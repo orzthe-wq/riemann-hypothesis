@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.OrbitCountSecondStage
 
 @[expose] public section
 
@@ -83,14 +84,11 @@ theorem qf_add {G : Matrix κ κ ℤ} (hG : Gᵀ = G) (x y : κ → F) : QF G (x
 theorem mem_LL {x : κ → F} : x ∈ LL F κ ↔ ∀ i, IsIntegral ℤ (x i) := by
   simp [LL, AddSubgroup.mem_pi, mem_integralClosure_iff]
 
-theorem intCast_isIntegral (n : ℤ) : IsIntegral ℤ (n : F) := by
-  simpa using isIntegral_algebraMap (R := ℤ) (A := F) (x := n)
-
 theorem bf_int (G : Matrix κ κ ℤ) {x y : κ → F} (hx : ∀ i, IsIntegral ℤ (x i)) (hy : ∀ i, IsIntegral ℤ (y i)) :
     IsIntegral ℤ (BF G x y) := by
   unfold BF
   simp only [dotProduct, Matrix.mulVec, Matrix.map_apply]
-  exact IsIntegral.sum _ fun i _ => (hx i).mul (IsIntegral.sum _ fun j _ => (intCast_isIntegral _).mul (hy j))
+  exact IsIntegral.sum _ fun i _ => (hx i).mul (IsIntegral.sum _ fun j _ => (_root_.PI.UnitaryGroupMassFormula.CntFormula.isInt_intCast _).mul (hy j))
 
 theorem trace_int {x : F} (hx : IsIntegral ℤ x) : ∃ n : ℤ, Algebra.trace ℚ F x = n := by
   have := Algebra.isIntegral_trace (L := ℚ) hx
@@ -109,14 +107,14 @@ theorem qf_int {G : Matrix κ κ ℤ} (hG : EvenPos G) {x : κ → F} (hx : ∀ 
     have : QF G (Pi.single i (x i)) = (m : F) * x i * x i := by
       rw [qf_single, hm]; push_cast; field_simp; ring
     rw [this]
-    exact ((intCast_isIntegral m).mul (hx i)).mul (hx i)
+    exact ((_root_.PI.UnitaryGroupMassFormula.CntFormula.isInt_intCast m).mul (hx i)).mul (hx i)
   have hvi : ∀ (s : Finset κ) (j : κ), IsIntegral ℤ ((∑ i ∈ s, Pi.single i (x i) : κ → F) j) := by
     intro s j
     rw [Finset.sum_apply]
     exact IsIntegral.sum _ fun i _ => by
       by_cases h : j = i
       · subst h; simpa using hx j
-      · simp [Pi.single_apply, h, isIntegral_zero]
+      · simp [h, isIntegral_zero]
   have key : ∀ s : Finset κ, IsIntegral ℤ (QF G (∑ i ∈ s, Pi.single i (x i))) := by
     intro s
     refine Finset.induction_on s ?_ ?_
@@ -127,7 +125,7 @@ theorem qf_int {G : Matrix κ κ ℤ} (hG : EvenPos G) {x : κ → F} (hx : ∀ 
       intro j
       by_cases h : j = i
       · subst h; simpa using hx j
-      · simp [Pi.single_apply, h, isIntegral_zero]
+      · simp [h, isIntegral_zero]
   simpa [Finset.univ_sum_single] using key Finset.univ
 
 theorem et_props (x y : F) : et (x + y) = et x * et y ∧ ‖et x‖ = 1 ∧ (et x = 1 ↔ ∃ n : ℤ, Algebra.trace ℚ F x = n) ∧
@@ -175,5 +173,3 @@ theorem GlobalTheory.HilbertThetaSeries.formLatticeProps : ∀ (F : Type) [Field
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 
-theorem _root_.GlobalTheory.T.evenPos_gramForm_integral_lattice_properties : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → (∀ x y : κ → F, BF G x y = BF G y x ∧ QF G (x + y) = QF G x + BF G x y + QF G y) ∧ (∀ (a : F) (x y : κ → F), BF G (a • x) y = a * BF G x y ∧ QF G (a • x) = a ^ 2 * QF G x ∧ QF G (-x) = QF G x) ∧ (∀ x y z : κ → F, BF G (x + y) z = BF G x z + BF G y z) ∧ (∀ x ∈ LL F κ, IsIntegral ℤ (QF G x) ∧ ∀ y ∈ LL F κ, IsIntegral ℤ (BF G x y)) ∧ (∀ x : κ → F, x ∈ LL F κ ↔ ∀ i, IsIntegral ℤ (x i)) ∧ (∀ (a : F) (x : κ → F), x ∈ aL κ a ↔ ∃ l ∈ LL F κ, x = a • l) ∧ (∀ x y : F, et (x + y) = et x * et y ∧ ‖et x‖ = 1 ∧ (et x = 1 ↔ ∃ n : ℤ, Algebra.trace ℚ F x = n) ∧ (IsIntegral ℤ x → et x = 1)) ∧ LL F κ ≤ dualL F G := by
-  first | exact @GlobalTheory.HilbertThetaSeries.formLatticeProps | exact GlobalTheory.HilbertThetaSeries.formLatticeProps | (intros; apply GlobalTheory.HilbertThetaSeries.formLatticeProps <;> assumption)

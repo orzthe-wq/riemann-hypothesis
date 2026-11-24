@@ -50,4 +50,4 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 
 theorem _root_.GlobalTheory.T.exists_ne_zero_latticeVacuum_selfDual : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → ∀ Γ ≤ latO S T (LS : Set _) (LT : Set _) (fun _ => True), ∃ f, VacG ψ S T Γ f ∧ f ≠ 0 := by
-  first | exact @GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero | exact GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero | (intros; apply GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero <;> assumption)
+  first | exact @GlobalTheory.AscFin.VacSub.exists_vacG_ne_zero

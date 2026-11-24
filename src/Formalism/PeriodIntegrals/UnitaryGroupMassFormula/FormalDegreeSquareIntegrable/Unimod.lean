@@ -49,7 +49,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib
+import Mathlib.Tactic
 
 @[expose] public section
 
@@ -140,13 +140,6 @@ lemma toM_inv (a : UJ ε) : toM a⁻¹ = Jm ε * (toM a)ᴴ * Jm ε := by
   show (((a : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _
   exact Units.inv_eq_of_mul_eq_one_left (coeMatrix_left_inv ε _ a.2)
 
-private lemma Jm_mul_self_eq_one' : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [diagonal_mul_diagonal, ← diagonal_one]
-  congr 1
-  funext a
-  by_cases h : ε a = true <;> simp [h]
-
 lemma inUJ_J : inUJ ε (Jm ε) := by
   unfold inUJ Jm
   rw [diagonal_conjTranspose, diagonal_mul_diagonal, diagonal_mul_diagonal]
@@ -156,7 +149,7 @@ lemma inUJ_J : inUJ ε (Jm ε) := by
 
 lemma inUJ_mul_J_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : g * Jm ε * gᴴ = Jm ε := by
   have h1 : g * (Jm ε * gᴴ * Jm ε) = 1 := mul_eq_one_comm.mp (coeMatrix_left_inv ε g hg)
-  calc g * Jm ε * gᴴ = g * Jm ε * gᴴ * (Jm ε * Jm ε) := by rw [Jm_mul_self_eq_one', Matrix.mul_one]
+  calc g * Jm ε * gᴴ = g * Jm ε * gᴴ * (Jm ε * Jm ε) := by rw [_root_.PI.UpqRep.Jm_mul_self, Matrix.mul_one]
     _ = (g * (Jm ε * gᴴ * Jm ε)) * Jm ε := by simp only [Matrix.mul_assoc]
     _ = Jm ε := by rw [h1, Matrix.one_mul]
 
@@ -181,7 +174,7 @@ lemma modChar_herm (h : UJ ε) (hh : (toM h)ᴴ = toM h) : Measure.modularCharac
     linarith
 
 lemma isCompact_Kset : IsCompact (Kset ε) := by
-  apply CompanionTheory.D.Upq.isCompact_Kset <;> assumption
+  apply CompanionTheory.D.Upq.isCompact_Kset
 
 lemma isCompact_KG : IsCompact ((KG ε : Set (UJ ε))) :=
   (isClosedEmbeddingMatrix n ε).1.isCompact_preimage (isCompact_Kset ε)

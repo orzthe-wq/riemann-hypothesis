@@ -132,7 +132,7 @@ theorem exists_ratio (p p' : QkPt D F k) : ∃ ζ : Fˣ, IsRatio p p' ζ.val := 
         (prod_neg _ _ (prod_sum₂ (K := Fin 4) (K' := Fin 8) (U := U) _ (prod_gt p'.g.b p.y h) rfl))).trans ?_
       rw [cPoint_y, cPoint_y]
       apply Additive.ofMul.injective
-      simp [Fin.prod_univ_succ, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, mul_comm p.g.b p'.g.b]
+      simp [Fin.prod_univ_succ, ofMul_mul, ofMul_inv, ofMul_pow, mul_comm p.g.b p'.g.b]
       module)
   refine ⟨ζ, fun T σ z J hJ => ?_⟩
   have e := hζ _ σ.left z J hJ

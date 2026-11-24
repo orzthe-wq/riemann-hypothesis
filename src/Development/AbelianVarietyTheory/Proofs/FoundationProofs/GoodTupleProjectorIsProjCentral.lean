@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.StandardFiveNontrivial
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CentralIdempotentIrreducibleCharacterPropsStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CentralIdempotentIrreducibleCharacterProps
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExteriorTensorProductConvolutionCalculus
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -87,14 +87,14 @@ theorem eGood_isProj_central : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ (m : 
   · refine (tens_calculus ι (GG g N) (GG g N)).2.1 _ fun v => ?_
     obtain ⟨V, hV, hχ, -⟩ := (hτ v).2 _ (hmem F hF v)
     rw [← hχ]
-    exact (GlobalTheory.T.centralIdempotent_irreducible_character_props _ V).1
+    exact (_root_.GlobalTheory.BadShare.ZCalc.zc_calc _ V).1
   · rw [conv_tens]
     obtain ⟨v, hv⟩ := Function.ne_iff.1 hne
     obtain ⟨V, hV, hχ, -⟩ := (hτ v).2 _ (hmem F hF v)
     obtain ⟨V', hV', hχ', -⟩ := (hτ v).2 _ (hmem F' hF' v)
     have h0 : conv (zc (τ v (F v))) (zc (τ v (F' v))) = 0 := by
       rw [← hχ, ← hχ']
-      refine (GlobalTheory.T.centralIdempotent_irreducible_character_props _ V).2.2.1 V' ?_
+      refine (_root_.GlobalTheory.BadShare.ZCalc.zc_calc _ V).2.2.1 V' ?_
       rw [hχ, hχ']
       exact fun h => hv ((hτ v).1 (hmem F hF v) (hmem F' hF' v) h)
     funext x

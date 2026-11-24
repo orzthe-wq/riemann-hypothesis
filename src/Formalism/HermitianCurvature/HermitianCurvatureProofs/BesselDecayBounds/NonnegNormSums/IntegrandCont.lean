@@ -100,8 +100,7 @@ theorem gN_rpow_le {a : ℝ} (ha : 1 ≤ a) {P Q R : Mx k r} (hP : 0 < Formalism
     Real.rpow_le_rpow_of_nonpos hR hle (by linarith)
   rw [Real.mul_rpow hP.le hQ.le] at h1
   have h2 : Formalism.FourierDecayAlt.B.gN P ^ (a - 1) * Formalism.FourierDecayAlt.B.gN P ^ (1 - a) = 1 := by
-    rw [← Real.rpow_add hP]
-    ring_nf
+    rw [← Real.rpow_add hP, show a - 1 + (1 - a) = 0 by ring]
     simp
   calc Formalism.FourierDecayAlt.B.gN Q ^ (1 - a)
       = Formalism.FourierDecayAlt.B.gN P ^ (a - 1) * (Formalism.FourierDecayAlt.B.gN P ^ (1 - a) * Formalism.FourierDecayAlt.B.gN Q ^ (1 - a)) := by
@@ -120,8 +119,7 @@ theorem finv_cont (a : ℝ) (ha : 1 ≤ a) : Continuous (finv k r a) := by
   exact (Formalism.FourierDecayAlt.P.B6.gN_continuous.comp hc).rpow_const (fun _ => Or.inr (by linarith))
 
 theorem finv_eq (a : ℝ) {x : Mx k r} (hx : x ∈ UH (Hpk k r)) : Formalism.FourierDecayAlt.B.gN x⁻¹ ^ (a - 1) = finv k r a x := by
-  unfold finv
-  rw [uh_inv_eq hx]
+  simp only [finv, uh_inv_eq hx]
 
 theorem bound_trans (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ) (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (ha : 1 ≤ a)
@@ -162,19 +160,15 @@ theorem integrand_cont (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r 
   have hs : Matrix.of p.1 * Matrix.of p.2 ∈ UH (Hpk k r) := hG.1 _ hp.1.1 _ hp.2.1
   have hg : ContinuousOn (fun x : Mx k r => (⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * x) u⟫_ℂ *
       star (psi k r z c (Matrix.of p.2))) • π (Matrix.of p.1)⁻¹) (UH (Hpk k r)) := by
-    have hm' : Continuous (fun x : Mx k r => Matrix.of p.1 * Matrix.of p.2 * x) :=
-      continuous_const.matrix_mul continuous_id
     have hm : ContinuousOn (fun x : Mx k r => Matrix.of p.1 * Matrix.of p.2 * x) (UH (Hpk k r)) :=
-      hm'.continuousOn
+      (continuous_const.matrix_mul continuous_id).continuousOn
     have hin : ContinuousOn (fun x : Mx k r => σ (Matrix.of p.1 * Matrix.of p.2 * x) u) (UH (Hpk k r)) :=
       (hcont u).comp hm (fun x hx => hG.1 _ hs _ hx)
     have hv : ContinuousOn (fun _ : Mx k r => v) (UH (Hpk k r)) := continuousOn_const
-    have h1 : ContinuousOn (fun x : Mx k r => ⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * x) u⟫_ℂ) (UH (Hpk k r)) :=
-      hv.inner hin
     have h2 : ContinuousOn (fun _ : Mx k r => star (psi k r z c (Matrix.of p.2))) (UH (Hpk k r)) :=
       continuousOn_const
     have h3 : ContinuousOn (fun _ : Mx k r => π (Matrix.of p.1)⁻¹) (UH (Hpk k r)) := continuousOn_const
-    exact (h1.mul h2).smul h3
+    exact ((hv.inner hin).mul h2).smul h3
   refine hg.congr (fun y hy => ?_)
   unfold beF
   beta_reduce

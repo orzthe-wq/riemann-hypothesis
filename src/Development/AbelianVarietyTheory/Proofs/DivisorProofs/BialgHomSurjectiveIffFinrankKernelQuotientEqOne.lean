@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.KerIdealCompOfSurjective
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHopfAlgebraEqRangeMulKernelStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankHopfAlgebraEqRangeMulKernel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -67,7 +67,7 @@ theorem surjective_iff_finrank_quot_kerIdeal_eq_one :
     let e : (A ⧸ augIdeal (R := k) (A := A)) ≃ₐ[k] k := Ideal.quotientKerAlgEquivOfSurjective hs
     rw [e.toLinearEquiv.finrank_eq, Module.finrank_self]
   · intro h
-    have hL := GlobalTheory.T.finrank_hopfAlgebra_eq_range_mul_kernel k A C f
+    have hL := _root_.GlobalTheory.Dieu.finrank_eq_range_mul_ker k A C f
     rw [h, mul_one] at hL
     have htop : LinearMap.range (f : C →ₐ[k] A).toLinearMap = ⊤ :=
       Submodule.eq_top_of_finrank_eq hL.symm

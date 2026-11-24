@@ -65,7 +65,7 @@ theorem ord_mul (v : Place k F) (x y : F) (hx : x ≠ 0) (hy : y ≠ 0) :
 
 theorem ord_zpow (v : Place k F) (x : F) (m : ℤ) : ord v (x ^ m) = m * ord v x := by
   unfold ord
-  rw [map_zpow₀, WithZero.log_zpow]; simp [smul_eq_mul]
+  rw [map_zpow₀, WithZero.log_zpow]; simp
 
 theorem le_one_iff (v : Place k F) (x : F) (hx : x ≠ 0) : v.1 x ≤ 1 ↔ 0 ≤ ord v x := by
   unfold ord

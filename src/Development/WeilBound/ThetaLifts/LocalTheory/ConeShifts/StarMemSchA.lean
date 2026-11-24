@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStab
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisenbergActsByLocalSchrodinger
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallyIntegralPointsIndicatorIsVacuum
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductFunctionOnSumCoordsMemAdelicSchwartzSpace
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAdelicAddCharLocalComponentNeOne
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.StandardTraceAdelicAddCharLocalComponentNeOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 public import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.Vaceigen
 import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.VaceigenAlg
@@ -69,7 +69,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {v : Pl F}
 
 theorem std_ne_one {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (v : Pl F) : ψ ≠ 1 := fun h =>
-  GlobalTheory.PsiNontriv.psiV_ne_one ψ hψ v (by rw [h]; rfl)
+  Tw.PsiNontriv.psiV_ne_one ψ hψ v (by rw [h]; rfl)
 
 theorem tens_smul {κ : Type} (c : ℂ) (φ : (κ → Fv F v) → ℂ) (r) : tens (evFin F v) (c • φ) r = c • tens (evFin F v) φ r :=
   (tensL v r).map_smul c φ

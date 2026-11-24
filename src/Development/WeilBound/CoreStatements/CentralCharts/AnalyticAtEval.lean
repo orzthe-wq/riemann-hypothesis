@@ -102,14 +102,6 @@ private theorem valAt_unique_lemma (hg : IsCptGen ξ) {z : Spec (CommRingCat.of 
   obtain ⟨h2, s', hs', rfl⟩ := h'
   rw [hg.inj ⟨centre z, h1⟩ (hs.trans hs'.symm)]
 
-private theorem valAt_mul_lemma_2 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a b : Ω} {r s : ℂ}
-    (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a * b) (r * s) := by
-  obtain ⟨hz, s1, hs, hs'⟩ := h
-  obtain ⟨hz', s2, ht, ht'⟩ := h'
-  refine ⟨hz, s1 * s2, by rw [map_mul, hs, ht], ?_⟩
-  rw [← hs', ← ht']
-  exact map_mul _ s1 s2
-
 private theorem valAt_sub_lemma_3 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a b : Ω} {r s : ℂ}
     (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a - b) (r - s) := by
   obtain ⟨hz, s1, hs, hs'⟩ := h
@@ -117,31 +109,6 @@ private theorem valAt_sub_lemma_3 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a b : �
   refine ⟨hz, s1 - s2, by rw [map_sub, hs, ht], ?_⟩
   rw [← hs', ← ht']
   exact map_sub _ s1 s2
-
-private theorem valAt_add_lemma_12 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a b : Ω} {r s : ℂ}
-    (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a + b) (r + s) := by
-  obtain ⟨hz, s1, hs, hs'⟩ := h
-  obtain ⟨hz', s2, ht, ht'⟩ := h'
-  refine ⟨hz, s1 + s2, by rw [map_add (f := _), hs, ht], ?_⟩
-  rw [← hs', ← ht']
-  exact map_add _ s1 s2
-
-private theorem valAt_intCast_lemma_13 {z : Spec (CommRingCat.of ℂ) ⟶ X} (h : genPt ξ ⤳ centre z) (m : ℤ) :
-    ValAt ξ z (m : Ω) (m : ℂ) := by
-  refine ⟨h, (m : ↑(X.presheaf.stalk (centre z))), by simp, ?_⟩
-  exact map_intCast _ m
-
-private theorem valAt_inv_lemma_4 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a : Ω} {r : ℂ}
-    (h : ValAt ξ z a r) (hr : r ≠ 0) : ValAt ξ z a⁻¹ r⁻¹ := by
-  obtain ⟨hz, t, ht, ht'⟩ := h
-  have hu : IsUnit t :=
-    (Scheme.isLocalHom_stalkClosedPointTo z).map_nonunit t (by rw [ht']; exact hr.isUnit)
-  have key : ∀ {L : Type} [Field L] (φ : ↑(X.presheaf.stalk (centre z)) →+* L),
-      φ ↑hu.unit⁻¹ = (φ t)⁻¹ := fun φ =>
-    eq_inv_of_mul_eq_one_left (by rw [← map_mul, hu.val_inv_mul, map_one])
-  refine ⟨hz, ↑hu.unit⁻¹, ?_, ?_⟩
-  · exact (key (genMap ξ ⟨centre z, hz⟩)).trans (congrArg (·⁻¹) ht)
-  · exact (key (Scheme.stalkClosedPointTo z).hom).trans (congrArg (·⁻¹) ht')
 
 private theorem unitAt_of_valAt_lemma_5 {z : Spec (CommRingCat.of ℂ) ⟶ X} {a : Ω} {r : ℂ}
     (h : ValAt ξ z a r) (hr : r ≠ 0) : ∃ hz : genPt ξ ⤳ centre z, unitAt ξ ⟨centre z, hz⟩ a := by
@@ -154,19 +121,19 @@ private theorem valAt_sum_lemma_6 {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : ge
     (s : Finset I) (f : I → Ω) (v : I → ℂ) (h : ∀ i ∈ s, ValAt ξ z (f i) (v i)) :
     ValAt ξ z (∑ i ∈ s, f i) (∑ i ∈ s, v i) := by
   induction s using Finset.cons_induction with
-  | empty => simpa using valAt_intCast_lemma_13 (ξ := ξ) hz 0
+  | empty => simpa using _root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_int (ξ := ξ) hz 0
   | @cons i s hi ih =>
     rw [Finset.sum_cons, Finset.sum_cons]
-    exact valAt_add_lemma_12 (h i (Finset.mem_cons_self i s)) (ih fun j hj => h j (Finset.mem_cons_of_mem hj))
+    exact _root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_add (h i (Finset.mem_cons_self i s)) (ih fun j hj => h j (Finset.mem_cons_of_mem hj))
 
 private theorem valAt_prod_lemma_7 {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : genPt ξ ⤳ centre z) {I : Type*}
     (s : Finset I) (f : I → Ω) (v : I → ℂ) (h : ∀ i ∈ s, ValAt ξ z (f i) (v i)) :
     ValAt ξ z (∏ i ∈ s, f i) (∏ i ∈ s, v i) := by
   induction s using Finset.cons_induction with
-  | empty => simpa using valAt_intCast_lemma_13 (ξ := ξ) hz 1
+  | empty => simpa using _root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_int (ξ := ξ) hz 1
   | @cons i s hi ih =>
     rw [Finset.prod_cons, Finset.prod_cons]
-    exact valAt_mul_lemma_2 (h i (Finset.mem_cons_self i s)) (ih fun j hj => h j (Finset.mem_cons_of_mem hj))
+    exact _root_.GlobalTheory.CompanionTheory.Ar.CxVal.mul (h i (Finset.mem_cons_self i s)) (ih fun j hj => h j (Finset.mem_cons_of_mem hj))
 
 private theorem valAt_pow_lemma_8 {z : Spec (CommRingCat.of ℂ) ⟶ X} (hz : genPt ξ ⤳ centre z) {a : Ω} {r : ℂ}
     (h : ValAt ξ z a r) (n : ℕ) : ValAt ξ z (a ^ n) (r ^ n) := by
@@ -196,7 +163,7 @@ private theorem valAt_ratio_lemma_10 {z : Spec (CommRingCat.of ℂ) ⟶ X} {w : 
   rw [MvPolynomial.aeval_def, MvPolynomial.eval_map, algebraMap_int_eq, eval₂_div_lemma_9 hp, eval₂_div_lemma_9 hp]
   apply valAt_sum_lemma_6 h0
   intro m _
-  apply valAt_mul_lemma_2 (valAt_intCast_lemma_13 h0 _)
+  apply _root_.GlobalTheory.CompanionTheory.Ar.CxVal.mul (_root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_int h0 _)
   apply valAt_prod_lemma_7 h0
   intro k _
   apply valAt_prod_lemma_7 h0
@@ -225,8 +192,8 @@ private theorem valAt_of_isValueAt_lemma_11 {z : Spec (CommRingCat.of ℂ) ⟶ X
       (MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) p) / ∏ k, w ⟨k, c k⟩ ^ d k)⁻¹ := by
     field_simp
   rw [e1, e2]
-  exact valAt_mul_lemma_2 (valAt_ratio_lemma_10 hz h0 c hc hg)
-    (valAt_inv_lemma_4 (valAt_ratio_lemma_10 hz h0 c hc hp) (div_ne_zero hwp hDw))
+  exact _root_.GlobalTheory.CompanionTheory.Ar.CxVal.mul (valAt_ratio_lemma_10 hz h0 c hc hg)
+    (_root_.GlobalTheory.CompanionTheory.Ar.CxVal.inv (valAt_ratio_lemma_10 hz h0 c hc hp) (div_ne_zero hwp hDw))
 
 theorem exists_val_fam (hT : CoordTie ℤ ξ (segreCoord y)) (hall : ∀ q : X, genPt ξ ⤳ q) {n : ℕ}
     {gm : (Fin n → ℂ) → (Σ k, J k) → ℂ} (hq : ∀ q, AnalyticAt ℂ (fun t => gm t q) 0)
@@ -242,7 +209,7 @@ theorem exists_val_fam (hT : CoordTie ℤ ξ (segreCoord y)) (hall : ∀ q : X, 
       rw [h2] at h1
       norm_num at h1
     · exact ⟨1, by simpa using h1⟩
-  have hv' : ValAt ξ z₀ (a + m) (v₀ + m) := valAt_add_lemma_12 hv (valAt_intCast_lemma_13 h0 m)
+  have hv' : ValAt ξ z₀ (a + m) (v₀ + m) := _root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_add hv (_root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_int h0 m)
   obtain ⟨h0', hu⟩ := unitAt_of_valAt_lemma_5 hv' hm
   obtain ⟨cc, hcc⟩ := hT.cover ⟨centre z₀, h0'⟩
   obtain ⟨-, v, ⟨d, g, p, hg, hp, hyp, hgf, hwp, rfl⟩, -⟩ :=
@@ -255,11 +222,8 @@ theorem exists_val_fam (hT : CoordTie ℤ ξ (segreCoord y)) (hall : ∀ q : X, 
     rw [hv0]
     ring
   · filter_upwards [(analyticAt_eval hq p).continuousAt.eventually_ne hwp] with t ht z hzt
-    have h5 := valAt_sub_lemma_3 (valAt_of_isValueAt_lemma_11 hzt (hall _) hg hp hyp hgf ht) (valAt_intCast_lemma_13 (hall _) m)
+    have h5 := valAt_sub_lemma_3 (valAt_of_isValueAt_lemma_11 hzt (hall _) hg hp hyp hgf ht) (_root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_int (hall _) m)
     rwa [add_sub_cancel_right] at h5
-
-theorem valAt_int {z : Spec (CommRingCat.of ℂ) ⟶ X} (h : genPt ξ ⤳ centre z) (m : ℤ) : ValAt ξ z (m : Ω) (m : ℂ) :=
-  ⟨h, m, map_intCast _ m, map_intCast (Scheme.stalkClosedPointTo z).hom m⟩
 
 theorem exists_val_ne {z : Spec (CommRingCat.of ℂ) ⟶ X} (h : genPt ξ ⤳ centre z) {a : Ω}
     (ha : unitAt ξ ⟨centre z, h⟩ a) : ∃ v : ℂ, v ≠ 0 ∧ ValAt ξ z a v := by
@@ -317,23 +281,23 @@ theorem exists_emb (𝔐 : HodgeCpt Y S y) {z : Spec (CommRingCat.of ℂ) ⟶ �
     obtain ⟨m, b, hm, hmb⟩ := hx.exists_nsmul_eq (𝓞 c.F)
     obtain ⟨r, hr⟩ := exists_cst_val_lemma 𝔐 z b
     have hmi : ValAt 𝔐.ξ z (m : Ω) (m : ℂ) := by
-      simpa using valAt_intCast_lemma_13 (ξ := 𝔐.ξ) h0 (m : ℤ)
+      simpa using _root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_int (ξ := 𝔐.ξ) h0 (m : ℤ)
     have hmC : (m : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hm
     have hmΩ : (m : Ω) ≠ 0 := Nat.cast_ne_zero.2 hm
     have e : 𝔐.cst a = 𝔐.cst (algebraMap (𝓞 c.F) c.F b) * (m : Ω)⁻¹ := by
       rw [← hmb, nsmul_eq_mul, map_mul, map_natCast]
       field_simp
     rw [e]
-    exact ⟨_, valAt_mul_lemma_2 hr (valAt_inv_lemma_4 hmi hmC)⟩
+    exact ⟨_, _root_.GlobalTheory.CompanionTheory.Ar.CxVal.mul hr (_root_.GlobalTheory.CompanionTheory.Ar.CxVal.inv hmi hmC)⟩
   choose sv hsv using hex
   have hu : ∀ a r, ValAt 𝔐.ξ z (𝔐.cst a) r → sv a = r := fun a r h =>
     valAt_unique_lemma 𝔐.tie.gen (hsv a) h
   let s : c.F →+* ℂ :=
     { toFun := sv
-      map_one' := hu _ _ (by rw [map_one]; simpa using valAt_intCast_lemma_13 (ξ := 𝔐.ξ) h0 1)
-      map_mul' := fun a b => hu _ _ (by rw [map_mul]; exact valAt_mul_lemma_2 (hsv a) (hsv b))
-      map_zero' := hu _ _ (by rw [map_zero]; simpa using valAt_intCast_lemma_13 (ξ := 𝔐.ξ) h0 0)
-      map_add' := fun a b => hu _ _ (by rw [map_add (f := _)]; exact valAt_add_lemma_12 (hsv a) (hsv b)) }
+      map_one' := hu _ _ (by rw [map_one]; simpa using _root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_int (ξ := 𝔐.ξ) h0 1)
+      map_mul' := fun a b => hu _ _ (by rw [map_mul]; exact _root_.GlobalTheory.CompanionTheory.Ar.CxVal.mul (hsv a) (hsv b))
+      map_zero' := hu _ _ (by rw [map_zero]; simpa using _root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_int (ξ := 𝔐.ξ) h0 0)
+      map_add' := fun a b => hu _ _ (by rw [map_add (f := _)]; exact _root_.GlobalTheory.CompanionTheory.Ar.TieValue.val_add (hsv a) (hsv b)) }
   exact ⟨s, hsv⟩
 
 theorem exists_emb_fam (𝔐 : HodgeCpt Y S y) {n : ℕ} {gm : (Fin n → ℂ) → (Σ k, J k) → ℂ}

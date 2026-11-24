@@ -168,7 +168,7 @@ theorem first_family_symbol_mul_variable_pow {u : Sym m n} (hu : SymbolInFirstFa
     · subst h; exact ha
     · exact absurd rfl hk
   have h0 : (∑ k, (Finsupp.single (Sum.inl a) b : Ix m n ⊕ Ix m n →₀ ℕ) (Sum.inr k)) ≤ 0 := by
-    simp [Finsupp.single_apply]
+    simp
   rw [X_pow_eq_monomial]
   refine ⟨?_, fun d hd => ?_⟩
   · intro t ht k hk

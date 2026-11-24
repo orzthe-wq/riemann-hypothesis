@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Definitions.Degenerations.NotAllMatchRankZero
 
 @[expose] public section
 
@@ -76,24 +77,6 @@ open scoped CategoryTheory.Obj BigOperators in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {O : Type} [CommRing O] {N : _root_.GlobalTheory.Ex.NumD O} {La : Type} [AddCommGroup La] {EF : LinearMap.BilinForm ℤ La}
   {ζ : ℕ → Oˣ} {lab : ∀ k : ℕ, La → N.QT k} in
-private theorem qEq_mul' (N : _root_.GlobalTheory.Ex.NumD O) {k : ℕ}
-    {p p' q q' : N.QT k} (h : N.QEq p p')
-    (h' : N.QEq q q') :
-    N.QEq (p * q) (p' * q') := by
-  unfold _root_.GlobalTheory.Ex.NumD.QEq at *
-  obtain ⟨z, hz1, hz2⟩ := h
-  obtain ⟨z', hz1', hz2'⟩ := h'
-  refine ⟨z + z', ?_, ?_⟩
-  · simp only [Subgroup.coe_mul, Prod.fst_mul, toAdd_mul, hz1, hz1', smul_add]
-    abel
-  · simp only [Subgroup.coe_mul, Prod.snd_mul, hz2, hz2', N.io_add]
-    ac_rfl
-
-open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField in
-open scoped CategoryTheory.Obj BigOperators in
-attribute [local instance] Over.cartesianMonoidalCategory in
-variable {O : Type} [CommRing O] {N : _root_.GlobalTheory.Ex.NumD O} {La : Type} [AddCommGroup La] {EF : LinearMap.BilinForm ℤ La}
-  {ζ : ℕ → Oˣ} {lab : ∀ k : ℕ, La → N.QT k} in
 private theorem qEq_label_pow_nsmul
     (hL : _root_.GlobalTheory.ModelData.Labels N EF ζ lab) {k : ℕ} (hk : 0 < k) (x : La) :
     ∀ d : ℕ, 1 ≤ d → N.QEq ((lab k x) ^ d) (lab k (d • x)) := by
@@ -104,7 +87,7 @@ private theorem qEq_label_pow_nsmul
     rw [pow_succ, succ_nsmul]
     unfold _root_.GlobalTheory.ModelData.Labels at hL
     exact (N.qEq_equivalence k).trans
-      (qEq_mul' N ih ((N.qEq_equivalence k).refl _)) (hL.1 k hk _ _)
+      (_root_.GlobalTheory.Ex.TateInh.qEq_mul N ih ((N.qEq_equivalence k).refl _)) (hL.1 k hk _ _)
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField in
 open scoped CategoryTheory.Obj BigOperators in

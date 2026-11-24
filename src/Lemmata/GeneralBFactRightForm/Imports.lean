@@ -1,103 +1,44 @@
 module
 
-public import Mathlib.LinearAlgebra.LinearIndependent.Defs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Algebra.Module.BigOperators
 public import Mathlib.Data.Matrix.Diagonal
 public import Mathlib.Data.Matrix.Mul
+public import Mathlib.LinearAlgebra.LinearIndependent.Defs
 public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 public import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+
+import Mathlib.LinearAlgebra.Dimension.OrzechProperty
+import Mathlib.LinearAlgebra.LinearIndependent.Basic
+import Mathlib.RingTheory.FiniteType
 
 @[expose] public section
 
 namespace Bl.general_b_fact_right_form
 
-theorem goal1 :
-  ∀ {R V : Type} [inst : CommRing.{0} R] [IsDomain.{0} R] [inst_2 : AddCommGroup.{0} V] [inst_3 : Module.{0, 0} R V]
-  {r : Nat} (e w : Fin r → V),
-  LinearIndependent.{0, 0, 0} R e →
-    ∀ {α β : R},
-      Ne.{1} α 0 →
-        Ne.{1} β 0 →
-          (∀ (a : Fin r),
-              Membership.mem.{0, 0} (Submodule.span.{0, 0} R (Set.range.{0, 1} e)) (HSMul.hSMul.{0, 0, 0} β (w a))) →
-            (∀ (l : Fin r),
-                Membership.mem.{0, 0} (Submodule.span.{0, 0} R (Set.range.{0, 1} w)) (HSMul.hSMul.{0, 0, 0} α (e l))) →
-              LinearIndependent.{0, 0, 0} R w := by
-  intro R V _ _ _ _ r e w he α β hα hβ hw he'
-  classical
-  choose B hB using fun a => (Submodule.mem_span_range_iff_exists_fun R).1 (hw a)
-  choose A hA using fun l => (Submodule.mem_span_range_iff_exists_fun R).1 (he' l)
-  have hAB : Matrix.of A * Matrix.of B = (α * β) • (1 : Matrix (Fin r) (Fin r) R) := by
-    ext l m
-    have h1 : ∑ j, (Matrix.of A * Matrix.of B) l j • e j = (α * β) • e l := by
-      simp only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_smul, mul_smul]
-      rw [Finset.sum_comm]
-      simp only [← Finset.smul_sum, hB]
-      simp only [smul_comm _ β, ← Finset.smul_sum, hA]
-    have h2 : ∑ j, ((α * β) • (1 : Matrix (Fin r) (Fin r) R)) l j • e j = (α * β) • e l := by
-      simp [Matrix.smul_apply, Matrix.one_apply, ite_smul]
-    have h3 : ∑ j, ((Matrix.of A * Matrix.of B) l j - ((α * β) • (1 : Matrix (Fin r) (Fin r) R)) l j) • e j = 0 := by
-      simp only [sub_smul, Finset.sum_sub_distrib, h1, h2, sub_self]
-    exact sub_eq_zero.1 (Fintype.linearIndependent_iff.1 he _ h3 m)
-  have hdet : (Matrix.of B).det ≠ 0 := by
-    intro h
-    have h4 := congrArg Matrix.det hAB
-    rw [Matrix.det_mul, h, mul_zero, Matrix.det_smul, Matrix.det_one, mul_one] at h4
-    exact pow_ne_zero _ (mul_ne_zero hα hβ) h4.symm
-  rw [Fintype.linearIndependent_iff]
-  intro c hc
-  have hv : Matrix.vecMul c (Matrix.of B) = 0 := by
-    have h5 : ∑ j, (Matrix.vecMul c (Matrix.of B)) j • e j = 0 := by
-      simp only [Matrix.vecMul, dotProduct, Matrix.of_apply, Finset.sum_smul, mul_smul]
-      rw [Finset.sum_comm]
-      simp only [← Finset.smul_sum, hB, smul_comm _ β]
-      rw [hc, smul_zero]
-    funext j
-    exact Fintype.linearIndependent_iff.1 he _ h5 j
-  intro i
-  by_contra hi
-  exact hdet (Matrix.exists_vecMul_eq_zero_iff.1 ⟨c, fun h0 => hi (congrFun h0 i), hv⟩)
+/-- A family of the same finite size as an independent family is independent if its
+span contains a regular scalar multiple of every vector in that family. -/
+theorem linearIndependent_of_smul_mem_span {R V ι : Type*} [CommRing R] [Nontrivial R]
+    [AddCommGroup V] [Module R V] [Fintype ι]
+    (e w : ι → V) (he : LinearIndependent R e) {α : R} (hα : IsRightRegular α)
+    (he' : ∀ i, α • e i ∈ Submodule.span R (Set.range w)) :
+    LinearIndependent R w := by
+  let := Module.Finite.span_of_finite R (Set.finite_range w)
+  apply linearIndependent_iff_card_le_finrank_span.mpr
+  have hi : LinearIndependent R (fun i => α • e i) :=
+    he.smul_of_isRightRegular (fun _ => hα)
+  have hs : LinearIndependent R
+      (fun i => (⟨α • e i, he' i⟩ : Submodule.span R (Set.range w))) :=
+    LinearIndependent.of_comp (Submodule.subtype _) hi
+  exact hs.fintype_card_le_finrank
+
+theorem goal1 {R V : Type} [CommRing R] [IsDomain R] [AddCommGroup V] [Module R V]
+    {r : ℕ} (e w : Fin r → V) (he : LinearIndependent R e) {α β : R}
+    (hα : α ≠ 0) (hβ : β ≠ 0)
+    (hw : ∀ a, β • w a ∈ Submodule.span R (Set.range e))
+    (he' : ∀ l, α • e l ∈ Submodule.span R (Set.range w)) :
+    LinearIndependent R w := by
+  clear hβ hw
+  exact linearIndependent_of_smul_mem_span e w he
+    (isRegular_iff_ne_zero.mpr hα).right he'
 
 end Bl.general_b_fact_right_form

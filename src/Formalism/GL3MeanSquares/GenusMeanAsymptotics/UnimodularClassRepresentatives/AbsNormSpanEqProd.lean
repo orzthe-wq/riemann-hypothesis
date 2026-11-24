@@ -100,12 +100,6 @@ theorem integral_of_mem_genus (hK : Formalism.HermitianLatticesTheory.IsCMUnram 
   rw [BrA.normD_eq_tprod hK hF hs hd hMl hMi, BrA.normD_eq_tprod hK hF hs hd hL hLi]
   exact tprod_congr fun 𝔭 => by rw [hvd 𝔭.1 𝔭.2]
 
-theorem normD_eq_prod (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
-    {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
-    (hL : Submodule.IsFullLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) :
-    normD h L = ∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, (Ideal.absNorm 𝔭.1 : ℝ) ^ vd h L 𝔭.1 :=
-  BrA.normD_eq_tprod hK hF hs hd hL hLi
-
 theorem absNorm_span_eq_prod (n : 𝓞 F) (hn : n ≠ 0) :
     (Ideal.absNorm (Ideal.span {n}) : ℝ) = ∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, (Ideal.absNorm 𝔭.1 : ℝ) ^ vF 𝔭.1 n := by
   have hI : Ideal.span {n} ≠ ⊥ := by

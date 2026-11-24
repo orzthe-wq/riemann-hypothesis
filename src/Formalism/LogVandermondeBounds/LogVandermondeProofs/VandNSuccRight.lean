@@ -172,7 +172,6 @@ private lemma vandN_le_pow_mul_pow_mul_vandN_of_interlace (p : ℕ) (u v : ℕ �
       ← prod_Ico_add' (fun j => v i - v j) (i + 1) p 1, mul_comm]
   have hD0 : 0 ≤ D := le_trans (by linarith [hu 0 1 (by omega) (by omega)]) (hD 0 1 (by omega) (by omega))
   rw [hvsplit, show p + 2 = (p + 1) + 1 from rfl, vandN_succ_left, vandN_succ_right]
-  beta_reduce
   have hP0 : ∏ j ∈ Ico 1 (p + 1 + 1), (u 0 - u j) ≤ D ^ (p + 1) := by
     calc _ ≤ ∏ _j ∈ Ico 1 (p + 1 + 1), D := by
           apply prod_le_prod₀

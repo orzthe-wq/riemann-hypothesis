@@ -230,7 +230,7 @@ theorem _root_.GlobalTheory.appellHumbert_trivial_of_nowhere_vanishing :
     refine Complex.ext ?_ ?_
     · simp only [Complex.zero_re]
       linarith
-    · simp [Complex.star_def] at h2
+    · simp at h2
       simpa using h2
   have hB0 : B = 0 := by
     ext i j

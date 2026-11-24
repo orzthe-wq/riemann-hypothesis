@@ -71,24 +71,6 @@ theorem ltr_lie {a : ℕ} (h : GA E a) (X : Lie E a) : Commute (ltr h) (lie E a 
     rw [chart_left]
     rfl
 
-theorem commute_zalg {a : ℕ} {T : Module.End ℂ (Sm E a)} (hT : ∀ X, Commute T (lie E a X))
-    {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) : Commute T z := by
-  let S : Subalgebra ℂ (Module.End ℂ (Sm E a)) := Subalgebra.centralizer ℂ {T}
-  have hS : ∀ {z}, z ∈ S ↔ Commute T z := by
-    intro z
-    simp [S, Subalgebra.mem_centralizer_iff, Commute, SemiconjBy]
-  have hV : ∀ X, lie E a X ∈ S := fun X => hS.2 (hT X)
-  have hE : ∀ τ i j, Eop τ i j ∈ S := fun τ i j =>
-    S.smul_mem (S.sub_mem (hV _) (S.smul_mem (hV _) _)) _
-  refine hS.1 ((Algebra.adjoin_le (S := S) ?_) hz)
-  rintro _ ⟨τ, u, rfl⟩
-  refine S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)
-  obtain ⟨k, rfl⟩ := List.mem_ofFn.1 hx
-  refine S.add_mem ?_ (hE _ _ _)
-  split_ifs
-  · exact S.algebraMap_mem _
-  · exact S.zero_mem
-
 theorem infGL_val_diag {a : ℕ} (y : GL (Fin a) (Cinf E)) (d : Fin a → Cinf E) (hy : y.val = Matrix.diagonal d) :
     (infGL E a y).val = Matrix.diagonal fun i => 1 - sInf E 1 + sInf E (d i) := by
   ext i j
@@ -175,7 +157,7 @@ theorem ltr_mem_goodCT {r s : ℕ} {L : Subgroup (GL (Fin (r + s)) (Af E))} {W :
     change ‖F.1 (aT E (r + s) r t * (g * infGL E (r + s) y))‖ ≤ _
     rw [← mul_assoc]
     exact hC y
-  · rw [← Module.End.mul_apply, ← (commute_zalg (ltr_lie (aT E (r + s) r t)) (hJ hz)).eq, Module.End.mul_apply,
+  · rw [← Module.End.mul_apply, ← (_root_.GlobalTheory.CuspQuot.commute_Zalg (ltr_lie (aT E (r + s) r t)) (hJ hz)).eq, Module.End.mul_apply,
       a6 z hz, map_zero]
 
 def stabFin {a : ℕ} (φ : Sm E a) : Subgroup (GL (Fin a) (Af E)) where
@@ -251,7 +233,7 @@ end PositivityTheory.Rg.Rs.JFinTr
 
 namespace PositivityTheory.Rg.Rs
 
-theorem finTr_holds : FinTr := JFinTr.finTr
+alias finTr_holds := _root_.PositivityTheory.Rg.Rs.JFinTr.finTr
 
 end PositivityTheory.Rg.Rs
 

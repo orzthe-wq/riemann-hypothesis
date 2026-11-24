@@ -283,7 +283,6 @@ theorem formal_group_points_param_holds : FormalGroupPointsParametrisation.{u} :
       have eB : -2 + W.a₁ * t + W.a₃ * ω = 0 := by
         have k : -2 + W.a₁ * t + W.a₃ * ω = ω * (2 * (-1 / ω) + W.a₁ * (t / ω) + W.a₃) := by
           field_simp
-          try ring
         rw [k, hB, mul_zero]
       set Q := W.a₁ * t + W.a₂ * t ^ 2 + (2 * W.a₃) * ω + (2 * W.a₄) * (t * ω)
         + (3 * W.a₆) * ω ^ 2 with hQ

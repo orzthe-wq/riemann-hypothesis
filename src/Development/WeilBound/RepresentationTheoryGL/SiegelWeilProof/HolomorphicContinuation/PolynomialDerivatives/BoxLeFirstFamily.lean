@@ -63,7 +63,7 @@ theorem opMono_add (t : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) �
 
 theorem opMono_smul (t : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) →₀ ℕ) (r : ℂ) (f : PX m n) :
     opMono t (r • f) = r • opMono t f := by
-  simp [opMono, map_smul, mul_smul_comm]
+  simp [opMono, map_smul]
 
 def opL (s : Sym m n) : Module.End ℂ (PX m n) where
   toFun := op s
@@ -145,8 +145,7 @@ theorem rr_aeval (N : ℕ) (q : Polynomial ℂ) (x : S (n := n) ε N) :
   induction q using Polynomial.induction_on' with
   | add p q hp hq => simp only [map_add (f := _), LinearMap.add_apply, hp, hq]
   | monomial k a =>
-    simp only [Polynomial.aeval_monomial, Module.End.mul_apply, LinearMap.map_smul_of_tower,
-      Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply, map_smul]
+    simp only [Polynomial.aeval_monomial, Module.End.mul_apply, Algebra.algebraMap_eq_smul_one, LinearMap.smul_apply, Module.End.one_apply, map_smul]
     congr 1
     induction k generalizing x with
     | zero => simp

@@ -174,14 +174,14 @@ theorem conj_up (hP : P * P = P) {k : GL (Fin n) ℤ_[g]} (hk : red g n k ∈ U 
     rw [map_mul, map_mul, map_sub, map_one, hx]
     simp only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, hp, hp', mul_one, one_mul, sub_self, add_zero])
   have hx2 : (1 - φ P) * (φ M * φ P) * ((1 - φ P) * (φ M * φ P)) = 0 := by
-    simp only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, hp, hp', mul_one, one_mul, sub_self, add_zero]
+    simp only [mul_sub, sub_mul, mul_assoc, hp', one_mul, sub_self]
   obtain ⟨k', h1, h2⟩ := exists_unit (P * k.val * P + (1 - P) * k.val * (1 - P) +
     (g : Matrix (Fin n) (Fin n) ℤ_[g]) * (P * k.val * (1 - P)) + (1 - P) * (M * P)) (un _ hx2) (by
       simp only [map_add (f := _), map_mul, map_sub, map_one, red_nat, hx, un_val, zero_mul]
       simp only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, hp, hp', mul_one, one_mul, sub_self, add_zero]
       abel)
   refine ⟨k', h2 ▸ un_mem _ ?_ ?_, Units.ext ?_⟩
-  · simp only [mul_sub, sub_mul, mul_assoc, hp, hp', mul_one, one_mul, sub_self, sub_zero]
+  · simp only [mul_sub, sub_mul, hp', one_mul, sub_self, sub_zero]
   · simp only [mul_assoc, hp]
   · change (dd hP 1).val * ι k'.val = ι k.val * (dd hP 1).val
     rw [dd_val, ← map_mul, ← map_mul, h1]
@@ -189,13 +189,11 @@ theorem conj_up (hP : P * P = P) {k : GL (Fin n) ℤ_[g]} (hk : red g n k ∈ U 
     have hP' : ∀ r, P * (P * r) = P * r := fun r => by rw [← mul_assoc, hP]
     have hM' : g • ((1 - P) * (M * P)) = (1 - P) * k.val * P := by
       rw [← mul_smul_comm, ← smul_mul_assoc, nsmul_eq_mul, ← hM]
-      simp only [mul_sub, sub_mul, mul_assoc, hP, hP', mul_one, one_mul, sub_self, sub_zero]
+      simp only [mul_sub, sub_mul, mul_assoc, hP, hP', one_mul, sub_self, sub_zero]
     have e : (P + g • (1 - P)) * ((1 - P) * (M * P)) = g • ((1 - P) * (M * P)) := by
-      simp only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, hP, hP', mul_one, one_mul, sub_self, sub_zero,
-        smul_mul_assoc, zero_add, smul_zero, add_zero, add_sub_cancel_left]
+      simp only [add_mul, mul_sub, sub_mul, hP', one_mul, sub_self, smul_mul_assoc, smul_zero, add_zero, add_sub_cancel_left]
     rw [pow_one, ← nsmul_eq_mul, mul_add _ _ ((1 - P) * _), e, hM']
-    simp only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, hP, hP', mul_one, one_mul, sub_self, sub_zero,
-        smul_mul_assoc, mul_smul_comm, zero_add, add_zero, smul_zero, smul_sub, smul_add]
+    simp only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, hP', mul_one, one_mul, sub_self, smul_mul_assoc, mul_smul_comm, add_zero, smul_sub]
     abel
 
 theorem conj_down (hP : P * P = P) {u : Gn g n} (hu : u ∈ U (1 - φ P) (φ P)) (m : ℕ) :
@@ -215,7 +213,7 @@ theorem conj_down (hP : P * P = P) {u : Gn g n} (hu : u ∈ U (1 - φ P) (φ P))
   generalize y.val - 1 = z
   rw [← Nat.cast_pow, ← nsmul_eq_mul]
   simp only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, hP, hP', mul_one, one_mul,
-    sub_self, sub_zero, smul_mul_assoc, mul_smul_comm, zero_add, add_zero, smul_zero, smul_sub, smul_add]
+    sub_self, smul_mul_assoc, mul_smul_comm, add_zero, smul_sub, smul_add]
   abel
 
 theorem eq_zero_of_mem_twKer {π : Representation ℂ (GL (Fin n) ℚ_[g]) V} (hπ : IsSmooth π) (hP : P * P = P) (m : ℕ) :

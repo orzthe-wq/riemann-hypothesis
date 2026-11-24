@@ -117,11 +117,7 @@ theorem transvection_apply' {n : ℕ} (a a' : Fin n) (d : L) (i j : Fin n) :
   congr 1
   by_cases h1 : a = i <;> by_cases h2 : a' = j <;> simp [h1, h2, eq_comm]
 
-theorem ordL_one [Valued L (WithZero (Multiplicative ℤ))] : ordL (1 : L) = 0 := by
-  unfold ordL
-  rw [dite_eq_right (by simp)]
-  simp
-  rfl
+alias ordL_one := _root_.Formalism.UG.P.fSatake_ord_one
 
 end GlobalTheory.UnipShiftU
 

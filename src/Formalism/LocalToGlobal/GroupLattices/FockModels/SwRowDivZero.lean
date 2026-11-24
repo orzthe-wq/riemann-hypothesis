@@ -3,48 +3,7 @@ module
 public import Formalism.GradedWeylDivisibility.StatementA
 public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.HWRaise
 public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LRowdivLemmas
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 public import Mathlib.RingTheory.Derivation.Lie
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -92,9 +51,9 @@ theorem sw_deriv (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) R) :
     rw [map_mul, Polynomial.derivative_mul, Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_add (f := _),
       map_mul, map_mul, ← hp, Dop_X, sw_rowGen_X]
     by_cases h1 : v.1 = b <;> by_cases h2 : a = b <;>
-      simp only [h1, h2, if_true, if_false, sw_rowGen_X, map_zero, mul_zero, zero_mul, add_zero,
+      simp only [h1, h2, if_true, if_false, sw_rowGen_X, map_zero, mul_zero, add_zero,
         Polynomial.derivative_add, Polynomial.derivative_C, Polynomial.derivative_mul,
-        Polynomial.derivative_X, zero_add, one_mul, mul_one, Polynomial.derivative_zero] <;> ring
+        Polynomial.derivative_X, zero_add, one_mul] <;> ring
 
 theorem sw_rowDiv_zero (a b : Fin r) (g : MvPolynomial (Fin r × Fin n) R) : rowDiv R a b 0 g = g := by
   unfold rowDiv
@@ -124,7 +83,7 @@ theorem sw_step_eq (a : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin n) R) :
   cases k with
   | zero =>
     rw [Polynomial.coeff_X_mul_zero, add_zero, Polynomial.coeff_derivative]
-    simp [MvPolynomial.smul_eq_C_mul, mul_comm]
+    simp [mul_comm]
   | succ k =>
     rw [Polynomial.coeff_X_mul, Polynomial.coeff_derivative, Polynomial.coeff_derivative]
     simp only [MvPolynomial.smul_eq_C_mul]

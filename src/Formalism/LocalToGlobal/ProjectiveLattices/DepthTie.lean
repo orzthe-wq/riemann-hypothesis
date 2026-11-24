@@ -3,41 +3,6 @@ module
 public import Formalism.LocalToGlobal.ProjectiveLattices.CuspidalL2Subspace
 public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
 public import Formalism.LocalToGlobal.ProjectiveLattices.DepthPins
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 
 @[expose] public section
 
@@ -127,9 +92,6 @@ variable {D : D7}
 theorem barE_barE (D : D7) (a : 𝓞 D.host.E) : barE D (barE D a) = a := by
   first
   | (apply RingOfIntegers.ext; simp [barE])
-  | (apply RingOfIntegers.ext; simp [barE, RingOfIntegers.mapRingEquiv, RingOfIntegers.mapRingHom])
-  | (apply RingOfIntegers.ext; exact IsCMField.complexConj_apply_apply _)
-  | simp [barE]
 
 theorem piG_ne_zero' (EX : ErrX D) (i : Fin 2) : ((EX.piG i : 𝓞 D.host.E) : D.host.E) ≠ 0 := by
   intro h0
@@ -153,8 +115,6 @@ theorem barE_piG_mem (EX : ErrX D) (i : Fin 2) : ((barE D (EX.piG i) : 𝓞 D.ho
   rw [h3]
   first
   | exact div_mem (natCast_mem _ _) (EX.piG_K i)
-  | exact IntermediateField.div_mem _ (IntermediateField.natCast_mem _ _) (EX.piG_K i)
-  | exact D.host.K.div_mem (D.host.K.natCast_mem _) (EX.piG_K i)
 
 def toOK (x : 𝓞 D.host.E) (hx : (x : D.host.E) ∈ D.host.K) : 𝓞 D.host.K :=
   ⟨⟨(x : D.host.E), hx⟩, (isIntegral_algHom_iff (IntermediateField.val D.host.K).toRingHom.toIntAlgHom
@@ -164,8 +124,6 @@ theorem algebraMap_toOK (x : 𝓞 D.host.E) (hx : (x : D.host.E) ∈ D.host.K) :
     algebraMap (𝓞 D.host.K) (𝓞 D.host.E) (toOK x hx) = x := by
   first
   | exact RingOfIntegers.ext rfl
-  | rfl
-  | (apply RingOfIntegers.ext; simp [toOK])
 
 abbrev halfI (T : Core D) (i : Fin 2) : Ideal (𝓞 D.host.E) :=
   (T.pb i).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))
@@ -281,7 +239,6 @@ variable (T : Core D) (EX : ErrX D) (Tn : ℕ+) (vd : ℕ → ℝ) (aL aF : ℕ 
 theorem tPos_depDataOf : TPos (depDataOf T EX Tn vd aL aF nW Dp Dm) := by
   first
   | exact PNat.one_le Tn
-  | exact Tn.pos
 
 theorem piSplit_depDataOf [StarRing (𝓞 D.host.E)] :
     PiSplit (H := T.Q.H) (depDataOf T EX Tn vd aL aF nW Dp Dm) := by
@@ -296,7 +253,6 @@ theorem levelQ_depDataOf [StarRing (𝓞 D.host.E)] (h : LawsM T) :
     LevelQ (l := T.Q.l) (depDataOf T EX Tn vd aL aF nW Dp Dm) := by
   first
   | exact level_M T h
-  | (unfold LevelQ; simp [level_M T h, depDataOf, depPageOf])
 
 def HalfEX (T : Core D) (EX : ErrX D) : Prop := ∀ i, barE D (EX.piG i) ∈ halfI T i
 

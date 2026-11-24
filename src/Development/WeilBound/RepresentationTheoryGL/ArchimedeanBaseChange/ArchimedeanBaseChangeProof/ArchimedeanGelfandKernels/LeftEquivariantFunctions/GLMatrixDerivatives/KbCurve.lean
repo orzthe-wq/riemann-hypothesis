@@ -136,7 +136,7 @@ theorem hasDerivAt_detLine (X : Mat n) : HasDerivAt (fun t : ℝ => (1 + t • X
     rw [hp, ← Polynomial.coe_evalRingHom, RingHom.map_det]
     congr 1
     ext i j
-    by_cases hij : i = j <;> simp [hij, Matrix.one_apply, Complex.real_smul] <;> ring
+    by_cases hij : i = j <;> simp [hij, Complex.real_smul] <;> ring
   have hd : HasDerivAt (fun y : ℝ => p.eval (y : ℂ)) (p.derivative.eval ((0:ℝ) : ℂ)) 0 :=
     (p.hasDerivAt ((0:ℝ) : ℂ)).comp_ofReal
   rw [Complex.ofReal_zero, hp, Matrix.derivative_det_one_add_X_smul] at hd

@@ -61,9 +61,3 @@ theorem exists_free_shortExact : ∀ (k G : Type) [CommRing k] [Group G] (A : Re
 
 end GlobalTheory.HomStab
 
-section
-open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
-theorem _root_.GlobalTheory.T.exists_free_resolution_short_exact : ∀ (k G : Type) [CommRing k] [Group G] (A : Rep k G), ∃ (ι : Type) (K : Rep k G) (i : K ⟶ Rep.free k G ι) (e : Rep.free k G ι ⟶ A) (h : i ≫ e = 0), (ShortComplex.mk i e h).ShortExact := by
-  first
-  | exact @GlobalTheory.HomStab.exists_free_shortExact
-end

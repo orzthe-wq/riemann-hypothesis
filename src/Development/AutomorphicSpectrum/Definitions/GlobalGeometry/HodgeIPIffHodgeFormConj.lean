@@ -126,9 +126,6 @@ variable {r : ℕ} {Γ : Matrix (Fin r) (Fin r) ℂ}
 
 theorem leadMinor_size_zero (Γ : Matrix (Fin r) (Fin r) ℂ) : leadMinor Γ 0 = 1 := by simp [leadMinor]
 
-theorem leadMinor_size_one (Γ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : leadMinor Γ 1 = (Γ 0 0).re := by
-  simp [leadMinor]
-
 theorem leadMinor_size_self (Γ : Matrix (Fin r) (Fin r) ℂ) : leadMinor Γ r = Γ.det.re := by
   simp [leadMinor]
 

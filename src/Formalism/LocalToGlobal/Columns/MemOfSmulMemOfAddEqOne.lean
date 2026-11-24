@@ -2,43 +2,6 @@ module
 
 public import Formalism.LocalToGlobal.Columns.CardFilterNeighboursEqPaths
 public import Formalism.LocalToGlobal.Columns.HeckeSpCount
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -77,9 +40,7 @@ theorem second_iso_quotient_equiv {R V : Type} [CommRing R] [AddCommGroup V] [Mo
 
 theorem mem_of_smul_mem_of_add_eq_one {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] {A : Submodule R V} {x : V} {a b : R}
     (hab : a + b = 1) (ha : a • x ∈ A) (hb : b • x ∈ A) : x ∈ A := by
-  have : x = a • x + b • x := by rw [← add_smul, hab, one_smul]
-  rw [this]
-  exact A.add_mem ha hb
+  simpa only [← add_smul, hab, one_smul] using A.add_mem ha hb
 
 end Gen
 
@@ -128,10 +89,8 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 theorem smul_mem_ideal_smul_comm {I J : Ideal (𝓞 E)} {X : Submodule (𝓞 E) (Sp E n)} {r : 𝓞 E} (hr : r ∈ J) {q : Sp E n}
     (hq : q ∈ I • X) : r • q ∈ I • (J • X) := by
   refine Submodule.smul_induction_on hq (fun s hs x hx => ?_) (fun x y hx hy => ?_)
-  · rw [show r • s • x = s • r • x from smul_comm r s x]
-    exact Submodule.smul_mem_smul hs (Submodule.smul_mem_smul hr hx)
-  · rw [smul_add]
-    exact Submodule.add_mem _ hx hy
+  · simpa only [smul_comm r s x] using Submodule.smul_mem_smul hs (Submodule.smul_mem_smul hr hx)
+  · simpa only [smul_add] using Submodule.add_mem _ hx hy
 
 theorem neighbour_path_transfer {P Q : HeightOneSpectrum (𝓞 E)} (hneQ : conjPrime₂ Q ≠ Q) (hQP : Q ≠ P) (hQP' : Q ≠ conjPrime₂ P)
     {i j : ℕ} {N e M : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N) (huN : IsUnimodular (hStd E n) N)

@@ -152,7 +152,7 @@ theorem eig_iff {g : ℕ} (M : Matrix (Fin g) (Fin g) A) (ρ : A) (B : Type) [Co
   have : (M - ρ • (1 : Matrix (Fin g) (Fin g) A)).map (algebraMap A B)
       = M.map (algebraMap A B) - algebraMap A B ρ • (1 : Matrix (Fin g) (Fin g) B) := by
     ext i j
-    by_cases h : i = j <;> simp [Matrix.one_apply, h, Algebra.algebraMap_eq_smul_one, sub_smul]
+    by_cases h : i = j <;> simp [h, Algebra.algebraMap_eq_smul_one, sub_smul]
   rw [this, Matrix.vecMul_sub, Matrix.vecMul_smul, Matrix.vecMul_one, sub_eq_zero]
 
 theorem sum_eq {g m : ℕ} (u : Fin m → Fin g → A) (B : Type) [CommRing B]

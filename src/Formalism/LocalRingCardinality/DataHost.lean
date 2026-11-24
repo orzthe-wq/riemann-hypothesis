@@ -51,9 +51,7 @@ open scoped Pointwise
 
 namespace Formalism.BasicNotions
 
-theorem hypOdd_of_hostHyp {q d : ℕ} (h : HostHyp q d) : HypOdd q d := by
-  obtain ⟨hq, hd, hq8, hd16, -⟩ := h
-  refine ⟨hq, hd, ?_, ?_, ?_⟩ <;> rintro rfl <;> omega
+alias hypOdd_of_hostHyp := _root_.Formalism.FrobeniusOrbits.HostHyp.toHypOdd
 
 noncomputable def iotaH (e : ℕ) (i : ZMod (2 ^ e)) : HGrp e := hcl e (u5 (e + 2)) ^ i.val
 
@@ -240,9 +238,7 @@ def HNeZero {R : Ranks} (H : Host R) (p : ℕ) : Prop :=
 theorem HNeZero.ne_one {R : Ranks} {H : Host R} {p : ℕ} (h : HNeZero H p) (P : Ideal (𝓞 H.E)) [P.IsPrime]
     [P.LiesOver (Ideal.span {(p : ℤ)})] (σ : H.E ≃ₐ[ℚ] H.E) (hσ : IsArithFrobAt ℤ σ P) : (H.galE σ).2 ≠ 1 := by
   intro h1
-  have := h P σ hσ
-  rw [h1, orderOf_one] at this
-  exact Nat.not_even_one this
+  exact Nat.not_even_one (by simpa [h1, orderOf_one] using h P σ hσ)
 
 def FactRd : Prop := ∀ (R : Ranks) (H : Host R),
   (2 : ℝ) ^ ((R.e : ℝ) + 1 - (2 : ℝ) ^ (-(R.e : ℝ))) * Real.sqrt H.d ≤ H.rdE ∧

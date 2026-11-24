@@ -100,24 +100,10 @@ theorem _root_.GlobalTheory.HL.SmallImage.resQ_pos {F : Type} [Field F] [Valuati
 
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
-private lemma hf_sub_left_flag_measures {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) (x x' y : Fin n → E) :
-    _root_.GlobalTheory.HL.hf L H (x - x') y = _root_.GlobalTheory.HL.hf L H x y - _root_.GlobalTheory.HL.hf L H x' y := by
-  unfold _root_.GlobalTheory.HL.hf
-  simp only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
-
-open ValuativeRel MeasureTheory in
-open scoped Pointwise ENNReal Classical in
 private lemma hf_sub_right_flag_measures {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) (x y y' : Fin n → E) :
     _root_.GlobalTheory.HL.hf L H x (y - y') = _root_.GlobalTheory.HL.hf L H x y - _root_.GlobalTheory.HL.hf L H x y' := by
   unfold _root_.GlobalTheory.HL.hf
   simp only [Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
-
-open ValuativeRel MeasureTheory in
-open scoped Pointwise ENNReal Classical in
-private lemma hf_add_left_flag_measures'' {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) (x x' y : Fin n → E) :
-    _root_.GlobalTheory.HL.hf L H (x + x') y = _root_.GlobalTheory.HL.hf L H x y + _root_.GlobalTheory.HL.hf L H x' y := by
-  unfold _root_.GlobalTheory.HL.hf
-  simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
@@ -244,12 +230,12 @@ theorem _root_.GlobalTheory.HL.SmallImage.small_image : ∀ {F : Type} [Field F]
         have e2 : x₂' = la₂' - (x₂ + la₂) := by rw [hz₂]; abel
         have hmain : _root_.GlobalTheory.HL.hf L S.Hm x₁ x₂'
             = -_root_.GlobalTheory.HL.hf L S.Hm la₁ la₂' := by
-          rw [e1, e2, hf_sub_left_flag_measures, hf_sub_right_flag_measures, hf_sub_right_flag_measures, isoX' _ hz₁X' _ hla₂',
+          rw [e1, e2, _root_.GlobalTheory.HL.Eichler.hf_sub_l, hf_sub_right_flag_measures, hf_sub_right_flag_measures, isoX' _ hz₁X' _ hla₂',
             isoX' _ hz₁X' _ hz₂X', isoX _ hla₁ _ hz₂X]
           ring
         have hkey : _root_.GlobalTheory.HL.hf L S.Hm (w₁ + la₁) (la₂' - la₂)
             = _root_.GlobalTheory.HL.hf L S.Hm la₁ la₂' := by
-          rw [hf_add_left_flag_measures'', hf_sub_right_flag_measures, hf_sub_right_flag_measures, hperp w₁ hw₁ la₂' (hX' hla₂'),
+          rw [_root_.GlobalTheory.HL.Eichler.hf_add_l, hf_sub_right_flag_measures, hf_sub_right_flag_measures, hperp w₁ hw₁ la₂' (hX' hla₂'),
             hperp w₁ hw₁ la₂ (hX hla₂), isoX la₁ hla₁ la₂ hla₂]
           ring
         have hsm : _root_.GlobalTheory.HL.hf L S.Hm (w₁ + la₁) (la₂' - la₂)

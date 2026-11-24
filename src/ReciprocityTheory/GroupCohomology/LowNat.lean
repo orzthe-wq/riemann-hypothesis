@@ -1,46 +1,6 @@
 module
 
 public import ReciprocityTheory.GroupCohomology.TransgressionStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -52,6 +12,8 @@ universe u
 
 theorem lowNat_holds : LowNatStatement.{u} := by
   intro R _ G _ _ _ G' _ _ _ M M' P e₀ e₁ e₂ e₀' e₁' e₂' hL hL'
+  have compEmpty : P.φ ∘ (![] : Fin 0 → G') = (![] : Fin 0 → G) :=
+    Subsingleton.elim _ _
   refine ⟨?_, ?_, ?_⟩
   · intro x
     obtain ⟨⟨c, hc⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -63,8 +25,8 @@ theorem lowNat_holds : LowNatStatement.{u} := by
     have h1 := hL'.1 (P.hom.Z 0 ⟨c, hc⟩).1 hw
     have h2 := hL.1 c hc'
     rw [h1, h2]
-    show P.u (c.1 fun i => P.φ (![] i)) = P.u (c.1 ![])
-    rw [show (fun i => P.φ (![] i)) = (![] : Fin 0 → G) from funext fun i => i.elim0]
+    change P.u (c.1 (P.φ ∘ ![])) = P.u (c.1 ![])
+    rw [compEmpty]
   · intro x
     obtain ⟨⟨c, hc⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ x
     obtain ⟨hz, he⟩ := hL.2.1 c hc
@@ -78,8 +40,8 @@ theorem lowNat_holds : LowNatStatement.{u} := by
     congr 1
     apply Subtype.ext
     funext g
-    show P.u (c.1 fun i => P.φ (![g] i)) = P.u (c.1 ![P.φ g])
-    rw [show (fun i => P.φ (![g] i)) = ![P.φ g] from by funext i; fin_cases i; rfl]
+    change P.u (c.1 (P.φ ∘ ![g])) = P.u (c.1 ![P.φ g])
+    simp only [Matrix.vecCons, Fin.comp_cons, compEmpty]
   · intro x
     obtain ⟨⟨c, hc⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ x
     obtain ⟨hz, he⟩ := hL.2.2 c hc
@@ -93,8 +55,7 @@ theorem lowNat_holds : LowNatStatement.{u} := by
     congr 1
     apply Subtype.ext
     funext g
-    show P.u (c.1 fun i => P.φ (![g.1, g.2] i)) = P.u (c.1 ![P.φ g.1, P.φ g.2])
-    rw [show (fun i => P.φ (![g.1, g.2] i)) = ![P.φ g.1, P.φ g.2] from by
-      funext i; fin_cases i <;> rfl]
+    change P.u (c.1 (P.φ ∘ ![g.1, g.2])) = P.u (c.1 ![P.φ g.1, P.φ g.2])
+    simp only [Matrix.vecCons, Fin.comp_cons, compEmpty]
 
 end ReciprocityTheory.Coh

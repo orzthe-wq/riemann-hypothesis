@@ -53,14 +53,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 theorem nfOf {M : Fld} (h : FiniteDimensional ℚ M) : NumberField M where
   to_finiteDimensional := h
 
-theorem isOfFinOrder_fbar {g : ℕ} [Fact g.Prime] {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ≠ 0) : IsOfFinOrder x := by
-  have hint : IsIntegral (ZMod g) x := Algebra.IsIntegral.isIntegral x
-  have := IntermediateField.adjoin.finiteDimensional hint
-  have : Finite (IntermediateField.adjoin (ZMod g) {x}) := Module.finite_of_finite (ZMod g)
-  let y : IntermediateField.adjoin (ZMod g) {x} := ⟨x, IntermediateField.mem_adjoin_simple_self _ x⟩
-  have hy : y ≠ 0 := fun h => hx (congrArg Subtype.val h)
-  have h1 : IsOfFinOrder (Units.mk0 y hy) := isOfFinOrder_of_finite _
-  exact ((IntermediateField.adjoin (ZMod g) {x}).val.toMonoidHom.comp (Units.coeHom _)).isOfFinOrder h1
+alias isOfFinOrder_fbar := _root_.GlobalTheory.TameLabels.isOfFinOrder_of_ne_zero
 
 section Iota
 

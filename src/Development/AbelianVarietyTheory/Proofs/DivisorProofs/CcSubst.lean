@@ -77,10 +77,6 @@ noncomputable def lin (N : ℕ) (ξ : J → PowerSeries k) (s : I → J → Powe
   map_smul' c v := by
     funext e; rcases e with _ | ⟨i, l⟩ <;> simp [linFun, Finset.mul_sum, mul_assoc, mul_add]
 
-lemma cc_subst (φ a : PowerSeries k) (ha : PowerSeries.constantCoeff a = 0) :
-    PowerSeries.constantCoeff (φ.subst a : PowerSeries k) = PowerSeries.constantCoeff φ :=
-  (GlobalTheory.taylor_subst_first_order k φ a 0 1 le_rfl ha).1
-
 end GlobalTheory.PicDiv.DeformZerosHasse
 
 namespace GlobalTheory.PicDiv.DeformZerosHasse
@@ -176,7 +172,7 @@ theorem deform : ∀ (k J I : Type) [Field k] [Fintype J] [Fintype I] (N : ℕ) 
     · simp only [sys, map_sum, map_mul, PowerSeries.constantCoeff_C, Sum.elim_inl, Sum.elim_inr]
       have h' : ∀ j, PowerSeries.constantCoeff ((GlobalTheory.PicDiv.hasse l.1 (s i j)).subst
           (PowerSeries.C ((0 : I → k) i)) : PowerSeries k) = PowerSeries.coeff l.1 (s i j) := by
-        intro j; rw [cc_subst _ _ (by simp), hA]
+        intro j; rw [_root_.GlobalTheory.TaylorSubst.constantCoeff_subst_eq _ _ (by simp), hA]
       simp only [h']
       exact hlow i l.1 l.2
   have htay : ∀ (x h : J ⊕ I → PowerSeries k) (m : ℕ), 1 ≤ m →
@@ -187,7 +183,7 @@ theorem deform : ∀ (k J I : Type) [Field k] [Fintype J] [Fintype I] (N : ℕ) 
 
     intro x h m hm hx0 e
     rcases e with _ | ⟨i, l⟩
-    · simp only [sys, lin, linFun, LinearMap.coe_mk, AddHom.coe_mk, Sum.elim_inl]
+    · simp only [sys, lin, linFun, LinearMap.coe_mk, AddHom.coe_mk]
       have heq : ∑ j, (x (Sum.inl j) + PowerSeries.X ^ m * h (Sum.inl j)) * ξ j - ∑ j, x (Sum.inl j) * ξ j
           - PowerSeries.X ^ m * PowerSeries.C (∑ j, PowerSeries.constantCoeff (h (Sum.inl j)) * PowerSeries.constantCoeff (ξ j))
           = PowerSeries.X ^ m * (∑ j, h (Sum.inl j) * ξ j - PowerSeries.C (∑ j, PowerSeries.constantCoeff (h (Sum.inl j)) * PowerSeries.constantCoeff (ξ j))) := by
@@ -230,7 +226,7 @@ theorem deform : ∀ (k J I : Type) [Field k] [Fintype J] [Fintype I] (N : ℕ) 
         refine Finset.sum_congr rfl fun j _ => by ring
       rw [heq]
       exact Finset.dvd_sum fun j _ => key j
-  obtain ⟨x, hx0, hx⟩ := GlobalTheory.newton_powerSeries_target k (J ⊕ I) (Option (I × Fin N)) (sys N ξ s) (Sum.elim y₀ 0)
+  obtain ⟨x, hx0, hx⟩ := _root_.GlobalTheory.newton_powerSeries_of_surjective_linearisation k (J ⊕ I) (Option (I × Fin N)) (sys N ξ s) (Sum.elim y₀ 0)
     (lin N ξ s y₀) hsur hbase htay
   refine ⟨fun j => x (Sum.inl j), fun i => x (Sum.inr i), fun j => by simpa using hx0 (Sum.inl j),
     fun i => by simpa using hx0 (Sum.inr i), hx none, ?_⟩

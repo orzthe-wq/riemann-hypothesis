@@ -78,7 +78,7 @@ theorem torusPow_central (t : GL (Fin n) F) (c : GL (Fin n) F)
 
 theorem torusPow_one_mem_minusculeSet :
     torusPow F n (fun _ => 1) ∈ minusculeSet F n n := by
-  apply PositivityTheory.JacquetShalikaLocal.MinusculeCentralEigen.torusPow_one_mem <;> assumption
+  apply PositivityTheory.JacquetShalikaLocal.MinusculeCentralEigen.torusPow_one_mem
 
 theorem inv_mul_mem_integralGL_of_mem {x : GL (Fin n) F} (hx : x ∈ minusculeSet F n n) :
     (torusPow F n (fun _ => 1))⁻¹ * x ∈ integralGL F n := by
@@ -242,7 +242,7 @@ theorem evalAt_esymmL_self_mul (z : Fin n → ℂˣ) :
   rw [this, one_mul, ← AddMonoidAlgebra.one_def, map_one]
 
 theorem heckeEigenvector_whittaker : L7 := by
-  apply PositivityTheory.JacquetShalikaLocal.minuscule_eigenvalue <;> assumption
+  apply PositivityTheory.JacquetShalikaLocal.minuscule_eigenvalue
 
 end GlobalTheory.CompanionTheory.SatakeBound
 

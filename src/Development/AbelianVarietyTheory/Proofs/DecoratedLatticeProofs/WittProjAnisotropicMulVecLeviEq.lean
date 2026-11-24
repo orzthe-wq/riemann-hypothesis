@@ -2,9 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WittDecompositionCoreProjMulCoreEqOne
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSplitLatMonoId
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualImageAdelicPointWittCoreStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualSplitComponentIsLatticeStabilizerEq
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitIdealCompletionAtPlaceEqIntegralAdelesAtPlac
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualImageAdelicPointWittCore
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCHyperbolicExtensionLatticeConjStable
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -196,7 +197,7 @@ theorem GlobalTheory.FinPl.exists_selfDual_mono_idele : ∀ (D : D7) (S S₀ : H
   intro D S S₀ ρ d L₀ hL₀ b
   have hL1 : IsSelfDualC S (SplitLat.splitL d L₀ (fun _ => (1 : FI D))) :=
     SplitLat.isSelfDualC_splitL d (fun _ => one_ne_zero) hL₀
-  obtain ⟨M, hM, hmv⟩ := (GlobalTheory.T.selfDual_image_adelicPoint_wittCore D S _ hL1).1 (d.levi (diagU b))
+  obtain ⟨M, hM, hmv⟩ := (_root_.GlobalTheory.FinPl.GlobImage.glob D S _ hL1).1 (d.levi (diagU b))
   refine ⟨M, hM, fun x => ⟨?_, fun i a _ => ?_, fun i a _ => ?_⟩⟩
   · have key := mem_iff_of_moves (hmv (· = x))
     rw [← map_inv] at key

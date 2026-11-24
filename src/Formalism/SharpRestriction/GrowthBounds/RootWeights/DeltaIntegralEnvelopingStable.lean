@@ -99,7 +99,7 @@ theorem adjoint_divided_power_expansion [CharZero (KK O)] (E : GLOps n (KK O) V)
   have hmk : m ≤ k := by simp at hm; omega
   rw [smul_pow, LinearMap.pow_mulLeft, LinearMap.pow_mulRight]
   simp only [Module.End.mul_apply, Module.End.natCast_apply, LinearMap.smul_apply, LinearMap.mulLeft_apply,
-    LinearMap.mulRight_apply, map_nsmul, map_smul, smul_mul_assoc, mul_smul_comm, mul_assoc]
+    LinearMap.mulRight_apply, map_nsmul, smul_mul_assoc, mul_smul_comm, mul_assoc]
   rw [← Nat.cast_smul_eq_nsmul (KK O), smul_smul, smul_smul, smul_smul, smul_smul]
   congr 1
   rw [Nat.cast_choose (KK O) hmk]
@@ -170,7 +170,7 @@ theorem nabla_to_delta_maps_stable [CharZero (KK O)] [FiniteDimensional (KK O) V
       refine Finset.sum_congr rfl fun μ hμ => ?_
       have hμw := (hh μ hμ).2
       rw [hR k μ ν _ hμw, smul_smul]
-      simp only [binomial_diagonal_on_weight hμw, map_smul, smul_smul]
+      simp only [binomial_diagonal_on_weight hμw, smul_smul]
       rw [← Finset.sum_smul]
       congr 1
       calc ((k.factorial : KK O))⁻¹ * ∏ j ∈ range k, ((μ a : KK O) - ((ν a : KK O) + j))

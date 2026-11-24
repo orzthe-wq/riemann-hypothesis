@@ -2,7 +2,8 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ResAlgSplitTwo
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardHermitianMatricesDvdSq
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCardStatement
+public import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.LocalDefs
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnramifiedQuotientCard
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -102,7 +103,7 @@ theorem card_hermMod : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (q 
     IsUnrQuad R σ ϖ q ε → ∀ n k : ℕ, Nat.card (hermMod σ ϖ n k) = q ^ (k * n ^ 2) := by
   intro R _ σ ϖ q ε h n k
   rw [hermMod_eq h n k]
-  have hcard := GlobalTheory.T.unramified_quotient_card R σ ϖ q ε h k
+  have hcard := _root_.GlobalTheory.CompanionTheory.UnrDens.card_quot_lev R σ ϖ q ε h k
   have hq : 1 < q := h.one_lt
   haveI : Finite (R ⧸ PositivityTheory.PfSWUS.Loc.lev ϖ k) :=
     Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (by omega))

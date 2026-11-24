@@ -75,10 +75,10 @@ theorem intInd_mem_SB (n d : ℕ) : intInd k n d ∈ GlobalTheory.WeilM.SB (Matr
   by_cases hx : x ∈ {Y : Matrix (Fin n) (Fin d) k | ∀ i j, Y i j ∈ 𝒪[k]}
   · filter_upwards [hW.isOpen.mem_nhds hx] with y hy
     simp only [Set.mem_setOf_eq] at hx
-    simp [intInd, Set.indicator_apply, hy, hx]
+    simp [intInd, hy, hx]
   · filter_upwards [hW.isClosed.isOpen_compl.mem_nhds hx] with y hy
     simp only [Set.mem_compl_iff, Set.mem_setOf_eq] at hx hy
-    simp [intInd, Set.indicator_apply, hy, hx]
+    simp [intInd, hy, hx]
 
 theorem intInd_zero (n d : ℕ) : intInd k n d 0 = 1 :=
   Set.indicator_of_mem (show (0 : Matrix (Fin n) (Fin d) k) ∈ {Y | ∀ i j, Y i j ∈ 𝒪[k]} from

@@ -74,11 +74,9 @@ instance instLC : LocallyCompactSpace (M2 n) :=
 instance instFC : FirstCountableTopology (M2 n) :=
   inferInstanceAs (FirstCountableTopology (Fin n ⊕ Fin n → Fin n ⊕ Fin n → ℂ))
 
-def Gs (n : ℕ) : Set (M2 n) := {x | InG x}
-
 theorem continuousAt_fz {x : M2 n} (hx : InG x) (m : ℕ) (e : ℤ) (z : ℂ) :
     ContinuousAt (fun p : M2 n × ℂ => fz m e p.2 p.1) (x, z) := by
-  have hdx : x.det ≠ 0 := (LoweringDerivative.isUnit_det_of_inG hx).ne_zero
+  have hdx : x.det ≠ 0 := (_root_.PositivityTheory.Rg.Sw.LVs.isUnit_det_of_inG' hx).ne_zero
   have hdet : Continuous (fun y : M2 n => y.det) := continuous_id.matrix_det
   have hdetn : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => M.det) := continuous_id.matrix_det
   have hu1 : Continuous (fun y : M2 n => u1 y) := by
@@ -118,7 +116,7 @@ theorem inG_path {y a b : M2 n} (hy : InG y) (ha : InG a) (hb : InG b) (t : Fin 
   have hN : InG (nU (herm t)) := by
     show (nU (herm t))ᴴ * JJ n * nU (herm t) = JJ n
     simp [nU, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hH]
-  exact inG_mul (inG_mul (inG_mul hy ha) hN) hb
+  exact _root_.PositivityTheory.Rg.Sw.LVs.inG_mul (_root_.PositivityTheory.Rg.Sw.LVs.inG_mul (_root_.PositivityTheory.Rg.Sw.LVs.inG_mul hy ha) hN) hb
 
 private theorem continuous_nU_herm : Continuous (fun t : Fin n → Fin n → ℝ => nU (herm t)) := by
   have hherm : Continuous (fun t : Fin n → Fin n → ℝ => herm t) := by
@@ -145,13 +143,13 @@ private theorem continuous_fz_mul_nU_herm_mul {X : Type} [TopologicalSpace X] (m
 
 theorem continuous_Hf (m : ℕ) (e : ℤ) {ψ : (Fin n → Fin n → ℝ) → ℂ} (hψ : Continuous ψ) (hψc : HasCompactSupport ψ)
     {a b : M2 n} (ha : InG a) (hb : InG b) :
-    Continuous fun q : ↥(Gs n) × ℂ => Hf m e ψ a b q.2 q.1.1 := by
-  haveI : LocallyCompactSpace ↥(Gs n) := (isClosed_G (n := n)).locallyCompactSpace
-  have hF := continuous_fz_mul_nU_herm_mul (X := (↥(Gs n) × ℂ) × (Fin n → Fin n → ℝ)) m e hψ ha hb
+    Continuous fun q : ↥(_root_.PositivityTheory.Rg.Sw.LVs.GSet n) × ℂ => Hf m e ψ a b q.2 q.1.1 := by
+  haveI : LocallyCompactSpace ↥(_root_.PositivityTheory.Rg.Sw.LVs.GSet n) := (isClosed_G (n := n)).locallyCompactSpace
+  have hF := continuous_fz_mul_nU_herm_mul (X := (↥(_root_.PositivityTheory.Rg.Sw.LVs.GSet n) × ℂ) × (Fin n → Fin n → ℝ)) m e hψ ha hb
     (fun p => p.1.1.1) (continuous_subtype_val.comp (continuous_fst.comp continuous_fst))
     (fun p => p.1.1.2) (fun p => p.1.2) (continuous_snd.comp continuous_fst) (fun p => p.2) continuous_snd
   have key := continuous_parametric_integral_of_continuous (μ := (volume : Measure (Fin n → Fin n → ℝ)))
-    (f := fun (q : ↥(Gs n) × ℂ) t => fz m e q.2 (q.1.1 * a * nU (herm t) * b) * ψ t) hF hψc
+    (f := fun (q : ↥(_root_.PositivityTheory.Rg.Sw.LVs.GSet n) × ℂ) t => fz m e q.2 (q.1.1 * a * nU (herm t) * b) * ψ t) hF hψc
   refine key.congr fun q => ?_
   unfold Hf
   exact setIntegral_eq_integral_of_forall_compl_eq_zero fun t ht => by

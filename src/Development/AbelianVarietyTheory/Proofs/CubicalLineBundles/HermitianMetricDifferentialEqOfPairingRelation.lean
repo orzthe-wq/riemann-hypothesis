@@ -2,10 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.CMLattices.IsDiffOf
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.AppellHumbertUnifTangentWeilPairing
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLinearOfIsMonHom
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueDifferentialMonHomLieBasisStatement
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueDifferentialMonHomLieBasis
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsCubeLBPairingIsoBaseChange
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieAlgebraSquaredLengthCompPairingHom
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLinearOfIsMonHom
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeilEqIffHermFormEqComplexStatement
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeilPairingEqOfIsomorphicCubePairings
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LieCombBaseChange
@@ -118,7 +118,7 @@ private lemma hermForm_sum_smul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ
     rw [Finset.sum_insert hi, Finset.sum_insert hi, ← ih]
     simp only [hermForm, star_add, star_smul, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add,
       dotProduct_smul, smul_eq_mul]
-    simp [Complex.star_def]
+    simp
 
 private lemma hermFam_form_apply_zero {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (h : HermFam K V)
     (σ : K →+* ℂ) (x : V) : h.form σ x 0 = 0 := by
@@ -162,8 +162,8 @@ theorem form_diff_eq : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [Nu
   intro hT hL K _ _ P F P' F' h h' f g M N hh hh' hf hg hl hM hN s c c'
   obtain ⟨Q, ψ, v, u, Hm, χ, W, hQ, hAH, hW, hF⟩ := hh s
   obtain ⟨Q', ψ', v', u', Hm', χ', W', hQ', hAH', hW', hF'⟩ := hh' s
-  obtain ⟨-, f₀, hf₀, ef₀, hc₀⟩ := GlobalTheory.T.existsUnique_differential_monHom_lieBasis K P F P' F' f hf
-  obtain ⟨-, g₀, hg₀, eg₀, hcg₀⟩ := GlobalTheory.T.existsUnique_differential_monHom_lieBasis K P F P F g hg
+  obtain ⟨-, f₀, hf₀, ef₀, hc₀⟩ := _root_.GlobalTheory.CM.DiffCoord.existsUnique_isDiffOf K P F P' F' f hf
+  obtain ⟨-, g₀, hg₀, eg₀, hcg₀⟩ := _root_.GlobalTheory.CM.DiffCoord.existsUnique_isDiffOf K P F P F g hg
   haveI := hf₀
   haveI := hg₀
   obtain ⟨f₁, hf₁, ef₁⟩ := GlobalTheory.NormHom.exists_monHom_lift hQ.2.1 hQ'.2.1 f₀

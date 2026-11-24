@@ -179,7 +179,7 @@ theorem hermA_single_left (i : Fin M) (p : Af F ⊗[F] E) (Y : Fin M → Af F �
   rw [hermA, dotProduct, Finset.sum_eq_single i]
   · simp
   · intro b _ hb
-    simp [Pi.single_apply, hb]
+    simp [hb]
   · simp
 
 theorem hermA_unitary (g : Matrix (Fin M) (Fin M) (Af F ⊗[F] E))
@@ -193,7 +193,7 @@ theorem hermA_unitary (g : Matrix (Fin M) (Fin M) (Af F ⊗[F] E))
     rw [← Matrix.mul_assoc]; exact hg
   unfold hermA
   rw [h1, ← Matrix.vecMul_transpose (g.map (sigR (Af F) σ)), ← Matrix.dotProduct_mulVec]
-  simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc, e]
+  simp only [Matrix.mulVec_mulVec, e]
 
 theorem finMat_unitary (h : HA (AF F) σ J) :
     cT (sigR (Af F) σ) (finMat σ J h) * JR (Af F) J * finMat σ J h = JR (Af F) J := by
@@ -225,7 +225,7 @@ theorem hermA_Oh {u dJ : ℕ} (hJ : ∀ i j, IsIntegral ℤ ((dJ : E) * J i j)) 
   have : (u * u * dJ) • hermA σ J X Y = ∑ i, ∑ j,
       sigR (Af F) σ (u • X i) * (inclR (Af F) ((dJ : E) * J i j) * (u • Y j)) := by
     simp only [hermA, dotProduct, Matrix.mulVec, JR, Matrix.map_apply, Finset.mul_sum, Finset.smul_sum,
-      map_nsmul, map_mul, map_natCast, nsmul_eq_mul]
+      map_mul, map_natCast, nsmul_eq_mul]
     refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
     push_cast
     ring

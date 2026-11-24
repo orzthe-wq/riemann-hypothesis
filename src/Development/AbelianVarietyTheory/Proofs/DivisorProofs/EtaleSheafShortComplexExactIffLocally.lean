@@ -75,6 +75,6 @@ theorem exactIff_kernel_sec {R : Type} [CommRing R] {G K : Shv R} (ψ : G ⟶ K)
   exact ⟨k, hk⟩
 
 theorem exactIff : ∀ (R : Type) [CommRing R] (S : ShortComplex (Shv R)), S.Exact ↔ ∀ U (b : Sec S.X₂ U), Sec.map S.g b = 0 → Loc U fun V g => ∃ a : Sec S.X₁ V, Sec.map S.f a = Sec.res g b := by
-  apply LateralTheory.EtaleFoundations.acycIffPf.exact_iff <;> assumption
+  apply LateralTheory.EtaleFoundations.acycIffPf.exact_iff
 
 end GlobalTheory.EtC

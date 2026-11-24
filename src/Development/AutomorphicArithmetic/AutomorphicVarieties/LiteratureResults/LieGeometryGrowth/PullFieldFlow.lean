@@ -60,12 +60,6 @@ private theorem rat_split (γ : GL (Fin a) E) (g : GL (Fin a) (Cinf E)) (x : GL 
   · simp only [map_mul, pFin_infGL, pFin_finGL, one_mul]
     rfl
 
-private theorem centre_zero : splitCentre E a 0 = 1 := by
-  have h : (expU fun _ : InfinitePlace E => ((0 : ℝ) : ℂ)) = 1 := by
-    ext w
-    simp [expU]
-  rw [splitCentre, h, map_one, map_one]
-
 private theorem scal_ex (r : ℝ) (hr : 0 < r) : ∃ (t : ℝ) (c : GL (Fin a) (Cinf E)),
     infGL E a c = splitCentre E a t ∧ ∀ p : HV E a, sand c p = r • p := by
   refine ⟨Real.log r / 2, _, rfl, fun p => Subtype.ext ?_⟩
@@ -73,7 +67,7 @@ private theorem scal_ex (r : ℝ) (hr : 0 < r) : ∃ (t : ℝ) (c : GL (Fin a) (
       (expU fun _ : InfinitePlace E => ((Real.log r / 2 : ℝ) : ℂ)) : GL (Fin a) (Cinf E)).val =
       Real.exp (Real.log r / 2) • (1 : Matrix (Fin a) (Fin a) (Cinf E)) := by
     ext i j w
-    by_cases hij : i = j <;> simp [expU, hij, Matrix.one_apply]
+    by_cases hij : i = j <;> simp [expU, hij]
   have e : Real.exp (Real.log r / 2) * Real.exp (Real.log r / 2) = r := by
     rw [← Real.exp_add, add_halves, Real.exp_log hr]
   change Matrix.of (sand _ p).1 = r • Matrix.of p.1
@@ -110,7 +104,7 @@ theorem UpperTheory.V.Lit.Geo.fieldFlow :
     have hσ : (geo ho U Ξ).σ γ (x : GL (Fin a) (Af E) ⧸ U) =
         ((GeneralLinearGroup.map (algebraMap E (Af E)) γ.1 * x : GL (Fin a) (Af E)) : GL (Fin a) (Af E) ⧸ U) := rfl
     have hl := hY.left γ.1 0 (infGL E a g * finGL E a x)
-    rw [centre_zero, mul_one] at hl
+    rw [_root_.GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_zero, mul_one] at hl
     rw [hσ, hs, hW, hW, hs, rat_split, hl]
   · rintro s r hr p ⟨g, rfl⟩
     obtain ⟨x, rfl⟩ := QuotientGroup.mk_surjective s

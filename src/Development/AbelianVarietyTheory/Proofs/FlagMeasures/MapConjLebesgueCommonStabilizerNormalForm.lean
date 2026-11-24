@@ -58,6 +58,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicLeviEmbeddingHomomorphismProperties
 
 @[expose] public section
 
@@ -269,30 +270,30 @@ theorem u_ew : uEmb k r u (eI k r a) (wI k r n) = 0 := by
   unfold uEmb
   split_ifs <;> first
     | rfl
-    | (exfalso; simp_all [eI, wI, esI, Fin.ext_iff] <;> omega)
+    | (exfalso; simp_all [eI, wI, Fin.ext_iff] <;> omega)
 theorem u_we : uEmb k r u (wI k r m) (eI k r b) = 0 := by
   have hb := b.isLt
   unfold uEmb
   split_ifs <;> first
     | rfl
-    | (exfalso; simp_all [eI, wI, esI, Fin.ext_iff] <;> omega)
+    | (exfalso; simp_all [eI, wI, Fin.ext_iff] <;> omega)
 theorem u_ww : uEmb k r u (wI k r m) (wI k r n) = if m = n then 1 else 0 := by
   unfold uEmb
   split_ifs <;> first
     | rfl
-    | (exfalso; simp_all [eI, wI, esI, Fin.ext_iff] <;> omega)
+    | (exfalso; simp_all [wI, Fin.ext_iff] <;> omega)
 theorem u_ws : uEmb k r u (wI k r m) (esI k r b) = 0 := by
   have hb := b.isLt
   unfold uEmb
   split_ifs <;> first
     | rfl
-    | (exfalso; simp_all [eI, wI, esI, Fin.ext_iff] <;> omega)
+    | (exfalso; simp_all [wI, esI, Fin.ext_iff] <;> omega)
 theorem u_sw : uEmb k r u (esI k r a) (wI k r n) = 0 := by
   have ha := a.isLt
   unfold uEmb
   split_ifs <;> first
     | rfl
-    | (exfalso; simp_all [eI, wI, esI, Fin.ext_iff] <;> omega)
+    | (exfalso; simp_all [wI, esI, Fin.ext_iff] <;> omega)
 theorem u_ss : uEmb k r u (esI k r a) (esI k r b) = (u⁻¹)ᴴ a b := by
   have ha := a.isLt
   have hb := b.isLt
@@ -307,32 +308,6 @@ theorem u_ss : uEmb k r u (esI k r a) (esI k r b) = (u⁻¹)ᴴ a b := by
   · exfalso; apply h2; simp only [esI]; omega
   · exfalso; apply h2; simp only [esI]; omega
 
-private lemma uEmb_eI_eI (u : Matrix (Fin r) (Fin r) ℂ) (a b : Fin r) :
-    uEmb k r u (eI k r a) (eI k r b) = u a b := by
-  have ha := a.isLt
-  have hb := b.isLt
-  unfold uEmb
-  split_ifs <;> first
-    | rfl
-    | (exfalso; simp_all [eI, wI, esI, Fin.ext_iff] <;> omega)
-
-private lemma uEmb_eI_esI (u : Matrix (Fin r) (Fin r) ℂ) (a b : Fin r) :
-    uEmb k r u (eI k r a) (esI k r b) = 0 := by
-  have ha := a.isLt
-  have hb := b.isLt
-  unfold uEmb
-  split_ifs <;> first
-    | rfl
-    | (exfalso; simp_all [eI, wI, esI, Fin.ext_iff] <;> omega)
-
-private lemma uEmb_esI_eI (u : Matrix (Fin r) (Fin r) ℂ) (a b : Fin r) :
-    uEmb k r u (esI k r a) (eI k r b) = 0 := by
-  have ha := a.isLt
-  have hb := b.isLt
-  unfold uEmb
-  split_ifs <;> first
-    | rfl
-    | (exfalso; simp_all [eI, wI, esI, Fin.ext_iff] <;> omega)
 end
 
 theorem conj_u {g : Mat k r} {D Y Z : Matrix (Fin r) (Fin r) ℂ} {M : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
@@ -341,12 +316,11 @@ theorem conj_u {g : Mat k r} {D Y Z : Matrix (Fin r) (Fin r) ℂ} {M : Matrix (F
   obtain ⟨hee, hew, hes, hwe, hww, hws, hse, hsw, hss⟩ := hg
   ext i j
   induction i using cases3 <;> induction j using cases3 <;>
-    simp only [Matrix.mul_apply, sum3, hee, hew, hes, hwe, hww, hws, hse, hsw, hss, uEmb_eI_eI, uEmb_eI_esI,
-      uEmb_esI_eI, u_ew, u_we, u_ww, u_ws, u_sw, u_ss, mul_zero, zero_mul, Finset.sum_const_zero, add_zero,
+    simp only [Matrix.mul_apply, sum3, hee, hew, hes, hwe, hww, hws, hse, hsw, hss, _root_.GlobalTheory.Amp.UEmb.u_ee, _root_.GlobalTheory.Amp.UEmb.u_es,
+      _root_.GlobalTheory.Amp.UEmb.u_se, u_ew, u_we, u_ww, u_ws, u_sw, u_ss, mul_zero, zero_mul, Finset.sum_const_zero, add_zero,
       zero_add, mul_ite, ite_mul, mul_one, one_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ,
       if_true]
   all_goals first
-    | rfl
     | simpa only [Matrix.mul_apply] using congrFun (congrFun h1 _) _
     | simpa only [Matrix.mul_apply] using congrFun (congrFun h2 _) _
     | simpa only [Matrix.mul_apply] using congrFun (congrFun h3 _) _
@@ -496,7 +470,6 @@ theorem conj_p {j : ℕ} {g : Mat k r} {c : ℂ} {Y Z : Matrix (Fin r) (Fin r) �
       zero_add, mul_ite, ite_mul, mul_one, one_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ,
       if_true]
   all_goals first
-    | rfl
     | (rw [hv1, add_zero]; split_ifs <;> simp_all)
     | (rename_i a n
        by_cases h : j ≤ a.val
@@ -550,9 +523,8 @@ theorem conj_p {j : ℕ} {g : Mat k r} {c : ℂ} {Y Z : Matrix (Fin r) (Fin r) �
          · rw [hZ a x (Or.inr h), zero_mul]
          · rw [hS x b (Or.inl (by omega)), hB x (by omega)]
            simp [herm]
-       simp only [hz, zero_add, add_zero]
+       simp only [hz, zero_add]
        split_ifs <;> simp_all)
-    | (clear hee hew hes hwe hww hws hse hsw hss hD hZ hS hB hc hM hv1; done)
 
 theorem exists_perm {j : ℕ} (hj : j ≤ r) (β : Fin r → ℕ) (Z : Matrix (Fin r) (Fin r) ℂ)
     (h : BlockAnti (fun a : Fin j => β (Fin.castLE hj a)) (Z.submatrix (Fin.castLE hj) (Fin.castLE hj))) :
@@ -673,9 +645,8 @@ theorem pairing {g : Mat k r} (hg : g ∈ GG k r) (x i : Fin (2 * r + k + 1)) :
       ∑ a, star (g (eI k r a) x) * g (esI k r a) i = Hpk k r x i := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
   rw [← congrFun (congrFun hg' x) i]
-  simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, sum3, H_ee, H_ew, H_es, H_we,
-    H_ww, H_ws, H_se, H_sw, H_ss, mul_zero, zero_mul, mul_ite, ite_mul, mul_one, Finset.sum_ite_eq,
-    Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_const_zero, add_zero, zero_add]
+  simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, sum3, H_ee, H_ew, H_es, H_we,
+    H_ww, H_ws, H_se, H_sw, H_ss, mul_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_const_zero, add_zero, zero_add]
 
 private theorem apply_eq_ite_of_mulVec_bvec_eq_smul {g : Mat k r} {c : ℂ} {x : Fin (2 * r + k + 1)}
     (h : g *ᵥ bvec x = c • bvec x) (i : Fin (2 * r + k + 1)) : g i x = if i = x then c else 0 := by
@@ -684,7 +655,7 @@ private theorem apply_eq_ite_of_mulVec_bvec_eq_smul {g : Mat k r} {c : ℂ} {x :
   rw [e]
   by_cases hi : i = x
   · subst hi; simp [bvec]
-  · simp [bvec, Pi.single_apply, hi]
+  · simp [bvec, hi]
 
 private theorem inv_eq_Hpk_mul_conjTranspose_mul_Hpk {g : Mat k r} (hg : g ∈ GG k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   apply Matrix.inv_eq_left_inv
@@ -695,7 +666,7 @@ private theorem Hpk_conj_apply_eI_eq_sum (g : Mat k r) (i : Fin (2 * r + k + 1))
     (Hpk k r * gᴴ * Hpk k r) i (eI k r a) = ∑ p, Hpk k r i p * star (g (esI k r a) p) := by
   rw [Matrix.mul_apply, sum3]
   simp only [H_ee, H_we, H_se, mul_zero, Finset.sum_const_zero, zero_add, mul_ite, mul_one,
-    Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    Finset.sum_ite_eq', Finset.mem_univ, if_true]
   rw [Matrix.mul_apply]
   simp [Matrix.conjTranspose_apply]
 
@@ -831,7 +802,7 @@ theorem exists_blocks {j : ℕ} (hj : j ≤ r) {β : Fin r → ℕ} {c : ℂ} {z
   · show (_ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)ᴴ * Hb k * _ = Hb k
     ext m m'
     have e := pairing hgG (wI k r m) (wI k r m')
-    simp only [gEw, gSw, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, zero_add, add_zero, H_ww] at e
+    simp only [gEw, gSw, star_zero, mul_zero, Finset.sum_const_zero, zero_add, add_zero, H_ww] at e
     rw [Hb_apply, ← e, Matrix.mul_apply]
     refine Finset.sum_congr rfl (fun n _ => ?_)
     rw [Matrix.mul_apply, Finset.sum_eq_single n]
@@ -955,8 +926,7 @@ theorem exists_phi {j : ℕ} {β : Fin r → ℕ} (hβ : ∀ a b : Fin r, β a =
       by_cases ha : a.val < j
       · have hb : b.val < j := (hβ a b hβab).mp ha
         have hσ : (σ b).val < j := (s1 b).mpr hb
-        simp only [F, e, Equiv.ofBijective_apply, τ, A, dif_pos ha, if_pos ha, shearInv, dif_pos hσ,
-          if_pos hσ, if_pos (And.intro ha hb), if_neg (show ¬ j ≤ a.val by omega), star_neg, add_zero]
+        simp only [F, e, Equiv.ofBijective_apply, τ, A, dif_pos ha, if_pos ha, shearInv, if_pos hσ, if_pos (And.intro ha hb), if_neg (show ¬ j ≤ a.val by omega), star_neg, add_zero]
         ring
       · have hja : j ≤ a.val := by omega
         simp only [F, e, Equiv.ofBijective_apply, τ, dif_neg ha, if_neg ha, shearInv,
@@ -1155,7 +1125,7 @@ theorem lebR0_map_conjM_eq_of_isNormalZero : ∀ (k r j : ℕ) (hj : j ≤ r) (z
       rw [hΦu, Matrix.add_apply, Matrix.mul_assoc, perm_weighted_mul_apply σ Ym _ _ hYP,
         mul_perm_weighted_conjTranspose_apply σ Zm _ _ hZP]
       simp only [Fj, Matrix.diagonal_mul, Matrix.conjTranspose_apply]
-      by_cases ha : a.val < j <;> by_cases hb : b.val < j <;> simp [ha, hb] <;> ring_nf <;> omega
+      by_cases ha : a.val < j <;> by_cases hb : b.val < j <;> simp [ha, hb] <;> ring_nf
     rw [← key]
     exact conj_u hB h1 h2 h3 h4
   have hZ0 : ∀ a b : Fin r, j ≤ a.val ∨ j ≤ b.val → Zm a b = 0 := by

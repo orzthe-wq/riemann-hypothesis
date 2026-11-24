@@ -103,7 +103,7 @@ theorem pderiv_mem_supported (S : Set (Fin m × Fin n × Bool)) (k) {p : PX m n}
     rcases eq_or_ne j k with rfl | h
     · simp only [Pi.single_eq_same]; exact Subalgebra.one_mem _
     · rw [Pi.single_eq_of_ne h]; exact Subalgebra.zero_mem _
-  | algebraMap r => simp [Subalgebra.zero_mem]
+  | algebraMap r => simp
   | add x y _ _ hx hy => rw [map_add (f := pderiv k)]; exact Subalgebra.add_mem _ hx hy
   | mul x y hx' hy' hx hy =>
     rw [Derivation.leibniz, smul_eq_mul, smul_eq_mul]
@@ -155,13 +155,13 @@ theorem contr_add (c : ℝ) (p q : PX m n) : contr c (p + q) = contr c p + contr
   rw [contr_eqS c (p.support ∪ q.support) MvPolynomial.support_add, contr_eqS c (p.support ∪ q.support) Finset.subset_union_left,
     contr_eqS c (p.support ∪ q.support) Finset.subset_union_right, ← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun s _ => ?_
-  split_ifs <;> simp [MvPolynomial.coeff_add, add_mul]
+  split_ifs <;> simp [add_mul]
 
 theorem contr_smul (c : ℝ) (r : ℂ) (p : PX m n) : contr c (r • p) = r * contr c p := by
   classical
   rw [contr_eqS c p.support MvPolynomial.support_smul, contr_eqS c p.support le_rfl, Finset.mul_sum]
   refine Finset.sum_congr rfl fun s _ => ?_
-  split_ifs <;> simp [MvPolynomial.coeff_smul, mul_assoc]
+  split_ifs <;> simp [mul_assoc]
 
 theorem contr_sum (c : ℝ) {ι : Type} (I : Finset ι) (f : ι → PX m n) : contr c (∑ i ∈ I, f i) = ∑ i ∈ I, contr c (f i) := by
   classical

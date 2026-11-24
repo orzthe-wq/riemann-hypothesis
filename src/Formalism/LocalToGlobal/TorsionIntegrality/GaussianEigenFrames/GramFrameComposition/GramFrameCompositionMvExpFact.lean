@@ -1,11 +1,10 @@
 module
 
+public import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.StatementH
+public import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.HurwitzB
 public import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.StatementA
 public import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.Several
-import Formalism.EllipticTorsion.EllipticTorsionProofs.NDeriv
 public import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.FinalA
-public import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.ConstantCoeffCMulSqSum
-import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.HurwitzB
 import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.BinomialSeriesCoefficients.CoeffPowEqZeroOfCc
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -24,14 +23,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -39,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,12 +43,76 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.EllipticTorsion.EllipticTorsionProofs.NDeriv
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Bool
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.ConstantCoeffCMulSqSum, Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.GramFrameCompositionMvExpFact
+
+-- ===== clump member: Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.ConstantCoeffCMulSqSum =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.ConstantCoeffCMulSqSum", "h": "module\n\npublic import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.StatementH\npublic import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.HurwitzB\nimport Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.BinomialSeriesCoefficients.CoeffPowEqZeroOfCc\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+open scoped BigOperators
+open Finset
+
+namespace Formalism.L2.Th1.G
+
+open Formalism.L2.Th1.C
+open Formalism.G (unitBall)
+open Formalism.DworkPowerSeriesWeights (JetsIntegral)
+
+namespace PairedSquareConstantCoefficients
+
+section Alg
+
+variable {K : Type} [Field K]
+
+theorem inBlock_mul {ι B : Type} (k : B) (f g : MvPowerSeries ι K) :
+    inBlock k (f * g) = inBlock k f * inBlock k g := by
+  simp only [HurwitzJetIntegrality.inBlock_eq_rename, map_mul]
+
+theorem tensor_four_mul {ι : Type} (f g : MvPowerSeries ι K) : tens4 (f * g) = tens4 f * tens4 g := by
+  unfold tens4
+  simp only [inBlock_mul, Finset.prod_mul_distrib]
+
+variable [CharZero K]
+
+theorem inBlock_mvExp {ι B : Type} [Finite ι] (k : B) {f : MvPowerSeries ι K}
+    (hf : MvPowerSeries.constantCoeff f = 0) : inBlock k (mvExp f) = mvExp (inBlock k f) := by
+  unfold inBlock
+  exact mvSubst_mvExp hf
+    (MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => MvPowerSeries.constantCoeff_X _)
+
+end Alg
+
+end PairedSquareConstantCoefficients
+
+open PairedSquareConstantCoefficients
+
+end Formalism.L2.Th1.G
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.ConstantCoeffCMulSqSum =====
+
+-- ===== clump member: Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.GramFrameCompositionMvExpFact =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.GramFrameCompositionMvExpFact", "h": "module\n\npublic import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.StatementA\npublic import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.Several\nimport Formalism.EllipticTorsion.EllipticTorsionProofs.NDeriv\npublic import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.FinalA\npublic import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.ConstantCoeffCMulSqSum\nimport Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSquareJets.HurwitzB\nimport Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.BinomialSeriesCoefficients.CoeffPowEqZeroOfCc\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Bool\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -103,111 +158,35 @@ theorem linSub_linSub {n m p : Type} [Finite n] [Fintype m] [Fintype p] (A : n �
   have hc : ∀ w, linSubHom B (MvPowerSeries.C (A i w)) = MvPowerSeries.C (A i w) := fun w => by
     rw [linSubHom_apply, linSub_C]
 
-  simp only [hc, Finset.mul_sum, map_sum, map_mul]
+  simp only [Finset.mul_sum, map_sum, map_mul]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun x _ => ?_
 
-  simp only [Finset.sum_mul, map_sum, map_mul]
+  simp only [Finset.sum_mul]
   refine Finset.sum_congr rfl fun w _ => ?_
   simp only [linSub_C]
   ring
 
-theorem hasSubst_block {ι B : Type} [Finite ι] (k : B) :
-    MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K)) := by
-  have hs : MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K)) := by
-    classical
-    refine ⟨fun s => by simp, fun dd => ?_⟩
-    refine Set.Subsingleton.finite ?_
-    intro s hs t ht
-    by_contra hne
-    apply hs
-    rw [MvPowerSeries.coeff_X, if_neg]
-    rintro rfl
-    apply ht
-    rw [MvPowerSeries.coeff_X, if_neg]
-    intro h
-    exact hne (Prod.ext_iff.mp (Finsupp.single_left_injective one_ne_zero h)).2
-    all_goals simp_all
-  exact hs
+theorem hasSubst_block {ι B : Type} (k : B) :
+    MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K)) :=
+  MvPowerSeries.HasSubst.X.comp_injective (Prod.mk_right_injective k)
 
 theorem inBlock_C {ι B : Type} (k : B) (r : K) :
     inBlock k (MvPowerSeries.C r : MvPowerSeries ι K) = MvPowerSeries.C r := by
-  have hs : MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K)) := by
-    classical
-    refine ⟨fun s => by simp, fun dd => ?_⟩
-    refine Set.Subsingleton.finite ?_
-    intro s hs t ht
-    by_contra hne
-    apply hs
-    rw [MvPowerSeries.coeff_X, if_neg]
-    rintro rfl
-    apply ht
-    rw [MvPowerSeries.coeff_X, if_neg]
-    intro h
-    exact hne (Prod.ext_iff.mp (Finsupp.single_left_injective one_ne_zero h)).2
-  unfold inBlock
-  rw [← MvPowerSeries.coe_substAlgHom hs]
-  first
-    | exact (MvPowerSeries.substAlgHom hs).commutes r
-    | simpa using (MvPowerSeries.substAlgHom hs).commutes r
-    | simp [← MvPowerSeries.algebraMap_apply']
+  simp only [HurwitzJetIntegrality.inBlock_eq_rename, MvPowerSeries.rename_C]
 
-theorem inBlock_X {ι B : Type} [Finite ι] (k : B) (i : ι) :
+theorem inBlock_X {ι B : Type} (k : B) (i : ι) :
     inBlock k (MvPowerSeries.X i : MvPowerSeries ι K) = MvPowerSeries.X (k, i) := by
-  have hs : MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K)) := by
-    classical
-    refine ⟨fun s => by simp, fun dd => ?_⟩
-    refine Set.Subsingleton.finite ?_
-    intro s hs t ht
-    by_contra hne
-    apply hs
-    rw [MvPowerSeries.coeff_X, if_neg]
-    rintro rfl
-    apply ht
-    rw [MvPowerSeries.coeff_X, if_neg]
-    intro h
-    exact hne (Prod.ext_iff.mp (Finsupp.single_left_injective one_ne_zero h)).2
-    all_goals simp_all
-  unfold inBlock
-  exact MvPowerSeries.subst_X hs i
+  rw [HurwitzJetIntegrality.inBlock_eq_rename, MvPowerSeries.rename_X]
+  rfl
 
 theorem inBlock_sum {ι B α : Type} (k : B) (s : Finset α) (f : α → MvPowerSeries ι K) :
     inBlock k (∑ a ∈ s, f a) = ∑ a ∈ s, inBlock k (f a) := by
-  have hs : MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K)) := by
-    classical
-    refine ⟨fun s => by simp, fun dd => ?_⟩
-    refine Set.Subsingleton.finite ?_
-    intro s hs t ht
-    by_contra hne
-    apply hs
-    rw [MvPowerSeries.coeff_X, if_neg]
-    rintro rfl
-    apply ht
-    rw [MvPowerSeries.coeff_X, if_neg]
-    intro h
-    exact hne (Prod.ext_iff.mp (Finsupp.single_left_injective one_ne_zero h)).2
-  unfold inBlock
-  rw [← MvPowerSeries.coe_substAlgHom hs]
-  exact map_sum (MvPowerSeries.substAlgHom hs) f s
+  simp only [HurwitzJetIntegrality.inBlock_eq_rename, map_sum]
 
 theorem inBlock_smul {ι B : Type} (k : B) (r : K) (f : MvPowerSeries ι K) :
     inBlock k (r • f) = r • inBlock k f := by
-  have hs : MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X (k, i) : MvPowerSeries (B × ι) K)) := by
-    classical
-    refine ⟨fun s => by simp, fun dd => ?_⟩
-    refine Set.Subsingleton.finite ?_
-    intro s hs t ht
-    by_contra hne
-    apply hs
-    rw [MvPowerSeries.coeff_X, if_neg]
-    rintro rfl
-    apply ht
-    rw [MvPowerSeries.coeff_X, if_neg]
-    intro h
-    exact hne (Prod.ext_iff.mp (Finsupp.single_left_injective one_ne_zero h)).2
-    all_goals simp_all
-  unfold inBlock
-  exact MvPowerSeries.subst_smul hs r f
+  simp only [HurwitzJetIntegrality.inBlock_eq_rename, map_smul]
 
 def diag4 {n ν : Type} (M : n → ν → K) (w : Fin 4 × n) (y : Fin 4 × ν) : K :=
   if w.1 = y.1 then M w.2 y.2 else 0
@@ -405,3 +384,7 @@ theorem ShapeLin_proof : ShapeLin := by
     rw [mul_left_comm, ← hadd _ _ (hccs _ _ hccβ) (hccs _ _ hccβ), neg_smul, neg_add_cancel, h0, mul_one]
 
 end Formalism.L2.Th1.GD
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.GramFrameCompositionMvExpFact =====

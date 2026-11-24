@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutRegFF
 
 @[expose] public section
 
@@ -107,7 +108,7 @@ theorem jDecayTrQQd_of_leaves (h1 : JDHatBdd) (h2 : JDHatOpQQ) (h3 : JDJComm) (h
   refine ⟨8 * C2 + |C3| + |C5|, ?_⟩
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa hQQ hL hJf
   have hmono : ∀ c, c ≤ 8 * C2 + |C3| + |C5| → BuiltOW c S T f χ ν' m₀ top A₀ := fun c hc =>
-    ⟨isBuiltPlace_mono hc hB.1, hB.2⟩
+    ⟨_root_.Formalism.FourierDecayAlt.P.CutMP.isBuiltPlace_mono3 hc hB.1, hB.2⟩
   have hB2 := hmono C2 (by linarith [abs_nonneg C3, abs_nonneg C5])
   have hB3 := hmono C3 (by linarith [le_abs_self C3, abs_nonneg C5])
   have hB5 := hmono C5 (by linarith [le_abs_self C5, abs_nonneg C3])

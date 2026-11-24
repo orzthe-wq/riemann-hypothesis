@@ -142,9 +142,6 @@ noncomputable section SlopeTestRemainingChoices
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 
-private theorem exists_lift_of_mem_fixing_case_three {F : IntermediateField ℚ Ω} {g : G ℚ Ω} (hg : g ∈ F.fixingSubgroup) : ∃ g' : G F Ω, resQ F g' = g :=
-  ⟨AlgEquiv.ofRingEquiv (f := g.toRingEquiv) fun x => (F.mem_fixingSubgroup_iff g).1 hg x.1 x.2, rfl⟩
-
 private theorem restrict_mem_fixing_subgroup_case_three {F : IntermediateField ℚ Ω} (g : G F Ω) : resQ F g ∈ F.fixingSubgroup :=
   (F.mem_fixingSubgroup_iff _).2 fun x hx => g.commutes ⟨x, hx⟩
 
@@ -227,9 +224,6 @@ private theorem distinct_four_eigenvalues_injective {R : Type} [CommRing R] {z :
     | exact absurd e.symm hzz
     | exact absurd (neg_eq_iff_eq_neg.1 e.symm) hn
     | exact absurd (neg_eq_iff_eq_neg.1 e) hn
-    | exact absurd (neg_eq_iff_eq_neg.1 e).symm hn
-    | exact absurd (neg_inj.1 e).symm h1
-    | exact absurd (neg_inj.1 e) h1
 
 private abbrev bU (c : Coef l) : c.Oˣ →* (ResidueField c.O)ˣ := Units.map (residue c.O : c.O →* ResidueField c.O)
 
@@ -647,7 +641,7 @@ theorem UpperTheory.V.Cu.existsTensorSeedTower_holds : ExistsTensorFactorTower :
       (fun p hp => (Finset.mem_insert.1 hp).elim (fun e => e ▸ hq) (hD.S_prime p)) H hopen hcomm D.cc hD.isCC hcc
   have hL : ∀ g, g ∈ H → g ∈ J → ∃ g' : G F Ω, resQ F g' = g ∧ resQ F g' ∈ K.fixingSubgroup := fun g a b => by
     have h : g ∈ F.fixingSubgroup ⊓ K.fixingSubgroup := hFK ▸ ⟨a, b⟩
-    obtain ⟨g', rfl⟩ := exists_lift_of_mem_fixing_case_three h.1
+    obtain ⟨g', rfl⟩ := _root_.UpperTheory.V.Ws.exists_resQ h.1
     exact ⟨g', rfl, h.2⟩
 
   obtain ⟨g1, i1, x1, p1, w1⟩ := large₂.eltTwo D hC

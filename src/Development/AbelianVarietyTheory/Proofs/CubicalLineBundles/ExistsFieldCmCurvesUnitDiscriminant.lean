@@ -123,37 +123,10 @@ theorem latticeJ_eq_of_isHomothetic {L L' : PeriodPair} {c : ℂ} (h : IsHomothe
 
 variable {K : Type} [Field K] [NumberField K]
 
-private theorem exists_ne_zero_upperHalfPlane_lattice_eq (L : PeriodPair) : ∃ (a : ℂ) (τ : ℍ), a ≠ 0 ∧
-    ∀ x, x ∈ L.lattice ↔ ∃ m n : ℤ, a * (m * (τ : ℂ) + n) = x := by
-  have hind := LinearIndependent.pair_iff.1 L.indep
-  have h1 : L.ω₁ ≠ 0 := fun h => by simpa using hind 1 0 (by simp [h])
-  have h2 : L.ω₂ ≠ 0 := fun h => by simpa using hind 0 1 (by simp [h])
-  have him : (L.ω₂ / L.ω₁).im ≠ 0 := by
-    intro h
-    have hr : L.ω₂ = ((L.ω₂ / L.ω₁).re : ℂ) * L.ω₁ := by
-      rw [← div_eq_iff h1]; exact Complex.ext (by simp) (by simp [h])
-    have := hind (-(L.ω₂ / L.ω₁).re) 1 (by
-      rw [Complex.real_smul, Complex.real_smul]; push_cast; linear_combination hr)
-    exact one_ne_zero this.2
-  rcases lt_or_gt_of_ne him with hlt | hgt
-  · have hpos : 0 < (L.ω₁ / L.ω₂).im := by
-      rw [← inv_div, Complex.inv_im]
-      exact div_pos (neg_pos.2 hlt) (Complex.normSq_pos.2 (div_ne_zero h2 h1))
-    refine ⟨L.ω₂, UpperHalfPlane.mk _ hpos, h2, fun x => ?_⟩
-    rw [PeriodPair.mem_lattice, UpperHalfPlane.coe_mk]
-    constructor
-    · rintro ⟨m, n, rfl⟩; exact ⟨m, n, by field_simp⟩
-    · rintro ⟨m, n, rfl⟩; exact ⟨m, n, by field_simp⟩
-  · refine ⟨L.ω₁, UpperHalfPlane.mk _ hgt, h1, fun x => ?_⟩
-    rw [PeriodPair.mem_lattice, UpperHalfPlane.coe_mk]
-    constructor
-    · rintro ⟨m, n, rfl⟩; exact ⟨n, m, by field_simp; ring⟩
-    · rintro ⟨m, n, rfl⟩; exact ⟨n, m, by field_simp; ring⟩
-
 theorem isIntegral_latticeJ (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (L : PeriodPair)
     (hL : ∀ (a : 𝓞 K), ∀ z ∈ L.lattice, σ (a : K) * z ∈ L.lattice) :
     IsIntegral ℤ (latticeJ L) := by
-  obtain ⟨a, τ, ha, h⟩ := exists_ne_zero_upperHalfPlane_lattice_eq L
+  obtain ⟨a, τ, ha, h⟩ := _root_.GlobalTheory.exists_lattice_eq_mul_tau L
   rw [show latticeJ L = modularJ τ from g₂_cube_div_eq_modularJ ha h]
   have key : ∀ y, y ∈ Submodule.span ℤ {(τ : ℂ), 1} ↔ a * y ∈ L.lattice := by
     intro y

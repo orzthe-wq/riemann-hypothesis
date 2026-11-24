@@ -44,4 +44,4 @@ open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.holomorphicType_of_smooth_borelKilled : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Hm : ι → Mt n) (q : ι → ℕ) (x₀ : ι → Mt n) (w : ι → Fin n → ℤ), (∀ τ, OrthFr (Hm τ) (q τ) (x₀ τ)) → ∀ f, SmFn Hm f → KilledFn Hm x₀ w f → HolFn Hm q x₀ w f := by
-  first | exact @GlobalTheory.HolDict.holFn_of_killed | exact GlobalTheory.HolDict.holFn_of_killed | (intros; apply GlobalTheory.HolDict.holFn_of_killed <;> assumption)
+  first | exact @GlobalTheory.HolDict.holFn_of_killed

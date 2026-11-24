@@ -55,6 +55,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -491,18 +492,6 @@ def parab : Subgroup (UJ ε) where
 
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {σ : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)}
 
-theorem isClosed_leviOne (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i) : IsClosed (leviOne ε W : Set (UJ ε)) := by
-  obtain ⟨h, hc, h1, -, hh⟩ := exists_height hW hj
-  have h0 : (1 : UJ ε) ∈ flagN ε W := ⟨fun i y _ => by simp [uMat_one], fun y _ => by simp [uMat_one]⟩
-  convert (isClosed_flagM W).inter (isClosed_eq hc (continuous_const (y := 0))) using 1
-  ext l
-  refine ⟨fun hl => ⟨hl.1, by simpa [h1] using hh 1 h0 l hl 0 1 isSplit_one 1⟩, fun hl => ?_⟩
-  obtain ⟨m, hm, x, t, ht, rfl⟩ := exists_leviOne_mul hW hj hl.1
-  have := hh 1 h0 m hm x t ht 1
-  rw [one_mul, mul_one, h1, add_zero, show h (m * t) = 0 from hl.2] at this
-  rw [(existsUnique_isSplit hW x).unique ht (this ▸ isSplit_one), mul_one]
-  exact hm
-
 end Model
 
 section Models
@@ -538,10 +527,6 @@ theorem IsIndModel.unique [CompleteSpace H] [CompleteSpace H'] (h : IsIndModel S
   refine h.dense.induction_on v (isClosed_eq (by fun_prop) (by fun_prop)) fun f => ?_
   rw [h.transl y hy f ⟨_, hR _ f.2 y hy⟩ fun _ => rfl, e, e]
   exact (h'.transl y hy _ _ fun _ => rfl).symm
-
-theorem leviOne_zero {j : Fin 0 → ℕ} {W : Flag n 0} (hW : IsIsoFlag ε j W) : leviOne ε W = ⊤ := by
-  have h : ∀ i, W i = ⊥ := fun i => by rw [Fin.eq_zero i, hW.1]
-  exact eq_top_iff.2 fun g _ => ⟨fun i y hy => by rw [h] at hy ⊢; simp_all, fun i => by rw [h, detOn_bot]⟩
 
 end Models
 

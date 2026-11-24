@@ -121,7 +121,7 @@ theorem extE_R1cond (κ : (Fin n → k) ≃ₗ[k] (Fin n → k)) : Loc.R1cond k 
     exact zero_mem _
 
 theorem extendByIdOnLastCoordsLinearEquiv_mem_firstRowGroup (κ : (Fin n → k) ≃ₗ[k] (Fin n → k)) : extE c κ ∈ Loc.R1 k n c :=
-  ⟨extE_R1cond c κ, by rw [extE_inv]; exact extE_R1cond c _⟩
+  Submonoid.mem_mulSupport.mpr ⟨extE_R1cond c κ, by rw [extE_inv]; exact extE_R1cond c _⟩
 
 theorem extE_inX (κ : (Fin n → k) ≃ₗ[k] (Fin n → k)) (x : Fin n → k) :
     extE c κ (Loc.inX k n c x) = Loc.inX k n c (κ x) := by

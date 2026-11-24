@@ -48,4 +48,4 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.nonempty_locIso_squareZeroSmoothLiftSystems : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀), ∀ S S' : Sys I π s₀, Nonempty (S.LocIso S') := by
-  first | exact @GlobalTheory.LiftSys.locIso_nonempty | exact GlobalTheory.LiftSys.locIso_nonempty | (intros; apply GlobalTheory.LiftSys.locIso_nonempty <;> assumption)
+  first | exact @GlobalTheory.LiftSys.locIso_nonempty

@@ -76,7 +76,6 @@ theorem theta_inj (hψ : IsStd ψ) {φ : (κ → AF F) → ℂ} (hφ : φ ∈ sc
     (fun ξ hξ => by
       obtain ⟨i, hi⟩ := Function.ne_iff.1 hξ
       refine ⟨Pi.single i (algebraMap F (AF F) (ξ i)⁻¹ * a₀), ?_⟩
-      beta_reduce
       rwa [dotProduct_single, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, one_mul])
     (by convert summable_norm_of_mem_schA F (GlobalTheory.SchwartzTranslate.schA_translate F x hφ) using 1) fun y => by
       have hb : ψ (⅟(2 : AF F) * (x ⬝ᵥ y)) ≠ 0 := norm_ne_zero_iff.1 (by rw [hn]; exact one_ne_zero)

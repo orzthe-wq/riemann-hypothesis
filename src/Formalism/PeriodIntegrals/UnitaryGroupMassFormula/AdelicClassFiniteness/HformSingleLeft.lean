@@ -86,7 +86,7 @@ theorem hform_single_left {n : Type} [Fintype n] [DecidableEq n] (J : Matrix n n
     by_cases h : r = i
     · subst h
       simp
-    · simp [Pi.single_apply, h]
+    · simp [h]
   rw [hform_eq, hs]
   simp
 

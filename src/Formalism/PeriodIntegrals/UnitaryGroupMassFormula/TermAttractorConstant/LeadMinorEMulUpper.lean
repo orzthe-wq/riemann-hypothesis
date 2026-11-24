@@ -127,9 +127,7 @@ theorem isLoUni_mul {N : ℕ} {A L : Matrix (Fin N) (Fin N) K} (hA : IsLoUni A) 
       · rw [(hA i k).1 hik, zero_mul]
     · simp
 
-theorem isUpUni_mul {N : ℕ} {U B : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) (hB : IsUpUni B) :
-    IsUpUni (U * B) := by
-  first | exact GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul .. | (apply GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul <;> assumption) | (intros; apply GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul <;> assumption) | (apply @GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul <;> assumption) | (intros; apply @GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul <;> assumption) | (apply @GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul <;> first | assumption | infer_instance) | exact @GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul K ‹_› N U B hU hB | exact @GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul K ‹_› N U B hU | exact @GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul K ‹_› N U B | exact @GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul K ‹_› N U | exact @GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul K ‹_› N | exact @GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul K ‹_› | exact @GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul K
+alias isUpUni_mul := _root_.GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul
 
 end Mat
 
@@ -308,8 +306,7 @@ theorem isUpUni_conj_sgn {K : Type*} [CommRing K] {B : Matrix (Fin (r + 1)) (Fin
   refine ⟨fun hji => ?_, fun hij => ?_⟩
   · simp [Matrix.mul_diagonal, Matrix.diagonal_mul, (hB i j).1 hji]
   · subst hij
-    simp only [Matrix.mul_diagonal, Matrix.diagonal_mul, (hB i i).2 rfl, mul_one]
-    exact sgn_sq i
+    simpa [Matrix.mul_diagonal, Matrix.diagonal_mul, (hB i i).2 rfl] using sgn_sq i
 
 theorem cell_step {K : Type*} [CommRing K] {Z Z₂ A B : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (hA : IsLoUni A) (hB : IsUpUni B) (he : Z₂ = A * Z * B) (w : Point K (r + 1))
@@ -333,10 +330,9 @@ theorem cell_step {K : Type*} [CommRing K] {Z Z₂ A B : Matrix (Fin (r + 1)) (F
 theorem cellFun_all (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (P : LFlag S r T' → Prop) :
     CellFun Λ F P := by
   intro x y h w
-  have h' : DCRel Λ F x.1 y.1 := h
-  have hs : DCRel Λ F y.1 x.1 := (dCRelEquivAll_holds E S r T T' Λ F).symm h'
-  obtain ⟨A, B, hA, hB, he⟩ := zhat_factor Λ h'
-  obtain ⟨A', B', hA', hB', he'⟩ := zhat_factor Λ hs
+  obtain ⟨A, B, hA, hB, he⟩ := zhat_factor Λ h
+  obtain ⟨A', B', hA', hB', he'⟩ :=
+    zhat_factor Λ ((dCRelEquivAll_holds E S r T T' Λ F).symm h)
   exact ⟨cell_step hA hB he w, cell_step hA' hB' he' w⟩
 
 theorem feqF_fwd (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {x y : LFlag S r T'} (h : DCRel Λ F x y)
@@ -360,9 +356,7 @@ theorem feqF_fwd (Λ : Submodule (𝓞 E) S.V) {F : LFlag S r T} {x y : LFlag S 
 theorem feqFFun_all (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (P : LFlag S r T' → Prop) :
     FeqFFun Λ F P := by
   intro x y h
-  have h' : DCRel Λ F x.1 y.1 := h
-  have hs : DCRel Λ F y.1 x.1 := (dCRelEquivAll_holds E S r T T' Λ F).symm h'
-  exact ⟨feqF_fwd Λ h', feqF_fwd Λ hs⟩
+  exact ⟨feqF_fwd Λ h, feqF_fwd Λ ((dCRelEquivAll_holds E S r T T' Λ F).symm h)⟩
 
 end Gen
 

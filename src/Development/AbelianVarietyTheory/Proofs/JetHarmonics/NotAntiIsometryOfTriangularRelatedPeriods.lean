@@ -93,7 +93,7 @@ private theorem hermC_self_re_eq_neg_sum_normSq_of_p0_eq_zero (X : _root_.Recipr
   obtain ⟨P, hP, hG⟩ := X.signature τ
   refine ⟨P, hP, fun p => ?_⟩
   rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.IntegralBasisReduction.hermC_normal X hP _ hG p p]
-  simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn, h0, mul_assoc, Complex.mul_conj, Complex.re_sum]
+  simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn, h0, Complex.mul_conj, Complex.re_sum]
 
 open NumberField AlgebraicGeometry CategoryTheory in
 open scoped Matrix in
@@ -228,7 +228,7 @@ theorem _root_.GlobalTheory.AntiIsom.not_antiIsometry : ∀ (E : Type) [Field E]
         funext j
         by_cases hkj : k = j
         · subst hkj; simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb]
-        · simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, Pi.single_apply, hkj, Ne.symm hkj]
+        · simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, hkj, Ne.symm hkj]
       rw [hs] at h
       rw [h]
       ring

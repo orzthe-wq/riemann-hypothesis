@@ -71,44 +71,8 @@ theorem inverseBound : LInvBound := by
   intro q _ χ s hs
   have hσ1 : 0 < s.re - 1 := by linarith
   have hshift : ∑' n : ℕ, ((n : ℝ) + 1) ^ (-(s.re - 1) - 1) ≤ s.re / (s.re - 1) := by
-    apply Real.tsum_le_of_sum_range_le
-    · intro n
-      positivity
-    · intro m
-      rcases m with _ | k
-      · simp only [Finset.range_zero, Finset.sum_empty]
-        positivity
-      · rw [Finset.sum_range_succ']
-        have hk : (0 : ℝ) ≤ k := Nat.cast_nonneg k
-        have hanti : AntitoneOn (fun x : ℝ => x ^ (-s.re)) (Set.Icc (1 : ℝ) (1 + k)) := by
-          intro x hx y _ hxy
-          exact Real.rpow_le_rpow_of_nonpos (by linarith [hx.1]) hxy (by linarith)
-        have hsum := hanti.sum_le_integral
-        have hint : ∫ x in (1 : ℝ)..(1 + k), x ^ (-s.re) =
-            ((1 + k : ℝ) ^ (-s.re + 1) - 1 ^ (-s.re + 1)) / (-s.re + 1) := by
-          apply integral_rpow
-          refine Or.inr ⟨by linarith, ?_⟩
-          rw [Set.uIcc_of_le (by linarith)]
-          intro h
-          linarith [h.1]
-        have hpos : 0 ≤ (1 + k : ℝ) ^ (-s.re + 1) := by positivity
-        have hb : ((1 + k : ℝ) ^ (-s.re + 1) - 1 ^ (-s.re + 1)) / (-s.re + 1) ≤ 1 / (s.re - 1) := by
-          rw [Real.one_rpow, show -s.re + 1 = -(s.re - 1) by ring, div_neg, ← neg_div]
-          have hpos' : 0 ≤ (1 + k : ℝ) ^ (-(s.re - 1)) := by positivity
-          gcongr
-          linarith
-        have e : ∑ i ∈ Finset.range k, (((i + 1 : ℕ) : ℝ) + 1) ^ (-(s.re - 1) - 1) =
-            ∑ i ∈ Finset.range k, (fun x : ℝ => x ^ (-s.re)) (1 + ((i + 1 : ℕ) : ℝ)) :=
-          Finset.sum_congr rfl fun i _ => by
-            show (((i + 1 : ℕ) : ℝ) + 1) ^ (-(s.re - 1) - 1) = (1 + ((i + 1 : ℕ) : ℝ)) ^ (-s.re)
-            congr 1 <;> ring
-        rw [e]
-        have e2 : s.re / (s.re - 1) = 1 / (s.re - 1) + 1 := by
-          field_simp
-          ring
-        simp only [Nat.cast_zero, zero_add, Real.one_rpow]
-        rw [hint] at hsum
-        linarith
+    calc _ ≤ 1 + 1 / (s.re - 1) := tsum_rpow_le hσ1
+      _ = s.re / (s.re - 1) := by field_simp; ring
   have hp : -(s.re - 1) - 1 < -1 := by linarith
   have hfun : (fun n : ℕ => ‖term (1 : ℕ → ℂ) s (n + 1)‖) = fun n : ℕ => ((n : ℝ) + 1) ^ (-(s.re - 1) - 1) :=
     funext (norm_term_one_succ s)

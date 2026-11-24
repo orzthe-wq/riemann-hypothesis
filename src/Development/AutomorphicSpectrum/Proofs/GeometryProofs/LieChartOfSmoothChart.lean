@@ -2,8 +2,10 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieChart
 public import Mathlib.RingTheory.RingHom.Smooth
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorOfDualHomStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorSumDualNumberStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorOfDualHom
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorSumDualNumber
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -186,7 +188,7 @@ theorem exists_lieModel {S : Scheme.{0}} (G : Over S) [GrpObj G] (U : G.left.Ope
       (∀ b, δ' ((G.hom.appLE V U hUV).hom b) = 0) → ∃ e, ∀ a, δ e a = δ' a) :
     ∃ M : LieModel G y E, ∀ e, ∃ φ : Γ(G.left, U) →+* DualNumber C,
       (∀ a, (φ a).fst = v a) ∧ (∀ a, (φ a).snd = δ e a) ∧ (M.pt e).left = spMap φ ≫ hU.fromSpec := by
-  obtain ⟨c1, c2⟩ := GlobalTheory.T.tangent_vector_of_dual_hom S G U V hU hV hUV C y v h1
+  obtain ⟨c1, c2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.TanChart.tan_iff_der S G U V hU hV hUV C y v h1
   let φ : E → (Γ(G.left, U) →+* DualNumber C) := fun e => dualOf v (δ e) (hadd e) (hmul e)
   have φfst : ∀ e a, (φ e a).fst = v a := fun e a => dualOf_fst ..
   have φsnd : ∀ e a, (φ e a).snd = δ e a := fun e a => dualOf_snd ..
@@ -213,7 +215,7 @@ theorem exists_lieModel {S : Scheme.{0}} (G : Over S) [GrpObj G] (U : G.left.Ope
     rw [pleft, f3, h2]
   · intro e e'
     refine Over.OverMorphism.ext ?_
-    rw [GlobalTheory.T.tangent_vector_sum_dual_number S G U hU C y v h1 (pt e) (pt e') (ptan e) (ptan e') (φ e) (φ e') (φ (e + e'))
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.TanMul.mul_left_eq S G U hU C y v h1 (pt e) (pt e') (ptan e) (ptan e') (φ e) (φ e') (φ (e + e'))
       (φfst e) (φfst e') (φfst _) (fun a => by rw [φsnd, φsnd, φsnd, hEadd]) (pleft e) (pleft e'), pleft]
   · intro c e
     have h2 : φ (c • e) = (epsMul c).comp (φ e) := RingHom.ext fun a => TrivSqZeroExt.ext

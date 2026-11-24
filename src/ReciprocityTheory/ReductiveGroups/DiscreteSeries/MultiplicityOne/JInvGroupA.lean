@@ -1,48 +1,6 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.StDefs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -133,18 +91,14 @@ include hE
 theorem embWb_inv_fix_offW (v : Fin (2 * r + k + 1) → ℂ) (hv : ∀ j, isW k r j → v j = 0) :
     (embWb k r γ)⁻¹ *ᵥ v = v := by
   have h := congrArg ((embWb k r γ)⁻¹ *ᵥ ·) (embWb_fix_offW γ v hv)
-  simp only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hE, Matrix.one_mulVec] at h
-  exact h.symm
+  simpa only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hE, Matrix.one_mulVec] using h.symm
 
 theorem embWb_inv_supW (v : Fin (2 * r + k + 1) → ℂ) (hv : ∀ j, ¬ isW k r j → v j = 0) :
     ∀ j, ¬ isW k r j → ((embWb k r γ)⁻¹ *ᵥ v) j = 0 := by
   intro j hj
-  have h1 : embWb k r γ *ᵥ ((embWb k r γ)⁻¹ *ᵥ v) = v := by
-    rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hE, Matrix.one_mulVec]
   have h2 := embWb_apply_offW γ ((embWb k r γ)⁻¹ *ᵥ v) j hj
-  rw [h1] at h2
-  rw [← h2]
-  exact hv j hj
+  rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hE, Matrix.one_mulVec] at h2
+  rw [← h2, hv j hj]
 
 theorem cc_supW (v : Fin (2 * r + k + 1) → ℂ) (hv : ∀ j, ¬ isW k r j → v j = 0) :
     ∀ j, ¬ isW k r j → cc γ v j = 0 := by
@@ -157,8 +111,7 @@ theorem cc_supW (v : Fin (2 * r + k + 1) → ℂ) (hv : ∀ j, ¬ isW k r j → 
 theorem cc_offW (v : Fin (2 * r + k + 1) → ℂ) (hv : ∀ j, isW k r j → v j = 0) :
     cc γ v = fun i => conj (v i) := by
   unfold cc
-  rw [embWb_inv_fix_offW hE v hv]
-  exact embWb_fix_offW γ _ (fun j hj => by simp [hv j hj])
+  rw [embWb_inv_fix_offW hE v hv, embWb_fix_offW γ _ (fun j hj => by simp [hv j hj])]
 
 theorem cc_cc (v : Fin (2 * r + k + 1) → ℂ) : cc γ (cc γ v) = v := by
   have h1 : ∀ w, (embWb k r γ)⁻¹ *ᵥ (embWb k r γ *ᵥ w) = w := fun w => by
@@ -231,12 +184,12 @@ section mem
 theorem bvec_offW (j : Fin (2 * r + k + 1)) (hj : ¬ isW k r j) : ∀ l, isW k r l → bvec j l = 0 := by
   intro l hl
   have h : l ≠ j := fun h => hj (h ▸ hl)
-  simp [bvec, Pi.single_apply, h]
+  simp [bvec, h]
 
 theorem bvec_supW (j : Fin (2 * r + k + 1)) (hj : isW k r j) : ∀ l, ¬ isW k r l → bvec j l = 0 := by
   intro l hl
   have h : l ≠ j := fun h => hl (h ▸ hj)
-  simp [bvec, Pi.single_apply, h]
+  simp [bvec, h]
 
 theorem not_isW_eI (a : Fin r) : ¬ isW k r (eI k r a) := by
   show ¬ (r ≤ a.val ∧ a.val ≤ r + k)
@@ -271,20 +224,15 @@ theorem gbar_mem_GV (g : Mat k r) (hg : g ∈ GV k r) : gbar k r γ g ∈ GV k r
 
 theorem gbar_fix (g : Mat k r) (v : Fin (2 * r + k + 1) → ℂ) (hv : cc γ v = v) (hgv : g *ᵥ v = v) :
     gbar k r γ g *ᵥ v = v := by
-  have hE := hG.unit _ hEG
-  have h := gbar_mulVec_cc hE g v
-  rw [hv, hgv, hv] at h
-  exact h
+  rw [← hv, gbar_mulVec_cc (hG.unit _ hEG), hgv]
 
 theorem cc_bvec_offW (j : Fin (2 * r + k + 1)) (hj : ¬ isW k r j) : cc γ (bvec j) = bvec j := by
-  rw [cc_offW (hG.unit _ hEG) _ (bvec_offW j hj)]
-  exact conj_bvec j
+  rw [cc_offW (hG.unit _ hEG) _ (bvec_offW j hj), conj_bvec j]
 
 theorem cc_embWb_bvec (j : Fin (k + 1)) :
     cc γ (embWb k r γ *ᵥ bvec (wI k r j)) = embWb k r γ *ᵥ bvec (wI k r j) := by
-  have hE := hG.unit _ hEG
   unfold cc
-  rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hE, Matrix.one_mulVec, conj_bvec]
+  rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (hG.unit _ hEG), Matrix.one_mulVec, conj_bvec]
 
 theorem gbar_mem_N (g : Mat k r) (hg : g ∈ Nset k r) : gbar k r γ g ∈ Nset k r := by
   have hE := hG.unit _ hEG

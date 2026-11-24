@@ -70,7 +70,6 @@ theorem φD_pow_smulA (T : LocLat G Qp LL O) (e : ℕ) (a : LetA O n) (x : W.DD 
   | zero =>
     first
     | rfl
-    | simp
   | succ e ih =>
     rw [pow_succ', pow_succ']
     show (W.φD T) (((W.φD T) ^ e) (a • x)) = (W.φA) ((W.φA ^ e) a) • (W.φD T) (((W.φD T) ^ e) x)

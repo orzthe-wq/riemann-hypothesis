@@ -161,7 +161,7 @@ theorem form_add_right (Q : Matrix α α E) (w w₁ w₂ : Matrix α (ν ⊕ ν)
 theorem form_swap (hc : ∀ z, c (c z) = z) {Q : Matrix α α E} (hQ : IsHerm c Q) (w w' : Matrix α (ν ⊕ ν) E) :
     form c Q w' w = -form c Q w w' := by
   have hJ : ∀ j l, c (stdJ ν E j l) = -stdJ ν E l j := by
-    rintro (j | j) (l | l) <;> by_cases h : j = l <;> simp [stdJ, one_apply, h, eq_comm, map_one, map_zero]
+    rintro (j | j) (l | l) <;> by_cases h : j = l <;> simp [stdJ, h, eq_comm, map_one, map_zero]
   have h : hTens c Q (stdJ ν E) w' w = -c (hTens c Q (stdJ ν E) w w') := by
 
     simp only [hTens, map_sum, map_mul, hc, hJ, hQ.1, ← Finset.sum_neg_distrib]
@@ -232,6 +232,14 @@ open GlobalTheory.WeilM (UG IsQuad IsHerm ResEtaPow)
 open GlobalTheory.SplitWeil (SB IsSmoothRep nabs)
 open GlobalTheory.SplitUnitary
 
+/-- **Kudla's splitting theorem for split unitary groups**: for a non-archimedean local field `F`
+and a quadratic extension `E/F`, the two-fold metaplectic cover over the split unitary group
+`U(ν, ν)` splits via a character `χ`, giving a smooth unitary Weil representation `ω` on the
+Schwartz space `S(M_{α × ν}(E))` intertwined with the Heisenberg representation and with explicit
+action on the Siegel Levi subgroup.
+
+Proposed reference:
+[S. S. Kudla, *Splitting metaplectic covers of dual reductive pairs* (Theorem 4.1)][kudla1996]. -/
 def KudlaSplittingSplitUnitary : Prop :=
   ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E]

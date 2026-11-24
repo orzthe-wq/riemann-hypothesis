@@ -143,10 +143,7 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 theorem isCompact_unitsO : IsCompact {x : kˣ | valuation k (x : k) = 1} := by
   haveI : T1Space k := IsTopologicalAddGroup.t1Space k (by
     first
-      | exact isClosed_singleton
-      | (convert (Valuation.isClosed_sphere (v := valuation k) 0) using 1
-         ext x
-         simp))
+      | exact isClosed_singleton)
   have hS : IsCompact (((valuation k).integer.toSubmonoid : Submonoid k) : Set k) :=
     IsNonarchimedeanLocalField.isCompact_closedBall k 1
   convert Submonoid.units_isCompact hS using 1
@@ -182,9 +179,6 @@ theorem jacB_apply (π : Representation ℂ (GL n k) V) (g : n → kˣ) (v : Jac
       (leviTorus k n).toMonoidHom) g)⁻¹ : ℂˣ) : ℂ) • jacBU π g v := by
   first
     | exact twist_apply (jacU (points n) π) (deltaHalf k fun _ : n => Unit)⁻¹ (leviTorus k n g) v
-    | (show twist (jacU (points n) π) (deltaHalf k fun _ : n => Unit)⁻¹ (leviTorus k n g) v = _
-       rw [twist_apply]
-       rfl)
 
 theorem jhMult_jacBU_eq_expMult {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π)
     {θ : (n → kˣ) →* ℂˣ} (hθ : ∀ t ∈ torusO k n, θ t = 1) :

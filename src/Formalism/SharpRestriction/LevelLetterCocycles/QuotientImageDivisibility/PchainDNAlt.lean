@@ -102,7 +102,7 @@ theorem Kc_le [IsDomain O] (i : ZMod n) (k : ℕ) (h3 : Formalism.MainNotions.De
   have hyE : (letE i : LetA O n) • y ∈ W.NΔ T :=
     Formalism.MainNotions.UnusedSlot80.SatW.smul_mem_NΔ W T hE ⟨hyN, hyΔ⟩
   refine Submodule.mem_sup_left (Submodule.mem_map.2 ⟨(letE i : LetA O n) • y, ?_, ?_⟩)
-  · exact ⟨hyE.1, by rw [smul_smul, letE_sq], hyE.2⟩
+  · exact ⟨hyE.1, by rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq], hyE.2⟩
   · simp only [LinearMap.smul_apply, LinearMap.id_apply]
     rw [aself_comm W T, ← hzy, hzl]
     rfl

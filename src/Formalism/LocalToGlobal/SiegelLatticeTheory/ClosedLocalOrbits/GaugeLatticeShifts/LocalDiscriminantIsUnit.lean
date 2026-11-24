@@ -5,50 +5,9 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.SiegelMassRatios.GramJ
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.EFSymmCont
 public import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
 public import Formalism.LocalRingCardinality.IntCastDvdOfDvdIntegers
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import Formalism.HermitianLattices.HermitianLatticesProofs.UnimodularSpan
 
 @[expose] public section
@@ -1771,18 +1730,6 @@ end BBTie
 
 open BBTie
 
-theorem bbTie_of (Z : LocDat D) (hE : LocEqC D Z) (hS : LocSatC D Z) (hD : LocDiffC D Z) : BBTie D Z :=
-  bbTie_core Z hE hS hD
-
-theorem frameGenLoc_of (Z : LocDat D) (hE : LocEqC D Z) (hS : LocSatC D Z) (hD : LocDiffC D Z)
-    (hDu : LocUnimodC D Z) {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
-    (Λ : Submodule (𝓞 D.host.E) (VS D).V) (F' : LFlag (D.sp.Y 0) D.R.rS (((D.mem u').A.T : ℕ) : D.host.E))
-    (hR : IsRowLat D F0 Λ) (hPD : PD D Λ (lf D F0) u' F') (hMI : MplusIndep Λ (lf D F0) (gS D) F')
-    (hG : Gval (lf D F0) F' ≠ 0) (hD1 : Dr1 (lf D F0) F' ≠ 0) :
-    IsGeneric Λ (gS D) (lf D F0) F' ↔
-      ∀ p : PlF D, (locH Z p).IsGeneric (locTerm Z p Λ (lf D F0) F' (Tu D u) (Tu D u')) :=
-  frameGenLoc_core Z hE hS hD hDu F0 Λ F' hR hPD hMI hG hD1
-
 section Tied
 
 
@@ -1802,7 +1749,7 @@ theorem frameGenLoc_of' (hDN : Formalism.L2.SG.GramJoint.DNeZeroAt) (Z : LocDat 
     IsGeneric Λ (gS D) (lf D F0) F' ↔
       ∀ p : PlF D, (locH Z p).IsGeneric (locTerm Z p Λ (lf D F0) F' (Tu D u) (Tu D u')) := by
   obtain ⟨τ⟩ : Nonempty (D.host.E →+* ℂ) := inferInstance
-  exact frameGenLoc_of Z hE hS hD hDu F0 Λ F' hR hPD hMI hG
+  exact _root_.Formalism.L2.SG.Pf.BBTie.frameGenLoc_core Z hE hS hD hDu F0 Λ F' hR hPD hMI hG
     (hDN D.host.E (VS D) τ (D.sp.cm.cmUnram.2.1 τ) (D.sp.Y_sig 0) D.R.rS (Tu D u) (Tu D u')
       (Formalism.L2.SG.GramJoint.sig_hS D τ) (Formalism.L2.SG.GramJoint.Tu_pos D u) (Formalism.L2.SG.GramJoint.Tu_pos D u') F0 F'.fl hG)
 

@@ -136,30 +136,27 @@ theorem latticeG_eq_E {k : ℕ} (hk : 3 ≤ k) :
     · rintro ⟨x, hx⟩
       obtain ⟨m, n, rfl⟩ := (h x).mp hx
       exact ⟨![m, n], rfl⟩
-  have h1 := tsum_eisSummand_eq_riemannZeta_mul_eisensteinSeries hk τ
   have h2 : E hk τ = (1 / 2 : ℂ) * eisensteinSeries (N := 1) 0 k τ := rfl
   rw [PeriodPair.G, ← (Equiv.ofBijective e he).tsum_eq, h2]
   have h3 : ∀ v, (((Equiv.ofBijective e he v : L.lattice) : ℂ) ^ k)⁻¹ =
       (a ^ k)⁻¹ * eisSummand k v τ := fun v ↦ by
     simp [e, eisSummand, mul_pow, mul_comm]
   simp_rw [h3]
-  rw [tsum_mul_left, h1]
+  rw [tsum_mul_left, tsum_eisSummand_eq_riemannZeta_mul_eisensteinSeries hk τ]
   field_simp
 
 theorem g₂_eq_E₄ : L.g₂ = 4 * π ^ 4 / 3 * E₄ τ / a ^ 4 := by
-  have := latticeG_eq_E ha h (k := 4) (by norm_num)
-  rw [PeriodPair.g₂, this, Nat.cast_ofNat, riemannZeta_four]
+  rw [PeriodPair.g₂, latticeG_eq_E ha h (k := 4) (by norm_num), Nat.cast_ofNat, riemannZeta_four]
   ring
 
 theorem g₃_eq_E₆ : L.g₃ = 8 * π ^ 6 / 27 * E₆ τ / a ^ 6 := by
-  have := latticeG_eq_E ha h (k := 6) (by norm_num)
   have h6 : riemannZeta 6 = π ^ 6 / 945 := by
     have := riemannZeta_two_mul_nat (k := 3) (by norm_num)
     rw [show bernoulli (2 * 3) = 1 / 42 by decide +kernel] at this
     norm_num [Nat.factorial] at this
     rw [this]
     ring
-  rw [PeriodPair.g₃, this, Nat.cast_ofNat, h6]
+  rw [PeriodPair.g₃, latticeG_eq_E ha h (k := 6) (by norm_num), Nat.cast_ofNat, h6]
   ring
 
 theorem latticeCurve_Δ_eq_discriminant :
@@ -173,9 +170,7 @@ end
 theorem latticeCurve_Δ_ne_zero (L : PeriodPair) : (latticeCurve L).Δ ≠ 0 := by
   obtain ⟨a, τ, ha, h⟩ := exists_lattice_eq_mul_tau L
   rw [latticeCurve_Δ_eq_discriminant ha h]
-  have := discriminant_ne_zero τ
-  have := Real.pi_ne_zero
-  simp [*]
+  simp [ha, Real.pi_ne_zero, discriminant_ne_zero τ]
 
 instance latticeCurve_isElliptic (L : PeriodPair) : (latticeCurve L).IsElliptic :=
   ⟨(latticeCurve_Δ_ne_zero L).isUnit⟩
@@ -198,9 +193,8 @@ lemma tendsto_E₄_atImInfty : Tendsto (E₄ : ℍ → ℂ) atImInfty (𝓝 1) :
     exact E_qExpansion_coeff_zero _ ⟨2, rfl⟩
   obtain ⟨c, hc, h⟩ := ModularFormClass.exp_decay_sub_atImInfty' (E₄)
   rw [h0] at h
-  have h2 : Tendsto (fun τ : ℍ ↦ Real.exp (-c * τ.im)) atImInfty (𝓝 0) := by
-    refine Real.tendsto_exp_atBot.comp ?_
-    exact Tendsto.const_mul_atTop_of_neg (by linarith) tendsto_comap
+  have h2 : Tendsto (fun τ : ℍ ↦ Real.exp (-c * τ.im)) atImInfty (𝓝 0) :=
+    Real.tendsto_exp_atBot.comp (Tendsto.const_mul_atTop_of_neg (by linarith) tendsto_comap)
   simpa using (h.trans_tendsto h2).add_const 1
 
 theorem exists_E₄_cube_div_discriminant_eq (c : ℂ) :
@@ -212,13 +206,12 @@ theorem exists_E₄_cube_div_discriminant_eq (c : ℂ) :
     simp [g]
     rfl
   have hg0 : ∀ τ, g τ ≠ 0 := fun τ h ↦ hc τ (by
-    rw [hg] at h
-    rw [div_eq_iff (discriminant_ne_zero τ)]
-    linear_combination h)
+    rw [hg, sub_eq_zero] at h
+    rwa [div_eq_iff (discriminant_ne_zero τ)])
   have hlim : Tendsto (g : ℍ → ℂ) atImInfty (𝓝 1) := by
-    have := (tendsto_E₄_atImInfty.pow 3).sub
-      ((show Tendsto discriminant atImInfty (𝓝 0) from discriminant_isZeroAtImInfty).const_mul c)
-    simpa [funext hg] using this
+    simpa [funext hg] using
+      (tendsto_E₄_atImInfty.pow 3).sub
+        ((show Tendsto discriminant atImInfty (𝓝 0) from discriminant_isZeroAtImInfty).const_mul c)
   have hsl : ∀ γ : SL(2, ℤ),
       ((1 : ℍ → ℂ) / g) ∣[(0 : ℤ) - 12] γ = (1 : ℍ → ℂ) / g := fun γ ↦ by
     have hγ : (γ : GL (Fin 2) ℝ) ∈ 𝒮ℒ := ⟨γ, rfl⟩
@@ -233,8 +226,8 @@ theorem exists_E₄_cube_div_discriminant_eq (c : ℂ) :
         intro γ _
         rw [hsl γ]
         exact ((tendsto_const_nhds (x := (1 : ℂ))).div hlim one_ne_zero).isBigO_one ℝ }
-  have := congrFun (ModularFormClass.levelOne_neg_weight_eq_zero (by norm_num) f) UpperHalfPlane.I
-  have h3 : (1 : ℂ) / g UpperHalfPlane.I = 0 := this
+  have h3 : (1 : ℂ) / g UpperHalfPlane.I = 0 :=
+    congrFun (ModularFormClass.levelOne_neg_weight_eq_zero (by norm_num) f) UpperHalfPlane.I
   simp [hg0] at h3
 
 theorem exists_variableChange_eq_latticeCurve (W : WeierstrassCurve ℂ) [W.IsElliptic] :

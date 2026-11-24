@@ -46,6 +46,8 @@ import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.PolyDerivSmulLetter
 import Formalism.LocalToGlobal.ProjectiveLattices.JFDFree
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Mathlib.RingTheory.MvPolynomial
 
 @[expose] public section
 

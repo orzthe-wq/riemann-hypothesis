@@ -125,7 +125,7 @@ theorem snd_aeval (N g : Matrix (Fin n) (Fin n) R) (hc : g * N = N * g) (P : (Du
       rw [aeval_monomial, ← Algebra.smul_def, dm_pow N g hc, dm_smul, dm_snd, Polynomial.map_monomial,
         derivative_monomial, aeval_monomial, aeval_monomial, ← Algebra.smul_def, ← Algebra.smul_def]
       simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, TrivSqZeroExt.fstHom_apply, add_tsub_cancel_right,
-        smul_zero, zero_add, Matrix.smul_mul, smul_smul]
+        Matrix.smul_mul, smul_smul]
 
 theorem mem_adjoin_of_commute (N g : Matrix (Fin n) (Fin n) R) (hs : N.charpoly.Separable)
     (hc : g * N = N * g) : g ∈ Algebra.adjoin R {N} := by

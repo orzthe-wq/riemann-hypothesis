@@ -55,8 +55,8 @@ variable {n : ℕ}
 
 theorem JJ_mul_JJ : JJ n * JJ n = -1 := by
   rw [JJ, fromBlocks_multiply]
-  simp only [Matrix.zero_mul, Matrix.one_mul, Matrix.mul_zero, Matrix.mul_one, zero_add, add_zero,
-    Matrix.neg_mul, Matrix.mul_neg]
+  simp only [Matrix.mul_zero, Matrix.mul_one, zero_add, add_zero,
+    Matrix.mul_neg]
   rw [← Matrix.fromBlocks_one, Matrix.fromBlocks_neg, neg_zero]
 
 theorem det_JJ_ne : (JJ n).det ≠ 0 := by
@@ -104,7 +104,7 @@ theorem inK_kth (θ : Fin n → ℝ) : InK (kth θ) := by
   refine ⟨?_, ?_⟩
   · simp [InG, kth, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply,
       Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, -Complex.ofReal_cos,
-      -Complex.ofReal_sin, Complex.conj_ofReal, hcs, hsc]
+      -Complex.ofReal_sin, Complex.conj_ofReal, hsc]
     refine ⟨?_, ?_, ?_⟩
     · funext i
       rw [Pi.zero_apply]

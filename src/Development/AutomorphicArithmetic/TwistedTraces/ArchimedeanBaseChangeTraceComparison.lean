@@ -106,7 +106,6 @@ private theorem rhoL_comm' {w w' : Pl K} (h : w ≠ w') (g : Gw n w) (g' : Gw n 
   have hc := (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.2.2.1 w' h.symm g g'
   change rhoF μ _ ∘L rhoF μ _ = rhoF μ _ ∘L rhoF μ _
   rw [← hm, ← hm]
-  unfold rhoL at *
   rw [hc]
 
 private theorem oloc_fix {w w' : Pl K} (h : w ≠ w') [MeasurableSpace (Gw n w)] (m : Measure (Gw n w)) (ψ : Gw n w → ℂ)

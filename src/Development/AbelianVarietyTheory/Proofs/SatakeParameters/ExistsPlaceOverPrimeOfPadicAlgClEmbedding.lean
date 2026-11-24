@@ -70,13 +70,13 @@ def ballIdeal (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E]
   zero_mem' := by simp
   add_mem' := by
     intro a b ha hb
-    simp only [Set.mem_setOf_eq] at *
+    simp only [Set.mem_ofPred_eq] at *
     have e : ((a + b : 𝓞 E) : E) = (a : E) + (b : E) := by simp
     rw [e, map_add (f := _)]
     exact lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ha hb)
   smul_mem' := by
     intro a b hb
-    simp only [Set.mem_setOf_eq, smul_eq_mul] at *
+    simp only [Set.mem_ofPred_eq, smul_eq_mul] at *
     push_cast
     rw [map_mul, norm_mul]
     exact lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (norm_int_le_one l c a)) hb
@@ -96,7 +96,7 @@ theorem ballIdeal_isPrime (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberF
     push_cast at hab
     rw [map_mul, norm_mul] at hab
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     have ha := le_antisymm (norm_int_le_one l c a) hcon.1
     have hb := le_antisymm (norm_int_le_one l c b) hcon.2
     rw [ha, hb] at hab

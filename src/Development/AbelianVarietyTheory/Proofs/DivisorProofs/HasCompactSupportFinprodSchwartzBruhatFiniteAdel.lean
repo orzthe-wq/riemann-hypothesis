@@ -64,6 +64,6 @@ theorem hasCompactSupport_finprod : ∀ {F : Type} [Field F] [NumberField F] {κ
     (φ : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), (κ → Fv F v) → ℂ), (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) →
     (∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) →
     HasCompactSupport (fun y : κ → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)) := by
-  apply PositivityTheory.ThKG.hasCompactSupport_finprod <;> assumption
+  apply PositivityTheory.ThKG.hasCompactSupport_finprod
 
 end GlobalTheory.AdelicCoordSupport

@@ -1,48 +1,7 @@
 module
 
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.CompInv
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -60,7 +19,7 @@ theorem dL_coeff (f : LaurentSeries R) (n : ℤ) :
     (dL f).coeff n = ((n + 1 : ℤ) : R) * f.coeff (n + 1) := by
   show (LaurentSeries.hasseDeriv R 1 f).coeff n = _
   rw [LaurentSeries.hasseDeriv_coeff]
-  simp [Ring.choose_one_right, zsmul_eq_mul]
+  simp [zsmul_eq_mul]
 
 theorem uPow_mul_coeff (m n : ℤ) (f : LaurentSeries R) :
     (uPow m * f).coeff n = f.coeff (n - m) := by
@@ -68,14 +27,11 @@ theorem uPow_mul_coeff (m n : ℤ) (f : LaurentSeries R) :
     | (have h := HahnSeries.coeff_single_mul_add (r := (1 : R)) (x := f) (a := n - m) (b := m)
        rw [sub_add_cancel, one_mul] at h
        exact h)
-    | (have h := HahnSeries.single_mul_coeff_add (r := (1 : R)) (x := f) (a := n - m) (b := m)
-       rw [sub_add_cancel, one_mul] at h
-       exact h)
 
 theorem C_mul_coeff (r : R) (f : LaurentSeries R) (n : ℤ) :
     (HahnSeries.C r * f).coeff n = r * f.coeff n := by
   rw [HahnSeries.C_mul_eq_smul]
-  first | rw [HahnSeries.coeff_smul, smul_eq_mul] | rw [HahnSeries.smul_coeff, smul_eq_mul] | simp
+  first | rw [HahnSeries.coeff_smul, smul_eq_mul]
 
 theorem toL_coeff_nat (f : R⟦X⟧) (n : ℕ) : (toL f).coeff (n : ℤ) = coeff n f := by
   exact HahnSeries.ofPowerSeries_apply_coeff f n
@@ -83,11 +39,6 @@ theorem toL_coeff_nat (f : R⟦X⟧) (n : ℕ) : (toL f).coeff (n : ℤ) = coeff
 theorem toL_coeff_neg (f : R⟦X⟧) {n : ℤ} (hn : n < 0) : (toL f).coeff n = 0 := by
   first
     | (rw [PowerSeries.coeff_coe, if_pos hn])
-    | (simp only [toL, HahnSeries.ofPowerSeries_apply]
-       rw [HahnSeries.embDomain_notin_range]
-       rintro ⟨k, hk⟩
-       simp at hk
-       omega)
 
 theorem uPow_zero : (uPow 0 : LaurentSeries R) = 1 := rfl
 
@@ -101,12 +52,12 @@ theorem uPow_add (m n : ℤ) : (uPow (m + n) : LaurentSeries R) = uPow m * uPow 
 
 theorem uPow_neg_mul (n : ℤ) : (uPow (-n) : LaurentSeries R) * uPow n = 1 := by
   rw [← uPow_add]
-  first | rw [neg_add_cancel] | rw [neg_add_self] | rw [add_left_neg]
+  first | rw [neg_add_cancel]
   exact uPow_zero
 
 theorem uPow_mul_neg (n : ℤ) : (uPow n : LaurentSeries R) * uPow (-n) = 1 := by
   rw [← uPow_add]
-  first | rw [add_neg_cancel] | rw [add_neg_self] | rw [add_right_neg]
+  first | rw [add_neg_cancel]
   exact uPow_zero
 
 theorem uPow_natCast (n : ℕ) : (uPow (n : ℤ) : LaurentSeries R) = toL (X ^ n) := by
@@ -117,7 +68,6 @@ theorem uPow_natCast (n : ℕ) : (uPow (n : ℤ) : LaurentSeries R) = toL (X ^ n
 theorem toL_C (r : R) : toL (C r) = (HahnSeries.C r : LaurentSeries R) := by
   first
     | exact HahnSeries.ofPowerSeries_C r
-    | simp [toL]
 
 theorem toL_injective : Function.Injective (toL : R⟦X⟧ → LaurentSeries R) := by
   exact HahnSeries.ofPowerSeries_injective
@@ -127,17 +77,13 @@ theorem exists_uPow_mul_toL (f : LaurentSeries R) :
   refine ⟨f.order, f.powerSeriesPart, ?_⟩
   first
     | exact (LaurentSeries.single_order_mul_powerSeriesPart f).symm
-    | (show f = uPow f.order * HahnSeries.ofPowerSeries ℤ R f.powerSeriesPart
-       rw [LaurentSeries.ofPowerSeries_powerSeriesPart]
-       change f = uPow f.order * (uPow (-f.order) * f)
-       rw [← mul_assoc, uPow_mul_neg, one_mul])
 
 theorem dL_uPow_mul (m : ℤ) (f : LaurentSeries R) :
     dL (uPow m * f) = uPow m * dL f + HahnSeries.C ((m : ℤ) : R) * uPow (m - 1) * f := by
   rw [show HahnSeries.C ((m : ℤ) : R) * uPow (m - 1) * f
       = HahnSeries.C ((m : ℤ) : R) * (uPow (m - 1) * f) from mul_assoc _ _ _]
   ext n
-  first | rw [HahnSeries.add_coeff] | rw [HahnSeries.coeff_add] | rw [HahnSeries.add_coeff']
+  first | rw [HahnSeries.coeff_add]
   rw [dL_coeff, uPow_mul_coeff, uPow_mul_coeff, dL_coeff, C_mul_coeff, uPow_mul_coeff]
   have h1 : n + 1 - m = n - m + 1 := by ring
   have h2 : n - (m - 1) = n - m + 1 := by ring
@@ -174,7 +120,7 @@ theorem dL_mul (f g : LaurentSeries R) : dL (f * g) = f * dL g + g * dL f := by
       = HahnSeries.C ((m : ℤ) : R) + HahnSeries.C ((k : ℤ) : R) := by
     rw [Int.cast_add, map_add (f := _)]
   rw [e, dL_uPow_mul, dL_toL, Derivation.leibniz]
-  simp only [dL_uPow_mul, dL_toL, Derivation.leibniz, smul_eq_mul, map_add (f := _), map_mul]
+  simp only [dL_uPow_mul, dL_toL, smul_eq_mul, map_add (f := _), map_mul]
   linear_combination (toL F * toL (derivative G) + toL G * toL (derivative F)) * h0
     + (toL F * toL G * uPow (m + k - 1)) * h3
     + (HahnSeries.C ((m : ℤ) : R) * toL F * toL G) * h1
@@ -191,7 +137,7 @@ theorem dL_uPow (n : ℤ) :
 
 theorem dL_C (r : R) : dL (HahnSeries.C r : LaurentSeries R) = 0 := by
   rw [← toL_C, dL_toL]
-  first | rw [PowerSeries.derivative_C, map_zero] | simp
+  first | rw [PowerSeries.derivative_C, map_zero]
 
 theorem dL_one : dL (1 : LaurentSeries R) = 0 := by
   have h := dL_C (R := R) 1

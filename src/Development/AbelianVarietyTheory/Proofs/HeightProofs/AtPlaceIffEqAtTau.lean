@@ -64,7 +64,7 @@ theorem tauE_injective : Function.Injective (tauE D) := fun _ _ h =>
 
 theorem tauE_cm (σ : D.host.E →+* ℂ) :
     (∃ ρ, tauE D ρ = σ) ↔ ¬ ∃ ρ, tauE D ρ = ComplexEmbedding.conjugate σ := by
-  apply GlobalTheory.SmoothForms.RealPts.tauE_cm <;> assumption
+  apply GlobalTheory.SmoothForms.RealPts.tauE_cm
 
 theorem archM_mul (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (a b : GA D V) :
     Formalism.L2.Pj.archM V θ (a * b) = Formalism.L2.Pj.archM V θ a * Formalism.L2.Pj.archM V θ b := by

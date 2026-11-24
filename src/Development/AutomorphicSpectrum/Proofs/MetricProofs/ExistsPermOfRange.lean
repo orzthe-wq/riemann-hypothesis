@@ -251,7 +251,7 @@ theorem core (j : ℕ) (A S I₀ : Finset (Fin N)) (hS : S ⊆ A) (hI : I₀ ⊆
           by_cases hx : x = s
           · subst hx
             simp [Matrix.updateRow_apply]
-          · simp [Matrix.updateRow_apply, Function.update_apply, hx]
+          · simp [Matrix.updateRow_apply, hx]
         have hprod : ((h.submatrix id f) * (h.submatrix e f)⁻¹) r s =
             Ring.inverse (h.submatrix e f).det * (h.submatrix (Function.update e s r) f).det := by
           rw [Matrix.mul_apply, Matrix.inv_def, ← hupdrow, ← sum_mul_adjugate, Finset.mul_sum]

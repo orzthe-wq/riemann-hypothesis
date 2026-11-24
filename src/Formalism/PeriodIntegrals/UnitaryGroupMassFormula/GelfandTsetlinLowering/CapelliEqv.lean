@@ -118,13 +118,13 @@ theorem embGL_transvec {n : ℕ} (g : GL (Fin n) ℂ) (a b : Fin n) (t : ℂ)
   induction i using Fin.lastCases with
   | last =>
     induction j using Fin.lastCases with
-    | last => simp [Matrix.transpose_apply, embGL_ll, Matrix.single_apply]
+    | last => simp [Matrix.transpose_apply, embGL_ll]
     | cast j =>
       simp [Matrix.transpose_apply, embGL_cl, Matrix.one_apply]
       exact fun h => Fin.castSucc_ne_last j h.symm
   | cast i =>
     induction j using Fin.lastCases with
-    | last => simp [Matrix.transpose_apply, embGL_lc, Matrix.single_apply, Matrix.one_apply]
+    | last => simp [Matrix.transpose_apply, embGL_lc]
     | cast j =>
       rw [Matrix.transpose_apply, embGL_cc, hg]
       simp [Matrix.single_apply, Matrix.one_apply, eq_comm, and_comm]

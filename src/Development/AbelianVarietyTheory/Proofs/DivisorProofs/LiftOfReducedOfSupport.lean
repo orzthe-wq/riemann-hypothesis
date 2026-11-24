@@ -58,7 +58,7 @@ theorem GlobalTheory.lift_of_reduced_of_support {X Y T : Scheme.{0}} (i : X ⟶ 
     apply eq_zero_of_basicOpen_eq_bot
     rw [← Scheme.preimage_basicOpen]
     ext t
-    simp only [Scheme.Hom.mem_preimage, Opens.coe_bot, Set.mem_empty_iff_false, iff_false]
+    simp only [Opens.coe_bot, Set.mem_empty_iff_false, iff_false]
     intro ht
     have h1 := (Scheme.IdealSheafData.mem_support_iff.mp (hg t)) U
     exact (Y.mem_zeroLocus_iff _ _).mp h1 a ha ht

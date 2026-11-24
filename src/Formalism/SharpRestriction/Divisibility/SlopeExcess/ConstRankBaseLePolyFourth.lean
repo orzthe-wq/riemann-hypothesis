@@ -88,9 +88,9 @@ theorem L_le : L.sc.L ≤ szPol L := by
 theorem Nj_le (j : ℕ) (hj : j ≤ D.R.m) : (D.R.N j : ℝ) ≤ szPol L := by
   refine le_trans ?_ (N_le L)
   unfold Ranks.N; push_cast
-  have : (j : ℝ) ≤ D.R.m := by exact_mod_cast hj
-  have : (0:ℝ) ≤ D.R.t + 1 := by positivity
-  nlinarith
+  have hjm : (j : ℝ) ≤ D.R.m := by exact_mod_cast hj
+  have hmul := mul_le_mul_of_nonneg_right hjm (show (0:ℝ) ≤ D.R.t + 1 by positivity)
+  linarith
 
 theorem nV_le : (D.R.nV : ℝ) ≤ szPol L := by
   have h := congrArg (fun q : ℚ => (q : ℝ)) (Formalism.BasicNotions.DV.nV_cast D.R)
@@ -145,12 +145,11 @@ theorem w''_nonneg : 0 ≤ L.sc.w'' D.R.n := by
 theorem w''_le (hN : SizeN L) : L.sc.w'' D.R.n ≤ L.sc.b' := by
   unfold Scale.w''
   apply div_le_self (b'_nonneg L)
-  have := n_pos hN; have := L.sc.one_lt_alt; nlinarith
+  exact one_le_mul_of_one_le_of_one_le L.sc.one_lt_alt.le (n_pos hN)
 
 theorem Sc_le (hK : SizeK L) (hDel : SizeDel L) : L.Sc ≤ L.sc.w'' D.R.n := by
   have h4 := hDel.2.2.2.1
-  have := k_one hK; have := L.Sc_pos
-  nlinarith
+  exact (le_mul_of_one_le_left L.Sc_pos.le (k_one hK)).trans h4
 
 theorem Sc_le' (hN : SizeN L) (hK : SizeK L) (hDel : SizeDel L) : L.Sc ≤ szPol L * L.sc.b :=
   (Sc_le hK hDel).trans ((w''_le hN).trans ((b'_le_a L).trans (a_le L hK)))
@@ -172,9 +171,8 @@ theorem delta1_le : L.sc.delta1 ≤ 1 := by
 theorem TT_le (hTT : SizeTT L) : (D.host.TT.card : ℝ) ≤ szPol L := by
   refine hTT.2.trans (le_trans ?_ (f_le L))
   unfold szNst; rw [f_eq]
-  have := delta1_le (L := L)
   have h0 : (0:ℝ) ≤ D.R.n := Nat.cast_nonneg _
-  nlinarith
+  linarith [mul_le_mul_of_nonneg_left (delta1_le (L := L)) h0]
 
 theorem xth_le : L.sc.x ^ szTh L ≤ L.sc.L := by
   unfold Scale.L szTh
@@ -197,8 +195,8 @@ theorem bT_le (hK : SizeK L) (hLa : SizeLa L) (hBot : SizeBot L) (t : D.host.TT)
   have hk := k_one hK
   have hNs : szNst L ≤ szPol L := by
     unfold szNst; refine le_trans ?_ (f_le L); rw [f_eq]
-    have := delta1_le (L := L); have h0 : (0:ℝ) ≤ D.R.n := Nat.cast_nonneg _
-    nlinarith
+    have h0 : (0:ℝ) ≤ D.R.n := Nat.cast_nonneg _
+    linarith [mul_le_mul_of_nonneg_left (delta1_le (L := L)) h0]
   have hNs0 : 0 ≤ szNst L := by
     unfold szNst; have : 0 ≤ L.sc.delta1 := (Real.rpow_pos_of_pos (sc_x_pos L) _).le
     positivity
@@ -228,7 +226,7 @@ theorem aT_bounds (hK : SizeK L) (t : D.host.TT) : 0 ≤ (L.aT t : ℝ) ∧ (L.a
   have hk := k_one hK
   have hx : (1:ℝ) ≤ L.sc.x ^ (Scale.A / 2) :=
     Real.one_le_rpow L.sc.one_lt_alt.le (by unfold Scale.A; norm_num)
-  have hd : 1 ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2) := by nlinarith
+  have hd : 1 ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2) := one_le_mul_of_one_le_of_one_le hk hx
   have : L.sc.a / ((D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)) ≤ L.sc.a := div_le_self ha hd
   constructor
   · linarith
@@ -298,7 +296,7 @@ theorem Lprime_bounds (hN : SizeN L) (hK : SizeK L) (hQD : SizeQD L) (hG : SizeG
   have hb := one_le_b L
   have hk := k_one hK
   have hv := nV_one hK
-  have hkb : 1 ≤ (D.R.k : ℝ) * L.sc.b := by nlinarith
+  have hkb : 1 ≤ (D.R.k : ℝ) * L.sc.b := one_le_mul_of_one_le_of_one_le hk hb
   have hg : ∀ i : Fin 2, 1 ≤ (D.host.g i : ℝ) ∧ Real.log (D.host.g i : ℝ) ≤ szPol L ^ 2 := by
     intro i
     obtain ⟨g1, -, g3⟩ := hG i i
@@ -322,7 +320,7 @@ theorem Lprime_bounds (hN : SizeN L) (hK : SizeK L) (hQD : SizeQD L) (hG : SizeG
   have := (sc_L_pos L).le; have := L_le L
   have hP := one_le_szPol L
   have hP2 : szPol L ≤ szPol L ^ 2 := P_le_pow (by norm_num)
-  constructor <;> nlinarith
+  constructor <;> linarith
 
 theorem logOm_abs (hQD : SizeQD L) (hDel : SizeDel L) :
     |L.logOm| ≤ 7 * szPol L := by
@@ -338,12 +336,12 @@ theorem logOm_abs (hQD : SizeQD L) (hDel : SizeDel L) :
   have hlv2 : Real.log D.host.v ≤ szPol L := by
     have h8 := hDel.2.2.2.2.2.2.2
     have hxm : 1 ≤ L.sc.x ^ szTh L * D.R.m := by
-      have : 1 ≤ L.sc.x ^ szTh L := Real.one_le_rpow L.sc.one_lt_alt.le (by unfold szTh; linarith [L.sc.eps_pos])
-      have : (2:ℝ) ≤ D.R.m := by exact_mod_cast D.R.two_le_m
-      nlinarith
+      have hxth : 1 ≤ L.sc.x ^ szTh L := Real.one_le_rpow L.sc.one_lt_alt.le (by unfold szTh; linarith [L.sc.eps_pos])
+      have hm2 : (2:ℝ) ≤ D.R.m := by exact_mod_cast D.R.two_le_m
+      exact one_le_mul_of_one_le_of_one_le hxth (by linarith)
     rcases le_or_gt (Real.log D.host.v) 0 with h | h
     · linarith [one_le_szPol L]
-    · have : Real.log D.host.v ≤ L.sc.x ^ szTh L * D.R.m * Real.log D.host.v := by nlinarith
+    · have : Real.log D.host.v ≤ L.sc.x ^ szTh L * D.R.m * Real.log D.host.v := le_mul_of_one_le_left h.le hxm
       linarith [k_le L]
   have hpi : Real.log Real.pi ≤ 3 := by
     have := Real.log_le_sub_one_of_pos Real.pi_pos; linarith [Real.pi_le_four]
@@ -376,9 +374,8 @@ theorem top_or (τ : D.what₂.Tau) :
 theorem Pb_le (k : ℕ) (hk : 1 ≤ k) : szPol L * L.sc.b ≤ szPol L ^ k * L.sc.b :=
   mul_le_mul_of_nonneg_right (P_le_pow hk) (by linarith [one_le_b L])
 
-theorem b_le_poly_fifth_mul_b : L.sc.b ≤ szPol L ^ 5 * L.sc.b := by
-  have : (1:ℝ) ≤ szPol L ^ 5 := one_le_pow₀ (one_le_szPol L)
-  have := one_le_b L; nlinarith
+theorem b_le_poly_fifth_mul_b : L.sc.b ≤ szPol L ^ 5 * L.sc.b :=
+  le_mul_of_one_le_left (by linarith [one_le_b L]) (one_le_pow₀ (one_le_szPol L))
 
 theorem e_bounds (hN : SizeN L) (hK : SizeK L) (hLa : SizeLa L) (hBot : SizeBot L) (hEta : SizeEta L)
     (τ : D.what₂.Tau) (q : Fin D.R.m) :
@@ -438,10 +435,8 @@ theorem u_abs (P5 : ParameterChoice' D L) (hN : SizeN L) (hK : SizeK L) (hLa : S
   have hP := one_le_szPol L
   have hPb := Pb_le (L := L) 5 (by norm_num)
   have hkP := k_le L
-  have hP5 : szPol L ≤ szPol L ^ 5 * L.sc.b := by
-    have := P_le_pow (L := L) (b := 5) (by norm_num)
-    have : 0 ≤ szPol L ^ 5 := by positivity
-    nlinarith
+  have hP5 : szPol L ≤ szPol L ^ 5 * L.sc.b :=
+    (P_le_pow (L := L) (b := 5) (by norm_num)).trans (le_mul_of_one_le_right (by positivity) hb)
   obtain ⟨iv, hiv⟩ := i
   by_cases h0 : iv = 0
   · subst h0
@@ -450,14 +445,14 @@ theorem u_abs (P5 : ParameterChoice' D L) (hN : SizeN L) (hK : SizeK L) (hLa : S
     rcases top_or τ with ⟨t, ht⟩ | hnt
     · rw [(L.top_u τ t hk0 ht).1]
       obtain ⟨a0, a1⟩ := aT_bounds hK t
-      rw [abs_le]; constructor <;> nlinarith
+      rw [abs_le]; constructor <;> linarith
     · have hk1 : 0 < D.R.k - 1 := by omega
       have c1 := P5.cloud_place_bound τ hk1 hnt
       have c2 := (D.hc τ).u_gt_v ⟨0, hk1⟩
       have c2' : (((D.hc τ).v ⟨0, hk1⟩ : ℚ) : ℝ) < (((D.hc τ).u ⟨0, hk0⟩ : ℚ) : ℝ) := by exact_mod_cast c2
       push_cast at c1
       obtain ⟨v0, v1⟩ := L.cloud_v τ ⟨0, hk1⟩
-      rw [abs_le]; constructor <;> nlinarith
+      rw [abs_le]; constructor <;> linarith
   · by_cases hl : iv = D.R.k - 1
     · subst hl
       have hk0 : 0 < D.R.k := by omega
@@ -466,15 +461,15 @@ theorem u_abs (P5 : ParameterChoice' D L) (hN : SizeN L) (hK : SizeK L) (hLa : S
       · rw [(L.top_u τ t hk0 ht).2]
         have hbt := bT_le hK hLa hBot t
         have hbt0 := bT_nonneg (L := L) t
-        rw [abs_le]; constructor <;> nlinarith
+        rw [abs_le]; constructor <;> linarith
       · have c := P5.uk_extreme τ hk2 hnt
         have c' : (((D.hc τ).u ⟨D.R.k - 1, by omega⟩ : ℚ) : ℝ) = (((D.hc τ).v ⟨D.R.k - 2, by omega⟩ : ℚ) : ℝ) - 1 / 2 := by
           rw [c]; push_cast; ring
         rw [c']
         obtain ⟨v0, v1⟩ := L.cloud_v τ ⟨D.R.k - 2, by omega⟩
-        rw [abs_le]; constructor <;> nlinarith
+        rw [abs_le]; constructor <;> linarith
     · obtain ⟨c0, c1⟩ := L.cloud_u w τ ⟨iv, hiv⟩ (by simp; omega) (by simp; omega)
-      rw [abs_le]; constructor <;> nlinarith
+      rw [abs_le]; constructor <;> linarith
 
 theorem phF_lower (y M : ℝ) (hM : 1 ≤ M) (hy : |y| ≤ M) : -(M * Real.log M + M + 1) ≤ phF y := by
   have hlogM : 0 ≤ Real.log M := Real.log_nonneg hM
@@ -482,10 +477,10 @@ theorem phF_lower (y M : ℝ) (hM : 1 ≤ M) (hy : |y| ≤ M) : -(M * Real.log M
     rw [← Real.log_abs y, abs_mul]
     rcases le_or_gt |y| 1 with h | h
     · rcases eq_or_lt_of_le (abs_nonneg y) with h0 | h0
-      · rw [← h0]; simp; nlinarith
+      · rw [← h0]; simp; linarith [mul_nonneg (show (0:ℝ) ≤ M by linarith) hlogM]
       · have := Real.abs_log_mul_self_lt |y| h0 h
         rw [abs_mul, abs_abs, mul_comm] at this
-        nlinarith
+        linarith [mul_nonneg (show (0:ℝ) ≤ M by linarith) hlogM]
     · have hl0 : 0 ≤ Real.log |y| := Real.log_nonneg h.le
       have hl1 : Real.log |y| ≤ Real.log M := Real.log_le_log (by linarith) hy
       rw [abs_of_nonneg hl0]
@@ -501,10 +496,8 @@ theorem srcPar_abs (P5 : ParameterChoice' D L) (hN : SizeN L) (hK : SizeK L) (hL
     |((Formalism.BasicNotions.DV.srcPar D w τ i : ℚ) : ℝ)| ≤ 5 * szPol L ^ 5 * L.sc.b := by
   have hb := one_le_b L
   have hP := one_le_szPol L
-  have hP5 : szPol L ≤ szPol L ^ 5 * L.sc.b := by
-    have := P_le_pow (L := L) (b := 5) (by norm_num)
-    have : 0 ≤ szPol L ^ 5 := by positivity
-    nlinarith
+  have hP5 : szPol L ≤ szPol L ^ 5 * L.sc.b :=
+    (P_le_pow (L := L) (b := 5) (by norm_num)).trans (le_mul_of_one_le_right (by positivity) hb)
   have hPb0 : 0 ≤ szPol L ^ 5 * L.sc.b := by positivity
   unfold Formalism.BasicNotions.DV.srcPar
   split_ifs with h1 h2
@@ -519,7 +512,7 @@ theorem srcPar_abs (P5 : ParameterChoice' D L) (hN : SizeN L) (hK : SizeK L) (hL
     have hc2' : (c:ℝ) ≤ D.R.t + 1 := by exact_mod_cast hc2
     have ht := t_le L
     push_cast
-    rw [abs_le]; constructor <;> nlinarith
+    rw [abs_le]; constructor <;> linarith
   · simp; positivity
 
 theorem wSz_abs (hN : SizeN L) (hK : SizeK L) (hLa : SizeLa L) (hBot : SizeBot L) (hEta : SizeEta L)
@@ -540,14 +533,12 @@ theorem nuRow_abs (P5 : ParameterChoice' D L) (hN : SizeN L) (hK : SizeK L) (hLa
   have hi' : (i : ℝ) < D.R.N (j - 1) := by exact_mod_cast hi
   have hb := one_le_b L
   have hP := one_le_szPol L
-  have hP5 : szPol L ≤ szPol L ^ 5 * L.sc.b := by
-    have := P_le_pow (L := L) (b := 5) (by norm_num)
-    have : 0 ≤ szPol L ^ 5 := by positivity
-    nlinarith
+  have hP5 : szPol L ≤ szPol L ^ 5 * L.sc.b :=
+    (P_le_pow (L := L) (b := 5) (by norm_num)).trans (le_mul_of_one_le_right (by positivity) hb)
   have hi0 : (0:ℝ) ≤ i := Nat.cast_nonneg _
   unfold Formalism.BasicNotions.DV.nuRow
   rw [abs_le] at *
-  constructor <;> nlinarith [h1.1, h1.2, h2.1, h2.2]
+  constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]
 
 theorem log_M_le :
     Real.log (11 * szPol L ^ 5 * L.sc.b) ≤ 16 * szPol L := by
@@ -560,7 +551,7 @@ theorem log_M_le :
   have lP : Real.log (szPol L) ≤ szPol L := (Real.log_le_sub_one_of_pos (by linarith)).trans (by linarith)
   have := L_le L
   push_cast
-  nlinarith
+  linarith
 
 theorem kerPlace_lower (P5 : ParameterChoice' D L) (hN : SizeN L) (hK : SizeK L) (hQD : SizeQD L) (hLa : SizeLa L)
     (hBot : SizeBot L) (hEta : SizeEta L) (hDel : SizeDel L) (w : D.what₂.Word) (j : ℕ) (hj : j ≤ D.R.m)
@@ -569,8 +560,8 @@ theorem kerPlace_lower (P5 : ParameterChoice' D L) (hN : SizeN L) (hK : SizeK L)
   have hb := one_le_b L
   have hP := one_le_szPol L
   have hM1 : 1 ≤ M := by
-    have : (1:ℝ) ≤ szPol L ^ 5 := one_le_pow₀ hP
-    rw [hMdef]; nlinarith
+    have h1 : (1:ℝ) ≤ szPol L ^ 5 * L.sc.b := one_le_mul_of_one_le_of_one_le (one_le_pow₀ hP) hb
+    rw [hMdef]; linarith
   have hnu : ∀ i ∈ Finset.range (D.R.N (j - 1)), |Formalism.BasicNotions.DV.nuRow D w j τ i| ≤ M := fun i hi =>
     nuRow_abs P5 hN hK hLa hBot hEta hDel w j hj τ i (Finset.mem_range.1 hi)
   have hOm := logOm_abs hQD hDel (L := L)
@@ -592,14 +583,14 @@ theorem kerPlace_lower (P5 : ParameterChoice' D L) (hN : SizeN L) (hK : SizeK L)
   have hK1 : M * Real.log M + M + 1 + M * (7 * szPol L) ≤ 300 * szPol L ^ 6 * L.sc.b := by
     have e1 : M * Real.log M ≤ M * (16 * szPol L) := mul_le_mul_of_nonneg_left hlM (by linarith)
     have e2 : M ≤ M * szPol L := le_mul_of_one_le_right (by linarith) hP
-    have e3 : (1:ℝ) ≤ szPol L ^ 6 * L.sc.b := by have : (1:ℝ) ≤ szPol L ^ 6 := one_le_pow₀ hP; nlinarith
+    have e3 : (1:ℝ) ≤ szPol L ^ 6 * L.sc.b := one_le_mul_of_one_le_of_one_le (one_le_pow₀ hP) hb
     have e4 : M * szPol L = 11 * szPol L ^ 6 * L.sc.b := by rw [hMdef]; ring
-    nlinarith
+    linarith
   have hK2 : (n : ℝ) * (M * Real.log M + M + 1 + M * (7 * szPol L)) ≤ szPol L * (300 * szPol L ^ 6 * L.sc.b) :=
     mul_le_mul hn hK1 (by positivity) (by linarith)
   have e5 : szPol L * (300 * szPol L ^ 6 * L.sc.b) = 300 * szPol L ^ 7 * L.sc.b := by ring
   unfold Formalism.BasicNotions.DV.kerPlace
-  nlinarith
+  linarith
 
 theorem logGamma_le (y : ℝ) (hy : 2 ≤ y) : Real.log (Real.Gamma y) ≤ y * Real.log y := by
   have hn1 : y ≤ (⌈y⌉₊ : ℝ) := Nat.le_ceil y
@@ -703,7 +694,7 @@ theorem log_const_poly_fifth_le (c : ℝ) (hc1 : 1 ≤ c) (hc2 : c ≤ 11) :
   have lP : Real.log (szPol L) ≤ szPol L := (Real.log_le_sub_one_of_pos (by linarith)).trans (by linarith)
   have := L_le L
   push_cast
-  nlinarith
+  linarith
 
 theorem aPlus_arg (j : ℕ) (hj1 : 1 ≤ j) (ρ : D.what₂.Tau) (i : ℕ) :
     Formalism.BasicNotions.DV.aPlus D j ρ i + (((D.R.sigW j).1 : ℕ) : ℝ) - (i : ℝ) =
@@ -746,7 +737,7 @@ theorem sigPar_abs (hN : SizeN L) (hK : SizeK L) (hLa : SizeLa L) (hBot : SizeBo
   unfold Formalism.BasicNotions.DV.sigPar
   split_ifs with h1 h2
   · obtain ⟨v0, v1⟩ := L.cloud_v ρ ⟨i, h1⟩
-    rw [abs_of_nonneg v0]; nlinarith
+    rw [abs_of_nonneg v0]; linarith
   · have := b_abs hN hK hLa hBot hEta ρ ⟨i - (D.R.k - 1), h2⟩
     push_cast; rw [abs_neg]; exact this
   · simp; positivity
@@ -759,8 +750,8 @@ theorem logHook_le (hN : SizeN L) (hK : SizeK L) (hLa : SizeLa L) (hBot : SizeBo
   have hP := one_le_szPol L
   set Y : ℝ := 10 * szPol L ^ 5 * L.sc.b with hY
   have hY1 : 2 ≤ Y := by
-    have : (1:ℝ) ≤ szPol L ^ 5 := one_le_pow₀ hP
-    rw [hY]; nlinarith
+    have h1 : (1:ℝ) ≤ szPol L ^ 5 * L.sc.b := one_le_mul_of_one_le_of_one_le (one_le_pow₀ hP) hb
+    rw [hY]; linarith
   have hn : ((D.R.sigW j).1 : ℕ) = D.R.k + j - 1 := rfl
   obtain ⟨e0, e1⟩ := e_bounds hN hK hLa hBot hEta ρ ⟨j - 1, by omega⟩
   have gap := (D.hc ρ).gap_be ⟨j - 1, by omega⟩
@@ -781,7 +772,7 @@ theorem logHook_le (hN : SizeN L) (hK : SizeK L) (hLa : SizeLa L) (hBot : SizeBo
     have hy2 : 2 ≤ y := by rw [hydef]; linarith
     have ht : (0:ℝ) ≤ D.R.t := Nat.cast_nonneg _
     have hyY : y ≤ Y := by
-      have : (1:ℝ) ≤ szPol L ^ 5 * L.sc.b := by have : (1:ℝ) ≤ szPol L ^ 5 := one_le_pow₀ hP; nlinarith
+      have : (1:ℝ) ≤ szPol L ^ 5 * L.sc.b := one_le_mul_of_one_le_of_one_le (one_le_pow₀ hP) hb
       rw [hY, hydef]; linarith [hs.2]
     have l0 : 0 ≤ Real.log y := Real.log_nonneg (by linarith)
     have l1 : Real.log y ≤ Real.log Y := Real.log_le_log (by linarith) hyY
@@ -860,9 +851,8 @@ theorem sumT_le (hK : SizeK L) (hTT : SizeTT L) (CTu : ℝ)
     · exact mul_le_mul a1 h1 hl.le (by positivity)
   have s := sum_card_le (L := L) _ _ _ (by positivity) (card_TT hTT) hB
   have e : szPol L * (2 * (szPol L * L.sc.b) * (|CTu| * szPol L * szPol L)) = 2 * |CTu| * (szPol L ^ 4 * L.sc.b) := by ring
-  have := poly_pow_mul_b_le_ninth (L := L) (a := 4) (by norm_num)
-  have hc : 0 ≤ 2 * |CTu| := by positivity
-  nlinarith
+  have hmul := mul_le_mul_of_nonneg_left (poly_pow_mul_b_le_ninth (L := L) (a := 4) (by norm_num)) (show (0:ℝ) ≤ 2 * |CTu| by positivity)
+  linarith
 
 theorem negSZbP_le (hN : SizeN L) (hK : SizeK L) (hQD : SizeQD L) (hTT : SizeTT L) (hEta : SizeEta L)
     (hDel : SizeDel L) (CTu : ℝ) (hTu : ∀ u, Real.log ((D.mem u).A.T : ℝ) ≤ CTu * D.R.m * L.sc.L) (C : ℝ)
@@ -890,20 +880,19 @@ theorem negSZbP_le (hN : SizeN L) (hK : SizeK L) (hQD : SizeQD L) (hTT : SizeTT 
         szPol L * (szPol L * L.sc.b + szPol L * L.sc.b) * szPol L := by
       gcongr
     have t3 : (D.R.f : ℝ) * (D.R.N D.R.m : ℝ) ^ 2 ≤ szPol L * szPol L ^ 2 := by gcongr
-    have t4 : szPol L * szPol L ^ 2 ≤ szPol L ^ 3 * L.sc.b := by
-      have : 0 ≤ szPol L ^ 3 := by positivity
-      nlinarith
-    rw [hQ]; nlinarith
+    have t4 : szPol L * szPol L ^ 2 ≤ szPol L ^ 3 * L.sc.b :=
+      calc szPol L * szPol L ^ 2 = szPol L ^ 3 := by ring
+        _ ≤ szPol L ^ 3 * L.sc.b := le_mul_of_one_le_right (by positivity) hb
+    rw [hQ]; linarith
   have key : -(C * Q * L.La) ≤ |C| * (4 * szPol L ^ 3 * L.sc.b) * (4 * szPol L) := by
     calc -(C * Q * L.La) ≤ |C * Q * L.La| := neg_le_abs _
       _ = |C| * Q * L.La := by rw [abs_mul, abs_mul, abs_of_nonneg hQ0, abs_of_nonneg La0]
       _ ≤ |C| * (4 * szPol L ^ 3 * L.sc.b) * (4 * szPol L) := by gcongr
   have e : |C| * (4 * szPol L ^ 3 * L.sc.b) * (4 * szPol L) = 16 * |C| * (szPol L ^ 4 * L.sc.b) := by ring
-  have := poly_pow_mul_b_le_ninth (L := L) (a := 4) (by norm_num)
-  have hc : 0 ≤ 16 * |C| := by positivity
+  have hmul := mul_le_mul_of_nonneg_left (poly_pow_mul_b_le_ninth (L := L) (a := 4) (by norm_num)) (show (0:ℝ) ≤ 16 * |C| by positivity)
   unfold Formalism.BasicNotions.DV.SZbP
   rw [← hQ]
-  nlinarith
+  linarith
 
 theorem neg_size_term_le_poly_eighth (P5 : ParameterChoice' D L) (hN : SizeN L) (hK : SizeK L) (hQD : SizeQD L) (hLa : SizeLa L)
     (hBot : SizeBot L) (hEta : SizeEta L) (hDel : SizeDel L) (C : ℝ) (u : D.what₂.Word) (j : ℕ)
@@ -938,18 +927,16 @@ theorem neg_size_term_le_poly_eighth (P5 : ParameterChoice' D L) (hN : SizeN L) 
   have e1 : szPol L * (300 * szPol L ^ 7 * L.sc.b) = 300 * szPol L ^ 8 * L.sc.b := by ring
   have e2 : szPol L * szPol L ^ 2 * (4 * szPol L) = 4 * szPol L ^ 4 := by ring
   have e3 : szPol L * szPol L ^ 3 * szPol L ^ 2 * szPol L = szPol L ^ 7 := by ring
-  have p4 : szPol L ^ 4 ≤ szPol L ^ 8 * L.sc.b := by
-    have := pow_mono_P (L := L) (a := 4) (b := 8) (by norm_num)
-    have : 0 ≤ szPol L ^ 8 := by positivity
-    nlinarith
-  have p7 : szPol L ^ 7 ≤ szPol L ^ 8 * L.sc.b := by
-    have := pow_mono_P (L := L) (a := 7) (b := 8) (by norm_num)
-    have : 0 ≤ szPol L ^ 8 := by positivity
-    nlinarith
+  have p4 : szPol L ^ 4 ≤ szPol L ^ 8 * L.sc.b :=
+    (pow_mono_P (L := L) (a := 4) (b := 8) (by norm_num)).trans (le_mul_of_one_le_right (by positivity) hb)
+  have p7 : szPol L ^ 7 ≤ szPol L ^ 8 * L.sc.b :=
+    (pow_mono_P (L := L) (a := 7) (b := 8) (by norm_num)).trans (le_mul_of_one_le_right (by positivity) hb)
   have hC := abs_nonneg C
+  have hp4 := mul_le_mul_of_nonneg_left p4 hC
+  have hp7 := mul_le_mul_of_nonneg_left p7 hC
   unfold Formalism.BasicNotions.DV.kernelPlaceMeanBound
   rw [e2] at a1; rw [e3] at a2
-  nlinarith
+  linarith
 
 theorem L6lo_le (hN : SizeN L) (hK : SizeK L) (hQD : SizeQD L) (hLa : SizeLa L) (hBot : SizeBot L)
     (hEta : SizeEta L) (hDel : SizeDel L) (hG : SizeG L) (C : ℝ) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) :
@@ -974,14 +961,13 @@ theorem L6lo_le (hN : SizeN L) (hK : SizeK L) (hQD : SizeQD L) (hLa : SizeLa L) 
       _ ≤ _ := mul_le_mul_of_nonneg_left q (abs_nonneg _)
   have e1 : szPol L * (160 * szPol L ^ 7 * L.sc.b) = 160 * szPol L ^ 8 * L.sc.b := by ring
   have e2 : szPol L * szPol L ^ 2 * (6 * szPol L ^ 2) = 6 * szPol L ^ 5 := by ring
-  have p5 : szPol L ^ 5 ≤ szPol L ^ 8 * L.sc.b := by
-    have := pow_mono_P (L := L) (a := 5) (b := 8) (by norm_num)
-    have : 0 ≤ szPol L ^ 8 := by positivity
-    nlinarith
+  have p5 : szPol L ^ 5 ≤ szPol L ^ 8 * L.sc.b :=
+    (pow_mono_P (L := L) (a := 5) (b := 8) (by norm_num)).trans (le_mul_of_one_le_right (by positivity) hb)
   have hC := abs_nonneg C
+  have hp5 := mul_le_mul_of_nonneg_left p5 hC
   unfold Formalism.BasicNotions.DV.L6lo
   rw [e2] at a1
-  nlinarith
+  linarith
 
 theorem _root_.Formalism.MainNotions.DIV.Proofs.hExpl6_lower_at (P5 : ParameterChoice' D L) (hS : SizesAt L) (CTu : ℝ)
     (hTu : ∀ u, Real.log ((D.mem u).A.T : ℝ) ≤ CTu * D.R.m * L.sc.L) (X : DivX D) (C : ℝ) (u : D.what₂.Word) :
@@ -1012,7 +998,8 @@ theorem _root_.Formalism.MainNotions.DIV.Proofs.hExpl6_lower_at (P5 : ParameterC
   rw [e2] at t2; rw [e3] at t3
   have hC := abs_nonneg C
   have h9 : 0 ≤ szPol L ^ 9 * L.sc.b := by positivity
-  nlinarith
+  have hC9 : 0 ≤ |C| * (szPol L ^ 9 * L.sc.b) := mul_nonneg hC h9
+  linarith
 
 theorem _root_.Formalism.MainNotions.DIV.Proofs.szPol_le_rpow (hS : SizesAt L) (hx : 9 ≤ L.sc.x) : szPol L ≤ L.sc.x ^ (max L.Ct 5 + 3) := by
   obtain ⟨hN, hM, hK, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -⟩ := hS
@@ -1033,7 +1020,7 @@ theorem _root_.Formalism.MainNotions.DIV.Proofs.szPol_le_rpow (hS : SizesAt L) (
   have hf : (D.R.f : ℝ) ≤ X := by
     rw [f_eq]
     have h1 : 2 * (D.R.n : ℝ) ≤ L.sc.x ^ (1:ℝ) * L.sc.x ^ (2 + 8 * L.sc.eps + szTh L) := by
-      rw [Real.rpow_one]; nlinarith [hN.2]
+      rw [Real.rpow_one]; exact mul_le_mul (by linarith) hN.2 (Nat.cast_nonneg _) hx0.le
     rw [hxx] at h1
     exact h1.trans (rp _ _ (by unfold szTh at *; linarith))
   have hk : (D.R.k : ℝ) ≤ X := hK.2.trans (rp _ _ (by unfold szTh at *; linarith))
@@ -1042,8 +1029,7 @@ theorem _root_.Formalism.MainNotions.DIV.Proofs.szPol_le_rpow (hS : SizesAt L) (
     have hs : Real.sqrt (L.sc.x * L.sc.delta1) ≤ L.sc.x ^ (1 / 2 : ℝ) := by
       rw [← Real.sqrt_eq_rpow]
       apply Real.sqrt_le_sqrt
-      have := delta1_le (L := L)
-      nlinarith
+      exact mul_le_of_le_one_right hx0.le (delta1_le (L := L))
     rw [← hxx]
     exact mul_le_mul_of_nonneg_left hs (Real.rpow_pos_of_pos hx0 _).le
   have hmX : (D.R.m : ℝ) ≤ X := hm.trans (rp _ _ (by unfold szTh at *; linarith))
@@ -1052,7 +1038,10 @@ theorem _root_.Formalism.MainNotions.DIV.Proofs.szPol_le_rpow (hS : SizesAt L) (
   have hxc1 : 1 ≤ L.sc.x ^ c := Real.one_le_rpow hx1 (by linarith)
   have hNX : (D.R.N D.R.m : ℝ) ≤ 2 * X := by
     have hNe : (D.R.N D.R.m : ℝ) = D.R.k + D.R.m * (D.R.t + 1) := by unfold Ranks.N; push_cast; ring
-    have h1 : (D.R.t : ℝ) + 1 ≤ L.sc.x ^ (1:ℝ) * L.sc.x ^ c := by rw [Real.rpow_one]; nlinarith
+    have h1 : (D.R.t : ℝ) + 1 ≤ L.sc.x ^ (1:ℝ) * L.sc.x ^ c := by
+      rw [Real.rpow_one]
+      have h2x : (2:ℝ) * L.sc.x ^ c ≤ L.sc.x * L.sc.x ^ c := mul_le_mul_of_nonneg_right (by linarith) (by linarith)
+      linarith
     rw [hxx] at h1
     have h2 : (D.R.m : ℝ) * (D.R.t + 1) ≤ L.sc.x ^ (szTh L + 1 / 2) * L.sc.x ^ (1 + c) :=
       mul_le_mul hm h1 (by positivity) (Real.rpow_pos_of_pos hx0 _).le
@@ -1061,7 +1050,8 @@ theorem _root_.Formalism.MainNotions.DIV.Proofs.szPol_le_rpow (hS : SizesAt L) (
     rw [hNe]; linarith
   have hL : L.sc.L ≤ X := rp _ _ (by linarith)
   have hsum : szPol L ≤ 8 * X := by unfold szPol; linarith
-  have h8 : 8 * X ≤ L.sc.x ^ (1:ℝ) * X := by rw [Real.rpow_one]; nlinarith
+  have h8 : 8 * X ≤ L.sc.x ^ (1:ℝ) * X := by
+    rw [Real.rpow_one]; exact mul_le_mul_of_nonneg_right (by linarith) (by linarith)
   rw [hX, hxx] at h8
   rw [hX] at hsum
   exact hsum.trans (h8.trans (le_of_eq (by ring_nf)))

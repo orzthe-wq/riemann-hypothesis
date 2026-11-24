@@ -4,7 +4,8 @@ public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnramifiedCharacter
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteQuotientPow
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankH1fDeRhamStatement
+public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankH1fDeRham
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrystallineIffMemH1f
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormSubLtOneOfFix
 import Mathlib.Algebra.Order.Floor.Extended
@@ -149,10 +150,10 @@ theorem unrTriv : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l 
       ρ := 1
       cont := fun x => (continuous_const : Continuous fun _ : ↥(GK K) => x) }
   have hDR : IsDR (P.PD K) A.ρ := GlobalTheory.CrysExt.isDR_trivial (P.PD K)
-  obtain ⟨hfin, hdim⟩ := GlobalTheory.T.finrank_H1f_de_rham l P AI T K ↥LL.1 ↥(OL LL) hgood A hDR
+  obtain ⟨hfin, hdim⟩ := _root_.GlobalTheory.SeqDim.h1f_finrank l P AI T K ↥LL.1 ↥(OL LL) hgood A hDR
   have hH0 : H0V A.ρ = ⊤ := by
     refine eq_top_iff.2 fun x _ => (Submodule.mem_iInf _).2 fun g => ?_
-    simp [A, H0V]
+    simp [A]
   have hFil : DdR (P.PD K) A.ρ ⊓ FilV (P.PD K) (LL := ↥LL.1) (V := A.V) 0 = DdR (P.PD K) A.ρ := by
     refine inf_eq_left.2 fun x hx => ?_
     change x ∈ DdR (P.PD K) (Representation.trivial ↥LL.1 ↥(GK K) ↥LL.1) at hx

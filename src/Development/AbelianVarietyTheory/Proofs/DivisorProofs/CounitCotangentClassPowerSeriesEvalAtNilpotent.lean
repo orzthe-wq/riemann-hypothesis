@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentXStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalAtNilpotentXEqCoordinateStatement
+public import Mathlib.RingTheory.MvPowerSeries.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentX
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalAtNilpotentXEqCoordinate
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,13 +67,13 @@ theorem coeff_single_one_mul {σ R : Type} [CommRing R] [DecidableEq σ] (i : σ
 
 theorem counit_dUnit_evA : ∀ (k : Type) [CommRing k] (d : ℕ) (A : Type) [CommRing A] [Bialgebra k A] (x : Fin d → A) (hx : ∀ i, IsNilpotent (x i)), (∀ i, Coalgebra.counit (R := k) (x i) = 0) → ∀ f : MvPowerSeries (Fin d) k, Coalgebra.counit (R := k) (evA k x hx f) = constantCoeff f ∧ dUnit (R := k) (evA k x hx f) = ∑ i, lin f i • dUnit (R := k) (x i) := by
   intro k _ d A _ _ x hx h0 f
-  have hev : ∀ i, evA k x hx (X i) = x i := GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k (Fin d) A x hx
+  have hev : ∀ i, evA k x hx (X i) = x i := _root_.GlobalTheory.Katz.evA_X k (Fin d) A x hx
   let c0 : MvPowerSeries (Fin d) k →ₐ[k] k :=
     { (constantCoeff : MvPowerSeries (Fin d) k →+* k) with
       commutes' := fun r => by simp [MvPowerSeries.algebraMap_apply] }
   have hc0 : ∀ g, c0 g = constantCoeff g := fun _ => rfl
   have h1 : (Bialgebra.counitAlgHom k A).comp (evA k x hx) = c0 :=
-    GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (Fin d) k _ _ (fun i => by simp [hev, h0]) (fun i => by simp [hev, h0, hc0])
+    _root_.GlobalTheory.mvPowerSeries_algHom_ext_of_isNilpotent k (Fin d) k _ _ (fun i => by simp [hev, h0]) (fun i => by simp [hev, h0, hc0])
   refine ⟨(AlgHom.congr_fun h1 f).trans (hc0 f), ?_⟩
   letI : Module kᵐᵒᵖ (Cot k A) := Module.compHom _ ((RingHom.id k).fromOpposite mul_comm)
   haveI : IsCentralScalar k (Cot k A) := ⟨fun _ _ => rfl⟩
@@ -108,7 +109,7 @@ theorem counit_dUnit_evA : ∀ (k : Type) [CommRing k] (d : ℕ) (A : Type) [Com
   have hlinX : ∀ i j, lin (X i : MvPowerSeries (Fin d) k) j = if j = i then 1 else 0 := fun i j => by
     simp [lin, coeff_X, Finsupp.single_left_inj one_ne_zero]
   have hφψ : φ = ψ := by
-    refine GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (Fin d) _ _ _ (fun i => ⟨2, ?_⟩) (fun i => ?_)
+    refine _root_.GlobalTheory.mvPowerSeries_algHom_ext_of_isNilpotent k (Fin d) _ _ _ (fun i => ⟨2, ?_⟩) (fun i => ?_)
     · ext
       · simp [pow_two, hφf, hev, h0]
       · simp [pow_two, TrivSqZeroExt.snd_mul, hφf, hev, h0]

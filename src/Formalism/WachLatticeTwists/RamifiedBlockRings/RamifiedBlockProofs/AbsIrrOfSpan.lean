@@ -1,14 +1,13 @@
 module
 
+public import Formalism.CharacterColumnKernels.StatementN
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.ChainFromPrimitiveData
-public import Formalism.CharacterColumnKernels.IdempotentNormalForms.MemCcIdealIffForall
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.BurnsideMat
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CharpolyRevMap
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.DensityPointOfCornerSimple
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.FinrankRangeEq
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.IdemFactor
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.IdempotentImageSurjective
-import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.Normal
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RankDiagIte
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -28,14 +27,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -43,7 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -56,12 +47,180 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Polynomial.Basic
+import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.Normal
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 import Formalism.WachLatticeTwists.CoprimeLiftBounds.Statement
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.CharacterColumnKernels.StatementBC, Formalism.CharacterColumnKernels.IdempotentNormalForms.MemCcIdealIffForall, Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.AbsIrrOfSpan
+
+-- ===== clump member: Formalism.CharacterColumnKernels.StatementBC =====
+-- clump-header: {"m": "Formalism.CharacterColumnKernels.StatementBC", "h": "module\n\npublic import Formalism.CharacterColumnKernels.StatementN\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+noncomputable section
+
+namespace Formalism.NG
+
+def StatVccBaseChange : Prop :=
+  ∀ (O O' : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
+    [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O'] [Module.Free O O']
+    [Module.Finite O O'] (e : ℕ),
+    (∀ y : O, IsDiscreteValuationRing.addVal O' (algebraMap O O' y) =
+      e * IsDiscreteValuationRing.addVal O y) →
+    ∀ (X : Type*) (T : Subalgebra O (X → O)) (T' : Subalgebra O' (X → O')),
+      (T' : Set (X → O')) = Submodule.span O' ((fun f : X → O => algebraMap O O' ∘ f) '' (T : Set (X → O))) →
+    ∀ (Z : Set X) (x : X), vcc T' Z x = e * vcc T Z x
+
+end Formalism.NG
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CharacterColumnKernels.StatementBC =====
+
+-- ===== clump member: Formalism.CharacterColumnKernels.IdempotentNormalForms.MemCcIdealIffForall =====
+-- clump-header: {"m": "Formalism.CharacterColumnKernels.IdempotentNormalForms.MemCcIdealIffForall", "h": "module\n\npublic import Formalism.CharacterColumnKernels.StatementBC\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+noncomputable section
+
+namespace Formalism.NG
+
+theorem mem_ccIdeal_iff_forall {O : Type*} [CommRing O] {X : Type*} (T : Subalgebra O (X → O))
+    (Z : Set X) (c : T) : c ∈ ccIdeal T Z ↔ ∀ x ∉ Z, (c : X → O) x = 0 := by
+  unfold ccIdeal
+  rw [RingHom.mem_ker]
+  constructor
+  · intro h x hx
+    have := congrFun h ⟨x, hx⟩
+    simpa [resOff] using this
+  · intro h
+    funext x
+    simp [resOff, h x.1 x.2]
+
+theorem vccBaseChange : StatVccBaseChange := by
+  intro O O' _ _ _ _ _ _ _ _ _ e he X T T' hT' Z x
+  classical
+  set b := Module.Free.chooseBasis O O' with hb
+  set φ : (X → O) → (X → O') := fun f => algebraMap O O' ∘ f with hφ
+  have hdec : ∀ f ∈ Submodule.span O' (φ '' (T : Set (X → O))),
+      ∃ g : Module.Free.ChooseBasisIndex O O' → (X → O), (∀ j, g j ∈ T) ∧ f = ∑ j, b j • φ (g j) := by
+    intro f hf
+    induction hf using Submodule.span_induction with
+    | mem f hf =>
+      obtain ⟨t, ht, rfl⟩ := hf
+      refine ⟨fun j => b.repr 1 j • t, fun j => T.smul_mem ht _, ?_⟩
+      funext x'
+      simp only [hφ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply]
+      calc algebraMap O O' (t x') = algebraMap O O' (t x') * ∑ j, b.repr 1 j • b j := by
+            rw [b.sum_repr, mul_one]
+        _ = ∑ j, b j * algebraMap O O' (b.repr 1 j * t x') := by
+            rw [Finset.mul_sum]
+            refine Finset.sum_congr rfl fun j _ => ?_
+            rw [Algebra.smul_def, map_mul]
+            ring
+    | zero =>
+      refine ⟨0, fun j => T.zero_mem, ?_⟩
+      funext x'
+      simp [hφ]
+    | add f f' _ _ hf hf' =>
+      obtain ⟨g, hg, rfl⟩ := hf
+      obtain ⟨g', hg', rfl⟩ := hf'
+      refine ⟨g + g', fun j => T.add_mem (hg j) (hg' j), ?_⟩
+      funext x'
+      simp only [hφ, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply,
+        map_add, mul_add, Finset.sum_add_distrib]
+    | smul o f _ hf =>
+      obtain ⟨g, hg, rfl⟩ := hf
+      refine ⟨fun k => ∑ j, b.repr (o * b j) k • g j, fun k => T.sum_mem fun j _ => T.smul_mem (hg j) _, ?_⟩
+      funext x'
+
+      simp only [hφ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply, map_sum, map_mul]
+      calc o * ∑ j, b j * algebraMap O O' (g j x') = ∑ j, (o * b j) * algebraMap O O' (g j x') := by
+            rw [Finset.mul_sum]
+            exact Finset.sum_congr rfl fun j _ => by ring
+        _ = ∑ j, (∑ k, b.repr (o * b j) k • b k) * algebraMap O O' (g j x') := by
+            simp_rw [b.sum_repr]
+        _ = ∑ k, b k * ∑ j, algebraMap O O' (b.repr (o * b j) k) * algebraMap O O' (g j x') := by
+            simp only [Finset.sum_mul, Finset.mul_sum, Algebra.smul_def]
+            rw [Finset.sum_comm]
+            exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring
+  have hvan : ∀ (g : Module.Free.ChooseBasisIndex O O' → X → O) (x' : X),
+      ∑ j, b j * algebraMap O O' (g j x') = 0 → ∀ j, g j x' = 0 := by
+    intro g x' h
+    have h2 : ∑ j, g j x' • b j = 0 := by
+      rw [← h]
+      exact Finset.sum_congr rfl fun j _ => by rw [Algebra.smul_def, mul_comm]
+    exact Fintype.linearIndependent_iff.mp b.linearIndependent _ h2
+  apply le_antisymm
+  · have hne : ((fun c : T => IsDiscreteValuationRing.addVal O ((c : X → O) x)) ''
+        (ccIdeal T Z : Set T)).Nonempty := ⟨_, 0, (ccIdeal T Z).zero_mem, rfl⟩
+    obtain ⟨c0, hc0, hc0eq⟩ := csInf_mem hne
+    have hvcc : vcc T Z x = IsDiscreteValuationRing.addVal O ((c0 : X → O) x) := by
+      rw [show IsDiscreteValuationRing.addVal O ((c0 : X → O) x) = _ from hc0eq, sInf_image]
+      rfl
+    rw [hvcc, ← he]
+    have hmem : φ (c0 : X → O) ∈ T' := by
+      have h1 : φ (c0 : X → O) ∈ (T' : Set (X → O')) := by
+        rw [hT']
+        exact Submodule.subset_span ⟨c0, c0.2, rfl⟩
+      exact h1
+    have hc0' : (⟨φ (c0 : X → O), hmem⟩ : T') ∈ ccIdeal T' Z := by
+      rw [mem_ccIdeal_iff_forall]
+      intro x' hx'
+      have h0 := (mem_ccIdeal_iff_forall T Z c0).mp hc0 x' hx'
+      simp [hφ, h0]
+    exact iInf₂_le _ hc0'
+  · unfold vcc
+    refine le_iInf₂ fun c' hc' => ?_
+    have hc'span : (c' : X → O') ∈ Submodule.span O' (φ '' (T : Set (X → O))) := by
+      have h1 : (c' : X → O') ∈ (T' : Set (X → O')) := c'.2
+      rw [hT'] at h1
+      exact h1
+    obtain ⟨g, hg, hgeq⟩ := hdec _ hc'span
+    have hgZ : ∀ j, (⟨g j, hg j⟩ : T) ∈ ccIdeal T Z := by
+      intro j
+      rw [mem_ccIdeal_iff_forall]
+      intro x' hx'
+      have h0 := (mem_ccIdeal_iff_forall T' Z c').mp hc' x' hx'
+      rw [hgeq] at h0
+      simp only [hφ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply] at h0
+      exact hvan g x' h0 j
+    rw [hgeq]
+    simp only [hφ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply]
+    refine AddValuation.map_le_sum _ fun j _ => ?_
+    rw [AddValuation.map_mul, he]
+    refine le_trans ?_ le_add_self
+    exact mul_le_mul_of_nonneg_left (iInf₂_le (⟨g j, hg j⟩ : T) (hgZ j)) (zero_le)
+
+end Formalism.NG
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CharacterColumnKernels.IdempotentNormalForms.MemCcIdealIffForall =====
+
+-- ===== clump member: Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.AbsIrrOfSpan =====
+-- clump-header: {"m": "Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.AbsIrrOfSpan", "h": "module\n\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.ChainFromPrimitiveData\npublic import Formalism.CharacterColumnKernels.IdempotentNormalForms.MemCcIdealIffForall\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.BurnsideMat\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CharpolyRevMap\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.DensityPointOfCornerSimple\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.FinrankRangeEq\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.IdemFactor\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.IdempotentImageSurjective\nimport Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.Normal\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RankDiagIte\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Formalism.WachLatticeTwists.CoprimeLiftBounds.Statement\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Finset Classical
@@ -381,3 +540,7 @@ theorem deltaO_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   simp
 
 end Formalism.RepresentationBoundsCohomology.ringDataObjects
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.AbsIrrOfSpan =====

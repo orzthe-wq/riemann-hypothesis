@@ -369,8 +369,8 @@ theorem Lr_mX (Q R : Matrix (Fin n) (Fin n) ℂ) :
     rw [CmI, Matrix.mul_smul, Matrix.fromCols_mul_fromBlocks]
     ext a b
     rcases b with b | b
-    · simp only [Matrix.smul_apply, Matrix.fromCols_apply_inl, Matrix.add_apply, Matrix.smul_mul, Matrix.mul_smul,
-        Matrix.one_mul, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_apply, Matrix.sub_apply, smul_eq_mul]
+    · simp only [Matrix.smul_apply, Matrix.fromCols_apply_inl, Matrix.add_apply, Matrix.mul_smul,
+        Matrix.mul_one, Matrix.mul_neg, Matrix.neg_apply, Matrix.sub_apply, smul_eq_mul]
       by_cases hab : a = b
       · subst hab
         simp only [Matrix.one_apply_eq]
@@ -378,7 +378,7 @@ theorem Lr_mX (Q R : Matrix (Fin n) (Fin n) ℂ) :
       · simp only [Matrix.one_apply_ne hab]
         linear_combination (- Q a b) * hI
     · simp only [Matrix.smul_apply, Matrix.fromCols_apply_inr, Matrix.add_apply, Matrix.smul_mul, Matrix.mul_smul,
-        Matrix.one_mul, Matrix.mul_one, smul_eq_mul]
+        Matrix.mul_one, smul_eq_mul]
       by_cases hab : a = b
       · subst hab
         simp only [Matrix.one_apply_eq]
@@ -407,8 +407,8 @@ theorem inverse_first_block_unipotent_formula {x : M2 n} (hx : InG x) (Q R : Mat
     Matrix.fromBlocks_mul_fromRows, Matrix.fromCols_mul_fromRows]
   simp only [u1, u2, Matrix.conjTranspose_add, Matrix.conjTranspose_neg, Matrix.conjTranspose_smul,
     Complex.star_def, Complex.conj_I, Matrix.mul_one, Matrix.mul_zero, add_zero, sub_neg_eq_add, neg_neg,
-    Matrix.add_mul, Matrix.sub_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul,
-    Matrix.mul_neg, Matrix.neg_mul, neg_smul, smul_neg]
+    Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul,
+    Matrix.mul_neg, Matrix.neg_mul, neg_smul]
   module
 
 end cm

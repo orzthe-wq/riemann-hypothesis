@@ -126,27 +126,13 @@ private theorem map_kapR_eq_inv_det_mul_det_submatrix (Zm : Matrix (Fin (r + 1))
     simp
   rw [hpow, one_mul, Fin.succAbove_last]
 
-private theorem isUnit_det_ZZm_of_isUnit_det (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
-    (hu : IsUnit Zh.det) : IsUnit (ZZm g Zh T T').det := by
-  have hq : (g.q : F) ≠ 0 := fun h => g.q_irr.ne_zero (Subtype.ext h)
-  have h1 : ph1 g Zh.det ≠ 0 := (hu.map (ph1 g)).ne_zero
-  have h2 : ph2 g Zh.det ≠ 0 := (hu.map (ph2 g)).ne_zero
-  rw [← MulEquiv.isUnit_map g.e.toMulEquiv, Prod.isUnit_iff]
-  constructor
-  · show IsUnit (ph1 g (ZZm g Zh T T').det)
-    rw [det_firstProj_zzMinus hs Zh T T']
-    exact isUnit_iff_ne_zero.2 (mul_ne_zero (pow_ne_zero _ (inv_ne_zero hq)) h1)
-  · show IsUnit (ph2 g (ZZm g Zh T T').det)
-    rw [det_secondProj_zzMinus hs Zh T T']
-    exact isUnit_iff_ne_zero.2 (mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 (inv_ne_zero hq))) h2)
-
 theorem cornerRatio_firstProj (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (hu : IsUnit Zh.det) :
     ph1 g (kapR (ZZm g Zh T T')) = (g.q : F) * ph1 g (Zh.submatrix Fin.castSucc Fin.castSucc).det /
       ph1 g Zh.det := by
   have hq : (g.q : F) ≠ 0 := fun h => g.q_irr.ne_zero (Subtype.ext h)
   have h1 : ph1 g Zh.det ≠ 0 := (hu.map (ph1 g)).ne_zero
-  rw [map_kapR_eq_inv_det_mul_det_submatrix _ _ (isUnit_det_ZZm_of_isUnit_det hs Zh T T' hu), det_firstProj_zzMinus hs Zh T T', leadingMinor_firstProj hs Zh T T', mul_inv, inv_pow,
+  rw [map_kapR_eq_inv_det_mul_det_submatrix _ _ (_root_.Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.unit_zzm hs Zh T T' hu), det_firstProj_zzMinus hs Zh T T', leadingMinor_firstProj hs Zh T T', mul_inv, inv_pow,
     inv_inv, inv_pow, pow_succ]
   field_simp
 
@@ -158,7 +144,7 @@ theorem cornerRatio_secondProj (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)
   have h2 : ph2 g Zh.det ≠ 0 := (hu.map (ph2 g)).ne_zero
   have hc : (-(g.q : F)⁻¹) ≠ 0 := neg_ne_zero.2 (inv_ne_zero hq)
   have hcq : (-(g.q : F)⁻¹)⁻¹ = -(g.q : F) := by rw [inv_neg, inv_inv]
-  rw [map_kapR_eq_inv_det_mul_det_submatrix _ _ (isUnit_det_ZZm_of_isUnit_det hs Zh T T' hu), det_secondProj_zzMinus hs Zh T T', leadingMinor_secondProj hs Zh T T', pow_succ, mul_inv,
+  rw [map_kapR_eq_inv_det_mul_det_submatrix _ _ (_root_.Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork.unit_zzm hs Zh T T' hu), det_secondProj_zzMinus hs Zh T T', leadingMinor_secondProj hs Zh T T', pow_succ, mul_inv,
     mul_inv, hcq]
   have hcr : (-(g.q : F)⁻¹) ^ r ≠ 0 := pow_ne_zero _ hc
   generalize (-(g.q : F)⁻¹) ^ r = C at hcr ⊢

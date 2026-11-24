@@ -64,7 +64,7 @@ theorem conj_conj (τ : E →+* ℂ) : ComplexEmbedding.conjugate (ComplexEmbedd
   ext x; simp
 
 theorem rt_conj (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : (starRingEnd ℂ) H.rt0 = -H.rt0 ∧ H.rt0 ≠ 0 := by
-  apply GlobalTheory.ThetaClaimsCompare.rt0_conj_neg_ne_zero <;> assumption
+  apply GlobalTheory.ThetaClaimsCompare.rt0_conj_neg_ne_zero
 
 theorem inPsi_or_conj (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (τ : E →+* ℂ) :
     InPsi H τ ∨ InPsi H (ComplexEmbedding.conjugate τ) := by

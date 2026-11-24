@@ -58,6 +58,7 @@ import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.GenericFibreKerTarget
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.IsFieldIntersection
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.IsRatSectionOn
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PRootsLiftToZeros
 
 @[expose] public section
 
@@ -66,93 +67,9 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 
 namespace PositivityTheory.UnitarySelfGeneration
 
-private theorem rootsLiftToZeros_statement : GroundTheory.Heights₂.Heights.HilbertSamuel.RootsLiftToZeros.Statement := by
-  intro σ P e ℓ u G hint hdiv y t hG
-  classical
-  let ψ : Polynomial (MvPolynomial (Fin e) ℚ) →+* MvPolynomial σ ℚ ⧸ P :=
-    (Ideal.Quotient.mk P).comp (Polynomial.eval₂RingHom (aeval ℓ).toRingHom u)
-  let φ : Polynomial (MvPolynomial (Fin e) ℚ) →+* ℂ := Polynomial.eval₂RingHom (aeval y).toRingHom t
-  letI : Algebra (Polynomial (MvPolynomial (Fin e) ℚ)) (MvPolynomial σ ℚ ⧸ P) := ψ.toAlgebra
-  have hψ : ∀ a, algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) (MvPolynomial σ ℚ ⧸ P) a =
-      Ideal.Quotient.mk P (Polynomial.eval₂ (aeval ℓ).toRingHom u a) := fun a => rfl
-  haveI : Algebra.IsIntegral (Polynomial (MvPolynomial (Fin e) ℚ)) (MvPolynomial σ ℚ ⧸ P) := by
-    constructor
-    intro s
-    obtain ⟨g, rfl⟩ := Ideal.Quotient.mk_surjective s
-    obtain ⟨p, hpm, hp⟩ := hint g
-    refine ⟨p.map Polynomial.C, hpm.map _, ?_⟩
-    rw [Polynomial.eval₂_map]
-    have hc : (algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) (MvPolynomial σ ℚ ⧸ P)).comp Polynomial.C =
-        (Ideal.Quotient.mk P).comp (aeval ℓ).toRingHom := by
-      refine RingHom.ext fun a => ?_
-      rw [RingHom.comp_apply, hψ, Polynomial.eval₂_C]
-      rfl
-    rw [hc, ← Polynomial.hom_eval₂]
-    exact Ideal.Quotient.eq_zero_iff_mem.2 hp
-  haveI : (RingHom.ker φ).IsPrime := RingHom.ker_isPrime φ
-  obtain ⟨Q, -, hQ, hQc⟩ := Ideal.exists_ideal_over_prime_of_isIntegral (RingHom.ker φ) (⊥ : Ideal (MvPolynomial σ ℚ ⧸ P)) (by
-    intro a ha
-    rw [Ideal.mem_comap, Ideal.mem_bot, hψ] at ha
-    obtain ⟨H, rfl⟩ := hdiv a (Ideal.Quotient.eq_zero_iff_mem.1 ha)
-    simp only [RingHom.mem_ker, φ, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_mul, mul_eq_zero]
-    left
-    exact hG)
-  letI : Algebra (Polynomial (MvPolynomial (Fin e) ℚ) ⧸
-      Q.comap (algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) (MvPolynomial σ ℚ ⧸ P))) ℂ :=
-    (Ideal.Quotient.lift _ φ (fun a ha => by
-      change a ∈ Ideal.under _ Q at ha
-      rw [hQc] at ha
-      exact ha)).toAlgebra
-  haveI : IsDomain ((MvPolynomial σ ℚ ⧸ P) ⧸ Q) := Ideal.Quotient.isDomain Q
-  haveI : Module.IsTorsionFree (Polynomial (MvPolynomial (Fin e) ℚ) ⧸
-      Q.comap (algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) (MvPolynomial σ ℚ ⧸ P))) ((MvPolynomial σ ℚ ⧸ P) ⧸ Q) :=
-    Module.isTorsionFree_iff_algebraMap_injective.2 Ideal.algebraMap_quotient_injective
-  haveI : Module.IsTorsionFree (Polynomial (MvPolynomial (Fin e) ℚ) ⧸
-      Q.comap (algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) (MvPolynomial σ ℚ ⧸ P))) ℂ := by
-    rw [Module.isTorsionFree_iff_algebraMap_injective, RingHom.injective_iff_ker_eq_bot, eq_bot_iff]
-    intro x hx
-    obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective x
-    rw [RingHom.mem_ker] at hx
-    rw [Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]
-    change a ∈ Ideal.under _ Q
-    rw [hQc]
-    exact hx
-  haveI : Algebra.IsIntegral (Polynomial (MvPolynomial (Fin e) ℚ) ⧸
-      Q.comap (algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) (MvPolynomial σ ℚ ⧸ P))) ((MvPolynomial σ ℚ ⧸ P) ⧸ Q) :=
-    ⟨RingHom.IsIntegral.quotient _ Algebra.IsIntegral.isIntegral⟩
-  haveI : Algebra.IsAlgebraic (Polynomial (MvPolynomial (Fin e) ℚ) ⧸
-      Q.comap (algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) (MvPolynomial σ ℚ ⧸ P))) ((MvPolynomial σ ℚ ⧸ P) ⧸ Q) :=
-    Algebra.IsIntegral.isAlgebraic
-  let χ0 := IsAlgClosed.lift (M := ℂ) (R := Polynomial (MvPolynomial (Fin e) ℚ) ⧸
-      Q.comap (algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) (MvPolynomial σ ℚ ⧸ P))) (S := (MvPolynomial σ ℚ ⧸ P) ⧸ Q)
-  let χ : MvPolynomial σ ℚ →+* ℂ := (χ0 : (MvPolynomial σ ℚ ⧸ P) ⧸ Q →+* ℂ).comp
-    ((Ideal.Quotient.mk Q).comp (Ideal.Quotient.mk P))
-  have key : ∀ a, χ (Polynomial.eval₂ (aeval ℓ).toRingHom u a) = φ a := by
-    intro a
-    have h1 := χ0.commutes (Ideal.Quotient.mk _ a)
-    exact h1
-  have hχ : ∀ g, aeval (fun i => χ (X i)) g = χ g := by
-    intro g
-    have : (aeval (fun i => χ (X i))).toRingHom = χ :=
-      MvPolynomial.ringHom_ext (fun r => RingHom.congr_fun
-        (Subsingleton.elim ((aeval (fun i => χ (X i))).toRingHom.comp C) (χ.comp C)) r) (fun i => by simp)
-    exact RingHom.congr_fun this g
-  refine ⟨fun i => χ (X i), ?_, ?_, ?_⟩
-  · intro g hg
-    rw [hχ]
-    show χ0 (Ideal.Quotient.mk Q (Ideal.Quotient.mk P g)) = 0
-    rw [Ideal.Quotient.eq_zero_iff_mem.2 hg, map_zero, map_zero]
-  · funext j
-    rw [hχ]
-    have := key (Polynomial.C (X j))
-    simpa [φ] using this
-  · rw [hχ]
-    have := key Polynomial.X
-    simpa [φ] using this
-
 open GroundTheory.Heights₂.Heights.HilbertSamuel in
 theorem nonvanishing_dense : NonvanishingDense.Statement := by
-  have hR : RatPrimeDense.Statement := RatPrimeDense.proof (FiniteSeparatingModel.proof NoetherProjection.proof rootsLiftToZeros_statement) RootsNear.proof RootsBounded.proof PolyNonvanishDense.proof
+  have hR : RatPrimeDense.Statement := RatPrimeDense.proof (FiniteSeparatingModel.proof NoetherProjection.proof _root_.GroundTheory.Heights₂.Heights.HilbertSamuel.RootsLiftToZeros.proof) RootsNear.proof RootsBounded.proof PolyNonvanishDense.proof
   revert hR
   intro hR
   intro K _ ι _ P d f hP hfP

@@ -1,18 +1,27 @@
 module
 
+public import Formalism.CyclotomicNorms.StatementT
+public import Mathlib.FieldTheory.Finite.GaloisField
+public import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.RegularLocalRing.Defs
+public import Mathlib.RingTheory.SimpleRing.Principal
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenRegularCharacters
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MemRootsBarXSubC
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspidalCharExistsOfGreen
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedMemRange
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -28,7 +37,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,7 +50,63 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedMemRange, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumRangeEqRoots
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedMemRange =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedMemRange", "h": "module\n\npublic import Formalism.CyclotomicNorms.StatementT\npublic import Mathlib.FieldTheory.Finite.GaloisField\npublic import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra\npublic import Mathlib.RingTheory.Flat.TorsionFree\npublic import Mathlib.RingTheory.Henselian\npublic import Mathlib.RingTheory.RegularLocalRing.Defs\npublic import Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial
+
+namespace GlobalTheory.FixedMemRange
+
+theorem fixed_mem_range {g : ℕ} [hg : Fact (Nat.Prime g)] {d : ℕ} (hd : 0 < d)
+    {w : AlgebraicClosure (ZMod g)} (hw : w ^ g ^ d = w) :
+    ∃ k : GaloisField g d,
+      ((IsAlgClosed.lift : GaloisField g d →ₐ[ZMod g] AlgebraicClosure (ZMod g)) : GaloisField g d → AlgebraicClosure (ZMod g)) k = w := by
+  classical
+  set ι : GaloisField g d →ₐ[ZMod g] AlgebraicClosure (ZMod g) := IsAlgClosed.lift with hι
+  letI : Fintype (GaloisField g d) := Fintype.ofFinite _
+  have hcard : Fintype.card (GaloisField g d) = g ^ d := by rw [Fintype.card_eq_nat_card]; exact GaloisField.card g d hd.ne'
+  have hq : 1 < g ^ d := Nat.one_lt_pow hd.ne' hg.out.one_lt
+  set P : (AlgebraicClosure (ZMod g))[X] := X ^ (g ^ d) - X with hP
+  have hP0 : P ≠ 0 := Polynomial.X_pow_sub_X_ne_zero hq
+  have hPdeg : P.natDegree = g ^ d := Polynomial.natDegree_X_pow_sub_X hq
+  have hsub : Finset.univ.image ι ⊆ P.roots.toFinset := by
+    intro x hx
+    obtain ⟨k, -, rfl⟩ := Finset.mem_image.1 hx
+    rw [Multiset.mem_toFinset, mem_roots hP0]
+    have hk : k ^ g ^ d = k := by
+      rw [← hcard]; exact FiniteField.pow_card k
+    simp [hP, IsRoot, ← map_pow, hk]
+  have hle : P.roots.toFinset.card ≤ (Finset.univ.image ι).card := by
+    have hinj : Function.Injective ι := fun a b h => (RingHom.injective ι.toRingHom) h
+    rw [Finset.card_image_of_injective _ hinj, Finset.card_univ, hcard, ← hPdeg]
+    exact (Multiset.toFinset_card_le _).trans (card_roots' P)
+  have heq := Finset.eq_of_subset_of_card_le hsub hle
+  have hwm : w ∈ P.roots.toFinset := by
+    rw [Multiset.mem_toFinset, mem_roots hP0]
+    simp [hP, IsRoot, hw]
+  rw [← heq] at hwm
+  obtain ⟨k, -, hk⟩ := Finset.mem_image.1 hwm
+  exact ⟨k, hk⟩
+
+theorem main : (let d1 : (g : ℕ) → ℕ → [Fact (Nat.Prime g)] → Type := @(fun (g d : ℕ) [Fact (Nat.Prime g)] ↦ GaloisField g d); let d2 : (g d : ℕ) → [inst : Fact (Nat.Prime g)] → d1 g d →ₐ[ZMod g] Formalism.CyclotomicNorms.Fbar g := @(fun (g d : ℕ) [Fact (Nat.Prime g)] ↦ IsAlgClosed.lift); ∀ {g : ℕ} [hg : Fact (Nat.Prime g)] {d : ℕ}, (0 : ℕ) < d → ∀ {w : Formalism.CyclotomicNorms.Fbar g}, w ^ g ^ d = w → ∃ (k : d1 g d), (d2 g d : d1 g d → Formalism.CyclotomicNorms.Fbar g) k = w) := by
+  intro d1 d2 g hg d hd w hw
+  exact fixed_mem_range hd hw
+
+end GlobalTheory.FixedMemRange
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedMemRange =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumRangeEqRoots =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumRangeEqRoots", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenRegularCharacters\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MemRootsBarXSubC\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspidalCharExistsOfGreen\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedMemRange\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -73,12 +137,7 @@ theorem N_pos' {d : ℕ} (hd : 0 < d) : 0 < g ^ d - 1 :=
 
 theorem exists_emb_eq {d : ℕ} (hd : 0 < d) {w : Fbar g} (hw : w ^ g ^ d = w) : ∃ k, emb g d k = w := by
   first
-  | exact @_root_.GlobalTheory.FixedMemRange.main
-  | exact _root_.GlobalTheory.FixedMemRange.main
   | (apply _root_.GlobalTheory.FixedMemRange.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.FixedMemRange.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.FixedMemRange.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.FixedMemRange.main ..)
 
 theorem gen_prim (L : LabelDatum g) {d : ℕ} (hd : 0 < d) : IsPrimitiveRoot (L.gen d) (g ^ d - 1) :=
   L.gen_order d hd ▸ IsPrimitiveRoot.orderOf _
@@ -346,3 +405,7 @@ theorem green_of_regular (hG : GlobalTheory.Published.GreenRegularCharacters) : 
     exact (h2 _ _ hθ (hreg P hPL)).2 ⟨j, hj', by rw [← hjx, th_pow L hd hx]⟩
 
 end GlobalTheory.GreenBridge
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumRangeEqRoots =====

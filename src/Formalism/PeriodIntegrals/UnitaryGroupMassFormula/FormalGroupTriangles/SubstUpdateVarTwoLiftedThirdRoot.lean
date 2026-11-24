@@ -117,10 +117,10 @@ theorem subst_updateVar_two_liftedThirdRoot (W : WeierstrassCurve ℂ_[p]) (wq :
   fin_cases i
   · show MvPowerSeries.subst (upd 2 t) (MvPowerSeries.X 0) = MvPowerSeries.X 0
     rw [MvPowerSeries.subst_X hu]
-    simp [upd, Function.update_apply]
+    simp [upd]
   · show MvPowerSeries.subst (upd 2 t) (MvPowerSeries.X 1) = MvPowerSeries.X 1
     rw [MvPowerSeries.subst_X hu]
-    simp [upd, Function.update_apply]
+    simp [upd]
 
 theorem liftedThirdRoot_mem_coeffSubring {S : Subring ℂ_[p]} {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
     (h1 : W.a₁ ∈ S) (h2 : W.a₂ ∈ S) (h3 : W.a₃ ∈ S) (h4 : W.a₄ ∈ S) (h6 : W.a₆ ∈ S) (h : IsWq W wq) :
@@ -134,8 +134,6 @@ theorem zc_const (i : Fin 3) : MvPowerSeries.constantCoeff (zc (p := p) i) = 0 :
 
 theorem hasSubst_zc : MvPowerSeries.HasSubst (zc (p := p)) := by
   first
-  | exact MvPowerSeries.HasSubst.of_constantCoeff_zero (fun i => zc_const i)
-  | exact MvPowerSeries.HasSubst.of_constantCoeff_zero (fun i => zc_const (p := p) i)
   | exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => zc_const i)
 
 theorem pr_zero_zero (g : MvPowerSeries (Fin 2) ℂ_[p]) (hg : MvPowerSeries.constantCoeff g = 0) :

@@ -1,21 +1,23 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EMatMulNegCol
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.DictionaryStatement
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralClosureCompletedCMAlgebraCompactOpen
-public import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.SpectralNormIntegrality.SpecInt
-import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -23,8 +25,8 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,7 +34,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,14 +46,65 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Sheaves.Init
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Compactness.Paracompact
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramNear
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMMemFramesEIff
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.SpectralNormIntegrality.SpecInt, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralOrderDataExistAtPlace
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.SpectralNormIntegrality.SpecInt =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HomogeneousNonvanishing.SpectralNormIntegrality.SpecInt", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.Completion.FinitePlace\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.Valuation.LocalSubring\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain
+
+namespace PositivityTheory.UnitarySelfGeneration.Mend
+
+theorem specInt_norm_le_one_iff_mem (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
+    (x : v.adicCompletion F) : ‖x‖ ≤ 1 ↔ x ∈ v.adicCompletionIntegers F := by
+  rw [HeightOneSpectrum.mem_adicCompletionIntegers]
+  exact Valued.toNormedField.norm_le_one_iff
+
+open Polynomial in
+theorem specInt_isIntegral_iff_coeff {K L : Type*} [Field K] [Field L] [Algebra K L] (O : ValuationSubring K)
+    [Algebra O L] [IsScalarTower O K L] (y : L) (hy : IsIntegral K y) :
+    IsIntegral O y ↔ ∀ n, (minpoly K y).coeff n ∈ O := by
+  constructor
+  · intro h n
+    rw [minpoly.isIntegrallyClosed_eq_field_fractions' K h, coeff_map]
+    exact Subtype.property _
+  · intro h
+    have hl : minpoly K y ∈ lifts (algebraMap O K) := by
+      rw [lifts_iff_coeff_lifts]
+      intro n
+      exact ⟨⟨_, h n⟩, rfl⟩
+    obtain ⟨q, hq, -, hm⟩ := lifts_and_natDegree_eq_and_monic hl (minpoly.monic hy)
+    refine ⟨q, hm, ?_⟩
+    rw [← aeval_def, ← aeval_map_algebraMap K, hq, minpoly.aeval]
+
+end PositivityTheory.UnitarySelfGeneration.Mend
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.SpectralNormIntegrality.SpecInt =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralOrderDataExistAtPlace =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralOrderDataExistAtPlace", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EMatMulNegCol\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure\nimport CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.DictionaryStatement\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralClosureCompletedCMAlgebraCompactOpen\npublic import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.SpectralNormIntegrality.SpecInt\nimport Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Compactness.Paracompact\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramNear\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMMemFramesEIff\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -77,7 +129,7 @@ theorem detect_of_idem {K : Type} [CommRing K] (O : Subring K) (I : Finset K)
   obtain ⟨c, hc, i₀, hi₀⟩ := hX
   have hex : ∃ e ∈ I, e * c i₀ ≠ 0 := by
     by_contra h
-    push_neg at h
+    push Not at h
     exact hi₀ (hsep _ h)
   obtain ⟨e, he, hne⟩ := hex
   have hmax : ∀ s : Finset (Fin n), s.Nonempty →
@@ -160,7 +212,7 @@ theorem line_tot {k K : Type} [Field k] [CommRing K] [Algebra k K] (A : Valuatio
 theorem field_total {k L : Type} [NontriviallyNormedField k] [IsUltrametricDist k] [CompleteSpace k] [Field L]
     [Algebra k L] [FiniteDimensional k L] (A : ValuationSubring k) (hA : ∀ x : k, ‖x‖ ≤ 1 ↔ x ∈ A) [Algebra A L]
     [IsScalarTower A k L] (x : L) (hx : x ≠ 0) : IsIntegral A x ∨ IsIntegral A x⁻¹ := by
-  haveI : Algebra.IsAlgebraic k L := Algebra.IsAlgebraic.of_finite k L
+  have : Algebra.IsAlgebraic k L := Algebra.IsAlgebraic.of_finite k L
   have key : ∀ y : L, spectralNorm k L y ≤ 1 → IsIntegral A y := by
     intro y hy
     have hyi : IsIntegral k y := Algebra.IsIntegral.isIntegral y
@@ -176,7 +228,7 @@ theorem field_total {k L : Type} [NontriviallyNormedField k] [IsUltrametricDist 
   by_cases h : spectralNorm k L x ≤ 1
   · exact Or.inl (key _ h)
   · refine Or.inr (key _ ?_)
-    push_neg at h
+    push Not at h
     have h0 : 0 ≤ spectralNorm k L x⁻¹ := spectralNorm_nonneg _
     nlinarith
 
@@ -208,7 +260,7 @@ theorem contract {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing
   have c1 : Continuous φ := continuous_const.mul continuous_id
   have c2 : Continuous φ.symm := continuous_const.mul continuous_id
   let h : K ≃ₜ K := { φ.toEquiv with continuous_toFun := c1, continuous_invFun := c2 }
-  haveI hH : (μ.map φ).IsAddHaarMeasure := φ.isAddHaarMeasure_map μ c1 c2
+  have hH : (μ.map φ).IsAddHaarMeasure := φ.isAddHaarMeasure_map μ c1 c2
   have hν := Measure.isAddLeftInvariant_eq_smul (μ.map φ) μ
   set c := Measure.addHaarScalarFactor (μ.map φ) μ with hcdef
   have hall : ∀ Y : Set K, μ ((fun x => (t : K) * x) '' Y) = c * μ Y := by
@@ -247,7 +299,7 @@ theorem contract {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing
   have hadd : μ T + μ ((O : Set K) \ T) = μ (O : Set K) := by
     rw [measure_add_diff hT.measurableSet.nullMeasurableSet, Set.union_eq_right.2 hsub]
   by_contra hge
-  push_neg at hge
+  push Not at hge
   have h2 : μ (O : Set K) ≤ μ T := by
     rw [hTdef, hall]
     calc μ (O : Set K) = 1 * μ (O : Set K) := (one_mul _).symm
@@ -310,12 +362,12 @@ theorem exists_idems (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (v : HeightOneS
         e * x = z * (e * y) ∨ e * y = z * (e * x)) ∧
       (∀ x : Fv F v ⊗[F] E, (∀ e ∈ I, e * x = 0) → x = 0) := by
   classical
-  letI nf : NontriviallyNormedField (Fv F v) :=
+  let nf : NontriviallyNormedField (Fv F v) :=
     Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))
-  haveI pf : ProperSpace (Fv F v) := Formalism.BasicNotions.Examples₂.LocF.proper v
-  haveI uf : IsUltrametricDist (Fv F v) := inferInstanceAs (@IsUltrametricDist (v.adicCompletion F)
+  have pf : ProperSpace (Fv F v) := Formalism.BasicNotions.Examples₂.LocF.proper v
+  have uf : IsUltrametricDist (Fv F v) := inferInstanceAs (@IsUltrametricDist (v.adicCompletion F)
       (Valued.toNormedField (v.adicCompletion F) (WithZero (Multiplicative ℤ))).toDist)
-  haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hσ.2.2.1
+  have : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hσ.2.2.1
   have hnorm : ∀ x : Fv F v, ‖x‖ ≤ 1 ↔ x ∈ v.adicCompletionIntegers F :=
     PositivityTheory.UnitarySelfGeneration.Mend.specInt_norm_le_one_iff_mem F v
   by_cases hs : Nonempty (E →ₐ[F] Fv F v)
@@ -408,8 +460,8 @@ theorem exists_idems (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (v : HeightOneS
         _ = 0 := by rw [add_mul, h1, h2, add_zero]
   · have hf : IsField (Fv F v ⊗[F] E) :=
       GlobalTheory.CompanionTheory.DictLoc.isField_tensor_of_no_algHom hσ.2.2.1 (not_nonempty_iff.1 hs)
-    letI fK : Field (Fv F v ⊗[F] E) := hf.toField
-    haveI : FiniteDimensional (Fv F v) (Fv F v ⊗[F] E) := inferInstance
+    let fK : Field (Fv F v ⊗[F] E) := hf.toField
+    have : FiniteDimensional (Fv F v) (Fv F v ⊗[F] E) := inferInstance
     refine ⟨{1}, ?_, ?_, ?_, ?_⟩
     · intro e he
       rw [Finset.mem_singleton] at he
@@ -436,7 +488,7 @@ theorem exists_idems (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (v : HeightOneS
 
 theorem exists_unif (v : HeightOneSpectrum (𝓞 F)) :
     ∃ w : Fv F v, w ≠ 0 ∧ w ∈ v.adicCompletionIntegers F ∧ Tendsto (fun j : ℕ => w ^ j) atTop (𝓝 0) := by
-  letI nf : NontriviallyNormedField (Fv F v) :=
+  let nf : NontriviallyNormedField (Fv F v) :=
     Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))
   obtain ⟨w, h0, h1⟩ := NormedField.exists_norm_lt_one (Fv F v)
   exact ⟨w, norm_pos_iff.1 h0, (PositivityTheory.UnitarySelfGeneration.Mend.specInt_norm_le_one_iff_mem F v w).1 h1.le,
@@ -460,23 +512,23 @@ theorem GlobalTheory.CompanionTheory.AvgFree.exists_ordData : ∀ (F E : Type) [
   intro F E _ _ _ _ _ σ hσ d b v lv hlv
   classical
   obtain ⟨r1, r2, r3, r4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
-  haveI := r1
-  haveI := r2
-  haveI := r3
-  haveI := r4
-  haveI : BorelSpace (Fv F v) := ⟨rfl⟩
+  have := r1
+  have := r2
+  have := r3
+  have := r4
+  have : BorelSpace (Fv F v) := ⟨rfl⟩
   obtain ⟨a1, a2, a3, a4, -, -, -, -, -, -⟩ := GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)
-  haveI := a1
-  haveI := a2
-  haveI := a3
-  haveI := a4
-  haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩
-  haveI := hlv.1
-  haveI : (GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv).IsAddHaarMeasure :=
+  have := a1
+  have := a2
+  have := a3
+  have := a4
+  have : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩
+  have := hlv.1
+  have : (GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv).IsAddHaarMeasure :=
     (GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ (Fv F v) d b lv hlv.1).1
-  haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hσ.2.2.1
-  haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
-  haveI : ContinuousSMul (Fv F v) (Fv F v ⊗[F] E) := IsModuleTopology.toContinuousSMul (Fv F v) _
+  have : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hσ.2.2.1
+  have : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
+  have : ContinuousSMul (Fv F v) (Fv F v ⊗[F] E) := IsModuleTopology.toContinuousSMul (Fv F v) _
   obtain ⟨hOc, hOo⟩ := GlobalTheory.CompletedOrder.isCompact_isOpen_integralClosure F E σ hσ v
   obtain ⟨I, h1, h2, h3, h4⟩ := GlobalTheory.CompanionTheory.AvgFree.Ord.exists_idems σ hσ v
   obtain ⟨w, hw0, hwA, hwt⟩ := GlobalTheory.CompanionTheory.AvgFree.Ord.exists_unif (F := F) v
@@ -515,3 +567,7 @@ theorem GlobalTheory.CompanionTheory.AvgFree.exists_ordData : ∀ (F E : Type) [
   · intro n M X hX
     obtain ⟨e, he, l, a, ha, hl, hk⟩ := GlobalTheory.CompanionTheory.AvgFree.Ord.detect_of_idem O I (fun e he => (h1 e he).1) h2 h3 h4 n M X hX
     exact ⟨(t e, e), Finset.mem_image_of_mem _ he, l, a, ha, hl, hk⟩
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralOrderDataExistAtPlace =====

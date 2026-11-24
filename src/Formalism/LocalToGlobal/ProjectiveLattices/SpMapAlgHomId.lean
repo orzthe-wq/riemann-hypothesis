@@ -1,44 +1,6 @@
 module
 
 public import Formalism.LocalToGlobal.ProjectiveLattices.ThClassPins
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 
 @[expose] public section
 
@@ -113,7 +75,6 @@ theorem evalAt_actL (hL : ActLaws pts mapR borR actR) (hWD : EvalWD pts mapR)
       have h2 := hL.mul g g⁻¹ _ _ _ _ (hm g y) (hm g⁻¹ (mvPt pts actR g y))
       first
         | rw [mul_inv_cancel] at h2
-        | rw [mul_right_inv] at h2
       have h3 := hL.func 1 _ _ _ _ h2 (hL.one _ y)
       exact ⟨p, φ, _, hTr _ _ φ _ _ _ h1 h3⟩
     unfold evalAt
@@ -145,7 +106,6 @@ theorem spMap_algHom_id (K : Type) [Field K] (T : Type) [CommRing T] [Algebra K 
   unfold spMap
   have h : CommRingCat.ofHom (AlgHom.id K T).toRingHom = 𝟙 (CommRingCat.of T) := rfl
   rw [h, Spec.map_id]
-  try rfl
 
 theorem dualMap_id (T : Type) [CommRing T] : dualMap (RingHom.id T) = RingHom.id _ := by
   refine RingHom.ext fun x => ?_
@@ -163,7 +123,6 @@ theorem frMap_trans_id {c : Coeff l} :
     unfold spMap
     have h0 : CommRingCat.ofHom (RingHom.id (TrivSqZeroExt T T)) = 𝟙 (CommRingCat.of (TrivSqZeroExt T T)) := rfl
     rw [h0, Spec.map_id]
-    try rfl
   refine ⟨?_, ?_, pm2 ≫ pm1, ?_, ?_, ?_⟩
   · rw [hx2, e1, Category.id_comp, hx1]
   · intro τ i
@@ -172,8 +131,6 @@ theorem frMap_trans_id {c : Coeff l} :
   · rw [Category.assoc, hf1, ← Category.assoc, hf2, Category.assoc, e1]
     first
       | erw [Category.id_comp]
-      | simp
-      | rfl
   · intro i h
     have h2 := ppx_le pm2 hs2 i
     have h1 := ppx_le pm1 hs1 i
@@ -299,7 +256,6 @@ theorem goodEmb_ext {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {σ' : c'.F →+* 
   rw [← hσ, ← h]
   first
     | rfl
-    | simp [incF]
 
 theorem cuspBC_of (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (hS : SecBC Xo hle) : CuspBC hle U := by
   classical

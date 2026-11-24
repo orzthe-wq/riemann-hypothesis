@@ -82,7 +82,7 @@ theorem _root_.GlobalTheory.IntegralityCompare.eval_twSubK {E K ι : Type} [Fiel
   rw [_root_.GlobalTheory.IntegralityCompare.twSubK, map_mul, eval_C, eval_bind_eq_eval_comp]
   congr 3
   funext k
-  simp [Matrix.mul_apply, eval_sum]
+  simp [Matrix.mul_apply]
 
 end GlobalTheory.IntegralityCompare
 

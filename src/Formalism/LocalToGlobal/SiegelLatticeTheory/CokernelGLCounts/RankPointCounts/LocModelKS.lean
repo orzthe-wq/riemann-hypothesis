@@ -1,63 +1,77 @@
 module
 
+public import Formalism.SharpRestriction.CuspSpanNormBounds.LocalGroupInFamilyNontrivial
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocModel
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.Blocks
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.PowModTwoOfSq
 public import Formalism.SharpRestriction.CuspSpanNormBounds.ChainLength
 public import Development.AutomorphicArithmetic.BlochKatoExtensions.FundamentalExactSequenceContinuityAllTheories
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralReduction
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.PeriodLatticeFactsSplitOfGeneral
 public import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtB
 public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ProdFormulaE
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.DeterminantFormIdentity
 public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.GlobalConditionOfProductFormula
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.KernelNonzeroModulusDeterminantEq
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.PeriodLatticeFactsSplitOfGeneral
 import Formalism.SharpRestriction.CuspSpanNormBounds.LocalOrbitGerms
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Algebra.Order.Star.Rat
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.KernelNonzeroModulusDeterminantEq
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.PadicChangeOfVariables
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.PowModTwoOfSq, Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocModelKS
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.PowModTwoOfSq =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.PowModTwoOfSq", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.LocalGroupInFamilyNontrivial\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.SupportDatumW
+
+open NumberField IsDedekindDomain Formalism.MainNotions.S Formalism.MainNotions.S.LocalSplitGroups ValuativeRel
+open scoped BigOperators ComplexOrder
+open Classical
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem twist_mul {D : Formalism.BasicNotions.D7} (p : PlF D) (s : ℕ) (x : (D.s.atP p).Ep) :
+    twist p s x = x * twist p s 1 := by
+  unfold twist
+  rcases (D.s.atP p).split with _ | sg
+  · simp
+  · apply sg.e.injective
+    ext <;> simp [mul_comm]
+
+theorem twist_one_pow {D : Formalism.BasicNotions.D7} (p : PlF D) (s : ℕ) :
+    twist p s (1 : (D.s.atP p).Ep) = twist p 1 (1 : (D.s.atP p).Ep) ^ s := by
+  unfold twist
+  rcases (D.s.atP p).split with _ | sg
+  · simp
+  · apply sg.e.injective
+    ext <;> simp
+
+theorem twist_sq {D : Formalism.BasicNotions.D7} (p : PlF D) :
+    twist p 1 (1 : (D.s.atP p).Ep) ^ 2 = 1 := by
+  unfold twist
+  rcases (D.s.atP p).split with _ | sg
+  · simp
+  · apply sg.e.injective
+    ext <;> simp
+
+def hF (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (a s : ℕ) : (D.s.atP p).Ep :=
+  Ring.inverse ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p) * (D.s.atP p).ιE (uP p : D.host.E)) ^
+    (nu D.R.rS a (a + s - 1))) * twist p s 1 * Ring.inverse (qE p)
+
+end PI.SupportDatumW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.PowModTwoOfSq =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocModelKS =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocModelKS", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocModel\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.Blocks\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.PowModTwoOfSq\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.ChainLength\npublic import Development.AutomorphicArithmetic.BlochKatoExtensions.FundamentalExactSequenceContinuityAllTheories\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralReduction\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.PeriodLatticeFactsSplitOfGeneral\npublic import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtB\npublic import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ProdFormulaE\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.DeterminantFormIdentity\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.GlobalConditionOfProductFormula\nimport Formalism.SharpRestriction.CuspSpanNormBounds.LocalOrbitGerms\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.KernelNonzeroModulusDeterminantEq\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.PadicChangeOfVariables\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -267,13 +281,6 @@ theorem isUnit_qE (p : PlF D) : IsUnit (qE p) := by
     exact (isUnit_iff_ne_zero.2 hq).map _
   · exact isUnit_one
 
-theorem unitAt_ne (p : PlF D) : uP p ≠ 0 := by
-  have h0 := (D.host.g_prime 0).ne_zero
-  have h1 := (D.host.g_prime 1).ne_zero
-  have hg : (Lat.gS D : ℚ) ≠ 0 := by exact_mod_cast (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D).ne'
-  unfold uP gpart
-  split_ifs <;> simp [hg, h0, h1]
-
 theorem isUnit_ιE (p : PlF D) {x : D.host.E} (hx : x ≠ 0) : IsUnit ((D.s.atP p).ιE x) :=
   (isUnit_iff_ne_zero.2 hx).map _
 
@@ -281,7 +288,7 @@ theorem isUnit_hF {δ : ∀ p : PlF D, (D.s.atP p).Fp} (p : PlF D) (hδ : δ p �
     IsUnit (PI.SupportDatumW.hF D δ p a s) := by
   unfold PI.SupportDatumW.hF
   refine ((isUnit_rinv (IsUnit.pow _ ?_)).mul (isUnit_twist p s)).mul (isUnit_rinv (isUnit_qE p))
-  exact ((isUnit_iff_ne_zero.2 hδ).map _).mul (isUnit_ιE p (by exact_mod_cast unitAt_ne p))
+  exact ((isUnit_iff_ne_zero.2 hδ).map _).mul (isUnit_ιE p (by exact_mod_cast _root_.Formalism.L2.SG.Pf.LocModel.unitAt_ne_zero₂ p))
 
 def uS (δ : ∀ p : PlF D, (D.s.atP p).Fp) (p : PlF D) (i s : ℕ) : (D.s.atP p).Ep :=
   (D.s.atP p).ιE (sgn D i) * PI.SupportDatumW.hF D δ p (i - s + 1) s
@@ -408,7 +415,7 @@ theorem hF_good {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Mod
     (D.s.atP p).ιE ((uP p : D.host.E)⁻¹) with hw1
   have hw01 : w0 * w1 = 1 := by
     rw [hw0, hw1, mul_mul_mul_comm, ← map_mul, ← map_mul, mul_inv_cancel₀ (hA p).2.1,
-      mul_inv_cancel₀ (by exact_mod_cast unitAt_ne p), map_one, map_one, one_mul]
+      mul_inv_cancel₀ (by exact_mod_cast _root_.Formalism.L2.SG.Pf.LocModel.unitAt_ne_zero₂ p), map_one, map_one, one_mul]
   have hw0O : w0 ∈ (D.s.atP p).O := Subring.mul_mem _ (LocModel.LM.algebraMap_mem_O p h.2.1.1) h.2.2.1.1
   have hw1O : w1 ∈ (D.s.atP p).O := Subring.mul_mem _ (LocModel.LM.algebraMap_mem_O p h.2.1.2) h.2.2.1.2
   have e : PI.SupportDatumW.hF D δ p a s = w1 ^ nu D.R.rS a (a + s - 1) := by
@@ -542,13 +549,6 @@ theorem blkN_hpt {m : ℕ} {h : TB.Pt D.host.E} {w : Point D.host.E m} (hw : ptO
   rw [(ptOfList_some hw).2]
   exact blkN_sign 1 h
 
-theorem modK_pow {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K}
-    {ψ : AddChar K ℂ} (hd : A5.LocalDatum K R ψ) {x : K} (hx : IsUnit x) : ∀ n : ℕ,
-    A5.modK R (x ^ n) = A5.modK R x ^ n
-  | 0 => by simp [Formalism.FourierDecayAlt.P.A5x5.modK_one]
-  | n + 1 => by
-    rw [pow_succ, Formalism.FourierDecayAlt.P.A5x5.modK_mul' hd (hx.pow n) hx, modK_pow hd hx n, pow_succ]
-
 theorem det_modPt {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D} {n : ℕ} (w : Point D.host.E n)
     (a : Loc.Pt (D.s.atP p).Ep n) (ha : modPt δ T T' p w = some a) :
     a.mat.det = PI.SupportDatumW.blkDet (mapBlocks (blkTop δ T T' p) 1 w.1) := by
@@ -603,7 +603,7 @@ theorem pf_det (hMN : ModNorm D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
       have := Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK (M p) (hA p).1
       have hd := Formalism.MainNotions.LocalModelPeriodLattices.datum_of_OK (M p) (hA p).1
       simp only [mapBlocks, PI.SupportDatumW.blkDet, hc p]
-      rw [mul_assoc, modK_negOnePow, Formalism.FourierDecayAlt.P.A5x5.modK_mul' hd ((hcu p).pow s) (hu p), modK_pow hd (hcu p)]
+      rw [mul_assoc, modK_negOnePow, Formalism.FourierDecayAlt.P.A5x5.modK_mul' hd ((hcu p).pow s) (hu p), _root_.Formalism.FourierDecayAlt.P.A6x9.modK_pow hd (hcu p)]
     refine ⟨fun p => ?_, ?_, ?_⟩
     · simp only [mapBlocks, PI.SupportDatumW.blkDet, hc p]
       exact (((isUnit_one.neg).pow _).mul ((hcu p).pow s)).mul (hu p)
@@ -1752,3 +1752,7 @@ theorem localModelS_of {D : Formalism.BasicNotions.D7} (hMN : ModNorm D) : Forma
   · exact LMK.clS_pull hMN hA S u u' hr hg hs1 hsi hir htop Y hY
 
 end Formalism.L2.SG.Pf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocModelKS =====

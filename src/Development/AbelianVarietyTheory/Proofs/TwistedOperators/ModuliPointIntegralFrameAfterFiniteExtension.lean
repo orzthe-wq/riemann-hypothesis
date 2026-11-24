@@ -67,6 +67,7 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
 import Development.AbelianVarietyTheory.BlockTheory.AbelianSchemeLaw.HomExtendsOverDVR
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VecMulMapEqZero
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

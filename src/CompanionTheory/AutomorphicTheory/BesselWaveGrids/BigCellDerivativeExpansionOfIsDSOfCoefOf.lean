@@ -1,64 +1,88 @@
 module
 
-public import CompanionTheory.AutomorphicTheory.BesselWaveGrids.FamilyThroughDiscreteSeries
+public import Formalism.HermitianCurvature.StatementTBB
+public import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AemeasurableBesselNormIntegrandBigCell
+public import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselDatumBothSidesAreSides
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselNormSqEqBigCellNormSq
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliKFiniteCoefficient
+public import Formalism.HermitianCurvature.StatementJF
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsRegularRepBesselBigCellVectorEqBessel
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HermCmpWedgeEqDet
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HsqNonneg
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsCoefContinuousOn
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.N1AddEZLe
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BigCellExpansionOfSubadditive
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AbsCoordLeOfLOneNormLe
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AemeasurableBesselNormIntegrandBigCellStatement
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BaseRepCapelliEigenDual
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselNormSqEqBigCellNormSqStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselPeriodAdjointPairStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselSettingGapDecayStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselSettingUniformConstantStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionOfBesselFunctionZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionSmulStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsFamilyFunctionalsStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsRegularRepBesselBigCellVectorEqBesselStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGapsStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionOfBesselFunctionZero
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionSmul
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TopNum
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DiscreteSeriesUnitarySmoothBasic
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FixesWedgeAndForm
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HaarEqSmul
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsFRepExteriorPowerStandardRep
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
+import Mathlib.Algebra.Order.Star.Int
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqUnitNormalizationLe
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AbsCoordLeOfLOneNormLe
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: CompanionTheory.AutomorphicTheory.BesselWaveGrids.FamilyThroughDiscreteSeries, CompanionTheory.AutomorphicTheory.BesselWaveGrids.BigCellDerivativeExpansionOfIsDSOfCoefOf
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.BesselWaveGrids.FamilyThroughDiscreteSeries =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.BesselWaveGrids.FamilyThroughDiscreteSeries", "h": "module\n\npublic import Formalism.HermitianCurvature.StatementTBB\npublic import Development.AbelianVarietyTheory.Definitions.Jets.SideFam\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AemeasurableBesselNormIntegrandBigCell\npublic import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselDatumBothSidesAreSides\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselNormSqEqBigCellNormSq\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CapelliKFiniteCoefficient\npublic import Formalism.HermitianCurvature.StatementJF\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsRegularRepBesselBigCellVectorEqBessel\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HermCmpWedgeEqDet\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HsqNonneg\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsCoefContinuousOn\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.N1AddEZLe\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.DiscreteSeriesUnitarySmoothBasic\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.FixesWedgeAndForm\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.HaarEqSmul\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsFRepExteriorPowerStandardRep\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps\nimport Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqUnitNormalizationLe\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
+open scoped InnerProductSpace ENNReal
+
+noncomputable section
+
+namespace CompanionTheory.WaveGrid.Ball
+
+section sup
+
+variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
+  [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
+
+structure Sup0 (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (q0 : ℕ)
+    (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq)
+    (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ)
+    (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp))
+    (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ) : Prop where
+  fam : IsFam lam q0 R
+  left : haveI := FiniteDimensional.complete ℂ Wp
+    SideFam p.T.base.z p.T.base.π p.T.base.μW p.T.base.μN p.T.base.μG q0 R l dg
+  right : haveI := FiniteDimensional.complete ℂ Wq
+    SideFam p.T.base.z' p.T.base.π' p.T.base.μW' p.T.base.μN p.T.base.μG q0 R l' dg
+  coef : ∀ ν, n1 ν ≤ q0 → NzOn (R ν) (l ν) → NzOn (R ν) (l' ν) →
+    IsCoef (R ν) (l ν) (l' ν) (J ν) (s ν) ∧ ‖s ν‖ = dg ν
+  zero : ∀ ν, ¬ (n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)) → J ν = 0
+  tau_zero : ∀ ν I, J ν = 0 ∨ J (ν + eZ I) = 0 → tau ν I = 0
+  tau_eq : ∀ ν, n1 ν + (P.r + 1) * (P.r + 2) ≤ q0 →
+    ∃ io pr ep, TensH (cmp (P.r + 1)) (cmp (P.r + 1) (Formalism.QuantumDeterminants.Hpk P.k P.r)) (R ν)
+        (fun I : Sub (2 * P.r + P.k + 1) (P.r + 1) => R (ν + eZ I.1)) io pr ep ∧
+      ∀ I : Sub (2 * P.r + P.k + 1) (P.r + 1), J ν ≠ 0 → J (ν + eZ I.1) ≠ 0 → ∃ κ κ' : ℂ,
+        (∀ v ∈ (R ν).sm, l (ν + eZ I.1)
+          (∑ c, pr I c (tm (R ν) (wedge (Formalism.QuantumDeterminants.fvec P.k P.r p.T.base.z)) v c)) = κ • l ν v) ∧
+        (∀ v ∈ (R ν).sm, l' (ν + eZ I.1)
+          (∑ c, pr I c (tm (R ν) (wedge (Formalism.QuantumDeterminants.fvec P.k P.r p.T.base.z')) v c)) = κ' • l' ν v) ∧
+        tau ν I.1 = (ep I : ℂ) * κ' * star κ * s ν / s (ν + eZ I.1)
+
+end sup
+
+end CompanionTheory.WaveGrid.Ball
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.BesselWaveGrids.FamilyThroughDiscreteSeries =====
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.BesselWaveGrids.BigCellDerivativeExpansionOfIsDSOfCoefOf =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.BesselWaveGrids.BigCellDerivativeExpansionOfIsDSOfCoefOf", "h": "module\n\npublic import CompanionTheory.AutomorphicTheory.BesselWaveGrids.FamilyThroughDiscreteSeries\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.BigCellExpansionOfSubadditive\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BaseRepCapelliEigenDual\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionOfBesselFunctionZero\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionSmul\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TopNum\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.AbsCoordLeOfLOneNormLe\nimport Formalism.HermitianCurvature.StatementTBB\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.AemeasurableBesselNormIntegrandBigCell\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselNormSqEqBigCellNormSq\nimport Formalism.HermitianCurvature.StatementJF\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsRegularRepBesselBigCellVectorEqBessel\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps\nimport Development.AbelianVarietyTheory.Definitions.Jets.SideFam\nimport Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqUnitNormalizationLe\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset CompanionTheory.WaveGrid.Ball
@@ -72,179 +96,8 @@ def CoefOf {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace
     [InnerProductSpace ℂ Wq] (R : Rep k r) (F : Mx k r → (Wq →L[ℂ] Wp)) : Prop :=
   ∀ (l : R.H → Wp) (l' : R.H → Wq), ∃ s, IsCoef R l l' F s
 
-theorem suppliedData_existsW : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R0 : Rep P.k P.r) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (ν₀ : Fin (2 * P.r + P.k + 1) → ℤ), n1 ν₀ ≤ q0 → Num P.k P.r lam P.u b bv ga h q0 → R0.IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)) → CoefOf R0 f → TBB.jN2 p f ≠ 0 → ∃ (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ) (t : ℝ), 0 < t ∧ J ν₀ = (fun g => (t : ℂ) • f g) ∧ Sup0 p lam q0 R l l' dg s J tau := by
-  intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R0 f ν₀ h0 hN hR0 hf hj
-  haveI := FiniteDimensional.complete ℂ Wp
-  haveI := FiniteDimensional.complete ℂ Wq
-  obtain ⟨R, hfam, hR⟩ := family_through_discreteSeries hH P.k P.r lam P.u b bv ga h q0 R0 ν₀ hN hR0
-  subst hR
-  obtain ⟨l, l', dg, hl, hl'⟩ := GlobalTheory.T.exists_family_functionals hH P Wp Wq p lam b bv ga h q0 R hN hfam
-  have hK : PI.KFinSmooth := hH.1.2.2.1
-  obtain ⟨s₀, hs₀⟩ := hf (l ν₀) (l' ν₀)
-  obtain ⟨⟨-, -, -, -, hgap⟩, hnum⟩ := GlobalTheory.T.numericalFamily_shape_gaps P.k P.r lam P.u b bv ga h q0 hN
-  have hg : Formalism.QuantumDeterminants.GapAtLeast (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)) (h / 2) :=
-    (hnum ν₀ h0).2.2.1
-  obtain ⟨c, -, hc⟩ := GlobalTheory.T.bessel_setting_uniform_constant hH P.k P.r Wp Wq p.T.base
-  have hne : s₀ ≠ 0 := by
-    intro hz
-    apply hj
-    rw [GlobalTheory.T.jN2_eq_normSq_base P Wp Wq p f,
-      hc _ _ (h / 2) (R ν₀) (l ν₀) (l' ν₀) (dg ν₀) hR0 hg hgap (hl ν₀ h0).1 (hl' ν₀ h0).1 (hl ν₀ h0).2.2 f s₀ hs₀, hz]
-    simp
-  obtain ⟨s, J, t, ht, hJ, -, hcoef, hzero⟩ :=
-    exists_coef_family hH P Wp Wq p lam b bv ga h q0 R l l' dg f s₀ ν₀ h0 hfam hl hl' hs₀ hne
-  obtain ⟨tau, htau⟩ :=
-    exists_tau hH P Wp Wq p lam b bv ga h q0 R l l' dg s J hN hfam hl hl' hcoef hzero
-  exact ⟨R, l, l', dg, s, J, tau, t, ht, hJ, htau⟩
-
-theorem coef_norm_finite_and_zeroW : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R0 : Rep P.k P.r) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (ν₀ : Fin (2 * P.r + P.k + 1) → ℤ), n1 ν₀ ≤ q0 → Num P.k P.r lam P.u b bv ga h q0 → R0.IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)) → CoefOf R0 f → TBB.jN2 p f < ⊤ ∧ (AEMeasurable fun c : Fin (P.r + 1) → ℂ => ENNReal.ofReal (TBB.Ew p (fun _ => 1) f (P.r + 1) [] (TBB.bigPt P.r c))) ∧ (TBB.jN2 p f = 0 → ∀ c : Fin (P.r + 1) → ℂ, D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) → 0 < TBB.Gp p (TBB.bigPt P.r c) → p.V f (TBB.bigPt P.r c) = 0) := by
-  intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R0 f ν₀ h0 hN hR0 hf
-  haveI := FiniteDimensional.complete ℂ Wp
-  haveI := FiniteDimensional.complete ℂ Wq
-  obtain ⟨R, hfam, hR⟩ := family_through_discreteSeries hH P.k P.r lam P.u b bv ga h q0 R0 ν₀ hN hR0
-  subst hR
-  obtain ⟨l, l', dg, hl, hl'⟩ := GlobalTheory.T.exists_family_functionals hH P Wp Wq p lam b bv ga h q0 R hN hfam
-  obtain ⟨hB, hdg, hfd⟩ := hl ν₀ h0
-  obtain ⟨hB', -, -⟩ := hl' ν₀ h0
-  obtain ⟨⟨-, -, -, -, hok⟩, hν⟩ := GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN
-  have hgap : Formalism.QuantumDeterminants.GapAtLeast (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)) (h / 2) :=
-    (hν ν₀ h0).2.2.1
-  obtain ⟨s, hs⟩ := hf (l ν₀) (l' ν₀)
-  obtain ⟨c, hc, hnorm⟩ := GlobalTheory.T.bessel_setting_uniform_constant hH P.k P.r Wp Wq p.T.base
-  have hj : TBB.jN2 p f = ENNReal.ofReal (c * ‖s‖ ^ 2 / dg ν₀) := by
-    rw [GlobalTheory.T.jN2_eq_normSq_base]
-    exact hnorm _ _ (h / 2) (R ν₀) (l ν₀) (l' ν₀) (dg ν₀) hR0 hgap hok hB hB' hfd f s hs
-  have hck := (GlobalTheory.T.smooth_and_inCC_of_isCoef_of_gap hH P.k P.r _ _ (h / 2) (R ν₀) Wp Wq (l ν₀) (l' ν₀) f s hR0 hgap hok hs).1
-  refine ⟨by rw [hj]; exact ENNReal.ofReal_lt_top,
-    GlobalTheory.T.aemeasurable_besselNormIntegrand_bigCell P Wp Wq p f (GlobalTheory.CoefZero.continuousOn_of_ckOn hck), fun hz x hx hG => ?_⟩
-  have hs0 : s = 0 := by
-    by_contra hne
-    rw [hj, ENNReal.ofReal_eq_zero] at hz
-    have hpos : 0 < ‖s‖ := norm_pos_iff.mpr hne
-    have : 0 < c * ‖s‖ ^ 2 / dg ν₀ := by positivity
-    linarith
-  obtain ⟨γ, hγ, -, hV⟩ := GlobalTheory.T.exists_regularRep_besselBigCellVector_eq_bessel P Wp Wq p x hx hG
-  obtain ⟨OO, hOO⟩ := GlobalTheory.T.bessel_orbital_integral_integrable_and_eq_smul hH P.k P.r _ _ (h / 2) (R ν₀) Wp Wq p.T.base (l ν₀) (l' ν₀) hR0 hgap hok hB hB'
-  rw [hV f, (hOO f s hs γ hγ).2, hs0, zero_smul]
-
-theorem familyDerivativeExpansion_of_isDS_of_coefOf (H : Hyps) (C : ℝ) (hC : 0 ≤ C) (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp]
-    [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
-    [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 a₁ : ℕ)
-    (R0 : Rep P.k P.r) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (ν₀ : Fin (2 * P.r + P.k + 1) → ℤ)
-    (hN : Num P.k P.r lam P.u b bv ga h q0) (hN' : Num P.k P.r lam P.u' b bv ga h q0)
-    (hT : P.T ≤ b ^ (C * ((2 * P.r + 2 : ℕ) : ℝ))) (hT' : P.T' ≤ b ^ (C * ((2 * P.r + 2 : ℕ) : ℝ)))
-    (hq : n1 ν₀ + (P.r + 1) * a₁ + (P.r + 1) * (P.r + 2) ≤ q0)
-    (hDS : R0.IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)))
-    (hf : CoefOf R0 f) :
-    Formalism.FourierDecayAlt.P.CutBP.FamilyDerivativeExpansion p f b (C / 2 + 6) a₁ := by
-  obtain ⟨⟨hbv, hbv', hn', -, -⟩, -⟩ := GlobalTheory.NumFam.num_fam _ _ _ _ _ _ _ _ _ hN
-  have hb : 2 ≤ b := by linarith
-  have hν₀ : n1 ν₀ ≤ q0 := by omega
-  obtain ⟨hfin, hmeas, hz⟩ := coef_norm_finite_and_zeroW H P Wp Wq p lam b bv ga h q0 R0 f ν₀ hν₀ hN hDS hf
-  by_cases h0 : TBB.jN2 p f = 0
-  · exact GlobalTheory.T.familyDerivativeExpansion_of_V_eq_zero P Wp Wq p f b _ a₁ (by linarith) hmeas (hz h0)
-  obtain ⟨R, l, l', dg, s, J, tau, t, ht, hJ, hS⟩ :=
-    suppliedData_existsW H P Wp Wq p lam b bv ga h q0 R0 f ν₀ hν₀ hN hDS hf h0
-  have hn : ∀ μ : Fin (2 * P.r + P.k + 1) → ℤ, n1 μ ≤ Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.N1 (μ - ν₀) + n1 ν₀ := fun μ => by
-    have e : Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.N1 (μ - ν₀ + ν₀) ≤ _ := Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.n1_add_le (μ - ν₀) ν₀
-    rw [sub_add_cancel] at e
-    exact e
-  let d : Formalism.FourierDecayAlt.P.CutBP.PieriExpansionData P Wp Wq :=
-    ⟨(2 * P.r + P.k + 1), J, ν₀, tau, (P.r + 1) * (P.r + 2), q0 - n1 ν₀, Real.sqrt (Hsq P.r P.T b * Hsq P.r P.T' b)⟩
-  have hP : Formalism.FourierDecayAlt.P.CutBP.PieriExpansion p d := fun μ hμ c hc hG =>
-    supplied_pieri H P Wp Wq p lam b bv ga h q0 R l l' dg s J tau hN hS μ
-      (by have := hn μ; dsimp only [d] at hμ; omega) c hc hG
-  have hTau : Formalism.FourierDecayAlt.P.CutBP.PieriCoefficientBound d := fun μ hμ I hI =>
-    tau_bound H P Wp Wq p lam b bv ga h q0 R l l' dg s J tau hN hN' hS μ
-      (by have := hn μ; dsimp only [d] at hμ; omega) I (Finset.mem_powersetCard.1 hI).2
-  have hD : Formalism.FourierDecayAlt.P.CutBP.PieriDegreeConditions p d := by
-    obtain ⟨c, hc, key⟩ := sup_norm H P Wp Wq p lam b bv ga h q0 R l l' dg s J tau hN hS
-    have hdeg := GlobalTheory.FamilyDegreeRatio.degree_ratios P.k P.r lam P.u b bv ga h q0 hN
-    dsimp only [d]
-    refine ⟨?_, ?_, ?_⟩
-    · show 0 < TBB.jN2 p (J ν₀)
-      rw [hJ, Formalism.FourierDecayAlt.P.CutBP.norm_sq_const_smul]
-      refine ENNReal.mul_pos ?_ h0
-      rw [Ne, ENNReal.ofReal_eq_zero, not_le]
-      exact pow_pos (norm_pos_iff.2 (Complex.ofReal_ne_zero.2 ht.ne')) 2
-    · intro μ hμ
-      have hμ' : n1 μ ≤ q0 := by have := hn μ; dsimp only at hμ; omega
-      show TBB.jN2 p (J μ) < ⊤ ∧ (TBB.jN2 p (J μ) = 0 → ∀ c : Fin (P.r + 1) → ℂ,
-        D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) → 0 < TBB.Gp p (TBB.bigPt P.r c) → p.V (J μ) (TBB.bigPt P.r c) = 0)
-      rcases key μ hμ' with ⟨hJ, hz, -⟩ | ⟨-, -, -, -, he⟩
-      · refine ⟨by rw [hz]; exact ENNReal.zero_lt_top, fun _ x _ _ => ?_⟩
-        have e : J μ = fun g => (0 : ℂ) • J μ g := by
-          funext g
-          rw [hJ, zero_smul]
-          rfl
-        rw [e, Formalism.FourierDecayAlt.P.CutBP.V_csmul, zero_smul]
-      · refine ⟨by rw [he]; exact ENNReal.ofReal_lt_top, fun hz => ?_⟩
-        rw [he] at hz
-        exact absurd hz (ENNReal.ofReal_pos.2 (mul_pos hc (hdeg μ hμ').1)).ne'
-    · intro μ hμ hne I hI
-      have hμ1 : n1 μ + (P.r + 1) * (P.r + 2) ≤ q0 := by have := hn μ; dsimp only at hμ; omega
-      have hμ' : n1 μ ≤ q0 := le_trans (Nat.le_add_right _ _) hμ1
-      have hcard : I.card = P.r + 1 := (mem_powersetCard.1 hI).2
-      have hν : n1 (μ + eZ I) ≤ q0 := by
-        have e1 : n1 (μ + eZ I) ≤ n1 μ + Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.N1 (Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.eI I) :=
-          Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.n1_add_le μ (Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.eI I)
-        rw [Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.n1_eI_eq_card, hcard] at e1
-        have e2 : P.r + 1 ≤ (P.r + 1) * (P.r + 2) := Nat.le_mul_of_pos_right _ (by omega)
-        omega
-      change TBB.jN2 p (J μ) ≠ 0 at hne
-      show TBB.jN2 p (J (μ + eZ I)) ≤
-        ENNReal.ofReal ((Real.exp 1 * ((2 * P.r + P.k + 1 : ℕ) : ℝ)) ^ (P.r + 1)) * TBB.jN2 p (J μ)
-      rcases key μ hμ' with ⟨-, hz, -⟩ | ⟨-, -, -, -, he⟩
-      · exact absurd hz hne
-      rcases key _ hν with ⟨-, hz, -⟩ | ⟨-, -, -, -, he'⟩
-      · rw [hz]; exact zero_le
-      rw [he, he', ← ENNReal.ofReal_mul (by positivity)]
-      refine ENNReal.ofReal_le_ofReal ?_
-      obtain ⟨hpos, hrat, -⟩ := hdeg μ hμ'
-      have e1 := hrat I
-      rw [hcard] at e1
-      have e2 : ((2 * P.r + P.k + 1) : ℝ) ^ (P.r + 1) ≤ (Real.exp 1 * ((2 * P.r + P.k + 1 : ℕ) : ℝ)) ^ (P.r + 1) := by
-        refine pow_le_pow_left₀ (by positivity) ?_ _
-        push_cast
-        exact le_mul_of_one_le_left (by positivity) (Real.one_le_exp zero_le_one)
-      have e3 := e1.trans (mul_le_mul_of_nonneg_right e2 hpos.le)
-      calc _ ≤ c * (_ * _) := mul_le_mul_of_nonneg_left e3 hc.le
-        _ = _ := by ring
-
-  have hM := sup_meas H P Wp Wq p lam b bv ga h q0 R l l' dg s J tau hN hS
-  have hH := GlobalTheory.TopNum.top_num P.r P.T P.T' b C hC hb hT hT'
-  have hE := Formalism.FourierDecayAlt.P.CutBP.family_expansion_of_parts p (Formalism.FourierDecayAlt.P.CutBP.unitF p (J ν₀)) b (C / 2 + 6) a₁ d
-    rfl (Real.sqrt_nonneg _) (Nat.le_mul_of_pos_right _ (by omega)) (by dsimp only [d]; omega)
-    (Formalism.FourierDecayAlt.P.CutBP.coefficient_growth_le_power _ P.r b _ (C + 10) _ hb (by dsimp only [d]; push_cast; exact hn') (Real.sqrt_nonneg _) hH (by linarith))
-    hP hTau hD hM
-  have hpos : 0 < TBB.jN2 p (J ν₀) := hD.1
-  have hlt : TBB.jN2 p (J ν₀) < ⊤ := (hD.2.1 ν₀ (by simp [Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.N1, d])).1
-  have hsc : Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) ≠ 0 := by
-    unfold Formalism.FourierDecayAlt.P.CutBP.scF
-    exact inv_ne_zero (Real.sqrt_pos.2 (ENNReal.toReal_pos hpos.ne' hlt.ne)).ne'
-  have hE' := GlobalTheory.T.bigCellExpansion_smul P Wp Wq p _ b _ a₁ (((Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) : ℂ) * (t : ℂ))⁻¹) hE
-  have hne : ((Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) : ℂ) * (t : ℂ)) ≠ 0 :=
-    mul_ne_zero (Complex.ofReal_ne_zero.2 hsc) (Complex.ofReal_ne_zero.2 ht.ne')
-  have e : (fun g => (((Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) : ℂ) * (t : ℂ))⁻¹) • Formalism.FourierDecayAlt.P.CutBP.unitF p (J ν₀) g) = f := by
-    funext g
-    have hg : J ν₀ g = (t : ℂ) • f g := congrFun hJ g
-    unfold Formalism.FourierDecayAlt.P.CutBP.unitF
-    rw [hg, smul_smul, smul_smul, mul_assoc, inv_mul_cancel₀ hne, one_smul]
-  rw [e] at hE'
-  exact hE'
-
-theorem bigCellDerivativeExpansion_of_isDS_of_coefOf (H : Hyps) (C : ℝ) (hC : 0 ≤ C) (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp]
-    [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
-    [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 a₁ : ℕ)
-    (R0 : Rep P.k P.r) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (ν₀ : Fin (2 * P.r + P.k + 1) → ℤ)
-    (hN : Num P.k P.r lam P.u b bv ga h q0) (hN' : Num P.k P.r lam P.u' b bv ga h q0)
-    (hT : P.T ≤ b ^ (C * ((2 * P.r + 2 : ℕ) : ℝ))) (hT' : P.T' ≤ b ^ (C * ((2 * P.r + 2 : ℕ) : ℝ)))
-    (hq : n1 ν₀ + (P.r + 1) * a₁ + (P.r + 1) * (P.r + 2) ≤ q0)
-    (hDS : R0.IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)))
-    (hf : CoefOf R0 f) :
-    Formalism.FourierDecayAlt.P.CutBP.BigCellDerivativeExpansion p f b (C / 2 + 6) a₁ := by
-  have hb := (GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN).1
-  exact Formalism.FourierDecayAlt.P.CutBP.big_cell_expansion_of_family p f b (C / 2 + 6) a₁ (by linarith [hb.1, hb.2.1])
-    (familyDerivativeExpansion_of_isDS_of_coefOf H C hC P Wp Wq p lam b bv ga h q0 a₁ R0 f ν₀ hN hN' hT hT' hq hDS hf)
-
 end CompanionTheory.WaveGrid.BallW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.BesselWaveGrids.BigCellDerivativeExpansionOfIsDSOfCoefOf =====

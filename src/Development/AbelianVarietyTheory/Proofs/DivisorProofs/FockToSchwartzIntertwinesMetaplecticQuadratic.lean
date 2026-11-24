@@ -139,7 +139,7 @@ theorem sum_eS (w : ι) (a : Ix P Q) (b : Ix R S) (x : ℂ) (c : ι → Matrix (
   rw [Finset.sum_eq_single w, Finset.sum_eq_single a, Finset.sum_eq_single b]
   · simp [eS_apply]
   all_goals first
-    | (intro y _ hy; simp [eS_apply, hy, Ne.symm hy]; done)
+    | (intro y _ hy; simp [eS_apply, hy]; done)
     | simp
 
 theorem decomp (c : ι → Matrix (Ix P Q) (Ix R S) ℂ) :
@@ -152,7 +152,7 @@ theorem decomp (c : ι → Matrix (Ix P Q) (Ix R S) ℂ) :
   · simp only [eS_apply, and_self, if_true, Complex.real_smul, mul_one]
     exact (Complex.re_add_im _).symm
   all_goals first
-    | (intro y _ hy; simp [eS_apply, hy, Ne.symm hy]; done)
+    | (intro y _ hy; simp [eS_apply, Ne.symm hy]; done)
     | simp
 
 end GlobalTheory.RealLift.QuadFock
@@ -185,7 +185,7 @@ theorem dual {l : Type} [Fintype l] (φ : (ι → Matrix (Ix P Q) (Ix R S) ℂ) 
   congr 2
   · simp [Complex.mul_im, Complex.mul_re]
     linear_combination (c w a b).re * h2
-  · simp [Complex.mul_im, Complex.mul_re]
+  · simp [Complex.mul_im]
     linear_combination (c w a b).im * h2
 
 theorem cu_true_mul (Y : ι → Mat R S) (w : ι) (a : Ix P Q) (b : Ix R S) (w' : ι) :
@@ -193,7 +193,7 @@ theorem cu_true_mul (Y : ι → Mat R S) (w : ι) (a : Ix P Q) (b : Ix R S) (w' 
       (Pi.single w ((sgn a b / 2) • (Matrix.single a b (1 : ℂ) * (Y w)ᵀ)) : ι → Matrix (Ix P Q) (Ix R S) ℂ) w' := by
   by_cases h : w' = w
   · subst h
-    simp only [cu, eS, if_true, Bool.false_eq_true, if_false, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_mul]
+    simp only [cu, eS, if_true, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_mul]
   · simp [cu, eS, h]
 
 theorem cu_false_mul (Y : ι → Mat R S) (w : ι) (a : Ix P Q) (b : Ix R S) (w' : ι) :
@@ -201,7 +201,7 @@ theorem cu_false_mul (Y : ι → Mat R S) (w : ι) (a : Ix P Q) (b : Ix R S) (w'
       (Pi.single w ((-(sgn a b / 2)) • (Matrix.single a b Complex.I * (Y w)ᵀ)) : ι → Matrix (Ix P Q) (Ix R S) ℂ) w' := by
   by_cases h : w' = w
   · subst h
-    simp only [cu, eS, if_true, Bool.false_eq_true, if_false, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_mul]
+    simp only [cu, eS, Bool.false_eq_true, if_false, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_mul]
   · simp [cu, eS, h]
 
 theorem cv_true (w : ι) (a : Ix P Q) (b : Ix R S) :
@@ -265,6 +265,6 @@ theorem quad_fock : (∀ (l κ : Type) [Fintype l] [DecidableEq l] [Fintype κ] 
 
   simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.coe_sum', Finset.sum_apply,
   ContinuousLinearMap.add_apply, ContinuousLinearMap.mul_apply, LinearMap.smul_apply, LinearMap.sum_apply,
-  LinearMap.add_apply, Module.End.mul_apply, map_smul, map_sum, map_add, hΨ, hZ]
+  LinearMap.add_apply, map_smul, map_sum, map_add, hΨ, hZ]
 
 end GlobalTheory.RealLift.QuadFock

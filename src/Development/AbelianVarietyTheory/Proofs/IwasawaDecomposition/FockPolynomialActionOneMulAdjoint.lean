@@ -154,17 +154,9 @@ theorem inv_comm {ε : Fin m → Bool} {k : Matrix (Fin m) (Fin m) ℂ} (hk : k 
     _ = Formalism.REAL.Jm ε * k⁻¹ := by
         rw [← hk.2, ← Matrix.mul_assoc k⁻¹, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]
 
-theorem Jm_mul_Jm (ε : Fin m → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  rw [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  cases ε a <;> simp
+alias Jm_mul_Jm := _root_.Formalism.REAL.Jm_mul_self
 
-theorem Jm_conj (ε : Fin m → Bool) : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by
-  rw [Formalism.REAL.Jm, Matrix.diagonal_conjTranspose]
-  congr 1
-  funext a
-  cases h : ε a <;> simp [h]
+alias Jm_conj := _root_.Formalism.REAL.Jm_conjTranspose
 
 def blk (J k : Matrix (Fin m) (Fin m) ℂ) : Matrix (Fin m) (Fin m) ℂ :=
   (1 / 2 : ℂ) • (1 + J) * k + (1 / 2 : ℂ) • (1 - J)
@@ -191,8 +183,7 @@ theorem blk_conj {J k : Matrix (Fin m) (Fin m) ℂ} (hJ : Jᴴ = J) (hk : k * J 
     exact this.symm
   have h2 : star (1 / 2 : ℂ) = 1 / 2 := by simp
   simp only [blk, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_smul,
-    Matrix.conjTranspose_sub, Matrix.conjTranspose_one, hJ, h2, Matrix.smul_mul, Matrix.mul_smul, add_mul, mul_add,
-    one_mul, mul_one, h1]
+    Matrix.conjTranspose_sub, Matrix.conjTranspose_one, hJ, h2, Matrix.smul_mul, add_mul, one_mul, h1]
 
 theorem detPlus_def₂ (ε : Fin m → Bool) (k : Matrix (Fin m) (Fin m) ℂ) :
     detP ε k = (blk (Formalism.REAL.Jm ε) k).det := rfl

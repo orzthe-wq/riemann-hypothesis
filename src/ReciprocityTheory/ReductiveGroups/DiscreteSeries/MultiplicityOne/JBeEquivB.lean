@@ -1,50 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.JBeEquivA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -72,15 +29,15 @@ private theorem Hpk_mul_self_eq_one : Hpk k r * Hpk k r = 1 := by
   rw [Finset.sum_eq_single (if i.val < r ∨ r + k < i.val then i.rev else i)]
   · by_cases h : i.val < r ∨ r + k < i.val
     · rw [if_pos h]
-      simp only [Hpk, Fin.val_rev, Fin.ext_iff, and_true]
+      simp only [Hpk, Fin.val_rev, Fin.ext_iff]
       split_ifs <;> first | (exfalso; omega) | norm_num
     · rw [if_neg h]
       simp only [Hpk, Fin.ext_iff, and_true]
       split_ifs <;> first | (exfalso; omega) | norm_num
   · intro l _ hl
     have hl' := l.isLt
-    simp only [Hpk, Fin.ext_iff, Fin.val_rev, and_true, ne_eq] at hl ⊢
-    split_ifs at hl ⊢ <;> (try simp only [ne_eq, Fin.ext_iff, Fin.val_rev] at hl) <;>
+    simp only [Hpk, Fin.ext_iff, ne_eq] at hl ⊢
+    split_ifs at hl ⊢ <;> (try simp only [Fin.val_rev] at hl) <;>
       first | (exfalso; omega) | norm_num
   · simp
 
@@ -163,8 +120,6 @@ theorem measurable_shG (m : Mat k r) : Measurable (Function.uncurry (shG (k := k
   refine measurable_pi_iff.mpr fun i => measurable_pi_iff.mpr fun j => hs.mul ?_
   first
     | exact (hG.matrix_elem i j).measurable
-    | exact (by fun_prop : Continuous fun p : Mt k r × Mt k r =>
-        (Matrix.of p.2 * (Matrix.of p.1 * m * (Matrix.of p.1 : Mat k r).adjugate) : Mat k r) i j).measurable
 
 theorem shL_mp (D : RealPlaceData k r Wp Wp) (hF : BEFacts D) {h0 m : Mat k r} (hh0 : h0 ∈ UWset k r D.z)
     (hm : m ∈ Nset k r) : MeasurePreserving (shL h0 m) (D.μW.prod D.μN) (D.μW.prod D.μN) := by
@@ -175,12 +130,10 @@ theorem shL_mp (D : RealPlaceData k r Wp Wp) (hF : BEFacts D) {h0 m : Mat k r} (
   haveI : SigmaFinite D.μW := by
     first
       | infer_instance
-      | exact sigmaFinite_of_locallyFinite
   haveI : IsFiniteMeasureOnCompacts D.μN := ⟨fun K hK => D.haarN.finite_compact K hK⟩
   haveI : SigmaFinite D.μN := by
     first
       | infer_instance
-      | exact sigmaFinite_of_locallyFinite
   unfold shL
   refine hf.skew_product (measurable_shG m) ?_
   filter_upwards [hW] with x hx
@@ -188,14 +141,6 @@ theorem shL_mp (D : RealPlaceData k r Wp Wp) (hF : BEFacts D) {h0 m : Mat k r} (
   have e : shG m x = rmulF (Matrix.of x * m * (Matrix.of x)⁻¹) := rfl
   rw [e]
   exact D.haarN.right _ hc'
-
-private theorem inv_mem_UWset' {z : Fin (2 * r + k + 1) → ℂ} {g : Mat k r} (hg : g ∈ UWset k r z) :
-    g⁻¹ ∈ UWset k r z := by
-  obtain ⟨-, him⟩ := mul_inv_and_inv_mul_of_mem_UH_Hpk hg.1
-  have fix : ∀ v, g *ᵥ v = v → g⁻¹ *ᵥ v = v := fun v hv => by
-    conv_lhs => rw [← hv]
-    rw [Matrix.mulVec_mulVec, him, Matrix.one_mulVec]
-  exact ⟨inv_mem_UH_Hpk hg.1, fun a => ⟨fix _ (hg.2.1 a).1, fix _ (hg.2.1 a).2⟩, fix _ hg.2.2⟩
 
 private theorem mul_mem_UH_Hpk {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) :
     a * b ∈ UH (Hpk k r) := by
@@ -213,17 +158,15 @@ theorem shR_mp (D : RealPlaceData k r Wp Wp) (hF : BEFacts D) {h0 m : Mat k r} (
   haveI : SigmaFinite D.μW := by
     first
       | infer_instance
-      | exact sigmaFinite_of_locallyFinite
   haveI : SigmaFinite D.μN := by
     first
       | infer_instance
-      | exact sigmaFinite_of_locallyFinite
   have hlm : ∀ a : Mat k r, Continuous (lmulM (k := k) (r := r) a) := fun a => by unfold lmulM; fun_prop
   have hcm : ∀ a : Mat k r, Continuous (conjM (k := k) (r := r) a) := fun a => by unfold conjM; fun_prop
   have h1 : MeasurePreserving (lmulM h0⁻¹) D.μW D.μW :=
-    ⟨(hlm _).measurable, D.haarW.left _ (inv_mem_UWset' hh0)⟩
+    ⟨(hlm _).measurable, D.haarW.left _ (_root_.ReciprocityTheory.ChartRestriction.DS.Mult1.BeEquiv.uw_inv hh0)⟩
   have h2 : MeasurePreserving (lmulM m⁻¹) D.μN D.μN := ⟨(hlm _).measurable, D.haarN.left _ (hF.ninv m hm)⟩
-  have h3 : MeasurePreserving (conjM h0⁻¹) D.μN D.μN := ⟨(hcm _).measurable, hF.conj _ (inv_mem_UWset' hh0)⟩
+  have h3 : MeasurePreserving (conjM h0⁻¹) D.μN D.μN := ⟨(hcm _).measurable, hF.conj _ (_root_.ReciprocityTheory.ChartRestriction.DS.Mult1.BeEquiv.uw_inv hh0)⟩
   have e : shR h0 m = Prod.map (lmulM h0⁻¹) (conjM h0⁻¹ ∘ lmulM m⁻¹) := rfl
   rw [e]
   exact h1.prod (h3.comp h2)
@@ -292,7 +235,7 @@ theorem beOp_left (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hF : BEFacts 
       rw [hF.pmul nn hn _ hc, hcp]
     have e5 : D.π (h * h0)⁻¹ = (D.π h0⁻¹).comp (D.π h⁻¹) := by
       rw [Matrix.mul_inv_rev]
-      exact D.π_rep.2 _ (inv_mem_UWset' hh0) _ (inv_mem_UWset' hh)
+      exact D.π_rep.2 _ (_root_.ReciprocityTheory.ChartRestriction.DS.Mult1.BeEquiv.uw_inv hh0) _ (_root_.ReciprocityTheory.ChartRestriction.DS.Mult1.BeEquiv.uw_inv hh)
     have e6 := mc_sig_left X u u' (mul_mem_UH_Hpk hn.1 hh.1) (mul_mem_UH_Hpk hm.1 hh0.1)
     rw [e1, e2, e3, e4, e5, e6, ContinuousLinearMap.comp_smul, hπ, smul_smul, star_mul]
     congr 1
@@ -321,8 +264,8 @@ theorem beOp_right (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hF : BEFacts
   have hN1 : (1 : Mat k r) ∈ Nset k r := hm1 ▸ hF.nmul m hm m⁻¹ hmi
   have hpsi : psiD D m * star (psiD D m) = 1 := by
     rw [← psiD_inv D hF hm, ← hF.pmul m hm m⁻¹ hmi, hm1, psiD_one D hF hN1]
-  have hh0i : h0⁻¹ ∈ UWset k r D.z := inv_mem_UWset' hh0
-  have hh0ii : h0⁻¹⁻¹ ∈ UWset k r D.z := inv_mem_UWset' hh0i
+  have hh0i : h0⁻¹ ∈ UWset k r D.z := _root_.ReciprocityTheory.ChartRestriction.DS.Mult1.BeEquiv.uw_inv hh0
+  have hh0ii : h0⁻¹⁻¹ ∈ UWset k r D.z := _root_.ReciprocityTheory.ChartRestriction.DS.Mult1.BeEquiv.uw_inv hh0i
   have hinvinv : h0⁻¹⁻¹ * h0⁻¹ = 1 := (mul_inv_and_inv_mul_of_mem_UH_Hpk hh0i.1).2
   have hid : (D.π h0⁻¹⁻¹).comp (D.π h0⁻¹) = ContinuousLinearMap.id ℂ Wp := by
     have := D.π_rep.2 _ hh0ii _ hh0i
@@ -349,7 +292,7 @@ theorem beOp_right (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hF : BEFacts
       rw [hcp, hF.pmul _ hmi _ hn, psiD_inv D hF hm]
     have e5 : D.π (h0⁻¹ * h)⁻¹ = (D.π h⁻¹).comp (D.π h0⁻¹⁻¹) := by
       rw [Matrix.mul_inv_rev]
-      exact D.π_rep.2 _ (inv_mem_UWset' hh) _ hh0ii
+      exact D.π_rep.2 _ (_root_.ReciprocityTheory.ChartRestriction.DS.Mult1.BeEquiv.uw_inv hh) _ hh0ii
     rw [e1, e2, e6, e3, e4, e5, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_assoc, hid,
       ContinuousLinearMap.comp_id, smul_smul, star_mul, star_star]
     congr 1

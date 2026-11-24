@@ -344,45 +344,17 @@ section NonVanishing
 theorem ne_zero_of_hasProd_inv_prod {ι : Type*} {m : ℕ} {L : ι → ℂ} {P : ℂ} (hP : HasProd L P)
     (w : ι → Fin m → ℂ) (hL : ∀ v, L v = ∏ i, (1 - w v i)⁻¹) {b : ι → ℝ} (hb : Summable b)
     (hw : ∀ v i, ‖w v i‖ ≤ b v) (hw1 : ∀ v i, ‖w v i‖ < 1) : P ≠ 0 := by
-  set a : ι → ℂ := fun v ↦ ∏ i, (1 + -w v i) - 1 with ha
-  have hbnd : ∀ v, ‖a v‖ ≤ Real.exp (∑ i, ‖w v i‖) - 1 := fun v ↦ by
-    have := Finset.norm_prod_one_add_sub_one_le Finset.univ (fun i ↦ -w v i)
-    simpa [norm_neg] using this
-  have hsum : Summable a := by
-    refine Summable.of_norm_bounded_eventually ((hb.mul_left (m : ℝ)).mul_left 2) ?_
-    have hev : ∀ᶠ v in Filter.cofinite, (m : ℝ) * b v ≤ 1 := by
-      have : Tendsto (fun v ↦ (m : ℝ) * b v) Filter.cofinite (𝓝 0) := by
-        simpa using hb.tendsto_cofinite_zero.const_mul (m : ℝ)
-      exact this.eventually (ge_mem_nhds one_pos)
-    filter_upwards [hev] with v hv
-    have hS : ∑ i, ‖w v i‖ ≤ m * b v := by
-      calc ∑ i, ‖w v i‖ ≤ ∑ _i : Fin m, b v := Finset.sum_le_sum fun i _ ↦ hw v i
-        _ = m * b v := by simp
-    have hS0 : 0 ≤ ∑ i, ‖w v i‖ := Finset.sum_nonneg fun i _ ↦ norm_nonneg _
-    calc ‖a v‖ ≤ Real.exp (∑ i, ‖w v i‖) - 1 := hbnd v
-      _ ≤ |Real.exp (∑ i, ‖w v i‖) - 1| := le_abs_self _
-      _ ≤ 2 * |∑ i, ‖w v i‖| := Real.abs_exp_sub_one_le (by rw [abs_of_nonneg hS0]; linarith)
-      _ ≤ 2 * ((m : ℝ) * b v) := by rw [abs_of_nonneg hS0]; linarith
-  have hM' : HasProd (fun v ↦ ∏ i, (1 - w v i)) (∏' v, (1 + a v)) := by
-    have := (Complex.multipliable_one_add_of_summable hsum).hasProd
-    convert this using 1
-    funext v
-    simp [ha, sub_eq_add_neg]
-  have hne : ∀ v i, (1 - w v i) ≠ 0 := fun v i h ↦ by
-    have h1 : w v i = 1 := by linear_combination -h
-    have := hw1 v i
-    rw [h1, norm_one] at this
-    exact lt_irrefl _ this
-  have h1 := hP.mul hM'
-  have h2 : (fun v ↦ L v * ∏ i, (1 - w v i)) = fun _ ↦ (1 : ℂ) := by
-    funext v
-    rw [hL v, ← Finset.prod_mul_distrib]
-    exact Finset.prod_eq_one fun i _ ↦ inv_mul_cancel₀ (hne v i)
-  rw [h2] at h1
-  intro hP0
-  have := h1.unique hasProd_one
-  rw [hP0, zero_mul] at this
-  exact zero_ne_one this
+  let p (i : Fin m) := Complex.exp (∑' v, Complex.log (1 - w v i))
+  have hp (i : Fin m) : HasProd (fun v ↦ (1 - w v i)⁻¹) (p i)⁻¹ := by
+    have hs : Summable (fun v ↦ w v i) := hb.of_norm_bounded (fun v ↦ hw v i)
+    have hlog : Summable (fun v ↦ Complex.log (1 - w v i)) := by
+      simpa only [sub_eq_add_neg] using Complex.summable_log_one_add_of_summable hs.neg
+    exact (Complex.hasProd_of_hasSum_log
+      (fun v ↦ (IsUnit.one_sub_of_norm_lt_one (hw1 v i)).ne_zero) hlog.hasSum).inv₀
+        (Complex.exp_ne_zero _)
+  rw [funext hL] at hP
+  rw [hP.unique (hasProd_prod fun i _ ↦ hp i)]
+  exact Finset.prod_ne_zero_iff.mpr fun i _ ↦ inv_ne_zero (Complex.exp_ne_zero _)
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 

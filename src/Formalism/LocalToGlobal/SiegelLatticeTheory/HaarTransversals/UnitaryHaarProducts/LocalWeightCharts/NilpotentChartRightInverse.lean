@@ -1,46 +1,6 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LocalWeightCharts.DDMulApply
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -80,24 +40,24 @@ variable (A : Matrix (Fin r) (Fin r) ℂ) (B : Matrix (Fin r) (Fin (k + 1)) ℂ)
     (E : Matrix (Fin (k + 1)) (Fin r) ℂ) (F : Matrix (Fin r) (Fin r) ℂ)
 
 @[simp] theorem mk_ee (a b : Fin r) : mkM A B C E F (eI k r a) (eI k r b) = A a b := by
-  simp only [mkM, symm_eI, symm_wI, symm_esI, blk]
+  simp only [mkM, symm_eI, blk]
 @[simp] theorem mk_ew (a : Fin r) (j : Fin (k + 1)) : mkM A B C E F (eI k r a) (wI k r j) = B a j := by
-  simp only [mkM, symm_eI, symm_wI, symm_esI, blk]
+  simp only [mkM, symm_eI, symm_wI, blk]
 @[simp] theorem mk_es (a b : Fin r) : mkM A B C E F (eI k r a) (esI k r b) = C a b := by
-  simp only [mkM, symm_eI, symm_wI, symm_esI, blk]
+  simp only [mkM, symm_eI, symm_esI, blk]
 @[simp] theorem mk_we (j : Fin (k + 1)) (b : Fin r) : mkM A B C E F (wI k r j) (eI k r b) = 0 := by
-  simp only [mkM, symm_eI, symm_wI, symm_esI, blk]
+  simp only [mkM, symm_eI, symm_wI, blk]
 @[simp] theorem mk_ww (j c : Fin (k + 1)) :
     mkM A B C E F (wI k r j) (wI k r c) = if j = c then 1 else 0 := by
-  simp only [mkM, symm_eI, symm_wI, symm_esI, blk]
+  simp only [mkM, symm_wI, blk]
 @[simp] theorem mk_ws (j : Fin (k + 1)) (b : Fin r) : mkM A B C E F (wI k r j) (esI k r b) = E j b := by
-  simp only [mkM, symm_eI, symm_wI, symm_esI, blk]
+  simp only [mkM, symm_wI, symm_esI, blk]
 @[simp] theorem mk_se (a b : Fin r) : mkM A B C E F (esI k r a) (eI k r b) = 0 := by
-  simp only [mkM, symm_eI, symm_wI, symm_esI, blk]
+  simp only [mkM, symm_eI, symm_esI, blk]
 @[simp] theorem mk_sw (a : Fin r) (j : Fin (k + 1)) : mkM A B C E F (esI k r a) (wI k r j) = 0 := by
-  simp only [mkM, symm_eI, symm_wI, symm_esI, blk]
+  simp only [mkM, symm_wI, symm_esI, blk]
 @[simp] theorem mk_ss (a b : Fin r) : mkM A B C E F (esI k r a) (esI k r b) = F a b := by
-  simp only [mkM, symm_eI, symm_wI, symm_esI, blk]
+  simp only [mkM, symm_esI, blk]
 
 theorem bA_mk : bA (mkM A B C E F) = A := by
   ext a b
@@ -257,31 +217,31 @@ theorem uh_mk (h2 : Aᴴ * F = 1) (h3 : E = -(dD k * (Bᴴ * F)))
   rw [uhE_lemma_4]
   simp only [mkM_pos_lemma]
   rcases p with a' | c' | a' <;> rcases q with b | c'' | b
-  · simp only [blk, hpkE_lemma, hpkW_lemma_2, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
-  · simp only [blk, hpkE_lemma, hpkW_lemma_2, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
-  · simp only [blk, hpkE_lemma, hpkW_lemma_2, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
+  · simp only [blk, hpkE_lemma, (posE k r).apply_eq_iff_eq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
+  · simp only [blk, hpkE_lemma, (posE k r).apply_eq_iff_eq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole]
+  · simp only [blk, hpkE_lemma, (posE k r).apply_eq_iff_eq, Sum.inr.injEq, star_zero, zero_mul, Finset.sum_const_zero, add_zero, ← mul_assoc]
     all_goals
       rw [e2 a' b]
       by_cases h : a' = b
       · subst h; simp
       · simp [h, Ne.symm h]
-  · simp only [blk, hpkE_lemma, hpkW_lemma_2, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
-  · simp only [blk, hpkE_lemma, hpkW_lemma_2, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
+  · simp only [blk, hpkW_lemma_2, (posE k r).apply_eq_iff_eq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
+  · simp only [blk, hpkW_lemma_2, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, Sum.inr.injEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq', Finset.mem_univ]
     all_goals
       by_cases h : c' = c''
       · subst h; simp
       · simp [h, Ne.symm h]
-  · simp only [blk, hpkE_lemma, hpkW_lemma_2, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
+  · simp only [blk, hpkW_lemma_2, (posE k r).apply_eq_iff_eq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, Finset.sum_const_zero, add_zero, hs, ← mul_assoc, ite_zero_mul, Finset.sum_ite_eq', Finset.mem_univ]
     all_goals linear_combination e3 c' b
-  · simp only [blk, hpkE_lemma, hpkW_lemma_2, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
+  · simp only [blk, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, mul_zero, Finset.sum_const_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
     all_goals
       rw [e2' a' b]
       by_cases h : a' = b
       · subst h; simp
       · simp [h, Ne.symm h]
-  · simp only [blk, hpkE_lemma, hpkW_lemma_2, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, hmz]
+  · simp only [blk, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, reduceCtorEq, ↓reduceIte, mul_zero, Finset.sum_const_zero, zero_add, ← mul_assoc, Finset.sum_ite_eq', Finset.mem_univ, hmz]
     all_goals linear_combination e3' a' c''
-  · simp only [blk, hpkE_lemma, hpkW_lemma_2, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, ↓reduceIte, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, hs, ← mul_assoc, boole_mul, mul_boole, ite_zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
+  · simp only [blk, hpkS_lemma_3, (posE k r).apply_eq_iff_eq, reduceCtorEq, ↓reduceIte, ← mul_assoc]
     all_goals linear_combination e4 a' b
 
 end mk
@@ -323,8 +283,7 @@ def psiR (g : Mx k r) : Fin r → ℝ := fun a => (mof g a a).im
 
 theorem lowId_cA (x : CI k r → ℂ) : LowId (cA x) := by
   intro a b hba
-  simp only [cA]
-  rw [dif_neg (not_lt.mpr hba)]
+  simp only [cA, dif_neg (not_lt.mpr hba)]
 
 theorem det_of_lowId {A : Matrix (Fin r) (Fin r) ℂ} (hA : LowId A) : A.det = 1 := by
   have ht : A.BlockTriangular id := fun i j hij => by
@@ -343,10 +302,8 @@ theorem cA_cF (x : CI k r → ℂ) : (cA x)ᴴ * cF x = 1 := by
     Matrix.conjTranspose_one]
 
 theorem nilpotent_chart_matrix_eq (x : CI k r → ℂ) (s : Fin r → ℝ) : mof (phi0 x s) = cM x s := by
-  unfold mof phi0
-  rw [bF_mk, bC_mk]
-  unfold cC
-  rw [← Matrix.mul_assoc, cF_cA, Matrix.one_mul]
+  unfold mof phi0 cC
+  rw [bF_mk, bC_mk, ← Matrix.mul_assoc, cF_cA, Matrix.one_mul]
 
 theorem test_vector_mem_schwartz_bruhat (x : CI k r → ℂ) (s : Fin r → ℝ) : phi0 x s ∈ Nset k r := by
   have hD : (dD k)ᴴ = dD k := by
@@ -447,7 +404,6 @@ theorem cA_psi {g : Mx k r} (hc : ColB g) : cA (psiC g) = bA g := by
     exact (hc.aa a b (not_lt.mp h)).symm
 
 theorem cB_psi (g : Mx k r) : cB (psiC g) = bB g := by
-  ext a j
   rfl
 
 theorem adj_eq {g : Mx k r} (hc : ColB g) (hu : g ∈ UH (Hpk k r)) : (bA g).adjugate = (bF g)ᴴ := by
@@ -493,7 +449,7 @@ theorem cE_psi {g : Mx k r} (hc : ColB g) (hu : g ∈ UH (Hpk k r)) : cE (psiC g
   have hE' : ∀ x y, g (posE k r (Sum.inr (Sum.inl x))) (posE k r (Sum.inr (Sum.inr y))) = bE g x y :=
     fun _ _ => rfl
   simp only [hww, hsw, hB', hF', hE', star_zero, zero_mul, Finset.sum_const_zero, add_zero, hs, boole_mul,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte, (posE k r).apply_eq_iff_eq,
+    Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte, (posE k r).apply_eq_iff_eq,
     Sum.inr.injEq, reduceCtorEq] at h
   have hd2 : (if (j : ℕ) = k then (-1 : ℂ) else 1) * (if (j : ℕ) = k then -1 else 1) = 1 := by
     split_ifs <;> norm_num

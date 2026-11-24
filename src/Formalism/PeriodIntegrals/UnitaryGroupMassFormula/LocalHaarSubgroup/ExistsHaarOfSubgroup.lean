@@ -101,7 +101,7 @@ theorem inv_mem_integer {x : K} (hx : x ∉ 𝒪[K]) : x⁻¹ ∈ 𝒪[K] := by
   exact inv_le_one_of_one_le₀ hx.le
 
 theorem sigmaCompactSpace_lf : SigmaCompactSpace K := by
-  apply GroundTheory.Variant₂.N1.MapThetaTInvariant.sigmaCompactSpace <;> assumption
+  apply GroundTheory.Variant₂.N1.MapThetaTInvariant.sigmaCompactSpace
 
 end Field
 

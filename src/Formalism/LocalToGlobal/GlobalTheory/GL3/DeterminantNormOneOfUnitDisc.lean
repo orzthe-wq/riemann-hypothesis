@@ -2,49 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.GlobalTheory.GL3.PLinkThIndep
 public import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -65,7 +23,6 @@ theorem mulVec_col {N : ℕ} (A U : Matrix (Fin N) (Fin N) D.host.E) (j : Fin N)
   funext i
   first
   | rfl
-  | simp [Matrix.mulVec, Matrix.mul_apply, dotProduct]
 
 theorem detId_mul_vol_le {N : ℕ} (L L' : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) :
     detId D L L' * vol D L ≤ vol D L' := by
@@ -254,7 +211,6 @@ theorem spanPow {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algeb
       rw [hIS]
       exact Submodule.subset_span hs
     first
-    | exact Submodule.pow_mem_pow hsI k
     | exact Submodule.pow_mem_pow _ hsI k
   let J : FractionalIdeal R⁰ K := ⟨_, FractionalIdeal.isFractional_of_le hJle⟩
   have hJ : (J : Submodule R K) = Submodule.span R ((fun s => s ^ k) '' S) := rfl
@@ -296,7 +252,6 @@ theorem spanPow {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algeb
       have haP : a ≤ P := by
         first
         | exact Ideal.IsPrime.le_of_pow_le hak
-        | exact hPmax.isPrime.le_of_pow_le hak
       calc FractionalIdeal.spanSingleton R⁰ s
             = FractionalIdeal.spanSingleton R⁰ s * I⁻¹ * I := by
               rw [mul_assoc, inv_mul_cancel₀ hI, mul_one]

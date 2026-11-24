@@ -1,13 +1,14 @@
 module
 
 public import Development.AutomorphicSpectrum.Statements.GeometryStatements.ZhangDimensionPushDownGrassmannianHeightBounds
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceRateStatementHoldsStatement
+public import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceRateStatementHolds
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConvergenceStatementHoldsStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GlobalRegularizationStatementHoldsStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackStatementHoldsStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SignedConvergenceStatementHoldsStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GlobalRegularizationStatementHolds
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PullbackStatementHolds
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SignedConvergenceStatementHolds
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.UniformIntegrabilityStatementHolds
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.TailBoundStatementHolds
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.UniformIntegrabilityStatementHoldsStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -53,7 +54,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.Link
 
 theorem prov_an : Prov.An :=
-  ⟨GlobalTheory.CompanionTheory.Ar.Giv.tailBound_holds, GlobalTheory.T.convergence_statement_holds, GlobalTheory.T.signed_convergence_statement_holds, GlobalTheory.T.convergence_rate_statement_holds, GlobalTheory.T.uniform_integrability_statement_holds,
-    GlobalTheory.T.pullback_statement_holds, GlobalTheory.T.global_regularization_statement_holds⟩
+  ⟨GlobalTheory.CompanionTheory.Ar.Giv.tailBound_holds, GlobalTheory.T.convergence_statement_holds, _root_.GlobalTheory.CompanionTheory.Ar.Giv.SignedConv.convergenceSigned, _root_.GlobalTheory.CompanionTheory.Ar.Giv.convergenceRate_holds, _root_.GlobalTheory.CompanionTheory.Ar.Giv.unifInt_holds,
+    _root_.GlobalTheory.CompanionTheory.Ar.Giv.pullbackStatement, _root_.GlobalTheory.CompanionTheory.Ar.Giv.regGlobalStatement_holds⟩
 
 end GlobalTheory.CompanionTheory.Ar.Link

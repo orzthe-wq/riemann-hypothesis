@@ -141,10 +141,9 @@ theorem ld_smooth {f : Mx k r → E} (hf : SmoothLev k r i D f) {X : Mx k r} (hX
   intro g₀ hg₀
   obtain ⟨U, F, hU, hgU, hF, he⟩ := hf g₀ hg₀
   refine ⟨U, fun x => fderiv ℝ F x (X * x), hU, hgU, ?_, fun x hxU hx => ?_⟩
-  · have h2 : ContDiffOn ℝ ∞ (fun x : Mx k r => X * x) U := (mulL X).contDiff.contDiffOn
-    exact (hF.fderiv_of_isOpen hU (by simp)).clm_apply h2
-  · have hFd : DifferentiableAt ℝ F x := (hF.contDiffAt (hU.mem_nhds hxU)).differentiableAt (by simp)
-    exact (l_hasDeriv_ext hU hxU hx hX hFd he).deriv
+  · exact (hF.fderiv_of_isOpen hU (by simp)).clm_apply (mulL X).contDiff.contDiffOn
+  · exact (l_hasDeriv_ext hU hxU hx hX
+      ((hF.contDiffAt (hU.mem_nhds hxU)).differentiableAt (by simp)) he).deriv
 
 theorem ld_lin {f f₂ : Mx k r → E} (hf : SmoothLev k r i D f) (hf₂ : SmoothLev k r i D f₂) (s : ℂ)
     {g X : Mx k r} (hg : g ∈ Glev k r i ∩ D) (hX : inLieLev k r i X) :
@@ -311,26 +310,19 @@ theorem uh_inv_mul {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ * g = 1 := by
   rw [Matrix.inv_eq_left_inv hl, hl]
 
 theorem uh_mul_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 := by
-  have hl : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by
-    rw [show Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) by simp only [Matrix.mul_assoc], hg,
-      Qx2.hpk_sq']
-  exact Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse hl)
+  exact mul_eq_one_comm.mp (uh_inv_mul hg)
 
 theorem unitary_hermitian_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : Hpk k r * g⁻¹ = gᴴ * Hpk k r := by
   have hl : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by
     rw [show Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) by simp only [Matrix.mul_assoc], hg,
       Qx2.hpk_sq']
-  have hsq : ∀ X : Mx k r, Hpk k r * (Hpk k r * X) = X := fun X => by
-    rw [← Matrix.mul_assoc, Qx2.hpk_sq', Matrix.one_mul]
   rw [Matrix.inv_eq_left_inv hl]
-  simp only [Matrix.mul_assoc, hsq]
+  simp only [← Matrix.mul_assoc, Qx2.hpk_sq', Matrix.one_mul]
 
 theorem unitary_inv_conjTranspose_hermitian {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : (g⁻¹)ᴴ * Hpk k r = Hpk k r * g := by
   have hl : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by
     rw [show Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) by simp only [Matrix.mul_assoc], hg,
       Qx2.hpk_sq']
-  have hsq : ∀ X : Mx k r, Hpk k r * (Hpk k r * X) = X := fun X => by
-    rw [← Matrix.mul_assoc, Qx2.hpk_sq', Matrix.one_mul]
   rw [Matrix.inv_eq_left_inv hl]
   simp only [conjTranspose_mul, conjTranspose_conjTranspose, Qx2.hpk_h, Matrix.mul_assoc, Qx2.hpk_sq', Matrix.mul_one]
 
@@ -338,8 +330,6 @@ theorem unitary_hermitian_conjTranspose {g : Mx k r} (hg : g ∈ UH (Hpk k r)) :
   have hl : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by
     rw [show Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) by simp only [Matrix.mul_assoc], hg,
       Qx2.hpk_sq']
-  have hsq : ∀ X : Mx k r, Hpk k r * (Hpk k r * X) = X := fun X => by
-    rw [← Matrix.mul_assoc, Qx2.hpk_sq', Matrix.one_mul]
   rw [Matrix.inv_eq_left_inv hl]
   simp only [Matrix.mul_assoc, Qx2.hpk_sq', Matrix.mul_one]
 
@@ -383,11 +373,9 @@ theorem lie_conj {g X : Mx k r} (hg : g ∈ Glev k r i) (hX : inLieLev k r i X) 
 
 theorem exp_swap {g : Mx k r} (hg : g ∈ UH (Hpk k r)) (X : Mx k r) (t : ℝ) :
     g * NormedSpace.exp ((t : ℂ) • (g⁻¹ * X * g)) = NormedSpace.exp ((t : ℂ) • X) * g := by
-  have h1 := uh_inv_mul hg
-  have h2 := uh_mul_inv hg
-  have hu : IsUnit g := ⟨⟨g, g⁻¹, h2, h1⟩, rfl⟩
+  have hu : IsUnit g := ⟨⟨g, g⁻¹, uh_mul_inv hg, uh_inv_mul hg⟩, rfl⟩
   rw [show (t : ℂ) • (g⁻¹ * X * g) = g⁻¹ * ((t : ℂ) • X) * g by rw [Matrix.mul_smul, Matrix.smul_mul]]
-  rw [Matrix.exp_conj' g _ hu, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]
+  rw [Matrix.exp_conj' g _ hu, ← Matrix.mul_assoc, ← Matrix.mul_assoc, uh_mul_inv hg, Matrix.one_mul]
 
 theorem rd_conj {g : Mx k r} (hg : g ∈ UH (Hpk k r)) (X : Mx k r) (F : Mx k r → E) :
     RdV (g⁻¹ * X * g) F g = LdV X F g := by

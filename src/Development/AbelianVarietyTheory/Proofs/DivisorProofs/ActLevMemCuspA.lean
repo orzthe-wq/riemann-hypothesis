@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.Tactic
 public import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 public import Formalism.LocalToGlobal.IndefiniteReal.OneMapEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetReducedBlockEqResidueDet

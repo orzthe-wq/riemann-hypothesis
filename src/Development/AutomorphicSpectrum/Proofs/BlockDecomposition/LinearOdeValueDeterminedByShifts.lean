@@ -61,6 +61,8 @@ import Development.AutomorphicArithmetic.IntegralCasts.IsOpenStabOfMemNhds
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.AffineGLForms.GenSpace
 public import Mathlib.Analysis.Calculus.Deriv.Add
 public import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

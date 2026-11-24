@@ -3,9 +3,10 @@ module
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.RedPEqZeroOfDiv
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.RedPDivOfUnit
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.BaseCosetRepIntegralAfterScalingAtBadPrimeStatement
-import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
+public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsMidLevIff
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.BaseCosetRepIntegralAfterScalingAtBadPrime
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteOrderValuation.WeakApprox
+import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -142,7 +143,7 @@ theorem sameCoset_loc {E : Type} [Field E] [NumberField E] [StarRing E] (P : Hei
     intro m v hv
     have : q ^ m • v = ((qOf P : 𝓞 E) ^ m) • v := by
       rw [← algebraMap_smul E ((qOf P : 𝓞 E) ^ m) v]
-      congr 1 <;> simp [hqdef]
+      congr 1
     rw [this]
     exact Submodule.smul_mem _ _ hv
   have hw : q ^ e • y₀ ∈ stdAt E n P := (hsm _ _).1 hy₀
@@ -220,7 +221,7 @@ theorem cosetOf_frames_vG : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A 
     simpa only [hP, if_true, hyy] using h
   have hy₀ : ∀ l, IntAt P.1 ((qOf P.1 : t.X.E) ^ 1 * A.y0 β P l) := by
     intro l
-    have h := GlobalTheory.T.intAt_scaled_baseCosetRep_of_adTie D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin H β P l
+    have h := _root_.GlobalTheory.TwU.BaseCosetInt.baseCosetRep_integral_after_scaling_at_bad_prime D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin H β P l
     simpa only [hP, if_true] using h
   have hqI : IntAt P.1 (qOf P.1 : t.X.E) := by
     simpa using IntAt.coe P.1 ((qOf P.1 : ℕ) : 𝓞 t.X.E)

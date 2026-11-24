@@ -96,6 +96,11 @@ def At : Prop := Canonical κ π ∧ LiftObj κ π ∧ LiftHom κ π
 
 end GrothendieckMessing
 
+/-- The Grothendieck--Messing deformation theorem for abelian schemes over nilpotent divided-power
+thickenings `R → R₀` with `p` nilpotent in `R`: deformations of an abelian scheme `A₀ / Spec R₀`
+correspond to admissible lifts of the Hodge filtration inside de Rham homology (`Canonical`,
+`LiftObj`, and `LiftHom`).
+See [Messing, *The Crystals Associated to Barsotti-Tate Groups* (Chapter V, Theorem 1.6 and Section 2)][messing1972]. -/
 def GrothendieckMessing : Prop :=
   ∀ (p : ℕ), p.Prime → ∀ (R : Type) [CommRing R], IsNilpotent (p : R) →
     ∀ (I : Ideal R) (κ : DividedPowers I), IsNilDP κ →

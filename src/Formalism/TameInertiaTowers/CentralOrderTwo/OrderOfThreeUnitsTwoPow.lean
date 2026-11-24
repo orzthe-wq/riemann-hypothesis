@@ -130,8 +130,7 @@ private lemma exists_one_add_two_pow_odd_pow_two_pow_eq (i m0 : ℕ) : ∀ k : �
     ring
 
 private lemma natCast_one_add_two_pow_mul_eq_one (N q : ℕ) : ((1 + 2 ^ N * q : ℕ) : ZMod (2 ^ N)) = 1 := by
-  have h : ((2 ^ N : ℕ) : ZMod (2 ^ N)) = 0 := ZMod.natCast_self _
-  rw [Nat.cast_add, Nat.cast_mul, h, zero_mul, add_zero, Nat.cast_one]
+  rw [Nat.cast_add, Nat.cast_mul, ZMod.natCast_self, zero_mul, add_zero, Nat.cast_one]
 
 private lemma natCast_one_add_two_pow_odd_ne_one (N m : ℕ) :
     ((1 + 2 ^ N * (2 * m + 1) : ℕ) : ZMod (2 ^ (N + 1))) ≠ 1 := by
@@ -204,11 +203,9 @@ lemma sign_eq (n : ℕ) {b b' : Bool} {k k' : ℕ}
 lemma inj (n : ℕ) : Function.Injective (fun p : Bool × Fin (2 ^ (n + 1)) =>
     (if p.1 then -1 else 1) * u5 (n + 3) ^ (p.2 : ℕ)) := by
   rintro ⟨b, k⟩ ⟨b', k'⟩ h
-  have h' : (if b then -1 else 1) * u5 (n + 3) ^ (k : ℕ) =
-      (if b' then -1 else 1) * u5 (n + 3) ^ (k' : ℕ) := h
-  have hb : b = b' := sign_eq n h'
+  have hb : b = b' := sign_eq n h
   subst hb
-  have h2 : u5 (n + 3) ^ (k : ℕ) = u5 (n + 3) ^ (k' : ℕ) := mul_left_cancel h'
+  have h2 : u5 (n + 3) ^ (k : ℕ) = u5 (n + 3) ^ (k' : ℕ) := mul_left_cancel h
   have ho : orderOf (u5 (n + 3)) = 2 ^ (n + 1) := orderOf_five_units_two_pow (n + 1)
   rw [pow_inj_mod, ho, Nat.mod_eq_of_lt k.2, Nat.mod_eq_of_lt k'.2] at h2
   exact Prod.ext rfl (Fin.ext h2)
@@ -217,10 +214,8 @@ lemma zpowers_sq {G : Type*} [Group G] [Finite G] {g y : G} (hg : g ^ 2 = 1)
     (hy : y ∈ Subgroup.zpowers g) : y = 1 ∨ y = g := by
   obtain ⟨k, rfl⟩ := mem_zpowers_nat hy
   rcases Nat.even_or_odd' k with ⟨m, rfl | rfl⟩
-  · left
-    rw [pow_mul, hg, one_pow]
-  · right
-    rw [pow_succ, pow_mul, hg, one_pow, one_mul]
+  · exact Or.inl (by rw [pow_mul, hg, one_pow])
+  · exact Or.inr (by rw [pow_succ, pow_mul, hg, one_pow, one_mul])
 
 lemma orderOf_mk_eq {G : Type*} [CommGroup G] [Finite G] {x g : G} (hg : g ^ 2 = 1)
     (hx : g ∉ Subgroup.zpowers x) :
@@ -240,11 +235,8 @@ lemma card_quot (n : ℕ) : Nat.card ((ZMod (2 ^ (n + 2)))ˣ ⧸
   have h1 := Subgroup.card_eq_card_quotient_mul_card_subgroup
     (Subgroup.zpowers (-1 : (ZMod (2 ^ (n + 2)))ˣ))
   rw [Nat.card_zpowers, orderOf_eq_prime (neg_one_sq) (neg_one_ne_one n)] at h1
-  have h2 : Nat.card (ZMod (2 ^ (n + 2)))ˣ = 2 ^ n * 2 := by
-    have := card_units (n + 1)
-    rw [pow_succ] at this
-    exact this
-  rw [h2] at h1
+  rw [show Nat.card (ZMod (2 ^ (n + 2)))ˣ = 2 ^ n * 2 by
+    simpa [pow_succ] using card_units (n + 1)] at h1
   exact (Nat.eq_of_mul_eq_mul_right two_pos h1).symm
 
 end AdmissibleUnits
@@ -268,10 +260,9 @@ open AdmissibleUnits in
 theorem quotCyclic : QuotCyclic := by
   unfold QuotCyclic
   intro n
-  have hsq : (-1 : (ZMod (2 ^ (n + 2)))ˣ) ^ 2 = 1 := neg_one_sq
   have h5 : orderOf (QuotientGroup.mk (s := Subgroup.zpowers (-1 : (ZMod (2 ^ (n + 2)))ˣ))
       (u5 (n + 2))) = 2 ^ n := by
-    rw [orderOf_mk_eq hsq (neg_not_mem_five n), orderOf_five_units_two_pow n]
+    rw [orderOf_mk_eq neg_one_sq (neg_not_mem_five n), orderOf_five_units_two_pow n]
   refine ⟨isCyclic_of_orderOf_eq_card _ (h5.trans (card_quot n).symm), card_quot n, h5, ?_⟩
   cases n with
   | zero =>

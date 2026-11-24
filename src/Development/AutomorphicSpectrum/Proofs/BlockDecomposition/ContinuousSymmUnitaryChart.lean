@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.WeilSiegelFormulaUnitary
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ContinuousLeviBlock
 
 @[expose] public section
 
@@ -50,16 +51,6 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 
 namespace GlobalTheory.CompanionTheory.ChartSymm
 
-theorem continuous_mat {D : D7} {n : ℕ} : Continuous (mat : G D n → Mx D (n + n) (n + n)) := by
-  unfold GlobalTheory.StdUnn.mat
-  exact Continuous.comp' Units.continuous_val continuous_induced_dom
-
-private theorem gram_conjTranspose_eq_self {D : D7} (S : HSp D) :
-    (Formalism.BasicNotions.HSpace.gram S).conjTranspose = Formalism.BasicNotions.HSpace.gram S := by
-  ext i j
-  simp only [Matrix.conjTranspose_apply, Formalism.BasicNotions.HSpace.gram]
-  exact S.herm.eq (S.frame j) (S.frame i)
-
 private theorem fromRows_gram_mul_fromCols_eq_one_of_hypDec {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (μ : D.host.E)
     (hμ : μ ≠ 0) :
     Matrix.fromRows (d.e'.conjTranspose * Formalism.BasicNotions.HSpace.gram S)
@@ -70,13 +61,13 @@ private theorem fromRows_gram_mul_fromCols_eq_one_of_hypDec {D : D7} {S S₀ : H
   have h0' : d.e'.conjTranspose * Formalism.BasicNotions.HSpace.gram S * d.e' = 0 := d.e'e'
   have h2 : d.e.conjTranspose * Formalism.BasicNotions.HSpace.gram S * d.e' = 1 := by
     have h := congrArg Matrix.conjTranspose h1
-    simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, gram_conjTranspose_eq_self,
+    simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, _root_.GlobalTheory.MixModel.gram_conjTranspose,
       Matrix.conjTranspose_one] at h
     rw [Matrix.mul_assoc]
     exact h
   rw [Matrix.fromRows_mul_fromCols]
   simp only [Matrix.mul_smul, Matrix.smul_mul, h1, h0, h0', h2, smul_zero, smul_smul,
-    inv_mul_cancel₀ hμ, mul_inv_cancel₀ hμ, one_smul, Matrix.fromBlocks_one]
+    mul_inv_cancel₀ hμ, one_smul, Matrix.fromBlocks_one]
 
 theorem continuous_symm : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ (κ : GA D (dblSp A) ≃* G D A.rank), IsChart A μ κ →
     Continuous κ.symm := by
@@ -114,7 +105,7 @@ theorem continuous_symm : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ �
       funext h
       exact key h
     rw [hf]
-    exact (continuous_const.matrix_mul continuous_mat).matrix_mul continuous_const
+    exact (continuous_const.matrix_mul _root_.GlobalTheory.StdUnn.HeightExists.continuous_mat).matrix_mul continuous_const
   · have hf : (fun h : G D A.rank => (((fun g : GA D (dblSp A) => matHom (dblSp A) g) ∘ κ.symm) h)⁻¹.val) =
         fun h => rat (Tm A μ) * mat h⁻¹ * rat L := by
       funext h

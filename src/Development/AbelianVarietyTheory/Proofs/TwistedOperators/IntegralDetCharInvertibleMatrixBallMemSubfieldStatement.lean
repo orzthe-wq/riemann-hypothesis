@@ -53,4 +53,4 @@ open ValuativeRel Formalism.L2.Host
 
 
 theorem _root_.GlobalTheory.T.integral_detChar_invertibleMatrixBall_mem_subfield : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {A' : Type} [Fintype A'] [DecidableEq A'] (F : Subfield ℂ) {J : Subgroup (GL A' k)}, IsOpen (J : Set (GL A' k)) → J ≤ KO k A' → ∀ (ν : kˣ →* ℂˣ) (z : ℂ) {ϖ : kˣ} {e : ℕ}, IsUnif ϖ → CondLE ϖ e ν → (∀ u, (ν u : ℂ) ∈ F) → (∀ u : kˣ, apow u z ∈ F) → ∀ (c : kˣ) (x : Matrix A' A' k), (∀ y : Matrix A' A' k, (∀ i j, valuation k (y i j - x i j) ≤ valuation k (c : k)) → y.det ≠ 0) → ∫ g in {g : GL A' k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k (c : k)}, (ν (gdet g) : ℂ) * apow (gdet g) z ∂(haarVol J) ∈ F := by
-  first | exact @GlobalTheory.GLBallInt.integral_glBall_mem | exact GlobalTheory.GLBallInt.integral_glBall_mem | (intros; apply GlobalTheory.GLBallInt.integral_glBall_mem <;> assumption)
+  first | exact @GlobalTheory.GLBallInt.integral_glBall_mem

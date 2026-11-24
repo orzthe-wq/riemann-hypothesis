@@ -3,7 +3,6 @@ module
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.SiegelWeilDatumProperties
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.SiegelWeilKwhitIwa
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaSplitting.SplitP
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.VacuumIwasawa.IsParOfFrame
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,16 +71,16 @@ theorem isPar_of_frame_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
     ext i j
     rfl
   have h2 : incM F ((diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E) * tb.1) = DC * incM F tb.1 := by
-    rw [incM_mul'']
+    rw [_root_.PositivityTheory.SiegelWeilFormula.KWhit.incM_mul']
     congr 1
     ext i j
     cases i <;> simp [DC, diagCols, incM, Matrix.one_apply, apply_ite] <;> split_ifs <;> simp_all
   have hb : incM F d.b.1 * E1 = DC * incM F tb.1 := h1.trans ((congrArg (incM F) htb').trans h2)
   have hTb : incM F tb.1 * incM F (tb⁻¹).1 = 1 := by
-    rw [← incM_mul'', Units.mul_inv]
+    rw [← _root_.PositivityTheory.SiegelWeilFormula.KWhit.incM_mul', Units.mul_inv]
     exact Matrix.map_one _ (map_zero _) (map_one _)
   have hTb' : incM F (tb⁻¹).1 * incM F tb.1 = 1 := by
-    rw [← incM_mul'', Units.inv_mul]
+    rw [← _root_.PositivityTheory.SiegelWeilFormula.KWhit.incM_mul', Units.inv_mul]
     exact Matrix.map_one _ (map_zero _) (map_one _)
   have hdc : DC = incM F d.b.1 * E1 * incM F (tb⁻¹).1 := by
     rw [hb, Matrix.mul_assoc, hTb, Matrix.mul_one]

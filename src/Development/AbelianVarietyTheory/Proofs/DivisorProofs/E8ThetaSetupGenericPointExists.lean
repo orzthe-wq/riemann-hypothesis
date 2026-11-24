@@ -1,11 +1,13 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ThetaSetupStructureMapComp
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsThetaCompact
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsChartSiegelLevelCoverSharpTheta
+public import Development.AbelianVarietyTheory.Definitions.Degenerations.ArithBase
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalModelNormalisationDedekind
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsThetaSystemOfPolarisedLevel
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsChartSiegelLevelCoverSharpThetaStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNormalModelNormalisationDedekindStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothProjectiveStalkFactorial
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsBigThetaSysWithAction
 import Mathlib.Algebra.Order.Floor.Extended
@@ -109,7 +111,7 @@ theorem exists_thetaSys_at : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → 
       spMap S.R.val.toRingHom ≫ u ≫ F.s = spMap ((algebraMap o₁ Ω₁).comp κ) ∧ κ.Finite ∧
       ((spMap S.R.val.toRingHom ≫ u).stalkMap (genericPoint (Sp Ω₁))).hom.Finite := by
   intro g n hg hn ho F W hW η hη B
-  obtain ⟨ℓ, hℓ, hℓo, H⟩ := GlobalTheory.T.exists_chart_siegelLevelCover_sharpTheta g n hg hn ho F W hW η hη
+  obtain ⟨ℓ, hℓ, hℓo, H⟩ := _root_.GlobalTheory.PoincChart.exists_chart g n hg hn ho F W hW η hη
   obtain ⟨k, j₀, hBk, Hs⟩ := exists_big_thetaSys_ge ℓ (8 * g) hℓ hℓo B
   obtain ⟨o, Ω, i₁, i₂, i₃, i₄, κ, R, J, b, t, w, w', x, hfg, hfr, hprim, hsh, hηx, hbase, hκ, hst⟩ :=
     H (max j₀ 1) (le_max_right _ _)
@@ -142,7 +144,7 @@ theorem exists_setup : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F
     rw [← Category.assoc, Scheme.Hom.stalkMap_comp]
     exact RingHom.Finite.comp hstalk (RingHom.Finite.of_surjective _
       (ConcreteCategory.bijective_of_isIso (i.stalkMap _)).2)
-  obtain ⟨M, π, hMn, hπ, hcomp⟩ := GlobalTheory.T.exists_normal_model_normalisation_dedekind (cycAway n) o₁ Ω₁ κ hκ Z z inferInstance inferInstance inferInstance
+  obtain ⟨M, π, hMn, hπ, hcomp⟩ := _root_.GlobalTheory.Poinc.exists_ratModel_normalization (cycAway n) o₁ Ω₁ κ hκ Z z inferInstance inferInstance inferInstance
     (spMap S.R.val.toRingHom ≫ u ≫ i) hp hst
   exact ⟨Setup.mk o₁ Ω₁ S ρ hbig u hsharp (fun w => (hgen w).symm ▸ hη) M (GlobalTheory.IsNormalScheme.of_pred hMn) π hπ hcomp
     hg hn ho z hproj (GlobalTheory.IsNormalScheme.of_pred hZn) hopen hiz hden hW hT κ hbase, hB, hgen⟩

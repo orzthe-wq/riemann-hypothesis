@@ -4,57 +4,13 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentat
 public import Formalism.RealPlaceAnalysis.SmoothOnG
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IntegrableComplexContinuousBoundedSupport
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 public import Mathlib.Analysis.Calculus.Deriv.Prod
 import Mathlib.Analysis.Calculus.Deriv.Star
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.ConjTransposeEqOfInG
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothDefs
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -72,17 +28,10 @@ section Mat
 
 variable {ε : Fin n → Bool}
 
-theorem J_mul_J_eq_one (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
-
 theorem unitary_group_inv_eq_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : g⁻¹ = Jm ε * gᴴ * Jm ε := by
   apply Matrix.inv_eq_left_inv
   unfold inUJ at hg
-  rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg, J_mul_J_eq_one]
+  rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self]
 
 theorem J_conj_entry (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) (d c : Fin n) :
     (Jm ε * A * Jm ε) d c = (if ε d then 1 else -1) * A d c * (if ε c then 1 else -1) := by
@@ -93,17 +42,16 @@ theorem J_conj_neg_mul_inv {g X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
   unfold inG at hX
   have h1 : Xᴴ * Jm ε = -(Jm ε * X) := eq_neg_of_add_eq_zero_left hX
   have h2 : Jm ε * Xᴴ * Jm ε = -X := by
-    rw [Matrix.mul_assoc, h1, Matrix.mul_neg, ← Matrix.mul_assoc, J_mul_J_eq_one, Matrix.one_mul]
+    rw [Matrix.mul_assoc, h1, Matrix.mul_neg, ← Matrix.mul_assoc, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self, Matrix.one_mul]
   have h3 : Jm ε * (g * X)ᴴ * Jm ε = (Jm ε * Xᴴ * Jm ε) * (Jm ε * gᴴ * Jm ε) := by
     rw [Matrix.conjTranspose_mul]
     simp only [Matrix.mul_assoc]
-    rw [← Matrix.mul_assoc (Jm ε) (Jm ε), J_mul_J_eq_one, Matrix.one_mul]
+    rw [← Matrix.mul_assoc (Jm ε) (Jm ε), _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self, Matrix.one_mul]
   rw [h3, h2, Matrix.neg_mul]
 
 theorem hasDerivAt_exp_curve_entry (g X : Matrix (Fin n) (Fin n) ℂ) (c d : Fin n) :
     HasDerivAt (fun t : ℝ => (g * NormedSpace.exp ((t : ℂ) • X)) c d) ((g * X) c d) 0 := by
-  have h := Formalism.REAL.hasDerivAt_mul_exp_smul_zero g X
-  exact hasDerivAt_pi.1 (hasDerivAt_pi.1 h c) d
+  exact hasDerivAt_pi.1 (hasDerivAt_pi.1 (Formalism.REAL.hasDerivAt_mul_exp_smul_zero g X) c) d
 
 theorem hasDerivAt_inv_exp_curve_entry {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hX : inG ε X) (d c : Fin n) :
     HasDerivAt (fun t : ℝ => (g * NormedSpace.exp ((t : ℂ) • X))⁻¹ d c) (-(X * g⁻¹) d c) 0 := by
@@ -114,8 +62,7 @@ theorem hasDerivAt_inv_exp_curve_entry {g X : Matrix (Fin n) (Fin n) ℂ} (hg : 
     funext t
     rw [unitary_group_inv_eq_conj (hcur t), J_conj_entry, Matrix.conjTranspose_apply]
   have e : (-(X * g⁻¹)) d c = (if ε d then 1 else -1) * star ((g * X) c d) * (if ε c then 1 else -1) := by
-    have e1 := J_conj_neg_mul_inv (g := g) hX
-    rw [unitary_group_inv_eq_conj hg, ← e1, J_conj_entry, Matrix.conjTranspose_apply]
+    rw [unitary_group_inv_eq_conj hg, ← J_conj_neg_mul_inv (g := g) hX, J_conj_entry, Matrix.conjTranspose_apply]
   rw [hfun]
   exact ((((hasDerivAt_exp_curve_entry g X c d).star).const_mul _).mul_const _).congr_deriv e.symm
 
@@ -199,7 +146,7 @@ theorem tensor_dphi_complex_comb (dual : Bool) (g : Matrix (Fin n) (Fin n) ℂ) 
     rw [h4]
     by_cases h : d = b
     · subst h; simp [Matrix.mul_apply, Matrix.single_apply]
-    · simp [Matrix.mul_apply, Matrix.single_apply, h, Ne.symm h]
+    · simp [Matrix.mul_apply, h, Ne.symm h]
   · have h3 : X1 * g⁻¹ + Complex.I • (X2 * g⁻¹) = Matrix.single a b 1 * g⁻¹ := by
       rw [hZ, Matrix.add_mul, Matrix.smul_mul]
     have h4 := congrFun (congrFun h3 d) c
@@ -253,7 +200,7 @@ theorem tensor_coef_Eab_action (dual : Bool) (hσ : IsURepOn (UJset ε) σ) (hD 
       intro d
       simp only [tensF, cond_true, tensVd_coord]
       by_cases h : d = b
-      · subst h; simp [mul_sub, inner_sub_right]
+      · subst h; simp [mul_sub]
       · simp [h]
     have hL : ∀ d, cond true (-(if d = a then (g⁻¹) b c else 0)) (if d = b then g c a else 0) *
         inner ℂ (η c) (σ g (f d : H)) = -(if d = a then (g⁻¹) b c * inner ℂ (η c) (σ g (f a : H)) else 0) := by

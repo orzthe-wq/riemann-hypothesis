@@ -215,6 +215,6 @@ theorem GlobalTheory.exists_trait_nonlocal_torusExtension : ∀ (R : Type) [Comm
     simp only [RingHom.coe_comp, Function.comp_apply] at h1 ⊢
     show i (α₀ (algebraMap (R ⧸ p) k₀ (Ideal.Quotient.mk p r))) = _
     rw [h1]
-    simp [g₀, gA, φ₀, IsFractionRing.lift_algebraMap]
+    simp [g₀, gA, IsFractionRing.lift_algebraMap]
   · rw [← key, spMap_comp']
     exact T₂

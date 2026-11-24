@@ -124,7 +124,6 @@ theorem pull_lie_value : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω
     rw [← hz, centre_field_base]
     exact h1
   refine ⟨epsBase σ hz ≫ v, valAt_lie_base σ M hz hg hv, ?_⟩
-  unfold LieModel.Lifts at *
   change (Spec.map _ ≫ v.left) ≫ 𝟙 _ = _
   rw [Category.comp_id]
   rw [Category.comp_id] at hl

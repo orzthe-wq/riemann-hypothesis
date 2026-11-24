@@ -2,9 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GeometricallyConnectedOfIsIsoRestrict
+public import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.ExistsEmbeddedResolution
+public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsValuationSubringDominatingSubring
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothProjectiveModel
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallySubsingletonCohTwistZOfIsProjOver
-public import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.ExistsEmbeddedResolutionStatement
-public import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.ExistsSmoothProjectiveModel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,7 +58,7 @@ namespace GlobalTheory.LogResExist
 
 theorem exists_logRes : GlobalTheory.Published.Principalisation → ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (η : RatForms p n) (m : ℕ) (G : CartierDiv X), η ≠ 0 → ∀ Z : Closeds X, Z ≠ ⊤ → ∃ (Y : Scheme.{0}) (_ : IsIntegral Y) (s : Y ⟶ X) (_ : IsDominant s) (K : CartierDiv Y) (B : Closeds Y), IsLogRes p n η m G s K B ∧ ∀ y, s y ∈ Z → y ∈ B := by
   intro hP k _ _ X _ p n hp hdim η m G hη Z hZ
-  obtain ⟨Y₀, hY₀, s₀, hs₀, hsm, hproj, hbij⟩ := GlobalTheory.T.exists_smooth_projective_birational_model hP k X p n hp hdim
+  obtain ⟨Y₀, hY₀, s₀, hs₀, hsm, hproj, hbij⟩ := _root_.GlobalTheory.BirModel.exists_smooth_projective_model hP k X p n hp hdim
   let Z₀ : Closeds Y₀ := ⟨s₀.base ⁻¹' (Z : Set X), Z.isClosed.preimage s₀.base.hom.continuous⟩
   have hZ₀ : Z₀ ≠ ⊤ := by
     intro h
@@ -73,7 +74,7 @@ theorem exists_logRes : GlobalTheory.Published.Principalisation → ∀ (k : Typ
     exact hcl trivial
   obtain ⟨-, A, hA⟩ := isProper_and_exists_isAmpleLB_of_isProjOver hproj
   obtain ⟨Y, hY, t, ht, K, B, hres, hB, -⟩ :=
-    GlobalTheory.T.exists_embedded_resolution hP k X p n η m G hη Y₀ s₀ hsm hproj hbij Z₀ hZ₀ A hA
+    _root_.GlobalTheory.exists_logRes_ample hP k X p n η m G hη Y₀ s₀ hsm hproj hbij Z₀ hZ₀ A hA
   haveI := ht
   exact ⟨Y, hY, t ≫ s₀, inferInstance, K, B, hres, fun y hy => hB y (by simpa [Z₀] using hy)⟩
 

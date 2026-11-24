@@ -1,40 +1,38 @@
 module
 
+public import Mathlib.RingTheory.Valuation.Basic
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalBlockDetBlockTriangular
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnramifiedCharacter
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.OffQOfSizeRows
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormaliseMeanSquareOfCocompact
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasDerivAtZeroAndIsTheta
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemLatOIffExistsActO
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.NotMemSpanOfCommute
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OmVacuumEqSplitFacSmulSum
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationLeOneOfMem
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.CocompactTensor
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceInvariantFormsSeparateThetaFunctions
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsInvariantForm
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EigenOfLocalComponentsFiniteAdelicPair
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdempotentComponentMemFrameStabilizer
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfPartOneSubEInfSmul
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsUnramifiedAtPlaceIdempotentOfHeckeCharUnramifi
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemCompletedGridArrowLatticeIffIntegralFrameMatr
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemHatLConjIIffHform
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NsmulProjectionXColumnsMemSelfDualLattice
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OmSplitHalves
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdSubProdLe
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOperatorLatticeStabiliserFixesVacuumNonsplit
-import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDetInt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -49,7 +47,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -62,9 +59,59 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormaliseMeanSquareOfCocompact
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CocompactTensor
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsInvariantForm
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfPartOneSubEInfSmul
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOperatorLatticeStabiliserFixesVacuumNonsplit
+import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.ReduceModChar
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDetInt
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdSubProdLe, Development.AbelianVarietyTheory.Proofs.TwistedOperators.DependenceFixed
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdSubProdLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdSubProdLe", "h": "module\n\npublic import Mathlib.RingTheory.Valuation.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.ProdSubProdBound
+
+theorem prod_sub_prod_le {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] {v : Valuation K Γ}
+    {ι : Type} (s : Finset ι) {c : Γ} {a b : ι → K}
+    (ha : ∀ i, v (a i) ≤ 1) (hb : ∀ i, v (b i) ≤ 1) (hab : ∀ i, v (a i - b i) ≤ c) :
+    v (∏ i ∈ s, a i - ∏ i ∈ s, b i) ≤ c := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert j s hj ih =>
+    rw [Finset.prod_insert hj, Finset.prod_insert hj]
+    have hB : v (∏ i ∈ s, b i) ≤ 1 := by
+      rw [map_prod]; exact Finset.prod_le_one' (fun i _ => hb i)
+    have e : a j * ∏ i ∈ s, a i - b j * ∏ i ∈ s, b i
+        = a j * (∏ i ∈ s, a i - ∏ i ∈ s, b i) + (a j - b j) * ∏ i ∈ s, b i := by ring
+    rw [e]
+    refine (v.map_add _ _).trans (max_le ?_ ?_)
+    · rw [v.map_mul]
+      calc v (a j) * v (∏ i ∈ s, a i - ∏ i ∈ s, b i) ≤ 1 * c := mul_le_mul' (ha j) ih
+        _ = c := one_mul c
+    · rw [v.map_mul]
+      calc v (a j - b j) * v (∏ i ∈ s, b i) ≤ c * 1 := mul_le_mul' (hab j) hB
+        _ = c := mul_one c
+
+alias main := _root_.GlobalTheory.ProdSubProdBound.prod_sub_prod_le
+
+end GlobalTheory.ProdSubProdBound
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdSubProdLe =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.DependenceFixed =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.DependenceFixed", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalBlockDetBlockTriangular\npublic import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnramifiedCharacter\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsSplitOfIsInertAt\npublic import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.OffQOfSizeRows\nimport Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormaliseMeanSquareOfCocompact\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasDerivAtZeroAndIsTheta\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MemLatOIffExistsActO\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.NotMemSpanOfCommute\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.OmVacuumEqSplitFacSmulSum\nimport Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ValuationLeOneOfMem\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare\nimport Development.AbelianVarietyTheory.Proofs.HeightProofs.CocompactTensor\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceInvariantFormsSeparateThetaFunctions\nimport Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsInvariantForm\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EigenOfLocalComponentsFiniteAdelicPair\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdempotentComponentMemFrameStabilizer\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfPartOneSubEInfSmul\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsUnramifiedAtPlaceIdempotentOfHeckeCharUnramifi\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemCompletedGridArrowLatticeIffIntegralFrameMatr\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemHatLConjIIffHform\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NsmulProjectionXColumnsMemSelfDualLattice\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OmSplitHalves\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ProdSubProdLe\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilOperatorLatticeStabiliserFixesVacuumNonsplit\nimport Formalism.LocalToGlobal.Divisibility.DefGroupLemmas\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDetInt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -239,16 +286,6 @@ theorem Sm.sub {m n : Type} {c : Γ} {M N : Matrix m n R} (h : Sm v φ c M) (h' 
     rw [Matrix.sub_apply, map_sub]
     exact v.map_sub_le (h i j) (h' i j)
 
-theorem prod_sub_le {ι : Type} (s : Finset ι) {c : Γ} {a b : ι → K} (ha : ∀ i, v (a i) ≤ 1) (hb : ∀ i, v (b i) ≤ 1)
-    (h : ∀ i, v (a i - b i) ≤ c) : v (∏ i ∈ s, a i - ∏ i ∈ s, b i) ≤ c := by
-  first
-  | exact @_root_.GlobalTheory.ProdSubProdBound.main
-  | exact _root_.GlobalTheory.ProdSubProdBound.main
-  | (apply _root_.GlobalTheory.ProdSubProdBound.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.ProdSubProdBound.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.ProdSubProdBound.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.ProdSubProdBound.main ..)
-
 theorem Sm.det {n : Type} [Fintype n] [DecidableEq n] {c : Γ} (hc : c ≤ 1) {M : Matrix n n R} (h : Sm v φ c (M - 1)) :
     v (φ M.det - 1) ≤ c := by
   have h1 : ∀ i j, v (φ ((1 : Matrix n n R) i j)) ≤ 1 := fun i j => by
@@ -264,7 +301,7 @@ theorem Sm.det {n : Type} [Fintype n] [DecidableEq n] {c : Γ} (hc : c ≤ 1) {M
   ← Finset.sum_sub_distrib]
   refine v.map_sum_le fun σ _ => ?_
   rw [map_mul, map_mul, ← mul_sub, map_prod, map_prod, map_mul]
-  refine mul_le_of_le_one_of_le ?_ (prod_sub_le _ (fun i => h3 _ _) (fun i => h1 _ _) fun i => h2 _ _)
+  refine mul_le_of_le_one_of_le ?_ (_root_.GlobalTheory.ProdSubProdBound.prod_sub_prod_le _ (fun i => h3 _ _) (fun i => h1 _ _) fun i => h2 _ _)
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> rw [e] <;> simp
 
 end Small
@@ -407,10 +444,6 @@ theorem mem_hatMx_of_sm (G : GridData L sc) {m n : ℕ} {Λ : Submodule (𝓞 D.
       rw [hz Q hQ, map_zero]
       exact zero_le
 
-theorem ext_cpt {a b : AE D} (h1 : infPart D a = infPart D b)
-    (h2 : ∀ Q : Pl D.host.E, cpt (D := D) Q (toEAf D a) = cpt (D := D) Q (toEAf D b)) : a = b :=
-  (comp_toAd D).ext' h1 h2
-
 def DepthLe (G : GridData L sc) (c : (AE D)ˣ →* Circle) : Prop :=
   (∀ v ∉ G.pl.S0, GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D c v) ∧ ∀ v ∈ G.pl.S0, ∀ e, Formalism.L2.NTheta.IsIdemAt e (G.pl.w v) →
     ∀ (x : (AE D)ˣ) (a : AE D), (x : AE D) = e * a + (1 - e) →
@@ -499,7 +532,7 @@ theorem fix_pair {μ₀ : T₀} (hL : L.Is μ₀) (hq : OffQ D) (G : GridData L 
       obtain ⟨q0, q1, -⟩ := Comparison₂.cpt_idemSum he₀
       obtain ⟨d1, d2⟩ := cpt_of_isIdemAt he
       have k : e₀ * e = e := by
-        refine ext_cpt ?_ fun Q => ?_
+        refine _root_.GlobalTheory.FunObj.ae_ext ?_ fun Q => ?_
         · rw [RingHom.map_mul, q0, zero_mul, GlobalTheory.SplitScalar.infPart_splitIdem he.1]
         · rw [RingHom.map_mul, RingHom.map_mul]
           by_cases hQ : Q = G.pl.w v
@@ -537,7 +570,7 @@ theorem fix_pair {μ₀ : T₀} (hL : L.Is μ₀) (hq : OffQ D) (G : GridData L 
       refine hΓ u u1 fun e₀ he₀ => ?_
       obtain ⟨q0, -, q2⟩ := Comparison₂.cpt_idemSum he₀
       have k : e₀ * algebraMap (AF D.host.F) (AE D) ε = 0 := by
-        refine ext_cpt ?_ fun Q => ?_
+        refine _root_.GlobalTheory.FunObj.ae_ext ?_ fun Q => ?_
         · rw [RingHom.map_mul, q0, zero_mul, RingHom.map_zero]
         · rw [RingHom.map_mul, RingHom.map_mul, RingHom.map_zero, RingHom.map_zero]
           by_cases hQ : Q ∈ G.pl.W0
@@ -568,3 +601,6 @@ theorem depFixed : DepFixed := by
 end GlobalTheory.DepthFix
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.DependenceFixed =====

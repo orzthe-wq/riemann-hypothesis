@@ -3,7 +3,7 @@ platformIndependent = true
 
 name = "tree"
 srcDir = "src"
-defaultTargets = ["CompanionTheory", "Development", "Formalism", "GroundTheory", "GroundTheoryFields", "Lemmata", "PositivityTheory", "ReciprocityTheory", "Supplements", "Main"]
+defaultTargets = ["CompanionTheory", "Development", "Formalism", "GroundTheory", "GroundTheoryFields", "Lemmata", "PositivityTheory", "ReciprocityTheory", "Main"]
 moreLeanArgs = ["--tstack=400000"]
 
 [leanOptions]
@@ -50,10 +50,6 @@ globs = ["PositivityTheory.+"]
 [[lean_lib]]
 name = "ReciprocityTheory"
 globs = ["ReciprocityTheory.+"]
-
-[[lean_lib]]
-name = "Supplements"
-globs = ["Supplements.+"]
 
 [[lean_lib]]
 name = "Main"

@@ -90,8 +90,9 @@ theorem exists_mem_one_sub_loc_dvd {R : Type} [CommRing R] [IsDedekindDomain R] 
     exact P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
   · rw [← hr]; ring
 
-theorem finite_divLat_quot_mulLat_homAt :
-    ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (N : Submodule (𝓞 E) (Sp E a)) (N' : Submodule (𝓞 E) (Sp E b)) (cA cB : ℕ), Submodule.IsFullLattice E N → Submodule.IsLattice E N' → 0 < cA → 0 < cB → Finite (↥(divLat cA (homAt S N N')) ⧸ (mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype) := by
+/-- Finiteness of the quotient for arbitrary source and target lattices. -/
+theorem finite_divLat_quot_mulLat_homAt_of_isLattice :
+    ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (N : Submodule (𝓞 E) (Sp E a)) (N' : Submodule (𝓞 E) (Sp E b)) (cA cB : ℕ), Submodule.IsLattice E N → Submodule.IsLattice E N' → 0 < cA → 0 < cB → Finite (↥(divLat cA (homAt S N N')) ⧸ (mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype) := by
   intro E _ _ _ a b S N N' cA cB hN hN' hA hB
   classical
   obtain ⟨G, hG⟩ := hN.fg
@@ -107,27 +108,11 @@ theorem finite_divLat_quot_mulLat_homAt :
     { toFun := fun x g => (cA : 𝓞 E) • x g
       map_add' := by intro x y; funext g; simp
       map_smul' := by intro r x; funext g; simp [smul_comm r] }
-  have ev_inj : Function.Injective ev := by
-    set_option backward.isDefEq.respectTransparency.instanceSearchTypes false in rw [injective_iff_map_eq_zero]
-    intro x hx
-    have hsp : Submodule.span E (G : Set (Sp E a)) = ⊤ := by
-      rw [← hN.span_eq_top, ← hG, Submodule.span_span_of_tower]
-    refine LinearMap.ext_on hsp fun g hg => ?_
-    have := congrFun hx ⟨g, hg⟩
-    have h2 : (cA : E) • x g = 0 := by
-      rw [Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul (𝓞 E)]; exact this
-    simpa [hA'] using (smul_eq_zero.1 h2).resolve_left hA'
   let T : Submodule (𝓞 E) (G → Sp E b) := Submodule.pi Set.univ fun _ => N'
   have hT : T.FG := Submodule.fg_pi fun _ => hN'.fg
   let Z : Submodule (𝓞 E) (HomE E a b) := T.comap ev
   have memZ : ∀ x : HomE E a b, x ∈ Z ↔ ∀ g : G, (cA : 𝓞 E) • x g ∈ N' := fun x =>
     ⟨fun h g => h g trivial, fun h g _ => h g⟩
-  have hZ : Z.FG := by
-    have : Module.Finite (𝓞 E) T := Module.Finite.iff_fg.2 hT
-    have : Module.Finite (𝓞 E) Z := Module.Finite.of_injective (ev.restrict (p := Z) (q := T) fun x hx => hx) (by
-      intro x y hxy
-      exact Subtype.ext (ev_inj (congrArg Subtype.val hxy)))
-    exact Module.Finite.iff_fg.1 this
   have hZD : Z ≤ divLat cA (homAt S N N') := by
     intro x hx
     rw [memD]
@@ -144,7 +129,6 @@ theorem finite_divLat_quot_mulLat_homAt :
     refine (mem_locP P N' _).2 ⟨s, hs, ?_⟩
     have h := this _ hsy
     rwa [LinearMap.map_smul_of_tower, smul_comm] at h
-  have : Module.Finite (𝓞 E) Z := Module.Finite.iff_fg.2 hZ
   have hc : ((cB : 𝓞 E) * cA) ≠ 0 := by
     have : cB * cA ≠ 0 := by positivity
     exact_mod_cast this
@@ -170,7 +154,7 @@ theorem finite_divLat_quot_mulLat_homAt :
         have := P.isPrime
         obtain ⟨g, _, hg⟩ := Ideal.IsPrime.prod_mem_iff.1 h
         exact hf g hg
-    obtain ⟨s, hs, t, r, ht, htr⟩ := exists_mem_one_sub_loc_dvd S I hI ((cB : 𝓞 E) * cA)
+    obtain ⟨s, hs, t, r, ht, htr⟩ := GlobalTheory.exists_mem_one_sub_loc_dvd S I hI ((cB : 𝓞 E) * cA)
     refine ⟨⟨s • x, hs⟩, ?_⟩
     symm
     refine (Submodule.Quotient.eq _).2 ?_
@@ -190,7 +174,61 @@ theorem finite_divLat_quot_mulLat_homAt :
       rw [LinearMap.smul_apply, smul_comm, e2, smul_smul t, htr, mul_assoc, mul_smul, smul_comm, hBinv, mul_comm, mul_smul]
     rw [mul_smul, e1, smul_comm]
     exact N'.smul_mem r huy
-  have := Module.Finite.of_surjective _ hsurj
+  let f : Z →ₗ[𝓞 E] T := ev.restrict (p := Z) (q := T) fun x hx => hx
+  let q : Z →ₗ[𝓞 E] _ :=
+    ((mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype).mkQ ∘ₗ Submodule.inclusion hZD
+  have hk : LinearMap.ker f ≤ LinearMap.ker q := by
+    intro x hx
+    have hxg : ∀ g : G, (x : HomE E a b) g = 0 := by
+      intro g
+      have h := congrFun (congrArg Subtype.val (LinearMap.mem_ker.mp hx)) g
+      have h2 : (cA : E) • (x : HomE E a b) g = 0 := by
+        rw [Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul (𝓞 E)]
+        exact h
+      exact (smul_eq_zero.mp h2).resolve_left hA'
+    have hxN : ∀ y ∈ N, (x : HomE E a b) y = 0 := by
+      intro y hy
+      rw [← hG] at hy
+      induction hy using Submodule.span_induction with
+      | mem g hg => exact hxg ⟨g, hg⟩
+      | zero => simp
+      | add u v _ _ hu hv => simp [hu, hv]
+      | smul r u _ hu => simp [LinearMap.map_smul_of_tower, hu]
+    have hxloc : ∀ (P : HeightOneSpectrum (𝓞 E)), ∀ y ∈ localization₂ P.asIdeal N, (x : HomE E a b) y = 0 := by
+      intro P y hy
+      obtain ⟨s, hs, hsy⟩ := (mem_locP P N y).1 hy
+      have hs0 : (s : E) ≠ 0 := by
+        intro h
+        have : s = 0 := by exact_mod_cast h
+        exact hs (this ▸ P.asIdeal.zero_mem)
+      have h := hxN _ hsy
+      rw [LinearMap.map_smul_of_tower] at h
+      have h' : (s : E) • (x : HomE E a b) y = 0 := by
+        exact h
+      exact (smul_eq_zero.mp h').resolve_left hs0
+    apply LinearMap.mem_ker.mpr
+    change Submodule.Quotient.mk (Submodule.inclusion hZD x) = 0
+    rw [Submodule.Quotient.mk_eq_zero]
+    change (x : HomE E a b) ∈ mulLat cB (homAt S N N')
+    rw [memM]
+    refine ⟨(cB : E)⁻¹ • (x : HomE E a b), ?_, ?_⟩
+    · rw [memH]
+      intro P hP y hy
+      simp [hxloc P y hy]
+    · ext y
+      simp only [Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E,
+        smul_smul, mul_inv_cancel₀ hB', one_smul]
+  have : Module.Finite (𝓞 E) T := Module.Finite.iff_fg.2 hT
+  have : Module.Finite (𝓞 E) (LinearMap.range f) := Module.Finite.of_injective
+    (LinearMap.range f).subtype Subtype.val_injective
+  have : Module.Finite (𝓞 E) (Z ⧸ LinearMap.ker f) :=
+    Module.Finite.equiv f.quotKerEquivRange.symm
+  let q' := (LinearMap.ker f).liftQ q hk
+  have hq' : Function.Surjective q' := by
+    intro y
+    obtain ⟨x, hx⟩ := hsurj y
+    exact ⟨Submodule.Quotient.mk x, hx⟩
+  have := Module.Finite.of_surjective q' hq'
   have : Module.Finite ℤ (↥(divLat cA (homAt S N N')) ⧸ (mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype) :=
     Module.Finite.trans (𝓞 E) _
   refine Module.finite_of_fg_torsion _ ?_
@@ -202,5 +240,10 @@ theorem finite_divLat_quot_mulLat_homAt :
   show ((cB * cA : ℕ) : 𝓞 E) • x ∈ mulLat cB (homAt S N N')
   rw [memM]
   exact ⟨(cA : 𝓞 E) • x, hx, by rw [smul_smul, Nat.cast_mul]⟩
+
+theorem finite_divLat_quot_mulLat_homAt :
+    ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (N : Submodule (𝓞 E) (Sp E a)) (N' : Submodule (𝓞 E) (Sp E b)) (cA cB : ℕ), Submodule.IsFullLattice E N → Submodule.IsLattice E N' → 0 < cA → 0 < cB → Finite (↥(divLat cA (homAt S N N')) ⧸ (mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype) := by
+  intro E _ _ _ a b S N N' cA cB hN hN' hA hB
+  exact finite_divLat_quot_mulLat_homAt_of_isLattice E a b S N N' cA cB hN.toIsLattice hN' hA hB
 
 end GlobalTheory

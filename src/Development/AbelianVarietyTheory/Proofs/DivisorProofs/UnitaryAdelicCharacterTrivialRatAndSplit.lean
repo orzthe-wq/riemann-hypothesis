@@ -95,7 +95,7 @@ def cut (ε : A) (hε : ε * ε = ε) (hσ : σ ε = ε) : UJ σ J →* UJ σ J 
     have h3 : (1 - ε) * (1 - ε) = 1 - ε := by rw [mul_sub, h2]; ring
     change cT σ (mix ε hε g.1).1 * J * (mix ε hε g.1).1 = J
     simp only [mix_val, cT_add, cT_smul, cT_one, map_sub, map_one, hσ, add_mul, mul_add, Matrix.smul_mul,
-      Matrix.mul_smul, smul_add, smul_smul, hε, h1, h2, h3, zero_smul, add_zero, zero_add, mul_one, one_mul, hg]
+      Matrix.mul_smul, smul_smul, hε, h1, h2, h3, zero_smul, add_zero, zero_add, mul_one, one_mul, hg]
     rw [← add_smul]; simp⟩
   map_one' := by
     refine Subtype.ext (Units.ext ?_)
@@ -108,7 +108,7 @@ def cut (ε : A) (hε : ε * ε = ε) (hσ : σ ε = ε) : UJ σ J →* UJ σ J 
     have h3 : (1 - ε) * (1 - ε) = 1 - ε := by rw [mul_sub, h2]; ring
     change ε • (g.1.1 * h.1.1) + (1 - ε) • 1 = (mix ε hε g.1).1 * (mix ε hε h.1).1
     simp only [mix_val, add_mul, mul_add, Matrix.smul_mul,
-      Matrix.mul_smul, smul_add, smul_smul, hε, h1, h2, h3, zero_smul, add_zero, zero_add, mul_one, one_mul]
+      Matrix.mul_smul, smul_smul, hε, h1, h2, h3, zero_smul, add_zero, zero_add, mul_one, one_mul]
 
 theorem cut_val (ε : A) (hε : ε * ε = ε) (hσ : σ ε = ε) (g : UJ σ J) :
     (cut σ J ε hε hσ g).1.1 = 1 + ε • (g.1.1 - 1) := by
@@ -117,7 +117,7 @@ theorem cut_val (ε : A) (hε : ε * ε = ε) (hσ : σ ε = ε) (g : UJ σ J) :
 
 theorem proj_mul (P : Matrix (Fin n) (Fin n) A) (hP : P * P = P) (a b : A) :
     (1 + (a - 1) • P) * (1 + (b - 1) • P) = 1 + (a * b - 1) • P := by
-  simp only [add_mul, mul_add, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, hP]
+  simp only [add_mul, mul_add, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hP]
   rw [add_assoc, ← add_smul, ← add_smul]
   congr 2
   ring

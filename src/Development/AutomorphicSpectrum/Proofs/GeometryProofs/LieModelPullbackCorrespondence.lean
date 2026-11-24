@@ -59,7 +59,7 @@ theorem fst_comp_alg : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).
     Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) = 𝟙 _ := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
   have e : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R := by
-    ext r; simp [TrivSqZeroExt.algebraMap_eq_inl]
+    ext r; simp
   rw [e]
   exact Spec.map_id _
 

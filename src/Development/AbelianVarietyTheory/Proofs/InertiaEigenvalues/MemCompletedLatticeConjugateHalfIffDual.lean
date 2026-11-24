@@ -44,6 +44,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ConjTupRefl
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.ExistsRootNotMem
 import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNsmulIntMemLatO
 
 @[expose] public section
 
@@ -60,29 +61,6 @@ namespace GlobalTheory.ConjHalfDual
 open Formalism.IndefR.Fin.LevelGroupLemmas.Lat
 
 variable {D : D7}
-
-theorem cA_cA_self (z : AE D) : cA D (cA D z) = z := by
-  induction z using TensorProduct.induction_on with
-  | zero => rw [map_zero, map_zero]
-  | tmul a x =>
-    show a ⊗ₜ[D.host.F] D.sp.cm.sig (D.sp.cm.sig x) = a ⊗ₜ[D.host.F] x
-    congr 1
-    exact star_star x
-  | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
-
-theorem infPart_cA_of_zero {z : AE D} (h : infPart D z = 0) : infPart D (cA D z) = 0 := by
-  have key : ∀ w : AE D, infPart D (cA D w) =
-      Algebra.TensorProduct.map (AlgHom.id D.host.F (Ainf D.host.F)) D.sp.cm.sig (infPart D w) := by
-    intro w
-    induction w using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a x => rfl
-    | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy, map_add (f := _), map_add (f := _)]
-  rw [key, h, map_zero]
-
-theorem symplO_add_right' (S T : HSp D) (x y y' : WO S T) :
-    symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
-  unfold symplO; rw [hO_add_right, mul_add, map_add (f := _)]
 
 theorem hO_eq_zero_of {f g : AE D} (hfg : cA D g * f = 0) {S T : HSp D} {x y' : WO S T} (hx : IsHalf f x) :
     hO S T x (g • y') = 0 := by
@@ -101,9 +79,9 @@ theorem symplO_eq_zero_of {f g : AE D} (hfg : cA D g * f = 0) {S T : HSp D} {x y
 theorem mem_latO_iff_of_conjHalf : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsStdChar D ψ (-1) → IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ e : AE D, e * e = e → e * cA D e = 0 → infPart D e = 0 → finPart D e ∈ intAE D → ∀ u : WO S T, IsHalf (cA D e) u → (u ∈ latO S T ΛS ΛT (fun _ => True) ↔ ∀ l ∈ latO S T ΛS ΛT (fun _ => True), IsHalf e l → ψ (symplO S T l u) = 1) := by
   intro D ψ S T ΛS ΛT hψ hS hT e he hec hinf hfin u hu
   have key := (GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT).1
-  have hcc : cA D (cA D e) = e := cA_cA_self e
+  have hcc : cA D (cA D e) = e := _root_.Formalism.L2.Theta.cA_cA e
   have hcidem : cA D e * cA D e = cA D e := by rw [← map_mul, he]
-  have hcinf : infPart D (cA D e) = 0 := infPart_cA_of_zero hinf
+  have hcinf : infPart D (cA D e) = 0 := _root_.GlobalTheory.PlaceVec.infPart_cA hinf
   constructor
   · intro hmem l hl _
     have hl0 : l.map (infPart D) = 0 := by
@@ -128,7 +106,7 @@ theorem mem_latO_iff_of_conjHalf : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
       symplO_eq_zero_of (f := cA D e) (by
         rw [map_sub, map_sub, map_one, hcc]
         linear_combination (-1 : AE D) * hcidem - hec) hu
-    rw [hdec, symplO_add_right', symplO_add_right', t2, t3, add_zero, add_zero, t1]
+    rw [hdec, _root_.GlobalTheory.LatVac.symplO_add_right, _root_.GlobalTheory.LatVac.symplO_add_right, t2, t3, add_zero, add_zero, t1]
 
 end GlobalTheory.ConjHalfDual
 

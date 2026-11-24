@@ -150,7 +150,7 @@ theorem LeafRelLev_of : LeafRelLev := by
     congr 1
     apply pullback.hom_ext <;>
       simp only [pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc,
-        pullback.lift_snd_assoc, Category.comp_id]
+        Category.comp_id]
     rw [inj_nat]
   · intro σ
     exact ⟨(pbMapIso disc g (α.app (σ.obj 0)) (c' (σ.obj 0)) (c (σ.obj 0)) (hj _)).symm⟩

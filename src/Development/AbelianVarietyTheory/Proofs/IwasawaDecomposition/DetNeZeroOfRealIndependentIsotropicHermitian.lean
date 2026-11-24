@@ -48,6 +48,8 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsAd
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsLatBasisZero
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
 import Formalism.LocalToGlobal.ProjectiveLattices.ErealAddIInf
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

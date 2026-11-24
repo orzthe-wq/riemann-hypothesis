@@ -126,7 +126,7 @@ theorem exists_nat_conj {w : Pl D.host.E}
     (hw : ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal) :
     ∃ m : ℕ, (m : 𝓞 D.host.E) ∉ w.asIdeal ∧ ∀ a ∈ D.host.AA, star ((m : D.host.E) * a) ∈ D.host.AA := by
   obtain ⟨p, hp, hP⟩ := GlobalTheory.HalfCompare.exists_prime_under w
-  have hb := ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.bb_ne_bot D
+  have hb := _root_.Formalism.L2.Pj.b_ne_bot D
   have h0 : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 :=
     FractionalIdeal.coeIdeal_ne_zero.2 hb
   refine ⟨Ideal.absNorm D.host.ccK * Ideal.absNorm D.host.𝔟, fun h => hw ((hP _).2 ?_), fun a ha => ?_⟩
@@ -302,12 +302,12 @@ theorem adj_surj (S X : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βX : GL (Fin X.
     ∃ y : WO S X, IsHalf (cA D (atPl w 1)) y ∧ (frMapAdj S X βS βX y).map (cpt w) = z := by
   have h1 : ((βS⁻¹).val.map (cpt w) * ((S.gram⁻¹).map (incA D)).map (atW w)) *
       ((S.gram.map (incA D)).map (atW w) * βS.val.map (cpt w)) = 1 := by
-    rw [Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.map _ (atW w)), ← Matrix.map_mul, GlobalTheory.SquareAgree.HeisCov.gram_inv_mul,
+    rw [Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.map _ (atW w)), ← Matrix.map_mul, _root_.GlobalTheory.RouteCoords.inv_mul_gram,
       Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, ← Matrix.map_mul, Units.inv_mul,
       Matrix.map_one _ (map_zero _) (map_one _)]
   have h2 : ((βX⁻¹).val.map (cpt w) * ((X.gram⁻¹).map (incA D)).map (atW w)) *
       ((X.gram.map (incA D)).map (atW w) * βX.val.map (cpt w)) = 1 := by
-    rw [Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.map _ (atW w)), ← Matrix.map_mul, GlobalTheory.SquareAgree.HeisCov.gram_inv_mul,
+    rw [Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.map _ (atW w)), ← Matrix.map_mul, _root_.GlobalTheory.RouteCoords.inv_mul_gram,
       Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, ← Matrix.map_mul, Units.inv_mul,
       Matrix.map_one _ (map_zero _) (map_one _)]
   obtain ⟨y₀, hy₀⟩ : ∃ y₀ : Matrix (Fin S.rank) (Fin X.rank) (Kw w), y₀ = ((S.gram.map (incA D)).map (atW w) * βS.val.map (cpt w)) * z *

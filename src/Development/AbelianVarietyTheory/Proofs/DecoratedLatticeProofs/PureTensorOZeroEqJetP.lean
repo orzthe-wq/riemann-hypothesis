@@ -103,7 +103,7 @@ theorem pr_line (z v : VCx ι a b) (t : ℝ) :
 def gs (sc : ℝ) (z : VCx ι a b) : ℂ := cexp (-((Real.pi : ℂ) / 2 * HV sc z z))
 
 theorem gs_zero (sc : ℝ) : gs sc (0 : VCx ι a b) = 1 := by
-  simp [gs, HV_eq]
+  simp [gs]
 
 theorem hasDerivAt_line (sc : ℝ) (K : ℂ) (Φ : VCx ι a b → ℂ) (hΦ : Differentiable ℝ Φ) (z v : VCx ι a b) :
     HasDerivAt (fun t : ℝ => cexp ((t : ℂ) * K) * (gs sc (z + t • v) * Φ (z + t • v)))

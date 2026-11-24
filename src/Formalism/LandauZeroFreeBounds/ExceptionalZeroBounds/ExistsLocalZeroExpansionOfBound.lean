@@ -1,5 +1,6 @@
 module
 
+public import Mathlib.Analysis.Analytic.Order
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.Calculus.Deriv.Basic
 public import Mathlib.Analysis.SpecialFunctions.Log.Basic
@@ -55,51 +56,14 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
-private theorem differentiable_prod_sub_pow (Z : Finset ℂ) (m : ℂ → ℕ) :
-    Differentiable ℂ (fun w => ∏ ρ ∈ Z, (w - ρ) ^ m ρ) := by
-  refine Finset.induction_on Z ?_ ?_
-  · simp
-  · intro a s ha ih
-    simp only [Finset.prod_insert ha]
-    exact ((differentiable_id.sub_const a).pow (m a)).mul ih
-
-private theorem deriv_sub_mul_at_self {g : ℂ → ℂ} {ρ : ℂ} (hg : DifferentiableAt ℂ g ρ) :
-    deriv (fun z => (z - ρ) * g z) ρ = g ρ := by
-  have h : HasDerivAt (fun z => (z - ρ) * g z) (1 * g ρ + (ρ - ρ) * deriv g ρ) ρ :=
-    ((hasDerivAt_id ρ).sub_const ρ).mul hg.hasDerivAt
-  rw [h.deriv]
-  ring
-
-private theorem deriv_eq_zero_iff_mult_of_local_factor {f k : ℂ → ℂ} {ρ : ℂ} {n : ℕ} (hn : 1 ≤ n)
-    (hk : DifferentiableAt ℂ k ρ) (hk0 : k ρ ≠ 0)
-    (hf : f =ᶠ[𝓝 ρ] fun w => (w - ρ) ^ n * k w) :
-    (deriv f ρ = 0 → 2 ≤ n) ∧ (deriv f ρ ≠ 0 → n = 1) := by
-  rw [hf.deriv_eq]
-  obtain ⟨j, rfl⟩ : ∃ j, n = j + 1 := ⟨n - 1, by omega⟩
-  have hfun : (fun w => (w - ρ) ^ (j + 1) * k w) = fun w => (w - ρ) * ((w - ρ) ^ j * k w) := by
-    funext w
-    ring
-  have hg : DifferentiableAt ℂ (fun w => (w - ρ) ^ j * k w) ρ := by
-    fun_prop
-  rw [hfun, deriv_sub_mul_at_self hg]
-  rcases Nat.eq_zero_or_pos j with hj | hj
-  · subst hj
-    simp only [pow_zero, one_mul]
-    exact ⟨fun h => absurd h hk0, fun _ => by simp⟩
-  · have h0 : (ρ - ρ) ^ j = 0 := by
-      rw [sub_self]
-      exact zero_pow hj.ne'
-    rw [h0, zero_mul]
-    exact ⟨fun _ => by omega, fun h => absurd rfl h⟩
-
-theorem exists_localZeroExpansion_of_bound (f : ℂ → ℂ) (z₀ : ℂ) (r M : ℝ) (hr : 0 < r) (hM : 1 ≤ M)
+/-- In the local Landau expansion, the coefficient at each zero is its analytic order. -/
+theorem exists_localZeroExpansion_with_order (f : ℂ → ℂ) (z₀ : ℂ) (r M : ℝ) (hr : 0 < r) (hM : 1 ≤ M)
     (hf : DifferentiableOn ℂ f (Metric.closedBall z₀ r)) (hfz₀ : f z₀ ≠ 0)
     (hbound : ∀ z ∈ Metric.closedBall z₀ r, ‖f z‖ ≤ M * ‖f z₀‖) :
     ∃ (Z : Finset ℂ) (m : ℂ → ℕ),
       (∀ ρ : ℂ, ρ ∈ Z ↔ (ρ ∈ Metric.closedBall z₀ (r / 3) ∧ f ρ = 0)) ∧
       (∀ ρ ∈ Z, 1 ≤ m ρ) ∧
-      (∀ ρ ∈ Z, deriv f ρ = 0 → 2 ≤ m ρ) ∧
-      (∀ ρ ∈ Z, deriv f ρ ≠ 0 → m ρ = 1) ∧
+      (∀ ρ ∈ Z, analyticOrderAt f ρ = (m ρ : ℕ∞)) ∧
       ((∑ ρ ∈ Z, m ρ : ℕ) : ℝ) ≤ Real.log M / Real.log 2 ∧
       ∀ z ∈ Metric.closedBall z₀ (r / 6), f z ≠ 0 →
         ‖deriv f z / f z - ∑ ρ ∈ Z, (m ρ : ℂ) / (z - ρ)‖ ≤ 72 * Real.log M / r := by
@@ -117,15 +81,17 @@ theorem exists_localZeroExpansion_of_bound (f : ℂ → ℂ) (z₀ : ℂ) (r M :
     hhd.differentiableAt (Filter.mem_of_superset (isOpen_ball.mem_nhds hz) ball_subset_closedBall)
   have hZ0 : ∀ ρ ∈ Z, f ρ = 0 := fun ρ hρ => ((hZ ρ).1 hρ).2
   have hZb : ∀ ρ ∈ Z, ρ ∈ closedBall z₀ (r / 3) := fun ρ hρ => ((hZ ρ).1 hρ).1
-  have horder : ∀ ρ ∈ Z, (deriv f ρ = 0 → 2 ≤ m ρ) ∧ (deriv f ρ ≠ 0 → m ρ = 1) := by
+  have horder : ∀ ρ ∈ Z, analyticOrderAt f ρ = (m ρ : ℕ∞) := by
     intro ρ hρ
     have hρb := hsub ρ (hZb ρ hρ)
-    refine deriv_eq_zero_iff_mult_of_local_factor (k := fun w => (∏ ρ' ∈ Z.erase ρ, (w - ρ') ^ m ρ') * h w)
-      (hm ρ hρ) ((differentiable_prod_sub_pow (Z.erase ρ) m ρ).mul (hhdiff ρ hρb)) ?_ ?_
+    have hfa := (hf.mono ball_subset_closedBall).analyticOnNhd isOpen_ball ρ hρb
+    have hha := (hhd.mono ball_subset_closedBall).analyticOnNhd isOpen_ball ρ hρb
+    apply hfa.analyticOrderAt_eq_natCast.mpr
+    refine ⟨fun w => (∏ ρ' ∈ Z.erase ρ, (w - ρ') ^ m ρ') * h w, by fun_prop, ?_, ?_⟩
     · exact mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun ρ' hρ' =>
         pow_ne_zero _ (sub_ne_zero.mpr (Finset.ne_of_mem_erase hρ').symm)) (hh0 ρ (hZb ρ hρ))
     · filter_upwards [hloc ρ hρb] with w hw
-      rw [hw, ← mul_assoc, Finset.mul_prod_erase Z (fun ρ' => (w - ρ') ^ m ρ') hρ]
+      rw [smul_eq_mul, hw, ← mul_assoc, Finset.mul_prod_erase Z (fun ρ' => (w - ρ') ^ m ρ') hρ]
   have hlow : ∀ w ∈ sphere z₀ r,
       2 ^ (∑ ρ ∈ Z, m ρ) * (r / 3) ^ (∑ ρ ∈ Z, m ρ) ≤ ‖∏ ρ ∈ Z, (w - ρ) ^ m ρ‖ := by
     intro w hw
@@ -197,7 +163,7 @@ theorem exists_localZeroExpansion_of_bound (f : ℂ → ℂ) (z₀ : ℂ) (r M :
     exact (le_mul_of_one_le_right (norm_nonneg _) hone).trans (hmax z hzr)
   have hB := Formalism.ZF.logDerivBoundOnBall h z₀ (r / 3) M hr3 hM
     (hhd.mono (closedBall_subset_closedBall (by linarith))) hh0 hbB
-  refine ⟨Z, m, hZ, hm, fun ρ hρ => (horder ρ hρ).1, fun ρ hρ => (horder ρ hρ).2, hsum, ?_⟩
+  refine ⟨Z, m, hZ, hm, horder, hsum, ?_⟩
   intro z hz hfz
   have hz3 : z ∈ closedBall z₀ (r / 3 / 2) := by
     rw [mem_closedBall] at hz ⊢
@@ -214,7 +180,7 @@ theorem exists_localZeroExpansion_of_bound (f : ℂ → ℂ) (z₀ : ℂ) (r M :
   have hhz : h z ≠ 0 := fun h0 => hfz (by rw [e1, h0, mul_zero])
   have hl : logDeriv (fun w => (∏ ρ ∈ Z, (w - ρ) ^ m ρ) * h w) z =
       logDeriv (fun w => ∏ ρ ∈ Z, (w - ρ) ^ m ρ) z + logDeriv h z := by
-    exact logDeriv_mul z hPz hhz (differentiable_prod_sub_pow Z m z) (hhdiff z hzb)
+    exact logDeriv_mul z hPz hhz (by fun_prop) (hhdiff z hzb)
   rw [Formalism.ZF.landauLocal_logDeriv_prod Z m z hzρ, logDeriv_apply, logDeriv_apply] at hl
   have hsplit : deriv f z / f z - ∑ ρ ∈ Z, (m ρ : ℂ) / (z - ρ) = deriv h z / h z := by
     rw [(hloc z hzb).deriv_eq, e1, hl]
@@ -224,5 +190,32 @@ theorem exists_localZeroExpansion_of_bound (f : ℂ → ℂ) (z₀ : ℂ) (r M :
     _ = 72 * Real.log M / r := by
       rw [div_div_eq_mul_div]
       ring
+
+theorem exists_localZeroExpansion_of_bound (f : ℂ → ℂ) (z₀ : ℂ) (r M : ℝ) (hr : 0 < r) (hM : 1 ≤ M)
+    (hf : DifferentiableOn ℂ f (Metric.closedBall z₀ r)) (hfz₀ : f z₀ ≠ 0)
+    (hbound : ∀ z ∈ Metric.closedBall z₀ r, ‖f z‖ ≤ M * ‖f z₀‖) :
+    ∃ (Z : Finset ℂ) (m : ℂ → ℕ),
+      (∀ ρ : ℂ, ρ ∈ Z ↔ (ρ ∈ Metric.closedBall z₀ (r / 3) ∧ f ρ = 0)) ∧
+      (∀ ρ ∈ Z, 1 ≤ m ρ) ∧
+      (∀ ρ ∈ Z, deriv f ρ = 0 → 2 ≤ m ρ) ∧
+      (∀ ρ ∈ Z, deriv f ρ ≠ 0 → m ρ = 1) ∧
+      ((∑ ρ ∈ Z, m ρ : ℕ) : ℝ) ≤ Real.log M / Real.log 2 ∧
+      ∀ z ∈ Metric.closedBall z₀ (r / 6), f z ≠ 0 →
+        ‖deriv f z / f z - ∑ ρ ∈ Z, (m ρ : ℂ) / (z - ρ)‖ ≤ 72 * Real.log M / r := by
+  obtain ⟨Z, m, hZ, hm, horder, hsum, hest⟩ :=
+    exists_localZeroExpansion_with_order f z₀ r M hr hM hf hfz₀ hbound
+  have ha (ρ : ℂ) (hρ : ρ ∈ Z) : AnalyticAt ℂ f ρ :=
+    (hf.mono ball_subset_closedBall).analyticOnNhd isOpen_ball ρ
+      (closedBall_subset_ball (by linarith : r / 3 < r) ((hZ ρ).mp hρ).1)
+  refine ⟨Z, m, hZ, hm, ?_, ?_, hsum, hest⟩
+  · intro ρ hρ hd
+    have htwo : (2 : ℕ∞) ≤ analyticOrderAt f ρ := by
+      apply (natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero (n := 2) (ha ρ hρ)).mpr
+      intro i hi
+      interval_cases i <;> simp [((hZ ρ).mp hρ).2, hd]
+    simpa [horder ρ hρ] using htwo
+  · intro ρ hρ hd
+    have hone := (ha ρ hρ).analyticOrderAt_eq_one_of_zero_deriv_ne_zero ((hZ ρ).mp hρ).2 hd
+    simpa [horder ρ hρ] using hone
 
 end Formalism.ZeroFreeDirichlet

@@ -100,7 +100,7 @@ theorem UpperTheory.V.Af.cuspFormsFiniteReal :
   have hone : TR.oneL F a = ∑ v, ∑ i, b (v, i, i) := by
     funext i j w
     simp only [hb, Finset.sum_apply]
-    by_cases hij : i = j <;> simp [Matrix.single_apply, Matrix.one_apply, Pi.single_apply, hij, ite_and, ite_apply]
+    by_cases hij : i = j <;> simp [Matrix.single_apply, Pi.single_apply, hij, ite_and, ite_apply]
   obtain ⟨t, ht⟩ : TR.lie F a (TR.oneL F a) ∈ S := by
     rw [hone]
 

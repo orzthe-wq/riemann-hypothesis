@@ -2,48 +2,7 @@ module
 
 public import Formalism.SharpRestriction.CuspSpanNormBounds.IsPrimitiveSub
 public import Formalism.FlagUnipotentLattices.SignaturePreservingEntryNorms
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -137,12 +96,11 @@ theorem hT_fvec (F : FlagG S r T) (i j : Fin (r + 1)) : S.hT (F.fvec i) (F.fvec 
     | cast j =>
       have h1 : S.hT F.z (F.e j) = 0 := by
         first
-          | rw [← S.herm (F.e j) F.z, F.z_orth j, map_zero]
           | rw [← S.herm.eq (F.e j) F.z, F.z_orth j, map_zero]
       simp [FlagG.fvec, TF, h1, Matrix.diagonal_apply_ne _ (hne j).symm]
   | cast i =>
     induction j using Fin.lastCases with
-    | last => simp [FlagG.fvec, TF, F.z_orth i, Matrix.diagonal_apply_ne _ (hne i)]
+    | last => simp [FlagG.fvec, TF, F.z_orth i]
     | cast j =>
       simp only [FlagG.fvec, Fin.snoc_castSucc, F.e_iso i j, TF, Matrix.diagonal_apply]
       split_ifs <;> simp_all
@@ -172,14 +130,13 @@ theorem gramBlocks : GramBlocks := by
   · simp only [gramFF, pairVec, brS, Zhat, Matrix.fromBlocks_apply₂₁, Matrix.conjTranspose_apply, Sum.elim_inl,
       Sum.elim_inr]
     first
-      | exact (S.herm _ _).symm
       | exact (S.herm.eq _ _).symm
   · simp [gramFF, pairVec, brS, hT_fvec]
 
 theorem gramDetFlag : GramDetFlag := by
   intro E _ _ _ S r T T' F F'
   rw [gramBlocks E S r T T' F F']
-  have h := Formalism.HermitianLatticeCounting.Final.LocalIntegralStructure.gramDetGen E r (Zhat F F')ᴴ (Zhat F F') T T'
+  have h := _root_.Formalism.HermitianLatticeCounting.P.gram_determinant_general E r (Zhat F F')ᴴ (Zhat F F') T T'
   unfold TF
   rw [h, Matrix.det_conjTranspose, ← Matrix.conjTranspose_submatrix, Matrix.det_conjTranspose,
     gflag_eq_gmat]
@@ -197,7 +154,7 @@ theorem gramIndep : GramIndep := by
       ext i j; rfl
     rw [this, Matrix.det_transpose]
     exact hdet
-  have h := Formalism.HermitianLatticeCounting.Final.LocalIntegralStructure.gramNondeg E S.V (Fin (r + 1) ⊕ Fin (r + 1)) (starRingEnd E) S.hT.flip
+  have h := _root_.Formalism.HermitianLatticeCounting.P.gram_matrix_nondegenerate E S.V (Fin (r + 1) ⊕ Fin (r + 1)) (starRingEnd E) S.hT.flip
     (pairVec F F') hB
   refine ⟨h.1, ?_⟩
   have hl : LinearIndependent E (Sum.elim F.fvec F'.fvec) := h.1

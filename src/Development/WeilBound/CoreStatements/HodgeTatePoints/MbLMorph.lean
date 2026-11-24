@@ -1,10 +1,11 @@
 module
 
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueDominatingMap
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DominatesOfCoordsRegularStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DominatesOfCoordsRegular
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.MaBase
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueDominatingMap
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -75,7 +76,7 @@ theorem existsUnique_dominates :
       (M' : PModel o' y) (i : Ω →+* Ω'), (∀ p', p' ∈ ctrSet o x i M'.ξ) →
       ∃! f : M'.X ⟶ M.X, Dominates M'.ξ M.ξ f i := by
   intro o _ Ω _ _ κ _ x M o' _ Ω' _ _ κ' _ y M' i h
-  obtain ⟨f, hf, -⟩ := GlobalTheory.T.dominates_of_coords_regular M.X Ω M.ξ o κ x M'.X Ω' M'.ξ i M.tie M'.tie.gen M'.all
+  obtain ⟨f, hf, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.CoordMap.exists_dominating_map M.X Ω M.ξ o κ x M'.X Ω' M'.ξ i M.tie M'.tie.gen M'.all
     (fun r p' => by
       obtain ⟨c, -, H⟩ := h p'
       exact H _ (Subalgebra.algebraMap_mem _ r))
@@ -91,6 +92,3 @@ theorem existsUnique_dominates :
 end PositivityTheory.HtPt.Mb.LMorph.ChMorph
 
 
-open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField in
-theorem PositivityTheory.HtPt.Mb.morph : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (o' : Type) [CommRing o'] (Ω' : Type) [Field Ω'] [Algebra o' Ω'] (κ' : Type) [Finite κ'] (y : κ' → Ω') (M' : PModel o' y) (i : Ω →+* Ω'), (∀ p', p' ∈ ctrSet o x i M'.ξ) → ∃! f : M'.X ⟶ M.X, Dominates M'.ξ M.ξ f i :=
-  @PositivityTheory.HtPt.Mb.LMorph.ChMorph.existsUnique_dominates

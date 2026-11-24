@@ -78,7 +78,7 @@ theorem conj_single_comm {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) (hQ : IsUnit
 
 theorem smooth_gl_module : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDS ε mu → ∀ Q : Mx k r, IsUnit Q → ∃ E : (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ R.smSub), R.IsE Q E ∧ Formalism.REAL.GlRel E := by
   intro hK k r ε mu R hDS Q hQ
-  obtain ⟨hmem, hlin, hadd, -, hbr, -⟩ := GlobalTheory.T.complexifiedDerivedAction_lieHom_gramAdjoint hK k r ε mu R hDS
+  obtain ⟨hmem, hlin, hadd, -, hbr, -⟩ := _root_.GlobalTheory.ComplexifiedAction.complexified_action hK k r ε mu R hDS
   have h0 : (0 : R.H) ∈ R.sm := R.smSub.zero_mem
   have hz : ∀ Y, R.dC Y 0 = 0 := fun Y => by
     have h := hlin Y 1 0 h0 0 h0

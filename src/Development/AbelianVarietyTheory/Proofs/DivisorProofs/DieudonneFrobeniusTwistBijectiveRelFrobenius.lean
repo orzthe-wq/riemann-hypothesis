@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneBaseChangeBasisStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorPropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneBaseChangeBasis
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorProperties
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigExtMapRelFrobCompRigOfOmega
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -100,13 +100,13 @@ theorem frobTwist_module (p : ℕ) [Fact p.Prime] (B : Base p fun _ _ _ => True)
   · haveI := B.free G trivial
     haveI := B.finite G trivial
     letI := (frobRing (p_eq_zero p k)).toAlgebra
-    obtain ⟨b', hb'⟩ := GlobalTheory.T.dieudonne_baseChange_basis p (fun _ _ _ => True) B k k G trivial trivial _
+    obtain ⟨b', hb'⟩ := _root_.GlobalTheory.Dieu.Base.smap_toBase_basis p (fun _ _ _ => True) B k k G trivial trivial _
       (Module.Free.chooseBasis (WittVector p k) (B.M G trivial))
     exact bijective_of_basis _ (wittMap_frobRing_bijective p k) _
       (fun a m => B.smap_smul trivial trivial _ a m) _ b' hb'
-  · obtain ⟨-, hc, -⟩ := GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) B k G
+  · obtain ⟨-, hc, -⟩ := _root_.GlobalTheory.Dieu.base_functor_props p (fun _ _ _ => True) B k G
       (frobTwist (p_eq_zero p k) G) G trivial trivial trivial
-    obtain ⟨hid, -, -, -, hp, -⟩ := GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) B k G G G trivial trivial trivial
+    obtain ⟨hid, -, -, -, hp, -⟩ := _root_.GlobalTheory.Dieu.base_functor_props p (fun _ _ _ => True) B k G G G trivial trivial trivial
     rw [← h2, e, ← LinearMap.comp_apply, ← hc, relFrob_comp_verschiebung, ← pow_one (p : ℤ_[p]), hp,
       pow_one, hid, LinearMap.id_apply]
 

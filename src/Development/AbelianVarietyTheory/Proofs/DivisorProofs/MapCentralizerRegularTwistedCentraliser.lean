@@ -133,11 +133,11 @@ theorem map_centralizer_carry : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r 
   intro p _ G r γ δ z hr hγ hN
   set δ' := z * δ * (sigG G r z)⁻¹ with hδ'
   have hN' : nrmG (sigG G r) r δ' = inclG G r γ := by
-    have h := (GlobalTheory.T.twistedNormConj_normalize_and_degree_one p G).1 r γ δ z hr hN
+    have h := (_root_.GlobalTheory.nrm_exact p G).1 r γ δ z hr hN
     simpa [IsNrm] using h
-  obtain ⟨hit, hfix, hinj, hrange⟩ := GlobalTheory.T.hermitianTripleFrobeniusTwist_order_fixed_points p G r hr
+  obtain ⟨hit, hfix, hinj, hrange⟩ := _root_.GlobalTheory.LKMid.SigIter.main p G r hr
   have hδc : Commute δ' (inclG G r γ) := by
-    have h2 := (GlobalTheory.T.twistedNormProductIterate_twistedConj (sigG G r) r δ' 1).2
+    have h2 := (_root_.GlobalTheory.LKMid.nrmG_twConj (sigG G r) r δ' 1).2
     rw [hN', hfix, hit] at h2
     exact h2
   have memT : ∀ h, h ∈ GlobalTheory.BCT.twCent (sigG G r) δ' ↔ ∃ g ∈ Subgroup.centralizer {γ}, inclG G r g = h := by
@@ -146,7 +146,7 @@ theorem map_centralizer_carry : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r 
     · intro hh
       change h * δ' = δ' * sigG G r h at hh
       have hc : Commute h (inclG G r γ) := by
-        have h1 := (GlobalTheory.T.twistedNormProductIterate_twistedConj (sigG G r) r δ' h).1
+        have h1 := (_root_.GlobalTheory.LKMid.nrmG_twConj (sigG G r) r δ' h).1
         have e : h⁻¹ * δ' * sigG G r h = δ' := by rw [mul_assoc, ← hh, inv_mul_cancel_left]
         rw [e, hN', hit] at h1
         change h * inclG G r γ = inclG G r γ * h

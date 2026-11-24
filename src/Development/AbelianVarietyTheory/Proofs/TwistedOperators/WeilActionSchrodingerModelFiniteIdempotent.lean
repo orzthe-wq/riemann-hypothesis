@@ -59,42 +59,14 @@ open GlobalTheory.SplitHecke GlobalTheory.AdelicLatMove
 
 variable {D : D7} {S T : HSp D}
 
-theorem actO_add (g : GA D S) (h : GA D T) (x y : WO S T) :
-    actO S T g h (x + y) = actO S T g h x + actO S T g h y := by
-  show _ * (x + y) * _ = _ * x * _ + _ * y * _
-  rw [Matrix.mul_add, Matrix.add_mul]
+alias actO_add := _root_.GlobalTheory.WeilVacMove.actO_add
 
 theorem actO_nsmul (g : GA D S) (h : GA D T) (k : ℕ) (x : WO S T) :
     actO S T g h (k • x) = k • actO S T g h x := by
   simp only [actO, Matrix.mul_smul, Matrix.smul_mul]
 
-private lemma isHalf_iff_smul_eq {e : AE D} (u : WO S T) : IsHalf e u ↔ e • u = u := by
-  unfold IsHalf
-  constructor
-  · intro hu
-    apply Matrix.ext
-    intro i j
-    change e * u i j = u i j
-    exact hu i j
-  · intro hu i j
-    have h := congrFun (congrFun hu i) j
-    change e * u i j = u i j at h
-    exact h
-
-private lemma isHalf_actO_twisted_operators {e : AE D} (g : GA D S) (h : GA D T) {u : WO S T} (hu : IsHalf e u) :
-    IsHalf e (actO S T g h u) := by
-  rw [isHalf_iff_smul_eq] at hu ⊢
-  unfold actO
-  rw [← Matrix.smul_mul, ← Matrix.mul_smul, hu]
-
-private lemma actO_inv_actO_twisted_operators (g : GA D S) (h : GA D T) (u : WO S T) :
-    actO S T g⁻¹ h⁻¹ (actO S T g h u) = u := by
-  unfold actO
-  rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, ← mt_mul, inv_mul_cancel, mt_one, Matrix.one_mul,
-    Matrix.mul_assoc, ← mt_mul, mul_inv_cancel, mt_one, Matrix.mul_one]
-
 theorem isHalf_actO_iff {e : AE D} (g : GA D S) (h : GA D T) (u : WO S T) :
-    IsHalf e (actO S T g h u) ↔ IsHalf e u := ⟨fun hu => by simpa only [actO_inv_actO_twisted_operators] using isHalf_actO_twisted_operators g⁻¹ h⁻¹ hu, isHalf_actO_twisted_operators g h⟩
+    IsHalf e (actO S T g h u) ↔ IsHalf e u := ⟨fun hu => by simpa only [_root_.GlobalTheory.WeilVacMove.actO_inv_actO] using _root_.GlobalTheory.SplitHecke.isHalf_actO g⁻¹ h⁻¹ hu, _root_.GlobalTheory.SplitHecke.isHalf_actO g h⟩
 
 theorem isSBHalf_comp {e : AE D} {Λ : AddSubgroup (WO S T)} {g : GA D S} {h : GA D T}
     (hΛ : ∀ u, u ∈ Λ ↔ actO S T g h u ∈ Λ) {Ψ : WO S T → ℂ} (hΨ : IsSBHalf e Λ Ψ) :
@@ -117,12 +89,7 @@ theorem halfInd_comp {e : AE D} {Λ : AddSubgroup (WO S T)} {g : GA D S} {h : GA
   · rw [if_pos (hc.2 ht), if_pos ht]
   · rw [if_neg (fun h' => ht (hc.1 h')), if_neg ht]
 
-theorem heisO_smul' (ψ : AddChar (AF D.host.F) ℂ) (x : WO S T) (c : ℂ) (f : WO S T → ℂ) :
-    heisO ψ S T x (c • f) = c • heisO ψ S T x f := by
-  unfold heisO
-  funext w
-  simp only [Pi.smul_apply, smul_eq_mul]
-  ring
+alias heisO_smul' := _root_.GlobalTheory.LatVac.heisO_smul
 
 theorem isPlaceModel_move {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) {a : AE D}

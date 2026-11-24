@@ -81,9 +81,8 @@ theorem one_le_mult (Γ : Subgroup G) (Ω : Set G) (h1 : (1 : G) ∈ Ω) (x : G)
     1 ≤ Formalism.L2.SG.FoldBound.mult Γ Ω x := by
   unfold Formalism.L2.SG.FoldBound.mult
   refine le_iSup_of_le x ?_
-  have h : (1 : ℕ∞) ≤ ({γ : Γ | x⁻¹ * ((γ : G) * x) ∈ Ω} : Set Γ).encard :=
-    Set.one_le_encard_iff_nonempty.2 ⟨1, by simpa using h1⟩
-  exact_mod_cast h
+  exact_mod_cast (Set.one_le_encard_iff_nonempty.2 ⟨1, by simpa using h1⟩ :
+    (1 : ℕ∞) ≤ ({γ : Γ | x⁻¹ * ((γ : G) * x) ∈ Ω} : Set Γ).encard)
 
 theorem mult_lt_top (Γ : Subgroup G) [DiscreteTopology Γ] (Ω : Set G) (hΩ : IsCompact Ω)
     (x : G) : Formalism.L2.SG.FoldBound.mult Γ Ω x < ⊤ := by
@@ -168,10 +167,7 @@ theorem measurable_mult [SecondCountableTopology G] [MeasurableSpace G] [BorelSp
     (Γ : Subgroup G) [DiscreteTopology Γ] (Ω : Set G) (hΩ : IsCompact Ω) :
     Measurable (Formalism.L2.SG.FoldBound.mult Γ Ω) := by
   have : Countable Γ := TopologicalSpace.separableSpace_iff_countable.1 inferInstance
-  have hm : Formalism.L2.SG.FoldBound.mult Γ Ω =
-      fun x => ⨆ A : Finset Γ, (hitSet Γ Ω A).indicator (fun _ => (A.card : ℝ≥0∞)) x :=
-    funext (mult_eq_iSup Γ Ω hΩ)
-  rw [hm]
+  rw [funext (mult_eq_iSup Γ Ω hΩ)]
   exact Measurable.iSup fun A => measurable_const.indicator (isClosed_hitSet Γ Ω hΩ A).measurableSet
 
 end PI.FoldMult.UnitaryGroupMassFormula

@@ -54,6 +54,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermitianTraceFormVanishing
 
 @[expose] public section
 
@@ -230,7 +231,7 @@ theorem letter_length_le : Known → ∀ (E : Type) [Field E] [NumberField E] [I
       Finset.sum_congr rfl fun j _ => congrArg (fun q => _ * ((s.ξ q : ℤ) : E)) (hBC.2.1 _ y)
     have hv : ∀ y, xiVal (conjEmb (relab c σ τ)) ξC y = em (φ₀ (p.xe y)) := fun y => by
       rw [(pairE_properties E aC.D₀.X ξC).2.2.2.2, hpair]
-      refine (ArchLen.emb_cc (relab c σ τ) _).symm.trans ?_
+      refine (_root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc (relab c σ τ) _).symm.trans ?_
       exact RingHom.congr_fun hσ _
     have ha := anVec_torusLetter hGl E H Dw l Xo c σ O β Y aC χ W _ _ Uw.F Ha ξC t (conjEmb (relab c σ τ)) eC ht htan b₂
       fun y j hj => (d₂ y j hj).trans (congrArg _ (hv y).symm)
@@ -316,7 +317,7 @@ theorem letter_length_le : Known → ∀ (E : Type) [Field E] [NumberField E] [I
         have e₁ := Uw.iso k (gm t) (gm (u • v))
         rw [hEF, ht0 _ (by rw [map_smul, hv, smul_zero]), htξ, map_smul, map_smul] at e₁
         have s1 : ((u • Uw.φ k (gm v) : (U.X k).Λ) : Fin r → E) = (u : E) • (Uw.φ k (gm v) : Fin r → E) := rfl
-        rw [s1, herm_swap, ArchLen.herm_smul_left] at e₁
+        rw [s1, herm_swap, _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_left] at e₁
         have e₂ := Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ)
           ((u : E) * (cc (-(U.X k).ξ0) * herm (U.X k).Gm (Uw.φ k (gm v) : Fin r → E) ξ'))
         rw [← e₂]

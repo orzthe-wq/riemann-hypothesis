@@ -193,7 +193,7 @@ def uu (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) : Fin j → ℂ := Matrix.vecMu
 
 def uu' (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) : Fin j → ℂ := ((cm x)ᴴ * Hpk k ρ) *ᵥ cy y
 
-theorem hH (k ρ : ℕ) : (Hpk k ρ)ᴴ = Hpk k ρ := Ux4.hpk_conjTranspose k ρ
+alias hH := _root_.Formalism.FourierDecayAlt.P.Ux3.hpk_herm
 
 theorem star_uu' (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a : Fin j) : star (uu' x y a) = uu x y a := by
   simp only [uu', uu, Matrix.mulVec, Matrix.vecMul, dotProduct, Matrix.mul_apply, Matrix.conjTranspose_apply,
@@ -421,9 +421,6 @@ theorem reversed_adjoint_block_apply {n m : ℕ} (c : Matrix (Fin m) (Fin n) ℂ
     (-(G.wMat n * cᴴ * H)) a p = -(cᴴ * H) a.rev p := by
   rw [Matrix.neg_apply, Matrix.mul_assoc, Ux3.wMat_mul_apply]
 
-theorem W_apply {n : ℕ} {m : Type*} (M : Matrix (Fin n) m ℂ) (a : Fin n) (p : m) :
-    (G.wMat n * M) a p = M a.rev p := Ux3.wMat_mul_apply M a p
-
 theorem star_first_coordinate_eq (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a : Fin j) :
     star (r0 x y a) = star (ct x a) - (1 / 2 : ℂ) * uu' x y a - Complex.I * (dy y : ℂ) * star (cb x a) := by
   have h := star_uu' x y a
@@ -488,11 +485,11 @@ theorem M1 (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) :
     | last =>
       simp only [qE, qV, Ux3.block3_apply,
         Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₂, Matrix.fromBlocks_apply₁₂]
-      rw [radical_unipotent_first_middle, qmul_last, reversed_adjoint_block_apply, rev_last', cXH_zero]
+      rw [radical_unipotent_first_middle, qmul_last, reversed_adjoint_block_apply, Fin.rev_last, cXH_zero]
     | cast a =>
       simp only [qX, qV, Ux3.block3_apply,
         Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂]
-      rw [reversed_adjoint_block_apply, cH_V, qmul_cs, reversed_adjoint_block_apply, reversed_adjoint_block_apply, rev_castSucc', rev_last', cXH_succ, cXH_zero]
+      rw [reversed_adjoint_block_apply, cH_V, qmul_cs, reversed_adjoint_block_apply, reversed_adjoint_block_apply, Fin.rev_castSucc, Fin.rev_last, cXH_succ, cXH_zero]
       simp [aC] <;> ring
   ·
     cases a using Fin.lastCases with
@@ -501,12 +498,12 @@ theorem M1 (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) :
       | zero =>
         simp only [qE, qE', Ux3.block3_apply,
           Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₂, Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inl]
-        rw [radical_unipotent_first_last, qmul_last, W_apply, rev_last', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cXHcX_00]
+        rw [radical_unipotent_first_last, qmul_last, _root_.Formalism.FourierDecayAlt.P.Ux3.wMat_mul_apply, Fin.rev_last, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cXHcX_00]
         simp [SX]
       | succ b' =>
         simp only [qE, qS, Ux3.block3_apply,
           Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inr, Matrix.fromRows_apply_inl]
-        rw [rc_E, qmul_last, W_apply, rev_last', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cXHcX_0s]
+        rw [rc_E, qmul_last, _root_.Formalism.FourierDecayAlt.P.Ux3.wMat_mul_apply, Fin.rev_last, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cXHcX_0s]
         simp only [SX, Fin.cases_zero, Fin.cases_succ, first_coordinate_apply]
         ring
     | cast a =>
@@ -514,14 +511,14 @@ theorem M1 (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) :
       | zero =>
         simp only [qX, qE', Ux3.block3_apply,
           Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inl]
-        rw [reversed_adjoint_block_apply, cH_E', qmul_cs, W_apply, W_apply, rev_castSucc', rev_last']
+        rw [reversed_adjoint_block_apply, cH_E', qmul_cs, _root_.Formalism.FourierDecayAlt.P.Ux3.wMat_mul_apply, _root_.Formalism.FourierDecayAlt.P.Ux3.wMat_mul_apply, Fin.rev_castSucc, Fin.rev_last]
         simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cXHcX_00, hermitian_form_column_succ_zero, SX, Fin.cases_zero,
           Fin.cases_succ, star_first_coordinate_eq, aC, star_neg]
         ring
       | succ b' =>
         simp only [qX, qS, Ux3.block3_apply,
           Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inl]
-        rw [W_apply, qmul_cs, W_apply, W_apply, rev_castSucc', rev_last']
+        rw [_root_.Formalism.FourierDecayAlt.P.Ux3.wMat_mul_apply, qmul_cs, _root_.Formalism.FourierDecayAlt.P.Ux3.wMat_mul_apply, _root_.Formalism.FourierDecayAlt.P.Ux3.wMat_mul_apply, Fin.rev_castSucc, Fin.rev_last]
         simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cHc, cXHcX_0s, cXHcX_ss, SX, Fin.cases_zero,
           Fin.cases_succ, first_coordinate_apply, dlt_apply, aC, star_neg, star_uu']
         ring
@@ -588,22 +585,22 @@ theorem M1 (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) :
       | zero =>
         simp only [qE', Ux3.block3_apply,
           Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₂]
-        rw [conj_inverse_block_apply, rev_zero', block_two_apply_last_last]; simp [radical_unipotent_rank_one_apply]
+        rw [conj_inverse_block_apply, Fin.rev_zero, block_two_apply_last_last]; simp [radical_unipotent_rank_one_apply]
       | succ b' =>
         simp only [qE', qS, Ux3.block3_apply,
           Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inr, Matrix.fromBlocks_apply₂₂]
-        rw [rc_E', conj_inverse_block_apply, rev_zero', rev_succ', block_two_apply_last_castSucc]
+        rw [rc_E', conj_inverse_block_apply, Fin.rev_zero, Fin.rev_succ, block_two_apply_last_castSucc]
         simp [aC]
     | succ b =>
       cases b' using Fin.cases with
       | zero =>
         simp only [qS, qE', Ux3.block3_apply,
           Matrix.fromBlocks_apply₂₁, Matrix.fromCols_apply_inr, Matrix.fromBlocks_apply₂₂]
-        rw [conj_inverse_block_apply, rev_zero', rev_succ', block_two_apply_castSucc_last]; simp
+        rw [conj_inverse_block_apply, Fin.rev_zero, Fin.rev_succ, block_two_apply_castSucc_last]; simp
       | succ b' =>
         simp only [qS, Ux3.block3_apply,
           Matrix.fromBlocks_apply₂₂]
-        rw [conj_inverse_block_apply, rev_succ', rev_succ', block_two_apply_castSucc_castSucc]
+        rw [conj_inverse_block_apply, Fin.rev_succ, Fin.rev_succ, block_two_apply_castSucc_castSucc]
         simp [Matrix.one_apply, Fin.rev_inj]
 
 end M1b
@@ -660,7 +657,7 @@ theorem M2 (H : Matrix (Fin j) (Fin j) ℂ) (hH : IsUnit H.det) (c : ℂ) (hc : 
       Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂,
       Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inl,
       Matrix.fromCols_apply_inr, Matrix.zero_apply] <;>
-      simp only [mul_w_apply, W_apply, rev_zero', rev_succ', block_two_apply_last_last,
+      simp only [mul_w_apply, _root_.Formalism.FourierDecayAlt.P.Ux3.wMat_mul_apply, Fin.rev_zero, Fin.rev_succ, block_two_apply_last_last,
         block_two_apply_castSucc_last, block_two_apply_last_castSucc,
         block_two_apply_castSucc_castSucc, Fin.last_zero] <;>
       simp [Z1]
@@ -706,10 +703,6 @@ theorem block_two_zero_size_eq {p : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B' : 
   rw [hi, hl, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_castAdd]
   rfl
 
-theorem corner_matrix_zero_size_eq (a : Fin 0 → Fin j → ℂ) (b : Fin j → Fin 0 → ℂ) (H : Matrix (Fin j) (Fin j) ℂ)
-    (Z : Matrix (Fin 0) (Fin 0) ℂ) : U.Zj a b H Z = H := by
-  rw [U.Zj, block_two_zero_size_eq, block_two_zero_size_eq, block_two_zero_size_eq, Matrix.one_mul, Matrix.mul_one]
-
 theorem mMap_sand {n ρ' : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (A M C : B.Mat k ρ') :
     U.mMap k n ρ' Z (A * M * C) = U.embG k n ρ' A * U.mMap k n ρ' Z M * U.embG k n ρ' C := by
   rw [U.mMap, U.mMap, U.embG, U.embG, Ux3.block3_mul, Ux3.block3_mul]
@@ -732,7 +725,7 @@ theorem qL_unit (x : U.RC k j (1 + ρ)) : IsUnit (qL x).det := by
 theorem headH_unit (σ : Equiv.Perm (Fin j)) (d : Fin j → ℂ) (hd : ∀ i, d i ≠ 0) (η : U.XiH j 0 σ) :
     IsUnit (U.headH σ d η.2.1 η.2.2).det := by
   have h := Formalism.FourierDecayAlt.P.level_determinant_z j 0 σ d η (fun a => a.elim0)
-  rw [U.ZjH, corner_matrix_zero_size_eq] at h
+  rw [U.ZjH, _root_.Formalism.FourierDecayAlt.P.Dx2.SL.zj_zero] at h
   rw [h]
   refine IsUnit.mul (Ne.isUnit (Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd)) ?_
   simp [G.detM, Matrix.det_isEmpty]
@@ -749,7 +742,7 @@ theorem GX (σ : Equiv.Perm (Fin j)) (d : Fin j → ℂ) (hd : ∀ i, d i ≠ 0)
       U.gaXi (p := j) (s := 1) k ρ σ d ((XC x y, XC x' y'), ((aC x, bC x'), η.2)) (Z1 c) γ := by
   have hH := headH_unit σ d hd η
   simp only [U.gaXi, U.ZjH]
-  rw [corner_matrix_zero_size_eq, mMap_sand, ← embG_inv' _ (rn_unit y)]
+  rw [_root_.Formalism.FourierDecayAlt.P.Dx2.SL.zj_zero, mMap_sand, ← embG_inv' _ (rn_unit y)]
   have e : (U.Rn k j (1 + ρ) x)⁻¹ * ((U.embG k j (1 + ρ) (U.Rn k 1 ρ y))⁻¹ *
         U.mMap k j (1 + ρ) (U.headH σ d η.2.1 η.2.2) (U.mMap k 1 ρ (Matrix.of (Z1 c)) γ) *
         U.embG k j (1 + ρ) (U.Rn k 1 ρ y')) * U.Rn k j (1 + ρ) x' =

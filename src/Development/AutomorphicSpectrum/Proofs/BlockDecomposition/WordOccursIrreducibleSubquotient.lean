@@ -152,7 +152,7 @@ theorem exists_irrRep_wd : ∀ {k : Type} [Field k] [ValuativeRel k] [Topologica
   intro k _ _ _ _ hA N V _ _ π hπ hl w ⟨hd, hw⟩
   have hσ : (piTensor fun a => (w.get a).rep).IsIrreducible :=
     GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur _ (fun a => (w.get a).2.rep.irr) fun a φ hφ =>
-      GlobalTheory.SchurAdm.schur_admissible _ (KO k (Fin (w.get a).1)) GlobalTheory.SplitFlip.isOpen_KO
+      _root_.GlobalTheory.SchurAdmissibility.schur_admissible _ (KO k (Fin (w.get a).1)) GlobalTheory.SplitFlip.isOpen_KO
         GlobalTheory.SplitFlip.isCompact_KO _ _ (w.get a).2.rep.irr
         (hA k _ _ _ (w.get a).2.rep.smooth (w.get a).2.rep.irr) φ hφ
   have hT1 : IsSubquotient π (⊤ : Subrepresentation π).toRepresentation :=

@@ -120,7 +120,7 @@ private theorem lev_diag {Γ A k : Type} [Group Γ] [CommGroup A] [Field k] [IsA
     apply Units.ext
     show d s i = 1
     simpa using (congrFun (congrFun h1 i) i).symm
-  choose χ hχ using fun i => GlobalTheory.PrimaryCharacter.exists_extend_of_injective (φ.comp H.subtype).range.subtype
+  choose χ hχ using fun i => _root_.GlobalTheory.ExtensionCharacter.exists_extension_character (φ.comp H.subtype).range.subtype
     (Subgroup.subtype_injective _) ((φ.comp H.subtype).rangeRestrict.liftOfSurjective hsurj ⟨κ i, hker i⟩)
   refine ⟨fun i => (χ i).comp φ, fun i s hs => by rw [MonoidHom.comp_apply, hs, map_one], P⁻¹, fun s hs => ?_⟩
   rw [inv_inv, hd ⟨s, hs⟩]

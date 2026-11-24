@@ -1,13 +1,15 @@
 module
 
+public import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowup
+public import Mathlib.AlgebraicGeometry.Morphisms.Proper
 public import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupProperties
-public import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupProper
 public import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupUniversal
 public import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupExistence
+public import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupCartier
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.AlgebraicGeometry.ProjectiveSpectrum.Proper
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -43,9 +45,94 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowup
-public import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupCartier
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupProper, Development.ResolutionOfSingularities.Foundations.Blowup.BlowupProper
+
+-- ===== clump member: Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupProper =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupProper", "h": "module\n\npublic import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowup\npublic import Mathlib.AlgebraicGeometry.Morphisms.Proper\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.ProjectiveSpectrum.Proper\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory AlgebraicGeometry
+
+namespace FunctorialResolution.Blowup
+
+universe u
+
+variable {R : Type u} [CommRing R]
+
+private theorem algebraMap_degreeZero_apply (I : Ideal R) (x : ↥(reesGrading I 0)) :
+    algebraMap ↥(reesGrading I 0) ↥(reesAlgebra I) x = (x : ↥(reesAlgebra I)) := rfl
+
+private theorem algebraMap_reesAlgebra_eq_algebraMap_degreeZero (I : Ideal R) (r : R) :
+    algebraMap R ↥(reesAlgebra I) r =
+      algebraMap ↥(reesGrading I 0) ↥(reesAlgebra I) (reesDegreeZeroEquiv I r) := by
+  apply Subtype.ext
+  rw [algebraMap_degreeZero_apply, reesDegreeZeroEquiv_coe_coe]
+  rfl
+
+private noncomputable def adjoinOverDegreeZero (I : Ideal R) (s : Set ↥(reesAlgebra I)) :
+    Subalgebra R ↥(reesAlgebra I) where
+  toSubsemiring := (Algebra.adjoin ↥(reesGrading I 0) s).toSubsemiring
+  algebraMap_mem' := fun r => by
+    rw [algebraMap_reesAlgebra_eq_algebraMap_degreeZero]
+    exact Subalgebra.algebraMap_mem (Algebra.adjoin ↥(reesGrading I 0) s) _
+
+private theorem mem_adjoin_degreeZero_of_mem_restrictScalars (I : Ideal R) (s : Set ↥(reesAlgebra I))
+    (x : ↥(reesAlgebra I)) (hx : x ∈ adjoinOverDegreeZero I s) :
+    x ∈ Algebra.adjoin ↥(reesGrading I 0) s := hx
+
+private theorem mem_restrictScalars_of_mem_adjoin_degreeZero (I : Ideal R) (s : Set ↥(reesAlgebra I))
+    (x : ↥(reesAlgebra I)) (hx : x ∈ Algebra.adjoin ↥(reesGrading I 0) s) :
+    x ∈ adjoinOverDegreeZero I s := hx
+
+private theorem adjoin_le_adjoin_degreeZero (I : Ideal R) (s : Set ↥(reesAlgebra I)) :
+    Algebra.adjoin R s ≤ adjoinOverDegreeZero I s := by
+  refine Algebra.adjoin_le ?_
+  intro y hy
+  rw [SetLike.mem_coe]
+  exact mem_restrictScalars_of_mem_adjoin_degreeZero I s y (Algebra.subset_adjoin hy)
+
+private theorem adjoin_degreeZero_eq_top_of_adjoin_eq_top (I : Ideal R) (s : Set ↥(reesAlgebra I))
+    (hs : Algebra.adjoin R s = ⊤) : Algebra.adjoin ↥(reesGrading I 0) s = ⊤ := by
+  rw [eq_top_iff]
+  intro x _
+  have hx : x ∈ Algebra.adjoin R s := by
+    rw [hs]
+    exact Algebra.mem_top
+  exact mem_adjoin_degreeZero_of_mem_restrictScalars I s x (adjoin_le_adjoin_degreeZero I s hx)
+
+theorem finiteType_reesAlgebra_degreeZero (I : Ideal R) [IsNoetherianRing R] :
+    Algebra.FiniteType ↥(reesGrading I 0) ↥(reesAlgebra I) := by
+  obtain ⟨s, hs⟩ := (inferInstance : Algebra.FiniteType R ↥(reesAlgebra I)).out
+  exact ⟨⟨s, adjoin_degreeZero_eq_top_of_adjoin_eq_top I (↑s : Set ↥(reesAlgebra I)) hs⟩⟩
+
+private theorem isProper_comp_of_isIso {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
+    (hf : AlgebraicGeometry.IsProper f) (hg : IsIso g) :
+    AlgebraicGeometry.IsProper (f ≫ g) := by
+  have := hf
+  have := hg
+  infer_instance
+
+theorem isProper_affineBlowup_toSpec (I : Ideal R) [IsNoetherianRing R] :
+    AlgebraicGeometry.IsProper (AffineBlowup.toSpec I) := by
+  have hft : Algebra.FiniteType ↥(reesGrading I 0) ↥(reesAlgebra I) :=
+    finiteType_reesAlgebra_degreeZero I
+  have h1 : AlgebraicGeometry.IsProper (AlgebraicGeometry.Proj.toSpecZero (reesGrading I)) :=
+    inferInstance
+  rw [AffineBlowup.toSpec_eq_toSpecZero_comp]
+  exact isProper_comp_of_isIso _ _ h1 (isIso_SpecMap_iff.mpr (reesDegreeZeroEquiv I).bijective)
+
+end FunctorialResolution.Blowup
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupProper =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.Foundations.Blowup.BlowupProper =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.Foundations.Blowup.BlowupProper", "h": "module\n\npublic import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupProperties\npublic import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupProper\npublic import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupUniversal\npublic import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupExistence\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowup\npublic import Development.ResolutionOfSingularities.Foundations.Blowup.AffineBlowupCartier\n\n"}
+section -- clump:auto
 @[expose] public section
 
 universe u
@@ -145,3 +232,6 @@ theorem isProper_of_isBlowupAlongIdealSheaf {X X' : Scheme.{u}}
   blowupIsProper X X' π I h
 
 end FunctorialResolution.Blowup
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.Foundations.Blowup.BlowupProper =====

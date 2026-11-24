@@ -105,10 +105,8 @@ def LP (L : Submodule (𝓞 D.host.E) (VS D).V) : Submodule (𝓞 D.host.E) (VS 
   haveI := P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal L
 
 theorem mem_LP {L : Submodule (𝓞 D.host.E) (VS D).V} {x : (VS D).V} :
-    x ∈ LP P L ↔ ∃ s : 𝓞 D.host.E, s ∉ P.asIdeal ∧ s • x ∈ L := by
-  unfold LP Formalism.HermitianLatticesTheory.localization₂ Formalism.HermitianLatticesTheory.locS
-  simp only [Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq]
-  rfl
+    x ∈ LP P L ↔ ∃ s : 𝓞 D.host.E, s ∉ P.asIdeal ∧ s • x ∈ L :=
+  Formalism.HermitianLatticesTheory.mem_locS
 
 theorem smul_eq_E (o : 𝓞 D.host.E) (v : (VS D).V) : o • v = (o : D.host.E) • v :=
   (algebraMap_smul D.host.E o v).symm

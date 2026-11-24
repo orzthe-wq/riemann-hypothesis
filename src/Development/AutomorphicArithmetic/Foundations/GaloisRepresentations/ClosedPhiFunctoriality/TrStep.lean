@@ -75,7 +75,7 @@ private theorem core {Z R B : Type} [CommRing Z] [CommRing R] [CommRing B] (f : 
     intro i
     rw [hM, hE, hq, Pi.sub_apply, ← RingHom.map_mulVec, ← RingHom.map_mulVec, ← map_mul, ← map_sub]
     congr 1
-    simp only [Matrix.mulVec, dotProduct, Pi.sub_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Finset.mul_sum, mul_sub]
+    simp only [Matrix.mulVec, dotProduct, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Finset.mul_sum, mul_sub]
     congr 1 <;> exact Finset.sum_congr rfl fun j _ => by ring
   have h2 : ∀ j, (V'.map f *ᵥ fun i => zb (e' i)) j = f ((V' *ᵥ fun i => zc (e' i)) j) := by
     intro j; rw [hE, ← RingHom.map_mulVec]
@@ -108,12 +108,6 @@ private theorem exists_iB {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P A
   rw [← h, T.ιA]
   rfl
 
-private theorem norm_l : ‖(l : Om l)‖ = (l : ℝ)⁻¹ := by
-  have h := PadicAlgCl.norm_extends l (l : ℚ_[l])
-  rw [Padic.norm_p] at h
-  rw [← h]
-  congr 1
-
 private theorem scale {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     (lam : Om l →ₗ[↥(MaximalUnramifiedExtension l)] ↥(MaximalUnramifiedExtension l)) (n : ℕ) (y : Om l) :
     uB T (lam ((n : Om l) * y)) = (n : Per.Bcris l) * uB T (lam y) := by
@@ -124,7 +118,7 @@ end UpperTheory.Gal.ClosedPhiFromClosedTrace
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.trStep_holds :
     Func → TrId → TrStep := by
   intro hF hI l _ P AI T s d d' m M c₁ c₂ t t' c pv p θ Pi e e' V V' h1 h2 h3 h4 h5 h6 h7 h8 h9
-  have hn : ‖(l : Om l)‖ = (l : ℝ)⁻¹ := norm_l
+  have hn : ‖(l : Om l)‖ = (l : ℝ)⁻¹ := _root_.GlobalTheory.UnramValue.norm_l
   have hlpos : (0 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).pos
   have hl0 : (l : Om l) ≠ 0 := by
     intro h0

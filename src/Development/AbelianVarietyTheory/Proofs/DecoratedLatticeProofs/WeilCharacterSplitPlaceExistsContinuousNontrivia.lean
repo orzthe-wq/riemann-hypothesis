@@ -58,18 +58,14 @@ theorem ι_one : p.ι 1 = p.e := by
   have h := p.ι_π 1
   rwa [map_one, mul_one] at h
 
-theorem e_mul_ι (x : k) : p.e * p.ι x = p.ι x := by
-  have h := p.ι_π (p.ι x)
-  rw [p.π_ι] at h
-  exact h.symm
+alias e_mul_ι := _root_.GlobalTheory.LocMod.Witness.e_ι
 
 theorem ι_mul (x y : k) : p.ι (x * y) = p.ι x * p.ι y := by
   have h := p.ι_π (p.ι x * p.ι y)
   rw [map_mul, p.π_ι, p.π_ι] at h
   rw [h, ← mul_assoc, e_mul_ι]
 
-theorem xi_ne : p.xi ≠ 0 :=
-  (_root_.map_ne_zero (p.π.comp (incA D))).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)
+alias xi_ne := _root_.GlobalTheory.LocMod.Witness.xi_ne
 
 theorem mul_aux (x y : k) : (p.ι x + (1 - p.e)) * (p.ι y + (1 - p.e)) = p.ι (x * y) + (1 - p.e) := by
   have h1 := e_mul_ι p x
@@ -84,10 +80,10 @@ def unitsHom : kˣ →* (AE D)ˣ where
     by rw [mul_aux, Units.inv_mul, ι_one, add_sub_cancel]⟩
   map_one' := by
     ext
-    simp only [Units.val_one, ι_one, Units.val_mk, add_sub_cancel]
+    simp only [Units.val_one, ι_one, add_sub_cancel]
   map_mul' x y := by
     ext
-    simp only [Units.val_mul, Units.val_mk]
+    simp only [Units.val_mul]
     rw [mul_aux]
 
 def wchar (ψ : AddChar (AF D.host.F) ℂ) (h : ∀ x, ‖ψ x‖ = 1) : AddChar k Circle where

@@ -93,7 +93,7 @@ theorem hasLen_diagonal_zpow {L : Type} [Field L] [Valued L (WithZero (Multiplic
     funext i
     by_cases h : 0 ≤ d i
     · simp [h, Int.toNat_eq_zero.2 (by omega : -d i ≤ 0)]
-    · simp only [h, if_false, zero_mul, zero_add, one_mul]
+    · simp only [h, if_false, zero_add, one_mul]
       rw [← zpow_natCast, ← zpow_add₀ h0]
       rw [show d i + (((-d i).toNat : ℕ) : ℤ) = 0 by omega, zpow_zero]
   · rw [Matrix.det_diagonal, map_prod]

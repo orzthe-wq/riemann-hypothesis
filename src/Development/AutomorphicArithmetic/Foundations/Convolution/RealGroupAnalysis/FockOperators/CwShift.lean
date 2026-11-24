@@ -63,7 +63,7 @@ private lemma cw_shift {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
     · have : w' ≠ w := fun h => hw h.symm
       simp [hw, this]
   · have h1 : (v + Pi.single i (at1 w t) : V4 F) j = v j := by
-      simp [Pi.single_apply, Ne.symm hij]
+      simp [Ne.symm hij]
     rw [h1]
     simp [hij]
 

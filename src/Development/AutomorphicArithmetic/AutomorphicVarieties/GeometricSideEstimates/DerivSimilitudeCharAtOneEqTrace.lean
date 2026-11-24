@@ -82,7 +82,7 @@ private theorem det_line (X : Lie E a) (t : ℝ) (w : InfinitePlace E) :
   have h := (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w).map_det (Matrix.of (oneL E a + t • X))
   refine h.trans (congrArg _ ?_)
   ext i j
-  by_cases hij : i = j <;> simp [oneL, toL, Matrix.one_apply, hij]
+  by_cases hij : i = j <;> simp [oneL, toL, hij]
 
 private theorem der_sc (X : Lie E a) :
     HasDerivAt (fun t : ℝ => sc (Matrix.of (oneL E a + t • X))) (-ell E a X) 0 := by

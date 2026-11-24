@@ -61,9 +61,6 @@ open GlobalTheory.SeeSaw (idV dI FI)
 open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 
-
-
-
 noncomputable section
 
 namespace GlobalTheory.Core.Mi.FrameMove
@@ -91,16 +88,6 @@ theorem mulVec_mem_ideal {I : Ideal (AE D)} {m n : ℕ} (A : Matrix (Fin m) (Fin
   simp only [Matrix.mulVec, dotProduct]
   exact Ideal.sum_mem _ fun i _ => I.mul_mem_left _ (hy i)
 
-theorem finE_mulVec_hat (S : HSp D) (x : GA D S) (y : Fin S.rank → AE D) :
-    (fun i => Formalism.IndefR.Lev.swapAE D (finPart D ((mt S x *ᵥ y) i))) =
-      (Formalism.IndefR.Lev.finE S x).val *ᵥ (fun i => Formalism.IndefR.Lev.swapAE D (finPart D (y i))) := by
-  have h : ((Formalism.IndefR.Lev.finE S x).val) = (mt S x).map ((Formalism.IndefR.Lev.swapAE D).comp (finPart D)) := by
-    ext i j
-    rfl
-  rw [h]
-  ext i
-  exact RingHom.map_mulVec ((Formalism.IndefR.Lev.swapAE D).comp (finPart D)) (mt S x) y i
-
 theorem hat_iff_of_moves (V : HSp D) (t : GA D V) (Λ M : Lat V) (hm : Moves V t Λ M (fun _ => True))
     (z : Fin V.rank → Formalism.IndefR.Lev.EAf D) :
     z ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ ↔
@@ -114,7 +101,7 @@ theorem hat_iff_of_moves (V : HSp D) (t : GA D V) (Λ M : Lat V) (hm : Moves V t
     rw [finPart_finIn']
     exact sw.apply_symm_apply (z i)
   have hy' : ∀ i, (mt V t *ᵥ y) i ∈ idAt D (fun _ => True) := mulVec_mem_ideal _ hy
-  rw [← hz, ← finE_mulVec_hat]
+  rw [← hz, ← GlobalTheory.FinPl.GlobImage.finE_mulVec]
   constructor
   · intro h
     have h1 : y ∈ latV V Λ (fun _ => True) := GlobalTheory.HatLatV.mem_latV_of_hatL D V Λ _ y hy h

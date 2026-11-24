@@ -201,7 +201,7 @@ theorem minpoly_eq (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F
   have heq : q = minpoly (𝓞 F) θ :=
     Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) hqm hdvd (by rw [hqdeg]; exact hdeg2)
   rw [← heq, hq]
-  simp only [derivative_add, derivative_sub, derivative_mul, derivative_X_pow, derivative_C,
+  simp only [derivative_mul, derivative_X_pow, derivative_C,
     derivative_X, zero_mul, mul_one, zero_add, add_zero, map_add, map_sub, map_mul, map_pow,
     aeval_X, aeval_C, map_natCast, hs]
   first
@@ -232,7 +232,6 @@ theorem discr_pos (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) : 0 < discr F := by
   haveI := isTotallyReal hK hF
   first
-    | exact NumberField.discr_pos_of_isTotallyReal F
     | (have h := NumberField.sign_discr F
        rw [IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero] at h
        exact Int.sign_eq_one_iff_pos.mp h)
@@ -258,9 +257,6 @@ theorem discrTower : DiscrTower := by
     have e3 := NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := K)
     have e4 : NumberField.InfinitePlace.nrRealPlaces K = 0 := by
       first
-        | exact NumberField.IsTotallyComplex.nrRealPlaces_eq_zero
-        | exact IsTotallyComplex.nrRealPlaces_eq_zero
-        | exact NumberField.InfinitePlace.nrRealPlaces_eq_zero_iff.mpr hTC
         | exact NumberField.nrRealPlaces_eq_zero_iff.mpr hTC
     rw [QuadraticExtensionConjugation.finrank_eq_two hK hF] at e2
     unfold Formalism.HermitianLatticesTheory.fDeg

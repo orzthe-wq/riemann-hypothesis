@@ -2,42 +2,6 @@ module
 
 public import Formalism.LocalToGlobal.NormalizedHeckeFactors.HeckeStdTwOfStd
 public import Formalism.SharpRestriction.LevelLetterCocycles.LocsCoverTw
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -59,10 +23,9 @@ theorem finrank_eq_of_semilinear {K₁ K₂ M₁ M₂ : Type} [Field K₁] [Fiel
     refine ⟨fun a b hab => hinj (congrArg Subtype.val hab), fun y => ?_⟩
     obtain ⟨z, hz⟩ := (hrange y).1 y.2
     exact ⟨z, Subtype.ext hz⟩
-  have h := rank_eq_of_equiv_equiv σ (AddEquiv.ofBijective g hg) σ.bijective fun r m =>
-    Subtype.ext (f.map_smulₛₗ r m)
-  unfold finrank
-  rw [h]
+  exact congrArg Cardinal.toNat
+    (rank_eq_of_equiv_equiv σ (AddEquiv.ofBijective g hg) σ.bijective fun r m =>
+      Subtype.ext (f.map_smulₛₗ r m))
 
 variable {D : D7} {M : MtFam D}
 
@@ -78,7 +41,6 @@ theorem finrank_V (B : NLocBase D M) (j : ℕ) (w : D.what₂.places.Pl) :
   let b := Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)
   have hb := B.iV_basis j w b
   let bV := Module.Basis.mk hb.1 hb.2.ge
-  haveI : Module.Finite D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j) := Module.Finite.of_basis b
   refine ⟨Module.Finite.of_basis bV, ?_⟩
   rw [Module.finrank_eq_card_basis bV, Module.finrank_eq_card_basis b]
 

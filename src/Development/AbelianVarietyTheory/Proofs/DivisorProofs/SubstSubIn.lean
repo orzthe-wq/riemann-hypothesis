@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesCoeffsInIdealPowEqFactorialMulStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesCoeffsInIdealPowEqFactorialMul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -136,7 +136,7 @@ theorem subst_sub_in : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] 
   classical
   have hdp : ∀ w ∈ coeffIdeal τ J, ∀ n : ℕ, 0 < n →
       ∃ y ∈ coeffIdeal τ J, w ^ n = (n.factorial : MvPowerSeries τ B) * y := fun w hw n hn => by
-    obtain ⟨y, hy, e⟩ := GlobalTheory.T.mvPowerSeries_coeffsInIdeal_pow_eq_factorial_mul p B O Q θ hF J hJ τ w hw n hn
+    obtain ⟨y, hy, e⟩ := _root_.GlobalTheory.DPSeries.pow_eq_factorial_mul p B O Q θ hF J hJ τ w hw n hn
     exact ⟨y, hy, e⟩
   have hsU : HasSubst (up Q u) := hasSubst_of_constantCoeff_zero fun i => by simp [up, hu i]
   have hsV : HasSubst (up Q v) := hasSubst_of_constantCoeff_zero fun i => by simp [up, hv i]

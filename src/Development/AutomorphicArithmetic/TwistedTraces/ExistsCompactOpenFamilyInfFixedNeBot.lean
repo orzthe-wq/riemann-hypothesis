@@ -160,7 +160,7 @@ theorem UpperTheory.exists_compactOpen_family_inf_fixed_ne_bot :
       have hYc : IsClosed (Y : Set H) := by
         have e : (Y : Set H) = (Z : Set H) ∩ ⋂ i ∈ s, (fixU (π i) (U i) : Set H) := by
           ext x
-          simp [hYdef, Submodule.mem_inf, Submodule.mem_iInf]
+          simp [hYdef]
         rw [e]
         exact hZ.inter (isClosed_biInter fun i _ => isClosed_fixU _ _)
       have hYinv : (π j).IsInvariant Y := by

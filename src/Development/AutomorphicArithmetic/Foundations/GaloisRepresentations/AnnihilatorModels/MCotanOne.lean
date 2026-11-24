@@ -69,7 +69,7 @@ private theorem tangent_of_form {κ B : Type} [Field κ] [CommRing B] [Algebra �
     have hz := h2 _ hm
     have e : x * y = (x - algebraMap κ B (ε x)) * (y - algebraMap κ B (ε y)) + ε y • x
         + ε x • y - (ε x * ε y) • (1 : B) := by
-      simp only [Algebra.smul_def, map_mul, mul_one]
+      simp only [Algebra.smul_def, map_mul]
       ring
     rw [e, map_sub, map_add (f := _), map_add (f := _), hz, map_smul, map_smul, map_smul, h1]
     simp only [smul_eq_mul]
@@ -78,7 +78,7 @@ private theorem tangent_of_form {κ B : Type} [Field κ] [CommRing B] [Algebra �
     { toFun := fun x => TrivSqZeroExt.inl (ε x) + TrivSqZeroExt.inr (d x)
       map_add' := by
         intro x y
-        ext <;> simp <;> ring
+        ext <;> simp
       map_smul' := by
         intro a x
         ext <;> simp }
@@ -88,7 +88,7 @@ private theorem tangent_of_form {κ B : Type} [Field κ] [CommRing B] [Algebra �
     ext <;> simp [h1]
   · intro x y
     rw [hf, hf, hf]
-    ext <;> simp [key] <;> ring
+    ext <;> simp [key]; ring
   · ext x
     simp [hf]
   · intro x
@@ -155,7 +155,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.cotanOne_of :
     refine Ideal.add_mem _ (Ideal.mem_sup_left ?_) (Ideal.mem_sup_right h2)
     rw [Algebra.smul_def]
     exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self t)
-  · push_neg at hex
+  · push Not at hex
     refine ⟨0, m.zero_mem, ?_⟩
     intro x hx
     exact Ideal.mem_sup_right (hkill x hx (hex x hx))

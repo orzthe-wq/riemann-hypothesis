@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMulEqZeroOfOrthogonal
 
 @[expose] public section
 
@@ -97,23 +98,12 @@ theorem sb_modul {m n : ℕ} {ε : AE D} {Λ : AddSubgroup (Mx D m n)} {φ : Mx 
   · rw [mul_smul]
     exact nsmul_mem (h3 t (right_ne_zero_of_mul ht)) k₀
 
-theorem symplO_add_left' (S T : HSp D) (x x' y : WO S T) : symplO S T (x + x') y = symplO S T x y + symplO S T x' y := by
-  simp only [symplO, hO, Matrix.add_apply, mul_add, Finset.sum_add_distrib, LinearMap.map_add (f := _)]
-
-theorem symplO_add_right' (S T : HSp D) (x y y' : WO S T) : symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
-  simp only [symplO, hO, Matrix.add_apply, RingHom.map_add (f := _), map_add (cA D), mul_add, add_mul, Finset.sum_add_distrib,
-    LinearMap.map_add]
+alias symplO_add_left' := _root_.GlobalTheory.LatVac.symplO_add_left
 
 theorem symplO_nsmul' (S T : HSp D) (k : ℕ) (x y : WO S T) : symplO S T (k • x) y = symplO S T x (k • y) := by
   have h1 := map_nsmul (AddMonoidHom.mk' (fun x => symplO S T x y) fun a b => symplO_add_left' S T a b y) k x
-  have h2 := map_nsmul (AddMonoidHom.mk' (fun y => symplO S T x y) fun a b => symplO_add_right' S T x a b) k y
+  have h2 := map_nsmul (AddMonoidHom.mk' (fun y => symplO S T x y) fun a b => _root_.GlobalTheory.LatVac.symplO_add_right S T x a b) k y
   exact h1.trans h2.symm
-
-theorem map_infPart_of_half {S T : HSp D} {a : AE D} (ha : infPart D a = 0) {u : WO S T} (hu : IsHalf a u) :
-    u.map (infPart D) = 0 := by
-  ext i j
-  show infPart D (u i j) = 0
-  rw [← hu i j, map_mul, ha, zero_mul]
 
 theorem sb_trans_latO {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : Submodule.IsFullLattice D.host.E ΛS)
@@ -122,7 +112,7 @@ theorem sb_trans_latO {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank
     {x : WO S T} (hx : IsHalf ε x) :
     IsSBHalf ε (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True)
       (fun t => φ (t + x)) := by
-  obtain ⟨k, hk, hkx⟩ := GlobalTheory.PlaceVec.exists_nsmul_mem_latO hS hT x (map_infPart_of_half hinf hx)
+  obtain ⟨k, hk, hkx⟩ := GlobalTheory.PlaceVec.exists_nsmul_mem_latO hS hT x (_root_.GlobalTheory.PlaceDatum.infPart_of_half hinf hx)
   exact sb_trans h hx hk hkx
 
 theorem sb_modul_latO {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
@@ -134,7 +124,7 @@ theorem sb_modul_latO {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank
       (fun t => ψ (symplO S T t y) * φ t) := by
   obtain ⟨k, hk, hky⟩ := GlobalTheory.PlaceVec.exists_nsmul_mem_latO
     (GlobalTheory.PlaceVec.selfDual_isFullLattice S ΛS hS)
-    (GlobalTheory.PlaceVec.selfDual_isFullLattice T ΛT hT) y (map_infPart_of_half hinf hy)
+    (GlobalTheory.PlaceVec.selfDual_isFullLattice T ΛT hT) y (_root_.GlobalTheory.PlaceDatum.infPart_of_half hinf hy)
   refine sb_modul h (fun t => ψ (symplO S T t y)) (fun a b => ?_) hk (fun u hu _ => ?_)
   · show ψ (symplO S T (a + b) y) = ψ (symplO S T a y) * ψ (symplO S T b y)
     rw [symplO_add_left', AddChar.map_add_eq_mul]

@@ -1,25 +1,49 @@
 module
 
+public import Formalism.UnipotentAdelicQuotients.CuspEllipticValues
+public import Mathlib.RepresentationTheory.Character
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CentralIdempotentIrreducibleCharacterProps
+public import Mathlib.RepresentationTheory.FinGroupCharZero
+public import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.FiniteDimensionalHcSpace
+public import Formalism.PadicSubsetSums.CentralIdempotents.GaloisConjCentralIdempotent
+public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseOneProdIco
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IrrCharEqOneOfSubsingleton
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabel
+public import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralIdempotentProperties
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyOfIrreduci
+public import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RegularIffNatDegreeAndExistsEllipticGL
+public import Formalism.PadicSubsetSums.CentralIdempotents.IsConstituent
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalLabelUnique
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCuspidalWithLabel
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenCuspidalIff
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalOfUnipotentSumsVanish
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCuspidalWithLabel
-public import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.LabelMapNonempty
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -29,7 +53,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,8 +65,400 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePow
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleIffIrreducible
+import Mathlib.Tactic.Linter.Style
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MemRootsBarXSubC
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Counterexamples.SubgroupCharacterSums.SumSubgroupEqZeroIff, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalParametrization, Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.IntertwiningIsomorphisms.IsoIffIntertwiningHolds, Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.LabelMapNonempty, Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal
+
+-- ===== clump member: Development.AbelianVarietyTheory.Counterexamples.SubgroupCharacterSums.SumSubgroupEqZeroIff =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Counterexamples.SubgroupCharacterSums.SumSubgroupEqZeroIff", "h": "module\n\npublic import Formalism.UnipotentAdelicQuotients.CuspEllipticValues\npublic import Mathlib.RepresentationTheory.Character\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CentralIdempotentIrreducibleCharacterProps\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RepresentationTheory.FinGroupCharZero\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+open CategoryTheory CuspElliptic
+namespace GlobalTheory.CuspCharCheck
+
+section Group
+variable {G : Type} [Group G]
+
+theorem isChar_iff (χ : G → ℂ) : IsChar χ ↔ ∃ V : FDRep ℂ G, V.character = χ := by
+  constructor
+  · rintro ⟨n, ρ, h⟩
+    let r : Representation ℂ G (Fin n → ℂ) :=
+      (Matrix.toLinAlgEquiv' (R := ℂ) (n := Fin n)).toMonoidHom.comp ((Units.coeHom _).comp ρ)
+    refine ⟨FDRep.of r, funext fun x => ?_⟩
+    rw [h]
+    exact Matrix.trace_toLin'_eq _
+  · rintro ⟨V, rfl⟩
+    let b := Module.finBasis ℂ V
+    let m : G →* Matrix (Fin (Module.finrank ℂ V)) (Fin (Module.finrank ℂ V)) ℂ :=
+      (LinearMap.toMatrixAlgEquiv b).toMonoidHom.comp V.ρ
+    exact ⟨_, m.toHomUnits, fun x => LinearMap.trace_eq_matrix_trace ℂ b _⟩
+
+theorem norm_iff [Fintype G] (V : FDRep ℂ G) :
+    (∑ x, V.character x * star (V.character x)) = (Fintype.card G : ℂ) ↔ Simple V := by
+  rw [FDRep.simple_iff_char_is_norm_one, Nat.card_eq_fintype_card]
+  simp only [GlobalTheory.BadShare.ZCalc.character_inv, starRingEnd_apply]
+
+theorem isIrrChar_iff [Fintype G] (χ : G → ℂ) : IsIrrChar χ ↔ ∃ V : FDRep ℂ G, Simple V ∧ V.character = χ := by
+  unfold IsIrrChar
+  rw [isChar_iff]
+  constructor
+  · rintro ⟨⟨V, rfl⟩, h⟩
+    exact ⟨V, (norm_iff V).1 h, rfl⟩
+  · rintro ⟨V, h, rfl⟩
+    exact ⟨⟨V, rfl⟩, (norm_iff V).2 h⟩
+
+theorem sum_subgroup_eq_zero_iff [Fintype G] (V : FDRep ℂ G) (U : Subgroup G) [DecidablePred (· ∈ U)] :
+    (∑ u : G, if u ∈ U then V.character u else 0) = 0 ↔ ∀ v : V, (∀ u ∈ U, V.ρ u v = v) → v = 0 := by
+  have hc : (Nat.card U : ℂ) ≠ 0 := Nat.cast_ne_zero.2 Nat.card_pos.ne'
+  haveI := invertibleOfNonzero hc
+  have h := Representation.card_inv_mul_sum_char_eq_finrank (V.ρ.comp U.subtype : Representation ℂ U V)
+  have hs : (∑ u : G, if u ∈ U then V.character u else 0) =
+      ∑ g : U, Representation.character (V.ρ.comp U.subtype : Representation ℂ U V) g := by
+    rw [← Finset.sum_filter]
+    exact Finset.sum_subtype _ (by simp) (fun g => V.character g)
+  rw [hs]
+  have h2 : (∑ g : U, Representation.character (V.ρ.comp U.subtype : Representation ℂ U V) g) = 0 ↔
+      Representation.invariants (V.ρ.comp U.subtype : Representation ℂ U V) = ⊥ := by
+    rw [← Submodule.finrank_eq_zero, ← Nat.cast_eq_zero (R := ℂ), ← h, mul_eq_zero, or_iff_right (inv_ne_zero hc)]
+  rw [h2, Submodule.eq_bot_iff]
+  refine forall_congr' fun v => imp_congr ?_ Iff.rfl
+  rw [Representation.mem_invariants]
+  exact ⟨fun h u hu => h ⟨u, hu⟩, fun h u => h u.1 u.2⟩
+
+end Group
+
+variable {F : Type} [Field F] [Fintype F] [DecidableEq F]
+
+theorem mem_unipBlock_iff (d a : ℕ) (u : GL (Fin d) F) :
+    u ∈ (unipBlock d a : Set (GL (Fin d) F)) ↔
+      ∀ i j : Fin d, ¬ (i.val < a ∧ a ≤ j.val) → ((u : Matrix (Fin d) (Fin d) F) - 1) i j = 0 := by
+  unfold unipBlock
+  refine forall₂_congr fun i j => ?_
+  rw [Matrix.sub_apply, sub_eq_zero, Matrix.one_apply]
+  tauto
+
+omit [Fintype F] [DecidableEq F] in
+theorem block_mul_eq_zero {d a : ℕ} {X Y : Matrix (Fin d) (Fin d) F}
+    (hX : ∀ i j : Fin d, ¬ (i.val < a ∧ a ≤ j.val) → X i j = 0)
+    (hY : ∀ i j : Fin d, ¬ (i.val < a ∧ a ≤ j.val) → Y i j = 0) : X * Y = 0 := by
+  ext i j
+  rw [Matrix.mul_apply]
+  refine Finset.sum_eq_zero fun k _ => ?_
+  by_cases hk : k.val < a
+  · rw [hX i k (by omega), zero_mul]
+  · rw [hY k j (by omega), mul_zero]
+
+def unipSubgroup (d a : ℕ) : Subgroup (GL (Fin d) F) where
+  carrier := unipBlock d a
+  one_mem' := (mem_unipBlock_iff d a 1).2 fun i j _ => by simp
+  mul_mem' := by
+    intro u v hu hv
+    rw [mem_unipBlock_iff] at hu hv ⊢
+    intro i j hij
+    have h0 := block_mul_eq_zero hu hv
+    have : ((u * v : GL (Fin d) F) : Matrix (Fin d) (Fin d) F) - 1 =
+        ((u : Matrix (Fin d) (Fin d) F) - 1) + ((v : Matrix (Fin d) (Fin d) F) - 1) := by
+      rw [Units.val_mul, ← sub_eq_zero, ← h0]; noncomm_ring
+    rw [this, Matrix.add_apply, hu i j hij, hv i j hij, add_zero]
+  inv_mem' := by
+    intro u hu
+    rw [mem_unipBlock_iff] at hu ⊢
+    intro i j hij
+    have h0 := block_mul_eq_zero hu hu
+    have h1 : (u : Matrix (Fin d) (Fin d) F) * (1 - ((u : Matrix (Fin d) (Fin d) F) - 1)) = 1 := by
+      rw [← sub_eq_zero, ← neg_eq_zero, ← h0]; noncomm_ring
+    have h2 : ((u⁻¹ : GL (Fin d) F) : Matrix (Fin d) (Fin d) F) = 1 - ((u : Matrix (Fin d) (Fin d) F) - 1) :=
+      Units.inv_eq_of_mul_eq_one_right h1
+    rw [h2, sub_sub_cancel_left, Matrix.neg_apply, hu i j hij, neg_zero]
+
+theorem isCuspChar_iff {d : ℕ} (χ : GL (Fin d) F → ℂ) :
+    IsCuspChar χ ↔ ∃ V : FDRep ℂ (GL (Fin d) F), Simple V ∧ V.character = χ ∧
+      ∀ a, 0 < a → a < d → ∀ v : V, (∀ u ∈ (unipSubgroup d a : Subgroup (GL (Fin d) F)), V.ρ u v = v) → v = 0 := by
+  classical
+  unfold IsCuspChar
+  rw [isIrrChar_iff]
+  constructor
+  · rintro ⟨⟨V, hV, rfl⟩, h⟩
+    refine ⟨V, hV, rfl, fun a h0 h1 => (sum_subgroup_eq_zero_iff V _).1 ?_⟩
+    convert h a h0 h1 using 3
+    rfl
+  · rintro ⟨V, hV, rfl, h⟩
+    refine ⟨⟨V, hV, rfl⟩, fun a h0 h1 => ?_⟩
+    convert (sum_subgroup_eq_zero_iff V _).2 (h a h0 h1) using 3
+    rfl
+
+end GlobalTheory.CuspCharCheck
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Counterexamples.SubgroupCharacterSums.SumSubgroupEqZeroIff =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalParametrization =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalParametrization", "h": "module\n\npublic import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.FiniteDimensionalHcSpace\npublic import Formalism.PadicSubsetSums.CentralIdempotents.GaloisConjCentralIdempotent\npublic import Formalism.UnipotentAdelicQuotients.CuspEllipticValues\npublic import Mathlib.RepresentationTheory.Character\npublic import Development.AbelianVarietyTheory.Counterexamples.SubgroupCharacterSums.SumSubgroupEqZeroIff\npublic import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseOneProdIco\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IrrCharEqOneOfSubsingleton\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabel\nimport Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open ReciprocityTheory.Ty.Fin
+open Formalism.IrreducibleCountingLemmas.TYPES hiding zIdem IsCuspidal
+open Polynomial CategoryTheory
+
+namespace GlobalTheory.CompanionTheory.TyFin
+
+section
+
+variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
+
+theorem isCuspChar_character {d : ℕ} (τ : FDRep ℂ (GL (Fin d) K)) (hs : Simple τ) (hc : IsCuspidal K τ) :
+    CuspElliptic.IsCuspChar τ.character := by
+  rw [GlobalTheory.CuspCharCheck.isCuspChar_iff]
+  refine ⟨τ, hs, rfl, fun a h0 h1 v hv => ?_⟩
+  refine hc 2 (twoBlock d a) ?_ le_rfl v fun u hu => hv u ?_
+  · intro c
+    fin_cases c
+    · exact ⟨⟨0, by omega⟩, by simp [twoBlock, h0]⟩
+    · exact ⟨⟨a, h1⟩, by simp [twoBlock]⟩
+  · intro i j
+    by_cases hij : i.val < a ∧ a ≤ j.val
+    · exact Or.inr hij
+    · left
+      by_cases hb : twoBlock d a i = twoBlock d a j
+      · exact hu.2 i j hb
+      · have hi : a ≤ i.val := by
+          by_contra hi
+          have hj : j.val < a := by
+            by_contra hj
+            exact hij ⟨by omega, by omega⟩
+          exact hb (by simp [twoBlock, show i.val < a by omega, hj])
+        have hj : j.val < a := by
+          by_contra hj
+          exact hb (by simp [twoBlock, show ¬ i.val < a by omega, show ¬ j.val < a by omega])
+        have hne : i ≠ j := fun e => by subst e; omega
+        rw [if_neg hne]
+        exact hu.1.1 i j (by simp [twoBlock, show ¬ i.val < a by omega, hj])
+
+theorem finrank_of_simple_cuspidal (θ : AlgebraicClosure K →* ℂ)
+    (hθ : ∀ x y : AlgebraicClosure K, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) {d : ℕ} (hd : 1 ≤ d)
+    (τ : FDRep ℂ (GL (Fin d) K)) (hs : Simple τ) (hc : IsCuspidal K τ) :
+    (Module.finrank ℂ τ : ℤ) = ∏ i ∈ Finset.Ico 1 d, ((q K : ℤ) ^ i - 1) := by
+  have h := isCuspChar_character τ hs hc
+  obtain ⟨k, -, hk⟩ := GlobalTheory.CuspFormula.exists_regular K θ hθ d hd τ.character
+    (GlobalTheory.CuspGL.isIrrChar_of_norm_one _ h.1) (GlobalTheory.CuspGL.isPrimitive_of_isCuspChar _ h)
+  have h1 := hk 1
+  have hid : Matrix.toLin' ((1 : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) = 1 := by
+    simp [Module.End.one_eq_id]
+  have hfr : Module.finrank K (Fin d → K) = d := by simp
+  rw [FDRep.char_one, hid, _root_.GlobalTheory.CuspGL.psi_one K (Fin d → K) (GlobalTheory.CuspGL.rootSum θ k) (_root_.GlobalTheory.CuspGL.rootSum_isAdditive_and_pow_X_sub_one K θ k).2
+    (by rw [hfr]; omega), hfr, Nat.card_eq_fintype_card] at h1
+  have hsign : ((-1 : ℂ)) ^ (d - 1) * ∏ i ∈ Finset.Ico 1 d, (1 - (Fintype.card K : ℂ) ^ i) =
+      ∏ i ∈ Finset.Ico 1 d, ((Fintype.card K : ℂ) ^ i - 1) := by
+    rw [← Nat.card_Ico 1 d, ← Finset.prod_const, ← Finset.prod_mul_distrib]
+    exact Finset.prod_congr rfl fun i _ => by ring
+  rw [hsign] at h1
+  have h2 : ((Module.finrank ℂ τ : ℤ) : ℂ) = ((∏ i ∈ Finset.Ico 1 d, ((q K : ℤ) ^ i - 1) : ℤ) : ℂ) := by
+    push_cast
+    exact h1
+  exact_mod_cast h2
+
+end
+
+end GlobalTheory.CompanionTheory.TyFin
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalParametrization =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.IntertwiningIsomorphisms.IsoIffIntertwiningHolds =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.IntertwiningIsomorphisms.IsoIffIntertwiningHolds", "h": "module\n\npublic import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.FiniteDimensionalHcSpace\npublic import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralIdempotentProperties\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SimpleIffIrreducible\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial CategoryTheory
+open Formalism.IrreducibleCountingLemmas.TYPES hiding zIdem IsCuspidal
+
+noncomputable section
+
+namespace ReciprocityTheory.Ty.Fin
+
+section Gen
+
+variable {Γ : Type} [Group Γ] [Fintype Γ]
+
+theorem isIrr_of_simple (τ : FDRep ℂ Γ) [h : Simple τ] : IsIrr τ.ρ := (_root_.GlobalTheory.CompanionTheory.TyFin.simpleIffIrr.1 Γ τ).1 h
+
+theorem zIdemIdemCentral_holds (Γ : Type) [Group Γ] [Fintype Γ] (τ : FDRep ℂ Γ) (hτ : Simple τ) :
+    zIdem τ * zIdem τ = zIdem τ ∧ ∀ a, zIdem τ * a = a * zIdem τ := _root_.GlobalTheory.CompanionTheory.TyFin.zIdemFacts.1 Γ τ hτ
+
+theorem zIdemOrthogonal_holds (Γ : Type) [Group Γ] [Fintype Γ] (τ σ : FDRep ℂ Γ) (hτ : Simple τ) (hσ : Simple σ)
+    (h : ¬ Nonempty (τ ≅ σ)) : zIdem τ * zIdem σ = 0 := _root_.GlobalTheory.CompanionTheory.TyFin.zIdemFacts.2.1 Γ τ σ hτ hσ h
+
+end Gen
+
+section GeneralLinearIntegers
+
+variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
+
+
+
+
+
+
+end GeneralLinearIntegers
+
+end ReciprocityTheory.Ty.Fin
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.IntertwiningIsomorphisms.IsoIffIntertwiningHolds =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.LabelMapNonempty =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.LabelMapNonempty", "h": "module\n\npublic import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.FiniteDimensionalHcSpace\npublic import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyOfIrreduci\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IrrCharEqOneOfSubsingleton\npublic import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RegularIffNatDegreeAndExistsEllipticGL\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabel\npublic import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralIdempotentProperties\npublic import Formalism.PadicSubsetSums.CentralIdempotents.IsConstituent\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalLabelUnique\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalParametrization\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCuspidalWithLabel\npublic import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.IntertwiningIsomorphisms.IsoIffIntertwiningHolds\nimport Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial CategoryTheory
+open Formalism.IrreducibleCountingLemmas.TYPES hiding zIdem IsCuspidal
+
+noncomputable section
+
+namespace ReciprocityTheory.Ty.Fin.GreenAll
+
+section
+
+variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
+
+open GlobalTheory.CompanionTheory.TyFin GlobalTheory.CompanionTheory.TyFin.CuspLabel in
+theorem exists_label (C : LabelConv K) {d : ℕ} (hd : 1 ≤ d) (τ : FDRep ℂ (GL (Fin d) K)) (hs : Simple τ)
+    (hc : IsCuspidal K τ) : ∃ P, HasCuspLabel C τ P := by
+  have hcard : Nat.card K = Fintype.card K := Nat.card_eq_fintype_card
+  have h := isCuspChar_character τ hs hc
+  obtain ⟨k, hreg, hchar⟩ := GlobalTheory.CuspFormula.exists_regular K C.ι C.ι_inj d hd τ.character
+    (GlobalTheory.CuspGL.isIrrChar_of_norm_one _ h.1) (GlobalTheory.CuspGL.isPrimitive_of_isCuspChar _ h)
+  have hq : 1 < Fintype.card K := Fintype.one_lt_card
+  have hqd : 1 < Fintype.card K ^ d := Nat.one_lt_pow (by omega) hq
+  have hg1 : C.gen d ^ (Fintype.card K ^ d - 1) = 1 := by rw [← C.gen_order d hd, pow_orderOf_eq_one]
+  have hfin : IsOfFinOrder (C.gen d) := isOfFinOrder_iff_pow_eq_one.2 ⟨_, by omega, hg1⟩
+  obtain ⟨x₀, hkx⟩ : ∃ x₀, C.gen d ^ k = x₀ := ⟨_, rfl⟩
+  have hx1 : x₀ ^ (Fintype.card K ^ d - 1) = 1 := by rw [← hkx, ← pow_mul, mul_comm, pow_mul, hg1, one_pow]
+  have hx0 : x₀ ≠ 0 := by
+    rintro rfl
+    rw [zero_pow (by omega)] at hx1
+    exact zero_ne_one hx1
+  have hint : IsIntegral K x₀ := Algebra.IsIntegral.isIntegral x₀
+  have hdeg : (minpoly K x₀).natDegree = d := by
+    refine ((_root_.GlobalTheory.CuspGL.regular_iff_natDegree_and_exists_elliptic K d hd x₀ (by
+      show x₀ ^ (Nat.card K ^ d - 1) = 1
+      rw [hcard]; exact hx1)).1).1 fun e he hed hh => hreg e he hed ?_
+    rw [← hkx, ← pow_mul, hfin.pow_eq_pow_iff_modEq, C.gen_order d hd] at hh
+    rw [hcard] at hh ⊢
+    exact hh
+  have hmon := minpoly.monic hint
+  have hirr := minpoly.irreducible hint
+  have hx₀ : aeval x₀ (minpoly K x₀) = 0 := minpoly.aeval K x₀
+  have hX : minpoly K x₀ ≠ X := fun hh => hx0 (by simpa [hh] using hx₀)
+  have hroot : ∀ w : AlgebraicClosure K, aeval w (minpoly K x₀) = 0 → w ^ (Fintype.card K ^ d - 1) = 1 :=
+    fun w hw => by rw [← hdeg]; exact root_pow_eq_one hmon hirr hX hw
+  have hminP : ∀ w : AlgebraicClosure K, aeval w (minpoly K x₀) = 0 → minpoly K w = minpoly K x₀ := fun w hw =>
+    (minpoly.eq_of_irreducible_of_monic hirr hw hmon).symm
+  have hadd := (_root_.GlobalTheory.CuspGL.rootSum_isAdditive_and_pow_X_sub_one K C.ι k).1
+  refine ⟨minpoly K x₀, hmon, hirr, hX, by simpa using hdeg, ?_⟩
+  intro x hx γ hγ z hz m hm
+  simp only [Fintype.card_fin] at hm ⊢
+  have hQ : minpoly K z = Matrix.charpoly (γ : Matrix (Fin d) (Fin d) K) :=
+    (minpoly.eq_of_irreducible_of_monic hγ hz (Matrix.charpoly_monic _)).symm
+  have hQd : (minpoly K z).natDegree = d := by
+    rw [hQ, Matrix.charpoly_natDegree_eq_dim]; simp
+  have hz1 : z ^ (Fintype.card K ^ d - 1) = 1 := by
+    rw [← hm, ← pow_mul, mul_comm, pow_mul, hg1, one_pow]
+  have hval := _root_.GlobalTheory.CuspGL.psi_of_irreducible_charpoly K (Fin d → K) _ hadd
+    (Matrix.toLin' (γ : Matrix (Fin d) (Fin d) K)) (by rw [Matrix.charpoly_toLin']; exact hγ)
+  rw [Matrix.charpoly_toLin'] at hval
+  show τ.character γ = _
+  rw [hchar, hval, ← hQ, rootSum_minpoly C.ι hd hz1 hQd k]
+  congr 1
+  have hxd : (minpoly K x).natDegree = d := by rw [hminP x hx, hdeg]
+  calc ∑ i ∈ Finset.range d, C.ι (z ^ Fintype.card K ^ i) ^ k
+      = ∑ i ∈ Finset.range d, C.ι (x₀ ^ Fintype.card K ^ i) ^ m := by
+        refine Finset.sum_congr rfl fun i _ => ?_
+        rw [← map_pow, ← map_pow, ← hm, ← hkx]
+        congr 1
+        simp only [← pow_mul]
+        congr 1
+        ring
+    _ = GlobalTheory.CuspGL.rootSum C.ι m (minpoly K x₀) := (rootSum_minpoly C.ι hd hx1 hdeg m).symm
+    _ = GlobalTheory.CuspGL.rootSum C.ι m (minpoly K x) := by rw [hminP x hx]
+    _ = ∑ i ∈ Finset.range d, C.ι (x ^ Fintype.card K ^ i) ^ m := rootSum_minpoly C.ι hd (hroot x hx) hxd m
+    _ = ∑ i ∈ Finset.range d, C.ι x ^ (m * Fintype.card K ^ i) := by
+        refine Finset.sum_congr rfl fun i _ => ?_
+        rw [map_pow, ← pow_mul, mul_comm (Fintype.card K ^ i) m]
+
+open GlobalTheory.CompanionTheory.TyFin GlobalTheory.CompanionTheory.TyFin.CuspLabel in
+theorem iso_of_label (C : LabelConv K) {d : ℕ} (hd : 1 ≤ d) (τ τ' : FDRep ℂ (GL (Fin d) K)) (P : K[X])
+    (hs : Simple τ) (hc : IsCuspidal K τ) (hs' : Simple τ') (hc' : IsCuspidal K τ')
+    (h : HasCuspLabel C τ P) (h' : HasCuspLabel C τ' P) : Nonempty (τ ≅ τ') := by
+  have hq : 1 < Fintype.card K := Fintype.one_lt_card
+  have hqd : 1 < Fintype.card K ^ d := Nat.one_lt_pow (by omega) hq
+  have hdeg : P.natDegree = d := by simpa using h.2.2.2.1
+  obtain ⟨x, hx⟩ := IsAlgClosed.exists_aeval_eq_zero (AlgebraicClosure K) P (degree_pos_of_irreducible h.2.1).ne'
+  have hprim : IsPrimitiveRoot (C.gen d) (Fintype.card K ^ d - 1) := by
+    rw [← C.gen_order d hd]; exact IsPrimitiveRoot.orderOf _
+  haveI : NeZero (Fintype.card K ^ d - 1) := ⟨by omega⟩
+  have heq : τ.character = τ'.character := by
+    refine GlobalTheory.CuspGL.cuspElliptic_statement K d _ _ (isCuspChar_character τ hs hc)
+      (isCuspChar_character τ' hs' hc') fun γ hγ => ?_
+    obtain ⟨z, hz⟩ := IsAlgClosed.exists_aeval_eq_zero (AlgebraicClosure K) _ (degree_pos_of_irreducible hγ).ne'
+    have hX : Matrix.charpoly (γ : Matrix (Fin d) (Fin d) K) ≠ X := by
+      intro hh
+      have h0 := Matrix.det_eq_sign_charpoly_coeff (γ : Matrix (Fin d) (Fin d) K)
+      rw [hh, coeff_X_zero, mul_zero] at h0
+      exact (Matrix.GeneralLinearGroup.det γ).ne_zero h0
+    have hz1 := root_pow_eq_one (Matrix.charpoly_monic _) hγ hX hz
+    rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin] at hz1
+    obtain ⟨m, -, hm⟩ := hprim.eq_pow_of_pow_eq_one hz1
+    have hm' : C.gen (Fintype.card (Fin d)) ^ m = z := by rw [Fintype.card_fin]; exact hm
+    exact (h.2.2.2.2 x hx γ hγ z hz m hm').trans (h'.2.2.2.2 x hx γ hγ z hz m hm').symm
+  by_contra hn
+  have h1 := zIdemOrthogonal_holds _ τ τ' hs hs' hn
+  have hz : zIdem τ = zIdem τ' := by
+    have hd1 : (Module.finrank ℂ τ : ℂ) = Module.finrank ℂ τ' := by
+      rw [← FDRep.char_one, ← FDRep.char_one, heq]
+    unfold zIdem
+    refine Finset.sum_congr rfl fun γ _ => ?_
+    rw [hd1]
+    exact congrArg _ (congrArg _ (congrFun heq γ⁻¹))
+  rw [← hz, (zIdemIdemCentral_holds _ τ hs).1] at h1
+  have h2 := _root_.GlobalTheory.CompanionTheory.TyFin.zIdemFacts.2.2.1 _ τ τ hs hs ⟨Iso.refl _⟩
+  rw [h1, map_zero] at h2
+  haveI : Nontrivial τ := (isIrr_of_simple τ).1
+  exact zero_ne_one h2
+
+theorem cuspParam_all (C : LabelConv K) : CuspParam K C := fun d hd =>
+  ⟨fun τ hs hc => ⟨(exists_label C hd τ hs hc).elim fun P hP =>
+      ⟨P, hP, fun Q hQ => _root_.GlobalTheory.CompanionTheory.TyFin.LabelUniq.hasCuspLabel_unique K C _ τ Q P hQ hP⟩,
+      GlobalTheory.CompanionTheory.TyFin.finrank_of_simple_cuspidal C.ι C.ι_inj hd τ hs hc⟩,
+    _root_.GlobalTheory.CompanionTheory.TyFin.CuspLabel.exists_cuspidal_label K C d hd, fun τ τ' P => iso_of_label C hd τ τ' P⟩
+
+end
+
+end ReciprocityTheory.Ty.Fin.GreenAll
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.LabelMapNonempty =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenCuspidalIff\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalOfUnipotentSumsVanish\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCuspidalWithLabel\npublic import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.LabelMapNonempty\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MemRootsBarXSubC\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Polynomial CategoryTheory
@@ -210,7 +625,6 @@ theorem isCusp_character {d : ℕ} (hd : 0 < d) (τ : FDRep ℂ (Gn g d)) (hs : 
   convert sum_char_eq_zero τ.ρ (stdRadical (ZMod g) d a) (fixed_eq_zero τ hc ha had) using 1
   first
     | rfl
-    | simp [FDRep.character, Representation.character]
 
 theorem isCuspidal_of_isCusp {d : ℕ} (τ : FDRep ℂ (Gn g d)) (h : IsCusp τ.character) : IsCuspidal (ZMod g) τ := by
   classical
@@ -241,30 +655,6 @@ theorem isPrimeLab_iff {d : ℕ} {P : (ZMod g)[X]} :
     have hdvd : X ∣ P := Polynomial.X_dvd_iff.mpr h0
     exact (Polynomial.eq_of_monic_of_associated Polynomial.monic_X hm
       (Polynomial.irreducible_X.associated_of_dvd hi hdvd)).symm
-
-theorem thetaOf_gen_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ^ (g ^ d - 1) = 1)
-    (m : ℕ) : thetaOf L d x (L.gen d ^ m) = L.teich x ^ m := by
-  have hex : ∃ n : ℕ, L.gen d ^ m = L.gen d ^ n := ⟨m, rfl⟩
-  unfold thetaOf
-  rw [dif_pos hex]
-  have hc : L.gen d ^ m = L.gen d ^ hex.choose := hex.choose_spec
-  have hg2 := (Fact.out : g.Prime).two_le
-  have hgd : g ≤ g ^ d := Nat.le_self_pow hd.ne' g
-  have hN : 0 < orderOf (L.gen d) := by
-    rw [L.gen_order d hd]
-    omega
-  have heq : hex.choose % orderOf (L.gen d) = m % orderOf (L.gen d) := by
-    refine pow_injOn_Iio_orderOf (Nat.mod_lt _ hN) (Nat.mod_lt _ hN) ?_
-    simp only [pow_mod_orderOf]
-    exact hc.symm
-  have hmod : hex.choose ≡ m [MOD g ^ d - 1] := by
-    rw [← L.gen_order d hd]
-    exact heq
-  have ht : L.teich x ^ (g ^ d - 1) = 1 := by
-    rw [← map_pow, hx, map_one]
-  have hdvd : orderOf (L.teich x) ∣ g ^ d - 1 := orderOf_dvd_of_pow_eq_one ht
-  rw [← pow_mod_orderOf (L.teich x) hex.choose, ← pow_mod_orderOf (L.teich x) m]
-  exact congrArg _ (Nat.ModEq.of_dvd hdvd hmod)
 
 theorem isCuspOf_character (L : LabelDatum g) {d : ℕ} (hd : 0 < d) (τ : FDRep ℂ (Gn g d)) (P : (ZMod g)[X])
     (hs : Simple τ) (hc : IsCuspidal (ZMod g) τ) (hl : HasCuspLabel (conv L) τ P) : IsCuspOf L P τ.character := by
@@ -300,7 +690,7 @@ theorem isCuspOf_character (L : LabelDatum g) {d : ℕ} (hd : 0 < d) (τ : FDRep
   rw [show τ.character y = _ from htr]
   congr 1
   refine Finset.sum_congr rfl fun i _ => ?_
-  rw [← hmz, ← pow_mul, thetaOf_gen_pow L hd hx1]
+  rw [← hmz, ← pow_mul, _root_.GlobalTheory.GLq.Model.thetaOf_gen_pow L hd hx1]
 
 theorem hasCuspLabel_of_character {K : Type} [Field K] [Fintype K] [DecidableEq K] (C : LabelConv K) {d : ℕ}
     {τ τ' : FDRep ℂ (GL (Fin d) K)} (h : τ.character = τ'.character) {P : K[X]} (hl : HasCuspLabel C τ P) :
@@ -350,3 +740,7 @@ theorem green : GlobalTheory.GLq.Green := by
 theorem greenCuspidal : GlobalTheory.Published.GreenCuspidal := green
 
 end PositivityTheory.GreenCharacters
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal =====

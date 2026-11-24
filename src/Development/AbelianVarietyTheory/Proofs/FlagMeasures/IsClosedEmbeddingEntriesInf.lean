@@ -5,8 +5,10 @@ public import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.Ortho
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CompletedTensorDiscreteSeriesIrreducibleFormalDe
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousMultilinearMapOfInnerProd
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSmoothAverageEqOfMemLowKSubStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HasDerivAtCompletedTensorOrbitSmoothAverageStatement
+public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSmoothAverageEqOfMemLowKSub
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HasDerivAtCompletedTensorOrbitSmoothAverage
 import Formalism.RealPlaceAnalysis.FinalF
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -174,7 +176,7 @@ theorem exists_smooth_average : GlobalTheory.DSId.StrictLow → ∀ (B : RowsAut
         rw [h0, norm_zero] at h1
         exact zero_ne_one h1
       have hK := (hSL B.I.n (B.I.ε v) (B.lam v) (hd v).1 (B.H v) (B.σ v) (hd v).2.1).1
-      exact GlobalTheory.T.exists_smooth_average_eq_of_mem_lowKSub' B.I.n (B.I.ε v) (B.H v) (B.σ v) (B.lam v) (B.w v) (hU v) hK hlow.2 hw0 (x v) (hx v)
+      exact _root_.GlobalTheory.exists_smooth_average_eq_of_mem_lowKSub B.I.n (B.I.ε v) (B.H v) (B.σ v) (B.lam v) (B.w v) (hU v) hK hlow.2 hw0 (x v) (hx v)
     choose Fl hFl hcl hxl using hloc
     obtain ⟨G, hG, hcG, hEq⟩ := tens_average B hU hσ B.w Fl hFl hcl
     refine ⟨G, hG, hcG, ?_⟩
@@ -185,7 +187,7 @@ theorem exists_smooth_average : GlobalTheory.DSId.StrictLow → ∀ (B : RowsAut
 
   have hstep : ∀ (E : gInf B) y, Av y → Av (dAct B E y) := by
     rintro E y ⟨F₁, hF₁, hc₁, rfl⟩
-    obtain ⟨F', hF', hc', hder⟩ := GlobalTheory.T.hasDerivAt_completedTensorOrbit_smoothAverage B F₁ E (B.tens B.w) hσ hF₁ hc₁
+    obtain ⟨F', hF', hc', hder⟩ := _root_.GlobalTheory.AverageDeriv.hasDerivAt_orbit_average B F₁ E (B.tens B.w) hσ hF₁ hc₁
     exact ⟨F', hF', hc', hder.deriv⟩
   have hword : ∀ (l : List (Σ v : InfinitePlace B.I.F, gLie (B.I.ε v))) (x : ∀ v, B.H v),
       (∀ v, x v ∈ lowKSub (B.I.ε v) (B.lam v) (B.σ v)) → Av (wordAct B l (B.tens x)) := by

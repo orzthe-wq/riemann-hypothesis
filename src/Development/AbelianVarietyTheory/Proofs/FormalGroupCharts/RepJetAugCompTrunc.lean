@@ -1,6 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.TwoChartAtlas.TwoChartSt
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsToJetEq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,32 +65,28 @@ theorem isFPt_of_isUnivChart {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {d 
 
 theorem repSt_of_jetAlgSt (hJ : JetAlgSt) : RepSt := by
   intro R _ G _ d x hx κ _
-  obtain ⟨hτ, htr, hinj, hsur, hsub⟩ := hJ R κ
+  obtain ⟨hτ, htr, -, -, -⟩ := hJ R κ
+  let e := compatibleJetMapsEquiv R (Fin d) κ
   have hxa := (isFPt_of_isUnivChart hx).2
-  have haug : ∀ (a : Fin d → MvPowerSeries κ R), (∀ j, constantCoeff (a j) = 0) → ∀ m
-      (ψ : JetR R (Fin d) m →ₐ[R] JetR R κ m), (∀ j, ψ (zR m j) = toJet m (a j)) →
-      (jetAug R κ m).comp ψ = jetAug R (Fin d) m := by
-    intro a ha m ψ hψ
-    refine jet_ext fun j => ?_
-    rw [AlgHom.comp_apply, hψ, (htr m _).2, ha, jetAug_zR]
+  have hpoint (a : Fin d → MvPowerSeries κ R) (ha : ∀ j, constantCoeff (a j) = 0)
+      (y : Fam G κ) (hy : Rep x a y) (m : ℕ) :
+      y m = spMap ((e.symm ⟨a, ha⟩).val m) ≫ x m := by
+    obtain ⟨ψ, hψ, hxy⟩ := hy.2 m
+    have he : ψ = (e.symm ⟨a, ha⟩).val m := jet_ext fun j =>
+      (hψ j).trans (compatibleJetMapsEquiv_symm_zR ⟨a, ha⟩ m j).symm
+    rw [hxy, he]
   have hfp : ∀ a (y : Fam G κ), Rep x a y → IsFPt y := by
-    rintro a y ⟨ha, hy⟩
-    choose ψ hψ hy using hy
+    intro a y hy
+    let φ := e.symm ⟨a, hy.1⟩
+    have hyφ (m : ℕ) : y m = spMap (φ.val m) ≫ x m := hpoint a hy.1 y hy m
     refine ⟨fun m => ?_, fun m => ?_⟩
-    · have e : (jetTruncR R κ m).comp (ψ (m + 1)) = (ψ m).comp (jetTruncR R (Fin d) m) := by
-        refine jet_ext fun j => ?_
-        rw [AlgHom.comp_apply, hψ, (htr m _).1]
-        exact (hψ m j).symm
-      rw [hy, hy, ← Category.assoc, spMap_comp, e, ← spMap_comp, Category.assoc, hx.1]
-    · rw [hy, ← Category.assoc, spMap_comp, haug a ha m _ (hψ m), hxa]
+    · rw [hyφ, hyφ, ← Category.assoc, spMap_comp, φ.property m, ← spMap_comp, Category.assoc, hx.1]
+    · rw [hyφ, ← Category.assoc, spMap_comp, compatibleJetMaps_comp_aug φ m, hxa]
   refine ⟨fun a ha => ?_, fun y hy => ?_, hfp, ⟨fun j => by simp, fun m => ?_⟩, ?_⟩
-  · choose ψ hψ using fun m => (hsub (Fin d) a ha m).1
-    refine ⟨fun m => spMap (ψ m) ≫ x m, ⟨ha, fun m => ⟨ψ m, hψ m, rfl⟩⟩, ?_⟩
-    rintro y ⟨-, hy⟩
-    funext m
-    obtain ⟨ψ', h1, h2⟩ := hy m
-    have : ψ' = ψ m := jet_ext fun j => (h1 j).trans (hψ m j).symm
-    rw [h2, this]
+  · let φ := e.symm ⟨a, ha⟩
+    refine ⟨fun m => spMap (φ.val m) ≫ x m,
+      ⟨ha, fun m => ⟨φ.val m, compatibleJetMapsEquiv_symm_zR ⟨a, ha⟩ m, rfl⟩⟩, ?_⟩
+    exact fun y hy => funext (hpoint a ha y hy)
   · have hU := fun m => hx.2.2 (JetR R κ m) (jetAug R κ m) m (ker_jetAug_pow κ m) (y m) (hy.2 m)
     choose ψ hψ hu using hU
     have hc : ∀ m, (jetTruncR R κ m).comp (ψ (m + 1)) = (ψ m).comp (jetTruncR R (Fin d) m) := by
@@ -101,17 +98,18 @@ theorem repSt_of_jetAlgSt (hJ : JetAlgSt) : RepSt := by
       · rw [← spMap_comp, Category.assoc, ← (hψ (m + 1)).2, hy.1 m]
       · rw [← AlgHom.comp_assoc, (hψ m).1, rep_jetAug_comp_trunc]
       · rw [← spMap_comp, Category.assoc, hx.1 m, ← (hψ m).2]
-    have hex : ∀ j, ∃ g : MvPowerSeries κ R, ∀ m, toJet m g = ψ m (zR m j) := fun j =>
-      hsur (fun m => ψ m (zR m j)) (fun m => AlgHom.congr_fun (hc m) (zR (m + 1) j))
-    choose a ha using hex
-    refine ⟨a, ⟨fun j => ?_, fun m => ⟨ψ m, fun j => (ha j m).symm, (hψ m).2⟩⟩, ?_⟩
-    · rw [← (htr 0 _).2, ha, ← jetAug_zR (R := R) 0 j]
-      exact AlgHom.congr_fun (hψ 0).1 _
-    · rintro a' ⟨ha', hy'⟩
-      funext j
-      refine hinj _ _ fun m => ?_
-      obtain ⟨ψ', h1, h2⟩ := hy' m
-      rw [ha, ← h1, hu m ψ' ⟨haug a' ha' m ψ' h1, h2⟩]
+    let φ : CompatibleJetMaps R (Fin d) κ := ⟨ψ, hc⟩
+    let a := e φ
+    have ha (j : Fin d) (m : ℕ) : toJet m (a.val j) = ψ m (zR m j) :=
+      compatibleJetMapsEquiv_toJet φ m j
+    refine ⟨a.val, ⟨a.property, fun m => ⟨ψ m, fun j => (ha j m).symm, (hψ m).2⟩⟩, ?_⟩
+    intro a' hy'
+    let φ' := e.symm ⟨a', hy'.1⟩
+    funext j
+    refine eq_of_toJet_eq fun m => ?_
+    have hφ' := hu m (φ'.val m) ⟨compatibleJetMaps_comp_aug φ' m, hpoint a' hy'.1 y hy' m⟩
+    rw [ha, ← compatibleJetMapsEquiv_symm_zR ⟨a', hy'.1⟩ m j]
+    exact congrArg (fun f : JetR R (Fin d) m →ₐ[R] JetR R κ m => f (zR m j)) hφ'
   · refine ⟨(Algebra.ofId R _).comp (jetAug R (Fin d) m), fun j => ?_, ?_⟩
     · obtain ⟨τ, h, -⟩ := hτ m
       rw [AlgHom.comp_apply, jetAug_zR, map_zero, Pi.zero_apply, ← h, map_zero]

@@ -57,6 +57,8 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.RingTheory.PicardGroup
+import Formalism.SharpRestriction.GlobalSchurBounds.LocalCountingBounds
 
 @[expose] public section
 
@@ -385,9 +387,7 @@ theorem hform_ne_zero {D : D7} {V : HSp D} (h : IsAniso V) (x : Fin V.rank → D
   simp only [Formalism.UG.hform, Formalism.UG.cT, Matrix.mul_apply, Finset.sum_mul, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply]
   rw [Finset.sum_comm]
 
-theorem mt_mul {D : D7} (V : HSp D) (x y : GA D V) : mt V (x * y) = mt V x * mt V y := by
-  unfold Formalism.L2.Theta.mt
-  rw [map_mul, Units.val_mul]
+alias mt_mul := _root_.GlobalTheory.BesselCompare.mt_mul
 
 theorem mt_mul_rat {D : D7} (V : HSp D) (x u : GA D V) {B M : Matrix (Fin V.rank) (Fin V.rank) D.host.E}
     (h : mt V u = (B * M).map (incA D)) : mt V (x * u) = mt V x * B.map (incA D) * M.map (incA D) * 1 := by
@@ -400,7 +400,7 @@ theorem exists_finite_part (D : D7) (V : HSp D) : ∃ C : Set (Af D.host.F ⊗[D
   haveI : IsModuleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩
   haveI : IsTopologicalRing (Af D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.isTopologicalRing (Af D.host.F) _
   obtain ⟨π, hπ, -⟩ := GlobalTheory.Mass.existsUnique_isFinProj D.sp.cm.sig V.gram
-  obtain ⟨S, hS⟩ := GlobalTheory.Mem.ClassFinite.exists_finset_classes _ _ _ (GlobalTheory.DefiniteQuotient.cmExt D) _ _
+  obtain ⟨S, hS⟩ := GlobalTheory.Mem.ClassFinite.exists_finset_classes _ _ _ (_root_.Formalism.MainNotions.UnusedSlot34.isCMExt_D D) _ _
     (GlobalTheory.DefiniteQuotient.gram_hermND V) _ (GlobalTheory.Mass.isOpen_stdLevel D.sp.cm.sig V.gram)
   obtain ⟨C, hC, hCe⟩ := (GlobalTheory.Mass.intTens_open_compact D.host.F D.host.E).2
   obtain ⟨C₁, hC₁, hCe₁⟩ := exists_compact_mul hC
@@ -432,7 +432,7 @@ theorem exists_real_part (D : D7) (V : HSp D) (hV : IsAniso V) {θ : InfF D} (h�
     ∃ (R : ℝ) (𝓒 : Set (Matrix (Fin V.rank) (Fin V.rank) D.host.E)), 𝓒.Finite ∧ ∀ x : GA D V,
       ∃ u ∈ GQ V, ∃ B : Matrix (Fin V.rank) (Fin V.rank) D.host.E, ∃ M ∈ 𝓒, mt V u = (B * M).map (incA D) ∧
         (∀ a b, IsIntegral ℤ (B a b)) ∧ ∀ a b τ, ‖θ τ (infPart D ((mt V x * B.map (incA D)) a b))‖ ≤ R := by
-  have hcm := GlobalTheory.DefiniteQuotient.cmExt D
+  have hcm := _root_.Formalism.MainNotions.UnusedSlot34.isCMExt_D D
   haveI := hcm.2.1
   obtain ⟨R, 𝓒, h𝓒, H⟩ := exists_bounded_unitary (σ := (D.sp.cm.sig : D.host.E →+* D.host.E))
     (GlobalTheory.CMTypePlaces.mk_tauE_bijective D) (fun τ x => hcm.2.2.2 _ x) (GlobalTheory.DefiniteQuotient.gram_hermND V).2

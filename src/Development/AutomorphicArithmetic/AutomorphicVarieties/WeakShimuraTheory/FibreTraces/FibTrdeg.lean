@@ -78,29 +78,16 @@ theorem UpperTheory.V.Ws.fibTrdeg :
   let E : Subfield K :=
     { S.toSubring with
       inv_mem' := fun x hx => by
-        by_cases h0 : x = 0
-        · rw [h0, inv_zero]
-          exact S.zero_mem
-        have halg : IsAlgebraic S x⁻¹ := by
-          refine ⟨Polynomial.C (⟨x, hx⟩ : S) * Polynomial.X - 1, ?_, ?_⟩
-          · intro h
-            have h' := congrArg (fun q => _root_.AddMonoidAlgebra.coeff (M := ℕ) q 0) h
-            simp at h'
-          · simp [h0]
-        exact (hmemS _).mpr (hSalg _ halg) }
+        exact (hmemS _).mpr (hSalg _ (isAlgebraic_algebraMap (⟨x, hx⟩ : S)).inv) }
   have hjE : ∀ y, j y ∈ E := by
     refine hE E (fun d => S.algebraMap_mem d) (fun t ht => ?_) (fun p x hp hc hr => ?_)
     · exact (hmemS t).mpr (M.subset_closure (T : Set K) (by simp [M]) ht)
-    · have hl : p ∈ Polynomial.lifts (algebraMap S K) := by
-        rw [Polynomial.lifts_iff_coeff_lifts]
-        intro n
-        exact ⟨⟨p.coeff n, hc n⟩, rfl⟩
+    · have hl : p ∈ Polynomial.lifts (algebraMap S K) :=
+        (Polynomial.lifts_iff_coeff_lifts p).mpr fun n => ⟨⟨p.coeff n, hc n⟩, rfl⟩
       obtain ⟨q, hq, -, hqm⟩ := Polynomial.lifts_and_natDegree_eq_and_monic hl hp
-      have halg : IsAlgebraic S x := by
-        refine ⟨q, hqm.ne_zero, ?_⟩
-        rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, hq]
-        exact hr
-      exact (hmemS x).mpr (hSalg x halg)
+      refine (hmemS x).mpr (hSalg x ⟨q, hqm.ne_zero, ?_⟩)
+      rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, hq]
+      exact hr
   obtain ⟨s, hs⟩ := exists_isTranscendenceBasis D C
   rw [← hs.cardinalMk_eq_trdeg]
   let jA : C →ₐ[D] K := { j with commutes' := fun _ => rfl }

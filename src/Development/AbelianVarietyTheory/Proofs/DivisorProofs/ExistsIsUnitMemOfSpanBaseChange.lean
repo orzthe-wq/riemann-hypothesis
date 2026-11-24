@@ -172,7 +172,7 @@ theorem exists_isUnit_mem_of_span_baseChange {k A K : Type} [Field k] [Infinite 
   rw [key] at ht
   convert ht using 2
   refine Finset.sum_congr rfl fun i _ => ?_
-  simp only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval_X]
+  simp only [MvPolynomial.eval_X]
   congr 1
   ext p q
   simp

@@ -61,10 +61,6 @@ section SlopeTestRemainingChoices
 
 open Polynomial
 
-private theorem rc_coef {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] :
-    ∃ c : Coef l, ∀ x ∈ K, ‖x‖ ≤ 1 → x ∈ c.O :=
-  _root_.UpperTheory.Reformulated.B.CoefficientRingContainingIntegers.rc_coef K
-
 private theorem rc_root {κ : Type} [NormedField κ] [IsAlgClosed κ] (γ : κ) (hγ : ‖γ - 1‖ < 1) (n : ℕ) (hn : 0 < n) :
     ∃ b : κ, b ^ n = γ ∧ ‖b - 1‖ < 1 := by
   by_contra hc
@@ -103,7 +99,7 @@ private theorem rc_char {l : ℕ} [Fact l.Prime] (b : PadicAlgCl l) (hb : ‖b -
     ∃ (κ : AddChar ℤ_[l] (PadicAlgCl l)) (c : Coef l), Continuous κ ∧ κ 1 = b ∧ ∀ x, κ x ∈ c.O ∧ ‖κ x - 1‖ < 1 := by
   let K : IntermediateField ℚ_[l] (PadicAlgCl l) := IntermediateField.adjoin ℚ_[l] {b}
   haveI : FiniteDimensional ℚ_[l] K := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral b)
-  obtain ⟨c, hc⟩ := rc_coef K
+  obtain ⟨c, hc⟩ := _root_.UpperTheory.Reformulated.B.CoefficientRingContainingIntegers.rc_coef K
   haveI : CompleteSpace K := by
     have h : IsClosed (K.toSubmodule : Set (PadicAlgCl l)) := Submodule.closed_of_finiteDimensional _
     have h2 : IsComplete (K.toSubmodule : Set (PadicAlgCl l)) := Submodule.complete_of_finiteDimensional _

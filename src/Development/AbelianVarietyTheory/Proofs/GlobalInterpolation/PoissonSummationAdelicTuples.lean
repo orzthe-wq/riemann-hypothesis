@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DecayZero
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdelicFourierSeriesOfSummableCoefficientsStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RapidDecayAdelicIntegrablePeriodisationContinuouStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AdelicFourierSeriesOfSummableCoefficients
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RapidDecayAdelicIntegrablePeriodisationContinuou
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalVectorsAdelesFundamentalDomainMassOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
 import Mathlib.Algebra.Order.Floor.Extended
@@ -68,13 +68,9 @@ variable {F : Type} [Field F] [NumberField F] {N : ℕ}
 theorem rat_add (ξ η : Fin N → F) : (rat (ξ + η) : Fin N → AF F) = rat ξ + rat η := by
   funext l; simp [rat]
 
-theorem rat_neg (ξ : Fin N → F) : (rat (-ξ) : Fin N → AF F) = -rat ξ := by
-  funext l; simp [rat]
+alias rat_neg := _root_.GlobalTheory.SWQ.FZero.rat_neg
 
-theorem Bd_add_left (a : Fin N → F) (u v w : Fin N → AF F) :
-    Bd (AF F) a (u + v) w = Bd (AF F) a u w + Bd (AF F) a v w := by
-  simp only [Bd, ← Finset.sum_add_distrib]
-  exact Finset.sum_congr rfl fun l _ => by simp only [Pi.add_apply]; ring
+alias Bd_add_left := _root_.GlobalTheory.SWQ.FZero.Bd_add_left
 
 theorem Bd_neg_right (a : Fin N → F) (u w : Fin N → AF F) :
     Bd (AF F) a u (-w) = -Bd (AF F) a u w := by
@@ -84,15 +80,9 @@ theorem Bd_neg_right (a : Fin N → F) (u w : Fin N → AF F) :
 theorem Bd_zero_left (a : Fin N → F) (w : Fin N → AF F) : Bd (AF F) a 0 w = 0 := by
   simp [Bd]
 
-theorem Bd_rat (a : Fin N → F) (ξ η : Fin N → F) :
-    Bd (AF F) a (rat ξ) (rat η) = algebraMap F (AF F) (Bd F a ξ η) := by
-  set_option synthInstance.maxHeartbeats 100000 in
-    simp [Bd, rat, map_sum, map_mul]
+alias Bd_rat := _root_.GlobalTheory.SWQ.Bd_rat_rat
 
-theorem continuous_Bd_right (a : Fin N → F) (w : Fin N → AF F) :
-    Continuous fun u : Fin N → AF F => Bd (AF F) a u w := by
-  unfold Bd
-  exact continuous_finsetSum _ fun l _ => (continuous_const.mul (continuous_apply l)).mul continuous_const
+alias continuous_Bd_right := _root_.GlobalTheory.SWQ.FZero.cont_Bd
 
 end GlobalTheory.SWQ.PoissonSum
 
@@ -103,8 +93,8 @@ theorem GlobalTheory.SWQ.poisson_summation : ∀ (F : Type) [Field F] [NumberFie
   have hψ := hC.2.1
   obtain ⟨hHaar, hmem, hinj, -, D, hDm, hD, hD1⟩ := GlobalTheory.SWQ.rat_lattice_fundamentalDomain F N ν hC.2.2.2.1
   haveI := hHaar
-  obtain ⟨hint, hsum, hcont⟩ := GlobalTheory.T.rapidDecay_adelic_integrable_periodisation_continuous F N hC.1 Φ hΦ
-  obtain ⟨-, hsumF, -⟩ := GlobalTheory.T.rapidDecay_adelic_integrable_periodisation_continuous F N hC.1 _ hFΦ
+  obtain ⟨hint, hsum, hcont⟩ := _root_.GlobalTheory.decay_integrable_periodise F N hC.1 Φ hΦ
+  obtain ⟨-, hsumF, -⟩ := _root_.GlobalTheory.decay_integrable_periodise F N hC.1 _ hFΦ
   set P : (Fin N → AF F) → ℂ := fun u => ∑' ξ : Fin N → F, Φ (rat ξ + u) with hP
   have hper : ∀ ξ u, P (rat ξ + u) = P u := by
     intro ξ u
@@ -150,7 +140,7 @@ theorem GlobalTheory.SWQ.poisson_summation : ∀ (F : Type) [Field F] [NumberFie
     have h := hsumF 0
     simp only [add_zero] at h
     exact (Equiv.neg (Fin N → F)).summable_iff.2 h
-  have key := GlobalTheory.T.adelic_fourierSeries_of_summable_coefficients F N ψ lam ν a hC D hD hD1 P _ hcont hper hcoef hsc 0
+  have key := _root_.GlobalTheory.SWQ.FourierSeries.fourier_series F N ψ lam ν a hC D hD hD1 P _ hcont hper hcoef hsc 0
   have h0 : P 0 = th Φ := by simp [hP, th]
   rw [h0] at key
   rw [key, th]

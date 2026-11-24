@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalTermEqFinprodLocalTerms
 
 @[expose] public section
 
@@ -48,20 +49,6 @@ open PositivityTheory.Rg.BcB.G8 PositivityTheory.Rg.BcB.G8.Fin GlobalTheory.Comp
 open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.SplitCpt
-
-theorem cptPart_le_self' {G : Type} [Group G] [TopologicalSpace G] (T : Subgroup G) : cptPart T ≤ T := by
-  rw [cptPart, Subgroup.closure_le]
-  rintro t ⟨ht, -⟩
-  exact ht
-
-theorem mem_map_conj {G : Type} [Group G] (K : Subgroup G) (x c : G) :
-    c ∈ K.map (MulAut.conj x).toMonoidHom ↔ x⁻¹ * c * x ∈ K := by
-  constructor
-  · rintro ⟨k, hk, rfl⟩
-    simpa [mul_assoc] using hk
-  · intro h
-    refine ⟨_, h, ?_⟩
-    simp [mul_assoc]
 
 theorem split_cpt : ∀ {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H] (σ : H →* H) (K : Subgroup H) (d d' : H),
   Continuous σ → (∀ g, σ (σ g) = g) → IsOpen (K : Set H) → IsCompact (K : Set H) → (∀ k ∈ K, σ k ∈ K) →
@@ -104,12 +91,12 @@ theorem split_cpt : ∀ {H : Type} [Group H] [TopologicalSpace H] [IsTopological
     have hle : B.comap (MonoidHom.fst H H) ⊓ cptPart T ≤
         T ⊓ (K.prod K).map (MulAut.conj y).toMonoidHom := by
       rintro c ⟨hcB, hcC⟩
-      have hcT : c ∈ T := cptPart_le_self' T hcC
+      have hcT : c ∈ T := _root_.GlobalTheory.EulerAbs.cptPart_le_self_term T hcC
       refine ⟨hcT, ?_⟩
       have h2 := ((mem_twCent_swTw σ hσ d d' c).1 hcT).2
-      have hm1 : y.1⁻¹ * c.1 * y.1 ∈ K := (mem_map_conj K _ _).1 hcB.1.2
-      have hm3 : x₃⁻¹ * c.1 * x₃ ∈ K := (mem_map_conj K _ _).1 hcB.2.2
-      refine (mem_map_conj _ _ _).2 (Subgroup.mem_prod.2 ⟨hm1, ?_⟩)
+      have hm1 : y.1⁻¹ * c.1 * y.1 ∈ K := (_root_.GlobalTheory.EulerAbs.mem_map_conj_iff_term K _ _).1 hcB.1.2
+      have hm3 : x₃⁻¹ * c.1 * x₃ ∈ K := (_root_.GlobalTheory.EulerAbs.mem_map_conj_iff_term K _ _).1 hcB.2.2
+      refine (_root_.GlobalTheory.EulerAbs.mem_map_conj_iff_term _ _ _).2 (Subgroup.mem_prod.2 ⟨hm1, ?_⟩)
       have hs := hσK _ hm3
       have e : (y⁻¹ * c * y).2 = σ (x₃⁻¹ * c.1 * x₃) := by
         simp only [Prod.snd_mul, Prod.snd_inv, h2, hx₃, map_mul, map_inv, hσ]

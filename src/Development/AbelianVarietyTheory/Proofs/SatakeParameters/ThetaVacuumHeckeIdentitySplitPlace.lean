@@ -107,7 +107,7 @@ theorem unr {P : Pl D.host.E} {e : AE D} (he : IsIdemAt e P) {χ : (AE D)ˣ →*
   have key : ∀ z : AE D, (1 - e) * z = 1 - e → finPart D (e * z) ∈ intAE D → finPart D z ∈ intAE D := fun z a b => by
     have : z = e * z + 1 - e := by linear_combination a
     rw [this, RingHom.map_sub, RingHom.map_add (f := _), RingHom.map_one]
-    exact sub_mem (add_mem b (GlobalTheory.SplitDivisors.one_mem_int D)) e0
+    exact sub_mem (add_mem b (_root_.GlobalTheory.HeckeConj.one_mem_intAE D)) e0
   refine hχ e _ (Or.inl ⟨he, rfl⟩) y ?_ (key _ h h1) (key _ h' h2)
   linear_combination (cA D e - 1) * h + ((y : AE D) - 1) * he.1.2.1
 

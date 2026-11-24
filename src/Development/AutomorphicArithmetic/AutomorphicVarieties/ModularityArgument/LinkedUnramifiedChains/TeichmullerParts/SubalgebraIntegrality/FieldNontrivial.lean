@@ -1,5 +1,6 @@
 module
 
+import Mathlib
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LinkedUnramifiedChains.TeichmullerParts.HodgeTateFromSandwich
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LinkedUnramifiedChains.TeichmullerParts.UnramifiedTrivialInertialType
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueSpecializes
@@ -247,12 +248,7 @@ private theorem joint_gen {I : Type} (g : I → B)
   rwa [e, e'] at hm
 
 omit [Module B M] in
-private theorem exists_semi [Algebra A K] [Module.Free A M] {C W : Type} [Field C] [AddCommGroup W] [Module C W] (ι : K ≃+* C)
-    (sp : M →+ W) (hsm : ∀ (a : A) m, sp (a • m) = ι (algebraMap A K a) • sp m)
-    (hind : ∀ (κ : Type) (b : Module.Basis κ A M), LinearIndependent C fun i => sp (b i)) :
-    ∃ Ψ : K ⊗[A] M →+ W, (∀ k m, Ψ (k ⊗ₜ m) = ι k • sp m) ∧ (∀ (k : K) v, Ψ (k • v) = ι k • Ψ v) ∧ Function.Injective Ψ ∧
-      ∀ w, w ∈ Submodule.span C (Set.range sp) ↔ ∃ v, Ψ v = w :=
-  by apply _root_.UpperTheory.Reformulated.B.Ra9.exists_semi <;> assumption
+private alias exists_semi := _root_.UpperTheory.Reformulated.B.Ra9.exists_semi
 
 include hann in
 private theorem mu_eq [IsAlgClosed K] [Module.Finite A M] [Module.Free A M] {I : Type} (g : I → B)

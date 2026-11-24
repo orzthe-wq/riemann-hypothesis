@@ -60,12 +60,12 @@ structure SequenceOfBlowupsPushforward {S X : Scheme.{u}} (j : S ⟶ X) (BS : Se
   square : ∀ (i : ℕ) (hi : i < B.length),
     σ (i + 1) hi ≫ B.transitionMapSucc i = BS.transitionMapSucc i ≫ σ i hi.le
   center : ∀ (i : ℕ) (hi : i < B.length),
-    B.center i = imageIdealSheaf (σ i hi.le) (BS.center i)
+    B.center i = _root_.FunctorialResolution.Blowup.schemeImageIdeal (σ i hi.le) (BS.center i)
 
 private theorem comap_imageIdealSheaf_of_isIso {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (J : A.IdealSheafData) :
-    (imageIdealSheaf f J).comap f = J := by
-  rw [show imageIdealSheaf f J = J.map f from map_eq_imageIdealSheaf ..]
+    (_root_.FunctorialResolution.Blowup.schemeImageIdeal f J).comap f = J := by
+  rw [show _root_.FunctorialResolution.Blowup.schemeImageIdeal f J = J.map f from map_eq_imageIdealSheaf ..]
   exact Blowup.comap_map_of_isClosedImmersion f J
 
 private theorem exists_iso_succ_comp_blowupMorphism {X : Scheme.{u}} (B B' : SequenceOfBlowups X) (i : ℕ)
@@ -181,7 +181,7 @@ theorem isomorphic {S X : Scheme.{u}} {j : S ⟶ X} [IsClosedImmersion j]
               Category.id_comp, Category.comp_id]
             have hBcen : (B'.center n).comap (d'.σ n hnB'.le) = BS.center n := by
               have := d'.isClosedImmersion n hnB'.le
-              rw [d'.center n hnB', show imageIdealSheaf (d'.σ n hnB'.le) (BS.center n)
+              rw [d'.center n hnB', show _root_.FunctorialResolution.Blowup.schemeImageIdeal (d'.σ n hnB'.le) (BS.center n)
                   = (BS.center n).map (d'.σ n hnB'.le) from map_eq_imageIdealSheaf ..,
                 Blowup.comap_map_of_isClosedImmersion]
             have hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor

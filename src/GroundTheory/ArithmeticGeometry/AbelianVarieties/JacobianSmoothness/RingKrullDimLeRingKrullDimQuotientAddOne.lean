@@ -255,7 +255,7 @@ omit [IsDomain A] [Algebra k A] [Algebra.FiniteType k A] in
 lemma coheight_eq_ringKrullDim_quotient (p : PrimeSpectrum A) :
     (Order.coheight p : WithBot ℕ∞) = ringKrullDim (A ⧸ p.asIdeal) := by
   rw [ringKrullDim_quotient, Order.coheight_eq_krullDim_Ici]
-  refine Order.krullDim_eq_of_orderIso (OrderIso.setCongr _ _ ?_)
+  refine Order.krullDim_eq_of_orderIso (Set.orderIsoOfEq _ _ ?_)
   ext q
   simp [PrimeSpectrum.mem_zeroLocus, ← PrimeSpectrum.asIdeal_le_asIdeal]
 

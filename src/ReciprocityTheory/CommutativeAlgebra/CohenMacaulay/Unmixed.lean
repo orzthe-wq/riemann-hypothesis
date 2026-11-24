@@ -1,6 +1,10 @@
 module
 
 public import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.ModDepthGE
+public import Lemmata.GeneralBFactRest.Imports
+public import Mathlib.RingTheory.Ideal.AssociatedPrime.Localization
+public import Mathlib.RingTheory.KrullDimension.Regular
+public import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.ExistsIsRegularAppendOfModDepthGE
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -19,13 +23,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
-public import Mathlib.RingTheory.Ideal.AssociatedPrime.Localization
-public import Mathlib.RingTheory.KrullDimension.Regular
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -33,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,13 +43,73 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.AssDim
-public import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.ExistsIsRegularAppendOfModDepthGE
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.AssDim, ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.Unmixed
+
+-- ===== clump member: ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.AssDim =====
+-- clump-header: {"m": "ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.AssDim", "h": "module\n\npublic import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.ModDepthGE\npublic import Lemmata.GeneralBFactRest.Imports\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace ReciprocityTheory.CA
+
+open IsLocalRing RingTheory.Sequence Pointwise
+
+variable {R : Type*} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
+
+theorem length_le_of_isRegular_of_mem_associatedPrimes : ∀ (rs : List R)
+    {M : Type*} [AddCommGroup M] [Module R M] [Module.Finite R M],
+    (∀ r ∈ rs, r ∈ maximalIdeal R) → IsRegular M rs → ∀ {p : Ideal R},
+    p ∈ associatedPrimes R M → (rs.length : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ p)
+  | [], M, _, _, _, _, _, p, hp => by
+    have : p.IsPrime := hp.isPrime
+    have : Nontrivial (R ⧸ p) := Ideal.Quotient.nontrivial_iff.mpr this.ne_top
+    simpa using ringKrullDim_nonneg_of_nontrivial
+  | x :: rs', M, _, _, _, hm, reg, p, hp => by
+    obtain ⟨hreg, hreg'⟩ := (isRegular_cons_iff M x rs').mp reg
+    have hx : x ∈ maximalIdeal R := hm x List.mem_cons_self
+    obtain ⟨q, hq, hpq, hxq, hxnp⟩ := _root_.Bl.general_b_fact_rest.goal1 hp hx hreg
+    have ih := length_le_of_isRegular_of_mem_associatedPrimes rs'
+      (fun r hr => hm r (List.mem_cons_of_mem _ hr)) hreg' hq
+    have hpp : p.IsPrime := hp.isPrime
+    have hxp : Ideal.Quotient.mk p x ≠ 0 := by
+      rw [ne_eq, Ideal.Quotient.eq_zero_iff_mem]
+      exact hxnp
+    have hdim : ringKrullDim (R ⧸ q) + 1 ≤ ringKrullDim (R ⧸ p) :=
+      ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hpq.le)
+        (Ideal.Quotient.factor_surjective hpq.le) (mem_nonZeroDivisors_of_ne_zero hxp)
+        (by simpa [Ideal.Quotient.eq_zero_iff_mem] using hxq)
+    calc ((x :: rs').length : WithBot ℕ∞) = (rs'.length : WithBot ℕ∞) + 1 := by simp
+      _ ≤ ringKrullDim (R ⧸ q) + 1 := by gcongr
+      _ ≤ ringKrullDim (R ⧸ p) := hdim
+
+variable {M : Type*} [AddCommGroup M] [Module R M] [Module.Finite R M]
+
+theorem ModDepthGE.le_ringKrullDim_quotient_of_mem_associatedPrimes {n : ℕ}
+    (h : ModDepthGE R M n) {p : Ideal R} (hp : p ∈ associatedPrimes R M) :
+    (n : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ p) := by
+  obtain ⟨rs, hlen, hmem, hreg⟩ := h
+  subst hlen
+  exact length_le_of_isRegular_of_mem_associatedPrimes rs hmem hreg hp
+
+end ReciprocityTheory.CA
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.AssDim =====
+
+-- ===== clump member: ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.Unmixed =====
+-- clump-header: {"m": "ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.Unmixed", "h": "module\n\npublic import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.ModDepthGE\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\npublic import Mathlib.RingTheory.Ideal.AssociatedPrime.Localization\npublic import Mathlib.RingTheory.KrullDimension.Regular\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.AssDim\npublic import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.ExistsIsRegularAppendOfModDepthGE\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace ReciprocityTheory.CA
@@ -68,7 +125,6 @@ private theorem unm_add_one_eq {a : WithBot ℕ∞} {n : ℕ} (h : a + 1 = n) :
     exfalso
     first
     | (simp at h; done)
-    | (rw [WithBot.bot_add] at h; exact WithBot.bot_ne_coe (a := (n : ℕ∞)) (by exact_mod_cast h))
   | coe b =>
     induction b using ENat.recTopCoe with
     | top =>
@@ -77,7 +133,7 @@ private theorem unm_add_one_eq {a : WithBot ℕ∞} {n : ℕ} (h : a + 1 = n) :
       simp at h'
     | coe k =>
       have h' : k + 1 = n := by exact_mod_cast h
-      exact ⟨k, h'.symm, by first | rfl | norm_cast | simp⟩
+      exact ⟨k, h'.symm, by first | rfl | simp⟩
 
 private theorem unm_dim_le_of_le {I J : Ideal R} (h : I ≤ J) :
     ringKrullDim (R ⧸ J) ≤ ringKrullDim (R ⧸ I) := by
@@ -112,7 +168,7 @@ private theorem unm_dim_succ_le_of_lt {Q P : Ideal R} [Q.IsPrime] (h : Q < P) :
     ringKrullDim_le_of_surjective f hf
   calc ringKrullDim (R ⧸ P) + 1
       ≤ ringKrullDim ((R ⧸ Q) ⧸ Ideal.span {(Ideal.Quotient.mk Q a : R ⧸ Q)}) + 1 := by
-        first | gcongr | exact add_le_add_right hle 1
+        first | gcongr
     _ ≤ ringKrullDim (R ⧸ Q) := ringKrullDim_quotient_succ_le_of_nonZeroDivisor hxreg
 
 private theorem unm_modDepthGE_congr {N : Type*} [AddCommGroup N] [Module R N]
@@ -135,7 +191,6 @@ private theorem unm_isCMMod_congr {N : Type*} [AddCommGroup N] [Module R N]
   rw [← hdim]
   first
   | (unfold Module.supportDim; rw [hs])
-  | (simp only [Module.supportDim, hs])
 
 theorem IsCMMod.ringKrullDim_quotient_eq_supportDim (h : IsCMMod R M) {p : Ideal R}
     (hp : p ∈ associatedPrimes R M) : ringKrullDim (R ⧸ p) = Module.supportDim R M := by
@@ -149,7 +204,6 @@ theorem IsCMMod.ringKrullDim_quotient_eq_supportDim (h : IsCMMod R M) {p : Ideal
   have hsupp : Module.supportDim R M = ringKrullDim (R ⧸ Module.annihilator R M) := by
     first
     | exact Module.supportDim_eq_ringKrullDim_quotient_annihilator R M
-    | (rw [ringKrullDim_quotient]; unfold Module.supportDim; rw [Module.support_eq_zeroLocus])
   apply le_antisymm
   · rw [hsupp]
     exact unm_dim_le_of_le hann
@@ -171,7 +225,6 @@ theorem IsCMMod.associatedPrimes_eq_minimalPrimes (h : IsCMMod R M) :
     have hsupp : Module.supportDim R M = ringKrullDim (R ⧸ Module.annihilator R M) := by
       first
       | exact Module.supportDim_eq_ringKrullDim_quotient_annihilator R M
-      | (rw [ringKrullDim_quotient]; unfold Module.supportDim; rw [Module.support_eq_zeroLocus])
     have hp' : ringKrullDim (R ⧸ p) = (n : WithBot ℕ∞) :=
       (h.ringKrullDim_quotient_eq_supportDim hp).trans hdim
     refine ⟨⟨hpp, hann⟩, fun q hq hqp => ?_⟩
@@ -217,7 +270,6 @@ theorem IsCMMod.of_quotSMulTop [IsNoetherianRing R] [Module.Finite R M] {x : R}
   first
   | (rw [← hsd, hdim]; done)
   | (rw [← hsd, hdim]; norm_cast)
-  | (rw [← hsd, hdim]; simp)
 
 theorem IsCMMod.isSMulRegular_of_supportDim_quotSMulTop_lt (h : IsCMMod R M) {x : R}
     (hd : Module.supportDim R (QuotSMulTop x M) < Module.supportDim R M) :
@@ -248,7 +300,6 @@ theorem IsCMMod.isSMulRegular_of_supportDim_quotSMulTop_lt (h : IsCMMod R M) {x 
       ringKrullDim (R ⧸ Module.annihilator R (QuotSMulTop x M)) := by
     first
     | exact Module.supportDim_eq_ringKrullDim_quotient_annihilator R (QuotSMulTop x M)
-    | (rw [ringKrullDim_quotient]; unfold Module.supportDim; rw [Module.support_eq_zeroLocus])
   have hle := unm_dim_le_of_le hannQ
   rw [h.ringKrullDim_quotient_eq_supportDim hp, ← hsQ] at hle
   exact absurd hd (not_lt.mpr hle)
@@ -259,7 +310,7 @@ theorem IsCMMod.quotient_ofList (h : IsCMMod R M) {rs : List R}
   induction rs generalizing M with
   | nil =>
     refine unm_isCMMod_congr (Submodule.quotEquivOfEqBot _ ?_).symm h
-    first | simp | simp [Ideal.ofList]
+    first | simp
   | cons r rs ih =>
     rw [RingTheory.Sequence.isRegular_cons_iff] at reg
     have hr : r ∈ maximalIdeal R := hrs r (by simp)
@@ -330,13 +381,11 @@ theorem IsCMMod.isRegular_of_supportDim_quotient_le_zero (h : IsCMMod R M) (xs :
       have h3 := unm_supportDim_le_quotient_add xs (QuotSMulTop x M) hxs'
       calc Module.supportDim R (QuotSMulTop x M) ≤ _ := h3
         _ ≤ 0 + (xs.length : WithBot ℕ∞) := by
-          first | gcongr | exact add_le_add_right hdQ _
+          first | gcongr
         _ = (xs.length : WithBot ℕ∞) := zero_add _
     have hlen' : Module.supportDim R M = (xs.length : WithBot ℕ∞) + 1 := by
       first
       | (rw [← hlen]; simp)
-      | (rw [← hlen, List.length_cons, Nat.cast_succ])
-      | (rw [← hlen]; push_cast; rfl)
     have hlt : Module.supportDim R (QuotSMulTop x M) < Module.supportDim R M := by
       have hl : ((xs.length : ℕ) : WithBot ℕ∞) < ((xs.length + 1 : ℕ) : WithBot ℕ∞) := by
         exact_mod_cast Nat.lt_succ_self _
@@ -359,3 +408,6 @@ theorem IsCMMod.isRegular_of_supportDim_quotient_le_zero (h : IsCMMod R M) (xs :
     exact ⟨reg, ih hQ hxs' hlenQ hdQ⟩
 
 end ReciprocityTheory.CA
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.Unmixed =====

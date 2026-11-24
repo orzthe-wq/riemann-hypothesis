@@ -127,10 +127,8 @@ lemma dgR_rev (k r : ℕ) (t : ℝ) (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) : d
       exact inv_mul_cancel₀ (pow_ne_zero _ ht)
 
 lemma prod_dgR_sq (k r : ℕ) (t : ℝ) (ht : t ≠ 0) : (∏ i, dgR k r t i) ^ 2 = 1 := by
-  have h : ∏ i, dgR k r t (Fin.rev i) = ∏ i, dgR k r t i :=
-    Equiv.prod_comp Fin.revPerm (dgR k r t)
   rw [sq]
-  nth_rewrite 2 [← h]
+  nth_rewrite 2 [← Equiv.prod_comp Fin.revPerm (dgR k r t)]
   rw [← Finset.prod_mul_distrib]
   exact Finset.prod_eq_one fun i _ => dgR_rev k r t ht i
 
@@ -206,8 +204,7 @@ lemma dilation_base_vector (t : ℝ) : aDil k (1 + r') t *ᵥ e0 k r' = ((t ^ (1
   rw [Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]
   unfold e0 bvec
   by_cases h : i = eI k (1 + r') (a0 r')
-  · subst h
-    simp [dgR, eI, a0]
+  · subst h; simp [dgR, eI, a0]
   · simp [h]
 
 lemma aDil_lift (t : ℝ) (y : Fin (2 * r' + k + 1) → ℂ) :
@@ -274,10 +271,8 @@ theorem modular_exponent_recursion : Formalism.FourierDecayAlt.B2.KapRec := by
   · simp [Mdim]; ring_nf
   · apply Finset.sum_congr rfl
     intro a _
-    have := a.isLt
     simp only [Mdim, Fin.natAdd]
-    have h1 : 1 + r' - (1 + a.val) = r' - a.val := by omega
-    simp only [h1]
+    rw [Nat.add_sub_add_left]
 
 namespace B2x7
 
@@ -384,8 +379,7 @@ lemma aDil_zero (k : ℕ) (t : ℝ) : aDil k 0 t = 1 := by
 
 lemma conjM_one (k r : ℕ) : (conjM (1 : Mat k r) : Mt k r → Mt k r) = id := by
   funext x
-  unfold conjM
-  rw [inv_one, Matrix.mul_one, Matrix.one_mul]
+  simp [conjM]
   rfl
 
 lemma mulM_cont {k r : ℕ} : Continuous (mulM : Mt k r × Mt k r → Mt k r) := by

@@ -99,7 +99,7 @@ section Coeff
 
 variable {R : Type*} [CommRing R]
 
-theorem cm_coeff (c : ℚ → R) (φ : HahnSeries ℚ R) (r : ℚ) : (cm c φ).coeff r = c r * φ.coeff r := rfl
+alias cm_coeff := _root_.GlobalTheory.CyclotomicQExpansion.Api.coeff_cm
 
 theorem cm_mul (c : ℚ → R) (hc : ∀ r s, c (r + s) = c r * c s) (φ ψ : HahnSeries ℚ R) :
     cm c (φ * ψ) = cm c φ * cm c ψ := by

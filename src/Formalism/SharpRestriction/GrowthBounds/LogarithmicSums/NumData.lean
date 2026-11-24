@@ -63,7 +63,7 @@ theorem ev_log (c α : ℝ) (hα : 0 < α) : ∀ᶠ x : ℝ in atTop, c * Real.l
   have h3 : |c| / (|c| + 1) ≤ 1 := by
     rw [div_le_one (by positivity)]; linarith
   have h2 : |c| * (1 / (|c| + 1) * x ^ α) = |c| / (|c| + 1) * x ^ α := by ring
-  nlinarith [mul_le_mul_of_nonneg_right h3 hp.le]
+  linarith [mul_le_mul_of_nonneg_right h3 hp.le]
 
 theorem ev_pow (c α β : ℝ) (h : α < β) : ∀ᶠ x : ℝ in atTop, c * x ^ α ≤ x ^ β := by
   have ht := (tendsto_rpow_atTop (sub_pos.2 h)).eventually_ge_atTop |c|
@@ -72,7 +72,7 @@ theorem ev_pow (c α β : ℝ) (h : α < β) : ∀ᶠ x : ℝ in atTop, c * x ^ 
   have e : x ^ β = x ^ α * x ^ (β - α) := by
     rw [← Real.rpow_add hx0]; congr 1; ring
   rw [e]
-  nlinarith [mul_le_mul_of_nonneg_right (le_abs_self c) hp.le, mul_le_mul_of_nonneg_left hx hp.le]
+  grind [mul_le_mul_of_nonneg_right (le_abs_self c) hp.le, mul_le_mul_of_nonneg_left hx hp.le]
 
 theorem k_le_x_pow_six {D : D7} (L : SizeData₂ D) (hS : Formalism.MainNotions.SizesAt L) : (D.R.k : ℝ) ≤ L.sc.x ^ (6 : ℝ) := by
   have hK := hS.2.2.1.2
@@ -104,17 +104,24 @@ theorem first_bound_arith (C c η l X' xn Y b : ℝ) (hC0 : 0 ≤ C) (hc0 : 0 �
   have hY0 : 0 ≤ Y := by linarith
   have hX0 : 0 ≤ X' := by linarith
   have h1 : c + η ≤ 2 * Y := by linarith
-  have h2 : X' * xn + 2 ≤ X' * (2 * Y) := by nlinarith
+  have h2 : X' * xn + 2 ≤ X' * (2 * Y) := by
+    have h2a : X' * xn ≤ X' * Y := mul_le_mul_of_nonneg_left hxn hX0
+    have h2b : Y ≤ X' * Y := le_mul_of_one_le_left hY0 hX
+    linarith
   have a1 : C * (c + η) ≤ Y * (2 * Y) := mul_le_mul hC h1 (by linarith) hY0
   have a2 : C * (c + η) * l ≤ Y * (2 * Y) * Y :=
     mul_le_mul a1 hl hl0 (mul_nonneg hY0 (by linarith))
   have a3 : C * (c + η) * l * (X' * xn + 2) ≤ Y * (2 * Y) * Y * (X' * (2 * Y)) :=
-    mul_le_mul a2 h2 (by nlinarith [mul_nonneg hX0 hxn0]) (mul_nonneg (mul_nonneg hY0 (by linarith)) hY0)
+    mul_le_mul a2 h2 (by positivity) (mul_nonneg (mul_nonneg hY0 (by linarith)) hY0)
   have h10 : (10 : ℝ) ^ 3 ≤ Y ^ 3 := pow_le_pow_left₀ (by norm_num) hY 3
   have h4 : 4 * Y ^ 4 ≤ Y ^ 7 := by
-    have := mul_le_mul_of_nonneg_left (show (4 : ℝ) ≤ Y ^ 3 by norm_num at h10; linarith) (pow_nonneg hY0 4)
-    nlinarith
-  nlinarith [mul_le_mul_of_nonneg_right h4 hX0]
+    calc 4 * Y ^ 4 = Y ^ 4 * 4 := by ring
+      _ ≤ Y ^ 4 * Y ^ 3 := mul_le_mul_of_nonneg_left (by norm_num at h10; linarith) (pow_nonneg hY0 4)
+      _ = Y ^ 7 := by ring
+  calc C * (c + η) * l * (X' * xn + 2) ≤ Y * (2 * Y) * Y * (X' * (2 * Y)) := a3
+    _ = (4 * Y ^ 4) * X' := by ring
+    _ ≤ Y ^ 7 * X' := mul_le_mul_of_nonneg_right h4 hX0
+    _ ≤ b := hb
 
 theorem n1'_arith (C f Nm la X' xn Y b : ℝ) (hC0 : 0 ≤ C) (hf0 : 0 ≤ f) (hN0 : 0 ≤ Nm) (hl0 : 0 ≤ la) (hxn0 : 0 ≤ xn)
     (hC : C ≤ Y) (hf : f ≤ Y) (hN : Nm ≤ Y) (hl : la ≤ Y) (hxn : xn ≤ Y) (hX : 1 ≤ X') (hY : 10 ≤ Y)
@@ -126,19 +133,33 @@ theorem n1'_arith (C f Nm la X' xn Y b : ℝ) (hC0 : 0 ≤ C) (hf0 : 0 ≤ f) (h
   have m1 : Nm ^ 2 * la ≤ Y ^ 2 * Y := mul_le_mul (pow_le_pow_left₀ hN0 hN 2) hl hl0 (sq_nonneg _)
   have m2 : la ^ 2 / Real.log 2 ≤ 2 * Y ^ 2 := by
     rw [div_le_iff₀ hlpos]
-    nlinarith [pow_le_pow_left₀ hl0 hl 2, sq_nonneg Y]
+    calc la ^ 2 ≤ Y ^ 2 := pow_le_pow_left₀ hl0 hl 2
+      _ ≤ Y ^ 2 * (2 * Real.log 2) := le_mul_of_one_le_right (sq_nonneg Y) (by linarith)
+      _ = 2 * Y ^ 2 * Real.log 2 := by ring
   have mid0 : 0 ≤ Nm ^ 2 * la + la ^ 2 / Real.log 2 :=
     add_nonneg (mul_nonneg (sq_nonneg _) hl0) (div_nonneg (sq_nonneg _) hlpos.le)
-  have mid : Nm ^ 2 * la + la ^ 2 / Real.log 2 ≤ 2 * Y ^ 3 := by nlinarith [sq_nonneg Y]
-  have h2 : X' * xn + 2 ≤ X' * (2 * Y) := by nlinarith
+  have mid : Nm ^ 2 * la + la ^ 2 / Real.log 2 ≤ 2 * Y ^ 3 := by
+    have h2Y : 2 * Y ^ 2 ≤ Y * Y ^ 2 := mul_le_mul_of_nonneg_right (by linarith) (sq_nonneg Y)
+    have heq : Y ^ 2 * Y + Y * Y ^ 2 = 2 * Y ^ 3 := by ring
+    linarith
+  have h2 : X' * xn + 2 ≤ X' * (2 * Y) := by
+    have h2a : X' * xn ≤ X' * Y := mul_le_mul_of_nonneg_left hxn hX0
+    have h2b : Y ≤ X' * Y := le_mul_of_one_le_left hY0 hX
+    linarith
   have a1 : C * f ≤ Y * Y := mul_le_mul hC hf hf0 hY0
   have a2 : C * f * (Nm ^ 2 * la + la ^ 2 / Real.log 2) ≤ Y * Y * (2 * Y ^ 3) :=
     mul_le_mul a1 mid mid0 (mul_nonneg hY0 hY0)
-  have a3 := mul_le_mul a2 h2 (by nlinarith [mul_nonneg hX0 hxn0])
+  have a3 := mul_le_mul a2 h2 (by positivity)
     (mul_nonneg (mul_nonneg hY0 hY0) (mul_nonneg (by norm_num) (pow_nonneg hY0 3)))
   have h10 : (10 : ℝ) ≤ Y := hY
-  have h4 : 4 * Y ^ 6 ≤ Y ^ 7 := by nlinarith [pow_nonneg hY0 6]
-  nlinarith [mul_le_mul_of_nonneg_right h4 hX0]
+  have h4 : 4 * Y ^ 6 ≤ Y ^ 7 := by
+    calc 4 * Y ^ 6 ≤ Y * Y ^ 6 := mul_le_mul_of_nonneg_right (by linarith) (pow_nonneg hY0 6)
+      _ = Y ^ 7 := by ring
+  calc C * f * (Nm ^ 2 * la + la ^ 2 / Real.log 2) * (X' * xn + 2)
+      ≤ Y * Y * (2 * Y ^ 3) * (X' * (2 * Y)) := a3
+    _ = (4 * Y ^ 6) * X' := by ring
+    _ ≤ Y ^ 7 * X' := mul_le_mul_of_nonneg_right h4 hX0
+    _ ≤ b := hb
 
 theorem second_bound_arith_a (g k W x b' X' b : ℝ) (hg : g ≤ x / 2) (hx : 0 < x) (hkW : 0 ≤ k ^ 2 * W) (hb' : 0 ≤ b')
     (h : k ^ 2 * W * x * x ≤ X') (hX : b' * X' = x * b) : g * (k ^ 2 * W) * b' ≤ b / 2 := by
@@ -147,8 +168,8 @@ theorem second_bound_arith_a (g k W x b' X' b : ℝ) (hg : g ≤ x / 2) (hx : 0 
   have h2 : k ^ 2 * W * x * b' ≤ b := by
     by_contra hc
     push_neg at hc
-    nlinarith [mul_lt_mul_of_pos_left hc hx]
-  nlinarith [mul_le_mul_of_nonneg_right hg hAb]
+    grind [mul_lt_mul_of_pos_left hc hx]
+  grind [mul_le_mul_of_nonneg_right hg hAb]
 
 theorem second_bound_arith_b (g k W x b : ℝ) (hg : g ≤ x / 2) (hx : 0 < x) (hk : 1 ≤ k) (hW : x ^ 2 ≤ W) (hW1 : 1 ≤ W)
     (hb : 0 ≤ b) : g * (k ^ 2 * W) * (x * b * ((k * W) ^ 4)⁻¹) ≤ b / 2 := by
@@ -163,13 +184,21 @@ theorem second_bound_arith_b (g k W x b : ℝ) (hg : g ≤ x / 2) (hx : 0 < x) (
   have a1 : x ^ 2 * (k ^ 2 * W) ≤ W * (k ^ 2 * W) := mul_le_mul_of_nonneg_right hW (by positivity)
   have a2 : k ^ 2 * W ^ 2 ≤ (k * W) ^ 4 := by
     have := mul_le_mul_of_nonneg_left hkW1 (by positivity : (0 : ℝ) ≤ k ^ 2 * W ^ 2)
-    nlinarith
+    grind
   have key : x * (k ^ 2 * W * (x * b * ((k * W) ^ 4)⁻¹)) ≤ b := by
     rw [show x * (k ^ 2 * W * (x * b * ((k * W) ^ 4)⁻¹)) = x ^ 2 * k ^ 2 * W * b / (k * W) ^ 4 by
       rw [div_eq_mul_inv]; ring]
     rw [div_le_iff₀ hP]
-    nlinarith [mul_le_mul_of_nonneg_right (le_trans a1 (by nlinarith : W * (k ^ 2 * W) ≤ (k * W) ^ 4)) hb]
-  nlinarith [mul_le_mul_of_nonneg_right hg hq, key]
+    calc x ^ 2 * k ^ 2 * W * b = (x ^ 2 * (k ^ 2 * W)) * b := by ring
+      _ ≤ (W * (k ^ 2 * W)) * b := mul_le_mul_of_nonneg_right a1 hb
+      _ = (k ^ 2 * W ^ 2) * b := by ring
+      _ ≤ (k * W) ^ 4 * b := mul_le_mul_of_nonneg_right a2 hb
+      _ = b * (k * W) ^ 4 := mul_comm _ _
+  calc g * (k ^ 2 * W) * (x * b * ((k * W) ^ 4)⁻¹)
+      = g * (k ^ 2 * W * (x * b * ((k * W) ^ 4)⁻¹)) := by ring
+    _ ≤ (x / 2) * (k ^ 2 * W * (x * b * ((k * W) ^ 4)⁻¹)) := mul_le_mul_of_nonneg_right hg hq
+    _ = (x * (k ^ 2 * W * (x * b * ((k * W) ^ 4)⁻¹))) / 2 := by ring
+    _ ≤ b / 2 := by linarith
 
 theorem fourth_bound_arith (z C lx La a k p0 x : ℝ) (hC : 0 ≤ C) (hlx : 0 ≤ lx) (hLa : 0 ≤ La) (ha : 0 ≤ a)
     (hx : 0 < x) (hk : 0 < k) (hl : z * (1 + z) ≤ 2 * x) (hg : 4 * C * lx ≤ x) (h1 : La * x ^ 3 ≤ k) (h2 : x ^ 3 ≤ p0) :
@@ -181,7 +210,8 @@ theorem fourth_bound_arith (z C lx La a k p0 x : ℝ) (hC : 0 ≤ C) (hlx : 0 �
   have hQ0 : 0 ≤ C * lx * (La * a / k + a / p0) := mul_nonneg (mul_nonneg hC hlx) hbr0
   have b1 : La * a / k ≤ a / x ^ 3 := by
     rw [div_le_div_iff₀ hk hx3]
-    nlinarith [mul_le_mul_of_nonneg_left h1 ha]
+    calc La * a * x ^ 3 = a * (La * x ^ 3) := by ring
+      _ ≤ a * k := mul_le_mul_of_nonneg_left h1 ha
   have b2 : a / p0 ≤ a / x ^ 3 := div_le_div_of_nonneg_left ha hx3 h2
   have hax : 0 ≤ a / x ^ 3 := div_nonneg ha hx3.le
   have b3 : C * lx * (La * a / k + a / p0) ≤ x / 4 * (2 * (a / x ^ 3)) :=
@@ -193,7 +223,6 @@ theorem fourth_bound_arith (z C lx La a k p0 x : ℝ) (hC : 0 ≤ C) (hlx : 0 �
       have hx0 : x ≠ 0 := hx.ne'
       first
         | (field_simp; ring)
-        | field_simp
 
 end Formalism.MainNotions.AuxBlock8.Pf.G5.Nu
 

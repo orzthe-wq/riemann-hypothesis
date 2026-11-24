@@ -167,21 +167,13 @@ theorem isSBHalf_frames {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.ra
 
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
-theorem coord_add (B : Frames G) (t : T) (w : Pl D.host.E) {X Y : ℕ × ℕ} (hX : X.1 ≤ D.R.m ∧ X.2 ≤ D.R.m)
-    (hY : Y.1 ≤ D.R.m ∧ Y.2 ≤ D.R.m)
-    (x y : Matrix (Fin (G.V (.grid X.1 X.2)).rank) (Fin (G.V (.grid Y.1 Y.2)).rank) (Kw w)) :
-    B.coord t w hX hY (x + y) = B.coord t w hX hY x + B.coord t w hX hY y := by
-  unfold Frames.coord
-  rw [Matrix.mul_add, Matrix.add_mul]
-  rfl
-
 noncomputable def coordHom (B : Frames G) (t : T) (w : Pl D.host.E) {X Y : ℕ × ℕ} (hX : X.1 ≤ D.R.m ∧ X.2 ≤ D.R.m)
     (hY : Y.1 ≤ D.R.m ∧ Y.2 ≤ D.R.m) :
     Matrix (Fin (G.V (.grid X.1 X.2)).rank) (Fin (G.V (.grid Y.1 Y.2)).rank) (AE D) →+
       Matrix (Fin ((locGrid G t w).rank Y)) (Fin ((locGrid G t w).rank X)) (Kw w) :=
   AddMonoidHom.mk' (fun z => B.coord t w hX hY (z.map fun a => cpt w (toEAf D a))) fun x y => by
     rw [Matrix.map_add _ (fun a b => by rw [RingHom.map_add (f := _), RingHom.map_add (f := _)])]
-    exact coord_add B t w hX hY _ _
+    exact _root_.GlobalTheory.BigDat.CoordinateMaps.coord_add B t w hX hY _ _
 
 theorem coordHom_int_iff (B : Frames G) (t : T) (w : Pl D.host.E) {X Y : ℕ × ℕ} (hX : X.1 ≤ D.R.m ∧ X.2 ≤ D.R.m)
     (hY : Y.1 ≤ D.R.m ∧ Y.2 ≤ D.R.m) (z : Matrix (Fin (G.V (.grid X.1 X.2)).rank) (Fin (G.V (.grid Y.1 Y.2)).rank) (AE D)) :
@@ -216,7 +208,7 @@ theorem vecs_last : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (e : A
     have hb := GlobalTheory.FunObj.Good.badInt_notMem hL (GlobalTheory.FlipIntegrand.pde_ne_q_of_setting s) (hch.guard t) hw
     have h2q := fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro _ rfl))
     have hN := fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro_left _ rfl))
-    refine ⟨fun a ha => ?_, ⟨_, GlobalTheory.HostClear.absNorm_mem_AA D, ?_⟩⟩
+    refine ⟨fun a ha => ?_, ⟨_, _root_.Formalism.L2.Pj.normK_mem_AA D, ?_⟩⟩
     · rw [GlobalTheory.FunObj.Good.valued_alg]
       exact GlobalTheory.FunObj.Good.valuation_le_one_of_mem h2q (Or.inl ha)
     · rw [GlobalTheory.FunObj.Good.valued_alg]

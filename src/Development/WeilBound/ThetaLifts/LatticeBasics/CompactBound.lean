@@ -88,7 +88,7 @@ theorem compact_bound {Ω : Set (AF F)} (hΩ : IsCompact Ω) : ∃ (c : ℕ) (R 
     rw [PNat.mul_coe, Nat.cast_mul, mul_right_comm, norm_mul]
     exact mul_le_one₀ (ha v) (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _)
   have cov : Ω ⊆ ⋃ c, O c := fun a _ => by
-    obtain ⟨d, d0, -, hd⟩ := GlobalTheory.SmoothForms.denom_global (fun v => max 1 ‖evFin F v a‖₊) (fun _ => le_max_left _ _)
+    obtain ⟨d, d0, -, hd⟩ := _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator (fun v => max 1 ‖evFin F v a‖₊) (fun _ => le_max_left _ _)
       ((Filter.eventually_cofinite.1 a.2.2).subset fun v hv h =>
         hv (max_eq_left (by exact_mod_cast Valued.toNormedField.norm_le_one_iff.2 h)))
     exact Set.mem_iUnion.2 ⟨⟨d, d0⟩, fun v => hd v _ (le_max_right _ _)⟩
@@ -106,7 +106,7 @@ theorem scale_core {ρ : (AF F)ˣ} (r1 : ∀ w, ‖evInf F w ρ‖₊ = 2⁻¹) 
   have hP : ∏ w, ‖evInf F w ν‖₊ ≤ D := Finset.prod_le_pow_card _ _ _ fun w _ => h1 w
   have hQ : ∏ᶠ v, ‖evFin F v ν‖₊ ≤ 1 := finprod_induction (· ≤ 1) le_rfl (fun _ _ => mul_le_one') h2
   have n0 : ∀ v, 0 < ‖evFin F v ν‖₊ := fun v => nnnorm_pos.2 (ν.isUnit.map _).ne_zero
-  obtain ⟨m, m0, hm, hv⟩ := GlobalTheory.SmoothForms.denom_global (fun v => ‖evFin F v ν‖₊⁻¹) (fun v => (one_le_inv₀ (n0 v)).2 (h2 v))
+  obtain ⟨m, m0, hm, hv⟩ := _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator (fun v => ‖evFin F v ν‖₊⁻¹) (fun v => (one_le_inv₀ (n0 v)).2 (h2 v))
     (by rwa [Function.mulSupport_fun_inv])
   have a1 : 1 ≤ 2 ^ i * ∏ᶠ v, ‖evFin F v ν‖₊ := le_of_mul_le_mul_left
     ((mul_one D).trans_le (h.trans ((mul_le_mul_right (mul_le_mul_left hP _) _).trans_eq (mul_left_comm _ _ _)))) D0

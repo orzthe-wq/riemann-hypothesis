@@ -1,54 +1,9 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ModelDer
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 public import Mathlib.Analysis.Calculus.Deriv.Prod
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.InhabA
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Calculus.Deriv.Pow
 
 @[expose] public section
@@ -93,10 +48,7 @@ theorem mexp_nonneg (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε
 
 lemma hwmf_diff_entry (i j : Fin n) : Differentiable ℂ (fun x : Matrix (Fin n) (Fin n) ℂ => x i j) := by
   first
-    | exact ((ContinuousLinearMap.proj j).comp (ContinuousLinearMap.proj i) :
-        (Fin n → Fin n → ℂ) →L[ℂ] ℂ).differentiable
     | fun_prop
-    | exact (differentiable_apply j).comp (differentiable_apply i)
 
 lemma hwmf_diff_prod {ι : Type} (s : Finset ι) (g : ι → Matrix (Fin n) (Fin n) ℂ → ℂ)
     (h : ∀ i, Differentiable ℂ (g i)) : Differentiable ℂ (fun x => ∏ i ∈ s, g i x) := by
@@ -115,10 +67,6 @@ lemma hwmf_diff_blkMinor (ε : Fin n → Bool) (a : Fin n) : Differentiable ℂ 
     | (apply Differentiable.fun_sum
        intro σ _
        exact (differentiable_const _).mul (hwmf_diff_prod _ _ (fun i => hwmf_diff_entry _ _)))
-    | fun_prop
-    | (apply Differentiable.sum
-       intro σ _
-       exact (differentiable_const _).mul (hwmf_diff_prod _ _ (fun i => hwmf_diff_entry _ _)))
 
 theorem differentiable_highest_weight_fn (ε : Fin n → Bool) (m : Fin n → ℤ) : Differentiable ℂ (f0 ε m) := by
   show Differentiable ℂ (fun x : Matrix (Fin n) (Fin n) ℂ => f0 ε m x)
@@ -128,9 +76,7 @@ theorem differentiable_highest_weight_fn (ε : Fin n → Bool) (m : Fin n → �
 theorem highest_weight_fn_K_one (ε : Fin n → Bool) (m : Fin n → ℤ) : f0K ε m 1 = 1 := by
   have h1 : toMK (1 : KG ε) = 1 := by
     first
-      | exact toMK_one
       | simp [toMK]
-      | rfl
   unfold f0K f0 blkMinor
   rw [h1]
   simp [Matrix.submatrix_one _ Subtype.val_injective]
@@ -153,10 +99,7 @@ theorem hasDerivAt_f0K (ε : Fin n → Bool) (m : Fin n → ℤ) {X : Matrix (Fi
   have hmul : ∀ a b : KG ε, toMK (a * b) = toMK a * toMK b := by
     intro a b
     first
-      | exact toMK_mul a b
       | (simp [toMK, toM]; done)
-      | (simp only [toMK]; exact map_mul _ _ _)
-      | (simp only [toMK, toM]; rfl)
   have hfun : (fun t : ℝ => f0K ε m (x * kcurve ε X t)) =
       fun t : ℝ => f0 ε m (toMK x * NormedSpace.exp ((t : ℂ) • X)) := by
     funext t
@@ -176,33 +119,11 @@ lemma hwmf_cpart_sum (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
   first
     | (simp
        linear_combination (-(1 / 2) * (Z i j + (Jm ε * Zᴴ * Jm ε) i j)) * Complex.I_sq)
-    | (simp [Complex.I_sq]; ring)
-
-private theorem inK_cp1_lemma (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
-    inK ε (cpart1 ε (bdPart ε Z)) := by
-  unfold inK inG cpart1 Jm bdPart
-  constructor <;> ext a b <;>
-    simp [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.sub_mul, Matrix.mul_sub,
-      Matrix.smul_mul, Matrix.mul_smul, Complex.star_def, map_div₀] <;>
-    rcases Bool.eq_false_or_eq_true (ε a) with ha | ha <;>
-    rcases Bool.eq_false_or_eq_true (ε b) with hb | hb <;>
-    simp [ha, hb, Complex.conj_ofNat, map_ofNat] <;> ring
-
-private theorem inK_cp2_lemma_2 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
-    inK ε (cpart2 ε (bdPart ε Z)) := by
-  unfold inK inG cpart2 Jm bdPart
-  constructor <;> ext a b <;>
-    simp [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.sub_mul, Matrix.mul_sub,
-      Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Complex.star_def, map_div₀,
-      Complex.conj_I] <;>
-    rcases Bool.eq_false_or_eq_true (ε a) with ha | ha <;>
-    rcases Bool.eq_false_or_eq_true (ε b) with hb | hb <;>
-    simp [ha, hb, Complex.conj_ofNat, map_ofNat] <;> ring
 
 lemma hwmf_rdc (ε : Fin n → Bool) (m : Fin n → ℤ) (Z : Matrix (Fin n) (Fin n) ℂ) (x : KG ε) :
     rdc ε Z (f0K ε m) x = fderiv ℂ (f0 ε m) (toMK x) (toMK x * bdPart ε Z) := by
-  have h1 := hasDerivAt_f0K ε m (inK_cp1_lemma ε Z) x
-  have h2 := hasDerivAt_f0K ε m (inK_cp2_lemma_2 ε Z) x
+  have h1 := hasDerivAt_f0K ε m (_root_.ReciprocityTheory.ChartRestriction.DS.HW.inK_cpart1_bdPart ε Z) x
+  have h2 := hasDerivAt_f0K ε m (_root_.ReciprocityTheory.ChartRestriction.DS.HW.inK_cpart2_bdPart ε Z) x
   unfold rdc
   rw [h1.deriv, h2.deriv]
   rw [show Complex.I * fderiv ℂ (f0 ε m) (toMK x) (toMK x * cpart2 ε (bdPart ε Z)) =
@@ -235,7 +156,7 @@ lemma hwmf_mul_tv (x : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) (s : ℂ) (r q 
     rw [if_pos rfl, Matrix.mul_apply]
     simp [Matrix.single_apply]
   · rw [if_neg hq, Matrix.mul_apply]
-    simp [Matrix.single_apply, Ne.symm hq]
+    simp [Ne.symm hq]
 
 lemma hwmf_blk_tv (ε : Fin n → Bool) {a b : Fin n} (hab : a < b) (he : ε a = ε b) (c : Fin n)
     (x : Matrix (Fin n) (Fin n) ℂ) (s : ℂ) :

@@ -212,7 +212,7 @@ theorem lag_of {b b' x y : Matrix β β A} (b1 : Adj c J b b') (hb : b + b' = -1
     calc _ = (diagCols β : Matrix (β ⊕ β) β A)ᵀ * (g.1.1ᵀ * dbl J * g.1.1.map c) * (diagCols β : Matrix (β ⊕ β) β A).map c := by
           simp only [Matrix.mul_assoc]
       _ = 0 := by
-        rw [h1]; simp [diagCols, dbl, fromRows_map, mapc_one, transpose_fromRows, fromCols_mul_fromBlocks, fromCols_mul_fromRows]
+        rw [h1]; simp [diagCols, dbl, fromRows_map, transpose_fromRows, fromCols_mul_fromBlocks, fromCols_mul_fromRows]
   have e : b'.map c = -1 - b.map c := by
     rw [← mapc_one (c := c), ← mapc_neg, ← mapc_sub, ← hb]; congr 1; abel
   have b2 : bᵀ * J = -J - J * b.map c := by rw [b1, e]; noncomm_ring
@@ -249,7 +249,7 @@ theorem exists_decomp {b b' x y t' : Matrix β β A} (b1 : Adj c J b b') (hb : b
       fromBlocks 0 J J 0 := by
     rw [SS, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]
     simp only [mapc_smul, mapc_one, map_sub, map_one, hc, transpose_smul, transpose_one, Matrix.smul_mul, Matrix.mul_smul,
-      Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, smul_zero, zero_add, add_zero, smul_smul, e0, e0', e1, he, ← add_smul]
+      Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, zero_add, add_zero, smul_smul, e0, e0', e1, he, ← add_smul]
     simp
   have hU : (fromBlocks 1 T 0 1 : Matrix (β ⊕ β) (β ⊕ β) A) * fromBlocks 1 (m * t') 0 1 = 1 := by
     rw [fromBlocks_multiply, ← fromBlocks_one, hT]; simp
@@ -267,8 +267,8 @@ theorem exists_decomp {b b' x y t' : Matrix β β A} (b1 : Adj c J b b') (hb : b
   have hεT' : (1 - ε) • T = 0 := by rw [sub_smul, one_smul, hεT, sub_self]
   have hL : (SS ε : Matrix (β ⊕ β) (β ⊕ β) A) * fromBlocks 1 T 0 1 * SS ε = fromBlocks 1 0 T 1 := by
     rw [SS, fromBlocks_multiply, fromBlocks_multiply]
-    simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, smul_zero, add_zero, hεT, hεT',
-      zero_add, Matrix.add_mul, smul_add, smul_smul, e0, e0', e1, he, zero_smul, ← add_smul]
+    simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, add_zero, hεT, hεT',
+      zero_add, smul_add, smul_smul, e0, e0', e1, he, zero_smul, ← add_smul]
     simp
   have hD : Ci b * (diagCols β : Matrix (β ⊕ β) β A) = (fromRows 1 0 : Matrix (β ⊕ β) β A) := by
     rw [Ci, diagCols, fromBlocks_mul_fromRows]; simp

@@ -127,7 +127,7 @@ lemma prod_factorial_support_sub_single [DecidableEq σ] (u : σ →₀ ℕ) (v 
       ∏ k ∈ u.support.erase v, (u k).factorial := by
     refine Finset.prod_congr rfl fun k hk => ?_
     have hk' : k ≠ v := Finset.ne_of_mem_erase hk
-    simp [Finsupp.tsub_apply, Finsupp.single_apply, Ne.symm hk']
+    simp [Finsupp.tsub_apply, Ne.symm hk']
   rw [h2, ← mul_assoc]
   congr 1
   simp only [Finsupp.tsub_apply, Finsupp.single_eq_same]

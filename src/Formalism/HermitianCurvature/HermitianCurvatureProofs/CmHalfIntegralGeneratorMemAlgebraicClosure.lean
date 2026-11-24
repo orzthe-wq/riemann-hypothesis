@@ -87,7 +87,7 @@ lemma herm_add_right (u v v' : ι → ℂ) : herm H u (v + v') = herm H u v + he
 lemma herm_smul_left (c : ℂ) (u v : ι → ℂ) : herm H (c • u) v = c * herm H u v := by
   simp [herm, Matrix.mulVec_smul]
 lemma herm_smul_right (c : ℂ) (u v : ι → ℂ) : herm H u (c • v) = conj c * herm H u v := by
-  simp [herm] <;> rfl
+  simp [herm]
 lemma herm_conj (hH : Hᴴ = H) (u v : ι → ℂ) : conj (herm H u v) = herm H v u := by
   have hc : ∀ i j, star (H i j) = H j i := fun i j => by
     have := congrFun (congrFun hH j) i
@@ -137,10 +137,10 @@ lemma three_block_apply (a : ℂ) (y : Fin (2 * r' + k + 1) → ℂ) (b : ℂ) (
   split_ifs <;> first | omega | simp
 
 lemma three_block_first (a : ℂ) (y : Fin (2 * r' + k + 1) → ℂ) (b : ℂ) : cF (mk3 k r' a y b) = a := by
-  simp only [cF, three_block_apply, Fin.val_mk]
-  split_ifs <;> first | rfl | omega
+  simp only [cF, three_block_apply]
+  split_ifs <;> first | rfl
 lemma three_block_last (a : ℂ) (y : Fin (2 * r' + k + 1) → ℂ) (b : ℂ) : cL (mk3 k r' a y b) = b := by
-  simp only [cL, three_block_apply, Fin.val_mk]
+  simp only [cL, three_block_apply]
   split_ifs <;> first | rfl | omega
 lemma three_block_middle (a : ℂ) (y : Fin (2 * r' + k + 1) → ℂ) (b : ℂ) : mid (mk3 k r' a y b) = y := by
   funext j
@@ -157,9 +157,9 @@ lemma three_block_eta (u : Fin (2 * (1 + r') + k + 1) → ℂ) : mk3 k r' (cF u)
   have hi := i.isLt
   rw [three_block_apply]
   split_ifs with h1 h2
-  · exact congrArg u (Fin.ext (by (try simp only [Fin.val_mk]); omega))
+  · exact congrArg u (Fin.ext (by (try simp only); omega))
   · exact congrArg u (Fin.ext (by (try simp only [levPos, Fin.val_mk]); omega))
-  · exact congrArg u (Fin.ext (by (try simp only [Fin.val_mk]); omega))
+  · exact congrArg u (Fin.ext (by (try simp only); omega))
 lemma three_block_injective {a a' b b' : ℂ} {y y' : Fin (2 * r' + k + 1) → ℂ} (h : mk3 k r' a y b = mk3 k r' a' y' b') :
     a = a' ∧ y = y' ∧ b = b' := by
   refine ⟨?_, ?_, ?_⟩
@@ -404,7 +404,7 @@ lemma levi_three_block (g₁ : Mat k r') (a b : ℂ) (y : Fin (2 * r' + k + 1) �
   · rw [tk_mulVec]
     simp only [ιLev_apply_tkF]
     simp only [tkF, tkL, levPos, Fin.val_mk]
-    simp [hN0]
+    simp
   · intro j
     rw [tk_mulVec, ιLev_levPos_tkF_eq_zero, ιLev_levPos_tkL_eq_zero]
     simp only [ιLev_levPos_levPos, zero_mul, zero_add, add_zero]
@@ -419,15 +419,15 @@ private lemma w0_tkF_apply_eq_ite_star_inv (c : ℂ) (q : Fin (2 * (1 + r') + k 
   have hN0' : 2 * (1 + r') + k ≠ 0 := by omega
   by_cases h : q.val = 2 * (1 + r') + k
   · simp [w0, tkF, h]
-  · simp [w0, tkF, h, hN0, hN0']
+  · simp [w0, tkF, h, hN0]
 
 private lemma w0_tkL_apply_eq_ite (c : ℂ) (q : Fin (2 * (1 + r') + k + 1)) :
     w0 k r' c (tkL k r') q = if q.val = 0 then c else 0 := by
   have hN0 : (0 : ℕ) ≠ 2 * (1 + r') + k := by omega
   have hN0' : 2 * (1 + r') + k ≠ 0 := by omega
   by_cases h : q.val = 0
-  · simp [w0, tkL, h, hN0, hN0']
-  · simp [w0, tkL, h, hN0, hN0']
+  · simp [w0, tkL, h, hN0]
+  · simp [w0, tkL, h]
 
 private lemma w0_levPos_apply_eq_ite_succ (c : ℂ) (i : Fin (2 * r' + k + 1)) (q : Fin (2 * (1 + r') + k + 1)) :
     w0 k r' c (levPos k 1 r' i) q = if q.val = i.val + 1 then 1 else 0 := by
@@ -451,7 +451,7 @@ lemma long_weyl_three_block (c a b : ℂ) (y : Fin (2 * r' + k + 1) → ℂ) :
   · rw [tk_mulVec]
     simp only [w0_tkF_apply_eq_ite_star_inv]
     simp only [tkF, tkL, levPos, Fin.val_mk]
-    simp [hN0', hN] <;> rfl
+    simp [hN0', hN]
   · intro j
     rw [tk_mulVec]
     simp only [w0_levPos_apply_eq_ite_succ]
@@ -460,7 +460,7 @@ lemma long_weyl_three_block (c a b : ℂ) (y : Fin (2 * r' + k + 1) → ℂ) :
   · rw [tk_mulVec]
     simp only [w0_tkL_apply_eq_ite]
     simp only [tkF, tkL, levPos, Fin.val_mk]
-    simp [hN0]
+    simp
 
 lemma tk_herm_sum {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (u v : Fin m → ℂ) :
     ∑ j, herm H (bvec j) v * u j = herm H u v := by
@@ -516,7 +516,7 @@ theorem map_mulVec_volume {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : A.det
 
 theorem map_smul_volume {n : ℕ} (c : ℂ) (hc : c ≠ 0) :
     (volume : Measure (Fin n → ℂ)).map (fun y => c • y) = ENNReal.ofReal ((‖c‖ ^ (2 * n))⁻¹) • volume := by
-  have hA : (c • (1 : Matrix (Fin n) (Fin n) ℂ)).det ≠ 0 := by simp [Matrix.det_smul, hc]
+  have hA : (c • (1 : Matrix (Fin n) (Fin n) ℂ)).det ≠ 0 := by simp [hc]
   have e : (fun y : Fin n → ℂ => c • y) = fun y => (c • (1 : Matrix (Fin n) (Fin n) ℂ)) *ᵥ y := by
     funext y; ext i; simp [Matrix.mulVec, dotProduct, Matrix.one_apply]
   rw [e, map_mulVec_volume _ hA, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin, norm_pow, ← pow_mul, mul_comm n 2]

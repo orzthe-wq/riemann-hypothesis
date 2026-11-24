@@ -2,7 +2,8 @@ module
 
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Distinct
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacters.ContinuousResP
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRootOfUnityFixedDvdWeilGroupDegreeStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRootOfUnityFixedDvdWeilGroupDegree
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.WeilGroupDenseInGaloisGroup
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -163,7 +164,7 @@ private theorem ce_open {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
   haveI hUfi : U.toSubgroup.FiniteIndex := U.toOpenSubgroup.finiteIndex_of_finite_quotient
   have he : U.toSubgroup.index ≠ 0 := Subgroup.FiniteIndex.index_ne_zero
   have hn : 0 < Nat.card B := Nat.card_pos
-  obtain ⟨ζ, hζ⟩ := GlobalTheory.T.exists_rootOfUnity_fixed_dvd_weilGroupDegree F Ω A w h (U.toSubgroup.index * Nat.card B)
+  obtain ⟨ζ, hζ⟩ := _root_.GlobalTheory.exists_fixed_dvd_deg F Ω A w h (U.toSubgroup.index * Nat.card B)
     (Nat.mul_pos (Nat.pos_of_ne_zero he) hn)
   haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic
   haveI : FiniteDimensional F (IntermediateField.adjoin F {ζ}) :=

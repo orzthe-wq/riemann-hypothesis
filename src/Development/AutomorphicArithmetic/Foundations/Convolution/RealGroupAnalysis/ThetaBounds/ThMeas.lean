@@ -68,7 +68,7 @@ private theorem measurable_tsum_complex {ι X : Type} [Countable ι] [Measurable
   · have h : Tendsto (fun s : Finset ι => ∑ i ∈ s, f i x) atTop (𝓝 (∑' i, f i x)) := by
       simpa [HasSum] using hx.hasSum
     simpa [Set.indicator, hx] using h
-  · simp [Set.indicator, hx, tsum_eq_zero_of_not_summable hx, tendsto_const_nhds]
+  · simp [Set.indicator, hx, tsum_eq_zero_of_not_summable hx]
 
 theorem UpperTheory.ConvolutionTheory.R2.Ff.thMeas :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E] (D : Dat F E) (W : Weil D), ThMeas W := by

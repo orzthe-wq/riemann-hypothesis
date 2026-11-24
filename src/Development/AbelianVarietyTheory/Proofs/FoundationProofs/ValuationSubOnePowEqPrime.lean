@@ -81,7 +81,7 @@ theorem valuation_sub_one_pow_eq_prime :
     rw [Valuation.map_sub_swap v ζ 1]
     have hc : (k + 1).Coprime (n + 1) := by
       have h := Nat.coprime_of_lt_prime (Nat.succ_ne_zero k) (by omega : k + 1 < n + 1) hp
-      first | exact h | exact h.symm
+      first | exact h.symm
     have hprim : IsPrimitiveRoot (ζ ^ (k + 1)) (n + 1) := hζ.pow_of_coprime _ hc
     apply le_antisymm
     · exact valuation_one_sub_pow_le v ζ (hone ζ hζ.pow_eq_one) (k + 1)

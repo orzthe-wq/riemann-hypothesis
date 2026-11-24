@@ -91,47 +91,35 @@ theorem isUnitIn_of_mul {a b : K} (ha : a ∈ S) (hb : b ∈ S) (hab : IsUnitIn 
   have hb0 : b ≠ 0 := right_ne_zero_of_mul hab.1
   have ha0 : a ≠ 0 := left_ne_zero_of_mul hab.1
   refine ⟨hb0, hb, ?_⟩
-  have : b⁻¹ = a * (a * b)⁻¹ := by field_simp
-  rw [this]
+  rw [show b⁻¹ = a * (a * b)⁻¹ by field_simp]
   exact S.mul_mem ha hab.2.2
 
 theorem Dv.mem (hπ : IsUnif S π) {a : K} (ha : Dv S π a) : a ∈ S := by
-  have : a = a * π⁻¹ * π := by field_simp [hπ.ne]
-  rw [this]
+  rw [show a = a * π⁻¹ * π by field_simp [hπ.ne]]
   exact S.mul_mem ha hπ.mem
 
 theorem Dv.add {a b : K} (ha : Dv S π a) (hb : Dv S π b) : Dv S π (a + b) := by
-  first | exact GlobalTheory.AddMulInvMembership.add_mul_inv_mem .. | (apply GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption) | (intros; apply GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption) | (apply @GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption) | (intros; apply @GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption) | (apply @GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> first | assumption | infer_instance) | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S π a b ha hb | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S π a b ha | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S π a b | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S π a | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S π | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› S | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› ‹_› | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K ‹_› | exact @GlobalTheory.AddMulInvMembership.add_mul_inv_mem K
+  first | (apply GlobalTheory.AddMulInvMembership.add_mul_inv_mem <;> assumption)
 
 theorem Dv.neg {a : K} (ha : Dv S π a) : Dv S π (-a) := by
-  unfold Dv
-  rw [neg_mul]
-  exact S.neg_mem ha
+  simpa only [Dv, neg_mul] using S.neg_mem ha
 
 theorem Dv.sub {a b : K} (ha : Dv S π a) (hb : Dv S π b) : Dv S π (a - b) := by
-  rw [sub_eq_add_neg]
-  exact ha.add hb.neg
+  simpa only [sub_eq_add_neg] using ha.add hb.neg
 
 theorem Dv.mul_left {a : K} (ha : Dv S π a) {s : K} (hs : s ∈ S) : Dv S π (s * a) := by
-  unfold Dv
-  rw [mul_assoc]
-  exact S.mul_mem hs ha
+  simpa only [Dv, mul_assoc] using S.mul_mem hs ha
 
 theorem Dv.mul_right {a : K} (ha : Dv S π a) {s : K} (hs : s ∈ S) : Dv S π (a * s) := by
-  rw [mul_comm]
-  exact ha.mul_left hs
+  simpa only [mul_comm a s] using ha.mul_left hs
 
 theorem Dv.star (hS : IsHermSemilocal S) (hπ : IsUnif S π) {a : K} (ha : Dv S π a) :
     Dv S π (star a) := by
-  have := hS.star_mem _ ha
-  rw [star_mul', star_inv₀, hπ.fix] at this
-  exact this
+  simpa only [Dv, star_mul', star_inv₀, hπ.fix] using hS.star_mem _ ha
 
 theorem dv_self_mul (hπ : IsUnif S π) {s : K} (hs : s ∈ S) : Dv S π (π * s) := by
   unfold Dv
-  have : π * s * π⁻¹ = s := by field_simp [hπ.ne]
-  rw [this]
-  exact hs
+  rwa [show π * s * π⁻¹ = s by field_simp [hπ.ne]]
 
 theorem Dv.eq (hπ : IsUnif S π) {a : K} (ha : Dv S π a) : ∃ r ∈ S, a = π * r :=
   ⟨a * π⁻¹, ha, by field_simp [hπ.ne]⟩
@@ -139,16 +127,14 @@ theorem Dv.eq (hπ : IsUnif S π) {a : K} (ha : Dv S π a) : ∃ r ∈ S, a = π
 theorem unit_add_dv (hπ : IsUnif S π) {s t : K} (hs : IsUnitIn S s) (ht : Dv S π t) :
     IsUnitIn S (s + t) := by
   obtain ⟨r, hr, rfl⟩ := ht.eq hπ
-  have : s + π * r = s * (1 + π * (r * s⁻¹)) := by
+  rw [show s + π * r = s * (1 + π * (r * s⁻¹)) by
     have := hs.1
-    field_simp
-  rw [this]
+    field_simp]
   exact unit_mul hs (hπ.rad _ (S.mul_mem hr hs.2.2))
 
 theorem unit_not_dv (hπ : IsUnif S π) {s : K} (hs : IsUnitIn S s) : ¬ Dv S π s := by
   intro h
-  have := (unit_add_dv hπ hs h.neg).1
-  simp at this
+  simpa using (unit_add_dv hπ hs h.neg).1
 
 theorem dv_of_not_unit (hπ : IsUnif S π) {s : K} (hs : s ∈ S) (hf : star s = s)
     (hn : ¬ IsUnitIn S s) : Dv S π s :=

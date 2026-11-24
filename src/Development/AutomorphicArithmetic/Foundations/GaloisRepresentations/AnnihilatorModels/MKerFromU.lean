@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SemiAbelianTorsionFiniteAndClosedPointFiniteOrde
 
 @[expose] public section
 
@@ -53,15 +54,6 @@ open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison
 section Helpers
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
   {S : Scheme.{0}} {s : S ⟶ Sp R}
-
-private theorem cpow {A T T' : Over S} [GrpObj A] (f : T' ⟶ T) (h : T ⟶ A) (n : ℕ) :
-    f ≫ (h ^ n) = (f ≫ h) ^ n := by
-  induction n with
-  | zero =>
-    simp only [pow_zero, Hom.one_def]
-    rw [← Category.assoc, toUnit_unique (f ≫ toUnit T) (toUnit T')]
-  | succ n ih =>
-    rw [pow_succ, pow_succ, ← ih, Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]
 
 private theorem powc {A B T : Over S} [GrpObj A] [GrpObj B] (h : T ⟶ A) (f : A ⟶ B) [IsMonHom f] (n : ℕ) :
     (h ^ n) ≫ f = (h ≫ f) ^ n := by
@@ -98,7 +90,7 @@ private theorem sc_nat (o : Obj b N s) (n : ℕ) : sc o (n : 𝓞 D.F) = (𝟙 o
 
 private theorem sc_killed (o : Obj b N s) {T : Over S} (z : T ⟶ o.A) {c : ℕ} (hz : z ^ c = 1) (t : 𝓞 D.F) :
     z ≫ sc o (t * (c : 𝓞 D.F)) = 1 := by
-  rw [sc_mul, sc_nat, ← Category.assoc, cpow, Category.comp_id, hz]
+  rw [sc_mul, sc_nat, ← Category.assoc, _root_.GlobalTheory.SemiAbTorsion.comp_pow_points, Category.comp_id, hz]
   have h := powc z (sc o t) 0
   rwa [pow_zero, pow_zero] at h
 
@@ -114,7 +106,7 @@ private theorem one_comp_monHom' {S : Scheme.{0}} {T A B : Over S} [GrpObj A] [G
 
 private theorem comp_one_grpObj {S : Scheme.{0}} {X T A : Over S} [GrpObj A] (f : X ⟶ T) :
     f ≫ (1 : T ⟶ A) = 1 := by
-  have h := cpow f (1 : T ⟶ A) 0
+  have h := _root_.GlobalTheory.SemiAbTorsion.comp_pow_points f (1 : T ⟶ A) 0
   rwa [pow_zero, pow_zero] at h
 
 private theorem comp_mul_grpObj {S : Scheme.{0}} {T A B : Over S} [GrpObj B] (f : T ⟶ A)
@@ -123,7 +115,7 @@ private theorem comp_mul_grpObj {S : Scheme.{0}} {T A B : Over S} [GrpObj B] (f 
 
 private theorem comp_id_pow_eq_pow {S : Scheme.{0}} {T A : Over S} [GrpObj A] (f : T ⟶ A) (n : ℕ) :
     f ≫ (𝟙 A ^ n) = f ^ n := by
-  rw [cpow, Category.comp_id]
+  rw [_root_.GlobalTheory.SemiAbTorsion.comp_pow_points, Category.comp_id]
 
 theorem UpperTheory.Gal.crystallineComparison.Mod.kerFromU_of :
     UElt → PairCalc → Adjoint → DivC → KerFromU := by

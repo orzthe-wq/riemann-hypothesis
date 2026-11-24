@@ -5,12 +5,13 @@ public import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsBlockOr
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.NotTrivialAndTwist
 public import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.BlattnerShiftsSignedParameters
 public import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.ExistsGoodFamily
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.BlockOrderedSquareIntegrableStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.DiscreteSeriesCoverIrreducibleUnitaryStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.FiniteDimKStableSubspaceKFiniteLieStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.HighestWeightGeneratedWeightsBelowStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsKStableOnOfLieStableFiniteDimStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.TorusWeightVectorIffCartanWeightVectorStatement
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.BlockOrderedSquareIntegrable
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.DiscreteSeriesCoverIrreducibleUnitary
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.FiniteDimKStableSubspaceKFiniteLie
+public import Formalism.LocalRingCardinality.DataTheta
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.HighestWeightGeneratedWeightsBelow
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsKStableOnOfLieStableFiniteDim
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.TorusWeightVectorIffCartanWeightVector
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -304,7 +305,7 @@ variable {T : GrpData p q} (R : DSRep T) {σ : Matrix (Fin n) (Fin n) ℂ → (R
 theorem comap_kstable (h : BlockOrd e ε) (hσ : Factors R.U e σ) {S : Submodule ℂ R.U.H} (hf : FiniteDimensional ℂ S)
     (hS : IsKStableOn ε σ S) : FiniteDimensional ℂ (S.comap R.ι) ∧ (S.comap R.ι).map R.ι = S ∧
       KStable R.HK.act (S.comap R.ι) := by
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.finiteDim_kStable_subspace_kFinite_lie p q n e ε T R σ h hσ
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.RealPar.KStabLie.kstable_lie p q n e ε T R σ h hσ
   have e1 : (S.comap R.ι).map R.ι = S := Submodule.map_comap_eq_of_le (h1 S hf hS)
   have e2 : FiniteDimensional ℂ (S.comap R.ι) := by
     have : FiniteDimensional ℂ ((S.comap R.ι).map R.ι) := by rwa [e1]
@@ -317,7 +318,7 @@ theorem isHW_of_isKTypeOf (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix 
   obtain ⟨v, hv, hv0, hw⟩ := hS.2.2.2.1
   rw [← e1] at hv
   obtain ⟨v, hv, rfl⟩ := hv
-  have hw' := (GlobalTheory.T.torusWeightVector_iff_cartanWeightVector p q n e ε T R σ h hσ _ v).1 hw
+  have hw' := (_root_.GlobalTheory.RealPar.TorusWt.isWtOn_iff p q n e ε T R σ h hσ _ v).1 hw
   simp only [Equiv.symm_apply_apply] at hw'
   refine ⟨v, fun h0 => hv0 (by rw [h0, map_zero]), (mem_hwSub _ _ _).2 ⟨fun a => by simpa using hw' a, fun a b hab => ?_⟩⟩
   by_contra hu
@@ -325,7 +326,7 @@ theorem isHW_of_isKTypeOf (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix 
   have hm := hK _ (isKC_Eab ((h.sameBlock_iff a b).2 hab'.2)) v hv
   have h1 : IsWtOn (Formalism.REAL.Kset ε) σ ((fun i => (μ (e.symm i) : ℝ)) + Formalism.REAL.root (e a) (e b))
       (R.ι (R.HK.act (Eab a b) v)) := by
-    refine (GlobalTheory.T.torusWeightVector_iff_cartanWeightVector p q n e ε T R σ h hσ _ _).2 fun x => ?_
+    refine (_root_.GlobalTheory.RealPar.TorusWt.isWtOn_iff p q n e ε T R σ h hσ _ _).2 fun x => ?_
     have := congrArg (fun f : Module.End ℂ R.HK.V => f v) (R.HK.lie (Eab x x) (Eab a b))
     simp only [Eab_bracket, map_smul, LinearMap.smul_apply, LinearMap.sub_apply, Module.End.mul_apply, hw'] at this
     rw [Pi.add_apply, root_apply, Equiv.symm_apply_apply, Complex.ofReal_add, add_smul, this]
@@ -342,7 +343,7 @@ theorem isHW_of_isKTypeOf (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix 
 
 theorem kstable_orthogonal (h : BlockOrd e ε) (hσ : Factors R.U e σ) {S : Submodule ℂ R.U.H} (hS : IsKStableOn ε σ S) :
     IsKStableOn ε σ Sᗮ := by
-  obtain ⟨⟨hm, hi, -⟩, -⟩ := GlobalTheory.T.discreteSeries_cover_irreducibleUnitary p q n e ε T R σ h hσ
+  obtain ⟨⟨hm, hi, -⟩, -⟩ := _root_.GlobalTheory.RealPar.CoverURep.urep_irred p q n e ε T R σ h hσ
   intro k hk x hx
   rw [Submodule.mem_orthogonal] at hx ⊢
   intro y hy
@@ -370,7 +371,7 @@ theorem isKTypeOf_of_isHW (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix 
     refine Submodule.eq_of_le_of_finrank_le h1 ?_
     rw [hW]
     exact Nat.find_min' hex ⟨W', ⟨Submodule.finiteDimensional_of_le h1, h2, v', h3, h4⟩, rfl⟩
-  have hSK := GlobalTheory.T.isKStableOn_of_lieStable_finiteDim p q n e ε T R σ h hσ W hf hK
+  have hSK := _root_.GlobalTheory.RealPar.isKStableOn_of_kStable p q n e ε T R σ h hσ W hf hK
   obtain ⟨hw1, hw2⟩ := (mem_hwSub _ _ _).1 hv.2
   have hle : ∀ S' : Submodule ℂ R.U.H, S' ≤ W.map R.ι → S'.comap R.ι ≤ W := fun S' h' =>
     (Submodule.comap_mono h').trans (Submodule.comap_map_eq_of_injective R.ι_inj W).le
@@ -416,13 +417,13 @@ theorem isKTypeOf_of_isHW (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix 
       have := hmin _ (hle _ h1) a2 y hy
         ⟨hy0, (mem_hwSub _ _ _).2 ⟨fun a => (s1 a).1, fun a b hab => by simpa using (s2 a b hab).1⟩⟩
       rw [← this, a1]
-  · exact (GlobalTheory.T.torusWeightVector_iff_cartanWeightVector p q n e ε T R σ h hσ _ v).2 fun a => by simpa using hw1 a
-  · obtain ⟨W0, c1, c2, c3, c4⟩ := GlobalTheory.T.highestWeight_generated_weights_below p q R.HK.V R.HK.act R.HK.lie μ v hv
+  · exact (_root_.GlobalTheory.RealPar.TorusWt.isWtOn_iff p q n e ε T R σ h hσ _ v).2 fun a => by simpa using hw1 a
+  · obtain ⟨W0, c1, c2, c3, c4⟩ := _root_.GlobalTheory.RealPar.HwGen.hw_generated p q R.HK.V R.HK.act R.HK.lie μ v hv
     have := hmin W0 (c3 W hvW hK) c2 v c1 hv
     subst this
     rintro ν _ ⟨w, hw, rfl⟩ hw0 hwt
     obtain ⟨c, d1, d2⟩ := c4 (fun a => ν (e a)) w hw (fun h0 => hw0 (by rw [h0, map_zero]))
-      ((GlobalTheory.T.torusWeightVector_iff_cartanWeightVector p q n e ε T R σ h hσ _ w).1 hwt)
+      ((_root_.GlobalTheory.RealPar.TorusWt.isWtOn_iff p q n e ε T R σ h hσ _ w).1 hwt)
     refine ⟨fun i j => c (e.symm i) (e.symm j), fun i j hij => by simpa using (h.posC_iff _ _).1 (d1 _ _ hij), ?_⟩
     funext i
     obtain ⟨x, rfl⟩ := e.surjective i
@@ -463,8 +464,8 @@ theorem weight_int {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 theorem hasParam_iff_isDSPar (P : SignedPar n) (h : BlockOrd e P.sgn) (hσ : Factors R.U e σ) :
     HasParam R (blockPar P e) ↔ IsDSPar P σ := by
-  obtain ⟨u1, u2⟩ := GlobalTheory.T.discreteSeries_cover_irreducibleUnitary p q n e _ T R σ h hσ
-  have u3 := GlobalTheory.T.block_ordered_square_integrable p q n e _ T R σ h hσ
+  obtain ⟨u1, u2⟩ := _root_.GlobalTheory.RealPar.CoverURep.urep_irred p q n e _ T R σ h hσ
+  have u3 := _root_.GlobalTheory.RealPar.SqInt.isSqIntOn_of_factors p q n e _ T R σ h hσ
   have hb : (fun i => ((blattner (blockPar P e) (e.symm i) : ℚ) : ℝ)) = Formalism.QuantumDeterminants.lowK P.sgn P.lam := funext fun i => by
     rw [blattner_eq P h (lam := blockPar P e) fun a => ratEntry_cast P (e a), Equiv.apply_symm_apply]; rfl
   unfold HasParam IsDSPar IsDS
@@ -514,7 +515,7 @@ theorem blattner_int (P : SignedPar n) (h : BlockOrd e P.sgn) (a : Ix p q) :
 theorem isHW_int (h : BlockOrd e ε) (hσ : Factors R.U e σ) {μ : Ix p q → ℚ} {v : R.HK.V}
     (hv : Formalism.BasicNotions.TH.IsHW R.HK.act μ v) (a : Ix p q) : ∃ m : ℤ, μ a = m := by
   obtain ⟨S, hS⟩ := isKTypeOf_of_isHW R h hσ μ ⟨v, hv⟩
-  obtain ⟨m, hm⟩ := weight_int (GlobalTheory.T.discreteSeries_cover_irreducibleUnitary p q n e ε T R σ h hσ).1.1.1 hS (e a)
+  obtain ⟨m, hm⟩ := weight_int (_root_.GlobalTheory.RealPar.CoverURep.urep_irred p q n e ε T R σ h hσ).1.1.1 hS (e a)
   rw [Equiv.symm_apply_apply] at hm
   exact ⟨m, by exact_mod_cast hm⟩
 

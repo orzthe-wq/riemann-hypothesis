@@ -3,11 +3,13 @@ module
 public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 public import Formalism.GaloisCohomology.LocalTateDualityK
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CupProductFiniteClassesCoboundaryStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamFiltrationDualityStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankH1DualPairStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankH1fDeRhamStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateDualityDegreeOneContinuousCocyclesStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CupProductFiniteClassesCoboundary
+public import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamFiltrationDuality
+public import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankH1DualPair
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankH1fDeRham
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TateDualityDegreeOneContinuousCocycles
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -197,15 +199,15 @@ theorem bkA_exact_annihilators : Formalism.GaloisCohomology.LocalTateDualityK �
     refine ⟨fun g y x => ?_, fun y hy => h3 y hy, fun x hx => h2 x hx, h4.symm⟩
     simp only [LinearMap.flip_apply]
     exact h1 g x y
-  obtain ⟨hdrd, hfd⟩ := GlobalTheory.T.de_rham_filtration_duality l P AI hT K
+  obtain ⟨hdrd, hfd⟩ := _root_.GlobalTheory.TateDualTied.main l P AI hT K
   have hdr' : IsDR (P.PD K) A'.ρ := hdrd LL O hO A A' m hdr hdual
   have hfil := hfd LL O hO A A' m hdr hdual
-  obtain ⟨hH1fin, hH1⟩ := GlobalTheory.T.finrank_H1_dual_pair hTD hEC l P K LL O hO A A' m hdual
-  obtain ⟨hH1fin', -⟩ := GlobalTheory.T.finrank_H1_dual_pair hTD hEC l P K LL O hO A' A m.flip hdual'
-  obtain ⟨-, hf⟩ := GlobalTheory.T.finrank_H1f_de_rham l P AI hT K LL O hO A hdr
-  obtain ⟨-, hf'⟩ := GlobalTheory.T.finrank_H1f_de_rham l P AI hT K LL O hO A' hdr'
-  have hort := GlobalTheory.T.cup_product_finite_classes_coboundary l P AI hT K LL O hO A A' m hdr hdual
-  obtain ⟨β, hβ, hl, hr⟩ := GlobalTheory.T.tateDuality_degreeOne_continuous_cocycles hTD l P K LL O hO A A' m hdual
+  obtain ⟨hH1fin, hH1⟩ := _root_.GlobalTheory.EulerCharH1.finite_and_finrank_H1V hTD hEC l P K LL O hO A A' m hdual
+  obtain ⟨hH1fin', -⟩ := _root_.GlobalTheory.EulerCharH1.finite_and_finrank_H1V hTD hEC l P K LL O hO A' A m.flip hdual'
+  obtain ⟨-, hf⟩ := _root_.GlobalTheory.SeqDim.h1f_finrank l P AI hT K LL O hO A hdr
+  obtain ⟨-, hf'⟩ := _root_.GlobalTheory.SeqDim.h1f_finrank l P AI hT K LL O hO A' hdr'
+  have hort := _root_.GlobalTheory.BKOrth.bk_orth l P AI hT K LL O hO A A' m hdr hdual
+  obtain ⟨β, hβ, hl, hr⟩ := _root_.GlobalTheory.tateDuality_degreeOne_cocycles hTD l P K LL O hO A A' m hdual
   haveI := finite_continuous_cocycles_localGaloisRep A hH1fin
   haveI := finite_continuous_cocycles_localGaloisRep A' hH1fin'
   have hkl : LinearMap.ker β = (B1 A.ρ).comap (continuousCocycles A.ρ).subtype := by

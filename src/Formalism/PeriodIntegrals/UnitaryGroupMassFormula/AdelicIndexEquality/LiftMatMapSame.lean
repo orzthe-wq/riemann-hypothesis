@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicIndexEquality.CompactLocalGlobal
 
 @[expose] public section
 
@@ -59,81 +60,23 @@ def liftMat (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F) :=
   fun i j => PI.FinKW.liftOne I v (g i j) + if i = j then 1 - PI.FinKW.liftOne I v 1 else 0
 
-private theorem evalV_singleV_self' {F : Type} [Field F] [NumberField F]
-    (v : HeightOneSpectrum (𝓞 F)) (c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) :
-    Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV F v c) = c := by
-  classical
-  first
-  | (simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV, AlgHom.coe_mk]
-     done)
-  | (unfold Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV
-     simp only [AlgHom.coe_mk, RestrictedProduct.evalRingHom_apply, RestrictedProduct.single_eq_same]
-     done)
-  | (change (RestrictedProduct.evalRingHom (fun w => HeightOneSpectrum.adicCompletion F w) v)
-      (RestrictedProduct.single (fun w => HeightOneSpectrum.adicCompletionIntegers F w) v c) = c
-     simp
-     done)
-
-private theorem evalV_singleV_of_ne {F : Type} [Field F] [NumberField F]
-    {v w : HeightOneSpectrum (𝓞 F)} (hw : w ≠ v) (c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) :
-    Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV F v c) = 0 := by
-  classical
-  first
-  | (simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV, AlgHom.coe_mk, hw]
-     done)
-  | (unfold Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.singleV
-     simp only [AlgHom.coe_mk, RestrictedProduct.evalRingHom_apply, RestrictedProduct.single_eq_of_ne _ _ hw]
-     done)
-  | (change (RestrictedProduct.evalRingHom (fun u => HeightOneSpectrum.adicCompletion F u) w)
-      (RestrictedProduct.single (fun u => HeightOneSpectrum.adicCompletionIntegers F u) v c) = 0
-     simp [hw]
-     done)
-
-private theorem psiV_liftOne_self (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
-    (y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) :
-    PI.FinKW.psiV I v (PI.FinKW.liftOne I v y) = y := by
-  classical
-  have hy := LinearEquiv.symm_apply_apply (TensorProduct.equivFinsuppOfBasisRight
-    (M := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (Module.Basis.ofVectorSpace I.F I.E)) y
-  rw [TensorProduct.equivFinsuppOfBasisRight_symm_apply] at hy
-  conv_rhs => rw [← hy]
-  unfold PI.FinKW.liftOne
-
-  simp only [Finsupp.sum, map_sum]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  simp only [PI.FinKW.psiV, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, AlgHom.coe_coe, AlgEquiv.coe_algHom,
-    Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul, evalV_singleV_self', AlgHom.coe_id, id_eq,
-    TensorProduct.zero_tmul]
-
-private theorem psiV_liftOne_of_ne (I : AutInst) {v w : HeightOneSpectrum (𝓞 I.F)} (hw : w ≠ v)
-    (y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) :
-    PI.FinKW.psiV I w (PI.FinKW.liftOne I v y) = 0 := by
-  classical
-  unfold PI.FinKW.liftOne
-
-  simp only [Finsupp.sum, map_sum]
-  refine Finset.sum_eq_zero fun j _ => ?_
-  simp only [PI.FinKW.psiV, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, AlgHom.coe_coe, AlgEquiv.coe_algHom,
-    Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul, evalV_singleV_of_ne hw, AlgHom.coe_id, id_eq,
-    TensorProduct.zero_tmul]
-
 theorem liftMat_map_same (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (g : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) :
     (liftMat I v g).map (PI.FinKW.psiV I v).toRingHom = g := by
   ext i j
-  have h1 := fun a => psiV_liftOne_self I v a
-  have h2 := psiV_liftOne_self I v 1
+  have h1 := fun a => _root_.PI.FinKW.psiV_liftOne_same I v a
+  have h2 := _root_.PI.FinKW.psiV_liftOne_same I v 1
   simp only [Matrix.map_apply, liftMat, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add (f := _)]
-  split_ifs with h <;> simp [h1, h2]
+  split_ifs with h <;> simp [h1]
 
 theorem liftMat_map_ne (I : AutInst) {v w : HeightOneSpectrum (𝓞 I.F)} (hw : w ≠ v)
     (g : Matrix (Fin I.n) (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) :
     (liftMat I v g).map (PI.FinKW.psiV I w).toRingHom = 1 := by
   ext i j
-  have h1 := fun a => psiV_liftOne_of_ne I hw a
-  have h2 := psiV_liftOne_of_ne I hw 1
+  have h1 := fun a => _root_.PI.FinKW.psiV_liftOne_ne I hw a
+  have h2 := _root_.PI.FinKW.psiV_liftOne_ne I hw 1
   simp only [Matrix.map_apply, liftMat, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add (f := _)]
-  split_ifs with h <;> simp [h1, h2, h, Matrix.one_apply]
+  split_ifs with h <;> simp [h1, h, Matrix.one_apply]
 
 private theorem equivFinsuppOfBasisRight_psiV_eq_evalV (I : AutInst) (w : HeightOneSpectrum (𝓞 I.F))
     [DecidableEq (Module.Basis.ofVectorSpaceIndex I.F I.E)]
@@ -146,8 +89,7 @@ private theorem equivFinsuppOfBasisRight_psiV_eq_evalV (I : AutInst) (w : Height
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul e a =>
-    simp only [PI.FinKW.psiV, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, AlgHom.coe_coe,
-      AlgEquiv.coe_algHom, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul,
+    simp only [PI.FinKW.psiV, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul,
       AlgHom.coe_id, id_eq, TensorProduct.equivFinsuppOfBasisRight_apply_tmul,
       TensorProduct.equivFinsuppOfBasisLeft_apply_tmul, Finsupp.mapRange_apply]
     first
@@ -166,7 +108,6 @@ private theorem eq_of_forall_psiV_eq (I : AutInst) {x y : I.E ⊗[I.F] Af I.F}
     rw [h w, equivFinsuppOfBasisRight_psiV_eq_evalV] at hw
     exact hw.symm
   first
-  | exact RestrictedProduct.ext key
   | exact Subtype.ext (funext key)
 
 theorem liftMat_mul (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
@@ -204,21 +145,6 @@ def liftGL (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     by rw [liftMat_mul, Units.mul_inv, liftMat_one],
     by rw [liftMat_mul, Units.inv_mul, liftMat_one]⟩
 
-private theorem psiV_sigR_eq_sigV_psiV (I : AutInst) (w : HeightOneSpectrum (𝓞 I.F))
-    (x : I.E ⊗[I.F] Af I.F) :
-    PI.FinKW.psiV I w (Formalism.UG.sigR I.cm.sig (Af I.F) x) = sigV I w (PI.FinKW.psiV I w x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul e a =>
-    simp [Formalism.UG.sigR, sigV, PI.FinKW.psiV, AlgEquiv.coe_algHom, Algebra.TensorProduct.comm_tmul,
-      Algebra.TensorProduct.map_tmul]
-  | add x y hx hy => simp only [map_add (f := _), hx, hy]
-
-private theorem psiV_inclE' (I : AutInst) (w : HeightOneSpectrum (𝓞 I.F)) (e : I.E) :
-    PI.FinKW.psiV I w (Formalism.UG.inclE (F := I.F) (Af I.F) e) = inclV I w e := by
-  simp [Formalism.UG.inclE, inclV, PI.FinKW.psiV, AlgEquiv.coe_algHom, Algebra.TensorProduct.comm_tmul,
-    Algebra.TensorProduct.map_tmul]
-
 theorem liftMat_unitary (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (g : GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) (hg : g ∈ Uv I v) :
     Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) (liftMat I v g.val) *
@@ -228,13 +154,13 @@ theorem liftMat_unitary (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
       I.J.map (inclV I w) := by
     intro w
     ext a b
-    simp [psiV_inclE']
+    simp [_root_.PI.UnitaryGroupMassFormula.AdIndexEq.psiV_inclE]
   have hC : ∀ w, ∀ M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F),
       (Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) M).map (PI.FinKW.psiV I w).toRingHom =
         Formalism.UG.cT (sigV I w) (M.map (PI.FinKW.psiV I w).toRingHom) := by
     intro w M
     ext a b
-    simp [Formalism.UG.cT, psiV_sigR_eq_sigV_psiV]
+    simp [Formalism.UG.cT, _root_.PI.UnitaryGroupMassFormula.AdIndexEq.psiV_sigR]
   have hmap : ∀ w, (Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) (liftMat I v g.val) *
         I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) * liftMat I v g.val).map
           (PI.FinKW.psiV I w).toRingHom =

@@ -52,6 +52,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.TangentEqLcZero
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -262,10 +263,10 @@ theorem nuFacC_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   letI := H.starRing
   intro p _ T io y C C' X f k
   letI := io.toAlgebra
-  obtain ⟨n, hn⟩ := GlobalTheory.T.exists_iso_integralModels_matching_lieBases E H Dw l Xo c T io y.1 C.I C'.I
+  obtain ⟨n, hn⟩ := _root_.GlobalTheory.ChartCmp.intData_models_iso E H Dw l Xo c T io y.1 C.I C'.I
   obtain ⟨B, b1, b2, b3, b4, b5, b6, -⟩ := GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y C
   obtain ⟨B', b1', b2', b3', b4', b5', b6', -⟩ := GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y C'
-  refine detDepth_le_of_charts (fun _ => rfl) T.V C.I.G C'.I.G n (GlobalTheory.T.surjective_appTop_integralModel_square E H Dw l Xo c T io y.1 C'.I) _ _ B B'
+  refine detDepth_le_of_charts (fun _ => rfl) T.V C.I.G C'.I.G n (_root_.GlobalTheory.ModelSquareFunctions.surjective_appTop_square E H Dw l Xo c T io y.1 C'.I) _ _ B B'
     C.tgT C'.tgT (fun j => Pi.single j 1) (fun j => Pi.single j 1) C.xT C'.xT C.eT C'.eT ?_ ?_
     (GlobalTheory.PowGerm.univSt_holds E H Dw l Xo c T io y C) (GlobalTheory.PowGerm.univSt_holds E H Dw l Xo c T io y C') ?_ ?_
     (fun a => C.uvecT ⟨f.1, Fin.castLE (rk_le f) a⟩) (fun a => C'.uvecT ⟨f.1, Fin.castLE (rk_le f) a⟩)

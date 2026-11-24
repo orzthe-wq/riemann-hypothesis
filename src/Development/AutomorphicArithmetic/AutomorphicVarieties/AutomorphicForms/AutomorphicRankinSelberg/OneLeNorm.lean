@@ -137,7 +137,7 @@ theorem UpperTheory.V.Af.Rs.zDiff :
     intro x
     have e : cls L (x + a) = cls L x + (v' - v) := by
       funext i
-      simp [cls, a, ZMod.natCast_zmod_val]
+      simp [cls, a]
     rw [e]
     constructor
     · intro h

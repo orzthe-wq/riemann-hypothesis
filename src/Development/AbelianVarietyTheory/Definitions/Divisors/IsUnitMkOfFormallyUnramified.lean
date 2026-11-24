@@ -200,11 +200,7 @@ variable {U U' U'' V W : Y.Opens} {ω : FormsOn p D U} {ω' : FormsOn p D U'} {�
 
 theorem res (hω : IsFrame ω) (hW : IsAffineOpen W) (h : W ≤ U) : IsFrame (resForm h ω) := ⟨hW, IsFreeGen.formMap (etale_resG hω.affine hW h) _ hω.gen⟩
 
-private theorem resG_resG_divisors {U V W : Y.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(Y, U)) :
-    resG Y h' (resG Y h a) = resG Y (h'.trans h) a := by
-  change (Y.presheaf.map (homOfLE h).op ≫ Y.presheaf.map (homOfLE h').op).hom a = _
-  rw [← Functor.map_comp]
-  rfl
+private alias resG_resG_divisors := _root_.GlobalTheory.LB.resG_resG
 
 theorem exists_coeff (hω : IsFrame ω) (h : V ≤ U) (η : FormsOn p D V) :
     ∃ c : Γ(Y, V), ∀ W : Y.Opens, IsAffineOpen W → ∀ hW : W ≤ V,

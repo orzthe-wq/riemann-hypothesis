@@ -90,7 +90,7 @@ variable {k r j : ℕ}
 theorem x0_GV (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} {τ : ℂ} (hZ : Z.det ≠ 0) (hτ : τ ≠ 0)
     {γ : B.Mat k (r - (j + 1))} (hγ : γ ∈ B.GV k (r - (j + 1))) : x0 k r j hj Z τ γ ∈ B.GV k r := by
   have hZf : (zfull Z τ).det ≠ 0 := by rw [zfull_det]; exact mul_ne_zero hZ hτ
-  have hM := (Formalism.FourierDecayAlt.P.slice_membership k (j + 1) (r - (j + 1))).1 _ γ hZf hγ
+  have hM := (_root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem k (j + 1) (r - (j + 1))).1 _ γ hZf hγ
   exact Formalism.FourierDecayAlt.P.PBE.castM_GV _ hM
 
 theorem upper_minor_of_level_point (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ) (γ : B.Mat k (r - (j + 1)))
@@ -98,7 +98,7 @@ theorem upper_minor_of_level_point (hj : j + 1 ≤ r) (Z : Matrix (Fin j) (Fin j
     PBG.xi0 (x0 k r j hj Z τ γ) a' q =
       if hq : q.val < j + 1 then zfull Z τ ⟨a'.val, ha'⟩ ⟨q.val, hq⟩ else 0 := by
   unfold PBG.xi0
-  rw [Formalism.FourierDecayAlt.P.PBM.herm_bvec_eI', Formalism.FourierDecayAlt.P.PBM.mulVec_bvec_apply]
+  rw [_root_.PI.StabPairsW.herm_e, Formalism.FourierDecayAlt.P.PBM.mulVec_bvec_apply]
   unfold x0
   rw [LeftFubiniLemmas.castM_apply']
   have hi : (Fin.cast (by omega) (esI k r a') : Fin (2 * (j + 1 + (r - (j + 1))) + k + 1)) =

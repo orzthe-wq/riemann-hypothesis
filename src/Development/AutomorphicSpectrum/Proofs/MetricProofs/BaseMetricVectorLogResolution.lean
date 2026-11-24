@@ -159,7 +159,7 @@ theorem exists_off_bdry {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype
     | none => simp [hσ] at hk
     | some i =>
       simp only [hσ] at hk
-      exact hw i (Set.mem_univ i) (by first | exact pow_eq_zero hk | exact eq_zero_of_pow_eq_zero hk)
+      exact hw i (Set.mem_univ i) (by first | exact eq_zero_of_pow_eq_zero hk)
 
 end GlobalTheory.CompanionTheory.Ar.PB.WSq.Dens
 

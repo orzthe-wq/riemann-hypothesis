@@ -5,10 +5,13 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsG
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.MemEigSpOfMemHtDual
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsStalkFractionOfGeneric
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumberStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumber
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeRegularAtLocalPoint
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValuesStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionEmbeddingGeometricPointsStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValues
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionEmbeddingGeometricPoints
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -55,7 +58,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 
 @[expose] public section
 
@@ -289,7 +291,7 @@ theorem exists_gamma (hξ : IsCptGen ξ) {G : Over X} [GrpObj G] (hG : IsSemiAbe
     rw [← Category.assoc]
     congr 1
     exact (spec_comp _ _).symm
-  obtain ⟨Γ₀, i, h1, h2⟩ := GlobalTheory.T.torsion_embedding_geometric_points (X.presheaf.stalk q.1) T X G hG (X.fromSpecStalk q.1) n hn τ τinj τtors geo
+  obtain ⟨Γ₀, i, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.Tors.exists_qfGroup_torsion (X.presheaf.stalk q.1) T X G hG (X.fromSpecStalk q.1) n hn τ τinj τtors geo
   exact ⟨T, inferInstance, inferInstance, Γ₀, i, h1, fun t => ⟨t.1, hTm t, h2 t⟩⟩
 end
 
@@ -316,7 +318,7 @@ theorem tangent_congr (hξ : IsCptGen ξ) {G : Over X} [GrpObj G] (hG : IsSemiAb
   let f₂ : Γ(G.left, V) := G.left.presheaf.map (homOfLE (inf_le_right : V ≤ W')).op f'
   let s : Γ(Γ₀.G.left, i ⁻¹ᵁ V) := (i.appLE V (i ⁻¹ᵁ V) le_rfl).hom (f₁ - f₂)
   have hs : s = 0 := by
-    refine GlobalTheory.T.section_eq_zero_of_values (X.presheaf.stalk q.1) T Γ₀ (i ⁻¹ᵁ V) s fun t ht => ?_
+    refine _root_.GlobalTheory.CompanionTheory.Ar.BT.section_eq_zero_of_val_generic (X.presheaf.stalk q.1) T Γ₀ (i ⁻¹ᵁ V) s fun t ht => ?_
     obtain ⟨g, hg, hgt⟩ := hpt t
     have hz : ⊤ ≤ ((Γ₀.pt t).left ≫ i) ⁻¹ᵁ V := ht
     have e1 : BT.valAt (Γ₀.pt t).left (i ⁻¹ᵁ V) ht s = secVal ((Γ₀.pt t).left ≫ i) V hz (f₁ - f₂) :=
@@ -332,7 +334,7 @@ theorem tangent_congr (hξ : IsCptGen ξ) {G : Over X} [GrpObj G] (hG : IsSemiAb
       secVal_congr hgt W hzW hyW f, secVal_congr hgt W' hzW' hyW' f',
       secVal_base _ g.left W h₀ hyW f, secVal_base _ g.left W' h₀' hyW' f', hval g h₀ h₀' hg, sub_self]
   obtain ⟨e₁, he₁⟩ := (stalkLie hξ M q).onto v hv.1
-  obtain ⟨vb, ⟨-, hvb⟩, -⟩ := GlobalTheory.T.existsUnique_tangent_dual_number (X.presheaf.stalk q.1) T Γ₀ X G (X.fromSpecStalk q.1) n i hΓ
+  obtain ⟨vb, ⟨-, hvb⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion (X.presheaf.stalk q.1) T Γ₀ X G (X.fromSpecStalk q.1) n i hΓ
     (Stalk M q) (stalkLie hξ M q) e₁
   rw [he₁] at hvb
   have hV : ⊤ ≤ v.left ⁻¹ᵁ V := fun z _ => ⟨@h z trivial, @h' z trivial⟩

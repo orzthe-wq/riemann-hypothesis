@@ -131,7 +131,6 @@ theorem UpperTheory.V.Af.StrongMultiplicityOne.finKir :
             hW _ (hl ν) (hE1 w ν hν).1 _ (supp_mul (mono hg) (hl y)), (hE1 w ν hν).2]
           rfl
         · intro y u hu
-          beta_reduce
           rw [map_mul, ← mul_assoc]
           exact hU _ (supp_mul (mono hg) (hl y)) _ hu (hl u)
       set p' := p * (locGL E n w (cmp w p))⁻¹ with hp'

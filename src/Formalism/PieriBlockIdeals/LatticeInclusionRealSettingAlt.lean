@@ -286,18 +286,6 @@ def ShapeAReal : Prop :=
     (((W.xp τ - W.xm τ).toNat : ℕ) : ℝ) ≤ P.S ∧
     (((W.U P τ (kc P) - W.U P τ (P.Nr - 1)).toNat : ℕ) : ℝ) ≤ 2 * P.η
 
-def ThinAReal : Prop :=
-  LA.LemmaAZ → ∀ P : Par, P.Hyp → P.Large → ∀ (ι : Type) (W : Wts ι), W.Ok P → ∀ J : ℕ → ℕ,
-    (W.sizeData₂ P J).ThinA P
-
-def ThickAReal : Prop :=
-  LA.LemmaAZ → ∀ P : Par, P.Hyp → P.Large → ∀ (ι : Type) (W : Wts ι), W.Ok P → ∀ J : ℕ → ℕ,
-    (W.sizeData₂ P J).ThickA P
-
-def CloudAReal : Prop :=
-  LA.LemmaAZ → ∀ P : Par, P.Hyp → P.Large → ∀ (ι : Type) (W : Wts ι), W.Ok P → ∀ J : ℕ → ℕ,
-    (W.sizeData₂ P J).CloudA P
-
 def ShapeTReal : Prop :=
   ∀ P : Par, P.Hyp → P.Large → ∀ (ι : Type) (W : Wts ι), W.Ok P → ∀ J : ℕ → ℕ,
     (W.sizeData₂ P J).ShapeT P

@@ -49,21 +49,13 @@ import Mathlib.Topology.Sheaves.Init
 
 namespace Formalism.L2.Th1.G
 
-theorem jetsInNorm : JetsInNorm := jets_in_norm_holds
-theorem jetsRing : JetsRing := jets_ring_holds
-theorem jetsExp : JetsExp := jets_exp_holds
-theorem jetsFourth : JetsFourth := jets_fourth_holds
-theorem intDJets : IntDJets := integral_dist_jets_holds
+alias jetsInNorm := _root_.Formalism.L2.Th1.G.jets_in_norm_holds
+alias jetsFourth := _root_.Formalism.L2.Th1.G.jets_fourth_holds
+alias curveNegNorm := _root_.Formalism.L2.Th1.G.curve_neg_norm_holds
+alias weierstrass_biadditive_mod_equiv := _root_.Formalism.L2.Th1.G.curve_formal_first_level_holds
+theorem curveRamified : CurveRamified := CurveRamified_of_shape _root_.Formalism.L2.Th1.G.ramified_shape_holds _root_.Formalism.L2.Th1.G.adjoint_unit_norm_holds _root_.Formalism.L2.Th1.G.inverse_endo_integral_holds
 
-theorem invEndInt : InvEndInt := inverse_endo_integral_holds
-theorem adjUnitNorm : AdjUnitNorm := adjoint_unit_norm_holds
-theorem ramifiedShape : RamifiedShape := ramified_shape_holds
-theorem curveNegNorm : CurveNegNorm := curve_neg_norm_holds
-theorem weierstrass_biadditive_mod_equiv : WeierstrassBiadditiveModEquiv := curve_formal_first_level_holds
-theorem curveRamified : CurveRamified := CurveRamified_of_shape ramifiedShape adjUnitNorm invEndInt
-
-theorem eigenSplit : EigenSplit := eigen_split_holds
-theorem shapeCong : ShapeCong := shape_congruence_holds
-theorem shapeOrth : ShapeOrth := shape_orthogonal_holds
+alias shapeCong := _root_.Formalism.L2.Th1.G.shape_congruence_holds
+alias shapeOrth := _root_.Formalism.L2.Th1.G.shape_orthogonal_holds
 
 end Formalism.L2.Th1.G

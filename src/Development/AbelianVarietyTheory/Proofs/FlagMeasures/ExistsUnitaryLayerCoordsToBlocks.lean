@@ -220,7 +220,7 @@ theorem toBlocks_norm (hU : Biorth r m U (fun b => (U b)ᴴ))
       (Submodule.subset_span ⟨i.1, i.2.ge, rfl⟩)
   have h1 : (Y * Yᴴ).trace = ((∑ i, ‖z i‖ ^ 2 : ℝ) : ℂ) := by
     simp [hYdef, conjTranspose_sum, Matrix.mul_sum, Matrix.sum_mul, trace_sum, hB,
-      Subtype.val_inj, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.conj_mul']
+      Subtype.val_inj, Complex.conj_mul']
   have horth : ∀ X ∈ lowers W (c + 1), (X * Yᴴ).trace = 0 := by
     intro X hX
     rw [hL] at hX

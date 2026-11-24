@@ -114,25 +114,6 @@ theorem _root_.GlobalTheory.UTrans.exists_isotropic_diagonal {n : ℕ} (hn : 3 �
 open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
-private lemma herm_eq_dotProduct_mulVec_cc {r : ℕ} (H : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
-    _root_.ReciprocityTheory.ChartRestriction.G.FD.herm H x y = x ⬝ᵥ (H *ᵥ fun b => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (y b)) := by
-  simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
-
-open NumberField IsDedekindDomain Matrix in
-open scoped TensorProduct in
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
-private lemma herm_mulVec_mulVec' {r : ℕ} (G P : Matrix (Fin r) (Fin r) E) (u v : Fin r → E) :
-    _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G (P *ᵥ u) (P *ᵥ v) = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (Pᵀ * G * P.map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc) u v := by
-  have hc : (fun b => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc ((P *ᵥ v) b)) = P.map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc *ᵥ fun b => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (v b) := by
-    ext b
-
-    simp [mulVec, dotProduct, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc, map_sum, map_mul]
-  rw [herm_eq_dotProduct_mulVec_cc, herm_eq_dotProduct_mulVec_cc, hc, ← mulVec_mulVec, ← mulVec_mulVec,
-    dotProduct_mulVec u, vecMul_transpose]
-
-open NumberField IsDedekindDomain Matrix in
-open scoped TensorProduct in
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 private lemma re_mul_cc_eq_normSq_mul_re (τ : E →+* ℂ) (y d : E) :
     (τ (y * d * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc y)).re = Complex.normSq (τ y) * (τ d).re := by
   rw [map_mul, map_mul, _root_.GlobalTheory.Published.embedding_cc, mul_right_comm, Complex.mul_conj,
@@ -181,7 +162,7 @@ theorem _root_.GlobalTheory.UTrans.exists_isotropic_of_indefinite : ∀ (E : Typ
   have hPinv : ∀ x, P *ᵥ (P⁻¹ *ᵥ x) = x := fun x => by
     rw [mulVec_mulVec, mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hP), one_mulVec]
   have hform : ∀ y, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G (P *ᵥ y) (P *ᵥ y) = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (Matrix.diagonal d) y y := fun y => by
-    rw [herm_mulVec_mulVec', hPd]
+    rw [_root_.GlobalTheory.SelfDualGenus.herm_mulVec, hPd]
   suffices ∃ y, y ≠ 0 ∧ _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (Matrix.diagonal d) y y = 0 by
     obtain ⟨y, hy, hy0⟩ := this
     exact ⟨P *ᵥ y, fun h => hy (eq_zero_of_mulVec_eq_zero hP h), by rw [hf, hform, hy0]⟩
@@ -191,7 +172,7 @@ theorem _root_.GlobalTheory.UTrans.exists_isotropic_of_indefinite : ∀ (E : Typ
     rw [_root_.GlobalTheory.UTrans.herm_diagonal_self, Finset.sum_eq_single i]
     · simp [hi]
     · intro j _ hj
-      simp [Pi.single_apply, hj]
+      simp [hj]
     · simp
   · push_neg at hd0
     refine _root_.GlobalTheory.UTrans.exists_isotropic_diagonal hn hd hd0 fun τ => ?_

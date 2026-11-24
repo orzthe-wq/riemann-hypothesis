@@ -115,7 +115,7 @@ theorem hasDerivAt_aevalTower_line {R ι : Type*} [CommRing R] [Algebra 𝕜 R] 
       rw [pderiv_mul, pderiv_X]
       by_cases hij : i = j
       · subst hij; simp; ring
-      · simp [hij, Pi.single_eq_of_ne hij]; ring
+      · simp [hij]; ring
     simp only [h1, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true,
       ← Finset.sum_mul]
     simp

@@ -76,11 +76,11 @@ theorem UpperTheory.Gal.TranscendenceTraces.trRed_of :
       nat := fun {A B} k a => (hfn _ _ k.g _).trans (congrArg (f A.U) ((tr0 p w Q i).nat k a)) }
   have hov1 : τ1.Over t := by
     intro A a
-    rw [hτ1, hσ1, hovQ A a, hf0, GlobalTheory.T.restrictScalarsResolutionMap_augmentation_spec]
+    rw [hτ1, hσ1, hovQ A a, hf0, _root_.GlobalTheory.EtC.restrMap_spec']
     rfl
   have hov2 : τ2.Over t := by
     intro A a
-    rw [hτ2, hσ2, hf0, hovq A, GlobalTheory.T.restrictScalarsResolutionMap_augmentation_spec, key]
+    rw [hτ2, hσ2, hf0, hovq A, _root_.GlobalTheory.EtC.restrMap_spec', key]
     rfl
   obtain ⟨a, ha⟩ := (hRp (ZMod Q) (res (ZMod Q) (tw Q i)) Z n).1 x
   have r1 := (hRp (ZMod Q) (res (ZMod Q) (tw Q i)) S n).2.2.2.2 (ZMod q) (res (ZMod q) (tw q i))

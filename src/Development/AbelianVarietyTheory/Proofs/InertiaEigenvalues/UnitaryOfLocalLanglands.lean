@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NStageTrivialCharacterCoeffEqAlt
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FinIso
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSplitAtOfIsSplitPl
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EqOrIsConjPlaceOfOverSplitPlace
 
 @[expose] public section
 
@@ -51,13 +52,9 @@ noncomputable section
 
 namespace GlobalTheory.UnitaryReadTrue
 
-theorem host_conj_eq (D : D7) (x : D.host.E) : D.host.conj x = IsCMField.complexConj D.host.E x :=
-  D.host.φ₀.injective (by
-    rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])
-
 theorem coe_cO (D : D7) (x : 𝓞 D.host.E) :
     ((IsCMField.ringOfIntegersComplexConj D.host.E x : 𝓞 D.host.E) : D.host.E) = D.host.conj (x : D.host.E) := by
-  rw [IsCMField.coe_ringOfIntegersComplexConj, host_conj_eq]
+  rw [IsCMField.coe_ringOfIntegersComplexConj, _root_.GlobalTheory.SplitPlaceOver.host_conj_eq']
 
 theorem exists_splitPlace_w (D : D7) (w : PlE D.host) (hw : IsSplitPl D.host w) :
     ∃ s : SplitPlace D.host.E, s.w = w := by

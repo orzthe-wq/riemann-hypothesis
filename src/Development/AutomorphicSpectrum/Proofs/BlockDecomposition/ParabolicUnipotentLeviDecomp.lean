@@ -123,7 +123,7 @@ theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [I
     | last =>
       rw [hh]
       induction b using Fin.lastCases <;>
-        simp [glEmbMat, colMat, eLast, Fin.castSucc_ne_last, Pi.single_apply]
+        simp [glEmbMat, colMat, eLast, Fin.castSucc_ne_last]
     | cast a =>
       induction b using Fin.lastCases <;>
         simp [glEmbMat, colMat, blockMat, Fin.castSucc_ne_last, M]

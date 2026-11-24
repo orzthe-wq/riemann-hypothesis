@@ -78,7 +78,7 @@ theorem aesm_weight_smul (D : B.RealPlaceData k r Wp Wq) {E : Type*} [NormedAddC
     · exact isOpen_lt continuous_const (Complex.continuous_normSq.comp continuous_snd)
   have contW : Continuous (fun q : (Fin r → ℂ) × ℂ => (∏ a : Fin r, ‖q.1 a‖ ^ (2 * (Mdim k r a - 2))) *
       (Complex.normSq q.2 - Tz k r D.z * Tz k r D.z') ^ (k - 1)) := by
-    first | fun_prop | continuity
+    first | fun_prop
   have hw : ContinuousOn (fun q => bcWeight k r (Tz k r D.z) (Tz k r D.z') q) s := by
     refine contW.continuousOn.congr fun q hq => ?_
     unfold bcWeight
@@ -94,14 +94,12 @@ theorem aesm_weight_smul (D : B.RealPlaceData k r Wp Wq) {E : Type*} [NormedAddC
       rw [he, MeasureTheory.volume_pi]
       first
         | exact MeasureTheory.Measure.pi_eval_preimage_null _ (measure_singleton 0)
-        | exact MeasureTheory.Measure.pi_eval_preimage_null (measure_singleton 0)
     exact MeasureTheory.Measure.QuasiMeasurePreserving.preimage_null
       MeasureTheory.Measure.quasiMeasurePreserving_fst h0
   have hN2 : volume {q : (Fin r → ℂ) × ℂ | Complex.normSq q.2 = Tz k r D.z * Tz k r D.z'} = 0 := by
     have hsph : volume (Metric.sphere (0 : ℂ) (Real.sqrt (Tz k r D.z * Tz k r D.z'))) = 0 := by
       first
         | exact MeasureTheory.Measure.addHaar_sphere volume (0 : ℂ) _
-        | exact MeasureTheory.Measure.addHaar_sphere (0 : ℂ) _
     have h0 : volume {z : ℂ | Complex.normSq z = Tz k r D.z * Tz k r D.z'} = 0 := by
       refine measure_mono_null (fun z hz => ?_) hsph
       simp only [Set.mem_setOf_eq] at hz
@@ -115,7 +113,7 @@ theorem aesm_weight_smul (D : B.RealPlaceData k r Wp Wq) {E : Type*} [NormedAddC
   filter_upwards [hA, hB] with q hqa hqb
   classical
   by_cases hq : q ∈ s
-  · simp [Set.indicator_apply, hq]
+  · simp [hq]
   · simp only [Set.indicator_apply, hq, if_false]
     have hlt : Complex.normSq q.2 < Tz k r D.z * Tz k r D.z' := by
       have hn : ¬ (Tz k r D.z * Tz k r D.z' < Complex.normSq q.2) := fun h => hq ⟨hqa, h⟩

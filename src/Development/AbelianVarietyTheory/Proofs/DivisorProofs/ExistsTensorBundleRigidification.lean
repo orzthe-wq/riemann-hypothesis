@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -50,9 +51,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum.TensRig
-
-theorem oneGen_isGen' {X Y : Scheme.{0}} (L : LB X) : (LB.oneGen L (Y := Y)).IsGen := fun _ _ =>
-  (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm
 
 theorem eta_eq_one {S : Scheme.{0}} (B : Over S) [GrpObj B] : (η[B] : 𝟙_ (Over S) ⟶ B) = 1 := by
   show _ = toUnit _ ≫ η[B]
@@ -86,7 +84,7 @@ theorem GlobalTheory.Mum.TensRig.rig_exists : ∀ (R : Type) [CommRing R] [IsDom
     simp only [GlobalTheory.LamBiext.flatφ, GlobalTheory.LamBiext.flatε, eSec_tensφ pr hpr, _root_.one_mul, Finset.univ_eq_empty,
       Finset.prod_empty, Fintype.prod_prod_type, Fin.prod_univ_four, tensε, Oε]
     simp
-  obtain ⟨t, ht, htv⟩ := exists_gen D.P.isLB hform (LB.oneGen D.P.L) (oneGen_isGen' _)
+  obtain ⟨t, ht, htv⟩ := exists_gen D.P.isLB hform (LB.oneGen D.P.L) (_root_.GlobalTheory.SelfUnif.oneGen_isGen _)
   obtain ⟨a, ha, hmaps⟩ := Transport.exists_transport
     (DVR.linComb_isLB L' hL' (fun _ : PUnit => eSec A') (fun _ => 1))
     (DVR.linComb_isLB _ (DVR.linComb_isLB D.P.L D.P.isLB (tensφ pr) (tensε W)) (fun _ : PUnit => eSec A') (fun _ => 1))

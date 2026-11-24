@@ -1,48 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TanSRestrict
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DualMapSOfIdToRingHom
 
 @[expose] public section
@@ -112,14 +71,6 @@ private theorem dualMapS_snd' {A A' : Type} [CommRing A] [Algebra S A] [CommRing
     (j : A →ₐ[S] A') (y : DualNumber A) : (dualMapS j y).snd = j y.snd := by
   simp [dualMapS, Bl.ThirdBlockLemmaB.goal1, TrivSqZeroExt.lift_def]
 
-private theorem scaleS_fst' {A : Type} [CommRing A] [Algebra S A] (c : A) (y : DualNumber A) :
-    (scaleS (S := S) c y).fst = y.fst := by
-  simp [scaleS]
-
-private theorem scaleS_snd' {A : Type} [CommRing A] [Algebra S A] (c : A) (y : DualNumber A) :
-    (scaleS (S := S) c y).snd = c * y.snd := by
-  simp [scaleS]
-
 theorem scaleS_comp {A : Type} [CommRing A] [Algebra S A] (a b : A) :
     (scaleS (S := S) a).comp (scaleS b) = scaleS (a * b) := by
   refine AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;> simp [scaleS] <;> ring
@@ -127,16 +78,16 @@ theorem scaleS_comp {A : Type} [CommRing A] [Algebra S A] (a b : A) :
 theorem dualMapS_comp_scaleS {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A'] (j : A →ₐ[S] A')
     (c : A) : (dualMapS j).comp (scaleS c) = (scaleS (j c)).comp (dualMapS j) := by
   refine AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_
-  · rw [AlgHom.comp_apply, AlgHom.comp_apply, dualMapS_fst', scaleS_fst', scaleS_fst',
-      dualMapS_fst']
-  · rw [AlgHom.comp_apply, AlgHom.comp_apply, dualMapS_snd', scaleS_snd', scaleS_snd',
-      dualMapS_snd', map_mul]
+  · rw [AlgHom.comp_apply, AlgHom.comp_apply, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_fst, _root_.ReciprocityTheory.ChartRestriction.G.Chart.scaleS_fst, _root_.ReciprocityTheory.ChartRestriction.G.Chart.scaleS_fst,
+      _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_fst]
+  · rw [AlgHom.comp_apply, AlgHom.comp_apply, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_snd, _root_.ReciprocityTheory.ChartRestriction.G.Chart.scaleS_snd, _root_.ReciprocityTheory.ChartRestriction.G.Chart.scaleS_snd,
+      _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_snd, map_mul]
 
 theorem dualMapS_comp {A A' A'' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A'] [CommRing A'']
     [Algebra S A''] (j : A →ₐ[S] A') (j' : A' →ₐ[S] A'') : (dualMapS j').comp (dualMapS j) = dualMapS (j'.comp j) := by
   refine AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_
-  · rw [AlgHom.comp_apply, dualMapS_fst', dualMapS_fst', dualMapS_fst', AlgHom.comp_apply]
-  · rw [AlgHom.comp_apply, dualMapS_snd', dualMapS_snd', dualMapS_snd', AlgHom.comp_apply]
+  · rw [AlgHom.comp_apply, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_fst, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_fst, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_fst, AlgHom.comp_apply]
+  · rw [AlgHom.comp_apply, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_snd, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_snd, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_snd, AlgHom.comp_apply]
 
 theorem scaleS_one {A : Type} [CommRing A] [Algebra S A] : scaleS (S := S) (1 : A) = AlgHom.id S _ := by
   refine AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;> simp [scaleS]
@@ -231,13 +182,13 @@ theorem glue_tan' {n : ℕ} (s : Fin n → S) (hs : Ideal.span (Set.range s) = �
     rw [RingHom.comp_apply, hgm]
     conv_lhs => rw [hdec x]
     rw [map_add (f := _), map_mul]
-    simp [dualMapS_fst', dualMapS_snd', hg0]
+    simp [_root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_fst, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_snd, hg0]
   have hβ : β = gm.comp (dualMapS (qR (s k) (s l))).toRingHom := by
     refine RingHom.ext fun x => ?_
     rw [RingHom.comp_apply, hgm]
     conv_lhs => rw [hdec x]
     rw [map_add (f := _), map_mul]
-    simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, dualMapS_fst', dualMapS_snd', hR', heps]
+    simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_fst, _root_.ReciprocityTheory.ChartRestriction.G.Chart.dualMapS_snd, hR', heps]
   have hk := congrArg (fun f => f.left) (hQ k l)
   simp only [Over.comp_left, spMap, Over.homMk_left] at hk
   rw [hα, hβ, CommRingCat.ofHom_comp, CommRingCat.ofHom_comp, Spec.map_comp, Spec.map_comp,

@@ -82,12 +82,12 @@ theorem exists_compact_ratN : ∃ K : Set (BlockIx a r → Ad E), IsCompact K �
 theorem not_isCuspidal_oneFn : ∀ (E : Type) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] (a : ℕ),
     2 ≤ a → ¬ IsCuspidal (oneFn E a).1 := by
   intro E _ _ _ a ha h
-  haveI : LocallyCompactSpace (Ad E) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E
-  haveI : SecondCountableTopology (Ad E) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele E
-  haveI : T2Space (Ad E) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E
-  letI : MeasurableSpace (BlockIx a 1 → Ad E) := borel _
-  haveI : BorelSpace (BlockIx a 1 → Ad E) := ⟨rfl⟩
-  haveI := discreteTopology_ratN E a 1
+  have : LocallyCompactSpace (Ad E) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E
+  have : SecondCountableTopology (Ad E) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele E
+  have : T2Space (Ad E) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E
+  let : MeasurableSpace (BlockIx a 1 → Ad E) := borel _
+  have : BorelSpace (BlockIx a 1 → Ad E) := ⟨rfl⟩
+  have := discreteTopology_ratN E a 1
   obtain ⟨K, hK, hcov⟩ := exists_compact_ratN E a 1
   obtain ⟨⟨μ, F, hμ, hF, h1⟩, -⟩ :=
     GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact _ (ratN E a 1) K hK hcov

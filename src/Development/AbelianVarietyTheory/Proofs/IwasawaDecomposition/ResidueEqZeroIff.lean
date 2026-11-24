@@ -119,9 +119,7 @@ theorem one_tmul_mem (v : HeightOneSpectrum (𝓞 F)) {a : v.adicCompletion F} (
     (1 : E) ⊗ₜ[F] a ∈ intV E v :=
   Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)
 
-theorem valued_natCast (v : HeightOneSpectrum (𝓞 F)) (N : ℕ) :
-    Valued.v (N : v.adicCompletion F) = v.valuation F (algebraMap (𝓞 F) F N) := by
-  rw [← valued_algebraMap, map_natCast (algebraMap (𝓞 F) F), map_natCast (algebraMap F (v.adicCompletion F))]
+alias valued_natCast := _root_.GlobalTheory.NormSum.RepAt.val_nat
 
 theorem mem_latS_iff {v : HeightOneSpectrum (𝓞 F)} {L : Submodule (𝓞 E) (Fin n → E)} {T : ℕ} (hT : (T : 𝓞 F) ∉ v.asIdeal)
     (h1 : ∀ x ∈ L, ∀ j, ∃ r : 𝓞 E, x j = r) (h2 : ∀ j, (Pi.single j (T : E) : Fin n → E) ∈ L)

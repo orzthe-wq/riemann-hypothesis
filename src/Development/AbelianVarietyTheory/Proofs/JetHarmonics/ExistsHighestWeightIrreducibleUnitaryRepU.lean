@@ -4,9 +4,11 @@ public import Formalism.PeriodIntegrals.UpqRep
 public import Formalism.RealPlaceAnalysis.StatementKT
 public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 public import Mathlib.Analysis.Normed.Algebra.Exponential
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsDerivedActionFiniteDimUnitaryRepStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WeightCompactDominanceOfMemHighestWeightSpanStatement
+public import Formalism.RealPlaceAnalysis.StatementA
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsDerivedActionFiniteDimUnitaryRep
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.WeightCompactDominanceOfMemHighestWeightSpan
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactExponentialSurjective
+public import Mathlib.Analysis.ODE.ExistUnique
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IsCompactInvariantCompactSpan
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -14,7 +16,6 @@ import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-public import Mathlib.Analysis.ODE.ExistUnique
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -275,7 +276,7 @@ theorem stable_of_derived [FiniteDimensional ℂ W] (hπ : IsURepOn (UJset (allP
 
 theorem exists_isHCTypeU : ∀ (k : ℕ) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [Nontrivial W] (π : Matrix (Fin k) (Fin k) ℂ → (W →L[ℂ] W)), PI.UpqRep.IsURepOn (PI.UpqRep.UJset (PI.UpqRep.allPos k)) π → (∀ S : Submodule ℂ W, (∀ g ∈ PI.UpqRep.UJset (PI.UpqRep.allPos k), ∀ v ∈ S, π g v ∈ S) → S = ⊥ ∨ S = ⊤) → ∃ u, PI.UpqRep.IsHCTypeU k u π := by
   intro k W _ _ _ _ π hπ hirr
-  obtain ⟨E, hgl, hun, hE⟩ := GlobalTheory.T.exists_derivedAction_finiteDimUnitaryRep k W π hπ
+  obtain ⟨E, hgl, hun, hE⟩ := _root_.GlobalTheory.UnitaryDerived.exists_derived_action k W π hπ
   obtain ⟨x, -, hx, Λ, hΛ⟩ := Formalism.REAL.highestWeightExists_holds W k (allPos k) E ⊤ inferInstance
     (Formalism.REAL.glRel_kRel _ E hgl) (Formalism.REAL.isUnitary_kUnit _ E hun) (fun _ _ _ _ _ => trivial) top_ne_bot
   have hxm : x ∈ Formalism.REAL.kSpan (allPos k) E x := Submodule.mem_sInf.2 fun S hS => hS.1
@@ -293,6 +294,6 @@ theorem exists_isHCTypeU : ∀ (k : ℕ) (W : Type) [NormedAddCommGroup W] [Inne
   rw [hl]
   refine ⟨inferInstance, fun _ _ _ _ => trivial, fun S _ hS => hirr S fun g hg => hS g ((mem_K_iff g).2 hg),
     ⟨x, trivial, hx, isWtOn_of_isWeight hπ E hE Λ x hΛ.1⟩, fun μ v _ hv hw => ?_⟩
-  exact GlobalTheory.T.weight_compactDominance_of_mem_highestWeightSpan k W E Λ μ x v hgl hun hΛ (htop ▸ trivial) hv (isWeight_of_isWtOn E hE μ v hw)
+  exact _root_.GlobalTheory.weight_cdom_of_mem_kSpan k W E Λ μ x v hgl hun hΛ (htop ▸ trivial) hv (isWeight_of_isWtOn E hE μ v hw)
 
 end GlobalTheory.UnitaryHighestWeight

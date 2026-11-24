@@ -61,6 +61,8 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Calculus.FDeriv.Mul
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelNablaStarRelations
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
 
 @[expose] public section
 
@@ -292,29 +294,6 @@ theorem mk_comm (X Xs Y Ys : D.Op) (h1 : X * Y = Y * X) (h2 : Xs * Ys = Ys * Xs)
 theorem vz_ne : (M.vz : M.Var r) ≠ M.vzb := by
   intro h; have := congrArg (fun p : M.Var r => (ofLex p).2) h; simp [M.vz, M.vzb] at this
 
-theorem vc_inj (l m : Fin r) : (M.vc l : M.Var r) = M.vc m ↔ l = m := by
-  constructor
-  · intro h; have := congrArg (fun p : M.Var r => (ofLex p).1) h; simpa [M.vc] using this
-  · rintro rfl; rfl
-theorem vcb_inj (l m : Fin r) : (M.vcb l : M.Var r) = M.vcb m ↔ l = m := by
-  constructor
-  · intro h; have := congrArg (fun p : M.Var r => (ofLex p).1) h; simpa [M.vcb] using this
-  · rintro rfl; rfl
-theorem vc_vcb (l m : Fin r) : (M.vc l : M.Var r) ≠ M.vcb m := by
-  intro h; have := congrArg (fun p : M.Var r => (ofLex p).2) h; simp [M.vc, M.vcb] at this
-theorem vc_vz (l : Fin r) : (M.vc l : M.Var r) ≠ M.vz := by
-  intro h; have := congrArg (fun p : M.Var r => (ofLex p).1) h
-  exact (Fin.castSucc_lt_last l).ne this
-theorem vc_vzb (l : Fin r) : (M.vc l : M.Var r) ≠ M.vzb := by
-  intro h; have := congrArg (fun p : M.Var r => (ofLex p).1) h
-  exact (Fin.castSucc_lt_last l).ne this
-theorem vcb_vz (l : Fin r) : (M.vcb l : M.Var r) ≠ M.vz := by
-  intro h; have := congrArg (fun p : M.Var r => (ofLex p).1) h
-  exact (Fin.castSucc_lt_last l).ne this
-theorem vcb_vzb (l : Fin r) : (M.vcb l : M.Var r) ≠ M.vzb := by
-  intro h; have := congrArg (fun p : M.Var r => (ofLex p).1) h
-  exact (Fin.castSucc_lt_last l).ne this
-
 variable {D} {TT : ℝ} (hL : D.Laws TT)
 include hL
 
@@ -474,15 +453,15 @@ theorem p_c (l : Fin r) : D.pP l * D.cP l = D.cP l * D.pP l + D.cP l := by
 theorem p_ci (l : Fin r) : D.pP l * D.ciP l = D.ciP l * D.pP l - D.ciP l := by
   rw [partialDeriv_def, DAlg.ciP, der_fn hL, eci hL, eci hL, if_pos rfl, if_pos rfl, one_mul, one_mul, sub_eq_add_neg, multiplierPair_neg]
 
-theorem zeta_free_of_variable : ZF D (D.x M.vz) := fun l => ⟨by rw [ec hL, if_neg (vc_vz l)], by rw [ec hL, if_neg (vcb_vz l)]⟩
-theorem zf_zb : ZF D (D.x M.vzb) := fun l => ⟨by rw [ec hL, if_neg (vc_vzb l)], by rw [ec hL, if_neg (vcb_vzb l)]⟩
-theorem zf_zi : ZF D (D.inv (D.x M.vz)) := fun l => ⟨by rw [eci hL, if_neg (vc_vz l)], by rw [eci hL, if_neg (vcb_vz l)]⟩
+theorem zeta_free_of_variable : ZF D (D.x M.vz) := fun l => ⟨by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vz l)], by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vz l)]⟩
+theorem zf_zb : ZF D (D.x M.vzb) := fun l => ⟨by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vzb l)], by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vzb l)]⟩
+theorem zf_zi : ZF D (D.inv (D.x M.vz)) := fun l => ⟨by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vz l)], by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vz l)]⟩
 theorem zf_zbi : ZF D (D.inv (D.x M.vzb)) :=
-  fun l => ⟨by rw [eci hL, if_neg (vc_vzb l)], by rw [eci hL, if_neg (vcb_vzb l)]⟩
+  fun l => ⟨by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vzb l)], by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vzb l)]⟩
 theorem zf_gg : ZF D (D.gg TT) := fun l =>
-  ⟨euler_gamma_vanish hL _ (vc_vz l) (vc_vzb l), euler_gamma_vanish hL _ (vcb_vz l) (vcb_vzb l)⟩
+  ⟨euler_gamma_vanish hL _ (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vz l) (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vzb l), euler_gamma_vanish hL _ (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vz l) (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vzb l)⟩
 theorem zf_ggi : ZF D (D.inv (D.gg TT)) := fun l =>
-  ⟨euler_gamma_inv_vanish hL _ (vc_vz l) (vc_vzb l), euler_gamma_inv_vanish hL _ (vcb_vz l) (vcb_vzb l)⟩
+  ⟨euler_gamma_inv_vanish hL _ (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vz l) (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vzb l), euler_gamma_inv_vanish hL _ (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vz l) (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vzb l)⟩
 omit hL in
 theorem zf_mul' (hL : D.Laws TT) {f g : D.R} (hf : ZF D f) (hg : ZF D g) : ZF D (f * g) := fun l =>
   ⟨by rw [hL.leibniz, (hf l).1, (hg l).1]; simp, by rw [hL.leibniz, (hf l).2, (hg l).2]; simp⟩
@@ -490,13 +469,13 @@ omit hL in
 theorem zf_smul {f : D.R} (z : ℂ) (hf : ZF D f) : ZF D (z • f) := fun l =>
   ⟨by rw [map_smul, (hf l).1, smul_zero], by rw [map_smul, (hf l).2, smul_zero]⟩
 
-theorem cf_c (m : Fin r) : CF D (D.x (M.vc m)) := ⟨by rw [ec hL, if_neg (vc_vz m).symm], by rw [ec hL, if_neg (vc_vzb m).symm]⟩
+theorem cf_c (m : Fin r) : CF D (D.x (M.vc m)) := ⟨by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vz m).symm], by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vzb m).symm]⟩
 theorem cf_cb (m : Fin r) : CF D (D.x (M.vcb m)) :=
-  ⟨by rw [ec hL, if_neg (vcb_vz m).symm], by rw [ec hL, if_neg (vcb_vzb m).symm]⟩
+  ⟨by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vz m).symm], by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vzb m).symm]⟩
 theorem cf_ci (m : Fin r) : CF D (D.inv (D.x (M.vc m))) :=
-  ⟨by rw [eci hL, if_neg (vc_vz m).symm], by rw [eci hL, if_neg (vc_vzb m).symm]⟩
+  ⟨by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vz m).symm], by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vzb m).symm]⟩
 theorem cf_cbi (m : Fin r) : CF D (D.inv (D.x (M.vcb m))) :=
-  ⟨by rw [eci hL, if_neg (vcb_vz m).symm], by rw [eci hL, if_neg (vcb_vzb m).symm]⟩
+  ⟨by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vz m).symm], by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_vzb m).symm]⟩
 
 theorem partialDeriv_mul_fn (l : Fin r) (f fb : D.R) :
     D.pP l * D.fnP f fb = D.fnP f fb * D.pP l + D.fnP (D.ev (M.vc l) f) (D.ev (M.vcb l) fb) := by
@@ -682,17 +661,17 @@ theorem levP : LevP := by
     by_cases h : l = m
     · subst h; rw [if_pos rfl]; simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact p_c hL l
     · rw [if_neg h, add_zero]; simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π
-      exact pP_0 hL _ _ _ (by rw [ec hL, if_neg (fun e => h ((vc_inj _ _).1 e))])
-        (by rw [ec hL, if_neg (fun e => h ((vcb_inj _ _).1 e))])
+      exact pP_0 hL _ _ _ (by rw [ec hL, if_neg (fun e => h ((_root_.Formalism.FourierDecayAlt.P.Mx2.vc_inj _ _).1 e))])
+        (by rw [ec hL, if_neg (fun e => h ((_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_inj _ _).1 e))])
   · intro m
     by_cases h : l = m
     · subst h; rw [if_pos rfl]; simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact p_ci hL l
     · rw [if_neg h, sub_zero]; simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π
-      exact pP_0 hL _ _ _ (by rw [eci hL, if_neg (fun e => h ((vc_inj _ _).1 e))])
-        (by rw [eci hL, if_neg (fun e => h ((vcb_inj _ _).1 e))])
+      exact pP_0 hL _ _ _ (by rw [eci hL, if_neg (fun e => h ((_root_.Formalism.FourierDecayAlt.P.Mx2.vc_inj _ _).1 e))])
+        (by rw [eci hL, if_neg (fun e => h ((_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_inj _ _).1 e))])
   · rintro x ((⟨m, rfl⟩ | ⟨m, rfl⟩) | hx)
-    · simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact pP_0 hL _ _ _ (by rw [ec hL, if_neg (vc_vcb _ _)]) (by rw [ec hL, if_neg (vc_vcb _ _).symm])
-    · simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact pP_0 hL _ _ _ (by rw [eci hL, if_neg (vc_vcb _ _)]) (by rw [eci hL, if_neg (vc_vcb _ _).symm])
+    · simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact pP_0 hL _ _ _ (by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vcb _ _)]) (by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vcb _ _).symm])
+    · simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact pP_0 hL _ _ _ (by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vcb _ _)]) (by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vcb _ _).symm])
     · simp only [zfnsA, Set.mem_insert_iff, Set.mem_singleton_iff] at hx
       rcases hx with rfl | rfl | rfl | rfl | rfl | rfl
       · simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact pP_0 hL _ _ _ (zeta_free_of_variable hL l).1 (zf_zb hL l).2
@@ -711,18 +690,18 @@ theorem levPb : LevPb := by
     · subst h; rw [if_pos rfl]; simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π
       rw [DAlg.cbP, partialDerivBar_mul_fn hL, ec hL, ec hL, if_pos rfl, if_pos rfl]
     · rw [if_neg h, add_zero]; simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π
-      exact pbP_0 hL _ _ _ (by rw [ec hL, if_neg (fun e => h ((vcb_inj _ _).1 e))])
-        (by rw [ec hL, if_neg (fun e => h ((vc_inj _ _).1 e))])
+      exact pbP_0 hL _ _ _ (by rw [ec hL, if_neg (fun e => h ((_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_inj _ _).1 e))])
+        (by rw [ec hL, if_neg (fun e => h ((_root_.Formalism.FourierDecayAlt.P.Mx2.vc_inj _ _).1 e))])
   · intro m
     by_cases h : l = m
     · subst h; rw [if_pos rfl]; simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π
       rw [DAlg.cbiP, partialDerivBar_mul_fn hL, eci hL, eci hL, if_pos rfl, if_pos rfl, sub_eq_add_neg, multiplierPair_neg]
     · rw [if_neg h, sub_zero]; simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π
-      exact pbP_0 hL _ _ _ (by rw [eci hL, if_neg (fun e => h ((vcb_inj _ _).1 e))])
-        (by rw [eci hL, if_neg (fun e => h ((vc_inj _ _).1 e))])
+      exact pbP_0 hL _ _ _ (by rw [eci hL, if_neg (fun e => h ((_root_.Formalism.FourierDecayAlt.P.Mx2.vcb_inj _ _).1 e))])
+        (by rw [eci hL, if_neg (fun e => h ((_root_.Formalism.FourierDecayAlt.P.Mx2.vc_inj _ _).1 e))])
   · rintro x ((⟨m, rfl⟩ | ⟨m, rfl⟩) | hx)
-    · simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact pbP_0 hL _ _ _ (by rw [ec hL, if_neg (vc_vcb _ _).symm]) (by rw [ec hL, if_neg (vc_vcb _ _)])
-    · simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact pbP_0 hL _ _ _ (by rw [eci hL, if_neg (vc_vcb _ _).symm]) (by rw [eci hL, if_neg (vc_vcb _ _)])
+    · simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact pbP_0 hL _ _ _ (by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vcb _ _).symm]) (by rw [ec hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vcb _ _)])
+    · simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact pbP_0 hL _ _ _ (by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vcb _ _).symm]) (by rw [eci hL, if_neg (_root_.Formalism.FourierDecayAlt.P.Mx2.vc_vcb _ _)])
     · simp only [zfnsA, Set.mem_insert_iff, Set.mem_singleton_iff] at hx
       rcases hx with rfl | rfl | rfl | rfl | rfl | rfl
       · simp only [pA, pbA, cA, ciA, cbA, cbiA, zA, ziA, zbA, zbiA, ggA, ggiA, nabA, nabsA, sc, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, Matrix.diagonal_sub, Matrix.diagonal_one]; congr 1; funext π; exact pbP_0 hL _ _ _ (zeta_free_of_variable hL l).2 (zf_zb hL l).1
@@ -988,8 +967,7 @@ noncomputable section
 
 variable (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)]
 
-theorem kap_eq (f : Ty P → ℂ) :
-    kap P D f = Matrix.diagonal fun π => algebraMap ℂ (D.Pr) (f π) := rfl
+alias kap_eq := _root_.Formalism.FourierDecayAlt.P.MAx1.kap_eq
 
 theorem kap_diag (f : Ty P → ℂ) (d : Ty P → D.Pr) :
     Commute (kap P D f) (Matrix.diagonal d) := by
@@ -1095,10 +1073,6 @@ theorem block_frame_conjugation_identity {R : Type*} [Ring R] [Algebra ℂ R] (g
   rw [mul_sub, sub_mul, mul_neg, neg_mul, h3, mul_smul_comm, smul_mul_assoc, h4, add_smul]
   abel
 
-theorem star_half : star (1 / 2 : ℂ) = 1 / 2 := by
-  have h : (1 / 2 : ℂ) = ((1 / 2 : ℝ) : ℂ) := by norm_num
-  rw [h, Complex.star_def, Complex.conj_ofReal]
-
 theorem conj_two : (starRingEnd ℂ) 2 = 2 := by
   have h : (2 : ℂ) = ((2 : ℝ) : ℂ) := by norm_num
   rw [h, Complex.conj_ofReal]
@@ -1106,13 +1080,13 @@ theorem conj_two : (starRingEnd ℂ) 2 = 2 := by
 theorem star_lowering_constant (Y : ℂ) : star (l0A P D Y) = ggA P D * m0A P D (star Y) * ggiA P D := by
   rw [raising_constant_eq_nabla_star, block_frame_conjugation_identity (ggA P D) (ggiA P D) (zA P D) (nabsA P D) (star Y - 1 / 2) 1 (gg_ggi P D)
     (by rw [one_smul]; exact nabs_gg P D) (fn_comm P D _ _ _ _) (fn_comm P D _ _ _ _), l0_eq_neg_nabla_sub,
-    star_sub, star_neg, star_smul, star_mul, star_nab, star_zb, star_ggi, star_add, star_half]
+    star_sub, star_neg, star_smul, star_mul, star_nab, star_zb, star_ggi, star_add, _root_.Formalism.REAL.star_one_half]
   congr 2; ring
 
 theorem star_raising_constant (Y : ℂ) : star (m0A P D Y) = ggA P D * l0A P D (star Y) * ggiA P D := by
   rw [l0_eq_neg_nabla_sub, block_frame_conjugation_identity (ggA P D) (ggiA P D) (zbA P D) (nabA P D) (star Y + 1 / 2) (-1) (gg_ggi P D)
     (by rw [neg_smul, one_smul, sub_neg_eq_add]; exact nab_gg P D) (fn_comm P D _ _ _ _) (fn_comm P D _ _ _ _),
-    raising_constant_eq_nabla_star, star_sub, star_neg, star_smul, star_mul, star_nabs, star_alt, star_ggi, star_sub, star_half]
+    raising_constant_eq_nabla_star, star_sub, star_neg, star_smul, star_mul, star_nabs, star_alt, star_ggi, star_sub, _root_.Formalism.REAL.star_one_half]
   congr 2; ring
 
 theorem kappa_commute_l0 (f : Ty P → ℂ) (Y : ℂ) : Commute (kap P D f) (l0A P D Y) := by
@@ -1245,14 +1219,6 @@ theorem qQHerm : QQHerm := by
   · exact congrFun (congrFun (star_t21 P D Y) _) _
   · exact congrFun (congrFun (star_t12 P D Y) _) _
   · exact congrFun (congrFun (star_t22 P D Y) _) _
-
-section lead
-
-variable {R : Type*} [Ring R] [Algebra ℂ R]
-
-variable {n m : ℕ} {c d : R} {f g : ℂ → R}
-
-end lead
 
 theorem xC_split (j : ℕ) (hj : j ∈ Icc 1 (P.k - 1)) (π : Ty P) (Y : ℂ) :
     xC P π Y = (Y + (rho P π j : ℂ)) * xEx P {j} π Y := by
@@ -1439,7 +1405,7 @@ theorem gamma_inv_commute_zeta : ggiA P D * zA P D = zA P D * ggiA P D := (fn_co
 
 theorem star_l0_shift (Y : ℂ) (hY : star Y = Y) : star (l0A P D (Y - 1)) = m0A P D Y := by
   rw [l0_eq_neg_nabla_sub, raising_constant_eq_nabla_star, star_sub, star_neg, star_smul, star_mul, star_nab, star_zb, star_ggi, star_add,
-    star_sub, star_one, star_half, hY, gamma_inv_commute_zeta]
+    star_sub, star_one, _root_.Formalism.REAL.star_one_half, hY, gamma_inv_commute_zeta]
   congr 2; ring
 
 theorem mA_star (Y : ℂ) (hY : star Y = Y) : mA P D Y = star (lA P D (Y - 1)) := by
@@ -1469,7 +1435,7 @@ end Formalism.FourierDecayAlt.P.MAx1.D5
 namespace Formalism.FourierDecayAlt.P.MAx1
 
 theorem qQNormal : QQNormal := D5.qQNormal_of sSNorm
-theorem qQHerm : QQHerm := D5.qQHerm
+alias qQHerm := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.qQHerm
 
 end Formalism.FourierDecayAlt.P.MAx1
 
@@ -1509,8 +1475,7 @@ noncomputable section
 
 variable (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)]
 
-theorem kap_eq (f : Ty P → ℂ) :
-    kap P D f = Matrix.diagonal fun π => algebraMap ℂ (D.Pr) (f π) := rfl
+alias kap_eq := _root_.Formalism.FourierDecayAlt.P.MAx1.kap_eq
 
 theorem kap_mul (f g : Ty P → ℂ) : kap P D f * kap P D g = kap P D (f * g) := (map_mul _ _ _).symm
 
@@ -1530,29 +1495,11 @@ theorem kap_nab (f : Ty P → ℂ) : kap P D f * nabA P D = nabA P D * kap P D f
 
 theorem kap_nabs (f : Ty P → ℂ) : kap P D f * nabsA P D = nabsA P D * kap P D f := kap_diag P D f _
 
-theorem star_kap (f : Ty P → ℂ) : star (kap P D f) = kap P D (fun π => star (f π)) := by
-  rw [kap_eq, kap_eq, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]
-  congr 1
-  funext π
-  simp only [Pi.star_apply]
-  rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, star_smul, star_one]
+alias star_kap := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.star_kap
 
-theorem S_shift (l : ℕ) (f g : Ty P → ℂ) (h : ∀ π π', Up P l π π' → g π' = f π) :
-    kap P D g * SS P D l = SS P D l * kap P D f := by
-  rw [kap_eq, kap_eq]
-  ext π' π
-  rw [Matrix.diagonal_mul, Matrix.mul_diagonal]
-  by_cases hu : Up P l π π'
-  · simp only [SS, Matrix.of_apply, if_pos hu, h π π' hu]
-    exact (Algebra.commutes _ _)
-  · simp [SS, hu]
+alias S_shift := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.ss_shift
 
-theorem Ss_shift (l : ℕ) (f g : Ty P → ℂ) (h : ∀ π π', Up P l π π' → g π' = f π) :
-    star (SS P D l) * kap P D g = kap P D f * star (SS P D l) := by
-  have h1 := S_shift P D l (fun π => star (f π)) (fun π => star (g π)) (fun π π' hu => by rw [h π π' hu])
-  have h2 := congrArg star h1
-  rw [star_mul, star_mul, star_kap, star_kap] at h2
-  simpa using h2
+alias Ss_shift := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.sss_shift
 
 theorem S_sc (l : ℕ) (w : D.Pr) : SS P D l * sc P D w = sc P D w * SS P D l := by
   ext π' π
@@ -2943,8 +2890,7 @@ def cc : A P D := zbA P D * ggiA P D
 
 def cz : A P D := zA P D * ggiA P D
 
-theorem sc_mul (a b : D.Pr) : sc P D a * sc P D b = sc P D (a * b) := by
-  unfold sc; exact (map_mul _ _ _).symm
+alias sc_mul := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.sc_mul
 
 theorem cc_sc : cc P D = sc P D (D.zbP * D.ggiP P.TT) := sc_mul P D _ _
 theorem cz_sc : cz P D = sc P D (D.zP * D.ggiP P.TT) := sc_mul P D _ _
@@ -2976,16 +2922,14 @@ theorem mem_G : ggiA P D ∈ fnsA P D := by simp [fnsA]
 
 theorem fcomm {x y : A P D} (hx : x ∈ fnsA P D) (hy : y ∈ fnsA P D) : x * y = y * x := (levFns P D).1 x hx y hy
 
-theorem gG : ggA P D * ggiA P D = 1 := (levFns P D).2.2.2.2.2.2.1
-theorem Gg : ggiA P D * ggA P D = 1 := (levFns P D).2.2.2.2.2.2.2.1
+alias gG := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.gg_ggi
+alias Gg := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.ggi_gg
 theorem g_def : ggA P D = zA P D * zbA P D - algebraMap ℂ (A P D) (P.TT : ℂ) := (levFns P D).2.2.2.2.2.2.2.2
 
 theorem besselUnipotent_mulVec_middle_vec : nabA P D * zA P D = zA P D * nabA P D + 1 := (levNab P D).1
 theorem N_zb : nabA P D * zbA P D = zbA P D * nabA P D := (levNab P D).2.2.1
-theorem nabla_gamma_relations : nabA P D * ggA P D = ggA P D * nabA P D + zbA P D := (levNab P D).2.2.2.2.1
 theorem nabla_star_gamma_relations : nabA P D * ggiA P D = ggiA P D * nabA P D - zbA P D * ggiA P D * ggiA P D := (levNab P D).2.2.2.2.2.1
 theorem Ns_zb : nabsA P D * zbA P D = zbA P D * nabsA P D - 1 := (levNabs P D).1
-theorem nabla_star_mul_GG : nabsA P D * ggA P D = ggA P D * nabsA P D - zA P D := (levNabs P D).2.2.2.2.1
 theorem nabla_star_gamma_inv_comm : nabsA P D * ggiA P D = ggiA P D * nabsA P D + zA P D * ggiA P D * ggiA P D := (levNabs P D).2.2.2.2.2.1
 
 theorem g_cc : ggA P D * cc P D = zbA P D := by
@@ -2993,9 +2937,9 @@ theorem g_cc : ggA P D * cc P D = zbA P D := by
 theorem g_cz : ggA P D * cz P D = zA P D := by
   unfold cz; rw [lc (fcomm P D (mem_g P D) (zeta_mem_function_algebra P D)), gG, mul_one]
 
-theorem N_g : nabA P D * ggA P D = ggA P D * nabA P D + ggA P D * cc P D := by rw [g_cc, nabla_gamma_relations]
+theorem N_g : nabA P D * ggA P D = ggA P D * nabA P D + ggA P D * cc P D := by rw [g_cc, _root_.Formalism.FourierDecayAlt.P.MAx1.D5.nab_gg]
 theorem N_G : nabA P D * ggiA P D = ggiA P D * nabA P D - cc P D * ggiA P D := nabla_star_gamma_relations P D
-theorem Ns_g : nabsA P D * ggA P D = ggA P D * nabsA P D - ggA P D * cz P D := by rw [g_cz, nabla_star_mul_GG]
+theorem Ns_g : nabsA P D * ggA P D = ggA P D * nabsA P D - ggA P D * cz P D := by rw [g_cz, _root_.Formalism.FourierDecayAlt.P.MAx1.D5.nabs_gg]
 theorem Ns_G : nabsA P D * ggiA P D = ggiA P D * nabsA P D + cz P D * ggiA P D := nabla_star_gamma_inv_comm P D
 theorem N_cc : nabA P D * cc P D = cc P D * nabA P D - cc P D * cc P D :=
   abs_Nc _ _ _ (N_zb P D) (nabla_star_gamma_relations P D) (fcomm P D (mem_G P D) (mem_zb P D))
@@ -3021,14 +2965,11 @@ theorem cz_cc : cz P D * cc P D = cc P D * cz P D := by
 
 theorem G_sc : ggiA P D = sc P D (D.ggiP P.TT) := rfl
 
-theorem star_g : star (ggA P D) = ggA P D := (starGens P D).2.2.2.1
 theorem star_G : star (ggiA P D) = ggiA P D := (starGens P D).2.2.2.2.1
-theorem star_alt : star (zA P D) = zbA P D := (starGens P D).2.1
-theorem star_N : star (nabA P D) = nabsA P D := (starGens P D).2.2.2.2.2
-theorem star_Ns : star (nabsA P D) = nabA P D := by rw [← star_N, star_star]
-theorem star_zb : star (zbA P D) = zA P D := by rw [← star_alt, star_star]
+alias star_alt := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.star_alt
+alias star_zb := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.star_zb
 theorem star_cc : star (cc P D) = cz P D := by
-  unfold cc cz; rw [star_mul, star_G, star_zb, fcomm P D (mem_G P D) (zeta_mem_function_algebra P D)]
+  unfold cc cz; rw [star_mul, _root_.Formalism.FourierDecayAlt.P.MAx1.D5.star_ggi, star_zb, fcomm P D (mem_G P D) (zeta_mem_function_algebra P D)]
 theorem star_cz : star (cz P D) = cc P D := by rw [← star_cc, star_star]
 
 theorem N_Lam (hS : NabSS) (u : ℂ) : nabA P D * abelian₂ P D u = abelian₂ P D u * nabA P D - cc P D * abelian₂ P D u := by
@@ -3047,12 +2988,12 @@ theorem Ns_Lam (hS : NabSS) (u : ℂ) : nabsA P D * abelian₂ P D u = abelian�
 
 theorem N_Lams (hS : NabSS) (u : ℂ) : nabA P D * Lams P D u = Lams P D u * nabA P D + cc P D * Lams P D u := by
   have h := congrArg star (Ns_Lam P D hS (star u))
-  rw [star_mul, star_sub, star_mul, star_mul, star_Lam, star_Ns, star_cz] at h
+  rw [star_mul, star_sub, star_mul, star_mul, star_Lam, _root_.Formalism.FourierDecayAlt.P.MAx1.D5.star_nabs, star_cz] at h
   rw [h, cc_sc, Lams_sc]; abel
 
 theorem mt_eq (u : ℂ) : mt P D u = -nabsA P D - (u + 1 / 2) • cz P D + ggiA P D * Lams P D u := by
   unfold mt
-  rw [lA_eq, lowering_constant_eq_shift, star_add, star_sub, star_neg, star_N, star_smul, star_cc, star_mul, star_Lam, star_G, G_sc, Lams_sc]
+  rw [lA_eq, lowering_constant_eq_shift, star_add, star_sub, star_neg, _root_.Formalism.FourierDecayAlt.P.MAx1.D5.star_nab, star_smul, star_cc, star_mul, star_Lam, _root_.Formalism.FourierDecayAlt.P.MAx1.D5.star_ggi, G_sc, Lams_sc]
   congr 3
   simp
 
@@ -3169,7 +3110,7 @@ theorem mixed_relation_diagonal_four (hN : SSNorm) (hM : SSMixed) (hS : NabSS) (
     simp only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul]
     ring
   have e4 : (ggA P D * kap P D fun π => xC P π v) * dA P D u = kap P D fun π => xC P π v * (qC P u * (xC P π (u + 1))⁻¹) := by
-    rw [dA, mul_smul_comm, mul_assoc, lc (kap_G P D _), lc1 (gG P D), kap_mul, ← map_smul]
+    rw [dA, mul_smul_comm, mul_assoc, lc (_root_.Formalism.FourierDecayAlt.P.MAx1.D5.kap_ggi P D _), lc1 (gG P D), kap_mul, ← map_smul]
     congr 1
     funext π
     simp only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul]
@@ -3222,7 +3163,7 @@ theorem star_qC (u : ℂ) : star (qC P (star u)) = qC P u := by
   · exact Finset.prod_congr rfl fun i _ => by simp [map_ofNat]
 
 theorem star_t22 (u : ℂ) : star (t22 P D (star u)) = t22 P D u := by
-  rw [t22, t22, star_mul, star_g, xA, xA, star_kap, kap_g]
+  rw [t22, t22, star_mul, _root_.Formalism.FourierDecayAlt.P.MAx1.D5.star_gg, xA, xA, star_kap, kap_g]
   congr 2
   funext π
   exact star_xC P π u
@@ -3349,9 +3290,7 @@ namespace Formalism.FourierDecayAlt.P.MAx1
 
 theorem qQRTTEntries : QQRTTEntries := ModelAlgebraRelations.entries_of sSNorm sSComm sSMixed nabSS curvature
 
-theorem qQRTTOfEntries : QQRTTOfEntries := ModelAlgebraRelations.PC.ofEntries
-
-theorem qQRTT : QQRTT := qQRTTOfEntries qQRTTEntries
+theorem qQRTT : QQRTT := _root_.Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.PC.ofEntries qQRTTEntries
 
 end Formalism.FourierDecayAlt.P.MAx1
 
@@ -3370,24 +3309,13 @@ open  Formalism.FourierDecayAlt Finset
 open Formalism.FourierDecayAlt.M hiding A sc kap pA pbA cA ciA cbA cbiA zA ziA zbA zbiA ggA ggiA nabA nabsA IsModelLevel SS l0A m0A xA weightedSumBis S12 S4 t22 t21 t12 t11 QQr eeA startM siteA FrameConcl Pr Op mulOp fnP mk cP ciP cbP cbiP zP ziP zbP zbiP ggP ggiP pP pbP dzP dzbP gg coord euler lA mA fnsA zfnsA sitesFrom QQlev LevFns LevP LevPb LevPP LevNab LevNabs StarGens SSScalar SSShift SSNorm SSComm SSMixed NabSS Curvature QQNormal QQHerm QQRTTEntries QQRTT QQRTTOfEntries QQDet T21Commute QQLeading QQZeta StartIsStart StartOK LevelExists LevelStar SitesOKM ChainM LowerCommutes LowerStart StartIsStartAssemble StartAssemble LevelAssemble ModelFrame ModelAssemble CutAdm
 open Formalism.FourierDecayAlt.MA
 
-theorem kap_eq (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) :
-    kap P D f = Matrix.diagonal fun π => algebraMap ℂ (D.Pr) (f π) := rfl
+alias kap_eq := _root_.Formalism.FourierDecayAlt.P.MAx1.kap_eq
 
-theorem kap_comm_diagonal (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) (d : Ty P → D.Pr) :
-    Commute (kap P D f) (Matrix.diagonal d) := by
-  show kap P D f * Matrix.diagonal d = Matrix.diagonal d * kap P D f
-  rw [kap_eq, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]
-  congr 1
-  funext π
-  exact Algebra.commutes _ _
+alias kap_comm_sc := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.kap_sc
 
-theorem kap_comm_sc (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) (w : D.Pr) : Commute (kap P D f) (sc P D w) := by
-  have : sc P D w = Matrix.diagonal fun _ => w := by simp [sc, Matrix.scalar_apply]
-  rw [this]; exact kap_comm_diagonal P D f _
+theorem kap_comm_nab (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) : Commute (kap P D f) (nabA P D) := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.kap_diag P D f _
 
-theorem kap_comm_nab (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) : Commute (kap P D f) (nabA P D) := kap_comm_diagonal P D f _
-
-theorem kap_comm_nabs (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) : Commute (kap P D f) (nabsA P D) := kap_comm_diagonal P D f _
+theorem kap_comm_nabs (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) : Commute (kap P D f) (nabsA P D) := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.kap_diag P D f _
 
 theorem kap_comm_kap (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f g : Ty P → ℂ) : Commute (kap P D f) (kap P D g) := by
   show kap P D f * kap P D g = kap P D g * kap P D f
@@ -3449,8 +3377,7 @@ theorem sh_pair (hSh : SSShift) (hR : RhoUp) (P : Par) (D : DAlg P.r) [Fact (D.L
     rw [xEx_pair P π' Y l j hj hjl, xEx_up hR P j π π' hU {l, j} (by simp), rho_up hR P j hj π π' hU]
     push_cast; ring)
 
-theorem lowering_constant_eq_shift (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (Y : ℂ) : l0A P D Y = -nabA P D - (Y + 1 / 2) • (zbA P D * ggiA P D) := by
-  rw [l0A, Algebra.smul_def]
+alias lowering_constant_eq_shift := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.l0_eq_neg_nabla_sub
 
 section abs
 
@@ -4465,15 +4392,9 @@ end abs2
 theorem kap_mul (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f g h : Ty P → ℂ) (e : ∀ π, f π * g π = h π) : kap P D f * kap P D g = kap P D h := by
   rw [← map_mul]; exact congrArg (kap P D) (funext e)
 
-theorem star_kap (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) : star (kap P D f) = kap P D (fun π => star (f π)) := by
-  rw [kap_eq, kap_eq, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]
-  refine congrArg Matrix.diagonal (funext fun π => ?_)
-  exact (algebraMap_star_comm (f π)).symm
+alias star_kap := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.star_kap
 
-theorem fn_comm (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f fb g gb : D.R) : Commute (sc P D (D.fnP f fb)) (sc P D (D.fnP g gb)) := by
-  show sc P D _ * sc P D _ = sc P D _ * sc P D _
-  have h : ∀ a b : D.Pr, sc P D a * sc P D b = sc P D (a * b) := fun a b => (map_mul (Matrix.scalar (Ty P)) a b).symm
-  rw [h, h, multiplierPair_comm D]
+alias fn_comm := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.fn_comm
 
 theorem sc_SSs (hSc : SSScalar) (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (l : ℕ) (w : D.Pr) : Commute (sc P D w) (star (SS P D l)) := by
   have h := (hSc P D l (star w)).star_star
@@ -4502,8 +4423,7 @@ noncomputable def Um (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (Y : ℂ) : A
 theorem lA_eq (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (Y : ℂ) : lA P D Y = l0A P D Y + ggiA P D * Ul P D Y := rfl
 theorem mA_eq (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (Y : ℂ) : mA P D Y = m0A P D Y + ggiA P D * Um P D Y := rfl
 
-theorem raising_constant_eq_shift (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (Y : ℂ) : m0A P D Y = -nabsA P D - (Y - 1 / 2) • (zA P D * ggiA P D) := by
-  rw [m0A, Algebra.smul_def]
+alias raising_constant_eq_shift := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.raising_constant_eq_nabla_star
 
 theorem sc_Ul (hSc : SSScalar) (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (w : D.Pr) (Y : ℂ) : Commute (sc P D w) (Ul P D Y) := by
   unfold Ul
@@ -4578,15 +4498,9 @@ theorem ti_comm (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (a b : ℂ) : ti P
   rw [ti_mul, ti_mul]
   exact congrArg (fun t => ggiA P D * ggiA P D * kap P D t) (funext fun π => mul_comm _ _)
 
-theorem kappa_commute_l0 (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) (Y : ℂ) : Commute (kap P D f) (l0A P D Y) := by
-  rw [lowering_constant_eq_shift]
-  exact ((kap_comm_nab P D f).neg_right).sub_right
-    (((kap_comm_sc P D f _).mul_right (kap_comm_sc P D f _)).smul_right _)
+alias kappa_commute_l0 := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.kappa_commute_l0
 
-theorem kappa_commute_raising_constant (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) (Y : ℂ) : Commute (kap P D f) (m0A P D Y) := by
-  rw [raising_constant_eq_shift]
-  exact ((kap_comm_nabs P D f).neg_right).sub_right
-    (((kap_comm_sc P D f _).mul_right (kap_comm_sc P D f _)).smul_right _)
+alias kappa_commute_raising_constant := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.kappa_commute_raising_constant
 
 theorem l_mul_t22_shift (hSc : SSScalar) (hSh : SSShift) (hR : RhoUp) (hLF : LevFns) (hLN : LevNab) (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (Y : ℂ)
     (h0 : ∀ π, xC P π Y ≠ 0) (h1 : ∀ π, xC P π (Y + 1) ≠ 0) :
@@ -4983,49 +4897,132 @@ theorem G_comm_ne (l m : Fin r) (h : l ≠ m) : ∀ x ∈ G L l, ∀ y ∈ G L m
     have := L.pb_cb a b; rwa [if_neg hab, add_zero] at this
   have pbcbi : ∀ a b : Fin r, a ≠ b → Commute (L.pb a) (L.cbi b) := fun a b hab => by
     have := L.pb_cbi a b; rwa [if_neg hab, sub_zero] at this
+  let F := Set.range L.c ∪ Set.range L.ci ∪ Set.range L.cb ∪ Set.range L.cbi ∪
+    {L.ζ, L.ζi, L.ζb, L.ζbi, L.GG, L.GGi}
+  have hcF : ∀ a, L.c a ∈ F := fun a => Or.inl (Or.inl (Or.inl (Or.inl ⟨a, rfl⟩)))
+  have hciF : ∀ a, L.ci a ∈ F := fun a => Or.inl (Or.inl (Or.inl (Or.inr ⟨a, rfl⟩)))
+  have hcbF : ∀ a, L.cb a ∈ F := fun a => Or.inl (Or.inl (Or.inr ⟨a, rfl⟩))
+  have hcbiF : ∀ a, L.cbi a ∈ F := fun a => Or.inl (Or.inr ⟨a, rfl⟩)
   intro x hx y hy
   simp only [G, Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy
   rcases hx with rfl | rfl | rfl | rfl | rfl | rfl <;>
-    rcases hy with rfl | rfl | rfl | rfl | rfl | rfl <;>
-    (try simp only [Commute.neg_left_iff, Commute.neg_right_iff]) <;>
-    first
-    | exact L.p_p _ _ | exact L.p_pb _ _ | exact (L.p_pb _ _).symm | exact L.pb_pb _ _
-    | exact pc _ _ h | exact (pc _ _ h').symm | exact pci _ _ h | exact (pci _ _ h').symm
-    | exact pbcb _ _ h | exact (pbcb _ _ h').symm | exact pbcbi _ _ h | exact (pbcbi _ _ h').symm
-    | exact L.p_cb _ _ | exact (L.p_cb _ _).symm | exact L.p_cbi _ _ | exact (L.p_cbi _ _).symm
-    | exact L.pb_c _ _ | exact (L.pb_c _ _).symm | exact L.pb_ci _ _ | exact (L.pb_ci _ _).symm
-    | exact L.fns_comm _ (by simp) _ (by simp)
+    rcases hy with rfl | rfl | rfl | rfl | rfl | rfl
+  · exact L.p_p _ _
+  · exact pc _ _ h
+  · exact pci _ _ h
+  · exact Commute.neg_right (L.p_pb _ _)
+  · exact L.p_cb _ _
+  · exact L.p_cbi _ _
+  · exact (pc _ _ h').symm
+  · exact L.fns_comm _ (hcF l) _ (hcF m)
+  · exact L.fns_comm _ (hcF l) _ (hciF m)
+  · exact Commute.neg_right (L.pb_c _ _).symm
+  · exact L.fns_comm _ (hcF l) _ (hcbF m)
+  · exact L.fns_comm _ (hcF l) _ (hcbiF m)
+  · exact (pci _ _ h').symm
+  · exact L.fns_comm _ (hciF l) _ (hcF m)
+  · exact L.fns_comm _ (hciF l) _ (hciF m)
+  · exact Commute.neg_right (L.pb_ci _ _).symm
+  · exact L.fns_comm _ (hciF l) _ (hcbF m)
+  · exact L.fns_comm _ (hciF l) _ (hcbiF m)
+  · exact Commute.neg_left (L.p_pb _ _).symm
+  · exact Commute.neg_left (L.pb_c _ _)
+  · exact Commute.neg_left (L.pb_ci _ _)
+  · exact Commute.neg_right (Commute.neg_left (L.pb_pb _ _))
+  · exact Commute.neg_left (pbcb _ _ h)
+  · exact Commute.neg_left (pbcbi _ _ h)
+  · exact (L.p_cb _ _).symm
+  · exact L.fns_comm _ (hcbF l) _ (hcF m)
+  · exact L.fns_comm _ (hcbF l) _ (hciF m)
+  · exact Commute.neg_right (pbcb _ _ h').symm
+  · exact L.fns_comm _ (hcbF l) _ (hcbF m)
+  · exact L.fns_comm _ (hcbF l) _ (hcbiF m)
+  · exact (L.p_cbi _ _).symm
+  · exact L.fns_comm _ (hcbiF l) _ (hcF m)
+  · exact L.fns_comm _ (hcbiF l) _ (hciF m)
+  · exact Commute.neg_right (pbcbi _ _ h').symm
+  · exact L.fns_comm _ (hcbiF l) _ (hcbF m)
+  · exact L.fns_comm _ (hcbiF l) _ (hcbiF m)
 
 theorem gamma_family_commute_generators (l : Fin r) : ∀ x ∈ G L l,
     ∀ y ∈ ({L.ζ, L.ζb, L.GG, L.GGi, L.nab, L.nabs} : Set A), Commute x y := by
+  let F := Set.range L.c ∪ Set.range L.ci ∪ Set.range L.cb ∪ Set.range L.cbi ∪
+    {L.ζ, L.ζi, L.ζb, L.ζbi, L.GG, L.GGi}
+  have hcF : L.c l ∈ F := Or.inl (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩)))
+  have hciF : L.ci l ∈ F := Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))
+  have hcbF : L.cb l ∈ F := Or.inl (Or.inl (Or.inr ⟨l, rfl⟩))
+  have hcbiF : L.cbi l ∈ F := Or.inl (Or.inr ⟨l, rfl⟩)
+  have hζF : L.ζ ∈ F := Or.inr (Or.inl rfl)
+  have hζbF : L.ζb ∈ F := Or.inr (Or.inr (Or.inr (Or.inl rfl)))
+  have hGGF : L.GG ∈ F := Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
+  have hGGiF : L.GGi ∈ F := Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))
   intro x hx y hy
   simp only [G, Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy
   rcases hx with rfl | rfl | rfl | rfl | rfl | rfl <;>
-    rcases hy with rfl | rfl | rfl | rfl | rfl | rfl <;>
-    (try simp only [Commute.neg_left_iff, Commute.neg_right_iff]) <;>
-    first
-    | exact L.p_ζ _ | exact L.p_ζb _ | exact L.p_GG _ | exact L.p_GGi _ | exact L.p_nab _ | exact L.p_nabs _
-    | exact L.pb_ζ _ | exact L.pb_ζb _ | exact L.pb_GG _ | exact L.pb_GGi _ | exact L.pb_nab _
-    | exact L.pb_nabs _
-    | exact (L.nab_c _).symm | exact (L.nab_ci _).symm | exact (L.nab_cb _).symm | exact (L.nab_cbi _).symm
-    | exact (L.nabs_c _).symm | exact (L.nabs_ci _).symm | exact (L.nabs_cb _).symm
-    | exact (L.nabs_cbi _).symm
-    | exact L.fns_comm _ (by simp) _ (by simp)
+    rcases hy with rfl | rfl | rfl | rfl | rfl | rfl
+  · exact L.p_ζ _
+  · exact L.p_ζb _
+  · exact L.p_GG _
+  · exact L.p_GGi _
+  · exact L.p_nab _
+  · exact L.p_nabs _
+  · exact L.fns_comm _ hcF _ hζF
+  · exact L.fns_comm _ hcF _ hζbF
+  · exact L.fns_comm _ hcF _ hGGF
+  · exact L.fns_comm _ hcF _ hGGiF
+  · exact (L.nab_c _).symm
+  · exact (L.nabs_c _).symm
+  · exact L.fns_comm _ hciF _ hζF
+  · exact L.fns_comm _ hciF _ hζbF
+  · exact L.fns_comm _ hciF _ hGGF
+  · exact L.fns_comm _ hciF _ hGGiF
+  · exact (L.nab_ci _).symm
+  · exact (L.nabs_ci _).symm
+  · exact Commute.neg_left (L.pb_ζ _)
+  · exact Commute.neg_left (L.pb_ζb _)
+  · exact Commute.neg_left (L.pb_GG _)
+  · exact Commute.neg_left (L.pb_GGi _)
+  · exact Commute.neg_left (L.pb_nab _)
+  · exact Commute.neg_left (L.pb_nabs _)
+  · exact L.fns_comm _ hcbF _ hζF
+  · exact L.fns_comm _ hcbF _ hζbF
+  · exact L.fns_comm _ hcbF _ hGGF
+  · exact L.fns_comm _ hcbF _ hGGiF
+  · exact (L.nab_cb _).symm
+  · exact (L.nabs_cb _).symm
+  · exact L.fns_comm _ hcbiF _ hζF
+  · exact L.fns_comm _ hcbiF _ hζbF
+  · exact L.fns_comm _ hcbiF _ hGGF
+  · exact L.fns_comm _ hcbiF _ hGGiF
+  · exact (L.nab_cbi _).symm
+  · exact (L.nabs_cbi _).symm
 
 theorem hol_comm (l : Fin r) : ∀ x ∈ ({L.p l, L.c l, L.ci l} : Set A),
     ∀ y ∈ ({-L.pb l, L.cb l, L.cbi l} : Set A), Commute x y := by
+  let F := Set.range L.c ∪ Set.range L.ci ∪ Set.range L.cb ∪ Set.range L.cbi ∪
+    {L.ζ, L.ζi, L.ζb, L.ζbi, L.GG, L.GGi}
+  have hcF : L.c l ∈ F := Or.inl (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩)))
+  have hciF : L.ci l ∈ F := Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))
+  have hcbF : L.cb l ∈ F := Or.inl (Or.inl (Or.inr ⟨l, rfl⟩))
+  have hcbiF : L.cbi l ∈ F := Or.inl (Or.inr ⟨l, rfl⟩)
   intro x hx y hy
   simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy
-  rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl <;>
-    (try simp only [Commute.neg_left_iff, Commute.neg_right_iff]) <;>
-    first
-    | exact L.p_pb _ _ | exact L.p_cb _ _ | exact L.p_cbi _ _
-    | exact (L.pb_c _ _).symm | exact (L.pb_ci _ _).symm
-    | exact L.fns_comm _ (by simp) _ (by simp)
+  rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl
+  · exact Commute.neg_right (L.p_pb _ _)
+  · exact L.p_cb _ _
+  · exact L.p_cbi _ _
+  · exact Commute.neg_right (L.pb_c _ _).symm
+  · exact L.fns_comm _ hcF _ hcbF
+  · exact L.fns_comm _ hcF _ hcbiF
+  · exact Commute.neg_right (L.pb_ci _ _).symm
+  · exact L.fns_comm _ hciF _ hcbF
+  · exact L.fns_comm _ hciF _ hcbiF
 
 theorem fn_cancel : L.ζb * L.ζi * L.GGi * (L.ζ * L.ζbi) = L.GGi := by
-  have c1 : L.GGi * L.ζ = L.ζ * L.GGi := L.fns_comm _ (by simp) _ (by simp)
-  have c3 : L.ζb * L.GGi = L.GGi * L.ζb := L.fns_comm _ (by simp) _ (by simp)
+  have c1 : L.GGi * L.ζ = L.ζ * L.GGi :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))) _ (Or.inr (Or.inl rfl))
+  have c3 : L.ζb * L.GGi = L.GGi * L.ζb :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inl rfl)))) _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl))))))
   calc L.ζb * L.ζi * L.GGi * (L.ζ * L.ζbi) = L.ζb * (L.ζi * (L.GGi * L.ζ)) * L.ζbi := by
         simp only [mul_assoc]
     _ = L.ζb * ((L.ζi * L.ζ) * L.GGi) * L.ζbi := by rw [c1]; simp only [mul_assoc]
@@ -5055,23 +5052,13 @@ theorem coordinate_real (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (l : ℕ) 
   show (starRingEnd ℂ) (x0 P l π Y) = x0 P l π Y
   simp [x0, map_prod, hY']
 
-theorem kap_eq (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) :
-    kap P D f = Matrix.diagonal fun π => algebraMap ℂ (D.Pr) (f π) := rfl
+alias kap_eq := _root_.Formalism.FourierDecayAlt.P.MAx1.kap_eq
 
-theorem kap_comm_diag (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) (d : Ty P → D.Pr) :
-    Commute (kap P D f) (Matrix.diagonal d) := by
-  show kap P D f * _ = _ * kap P D f
-  rw [kap_eq, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]
-  congr 1
-  funext π
-  exact Algebra.commutes _ _
+alias kap_comm_diag := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.kap_diag
 
-theorem kap_comm_sc (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) (w : D.Pr) : Commute (kap P D f) (sc P D w) :=
-  kap_comm_diag P D f _
+alias kap_comm_sc := _root_.Formalism.FourierDecayAlt.P.MAx1.D5.kap_sc
 
-theorem kap_comm_kap (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f g : Ty P → ℂ) : Commute (kap P D f) (kap P D g) := by
-  show _ * _ = _ * _
-  rw [← map_mul, ← map_mul, mul_comm]
+alias kap_comm_kap := _root_.Formalism.FourierDecayAlt.P.MAx1.D7.kap_comm_kap
 
 theorem star_kap (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (f : Ty P → ℂ) : star (kap P D f) = kap P D (star f) := by
   rw [kap_eq, kap_eq, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]
@@ -5083,15 +5070,6 @@ theorem kappa_sign_coordinate (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (l :
   have h : (fun π => x0 P l π Y) = sgn P l • (fun π => xC P π Y) := by
     ext π; simp [x0, sgn, xC]
   rw [h, map_smul]; rfl
-
-theorem ssScalar : SSScalar := by
-  intro P D _ l w
-  show SS P D l * sc P D w = sc P D w * SS P D l
-  ext π' π
-  simp only [sc, Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, SS, Matrix.of_apply]
-  split_ifs
-  · exact (Algebra.commutes _ _)
-  · simp
 
 theorem low_sum (hSh : SSShift) (hRho : RhoUp) (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (Y : ℂ) (hY : ∀ π, xC P π Y ≠ 0) :
     xA P D Y * ∑ j ∈ Icc 1 (P.k - 1), (kap P D fun π => (Y + (rho P π j : ℂ))⁻¹) * SS P D j = weightedSumBis P D Y := by
@@ -5152,14 +5130,12 @@ theorem startOK_of (hS : StartIsStart) (hT : T21Commute) (hSc : SSScalar) (hSh :
   · intro Y hY
     show star (kap P D fun π => x0 P l π Y) = kap P D fun π => x0 P l π Y
     rw [star_kap]
-    congr 1
-    funext π
-    exact coordinate_real P D l π Y hY
+    exact congrArg (kap P D) (funext fun π => coordinate_real P D l π Y hY)
   · intro Y g hg
     have h1 : Commute (zA P D) g := by
-      rw [← hz]; exact L.fns_comm _ (Or.inr (by simp)) g (Or.inr hg)
+      rw [← hz]; exact L.fns_comm _ (Or.inr (Or.inl rfl)) g (Or.inr hg)
     have h2 : Commute (zbiA P D) g := by
-      rw [← hzbi]; exact L.fns_comm _ (Or.inr (by simp)) g (Or.inr hg)
+      rw [← hzbi]; exact L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))) g (Or.inr hg)
     have h3 : Commute (∑ j ∈ Icc 1 (P.k - 1), (kap P D fun π => (Y + (rho P π j : ℂ))⁻¹) * SS P D j) g := by
       obtain ⟨w, hw⟩ := hzf g hg
       rw [hw]
@@ -5179,8 +5155,8 @@ theorem startOK_of (hS : StartIsStart) (hT : T21Commute) (hSc : SSScalar) (hSh :
       L.GG * (kap P D fun π => x0 P l π Y) * (L.l0 Y + L.ζb * L.ζi * L.GGi * eeA P D Y)
     rw [hl0, kappa_sign_coordinate, hgg, hzb, hzi, hggi, ← low_sum hSh hRho P D Y hY, eeA, ← mul_assoc _ (zA P D * zbiA P D), hcan,
       mul_smul_comm, smul_mul_assoc, mul_add]
-    congr 2
-    rw [hcx, mul_assoc, ← mul_assoc (ggA P D), hgi, one_mul]
+    exact congrArg (fun t => sgn P l • (ggA P D * xA P D Y * l0A P D Y + t))
+      (by rw [hcx, mul_assoc, ← mul_assoc (ggA P D), hgi, one_mul])
 
 theorem ops_sub (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (i : Fin P.r) : ∀ x ∈ ops (siteA P D i),
     x ∈ ({pA P D i, cA P D i, ciA P D i, -pbA P D i, cbA P D i, cbiA P D i} : Set (A P D)) := by
@@ -5262,7 +5238,7 @@ theorem SS_mem (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (i : Fin P.r) (l : 
   rw [mem_Cen]
   intro g hg
   obtain ⟨w, rfl⟩ := ops_sc P D i g hg
-  exact (ssScalar P D l w).symm
+  exact (_root_.Formalism.FourierDecayAlt.P.MAx1.sSScalar P D l w).symm
 
 theorem z_mem (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (i : Fin P.r) : ∀ y ∈ ({zA P D, zbA P D, ggA P D, ggiA P D, nabA P D, nabsA P D} : Set (A P D)),
     y ∈ Cen P D i := by
@@ -5276,12 +5252,6 @@ theorem z_mem (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (i : Fin P.r) : ∀ 
   exact fun g hg => key g (hG g hg) y hy
 
 def Ent {A : Type} [Ring A] [Algebra ℂ A] (C : Subalgebra ℂ A) (M : M2 A) : Prop := ∀ a b, M a b ∈ C
-
-section Ent
-
-variable {A : Type} [Ring A] [Algebra ℂ A] {C : Subalgebra ℂ A}
-
-end Ent
 
 theorem QQr_ent (P : Par) (D : DAlg P.r) [Fact (D.Laws P.TT)] (i : Fin P.r) (Y : ℂ) : Ent (Cen P D i) (QQr P D Y) := by
   have hz : zA P D ∈ Cen P D i := z_mem P D i _ (by simp)
@@ -5520,8 +5490,7 @@ theorem wirt_wirt (v w : M.Var r) {F : E r → ℂ} {s : Set (E r)} (hs : IsOpen
   have e1 : wirt v (wirt w F) x = WL v (fderiv ℝ (wirt w F) x) := by rw [wirt_eq v (wirt w F)]
   have e2 : wirt w (wirt v F) x = WL w (fderiv ℝ (wirt v F) x) := by rw [wirt_eq w (wirt v F)]
   rw [e1, e2, key, key]
-  simp only [WL_apply, ContinuousLinearMap.coe_comp, Function.comp_apply, map_add (f := _), map_smul,
-    add_apply, smul_apply, smul_eq_mul]
+  simp only [WL_apply, ContinuousLinearMap.coe_comp, Function.comp_apply]
   rw [hsym (dirE w) (dirE v), hsym (dirE w) (Complex.I • dirE v), hsym (Complex.I • dirE w) (dirE v),
     hsym (Complex.I • dirE w) (Complex.I • dirE v)]
   ring
@@ -5578,7 +5547,6 @@ theorem gg_apply (q : Qp r TT) : ((ggQ r TT : SmQ r TT) : Qp r TT → ℂ) q =
     coordE M.vz q.1 * coordE M.vzb q.1 - (TT : ℂ) := by
   first
   | rfl
-  | simp [ggQ, DAlg.gg, anQ, coordQ]
 
 theorem gg_ne (q : Qp r TT) : ((ggQ r TT : SmQ r TT) : Qp r TT → ℂ) q ≠ 0 := by
   rw [gg_apply, coordE_vz, coordE_vzb, Complex.mul_conj]
@@ -5717,8 +5685,8 @@ theorem model_frame_of_parts : Formalism.FourierDecayAlt.MA.ModelFrameDOfParts :
       hP.T_pos hP.T'_pos hw.2.1 hw.2.2 e
 
 theorem model_frame_algebra : Formalism.FourierDecayAlt.MA.ModelFrameD :=
-  model_frame_of_parts interlacing_sign q_positive_interlacing q_positive_shift cPos_true
-    c_pos_truncated frame_of_admissible_word frame_eq_word_module c_diagonal types_interlace realPoints_statement
+  model_frame_of_parts _root_.Formalism.FourierDecayAlt.P.Interlace.interlaceSign _root_.Formalism.FourierDecayAlt.P.Interlace.qPositive _root_.Formalism.FourierDecayAlt.P.Fr2.qPositiveShift _root_.Formalism.FourierDecayAlt.P.Fr2.cPos
+    _root_.Formalism.FourierDecayAlt.P.Fr2.cPosCut frame_of_admissible_word frame_eq_word_module _root_.Formalism.FourierDecayAlt.P.Fr2.cDiag types_interlace realPoints_statement
     cut_admissible admissible_joint_alt level_exists_alt level_star_holds start_admissible
 
 theorem model_frame_analytic_of_parts : Formalism.FourierDecayAlt.MA.ModelFrameAnOfParts := by

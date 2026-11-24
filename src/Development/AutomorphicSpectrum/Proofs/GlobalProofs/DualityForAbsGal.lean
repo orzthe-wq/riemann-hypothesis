@@ -3,8 +3,8 @@ module
 public import ReciprocityTheory.Hypotheses.GalCoh
 public import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.Transport
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ExistsPrimeMemAsIdeal
-import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohCmp
-import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohField
+import CompanionTheory.AutomorphicTheory.PadicCyclotomicFields.GcohCmp
+import CompanionTheory.AutomorphicTheory.PadicCyclotomicFields.GcohField
 public import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohTate
 import GroundTheory.ProfiniteCohomology.LocalTateDuality.MainDefs
 import Mathlib.Algebra.Order.Floor.Extended
@@ -67,7 +67,7 @@ theorem dualityFor_absGal (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p
     (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M]
     [DiscreteTopology M] (rho : Representation (ZMod (l ^ r)) (PadicAlgCl p ≃ₐ[K] PadicAlgCl p) M)
     (hrho : ContAction rho) : ReciprocityTheory.Neutral.Bridge.DualityFor χ rho hrho := by
-  obtain ⟨hsep, _, _, hloc, -⟩ := PositivityTheory.LocalTateOrthogonality.Gcoh.gcField p K hK
+  obtain ⟨hsep, _, _, hloc, -⟩ := CompanionTheory.LocalTateOrthogonality.Gcoh.gcField p K hK
   have hl : (l ^ r : ℕ) ≠ 0 := pow_ne_zero _ (Fact.out : l.Prime).ne_zero
   have : NeZero (l ^ r) := ⟨hl⟩
   have : CharZero K := algebraRat.charZero K
@@ -92,8 +92,8 @@ theorem dualityFor_absGal (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p
     refine Eq.trans ?_ (key _).symm
     refine Eq.trans ?_ (map_nsmul e.symm _ m)
     rw [nsmul_eq_mul, ZMod.natCast_zmod_val]
-  exact PositivityTheory.LocalTateOrthogonality.Gcoh.tate_core PositivityTheory.LocalTateOrthogonality.Gcoh.gcRep PositivityTheory.LocalTateOrthogonality.Gcoh.gc0
-    PositivityTheory.LocalTateOrthogonality.Gcoh.gc1 PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 (galRootsOfUnity.{0} K (PadicAlgCl p) (l ^ r))
+  exact PositivityTheory.LocalTateOrthogonality.Gcoh.tate_core CompanionTheory.LocalTateOrthogonality.Gcoh.gcRep CompanionTheory.LocalTateOrthogonality.Gcoh.gc0
+    CompanionTheory.LocalTateOrthogonality.Gcoh.gc1 CompanionTheory.LocalTateOrthogonality.Gcoh.gc2 (galRootsOfUnity.{0} K (PadicAlgCl p) (l ^ r))
     (localDualityHypotheses hn)
     (fun A _ _ hA => finite_cohomology_galois_top K (PadicAlgCl p) hn A hA 1)
     χ e.symm hD M rho hrho

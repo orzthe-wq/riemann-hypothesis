@@ -201,10 +201,6 @@ open Formalism.L2.Th1.H (imgLat pow4 stdLat relIdx altE IsReps dualLat)
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
-theorem embT_mem_Qbar (τ : D.what₂.Tau) (x : D.host.E) : Formalism.MainNotions.TaylorLogMetric.embT D τ x ∈ Formalism.MainNotions.TaylorLogMetric.Qbar :=
-  mem_algebraicClosure_iff.2
-    ((Algebra.IsIntegral.isIntegral (R := ℚ) x).map (Formalism.MainNotions.TaylorLogMetric.embT D τ).toRatAlgHom).isAlgebraic
-
 theorem gC_symm_single (B : Ker.Base D cc δ) (w : Fin 4 × D.what₂.Tau) :
     B.gC.symm (Pi.single w 1) = fun w' => Formalism.MainNotions.TaylorLogMetric.embT D w'.2 (B.γ₀.g.symm (Pi.single w 1) w'.1) := by
   rw [LinearEquiv.symm_apply_eq, B.gC_spec, LinearEquiv.apply_symm_apply]
@@ -220,7 +216,7 @@ theorem gC_mat_mem (B : Ker.Base D cc δ) (i j : Fin 4 × D.what₂.Tau) :
       ∈ Formalism.MainNotions.TaylorLogMetric.Qbar := by
     intro i j
     rw [LinearMap.toMatrix'_apply, LinearEquiv.coe_coe, gC_symm_single]
-    exact embT_mem_Qbar _ _
+    exact _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.emb_mem _ _
   refine mat_inv_mem _ _ _ ?_ hA i j
   rw [← LinearMap.toMatrix'_comp]
   have h : ((B.gC.symm : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)).comp

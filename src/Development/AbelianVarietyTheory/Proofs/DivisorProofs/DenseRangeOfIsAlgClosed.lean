@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalAdjoinRange
 
 @[expose] public section
 
@@ -83,11 +84,8 @@ theorem denseRange_of_isAlgClosed {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClo
   obtain ⟨y, -, rfl⟩ := Multiset.mem_map.1 hb
   exact ⟨y, by rwa [dist_eq_norm]⟩
 
-theorem norm_aut (σ : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) (x : PadicAlgCl l) : ‖σ x‖ = ‖x‖ :=
-  (spectralNorm_eq_of_equiv σ x).symm
-
 theorem continuous_aut (σ : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) : Continuous σ :=
-  (AddMonoidHomClass.isometry_of_norm σ (norm_aut σ)).continuous
+  (AddMonoidHomClass.isometry_of_norm σ (_root_.GlobalTheory.PlaceBridge.norm_algEquiv σ)).continuous
 
 theorem norm_l : ‖(l : PadicAlgCl l)‖ < 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap']
@@ -267,7 +265,7 @@ theorem exists_equiv [IsAlgClosure E Ω] (j : Ω →+* PadicAlgCl l) :
   let R' : ↥K.fixingSubgroup →* ↥(ReciprocityTheory.Gal.Dec (F := E) (ring j)) :=
     R.codRestrict _ fun σ => (mem_dec j _).2 fun x => by
       change ‖j (r σ x)‖ = _
-      rw [← hr, norm_aut]
+      rw [← hr, _root_.GlobalTheory.PlaceBridge.norm_algEquiv]
   have hbij : Function.Bijective R' := by
     refine ⟨fun a b hab => Subtype.ext (AlgEquiv.ext fun x => ?_), fun g => ?_⟩
     · have hab' : r a = r b := congrArg Subtype.val hab

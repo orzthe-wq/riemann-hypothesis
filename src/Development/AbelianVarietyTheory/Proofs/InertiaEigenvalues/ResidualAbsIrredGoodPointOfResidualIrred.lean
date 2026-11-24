@@ -80,7 +80,7 @@ theorem absIrrSub_top_of_irred {k L : Type} [Field k] [Field L] [IsAlgClosed L] 
       ext j
       by_cases hij : j = i
       · subst hij; simp
-      · simp [Pi.single_apply, hij]
+      · simp [hij]
     rw [this]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, trivial, rfl⟩)
   unfold AbsIrrSub
@@ -125,7 +125,7 @@ theorem absIrrSub_top_of_irred {k L : Type} [Field k] [Field L] [IsAlgClosed L] 
       rw [map_sum]
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [show (Pi.single i (v i) : Fin a → K) = v i • (Pi.single i (1 : K) : Fin a → K) by
-        ext j; by_cases hij : j = i <;> simp [Pi.single_apply, hij], map_smul, smul_eq_mul]
+        ext j; by_cases hij : j = i <;> simp [hij], map_smul, smul_eq_mul]
     have hkill : ∀ X ∈ W'', ∑ i, X i * c i = 0 := by
       intro X hX
       induction hX using Submodule.span_induction with
@@ -149,7 +149,7 @@ theorem absIrrSub_top_of_irred {k L : Type} [Field k] [Field L] [IsAlgClosed L] 
       simpa [Pi.single_apply] using this
     have : θ (Pi.single i 1) = 0 := hψinj (by simpa [c] using hci)
     rw [show (Pi.single i x : Fin a → K) = x • (Pi.single i (1 : K) : Fin a → K) by
-      ext j; by_cases hij : j = i <;> simp [Pi.single_apply, hij], map_smul, this]
+      ext j; by_cases hij : j = i <;> simp [hij], map_smul, this]
     simp
 
 end GlobalTheory.ResAbsIrrGood

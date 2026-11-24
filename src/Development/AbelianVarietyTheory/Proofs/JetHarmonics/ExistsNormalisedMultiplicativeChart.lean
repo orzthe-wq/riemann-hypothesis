@@ -3,10 +3,10 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommutatorPairingPowEqOneOfGoodLift
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffShiftS
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpBinomialPowerSubOneSeriesIntegralityCompositio
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpSeriesMultiplicativeShiftCompAndSubstStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpSeriesMultiplicativeShiftCompAndSubst
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ImagQuadraticMaximalOrderArithmeticAtSplitPrime
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MultiplicativeCoordAddAndComplexMulStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallPointMultiplicativeCoordinateExistsUniqueStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MultiplicativeCoordAddAndComplexMul
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallPointMultiplicativeCoordinateExistsUnique
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -76,48 +76,32 @@ lemma coeff_expY_subst {a : ℂ_[q]⟦X⟧} (ha : constantCoeff a = 0) (f : ℂ_
   rw [map_mul, cc_subst ha] at e
   simpa [← coeff_zero_eq_constantCoeff_apply, coeff_derivative] using e
 
-lemma const_log (ω : ℂ_[q]) : constantCoeff (C ω * logS : ℂ_[q]⟦X⟧) = 0 := by
-  have : constantCoeff (logS : ℂ_[q]⟦X⟧) = 0 := by
-    rw [← coeff_zero_eq_constantCoeff_apply]
-    simp [logS]
-  simp [this]
-
-lemma hat_scale (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (G : ℂ → ℂ) (a : ℤ_[q]) :
-    hat ι (C (ω * zc a) * logS) G = (hat ι (C ω * logS) G).subst (mulS a : ℂ_[q]⟦X⟧) := by
-  obtain ⟨hm, -⟩ := MulSeries.mulS_laws q
-  obtain ⟨-, h0, -, hl⟩ := hm a
-  have hsub : HasSubst (mulS a : ℂ_[q]⟦X⟧) := HasSubst.of_constantCoeff_zero' h0
-  have hs : HasSubst (C ω * logS : ℂ_[q]⟦X⟧) := HasSubst.of_constantCoeff_zero' (const_log ω)
-  unfold hat
-  rw [subst_comp_subst_apply hs hsub, ← smul_eq_C_mul (a := ω), subst_smul hsub, hl, smul_eq_C_mul,
-    map_mul, mul_assoc]
-
 lemma mchart_scale (M : Mdl q) {ω : ℂ_[q]} (h : M.MChart ω) {a : ℤ_[q]} (ha : ‖a‖ = 1) :
     M.MChart (ω * zc a) := by
   obtain ⟨hm, -, -, hb, -, hn⟩ := MulSeries.mulS_laws q
   obtain ⟨-, h0, h1, -⟩ := hm a
   obtain ⟨ok, -, bd, c1⟩ := h
-  refine ⟨ok, const_log _, ?_, ?_⟩
-  · rw [hat_scale, hb a _ _ ha]; exact bd
-  · rw [hat_scale, coeff_expY_subst h0, norm_mul, c1, h1, hn, ha, one_mul]
+  refine ⟨ok, _root_.GlobalTheory.MomOne.hatmul_const_log _, ?_, ?_⟩
+  · rw [_root_.GlobalTheory.MomOne.hatmul_subst, hb a _ _ ha]; exact bd
+  · rw [_root_.GlobalTheory.MomOne.hatmul_subst, coeff_expY_subst h0, norm_mul, c1, h1, hn, ha, one_mul]
 
 lemma at_scale (M : Mdl q) {ω : ℂ_[q]} (h : M.MChart ω) {a : ℤ_[q]} {ξ : ℂ_[q]} {n k : ℕ} {y : ℂ}
     (hξ : ξ ^ (q ^ n) = 1) (hk : ‖a - (k : ℤ_[q])‖ ≤ (q : ℝ) ^ (-(n : ℤ))) (hy : M.At ω (ξ ^ k) y) :
     M.At (ω * zc a) ξ y := by
   obtain ⟨hm, -⟩ := MulSeries.mulS_laws q
   obtain ⟨-, h0, -, -⟩ := hm a
-  obtain ⟨h1, h2⟩ := (GlobalTheory.T.cpSeriesMultiplicativeShift_comp_and_subst q).2 ξ n k a _ hξ hk ⟨1, h.2.2.1⟩
+  obtain ⟨h1, h2⟩ := (_root_.GlobalTheory.MomOne.ShiftComp.main q).2 ξ n k a _ hξ hk ⟨1, h.2.2.1⟩
   obtain ⟨s, h3, h4⟩ := hy
   refine ⟨s, h1, ?_⟩
-  rw [hat_scale, ← (Shift.shift_laws q ξ h1).2.2.2.2.1, h2, cc_subst h0,
+  rw [_root_.GlobalTheory.MomOne.hatmul_subst, ← (Shift.shift_laws q ξ h1).2.2.2.2.1, h2, cc_subst h0,
     (Shift.shift_laws q _ h3).2.2.2.2.1, h4]
 
 lemma at_pow (M : Mdl q) {ω : ℂ_[q]} (h : M.MChart ω) {ξ : ℂ_[q]} {p : ℂ} (hp : M.At ω ξ p) (k : ℕ) :
     M.At ω (ξ ^ k) ((k : ℂ) * p) := by
   induction k with
-  | zero => simpa using (GlobalTheory.T.smallPoint_multiplicativeCoordinate_existsUnique q M ω h).2.2.2.2
+  | zero => simpa using (_root_.GlobalTheory.MomOne.SmallPt.at_exists_unique q M ω h).2.2.2.2
   | succ k ih =>
-    have := (GlobalTheory.T.multiplicativeCoord_add_and_complexMul q M ω h).1 _ _ _ _ ih hp
+    have := (_root_.GlobalTheory.MomOne.AtAdd.at_add_and_mul q M ω h).1 _ _ _ _ ih hp
     rw [← pow_succ] at this
     convert this using 1
     push_cast; ring
@@ -190,13 +174,13 @@ lemma div_ok (ι : ℂ ≃+* ℂ_[q]) (n : ℕ) (u b : ℤ) (hb : (q : ℤ) ^ n 
 lemma gen (M : Mdl q) {ω : ℂ_[q]} (hL : IsOK d M.L) (h : M.MChart ω) (n : ℕ) :
     ∃ u b : ℤ, M.At ω (M.ι (rt q n)) (((u : ℂ) + (b : ℂ) * wK d) / (q : ℂ) ^ n) ∧
       ‖M.ι (conj ((u : ℂ) + (b : ℂ) * wK d))‖ ≤ (q : ℝ) ^ (-(n : ℤ)) ∧ (n ≠ 0 → ¬ (q : ℤ) ∣ b) := by
-  obtain ⟨hex, -, huq, hlat, h10⟩ := GlobalTheory.T.smallPoint_multiplicativeCoordinate_existsUnique q M ω h
+  obtain ⟨hex, -, huq, hlat, h10⟩ := _root_.GlobalTheory.MomOne.SmallPt.at_exists_unique q M ω h
   obtain ⟨⟨-, -, hring⟩, hint, -, hid, -⟩ := okArith d q M.ι hd h16 hs
   have hq0 : (q : ℂ) ≠ 0 := by exact_mod_cast hq.out.ne_zero
   have hq1 : (1 : ℝ) < q := by exact_mod_cast hq.out.one_lt
   have hη : M.ι (rt q n) ^ (q ^ n) = 1 := by rw [← map_pow, (rt_prim n).pow_eq_one, map_one]
   have hlt : ‖M.ι (rt q n) - 1‖ < 1 :=
-    ((GlobalTheory.T.cpSeriesMultiplicativeShift_comp_and_subst q).2 _ n 0 0 0 hη (by simp) ⟨0, fun m => by simp⟩).1
+    ((_root_.GlobalTheory.MomOne.ShiftComp.main q).2 _ n 0 0 0 hη (by simp) ⟨0, fun m => by simp⟩).1
   obtain ⟨p, hp⟩ := hex _ hlt
   have kill : ∀ z, M.At ω 1 z ↔ InOK d z := fun z => by
     rw [hlat 1 0 z h10, zero_sub, neg_mem_iff, hL]
@@ -209,7 +193,7 @@ lemma gen (M : Mdl q) {ω : ℂ_[q]} (hL : IsOK d M.L) (h : M.MChart ω) (n : �
     obtain ⟨e, he, he1, he2⟩ := hid (n + 1) 1 (by simp)
     have hce := (hring e e he he).2.2.2
     obtain ⟨⟨a, ha⟩, -⟩ := hint _ hce
-    have h2 := (GlobalTheory.T.multiplicativeCoord_add_and_complexMul q M ω h).2 (conj e) a n 0 _ p
+    have h2 := (_root_.GlobalTheory.MomOne.AtAdd.at_add_and_mul q M ω h).2 (conj e) a n 0 _ p
       (fun l hl => (hL _).2 (hring _ _ hce ((hL _).1 hl)).2.1) ha
       (by
         rw [Nat.cast_zero, sub_zero, ← OKArith.norm_zc, ← OKArith.zc_eq, ← ha]
@@ -247,7 +231,7 @@ end
 theorem exists_normalised_chart : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q]), d.Prime → d % 16 = 7 → Split d q → IsOK d M.L → M.MChart ω → ∃ a : ℤ_[q], ‖a‖ = 1 ∧ M.MChart (ω * zc a) ∧ ∀ (n : ℕ) (y : ℂ), Good M.ι d n 1 y → M.ι (kap1 d 1 y) ^ (q ^ n) = 1 ∧ M.At (ω * zc a) (M.ι (kap1 d 1 y)) y := by
   intro d q hq M ω hd h16 hs hL h
   choose u b hat hc hb using gen hd h16 hs M hL h
-  obtain ⟨-, -, -, hlat, -⟩ := GlobalTheory.T.smallPoint_multiplicativeCoordinate_existsUnique q M ω h
+  obtain ⟨-, -, -, hlat, -⟩ := _root_.GlobalTheory.MomOne.SmallPt.at_exists_unique q M ω h
   have hq0 : (q : ℂ) ≠ 0 := by exact_mod_cast hq.out.ne_zero
   have hdv : ∀ n, (q : ℤ) ^ n ∣ b (n + 1) - b n := fun n => by
     have h1 := at_pow M h (hat (n + 1)) q

@@ -101,7 +101,7 @@ theorem UpperTheory.V.Pa.okX :
     rintro M E rfl
     refine ⟨Units.map (algebraMap x.A X).toMonoidHom E, ?_⟩
     ext i j
-    by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+    by_cases hij : i = j <;> simp [hij]
   have hform : ∀ g : G.frame.G₀, ∃ u : Xˣ,
       (x.ρX X (h.p₀ g))ᵀ * x.ρX X (h.p₀ (G.frame.conj g)) =
         (u : X) • (1 : Matrix (Fin n) (Fin n) X) := by

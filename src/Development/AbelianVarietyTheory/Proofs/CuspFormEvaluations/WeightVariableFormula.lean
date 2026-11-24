@@ -668,8 +668,8 @@ theorem rowGen_eval (a b : Fin n) (c : ℚ) (f : MvPolynomial (Fin n × Fin n) �
       · by_cases h : u = b
         · simp [h]
           ring
-        · simp [h, Matrix.single_apply, Ne.symm h]
-      · intro j _ hj; simp [Matrix.single_apply, Ne.symm hj]
+        · simp [h, Ne.symm h]
+      · intro j _ hj; simp [Ne.symm hj]
       · simp
   have := congrArg (fun F => F f) this
   simpa [Polynomial.coe_aeval_eq_eval] using this
@@ -695,7 +695,7 @@ theorem closed_of_stable (M : Submodule ℚ (MvPolynomial (Fin n × Fin n) ℚ))
           · subst hij
             by_cases hi : i = b
             · simp [hi]
-            · simp [hi, Matrix.single_apply, Ne.symm hi]
+            · simp [hi, Ne.symm hi]
           · simp only [Matrix.add_apply, Matrix.one_apply_ne hij, Matrix.diagonal_apply_ne _ hij, Matrix.single_apply]
             rw [if_neg (by rintro ⟨rfl, rfl⟩; exact hij rfl)]; simp
         rw [this, Matrix.det_diagonal, Finset.prod_ne_zero_iff]
@@ -957,7 +957,7 @@ theorem pev_cof_mem [CharZero K] {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt 
     ext1 b k
     by_cases hs : s = t
     · by_cases hk : k = j
-      · simp [hs, hk, gen, pev, colAdd, hlj.ne]
+      · simp [hs, hk, gen, pev, colAdd]
       · simp [hs, hk, gen, pev, colAdd]
     · simp [hs, gen, pev]
 
@@ -1102,7 +1102,7 @@ theorem harm_shift (t : Ix) (c : K) {P : MvPolynomial (Lt Ix p q n) K} (hP : ∀
 
     simp only [lp, xl, yl, map_sum, map_zero] at h1 h2 ⊢
     by_cases h3 : s = t ∧ (Sum.inr j : Fin p ⊕ Fin q) = Sum.inr u'
-    · simp only [pderiv_shift, Prod.mk.injEq, h3, and_self, if_true, map_add (f := _), Derivation.map_smul, reduceCtorEq, and_false,
+    · simp only [pderiv_shift, Prod.mk.injEq, h3, if_true, map_add (f := _), Derivation.map_smul, reduceCtorEq, and_false,
         if_false, add_zero, Finset.sum_add_distrib, ← Finset.smul_sum, h2, smul_zero]
       simpa only [h3] using h1
     · simp only [pderiv_shift, Prod.mk.injEq, h3, reduceCtorEq, and_false, if_false, add_zero, h1]
@@ -1304,7 +1304,7 @@ theorem degree_qf (m : MonomialOrder.{0,0} (Lt Ix p q n))
     (qf xl yl K i : MvPolynomial (Lt Ix p q n) K) ≠ 0 ∧ m.degree (qf xl yl K i) =
       Finsupp.single (xl i (lead h i)) 1 + Finsupp.single (yl i (lead h i)) 1 := by
   have e : qf xl yl K i = ∑ b : Fin n, monomial (Finsupp.single (xl i b) 1 + Finsupp.single (yl i b) 1) (1 : K) := by
-    simp [qf, X, monomial_mul]
+    simp [qf, X]
   rw [e]
   refine degree_sum_monomial m wt hm _ _ (lead h i) one_ne_zero fun b hb _ => ?_
   obtain ⟨t, i, j⟩ := i
@@ -1347,7 +1347,7 @@ theorem degree_det (m : MonomialOrder.{0,0} (Lt Ix p q n))
     split_ifs
     · simp only [Finsupp.weight_single, one_smul]
       zify
-      simp only [weight_variable_formula, Equiv.Perm.coe_one, id]
+      simp only [weight_variable_formula, id]
       nlinarith [sq_nonneg (((σ k : ℕ) : ℤ) - (k : ℕ))]
     · rfl
   · obtain ⟨k, hk⟩ : ∃ k, σ k ≠ k := by
@@ -1358,7 +1358,7 @@ theorem degree_det (m : MonomialOrder.{0,0} (Lt Ix p q n))
     refine ⟨k, Finset.mem_univ _, ?_⟩
     simp only [hk', dif_pos, Finsupp.weight_single, one_smul]
     zify
-    simp only [weight_variable_formula, Equiv.Perm.coe_one, id]
+    simp only [weight_variable_formula, id]
     have : ((σ k : ℕ) : ℤ) - (k : ℕ) ≠ 0 := by
       intro e; apply hk; simp only [Fin.ext_iff]; omega
     nlinarith [sq_pos_of_ne_zero this]

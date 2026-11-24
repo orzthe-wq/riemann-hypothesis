@@ -129,11 +129,6 @@ theorem vStd_of_frameChoice : ∀ (D : D7) (i : Fin D.R.m), FrameChoice D i → 
   rw [SetLike.mem_coe, Submodule.mem_pi]
   exact (h.mem_iff x).trans ⟨fun k a _ => k a, fun k a => k a trivial⟩
 
-theorem nV_pos (R : Ranks) : 0 < R.nV := by
-  have := R.rank_add_five_le
-  unfold Ranks.nV
-  omega
-
 theorem neg_eq_false_of_vStd (D : D7) (i : Fin D.R.m) (h : VStd D i) : D.sp.Vneg ((i : ℕ) + 1) = false := by
   by_contra hneg
   rw [Bool.not_eq_false] at hneg
@@ -146,7 +141,7 @@ theorem neg_eq_false_of_vStd (D : D7) (i : Fin D.R.m) (h : VStd D i) : D.sp.Vneg
     rw [h0, Matrix.map_one _ (map_zero _) (map_one _)]
     simpa using Formalism.UG.P.stdform_sig_one (n := Fin (Vc D i).rank)
   have h2 := (sig_family (Vc D i) τ (D.sp.cm.cmUnram.2.1 τ) _ h1 hs).1
-  have := nV_pos D.R
+  have := _root_.Formalism.L2.Col.nV_pos D.R
   simp only at h2
   omega
 
@@ -157,6 +152,6 @@ theorem neg_eq_false_of_posDef (D : D7) (i : Fin D.R.m) (h : (Vc D i).IsPosDef) 
   have h1 := factVSig _ _ D.sp ((i : ℕ) + 1) (by omega) (by omega) D.host.φ₀
   rw [if_pos hneg] at h1
   have h2 := congrArg Prod.snd ((h D.host.φ₀).symm.trans h1)
-  exact (nV_pos D.R).ne h2
+  exact (_root_.Formalism.L2.Col.nV_pos D.R).ne h2
 
 end GlobalTheory.StdFrame

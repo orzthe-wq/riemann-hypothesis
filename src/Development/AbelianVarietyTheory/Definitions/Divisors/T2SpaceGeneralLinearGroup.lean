@@ -110,7 +110,7 @@ instance locallyCompact_GL : LocallyCompactSpace (GL n k) := by
 
 omit [DecidableEq n] in
 theorem isOpen_intMatrix {m : Type*} [Fintype m] : IsOpen {A : Matrix m n k | ∀ i j, A i j ∈ 𝒪[k]} := by
-  simp only [Set.setOf_forall]
+  simp only [Set.ofPred_forall]
   refine isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_
   exact isOpen_int.preimage (f := fun A : Matrix m n k => A i j) (by fun_prop)
 
@@ -136,7 +136,7 @@ theorem isCompact_KO : IsCompact (KO k n : Set (GL n k)) := by
     (hK.prod (hK.image MulOpposite.continuous_op))
   convert h using 1
   ext g
-  simp only [SetLike.mem_coe, mem_KO_iff, Set.mem_setOf_eq, Set.mem_preimage, Units.embedProduct_apply,
+  simp only [SetLike.mem_coe, mem_KO_iff, Set.mem_ofPred_eq, Set.mem_preimage, Units.embedProduct_apply,
     Set.mem_prod, (MulOpposite.op_injective).mem_set_image]
 
 

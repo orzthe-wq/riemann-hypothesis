@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProdUpdateDiv
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermGenPtInjectiveRangeRegAtStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermGenPtInjectiveRangeRegAt
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIsLocalRingIsFractionRingStalk
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -61,7 +62,7 @@ theorem exists_basicOpen_piece (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spe
     · refine ⟨fun _ q hq => absurd hq (hno q), fun _ => le_locSub R a ?_⟩
       exact (hP.ring b).2 fun q hq => absurd hq (hno q)
     · exact ⟨fun h => absurd h (hno q), fun h => h.1⟩
-  obtain ⟨-, hrng⟩ := GlobalTheory.T.germ_genPt_injective_range_regAt X Ω ξ hc U hη hP.spec
+  obtain ⟨-, hrng⟩ := _root_.GlobalTheory.CompanionTheory.Ar.regAt_sections X Ω ξ hc U hη hP.spec
   obtain ⟨s, hs⟩ := (hrng a).2 ((hP.ring a).1 haR)
   have hga : ∀ (q : Cpt ξ) (hq : q.1 ∈ U), genMap ξ q (X.presheaf.germ U q.1 hq s) = a :=
     fun q hq => (genMap_germ_eq_stalk_closed ξ q U hq hη s).trans hs
@@ -102,7 +103,7 @@ theorem exists_basicOpen_piece (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spe
     rw [e]
     exact (regAt ξ q).mul_mem ((regAt ξ q).pow_mem hinv _) h1
   · intro hb
-    obtain ⟨-, hrng'⟩ := GlobalTheory.T.germ_genPt_injective_range_regAt X Ω ξ hc (X.basicOpen s) hη'
+    obtain ⟨-, hrng'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.regAt_sections X Ω ξ hc (X.basicOpen s) hη'
       (fun q hq => hP.spec q (X.basicOpen_le s hq))
     obtain ⟨t, ht⟩ := (hrng' b).2 hb
     have hloc := hP.affine.isLocalization_basicOpen s

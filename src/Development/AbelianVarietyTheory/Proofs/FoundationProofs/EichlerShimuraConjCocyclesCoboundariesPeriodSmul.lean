@@ -55,8 +55,7 @@ theorem polySlash_map_conj (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (p : ℂ[X
   set_option synthInstance.maxHeartbeats 100000 in
     simp only [slP, LinearMap.sum_apply, LinearMap.comp_apply,
     LinearMap.toSpanSingleton_apply, lcoeff_apply, Polynomial.map_sum, Polynomial.map_smul,
-    Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_add, Polynomial.map_X, Polynomial.map_C,
-    map_intCast, coeff_map, Polynomial.map_intCast, Polynomial.map_natCast]
+    Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_add, Polynomial.map_X, map_intCast, coeff_map, Polynomial.map_intCast]
 
 theorem eichler_smul (w : ℕ) (c : ℂ) (f : UpperHalfPlane → ℂ) (τ : UpperHalfPlane) :
     eichler w (c • f) τ = c • eichler w f τ := by

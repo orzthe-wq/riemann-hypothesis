@@ -130,7 +130,7 @@ theorem exists_derHom (y : Sp (DualNumber (Sec s U.1)) ⟶ X)
         simp [Algebra.smul_def, TrivSqZeroExt.algebraMap_eq_inl']
       map_one_eq_zero' := by simp
       leibniz' := fun a b ↦ by
-        simp only [map_mul, TrivSqZeroExt.snd_mul, smul_eq_mul]
+        simp only [smul_eq_mul]
         simp [MulOpposite.smul_eq_mul_unop, hfst]
         ring }
   refine ⟨d.liftKaehlerDifferential, ?_⟩
@@ -158,7 +158,7 @@ theorem snd_val_derHom (δ : Ω[Sec s U.1⁄R] →ₗ[Sec s U.1] Sec s U.1) (y :
     { toFun := fun c ↦ TrivSqZeroExt.inl c.fst + TrivSqZeroExt.inr (δ c.snd)
       map_one' := by ext <;> simp
       map_zero' := by ext <;> simp
-      map_add' := fun a b ↦ by ext <;> simp <;> ring
+      map_add' := fun a b ↦ by ext <;> simp
       map_mul' := fun a b ↦ by
         ext
         · simp

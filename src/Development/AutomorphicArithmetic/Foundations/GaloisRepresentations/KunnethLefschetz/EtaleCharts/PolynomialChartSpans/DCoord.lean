@@ -207,7 +207,7 @@ theorem dCoord : DCoord := by
   have h3 := RingHom.Etale.stableUnderComposition _ _ h h'
   convert h3 using 1
   refine MvPolynomial.ringHom_ext (fun b => ?_) fun k => ?_
-  · simp [MvPolynomial.coe_eval₂Hom]
-  · simp [DChart.s, MvPolynomial.coe_eval₂Hom]
+  · simp
+  · simp [DChart.s]
 
 end UpperTheory.Gal.KunnethLefschetz.G

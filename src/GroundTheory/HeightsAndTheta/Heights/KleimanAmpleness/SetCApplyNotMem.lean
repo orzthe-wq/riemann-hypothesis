@@ -81,14 +81,6 @@ theorem rem_apply_subset (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) (l : K) : r
   · subst hl; rw [rem_apply_self]; exact Finset.erase_subset _ _
   · rw [rem_apply_of_ne i hl]
 
-
-omit [∀ k, LinearOrder (ι k)] in
-theorem offset_update (I : ∀ k, Finset (ι k)) (k : K) (X : Finset (ι k)) :
-    ∑ l ∈ Finset.univ.filter (· < k), ((Function.update I k X l).card - 1) =
-      ∑ l ∈ Finset.univ.filter (· < k), ((I l).card - 1) :=
-  Finset.sum_congr rfl fun l hl => by
-    rw [Function.update_of_ne (ne_of_lt (Finset.mem_filter.1 hl).2)]
-
 theorem sign_swap_same {I : ∀ k, Finset (ι k)} {k : K} {i i' : ι k} (hi : i ∈ I k) (hlt : i < i') :
     faceSign I k i' * faceSign (rem I ⟨k, i'⟩) k i = -(faceSign I k i * faceSign (rem I ⟨k, i⟩) k i') := by
   apply GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CellDSq.sign_swap_same <;> assumption
@@ -98,13 +90,6 @@ theorem sign_swap_lt {I : ∀ k, Finset (ι k)} {k k' : K} (i : ι k) (i' : ι k
     faceSign I k' i' * faceSign (rem I ⟨k', i'⟩) k i =
       -(faceSign I k i * faceSign (rem I ⟨k, i⟩) k' i') := by
   apply GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CellDSq.sign_swap_lt <;> assumption
-
-omit [Fintype K] [LinearOrder K] in
-theorem two_le_card {I : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : i ∈ I k)
-    (h : ((I k).erase i).Nonempty) : 2 ≤ (I k).card := by
-  have := h.card_pos
-  rw [Finset.card_erase_of_mem hi] at this
-  omega
 
 theorem sign_swap {I : ∀ k, Finset (ι k)} {p q : Σ k, ι k} (hp : p.2 ∈ I p.1) (hq : q.2 ∈ I q.1)
     (hne : q ≠ p) (hJ : ∀ l, (rem (rem I p) q l).Nonempty) :
@@ -378,7 +363,7 @@ theorem dif_coneOp (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {f : (∀ k, Finset (ι k)
     · have hnin : c k ∉ rem I ⟨k, c k⟩ k := by rw [rem_apply_self]; exact Finset.notMem_erase _ _
       rw [coneOp_of_good (good_rem hI hne) hnin, addC_rem hck, smul_smul, faceSign_mul_self, one_smul]
       have hP : projOp y c {k} f I = 0 := projOp_of_not fun h => by
-        have h1 := two_le_card hck hne
+        have h1 := GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CellDSq.two_le_card hck hne
         have h2 := h.2 k (Finset.mem_singleton_self k)
         omega
       rw [hP, sub_zero]
@@ -656,7 +641,7 @@ def extC (m : ℕ) (t : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH
 
 theorem deg_rem {J : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : i ∈ J k) (hne : ((J k).erase i).Nonempty) :
     ∑ l, ((rem J ⟨k, i⟩ l).card - 1) + 1 = ∑ l, ((J l).card - 1) := by
-  have hk := two_le_card hi hne
+  have hk := GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CellDSq.two_le_card hi hne
   rw [← Finset.add_sum_erase _ _ (Finset.mem_univ k), ← Finset.add_sum_erase _ _ (Finset.mem_univ k),
     rem_apply_self, Finset.card_erase_of_mem hi,
     Finset.sum_congr rfl fun l hl => by rw [rem_apply_of_ne i (Finset.ne_of_mem_erase hl)]]

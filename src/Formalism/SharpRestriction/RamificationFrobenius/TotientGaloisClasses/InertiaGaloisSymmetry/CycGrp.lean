@@ -300,45 +300,6 @@ private theorem jac_lemma {p d : ℕ} (hp : p % 2 = 1) (hd : d % 4 = 3) :
   · rw [ZMod.χ₄_nat_three_mod_four h, jacobiSym.quadratic_reciprocity_three_mod_four hd h]
     ring
 
-private theorem art_snd_lemma (u : (ZMod H.condN)ˣ) :
-    (((H.art u).1.2 : ℤˣ) : ℤ) = jacobiSym (((u : ZMod H.condN).val : ℕ) : ℤ) H.d := by
-  haveI : Fact H.d.Prime := ⟨H.hyp.2.1⟩
-  have hd4 : H.d % 4 = 3 := by have := H.hyp.2.2.2.1; omega
-  have hz := Cond.z_spec H.condN
-  have hx : IsPrimitiveRoot (Cond.z H.condN ^ (H.QS * H.q)) H.d :=
-    hz.pow (Nat.pos_of_ne_zero (NeZero.ne H.condN)) rfl
-  have hg2 : Cond.gs H.d hx.pow_eq_one ^ 2 = -(H.d : Cond.Cyc H.condN) := Cond.gs_sq hd4 hx
-  have hy2 : (emb H H.sqd) ^ 2 = -(H.d : Cond.Cyc H.condN) := by
-    rw [← map_pow, H.sqd_sq, map_neg, map_natCast]
-  have hy0 : emb H H.sqd ≠ 0 := by
-    intro h
-    rw [h, zero_pow two_ne_zero] at hy2
-    have h0 : (H.d : Cond.Cyc H.condN) = 0 := by linear_combination hy2
-    exact H.hyp.2.1.ne_zero (by exact_mod_cast h0)
-  have hτx : (tauN H.condN u) (Cond.z H.condN ^ (H.QS * H.q)) =
-      (Cond.z H.condN ^ (H.QS * H.q)) ^ (u : ZMod H.condN).val :=
-    tauN_root H.condN u _ (by rw [← pow_mul, mul_comm, pow_mul, hz.pow_eq_one, one_pow])
-  have hcopv : Nat.Coprime (u : ZMod H.condN).val H.d :=
-    Nat.Coprime.coprime_dvd_right (dvd_mul_left H.d (H.QS * H.q)) (ZMod.val_coe_unit_coprime u)
-  have hτg : (tauN H.condN u) (Cond.gs H.d hx.pow_eq_one) =
-      ((jacobiSym (((u : ZMod H.condN).val : ℕ) : ℤ) H.d : ℤ) : Cond.Cyc H.condN) *
-        Cond.gs H.d hx.pow_eq_one :=
-    Formalism.HC.D7.gs_act hx.pow_eq_one
-      ((tauN H.condN u : Cond.Cyc H.condN ≃ₐ[ℚ] Cond.Cyc H.condN) : Cond.Cyc H.condN →+* Cond.Cyc H.condN)
-      _ hτx hcopv
-  have hτy : (tauN H.condN u) (emb H H.sqd) =
-      ((jacobiSym (((u : ZMod H.condN).val : ℕ) : ℤ) H.d : ℤ) : Cond.Cyc H.condN) * emb H H.sqd := by
-    rcases sq_eq_sq_iff_eq_or_eq_neg.mp (hy2.trans hg2.symm) with h | h
-    · rw [h]
-      exact hτg
-    · rw [h, map_neg, hτg, mul_neg]
-  have hσ := H.gal_sqd (H.gal.symm (H.art u))
-  rw [MulEquiv.apply_symm_apply] at hσ
-  have h2 := emb_art H u H.sqd
-  rw [hσ, map_mul, map_intCast, hτy] at h2
-  have h3 := mul_right_cancel₀ hy0 h2
-  exact_mod_cast h3
-
 theorem frob : ∀ (p : ℕ) [Fact p.Prime], ¬ p ∣ H.condN →
     ∀ (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})],
       (∃ σ : H.E ≃ₐ[ℚ] H.E, IsArithFrobAt ℤ σ P) ∧
@@ -408,7 +369,7 @@ theorem frob : ∀ (p : ℕ) [Fact p.Prime], ¬ p ∣ H.condN →
   · rw [hg]
     unfold HostRaw.psAt
     rw [dite_eq_left hcop]
-  · rw [hg, art_snd_lemma H, hu0, ZMod.val_natCast, jac_lemma hpodd hd4,
+  · rw [hg, _root_.Formalism.HC.Der.art_ch H, hu0, ZMod.val_natCast, jac_lemma hpodd hd4,
       jacobiSym.mod_left ((p % H.condN : ℕ) : ℤ), jacobiSym.mod_left (p : ℤ)]
     congr 1
     push_cast
@@ -448,7 +409,7 @@ theorem exists_art_iod : ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 
       jacobiSym.at_neg_one (Nat.odd_iff.mpr (by omega)), ZMod.χ₄_nat_three_mod_four hd4]
   rcases H.art_d u hu1 with h | h
   · exfalso
-    have h0 := art_snd_lemma H u
+    have h0 := _root_.Formalism.HC.Der.art_ch H u
     rw [h, hJ] at h0
     norm_num at h0
   · exact h

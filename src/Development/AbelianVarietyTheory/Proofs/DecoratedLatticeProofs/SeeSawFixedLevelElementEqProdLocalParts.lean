@@ -55,25 +55,6 @@ namespace GlobalTheory.LevelCut
 
 variable {D : D7}
 
-theorem tensor_prod_zero {F A B E : Type} [Field F] [CommRing A] [CommRing B] [CommRing E] [Algebra F A]
-    [Algebra F B] [Algebra F E] (z : (A × B) ⊗[F] E)
-    (h1 : Algebra.TensorProduct.map (AlgHom.fst F A B) (AlgHom.id F E) z = 0)
-    (h2 : Algebra.TensorProduct.map (AlgHom.snd F A B) (AlgHom.id F E) z = 0) : z = 0 := by
-  have key : ∀ z : (A × B) ⊗[F] E, z =
-      (LinearMap.inl F A B).rTensor E (Algebra.TensorProduct.map (AlgHom.fst F A B) (AlgHom.id F E) z) +
-      (LinearMap.inr F A B).rTensor E (Algebra.TensorProduct.map (AlgHom.snd F A B) (AlgHom.id F E) z) := by
-    intro z
-    induction z using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a e => simp [← TensorProduct.add_tmul]
-    | add x y hx hy =>
-      simp only [map_add (f := _)]
-      rw [add_add_add_comm, ← hx, ← hy]
-  rw [key z, h1, h2]; simp
-
-theorem adele_zero (z : AE D) (h1 : infPart D z = 0) (h2 : finPart D z = 0) : z = 0 :=
-  tensor_prod_zero (F := D.host.F) (A := Ainf D.host.F) (B := Af D.host.F) (E := D.host.E) z h1 h2
-
 theorem mem_GfC_of (V : HSp D) (y : GA D V) (hy : ∀ i j, infPart D ((mt V y - 1) i j) = 0) : y ∈ GfC V := by
   show infHom V y = 1
   apply Units.ext
@@ -83,23 +64,6 @@ theorem mem_GfC_of (V : HSp D) (y : GA D V) (hy : ∀ i j, infPart D ((mt V y - 
   rw [Matrix.sub_apply, RingHom.map_sub, sub_eq_zero] at this
   rw [Matrix.map_apply, this]
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
-
-theorem eq_one_of_parts (V : HSp D) (y : GA D V) (h1 : y ∈ GfC V) (h2 : y ∈ GinfC V) : y = 1 := by
-  have k1 : (mt V y).map (infPart D) = 1 := by
-    have := congrArg Units.val (show infHom V y = 1 from h1)
-    exact this
-  have k2 : (mt V y).map (finPart D) = 1 := by
-    have := congrArg Units.val (show finHom V y = 1 from h2)
-    exact this
-  apply GlobalTheory.SplitCut.mt_injective
-  rw [GlobalTheory.SplitCut.mt_one]
-  ext i j
-  apply sub_eq_zero.mp
-  apply adele_zero
-  · rw [RingHom.map_sub, sub_eq_zero]
-    exact congrFun (congrFun (k1.trans (Matrix.map_one (infPart D) (RingHom.map_zero _) (RingHom.map_one _)).symm) i) j
-  · rw [RingHom.map_sub, sub_eq_zero]
-    exact congrFun (congrFun (k2.trans (Matrix.map_one (finPart D) (RingHom.map_zero _) (RingHom.map_one _)).symm) i) j
 
 theorem mem_GfC_of_grpAt (V : HSp D) (P : Pl D → Prop) (x : GA D V) (hx : x ∈ grpAt V P) : x ∈ GfC V := by
   refine mem_GfC_of V x fun i j => ?_
@@ -189,6 +153,6 @@ theorem grpAt_eq_prod_local : ∀ {D : D7} {c : Comm D} {v : VCom c} {n : ℕ}, 
     have : a = x * ((List.ofFn h).prod)⁻¹ := by rw [hxa, mul_inv_cancel_right]
     rw [this]
     exact mul_mem hxf (inv_mem hP)
-  rw [hxa, eq_one_of_parts _ a haf ha, one_mul]
+  rw [hxa, _root_.GlobalTheory.PointAtPlace.eq_one_of_mem _ a haf ha, one_mul]
 
 end GlobalTheory.LevelCut

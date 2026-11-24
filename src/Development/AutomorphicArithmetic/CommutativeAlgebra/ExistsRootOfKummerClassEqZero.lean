@@ -1,17 +1,19 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.PullHlComp
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreeZeroSectionClassPropertiesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexBasicPropertiesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegreeZeroSectionClassProperties
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPrimitiveRootAndRootsOfUnityStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalPropertyCalculusRulesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlueStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKummerTorsorSplittingKummerTorsorSplittingStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsExtAndGlue
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKummerTorsorSplittingKummerTorsorSplitting
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KummerClassOfUnitCocycleNaturalAdditiveStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
 public import Development.AutomorphicArithmetic.CommutativeAlgebra.EqOfUnitGlobalSectionEq
 public import Development.AutomorphicArithmetic.CommutativeAlgebra.ExistsUnitEqMultiplicativeGroupSection
 public import Development.AutomorphicArithmetic.CommutativeAlgebra.KummerClassAddOfUnitSecAdd
+public import Development.AutomorphicArithmetic.CommutativeAlgebra.KumSExact
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexBasicPropertiesStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
 import Development.AutomorphicArithmetic.CommutativeAlgebra.PicUnit
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -54,8 +56,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
-public import Development.AutomorphicArithmetic.CommutativeAlgebra.KumSExact
 
 @[expose] public section
 
@@ -63,42 +63,20 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace UpperTheory.KumRoot
 
-private lemma map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U)
-    (x : Sec F U) : Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) := by
-  show (ModuleCat.Hom.hom (φ.hom.app (op V))) ((ModuleCat.Hom.hom (F.obj.map g.op)) x) =
-    (ModuleCat.Hom.hom (G.obj.map g.op)) ((ModuleCat.Hom.hom (φ.hom.app (op U))) x)
-  rw [← ModuleCat.comp_apply, ← ModuleCat.comp_apply, φ.hom.naturality]
+private alias map_res := _root_.GlobalTheory.EtC.exactIff_map_res
 
-private lemma res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U)
-    (x : Sec F U) : Sec.res k (Sec.res g x) = Sec.res (k ≫ g) x := by
-  show (ModuleCat.Hom.hom (F.obj.map k.op)) ((ModuleCat.Hom.hom (F.obj.map g.op)) x) =
-    (ModuleCat.Hom.hom (F.obj.map (k ≫ g).op)) x
-  rw [← ModuleCat.comp_apply, ← F.obj.map_comp]
-  rfl
+private alias res_comp := _root_.GlobalTheory.EtC.ClsSpec.res_comp
 
-private lemma sec_map_add {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
-    Sec.map φ (a + b) = Sec.map φ a + Sec.map φ b := by
-  exact map_add _ a b
+private alias sec_map_sub := _root_.GlobalTheory.EtC.KummerSplit.smap_sub
 
-private lemma sec_map_sub {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
-    Sec.map φ (a - b) = Sec.map φ a - Sec.map φ b := by
-  exact map_sub _ a b
+private alias sec_res_add := _root_.GlobalTheory.TwSec.res_add
 
-private lemma sec_res_add {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (a b : Sec F U) :
-    Sec.res g (a + b) = Sec.res g a + Sec.res g b := by
-  exact map_add _ a b
-
-private lemma sec_res_nsmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (n : ℕ) (a : Sec F U) :
-    Sec.res g (n • a) = n • Sec.res g a := by
-  exact map_nsmul _ n a
+private alias sec_res_nsmul := _root_.GlobalTheory.TwSec.res_nsmul
 
 private lemma map_smul_int {V : Scheme.{0}} (b : Sec Gm V) (n : ℤ) : Sec.map (n • 𝟙 Gm) b = n • b := by
   rfl
 
-private lemma unitSec_pow {U : Scheme.{0}} (v : (Γ(U, ⊤))ˣ) (n : ℕ) : unitSec (v ^ n) = n • unitSec v := by
-  induction n with
-  | zero => simp [UpperTheory.PicD.unitSec_one]
-  | succ n ih => rw [pow_succ, UpperTheory.PicD.unitSec_mul, ih, succ_nsmul]
+private alias unitSec_pow := _root_.GlobalTheory.EtC.KummerSeq.unitSec_pow
 
 private lemma units_comp {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (w : (Γ(U, ⊤))ˣ) :
     Units.map k.appTop.hom.toMonoidHom (Units.map g.appTop.hom.toMonoidHom w) =
@@ -110,9 +88,9 @@ private lemma units_comp {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (w : (
 private lemma ker_res {R : Type} [CommRing R] (F : Shv R) (U : Scheme.{0}) (z : Sec ((res R F).X 0) U)
     (hz : Sec.map ((res R F).d 0 1) z = 0) : ∃ s : Sec F U, Sec.map (resι R F) s = z := by
   obtain ⟨α, hα0, -⟩ := (GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R U (res R F) (-1) 0 1 (by norm_num) (by norm_num)).1 z hz
-  obtain ⟨s, hs⟩ := (GlobalTheory.T.degreeZeroSectionClass_properties R F U).2.1.2 (CohomologyClass.mk α)
+  obtain ⟨s, hs⟩ := (_root_.GlobalTheory.EtC.secClass_props R F U).2.1.2 (CohomologyClass.mk α)
   refine ⟨s, ?_⟩
-  have h1 := ((GlobalTheory.T.degreeZeroSectionClass_properties R F U).1 s α).2 hs.symm
+  have h1 := ((_root_.GlobalTheory.EtC.secClass_props R F U).1 s α).2 hs.symm
   rw [← h1, hα0]
   show (ModuleCat.Hom.hom (((res R F).X 0).obj.map (𝟙 U).op)) z = z
   rw [op_id, CategoryTheory.Functor.map_id]
@@ -121,9 +99,9 @@ private lemma ker_res {R : Type} [CommRing R] (F : Shv R) (U : Scheme.{0}) (z : 
 private lemma resι_inj {R : Type} [CommRing R] (F : Shv R) (U : Scheme.{0}) (a b : Sec F U)
     (h : Sec.map (resι R F) a = Sec.map (resι R F) b) : a = b := by
   obtain ⟨α, hα⟩ := CohomologyClass.mk_surjective (secClass F a)
-  have h1 := ((GlobalTheory.T.degreeZeroSectionClass_properties R F U).1 a α).2 hα
-  have h2 := ((GlobalTheory.T.degreeZeroSectionClass_properties R F U).1 b α).1 (h1.trans h)
-  exact (GlobalTheory.T.degreeZeroSectionClass_properties R F U).2.1.1 (hα.symm.trans h2)
+  have h1 := ((_root_.GlobalTheory.EtC.secClass_props R F U).1 a α).2 hα
+  have h2 := ((_root_.GlobalTheory.EtC.secClass_props R F U).1 b α).1 (h1.trans h)
+  exact (_root_.GlobalTheory.EtC.secClass_props R F U).2.1.1 (hα.symm.trans h2)
 
 variable (q : ℕ) [NeZero q]
 
@@ -132,7 +110,7 @@ private noncomputable def kp {V : Scheme.{0}} (s : Sec (tw q 1) V) : Sec Gm V :=
 
 private lemma kp_add {V : Scheme.{0}} (s t : Sec (tw q 1) V) : kp q (s + t) = kp q s + kp q t := by
   unfold kp
-  exact sec_map_add _ _ _
+  exact _root_.GlobalTheory.EtC.ClsSpec.smap_add _ _ _
 
 private lemma kp_res {W V : Scheme.{0}} (k : W ⟶ V) (s : Sec (tw q 1) V) :
     Sec.res k (kp q s) = kp q (Sec.res k s) := by
@@ -160,7 +138,7 @@ private lemma unique_datum {V : Scheme.{0}} (hq : IsUnit (q : Γ(V, ⊤))) (v v'
   have e2 := UpperTheory.kummer_class_add_of_unitSec_add q V hq v v' a e1
   rw [e2, add_assoc] at h
   have h3 : Sec.map (resι _ (tw q 1)) s = Sec.map (resι _ (tw q 1)) ((show Sec (tw q 1) V from a) + s') := by
-    rw [sec_map_add]
+    rw [_root_.GlobalTheory.EtC.ClsSpec.smap_add]
     exact add_left_cancel h
   have hs := resι_inj _ _ _ _ h3
   rw [hs, kp_add, e1, add_assoc]
@@ -203,20 +181,20 @@ theorem UpperTheory.exists_root_of_kummer_class_eq_zero :
     refine ⟨Units.map ↑(CommRingCat.Hom.hom (Scheme.Hom.appTop k)) v, Sec.res k s, ?_, ?_, ?_⟩
     · rw [← map_pow, hv]
       exact units_comp k g w
-    · rw [← res_comp, hs, sec_res_add, (GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).1 W V k v (hqV g), map_res]
+    · rw [← res_comp, hs, sec_res_add, (_root_.GlobalTheory.EtC.KummerSplit.isKum_kumT q).1 W V k v (hqV g), map_res]
       rfl
     · rw [hb, sec_res_add, UpperTheory.PicD.unitSec_res, kp_res]
       rfl
   have hloc : Loc X fun V g => ∃ b, D V g b :=
     GlobalTheory.T.etaleLocal_property_calculus_rules.2.1 X _ _ ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity q X).2.2.2 hq w) (fun V g ⟨v, hv⟩ => hA g v hv)
   obtain ⟨S, hS, hSP⟩ := hloc
-  obtain ⟨b0, hb0⟩ := (GlobalTheory.T.etaleSheafSections_ext_and_glue ℤ Gm X).2 S hS (fun V g hg => Classical.choose (hSP V g hg))
+  obtain ⟨b0, hb0⟩ := (_root_.GlobalTheory.EtC.sec_ext_glue ℤ Gm X).2 S hS (fun V g hg => Classical.choose (hSP V g hg))
     (fun V W g k hg => hB (k ≫ g) _ _ (hC g k _ (Classical.choose_spec (hSP V g hg)))
       (Classical.choose_spec (hSP W (k ≫ g) (S.downward_closed hg k))))
   obtain ⟨u, hu⟩ := UpperTheory.exists_unit_eq_multiplicativeGroup_section X b0
   refine ⟨u, UpperTheory.eq_of_unitGlobalSection_eq X _ _ ?_⟩
   rw [unitSec_pow, hu]
-  apply (GlobalTheory.T.etaleSheafSections_ext_and_glue ℤ Gm X).1
+  apply (_root_.GlobalTheory.EtC.sec_ext_glue ℤ Gm X).1
   refine ⟨S, hS, fun V g hg => ?_⟩
   obtain ⟨v, s, hv, -, hb⟩ := Classical.choose_spec (hSP V g hg)
   rw [sec_res_nsmul, hb0 V g hg, hb, nsmul_add, kp_nsmul, add_zero, ← unitSec_pow, hv,

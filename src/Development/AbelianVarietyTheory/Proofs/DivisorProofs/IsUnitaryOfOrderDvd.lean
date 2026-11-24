@@ -65,16 +65,6 @@ namespace GlobalTheory.XiSplit
 
 open Formalism.L2.Host
 
-theorem isUnitary_of_orderDvd {L : Type} [Field L] [NumberField L] {χ : HChar L} {n : ℕ} (hn : 0 < n)
-    (h : χ.OrderDvd n) : χ.IsUnitary := by
-  intro x
-  have h1 : (χ.1 x) ^ n = 1 := by
-    have : (χ ^ n).1 x = 1 := by rw [h]; rfl
-    rw [← this]; rfl
-  have h2 : ‖((χ.1 x : ℂˣ) : ℂ)‖ ^ n = 1 := by
-    rw [← norm_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, norm_one]
-  exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h2
-
 theorem inf_eq_one {L : Type} [Field L] [NumberField L] [_root_.NumberField.IsTotallyComplex L] {χ : HChar L} {n : ℕ} (hn : 0 < n)
     (h : χ.OrderDvd n) (k : Lˣ) : χ.inf k = 1 := by
   have hx : ∀ x, (χ.1 x) ^ n = 1 := fun x => congrArg (fun ξ : HChar L => ξ.1 x) h
@@ -133,7 +123,7 @@ theorem exists_heckeU_xi : ∀ {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T}, 
   intro D T L μ₀ hL t
   haveI : IsTotallyComplex D.host.E := D.sp.cm.cmUnram.1
   obtain ⟨n, hn, ho⟩ := hL.xi_fin t
-  have hu : (L.xiH t).IsUnitary := isUnitary_of_orderDvd hn ho
+  have hu : (L.xiH t).IsUnitary := _root_.Formalism.L2.Host.HChar.isUnitary_of_order hn ho
   have hi : (L.xiH t).HasInf (Formalism.L2.Host.embTau D) 0 := fun k => by
     rw [inf_eq_one hn ho k]
     simp

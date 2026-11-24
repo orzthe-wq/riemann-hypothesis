@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDecayBounds.BesselUnitNorm.BesselLine
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDecayBounds.BesselUnitNorm.BesselNormSteps.UnitNorm.UnrealifyRealify
 
 @[expose] public section
 
@@ -89,21 +90,6 @@ theorem coef_aesm {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1)
 def Tset (z : Fin (2 * r + k + 1) → ℂ) : Set (Mt k r × (Mt k r × Mt k r)) :=
   {q | Matrix.of q.1 ∈ UH (Hpk k r) ∧ (Matrix.of q.2.1 ∈ UWset k r z ∧ Matrix.of q.2.2 ∈ Nset k r)}
 
-private theorem isClosed_UWset' (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (UWset k r z) := by
-  have h1 : ∀ u : Fin (2 * r + k + 1) → ℂ, Continuous fun g : Mx k r => g *ᵥ u :=
-    fun u => continuous_id.matrix_mulVec continuous_const
-  simp only [UWset, Set.ofPred_and, Set.ofPred_forall]
-  exact (isClosed_UH' _).inter ((isClosed_iInter fun a =>
-    (isClosed_eq (h1 _) continuous_const).inter (isClosed_eq (h1 _) continuous_const)).inter
-      (isClosed_eq (h1 _) continuous_const))
-
-private theorem isClosed_Nset_bessel_line (k r : ℕ) : IsClosed (Nset k r) := by
-  simp only [Nset, Set.ofPred_and, Set.ofPred_forall]
-  exact (isClosed_UH' _).inter ((isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun _ =>
-    isClosed_eq (continuous_id.matrix_elem _ _) continuous_const).inter
-      (isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_iInter fun _ =>
-        isClosed_iInter fun _ => isClosed_eq (continuous_id.matrix_elem _ _) continuous_const))
-
 theorem measurableSet_Tset (z : Fin (2 * r + k + 1) → ℂ) : MeasurableSet (Tset (k := k) (r := r) z) := by
   have c1 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.1 : Mx k r) := continuous_fst
   have c2 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.1 : Mx k r) :=
@@ -111,7 +97,7 @@ theorem measurableSet_Tset (z : Fin (2 * r + k + 1) → ℂ) : MeasurableSet (Ts
   have c3 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.2 : Mx k r) :=
     continuous_snd.comp continuous_snd
   exact (((isClosed_UH' (Hpk k r)).preimage c1).inter
-    (((isClosed_UWset' (k := k) (r := r) z).preimage c2).inter ((isClosed_Nset_bessel_line k r).preimage c3))).measurableSet
+    (((_root_.PI.WUN.isClosed_UW (k := k) (r := r) z).preimage c2).inter ((_root_.PI.WUN.isClosed_N k r).preimage c3))).measurableSet
 
 theorem joint_ae {z : Fin (2 * r + k + 1) → ℂ} {μW μN μG : Measure (Mt k r)} [SFinite μW] [SFinite μN]
     [SFinite μG] (hG : IsHaarOn (UH (Hpk k r)) μG)

@@ -2,8 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairPowSectionMemAndNormPow
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaiseFirstWeightSectionsLociValuesNormsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularNonvanishingLocusSectionPropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RaiseFirstWeightSectionsLociValuesNorms
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularNonvanishingLocusSectionProperties
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -63,13 +63,13 @@ theorem canNorms : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (
   have he : (0 : ℝ) < e := by exact_mod_cast hx.pos
   have hnR : (0 : ℝ) < n := by exact_mod_cast hn
   have hn0 : 2 * n ≠ 0 := by omega
-  have hup := GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P u (e : ℤ) 0
+  have hup := _root_.GlobalTheory.HSAmp.upAtPrime_groups_values_norms k X p P u (e : ℤ) 0
   have hnn : ∀ (Q : Pair p) σ (y : CxPts p σ) f, 0 ≤ Q.nu e 0 σ y f := fun Q σ y f => by
     rw [← norm_val]; exact norm_nonneg _
   have hS : ∀ σ (y : CxPts p σ), 0 < ∑ l, P.nu e 0 σ y (x l) ^ (2 * n) := by
     intro σ y
     obtain ⟨l, hl⟩ := hx.cover (under y)
-    have h := ((GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 (x l) (hx.mem l)).2.2.2.2 (x l) (hx.mem l) σ y hl).2
+    have h := ((_root_.GlobalTheory.HSAmp.nv_rules k X p P e 0 (x l) (hx.mem l)).2.2.2.2 (x l) (hx.mem l) σ y hl).2
     exact lt_of_lt_of_le (pow_pos h _) (Finset.single_le_sum (f := fun l => P.nu e 0 σ y (x l) ^ (2 * n))
       (fun i _ => pow_nonneg (hnn P σ y _) _) (Finset.mem_univ l))
   have key : ∀ σ (y : CxPts p σ) f, (upperParabolic P u).nu e 0 σ y f ^ (2 * n) =
@@ -102,7 +102,7 @@ theorem canNorms : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (
     convert h using 2 <;> push_cast <;> ring
   · obtain ⟨l, hl⟩ := hx.cover z
     refine ⟨l, ?_⟩
-    have h := (GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 (x l) (hx.mem l)).2.2.1 n hn
+    have h := (_root_.GlobalTheory.HSAmp.nv_rules k X p P e 0 (x l) (hx.mem l)).2.2.1 n hn
     have e2 : ((e * n : ℕ) : ℤ) = (n : ℤ) * (e : ℤ) := by push_cast; ring
     have e3 : (0 : ℤ) = (n : ℤ) * 0 := by ring
     show z ∈ NV P ((e * n : ℕ) : ℤ) 0 (x l ^ n)

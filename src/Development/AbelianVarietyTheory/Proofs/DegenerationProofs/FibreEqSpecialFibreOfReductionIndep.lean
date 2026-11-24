@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.IsNormalSchemeSp
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianSchemeProperClosureDataBasicPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsClassicalPointLiftingResiduePointStatement
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.AbelianSchemeProperClosureDataBasicProperties
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsClassicalPointLiftingResiduePoint
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -53,14 +53,14 @@ namespace GlobalTheory.ZJ
 
 theorem Core.fib_of_indep : ∀ C : Core, C.Indep → C.Fib := by
   intro C hI p _ y τ x hx
-  obtain ⟨-, hlft, -, hint, hflat, -, -, -, -, -, -, hdom, htest⟩ := GlobalTheory.T.abelianSchemeProperClosureData_basic_properties C
+  obtain ⟨-, hlft, -, hint, hflat, -, -, -, -, -, -, hdom, htest⟩ := _root_.GlobalTheory.ZJ.core_basic C
   have := C.lft
   have hne : ((C.GG.hom ⁻¹ᵁ C.U : C.G.toScheme.Opens) : Set C.G.toScheme).Nonempty := by
     obtain ⟨w, hw⟩ := hdom.denseRange.exists_mem_open C.U.isOpen C.ne
     exact ⟨w, hw⟩
   have hlft' : LocallyOfFiniteType (C.GG.hom ≫ C.π) := inferInstance
   obtain ⟨b', hb'x, hb'U⟩ :=
-    (@GlobalTheory.T.exists_classical_point_lifting_residue_point C.G.toScheme hint (C.GG.hom ≫ C.π) hflat hlft' (C.GG.hom ⁻¹ᵁ C.U) hne p _).1 x
+    (@_root_.GlobalTheory.exists_integral_point_lifting_residue_point C.G.toScheme hint (C.GG.hom ≫ C.π) hflat hlft' (C.GG.hom ⁻¹ᵁ C.U) hne p _).1 x
   have hcl : C.Cl (b' ≫ C.GG.hom) := by
     rintro _ ⟨s, rfl⟩
     have := hb'U ⟨s, rfl⟩

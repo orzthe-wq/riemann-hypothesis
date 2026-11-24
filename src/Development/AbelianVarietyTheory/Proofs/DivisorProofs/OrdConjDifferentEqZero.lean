@@ -3,15 +3,19 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FlagComponentFramedPointFrame
 public import Development.AbelianVarietyTheory.Definitions.KeyFormula.KeyRootOfKeyFormula
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeySectionFourthRootPerComponentStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitSectionThetaKeyRuleWeightFourStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulMemCuspFormsOfBoundedSectionComponentStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeySectionNormComplexPointsEqTwoPiPowStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeySectionValuationBoundsDifferentStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KchMul
+public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsFlatSecRankZero
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsKeySectionFourthRootPerComponent
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitSectionThetaKeyRuleWeightFour
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MulMemCuspFormsOfBoundedSectionComponent
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeySectionNormComplexPointsEqTwoPiPow
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.FibreFramesOnModels
+public import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.SchurLatticeConjugates
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeySectionValuationBoundsDifferent
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsNumberFieldPoint
+public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyFamOne
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.BeSumStatementIffDefectSumBound
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniversalTripleFibreAtFramedPoint
-public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyFamOne
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.FinitePlaceArcs.BeSumPf
 import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.Algebra.Order.Floor.Extended
@@ -51,7 +55,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum
-public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.FibreFramesOnModels
 
 @[expose] public section
 
@@ -194,20 +197,26 @@ theorem le_lineDeg_root : ∀ (K E : Type) [Field K] [NumberField K] [Field E] [
   rw [h1, h2, mul_div_assoc, add_div]
   linarith
 
-theorem exists_twSec_keyRoot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → FnAlgClosed (Xo := Xo) (c := c) → 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → UnramPts Xo c (badPrimes H l) → Nonempty (KeySec Xo c) ∧ ∀ Z : Comp Xo c, ∃ t : TwSec U x Z (wtOf Dw 0 1), IntOff (badPrimes H l) t.lo ∧ -(((Module.finrank ℚ E / 2 * (Dw.p + Dw.q) : ℕ) : ℝ) * (Real.log (2 * Real.pi) / 2 + lrd E)) ≤ t.degLo := by
+/-- One key-root construction controls both valuation endpoints and their width. -/
+theorem exists_twSec_keyRoot_bounds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → FnAlgClosed (Xo := Xo) (c := c) → 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → UnramPts Xo c (badPrimes H l) →
+    Nonempty (KeySec Xo c) ∧
+    ∀ Z : Comp Xo c, ∃ t : TwSec U x Z (wtOf Dw 0 1),
+      IntOff (badPrimes H l) t.lo ∧ IntOff (badPrimes H l) t.hi ∧
+      -(((Module.finrank ℚ E / 2 * (Dw.p + Dw.q) : ℕ) : ℝ) * (Real.log (2 * Real.pi) / 2 + lrd E)) ≤ t.degLo ∧
+      ∀ w, t.hi w - t.lo w = ∑ τ : E →+* ℂ, (Dw.mult τ : ℝ) * (ord_vw w (conjDifferent (embF c τ)) : ℝ) := by
   intro E _ _ _ H Dw l Xo c r U x hU hx hF hpq hg hun
   obtain ⟨κ, k₁, k₂, k₃, k₄, k₅, k₆, -, -⟩ := GlobalTheory.KeyFamClosing.keyFam_one
   let e : Fin (Fintype.card (Σ τ : E →+* ℂ, Fin (Dw.mult τ))) ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ) :=
     (Fintype.equivFin _).symm
-  obtain ⟨K, hKmem, hKval⟩ := GlobalTheory.T.exists_unit_section_thetaKeyRule_weightFour κ k₁ k₂ k₆ E H Dw l Xo c _ e hpq
+  obtain ⟨K, hKmem, hKval⟩ := _root_.GlobalTheory.KeyFourth.exists_unit_secZ_keyRule κ k₁ k₂ k₆ E H Dw l Xo c _ e hpq
   have hσ0 := goodEmb_goodOf c c.F.val.toRingHom
-  obtain ⟨⟨ρ, hρmem⟩, hρ⟩ := GlobalTheory.T.exists_keySection_fourthRoot_perComponent κ k₁ k₂ k₆ k₄ E H Dw l Xo c _ e _ r (U _) K hσ0 (hU _ hσ0) hF hpq hKmem hKval
+  obtain ⟨⟨ρ, hρmem⟩, hρ⟩ := _root_.GlobalTheory.KeyRoot.exists_keySec_pow_four κ k₁ k₂ k₆ k₄ E H Dw l Xo c _ e _ r (U _) K hσ0 (hU _ hσ0) hF hpq hKmem hKval
   have hkr : GlobalTheory.IndefiniteRowSideFullHecke.FibreFramesOnModels.IsKeyRule κ := by
     refine ⟨?_, k₂, k₃, k₄, ?_⟩
     · simpa only [GlobalTheory.KeyCl.Homog, mul_one] using k₁
     · simpa only [GlobalTheory.KeyCl.ArchNorm, mul_one] using k₅
-  have hval := GlobalTheory.T.theta_key_section_valuation_bounds_different κ hkr E H Dw l Xo c _ e K hpq hg hKmem hKval
-  have hC := fun σ : c.F →+* ℂ => GlobalTheory.T.thetaKeySection_norm_complexPoints_eq_two_pi_pow κ k₁ k₂ k₅ E H Dw l Xo c _ e (goodOf c σ) r (U (goodOf c σ)) x K
+  have hval := _root_.GlobalTheory.KeyIntegralVal.key_valuation_bounds κ hkr E H Dw l Xo c _ e K hpq hg hKmem hKval
+  have hC := fun σ : c.F →+* ℂ => _root_.GlobalTheory.KeyArchNorm.homN_key_const κ k₁ k₂ k₅ E H Dw l Xo c _ e (goodOf c σ) r (U (goodOf c σ)) x K
     (goodEmb_goodOf c σ) (hU _ (goodEmb_goodOf c σ)) (hx _ (goodEmb_goodOf c σ)) ⟨⟨ρ, hρmem⟩⟩ hpq hKmem hKval
   choose C hCpos hClog hCeq using hC
   have hgE := card_frame_index Dw e
@@ -283,9 +292,9 @@ theorem exists_twSec_keyRoot : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
       norm_inf := fun σ z hz => by
         rw [(hnorm σ z hz).1, norm_goodOf]
       cusp_sig := fun G hG f hf =>
-        GlobalTheory.T.mul_mem_cuspForms_of_boundedSection_component E H Dw l Xo c r U x Z (wtOf Dw 0 1) s ⟨⟨ρ, hρmem⟩⟩ hU hpq (even_wtOf _ _) (hmono 1) hsm hsupp hbd G hG f hf
+        _root_.GlobalTheory.BddCusp.mul_mem_cuspOn_of_bdd E H Dw l Xo c r U x Z (wtOf Dw 0 1) s ⟨⟨ρ, hρmem⟩⟩ hU hpq (even_wtOf _ _) (hmono 1) hsm hsupp hbd G hG f hf
       cusp_inv := fun G hG f hf => by
-        have h7 := GlobalTheory.T.mul_mem_cuspForms_of_boundedSection_component E H Dw l Xo c r U x Z (wtOf Dw 0 (-1)) s' ⟨⟨ρ, hρmem⟩⟩ hU hpq (even_wtOf _ _) (hmono (-1))
+        have h7 := _root_.GlobalTheory.BddCusp.mul_mem_cuspOn_of_bdd E H Dw l Xo c r U x Z (wtOf Dw 0 (-1)) s' ⟨⟨ρ, hρmem⟩⟩ hU hpq (even_wtOf _ _) (hmono (-1))
           hsm' hsupp' hbd' (G + wtOf Dw 0 1) (hG.add (even_wtOf _ _)) f hf
         rwa [add_assoc, hadd, add_zero] at h7
       lo := fun w => -(vAdd w a : ℝ) / 4 - B w
@@ -305,25 +314,43 @@ theorem exists_twSec_keyRoot : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
         apply hw
         simp [hn]
       pts := hP }
-  refine ⟨t, ?_, ?_⟩
-  · intro w hw
+  have hBzero (w : HeightOneSpectrum (𝓞 c.F))
+      (hw : ∀ p ∈ badPrimes H l, ((p : ℕ) : 𝓞 c.F) ∉ w.asIdeal) : B w = 0 := by
+    refine Finset.sum_eq_zero fun τ _ => ?_
+    rw [ord_conjDifferent_eq_zero c.F E (embF c τ) w fun p hp hd =>
+      hw p (mem_badPrimes.2 ⟨hp, Or.inr (Or.inr (Or.inl hd))⟩)]
+    simp
+  have hhi : IntOff (badPrimes H l) t.hi := by
+    intro w hw
     obtain ⟨v, hv, hint⟩ := hun Z w hw
-    have hB : B w = 0 := by
-      refine Finset.sum_eq_zero fun τ _ => ?_
-      rw [ord_conjDifferent_eq_zero c.F E (embF c τ) w fun p hp hd => hw p (mem_badPrimes.2 ⟨hp, Or.inr (Or.inr (Or.inl hd))⟩)]
-      simp
     obtain ⟨h1, h2⟩ := hbnd w v hv
-    rw [hB, sub_zero] at h1
+    rw [hBzero w hw, sub_zero] at h1
     rcases hint s with h | ⟨n, hn⟩
-    · rw [h] at h2; exact absurd h2 (by simp)
+    · rw [h] at h2
+      exact absurd h2 (by simp)
     · refine ⟨n, ?_⟩
-      show -(vAdd w a : ℝ) / 4 - B w = n
-      rw [hB, sub_zero]
+      show -(vAdd w a : ℝ) / 4 = n
       rw [hn] at h1 h2
       exact le_antisymm (EReal.coe_le_coe_iff.1 h1) (EReal.coe_le_coe_iff.1 h2)
-  · have h8 := le_lineDeg_root c.F E (fun τ => Dw.mult τ) (fun τ => embF c τ) _ a C ha hCpos hClog hsum
+  refine ⟨t, ?_, hhi, ?_, fun w => ?_⟩
+  · intro w hw
+    obtain ⟨n, hn⟩ := hhi w hw
+    refine ⟨n, ?_⟩
+    show -(vAdd w a : ℝ) / 4 - B w = n
+    rwa [hBzero w hw, sub_zero]
+  · have h8 := le_lineDeg_root c.F E (fun τ => Dw.mult τ) (fun τ => embF c τ) _
+      a C ha hCpos hClog hsum
     show _ ≤ lineDeg _ _
     rw [hgE]
     exact h8
+  · show -(vAdd w a : ℝ) / 4 - (-(vAdd w a : ℝ) / 4 - B w) = B w
+    ring
+
+theorem exists_twSec_keyRoot : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → FnAlgClosed (Xo := Xo) (c := c) → 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → UnramPts Xo c (badPrimes H l) → Nonempty (KeySec Xo c) ∧ ∀ Z : Comp Xo c, ∃ t : TwSec U x Z (wtOf Dw 0 1), IntOff (badPrimes H l) t.lo ∧ -(((Module.finrank ℚ E / 2 * (Dw.p + Dw.q) : ℕ) : ℝ) * (Real.log (2 * Real.pi) / 2 + lrd E)) ≤ t.degLo := by
+  intro E _ _ _ H Dw l Xo c r U x hU hx hF hpq hg hun
+  obtain ⟨hkey, hsecs⟩ := exists_twSec_keyRoot_bounds E H Dw l Xo c r U x hU hx hF hpq hg hun
+  refine ⟨hkey, fun Z => ?_⟩
+  obtain ⟨t, hlo, _, hdeg, _⟩ := hsecs Z
+  exact ⟨t, hlo, hdeg⟩
 
 end GlobalTheory.KeyRootTw

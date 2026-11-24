@@ -51,8 +51,7 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 
 namespace GlobalTheory.LabEq
 
-theorem dualLab_dualLab' (d : List ℤ) : dualLab (dualLab d) = d := by
-  simp [dualLab, List.map_reverse]
+alias dualLab_dualLab' := _root_.GlobalTheory.SphLabelOps.dualLab_dualLab
 
 theorem dualLab_length' (d : List ℤ) : (dualLab d).length = d.length := by
   simp [dualLab]

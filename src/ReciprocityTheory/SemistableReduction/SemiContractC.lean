@@ -2,56 +2,14 @@ module
 
 public import ReciprocityTheory.SemistableReduction.LatSemiSt
 public import Lemmata.GeneralBFactSecond.Imports
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -62,7 +20,7 @@ open Matrix NumberField Module
 theorem sc_scale {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule (𝓞 K) (Fin r → K))
     (hL : Submodule.span K (L : Set (Fin r → K)) = ⊤) (x : Fin r → K) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ L := by
-  first | exact Bl.general_b_fact_second.goal1 .. | (apply Bl.general_b_fact_second.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second.goal1 <;> assumption)
+  first | (apply Bl.general_b_fact_second.goal1 <;> assumption)
 
 theorem sc_li_scale {K V ι : Type*} [Field K] [AddCommGroup V] [Module K V] {v : ι → V}
     (hv : LinearIndependent K v) (a : ι → K) (ha : ∀ i, a i ≠ 0) :
@@ -78,7 +36,7 @@ theorem sc_kerfam {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule 
       (∀ i, b i ∈ L) ∧ (∀ i, N *ᵥ b i = 0) ∧ LinearIndependent K b ∧
       ∀ y, N *ᵥ y = 0 → y ∈ Submodule.span K (Set.range b) := by
   set b0 := Module.finBasis K (LinearMap.ker N.mulVecLin)
-  choose d hd0 hdL using fun i => sc_scale L hL (b0 i : Fin r → K)
+  choose d hd0 hdL using fun i => _root_.Bl.general_b_fact_second.goal1 L hL (b0 i : Fin r → K)
   have hinj := FaithfulSMul.algebraMap_injective (𝓞 K) K
   have ha : ∀ i, algebraMap (𝓞 K) K (d i) ≠ 0 := fun i h =>
     hd0 i (hinj (by rw [h, map_zero]))
@@ -116,7 +74,7 @@ theorem sc_imfam {K : Type} [Field K] [NumberField K] {r : ℕ} (L : Submodule (
     obtain ⟨y, hy⟩ := LinearMap.mem_range.mp (e j).2
     exact ⟨y, by rw [← Matrix.mulVecLin_apply]; exact hy⟩
   choose y hy using hex
-  choose d hd0 hdL using fun j => sc_scale L hL (y j)
+  choose d hd0 hdL using fun j => _root_.Bl.general_b_fact_second.goal1 L hL (y j)
   have hinj := FaithfulSMul.algebraMap_injective (𝓞 K) K
   have ha : ∀ j, algebraMap (𝓞 K) K (d j) ≠ 0 := fun j h =>
     hd0 j (hinj (by rw [h, map_zero]))

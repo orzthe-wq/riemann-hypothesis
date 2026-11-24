@@ -128,6 +128,6 @@ omit [CommRing B] in
 theorem fil_le_map_fil : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J) (C : Type) [CommRing C]
     (J' : Ideal C) (δ' : DividedPowers J') (f : B →+* C), IsDPMorphism δ δ' f → J' = J.map f →
     ∀ N, fil δ' N ≤ (fil δ N).map f := by
-  apply GlobalTheory.PDA.fil_le_map_fil <;> assumption
+  apply GlobalTheory.PDA.fil_le_map_fil
 
 end FubiniStudyChowHeightFormula₂.Adr.Fil

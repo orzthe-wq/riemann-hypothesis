@@ -58,4 +58,4 @@ theorem _root_.GlobalTheory.T.thetaTransform_fixed_by_small_finiteHeisenberg : �
           co.e (incM D.host.F x) = (fun i => algebraMap D.host.F (AF D.host.F) (y i), fun i => algebraMap D.host.F (AF D.host.F) (z i))) →
         ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ, ∃ U : AddSubgroup (Formalism.IndefR.Datum.WO S T), IsOpen (U : Set (Formalism.IndefR.Datum.WO S T)) ∧
           ∀ u ∈ U, u.map (infPart D) = 0 → Formalism.IndefR.Datum.heisO ψ S T u (GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ) = GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ := by
-  first | exact @GlobalTheory.ThetaLevel.thetaTr_level | exact GlobalTheory.ThetaLevel.thetaTr_level | (intros; apply GlobalTheory.ThetaLevel.thetaTr_level <;> assumption)
+  first | exact @GlobalTheory.ThetaLevel.thetaTr_level

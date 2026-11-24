@@ -3,61 +3,16 @@ module
 public import Formalism.UnipotentAdelicQuotients.SWXSDefs
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteAdeleStrongApproximationModNat
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenNsmulAdelicCompletionOfVectorSet
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Convex.Contractible
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
 public import Mathlib.Analysis.SpecialFunctions.Complex.Circle
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.GroupTheory.ArchimedeanDensely
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.NumberField.ClassNumber
-import Mathlib.NumberTheory.SelbergSieve
 public import Mathlib.RingTheory.DedekindDomain.Different
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 public import Mathlib.Topology.Homotopy.Lifting
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Complex.Circle
 
 @[expose] public section
@@ -114,7 +69,7 @@ theorem denseRange_fin : DenseRange (algebraMap F (Af F)) := by
   have hc : Continuous fun z : Af F => y - z := continuous_const.sub continuous_id
   have hV : (fun z : Af F => y - z) ⁻¹' U ∈ 𝓝 (0 : Af F) :=
     hc.continuousAt.preimage_mem_nhds (by simpa using hU)
-  obtain ⟨N, hN, hNU⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ hV
+  obtain ⟨N, hN, hNU⟩ := _root_.GlobalTheory.LocalNormBound.main F _ hV
   obtain ⟨a, β, hβ, e⟩ := (GlobalTheory.AdLat.strong_approximation_mod_nat F N hN).1 y
   refine ⟨y - N • β, hNU β hβ, a, ?_⟩
   rw [e, add_sub_cancel_right]
@@ -151,8 +106,8 @@ theorem ker_mem_nhds {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ)
     refine ((Circle.isOpen_centeredArc _).preimage hχ).mem_nhds ?_
     rw [Set.mem_preimage, h0, Circle.mem_centeredArc (by linarith [Real.pi_pos])]
     simp [Real.pi_pos]
-  obtain ⟨N, hN, hNV⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ hV
-  refine Filter.mem_of_superset (GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds F N hN) ?_
+  obtain ⟨N, hN, hNV⟩ := _root_.GlobalTheory.LocalNormBound.main F _ hV
+  refine Filter.mem_of_superset (_root_.GlobalTheory.IntegralNeighbourhoodZero.nsmul_integral_mem_nhds_zero F N hN) ?_
   rintro _ ⟨a, ha, rfl⟩
   have : χ (N • a) = 1 := by
     refine Circle.eq_one_of_forall_pow_mem_centeredArc_pi_div_two fun n _ => ?_
@@ -170,7 +125,7 @@ theorem ker_mem_nhds {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ)
 
 theorem exists_nsmul_inf {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
     ∃ N : ℕ, 0 < N ∧ ∀ r : 𝓞 F, ψ (pairA F (algebraMap F _ ((N : F) * r)) 0) = 1 := by
-  obtain ⟨N, hN, h⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ (ker_mem_nhds hψ.1 hψ.2.1)
+  obtain ⟨N, hN, h⟩ := _root_.GlobalTheory.LocalNormBound.main F _ (ker_mem_nhds hψ.1 hψ.2.1)
   refine ⟨N, hN, fun r => ?_⟩
   have h1 : ψ (pairA F 0 (N • algebraMap F (Af F) r)) = 1 :=
     h _ fun v => HeightOneSpectrum.coe_mem_adicCompletionIntegers v r
@@ -352,7 +307,7 @@ theorem exists_fin {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (v : HeightOn
   obtain ⟨a, ha⟩ := exists_trace hψ
   have ha0 := trace_mul_ne_zero hψ ha
   obtain ⟨N, hN, hNU⟩ :=
-    GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ (ker_mem_nhds hψ.1 hψ.2.1)
+    _root_.GlobalTheory.LocalNormBound.main F _ (ker_mem_nhds hψ.1 hψ.2.1)
   obtain ⟨t, ht0, htv, htw⟩ := exists_mem_only v
   have key : ∀ y : F, (∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → w.valuation F y ≤ 1) →
       ∃ n : ℤ, Algebra.trace ℚ F (a * (N * y)) = n := fun y hy => by
@@ -389,10 +344,6 @@ theorem exists_fin {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (v : HeightOn
   have h1 : (1 : FractionalIdeal (𝓞 F)⁰ F) ≠ 0 := by
     first
       | exact one_ne_zero
-      | exact FractionalIdeal.one_ne_zero
-      | simp
-      | (rw [← FractionalIdeal.coeIdeal_top]; exact FractionalIdeal.coeIdeal_ne_zero.2 top_ne_bot)
-      | (rw [← Ideal.one_eq_top, FractionalIdeal.coeIdeal_one]; simp)
   have hD : ∀ k : ℕ, a * N / (t : F) ^ k ∈ D := fun k => by
     rw [FractionalIdeal.mem_dual h1]
     intro x hx

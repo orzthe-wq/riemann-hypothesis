@@ -74,15 +74,9 @@ theorem unip_apply_last_last (n : ℕ) (v : Multiplicative (Fin n → k)) :
 
 end Entries
 
-theorem blockIndex_false_val (m j : ℕ) (a : Fin m) : (eGP m j ⟨false, a⟩ : Fin (m + j + 1)).val = a.val := by
-  first
-  | rfl
-  | simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.stdSum]
-
 theorem blockIndex_true_val (m j : ℕ) (b : Fin (j + 1)) : (eGP m j ⟨true, b⟩ : Fin (m + j + 1)).val = m + b.val := by
   first
   | rfl
-  | simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.stdSum]
 
 end GlobalTheory.CompanionTheory.BZMir.GpExists
 
@@ -139,9 +133,6 @@ theorem exists_gpProj_unip (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
     | (show ((GlobalTheory.SmGL.leviProj k (GlobalTheory.BZMir.Leib.eGP m j)
           (GlobalTheory.BZMir.Leib.hgpIncl k m j ⟨⟨GlobalTheory.BZMir.unip k (m + j) v', hM⟩, hP⟩) true :
           GL _ k) : Matrix _ _ k) b b' = _
-       rw [GlobalTheory.SmGL.leviProj_apply])
-    | (simp only [GlobalTheory.BZMir.Leib.gpProj, MonoidHom.prod_apply, MonoidHom.codRestrict_apply,
-          MonoidHom.coe_codRestrict, MonoidHom.comp_apply, Pi.evalMonoidHom_apply, Subgroup.coe_mk]
        rw [GlobalTheory.SmGL.leviProj_apply])
     change ((GlobalTheory.BZMir.unip k (m + j) v' : GL (Fin (m + j + 1)) k) :
       Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) _ _ = _

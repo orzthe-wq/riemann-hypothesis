@@ -80,9 +80,7 @@ theorem dlB_pos (S : C.HidaSetting E Wp Wq) (hg : 0 < S.g) (b s : ℕ) : 0 < KB.
   have hg' : (0 : ℝ) < S.g := by exact_mod_cast hg
   refine div_pos ?_ (div_pos two_pos (mul_pos hrd (pow_pos hg' 3)))
   first
-  | exact pow_pos hrd _
   | exact zpow_pos hrd _
-  | exact Real.rpow_pos_of_pos hrd _
 
 theorem exists_word_of_admissible_at_place (S : C.HidaSetting E Wp Wq) {v : Fin S.f} {a : List C.Letter} (ha : D.AdmAt S v a) :
     ∃ w : S.W, w.1 v = a := ha
@@ -123,7 +121,7 @@ theorem offdiag_bound {Z : Type} (w : Z → Z → ℂ) (a b : Z → Z → ℂ) (
   rw [Complex.nonneg_iff] at hd0 hd1
   have hw : ‖w p p‖ ^ 2 ≤ (a p p).re * (b p p).re := by
     have h3 := hdet.1
-    simp only [Complex.sub_re, Complex.mul_re, Complex.mul_conj, Complex.ofReal_re,
+    simp only [Complex.mul_re, Complex.mul_conj, Complex.ofReal_re,
       Complex.normSq_eq_norm_sq, ← hd0.2, ← hd1.2] at h3
     nlinarith [h3]
   calc ‖w p p‖ ^ 2 ≤ (a p p).re * (b p p).re := hw

@@ -69,7 +69,7 @@ theorem sImg_indep_finite (K Ω : Type) [Field K] [CharZero K] [Field Ω] [Algeb
     Function.Injective (sHom (K := K) (D := D) j₀ x) ∧
       FiniteDimensional (IntermediateField.adjoin K (Set.range (sImg (D := D) j₀ x)))
         (OmS Ω D N) := by
-  have hfs := ReciprocityTheory.MultiplicativeHeights.Closed.fieldOfS K Ω D N x hfg htr hJ
+  have hfs := _root_.ReciprocityTheory.MultiplicativeHeights.genericImageFinite K Ω D N x hfg htr hJ
   let e : TVar D N ≃ TVar D N :=
     Equiv.prodCongr (Equiv.refl _) (Fin.cycleRange j₀).symm
   have key : (ReciprocityTheory.MultiplicativeHeights.sImage (D := D) x) = (sImg (D := D) j₀ x) ∘ e := by
@@ -167,8 +167,7 @@ theorem sImg_rel {Ω : Type} [Field Ω] {D N : ℕ} (j₀ : Fin (N + 1)) (x : Fi
       algebraMap Ω (OmS Ω D N) a := fun a => by
     rw [← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]
 
-  simp only [sImg, sac_self, sac_succAbove, Fin.succ_ne_zero, if_false,
-  ↓reduceIte, map_neg, map_sum, map_mul, hC]
+  simp only [sImg, sac_self, sac_succAbove, Fin.succ_ne_zero, ↓reduceIte, map_neg, map_sum, map_mul, hC]
   exact neg_add_cancel _
 
 theorem bijOn_restrict {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {D N : ℕ}

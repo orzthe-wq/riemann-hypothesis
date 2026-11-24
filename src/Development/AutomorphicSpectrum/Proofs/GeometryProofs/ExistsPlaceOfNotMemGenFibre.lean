@@ -99,7 +99,7 @@ theorem exists_place_of_notMem_genFibre (hN : NormalCpt ξ) (φ : F →+* Ω) {p
   have hf : ∀ a : 𝓞 F, ((f a : regAt ξ p) : Ω) = φ (a : F) := fun _ => rfl
   have hmem : ∀ a : 𝓞 F, a ∈ (IsLocalRing.maximalIdeal (regAt ξ p)).comap f ↔ ¬ unitAt ξ p (φ (a : F)) := by
     intro a
-    rw [Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Centre.Sep.isUnit_regAt_iff, hf]
+    rw [Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, _root_.GlobalTheory.CompanionTheory.Ar.Centre.isUnit_regAt_iff, hf]
   obtain ⟨o, ho, hu⟩ : ∃ o : ℤ, o ≠ 0 ∧ ¬ unitAt ξ p (algebraMap ℤ Ω o) := by
     by_contra h
     push_neg at h

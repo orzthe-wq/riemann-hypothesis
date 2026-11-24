@@ -64,7 +64,7 @@ theorem isIso_cokernel_map_of_etale_local_iso (R : Type) [CommRing R] {A' B' A B
       (G.map ((freeP R).map b)) (by rw [← G.map_comp, ← w', G.map_comp]) ≫
         cokernelComparison ((freeP R).map i) G =
       cokernelComparison ((freeP R).map i') G ≫ G.map (pcok R i' i a b w) :=
-    cokernel_map_comp_cokernelComparison _ G _ _ _ (by first | exact w' | exact w'.symm)
+    cokernel_map_comp_cokernelComparison _ G _ _ _ (by first | exact w'.symm)
   have h2 : IsIso (cokernelComparison ((freeP R).map i') G ≫ G.map (pcok R i' i a b w)) := by
     have : IsIso (G.map (pcok R i' i a b w)) := hW
     infer_instance

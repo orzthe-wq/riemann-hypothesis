@@ -83,8 +83,6 @@ theorem cosetConv_of_continuous_law : ∀ (D : D7) (n : ℕ) (χ : (AE D)ˣ →*
   have hχ : ∀ u : Circle, ‖(u : ℂ)‖ = 1 := fun u => by
     first
       | exact Circle.norm_coe u
-      | exact mem_sphere_zero_iff_norm.mp u.2
-      | simp [Circle.abs_coe]
   have key : ∀ x, ‖φ x‖ ≤ C / ‖φ₀ k₀‖ * ‖φ₀ x‖ := by
     intro x
     obtain ⟨p, hp, k, hk, rfl⟩ := GlobalTheory.StdUnn.Iwasawa.exists_mul D n x
@@ -100,7 +98,7 @@ theorem cosetConv_of_continuous_law : ∀ (D : D7) (n : ℕ) (χ : (AE D)ˣ →*
           (s₁ + (n : ℂ) / 2)‖ := by
       simp only [GlobalTheory.Doubling.npow]
       rw [Complex.norm_cpow_eq_rpow_re_of_pos hr, Complex.norm_cpow_eq_rpow_re_of_pos hr]
-      congr 1 <;> simp
+      congr 1
     have hb : ‖φ k‖ ≤ C / ‖φ₀ k₀‖ * ‖φ₀ k‖ := by
       refine le_trans (hC k hk) ?_
       calc C = C / ‖φ₀ k₀‖ * ‖φ₀ k₀‖ := (div_mul_cancel₀ C hc.ne').symm

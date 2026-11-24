@@ -94,8 +94,6 @@ theorem multiset_prod_sub_dvd {S ι : Type*} [CommRing S] (t : S) (k : ℕ) (x y
 theorem finsupp_prod_eq_multiset {S ι : Type*} [CommMonoid S] (x : ι → S) (e : ι →₀ ℕ) :
     e.prod (fun i m => x i ^ m) = (e.toMultiset.map x).prod := by
   first
-  | (rw [← Finsupp.toMultiset_map, Finsupp.prod_toMultiset,
-      Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)])
   | (induction e using Finsupp.induction with
       | zero => simp
       | single_add i m f hi hm ih =>
@@ -240,7 +238,6 @@ def expC (q : ℕ) (ga : Fin d → PowerSeries C) : Fin d → PowerSeries C :=
 theorem expC_apply {q : ℕ} (hq : q ≠ 0) (ga : Fin d → PowerSeries C) (a : Fin d) :
     expC q ga a = PowerSeries.expand q hq (ga a) := by
   first
-  | rfl
   | (simp only [expC]; rw [PowerSeries.expand_eq_subst])
   | (unfold expC; ext m; rw [PowerSeries.coeff_expand, PowerSeries.coeff_subst_X_pow] <;> simp [hq])
 
@@ -266,7 +263,7 @@ theorem lgCurve_expC (G : LogFGL v d) {q : ℕ} (hq : q ≠ 0) {ga : Fin d → P
     | exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun b => h0 b)
   have hX : HasSubst (fun _ : Unit => (PowerSeries.X ^ q : PowerSeries C)) := by
     first
-    | exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by first | simp [hq, PowerSeries.X] | (simp [hq]; exact PowerSeries.constantCoeff_X))
+    | exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by first | simp [hq, PowerSeries.X])
   have e1 : ∀ g : PowerSeries C,
       PowerSeries.expand q hq g = PowerSeries.subst (PowerSeries.X ^ q : PowerSeries C) g :=
     fun g => (expC_apply hq (fun _ => g) a).symm

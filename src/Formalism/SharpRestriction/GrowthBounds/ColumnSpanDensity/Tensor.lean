@@ -92,8 +92,7 @@ private theorem rowAct_invariant_zero_weight_iff {K : Type} [CommRing K] {r n : 
     apply MvPolynomial.algHom_ext
     intro v
 
-    simp only [rowAct, AlgHom.comp_apply, aeval_X, map_sum, map_mul, aeval_C, Matrix.mul_apply, C_mul,
-    Finset.mul_sum, Finset.sum_mul, algebraMap_eq, mul_assoc]
+    simp only [rowAct, AlgHom.comp_apply, aeval_X, map_sum, map_mul, aeval_C, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, algebraMap_eq, mul_assoc]
     exact Finset.sum_comm
   exact AlgHom.congr_fun e F
 

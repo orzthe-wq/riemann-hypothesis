@@ -2,10 +2,12 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsBlkCover
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJMap
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishingStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverBasePointInPointsStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverFrameCompatibilityStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameChangeUnderFieldMapStatement
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GenericBlockMatrixIsBlockDiag
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverBasePointInPoints
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverFrameCompatibility
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameChangeUnderFieldMap
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -109,7 +111,7 @@ theorem minor_of_plk (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk}
     (hk : M.blk p = some k) {I : Finset (Fin N)} (hI : IsStepRows N j p.2 I) {g : Matrix (Fin N) (Fin N) ℂ}
     (hg : IsBlockDiag j g) :
     ∑ m : ι k, valAt M.x (F.u' I ⟨k, m⟩) b * plk M F b p.2 ⟨k, m⟩ g = minorIJ g I (stepCols N j p.2) := by
-  have hi := GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le
+  have hi := _root_.GlobalTheory.CompanionTheory.Ar.PB.MinorCalc.minors_main ℂ N j p.2 M.j_le
   have hz : ∀ I', ¬ IsStepRows N j p.2 I' → minorIJ g I' (stepCols N j p.2) = 0 := fun I' h =>
     (hi.2.1 g I' hg h).resolve_right (stepCols_nonempty M.j_le p.2).ne_empty
   have hv : ∀ I', IsStepRows N j p.2 I' →
@@ -144,7 +146,7 @@ theorem minor_eq_of_plk (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.b
   · rw [← minor_of_plk M hb hF hG hk hI hg, ← minor_of_plk M hb hF hG hk hI hg₂, Finset.mul_sum]
     refine Finset.sum_congr rfl fun m _ => ?_
     rw [h m]; ring
-  · have hi := GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le
+  · have hi := _root_.GlobalTheory.CompanionTheory.Ar.PB.MinorCalc.minors_main ℂ N j p.2 M.j_le
     have hne := (stepCols_nonempty M.j_le p.2).ne_empty
     rw [(hi.2.1 g I hg hI).resolve_right hne, (hi.2.1 g₂ I hg₂ hI).resolve_right hne, mul_zero]
 
@@ -154,8 +156,8 @@ theorem plk_moved_indep : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, F
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv b F₁' F₂' F₁ F₂ H₁ H₂ hb hF₁' hF₂' hF₁ hF₂ hG₁' hG₂' hG₁ hG₂
     hH₁ hH₂ hyp p k hk
   obtain ⟨k', hk'⟩ := exists_blk_cover M' hk
-  obtain ⟨hbv, hpt⟩ := GlobalTheory.T.flag_cover_base_point_in_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv b hb
-  have hi := GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le
+  obtain ⟨hbv, hpt⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.Pt.main K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv b hb
+  have hi := _root_.GlobalTheory.CompanionTheory.Ar.PB.MinorCalc.minors_main ℂ N j p.2 M.j_le
   have dT₁' := (hF₁'.1 p.1).2
   have dP : ∀ F : FrameData ι Ψ N M.Ω M.blk, M.IsFrame F → ((F.T p.1).map Cv.φ).det ≠ 0 := fun F hF => by
     have e : ((F.T p.1).map Cv.φ).det = Cv.φ (F.T p.1).det := (RingHom.map_det Cv.φ (F.T p.1)).symm
@@ -173,7 +175,7 @@ theorem plk_moved_indep : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, F
   have c₆ := reg_chain hb (dP F₂ hF₂) c₃.1 (fun a c => (r₂₂ a c).1)
 
   have eid : ∀ A : Matrix (Fin N) (Fin N) M'.Ω, A.map (RingHom.id M'.Ω) = A := fun A => by ext; rfl
-  obtain ⟨c', hc'0, hc'⟩ := GlobalTheory.T.frame_change_under_field_map K' ι' Φ' y' Ψ N j M' (NonPluckerBlocks M'.blk) (baseIdx ι' M'.blk) M'.Ω M'.x
+  obtain ⟨c', hc'0, hc'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.FV.main K' ι' Φ' y' Ψ N j M' (NonPluckerBlocks M'.blk) (baseIdx ι' M'.blk) M'.Ω M'.x
     (RingHom.id _) b F₁' F₂' hb hF₁' hF₂' (fun k => coord_ne hb (hG₁'.1 k)) (fun k => coord_ne hb (hG₂'.1 k)) p k' hk'
     (fun m I => ⟨(hG₁'.2.1 _ _).1, (hG₂'.2.1 _ _).1, (hG₁'.2.1 _ _).2, (hG₂'.2.1 _ _).2⟩)
     (fun a c => by simp only [eid]; exact ⟨c₁.1 a c, c₂.1 a c⟩)
@@ -201,13 +203,13 @@ theorem plk_moved_indep : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, F
     rw [e₂ I']
     field_simp
 
-  obtain ⟨c, hc0, hc⟩ := GlobalTheory.T.frame_change_under_field_map K ι Φ y Ψ N j M (NonPluckerBlocks M'.blk) (baseIdx ι' M'.blk) M'.Ω M'.x Cv.φ b F₁ F₂
+  obtain ⟨c, hc0, hc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.FV.main K ι Φ y Ψ N j M (NonPluckerBlocks M'.blk) (baseIdx ι' M'.blk) M'.Ω M'.x Cv.φ b F₁ F₂
     hb hF₁ hF₂ (fun k => coord_ne hbv (hG₁.1 k)) (fun k => coord_ne hbv (hG₂.1 k)) p k hk
     (fun m I => ⟨(hpt _ (hG₁.2.1 _ _).1).1, (hpt _ (hG₂.2.1 _ _).1).1, (hpt _ (hG₁.2.1 _ _).2).1,
       (hpt _ (hG₂.2.1 _ _).2).1⟩)
     (fun a c => ⟨c₃.1 a c, c₄.1 a c⟩)
   rw [← hS] at hc
-  have bdT₂ := (GlobalTheory.T.flag_cover_frame_compatibility K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv b F₂' F₂ hb hF₂' hF₂ hG₂' hG₂ p.1).1
+  have bdT₂ := (_root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.trans_blockDiag_det K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv b F₂' F₂ hb hF₂' hF₂ hG₂' hG₂ p.1).1
   have hval : ∀ F : FrameData ι Ψ N M.Ω M.blk, M.GoodAt F (mCoordIdeal (b ∘ Cv.v)) → ∀ q I,
       valAt M'.x (Cv.φ (F.u q I)) b = valAt M.x (F.u q I) (b ∘ Cv.v) := fun F hG q I => (hpt _ (hG.2.1 q I).1).2
   refine ⟨μ⁻¹ * c, mul_ne_zero (inv_ne_zero hμ) hc0, fun m => ?_⟩

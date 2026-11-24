@@ -159,7 +159,7 @@ lemma flag_ind [IsAlgClosed C] [CharZero C] (hv : v.Integers R) [Fintype F] [Dec
       unfold flagSub
       have hu : {j : Fin n | (j : ℕ) < n} = Set.univ := by
         ext j
-        simp [j.isLt]
+        simp
       rw [hu, Set.image_univ, b.span_eq]
     haveI : Subsingleton Q := by
       constructor

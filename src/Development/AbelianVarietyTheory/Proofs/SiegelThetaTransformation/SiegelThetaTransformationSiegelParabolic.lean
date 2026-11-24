@@ -148,7 +148,6 @@ theorem _root_.GlobalTheory.SW.Parab.isSB_parChar_mul {κ ι : Type} [Fintype κ
       have hx2 : x k j = U k j / R := by rw [hU]; field_simp
       have hS : S i j = T i j / d := by rw [hT]; field_simp
       simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
-      push_cast
       rw [hx1, hx2, hS, ← hY k i, ← hY k j]
       field_simp
       ring
@@ -248,7 +247,7 @@ theorem _root_.GlobalTheory.SW.Parab.trans_parabolic : ∀ (κ ι : Type) [Finty
       simp [_root_.GlobalTheory.SW.qm]
     unfold _root_.GlobalTheory.SW.thS _root_.GlobalTheory.SW.spAct _root_.GlobalTheory.SW.spDen
     rw [h0, ← hA, ← hB, ← hD]
-    simp only [zero_mul, zero_add, Matrix.mul_zero, zero_mulVec, dotProduct_zero, Finset.sum_const_zero,
+    simp only [zero_mul, zero_add, zero_mulVec, dotProduct_zero, Finset.sum_const_zero,
       mul_zero, Complex.exp_zero, mul_one, hqD, Pi.smul_apply, smul_eq_mul]
     conv_rhs => rw [← e.tsum_eq, ← tsum_mul_left]
     congr 1

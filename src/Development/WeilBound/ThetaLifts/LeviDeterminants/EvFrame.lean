@@ -1,7 +1,7 @@
 module
 
 public import Development.WeilBound.ThetaLifts.LeviDeterminants.MixedModels.AdaptC
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallySelfDualLatticeIndicatorIsVacuum
+import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.EventuallySelfDualLatticeIndicatorIsVacuum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -98,7 +98,7 @@ theorem incM_one' {α : Type} [DecidableEq α] : incM F (1 : Matrix α α E) = 1
 theorem inc_herm {α : Type} {J : Matrix α α E} {η : ℤ} (hJ : ∀ i j, σ (J j i) = η * J i j) (i j : α) :
     cA σ (incM F J j i) = η * incM F J i j := by
   show cA σ (inclR (F := F) (AF F) _) = _ * inclR (F := F) (AF F) _
-  rw [GlobalTheory.VacIndic.cA_inclR, hJ, map_mul, map_intCast]
+  rw [Tw.VacIndic.cA_inclR, hJ, map_mul, map_intCast]
 
 structure FrOK (σ : E →ₐ[F] E) {m m₁ : ℕ} (Y : Spc F E m) (Y₁ : Spc F E m₁) (H : Plane E m m₁) (η : ℤ)
     (Q : Matrix (Fin m₁ ⊕ Fin 2) (Fin m) E) : Prop where

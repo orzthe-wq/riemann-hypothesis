@@ -386,8 +386,6 @@ theorem step {π : Submodule ℂ (UA E n → ℂ)} (hπ : IsAutRepU π) {w : Pl 
         simp only [Submodule.coe_smul, map_smul, hv q hq] }
   have hWst : ∀ (g : locU n w), ∀ v ∈ W, (GlobalTheory.UnitaryBC.SatEx.pull π hst j g) v ∈ W := by
     intro g v hv q hq
-    change RU E n q (((GlobalTheory.UnitaryBC.SatEx.pull π hst j g) v : π) : UA E n → ℂ) =
-      (((GlobalTheory.UnitaryBC.SatEx.pull π hst j g) v : π) : UA E n → ℂ)
     rw [key, ← Module.End.mul_apply, ← map_mul, hQ q hq g g.2, map_mul, Module.End.mul_apply, hv q hq]
   have hne : W ⊓ GlobalTheory.PRep.fixed (GlobalTheory.UnitaryBC.SatEx.pull π hst j)
       ((GlobalTheory.LFun.KGL w (n := n)).comap ((cLoc w).comp (locU n w).subtype)) ≠ ⊥ := by

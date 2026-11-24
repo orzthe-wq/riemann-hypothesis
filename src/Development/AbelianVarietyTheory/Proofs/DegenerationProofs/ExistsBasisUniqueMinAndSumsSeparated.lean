@@ -61,7 +61,7 @@ theorem eq_zero_of_sum_eq_sum_add_nsmul {X : Type*} [AddCommGroup X] {ι : Type*
     have := congrArg (fun x => e.repr x i) h
 
     simp only [map_add (f := _), map_sum, map_nsmul, Finsupp.coe_add, Pi.add_apply, Finsupp.coe_finsetSum,
-    Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, nsmul_eq_mul] at this
+    Finset.sum_apply, Finsupp.coe_smul, nsmul_eq_mul] at this
     exact_mod_cast this
   have bound : ∀ γ : Fin k → X, (∀ j i, |(e.repr (γ j) i : ℝ)| ≤ C) →
       |∑ j, (e.repr (γ j) i : ℝ)| ≤ D * C := fun γ hγ => by

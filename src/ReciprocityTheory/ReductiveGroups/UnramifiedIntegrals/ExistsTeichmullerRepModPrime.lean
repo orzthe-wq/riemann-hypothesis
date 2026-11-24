@@ -1,50 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.KurDefs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ExistsPowerMulUnitNorm
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FrobFixNegOne
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.NormNatCastClOfNotDvd
@@ -73,38 +30,26 @@ theorem tch_mem_kur {ξ : ℂ_[l]} (hξ : ξ ∈ Tch l) : ξ ∈ MaximalUnramifi
   · exact (MaximalUnramifiedExtension l).zero_mem
   · exact kmu_le_kur l (Subfield.subset_closure h)
 
-theorem norm_sub_le_max_padic (x y : ℂ_[l]) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
-  have h := IsUltrametricDist.dist_triangle_max x 0 y
-  rw [dist_eq_norm, dist_eq_norm, dist_eq_norm, sub_zero, zero_sub, norm_neg] at h
-  exact h
-
 theorem norm_eq_of_norm_sub_lt_max {x y : ℂ_[l]} (h : ‖x - y‖ < max ‖x‖ ‖y‖) : ‖x‖ = ‖y‖ := by
   by_contra hne
   rcases lt_or_gt_of_ne hne with hlt | hgt
-  · have h1 := norm_sub_le_max_padic l x (x - y)
+  · have h1 := _root_.ReciprocityTheory.ChartRestriction.L1.norm_sub_le_max_Cl l x (x - y)
     rw [sub_sub_cancel] at h1
     rw [max_eq_right hlt.le] at h
     have h2 : max ‖x‖ ‖x - y‖ < ‖y‖ := max_lt hlt h
     linarith
-  · have h1 := norm_sub_le_max_padic l y (y - x)
+  · have h1 := _root_.ReciprocityTheory.ChartRestriction.L1.norm_sub_le_max_Cl l y (y - x)
     rw [sub_sub_cancel] at h1
     rw [max_eq_left hgt.le, norm_sub_rev] at h
     have h2 : max ‖y‖ ‖y - x‖ < ‖x‖ := max_lt hgt h
     linarith
 
-private theorem norm_natCast_l_padicComplex_eq_inv : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
-  have h := PadicComplex.norm_extends (p := l) ((l : ℚ_[l]) : PadicAlgCl l)
-  rw [PadicAlgCl.norm_extends, Padic.norm_p] at h
-  have e : (((l : ℚ_[l]) : PadicAlgCl l) : ℂ_[l]) = (l : ℂ_[l]) := by simp
-  rw [e] at h
-  exact h
-
 theorem norm_prime_pos_complexPadic : 0 < ‖(l : ℂ_[l])‖ := by
-  rw [norm_natCast_l_padicComplex_eq_inv l]
+  rw [_root_.ReciprocityTheory.ChartRestriction.L1.norm_l_Cl l]
   exact inv_pos.mpr (by exact_mod_cast (Fact.out : Nat.Prime l).pos)
 
 theorem norm_prime_lt_one_complexPadic : ‖(l : ℂ_[l])‖ < 1 := by
-  rw [norm_natCast_l_padicComplex_eq_inv l]
+  rw [_root_.ReciprocityTheory.ChartRestriction.L1.norm_l_Cl l]
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : Nat.Prime l).one_lt)
 
 theorem kmu_discrete {x : ℂ_[l]} (hx : x ∈ Kmu l) (h1 : ‖x‖ < 1) : ‖x‖ ≤ ‖(l : ℂ_[l])‖ := by
@@ -161,7 +106,7 @@ theorem kmu_rep {x : ℂ_[l]} (hx : x ∈ Kmu l) (h1 : ‖x‖ ≤ 1) :
     field_simp
     ring
   rw [he, norm_div, norm_mul b, hb, hβ1, mul_one, div_one]
-  refine (norm_sub_le_max_padic l _ _).trans (max_le ?_ ?_)
+  refine (_root_.ReciprocityTheory.ChartRestriction.L1.norm_sub_le_max_Cl l _ _).trans (max_le ?_ ?_)
   · rw [norm_mul, hβ1, mul_one]; exact hαa
   · rw [norm_mul]
     exact (mul_le_of_le_one_left (norm_nonneg _) (tch_norm_le l hα)).trans hβb
@@ -187,12 +132,12 @@ theorem kur_rep {x : ℂ_[l]} (hx : x ∈ MaximalUnramifiedExtension l) (h1 : �
   obtain ⟨y, hy, hxy⟩ := kur_approx l hx ‖(l : ℂ_[l])‖ (norm_prime_pos_complexPadic l)
   have hl1 := norm_prime_lt_one_complexPadic l
   have hy1 : ‖y‖ ≤ 1 := by
-    have h := norm_sub_le_max_padic l x (x - y)
+    have h := _root_.ReciprocityTheory.ChartRestriction.L1.norm_sub_le_max_Cl l x (x - y)
     rw [sub_sub_cancel] at h
     exact h.trans (max_le h1 (by linarith))
   obtain ⟨ξ, hξ, hyξ⟩ := kmu_rep l hy hy1
   refine ⟨ξ, hξ, ?_⟩
-  have h := norm_sub_le_max_padic l (x - y) (ξ - y)
+  have h := _root_.ReciprocityTheory.ChartRestriction.L1.norm_sub_le_max_Cl l (x - y) (ξ - y)
   rw [sub_sub_sub_cancel_right, norm_sub_rev ξ y] at h
   exact h.trans (max_le hxy.le hyξ)
 

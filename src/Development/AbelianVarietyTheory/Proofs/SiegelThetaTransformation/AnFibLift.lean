@@ -77,7 +77,7 @@ theorem val_pullU (x : Sp ℂ ⟶ Y) (f : Y ⟶ X) (U : X.Opens) (u : Γ(X, U)ˣ
 
 theorem mem_wchart (x : Sp ℂ ⟶ Y) (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (j : K → L.ι) :
     ⊤ ≤ x ⁻¹ᵁ LB.wchart L φ j ↔ ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (j k) := by
-  simp only [top_le_preimage_comp, top_le_preimage_iff_mem]
+  simp only [top_le_preimage_iff_mem]
   exact Set.mem_iInter
 
 theorem exists_chart (x : Sp ℂ ⟶ X) (L : LB X) (hL : L.IsLB) : ∃ j, ⊤ ≤ x ⁻¹ᵁ L.U j := by

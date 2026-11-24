@@ -2,51 +2,6 @@ module
 
 public import GroundTheory.AutomorphicForms.MacdonaldAlternant
 public import Mathlib.LinearAlgebra.Vandermonde
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -171,7 +126,7 @@ theorem exists_antisymm_hlFactor_eq (t : ℂ) :
     refine ⟨(hlFactor n t).coeff ν * c, ?_⟩
     have : (single ν ((hlFactor n t).coeff ν) : LaurentRing n) =
         (hlFactor n t).coeff ν • monomial ν := by
-      simp [monomial, smul_single']
+      simp [monomial]
     rw [this, map_smul, ← alternant, hc, smul_smul]
   choose c hc using key
   refine ⟨∑ ν ∈ (hlFactor n t).coeff.support.attach, c ν.1 ν.2, ?_⟩
@@ -369,7 +324,7 @@ theorem hlR_zero (t : ℂ) (ht : Function.Injective fun k : ℕ => t ^ k) :
       rw [hlFactor]
       exact Finset.prod_eq_one fun p _ => p.1.elim0
     rw [hD, hδ, antisymm_apply, Fintype.sum_unique] at hc
-    simp only [Equiv.Perm.sign_one, one_smul, map_one] at hc
+    simp only [map_one] at hc
     rw [vPoly, Finset.range_zero, Finset.prod_empty]
     have := congrArg (fun p : LaurentRing 0 => p.coeff 0) hc
     simp [AddMonoidAlgebra.one_def] at this

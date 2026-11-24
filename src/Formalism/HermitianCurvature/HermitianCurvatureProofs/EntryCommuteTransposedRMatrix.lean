@@ -64,11 +64,10 @@ theorem cond_iff (a : S) (i j : Fin 2) (x y : Ix S) :
     (x a = i ∧ y a = j ∧ ∀ b, b ≠ a → x b = y b) ↔ (x a = i ∧ y = Function.update x a j) := by
   constructor
   · rintro ⟨h1, h2, h3⟩
-    refine ⟨h1, ?_⟩
-    funext b
-    by_cases hb : b = a
-    · subst hb; simp [h2]
-    · simp [Function.update_of_ne hb, h3 b hb]
+    refine ⟨h1, funext fun b => ?_⟩
+    obtain rfl | hb := eq_or_ne b a
+    · simpa using h2
+    · rw [Function.update_of_ne hb, h3 b hb]
   · rintro ⟨h1, rfl⟩
     refine ⟨h1, by simp, ?_⟩
     intro b hb
@@ -94,9 +93,7 @@ theorem eU_mul_eU (a : S) (i j k l : Fin 2) :
   rw [eU_mul_apply, eU_apply]
   by_cases hjk : j = k
   · subst hjk
-    simp only [Function.update_self, Function.update_idem, true_and, if_true]
-    rw [eU_apply]
-    by_cases h : x a = i <;> simp [h]
+    by_cases h : x a = i <;> simp [eU_apply, Function.update_idem, h]
   · simp [hjk]
 
 theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
@@ -135,9 +132,7 @@ theorem EC.mul {z : B} {M N : M2 B} (hM : EC z M) (hN : EC z N) : EC z (M * N) :
 
 theorem EC.one (z : B) : EC z (1 : M2 B) := by
   intro i j
-  by_cases h : i = j
-  · subst h; simp
-  · simp [Matrix.one_apply_ne h]
+  by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
 theorem diag_comm {z : B} {M : M2 B} (h : EC z M) :
     (Matrix.diagonal fun _ => z) * M = M * (Matrix.diagonal fun _ => z) := by
@@ -195,8 +190,7 @@ theorem io_comm {x y : A} (h : Commute x y) : Commute (io x : SlopeTestRemaining
   rw [← io_mul, ← io_mul, h.eq]
 
 theorem diagScalar_mul (x y : SlopeTestRemainingChoices S A) : d0 (x * y) = d0 x * d0 y := by
-  unfold d0
-  rw [Matrix.diagonal_mul_diagonal]
+  simp [d0]
 
 theorem entry_commute_R_matrix {z : SlopeTestRemainingChoices S A} {a : S} (h : ∀ i j, Commute z (eU a i j)) (D : K) : EC z (Rh0 a D) := by
   intro i j
@@ -211,9 +205,8 @@ theorem entry_commute_transposed_R_matrix {z : SlopeTestRemainingChoices S A} {a
   exact Commute.smul_right (Commute.sub_right (Commute.smul_right (EC.one z i j) _) (h i j)) _
 
 theorem Rh0_transpose (a : S) (D : K) : (Rh0 a D : M2 (SlopeTestRemainingChoices S A))ᵀ = Rht0 a D := by
-  unfold Rh0 Rht0 P0 Q0
   ext i j
-  simp [Matrix.one_apply, eq_comm]
+  simp [Rh0, Rht0, P0, Q0, Matrix.one_apply, eq_comm]
 
 end Slots
 
@@ -246,8 +239,7 @@ theorem ins_mul_io (a : S) (x : A) (N : M2 A) :
 
 theorem unit_mul_ins (a : S) (j i : Fin 2) (x : A) (N : M2 A) :
     (eU a j i : SlopeTestRemainingChoices S A) * io x * ins a (lift0 N) = ∑ s, eU a j s * io (x * N i s) := by
-  unfold ins lift0
-  simp only [Finset.mul_sum, Matrix.map_apply, unit_mul]
+  simp only [ins, lift0, Finset.mul_sum, Matrix.map_apply, unit_mul]
   simp
 
 theorem ins_mul_unit (a : S) (k j : Fin 2) (x : A) (N : M2 A) :
@@ -562,19 +554,15 @@ end Formalism.FourierDecayAlt.P.Wd6
 namespace Formalism.FourierDecayAlt.P
 
 theorem exchange_plus_factor : Formalism.FourierDecayAlt.Wd.ExchangePlusFactor := by
-  intro K A S _ _ _ _ _ _ _ _ σ w Y hσ hw
-  exact Wd6.Xp_lift0_d0_comm σ w Y hσ hw.1
+  exact fun K A S _ _ _ _ _ _ _ _ σ w Y hσ hw => Wd6.Xp_lift0_d0_comm σ w Y hσ hw.1
 
 theorem exchange_second_case : Formalism.FourierDecayAlt.Wd.ExchangeMinusFactorStar := by
-  intro K A S _ _ _ _ _ _ _ _ σ w Y hσ hw hY
-  exact Wd6.exch2 σ w Y hσ hw.1 hw.2.1 hY
+  exact fun K A S _ _ _ _ _ _ _ _ σ w Y hσ hw hY => Wd6.exch2 σ w Y hσ hw.1 hw.2.1 hY
 
 theorem exchange_third_case : Formalism.FourierDecayAlt.Wd.ExchangeMinusFactorTranspose := by
-  intro K A S _ _ _ _ _ _ _ _ σ w Y hσ hw hY
-  exact Wd6.exch3 σ w Y hσ hw.1 hw.2.1 hY
+  exact fun K A S _ _ _ _ _ _ _ _ σ w Y hσ hw hY => Wd6.exch3 σ w Y hσ hw.1 hw.2.1 hY
 
 theorem exchange_fourth_case : Formalism.FourierDecayAlt.Wd.ExchangePlusFactorTranspose := by
-  intro K A S _ _ _ _ _ _ _ _ σ w Y hσ hw
-  exact Wd6.exch4 σ w Y hσ hw.1
+  exact fun K A S _ _ _ _ _ _ _ _ σ w Y hσ hw => Wd6.exch4 σ w Y hσ hw.1
 
 end Formalism.FourierDecayAlt.P

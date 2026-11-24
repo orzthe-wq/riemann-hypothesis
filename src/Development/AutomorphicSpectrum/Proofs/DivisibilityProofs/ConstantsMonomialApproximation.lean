@@ -103,7 +103,7 @@ theorem exists_form_of_mem_chart (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hs
     · exact isWeightedHomogeneous_C (blockWeight ι) z
     · have h1 : (C z : MRing ι ℤ) = algebraMap ℤ (MRing ι ℤ) z := rfl
       rw [h1, AlgHom.commutes]
-      simp [MvPolynomial.algebraMap_eq]
+      simp
   | add u v _ _ hu hv =>
     obtain ⟨a, F, hF, hFc⟩ := hu
     obtain ⟨b, G, hG, hGc⟩ := hv
@@ -147,7 +147,7 @@ theorem const_mul_chartMonomial_pow_form : ∀ (K : Type) [Fintype K] [Decidable
         C (segreVec y c) * ∏ k : K, (X k : MvPolynomial K Ω) := by
       simp [pointConeMap, segreVec, Finset.prod_mul_distrib, map_prod]
     have hC : pointConeMap A y (C a : MRing ι A) = C (algebraMap A Ω a) := by
-      simp [pointConeMap, MvPolynomial.algebraMap_eq]
+      simp [pointConeMap]
     rw [hM, hC, mul_pow, ← C_pow, C_mul]
     ring
 

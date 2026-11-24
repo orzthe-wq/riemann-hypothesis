@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocA
 
 @[expose] public section
 
@@ -48,8 +49,7 @@ section
 
 variable {Ω : Type} [Field Ω]
 
-private theorem val_int_le (A : ValuationSubring Ω) (a : ℤ) : A.valuation (a : Ω) ≤ 1 :=
-  (A.valuation_le_one_iff _).2 (intCast_mem A a)
+private alias val_int_le := _root_.Formalism.BasicNotions.Examples₂.LB.val_intCast_le_one
 
 private theorem val_dvd (A : ValuationSubring Ω) {a b : ℕ} (h : a ∣ b) (ha : A.valuation (a : Ω) < 1) :
     A.valuation (b : Ω) < 1 := by

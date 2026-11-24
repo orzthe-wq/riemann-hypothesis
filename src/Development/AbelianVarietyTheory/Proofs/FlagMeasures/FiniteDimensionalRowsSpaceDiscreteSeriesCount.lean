@@ -1,27 +1,30 @@
 module
 
-public import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.EigenfunctionFiniteCoefficients
-public import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne
-public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocDecOfDecGap
+public import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.EigenfunctionFiniteCoefficients
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CompletedTensorDiscreteSeriesIrreducibleFormalDe
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotypicOrthogonalDecomposition
+public import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric
+public import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.DeepKernelBound
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizeProperties
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DeepRegionExponents
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsLimitOfChart
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeEqFundamentalDomainInter
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureLeCardMul
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFlagIsotropicSelfDual
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousRepresentativeProperties
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountHypPAtAddQAt
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DeepPointBoundCuspidalIsometricIntertwinerFamilyStatement
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsProjOnOne
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DeepPointBoundCuspidalIsometricIntertwinerFamily
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousRepresentativeBoundedEvaluation
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousRowRepresentativesLowestKTypeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsLimitOfChart
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameOfLe
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IdempotentIntertwinerImagesCuspidalOfLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeEqFundamentalDomainInter
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeMultiplicityOneCountingHypotheses
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureFundamentalDomainLtOfDeepPointBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureLeCardMul
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousRowRepresentativesLowestKType
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IdempotentIntertwinerImagesCuspidalOfLevel
+public import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.OrthonormalPlaceBasis
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -34,13 +37,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -48,8 +45,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -65,10 +60,191 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuous
+import Mathlib.Algebra.Order.Star.Real
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeMultiplicityOneCountingHypotheses
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.OrthonormalPlaceBasis
-public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsProjOnOne
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocDecOfDecGap, Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameOfLe, Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureFundamentalDomainLtOfDeepPointBound, Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteDimensionalRowsSpaceDiscreteSeriesCount
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocDecOfDecGap =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocDecOfDecGap", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne\npublic import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.EigenfunctionFiniteCoefficients\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory NumberField Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
+open scoped InnerProductSpace
+
+namespace GlobalTheory.Dec
+
+theorem locDec_of_decGap (hD : GlobalTheory.DSId.DecGap) (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ)
+    (hB : IsDSData B d) (hg : GapGe B h)
+    (hh : ∀ v, 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) : LocDec B h := by
+  intro v g
+  obtain ⟨h1, h2, h3, -⟩ := hB v
+  simpa [h3.1] using (hD _ _ _ _ _ h1 h2 h (hg v) (hh v) (uMat g) g.2 _ h3.2 _ h3.2).2
+
+end GlobalTheory.Dec
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocDecOfDecGap =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameOfLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameOfLe", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CompletedTensorDiscreteSeriesIrreducibleFormalDe\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotypicOrthogonalDecomposition\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuous\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
+open scoped InnerProductSpace ContDiff
+
+noncomputable section
+
+namespace GlobalTheory.IntertwinerFrame
+
+theorem exists_orthonormal_frame_of_le : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ), IsDSData B d → ∀ S : Submodule ℂ (B.Hs →L[ℂ] B.I.L2 B.μf B.fund), S ≤ B.I.HomS B.σs B.μf B.fund B.R → FiniteDimensional ℂ S → ∃ T : Fin (Module.finrank ℂ S) → (B.Hs →L[ℂ] B.I.L2 B.μf B.fund), (∀ i, T i ∈ S) ∧ (∀ i u, ‖T i u‖ = ‖u‖) ∧ ∀ i j, i ≠ j → ∀ u u', ⟪T i u, T j u'⟫_ℂ = 0 := by
+  intro B d hd S hle hfin
+  obtain ⟨hU, hirr, -, hw, -⟩ := GlobalTheory.Dec.tensorRep B d hd
+  obtain ⟨-, -, hR, -⟩ := GlobalTheory.RightRegFund.rightReg_unitary_continuous B
+  let σ : B.I.Ginf →* (B.Hs →L[ℂ] B.Hs) :=
+    { toFun := B.σs
+      map_one' := hU.1
+      map_mul' := hU.2.1 }
+  obtain ⟨T, h1, h2, h3, -⟩ := exists_frame S (B.tens B.w) fun T hT T' hT' u u' =>
+    inner_intertwiners σ hU.2.2.1 hirr (fun g => B.R (g, 1)) (fun g => hR _) _ hw T T' (hle hT) (hle hT') u u'
+  exact ⟨T, h1, h2, h3⟩
+
+end GlobalTheory.IntertwinerFrame
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameOfLe =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureFundamentalDomainLtOfDeepPointBound =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureFundamentalDomainLtOfDeepPointBound", "h": "module\n\npublic import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric\npublic import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.DeepKernelBound\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizeProperties\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DeepRegionExponents\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsLimitOfChart\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeEqFundamentalDomainInter\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureLeCardMul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory NumberField Formalism.MainNotions.S GlobalTheory.Count
+
+namespace GlobalTheory.DeepArith
+
+theorem one_le_f (I : AutInst) : 1 ≤ I.f := Module.finrank_pos
+
+theorem one_le_rd (I : AutInst) : 1 ≤ I.rd := by
+  unfold AutInst.rd
+  refine Real.one_le_rpow ?_ (by positivity)
+  have h := Int.one_le_abs (discr_ne_zero I.E)
+  exact_mod_cast h
+
+theorem deep_mul_volume_le (hV : GlobalTheory.FlagMeas.AbsoluteVolume) (B : RowsAut) (Cg : ℝ) (n₀ : ℕ)
+    (d : InfinitePlace B.I.F → ℝ) (p q : ℕ) (b : ℝ) (c : InfinitePlace B.I.F → ℝ) (x : B.I.GA)
+    (hn₀ : 8 ≤ n₀) (hq : 1 ≤ q) (hC : CountHyp B Cg n₀ d p q b) (hc : ∀ v, IsGauge (B.I.ε v) (c v))
+    (hx : least B.I x < tauStar B q b) :
+    B.I.muA B.μf B.fund < ⊤ ∧
+    (2 * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh B q (least B.I x) * Real.sqrt B.I.f * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b
+        (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B)) ^ (16 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B) *
+      (6 * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B + GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B)) ^
+        GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B * Real.exp B.I.f *
+      (17 * Real.sqrt B.I.n / least B.I x ^ 2) ^ (2 * GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B) * (∏ v, c v) /
+      (B.μf (B.I.Kg B.g)).toReal * (B.I.muA B.μf B.fund).toReal ≤
+      Real.exp (-((B.I.n : ℝ) ^ 2 * B.I.f)) := by
+  obtain ⟨-, hsig, hn', hq2, -, -, hb, -, -, hg, -⟩ := hC
+  have hn : 8 ≤ B.I.n := hn₀.trans hn'
+  have hc0 : ∀ v, 0 < c v := fun v => by
+    obtain ⟨c', h0, -, hu⟩ := GlobalTheory.GaugeConst.exists_unique_isGauge B.I.n (B.I.ε v)
+    rw [hu _ (hc v)]; exact h0
+  have hf := one_le_f B.I
+  have hrd := one_le_rd B.I
+  have hnR : (8 : ℝ) ≤ B.I.n := by exact_mod_cast hn
+  have hfR : (1 : ℝ) ≤ B.I.f := by exact_mod_cast hf
+  have hgR : (1 : ℝ) ≤ B.g := by exact_mod_cast hg
+  have hfr : B.I.rd ≤ B.I.f * B.I.rd := by nlinarith
+  have hX : 2 * (B.I.f * B.I.rd) ≤ bigX B b := by
+    have h1 : (2 : ℝ) ≤ B.g * b := by nlinarith
+    have h2 : (2 : ℝ) ≤ B.I.n * (B.g * b) := by nlinarith
+    have : bigX B b = (B.I.n * (B.g * b)) * (B.I.f * B.I.rd) := by unfold bigX; ring
+    rw [this]
+    exact mul_le_mul_of_nonneg_right h2 (by linarith)
+  have hX2 : 2 ≤ bigX B b := by linarith
+  have hvol := hV B.I p q hsig hq2 hn (bigX B b) hX2 (by linarith) (by nlinarith) c B.μf hc
+  obtain ⟨hcov, -⟩ := _root_.GlobalTheory.CovolRat.covol_eq_inter_fund B.I B.μf B.fund Set.univ B.fund_spec MeasurableSet.univ
+    (fun _ _ _ _ => Set.mem_univ _)
+  obtain ⟨hidx, hKg0, hKfin⟩ := GlobalTheory.CongIndex.measure_Kset_le B.I B.μf B.g hg
+  have hKgfin : B.μf (B.I.Kg B.g) ≠ ⊤ :=
+    ne_top_of_le_ne_top hKfin.ne (measure_mono fun _ h => h.1)
+  unfold GlobalTheory.FlagMeas.gaugeVol at hvol
+  rw [hcov, Set.univ_inter, ENNReal.div_le_iff_le_mul (Or.inr ENNReal.ofReal_ne_top) (Or.inl hKfin.ne)] at hvol
+  set N : ℕ := B.I.n ^ 2 * B.I.f with hN
+  set m : ℝ := (B.μf (B.I.Kg B.g)).toReal with hm
+  have hm0 : 0 < m := ENNReal.toReal_pos hKg0.ne' hKgfin
+  have hcp : 0 < ∏ v, c v := Finset.prod_pos fun v _ => hc0 v
+  have hXp : 0 < bigX B b := by linarith
+  have hgp : (0 : ℝ) < B.g := by linarith
+  set Y : ℝ := (B.g : ℝ) ^ (2 * N) * bigX B b ^ N with hY
+  have hY0 : 0 < Y := by positivity
+  have hv2 : ENNReal.ofReal (∏ v, c v) * B.I.muA B.μf B.fund ≤ ENNReal.ofReal (Y * m) := by
+    refine (hvol.trans (mul_le_mul' le_rfl hidx)).trans_eq ?_
+    rw [show Y * m = bigX B b ^ N * ((B.g : ℝ) ^ (2 * N) * m) by rw [hY]; ring,
+      ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity),
+      hm, ENNReal.ofReal_toReal hKgfin, ENNReal.ofReal_pow (Nat.cast_nonneg _), ENNReal.ofReal_natCast]
+  have hfin : B.I.muA B.μf B.fund < ⊤ := by
+    rw [lt_top_iff_ne_top]
+    intro h
+    rw [h, ENNReal.mul_top (ENNReal.ofReal_pos.2 hcp).ne'] at hv2
+    exact ENNReal.ofReal_ne_top (top_le_iff.1 hv2)
+  refine ⟨hfin, ?_⟩
+  have hv3 : (∏ v, c v) * (B.I.muA B.μf B.fund).toReal ≤ Y * m := by
+    have := ENNReal.toReal_mono ENNReal.ofReal_ne_top hv2
+    rwa [ENNReal.toReal_mul, ENNReal.toReal_ofReal hcp.le, ENNReal.toReal_ofReal (by positivity)] at this
+  have hl : 0 < least B.I x := ((GlobalTheory.CountSteps.steps B.I x 1 one_pos).2.2.2.2.2.2.2.2 (by omega)).1
+  have ha := (GlobalTheory.deep_region_exponents B.I.n B.I.f q B.I.rd B.g b (least B.I x) hn hf hq hq2 hrd hb hgR hl
+    hx.le).2
+  have hbe : GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe B.I.n b (8 * q * N + N) =
+      Real.sqrt B.I.n * b ^ 2 + 1.5 * (B.I.n : ℝ) ^ ((3 : ℝ) / 2) + 3 * ((8 * q * N + N : ℕ) : ℝ) := by
+    unfold GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.stepBe
+    have : (B.I.n : ℝ) ^ ((3 : ℝ) / 2) = B.I.n * Real.sqrt B.I.n := by
+      rw [show ((3 : ℝ) / 2) = 1 + 1 / 2 by norm_num, Real.rpow_add (by linarith), Real.rpow_one,
+        Real.sqrt_eq_rpow]
+    rw [this]; norm_num
+  have hd : GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.dimN B = N := rfl
+  rw [hd, hbe, show 16 * q * N = 2 * (8 * q * N) by ring]
+  unfold GlobalTheory.IndefiniteRowSideFullHecke.DeepKernelRadiusBound.radRh
+  rw [← hN] at ha
+  generalize (2 * ((B.I.n : ℝ) ^ 2 * Real.sqrt B.I.f * B.g * B.I.rd * (2 * least B.I x) ^ ((1 : ℝ) / q) / 4) *
+    Real.sqrt B.I.f * (Real.sqrt B.I.n * b ^ 2 + 1.5 * (B.I.n : ℝ) ^ ((3 : ℝ) / 2) +
+      3 * ((8 * q * N + N : ℕ) : ℝ))) ^ (2 * (8 * q * N)) = u at ha ⊢
+  generalize (6 * (Real.sqrt B.I.n * b ^ 2 + 1.5 * (B.I.n : ℝ) ^ ((3 : ℝ) / 2) +
+      3 * ((8 * q * N + N : ℕ) : ℝ))) ^ N = v at ha ⊢
+  generalize (17 * Real.sqrt B.I.n / least B.I x ^ 2) ^ (2 * N) = w at ha ⊢
+  have h1 : u * v * Real.exp B.I.f * w ≤ Real.exp (-(N : ℝ)) / Y := by
+    rw [le_div_iff₀ hY0]
+    refine le_of_eq_of_le ?_ ha
+    rw [hY]; unfold bigX; ring
+  have hNc : (N : ℝ) = (B.I.n : ℝ) ^ 2 * (B.I.f : ℝ) := by rw [hN]; push_cast; ring
+  calc u * v * Real.exp B.I.f * w * (∏ v, c v) / m * (B.I.muA B.μf B.fund).toReal
+      ≤ Real.exp (-(N : ℝ)) / Y * (∏ v, c v) / m * (B.I.muA B.μf B.fund).toReal := by gcongr
+    _ = Real.exp (-(N : ℝ)) / Y / m * ((∏ v, c v) * (B.I.muA B.μf B.fund).toReal) := by ring
+    _ ≤ Real.exp (-(N : ℝ)) / Y / m * (Y * m) := by gcongr
+    _ = Real.exp (-((B.I.n : ℝ) ^ 2 * (B.I.f : ℝ))) := by
+        rw [hNc]; field_simp
+
+end GlobalTheory.DeepArith
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureFundamentalDomainLtOfDeepPointBound =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteDimensionalRowsSpaceDiscreteSeriesCount =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteDimensionalRowsSpaceDiscreteSeriesCount", "h": "module\n\npublic import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.EigenfunctionFiniteCoefficients\npublic import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.SameKindIsometric\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocDecOfDecGap\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizeProperties\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFlagIsotropicSelfDual\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ContinuousRepresentativeProperties\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CountHypPAtAddQAt\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsProjOnOne\npublic import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.DeepKernelBound\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DeepPointBoundCuspidalIsometricIntertwinerFamily\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousRepresentativeBoundedEvaluation\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousRowRepresentativesLowestKType\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsOrthonormalFrameOfLe\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IdempotentIntertwinerImagesCuspidalOfLevel\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeEqFundamentalDomainInter\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureFundamentalDomainLtOfDeepPointBound\npublic import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.OrthonormalPlaceBasis\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsLimitOfChart\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeMultiplicityOneCountingHypotheses\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasureLeCardMul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalism.QuantumDeterminants GlobalTheory.Count GlobalTheory.Dec
@@ -132,8 +308,8 @@ theorem vol_lt_top (hV : GlobalTheory.FlagMeas.AbsoluteVolume) (B : RowsAut) (p 
   have hrd1 : (1 : ℝ) ≤ B.I.rd := hrd
   have hx := hV B.I p q hs hq hn (2 * B.I.f * B.I.rd + B.I.rd + 2) (by nlinarith) (by nlinarith)
     (by nlinarith) c B.μf
-  first | unfold GlobalTheory.FlagMeas.gaugeVol at hx | unfold gaugeVol at hx | skip
-  first | unfold GlobalTheory.FlagMeas.IsGaugeAll at hx | unfold IsGaugeAll at hx | skip
+  first | unfold GlobalTheory.FlagMeas.gaugeVol at hx
+  first | unfold GlobalTheory.FlagMeas.IsGaugeAll at hx
   have hx2 := hx hc
   have hcov := (GlobalTheory.CovolRat.covol_eq_inter_fund B.I B.μf B.fund Set.univ B.fund_spec
     MeasurableSet.univ (by simp)).1
@@ -151,7 +327,6 @@ theorem half_le_least (I : AutInst) (hn : 1 ≤ I.n) (h0 : ∀ v, rkR (I.ε v) =
   obtain ⟨v⟩ : Nonempty (InfinitePlace I.F) := by
     first
     | exact inferInstance
-    | exact ⟨InfinitePlace.mk (Classical.arbitrary _)⟩
   have h1 := (GlobalTheory.FlagIso.flag_isotropic I x).2.1 v
   rw [h0 v] at h1
   have hbot : stepLt I x (1 / 2) = ⊥ := by
@@ -202,8 +377,6 @@ theorem bessel (B : RowsAut) (C : ℝ) (t : B.I.GA → ℝ) (w : B.Hs) (hw : ‖
     rw [hc]
     first
     | exact Complex.conj_mul' _
-    | exact RCLike.conj_mul _
-    | simp [Complex.conj_mul']
   have hon : Orthonormal ℂ (fun i => T i w) :=
     ⟨fun i => by simp [hiso, hw], fun i j hij => horth i j hij w w⟩
   have hAn : ‖A w‖ ^ 2 = S := by
@@ -217,9 +390,6 @@ theorem bessel (B : RowsAut) (C : ℝ) (t : B.I.GA → ℝ) (w : B.Hs) (hw : ‖
     rw [e1]
     first
     | exact RCLike.ofReal_re _
-    | exact Complex.ofReal_re _
-    | simp only [RCLike.re_to_complex, Complex.ofReal_re]
-    | rfl
   have hAn' : ‖A w‖ = Real.sqrt S := by
     rw [← hAn, Real.sqrt_sq (norm_nonneg _)]
   have key : S ≤ C * t x * Real.sqrt S := by
@@ -304,7 +474,7 @@ theorem rows_finiteDimensional : GlobalTheory.DSId.DecGap → GlobalTheory.FlagM
     rw [hrk v]
     exact h120
   have hLoc := GlobalTheory.Dec.locDec_of_decGap hD B d h hB hgap h120'
-  have hE := GlobalTheory.T.idempotent_intertwiner_images_cuspidal_of_level B d h hB hK hg h120' hLoc hbig40
+  have hE := _root_.GlobalTheory.Dec.CuspAllKType.cusp_all B d h hB hK hg h120' hLoc hbig40
   obtain ⟨hvpos, hvtop⟩ := vol_lt_top hV B p q hs hqn hn8 hrd
   obtain ⟨C, hC⟩ := GlobalTheory.EvalBound.exists_contRep_bound_of_isKTypeOf B d hB hK (by omega) hg
   have hw1 : ‖B.tens B.w‖ = 1 := by
@@ -345,13 +515,12 @@ theorem rows_finiteDimensional : GlobalTheory.DSId.DecGap → GlobalTheory.FlagM
     fun i u => ((hE _ (hS (hTS i))).2 u).2
   have hTc : ∀ i u, B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext (T i u)) :=
     fun i u => ((hE _ (hS (hTS i))).2 u).1
-  choose Fr hFr using fun i => GlobalTheory.T.exists_continuousRowRepresentatives_lowestKType B d hB hK hg (T i) (hTH i) (fun u k hk => hTk i u k hk)
+  choose Fr hFr using fun i => _root_.GlobalTheory.SmoothRepsType.repsExist B d hB hK hg (T i) (hTH i) (fun u k hk => hTk i u k hk)
   have hmem : B.tens B.w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.VP B 0 := by
     apply Submodule.subset_span
     refine ⟨[], B.w, by simp, fun v => (hB v).2.2.1.2, ?_⟩
     first
     | rfl
-    | simp [GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.wordAct]
   have hG : ∀ i, IsContRep B (T i (B.tens B.w)) (Fr i (B.tens B.w)) :=
     fun i => (hFr i 0 _ hmem).1
   have hy : ∀ i, ‖T i (B.tens B.w)‖ = 1 := fun i => by rw [hiso, hw1]
@@ -361,8 +530,8 @@ theorem rows_finiteDimensional : GlobalTheory.DSId.DecGap → GlobalTheory.FlagM
     have hfirst : 0 ≤ ((Module.finrank ℂ S) : ℝ) * e / V := by positivity
     have hsecond : 0 ≤ C ^ 2 * M ^ 2 := by positivity
     by_cases hx : 1 ≤ q ∧ least B.I x < tauStar B q b
-    · have h1 := GlobalTheory.T.deepPoint_bound_cuspidalIsometricIntertwinerFamily B Cg n₀ d p q b c x (Module.finrank ℂ S) T Fr hn₀ hx.1 hH hc hx.2 hFr hiso hTc
-      have h2 := (GlobalTheory.T.measure_fundamentalDomain_lt_of_deepPoint_bound hV B Cg n₀ d p q b c x hn₀ hx.1 hH hc hx.2).2
+    · have h1 := _root_.GlobalTheory.DeepFamilyGap.deep_bound_family B Cg n₀ d p q b c x (Module.finrank ℂ S) T Fr hn₀ hx.1 hH hc hx.2 hFr hiso hTc
+      have h2 := (_root_.GlobalTheory.DeepArith.deep_mul_volume_le hV B Cg n₀ d p q b c x hn₀ hx.1 hH hc hx.2).2
       have hvv : ‖GlobalTheory.Deep.vv B Fr (B.tens B.w) x‖ ^ 2 = ∑ i, ‖Fr i (B.tens B.w) x‖ ^ 2 := by
         rw [EuclideanSpace.norm_sq_eq]
         simp [GlobalTheory.Deep.vv]
@@ -398,3 +567,7 @@ theorem rows_finiteDimensional : GlobalTheory.DSId.DecGap → GlobalTheory.FlagM
   exact_mod_cast hfin
 
 end GlobalTheory.RowsFinMult
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteDimensionalRowsSpaceDiscreteSeriesCount =====

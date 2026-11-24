@@ -84,7 +84,7 @@ theorem secOfP' (hinj : Function.Injective (algebraMap O LL))
   rw [one_smul] at hyx
   obtain ⟨β₀, hβ₀, hyβ⟩ := Formalism.MainNotions.UnusedSlot80.ArcF.Pp_repr W T c' e b hb.1 yP hyP
   have hbl : ∀ m, (letE c' : LetA O n) • b m = b m := fun m =>
-    Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' (hb.1.1 m).2
+    _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c' (hb.1.1 m).2
   have hφl : ∀ m, (letE (c' + (e : ZMod n)) : LetA O n) • ((W.φD T) ^ e) (b m) = ((W.φD T) ^ e) (b m) :=
     fun m => φD_pow_letter W T c' (b m) (hbl m) e
   set Λ : LetA O n := abelian₂ W A (c' + (e : ZMod n)) e with hΛdef

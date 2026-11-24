@@ -6,7 +6,9 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValu
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.MemEigSpOfMemHtDual
 public import Mathlib.Tactic.ENatToNat
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChangeStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NatCastSmulMemHtLat
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionLiftIsClosedImmersion
 import Mathlib.Algebra.Order.Floor.Extended
@@ -163,7 +165,7 @@ theorem exists_denom {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsCommMonObj G] [
     { toFun := j
       map_add' := jadd
       map_smul' := jsmul }
-  have hbc : IsBaseChange O β := (GlobalTheory.T.lie_model_finite_base_change X G R x L₀ M₀).2.2 O L' M' β hjl
+  have hbc : IsBaseChange O β := (_root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange X G R x L₀ M₀).2.2 O L' M' β hjl
   have hloc : IsLocalizedModule S β := (isLocalizedModule_iff_isBaseChange S O β).2 hbc
   obtain ⟨e', he'⟩ := M'.onto v hv
   obtain ⟨⟨b, u⟩, hb⟩ := IsLocalizedModule.surj S β e'
@@ -173,8 +175,7 @@ theorem exists_denom {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsCommMonObj G] [
   rw [← h1, ← hjl]
   congr 3
 
-theorem snd_epsMul {A : Type} [CommRing A] (c : A) (t : DualNumber A) : (epsMul c t).snd = c * t.snd := by
-  simp [epsMul]
+alias snd_epsMul := _root_.GlobalTheory.CompanionTheory.Ar.LieTangent.epsMul_snd
 
 theorem core_tan {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {G : Over X} [GrpObj G]
     [IsCommMonObj G] [Smooth G.hom] {E : Type} [AddCommGroup E] [Module Ω E]

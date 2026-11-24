@@ -82,14 +82,11 @@ private theorem coeff_mul_eq_zero_lemma_4 {τ : Type} (A B : MvPowerSeries τ S)
   replace hp : p.1 + p.2 = x := by
     first
       | exact Finset.HasAntidiagonal.mem_antidiagonal.1 hp
-      | exact Finset.mem_antidiagonal.1 hp
-      | simpa using hp
   have hdeg : p.1.degree + p.2.degree = x.degree := by
     rw [← hp]
     have e : ∀ y : τ →₀ ℕ, y.degree = y.sum (fun _ k => k) := fun y => by
       first
         | rfl
-        | simp [Finsupp.degree, Finsupp.sum]
     rw [e, e, e, Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)]
   by_cases h1 : p.1.degree < a
   · rw [hA _ h1, zero_mul]
@@ -111,7 +108,6 @@ private theorem order_prod_lemma_5 {τ τ' : Type} (σ' : τ' → MvPowerSeries 
       have hz0 : z = 0 := by
         first
           | exact (Finsupp.degree_eq_zero_iff z).1 (by omega)
-          | exact Finsupp.degree_eq_zero_iff.1 (by omega)
       rw [hz0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hσ]
   have hprod : ∀ (t : Finset τ') (y : τ →₀ ℕ), y.degree < ∑ s ∈ t, e s →
       MvPowerSeries.coeff y (∏ s ∈ t, σ' s ^ e s) = 0 := by
@@ -126,7 +122,6 @@ private theorem order_prod_lemma_5 {τ τ' : Type} (σ' : τ' → MvPowerSeries 
   have he : e.degree = ∑ s ∈ e.support, e s := by
     first
       | rfl
-      | simp [Finsupp.degree]
   exact hprod e.support x (he ▸ hx)
 
 private theorem eq_single_lemma_6 {κ : Type} (e : κ →₀ ℕ) (he : e.degree = 1) : ∃ q, e = Finsupp.single q 1 := by
@@ -134,7 +129,6 @@ private theorem eq_single_lemma_6 {κ : Type} (e : κ →₀ ℕ) (he : e.degree
   have h1 : ∑ i ∈ e.support, e i = 1 := by
     first
       | exact he
-      | simpa [Finsupp.degree] using he
   obtain ⟨q, hq⟩ : e.support.Nonempty := by
     rw [Finset.nonempty_iff_ne_empty]
     intro h
@@ -170,16 +164,11 @@ theorem formal_group_linear_second (G : FGLaw S d) (i j : Fin d) :
     have hS : MvPowerSeries.HasSubst
         (fun s : Fin 2 × Fin d => (![0, pt S d 0] : Fin 2 → Pt S 1 d) s.1 s.2) := by
       first
-        | exact MvPowerSeries.HasSubst.of_constantCoeff_zero hσ
         | exact MvPowerSeries.hasSubst_of_constantCoeff_zero hσ
-        | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent fun s => by rw [hσ s]; exact IsNilpotent.zero
-        | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent fun s => by rw [hσ s]; exact IsNilpotent.zero
-        | exact ⟨fun s => by rw [hσ s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩
     rw [MvPowerSeries.coeff_subst hS]
     have hd1 : (Finsupp.single ((0 : Fin 1), j) 1).degree = 1 := by
       first
         | simp
-        | simp [Finsupp.degree]
     rw [finsum_eq_single _ (Finsupp.single ((1 : Fin 2), j) 1)]
     · rw [Finsupp.prod_single_index (by simp)]
       simp [pt, MvPowerSeries.coeff_X]
@@ -188,7 +177,6 @@ theorem formal_group_linear_second (G : FGLaw S d) (i j : Fin d) :
       · have he0 : e = 0 := by
           first
             | exact (Finsupp.degree_eq_zero_iff e).1 (by omega)
-            | exact Finsupp.degree_eq_zero_iff.1 (by omega)
         subst he0
         simp [MvPowerSeries.coeff_one]
       · obtain ⟨⟨q1, q2⟩, rfl⟩ := eq_single_lemma_6 e heq
@@ -196,12 +184,10 @@ theorem formal_group_linear_second (G : FGLaw S d) (i j : Fin d) :
         obtain rfl | rfl : q1 = 0 ∨ q1 = 1 := by fin_cases q1 <;> simp
         · simp
         · have hq : q2 ≠ j := fun h => he (by rw [h])
-          simp [pt, MvPowerSeries.coeff_X, Finsupp.single_left_inj one_ne_zero, hq, Ne.symm hq]
+          simp [pt, MvPowerSeries.coeff_X, Finsupp.single_left_inj one_ne_zero, Ne.symm hq]
       · have h0 := order_prod_lemma_5 _ hσ e (Finsupp.single ((0 : Fin 1), j) 1) (by omega)
         first
           | simp only [h0, smul_zero]
-          | rw [h0, smul_zero]
-          | erw [h0, smul_zero]
   have hu := congrArg (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1)) (G.unit i)
   rw [key, MvPowerSeries.coeff_X] at hu
   rw [hu]
@@ -225,16 +211,11 @@ theorem formal_group_linear_first (G : FGLaw S d) (i j : Fin d) :
     have hS : MvPowerSeries.HasSubst
         (fun s : Fin 2 × Fin d => (![pt S d 1, pt S d 0] : Fin 2 → Pt S 2 d) s.1 s.2) := by
       first
-        | exact MvPowerSeries.HasSubst.of_constantCoeff_zero hσ
         | exact MvPowerSeries.hasSubst_of_constantCoeff_zero hσ
-        | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent fun s => by rw [hσ s]; exact IsNilpotent.zero
-        | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent fun s => by rw [hσ s]; exact IsNilpotent.zero
-        | exact ⟨fun s => by rw [hσ s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩
     rw [MvPowerSeries.coeff_subst hS]
     have hd1 : (Finsupp.single ((0 : Fin 2), j) 1).degree = 1 := by
       first
         | simp
-        | simp [Finsupp.degree]
     rw [finsum_eq_single _ (Finsupp.single ((1 : Fin 2), j) 1)]
     · rw [Finsupp.prod_single_index (by simp)]
       simp [pt, MvPowerSeries.coeff_X]
@@ -243,7 +224,6 @@ theorem formal_group_linear_first (G : FGLaw S d) (i j : Fin d) :
       · have he0 : e = 0 := by
           first
             | exact (Finsupp.degree_eq_zero_iff e).1 (by omega)
-            | exact Finsupp.degree_eq_zero_iff.1 (by omega)
         subst he0
         simp [MvPowerSeries.coeff_one]
       · obtain ⟨⟨q1, q2⟩, rfl⟩ := eq_single_lemma_6 e heq
@@ -251,42 +231,14 @@ theorem formal_group_linear_first (G : FGLaw S d) (i j : Fin d) :
         obtain rfl | rfl : q1 = 0 ∨ q1 = 1 := by fin_cases q1 <;> simp
         · simp [pt, MvPowerSeries.coeff_X, Finsupp.single_left_inj one_ne_zero]
         · have hq : q2 ≠ j := fun h => he (by rw [h])
-          simp [pt, MvPowerSeries.coeff_X, Finsupp.single_left_inj one_ne_zero, hq, Ne.symm hq]
+          simp [pt, MvPowerSeries.coeff_X, Finsupp.single_left_inj one_ne_zero, Ne.symm hq]
       · have h0 := order_prod_lemma_5 _ hσ e (Finsupp.single ((0 : Fin 2), j) 1) (by omega)
         first
           | simp only [h0, smul_zero]
-          | rw [h0, smul_zero]
-          | erw [h0, smul_zero]
   have hc := congrArg (MvPowerSeries.coeff (Finsupp.single ((0 : Fin 2), j) 1)) (G.comm i)
   rw [key] at hc
   rw [← hc]
   exact formal_group_linear_second G i j
-
-theorem eq_single_of_degree_one {κ : Type} (e : κ →₀ ℕ) (he : e.degree = 1) : ∃ q, e = Finsupp.single q 1 := by
-  classical
-  have h1 : ∑ i ∈ e.support, e i = 1 := by
-    first
-      | exact he
-      | simpa [Finsupp.degree] using he
-  obtain ⟨q, hq⟩ : e.support.Nonempty := by
-    rw [Finset.nonempty_iff_ne_empty]
-    intro h
-    rw [h, Finset.sum_empty] at h1
-    exact zero_ne_one h1
-  have h2 := Finset.add_sum_erase e.support e hq
-  rw [h1] at h2
-  have hq0 : e q ≠ 0 := Finsupp.mem_support_iff.1 hq
-  have h3s : ∑ i ∈ e.support.erase q, e i = 0 := by omega
-  have h3 := Finset.sum_eq_zero_iff.1 h3s
-  refine ⟨q, ?_⟩
-  ext i
-  by_cases hi : i = q
-  · subst hi
-    rw [Finsupp.single_eq_same]
-    omega
-  · rw [Finsupp.single_apply, if_neg (Ne.symm hi)]
-    by_contra hne
-    exact hne (h3 i (Finset.mem_erase.2 ⟨hi, Finsupp.mem_support_iff.2 hne⟩))
 
 private theorem mem_degLE_lemma {κ : Type} [Fintype κ] [DecidableEq κ] {n : ℕ} {x : κ →₀ ℕ}
     (hx : x.degree ≤ n) : x ∈ degLE n := by
@@ -307,7 +259,7 @@ private theorem coeff_psTrunc_lemma_2 {κ : Type} [Fintype κ] [DecidableEq κ] 
     (x : κ →₀ ℕ) : AddMonoidAlgebra.coeff (psTrunc n f) x = if x.degree ≤ n then MvPowerSeries.coeff x f else 0 := by
   unfold psTrunc
   rw [coeff_sum]
-  simp only [coeff_monomial, Finset.sum_ite_eq', Finset.sum_ite_eq]
+  simp only [coeff_monomial, Finset.sum_ite_eq']
   by_cases h : x.degree ≤ n
   · rw [if_pos (mem_degLE_lemma h), if_pos h]
   · have h' : x ∉ degLE n := by
@@ -326,7 +278,6 @@ private theorem mem_pow_Io_lemma_3 {κ : Type} (k : ℕ) (p : MvPolynomial κ S)
   have h2 : x.degree = ∑ a ∈ x.support, x a := by
     first
       | rfl
-      | simp [Finsupp.degree]
   have h1 : (x.prod fun n e => (X n : MvPolynomial κ S) ^ e) ∈ Io S κ ^ x.degree := by
     unfold Finsupp.prod
     rw [h2, ← Finset.prod_pow_eq_pow_sum]
@@ -346,10 +297,9 @@ theorem psTrunc_law_sub_mem (G : FGLaw S d) {m : ℕ} (hm : 1 ≤ m) (j : Fin d)
   · have hx0 : x = 0 := by
       first
         | exact (Finsupp.degree_eq_zero_iff x).1 h0
-        | exact Finsupp.degree_eq_zero_iff.1 h0
     subst hx0
     simp [coeff_X', MvPowerSeries.coeff_zero_eq_constantCoeff_apply, G.const]
-  · obtain ⟨⟨q1, q2⟩, rfl⟩ := eq_single_of_degree_one x h0
+  · obtain ⟨⟨q1, q2⟩, rfl⟩ := _root_.Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrExp2.eq_single_lemma_6 x h0
     obtain rfl | rfl : q1 = 0 ∨ q1 = 1 := by fin_cases q1 <;> simp
     · by_cases hq : q2 = j
       · subst hq
@@ -372,9 +322,9 @@ theorem sil_inj {i l i0 l0 : Fin d} : sil i l = sil i0 l0 ↔ i = i0 ∧ l = l0 
     have h2 := DFunLike.congr_fun h ((1 : Fin 2), l)
     constructor
     · by_contra hne
-      simp [sil, Finsupp.single_apply, hne, Ne.symm hne] at h1
+      simp [sil, hne] at h1
     · by_contra hne
-      simp [sil, Finsupp.single_apply, hne, Ne.symm hne] at h2
+      simp [sil, hne] at h2
   · rintro ⟨rfl, rfl⟩
     rfl
 
@@ -418,15 +368,12 @@ theorem bil_hom (M : Fin d → Fin d → S) : (bil M).IsHomogeneous 2 := by
   have h0 : (C (M i l) : MvPolynomial (Fin 2 × Fin d) S).IsHomogeneous 0 := by
     first
       | exact isHomogeneous_C _ _
-      | exact isHomogeneous_C _
   have h1 : (X ((0 : Fin 2), i) : MvPolynomial (Fin 2 × Fin d) S).IsHomogeneous 1 := by
     first
       | exact isHomogeneous_X _ _
-      | exact isHomogeneous_X _
   have h2 : (X ((1 : Fin 2), l) : MvPolynomial (Fin 2 × Fin d) S).IsHomogeneous 1 := by
     first
       | exact isHomogeneous_X _ _
-      | exact isHomogeneous_X _
   simpa using h0.mul (h1.mul h2)
 
 theorem psTrunc_sub_mem {κ : Type} [Fintype κ] [DecidableEq κ] (f : MvPowerSeries κ S) {k m : ℕ} (hkm : k ≤ m) :
@@ -448,7 +395,7 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrExp1
 theorem eval_pair_bilinear {τ : Type} (M : Fin d → Fin d → S) (u v : Fin d → MvPolynomial τ S) :
     ev2 (bil M) u v = ∑ i, ∑ l, C (M i l) * (u i * v l) := by
 
-  simp [ev2, bil, map_sum, map_mul, aeval_C, aeval_X, algebraMap_eq]
+  simp [ev2, bil, map_sum, map_mul, aeval_X, algebraMap_eq]
 
 theorem lead_bil {P : MvPolynomial (Fin 2 × Fin d) S} {m : ℕ} (hm : 2 ≤ m)
     (fF : Fin d → MvPolynomial (Fin 3 × Fin d) S)
@@ -506,7 +453,7 @@ theorem coeff_linR (Ab B : Fin d → Fin d → S) (i0 l0 : Fin d) :
     by_cases h : i = i0 ∧ j = l0
     · rw [if_pos (sil_inj.2 h), if_pos h, mul_one]
     · rw [if_neg (fun h' => h (sil_inj.1 h')), if_neg h, mul_zero]
-  simp only [PairEvaluation.lin, xs, Finset.sum_mul, Finset.mul_sum, coeff_sum, key]
+  simp only [PairEvaluation.lin, xs, Finset.mul_sum, coeff_sum, key]
   rw [Finset.sum_eq_single i0 (fun i _ hi => Finset.sum_eq_zero fun l _ => Finset.sum_eq_zero fun j _ => by simp [hi]) (by simp)]
   refine Finset.sum_congr rfl fun l _ => ?_
   rw [Finset.sum_eq_single l0 (fun j _ hj => by simp [hj]) (by simp), if_pos ⟨rfl, rfl⟩]
@@ -532,10 +479,9 @@ theorem psTrunc_act_sub_mem (φ : Fin d → PS S 1 d) (hφ : ∀ i, MvPowerSerie
   · have hx0 : x = 0 := by
       first
         | exact (Finsupp.degree_eq_zero_iff x).1 h0
-        | exact Finsupp.degree_eq_zero_iff.1 h0
     subst hx0
     simp [coeff_C_mul, coeff_X', MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hφ]
-  · obtain ⟨⟨q1, q2⟩, rfl⟩ := eq_single_of_degree_one x h0
+  · obtain ⟨⟨q1, q2⟩, rfl⟩ := _root_.Formalism.MainNotions.ModuliIntegralCharts.H1.CIndFrExp2.eq_single_lemma_6 x h0
     have hq1 : q1 = 0 := Subsingleton.elim _ _
     subst hq1
     rw [Finset.sum_eq_single q2]
@@ -569,7 +515,6 @@ theorem psIn_act_sub_mem (φ : Fin d → PS S 1 d) (hφ : ∀ i, MvPowerSeries.c
     have h0 : constantCoeff (psTrunc m (φ i)) = AddMonoidAlgebra.coeff (psTrunc m (φ i)) 0 := by
       first
         | rfl
-        | simp [constantCoeff_eq]
     rw [h0, coeff_psTrunc_lemma_2]
     simp [MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hφ]
   convert h3 using 1
@@ -577,7 +522,7 @@ theorem psIn_act_sub_mem (φ : Fin d → PS S 1 d) (hφ : ∀ i, MvPowerSeries.c
   congr 1
   all_goals first
     | rfl
-    | simp [PairEvaluation.lin, map_sum, rename_X, rename_C]
+    | simp [PairEvaluation.lin, map_sum, rename_X]
 
 end Act
 

@@ -134,8 +134,7 @@ lemma card_lt_pairs (n : ℕ) : Nat.card {p : Fin n × Fin n // p.1 < p.2} = n *
 
 theorem cardUnitriangular : CardUnitriangular := by
   intro F _ _ _ n
-  rw [Nat.card_congr (upperEquiv F n)]
-  rw [Nat.card_fun, card_lt_pairs, Nat.card_eq_fintype_card]
+  rw [Nat.card_congr (upperEquiv F n), Nat.card_fun, card_lt_pairs, Nat.card_eq_fintype_card]
 
 def RowVec (F : Type) (n : ℕ) : Type := Fin n → F
 
@@ -158,21 +157,16 @@ lemma vecMul_inv_eq_iff {F : Type} [Field F] {n : ℕ} (v : Fin n → F) (A : GL
       Matrix.vecMul v (A : Matrix (Fin n) (Fin n) F) = v := by
   constructor
   · intro h
-    calc Matrix.vecMul v (A : Matrix (Fin n) (Fin n) F)
-        = Matrix.vecMul (Matrix.vecMul v ((A⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F))
-            (A : Matrix (Fin n) (Fin n) F) := by rw [h]
-      _ = v := by rw [Matrix.vecMul_vecMul, Units.inv_mul, Matrix.vecMul_one]
+    simpa only [Matrix.vecMul_vecMul, Units.inv_mul, Matrix.vecMul_one] using
+      (congrArg (fun w => Matrix.vecMul w (A : Matrix (Fin n) (Fin n) F)) h).symm
   · intro h
-    calc Matrix.vecMul v ((A⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)
-        = Matrix.vecMul (Matrix.vecMul v (A : Matrix (Fin n) (Fin n) F))
-            ((A⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) := by rw [h]
-      _ = v := by rw [Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one]
+    simpa only [Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one] using
+      (congrArg (fun w => Matrix.vecMul w ((A⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) h).symm
 
 private theorem vecMul_one_add_vecMulVec_single {F : Type} [Field F] {n : ℕ} (k : Fin n)
     (c z : Fin n → F) :
     Matrix.vecMul z (1 + Matrix.vecMulVec (Pi.single k 1) c) = z + z k • c := by
   rw [Matrix.vecMul_add, Matrix.vecMul_one]
-  congr 1
   funext j
   simp [Matrix.vecMul, dotProduct, Matrix.vecMulVec_apply, Pi.single_apply]
 
@@ -263,7 +257,6 @@ theorem cardStabilizerVector : CardStabilizerVector := by
   have hos : Nat.card (@MulAction.stabilizer (GL (Fin n) F) (RowVec F n) _ _ v) *
       Nat.card (@MulAction.orbit (GL (Fin n) F) (RowVec F n) _ v) = Nat.card (GL (Fin n) F) := by
     first
-    | (rw [← MulAction.index_stabilizer]; exact Subgroup.card_mul_index _)
     | (rw [mul_comm]; exact MulAction.card_orbit_mul_card_stabilizer_eq_card_group _ _)
     | (rw [mul_comm, ← Nat.card_prod]; exact Nat.card_congr (MulAction.orbitProdStabilizerEquivGroup _ _))
   rw [hstab, ← horbit, hos, Nat.card_eq_fintype_card]

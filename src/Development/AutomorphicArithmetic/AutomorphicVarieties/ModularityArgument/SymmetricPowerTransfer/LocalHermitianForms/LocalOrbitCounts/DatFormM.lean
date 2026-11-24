@@ -65,7 +65,7 @@ theorem UpperTheory.V.Z.Sym.Loc.datFormM : UpperTheory.V.Z.Sym.Loc.DatFormM := b
     ext <;> simp [ofE]
   have ofE_mul : ∀ x y : Etau K τ, ofE Δ (x * y) = ofE Δ x * ofE Δ y := by
     intro x y
-    ext <;> simp [ofE] <;> ring
+    ext <;> simp [ofE]
   have sig_ofE : ∀ y : Etau K τ, sigL (ofE Δ y) = ofE Δ y := by
     intro y
     ext <;> simp [sigL, ofE]

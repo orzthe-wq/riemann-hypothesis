@@ -291,9 +291,8 @@ theorem hostField_le_fixedField (x : B.host.E) : B.embE x ∈ B.LL0 := B.Ks_le (
 
 theorem embE_conj (x : B.host.E) : B.embE (B.host.conj x) = star (B.embE x) := by
   apply B.embLL.injective
-  rw [B.starLL_cx]
   have h : ∀ y, B.embLL (B.embE y) = B.host.φ₀ y := fun y => RingHom.congr_fun B.embE_φ₀ y
-  rw [h, h]
+  rw [B.starLL_cx, h, h]
   exact B.host.conjE_apply _ _
 
 end Base

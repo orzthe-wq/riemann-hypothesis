@@ -59,9 +59,7 @@ theorem mem_twCent (θ : G →* G) (δ x : G) : x ∈ GlobalTheory.BCT.twCent θ
 theorem relIndex_map_equiv (φ : G ≃* G) (H L : Subgroup G) :
     (H.map φ.toMonoidHom).relIndex (L.map φ.toMonoidHom) = H.relIndex L := by
   first
-  | (rw [Subgroup.map_equiv_eq_comap_symm, Subgroup.relIndex_comap, Subgroup.map_map]; simp)
   | exact Subgroup.relIndex_map_map_of_injective _ _ φ.injective
-  | simp [Subgroup.relIndex]
 
 theorem avg_left {H : Type} [Group H] (u : H → ℂ) (a : H) :
     GlobalTheory.BCT.avg (fun h => u (a * h)) = GlobalTheory.BCT.avg u := by
@@ -110,7 +108,7 @@ theorem twCent_conj (θ : G →* G) (δ g : G) :
     GlobalTheory.BCT.twCent θ (g⁻¹ * δ * θ g) = (GlobalTheory.BCT.twCent θ δ).map (MulAut.conj g⁻¹).toMonoidHom := by
   ext x
   rw [Subgroup.mem_map_equiv]
-  have e : (MulAut.conj g⁻¹).symm x = g * x * g⁻¹ := by simp [MulAut.conj_symm_apply]
+  have e : (MulAut.conj g⁻¹).symm x = g * x * g⁻¹ := by simp
   rw [e, mem_twCent, mem_twCent, map_mul, map_mul, map_inv]
   constructor
   · intro h
@@ -208,7 +206,7 @@ def dcEquiv (θ : G →* G) (K : Subgroup G) (δ g : G) :
     rw [DoubleCoset.eq]
     refine ⟨g⁻¹ * t⁻¹ * g, ?_, k⁻¹, K.inv_mem hk, by group⟩
     rw [twCent_conj]
-    exact ⟨t⁻¹, (GlobalTheory.BCT.twCent θ δ).inv_mem ht, by simp [MulAut.conj_apply]⟩
+    exact ⟨t⁻¹, (GlobalTheory.BCT.twCent θ δ).inv_mem ht, by simp⟩
   right_inv q := by
     obtain ⟨t, ht, k, hk, he⟩ :=
       DoubleCoset.mk_out_eq_mul (GlobalTheory.BCT.twCent θ (g⁻¹ * δ * θ g)) K (g⁻¹ * Quotient.out q)

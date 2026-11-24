@@ -79,7 +79,7 @@ theorem dop_apply (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) (x : V) :
 theorem dop_add (a b : V) (L M : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) :
     dop (a + b) (L + M) f = dop a L f + dop b M f := by
   ext x
-  simp only [SchwartzMap.add_apply, dop_apply, map_add (f := _), ContinuousLinearMap.add_apply]
+  simp only [SchwartzMap.add_apply, dop_apply, map_add (f := _)]
   push_cast
   ring
 
@@ -114,22 +114,7 @@ end Line
 
 
 open Complex in
-theorem temperate_exp : Function.HasTemperateGrowth (fun t : ℝ => cexp (I * t)) := by
-  have hd : ∀ n : ℕ, iteratedDeriv n (fun t : ℝ => cexp (I * t)) = fun t : ℝ => I ^ n * cexp (I * t) := by
-    intro n
-    induction n with
-    | zero => simp
-    | succ n ih =>
-      funext t
-      rw [iteratedDeriv_succ, ih]
-      have : HasDerivAt (fun t : ℝ => I ^ n * cexp (I * t)) (I ^ n * (cexp (I * t) * (I * 1))) t :=
-        (((hasDerivAt_id (t : ℂ)).const_mul I).cexp.const_mul _).comp_ofReal
-      rw [this.deriv]; ring
-  refine ⟨Complex.contDiff_exp.comp (contDiff_const.mul Complex.ofRealCLM.contDiff),
-    fun n => ⟨0, 1, fun t => ?_⟩⟩
-  rw [norm_iteratedFDeriv_eq_norm_iteratedDeriv, hd, norm_mul, norm_pow,
-    Complex.norm_I, one_pow, one_mul, Complex.norm_exp_I_mul_ofReal]
-  simp
+alias temperate_exp := _root_.GlobalTheory.CompanionTheory.OM.SchDiff.temperate_exp
 
 variable {κ : Type} [Fintype κ]
 

@@ -134,14 +134,14 @@ theorem locHom_extX (y : Sp E M ≃ₗ[E] Sp E M) :
       · simp
       intro h'
       have := congrArg Fin.val h'
-      simp [eX_val] at this
+      simp at this
       have := eX_lt e hcc he b
       omega
     · rw [e_inr e hcc he]
       by_cases h : s = t
       · subst h; simp
       · rw [Pi.single_eq_of_ne]
-        · simp [Matrix.one_apply, h]
+        · simp [h]
         intro h'
         have := congrArg Fin.val h'
         simp at this

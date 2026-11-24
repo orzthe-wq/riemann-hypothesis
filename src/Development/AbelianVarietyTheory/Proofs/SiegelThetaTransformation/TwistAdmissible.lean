@@ -61,9 +61,7 @@ variable {E : Type} [Field E] [NumberField E] {n N : ℕ}
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
-theorem _root_.GlobalTheory.SW.TwistAdm.nat_smul_mem (Λ : _root_.GlobalTheory.SW.Lt E n) (k : ℕ)
-    {v : Fin n → E} (h : v ∈ Λ) : (k : E) • v ∈ Λ :=
-  _root_.GlobalTheory.SW.Base.nat_smul_mem Λ k h
+alias _root_.GlobalTheory.SW.TwistAdm.nat_smul_mem := _root_.GlobalTheory.SW.Base.nat_smul_mem
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
@@ -104,10 +102,7 @@ theorem _root_.GlobalTheory.SW.TwistAdm.colsIn_mulVec {Λ : _root_.GlobalTheory.
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in
 variable {E : Type} [Field E] [NumberField E] {n N : ℕ} in
-theorem _root_.GlobalTheory.SW.TwistAdm.mem_of_coprime (Λ : _root_.GlobalTheory.SW.Lt E n) {u w : ℕ}
-    (h : u.Coprime w) {v : Fin n → E}
-    (hu : (u : E) • v ∈ Λ) (hw : (w : E) • v ∈ Λ) : v ∈ Λ :=
-  _root_.GlobalTheory.SW.Base.mem_of_coprime Λ h hu hw
+alias _root_.GlobalTheory.SW.TwistAdm.mem_of_coprime := _root_.GlobalTheory.SW.Base.mem_of_coprime
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real Classical in

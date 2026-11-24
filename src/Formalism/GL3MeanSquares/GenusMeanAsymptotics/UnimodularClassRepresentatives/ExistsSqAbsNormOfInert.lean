@@ -99,9 +99,7 @@ theorem exists_sub_conjO_notMem (hK : Formalism.HermitianLatticesTheory.IsCMUnra
 omit [StarRing K] in
 theorem absNorm_eq_card (I : Ideal (𝓞 K)) : Ideal.absNorm I = Nat.card (𝓞 K ⧸ I) := by
   first
-  | rfl
   | (rw [Ideal.absNorm_apply]; rfl)
-  | (rw [Ideal.absNorm_apply, Submodule.cardQuot_apply])
 
 theorem conjIdeal_isMaximal (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)} (hP : P.IsMaximal) :
     (Formalism.HermitianLatticesTheory.conjIdeal (K := K) P).IsMaximal := by
@@ -161,7 +159,6 @@ theorem conjO_eq_iff_mem_range (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (
       rw [ha]
       first
       | exact RingOfIntegers.isIntegral_coe x
-      | exact x.2
     have ha' : IsIntegral ℤ a := (isIntegral_algebraMap_iff ).1 hint
     refine ⟨⟨a, ha'⟩, ?_⟩
     apply RingOfIntegers.ext
@@ -185,12 +182,7 @@ theorem exists_maximal_over (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
   haveI := h𝔭
   have hinj : Function.Injective (algebraMap (𝓞 F) (𝓞 K)) := by
     first
-    | exact NoZeroSMulDivisors.algebraMap_injective _ _
     | exact FaithfulSMul.algebraMap_injective _ _
-    | (intro a b hab
-       apply RingOfIntegers.ext
-       apply (algebraMap F K).injective
-       exact congrArg (fun z : 𝓞 K => (z : K)) hab)
   have hker : RingHom.ker (algebraMap (𝓞 F) (𝓞 K)) ≤ 𝔭 := by
     rw [(RingHom.injective_iff_ker_eq_bot _).1 hinj]
     exact bot_le

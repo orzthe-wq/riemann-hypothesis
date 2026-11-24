@@ -245,7 +245,7 @@ theorem incf_frame (p : PP Lc n) {x : Fin n → Lc.K} (hx : p.1.f x = 1) :
       Finset.sum_ite_eq]
     by_cases hk : k = j
     · subst hk; simp; ring
-    · simp [hk, Function.update_of_ne hk]; ring
+    · simp [hk]; ring
   refine ⟨h * Matrix.GeneralLinearGroup.mkOfDetNeZero A hdet, fun y => ?_⟩
   have hv : ((h * Matrix.GeneralLinearGroup.mkOfDetNeZero A hdet : GL (Fin n) Lc.K) : Matrix (Fin n) (Fin n) Lc.K)
       = (h : Matrix (Fin n) (Fin n) Lc.K) * A := rfl

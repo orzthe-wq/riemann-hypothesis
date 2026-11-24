@@ -133,9 +133,6 @@ theorem classMapPf_local (π' Eπ : LetA O n) (h' M : ℕ) (c : ZMod n)
     have hsub : W.clK T (pr - pr') = W.clK T pr - W.clK T pr' := by
       first
         | exact map_sub (W.clK T) pr pr'
-        | exact (W.clK T).map_sub pr pr'
-        | exact LinearMap.map_sub _ _ _
-        | simp
     rw [hsub, sub_eq_zero] at hk
     exact hk
   · have h1 := hf pr hy hz
@@ -175,7 +172,7 @@ theorem classMapPf_of (π' : LetA O n) (E : ZMod n → Polynomial O) (e s' h' M 
   have hQ : W.Q = W.q := by
     show (W.φA ^ (W.s - 1)) W.q = W.q
     rw [hs1]
-    first | rfl | simp
+    first | rfl
   have hNγ : ∀ x ∈ W.N T, W.γD T W.gam x ∈ W.N T := by
     exact fun x hx => W.N_Γ T W.gam x hx
   have hsm : ∀ (a : LetA O n) (y : W.DD T), W.γD T W.gam (a • y) = letγ (W.γ₀ W.gam) a • W.γD T W.gam y := by

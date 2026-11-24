@@ -54,26 +54,15 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
 
 variable {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
 
-theorem mem_one (k : Fin N) : emb X la N (X.inc wL (w k)) ∈ Vw X la N (addL (wt0 D j) wL 1) := by
-  rw [add_zero_weight_one_eq]; exact emb_mem_Vw X la N wL (w k)
-
 theorem sfr_eq_sum (i : Fin (WeightFamilies.dimY D j + 1)) :
     sfr X la w i = ∑ k, algebraMap (Kp X la N) ↥(Frac0 X la w) (@algebraMap (Op X la N) (Kp X la N) _ _ _ (Tv X la N (i, k))) *
-      CurveLoc.fr0 X la N w 1 (X.inc wL (w k)) (mem_one X la N w k) := by
+      CurveLoc.fr0 X la N w 1 (X.inc wL (w k)) (_root_.Formalism.L2.Pj.CurveLoc.emb_inc_mem X la N w k) := by
   apply Subtype.ext
 
   rw [coe_sfr, Formalism.MainNotions.Gaps.EtaleWeightGaps.sec, map_sum, AddSubmonoidClass.coe_finsetSum]
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_smul, ← Algebra.smul_def]
   rfl
-
-theorem sfr_zero : sfr X la w 0 = 1 := by
-  apply Subtype.ext
-  rw [coe_sfr, frac_apply, pow_one, section_mul_inverse_eq_one]
-  rfl
-
-
-
 
 theorem countQAt_of_trdeg_le {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω)
     (htr : Algebra.trdeg B.KO Ω ≤ WeightFamilies.dimY D j) : CurveLoc.CountQAt X la N w gF := by
@@ -85,7 +74,7 @@ theorem countQAt_of_trdeg_le {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : X.Fo
     exfalso
     push Not at h0
     refine h𝔮.ne_top ((Ideal.eq_top_iff_one _).2 ?_)
-    rw [← sfr_zero X la N w, sfr_eq_sum X la N w 0]
+    rw [← _root_.Formalism.L2.Pj.CurveLoc.sfr_zero X la N w, sfr_eq_sum X la N w 0]
     refine Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (hK ?_)
     rw [RingHom.mem_ker, CurveLoc.phiZ_fraction_base, h0, map_zero, zero_mul]
 

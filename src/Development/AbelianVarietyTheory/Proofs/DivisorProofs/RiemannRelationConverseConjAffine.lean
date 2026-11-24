@@ -73,7 +73,7 @@ private theorem dot_left {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) (x y : Fin g
 
 private theorem map_star_mul' {g : ℕ} (A B : Matrix (Fin g) (Fin g) ℂ) :
     (A * B).map star = A.map star * B.map star := by
-  ext i j; simp [Matrix.mul_apply, star_sum]
+  ext i j; simp [Matrix.mul_apply]
 
 private theorem map_star_map_star' {g : ℕ} (A : Matrix (Fin g) (Fin g) ℂ) : (A.map star).map star = A := by
   ext i j; simp

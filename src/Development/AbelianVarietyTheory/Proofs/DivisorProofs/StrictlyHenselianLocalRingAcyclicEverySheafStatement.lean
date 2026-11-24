@@ -46,4 +46,4 @@ import Mathlib.Tactic.NormNum.RealSqrt
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct GlobalTheory.EtC
 
 theorem _root_.GlobalTheory.T.strictlyHenselianLocalRing_acyclic_every_sheaf : GlobalTheory.EtC.B2 := by
-  first | (exact @GlobalTheory.EtC.b2) | (exact GlobalTheory.EtC.b2) | (intros; apply GlobalTheory.EtC.b2  <;> assumption)
+  first | (exact @GlobalTheory.EtC.b2)

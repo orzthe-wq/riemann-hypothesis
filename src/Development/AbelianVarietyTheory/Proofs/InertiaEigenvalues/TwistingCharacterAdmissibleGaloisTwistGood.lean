@@ -101,7 +101,7 @@ theorem tw_good : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.h
   refine ⟨?_, hadm, ?_⟩
   · show (⟨half (ρ.ch i) Q, charOf ρ.rc (ρ.eOk i b k) ψ, resOf (charOf ρ.rc (ρ.eOk i b k) ψ)⟩ : Twist D Circle).Good
     rw [hkey]
-    refine GlobalTheory.T.artinPullback_isGoodTwist_of_anticyclotomic_tame D N X ρ.rc hρ.rc Circle (g.comp ψ) (X.l i) (X.lPrime i).out
+    refine _root_.GlobalTheory.TwistPull.good_pull D N X ρ.rc hρ.rc Circle (g.comp ψ) (X.l i) (X.lPrime i).out
       (fun σ => ⟨k, by rw [MonoidHom.comp_apply, ← map_pow, hpow, map_one]⟩) ?_ ?_ _ ?_ ?_ ?_
     · exact Subgroup.isOpen_mono (H₁ := ψ.ker) (fun x hx => by
         rw [MonoidHom.mem_ker] at hx ⊢

@@ -73,11 +73,7 @@ theorem exists_ltSeries_lift_of_isIntegral {A B : Type*} [CommRing A] [CommRing 
     intro l hl
     obtain ⟨Q, -, hQ, hQc⟩ := exists_prime_over_lemma l.last.asIdeal ⊥ (by
       first
-      | (rw [Ideal.comap_bot_of_injective _ h]; exact bot_le)
-      | (intro y hy
-         rw [Ideal.mem_comap, Ideal.mem_bot] at hy
-         rw [show y = 0 from h (by rw [hy, map_zero])]
-         exact Ideal.zero_mem _))
+      | (rw [Ideal.comap_bot_of_injective _ h]; exact bot_le))
     refine ⟨RelSeries.singleton _ ⟨Q, hQ⟩, ?_, ?_⟩
     · simp [hl]
     · simpa using hQc

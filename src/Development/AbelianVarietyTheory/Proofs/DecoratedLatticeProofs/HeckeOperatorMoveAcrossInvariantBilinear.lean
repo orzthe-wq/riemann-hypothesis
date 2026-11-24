@@ -110,7 +110,7 @@ private theorem finite_left_cosets_of_isCommensurated (hK : IsCommensurated K) (
     simp [MulAut.conj_apply]
   have hx : ((((⟨k, hk⟩ : K) * (h' : K) : K) : G) * a)⁻¹ * (k * a) = y⁻¹ := by
     rw [Subgroup.coe_mul, hy']
-    simp only [Subgroup.coe_mk]
+    simp only
     group
   rw [hx]
   exact K.inv_mem hy

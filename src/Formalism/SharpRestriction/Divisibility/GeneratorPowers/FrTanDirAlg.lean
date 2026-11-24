@@ -93,7 +93,7 @@ theorem decomp_of_inv (ρ : 𝓞 E →+* Module.End R M) (χ : ι → (𝓞 E �
     rw [Finset.sum_comm]
     simp_rw [← Finset.sum_smul, hcoef]
     conv_lhs => rw [hom_basis ρ b a]
-    simp [Module.End.mul_apply, Module.End.intCast_apply, Int.cast_smul_eq_zsmul]
+    simp [Int.cast_smul_eq_zsmul]
   have eig : ∀ σ (a : 𝓞 E) (m : M), ρ a (Q σ m) = χ σ a • Q σ m := by
     intro σ a m
     have h1 : ρ a (Q σ m) = ∑ i, Cm i σ • ρ (a * b i) m := by

@@ -80,7 +80,7 @@ theorem majAt_self_re (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
   apply Finset.sum_congr rfl
   intro i _
   rw [Complex.sq_norm, Complex.normSq_apply]
-  simp [Complex.mul_re] <;> ring
+  simp [Complex.mul_re]
 
 theorem rkK_span_singleton (x : V) (hx : x ≠ 0) :
     rkK (K := K) (Submodule.span (𝓞 K) ({x} : Set V)) = 1 := by

@@ -96,13 +96,13 @@ theorem ipO_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (
       rw [← integral_const_mul]
       congr 1
       funext w
-      simp only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, map_mul, map_add]
+      simp only [Pi.smul_apply, smul_eq_mul]
       ring
     · unfold ipO
       rw [← integral_const_mul]
       congr 1
       funext w
-      simp only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, map_mul, map_add]
+      simp only [Pi.smul_apply, smul_eq_mul, map_mul]
       ring
   · intro f' hf'
     constructor
@@ -110,13 +110,13 @@ theorem ipO_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (
       rw [← integral_add (hInt f g hf hg) (hInt f' g hf' hg)]
       congr 1
       funext w
-      simp only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, map_mul, map_add]
+      simp only [Pi.add_apply]
       ring
     · unfold ipO
       rw [← integral_add (hInt g f hg hf) (hInt g f' hg hf')]
       congr 1
       funext w
-      simp only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, map_mul, map_add]
+      simp only [Pi.add_apply, map_add]
       ring
   · exact ipO_self μ 𝓕 f
   ·

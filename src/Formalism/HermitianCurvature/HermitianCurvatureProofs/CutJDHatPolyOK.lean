@@ -89,7 +89,7 @@ theorem jdh_pd_star {N κ : ℕ} {P : Matrix (Fin N) (Fin N) ℂ → ℂ} (h : U
     rcases x with x | x <;> simp
 
 theorem polynomial_decay_admissible : JDPolyOK := by
-  apply GlobalTheory.HatNF.polyOp_ok <;> assumption
+  apply GlobalTheory.HatNF.polyOp_ok
 
 end
 

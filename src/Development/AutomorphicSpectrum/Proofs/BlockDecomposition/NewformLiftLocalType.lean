@@ -1,8 +1,8 @@
 module
 
+public import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.AdFormOf
 public import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.VerticalStrips.UnramifiedEulerProductIntegral
 public import GroundTheory.GlobalFields.CompletionAtPlace.Integers
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeSum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -18,11 +18,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -44,9 +41,138 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeSum, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftLocalType
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeSum =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeSum", "h": "module\n\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.AdFormOf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open UpperHalfPlane CongruenceSubgroup Ad3
+
+namespace GlobalTheory.CompanionTheory.HeckeSum
+
+theorem sum_root (p : ℕ) (hp : p.Prime) (n : ℕ) :
+    ∑ b ∈ Finset.range p, Complex.exp (-(2 * Real.pi * Complex.I * n * b / p)) =
+      if p ∣ n then (p : ℂ) else 0 := by
+  have hprim : IsPrimitiveRoot (Complex.exp (2 * Real.pi * Complex.I / p)) p :=
+    Complex.isPrimitiveRoot_exp p hp.ne_zero
+  set ζ : ℂ := (Complex.exp (2 * Real.pi * Complex.I / p))⁻¹ ^ n with hζ
+  have hterm : ∀ b ∈ Finset.range p,
+      Complex.exp (-(2 * Real.pi * Complex.I * n * b / p)) = ζ ^ b := by
+    intro b _
+    rw [hζ, ← Complex.exp_neg, ← pow_mul, ← Complex.exp_nat_mul]
+    congr 1
+    push_cast
+    ring
+  rw [Finset.sum_congr rfl hterm]
+  have hζp : ζ ^ p = 1 := by
+    rw [hζ, ← pow_mul, mul_comm n p, pow_mul, hprim.inv.pow_eq_one, one_pow]
+  split_ifs with h
+  · have h1 : ζ = 1 := by
+      rw [hζ]
+      exact (hprim.inv.pow_eq_one_iff_dvd n).mpr h
+    simp [h1]
+  · have h1 : ζ ≠ 1 := by
+      rw [hζ]
+      intro h1
+      exact h ((hprim.inv.pow_eq_one_iff_dvd n).mp h1)
+    rw [geom_sum_eq h1, hζp, sub_self, zero_div]
+
+theorem hecke_sum (k N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N)
+    (f : CuspForm (Gamma1 N) (k : ℤ)) (a : ℕ → ℂ) (hf : IsForm k N χ f a)
+    (he : IsEig k N χ a) (p : ℕ) (hp : p.Prime) (z : ℍ) (w : ℕ → ℍ)
+    (hw : ∀ b : ℕ, (w b : ℂ) = ((z : ℂ) - b) / p) (w' : ℍ) (hw' : (w' : ℂ) = p * z) :
+    ∑ b ∈ Finset.range p, (f : ℍ → ℂ) (w b) =
+      p * (a p * f z - χ p * (p : ℂ) ^ (k - 1) * f w') := by
+  have hterm : ∀ n : ℕ, ∑ b ∈ Finset.range p,
+      a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * ((w b : ℍ) : ℂ)) =
+      if p ∣ n then (p : ℂ) * (a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * (z : ℂ) / p))
+      else 0 := by
+    intro n
+    have hsplit : ∀ b : ℕ,
+        a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * ((w b : ℍ) : ℂ)) =
+        a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * (z : ℂ) / p) *
+          Complex.exp (-(2 * Real.pi * Complex.I * n * b / p)) := by
+      intro b
+      rw [hw b, mul_assoc (a n), ← Complex.exp_add]
+      congr 2
+      ring
+    rw [Finset.sum_congr rfl fun b _ => hsplit b, ← Finset.mul_sum, sum_root p hp n]
+    split_ifs <;> ring
+  have hL : HasSum (fun n : ℕ => if p ∣ n then
+      (p : ℂ) * (a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * (z : ℂ) / p)) else 0)
+      (∑ b ∈ Finset.range p, (f : ℍ → ℂ) (w b)) := by
+    have h := hasSum_sum fun b (_ : b ∈ Finset.range p) => hf.exp (w b)
+    convert h using 1
+    funext n
+    exact (hterm n).symm
+  have hinj : Function.Injective (fun m : ℕ => p * m) := fun x y h =>
+    Nat.eq_of_mul_eq_mul_left hp.pos h
+  have hLm : HasSum (fun m : ℕ => (p : ℂ) *
+      (a (p * m) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ))))
+      (∑ b ∈ Finset.range p, (f : ℍ → ℂ) (w b)) := by
+    have h1 := (hinj.hasSum_iff (f := fun n : ℕ => if p ∣ n then
+      (p : ℂ) * (a n * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) * (z : ℂ) / p)) else 0)
+      (a := ∑ b ∈ Finset.range p, (f : ℍ → ℂ) (w b)) ?_).mpr hL
+    · convert h1 using 1
+      funext m
+      simp only [Function.comp_apply]
+      rw [if_pos (dvd_mul_right p m)]
+      congr 3
+      rw [eq_div_iff (Nat.cast_ne_zero.mpr hp.ne_zero)]
+      push_cast
+      ring
+    · intro x hx
+      rw [if_neg]
+      rintro ⟨m, rfl⟩
+      exact hx ⟨m, rfl⟩
+  have h2 : HasSum ((fun m : ℕ => if p ∣ m then
+      a (m / p) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ)) else 0) ∘
+      (fun n : ℕ => p * n)) ((f : ℍ → ℂ) w') := by
+    convert hf.exp w' using 1
+    funext n
+    simp only [Function.comp_apply]
+    rw [if_pos (dvd_mul_right p n), Nat.mul_div_cancel_left n hp.pos, hw']
+    congr 2
+    push_cast
+    ring
+  have hw's : HasSum (fun m : ℕ => if p ∣ m then
+      a (m / p) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ)) else 0)
+      ((f : ℍ → ℂ) w') := by
+    refine (hinj.hasSum_iff ?_).mp h2
+    intro x hx
+    rw [if_neg]
+    rintro ⟨m, rfl⟩
+    exact hx ⟨m, rfl⟩
+  have hR := ((hf.exp z).mul_left (a p)).sub (hw's.mul_left (χ p * (p : ℂ) ^ (k - 1)))
+  have key : ∀ m : ℕ, a p * (a m * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ))) - χ p * (p : ℂ) ^ (k - 1) *
+      (if p ∣ m then a (m / p) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ)) else 0) = a (p * m) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ)) := by
+    intro m
+    have h := he.2.2 p m hp
+    by_cases hm : p ∣ m
+    · rw [if_pos hm] at h ⊢
+      linear_combination (Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ))) * h
+    · rw [if_neg hm] at h ⊢
+      linear_combination (Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (m : ℂ) * (z : ℂ))) * h
+  simp only [key] at hR
+  exact hLm.unique (hR.mul_left (p : ℂ))
+
+end GlobalTheory.CompanionTheory.HeckeSum
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeSum =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftLocalType =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftLocalType", "h": "module\n\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.ArchimedeanCuspidal.VerticalStrips.UnramifiedEulerProductIntegral\npublic import GroundTheory.GlobalFields.CompletionAtPlace.Integers\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeSum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -204,7 +330,7 @@ theorem uni_mem {v : Pl} (b : Qv v) (hb : b ∈ 𝒪[Qv v]) : uni2 b ∈ integra
   refine (GLnLocal.mem_integralGL_iff _ 2).2 ⟨fun i j => ?_, fun i j => ?_⟩
   · fin_cases i <;> fin_cases j <;> simp [uni2, hb, zero_mem, one_mem]
   · rw [inv_uni]
-    fin_cases i <;> fin_cases j <;> simp [uni2, hb', hb, zero_mem, one_mem]
+    fin_cases i <;> fin_cases j <;> simp [uni2, hb', zero_mem, one_mem]
 
 theorem dg_mem {v : Pl} (a d : (Qv v)ˣ) (ha : ord (a : Qv v) = 0) (hd : ord (d : Qv v) = 0) :
     dg2 a d ∈ integralGL (Qv v) 2 := by
@@ -395,7 +521,7 @@ theorem up_facts {p : ℕ} {P : ℚˣ} (hP : (P : ℚ) = p) (b : ℕ) :
   rw [← map_inv, inv_uni_dg, det_toReal]
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
   · rw [Matrix.GeneralLinearGroup.val_det_apply]
-    simp [uni2, dg2, Matrix.det_fin_two, Matrix.mul_apply, Fin.sum_univ_two, hP]
+    simp [uni2, dg2, Matrix.det_fin_two, hP]
   all_goals
     rw [toReal_apply]
     simp [uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two, hP]
@@ -509,3 +635,7 @@ theorem f3a : Ad3.R.B0 → Ad3.R.HeckeSumLocalTranslates := by
     linear_combination (-(Complex.ofReal (Real.sqrt (pOf v : ℝ)⁻¹) ^ k * ((Real.sqrt x.det.val : ℂ) ^ k * denom x (UpperHalfPlane.I : ℂ) ^ (-(k : ℤ))) * χ ((pOf v : ℕ) : ZMod N) * f (δ' • x • UpperHalfPlane.I))) * hk1
 
 end GlobalTheory.CompanionTheory.RSq
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NewformLiftLocalType =====

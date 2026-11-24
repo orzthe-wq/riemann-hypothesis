@@ -54,7 +54,7 @@ private theorem norm_le_one_of_isIntegral_padicInt' {l : ℕ} [Fact l.Prime] (x 
     ‖x‖ ≤ 1 := by
   obtain ⟨p, hm, hp⟩ := hx
   by_contra h
-  push_neg at h
+  push Not at h
   have hd0 : p.natDegree ≠ 0 := by
     intro h0
     have h1 := Polynomial.eq_one_of_monic_natDegree_zero hm h0
@@ -88,18 +88,15 @@ private theorem norm_le_one_of_isIntegral_padicInt' {l : ℕ} [Fact l.Prime] (x 
 
 private theorem norm_coe_padicAlgCl_coefO_le_one {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) :
     ‖(x : PadicAlgCl l)‖ ≤ 1 := by
-  haveI := c.fin
-  haveI : Algebra.IsIntegral ℤ_[l] c.O := Algebra.IsIntegral.of_finite ℤ_[l] c.O
+  have := c.fin
+  have : Algebra.IsIntegral ℤ_[l] c.O := Algebra.IsIntegral.of_finite ℤ_[l] c.O
   exact norm_le_one_of_isIntegral_padicInt' _ ((Algebra.IsIntegral.isIntegral x).map c.O.val)
-
-private theorem norm_natCast_prime_padicAlgCl_eq_inv {l : ℕ} [Fact l.Prime] : ‖(l : PadicAlgCl l)‖ = (l : ℝ)⁻¹ := by
-  rw [← map_natCast (algebraMap ℤ_[l] (PadicAlgCl l)) l, norm_algebraMap_padicInt_padicAlgCl, PadicInt.norm_p]
 
 private theorem norm_coe_lt_one_of_mem_maximalIdeal_coefO {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O)
     (hx : x ∈ IsLocalRing.maximalIdeal c.O) : ‖(x : PadicAlgCl l)‖ < 1 := by
-  haveI := c.dvr
+  have := c.dvr
   have hcast : ((l : c.O) : PadicAlgCl l) = (l : PadicAlgCl l) := by simp
-  have hl : ‖((l : c.O) : PadicAlgCl l)‖ = (l : ℝ)⁻¹ := by rw [hcast, norm_natCast_prime_padicAlgCl_eq_inv]
+  have hl : ‖((l : c.O) : PadicAlgCl l)‖ = (l : ℝ)⁻¹ := by rw [hcast, _root_.GlobalTheory.CycTrace.norm_l]
   have hlt : (l : ℝ)⁻¹ < 1 :=
     inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)
   have hl0 : (l : c.O) ≠ 0 := by
@@ -184,8 +181,8 @@ private theorem norm_natCast_prime_sub_one_padicAlgCl_eq_one {l : ℕ} [Fact l.P
     inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)
   rw [Nat.cast_sub hl1, Nat.cast_one, sub_eq_neg_add,
     IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm
-      (by rw [norm_neg, norm_one, norm_natCast_prime_padicAlgCl_eq_inv]; exact hlt.ne'),
-    norm_neg, norm_one, norm_natCast_prime_padicAlgCl_eq_inv]
+      (by rw [norm_neg, norm_one, _root_.GlobalTheory.CycTrace.norm_l]; exact hlt.ne'),
+    norm_neg, norm_one, _root_.GlobalTheory.CycTrace.norm_l]
   exact max_eq_left hlt.le
 
 private theorem sq_mul_eq_of_pow_two_mul_pred_eq_of_norm_sub_lt_one {l : ℕ} [Fact l.Prime] (b w y : PadicAlgCl l) (hb : ‖b - 1‖ < 1)

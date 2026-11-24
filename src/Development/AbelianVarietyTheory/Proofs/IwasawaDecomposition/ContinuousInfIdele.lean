@@ -61,7 +61,7 @@ namespace GlobalTheory.InfTypeLocal
 
 theorem denseRange_atInf (L : Type) [Field L] [NumberField L] :
     DenseRange (fun (k : Lˣ) (w : InfinitePlace L) => atInf w k) := by
-  apply PositivityTheory.ThKRed.HK.dense_atInf <;> assumption
+  apply PositivityTheory.ThKRed.HK.dense_atInf
 
 theorem continuous_infIdele (L : Type) [Field L] [NumberField L] (w : InfinitePlace L) :
     Continuous (infIdele L w) := by

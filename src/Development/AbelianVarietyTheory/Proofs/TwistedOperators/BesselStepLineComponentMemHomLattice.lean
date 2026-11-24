@@ -56,14 +56,6 @@ namespace GlobalTheory.LineCompLat
 
 variable {D : D7}
 
-theorem rat_mulVec_tmul {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (t : AF D.host.F) (x : Fin n → D.host.E) :
-    rat M *ᵥ (fun l => t ⊗ₜ[D.host.F] (1 * x l)) = fun k => t ⊗ₜ[D.host.F] (1 * (M *ᵥ x) k) := by
-  funext k
-  simp only [Matrix.mulVec, dotProduct, rat, Matrix.map_apply, one_mul, TensorProduct.tmul_sum]
-  refine Finset.sum_congr rfl fun l _ => ?_
-  change ((1 : AF D.host.F) ⊗ₜ[D.host.F] M k l) * (t ⊗ₜ[D.host.F] x l) = _
-  rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
-
 theorem rat_mulVec_latV {S S' : HSp D} {L : Lat S} {L' : Lat S'} {P : GlobalTheory.FinPl.Pl D → Prop}
     (M : Matrix (Fin S'.rank) (Fin S.rank) D.host.E) (hM : ∀ x ∈ L, M *ᵥ x ∈ L')
     {y : Fin S.rank → AE D} (hy : y ∈ latV S L P) : rat M *ᵥ y ∈ latV S' L' P := by
@@ -72,21 +64,15 @@ theorem rat_mulVec_latV {S S' : HSp D} {L : Lat S} {L' : Lat S'} {P : GlobalTheo
     obtain ⟨α, hαi, hα, a, ha, x, hx, rfl⟩ := hz
     rw [Set.mem_singleton_iff] at ha
     subst ha
-    rw [rat_mulVec_tmul]
+    rw [_root_.GlobalTheory.SeeSaw.SplitLat.rat_mulVec_gen]
     exact AddSubgroup.subset_closure ⟨α, hαi, hα, 1, rfl, M *ᵥ x, hM x hx, rfl⟩
   | zero => rw [Matrix.mulVec_zero]; exact zero_mem _
   | add z z' _ _ hz hz' => rw [Matrix.mulVec_add]; exact add_mem hz hz'
   | neg z _ hz => rw [Matrix.mulVec_neg]; exact neg_mem hz
 
-theorem mxAt_mul_left {P : GlobalTheory.FinPl.Pl D → Prop} {k m n : ℕ} (B : Mx D k m) {A : Mx D m n} (hA : MxAt P A) :
-    MxAt P (B * A) := fun i j => by
-  rw [Matrix.mul_apply]
-  exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hA l j)
+alias mxAt_mul_left := _root_.GlobalTheory.AscFinWit.mxAt_mul
 
-theorem mxAt_mul_right {P : GlobalTheory.FinPl.Pl D → Prop} {k m n : ℕ} {A : Mx D k m} (hA : MxAt P A) (C : Mx D m n) :
-    MxAt P (A * C) := fun i j => by
-  rw [Matrix.mul_apply]
-  exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hA i l)
+alias mxAt_mul_right := _root_.GlobalTheory.AscFinWit.mxAt_mul'
 
 end GlobalTheory.LineCompLat
 

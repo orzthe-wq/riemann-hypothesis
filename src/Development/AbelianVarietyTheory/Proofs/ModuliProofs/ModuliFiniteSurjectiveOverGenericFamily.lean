@@ -1,6 +1,5 @@
 module
 
-import Development.WeilBound.CoreStatements.FlagImmersions.ValAtOfExtends
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.TopAmpExists
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PushEquivSymmLeft
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RangeSubsetOfGeom
@@ -8,20 +7,22 @@ public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsCoprime
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemNonzeroLocusIffPowFn
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.RelAmpleOfLocallyOnBase
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoIffBijectiveOverAlgClosed
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmModelCoefficientSubringDedekindCompatibleEmbed
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFiniteEtaleLatticeTorsionHom
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFormEqOne
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsObjTwistBySimilitude
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSimilitudeOfAutModLevelIdealStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSimilitudeOfAutModLevelIdeal
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FullObjOfObj
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfIsGrpPullback
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsReducedIsNormalSchemeIsLocallyNoetherianOfSmoo
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SpMapComp
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.GeometricallyReducedOfPerfectField
+import Development.WeilBound.CoreStatements.FlagImmersions.ValAtOfExtends
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoIffBijectiveOverAlgClosed
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsObjTwistBySimilitude
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TateIsoDifferBySimilitude
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.GeometricallyReducedOfPerfectField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -121,7 +122,7 @@ theorem exists_tate_of_lin (hc : l.A.Coprime l.M) {k : Type} [Field k] {Q : Type
     have h : P.mkQ (f a) = P.mkQ (s a) := LinearMap.congr_fun hf a
     rw [(hP _ _).1 h, hs]
   obtain ⟨ε, he, he'⟩ := exists_idem l
-  obtain ⟨g, g1, g2, g3⟩ := GlobalTheory.T.exists_similitude_of_aut_mod_levelIdeal E H D l l.A f hpq l.A_pos hc fun x hx => by
+  obtain ⟨g, g1, g2, g3⟩ := _root_.GlobalTheory.exists_sim_of_aut_mod E H D l l.A f hpq l.A_pos hc fun x hx => by
     have h1 : ε • x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) := hinj _ (by
       rw [hf, map_smul]; exact (I.ker _ hN _).2 (modN_smul_Mb l he hx))
     have h2 : x = ε • x + (1 - ε) • x := by rw [← add_smul, add_sub_cancel, one_smul]
@@ -325,7 +326,7 @@ theorem exists_closure {T Z : Scheme.{0}} [IsReduced T] (h : T ⟶ Z) :
   exact subset_rfl
 
 theorem exists_sabPull (f : S' ⟶ S) (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
-  apply RootFieldNumerics.RF.IntFr.exists_sab <;> assumption
+  apply RootFieldNumerics.RF.IntFr.exists_sab
 
 theorem exists_cancel {S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     {u : S'' ⟶ S} (e : g ≫ f = u) (m : SABMap t' t f) (n : SABMap t'' t u) :

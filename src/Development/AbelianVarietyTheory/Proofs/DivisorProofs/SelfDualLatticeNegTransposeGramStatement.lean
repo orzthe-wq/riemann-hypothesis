@@ -51,4 +51,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 
 theorem _root_.GlobalTheory.T.selfDualLattice_neg_transpose_gram : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D), GlobalTheory.UCls.SelfDualLat (-(V.gram)ᵀ) (GlobalTheory.Member.latC V) := by
-  first | exact @GlobalTheory.Member.selfDualLat_neg_gram_transpose | exact GlobalTheory.Member.selfDualLat_neg_gram_transpose | (intros; apply GlobalTheory.Member.selfDualLat_neg_gram_transpose <;> assumption)
+  first | exact @GlobalTheory.Member.selfDualLat_neg_gram_transpose

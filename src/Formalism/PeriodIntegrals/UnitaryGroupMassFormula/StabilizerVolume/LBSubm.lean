@@ -172,7 +172,7 @@ theorem submLB_holds : SubmLB := by
     have h2 := ((hasStrictFDerivAt_id x0).add (R.hasStrictFDerivAt.comp x0 h1)).add_const
       (R (A x0) - R (f x0))
     rw [hhdef]
-    convert h2 using 1 <;> first | rfl | (funext x; simp) | (ext v; simp) | (ext v i; simp)
+    convert h2 using 1 <;> first | rfl | (funext x; simp) | (ext v; simp)
   have hdiff : Differentiable ℝ h := hC.differentiable (by norm_num)
   have hdet : Continuous fun x => (fderiv ℝ h x).det :=
     ContinuousLinearMap.continuous_det.comp (hC.continuous_fderiv (by norm_num))
@@ -213,7 +213,6 @@ theorem submLB_holds : SubmLB := by
   · first
     | exact ENNReal.mul_pos (ENNReal.inv_ne_zero.2 ENNReal.ofReal_ne_top)
         (ENNReal.coe_ne_zero.2 hc0pos.ne')
-    | (apply ENNReal.mul_pos <;> simp [hc0pos.ne'])
   · exact ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 hK0) ENNReal.coe_ne_top
   · intro S hSN hS
     have hAm : Measurable A := A.continuous.measurable
@@ -261,8 +260,6 @@ theorem submLB_holds : SubmLB := by
         ∫⁻ x in f ⁻¹' S ∩ U0, ENNReal.ofReal |(fderiv ℝ h x).det| ∂μ := by
       first
       | exact addHaar_image_le_lintegral_abs_det_fderiv μ hM
-          (fun x _ => (hdiff x).hasFDerivAt.hasFDerivWithinAt)
-      | exact addHaar_image_le_lintegral_abs_det_fderiv hM
           (fun x _ => (hdiff x).hasFDerivAt.hasFDerivWithinAt)
     have h6 : ∫⁻ x in f ⁻¹' S ∩ U0, ENNReal.ofReal |(fderiv ℝ h x).det| ∂μ ≤
         ∫⁻ _ in f ⁻¹' S ∩ U0, ENNReal.ofReal 2 ∂μ := by

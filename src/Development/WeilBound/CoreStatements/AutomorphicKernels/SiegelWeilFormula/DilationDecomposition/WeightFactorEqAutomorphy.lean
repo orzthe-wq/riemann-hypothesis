@@ -107,9 +107,6 @@ theorem gf_real (e : ℤ) (p q : ℕ) (t : ℝ) {m : ℕ} (X : Fin n → ℝ) (a
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
-theorem abs_tw {d : SD σ} (R : RD d) (w : InfinitePlace F) : |2 * Real.pi * ((R.sg w : ℤ) : ℝ)| = 2 * Real.pi := by
-  rcases Int.units_eq_one_or (R.sg w) with h | h <;> simp [h, abs_of_pos Real.pi_pos]
-
 end PositivityTheory.SiegelWeilFormula.Kdil
 
 end

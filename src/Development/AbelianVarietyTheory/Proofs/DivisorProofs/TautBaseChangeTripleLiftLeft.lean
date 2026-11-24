@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.LawsProved
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -53,8 +54,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PolDeg.TautEx
 
-theorem toUnit_left {S : Scheme.{0}} (X : Over S) : (toUnit X).left = X.hom := by
-  simpa using Over.w (toUnit X)
+alias toUnit_left := _root_.GlobalTheory.ObjPull.toUnit_left'
 
 section Gen
 
@@ -139,11 +139,9 @@ section Tau
 variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N m n : ℕ)
   (ε : Fin N → LinearMap.BilinForm ℤ (Fin T.r → ℤ))
 
-theorem unitOn_mul {R : Type} [CommRing R] (u v : Rˣ) : unitOn (u * v) = unitOn u * unitOn v := map_mul _ _ _
+alias unitOn_mul := _root_.GlobalTheory.ToricData.unitOn_mul
 
-theorem triple_lift_comp_projections {S : Scheme.{0}} {G Tt : Over S} (x y w : Tt ⟶ G) :
-    lift x (lift y w) ≫ x3 G 0 = x ∧ lift x (lift y w) ≫ x3 G 1 = y ∧ lift x (lift y w) ≫ x3 G 2 = w := by
-  simp [x3]
+alias triple_lift_comp_projections := _root_.GlobalTheory.BXOf.onObjOf3_x_eq
 
 theorem alg_step {G : Type} [CommGroup G] {g₁ g₂ v c a b : G} (e : v * c = a * b) :
     g₁ * g₂ * v * c = g₁ * a * (g₂ * b) := by

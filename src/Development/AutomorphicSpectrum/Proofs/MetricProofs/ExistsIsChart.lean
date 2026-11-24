@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LogPeriodLimit
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SymplecticPolydiscPeriodBasisStatement
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.ClopenCondOnto
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SymplecticPolydiscPeriodBasis
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.Assembly
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.PLogCoverDescent
 import GroundTheory.HeightsAndTheta.Heights.Regularisation.PPuncturedExpOrder
@@ -86,7 +87,7 @@ structure IsChart (L : Flat.LogPeriods n a g Λ) (bas : Module.Basis (Fin g ⊕ 
     (A (expCover a w))ᵀ *ᵥ (cst (uCo bas x) + tauAt L.a_le T0 B w *ᵥ cst (vCo bas x))
 
 theorem exists_isChart (L : Flat.LogPeriods n a g Λ) : ∃ bas A T0 B c ρ, IsChart L bas A T0 B c ρ := by
-  obtain ⟨bas, Q, A, T0, hE, hAd, hA0, hT0, hBpsd, hPa, hPb⟩ := GlobalTheory.T.symplectic_polydisc_period_basis n a g Λ L
+  obtain ⟨bas, Q, A, T0, hE, hAd, hA0, hT0, hBpsd, hPa, hPb⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_markedPeriods_frame n a g Λ L
   obtain ⟨ρ₁, c, C₁, hρ₁, hρ₁1, hc, hb⟩ :=
     (ImTauBounds.cond RiemannExtensionSlices.proof PuncturedExpOrder.proof LogCoverDescent.proof) n a g Q
   have hAc : ContinuousOn A (Metric.ball 0 1) :=
@@ -110,7 +111,7 @@ theorem exists_isChart (L : Flat.LogPeriods n a g Λ) : ∃ bas A T0 B c ρ, IsC
     have hwj : ∀ j : Fin a, w (Fin.castLE L.a_le j) = l j := by
       intro j
       have hj : (Fin.castLE L.a_le j).val < a := j.2
-      simp [w, hj]
+      simp [w]
     have hexp : expCover a w = z := by
       funext k
       by_cases hk : k.val < a

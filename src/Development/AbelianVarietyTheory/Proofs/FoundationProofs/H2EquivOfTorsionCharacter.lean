@@ -475,7 +475,7 @@ theorem exists_pow_smul_mem (hO : GoodO (Qp := ℚ_[l]) LL O) :
   have h4 := hc.continuousAt (x := 0) (h3.mem_nhds ⟨0, by simp⟩)
   rw [Filter.mem_map, Metric.mem_nhds_iff] at h4
   obtain ⟨ε, hε, h5⟩ := h4
-  obtain ⟨n, hn⟩ := exists_zpow_neg_lt (l := l) hε
+  obtain ⟨n, hn⟩ := PadicInt.exists_pow_neg_lt (p := l) hε
   refine ⟨n, fun a => ?_⟩
   rw [← Algebra.smul_def]
   apply h5

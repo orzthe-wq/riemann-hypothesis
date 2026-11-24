@@ -154,7 +154,7 @@ theorem fibTri : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Rec
     rfl
   have hC : C.BlockTriangular (fun j => ((e j).2 : ℕ)) := by
     intro j j' hj
-    simp only [C, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
+    simp only [C, Matrix.of_apply, Finset.sum_apply]
     refine Finset.sum_eq_zero fun i _ => ?_
     by_cases hi : j = e.symm ⟨(e j').1, i⟩
     · have h3 : (((e j).2 : ℕ)) = i := by rw [hi, Equiv.apply_symm_apply]

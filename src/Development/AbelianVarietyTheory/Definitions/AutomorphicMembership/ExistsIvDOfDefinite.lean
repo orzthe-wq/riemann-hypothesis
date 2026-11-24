@@ -283,7 +283,7 @@ theorem ρ_mem_opn_iff (x : d.Z.genO.toScheme) : d.ρ x ∈ Z₀.opn ↔ d.Z.gen
   rw [← d.π_mem_iff]
   change Z₀.π (d.ρ x) ∈ Set.range (Y Z₀.i).j ↔ _
   rw [← Scheme.Hom.comp_apply]
-  simp [ρ, Category.assoc, Scheme.Hom.comp_apply]
+  simp [ρ, Category.assoc]
 
 def idealQ : d.Z.genO.toScheme.IdealSheafData := d.D.1.comap d.Z.genO.ι
 

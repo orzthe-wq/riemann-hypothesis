@@ -45,4 +45,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.exists_unramifiedHeckeChar_halfExponent_restrict_quadratic : ∀ D : D7, ∃ χ : IdC D, IsHeckeChar D χ ∧ (∀ τ, HasInfExp D χ τ (1 / 2)) ∧ ResEta D χ 1 ∧ UnramEverywhere D χ := by
-  first | exact @GlobalTheory.Mem.EtaTilde.exists_etaTilde | exact GlobalTheory.Mem.EtaTilde.exists_etaTilde | (intros; apply GlobalTheory.Mem.EtaTilde.exists_etaTilde <;> assumption)
+  first | exact @GlobalTheory.Mem.EtaTilde.exists_etaTilde

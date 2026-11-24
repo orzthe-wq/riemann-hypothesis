@@ -44,4 +44,4 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.trueColumn_periodLattice_vacuumSmooth : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (a : I.ι) (u : B.Word) (i : ℕ), i < B.R.m → I.A.LaHyp (B.R.N i) (B.R.N (i + 1)) (ColIn.Sb I a u) ∧ I.A.ESmooth (B.R.N i) (B.R.N (i + 1)) := by
-  first | exact @GlobalTheory.Mem.Col2.TC.laHyp_eSmooth_true | exact GlobalTheory.Mem.Col2.TC.laHyp_eSmooth_true | (intros; apply GlobalTheory.Mem.Col2.TC.laHyp_eSmooth_true <;> assumption)
+  first | exact @GlobalTheory.Mem.Col2.TC.laHyp_eSmooth_true

@@ -101,7 +101,7 @@ theorem ring_AE : IsTopologicalRing (AE F E) := by
 
 omit [NumberField E] in
 theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (piInf τ) := by
-  apply PositivityTheory.RL.continuous_piInf <;> assumption
+  apply PositivityTheory.RL.continuous_piInf
 
 variable {n d : ℕ}
 

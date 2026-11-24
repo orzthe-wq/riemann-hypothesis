@@ -78,23 +78,6 @@ structure BlockBaseChangeAt (φ : K →+* K') (e : G ≃* G') (B : BlockDat K G 
 
   ψ : ∀ h : ℓ.P, ((ℓ'.ψ ⟨e h, P ▸ Subgroup.mem_map_of_mem e.toMonoidHom h.2⟩ : K'ˣ) : K') = φ (ℓ.ψ h : K)
 
-section Cx
-
-open Formalism.IndefR.Cx Formalism.L2.Indef
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
-  {fc : DefSub A → DefFace Bs}
-
-theorem tC_cpt (cr : Crd A fc) (b : Bool) (j : Bs.J) (t : Bs.Tup) (x : Fin ((lv (fc X.zs) b).dZ j t) → K) :
-    X.tC cr b j t (cpt Bs.v0.embedding x) = X.θ' j t (X.jL j t (cr.toL X.zs b j t x)) := by
-  have hx : x = ∑ k, x k • Pi.single k 1 := by
-    funext i; simp [Finset.sum_apply, Pi.single_apply]
-  conv_rhs => rw [hx]
-
-  simp only [map_sum, map_smul, map_smulₛₗ, CxData.tC, lin, Fintype.linearCombination_apply, cpt]
-
-end Cx
-
 end GlobalTheory.Mem.R3.LiftLatBC
 
 end

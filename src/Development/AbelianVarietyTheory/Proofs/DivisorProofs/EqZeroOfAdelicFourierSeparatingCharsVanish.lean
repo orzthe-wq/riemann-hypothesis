@@ -61,22 +61,15 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
 
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
-theorem t2Space_infiniteAdeleRing_of_numberField : T2Space (InfiniteAdeleRing F) :=
-  inferInstanceAs (T2Space ((v : InfinitePlace F) → v.Completion))
-
 theorem secondCountable_completion (v : InfinitePlace F) : SecondCountableTopology v.Completion :=
   (InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.secondCountableTopology
 
-theorem secondCountable_inf : SecondCountableTopology (InfiniteAdeleRing F) := by
-  haveI := secondCountable_completion F
-  exact inferInstanceAs (SecondCountableTopology ((v : InfinitePlace F) → v.Completion))
-
 theorem t2Space_adeleRing_of_numberField : T2Space (AF F) := by
-  haveI := t2Space_infiniteAdeleRing_of_numberField F
+  haveI := _root_.GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field F
   exact inferInstanceAs (T2Space (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))
 
 theorem secondCountable_AF : SecondCountableTopology (AF F) := by
-  haveI := secondCountable_inf F
+  haveI := _root_.GlobalTheory.AdelicUnitaryTop.secondCountable_infiniteAdele F
   exact inferInstanceAs (SecondCountableTopology (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))
 
 theorem continuousAdd_AE : ContinuousAdd (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E)) :=

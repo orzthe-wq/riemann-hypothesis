@@ -41,6 +41,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Concre
 import Formalism.LocalToGlobal.IndefiniteReal.AutomorphicEvaluation
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowLevelMatch
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowsJoinPinned
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.DegreeRatioFormulaStatement
 
 @[expose] public section
 
@@ -52,15 +53,9 @@ open Formalism.L2.SG.Pf
 namespace GlobalTheory.Mem.SymChar.ZPair
 open GlobalTheory.Mem.SymFrame
 
-theorem rank_eq' (D : D7) : D.R.r = D.R.k + 2 * D.R.rS + 1 := by
-  unfold Ranks.r Ranks.rS
-  obtain ⟨t, ht⟩ := D.R.m_even
-  have := D.R.two_le_m
-  omega
-
 theorem zmod_hA_z0_symVec (D : D7) (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (j : Fin D.R.r) :
     ZMod' X.B.I X.B.g (hA X.B.I X.z0 (symVec X w j) - (if j.val = D.R.rS + D.R.k then -1 else 0)) := by
-  have hr := rank_eq' D
+  have hr := _root_.Formalism.MainNotions.BridgeLemma.sza_r_eq D
   have hj := j.2
   unfold symVec GlobalTheory.SeeConjRead.flagV epsW
   split_ifs

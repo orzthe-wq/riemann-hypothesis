@@ -1,8 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyValExtOfOverLa
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentialOperatorDepthRestrictColumnsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupOperatorDepthMulDisjointColumnsStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DifferentialOperatorDepthRestrictColumns
+public import Mathlib.Algebra.MvPolynomial.Variables
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupOperatorDepthMulDisjointColumns
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsExpEqOfSubstLg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -92,7 +94,7 @@ theorem depth_prod [CharZero C] [DecidableEq κ] [∀ b, DecidableEq (ι b)] {F 
   | empty => simpa using depth_one G u
   | insert a s ha ih =>
     rw [Finset.prod_insert ha, Finset.sum_insert ha, ← ih]
-    refine GlobalTheory.T.formalGroupOperatorDepth_mul_disjoint_columns C v κ d G ι u {b | col b = a} _ _ (hP a) fun x hx h => ?_
+    refine _root_.GlobalTheory.FGDepth.depth_mul_of_disjoint_columns C v κ d G ι u {b | col b = a} _ _ (hP a) fun x hx h => ?_
     obtain ⟨f, hf, hxf⟩ := Finset.mem_biUnion.1 (MvPolynomial.vars_prod _ hx)
     exact ha ((show col x.1 = a from h) ▸ hP f x hxf ▸ hf)
 
@@ -105,7 +107,7 @@ theorem depth_prod_detPow [CharZero C] {n : ℕ} (G₀ : LogFGL v n) {F : Type} 
   classical
   rw [depth_prod _ _ (fun b : (Σ f : F, Fin (r f)) => b.1)]
   · refine Finset.sum_congr rfl fun f _ => ?_
-    have h := GlobalTheory.T.differentialOperatorDepth_restrict_columns C v (Σ f : F, Fin (r f)) (fun _ => n) (fun _ => G₀)
+    have h := _root_.GlobalTheory.FGDepth.depth_restrict C v (Σ f : F, Fin (r f)) (fun _ => n) (fun _ => G₀)
       (fun b => Fin (r b.1)) (fun b => w b.1) (Fin (r f)) ⟨fun b => ⟨f, b⟩, fun _ _ h => eq_of_heq (Sigma.mk.inj h).2⟩
       (detPow C (r f) (cx f))
     unfold detDepth

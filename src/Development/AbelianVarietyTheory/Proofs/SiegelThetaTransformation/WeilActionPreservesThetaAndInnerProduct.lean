@@ -2,15 +2,17 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.DifferentiableOnDetHMat
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CanonicalThetaExponentSymplecticInvariantStatement
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Mathlib.LinearAlgebra.SymplecticGroup
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CanonicalThetaExponentSymplecticInvariant
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EqOfSiegelThetaSeriesRationalEq
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsWeilOfSymplecticStatement
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsWeilOfSymplectic
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LactMulFrame
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PeriodsLactSymplectic
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableNormSiegelThetaSeriesTerms
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticSiegelActionMemUpperHalfSpaceAndCocyclStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticSiegelActionMemUpperHalfSpaceAndCocycl
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -89,15 +91,7 @@ theorem lact_one' {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact (1 : GL (F
 
 
 omit [NumberField E] [IsCMField E] in
-theorem lact_mul' {Ψ : Finset (E →+* ℂ)} (γ' γ : GL (Fin r) E) (x : Frame Ψ r) :
-    lact (γ' * γ) x = lact γ' (lact γ x) := by
-  first
-  | exact @_root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame
-  | exact _root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame
-  | (apply _root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame <;> assumption)
-  | (intros; apply _root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame ..)
+alias lact_mul' := _root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame
 
 theorem isUn_mul {γ' γ : GL (Fin r) E} (h' : IsUn X γ') (h : IsUn X γ) : IsUn X (γ' * γ) := by
   intro u v
@@ -137,14 +131,14 @@ theorem exists_weil (hs : IsSympl X bas) (hn : Even n) {γ : GL (Fin r) E} (hγ 
       (∀ x ∈ X.dom, thA X bas idx (ω φ) (lact γ x) = thA X bas idx φ x) ∧
       ∀ φ', IsSB φ' → ip (ω φ) (ω φ') = ip φ φ' := by
   obtain ⟨σ, hσ, h⟩ := periods_lact_symplectic E r X g bas idx n hs hn γ hγ
-  obtain ⟨ω, hω⟩ := GlobalTheory.T.exists_weil_of_symplectic' (Fin n) (Fin g) σ (by simpa using hn) hσ
+  obtain ⟨ω, hω⟩ := _root_.GlobalTheory.SW.exists_weil_of_symplectic (Fin n) (Fin g) σ (by simpa using hn) hσ
   refine ⟨ω, fun φ hφ => ⟨(hω φ hφ).1, fun x hx => ?_, (hω φ hφ).2.2⟩⟩
   obtain ⟨-, hτ, h1, h2⟩ := h x hx
   funext z
   have h3 := (hω φ hφ).2.1 _ hτ fun k => hMat X bas idx x *ᵥ z k
   have h4 := Finset.sum_congr (s₁ := Finset.univ) rfl fun (k : Fin n) _ =>
-    GlobalTheory.T.canonicalThetaExponent_symplectic_invariant _ σ hσ _ hτ (hMat X bas idx x *ᵥ z k)
-  have hd := (GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle _ σ hσ _ hτ).1
+    _root_.GlobalTheory.SW.canon_exponent_invariant _ σ hσ _ hτ (hMat X bas idx x *ᵥ z k)
+  have hd := (_root_.GlobalTheory.SiegelAction.symplectic_action _ σ hσ _ hτ).1
   rw [Finset.sum_add_distrib, ← Finset.mul_sum] at h4
   have h5 (k) : hMat X bas idx (lact γ x) *ᵥ z k =
       (hMat X bas idx x *ᵥ z k) ᵥ* (spDen σ (tauMat X bas idx x))⁻¹ := by
@@ -175,7 +169,7 @@ theorem herm_lact (hs : IsSympl X bas) {γ : GL (Fin r) E} (hγ : IsUn X γ) {x 
       (hMat X bas idx x *ᵥ u) ⬝ᵥ imInv X bas idx x *ᵥ star (hMat X bas idx x *ᵥ v) := by
   obtain ⟨σ, hσ, h⟩ := periods_lact_symplectic E r X g bas idx 0 hs Even.zero γ hγ
   obtain ⟨hx', hτ, h1, h2⟩ := h x hx
-  obtain ⟨hd, -, -, h3, -⟩ := GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle _ σ hσ _ hτ
+  obtain ⟨hd, -, -, h3, -⟩ := _root_.GlobalTheory.SiegelAction.symplectic_action _ σ hσ _ hτ
   have h4 : imInv X bas idx x = (spDen σ (tauMat X bas idx x))⁻¹ * imInv X bas idx (lact γ x) *
       ((spDen σ (tauMat X bas idx x))⁻¹)ᴴ := by
     rw [← (imInv_isSymm idx hs hx).eq, ← (imInv_isSymm idx hs hx').eq, imInv_eq, imInv_eq, ← h3, h1,
@@ -208,9 +202,9 @@ theorem wG_laws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : �
   refine ⟨k1, k2, fun ψ hψ => ⟨k3 ψ hψ, ?_, fun x hx => eq_of_thA_eq idx hs hx hφ hψ⟩,
     fun a => ?_, ?_, fun γ' hγ' => ?_, fun y => ?_⟩
   · obtain ⟨l1, l2, -⟩ := key γ hγ ψ hψ
-    refine wG_eq idx hs hγ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ k1 l1).1 fun x hx => ?_
+    refine wG_eq idx hs hγ (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ k1 l1).1 fun x hx => ?_
     rw [thA_add idx hs (hγ.lact_mem hx) k1 l1, thA_add idx hs hx hφ hψ, k2 x hx, l2 x hx]
-  · refine wG_eq idx hs hγ ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ k1 k1).2.1 a) fun x hx => ?_
+  · refine wG_eq idx hs hγ ((_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ k1 k1).2.1 a) fun x hx => ?_
     rw [thA_smul, thA_smul, k2 x hx]
   · exact wG_eq idx hs (fun u v => by simp) hφ fun x _ => by rw [lact_one']
   · obtain ⟨l1, l2, -⟩ := key γ' hγ' _ k1

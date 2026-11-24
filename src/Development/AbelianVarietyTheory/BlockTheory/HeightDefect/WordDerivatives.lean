@@ -60,15 +60,15 @@ def lieU {n : ℕ} (J : Matrix (Fin n) (Fin n) ℂ) : LieSubalgebra ℝ (Matrix 
   zero_mem' := by simp
   add_mem' := by
     intro X Y hX hY
-    simp only [Set.mem_setOf_eq] at hX hY ⊢
+    simp only [Set.mem_ofPred_eq] at hX hY ⊢
     rw [conjTranspose_add, add_mul, mul_add, add_add_add_comm, hX, hY, add_zero]
   smul_mem' := by
     intro c X hX
-    simp only [Set.mem_setOf_eq] at hX ⊢
+    simp only [Set.mem_ofPred_eq] at hX ⊢
     rw [conjTranspose_smul, star_trivial, smul_mul_assoc, mul_smul_comm, ← smul_add, hX, smul_zero]
   lie_mem' := by
     intro X Y hX hY
-    simp only [Set.mem_setOf_eq] at hX hY ⊢
+    simp only [Set.mem_ofPred_eq] at hX hY ⊢
     have h1 : Xᴴ * J = -(J * X) := eq_neg_of_add_eq_zero_left hX
     have h2 : Yᴴ * J = -(J * Y) := eq_neg_of_add_eq_zero_left hY
     rw [Ring.lie_def, conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, sub_mul, mul_assoc, mul_assoc, h1, h2,

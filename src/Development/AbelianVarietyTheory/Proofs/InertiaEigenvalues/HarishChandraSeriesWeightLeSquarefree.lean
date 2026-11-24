@@ -1,13 +1,13 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BernsteinZelevinskyDerivativeHarishChandraProducStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegreeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTracePatternIdempotentExchangeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesLabelExistsUniqueGLnStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceUnitriangularColumnVanishingIdempotentEqSumStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerDimensionCuspidalGreenDegreeEqOneStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerJacquetIdempotentsPropertiesPrimeFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BernsteinZelevinskyDerivativeHarishChandraProduct
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTracePatternIdempotentExchange
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesLabelExistsUniqueGLn
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TraceUnitriangularColumnVanishingIdempotentEqSum
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerDimensionCuspidalGreenDegreeEqOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegree
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerJacquetIdempotentsPropertiesPrimeField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -95,7 +95,7 @@ theorem comb_bound {g : ℕ} (L : List (Pc g)) (hg : 1 ≤ g) (hpos : ∀ p ∈ 
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun I _ => ?_
     rw [Finset.sum_ite_eq]
-    simp [Finset.mem_range, Nat.lt_succ_iff]
+    simp [Finset.mem_range]
 
   have h3 : ∀ I : Finset (Fin L.length), (if w I ≤ k then (g : ℝ) ^ (k - w I) else 0) ≤ (g : ℝ) ^ k * x ^ w I := by
     intro I
@@ -130,7 +130,7 @@ theorem wtC_eJ_le : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g), 5 ≤ g →
     ∀ (N k s : ℕ), N = k + 2 * s + 1 → 1 ≤ k → ∀ f : (ZMod g)[X], f.Monic → f.natDegree = N → f.coeff 0 ≠ 0 →
     Squarefree f → wtC L (eJ g N k s ψ) f ≤ (1 + 1 / (g : ℝ)) ^ N * wtC L (eU g N ψ) f := by
   intro g _ L hg hG ψ hψ N k s hN hk f hm hd hc hsq
-  obtain ⟨Q, hQ, -, hdeg, hset⟩ := (GlobalTheory.T.harishChandraSeriesLabel_exists_unique_GLn g L hg hG N).2.2 f hm hd hc hsq
+  obtain ⟨Q, hQ, -, hdeg, hset⟩ := (_root_.GlobalTheory.GLq.Label.label_main g L hg hG N).2.2 f hm hd hc hsq
   set τ := hcL (Q.map Prod.snd) N with hτ
   have hser : eSerC L N f = zOf τ := by
     unfold eSerC; rw [hset, finsum_mem_singleton]
@@ -138,29 +138,29 @@ theorem wtC_eJ_le : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g), 5 ≤ g →
     have : τ ∈ {χ : Gn g N → ℂ | IsIrr χ ∧ HasLabel L χ f} := by rw [hset]; rfl
     exact this.1
   have hcl := isClass_of_isIrr hirr
-  obtain ⟨d, hdpos, hd1⟩ := (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree (Gn g N) (eU g N ψ) τ).2.1 hirr
+  obtain ⟨d, hdpos, hd1⟩ := (_root_.GlobalTheory.GLq.trIdem (Gn g N) (eU g N ψ) τ).2.1 hirr
   have hL : ∀ p ∈ Q.map Prod.snd, IsCusp p.2 ∧ wh ψ p.2 = 1 := by
     intro p hp
     obtain ⟨q, hq, rfl⟩ := List.mem_map.1 hp
-    exact ⟨(hQ q hq).1.2.1, GlobalTheory.T.whittakerDimension_cuspidal_greenDegree_eq_one g ψ hψ _ _ (hQ q hq).1.2.1 (hQ q hq).2⟩
-  have hlb := fun i (hi : i ≤ N) => GlobalTheory.T.bernsteinZelevinskyDerivative_harishChandraProduct g ψ hψ (Q.map Prod.snd) N i hdeg hi hL
+    exact ⟨(hQ q hq).1.2.1, _root_.GlobalTheory.GLq.wh_cusp_eq_one g ψ hψ _ _ (hQ q hq).1.2.1 (hQ q hq).2⟩
+  have hlb := fun i (hi : i ≤ N) => _root_.GlobalTheory.GLq.Leibniz.main g ψ hψ (Q.map Prod.snd) N i hdeg hi hL
   have hwhU : tr (eU g N ψ) τ = 1 := (hlb 0 (Nat.zero_le _)).2
   have hkN : k < N := by omega
   set TR : ℝ := (∑ i ∈ Finset.range k, (cnt (Q.map Prod.snd) i : ℝ) * ((g : ℝ) ^ (k - i) - (g : ℝ) ^ (k - i - 1)))
     + cnt (Q.map Prod.snd) k with hTR
   have hJ : tr (eJ g N k s ψ) τ = (TR : ℂ) := by
-    rw [GlobalTheory.T.groupAlgebraTrace_patternIdempotent_exchange g ψ hψ N k s hN τ hcl, GlobalTheory.T.trace_unitriangularColumnVanishingIdempotent_eq_sum_derivatives g ψ hψ N k hk hkN τ hcl, (hlb k hkN.le).1, hTR]
+    rw [_root_.GlobalTheory.GLq.tr_eJ_eq_tr_eJ' g ψ hψ N k s hN τ hcl, _root_.GlobalTheory.GLq.ExactMult.tr_eJ'_eq_sum_wh_der g ψ hψ N k hk hkN τ hcl, (hlb k hkN.le).1, hTR]
     push_cast
     congr 1
     refine Finset.sum_congr rfl fun i hi => ?_
     rw [(hlb i (by simp at hi; omega)).1]
     rfl
-  obtain ⟨-, hU1, hJ', -⟩ := GlobalTheory.T.whittakerJacquetIdempotents_properties_primeField g N k s ψ
+  obtain ⟨-, hU1, hJ', -⟩ := _root_.GlobalTheory.Adopt.whittakerJacquetIdempotents_properties_primeField g N k s ψ
   obtain ⟨-, hJ1⟩ := hJ' hN
   have hb := comb_bound (Q.map Prod.snd) (by omega) (fun p hp => (hL p hp).1.1) k
   rw [hdeg] at hb
   unfold wtC
-  rw [hser, (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree _ (eJ g N k s ψ) τ).2.2, (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree _ (eU g N ψ) τ).2.2, hwhU, hJ, hJ1, hU1, hd1]
+  rw [hser, (_root_.GlobalTheory.GLq.trIdem _ (eJ g N k s ψ) τ).2.2, (_root_.GlobalTheory.GLq.trIdem _ (eU g N ψ) τ).2.2, hwhU, hJ, hJ1, hU1, hd1]
   set M := N * (N - 1) / 2
   set a : ℝ := (d : ℝ) / (Fintype.card (Gn g N) : ℝ) with ha
   set m : ℝ := ((g : ℝ) ^ M)⁻¹ with hm'

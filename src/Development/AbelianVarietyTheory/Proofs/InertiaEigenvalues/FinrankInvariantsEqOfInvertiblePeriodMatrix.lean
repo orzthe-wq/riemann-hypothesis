@@ -57,9 +57,8 @@ theorem GlobalTheory.InertiaEigenvalues.finrank_invariants_eq_of_period_matrix :
   have hQQ : Q' * (↑Q⁻¹ : Matrix n n B) = 1 := by rw [hQ']; exact_mod_cast Q.mul_inv
   have key : ∀ g (y : n → B), (A g).mulVec (fun i => act g ((Q' *ᵥ y) i)) = Q' *ᵥ (fun i => act g (y i)) := by
     intro g y
-    have h1 : (fun i => act g ((Q' *ᵥ y) i)) = Q'.map (act g) *ᵥ (fun i => act g (y i)) := by
-      funext i; exact RingHom.map_mulVec _ _ _ _
-    rw [h1, Matrix.mulVec_mulVec, hQ g]
+    rw [show (fun i => act g ((Q' *ᵥ y) i)) = Q'.map (act g) *ᵥ (fun i => act g (y i)) by
+      funext i; exact RingHom.map_mulVec (act g) Q' y i, Matrix.mulVec_mulVec, hQ g]
   have inj : ∀ u v : n → B, Q' *ᵥ u = Q' *ᵥ v → u = v := by
     intro u v h
     have h2 := congrArg (fun w => (↑Q⁻¹ : Matrix n n B) *ᵥ w) h
@@ -83,10 +82,8 @@ theorem GlobalTheory.InertiaEigenvalues.finrank_invariants_eq_of_period_matrix :
   have hφ : ∀ c, φ c = Q' *ᵥ (fun i => algebraMap E B (c i)) := fun c => rfl
   have φinj : Function.Injective φ := by
     intro a b h
-    rw [hφ, hφ] at h
-    have h3 := inj _ _ h
     funext i
-    exact (algebraMap E B).injective (congrFun h3 i)
+    exact (algebraMap E B).injective (congrFun (inj _ _ h) i)
   have hWr : W = LinearMap.range φ := by
     ext x
     rw [hW, LinearMap.mem_range]

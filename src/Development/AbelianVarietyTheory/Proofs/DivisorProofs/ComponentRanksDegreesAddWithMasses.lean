@@ -1,17 +1,18 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SlopeSqSubLeSlopeSqSpan
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum
 public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockDiagonalMulVecApply
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegScale
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulMemOfMemSpan
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasGramComp
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InnerRealizeEqZero
-import Formalism.LocalToGlobal.ProjectiveLattices.CompFin
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
+import Formalism.MeanHeightDescent.AverageDegreeBounds.GoodBadCut
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -24,6 +25,8 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -31,7 +34,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,9 +47,103 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsFlatSecRankZero
+import Formalism.LocalToGlobal.ProjectiveLattices.CompFin
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Tactic.Linter.Style
 import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegScale, Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComponentRanksDegreesAddWithMasses
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegScale =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegScale", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SlopeSqSubLeSlopeSqSpan\nimport Formalism.MeanHeightDescent.AverageDegreeBounds.GoodBadCut\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Development.AbelianVarietyTheory.Definitions.Foundations.ExistsFlatSecRankZero\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.BasicNotions GlobalTheory.AllWt GlobalTheory.FlatLine
+
+noncomputable section
+
+namespace GlobalTheory.NormScale
+
+theorem deg_scale : ∀ (K V : Type) [Field K] [NumberField K] [_root_.NumberField.IsTotallyComplex K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (N N' : (K →+* ℂ) → V → ℝ) (t : (K →+* ℂ) → ℝ), HasGram N → (∀ σ, 0 < t σ) → (∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) → (∀ σ x, N' σ x = t σ * N σ x) → HasGram N' ∧ ∀ L : Submodule (𝓞 K) V, L.FG → deg N' L = deg N L - (Formalism.HN.rkK L : ℝ) * ((∑ σ : K →+* ℂ, Real.log (t σ)) / (Module.finrank ℚ K : ℝ)) := by
+  intro K V _ _ _ _ _ _ _ N N' t hN ht hc hN'
+  letI : StarRing K := starRingOfComm
+  obtain ⟨⟨n, ⟨b, X⟩, hG⟩⟩ := hN
+  set X' : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ := fun v => ((t v.embedding : ℂ)⁻¹) • X v with hX'
+  have htc : ∀ v : InfinitePlace K, (t v.embedding : ℂ) ≠ 0 := fun v => by
+    exact_mod_cast (ht v.embedding).ne'
+  have hinv : ∀ v, (X' v)⁻¹ = (t v.embedding : ℂ) • (X v)⁻¹ := fun v => by
+    refine Matrix.inv_eq_left_inv ?_
+    simp only [hX', Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.nonsing_inv_mul _ (hG v).1,
+      inv_mul_cancel₀ (htc v), one_smul]
+  have hfc : ∀ v x, Formalism.HermitianLatticesTheory.fcoord b X' v x = (t v.embedding : ℂ) • Formalism.HermitianLatticesTheory.fcoord b X v x := fun v x => by
+    simp only [Formalism.HermitianLatticesTheory.fcoord, hinv]
+    exact Matrix.smul_mulVec _ _ _
+  have hnorm : ∀ v x, Formalism.HermitianLatticesTheory.normAt b X' v x = t v.embedding * Formalism.HermitianLatticesTheory.normAt b X v x := fun v x => by
+    simp only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, hfc, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow,
+      ← Finset.mul_sum]
+    rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _), Complex.norm_real, Real.norm_eq_abs,
+      abs_of_pos (ht _)]
+  have hG' : IsGram b X' N' := fun v => by
+    refine ⟨?_, fun x => by rw [hnorm, (hG v).2, hN']⟩
+    simp only [hX', Matrix.det_smul]
+    exact (IsUnit.pow _ (isUnit_iff_ne_zero.2 (inv_ne_zero (htc v)))).mul (hG v).1
+  refine ⟨hG'.hasGram, fun L hL => ?_⟩
+  have hgram : ∀ v {j : ℕ} (e : Fin j → V), Formalism.HN.gramPl b X' v e = (((t v.embedding) ^ 2 : ℝ) : ℂ) • Formalism.HN.gramPl b X v e := by
+    intro v j e
+    ext a c
+    simp only [Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, hfc, Matrix.of_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul,
+      Finset.mul_sum, star_mul', Complex.star_def, Complex.conj_ofReal]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    push_cast; ring
+  have hdet : ∀ v {j : ℕ} (e : Fin j → V), (Formalism.HN.gramPl b X' v e).det.re =
+      t v.embedding ^ (2 * j) * (Formalism.HN.gramPl b X v e).det.re := by
+    intro v j e
+    rw [hgram, Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul, ← pow_mul]
+  haveI : Module.Finite K V := Module.Finite.of_basis b
+  obtain ⟨e, heL, hsp, he⟩ := Submodule.exists_fun_fin_finrank_span_eq K (L : Set V)
+  have hj : Formalism.HN.rkK L = Module.finrank K (Submodule.span K (L : Set V)) := rfl
+  generalize Module.finrank K (Submodule.span K (L : Set V)) = j at e heL hsp he hj
+  obtain ⟨-, g1, m1⟩ := GlobalTheory.SlopeExt.rk_mul_mu_eq b X (fun v => (hG v).1) e he L hL
+    (Submodule.span_le.2 (Set.range_subset_iff.2 heL)) hj
+  obtain ⟨-, g2, m2⟩ := GlobalTheory.SlopeExt.rk_mul_mu_eq b X' (fun v => (hG' v).1) e he L hL
+    (Submodule.span_le.2 (Set.range_subset_iff.2 heL)) hj
+  have hlog : ∀ v, Real.log (Formalism.HN.gramPl b X' v e).det.re =
+      (2 * j : ℝ) * Real.log (t v.embedding) + Real.log (Formalism.HN.gramPl b X v e).det.re := fun v => by
+    rw [hdet, Real.log_mul (pow_pos (ht _) _).ne' (g1 v).ne', Real.log_pow]
+    push_cast; ring
+  have hsum : ∑ σ : K →+* ℂ, Real.log (t σ) = 2 * ∑ v : InfinitePlace K, Real.log (t v.embedding) := by
+    rw [← GlobalTheory.SlopeExt.sum_mk K (fun v => Real.log (t v.embedding))]
+    refine Finset.sum_congr rfl fun σ _ => ?_
+    rcases InfinitePlace.embedding_mk_eq σ with h | h
+    · rw [h]
+    · rw [h]; exact congrArg Real.log (hc σ).symm
+  have hfin : (Module.finrank ℚ K : ℝ) = 2 * Formalism.HN.nPl K := by
+    have := GlobalTheory.SlopeExt.sum_mk K (fun _ => (1 : ℝ))
+    simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one] at this
+    rw [← NumberField.Embeddings.card K ℂ, this]
+    rfl
+  have hP : (Formalism.HN.nPl K : ℝ) ≠ 0 := by exact_mod_cast Formalism.ExtensionFiltration.HermitianIdempotentFrameLemmas.nPl_ne_zero
+  rw [Finset.sum_congr rfl (fun v _ => hlog v), Finset.sum_add_distrib, ← Finset.mul_sum] at m2
+  simp only [GlobalTheory.AllWt.deg, GlobalTheory.AllWt.slope, slope_sq_eq hG hL, slope_sq_eq hG' hL, hj, hsum, hfin]
+  have key : (Formalism.HN.nPl K : ℝ) * ((j : ℝ) * Formalism.HN.muDef b X' L) = (Formalism.HN.nPl K : ℝ) * ((j : ℝ) * Formalism.HN.muDef b X L)
+      - 2 * j * ∑ v : InfinitePlace K, Real.log (t v.embedding) := by linarith
+  field_simp
+  linear_combination key
+
+end GlobalTheory.NormScale
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegScale =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComponentRanksDegreesAddWithMasses =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComponentRanksDegreesAddWithMasses", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ComponentMassSum\npublic import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockDiagonalMulVecApply\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DegScale\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmulMemOfMemSpan\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasGramComp\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InnerRealizeEqZero\nimport Formalism.LocalToGlobal.ProjectiveLattices.CompFin\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal\nimport Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum
@@ -54,6 +151,159 @@ open NumberField IsDedekindDomain MeasureTheory ReciprocityTheory.ChartRestricti
 set_option synthInstance.maxHeartbeats 400000
 
 noncomputable section
+
+section CompAddsInsts
+
+local instance (priority := high) instAlgebraTRing_CompAdds {K : Type} [Field K] (p : TRing K) :
+    Algebra K p.R :=
+  Ideal.Quotient.algebra K
+
+local instance (priority := high) instCommRingTRing_CompAdds {K : Type} [Field K] (p : TRing K) :
+    CommRing p.R :=
+  Ideal.Quotient.commRing p.I
+
+local instance (priority := high) instModuleTRing_CompAdds {K : Type} [Field K] (p : TRing K) :
+    Module K p.R :=
+  Algebra.toModule
+
+section RulCuspInsts
+variable {E : Type} [Field E] [NumberField E] [IsCMField E]
+  {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
+  {l : Level H}
+
+local instance (priority := high) instAddCommGroupRul_CompAdds (Xo : Moduli Dw l) (c : Coeff l) :
+    AddCommGroup (Rul Xo c) :=
+  inferInstance
+
+local instance (priority := high) instModuleRul_CompAdds (Xo : Moduli Dw l) (c : Coeff l) :
+    Module c.F (Rul Xo c) :=
+  inferInstance
+
+local instance (priority := high) instSMulWithZeroRul_CompAdds (Xo : Moduli Dw l) (c : Coeff l) :
+    SMulWithZero c.F (Rul Xo c) :=
+  Module.toMulActionWithZero.toSMulWithZero
+
+local instance (priority := high) instSMulORul_CompAdds (Xo : Moduli Dw l) (c : Coeff l) :
+    SMul (𝓞 c.F) (Rul Xo c) :=
+  inferInstance
+
+local instance (priority := high) instModuleORul_CompAdds (Xo : Moduli Dw l) (c : Coeff l) :
+    Module (𝓞 c.F) (Rul Xo c) :=
+  inferInstance
+
+local instance (priority := high) instScalarTowerORul_CompAdds (Xo : Moduli Dw l) (c : Coeff l) :
+    IsScalarTower (𝓞 c.F) c.F (Rul Xo c) :=
+  inferInstance
+
+local instance (priority := high) instAddCommGroupCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    AddCommGroup ↥(cuspW Xo c U G) :=
+  Submodule.addCommGroup _
+
+local instance (priority := high) instModuleCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    Module c.F ↥(cuspW Xo c U G) :=
+  Submodule.module _
+
+local instance (priority := high) instSMulWithZeroCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    SMulWithZero c.F ↥(cuspW Xo c U G) :=
+  Module.toMulActionWithZero.toSMulWithZero
+
+local instance (priority := high) instDistribMulActionCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    DistribMulAction c.F ↥(cuspW Xo c U G) :=
+  Module.toDistribMulAction
+
+local instance (priority := high) instMulActionCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    MulAction c.F ↥(cuspW Xo c U G) :=
+  DistribMulAction.toMulAction
+
+local instance (priority := high) instSMulCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    SMul c.F ↥(cuspW Xo c U G) :=
+  Module.toDistribMulAction.toDistribSMul.toSMul
+
+local instance (priority := high) instHSMulCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    HSMul c.F ↥(cuspW Xo c U G) ↥(cuspW Xo c U G) :=
+  instHSMul
+
+local instance (priority := high) instSMulOCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    SMul (𝓞 c.F) ↥(cuspW Xo c U G) :=
+  Submodule.smul _
+
+local instance (priority := high) instHSMulOCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    HSMul (𝓞 c.F) ↥(cuspW Xo c U G) ↥(cuspW Xo c U G) :=
+  instHSMul
+
+local instance (priority := high) instModuleOCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    Module (𝓞 c.F) ↥(cuspW Xo c U G) :=
+  inferInstance
+
+local instance (priority := high) instScalarTowerOCuspW_CompAdds (Xo : Moduli Dw l) (c : Coeff l) {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ E) :
+    IsScalarTower (𝓞 c.F) c.F ↥(cuspW Xo c U G) :=
+  inferInstance
+
+local instance (priority := high) instAddCommGroupCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    AddCommGroup ↥(cuspOn U Z G) :=
+  Submodule.addCommGroup _
+
+local instance (priority := high) instModuleCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    Module c.F ↥(cuspOn U Z G) :=
+  Submodule.module _
+
+local instance (priority := high) instSMulWithZeroCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    SMulWithZero c.F ↥(cuspOn U Z G) :=
+  Module.toMulActionWithZero.toSMulWithZero
+
+local instance (priority := high) instDistribMulActionCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    DistribMulAction c.F ↥(cuspOn U Z G) :=
+  Module.toDistribMulAction
+
+local instance (priority := high) instMulActionCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    MulAction c.F ↥(cuspOn U Z G) :=
+  DistribMulAction.toMulAction
+
+local instance (priority := high) instSMulCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    SMul c.F ↥(cuspOn U Z G) :=
+  Module.toDistribMulAction.toDistribSMul.toSMul
+
+local instance (priority := high) instHSMulCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    HSMul c.F ↥(cuspOn U Z G) ↥(cuspOn U Z G) :=
+  instHSMul
+
+local instance (priority := high) instSMulOCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    SMul (𝓞 c.F) ↥(cuspOn U Z G) :=
+  Submodule.smul _
+
+local instance (priority := high) instHSMulOCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    HSMul (𝓞 c.F) ↥(cuspOn U Z G) ↥(cuspOn U Z G) :=
+  instHSMul
+
+local instance (priority := high) instModuleOCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    Module (𝓞 c.F) ↥(cuspOn U Z G) :=
+  inferInstance
+
+local instance (priority := high) instScalarTowerOCuspOn_CompAdds {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ E) :
+    IsScalarTower (𝓞 c.F) c.F ↥(cuspOn U Z G) :=
+  inferInstance
 
 namespace GlobalTheory.CompAdds
 
@@ -133,6 +383,22 @@ theorem hasGram_normRes (h : HasGram (normOn U (xiR D) V dict Z G)) : HasGram (n
 
 def sub : Submodule c.F (cuspW Xo c U G) := (cuspOn U Z G).comap (cuspW Xo c U G).subtype
 
+local instance (priority := high) instAddCommGroupSub_Basic :
+    AddCommGroup ↥(sub U Z G) :=
+  Submodule.addCommGroup _
+
+local instance (priority := high) instModuleSub_Basic :
+    Module c.F ↥(sub U Z G) :=
+  Submodule.module _
+
+local instance (priority := high) instSMulWithZeroSub_Basic :
+    SMulWithZero c.F ↥(sub U Z G) :=
+  Module.toMulActionWithZero.toSMulWithZero
+
+local instance (priority := high) instSMulSub_Basic :
+    SMul c.F ↥(sub U Z G) :=
+  Module.toDistribMulAction.toDistribSMul.toSMul
+
 def toOn : sub U Z G →ₗ[c.F] cuspOn U Z G :=
   LinearMap.codRestrict (cuspOn U Z G) ((cuspW Xo c U G).subtype ∘ₗ (sub U Z G).subtype) fun x => x.2
 
@@ -150,6 +416,22 @@ theorem span_partLat_le : Submodule.span c.F (partLat U Z G : Set (cuspW Xo c U 
 end Basic
 
 variable {U V dict} {G : WTZ D.host.E}
+
+local instance (priority := high) instAddCommGroupSub_CompAdds (Z : Comp Xo c) :
+    AddCommGroup ↥(sub U Z G) :=
+  Submodule.addCommGroup _
+
+local instance (priority := high) instModuleSub_CompAdds (Z : Comp Xo c) :
+    Module c.F ↥(sub U Z G) :=
+  Submodule.module _
+
+local instance (priority := high) instSMulWithZeroSub_CompAdds (Z : Comp Xo c) :
+    SMulWithZero c.F ↥(sub U Z G) :=
+  Module.toMulActionWithZero.toSMulWithZero
+
+local instance (priority := high) instSMulSub_CompAdds (Z : Comp Xo c) :
+    SMul c.F ↥(sub U Z G) :=
+  Module.toDistribMulAction.toDistribSMul.toSMul
 
 theorem sub_indep (hS : Splits U G) : iSupIndep (fun Z => sub U Z G) := by
   intro Z
@@ -286,3 +568,9 @@ theorem adds : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Ho
   exact finsum_congr fun Z => degRes_eq hO Z (hRes Z) (hOn Z).2.1
 
 end GlobalTheory.CompAdds
+end RulCuspInsts
+end CompAddsInsts
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComponentRanksDegreesAddWithMasses =====

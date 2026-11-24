@@ -68,7 +68,6 @@ theorem finrank_eq_one_of_isDomain_tensor {F L : Type} [Field F] [Field L] [Alge
   have hs : Function.Surjective f := fun x => ⟨x ⊗ₜ 1, by
     show Algebra.TensorProduct.lmul'' F (x ⊗ₜ[F] (1 : L)) = x
     first
-      | simp [Algebra.TensorProduct.lmul''_apply_tmul]
       | exact (Algebra.TensorProduct.lmul'_apply_tmul (R := F) x (1 : L)).trans (mul_one x)⟩
   have e := (LinearEquiv.ofBijective f.toLinearMap ⟨hf, hs⟩).finrank_eq
   rw [Module.finrank_baseChange, Module.finrank_self] at e

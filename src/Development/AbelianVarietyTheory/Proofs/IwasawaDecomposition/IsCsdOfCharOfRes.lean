@@ -102,7 +102,7 @@ theorem loc_eq_one_of_prod {ψ : Ideles L →* ℂˣ} (hψ : Continuous ψ) (S :
 
 theorem infId_pInf [_root_.NumberField.IsTotallyComplex L] (k : Lˣ) :
     infId L (Units.map (pInf L).toMonoidHom (diagUnits L k)) = ∏ w, infIdele L w (atInf w k) := by
-  apply GlobalTheory.CsdTriv.infId_pInf <;> assumption
+  apply GlobalTheory.CsdTriv.infId_pInf
 
 end General
 

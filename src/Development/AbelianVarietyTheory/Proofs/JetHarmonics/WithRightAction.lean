@@ -64,7 +64,7 @@ theorem exists_place_other_right_type : ∃ Cb : ℝ, 0 ≤ Cb ∧ ∀ (P : M.Pa
   obtain ⟨Cb, hCb, hTL⟩ := Formalism.FourierDecayAlt.P.top_lift_exists
   refine ⟨Cb, hCb, ?_⟩
   intro P Wp _ _ _ Wq _ _ _ Wq' _ _ _ p u u' π'' l0 hPl hl1 hl2
-  obtain ⟨T, h1, h2, h3, h4, hN⟩ := Formalism.FourierDecayAlt.P.exists_normalized_tower P.k P.r Wp Wq'
+  obtain ⟨T, h1, h2, h3, h4, hN⟩ := _root_.Formalism.FourierDecayAlt.P.HaarMassHermitianCurvature.towerAt P.k P.r Wp Wq'
     (withRight p.T.base π'' u' hPl.2.2.2.2.2.2)
   change T.base.z = p.T.base.z at h1
   change T.base.z' = p.T.base.z' at h2

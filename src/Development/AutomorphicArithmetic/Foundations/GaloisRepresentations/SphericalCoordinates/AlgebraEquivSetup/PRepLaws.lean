@@ -64,7 +64,7 @@ private lemma beta_baseChange {E : Type} [Field E] [NumberField E] {n : ℕ}
     rw [h2, h1 (b • v), h1 v, map_smul, map_smul]
     funext i
     simp only [Pi.smul_apply, hβ]
-    simp only [Pi.smul_apply, smul_eq_mul, map_mul, RingOfIntegers.coe_eq_algebraMap, Rat.smul_def, mul_left_comm, Algebra.smul_def]
+    simp only [smul_eq_mul, map_mul, RingOfIntegers.coe_eq_algebraMap, mul_left_comm, Algebra.smul_def]
 
 theorem UpperTheory.Gal.W2.Seed.pRepLaws :
     RepLaws := by

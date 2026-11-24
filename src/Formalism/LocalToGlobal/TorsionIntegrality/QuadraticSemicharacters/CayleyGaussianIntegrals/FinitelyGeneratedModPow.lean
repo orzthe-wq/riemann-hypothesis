@@ -11,51 +11,11 @@ public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.TripleEighthProof
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.UnitaryEighthOf
 import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharacterIdentityReformulated2
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -180,12 +140,12 @@ theorem KernelRatio_of (hC : UnitaryConstant) : KernelRatio := by
   have iab : relIdx Λa Λb ≠ 0 := KR.relIdx_trans ia0 i0b
   have iba : relIdx Λb Λa ≠ 0 := KR.relIdx_trans ib0 i0a
 
-  have sd0 : IsSelfDual H Λ₀ := by rw [hHdef, hΛ₀]; exact stdSelfDual L _
+  have sd0 : IsSelfDual H Λ₀ := by rw [hHdef, hΛ₀]; exact _root_.Formalism.L2.Th1.H.StdSelfDual_proof L _
   have sda : IsSelfDual H Λa := by rw [hHdef, hΛa]; exact D0.selfDual
   have sdb : IsSelfDual H Λb := by rw [hHdef, hΛb]; exact D1.selfDual
   have sc0 : IsSemiChar H Λ₀ β := by
     rw [hHdef, hΛ₀]
-    exact isSemiChar_congr _ _ _ _ D0.betaStd (stdSemiChar L ω₀ (Fin 4 × n) D0.per)
+    exact isSemiChar_congr _ _ _ _ D0.betaStd (_root_.Formalism.L2.Th1.H.StdSemiChar_proof L ω₀ (Fin 4 × n) D0.per)
   have sca : IsSemiChar H Λa β := by rw [hHdef, hΛa]; exact D0.betaSemi
   have scb : IsSemiChar H Λb β := by rw [hHdef, hΛb]; exact D1.betaSemi
   have hLat0 : IsLat Λ₀ := by rw [hΛ₀]; exact KR.isLat_stdLat L _
@@ -234,7 +194,7 @@ theorem KernelRatio_of (hC : UnitaryConstant) : KernelRatio := by
   have hFline : ∀ G ∈ Th H β Λ₀, ∃ c : ℂ, G = c • F := by
     intro G hG
     rw [hHdef, hΛ₀] at hG
-    exact ⟨G 0, hF ▸ thStd L ω₀ _ D0.per D0.half β D0.betaStd G hG⟩
+    exact ⟨G 0, hF ▸ _root_.Formalism.L2.Th1.H.ThStd_proof L ω₀ _ D0.per D0.half β D0.betaStd G hG⟩
   obtain ⟨hGa0, hGaline⟩ := lineTransport (Fin 4 × n → ℂ) H hHerm Λ₀ Λa β sd0 sda sc0 sca i0a ia0 F hFmem
     hFne hFline
   have hGamem : inter H β Λ₀ Λa F ∈ Th H β Λa := interTh _ H hHerm Λ₀ Λa β sca i0a F hFmem

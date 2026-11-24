@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorsUniversalBasis
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -90,16 +91,6 @@ theorem comb_comb {S : Type} [CommRing S] [IsLocalRing S] {x : Sp S ⟶ X} {m n 
   simp only [h1, Finset.smul_sum, Finset.sum_smul, smul_smul]
   exact Finset.sum_comm
 
-theorem spMap_comp2 {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
-    spMap (ψ.comp φ) = spMap ψ ≫ spMap φ := (spMap_comp' _ _).symm
-
-theorem dualMap_comp2 {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
-    dualMap (ψ.comp φ) = (dualMap ψ).comp (dualMap φ) :=
-  by
-    apply RingHom.ext
-    intro x
-    apply TrivSqZeroExt.ext <;> simp [dualMap]
-
 end GlobalTheory.ShFam.CoordComp
 
 
@@ -109,10 +100,10 @@ theorem GlobalTheory.ShFam.CoordComp.coord_comp : ∀ (E : Type) [Field E] [Numb
   obtain ⟨a1, a2, a3⟩ := h₁
   obtain ⟨b1, b2, b3⟩ := h₂
   subst a1 a2 b1 b2
-  refine ⟨by rw [spMap_comp2, Category.assoc], rfl, fun τ i => ?_⟩
+  refine ⟨by rw [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc], rfl, fun τ i => ?_⟩
   have e : (fun k => spMap (dualMap (ψ'.comp ψ)) ≫ f.v τ k) =
       fun k => spMap (dualMap ψ') ≫ spMap (dualMap ψ) ≫ f.v τ k :=
-    funext fun k => by rw [dualMap_comp2, spMap_comp2, Category.assoc]
+    funext fun k => by rw [_root_.GlobalTheory.FramedBaseChange.dual_comp, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc]
   rw [e]
   exact comb_comb Z.t
     (fun j => GlobalTheory.FactorDepth.isTanAtG_map _ ψ' (GlobalTheory.FactorDepth.isTanAtG_map _ ψ (f.tan τ j)))

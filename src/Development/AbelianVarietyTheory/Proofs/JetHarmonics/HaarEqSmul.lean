@@ -67,40 +67,4 @@ theorem haar_eq_smul {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mx k r
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ∞ ∧ ν = c • (Formalism.REAL.muG ε).map (phi ε P) := by
   apply Gp91.GlobalTheory.BesselDegree.haar_eq_smul <;> assumption
 
-theorem schur_fdeg : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (μG : Measure (Formalism.QuantumDeterminants.Mt k r)), PI.BesselPeriodGGP.IsHaarOn (GG k r) μG → ∃ c : ℝ, 0 < c ∧ ∀ (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDS ε mu → (∀ w, w ≠ 0 → PI.BesselPeriodGGP.fdegH μG R.σ w = c * Formalism.QuantumDeterminants.fdegHC mu) ∧ ∀ v w v' w' : R.H, Integrable (fun x : Formalism.QuantumDeterminants.Mt k r => ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ) μG ∧ ∫ x, ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ ∂μG = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / ((c * Formalism.QuantumDeterminants.fdegHC mu : ℝ) : ℂ) := by
-  intro hy k r ε μG hμ
-  have hHC : GlobalTheory.FormalDegree.HarishChandra := hy.2.2.2.2.2.2
-  by_cases hQ : ∃ Q, PI.UpqRep.IsCayleyU k r ε Q
-  swap
-  · refine ⟨1, one_pos, fun mu R hR => absurd ?_ hQ⟩
-    obtain ⟨Q, hQ, -⟩ := hR.2
-    exact ⟨Q, hQ⟩
-  obtain ⟨Q, hQ⟩ := hQ
-  have hP : IsUnit Q.det := (Matrix.isUnit_iff_isUnit_det Q).1 hQ.1.1
-  have hH : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.QuantumDeterminants.Hpk k r := hQ.1.2
-  obtain ⟨a, ha0, hat, ha⟩ := haar_eq_smul hP hH μG hμ
-  obtain ⟨c, hc, hF⟩ := hHC.chamber _ ε
-  have hapos : 0 < a.toReal := ENNReal.toReal_pos ha0 hat
-  have hme : MeasurableEmbedding (phi ε Q) :=
-    (phi_closedEmbedding (ε := ε) Formalism.REAL.isClosedEmbeddingMatrix hP).measurableEmbedding
-  refine ⟨c / a.toReal, div_pos hc hapos, fun mu R hR => ?_⟩
-  have hDS := (isDS_iff _ _ _).1 ((GlobalTheory.CayleyChoice.cayley_exists_and_any k r).2 ε mu R hR Q hQ)
-  obtain ⟨hd, hS⟩ := hF mu hR.1 R.H _ hDS
-  have hd' : 0 < c / a.toReal * Formalism.QuantumDeterminants.fdegHC mu := by
-    rw [div_mul_eq_mul_div]; exact div_pos hd hapos
-  have key : ∀ v w v' w' : R.H, Integrable (fun x : Formalism.QuantumDeterminants.Mt k r => ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ) μG ∧ ∫ x, ⟪w, R.σ (Matrix.of x) v⟫_ℂ * star ⟪w', R.σ (Matrix.of x) v'⟫_ℂ ∂μG = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / ((c / a.toReal * Formalism.QuantumDeterminants.fdegHC mu : ℝ) : ℂ) := by
-    intro v w v' w'
-    obtain ⟨h1, h2⟩ := hS v w v' w'
-    rw [ha]
-    constructor
-    · refine Integrable.smul_measure ?_ hat
-      rw [hme.integrable_map_iff]
-      exact h1
-    · rw [integral_smul_measure, hme.integral_map]
-      have h3 : ∫ g, ⟪w, R.σ (Matrix.of (phi ε Q g)) v⟫_ℂ * star ⟪w', R.σ (Matrix.of (phi ε Q g)) v'⟫_ℂ
-          ∂(Formalism.REAL.muG ε) = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / ((c * Formalism.QuantumDeterminants.fdegHC mu : ℝ) : ℂ) := h2
-      rw [h3, div_mul_eq_mul_div, Complex.ofReal_div, div_div_eq_mul_div, Complex.real_smul]
-      ring
-  exact ⟨fun w hw => Formalism.FourierDecayAlt.P.DDSmoothness.fdeg_eq hd' key hw, key⟩
-
 end GlobalTheory.BesselDegree

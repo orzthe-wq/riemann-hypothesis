@@ -177,7 +177,7 @@ private lemma exists_pos_nat_beta_self_eq {d : ℕ} (hd : 0 < d) {H : Matrix (Fi
   have hpos : 0 < _root_.Formalism.L2.Ker.JMB.hf H w w := by
     have := hH.dotProduct_mulVec_pos (x := star w) (by simpa using hw)
     convert this using 1
-    simp [_root_.Formalism.L2.Ker.JMB.hf, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc, Complex.star_def]
+    simp [_root_.Formalism.L2.Ker.JMB.hf, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
   rw [Complex.pos_iff] at hpos
   have hv : v = 0 := by
     have := im_hf_eq_of_beta_eq hd huv

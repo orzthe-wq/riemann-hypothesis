@@ -1,11 +1,11 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentralStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterDecompositionAndClassFunctionExpansionStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionCharacterRestrictionDecompStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionExteriorProductAssocCommStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvariStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentral
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterDecompositionAndClassFunctionExpansion
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionCharacterRestrictionDecomp
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionExteriorProductAssocComm
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvari
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,9 +59,7 @@ theorem ip_add_right {G : Type} [Group G] [Fintype G] (χ φ ψ : G → ℂ) :
     ip χ (φ + ψ) = ip χ φ + ip χ ψ := by
   simp only [ip, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
-theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
-  obtain ⟨V, -, hV⟩ := h
-  exact ⟨V, hV⟩
+alias isChar_of_isIrr := _root_.GlobalTheory.CharDec.isChar_of_isIrr
 
 theorem ip_sum_eq_count {G : Type} [Group G] [Fintype G] {χ : G → ℂ} (hχ : IsIrr χ) (L : List (G → ℂ))
     (hL : ∀ ρ ∈ L, IsIrr ρ) : ip χ L.sum = (L.count χ : ℕ) := by
@@ -69,7 +67,7 @@ theorem ip_sum_eq_count {G : Type} [Group G] [Fintype G] {χ : G → ℂ} (hχ :
   | nil => simp [ip]
   | cons ρ L ih =>
     rw [List.sum_cons, ip_add_right, ih (fun σ hσ => hL σ (List.mem_cons_of_mem _ hσ)),
-      (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G χ ρ hχ (hL ρ List.mem_cons_self)).2.2, List.count_cons]
+      (_root_.GlobalTheory.GLq.ZOrth.zorth G χ ρ hχ (hL ρ List.mem_cons_self)).2.2, List.count_cons]
     by_cases h : χ = ρ
     · subst h
       simp [add_comm]
@@ -78,15 +76,15 @@ theorem ip_sum_eq_count {G : Type} [Group G] [Fintype G] {χ : G → ℂ} (hχ :
 
 theorem ip_nat {G : Type} [Group G] [Fintype G] {χ φ : G → ℂ} (hχ : IsIrr χ) (hφ : IsChar φ) :
     ∃ k : ℕ, ip χ φ = k := by
-  obtain ⟨L, hL, rfl⟩ := (GlobalTheory.T.character_decomposition_and_classFunction_expansion G φ).1 hφ
+  obtain ⟨L, hL, rfl⟩ := (_root_.GlobalTheory.charDec G φ).1 hφ
   exact ⟨_, ip_sum_eq_count hχ L hL⟩
 
 theorem exists_add_of_ip_ne_zero {G : Type} [Group G] [Fintype G] {χ φ : G → ℂ} (hχ : IsIrr χ) (hφ : IsChar φ)
     (h : ip χ φ ≠ 0) : ∃ ψ, IsChar ψ ∧ φ = χ + ψ := by
-  obtain ⟨L, hL, rfl⟩ := (GlobalTheory.T.character_decomposition_and_classFunction_expansion G φ).1 hφ
+  obtain ⟨L, hL, rfl⟩ := (_root_.GlobalTheory.charDec G φ).1 hφ
   rw [ip_sum_eq_count hχ L hL] at h
   have hm : χ ∈ L := List.count_pos_iff.1 (Nat.pos_of_ne_zero (by exact_mod_cast h))
-  refine ⟨(L.erase χ).sum, (GlobalTheory.T.character_decomposition_and_classFunction_expansion G χ).2.2.2.2 _
+  refine ⟨(L.erase χ).sum, (_root_.GlobalTheory.charDec G χ).2.2.2.2 _
     (fun ρ hρ => isChar_of_isIrr (hL ρ (List.mem_of_mem_erase hρ))), ?_⟩
   rw [(List.perm_cons_erase hm).sum_eq, List.sum_cons]
 
@@ -120,25 +118,25 @@ theorem hcL_append (P Q : List (Pc g)) (hP : ∀ p ∈ P, IsChar p.2) (hQ : ∀ 
     ∀ n, n = degL P + degL Q →
       hcL (P ++ Q) n = hc (degL P) (degL Q) (hcL P (degL P)) (hcL Q (degL Q)) n := by
   have cQ : IsClass (hcL Q (degL Q)) :=
-    (GlobalTheory.T.character_decomposition_and_classFunction_expansion _ _).2.2.1 (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g Q Q _ rfl hQ).1
+    (_root_.GlobalTheory.charDec _ _).2.2.1 (_root_.GlobalTheory.gl_list_product_perm_char g Q Q _ rfl hQ).1
   induction P with
   | nil =>
     intro n hn
     have hn' : n = degL Q := by simpa [degL] using hn
     subst hn'
-    exact (GlobalTheory.T.harishChandraInductionExteriorProduct_assoc_comm g (degL Q) (degL Q) (degL Q) (degL Q) _ _ _ cQ cQ cQ).2.2.1.symm
+    exact (_root_.GlobalTheory.GLq.HcRing.main g (degL Q) (degL Q) (degL Q) (degL Q) _ _ _ cQ cQ cQ).2.2.1.symm
   | cons p P ih =>
     intro n hn
     have hP' : ∀ q ∈ P, IsChar q.2 := fun q hq => hP q (List.mem_cons_of_mem _ hq)
     have cP : IsClass (hcL P (degL P)) :=
-      (GlobalTheory.T.character_decomposition_and_classFunction_expansion _ _).2.2.1 (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g P P _ rfl hP').1
-    have cp : IsClass p.2 := (GlobalTheory.T.character_decomposition_and_classFunction_expansion _ _).2.2.1 (hP p List.mem_cons_self)
+      (_root_.GlobalTheory.charDec _ _).2.2.1 (_root_.GlobalTheory.gl_list_product_perm_char g P P _ rfl hP').1
+    have cp : IsClass p.2 := (_root_.GlobalTheory.charDec _ _).2.2.1 (hP p List.mem_cons_self)
     have key : ∀ m, m = degL P + degL Q → hc p.1 m p.2 (hcL (P ++ Q) m) n =
         hc (p.1 + degL P) (degL Q) (hc p.1 (degL P) p.2 (hcL P (degL P)) (p.1 + degL P)) (hcL Q (degL Q)) n := by
       intro m hm
       subst hm
       rw [ih hP' _ rfl]
-      exact ((GlobalTheory.T.harishChandraInductionExteriorProduct_assoc_comm g _ _ _ n _ _ _ cp cP cQ).1 hn).symm
+      exact ((_root_.GlobalTheory.GLq.HcRing.main g _ _ _ n _ _ _ cp cP cQ).1 hn).symm
     exact key _ (degL_append P Q)
 
 theorem hasLabel_mul : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (a b n : ℕ) (χ : Gn g n → ℂ) (α : Gn g a → ℂ) (β : Gn g b → ℂ) (f₁ f₂ : (ZMod g)[X]), n = a + b → IsIrr χ → IsIrr α → IsIrr β → HasLabel L α f₁ → HasLabel L β f₂ → ip χ (hc a b α β n) ≠ 0 → HasLabel L χ (f₁ * f₂) := by
@@ -153,8 +151,8 @@ theorem hasLabel_mul : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (a b n : 
     intro p hp
     obtain ⟨q, hq, rfl⟩ := List.mem_map.1 hp
     exact isChar_of_isIrr (hQ q hq).2.1.2.1
-  obtain ⟨A, hA, eA⟩ := exists_add_of_ip_ne_zero hα (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g _ [] _ rfl cP).1 iP
-  obtain ⟨B, hB, eB⟩ := exists_add_of_ip_ne_zero hβ (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g _ [] _ rfl cQ).1 iQ
+  obtain ⟨A, hA, eA⟩ := exists_add_of_ip_ne_zero hα (_root_.GlobalTheory.gl_list_product_perm_char g _ [] _ rfl cP).1 iP
+  obtain ⟨B, hB, eB⟩ := exists_add_of_ip_ne_zero hβ (_root_.GlobalTheory.gl_list_product_perm_char g _ [] _ rfl cQ).1 iQ
   refine ⟨P ++ Q, ?_, ?_, ?_, ?_⟩
   · intro p hp
     rcases List.mem_append.1 hp with h | h
@@ -164,7 +162,7 @@ theorem hasLabel_mul : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (a b n : 
   · rw [List.map_append, List.prod_append]
   · rw [List.map_append, hcL_append _ _ cP cQ n hn, eA, eB, hc_add_left, hc_add_right, hc_add_right,
       ip_add_right, ip_add_right, ip_add_right]
-    have H := (GlobalTheory.T.harishChandra_induction_character_restriction_decomp g _ _ n hn).1
+    have H := (_root_.GlobalTheory.GLq.HCChar.hc_isChar_and_res_decomp g _ _ n hn).1
     obtain ⟨k₁, e₁⟩ := ip_nat hχ (H _ _ (isChar_of_isIrr hα) (isChar_of_isIrr hβ))
     obtain ⟨k₂, e₂⟩ := ip_nat hχ (H _ _ (isChar_of_isIrr hα) hB)
     obtain ⟨k₃, e₃⟩ := ip_nat hχ (H _ _ hA (isChar_of_isIrr hβ))

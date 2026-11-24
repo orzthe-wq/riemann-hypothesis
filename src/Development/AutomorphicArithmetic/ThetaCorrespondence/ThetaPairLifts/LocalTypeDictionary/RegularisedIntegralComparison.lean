@@ -87,7 +87,7 @@ theorem regularisedIntegral_of_const : _root_.GlobalTheory.FunPr.ThetaLocalInput
   rw [finRel, Submodule.mem_span_set'] at hrel
   obtain ⟨n, c, g, hsum⟩ := hrel
   choose u hu Ψ hΨ hg using fun i => (g i).2
-  obtain ⟨z, hzG, hz0, hz⟩ := _root_.GlobalTheory.T.twist_regulariser_isGood hP hK D ψ θ hθ W W₁ X A₁ B α β hT ν₁ 𝓕₁ hν₁ ωB hm.weilB (n + 1)
+  obtain ⟨z, hzG, hz0, hz⟩ := _root_.GlobalTheory.RegGood.regulariser_isGood hP hK D ψ θ hθ W W₁ X A₁ B α β hT ν₁ 𝓕₁ hν₁ ωB hm.weilB (n + 1)
     (Fin.cons ΦB Ψ) (Fin.cons 1 u) (Fin.cases hΦB hΨ) (Fin.cases (one_mem _) hu)
   have hB : ModInt θ ωB ν₁ 𝓕₁ (wop ωB z ΦB) := (hz 0).1
   have hX : ∀ i, ModInt θ ωB ν₁ 𝓕₁ (wop ωB z (Ψ i)) ∧

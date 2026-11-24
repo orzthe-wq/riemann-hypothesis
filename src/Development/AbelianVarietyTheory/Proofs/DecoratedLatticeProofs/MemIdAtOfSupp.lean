@@ -4,18 +4,21 @@ public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombA
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemSum
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CompIncAAlgebraMap
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsAddChar
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsFiniteAdeleProjectionIntegralReductionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalBlockDetBlockTriangular
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsFiniteAdeleProjectionIntegralReduction
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSelfDualLatticeWithPrescribedSplitComponen
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatticeCompletionAtPlacesMemCompletedHermitianLaStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemLatticeCompletionAtPlacesOfFinPartMemHatLattiStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemLevelIffSymmetricPositionEntryPatternStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlaceIdempotentActsOnSupportedAndOffStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.OnesRepresent
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemLevelIffSymmetricPositionEntryPattern
+public import Mathlib.Analysis.Fourier.FiniteAbelian.PontryaginDuality
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LatticeCompletionAtPlacesMemCompletedHermitianLaStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlaceIdempotentActsOnSupportedAndOff
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FrameTransport.InstIsModTopTens
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.Fourier.FiniteAbelian.PontryaginDuality
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -53,6 +56,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHermitianFrameProperties
 
 @[expose] public section
 
@@ -70,13 +74,7 @@ open Formalism.L2.Col (IntAt)
 section Place
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k)
 
-theorem sec_one : q.sec 1 = q.e := by
-  have := q.sec_pr 1
-  rwa [map_one, mul_one] at this
-
-theorem pr_e : q.pr q.e = 1 := by rw [← sec_one, q.pr_sec]
-
-theorem pr_e_mul (x : AE D) : q.pr (q.e * x) = q.pr x := by rw [map_mul, pr_e, one_mul]
+theorem pr_e_mul (x : AE D) : q.pr (q.e * x) = q.pr x := by rw [map_mul, _root_.GlobalTheory.FrameAt.pr_e, one_mul]
 
 theorem idAt_mono {P P' : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ v, P v → P' v) : idAt D P ≤ idAt D P' :=
   inf_le_inf_left _ (le_iInf fun w => iInf_le_of_le ⟨w.1, fun hw => w.2 (h _ hw)⟩ le_rfl)
@@ -87,7 +85,7 @@ theorem add_mul_e : (q.e + cA D q.e) * q.e = q.e := by
 
 theorem mem_idAt_of_supp {a : AE D} (h : (q.e + cA D q.e) * a = a) : a ∈ idAt D (· = q.v) := by
   obtain ⟨ε, hε, hs⟩ := q.above
-  exact ((GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q.v ε hε).1 a).2 (hs ▸ h)
+  exact ((_root_.GlobalTheory.FinPl.placeIdem_acts D q.v ε hε).1 a).2 (hs ▸ h)
 
 theorem place_facts {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) :
     q.v = (_root_.IsDedekindDomain.HeightOneSpectrum.under (𝓞 D.host.F) PP) ∧ (∀ a, (ofSplit q).pr a ∈ 𝒪[k] ↔ IntAt PP a) ∧ DenseRange (ofSplit q).pr := by
@@ -96,10 +94,10 @@ theorem place_facts {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) :
   · rw [← hv]
     by_contra hne
     obtain ⟨ε, hε, hs⟩ := q₀.above
-    have h0 := (GlobalTheory.T.placeIdempotent_acts_on_supportedAndOff D q₀.v ε hε).2 q.e
+    have h0 := (_root_.GlobalTheory.FinPl.placeIdem_acts D q₀.v ε hε).2 q.e
       (idAt_mono (fun v (hv : v = q.v) => hv ▸ hne) (GlobalTheory.FrameGlob.e_mem_idAt q))
     rw [← hs, he, add_mul_e] at h0
-    have := pr_e q
+    have := _root_.GlobalTheory.FrameAt.pr_e q
     rw [h0, map_zero] at this
     exact zero_ne_one this
   · rw [← hi, q.int_iff, q₀.int_iff]
@@ -135,7 +133,7 @@ theorem prO_eq_one {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) {z 
     valuation k (prO q z) = 1 := le_antisymm (prO_le q h z) (not_lt.1 (mt (prO_lt q h z).2 hz))
 
 theorem xi_unit (hu : q.UnitAA) (h0 : (ofSplit q).xi ≠ 0) : valuation k (ofSplit q).xi = 1 := by
-  have he : q.e ∈ intAt D (· = q.v) := ⟨GlobalTheory.FrameGlob.e_mem_idAt q, by rw [← sec_one]; exact (q.int_iff 1).1 (one_mem _)⟩
+  have he : q.e ∈ intAt D (· = q.v) := ⟨GlobalTheory.FrameGlob.e_mem_idAt q, by rw [← _root_.GlobalTheory.FinPl.FrameLat.sec_one]; exact (q.int_iff 1).1 (one_mem _)⟩
   obtain ⟨h1, h2⟩ := hu.1 q.e he
   have h3 := h1.2
   have h4 := h2.2
@@ -151,7 +149,7 @@ theorem sec_mul (x y : k) : q.sec x * q.sec y = q.sec (x * y) := by
 
 theorem idl_mul (x y : k) (h : x * y = 1) : (q.sec x + (1 - q.e)) * (q.sec y + (1 - q.e)) = 1 := by
   have h1 := sec_mul q x y
-  rw [h, sec_one] at h1
+  rw [h, _root_.GlobalTheory.FinPl.FrameLat.sec_one] at h1
   have h2 := GlobalTheory.FrameGlob.sec_eq_mul q x
   have h3 := GlobalTheory.FrameGlob.sec_eq_mul q y
   have h4 := q.split.1
@@ -282,14 +280,14 @@ theorem exists_unif {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) {�
 theorem exists_topFrame {PP : Formalism.L2.DIV.Pl D.host.E} (h : IsIdemAt q.e PP) (S : HSp D) (L : GlobalTheory.FinPl.Lat S)
     (β : GL (Fin S.rank) (Lev.EAf D)) (hβ : Formalism.L2.DIV.IsFrame β L) : ∃ B : GL (Fin S.rank) k, MovedTo (ofSplit q) S 1 β B.val ∧
       ∀ y : Fin S.rank → k, (fun i => q.sec (y i)) ∈ latV S L (· = q.v) ↔ ∀ i, ((B⁻¹).val *ᵥ y) i ∈ 𝒪[k] := by
-  obtain ⟨π, h1, -, h2, -⟩ := GlobalTheory.T.exists_finiteAdele_projection_integral_reduction D k q PP h
+  obtain ⟨π, h1, -, h2, -⟩ := _root_.GlobalTheory.FinPl.SplitPt.exists_lift_isRed D k q PP h
   refine ⟨Matrix.GeneralLinearGroup.map π β, fun b hb => ?_, fun y => ?_⟩
   · ext i j
     change q.pr (((matHom S 1).val * b) i j) = π (β.val i j)
     rw [map_one, Units.val_one, Matrix.one_mul, ← hb, ← h1]
     rfl
   have h3 : (fun i => q.sec (y i)) ∈ latV S L (· = q.v) ↔ (fun i => toEAf D (q.sec (y i))) ∈ Formalism.L2.Herm.hatL (F := D.host.F) L :=
-    ⟨GlobalTheory.T.latticeCompletionAtPlaces_mem_completedHermitianLattice D S L _ _, GlobalTheory.T.mem_latticeCompletionAtPlaces_of_finPart_mem_hatLattice D S L _ _ fun i => GlobalTheory.FrameGlob.sec_mem_idAt q _⟩
+    ⟨_root_.GlobalTheory.LatVHat.latV_mem_hatL D S L _ _, _root_.GlobalTheory.HatLatV.mem_latV_of_hatL D S L _ _ fun i => GlobalTheory.FrameGlob.sec_mem_idAt q _⟩
   rw [h3, hβ]
   refine forall_congr' fun i => ?_
   have h4 : ∀ j, (1 - toEAf D q.e) * toEAf D (q.sec (y j)) = 0 := fun j => by
@@ -362,7 +360,7 @@ theorem sym_grp : (∃ x : S.P.J, ∀ a b z, Ideal.Quotient.mk I z = g.val (e a)
   · rintro ⟨x, hx⟩ i j hij
     obtain ⟨a, rfl⟩ := (e.trans π.symm).surjective i
     obtain ⟨b, rfl⟩ := (e.trans π.symm).surjective j
-    have h3 := ((GlobalTheory.T.mem_level_iff_symmetricPosition_entry_pattern k s κ S x).1 x.2).2 a b ((sym_order S.odd e he hπ a b).1.2 hij)
+    have h3 := ((_root_.GlobalTheory.SymChain.SymData.mem_J_iff_pattern k s κ S x).1 x.2).2 a b ((sym_order S.odd e he hπ a b).1.2 hij)
     have h4 := Valuation.map_sub_lt _ h3 (hx a b _ (hl _))
     rw [(one a b).1, sub_sub_sub_cancel_left, ← map_sub, ← h2, ← Ideal.Quotient.eq, hl] at h4
     refine (hg _ _).trans (Eq.trans ?_ (one a b).2.symm)
@@ -387,7 +385,7 @@ theorem sym_grp : (∃ x : S.P.J, ∀ a b z, Ideal.Quotient.mk I z = g.val (e a)
         valuation k ((GeneralLinearGroup.map (algebraMap 𝒪[k] k) x₀).val a b - pr z) < 1 := fun a b z hz => by
       change valuation k (pr (Z a b) - pr z) < 1
       rw [← map_sub, ← h2, ← Ideal.Quotient.eq, hl, hz]
-    refine ⟨⟨_, (GlobalTheory.T.mem_level_iff_symmetricPosition_entry_pattern k s κ S _).2 ⟨⟨x₀, rfl⟩, fun a b hab => ?_⟩⟩, hx⟩
+    refine ⟨⟨_, (_root_.GlobalTheory.SymChain.SymData.mem_J_iff_pattern k s κ S _).2 ⟨⟨x₀, rfl⟩, fun a b hab => ?_⟩⟩, hx⟩
     rw [(one a b).1]
     refine hx a b _ ?_
     rw [← (one a b).2, ← h _ _ ((sym_order S.odd e he hπ a b).1.1 hab), hg, Equiv.apply_symm_apply, Equiv.apply_symm_apply]

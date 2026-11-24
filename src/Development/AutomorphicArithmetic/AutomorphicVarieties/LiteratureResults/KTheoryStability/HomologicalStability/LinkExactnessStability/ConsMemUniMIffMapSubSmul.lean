@@ -112,10 +112,3 @@ theorem cons_mem_uniM_iff_map_proj : ∀ (R M : Type) [CommRing R] [AddCommGroup
 
 end GlobalTheory.UniModVec
 
-section
-open GlobalTheory.SeqCx Matrix
-theorem _root_.GlobalTheory.T.cons_mem_uniM_iff_map_sub_smul : ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (φ : M →ₗ[R] R) (v : M), φ v = 1 → ∀ l : List M, (v :: l) ∈ uniM R M ↔ l.map (fun x => x - φ x • v) ∈ uniM R M := by
-  first
-  | exact @GlobalTheory.UniModVec.cons_mem_uniM_iff_map_proj
-  | exact @GlobalTheory.UniModVec.mem_uniM_iff_nat
-end

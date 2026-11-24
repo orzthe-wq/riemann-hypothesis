@@ -118,31 +118,6 @@ variable {K V : Type} [Field K] [AddCommGroup V] [Module K V] (ι : Type) [Finty
 
 def piNorm (N : (K →+* ℂ) → V → ℝ) (σ : K →+* ℂ) (F : ι → V) : ℝ := Real.sqrt (∑ i, N σ (F i) ^ 2)
 
-theorem hasGram_piNorm {N : (K →+* ℂ) → V → ℝ} (h : HasGram N) : HasGram (piNorm ι N) := by
-  classical
-  obtain ⟨n, ⟨b, X⟩, hb⟩ := h
-  refine IsGram.hasGram (b := (Pi.basis fun _ : ι => b).reindex
-    ((Equiv.sigmaEquivProd ι (Fin n)).trans (Equiv.prodComm _ _)))
-    (X := fun v => Matrix.blockDiagonal fun _ : ι => X v) fun v => ⟨?_, fun F => ?_⟩
-  · rw [Matrix.det_blockDiagonal]
-    exact IsUnit.prod_iff.2 fun _ _ => (hb v).1
-  · have hi : (Matrix.blockDiagonal fun _ : ι => X v)⁻¹ = Matrix.blockDiagonal fun _ : ι => (X v)⁻¹ := by
-      refine Matrix.inv_eq_left_inv ?_
-      rw [← Matrix.blockDiagonal_mul]
-      simp only [Matrix.nonsing_inv_mul _ (hb v).1]
-      exact Matrix.blockDiagonal_one
-    simp only [piNorm, ← (hb v).2, normAt, cnorm, fcoord, hi]
-    congr 1
-    rw [Fintype.sum_prod_type_right]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
-    refine Finset.sum_congr rfl fun a _ => ?_
-    congr 2
-    have e : ∀ k, vecAt ((Pi.basis fun _ : ι => b).reindex
-        ((Equiv.sigmaEquivProd ι (Fin n)).trans (Equiv.prodComm _ _))) v F k = vecAt b v (F k.2) k.1 := fun k => by
-      simp only [vecAt, Basis.repr_reindex_apply]; rfl
-    simp [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.blockDiagonal_apply, e]
-
 variable [Module (𝓞 K) V]
 
 def piLat (L : Submodule (𝓞 K) V) : Submodule (𝓞 K) (ι → V) := Submodule.pi Set.univ fun _ => L

@@ -247,9 +247,7 @@ theorem acrisFrobeniusRingHom_algebraMap_envelope (s : Per.Acris0 l) :
       ⟨Per.extP (Per.φA l) s, (GlobalTheory.CrisMaps.phiA_extends l).mem _ s.2⟩ :=
   (GlobalTheory.CrisMaps.phiA_extends l).env s
 
-theorem alg_eq (a : Per.Ainf l) : algebraMap (Per.Ainf l) (Per.Acris l) a =
-    algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) a) :=
-  GlobalTheory.RingIface.tower l a
+alias alg_eq := _root_.GlobalTheory.RingIface.tower
 
 theorem phiA_alg (a : Per.Ainf l) : phiA l (algebraMap (Per.Ainf l) (Per.Acris l) a) =
     algebraMap (Per.Ainf l) (Per.Acris l) (Per.φA l a) := (GlobalTheory.CrisMaps.phiA_extends l).alg a

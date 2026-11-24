@@ -1,9 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthToFunNonneg
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentreDepthLeStarDepthOfCellStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentreDepthLeStarDepthOfCell
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalRStarDepthLeOfCentreBound
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RealConeCoveredByStarAtPoint
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinkowskiWeylOrthantConeIntegralConstraints
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -42,7 +43,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinkowskiWeylOrthantConeIntegralConstraints
 
 @[expose] public section
 
@@ -125,7 +125,7 @@ theorem exists_nat_of_inRCone {n : ℕ} (u : Fin n → LinearMap.BilinForm ℤ X
     push_neg at hne
     simp [hne] at h0
   have hv := (hiff fun i => (v k i : ℝ)).2 ⟨Pi.single k 1, fun j => by
-    by_cases h : j = k <;> simp [Pi.single_apply, h], by
+    by_cases h : j = k <;> simp [h], by
     ext i
     rw [Finset.sum_apply, Finset.sum_eq_single k (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp)]
     simp⟩
@@ -205,7 +205,7 @@ theorem GlobalTheory.PolFan.starDepth_on_cell : ∀ (E : Type) [Field E] [Number
     refine le_antisymm ?_ ?_
     · have := hI β₀ hin
       nlinarith
-    · have hl := GlobalTheory.T.centreDepth_le_starDepth_of_cell (𝓞 E) H.bar ψ w X m γ (toReal β₀) β₀ 1 hγ (by
+    · have hl := _root_.GlobalTheory.PolFan.depth_le_starDepth (𝓞 E) H.bar ψ w X m γ (toReal β₀) β₀ 1 hγ (by
         obtain ⟨c, hc0, e⟩ := hin; exact ⟨c, hc0, e⟩) hβ₀ hβ₀p hw hin hne huniq zero_le_one
         (by rw [one_smul, sub_self]; exact ⟨0, fun _ => le_rfl, by simp⟩)
       rwa [evalR_toReal] at hl

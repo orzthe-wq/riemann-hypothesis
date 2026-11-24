@@ -51,4 +51,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.exists_weilDatum_hermitianPair : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.WeilDatumExistenceCriterion.WeilDatumExists D := by
-  first | exact @GlobalTheory.WeilDatumExistence.weilDatumExists | exact GlobalTheory.WeilDatumExistence.weilDatumExists | (intros; apply GlobalTheory.WeilDatumExistence.weilDatumExists <;> assumption)
+  first | exact @GlobalTheory.WeilDatumExistence.weilDatumExists

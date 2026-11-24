@@ -134,7 +134,7 @@ private lemma eisG_lat2_eq_inv_pow_mul_tsum (a z : ℂ) (ha : a ≠ 0) (hz : 0 <
     exact zero_zpow _ (by omega)
   rw [← tsum_subtype_eq_of_support_subset hsupp, ← tsum_mul_left]
   refine tsum_congr fun v => ?_
-  simp only [Equiv.ofBijective_apply, f, EisensteinSeries.eisSummand, UpperHalfPlane.coe_mk, zpow_natCast]
+  simp only [Equiv.ofBijective_apply, f, EisensteinSeries.eisSummand]
   rw [mul_pow, one_div, mul_inv, zpow_neg, zpow_natCast]
 
 theorem eisenstein_four_lattice_eq (a : ℂ) (ha : a ≠ 0) (τ : ℍ) :

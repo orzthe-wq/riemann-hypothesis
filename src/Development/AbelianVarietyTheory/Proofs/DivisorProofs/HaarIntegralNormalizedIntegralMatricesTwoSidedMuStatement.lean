@@ -49,4 +49,4 @@ theorem _root_.GlobalTheory.T.haarIntegralNormalized_integralMatrices_twoSidedMu
     A ∈ GlobalTheory.LFun.KGL w (n := a) → B ∈ GlobalTheory.LFun.KGL w (n := b) →
     hint (intMat a b w) (fun X => u (Multiplicative.ofAdd (A.val * Multiplicative.toAdd X * B.val))) =
       hint (intMat a b w) u := by
-  first | exact @GlobalTheory.BCT.HintInv.hint_intMat_mul_mul | exact GlobalTheory.BCT.HintInv.hint_intMat_mul_mul | (intros; apply GlobalTheory.BCT.HintInv.hint_intMat_mul_mul <;> assumption)
+  first | exact @GlobalTheory.BCT.HintInv.hint_intMat_mul_mul

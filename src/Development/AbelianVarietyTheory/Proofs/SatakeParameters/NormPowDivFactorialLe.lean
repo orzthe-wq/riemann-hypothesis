@@ -130,7 +130,7 @@ private theorem coeff_mapDomain_rename_of_injective {σ τ R : Type} [CommSemiri
     (n : σ →₀ ℕ) : coeff (Finsupp.mapDomain f n) (rename f p) = coeff n p := by
   rw [coeff_rename, Finset.sum_eq_single n]
   · intro y hy hne
-    simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hy
+    simp only [Set.Finite.mem_toFinset] at hy
     exact absurd (Finsupp.mapDomain_injective hf hy) hne
   · intro hn
     exact absurd (by simp) hn

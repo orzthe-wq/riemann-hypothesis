@@ -93,7 +93,7 @@ theorem isCompOf_one_of_not_mem (s : SplitPlace L) {T : Set (HeightOneSpectrum (
     split_ifs <;> simp
   intro a c
   rw [e]
-  by_cases hac : a = c <;> simp [Matrix.one_apply, hac]
+  by_cases hac : a = c <;> simp [hac]
 
 theorem isBlockDiagonal_reduction_of_blockLift_splitPlace (s : SplitPlace L) {r p : ℕ} [NeZero p] (γ : GL (Fin r) (ZMod p)) {κ : Formalism.AUTREP.GAf L n}
     {y : GL (Fin n) (Os s)} (hy : IsCompOf s κ y) (hl : GlobalTheory.PendOf.IsLiftAt s r p γ (s.loc n κ)) {k : Type} [CommRing k]

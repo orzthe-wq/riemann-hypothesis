@@ -1,64 +1,20 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarMeasureProdOfAddGroupsStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlacesStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeGramScalarAlmostAllStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensityBlockOneProductStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalLatticeCompactOpenUnitVolumeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionArtinianRingStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+public import Mathlib.MeasureTheory.Group.Measure
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarMeasureProdOfAddGroups
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlaces
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeGramScalarAlmostAll
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensityBlockOneProduct
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalLatticeCompactOpenUnitVolume
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionArtinianRing
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -159,20 +115,20 @@ theorem coordK_map_unit [NumberField E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E 
     (htv : Valued.v (algebraMap F (Fv F v) t) = 1) (d : ℕ) (b : Module.Basis (Fin d) F E) :
     (coordK (Fv F v) b lam).map (fun y => inclR (Fv F v) (algebraMap F E t) * y) =
       (1 : ℝ≥0) • coordK (Fv F v) b lam := by
-  obtain ⟨r1, r2, r3, r4, -⟩ := GlobalTheory.T.completion_is_local_ring F v
+  obtain ⟨r1, r2, r3, r4, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   haveI := r1
   haveI := r2
   haveI := r3
   haveI := r4
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-  obtain ⟨i1, i2, i3, i4, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)
+  obtain ⟨i1, i2, i3, i4, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)
   haveI := i1
   haveI := i2
   haveI := i3
   haveI := i4
   haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩
   haveI := hlam.1
-  haveI := (GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b lam hlam.1).1
+  haveI := (_root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) d b lam hlam.1).1
   have hinv : inclR (F := F) (Fv F v) (algebraMap F E t) * inclR (F := F) (Fv F v) (algebraMap F E t⁻¹) = 1 := by
     rw [← map_mul, ← map_mul, mul_inv_cancel₀ ht, map_one, map_one]
   let e : (Fv F v ⊗[F] E) ≃+ (Fv F v ⊗[F] E) :=
@@ -189,7 +145,7 @@ theorem coordK_map_unit [NumberField E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E 
   have he' : Continuous e.symm := continuous_const.mul continuous_id
   let L : Set (Fv F v ⊗[F] E) := {y | ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈
     v.adicCompletionIntegers F}
-  obtain ⟨c1, c2, c3, -⟩ := GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b 1 1 v
+  obtain ⟨c1, c2, c3, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.latV_compact_open_mass F E σ hCM d b 1 1 v
   have hLc : IsCompact L := by
     have : L = (fun X : Fin 1 → Fin 1 → Fv F v ⊗[F] E => X 0 0) '' latV b v := by
       ext y
@@ -224,7 +180,7 @@ theorem coordK_map_unit [NumberField E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E 
       exact (hmem _).1 (hk k ▸ h k)
     · intro h k
       exact hk k ▸ (hmem _).2 (h k)
-  have := (GlobalTheory.T.map_addHaar_addEquiv_eq_smul_and_eq_of_compact_open _ _ (coordK (Fv F v) b lam) (coordK (Fv F v) b lam) e he he').2 L L hLc hLo hL0 hL rfl
+  have := (_root_.GlobalTheory.CompanionTheory.SW.HaarTransport.map_addEquiv_haar _ _ (coordK (Fv F v) b lam) (coordK (Fv F v) b lam) e he he').2 L L hLc hLo hL0 hL rfl
   rw [one_smul]
   exact this
 
@@ -233,29 +189,29 @@ end Place
 theorem blockFibre_mass : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (t : F), t ≠ 0 → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b), ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ lam, IsStdV v lam → ∀ m m₁ m', IsGramFib (Fv F v) σ (blockOne (algebraMap F E t) J) (n + 1) (coordW (Fv F v) b lam (n + 1) (M + 1)) (coordHerm (Fv F v) σ b lam (n + 1)) m → IsGramFib (Fv F v) σ (blockOne (algebraMap F E t) J) 1 (coordW (Fv F v) b lam 1 (M + 1)) (coordHerm (Fv F v) σ b lam 1) m₁ → IsGramFib (Fv F v) σ J n (coordW (Fv F v) b lam n M) (coordHerm (Fv F v) σ b lam n) m' → m (hermOf (Fv F v) σ _ hT') (latV b v) = m₁ (hermScal (Fv F v) σ (algebraMap F _ t)) (latV b v) * m' (hermOf (Fv F v) σ T hT) (latV b v) := by
   intro F E _ _ _ _ _ σ hCM M J hJ t ht n T hT hdet hT' d b
   have hJ' := isHermND_blockOne σ J hJ t ht
-  filter_upwards [GlobalTheory.T.lattice_gram_scalar_almost_all F E σ hCM (M + 1) _ hJ' t ht d b,
-    (GlobalTheory.T.integral_almost_all_places F E σ hCM d b).1 1, (GlobalTheory.T.integral_almost_all_places F E σ hCM d b).2 t ht] with v hgt h1' htv
+  filter_upwards [_root_.GlobalTheory.CompanionTheory.SW.GoodTrans.good_trans F E σ hCM (M + 1) _ hJ' t ht d b,
+    (_root_.GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hCM d b).1 1, (_root_.GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hCM d b).2 t ht] with v hgt h1' htv
   intro lam hlam m m₁ m' hm hm₁ hm'
   have h1 : ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr (1 : Fv F v ⊗[F] E) k ∈
       v.adicCompletionIntegers F := by
     intro k
     simpa using h1' k
-  have hlocR := GlobalTheory.T.completion_is_local_ring F v
+  have hlocR := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   obtain ⟨r1, r2, r3, r4, -⟩ := id hlocR
   haveI := r1
   haveI := r2
   haveI := r3
   haveI := r4
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-  obtain ⟨-, -, -, -, -, -, -, hB, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)
+  obtain ⟨-, -, -, -, -, -, -, hB, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)
   have hmeas : ∀ p q : ℕ, MeasurableSet (latV (M := q) (n := p) b v) := by
     intro p q
     haveI := hB p q
-    exact (GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b p q v).2.1.measurableSet
+    exact (_root_.GlobalTheory.CompanionTheory.SW.latV_compact_open_mass F E σ hCM d b p q v).2.1.measurableSet
   have hc := coordK_map_unit σ hCM v lam hlam t ht htv d b
   let φ : (Fin (n + 1) → Fin (M + 1) → Fv F v ⊗[F] E) → ℝ≥0∞ := (latV b v).indicator 1
   have hφ : Measurable φ := measurable_one.indicator (hmeas _ _)
-  obtain ⟨Ψ, -, hΨ, hint⟩ := GlobalTheory.T.local_density_block_one_product F E σ hCM M J hJ t ht n T hT hdet hT' (Fv F v) hlocR d b lam
+  obtain ⟨Ψ, -, hΨ, hint⟩ := _root_.GlobalTheory.CompanionTheory.SW.fibre_block_stages F E σ hCM M J hJ t ht n T hT hdet hT' (Fv F v) hlocR d b lam
     hlam.1 m m₁ m' hm hm₁ hm' 1 hc φ hφ
   have hae : Ψ =ᵐ[m₁ (hermScal (Fv F v) σ (algebraMap F _ t))]
       (latV b v).indicator (fun _ => m' (hermOf (Fv F v) σ T hT) (latV b v)) := by
@@ -275,7 +231,7 @@ theorem blockFibre_mass : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
         · rw [Set.indicator_of_notMem hX]
           exact Set.indicator_of_notMem (fun hc' => hX ((consTup_mem_latV b v h1 X).1 ((hpres _ _).1 hc'))) _
       rw [this, lintegral_indicator_one (hmeas _ _)]
-    · obtain ⟨h, hh⟩ := GlobalTheory.T.witt_extension_artinian_ring F E σ hCM (M + 1) _ hJ' (Fv F v) 1 _ y (hg0.trans hg.symm)
+    · obtain ⟨h, hh⟩ := _root_.GlobalTheory.CompanionTheory.SW.WittTuples.exists_actW_eq_of_gramR_eq F E σ hCM (M + 1) _ hJ' (Fv F v) 1 _ y (hg0.trans hg.symm)
         (by rw [hg0, ← hg]; exact hu)
       rw [Set.indicator_of_notMem hyL, ← hh, hΨ h]
       have : (fun X => φ (actW (Fv F v) σ _ h (consTup X))) = 0 := by

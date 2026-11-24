@@ -156,16 +156,12 @@ theorem skew_entry (hH : Hᴴ = H) (hW : Wᴴ * H + H * W = 0) {ξ : ℂ} (hξ :
   rw [Matrix.conjTranspose_apply, Matrix.neg_apply, Complex.neg_im, Complex.star_def, Complex.conj_im, neg_inj] at e'
   rw [Complex.mul_re, Complex.mul_re, hξ, e', zero_mul, zero_mul]
 
-theorem herm_cartan (hs : IsCartanInv H s) : sᴴ * H = H * s := by
-  calc sᴴ * H = sᴴ * H * s * s := by rw [Matrix.mul_assoc _ s, hs.1, Matrix.mul_one]
-    _ = _ := by rw [hs.2.1]
-
 theorem zero_entry (hs : IsCartanInv H s) (hB : s * B' = B' * diagonal δ) (hW : s * W = -(W * s)) {a b : Fin m}
     (ha : star (δ a) + δ b ≠ 0) : (B'ᴴ * H * W * B') a b = 0 := by
   have e : (diagonal δ)ᴴ * (B'ᴴ * H * W * B') = -(B'ᴴ * H * W * B' * diagonal δ) := by
     calc _ = (B' * diagonal δ)ᴴ * H * W * B' := by simp only [conjTranspose_mul, Matrix.mul_assoc]
       _ = B'ᴴ * H * (s * W) * B' := by
-        rw [← hB, conjTranspose_mul, Matrix.mul_assoc _ _ H, herm_cartan hs]; simp only [Matrix.mul_assoc]
+        rw [← hB, conjTranspose_mul, Matrix.mul_assoc _ _ H, _root_.GlobalTheory.CartanTrace.adj_mul hs]; simp only [Matrix.mul_assoc]
       _ = _ := by
         rw [hW, Matrix.mul_assoc _ B', ← hB]; simp only [Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg]
   have e' := congrFun (congrFun e a) b
@@ -186,7 +182,7 @@ theorem parts (hH : IsUnit H.det) (hs : IsCartanInv H s) {Z : Matrix (Fin m) (Fi
     s * ((1 / 2 : ℂ) • (Z + -(H⁻¹ * Zᴴ * H))) = -((1 / 2 : ℂ) • (Z + -(H⁻¹ * Zᴴ * H)) * s) ∧
     (1 / (2 * Complex.I)) • (Z - -(H⁻¹ * Zᴴ * H)) =
       Complex.I • (s * ((1 / 2 : ℂ) • (Z + -(H⁻¹ * Zᴴ * H)))) := by
-  have e := herm_cartan hs
+  have e := _root_.GlobalTheory.CartanTrace.adj_mul hs
   have e' : s * H⁻¹ = H⁻¹ * sᴴ := by
     calc s * H⁻¹ = H⁻¹ * (H * s) * H⁻¹ := by rw [Matrix.nonsing_inv_mul_cancel_left _ _ hH]
       _ = _ := by rw [← e, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ hH]
@@ -371,7 +367,7 @@ theorem gen_kill_vac (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) 
     (lX : X ∈ lieAt T τ) (lY : Complex.I • (sT τ * X) ∈ lieAt T τ) (ha : sT τ * X = -(X * sT τ))
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hv : ∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO 1 (sT τ)) f) :
     (GX + Complex.I • GY) f = 0 := by
-  obtain ⟨x₁, x₂, y₁, y₂, h⟩ := GlobalTheory.T.maximalCompact_acts_on_realVacua_by_detPowers D ψ θ S T χS χT om hom hθ kS kT (fun _ => 1) sT hS hT
+  obtain ⟨x₁, x₂, y₁, y₂, h⟩ := _root_.GlobalTheory.VacuumChar.vacuum_char D ψ θ S T χS χT om hom hθ kS kT (fun _ => 1) sT hS hT
   have sp := GlobalTheory.PointAtPlaceHom.atTau_spec hθ T τ (g := sT τ) (hT τ).2.1
   have hk : ∀ ρ, sT ρ * compAt θ ρ (Formalism.L2.Theta.mt T (atTau θ T τ (sT τ))) =
       compAt θ ρ (Formalism.L2.Theta.mt T (atTau θ T τ (sT τ))) * sT ρ := fun ρ => by

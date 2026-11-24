@@ -1,50 +1,11 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicOutsideLine
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMatMulVec
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsIntegralCc
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SpanColsMul
 
 @[expose] public section
 
@@ -52,15 +13,12 @@ namespace ReciprocityTheory.ChartRestriction.G.FD
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
-private theorem tau_cc_eq_conj_tau (τ : E →+* ℂ) (x : E) : τ (cc x) = starRingEnd ℂ (τ x) :=
-  NumberField.IsCMField.complexEmbedding_complexConj E τ x
-
 private theorem hermC_emb_emb_eq_zero_of_isIsoPair {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E) (hiso : IsIsoPair X.Gm u)
     (τ : E →+* ℂ) (i k : Fin 2) :
     hermC τ X.Gm (Data.emb τ (u i)) (Data.emb τ (u k)) = 0 := by
   have h := congrArg τ (hiso.1 i k)
 
-  simp only [herm, map_sum, map_mul, map_zero, tau_cc_eq_conj_tau] at h
+  simp only [herm, map_sum, map_mul, map_zero, _root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc] at h
   simp only [hermC, Data.emb]
   exact h
 
@@ -142,7 +100,7 @@ private theorem hermC_Gm_eq_starRingEnd_swap {r : ℕ} (X : Data E r) (τ : E �
   simp only [hermC, map_sum, map_mul, Complex.conj_conj]
   conv_rhs => rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_
-  rw [← X.Gm_herm y x, tau_cc_eq_conj_tau]
+  rw [← X.Gm_herm y x, _root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc]
   ring
 
 private theorem hermC_zmat_mulVec_of_isIsoPair {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E) (hiso : IsIsoPair X.Gm u)
@@ -167,27 +125,18 @@ private theorem zmat_mulVec_emb_eq_self {r : ℕ} (X : Data E r) (u : Fin 2 → 
   funext p
   simp only [hermC_emb_emb_eq_zero_of_isIsoPair X u hiso τ.1, mul_zero, Finset.sum_const_zero, zero_mul, sub_zero]
 
-private theorem col_mul_eq_mulVec_col_natDim {r : ℕ} (M N : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
-    col (M * N) a = Matrix.mulVec M (col N a) := by
-  funext k
-  simp only [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]
-
 private theorem gram_zmat_mul_eq_gram {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (hiso : IsIsoPair X.Gm u) (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (hb : IsHermFam b) (τ : X.Ψ)
     (M : Matrix (Fin r) (Fin r) ℂ) :
     gram τ.1 X.Gm (X.zmat u b τ * M) = gram τ.1 X.Gm M := by
   ext a c
-  simp only [gram, Matrix.of_apply, col_mul_eq_mulVec_col_natDim, hermC_zmat_mulVec_of_isIsoPair X u hiso b hb τ]
-
-private theorem mat_Zb_eq_zmat_mul_mat {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
-    (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (x : Frame X.Ψ r) (τ : X.Ψ) :
-    mat (X.Zb u b x) τ = X.zmat u b τ * mat x τ := rfl
+  simp only [gram, Matrix.of_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.col_mul, hermC_zmat_mulVec_of_isIsoPair X u hiso b hb τ]
 
 private theorem dmin_Zb_eq_dmin {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (hiso : IsIsoPair X.Gm u) (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (hb : IsHermFam b)
     (x : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm (X.Zb u b x) τ i = dmin X.Gm x τ i := by
-  simp only [dmin, mat_Zb_eq_zmat_mul_mat, gram_zmat_mul_eq_gram X u hiso b hb τ]
+  simp only [dmin, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.mat_Zb, gram_zmat_mul_eq_gram X u hiso b hb τ]
 
 private theorem zmat_mul_zmat_eq_zmat_add {r : ℕ} (X : Data E r) (u : Fin 2 → Fin r → E)
     (hiso : IsIsoPair X.Gm u) (b b' : X.Ψ → Fin 2 → Fin 2 → ℂ) (τ : X.Ψ) :
@@ -208,7 +157,7 @@ private theorem flowMatV_uvec_eq_zmat {r : ℕ} (X : Data E r) (u : Fin 2 → Fi
   ext p j
   simp only [Data.flowMatV, Data.zmat, Data.uvec, Matrix.of_apply, Fin.sum_univ_two,
     Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, mul_add, add_mul,
-    Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]
+    Finset.mul_sum, ← Finset.sum_add_distrib]
   congr 1
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
@@ -226,7 +175,7 @@ theorem unipotent_vector_group : UnipotentVectorGroup (E := E) := by
       simp only [Data.dom, GG, Set.mem_setOf_eq] at hx ⊢
       intro τ
       refine ⟨?_, fun i => ?_⟩
-      · rw [mat_Zb_eq_zmat_mul_mat, Matrix.det_mul, det_zmat_eq_one X u hiso b, one_mul]
+      · rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.mat_Zb, Matrix.det_mul, det_zmat_eq_one X u hiso b, one_mul]
         exact (hx τ).1
       · rw [dmin_Zb_eq_dmin X u hiso b hb]
         exact (hx τ).2 i
@@ -238,7 +187,7 @@ theorem unipotent_vector_group : UnipotentVectorGroup (E := E) := by
         intro w
         have h := hermC_zmat_mulVec_of_isIsoPair X u hiso b hb τ (Data.emb τ.1 (u 0)) w
         rwa [hfix τ 0] at h
-      simp only [Data.maj, Data.posPart, Data.gramPos, mat_Zb_eq_zmat_mul_mat, col_mul_eq_mulVec_col_natDim,
+      simp only [Data.maj, Data.posPart, Data.gramPos, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.mat_Zb, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.col_mul,
         gram_zmat_mul_eq_gram X u hiso b hb τ, hv0]
     have hD1 : ∀ x ∈ X.FramesOverBasis (u 0), X.Zb u b x ∈ X.FramesOverBasis (u 0) := by
       intro x hx

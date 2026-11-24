@@ -1,49 +1,8 @@
 module
 
 public import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 
 @[expose] public section
@@ -63,8 +22,6 @@ lemma map_germ_ideal_eq_of_le {W : Scheme.{u}} (G : W.IdealSheafData) {U V : W.a
   rw [← G.map_ideal h, Ideal.map_map, ← CommRingCat.hom_comp]
   first
   | (congr 2; exact (TopCat.Presheaf.germ_res W.presheaf _ x hx).symm)
-  | (erw [TopCat.Presheaf.germ_res])
-  | simp [TopCat.Presheaf.germ_res]
 
 lemma ds_stalkId_eq_map {W : Scheme.{u}} (G : W.IdealSheafData) (U : W.affineOpens) (x : W)
     (hx : x ∈ U.1) :
@@ -75,14 +32,10 @@ lemma ds_stalkId_eq_map {W : Scheme.{u}} (G : W.IdealSheafData) (U : W.affineOpe
     have hxi : x ∈ U.1 ⊓ U'.1 := by
       first
       | exact ⟨hx, hx'⟩
-      | exact TopologicalSpace.Opens.mem_inf.mpr ⟨hx, hx'⟩
-      | simp [hx, hx']
     obtain ⟨O, hO, hxO, hOle⟩ : ∃ O ∈ W.affineOpens, x ∈ O ∧ O ≤ U.1 ⊓ U'.1 := by
       first
       | (obtain ⟨f, hf1, hf2⟩ := U.2.exists_basicOpen_le (V := U'.1) ⟨x, hx'⟩ hx
          exact ⟨W.basicOpen f, U.2.basicOpen f, hf2, le_inf (W.basicOpen_le f) hf1⟩)
-      | exact (TopologicalSpace.Opens.isBasis_iff_nbhd.mp (AlgebraicGeometry.isBasis_affine_open W)) hxi
-      | exact (TopologicalSpace.Opens.isBasis_iff_nbhd.mp W.isBasis_affineOpens) hxi
     let U'' : W.affineOpens := ⟨O, hO⟩
     have h1 : U'' ≤ U := (le_inf_iff.mp hOle).1
     have h2 : U'' ≤ U' := (le_inf_iff.mp hOle).2
@@ -120,11 +73,6 @@ lemma ds_spread {R S : Type*} [CommRing R] [IsNoetherianRing R] [CommRing S] [Al
       rw [map_zero]
       first
       | exact (mul_right_mem_nonZeroDivisors_eq_zero_iff hnzd).mp h1
-      | exact (mul_cancel_right_mem_nonZeroDivisors hnzd).mp (by rw [zero_mul]; exact h1)
-      | exact (mem_nonZeroDivisors_iff.mp hnzd).1 _ h1
-      | exact mem_nonZeroDivisors_iff.mp hnzd _ h1
-      | exact hnzd.1 _ h1
-      | exact hnzd _ h1
     obtain ⟨d, hd⟩ := IsLocalization.exists_of_eq (M := P.primeCompl) h2
     exact ⟨d, d.2, by rw [hd, mul_zero]⟩
   choose! cI hcP hcA using key
@@ -190,11 +138,7 @@ lemma ds_spread {R S : Type*} [CommRing R] [IsNoetherianRing R] [CommRing S] [Al
       show (C * D) ^ (k + 1) * r = 0
       linear_combination C * h0
     first
-    | exact mem_nonZeroDivisors_iff.mpr H
     | exact mem_nonZeroDivisors_iff_right.mpr H
-    | exact mem_nonZeroDivisors_iff.mpr ⟨H, fun z hz => H z (by rw [mul_comm]; exact hz)⟩
-    | exact ⟨H, fun z hz => H z (by rw [mul_comm]; exact hz)⟩
-    | exact H
 
 lemma ds_gen_of_span {S : Type*} [CommRing S] [IsLocalRing S] (A : Set S) (t : S)
     (ht0 : t ∈ nonZeroDivisors S) (hA : Ideal.span A = Ideal.span {t}) :
@@ -218,17 +162,10 @@ lemma ds_gen_of_span {S : Type*} [CommRing S] [IsLocalRing S] (A : Set S) (t : S
   obtain ⟨m, hm, hmt⟩ : ∃ m ∈ IsLocalRing.maximalIdeal S, m * t = t := by
     first
     | exact Ideal.mem_mul_span_singleton.mp ht
-    | (obtain ⟨m, hm, hmt⟩ := Ideal.mem_span_singleton_mul.mp (by rwa [mul_comm] at ht)
-       exact ⟨m, hm, by rw [mul_comm]; exact hmt⟩)
   have h1 : (1 - m) * t = 0 := by rw [sub_mul, one_mul, hmt, sub_self]
   have h2 : 1 - m = 0 := by
     first
     | exact (mul_right_mem_nonZeroDivisors_eq_zero_iff ht0).mp h1
-    | exact (mul_cancel_right_mem_nonZeroDivisors ht0).mp (by rw [zero_mul]; exact h1)
-    | exact (mem_nonZeroDivisors_iff.mp ht0).1 _ h1
-    | exact mem_nonZeroDivisors_iff.mp ht0 _ h1
-    | exact ht0.1 _ h1
-    | exact ht0 _ h1
   have hm1 : m = 1 := (sub_eq_zero.mp h2).symm
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hm1] at hm
   exact hm isUnit_one
@@ -265,7 +202,6 @@ lemma mem_dsJ {U : W.affineOpens} {f : Γ(W, U)} :
     f ∈ dsJ V g U ↔ ∀ x (hx : x ∈ U.1), W.presheaf.germ U.1 x hx f ∈ dsK V g x := by
   unfold dsJ
   simp only [Submodule.mem_iInf, Ideal.mem_comap]
-  all_goals exact Iff.rfl
 
 end LocGen
 
@@ -292,20 +228,6 @@ private lemma exists_pow_mul_mem_span_of_germ_mem {X : Scheme.{u}} {O : X.Opens}
     | (refine ⟨hO.isoSpec.inv (⟨p, hp⟩ : PrimeSpectrum Γ(X, O)), ?_⟩
        exact congrArg (fun f : Spec Γ(X, O) ⟶ Spec Γ(X, O) => f (⟨p, hp⟩ : PrimeSpectrum Γ(X, O)))
          hO.isoSpec.inv_hom_id)
-    | (refine ⟨hO.isoSpec.inv.base (⟨p, hp⟩ : PrimeSpectrum Γ(X, O)), ?_⟩
-       simp [IsAffineOpen.primeIdealOf, ← Scheme.Hom.comp_apply]
-       done)
-    | (refine ⟨hO.isoSpec.inv (⟨p, hp⟩ : PrimeSpectrum Γ(X, O)), ?_⟩
-       show hO.isoSpec.hom (hO.isoSpec.inv _) = _
-       rw [← Scheme.Hom.comp_apply, Iso.inv_hom_id]
-       try rfl
-       done)
-    | (refine ⟨hO.isoSpec.inv (⟨p, hp⟩ : PrimeSpectrum Γ(X, O)), ?_⟩
-       simp only [IsAffineOpen.primeIdealOf]
-       rw [← Scheme.Hom.comp_apply, Iso.inv_hom_id]
-       try rfl
-       try simp
-       done)
   have hL := hO.isLocalization_stalk x
   have hxp : (hO.primeIdealOf x).asIdeal = p := by rw [hx]
   have hsu : IsUnit (X.presheaf.germ O x x.2 s) :=
@@ -353,14 +275,11 @@ lemma ds_local (hg : ∀ c c' (x : W) (hx : x ∈ V c) (hx' : x ∈ V c'), ∃ u
     apply ha z (hOU hz)
     have hu' : IsUnit (W.presheaf.germ U.1 z (hOU hz) s) := by rw [← gU z hz]; exact hu
     first
-    | exact (Scheme.mem_basicOpen W s z (hOU hz)).mpr hu'
-    | exact (W.mem_basicOpen s z (hOU hz)).mpr hu'
-    | simpa [Scheme.mem_basicOpen] using hu')
+    | exact (Scheme.mem_basicOpen W s z (hOU hz)).mpr hu')
   refine ⟨m, fun z hz => ?_⟩
   rw [hK z hz, ← gU z hz]
   first
   | rw [map_mul, map_pow]
-  | simp only [map_mul, map_pow]
   obtain ⟨y, hy⟩ := Ideal.mem_span_singleton'.mp hm
   rw [← hy, map_mul]
   exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)

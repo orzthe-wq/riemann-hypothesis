@@ -164,18 +164,11 @@ theorem cc_flat_add {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (al be al' be' :
   funext s i
   simp only [Pi.add_apply]
   unfold flatW
-  split_ifs
-  · push_cast; ring
-  · push_cast; ring
-  · simp
-  · simp
+  split_ifs <;> push_cast <;> ring
 
 theorem cc_dualWt_anti {m : ℕ} (mu : Fin (m + 1) → ℤ) (h : Antitone mu) : Antitone (dualWt mu) := by
   intro i j hij
-  unfold dualWt
-  have : j.rev ≤ i.rev := Fin.rev_le_rev.2 hij
-  have := h this
-  linarith
+  simpa [dualWt] using neg_le_neg (h (Fin.rev_le_rev.2 hij))
 
 theorem cc_lo {n' mm : ℕ} (TT : Finset (Fin n')) (ccl : ℕ) (aw bw : Fin n' → ℤ)
     (lam0 : Fin n' → Fin (mm + 1 + 1) → ℤ) (A B : TT → ℕ) (hBase : IsBaseWeight TT aw bw ccl lam0)
@@ -186,12 +179,10 @@ theorem cc_lo {n' mm : ℕ} (TT : Finset (Fin n')) (ccl : ℕ) (aw bw : Fin n' �
   · intro s hs
     obtain ⟨h1, h2, -⟩ := (hBase s).1 hs
     obtain ⟨h3, h4⟩ := hAB ⟨s, hs⟩
-    simp only [Pi.sub_apply]
-    rw [cc_flat_zero _ _ _ s hs, cc_flat_last _ _ _ s hs, h1, h2, h3, h4]
+    simp only [Pi.sub_apply, cc_flat_zero _ _ _ s hs, cc_flat_last _ _ _ s hs, h1, h2, h3, h4]
     constructor <;> ring
   · intro s hs
-    show lam0 s - flatW (mm + 1) A B s = 0
-    rw [hzero s hs, cc_flat_off _ _ _ s hs, sub_zero]
+    simp [Pi.sub_apply, hzero s hs, cc_flat_off _ _ _ s hs]
 
 theorem cc_lo_dom {n' mm : ℕ} (TT : Finset (Fin n')) (ccl : ℕ) (aw bw : Fin n' → ℤ)
     (lam0 : Fin n' → Fin (mm + 1 + 1) → ℤ) (A B : TT → ℕ) (hBase : IsBaseWeight TT aw bw ccl lam0)
@@ -243,14 +234,10 @@ theorem cc_dualW {n' m : ℕ} (TT : Finset (Fin n')) (X : Fin n' → Fin (m + 1)
   constructor
   · intro s hs
     obtain ⟨h1, h2⟩ := h s hs
-    unfold dualW dualWt
-    rw [Fin.rev_zero, Fin.rev_last, h1, h2]
-    simp
+    simp [dualW, dualWt, Fin.rev_zero, Fin.rev_last, h1, h2]
   · intro s hs
     funext i
-    unfold dualW dualWt
-    rw [h0 s hs]
-    simp
+    simp [dualW, dualWt, h0 s hs]
 
 theorem cc_D_one {K : Type*} [Field K] (k : ℕ) : lb_D k 1 (1 : K) = 1 := by
   unfold lb_D

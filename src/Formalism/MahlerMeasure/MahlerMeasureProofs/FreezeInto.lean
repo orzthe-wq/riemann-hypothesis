@@ -177,10 +177,10 @@ theorem glAct_full_X (b : Fin K) (d : Fin r) :
       if L.vec b then (if d = ρ then X (b, c) else 0) else (if d = c then -X (b, ρ) else 0) := by
   rw [glAct_full_apply, Finset.sum_eq_single b]
   · by_cases hv : L.vec b
-    · by_cases hd : d = ρ <;> simp [hv, hd, pderiv_X, Pi.single_apply]
-    · by_cases hd : d = c <;> simp [hv, hd, pderiv_X, Pi.single_apply]
+    · by_cases hd : d = ρ <;> simp [hv, hd, pderiv_X]
+    · by_cases hd : d = c <;> simp [hv, hd, pderiv_X]
   · intro i _ hi
-    simp [pderiv_X, Pi.single_apply, Ne.symm hi]
+    simp [pderiv_X, Ne.symm hi]
   · intro h
     exact absurd (Finset.mem_univ b) h
 
@@ -231,7 +231,7 @@ theorem freeze_inv (p : ℕ) [Fact p.Prime] {N r : ℕ} (LL : M.Letters N) (ρ :
         simp only [glAct_full_mul, hX, snoc_vec_castSucc, snoc_vec_last, hv, hc', Ne.symm hc, if_true, if_false, Bool.false_eq_true, mul_zero, add_zero]
     · by_cases hc' : c' = ρ
       · rw [if_neg hv, if_pos hc']
-        simp only [glAct_full_mul, hX, snoc_vec_castSucc, snoc_vec_last, hv, hc', Ne.symm hc, if_true, if_false, Bool.false_eq_true, mul_zero, add_zero]
+        simp only [glAct_full_mul, hX, snoc_vec_castSucc, snoc_vec_last, hv, Ne.symm hc, if_true, if_false, Bool.false_eq_true, mul_zero, add_zero]
       · rw [if_neg hv, if_neg hc', _root_.map_sub]
         simp only [glAct_full_mul, hX, snoc_vec_castSucc, snoc_vec_last, hv, hc', Ne.symm hc, if_true, if_false, Bool.false_eq_true, mul_zero, add_zero]
         by_cases hcc : c' = c

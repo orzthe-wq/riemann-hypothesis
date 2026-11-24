@@ -238,12 +238,12 @@ theorem summable_nine_pow_mul_inv_sq_succ (t : ℝ) (ht : 1 < t) : Summable (fun
     (show -t < -1 by linarith))
   simpa using this
 
-theorem norm_term_le (b : ℕ → ℂ) (K R : ℝ) (hb : ∀ n, ‖b n‖ ≤ K) (s : ℂ)
-    (hs : -(15 / 8 : ℝ) ≤ s.re) (hR : ‖s‖ ≤ R) (n : ℕ) :
-    ‖b n * diffPow 3 s ((n : ℝ) + 1)‖ ≤ K * (R + 3) ^ 3 * ((n : ℝ) + 1) ^ (-(9 / 8 : ℝ)) := by
+theorem norm_term_le_of_lower_bound {σ : ℝ} (hσ : -3 ≤ σ) (b : ℕ → ℂ) (K R : ℝ) (hb : ∀ n, ‖b n‖ ≤ K) (s : ℂ)
+    (hs : σ ≤ s.re) (hR : ‖s‖ ≤ R) (n : ℕ) :
+    ‖b n * diffPow 3 s ((n : ℝ) + 1)‖ ≤ K * (R + 3) ^ 3 * ((n : ℝ) + 1) ^ (-σ - 3) := by
   have hK : 0 ≤ K := (norm_nonneg _).trans (hb 0)
   have h1 := norm_diffPow_le 3 s ((n : ℝ) + 1) (by positivity) (by push_cast; linarith)
-  have h2 : ((n : ℝ) + 1) ^ (-(s.re + (3 : ℕ))) ≤ ((n : ℝ) + 1) ^ (-(9 / 8 : ℝ)) :=
+  have h2 : ((n : ℝ) + 1) ^ (-(s.re + (3 : ℕ))) ≤ ((n : ℝ) + 1) ^ (-σ - 3) :=
     Real.rpow_le_rpow_of_exponent_le (by linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)])
       (by push_cast; linarith)
   have hR0 : 0 ≤ R := (norm_nonneg _).trans hR
@@ -253,10 +253,16 @@ theorem norm_term_le (b : ℕ → ℂ) (K R : ℝ) (hb : ∀ n, ‖b n‖ ≤ K)
   push_cast
   gcongr
 
-theorem LFunction_eq (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) :
+theorem norm_term_le (b : ℕ → ℂ) (K R : ℝ) (hb : ∀ n, ‖b n‖ ≤ K) (s : ℂ)
+    (hs : -(15 / 8 : ℝ) ≤ s.re) (hR : ‖s‖ ≤ R) (n : ℕ) :
+    ‖b n * diffPow 3 s ((n : ℝ) + 1)‖ ≤ K * (R + 3) ^ 3 * ((n : ℝ) + 1) ^ (-(9 / 8 : ℝ)) := by
+  convert norm_term_le_of_lower_bound (σ := -(15 / 8 : ℝ)) (by norm_num)
+    b K R hb s hs hR n using 1 <;> norm_num
+
+theorem LFunction_eq_of_neg_two_lt (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) :
     ∃ (b : ℕ → ℂ) (μ₁ μ₂ μ₃ : ℂ), (∀ n, ‖b n‖ ≤ 8 * (q : ℝ) ^ 3) ∧ ‖μ₁‖ ≤ q ∧
       ‖μ₂‖ ≤ 2 * (q : ℝ) ^ 2 ∧ ‖μ₃‖ ≤ 4 * (q : ℝ) ^ 3 ∧
-      ∀ s : ℂ, -(15 / 8 : ℝ) < s.re → LFunction χ s =
+      ∀ s : ℂ, -2 < s.re → LFunction χ s =
         μ₁ * diffPow 0 s 1 + μ₂ * diffPow 1 s 1 + μ₃ * diffPow 2 s 1 +
           ∑' n : ℕ, b n * diffPow 3 s ((n : ℝ) + 1) := by
   have hq : 0 < q := Nat.pos_of_ne_zero (NeZero.ne q)
@@ -276,23 +282,25 @@ theorem LFunction_eq (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (hχ :
   obtain ⟨b, μ₁, μ₂, μ₃, hb, m₁, m₂, m₃, he⟩ := abel_three q hq
     (fun n => χ ((n + 1 : ℕ) : ZMod q)) (fun n => by simp) hz' (fun n => χ.norm_le_one _)
   refine ⟨b, μ₁, μ₂, μ₃, hb, m₁, m₂, m₃, fun s hs => ?_⟩
+  let σ : ℝ := min (-1) ((s.re - 2) / 2)
+  have hσ : -2 < σ := lt_min (by norm_num) (by linarith)
+  have hσs : σ < s.re := lt_of_le_of_lt (min_le_right _ _) (by linarith)
+  have hσ2 : σ < 2 := lt_of_le_of_lt (min_le_left _ _) (by norm_num)
   set R : ℝ := ‖s‖ + 3 with hR
-  set U : Set ℂ := {z | -(15 / 8 : ℝ) < z.re} ∩ Metric.ball 0 R with hU
+  set U : Set ℂ := {z | σ < z.re} ∩ Metric.ball 0 R with hU
   have hUo : IsOpen U := (isOpen_lt continuous_const Complex.continuous_re).inter Metric.isOpen_ball
   have hUc : IsPreconnected U :=
     ((convex_halfSpace_re_gt _).inter (convex_ball _ _)).isPreconnected
-  have hsU : s ∈ U := ⟨hs, by simp [hR]⟩
-  have h2U : (2 : ℂ) ∈ U := ⟨by simp; norm_num, by
+  have hsU : s ∈ U := ⟨hσs, by simp [hR]⟩
+  have h2U : (2 : ℂ) ∈ U := ⟨by simpa using hσ2, by
     simp only [hR, Metric.mem_ball, dist_zero_right, Complex.norm_ofNat]
     linarith [norm_nonneg s]⟩
   have d1 : DifferentiableOn ℂ (fun z => ∑' n : ℕ, b n * diffPow 3 z ((n : ℝ) + 1)) U := by
     refine Complex.differentiableOn_tsum_of_summable_norm
-      ((summable_nine_pow_mul_inv_sq_succ (9 / 8) (by norm_num)).mul_left (8 * (q : ℝ) ^ 3 * (R + 3) ^ 3))
+      ((summable_nine_pow_mul_inv_sq_succ (σ + 3) (by linarith)).mul_left (8 * (q : ℝ) ^ 3 * (R + 3) ^ 3))
       (fun n => ((differentiable_diffPow 3 _ (by positivity)).const_mul _).differentiableOn)
-      hUo (fun n z hz => norm_term_le b _ R hb z (le_of_lt hz.1) ?_ n)
-    have := hz.2
-    simp only [Metric.mem_ball, dist_zero_right] at this
-    exact this.le
+      hUo (fun n z hz => by
+        convert norm_term_le_of_lower_bound (by linarith) b _ R hb z (le_of_lt hz.1) (le_of_lt (mem_ball_zero_iff.mp hz.2)) n using 1 <;> ring_nf)
   have d2 : DifferentiableOn ℂ (fun z => μ₁ * diffPow 0 z 1 + μ₂ * diffPow 1 z 1 +
       μ₃ * diffPow 2 z 1 + ∑' n : ℕ, b n * diffPow 3 z ((n : ℝ) + 1)) U :=
     (((((differentiable_diffPow 0 1 one_pos).const_mul _).add
@@ -313,18 +321,31 @@ theorem LFunction_eq (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (hχ :
   push_cast
   rfl
 
+theorem LFunction_eq (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) :
+    ∃ (b : ℕ → ℂ) (μ₁ μ₂ μ₃ : ℂ), (∀ n, ‖b n‖ ≤ 8 * (q : ℝ) ^ 3) ∧ ‖μ₁‖ ≤ q ∧
+      ‖μ₂‖ ≤ 2 * (q : ℝ) ^ 2 ∧ ‖μ₃‖ ≤ 4 * (q : ℝ) ^ 3 ∧
+      ∀ s : ℂ, -(15 / 8 : ℝ) < s.re → LFunction χ s =
+        μ₁ * diffPow 0 s 1 + μ₂ * diffPow 1 s 1 + μ₃ * diffPow 2 s 1 +
+          ∑' n : ℕ, b n * diffPow 3 s ((n : ℝ) + 1) := by
+  obtain ⟨b, μ₁, μ₂, μ₃, hb, h₁, h₂, h₃, he⟩ := LFunction_eq_of_neg_two_lt q χ hχ
+  exact ⟨b, μ₁, μ₂, μ₃, hb, h₁, h₂, h₃, fun s hs => he s (by linarith)⟩
+
 end LLeft
 open LLeft
 
 
 open LLeft in
-theorem norm_LFunction_le_poly_left :
+/-- Polynomial growth on every closed half-plane strictly to the right of `-2`. -/
+theorem norm_LFunction_le_poly_left_of_neg_two_lt {σ : ℝ} (hσ : -2 < σ) :
     ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 → ∀ s : ℂ,
-      -(7/4 : ℝ) ≤ s.re → ‖LFunction χ s‖ ≤ C * (q : ℝ) ^ 4 * (‖s‖ + 2) ^ 4 := by
-  set Z : ℝ := ∑' n : ℕ, ((n : ℝ) + 1) ^ (-(9 / 8 : ℝ)) with hZ
+      σ ≤ s.re → ‖LFunction χ s‖ ≤ C * (q : ℝ) ^ 4 * (‖s‖ + 2) ^ 4 := by
+  set Z : ℝ := ∑' n : ℕ, ((n : ℝ) + 1) ^ (-σ - 3) with hZ
+  have hsum : Summable (fun n : ℕ => ((n : ℝ) + 1) ^ (-σ - 3)) := by
+    rw [show -σ - 3 = -(σ + 3) by ring]
+    exact summable_nine_pow_mul_inv_sq_succ (σ + 3) (by linarith)
   have hZ0 : 0 ≤ Z := tsum_nonneg fun n => by positivity
   refine ⟨15 + 64 * Z, by positivity, fun q _ χ hχ s hs => ?_⟩
-  obtain ⟨b, μ₁, μ₂, μ₃, hb, m₁, m₂, m₃, he⟩ := LLeft.LFunction_eq q χ hχ
+  obtain ⟨b, μ₁, μ₂, μ₃, hb, m₁, m₂, m₃, he⟩ := LLeft.LFunction_eq_of_neg_two_lt q χ hχ
   have hq : (1 : ℝ) ≤ q := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne q)
   have hn := norm_nonneg s
   set A : ℝ := (q : ℝ) ^ 4 with hA
@@ -356,8 +377,9 @@ theorem norm_LFunction_le_poly_left :
     linarith
   have t3 : ‖∑' n : ℕ, b n * diffPow 3 s ((n : ℝ) + 1)‖ ≤ 8 * (q : ℝ) ^ 3 * (‖s‖ + 3) ^ 3 * Z := by
     rw [hZ, ← tsum_mul_left]
-    exact tsum_of_norm_bounded ((summable_nine_pow_mul_inv_sq_succ (9 / 8) (by norm_num)).mul_left _).hasSum
-      fun n => norm_term_le b _ _ hb s (by linarith) le_rfl n
+    exact tsum_of_norm_bounded (hsum.mul_left _).hasSum
+      fun n => by
+        convert norm_term_le_of_lower_bound (by linarith) b _ _ hb s hs le_rfl n using 1 <;> ring_nf
   have u0 : ‖μ₁ * diffPow 0 s 1‖ ≤ A * B := by
     rw [norm_mul]; exact mul_le_mul (m₁.trans q1) t0 (norm_nonneg _) hA0
   have u1 : ‖μ₂ * diffPow 1 s 1‖ ≤ (2 * A) * (5 * B) := by
@@ -370,5 +392,10 @@ theorem norm_LFunction_le_poly_left :
   have := norm_add₃_le (a := μ₁ * diffPow 0 s 1) (b := μ₂ * diffPow 1 s 1)
     (c := μ₃ * diffPow 2 s 1)
   nlinarith
+
+theorem norm_LFunction_le_poly_left :
+    ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 → ∀ s : ℂ,
+      -(7/4 : ℝ) ≤ s.re → ‖LFunction χ s‖ ≤ C * (q : ℝ) ^ 4 * (‖s‖ + 2) ^ 4 := by
+  exact norm_LFunction_le_poly_left_of_neg_two_lt (by norm_num)
 
 end GlobalTheory

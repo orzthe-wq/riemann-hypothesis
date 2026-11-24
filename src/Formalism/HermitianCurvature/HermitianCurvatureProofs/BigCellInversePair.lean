@@ -101,8 +101,7 @@ theorem sgs_invP (p : SS k r) (hp1 : IsUnit (Matrix.of p.1.1 : Mat k r).det) (hp
   generalize (Matrix.of p.2.2 : Mat k r) = D at hp4 ⊢
   rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv A hp1,
     Matrix.nonsing_inv_nonsing_inv B hp2]
-  simp only [mul_assoc, Matrix.mul_nonsing_inv_cancel_left, Matrix.nonsing_inv_mul_cancel_left,
-    Matrix.mul_nonsing_inv, hp1, hp2, hp3, hp4, mul_one]
+  simp only [mul_assoc, Matrix.mul_nonsing_inv_cancel_left, Matrix.mul_nonsing_inv, hp1, hp2, hp3, hp4, mul_one]
 
 end Formalism.FourierDecayAlt.P.BigCellInversePair
 

@@ -156,10 +156,7 @@ theorem logIdeal_support_finite : ∀ (E : Type) [Field E] [NumberField E] (I : 
     have : ((n : ℚ_[p]) : ℂ_[p]) = (n : ℂ_[p]) := by simp
     rw [← this, PadicComplex.norm_extends', Padic.norm_natCast_eq_one_iff]
     first
-    | exact hdvd
     | exact (Nat.Prime.coprime_iff_not_dvd p.2).2 hdvd
-    | exact ((Nat.Prime.coprime_iff_not_dvd p.2).2 hdvd).symm
-    | simpa using hdvd
   rw [NI.logIdeal_eq j I hnI (fun b _ => h1 ▸ NI.norm_int_le j b), h1, Real.log_one]
 
 end PositivityTheory.Xgf

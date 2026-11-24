@@ -21,49 +21,7 @@ public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.C
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.CubeThreeR
 import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.FlowTwoTorsionWp
 import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.TwoTorsionU
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -154,16 +112,15 @@ theorem Rd.opU (x : ℂ) :
     Rd l L ι (F.opU L x (F.sgStar L)) (inU l L ι (F.opU L x (F.sgStar L))) :=
   ⟨analytic_opU L x, rfl⟩
 
-theorem taylorSgStar : F.TaylorSgStar :=
-  F.taylorSgStar_of (F.taylorSigma_of F.taylorRing F.taylorDeriv) F.taylorRing F.taylorExp F.sigmaEntire
+alias taylorSgStar := _root_.Formalism.L2.Th1.F.taylorSgStar
 
 theorem cc_phL : constantCoeff (phL l L ι) = 0 :=
-  (B.phODef ℂ_[l] _ _ _ (lg0 l L ι) (lg1 l L ι)).1
+  (_root_.Formalism.L2.Th1.B.Ph.logSigmaPullbackSpec ℂ_[l] _ _ _ (lg0 l L ι) (lg1 l L ι)).1
 
 theorem inU_sgStar : inU l L ι (F.sgStar L) = X * B.fExp (-(phL l L ι)) := by
   unfold inU phL
   rw [taylorSgStar L, B.Map.map_sgStar]
-  exact (B.phODef ℂ_[l] _ _ _ (lg0 l L ι) (lg1 l L ι)).2
+  exact (_root_.Formalism.L2.Th1.B.Ph.logSigmaPullbackSpec ℂ_[l] _ _ _ (lg0 l L ι) (lg1 l L ι)).2
 
 theorem fExp_cancel : B.fExp (phL l L ι) * B.fExp (-(phL l L ι)) = 1 :=
   B.ParO.fExp_mul_neg (cc_phL l L ι)
@@ -366,7 +323,7 @@ end Trans
 theorem transWpBridge : TransWpBridge := by
   intro l _ L ι t ht
   have hz := A.zMap ℂ ℂ_[l] (ι : ℂ →+* ℂ_[l]) (A.shortW L.g₂ L.g₃)
-  have hp := (A.plusMap ℂ ℂ_[l] (ι : ℂ →+* ℂ_[l]) (A.shortW L.g₂ L.g₃) (L.weierstrassP t)
+  have hp := (_root_.Formalism.L2.Th1.A.addition_map ℂ ℂ_[l] (ι : ℂ →+* ℂ_[l]) (A.shortW L.g₂ L.g₃) (L.weierstrassP t)
     (L.derivWeierstrassP t / 2)).2.1
   have he := A.expSpec ℂ_[l] (curveL l L ι)
   unfold inU

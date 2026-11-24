@@ -115,7 +115,7 @@ theorem norm_entry_le_opNorm {n : Type} [Fintype n] [DecidableEq n] (A : Matrix 
   have h2 := PiLp.norm_apply_le (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) A (EuclideanSpace.single j 1)) i
   have h3 : (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) A (EuclideanSpace.single j 1)) i = A i j := by
     change ∑ k, A i k * (EuclideanSpace.single j (1 : ℂ)) k = _
-    simp [Pi.single_apply]
+    simp
   rw [h3] at h2
   simpa [opNorm] using h2.trans h
 
@@ -158,7 +158,7 @@ theorem exists_compact_entries (n : Type) [Fintype n] [DecidableEq n] (c : ℝ�
   have he : Continuous e.symm := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap
   refine ⟨e.symm '' Set.pi Set.univ C, (isCompact_univ_pi hC).image he, fun g hg i j =>
     ⟨e (g.1 i j), fun k _ => ?_, e.symm_apply_apply _⟩⟩
-  obtain ⟨d, hd, hdc, hv⟩ := GlobalTheory.SmoothForms.denom_global (fun v => htFin F v (bc (compFin F E v) g))
+  obtain ⟨d, hd, hdc, hv⟩ := _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator (fun v => htFin F v (bc (compFin F E v) g))
     (fun v => one_le_htOf _ _) (finite_mulSupport_htFin F g)
   refine hC' k _ (fun w => ?_) d hd ?_ fun v => hv v _ ?_
   · refine (congrArg norm (repr_map b.traceDual (evInf F w) (g.1 i j) k)).symm.trans_le (hB k w _ fun τ => ?_)

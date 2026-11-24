@@ -1,11 +1,11 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.SegmentDerivatives.CuspPairSubGeneric
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeJacquetHoldsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JmThetaHoldsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NuPairOfDerivativesJacquetStatement
+public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.SegmentDerivatives.DerivJac
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeJacquetHolds
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JmThetaHolds
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.BernsteinZelevinskyGL.TopAdm
-public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.NuPairInjectivity.DerivSub
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -43,16 +43,29 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-
+import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.ComplementarySeries.CuspPairIrr
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NontrivialOfIrreducible
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.ColMatMulGlEmbMat
+public import Mathlib.Topology.Instances.Matrix
+public import GroundTheory.LocalFields.PadicLogSeries
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NontrivialTwJacquetOfSurjective
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SmoothContragredientIrreducibleAndReflexive
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaCorrespondenceLargeRank
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DualClassInvolutive
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DualClassTwistNeg
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetSegmentInduction
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GelfandKazhdanContragredient
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsSmoothIterPhi
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityOfEquiv
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalLanglandsOfIrreducibleAdmissible
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PairingTwistedDeterminantSubquotient
 @[expose] public section
 
 namespace GlobalTheory.RgGu.Nup2
 
 theorem nuPair : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
-    GlobalTheory.BZSeg.NuPair k := fun k _ _ _ _ =>
-  GlobalTheory.T.nu_pair_of_derivatives_jacquet k PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top
-    (GlobalTheory.T.derivative_jacquet_holds k PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top)
-    (GlobalTheory.T.jm_theta_holds k PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top)
-    (derivSub_main k PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top)
+    GlobalTheory.BZSeg.NuPair k :=
+  PositivityTheory.RgGu.NR.nuPair
 
 end GlobalTheory.RgGu.Nup2

@@ -62,23 +62,6 @@ private theorem det_mem_foundation {m : Type} [Fintype m] [DecidableEq m] (M : M
   rw [Units.smul_def]
   exact zsmul_mem (prod_mem fun i _ => h _ _) _
 
-private theorem valuation_zpow_uniformizer' {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (m : ℤ) :
-    Valued.v (ϖ ^ m) = WithZero.exp (-m) := by
-  rw [map_zpow₀, hϖ, ← WithZero.exp_zsmul]
-  congr 1
-  simp
-
-private theorem valuation_prod_zpow_uniformizer {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) {ι : Type}
-    (s : Finset ι) (m : ι → ℤ) :
-    Valued.v (∏ i ∈ s, ϖ ^ m i) = WithZero.exp (-∑ i ∈ s, m i) := by
-  classical
-  refine Finset.induction_on s ?_ ?_
-  · simp
-  · intro j s hj ih
-    rw [Finset.prod_insert hj, Finset.sum_insert hj, map_mul, ih, valuation_zpow_uniformizer' hϖ, ← WithZero.exp_add]
-    congr 1
-    ring
-
 theorem minor_le {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) {a μ : Fin n → ℤ}
     {b k₁ k₂ : Matrix (Fin n) (Fin n) L} (hb : b.BlockTriangular id) (hd : ∀ i, b i i = ϖ ^ a i)
     (h₁ : ∀ i j, k₁ i j ∈ intL L) (h₂ : ∀ i j, k₂ i j ∈ intL L)
@@ -115,7 +98,7 @@ theorem minor_le {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) {a μ : 
         ext i j
         simp only [Matrix.submatrix_apply, Matrix.mul_diagonal, id]
         rfl
-      rw [hA, Matrix.det_mul, Matrix.det_diagonal, map_mul, map_mul, valuation_prod_zpow_uniformizer hϖ]
+      rw [hA, Matrix.det_mul, Matrix.det_diagonal, map_mul, map_mul, _root_.GlobalTheory.InertThetaCompare.val_prod_zpow hϖ]
       have h1 : Valued.v (∏ i, B (f i) i) ≤ 1 := (hint _).mp (prod_mem fun i _ => h₂ _ _)
       have h2 : Valued.v (k₁.submatrix (fun i : I => (i : Fin n)) f).det ≤ 1 :=
         (hint _).mp (det_mem_foundation _ fun i j => h₁ _ _)
@@ -136,7 +119,7 @@ theorem minor_le {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) {a μ : 
   have hle : Valued.v (∏ i : I, ϖ ^ a i) ≤ WithZero.exp (-c) := by
     rw [← hdet, hM, hexp]
     exact Valuation.map_sum_le _ fun f _ => hterm f
-  rw [valuation_prod_zpow_uniformizer hϖ, WithZero.exp_le_exp] at hle
+  rw [_root_.GlobalTheory.InertThetaCompare.val_prod_zpow hϖ, WithZero.exp_le_exp] at hle
   have : ∑ i : I, a i = ∑ i ∈ I, a i := Finset.sum_coe_sort I a
   omega
 
@@ -217,16 +200,6 @@ theorem neg_one_le_tExp {n : ℕ} {a : Fin (n / 2) → ℤ} (h : ∀ i, |a i| �
     omega
   · norm_num
 
-private theorem entries_mem_intL_of_mem_KU {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
-    {σ : L →+* L} {n : ℕ} {k : GU σ n} (hk : k ∈ KU σ n) (i j : Fin n) :
-    ((k : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j ∈ intL L := by
-  rw [KU, Subgroup.mem_subgroupOf] at hk
-  unfold intPts at hk
-  obtain ⟨g, hg⟩ := (Subgroup.mem_inf.mp hk).2
-  rw [← hg]
-  unfold bc
-  exact ((g : Matrix (Fin n) (Fin n) (intL L)) i j).2
-
 private theorem tMat_eq_diagonal_pow_tExp {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L)
     (n : ℕ) (a : Fin (n / 2) → ℤ) :
     tMat ϖ n (n / 2) a = Matrix.diagonal (fun j => ϖ ^ tExp n (n / 2) a j) := by
@@ -249,7 +222,7 @@ theorem cell_bound : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicativ
       (((k : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1
     exact Units.mul_inv _
   have hint₂ : ∀ i j, (K₂ * Ki) i j ∈ intL L := fun i j =>
-    entries_mem_intL_of_mem_KU (mul_mem hk₂ (inv_mem hk)) i j
+    _root_.Formalism.UG.P.fSatake_K_int (mul_mem hk₂ (inv_mem hk)) i j
   set b := tMat ϖ n (n / 2) κ * U with hbdef
   have hbe : b = K₁ * Matrix.diagonal (fun j => ϖ ^ tExp n (n / 2) ε j) * (K₂ * Ki) := by
     calc b = b * (K * Ki) := by rw [hKK, Matrix.mul_one]
@@ -263,7 +236,7 @@ theorem cell_bound : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicativ
   have hbd : ∀ j, b j j = ϖ ^ tExp n (n / 2) κ j := by
     intro j
     rw [hbdef, tMat_eq_diagonal_pow_tExp, Matrix.diagonal_mul, show U j j = 1 from hu.2 j, mul_one]
-  have key := fun I c hc => minor_le hϖ hbT hbd (fun i j => entries_mem_intL_of_mem_KU hk₁ i j) hint₂ hbe I c hc
+  have key := fun I c hc => minor_le hϖ hbT hbd (fun i j => _root_.Formalism.UG.P.fSatake_K_int hk₁ i j) hint₂ hbe I c hc
   have hlow : ∀ j, -1 ≤ tExp n (n / 2) κ j := by
     intro j
     have := key {j} (-1) (by

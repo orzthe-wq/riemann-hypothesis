@@ -111,7 +111,7 @@ theorem rank_DpstUr_le : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l), IsDomain
     rfl
   have hli : LinearIndependent ↥(MaximalUnramifiedExtension l) v := hs.map' (toB P ρ) (LinearMap.ker_eq_bot.mpr (toB_injective P ρ))
   have hB : LinearIndepOn (Bst P) v ((Finset.univ : Finset ↥s) : Set ↥s) :=
-    GlobalTheory.RegularRing.linearIndepOn_of_invariant (K := ↥(MaximalUnramifiedExtension l)) (B := Bst P) (G := ↥(GK K'))
+    _root_.GlobalTheory.LinearIndependentFixed.linearIndepOn_of_fixed (K := ↥(MaximalUnramifiedExtension l)) (B := Bst P) (G := ↥(GK K'))
       (fun g b => actSt P (g : GQ l) b)
       (fun g => (sigSt P ρ ⟨g, GK_le hKK' g.2⟩).toAddMonoidHom)
       (fun g b w => sigSt_smul P ρ _ b w)

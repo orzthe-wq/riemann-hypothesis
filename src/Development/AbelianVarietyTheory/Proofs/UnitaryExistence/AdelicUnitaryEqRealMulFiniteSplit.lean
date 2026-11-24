@@ -57,8 +57,6 @@ open Formalism.UG
 
 variable {R A B : Type} [CommRing R] [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n]
 
-theorem val_bc (p : R →+* A) (g : GL n R) : ((bc p g : GL n A) : Matrix n n A) = (g : Matrix n n R).map p := rfl
-
 theorem mat_ext (p : R →+* A) (q : R →+* B) (hi : ∀ x y, p x = p y → q x = q y → x = y) {M N : Matrix n n R}
     (h1 : M.map p = N.map p) (h2 : M.map q = N.map q) : M = N := by
   ext i j

@@ -1,5 +1,7 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IsPrincipalIdealRingLoc
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
@@ -7,10 +9,7 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFullL
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGenericWeilPairing
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModuleModNBasisStatement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TateIsoPullbackEquiv
-import Mathlib.Algebra.AffineMonoid.Basic
-import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -24,13 +23,11 @@ import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
+import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -38,8 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,8 +47,127 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModuleModNBasis, Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimitiveRootHodgeCpt
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModuleModNBasis =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModuleModNBasis", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IsPrincipalIdealRingLoc\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+noncomputable section
+
+namespace GlobalTheory.CompanionTheory.ModFree
+
+open NumberField Module
+open scoped nonZeroDivisors TensorProduct
+
+theorem exists_map_of_basis {O B M Mb : Type} [CommRing O] [IsDomain O] [CommRing B] [Algebra O B]
+    (S : Submonoid O) (hS : S ≤ O⁰) [IsLocalization S B] [AddCommGroup M] [Module O M]
+    [AddCommGroup Mb] [Module O Mb] [Module B Mb] [IsScalarTower O B Mb] (f : M →ₗ[O] Mb)
+    [IsLocalizedModule S f] {n : ℕ} (b : Basis (Fin n) B Mb) :
+    ∃ φ : (Fin n → O) →ₗ[O] M, Function.Injective φ ∧
+      ∀ m, ∃ s : S, ∃ y, (s : O) • m = φ y := by
+  choose p hp using fun i => IsLocalizedModule.surj S f (b i)
+  have hinj : Function.Injective (algebraMap O B) := IsLocalization.injective B hS
+  refine ⟨Fintype.linearCombination O (fun i => (p i).1), ?_, ?_⟩
+  · rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+    intro y hy
+    rw [Fintype.linearCombination_apply] at hy
+    have h1 : ∑ i, algebraMap O B (y i * (p i).2) • b i = 0 := by
+      have h := congrArg f hy
+
+      rw [map_sum, map_zero] at h
+      rw [← h]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      rw [map_smul, ← hp i, Submonoid.smul_def, algebraMap_smul, mul_smul]
+    have h2 := Fintype.linearIndependent_iff.mp b.linearIndependent _ h1
+    funext i
+    have h3 : y i * (p i).2 = 0 := hinj (by rw [h2 i, map_zero])
+    exact (mul_eq_zero.mp h3).resolve_right (nonZeroDivisors.ne_zero (hS (p i).2.2))
+  · intro x
+    have hx := b.sum_repr (f x)
+    obtain ⟨t, ht⟩ := IsLocalization.exist_integer_multiples S Finset.univ
+      (fun i => b.repr (f x) i * ((IsLocalization.map_units B (p i).2).unit⁻¹ : Bˣ))
+    choose a ha using fun i => RingHom.mem_rangeS.mp (ht i (Finset.mem_univ i))
+    have hc : ∀ i, algebraMap O B (a i) * algebraMap O B (p i).2 =
+        algebraMap O B t * b.repr (f x) i := by
+      intro i
+      rw [ha i, Algebra.smul_def, mul_assoc, mul_assoc, IsUnit.val_inv_mul, mul_one]
+    have key : f ((t : O) • x) = f (Fintype.linearCombination O (fun i => (p i).1) a) := by
+
+      rw [map_smul, Fintype.linearCombination_apply, map_sum, ← hx, Finset.smul_sum]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      rw [map_smul, ← hp i, Submonoid.smul_def, ← algebraMap_smul B (a i),
+        ← algebraMap_smul B ((p i).2 : O), smul_smul, hc i, mul_smul, algebraMap_smul]
+    obtain ⟨c, hc'⟩ := IsLocalizedModule.exists_of_eq (S := S) (f := f) key
+    refine ⟨c * t, (c : O) • a, ?_⟩
+    rw [map_smul, Submonoid.coe_mul, mul_smul, ← Submonoid.smul_def, hc', Submonoid.smul_def]
+
+theorem exists_free_map_mod (E : Type) [Field E] [NumberField E] (M : Type) [AddCommGroup M]
+    [Module (𝓞 E) M] : Module.Finite (𝓞 E) M → Module.Projective (𝓞 E) M →
+    ∀ (n N : ℕ), Module.finrank (𝓞 E) M = n → 0 < N →
+    ∃ φ : (Fin n → 𝓞 E) →ₗ[𝓞 E] M, (∀ m, ∃ x b, m = φ x + N • b) ∧
+      ∀ x b, φ x = N • b → ∃ x', x = N • x' := by
+  intro hfin hproj n N hn hN
+  set S := GlobalTheory.PlaceInt.LocBasis.primeTo (𝓞 E) N with hSdef
+  have hS : S ≤ (𝓞 E)⁰ := by
+    rintro s ⟨k, hk0, -, rfl⟩
+    exact mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.mpr hk0)
+  have : IsDomain (Localization S) := IsLocalization.isDomain_localization hS
+  have : IsPrincipalIdealRing (Localization S) :=
+    GlobalTheory.PlaceInt.LocBasis.isPrincipalIdealRing_loc E N hN hS (Localization S)
+  have hrank : Module.finrank (Localization S) (LocalizedModule S M) = n := by
+    rw [IsLocalization.finrank_eq (Localization S) S hS,
+      IsLocalizedModule.finrank_eq S (LocalizedModule.mkLinearMap S M) hS, hn]
+  let b := Module.finBasisOfFinrankEq (Localization S) (LocalizedModule S M) hrank
+  obtain ⟨φ, hφ, hsurj⟩ := exists_map_of_basis S hS (LocalizedModule.mkLinearMap S M) b
+  have hunit : ∀ s : S, ∃ k : ℕ, (s : 𝓞 E) = k ∧ ∃ u v : ℤ, u * k + v * N = 1 := by
+    rintro ⟨_, k, -, hkc, rfl⟩
+    obtain ⟨u, v, huv⟩ := Nat.isCoprime_iff_coprime.mpr hkc
+    exact ⟨k, rfl, u, v, huv⟩
+  refine ⟨φ, fun m => ?_, fun x c hxc => ?_⟩
+  · obtain ⟨s, y, hs⟩ := hsurj m
+    obtain ⟨k, hk, u, v, huv⟩ := hunit s
+    rw [hk, Nat.cast_smul_eq_nsmul] at hs
+    refine ⟨u • y, v • m, ?_⟩
+    calc m = ((u * k + v * N : ℤ)) • m := by rw [huv, one_smul]
+      _ = u • ((k : ℤ) • m) + (N : ℤ) • (v • m) := by
+        rw [add_smul, mul_smul, mul_comm v, mul_smul]
+      _ = φ (u • y) + N • (v • m) := by
+        rw [map_zsmul, ← hs, natCast_zsmul, natCast_zsmul]
+  · obtain ⟨s, y, hs⟩ := hsurj c
+    obtain ⟨k, hk, u, v, huv⟩ := hunit s
+    rw [hk, Nat.cast_smul_eq_nsmul] at hs
+    have hNy : N • y = k • x := by
+      apply hφ
+      rw [map_nsmul, map_nsmul, ← hs, hxc, smul_comm]
+    refine ⟨u • y + v • x, ?_⟩
+    calc x = ((u * k + v * N : ℤ)) • x := by rw [huv, one_smul]
+      _ = u • ((k : ℤ) • x) + v • ((N : ℤ) • x) := by
+        rw [add_smul, mul_smul, mul_smul]
+      _ = N • (u • y + v • x) := by
+        rw [natCast_zsmul, natCast_zsmul, ← hNy, smul_add, smul_comm u N y, smul_comm v N x]
+
+end GlobalTheory.CompanionTheory.ModFree
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModuleModNBasis =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimitiveRootHodgeCpt =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimitiveRootHodgeCpt", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFullLevelAt\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGenericWeilPairing\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModuleModNBasis\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TateIsoPullbackEquiv\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -163,7 +277,7 @@ theorem torsion_of_tate {E : Type} [Field E] [NumberField E] [IsCMField E] (H : 
     rw [MonObj.comp_mul, hev, hev, hev, I.add])
   have hlin : ∀ (c : 𝓞 E) a, ev (c • a) = ev a ≫ t.act.act c := fun c a => inj _ _ (by
     rw [← Category.assoc, hev, hev]; exact I.lin N c a)
-  obtain ⟨φ, hφ1, hφ2⟩ := GlobalTheory.T.projective_module_mod_N_basis E D.La D.fin D.proj (D.p + D.q) N D.rank hN0
+  obtain ⟨φ, hφ1, hφ2⟩ := _root_.GlobalTheory.CompanionTheory.ModFree.exists_free_map_mod E D.La D.fin D.proj (D.p + D.q) N D.rank hN0
 
   have hζΩ : IsPrimitiveRoot (ζ : Ω) N := hζ.map_of_injective (f := Units.coeHom Ω) Units.val_injective
   have hζK : IsPrimitiveRoot (iK ζ) N := hζΩ.map_of_injective iK.injective
@@ -323,3 +437,7 @@ theorem generic_torsion : Out.WeilSt → ∀ (E : Type) [Field E] [NumberField E
   exact ⟨τ, ew, e, h1, h2, h3, hew, h4, h5, h6, h7, h8⟩
 
 end GlobalTheory.CompanionTheory.Ar.HF
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimitiveRootHodgeCpt =====

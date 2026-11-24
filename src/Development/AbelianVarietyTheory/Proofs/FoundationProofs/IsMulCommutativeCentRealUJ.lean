@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 public import Mathlib.Topology.Algebra.MvPolynomial
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

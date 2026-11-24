@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPotential
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeCoeffTensorAinfOfFrobeniusEqMatrixMulStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerSubOneAinfPropertiesCompatibleRootsStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExistsGenIsUnitSub
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemRangeCoeffTensorAinfOfFrobeniusEqMatrixMul
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TeichmullerSubOneAinfPropertiesCompatibleRoots
 import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.Kernel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -61,7 +62,7 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] [M
 
 theorem integral_of_frob {n : Type} [Fintype n] (v : n → OW l O) (Y : Matrix n n (OA l O))
     (h : ∀ i, frobOW l O (v i) = (Y.map (inclO l O) *ᵥ v) i) : ∀ i, v i ∈ (inclO l O).range :=
-  GlobalTheory.T.mem_range_coeffTensorAinf_of_frobenius_eq_matrix_mul l O v Y h
+  _root_.GlobalTheory.FrobIntTensor.mem_range_inclO l O v Y h
 
 theorem integral_of_frob_row {n : Type} [Fintype n] (v : n → OW l O) (Y : Matrix n n (OA l O))
     (h : ∀ i, frobOW l O (v i) = (v ᵥ* Y.map (inclO l O)) i) : ∀ i, v i ∈ (inclO l O).range :=
@@ -238,7 +239,7 @@ namespace GlobalTheory.BKExp
 
 theorem exponents : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (T : LocLat (Gl l) ℚ_[l] K O) (I : Ident t ϖ P T) (α β : ℕ), (∀ m ∈ P.L, E K l e ^ α • m ∈ P.M) → (∀ m ∈ P.M, E K l e ^ β • m ∈ P.L) → ∀ ε δ : OCb l, IsEps ε → δ ^ l = ε → (∀ x, inclO l O (1 ⊗ₜ (muOf δ ^ β)) • I.ofT x ∈ MA P) ∧ (∀ v ∈ MA P, ∃ z : TW (OA l O) T, I.j (inclO l O (1 ⊗ₜ (muOf δ ^ α)) • v) = TWincl (inclO l O) T z) ∧ (∀ x, inclO l O (1 ⊗ₜ (muOf ε ^ β)) • I.ofT x ∈ LA t ϖ P) ∧ ∀ v ∈ LA t ϖ P, ∃ z : TW (OA l O) T, I.j (inclO l O (1 ⊗ₜ (muOf ε ^ α)) • v) = TWincl (inclO l O) T z := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I α β hα hβ ε δ hε hδ
-  obtain ⟨-, h2⟩ := GlobalTheory.T.teichmullerSubOneAinf_properties_compatibleRoots l
+  obtain ⟨-, h2⟩ := _root_.GlobalTheory.MuOfEps.main l
   obtain ⟨⟨ξ, hξ, hμ⟩, hφ, -⟩ := h2 ε δ hε hδ
   obtain ⟨u, hu⟩ := Ideal.span_singleton_eq_span_singleton.1 ((ϖ.span_ev_eis a).trans hξ.symm)
   have hsplit : ∀ (n : ℕ) (y : OW l O), jA l O (ξ ^ n) * y =

@@ -73,7 +73,7 @@ open Finset
 def dl {r : ℕ} (a b : Fin r) : Fin r → ℤ := Pi.single a 1 - Pi.single b 1
 
 lemma dl_self {r : ℕ} (a : Fin r) : dl a a = 0 := by
-  first | (simp only [dl, sub_self]) | (unfold dl; exact sub_self _)
+  first | (simp only [dl, sub_self])
 
 lemma dl_apply {r : ℕ} (a b c : Fin r) :
     dl a b c = (if c = a then 1 else 0) - (if c = b then 1 else 0) := by
@@ -347,7 +347,7 @@ lemma psum_dl (a b : Fin r) (k : ℕ) :
     rw [Finset.sum_eq_single e]
     · simp
     · intro c _ hc
-      simp [Pi.single_apply, hc]
+      simp [hc]
     · intro h'
       exact absurd (Finset.mem_univ e) h'
   rw [dl, psum_sub, hs, hs]
@@ -355,10 +355,6 @@ lemma psum_dl (a b : Fin r) (k : ℕ) :
 lemma sum_dl (a b : Fin r) : ∑ c, dl a b c = 0 := by
   first
     | (simp [dl_apply, Finset.sum_sub_distrib])
-    | (unfold dl
-       simp only [Pi.sub_apply, Finset.sum_sub_distrib]
-       rw [Finset.sum_pi_single', Finset.sum_pi_single']
-       simp)
 
 lemma Dle_add_right {μ ν : Fin r → ℤ} (h : Dle μ ν) (κ : Fin r → ℤ) : Dle (μ + κ) (ν + κ) := by
   refine ⟨fun k => ?_, ?_⟩
@@ -467,14 +463,14 @@ theorem cas_lt {μ ν : Fin r → ℤ} (hμ : DomW μ) (hν : DomW ν) (h : Dle 
     rw [hsumE (fun c => if (c : ℕ) < k then κ c else 0), ← psum_range (E κ) hk]
     refine Finset.sum_congr rfl fun j hj => ?_
     rw [Finset.mem_range] at hj
-    simp only [hE _ j hj, Fin.val_mk]
+    simp only [hE _ j hj]
   have hS : GlW.casI ν - GlW.casI μ =
       ∑ k ∈ range r, (E ν k + E μ k + ((r : ℤ) - 1 - 2 * k)) * (E ν k - E μ k) := by
     rw [casI_closed ν, casI_closed μ, ← Finset.sum_sub_distrib,
       hsumE (fun c => ν c * (ν c + ((r : ℤ) - 1 - 2 * (c : ℤ))) - μ c * (μ c + ((r : ℤ) - 1 - 2 * (c : ℤ))))]
     refine Finset.sum_congr rfl fun k hk => ?_
     rw [Finset.mem_range] at hk
-    simp only [hE _ k hk, Fin.val_mk]
+    simp only [hE _ k hk]
     ring
   have hab := abel_ineq r (fun k => E ν k - E μ k) (fun k => E ν k + E μ k + ((r : ℤ) - 1 - 2 * k))
     (fun k hk => by
@@ -599,8 +595,6 @@ theorem dom_of_hwmod {U W : Submodule K V} (hU : G.Stable U) (hW : G.Stable W) (
         apply mul_ne_zero
         · first
             | exact_mod_cast Nat.succ_ne_zero k
-            | exact Nat.cast_add_one_ne_zero k
-            | (push_cast; exact Nat.cast_add_one_ne_zero k)
         · have h6 : μ a - μ b - (k : ℤ) ≠ 0 := by omega
           exact_mod_cast h6
       have h4 := U.smul_mem (((k + 1 : ℕ) : K) * ((μ a - μ b - k : ℤ) : K))⁻¹ h3
@@ -613,7 +607,6 @@ theorem dom_of_hwmod {U W : Submodule K V} (hU : G.Stable U) (hW : G.Stable W) (
     omega
   have hex : ∃ w ∈ Set.range (fun k : ℕ => μ + (k : ℤ) • dl b a), w ∉ S := by
     first
-      | exact (Set.infinite_range_of_injective hinj).exists_not_mem_finset S
       | exact (Set.infinite_range_of_injective hinj).exists_notMem_finset S
   obtain ⟨w, ⟨k, rfl⟩, hw⟩ := hex
   have hwt' : G.comp (μ + (k : ℤ) • dl b a) ((G.E b a ^ k) v) = (G.E b a ^ k) v := G.isWt_pow hv b a k
@@ -739,7 +732,6 @@ theorem Cas_gS {la : Fin r → ℤ} {v : V} (hv : G.IsHW la v) {x : V} (hx : x �
   have hmem : ∀ y, y ∈ U ↔ G.Cas y - ((casI la : ℤ) : K) • y = 0 := fun y => by
     first
       | simp only [U, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]
-      | simp [U]
   have hstab : G.Stable U := by
     intro a b y hy
     rw [hmem] at hy ⊢
@@ -851,7 +843,6 @@ lemma cprod_cons (c : ℤ) (cs : List ℤ) (x : V) :
     G.cprod (c :: cs) x = G.Cas (G.cprod cs x) - ((c : ℤ) : K) • G.cprod cs x := by
   first
     | rfl
-    | simp only [cprod, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]
 
 lemma cprod_mem {U : Submodule K V} (hU : G.Stable U) (cs : List ℤ) {x : V} (hx : x ∈ U) :
     G.cprod cs x ∈ U := by
@@ -1019,7 +1010,7 @@ theorem top_self_comm (LL : Letters N) (i : Fin N) (a b c d : Fin r) (F : MvPoly
     rw [XD_comm]
     simp only [Prod.mk.injEq, true_and]
   · simp only [hv, if_false, Bool.false_eq_true]
-    simp only [map_neg, mul_neg, neg_neg, sub_neg_eq_add]
+    simp only [map_neg, mul_neg, neg_neg]
     have := XD_comm (K := ℚ_[p]) (i, b) (i, a) (i, d) (i, c) F
     simp only [Prod.mk.injEq, true_and, @eq_comm _ a d, @eq_comm _ c b] at this
     rw [this]
@@ -1136,7 +1127,7 @@ theorem glAct_diag_monomial (LL : Letters N) (j : ℕ) (c : Fin r) (d : Fin N ×
   unfold glAct wt
   rw [LinearMap.sum_apply, Int.cast_sum, Finset.sum_smul]
   refine Finset.sum_congr rfl fun i _ => ?_
-  split_ifs with h1 h2 <;> simp [XD_diag] <;> rw [← pderiv_monomial, XD_diag]
+  split_ifs with h1 h2 <;> simp <;> rw [← pderiv_monomial, XD_diag]
 
 open Formalism.GM.FrozenVariableComponents in
 theorem glAct_wh (LL : Letters N) (j : ℕ) (a b : Fin r) {ν : Fin r → ℤ} {x : MvPolynomial (Fin N × Fin r) ℚ_[p]}
@@ -1155,8 +1146,7 @@ theorem glAct_wh (LL : Letters N) (j : ℕ) (a b : Fin r) {ν : Fin r → ℤ} {
     have e : ν + dl a b = Finsupp.weight (wv LL j) d - wv LL j (i, b) + wv LL j (i, a) := by
       rw [hwd]
       funext c
-      simp only [Pi.add_apply, Pi.sub_apply, Pi.neg_apply, wv, h1, h2, if_true, if_false, ite_true, ite_false,
-        Bool.false_eq_true, dl_apply, Pi.single_apply]
+      simp only [Pi.add_apply, Pi.sub_apply, wv, h1, h2, if_true, dl_apply, Pi.single_apply]
       split_ifs <;> omega
     rw [e]
     exact h3
@@ -1164,8 +1154,7 @@ theorem glAct_wh (LL : Letters N) (j : ℕ) (a b : Fin r) {ν : Fin r → ℤ} {
     have e : ν + dl a b = Finsupp.weight (wv LL j) d - wv LL j (i, a) + wv LL j (i, b) := by
       rw [hwd]
       funext c
-      simp only [Pi.add_apply, Pi.sub_apply, Pi.neg_apply, wv, h1, h2, if_true, if_false, ite_true, ite_false,
-        Bool.false_eq_true, dl_apply, Pi.single_apply]
+      simp only [Pi.add_apply, Pi.sub_apply, Pi.neg_apply, wv, h1, h2, if_true, if_false, Bool.false_eq_true, dl_apply, Pi.single_apply]
       split_ifs <;> omega
     rw [LinearMap.neg_apply, e]
     exact Submodule.neg_mem _ h3
@@ -1267,9 +1256,9 @@ theorem glAct_X_gen (LL : Letters N) (j : ℕ) (c d : Fin r) (i : Fin N) (a : Fi
       (if LL.vec i then (if a = d then X (i, c) else 0) else (if a = c then -X (i, d) else 0)) else 0 := by
   unfold glAct
   rw [LinearMap.sum_apply, Finset.sum_eq_single i]
-  · split_ifs <;> simp [pderiv_X, Pi.single_apply, *]
+  · split_ifs <;> simp [pderiv_X, *]
   · intro b _ hb
-    split_ifs <;> simp [pderiv_X, Pi.single_apply, hb, Ne.symm hb]
+    split_ifs <;> simp [pderiv_X, Ne.symm hb]
   · simp
 
 theorem glAct_rename {M : ℕ} (LA : Letters M) (LB : Letters N) (ι : Fin M → Fin N) (hι : ∀ a, ((ι a) : ℕ) = a)
@@ -1374,7 +1363,7 @@ theorem weight_wL (m : Fin N × Fin r →₀ ℕ) (i : Fin N) :
     Finset.sum_eq_single i]
   · simp [wL]
   · intro b _ hb
-    simp [wL, Pi.single_apply, hb, Ne.symm hb]
+    simp [wL, Ne.symm hb]
   · simp
 
 theorem pol_iff (LL : Letters N) (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
@@ -1463,8 +1452,7 @@ theorem glAct_wh' (LL : Letters N) {j J : ℕ} (hjJ : j ≤ J) (a b : Fin r) {ν
     have e : ν + dl a b = Finsupp.weight (wv LL J) d - wv LL J (i, b) + wv LL J (i, a) := by
       rw [hwd]
       funext c
-      simp only [Pi.add_apply, Pi.sub_apply, Pi.neg_apply, wv, h1, h2, if_true, if_false, ite_true, ite_false,
-        Bool.false_eq_true, dl_apply, Pi.single_apply]
+      simp only [Pi.add_apply, Pi.sub_apply, wv, h1, h2, if_true, dl_apply, Pi.single_apply]
       split_ifs <;> omega
     rw [e]
     exact h3
@@ -1473,8 +1461,7 @@ theorem glAct_wh' (LL : Letters N) {j J : ℕ} (hjJ : j ≤ J) (a b : Fin r) {ν
     have e : ν + dl a b = Finsupp.weight (wv LL J) d - wv LL J (i, a) + wv LL J (i, b) := by
       rw [hwd]
       funext c
-      simp only [Pi.add_apply, Pi.sub_apply, Pi.neg_apply, wv, h1, h2, if_true, if_false, ite_true, ite_false,
-        Bool.false_eq_true, dl_apply, Pi.single_apply]
+      simp only [Pi.add_apply, Pi.sub_apply, Pi.neg_apply, wv, h1, h2, if_true, if_false, Bool.false_eq_true, dl_apply, Pi.single_apply]
       split_ifs <;> omega
     rw [LinearMap.neg_apply, e]
     exact Submodule.neg_mem _ h3
@@ -1580,7 +1567,7 @@ theorem glAct_split (LL : Letters N) {J j0 : ℕ} (hJ : J ≤ j0) (c d : Fin r) 
   by_cases h1 : (i : ℕ) < J
   · have h2 : (i : ℕ) < j0 := by omega
     have h3 : ¬ (J ≤ (i : ℕ) ∧ (i : ℕ) < j0) := fun h => by omega
-    simp [h1, h2, h3]
+    simp [h1, h2]
   · by_cases h2 : (i : ℕ) < j0
     · have h3 : J ≤ (i : ℕ) := by omega
       simp [h1, h2, h3, Formalism.GM.FrozenVariableComponents.top]
@@ -1600,14 +1587,10 @@ private theorem top_comm_lemma (LL : Letters N) (i i' : Fin N) (hne : i ≠ i') 
     exact h
   unfold Formalism.GM.FrozenVariableComponents.top
   by_cases hv : LL.vec i <;> by_cases hv' : LL.vec i' <;>
-    simp only [hv, hv', if_true, if_false, ite_true, ite_false, Bool.false_eq_true, LinearMap.neg_apply,
-      LinearMap.comp_apply, LinearMap.mulLeft_apply, map_neg, mul_neg, neg_neg, neg_inj] <;>
+    simp only [hv, hv', if_true, if_false, Bool.false_eq_true, LinearMap.neg_apply,
+      LinearMap.comp_apply, LinearMap.mulLeft_apply, map_neg, neg_neg, neg_inj] <;>
     first
       | exact key _ _ _ _ rfl rfl rfl rfl F
-      | exact key (i, a) (i, b) (i', c) (i', d) rfl rfl rfl rfl F
-      | exact key (i, a) (i, b) (i', d) (i', c) rfl rfl rfl rfl F
-      | exact key (i, b) (i, a) (i', c) (i', d) rfl rfl rfl rfl F
-      | exact key (i, b) (i, a) (i', d) (i', c) rfl rfl rfl rfl F
 
 theorem midAct_comm (LL : Letters N) (J j0 : ℕ) (c d c' d' : Fin r) (F : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     midAct p LL J j0 c d (glAct p LL J c' d' F) = glAct p LL J c' d' (midAct p LL J j0 c d F) := by
@@ -1907,22 +1890,22 @@ theorem glAct_freezeSub_gen (LL : Letters K) (n : ℕ) (ρ a b : Fin r) (ha : a 
     · subst h2
 
       simp only [freezeSub, h1, if_true, map_sum, glAct_mul, glAct_X, snoc_vec_last, snoc_vec_castSucc]
-      simp [mul_ite, Finset.sum_add_distrib, ha, hb, Ne.symm hb, Ne.symm ha]
+      simp [mul_ite, Finset.sum_add_distrib, Ne.symm hb]
       try ring
     · simp only [freezeSub, h1, h2, if_true, if_false, glAct_mul, glAct_X, snoc_vec_last, snoc_vec_castSucc]
       by_cases h3 : c' = b
-      · subst h3; simp [h2, Ne.symm h2, ha, Ne.symm ha, freezeSub, h1]; try ring
-      · simp [h2, Ne.symm h2, h3, ha, Ne.symm ha]
+      · subst h3; simp [ha, Ne.symm ha, freezeSub, h1]
+      · simp [h3, Ne.symm ha]
   · by_cases h2 : c' = ρ
     · subst h2
       simp only [freezeSub, h1, if_true, if_false, Bool.false_eq_true, glAct_mul, glAct_X, snoc_vec_last,
         snoc_vec_castSucc]
-      simp [ha, Ne.symm ha]
-    · simp only [freezeSub, h1, h2, if_true, if_false, Bool.false_eq_true, glAct_mul, glAct_X, snoc_vec_last,
+      simp [Ne.symm ha]
+    · simp only [freezeSub, h1, h2, if_false, Bool.false_eq_true, glAct_mul, glAct_X, snoc_vec_last,
         snoc_vec_castSucc, map_sub]
       by_cases h3 : c' = a
-      · subst h3; simp [h2, Ne.symm h2, hb, Ne.symm hb, freezeSub, h1]; try ring
-      · simp [h2, Ne.symm h2, h3, ha, Ne.symm ha]
+      · subst h3; simp [Ne.symm h2, hb, freezeSub, h1]; try ring
+      · simp [h3, Ne.symm ha]
 
 theorem glAct_freeze_gen (LL : Letters K) (n : ℕ) (ρ a b : Fin r) (ha : a ≠ ρ) (hb : b ≠ ρ)
     (f : MvPolynomial (Fin K × Fin r) ℚ_[p]) :
@@ -1975,13 +1958,13 @@ theorem freezeSub_wh (LL : Letters K) (n : ℕ) (ρ : Fin r) (v : Fin K × Fin r
       rw [wv_snoc_castSucc, wv_snoc_last, hwi, if_neg h1] at this
       convert this using 1
       rw [hwi, if_neg h1]; abel
-    · simp only [freezeSub, h1, h2, if_true, if_false, Bool.false_eq_true]
+    · simp only [freezeSub, h1, h2, if_false, Bool.false_eq_true]
       have e1 := (hX (Fin.last K, ρ)).mul (hX (Fin.castSucc i, c))
       have e2 := (hX (Fin.castSucc i, ρ)).mul (hX (Fin.last K, c))
       rw [wv_snoc_castSucc, wv_snoc_last, hwi, if_neg h1] at e1 e2
       rw [← mem_weightedHomogeneousSubmodule] at e1 e2 ⊢
       have e3 := Submodule.sub_mem _ e1 (show _ ∈ weightedHomogeneousSubmodule ℚ_[p] (wv (LL.snoc n) (K + 1))
-        (-Pi.single ρ 1 + -Pi.single c 1) from by convert e2 using 2; try abel)
+        (-Pi.single ρ 1 + -Pi.single c 1) from by convert e2 using 2)
       convert e3 using 2
       rw [hwi, if_neg h1]; abel
 
@@ -2484,7 +2467,7 @@ theorem dle_cov (ρ : Fin r) (hρ : (ρ : ℕ) = r - 1) (u : ℕ) (a : Fin r →
         refine Finset.sum_eq_zero fun c _ => ?_
         split_ifs with hc
         · have hcρ : c ≠ ρ := fun h => hk (h ▸ hc)
-          simp [Pi.single_apply, hcρ]
+          simp [hcρ]
         · rfl
       rw [h1]
       exact Finset.sum_nonpos fun c _ => by split_ifs <;> simp
@@ -2559,7 +2542,7 @@ theorem weight_zero_span_highest [NeZero r] (LL : Letters N) (j0 : ℕ) (iK : Fi
         refine Finset.sum_eq_zero fun c _ => ?_
         split_ifs with h
         · have : c ≠ ρ := fun h' => by subst h'; omega
-          simp [Pi.single_apply, this]
+          simp [this]
         · rfl
       have hpw : psum wm (r - 1) = -∑ c : Fin r, (if (c : ℕ) < r - 1 then ((m (iK, c) : ℕ) : ℤ) else 0) := by
         unfold psum; rw [← Finset.sum_neg_distrib]

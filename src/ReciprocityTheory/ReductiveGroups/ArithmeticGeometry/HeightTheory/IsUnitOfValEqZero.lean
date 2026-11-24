@@ -3,53 +3,10 @@ module
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HNormA
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.TheoremA
 public import ReciprocityTheory.SemistableReduction.ComapInclusionIsLocalHom
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
 
 @[expose] public section
@@ -68,9 +25,7 @@ theorem wt_pos {a b : WithTop ℤ} (ha : 0 ≤ a) (hb : 0 < b) : 0 < a + b := by
     _ = 0 + b := (zero_add b).symm
     _ ≤ a + b := by
       first
-        | exact add_le_add_right ha b
         | exact add_le_add_left ha b
-        | gcongr
 
 theorem wt_nonneg_of_add {a b c : WithTop ℤ} (hb : b ≠ ⊤) (h : a + b = c) (hc : b ≤ c) : 0 ≤ a := by
   induction b using WithTop.recTopCoe with
@@ -90,7 +45,6 @@ variable {F : Type*} [Field F] (v : AddValuation F (WithTop ℤ))
 private lemma mem_iff_lemma (y : F) : y ∈ vRing v ↔ 0 ≤ v y := by
   first
     | exact Iff.rfl
-    | exact Valuation.mem_valuationSubring_iff _ _
 
 theorem val_eq_zero_of_isUnit (x : vRing v) (hx : IsUnit x) : v (x : F) = 0 := by
   obtain ⟨y, hy⟩ := hx.exists_right_inv
@@ -118,8 +72,6 @@ theorem isUnit_of_val_eq_zero (x : vRing v) (hx : v (x : F) = 0) : IsUnit x := b
     exact mul_inv_cancel₀ hx0
   first
     | exact IsUnit.of_mul_eq_one _ hmul
-    | exact isUnit_of_mul_eq_one x _ hmul
-    | exact ⟨⟨x, _, hmul, by rw [mul_comm]; exact hmul⟩, rfl⟩
 
 theorem mem_max_iff (x : vRing v) : x ∈ maximalIdeal (vRing v) ↔ 0 < v (x : F) := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
@@ -167,9 +119,6 @@ theorem val_eval_eq_zero {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
          simp only [MvPolynomial.map_monomial]
          conv_rhs => rw [P.as_sum]
          rfl)
-      | exact MvPolynomial.mem_range_map_iff_coeffs_subset.2 (fun c hc' => by
-          obtain ⟨β, -, rfl⟩ := MvPolynomial.mem_coeffs_iff.1 hc'
-          exact ⟨⟨_, hc β⟩, rfl⟩)
 
   have hQ1 : ((MvPolynomial.eval₂ (ReciprocityTheory.MultiplicativeHeights.comapInclusion (vRing w) (algebraMap Ω U))
       (fun s => (⟨t s, ht s⟩ : vRing w)) P₀ : vRing w) : U) = MvPolynomial.aeval t P := by
@@ -178,14 +127,12 @@ theorem val_eval_eq_zero {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
       (ReciprocityTheory.MultiplicativeHeights.comapInclusion (vRing w) (algebraMap Ω U)) (fun s => (⟨t s, ht s⟩ : vRing w)) P₀
     first
       | exact h2
-      | (rw [← h2]; rfl)
   have hhom : (residue (vRing w)).comp (ReciprocityTheory.MultiplicativeHeights.comapInclusion (vRing w) (algebraMap Ω U)) =
       (algebraMap (ResidueField ((vRing w).comap (algebraMap Ω U))) (ResidueField (vRing w))).comp
         (residue ((vRing w).comap (algebraMap Ω U))) := by
     ext x
     first
       | rfl
-      | exact (IsLocalRing.ResidueField.map_residue _ _).symm
   have hkey : MvPolynomial.aeval (fun s => residue (vRing w) ⟨t s, ht s⟩)
       (MvPolynomial.map (residue ((vRing w).comap (algebraMap Ω U))) P₀) =
       residue (vRing w) (MvPolynomial.eval₂ (ReciprocityTheory.MultiplicativeHeights.comapInclusion (vRing w) (algebraMap Ω U))
@@ -210,7 +157,6 @@ theorem val_eval_eq_zero {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
     apply hne0
     first
       | exact algebraicIndependent_iff.1 hind _ h0
-      | exact hind (by rw [h0, map_zero])
   have h5 := (residue_ne_zero_iff w _).1 hne
   rw [hQ1] at h5
   exact h5
@@ -225,7 +171,6 @@ theorem exists_val_coeff {Ω U σ : Type} [Field Ω] [Field U] [Algebra Ω U]
   classical
   have hsupp : P.support.Nonempty := by
     first
-      | exact Finsupp.support_nonempty_iff.2 hP
       | (rw [Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]; exact hP)
 
   obtain ⟨β₀, hβ₀, hmin⟩ := Finset.exists_min_image P.support

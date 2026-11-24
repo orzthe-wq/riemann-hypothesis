@@ -235,14 +235,6 @@ def GenIso (g : ℕ) : Prop :=
 
 
 variable (S r) in
-def FeqFIso : Prop :=
-  ∀ T T' : E, IsoInv (S := S) (r := r) (T := T) (T' := T')
-    (fun Λ F F' => ∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame F' a)
-
-
-
-
-variable (S r) in
 def DCIso : Prop :=
   ∀ (T T' : E) (β : S.V ≃ₗ[E] S.V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom S.hT) (Λ : Submodule (𝓞 E) S.V)
     (F : LFlag S r T) (F₁ F₂ : LFlag S r T'),

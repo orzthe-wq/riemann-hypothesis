@@ -1,6 +1,7 @@
 module
 
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentApproximation.MemZeroLocusGLIff
+public import Mathlib.RingTheory.DedekindDomain.FiniteAdeleRing
+public import Mathlib.RingTheory.DedekindDomain.Factorization
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -19,12 +20,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,7 +28,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,10 +40,39 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.RingTheory.DedekindDomain.Factorization
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.TypeStar
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.AdeleApproximation.AdeleIntA
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentApproximation.MemZeroLocusGLIff, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentApproximation.AddDense
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentApproximation.MemZeroLocusGLIff =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentApproximation.MemZeroLocusGLIff", "h": "module\n\npublic import Mathlib.RingTheory.DedekindDomain.FiniteAdeleRing\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain
+
+namespace PI.UnipApproxD
+
+def AddDense : Prop :=
+  ∀ (F : Type) [Field F] [NumberField F], DenseRange (algebraMap F (FiniteAdeleRing (𝓞 F) F))
+
+end PI.UnipApproxD
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentApproximation.MemZeroLocusGLIff =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentApproximation.AddDense =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentApproximation.AddDense", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentApproximation.MemZeroLocusGLIff\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.RingTheory.DedekindDomain.Factorization\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.AdeleApproximation.AdeleIntA\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -97,9 +121,6 @@ theorem exists_den_local (v : HeightOneSpectrum R) (y : v.adicCompletion K) :
   refine ⟨b, nonZeroDivisors.ne_zero hb, ?_⟩
   first
   | (rw [← IsScalarTower.algebraMap_apply, mul_comm]; exact h)
-  | (rw [mul_comm, ← IsScalarTower.algebraMap_apply]; exact h)
-  | (simpa [mul_comm, ← IsScalarTower.algebraMap_apply] using h)
-  | (convert h using 1; rw [mul_comm, IsScalarTower.algebraMap_apply R K]; rfl)
 
 theorem exists_den (b : FiniteAdeleRing R K) :
     ∃ r : R, r ≠ 0 ∧ IsInt (algebraMap R (FiniteAdeleRing R K) r * b) := by
@@ -114,7 +135,6 @@ theorem exists_den (b : FiniteAdeleRing R K) :
       = algebraMap K (w.adicCompletion K) (algebraMap R K (∏ v ∈ hfin.toFinset, s v)) * b w := by
     first
     | rfl
-    | (rw [← IsScalarTower.algebraMap_apply]; rfl)
   rw [hc]
   by_cases hw : w ∈ hfin.toFinset
   · rw [← Finset.mul_prod_erase _ _ hw, map_mul, map_mul, mul_assoc, mul_left_comm]
@@ -126,60 +146,11 @@ theorem exists_den (b : FiniteAdeleRing R K) :
 theorem exists_approx_local (v : HeightOneSpectrum R) (c : v.adicCompletion K)
     (hc : c ∈ v.adicCompletionIntegers K) (r : R) (hr : r ≠ 0) :
     ∃ a : R, Valued.v (c - algebraMap K _ (algebraMap R K a)) ≤ v.intValuation r := by
-  have hrK : algebraMap R K r ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr hr
-  have hrv : algebraMap K (v.adicCompletion K) (algebraMap R K r) ≠ 0 :=
-    (map_ne_zero_iff _ (algebraMap K (v.adicCompletion K)).injective).mpr hrK
-  obtain ⟨k', hk'⟩ := exists_near v ((algebraMap K (v.adicCompletion K) (algebraMap R K r))⁻¹ * c)
-  have h1 : Valued.v (c - algebraMap K _ (algebraMap R K r * k')) ≤ v.intValuation r := by
-    have : c - algebraMap K (v.adicCompletion K) (algebraMap R K r * k') =
-        algebraMap K _ (algebraMap R K r) *
-          ((algebraMap K (v.adicCompletion K) (algebraMap R K r))⁻¹ * c - algebraMap K _ k') := by
-      rw [map_mul, mul_sub, ← mul_assoc, mul_inv_cancel₀ hrv, one_mul]
-    rw [this, Valuation.map_mul, val_R]
-    exact mul_le_of_le_one_right' hk'
-  have hk : v.valuation K (algebraMap R K r * k') ≤ 1 := by
-    rw [← valuedAdicCompletion_eq_valuation']
-    have : (((algebraMap R K r * k' : K)) : v.adicCompletion K) =
-        c - (c - algebraMap K (v.adicCompletion K) (algebraMap R K r * k')) := by
-      rw [sub_sub_cancel]; rfl
-    rw [this]
-    exact (Valuation.map_sub _ _ _).trans (max_le hc (h1.trans (v.intValuation_le_one r)))
-  have hγ : v.intValuation r ≠ 0 := v.intValuation_ne_zero r hr
-  obtain ⟨a, ha⟩ := exists_valuation_sub_lt_of_integer v hk (Units.mk0 _ hγ)
-  refine ⟨a, ?_⟩
-  have e : c - algebraMap K (v.adicCompletion K) (algebraMap R K a) =
-      (c - algebraMap K _ (algebraMap R K r * k')) -
-        algebraMap K _ (algebraMap R K a - algebraMap R K r * k') := by
-    rw [map_sub]; ring
-  rw [e]
-  refine (Valuation.map_sub _ _ _).trans (max_le h1 ?_)
-  have := valuedAdicCompletion_eq_valuation' v (algebraMap R K a - algebraMap R K r * k')
-  exact this.trans_le ha.le
+  exact ReciprocityTheory.ChartRestriction.G.Lib.AdeleIntA.exists_approx_local v c hc r hr
 
 theorem exists_approx (c : FiniteAdeleRing R K) (hc : IsInt c) (r : R) (hr : r ≠ 0) :
     ∃ a : R, ∀ v, Valued.v (c v - algebraMap K _ (algebraMap R K a)) ≤ v.intValuation r := by
-  classical
-  have hT : {v : HeightOneSpectrum R | v.asIdeal ∣ Ideal.span {r}}.Finite :=
-    Ideal.finite_factors (by rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact hr)
-  choose a0 ha0 using fun v => exists_approx_local v (c v) (hc v) r hr
-  obtain ⟨a, ha⟩ := exists_forall_sub_mem_ideal (s := hT.toFinset) (fun v => v.asIdeal)
-    (fun v => multiplicity v.asIdeal (Ideal.span {r})) (fun v _ => v.prime)
-    (fun v _ w _ hvw h => hvw (HeightOneSpectrum.ext h)) (fun v => a0 v.1)
-  refine ⟨a, fun v => ?_⟩
-  by_cases hv : v ∈ hT.toFinset
-  · have h1 := ha v hv
-    rw [← intValuation_le_pow_iff_mem, ← intValuation_eq_exp_neg_multiplicity v hr] at h1
-    have e : c v - algebraMap K (v.adicCompletion K) (algebraMap R K a) =
-        (c v - algebraMap K _ (algebraMap R K (a0 v))) - algebraMap K _ (algebraMap R K (a - a0 v)) := by
-      rw [map_sub, map_sub]; ring
-    rw [e]
-    refine (Valuation.map_sub _ _ _).trans (max_le (ha0 v) ?_)
-    rw [val_R]; exact h1
-  · have h1 : v.intValuation r = 1 := by
-      rw [intValuation_eq_one_iff_mem_primeCompl]
-      refine Ideal.mem_primeCompl_iff.mpr fun hmem => hv ?_
-      rw [Set.Finite.mem_toFinset]; exact Ideal.dvd_span_singleton.mpr hmem
-    rw [h1]; exact sub_mem (hc v) (int_R v a)
+  exact ReciprocityTheory.ChartRestriction.G.Lib.AdeleIntA.exists_approx c hc r hr
 
 theorem exists_approx_adele (b : FiniteAdeleRing R K) :
     ∃ u : K, IsInt (b - algebraMap K (FiniteAdeleRing R K) u) := by
@@ -199,7 +170,6 @@ theorem exists_approx_adele (b : FiniteAdeleRing R K) :
       = algebraMap K (v.adicCompletion K) (algebraMap R K r) * b v := by
     first
     | rfl
-    | (rw [← IsScalarTower.algebraMap_apply]; rfl)
   have h1 := ha v
   rw [e2] at h1
   have e3 : b v - algebraMap K (v.adicCompletion K) (algebraMap R K a / algebraMap R K r)
@@ -319,3 +289,7 @@ theorem additive_dense_integers : AddDense := by
   exact IntegersDenseFiniteAdeles.denseRange
 
 end PI.UnipApproxD
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentApproximation.AddDense =====

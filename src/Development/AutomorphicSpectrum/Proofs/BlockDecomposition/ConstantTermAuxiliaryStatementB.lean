@@ -74,7 +74,7 @@ theorem map_lev {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (g : GL (
   ext i j
   simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]
   rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i with a | a <;>
-    rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j with b | b <;> simp <;> rfl
+    rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j with b | b <;> simp
 
 theorem lev_infGL (a : GL (Fin r) (Cinf E)) (b : GL (Fin s) (Cinf E)) :
     lev (Ad E) r s (infGL E r a, infGL E s b) = infGL E (r + s) (lev (Cinf E) r s (a, b)) := by
@@ -175,7 +175,7 @@ def blkL (x : Lie E s) : Lie E (r + s) :=
 
 theorem contDiff_blkL : ContDiff ℝ ∞ (blkL (E := E) (r := r) (s := s)) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
-  simp only [blkL, Matrix.reindex_apply, Matrix.submatrix_apply]
+  simp only [blkL, Matrix.reindex_apply]
   change ContDiff ℝ ∞ fun x : Lie E s => Matrix.fromBlocks 1 0 0 (Matrix.of x)
     ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i) ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j)
   rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i with a | a <;>

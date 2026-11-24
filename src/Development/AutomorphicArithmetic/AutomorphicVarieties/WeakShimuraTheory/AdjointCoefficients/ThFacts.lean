@@ -130,14 +130,14 @@ private theorem cycZ_eq_one_of_mem_ine_of_not_valuation_lt {Ω : Type} [Field Ω
     (F : IntermediateField ℚ Ω) [NumberField F] (A : ValuationSubring Ω) (hA : ¬ A.valuation (l : Ω) < 1)
     (g : G F Ω) (hg : g ∈ Ine A) : cycZ F Ω l g = 1 := by
   have hpr : l.Prime := Fact.out
-  haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
+  have : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
   apply Units.ext
   rw [Units.val_one]
   refine PadicInt.ext_of_toZModPow.mp (fun n => ?_)
-  haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ hpr.ne_zero⟩
+  have : NeZero (l ^ n) := ⟨pow_ne_zero _ hpr.ne_zero⟩
   have hAn : ¬ A.valuation ((l ^ n : ℕ) : Ω) < 1 := by
     rw [Nat.cast_pow, map_pow]
-    push_neg at hA ⊢
+    push Not at hA ⊢
     exact one_le_pow₀ hA
   have hk : Chr.cls F Ω (l ^ n) g = 1 := ((Chr.clsFacts F Ω (l ^ n)).2.2.2.2 A hAn) hg
   obtain ⟨ζ, hζ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)
@@ -305,7 +305,7 @@ private theorem ringHom_padicInt_eq_castHom_toZModPow_one {l : ℕ} [Fact l.Prim
   have hpos : 0 < l ^ 1 := by
     have := (Fact.out : l.Prime).pos
     positivity
-  haveI : NeZero (l ^ 1) := ⟨hpos.ne'⟩
+  have : NeZero (l ^ 1) := ⟨hpos.ne'⟩
   set z := PadicInt.toZModPow 1 x with hz
   have hk : x - ((z.val : ℕ) : ℤ_[l]) ∈ RingHom.ker (PadicInt.toZModPow 1 : ℤ_[l] →+* ZMod (l ^ 1)) := by
     rw [RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, hz, sub_self]
@@ -319,14 +319,14 @@ private theorem ringHom_padicInt_eq_castHom_toZModPow_one {l : ℕ} [Fact l.Prim
 private theorem exists_rt_ne_cycF_of_good_of_ok {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D) (hG : D.Good) (hOk : T.Ok) :
     ∀ (k : Type) [Field k] [CharP k l] (a : c.O →+* k), (∀ x ∈ maximalIdeal c.O, a x = 0) → ∀ w, ∃ g, a ((T.fr ∅).rt w g) ≠ (GC.cycF T.F Ω l k g : k) := by
   intro k _ _ a ha w
-  haveI : IsDiscreteValuationRing c.O := c.dvr
+  have : IsDiscreteValuationRing c.O := c.dvr
   obtain ⟨g, -, hg⟩ := hOk.g2 w
   refine ⟨g, fun heq => hg ?_⟩
   rw [hG.om_bar]
   have e1 : ∀ y : c.O, Ideal.Quotient.lift (maximalIdeal c.O) a ha (residue c.O y) = a y :=
     fun y => Ideal.Quotient.lift_mk _ _ _
   have hinj : Function.Injective (Ideal.Quotient.lift (maximalIdeal c.O) a ha) := by
-    letI := Ideal.Quotient.field (maximalIdeal c.O)
+    let := Ideal.Quotient.field (maximalIdeal c.O)
     exact RingHom.injective _
   apply hinj
   show Ideal.Quotient.lift (maximalIdeal c.O) a ha (residue c.O ↑(((T.fr ∅).rt w) g)) =

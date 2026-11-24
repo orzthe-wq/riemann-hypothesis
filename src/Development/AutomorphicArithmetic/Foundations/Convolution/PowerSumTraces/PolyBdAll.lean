@@ -1,15 +1,18 @@
 module
 
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SiegelHeights.SiegelHeight
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AdelicNormDetLeHeightPow
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AdelicNormVecMulGeOfHeight
+public import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspFormsHeight
+public import GroundTheory.AutomorphicForms.Reduction
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.DecayTraceClassAlt
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SiegelHeights.SiegelH
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspFormsHeight
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SiegelCount
-import GroundTheory.AutomorphicForms.HilbertSchmidtKernel
-import GroundTheory.AutomorphicForms.NormDetDiagUnitsPosRealToUnits
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SiegelSetHeightBound
+import GroundTheory.AutomorphicForms.ReductionCore
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -42,10 +45,78 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SiegelCount
+import GroundTheory.AutomorphicForms.HilbertSchmidtKernel
+import GroundTheory.AutomorphicForms.NormDetDiagUnitsPosRealToUnits
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SiegelHeights.SiegelH, Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.PolyBdAll
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SiegelHeights.SiegelH =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SiegelHeights.SiegelH", "h": "module\n\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SiegelSetHeightBound\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SiegelHeights.SiegelHeight\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AdelicNormDetLeHeightPow\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AdelicNormVecMulGeOfHeight\npublic import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspFormsHeight\npublic import GroundTheory.AutomorphicForms.Reduction\nimport GroundTheory.AutomorphicForms.ReductionCore\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Matrix GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Global GroundTheory.Global.IdeleGroup
+
+namespace UpperTheory.V.Fb
+
+private theorem box {n d : ℕ} (hd : d ≠ 0) {r : Fin (n + 1) → ℝ} (hr : ∀ i, 0 < r i) {A B : ℝ} (hA : 1 ≤ A) (hB : 1 ≤ B)
+    (h1 : ∀ i, 1 ≤ A * r i ^ d) (h2 : (∏ i, r i) ^ d ≤ B) (i : Fin (n + 1)) :
+    r i ≤ B * A ^ (n + 1) ∧ (r i)⁻¹ ≤ B * A ^ (n + 1) := by
+  have hL : 1 ≤ B * A ^ (n + 1) := one_le_mul_of_one_le_of_one_le hB (one_le_pow₀ hA)
+  have key : ∀ x : ℝ, x ^ d ≤ B * A ^ (n + 1) → x ≤ B * A ^ (n + 1) := fun x hx =>
+    le_of_pow_le_pow_left₀ hd (by positivity) (hx.trans (le_self_pow₀ hL hd))
+  refine ⟨key _ ?_, key _ ?_⟩
+  · have h3 : 1 ≤ ∏ j : Fin n, A * r (i.succAbove j) ^ d :=
+      Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl fun j _ => h1 _
+    rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_pow] at h3
+    rw [Fin.prod_univ_succAbove _ i, mul_pow] at h2
+    have h4 := pow_pos (hr i) d
+    calc r i ^ d ≤ r i ^ d * (A ^ n * (∏ j : Fin n, r (i.succAbove j)) ^ d) := le_mul_of_one_le_right h4.le h3
+      _ = (r i ^ d * (∏ j : Fin n, r (i.succAbove j)) ^ d) * A ^ n := by ring
+      _ ≤ B * A ^ (n + 1) := mul_le_mul h2 (pow_le_pow_right₀ hA n.le_succ) (by positivity) (by positivity)
+  · rw [inv_pow]
+    refine ((inv_le_iff_one_le_mul₀ (pow_pos (hr i) d)).2 (h1 i)).trans ?_
+    exact (le_self_pow₀ hA n.succ_ne_zero).trans (le_mul_of_one_le_left (by positivity) hB)
+
+variable {K : Type} [Field K] [NumberField K]
+
+private theorem lastRow {m : ℕ} {ω : Set (AdelicGLn.AdelicGL K (m + 1))} (hω : IsCompact ω)
+    (hB : ω ⊆ (adelicBorel (K := K) (n := m + 1) : Set (AdelicGLn.AdelicGL K (m + 1)))) :
+    ∃ P : ℝ, 0 < P ∧ ∀ b ∈ ω, ∀ (r : Fin (m + 1) → ℝ) (hr : ∀ i, 0 < r i),
+      height (b * diagUnits (m + 1) fun i => posIdele (K := K) (r i) (hr i)) (Pi.single (Fin.last m) 1) ≤
+        P * r (Fin.last m) ^ Module.finrank ℚ K := by
+  obtain ⟨P, hP, h⟩ := exists_adelicNorm_vecMul_le_mul hω
+  refine ⟨P, hP, fun b hb r hr => ?_⟩
+  obtain ⟨u, hu⟩ := isUnit_apply_self_of_mem_adelicBorel (hB hb) (Fin.last m)
+  have e : Pi.single (Fin.last m) 1 ᵥ* b.val = Pi.single (Fin.last m) u.val := by
+    rw [single_one_vecMul]
+    funext j
+    rcases (Fin.le_last j).eq_or_lt with rfl | hj
+    · simp [Matrix.row, hu]
+    · rw [Pi.single_eq_of_ne hj.ne]
+      exact hB hb hj
+  have h1 := h b hb _ (hasFiniteContent_single_one (K := K) (Fin.last m))
+  rw [e, adelicNorm_single_one, mul_one, adelicNorm_single_units] at h1
+  rw [height, Units.val_mul, ← vecMul_vecMul, ratVec_single_one, e, coe_diagUnits, single_vecMul_diagonal,
+    ← Units.val_mul, adelicNorm_single_units, map_mul, Positive.val_mul, ideleModule_posIdele]
+  exact mul_le_mul_of_nonneg_right h1 (pow_nonneg (hr _).le _)
+
+theorem siegelHeight : SiegelHeight := by
+  apply UpperTheory.siegelSet_height_bound
+
+end UpperTheory.V.Fb
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SiegelHeights.SiegelH =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.PolyBdAll =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.PolyBdAll", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.DecayTraceClassAlt\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SiegelHeights.SiegelH\nimport GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspFormsHeight\nimport GroundTheory.AutomorphicForms.CuspidalDiscreteness.SiegelCount\nimport GroundTheory.AutomorphicForms.HilbertSchmidtKernel\nimport GroundTheory.AutomorphicForms.NormDetDiagUnitsPosRealToUnits\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
@@ -205,3 +276,6 @@ theorem UpperTheory.ConvolutionTheory.C.polyBdAll :
         have : (0 : ℝ) ≤ max C₀ 0 := le_max_right _ _
         gcongr
     _ = max C₀ 0 * (D * E) ^ N₀ * qht x ^ (N₁ * N₀) * ‖φ‖ := by ring
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.PolyBdAll =====

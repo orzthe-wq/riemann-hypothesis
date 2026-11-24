@@ -63,7 +63,7 @@ theorem tuple_free_level_moves_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B
     rw [_root_.GlobalTheory.PenBridge.eq_s_succ_of_succ_eq_m J hj i]
     exact ⟨y⟩
   let α : J.Ch j := fun i => (hch i).some
-  rw [← _root_.GlobalTheory.T.true_geometry_tuple_free_relation_alt W hW u a ha hTr j hj t J hJ α, _root_.GlobalTheory.PenLev.mem_relax_iff'] at hg
+  rw [← _root_.GlobalTheory.PenLev.relaxed_level_eq_tuple_free_alt W hW u a ha hTr j hj t J hJ α, _root_.GlobalTheory.PenLev.mem_relax_iff'] at hg
   obtain ⟨-, -, hK⟩ := hg
   have hsd : IsSelfDualC ((I.rec7 l Z).sp.X j) (a.g.x j).L :=
     (ha.x j (by have h2 : (I.rec7 l Z).R.m = B.R.m := rfl; omega)).sd

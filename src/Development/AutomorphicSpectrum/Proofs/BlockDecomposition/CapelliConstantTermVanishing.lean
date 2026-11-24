@@ -193,11 +193,11 @@ theorem single_natAdd (i j : Fin s) (x : Cinf E) :
   rcases a with a | a <;> rcases b with b | b <;> simp [Matrix.single_apply]
 
 theorem capR_mem (τ : E →+* ℂ) (u : ℂ) : capR r s τ u ∈ vanAlg E r s :=
-  qdet_mem _ _ (fun i j => Eop_mem_of _ τ _ _ fun x => by
+  qdet_mem (vanAlg E r s) _ (fun i j => Eop_mem_of _ τ _ _ fun x => by
     rw [lieS_apply, single_castAdd]; exact lie_block_mem _ _) _
 
 theorem capS_mem (τ : E →+* ℂ) (u : ℂ) : capS r s τ u ∈ vanAlg E r s :=
-  qdet_mem _ _ (fun i j => Eop_mem_of _ τ _ _ fun x => by
+  qdet_mem (vanAlg E r s) _ (fun i j => Eop_mem_of _ τ _ _ fun x => by
     rw [lieS_apply, single_natAdd]; exact lie_block_mem _ _) _
 
 

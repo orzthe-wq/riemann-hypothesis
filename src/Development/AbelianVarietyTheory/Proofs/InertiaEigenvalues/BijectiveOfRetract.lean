@@ -209,7 +209,7 @@ theorem cont_sum {ι M M' : Type} [AddCommGroup M] [Module O M] [TopologicalSpac
     (s : Finset ι) (u : ι → M →ₗ[O] M') (hu : ∀ j, Continuous (u j)) :
     Continuous ((∑ j ∈ s, u j : M →ₗ[O] M') : M → M') := by
   have h := continuous_finsetSum s (fun j _ => hu j)
-  convert h using 1 <;> ext x <;> simp only [LinearMap.sum_apply, Finset.sum_apply]
+  convert h using 1 <;> ext x <;> simp only [LinearMap.sum_apply]
 
 theorem bijective_of_retract (M : Type) [AddCommGroup M] [Module O M] [TopologicalSpace M]
     [IsTopologicalAddGroup M] [ContinuousConstSMul O M] [ContinuousSMul O M]

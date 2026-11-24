@@ -1,62 +1,202 @@
 module
 
-public import Formalism.LocalToGlobal.GlobalTheory.GL6.CongruenceNoKernelOfLevelZeroIdentities
+public import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
+public import Formalism.LocalToGlobal.GlobalTheory.GL6.DiamondPreservesRationalFormZero
+public import Formalism.LocalToGlobal.GlobalTheory.GL6.FrameTranslate
+public import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.ComplexSpanBlockActionStable
 public import Formalism.LocalToGlobal.GlobalTheory.EqGlobOfHat
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.CongruenceNoKernelOfHeckeRamified
-public import Formalism.LocalToGlobal.GlobalTheory.GL6.FrameTranslate
-public import Formalism.LocalToGlobal.GlobalTheory.GL6.AdelicFunctionExtendsFromClasses
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.AdmissibleStabilisersOfCompatibleForms
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.DiamondCommDistinctPlaces
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.PSplitT
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.StabiliserOfLocalTransport
-import Formalism.LocalToGlobal.GlobalTheory.GL6.DiamondPreservesRationalFormZero
-import Formalism.LocalToGlobal.GlobalTheory.GL6.PKerAtP
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.RndLinkAdmTOf
 public import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.PClassE
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsEquiv
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.AdelicFunctionRightTranslateDiamond
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.TotallySplit
+import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
+import Mathlib.RingTheory.PiTensorProduct
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.RationalPointsLeHolds
+import Formalism.LocalToGlobal.GlobalTheory.GL6.PKerAtP
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.GlobalTheory.GL6.CongruenceNoKernelOfLevelZeroIdentities, Formalism.LocalToGlobal.GlobalTheory.GL6.AdelicFunctionExtendsFromClasses, Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.NaturalTranslateAdelicFunction
+
+-- ===== clump member: Formalism.LocalToGlobal.GlobalTheory.GL6.CongruenceNoKernelOfLevelZeroIdentities =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.GlobalTheory.GL6.CongruenceNoKernelOfLevelZeroIdentities", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.DiamondPreservesRationalFormZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.HermitianForms.IsLocBasis\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
+
+open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts Formalism.L2.Forms
+
+section UnramifiedDiagonal
+
+variable (D : D7) (u : D.what₂.Word)
+
+def DiamondCommutesLevelZero : Prop :=
+  ∀ v v' (a : ((D.mem u).A.Fv v')ˣ), ∀ φ ∈ (D.fm u).Fi 0,
+    dia D u 0 v' a (Uop D u 0 v φ) = Uop D u 0 v (dia D u 0 v' a φ) ∧
+    dia D u 0 v' a (Dop D u 0 v φ) = Dop D u 0 v (dia D u 0 v' a φ)
+
+def TraceDiamondInvariantLevelZero : Prop :=
+  ∀ v (a : ((D.mem u).A.Fv v)ˣ), ∀ φ ∈ (D.fm u).Fi 0, trp D u 0 v (dia D u 0 v a φ) = trp D u 0 v φ
+
+def DUFormulaLevelZero : Prop :=
+  ∀ v, ∀ φ ∈ (D.fm u).Fi 0, Dop D u 0 v (Uop D u 0 v φ) =
+    ((D.mem u).A.T : ℂ) ^ (D.R.N 0 - 1) • φ - ((D.mem u).A.T : ℂ) ^ (D.R.N 0 - 2) • Nm D u 0 v φ
+      + ((D.mem u).A.T : ℂ) ^ (D.R.N 0 - 2) • trp D u 0 v φ
+
+variable {D u}
+
+theorem norm_commutes_hecke_level_zero (hc : DiamondCommutesLevelZero D u) (v v' : (D.mem u).A.vT) (φ : Fn D u 0) (hφ : φ ∈ (D.fm u).Fi 0) :
+    Nm D u 0 v' (Uop D u 0 v φ) = Uop D u 0 v (Nm D u 0 v' φ) ∧
+    Nm D u 0 v' (Dop D u 0 v φ) = Dop D u 0 v (Nm D u 0 v' φ) := by
+
+  simp only [norm_eq_sum_diamond, map_sum]
+  exact ⟨Finset.sum_congr rfl fun a _ => (hc v v' a φ hφ).1, Finset.sum_congr rfl fun a _ => (hc v v' a φ hφ).2⟩
+
+theorem trace_zero_of_norm_zero_level_zero (ht : TraceDiamondInvariantLevelZero D u) (v : (D.mem u).A.vT) (φ : Fn D u 0)
+    (hφ : φ ∈ (D.fm u).Fi 0) (hN : Nm D u 0 v φ = 0) : trp D u 0 v φ = 0 := by
+  have h1 : ∑ a : ((D.mem u).A.Fv v)ˣ, trp D u 0 v (dia D u 0 v a φ) = trp D u 0 v (Nm D u 0 v φ) := by
+
+    rw [norm_eq_sum_diamond, map_sum]
+  rw [hN, map_zero, Finset.sum_congr rfl (fun a _ => ht v a φ hφ), Finset.sum_const,
+    Finset.card_univ] at h1
+  have hc : (Fintype.card ((D.mem u).A.Fv v)ˣ : ℂ) ≠ 0 := Nat.cast_ne_zero.2 Fintype.card_ne_zero
+  rw [← Nat.cast_smul_eq_nsmul ℂ] at h1
+  exact (smul_eq_zero.1 h1).resolve_left hc
+
+end UnramifiedDiagonal
+
+end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.GlobalTheory.GL6.CongruenceNoKernelOfLevelZeroIdentities =====
+
+-- ===== clump member: Formalism.LocalToGlobal.GlobalTheory.GL6.AdelicFunctionExtendsFromClasses =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.GlobalTheory.GL6.AdelicFunctionExtendsFromClasses", "h": "module\n\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.FrameTranslate\npublic import Formalism.SatakeDualWeyl.KpqSubgroupCompact\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.RationalPointsLeHolds\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
+
+open Formalism.BasicNotions Formalism.L2.Forms NumberField IsDedekindDomain Matrix Formalism.UG
+open scoped TensorProduct
+
+section Gen
+
+variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+  {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
+  {ι : Type} [Fintype ι]
+
+theorem translate_mem_span_adelic (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ)
+    (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x))
+    {g : UPts σ J (FiniteAdeleRing (𝓞 F) F) → Frames (gramC J emb) → ℂ} (hg : g ∈ AdFun S emb)
+    (γ : GL (Fin n) E) (hγ : γ ∈ UJ (σ : E →+* E) J) (κ : S.U) {h : Frames (gramC J emb) → ℂ}
+    (hh : h ∈ Submodule.span ℂ (Set.range g)) :
+    (fun y => (S.chi κ : ℂ) * h (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) ∈
+      Submodule.span ℂ (Set.range g) := by
+  induction hh using Submodule.span_induction with
+  | mem h hh =>
+    obtain ⟨z, rfl⟩ := hh
+    have hb : bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) :=
+      _root_.Formalism.UG.P.rational_points_le_holds F E (Fin n) σ J (FiniteAdeleRing (𝓞 F) F) ⟨γ, hγ, rfl⟩
+    have hk : κ.1 ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) := ((S.U_eq κ.1).1 κ.2).1
+    let z' : UPts σ J (FiniteAdeleRing (𝓞 F) F) :=
+      ⟨bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * z.1 * κ.1, mul_mem (mul_mem hb z.2) hk⟩
+    apply Submodule.subset_span
+    refine ⟨z', ?_⟩
+    funext y
+    exact adelic_value_translate S emb hc hg γ hγ z z' κ rfl y
+  | zero =>
+    have e : (fun y => (S.chi κ : ℂ) * (0 : Frames (gramC J emb) → ℂ)
+        (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) = 0 := by funext y; simp
+    rw [e]; exact zero_mem _
+  | add a b _ _ ha hb =>
+    have e : (fun y => (S.chi κ : ℂ) * (a + b) (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) =
+        (fun y => (S.chi κ : ℂ) * a (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) +
+        (fun y => (S.chi κ : ℂ) * b (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) := by
+      funext y; simp [mul_add]
+    rw [e]; exact add_mem ha hb
+  | smul r a _ ha =>
+    have e : (fun y => (S.chi κ : ℂ) * (r • a) (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) =
+        r • (fun y => (S.chi κ : ℂ) * a (frameTranslate emb hc γ⁻¹ ((UJ (σ : E →+* E) J).inv_mem hγ) y)) := by
+      funext y; simp only [Pi.smul_apply, smul_eq_mul]; ring
+    rw [e]; exact Submodule.smul_mem _ r ha
+
+theorem adelic_function_extends_from_classes (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ)
+    (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (lam : ι → DomWeight n)
+    {C : Type} [Fintype C] (y : C → UPts σ J (FiniteAdeleRing (𝓞 F) F)) (hs : ∀ c, RndStabTriv S (y c))
+    (hdis : ∀ (c c' : C) (γ : GL (Fin n) E), γ ∈ UJ (σ : E →+* E) J → ∀ κ : S.U,
+      bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * (y c).1 = (y c').1 * κ.1 → c = c')
+    {g : UPts σ J (FiniteAdeleRing (𝓞 F) F) → Frames (gramC J emb) → ℂ} (hg : g ∈ AdForms S emb lam)
+    (Fc : C → Frames (gramC J emb) → ℂ) (hF : ∀ c, Fc c ∈ Submodule.span ℂ (Set.range g)) :
+    ∃ G ∈ AdForms S emb lam, ∀ c, G (y c) = Fc c := by
+  classical
+  have hgA := (Submodule.mem_inf.1 hg).1
+  have hgV : ∀ z, g z ∈ ValC (gramC J emb) lam := fun z => (Submodule.mem_pi.1 (Submodule.mem_inf.1 hg).2) z trivial
+  have hspan : Submodule.span ℂ (Set.range g) ≤ ValC (gramC J emb) lam :=
+    Submodule.span_le.2 (by rintro _ ⟨z, rfl⟩; exact hgV z)
+  let G := ∑ c, rndFillG S emb hc (y c) (Fc c)
+  refine ⟨G, Submodule.mem_inf.2 ⟨Submodule.sum_mem _ fun c _ => rnd_fill_mem S emb hc (y c) (hs c) (Fc c), ?_⟩, ?_⟩
+  · refine Submodule.mem_pi.2 fun x _ => ?_
+    show (∑ c, rndFillG S emb hc (y c) (Fc c)) x ∈ _
+    rw [Finset.sum_apply]
+    refine Submodule.sum_mem _ fun c _ => ?_
+    by_cases hx : ∃ p : {γ : GL (Fin n) E // γ ∈ UJ (σ : E →+* E) J} × S.U,
+        x.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) p.1.1 * (y c).1 * p.2.1
+    · have e : rndFillG S emb hc (y c) (Fc c) x = fun yy => (S.chi (Classical.choose hx).2 : ℂ) *
+          Fc c (frameTranslate emb hc (Classical.choose hx).1.1⁻¹ ((UJ (σ : E →+* E) J).inv_mem (Classical.choose hx).1.2) yy) := by
+        funext yy; unfold rndFillG; rw [dite_eq_left hx]
+      rw [e]
+      exact hspan (translate_mem_span_adelic S emb hc hgA _ (Classical.choose hx).1.2 _ (hF c))
+    · have e : rndFillG S emb hc (y c) (Fc c) x = 0 := by
+        funext yy; unfold rndFillG; rw [dite_eq_right hx]; rfl
+      rw [e]; exact zero_mem _
+  · intro c
+    show (∑ c', rndFillG S emb hc (y c') (Fc c')) (y c) = Fc c
+    rw [Finset.sum_apply, Finset.sum_eq_single c]
+    · exact rnd_fill_at S emb hc (y c) (hs c) (Fc c)
+    · intro c' _ hne
+      funext yy
+      unfold rndFillG
+      rw [dite_eq_right]
+      · rfl
+      rintro ⟨p, hp⟩
+      apply hne
+      refine hdis c' c p.1.1 p.1.2 p.2⁻¹ ?_
+      rw [hp, InvMemClass.coe_inv]; group
+    · intro h; exact absurd (Finset.mem_univ c) h
+
+end Gen
+
+section Tied
+
+variable {D : D7} {u : D.what₂.Word}
+
+end Tied
+
+end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.GlobalTheory.GL6.AdelicFunctionExtendsFromClasses =====
+
+-- ===== clump member: Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.NaturalTranslateAdelicFunction =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.NaturalTranslateAdelicFunction", "h": "module\n\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.CongruenceNoKernelOfLevelZeroIdentities\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.ComplexSpanBlockActionStable\npublic import Formalism.LocalToGlobal.GlobalTheory.EqGlobOfHat\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.CongruenceNoKernelOfHeckeRamified\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.FrameTranslate\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.AdelicFunctionExtendsFromClasses\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.AdmissibleStabilisersOfCompatibleForms\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.DiamondCommDistinctPlaces\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.PSplitT\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.StabiliserOfLocalTransport\nimport Formalism.LocalToGlobal.GlobalTheory.GL6.DiamondPreservesRationalFormZero\nimport Formalism.LocalToGlobal.GlobalTheory.GL6.PKerAtP\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.RndLinkAdmTOf\npublic import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.PClassE\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsEquiv\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.AdelicFunctionRightTranslateDiamond\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -86,9 +226,7 @@ theorem is_translate_inverse (T : Forms0 D u) (γ : UJ (sigD D : D.host.E →+* 
   rw [Equiv.apply_symm_apply]
   show (T.val0.eY s).1 τ = atInf (embT D) (γ.1 : Matrix _ _ D.host.E) τ *
     (atInf (embT D) ((γ.1⁻¹ : GL _ D.host.E) : Matrix _ _ D.host.E) τ * (T.val0.eY s).1 τ)
-  rw [← Matrix.mul_assoc, at_infinity_mul_inv, Matrix.one_mul]
-
-
+  rw [← Matrix.mul_assoc, Formalism.L2.Forms.atInf_mul_inv, Matrix.one_mul]
 
 theorem up_move_natural (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
     (z : ↥(Ld D u 0 (Nat.zero_le _) c)) (hz : (D.fm u).fv 0 v c (T.lv0.pr v c z) = 1) :
@@ -103,8 +241,6 @@ theorem up_move_natural (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.c
   funext s
   rw [h6 h s _ (is_translate_inverse T γ s), Units.val_inv_eq_inv_val]
   rfl
-
-
 
 theorem down_move_natural (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
     (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c)) (hg0 : g ≠ 0) :
@@ -155,8 +291,6 @@ theorem class_eq_of_rational_translate (T : Forms0 D u) (c c' : (D.mem u).C.cls 
       (T.cls0.y c').1 * κ.1) : c = c' :=
   T.cls0.y_bij.1 (rnd_cls _ γ hγ _ _ κ h)
 
-
-
 theorem U_op_preserves_forms_zero (T : Forms0 D u) (v : (D.mem u).A.vT) (φ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)
     (hφ : φ ∈ (D.fm u).Fi 0) : Formalism.MainNotions.product_first_zeroth_parts.Uop D u 0 v φ ∈ (D.fm u).Fi 0 := by
   classical
@@ -196,8 +330,6 @@ theorem U_op_preserves_forms_zero (T : Forms0 D u) (v : (D.mem u).A.vT) (φ : (D
   show G (T.cls0.y c) z = _
   rw [hGc, hU]
   simp
-
-
 
 theorem D_op_preserves_forms_zero (T : Forms0 D u) (v : (D.mem u).A.vT) (φ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)
     (hφ : φ ∈ (D.fm u).Fi 0) : Formalism.MainNotions.product_first_zeroth_parts.Dop D u 0 v φ ∈ (D.fm u).Fi 0 := by
@@ -252,8 +384,6 @@ def IsUpMvF (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (x : (
       (T.cls0.y ((D.fm u).up 0 v c x)).1 = (T.cls0.y c).1 * η.1 * κ.1 ∧
     ∀ h, (D.fm u).upT 0 v c x h = natTr0 T γ κ h
 
-
-
 theorem U_op_eq_move_sum (T : Forms0 D u) (v : (D.mem u).A.vT) (ψ : Fn D u 0)
     {g : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) → Fr D 0 (Nat.zero_le _) → ℂ}
     (hg : g ∈ AdFun T.cls0.lev (embT D))
@@ -290,8 +420,6 @@ def UpDiaMatch0F (T : Forms0 D u) : Prop :=
         UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)),
       (∀ x, IsUpMvF T v c x.1 (Mv x)) ∧ (∀ x, IsUpMvF T v _ x.1 (Mv2 x)) ∧
       ∀ x, (Mv2 (σ x)).1⁻¹ * κd.1 * (Mv x).1 ∈ T.cls0.lev.U
-
-
 
 theorem diamond_commutes_U_distinct (T : Forms0 D u) (hM : UpDiaMatch0F T) (v v' : (D.mem u).A.vT) (hvv : v ≠ v')
     (a : ((D.mem u).A.Fv v')ˣ) (φ : Fn D u 0) (hφ : φ ∈ (D.fm u).Fi 0) :
@@ -376,8 +504,6 @@ def IsDnMvF (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) (x : M
       (T.cls0.y ((D.fm u).dn 0 v c x)).1 = (T.cls0.y c).1 * η.1 * κ.1 ∧
     ∀ h, (D.fm u).dnT 0 v c x h = natTr0 T γ κ h
 
-
-
 theorem D_op_eq_move_sum (T : Forms0 D u) (v : (D.mem u).A.vT) (ψ : Fn D u 0)
     {g : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) → Fr D 0 (Nat.zero_le _) → ℂ}
     (hg : g ∈ AdFun T.cls0.lev (embT D))
@@ -414,8 +540,6 @@ def DnDiaMatch0F (T : Forms0 D u) : Prop :=
         UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)),
       (∀ x, IsDnMvF T v c x.1 (Mv x)) ∧ (∀ x, IsDnMvF T v _ x.1 (Mv2 x)) ∧
       ∀ x, (Mv2 (σ x)).1⁻¹ * κd.1 * (Mv x).1 ∈ T.cls0.lev.U
-
-
 
 theorem diamond_commutes_D_distinct (T : Forms0 D u) (hM : DnDiaMatch0F T) (v v' : (D.mem u).A.vT) (hvv : v ≠ v')
     (a : ((D.mem u).A.Fv v')ˣ) (φ : Fn D u 0) (hφ : φ ∈ (D.fm u).Fi 0) :
@@ -579,16 +703,12 @@ theorem mul_lattice_dual_comm {F E : Type} [Field F] [NumberField F] [Field E] [
     rw [← hermitian_form_unitary_mul (σ : E →+* E) J _ hgi] at this
     rwa [mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec] at this
 
-
-
 theorem level_stabilises_base_lattice (T : Forms0 D u) (κ : T.cls0.lev.U) :
     κ.1 ∈ stabGL (latS (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)
       (tensInt (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (intOE D.host.E) (intAd D.host.F))
       T.cls0.lev.Lb) :=
   Formalism.L2.Geo.Def.PC.stab_of_loc T.cls0.lev.Lb T.cls0.lev.Lb_span κ.1
     (fun w => (T.cls0.lev.Uloc_lev w (((T.cls0.lev.U_eq _).1 κ.2).2 w)).2)
-
-
 
 theorem diamond_stabilises_base_lattice (T : Forms0 D u) (v' : (D.mem u).A.vT) (k : ℤ)
     (δ : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
@@ -600,9 +720,6 @@ theorem diamond_stabilises_base_lattice (T : Forms0 D u) (v' : (D.mem u).A.vT) (
   by_cases hw : w = (T.atT.eV v').1
   · subst hw; exact hδ.2.1.2
   · rw [hδ.1 w hw]; exact one_mem _
-
-
-
 
 theorem diamond_lattice_transport (T : Forms0 D u) (v' : (D.mem u).A.vT) (k : ℤ)
     (δ : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
@@ -699,3 +816,6 @@ end DiaFun
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.NaturalTranslateAdelicFunction =====

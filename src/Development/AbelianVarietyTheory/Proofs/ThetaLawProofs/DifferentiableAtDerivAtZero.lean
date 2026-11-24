@@ -196,7 +196,6 @@ theorem _root_.GlobalTheory.JacobiDeriv.tendsto_derivAtZero :
       rw [jacobiTheta₂'_term, norm_mul, norm_jacobiTheta₂_term, hi]
       simp [abs_of_pos Real.pi_pos]
       left
-      congr 1
       ring
   · rw [Filter.eventually_iff, UpperHalfPlane.atImInfty_mem]
     refine ⟨1, fun τ hτ n => ?_⟩
@@ -228,7 +227,7 @@ private lemma eighthPower_slash_S :
   ext τ
   rw [ModularForm.SL_slash_apply, ModularGroup.denom_S, UpperHalfPlane.modular_S_smul]
   unfold _root_.GlobalTheory.JacobiDeriv.eighthPower
-  simp only [UpperHalfPlane.coe_mk]
+  simp only
   have hτ : (τ : ℂ) ≠ 0 := τ.ne_zero
   set t : ℂ := (τ : ℂ) with ht
   rw [derivAtZero_neg_inv t hτ]

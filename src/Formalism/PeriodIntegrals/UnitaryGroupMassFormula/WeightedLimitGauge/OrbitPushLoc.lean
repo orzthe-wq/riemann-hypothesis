@@ -88,7 +88,6 @@ theorem hypLocal_of (hJ : ChartJac) (hC : HypChart) (hD : PhiDiff) : HypLocal :=
       T' ^ k / 2 ^ (k + 1) := by
     rw [hdet, ENNReal.toReal_one, one_mul, abs_of_pos (by positivity), div_pow, pow_succ]
     field_simp
-    try ring
   rw [hval] at key
   refine key.congr' ?_
   filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (Iio_mem_nhds hε)] with ρ hρ0 hρε

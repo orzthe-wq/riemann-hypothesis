@@ -143,7 +143,7 @@ theorem GlobalTheory.ChainOnto.fock_vacFin_off :
       (frameLat s'.V : Set (Fin s'.V.rank → D.host.E)) (fun u => u = v),
       heisO c.ψ s.V s'.V u f₀ = f₀ → heisO c.ψ s.V s'.V u (p.pt φ) = p.pt φ := fun u hu h0 =>
     GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite c.ψ c.θ s.V s'.V hc.inf _ _ _ _ p.f hp.theta u
-      (GlobalTheory.VacGood.infPart_latO (hle hu))
+      (_root_.GlobalTheory.SplitScalar.latO_fin (hle hu))
       (GlobalTheory.Hk3.heisO_fix_thetaAt_off c.ψ _ _ _ _ _ _ _ _ hth u
         (fun i j => GlobalTheory.FinZeta.VacOff.idemSum_mul_off he hoff hu i j) h0) φ
   refine ⟨hp.theta φ, fun u hu => ?_, fun e' he' u hu hh => ?_⟩

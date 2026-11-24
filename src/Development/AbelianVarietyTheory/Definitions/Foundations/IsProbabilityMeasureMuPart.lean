@@ -1,6 +1,6 @@
 module
 
-public import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.SectionInputData
+public import Formalism.LocalToGlobal.ProjectiveLattices.CompOrd
 public import Formalism.LocalToGlobal.ProjectiveLattices.L2DefiniteCuspForms
 public import Formalism.LocalToGlobal.ProjectiveLattices.NonnegIffOfLiesTotal
 public import Formalism.HarderNarasimhan.HarderNarasimhanProofs.QuotRealize
@@ -10,20 +10,20 @@ import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -31,8 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,10 +43,133 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.BlockTheory.HeightDefect.SectionInputData, Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
+
+-- ===== clump member: Development.AbelianVarietyTheory.BlockTheory.HeightDefect.SectionInputData =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.BlockTheory.HeightDefect.SectionInputData", "h": "module\n\npublic import Formalism.LocalToGlobal.ProjectiveLattices.CompOrd\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GlobalTheory.IndefiniteRowSideFullHecke.ZeroWeightSections
+
+open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
+
+variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
+  {Xo : Moduli Dw l} {c : Coeff l}
+
+def IsSecZ (G : WTZ E) (f : Rul Xo c) : Prop :=
+  IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f ∧
+    ∀ (p : TRing c.F) (t : Ix Dw → (p.R)ˣ) (y y' : FrPt Xo c p.R), FrBor t y y' →
+      f p y' = ((∏ i, t i ^ exZ Dw G i : (p.R)ˣ) : p.R) * f p y
+
+theorem isSecZ_wtZ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c) :
+    IsSecZ (wtZ a n) f ↔ f ∈ sec Xo c a n := by
+  have key : ∀ (S : Type) [CommRing S] (t : Ix Dw → Sˣ),
+      ((∏ i, t i ^ exZ Dw (wtZ a n) i : Sˣ) : S) = wchar (ex Dw a n) t := by
+    intro S _ t
+    rw [wchar, Units.coe_prod]
+    refine Finset.prod_congr rfl fun i _ => ?_
+    cases i <;> simp [exZ, wtZ, ex]
+  constructor
+  · rintro ⟨h1, h2⟩
+    exact ⟨h1, fun p t y y' hb => by rw [← key]; exact h2 p t y y' hb⟩
+  · rintro ⟨h1, h2⟩
+    exact ⟨h1, fun p t y y' hb => by rw [key]; exact h2 p t y y' hb⟩
+
+
+variable (Xo c) in
+structure Input : Type where
+
+  D : ℕ
+  N : ℕ
+  T : ℕ
+  i : ℕ
+  g0 : ℕ
+
+  cc : ℝ
+
+  wL : WTZ E
+  wF : WTZ E
+  wde : WTZ E
+
+  Mr : Set (Rul Xo c)
+
+  w : Fin (N + 1) → Rul Xo c
+  jc : Comp Xo c → Fin (N + 1)
+
+  np : ℕ
+  thp : Fin np → Rul Xo c
+
+  n0 : ℕ
+  th0 : Fin n0 → Rul Xo c
+
+  nk : ℕ
+  thk : Fin nk → Rul Xo c
+
+  et : Rul Xo c
+  ta1 : Rul Xo c
+  ta2 : Rul Xo c
+
+  nu : IsDedekindDomain.HeightOneSpectrum (𝓞 c.F) → ℝ
+
+  ip : (c.F →+* ℂ) → (∀ Z : Comp Xo c, AC Z) → (∀ Z : Comp Xo c, AC Z) → ℂ
+
+  wsize : WTZ E → ℝ
+  DF : ℝ
+  cNu : ℝ
+  cQuot : ℝ
+  cLow : ℝ
+  cLow' : ℝ
+  cDim : ℝ
+  cGen : ℝ
+  crystallineInclusion : ℝ
+  cEta : ℝ
+  cBase : ℝ
+  cBase' : ℝ
+  cRank : ℝ
+  cField : ℝ
+  f : ℝ
+  r : ℝ
+
+namespace Input
+
+variable (I : Input Xo c)
+
+end Input
+
+variable (Xo c)
+
+variable {Xo c}
+
+section
+variable [Fintype (Comp Xo c)] (I : Input Xo c) (h : GenFrEx Xo c)
+    (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
+    (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ)
+    (yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P)))
+
+end
+
+end GlobalTheory.IndefiniteRowSideFullHecke.ZeroWeightSections
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.BlockTheory.HeightDefect.SectionInputData =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.SectionInputData\npublic import Formalism.LocalToGlobal.ProjectiveLattices.L2DefiniteCuspForms\npublic import Formalism.LocalToGlobal.ProjectiveLattices.NonnegIffOfLiesTotal\npublic import Formalism.HarderNarasimhan.HarderNarasimhanProofs.QuotRealize\npublic import Formalism.HarderNarasimhan.ShiftInvariance\npublic import Formalism.MeanHeightDescent.AverageDegreeBounds.GlobalBoundRefinements\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -127,8 +248,8 @@ theorem IsGram.rk_deg {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] 
   obtain ⟨h1, h2, -⟩ := Formalism.HN.plLat K V ι b X (fun v => (h v).1) L hL
   obtain ⟨h1', h2', -⟩ := Formalism.HN.plLat K V κ b' X' (fun v => (h' v).1) L hL
   refine ⟨h2.trans h2'.symm, ?_⟩
-  haveI := h1.2
-  haveI := h1'.2
+  have := h1.2
+  have := h1'.2
   unfold Formalism.HN.deg Formalism.F.deg
   rw [Formalism.HN.QuotientRealization.covol_eq_of_norm_eq ((Formalism.HermitianLatticesTheory.realize b X).comp L.toAddSubgroup.subtype)
     ((Formalism.HermitianLatticesTheory.realize b' X').comp L.toAddSubgroup.subtype) (Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize b X) L)
@@ -176,7 +297,7 @@ theorem slopeMax_slopeMin_eq {ι : Type} [Fintype ι] [DecidableEq ι] {b : Basi
     (Formalism.HN.plLat K V _ _ _ (fun v => (h' v).1) L hL).1
     (fun M hM => by
       have hM' : M.FG := by
-        haveI : IsNoetherian (𝓞 K) L := isNoetherian_of_fg_of_noetherian L hL
+        have : IsNoetherian (𝓞 K) L := isNoetherian_of_fg_of_noetherian L hL
         exact isNoetherian_submodule.1 inferInstance M hM
       simpa using IsGram.rk_deg h' h hM')).2.1 h0
   rw [slopeMax_sq, slopeMin_sq, dif_pos h.hasGram, dif_pos h.hasGram]
@@ -194,7 +315,7 @@ theorem deg_bot (N : (K →+* ℂ) → V → ℝ) : deg N (⊥ : Submodule (𝓞
 theorem slope_sq_line [_root_.NumberField.IsTotallyComplex K] (x : K) (hx : x ≠ 0) :
     slope_sq (fun (σ : K →+* ℂ) (y : K) => ‖σ y‖) (Submodule.span (𝓞 K) {x}) =
       -((1 / (Formalism.HN.nPl K : ℝ)) * ∑ v : InfinitePlace K, 2 * Real.log (v x)) := by
-  letI : StarRing K := starRingOfComm
+  let : StarRing K := starRingOfComm
   have hn : ∀ v y, Formalism.HermitianLatticesTheory.normAt (Basis.singleton Unit K) (fun _ : InfinitePlace K => (1 : Matrix Unit Unit ℂ)) v y =
       ‖v.embedding y‖ := fun v y => by
     simp [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt]
@@ -642,7 +763,7 @@ theorem muPart_univ : muPart V dict Set.univ = muQ1 V := by
   rw [muPart, this, ProbabilityTheory.cond_univ]
 
 theorem muPart_univ_le (A : Set (Σ k, Frame (X k).Ψ r)) : muPart V dict A Set.univ ≤ 1 := by
-  haveI : IsZeroOrProbabilityMeasure (muPart V dict A) := by unfold muPart; infer_instance
+  have : IsZeroOrProbabilityMeasure (muPart V dict A) := by unfold muPart; infer_instance
   exact prob_le_one
 
 variable (μ : Measure (AutQ V))
@@ -853,3 +974,7 @@ theorem degW_eq (G : WTZ E) : degW U x V dict G = (rankW U G : ℝ) * (slopeW_sq
 end Norms
 
 end GlobalTheory.AllWt
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart =====

@@ -132,7 +132,7 @@ theorem cube_exists (hinst : inst = ffAlg p) (hU : IsAffCover p U B) (a b : ℕ)
         Cube.d (cechCube ℂ (Omega p a) ⊤ U) (b + 1) x = 0) := by
   letI := algΓ p
   have hs := gm_spec (p := p) d hinst hU a
-  exact GlobalTheory.T.cechHomologyEquivFamAlt ℂ ι (DR ℂ Z.functionField) (fun I => omB ℂ Z.functionField (B I) a)
+  exact _root_.GlobalTheory.cechHomologyEquivFam ℂ ι (DR ℂ Z.functionField) (fun I => omB ℂ Z.functionField (B I) a)
     (cechCube ℂ (Omega p a) ⊤ U) (gm p hinst hU a) hs.1 hs.2.1 hs.2.2 b
 
 def cmp (hinst : inst = ffAlg p) (hU : IsAffCover p U B) (a b : ℕ) :

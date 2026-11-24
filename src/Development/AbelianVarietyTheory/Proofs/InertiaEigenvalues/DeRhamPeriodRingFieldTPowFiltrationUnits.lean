@@ -78,9 +78,6 @@ theorem fil_anti_le {a b : ℤ} (h : a ≤ b) (x : P.R.BdR) (hx : x ∈ Fil P b)
     change x ∈ (P.PD (botExt l)).Fil (a + ↑(n + 1)) at hx
     exact ih (by omega) ((P.PD (botExt l)).Fil_anti (a + n) (by simpa [add_assoc] using hx))
 
-theorem ι_injective : Function.Injective P.ιB := fun a b h =>
-  (P.PD (botExt l)).ι_inj (by rw [P.PD_ι, P.PD_ι]; exact h)
-
 theorem fil_mul (a b : ℤ) (x y : P.R.BdR) (hx : x ∈ Fil P a) (hy : y ∈ Fil P b) : x * y ∈ Fil P (a + b) :=
   (P.PD (botExt l)).Fil_mul a b x y hx hy
 
@@ -187,7 +184,7 @@ theorem bdR_tied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l
     (∀ (a : ℤ) (g : GQ l), P.actQdR g (tz P a) = algebraMap ℚ_[l] P.R.BdR ((P.χQ g ^ a : ℚ_[l]ˣ) : ℚ_[l]) * tz P a) ∧
     (∀ a b : ℤ, tz P (a + b) = tz P a * tz P b) ∧ tz P 0 = 1 ∧ tz P 1 = P.ιB P.tB := by
   intro l _ P AI T
-  refine ⟨BdRTied.isField P T, BdRTied.ι_injective P, fun a b x => BdRTied.fil_tz P T b a x,
+  refine ⟨BdRTied.isField P T, _root_.GlobalTheory.MemLoc.FitsEx.iota_inj P, fun a b x => BdRTied.fil_tz P T b a x,
     fun x h0 h1 => BdRTied.unit_of_fil P T x h0 h1, BdRTied.exact_deg P, BdRTied.fil_mul P,
     BdRTied.fil_act P, fun a g => BdRTied.act_tz P g a, fun a b => ?_, ?_, ?_⟩
   · rw [BdRTied.tz_eq, BdRTied.tz_eq, BdRTied.tz_eq, zpow_add, Units.val_mul]

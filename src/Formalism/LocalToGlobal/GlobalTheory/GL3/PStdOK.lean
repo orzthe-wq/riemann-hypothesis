@@ -117,22 +117,6 @@ theorem denom (E K : Type*) [Field E] [NumberField E] [Field K] [NumberField K] 
   rw [map_zsmul, mul_smul_comm]
   exact (h _ (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩)).zsmul _
 
-theorem fg_of_nsmul_le {ι : Type} (M M' : AddSubgroup (ι → ℂ)) [AddGroup.FG M'] (N : ℕ) (hN : 0 < N)
-    (h : ∀ x ∈ M, N • x ∈ M') : AddGroup.FG M := by
-  rw [← Module.Finite.iff_addGroup_fg]
-  have : Module.Finite ℤ M' := Module.Finite.iff_addGroup_fg.2 inferInstance
-  let f : M →+ M' :=
-    { toFun := fun x => ⟨N • x.1, h x.1 x.2⟩
-      map_zero' := by ext; simp
-      map_add' := fun x y => by ext; simp }
-  refine Module.Finite.of_injective f.toIntLinearMap ?_
-  intro x y hxy
-  have h1 : N • x.1 = N • y.1 := congrArg (fun z : M' => z.1) hxy
-  ext i
-  have h2 := congrFun h1 i
-  simp only [Pi.smul_apply, nsmul_eq_mul] at h2
-  exact mul_left_cancel₀ (by exact_mod_cast hN.ne') h2
-
 def e4 : Fin 2 × Fin 2 ≃ Fin 4 := finProdFinEquiv
 
 def reix (n : Type) : (n → Fin 2 → Fin 2 → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ) where
@@ -205,7 +189,7 @@ def put4 (n : Type) (a : Fin 4) : (n → ℂ) →+ (Fin 4 × n → ℂ) where
 
 theorem fourth_power_le_closure_embeddings (Λ : AddSubgroup ℂ) : pow4 (lamMM D Λ) ≤
     AddSubgroup.closure {z | ∃ w ∈ Λ, ∃ y : Fin 4 → D.host.E, (∀ a, y a ∈ D.host.AA0) ∧ z = w • emb4 D y} := by
-  apply GlobalTheory.FourthRootStd.fourth_power_le_closure_embeddings <;> assumption
+  apply GlobalTheory.FourthRootStd.fourth_power_le_closure_embeddings
 
 theorem int_mem_inverse_half_different {x : D.host.E} (hx : IsIntegral ℤ x) : x ∈ D.host.AA0 := by
   have h1 := FL.one_mem_inverse_halfDifferent D
@@ -214,15 +198,6 @@ theorem int_mem_inverse_half_different {x : D.host.E} (hx : IsIntegral ℤ x) : 
   have e : ((⟨x, hx⟩ : 𝓞 D.host.E) • (1 : D.host.E)) = x := by rw [Algebra.smul_def, mul_one]; rfl
   rw [e] at h2
   exact h2
-
-theorem exists_nat_clearing_order_denominators (D : D7) : ∃ k : ℕ, 0 < k ∧ ∀ a ∈ D.host.AA0, IsIntegral ℤ ((k : D.host.E) * a) := by
-  obtain ⟨k, hk, h⟩ := FL.exists_int_clearing_order_denominators D
-  refine ⟨k.natAbs, Int.natAbs_pos.2 hk, fun a ha => ?_⟩
-  have h1 := h a ha
-  rw [Nat.cast_natAbs]
-  rcases abs_choice k with e | e <;> rw [e]
-  · exact h1
-  · push_cast; rw [neg_mul]; exact h1.neg
 
 section B
 
@@ -275,11 +250,11 @@ theorem betaSemi (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetri
 theorem up : ∃ N : ℕ, 0 < N ∧
     ∀ x ∈ imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM),
       N • x ∈ stdLat B.L (Fin 4 × D.what₂.Tau) := by
-  apply GlobalTheory.FourthRootStd.up <;> assumption
+  apply GlobalTheory.FourthRootStd.up
 
 theorem down : ∃ N : ℕ, 0 < N ∧ ∀ x ∈ stdLat B.L (Fin 4 × D.what₂.Tau),
     N • x ∈ imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM) := by
-  apply GlobalTheory.FourthRootStd.down <;> assumption
+  apply GlobalTheory.FourthRootStd.down
 
 theorem idx₂ : relIdx (imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM))
     (stdLat B.L (Fin 4 × D.what₂.Tau)) ≠ 0 := by
@@ -289,7 +264,7 @@ theorem idx₂ : relIdx (imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[
 theorem idx₁ : relIdx (stdLat B.L (Fin 4 × D.what₂.Tau))
     (imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM)) ≠ 0 := by
   obtain ⟨N, hN, h⟩ := up B
-  have := fg_of_nsmul_le _ (stdLat B.L (Fin 4 × D.what₂.Tau)) N hN h
+  have := GlobalTheory.FourthRootStd.fg_of_nsmul_le _ (stdLat B.L (Fin 4 × D.what₂.Tau)) N hN h
   exact Formalism.L2.Th1.H.Inh.relIdx_ne_zero_of_fg _ _ N hN h
 
 theorem stdOK (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : B.StdOK :=

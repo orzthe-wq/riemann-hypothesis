@@ -144,13 +144,13 @@ private theorem deriv_deriv_half_log_quadratic_at_zero (N P C : ℝ) (hN : 0 < N
       fun t => (P + C * t) / (N + 2 * t * P + t ^ 2 * C) := by
     filter_upwards [hev] with t ht
     rw [(((hq t).log ht).div_const 2).deriv]
-    field_simp <;> ring
+    field_simp
   rw [hd.deriv_eq]
   have h4 := (((hasDerivAt_id' (0 : ℝ)).const_mul C).const_add P).div (hq 0) hq0
   rw [show (fun t : ℝ => (P + C * t) / (N + 2 * t * P + t ^ 2 * C)) =
     (fun x => P + C * x) / (fun s => N + 2 * s * P + s ^ 2 * C) from rfl, h4.deriv]
   simp only [mul_zero, zero_mul, add_zero, mul_one, zero_pow two_ne_zero]
-  field_simp <;> ring
+  field_simp
 
 theorem levi_fs_zero {κ : Type} [Fintype κ] {z : κ → ℂ} (hz : z ≠ 0) (w : κ → ℂ)
     (h : levi (fun z => Real.log ((fsMetric (ι := κ)).ρ z)) z w = 0) : ∃ c : ℂ, w = c • z := by
@@ -448,7 +448,6 @@ theorem g_pos : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι
     rw [levi_congr hev, levi_add_smul 1 hΦy hRe]
     have h0 : levi (fun u => (G ((R.A.chart j).symm u)).re) v w = 0 := levi_re_analytic hGa w
     rw [h0, mul_zero, add_zero, levi_comp w hτ ((contDiffAt_log_prod_fsMetric_rho_blk hblk).of_le h2)]
-    beta_reduce
     rw [levi_log_prod_fsMetric_eq_sum hblk]
     have hnn : ∀ k, 0 ≤ levi (fun z : ι k → ℂ => Real.log ((fsMetric (ι := ι k)).ρ z))
         (blk k (R.lift ((R.A.chart j).symm v) ((R.A.chart j).symm v)))

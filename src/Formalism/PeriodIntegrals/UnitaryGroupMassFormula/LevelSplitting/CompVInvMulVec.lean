@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelSplitting.RatVMemSpan
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelSplitting.MulVecSpanStable
 
 @[expose] public section
 
@@ -74,17 +75,6 @@ theorem places_countable : PlacesCountable := by
     fun P Q h => HeightOneSpectrum.ext h
   exact hinj.countable
 
-private theorem mulVec_mem_span_of_mulVec_generators_mem {O B : Type} [CommRing O] [CommRing B] [Algebra O B] {n : ℕ}
-    (A : Matrix (Fin n) (Fin n) B) (G : Set (Fin n → B))
-    (hG : ∀ y ∈ G, A.mulVec y ∈ Submodule.span O G) :
-    ∀ x ∈ Submodule.span O G, A.mulVec x ∈ Submodule.span O G := by
-  intro x hx
-  induction hx using Submodule.span_induction with
-  | mem y hy => exact hG y hy
-  | zero => rw [Matrix.mulVec_zero]; exact Submodule.zero_mem _
-  | add a b _ _ ha hb => rw [Matrix.mulVec_add]; exact Submodule.add_mem _ ha hb
-  | smul c a _ ha => rw [Matrix.mulVec_smul]; exact Submodule.smul_mem _ c ha
-
 theorem stab_iff {O B : Type} [CommRing O] [CommRing B] [Algebra O B] {n : ℕ}
     (A C : Matrix (Fin n) (Fin n) B) (hCA : ∀ x, C.mulVec (A.mulVec x) = x)
     (hAC : ∀ x, A.mulVec (C.mulVec x) = x) (G : Set (Fin n → B)) :
@@ -98,9 +88,9 @@ theorem stab_iff {O B : Type} [CommRing O] [CommRing B] [Algebra O B] {n : ℕ}
     exact hyS
   · intro h x
     constructor
-    · exact fun hx => mulVec_mem_span_of_mulVec_generators_mem A G (fun y hy => (h y hy).1) x hx
+    · exact fun hx => _root_.PI.LevelKSplit.W.Loc.mulVec_span_stable A G (fun y hy => (h y hy).1) x hx
     · intro hx
-      have hC := mulVec_mem_span_of_mulVec_generators_mem C G (fun y hy => (h y hy).2) _ hx
+      have hC := _root_.PI.LevelKSplit.W.Loc.mulVec_span_stable C G (fun y hy => (h y hy).2) _ hx
       rwa [hCA x] at hC
 
 theorem compV_inv_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]

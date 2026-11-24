@@ -4,9 +4,18 @@ public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.Calculus.FDeriv.Defs
 public import Mathlib.Analysis.InnerProductSpace.Basic
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+public import Mathlib.LinearAlgebra.Matrix.Hermitian
+public import Mathlib.Analysis.Calculus.FDeriv.Basic
+public import Mathlib.Analysis.Calculus.FDeriv.Bilinear
+public import Mathlib.Analysis.Calculus.FDeriv.Mul
+public import Mathlib.Analysis.Calculus.FDeriv.RestrictScalars
+public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+public import Mathlib.Topology.Algebra.Module.FiniteDimension
+public import Mathlib.Algebra.Algebra.Basic
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.LinearAlgebra.BilinearMap
+public import Mathlib.Data.Rat.Cast.CharZero
 public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DifferentiableExpMulOfAnnihilatedStatement
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatBilinForm
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelOneThetaEqSmulOfSelfDualLattice
 public import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsEquivOfSumEq
 import Mathlib.Algebra.Order.Floor.Extended
@@ -16,6 +25,7 @@ import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -27,11 +37,10 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -39,7 +48,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -53,7 +61,162 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DifferentiableExpMulOfAnnihilated, Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatBilinForm, Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.NotLinearIndependent
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DifferentiableExpMulOfAnnihilated =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DifferentiableExpMulOfAnnihilated", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Calculus.FDeriv.Defs\npublic import Mathlib.Analysis.InnerProductSpace.Basic\npublic import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic\npublic import Mathlib.LinearAlgebra.Matrix.Hermitian\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Calculus.FDeriv.Basic\npublic import Mathlib.Analysis.Calculus.FDeriv.Bilinear\npublic import Mathlib.Analysis.Calculus.FDeriv.Mul\npublic import Mathlib.Analysis.Calculus.FDeriv.RestrictScalars\npublic import Mathlib.Analysis.SpecialFunctions.ExpDeriv\npublic import Mathlib.Topology.Algebra.Module.FiniteDimension\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+
+namespace GlobalTheory
+
+
+open Matrix in
+theorem _root_.GlobalTheory.differentiable_exp_mul_of_annihilated :
+    ∀ (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ), Hm.IsHermitian → ∀ f : (Fin g → ℂ) → ℂ, Differentiable ℝ f → (∀ w z : Fin g → ℂ, (fderiv ℝ f w z + Real.pi * Complex.I * ((w ⬝ᵥ Hm.mulVec (star z)).im : ℂ) * f w) + Complex.I * (fderiv ℝ f w (Complex.I • z) + Real.pi * Complex.I * ((w ⬝ᵥ Hm.mulVec (star (Complex.I • z))).im : ℂ) * f w) = 0) → Differentiable ℂ fun w : Fin g → ℂ => Complex.exp (Real.pi / 2 * (w ⬝ᵥ Hm.mulVec (star w))) * f w := by
+  intro g Hm _ f hfd hann
+  let B0 : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ) →ₗ[ℝ] ℂ :=
+    LinearMap.mk₂ ℝ (fun u v => u ⬝ᵥ Hm.mulVec (star v))
+      (fun u₁ u₂ v => by simp [add_dotProduct])
+      (fun r u v => by simp [smul_dotProduct])
+      (fun u v₁ v₂ => by simp [star_add, Matrix.mulVec_add, dotProduct_add])
+      (fun r u v => by simp [star_smul, Matrix.mulVec_smul, dotProduct_smul])
+  let B : (Fin g → ℂ) →L[ℝ] (Fin g → ℂ) →L[ℝ] ℂ :=
+    LinearMap.toContinuousLinearMap (LinearMap.toContinuousLinearMap.toLinearMap ∘ₗ B0)
+  have hB : ∀ u v, B u v = u ⬝ᵥ Hm.mulVec (star v) := fun u v => rfl
+  have hQ : ∀ w : Fin g → ℂ, HasFDerivAt (fun w : Fin g → ℂ => w ⬝ᵥ Hm.mulVec (star w))
+      (B.precompR _ w (ContinuousLinearMap.id ℝ _) + B.precompL _ (ContinuousLinearMap.id ℝ _) w) w :=
+    fun w => B.hasFDerivAt_of_bilinear (hasFDerivAt_id w) (hasFDerivAt_id w)
+  intro w
+  have hF : HasFDerivAt (fun w : Fin g → ℂ => Complex.exp (Real.pi / 2 * (w ⬝ᵥ Hm.mulVec (star w))) * f w) _ w :=
+    (((hQ w).const_mul ((Real.pi : ℂ) / 2)).cexp).mul (hfd w).hasFDerivAt
+  refine (differentiableAt_iff_restrictScalars ℝ hF.differentiableAt).2 ?_
+  rw [hF.fderiv]
+  set e := Complex.exp (Real.pi / 2 * (w ⬝ᵥ Hm.mulVec (star w))) with he
+  set T := e • fderiv ℝ f w + f w • (e • (((Real.pi : ℂ) / 2) •
+    (B.precompR _ w (ContinuousLinearMap.id ℝ _) + B.precompL _ (ContinuousLinearMap.id ℝ _) w)))
+    with hTdef
+  have hT : ∀ z, T z = e * fderiv ℝ f w z + f w * (e * ((Real.pi : ℂ) / 2 *
+      (w ⬝ᵥ Hm.mulVec (star z) + z ⬝ᵥ Hm.mulVec (star w)))) := by
+    intro z
+    clear hann hQ hF hTdef
+    simp only [T, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply,
+      ContinuousLinearMap.precompR_apply, ContinuousLinearMap.precompL_apply,
+      ContinuousLinearMap.compL_apply, ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.id_apply, hB, smul_eq_mul]
+  have key : ∀ z, T (Complex.I • z) = Complex.I • T z := by
+    intro z
+    have h1 := hann w z
+    have hs1 : w ⬝ᵥ Hm.mulVec (star (Complex.I • z)) = -Complex.I * (w ⬝ᵥ Hm.mulVec (star z)) := by
+      simp [Matrix.mulVec_neg, Matrix.mulVec_smul, dotProduct_neg, dotProduct_smul]
+    have hs2 : (Complex.I • z) ⬝ᵥ Hm.mulVec (star w) = Complex.I * (z ⬝ᵥ Hm.mulVec (star w)) := by
+      simp [smul_dotProduct]
+    rw [hs1] at h1
+    rw [hT, hT, hs1, hs2, smul_eq_mul]
+    set b := w ⬝ᵥ Hm.mulVec (star z)
+    have him : (-Complex.I * b).im = -b.re := by simp
+    rw [him] at h1
+    have hb : b = b.re + b.im * Complex.I := (Complex.re_add_im b).symm
+    push_cast at h1
+    linear_combination (-Complex.I * e) * h1 + (-Complex.I * e * Real.pi * f w) * hb +
+      (e * fderiv ℝ f w (Complex.I • z) - Real.pi * Complex.I * e * b.re * f w) * Complex.I_sq
+  let L : (Fin g → ℂ) →ₗ[ℂ] ℂ :=
+    { toFun := T
+      map_add' := T.map_add
+      map_smul' := fun c z => by
+        have hc : c • z = c.re • z + c.im • (Complex.I • z) := by
+          ext i
+          simp only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, Complex.real_smul]
+          conv_lhs => rw [← Complex.re_add_im c]
+          ring
+        rw [hc, T.map_add, T.map_smul, T.map_smul, key, RingHom.id_apply]
+        simp only [Complex.real_smul, smul_eq_mul]
+        conv_rhs => rw [← Complex.re_add_im c]
+        ring }
+  exact ⟨LinearMap.toContinuousLinearMap L, ContinuousLinearMap.ext fun z => rfl⟩
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DifferentiableExpMulOfAnnihilated =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatBilinForm =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatBilinForm", "h": "module\n\npublic import Mathlib.Algebra.Algebra.Basic\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.LinearAlgebra.BilinearMap\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Data.Rat.Cast.CharZero\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.RationalValueRealScalar
+
+theorem map_rat_smul_real {U : Type} [AddCommGroup U] [Module ℝ U] {V : Type} [AddCommGroup V]
+    [Module ℚ V] (p : V →+ U) (c : ℚ) (x : V) : p (c • x) = (c : ℝ) • p x := by
+  have h1 : (c.den : ℤ) • (c • x) = c.num • x := by
+    rw [← Int.cast_smul_eq_zsmul ℚ, ← Int.cast_smul_eq_zsmul ℚ, smul_smul]
+    congr 1
+    rw [Int.cast_natCast, mul_comm, Rat.mul_den_eq_num]
+  have h2 : (c.den : ℝ) • p (c • x) = (c.num : ℝ) • p x := by
+    rw [← Int.cast_natCast, Int.cast_smul_eq_zsmul ℝ, Int.cast_smul_eq_zsmul ℝ, ← map_zsmul, ← map_zsmul, h1]
+  have hd : (c.den : ℝ) ≠ 0 := by positivity
+  calc p (c • x) = ((c.den : ℝ)⁻¹ * c.den) • p (c • x) := by rw [inv_mul_cancel₀ hd, one_smul]
+    _ = (c.den : ℝ)⁻¹ • ((c.den : ℝ) • p (c • x)) := by rw [smul_smul]
+    _ = (c.den : ℝ)⁻¹ • ((c.num : ℝ) • p x) := by rw [h2]
+    _ = (c : ℝ) • p x := by rw [smul_smul, Rat.cast_def, inv_mul_eq_div]
+
+theorem exists_rat_value {U : Type} [AddCommGroup U] [Module ℝ U] (om : U →ₗ[ℝ] U →ₗ[ℝ] ℝ)
+    {V : Type} [AddCommGroup V] (p : V →+ U) (L : AddSubgroup V)
+    (hL : ∀ x : V, ∃ N : ℕ, 0 < N ∧ N • x ∈ L)
+    (hint : ∀ x ∈ L, ∀ y ∈ L, ∃ k : ℤ, om (p x) (p y) = (k : ℝ)) (u v : V) :
+    ∃ q : ℚ, (q : ℝ) = -(om (p u) (p v)) := by
+  obtain ⟨N, hN, hNu⟩ := hL u
+  obtain ⟨M, hM, hMv⟩ := hL v
+  obtain ⟨k, hk⟩ := hint _ hNu _ hMv
+  simp only [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul] at hk
+  refine ⟨-(k / (N * M) : ℚ), ?_⟩
+  have hNM : (N : ℝ) * M ≠ 0 := by positivity
+  push_cast
+  rw [neg_inj, div_eq_iff hNM, ← hk]
+  ring
+
+theorem exists_rat_bilinForm {U : Type} [AddCommGroup U] [Module ℝ U] (om : U →ₗ[ℝ] U →ₗ[ℝ] ℝ)
+    {V : Type} [AddCommGroup V] [Module ℚ V] (p : V →+ U) (L : AddSubgroup V)
+    (hL : ∀ x : V, ∃ N : ℕ, 0 < N ∧ N • x ∈ L)
+    (hint : ∀ x ∈ L, ∀ y ∈ L, ∃ k : ℤ, om (p x) (p y) = (k : ℝ)) :
+    ∃ B : LinearMap.BilinForm ℚ V, ∀ u v : V, ((B u v : ℚ) : ℝ) = -(om (p u) (p v)) := by
+  choose q hq using exists_rat_value om p L hL hint
+  refine ⟨LinearMap.mk₂ ℚ q ?_ ?_ ?_ ?_, fun u v => hq u v⟩
+  · intro u1 u2 v
+    apply Rat.cast_injective (α := ℝ)
+    rw [Rat.cast_add, hq, hq, hq, map_add (f := _), LinearMap.map_add (f := _), LinearMap.add_apply]
+    ring
+  · intro c u v
+    apply Rat.cast_injective (α := ℝ)
+    rw [smul_eq_mul, Rat.cast_mul, hq, hq, map_rat_smul_real, LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul]
+    ring
+  · intro u v1 v2
+    apply Rat.cast_injective (α := ℝ)
+    rw [Rat.cast_add, hq, hq, hq, map_add (f := _), LinearMap.map_add (f := _)]
+    ring
+  · intro c u v
+    apply Rat.cast_injective (α := ℝ)
+    rw [smul_eq_mul, Rat.cast_mul, hq, hq, map_rat_smul_real, LinearMap.map_smul, smul_eq_mul]
+    ring
+
+end GlobalTheory.RationalValueRealScalar
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatBilinForm =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.NotLinearIndependent =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.NotLinearIndependent", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Calculus.FDeriv.Defs\npublic import Mathlib.Analysis.InnerProductSpace.Basic\npublic import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic\npublic import Mathlib.LinearAlgebra.FiniteDimensional.Defs\npublic import Mathlib.LinearAlgebra.Matrix.Hermitian\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DifferentiableExpMulOfAnnihilated\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsRatBilinForm\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelOneThetaEqSmulOfSelfDualLattice\npublic import Development.AbelianVarietyTheory.Proofs.ToricGeometry.ExistsEquivOfSumEq\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix
@@ -74,19 +237,6 @@ theorem exists_coord {U : Type} [AddCommGroup U] [Module ℝ U] [FiniteDimension
   have hI : ∀ v : U, Complex.I • v = J v := fun v => by simp [hsm]
   let e := (Module.finBasis ℂ U).equivFun
   exact ⟨_, e.restrictScalars ℝ, fun v => by rw [← hI]; exact e.map_smul _ _⟩
-
-theorem exists_ratForm {U : Type} [AddCommGroup U] [Module ℝ U] (om : U →ₗ[ℝ] U →ₗ[ℝ] ℝ)
-    {V : Type} [AddCommGroup V] [Module ℚ V] (p : V →+ U) (L : AddSubgroup V)
-    (hN : ∀ x : V, ∃ N : ℕ, 0 < N ∧ N • x ∈ L)
-    (hint : ∀ x ∈ L, ∀ y ∈ L, ∃ k : ℤ, om (p x) (p y) = k) :
-    ∃ B : LinearMap.BilinForm ℚ V, ∀ u v, (B u v : ℝ) = -om (p u) (p v) := by
-  first
-  | exact @_root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm
-  | exact _root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm
-  | (apply _root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm <;> assumption)
-  | (intros; apply _root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm ..)
 
 theorem span_image {U : Type} [AddCommGroup U] [Module ℝ U]
     {V : Type} [AddCommGroup V] (p : V →+ U) (hsp : Submodule.span ℝ (Set.range p) = ⊤)
@@ -142,7 +292,7 @@ theorem not_linearIndependent : ∀ (U : Type) [NormedAddCommGroup U] [NormedSpa
   have him : ∀ x y, (x ⬝ᵥ Hm.mulVec (star y)).im = -om (e.symm x) (e.symm y) := hHim
   have hpos' : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re := hHpos
   have hint : ∀ x ∈ L, ∀ y ∈ L, ∃ k : ℤ, om (p x) (p y) = k := fun x hx => (hL x).1 hx
-  obtain ⟨B, hB⟩ := exists_ratForm om p L hN hint
+  obtain ⟨B, hB⟩ := _root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm om p L hN hint
   have hspL := span_image p hsp L hN
   have hom : ∀ x, om x = 0 → x = 0 := fun x hx => by
     by_contra h
@@ -178,7 +328,7 @@ theorem not_linearIndependent : ∀ (U : Type) [NormedAddCommGroup U] [NormedSpa
   · intro u v
     rw [him, hB, hP, hP, e.symm_apply_apply, e.symm_apply_apply]
   · intro k
-    refine GlobalTheory.T.differentiable_exp_mul_of_annihilated' g Hm hH (fun w => f k (E w)) ((hd k).comp E.differentiable) fun w z => ?_
+    refine _root_.GlobalTheory.differentiable_exp_mul_of_annihilated g Hm hH (fun w => f k (E w)) ((hd k).comp E.differentiable) fun w z => ?_
     have h1 : fderiv ℝ (fun w => f k (E w)) w = (fderiv ℝ (f k) (E w)).comp E :=
       ((hd k (E w)).hasFDerivAt.comp w E.hasFDerivAt).fderiv
     have h2 := hann k (e.symm w) (e.symm z)
@@ -214,3 +364,6 @@ theorem not_linearIndependent : ∀ (U : Type) [NormedAddCommGroup U] [NormedSpa
     linear_combination h1
 
 end GlobalTheory.VacuumLine
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.NotLinearIndependent =====

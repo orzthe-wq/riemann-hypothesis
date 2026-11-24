@@ -96,8 +96,6 @@ theorem inner_casimirK (hU : IsInfUnitary ε E) (w : V) :
   rw [← inner_compact hU hba.symm, inner_self_eq_norm_sq_to_K]
   first
     | rfl
-    | simp
-    | norm_cast
 
 theorem mem_ker_iff (μ : ℝ) (x : V) :
     x ∈ LinearMap.ker (casimirK ε E - (μ : ℂ) • (1 : Module.End ℂ V)) ↔ casimirK ε E x = (μ : ℂ) • x := by

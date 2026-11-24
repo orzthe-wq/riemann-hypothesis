@@ -297,7 +297,7 @@ lemma primeLogSum_small :
 
 lemma primeLogSum_nat (N : ℕ) (hN : 1 ≤ N) :
     ∑ p ∈ (Finset.Iic N).filter Nat.Prime, Real.log p / ((p : ℝ) - 1) ≤ Real.log N + 2.2 := by
-  have h : Finset.Iic N = Finset.range (N + 1) := by ext; simp [Nat.lt_succ_iff]
+  have h : Finset.Iic N = Finset.range (N + 1) := by ext; simp
   rw [h]
   exact GlobalTheory.PrimeLogSum.sum_log_div_pred_le N
 

@@ -1,12 +1,11 @@
 module
 
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SEqOne
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.PolynomialSiteTraces.AdmissibleMap
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.AffineHodgeIsomorphisms.IsFormT
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupListRepresentativeOfForms
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitOfBasicOpenTop
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RepUnique
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafFiltrationProperty
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitLogRepresentativeCompat
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -45,8 +44,150 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StdSomeZero
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.ZariskiEtaleLifting.XSmulSucc
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RepUnique
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.CoeEqAlgebraMapZeroEquiv
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitOfBasicOpenTop, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupH0NormalCoboundary
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitOfBasicOpenTop =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitOfBasicOpenTop", "h": "module\n\npublic import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SEqOne\npublic import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.PolynomialSiteTraces.AdmissibleMap\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StdSomeZero\nimport Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.ZariskiEtaleLifting.XSmulSucc\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+set_option backward.isDefEq.respectTransparency false
+set_option linter.unusedVariables false
+noncomputable section
+open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistableComparison CrystallineSemistableComparison.B CrystallineSemistableComparison.Pb DividedPowers ReciprocityTheory.ChartRestriction.G.Geo.Tor
+
+namespace GlobalTheory.CompanionTheory.KMVan
+
+section Sc
+
+variable {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
+
+structure Sc (Φ : PDF R C) (Λ : Type) [CommRing Λ] where
+  ρ : ∀ T : C, Λ →+* Φ.A.obj T
+  nat : ∀ {T T' : C} (φ : T ⟶ T') (a : Λ), (Φ.A.map φ).hom (ρ T a) = ρ T' a
+
+variable {Φ : PDF R C} {Λ : Type} [CommRing Λ]
+
+end Sc
+
+end GlobalTheory.CompanionTheory.KMVan
+
+namespace GlobalTheory.CompanionTheory.KMVan
+section Loc
+open TensorProduct
+variable {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
+  {Φ : PDF R C} {Λ : Type} [CommRing Λ]
+
+end Loc
+end GlobalTheory.CompanionTheory.KMVan
+
+namespace GlobalTheory.CompanionTheory.KMVan
+open TensorProduct
+
+end GlobalTheory.CompanionTheory.KMVan
+
+namespace GlobalTheory.CompanionTheory.KMVan
+open TensorProduct
+section D
+variable {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
+  {Φ : PDF R C} {Λ : Type} [CommRing Λ]
+
+end D
+end GlobalTheory.CompanionTheory.KMVan
+
+namespace GlobalTheory.CompanionTheory.KMVan
+open TensorProduct
+section LT
+variable {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
+  {Φ : PDF R C} {Λ : Type} [CommRing Λ]
+
+end LT
+end GlobalTheory.CompanionTheory.KMVan
+
+namespace GlobalTheory.CompanionTheory.KMVan
+section FV
+variable {R : Type} [CommRing R]
+
+end FV
+end GlobalTheory.CompanionTheory.KMVan
+
+namespace GlobalTheory.CompanionTheory.KMVan
+section PS
+open CrystallineSemistableComparison.Pb.Site GlobalTheory.PDA GlobalTheory.CompanionTheory.ChartLocBc
+variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
+  {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
+
+end PS
+
+section Res
+variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C}
+
+end Res
+
+section Fr
+open CrystallineSemistableComparison.Pb.Site
+variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
+  {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {V : X.Opens} {d : ℕ}
+
+end Fr
+end GlobalTheory.CompanionTheory.KMVan
+
+namespace GlobalTheory.CompanionTheory.KMVan
+section CL
+open CrystallineSemistableComparison.Pb.Site
+variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
+  {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {V V' : X.Opens} {d : ℕ}
+
+end CL
+end GlobalTheory.CompanionTheory.KMVan
+
+namespace GlobalTheory.CompanionTheory.KMVan
+section TAU
+open CrystallineSemistableComparison.Pb.Site
+variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
+  {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
+
+theorem inU_top (T : Thick (nlFun γ p X q κ)) : InU (⊤ : X.Opens) T := fun _ _ => trivial
+
+def evT (T : Thick (nlFun γ p X q κ)) : Γ(X, ⊤) →+* T.B ⧸ T.J := ev T (inU_top T)
+
+theorem evT_nat {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (f : Γ(X, ⊤)) :
+    evT T' f = Ideal.quotientMap T'.J φ.φ φ.hle (evT T f) := by
+  have key : ∀ (y : Spec (CommRingCat.of (T'.B ⧸ T'.J)) ⟶ X)
+      (hy : y = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T)
+      (hh : ⊤ ≤ y ⁻¹ᵁ ⊤), GlobalTheory.Cris.evalAt y ⊤ hh f = Ideal.quotientMap T'.J φ.φ φ.hle (evT T f) := by
+    intro y hy hh
+    subst hy
+    exact evalAt_map (B := CommRingCat.of (T.B ⧸ T.J)) (B' := CommRingCat.of (T'.B ⧸ T'.J)) _ (pt T) (inU_top T) hh f
+  exact key _ (pt_hom φ) (inU_top T')
+
+end TAU
+end GlobalTheory.CompanionTheory.KMVan
+
+namespace GlobalTheory.CompanionTheory.KMVan
+section TAU2
+open CrystallineSemistableComparison.Pb.Site
+variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
+  {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
+
+end TAU2
+end GlobalTheory.CompanionTheory.KMVan
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitOfBasicOpenTop =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupH0NormalCoboundary =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupH0NormalCoboundary", "h": "module\n\npublic import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.DifferentialFormsCech.AffineHodgeIsomorphisms.IsFormT\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupListRepresentativeOfForms\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitOfBasicOpenTop\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RepUnique\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafFiltrationProperty\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitLogRepresentativeCompat\nimport Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.TotPairing\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AbelianVarietyTheory.Definitions.GaloisGeometry.CoeEqAlgebraMapZeroEquiv\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
@@ -351,3 +492,7 @@ theorem main : ∀ {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (Com
   exact fm_change hF (lifts_nr Λ g₀) (fun k => lifts_nr _ _) (lifts_sub _ _ _) (fun k => lifts_sub _ _ _) hc
 
 end GlobalTheory.CompanionTheory.OmCls
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CupH0NormalCoboundary =====

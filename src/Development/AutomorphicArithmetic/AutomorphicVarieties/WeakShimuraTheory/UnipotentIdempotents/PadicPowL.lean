@@ -127,5 +127,5 @@ theorem UpperTheory.V.Ws.Lk.kapMu :
     have := pow_gcd_eq_one.2 ⟨hp, hq⟩
     rwa [hcop, pow_one] at this
   have hγ' : P.γ (AlgEquiv.restrictScalars ℚ g) = 1 := hγ
-  simp only [Pre.κ, MonoidHom.mul_apply, MonoidHom.comp_apply, hβ, hγ, hκ]
+  simp only [Pre.κ, MonoidHom.mul_apply, MonoidHom.comp_apply, hκ]
   simp [hγ', hβ]

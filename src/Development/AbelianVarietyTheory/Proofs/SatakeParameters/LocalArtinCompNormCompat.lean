@@ -1,28 +1,29 @@
 module
 
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSmoothCharCompNormU
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasNormGroups
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsParahoricTypeVectorAtConjugatePlace
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharZeroAdicCompletion
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSmoothCharCompNormU
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChevalleyUnits
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DecompositionGroupLocalGaloisIso
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEqOfPowEqSelf
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalEmbeddingOverPlace
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlobalArtinReciprocityHolds
+public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
+public import CompanionTheory.AutomorphicTheory.PlaceSeparation.IsOpenQuotientMapArt0
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalArtinHasNormGroups
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntegralIffSpectralNormLeOne
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.LocalLanglandsGL
-import GroundTheory.LocalFields.LocalArtinUniqueness
-import GroundTheory.LocalFields.MainTheorem
-import GroundTheory.LocalFields.UnramifiedHensel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -30,6 +31,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.Valuation.LocalSubring
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -38,7 +40,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -51,6 +52,14 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivOfRangeEq
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharZeroAdicCompletion
+import GroundTheory.LocalFields.LocalArtinUniqueness
+import GroundTheory.LocalFields.MainTheorem
+import GroundTheory.LocalFields.UnramifiedHensel
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Tactic.Linter.Style
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalPrimeGaloisActionPeriodT
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.CyclicStrongAtCusp
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsWeight
@@ -58,6 +67,185 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RestrictsSelf
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.TrivialOnInertiaOfUnr
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntegralIffSpectralNormLeOne, Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalArtinCompNormCompat
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntegralIffSpectralNormLeOne =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntegralIffSpectralNormLeOne", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasNormGroups\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsParahoricTypeVectorAtConjugatePlace\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.Valuation.LocalSubring\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivOfRangeEq\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain ValuativeRel Matrix Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocDict
+attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+
+noncomputable section
+
+namespace GlobalTheory.ClosureIso
+
+open Polynomial
+
+section localPart
+
+variable {K F : Type} [Field K] [NumberField K] [Field F] [NumberField F]
+  {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 F)}
+
+theorem exists_ne_zero_valued_lt_one (v : HeightOneSpectrum (𝓞 K)) :
+    ∃ c : v.adicCompletion K, c ≠ 0 ∧ Valued.v c < 1 := by
+  obtain ⟨x, hx⟩ := v.valuation_surjective K (WithZero.exp (-1))
+  have hxv : Valued.v (algebraMap K (v.adicCompletion K) x) = WithZero.exp (-1) :=
+    (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x).trans hx
+  refine ⟨algebraMap K _ x, ?_, ?_⟩
+  · intro h0
+    rw [h0, map_zero] at hxv
+    exact WithZero.exp_ne_zero hxv.symm
+  · rw [hxv, ← WithZero.exp_zero, WithZero.exp_lt_exp]
+    norm_num
+
+theorem valued_map_le_one (f : v.adicCompletion K →+* v'.adicCompletion F) (hf : Continuous f)
+    {x : v.adicCompletion K} (hx : Valued.v x ≤ 1) : Valued.v (f x) ≤ 1 := by
+  obtain ⟨c, hc0, hc1⟩ := exists_ne_zero_valued_lt_one v
+  have hN : ∀ N : ℕ, ‖f c‖ * ‖f x‖ ^ N < 1 := by
+    intro N
+    have h1 : Valued.v (c * x ^ N) < 1 := by
+      rw [Valuation.map_mul, Valuation.map_pow]
+      exact lt_of_le_of_lt (mul_le_of_le_one_right' (pow_le_one₀ zero_le hx)) hc1
+    have h2 := GlobalTheory.ConjParahoric.val_lt_one_map f hf h1
+    rw [← Valued.toNormedField.norm_lt_one_iff] at h2
+    simpa [map_mul, map_pow, norm_mul, norm_pow] using h2
+  by_contra hgt
+  rw [← Valued.toNormedField.norm_le_one_iff, not_le] at hgt
+  have hfc : 0 < ‖f c‖ := norm_pos_iff.2 ((map_ne_zero f).2 hc0)
+  obtain ⟨N, hN'⟩ := pow_unbounded_of_one_lt (‖f c‖⁻¹) hgt
+  have := hN N
+  have h3 : 1 < ‖f c‖ * ‖f x‖ ^ N := by
+    calc (1 : ℝ) = ‖f c‖ * ‖f c‖⁻¹ := (mul_inv_cancel₀ hfc.ne').symm
+      _ < ‖f c‖ * ‖f x‖ ^ N := mul_lt_mul_of_pos_left hN' hfc
+  linarith
+
+def intMap (f : v.adicCompletion K →+* v'.adicCompletion F) (hf : Continuous f) :
+    v.adicCompletionIntegers K →+* v'.adicCompletionIntegers F :=
+  (f.comp (v.adicCompletionIntegers K).subtype).codRestrict (v'.adicCompletionIntegers F).toSubring
+    (fun x => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2
+      (valued_map_le_one f hf ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 x.2)))
+
+theorem isIntegral_map (f : v.adicCompletion K →+* v'.adicCompletion F) (hf : Continuous f)
+    (b : Kbar v ≃+* Kbar v') (hb : ∀ x, b (algebraMap _ _ x) = algebraMap _ _ (f x)) {y : Kbar v}
+    (hy : IsIntegral (v.adicCompletionIntegers K) y) :
+    IsIntegral (v'.adicCompletionIntegers F) (b y) := by
+  refine IsIntegral.map_of_comp_eq (intMap f hf) b.toRingHom ?_ hy
+  ext x
+  simp only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe]
+  rw [IsScalarTower.algebraMap_apply (v.adicCompletionIntegers K) (v.adicCompletion K) (Kbar v),
+    IsScalarTower.algebraMap_apply (v'.adicCompletionIntegers F) (v'.adicCompletion F) (Kbar v'), hb]
+  rfl
+
+theorem valued_le_one_of_isIntegral {x : v'.adicCompletion F}
+    (hx : IsIntegral (v'.adicCompletionIntegers F) (algebraMap (v'.adicCompletion F) (Kbar v') x)) :
+    Valued.v x ≤ 1 := by
+  rw [isIntegral_algebraMap_iff ] at hx
+  obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.1 hx
+  exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 y.2
+
+end localPart
+
+section spectral
+
+variable {K F : Type} [Field K] [NumberField K] [Field F] [NumberField F]
+  {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 F)}
+
+theorem isIntegral_iff_spectralNorm_le_one (y : Kbar v) :
+    IsIntegral (v.adicCompletionIntegers K) y ↔ spectralNorm (v.adicCompletion K) (Kbar v) y ≤ 1 := by
+  have hyK : IsIntegral (v.adicCompletion K) y := Algebra.IsIntegral.isIntegral y
+  rw [spectralNorm, spectralValue_le_one_iff (minpoly.monic hyK)]
+  constructor
+  · intro hy n
+    rw [minpoly.isIntegrallyClosed_eq_field_fractions' (v.adicCompletion K) hy, coeff_map]
+    exact Valued.toNormedField.norm_le_one_iff.2
+      ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ((minpoly (v.adicCompletionIntegers K) y).coeff n).2)
+  · intro h
+    have hl : minpoly (v.adicCompletion K) y ∈
+        lifts (algebraMap (v.adicCompletionIntegers K) (v.adicCompletion K)) := by
+      rw [lifts_iff_coeff_lifts]
+      intro n
+      exact ⟨⟨_, (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2
+        (Valued.toNormedField.norm_le_one_iff.1 (h n))⟩, rfl⟩
+    obtain ⟨q, hq, -, hqm⟩ := lifts_and_natDegree_eq_and_monic hl (minpoly.monic hyK)
+    refine ⟨q, hqm, ?_⟩
+    rw [← aeval_def, ← aeval_map_algebraMap (v.adicCompletion K), hq, minpoly.aeval]
+
+theorem exists_isIntegral_mul_inv_pow {y : Kbar v} (hy : ¬ IsIntegral (v.adicCompletionIntegers K) y)
+    {c : v.adicCompletion K} (hc : c ≠ 0) :
+    ∃ N : ℕ, IsIntegral (v.adicCompletionIntegers K) (algebraMap _ (Kbar v) c⁻¹ * y⁻¹ ^ N) := by
+  obtain ⟨ϖ, hϖ0, hϖ1⟩ := exists_ne_zero_valued_lt_one v
+  letI : NontriviallyNormedField (v.adicCompletion K) :=
+    NontriviallyNormedField.ofNormNeOne ⟨ϖ, hϖ0, (Valued.toNormedField.norm_lt_one_iff.2 hϖ1).ne⟩
+  have hmul : ∀ a b : Kbar v, spectralNorm (v.adicCompletion K) (Kbar v) (a * b) =
+      spectralNorm (v.adicCompletion K) (Kbar v) a * spectralNorm (v.adicCompletion K) (Kbar v) b :=
+    fun a b => spectralAlgNorm_mul a b
+  have hy1 : 1 < spectralNorm (v.adicCompletion K) (Kbar v) y := by
+    rw [isIntegral_iff_spectralNorm_le_one, not_le] at hy
+    exact hy
+  have hy0 : y ≠ 0 := by
+    rintro rfl
+    exact hy isIntegral_zero
+  have hinv : spectralNorm (v.adicCompletion K) (Kbar v) y⁻¹ *
+      spectralNorm (v.adicCompletion K) (Kbar v) y = 1 := by
+    rw [← hmul, inv_mul_cancel₀ hy0, spectralNorm_one]
+  have hlt : spectralNorm (v.adicCompletion K) (Kbar v) y⁻¹ < 1 := by
+    rw [eq_inv_of_mul_eq_one_left hinv]
+    exact inv_lt_one_of_one_lt₀ hy1
+  have hc' : 0 < ‖c‖ := norm_pos_iff.2 hc
+  obtain ⟨n, hn⟩ := exists_pow_lt_of_lt_one hc' hlt
+  refine ⟨n + 1, ?_⟩
+  have hs0 : 0 ≤ spectralNorm (v.adicCompletion K) (Kbar v) y⁻¹ := spectralNorm_nonneg _
+  rw [isIntegral_iff_spectralNorm_le_one, hmul, spectralNorm_extends,
+    isPowMul_spectralNorm _ (by omega : 1 ≤ n + 1)]
+  calc ‖c⁻¹‖ * spectralNorm (v.adicCompletion K) (Kbar v) y⁻¹ ^ (n + 1)
+      ≤ ‖c⁻¹‖ * spectralNorm (v.adicCompletion K) (Kbar v) y⁻¹ ^ n :=
+        mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one hs0 hlt.le (by omega)) (norm_nonneg _)
+    _ ≤ ‖c⁻¹‖ * ‖c‖ := mul_le_mul_of_nonneg_left hn.le (norm_nonneg _)
+    _ = 1 := by rw [norm_inv, inv_mul_cancel₀ hc'.ne']
+
+theorem isIntegral_map_iff (f : v.adicCompletion K →+* v'.adicCompletion F) (hf : Continuous f)
+    (b : Kbar v ≃+* Kbar v') (hb : ∀ x, b (algebraMap _ _ x) = algebraMap _ _ (f x)) (y : Kbar v) :
+    IsIntegral (v'.adicCompletionIntegers F) (b y) ↔ IsIntegral (v.adicCompletionIntegers K) y := by
+  refine ⟨fun h => ?_, isIntegral_map f hf b hb⟩
+  by_contra hy
+  obtain ⟨c, hc0, hc1⟩ := exists_ne_zero_valued_lt_one v
+  obtain ⟨N, hN⟩ := exists_isIntegral_mul_inv_pow hy hc0
+  have h1 := isIntegral_map f hf b hb hN
+  have hy0 : y ≠ 0 := by
+    rintro rfl
+    exact hy isIntegral_zero
+  have hby0 : b y ≠ 0 := (map_ne_zero b).2 hy0
+  have h2 : IsIntegral (v'.adicCompletionIntegers F)
+      (algebraMap (v'.adicCompletion F) (Kbar v') (f c)⁻¹) := by
+    have e : algebraMap (v'.adicCompletion F) (Kbar v') (f c)⁻¹ =
+        b y ^ N * b (algebraMap (v.adicCompletion K) (Kbar v) c⁻¹ * y⁻¹ ^ N) := by
+      rw [map_mul, map_pow, map_inv₀ b y, hb, map_inv₀ f, inv_pow, mul_left_comm,
+        mul_inv_cancel₀ (pow_ne_zero _ hby0), mul_one]
+    rw [e]
+    exact (h.pow N).mul h1
+  have h3 := valued_le_one_of_isIntegral h2
+  have h4 := GlobalTheory.ConjParahoric.val_lt_one_map f hf hc1
+  have hfc : f c ≠ 0 := (map_ne_zero f).2 hc0
+  have h5 : Valued.v (f c * (f c)⁻¹) < 1 := by
+    rw [Valuation.map_mul]
+    exact lt_of_le_of_lt (mul_le_of_le_one_right' h3) h4
+  rw [mul_inv_cancel₀ hfc, Valuation.map_one] at h5
+  exact lt_irrefl _ h5
+
+end spectral
+
+end GlobalTheory.ClosureIso
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntegralIffSpectralNormLeOne =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalArtinCompNormCompat =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalArtinCompNormCompat", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSmoothCharCompNormU\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChevalleyUnits\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DecompositionGroupLocalGaloisIso\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEqOfPowEqSelf\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalEmbeddingOverPlace\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder\npublic import CompanionTheory.AutomorphicTheory.PlaceSeparation.IsOpenQuotientMapArt0\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalArtinHasNormGroups\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsIntegralIffSpectralNormLeOne\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.LocalLanglandsGL\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharZeroAdicCompletion\nimport GroundTheory.LocalFields.LocalArtinUniqueness\nimport GroundTheory.LocalFields.MainTheorem\nimport GroundTheory.LocalFields.UnramifiedHensel\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalPrimeGaloisActionPeriodT\nimport Development.AbelianVarietyTheory.Definitions.GaloisGeometry.CyclicStrongAtCusp\nimport Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsWeight\nimport Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RestrictsSelf\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum\nimport Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.TrivialOnInertiaOfUnr\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial
@@ -137,7 +325,7 @@ theorem localArtin_normU : ∀ (K L Ω : Type) [Field Ω] [Field K] [NumberField
         AlgEquiv.restrictNormalHom (maximalAbelianExtension (w.adicCompletion E) (Kbar w)) g =
           (localArtinMap (w.adicCompletion E) (Kbar w) (a σ))⁻¹ := by
     intro E Ω _ _ _ _ _ A w h ι hι a ha _ σ g hg
-    have hN := GlobalTheory.LocNormGrp.hasNormGroups_of_isLocalArtin GlobalTheory.globalArtinReciprocity_holds
+    have hN := GlobalTheory.LocNormGrp.hasNormGroups_of_isLocalArtin _root_.CompanionTheory.FamInh.globalArtin
       GlobalTheory.Published.chevalleyUnits' E Ω A w h ι a hι ha
     obtain ⟨θ, -, -, hl⟩ := GlobalTheory.LocDec.decomposition_mulEquiv_galLoc E Ω A w h ι hι
     let ψ : Weil h →* GalLoc w := θ.toMonoidHom.comp (Subgroup.inclusion (Weil_le_Dec h))
@@ -273,3 +461,7 @@ theorem localArtin_normU : ∀ (K L Ω : Type) [Field Ω] [Field K] [NumberField
   exact injective_localArtinMap key
 
 end GlobalTheory.ArtinNormU
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalArtinCompNormCompat =====

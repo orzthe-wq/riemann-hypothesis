@@ -122,11 +122,11 @@ theorem psi_rn_mulC (z : Fin (2 * ρ + k + 1) → ℂ) (hz : inWb k ρ z) (x y :
     psi k (p + ρ) (liftVec k p ρ z) cStd (U.Rn k p ρ (StabilizerDisintegration.HC.mulC x y)) =
       psi k (p + ρ) (liftVec k p ρ z) cStd (U.Rn k p ρ x) * psi k (p + ρ) (liftVec k p ρ z) cStd (U.Rn k p ρ y) := by
   rw [← StabilizerDisintegration.HC.rn_mul]
-  exact PBG.psi_mul_nset _ (LeftFubiniLemmas.inWb_liftVec hz) _ (LeftFubiniLemmas.rn_nset x) (LeftFubiniLemmas.rn_nset y)
+  exact PBG.psi_mul_nset _ (LeftFubiniLemmas.inWb_liftVec hz) _ (_root_.Formalism.FourierDecayAlt.P.Ux3.rn_nset x) (_root_.Formalism.FourierDecayAlt.P.Ux3.rn_nset y)
 
 theorem cont_kap (c1 : Matrix (Fin (2 * ρ + k + 1)) (Fin p) ℂ) :
     Continuous (fun c : Fin (2 * ρ + k + 1) → Fin p → ℂ => StabilizerDisintegration.HC.kap c1 (Matrix.of c)) := by
-  unfold StabilizerDisintegration.HC.kap StabilizerDisintegration.HC.skc
+  unfold StabilizerDisintegration.HC.kap _root_.Formalism.FourierDecayAlt.P.Ux3.skewCoords
   have hM : Continuous (fun c : Fin (2 * ρ + k + 1) → Fin p → ℂ =>
       (1 / 2 : ℂ) • ((Matrix.of c)ᴴ * Hpk k ρ * c1 - c1ᴴ * Hpk k ρ * Matrix.of c)) := by
     have hof : Continuous (fun c : Fin (2 * ρ + k + 1) → Fin p → ℂ =>
@@ -160,7 +160,7 @@ theorem mp_mulC (d : U.RC k p ρ) :
 
 theorem cont_mulC_left {X : Type*} [TopologicalSpace X] {d : X → U.RC k p ρ} (hd : Continuous d) :
     Continuous (fun q : X × U.RC k p ρ => StabilizerDisintegration.HC.mulC (d q.1) q.2) := by
-  unfold StabilizerDisintegration.HC.mulC StabilizerDisintegration.HC.kap StabilizerDisintegration.HC.skc
+  unfold StabilizerDisintegration.HC.mulC StabilizerDisintegration.HC.kap _root_.Formalism.FourierDecayAlt.P.Ux3.skewCoords
   have hc1 : Continuous (fun q : X × U.RC k p ρ => (Matrix.of (d q.1).1 : Matrix (Fin (2 * ρ + k + 1)) (Fin p) ℂ)) :=
     (hd.comp continuous_fst).fst
   have hc2 : Continuous (fun q : X × U.RC k p ρ => (Matrix.of q.2.1 : Matrix (Fin (2 * ρ + k + 1)) (Fin p) ℂ)) :=
@@ -179,7 +179,7 @@ theorem rn_neg_eq_inv (x : U.RC k p ρ) : U.Rn k p ρ (-x) = (U.Rn k p ρ x)⁻�
   (Matrix.inv_eq_right_inv (PBM.rn_mul_neg x)).symm
 
 theorem rn_inj {x y : U.RC k p ρ} (h : U.Rn k p ρ x = U.Rn k p ρ y) : x = y :=
-  (Formalism.FourierDecayAlt.P.radical_parametrisation k p ρ).1 h
+  (_root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam k p ρ).1 h
 
 theorem mulC_neg_cancel (d x : U.RC k p ρ) : StabilizerDisintegration.HC.mulC d (StabilizerDisintegration.HC.mulC (-d) x) = x := by
   apply rn_inj
@@ -264,7 +264,7 @@ theorem psi_dOf (hz : inWb k ρ Bj.z) {q : Mt k ρ × Mt k ρ}
     unfold dOf
     rw [yA_eq hq]
     unfold LeftFubiniLemmas.rcAct
-    simp only [Matrix.of_apply, Matrix.mul_assoc]
+    simp only [Matrix.mul_assoc]
     rfl
   rw [hsplit, LeftFubiniLemmas.psi_right_action_comm k p ρ Bj.z _ _ hz (Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hq.1)]
   set ν := (Matrix.of q.2 : B.Mat k ρ) with hν
@@ -274,7 +274,7 @@ theorem psi_dOf (hz : inWb k ρ Bj.z) {q : Mt k ρ × Mt k ρ}
   have hz0 := LeftFubiniLemmas.inWb_liftVec (p := p) hz
   have hE : U.embG k p ρ ν⁻¹ ∈ QuantumDeterminants.Nset k (p + ρ) := LeftFubiniLemmas.embG_nset hνi
   have h1 := congrArg (psi k (p + ρ) (liftVec k p ρ Bj.z) cStd) e
-  rw [PBG.psi_mul_nset _ hz0 _ hE (LeftFubiniLemmas.rn_nset d0), PBG.psi_mul_nset _ hz0 _ (LeftFubiniLemmas.rn_nset _) hE] at h1
+  rw [PBG.psi_mul_nset _ hz0 _ hE (_root_.Formalism.FourierDecayAlt.P.Ux3.rn_nset d0), PBG.psi_mul_nset _ hz0 _ (_root_.Formalism.FourierDecayAlt.P.Ux3.rn_nset _) hE] at h1
   have hne : psi k (p + ρ) (liftVec k p ρ Bj.z) cStd (U.embG k p ρ ν⁻¹) ≠ 0 := Complex.exp_ne_zero _
   have := mul_left_cancel₀ hne (h1.trans (mul_comm _ _))
   exact this.symm
@@ -289,7 +289,7 @@ theorem leftFactor_mul_eq_shear {x : XP k p ρ} (hx : GoodP Bj x) (d0 : U.RC k p
   rw [Matrix.mul_assoc, ← yA_eq hx, LeftFubiniLemmas.embedded_group_right_action k p ρ _ d0 (yA_unitary hx), ← Matrix.mul_assoc]
   congr 1
   rw [rn_neg_eq_inv x.2, rn_neg_eq_inv (StabilizerDisintegration.HC.mulC _ x.2), ← StabilizerDisintegration.HC.rn_mul, Matrix.mul_inv_rev,
-    rn_neg_eq_inv (dOf d0 x.1), Matrix.nonsing_inv_nonsing_inv _ (Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh (LeftFubiniLemmas.rn_nset _).1)]
+    rn_neg_eq_inv (dOf d0 x.1), Matrix.nonsing_inv_nonsing_inv _ (Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh (_root_.Formalism.FourierDecayAlt.P.Ux3.rn_nset _).1)]
   rfl
 
 theorem characterProduct_shear (hz : inWb k ρ Bj.z) {x : XP k p ρ} (hx : GoodP Bj x) (d0 : U.RC k p ρ) :
@@ -301,7 +301,7 @@ theorem characterProduct_shear (hz : inWb k ρ Bj.z) {x : XP k p ρ} (hx : GoodP
   have hz0 := LeftFubiniLemmas.inWb_liftVec (p := p) hz
   have h1 : psi k (p + ρ) (liftVec k p ρ Bj.z) cStd (U.Rn k p ρ (dOf d0 x.1)) *
       psi k (p + ρ) (liftVec k p ρ Bj.z) cStd (U.Rn k p ρ (-(dOf d0 x.1))) = 1 := by
-    rw [← PBG.psi_mul_nset _ hz0 _ (LeftFubiniLemmas.rn_nset _) (LeftFubiniLemmas.rn_nset _), PBM.rn_mul_neg,
+    rw [← PBG.psi_mul_nset _ hz0 _ (_root_.Formalism.FourierDecayAlt.P.Ux3.rn_nset _) (_root_.Formalism.FourierDecayAlt.P.Ux3.rn_nset _), PBM.rn_mul_neg,
       Formalism.FourierDecayAlt.P.BesselCapelliCommutation.psi_one hz0]
   calc _ = (psi k (p + ρ) (liftVec k p ρ Bj.z) cStd (U.Rn k p ρ (dOf d0 x.1)) *
         psi k (p + ρ) (liftVec k p ρ Bj.z) cStd (U.Rn k p ρ (-(dOf d0 x.1)))) *
@@ -320,9 +320,6 @@ theorem ae_goodP (Bj : B.RealPlaceData k ρ Wp Wq) : ∀ᵐ x ∂(muXP (p := p) 
     Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae w2)] with x a b
   exact ⟨a, b⟩
 
-theorem castM_mul {a b : ℕ} (e : a = b) (g h : B.Mat k a) : D.castM e (g * h) = D.castM e g * D.castM e h := by
-  subst e; simp [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]
-
 theorem pbF_left_rn (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n) (hz : inWb k ρ Bj.z)
     (H : B.Mat k n → (Wq →L[ℂ] Wp)) (d0 : U.RC k p ρ) (g : B.Mat k n) :
     pbF Bj B0 e H (D.castM e (U.Rn k p ρ d0) * g) =
@@ -332,7 +329,7 @@ theorem pbF_left_rn (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n) (hz : inWb
   refine integral_congr_ae ?_
   filter_upwards [ae_goodP Bj] with x hx
   unfold pbI
-  rw [← Matrix.mul_assoc, ← castM_mul, leftFactor_mul_eq_shear hx d0, characterProduct_shear hz hx d0, mul_smul]
+  rw [← Matrix.mul_assoc, ← _root_.Formalism.FourierDecayAlt.P.Dx2.Tower.castM_mul, leftFactor_mul_eq_shear hx d0, characterProduct_shear hz hx d0, mul_smul]
   rfl
 
 end left

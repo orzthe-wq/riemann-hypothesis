@@ -293,7 +293,7 @@ private theorem charpoly_N :
   rw [LinearMap.charpoly_prodMap, LinearMap.charpoly_one, Module.finrank_self, pow_one,
     ← LinearMap.charpoly_toMatrix _ (QuadraticAlgebra.basis _ _), Matrix.charpoly_fin_two]
   simp only [Matrix.trace_fin_two, Matrix.det_fin_two, LinearMap.toMatrix_apply, hb, b0, b1, LinearMap.mulLeft_apply]
-  simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
+  simp
 
 end UpperTheory.V.Z.Sym.Glob
 

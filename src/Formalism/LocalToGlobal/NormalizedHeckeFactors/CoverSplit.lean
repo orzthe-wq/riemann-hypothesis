@@ -4,50 +4,10 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitExEveryDatu
 public import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverAct
 public import Formalism.LocalToGlobal.GaloisLevelStructure.TiedHecke
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.PSplitT
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.AdicCompletion.Noetherian
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.Automorphisms.InstMainA
 import ReciprocityTheory.Automorphisms.PlaceA
 
@@ -63,16 +23,6 @@ variable {D : D7}
 
 local notation "cO" => IsCMField.ringOfIntegersComplexConj D.host.E
 
-theorem cO_cO (x : 𝓞 D.host.E) : cO (cO x) = x := by
-  apply RingOfIntegers.ext
-  rw [IsCMField.coe_ringOfIntegersComplexConj, IsCMField.coe_ringOfIntegersComplexConj]
-  exact IsCMField.complexConj_apply_apply D.host.E (x : D.host.E)
-
-theorem cO_algebraMap (a : 𝓞 (maximalRealSubfield D.host.E)) :
-    cO (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E) a) =
-      algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E) a :=
-  (IsCMField.ringOfIntegersComplexConj_eq_self_iff D.host.E _).2 ⟨a, rfl⟩
-
 def conjPlE (P : PlE D.host) : PlE D.host where
   asIdeal := P.asIdeal.comap (cO : 𝓞 D.host.E →+* 𝓞 D.host.E)
   isPrime := Ideal.comap_isPrime _ _
@@ -80,10 +30,10 @@ def conjPlE (P : PlE D.host) : PlE D.host where
     obtain ⟨y, hy, hy0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot
     refine (Submodule.ne_bot_iff _).2 ⟨cO y, ?_, ?_⟩
     · show (cO : 𝓞 D.host.E →+* 𝓞 D.host.E) (cO y) ∈ P.asIdeal
-      rw [RingHom.coe_coe, cO_cO]; exact hy
+      rw [RingHom.coe_coe, GlobalTheory.SplitConjPlace.cO_cO]; exact hy
     · intro h0
       apply hy0
-      rw [← cO_cO y, h0, map_zero]
+      rw [← GlobalTheory.SplitConjPlace.cO_cO y, h0, map_zero]
 
 theorem mem_conjPlE (P : PlE D.host) (x : 𝓞 D.host.E) : x ∈ (conjPlE P).asIdeal ↔ cO x ∈ P.asIdeal := Iff.rfl
 
@@ -135,7 +85,7 @@ theorem splitEx_of (hstar : ∀ x : D.host.E, D.host.conj x = IsCMField.complexC
       v₀.asIdeal := by
     ext a
     show cO (algebraMap _ _ a) ∈ v.asIdeal ↔ algebraMap _ _ a ∈ v.asIdeal
-    rw [cO_algebraMap]
+    rw [GlobalTheory.SplitConjPlace.cO_algebraMap]
   obtain ⟨s, hs⟩ := hsplit v₀ ⟨v, conjPlE v, hne, rfl, hover'⟩
   have hsw : s.w.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) =
       v.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) := by
@@ -150,11 +100,11 @@ theorem splitEx_of (hstar : ∀ x : D.host.E, D.host.conj x = IsCMField.complexC
     refine ⟨conjSplit s, algebraMap (maximalRealSubfield D.host.E) (s.v.adicCompletion _) π, ?_, hu⟩
     apply hconj
     intro x
-    rw [mem_conj_w, cO_cO, h]
+    rw [mem_conj_w, GlobalTheory.SplitConjPlace.cO_cO, h]
   · refine ⟨s, algebraMap (maximalRealSubfield D.host.E) (s.v.adicCompletion _) π, ?_, hu⟩
     apply hconj
     intro x
-    rw [h, mem_conjPlE, cO_cO]
+    rw [h, mem_conjPlE, GlobalTheory.SplitConjPlace.cO_cO]
 
 end Formalism.L2
 
@@ -172,18 +122,12 @@ def belowE (v : PlE D.host) : HeightOneSpectrum (𝓞 Fp) where
     obtain ⟨y, hy, hy0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot
     exact Ideal.comap_ne_bot_of_integral_mem hy0 hy (Algebra.IsIntegral.isIntegral y)
 
-theorem fixed_of_cO {x : 𝓞 D.host.E} (hx : cO x = x) : ∃ y : 𝓞 Fp, algebraMap (𝓞 Fp) (𝓞 D.host.E) y = x :=
-  (IsCMField.ringOfIntegersComplexConj_eq_self_iff D.host.E _).1 hx
-
-
-
-
 theorem exists_splitPlace (v : PlE D.host) (x0 : 𝓞 D.host.E) (hx0 : x0 ∈ v.asIdeal) (hc0 : cO x0 ∉ v.asIdeal) :
     ∃ s : SplitPlace D.host.E, s.v = belowE v := by
   classical
   set v₀ := belowE v
-  obtain ⟨a, ha⟩ := fixed_of_cO (x := x0 + cO x0) (by rw [map_add (f := _), cO_cO, add_comm])
-  obtain ⟨b, hb⟩ := fixed_of_cO (x := x0 * cO x0) (by rw [map_mul, cO_cO, mul_comm])
+  obtain ⟨a, ha⟩ := GlobalTheory.SplitConjPlace.fixed_of_cO (x := x0 + cO x0) (by rw [map_add (f := _), GlobalTheory.SplitConjPlace.cO_cO, add_comm])
+  obtain ⟨b, hb⟩ := GlobalTheory.SplitConjPlace.fixed_of_cO (x := x0 * cO x0) (by rw [map_mul, GlobalTheory.SplitConjPlace.cO_cO, mul_comm])
   have hbv : b ∈ v₀.asIdeal := by
     show algebraMap _ _ b ∈ v.asIdeal
     rw [hb]; exact v.asIdeal.mul_mem_right _ hx0

@@ -55,7 +55,7 @@ theorem ddR_finrank_le : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : Loc
       FiniteDimensional ↥LL.1 ↥(DdR (P.PD K) ρ) ∧
         Module.finrank ↥LL.1 ↥(DdR (P.PD K) ρ) ≤ Module.finrank ℚ_[l] ↥K.1 * Module.finrank ↥LL.1 V := by
   intro l _ P AI T K LL V _ _ _ _ _ ρ
-  haveI := LL.2
+  have := LL.2
   exact GlobalTheory.Per.FontaineBound.ddR_finite_le (P.PD K) (GlobalTheory.Per.FontaineBound.isField_of_tied T) ρ
 
 end GlobalTheory.Per.TiedDdR

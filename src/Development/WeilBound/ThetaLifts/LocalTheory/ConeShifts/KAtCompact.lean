@@ -171,7 +171,7 @@ theorem tate (hI : IdeleFub) (hJ : IdealId0) (hS : StabEx) {B : Base F E} {M : M
       have q : algebraMap (AF F) (AE F E) (idem F v) * algebraMap (AF F) (AE F E) (idem F v) =
           algebraMap (AF F) (AE F E) (idem F v) := by rw [← map_mul, idem_sq]
       rw [Subgroup.coe_mul, Units.val_mul, map_mul, hl₀, map_add (f := _), map_smul, map_smul, map_natCast, map_one]
-      simp only [Algebra.smul_def, smul_eq_mul, map_mul, map_sub, map_one, map_natCast, Algebra.algebraMap_self, RingHom.id_apply]
+      simp only [Algebra.smul_def, map_mul, map_sub, map_one, map_natCast, Algebra.algebraMap_self]
       linear_combination ((N : AE F E) * c l.1.1 - c l.1.1) * q
     have h0 : (0 : ℝ) < absE F E l₀.1 := by
       refine lt_of_le_of_ne NNReal.zero_le_coe fun e => ?_

@@ -60,7 +60,7 @@ open Formalism.FourierDecayAlt.S3
 section Count
 
 theorem card_lt_pairs (n : ℕ) : Nat.card {p : Fin n × Fin n // p.1 < p.2} = n * (n - 1) / 2 := by
-  apply Formalism.LogVandermondeBounds.StandardLattice.card_lt_pairs <;> assumption
+  apply Formalism.LogVandermondeBounds.StandardLattice.card_lt_pairs
 
 theorem card_matrix (m n K : Type) [Finite m] [Finite n] :
     Nat.card (Matrix m n K) = Nat.card K ^ (Nat.card m * Nat.card n) := by
@@ -114,39 +114,30 @@ variable (a : Matrix (Fin r) (Fin r) A) (b : Matrix (Fin r) (Mid k) A) (c : Matr
 theorem block11_of_blocks : b11 (mk a b c m e f) = a := by
   first
     | rfl
-    | (ext i j; simp [mk, b11])
 theorem block12_of_blocks : b12 (mk a b c m e f) = b := by
   first
     | rfl
-    | (ext i j; simp [mk, b12])
 theorem block13_of_blocks : b13 (mk a b c m e f) = c := by
   first
     | rfl
-    | (ext i j; simp [mk, b13])
 theorem block21_of_blocks : b21 (mk a b c m e f) = 0 := by
   first
     | rfl
-    | (ext i j; simp [mk, b21])
 theorem block22_of_blocks : b22 (mk a b c m e f) = m := by
   first
     | rfl
-    | (ext i j; simp [mk, b22])
 theorem block23_of_blocks : b23 (mk a b c m e f) = e := by
   first
     | rfl
-    | (ext i j; simp [mk, b23])
 theorem block31_of_blocks : b31 (mk a b c m e f) = 0 := by
   first
     | rfl
-    | (ext i j; simp [mk, b31])
 theorem block32_of_blocks : b32 (mk a b c m e f) = 0 := by
   first
     | rfl
-    | (ext i j; simp [mk, b32])
 theorem block33_of_blocks : b33 (mk a b c m e f) = f := by
   first
     | rfl
-    | (ext i j; simp [mk, b33])
 end mk
 
 def parMap (P : Matrix (Fin k) (Fin k) A → Prop) :
@@ -223,7 +214,6 @@ theorem card_isN (K : Type) [Field K] [Fintype K] (r k : ℕ) :
   have hone : Nat.card {h : Matrix (Fin k) (Fin k) K // h = 1} = 1 := by
     first
       | exact Nat.card_unique
-      | simp
   rw [Nat.card_congr e, card_par, hone, one_mul]
 
 end Count

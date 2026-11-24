@@ -138,7 +138,7 @@ theorem UpperTheory.HF.discr_K :
       rw [IntermediateField.lift_adjoin, IntermediateField.lift_top, Set.image_singleton]
       rfl
     have key := IntermediateField.lift_injective H.K h'
-    convert key <;> exact Subsingleton.elim _ _
+    convert key
   obtain ⟨β, hβ⟩ : ∃ β : 𝓞 H.K, (β : H.K) = x := ⟨⟨x, hint⟩, rfl⟩
   obtain ⟨hd, hK⟩ := diffQuadK H.K H.d H.d_prime H.d_mod_four x hx hadj H.finrank_K β hβ
   have hmap : (differentIdeal ℤ (𝓞 H.K)).map (algebraMap (𝓞 H.K) (𝓞 H.E)) =

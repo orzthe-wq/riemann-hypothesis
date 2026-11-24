@@ -1,11 +1,13 @@
 module
 
+public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.CardFiberMulCardRange
+public import Mathlib.RingTheory.Ideal.Maps
+public import Mathlib.RingTheory.Ideal.BigOperators
 public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExtPPowLeSpanSup
 public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.NormRepCountPowSuccInert
 public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsMulSubOneMemPow
-import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsSqAbsNormOfInert
-public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.MemRangeLinPart
 public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.StarAlgebraMap
+public import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -19,16 +21,15 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-public import Mathlib.RingTheory.Ideal.Norm.RelNorm
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -37,6 +38,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,8 +54,211 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsSqAbsNormOfInert
+import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.MemRangeLinPart, Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.UnitaryDensityField
+
+-- ===== clump member: Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.MemRangeLinPart =====
+-- clump-header: {"m": "Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.MemRangeLinPart", "h": "module\n\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.CardFiberMulCardRange\npublic import Mathlib.RingTheory.Ideal.Maps\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.RingTheory.Ideal.BigOperators\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.HermitianLattices.Ext.L3.SecondPropositionFree
+
+open NormLifting
+
+variable {A B : Type*} [CommRing A] [CommRing B] {σ : A →+* A} {τ : B →+* B} {π : A →+* B}
+
+theorem card_lift_pred [Finite A] (hπ : Function.Surjective π) (hστ : ∀ a, π (σ a) = τ (π a))
+    (hσ : ∀ a, σ (σ a) = a) (hsq : ∀ a b, π a = 0 → π b = 0 → a * b = 0) {θ e : A}
+    (he : (θ - σ θ) * e = 1) {n : A} (hn : σ n = n) (q : ℕ)
+    (hq : Nat.card A = q ^ 2 * Nat.card B) (M : ℕ) (hM : 1 ≤ M) (p : (Fin M → B) → Prop)
+    (hsurj : ∀ y : Fin M → A, p (fun i => π (y i)) → ∀ w ∈ fixSub σ (RingHom.ker π),
+      w ∈ (linPart σ (RingHom.ker π) y).range) :
+    Nat.card {x : Fin M → A // p (fun i => π (x i)) ∧ ∑ i, σ (x i) * x i = n} =
+      q ^ (2 * M - 1) * Nat.card {x : Fin M → B // p x ∧ ∑ i, τ (x i) * x i = π n} := by
+  classical
+  have hIσ : ∀ a ∈ RingHom.ker π, σ a ∈ RingHom.ker π := by
+    intro a ha
+    rw [RingHom.mem_ker] at ha ⊢
+    rw [hστ, ha, map_zero]
+  haveI : Finite B := Finite.of_surjective π hπ
+
+  have hker : Nat.card (RingHom.ker π) = q ^ 2 := by
+    have h1 : Nat.card A = Nat.card (RingHom.ker π) * Nat.card B := by
+      refine card_eq_mul_of_fibers π _ (fun b => ?_)
+      obtain ⟨a0, ha0⟩ := hπ b
+      exact Nat.card_congr
+        { toFun := fun a => ⟨a.1 - a0, by rw [RingHom.mem_ker, map_sub, a.2, ha0, sub_self]⟩
+          invFun := fun k => ⟨k.1 + a0, by rw [map_add (f := _), RingHom.mem_ker.mp k.2, ha0, zero_add]⟩
+          left_inv := fun a => Subtype.ext (sub_add_cancel a.1 a0)
+          right_inv := fun k => Subtype.ext (add_sub_cancel_right k.1 a0) }
+    have hB : 0 < Nat.card B := Nat.card_pos
+    rw [hq] at h1
+    exact (Nat.eq_of_mul_eq_mul_right hB h1).symm
+  have hq0 : 0 < q := by
+    have hk : 0 < Nat.card (RingHom.ker π) := Nat.card_pos
+    rw [hker] at hk
+    exact Nat.pos_of_ne_zero (fun h => by simp [h] at hk)
+
+  have hfix : Nat.card (fixSub σ (RingHom.ker π)) = q := by
+    have h := card_fixSub_sq hσ hIσ he
+    rw [hker] at h
+    exact Nat.pow_left_injective two_ne_zero h
+
+  have hrange : ∀ x0 : Fin M → A, p (fun i => π (x0 i)) →
+      Nat.card (linPart σ (RingHom.ker π) x0).range = q := by
+    intro x0 hp
+    have hR : (linPart σ (RingHom.ker π) x0).range = fixSub σ (RingHom.ker π) := by
+      ext w
+      rw [AddMonoidHom.mem_range]
+      constructor
+      · rintro ⟨δ, rfl⟩
+        show linPart σ (RingHom.ker π) x0 δ ∈ RingHom.ker π ∧
+          σ (linPart σ (RingHom.ker π) x0 δ) = linPart σ (RingHom.ker π) x0 δ
+        refine ⟨?_, ?_⟩
+        · rw [linPart_apply]
+          refine Ideal.sum_mem _ fun i _ => Ideal.add_mem _ ?_ ?_
+          · exact Ideal.mul_mem_left _ _ (δ i).2
+          · exact Ideal.mul_mem_right _ _ (hIσ _ (δ i).2)
+        · set_option synthInstance.maxHeartbeats 100000 in
+            rw [linPart_apply, map_sum]
+          refine Finset.sum_congr rfl fun i _ => ?_
+          simp only [map_add (f := _), map_mul, hσ]
+          ring
+      · intro hw
+        exact AddMonoidHom.mem_range.mp (hsurj x0 hp w hw)
+    rw [hR, hfix]
+
+  have hnorm : ∀ x : Fin M → A, ∑ i, σ (x i) * x i = n → ∑ i, τ (π (x i)) * π (x i) = π n := by
+    intro x hx
+
+    rw [← hx, map_sum]
+    simp only [map_mul, hστ]
+  refine card_eq_mul_of_fibers
+    (fun x : {x : Fin M → A // p (fun i => π (x i)) ∧ ∑ i, σ (x i) * x i = n} =>
+      (⟨fun i => π (x.1 i), x.2.1, hnorm x.1 x.2.2⟩ :
+        {x : Fin M → B // p x ∧ ∑ i, τ (x i) * x i = π n})) _ ?_
+  intro y
+  choose x0 hx0 using fun i => hπ (y.1 i)
+  have hpx0 : p (fun i => π (x0 i)) := by
+    have h : (fun i => π (x0 i)) = y.1 := funext hx0
+    rw [h]
+    exact y.2.1
+  have hNx0 : π (∑ i, σ (x0 i) * x0 i) = π n := by
+
+    rw [map_sum]
+    simp only [map_mul, hστ, hx0]
+    exact y.2.2
+  have ht : n - ∑ i, σ (x0 i) * x0 i ∈ fixSub σ (RingHom.ker π) := by
+    show n - ∑ i, σ (x0 i) * x0 i ∈ RingHom.ker π ∧
+      σ (n - ∑ i, σ (x0 i) * x0 i) = n - ∑ i, σ (x0 i) * x0 i
+    refine ⟨?_, ?_⟩
+    · rw [RingHom.mem_ker, map_sub, hNx0, sub_self]
+    · set_option synthInstance.maxHeartbeats 100000 in
+        rw [map_sub, hn, map_sum]
+      congr 1
+      refine Finset.sum_congr rfl fun i _ => ?_
+      simp only [map_mul, hσ]
+      ring
+
+  have key : Nat.card {δ : Fin M → RingHom.ker π //
+      linPart σ (RingHom.ker π) x0 δ = n - ∑ i, σ (x0 i) * x0 i} = q ^ (2 * M - 1) := by
+    have hfib := card_fiber_mul_card_range (linPart σ (RingHom.ker π) x0) _ (hsurj x0 hpx0 _ ht)
+    rw [hrange x0 hpx0, Nat.card_fun, hker, Nat.card_eq_fintype_card (α := Fin M), Fintype.card_fin,
+      ← pow_mul] at hfib
+    have hpow : q ^ (2 * M) = q ^ (2 * M - 1) * q := by
+      rw [← pow_succ]
+      congr 1
+      omega
+    rw [hpow] at hfib
+    exact Nat.eq_of_mul_eq_mul_right hq0 hfib
+
+  have hfwd : ∀ x : Fin M → A, (∀ i, π (x i) = y.1 i) → ∀ i, x i - x0 i ∈ RingHom.ker π := by
+    intro x hx i
+    rw [RingHom.mem_ker, map_sub, hx, hx0, sub_self]
+  have hexp : ∀ (x : Fin M → A) (hd : ∀ i, x i - x0 i ∈ RingHom.ker π),
+      ∑ i, σ (x i) * x i = ∑ i, σ (x0 i) * x0 i +
+        linPart σ (RingHom.ker π) x0 (fun i => ⟨x i - x0 i, hd i⟩) := by
+    intro x hd
+    rw [linPart_apply, ← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    have h0 : σ (x i - x0 i) * (x i - x0 i) = 0 :=
+      hsq _ _ (RingHom.mem_ker.mp (hIσ _ (hd i))) (RingHom.mem_ker.mp (hd i))
+    dsimp only
+    rw [map_sub] at h0 ⊢
+    linear_combination h0
+  have hLfwd : ∀ (x : Fin M → A) (hx : ∀ i, π (x i) = y.1 i), ∑ i, σ (x i) * x i = n →
+      linPart σ (RingHom.ker π) x0 (fun i => ⟨x i - x0 i, hfwd x hx i⟩) =
+        n - ∑ i, σ (x0 i) * x0 i := by
+    intro x hx hN
+    have h := hexp x (hfwd x hx)
+    rw [hN] at h
+    rw [h]
+    ring
+  have hdmem : ∀ (δ : Fin M → RingHom.ker π) i, (x0 i + δ i) - x0 i ∈ RingHom.ker π := by
+    intro δ i
+    rw [add_sub_cancel_left]
+    exact (δ i).2
+  have hbinv : ∀ (δ : Fin M → RingHom.ker π) i, π (x0 i + δ i) = y.1 i := by
+    intro δ i
+    rw [map_add (f := _), RingHom.mem_ker.mp (δ i).2, add_zero, hx0]
+  have hpinv : ∀ δ : Fin M → RingHom.ker π, p (fun i => π (x0 i + δ i)) := by
+    intro δ
+    have h : (fun i => π (x0 i + δ i)) = y.1 := funext (hbinv δ)
+    rw [h]
+    exact y.2.1
+  have hNinv : ∀ δ : Fin M → RingHom.ker π,
+      linPart σ (RingHom.ker π) x0 δ = n - ∑ i, σ (x0 i) * x0 i →
+        ∑ i, σ (x0 i + δ i) * (x0 i + δ i) = n := by
+    intro δ hδ
+    have h := hexp (fun i => x0 i + δ i) (hdmem δ)
+    have hδ' : (fun i => (⟨(x0 i + δ i) - x0 i, hdmem δ i⟩ : RingHom.ker π)) = δ := by
+      funext i
+      exact Subtype.ext (add_sub_cancel_left (x0 i) (δ i : A))
+    rw [hδ', hδ] at h
+    rw [h]
+    ring
+  rw [← key]
+  exact Nat.card_congr
+    { toFun := fun x => ⟨fun i => ⟨x.1.1 i - x0 i,
+          hfwd x.1.1 (fun j => congrFun (congrArg Subtype.val x.2) j) i⟩,
+        hLfwd x.1.1 (fun j => congrFun (congrArg Subtype.val x.2) j) x.1.2.2⟩
+      invFun := fun δ => ⟨⟨fun i => x0 i + δ.1 i, hpinv δ.1, hNinv δ.1 δ.2⟩,
+        Subtype.ext (funext fun i => hbinv δ.1 i)⟩
+      left_inv := fun x => Subtype.ext (Subtype.ext (funext fun i =>
+        show x0 i + (x.1.1 i - x0 i) = x.1.1 i by ring))
+      right_inv := fun δ => Subtype.ext (funext fun i => Subtype.ext
+        (show x0 i + (δ.1 i : A) - x0 i = (δ.1 i : A) by ring)) }
+
+theorem mem_range_linPart (I : Ideal A) {M : ℕ} (y : Fin M → A) (i₀ : Fin M)
+    {b : A} (hb : σ (y i₀) * b + σ b * y i₀ = 1) {w : A} (hw : w ∈ fixSub σ I) :
+    w ∈ (linPart σ I y).range := by
+  have hw' : w ∈ I ∧ σ w = w := hw
+  obtain ⟨hwI, hσw⟩ := hw'
+  classical
+  refine ⟨fun i => if i = i₀ then ⟨b * w, I.mul_mem_left b hwI⟩ else 0, ?_⟩
+  rw [linPart_apply, Finset.sum_eq_single i₀]
+  · rw [if_pos rfl]
+    show σ (y i₀) * (b * w) + σ (b * w) * y i₀ = w
+    rw [map_mul, hσw]
+    linear_combination w * hb
+  · intro j _ hj
+    simp [hj]
+  · intro h
+    exact absurd (Finset.mem_univ i₀) h
+
+end Formalism.HermitianLattices.Ext.L3.SecondPropositionFree
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.MemRangeLinPart =====
+
+-- ===== clump member: Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.UnitaryDensityField =====
+-- clump-header: {"m": "Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.UnitaryDensityField", "h": "module\n\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExtPPowLeSpanSup\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.NormRepCountPowSuccInert\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsMulSubOneMemPow\nimport Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsSqAbsNormOfInert\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.MemRangeLinPart\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.StarAlgebraMap\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.FreeModule.IdealQuotient\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RingTheory.Ideal.Norm.RelNorm\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField Module
@@ -127,7 +332,7 @@ theorem card_AQ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFix
 theorem card_split {X : Type*} [Finite X] (p r : X → Prop) :
     Nat.card {x // r x} = Nat.card {x // ¬ p x ∧ r x} + Nat.card {x // p x ∧ r x} := by
   classical
-  haveI := Fintype.ofFinite X
+  have := Fintype.ofFinite X
   simp only [Nat.card_eq_fintype_card, Fintype.card_subtype]
   rw [← Finset.card_union_of_disjoint]
   · congr 1
@@ -140,7 +345,7 @@ theorem card_split {X : Type*} [Finite X] (p r : X → Prop) :
 
 theorem cnt_eq_add (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k M : ℕ) (n : 𝓞 K) :
     cnt hF 𝔭 k M n = cntP hF 𝔭 k M n + cntI hF 𝔭 k M n := by
-  haveI := finite_AQ (K := K) h𝔭 k
+  have := finite_AQ (K := K) h𝔭 k
   unfold cnt cntP cntI
   exact card_split (fun x : Fin M → AQ K 𝔭 k => ∀ i, InQ 𝔭 k (x i)) _
 
@@ -238,3 +443,7 @@ theorem cntP_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFix
     ring
 
 end Formalism.HermitianLattices.Ext.L3.unitaryAbsoluteValueBounds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.UnitaryDensityField =====

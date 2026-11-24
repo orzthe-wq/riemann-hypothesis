@@ -3,7 +3,8 @@ module
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.NormCharSplit
 public import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.EigBasic
 public import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.TypedEx
-public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursBasics
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SummandFactor
+public import Development.WeilBound.CuspidalAdmissibility.OccursIff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -80,7 +81,7 @@ private lemma exists_local_level (μ : Measure (normOneGL (K := K) (n := n))) [�
       interior_nonempty' := by
         rw [(GLnLocal.isOpen_integralGL _ n).interior_eq]
         exact ⟨1, Subgroup.one_mem _⟩ }
-  obtain ⟨⟨σ, f, hf0, hfV, hfe⟩, -, -⟩ := occursBasics K n μ V w (Measure.haarMeasure P) hV
+  obtain ⟨⟨σ, f, hf0, hfV, hfe⟩, -, -⟩ := _root_.PositivityTheory.TfC.OccursBasics_holds K n μ V w (Measure.haarMeasure P) hV
   obtain ⟨x, hx⟩ : ∃ x, f x ≠ 0 := by
     by_contra h
     push_neg at h

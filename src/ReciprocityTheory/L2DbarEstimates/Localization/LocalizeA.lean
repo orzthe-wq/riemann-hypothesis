@@ -48,6 +48,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Calculus.ContDiff.Operations
+import ReciprocityTheory.L2DbarEstimates.ChartDerivatives.ChartSymmEventuallyEq
 
 @[expose] public section
 
@@ -84,8 +85,6 @@ theorem loc_d_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     have ht : Tendsto e.symm (𝓝 (e x)) (𝓝 x) := by
       first
       | exact e.tendsto_symm he.2
-      | (have hc' : Tendsto e.symm (𝓝 (e x)) (𝓝 (e.symm (e x))) := e.continuousAt_symm (e.map_source he.2)
-         rwa [e.left_inv he.2] at hc')
     have hfg : f ∘ e.symm =ᶠ[𝓝 (z x)] g ∘ e.symm := by
       rw [hzx]
       exact ht.eventually h
@@ -104,8 +103,6 @@ theorem loc_db_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     have ht : Tendsto e.symm (𝓝 (e x)) (𝓝 x) := by
       first
       | exact e.tendsto_symm he.2
-      | (have hc' : Tendsto e.symm (𝓝 (e x)) (𝓝 (e.symm (e x))) := e.continuousAt_symm (e.map_source he.2)
-         rwa [e.left_inv he.2] at hc')
     have hfg : f ∘ e.symm =ᶠ[𝓝 (z x)] g ∘ e.symm := by
       rw [hzx]
       exact ht.eventually h
@@ -121,58 +118,12 @@ theorem loc_ck_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k
   exact (ContDiffOn.sum fun i _ => hf i e he :
     ContDiffOn ℝ _ (fun y => ∑ i ∈ s, (f i ∘ e.symm) y) e.target)
 
-theorem loc_d_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι : Type*}
-    (s : Finset ι) (f : ι → M → ℂ) (hf : ∀ i, Ck n z 1 (f i)) (j : Fin n) (x : M) :
-    d n z j (fun y => ∑ i ∈ s, f i y) x = ∑ i ∈ s, d n z j (f i) x := by
-  by_cases hc : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source
-  · simp only [d, dif_pos hc]
-    set e := Classical.choose hc with he_def
-    have he : IsChart n z e ∧ x ∈ e.source := Classical.choose_spec hc
-    have hdiff : ∀ i ∈ s, DifferentiableAt ℝ (f i ∘ e.symm) (z x) := by
-      intro i _
-      rw [he.1 he.2]
-      exact ((hf i e he.1).contDiffAt (e.open_target.mem_nhds (e.map_source he.2))).differentiableAt
-        (by first | simp | norm_num | exact le_rfl)
-    have hsum : ((fun y => ∑ i ∈ s, f i y) ∘ e.symm) = fun y => ∑ i ∈ s, (f i ∘ e.symm) y := rfl
-    unfold wd
-    (first | rw [hsum, fderiv_fun_sum hdiff] | rw [hsum, ← Finset.sum_fn, fderiv_sum hdiff])
-    have key : ∀ L : ι → (V n →L[ℝ] ℂ), ((∑ i ∈ s, L i) (bas n j) - Complex.I * (∑ i ∈ s, L i) (Complex.I • bas n j)) / 2 =
-        ∑ i ∈ s, (L i (bas n j) - Complex.I * L i (Complex.I • bas n j)) / 2 := by
-      intro L
-      simp only [ContinuousLinearMap.sum_apply, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]
-    exact key _
-  · simp only [d, dif_neg hc, Finset.sum_const_zero]
-
-theorem loc_db_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι : Type*}
-    (s : Finset ι) (f : ι → M → ℂ) (hf : ∀ i, Ck n z 1 (f i)) (j : Fin n) (x : M) :
-    db n z j (fun y => ∑ i ∈ s, f i y) x = ∑ i ∈ s, db n z j (f i) x := by
-  by_cases hc : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source
-  · simp only [db, dif_pos hc]
-    set e := Classical.choose hc with he_def
-    have he : IsChart n z e ∧ x ∈ e.source := Classical.choose_spec hc
-    have hdiff : ∀ i ∈ s, DifferentiableAt ℝ (f i ∘ e.symm) (z x) := by
-      intro i _
-      rw [he.1 he.2]
-      exact ((hf i e he.1).contDiffAt (e.open_target.mem_nhds (e.map_source he.2))).differentiableAt
-        (by first | simp | norm_num | exact le_rfl)
-    have hsum : ((fun y => ∑ i ∈ s, f i y) ∘ e.symm) = fun y => ∑ i ∈ s, (f i ∘ e.symm) y := rfl
-    unfold wdb
-    (first | rw [hsum, fderiv_fun_sum hdiff] | rw [hsum, ← Finset.sum_fn, fderiv_sum hdiff])
-    have key : ∀ L : ι → (V n →L[ℝ] ℂ), ((∑ i ∈ s, L i) (bas n j) + Complex.I * (∑ i ∈ s, L i) (Complex.I • bas n j)) / 2 =
-        ∑ i ∈ s, (L i (bas n j) + Complex.I * L i (Complex.I • bas n j)) / 2 := by
-      intro L
-      simp only [ContinuousLinearMap.sum_apply, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_div]
-    exact key _
-  · simp only [db, dif_neg hc, Finset.sum_const_zero]
-
 theorem loc_norm_sum_sq {E : Type*} [SeminormedAddCommGroup E] {N : ℕ} (a : Fin N → E) :
     ‖∑ i, a i‖ ^ 2 ≤ N * ∑ i, ‖a i‖ ^ 2 := by
   have h1 : ‖∑ i, a i‖ ≤ ∑ i, ‖a i‖ := norm_sum_le _ _
   have h2 : (∑ i, ‖a i‖) ^ 2 ≤ N * ∑ i, ‖a i‖ ^ 2 := by
     first
     | (have h3 := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun _ => (1 : ℝ)) (fun i => ‖a i‖)
-       simpa using h3)
-    | (have h3 := sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun i => ‖a i‖)
        simpa using h3)
   calc ‖∑ i, a i‖ ^ 2 ≤ (∑ i, ‖a i‖) ^ 2 := by gcongr
     _ ≤ N * ∑ i, ‖a i‖ ^ 2 := h2
@@ -227,11 +178,7 @@ def locS {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (η : M → 
 theorem loc_sum_apply {n N : ℕ} (a : Fin N → V n) (j : Fin n) :
     (∑ i, a i) j = ∑ i, a i j := by
   first
-  | exact Finset.sum_apply j Finset.univ a
   | simp [Finset.sum_apply]
-  | simp [WithLp.ofLp_sum]
-  | exact map_sum (EuclideanSpace.proj (𝕜 := ℂ) j) a Finset.univ
-  | simpa using map_sum (EuclideanSpace.proj (𝕜 := ℂ) j) a Finset.univ
 
 theorem loc_tsupport_sub {M E : Type*} [TopologicalSpace M] [Zero E] (f : M → E) (T : Set M)
     (hT : IsClosed T) (h : ∀ x, x ∉ T → f x = 0) : tsupport f ⊆ T := by
@@ -243,20 +190,11 @@ theorem loc_continuous_wedge (n : ℕ) :
     Continuous (fun p : (Fin n → ℂ) × (Fin n → ℂ) => wedge p.1 p.2) := by
   first
   | (unfold wedge; fun_prop)
-  | (refine continuous_pi fun j => continuous_pi fun k => ?_
-     unfold wedge
-     fun_prop)
-  | (refine continuous_pi fun j => continuous_pi fun k => ?_
-     simp only [wedge]
-     exact (((continuous_apply j).comp continuous_fst).mul ((continuous_apply k).comp continuous_snd)).sub
-       (((continuous_apply k).comp continuous_fst).mul ((continuous_apply j).comp continuous_snd)))
 
 theorem continuous_two_form_norm_sq (n : ℕ) : Continuous (sq2 n) := by
   show Continuous (fun σ : Fin n → Fin n → ℂ => (∑ j, ∑ k, ‖σ j k‖ ^ 2) / 2)
   first
   | fun_prop
-  | exact (continuous_finset_sum _ fun j _ => continuous_finset_sum _ fun k _ =>
-      (((continuous_apply k).comp (continuous_apply j)).norm.pow 2)).div_const 2
 
 private theorem chart_symm_eventuallyEq_at_chart_point {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e e' : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (he' : IsChart n z e') (y : M)
@@ -273,8 +211,6 @@ private theorem chart_symm_eventuallyEq_at_chart_point {M : Type*} [TopologicalS
     rw [hzy']
     first
     | exact e'.tendsto_symm hy'
-    | (have hc' : Tendsto e'.symm (𝓝 (e' y)) (𝓝 (e'.symm (e' y))) := e'.continuousAt_symm (e'.map_source hy')
-       rwa [e'.left_inv hy'] at hc')
   have h3 : ∀ᶠ w in 𝓝 (z y), e'.symm w ∈ e.source := ht.eventually (e.open_source.mem_nhds hy)
   filter_upwards [h1, h2, h3] with w hw hw' hw''
   refine e.injOn hw'' (e.map_target hw) ?_
@@ -311,7 +247,7 @@ private theorem continuous_d_of_smooth {M : Type*} [TopologicalSpace M] (n : ℕ
   obtain ⟨e, hx, hze⟩ := hz x
   have he : IsChart n z e := fun y _ => by rw [hze]
   have hF : ContinuousOn (fun w => fderiv ℝ (g ∘ e.symm) w) e.target :=
-    (hg e he).continuousOn_fderiv_of_isOpen e.open_target (by first | simp | exact_mod_cast le_top | norm_num)
+    (hg e he).continuousOn_fderiv_of_isOpen e.open_target (by first | simp)
   have h0 : ContinuousOn (fun w => wd n j (g ∘ e.symm) w) e.target := by
     unfold wd
     exact ((hF.clm_apply continuousOn_const).sub (continuousOn_const.mul
@@ -324,8 +260,6 @@ private theorem continuous_d_of_smooth {M : Type*} [TopologicalSpace M] (n : ℕ
     exact (d_eq_wd_at_chart_image n z g e he y hy j).symm
   first
   | exact hc.congr hEv
-  | exact hc.congr_of_eventuallyEq hEv.symm
-  | exact (continuousAt_congr hEv).mp hc
 
 private theorem continuous_db_apply_of_smooth {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (g : M → ℂ) (hg : Smooth n z g) (j : Fin n) :
@@ -334,7 +268,7 @@ private theorem continuous_db_apply_of_smooth {M : Type*} [TopologicalSpace M] (
   obtain ⟨e, hx, hze⟩ := hz x
   have he : IsChart n z e := fun y _ => by rw [hze]
   have hF : ContinuousOn (fun w => fderiv ℝ (g ∘ e.symm) w) e.target :=
-    (hg e he).continuousOn_fderiv_of_isOpen e.open_target (by first | simp | exact_mod_cast le_top | norm_num)
+    (hg e he).continuousOn_fderiv_of_isOpen e.open_target (by first | simp)
   have h0 : ContinuousOn (fun w => wdb n j (g ∘ e.symm) w) e.target := by
     unfold wdb
     exact ((hF.clm_apply continuousOn_const).add (continuousOn_const.mul
@@ -347,24 +281,6 @@ private theorem continuous_db_apply_of_smooth {M : Type*} [TopologicalSpace M] (
     exact (db_eq_wdb_at_chart_image n z g e he y hy j).symm
   first
   | exact hc.congr hEv
-  | exact hc.congr_of_eventuallyEq hEv.symm
-  | exact (continuousAt_congr hEv).mp hc
-
-private theorem continuous_of_smooth_localization {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
-    (hz : IsLocalHomeomorph z) (g : M → ℂ) (hg : Smooth n z g) : Continuous g := by
-  refine continuous_iff_continuousAt.mpr fun x => ?_
-  obtain ⟨e, hx, hze⟩ := hz x
-  have he : IsChart n z e := fun y _ => by rw [hze]
-  have hW : ContinuousOn (fun y => (g ∘ e.symm) (e y)) e.source :=
-    (hg e he).continuousOn.comp e.continuousOn (fun y hy => e.map_source hy)
-  have hEv : (fun y => (g ∘ e.symm) (e y)) =ᶠ[𝓝 x] g := by
-    filter_upwards [e.open_source.mem_nhds hx] with y hy
-    simp only [Function.comp_apply, e.left_inv hy]
-  have hc := hW.continuousAt (e.open_source.mem_nhds hx)
-  first
-  | exact hc.congr hEv
-  | exact hc.congr_of_eventuallyEq hEv.symm
-  | exact (continuousAt_congr hEv).mp hc
 
 theorem loc_piece {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z)
@@ -381,7 +297,7 @@ theorem loc_piece {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableT
       tsupport (locG η G) ⊆ T ∧ tsupport (locD n z η G D) ⊆ T ∧
       tsupport (locS n z η G S) ⊆ T := by
   have hsm : Smooth n z (fun y => (η y : ℂ)) := hη
-  have hCC : Continuous (fun y => (η y : ℂ)) := continuous_of_smooth_localization n z hz _ hsm
+  have hCC : Continuous (fun y => (η y : ℂ)) := _root_.ReciprocityTheory.L2DbarEstimates.Smooth.continuous n z hz _ hsm
   have hz0 : ∀ x, x ∉ tsupport η → η x = 0 := fun x hx => by
     by_contra hne
     exact hx (subset_tsupport η hne)
@@ -411,8 +327,6 @@ theorem loc_piece {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableT
     have hex : ∃ C, ∀ x, ‖φ x‖ ≤ C := by
       first
       | exact hφ.bounded_above_of_compact_support hcs
-      | (obtain ⟨C, hC⟩ := (hcs.isCompact_range hφ).isBounded.exists_norm_le
-         exact ⟨C, fun x => hC _ ⟨x, rfl⟩⟩)
     obtain ⟨C, hC⟩ := hex
     exact ⟨max C 0, le_max_right _ _, fun x => (hC x).trans (le_max_left _ _)⟩
   obtain ⟨Cη, hCη0, hCη⟩ := hbound _ hCC (fun x hx => by simp [hz0 x hx])
@@ -435,17 +349,10 @@ theorem loc_piece {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableT
     intro v j
     first
     | exact PiLp.norm_apply_le v j
-    | exact PiLp.norm_apply_le_norm v j
-    | (rw [EuclideanSpace.norm_eq]
-       exact (le_abs_self _).trans (Real.abs_le_sqrt (Finset.single_le_sum (f := fun i => ‖v i‖ ^ 2)
-         (fun i _ => sq_nonneg _) (Finset.mem_univ j))))
   have hcoordc : ∀ j : Fin n, Continuous (fun v : V n => v j) := by
     intro j
     first
     | fun_prop
-    | exact (EuclideanSpace.proj (𝕜 := ℂ) j).continuous
-    | exact PiLp.continuous_apply 2 _ j
-    | continuity
   have hGj : ∀ j : Fin n, AEStronglyMeasurable (fun x => G x j) (vol n z) := fun j =>
     (hcoordc j).comp_aestronglyMeasurable hG.1
   have hGm : LocalL2Isometry (vol n z) (locG η G) := by
@@ -458,9 +365,7 @@ theorem loc_piece {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableT
   have hDmeas : AEStronglyMeasurable (locD n z η G D) (vol n z) := by
     have h2 : AEStronglyMeasurable (fun x => ∑ j, d n z j (fun y => (η y : ℂ)) x * G x j) (vol n z) := by
       first
-      | exact Finset.aestronglyMeasurable_sum _ fun j _ => (hdc j).aestronglyMeasurable.mul (hGj j)
       | exact Finset.aestronglyMeasurable_fun_sum _ fun j _ => (hdc j).aestronglyMeasurable.mul (hGj j)
-      | exact Finset.aestronglyMeasurable_sum' _ fun j _ => (hdc j).aestronglyMeasurable.mul (hGj j)
     exact (hCC.aestronglyMeasurable.mul hD.1).add h2
   have hDm : LocalL2Isometry (vol n z) (locD n z η G D) := by
     refine locL2_of_le_sum (vol n z) (locD n z η G D) G D (Cη + (n : ℝ) * K) hG hD hDmeas fun x => ?_
@@ -491,7 +396,6 @@ theorem loc_piece {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableT
         (fun x => ((fun l => db n z l (fun y => (η y : ℂ)) x), (fun l => G x l))) (vol n z) := by
       first
       | exact h1.prodMk h2
-      | exact h1.prod_mk h2
     have hW := (loc_continuous_wedge n).comp_aestronglyMeasurable hpair
     exact (hCC.aestronglyMeasurable.smul hS.1).add hW
   have hSm : LocalL2Isometry (vol n z) (locS n z η G S) := by
@@ -537,7 +441,6 @@ theorem two_form_norm_sq_nonneg (n : ℕ) (σ : Fin n → Fin n → ℂ) : 0 ≤
   unfold sq2
   first
   | positivity
-  | exact div_nonneg (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => sq_nonneg _) (by norm_num)
 
 theorem loc_ofReal_le {N : ℕ} (b : Fin N → ℝ) (hb : ∀ i, 0 ≤ b i) (a : ℝ)
     (h : a ≤ N * ∑ i, b i) : ENNReal.ofReal a ≤ N * ∑ i, ENNReal.ofReal (b i) := by

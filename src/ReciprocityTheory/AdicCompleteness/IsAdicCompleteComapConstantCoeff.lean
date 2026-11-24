@@ -154,7 +154,7 @@ theorem isAdicComplete_comap_constantCoeff [IsAdicComplete I A] :
 
 end Complete
 
-theorem isAdicComplete_ps {R : Type u} [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] :
+theorem isAdicComplete_ps {R : Type u} [CommRing R] [IsLocalRing R] [IsAdicComplete (maximalIdeal R) R] :
     IsAdicComplete (maximalIdeal R⟦X⟧) R⟦X⟧ := by
   have h : maximalIdeal R⟦X⟧ = (maximalIdeal R).comap (constantCoeff (R := R)) := by
     ext f

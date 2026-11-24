@@ -116,7 +116,7 @@ theorem compFin_add_cA_eq_one : ∀ {D : D7} (Z : Finset (Pl D.host.E)) (e : AE 
       (if splitPrime (τ0.comp D.sp.cm.sig) ∈ Z then 1 - splitIdem (isCMExt_host D) τ0 else 0) := by
 
     rw [map_sum, Finset.sum_congr rfl key]
-    simp only [Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq, if_pos hPP]
+    simp only [Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos hPP]
   have hc : compFin D.host.F D.host.E v0 (cA D (∑ Q ∈ Z, es Q)) =
       sigR _ D.sp.cm.sig (compFin D.host.F D.host.E v0 (∑ Q ∈ Z, es Q)) :=
     (GlobalTheory.SplitIdemDict.compFin_cA _).symm

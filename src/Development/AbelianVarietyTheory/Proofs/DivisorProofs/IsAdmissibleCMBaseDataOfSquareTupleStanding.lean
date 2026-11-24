@@ -182,7 +182,7 @@ namespace GlobalTheory.BaseGoodPlace
 theorem exists_ram_prime_of_le (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F))
     (hle : differentIdeal ℤ (𝓞 D.host.F) ≤ v.asIdeal) :
     ∃ p : ℕ, p ∣ D.host.QS * D.host.q * D.host.d ∧ (p : 𝓞 D.host.F) ∈ v.asIdeal := by
-  obtain ⟨p, -, h1, h2⟩ := UpperTheory.Ram.Fun.exists_prime_of_different_le D.host v hle
+  obtain ⟨p, -, h1, h2⟩ := _root_.UpperTheory.Reformulated.B.Qj12.exists_prime_of_different_le D.host v hle
   exact ⟨p, h1, h2⟩
 
 end GlobalTheory.BaseGoodPlace

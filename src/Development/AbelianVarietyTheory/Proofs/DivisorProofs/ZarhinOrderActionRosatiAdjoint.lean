@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.TypeStar
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -135,7 +136,7 @@ theorem mul_form_eq {d : ℕ} {N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) �
   congr 1
   · simp
   · simp only [Matrix.mul_smul, Matrix.mul_one]
-  · simp [Matrix.smul_mul]
+  · simp
   · simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, smul_add]
 
 theorem blocks_bar {d : ℕ} (hd : 0 < d) (N : ord d) :

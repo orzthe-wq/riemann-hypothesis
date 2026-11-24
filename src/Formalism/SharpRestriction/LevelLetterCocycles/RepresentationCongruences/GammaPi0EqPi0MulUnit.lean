@@ -1,8 +1,17 @@
 module
 
-import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.Pi0MemADelta
+public import Mathlib.RingTheory.PowerSeries.Substitution
 public import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
-public import Formalism.SharpRestriction.LevelLetterCocycles.ConstantCoeffAlgHom
+public import Mathlib.RingTheory.PowerSeries.Inverse
+import Mathlib.Algebra.Order.Algebra
+import Mathlib.Analysis.Normed.Group.Basic
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Data.EReal.Inv
+import Mathlib.Geometry.Convex.ConvexSpace.Defs
+import Mathlib.Tactic.ContinuousFunctionalCalculus
+import Mathlib.Tactic.Positivity.Finset
+import Mathlib.Tactic.TypeStar
+import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.Pi0MemADelta
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -18,7 +27,6 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-public import Mathlib.RingTheory.PowerSeries.Inverse
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -42,6 +50,167 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.LevelLetterCocycles.ConstantCoeffAlgHom, Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.GammaPi0EqPi0MulUnit
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.ConstantCoeffAlgHom =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.ConstantCoeffAlgHom", "h": "module\n\npublic import Mathlib.RingTheory.PowerSeries.Substitution\nimport Mathlib.Algebra.Order.Algebra\nimport Mathlib.Analysis.Normed.Group.Basic\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Data.EReal.Inv\nimport Mathlib.Geometry.Convex.ConvexSpace.Defs\nimport Mathlib.Tactic.ContinuousFunctionalCalculus\nimport Mathlib.Tactic.Positivity.Finset\nimport Mathlib.Tactic.TypeStar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open PowerSeries
+
+namespace Formalism.MainNotions.N.WachTwistedLattices.PowerSeriesTruncation
+
+variable {O : Type*} [CommRing O]
+
+theorem coeff_X_pow_mul_lt {n d : ℕ} (h : d < n) (p : PowerSeries O) :
+    coeff d (X ^ n * p) = 0 := by
+  first
+  | rw [PowerSeries.coeff_X_pow_mul', if_neg (not_le.mpr h)]
+
+theorem coeff_pow_mul_lt {Y : PowerSeries O} (hY : constantCoeff Y = 0) {n d : ℕ} (h : d < n)
+    (p : PowerSeries O) : coeff d (Y ^ n * p) = 0 := by
+  obtain ⟨Z, rfl⟩ := PowerSeries.X_dvd_iff.mpr hY
+  rw [mul_pow, mul_assoc]
+  exact coeff_X_pow_mul_lt h _
+
+theorem trunc_decomp (a : PowerSeries O) (k : ℕ) :
+    ∃ b, a = (trunc k a : PowerSeries O) + X ^ k * b := by
+  have hd : (X : PowerSeries O) ^ k ∣ a - (trunc k a : PowerSeries O) := by
+    rw [PowerSeries.X_pow_dvd_iff]
+    intro m hm
+    rw [map_sub, Polynomial.coeff_coe, PowerSeries.coeff_trunc, if_pos hm, sub_self]
+  obtain ⟨b, hb⟩ := hd
+  exact ⟨b, by rw [← hb]; ring⟩
+
+theorem algHom_coe (ψ : PowerSeries O →ₐ[O] PowerSeries O) (p : Polynomial O) :
+    ψ (p : PowerSeries O) = Polynomial.aeval (ψ X) p := by
+  induction p using Polynomial.induction_on' with
+  | add p q hp hq => rw [Polynomial.coe_add, map_add (f := _), hp, hq, map_add (f := _)]
+  | monomial n c =>
+    rw [← Polynomial.C_mul_X_pow_eq_monomial]
+    simp only [Polynomial.coe_mul, Polynomial.coe_pow, Polynomial.coe_C, Polynomial.coe_X, map_mul,
+      map_pow, Polynomial.aeval_C, Polynomial.aeval_X]
+    congr 1
+    first
+    | exact ψ.commutes c
+
+private theorem natDegree_trunc_lt_of_pos (a : PowerSeries O) {N : ℕ} (hN : 0 < N) :
+    (trunc N a).natDegree < N := by
+  obtain ⟨N', rfl⟩ : ∃ N', N = N' + 1 := ⟨N - 1, by omega⟩
+  first
+  | exact PowerSeries.natDegree_trunc_lt a N'
+
+private theorem coeff_algHom_eq_sum_range_of_lt (σ : PowerSeries O →ₐ[O] PowerSeries O)
+    (hσ : constantCoeff (σ X) = 0) (a : PowerSeries O) {m N : ℕ} (hN : m < N) :
+    coeff m (σ a) = ∑ n ∈ Finset.range N, coeff n a * coeff m (σ X ^ n) := by
+  obtain ⟨b, hb⟩ := trunc_decomp a N
+  have hdeg := natDegree_trunc_lt_of_pos a (lt_of_le_of_lt (Nat.zero_le m) hN)
+
+  rw [show σ a = σ ((trunc N a : PowerSeries O) + X ^ N * b) from congrArg σ hb, map_add (f := _), map_mul,
+  map_pow, algHom_coe, map_add,
+  coeff_pow_mul_lt hσ hN, add_zero,
+  Polynomial.aeval_eq_sum_range' hdeg, map_sum]
+  refine Finset.sum_congr rfl fun i hi => ?_
+  rw [Finset.mem_range] at hi
+  first
+  | rw [map_smul, smul_eq_mul, PowerSeries.coeff_trunc, if_pos hi]
+
+private theorem hasSubst_of_constantCoeff_eq_zero_level_letter_cocycles {Y : PowerSeries O}
+    (hY : constantCoeff Y = 0) : PowerSeries.HasSubst Y := by
+  first
+  | exact PowerSeries.HasSubst.of_constantCoeff_zero' hY
+
+private theorem coeff_subst_eq_sum_range_of_lt {Y : PowerSeries O} (hY : constantCoeff Y = 0)
+    (a : PowerSeries O) {m N : ℕ} (hN : m < N) :
+    coeff m (a.subst Y) = ∑ n ∈ Finset.range N, coeff n a * coeff m (Y ^ n) := by
+  have hs := hasSubst_of_constantCoeff_eq_zero_level_letter_cocycles hY
+  let σ : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom hs
+  have h1 : ∀ f : PowerSeries O, σ f = f.subst Y := fun f => by
+    first
+    | simp [σ, PowerSeries.coe_substAlgHom]
+  have h2 : σ X = Y := by
+    rw [h1]
+    first
+    | exact PowerSeries.subst_X hs
+  have h3 := coeff_algHom_eq_sum_range_of_lt σ (by rw [h2]; exact hY) a hN
+  rw [h2, h1] at h3
+  exact h3
+
+theorem algHom_eq_subst (ψ : PowerSeries O →ₐ[O] PowerSeries O)
+    (hψ : constantCoeff (ψ X) = 0) (a : PowerSeries O) : ψ a = a.subst (ψ X) := by
+  ext m
+  rw [coeff_algHom_eq_sum_range_of_lt ψ hψ a (Nat.lt_succ_self m),
+    coeff_subst_eq_sum_range_of_lt hψ a (Nat.lt_succ_self m)]
+
+def qn (Y Z : PowerSeries O) (n : ℕ) : PowerSeries O :=
+  ∑ i ∈ Finset.range n, Y ^ i * Z ^ (n - 1 - i)
+
+theorem coeff_qn {Y Z : PowerSeries O} (hY : constantCoeff Y = 0) (hZ : constantCoeff Z = 0)
+    {n j : ℕ} (h : j + 1 < n) : coeff j (qn Y Z n) = 0 := by
+  obtain ⟨Y', rfl⟩ := PowerSeries.X_dvd_iff.mpr hY
+  obtain ⟨Z', rfl⟩ := PowerSeries.X_dvd_iff.mpr hZ
+  unfold qn
+
+  rw [map_sum]
+  refine Finset.sum_eq_zero fun i hi => ?_
+  rw [Finset.mem_range] at hi
+  have e : n - 1 = i + (n - 1 - i) := by omega
+  have hprod : (X * Y') ^ i * (X * Z') ^ (n - 1 - i) = X ^ (n - 1) * (Y' ^ i * Z' ^ (n - 1 - i)) := by
+    generalize n - 1 - i = k at e ⊢
+    rw [e]
+    ring
+  rw [hprod]
+  exact coeff_X_pow_mul_lt (by omega) _
+
+theorem subst_sub_subst_dvd {Y Z : PowerSeries O} (hY : constantCoeff Y = 0)
+    (hZ : constantCoeff Z = 0) (a : PowerSeries O) : (Y - Z) ∣ a.subst Y - a.subst Z := by
+  classical
+  have hYZ : ∀ n, (Y - Z) * qn Y Z n = Y ^ n - Z ^ n := fun n => by
+    unfold qn
+    rw [mul_comm]
+    first
+    | exact geom_sum₂_mul Y Z n
+  have stab : ∀ q M, q + 2 ≤ M →
+      ∑ n ∈ Finset.range M, coeff n a * coeff q (qn Y Z n) =
+        ∑ n ∈ Finset.range (q + 2), coeff n a * coeff q (qn Y Z n) := by
+    intro q M hM
+    symm
+    refine Finset.sum_subset (fun x hx => by rw [Finset.mem_range] at hx ⊢; omega) fun n _ hn => ?_
+    rw [Finset.mem_range, not_lt] at hn
+    rw [coeff_qn hY hZ (by omega), mul_zero]
+  refine ⟨PowerSeries.mk fun q =>
+    ∑ n ∈ Finset.range (q + 2), coeff n a * coeff q (qn Y Z n), ?_⟩
+  ext m
+  symm
+  have hm : m < m + 2 := by omega
+  rw [map_sub, PowerSeries.coeff_mul, coeff_subst_eq_sum_range_of_lt hY a hm,
+    coeff_subst_eq_sum_range_of_lt hZ a hm, ← Finset.sum_sub_distrib]
+  have h1 : ∀ n, coeff n a * coeff m (Y ^ n) - coeff n a * coeff m (Z ^ n) =
+      ∑ p ∈ Finset.antidiagonal m, coeff p.1 (Y - Z) * (coeff n a * coeff p.2 (qn Y Z n)) := by
+    intro n
+    have e := congrArg (coeff m) (hYZ n)
+    rw [map_sub, PowerSeries.coeff_mul] at e
+    rw [← mul_sub, ← e, Finset.mul_sum]
+    exact Finset.sum_congr rfl fun p _ => by ring
+  rw [Finset.sum_congr rfl fun n _ => h1 n]
+  conv_rhs => rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun p hp => ?_
+  rw [PowerSeries.coeff_mk, ← Finset.mul_sum,
+    stab p.2 (m + 2) (by rw [Finset.mem_antidiagonal] at hp; omega)]
+
+end Formalism.MainNotions.N.WachTwistedLattices.PowerSeriesTruncation
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.ConstantCoeffAlgHom =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.GammaPi0EqPi0MulUnit =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.GammaPi0EqPi0MulUnit", "h": "module\n\nimport Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.Pi0MemADelta\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ConstantCoeffAlgHom\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RingTheory.PowerSeries.Inverse\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -79,7 +248,7 @@ theorem delF_iff (g : W.Gam) : g ∈ W.DelF ↔ IsOfFinOrder g := by
   rw [W.DelF_def, isOfFinOrder_iff_pow_eq_one]
 
 theorem π₀_mem : W.π₀ ∈ W.AΔ := by
-  apply Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.pi0_mem_ADelta <;> assumption
+  apply Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.pi0_mem_ADelta
 
 theorem qA_mem : qA W ∈ W.AΔ :=
   W.AΔ.add_mem (π₀_mem W) (natCast_mem _ _)
@@ -390,3 +559,7 @@ theorem gam_frac_core (hR : RD W) (a : ZMod n) (e : ℕ) (α : ℕ → ℤ) (f :
 end RDsec2
 
 end Formalism.MainNotions.N.FrobeniusPowerSeries.GS
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.GammaPi0EqPi0MulUnit =====

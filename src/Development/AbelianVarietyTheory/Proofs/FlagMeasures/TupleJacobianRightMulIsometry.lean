@@ -3,10 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
 public import Mathlib.RingTheory.Norm.Defs
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsEqZpowMulUnit
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthonormalBasisAndOneOrbit
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelVolMul
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelativeLatticeVolumeOfDetValuationStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelativeLatticeVolumeOfDetValuation
+public import Mathlib.RingTheory.Norm.Transitivity
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,7 +58,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.RingTheory.Norm.Transitivity
 
 @[expose] public section
 
@@ -175,7 +175,7 @@ theorem cont_linearEquiv [IsNonarchimedeanLocalField F] [CharZero F] (L : LocE F
   obtain ⟨c, hc, hN⟩ := exists_int_basis L
   obtain ⟨B, hB⟩ := exists_lat_basis L Hm hH Λ hΛ
   have := L.free
-  have h := GlobalTheory.T.relative_lattice_volume_of_det_valuation ϖ hϖ (Pi.basis fun _ : Fin m => c.smulTower B) (φ.restrictScalars F) a u
+  have h := _root_.GlobalTheory.HL.LatDet.relVol_map ϖ hϖ (Pi.basis fun _ : Fin m => c.smulTower B) (φ.restrictScalars F) a u
     (by
       apply GlobalTheory.UnramOrder.algebraMap_inj L
       rw [← hd, ← hN, ← LinearMap.det_restrictScalars]
@@ -192,7 +192,7 @@ theorem cont_linearEquiv [IsNonarchimedeanLocalField F] [CharZero F] (L : LocE F
 def rmulL {n m : ℕ} (A : Matrix (Fin m) (Fin m) E) :
     (Fin m → Fin n → E) →ₗ[E] (Fin m → Fin n → E) where
   toFun x := rmul x A
-  map_add' x y := by ext j k; simp [rmul, mul_add, Finset.sum_add_distrib]
+  map_add' x y := by ext j k; simp [rmul, Finset.sum_add_distrib]
   map_smul' c x := by ext j k; simp [rmul, Finset.mul_sum, mul_left_comm]
 
 def swapL (n m : ℕ) : (Fin n → Fin m → E) ≃ₗ[E] (Fin m → Fin n → E) where
@@ -233,8 +233,7 @@ theorem det_isom (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (hH : 
   refine hH.mul_left_cancel ?_
   rw [mul_one]
   conv_rhs => rw [← h3]
-  simp only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, AlgEquiv.coe_ringEquiv,
-    AlgEquiv.coe_toRingEquiv]
+  simp only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, AlgEquiv.coe_ringEquiv]
   ring
 
 end GlobalTheory.HL.TupleJac

@@ -42,7 +42,6 @@ import Mathlib.Topology.Sheaves.Init
 
 namespace PositivityTheory.Prw
 
-theorem siegelCore_holds : PositivityTheory.ThKR.SiegelCore :=
-  GlobalTheory.CompanionTheory.SiegelRed.siegelCore
+alias siegelCore_holds := _root_.GlobalTheory.CompanionTheory.SiegelRed.siegelCore
 
 end PositivityTheory.Prw

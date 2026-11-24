@@ -2,7 +2,6 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsMidLevIff
 public import Formalism.LocalToGlobal.InertKernelTheory.K2OfAgreements
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaDistributionUnfolded
 public import Development.AbelianVarietyTheory.PublishedTheorems.GlobalTheta.WeylDualWeylLatticesAgreeOfLowestAlcove
 import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SharpPoly
@@ -53,11 +52,6 @@ namespace GlobalTheory.FormsSharpTie
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Forms Formalism.L2.KerInert.K2
 
-theorem natW_antitone {n : ℕ} (l : DomWeight n) : Antitone l.natW := by
-  intro a b h
-  simp only [DomWeight.natW]
-  exact Int.toNat_le_toNat (by have := l.anti h; omega)
-
 theorem ratSpan_le_wtPol (D : D7) {n : ℕ} (lam : D.what₂.Tau → DomWeight n) :
     ∀ P ∈ RatSpan D lam, P ∈ WtPol ℂ (fun τ r => (lam τ).natW r) := by
   intro P hP
@@ -67,14 +61,14 @@ theorem ratSpan_le_wtPol (D : D7) {n : ℕ} (lam : D.what₂.Tau → DomWeight n
     rintro p ⟨r, f, hf, rfl⟩
     show _ ∈ WtPol ℂ _
     apply Submodule.smul_mem
-    apply GlobalTheory.KerWt.VV_le_WtPol lam
+    apply _root_.Formalism.L2.Ker.VV_le_WtPol lam
     unfold Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat
     apply Submodule.subset_span
     refine ⟨fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ), fun τ => ?_, rfl⟩
     have h1 : MvPolynomial.map (Int.castRingHom ℂ) (f τ) ∈ delSq ℂ n (lam τ) := by
       rw [← GlobalTheory.Published.span_map_delSq ℤ ℂ (Int.castRingHom ℂ) n (lam τ)]
       exact Submodule.subset_span ⟨f τ, hf τ, rfl⟩
-    exact Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl _ (natW_antitone (lam τ)) h1
+    exact Formalism.GradedWeylDivisibility.weylLeDual ℂ n n le_rfl _ (_root_.Formalism.L2.Col.natW_anti (lam τ)) h1
   exact hle hP
 
 theorem eval_colSub {ι : Type} [Fintype ι] {a : ℕ} (β x : ι → Matrix (Fin a) (Fin a) ℂ) (p : Formalism.L2.DIV.Pol ℂ ι a) :
@@ -84,7 +78,7 @@ theorem eval_colSub {ι : Type} [Fintype ι] {a : ℕ} (β x : ι → Matrix (Fi
   | C c => simp [colSub]
   | add p q hp hq => simp only [map_add (f := _), hp, hq]
   | mul_X p v hp =>
-    simp only [map_mul, hp, colSub, MvPolynomial.aeval_X, MvPolynomial.eval_X, Matrix.mul_apply]
+    simp only [map_mul, colSub, MvPolynomial.aeval_X, MvPolynomial.eval_X, Matrix.mul_apply]
     congr 1
 
     rw [map_sum]
@@ -167,7 +161,7 @@ theorem sharpWt_rat (D : D7) (Tw : TwForms D) (u : D.what₂.Word) (μ : D.what�
     (τ : D.what₂.Tau) (r : Fin (D.R.N j)) :
     ((((nuT D u j τ r : ℤ) - (D.chTw u μ).sSharp j τ : ℤ)) : ℚ) =
         ((((Tw.fm u μ).lam j τ).w r : ℤ) : ℚ) - (j : ℚ) * ((D.R.t : ℚ) + 1) / 2 := by
-  have h1 := (GlobalTheory.KerWt.nu_t_identity D u j hj τ r).1
+  have h1 := (_root_.Formalism.L2.Ker.nu_t_identity D u j hj τ r).1
   have h2 := (D.chTw u μ).sSharp_eq j hj τ
   have h3 := (Tw.fm u μ).lam_eq j hj.le τ r
   have h2' : (((D.chTw u μ).sSharp j τ : ℤ) : ℝ) =

@@ -103,7 +103,7 @@ private lemma exists_contr_ne_zero {y : L ⊗[k] A} (hy : y ≠ 0) :
     intro z
     induction z using TensorProduct.induction_on with
     | zero => simp
-    | tmul m n => simp [contr_tmul, E, TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]
+    | tmul m n => simp [contr_tmul, E]
     | add x y hx hy => simp only [map_add (f := _), hx, hy, Finsupp.add_apply]
   rw [key]
   simpa using hi

@@ -105,28 +105,13 @@ theorem bind_singleton_self (s : Multiset (List A)) : s.bind (fun x => {x}) = s 
 
 theorem shuffle_assoc : ∀ u v w : List A,
     (shuffle u v).bind (fun x => shuffle x w) = (shuffle v w).bind (fun x => shuffle u x)
-  | [], v, w => by simp [bind_singleton_self]
-  | a :: u, [], w => by simp
-  | a :: u, b :: v, [] => by simp [bind_singleton_self]
+  | [], _, _ | _, [], _ | _, _, [] => by simp [bind_singleton_self]
   | a :: u, b :: v, c :: w => by
-      have h1 := shuffle_assoc u (b :: v) (c :: w)
-      have h2 := shuffle_assoc (a :: u) v (c :: w)
-      have h3 := shuffle_assoc (a :: u) (b :: v) w
-      have e1 : (shuffle (a :: u) (b :: v)).bind (fun x => shuffle x (c :: w)) =
-          ((shuffle u (b :: v)).bind (fun x => shuffle x (c :: w))).map (List.cons a) +
-          ((shuffle (a :: u) v).bind (fun x => shuffle x (c :: w))).map (List.cons b) +
-          ((shuffle (a :: u) (b :: v)).bind (fun x => shuffle x w)).map (List.cons c) := by
-        simp only [shuffle_cons_cons a b, Multiset.add_bind, Multiset.bind_map,
-          shuffle_cons_cons _ c, Multiset.bind_add, Multiset.map_bind, Multiset.map_add]
-        abel
-      have e2 : (shuffle (b :: v) (c :: w)).bind (fun x => shuffle (a :: u) x) =
-          ((shuffle (b :: v) (c :: w)).bind (fun x => shuffle u x)).map (List.cons a) +
-          ((shuffle v (c :: w)).bind (fun x => shuffle (a :: u) x)).map (List.cons b) +
-          ((shuffle (b :: v) w).bind (fun x => shuffle (a :: u) x)).map (List.cons c) := by
-        simp only [shuffle_cons_cons b c, Multiset.add_bind, Multiset.bind_map,
-          shuffle_cons_cons a, Multiset.bind_add, Multiset.map_bind, Multiset.map_add]
-        abel
-      rw [e1, e2, h1, h2, h3]
+      have h := congrArg₂ (fun s t => s.map (a :: ·) + t.map (b :: ·))
+        (shuffle_assoc u (b :: v) (c :: w)) (shuffle_assoc (a :: u) v (c :: w))
+      simpa [shuffle_cons_cons, Multiset.bind_map, Multiset.map_bind,
+        add_assoc, add_comm, add_left_comm] using
+        congrArg₂ (fun s t => s + t.map (c :: ·)) h (shuffle_assoc (a :: u) (b :: v) w)
 termination_by u v w => u.length + v.length + w.length
 
 end Shuffle
@@ -160,39 +145,28 @@ theorem mulLin_word (u v : List A) :
     mulLin K (word K u) (word K v) = ((shuffle u v).map (word K)).sum := by
   simp only [mulLin, ← wordBasis_apply, Module.Basis.constr_basis]
 
+theorem word_ext (f g : Module.End K (ShuffleAlgebra K A))
+    (h : ∀ w, f (word K w) = g (word K w)) (x : ShuffleAlgebra K A) : f x = g x :=
+  LinearMap.congr_fun ((wordBasis K A).ext h) x
+
 theorem mulLin_comm (x y : ShuffleAlgebra K A) : mulLin K x y = mulLin K y x := by
-  have : mulLin K (A := A) = (mulLin K).flip := by
-    refine (wordBasis K A).ext fun u => (wordBasis K A).ext fun v => ?_
-    simp only [wordBasis_apply, LinearMap.flip_apply, mulLin_word, shuffle_comm u v]
-  conv_lhs => rw [this]
-  rfl
+  refine word_ext K ((mulLin K).flip y) _ (fun u => ?_) x
+  refine word_ext K _ ((mulLin K).flip (word K u)) (fun v => ?_) y
+  simp [mulLin_word, shuffle_comm u v]
 
 theorem mulLin_one (x : ShuffleAlgebra K A) : mulLin K (word K []) x = x := by
-  have : mulLin K (word K ([] : List A)) = LinearMap.id := by
-    refine (wordBasis K A).ext fun v => ?_
-    simp [wordBasis_apply, mulLin_word]
-  rw [this]; rfl
+  exact word_ext K _ LinearMap.id (fun v => by simp [mulLin_word]) x
 
 theorem mulLin_assoc (x y z : ShuffleAlgebra K A) :
     mulLin K (mulLin K x y) z = mulLin K x (mulLin K y z) := by
-  have key : ∀ u v w : List A, mulLin K (mulLin K (word K u) (word K v)) (word K w) =
-      mulLin K (word K u) (mulLin K (word K v) (word K w)) := by
-    intro u v w
-    have h := congrArg (fun s => (Multiset.map (word K) s).sum) (shuffle_assoc u v w)
-    simp only [Multiset.map_bind, Multiset.sum_bind] at h
-    rw [mulLin_comm, mulLin_word, mulLin_word, map_multiset_sum, map_multiset_sum,
-      Multiset.map_map, Multiset.map_map]
-    simp only [Function.comp_def, mulLin_word, shuffle_comm w]
-    exact h
-  have h3 : ∀ u v : List A, mulLin K (mulLin K (word K u) (word K v)) =
-      mulLin K (word K u) ∘ₗ mulLin K (word K v) := fun u v =>
-    (wordBasis K A).ext fun w => key u v w
-  have h2 : ∀ u : List A, ((mulLin K).flip z) ∘ₗ mulLin K (word K u) =
-      mulLin K (word K u) ∘ₗ (mulLin K).flip z := fun u =>
-    (wordBasis K A).ext fun v => LinearMap.congr_fun (h3 u v) z
-  have h1 : ((mulLin K).flip z) ∘ₗ (mulLin K).flip y = (mulLin K).flip (mulLin K y z) :=
-    (wordBasis K A).ext fun u => LinearMap.congr_fun (h2 u) y
-  exact LinearMap.congr_fun h1 x
+  let m := mulLin K (A := A)
+  refine word_ext K (m.flip z ∘ₗ m.flip y) (m.flip (m y z)) (fun u => ?_) x
+  refine word_ext K (m.flip z ∘ₗ m (word K u))
+    (m (word K u) ∘ₗ m.flip z) (fun v => ?_) y
+  refine word_ext K _ (m (word K u) ∘ₗ m (word K v)) (fun w => ?_) z
+  rw [mulLin_comm]
+  simpa [m, mulLin_word, map_multiset_sum, shuffle_comm w, Multiset.map_bind] using
+    congrArg (fun s => (s.map (word K)).sum) (shuffle_assoc u v w)
 
 noncomputable instance : CommRing (ShuffleAlgebra K A) where
   __ := (inferInstance : AddCommGroup (ShuffleAlgebra K A))
@@ -254,20 +228,14 @@ theorem append_lt_of_lt_of_length {u v : List A} (h : u < v) (hl : v.length ≤ 
   · exact h x y
   · exact absurd (by simpa using hl) ht
 
-theorem append_lt_append_left (p : List A) {u v : List A} (h : u < v) : p ++ u < p ++ v := by
-  induction p with
-  | nil => exact h
-  | cons a p ih => exact List.Lex.cons ih
+theorem append_lt_append_left (p : List A) {u v : List A} (h : u < v) : p ++ u < p ++ v :=
+  List.append_left_lt h
 
-theorem nil_le (u : List A) : [] ≤ u := by
-  cases u with
-  | nil => exact le_rfl
-  | cons a u => exact le_of_lt (List.Lex.nil)
+theorem nil_le (u : List A) : [] ≤ u :=
+  le_of_not_gt (List.nil_le u)
 
-theorem le_append (p u : List A) : p ≤ p ++ u := by
-  rcases (nil_le u).lt_or_eq with h | h
-  · simpa using (append_lt_append_left p h).le
-  · simp [← h]
+theorem le_append (p u : List A) : p ≤ p ++ u :=
+  le_of_not_gt List.le_append_left
 
 theorem isLyndon_singleton (a : A) : IsLyndon [a] :=
   isLyndon_of_pairwise_lt (by simp) (by simp)
@@ -275,20 +243,18 @@ theorem isLyndon_singleton (a : A) : IsLyndon [a] :=
 theorem isLyndon_append {l m : List A} (hl : IsLyndon l) (hm : IsLyndon m) (h : l < m) :
     IsLyndon (l ++ m) := by
   have h0 : l ++ m < m := by
-    rcases lt_cases h with h | ⟨t, ht, e⟩
+    rcases lt_cases h with h | ⟨t, ht, rfl⟩
     · simpa using h m []
-    · have := append_lt_append_left l (lt_of_isLyndon hm hl.1 ht e)
-      rwa [← e] at this
+    · exact append_lt_append_left l (lt_of_isLyndon hm hl.1 ht rfl)
   refine ⟨by simp [hl.1], fun u v hu hv e => ?_⟩
   change l ++ m < v
-  rcases List.append_eq_append_iff.1 e with ⟨s, e1, e2⟩ | ⟨s, e1, e2⟩
-  · by_cases hs : s = []
-    · subst hs; simp at e2; rw [← e2]; exact h0
-    · exact h0.trans (lt_of_isLyndon hm hs hv e2)
-  · by_cases hs : s = []
-    · subst hs; simp at e2; rw [e2]; exact h0
-    · rw [e2]
-      exact append_lt_of_lt_of_length (lt_of_isLyndon hl hu hs e1) (by simp [e1]) _ _
+  by_cases hul : u = l
+  · subst u
+    simpa only [List.append_cancel_left e] using h0
+  rcases List.append_eq_append_iff.1 e with ⟨s, rfl, e2⟩ | ⟨s, rfl, rfl⟩
+  · exact h0.trans (lt_of_isLyndon hm (by simpa using hul) hv e2)
+  · exact append_lt_of_lt_of_length
+      (lt_of_isLyndon hl hu (by simpa using hul) rfl) (by simp) _ _
 
 def IsFactors (L : List (List A)) : Prop := (∀ l ∈ L, IsLyndon l) ∧ L.Pairwise (· ≥ ·)
 
@@ -302,41 +268,31 @@ theorem exists_factors_cons (L : List (List A)) (hL : IsFactors L) :
   | cons m L ih =>
     intro l hl
     rcases le_or_gt m l with h | h
-    · refine ⟨l :: m :: L, ⟨?_, List.pairwise_cons.2 ⟨?_, hL.2⟩⟩, by simp⟩
-      · intro x hx
-        rcases List.mem_cons.1 hx with rfl | hx
-        · exact hl
-        · exact hL.1 x hx
-      · intro x hx
-        rcases List.mem_cons.1 hx with rfl | hx
-        · exact h
-        · exact le_trans ((List.pairwise_cons.1 hL.2).1 x hx) h
+    · exact ⟨l :: m :: L, ⟨by simpa using And.intro hl hL.1,
+        List.Pairwise.cons_cons_of_trans h hL.2⟩, rfl⟩
     · obtain ⟨L', h1, h2⟩ := ih hL.tail (l ++ m) (isLyndon_append hl (hL.1 m (by simp)) h)
       exact ⟨L', h1, by simp [h2]⟩
 
 theorem exists_factors (w : List A) : ∃ L, IsFactors L ∧ L.flatten = w := by
   induction w with
-  | nil => exact ⟨[], ⟨by simp, by simp⟩, rfl⟩
+  | nil => exact ⟨[], by simp [IsFactors]⟩
   | cons a w ih =>
-    obtain ⟨L, h1, h2⟩ := ih
-    obtain ⟨L', h3, h4⟩ := exists_factors_cons L h1 [a] (isLyndon_singleton a)
-    exact ⟨L', h3, by simp [h4, h2]⟩
+    obtain ⟨L, hL, rfl⟩ := ih
+    exact exists_factors_cons L hL [a] (isLyndon_singleton a)
 
 theorem exists_suffix_le (l : List A) (L : List (List A)) (hL : ∀ m ∈ L, m ≤ l) :
     ∀ t r : List A, t ≠ [] → t ++ r = L.flatten → ∃ s q, q ≠ [] ∧ t = s ++ q ∧ q ≤ l := by
   induction L with
-  | nil => intro t r ht e; simp [ht] at e
+  | nil => simp +contextual
   | cons m L ih =>
     intro t r ht e
-    rw [List.flatten_cons] at e
-    have hm := hL m (by simp)
-    rcases List.append_eq_append_iff.1 e with ⟨s, e1, e2⟩ | ⟨s, e1, e2⟩
-    · exact ⟨[], t, ht, rfl, le_trans (e1 ▸ le_append t s) hm⟩
-    · by_cases hs : s = []
-      · subst hs; simp at e1; exact ⟨[], t, ht, rfl, e1 ▸ hm⟩
-      · obtain ⟨s', q, h1, h2, h3⟩ :=
-          ih (fun x hx => hL x (List.mem_cons_of_mem _ hx)) s r hs e2.symm
-        exact ⟨m ++ s', q, h1, by simp [e1, h2], h3⟩
+    simp only [List.forall_mem_cons] at hL
+    rcases List.append_eq_append_iff.1 e with ⟨s, rfl, _⟩ | ⟨s, rfl, er⟩
+    · exact ⟨[], t, ht, rfl, (le_append t s).trans hL.1⟩
+    · rcases eq_or_ne s [] with rfl | hs
+      · exact ⟨[], m, by simpa using ht, by simp, hL.1⟩
+      · obtain ⟨p, q, hq, rfl, h⟩ := ih hL.2 s r hs er.symm
+        exact ⟨m ++ p, q, hq, (List.append_assoc _ _ _).symm, h⟩
 
 theorem eq_nil_of_head_append {l t r : List A} {L : List (List A)} (hL : IsFactors (l :: L))
     (hp : IsLyndon (l ++ t)) (e : L.flatten = t ++ r) : t = [] := by
@@ -351,23 +307,17 @@ theorem factors_unique (L : List (List A)) (hL : IsFactors L) :
     ∀ L', IsFactors L' → L.flatten = L'.flatten → L = L' := by
   induction L with
   | nil =>
-    intro L' h e
-    cases L' with
-    | nil => rfl
-    | cons m L' => simp [(h.1 m (by simp)).1] at e
+    rintro (_ | ⟨m, L'⟩) h e
+    · rfl
+    · simp [(h.1 m (by simp)).1] at e
   | cons l L ih =>
-    intro L' h e
-    cases L' with
-    | nil => simp [(hL.1 l (by simp)).1] at e
-    | cons m L' =>
-      simp only [List.flatten_cons] at e
-      have : l = m := by
-        rcases List.append_eq_append_iff.1 e with ⟨s, e1, e2⟩ | ⟨s, e1, e2⟩
-        · have := eq_nil_of_head_append hL (e1 ▸ h.1 m (by simp)) e2
-          simp [e1, this]
-        · have := eq_nil_of_head_append h (e1 ▸ hL.1 l (by simp)) e2
-          simp [e1, this]
-      subst this
+    rintro (_ | ⟨m, L'⟩) h e
+    · simp [(hL.1 l (by simp)).1] at e
+    · have heads : l = m := by
+        rcases List.append_eq_append_iff.1 e with ⟨s, rfl, er⟩ | ⟨s, rfl, er⟩
+        · rw [eq_nil_of_head_append hL (h.1 _ (by simp)) er, List.append_nil]
+        · rw [eq_nil_of_head_append h (hL.1 _ (by simp)) er, List.append_nil]
+      subst m
       rw [ih hL.tail L' h.tail (List.append_cancel_left e)]
 
 noncomputable def Interleaves : List A → Multiset (List A) → Prop
@@ -375,103 +325,72 @@ noncomputable def Interleaves : List A → Multiset (List A) → Prop
   | a :: w, S => ∃ u T, S = (a :: u) ::ₘ T ∧ Interleaves w (u ::ₘ T)
 
 omit [LinearOrder A] in
+theorem interleaves_step {a : A} {w u : List A} (T S : Multiset (List A))
+    (h : Interleaves w (T + u ::ₘ S)) : Interleaves (a :: w) (T + (a :: u) ::ₘ S) := by
+  simp only [Multiset.add_cons] at h ⊢
+  exact ⟨u, T + S, rfl, h⟩
+
+omit [LinearOrder A] in
 theorem interleaves_nil_cons (w : List A) :
     ∀ S : Multiset (List A), Interleaves w ([] ::ₘ S) ↔ Interleaves w S := by
-  induction w with
-  | nil => intro S; simp [Interleaves]
-  | cons a w ih =>
-    intro S
-    constructor
-    · rintro ⟨u, T, e, h⟩
-      rcases Multiset.cons_eq_cons.1 e with ⟨e1, _⟩ | ⟨_, R, e1, e2⟩
-      · simp at e1
-      · subst e1 e2
-        rw [Multiset.cons_swap, ih] at h
-        exact ⟨u, R, rfl, h⟩
-    · rintro ⟨u, T, rfl, h⟩
-      refine ⟨u, [] ::ₘ T, Multiset.cons_swap _ _ _, ?_⟩
-      rw [Multiset.cons_swap, ih]; exact h
+  induction w <;> simp_all [Interleaves, Multiset.cons_eq_cons, Multiset.cons_swap _ []]
 
 omit [LinearOrder A] in
 theorem interleaves_of_mem_shuffle : ∀ (u x w : List A) (S : Multiset (List A)),
-    w ∈ shuffle u x → Interleaves x S → Interleaves w (u ::ₘ S)
-  | [], x, w, S, h, hS => by
-      simp at h; subst h; exact (interleaves_nil_cons _ _).2 hS
-  | a :: u, [], w, S, h, hS => by
+    w ∈ shuffle u x → Interleaves x S → Interleaves w (u ::ₘ S) := by
+  intro u x w S h hS
+  induction u generalizing x w S with
+  | nil => simp_all [interleaves_nil_cons]
+  | cons a u ihu =>
+    induction x generalizing w S with
+    | nil =>
       simp at h; subst h
-      exact ⟨u, S, rfl, interleaves_of_mem_shuffle u [] u S (by simp) hS⟩
-  | a :: u, b :: v, w, S, h, hS => by
-      rw [shuffle_cons_cons, Multiset.mem_add, Multiset.mem_map, Multiset.mem_map] at h
+      exact ⟨u, S, rfl, ihu [] u S (by simp) hS⟩
+    | cons b v ihv =>
+      simp [shuffle_cons_cons] at h
       rcases h with ⟨y, hy, rfl⟩ | ⟨y, hy, rfl⟩
-      · exact ⟨u, S, rfl, interleaves_of_mem_shuffle u (b :: v) y S hy hS⟩
+      · exact ⟨u, S, rfl, ihu _ _ _ hy hS⟩
       · obtain ⟨t, T, rfl, hT⟩ := hS
-        refine ⟨t, (a :: u) ::ₘ T, Multiset.cons_swap _ _ _, ?_⟩
-        rw [Multiset.cons_swap]
-        exact interleaves_of_mem_shuffle (a :: u) v y _ hy hT
-termination_by u x => u.length + x.length
+        exact interleaves_step {a :: u} T (ihv _ _ hy hT)
 
 omit [LinearOrder A] in
 theorem interleaves_split (w : List A) : ∀ (x y : List A) (S : Multiset (List A)),
     Interleaves w ((x ++ y) ::ₘ S) → Interleaves w (x ::ₘ y ::ₘ S) := by
   induction w with
-  | nil => intro x y S h; simp [Interleaves] at h ⊢; tauto
+  | nil => simp [Interleaves, and_assoc]
   | cons a w ih =>
     rintro x y S ⟨u, T, e, h⟩
-    rcases Multiset.cons_eq_cons.1 e with ⟨e1, e2⟩ | ⟨_, R, e1, e2⟩
-    · subst e2
-      cases x with
-      | nil =>
-        simp at e1; subst e1
-        rw [interleaves_nil_cons]; exact ⟨u, S, rfl, h⟩
-      | cons b x =>
-        simp at e1
-        obtain ⟨rfl, rfl⟩ := e1
-        exact ⟨x, _, rfl, ih _ _ _ h⟩
-    · subst e1 e2
-      rw [Multiset.cons_swap] at h
-      refine ⟨u, x ::ₘ y ::ₘ R, ?_, ?_⟩
-      · rw [Multiset.cons_swap y, Multiset.cons_swap x]
-      · rw [Multiset.cons_swap u, Multiset.cons_swap u]; exact ih _ _ _ h
+    rcases Multiset.cons_eq_cons.1 e with ⟨e1, rfl⟩ | ⟨_, R, rfl, rfl⟩
+    · rcases List.append_eq_cons_iff.1 e1 with ⟨rfl, rfl⟩ | ⟨x, rfl, rfl⟩
+      · exact (interleaves_nil_cons _ _).2 ⟨u, S, rfl, h⟩
+      · exact ⟨x, _, rfl, ih _ _ _ h⟩
+    · rw [Multiset.cons_swap] at h
+      simpa [Multiset.cons_swap] using interleaves_step (a := a) {x, y} R
+        (by simpa [Multiset.cons_swap] using ih x y (u ::ₘ R) h)
 
 omit [LinearOrder A] in
 theorem interleaves_flatten (w : List A) (F : List (List A)) : ∀ S : Multiset (List A),
     Interleaves w (F.flatten ::ₘ S) → Interleaves w (↑F + S) := by
   induction F with
-  | nil => intro S h; simpa [interleaves_nil_cons] using h
+  | nil => simp [interleaves_nil_cons]
   | cons f F ih =>
     intro S h
-    have h1 := interleaves_split w _ _ _ h
-    rw [Multiset.cons_swap] at h1
-    have h2 := ih _ h1
-    rwa [Multiset.add_cons, ← Multiset.cons_add, Multiset.cons_coe] at h2
+    simpa [← Multiset.cons_coe] using
+      ih (f ::ₘ S) (by simpa [Multiset.cons_swap] using interleaves_split w f F.flatten S h)
 
 theorem exists_suffix_le_of_mem {F : List (List A)} (hF : IsFactors F) {f : List A} (hf : f ∈ F) :
     ∃ s g, g ≠ [] ∧ F.flatten = s ++ g ∧ g ≤ f := by
-  rcases List.eq_nil_or_concat F with rfl | ⟨F', g, rfl⟩
-  · simp at hf
-  · rw [List.concat_eq_append] at hF hf ⊢
-    refine ⟨F'.flatten, g, (hF.1 g (by simp)).1, by simp, ?_⟩
-    rcases List.mem_append.1 hf with h | h
-    · exact (List.pairwise_append.1 hF.2).2.2 f h g (by simp)
-    · simp at h; exact h.ge
+  have hne := List.ne_nil_of_mem hf
+  refine ⟨F.dropLast.flatten, F.getLast hne, (hF.1 _ (List.getLast_mem hne)).1,
+    ?_, hF.2.rel_getLast hf⟩
+  simpa using congrArg List.flatten (List.dropLast_append_getLast hne).symm
 
 theorem exists_cut (m : List A) (F : List (List A)) (hF : F.Pairwise (· ≥ ·)) :
     ∃ P R, F = P ++ R ∧ (∀ f ∈ P, m ≤ f) ∧ ∀ f ∈ R, f ≤ m := by
-  induction F with
-  | nil => exact ⟨[], [], rfl, by simp, by simp⟩
-  | cons f F ih =>
-    rcases le_total m f with h | h
-    · obtain ⟨P, R, e, h1, h2⟩ := ih (List.pairwise_cons.1 hF).2
-      refine ⟨f :: P, R, by simp [e], ?_, h2⟩
-      intro x hx
-      rcases List.mem_cons.1 hx with rfl | hx
-      · exact h
-      · exact h1 x hx
-    · refine ⟨[], f :: F, rfl, by simp, ?_⟩
-      intro x hx
-      rcases List.mem_cons.1 hx with rfl | hx
-      · exact h
-      · exact le_trans ((List.pairwise_cons.1 hF).1 x hx) h
+  have h := List.Pairwise.orderedInsert m F hF
+  rw [List.orderedInsert_eq_take_drop, List.pairwise_append, List.pairwise_cons] at h
+  exact ⟨_, _, List.takeWhile_append_dropWhile.symm,
+    fun f hf => h.2.2 f hf m List.mem_cons_self, h.2.1.1⟩
 
 theorem exists_sorted (S : Multiset (List A)) :
     ∃ Q : List (List A), (Q : Multiset (List A)) = S ∧ Q.Pairwise (· ≥ ·) :=
@@ -490,10 +409,7 @@ theorem exists_factors_step {L F : List (List A)} {a : A} {u : List A} {T : Mult
     rcases Multiset.cons_eq_cons.1 e with ⟨e1, e2⟩ | ⟨hne, R, e1, e2⟩
     · subst e1 e2
       refine ⟨F ++ L, ⟨?_, List.pairwise_append.2 ⟨hF.2, hL.tail.2, ?_⟩⟩, by simp, by simp [hu]⟩
-      · intro x hx
-        rcases List.mem_append.1 hx with hx | hx
-        · exact hF.1 x hx
-        · exact hL.tail.1 x hx
+      · exact List.forall_mem_append.2 ⟨hF.1, hL.tail.1⟩
       · intro f hf x hx
         obtain ⟨s, g, h1, h2, h3⟩ := exists_suffix_le_of_mem hF hf
         have : a :: u < g := lt_of_isLyndon hm (u := a :: s) (by simp) h1 (by simp [← hu, h2])
@@ -505,39 +421,32 @@ theorem exists_factors_step {L F : List (List A)} {a : A} {u : List A} {T : Mult
         lt_of_le_of_ne (hmax _ (hmem _ (Multiset.mem_cons_self _ _))) (Ne.symm hne)
       obtain ⟨P, P', eF, h1, h2⟩ := exists_cut m F hF.2
       obtain ⟨Q, hQ, hQs⟩ := exists_sorted ((P' : Multiset (List A)) + R)
-      have hQm : ∀ x ∈ Q, x ∈ P' ∨ x ∈ L := fun x hx => by
-        have : x ∈ (↑P' + R : Multiset (List A)) := by rw [← hQ]; exact Multiset.mem_coe.2 hx
-        rcases Multiset.mem_add.1 this with h | h
-        · exact Or.inl (Multiset.mem_coe.1 h)
-        · exact Or.inr (hmem x (Multiset.mem_cons_of_mem h))
+      have hQm x (hx : x ∈ Q) : x ∈ P' ∨ x ∈ L := by
+        have hx := hQ ▸ Multiset.mem_coe.2 hx
+        exact (Multiset.mem_add.1 hx).imp Multiset.mem_coe.1
+          (fun h => hmem x (Multiset.mem_cons_of_mem h))
       have hQle : ∀ x ∈ Q, x ≤ m := fun x hx => (hQm x hx).elim (h2 x) (hmax x)
       subst eF
+      obtain ⟨hP, hP'⟩ := List.forall_mem_append.1 hF.1
       refine ⟨P ++ m :: Q, ⟨?_, List.pairwise_append.2 ⟨(List.pairwise_append.1 hF.2).1,
         List.pairwise_cons.2 ⟨hQle, hQs⟩, ?_⟩⟩, ?_, ?_⟩
-      · intro x hx
-        rcases List.mem_append.1 hx with hx | hx
-        · exact hF.1 x (List.mem_append_left _ hx)
-        · rcases List.mem_cons.1 hx with rfl | hx
-          · exact hm
-          · exact (hQm x hx).elim (fun h => hF.1 x (List.mem_append_right _ h)) (hL.tail.1 x)
-      · intro f hf x hx
-        rcases List.mem_cons.1 hx with rfl | hx
-        · exact h1 f hf
-        · exact le_trans (hQle x hx) (h1 f hf)
+      · exact List.forall_mem_append.2 ⟨hP, List.forall_mem_cons.2
+          ⟨hm, fun x hx => (hQm x hx).elim (hP' x) (hL.tail.1 x)⟩⟩
+      · exact fun f hf => List.forall_mem_cons.2
+          ⟨h1 f hf, fun x hx => (hQle x hx).trans (h1 f hf)⟩
       · rw [← Multiset.coe_add, ← Multiset.coe_add, ← Multiset.cons_coe, hQ, Multiset.add_cons,
           Multiset.add_cons, add_assoc]
-      · have hp : a :: P.flatten < m := by
-          refine lt_of_le_of_lt ?_ hlt
-          have := le_append (a :: P.flatten) P'.flatten
-          simpa [← hu] using this
-        have goal : (a :: P.flatten) ++ (m ++ Q.flatten) < m ++ L.flatten := by
+      · have hp : a :: P.flatten < m :=
+          lt_of_le_of_lt (by simpa [← hu] using le_append (a :: P.flatten) P'.flatten) hlt
+        have hpm : (a :: P.flatten) ++ m < m := by
           rcases lt_cases hp with h | ⟨q, hq, em⟩
-          · exact h _ _
-          · have h3 := append_lt_of_lt_of_length (lt_of_isLyndon hm (by simp) hq em)
-              (by rw [em]; simp; omega) Q.flatten L.flatten
-            have h4 := append_lt_append_left (a :: P.flatten) h3
-            rwa [← List.append_assoc _ q, ← em] at h4
-        simpa using goal.le
+          · simpa using h m []
+          · have := append_lt_append_left (a :: P.flatten)
+              (lt_of_isLyndon hm (by simp) hq em)
+            rwa [← em] at this
+        simpa [List.append_assoc] using
+          (append_lt_of_lt_of_length hpm (List.suffix_append _ _).length_le
+            Q.flatten L.flatten).le
 
 theorem le_flatten_of_interleaves (w : List A) : ∀ L : List (List A), IsFactors L →
     Interleaves w ↑L → w ≤ L.flatten := by
@@ -549,10 +458,7 @@ theorem le_flatten_of_interleaves (w : List A) : ∀ L : List (List A), IsFactor
     obtain ⟨L', h1, h2, h3⟩ := exists_factors_step hL hF hu e
     have h4 := interleaves_flatten w F T (hu ▸ h)
     rw [← h2] at h4
-    refine le_trans ?_ h3
-    rcases (ih L' h1 h4).lt_or_eq with h | h
-    · exact (append_lt_append_left [a] h).le
-    · rw [h]
+    exact (List.cons_le_cons a (ih L' h1 h4)).trans h3
 
 noncomputable def shuffleList {A : Type} : List (List A) → Multiset (List A)
   | [] => {[]}
@@ -591,14 +497,9 @@ theorem prod_word (L : List (List A)) :
 
 theorem repr_sum_word (s : Multiset (List A)) (w : List A) :
     (wordBasis K A).repr (s.map (word K)).sum w = (s.count w : K) := by
-  induction s using Multiset.induction_on with
-  | empty => simp
-  | cons x s ih =>
-    rw [Multiset.map_cons, Multiset.sum_cons, map_add (f := _), Finsupp.add_apply, ih,
-      ← wordBasis_apply, Module.Basis.repr_self, Multiset.count_cons, Finsupp.single_apply]
-    by_cases h : x = w
-    · simp [h, add_comm]
-    · simp [h, Ne.symm h]
+  induction s using Multiset.induction <;>
+    simp_all [word, Multiset.count_cons]
+  grind
 
 theorem repr_prod_self [CharZero K] (L : List (List A)) :
     (wordBasis K A).repr (L.map (word K)).prod L.flatten ≠ 0 := by
@@ -609,61 +510,41 @@ theorem le_of_repr_prod_ne_zero {L : List (List A)} (hL : IsFactors L) {w : List
     (h : (wordBasis K A).repr (L.map (word K)).prod w ≠ 0) :
     w.Perm L.flatten ∧ w ≤ L.flatten := by
   rw [prod_word, repr_sum_word] at h
-  have hw : w ∈ shuffleList L := by
-    by_contra hw
-    exact h (by rw [Multiset.count_eq_zero.2 hw, Nat.cast_zero])
-  exact ⟨(of_mem_shuffleList L w hw).1,
-    le_flatten_of_interleaves w L hL (of_mem_shuffleList L w hw).2⟩
+  have hw : w ∈ shuffleList L := Multiset.count_ne_zero.1 fun hz => h (by simp [hz])
+  obtain ⟨hp, hi⟩ := of_mem_shuffleList L w hw
+  exact ⟨hp, le_flatten_of_interleaves w L hL hi⟩
 
 theorem word_mem_of_lyndon_mem [CharZero K] (B : Subalgebra K (ShuffleAlgebra K A))
     (hB : ∀ l, IsLyndon l → word K l ∈ B) (w : List A) : word K w ∈ B := by
   classical
-  induction hn : (w.permutations.toFinset.filter (· < w)).card using Nat.strong_induction_on
-    generalizing w with
-  | _ n ih =>
-    obtain ⟨L, hL, rfl⟩ := exists_factors w
-    set x := (L.map (word K)).prod with hx
-    have hxB : x ∈ B := B.list_prod_mem fun y hy => by
-      obtain ⟨l, hl, rfl⟩ := List.mem_map.1 hy
-      exact hB l (hL.1 l hl)
-    have hc := repr_prod_self K L
-    rw [← hx] at hc
-    have hsum : x = ∑ v ∈ ((wordBasis K A).repr x).support,
-        (wordBasis K A).repr x v • word K v := by
-      conv_lhs => rw [← (wordBasis K A).linearCombination_repr x]
-      rfl
-    rw [← Finset.add_sum_erase _ _ (Finsupp.mem_support_iff.2 hc)] at hsum
-    have hrest : ∑ v ∈ ((wordBasis K A).repr x).support.erase L.flatten,
-        (wordBasis K A).repr x v • word K v ∈ B := by
-      refine B.sum_mem fun v hv => B.smul_mem ?_ _
-      obtain ⟨hne, hv⟩ := Finset.mem_erase.1 hv
-      obtain ⟨hp, hle⟩ := le_of_repr_prod_ne_zero K hL (Finsupp.mem_support_iff.1 hv)
-      have hlt := lt_of_le_of_ne hle hne
-      refine ih _ ?_ v rfl
-      rw [← hn]
-      refine Finset.card_lt_card ⟨fun y hy => ?_, fun hsub => ?_⟩
-      · simp only [Finset.mem_filter, List.mem_toFinset, List.mem_permutations] at hy ⊢
-        exact ⟨hy.1.trans hp, hy.2.trans hlt⟩
-      · have := @hsub v (by
-          simp only [Finset.mem_filter, List.mem_toFinset, List.mem_permutations]
-          exact ⟨hp, hlt⟩)
-        simp at this
-    have h1 : (wordBasis K A).repr x L.flatten • word K L.flatten ∈ B := by
-      rw [eq_sub_iff_add_eq.2 hsum.symm]
-      exact B.sub_mem hxB hrest
-    have h2 := B.smul_mem h1 ((wordBasis K A).repr x L.flatten)⁻¹
-    rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at h2
+  refine (w.permutations.toFinset.wellFoundedOn (r := (· < ·))).induction
+    (P := fun v => word K v ∈ B) (x := w) (by simp) ?_
+  intro v hv ih
+  simp only [Finset.mem_coe, List.mem_toFinset, List.mem_permutations] at hv ih
+  obtain ⟨L, hL, rfl⟩ := exists_factors v
+  let x := (L.map (word K)).prod
+  have hxB : x ∈ B := B.list_prod_mem fun y hy => by
+    obtain ⟨l, hl, rfl⟩ := List.mem_map.1 hy
+    exact hB l (hL.1 l hl)
+  have hc := repr_prod_self K L
+  have hsum := (wordBasis K A).linearCombination_repr x
+  change (∑ v ∈ ((wordBasis K A).repr x).support,
+    (wordBasis K A).repr x v • word K v) = x at hsum
+  rw [← Finset.add_sum_erase _ _ (Finsupp.mem_support_iff.2 hc)] at hsum
+  have hrest : ∑ v ∈ ((wordBasis K A).repr x).support.erase L.flatten,
+      (wordBasis K A).repr x v • word K v ∈ B := by
+    refine B.sum_mem fun v hv' => B.smul_mem ?_ _
+    obtain ⟨hne, hv'⟩ := Finset.mem_erase.1 hv'
+    obtain ⟨hp, hle⟩ := le_of_repr_prod_ne_zero K hL (Finsupp.mem_support_iff.1 hv')
+    exact ih v (hp.trans hv) (lt_of_le_of_ne hle hne)
+  apply (B.toSubmodule.smul_mem_iff hc).1
+  rw [eq_sub_of_add_eq hsum]
+  exact B.sub_mem hxB hrest
 
 theorem monomial_eq_prod {σ : Type} (d : σ →₀ ℕ) :
     (MvPolynomial.monomial d (1 : K)) = ((Finsupp.toMultiset d).map MvPolynomial.X).prod := by
-  induction d using Finsupp.induction_linear with
-  | zero => simp
-  | add f g hf hg =>
-    rw [map_add (f := _), Multiset.map_add (f := _), Multiset.prod_add, ← hf, ← hg, MvPolynomial.monomial_mul,
-      one_mul]
-  | single a n =>
-    rw [Finsupp.toMultiset_single, ← MvPolynomial.X_pow_eq_monomial]
-    simp [Multiset.map_nsmul, Multiset.prod_nsmul]
+  classical
+  simp [Finset.prod_multiset_map_count, MvPolynomial.prod_X_pow_eq_monomial]
 
 theorem aeval_injective [CharZero K] : Function.Injective
     (MvPolynomial.aeval (fun l : {w : List A // IsLyndon w} => word K l.1) :
@@ -671,58 +552,56 @@ theorem aeval_injective [CharZero K] : Function.Injective
   classical
   choose Λ hΛ hΛs using fun d : {w : List A // IsLyndon w} →₀ ℕ =>
     exists_sorted ((Finsupp.toMultiset d).map Subtype.val)
-  have hfac : ∀ d, IsFactors (Λ d) := fun d => ⟨fun l hl => by
-    have : l ∈ (Finsupp.toMultiset d).map Subtype.val := by
-      rw [← hΛ]; exact Multiset.mem_coe.2 hl
-    obtain ⟨y, _, rfl⟩ := Multiset.mem_map.1 this
+  have hfac d : IsFactors (Λ d) := ⟨fun l hl => by
+    obtain ⟨y, _, rfl⟩ := Multiset.mem_map.1 (hΛ d ▸ Multiset.mem_coe.2 hl)
     exact y.2, hΛs d⟩
-  have hinj : ∀ d d', (Λ d).flatten = (Λ d').flatten → d = d' := fun d d' h => by
-    have h1 := factors_unique _ (hfac d) _ (hfac d') h
-    have h2 : (Finsupp.toMultiset d).map Subtype.val =
-        (Finsupp.toMultiset d').map Subtype.val := by rw [← hΛ, ← hΛ, h1]
-    exact Multiset.toFinsupp.symm.injective
-      (Multiset.map_injective Subtype.val_injective h2)
-  have hmon : ∀ d, MvPolynomial.aeval (fun l : {w : List A // IsLyndon w} => word K l.1)
-      (MvPolynomial.monomial d (1 : K)) = ((Λ d).map (word K)).prod := fun d => by
-    rw [monomial_eq_prod, map_multiset_prod, ← Multiset.prod_coe, ← Multiset.map_coe, hΛ,
-      Multiset.map_map, Multiset.map_map]
-    simp
+  have hinj : Function.Injective (fun d => (Λ d).flatten) := fun d d' h => by
+    apply Multiset.toFinsupp.symm.injective
+    change Finsupp.toMultiset d = Finsupp.toMultiset d'
+    apply Multiset.map_injective Subtype.val_injective
+    rw [← hΛ, ← hΛ, factors_unique _ (hfac d) _ (hfac d') h]
+  have hmon d (c : K) : MvPolynomial.aeval (fun l : {w : List A // IsLyndon w} => word K l.1)
+      (MvPolynomial.monomial d c) = c • ((Λ d).map (word K)).prod := by
+    rw [MvPolynomial.aeval_monomial, Algebra.smul_def, ← Multiset.prod_coe,
+      ← Multiset.map_coe, hΛ, Multiset.map_map]
+    simp [Finset.prod_multiset_map_count, Finsupp.prod]
   set_option backward.isDefEq.respectTransparency.instanceSearchTypes false in rw [injective_iff_map_eq_zero]
   intro p hp
   by_contra hne
   obtain ⟨d₀, hd₀, hmax⟩ := p.support.exists_max_image (fun d => (Λ d).flatten)
     (MvPolynomial.support_nonempty.2 hne)
-  have hsum : p = ∑ d ∈ p.support, p.coeff d • MvPolynomial.monomial d (1 : K) := by
-    conv_lhs => rw [p.as_sum]
-    simp [MvPolynomial.smul_monomial]
-
-  rw [hsum, map_sum] at hp
+  rw [p.as_sum, map_sum] at hp
   have h1 := congrArg (fun x => (wordBasis K A).repr x (Λ d₀).flatten) hp
-
-  simp only [map_smul, hmon, map_sum, Finsupp.finsetSum_apply, Finsupp.smul_apply, map_zero,
-  Finsupp.zero_apply, smul_eq_mul] at h1
+  simp only [hmon, map_sum, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, map_zero,
+    Finsupp.zero_apply, smul_eq_mul] at h1
   rw [Finset.sum_eq_single d₀] at h1
   · exact mul_ne_zero (MvPolynomial.mem_support_iff.1 hd₀) (repr_prod_self K _) h1
   · intro d hd hdne
     by_contra h
     have h2 := (le_of_repr_prod_ne_zero K (hfac d) (right_ne_zero_of_mul h)).2
-    exact hdne (hinj _ _ (le_antisymm (hmax d hd) h2))
+    exact hdne (hinj (le_antisymm (hmax d hd) h2))
   · exact fun h => absurd hd₀ h
 
 theorem aeval_surjective [CharZero K] : Function.Surjective
     (MvPolynomial.aeval (fun l : {w : List A // IsLyndon w} => word K l.1) :
       MvPolynomial {w : List A // IsLyndon w} K →ₐ[K] ShuffleAlgebra K A) := by
-  intro x
-  change x ∈ AlgHom.range _
-  rw [← (wordBasis K A).linearCombination_repr x, Finsupp.linearCombination_apply, Finsupp.sum]
-  refine Subalgebra.sum_mem _ fun v _ => Subalgebra.smul_mem _ ?_ _
-  exact word_mem_of_lyndon_mem K _
-    (fun l hl => (AlgHom.mem_range _).2 ⟨MvPolynomial.X ⟨l, hl⟩, MvPolynomial.aeval_X _ _⟩) v
+  apply (AlgHom.range_eq_top _).1
+  apply Subalgebra.toSubmodule_injective
+  apply (Submodule.eq_top_iff_forall_basis_mem (wordBasis K A)).2
+  exact word_mem_of_lyndon_mem K _ fun l hl =>
+    ⟨MvPolynomial.X ⟨l, hl⟩, MvPolynomial.aeval_X _ _⟩
 
 end Lyndon
 
 namespace Published
 
+/-- **Radford's theorem on shuffle algebras**: over a field `K` of characteristic zero, the shuffle
+algebra on a totally ordered alphabet `A` is freely generated as a commutative polynomial algebra
+by the Lyndon words: the canonical evaluation homomorphism from the polynomial algebra on Lyndon
+words to the shuffle algebra is an isomorphism (bijective).
+
+Proposed reference:
+[Radford, *A natural ring basis for the shuffle algebra and an application to group schemes* (Theorem 2.1, p. 437)][radford1979]. -/
 def RadfordShufflePolynomial : Prop :=
   ∀ (K : Type) [Field K] [CharZero K] (A : Type) [LinearOrder A],
     Function.Bijective

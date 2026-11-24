@@ -1,51 +1,162 @@
 module
 
+public import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsRename
 public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsPairNumberRelabel
 public import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.IntNumRelabel
-public import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiHomog
-public import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiProjPrime
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PExistsUniqueRelabel
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumSymm
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiHomog, GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiProjPrime, GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPairNumberRelabel
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiHomog =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiHomog", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsRename\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.FieldNumbers
+
+open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR
+
+noncomputable section
+
+universe u
+
+def extendAddHom {K K' : Type} (j : K ↪ K') : (K → ℕ) →+ (K' → ℕ) where
+  toFun x := Function.extend j x 0
+  map_zero' := by
+    funext k'
+    by_cases h : ∃ a, j a = k'
+    · obtain ⟨a, rfl⟩ := h
+      simp [j.injective.extend_apply]
+    · simp [Function.extend_apply' _ _ _ h]
+  map_add' x y := by
+    funext k'
+    by_cases h : ∃ a, j a = k'
+    · obtain ⟨a, rfl⟩ := h
+      simp [j.injective.extend_apply]
+    · simp [Function.extend_apply' _ _ _ h]
+
+theorem weight_mapDomain_blockWeight {K K' : Type} [DecidableEq K] [DecidableEq K'] (j : K ↪ K')
+    (ι : K → Type) (ι' : K' → Type) (g : (Σ k, ι k) → (Σ k', ι' k'))
+    (hg : ∀ v, (g v).1 = j v.1) (u : (Σ k, ι k) →₀ ℕ) :
+    Finsupp.weight (blockWeight ι') (Finsupp.mapDomain g u) =
+      Function.extend j (Finsupp.weight (blockWeight ι) u) 0 := by
+  have key : (Finsupp.weight (R := ℕ) (blockWeight ι')).comp
+        (Finsupp.mapDomain.addMonoidHom (M := ℕ) g) =
+      (extendAddHom j).comp (Finsupp.weight (R := ℕ) (blockWeight ι)) := by
+    ext v
+    simp only [AddMonoidHom.coe_comp, Function.comp_apply, Finsupp.singleAddHom_apply,
+      Finsupp.mapDomain.addMonoidHom_apply, Finsupp.mapDomain_single, Finsupp.weight_single,
+      one_smul]
+    show blockWeight ι' (g v) _ = Function.extend j (blockWeight ι v) 0 _
+    rename_i k'
+    simp only [blockWeight, hg v]
+    by_cases h : ∃ a, j a = k'
+    · obtain ⟨a, rfl⟩ := h
+      rw [j.injective.extend_apply]
+      by_cases hav : a = v.1
+      · subst hav; simp
+      · rw [Pi.single_eq_of_ne (fun e => hav (j.injective e)), Pi.single_eq_of_ne hav]
+    · rw [Function.extend_apply' _ _ _ h, Pi.single_eq_of_ne (fun e => h ⟨v.1, e.symm⟩)]
+      rfl
+  exact DFunLike.congr_fun key u
+
+theorem RenameMultiHomog.proof : RenameMultiHomog.Statement.{u} := by
+  intro R _ K K' _ _ j ι ι' g hg f d hf e he
+  obtain ⟨u, rfl, hu⟩ := coeff_rename_ne_zero g f e he
+  rw [weight_mapDomain_blockWeight j ι ι' g hg u, hf hu]
+
+end
+
+end GroundTheory.Heights₂.Heights.FieldNumbers
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiHomog =====
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiProjPrime =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiProjPrime", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.StatementsRename\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.FieldNumbers
+
+open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR
+
+noncomputable section
+
+universe u
+
+namespace RenameMultiProjPrime
+
+variable {S K' : Type} [DecidableEq S] [DecidableEq K'] {κ : S → Type} {ι' : K' → Type} (E : S ≃ K')
+  (σ : (Σ s, κ s) ≃ (Σ k', ι' k'))
+
+theorem weight_mapDomain (hσ : ∀ v, (σ v).1 = E v.1) (d : (Σ s, κ s) →₀ ℕ) :
+    Finsupp.weight (blockWeight ι') (Finsupp.mapDomain σ d) =
+      Finsupp.weight (blockWeight κ) d ∘ E.symm := by
+  induction d using Finsupp.induction_linear with
+  | zero => funext k; simp
+  | add f g hf hg =>
+    rw [Finsupp.mapDomain_add, map_add (f := _), map_add (f := _), hf, hg]
+    rfl
+  | single v n =>
+    rw [Finsupp.mapDomain_single, Finsupp.weight_single, Finsupp.weight_single]
+    funext k
+    simp only [blockWeight, hσ, Function.comp_apply, Pi.smul_apply, Pi.single_apply,
+      Equiv.symm_apply_eq, smul_eq_mul]
+
+theorem rename_weightedHomogeneousComponent {R : Type u} [CommRing R]
+    (hσ : ∀ v, (σ v).1 = E v.1) (b : S → ℕ) (f : MRing κ R) :
+    rename σ (weightedHomogeneousComponent (blockWeight κ) b f) =
+      weightedHomogeneousComponent (blockWeight ι') (b ∘ E.symm) (rename σ f) := by
+  classical
+  ext m
+  have hm : m = Finsupp.mapDomain σ (Finsupp.mapDomain σ.symm m) := by
+    rw [← Finsupp.mapDomain_comp, Equiv.self_comp_symm, Finsupp.mapDomain_id]
+  rw [hm, coeff_weightedHomogeneousComponent, coeff_rename_mapDomain _ σ.injective,
+    coeff_rename_mapDomain _ σ.injective, coeff_weightedHomogeneousComponent,
+    weight_mapDomain E σ hσ]
+  have hiff : Finsupp.weight (blockWeight κ) (Finsupp.mapDomain σ.symm m) ∘ E.symm = b ∘ E.symm ↔
+      Finsupp.weight (blockWeight κ) (Finsupp.mapDomain σ.symm m) = b :=
+    E.symm.surjective.injective_comp_right.eq_iff
+  simp only [hiff]
+
+end RenameMultiProjPrime
+
+theorem RenameMultiProjPrime.proof : RenameMultiProjPrime.Statement.{u} := by
+  intro R _ S K' _ _ κ ι' E σ hσ P hP
+  refine ⟨?_, ?_, ?_⟩
+  · have := hP.isPrime
+    exact Ideal.comap_isPrime _ _
+  · intro f hf b
+    rw [Ideal.mem_comap] at hf ⊢
+    rw [RenameMultiProjPrime.rename_weightedHomogeneousComponent (R := R) E σ hσ b f]
+    exact hP.multiHomog _ hf _
+  · intro s
+    obtain ⟨i', hi'⟩ := hP.relevant (E s)
+    obtain ⟨⟨s', i⟩, hv⟩ : ∃ v, σ v = ⟨E s, i'⟩ := σ.surjective _
+    have hs : s' = s := E.injective (by simpa [hv] using (hσ ⟨s', i⟩).symm)
+    subst hs
+    refine ⟨i, ?_⟩
+    rw [Ideal.mem_comap, rename_X, hv]
+    exact hi'
+
+end
+
+end GroundTheory.Heights₂.Heights.FieldNumbers
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiProjPrime =====
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPairNumberRelabel =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPairNumberRelabel", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsPairNumberRelabel\npublic import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.IntNumRelabel\npublic import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiHomog\npublic import GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PRenameMultiProjPrime\npublic import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PExistsUniqueRelabel\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport GroundTheory.HeightsAndTheta.Heights.FieldsOfNumbers.PIntNumSymm\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -153,20 +264,12 @@ variable {K : Type*} [DecidableEq K] {ι : K → Type*}
 
 
 omit [DecidableEq K] in
-theorem diffStep_comm (a b : K → ℤ) (h : (K → ℤ) → ℤ) :
-    diffStep a (diffStep b h) = diffStep b (diffStep a h) := by
-  funext m
-  simp only [diffStep, sub_right_comm m a b]
-  ring
-
-
-omit [DecidableEq K] in
 theorem foldr_diffStep_perm {l₁ l₂ : List (K → ℤ)} (p : l₁.Perm l₂) (h : (K → ℤ) → ℤ) :
     l₁.foldr diffStep h = l₂.foldr diffStep h := by
   induction p with
   | nil => rfl
   | cons x _ ih => simp only [List.foldr_cons, ih]
-  | swap x y l => simp only [List.foldr_cons]; exact diffStep_comm y x _
+  | swap x y l => simp only [List.foldr_cons]; exact _root_.GroundTheory.Heights₂.Heights.FieldNumbers.diffStep_comm y x _
   | trans _ _ ih₁ ih₂ => exact ih₁.trans ih₂
 
 theorem intNum_get_eq {F : Type*} [Field F] (I : Ideal (MRing ι F)) (l : List (K → ℤ)) :
@@ -340,3 +443,6 @@ theorem PairNumberRelabel.proof : PairNumberRelabel.Statement := by
 end
 
 end GroundTheory.Heights₂.Heights.NumbersDVR
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PPairNumberRelabel =====

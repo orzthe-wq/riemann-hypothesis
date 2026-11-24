@@ -3,50 +3,8 @@ module
 public import Formalism.LocalRingCardinality.DataSpaces
 public import Formalism.LocalRingCardinality.DataHost
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountPositivity.CardLeOfNegFamily
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Formalism.SharpRestriction.CuspSpanNormBounds.Point
+import Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals
 
 @[expose] public section
 
@@ -64,8 +22,6 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) {r : ℕ}
 
 theorem hsw (x y : S.V) : S.hT y x = star (S.hT x y) := (S.herm.eq x y).symm
-
-theorem hsw0 {x y : S.V} (h : S.hT x y = 0) : S.hT y x = 0 := by rw [hsw, h, star_zero]
 
 variable {S}
 variable (e y : Fin r → S.V) (z : S.V) (N : ℕ)
@@ -114,12 +70,12 @@ theorem semidefG (h : Dual e y z N) (hN : 0 < N) (τ : E →+* ℂ) (hτ : ∀ a
       · simp only [wv, Sum.elim_inl, Sum.elim_inr, if_true, map_sub, LinearMap.sub_apply, hE, hF, sub_zero]
     · cases b
       · simp only [wv, Sum.elim_inl, Sum.elim_inr, Bool.false_eq_true, if_false, map_sub,
-          hsw0 S (h.ez a'), hsw0 S (h.yz a'), sub_zero]
-      · simp only [wv, Sum.elim_inl, Sum.elim_inr, if_true, map_sub, hsw0 S (hE a'), hsw0 S (hF a'), sub_zero]
+          _root_.Formalism.MainNotions.LatticeGluingRadicals.p_symm_zero S (h.ez a'), _root_.Formalism.MainNotions.LatticeGluingRadicals.p_symm_zero S (h.yz a'), sub_zero]
+      · simp only [wv, Sum.elim_inl, Sum.elim_inr, if_true, map_sub, _root_.Formalism.MainNotions.LatticeGluingRadicals.p_symm_zero S (hE a'), _root_.Formalism.MainNotions.LatticeGluingRadicals.p_symm_zero S (hF a'), sub_zero]
     · cases b <;> cases b'
       · exact absurd rfl hij
       · simpa [wv] using hz
-      · simpa [wv] using hsw0 S hz
+      · simpa [wv] using _root_.Formalism.MainNotions.LatticeGluingRadicals.p_symm_zero S hz
       · exact absurd rfl hij
   have hdiag : ∀ i, τ (S.hT (wv i) (wv i)) = (d i : ℂ) := by
     intro i
@@ -186,8 +142,8 @@ theorem isoZeroG (h : Dual e y z N) (hN : 0 < N) (τ : E →+* ℂ) (hτ : ∀ a
   apply S.nondeg.1 w
   intro x
   set xW : S.V := x - ∑ a, (S.hT (y a) x • e a + S.hT (e a) x • y a) - (S.hT z x / S.hT z z) • z with hxW
-  have hzE : ∀ a, S.hT z (e a) = 0 := fun a => hsw0 S (h.ez a)
-  have hzF : ∀ a, S.hT z (y a) = 0 := fun a => hsw0 S (h.yz a)
+  have hzE : ∀ a, S.hT z (e a) = 0 := fun a => _root_.Formalism.MainNotions.LatticeGluingRadicals.p_symm_zero S (h.ez a)
+  have hzF : ∀ a, S.hT z (y a) = 0 := fun a => _root_.Formalism.MainNotions.LatticeGluingRadicals.p_symm_zero S (h.yz a)
   have hWE : ∀ b, S.hT (e b) xW = 0 := by
     intro b
 
@@ -200,9 +156,9 @@ theorem isoZeroG (h : Dual e y z N) (hN : 0 < N) (τ : E →+* ℂ) (hτ : ∀ a
 
     simp [hxW, map_sub, map_sum, map_add (f := _), map_smul, hzE, hzF, hzz]
   have h1 := orthW xW ⟨hWE, hWF, hWz⟩
-  have hwE : ∀ a, S.hT w (e a) = 0 := fun a => hsw0 S (hE a)
-  have hwF : ∀ a, S.hT w (y a) = 0 := fun a => hsw0 S (hF a)
-  have hwz : S.hT w z = 0 := hsw0 S hz
+  have hwE : ∀ a, S.hT w (e a) = 0 := fun a => _root_.Formalism.MainNotions.LatticeGluingRadicals.p_symm_zero S (hE a)
+  have hwF : ∀ a, S.hT w (y a) = 0 := fun a => _root_.Formalism.MainNotions.LatticeGluingRadicals.p_symm_zero S (hF a)
+  have hwz : S.hT w z = 0 := _root_.Formalism.MainNotions.LatticeGluingRadicals.p_symm_zero S hz
 
   simpa [hxW, map_sub, map_sum, map_add (f := _), map_smul, hwE, hwF, hwz] using h1
 

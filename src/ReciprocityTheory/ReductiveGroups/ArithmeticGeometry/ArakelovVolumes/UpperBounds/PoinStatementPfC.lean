@@ -85,19 +85,7 @@ def SumBallStatement : Prop :=
       ∑' γ : X.Γ, (∫⁻ w in Bset X x ρ0,
         ‖P (lact γ.1 (cpt X x w))‖ₑ ^ 2 * W (lact γ.1 (cpt X x w))) ^ (1 / 2 : ℝ) ≤ C
 
-theorem cont_cpt' (X : Data E r) (x0 : Frame X.Ψ r) : Continuous (cpt X x0) := by
-  unfold cpt
-  refine continuous_pi fun τ => ?_
-  have hn : Continuous fun z : V (nd X) => mat (nmat X z) τ := by
-    refine continuous_pi fun a => continuous_pi fun b => ?_
-    simp only [mat, nmat, Matrix.of_apply]
-    split_ifs
-    · first
-        | fun_prop
-        | continuity
-    · exact continuous_const
-    · exact continuous_const
-  exact continuous_const.matrix_mul hn
+alias cont_cpt' := _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.cpt_cont
 
 private theorem gram_continuous_comp {α : Type*} [TopologicalSpace α] (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) {f : α → Matrix (Fin r) (Fin r) ℂ} (hf : Continuous f) :
@@ -109,7 +97,6 @@ private theorem gram_continuous_comp {α : Type*} [TopologicalSpace α] (τ : E 
   refine ((hf.matrix_elem k a).mul continuous_const).mul ?_
   first
     | exact Complex.continuous_conj.comp (hf.matrix_elem l b)
-    | fun_prop
 
 theorem isOpen_Bset (X : Data E r) (x : Frame X.Ψ r) (ρ : ℝ) : IsOpen (Bset X x ρ) := by
   have hdom : IsOpen X.dom := by
@@ -122,14 +109,10 @@ theorem isOpen_Bset (X : Data E r) (x : Frame X.Ψ r) (ρ : ℝ) : IsOpen (Bset 
     · have hmat : Continuous fun y : Frame X.Ψ r => mat y τ := by
         first
           | exact continuous_apply τ
-          | (unfold mat; exact continuous_apply τ)
-          | fun_prop
       exact isOpen_ne_fun hmat.matrix_det continuous_const
     · have hmat : Continuous fun y : Frame X.Ψ r => mat y τ := by
         first
           | exact continuous_apply τ
-          | (unfold mat; exact continuous_apply τ)
-          | fun_prop
       have hdm : Continuous fun y : Frame X.Ψ r => dmin X.Gm y τ i := by
         unfold dmin lminor
         exact ((gram_continuous_comp τ.1 X.Gm hmat).matrix_submatrix _ _).matrix_det
@@ -180,82 +163,6 @@ theorem supR_ne_top (X : Data E r) (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥
     _ = 1 / ENNReal.ofReal c := ENNReal.mul_div_mul_right _ _ he heT
     _ = (ENNReal.ofReal c)⁻¹ := one_div _
 
-private theorem apply_cc_eq_starRingEnd_apply (τ : E →+* ℂ) (z : E) : τ (cc z) = starRingEnd ℂ (τ z) := by
-  unfold cc
-  first
-    | exact NumberField.IsCMField.complexEmbedding_complexConj τ z
-    | exact NumberField.IsCMField.complexEmbedding_complexConj E τ z
-
-private theorem gram_eq_transpose_mul_mul_map_conj (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (M : Matrix (Fin r) (Fin r) ℂ) :
-    ReciprocityTheory.ChartRestriction.G.FD.gram τ G M = M.transpose * G.map τ * M.map (starRingEnd ℂ) := by
-  ext a b
-  simp only [ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply,
-    Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
-  all_goals rw [Finset.sum_comm]
-
-private theorem transpose_mul_mul_map_cc_eq_of_isUStab' {γ : GL (Fin r) E} {G : Matrix (Fin r) (Fin r) E}
-    {Λ : Submodule (𝓞 E) (Fin r → E)} (h : IsUStab G Λ γ) :
-    (γ : Matrix (Fin r) (Fin r) E).transpose * G * (γ : Matrix (Fin r) (Fin r) E).map cc = G := by
-  ext p q
-  have hcs : ∀ b, cc ((Pi.single q (1 : E) : Fin r → E) b) = (Pi.single q (1 : E) : Fin r → E) b := by
-    intro b
-    by_cases hb : b = q
-    · subst hb
-      simp [cc]
-    · simp [cc, hb, Pi.single_apply]
-  have hv : ∀ (j a : Fin r), ((γ : Matrix (Fin r) (Fin r) E) *ᵥ (Pi.single j (1 : E) : Fin r → E)) a =
-      (γ : Matrix (Fin r) (Fin r) E) a j := by
-    intro j a
-    simp [Matrix.mulVec, dotProduct, Pi.single_apply]
-  have h2 : ∑ a, ∑ b, (Pi.single p (1 : E) : Fin r → E) a * G a b * (Pi.single q (1 : E) : Fin r → E) b =
-      G p q := by
-    simp [Pi.single_apply]
-  have h1 := h.1 (Pi.single p (1 : E) : Fin r → E) (Pi.single q (1 : E) : Fin r → E)
-  simp only [herm, hv, hcs] at h1
-  rw [h2] at h1
-  simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
-  rw [Finset.sum_comm]
-  exact h1
-
-private theorem gram_mat_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x : Frame X.Ψ r)
-    (τ : X.Ψ) : ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (mat (lact γ x) τ) = ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (mat x τ) := by
-  have hU := transpose_mul_mul_map_cc_eq_of_isUStab' (X.Γ_stab γ hγ)
-  have hA : ((γ : Matrix (Fin r) (Fin r) E).map τ.1).map (starRingEnd ℂ) =
-      ((γ : Matrix (Fin r) (Fin r) E).map cc).map τ.1 := by
-    ext a b
-    simp only [Matrix.map_apply]
-    exact (apply_cc_eq_starRingEnd_apply τ.1 _).symm
-  have hm : mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ := rfl
-  have hU' : ((γ : Matrix (Fin r) (Fin r) E).map τ.1).transpose * X.Gm.map τ.1 *
-      ((γ : Matrix (Fin r) (Fin r) E).map cc).map τ.1 = X.Gm.map τ.1 := by
-    rw [← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hU]
-  have key : ∀ Y : Matrix (Fin r) (Fin r) ℂ, ((γ : Matrix (Fin r) (Fin r) E).map τ.1).transpose *
-      (X.Gm.map τ.1 * (((γ : Matrix (Fin r) (Fin r) E).map cc).map τ.1 * Y)) = X.Gm.map τ.1 * Y := by
-    intro Y
-    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hU']
-  rw [gram_eq_transpose_mul_mul_map_conj, gram_eq_transpose_mul_mul_map_conj, hm, Matrix.transpose_mul, Matrix.map_mul, hA]
-  simp only [Matrix.mul_assoc]
-  rw [key]
-
-private theorem lact_mem_dom_of_mem_Γ (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r}
-    (hx : x ∈ X.dom) : lact γ x ∈ X.dom := by
-  simp only [Data.dom, GG, Set.mem_setOf_eq] at hx ⊢
-  intro τ
-  obtain ⟨h1, h2⟩ := hx τ
-  refine ⟨?_, fun i => ?_⟩
-  · show ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ).det ≠ 0
-    rw [Matrix.det_mul]
-    refine mul_ne_zero ?_ h1
-    have hd : ((γ : Matrix (Fin r) (Fin r) E).map τ.1).det = τ.1 (γ : Matrix (Fin r) (Fin r) E).det :=
-      (RingHom.map_det τ.1 _).symm
-    rw [hd]
-    exact (map_ne_zero τ.1).mpr ((Matrix.isUnit_iff_isUnit_det _).mp γ.isUnit).ne_zero
-  · have hd : dmin X.Gm (lact γ x) τ i = dmin X.Gm x τ i := by
-      unfold dmin
-      rw [gram_mat_lact X hγ x τ]
-    rw [hd]
-    exact h2 i
-
 private theorem differentiable_lact_upper_bounds (X : Data E r) (γ : GL (Fin r) E) :
     Differentiable ℂ (fun y : Frame X.Ψ r => lact γ y) := by
   refine differentiable_pi.mpr fun τ => differentiable_pi.mpr fun a =>
@@ -263,8 +170,6 @@ private theorem differentiable_lact_upper_bounds (X : Data E r) (γ : GL (Fin r)
   simp only [lact, mat, Matrix.mul_apply, Matrix.of_apply]
   first
     | fun_prop
-    | exact Differentiable.sum fun k _ => ((differentiable_apply b).comp
-        ((differentiable_apply k).comp (differentiable_apply τ))).const_mul _
 
 theorem key_int (X : Data E r) (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞) (hW : IsMetricW X la W)
     {c : ℝ} (hc : 0 < c) (hcW : ∀ x ∈ X.dom, ENNReal.ofReal (c * Real.exp (-phla X la x)) ≤ W x)
@@ -281,7 +186,7 @@ theorem key_int (X : Data E r) (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞
   have hgc : Continuous fun w => lact γ (cpt X x w) :=
     (differentiable_lact_upper_bounds X γ).continuous.comp (cont_cpt' X x)
   have hmaps : ∀ w ∈ Bset X x ρ, lact γ (cpt X x w) ∈ X.dom := fun w hw =>
-    lact_mem_dom_of_mem_Γ X hγ (show ‖w‖ < ρ ∧ cpt X x w ∈ X.dom from hw).2
+    _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.lactDom X hγ (show ‖w‖ < ρ ∧ cpt X x w ∈ X.dom from hw).2
   have hPc : ContinuousOn (fun w => P (lact γ (cpt X x w))) (Bset X x ρ) :=
     hP.continuousOn.comp hgc.continuousOn hmaps
   have hmeas : AEMeasurable (fun w => ‖P (lact γ (cpt X x w))‖ₑ ^ 2 * W (lact γ (cpt X x w)))
@@ -319,7 +224,6 @@ theorem key_int (X : Data E r) (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞
         _ ≤ supR X la W ρ x ^ 2 := by
           first
             | exact pow_le_pow_left' h1 2
-            | gcongr
     have he : e ≤ supR X la W ρ x ^ 2 * W (cpt X x w) := by
       calc e = e / W (cpt X x w) * W (cpt X x w) := (ENNReal.div_mul_cancel hW0 hWT).symm
         _ ≤ supR X la W ρ x ^ 2 * W (cpt X x w) := by gcongr
@@ -364,7 +268,7 @@ theorem ball_of (hA : SubMeanStatement (E := E)) (hS : SumBallStatement (E := E)
       (∫⁻ w in Bset X x ρ0, ‖P (lact γ.1 (cpt X x w))‖ₑ ^ 2 * W (lact γ.1 (cpt X x w))) ^ (1 / 2 : ℝ) := by
     intro γ
     have hdγ : DifferentiableOn ℂ (fun y => P (lact γ.1 y)) X.dom :=
-      hPd.comp (differentiable_lact_upper_bounds X γ.1).differentiableOn (fun y hy => lact_mem_dom_of_mem_Γ X γ.2 hy)
+      hPd.comp (differentiable_lact_upper_bounds X γ.1).differentiableOn (fun y hy => _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.lactDom X γ.2 hy)
     have h1 : ‖P (lact γ.1 x)‖ₑ ^ 2 ≤ CA * ∫⁻ w in Bset X x ρ', ‖P (lact γ.1 (cpt X x w))‖ₑ ^ 2 *
         ENNReal.ofReal (Real.exp (-phla X la (cpt X x w))) :=
       hsub (fun y => P (lact γ.1 y)) hdγ x hx hxo
@@ -433,12 +337,12 @@ theorem isBEq_lact (X : Data E r) (la : Wt X.Ψ r) {P : Frame X.Ψ r → ℂ} (h
   unfold IsBEq at hP ⊢
   obtain ⟨hPd, hPe⟩ := hP
   refine ⟨?_, fun x hx b hb => ?_⟩
-  · exact hPd.comp (differentiable_lact_upper_bounds X γ).differentiableOn (fun y hy => lact_mem_dom_of_mem_Γ X hγ hy)
+  · exact hPd.comp (differentiable_lact_upper_bounds X γ).differentiableOn (fun y hy => _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.lactDom X hγ hy)
   · have hl : lact γ (rmul x b) = rmul (lact γ x) b := by
       funext τ
       exact (Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat x τ) (mat b τ)).symm
     simp only [hl]
-    exact hPe (lact γ x) (lact_mem_dom_of_mem_Γ X hγ hx) b hb
+    exact hPe (lact γ x) (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.lactDom X hγ hx) b hb
 
 theorem loc_of (hA : SubMeanLocStatement (E := E)) (hS : SumBallStatement (E := E)) :
     LocStatement (E := E) := by

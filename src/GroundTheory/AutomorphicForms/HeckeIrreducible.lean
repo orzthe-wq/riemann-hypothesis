@@ -100,7 +100,7 @@ theorem mem_span_orbit [ρ.IsIrreducible] {v : V} (hv : v ≠ 0) (w : V) :
     intro g x hx
     have : S ≤ S.comap (ρ g) := Submodule.span_le.2 (by
       rintro _ ⟨h, rfl⟩
-      exact Submodule.subset_span ⟨g * h, by simp [Module.End.mul_apply]⟩)
+      exact Submodule.subset_span ⟨g * h, by simp⟩)
     exact this hx
   rcases IsSimpleOrder.eq_bot_or_eq_top (⟨S, hS⟩ : Subrepresentation ρ) with h | h
   · exfalso

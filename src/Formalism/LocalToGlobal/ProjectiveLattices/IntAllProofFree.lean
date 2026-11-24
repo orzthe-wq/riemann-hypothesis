@@ -122,9 +122,6 @@ private lemma vV_alg_nonneg_lemma {V K' : Type} [CommRing V] [IsDomain V] [IsDis
   · have h1 : HeightOneSpectrum.valuation K' (IsDiscreteValuationRing.maximalIdeal V) (algebraMap V K' a) ≤ 1 := by
       first
         | exact HeightOneSpectrum.valuation_le_one _ a
-        | exact (IsDiscreteValuationRing.maximalIdeal V).valuation_le_one a
-        | exact HeightOneSpectrum.valuation_le_one (K := K') _ a
-        | exact (IsDiscreteValuationRing.maximalIdeal V).valuation_le_one (K := K') a
     rw [← WithZero.exp_log ha, ← WithZero.exp_zero, WithZero.exp_le_exp] at h1
     linarith
 
@@ -212,10 +209,6 @@ theorem epsPt_zero {S : Type} [CommRing S] {Xo : Moduli Dw l} {x : Sp S ⟶ Xo.X
   have he : epsMul (0 : S) = (algebraMap S (DualNumber S)).comp (TrivSqZeroExt.fstHom S S S).toRingHom := by
     first
       | (ext d <;> simp [epsMul])
-      | (refine RingHom.ext fun d => TrivSqZeroExt.ext ?_ ?_ <;>
-          simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl])
-      | (refine RingHom.ext fun d => TrivSqZeroExt.ext ?_ ?_ <;>
-          simp [epsMul, TrivSqZeroExt.map, TrivSqZeroExt.algebraMap_eq_inl])
   apply Over.OverMorphism.ext
   rw [hm, Over.comp_left]
   show (epsPt hv 0).left = spMap (algebraMap S (DualNumber S)) ≫ (1 : Over.mk x ⟶ Xo.univ.t.G).left

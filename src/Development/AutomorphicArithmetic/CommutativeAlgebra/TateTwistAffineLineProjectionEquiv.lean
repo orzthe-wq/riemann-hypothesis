@@ -1,11 +1,14 @@
 module
 
 public import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafPropertiesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
+public import Mathlib.Algebra.Homology.HomotopyCategory.KInjective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafProperties
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCochainEvalOnSimplexBasicPropertiesStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchClsCocycleSecStatement
 public import Development.AutomorphicArithmetic.CommutativeAlgebra.InjectiveComplexProductSectionMapQuasiIso
-public import Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.HomotopyInvarianceEtale
+public import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomotopyInvarianceEtaleStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,26 +59,15 @@ namespace UpperTheory.AffineEquivalences
 
 variable {R : Type} [CommRing R]
 
-private theorem res_comp {F : Shv R} {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (a : Sec F Z) :
-    Sec.res (f ≫ g) a = Sec.res f (Sec.res g a) := by
-  simp [Sec.res]
+private alias res_comp := _root_.GlobalTheory.TwSec.res_comp
 
-private theorem res_id {F : Shv R} {X : Scheme.{0}} (a : Sec F X) : Sec.res (𝟙 X) a = a := by
-  simp [Sec.res]
+private alias res_id := _root_.GlobalTheory.EtC.ClsSpec.res_id
 
-private theorem map_res {F G : Shv R} (φ : F ⟶ G) {X Y : Scheme.{0}} (f : X ⟶ Y) (a : Sec F Y) :
-    Sec.map φ (Sec.res f a) = Sec.res f (Sec.map φ a) := by
-  have h := φ.hom.naturality f.op
-  have h2 := congr($(h).hom a)
-  simp only [ModuleCat.hom_comp, LinearMap.comp_apply] at h2
-  exact h2
+private alias map_res := _root_.GlobalTheory.EtC.exactIff_map_res
 
-private theorem res_zero {F : Shv R} {X Y : Scheme.{0}} (f : X ⟶ Y) : Sec.res f (0 : Sec F Y) = 0 :=
-  map_zero (F.obj.map f.op).hom
+private alias res_zero := _root_.GlobalTheory.TwSec.res_zero
 
-private theorem res_add {F : Shv R} {X Y : Scheme.{0}} (f : X ⟶ Y) (a b : Sec F Y) :
-    Sec.res f (a + b) = Sec.res f a + Sec.res f b :=
-  map_add (F.obj.map f.op).hom a b
+private alias res_add := _root_.GlobalTheory.TwSec.res_add
 
 private theorem ev_pull {Y X : Scheme.{0}} (π : Y ⟶ X) (I : Cx R) (n : ℤ) (α : Cochain ((chains R).obj (sch.obj X)) I n) :
     ev ((Cochain.ofHom ((chains R).map (sch.map π))).comp α (zero_add n)) 0 n (by simp) Y (𝟙 Y) =
@@ -138,12 +130,6 @@ private theorem loc_affine (T : Scheme.{0}) (P : ∀ V : Scheme.{0}, (V ⟶ T) �
   · rintro V g ⟨W, f, h, hW, rfl⟩
     haveI : IsAffine W := hW
     exact hres h f (haff W h)
-
-private theorem eqv_of_iso {E E' : Spc} (f : E ⟶ E') [IsIso f] (F : Shv R) : Eqv R f F := by
-  intro n
-  refine Function.bijective_iff_has_inverse.2 ⟨pull R (inv f) F n, fun x => ?_, fun x => ?_⟩
-  · rw [← pull_comp, IsIso.inv_hom_id, pull_id]
-  · rw [← pull_comp, IsIso.hom_inv_id, pull_id]
 
 private theorem pull_fn {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'') (F : Shv R) (n : ℤ) :
     (⇑(pull R (f ≫ g) F n)) = (pull R f F n) ∘ (pull R g F n) :=
@@ -209,11 +195,11 @@ open Polynomial in
 private theorem eqv_spec (q : ℕ) [NeZero q] (A : Type) [CommRing A] (hq : IsUnit (q : A)) (i : ℤ) :
     Eqv _ (sch.map (prod.snd : Pbf.A1 ⨯ Spec (CommRingCat.of A) ⟶ Spec (CommRingCat.of A))) (tw q i) := by
   obtain ⟨u, hu, hc⟩ := line_iso A
-  have h := UpperTheory.Cb.homotopy_invariance_etale_alt q A hq i
+  have h := _root_.GlobalTheory.T.homotopy_invariance_etale_alt q A hq i
   have h' : Eqv _ (sch.map u ≫ sch.map (prod.snd : Pbf.A1 ⨯ Spec (CommRingCat.of A) ⟶ Spec (CommRingCat.of A))) (tw q i) := by
     rw [← Functor.map_comp, hc]
     exact h
-  exact eqv_left (eqv_of_iso _ _) h'
+  exact eqv_left (_root_.GlobalTheory.EtC.eqv_of_isIso _ _) h'
 
 private theorem eqv_aff (q : ℕ) [NeZero q] (W : Scheme.{0}) [IsAffine W] (hq : IsUnit (q : Γ(W, ⊤))) (i : ℤ) :
     Eqv _ (sch.map (prod.snd : Pbf.A1 ⨯ W ⟶ W)) (tw q i) := by
@@ -221,9 +207,9 @@ private theorem eqv_aff (q : ℕ) [NeZero q] (W : Scheme.{0}) [IsAffine W] (hq :
   have h' : sch.map (prod.snd : Pbf.A1 ⨯ W ⟶ W) ≫ sch.map W.isoSpec.hom =
       sch.map (prod.map (𝟙 Pbf.A1) W.isoSpec.hom) ≫ sch.map (prod.snd : Pbf.A1 ⨯ Spec Γ(W, ⊤) ⟶ Spec Γ(W, ⊤)) := by
     rw [← Functor.map_comp, ← Functor.map_comp, prod.map_snd]
-  refine eqv_right (g := sch.map W.isoSpec.hom) (eqv_of_iso _ _) ?_
+  refine eqv_right (g := sch.map W.isoSpec.hom) (_root_.GlobalTheory.EtC.eqv_of_isIso _ _) ?_
   rw [h']
-  exact eqv_comp (eqv_of_iso _ _) h
+  exact eqv_comp (_root_.GlobalTheory.EtC.eqv_of_isIso _ _) h
 
 private noncomputable def psi {R : Type} [CommRing R] (F : Shv R) (T : Scheme.{0}) : Sec F T →+ Sec F (Pbf.A1 ⨯ T) :=
   ((F.obj.map (prod.snd : Pbf.A1 ⨯ T ⟶ T).op).hom).toAddMonoidHom
@@ -247,7 +233,7 @@ open UpperTheory.AffineEquivalences in
 theorem UpperTheory.tateTwist_affineLine_projection_equiv :
     ∀ (q : ℕ) [NeZero q] (E : Spc) (i : ℤ), Inv q E → Eqv _ (prod.snd : sch.obj A1 ⨯ E ⟶ E) (tw q i) := by
   intro q _ E i hE
-  obtain ⟨-, hinj, hge, -⟩ := GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties (ZMod q) (tw q i)
+  obtain ⟨-, hinj, hge, -⟩ := _root_.GlobalTheory.EtC.ResBasic.res_basic (ZMod q) (tw q i)
   haveI := hge
   have hZ : ∀ {T' T : Scheme.{0}}, (T' ⟶ T) → IsUnit (q : Γ(T, ⊤)) → IsUnit (q : Γ(T', ⊤)) := fun g h => by
     simpa using h.map g.appTop.hom

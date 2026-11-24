@@ -198,7 +198,7 @@ theorem wtTie_meet {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNoti
       exact_mod_cast key
   · simp only [shh, if_neg (Nat.succ_ne_zero i), Nat.add_sub_cancel]
     rw [sDiv_indep u D.what₂.mu0 μ i hi τ]
-  · haveI : Infinite D.what₂.LL := Infinite.of_injective (fun n : ℕ => (n : D.what₂.LL)) (fun a b h => by
+  · have : Infinite D.what₂.LL := Infinite.of_injective (fun n : ℕ => (n : D.what₂.LL)) (fun a b h => by
       have := congrArg D.what₂.embLL h; simp only [map_natCast] at this; exact_mod_cast this)
     refine jet_in_vv_of_weight D.what₂.LL D.what₂.Tau (D.R.N i) (D.R.N (i + 1)) (by unfold Ranks.N; nlinarith) _ _ _ fun τ r => ?_
     unfold extNu
@@ -460,7 +460,7 @@ theorem vqTie_kerEntC (hD : WtDiv) (t : KerEntTied ex) (P : Examples₂.EntPl D)
   rw [he]
   show Set.range (evC t.O u μ i) = _
   rw [range_evC]
-  haveI hLL : Infinite D.what₂.LL := Infinite.of_injective (fun n : ℕ => (n : D.what₂.LL)) (fun a b h => by
+  have hLL : Infinite D.what₂.LL := Infinite.of_injective (fun n : ℕ => (n : D.what₂.LL)) (fun a b h => by
     have := congrArg D.what₂.embLL h; simp only [map_natCast] at this; exact_mod_cast this)
   have hne : ∀ y τ, ((t.O u μ).frm i y τ).det ≠ 0 := fun y τ => by
     rw [← (t.O u μ).frm_de i hi y τ]; exact (D.chTw u μ).de_ne i y τ
@@ -491,7 +491,7 @@ theorem vqTie_kerEntC (hD : WtDiv) (t : KerEntTied ex) (P : Examples₂.EntPl D)
     · rintro ⟨⟨Q, hQ⟩, rfl⟩
       have hQ' : Q ∈ WtPol D.what₂.LL (nuT D u 0) := hQ
       obtain ⟨P0, hP0, rfl⟩ := hD D.what₂.LL D.what₂.Tau (D.R.N 0) (nuT D u 0) (nn D u 0) hk Q hQ'
-      rw [Set.mem_setOf_eq]
+      rw [Set.mem_ofPred_eq]
       refine ⟨P0, ?_, hfun P0 hQ⟩
       rw [VV_eq_WtPol]
       have e : (fun τ r => (lam (antitone_kernelChain_nuT D) u 0 τ).natW r) = fun τ r => nuT D u 0 τ r - nn D u 0 τ := by
@@ -524,7 +524,7 @@ theorem vqTie_kerEntC (hD : WtDiv) (t : KerEntTied ex) (P : Examples₂.EntPl D)
     ext f
     constructor
     · rintro ⟨⟨Q, hQ⟩, rfl⟩
-      rw [Set.mem_setOf_eq]
+      rw [Set.mem_ofPred_eq]
       exact ⟨Q, hVV ▸ hQ, hfun Q hQ⟩
     · rintro ⟨Q, hQ, rfl⟩
       have hQ' : Q ∈ polV D u (j + 1) := hVV ▸ hQ

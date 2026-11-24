@@ -2,6 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNineTermTransgressionZeroApply
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardDualZmodModuleEqCard
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CardEqCardKerMulCardRange
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardKerMulCardEq
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedDualEvalBidualApply
 import Mathlib.Algebra.Order.Floor.Extended
@@ -64,9 +65,8 @@ variable {R : Type*} [CommRing R] {A B C D E : Type*} [AddCommGroup A] [Module R
   [AddCommGroup E] [Module R E]
 
 theorem card_eq_ker_mul_range (f : A →ₗ[R] B) :
-    Nat.card A = Nat.card (LinearMap.ker f) * Nat.card (LinearMap.range f) := by
-  rw [Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f),
-    Nat.card_congr f.quotKerEquivRange.toEquiv]
+    Nat.card A = Nat.card (LinearMap.ker f) * Nat.card (LinearMap.range f) :=
+  GlobalTheory.CompanionTheory.Counting.card_eq_ker_mul_range_general f
 
 theorem card_five {f : A →ₗ[R] B} {g : B →ₗ[R] C} {h : C →ₗ[R] D} {k : D →ₗ[R] E}
     (hf : Function.Injective f) (h1 : Function.Exact f g) (h2 : Function.Exact g h)
@@ -101,13 +101,8 @@ theorem card_comap {f : A →ₗ[R] B} {g : B →ₗ[R] C} (h : Function.Exact f
 
 theorem card_pi {I : Type*} [Fintype I] {P : I → Type*} [∀ i, AddCommGroup (P i)]
     [∀ i, Module R (P i)] (L : ∀ i, Submodule R (P i)) :
-    Nat.card (Submodule.pi Set.univ L) = ∏ i, Nat.card (L i) := by
-  rw [← Nat.card_pi]
-  exact Nat.card_congr
-    { toFun := fun x i => ⟨x.1 i, x.2 i trivial⟩
-      invFun := fun x => ⟨fun i => (x i).1, fun i _ => (x i).2⟩
-      left_inv := fun _ => rfl
-      right_inv := fun _ => rfl }
+    Nat.card (Submodule.pi Set.univ L) = ∏ i, Nat.card (L i) :=
+  GlobalTheory.CompanionTheory.Counting.card_pi_submodule_general L
 
 end Count
 

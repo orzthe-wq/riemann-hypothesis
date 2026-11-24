@@ -70,8 +70,7 @@ variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensiona
 theorem closedS (S : Submodule ℂ W) : IsClosed (S : Set W) := Submodule.closed_of_finiteDimensional S
 
 theorem deriv_mem (S : Submodule ℂ W) {f : ℝ → W} {f' : W} (h : HasDerivAt f f' 0) (hf : ∀ t, f t ∈ S) : f' ∈ S := by
-  have h1 := h.tendsto_slope_zero
-  refine (closedS S).mem_of_tendsto h1 (Eventually.of_forall fun t => ?_)
+  refine (closedS S).mem_of_tendsto h.tendsto_slope_zero (Eventually.of_forall fun t => ?_)
   exact (S.restrictScalars ℝ).smul_mem _ (S.sub_mem (hf _) (hf _))
 
 theorem pow_mem (S : Submodule ℂ W) {A : W →L[ℂ] W} (hA : ∀ v ∈ S, A v ∈ S) (n : ℕ) : ∀ v ∈ S, (A ^ n) v ∈ S := by
@@ -89,8 +88,7 @@ theorem exp_mem (S : Submodule ℂ W) {A : W →L[ℂ] W} (hA : ∀ v ∈ S, A v
   have h2 := (ContinuousLinearMap.apply ℂ W v).hasSum h
   refine (closedS S).mem_of_tendsto h2 (Eventually.of_forall fun s => ?_)
   refine S.sum_mem fun n _ => ?_
-  show ((((n.factorial : ℂ)⁻¹) • A ^ n : W →L[ℂ] W)) v ∈ S
-  exact S.smul_mem _ (pow_mem S hA n v hv)
+  simpa using S.smul_mem ((n.factorial : ℂ)⁻¹) (pow_mem S hA n v hv)
 
 end Closed
 
@@ -170,8 +168,7 @@ theorem complete {x : Fin (2 * r + k + 1) → ℂ} {Bs : Fin k → Fin (2 * r + 
   conv_lhs => rw [complete0 hx hxx hB hv]
   rw [← Equiv.sum_comp (finCongr (mdim_last (k := k) (r := r)).symm), Fin.sum_univ_castSucc]
   congr 1
-  · refine Finset.sum_congr rfl fun b _ => ?_
-    simp [bcol, nrm]
+  · exact Finset.sum_congr rfl fun b _ => by simp [bcol, nrm]
   · simp [bcol, nrm]
 
 theorem mat_ext_b {n : ℕ} {M N : Matrix (Fin n) (Fin n) ℂ} (h : ∀ p, M *ᵥ bvec p = N *ᵥ bvec p) : M = N := by
@@ -197,11 +194,7 @@ theorem lie_expand {z : Fin (2 * r + k + 1) → ℂ} {Bs : Fin k → Fin (2 * r 
   have hR : ∀ v, (∑ a, ∑ b, herm (Hpk k r) (X *ᵥ Bs b) (Bs a) • unitB (Hpk k r) Bs a b) *ᵥ v =
       ∑ a, ∑ b, (herm (Hpk k r) (X *ᵥ Bs b) (Bs a) * herm (Hpk k r) v (Bs b)) • Bs a := by
     intro v
-    rw [Matrix.sum_mulVec]
-    refine Finset.sum_congr rfl fun a _ => ?_
-    rw [Matrix.sum_mulVec]
-    refine Finset.sum_congr rfl fun b _ => ?_
-    rw [Matrix.smul_mulVec, Qx8.unitB_mulVec, smul_smul]
+    simp only [Matrix.sum_mulVec, Matrix.smul_mulVec, Qx8.unitB_mulVec, smul_smul]
   have hW : ∀ v, inWb k r v → X *ᵥ v =
       ∑ a, ∑ b, (herm (Hpk k r) (X *ᵥ Bs b) (Bs a) * herm (Hpk k r) v (Bs b)) • Bs a := by
     intro v hv
@@ -235,17 +228,15 @@ theorem lie_expand {z : Fin (2 * r + k + 1) → ℂ} {Bs : Fin k → Fin (2 * r 
   · exact hW _ hp
 
 theorem hpart1_skew {X : Mx k r} (hX : Xᴴ * Hpk k r + Hpk k r * X = 0) : hpart1 (Hpk k r) X = X := by
-  have e : Xᴴ * Hpk k r = -(Hpk k r * X) := eq_neg_of_add_eq_zero_left hX
   unfold hpart1
-  rw [Qx8.hpk_inv, Matrix.mul_assoc, e, Matrix.mul_neg, ← Matrix.mul_assoc, Qx2.hpk_sq', Matrix.one_mul,
-    sub_neg_eq_add, ← two_smul ℂ X, smul_smul]
+  rw [Qx8.hpk_inv, Matrix.mul_assoc, eq_neg_of_add_eq_zero_left hX, Matrix.mul_neg,
+    ← Matrix.mul_assoc, Qx2.hpk_sq', Matrix.one_mul, sub_neg_eq_add, ← two_smul ℂ X, smul_smul]
   norm_num
 
 theorem hpart2_skew {X : Mx k r} (hX : Xᴴ * Hpk k r + Hpk k r * X = 0) : hpart2 (Hpk k r) X = 0 := by
-  have e : Xᴴ * Hpk k r = -(Hpk k r * X) := eq_neg_of_add_eq_zero_left hX
   unfold hpart2
-  rw [Qx8.hpk_inv, Matrix.mul_assoc, e, Matrix.mul_neg, ← Matrix.mul_assoc, Qx2.hpk_sq', Matrix.one_mul,
-    add_neg_cancel, smul_zero]
+  rw [Qx8.hpk_inv, Matrix.mul_assoc, eq_neg_of_add_eq_zero_left hX, Matrix.mul_neg,
+    ← Matrix.mul_assoc, Qx2.hpk_sq', Matrix.one_mul, add_neg_cancel, smul_zero]
 
 theorem inLie_zero (z : Fin (2 * r + k + 1) → ℂ) : InLieW k r z 0 :=
   ⟨⟨by simp, fun a _ => by simp⟩, by simp⟩
@@ -264,8 +255,7 @@ section Rep
 variable {k r : ℕ} {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W]
 
 theorem dOp_zero (π : Mx k r → (W →L[ℂ] W)) : dOp π (0 : Mx k r) = 0 := by
-  unfold dOp
-  simp
+  simp [dOp]
 
 theorem dOp_stab (hE : EcLie) {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (W →L[ℂ] W)}
     {Bs : Fin k → Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hzz : herm (Hpk k r) z z ≠ 0) (hπ : IsRepW k r z π)

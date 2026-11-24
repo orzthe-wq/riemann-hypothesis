@@ -67,11 +67,7 @@ end SplitSph
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
-theorem split_spherical {π : Submodule ℂ (UA E n → ℂ)} (hπ : IsAutRepU π) {w : HeightOneSpectrum (𝓞 E)} (hs : IsSplitAt w)
-    (P : SmIrr (GL (Fin n) (w.adicCompletion E)))
-    (hc : IsCompAlong π (locU n w) ((cLoc w).comp (locU n w).subtype) P.ρ) (hu : IsUnramU π w) :
-    GlobalTheory.LGrp.IsSpherical P.ρ (GlobalTheory.LFun.KGL w (n := n)) :=
-  PositivityTheory.Rg.BcB.Loc.split_spherical2 hπ hs P hc hu
+alias split_spherical := _root_.PositivityTheory.Rg.BcB.Loc.split_spherical2
 
 end GlobalTheory.PfBCI
 

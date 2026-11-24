@@ -380,23 +380,16 @@ theorem levelaf_mem_range_of_integral (O : Subring L) (U : GL n L)
 theorem levelaf_princ_relIndex_ne_zero (O : Subring L) (I : Ideal O) [Finite (O ⧸ I)] :
     (princ (n := n) O.subtype I).relIndex (bc (n := n) O.subtype).range ≠ 0 := by
   classical
-  have : Finite (Matrix n n (O ⧸ I)) := inferInstanceAs (Finite (n → n → O ⧸ I))
   have hN : (redGL (n := n) I).ker.index ≠ 0 := by
     rw [Subgroup.index_ker]
     exact Nat.card_pos.ne'
-  have hsup : ((redGL (n := n) I).ker ⊔ (bc (n := n) O.subtype).ker).index ≠ 0 := by
-    intro h
-    apply hN
-    have hd := Subgroup.index_dvd_of_le
-      (le_sup_left : (redGL (n := n) I).ker ≤ (redGL (n := n) I).ker ⊔ (bc (n := n) O.subtype).ker)
-    rw [h] at hd
-    exact Nat.eq_zero_of_zero_dvd hd
   have hprinc : princ (n := n) O.subtype I = ((redGL (n := n) I).ker).map (bc (n := n) O.subtype) := by
     unfold princ congPre
     rw [MonoidHom.comap_bot]
   rw [hprinc, MonoidHom.range_eq_map, Subgroup.relIndex_map_map, top_sup_eq,
     Subgroup.relIndex_top_right]
-  exact hsup
+  intro h
+  exact hN (Nat.eq_zero_of_zero_dvd (h ▸ Subgroup.index_dvd_of_le le_sup_left))
 
 end Generic
 

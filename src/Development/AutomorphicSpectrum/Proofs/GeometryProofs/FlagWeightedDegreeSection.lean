@@ -3,14 +3,19 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.AlternatingMapSumSmulEqDetSmul
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsAtSmul
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericFlagTrdegFormulaStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericTrdegEqDimensionStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
+public import Mathlib.RingTheory.AlgebraicIndependent.Basic
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericFlagTrdegFormula
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericTrdegEqDimension
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixTwoFrames
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptAwayFromPrimesStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptAwayFromPrimes
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorFlag
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGenericStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarisedStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairSumFrameAtPointStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarised
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairSumFrameAtPoint
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGeneric
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -240,10 +245,10 @@ theorem val_ne_zero_of_rank_zero {O : Type} [CommRing O] {β : O →+* c.F} {Y :
     (Fl : 𝔐.Flag) (hβ : Function.Injective β) (hp : D.p = 0) (hq : D.q = 0) {f : Ω} (hf : f ≠ 0)
     {z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X} {u : ℂ} (hu : ValAt 𝔐.ξ z f u) : u ≠ 0 := by
   classical
-  obtain ⟨-, ⟨x, hx⟩, hchar, -⟩ := GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c O β Y S Ω K J y 𝔐 hβ
-  have hA := GlobalTheory.T.generic_trdeg_eq_dimension E H D l Xo c O β Y 𝔐.Ω₀ 𝔐.ξ₀ Ω x 𝔐.fn hβ 𝔐.gen₀ (hx ▸ 𝔐.fn_over)
+  obtain ⟨-, ⟨x, hx⟩, hchar, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeCpt.basic E H D l Xo c O β Y S Ω K J y 𝔐 hβ
+  have hA := _root_.GlobalTheory.CompanionTheory.Ar.CptTrdeg.trdeg_eq_dim E H D l Xo c O β Y 𝔐.Ω₀ 𝔐.ξ₀ Ω x 𝔐.fn hβ 𝔐.gen₀ (hx ▸ 𝔐.fn_over)
   letI : Algebra 𝔐.Ω₀ Ω := 𝔐.fn.toAlgebra
-  have hB := GlobalTheory.T.generic_flag_trdeg_formula 𝔐.Ω₀ Ω Fl.Li₀ 𝔐.Li Fl.j (CMType H ⊕ CMType H) (labelRk D) Fl.V₀ Fl.b Fl.deg Fl.generic
+  have hB := _root_.GlobalTheory.CompanionTheory.Ar.FlagTrdeg.trdeg_of_isGenericFlag 𝔐.Ω₀ Ω Fl.Li₀ 𝔐.Li Fl.j (CMType H ⊕ CMType H) (labelRk D) Fl.V₀ Fl.b Fl.deg Fl.generic
   haveI : CharZero 𝔐.Ω₀ := (RingHom.charZero_iff 𝔐.fn.injective).mpr hchar
   haveI : FaithfulSMul ℤ 𝔐.Ω₀ := (faithfulSMul_iff_algebraMap_injective ℤ 𝔐.Ω₀).mpr Int.cast_injective
   haveI : FaithfulSMul 𝔐.Ω₀ Ω := (faithfulSMul_iff_algebraMap_injective 𝔐.Ω₀ Ω).mpr 𝔐.fn.injective
@@ -283,10 +288,10 @@ theorem exists_gram [NumberField c.F] {Y : Model Xo c (algebraMap (𝓞 c.F) c.F
     (hb : (𝔐.V s).IsFrameAt b ⟨centre z, 𝔐.all _⟩) :
     ∃ Γ : Matrix (Fin (labelRk D s)) (Fin (labelRk D s)) ℂ, 𝔐.M.GramAt 𝔐.t.PP.L z b Γ ∧ Γ.PosDef := by
   have hβ : Function.Injective (algebraMap (𝓞 c.F) c.F) := RingOfIntegers.coe_injective
-  obtain ⟨-, -, hchar, -⟩ := GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ
+  obtain ⟨-, -, hchar, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeCpt.basic E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ
   have hgen : genPt 𝔐.ξ ⤳ centre z := 𝔐.all _
-  have hpol := GlobalTheory.T.interior_point_polarised E H D l Xo c Y S Ω K J y 𝔐 z hz
-  obtain ⟨hV, -, -⟩ := GlobalTheory.T.hodge_cpt_away_from_primes E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ ⟨centre z, hgen⟩
+  have hpol := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.polarisedAt_of_interior E H D l Xo c Y S Ω K J y 𝔐 z hz
+  obtain ⟨hV, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeChar0.lattices_of_char_zero E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ ⟨centre z, hgen⟩
     fun r hr => GrNorm.not_inFibre 𝔐.tie.gen hgen hr
   have hmem : ∀ k, b k ∈ 𝔐.Vgen s ⊔ 𝔐.Vgen s := fun k => by
     have h1 : b k ∈ 𝔐.V s ⟨centre z, hgen⟩ := by
@@ -315,7 +320,7 @@ theorem exists_gram [NumberField c.F] {Y : Model Xo c (algebraMap (𝓞 c.F) c.F
       show (x : 𝔐.Li) ∈ 𝔐.V s ⟨centre z, hgen⟩ ⊔ 𝔐.V s ⟨centre z, hgen⟩
       rw [sup_idem, hb.2, ← hspan]
       exact ⟨x, hx, rfl⟩
-  obtain ⟨Γ, h1, h2⟩ := GlobalTheory.T.pair_sum_frame_at_point E H D l Xo c Y S Ω K J y 𝔐 s s _ bb z hgen hpol hfr
+  obtain ⟨Γ, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.GramEx.exists_gramAt_posDef E H D l Xo c Y S Ω K J y 𝔐 s s _ bb z hgen hpol hfr
   exact ⟨Γ, h1, h2⟩
 
 theorem exists_flag_frame [NumberField c.F] {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {𝔐 : HodgeCpt Y S y} (Fl : 𝔐.Flag)
@@ -343,9 +348,9 @@ theorem exists_doubled [NumberField c.F] {Y : Model Xo c (algebraMap (𝓞 c.F) 
       𝔐.M.GramAt 𝔐.t.PP.L z (fun k => (2 : Ω) • b k) Γ' ∧ Γ'.PosDef ∧
       Real.log ‖Γ'.det‖ = Real.log ‖Γ.det‖ + labelRk D s * Real.log 4 := by
   have hβ : Function.Injective (algebraMap (𝓞 c.F) c.F) := RingOfIntegers.coe_injective
-  obtain ⟨-, -, hchar, -⟩ := GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ
+  obtain ⟨-, -, hchar, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeCpt.basic E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ
   have hgen : genPt 𝔐.ξ ⤳ centre z := 𝔐.all _
-  have hpol := GlobalTheory.T.interior_point_polarised E H D l Xo c Y S Ω K J y 𝔐 z hz
+  have hpol := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.polarisedAt_of_interior E H D l Xo c Y S Ω K J y 𝔐 z hz
   have hu2 : IsUnit (2 : 𝔐.X.presheaf.stalk (centre z)) :=
     CxVal.isUnit (z := z) 2 fun h =>
       (two_ne_zero : (2 : ℂ) ≠ 0) ((map_ofNat (Scheme.stalkClosedPointTo z).hom 2).symm.trans h)
@@ -392,7 +397,7 @@ theorem wedge_doubled {Ω : Type} [Field Ω] [CharZero Ω] {V : Type} [AddCommGr
 theorem norm_against_root_metrics : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) [NumberField c.F] (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag) (xdeg : CMType H × Fin (D.p + D.q) → K → ℤ) (e : CMType H × Fin (D.p + D.q) → Ω) (hx : CMType H × Fin (D.p + D.q) → HermLine J) (A : HermLine J) (τ : CMType H) (t₀ : ℝ) (c₁ : Ω) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (w : (Σ k, J k) → ℂ), Fl.RootLines xdeg e → (∀ r, Fl.IsHodgeLine r (e r) (hx r)) → A.a = ∑ i, xdeg (τ, i) → (∀ w' : (Σ k, J k) → ℂ, CoordsAt 𝔐.ξ y z w' → A.h w' = ∏ i, (hx (τ, i)).h w') → CoordsAt 𝔐.ξ y z w → 𝔐.Interior z → c₁ ≠ 0 → (∀ (hc : genPt 𝔐.ξ ⤳ centre z) (bp : Fin D.p → 𝔐.Li) (bq : Fin D.q → 𝔐.Li) (Γ : Matrix (Fin D.p) (Fin D.p) ℂ) (Δ : Matrix (Fin D.q) (Fin D.q) ℂ) (α κ : Ω) (u : ℂ), (𝔐.V (.inl τ)).IsFrameAt bp ⟨centre z, hc⟩ → (𝔐.V (.inr τ)).IsFrameAt bq ⟨centre z, hc⟩ → 𝔐.M.GramAt 𝔐.t.PP.L z bp Γ → 𝔐.M.GramAt 𝔐.t.PP.L z bq Δ → Γ.PosDef → Δ.PosDef → (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) = α • exteriorPower.ιMulti Ω _ bp → (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ))) = κ • exteriorPower.ιMulti Ω _ bq → ValAt 𝔐.ξ z (c₁ * α / κ) u → Real.log ‖u‖ + (Real.log ‖Γ.det‖ - Real.log ‖Δ.det‖) / 2 = t₀) → ∀ (cc : (k : K) → J k) (u : ℂ), (∀ k, w ⟨k, cc k⟩ ≠ 0) → ValAt 𝔐.ξ z (c₁ / ((∏ k, y ⟨k, cc k⟩ ^ A.a k) * ∏ i, e (τ, i))) u → ‖u‖ * ∏ k, ‖w ⟨k, cc k⟩‖ ^ A.a k = Real.exp t₀ * A.h w := by
   intro E _ _ _ H D l Xo c _ Y S Ω _ K _ J _ y 𝔐 Fl xdeg e hx A τ t₀ c₁ z w hroot hhod hAa hAh hw hint hc₁ hfr cc u hcc hu
   have hβ : Function.Injective (algebraMap (𝓞 c.F) c.F) := RingOfIntegers.coe_injective
-  obtain ⟨-, -, hchar, -⟩ := GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ
+  obtain ⟨-, -, hchar, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeCpt.basic E H D l Xo c _ _ Y S Ω K J y 𝔐 hβ
   have hgen : genPt 𝔐.ξ ⤳ centre z := 𝔐.all _
   choose b Γ t hbf hbG hbP ht hbw hbn using fun s => exists_flag_frame Fl hint s
   let ν : ∀ s, Fin (labelRk D s) → ℝ := fun s k => Real.sqrt (leadMinor (Γ s) ((k : ℕ) + 1) / leadMinor (Γ s) k)

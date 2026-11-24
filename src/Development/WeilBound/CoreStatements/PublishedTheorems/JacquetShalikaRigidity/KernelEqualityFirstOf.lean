@@ -466,15 +466,6 @@ theorem law_fC (hG0 : jumpWindows.G0) (hG5 : jumpWindows.G5) (hP2 : P2) (hP3 : P
 
 open scoped ValuativeRel
 
-theorem sph_memO {w : Pl E} (x : w.adicCompletion E) :
-    x ∈ 𝒪[w.adicCompletion E] ↔ x ∈ Formalism.UG.Ov E w := by
-  rw [Valuation.mem_integer_iff]
-  change _ ↔ x ∈ w.adicCompletionIntegers E
-  rw [HeightOneSpectrum.mem_adicCompletionIntegers]
-  haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
-    Valuation.Compatible.ofValuation _
-  exact (ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one
-
 theorem sph_lr (hk : 1 ≤ k) {R' : Type} [CommRing R'] (σ : Ad E →+* R') (g : GA E k) (c : Fin k) :
     σ (lastRow g c) = (g.val.map σ) ⟨k - 1, by omega⟩ c := by
 
@@ -531,15 +522,15 @@ theorem sph_fC (hG0 : jumpWindows.G0) (hP2 : P2) (hP3 : P3) (hK8 : K8) (hk : 1 �
     have hK := fun w => (GLnLocal.mem_integralGL_iff _ _).1 (hκint w)
     constructor
     · intro h w hw i
-      rw [hloc, ← sph_memO]
-      exact sph_rowint _ (fun c => by rw [← hloc0, sph_memO]; exact h w hw c) _ (hK w).1 i
+      rw [hloc, ← _root_.PositivityTheory.AdelicQuotientData.PKEq1.law_memO]
+      exact sph_rowint _ (fun c => by rw [← hloc0, _root_.PositivityTheory.AdelicQuotientData.PKEq1.law_memO]; exact h w hw c) _ (hK w).1 i
     · intro h w hw i
       have e : (cLoc w g).val ℓ i = ∑ j, (cLoc w (g * κ)).val ℓ j * (cLoc w κ)⁻¹.val j i := by
         rw [← Matrix.mul_apply, ← Units.val_mul, ← map_inv, ← map_mul, mul_inv_cancel_right]
-      rw [hloc0, ← sph_memO, e]
+      rw [hloc0, ← _root_.PositivityTheory.AdelicQuotientData.PKEq1.law_memO, e]
       refine sph_rowint _ (fun c => ?_) _ (by simpa [map_inv] using (hK w).2) i
       have := h w hw c
-      rw [hloc, ← sph_memO] at this
+      rw [hloc, ← _root_.PositivityTheory.AdelicQuotientData.PKEq1.law_memO] at this
       rw [map_mul, Units.val_mul, Matrix.mul_apply]
       exact this
   have hsy : s y' = s y := (hcut.dep y' y hinf hS').1

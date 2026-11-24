@@ -55,8 +55,7 @@ variable {p : ℕ} [Fact p.Prime] {N r n : ℕ}
 
 theorem single_comp_emb (e : Fin n ↪o Fin r) (a : Fin n) :
     (Pi.single (e a) (1 : ℤ) : Fin r → ℤ) ∘ e = Pi.single a 1 := by
-  funext c
-  simp only [Function.comp_apply, Pi.single_apply, e.injective.eq_iff]
+  ext c; simp [Function.comp_apply, Pi.single_apply, e.injective.eq_iff]
 
 theorem weight_comp (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) (m : Fin N × Fin r →₀ ℕ) :
     Finsupp.weight (fun x => (wv LL j x) ∘ e) m = (Finsupp.weight (wv LL j) m) ∘ e := by
@@ -204,9 +203,8 @@ theorem enumC_mem (Cs : Finset (Fin r)) (a : Fin Cs.card) : enumC Cs a ∈ Cs :=
   Finset.orderEmbOfFin_mem Cs rfl a
 
 theorem enumC_surj (Cs : Finset (Fin r)) {c : Fin r} (hc : c ∈ Cs) : ∃ a, enumC Cs a = c := by
-  have h : c ∈ Set.range (Cs.orderEmbOfFin rfl) := by
-    rw [Finset.range_orderEmbOfFin]; exact hc
-  exact h
+  change c ∈ Set.range (enumC Cs)
+  rwa [enumC, Finset.range_orderEmbOfFin]
 
 theorem wtSpC_iff (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ)
     (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
@@ -256,9 +254,7 @@ theorem isoC_eq (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r →
   ext S
   simp only [Set.mem_ofPred_eq, stableC_iff]
   refine and_congr_left fun _ => ?_
-  constructor
-  · intro h v hv; exact h ((hwc_iff LL j Cs la v).mpr hv)
-  · intro h v hv; exact h ((hwc_iff LL j Cs la v).mp hv)
+  exact ⟨fun h v hv => h ((hwc_iff LL j Cs la v).mpr hv), fun h v hv => h ((hwc_iff LL j Cs la v).mp hv)⟩
 
 theorem exists_ext (Cs : Finset (Fin r)) (μ : Fin Cs.card → ℤ) : ∃ la : Fin r → ℤ, la ∘ enumC Cs = μ :=
   ⟨Function.extend (enumC Cs) μ 0, Function.extend_comp (enumC Cs).injective μ 0⟩
@@ -324,11 +320,9 @@ theorem monomial_mem_pol (LL : Letters N) (m : Fin N × Fin r →₀ ℕ) (a : �
     monomial m a ∈ Pol p r (⟨LL.vec, fun i => ∑ c, m (i, c)⟩ : Letters N) := by
   classical
   rw [Pol, MvPolynomial.mem_restrictSupport_iff]
-  intro d hd
-  have := MvPolynomial.support_monomial_subset hd
-  rw [Finset.mem_singleton] at this
-  subst this
-  intro i
+  rintro d hd i
+  have hd' : d = m := by simpa using MvPolynomial.support_monomial_subset hd
+  subst hd'
   rfl
 
 end Formalism.InvariantFactorPaths.PW

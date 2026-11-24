@@ -291,10 +291,10 @@ theorem PhiData.constant_le_rpow_of_three_le (B y : ℕ) (hB : 1 ≤ B) (hy : 1 
           generalize l * (j0 + 1) = t at h1
           omega
         have h3 : (B : ℝ) ≤ l * (j0 + 1) := by exact_mod_cast h2
-        rw [div_le_iff₀ hlpos]
-        linarith
+        rw [div_le_iff₀ hlpos, mul_comm]
+        exact h3
       push_cast [hj0y]
-      linarith
+      linarith only [hBl, hlog]
   calc ((cont ϖ ((X : O⟦X⟧) ^ B) (P.p 1 ^ y)).toNat : ℝ)
       ≤ ((eO (O := O) l * (v + (y - j0)) : ℕ) : ℝ) := by exact_mod_cast htn
     _ ≤ eO (O := O) l * max 0 ((y : ℝ) - B / l + 2 + Real.logb l y) := by
@@ -326,16 +326,18 @@ private theorem le_of_le_ceil_eO_mul (w B η k : ℕ)
   have hl1 : (1 : ℝ) ≤ l := by exact_mod_cast (Fact.out : l.Prime).one_lt.le
   set a : ℝ := (B : ℝ) / l with ha
   set b : ℝ := (η : ℝ) / (l : ℝ) ^ 2 with hb
-  have hBa : (B : ℝ) = a * l := by rw [ha]; field_simp
-  have hηb : (η : ℝ) = b * l ^ 2 := by rw [hb]; field_simp
-  have hb0 : 0 ≤ b := by positivity
+  have hBa : (B : ℝ) = a * l := (div_mul_cancel₀ _ hlpos.ne').symm
+  have hηb : (η : ℝ) = b * l ^ 2 := (div_mul_cancel₀ _ (pow_ne_zero _ hlpos.ne')).symm
+  have hb0 : 0 ≤ b := div_nonneg (Nat.cast_nonneg η) (sq_nonneg _)
   have hkey : ∀ N : ℕ, (w : ℝ) - a - b ≤ N → C ϖ ^ k ∣ (C (l : O) : O⟦X⟧) ^ N :=
     fun N hN => le_eO_mul_of_l_ne_zero hϖ P.hl0 (le_mul_of_le_ceil_mul_of_le hϖ _ _ _ _ hk hN)
   rw [P.p_two_eq_l_mul_phi_eps_add_phi_u_mul, add_comm, add_pow]
   refine Ideal.sum_mem _ fun j hj => ?_
   have hjw : j ≤ w := Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)
   by_cases hc : (j : ℝ) ≤ a + b
-  · obtain ⟨q, hq⟩ := hkey (w - j) (by push_cast [hjw]; linarith)
+  · obtain ⟨q, hq⟩ := hkey (w - j) (by
+      push_cast [hjw]
+      linarith only [hc])
     have e1 : (P.φ P.u * P.p 1 ^ l) ^ j * (C (l : O) * P.φ P.eps) ^ (w - j) *
         ((w.choose j : ℕ) : O⟦X⟧) =
         C ϖ ^ k * (q * ((P.φ P.u * P.p 1 ^ l) ^ j * P.φ P.eps ^ (w - j) *
@@ -344,11 +346,11 @@ private theorem le_of_le_ceil_eO_mul (w B η k : ℕ)
       ring
     rw [e1]
     exact I.mul_mem_right _ hϖI
-  · push_neg at hc
+  · have habj : a + b < j := lt_of_not_ge hc
     have hBj : B ≤ l * j := by
       have h2 : (B : ℝ) < l * j := by
-        rw [hBa]
-        nlinarith
+        rw [hBa, mul_comm (l : ℝ)]
+        exact mul_lt_mul_of_pos_right ((le_add_of_nonneg_right hb0).trans_lt habj) hlpos
       exact_mod_cast h2.le
     set N := l * j - B with hN
     have hsplit : P.p 1 ^ (l * j) = P.p 1 ^ B * P.p 1 ^ N := by
@@ -374,19 +376,21 @@ private theorem le_of_le_ceil_eO_mul (w B η k : ℕ)
         rw [mul_assoc, ← pow_add, Nat.add_sub_cancel' hη]
       rw [e3, mul_assoc]
       exact I.mul_mem_right _ hgI
-    · push_neg at hη
-      have hmr : (l : ℝ) * m < η := by exact_mod_cast hη
+    · have hmr : (l : ℝ) * m < η := by exact_mod_cast (lt_of_not_ge hη)
       have hcast : ((N - m : ℕ) : ℝ) = (l : ℝ) * j - B - m := by
-        rw [Nat.cast_sub hmN, hN, Nat.cast_sub hBj]
-        push_cast
-        ring
+        rw [Nat.cast_sub hmN, hN, Nat.cast_sub hBj, Nat.cast_mul]
       obtain ⟨q, hq⟩ := hkey (N - m + (w - j)) (by
         rw [Nat.cast_add, hcast, Nat.cast_sub hjw, hBa]
         rw [hηb] at hmr
-        have hm' : (m : ℝ) ≤ b * l := by nlinarith
+        have hm' : (m : ℝ) < b * l := by
+          apply (mul_lt_mul_iff_of_pos_left hlpos).mp
+          calc
+            (l : ℝ) * m < b * l ^ 2 := hmr
+            _ = l * (b * l) := by rw [pow_two, mul_left_comm b]
         have h3 : ((l : ℝ) - 1) * b ≤ ((l : ℝ) - 1) * (j - a) :=
-          mul_le_mul_of_nonneg_left (by linarith) (by linarith)
-        nlinarith)
+          mul_le_mul_of_nonneg_left (le_sub_iff_add_le.mpr (by simpa only [add_comm] using habj.le))
+            (sub_nonneg.mpr hl1)
+        linarith only [hm', h3])
       have e4 : P.p 1 ^ B * X ^ (l * m) * (P.φ P.u ^ j * P.u ^ m * (C (l : O) * P.eps) ^ (N - m) *
           ((N.choose m : ℕ) : O⟦X⟧) * (C (l : O) * P.φ P.eps) ^ (w - j) *
           ((w.choose j : ℕ) : O⟦X⟧)) =

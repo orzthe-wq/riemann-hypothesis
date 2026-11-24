@@ -372,7 +372,7 @@ theorem sumL_last (g : Sp E n →ₗ[E] Sp E n) (t : E) (x : Sp E N) : sumL hN g
   rfl
 
 def sumE (g : Sp E n ≃ₗ[E] Sp E n) (t : Eˣ) : Sp E N ≃ₗ[E] Sp E N :=
-  LinearEquiv.ofLinear (sumL hN (g : Sp E n →ₗ[E] Sp E n) t) (sumL hN (g.symm : Sp E n →ₗ[E] Sp E n) (t⁻¹ : Eˣ))
+  LinearEquiv.ofLinearMap (sumL hN (g : Sp E n →ₗ[E] Sp E n) t) (sumL hN (g.symm : Sp E n →ₗ[E] Sp E n) (t⁻¹ : Eˣ))
     (LinearMap.ext fun x => ext_prH hN (by simp [prH_sumL]) (by simp [sumL_last]))
     (LinearMap.ext fun x => ext_prH hN (by simp [prH_sumL]) (by simp [sumL_last]))
 
@@ -412,7 +412,7 @@ theorem extGH_apply {SG : Finset (HeightOneSpectrum (𝓞 E))} (h : GLG (E := E)
   show padM _ n (h w).1 = _
   ext i j
   refine Fin.lastCases ?_ (fun i' => ?_) i <;> refine Fin.lastCases ?_ (fun j' => ?_) j <;>
-    simp [padM, diagMat, Matrix.one_apply, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]
+    simp [padM, diagMat, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]
 
 variable {P : HeightOneSpectrum (𝓞 E)}
 
@@ -442,10 +442,10 @@ theorem diagMat_mulVec {κ : Type} [CommRing κ] (A : Matrix (Fin n) (Fin n) κ)
   refine ⟨fun i => ?_, ?_⟩
   · show ∑ l, diagMat n (n + 1) A i.castSucc l * v l = ∑ j, A i j * v j.castSucc
     rw [Fin.sum_univ_castSucc]
-    simp [diagMat, Matrix.one_apply, Fin.castSucc_ne_last]
+    simp [diagMat, Fin.castSucc_ne_last]
   · show ∑ l, diagMat n (n + 1) A (Fin.last n) l * v l = v (Fin.last n)
     rw [Fin.sum_univ_castSucc]
-    simp [diagMat, Matrix.one_apply, (Fin.castSucc_ne_last _).symm]
+    simp [diagMat, (Fin.castSucc_ne_last _).symm]
 
 theorem redGL_extI (j : GLint E n P) : redGL N P (extI hN P j) = diagEmb _ (by omega : n ≤ N) (redGL n P j) := by
   refine redGL_eq _ fun x hx => ?_

@@ -5,52 +5,11 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHer
 import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSchur
 public import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RrExistsMeasRep
 public import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RrgCountableField
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.MeasureTheory.Integral.Pi
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Separation.CompletelyRegular
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -82,9 +41,7 @@ theorem map_lin_of_inner (ψ : E → F) (C : ℂ) (h : ∀ y y', ⟪ψ y, ψ y'�
 
 theorem map_zero_of_inner (ψ : E → F) (C : ℂ) (h : ∀ y y', ⟪ψ y, ψ y'⟫_ℂ = C * ⟪y, y'⟫_ℂ) :
     ψ 0 = 0 := by
-  have h0 := h 0 0
-  rw [inner_zero_left, mul_zero, inner_self_eq_zero] at h0
-  exact h0
+  simpa only [inner_zero_left, mul_zero, inner_self_eq_zero] using h 0 0
 
 def linOfInner (ψ : E → F) (C : ℂ) (h : ∀ y y', ⟪ψ y, ψ y'⟫_ℂ = C * ⟪y, y'⟫_ℂ) : E →L[ℂ] F :=
   LinearMap.mkContinuous
@@ -135,12 +92,10 @@ theorem tens_continuous (tens : (∀ i, H i) → Hs) (htin : ∀ x y, ⟪tens x,
   have hsq : ∀ x y, ‖tens x - tens y‖ ^ 2 = RCLike.re ((∏ i, ⟪x i, x i⟫_ℂ) - (∏ i, ⟪x i, y i⟫_ℂ) -
       (∏ i, ⟪y i, x i⟫_ℂ) + ∏ i, ⟪y i, y i⟫_ℂ) := by
     intro x y
-    rw [← htin, ← htin, ← htin, ← htin, ← inner_self_eq_norm_sq (𝕜 := ℂ)]
-    have e : ⟪tens x - tens y, tens x - tens y⟫_ℂ = ⟪tens x, tens x⟫_ℂ - ⟪tens x, tens y⟫_ℂ -
-        ⟪tens y, tens x⟫_ℂ + ⟪tens y, tens y⟫_ℂ := by
-      simp only [inner_sub_left, inner_sub_right]
-      ring
-    rw [e]
+    rw [← inner_self_eq_norm_sq (𝕜 := ℂ)]
+    simp only [inner_sub_left, inner_sub_right, htin]
+    congr 1
+    ring
   rw [continuous_iff_continuousAt]
   intro x0
   rw [ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]
@@ -205,9 +160,7 @@ theorem reg_alg (hU : UnimodGf) (I : AutInst) (μf : Measure I.Gf) [SigmaFinite 
   have : (I.muA μf).IsMulLeftInvariant := Measure.prod.instIsMulLeftInvariant
   have : (I.muA μf).IsMulRightInvariant := Measure.prod.instIsMulRightInvariant
   have h1 : Formalism.MainNotions.LeviCoordinates.rr_FD (I.muA μf) (Formalism.MainNotions.LeviCoordinates.rr_GF I) fund := ⟨hfund.1, hfund.2.1, hfund.2.2⟩
-  have h2 : Formalism.MainNotions.LeviCoordinates.rr_IsReg (I.muA μf) (Formalism.MainNotions.LeviCoordinates.rr_GF I) fund R := hR
-  exact ⟨fun a b => Formalism.MainNotions.LeviCoordinates.rr_mul h1 h2 a b, Formalism.MainNotions.LeviCoordinates.rr_one h1 h2,
-    fun a F => Formalism.MainNotions.LeviCoordinates.rr_norm h1 h2 a F⟩
+  exact ⟨fun a b => Formalism.MainNotions.LeviCoordinates.rr_mul h1 hR a b, Formalism.MainNotions.LeviCoordinates.rr_one h1 hR, fun a F => Formalism.MainNotions.LeviCoordinates.rr_norm h1 hR a F⟩
 
 theorem loc_schur {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d : ℝ} {w : H} (x : H)
@@ -221,9 +174,7 @@ theorem loc_schur {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup
     simp only [Formalism.L2.SG.ProjRows.phLoc, coefOn]
     ring
   simp_rw [hph]
-  have hww : ⟪w, w⟫_ℂ = 1 := by
-    rw [inner_self_eq_norm_sq_to_K, hw]
-    simp
+  have hww : ⟪w, w⟫_ℂ = 1 := by simp [inner_self_eq_norm_sq_to_K, hw]
   rw [MeasureTheory.integral_const_mul, (hF2 w x w w).2, hww, one_mul]
   field_simp
 

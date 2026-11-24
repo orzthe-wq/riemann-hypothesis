@@ -113,12 +113,12 @@ theorem padMat_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n M :
 theorem kr_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (d : ℕ) {n : ℕ}
     (A : Matrix (Fin n) (Fin n) R) : (kr d A).map f = kr d (A.map f) := by
   ext i j
-  simp only [kr, reindex_apply, map_apply, submatrix_apply, kroneckerMap_apply, one_apply]
+  simp only [kr, reindex_apply, map_apply, submatrix_apply, kroneckerMap_apply]
   by_cases h : i.divNat = j.divNat <;> simp [Matrix.one_apply, h]
 
 theorem kr_conjTranspose (d : ℕ) {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : (kr d A)ᴴ = kr d Aᴴ := by
   ext i j
-  simp only [kr, reindex_apply, conjTranspose_apply, submatrix_apply, kroneckerMap_apply, one_apply]
+  simp only [kr, reindex_apply, conjTranspose_apply, submatrix_apply, kroneckerMap_apply]
   by_cases h : i.divNat = j.divNat <;> simp [Matrix.one_apply, eq_comm, h]
 
 theorem kr_mul (d : ℕ) {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) : kr d (A * B) = kr d A * kr d B := by

@@ -7,48 +7,9 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.WuBesselLoc
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.WuDecayAll
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.WFLStepsLocHNProps
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -101,11 +62,6 @@ theorem Qm_of_tr (Q : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     first
     | (simp [Matrix.mulVec_single]; done)
     | (simp [Matrix.mulVec_single]; congr 1; ext; simp <;> omega)
-    | (simp [Matrix.mulVec_single_one]; done)
-    | (simp [Matrix.mulVec_single_one]; congr 1; ext; simp <;> omega)
-    | (simp [Matrix.mulVec, dotProduct, Pi.single_apply]; done)
-    | (simp [Matrix.mulVec, dotProduct, Pi.single_apply]; congr 1; ext; simp <;> omega)
-    | (simp [Matrix.mulVec_single]; omega)
 
 theorem Qi_of_tr {ε : Fin (2 * r + k + 1) → Bool} {Q Qi : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Hpk k r) :
@@ -139,10 +95,7 @@ theorem inN_scale {n : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) 
   unfold InN InS
   intro h
   first
-    | simpa [hsp, hs, Matrix.mulVec_smul, hc] using h
     | simpa [hsp, hs, Matrix.mulVec_smul, hc, hJ, dotProduct_smul, smul_dotProduct, mul_eq_zero] using h
-    | simpa [hsp, hs, Matrix.mulVec_smul, hc, hJ, Matrix.dotProduct_smul, Matrix.smul_dotProduct, mul_eq_zero] using h
-    | (unfold hJ at h ⊢; simp only [hsp, hs, Matrix.mulVec_smul] at h ⊢; done)
 
 theorem inN_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ)
     (Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ) (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
@@ -196,8 +149,6 @@ theorem inN_scale' {n : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ)
   first
     | simpa [hsp, hs, Matrix.mulVec_smul, hc] using h
     | simpa [hsp, hs, Matrix.mulVec_smul, hc, hJ, dotProduct_smul, smul_dotProduct, mul_eq_zero] using h
-    | simpa [hsp, hs, Matrix.mulVec_smul, hc, hJ, Matrix.dotProduct_smul, Matrix.smul_dotProduct, mul_eq_zero] using h
-    | (unfold hJ at h ⊢; simp only [hsp, hs, Matrix.mulVec_smul] at h ⊢; done)
 
 theorem nset_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ)
     (Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ) (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
@@ -247,9 +198,6 @@ theorem psiR_fix_left {n : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r �
     intro a w
     first
       | (unfold hJ; conv_lhs => rw [← hf a, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hH])
-      | (unfold hJ; conv_lhs => rw [← hf a, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hH])
-      | (unfold hJ; conv_lhs => rw [← hf a, Matrix.star_mulVec, ← dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hH])
-      | (unfold hJ; done)
   unfold psiR
   congr 3
   unfold rootCoord

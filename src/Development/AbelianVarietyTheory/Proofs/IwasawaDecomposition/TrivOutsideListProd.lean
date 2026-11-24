@@ -74,7 +74,7 @@ theorem bz_map_zmod (r t p : ℕ) [Fact p.Prime] (γ : GL (Fin r) (ZMod p)) :
   ext a b
   rw [GlobalTheory.SerSys.BlockLift.bm_apply]
   simp only [Matrix.map_apply, bz]
-  split_ifs <;> simp [ZMod.natCast_zmod_val]
+  split_ifs <;> simp
 
 theorem bz_det_ne (r t p : ℕ) [Fact p.Prime] (γ : GL (Fin r) (ZMod p)) :
     (((bz r (r + t) p γ).det : ℤ) : ZMod p) ≠ 0 := by

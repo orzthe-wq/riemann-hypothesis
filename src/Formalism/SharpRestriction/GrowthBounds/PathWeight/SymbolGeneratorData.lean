@@ -242,9 +242,7 @@ theorem ph_Wseg (j : ℤ) :
     ∃ h ∈ X.SS, phSeg O K p X.Fr j (Wseg X.Fr j O K) = X.DlO (j - 1) ^ (Qj X.Fr p (j - 1)) + (p : AA) * h := by
   obtain ⟨h, hh, he⟩ := ph_det_pow_sub X.SS p (zF X.Fr j - zF X.Fr (j - 1)).toNat (X.DlM (j - 1)) (ph_DlM_mem X _)
   refine ⟨h, hh, ?_⟩
-  have hQ : Qj X.Fr p (j - 1) = p ^ (zF X.Fr j - zF X.Fr (j - 1)).toNat := by
-    unfold Qj; rw [sub_add_cancel]
-  rw [hQ, Ctx.DlO, ← he]
+  rw [show Qj X.Fr p (j - 1) = p ^ (zF X.Fr j - zF X.Fr (j - 1)).toNat by unfold Qj; rw [sub_add_cancel], Ctx.DlO, ← he]
   unfold Wseg
   rw [AlgHom.map_det]
   refine congrArg Matrix.det (Matrix.ext fun l i => ?_)

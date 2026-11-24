@@ -106,7 +106,7 @@ lemma rho_nsq_root {n : ℕ} (x : Fin n → ℝ) (a b : Fin n) (hab : a ≠ b) :
     intro i
     by_cases h1 : i = a <;> by_cases h2 : i = b
     · exact absurd (h1.symm.trans h2) hab
-    all_goals simp [Pi.single_apply, h1, h2, hab, Ne.symm hab] <;> ring
+    all_goals simp [h1, h2, hab, Ne.symm hab] <;> ring
   unfold root nsq dot
   rw [Finset.sum_congr rfl (fun i _ => hs i), Finset.sum_add_distrib, Finset.sum_add_distrib]
   simp [Pi.single_apply] <;> ring

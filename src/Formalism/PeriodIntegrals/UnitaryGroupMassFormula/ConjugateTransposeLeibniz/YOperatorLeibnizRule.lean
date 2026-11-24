@@ -108,13 +108,13 @@ lemma rdV_smul_of {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 lemma single_mulVec_bvec (p s q : Fin n) :
     Matrix.single p s (1 : ℂ) *ᵥ bvec q = if q = s then bvec p else 0 := by
   funext j
-  simp only [bvec, Matrix.mulVec_single, Matrix.single_apply, mul_one]
+  simp only [bvec, Matrix.mulVec_single]
   by_cases h : q = s
   · subst h
     by_cases hj : j = p
     · subst hj
       simp
-    · simp [hj, Ne.symm hj, Pi.single_apply]
+    · simp [hj, Ne.symm hj]
   · simp [h, Ne.symm h]
 
 lemma single_conjTranspose (p s : Fin n) :
@@ -155,7 +155,7 @@ lemma hpart2_skew (H Z : Matrix (Fin n) (Fin n) ℂ) (hHh : Hᴴ = H) (hHH : H *
   have hHH' : ∀ X : Matrix (Fin n) (Fin n) ℂ, H * (H * X) = X := fun X => by
     rw [← mul_assoc, hHH, one_mul]
   have hs : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) := by
-    first | (simp; done) | (simp [mul_neg, inv_neg]; done) | (rw [star_div₀, star_one, star_mul', star_ofNat, Complex.star_def, Complex.conj_I, mul_neg, div_neg])
+    first | (simp; done)
   unfold hpart2
   rw [hHinv, Matrix.conjTranspose_smul, hs, smul_mul_assoc, Matrix.mul_smul, neg_smul, ← smul_neg, ← smul_add]
   have e : -((Z + H * Zᴴ * H)ᴴ * H) + H * (Z + H * Zᴴ * H) = 0 := by
@@ -220,7 +220,7 @@ lemma hpart_kill (a b : Fin (mdim k r i)) (q : Fin (2 * r + k + 1))
     rw [he]
     unfold Hpk
     try beta_reduce
-    split_ifs <;> first | rfl | (exfalso; omega) | (exfalso; rw [Fin.ext_iff] at *; omega)
+    split_ifs <;> first | rfl | (exfalso; omega)
   have h2 : (Matrix.single (posL k r i a) (posL k r i b) (1 : ℂ))ᴴ *ᵥ (Hpk k r *ᵥ bvec q) = 0 := by
     rw [single_conjTranspose]
     generalize Hpk k r *ᵥ bvec q = w at hw ⊢
@@ -269,7 +269,7 @@ private theorem hasDerivAt_mul_exp_smul_zero' {n : ℕ} (g X : Matrix (Fin n) (F
   let large₂ : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ := LinearMap.toContinuousLinearMap
     { toFun := fun M => g * M
       map_add' := fun M N => Matrix.mul_add g M N
-      map_smul' := fun c M => by simp [Matrix.mul_smul] }
+      map_smul' := fun c M => by simp }
   have h := large₂.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_matrix_exp_smul_at_zero X)
   exact h
 
@@ -280,7 +280,7 @@ lemma hasDerivAt_f {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     HasDerivAt (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) (fderiv ℝ F g (g * X)) 0 := by
   have hc : HasDerivAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) (g * X) 0 := hasDerivAt_mul_exp_smul_zero' g X
   have hFd : DifferentiableAt ℝ F g :=
-    (hF.contDiffAt (hU.mem_nhds hgU)).differentiableAt (by first | simp | exact_mod_cast le_top)
+    (hF.contDiffAt (hU.mem_nhds hgU)).differentiableAt (by first | simp)
   have h1 := hFd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hc (curve_zero g X).symm
   apply h1.congr_of_eventuallyEq
   have hev : ∀ᶠ t : ℝ in 𝓝 (0 : ℝ), g * NormedSpace.exp ((t : ℂ) • X) ∈ U := by

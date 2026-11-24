@@ -402,7 +402,7 @@ theorem aeval_linT_eq (U : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.
   rw [Finset.sum_eq_single a (fun a' _ ha' => Finset.sum_eq_zero fun b' _ => by
     beta_reduce
     rw [hV, if_neg ha', map_zero, map_zero, zero_mul]) (fun h => absurd (Finset.mem_univ _) h)]
-  simp only [Matrix.mul_apply, Matrix.map_apply, hV, if_pos rfl, dMat]
+  simp only [Matrix.mul_apply, Matrix.map_apply, hV, dMat]
   refine Finset.sum_congr rfl fun b' _ => ?_
   rw [mul_comm]
   rfl

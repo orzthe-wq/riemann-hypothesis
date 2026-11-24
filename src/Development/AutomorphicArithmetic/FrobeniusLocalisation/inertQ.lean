@@ -71,11 +71,11 @@ private theorem QSd_dvd {φ : Frame} (H : HostRaw φ) : H.QS * H.d ∣ H.condN :
   ⟨H.q, by unfold HostRaw.condN; ring⟩
 
 private theorem cyc_unitsOne {φ : Frame} (H : HostRaw φ) : IsCyclic (H.unitsOne (H.QS * H.d)) := by
-  haveI : Fact (Nat.Prime H.q) := ⟨H.q_prime⟩
+  have : Fact (Nat.Prime H.q) := ⟨H.q_prime⟩
   have hN : H.condN = H.QS * H.d * H.q := by
     show H.QS * H.q * H.d = H.QS * H.d * H.q
     ring
-  haveI : NeZero H.condN := ⟨by
+  have : NeZero H.condN := ⟨by
     rw [hN]
     exact Nat.mul_ne_zero (Nat.mul_ne_zero H.QS_ne_zero H.d_prime.ne_zero) H.q_prime.ne_zero⟩
   let f : H.unitsOne (H.QS * H.d) →* ZMod H.q :=
@@ -99,8 +99,8 @@ private theorem el_q_dvd {φ : Frame} (H : HostRaw φ) : H.el H.q ∣ 2 := by
   show Nat.card (H.imgOne (H.condN / H.q ^ H.condN.factorization H.q)) ∣ 2
   rw [ordCompl_q H]
   show Nat.card (Subgroup.map H.art (H.unitsOne (H.QS * H.d))) ∣ 2
-  haveI := cyc_unitsOne H
-  haveI : IsCyclic (Subgroup.map H.art (H.unitsOne (H.QS * H.d))) :=
+  have := cyc_unitsOne H
+  have : IsCyclic (Subgroup.map H.art (H.unitsOne (H.QS * H.d))) :=
     isCyclic_of_surjective (H.art.subgroupMap _) (H.art.subgroupMap_surjective _)
   rw [← IsCyclic.exponent_eq_card]
   apply Monoid.exponent_dvd_of_forall_pow_eq_one

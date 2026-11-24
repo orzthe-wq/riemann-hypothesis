@@ -231,11 +231,11 @@ theorem UpperTheory.Gal.CertificateRingHomMap.pLocAdj_of :
     · exact absurd (h ▸ hφ₀π) hφ₀N
   obtain ⟨v₀, hv₀⟩ : ∃ v, f v ≠ 0 := by
     by_contra hh
-    push_neg at hh
+    push Not at hh
     exact hf (LinearMap.ext hh)
   obtain ⟨h, hh, hZ⟩ : ∃ h ∈ H, ¬ Z σ χ (ρ h (f v₀)) := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     have : f v₀ ∈ Nn := ⟨hfπ v₀, hcon⟩
     rw [hbot] at this
     exact hv₀ ((Submodule.mem_bot ℂ).1 this)

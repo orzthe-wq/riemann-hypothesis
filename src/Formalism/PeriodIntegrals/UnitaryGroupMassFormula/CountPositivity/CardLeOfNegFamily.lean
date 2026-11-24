@@ -138,7 +138,7 @@ theorem card_le_of_negFamily (S : Formalism.BasicNotions.HSpace E) (τ : E →+*
       rw [hz]
       simp only [Matrix.conjTranspose_sum, Matrix.conjTranspose_smul, Matrix.sum_mul, Matrix.mul_sum,
         Matrix.smul_mul, Matrix.mul_smul, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, hG,
-        mul_ite, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+        mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
       refine Finset.sum_congr rfl fun i _ => ?_
       ring
     have hG2 : (zᴴ * Formalism.UG.Jpq p' q' * z) 0 0 =

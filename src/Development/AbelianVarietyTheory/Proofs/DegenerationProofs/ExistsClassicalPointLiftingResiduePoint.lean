@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.IsNormalSchemeSp
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.JacobsonClosedPointsToolsInt
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.KbIsAlgClosedAndConjStatement
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.KbIsAlgClosedAndConj
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MemPadicAlgClValuationSubringIffNormLeOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt
 import Mathlib.Algebra.Order.Floor.Extended
@@ -113,7 +113,7 @@ theorem exists_integral_point_lifting_residue_point :
         (∀ (x : Sp (kb p) ⟶ X) (s : Sp (kb p)), IsClosed ({x s} : Set X)) := by
   intro X _ π _ _ U hU p hp
   obtain ⟨hJ, hfin, -⟩ := jacobson_closedPoints_tools_int X π
-  obtain ⟨-, hord, hgal⟩ := GlobalTheory.T.kb_isAlgClosed_and_conj' p
+  obtain ⟨-, hord, hgal⟩ := _root_.GlobalTheory.ZJ.kb_isAlgClosed_and_conj p
   have hcl : ∀ (x : Sp (kb p) ⟶ X) (s : Sp (kb p)), IsClosed ({x s} : Set X) :=
     fun x s => isClosed_image_point_of_forall_pow_eq_one hord x s
   refine ⟨fun x => ?_, hcl⟩

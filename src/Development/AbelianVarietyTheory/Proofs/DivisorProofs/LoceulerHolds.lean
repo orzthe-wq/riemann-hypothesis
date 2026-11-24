@@ -46,6 +46,4 @@ import Mathlib.Topology.Sheaves.Init
 
 namespace GlobalTheory.Laid
 
-theorem loceuler_holds : ReciprocityTheory.Gal.LocalEulerChar := GlobalTheory.CompanionTheory.Hypotheses₂.LocalEuler.localEulerChar_holds
-
 end GlobalTheory.Laid

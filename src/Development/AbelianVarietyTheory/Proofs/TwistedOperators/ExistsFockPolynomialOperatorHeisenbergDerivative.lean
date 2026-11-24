@@ -75,16 +75,7 @@ section Mat
 
 variable {m n : ℕ}
 
-theorem Jm_mul_Jm (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1; funext a; split_ifs <;> simp
-
-theorem Jm_herm (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_conjTranspose]
-  congr 1; funext a; simp only [Pi.star_apply]; split_ifs <;> simp
-
+alias Jm_mul_Jm := _root_.Formalism.REAL.Jm_mul_self
 
 open scoped ComplexOrder in
 theorem isCartanInv_of_isFrameOf {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFrameOf G s ε fr) : IsCartanInv G s := by
@@ -100,7 +91,7 @@ theorem isCartanInv_of_isFrameOf {G s fr : Mn n} {ε : Fin n → Bool} (h : IsFr
       _ = _ := by rw [h1, Matrix.mul_one, Jm_mul_Jm, Matrix.mul_one, h2]
   refine ⟨hs, ?_, ?_⟩
   · have hGh : (frᴴ * Formalism.REAL.Jm ε * fr)ᴴ = frᴴ * Formalism.REAL.Jm ε * fr := by
-      simp [Matrix.conjTranspose_mul, Jm_herm, Matrix.mul_assoc]
+      simp [Matrix.conjTranspose_mul, _root_.Formalism.REAL.Jm_conjTranspose, Matrix.mul_assoc]
     have h3 := congrArg Matrix.conjTranspose hG
     rw [Matrix.conjTranspose_mul, hGh, Matrix.conjTranspose_mul frᴴ fr, Matrix.conjTranspose_conjTranspose] at h3
     rw [h3, ← hG, Matrix.mul_assoc _ (fr⁻¹ * Formalism.REAL.Jm ε * fr), hs, Matrix.mul_one]

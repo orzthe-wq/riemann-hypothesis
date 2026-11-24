@@ -51,7 +51,7 @@ namespace GlobalTheory.CM.Test
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 theorem bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
-  apply GlobalTheory.QuadTrace.bar_rt <;> assumption
+  apply GlobalTheory.QuadTrace.bar_rt
 
 variable {D : Datum H} {ε : ℤˣ} {h : D.La → D.La → OK H}
 

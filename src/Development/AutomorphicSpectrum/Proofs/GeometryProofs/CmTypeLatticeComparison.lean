@@ -4,9 +4,11 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsPullWedge
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericCoordsDescendSubfield
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsVBOneOfChartGenerators
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelConstantsExtension
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelDominantHodgeStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsVBOneOfChartGenerators
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelDominantHodge
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkClosedPointToGermTop
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -130,7 +132,7 @@ theorem eigLat_eq_pull [CharZero Ω₀] [CharZero Ω] (cst : c.F →+* Ω₀) (h
     (s : CMType H ⊕ CMType H) (q : Cpt ξ') (hq : ∀ r : ℕ, r.Prime → ¬ InFibre ξ' r q) :
     M'.eigLat ρ' ((i.comp cst).comp (labelEmb c s)) q =
       (M.eigLat ρ (cst.comp (labelEmb c s))).pull ξ' f j q := by
-  obtain ⟨j₂, hj₂, hsl₂, -, -, hlat₂⟩ := GlobalTheory.T.lie_model_dominant_hodge E H X t X' t' f m Ω₀ Ω ξ ξ' i V V' M M' hg hg' hd
+  obtain ⟨j₂, hj₂, hsl₂, -, -, hlat₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LiePullSab.lie_pull_lat E H X t X' t' f m Ω₀ Ω ξ ξ' i V V' M M' hg hg' hd
   have hcanc : ∀ v w : epsAt ξ' ⟶ t'.G, v.left ≫ m.φ = w.left ≫ m.φ → v = w := by
     intro v w h
     apply Over.OverMorphism.ext

@@ -106,7 +106,7 @@ structure CoverSequenceProperties (hinv : ComapIsoInvariance.{u}) (P : ℕ → P
       IsSmoothDivisor T.structMap (Scheme.Hom.ker e) →
     ∀ J : Y.IdealSheafData,
       (T.withSchemeIdealBoundary Y q J ([] : List Y.IdealSheafData)).IsAdmissible →
-      T.ideal = imageIdealSheaf e J →
+      T.ideal = _root_.FunctorialResolution.Blowup.schemeImageIdeal e J →
       IsStrictPullbackBlowupSeq (MaxContactCoverData.coverMap T h.valid)
         (coverBlowupSequence hinv A T h.valid).toBlowupSequenceData.toSequenceOfBlowups
         (A 0 (T.withBoundary [Scheme.Hom.ker e])).toSequenceOfBlowups
@@ -209,10 +209,10 @@ structure DescentHypotheses (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     ∀ (ε : Y ⟶ (Scheme.Hom.ker e).subscheme),
       ε ≫ (Scheme.Hom.ker e).subschemeι = e →
       (T.withSchemeIdealBoundary (Scheme.Hom.ker e).subscheme
-          ((Scheme.Hom.ker e).subschemeι ≫ T.structMap) (imageIdealSheaf ε J)
+          ((Scheme.Hom.ker e).subschemeι ≫ T.structMap) (_root_.FunctorialResolution.Blowup.schemeImageIdeal ε J)
           ([] : List (Scheme.Hom.ker e).subscheme.IdealSheafData)).IsAdmissible ∧
       (T.withSchemeIdealBoundary (Scheme.Hom.ker e).subscheme
-          ((Scheme.Hom.ker e).subschemeι ≫ T.structMap) (imageIdealSheaf ε J)
+          ((Scheme.Hom.ker e).subschemeι ≫ T.structMap) (_root_.FunctorialResolution.Blowup.schemeImageIdeal ε J)
           ([] : List (Scheme.Hom.ker e).subscheme.IdealSheafData)).krullDimSucc =
         (T.withSchemeIdealBoundary Y q J ([] : List Y.IdealSheafData)).krullDimSucc
   tunedIdeal_of_mult_one : ∀ (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible), T.mult = 1 →

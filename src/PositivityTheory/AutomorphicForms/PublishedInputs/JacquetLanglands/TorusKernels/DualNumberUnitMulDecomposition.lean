@@ -1,58 +1,374 @@
 module
 
 public import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.Imports
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-public import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ConjNeOne
-public import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ExistsFix
-public import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.RadialIntegralUnitCircleEq
+public import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ComplexMinusRealLineMeasureCoordinates
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+public import Mathlib.Analysis.Calculus.Deriv.Add
+public import Mathlib.Analysis.Calculus.Deriv.Inv
+public import Mathlib.Analysis.Calculus.Deriv.Mul
+public import Mathlib.Analysis.Calculus.Deriv.Pow
+public import Mathlib.Analysis.Complex.RealDeriv
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+public import Mathlib.MeasureTheory.Integral.Prod
 public import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ConjNeOne, PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ExistsFix, PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.RadialIntegralUnitCircleEq, PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.DualNumberUnitMulDecomposition
+
+-- ===== clump member: PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ConjNeOne =====
+-- clump-header: {"m": "PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ConjNeOne", "h": "module\n\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.Imports\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix
+open scoped ENNReal NNReal ComplexConjugate
+
+namespace UpperTheory.Esk.RadialIntegralLemmas
+open UpperTheory.Esk
+
+theorem key_id (α β u ub : ℂ) (hα : α ≠ 0) (hu : 1 - u ≠ 0) (h1 : β - α * u ≠ 0) (h2 : α - β * ub ≠ 0)
+    (hA : α - β * u * ub ≠ 0) :
+    (Complex.I * (β + α * u) / (β - α * u) - -Complex.I * (α + β * ub) / (α - β * ub)) /
+      (Complex.I * (1 + u) / (1 - u) - -Complex.I * (α + β * ub) / (α - β * ub)) * ((β - α * u) / (1 - u)) =
+      β * (1 - u * ub) / (1 - β / α * (u * ub)) := by
+  have hI := Complex.I_ne_zero
+  have e1 : Complex.I * (1 + u) / (1 - u) - -Complex.I * (α + β * ub) / (α - β * ub) =
+      2 * Complex.I * (α - β * u * ub) / ((1 - u) * (α - β * ub)) := by
+    field_simp; ring
+  have e2 : Complex.I * (β + α * u) / (β - α * u) - -Complex.I * (α + β * ub) / (α - β * ub) =
+      2 * Complex.I * α * β * (1 - u * ub) / ((β - α * u) * (α - β * ub)) := by
+    field_simp; ring
+  have e3 : 1 - β / α * (u * ub) = (α - β * u * ub) / α := by field_simp
+  rw [e1, e2, e3]
+  field_simp
+
+theorem pow_combine (c X Y S T : ℂ) (k : ℕ) (h : X * Y / S = T) :
+    c * X ^ k * (Y ^ k * (S ^ k)⁻¹) = c * T ^ k := by
+  rw [← h, div_pow, mul_pow]; ring
+
+theorem cayley_val (k : ℕ) (m : GL (Fin 2) ℝ) (a b : ℝ) (h00 : m 0 0 = a) (h01 : m 0 1 = b)
+    (h10 : m 1 0 = -b) (h11 : m 1 1 = a) (hb : b ≠ 0) (r θ : ℝ) (hr0 : 0 < r) (hr1 : r < 1) :
+    ext1 (U k m) (Complex.I * (1 + circleMap 0 r θ) / (1 - circleMap 0 r θ)) =
+      ((k : ℂ) - 1) / (4 * Real.pi) * (eta a b * (1 - (r : ℂ) ^ 2) / (1 - eta a b ^ 2 * (r : ℂ) ^ 2)) ^ k := by
+  set u := circleMap 0 r θ with hu_def
+  have hnu : ‖u‖ = r := by simp [u, abs_of_pos hr0]
+  have hu1 : (1 : ℂ) - u ≠ 0 := by
+    intro h; rw [sub_eq_zero] at h; rw [← h, norm_one] at hnu; linarith
+  have huu : u * conj u = (r : ℂ) ^ 2 := by
+    rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, hnu]; push_cast; ring
+  have hn : u.re ^ 2 + u.im ^ 2 = r ^ 2 := by
+    rw [← hnu, Complex.sq_norm, Complex.normSq_apply]; ring
+  set z := Complex.I * (1 + u) / (1 - u) with hz_def
+  have hz_im : z.im = (1 - r ^ 2) / Complex.normSq (1 - u) := by
+    rw [hz_def, Complex.div_im, ← sub_div]
+    congr 1
+    simp
+    nlinarith [hn]
+  have hzpos : 0 < z.im := by
+    rw [hz_im]
+    apply div_pos
+    · nlinarith
+    · exact Complex.normSq_pos.2 hu1
+  have hz : z.im ≠ 0 := hzpos.ne'
+  set zP : P := ⟨z, hz⟩ with hzP
+  have hzP1 : zP.1 = z := rfl
+  have hzpos' : 0 < zP.1.im := hzpos
+  have hext : ext1 (U k m) z = F k m zP := by
+    unfold ext1; rw [dite_eq_left hz]; exact if_pos hzpos'
+  have hab : 0 < a ^ 2 + b ^ 2 := by
+    have := lt_of_le_of_ne (sq_nonneg b) (Ne.symm (pow_ne_zero 2 hb)); nlinarith [sq_nonneg a]
+  obtain ⟨s, hs_def⟩ : ∃ s, s = Real.sqrt (a ^ 2 + b ^ 2) := ⟨_, rfl⟩
+  have hs : 0 < s := by rw [hs_def]; exact Real.sqrt_pos.2 hab
+  have hs2 : s ^ 2 = a ^ 2 + b ^ 2 := by rw [hs_def]; exact Real.sq_sqrt hab.le
+  have hS0 : (s : ℂ) ≠ 0 := by exact_mod_cast hs.ne'
+  have hα0 : (a : ℂ) + b * Complex.I ≠ 0 := by
+    intro h; have := congrArg Complex.im h; simp at this; exact hb this
+  have hβ0 : (a : ℂ) - b * Complex.I ≠ 0 := by
+    intro h; have := congrArg Complex.im h; simp at this; exact hb this
+  have hden : den m z = (((a : ℂ) - b * Complex.I) - ((a : ℂ) + b * Complex.I) * u) / (1 - u) := by
+    rw [eq_div_iff hu1]; unfold den; rw [h10, h11, hz_def]; push_cast; field_simp; ring
+  have hnum : num m z = Complex.I * (((a : ℂ) - b * Complex.I) + ((a : ℂ) + b * Complex.I) * u) / (1 - u) := by
+    rw [eq_div_iff hu1]; unfold num; rw [h00, h01, hz_def]; field_simp
+    linear_combination (b * (1 - u)) * Complex.I_sq
+  have h1 : ((a : ℂ) - b * Complex.I) - ((a : ℂ) + b * Complex.I) * u ≠ 0 := by
+    have := den_ne m hz; rw [hden] at this; exact (div_ne_zero_iff.1 this).1
+  have h2 : ((a : ℂ) + b * Complex.I) - ((a : ℂ) - b * Complex.I) * conj u ≠ 0 := by
+    have h := (map_ne_zero (starRingEnd ℂ)).2 h1
+    convert h using 1
+    simp only [map_sub, map_mul, map_add (f := _), Complex.conj_ofReal, Complex.conj_I]; ring
+  have hA : ((a : ℂ) + b * Complex.I) - ((a : ℂ) - b * Complex.I) * u * conj u ≠ 0 := by
+    intro h
+    rw [mul_assoc, huu, ← Complex.ofReal_pow] at h
+    have := congrArg Complex.im h
+    simp only [Complex.sub_im, Complex.add_im, Complex.mul_im, Complex.ofReal_im, Complex.ofReal_re,
+      Complex.I_re, Complex.I_im, Complex.sub_re, Complex.mul_re, Complex.zero_im] at this
+    have h3 : b * (1 + r ^ 2) = 0 := by
+      linear_combination this
+    rcases mul_eq_zero.1 h3 with h4 | h4
+    · exact hb h4
+    · nlinarith [sq_nonneg r]
+  have hw : (m • zP).1 = Complex.I * (((a : ℂ) - b * Complex.I) + ((a : ℂ) + b * Complex.I) * u) /
+      (((a : ℂ) - b * Complex.I) - ((a : ℂ) + b * Complex.I) * u) := by
+    rw [coe_smul, hzP1, hnum, hden, div_div_div_cancel_right₀ hu1]
+  have hwb : conj (Complex.I * (((a : ℂ) - b * Complex.I) + ((a : ℂ) + b * Complex.I) * u) /
+      (((a : ℂ) - b * Complex.I) - ((a : ℂ) + b * Complex.I) * u)) =
+      -Complex.I * (((a : ℂ) + b * Complex.I) + ((a : ℂ) - b * Complex.I) * conj u) /
+      (((a : ℂ) + b * Complex.I) - ((a : ℂ) - b * Complex.I) * conj u) := by
+    simp only [map_div₀, map_sub, map_mul, map_add (f := _), Complex.conj_ofReal, Complex.conj_I]; ring
+  have hwim : 0 < (m • zP).1.im := by
+    rw [coe_smul, im_div, det_eq, h00, h01, h10, h11]
+    apply div_pos (mul_pos (by nlinarith) hzpos') (Complex.normSq_pos.2 (den_ne m hz))
+  have hdet : |m.val.det| = s ^ 2 := by
+    rw [det_eq, h00, h01, h10, h11, hs2, abs_of_pos (by nlinarith)]; ring
+  have hrp : (|m.val.det| ^ (-(k : ℝ) / 2) : ℝ) = (s ^ k)⁻¹ := by
+    rw [hdet, ← Real.rpow_natCast s 2, ← Real.rpow_mul hs.le,
+      show ((2 : ℕ) : ℝ) * (-(k : ℝ) / 2) = -(k : ℝ) by push_cast; ring, Real.rpow_neg hs.le, Real.rpow_natCast]
+  have hηsq : (((a : ℂ) - b * Complex.I) / (s : ℂ)) ^ 2 = ((a : ℂ) - b * Complex.I) / ((a : ℂ) + b * Complex.I) := by
+    rw [div_pow, div_eq_div_iff (pow_ne_zero 2 hS0) hα0, ← Complex.ofReal_pow, hs2]
+    push_cast
+    linear_combination (-((a : ℂ) - b * Complex.I) * (b : ℂ) ^ 2) * Complex.I_sq
+  rw [hext]
+  unfold F q1 j1
+  rw [if_pos (mul_pos hzpos' hwim), hrp]
+  push_cast
+  refine pow_combine _ _ _ _ _ k ?_
+  rw [hw, hwb, hzP1, hden, key_id _ _ _ _ hα0 hu1 h1 h2 hA, ← huu, eta, ← hs_def, hηsq]
+  field_simp
+
+end UpperTheory.Esk.RadialIntegralLemmas
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ConjNeOne =====
+
+-- ===== clump member: PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ExistsFix =====
+-- clump-header: {"m": "PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ExistsFix", "h": "module\n\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ComplexMinusRealLineMeasureCoordinates\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix
+open scoped ENNReal NNReal ComplexConjugate
+
+namespace UpperTheory.Esk.RadialIntegralLemmas
+open UpperTheory.Esk
+
+theorem kap_rot (m : GL (Fin 2) ℝ) (a b : ℝ) (h00 : m 0 0 = a) (h01 : m 0 1 = b)
+    (h10 : m 1 0 = -b) (h11 : m 1 1 = a) (hb : b ≠ 0) (z : P) (hz : 0 < z.1.im) :
+    kap z (m • z) ≤ (a ^ 2 + b ^ 2) / b ^ 2 * kap iP z := by
+  set x := z.1.re with hx
+  set y := z.1.im with hy
+  have hden : den m z.1 ≠ 0 := den_ne m z.2
+  have hnd : 0 < Complex.normSq (den m z.1) := Complex.normSq_pos.2 hden
+  have hdet : m.val.det = a ^ 2 + b ^ 2 := by rw [det_eq, h00, h01, h10, h11]; ring
+  have hb2 : 0 < b ^ 2 := by positivity
+  have hs : 0 < a ^ 2 + b ^ 2 := by positivity
+  have hwim : (m • z).1.im = (a ^ 2 + b ^ 2) * y / Complex.normSq (den m z.1) := by
+    rw [coe_smul, im_div, hdet]
+  have hwpos : 0 < (m • z).1.im := by rw [hwim]; positivity
+  have hconj : z.1 - conj (m • z).1 = (z.1 * conj (den m z.1) - conj (num m z.1)) / conj (den m z.1) := by
+    have : conj (den m z.1) ≠ 0 := (map_ne_zero _).2 hden
+    rw [coe_smul, map_div₀]
+    field_simp
+  have hE : Complex.normSq (z.1 * conj (den m z.1) - conj (num m z.1)) =
+      b ^ 2 * (x ^ 2 + y ^ 2 + 1) ^ 2 + 4 * a ^ 2 * y ^ 2 := by
+    rw [Complex.normSq_apply]
+    simp [num, den, h00, h01, h10, h11, ← hx, ← hy]
+    ring
+  have hN : ‖z.1 - conj (m • z).1‖ ^ 2 = (b ^ 2 * (x ^ 2 + y ^ 2 + 1) ^ 2 + 4 * a ^ 2 * y ^ 2) / Complex.normSq (den m z.1) := by
+    rw [hconj, Complex.sq_norm, Complex.normSq_div, Complex.normSq_conj, hE]
+  have hI : ‖iP.1 - conj z.1‖ ^ 2 = x ^ 2 + (1 + y) ^ 2 := by
+    rw [Complex.sq_norm, Complex.normSq_apply]
+    simp [iP, ← hx, ← hy]
+    ring
+  have hk1 : kap z (m • z) = 4 * (a ^ 2 + b ^ 2) * y ^ 2 / (b ^ 2 * (x ^ 2 + y ^ 2 + 1) ^ 2 + 4 * a ^ 2 * y ^ 2) := by
+    rw [kap, if_pos (mul_pos hz hwpos), hN, hwim]
+    simp only [← hy]
+    field_simp
+  have hk2 : kap iP z = 4 * y / (x ^ 2 + (1 + y) ^ 2) := by
+    rw [kap, if_pos (by simpa [iP] using hz), hI]
+    simp [iP, ← hy]
+  rw [hk1, hk2]
+  have hQ : 0 < b ^ 2 * (x ^ 2 + y ^ 2 + 1) ^ 2 + 4 * a ^ 2 * y ^ 2 := by positivity
+  have hR : 0 < x ^ 2 + (1 + y) ^ 2 := by positivity
+  rw [div_mul_div_comm, div_le_div_iff₀ hQ (mul_pos hb2 hR)]
+  have h1 : 2 * y ≤ x ^ 2 + y ^ 2 + 1 := by nlinarith [sq_nonneg x, sq_nonneg (y - 1)]
+  have key : b ^ 2 * (y * (x ^ 2 + y ^ 2 + 1) + 2 * y ^ 2) ≤ b ^ 2 * (x ^ 2 + y ^ 2 + 1) ^ 2 + 4 * a ^ 2 * y ^ 2 := by
+    have : y * (x ^ 2 + y ^ 2 + 1) + 2 * y ^ 2 ≤ (x ^ 2 + y ^ 2 + 1) ^ 2 := by nlinarith
+    nlinarith [mul_le_mul_of_nonneg_left this hb2.le, sq_nonneg a, sq_nonneg y]
+  have e : x ^ 2 + (1 + y) ^ 2 = (x ^ 2 + y ^ 2 + 1) + 2 * y := by ring
+  rw [e]
+  have hs' : 0 ≤ 4 * (a ^ 2 + b ^ 2) * y := by positivity
+  nlinarith [mul_le_mul_of_nonneg_left key hs']
+
+theorem exists_fix (g : GL (Fin 2) ℝ) (hg : g.val.trace ^ 2 < 4 * g.val.det) : ∃ z : P, g • z = z := by
+  have htr : g.val.trace = g 0 0 + g 1 1 := Matrix.trace_fin_two _
+  rw [htr, det_eq] at hg
+  set p := g 0 0 with hp
+  set q := g 0 1 with hq
+  set r := g 1 0 with hr
+  set t := g 1 1 with ht
+  set D := 4 * (p * t - q * r) - (p + t) ^ 2 with hD
+  have hD0 : 0 < D := by rw [hD]; linarith
+  have hr0 : r ≠ 0 := by
+    intro h0
+    rw [h0] at hg
+    nlinarith [sq_nonneg (p - t)]
+  set sD := Real.sqrt D with hsD
+  have hsD0 : 0 < sD := Real.sqrt_pos.2 hD0
+  have hsD2 : (sD : ℂ) ^ 2 = (D : ℂ) := by
+    rw [← Complex.ofReal_pow, hsD, Real.sq_sqrt hD0.le]
+  set z0 : ℂ := (((p - t : ℝ) : ℂ) + Complex.I * sD) / (2 * (r : ℂ)) with hz0
+  have hrc : (r : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 hr0
+  have him : z0.im ≠ 0 := by
+    have : z0 = (((p - t) / (2 * r) : ℝ) : ℂ) + ((sD / (2 * r) : ℝ) : ℂ) * Complex.I := by
+      rw [hz0]; push_cast; field_simp
+    rw [this]
+    simp only [Complex.add_im, Complex.ofReal_im, Complex.mul_im, Complex.ofReal_re, Complex.I_re,
+      Complex.I_im, mul_zero, mul_one, zero_add]
+    rw [add_zero]
+    exact div_ne_zero hsD0.ne' (mul_ne_zero two_ne_zero hr0)
+  have hz : (2 * (r : ℂ)) * z0 = ((p - t : ℝ) : ℂ) + Complex.I * sD := by
+    rw [hz0]; field_simp
+  have hquad : (r : ℂ) * z0 ^ 2 + ((t : ℂ) - p) * z0 - q = 0 := by
+    have h4 : (4 * (r : ℂ)) ≠ 0 := mul_ne_zero (by norm_num) hrc
+    apply mul_left_cancel₀ h4
+    rw [mul_zero]
+    have hDc : (D : ℂ) = 4 * ((p : ℂ) * t - q * r) - (p + t) ^ 2 := by rw [hD]; push_cast; ring
+    rw [hDc] at hsD2
+    push_cast at hz
+    linear_combination (2 * (r : ℂ) * z0 + ((p : ℂ) - t + Complex.I * sD) + 2 * ((t : ℂ) - p)) * hz
+      + (sD : ℂ) ^ 2 * Complex.I_sq - hsD2
+  refine ⟨(⟨z0, him⟩ : P), Subtype.ext ?_⟩
+  change num g z0 / den g z0 = z0
+  have hd := den_ne g (z := z0) him
+  rw [div_eq_iff hd]
+  simp only [num, den]
+  rw [← hp, ← hq, ← hr, ← ht]
+  linear_combination (-1 : ℂ) * hquad
+
+end UpperTheory.Esk.RadialIntegralLemmas
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ExistsFix =====
+
+-- ===== clump member: PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.RadialIntegralUnitCircleEq =====
+-- clump-header: {"m": "PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.RadialIntegralUnitCircleEq", "h": "module\n\npublic import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Analysis.Calculus.Deriv.Add\npublic import Mathlib.Analysis.Calculus.Deriv.Inv\npublic import Mathlib.Analysis.Calculus.Deriv.Mul\npublic import Mathlib.Analysis.Calculus.Deriv.Pow\npublic import Mathlib.Analysis.Complex.RealDeriv\npublic import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus\npublic import Mathlib.MeasureTheory.Integral.Prod\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix
+open scoped ENNReal NNReal ComplexConjugate
+
+namespace UpperTheory.Esk.RadialIntegralLemmas
+open UpperTheory.Esk
+
+theorem one_sub_ne (ζ : ℂ) (hζ : ‖ζ‖ = 1) (hζ1 : ζ ≠ 1) (r : ℝ) : 1 - ζ * (r : ℂ) ^ 2 ≠ 0 := by
+  intro h
+  have h1 : ζ * (r : ℂ) ^ 2 = 1 := by linear_combination -h
+  have h2 : ‖ζ * (r : ℂ) ^ 2‖ = 1 := by rw [h1, norm_one]
+  rw [norm_mul, hζ, one_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs] at h2
+  have h3 : (r : ℂ) ^ 2 = 1 := by exact_mod_cast h2
+  apply hζ1
+  rw [h3, mul_one] at h1
+  exact h1
+
+theorem radial_integral_unit_circle_eq (n : ℕ) (K ζ : ℂ) (hζ : ‖ζ‖ = 1) (hζ1 : ζ ≠ 1) :
+    ∫ r in (0 : ℝ)..1, K * (4 * (r : ℂ) * (1 - (r : ℂ) ^ 2) ^ n / (1 - ζ * (r : ℂ) ^ 2) ^ (n + 2))
+      = K * (2 / (((n : ℂ) + 1) * (1 - ζ))) := by
+  have hne := one_sub_ne ζ hζ hζ1
+  have hζ1' : ζ - 1 ≠ 0 := sub_ne_zero.2 hζ1
+  have hn1 : (n : ℂ) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+  set G : ℝ → ℂ := fun r => K * (2 / (((n : ℂ) + 1) * (ζ - 1))) *
+    ((1 - (r : ℂ) ^ 2) / (1 - ζ * (r : ℂ) ^ 2)) ^ (n + 1) with hG
+  have hderiv : ∀ x ∈ Set.uIcc (0 : ℝ) 1, HasDerivAt G
+      (K * (4 * (x : ℂ) * (1 - (x : ℂ) ^ 2) ^ n / (1 - ζ * (x : ℂ) ^ 2) ^ (n + 2))) x := by
+    intro x _
+    have h1 : HasDerivAt (fun w : ℂ => 1 - w ^ 2) (-(2 * (x : ℂ))) (x : ℂ) := by
+      simpa using ((hasDerivAt_pow 2 (x : ℂ)).const_sub 1)
+    have h2 : HasDerivAt (fun w : ℂ => 1 - ζ * w ^ 2) (-(ζ * (2 * (x : ℂ)))) (x : ℂ) := by
+      simpa using (((hasDerivAt_pow 2 (x : ℂ)).const_mul ζ).const_sub 1)
+    have h3 := ((h1.div h2 (hne x)).pow (n + 1)).const_mul (K * (2 / (((n : ℂ) + 1) * (ζ - 1))))
+    have h5 : HasDerivAt G _ x := h3.comp_ofReal
+    refine h5.congr_deriv ?_
+    have e := hne x
+    simp only [Pi.div_apply, Nat.add_sub_cancel, Nat.cast_add, Nat.cast_one, div_pow]
+    field_simp
+    ring
+  have hcont : ContinuousOn (fun x : ℝ => K * (4 * (x : ℂ) * (1 - (x : ℂ) ^ 2) ^ n / (1 - ζ * (x : ℂ) ^ 2) ^ (n + 2)))
+      (Set.uIcc 0 1) := by
+    apply ContinuousOn.mul continuousOn_const
+    apply ContinuousOn.div₀ (by fun_prop) (by fun_prop)
+    intro x _
+    exact pow_ne_zero _ (hne x)
+  rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv (hcont.intervalIntegrable)]
+  simp only [hG]
+  push_cast
+  have e0 : (1 : ℂ) - ζ * 0 ^ 2 = 1 := by ring
+  simp only [one_pow, sub_self, zero_div, ne_eq, Nat.add_eq_zero_iff, one_ne_zero, and_false,
+    not_false_eq_true, zero_pow, mul_zero, zero_sub]
+  field_simp
+  ring
+
+theorem rad_int (k : ℕ) (hk : 2 ≤ k) (c η ζ : ℂ) (hζ : ‖ζ‖ = 1) (hζ1 : ζ ≠ 1) :
+    ∫ p in Set.Ioo (0 : ℝ) 1 ×ˢ Set.Ioo (-Real.pi) Real.pi, ((4 * p.1 / (1 - p.1 ^ 2) ^ 2 : ℝ) : ℂ) *
+      (c * (η * (1 - (p.1 : ℂ) ^ 2) / (1 - ζ * (p.1 : ℂ) ^ 2)) ^ k)
+      = c * η ^ k * (4 * Real.pi / (((k : ℂ) - 1) * (1 - ζ))) := by
+  obtain ⟨n, rfl⟩ : ∃ n, k = n + 2 := ⟨k - 2, by omega⟩
+  have hne := one_sub_ne ζ hζ hζ1
+  have e1 := setIntegral_prod_mul (μ := (volume : Measure ℝ)) (ν := (volume : Measure ℝ))
+    (fun r : ℝ => ((4 * r / (1 - r ^ 2) ^ 2 : ℝ) : ℂ) * (c * (η * (1 - (r : ℂ) ^ 2) / (1 - ζ * (r : ℂ) ^ 2)) ^ (n + 2)))
+    (fun _ : ℝ => (1 : ℂ)) (Set.Ioo 0 1) (Set.Ioo (-Real.pi) Real.pi)
+  simp only [mul_one] at e1
+  rw [Measure.volume_eq_prod, e1]
+  rw [setIntegral_const, Real.volume_real_Ioo_of_le (by linarith [Real.pi_pos])]
+  have e2 : ∫ r in Set.Ioo (0 : ℝ) 1, ((4 * r / (1 - r ^ 2) ^ 2 : ℝ) : ℂ) *
+      (c * (η * (1 - (r : ℂ) ^ 2) / (1 - ζ * (r : ℂ) ^ 2)) ^ (n + 2)) =
+      ∫ r in Set.Ioo (0 : ℝ) 1, (c * η ^ (n + 2)) *
+        (4 * (r : ℂ) * (1 - (r : ℂ) ^ 2) ^ n / (1 - ζ * (r : ℂ) ^ 2) ^ (n + 2)) := by
+    apply setIntegral_congr_fun measurableSet_Ioo
+    intro r hr
+    have h1 : (1 - (r : ℂ) ^ 2) ≠ 0 := by
+      have : (1 - r ^ 2 : ℝ) ≠ 0 := by nlinarith [hr.1, hr.2]
+      exact_mod_cast this
+    have h2 := hne r
+    simp only []
+    push_cast
+    rw [div_pow, mul_pow]
+    field_simp
+    ring
+  rw [e2, ← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le zero_le_one,
+    radial_integral_unit_circle_eq n _ ζ hζ hζ1]
+  have hζ1' : 1 - ζ ≠ 0 := sub_ne_zero.2 (Ne.symm hζ1)
+  have hn1 : (n : ℂ) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+  push_cast
+  rw [show (n : ℂ) + 2 - 1 = n + 1 by ring]
+  simp only [Complex.real_smul]
+  push_cast
+  field_simp
+  ring
+
+end UpperTheory.Esk.RadialIntegralLemmas
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.RadialIntegralUnitCircleEq =====
+
+-- ===== clump member: PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.DualNumberUnitMulDecomposition =====
+-- clump-header: {"m": "PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.DualNumberUnitMulDecomposition", "h": "module\n\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.Imports\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ConjNeOne\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.ExistsFix\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.RadialIntegralUnitCircleEq\npublic import Mathlib.MeasureTheory.Integral.Bochner.Set\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -363,3 +679,7 @@ theorem UpperTheory.Esk.radial_integral_formula_proof : UpperTheory.Esk.B1a → 
   have hF' : (fun z => F k g (h • z)) = F k m := funext fun z => (hF z).symm
   refine ⟨hc1.1 (hF' ▸ hI), ?_⟩
   rw [hF']
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.DualNumberUnitMulDecomposition =====

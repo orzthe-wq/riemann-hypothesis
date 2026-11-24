@@ -96,7 +96,7 @@ private theorem UpperTheory.ConvolutionTheory.Dp.jGen_lin_E {A : Type} [Ring A] 
   · simp [HarishChandra.E]
   · intro d _ hd
     have : ¬ (c.1 = d.1 ∧ c.2 = d.2) := fun h => hd (Prod.ext h.1.symm h.2.symm)
-    simp [HarishChandra.E, Matrix.single_apply, this]
+    simp [HarishChandra.E, this]
   · simp
 
 private theorem UpperTheory.ConvolutionTheory.Dp.jGen_lin_lie {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (F : Fin n → Fin n → A)

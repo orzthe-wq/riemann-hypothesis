@@ -98,11 +98,10 @@ theorem UpperTheory.V.Ws.P1.levEps :
     show Nonempty (UpperTheory.V.W.Vl l L)
     unfold UpperTheory.V.W.Vl
     first
-      | exact ⟨⟨(exists_plc_over L l).choose, (exists_plc_over L l).choose_spec⟩⟩
       | exact ⟨⟨(exists_plc_over (W.Lp L) l).choose, (exists_plc_over (W.Lp L) l).choose_spec⟩⟩
   · intro O _ _ R _ _ g
     unfold UpperTheory.V.W.HidaSetting.Lev.frame UpperTheory.V.W.GFrame.eps
     simp only [UpperTheory.V.W.HidaSetting.Lev.pr, UpperTheory.V.Base.chiO]
-    simp [UpperTheory.V.W.pushCh, MonoidHom.codRestrict_apply]
+    simp [UpperTheory.V.W.pushCh]
     change (algebraMap O R) ((algebraMap ℤ_[l] O) ↑(V.ε (toGS Ω V.S' (W.resP L Ω g)))) = _
     rw [key]

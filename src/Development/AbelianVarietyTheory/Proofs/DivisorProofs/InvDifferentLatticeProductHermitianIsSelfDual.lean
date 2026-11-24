@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemLsB
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCongLevelIntG
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealExtendConjMulEqAbsNormStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealExtendConjMulEqAbsNorm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTransvectionVectorsNeighbour
 
 @[expose] public section
 
@@ -61,8 +62,8 @@ theorem intE_gen (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r
     (hγ₁ : γ₁ ∈ cE D D.host.ccK) (hγ₂ : γ₂ ∈ cE D D.host.ccK) :
     IntE D (r * D.host.conj α₁ * γ₁ / (Ideal.absNorm cc : D.host.E) *
       D.host.conj (r * D.host.conj α₂ * γ₂ / (Ideal.absNorm cc : D.host.E))) := by
-  obtain ⟨o₁, h₁⟩ := (GlobalTheory.T.idealExtend_conj_mul_eq_absNorm D cc).1 α₁ hα₁ α₂ hα₂
-  obtain ⟨o₂, h₂⟩ := (GlobalTheory.T.idealExtend_conj_mul_eq_absNorm D D.host.ccK).1 γ₂ hγ₂ γ₁ hγ₁
+  obtain ⟨o₁, h₁⟩ := (_root_.GlobalTheory.VacRead.conj_mul_cE_absNorm D cc).1 α₁ hα₁ α₂ hα₂
+  obtain ⟨o₂, h₂⟩ := (_root_.GlobalTheory.VacRead.conj_mul_cE_absNorm D D.host.ccK).1 γ₂ hγ₂ γ₁ hγ₁
   unfold GlobalTheory.NormExact.IsScale at hs
   refine ⟨o₁ * o₂, ?_⟩
   simp only [map_div₀, map_mul, map_natCast, GlobalTheory.InertSign.conj_conj]
@@ -79,8 +80,6 @@ theorem conj_smul (D : Formalism.BasicNotions.D7) (c : 𝓞 D.host.E) (x : D.hos
     D.host.conj (c • x) = D.host.conj (c : D.host.E) * D.host.conj x := by
   rw [Algebra.smul_def, map_mul]
 
-theorem intE_coe (D : Formalism.BasicNotions.D7) (c : 𝓞 D.host.E) : IntE D (c : D.host.E) := ⟨c, rfl⟩
-
 theorem intE_mul_conj (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E) (hn : (Ideal.absNorm cc : D.host.E) ≠ 0)
     (hs : GlobalTheory.NormExact.IsScale D cc r) {u x : D.host.E} (hu : u ∈ bInv D cc r) (hx : x ∈ bInv D cc r) :
     IntE D (u * D.host.conj x) := by
@@ -96,18 +95,18 @@ theorem intE_mul_conj (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K
     | add y z _ _ hy hz => rw [map_add (f := _), mul_add]; exact add_mem hy hz
     | smul c y _ hy =>
       rw [conj_smul, mul_left_comm]
-      exact mul_mem (GlobalTheory.InertSign.IntE.conj (intE_coe D c)) hy
+      exact mul_mem (GlobalTheory.InertSign.IntE.conj (_root_.GlobalTheory.NbVec.intE_coe D c)) hy
   | zero => rw [zero_mul]; exact zero_mem _
   | add y z _ _ hy hz => rw [add_mul]; exact add_mem (hy hx) (hz hx)
   | smul c y _ hy =>
     rw [Algebra.smul_def, mul_assoc]
-    exact mul_mem (intE_coe D c) (hy hx)
+    exact mul_mem (_root_.GlobalTheory.NbVec.intE_coe D c) (hy hx)
 
 theorem one_mem_pairSpan (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E)
     (hn : (Ideal.absNorm cc : D.host.E) ≠ 0) (hs : GlobalTheory.NormExact.IsScale D cc r) :
     (1 : D.host.E) ∈ pairSpan D (bInv D cc r) := by
-  have h₁ := (GlobalTheory.T.idealExtend_conj_mul_eq_absNorm D cc).2
-  have h₂ := (GlobalTheory.T.idealExtend_conj_mul_eq_absNorm D D.host.ccK).2
+  have h₁ := (_root_.GlobalTheory.VacRead.conj_mul_cE_absNorm D cc).2
+  have h₂ := (_root_.GlobalTheory.VacRead.conj_mul_cE_absNorm D D.host.ccK).2
   have hm := Submodule.mul_mem_mul h₁ h₂
   rw [Submodule.span_mul_span] at hm
   set c : D.host.E := r * D.host.conj r / (Ideal.absNorm cc : D.host.E) ^ 2 with hc
@@ -191,7 +190,7 @@ theorem lsB_sd (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r :
       · subst hj
         simp only [Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one, Algebra.smul_def, ho]
         field_simp
-      · simp [Pi.single_apply, hj]
+      · simp [hj]
     rw [he]
     exact Submodule.smul_mem _ o (Submodule.subset_span ⟨i, rfl⟩)
   · rw [eq_top_iff]
@@ -211,7 +210,7 @@ theorem lsB_sd (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r :
             funext j
             by_cases hj : j = i
             · subst hj; simp [mul_comm]
-            · simp [Pi.single_apply, hj]
+            · simp [hj]
           rw [hg']
           exact Submodule.smul_mem _ _ (Submodule.subset_span (hsingle i u hu))
         | zero => rw [zero_smul]; exact zero_mem _

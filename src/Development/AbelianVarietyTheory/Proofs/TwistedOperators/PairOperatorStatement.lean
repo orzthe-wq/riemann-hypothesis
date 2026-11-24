@@ -536,7 +536,6 @@ theorem operatorIdentities [Fintype n] (hχ : χ ≠ 1) : OperatorIdentities k n
     FF_eq_D_Gs φ h := FF_eq_D_Gs_of_mem_Mram q h
     Gs_mul_GsStar := Gs_mul_GsStar hχ
     D_U_ram φ h := D_U_ram q hχ h
-    U_D_ram φ h := U_D_ram q hχ h
     FFStar_dia c := FFStar_dia q χ c
     U_dia c := U_dia q c
     dia_mem_ram c φ h := mem_ram (fun d => dia_dia c d) h

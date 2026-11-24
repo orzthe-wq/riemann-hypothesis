@@ -140,13 +140,13 @@ theorem UpperTheory.Gal.Wt.sepPoly_of :
       intro a ha
       have hdist : D ≤ ‖z - a‖ := by
         by_contra hlt
-        push_neg at hlt
+        push Not at hlt
         apply Set.disjoint_left.1 hDd
           (Metric.self_subset_thickening hD _ (hTsub (hTfin.mem_toFinset.1 ha)))
         exact Metric.mem_thickening_iff.2 ⟨z, hz, by rw [dist_eq_norm, norm_sub_rev]; exact hlt⟩
       obtain ⟨i, hi⟩ : ∃ i, D ≤ ‖z i - a i‖ := by
         by_contra hno
-        push_neg at hno
+        push Not at hno
         have := (pi_norm_lt_iff (x := z - a) hD).2 (fun i => by simpa using hno i)
         linarith
       rw [hq, norm_prod, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]

@@ -78,7 +78,7 @@ theorem rowQ_one (n : ℕ) : rowQ k n 1 = Pi.single (Fin.last n) 1 := by
   by_cases h : j = Fin.last n
   · subst h
     simp [GlobalTheory.CompanionTheory.BZPhiPhi.rowQ]
-  · simp [GlobalTheory.CompanionTheory.BZPhiPhi.rowQ, Matrix.one_apply, Pi.single_apply, h, Ne.symm h]
+  · simp [GlobalTheory.CompanionTheory.BZPhiPhi.rowQ, h, Ne.symm h]
 
 end GlobalTheory.CompanionTheory.BZPhiPhi
 

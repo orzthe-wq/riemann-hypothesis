@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.IUnfold
 
 @[expose] public section
 
@@ -60,35 +61,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Glob
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
-
-private theorem norm_psiR_eq_one {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → Fin n → ℂ)
-    (z : Fin n → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) : ‖psiR ε gg e f z g‖ = 1 := by
-  unfold psiR
-  have hS : (∑ a, (rootCoord ε e f z g a + star (rootCoord ε e f z g a))) =
-      ((∑ a, 2 * (rootCoord ε e f z g a).re : ℝ) : ℂ) := by
-    push_cast
-    refine Finset.sum_congr rfl fun a _ => ?_
-    rw [Complex.star_def, Complex.add_conj]
-    push_cast
-    ring
-  convert Complex.norm_exp_ofReal_mul_I (2 * Real.pi * (∑ a, 2 * (rootCoord ε e f z g a).re) / gg) using 2
-  rw [hS]
-  push_cast
-  ring_nf
-
-private theorem norm_psiInf_eq_one (I : Formalism.MainNotions.S.AutInst) {r : ℕ} (g : ℕ) (e f : Fin r → Fin I.n → I.E)
-    (z : Fin I.n → I.E) (s : I.Ginf) : ‖psiInf I g e f z s‖ = 1 := by
-  unfold psiInf
-  rw [norm_prod]
-  exact Finset.prod_eq_one fun v _ => norm_psiR_eq_one _ _ _ _ _ _
-
-theorem norm_Wu_S (u : D.what₂.Word) : ∀ s ∈ X.SinfU u, ∀ x, ‖X.Wu u (s * x)‖ = ‖X.Wu u x‖ := by
-  intro s hs x
-  rw [(X.Wu_spec u).1 s hs x, norm_smul, norm_psiInf_eq_one, one_mul]
-  have h := (X.piU_rep u).2.2.1 s hs (X.Wu u x) (X.Wu u x)
-  rw [inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at h
-  have h2 : ‖X.piU u s (X.Wu u x)‖ ^ 2 = ‖X.Wu u x‖ ^ 2 := by exact_mod_cast h
-  exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2
 
 @[irreducible] def phiV (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) (a b : Formalism.REAL.UJ (X.B.I.ε v)) :
     ℝ≥0∞ :=

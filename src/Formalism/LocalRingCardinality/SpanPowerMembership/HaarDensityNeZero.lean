@@ -84,11 +84,7 @@ theorem exists_of_mem (h : MM P Q) (hh : hᴴ * J * h = J) : ∃ g : UpqT P Q, U
 
 theorem mat_range : Set.range (UpqT.mat : UpqT P Q → MM P Q) = {h | hᴴ * J * h = J} := by
   ext h
-  constructor
-  · rintro ⟨g, rfl⟩
-    exact mat_mem P Q g
-  · intro hh
-    exact exists_of_mem P Q h hh
+  exact ⟨fun ⟨g, hg⟩ => hg ▸ mat_mem P Q g, exists_of_mem P Q h⟩
 
 theorem mat_closedEmbedding : IsClosedEmbedding (UpqT.mat : UpqT P Q → MM P Q) := by
   refine ⟨mat_embedding P Q, ?_⟩
@@ -111,8 +107,7 @@ theorem exp_neg_mul' (X : MM P Q) : exp (-X) * exp X = 1 := by
   exact h.symm
 
 theorem exp_conjJ (A : MM P Q) : exp (J * A * J) = J * exp A * J := by
-  let u : (MM P Q)ˣ := ⟨J, J, J_sq P Q, J_sq P Q⟩
-  exact NormedSpace.exp_units_conj u A
+  exact NormedSpace.exp_units_conj ⟨J, J, J_sq P Q, J_sq P Q⟩ A
 
 theorem exp_mem (X : MM P Q) (hX : X ∈ lieU P Q) : (exp X)ᴴ * J * exp X = J := by
   have h1 : J * (-Xᴴ) * J = X := (mem_lieU_iff P Q X).1 hX
@@ -122,20 +117,16 @@ theorem exp_mem (X : MM P Q) (hX : X ∈ lieU P Q) : (exp X)ᴴ * J * exp X = J 
     rw [h1] at e
     rw [mul_neg, neg_mul, e, neg_neg]
   rw [← Matrix.exp_conjTranspose, h2, exp_conjJ]
-  calc J * exp (-X) * J * J * exp X = J * (exp (-X) * (J * J) * exp X) := by
-        simp only [mul_assoc]
-    _ = J := by rw [J_sq, mul_one, exp_neg_mul', mul_one]
+  simp [Matrix.mul_assoc, J_sq, exp_neg_mul']
 
 theorem exp_theta (Z : MM P Q) (hZ : (exp Z)ᴴ * J * exp Z = J) : exp (J * (-Zᴴ) * J) = exp Z := by
-  have hc : (exp Z)ᴴ = exp Zᴴ := (Matrix.exp_conjTranspose Z).symm
-  rw [hc] at hZ
+  rw [← Matrix.exp_conjTranspose Z] at hZ
   have h1 : J * exp Z = exp (-Zᴴ) * J := by
     calc J * exp Z = exp (-Zᴴ) * exp Zᴴ * J * exp Z := by rw [exp_neg_mul', one_mul]
       _ = exp (-Zᴴ) * (exp Zᴴ * J * exp Z) := by simp only [mul_assoc]
       _ = exp (-Zᴴ) * J := by rw [hZ]
   rw [exp_conjJ]
-  calc J * exp (-Zᴴ) * J = J * (exp (-Zᴴ) * J) := by rw [mul_assoc]
-    _ = J * (J * exp Z) := by rw [h1]
+  calc J * exp (-Zᴴ) * J = J * (J * exp Z) := by rw [mul_assoc, ← h1]
     _ = exp Z := by rw [← mul_assoc, J_sq, one_mul]
 
 def chart : Chart (lieU P Q) (UpqT P Q) where
@@ -160,12 +151,11 @@ def chart : Chart (lieU P Q) (UpqT P Q) where
       _ = Z := h1
 
 theorem norm_le_sum (X : MM P Q) : ‖X‖ ≤ ∑ i, ∑ j, ‖X i j‖ := by
-  have hs : (Finset.univ.sup fun i => ∑ j, ‖X i j‖₊) ≤ ∑ i, ∑ j, ‖X i j‖₊ :=
-    Finset.sup_le fun i _ =>
-      Finset.single_le_sum (f := fun i => ∑ j, ‖X i j‖₊) (fun _ _ => zero_le) (Finset.mem_univ i)
-  rw [Matrix.linfty_opNorm_def]
-  refine (NNReal.coe_le_coe.mpr hs).trans (le_of_eq ?_)
-  simp [NNReal.coe_sum]
+  rw [Matrix.linfty_opNorm_def (A := X)]
+  simpa [NNReal.coe_sum] using
+    NNReal.coe_le_coe.mpr (Finset.sup_le fun i _ =>
+      Finset.single_le_sum (f := fun i => ∑ j, ‖X i j‖₊) (fun _ _ => zero_le)
+        (Finset.mem_univ i))
 
 theorem omegaDensity_haar (μ : Measure (UpqT P Q)) [μ.IsHaarMeasure] :
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ OmegaDensity μ c := by
@@ -186,8 +176,7 @@ theorem omegaDensity_smul {μ : Measure (UpqT P Q)} {c : ℝ≥0∞} (h : OmegaD
     (ht : t ≠ ⊤) : OmegaDensity (t • μ) (t * c) := by
   obtain ⟨lam, hl, hc⟩ := h
   refine ⟨lam, hl, ?_⟩
-  refine (ENNReal.Tendsto.const_mul hc (Or.inr ht)).congr (fun r => ?_)
-  rw [Measure.smul_apply, smul_eq_mul, mul_div_assoc]
+  simpa [Measure.smul_apply, smul_eq_mul, mul_div_assoc] using ENNReal.Tendsto.const_mul hc (Or.inr ht)
 
 def mu0 : Measure (UpqT P Q) := Measure.haar
 

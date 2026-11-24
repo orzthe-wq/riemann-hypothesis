@@ -199,8 +199,7 @@ theorem unimodUnramUnique_fixUnit (hR₀ : ∀ x, x ∈ R₀ ↔ star x = x) {x 
     (hu : IsUnit x) : IsUnit (⟨x, (hR₀ x).2 hx⟩ : R₀) := by
   obtain ⟨y, hy⟩ := hu.exists_right_inv
   have h1 : star y * x = 1 := by
-    have := congrArg star hy
-    rwa [star_mul, hx, star_one] at this
+    simpa [star_mul, hx, star_one] using congrArg star hy
   have hy' : star y = y := by
     calc star y = star y * (x * y) := by rw [hy, mul_one]
       _ = (star y * x) * y := by ring
@@ -271,8 +270,7 @@ theorem unimodUnramUnique_offdiag [IsLocalRing R₀] (hR₀ : ∀ x, x ∈ R₀ 
       ext i j
       simpa [Ideal.Quotient.eq_zero_iff_mem] using hmem i j
     rw [this, det_zero]
-  have htop := Ideal.eq_top_of_isUnit_mem _ hdetJ hdet
-  have h1 : (1 : R) ∈ unimodUnramUnique_J hR₀ := htop ▸ Submodule.mem_top
+  have h1 : (1 : R) ∈ unimodUnramUnique_J hR₀ := (Ideal.eq_top_iff_one _).1 (Ideal.eq_top_of_isUnit_mem _ hdetJ hdet)
   rw [unimodUnramUnique_mem_J] at h1
   obtain ⟨v, hv⟩ := hθ.exists_right_inv
   apply h1 (θ * v)
@@ -425,9 +423,7 @@ theorem unimodUnramUnique_transport {κ ι : Type} [Fintype κ] [Fintype ι] [De
     [DecidableEq ι] (e : κ ≃ ι) (B : Matrix ι ι R) (g : Matrix κ κ R)
     (hg : gᴴ * B.submatrix e e * g = 1) :
     (g.submatrix e.symm e.symm)ᴴ * B * g.submatrix e.symm e.symm = 1 := by
-  have hB : B = (B.submatrix e e).submatrix e.symm e.symm := by simp
-  rw [hB, conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, hg,
-    submatrix_one_equiv]
+  rw [show B = (B.submatrix e e).submatrix e.symm e.symm by simp, conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, hg, submatrix_one_equiv]
 
 theorem unimodUnramUnique_main [HenselianLocalRing R₀] [Finite (ResidueField R₀)]
     (hR₀ : ∀ x, x ∈ R₀ ↔ star x = x) {θ : R} (hθ : IsUnit (θ - star θ)) (n : ℕ) :

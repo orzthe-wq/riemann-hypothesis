@@ -76,7 +76,7 @@ theorem lp_pd (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) (A : ℂ
     crystallineComparison.PDOn (crystallineComparison.dualSet (Submodule.span ℤ (Set.range (TBBx5.lp_b ω₁ ω₂ hω))))
       (fun τ : crystallineComparison.V 1 => (Real.pi : ℂ) * A (2 * Real.pi * Complex.I * τ 0)) := by
   intro S c hS
-  have hne : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := TBBx5.lp_ne
+  have hne : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := Complex.two_pi_I_ne_zero
 
   have hinj : Set.InjOn (fun τ : crystallineComparison.V 1 => 2 * Real.pi * Complex.I * τ 0) (S : Set (crystallineComparison.V 1)) := by
     intro x _ y _ hxy

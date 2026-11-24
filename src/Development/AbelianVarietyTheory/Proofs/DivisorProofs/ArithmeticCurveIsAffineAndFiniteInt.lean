@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsAmbOfIsArithVar
 import Development.AbelianVarietyTheory.Definitions.Divisors.NefFibOfIsNef
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAbelianSchemeAway
 
 @[expose] public section
 
@@ -56,12 +57,6 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.ArInt GlobalTheory.MixHt
 
 namespace GlobalTheory.ArithCurve
-
-theorem isProper_of_projOver {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
-    (h : IsProjOver f) : IsProper f := by
-  obtain ⟨m, i, hi, rfl⟩ := h
-  have := isProper_str R m
-  infer_instance
 
 theorem not_isClosed_genericPoint_int : ¬ IsClosed ({genericPoint (Sp ℤ)} : Set (Sp ℤ)) := by
   intro hc
@@ -83,7 +78,7 @@ theorem isAffine_and_finite : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : 
   have := h.isIntegral
   have := h.isNoetherian
   have hd : topologicalKrullDim Y = 1 := by simpa using h.dim_eq
-  have : IsProper q := isProper_of_projOver h.isProjOver
+  have : IsProper q := _root_.GlobalTheory.SpreadAb.isProper_of_isProjOver h.isProjOver
   have : IsFinite (spMap (Int.castRingHom k)) := by
     have := h.finite
     rw [IsFinite.SpecMap_iff]

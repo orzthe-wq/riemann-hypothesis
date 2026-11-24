@@ -264,29 +264,41 @@ theorem up_idx (P : M.Par) {l l' : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) (hl' : l' �
 theorem not_up_up (P : M.Par) {i j l : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1))
     (hl : l ∈ Icc 1 (P.k - 1)) {τ μ σ : M.Ty P} (h1 : M.Up P i τ μ) (h2 : M.Up P j μ σ) (h3 : M.Up P l τ σ) : False := by
   have a := Finset.mem_Icc.1 hi; have b := Finset.mem_Icc.1 hj; have c := Finset.mem_Icc.1 hl
+  have hi' : i - 1 + 1 = i := by omega
+  have hj' : j - 1 + 1 = j := by omega
+  have hl' : l - 1 + 1 = l := by omega
   have e1 := h1 ⟨l - 1, by omega⟩; have e2 := h2 ⟨l - 1, by omega⟩; have e3 := h3 ⟨l - 1, by omega⟩
   have f1 := h1 ⟨i - 1, by omega⟩; have f2 := h2 ⟨i - 1, by omega⟩; have f3 := h3 ⟨i - 1, by omega⟩
   have g1 := h1 ⟨j - 1, by omega⟩; have g2 := h2 ⟨j - 1, by omega⟩; have g3 := h3 ⟨j - 1, by omega⟩
-  simp only at e1 e2 e3 f1 f2 f3 g1 g2 g3
-  split_ifs at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega
+  simp only [hi', hj', hl', ↓reduceIte] at e1 e2 e3 f1 f2 f3 g1 g2 g3
+  by_cases hli : l = i <;> by_cases hlj : l = j <;> by_cases hij : i = j <;>
+    simp only [hli, hlj, hij, ↓reduceIte] at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega
 
 theorem not_up_down (P : M.Par) {i j l : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1))
     (hl : l ∈ Icc 1 (P.k - 1)) {τ μ σ : M.Ty P} (h1 : M.Up P i τ μ) (h2 : M.Up P j σ μ) (h3 : M.Up P l τ σ) : False := by
   have a := Finset.mem_Icc.1 hi; have b := Finset.mem_Icc.1 hj; have c := Finset.mem_Icc.1 hl
+  have hi' : i - 1 + 1 = i := by omega
+  have hj' : j - 1 + 1 = j := by omega
+  have hl' : l - 1 + 1 = l := by omega
   have e1 := h1 ⟨l - 1, by omega⟩; have e2 := h2 ⟨l - 1, by omega⟩; have e3 := h3 ⟨l - 1, by omega⟩
   have f1 := h1 ⟨i - 1, by omega⟩; have f2 := h2 ⟨i - 1, by omega⟩; have f3 := h3 ⟨i - 1, by omega⟩
   have g1 := h1 ⟨j - 1, by omega⟩; have g2 := h2 ⟨j - 1, by omega⟩; have g3 := h3 ⟨j - 1, by omega⟩
-  simp only at e1 e2 e3 f1 f2 f3 g1 g2 g3
-  split_ifs at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega
+  simp only [hi', hj', hl', ↓reduceIte] at e1 e2 e3 f1 f2 f3 g1 g2 g3
+  by_cases hli : l = i <;> by_cases hlj : l = j <;> by_cases hij : i = j <;>
+    simp only [hli, hlj, hij, ↓reduceIte] at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega
 
 theorem not_down_up (P : M.Par) {i j l : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1))
     (hl : l ∈ Icc 1 (P.k - 1)) {τ μ σ : M.Ty P} (h1 : M.Up P i μ τ) (h2 : M.Up P j μ σ) (h3 : M.Up P l τ σ) : False := by
   have a := Finset.mem_Icc.1 hi; have b := Finset.mem_Icc.1 hj; have c := Finset.mem_Icc.1 hl
+  have hi' : i - 1 + 1 = i := by omega
+  have hj' : j - 1 + 1 = j := by omega
+  have hl' : l - 1 + 1 = l := by omega
   have e1 := h1 ⟨l - 1, by omega⟩; have e2 := h2 ⟨l - 1, by omega⟩; have e3 := h3 ⟨l - 1, by omega⟩
   have f1 := h1 ⟨i - 1, by omega⟩; have f2 := h2 ⟨i - 1, by omega⟩; have f3 := h3 ⟨i - 1, by omega⟩
   have g1 := h1 ⟨j - 1, by omega⟩; have g2 := h2 ⟨j - 1, by omega⟩; have g3 := h3 ⟨j - 1, by omega⟩
-  simp only at e1 e2 e3 f1 f2 f3 g1 g2 g3
-  split_ifs at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega
+  simp only [hi', hj', hl', ↓reduceIte] at e1 e2 e3 f1 f2 f3 g1 g2 g3
+  by_cases hli : l = i <;> by_cases hlj : l = j <;> by_cases hij : i = j <;>
+    simp only [hli, hlj, hij, ↓reduceIte] at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega
 
 end Types
 
@@ -376,8 +388,7 @@ theorem blk_mul {R S : M.Ty P → M.Ty P → Prop} {X Y : A} (hX : GlobalTheory 
   rw [blk_expand]
   refine Finset.sum_eq_zero fun μ _ => ?_
   by_cases h1 : S τ μ
-  · have h2 : ¬ R μ σ := fun h2 => h ⟨μ, h1, h2⟩
-    rw [hX σ μ h2, zero_mul]
+  · rw [hX σ μ (fun h2 => h ⟨μ, h1, h2⟩), zero_mul]
   · rw [hY μ τ h1, mul_zero]
 
 theorem blk_mono {R S : M.Ty P → M.Ty P → Prop} {X : A} (hX : GlobalTheory κ R X) (hRS : ∀ τ σ, R τ σ → S τ σ) :
@@ -394,10 +405,7 @@ theorem blk_diag {X : A} (hX : ∀ ρ, Commute (proj κ ρ) X) : GlobalTheory κ
 theorem blk_star {R : M.Ty P → M.Ty P → Prop} {X : A} (hs : ∀ ρ, star (proj κ ρ) = proj κ ρ) (hX : GlobalTheory κ R X) :
     GlobalTheory κ (fun τ σ => R σ τ) (star X) := by
   intro σ τ h
-  have := hX τ σ h
-  have e := congrArg star this
-  rw [star_mul, star_mul, hs, hs, star_zero, ← mul_assoc] at e
-  exact e
+  simpa [star_mul, hs, mul_assoc] using congrArg star (hX τ σ h)
 
 theorem ss_pj_none {SS : ℕ → A} (hR : Raises κ SS) {l : ℕ} {ρ : M.Ty P} (h : ¬ ∃ ρ', M.Up P l ρ ρ') :
     SS l * proj κ ρ = 0 := by
@@ -441,9 +449,7 @@ theorem xC_ne_of_im (P : M.Par) (ρ : M.Ty P) {Y : ℂ} (h : Y.im ≠ 0) : M.xC 
   unfold M.xC
   rw [Finset.prod_ne_zero_iff]
   intro i _ h0
-  apply h
-  have := congrArg Complex.im h0
-  simpa using this
+  exact h (by simpa using congrArg Complex.im h0)
 
 theorem reg_of_im (P : M.Par) {Y : ℂ} (h : Y.im ≠ 0) : Reg P Y := fun ρ => xC_ne_of_im P ρ h
 
@@ -460,8 +466,7 @@ theorem nreg_finite (P : M.Par) : {Y : ℂ | ¬ Reg P Y}.Finite := by
   exact Set.finite_iUnion fun ρ => Set.Finite.biUnion (Finset.finite_toSet _) fun i _ => Set.finite_singleton _
 
 theorem reg_infinite (P : M.Par) : {Y : ℂ | Reg P Y}.Infinite := by
-  apply cofinite_infinite
-  simpa [Set.compl_setOf] using nreg_finite P
+  exact cofinite_infinite (by simpa [Set.compl_setOf] using nreg_finite P)
 
 theorem regular_pairs_infinite (P : M.Par) : {Y : ℂ | Reg P Y ∧ Reg P (Y + 1)}.Infinite := by
   apply cofinite_infinite
@@ -470,10 +475,7 @@ theorem regular_pairs_infinite (P : M.Par) : {Y : ℂ | Reg P Y ∧ Reg P (Y + 1
     simpa using this
   refine ((nreg_finite P).union h2).subset ?_
   intro Y hY
-  simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_and_or] at hY
-  rcases hY with h | h
-  · exact Or.inl h
-  · exact Or.inr h
+  simpa only [Set.mem_union, Set.mem_compl_iff, Set.mem_setOf_eq, not_and_or] using hY
 
 end Regular
 
@@ -482,10 +484,10 @@ section SB
 variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {L0 : PreLevel A P.r}
   {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.Ty P → ℂ) →ₐ[ℂ] A}
 
-theorem sb_mem_GG : L0.GG ∈ L0.ops := by simp [PreLevel.ops, PreLevel.fns]
-theorem sb_mem_GGi : L0.GGi ∈ L0.ops := by simp [PreLevel.ops, PreLevel.fns]
-theorem sb_mem_ζ : L0.ζ ∈ L0.ops := by simp [PreLevel.ops, PreLevel.fns]
-theorem sb_mem_ζb : L0.ζb ∈ L0.ops := by simp [PreLevel.ops, PreLevel.fns]
+theorem sb_mem_GG : L0.GG ∈ L0.ops := Or.inl (Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))))
+theorem sb_mem_GGi : L0.GGi ∈ L0.ops := Or.inl (Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))))
+theorem sb_mem_ζ : L0.ζ ∈ L0.ops := Or.inl (Or.inl (Or.inr (Or.inl rfl)))
+theorem sb_mem_ζb : L0.ζb ∈ L0.ops := Or.inl (Or.inl (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
 
 theorem sb_pj_GG (h : SHyp P L0 QQ κ) (ρ : M.Ty P) : proj κ ρ * L0.GG = L0.GG * proj κ ρ :=
   (H_kops h _ _ sb_mem_GG).eq
@@ -497,13 +499,12 @@ theorem sb_pj_ζb (h : SHyp P L0 QQ κ) (ρ : M.Ty P) : proj κ ρ * L0.ζb = L0
   (H_kops h _ _ sb_mem_ζb).eq
 
 theorem sb_GGi_ζb : L0.GGi * L0.ζb = L0.ζb * L0.GGi :=
-  L0.fns_comm _ (by simp) _ (by simp)
+  L0.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))) _ (Or.inr (Or.inr (Or.inr (Or.inl rfl))))
 
 theorem lower_left_gamma_commutator (h : SHyp P L0 QQ κ) (v : ℂ) :
     QQ v 1 0 * L0.GG = L0.GG * QQ v 1 0 - QQ v 1 1 * L0.ζb := by
   obtain ⟨e1, -, -, -, e5, -⟩ := levelSubgroupAtPlace h v
-  have e2 : QQ v 1 0 * algebraMap ℂ A L0.TT = algebraMap ℂ A L0.TT * QQ v 1 0 := (Algebra.commutes _ _).symm
-  rw [L0.GG_def, mul_sub, sub_mul, e2, ← mul_assoc, e1, sub_mul, mul_assoc, e5]
+  rw [L0.GG_def, mul_sub, sub_mul, ← Algebra.commutes, ← mul_assoc, e1, sub_mul, mul_assoc, e5]
   noncomm_ring
 
 def lowerBlockAlt (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) (QQ : ℂ → Matrix (Fin 2) (Fin 2) A) (σ ρ : M.Ty P) (v : ℂ) : A :=
@@ -553,8 +554,7 @@ theorem sb_feq (h : SHyp P L0 QQ κ) (σ ρ : M.Ty P) (u v : ℂ) :
   rw [sb_sand1 h, sb_sand2 h, sb_sand1 h] at r2
   have cancel : ∀ Z : A, L0.GGi * (L0.GG * Z) = Z := fun Z => by rw [← mul_assoc, L0.GGi_GG, one_mul]
   simp only [cancel] at r2
-  rw [smul_sub]
-  exact r2
+  simpa only [smul_sub] using r2
 
 theorem sb_T_pj (σ ρ : M.Ty P) (v : ℂ) : lowerBlockAlt κ QQ σ ρ v * proj κ ρ = lowerBlockAlt κ QQ σ ρ v := by
   rw [lowerBlockAlt, mul_assoc, pj_idem]
@@ -826,8 +826,7 @@ theorem sb_raises : Raises κ (sb_SS κ QQ) := by
 theorem sb_comm_inv {X a ai : A} (h : Commute X a) (h1 : a * ai = 1) (h2 : ai * a = 1) : Commute X ai := by
   show X * ai = ai * X
   calc X * ai = (ai * a) * X * ai := by rw [h2, one_mul]
-    _ = ai * (a * X) * ai := by noncomm_ring
-    _ = ai * (X * a) * ai := by rw [h.eq]
+    _ = ai * (X * a) * ai := by rw [h.eq]; noncomm_ring
     _ = ai * X * (a * ai) := by noncomm_ring
     _ = ai * X := by rw [h1, mul_one]
 
@@ -901,16 +900,16 @@ theorem sn_kc (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → �
     ∀ g ∈ L.fns ∪ {L.nab, L.nabs}, Commute (κ f) g := hc.2.1 f
 
 theorem sn_kG (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → ℂ) : Commute (κ f) L.GG :=
-  sn_kc hc f _ (by simp [R.LevelData.fns])
+  sn_kc hc f _ (Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))))
 
 theorem sn_kGi (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → ℂ) : Commute (κ f) L.GGi :=
-  sn_kc hc f _ (by simp [R.LevelData.fns])
+  sn_kc hc f _ (Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))))
 
 theorem sn_kz (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → ℂ) : Commute (κ f) L.ζ :=
-  sn_kc hc f _ (by simp [R.LevelData.fns])
+  sn_kc hc f _ (Or.inl (Or.inr (Or.inl rfl)))
 
 theorem sn_knabs (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → ℂ) : Commute (κ f) L.nabs :=
-  sn_kc hc f _ (by simp)
+  sn_kc hc f _ (Or.inr (Or.inr rfl))
 
 theorem sn_kalg (f : M.Ty P → ℂ) (z : ℂ) : Commute (κ f) (algebraMap ℂ A z) := (Algebra.commutes z _).symm
 
@@ -919,7 +918,7 @@ theorem kappa_commute_raising (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f
   exact ((sn_knabs hc f).neg_right).sub_right ((sn_kalg f _).mul_right ((sn_kz hc f).mul_right (sn_kGi hc f)))
 
 theorem sn_sGi (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (l : ℕ) : Commute (SS l) L.GGi :=
-  hc.2.2.1 l _ (by simp [R.LevelData.fns])
+  hc.2.2.1 l _ (Or.inl (Or.inl (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl))))))))
 
 theorem sn_raises (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) : Raises κ SS := hc.2.2.2.1
 
@@ -940,8 +939,7 @@ theorem sn_Gi_star (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsSt
 
 theorem sn_ssGi (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L) (l : ℕ) :
     Commute (star (SS l)) L.GGi := by
-  have := (sn_sGi hc l).star_star
-  rwa [sn_Gi_star hc hs] at this
+  simpa only [sn_Gi_star hc hs] using (sn_sGi hc l).star_star
 
 end SN
 
@@ -1004,10 +1002,7 @@ theorem sn_kxl_sss (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (l : ℕ) (Y 
     κ (fun ρ => M.xEx P {l} ρ Y) * star (SS l) = star (SS l) * κ (fun ρ => M.xEx P {l} ρ Y) := by
   have h := sn_raises hc l (fun ρ => star (M.xEx P {l} ρ Y)) (fun ρ => star (M.xEx P {l} ρ Y))
     (fun ρ ρ' h => by rw [sn_xEx_up h, sn_hsh_same])
-  have h2 := congrArg star h
-  rw [star_mul, star_mul, show star (κ _) = _ from hc.1 _] at h2
-  simp only [star_star] at h2
-  exact h2.symm
+  simpa [star_mul, hc.1, star_star] using (congrArg star h).symm
 
 theorem upper_left_from_determinant {t11 t12 t21 t21' τ τ' τi τi' q : A} (hD3 : t11 * τ' - t12 * t21' = q)
     (hD4 : t21 * τ' = τ * t21') (h1 : τ' * τi' = 1) (h2 : τi * τ = 1) : t11 = q * τi' + t12 * τi * t21 := by
@@ -1111,9 +1106,7 @@ theorem sn_stepE (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) {Y : ℂ} (hY :
     · refine Finset.sum_congr rfl fun l hl => ?_
       have hlj : l ≠ j := Finset.ne_of_mem_erase hl
       rw [sn_hsh_diff hj hlj]; congr 1; field_simp
-  · have h0 := ss_pj_none κ (sn_raises hc) hτ
-    have z : ∀ l, star (SS l) * SS j * proj κ τ = 0 := fun l => by rw [mul_assoc, h0, mul_zero]
-    simp [z]
+  · simp [ss_pj_none κ (sn_raises hc) hτ, mul_assoc]
 
 theorem upper_left_tail_projection (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L) {Y : ℂ} (hY : Reg P Y)
     (τ : M.Ty P) :
@@ -1467,24 +1460,24 @@ theorem sc_fc (L0 : PreLevel A P.r) {x y : A} (hx : x ∈ L0.fns) (hy : y ∈ L0
 
 section Mem
 variable (L0 : PreLevel A P.r)
-theorem sc_mζ : L0.ζ ∈ L0.fns := by simp [PreLevel.fns]
-theorem sc_mζb : L0.ζb ∈ L0.fns := by simp [PreLevel.fns]
-theorem sc_mGG : L0.GG ∈ L0.fns := by simp [PreLevel.fns]
-theorem sc_mGGi : L0.GGi ∈ L0.fns := by simp [PreLevel.fns]
-theorem sc_mc (l) : L0.c l ∈ L0.fns := by simp [PreLevel.fns]
-theorem sc_mci (l) : L0.ci l ∈ L0.fns := by simp [PreLevel.fns]
-theorem sc_mcb (l) : L0.cb l ∈ L0.fns := by simp [PreLevel.fns]
-theorem sc_mcbi (l) : L0.cbi l ∈ L0.fns := by simp [PreLevel.fns]
+theorem sc_mζ : L0.ζ ∈ L0.fns := Or.inr (Or.inl rfl)
+theorem sc_mζb : L0.ζb ∈ L0.fns := Or.inr (Or.inr (Or.inr (Or.inl rfl)))
+theorem sc_mGG : L0.GG ∈ L0.fns := Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
+theorem sc_mGGi : L0.GGi ∈ L0.fns := Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))
+theorem sc_mc (l) : L0.c l ∈ L0.fns := Or.inl (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩)))
+theorem sc_mci (l) : L0.ci l ∈ L0.fns := Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))
+theorem sc_mcb (l) : L0.cb l ∈ L0.fns := Or.inl (Or.inl (Or.inr ⟨l, rfl⟩))
+theorem sc_mcbi (l) : L0.cbi l ∈ L0.fns := Or.inl (Or.inr ⟨l, rfl⟩)
 theorem sc_ops_of_fns {x : A} (hx : x ∈ L0.fns) : x ∈ L0.ops := by
   unfold PreLevel.ops; exact Or.inl (Or.inl hx)
 theorem sc_mp (l) : L0.p l ∈ L0.ops := by unfold PreLevel.ops; exact Or.inl (Or.inr ⟨l, rfl⟩)
 theorem sc_mpb (l) : L0.pb l ∈ L0.ops := by unfold PreLevel.ops; exact Or.inr ⟨l, rfl⟩
-theorem sc_crd_c (l) : L0.c l ∈ L0.crdOps := by simp [PreLevel.crdOps]
-theorem sc_crd_ci (l) : L0.ci l ∈ L0.crdOps := by simp [PreLevel.crdOps]
-theorem sc_crd_cb (l) : L0.cb l ∈ L0.crdOps := by simp [PreLevel.crdOps]
-theorem sc_crd_cbi (l) : L0.cbi l ∈ L0.crdOps := by simp [PreLevel.crdOps]
-theorem sc_crd_p (l) : L0.p l ∈ L0.crdOps := by simp [PreLevel.crdOps]
-theorem sc_crd_pb (l) : L0.pb l ∈ L0.crdOps := by simp [PreLevel.crdOps]
+theorem sc_crd_c (l) : L0.c l ∈ L0.crdOps := Or.inl (Or.inl (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩))))
+theorem sc_crd_ci (l) : L0.ci l ∈ L0.crdOps := Or.inl (Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩))))
+theorem sc_crd_cb (l) : L0.cb l ∈ L0.crdOps := Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))
+theorem sc_crd_cbi (l) : L0.cbi l ∈ L0.crdOps := Or.inl (Or.inl (Or.inr ⟨l, rfl⟩))
+theorem sc_crd_p (l) : L0.p l ∈ L0.crdOps := Or.inl (Or.inr ⟨l, rfl⟩)
+theorem sc_crd_pb (l) : L0.pb l ∈ L0.crdOps := Or.inr ⟨l, rfl⟩
 end Mem
 
 section Core
@@ -1589,14 +1582,13 @@ theorem sc_lζ (h : SHyp P L0 QQ κ) {Y : ℂ} (hY : Reg P Y) : lA L0 QQ κ Y * 
   have h1 := (levelSubgroupAtPlace h Y).1
   have hx : xiA κ Y * L0.ζ = L0.ζ * xiA κ Y := sc_kc h _ (sc_mζ L0)
   have hg : L0.GGi * L0.ζ = L0.ζ * L0.GGi := sc_fc L0 (sc_mGGi L0) (sc_mζ L0)
-  have hgx : L0.GGi * L0.GG = 1 := L0.GGi_GG
   calc xiA κ Y * L0.GGi * QQ Y 1 0 * L0.ζ = xiA κ Y * L0.GGi * (QQ Y 1 0 * L0.ζ) := by noncomm_ring
     _ = xiA κ Y * L0.GGi * (L0.ζ * QQ Y 1 0 - L0.GG * xA κ Y) := by rw [h1, diagonal_entry_hypothesis h]
     _ = (xiA κ Y * L0.GGi * L0.ζ) * QQ Y 1 0 - xiA κ Y * (L0.GGi * L0.GG) * xA κ Y := by noncomm_ring
     _ = L0.ζ * (xiA κ Y * L0.GGi * QQ Y 1 0) - 1 := by
         have key : xiA κ Y * L0.GGi * L0.ζ = L0.ζ * (xiA κ Y * L0.GGi) := by
           rw [mul_assoc, hg, ← mul_assoc, hx, mul_assoc]
-        rw [hgx, mul_one, xiA_xA κ hY, key]; noncomm_ring
+        rw [L0.GGi_GG, mul_one, xiA_xA κ hY, key]; noncomm_ring
 
 theorem sc_lζb (h : SHyp P L0 QQ κ) (Y : ℂ) : lA L0 QQ κ Y * L0.ζb = L0.ζb * lA L0 QQ κ Y := by
   unfold lA
@@ -1780,15 +1772,11 @@ theorem sc_Nsζbi (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
 
 theorem sc_Nsζ (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
     star (nabDef L0 κ b) * L0.ζ = L0.ζ * star (nabDef L0 κ b) := by
-  have e := congrArg star (sc_Nζb h hF)
-  rw [star_mul, star_mul, sc_sζb h] at e
-  exact e.symm
+  simpa only [star_mul, sc_sζb h] using (congrArg star (sc_Nζb h hF)).symm
 
 theorem sc_Nsζi (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
     star (nabDef L0 κ b) * L0.ζi = L0.ζi * star (nabDef L0 κ b) := by
-  have e := congrArg star (sc_Nζbi h hF)
-  rw [star_mul, star_mul, sc_sζbi h] at e
-  exact e.symm
+  simpa only [star_mul, sc_sζbi h] using (congrArg star (sc_Nζbi h hF)).symm
 
 theorem sc_NsGG (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
     star (nabDef L0 κ b) * L0.GG = L0.GG * star (nabDef L0 κ b) - L0.ζ := by
@@ -1802,23 +1790,18 @@ theorem sc_NsGGi (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
   rw [star_mul, star_sub, star_mul, star_mul, star_mul, sc_sGGi h, sc_sζb h] at e
   have c1 : L0.GGi * L0.ζ = L0.ζ * L0.GGi := sc_fc L0 (sc_mGGi L0) (sc_mζ L0)
   have c : L0.GGi * (L0.GGi * L0.ζ) = L0.ζ * L0.GGi * L0.GGi := by
-    calc L0.GGi * (L0.GGi * L0.ζ) = L0.GGi * (L0.ζ * L0.GGi) := by rw [c1]
-      _ = (L0.GGi * L0.ζ) * L0.GGi := by noncomm_ring
-      _ = _ := by rw [c1]
-  rw [e, c]; abel
+    rw [c1, ← mul_assoc, c1]
+  rw [e, c, sub_add_cancel]
 
 theorem sc_Ns_of {g g' : A} (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hg : g ∈ L0.crdOps)
     (hs : star g = g') : star (nabDef L0 κ b) * g' = g' * star (nabDef L0 κ b) := by
-  have e := congrArg star (sc_Ncrd h hF hg)
-  rw [star_mul, star_mul, hs] at e
-  exact e.symm
+  simpa only [star_mul, hs] using (congrArg star (sc_Ncrd h hF hg)).symm
 
 theorem sc_Nskap (h : SHyp P L0 QQ κ) (b : M.Ty P → A) (f : M.Ty P → ℂ) :
     κ f * star (nabDef L0 κ b) = star (nabDef L0 κ b) * κ f := by
   have e := congrArg star (sc_Nkap h b (fun ρ => star (f ρ)))
   rw [star_mul, star_mul, H_kstar h] at e
-  simp only [star_star] at e
-  exact e.symm
+  simpa only [star_star] using e.symm
 
 def sc_L {r : ℕ} (L0 : PreLevel A r) (N Ns : A)
     (p_nab : ∀ l, L0.p l * N = N * L0.p l) (pb_nab : ∀ l, L0.pb l * N = N * L0.pb l)
@@ -2087,10 +2070,7 @@ theorem connection_star_lowering (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b 
   rw [connection_lowering_eq_nabla, connection_raising_constant_eq, star_sub, star_neg, H_smul_star h, star_mul, sc_sGGi h, sc_sζb h, hc,
     mul_sub, sub_mul, mul_neg, neg_mul, mul_smul_comm, smul_mul_assoc]
   have e1b : L0.GG * (L0.ζ * L0.GGi * L0.GGi) = L0.ζ * L0.GGi := by
-    calc L0.GG * (L0.ζ * L0.GGi * L0.GGi) = (L0.GG * L0.ζ) * L0.GGi * L0.GGi := by noncomm_ring
-      _ = (L0.ζ * L0.GG) * L0.GGi * L0.GGi := by rw [sc_fc L0 (sc_mGG L0) (sc_mζ L0)]
-      _ = L0.ζ * (L0.GG * L0.GGi) * L0.GGi := by noncomm_ring
-      _ = L0.ζ * L0.GGi := by rw [L0.GG_GGi, mul_one]
+    rw [← mul_assoc, sc_GGζGGi L0]
   have e1 : L0.GG * star (nabDef L0 κ b) * L0.GGi = star (nabDef L0 κ b) + L0.ζ * L0.GGi := by
     rw [mul_assoc, sc_NsGGi h hF, mul_add, ← mul_assoc, L0.GG_GGi, one_mul, e1b]
   have e2 : L0.GG * (L0.ζ * L0.GGi) * L0.GGi = L0.ζ * L0.GGi := by rw [sc_GGζGGi]
@@ -2138,10 +2118,8 @@ variable {L0 : PreLevel A P.r} {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.
 theorem sc_xEx_ne (P : M.Par) (ρ : M.Ty P) (ex : Finset ℕ) {Y : ℂ} (h : Y.im ≠ 0) : M.xEx P ex ρ Y ≠ 0 := by
   unfold M.xEx
   rw [Finset.prod_ne_zero_iff]
-  intro i _ h0
-  apply h
-  have := congrArg Complex.im h0
-  simpa using this
+  rintro i _ h0
+  exact h (by simpa using congrArg Complex.im h0)
 
 theorem sc_x_of_P {σ : M.Ty P} {W : A} (hW : proj κ σ * W = W) (Y : ℂ) : xA κ Y * W = M.xC P σ Y • W := by
   conv_lhs => rw [← hW]
@@ -2194,9 +2172,8 @@ theorem sc_keyN (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises 
   have hPK : proj κ ρ' * K = K := by rw [hK, ← mul_assoc, pj_ss_pj κ hR hu]
   have hKGG : K * L0.GG = L0.GG * K := sc_K_comm h hSS l ρ (sc_mGG L0)
   have hKZ : K * Z = Z * K := by
-    have c1 : K * L0.ζb = L0.ζb * K := sc_K_comm h hSS l ρ (sc_mζb L0)
-    have c2 : K * L0.GGi = L0.GGi * K := sc_K_comm h hSS l ρ (sc_mGGi L0)
-    rw [hZ, ← mul_assoc, c1, mul_assoc, c2, mul_assoc]
+    rw [hZ, ← mul_assoc, sc_K_comm h hSS l ρ (sc_mζb L0), mul_assoc,
+      sc_K_comm h hSS l ρ (sc_mGGi L0), mul_assoc]
   have hKx : ∀ Y, K * xA κ Y = M.xC P ρ Y • K := by
     intro Y; rw [hK, mul_assoc, xA, pj_mul_kap, mul_smul_comm]
   have hG : ∀ Y, G Y * K - K * G Y =
@@ -2326,10 +2303,7 @@ theorem sc_H_pc (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) (σ
 theorem connection_raising_gamma_shift (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) :
     L0.GG * (sc_LL h hF).m0 Y * L0.GGi = (sc_LL h hF).m0 (Y + 1) := by
   have e1b : L0.GG * (L0.ζ * L0.GGi * L0.GGi) = L0.ζ * L0.GGi := by
-    calc L0.GG * (L0.ζ * L0.GGi * L0.GGi) = (L0.GG * L0.ζ) * L0.GGi * L0.GGi := by noncomm_ring
-      _ = (L0.ζ * L0.GG) * L0.GGi * L0.GGi := by rw [sc_fc L0 (sc_mGG L0) (sc_mζ L0)]
-      _ = L0.ζ * (L0.GG * L0.GGi) * L0.GGi := by noncomm_ring
-      _ = L0.ζ * L0.GGi := by rw [L0.GG_GGi, mul_one]
+    rw [← mul_assoc, sc_GGζGGi L0]
   have e1 : L0.GG * star (nabDef L0 κ b) * L0.GGi = star (nabDef L0 κ b) + L0.ζ * L0.GGi := by
     rw [mul_assoc, sc_NsGGi h hF, mul_add, ← mul_assoc, L0.GG_GGi, one_mul, e1b]
   have e2 : L0.GG * (L0.ζ * L0.GGi) * L0.GGi = L0.ζ * L0.GGi := by rw [sc_GGζGGi]
@@ -2600,9 +2574,8 @@ end SC
 theorem relIsCoreNorm : RelIsCoreNorm := by
   intro P A _ _ _ d
   unfold Q.NFData.Rel RelCore RelNorm
-  constructor
-  · rintro ⟨a, b, c, e, f, g⟩; exact ⟨⟨a, b, c, e, f⟩, g⟩
-  · rintro ⟨⟨a, b, c, e, f⟩, g⟩; exact ⟨a, b, c, e, f, g⟩
+  exact ⟨fun ⟨a, b, c, e, f, g⟩ => ⟨⟨a, b, c, e, f⟩, g⟩,
+    fun ⟨⟨a, b, c, e, f⟩, g⟩ => ⟨a, b, c, e, f, g⟩⟩
 
 theorem thmSOfSteps : ThmSOfSteps := by
   intro hI hC hU hN hRP hW hB hSC hSN hRel P A _ _ _ L0 QQ κ hP h

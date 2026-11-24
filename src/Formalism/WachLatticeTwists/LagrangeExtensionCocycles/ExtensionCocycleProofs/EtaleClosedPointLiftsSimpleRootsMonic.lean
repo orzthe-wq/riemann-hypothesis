@@ -184,7 +184,7 @@ theorem lift_exists_first_case : StatLiftA := by
   have hcj : ∀ j ∈ JSet jumps M, (0 - c j) ∣ (ℓ : ℤ_[ℓ]) ^ padicValInt ℓ j := by
     intro j hj
     have hj0 : j ≠ 0 := fun h => zero_notMem_JSet jumps M (h ▸ hj)
-    obtain ⟨hne, hval⟩ := Formalism.WindowSums.arc_ZpowVal ℓ u 1 le_rfl (fun h => absurd h hℓ) hv (-j)
+    obtain ⟨hne, hval⟩ := _root_.Formalism.WindowSums.valuation_zpow_sub_one ℓ u 1 le_rfl (fun h => absurd h hℓ) hv (-j)
       (neg_ne_zero.2 hj0)
     have hneg : padicValInt ℓ (-j) = padicValInt ℓ j := by simp [padicValInt]
     rw [hneg] at hval

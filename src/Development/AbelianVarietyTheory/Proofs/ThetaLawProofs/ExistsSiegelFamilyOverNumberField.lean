@@ -123,7 +123,7 @@ open NumberField Polynomial in
 theorem _root_.GlobalTheory.SiegelFamilyNumberField.exists_sFam_numberField : _root_.ReciprocityTheory.ChartRestriction.G.Out.Laws → _root_.ReciprocityTheory.ChartRestriction.G.Out.Laws2 → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ThetaUnifAV → ∀ h : ℕ, 1 ≤ h → ∃ (k : ℕ) (K : Type) (_ : Field K) (_ : NumberField K) (ζ : K) (σ : K →+* ℂ), 3 ≤ k ∧ Odd k ∧ σ ζ = Complex.exp (-(2 * Real.pi * Complex.I) / k) ∧ Nonempty (_root_.GlobalTheory.ZM.SFam h k ζ) := by
   intro hL hL2 hT h hh
   obtain ⟨j₀, hj₀⟩ := _root_.GlobalTheory.ZM.SiegelArithFamily.nonempty_sFam hL hL2
-    _root_.GlobalTheory.Moduli.cube_of_isLB hT h 3 hh Nat.prime_three ⟨1, rfl⟩
+    _root_.GlobalTheory.AbLaw.CubeAssembly.cube_gen hT h 3 hh Nat.prime_three ⟨1, rfl⟩
   have hkpos : 0 < (3 ^ max j₀ 1) ^ 2 := by positivity
   haveI : NeZero ((3 ^ max j₀ 1) ^ 2) := ⟨hkpos.ne'⟩
   haveI := _root_.GlobalTheory.ZM.CycBase.cyc (k := (3 ^ max j₀ 1) ^ 2)

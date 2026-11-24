@@ -105,15 +105,15 @@ theorem isBaseChange_pullLE (hM : M.IsLB) (π : X' ⟶ X) {V' : X'.Opens} (hV : 
     (halg : ∀ r, algebraMap Γ(X, V) Γ(X', V') r = (π.appLE V V' e).hom r)
     (l : SecOn M V →ₗ[Γ(X, V)] SecOn (M.pull π) V') (hl : ∀ s, l s = pullLE M π V V' e s) :
     IsBaseChange Γ(X', V') l := by
-  haveI := isQuasicoherent_toMod hM
-  letI : Module Γ(X, V) Γ((Scheme.Modules.pullback π).obj (toMod M), V') :=
+  have := isQuasicoherent_toMod hM
+  let : Module Γ(X, V) Γ((Scheme.Modules.pullback π).obj (toMod M), V') :=
     Module.compHom _ (algebraMap Γ(X, V) Γ(X', V'))
-  haveI : IsScalarTower Γ(X, V) Γ(X', V') Γ((Scheme.Modules.pullback π).obj (toMod M), V') :=
+  have : IsScalarTower Γ(X, V) Γ(X', V') Γ((Scheme.Modules.pullback π).obj (toMod M), V') :=
     .of_algebraMap_smul fun _ _ ↦ rfl
   have h := QCoh.isBaseChange_of_eq_pullbackSections π (toMod M) hV' hV e halg
     { toFun := QCoh.pullbackSections π (toMod M) e
       map_add' s t := by
-        letI := QCoh.appLEModule π ((Scheme.Modules.pullback π).obj (toMod M)) e
+        let := QCoh.appLEModule π ((Scheme.Modules.pullback π).obj (toMod M)) e
         exact (QCoh.pullbackSections π (toMod M) e).map_add s t
       map_smul' r s := by
         rw [QCoh.pullbackSections_smul]
@@ -191,17 +191,17 @@ theorem isBaseChange_pull (hM : M.IsLB)
     [IsScalarTower R R' (SecOnR f' (M.pull π) V')]
     (l : SecOnR f M V →ₗ[R] SecOnR f' (M.pull π) V') (hl : ∀ s, l s = pull M H.w V V' e.le s) :
     IsBaseChange R' l := by
-  letI := cstAlgebra f V
-  letI := cstAlgebra f' V'
-  letI : Algebra Γ(X, V) Γ(X', V') := (π.appLE V V' e.le).hom.toAlgebra
-  letI : Algebra R Γ(X', V') := ((cst f' V').comp (algebraMap R R')).toAlgebra
-  haveI : IsScalarTower R R' Γ(X', V') := .of_algebraMap_eq fun _ => rfl
-  haveI : IsScalarTower R Γ(X, V) Γ(X', V') :=
+  let := cstAlgebra f V
+  let := cstAlgebra f' V'
+  let : Algebra Γ(X, V) Γ(X', V') := (π.appLE V V' e.le).hom.toAlgebra
+  let : Algebra R Γ(X', V') := ((cst f' V').comp (algebraMap R R')).toAlgebra
+  have : IsScalarTower R R' Γ(X', V') := .of_algebraMap_eq fun _ => rfl
+  have : IsScalarTower R Γ(X, V) Γ(X', V') :=
     .of_algebraMap_eq fun r => (appLE_cst H.w e.le r).symm
-  haveI : Algebra.IsPushout R R' Γ(X, V) Γ(X', V') :=
+  have : Algebra.IsPushout R R' Γ(X, V) Γ(X', V') :=
     CommRingCat.isPushout_iff_isPushout.mp (isPushout_cst H hV e)
-  letI : Module Γ(X, V) (SecOn (M.pull π) V') := Module.compHom _ (π.appLE V V' e.le).hom
-  haveI : IsScalarTower Γ(X, V) Γ(X', V') (SecOn (M.pull π) V') :=
+  let : Module Γ(X, V) (SecOn (M.pull π) V') := Module.compHom _ (π.appLE V V' e.le).hom
+  have : IsScalarTower Γ(X, V) Γ(X', V') (SecOn (M.pull π) V') :=
     .of_algebraMap_smul fun _ _ => rfl
   have h := SecOn.isBaseChange_pullLE hM π hV (e ▸ isAffineOpen_preimage_of_isPullback H hV) e.le
     (fun _ => rfl)
@@ -250,8 +250,8 @@ theorem baseChangeHom_bijective (hM : M.IsLB)
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap R R')))) (hV : IsAffineOpen V)
     {V' : X'.Opens} (e : V' = π ⁻¹ᵁ V) :
     Function.Bijective (baseChangeHom M H.w V V' e.le) := by
-  letI : Module R (SecOnR f' (M.pull π) V') := Module.compHom _ (algebraMap R R')
-  haveI : IsScalarTower R R' (SecOnR f' (M.pull π) V') := .of_algebraMap_smul fun _ _ => rfl
+  let : Module R (SecOnR f' (M.pull π) V') := Module.compHom _ (algebraMap R R')
+  have : IsScalarTower R R' (SecOnR f' (M.pull π) V') := .of_algebraMap_smul fun _ _ => rfl
   have h := isBaseChange_pull hM H hV e
     { toFun := pull M H.w V V' e.le
       map_add' := map_add _

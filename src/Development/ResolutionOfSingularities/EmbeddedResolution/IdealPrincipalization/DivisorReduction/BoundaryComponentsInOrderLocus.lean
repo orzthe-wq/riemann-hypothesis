@@ -89,12 +89,12 @@ theorem containedComponentsIdeal_eq_ker_of_isOpen (T : MarkedIdealWithBoundary.{
     containedComponentsIdeal T j hj =
       AlgebraicGeometry.Scheme.Hom.ker
         ((boundaryComponentsInOrderLocusOpens T j hj h).ι ≫ (T.boundary.get ⟨j, hj⟩).subschemeι) :=
-  containedComponentsIdeal_eq_ker_ι_comp_subschemeι_of_isOpen T j hj h
+  _root_.FunctorialResolution.EmbeddedResolution.DivisorReduction.containedComponentsIdeal_eq_ker T j hj h
 
 theorem containedComponentsIdeal_eq_top_of_not_isOpen_locus (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (h : ¬ IsOpen (boundaryComponentsInOrderLocus T j hj)) :
     containedComponentsIdeal T j hj = ⊤ :=
-  containedComponentsIdeal_eq_top_of_not_isOpen_setOf_connectedComponent T j hj h
+  _root_.FunctorialResolution.EmbeddedResolution.DivisorReduction.containedComponentsIdeal_eq_top_of_not_isOpen T j hj h
 
 theorem support_containedComponentsIdeal_subset_support_boundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) :

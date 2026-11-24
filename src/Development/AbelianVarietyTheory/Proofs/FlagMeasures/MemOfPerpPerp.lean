@@ -129,7 +129,7 @@ theorem span_dual_eq_top {h : V →ₗ⋆[K] V →ₗ[K] K} (hn : h.Nondegenerat
       obtain ⟨r', hr'⟩ := star_algebraMap_ringOfIntegers_mem_range r
       refine ⟨r' * r1, ?_⟩
       rw [map_mul, hr', hr1, ← algebraMap_smul K r x, LinearMap.map_smulₛₗ₂]
-      simp only [LinearMap.smul_apply, starRingEnd_apply, smul_eq_mul]
+      simp only [starRingEnd_apply, smul_eq_mul]
   have hbsK : ∀ j, bs j ∈ Submodule.span K (dual h Λ : Set V) := by
     intro j
     have hmem : d' • bs j ∈ dual h Λ := by
@@ -142,7 +142,7 @@ theorem span_dual_eq_top {h : V →ₗ⋆[K] V →ₗ[K] K} (hn : h.Nondegenerat
         rw [← algebraMap_smul K d' (bs j), LinearMap.map_smul, smul_eq_mul]
       have e2 : h (d • y) (bs j) = star (algebraMap (𝓞 K) K d) * h y (bs j) := by
         rw [← algebraMap_smul K d y, LinearMap.map_smulₛₗ₂]
-        simp only [LinearMap.smul_apply, starRingEnd_apply, smul_eq_mul]
+        simp only [starRingEnd_apply, smul_eq_mul]
       rw [hr, e1, e2, hd']
     have e : bs j = (algebraMap (𝓞 K) K d')⁻¹ • (d' • bs j) := by
       rw [← algebraMap_smul K d' (bs j), smul_smul, inv_mul_cancel₀ hd'0, one_smul]

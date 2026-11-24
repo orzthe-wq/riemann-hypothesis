@@ -50,6 +50,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.EllipticTorsion.EllipticTorsionProofs.CubeThree
 
 @[expose] public section
 
@@ -181,8 +182,8 @@ theorem map_diff2 (φ : A →+* B) : MvPowerSeries.map φ (diff2 W) = diff2 (W.m
     map_iSer, MvPowerSeries.map_X, MvPowerSeries.map_X]
 
 theorem two_univ : ∃ c : MvPowerSeries (Fin 2) Z, cc c = -1 ∧ lhs2 W₀ = c * fgl W₀ * diff2 W₀ := by
-  obtain ⟨c, hc, hc0, h⟩ := Formalism.ELL.cubeTwo K₀ WK (wSer WK) (fgl WK) (wSer_fixed WK)
-    (fgl_constantCoeff WK) (fglSum K₀ WK)
+  obtain ⟨c, hc, hc0, h⟩ := _root_.Formalism.ELL.cube_two K₀ WK (wSer WK) (fgl WK) (wSer_fixed WK)
+    (fgl_constantCoeff WK) (_root_.Formalism.L2.Th1.A.formal_group_sum K₀ WK)
   obtain ⟨c₀, rfl⟩ := lift c hc
   refine ⟨c₀, lift_cc hc0, mv_map_injective ι ι_injective ?_⟩
   rw [inv_wU_subst WK (MvPowerSeries.constantCoeff_X 0),
@@ -228,8 +229,8 @@ theorem map_cubic_sum (φ : A →+* B) : MvPowerSeries.map φ (sum3 W) = sum3 (W
 theorem three_univ : ∃ e : MvPowerSeries (Fin 3) Z, cc e = -1 ∧
     lhs3 W₀ = e * sum3 W₀ * (MvPowerSeries.X 0 - MvPowerSeries.X 1)
       * (MvPowerSeries.X 0 - MvPowerSeries.X 2) * (MvPowerSeries.X 1 - MvPowerSeries.X 2) := by
-  obtain ⟨e, he, he0, h⟩ := Formalism.ELL.cubeThree K₀ WK (wSer WK) (fgl WK) (wSer_fixed WK)
-    (fgl_constantCoeff WK) (fglSum K₀ WK)
+  obtain ⟨e, he, he0, h⟩ := _root_.Formalism.ELL.chordDeterminantFactor_holds K₀ WK (wSer WK) (fgl WK) (wSer_fixed WK)
+    (fgl_constantCoeff WK) (_root_.Formalism.L2.Th1.A.formal_group_sum K₀ WK)
   obtain ⟨e₀, rfl⟩ := lift e he
   refine ⟨e₀, lift_cc he0, mv_map_injective ι ι_injective ?_⟩
   simp only [inv_wU_subst WK (MvPowerSeries.constantCoeff_X _)] at h
@@ -274,7 +275,7 @@ theorem coeffMem_of (hZ : ZSerMap.{u, u}) (hH : HalfLog.{u, u}) : CoeffMem.{u} :
   rw [hW] at m1 m3 m4 m5 m7 m8
   refine ⟨key _ _ m1, key _ _ m3, key _ _ m4, key _ _ m5, key _ _ m7, key _ _ m8, ?_, ?_, ?_, ?_, ?_⟩
   · intro d
-    have := fglMap S R S.subtype WS
+    have := _root_.Formalism.L2.Th1.A.formal_group_map S R S.subtype WS
     rw [hW] at this
     rw [← this, MvPowerSeries.coeff_map]
     exact (MvPowerSeries.coeff d (fgl WS)).2
@@ -291,11 +292,11 @@ theorem coeffMem_of (hZ : ZSerMap.{u, u}) (hH : HalfLog.{u, u}) : CoeffMem.{u} :
     rw [hW] at this
     exact key _ _ this
   · intro xP hx
-    have := (plusMap S R S.subtype WS ⟨xP, hx⟩ 0).1
+    have := (_root_.Formalism.L2.Th1.A.addition_map S R S.subtype WS ⟨xP, hx⟩ 0).1
     rw [hW] at this
     exact key _ _ this
   · intro xP hx yP hy n
-    obtain ⟨-, p2, p3⟩ := plusMap S R S.subtype WS ⟨xP, hx⟩ ⟨yP, hy⟩
+    obtain ⟨-, p2, p3⟩ := _root_.Formalism.L2.Th1.A.addition_map S R S.subtype WS ⟨xP, hx⟩ ⟨yP, hy⟩
     rw [hW] at p2 p3
     exact ⟨key _ _ p2 n, key _ _ p3 n⟩
 

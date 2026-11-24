@@ -77,10 +77,9 @@ theorem liftVec_inj {v w : Fin (2 * r' + k + 1) → ℂ} (h : liftVec k i r' v =
   have hjl := j.isLt
   have hj := congrFun h ⟨j.val + i, by omega⟩
   have hc : i ≤ j.val + i ∧ j.val + i < 2 * r' + k + 1 + i := ⟨Nat.le_add_left _ _, by omega⟩
-  simp only [liftVec, Fin.val_mk, dif_pos hc] at hj
+  simp only [liftVec, dif_pos hc] at hj
   first
     | simpa using hj
-    | (simp at hj; rwa [if_pos (by omega)] at hj)
 
 private theorem levPos_injective : Function.Injective (levPos k i r') := by
   intro a b h
@@ -94,10 +93,6 @@ private theorem liftVec_apply_levPos (x : Fin (2 * r' + k + 1) → ℂ) (j : Fin
   have hj := j.isLt
   have hj' : (j : ℕ) ≤ 2 * r' + k := by omega
   simp [liftVec, levPos, hj']
-  all_goals first
-    | (intro h; omega)
-    | rw [if_pos hj']
-    | rfl
 
 private theorem liftVec_apply_eq_zero_of_not_mem_range (x : Fin (2 * r' + k + 1) → ℂ) (p : Fin (2 * (i + r') + k + 1))
     (hp : p ∉ Set.range (levPos k i r')) : liftVec k i r' x p = 0 := by
@@ -182,7 +177,7 @@ private theorem liftVec_apply_of_mid (x : Fin (2 * r' + k + 1) → ℂ) (p : Fin
 private theorem bvec_eq_liftVec_bvec_of_mid (q : Fin (2 * (i + r') + k + 1)) (hq : i ≤ q.val ∧ q.val < 2 * r' + k + 1 + i) :
     bvec q = liftVec k i r' (bvec (⟨q.val - i, by omega⟩ : Fin (2 * r' + k + 1))) := by
   funext p
-  simp only [bvec, liftVec, Pi.single_apply, Fin.ext_iff, Fin.val_mk]
+  simp only [bvec, liftVec, Pi.single_apply, Fin.ext_iff]
   split_ifs <;> (try split_ifs) <;> (try split_ifs) <;> first | rfl | (exfalso; omega)
 
 theorem unitB_lift {m : ℕ} (Bs : Fin m → Fin (2 * r' + k + 1) → ℂ) (a b : Fin m) :
@@ -266,8 +261,6 @@ theorem continuous_ιLev : Continuous (ιLev k i r') := by
   all_goals first
     | exact continuous_const
     | exact continuous_id.matrix_elem _ _
-    | exact (continuous_apply _).comp (continuous_apply _)
-    | fun_prop
 
 theorem uw_onto (z : Fin (2 * r' + k + 1) → ℂ) (g : Mx k (i + r')) (hg : g ∈ UWset k (i + r') (liftVec k i r' z)) :
     ∃ y ∈ UWset k r' z, ιLev k i r' y = g := by
@@ -278,7 +271,7 @@ theorem uw_onto (z : Fin (2 * r' + k + 1) → ℂ) (g : Mx k (i + r')) (hg : g �
   · have ha := a.isLt
     obtain ⟨h1, h2⟩ := hg.2.1 ⟨a.val + i, by omega⟩
     have e1 : bvec (eI k (i + r') ⟨a.val + i, by omega⟩) = liftVec k i r' (bvec (eI k r' a)) := by
-      rw [← PIQnLT.bvec_lev]; congr 1; all_goals (ext; simp [eI, levPos])
+      rw [← PIQnLT.bvec_lev]; congr 1
     have e2 : bvec (esI k (i + r') ⟨a.val + i, by omega⟩) = liftVec k i r' (bvec (esI k r' a)) := by
       rw [← PIQnLT.bvec_lev]; congr 1; all_goals (ext; simp [esI, levPos]; try omega)
     rw [e1, PIQnLT.mulVec_liftVec] at h1
@@ -316,12 +309,10 @@ variable {k : ℕ}
 theorem castV_rfl {a : ℕ} (v : Fin (2 * a + k + 1) → ℂ) : Formalism.FourierDecayAlt.D.castV (k := k) (rfl : a = a) v = v := by
   first
     | rfl
-    | (funext j; simp [Formalism.FourierDecayAlt.D.castV])
 
 theorem castM_rfl {a : ℕ} (g : Formalism.FourierDecayAlt.B.Mat k a) : Formalism.FourierDecayAlt.D.castM (rfl : a = a) g = g := by
   first
     | rfl
-    | (ext p q; simp [Formalism.FourierDecayAlt.D.castM])
 
 theorem isType_cast {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] {a b : ℕ} (h : a = b)
     (z : Fin (2 * a + k + 1) → ℂ) (π : Mx k b → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ)
@@ -372,9 +363,6 @@ theorem exists_haar_level_zero {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProd
   subst h
   first
     | exact ⟨Bs.μG, Bs.haarG⟩
-    | (cases Bs
-       refine ⟨_, ?_⟩
-       assumption)
 
 def embL (k r' : ℕ) (x : Mt k 0) : Mt k r' := ιLev k r' 0 x
 
@@ -385,13 +373,11 @@ variable {k r' : ℕ}
 theorem continuous_embL : Continuous (embL k r') := by
   first
     | exact continuous_ιLev
-    | (unfold embL; exact continuous_ιLev)
 
 theorem continuous_projL : Continuous (projL k r') := by
   unfold projL
   first
     | fun_prop
-    | exact continuous_pi fun p => continuous_pi fun q => continuous_apply_apply _ _
 
 theorem projL_embL (x : Mt k 0) : projL k r' (embL k r' x) = x := by
   funext p q
@@ -408,16 +394,12 @@ theorem glev_closed (k r : ℕ) (i : Fin (r + 1)) : IsClosed (Glev k r i) := by
   · unfold UH
     first
       | exact isClosed_eq (by fun_prop) continuous_const
-      | exact isClosed_eq (((continuous_id.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_id) continuous_const
   all_goals first
     | exact isClosed_eq (by fun_prop) continuous_const
-    | exact isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const
 
 theorem glev_measurable (k r : ℕ) (i : Fin (r + 1)) : @MeasurableSet (Mt k r) _ (Glev k r i) := by
   first
     | exact (glev_closed k r i).measurableSet
-    | exact IsClosed.measurableSet (α := Mt k r) (glev_closed k r i)
-    | exact @IsClosed.measurableSet (Mt k r) _ _ _ _ (glev_closed k r i)
 
 theorem haar_glev (μ0 : Measure (Mt k 0)) (h0 : Formalism.FourierDecayAlt.B.IsHaarOn (Formalism.FourierDecayAlt.B.GV k 0) μ0) :
     Formalism.FourierDecayAlt.B.IsHaarOn (Glev k r' (Fin.last r')) (μ0.map (embL k r')) := by
@@ -536,7 +518,6 @@ theorem rho_bounds (hOK : P.OK) (ρ : M.Ty P) (i : ℕ) (hi1 : 1 ≤ i) (hi2 : i
   have hv' : ((ρ ⟨i - 1, by omega⟩ : ℕ)) ≤ ⌊P.hi i - P.lo i⌋₊ := by
     first
       | exact Nat.lt_succ_iff.mp hw
-      | omega
   have hv : ((ρ ⟨i - 1, by omega⟩ : ℕ) : ℝ) ≤ ((⌊P.hi i - P.lo i⌋₊ : ℕ) : ℝ) := by exact_mod_cast hv'
   unfold M.rho
   rw [dif_pos ⟨hi1, hi2⟩]
@@ -593,14 +574,12 @@ theorem qC_ne (hOK : P.OK) (l : ℕ) (hl1 : 1 ≤ l) (hlk : l ≤ P.k) (y : ℝ)
     · intro h0
       apply key.1
       first
-        | exact_mod_cast h0
         | (have h1 := congrArg Complex.re h0
            simp at h1
            linarith)
     · intro h0
       apply key.2
       first
-        | exact_mod_cast h0
         | (have h1 := congrArg Complex.re h0
            simp at h1
            linarith)

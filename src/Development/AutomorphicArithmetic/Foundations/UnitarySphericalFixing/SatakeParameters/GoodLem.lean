@@ -90,10 +90,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A} {rc : IrrGL (k := w.adicCompletion E) → WD h}
 
-theorem charZero_compl (w : HeightOneSpectrum (𝓞 E)) : CharZero (w.adicCompletion E) :=
-  charZero_of_injective_algebraMap (algebraMap E _).injective
-
-theorem New.close (H : LawsM a ha ε rc) : IsRecT h rc := cls_of H
+alias New.close := _root_.UpperTheory.One.M.cls_of
 
 theorem New.artin (hL : RecTExists) (h : IsPlaceOver A w) : ∃ a : Weil h →* (w.adicCompletion E)ˣ, IsLocalArtin h a :=
   let ⟨_, a, ha, _⟩ := hL E Ω A w h

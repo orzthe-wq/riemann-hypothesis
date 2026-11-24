@@ -58,22 +58,10 @@ def bordM {a : ℕ} (G : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) (z : Fin a) :
     (fun i => Fin.snoc (α := fun _ => Fv F v ⊗[F] E) (G i) (if i = z then 1 else 0))
     (Fin.snoc (α := fun _ => Fv F v ⊗[F] E) (fun j => if j = z then 1 else 0) 0)
 
-theorem hAddR (x y y' : Fin n → Fv F v ⊗[F] E) :
-    hR (Fv F v) σ J x (y + y') = hR (Fv F v) σ J x y + hR (Fv F v) σ J x y' := by
-  simp only [hR, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
-
 theorem hSmulR (c : Fv F v ⊗[F] E) (x y : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J x (c • y) = c * hR (Fv F v) σ J x y := by
   simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
-
-theorem hAddL (x x' y : Fin n → Fv F v ⊗[F] E) :
-    hR (Fv F v) σ J (x + x') y = hR (Fv F v) σ J x y + hR (Fv F v) σ J x' y := by
-  simp only [hR, Formalism.UG.hform, Pi.add_apply, map_add (f := _), add_mul, Finset.sum_add_distrib]
-
-theorem hSmulL (c : Fv F v ⊗[F] E) (x y : Fin n → Fv F v ⊗[F] E) :
-    hR (Fv F v) σ J (c • x) y = sigR (Fv F v) σ c * hR (Fv F v) σ J x y := by
-  simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
 theorem gram_augT {a : ℕ} (X : TupV (E := E) v n a) (w : Fin n → Fv F v ⊗[F] E) (z : Fin a)
     (h1 : ∀ i, hR (Fv F v) σ J (X i) w = if i = z then 1 else 0)

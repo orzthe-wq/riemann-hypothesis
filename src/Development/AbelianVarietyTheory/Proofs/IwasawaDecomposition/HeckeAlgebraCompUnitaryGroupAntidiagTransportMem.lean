@@ -94,7 +94,7 @@ theorem guMap_mem_KU (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) 
   apply Units.ext
   ext i j
   have hij := congrArg (fun u : GL (Fin n) K => (u : Matrix (Fin n) (Fin n) K) i j) hb
-  simp only [bc, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply] at hij ⊢
+  simp only [bc, Units.coe_map] at hij ⊢
   rw [guMap_val, Matrix.map_apply, ← hij]
   rfl
 

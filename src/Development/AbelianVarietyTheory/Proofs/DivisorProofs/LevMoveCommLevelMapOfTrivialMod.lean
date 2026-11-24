@@ -5,11 +5,13 @@ public import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditionalStatement
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsLevMoveOfFrOver
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsReducedIsNormalSchemeIsLocallyNoetherianOfSmoo
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrMoveTransfer
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitive
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjPull
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SabMapEqOfLevelEq
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrMoveTransfer
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitiveOfLaws
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -110,7 +112,7 @@ theorem levMove_comm_levelMap_of_trivial_mod : ∀ (E : Type) [Field E] [NumberF
     refine (Xo.rep d.Xo₂.X (d.r ≫ Xo.s) hred o).unique ⟨?_, ⟨q⟩⟩ ⟨rfl, ⟨p⟩⟩
     rw [Category.id_comp, Category.assoc, hb, ← Category.assoc, hmv.1]
   obtain ⟨q', hq'⟩ := LevelFibre.sab_cast hr q.toSABMap
-  have e : p.toSABMap.φ = q'.φ := sabMap_eq_of_level_eq hL obj_isAbelianScheme_dim_rigidified_sym E H Dw l _ _ _ _ _ _
+  have e : p.toSABMap.φ = q'.φ := _root_.GlobalTheory.obj_rigid_of_laws hL obj_isAbelianScheme_dim_rigidified_sym E H Dw l _ _ _ _ _ _
     _ _ Xo.univ o _ (Or.inl hred) p.toSABMap q' fun a => ⟨_, p.eta a, by rw [hq']; exact (q.eta a).trans (by rw [hr])⟩
   rw [hq', hq, ← hu, hu₂, Category.assoc] at e
   have : IsIso u.φ := u.cart.1.isIso_fst_of_isIso

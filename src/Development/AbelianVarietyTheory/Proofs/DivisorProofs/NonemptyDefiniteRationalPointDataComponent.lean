@@ -42,7 +42,6 @@ open scoped Matrix Classical
 
 namespace GlobalTheory.DefPt.PtExist
 
-theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ), DefCase U ξ → ∀ Z : Comp Xo c, Nonempty (PtData Z) :=
-  GlobalTheory.DefPt.Model.nonempty_ptData_all
+alias main := _root_.GlobalTheory.DefPt.Model.nonempty_ptData_all
 
 end GlobalTheory.DefPt.PtExist

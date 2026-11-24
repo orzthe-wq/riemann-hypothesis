@@ -56,7 +56,7 @@ private theorem trace_pi_eq_sum {C J : Type} [CommRing C] [Fintype J] (a : J →
   rw [Algebra.trace_apply, LinearMap.trace_eq_matrix_trace C (Pi.basisFun C J), Matrix.trace]
   apply Finset.sum_congr rfl
   intro j _
-  simp [LinearMap.toMatrix_apply, Pi.single_apply]
+  simp
 
 theorem UpperTheory.Gal.G3.pAlgTr :
     AlgTr := by

@@ -136,10 +136,9 @@ theorem gl_levi (M : Maps D hn) (g : G D p) (a : GL (Fin p) (AE D)) (hg : mat g 
   have h5 : ∀ w : Mx D ρ p, w ⬝ (a⁻¹).1 ⬝ a.1 = w := fun w => by
     rw [Matrix.mul_assoc, h1, Matrix.mul_one]
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, block_mul₂, adj_mul, adj_adj, Matrix.one_mul,
-    Matrix.mul_one, h4, h5, Matrix.mul_assoc x, h3, Matrix.mul_neg, Matrix.neg_mul, neg_zero]
+    Matrix.mul_one, h4, h5, Matrix.mul_assoc x, h3, Matrix.mul_neg, neg_zero]
 
-theorem adj_sub' {k l : ℕ} (u v : Mx D k l) : adj (u - v) = adj u - adj v := by
-  rw [sub_eq_add_neg, adj_add, adj_neg, sub_eq_add_neg]
+alias adj_sub' := _root_.GlobalTheory.MixModel.adj_sub
 
 def zU (z : hermA D ρ) (y : Mx D ρ p) (b : Mx D p p) (hb : adj b = b) : hermA D ρ :=
   ⟨z.1 - y ⬝ (b ⬝ adj y), by

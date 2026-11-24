@@ -96,7 +96,7 @@ theorem fd_inf_ker_aeval (N : Submodule ℂ M) (t : Module.End ℂ M) (ht : ∀ 
     have hle : N ⊓ LinearMap.ker (aeval t (C (q.coeff 0))) ≤ ⊥ := by
       intro v hv
       have h2 := hv.2
-      simp only [LinearMap.mem_ker, aeval_C, Module.algebraMap_end_apply] at h2
+      simp only [aeval_C] at h2
       simpa [Submodule.mem_bot] using (smul_eq_zero.1 h2).resolve_left ha
     exact Submodule.finiteDimensional_of_le hle
   | succ n ih =>

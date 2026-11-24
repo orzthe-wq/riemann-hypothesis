@@ -18,54 +18,14 @@ import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 public import Formalism.PeriodIntegrals.AdmissibleModel.WeylDim
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ProdFactorialSupportSubSingle
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Wlocal
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Algebra.Order.Star.Rat
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -378,19 +338,6 @@ theorem brTranspose : BrTranspose hN lam sg K := by
 
 end Transpose
 
-section Period
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
-
-end Period
-
-section Chi
-
-variable {G : Type} [CommGroup G]
-
-end Chi
-
 end Formalism.L2.Ker
 
 open MvPolynomial NumberField
@@ -405,12 +352,6 @@ open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Col.B
 section Fock
 
 variable {K : Type} [Field K] {σ : Type}
-
-theorem lb_fockB_symm (f g : MvPolynomial σ K) : fockB f g = fockB g f := by
-  classical
-  rw [fockB_eq_sum f g (f.support ∪ g.support) Finset.subset_union_left,
-    fockB_eq_sum g f (f.support ∪ g.support) Finset.subset_union_right]
-  exact Finset.sum_congr rfl fun m _ => by ring
 
 theorem lb_fockB_map {K' : Type} [Field K'] (j : K →+* K') (f g : MvPolynomial σ K) :
     fockB (map j f) (map j g) = j (fockB f g) := by
@@ -467,7 +408,7 @@ theorem lb_gram_det_ne : (gramB (K := K) lam).det ≠ 0 := by
     rw [← bVV_coe]; exact (bVV K lam i).2
   have horth : ∀ k, fockB x (bVVfun K lam k) = 0 := by
     intro k
-    rw [lb_fockB_symm, hxdef]
+    rw [_root_.Formalism.L2.Ker.fockB_comm, hxdef]
     have e : fockB (bVVfun K lam k) (∑ i, c i • bVVfun K lam i) = (gramB (K := K) lam *ᵥ c) k := by
 
       rw [← fockBL_apply, map_sum]
@@ -484,7 +425,7 @@ open Classical in
 theorem lb_proj_spec (p : Pol K ι n) : ∀ v ∈ VV K lam, fockB ((projVV lam p : VV K lam) : Pol K ι n) v = fockB p v := by
   have hG : IsUnit (gramB (K := K) lam).det := isUnit_iff_ne_zero.mpr (lb_gram_det_ne lam)
   have hsym : (gramB (K := K) lam)ᵀ = gramB (K := K) lam := by
-    ext i j; simp [gramB, lb_fockB_symm]
+    ext i j; simp [gramB, _root_.Formalism.L2.Ker.fockB_comm]
   have hinv : ∀ j k, ∑ i, (gramB (K := K) lam)⁻¹ i j * fockB (bVVfun K lam i) (bVVfun K lam k) = if j = k then 1 else 0 := by
     intro j k
     have e := congrFun (congrFun (Matrix.nonsing_inv_mul _ hG) j) k
@@ -509,16 +450,16 @@ theorem lb_proj_spec (p : Pol K ι n) : ∀ v ∈ VV K lam, fockB ((projVV lam p
     · intro k
       rw [lb_fockB_sub_left, hp, sub_eq_zero]
 
-      rw [lb_fockB_symm, ← fockBL_apply, map_sum]
+      rw [_root_.Formalism.L2.Ker.fockB_comm, ← fockBL_apply, map_sum]
 
       simp only [map_sum, map_smul, fockBL_apply, smul_eq_mul]
       have e : ∀ i j, (gramB (K := K) lam)⁻¹ i j * fockB (bVVfun K lam j) p * fockB (bVVfun K lam k) (bVVfun K lam i) =
           fockB (bVVfun K lam j) p * ((gramB (K := K) lam)⁻¹ i j * fockB (bVVfun K lam i) (bVVfun K lam k)) := by
-        intro i j; rw [lb_fockB_symm (bVVfun K lam k)]; ring
+        intro i j; rw [_root_.Formalism.L2.Ker.fockB_comm (bVVfun K lam k)]; ring
       simp only [e]
       rw [Finset.sum_comm]
       simp only [← Finset.mul_sum, hinv, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
-      exact lb_fockB_symm _ _
+      exact _root_.Formalism.L2.Ker.fockB_comm _ _
 
 theorem lb_proj_unique (p y : Pol K ι n) (hy : y ∈ VV K lam) (h : ∀ v ∈ VV K lam, fockB y v = fockB p v) :
     ((projVV lam p : VV K lam) : Pol K ι n) = y := by
@@ -600,12 +541,6 @@ theorem lb_map_projVV [CharZero K] [CharZero K'] {n : ℕ} (lam : ι → DomWeig
 
 end BCMaps
 
-section Member
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
-
-end Member
-
 end Formalism.L2.Ker
 
 open MvPolynomial
@@ -613,30 +548,6 @@ open MvPolynomial
 noncomputable section
 
 namespace Formalism.L2.Ker
-
-open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Col.Br
-
-section Shift
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
-
-end Shift
-
-section Degen
-
-open Classical
-
-variable {K : Type} [Field K] {ι : Type} [Fintype ι]
-
-end Degen
-
-section Degen2
-
-open Classical
-
-variable {K : Type} [Field K] {ι : Type} [Fintype ι]
-
-end Degen2
 
 end Formalism.L2.Ker
 
@@ -785,7 +696,7 @@ theorem lx_rename_minorB (i : Fin n) :
   simp only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, rename_X]
   refine congrArg (fun v => (X v : MvPolynomial (Fin N × Fin N) K)) (Prod.ext ?_ (Fin.ext rfl))
   simp only [lxRho, Formalism.BranchingDeterminantCap.rowsB]
-  split_ifs <;> first | exact Fin.ext rfl | exact Fin.ext (by simp [iL])
+  split_ifs <;> first | exact Fin.ext rfl
 
 variable {K}
 
@@ -1385,21 +1296,11 @@ namespace Formalism.L2.Ker
 
 open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Col.Br
 
-section Inhabit
-
-end Inhabit
-
 section Small
 
 def wt0 : DomWeight 1 := ⟨![0], by intro a b _; fin_cases a; fin_cases b; simp⟩
 
 end Small
-
-section Chain
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
-
-end Chain
 
 end Formalism.L2.Ker
 
@@ -1494,19 +1395,6 @@ theorem sameShiftTr (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (τ : D
   omega
 
 end ShiftTr
-
-section NZ
-
-variable {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n + 1)
-  (lam : ι → DomWeight N) (sg : ι → DomWeight n)
-
-end NZ
-
-section ShapeNe
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
-
-end ShapeNe
 
 section Comparison₂
 
@@ -2554,26 +2442,9 @@ theorem hwD_sum_apply {ι' A : Type} [CommRing A] [Algebra K A] (s : Finset ι')
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]
 
-theorem hwD_rE_eq (a a' : Fin r) (f : MvPolynomial (Fin r × Fin n) K) :
-    rE K r n a a' f = ∑ s, X (a, s) * pderiv (a', s) f := by
-  classical
-  have h : rE K r n a a' = ∑ s : Fin n, (X (a, s) : MvPolynomial (Fin r × Fin n) K) • pderiv (a', s) := by
-    apply derivation_ext
-    rintro ⟨v1, v2⟩
-    rw [rE, mkDerivation_X, hwD_sum_apply]
-    simp only [Derivation.smul_apply, smul_eq_mul, pderiv_X, Pi.single_apply, Prod.mk.injEq]
-    rw [Finset.sum_eq_single v2]
-    · by_cases h2 : v1 = a' <;> simp [h2]
-    · intro b _ hb
-      simp [Ne.symm hb]
-    · intro hb
-      exact absurd (Finset.mem_univ _) hb
-  rw [h, hwD_sum_apply]
-  simp only [Derivation.smul_apply, smul_eq_mul]
-
 theorem hwD_fockB_rE (a a' : Fin r) (f g : MvPolynomial (Fin r × Fin n) K) :
     fockB (rE K r n a a' f) g = fockB f (rE K r n a' a g) := by
-  rw [hwD_rE_eq, hwD_rE_eq, hwD_fockB_sum_left, fockB_comm f, hwD_fockB_sum_left]
+  rw [_root_.Formalism.L2.Ker.hwA_rE_sum, _root_.Formalism.L2.Ker.hwA_rE_sum, hwD_fockB_sum_left, fockB_comm f, hwD_fockB_sum_left]
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [hwD_fockB_X_mul, hwD_fockB_X_mul, fockB_comm]
 
@@ -4284,8 +4155,6 @@ open Formalism.MainNotions.product_first_zeroth_parts
 theorem brOneIsBr (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) : BrOneIsBr D u :=
   brOneIsBr_of D u (fun τ hI => int_member D u τ hI) (fun τ hI => nm_hB D u τ hI)
 
-theorem beOnEq (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) : BeOnEq D u := nm_beOnEq D u
-
 end Final
 
 end Formalism.L2.Ker
@@ -4355,21 +4224,6 @@ theorem ta_nfAll_nonneg {n : ℕ} (l : ι → Formalism.BasicNotions.DomWeight n
 
 end BlkCalc
 
-section TieAt
-
-variable {D : Formalism.BasicNotions.D7} {u : D.what₂.Word}
-  {coM : D.what₂.places.Pl → (D.fm u).clsP → (((D.mem u).C.Y D.R.m → ℂ) →ₗ[ℂ]
-    MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ)}
-  {gP : D.what₂.places.Pl → (D.fm u).clsP → D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ}
-
-end TieAt
-
-section Kill
-
-open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Col.Br
-
-end Kill
-
 end At
 
 end Formalism.L2.Ker
@@ -4383,7 +4237,7 @@ section Eps
 theorem eps_sqAct_mem (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ)
     (hf : f ∈ delSq ℂ N lam) : sqAct ℂ N lam g f ∈ delSq ℂ N lam := by
   unfold sqAct; refine Submodule.smul_mem _ _ ?_
-  have := Formalism.UG.P.weyl_module_GL_stable ℂ N N le_rfl lam.natW (inside₂ ℂ N g) f hf
+  have := _root_.Formalism.UG.P.wlocal_global ℂ N N le_rfl lam.natW (inside₂ ℂ N g) f hf
   simpa [Formalism.UG.dwAct, inside₂, delSq] using this
 
 variable {D : Formalism.BasicNotions.D7} {u : D.what₂.Word}

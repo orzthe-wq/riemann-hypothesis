@@ -166,7 +166,5 @@ theorem target_of' (hI : LocIdem) (hS : LocSplitP) (hA : BridgeA) (hB : BridgeB)
     _root_.PI.ScXuExists.Target := by
   first
   | exact target_of hI (locCore_of hS hA hB hL) hG
-  | exact target_of hI hG (locCore_of hS hA hB hL)
-  | (unfold PI.ScXuExists.Target LocIdem Glue LocCore at *; done)
 
 end PI.UnitaryGroupMassFormula.ScXuExists

@@ -254,7 +254,7 @@ private theorem inRing_pointwise_smul_of_mem {f : X → A} (hf : f ∈ T)
       (Submodule.subset_span ⟨f, hf, 1, rfl⟩)
   convert _root_.GlobalTheory.SpanRing.inRing_mul h1 hb using 1
   funext x
-  simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.mat, smul_mul_assoc]
+  simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.mat]
 
 variable {Γ X A : Type} [Group Γ] [CommRing A] {n : ℕ}
   (T : Subalgebra A (X → A)) (rep : X → (Γ →* GL (Fin n) A)) in

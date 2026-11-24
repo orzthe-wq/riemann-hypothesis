@@ -1,55 +1,10 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothDefs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothBr
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothDS
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -62,25 +17,9 @@ namespace ReciprocityTheory.ChartRestriction.DS
 namespace SmDerA
 
 variable {n : ℕ}
-theorem Jm_mul_Jm (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  first
-    | (unfold Jm
-       rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-       congr 1
-       funext a
-       split_ifs <;> norm_num)
-    | (ext i j
-       by_cases h : i = j <;> by_cases hε : ε i <;> simp [Jm, Matrix.one_apply, h, hε])
+alias Jm_mul_Jm := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self
 
-theorem Jm_conjTranspose (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
-  first
-    | (unfold Jm
-       rw [Matrix.diagonal_conjTranspose]
-       congr 1
-       funext i
-       by_cases h : ε i = true <;> simp [h])
-    | (ext i j
-       by_cases h : i = j <;> by_cases hε : ε i <;> simp [Jm, Matrix.diagonal_apply, h, hε])
+alias Jm_conjTranspose := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_conjTranspose
 
 private theorem Jm_mul_Jm_mulDiscreteSeriesExistence (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     Jm ε * (Jm ε * A) = A := by
@@ -142,7 +81,7 @@ theorem inG_bracket {ε : Fin n → Bool} {X Y : Matrix (Fin n) (Fin n) ℂ} (hX
 
 theorem inG_cpart1 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) : inG ε (S7.cpart1 ε Z) := by
   have hs : star (1 / 2 : ℂ) = 1 / 2 := by
-    first | (rw [one_div, star_inv₀, star_ofNat]) | simp
+    first | (rw [one_div, star_inv₀, star_ofNat])
   apply inG_of_J
   unfold S7.cpart1
   simp only [Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul,
@@ -155,7 +94,6 @@ theorem inG_cpart2 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) : inG 
   have hs : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) := by
     first
       | (rw [one_div, star_inv₀, star_mul', hI, star_ofNat, mul_neg, inv_neg])
-      | simp [hI]
   apply inG_of_J
   unfold S7.cpart2
   simp only [Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul,
@@ -168,7 +106,7 @@ theorem cpart_decomp (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
   unfold S7.cpart1 S7.cpart2
   rw [smul_smul]
   have h : Complex.I * (1 / (2 * Complex.I)) = 1 / 2 := by
-    first | (field_simp; done) | (field_simp; ring)
+    first | (field_simp; done)
   rw [h]
   module
 
@@ -221,7 +159,7 @@ theorem actM_single (a b : Fin n) : actM E (Matrix.single a b 1) = E a b := by
       simp [Matrix.single_apply, hx, Ne.symm hx]) (fun h => absurd (Finset.mem_univ a) h),
     Finset.sum_eq_single b (fun y _ hy => by simp [Matrix.single_apply, hy, Ne.symm hy])
       (fun h => absurd (Finset.mem_univ b) h)]
-  simp [Matrix.single_apply]
+  simp
 
 end ActM
 
@@ -257,7 +195,6 @@ theorem Tm_apply (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ}
   first
     | (simp only [Tm, dif_pos hX]; done)
     | (simp only [Tm, dif_pos hX]; rfl)
-    | (rw [Tm, dif_pos hX]; rfl)
 
 theorem Tm_add (hσ : IsURepOn (UJset ε) σ) {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X)
     (hY : inG ε Y) : Tm hσ (X + Y) = Tm hσ X + Tm hσ Y := by
@@ -276,7 +213,7 @@ private theorem dS_real_smul (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) 
     simpa using (hasDerivAt_id (0 : ℝ)).const_mul r
   have hc : HasDerivAt ((fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v) ∘ (fun t : ℝ => r * t))
       (r • dS σ X v) 0 := by
-    first | exact HasDerivAt.scomp (0 : ℝ) hg' hh | exact hg'.scomp hh | exact hg'.scomp (0 : ℝ) hh
+    first | exact HasDerivAt.scomp (0 : ℝ) hg' hh
   have e : (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • ((r : ℂ) • X))) v) =
       (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v) ∘ (fun t : ℝ => r * t) := by
     funext t
@@ -286,8 +223,6 @@ private theorem dS_real_smul (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) 
   rw [e, hc.deriv]
   first
     | exact (Complex.coe_smul r _).symm
-    | exact RCLike.real_smul_eq_coe_smul (K := ℂ) r _
-    | simp
 
 theorem Tm_rsmul (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (r : ℝ) :
     Tm hσ ((r : ℂ) • X) = (r : ℂ) • Tm hσ X := by
@@ -377,13 +312,12 @@ theorem EcL_br (hσ : IsURepOn (UJset ε) σ) (Z W : Matrix (Fin n) (Fin n) ℂ)
     inG_add (inG_bracket hA hD) (inG_bracket hB hC)
   have e : (A + Complex.I • B) * (C + Complex.I • D) - (C + Complex.I • D) * (A + Complex.I • B) =
       ((A * C - C * A) - (B * D - D * B)) + Complex.I • ((A * D - D * A) + (B * C - C * B)) := by
-    simp only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul,
-      Complex.I_mul_I]
+    simp only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul]
     match_scalars <;> (try ring_nf) <;> (try simp only [Complex.I_sq]) <;> ring_nf
   rw [e, EcL_of hσ hP hQ, EcL_of hσ hA hB, EcL_of hσ hC hD,
     Tm_sub hσ (inG_bracket hA hC) (inG_bracket hB hD), Tm_add hσ (inG_bracket hA hD) (inG_bracket hB hC),
     ← Tm_br hσ hA hC, ← Tm_br hσ hB hD, ← Tm_br hσ hA hD, ← Tm_br hσ hB hC]
-  simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I]
+  simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm]
   match_scalars <;> (try ring_nf) <;> (try simp only [Complex.I_sq]) <;> ring_nf
 
 private theorem single_one_mul_single_one' (a b c d : Fin n) :
@@ -437,12 +371,11 @@ theorem inG_casGen (ε : Fin n → Bool) (p : Fin n × Fin n) : inG ε (casGen �
   have hI : star Complex.I = -Complex.I := Complex.conj_I
   apply inG_of_entry
   intro i j
-  simp only [casGen, casSg, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply,
-    Matrix.single_apply, smul_eq_mul]
+  simp only [casGen, casSg]
   rcases lt_trichotomy a b with hab | hab | hab <;>
   by_cases hai : a = i <;> by_cases haj : a = j <;> by_cases hbi : b = i <;> by_cases hbj : b = j <;>
   by_cases ha : ε a = true <;> by_cases hb : ε b = true <;>
-  simp_all [hI, ne_of_lt, ne_of_gt, not_lt_of_gt] <;> ring_nf
+  simp_all [ne_of_lt, ne_of_gt, not_lt_of_gt]
 
 section Cas
 
@@ -456,7 +389,7 @@ theorem cas_pair_alg (x y : Module.End ℂ M) (s : ℂ) (hs : s = 1 ∨ s = -1) 
       -((1 / 2 * s) • ((Complex.I • (x + s • y)) * (Complex.I • (x + s • y)))) = x * y + y * x := by
   rw [smulI_sq]
   rcases hs with rfl | rfl <;>
-  · simp only [sub_mul, mul_sub, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul]
+  · simp only [sub_mul, mul_sub, add_mul, mul_add, smul_mul_assoc, mul_smul_comm]
     module
 
 theorem casSg_cases (ε : Fin n → Bool) (p : Fin n × Fin n) : casSg ε p = 1 ∨ casSg ε p = -1 := by
@@ -495,7 +428,7 @@ theorem cas_pair (ε : Fin n → Bool) (p : Fin n × Fin n) :
   · have hw : casWt (a, a) = 1 := by simp [casWt]
     have hs : casSg ε (a, a) = 1 := by simp [casSg]
     have hg : casGen ε (a, a) = Complex.I • Matrix.single a a 1 := by simp [casGen]
-    simp only [Prod.swap_prod_mk, hw, hs, hg, actM_smul, actM_single, smulI_sq, one_mul, mul_one,
+    simp only [Prod.swap_prod_mk, hw, hs, hg, actM_smul, actM_single, smulI_sq, mul_one,
       one_smul, neg_neg]
   · have := cas_pair_lt E ε h
     simp only [Prod.swap_prod_mk]

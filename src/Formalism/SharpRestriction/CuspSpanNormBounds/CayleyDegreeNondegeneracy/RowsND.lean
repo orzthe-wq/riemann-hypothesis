@@ -219,7 +219,7 @@ theorem rows_nd_count (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch 
     have h1 : 1 ≤ rows_DeZ D u u' s x y :=
       le_trans (rows_DetGeOne_of h.hH.2.1 p₀ (hS p₀ hp₀).1.1 (hS p₀ hp₀).1.2.1) (hDe_of p₀ hp₀)
     have h2 : rows_DeZ D u u' s x y ≤ (HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y) ^ (3 : ℝ) := by
-      have := (Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.deNonDegBound D.R.f s (gg D) (wordPairGramProduct D u u' x) (wordPairGramProduct D u u' y)
+      have := (_root_.Formalism.HermitianLatticeCounting.P.nondegenerateFactorBound D.R.f s (gg D) (wordPairGramProduct D u u' x) (wordPairGramProduct D u u' y)
         (HHZ D large₂.sc.b c x) (HHZ D large₂.sc.b c y) hg2 (gramProductG0_pos Y h.hH.1 h.hT gx).le
         (gramProductG0_pos Y h.hH.1 h.hT gy).le (gramProductG0_le_height Y h.hH h.hHH h.hT gx)
         (gramProductG0_le_height Y h.hH h.hHH h.hT gy) (rows_one_le_HHZ D large₂ h.hc x) (rows_one_le_HHZ D large₂ h.hc y)).2
@@ -270,7 +270,7 @@ theorem rows_nd_prod (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch �
     unfold rows_al
     rw [Real.sq_sqrt (div_nonneg (mul_nonneg (rows_l_nonneg D large₂ c C2 Ch q hc Z) hτ0) (rows_nZ_pos Y h hZ).le),
       mul_div_cancel₀ _ (rows_nZ_pos Y h hZ).ne']
-  have n1 := Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.nonDegRow D.R.k D.R.f s (gg D) D.host.v (NT D u) (wordPairGramProduct D u u' x) (wordPairGramProduct D u u' y)
+  have n1 := _root_.Formalism.HermitianLatticeCounting.P.nondegenerateRowBound D.R.k D.R.f s (gg D) D.host.v (NT D u) (wordPairGramProduct D u u' x) (wordPairGramProduct D u u' y)
     (XiS D u (HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y) c s)
     ((HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y) ^ pairCountExponent D c s * (c * s * D.R.f) ^ (6 * s * D.R.f))
     (wordSublatticeTripleBound D large₂ u c x y s (rows_DeZ D u u' s x y)) (rows_al D large₂ u u' c C2 Ch δ q x) (rows_al D large₂ u u' c C2 Ch δ q y)

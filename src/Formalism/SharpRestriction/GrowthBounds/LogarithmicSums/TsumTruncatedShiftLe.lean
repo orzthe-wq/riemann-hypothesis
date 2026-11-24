@@ -1,50 +1,6 @@
 module
 
 public import Mathlib.Analysis.SpecialFunctions.Log.Base
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -55,73 +11,55 @@ open scoped BigOperators
 namespace Formalism.MainNotions.AuxBlock8.Pf
 
 theorem summable_geo (p y : ℝ) (hp : 2 ≤ p) : Summable (fun e : ℕ => y / p ^ e) := by
-  have h : Summable (fun e : ℕ => y * (1 / p) ^ e) :=
-    (summable_geometric_of_lt_one (by positivity) (by rw [div_lt_one (by linarith)]; linarith)).mul_left y
-  refine h.congr (fun e => ?_)
-  rw [one_div, inv_pow, div_eq_mul_inv]
+  have hp' : 1 < p := lt_of_lt_of_le one_lt_two hp
+  simpa only [div_eq_mul_inv, inv_pow] using
+    (summable_geometric_of_lt_one (inv_nonneg.mpr (zero_le_one.trans hp'.le))
+      (inv_lt_one_of_one_lt₀ hp')).mul_left y
 
 theorem summable_if_of_le (p y : ℝ) (hp : 2 ≤ p) (f : ℕ → ℝ) (Q : ℕ → Prop) [DecidablePred Q]
     (h0 : ∀ e, 0 ≤ f e) (h1 : ∀ e, f e ≤ y / p ^ e) : Summable (fun e => if Q e then f e else 0) := by
-  refine Summable.of_nonneg_of_le (fun e => ?_) (fun e => ?_) (summable_geo p y hp)
-  · split_ifs
-    · exact h0 e
-    · exact le_rfl
-  · split_ifs
-    · exact h1 e
-    · exact le_trans (h0 e) (h1 e)
+  exact ((Summable.of_nonneg_of_le h0 h1 (summable_geo p y hp)).indicator {e | Q e}).congr
+    fun e => by simp only [Set.indicator_apply, Set.mem_ofPred_eq]
 
 theorem summable_odd (p y : ℝ) (hp : 2 ≤ p) (Q : ℕ → Prop) [DecidablePred Q] :
     Summable (fun e : ℕ => if Q e then y / p ^ e else 0) := by
-  have h := (summable_geo p |y| hp)
-  refine Summable.of_norm_bounded h (fun e => ?_)
-  have hpe : 0 < p ^ e := by positivity
-  split_ifs
-  · rw [Real.norm_eq_abs, abs_div, abs_of_pos hpe]
-  · rw [norm_zero]; positivity
+  exact ((summable_geo p y hp).indicator {e | Q e}).congr
+    fun e => by simp only [Set.indicator_apply, Set.mem_ofPred_eq]
 
 theorem tsum_odd (p y : ℝ) (hp : 2 ≤ p) (Q : ℕ → Prop) [DecidablePred Q] (hQ : ∀ e, Q e ↔ Odd e) :
     ∑' e : ℕ, (if Q e then y / p ^ e else 0) = p / (p ^ 2 - 1) * y := by
-  set f : ℕ → ℝ := fun e => if Q e then y / p ^ e else 0 with hf
-  have he : ∀ k : ℕ, f (2 * k) = 0 := by
-    intro k
-    rw [hf]
-    exact if_neg (fun h => by have := (hQ _).1 h; exact (Nat.not_odd_iff_even.2 (even_two_mul k)) this)
-  have ho : ∀ k : ℕ, f (2 * k + 1) = y / p * (1 / p ^ 2) ^ k := by
-    intro k
-    rw [hf]
-    have : Q (2 * k + 1) := (hQ _).2 (odd_two_mul_add_one k)
-    simp only [if_pos this]
-    rw [pow_succ, pow_mul, one_div, inv_pow]
-    field_simp
-  have hp2 : (1 : ℝ) / p ^ 2 < 1 := by
-    rw [div_lt_one (by positivity)]
-    nlinarith
-  have hs0 : Summable (fun k : ℕ => f (2 * k)) := by
-    simp only [he]; exact summable_zero
-  have hs1 : Summable (fun k : ℕ => f (2 * k + 1)) := by
-    simp only [ho]
-    exact (summable_geometric_of_lt_one (by positivity) hp2).mul_left _
-  rw [← tsum_even_add_odd hs0 hs1]
-  simp only [he, ho, tsum_zero, zero_add]
-  rw [tsum_mul_left, tsum_geometric_of_lt_one (by positivity) hp2]
-  have h1 : p ^ 2 - 1 ≠ 0 := by nlinarith
-  have h2 : p ≠ 0 := by linarith
-  have h3 : (1 : ℝ) - 1 / p ^ 2 ≠ 0 := by linarith
-  field_simp
+  have hp' : 1 < p := lt_of_lt_of_le one_lt_two hp
+  have hp2 : 1 < p ^ 2 := one_lt_pow₀ hp' (by decide)
+  have hsum : ∑' e : ℕ, (if Q e then y / p ^ e else 0) =
+      ∑' k : ℕ, y / p ^ (2 * k + 1) := by
+    let f (e : ℕ) := y / p ^ e
+    rw [← tsum_range f (g := fun k : ℕ => 2 * k + 1)
+      (fun _ _ h => Nat.mul_left_cancel zero_lt_two (Nat.add_right_cancel h)), tsum_subtype _ f]
+    exact tsum_congr fun e => by simp only [Set.indicator_apply, range_two_mul_add_one,
+      Set.mem_ofPred_eq, hQ, f]
+  rw [hsum]
+  have term (k : ℕ) : y / p ^ (2 * k + 1) = y / p * ((p ^ 2)⁻¹) ^ k := by
+    rw [pow_succ', pow_mul, ← div_div, inv_pow, div_eq_mul_inv (y / p)]
+  simp_rw [term]
+  rw [tsum_mul_left, tsum_geometric_of_lt_one (inv_nonneg.mpr (sq_nonneg p))
+    (inv_lt_one_of_one_lt₀ hp2)]
+  field_simp [(zero_lt_one.trans hp').ne', (sub_pos.mpr hp2).ne']
 
 theorem max_add_min_eq (u w : ℝ) : max 0 (u - w) + min u w = u := by
-  rcases le_total u w with h | h
-  · rw [max_eq_left (by linarith), min_eq_left h]; ring
-  · rw [max_eq_right (by linarith), min_eq_right h]; ring
+  rw [← sub_self u, max_sub_sub_left, sub_add_cancel]
+
+private theorem summable_pos_sub (p y : ℝ) (hp : 2 ≤ p) (hy : 0 ≤ y) (w : ℕ → ℝ)
+    (hw : ∀ e, 0 ≤ w e) (Q : ℕ → Prop) [DecidablePred Q] :
+    Summable (fun e => if Q e then max 0 (y / p ^ e - w e) else 0) :=
+  summable_if_of_le p y hp _ Q (fun _ => le_max_left _ _)
+    (fun e => max_le (div_nonneg hy (by positivity)) (sub_le_self _ (hw e)))
 
 theorem tsum_pos_add_min (p y : ℝ) (hp : 2 ≤ p) (hy : 0 ≤ y) (w : ℕ → ℝ) (hw : ∀ e, 0 ≤ w e)
     (Q : ℕ → Prop) [DecidablePred Q] (hQ : ∀ e, Q e ↔ Odd e) :
     ∑' e : ℕ, (if Q e then max 0 (y / p ^ e - w e) else 0) +
       ∑' e : ℕ, (if Q e then min (y / p ^ e) (w e) else 0) = p / (p ^ 2 - 1) * y := by
   have hpe : ∀ e : ℕ, 0 ≤ y / p ^ e := fun e => div_nonneg hy (by positivity)
-  have s1 : Summable (fun e : ℕ => if Q e then max 0 (y / p ^ e - w e) else 0) :=
-    summable_if_of_le p y hp _ Q (fun e => le_max_left _ _)
-      (fun e => max_le (hpe e) (by have := hw e; linarith))
+  have s1 := summable_pos_sub p y hp hy w hw Q
   have s2 : Summable (fun e : ℕ => if Q e then min (y / p ^ e) (w e) else 0) :=
     summable_if_of_le p y hp _ Q (fun e => le_min (hpe e) (hw e)) (fun e => min_le_left _ _)
   rw [← s1.tsum_add s2, ← tsum_odd p y hp Q hQ]
@@ -138,12 +76,11 @@ theorem tsum_pos_le (p y : ℝ) (hp : 2 ≤ p) (hy : 0 ≤ y) (w : ℕ → ℝ) 
   have hpe : ∀ e : ℕ, 0 ≤ y / p ^ e := fun e => div_nonneg hy (by positivity)
   rw [← tsum_odd p y hp (fun e => Odd e) (fun e => Iff.rfl)]
   refine Summable.tsum_le_tsum (fun e => ?_)
-    (summable_if_of_le p y hp _ Q (fun e => le_max_left _ _)
-      (fun e => max_le (hpe e) (by have := hw e; linarith))) (summable_odd p y hp _)
+    (summable_pos_sub p y hp hy w hw Q) (summable_odd p y hp _)
   by_cases h : Q e
-  · rw [if_pos h, if_pos (hQ e h)]
-    exact max_le (hpe e) (by have := hw e; linarith)
-  · rw [if_neg h]
+  · rw [ite_eq_left h, ite_eq_left (hQ e h)]
+    exact max_le (hpe e) (sub_le_self _ (hw e))
+  · rw [ite_eq_right h]
     split_ifs
     · exact hpe e
     · exact le_rfl
@@ -154,62 +91,47 @@ theorem tsum_truncated_shift_le (p y c A : ℝ) (hp : 2 ≤ p) (hc : 0 ≤ c) (h
     ∑' e : ℕ, (if Q e then max 0 (y / p ^ e - w e) else 0) - 3 * c * Real.logb p A ≤
       ∑' e : ℕ, (if Q e then max 0 ((y - 2 * c) / p ^ e - w' e) else 0) := by
   classical
-  have hy0 : 0 ≤ y := by linarith
-  set M : ℕ := ⌊Real.logb p A⌋₊ with hM
-  have hlog : 0 ≤ Real.logb p A := Real.logb_nonneg (by linarith) hA
-  have hpe : ∀ e : ℕ, 0 ≤ y / p ^ e := fun e => div_nonneg hy0 (by positivity)
-  have hpe' : ∀ e : ℕ, 0 ≤ (y - 2 * c) / p ^ e := fun e => div_nonneg (by linarith) (by positivity)
-  have sF : Summable (fun e : ℕ => if Q e then max 0 (y / p ^ e - w e) else 0) :=
-    summable_if_of_le p y hp _ Q (fun e => le_max_left _ _)
-      (fun e => max_le (hpe e) (by have := hw e; linarith))
-  have sG : Summable (fun e : ℕ => if Q e then max 0 ((y - 2 * c) / p ^ e - w' e) else 0) :=
-    summable_if_of_le p (y - 2 * c) hp _ Q (fun e => le_max_left _ _)
-      (fun e => max_le (hpe' e) (by have := hw0 e; linarith))
+  have hp' : 1 < p := one_lt_two.trans_le hp
+  have hy0 : 0 ≤ y := (mul_nonneg zero_le_two hc).trans hy
+  let M := ⌊Real.logb p A⌋₊
+  have hlog : 0 ≤ Real.logb p A := Real.logb_nonneg hp' hA
+  have sF := summable_pos_sub p y hp hy0 w (fun e => zero_le_one.trans (hw e)) Q
+  have sG := summable_pos_sub p (y - 2 * c) hp (sub_nonneg.mpr hy) w' hw0 Q
   have sH : Summable (fun e : ℕ => if e ∈ Finset.Icc 1 M then 3 * c else 0) :=
-    summable_of_ne_finset_zero (s := Finset.Icc 1 M) (fun e he => if_neg he)
+    summable_of_ne_finset_zero (s := Finset.Icc 1 M) (fun e he => ite_eq_right he)
   have hH : ∑' e : ℕ, (if e ∈ Finset.Icc 1 M then 3 * c else 0) ≤ 3 * c * Real.logb p A := by
-    rw [tsum_eq_sum (s := Finset.Icc 1 M) (fun e he => if_neg he)]
-    rw [Finset.sum_congr rfl (fun e he => if_pos he), Finset.sum_const, Nat.card_Icc, nsmul_eq_mul]
-    have h1 : ((M + 1 - 1 : ℕ) : ℝ) ≤ Real.logb p A := by
-      rw [Nat.add_sub_cancel]
-      exact Nat.floor_le hlog
-    nlinarith
+    rw [tsum_eq_sum (s := Finset.Icc 1 M) (fun e he => ite_eq_right he)]
+    rw [Finset.sum_congr rfl (fun e he => ite_eq_left he), Finset.sum_const, Nat.card_Icc, nsmul_eq_mul]
+    rw [Nat.add_sub_cancel, mul_comm (M : ℝ)]
+    exact mul_le_mul_of_nonneg_left (Nat.floor_le hlog) (by positivity)
   have hterm : ∀ e : ℕ, (if Q e then max 0 (y / p ^ e - w e) else 0) ≤
       (if Q e then max 0 ((y - 2 * c) / p ^ e - w' e) else 0) +
         (if e ∈ Finset.Icc 1 M then 3 * c else 0) := by
     intro e
-    have h3c : (0 : ℝ) ≤ (if e ∈ Finset.Icc 1 M then 3 * c else 0) := by
-      split_ifs
-      · linarith
-      · exact le_rfl
+    have h3c : (0 : ℝ) ≤ (if e ∈ Finset.Icc 1 M then 3 * c else 0) := by positivity
     by_cases h : Q e
-    · rw [if_pos h, if_pos h]
+    · rw [ite_eq_left h, ite_eq_left h]
       by_cases hpos : y / p ^ e ≤ w e
-      · rw [max_eq_left (by linarith)]
+      · rw [max_eq_left (sub_nonpos.mpr hpos)]
         exact add_nonneg (le_max_left _ _) h3c
-      · push_neg at hpos
+      · have hpos := lt_of_not_ge hpos
         have hpp : (0 : ℝ) < p ^ e := by positivity
         have h1 : 1 < y / p ^ e := lt_of_le_of_lt (hw e) hpos
         have h2 : p ^ e < y := by rwa [lt_div_iff₀ hpp, one_mul] at h1
         have h3 : (e : ℝ) ≤ Real.logb p A := by
-          rw [Real.le_logb_iff_rpow_le (by linarith) (by linarith), Real.rpow_natCast]
-          linarith
-        have h4 : e ∈ Finset.Icc 1 M := by
-          rw [Finset.mem_Icc]
-          refine ⟨?_, Nat.le_floor h3⟩
-          obtain ⟨k, hk⟩ := hQ e h
-          omega
-        rw [if_pos h4, max_eq_right (by linarith)]
-        have h5 : 2 * c / p ^ e ≤ 2 * c := div_le_self (by linarith) (one_le_pow₀ (by linarith))
+          rw [Real.le_logb_iff_rpow_le hp' (zero_lt_one.trans_le hA), Real.rpow_natCast]
+          exact h2.le.trans hyA
+        have h4 : e ∈ Finset.Icc 1 M := Finset.mem_Icc.mpr ⟨(hQ e h).pos, Nat.le_floor h3⟩
+        rw [ite_eq_left h4, max_eq_right (sub_nonneg.mpr hpos.le)]
+        have h5 : 2 * c / p ^ e ≤ 2 * c := div_le_self (mul_nonneg zero_le_two hc) (one_le_pow₀ hp'.le)
         have h6 : (y - 2 * c) / p ^ e = y / p ^ e - 2 * c / p ^ e := sub_div _ _ _
-        have h7 := hw' e
         have h8 : (y - 2 * c) / p ^ e - w' e ≤ max 0 ((y - 2 * c) / p ^ e - w' e) := le_max_right _ _
-        linarith
-    · rw [if_neg h, if_neg h]
-      linarith
-  have := Summable.tsum_le_tsum hterm sF (sG.add sH)
-  rw [sG.tsum_add sH] at this
-  linarith
+        linarith only [h5, h6, hw' e, h8]
+    · rw [ite_eq_right h, ite_eq_right h, zero_add]
+      exact h3c
+  have hsum := Summable.tsum_le_tsum hterm sF (sG.add sH)
+  rw [sG.tsum_add sH] at hsum
+  exact sub_le_iff_le_add.mpr (hsum.trans (add_le_add le_rfl hH))
 
 end Formalism.MainNotions.AuxBlock8.Pf
 

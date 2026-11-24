@@ -6,7 +6,8 @@ public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsTopological
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MulVecCEApply
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddHaarCharLeftRightMatrixMulAdeleTensor
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalThetaIntegralSiegelRuleDoubledWeil
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharProdCongrStatement
+import Mathlib.MeasureTheory.Measure.Haar.MulEquivHaarChar
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharProdCongr
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsRestrictScalarsMatrixLeftRightMulAdeleTens
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -96,8 +97,8 @@ theorem char_sq [IsTopologicalAddGroup M] [LocallyCompactSpace M] [SecondCountab
     (h1 : ∀ s ∈ S, P (L s) = 0) (h2 : ∀ s ∈ S, P (L.symm s) = 0) (h3 : ∀ x, P x + L (P (L.symm x)) = x)
     (U : M ≃ₜ+ M) (hUL : ∀ x, U (L x) = L (U x)) (hU : ∀ s ∈ S, U s ∈ S) (hU' : ∀ s ∈ S, U.symm s ∈ S) :
     addEquivAddHaarChar (restr S U hU hU') ^ 2 = addEquivAddHaarChar U := by
-  haveI : SecondCountableTopology S := Topology.IsInducing.subtypeVal.secondCountableTopology
-  haveI : T2Space S := Topology.IsEmbedding.subtypeVal.t2Space
+  have : SecondCountableTopology S := Topology.IsInducing.subtypeVal.secondCountableTopology
+  have : T2Space S := Topology.IsEmbedding.subtypeVal.t2Space
   set Ψ := dbl S P hPc hPm hPs L h1 h2 h3 with hΨ
   set T := restr S U hU hU' with hT
   have e : ((Ψ.symm.trans (GlobalTheory.ModuLR.prodCE T T)).trans Ψ) = U := by
@@ -108,7 +109,7 @@ theorem char_sq [IsTopologicalAddGroup M] [LocallyCompactSpace M] [SecondCountab
     rw [hl]
     change U p.1.1 + L (U p.2.1) = U (p.1.1 + L p.2.1)
     rw [map_add (f := _), hUL]
-  rw [sq, ← GlobalTheory.T.addEquivAddHaarChar_prodCongr, ← GlobalTheory.ModuLR.addEquivAddHaarChar_transport Ψ (GlobalTheory.ModuLR.prodCE T T), e]
+  rw [sq, ← _root_.GlobalTheory.ModuLR.addEquivAddHaarChar_prodCE, ← GlobalTheory.ModuLR.addEquivAddHaarChar_transport Ψ (GlobalTheory.ModuLR.prodCE T T), e]
 
 end Abstract
 
@@ -120,7 +121,7 @@ theorem exists_anti {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   have hsq : ∀ x, σ (σ x) = x := fun x => v.embedding.injective (by rw [hs, hs]; simp)
   have hx : ∃ x, σ x ≠ x := by
     by_contra hn
-    push_neg at hn
+    push Not at hn
     apply NumberField.InfinitePlace.not_isReal_iff_isComplex.2 hv
     rw [NumberField.InfinitePlace.isReal_iff, NumberField.ComplexEmbedding.isReal_iff]
     ext x
@@ -205,14 +206,14 @@ theorem lr_smul (a : GL (Fin n) (AE D)) (d e : AE D) (hde : d * e = 1) (x : Mx D
 theorem integral_cg : ∀ (D : D7) (n : ℕ) (lam : Measure (hermA D n)), lam.IsAddHaarMeasure → ∀ (a : GL (Fin n) (AE D)) (f : hermA D n → ℂ), ∫ c, f (GlobalTheory.CompanionTheory.IwaAd.cg a c) ∂lam = npow (absA D (Matrix.GeneralLinearGroup.det a)) (-(n : ℂ)) * ∫ c, f c ∂lam := by
   intro D n lam hlam a f
   obtain ⟨i1, i2, i3, i4, -, -⟩ := lattice_Mx D n n
-  haveI : IsTopologicalAddGroup (Mx D n n) := i1
-  haveI : LocallyCompactSpace (Mx D n n) := i2
-  haveI : SecondCountableTopology (Mx D n n) := i3
-  haveI : T2Space (Mx D n n) := i4
-  haveI : BorelSpace (Mx D n n) := ⟨rfl⟩
-  haveI : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology
-  haveI : T2Space (hermA D n) := Topology.IsEmbedding.subtypeVal.t2Space
-  haveI : LocallyCompactSpace (hermA D n) := (isClosed_hermA (D := D) (r := n)).isClosedEmbedding_subtypeVal.locallyCompactSpace
+  have : IsTopologicalAddGroup (Mx D n n) := i1
+  have : LocallyCompactSpace (Mx D n n) := i2
+  have : SecondCountableTopology (Mx D n n) := i3
+  have : T2Space (Mx D n n) := i4
+  have : BorelSpace (Mx D n n) := ⟨rfl⟩
+  have : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology
+  have : T2Space (hermA D n) := Topology.IsEmbedding.subtypeVal.t2Space
+  have : LocallyCompactSpace (hermA D n) := (isClosed_hermA (D := D) (r := n)).isClosedEmbedding_subtypeVal.locallyCompactSpace
   obtain ⟨d, e, hde, hd, he⟩ := exists_anti_units D
   have hsq := char_sq (hermA D n) (hermPartHom D n) continuous_hermPart hermPart_mem
     (fun s hs => hermPart_of_mem hs) (mulCE d e hde)

@@ -188,7 +188,7 @@ theorem boundary_eq_map_comap_pullbackMapAtLength [AlgebraicGeometry.Flat g]
   have hlen : t.length = s.length := D.length_eq
   have key := boundary_eq_map_comap_strictPullbackComparisonMap (dd := s.toBlowupSequenceData) (II := S.ideal) (mm := S.mult)
     (EE := S.boundary) (gg := g) t D hNs hNt t.length s.length le_rfl hlen
-  rw [MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq s s.length le_rfl] at key
+  rw [_root_.FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq_boundary_of_le s s.length le_rfl] at key
   exact key
 
 private theorem smooth_comp_eqToHom {X Y Y' : Scheme.{u}} (f : X ⟶ Y) (h : Y = Y')
@@ -251,7 +251,7 @@ theorem tunedIdealAtLength_comap_pullbackMapAtLength [AlgebraicGeometry.Smooth g
     ideal_eq_comap_pullbackMapAtLength S g s t D
   have hsm : AlgebraicGeometry.Smooth (s.proj s.length ≫ S.structMap) := by
     have h0 := hVc.smooth
-    rwa [structureMorphism_derivedTriple S s hftS extra keep] at h0
+    rwa [_root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverData.derivedTriple_structureMorphism S s hftS extra keep] at h0
   have := hftS
   have := hftT
   have := smooth_pullbackMapAtLength S g s t D

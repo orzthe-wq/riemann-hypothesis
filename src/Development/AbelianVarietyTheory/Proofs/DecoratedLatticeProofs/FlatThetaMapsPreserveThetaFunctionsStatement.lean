@@ -47,4 +47,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.flatThetaMaps_preserve_thetaFunctions : ∀ D : D7, FlatLaw D → ∀ (ψ : AddChar (AF D.host.F) ℂ), (∀ (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) Ψ, IsThetaFunO ψ B.V J.W Ψ → IsThetaFunO ψ B.V₀ J.W₀ (flatBF s Ψ)) ∧ ∀ (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B) Ψ, IsThetaFunO ψ J.W B.V Ψ → IsThetaFunO ψ J.W₀ B.V₀ (flatFB s Ψ) := by
-  first | exact @GlobalTheory.Unf.FlatTheta.flat_isThetaFun | exact GlobalTheory.Unf.FlatTheta.flat_isThetaFun | (intros; apply GlobalTheory.Unf.FlatTheta.flat_isThetaFun <;> assumption)
+  first | exact @GlobalTheory.Unf.FlatTheta.flat_isThetaFun

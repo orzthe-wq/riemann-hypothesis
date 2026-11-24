@@ -2,9 +2,9 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LieLatticeData
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.Imports
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChangeStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeGoodBaseChange
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocFreeMapMkQIff
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeSummandCriterionStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyFreeSummandCriterion
 import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SumMemLoc
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -183,7 +183,7 @@ theorem core (R : Subalgebra o Ω) {a b c : ℕ} (W : AddSubgroup (Fin a → Ω)
   have hfin : Module.finrank Ω (LinearMap.ker (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω))) = b := by
     rw [← LinearMap.range_inr, LinearMap.finrank_range_of_inj LinearMap.inr_injective,
       Module.finrank_fin_fun]
-  obtain ⟨ρ, hρ1, hρ2, hρ3⟩ := (GlobalTheory.T.locally_free_summand_criterion R (LinearMap.ker (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω)))
+  obtain ⟨ρ, hρ1, hρ2, hρ3⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Num.summand_of_locFree_quot R (LinearMap.ker (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω)))
     (b + a) a Gam hGam).1
     ((LatticeGoodness.locFree_map_mkQ_iff R _ LinearMap.fst_surjective Gam).2 fDiv)
   have hS : Summand (Gam ⊓ (⊤ : AddSubgroup _).prod H)
@@ -195,7 +195,7 @@ theorem core (R : Subalgebra o Ω) {a b c : ℕ} (W : AddSubgroup (Fin a → Ω)
     apply (g2 _).1
     have : ((0 : Fin a → Ω), (ρ v).2) = ρ v := by rw [← h2]
     rwa [this]
-  have hfinal := ((GlobalTheory.T.locally_free_summand_criterion R (LinearMap.ker (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω)))
+  have hfinal := ((_root_.GlobalTheory.CompanionTheory.Ar.Num.summand_of_locFree_quot R (LinearMap.ker (LinearMap.fst Ω (Fin a → Ω) (Fin b → Ω)))
     (a + b) a _ hG').2 hS).2
   rw [hfin, Nat.add_sub_cancel] at hfinal
   exact (LatticeGoodness.locFree_map_mkQ_iff R _ LinearMap.fst_surjective _).1 hfinal
@@ -207,7 +207,7 @@ theorem main : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Typ
     intro h
     apply hC.1
     rw [hc, h, mul_zero]
-  obtain ⟨-, fH, hle, -⟩ := (GlobalTheory.T.lattice_good_base_change D R p w χ hC hB hG₁).1 τ
+  obtain ⟨-, fH, hle, -⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Num.LatticeGoodBaseChange.main D R p w χ hC hB hG₁).1 τ
   obtain ⟨-, fW, -, fO⟩ := hB.free τ
   obtain ⟨g1, g2, g3⟩ := hB.gam τ
   obtain ⟨d1, -, d3, d4⟩ := hB.del τ

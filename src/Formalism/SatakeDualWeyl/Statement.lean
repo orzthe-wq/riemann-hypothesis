@@ -75,8 +75,7 @@ theorem cT_mul (σ : A →+* A) {m p q : Type} [Fintype p] (M : Matrix m p A) (N
   simp [cT, Matrix.map_mul, Matrix.transpose_mul]
 
 theorem cT_one (σ : A →+* A) : cT σ (1 : Matrix n n A) = 1 := by
-  unfold cT
-  rw [Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.transpose_one]
+  simp only [cT, Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.transpose_one]
 
 def UJ (σ : A →+* A) (J : Matrix n n A) : Subgroup (GL n A) where
   carrier := {g | cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J}

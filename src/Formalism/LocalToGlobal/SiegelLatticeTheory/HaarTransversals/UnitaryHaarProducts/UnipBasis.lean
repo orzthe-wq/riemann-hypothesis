@@ -3,56 +3,15 @@ module
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.UnipTool
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.HidaSetting
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Bridge
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.PoincareInHH
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -195,8 +154,8 @@ theorem pW_mem (x : Fin X.B.I.n → X.B.I.E) : pW X x ∈ Wsub X := by
   show ∀ a, hE X (X.eR a) (pW X x) = 0 ∧ hE X (X.fR a) (pW X x) = 0
   intro a
   constructor
-  · simp [pW, hE_sub_right, hE_sum_right, hE_smul_right, hE_ee, hE_ef, mul_boole, Finset.sum_ite_eq]
-  · simp [pW, hE_sub_right, hE_sum_right, hE_smul_right, hE_ff, hE_fe, mul_boole, Finset.sum_ite_eq]
+  · simp [pW, hE_sub_right, hE_sum_right, hE_smul_right, hE_ee, hE_ef, Finset.sum_ite_eq]
+  · simp [pW, hE_sub_right, hE_sum_right, hE_smul_right, hE_ff, hE_fe, Finset.sum_ite_eq]
 
 theorem pW_add (x y : Fin X.B.I.n → X.B.I.E) : pW X (x + y) = pW X x + pW X y := by
   simp only [pW, hE_add_right, add_smul, Finset.sum_add_distrib]
@@ -276,7 +235,6 @@ theorem Bm'_mulVec (x : Fin X.B.I.n → X.B.I.E) : Bm' X *ᵥ x = cE X x := by
   have hB : Bm' X = LinearMap.toMatrix' (cE X) := by
     ext k i
     simp only [Bm', Matrix.of_apply, LinearMap.toMatrix'_apply]
-    try (congr 2; funext j'; simp [Pi.single_apply])
   rw [hB, ← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']
 
 theorem Bm_mulVec (c : Kap X → X.B.I.E) : Bm X *ᵥ c = ∑ k, c k • bv X k := by
@@ -325,7 +283,6 @@ theorem JB_graded : Graded (lvk X) (2 * D.R.rS + 2) (JB X) := by
       not_not] at h ⊢
   all_goals first
     | omega
-    | (have ha := a.isLt; have hb := b.isLt; subst h; omega)
 
 theorem JB_e_row (a : Fin D.R.rS) (k : Kap X) :
     JB X (Sum.inl a) k = if k = Sum.inr (Sum.inr a) then 1 else 0 := by
@@ -336,8 +293,8 @@ theorem JB_e_row (a : Fin D.R.rS) (k : Kap X) :
   · simp only [JB, Matrix.of_apply, bv, Sum.elim_inl, Sum.elim_inr, hE_ef, Sum.inr.injEq]
     by_cases h : a = b
     · subst h
-      simp [hE_ef]
-    · simp [hE_ef, h, Ne.symm h]
+      simp
+    · simp [h, Ne.symm h]
 
 def JB' : Matrix (Kap X) (Kap X) X.B.I.E := Bm' X * (X.B.I.J)⁻¹ * (Bm' X)ᴴ
 

@@ -189,8 +189,8 @@ theorem exists_weilIs_hecke : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPe
       unfold qc
       rw [hcls, map_nsmul, map_nsmul, map_nsmul]
       exact (congrArg _ (hB' T x y y')).trans (smul_add _ _ _)
-  obtain ⟨t₁, -⟩ := GlobalTheory.T.heckeSections_linearSimilitude_mem_kernel_polarisation p D R b g c k N hc hk hN hNp hsim hsurj hdiv S s o h₁ hh₁
-  obtain ⟨-, t₂⟩ := GlobalTheory.T.heckeSections_linearSimilitude_mem_kernel_polarisation p D R b g c k N hc hk hN hNp hsim hsurj hdiv S s o h₂ hh₂
+  obtain ⟨t₁, -⟩ := _root_.GlobalTheory.UPel.HT.Hecke.KerPol.hecke_sections_triv p D R b g c k N hc hk hN hNp hsim hsurj hdiv S s o h₁ hh₁
+  obtain ⟨-, t₂⟩ := _root_.GlobalTheory.UPel.HT.Hecke.KerPol.hecke_sections_triv p D R b g c k N hc hk hN hNp hsim hsurj hdiv S s o h₂ hh₂
   have hA2 : IsAbelianScheme (G2 o.A) := AbelianSchemeGerms.isAbelianScheme_tensor o.A o.A o.ab o.ab
   exact CommutatorPairing.exists_weilIs hG hA2 hQ
     (fun _ => ⟨⊤, trivial, exists_theta_left hQB (Out.overResι ⊤) h₁ t₁⟩)

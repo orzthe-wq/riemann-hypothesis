@@ -58,14 +58,6 @@ namespace PositivityTheory.Xgn.ImageLatticeBaseChange
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
-theorem mem_dotDual (R : Subalgebra o Ω) {m : ℕ} (L : AddSubgroup (Fin m → Ω)) (w : Fin m → Ω) :
-    w ∈ dotDual R L ↔ ∀ v ∈ L, v ⬝ᵥ w ∈ R := by
-  simp [dotDual, AddSubgroup.mem_iInf]
-
-theorem mem_stdLat (R : Subalgebra o Ω) {ι : Type} (v : ι → Ω) :
-    v ∈ stdLat R ι ↔ ∀ i, v i ∈ R := by
-  simp [stdLat, AddSubgroup.mem_pi]
-
 theorem isBaseChange_bcMap (C : Type) [Field C] [Algebra Ω C] (m : ℕ) :
     IsBaseChange C (bcMap Ω C (Fin m)) :=
   IsBaseChange.finitePow (Fin m) (IsBaseChange.linearMap Ω C)
@@ -129,7 +121,7 @@ private theorem dotDual_spanOver_bcMap_eq {o Ω C : Type} [CommRing o] [Field Ω
     simp only [dotProduct, hb, map_sum, map_mul]
   apply le_antisymm
   · intro y hy
-    rw [PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual] at hy
+    rw [_root_.PositivityTheory.Xgn.A_dotdual_bc.mem_dotDual] at hy
     have hy' : y = ∑ i, (bcMap Ω C (Fin m) (a i) ⬝ᵥ y) • bcMap Ω C (Fin m) (γ i) := by
       funext j
       simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, dotProduct, hb]
@@ -147,8 +139,8 @@ private theorem dotDual_spanOver_bcMap_eq {o Ω C : Type} [CommRing o] [Field Ω
         _, ⟨γ i, hγ i, rfl⟩, rfl⟩
   · refine (AddSubgroup.closure_le _).2 ?_
     rintro _ ⟨c, hc, _, ⟨g, hg, rfl⟩, rfl⟩
-    have hg' := (PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual R A g).1 hg
-    rw [SetLike.mem_coe, PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual]
+    have hg' := (_root_.PositivityTheory.Xgn.A_dotdual_bc.mem_dotDual R A g).1 hg
+    rw [SetLike.mem_coe, _root_.PositivityTheory.Xgn.A_dotdual_bc.mem_dotDual]
     intro v hv
     induction hv using AddSubgroup.closure_induction with
     | mem v hv =>
@@ -182,7 +174,7 @@ private theorem exists_dual_pair_af_of_summand_locFree {o Ω : Type} [CommRing o
   · intro i
     exact hπL _ (u _).2
   · intro i
-    rw [PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual]
+    rw [_root_.PositivityTheory.Xgn.A_dotdual_bc.mem_dotDual]
     intro v hv
     have hv' : v = ∑ j, v j • (Pi.single j 1 : Fin n → Ω) := by
       funext l
@@ -240,26 +232,26 @@ theorem PositivityTheory.Xgn.image_lattice_base_change : ∀ {o Ω : Type} [Comm
     constructor
     · rintro ⟨⟨b, c'⟩, hbc, rfl⟩
       have := ((hB.del τ).1 b).1 ⟨c', hbc⟩
-      rw [PositivityTheory.Xgn.ImageLatticeBaseChange.mem_stdLat] at this
+      rw [_root_.PositivityTheory.Xgn.GoodLatticeBaseChange.mem_stdLat] at this
       exact this
     · intro hv
-      obtain ⟨c', hc'⟩ := ((hB.del τ).1 v).2 ((PositivityTheory.Xgn.ImageLatticeBaseChange.mem_stdLat R _).2 hv)
+      obtain ⟨c', hc'⟩ := ((hB.del τ).1 v).2 ((_root_.PositivityTheory.Xgn.GoodLatticeBaseChange.mem_stdLat R _).2 hv)
       exact ⟨(v, c'), hc', rfl⟩
   have hLF := PositivityTheory.Xgn.ImageLatticeBaseChange.locFree_div R hw0 _ hfst
   have hHle : D.hh R p (χ τ) ≤ AddSubgroup.map (AddMonoidHom.fst _ _) (D.Del τ) := by
     intro v hv
     rw [hfst]
     intro i
-    have hv' := (PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual R _ v).1 hv
+    have hv' := (_root_.PositivityTheory.Xgn.A_dotdual_bc.mem_dotDual R _ v).1 hv
     have hmem : w • (Pi.single i 1 : Fin n → Ω) ∈ D.af R p (χ τ) :=
-      hw τ ⟨Pi.single i 1, (PositivityTheory.Xgn.ImageLatticeBaseChange.mem_stdLat R _).2 (fun j => by
+      hw τ ⟨Pi.single i 1, (_root_.PositivityTheory.Xgn.GoodLatticeBaseChange.mem_stdLat R _).2 (fun j => by
         by_cases h : j = i <;> simp [h, Pi.single_apply, R.one_mem, R.zero_mem]), rfl⟩
     have := hv' _ hmem
     simpa [smul_dotProduct, single_dotProduct] using this
   have hHst : ∀ a ∈ R, ∀ v ∈ D.hh R p (χ τ), a • v ∈ D.hh R p (χ τ) := by
     intro a ha v hv
     unfold LieLatticeData.hh at hv ⊢
-    rw [PositivityTheory.Xgn.ImageLatticeBaseChange.mem_dotDual] at hv ⊢
+    rw [_root_.PositivityTheory.Xgn.A_dotdual_bc.mem_dotDual] at hv ⊢
     intro u hu
     rw [dotProduct_smul, smul_eq_mul]
     exact R.mul_mem ha (hv u hu)

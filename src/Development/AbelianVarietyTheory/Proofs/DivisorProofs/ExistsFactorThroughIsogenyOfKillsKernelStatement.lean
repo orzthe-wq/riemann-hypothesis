@@ -50,4 +50,4 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.exists_factor_through_isogeny_of_kills_kernel : ∀ (K : Type) [Field K] (A B C : AbVar K) (q : A ⟶ B) (f : A ⟶ C), IsIsogeny q → (∀ (T : Over (Sp K)) (x : T ⟶ A.X), x ≫ q.hom = 1 → x ≫ f.hom = 1) → ∃ g : B ⟶ C, q ≫ g = f := by
-  first | exact @GlobalTheory.AV.AbVar.exists_factor_of_isogeny | exact GlobalTheory.AV.AbVar.exists_factor_of_isogeny | (intros; apply GlobalTheory.AV.AbVar.exists_factor_of_isogeny <;> assumption)
+  first | exact @GlobalTheory.AV.AbVar.exists_factor_of_isogeny

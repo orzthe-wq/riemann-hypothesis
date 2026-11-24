@@ -330,12 +330,12 @@ theorem uEmb_inv (hu : IsUnit u.det) : (uEmb k r u)⁻¹ = uEmb k r u⁻¹ := by
 theorem uEmb_eI : uEmb k r u *ᵥ bvec (eI k r b) = ∑ a, u a b • bvec (eI k r a) := by
   ext i
   rcases idx_cases i with ⟨c, rfl⟩ | ⟨p, rfl⟩ | ⟨c, rfl⟩ <;>
-    simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply, Finset.sum_apply, u_ee, u_em, u_es, u_me, u_mm, u_ms, u_se, u_sm, u_ss, eI_inj, mI_inj, esI_inj, eI_ne_mI, eI_ne_esI, mI_ne_esI, mI_ne_eI, esI_ne_eI, esI_ne_mI]
+    simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply, Finset.sum_apply, u_ee, u_me, u_se, eI_inj, mI_ne_eI, esI_ne_eI]
 
 theorem uEmb_esI : uEmb k r u *ᵥ bvec (esI k r b) = ∑ a, star (u⁻¹ b a) • bvec (esI k r a) := by
   ext i
   rcases idx_cases i with ⟨c, rfl⟩ | ⟨p, rfl⟩ | ⟨c, rfl⟩ <;>
-    simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply, Finset.sum_apply, u_ee, u_em, u_es, u_me, u_mm, u_ms, u_se, u_sm, u_ss, eI_inj, mI_inj, esI_inj, eI_ne_mI, eI_ne_esI, mI_ne_esI, mI_ne_eI, esI_ne_eI, esI_ne_mI]
+    simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply, Finset.sum_apply, u_es, u_ms, u_ss, esI_inj, eI_ne_esI, mI_ne_esI]
 
 theorem uEmb_mid (w : Fin (2 * r + k + 1) → ℂ) (hw : inWb k r w) : uEmb k r u *ᵥ w = w := by
   have he : ∀ c, w (eI k r c) = 0 := fun c => hw _ (Or.inl (by simp [eI]))

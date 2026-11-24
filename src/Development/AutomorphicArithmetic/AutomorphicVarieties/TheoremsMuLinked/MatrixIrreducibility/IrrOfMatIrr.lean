@@ -42,8 +42,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.Base
 open scoped Matrix
 
-attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
-
 namespace UpperTheory.V.Th.Db
 
 theorem algClo (L Ω : Type) [Field L] [NumberField L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra L Ω] :

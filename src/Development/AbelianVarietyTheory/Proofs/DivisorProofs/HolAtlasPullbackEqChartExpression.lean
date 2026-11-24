@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackComplexFormsLinearMapCompStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackComplexFormsLinearMapComp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,7 +57,7 @@ theorem pullback_eq_chart : ∀ (M M' : Type) [TopologicalSpace M] [TopologicalS
         pull (fderiv ℂ (A.e i ∘ f ∘ x.ch.symm) x.crd) (α ⟨(i, f x.pt), h⟩) := by
     intro j hj
     have hc := hα.compat ⟨(j, f x.pt), hj⟩ ⟨(i, f x.pt), h⟩ rfl
-    rw [hc, ← GlobalTheory.T.pullbackComplexFormsLinearMap_comp]
+    rw [hc, ← _root_.GlobalTheory.CxForm.pull_comp]
     have hx : x.ch.symm x.crd = x.pt := x.ch.left_inv x.2
     have hxt : x.crd ∈ x.ch.target := x.ch.map_source x.2
     have hopen : IsOpen (x.ch.target ∩ x.ch.symm ⁻¹' (f ⁻¹' (A.e j).source)) :=

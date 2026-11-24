@@ -135,7 +135,7 @@ theorem RiemLat.form_antisymm (R : RiemLat E g Λ) (x y : Λ) : R.form y x = - R
 
 theorem RiemLat.form_sq_le (R : RiemLat E g Λ) (x y : Λ) :
     ((R.form x y : ℤ) : ℝ) ^ 2 ≤ R.normSq x * R.normSq y := by
-  apply GlobalTheory.CompanionTheory.Ar.Cusp.RiemLat.integral_form_sq_le_mul_normSq <;> assumption
+  apply GlobalTheory.CompanionTheory.Ar.Cusp.RiemLat.integral_form_sq_le_mul_normSq
 
 theorem RiemLat.finite_normSq_le (R : RiemLat E g Λ) (c : ℝ) : {x | R.normSq x ≤ c}.Finite := by
   haveI := R.free

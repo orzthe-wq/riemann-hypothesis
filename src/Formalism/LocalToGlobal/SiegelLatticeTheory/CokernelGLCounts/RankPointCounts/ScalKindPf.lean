@@ -8,47 +8,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PairCorankPositivity.Eq
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarPairOrthogonal.ExistsNeZeroMem
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarPairOrthogonal.MemThPairs
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarPairOrthogonal.XLeOrthXplus
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -73,7 +32,7 @@ theorem det_updateCol_last_single (A : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (c 
     have e : (A.updateCol (Fin.last r) (Pi.single (Fin.last r) c)).submatrix Fin.castSucc Fin.castSucc =
         A.submatrix Fin.castSucc Fin.castSucc := by
       ext i j
-      simp [Matrix.updateCol_ne (Fin.castSucc_lt_last j).ne]
+      simp
     rw [e, ← two_mul, pow_mul]
     simp
   · intro i _ hi
@@ -283,7 +242,7 @@ theorem zeta_core (k : ℕ) (F : LFlag S r T) (F' F'' : LFlag S r T') (β : S.V 
       rw [one_smul, map_add (f := _), hermitian_frame_z, hT_wv, hAv]
       by_cases hi : i = Fin.last r
       · subst hi; simp [hb]
-      · simp [hb, hi, Pi.single_eq_of_ne hi]
+      · simp [hb, hi]
     obtain ⟨v'', hl'', hv''⟩ := transfer 1 v hvz
     have hA''v : A'' *ᵥ v'' = b := funext fun i => by
       have := hv'' i
@@ -341,8 +300,8 @@ theorem cell_of_at {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : 
     {w : Point D.host.E (D.R.rS + 1)} (hat : AtPt Λ (lf D F0) (PD D Λ (lf D F0) u') (mk Λ (lf D F0) _ x) w) :
     IsInCell (ZhatOM (ZhatL (lf D F0) x.1)) w := by
   obtain ⟨F', ⟨h, hmk⟩, -, hcell⟩ := hat
-  have hTF := Formalism.L2.SG.Closed.TermFun_holds D u u' F0 Λ (hrows.1 Λ hΛ)
-  have hEq := Formalism.L2.SG.Closed.TermEqIff_holds D u u' F0 Λ (hrows.1 Λ hΛ)
+  have hTF := _root_.term_function_const D u u' F0 Λ (hrows.1 Λ hΛ)
+  have hEq := _root_.term_eq_iff_relation D u u' F0 Λ (hrows.1 Λ hΛ)
   have hrel := (hEq ⟨F', h⟩ x).1 hmk
   exact (hTF.2.1 ⟨F', h⟩ x hrel w).1 hcell
 

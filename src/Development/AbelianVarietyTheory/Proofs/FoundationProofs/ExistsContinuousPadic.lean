@@ -242,9 +242,9 @@ section Completion
 variable {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F))
 
 theorem resChar_prime : (resChar p).Prime := by
-  haveI := p.isMaximal
-  letI := Ideal.Quotient.field p.asIdeal
-  haveI : Finite (𝓞 F ⧸ p.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ p.ne_bot
+  have := p.isMaximal
+  let := Ideal.Quotient.field p.asIdeal
+  have : Finite (𝓞 F ⧸ p.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ p.ne_bot
   exact CharP.char_is_prime (𝓞 F ⧸ p.asIdeal) _
 
 theorem resChar_mem : ((resChar p : ℕ) : 𝓞 F) ∈ p.asIdeal := by
@@ -255,14 +255,14 @@ theorem resChar_mem : ((resChar p : ℕ) : 𝓞 F) ∈ p.asIdeal := by
   ValuativeRel.ofValuation (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ)))
 
 theorem isLocalField : letI := complRel p; IsNonarchimedeanLocalField (p.adicCompletion F) := by
-  letI := complRel p
-  haveI : (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible :=
+  let := complRel p
+  have : (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
-  haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F p
-  haveI : IsValuativeTopology (p.adicCompletion F) :=
+  have := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F p
+  have : IsValuativeTopology (p.adicCompletion F) :=
     IsValuativeTopology.of_mem_nhds_zero_iff_vle
       (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))) Valued.mem_nhds_zero
-  haveI : ValuativeRel.IsNontrivial (p.adicCompletion F) := by
+  have : ValuativeRel.IsNontrivial (p.adicCompletion F) := by
     rw [ValuativeRel.isNontrivial_iff_isNontrivial
       (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ)))]
     infer_instance
@@ -283,20 +283,20 @@ end Completion
 
 theorem exists_locAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (sig : E →ₐ[F] E), Module.finrank F E = 2 → ∀ p : HeightOneSpectrum (𝓞 F), ∃ L : LocAt F E sig p, L.split = none := by
   intro F E _ _ _ _ _ sig hr p
-  letI := complRel p
-  haveI hp : Fact (resChar p).Prime := ⟨resChar_prime p⟩
-  haveI hc : CharZero (p.adicCompletion F) :=
+  let := complRel p
+  have hp : Fact (resChar p).Prime := ⟨resChar_prime p⟩
+  have hc : CharZero (p.adicCompletion F) :=
     charZero_of_injective_ringHom (algebraMap F (p.adicCompletion F)).injective
-  haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F p
-  haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)
+  have := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F p
+  have : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)
   obtain ⟨j, hj⟩ := exists_continuous_padic (resChar p) (norm_resChar_lt_one p)
-  letI alg : Algebra ℚ_[resChar p] (p.adicCompletion F) := j.toAlgebra
-  haveI : ContinuousSMul ℚ_[resChar p] (p.adicCompletion F) :=
+  let alg : Algebra ℚ_[resChar p] (p.adicCompletion F) := j.toAlgebra
+  have : ContinuousSMul ℚ_[resChar p] (p.adicCompletion F) :=
     ⟨(hj.comp continuous_fst).mul continuous_snd⟩
   let sigE : E ≃ₐ[F] E := AlgEquiv.ofBijective sig (AlgHom.bijective sig)
-  letI top : TopologicalSpace (p.adicCompletion F ⊗[F] E) := moduleTopology (p.adicCompletion F) _
-  letI ms : MeasurableSpace (p.adicCompletion F ⊗[F] E) := borel _
-  letI algE : Algebra ℚ_[resChar p] (p.adicCompletion F ⊗[F] E) :=
+  let top : TopologicalSpace (p.adicCompletion F ⊗[F] E) := moduleTopology (p.adicCompletion F) _
+  let ms : MeasurableSpace (p.adicCompletion F ⊗[F] E) := borel _
+  let algE : Algebra ℚ_[resChar p] (p.adicCompletion F ⊗[F] E) :=
     ((algebraMap (p.adicCompletion F) (p.adicCompletion F ⊗[F] E)).comp
       (algebraMap ℚ_[resChar p] (p.adicCompletion F))).toAlgebra
   refine ⟨{

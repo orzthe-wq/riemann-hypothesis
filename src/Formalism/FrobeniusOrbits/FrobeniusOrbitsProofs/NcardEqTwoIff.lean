@@ -106,13 +106,7 @@ theorem split_or_inert
   have hmax : 𝔭.IsMaximal := Ideal.IsPrime.isMaximal inferInstance h𝔭
   obtain ⟨P, hPp, hPl⟩ : ∃ P : Ideal (𝓞 K), P.IsPrime ∧ P.LiesOver 𝔭 := by
     first
-    | exact Ideal.nonempty_primesOver (S := 𝓞 K) 𝔭
     | (obtain ⟨Q, hQ⟩ := Ideal.nonempty_primesOver (S := 𝓞 K) 𝔭; exact ⟨Q, hQ.1, hQ.2⟩)
-    | (obtain ⟨Q, hQm, hQ⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral 𝔭
-          (S := 𝓞 K) (by
-            rw [(RingHom.injective_iff_ker_eq_bot _).mp (FaithfulSMul.algebraMap_injective _ _)]
-            exact bot_le)
-       exact ⟨Q, hQm.isPrime, ⟨hQ.symm⟩⟩)
   have hP0 : P ≠ ⊥ := Ideal.ne_bot_of_liesOver_of_ne_bot h𝔭 P
   have hin : P.inertia (K ≃ₐ[K⁺] K) = ⊥ := by
     rw [Subgroup.eq_bot_iff_forall]

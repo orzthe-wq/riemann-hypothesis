@@ -302,13 +302,6 @@ theorem subElem_eq_empty {k : ℕ} (hk : r < k)
   have := (Nat.pow_dvd_pow_iff_le_right (two_le_qRes (O := O))).1 hd
   omega
 
-theorem maxMul_ne (hr : 0 < r) (L : Lat O K r) : maxMul L ≠ L := by
-  intro h
-  have h1 := relIndex_maxMul L
-  rw [h, AddSubgroup.relIndex_self] at h1
-  have := Nat.one_lt_pow hr.ne' (two_le_qRes (O := O))
-  omega
-
 theorem smul_mem_subIdx_iff (g : GL (Fin r) K) (n : ℕ) (M L : Lat O K r) :
     g • M ∈ subIdx n (g • L) ↔ M ∈ subIdx n L := by
   simp only [subIdx, Set.mem_setOf_eq, smul_def, glLat_val, glMap_le_glMap_iff, relIndex_glMap]

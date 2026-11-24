@@ -112,11 +112,11 @@ def torusDerL {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) :
   toFun θ τ a b := (mat x τ * diagonal (fun c => I * (angles (θ τ) c : ℂ)) * (mat x τ)⁻¹) a b
   map_add' θ θ' := by
     funext τ a b
-    simp only [Pi.add_apply, angles_add, ofReal_add, mul_add, ← diagonal_add, Matrix.mul_add, Matrix.add_mul, Matrix.add_apply]
+    simp only [Pi.add_apply, angles_add, ofReal_add, mul_add, ← diagonal_add, Matrix.add_mul, Matrix.add_apply]
   map_smul' c θ := by
     funext τ a b
     have : (diagonal fun d => I * (angles (c • θ τ) d : ℂ)) = (c : ℂ) • diagonal fun d => I * (angles (θ τ) d : ℂ) := by
-      ext i j; by_cases h : i = j <;> simp [diagonal_apply, h, angles_smul]; ring
+      ext i j; by_cases h : i = j <;> simp [h, angles_smul]; ring
     simp only [Pi.smul_apply, RingHom.id_apply]
     rw [this, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, Complex.real_smul, smul_eq_mul]
 

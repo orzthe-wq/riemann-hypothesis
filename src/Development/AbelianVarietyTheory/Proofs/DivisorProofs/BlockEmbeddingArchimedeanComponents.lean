@@ -159,7 +159,7 @@ theorem map_star_of_continuous {ι : Type} [Fintype ι] (ψ : (ι → ℂ) →+*
       funext k
       by_cases hk : k = i
       · subst hk; simp
-      · simp [Pi.single_apply, hk]
+      · simp [hk]
     calc ψ y = ψ y * ψ (Pi.single i 1) := by rw [he, mul_one]
       _ = ψ (y * Pi.single i 1) := (map_mul _ _ _).symm
       _ = φ (y i) * ψ (Pi.single i 1) := by rw [h3, map_mul]; rfl

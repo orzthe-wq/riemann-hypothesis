@@ -1,21 +1,25 @@
 module
 
+public import Mathlib.Algebra.Algebra.Operations
+public import Mathlib.Analysis.Normed.Field.Basic
+public import Mathlib.RingTheory.Noetherian.Defs
+public import Mathlib.Topology.MetricSpace.Ultra.Basic
+public import Mathlib.Analysis.Normed.Group.Ultra
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.DecompSigmaOrd
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.DvrIntClosure
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PtFinFinite
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CoproductGeometry
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MonicNormLtOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -23,6 +27,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,8 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,8 +47,81 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.DvrIntClosure
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CoproductGeometry, Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.CopNormLt
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CoproductGeometry =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CoproductGeometry", "h": "module\n\npublic import Mathlib.Algebra.Algebra.Operations\npublic import Mathlib.Analysis.Normed.Field.Basic\npublic import Mathlib.RingTheory.Noetherian.Defs\npublic import Mathlib.Topology.MetricSpace.Ultra.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Analysis.Normed.Group.Ultra\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.Reformulated.B.CoproductGeometry.cop_geom :
+    ∀ {R κ : Type} [inst : CommRing R] [IsNoetherianRing R]
+    [inst_2 : NormedField κ] [IsUltrametricDist κ] (m : Ideal R) (y : R →+* κ),
+    (∀ (x : R), ‖(y : R → κ) x‖ ≤ (1 : ℝ)) →
+      (∀ x ∈ m, ‖(y : R → κ) x‖ < (1 : ℝ)) →
+        ∃ a < (1 : ℝ), (0 : ℝ) ≤ a ∧ ∀ (n : ℕ), ∀ x ∈ m ^ n, ‖(y : R → κ) x‖ ≤ a ^ n := by
+  intro R κ _ _ _ _ m y h1 hm
+  classical
+  have key : ∀ T : Finset R, (∀ s ∈ T, ‖y s‖ < 1) →
+      ∃ a < (1 : ℝ), (0 : ℝ) ≤ a ∧ ∀ s ∈ T, ‖y s‖ ≤ a := by
+    intro T
+    induction T using Finset.induction_on with
+    | empty => intro _; exact ⟨0, by norm_num, le_rfl, by simp⟩
+    | insert b T hb ih =>
+      intro h
+      obtain ⟨a, ha1, ha0, ha⟩ := ih (fun s hs => h s (Finset.mem_insert_of_mem hs))
+      refine ⟨max a ‖y b‖, max_lt ha1 (h b (Finset.mem_insert_self _ _)),
+        le_max_of_le_left ha0, ?_⟩
+      intro s hs
+      rcases Finset.mem_insert.mp hs with rfl | hs
+      · exact le_max_right _ _
+      · exact (ha s hs).trans (le_max_left _ _)
+  obtain ⟨S, hS⟩ : m.FG := IsNoetherian.noetherian m
+  obtain ⟨a, ha1, ha0, ha⟩ := key S (fun s hs => hm s (hS ▸ Ideal.subset_span hs))
+  have hgen : ∀ z ∈ m, ‖y z‖ ≤ a := by
+    intro z hz
+    rw [← hS] at hz
+    induction hz using Submodule.span_induction with
+    | mem x hx => exact ha x hx
+    | zero => simpa using ha0
+    | add u v _ _ hu hv =>
+      rw [map_add (f := _)]
+      exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hu hv)
+    | smul r u _ hu =>
+      rw [smul_eq_mul, map_mul, norm_mul]
+      calc ‖y r‖ * ‖y u‖ ≤ 1 * a := mul_le_mul (h1 r) hu (norm_nonneg _) zero_le_one
+        _ = a := one_mul a
+  refine ⟨a, ha1, ha0, ?_⟩
+  intro n
+  induction n with
+  | zero => intro x _; simpa using h1 x
+  | succ n ih =>
+    intro x hx
+    rw [pow_succ] at hx
+    induction hx using Submodule.mul_induction_on' with
+    | mem_mul_mem u hu v hv =>
+      rw [map_mul, norm_mul, pow_succ]
+      exact mul_le_mul (ih u hu) (hgen v hv) (norm_nonneg _) (pow_nonneg ha0 n)
+    | add u _ v _ hu hv =>
+      rw [map_add (f := _)]
+      exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hu hv)
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CoproductGeometry =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.CopNormLt =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.CopNormLt", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.DecompSigmaOrd\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.DvrIntClosure\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PtFinFinite\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CoproductGeometry\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MonicNormLtOne\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
@@ -53,24 +129,6 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 section SlopeTestRemainingChoices
 
 open Polynomial
-
-private theorem cop_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
-  have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
-  rw [h0, spectralValue_le_one_iff (minpoly.monic hi)]
-  constructor
-  · intro h n
-    rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, coeff_map]
-    exact PadicInt.norm_le_one _
-  · intro h
-    have hl' : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l]) :=
-      (lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩
-    obtain ⟨q, hq, -, hqm⟩ := lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)
-    exact ⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
-
-private theorem cop_norm_lt {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ_[l] R]
-    (y : R →ₐ[ℤ_[l]] PadicAlgCl l) (a : R) (ha : a ∈ maximalIdeal R) : ‖y a‖ < 1 :=
-  _root_.UpperTheory.Reformulated.B.MonicNormLtOne.mc_norm_lt y a ha
 
 private theorem cop_coef {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] :
     ∃ c : Coef l, ∀ x ∈ K, ‖x‖ ≤ 1 → x ∈ c.O := by
@@ -80,7 +138,7 @@ private theorem cop_coef {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l]
   let e := (integralClosure ℤ_[l] K).equivMapOfInjective f hf
   refine ⟨⟨(integralClosure ℤ_[l] K).map f, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e,
     Module.Finite.equiv e.toLinearEquiv⟩, fun x hx h => ?_⟩
-  exact ⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 ((cop_intIff _).2 h), rfl⟩
+  exact ⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 ((_root_.GlobalTheory.isIntegral_padicInt_iff_norm_le_one _).2 h), rfl⟩
 
 private theorem cop_geom {R κ : Type} [CommRing R] [IsNoetherianRing R] [NormedField κ] [IsUltrametricDist κ]
     (m : Ideal R) (y : R →+* κ) (h1 : ∀ x, ‖y x‖ ≤ 1) (hm : ∀ x ∈ m, ‖y x‖ < 1) :
@@ -121,7 +179,7 @@ private theorem cop_bdd {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsNoet
     rw [map_sum, TrivSqZeroExt.snd_sum]
     refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
     rw [map_smul, TrivSqZeroExt.snd_smul, Algebra.smul_def, norm_mul]
-    exact mul_le_of_le_one_left (norm_nonneg _) ((cop_intIff _).1 isIntegral_algebraMap)
+    exact mul_le_of_le_one_left (norm_nonneg _) ((_root_.GlobalTheory.isIntegral_padicInt_iff_norm_le_one _).1 isIntegral_algebraMap)
   have h7 : (F a).snd = (F (a - ∑ i, u i • b i)).snd + (F (∑ i, u i • b i)).snd := by
     rw [← TrivSqZeroExt.snd_add, ← map_add (f := _), sub_add_cancel]
   rw [h7]
@@ -158,7 +216,7 @@ private theorem cop_main {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDom
   letI : Algebra ℤ_[l] R := ((algebraMap O R).comp (algebraMap ℤ_[l] O)).toAlgebra
   haveI : IsScalarTower ℤ_[l] O R := IsScalarTower.of_algebraMap_eq fun _ => rfl
   let f : R →ₐ[O] PadicAlgCl l := UpperTheory.V.U3.dualFst F
-  have hm : ∀ x ∈ maximalIdeal R, ‖(F x).fst‖ < 1 := cop_norm_lt (f.restrictScalars ℤ_[l])
+  have hm : ∀ x ∈ maximalIdeal R, ‖(F x).fst‖ < 1 := _root_.UpperTheory.Reformulated.B.MonicNormLtOne.mc_norm_lt (f.restrictScalars ℤ_[l])
   have h1 : ∀ x, ‖(F x).fst‖ ≤ 1 := by
     intro x
     obtain ⟨c, hc⟩ := IsCO.res_surj (O := O) x
@@ -167,7 +225,7 @@ private theorem cop_main {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDom
       (Algebra.IsIntegral.isIntegral (R := ℤ_[l]) c).map (IsScalarTower.toAlgHom ℤ_[l] O (PadicAlgCl l))
     show ‖f x‖ ≤ 1
     rw [h2]
-    exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hm _ hc).le ((cop_intIff _).1 h3))
+    exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hm _ hc).le ((_root_.GlobalTheory.isIntegral_padicInt_iff_norm_le_one _).1 h3))
   obtain ⟨E, hE⟩ := UpperTheory.V.Loc.ptFin (l := l) R F hm
   haveI : FiniteDimensional ℚ_[l] E.1 := E.2
   obtain ⟨c', hc'⟩ := cop_coef E.1
@@ -191,3 +249,6 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.coPt :
   refine ⟨⟨c', fun x hx => ?_, hc'⟩, h2⟩
   have h : y (algebraMap c.O R ⟨x, hx⟩) ∈ c'.O := hc' _
   rwa [AlgHom.commutes] at h
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.CopNormLt =====

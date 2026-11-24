@@ -147,12 +147,12 @@ theorem zero_mem_incidence {P : Ideal (MvPolynomial (Fin n) F)} (hP : IsProjPrim
 
 theorem IsChowForm.exists_multiHomog {P : Ideal (MvPolynomial (Fin n) F)}
     {f : MvPolynomial (Fin k × Fin n) F} (hP : IsProjPrime P) (hf : IsChowForm P k f) :
-    ∃ δ, 1 ≤ δ ∧ IsMultiHomog δ f := by
+    ∃ δ, 1 ≤ δ ∧ Heights.IsMultiHomog δ f := by
   rcases Nat.eq_zero_or_pos k with hk0 | hk
   · subst hk0
     exact ⟨1, le_rfl, fun d _ => funext fun i => i.elim0⟩
   choose a ha using fun i => hf.exists_isWeightedHomogeneous_inGroup i
-  have hδ : IsMultiHomog (a ⟨0, hk⟩) f := (isMultiHomog_iff _ _).mpr fun i => by
+  have hδ : Heights.IsMultiHomog (a ⟨0, hk⟩) f := (isMultiHomog_iff _ _).mpr fun i => by
     rw [hf.degrees_eq ha ⟨0, hk⟩ i]
     exact ha i
   refine ⟨a ⟨0, hk⟩, Nat.one_le_iff_ne_zero.mpr fun h0 => ?_, hδ⟩

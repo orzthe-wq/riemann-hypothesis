@@ -115,7 +115,7 @@ theorem UpperTheory.V.Pa.adEx :
   have hadmul : ∀ g h Z, adV (g * h) Z = adV g (adV h Z) := by
     intro g h Z
     apply Subtype.ext
-    simp [adV, hmul, _root_.mul_inv_rev, hχmul, Matrix.mul_assoc, smul_smul, Matrix.mul_smul, Matrix.smul_mul]
+    simp [adV, hmul, _root_.mul_inv_rev, hχmul, Matrix.mul_assoc, smul_smul]
   have hττ : ∀ Z, τV (τV Z) = Z := by
     intro Z
     apply Subtype.ext
@@ -162,7 +162,7 @@ theorem UpperTheory.V.Pa.adEx :
       rw [hswap, ← hadmul]
       congr 1
       apply hadEq
-      simp only [Subgroup.coe_mul, MulMemClass.coe_mul]
+      simp only [MulMemClass.coe_mul]
       show F.c * (x * y) = F.c * x * F.c⁻¹ * (F.c * y)
       simp only [hcinv, mul_assoc, hcc']
     · have hxy : F.η (x * y) ≠ 1 := by rw [map_mul, hy, mul_one]; exact hx
@@ -170,7 +170,7 @@ theorem UpperTheory.V.Pa.adEx :
       rw [← hadmul]
       congr 1
       apply hadEq
-      simp only [Subgroup.coe_mul, MulMemClass.coe_mul]
+      simp only [MulMemClass.coe_mul]
       show F.c * (x * y) = F.c * x * y
       rw [mul_assoc]
     · have hxy : F.η (x * y) = 1 := by
@@ -179,7 +179,7 @@ theorem UpperTheory.V.Pa.adEx :
       simp only [f, dif_pos hxy, dif_neg hx, dif_neg hy, LinearMap.comp_apply]
       rw [hswap, hττ, ← hadmul]
       apply hadEq
-      simp only [Subgroup.coe_mul, MulMemClass.coe_mul]
+      simp only [MulMemClass.coe_mul]
       show x * y = F.c * (F.c * x) * F.c⁻¹ * (F.c * y)
       simp only [hcinv, mul_assoc, hcc']
   · intro g Z

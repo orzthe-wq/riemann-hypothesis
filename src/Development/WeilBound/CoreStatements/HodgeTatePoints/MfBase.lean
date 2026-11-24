@@ -92,8 +92,8 @@ theorem xr_normal : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ 
           (X.presheaf.stalkSpecializes p.2 ≫ Scheme.stalkClosedPointTo ξ).hom r := rfl
       rw [h1, h2]
       have h3 := congrArg (fun φ => (φ ≫ Scheme.stalkClosedPointTo ξ).hom r) hc
-      simp only [CommRingCat.hom_comp, RingHom.comp_apply] at h3
-      simp only [ψ, CommRingCat.hom_comp, RingHom.comp_apply]
+      simp only at h3
+      simp only [ψ]
       exact h3
     have hsurj : Function.Surjective ψ := by
       intro a
@@ -103,8 +103,8 @@ theorem xr_normal : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ 
           X.presheaf.stalkSpecializes (hall (genericPoint X)) = 𝟙 _ :=
         (TopCat.Presheaf.stalkSpecializes_comp _ _ _).trans (TopCat.Presheaf.stalkSpecializes_refl _ _)
       have h3 := congrArg (fun φ => (φ ≫ Scheme.stalkClosedPointTo ξ).hom g) hc2
-      simp only [Category.id_comp, CommRingCat.hom_comp, RingHom.comp_apply] at h3
-      simp only [ψ, CommRingCat.hom_comp, RingHom.comp_apply]
+      simp only at h3
+      simp only [ψ]
       exact h3
     let e : X.functionField ≃ₐ[X.presheaf.stalk p.1] Ω :=
       AlgEquiv.ofBijective { ψ with commutes' := hcomm } ⟨ψ.injective, hsurj⟩
@@ -151,7 +151,7 @@ theorem genMap_push {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ X) (q : Cpt �
 theorem regAt_push {W : Scheme.{0}} (ξ : Sp Ω ⟶ W) (f : W ⟶ X) [SurjectiveOnStalks f] (q : Cpt ξ) :
     regAt (ξ ≫ f) (push ξ f q) = regAt ξ q := by
   ext a
-  simp only [regAt, genMap_push, RingHom.mem_range, RingHom.comp_apply]
+  simp only [regAt, genMap_push, RingHom.mem_range]
   constructor
   · rintro ⟨x, rfl⟩
     exact ⟨_, rfl⟩

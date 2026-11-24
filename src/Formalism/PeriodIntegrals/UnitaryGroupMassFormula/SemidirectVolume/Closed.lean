@@ -124,7 +124,7 @@ theorem mem_spanR_iff {m : ℕ} (Y : Fin m → Fin n → E) (s : Set (Fin m))
     by_cases hij : i = j
     · subst hij
       simp [ratV]
-    · simp [ratV, Pi.single_apply, hij]
+    · simp [ratV, hij]
   constructor
   · intro hv
     have hle : spanR (F := F) R Y s ≤ LinearMap.eqLocus (Matrix.mulVecLin (P.map (inclR (F := F) R))) LinearMap.id := by

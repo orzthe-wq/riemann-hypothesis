@@ -256,7 +256,7 @@ theorem sum_values_eq [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c n
   classical
   rcases isEmpty_or_nonempty T with hT0 | ⟨⟨t₀⟩⟩
   · simp
-  haveI := ShortValue.finite_levelQuotient Dw l
+  haveI := _root_.GlobalTheory.finite_levQ Dw l
   haveI := Fintype.ofFinite (Fin n → LevQ Dw l)
   obtain ⟨S', _, _, φ, y', z, tp, F, hf, hm, hz, hg, ht, hF, -⟩ := hv t₀
   have hid : (AlgHom.id c.F S').toRingHom.FaithfullyFlat :=

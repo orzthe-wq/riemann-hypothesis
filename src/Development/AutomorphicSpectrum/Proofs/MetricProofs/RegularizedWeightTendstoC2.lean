@@ -111,7 +111,7 @@ theorem arg_C2_through_chart {D : ℕ} (ρ : Mollifier D) {O P L : Set (Fin D �
   have hle : ∀ m : ℕ, (m : WithTop ℕ∞) ≤ ∞ := fun m => by exact_mod_cast le_top
   have h3 : (3 : WithTop ℕ∞) ≤ ∞ := hle 3
   have h2 : (2 : WithTop ℕ∞) ≤ ∞ := hle 2
-  obtain ⟨C₀, ε₀, hε₀, hmol⟩ := ReciprocityTheory.AnForm.A.mollification_second_order D ρ P' (T '' cthickening (δ / 2) L)
+  obtain ⟨C₀, ε₀, hε₀, hmol⟩ := _root_.ReciprocityTheory.AnForm.A.mollificationSecondOrder_holds D ρ P' (T '' cthickening (δ / 2) L)
     u hP' (hu'.of_le h3) hK' hK'P'
   obtain ⟨BT, hBT⟩ := ArgumentConvergenceLemmas.exists_bound_iteratedFDeriv hO (hTO.of_le h2) hL hLO
   obtain ⟨BH, hBH⟩ := ArgumentConvergenceLemmas.exists_bound_iteratedFDeriv hO (hH.of_le h2) hL hLO

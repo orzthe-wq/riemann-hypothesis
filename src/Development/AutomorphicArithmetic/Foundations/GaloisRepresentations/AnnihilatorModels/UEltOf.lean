@@ -65,7 +65,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.uElt_of :
   have hs : D.ω - (r : 𝓞 D.F) ∈ uIdeal D r := sub_mem_uIdeal D r
   set ub : Ideal (𝓞 D.F) := Ideal.span {(p : 𝓞 D.F), D.bar D.ω - (r : 𝓞 D.F)} with hub
   have hmap : Ideal.map D.bar (uIdeal D r) = ub := by
-    simp [uIdeal, Ideal.map_span, Set.image_pair, hub]
+    simp [uIdeal, Ideal.map_span, hub]
   have hc : (D.ω - (r : 𝓞 D.F)) * (D.bar D.ω - r) = (r : 𝓞 D.F) ^ 2 - (D.tr : 𝓞 D.F) * r + D.nm := by
     linear_combination D.nm_eq - (r : 𝓞 D.F) * D.tr_eq
   have hdvd : (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm := by

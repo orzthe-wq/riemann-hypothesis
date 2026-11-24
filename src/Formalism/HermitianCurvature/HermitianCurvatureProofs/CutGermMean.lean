@@ -177,7 +177,7 @@ variable (hG : PBK.GermD s β ε' ({()} : Finset Unit) (fun _ => ut) (fun _ => b
 theorem inner_uL_uL {x x' : ℂ} (hx : x ≠ 0) (hx' : x' ≠ 0) :
     ⟪uL hG x, uL hG x'⟫_ℂ =
       PBK.gramL volume (PBK.Uc s fun _ => ut) (PBK.Uc s fun _ => ut) ((), x) ((), x') := by
-  simp only [uL, aL, dif_pos hx, dif_pos hx']
+  simp only [uL, dif_pos hx, dif_pos hx']
   rw [MeasureTheory.L2.inner_def, PBK.gramL]
   refine integral_congr_ae ?_
   filter_upwards [((PBK.memLp_cvec s ut x hx).1 (hG.memU () (Finset.mem_singleton_self _) x hx)).coeFn_toLp, ((PBK.memLp_cvec s ut x' hx').1 (hG.memU () (Finset.mem_singleton_self _) x' hx')).coeFn_toLp] with D h1 h2
@@ -198,7 +198,7 @@ theorem inner_uL_aL {x x' : ℂ} (hx : x ≠ 0) (hx' : x' ≠ 0) :
 theorem inner_aL_aL {x x' : ℂ} (hx : x ≠ 0) (hx' : x' ≠ 0) :
     ⟪aL hG x, aL hG x'⟫_ℂ =
       PBK.gramL volume (PBK.Ac s β ε' fun _ => bt) (PBK.Ac s β ε' fun _ => bt) ((), x) ((), x') := by
-  simp only [uL, aL, dif_pos hx, dif_pos hx']
+  simp only [aL, dif_pos hx, dif_pos hx']
   rw [MeasureTheory.L2.inner_def, PBK.gramL]
   refine integral_congr_ae ?_
   filter_upwards [((PBK.memLp_cvec s (fun x D => PBK.mainD s β ε' bt x D) x hx).1
@@ -379,11 +379,11 @@ theorem germ_mean_property : PropGMean := by
     filter_upwards [hne0, hne (X σ)] with y hy1 hy2
     simp only [Function.comp_apply, hr, ha, hu, hXadd, inner_sub_left]
     rw [← inner_aL_aL hGD hy1 hy2, ← inner_uL_aL hGD hy1 hy2]
-  obtain ⟨hsplit, hpd⟩ := Formalism.FourierDecayAlt.P.mean_split_identity 1 Λs.toAddSubgroup LIM (Lp H 2 (volume : Measure ℂ)) a r
+  obtain ⟨hsplit, hpd⟩ := _root_.Formalism.FourierDecayAlt.P.MeanBoundsLimits.meanSplit_ok 1 Λs.toAddSubgroup LIM (Lp H 2 (volume : Measure ℂ)) a r
     Nh' (√SS + √B') hLIM hbnd hAA hAR hRA
   set A0 : V 1 → ℂ := fun σ => LIM (fun x : Λs.toAddSubgroup => ⟪r x, r ((x : V 1) + σ)⟫_ℂ) with hA0
 
-  have h2pi : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := TBBx5.lp_ne
+  have h2pi : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := Complex.two_pi_I_ne_zero
   have hη0 : η ≠ 0 := by rcases hη with h | h <;> simp [h]
   set φ : ℂ → V 1 := fun σ => fun _ => η * σ / (2 * Real.pi * Complex.I) with hφ
   have hXφ : ∀ σ, X (φ σ) = η * σ := by

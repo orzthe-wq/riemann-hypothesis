@@ -73,7 +73,7 @@ theorem hsmul_l {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (c : ℂ) (x w : Fin 
 
 theorem hsmul_r {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (c : ℂ) (x w : Fin m → ℂ) :
     herm H x (c • w) = conj c * herm H x w := by
-  simp [herm, smul_dotProduct, Complex.star_def]
+  simp [herm, smul_dotProduct]
 
 private theorem herm_swap_eq_zero_of_eq_zero {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (hH : ∀ i j, H i j = star (H j i))
     (v w : Fin m → ℂ) : herm H w v = conj (herm H v w) := by
@@ -137,23 +137,13 @@ theorem prWv_inWb {z y : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hy : in
     omega
   simp only [SSn.prWv, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hz i hi, h1, mul_zero, add_zero]
 
-private theorem herm_Hpk_self_self_eq_neg_ofReal_Tz (z : Fin (2 * r + k + 1) → ℂ) :
-    herm (Hpk k r) z z = -((Tz k r z : ℝ) : ℂ) := by
-  have h := hswap (k := k) (r := r) z z
-  apply Complex.ext
-  · simp [Tz]
-  · have h2 := congrArg Complex.im h
-    simp only [Complex.conj_im] at h2
-    simp
-    linarith
-
 theorem prWv_norm {z y : Fin (2 * r + k + 1) → ℂ} (hT : 0 < Tz k r z) (hy : inWb k r y) {ζ : ℂ} {T' : ℝ}
     (hyy : herm (Hpk k r) y y = -(T' : ℂ)) (hyz : herm (Hpk k r) y z = ζ) :
     herm (Hpk k r) (SSn.prWv k r z y) (SSn.prWv k r z y) =
       ((Complex.normSq ζ / Tz k r z - T' : ℝ) : ℂ) := by
   have hT0 : (Tz k r z : ℂ) ≠ 0 := by exact_mod_cast hT.ne'
   rw [prWv_of hy]
-  simp only [hadd_l, hadd_r, hsmul_l, hsmul_r, herm_Hpk_self_self_eq_neg_ofReal_Tz, hyy, hyz]
+  simp only [hadd_l, hadd_r, hsmul_l, hsmul_r, _root_.Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.DU.herm_Hpk_self_eq_neg_Tz, hyy, hyz]
   rw [hswap y z, hyz, map_div₀, Complex.conj_ofReal]
   push_cast
   rw [← Complex.mul_conj]

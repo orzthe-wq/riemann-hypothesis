@@ -139,10 +139,6 @@ def torusModel (x : Sp R ⟶ S) (X : Type) [AddCommGroup X] : LieModel (splitTor
 
 end Frames
 
-section Gram
-
-end Gram
-
 section Form
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
@@ -187,10 +183,6 @@ theorem eq_of_trace {s t : E} (h : ∀ a : 𝓞 E, Algebra.trace ℚ E ((a : E) 
     rw [Algebra.traceForm_apply, integralBasis_apply, sub_mul, map_sub, mul_comm s, mul_comm t]
     exact sub_eq_zero.2 (h _)
   simp [this]
-
-theorem sesq_smul_left (D : Datum H) (c : 𝓞 E) (x y : D.La) : sesq D (c • x) y = c * sesq D x y :=
-  eq_of_trace fun a => by
-    rw [trace_mul_sesq, ← _root_.mul_assoc, ← mul_smul, ← trace_mul_sesq]; simp
 
 theorem sesq_smul_right (D : Datum H) (c : 𝓞 E) (x y : D.La) : sesq D x (H.bar c • y) = c * sesq D x y :=
   eq_of_trace fun a => by

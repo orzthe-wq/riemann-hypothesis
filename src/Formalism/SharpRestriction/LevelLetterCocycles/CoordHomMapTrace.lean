@@ -78,23 +78,23 @@ theorem map_smulA {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (a : LetA O n)
 theorem φA_letE (i : ZMod n) : W.φA (letE (i - 1) : LetA O n) = letE i := by
   unfold Formalism.BasicNotions.LocWach.φA letφ letE
   funext j
-  by_cases h : j = i <;> simp [Pi.single_apply, h, sub_left_inj]
+  by_cases h : j = i <;> simp [h, sub_left_inj]
 
 theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i : LetA O n) = letE i := by
   unfold Formalism.BasicNotions.LocWach.γA letγ letE
   funext j
-  by_cases h : j = i <;> simp [Pi.single_apply, h]
+  by_cases h : j = i <;> simp [h]
 
 theorem letE_mul_self (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
   unfold letE LetA
   ext j
-  by_cases h : j = i <;> simp [Pi.single_apply, h]
+  by_cases h : j = i <;> simp [h]
 
 theorem letE_mul_ne {i k : ZMod n} (h : i ≠ k) : (letE i : LetA O n) * letE k = 0 := by
   unfold letE LetA
   ext j
   by_cases hj : j = i
-  · subst hj; simp [Pi.single_apply, h]
+  · subst hj; simp [h]
   · simp [Pi.single_apply, hj]
 
 theorem sum_letE [NeZero n] : ∑ i : ZMod n, (letE i : LetA O n) = 1 := by

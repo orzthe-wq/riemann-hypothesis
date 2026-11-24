@@ -1,23 +1,20 @@
 module
 
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousExptPY
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 public import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.FockSingularValues
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DilMonomial
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGrpDataMapHaar
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.FiniteDimKStableSubspaceKFiniteLie
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedAdjoint
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSvd
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockKsetPreservesHomogeneousDegree
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockPolynomialKFiniteBothMembers
+public import Mathlib.Analysis.Calculus.Deriv.Prod
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.Calculus.Deriv.Prod
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.InnerProductSpace.Calculus
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
@@ -27,10 +24,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -50,11 +44,89 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.FiniteDimKStableSubspaceKFiniteLie
+import Mathlib.Analysis.InnerProductSpace.Calculus
+import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.DilMonomial, Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasDerivAtLogCosh
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.DilMonomial =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.DilMonomial", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousExptPY\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+namespace GlobalTheory.FockDecay
+open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.PolarU Matrix
+
+def rectDiag (p q : ℕ) (f : ℕ → ℝ) : Matrix (Fin p) (Fin q) ℂ :=
+  Matrix.of fun i j => if (i : ℕ) = (j : ℕ) then ((f i : ℝ) : ℂ) else 0
+
+def diagP (p q : ℕ) (σ : ℕ → ℝ) : Mat p q :=
+  Matrix.fromBlocks 0 (rectDiag p q σ) (rectDiag p q σ)ᴴ 0
+
+def tanhDiag (p q : ℕ) (σ : ℕ → ℝ) (t : ℝ) : Mat p q :=
+  Matrix.diagonal fun a => (if a.isLeft then 1 else -1) *
+    ((σ (posIx a) * Real.tanh (t * σ (posIx a)) : ℝ) : ℂ)
+
+def hypMat (p q : ℕ) (σ : ℕ → ℝ) (t : ℝ) : Mat p q :=
+  Matrix.fromBlocks (Matrix.diagonal fun i : Fin p => ((Real.cosh (t * σ i) : ℝ) : ℂ))
+    (rectDiag p q fun i => Real.sinh (t * σ i)) (rectDiag p q fun i => Real.sinh (t * σ i))ᴴ
+    (Matrix.diagonal fun j : Fin q => ((Real.cosh (t * σ j) : ℝ) : ℂ))
+
+def dil {p q : ℕ} (n : ℕ) (u : Ix p q → ℝ) : Pol p q n 0 →ₗ[ℂ] Pol p q n 0 :=
+  ((Real.exp ((∑ l : Ln p q n 0, u l.1) / 2) : ℝ) : ℂ) •
+    (MvPolynomial.aeval fun l : Ln p q n 0 =>
+      (MvPolynomial.C ((Real.exp (u l.1) : ℝ) : ℂ) * MvPolynomial.X l : Pol p q n 0)).toLinearMap
+
+theorem diagonalElement_mem (p q : ℕ) (σ : ℕ → ℝ) : diagP p q σ ∈ pR p q := pY_mem (rectDiag p q σ)
+
+theorem dil_monomial {p q n : ℕ} (u : Ix p q → ℝ) (α : Ln p q n 0 →₀ ℕ) (c : ℂ) :
+    dil n u (MvPolynomial.monomial α c) =
+      ((Real.exp (∑ l : Ln p q n 0, ((α l : ℝ) + 1 / 2) * u l.1) : ℝ) : ℂ) • MvPolynomial.monomial α c := by
+  have h : Real.exp (∑ l : Ln p q n 0, ((α l : ℝ) + 1 / 2) * u l.1) =
+      Real.exp ((∑ l : Ln p q n 0, u l.1) / 2) * ∏ l : Ln p q n 0, Real.exp (u l.1) ^ α l := by
+    simp only [← Real.exp_nat_mul, ← Real.exp_sum, ← Real.exp_add, Finset.sum_div, ← Finset.sum_add_distrib]
+    congr 1
+    exact Finset.sum_congr rfl fun l _ => by ring
+  rw [h, Complex.ofReal_mul, mul_smul, dil, LinearMap.smul_apply, AlgHom.toLinearMap_apply,
+    MvPolynomial.aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), MvPolynomial.monomial_eq,
+    Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]
+  congr 1
+  simp only [mul_pow, Finset.prod_mul_distrib, ← map_pow, ← map_prod, MvPolynomial.smul_eq_C_mul,
+    MvPolynomial.algebraMap_eq, Complex.ofReal_prod, Complex.ofReal_pow]
+  ring
+
+theorem dil_dil_neg {p q n : ℕ} (u : Ix p q → ℝ) (Φ : Pol p q n 0) : dil n u (dil n (-u) Φ) = Φ := by
+  induction Φ using MvPolynomial.induction_on' with
+  | add P Q hP hQ => rw [map_add (f := _), map_add (f := _), hP, hQ]
+  | monomial α c =>
+    rw [dil_monomial, map_smul, dil_monomial, smul_smul, ← Complex.ofReal_mul, ← Real.exp_add,
+      ← Finset.sum_add_distrib]
+    simp
+
+theorem dil_zero {p q n : ℕ} (Φ : Pol p q n 0) : dil n 0 Φ = Φ := by
+  induction Φ using MvPolynomial.induction_on' with
+  | add P Q hP hQ => rw [map_add (f := _), hP, hQ]
+  | monomial α c => rw [dil_monomial]; simp
+
+end GlobalTheory.FockDecay
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.DilMonomial =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasDerivAtLogCosh =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasDerivAtLogCosh", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData\npublic import Development.AbelianVarietyTheory.BlockTheory.TorsionBlocks.FockSingularValues\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DilMonomial\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGrpDataMapHaar\nimport Development.AbelianVarietyTheory.Proofs.HeightProofs.FiniteDimKStableSubspaceKFiniteLie\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedAdjoint\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSvd\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockKsetPreservesHomogeneousDegree\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockPolynomialKFiniteBothMembers\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.Deriv.Prod\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.InnerProductSpace.Calculus\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.Normed.Algebra.MatrixExponential\npublic import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -225,7 +297,7 @@ theorem pderiv_dil (u : Ix p q → ℝ) (l : Ln p q n 0) (P : Pol p q n 0) :
         · subst e
           rw [Finsupp.tsub_apply, Finsupp.single_eq_same, Nat.cast_sub (Nat.pos_of_ne_zero h)]
           push_cast; ring
-        · simp [Finsupp.single_apply, Ne.symm e]
+        · simp [Ne.symm e]
       rw [Finset.sum_congr rfl fun l' _ => this l', Finset.sum_add_distrib]
       simp
 
@@ -709,3 +781,6 @@ theorem harmonicDecay : HarmonicDecay := by
 
 end GlobalTheory.FockDecay
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasDerivAtLogCosh =====

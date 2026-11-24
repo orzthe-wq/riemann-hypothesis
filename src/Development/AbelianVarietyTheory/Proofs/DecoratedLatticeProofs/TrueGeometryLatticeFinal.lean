@@ -109,7 +109,7 @@ theorem prV_toEAf (v : GlobalTheory.FinPl.Pl D) (x : AE D) :
     Formalism.UG.prV (E := D.host.E) v (toEAf D x) =
       Algebra.TensorProduct.comm D.host.F _ _ (GlobalTheory.FinPl.compAt D v x) := by
   induction x using TensorProduct.induction_on with
-  | zero => simp only [RingHom.map_zero, map_zero]
+  | zero => simp only [map_zero]
   | tmul x y => rfl
   | add x y hx hy => rw [RingHom.map_add (f := _), RingHom.map_add (f := _), RingHom.map_add (f := _), hx, hy, map_add (f := _)]
 

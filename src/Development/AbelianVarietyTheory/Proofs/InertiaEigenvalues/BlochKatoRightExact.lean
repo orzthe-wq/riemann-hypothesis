@@ -1,12 +1,14 @@
 module
 
 public import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineCoboundaryLiftStatement
+public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineCoboundaryLift
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamSubrepQuotientAndStrictness
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBlochKatoCocycleOfCrysDeRhamPairStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBlochKatoCocycleOfCrysDeRhamPair
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeRhamOfIsCrystallineSpan
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OfShortExact
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorFundamentalExactSequenceCrystallineStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorFundamentalExactSequenceCrystalline
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -141,12 +143,7 @@ theorem map_actVB {ρ : Representation LL G V} {ρ' : Representation LL G V'}
   | add x y hx hy => simp only [map_add (f := _), hx, hy]
 
 include PD in
-theorem tmul_one_injective {v w : V} (h : v ⊗ₜ[Qp] (1 : B) = w ⊗ₜ[Qp] (1 : B)) : v = w := by
-  have h1 : (1 : B) ≠ 0 := fun h0 => PD.not_mem_filtration_two (by
-    rw [← mul_one PD.t, h0, mul_zero, map_zero]; exact Submodule.zero_mem _)
-  obtain ⟨φ, hφ⟩ := Module.Projective.exists_dual_eq_one Qp h1
-  have := congrArg (fun z => TensorProduct.rid Qp V (LinearMap.lTensor V φ z)) h
-  simpa [hφ] using this
+alias tmul_one_injective := _root_.GlobalTheory.FundDel.tmul_one_injective'
 
 end Generic
 
@@ -194,14 +191,14 @@ theorem bkARightExact_of_tied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (A
   haveI := hO.2.1
   obtain ⟨hdr, hl1, hl2⟩ := lift_periods T K LL A.ρ A'.ρ f hf hs hA
   obtain ⟨-, x', hx'⟩ := hc'
-  obtain ⟨hd1, d₂', hd2, hfil⟩ := GlobalTheory.T.crystalline_coboundary_lift l P AI T K LL O hO A' hdr c' x' hx'
+  obtain ⟨hd1, d₂', hd2, hfil⟩ := _root_.GlobalTheory.CobCrisLift.coboundary_lift l P AI T K LL O hO A' hdr c' x' hx'
   obtain ⟨d₁, hd₁, e₁⟩ := hl1 _ hd1
   obtain ⟨d₂, hd₂, e₂⟩ := hl2 _ hd2
-  obtain ⟨x, y, c, hy, hx1, hx2, hc, hcx⟩ := GlobalTheory.T.exists_blochKato_cocycle_of_crys_deRham_pair l P AI T K LL O hO A d₁ hd₁ d₂ hd₂
+  obtain ⟨x, y, c, hy, hx1, hx2, hc, hcx⟩ := _root_.GlobalTheory.FundDel.connecting_cocycle l P AI T K LL O hO A d₁ hd₁ d₂ hd₂
   refine ⟨c, hc, ?_⟩
   rw [← hx1, map_sub, map_φVB] at e₁
   rw [← hx2, map_sub, map_ιV] at e₂
-  obtain ⟨v, hv⟩ := (GlobalTheory.T.tensor_fundamental_exact_sequence_crystalline l P AI T K LL A'.V).2
+  obtain ⟨v, hv⟩ := (_root_.GlobalTheory.FundSeq.tensor_fundamental_sequence l P AI T K LL A'.V).2
     (AlgebraTensorModule.map f (LinearMap.id : P.R.B →ₗ[ℚ_[l]] P.R.B) x - x')
     (by rw [map_sub, eq_comm, sub_eq_sub_iff_sub_eq_sub]; exact e₁)
     (by

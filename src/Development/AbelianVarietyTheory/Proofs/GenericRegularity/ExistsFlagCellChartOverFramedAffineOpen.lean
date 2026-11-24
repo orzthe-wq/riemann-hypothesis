@@ -1,14 +1,14 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.Reframe
+public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsLowerMulUpperOfLeadingMinors
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtGMulVec
+public import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
-public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCoordinatesCellChangeBirationalStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsLowerMulUpperOfLeadingMinors
-public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.IsTriangularReframeExistsAndUniqueStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
+public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidProperties
+public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.IsTriangularReframeExistsAndUnique
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.PolyChartSmoothFractionLift
-public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularReframeCompBaseChangeBorelStatement
-import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -26,11 +26,11 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
 import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -38,8 +38,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,7 +50,361 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.ReduceModChar
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.Tactic.Linter.Style
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCoordinatesCellChangeBirational, Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularReframeCompBaseChangeBorel, Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCellChartOverFramedAffineOpen
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCoordinatesCellChangeBirational =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCoordinatesCellChangeBirational", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.RegularCharts.Reframe\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsLowerMulUpperOfLeadingMinors\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PicardGroup\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.Reg.CellChange
+
+open Matrix
+
+theorem exists_algEquiv_of_generates {κ ι : Type} [Field κ] [Finite ι] (y : ι → FractionRing (MvPolynomial ι κ))
+    (hy : ∀ v, algebraMap (MvPolynomial ι κ) (FractionRing (MvPolynomial ι κ)) (MvPolynomial.X v) ∈
+      IntermediateField.adjoin κ (Set.range y)) :
+    ∃ e : FractionRing (MvPolynomial ι κ) ≃ₐ[κ] FractionRing (MvPolynomial ι κ),
+      ∀ v, e (algebraMap (MvPolynomial ι κ) _ (MvPolynomial.X v)) = y v := by
+  have htop : IntermediateField.adjoin κ (Set.range y) = ⊤ := by
+    have hp : ∀ p : MvPolynomial ι κ, algebraMap (MvPolynomial ι κ) (FractionRing (MvPolynomial ι κ)) p ∈
+        IntermediateField.adjoin κ (Set.range y) := by
+      intro p
+      induction p using MvPolynomial.induction_on with
+      | C a =>
+        rw [← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]
+        exact IntermediateField.algebraMap_mem _ a
+      | add p q hp hq => rw [map_add]; exact add_mem hp hq
+      | mul_X p v hp => rw [map_mul]; exact mul_mem hp (hy v)
+    rw [eq_top_iff]
+    intro x _
+    obtain ⟨a, b, _, rfl⟩ := IsFractionRing.div_surjective (A := MvPolynomial ι κ) x
+    exact div_mem (hp a) (hp b)
+  have hX : AlgebraicIndependent κ (fun v : ι =>
+      algebraMap (MvPolynomial ι κ) (FractionRing (MvPolynomial ι κ)) (MvPolynomial.X v)) :=
+    (MvPolynomial.algebraicIndependent_X ι κ).map'
+      (f := IsScalarTower.toAlgHom κ (MvPolynomial ι κ) (FractionRing (MvPolynomial ι κ)))
+      (IsFractionRing.injective _ _)
+  have halg : Algebra.IsAlgebraic (Algebra.adjoin κ (Set.range y)) (FractionRing (MvPolynomial ι κ)) := by
+    rw [← IntermediateField.isAlgebraic_adjoin_iff_top, htop]
+    exact ⟨fun x => isAlgebraic_algebraMap (⟨x, trivial⟩ : (⊤ : IntermediateField κ _))⟩
+  have hind : AlgebraicIndependent κ y :=
+    (Algebra.IsAlgebraic.isTranscendenceBasis_of_le_trdeg_of_finite κ y hX.cardinalMk_le_trdeg).1
+  have hinj : Function.Injective (MvPolynomial.aeval y : MvPolynomial ι κ →ₐ[κ] _) :=
+    algebraicIndependent_iff_injective_aeval.1 hind
+  let f : FractionRing (MvPolynomial ι κ) →ₐ[κ] FractionRing (MvPolynomial ι κ) :=
+    IsFractionRing.liftAlgHom hinj
+  have hf : ∀ v, f (algebraMap (MvPolynomial ι κ) _ (MvPolynomial.X v)) = y v := by
+    intro v
+    simp [f]
+  have hs : Function.Surjective f := by
+    have : IntermediateField.adjoin κ (Set.range y) ≤ f.fieldRange := by
+      rw [IntermediateField.adjoin_le_iff]
+      rintro _ ⟨v, rfl⟩
+      exact ⟨_, hf v⟩
+    intro x
+    exact this (htop ▸ IntermediateField.mem_top)
+  exact ⟨AlgEquiv.ofBijective f ⟨f.injective, hs⟩, hf⟩
+
+theorem minors_iff {R : Type} [CommRing R] {n : ℕ} (g : Matrix (Fin n) (Fin n) R) :
+    (∀ k (hk : k ≤ n), IsUnit (g.submatrix (Fin.castLE hk) (Fin.castLE hk)).det) ↔
+      ∃ u b : Matrix (Fin n) (Fin n) R, (∀ i j : Fin n, i < j → u i j = 0) ∧ (∀ i, u i i = 1) ∧
+        b.BlockTriangular id ∧ (∀ i, IsUnit (b i i)) ∧ g = u * b :=
+  (GlobalTheory.cell_coordinates_exists_unique R n n (Function.Embedding.refl _) g).1
+
+theorem upper_inv {R : Type} [CommRing R] {n : ℕ} (b : Matrix (Fin n) (Fin n) R) (hb : b.BlockTriangular id)
+    (hu : ∀ i, IsUnit (b i i)) : b⁻¹.BlockTriangular id ∧ (∀ i, IsUnit (b⁻¹ i i)) ∧ b * b⁻¹ = 1 := by
+  have hd := GlobalTheory.isUnit_det_of_upper_of_isUnit_diag b hb hu
+  have hbi : b⁻¹.BlockTriangular id := by
+    let _ := Matrix.invertibleOfIsUnitDet b hd
+    exact Matrix.blockTriangular_inv_of_blockTriangular hb
+  refine ⟨hbi, fun i => ?_, Matrix.mul_nonsing_inv _ hd⟩
+  have h1 : IsUnit b⁻¹.det := Matrix.isUnit_nonsing_inv_det _ hd
+  rw [Matrix.det_of_isUpperTriangular hbi] at h1
+  exact IsUnit.prod_iff.1 h1 i (Finset.mem_univ _)
+
+theorem upper_mul_diag {R : Type} [CommRing R] {n : ℕ} (b c : Matrix (Fin n) (Fin n) R) (hb : b.BlockTriangular id)
+    (hu : ∀ i, IsUnit (b i i)) (hc : c.BlockTriangular id) (hv : ∀ i, IsUnit (c i i)) (i : Fin n) :
+    IsUnit ((b * c) i i) := by
+  have h1 : IsUnit (b * c).det := by
+    rw [Matrix.det_mul]
+    exact (GlobalTheory.isUnit_det_of_upper_of_isUnit_diag b hb hu).mul (GlobalTheory.isUnit_det_of_upper_of_isUnit_diag c hc hv)
+  rw [Matrix.det_of_isUpperTriangular (hb.mul hc)] at h1
+  exact IsUnit.prod_iff.1 h1 i (Finset.mem_univ _)
+
+theorem lower_mem_range {F K : Type} [Field F] [Field K] (φ : F →+* K) {n : ℕ} (M : Matrix (Fin n) (Fin n) F)
+    (l b : Matrix (Fin n) (Fin n) K) (h0 : ∀ i j : Fin n, i < j → l i j = 0) (h1 : ∀ i, l i i = 1)
+    (hb : b.BlockTriangular id) (hu : ∀ i, IsUnit (b i i)) (h : M.map φ = l * b) (i j : Fin n) :
+    ∃ x, φ x = l i j := by
+  have hm := (minors_iff (M.map φ)).2 ⟨l, b, h0, h1, hb, hu, h⟩
+  obtain ⟨u, c, hu0, hu1, hc, hcu, hM⟩ := (minors_iff M).1 (fun k hk => by
+    have h2 := hm k hk
+    rw [Matrix.submatrix_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det] at h2
+    rw [isUnit_iff_ne_zero] at h2 ⊢
+    intro h3
+    exact h2 (by rw [h3, map_zero]))
+  have := (GlobalTheory.cell_coordinates_exists_unique K n n (Function.Embedding.refl _) l).2 l (u.map φ) b (c.map φ)
+    ⟨h0, h1⟩ ⟨fun i j hij => by simpa using hu0 i j hij, fun i => by simp [hu1 i]⟩ hb
+    (hc.map φ) hu (by rw [← h, hM, Matrix.map_mul])
+  exact ⟨u i j, by rw [this.1]; rfl⟩
+
+theorem exists_lower_minors {κ : Type} [Field κ] {n : ℕ} (A : Matrix (Fin n) (Fin n) κ) (hA : IsUnit A.det) :
+    ∃ l : Matrix (Fin n) (Fin n) (RatFunc κ), (∀ i j : Fin n, i < j → l i j = 0) ∧ (∀ i, l i i = 1) ∧
+      ∀ k (hk : k ≤ n), IsUnit ((A.map (algebraMap κ (RatFunc κ)) * l).submatrix
+        (Fin.castLE hk) (Fin.castLE hk)).det := by
+  have key : ∀ M : Matrix (Fin n) (Fin n) (Polynomial κ),
+      (∀ k (hk : k ≤ n), (M.submatrix (Fin.castLE hk) (Fin.castLE hk)).det ≠ 0) →
+      ∀ k (hk : k ≤ n), IsUnit ((M.map (algebraMap _ (RatFunc κ))).submatrix
+        (Fin.castLE hk) (Fin.castLE hk)).det := by
+    intro M hM k hk
+    rw [Matrix.submatrix_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det, isUnit_iff_ne_zero]
+    exact (map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 (hM k hk)
+  obtain ⟨l, b, h0, h1, hb, hu, h⟩ := (minors_iff _).1 (key (Matrix.charmatrix (-A⁻¹)) (fun k hk => by
+    have : (Matrix.charmatrix (-A⁻¹)).submatrix (Fin.castLE hk) (Fin.castLE hk) =
+        Matrix.charmatrix ((-A⁻¹).submatrix (Fin.castLE hk) (Fin.castLE hk)) := by
+      ext i j : 2
+      simp [Matrix.charmatrix_apply, Matrix.diagonal_apply]
+    rw [this]
+    exact (Matrix.charpoly_monic _).ne_zero))
+  obtain ⟨u, c, hu0, hu1, hc, hcu, h'⟩ := (minors_iff _).1
+    (key (1 + (Polynomial.X : Polynomial κ) • A.map Polynomial.C) (fun k hk h2 => by
+      have h3 := congrArg (Polynomial.evalRingHom (0 : κ)) h2
+      rw [RingHom.map_det, map_zero] at h3
+      have : (Polynomial.evalRingHom (0 : κ)).mapMatrix ((1 + (Polynomial.X : Polynomial κ) •
+          A.map Polynomial.C).submatrix (Fin.castLE hk) (Fin.castLE hk)) = 1 := by
+        ext i j
+        simp [Matrix.one_apply, apply_ite]
+      rw [this, Matrix.det_one] at h3
+      exact one_ne_zero h3))
+  obtain ⟨hbi, hbu, hbb⟩ := upper_inv b hb hu
+  refine ⟨l, h0, h1, (minors_iff _).2 ⟨u, c * b⁻¹, hu0, hu1, hc.mul hbi, upper_mul_diag _ _ hc hcu hbi hbu, ?_⟩⟩
+  have e1 : A.map Polynomial.C * Matrix.charmatrix (-A⁻¹) = 1 + (Polynomial.X : Polynomial κ) • A.map Polynomial.C := by
+    rw [Matrix.charmatrix, Matrix.mul_sub, map_neg, Matrix.mul_neg, RingHom.mapMatrix_apply, ← Matrix.map_mul,
+      Matrix.mul_nonsing_inv _ hA, sub_neg_eq_add, add_comm, Matrix.map_one _ (map_zero _) (map_one _)]
+    congr 1
+    ext i j : 2
+    rw [Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.smul_apply, smul_eq_mul, mul_comm]
+  have e2 : A.map (algebraMap κ (RatFunc κ)) = (A.map Polynomial.C).map (algebraMap _ (RatFunc κ)) := by
+    ext i j
+    exact IsScalarTower.algebraMap_apply κ (Polynomial κ) (RatFunc κ) (A i j)
+  rw [← Matrix.mul_assoc, ← h', ← e1, Matrix.map_mul, h, ← e2, Matrix.mul_assoc, Matrix.mul_assoc, hbb,
+    Matrix.mul_one]
+
+section Low
+variable {T S S' : Type} [CommRing S] [CommRing S'] {r : T → ℕ}
+
+theorem lowM_upper (x : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) → S) (τ : T) (i j : Fin (r τ))
+    (h : i < j) : lowM x τ i j = 0 := by
+  simp [lowM, h.not_gt, h.ne']
+
+theorem lowM_diag (x : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) → S) (τ : T) (i : Fin (r τ)) :
+    lowM x τ i i = 1 := by
+  simp [lowM]
+
+theorem lowM_entry (x : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) → S)
+    (v : Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) : lowM x v.1 v.2.1.2 v.2.1.1 = x v := by
+  obtain ⟨τ, ⟨i, j⟩, h⟩ := v
+  exact dite_eq_left h
+
+theorem lowM_map (f : S →+* S') (x : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) → S) (τ : T) :
+    (lowM x τ).map f = lowM (fun v => f (x v)) τ := by
+  ext i j
+  simp only [lowM, Matrix.map_apply]
+  split_ifs <;> simp
+
+theorem lowM_of_lower (l : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) S) (τ : T)
+    (h0 : ∀ i j, i < j → l τ i j = 0) (h1 : ∀ i, l τ i i = 1) :
+    lowM (fun v : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) => l v.1 v.2.1.2 v.2.1.1) τ = l τ := by
+  ext i j
+  simp only [lowM]
+  split_ifs with h h'
+  · rfl
+  · rw [h', h1]
+  · exact (h0 i j (lt_of_le_of_ne (not_lt.1 h) (Ne.symm h'))).symm
+
+end Low
+
+theorem generic_minors {κ T : Type} [Field κ] {r : T → ℕ} (A : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) κ)
+    (hA : ∀ τ, IsUnit (A τ).det) (τ : T) (k : ℕ) (hk : k ≤ r τ) :
+    (((A τ).map (algebraMap κ (MvPolynomial (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) κ)) *
+      lowM MvPolynomial.X τ).submatrix (Fin.castLE hk) (Fin.castLE hk)).det ≠ 0 := by
+  choose l h0 h1 hm using fun τ => exists_lower_minors (A τ) (hA τ)
+  intro h
+  let φ : MvPolynomial (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) κ →ₐ[κ] RatFunc κ :=
+    MvPolynomial.aeval (fun v => l v.1 v.2.1.2 v.2.1.1)
+  have h2 := congrArg φ.toRingHom h
+  rw [RingHom.map_det, map_zero, RingHom.mapMatrix_apply, ← Matrix.submatrix_map, Matrix.map_mul, lowM_map] at h2
+  apply (hm τ k hk).ne_zero
+  rw [← h2, ← lowM_of_lower l τ (h0 τ) (h1 τ)]
+  congr 3
+  · ext i j
+    exact (φ.commutes _).symm
+  · congr 1
+    funext v
+    simp [φ]
+
+end GlobalTheory.Reg.CellChange
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
+
+theorem GlobalTheory.Reg.cell_change_birational :
+    ∀ (κ T : Type) [Field κ] [Infinite κ] [Finite T] (r : T → ℕ) (G : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) κ) (σ : ∀ τ, Equiv.Perm (Fin (r τ))), (∀ τ, IsUnit (G τ).det) → ∃ (e : FractionRing (MvPolynomial (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) κ) ≃ₐ[κ] FractionRing (MvPolynomial (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) κ)) (b : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) (FractionRing (MvPolynomial (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) κ))), (∀ τ, (b τ).BlockTriangular id ∧ ∀ i, b τ i i ≠ 0) ∧ ∀ τ, (G τ).map (algebraMap κ _) * lowM (fun v => algebraMap (MvPolynomial _ κ) _ (MvPolynomial.X v)) τ = (lowM (fun v => e (algebraMap (MvPolynomial _ κ) _ (MvPolynomial.X v))) τ).submatrix (σ τ).symm id * b τ := by
+  intro κ T _ _ _ r G σ hG
+  let P := MvPolynomial (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) κ
+  let K := FractionRing P
+  let A : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) κ := fun τ => (G τ).submatrix (σ τ) id
+  have hA : ∀ τ, IsUnit (A τ).det := fun τ => by
+    simp only [A]
+    rw [Matrix.det_permute]
+    exact (((Equiv.Perm.sign (σ τ)).isUnit).map (Int.castRingHom κ)).mul (hG τ)
+  have hdec := fun τ => (CellChange.minors_iff ((A τ).map (algebraMap κ K) *
+      lowM (fun v => algebraMap P K (MvPolynomial.X v)) τ)).1 (fun k hk => by
+    have h := (map_ne_zero_iff (algebraMap P K) (IsFractionRing.injective _ _)).2
+      (CellChange.generic_minors A hA τ k hk)
+    rw [RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.submatrix_map, Matrix.map_mul, CellChange.lowM_map,
+      Matrix.map_map] at h
+    exact isUnit_iff_ne_zero.2 h)
+  choose l b h0 h1 hb hu h using hdec
+  obtain ⟨e, he⟩ := CellChange.exists_algEquiv_of_generates
+    (fun v : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) => l v.1 v.2.1.2 v.2.1.1) (fun v => by
+      set y : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) → K := fun v => l v.1 v.2.1.2 v.2.1.1 with hy
+      let F := IntermediateField.adjoin κ (Set.range y)
+      obtain ⟨hbi, hbu, hbb⟩ := CellChange.upper_inv _ (hb v.1) (hu v.1)
+      obtain ⟨x, hx⟩ := CellChange.lower_mem_range (algebraMap F K)
+        ((A v.1)⁻¹.map (algebraMap κ F) * lowM (fun w => (⟨y w, IntermediateField.subset_adjoin _ _ ⟨w, rfl⟩⟩ : F)) v.1)
+        (lowM (fun v => algebraMap P K (MvPolynomial.X v)) v.1) (b v.1)⁻¹
+        (CellChange.lowM_upper _ _) (CellChange.lowM_diag _ _) hbi hbu (by
+          rw [Matrix.map_mul, CellChange.lowM_map, Matrix.map_map]
+          change (A v.1)⁻¹.map (algebraMap κ K) * lowM y v.1 = _
+          rw [hy, CellChange.lowM_of_lower l v.1 (h0 _) (h1 _), ← Matrix.mul_one (l v.1), ← hbb,
+            ← Matrix.mul_assoc (l v.1), ← h, Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul,
+            Matrix.nonsing_inv_mul _ (hA _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul])
+        v.2.1.2 v.2.1.1
+      rw [CellChange.lowM_entry] at hx
+      have hx' : (x : K) ∈ F := x.2
+      exact hx ▸ hx')
+  refine ⟨e, b, fun τ => ⟨hb τ, fun i => (hu τ i).ne_zero⟩, fun τ => ?_⟩
+  simp only [he]
+  rw [CellChange.lowM_of_lower l τ (h0 τ) (h1 τ)]
+  ext i j
+  have := congrFun (congrFun (h τ) ((σ τ).symm i)) j
+  simpa [A, Matrix.mul_apply] using this
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCoordinatesCellChangeBirational =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularReframeCompBaseChangeBorel =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularReframeCompBaseChangeBorel", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.RegularCharts.Reframe\npublic import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtGMulVec\npublic import Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GlobalTheory.Reg
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
+
+section
+
+variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
+  {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S]
+
+theorem reframe_scal_mul (x : Sp S ⟶ Xo.X) (a b : S) (i : (PPx x).ι) :
+    scal x (a * b) i = scal x a i * scal x b i := by
+  unfold scal Out.liftFun
+  simp only [map_mul]
+
+theorem reframe_scal_one (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) : scal x (1 : S) i = 1 := by
+  unfold scal Out.liftFun
+  simp only [map_one]
+
+theorem generators_unit {x : Sp S ⟶ Xo.X} (s s' : LB.Sec (PPx x))
+    (hs : ∀ r : LB.Sec (PPx x), ∃! a : S, ∀ i, r.f i = scal x a i * s.f i)
+    (hs' : ∀ r : LB.Sec (PPx x), ∃! a : S, ∀ i, r.f i = scal x a i * s'.f i) :
+    ∃ a : Sˣ, ∀ i, s'.f i = scal x (a : S) i * s.f i := by
+  obtain ⟨a, ha, -⟩ := hs s'
+  obtain ⟨b, hb, -⟩ := hs' s
+  obtain ⟨c, -, hc⟩ := hs s
+  have h1 : b * a = c := hc _ fun i => by rw [reframe_scal_mul, _root_.mul_assoc, ← ha i, ← hb i]
+  have h2 : (1 : S) = c := hc _ fun i => by rw [reframe_scal_one, _root_.one_mul]
+  exact ⟨⟨a, b, by rw [mul_comm, h1, ← h2], by rw [h1, ← h2]⟩, ha⟩
+
+variable [Algebra c.F S]
+
+theorem Reframe.trans {g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {y y' y'' : FrPt Xo c S}
+    (h : Reframe g y y') (h' : Reframe g' y' y'') : Reframe (fun τ => g τ * g' τ) y y'' := by
+  obtain ⟨hx, hc⟩ := h
+  obtain ⟨hx', hc'⟩ := h'
+  refine ⟨hx'.trans hx, fun τ i => ?_⟩
+  have h2 := hc' τ i
+  rw [hx] at h2
+  exact GlobalTheory.TangentLinear.isCombAt_mulVec _ _ _ _ _ _ _ (y.u τ) (y.tan τ) (y'.u τ) (g τ) (fun j => g' τ j i)
+    (y''.u τ i) (hc τ) h2
+
+theorem Reframe.baseChange {T : Type} [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
+    {g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {y y' : FrPt Xo c S} {z z' : FrPt Xo c T}
+    (h : Reframe g y y') (hz : FrMap φ y z) (hz' : FrMap φ y' z') : Reframe (fun τ => (g τ).map φ) z z' := by
+  obtain ⟨hx, hc⟩ := h
+  obtain ⟨hzx, hzu, -⟩ := hz
+  obtain ⟨hzx', hzu', -⟩ := hz'
+  refine ⟨by rw [hzx', hzx, hx], fun τ i => ?_⟩
+  exact isCombAt_pull φ.toRingHom hzx (hzu τ) (hzu' τ i) (hc τ i)
+
+private theorem appLE_id_apply' {X : Scheme} (U : X.Opens) (e : U ≤ (𝟙 X) ⁻¹ᵁ U) (r : Γ(X, U)) :
+    (Scheme.Hom.appLE (𝟙 X) U U e).hom r = r := by
+  change (X.presheaf.map (𝟙 (Opposite.op U))).hom r = r
+  rw [X.presheaf.map_id]
+  rfl
+
+theorem frBor_iff_reframe (y y' : FrPt Xo c S) : (∃ t : Ix Dw → Sˣ, FrBor t y y') ↔
+    ∃ b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S,
+      (∀ τ, (b τ).BlockTriangular id ∧ ∀ i, IsUnit (b τ i i)) ∧ Reframe b y y' := by
+  constructor
+  · rintro ⟨t, hx, hcomb, -⟩
+    choose cf hcf1 hcf2 hcf3 using hcomb
+    refine ⟨fun τ j i => cf τ i j, fun τ => ⟨fun p q hpq => hcf2 τ q p hpq, fun p => ?_⟩, hx, fun τ i => hcf3 τ i⟩
+    show IsUnit (cf τ p p)
+    rw [hcf1 τ p]
+    exact Units.isUnit _
+  · rintro ⟨b, hb, hx, hcomb⟩
+    cases y'
+    dsimp only at hx hcomb ⊢
+    subst hx
+    obtain ⟨a, ha⟩ := generators_unit y.s _ y.gen ‹_›
+    obtain ⟨t, ht0, ht1⟩ : ∃ t : Ix Dw → Sˣ, t none = a ∧ ∀ τ i, (t (some ⟨τ, i⟩) : S) = b τ i i :=
+      ⟨fun o => o.elim a fun p => ((hb p.1).2 p.2).unit, rfl, fun τ i => ((hb τ).2 i).unit_spec⟩
+    refine ⟨t, rfl, fun τ i => ⟨fun j => b τ j i, (ht1 τ i).symm, fun j hij => (hb τ).1 hij, hcomb τ i⟩,
+      𝟙 _, Category.id_comp _, Category.id_comp _, fun i h => ?_⟩
+    rw [ht0, ← ha i]
+    exact appLE_id_apply' _ _ _
+
+end
+
+theorem reframe_calculus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (S : Type) [CommRing S] [Algebra c.F S], (∀ (g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) (y y' y'' : FrPt Xo c S), Reframe g y y' → Reframe g' y' y'' → Reframe (fun τ => g τ * g' τ) y y'') ∧ (∀ (T : Type) [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) (y y' : FrPt Xo c S) (z z' : FrPt Xo c T), Reframe g y y' → FrMap φ y z → FrMap φ y' z' → Reframe (fun τ => (g τ).map φ) z z') ∧ ∀ y y' : FrPt Xo c S, (∃ t : Ix Dw → Sˣ, FrBor t y y') ↔ ∃ b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S, (∀ τ, (b τ).BlockTriangular id ∧ ∀ i, IsUnit (b τ i i)) ∧ Reframe b y y' := by
+  intro E _ _ _ H Dw l Xo c S _ _
+  exact ⟨fun g g' y y' y'' h h' => Reframe.trans h h',
+    fun T _ _ φ g y y' z z' h hz hz' => Reframe.baseChange φ h hz hz', fun y y' => frBor_iff_reframe y y'⟩
+
+end GlobalTheory.Reg
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularReframeCompBaseChangeBorel =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCellChartOverFramedAffineOpen =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCellChartOverFramedAffineOpen", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.RegularCharts.Reframe\npublic import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCoordinatesCellChangeBirational\npublic import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FrameBorelGroupoidProperties\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.IsTriangularReframeExistsAndUnique\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.PolyChartSmoothFractionLift\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularReframeCompBaseChangeBorel\nimport Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsLowerMulUpperOfLeadingMinors\nimport Formalism.LocalToGlobal.ProjectiveLattices.FrameCharts\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
@@ -87,7 +439,7 @@ theorem exists_away_fac {K A S L : Type} [CommRing K] [CommRing A] [Algebra K A]
   let p : PrimeSpectrum S := PrimeSpectrum.comap χ ⟨⊥, Ideal.isPrime_bot⟩
   have hp : p ∈ (W ⁻¹ᵁ j.opensRange : (Sp S).Opens) := by
     have e := congrArg (fun m : Sp L ⟶ X => m (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum L)) h
-    simp only [Scheme.Hom.comp_apply] at e
+    simp only at e
     exact ⟨_, e.symm⟩
   obtain ⟨_, ⟨g, rfl⟩, hg, hle⟩ := PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open
     hp (W ⁻¹ᵁ j.opensRange).isOpen
@@ -190,22 +542,16 @@ noncomputable def cellM (σ : ∀ τ, Equiv.Perm (Fin (r τ)))
 
 variable (σ : ∀ τ, Equiv.Perm (Fin (r τ))) (x : (Σ τ : T, {p : Fin (r τ) × Fin (r τ) // p.1 < p.2}) → S)
 
-theorem lowM_zero (τ : T) (i j : Fin (r τ)) (h : i < j) : lowM x τ i j = 0 := by
-  simp [lowM, h.not_gt, h.ne']
-
-theorem lowM_diag (τ : T) (i : Fin (r τ)) : lowM x τ i i = 1 := by
-  simp [lowM]
-
 theorem cellM_apply (τ : T) (i j : Fin (r τ)) : cellM σ x τ (σ τ i) j = lowM x τ i j := by
   simp [cellM]
 
 theorem cellM_shape (τ : T) : (∀ i j : Fin (r τ), i < j → cellM σ x τ ((σ τ).toEmbedding i) j = 0) ∧
     ∀ i : Fin (r τ), cellM σ x τ ((σ τ).toEmbedding i) i = 1 :=
-  ⟨fun i j h => (cellM_apply σ x τ i j).trans (lowM_zero x τ i j h),
-    fun i => (cellM_apply σ x τ i i).trans (lowM_diag x τ i)⟩
+  ⟨fun i j h => (cellM_apply σ x τ i j).trans (_root_.GlobalTheory.Reg.CellChange.lowM_upper x τ i j h),
+    fun i => (cellM_apply σ x τ i i).trans (_root_.GlobalTheory.Reg.CellChange.lowM_diag x τ i)⟩
 
 theorem isUnit_det_cellM (τ : T) : IsUnit (cellM σ x τ).det := by
-  rw [cellM, Matrix.det_permute, det_eq_one_of_lower_unitriangular _ (lowM_zero x τ) (lowM_diag x τ), _root_.mul_one]
+  rw [cellM, Matrix.det_permute, det_eq_one_of_lower_unitriangular _ (_root_.GlobalTheory.Reg.CellChange.lowM_upper x τ) (_root_.GlobalTheory.Reg.CellChange.lowM_diag x τ), _root_.mul_one]
   exact ((Equiv.Perm.sign (σ τ).symm).isUnit).map (Int.castRingHom S)
 
 theorem cellM_map {S' F : Type} [CommRing S'] [FunLike F S S'] [RingHomClass F S S'] (φ : F) (τ : T) :
@@ -249,8 +595,8 @@ theorem minor_iff (g : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) S) :
     obtain ⟨i, rfl⟩ := (σ τ).surjective i
     rw [cellM_apply]
     rcases lt_trichotomy i j with hij | rfl | hij
-    · rw [lowM_zero _ _ _ _ hij]; exact h0 τ i j hij
-    · rw [lowM_diag]; exact h1 τ i
+    · rw [_root_.GlobalTheory.Reg.CellChange.lowM_upper _ _ _ _ hij]; exact h0 τ i j hij
+    · rw [_root_.GlobalTheory.Reg.CellChange.lowM_diag]; exact h1 τ i
     · simp [lowM, hij]
   · rintro ⟨x, b, hb, hg⟩ ⟨τ, k⟩
     exact (cell_coordinates_exists_unique S _ _ (σ τ).toEmbedding (g τ)).1.2
@@ -271,8 +617,8 @@ theorem reframe_cancel {S : Type} [CommRing S] [Algebra c.F S]
     {g b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {y y' y'' : FrPt Xo c S}
     (hg : ∀ τ, IsUnit (g τ).det) (h : Reframe g y y') (h' : Reframe (fun τ => g τ * b τ) y y'') :
     Reframe b y' y'' := by
-  obtain ⟨b', ⟨_, hb'⟩, _⟩ := (GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c S y').2 y'' (h'.1.trans h.1.symm)
-  have e := reframe_unique ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).1 _ _ _ _ _ h hb') h'
+  obtain ⟨b', ⟨_, hb'⟩, _⟩ := (_root_.GlobalTheory.Reg.ReframeEx.reframe_exists_unique E H Dw l Xo c S y').2 y'' (h'.1.trans h.1.symm)
+  have e := reframe_unique ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c S).1 _ _ _ _ _ h hb') h'
   have : b' = b := funext fun τ => ((Matrix.isUnit_iff_isUnit_det _).2 (hg τ)).mul_left_cancel (e τ)
   exact this ▸ hb'
 
@@ -301,7 +647,7 @@ theorem reframe_pt (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v 
     {S : Type} [CommRing S] [Algebra c.F S] {ψ : R →ₐ[c.F] S} {z₀ z : FrPt Xo c S}
     (hz₀ : FrMap (ψ.comp (cst q)) yA z₀) (hz : FrMap ψ y z) :
     Reframe (cellM σ fun v => ψ (q (MvPolynomial.X v))) z₀ z := by
-  have := (GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c R).2.1 S ψ _ _ _ _ _ hy (frMap_cancel _ _ _ _ _ _ _ _ h₀ hz₀) hz
+  have := (_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c R).2.1 S ψ _ _ _ _ _ hy (frMap_cancel _ _ _ _ _ _ _ _ h₀ hz₀) hz
   simpa only [cellM_map] using this
 
 include bc in
@@ -320,7 +666,7 @@ theorem catches (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v => 
   obtain ⟨z, hz⟩ := bc _ _ ψ y
   have h3 := reframe_pt σ q h₀ hy (h1 ▸ hz₀) hz
   rw [h2] at h3
-  obtain ⟨t, ht⟩ := ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).2.2 z w).2 ⟨b, hb, reframe_cancel (isUnit_det_cellM σ x) h3 hw⟩
+  obtain ⟨t, ht⟩ := ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c S).2.2 z w).2 ⟨b, hb, reframe_cancel (isUnit_det_cellM σ x) h3 hw⟩
   exact ⟨ψ, z, t, hz, ht⟩
 
 variable {j : Sp A ⟶ Xo.XF c} [IsOpenImmersion j] (hj : j ≫ pullback.snd _ _ = spMap (algebraMap c.F A))
@@ -339,9 +685,9 @@ theorem mono_chart (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v 
   have h1 : ψ.comp (cst q) = ψ'.comp (cst q) :=
     algHom_eq_of_point j hj _ _ (by rw [← point_eq σ q hA h₀ hy hz, ← point_eq σ q hA h₀ hy hz', ht.1])
   obtain ⟨z₀, hz₀⟩ := bc _ _ (ψ.comp (cst q)) yA
-  obtain ⟨b, hb, hbz⟩ := ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).2.2 z z').1 ⟨t, ht⟩
+  obtain ⟨b, hb, hbz⟩ := ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c S).2.2 z z').1 ⟨t, ht⟩
   have h2 := cellM_unique σ _ _ b hb (reframe_unique
-    ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S).1 _ _ _ _ _ (reframe_pt σ q h₀ hy hz₀ hz) hbz)
+    ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c S).1 _ _ _ _ _ (reframe_pt σ q h₀ hy hz₀ hz) hbz)
     (reframe_pt σ q h₀ hy (h1 ▸ hz₀) hz'))
   have h3 : ψ.comp q.toAlgHom = ψ'.comp q.toAlgHom :=
     MvPolynomial.algHom_ext' h1 fun v => congrFun h2 v
@@ -380,19 +726,19 @@ theorem open_chart (h₀ : FrMap (cst q) yA y₀) (hy : Reframe (cellM σ fun v 
   obtain ⟨z₁, hz₁⟩ := bc _ _ f₁ yA
   have hx₁ : w₁.x = z₁.x := by
     rw [hw₁.1, hz₁.1, hA, ← Category.assoc, hf₁, Category.assoc, hW1]; rfl
-  obtain ⟨G, ⟨_, hG⟩, _⟩ := (GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c S₁ z₁).2 w₁ hx₁
+  obtain ⟨G, ⟨_, hG⟩, _⟩ := (_root_.GlobalTheory.Reg.ReframeEx.reframe_exists_unique E H Dw l Xo c S₁ z₁).2 w₁ hx₁
   have base : ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (ν : S₁ →ₐ[c.F] S') (z' w' : FrPt Xo c S'),
       FrMap (ν.comp f₁) yA z' → FrMap (ν.comp i₁) w w' → Reframe (fun τ => (G τ).map ν) z' w' :=
-    fun S' _ _ ν z' w' h1 h2 => (GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c S₁).2.1 S' ν _ _ _ _ _ hG
+    fun S' _ _ ν z' w' h1 h2 => (_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c S₁).2.1 S' ν _ _ _ _ _ hG
       (frMap_cancel _ _ _ _ _ _ _ _ hz₁ h1) (frMap_cancel _ _ _ _ _ _ _ _ hw₁ h2)
   obtain ⟨χ₁, hχ₁⟩ := ext L χ (IsUnit.mk0 _ hg₁)
   obtain ⟨z₀, hz₀⟩ := bc _ _ (χ₁.comp f₁) yA
   have hGL := base L χ₁ z₀ wL hz₀ (hχ₁ ▸ hw)
   have he : χ₁.comp f₁ = ψ.comp (cst q) :=
     algHom_eq_of_point j hj _ _ (by rw [← hL, hGL.1, hz₀.1, hA])
-  obtain ⟨b, hb, hbz⟩ := ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c L).2.2 z wL).1 ⟨t, ht⟩
+  obtain ⟨b, hb, hbz⟩ := ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c L).2.2 z wL).1 ⟨t, ht⟩
   have hmin := (minor_iff σ _).2 ⟨_, b, hb, reframe_unique hGL
-    ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c L).1 _ _ _ _ _ (reframe_pt σ q h₀ hy (he ▸ hz₀) hz) hbz)⟩
+    ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c L).1 _ _ _ _ _ (reframe_pt σ q h₀ hy (he ▸ hz₀) hz) hbz)⟩
   obtain ⟨n, g₂, hg₂⟩ := IsLocalization.Away.surj g₁ (∏ k, minor σ G k)
   have hval : ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (ν : S₁ →ₐ[c.F] S'),
       (ν.comp i₁) g₂ = (∏ k, minor σ (fun τ => (G τ).map ν) k) * (ν.comp i₁) g₁ ^ n := by
@@ -437,18 +783,18 @@ theorem exists_fChart_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   haveI : Infinite (kap Z) := Infinite.of_injective _ (algebraMap c.F (kap Z)).injective
   obtain ⟨hgx, y₀, hy₀, hgu⟩ := isGenFr_genFr h Z
   obtain ⟨zκ, hzκ⟩ := bc _ _ f yA
-  obtain ⟨G, ⟨hGu, hG⟩, _⟩ := (GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c _ zκ).2 y₀ (by
+  obtain ⟨G, ⟨hGu, hG⟩, _⟩ := (_root_.GlobalTheory.Reg.ReframeEx.reframe_exists_unique E H Dw l Xo c _ zκ).2 y₀ (by
     rw [hy₀, hzκ.1, hA, ← Category.assoc, hf]; rfl)
-  obtain ⟨e, b, hb, he⟩ := GlobalTheory.T.exists_flagCoordinates_cellChange_birational (kap Z) (E →+* ℂ) Dw.mult G σ hGu
+  obtain ⟨e, b, hb, he⟩ := _root_.GlobalTheory.Reg.cell_change_birational (kap Z) (E →+* ℂ) Dw.mult G σ hGu
   obtain ⟨θ, hθ, hθC, hθX, hθf⟩ := exists_poly_embed (V := FlagVar Dw) f hfi hfr e
   let q : MvPolynomial (FlagVar Dw) A ≃ₐ[c.F] θ.range := AlgEquiv.ofInjective θ hθ
   obtain ⟨u₀, hu₀⟩ := bc _ _ (cst q) yA
-  obtain ⟨u, hu⟩ := (GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c _ u₀).1 _ (isUnit_det_cellM σ fun v => q (MvPolynomial.X v))
+  obtain ⟨u, hu⟩ := (_root_.GlobalTheory.Reg.ReframeEx.reframe_exists_unique E H Dw l Xo c _ u₀).1 _ (isUnit_det_cellM σ fun v => q (MvPolynomial.X v))
   obtain ⟨yg, hyg⟩ := bc _ _ θ.range.val u
   let k : kap Z →ₐ[c.F] Om Z := IsScalarTower.toAlgHom c.F (kap Z) (Om Z)
   obtain ⟨zΩ, hzΩ⟩ := bc _ _ k zκ
   obtain ⟨yΩ, hyΩ⟩ := bc _ _ k y₀
-  have h1 := (GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c _).2.1 _ k _ _ _ _ _ hG hzΩ hyΩ
+  have h1 := (_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c _).2.1 _ k _ _ _ _ _ hG hzΩ hyΩ
   have hx : (genFr h Z).x = yΩ.x := by rw [hgx, hyΩ.1, hy₀]; rfl
   have h2 : Reframe (lowM fun v => algebraMap (MvPolynomial (FlagVar Dw) (kap Z)) (Om Z) (MvPolynomial.X v)) yΩ
       (genFr h Z) := by
@@ -457,7 +803,7 @@ theorem exists_fChart_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
     rw [hx] at this
     rw [funext (hyΩ.2.1 τ)]
     exact this
-  have h3 := (GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c _).1 _ _ _ _ _ h1 h2
+  have h3 := (_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c _).1 _ _ _ _ _ h1 h2
   have hc : θ.range.val.comp (cst q) = k.comp f := AlgHom.ext hθC
   have h4 := reframe_pt σ q hu₀ hu (hc ▸ frMap_trans _ _ _ _ _ _ _ _ hzκ hzΩ) hyg
   have hX : (fun v => θ.range.val (q (MvPolynomial.X v))) =
@@ -466,15 +812,18 @@ theorem exists_fChart_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   have h5 : Reframe b yg (genFr h Z) := reframe_cancel (isUnit_det_cellM σ _) h4 (by
     have := funext he
     exact this ▸ h3)
-  obtain ⟨t, ht⟩ := ((GlobalTheory.T.triangularReframe_comp_baseChange_borel E H Dw l Xo c _).2.2 _ _).2
+  obtain ⟨t, ht⟩ := ((_root_.GlobalTheory.Reg.reframe_calculus E H Dw l Xo c _).2.2 _ _).2
     ⟨b, fun τ => ⟨(hb τ).1, fun i => IsUnit.mk0 _ ((hb τ).2 i)⟩, h5⟩
   have hsm' : Algebra.Smooth c.F θ.range := by
     have : Algebra.Smooth A (MvPolynomial (FlagVar Dw) A) := ⟨inferInstance, inferInstance⟩
     have : Algebra.Smooth c.F (MvPolynomial (FlagVar Dw) A) := Algebra.Smooth.comp c.F A _
     exact Algebra.Smooth.of_equiv q
-  refine ⟨⟨Z, θ.range, hsm', hθf, u, yg, t⁻¹, hyg, (GlobalTheory.T.frameBorel_groupoid_properties E H Dw l Xo c _).2.2.1 _ _ _ ht,
+  refine ⟨⟨Z, θ.range, hsm', hθf, u, yg, t⁻¹, hyg, (_root_.GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c _).2.2.1 _ _ _ ht,
     fun L _ _ => mono_chart bc σ q hj hA hu₀ hu, open_chart bc σ q hj hA hu₀ hu⟩, ?_⟩
   intro L _ _ f' z₀ y x b' hz₀ hb' hr
   exact catches bc σ q hu₀ hu f' z₀ y x b' hz₀ (fun τ => ⟨(hb' τ).1, fun i => IsUnit.mk0 _ ((hb' τ).2 i)⟩) hr
 
 end GlobalTheory.Reg
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsFlagCellChartOverFramedAffineOpen =====

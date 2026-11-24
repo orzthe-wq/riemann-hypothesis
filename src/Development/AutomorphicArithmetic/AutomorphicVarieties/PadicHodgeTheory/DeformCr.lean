@@ -67,7 +67,7 @@ private def extRep {G A V : Type} [Group G] [CommRing A] [AddCommGroup V] [Modul
     simp [h1]
   map_mul' g h := by
     refine LinearMap.ext fun x => ?_
-    simp [hc, add_assoc, add_comm, add_left_comm]
+    simp [hc, add_comm, add_left_comm]
 
 private theorem extRep_apply {G A V : Type} [Group G] [CommRing A] [AddCommGroup V] [Module A V]
     (ρ : Representation A G V) (c : G → V) (hc : ∀ g h, c (g * h) = c g + ρ g (c h)) (g : G) (x : V × A) :

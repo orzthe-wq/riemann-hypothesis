@@ -59,6 +59,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsBaseClassLevelAdapted
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -111,7 +112,7 @@ theorem exists_pow_root_eq_one (K : Type) [Field K] [NumberField K] :
     (CommGroup.mem_torsion _).2 (isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, Units.pow_ofPowEqOne h1 hn.ne'⟩)
   have h2 : (⟨v, hv⟩ : NumberField.Units.torsion K) ^ NumberField.Units.torsionOrder K = 1 := by
     unfold NumberField.Units.torsionOrder
-    first | exact pow_card_eq_one | exact pow_card_eq_one'
+    first | exact pow_card_eq_one'
   have h3 : v ^ NumberField.Units.torsionOrder K = 1 := congrArg Subtype.val h2
   exact congrArg (fun x : (𝓞 K)ˣ => ((x : 𝓞 K) : K)) h3
 

@@ -61,21 +61,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
-private theorem gammaA_letE_eq_letE (g : W.Gam) (c : ZMod n) : W.γA g (letE c) = (letE c : LetA O n) := by
-  funext i
-  change (W.γ₀ g) ((letE c : LetA O n) i) = (letE c : LetA O n) i
-  by_cases h : i = c
-  · subst h; simp [letE]
-  · simp [letE, h]
-
-theorem gradNPf_γD_smul (g : W.Gam) (a : LetA O n) (x : W.DD T) :
-    W.γD T g (a • x) = W.γA g a • W.γD T g x := by
-  have h := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
-  rw [algebraMap_smul, W.γE_ext, algebraMap_smul] at h
-  first
-  | exact h
-  | simpa [Formalism.BasicNotions.LocWach.γA] using h
-
 theorem gradNPf_tf (a : LetA O n) (ha : IsUnit (algebraMap (LetA O n) W.EE a)) (x : W.DD T)
     (hx : a • x = 0) : x = 0 := by
   obtain ⟨u, hu⟩ := ha
@@ -86,8 +71,6 @@ theorem gradNPf_tf (a : LetA O n) (ha : IsUnit (algebraMap (LetA O n) W.EE a)) (
 private theorem mem_DelS_iff_forall_gammaD_fixed {x : W.DD T} : x ∈ DelS W T ↔ ∀ δ ∈ W.DelF, W.γD T δ x = x := by
   first
   | exact mem_DelS W T x
-  | simp only [DelS, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
-      sub_eq_zero]
 
 theorem gradNPf_DelS_γ (g : W.Gam) {x : W.DD T} (hx : x ∈ DelS W T) : W.γD T g x ∈ DelS W T := by
   have hx' := (mem_DelS_iff_forall_gammaD_fixed W T).mp hx
@@ -98,20 +81,17 @@ private theorem mem_letS_iff_letE_smul_eq (c : ZMod n) {x : W.DD T} :
     x ∈ letS W T c ↔ (letE c : LetA O n) • x = x := by
   first
   | exact mem_letS W T c x
-  | simp only [letS, LinearMap.mem_ker, LinearMap.restrictScalars_apply, LinearMap.coe_restrictScalars,
-      LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]
 
 theorem gradNPf_letS_γ (g : W.Gam) (c : ZMod n) {x : W.DD T} (hx : x ∈ letS W T c) :
     W.γD T g x ∈ letS W T c := by
   have hx' := (mem_letS_iff_letE_smul_eq W T c).mp hx
   refine (mem_letS_iff_letE_smul_eq W T c).mpr ?_
-  rw [← gammaA_letE_eq_letE W g c, ← gradNPf_γD_smul W T g (letE c) x, hx']
+  rw [← _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent W g c, ← _root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear W T g (letE c) x, hx']
 
 theorem gradNPf_PiNS_DelS (π' : LetA O n) (k : ℕ) {x : W.DD T} (hx : x ∈ PiNS W T π' k) :
     x ∈ DelS W T := by
   first
   | exact (Submodule.mem_inf.mp hx).2
-  | (simp only [PiNS, Submodule.mem_inf] at hx; exact hx.2)
 
 theorem gradNPf_PiNS_anti (π' : LetA O n) {j k : ℕ} (h : j ≤ k) {x : W.DD T}
     (hx : x ∈ PiNS W T π' k) : x ∈ PiNS W T π' j := by
@@ -136,7 +116,7 @@ theorem exists_gam_pow_smul_sub_eq (π' f t : LetA O n) (c₀ : O) (hf : W.γA W
   have hs : f ^ y = algebraMap O (LetA O n) c₀ ^ y + π' * (t * e) := by linear_combination he
   refine ⟨(t * e) • r₀ + f ^ y • d, Submodule.add_mem _ (Submodule.smul_mem _ _ hr₀N)
     (Submodule.smul_mem _ _ hdN), ?_⟩
-  rw [gradNPf_γD_smul, map_pow, hf, mul_pow, hd', ← algebraMap_smul (LetA O n) (c₀ ^ y - 1)]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, map_pow, hf, mul_pow, hd', ← algebraMap_smul (LetA O n) (c₀ ^ y - 1)]
   simp only [map_sub, map_pow, map_one]
   simp only [smul_add, smul_smul]
   have c2 : π' ^ y * f ^ y * π' = π' ^ (y + 1) * f ^ y := by ring
@@ -176,7 +156,7 @@ theorem gradNPf_coker (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π
       refine ⟨hr'N, fun δ hδ => ?_⟩
       have h2 : W.γA δ (π' ^ k) = π' ^ k := by rw [map_pow, hπΔ δ hδ]
       have h1 : π' ^ k • (W.γD T δ r' - r') = 0 := by
-        rw [smul_sub, ← h2, ← gradNPf_γD_smul, h2, hr'eq', hΔr δ hδ, sub_self]
+        rw [smul_sub, ← h2, ← _root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, h2, hr'eq', hΔr δ hδ, sub_self]
       have hu' : IsUnit (algebraMap (LetA O n) W.EE (π' ^ k)) := by
         rw [map_pow]; exact hu.pow k
       exact sub_eq_zero.mp (gradNPf_tf W T (π' ^ k) hu' _ h1)

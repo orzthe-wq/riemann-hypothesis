@@ -129,8 +129,8 @@ def mOf (a : GL (Fin n) ℂ) : PositivityTheory.Rg.Sw.GR n where
   property := by
     show InG (fromBlocks a.1 0 0 (a⁻¹).1ᴴ)
     simp only [InG, JJ, fromBlocks_conjTranspose, conjTranspose_zero, conjTranspose_conjTranspose, fromBlocks_multiply,
-      Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg,
-      Matrix.neg_mul, Units.inv_mul, ← conjTranspose_mul, Units.mul_inv, conjTranspose_one, neg_zero]
+      Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.mul_neg,
+      Matrix.neg_mul, Units.inv_mul, ← conjTranspose_mul, conjTranspose_one, neg_zero]
 
 theorem mR_mOf (a : GL (Fin n) ℂ) : mR (mOf a) = fromBlocks a.1 0 0 (a⁻¹).1ᴴ := rfl
 

@@ -171,20 +171,7 @@ section Free
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ]
   {Ω : Type} [Field Ω] [Algebra ℚ Ω] {W : Ψ → Type} [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)]
 
-theorem isOpen_offBd (D : ComponentData II Ψ K J Ω W) (a : Fin D.nCharts) : IsOpen (offBd D a) := by
-  have e : offBd D a = ball 0 1 ∩ ⋂ i : Fin (Fintype.card Ψ * D.j * (D.N - D.j)),
-      {t | (i : ℕ) < (D.chart a).a → t i ≠ 0} := by
-    ext t
-    simp only [offBd, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]
-    refine and_congr_right fun ht => ?_
-    rw [(D.chart a).boundary t ht]
-    push_neg
-    rfl
-  rw [e]
-  refine isOpen_ball.inter (isOpen_iInter_of_finite fun i => ?_)
-  by_cases h : (i : ℕ) < (D.chart a).a
-  · simpa [h] using isOpen_ne_fun (continuous_apply i) continuous_const
-  · simp [h]
+alias isOpen_offBd := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.SncPiece.isOpen_offBd
 
 end Free
 

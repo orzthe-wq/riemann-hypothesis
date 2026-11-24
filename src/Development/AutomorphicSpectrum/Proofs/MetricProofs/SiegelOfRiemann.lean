@@ -166,7 +166,7 @@ theorem siegel_of_riemann : ∀ (g : ℕ) (A Bm Hm : Matrix (Fin g) (Fin g) ℂ)
     have h := congrFun (congrFun hPH j) i
     rw [Matrix.conjTranspose_apply] at h
     rw [← h]
-    simp [Complex.star_def]
+    simp
   have hRim : (A * Hm * Bmᴴ).map im = -1 := by
     ext i j
     simp only [Matrix.map_apply, Matrix.neg_apply, Matrix.one_apply]
@@ -174,10 +174,10 @@ theorem siegel_of_riemann : ∀ (g : ℕ) (A Bm Hm : Matrix (Fin g) (Fin g) ℂ)
     split_ifs <;> simp
   have hZH : (Zᴴ).map im = -(Z.map im)ᵀ := by
     ext i j
-    simp [Matrix.conjTranspose_apply, Complex.star_def]
+    simp [Matrix.conjTranspose_apply]
   have hZHre : (Zᴴ).map re = (Z.map re)ᵀ := by
     ext i j
-    simp [Matrix.conjTranspose_apply, Complex.star_def]
+    simp [Matrix.conjTranspose_apply]
   have hPY : (A * Hm * Aᴴ).map re * (Z.map im)ᵀ = 1 := by
     have h := hRim
     rw [hR, hPc, sr_im_left, hZH, Matrix.mul_neg] at h

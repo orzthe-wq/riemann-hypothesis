@@ -110,8 +110,6 @@ theorem finrank_K0_eq_one_of_le_Kur {l : ℕ} [Fact l.Prime] {K : FinExt l} (hK 
   refine ⟨⟨(x : Om l), IntermediateField.mem_inf.mpr ⟨x.2, hK x.2⟩⟩, ?_⟩
   first
     | exact Subtype.ext (mul_one _)
-    | exact Subtype.ext (by simp)
-    | rfl
 
 theorem ring_condition_uniformizer_polynomial (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (h : CaseA K LL) :

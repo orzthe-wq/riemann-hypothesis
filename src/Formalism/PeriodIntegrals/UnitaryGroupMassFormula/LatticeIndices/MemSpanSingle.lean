@@ -69,7 +69,7 @@ theorem mem_span_single (s : Set ι) (v : ι → K) :
       obtain ⟨j, hj, rfl⟩ := hx
       intro i hi
       have hij : i ≠ j := fun h => hi (h ▸ hj)
-      simp [Pi.single_apply, hij]
+      simp [hij]
     | zero => intro i _; rfl
     | add x y _ _ hx hy => intro i hi; simp [hx i hi, hy i hi]
     | smul a x _ hx => intro i hi; simp [hx i hi]
@@ -109,7 +109,7 @@ theorem colFlag_iff' (m : Matrix (Idx r k) (Idx r k) K) :
     exact forall_congr' fun a => imp_congr_right fun _ => ne_comm
   rw [h1]
   refine imp_congr_right fun _ => ?_
-  simp [Matrix.mulVec, dotProduct, Pi.single_apply, sub_eq_zero]
+  simp [Pi.single_apply, sub_eq_zero]
 
 theorem pe_castSucc (i : Fin r) : pe (k := k) (Fin.castSucc i) = Sum.inl i := by
   have h : ((Fin.castSucc i : Fin (r + 1)) : ℕ) < r := i.isLt

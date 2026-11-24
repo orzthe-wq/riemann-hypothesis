@@ -305,7 +305,7 @@ theorem exists_io_poly (D : D7) (V W : HSp D) (θ : InfFam D) (Sp : D.what₂.Ta
   · rw [MultilinearMap.map_smul_univ]
     rw [map_smul, map_smul, LinearMap.smul_apply, hio, smul_smul, smul_smul, hψ0, hmv _ hbK, factK]
     have : (fun τ => ((((k₀ * κ) τ).map star)⁻¹)ᵀ) = k₀ * κ := funext fun τ => invT_conj (hκ' τ).1
-    have hm := (GlobalTheory.T.fockPolynomialAction_one_mul_adjoint D W.rank V.rank M.ε x₁ x₂ x₃).2.1 k₀ κ 1 1 (fun τ => mem_KC_of_K (hk₀ τ))
+    have hm := (_root_.GlobalTheory.JointHarm.fact_one_mul_adj D W.rank V.rank M.ε x₁ x₂ x₃).2.1 k₀ κ 1 1 (fun τ => mem_KC_of_K (hk₀ τ))
       (fun τ => mem_KC_of_K (hκ τ)) (fun _ => isUnit_one) (fun _ => isUnit_one)
     rw [mul_one] at hm
     rw [this, hm, Module.End.mul_apply, hΔ]
@@ -452,7 +452,7 @@ theorem fact_mul_cancel {D : D7} {m n : ℕ} (ε : D.what₂.Tau → Fin m → B
     {k k' : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ} (hk : ∀ τ, k τ ∈ Formalism.REAL.Kset (ε τ))
     (hk' : ∀ τ, k' τ ∈ Formalism.REAL.Kset (ε τ)) (h : k * k' = 1) (P : PolF D m n) :
     fact ε x₁ x₂ x₃ k 1 (fact ε x₁ x₂ x₃ k' 1 P) = P := by
-  have H := GlobalTheory.T.fockPolynomialAction_one_mul_adjoint D m n ε x₁ x₂ x₃
+  have H := _root_.GlobalTheory.JointHarm.fact_one_mul_adj D m n ε x₁ x₂ x₃
   have hm := H.2.1 k k' 1 1 (fun τ => mem_KC_of_K (hk τ))
     (fun τ => mem_KC_of_K (hk' τ)) (fun _ => isUnit_one) (fun _ => isUnit_one)
   rw [mul_one, h, H.1] at hm

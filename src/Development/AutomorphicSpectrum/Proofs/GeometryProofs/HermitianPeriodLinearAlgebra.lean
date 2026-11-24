@@ -3,7 +3,9 @@ module
 public import Mathlib.Data.Matrix.ColumnRowPartitioned
 public import Mathlib.LinearAlgebra.Matrix.Rank
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannFormPeriodDeterminantBoundStatement
+public import Mathlib.Analysis.Complex.Order
+public import Mathlib.LinearAlgebra.Matrix.PosDef
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannFormPeriodDeterminantBound
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -220,7 +222,7 @@ theorem reindexed {p q : ℕ} (A : Matrix (Fin p) (Fin p ⊕ Fin q) ℂ)
     simpa [Matrix.mul_apply] using this
   have hdet : (S.submatrix e e).det ≠ 0 := by
     rwa [Matrix.det_submatrix_equiv_self]
-  obtain ⟨t₁, t₂, t₃, -⟩ := GlobalTheory.T.riemann_form_period_determinant p q (A.submatrix id e) (B.submatrix id e)
+  obtain ⟨t₁, t₂, t₃, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.fcNorm p q (A.submatrix id e) (B.submatrix id e)
     (S.submatrix e e) H₁ H₂ h₁ h₂ hdet hrel'
   have hG : ((S.submatrix e e)ᵀ)⁻¹ * (B.submatrix id e)ᵀ = ((Sᵀ)⁻¹ * Bᵀ).submatrix e id := by
     rw [Matrix.transpose_submatrix, Matrix.transpose_submatrix, Matrix.inv_submatrix_equiv,

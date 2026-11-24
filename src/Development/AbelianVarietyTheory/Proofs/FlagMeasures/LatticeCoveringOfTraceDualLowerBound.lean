@@ -111,11 +111,6 @@ theorem eq_zero_of_sum_re_lin {ι : Type} [Fintype ι] (g : InfinitePlace K → 
     · simp [Pi.single_eq_of_ne hj])
   simpa using congrFun this w
 
-theorem trace_eq_sum (a : K) :
-    ((Algebra.trace ℚ K a : ℚ) : ℝ) = ∑ w : InfinitePlace K, 2 * (w.embedding a).re := by
-  apply Formalism.HN.DualPolygon.ident_trace_eq <;> assumption
-
-
 omit [_root_.NumberField.IsTotallyComplex K] in
 theorem exists_basis {ι : Type} [Fintype ι] (L : Submodule (𝓞 K) (ι → K)) (hfg : L.FG)
     (hsp : Submodule.span K (L : Set (ι → K)) = ⊤) :
@@ -286,7 +281,7 @@ theorem cover : ∀ (K : Type) [Field K] [NumberField K] [_root_.NumberField.IsT
       have hz := eq_zero_of_sum_re_lin (fun w => (2 : ℂ) • d w - form M u w) (by
         intro y
         have h1 := hφ y
-        rw [← hf, trace_eq_sum, inner_rho, ← sub_eq_zero, ← Finset.sum_sub_distrib] at h1
+        rw [← hf, _root_.Formalism.HN.DualPolygon.ident_trace_eq, inner_rho, ← sub_eq_zero, ← Finset.sum_sub_distrib] at h1
         rw [← h1]
         refine Finset.sum_congr rfl fun w _ => ?_
         simp [d, dotProduct])

@@ -68,9 +68,9 @@ private theorem lev_left {R : Type} [CommRing R] {r s : ℕ} (x : GL (Fin r) R) 
     simp only [orderedCechToCatCochainsOne_apply_valueAtSubset] at this
     simp [this, Matrix.one_apply]
   · rw [Matrix.add_apply, matrixExtendByZero_apply_of_outside_col _ _ _ fun k => (cast_ne_nat k j).symm]
-    simp [Matrix.one_apply, cast_ne_nat]
+    simp [cast_ne_nat]
   · rw [Matrix.add_apply, extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => (cast_ne_nat k i).symm]
-    simp [Matrix.one_apply, (cast_ne_nat _ _).symm]
+    simp [(cast_ne_nat _ _).symm]
   · rw [Matrix.add_apply, extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => (cast_ne_nat k i).symm]
     simp [Matrix.one_apply]
 
@@ -84,9 +84,9 @@ private theorem lev_right {R : Type} [CommRing R] {r s : ℕ} (y : GL (Fin s) R)
   · rw [Matrix.add_apply, extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => cast_ne_nat i k]
     simp [Matrix.one_apply]
   · rw [Matrix.add_apply, extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => cast_ne_nat i k]
-    simp [Matrix.one_apply, cast_ne_nat]
+    simp [cast_ne_nat]
   · rw [Matrix.add_apply, matrixExtendByZero_apply_of_outside_col _ _ _ fun k => cast_ne_nat j k]
-    simp [Matrix.one_apply, (cast_ne_nat _ _).symm]
+    simp [(cast_ne_nat _ _).symm]
   · have := matrixExtendByZero_apply (e2 r s) (y.val - 1) i j
     simp only [alternatingToOrderedCechDegreeTwo_apply_valueAtSubset] at this
     simp [this, Matrix.one_apply]

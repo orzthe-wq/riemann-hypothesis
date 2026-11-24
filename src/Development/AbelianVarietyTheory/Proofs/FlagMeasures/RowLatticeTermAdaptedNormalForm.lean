@@ -110,13 +110,6 @@ theorem frF_Xa {T : E} (F : Formalism.MainNotions.S.FlagG S r T) (hT : T ≠ 0) 
   show Submodule.span E ((fun b : Fin r => F.fvec b.castSucc) '' {b | b.val < a}) = _
   rw [h]; rfl
 
-theorem Xa_r {T : E} (F : Formalism.MainNotions.S.FlagG S r T) : F.Xa r = F.X := by
-  unfold Formalism.MainNotions.S.FlagG.X Formalism.MainNotions.S.FlagG.Xa
-  congr 1
-  ext x; constructor
-  · rintro ⟨i, -, rfl⟩; exact ⟨i, rfl⟩
-  · rintro ⟨i, rfl⟩; exact ⟨i, i.2, rfl⟩
-
 theorem frame_gen {T : E} (G : Formalism.MainNotions.S.Lat.LFlag S r T) (hT : T ≠ 0) (𝔡 : Ideal (𝓞 E))
     (Λ : Submodule (𝓞 E) S.V) (f : Fin r → S.V)
     (hfe : ∀ a b, S.hT (f a) (G.fl.e b) = if a = b then 1 else 0)
@@ -168,7 +161,7 @@ theorem frame_gen {T : E} (G : Formalism.MainNotions.S.Lat.LFlag S r T) (hT : T 
     constructor
     · intro ht
       obtain ⟨y, hy, x, hx, hxy⟩ := Submodule.mem_sup.1 ht
-      have hxX : x ∈ G.fl.X := by rw [← Xa_r]; exact hx
+      have hxX : x ∈ G.fl.X := by rw [← _root_.Formalism.L2.SG.Pf.Xa_r']; exact hx
       have hzo : ∀ w ∈ G.fl.X, S.hT w (t • G.fl.z) = 0 := by
         intro w hw
         have hle : G.fl.X ≤ LinearMap.ker (S.hT.flip (t • G.fl.z)) := by

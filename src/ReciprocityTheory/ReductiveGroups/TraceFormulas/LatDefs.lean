@@ -293,23 +293,6 @@ def NatInvIso : Prop :=
     FiniteDimensional ℚ_[p] K → PadicCoeff p O → ∀ (i : G ≃ₜ* GK p K) {ε : G →* Oˣ}, IsCyc p K (carry i ε) →
     Nonempty (NatInv ε (fun M _ _ _ => IsFGTop O M))
 
-def ShapeG : Prop :=
-  ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
-    [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)] {G : Type} [Group G] [TopologicalSpace G],
-    FiniteDimensional ℚ_[p] K → PadicCoeff p O → FracTop O → ∀ (i : G ≃ₜ* GK p K) {ε : G →* Oˣ}, IsCyc p K (carry i ε) →
-    ∀ e : ℕ, 0 < e → ∀ {M : Type} [AddCommGroup M] [Module O M] (_u : M ≃ₗ[O] KO O) (ρ : Representation O G M),
-    (∀ g m, ρ g m = ((((ε g) ^ e)⁻¹ : Oˣ) : O) • m) → QuotShape (HcLC ρ) ⊥ (Module.finrank ℚ_[p] K)
-
-def ShapeUnr : Prop :=
-  ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
-    [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)] {G : Type} [Group G] [TopologicalSpace G],
-    FiniteDimensional ℚ_[p] K → PadicCoeff p O → FracTop O → ∀ (i : G ≃ₜ* GK p K)
-    {M : Type} [AddCommGroup M] [Module O M] (_u : M ≃ₗ[O] KO O) (ρ : Representation O G M),
-    (∀ g m, ρ g m = m) → ∀ I : Subgroup G, (∀ g, g ∈ I ↔ i g ∈ Formalism.GaloisCohomology.inertiaK p K) →
-    QuotShape (HcLC ρ) (unrH1 ρ I) (Module.finrank ℚ_[p] K)
-
 def UnrDec : Prop :=
   ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {p : ℕ} [Fact p.Prime]
     (A : ValuationSubring Ω), A.valuation (p : Ω) < 1 →
@@ -327,12 +310,6 @@ def VhE : Prop :=
       (∀ x ∈ S, ∃ z : coZ1s ρ, Submodule.mkQ _ z = x ∧ IsLocallyConstant (z : G E Ω → M)) →
       (∀ v, S ≤ unrH1 ρ (Ine (F := E) (Av v))) →
       Module.length O S ≤ Module.length O (O ⧸ Ideal.span {(l : O)}) * (padicValNat l (classNumber E) : ℕ∞)
-
-def TopEx : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    [Algebra ℤ_[p] O] [Module.Finite ℤ_[p] O], Function.Injective (algebraMap ℤ_[p] O) →
-    ∃ (_ : TopologicalSpace O) (_ : TopologicalSpace (FractionRing O)) (_ : IsTopologicalAddGroup (FractionRing O))
-      (_ : ContinuousSMul O (FractionRing O)), PadicCoeff p O ∧ FracTop O
 
 structure Elem : Prop where
   padicInt : ∀ {p : ℕ} [Fact p.Prime], PadicCoeff p ℤ_[p]
@@ -366,13 +343,9 @@ structure Core : Prop where
   fin : FinIso
   rat : RatIso
   int : IntIso
-  jspan : JSpan
   nat : NatInvIso
-  shape : ShapeG
-  shapeUnr : ShapeUnr
   unr : UnrDec
   vhE : VhE
-  top : TopEx
   elem : Elem
 
 section Wrap

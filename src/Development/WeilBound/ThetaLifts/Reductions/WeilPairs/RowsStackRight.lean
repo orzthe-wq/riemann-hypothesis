@@ -55,10 +55,6 @@ namespace PositivityTheory.ThKW
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
-theorem sig_sig (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
-
 theorem exists_nsmul_mem {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} (h : L.IsFullLattice E) (v : Fin n → E) :
     ∃ N : ℕ, 0 < N ∧ N • v ∈ L := by
   letI := h
@@ -137,7 +133,7 @@ theorem latH_of {B : Base F E} (hcm : IsCMExt F E σ) {X : Spc F E n} {W : Spc F
     rw [e1, smul_smul, inv_neg, mul_neg, mul_inv_cancel₀ hξ, neg_one_smul]
   letI : StarRing E :=
     { star := σ
-      star_involutive := sig_sig hcm
+      star_involutive := _root_.GlobalTheory.AdelicU.cm_conj_conj hcm
       star_mul := fun a b => by show σ (a * b) = σ b * σ a; rw [map_mul, mul_comm]
       star_add := fun a b => map_add σ a b }
   obtain ⟨m, u, u', hu, hd⟩ := GlobalTheory.LatVacDual.exists_dual_family X.Jᵀ (fun i j => hX.herm i j)
@@ -196,7 +192,7 @@ theorem latH_of {B : Base F E} (hcm : IsCMExt F E σ) {X : Spc F E n} {W : Spc F
     have h2 : form σ W.J (ctr σ X.J t M) (o' • x) = o * form σ W.J (ctr σ X.J t M) x := by
       have : ∀ i, σ ((o' • x) i) = o * σ (x i) := fun i => by
         show σ (σ o * x i) = _
-        rw [map_mul, sig_sig hcm]
+        rw [map_mul, _root_.GlobalTheory.AdelicU.cm_conj_conj hcm]
       simp only [form, this, dotProduct, Matrix.mulVec, Finset.mul_sum]
       exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
     rw [h2] at h1

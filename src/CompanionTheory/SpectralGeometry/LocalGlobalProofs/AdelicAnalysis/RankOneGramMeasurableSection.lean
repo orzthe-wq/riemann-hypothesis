@@ -1,59 +1,14 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorInvolutionAlgebraPropertiesStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensorStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionArtinianRingStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorInvolutionAlgebraProperties
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensor
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionArtinianRing
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -131,14 +86,14 @@ theorem reflM_unitary (τ : A →+* A) (hτ : ∀ a, τ (τ a) = a) (J : Matrix 
   have h4 : cT τ (reflM τ J a d) * J = J - τ a • Q := by
     rw [hc, sub_mul, one_mul, Matrix.smul_mul, h1]
   rw [h4]
-  simp only [reflM, ← hw, sub_mul, mul_sub, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, h2, h3, smul_smul]
+  simp only [reflM, ← hw, sub_mul, mul_sub, mul_one, Matrix.smul_mul, Matrix.mul_smul, h2, h3, smul_smul]
   calc _ = J - (a + τ a - a * τ a * hform τ J d d) • Q := by module
     _ = J := by rw [sub_eq_zero.2 h]; simp
 
 theorem reflM_mulVec (τ : A →+* A) (J : Matrix n n A) (a : A) (d p : n → A) :
     (reflM τ J a d).mulVec p = p - (a * hform τ J d p) • d := by
   simp only [reflM, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, Matrix.vecMulVec_mulVec, rowOf_dot]
-  ext i; simp [Matrix.vecMulVec_apply, mul_comm, mul_left_comm, mul_assoc]
+  ext i; simp [mul_comm, mul_left_comm]
 
 theorem refl_facts (τ : A →+* A) (hτ : ∀ a, τ (τ a) = a) (J : Matrix n n A)
     (hJ : ∀ i j, τ (J j i) = J i j) (p y : n → A) (hyp : hform τ J y y = hform τ J p p)
@@ -359,12 +314,12 @@ theorem orbit_section : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   intro F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hLoc x hx
   obtain ⟨hTR, hLC, hSC, hT2, hArt, hRed, -, -⟩ := id hLoc
   haveI := hTR; haveI := hLC; haveI := hSC; haveI := hT2; haveI := hArt; haveI := hRed
-  obtain ⟨hKr, hKl, hKs, hKt, hσc, -, -, hBor, -, hgram⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R
+  obtain ⟨hKr, hKl, hKs, hKt, hσc, -, -, hBor, -, hgram⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R
   haveI := hKr; haveI := hKl; haveI := hKs; haveI := hKt
-  obtain ⟨hHg, -, -, -, hHb, hact⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ R
+  obtain ⟨hHg, -, -, -, hHb, hact⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hCM M J hJ R
   haveI := hHg; haveI := hHb
-  obtain ⟨-, -, h2, hinv, -, -, -⟩ := GlobalTheory.T.tensor_involution_algebra_properties F E σ hCM R
-  have hUe := GlobalTheory.T.units_open_embedding_local_tensor F E σ hCM R hLoc
+  obtain ⟨-, -, h2, hinv, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.KAlg.algebra_tensor_invol F E σ hCM R
+  have hUe := _root_.GlobalTheory.CompanionTheory.SW.KUnits.units_val_isOpenEmbedding F E σ hCM R hLoc
   haveI := hBor 1 M
   have hZ : IsClosed {y : Fin 1 → Fin M → R ⊗[F] E | gramR R σ J y = gramR R σ J x} :=
     isClosed_eq (hgram 1 M J) continuous_const
@@ -390,7 +345,7 @@ theorem orbit_section : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
         rw [Fin.fin_one_eq_zero a, Fin.fin_one_eq_zero b]
         show hform (sigR R σ) (JR R J) (x 0) (x 0) = hform (sigR R σ) (JR R J) (- y₀ 0) (- y₀ 0)
         rw [hform_neg_neg, hβ]
-      obtain ⟨h₀, hh₀⟩ := GlobalTheory.T.witt_extension_artinian_ring F E σ hCM M J hJ R 1 x _ hgp hx
+      obtain ⟨h₀, hh₀⟩ := _root_.GlobalTheory.CompanionTheory.SW.WittTuples.exists_actW_eq_of_gramR_eq F E σ hCM M J hJ R 1 x _ hgp hx
       have hmem : ∀ y ∈ (fun y : Fin 1 → Fin M → R ⊗[F] E => y 0) ⁻¹' U ∩
           {y : Fin 1 → Fin M → R ⊗[F] E | gramR R σ J y = gramR R σ J x},
           y 0 ∈ U ∧ hform (sigR R σ) (JR R J) (y 0) (y 0) = hform (sigR R σ) (JR R J) (y₀ 0) (y₀ 0) :=

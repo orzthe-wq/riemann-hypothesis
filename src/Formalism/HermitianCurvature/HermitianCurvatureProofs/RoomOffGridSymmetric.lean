@@ -211,4 +211,3 @@ theorem roomOffGrid : RoomOffGrid := by
 
 end Formalism.FourierDecayAlt.P.PBD
 
-theorem Formalism.FourierDecayAlt.P.room_off_grid : Formalism.FourierDecayAlt.P.PBD.RoomOffGrid := Formalism.FourierDecayAlt.P.PBD.roomOffGrid

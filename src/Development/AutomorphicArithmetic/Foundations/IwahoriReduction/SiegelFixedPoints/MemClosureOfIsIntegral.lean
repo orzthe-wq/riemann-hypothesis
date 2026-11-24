@@ -1,18 +1,23 @@
 module
 
+public import Mathlib.NumberTheory.Bernoulli
+public import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+public import Development.AbelianVarietyTheory.Definitions.Foundations.Integral
+public import Mathlib.RingTheory.RootsOfUnity.Minpoly
 public import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.IsThBIff
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjoin
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
 public import Mathlib.RingTheory.AdicCompletion.Noetherian
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsOfEmbedding
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsEqExpOfRat
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntModLevelPrimePowEqAddMul
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedEisensteinFxCoefficientSeqOneMemSubring
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -22,9 +27,10 @@ import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.NumberField.Cyclotomic.Basic
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -34,7 +40,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,8 +53,425 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsEqExpOfRat
+import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.NumberTheory.NumberField.Cyclotomic.Basic
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimeMulBernoulliMem, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntModLevelPrimePowEqAddMul, Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.MemClosureOfIsIntegral
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimeMulBernoulliMem =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimeMulBernoulliMem", "h": "module\n\npublic import Mathlib.NumberTheory.Bernoulli\npublic import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.Integral\npublic import Mathlib.RingTheory.RootsOfUnity.Minpoly\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset GlobalTheory.KummerEisensteinGalois
+
+namespace GlobalTheory.EisCong
+
+variable {K : Type} [Field K] [CharZero K]
+
+def pInt (p : ℕ) [Fact p.Prime] (K : Type) [Field K] : Subring K where
+  carrier := {x | ∃ D : ℕ, ¬ p ∣ D ∧ IsIntegral ℤ ((D : K) * x)}
+  mul_mem' := by
+    rintro x y ⟨D, hD, hx⟩ ⟨E, hE, hy⟩
+    refine ⟨D * E, fun h => ((Fact.out : p.Prime).dvd_mul.1 h).elim hD hE, ?_⟩
+    have : ((D * E : ℕ) : K) * (x * y) = ((D : K) * x) * ((E : K) * y) := by push_cast; ring
+    rw [this]; exact hx.mul hy
+  one_mem' := ⟨1, (Fact.out : p.Prime).not_dvd_one, by simpa using isIntegral_one⟩
+  add_mem' := by
+    rintro x y ⟨D, hD, hx⟩ ⟨E, hE, hy⟩
+    refine ⟨D * E, fun h => ((Fact.out : p.Prime).dvd_mul.1 h).elim hD hE, ?_⟩
+    have : ((D * E : ℕ) : K) * (x + y) = (E : K) * ((D : K) * x) + (D : K) * ((E : K) * y) := by
+      push_cast; ring
+    rw [this]
+    exact ((isIntegral_natCast E).mul hx).add ((isIntegral_natCast D).mul hy)
+  zero_mem' := ⟨1, (Fact.out : p.Prime).not_dvd_one, by simpa using isIntegral_zero⟩
+  neg_mem' := by
+    rintro x ⟨D, hD, hx⟩
+    exact ⟨D, hD, by rw [mul_neg]; exact hx.neg⟩
+
+variable {p : ℕ} [Fact p.Prime]
+
+omit [CharZero K] in
+lemma mem_of_isIntegral {x : K} (h : IsIntegral ℤ x) : x ∈ pInt p K :=
+  ⟨1, (Fact.out : p.Prime).not_dvd_one, by simpa using h⟩
+
+lemma inv_nat_mem {m : ℕ} (h : ¬ p ∣ m) : (m : K)⁻¹ ∈ pInt p K := by
+  have hm : (m : K) ≠ 0 := by
+    have : m ≠ 0 := by rintro rfl; exact h (dvd_zero _)
+    exact_mod_cast this
+  exact ⟨m, h, by rw [mul_inv_cancel₀ hm]; exact isIntegral_one⟩
+
+lemma inv_int_mem {c : ℤ} (h : ¬ (p : ℤ) ∣ c) : (c : K)⁻¹ ∈ pInt p K := by
+  have h1 : ((c.natAbs : ℕ) : K)⁻¹ ∈ pInt p K := inv_nat_mem (fun h' => h (Int.natCast_dvd.2 h'))
+  rcases Int.natAbs_eq c with h2 | h2
+  · rw [h2]; simpa using h1
+  · rw [h2]; simpa using neg_mem h1
+
+omit [CharZero K] in
+lemma root_zpow_mem {ζ : K} {M : ℕ} (hM : 0 < M) (h : IsPrimitiveRoot ζ M) (e : ℤ) : ζ ^ e ∈ pInt p K := by
+  rcases e with e | e
+  · simpa using pow_mem (mem_of_isIntegral (h.isIntegral hM)) e
+  · rw [zpow_negSucc, ← inv_pow]; exact pow_mem (mem_of_isIntegral (h.inv.isIntegral hM)) _
+
+lemma pow_div_mem {k e : ℕ} (hk : k ≠ 0) (h : k < p ^ (e + 1)) : (p : K) ^ e / k ∈ pInt p K := by
+  have hp : p.Prime := Fact.out
+  obtain ⟨v, u, hu, rfl⟩ := Nat.exists_eq_pow_mul_and_not_dvd hk p hp.ne_one
+  have hu0 : u ≠ 0 := by rintro rfl; exact hu (dvd_zero _)
+  have hv : v ≤ e := by
+    have : p ^ v < p ^ (e + 1) := lt_of_le_of_lt (Nat.le_mul_of_pos_right _ (Nat.pos_of_ne_zero hu0)) h
+    have := (Nat.pow_lt_pow_iff_right hp.one_lt).1 this
+    omega
+  obtain ⟨w, rfl⟩ := Nat.exists_eq_add_of_le hv
+  have hp0 : (p : K) ≠ 0 := by exact_mod_cast hp.ne_zero
+  have : (p : K) ^ (v + w) / ((p ^ v * u : ℕ) : K) = (p : K) ^ w * (u : K)⁻¹ := by
+    push_cast; field_simp; ring
+  rw [this]
+  exact mul_mem (pow_mem (natCast_mem _ p) w) (inv_nat_mem hu)
+
+lemma pow_div_add_two_mem (hp2 : p ≠ 2) (n i : ℕ) : ((p : K) ^ (n + 1)) ^ i / ((i : K) + 2) ∈ pInt p K := by
+  have hp : p.Prime := Fact.out
+  have h3 : 3 ≤ p := by have := hp.two_le; omega
+  have h1 : ∀ i : ℕ, i + 2 < 3 ^ (i + 1) := by
+    intro i
+    induction i with
+    | zero => norm_num
+    | succ i ih => rw [pow_succ]; omega
+  have h2 : i + 2 < p ^ ((n + 1) * i + 1) :=
+    (h1 i).trans_le ((Nat.pow_le_pow_left h3 _).trans (Nat.pow_le_pow_right hp.pos (by nlinarith)))
+  have := pow_div_mem (K := K) (k := i + 2) (by omega) h2
+  rw [← pow_mul]
+  simpa using this
+
+lemma prime_mul_bernoulli_mem (k : ℕ) : (p : K) * ((bernoulli (k + 2) : ℚ) : K) ∈ pInt p K := by
+  have hp : p.Prime := Fact.out
+  rcases Nat.even_or_odd (k + 2) with ⟨m, hm⟩ | hodd
+  · have hk2 : k + 2 = 2 * m := by omega
+    obtain ⟨z, hz⟩ := Bernoulli.vonStaudt_clausen m
+    have hB : bernoulli (k + 2) = (z : ℚ) -
+        ∑ q ∈ Finset.range (2 * m + 2) with q.Prime ∧ (q - 1) ∣ 2 * m, (1 : ℚ) / q := by
+      rw [hk2, hz]; ring
+    rw [hB]
+    push_cast
+    rw [mul_sub, Finset.mul_sum]
+    refine sub_mem (mul_mem (natCast_mem _ _) (intCast_mem _ _)) (sum_mem fun q hq => ?_)
+    have hq' := (Finset.mem_filter.mp hq).2.1
+    by_cases hql : q = p
+    · subst hql
+      have : (q : K) ≠ 0 := by exact_mod_cast hp.ne_zero
+      rw [mul_one_div_cancel this]; exact one_mem _
+    · rw [one_div]
+      exact mul_mem (natCast_mem _ _)
+        (inv_nat_mem fun h => hql ((Nat.prime_dvd_prime_iff_eq hp hq').mp h).symm)
+  · rw [bernoulli_eq_zero_of_odd hodd (by omega)]
+    simp
+
+lemma choose_cast (m i : ℕ) :
+    (((m + 2).choose (i + 2) : ℕ) : K) = ((m : K) + 2) * ((m + 1).choose (i + 1) : ℕ) / ((i : K) + 2) := by
+  have h := Nat.add_one_mul_choose_eq (m + 1) (i + 1)
+  have hi : (i : K) + 2 ≠ 0 := by exact_mod_cast (show i + 2 ≠ 0 by omega)
+  rw [eq_div_iff hi]
+  have h' := congrArg (Nat.cast : ℕ → K) h
+  push_cast at h'
+  simp only [add_assoc, one_add_one_eq_two] at h'
+  rw [← h']
+
+lemma binom_second (hp2 : p ≠ 2) (n m : ℕ) (x t : ℤ) :
+    ∃ y ∈ pInt p K, ((x : K) + t * (p : K) ^ (n + 1)) ^ (m + 2) =
+      (x : K) ^ (m + 2) + ((m : K) + 2) * t * (p : K) ^ (n + 1) * (x : K) ^ (m + 1) +
+        ((m : K) + 2) * ((p : K) ^ (n + 1)) ^ 2 * y := by
+  set Q : K := (p : K) ^ (n + 1) with hQ
+  refine ⟨∑ i ∈ range (m + 1), (t : K) ^ (i + 2) * (x : K) ^ (m - i) * ((m + 1).choose (i + 1) : ℕ) *
+    (Q ^ i / ((i : K) + 2)), sum_mem fun i _ => mul_mem (mul_mem (mul_mem (pow_mem (intCast_mem _ _) _)
+      (pow_mem (intCast_mem _ _) _)) (natCast_mem _ _)) (pow_div_add_two_mem hp2 n i), ?_⟩
+  rw [add_comm (x : K), add_pow, sum_range_succ', sum_range_succ', mul_sum]
+  have : ∀ i ∈ range (m + 1), ((t : K) * Q) ^ (i + 1 + 1) * (x : K) ^ (m + 2 - (i + 1 + 1)) *
+      ((m + 2).choose (i + 1 + 1) : ℕ) = ((m : K) + 2) * Q ^ 2 * ((t : K) ^ (i + 2) * (x : K) ^ (m - i) *
+        ((m + 1).choose (i + 1) : ℕ) * (Q ^ i / ((i : K) + 2))) := by
+    intro i _
+    rw [show m + 2 - (i + 1 + 1) = m - i by omega, show i + 1 + 1 = i + 2 by omega, choose_cast]
+    ring
+  rw [sum_congr rfl this]
+  simp
+  ring
+
+lemma binom_first (Q : ℤ) (k : ℕ) (x t : ℤ) :
+    ∃ y : ℤ, ((x : K) + t * (Q : K)) ^ k = (x : K) ^ k + Q * y := by
+  obtain ⟨y, hy⟩ := sub_dvd_pow_sub_pow (x + t * Q) x k
+  refine ⟨t * y, ?_⟩
+  have := congrArg (Int.cast : ℤ → K) hy
+  push_cast at this ⊢
+  linear_combination this
+
+
+
+end GlobalTheory.EisCong
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimeMulBernoulliMem =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntModLevelPrimePowEqAddMul =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntModLevelPrimePowEqAddMul", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.Integral\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimeMulBernoulliMem\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset GlobalTheory.KummerEisensteinGalois GlobalTheory.EisCong
+
+namespace GlobalTheory.EisCongGen
+
+variable {K : Type} [Field K] [CharZero K]
+variable {p : ℕ} [Fact p.Prime]
+
+lemma bernoulli_expansion_lvl (hp2 : p ≠ 2) (n m N : ℕ) (hN : 0 < N) (b : ℤ) :
+    ∃ y ∈ pInt p K, ((N : K) * (p : K) ^ (n + 1)) ^ (m + 1) *
+        (((Polynomial.bernoulli (m + 2)).eval ((b : ℚ) / ((N : ℚ) * (p : ℚ) ^ (n + 1))) / ((m + 2 : ℕ) : ℚ) : ℚ) : K) =
+      (b : K) ^ (m + 2) / (((m : K) + 2) * ((N : K) * (p : K) ^ (n + 1))) - (b : K) ^ (m + 1) / 2 + (p : K) ^ n * y := by
+  have hp : p.Prime := Fact.out
+  have hp0 : (p : K) ≠ 0 := by exact_mod_cast hp.ne_zero
+  have hN0 : (N : K) ≠ 0 := by exact_mod_cast hN.ne'
+  have hm : (m : K) + 2 ≠ 0 := by exact_mod_cast (show m + 2 ≠ 0 by omega)
+  refine ⟨∑ i ∈ range (m + 1), ((p : K) * ((bernoulli (i + 2) : ℚ) : K)) * (b : K) ^ (m - i) *
+    ((m + 1).choose (i + 1) : ℕ) * (((p : K) ^ (n + 1)) ^ i / ((i : K) + 2)) * (N : K) ^ (i + 1),
+    sum_mem fun i _ => mul_mem (mul_mem (mul_mem (mul_mem (prime_mul_bernoulli_mem i)
+      (pow_mem (intCast_mem _ _) _)) (natCast_mem _ _)) (pow_div_add_two_mem hp2 n i))
+      (pow_mem (natCast_mem _ _) _), ?_⟩
+  rw [Polynomial.bernoulli, Polynomial.eval_finsetSum]
+  simp only [Polynomial.eval_monomial]
+  push_cast
+  rw [sum_div, mul_sum, sum_range_succ', sum_range_succ', mul_sum]
+  have : ∀ i ∈ range (m + 1), ((N : K) * (p : K) ^ (n + 1)) ^ (m + 1) *
+      (((bernoulli (i + 1 + 1) : ℚ) : K) * ((m + 2).choose (i + 1 + 1) : ℕ) *
+        ((b : K) / ((N : K) * (p : K) ^ (n + 1))) ^ (m + 2 - (i + 1 + 1)) / ((m : K) + 2)) =
+      (p : K) ^ n * (((p : K) * ((bernoulli (i + 2) : ℚ) : K)) * (b : K) ^ (m - i) *
+        ((m + 1).choose (i + 1) : ℕ) * (((p : K) ^ (n + 1)) ^ i / ((i : K) + 2)) * (N : K) ^ (i + 1)) := by
+    intro i hi
+    obtain ⟨l, rfl⟩ : ∃ l, m = i + l := ⟨m - i, by have := mem_range.1 hi; omega⟩
+    have hi2 : (i : K) + 2 ≠ 0 := by exact_mod_cast (show i + 2 ≠ 0 by omega)
+    rw [show i + l + 2 - (i + 1 + 1) = l by omega, show i + l - i = l by omega,
+      show i + 1 + 1 = i + 2 by omega, choose_cast, div_pow]
+    field_simp
+    ring
+  rw [sum_congr rfl this]
+  generalize (∑ i ∈ range (m + 1), _ : K) = S
+  simp [div_pow]
+  field_simp
+  ring
+
+lemma inv_pow_nat_mem {N : ℕ} (hpN : ¬ p ∣ N) (k : ℕ) : ((N : K)⁻¹) ^ k ∈ pInt p K :=
+  pow_mem (inv_nat_mem hpN) k
+
+lemma const_j (hp2 : p ≠ 2) {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (n m : ℕ) (ζ : K) (a a₂ x s : ℤ)
+    (hb : a % ((N * p ^ (n + 1) : ℕ) : ℤ) = N * x + s * (p : ℤ) ^ (n + 1)) :
+    ∃ y ∈ pInt p K, (p : K) ^ ((n + 1) * (m + 1)) * const0 (m + 2) (N * p ^ (n + 1)) ζ a a₂ =
+      -((x : K) ^ (m + 2) / (((m : K) + 2) * (p : K) ^ (n + 1)) + s * (x : K) ^ (m + 1) / N
+        - (x : K) ^ (m + 1) / 2) + (p : K) ^ n * y := by
+  have hp : p.Prime := Fact.out
+  have hp0 : (p : K) ≠ 0 := by exact_mod_cast hp.ne_zero
+  have hN0 : (N : K) ≠ 0 := by exact_mod_cast hN.ne'
+  have hm : (m : K) + 2 ≠ 0 := by exact_mod_cast (show m + 2 ≠ 0 by omega)
+  set b : ℤ := a % ((N * p ^ (n + 1) : ℕ) : ℤ) with hbdef
+  have hbK : (b : K) = (N : K) * x + s * (p : K) ^ (n + 1) := by rw [hb]; push_cast; ring
+  have f : frc (N * p ^ (n + 1)) a = (b : ℚ) / ((N : ℚ) * (p : ℚ) ^ (n + 1)) := by
+    unfold frc; rw [← hbdef]; push_cast; ring
+  obtain ⟨y1, hy1, E1⟩ := bernoulli_expansion_lvl (K := K) hp2 n m N hN b
+  obtain ⟨y3, hy3, E3⟩ := binom_second (K := K) hp2 n m (N * x) s
+  obtain ⟨y4, E4⟩ := binom_first (K := K) ((p : ℤ) ^ (n + 1)) (m + 1) (N * x) s
+  push_cast at E3 E4
+  rw [← hbK] at E3 E4
+  have h2 : (2 : K)⁻¹ ∈ pInt p K := by
+    simpa using inv_nat_mem (K := K) (p := p) (m := 2)
+      fun h => hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 h)
+  refine ⟨-(((N : K)⁻¹) ^ (m + 1) * (p * y3 * (N : K)⁻¹ - p * y4 * 2⁻¹ + y1)),
+    neg_mem (mul_mem (inv_pow_nat_mem hpN _) (add_mem (sub_mem (mul_mem (mul_mem (natCast_mem _ _) hy3)
+      (inv_nat_mem hpN)) (mul_mem (mul_mem (natCast_mem _ _) (intCast_mem _ _)) h2)) hy1)), ?_⟩
+  simp only [const0, if_neg (show m + 2 ≠ 1 by omega), f]
+  have hZ := (eq_div_iff (pow_ne_zero (m + 1) (mul_ne_zero hN0 (pow_ne_zero (n + 1) hp0)))).2 ((mul_comm _ _).trans E1)
+  rw [hZ, E3, E4]
+  rw [pow_mul]
+  have hQ : (p : K) ^ n ≠ 0 := pow_ne_zero _ hp0
+  simp only [pow_succ (p : K) n]
+  generalize (p : K) ^ n = Q at hQ ⊢
+  rw [inv_pow]
+  field_simp
+  ring
+
+omit [Fact p.Prime] in
+lemma exists_intMod_levelPrimePow_eq_add_mul {N : ℕ} (n : ℕ) (a x : ℤ) (h : a ≡ N * x [ZMOD (p : ℤ) ^ (n + 1)]) :
+    ∃ s : ℤ, a % ((N * p ^ (n + 1) : ℕ) : ℤ) = N * x + s * (p : ℤ) ^ (n + 1) := by
+  have h1 : a % ((N * p ^ (n + 1) : ℕ) : ℤ) ≡ a [ZMOD (N : ℤ) * (p : ℤ) ^ (n + 1)] := by
+    have := Int.mod_modEq a ((N * p ^ (n + 1) : ℕ) : ℤ)
+    push_cast at this ⊢
+    exact this
+  have h2 := (h1.of_mul_left _).trans h
+  obtain ⟨s, hs⟩ := h2.symm.dvd
+  exact ⟨s, by linear_combination hs⟩
+
+lemma not_dvd_of_congr {N : ℕ} (hpN : ¬ p ∣ N) (n : ℕ) {a α : ℤ} (h0 : 0 < α) (h1 : α < (p : ℤ) ^ (n + 1))
+    (ha : a ≡ N * α [ZMOD (p : ℤ) ^ (n + 1)]) : ¬ ((p : ℤ) ^ (n + 1) ∣ a) := by
+  have hp : p.Prime := Fact.out
+  intro hd1
+  have hd2 : (p : ℤ) ^ (n + 1) ∣ N * α := (Int.ModEq.dvd ha).elim fun t ht => by
+    refine ⟨t + a / (p : ℤ) ^ (n + 1), ?_⟩
+    have := Int.ediv_mul_cancel hd1
+    linear_combination ht - this
+  have hcop : IsCoprime ((p : ℤ) ^ (n + 1)) (N : ℤ) :=
+    IsCoprime.pow_left ((Nat.prime_iff_prime_int.1 hp).irreducible.coprime_iff_not_dvd.2
+      (fun h => hpN (Int.natCast_dvd_natCast.1 h)))
+  have := hcop.dvd_of_dvd_mul_left hd2
+  exact absurd (Int.le_of_dvd h0 this) (not_le.2 h1)
+
+lemma not_dvd_lvl {N : ℕ} (n : ℕ) {a : ℤ} (h : ¬ ((p : ℤ) ^ (n + 1) ∣ a)) :
+    ¬ (((N * p ^ (n + 1) : ℕ) : ℤ) ∣ a) := fun hd => h (dvd_trans (by push_cast; exact dvd_mul_left _ _) hd)
+
+lemma not_dvd_mul {n : ℕ} {c a : ℤ} (hc : ¬ (p : ℤ) ∣ c) (h : ¬ ((p : ℤ) ^ (n + 1) ∣ a)) :
+    ¬ ((p : ℤ) ^ (n + 1) ∣ c * a) := fun hd => h <|
+  IsCoprime.dvd_of_dvd_mul_left (IsCoprime.pow_left
+    ((Nat.prime_iff_prime_int.1 (Fact.out : p.Prime)).irreducible.coprime_iff_not_dvd.2 hc)) hd
+
+lemma const_congr_gen (hp2 : p ≠ 2) {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (n m : ℕ) (ζ : K) {c : ℤ}
+    (hc : ¬ (p : ℤ) ∣ c) {α a₁ : ℤ} (a₂ : ℤ) (h0 : 0 ≤ α) (h1 : α < (p : ℤ) ^ (n + 1))
+    (ha : a₁ ≡ N * α [ZMOD (p : ℤ) ^ (n + 1)]) :
+    ∃ y ∈ pInt p K, (α : K) ^ (m + 1) * smF c 1 (N * p ^ (n + 1)) ζ a₁ a₂ 0 -
+      (p : K) ^ ((n + 1) * (m + 1)) * smF c (m + 2) (N * p ^ (n + 1)) ζ a₁ a₂ 0 = (p : K) ^ n * y := by
+  have hp : p.Prime := Fact.out
+  have hp0 : (p : K) ≠ 0 := by exact_mod_cast hp.ne_zero
+  have hN0 : (N : K) ≠ 0 := by exact_mod_cast hN.ne'
+  have hm : (m : K) + 2 ≠ 0 := by exact_mod_cast (show m + 2 ≠ 0 by omega)
+  have hc0 : (c : K) ≠ 0 := by
+    have : c ≠ 0 := by rintro rfl; exact hc (dvd_zero _)
+    exact_mod_cast this
+  have hca : c * a₁ ≡ N * (c * α) [ZMOD (p : ℤ) ^ (n + 1)] := by
+    have := ha.mul_left c; rwa [mul_left_comm] at this
+  obtain ⟨s₁, hs₁⟩ := exists_intMod_levelPrimePow_eq_add_mul n a₁ α ha
+  obtain ⟨s₂, hs₂⟩ := exists_intMod_levelPrimePow_eq_add_mul n (c * a₁) (c * α) hca
+  obtain ⟨y1, hy1, E1⟩ := const_j (K := K) hp2 hN hpN n m ζ a₁ a₂ α s₁ hs₁
+  obtain ⟨y2, hy2, E2⟩ := const_j (K := K) hp2 hN hpN n m ζ (c * a₁) (c * a₂) (c * α) s₂ hs₂
+  have hz : (c : K) ^ ((2 : ℤ) - ((m + 2 : ℕ) : ℤ)) = ((c : K) ^ m)⁻¹ := by
+    rw [show (2 : ℤ) - ((m + 2 : ℕ) : ℤ) = -(m : ℤ) by push_cast; ring, zpow_neg, zpow_natCast]
+  have hS : (p : K) ^ ((n + 1) * (m + 1)) * smF c (m + 2) (N * p ^ (n + 1)) ζ a₁ a₂ 0 =
+      (c : K) ^ 2 * ((p : K) ^ ((n + 1) * (m + 1)) * const0 (m + 2) (N * p ^ (n + 1)) ζ a₁ a₂) -
+      ((c : K) ^ m)⁻¹ * ((p : K) ^ ((n + 1) * (m + 1)) * const0 (m + 2) (N * p ^ (n + 1)) ζ (c * a₁) (c * a₂)) := by
+    simp only [smF, eisF, ↓reduceIte, hz]; ring
+  have hci : ((c : K) ^ m)⁻¹ ∈ pInt p K := by rw [← inv_pow]; exact pow_mem (inv_int_mem hc) m
+  refine ⟨-((c : K) ^ 2 * y1 - ((c : K) ^ m)⁻¹ * y2),
+    neg_mem (sub_mem (mul_mem (pow_mem (intCast_mem _ _) _) hy1) (mul_mem hci hy2)), ?_⟩
+  rw [hS, E1, E2]
+  rcases h0.eq_or_lt with h | h
+  · rw [← h]; simp; ring
+  have d0 := not_dvd_of_congr hpN n h h1 ha
+  have d1 := not_dvd_lvl (N := N) n d0
+  have d2 := not_dvd_lvl (N := N) n (not_dvd_mul hc d0)
+  have f1 : frc (N * p ^ (n + 1)) a₁ = ((N * α + s₁ * (p : ℤ) ^ (n + 1) : ℤ) : ℚ) / ((N : ℚ) * (p : ℚ) ^ (n + 1)) := by
+    unfold frc; rw [hs₁]; push_cast; ring
+  have f2 : frc (N * p ^ (n + 1)) (c * a₁) = ((N * (c * α) + s₂ * (p : ℤ) ^ (n + 1) : ℤ) : ℚ) /
+      ((N : ℚ) * (p : ℚ) ^ (n + 1)) := by
+    unfold frc; rw [hs₂]; push_cast; ring
+  simp only [smF, eisF, ↓reduceIte, const0, if_neg d1, if_neg d2, f1, f2]
+  push_cast
+  have hQ : (p : K) ^ n ≠ 0 := pow_ne_zero _ hp0
+  simp only [pow_succ (p : K) n]
+  generalize (p : K) ^ n = Q at hQ ⊢
+  field_simp
+  ring
+
+lemma term_congr_gen (hp0 : (p : K) ≠ 0) {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (n k : ℕ) {A a₁ a : ℤ}
+    (h : A ≡ a₁ [ZMOD ((N * p ^ n : ℕ) : ℤ)]) (ha : a₁ ≡ N * a [ZMOD (p : ℤ) ^ n]) :
+    ∃ y ∈ pInt p K, (p : K) ^ (n * k) * ((A : K) / ((N * p ^ n : ℕ) : K)) ^ k = (a : K) ^ k + (p : K) ^ n * y := by
+  have h' : A ≡ N * a [ZMOD (p : ℤ) ^ n] := by
+    have : A ≡ a₁ [ZMOD (N : ℤ) * (p : ℤ) ^ n] := by push_cast at h; exact h
+    exact (this.of_mul_left _).trans ha
+  obtain ⟨t, ht⟩ := h'.symm.dvd
+  obtain ⟨y, hy⟩ := binom_first (K := K) ((p : ℤ) ^ n) k (N * a) t
+  have hN' : (N : K) ≠ 0 := by exact_mod_cast hN.ne'
+  refine ⟨(y : K) * ((N : K) ^ k)⁻¹, mul_mem (intCast_mem _ _) (by rw [← inv_pow]; exact pow_mem (inv_nat_mem hpN) k), ?_⟩
+  have hA : (A : K) = N * a + t * (p : K) ^ n := by
+    have := congrArg (Int.cast : ℤ → K) ht
+    push_cast at this
+    linear_combination this
+  push_cast at hy ⊢
+  rw [hA, div_pow, hy, pow_mul]
+  have hQ : (p : K) ^ n ≠ 0 := pow_ne_zero _ hp0
+  generalize (p : K) ^ n = Q at hQ ⊢
+  field_simp
+  ring
+
+lemma coefPos_congr_gen {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (n k : ℕ) {ζ : K}
+    (hζ : IsPrimitiveRoot ζ (N * p ^ n)) (a a₁ a₂ : ℤ) (ha : a₁ ≡ N * a [ZMOD (p : ℤ) ^ n]) (r : ℕ) :
+    ∃ y ∈ pInt p K, (a : K) ^ k * coefPos 1 (N * p ^ n) ζ a₁ a₂ r -
+      (p : K) ^ (n * k) * coefPos (k + 1) (N * p ^ n) ζ a₁ a₂ r = (p : K) ^ n * y := by
+  have hp : p.Prime := Fact.out
+  have hp0 : (p : K) ≠ 0 := by exact_mod_cast hp.ne_zero
+  have hM : 0 < N * p ^ n := Nat.mul_pos hN (pow_pos hp.pos n)
+  have key : ∀ (A e : ℤ), ∃ y ∈ pInt p K,
+      (a : K) ^ k * (if A ≡ a₁ [ZMOD ((N * p ^ n : ℕ) : ℤ)] then ζ ^ e else 0) -
+        (p : K) ^ (n * k) * (if A ≡ a₁ [ZMOD ((N * p ^ n : ℕ) : ℤ)] then
+          ((A : K) / ((N * p ^ n : ℕ) : K)) ^ k * ζ ^ e else 0) = (p : K) ^ n * y := by
+    intro A e
+    split_ifs with h
+    · obtain ⟨y, hy, hE⟩ := term_congr_gen hp0 hN hpN n k h ha
+      refine ⟨-(y * ζ ^ e), neg_mem (mul_mem hy (root_zpow_mem hM hζ e)), ?_⟩
+      rw [← mul_assoc, hE]; ring
+    · exact ⟨0, zero_mem _, by simp⟩
+  choose y hy hE using key
+  refine ⟨∑ d ∈ r.divisors, (y ((r / d : ℕ) : ℤ) (a₂ * d) - y (-((r / d : ℕ) : ℤ)) (-(a₂ * d))),
+    sum_mem fun d _ => sub_mem (hy _ _) (hy _ _), ?_⟩
+  unfold coefPos
+  rw [mul_sum, mul_sum, mul_sum, ← sum_sub_distrib]
+  refine sum_congr rfl fun d _ => ?_
+  rw [mul_sub ((p : K) ^ n), ← hE, ← hE]
+  simp only [Nat.sub_self, pow_zero, one_mul, Nat.add_sub_cancel, Int.cast_neg, Int.cast_natCast, neg_div]
+  ring
+
+theorem smF_congr_gen : ∀ (p : ℕ) [Fact p.Prime] (N n j : ℕ) (K : Type) [Field K] [CharZero K] (ζ : K), p ≠ 2 → IsPrimitiveRoot ζ (N * p ^ n) → 0 < N → ¬ p ∣ N → 2 ≤ j → j ^ 2 * p ≤ p ^ n → ∀ (c : ℤ), ¬ (p : ℤ) ∣ c → ∀ (α a₁ a₂ : ℤ), 0 ≤ α → α < (p : ℤ) ^ n → a₁ ≡ N * α [ZMOD (p : ℤ) ^ n] → ∀ r : ℕ, ∃ D : ℕ, ¬ p ∣ D ∧ IsIntegral ℤ ((D : K) * ((α : K) ^ (j - 1) * smF c 1 (N * p ^ n) ζ a₁ a₂ r - (p : K) ^ (n * (j - 1)) * smF c j (N * p ^ n) ζ a₁ a₂ r) / (p : K) ^ (n - 1)) := by
+  intro p _ N n j K _ _ ζ hp2 hζ hN hpN hj hn c hc α a₁ a₂ h0 h1 ha r
+  have hp : p.Prime := Fact.out
+  have hp0 : (p : K) ≠ 0 := by exact_mod_cast hp.ne_zero
+  obtain ⟨m, rfl⟩ : ∃ m, j = m + 2 := ⟨j - 2, by omega⟩
+  obtain ⟨n, rfl⟩ : ∃ n', n = n' + 1 := by
+    rcases n with _ | n
+    · exfalso; have := hp.two_le; rw [pow_zero] at hn; nlinarith
+    · exact ⟨n, rfl⟩
+  rw [show m + 2 - 1 = m + 1 from rfl, Nat.add_sub_cancel]
+  suffices H : ∃ y ∈ pInt p K, (α : K) ^ (m + 1) * smF c 1 (N * p ^ (n + 1)) ζ a₁ a₂ r -
+      (p : K) ^ ((n + 1) * (m + 1)) * smF c (m + 2) (N * p ^ (n + 1)) ζ a₁ a₂ r = (p : K) ^ n * y by
+    obtain ⟨y, ⟨D, hD, hy⟩, E⟩ := H
+    refine ⟨D, hD, ?_⟩
+    rw [E, mul_left_comm, mul_div_cancel_left₀ _ (pow_ne_zero _ hp0)]
+    exact hy
+  rcases eq_or_ne r 0 with rfl | hr
+  · exact const_congr_gen hp2 hN hpN n m ζ hc a₂ h0 h1 ha
+  have hc0 : (c : K) ≠ 0 := by
+    have : c ≠ 0 := by rintro rfl; exact hc (dvd_zero _)
+    exact_mod_cast this
+  have hca : c * a₁ ≡ N * (c * α) [ZMOD (p : ℤ) ^ (n + 1)] := by
+    have := ha.mul_left c; rwa [mul_left_comm] at this
+  obtain ⟨y1, hy1, E1⟩ := coefPos_congr_gen hN hpN (n + 1) (m + 1) hζ α a₁ a₂ ha r
+  obtain ⟨y2, hy2, E2⟩ := coefPos_congr_gen hN hpN (n + 1) (m + 1) hζ (c * α) (c * a₁) (c * a₂) hca r
+  have hz : (c : K) ^ ((2 : ℤ) - ((m + 2 : ℕ) : ℤ)) = ((c : K)⁻¹) ^ m := by
+    rw [show (2 : ℤ) - ((m + 2 : ℕ) : ℤ) = -(m : ℤ) by push_cast; ring, zpow_neg, zpow_natCast, inv_pow]
+  have hz1 : (c : K) ^ ((2 : ℤ) - ((1 : ℕ) : ℤ)) = c := by norm_num
+  refine ⟨p * ((c : K) ^ 2 * y1 - ((c : K)⁻¹) ^ m * y2), mul_mem (natCast_mem _ _)
+    (sub_mem (mul_mem (pow_mem (intCast_mem _ _) _) hy1) (mul_mem (pow_mem (inv_int_mem hc) m) hy2)), ?_⟩
+  simp only [smF, eisF, if_neg hr, hz, hz1]
+  have hcm : ((c : K)⁻¹) ^ m * ((c * α : ℤ) : K) ^ (m + 1) = c * (α : K) ^ (m + 1) := by
+    push_cast; rw [inv_pow]; field_simp; ring
+  linear_combination (c : K) ^ 2 * E1 - ((c : K)⁻¹) ^ m * E2 +
+    coefPos 1 (N * p ^ (n + 1)) ζ (c * a₁) (c * a₂) r * hcm
+
+end GlobalTheory.EisCongGen
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntModLevelPrimePowEqAddMul =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.MemClosureOfIsIntegral =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.MemClosureOfIsIntegral", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.IsThBIff\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.ApplyEqOfMemAdjoin\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective\npublic import Mathlib.RingTheory.AdicCompletion.Noetherian\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsOfEmbedding\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsEqExpOfRat\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntModLevelPrimePowEqAddMul\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedEisensteinFxCoefficientSeqOneMemSubring\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.NumberField.Cyclotomic.Basic\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open scoped MatrixGroups Matrix
@@ -340,3 +763,6 @@ theorem UpperTheory.Kd.L.inzl :
   refine Int.modEq_iff_dvd.2 ⟨-(N : ℤ) * (en g 0 0 / (l : ℤ) ^ L) - en g 0 0 * ((x.val : ℤ) * (topT l L N : ℤ)), ?_⟩
   rw [Int.emod_def]
   ring
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.MemClosureOfIsIntegral =====

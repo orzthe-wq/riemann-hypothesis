@@ -1,9 +1,8 @@
 module
 
+public import Formalism.LocalRingCardinality.DataDIV
 public import Formalism.LocalToGlobal.LatticeGeometry.DegFlLApply
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalShimX
 public import Formalism.LocalRingCardinality.DataKap
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -20,8 +19,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,8 +39,89 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalShimX, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalDivX
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalShimX =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalShimX", "h": "module\n\npublic import Formalism.LocalRingCardinality.DataDIV\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions NumberField
+
+noncomputable section
+
+namespace GlobalTheory
+
+def provisionalShimX (Tau : Type) [Fintype Tau] (N j : ℕ) (lev : Finset ℕ) (hj : 1 ≤ j)
+    (hjN : j < N) (hlev : ∀ p ∈ lev, p.Prime) : DV.ShimX Tau where
+  N := N
+  j := j
+  j_pos := hj
+  j_lt := hjN
+  lev := lev
+  lev_prime := hlev
+  Comp := Unit
+  vol := 0
+  chern := 0
+  chern_homog := fun _ _ _ _ => rfl
+  arDeg := fun _ _ => 0
+  arDeg_homog := fun _ _ _ _ _ _ => rfl
+  arMix := fun _ _ _ => 0
+  arMix_HT := fun _ _ _ _ => rfl
+  arMix_DR := fun _ _ _ _ => rfl
+  CurveHT := fun _ => Empty
+  degHT := fun _ _ _ => 0
+  CurveDR := fun _ => Empty
+  degDR := fun _ _ _ => 0
+  FibComp := fun _ => Empty
+  fibInBd := fun _ _ => False
+  Pt := Unit
+  phiDR := fun _ _ _ => 0
+  phiMod := fun _ _ _ => 0
+  phiFr := fun _ _ _ => 0
+  XC := Unit
+  rfn := fun _ => Real.exp 1
+  rfn_ge := fun _ => le_rfl
+  hLo := fun _ => 1
+  hUp := fun _ => 1
+  hLo_le := fun _ => ⟨one_pos, le_rfl⟩
+  connN := fun _ => 0
+  curvN := fun _ => 0
+  compOf := fun _ => ()
+  normDetInf := fun _ _ => 1
+  compPt := fun _ => ()
+  normDetT := fun _ _ _ => 1
+  normDetH := fun _ _ _ => 1
+  htDetT := fun _ _ _ => 0
+  ALB := Unit
+  arSelf := fun _ => 0
+  arSelfC := fun _ _ => 0
+  arSelf_sum := fun _ => by simp
+  geo := fun _ => 0
+  geoC := fun _ _ => 0
+  geo_sum := fun _ => by simp
+  arVol := fun _ => 0
+  semipos := fun _ => True
+  nefFib := fun _ => True
+  arNef := fun _ => True
+  Mbar := fun _ _ _ => ()
+
+end GlobalTheory
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalShimX =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalDivX =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalDivX", "h": "module\n\npublic import Formalism.LocalToGlobal.LatticeGeometry.DegFlLApply\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalShimX\npublic import Formalism.LocalRingCardinality.DataKap\nimport Formalism.LocalRingCardinality.RankBoundMonotoneInDimension\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism.BasicNotions NumberField
@@ -167,11 +245,6 @@ def provisionalDivX (D : D7) (G : DV.Geo D.what₂.LL) (Y : G.Var)
     qv_gt := fun _ v => v.elim
     qv_char := fun _ _ v => v.elim
     nu := fun _ v => v.elim
-    nu_ne := fun _ v => v.elim
-    nu_abs := fun _ v => v.elim
-    ZQ := fun _ v => v.elim
-    quotientLocalValueFirst := fun _ v => v.elim
-    typeDim := fun _ v => v.elim
     Comp := fun _ => Unit
     degHH := fun _ _ _ => 0
     Yv := fun _ _ => Y
@@ -193,3 +266,6 @@ def provisionalDivX (D : D7) (G : DV.Geo D.what₂.LL) (Y : G.Var)
 end GlobalTheory
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsProvisionalDivX =====

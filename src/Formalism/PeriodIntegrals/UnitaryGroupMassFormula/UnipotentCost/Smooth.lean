@@ -175,35 +175,6 @@ lemma permutationMatrix_eq_permMatrix' (σ : Equiv.Perm (Fin p)) : wP σ = σ.pe
   ext a b
   simp [wP, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply]
 
-private lemma det_one_add_strictLower {q : ℕ} (M : Matrix (Fin q) (Fin q) ℂ) (h : ∀ a b, a ≤ b → M a b = 0) :
-    (1 + M).det = 1 := by
-  rw [Matrix.det_of_lowerTriangular]
-  · simp [h _ _ le_rfl]
-  · intro i j hij
-    have hij' : i < j := hij
-    simp [Matrix.one_apply_ne hij'.ne, h i j hij'.le]
-
-private lemma det_one_add_strictUpper' {q : ℕ} (M : Matrix (Fin q) (Fin q) ℂ) (h : ∀ a b, b ≤ a → M a b = 0) :
-    (1 + M).det = 1 := by
-  rw [Matrix.det_of_upperTriangular]
-  · simp [h _ _ le_rfl]
-  · intro i j hij
-    have hij' : j < i := hij
-    simp [Matrix.one_apply_ne hij'.ne', h i j hij'.le]
-
-lemma det_zjH_ne (hd : ∀ i, d i ≠ 0) (η : XiH p s σ) {Z : G.Mat s} (hZ : G.detM Z ≠ 0) :
-    (ZjH σ d η Z).det ≠ 0 := by
-  simp only [ZjH, Zj, blk2, Matrix.det_mul, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₁₂,
-    Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, headH, G.detM] at hZ ⊢
-  simp only [lowW, G.upper]
-  rw [det_one_add_strictLower _ (fun a b hab => ?_), det_one_add_strictUpper' _ (fun a b hab => ?_)]
-  · rw [permutationMatrix_eq_permMatrix', Matrix.det_permutation, Matrix.det_diagonal]
-    simp only [one_mul, mul_one]
-    refine mul_ne_zero (mul_ne_zero ?_ (Finset.prod_ne_zero_iff.2 fun i _ => hd i)) hZ
-    rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
-  · simp [G.strictUpper, not_lt.2 hab]
-  · simp [not_lt.2 hab]
-
 lemma rn_mem' (hRP : RadicalParam) (j : ℕ) (x : RC k j ρ) : Rn k j ρ x ∈ B.GV k (j + ρ) := by
   have hr : Rn k j ρ x ∈ Rset k j ρ := (hRP k j ρ).2.1 ▸ Set.mem_range_self x
   exact ((hRP k j ρ).2.2 hr).1

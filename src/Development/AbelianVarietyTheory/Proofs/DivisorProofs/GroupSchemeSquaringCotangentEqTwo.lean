@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatPath
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupSchemeUnitStalkDataGermStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupSchemeUnitStalkDataGerm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,7 +62,7 @@ private theorem unitSec_comp_sqr {S : Scheme.{0}} (G : Over S) [GrpObj G] : unit
 theorem sqr_sub_two_mem : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], QuasiSeparated G.hom → ∀ (s : S) (π : S.presheaf.stalk s →+* G.left.presheaf.stalk (unitSec G s)) (ε : G.left.presheaf.stalk (unitSec G s) →+* S.presheaf.stalk s) (m : G.left.presheaf.stalk (unitSec G s) →+* G.left.presheaf.stalk (unitSec G s)), StalkData G s π ε m → ∀ f ∈ RingHom.ker ε, m f - 2 * f ∈ RingHom.ker ε ^ 2 := by
   intro S G _ hqs s π ε m hd f hf
   haveI := hqs
-  obtain ⟨hπ, hε, hm⟩ := GlobalTheory.T.groupSchemeUnitStalkData_germ S G s π ε m hd
+  obtain ⟨hπ, hε, hm⟩ := _root_.GlobalTheory.Nef.stalkData_germ S G s π ε m hd
   have he : unitSec G ≫ G.hom = 𝟙 S := sec_hom η[G]
   obtain ⟨U₀, hU₀, g, rfl⟩ := G.left.presheaf.germ_exist f
   have hsq : sqr G (unitSec G s) = unitSec G s := by rw [← Scheme.Hom.comp_apply, unitSec_comp_sqr]

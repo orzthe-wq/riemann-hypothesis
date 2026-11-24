@@ -2,9 +2,10 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMap
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelBaseChangeMapStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChangeStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -107,22 +108,19 @@ theorem iota_surjective_spec :
 theorem epsMul_fst {A : Type} [CommRing A] (c : A) (a : DualNumber A) : (epsMul c a).fst = a.fst := by
   simp [epsMul]
 
-theorem epsMul_snd {A : Type} [CommRing A] (c : A) (a : DualNumber A) : (epsMul c a).snd = c * a.snd := by
-  simp [epsMul]
+alias epsMul_snd := _root_.GlobalTheory.CompanionTheory.Ar.LieTangent.epsMul_snd
 
 theorem dualMap_fst {A A' : Type} [CommRing A] [CommRing A'] (f : A →+* A') (a : DualNumber A) :
     (dualMap f a).fst = f a.fst := by
   simp [dualMap]
 
-theorem dualMap_snd {A A' : Type} [CommRing A] [CommRing A'] (f : A →+* A') (a : DualNumber A) :
-    (dualMap f a).snd = f a.snd := by
-  simp [dualMap]
+alias dualMap_snd := _root_.GlobalTheory.CompanionTheory.Ar.LieTangent.dualMap_snd
 
 theorem iota_comp_map (q : V) :
     iota.comp (TrivSqZeroExt.map (LinearMap.toSpanSingleton R V q)).toRingHom =
       (epsMul (TrivSqZeroExt.inr q : TrivSqZeroExt R V)).comp (dualMap (algebraMap R (TrivSqZeroExt R V))) := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_
-  · simp [iota_fst, epsMul_fst, dualMap_fst, TrivSqZeroExt.algebraMap_eq_inl]
+  · simp [iota_fst, TrivSqZeroExt.algebraMap_eq_inl]
   · simp only [RingHom.comp_apply, iota_snd, epsMul_snd, dualMap_snd]
     refine TrivSqZeroExt.ext ?_ ?_
     · simp
@@ -137,15 +135,15 @@ theorem dualMap_fst_comp_iota :
     (dualMap (TrivSqZeroExt.fstHom R R V).toRingHom).comp iota =
       (TrivSqZeroExt.map (0 : V →ₗ[R] R)).toRingHom := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_
-  · simp [iota_fst, dualMap_fst]
-  · simp [iota_snd, dualMap_snd]
+  · simp [iota_fst]
+  · simp [iota_snd]
 
 theorem reduce_epsMul (b : TrivSqZeroExt R V) :
     ((dualMap (TrivSqZeroExt.fstHom R R V).toRingHom).comp (epsMul b)).comp (dualMap (algebraMap R (TrivSqZeroExt R V))) =
       epsMul b.fst := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_
-  · simp [epsMul_fst, dualMap_fst, TrivSqZeroExt.algebraMap_eq_inl]
-  · simp [epsMul_snd, dualMap_snd, TrivSqZeroExt.algebraMap_eq_inl]
+  · simp [TrivSqZeroExt.algebraMap_eq_inl]
+  · simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 end Ring
 
@@ -174,8 +172,8 @@ def dMor : epsAt x ⟶ epsAt (xB x V) :=
     congr 2
     ext r : 2
     refine TrivSqZeroExt.ext ?_ ?_
-    · simp [dualMap_fst, TrivSqZeroExt.algebraMap_eq_inl]
-    · simp [dualMap_snd, TrivSqZeroExt.algebraMap_eq_inl])
+    · simp [TrivSqZeroExt.algebraMap_eq_inl]
+    · simp [TrivSqZeroExt.algebraMap_eq_inl])
 
 theorem dMor_cMor : dMor x V ≫ cMor x V = hom x (0 : V →ₗ[R] R) := by
   ext1
@@ -453,7 +451,7 @@ theorem tangent_universal (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj
       (∀ e : L, hom x (Module.Dual.eval R L e) ≫ u = M.pt e) ∧
       ∀ (V : Type) [AddCommGroup V] [Module R V] [Module Rᵐᵒᵖ V] [IsCentralScalar R V] (v : ob x V ⟶ G),
         zsec x ≫ v = 1 → ∃! φ : Module.Dual R L →ₗ[R] V, hom x φ ≫ u = v := by
-  obtain ⟨hfin, hproj, hbc⟩ := GlobalTheory.T.lie_model_finite_base_change S G R x L M
+  obtain ⟨hfin, hproj, hbc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange S G R x L M
   obtain ⟨n, f, g, -, -, hfg⟩ := Module.Finite.exists_comp_eq_id_of_projective R L
   let e : Fin n → L := fun k => f (Pi.single k 1)
   let w : Fin n → Module.Dual R L := fun k => LinearMap.proj k ∘ₗ g
@@ -472,7 +470,7 @@ theorem tangent_universal (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj
   refine ⟨univ M e w, zsec_univ M e w, eval_univ M he, ?_⟩
   intro V _ _ _ _ v hv
   obtain ⟨L', _, _, ⟨M'⟩⟩ := lieModel_exists S G (TrivSqZeroExt R V) (xB x V)
-  obtain ⟨j, hj1, hj2, -⟩ := GlobalTheory.T.lie_model_base_change_map S G R (TrivSqZeroExt R V) x L L' M M'
+  obtain ⟨j, hj1, hj2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_baseChange S G R (TrivSqZeroExt R V) x L L' M M'
   letI : Module R L' := Module.compHom L' (algebraMap R (TrivSqZeroExt R V))
   haveI : IsScalarTower R (TrivSqZeroExt R V) L' := IsScalarTower.of_algebraMap_smul fun _ _ => rfl
   let β : L →ₗ[R] L' := { toFun := j, map_add' := j.map_add, map_smul' := hj2 }

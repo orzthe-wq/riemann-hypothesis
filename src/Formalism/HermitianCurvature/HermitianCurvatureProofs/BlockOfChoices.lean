@@ -239,12 +239,7 @@ end choices
 
 section block0
 
-theorem psd_congr {α : Type} {Y : Finset α} {k k' : α → α → ℂ} (h : ∀ x ∈ Y, ∀ y ∈ Y, k x y = k' x y)
-    (hk : TB.PSDOn Y k) : TB.PSDOn Y k' := by
-  have e : (Matrix.of fun x y : Y => k x y) = Matrix.of fun x y : Y => k' x y := by
-    ext x y; exact h x x.2 y y.2
-  unfold TB.PSDOn at hk ⊢
-  rwa [← e]
+alias psd_congr := _root_.Formalism.FourierDecayAlt.P.Jx7.psd_congr
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V] (Dv : V → Prop) (β : V → V → ℂ)
 

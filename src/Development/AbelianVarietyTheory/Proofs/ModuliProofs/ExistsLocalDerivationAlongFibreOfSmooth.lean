@@ -1,9 +1,10 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLocalDerivationLiftSmoothOverField
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSymm
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDerivationExtendOfFormallySmoothStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLocalDerivationExtensionOfAffineStatement
+public import Mathlib.RingTheory.Smooth.Basic
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDerivationExtendOfFormallySmooth
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLocalDerivationExtensionOfAffine
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLocalDerivationLiftSmoothOverField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -78,10 +79,10 @@ theorem exists_locDer_of_smooth : ∀ (R : Type) [CommRing R] (x₀ : R →+* �
   haveI : Algebra.Smooth R Γ(X, W₀) := liftConstHom_smooth p W₀ hp hW
   have hc : ∀ a, (m.app W₀).hom (algebraMap R Γ(X, W₀) a) = liftConstHom q (m ⁻¹ᵁ W₀) (x₀ a) :=
     fun a => app_constFn_of_comm x₀ q p m hm W₀ a
-  obtain ⟨d₀, h1, h2, h3⟩ := GlobalTheory.T.exists_derivation_extend' R Γ(X, W₀) Γ(Y, m ⁻¹ᵁ W₀) (m.app W₀).hom
+  obtain ⟨d₀, h1, h2, h3⟩ := _root_.GlobalTheory.KS.exists_derivation_extend_of_formallySmooth R Γ(X, W₀) Γ(Y, m ⁻¹ᵁ W₀) (m.app W₀).hom
     (fun r => liftConstHom q (m ⁻¹ᵁ W₀) (D r)) (fun a b => by rw [hD.1, map_add (f := _)])
     (fun a b => by rw [hD.2, hc, hc, map_add (f := _), map_mul, map_mul])
-  obtain ⟨d, hd, -⟩ := GlobalTheory.T.exists_local_derivation_extension_of_affine R Y X q p m D W₀ hW d₀ h1 h2 h3
+  obtain ⟨d, hd, -⟩ := _root_.GlobalTheory.LocDerExt.exists_locDer R Y X q p m D W₀ hW d₀ h1 h2 h3
   exact ⟨d, hd⟩
 
 end GlobalTheory.KS

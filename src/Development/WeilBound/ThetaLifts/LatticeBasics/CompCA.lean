@@ -1,7 +1,7 @@
 module
 
 public import Development.WeilBound.ThetaLifts.LocalTheory.ConeShifts.MemIntLocOfIdem
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntAddConjEqOneOfBaseGood
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.ExistsIntAddConjEqOneOfBaseGood
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceSplitOrInert
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsLatticeFrameIsMajorantFrame
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueIsConjAt
@@ -185,7 +185,7 @@ theorem exists_beta {B : Base F E} (hB : B.IsGood σ) {X : Spc F E n} {r s : ℕ
     rfl
   have jj : ∀ N N' : Matrix (Fin n) (Fin n) (intLoc F E v), j (Nᵀ * G * N'.map (cInt σ v)) = (j N)ᵀ * j G * (j N').map (sigR _ σ) :=
     fun N N' => by rw [map_mul, map_mul]; rfl
-  obtain ⟨θ₀, hθ⟩ := GlobalTheory.exists_int_add_conj_eq_one_of_base_good B hB
+  obtain ⟨θ₀, hθ⟩ := Tw.exists_int_add_conj_eq_one_of_base_good B hB
   let θ : AE F E := inclR (F := F) (AF F) (θ₀ : E)
   have iθ : compFin F E v (-θ) ∈ intLoc F E v := by
     rw [map_neg]; exact neg_mem (tmul_mem_intLoc (show evFin F v 1 ∈ _ by rw [map_one]; exact one_mem _) θ₀)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Operator-only small-runner queue. GH credentials remain on the operator host.
 
-One logical `gh run watch --interval120` per host/run; no run-view polling.
+One logical `gh run watch --interval 120` per host/run; no run-view polling.
 An uncertain POST or monitor outcome is held for operator recovery, never retried.
 """
 import argparse,concurrent.futures,fcntl,json,os,re,subprocess,threading,time

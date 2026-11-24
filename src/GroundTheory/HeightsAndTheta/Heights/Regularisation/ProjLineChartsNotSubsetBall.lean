@@ -1,48 +1,127 @@
 module
 
-public import GroundTheory.HeightsAndTheta.Heights.Regularisation.ToPotentialChartsChartFun
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
+public import GroundTheory.HeightsAndTheta.Heights.Regularisation.Statements
+public import GroundTheory.HeightsAndTheta.Heights.Regularisation.IsOpenKappaOpenNeighbourhood
+public import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.ContinuousTmaxShift
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Real
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.HeightsAndTheta.Heights.Regularisation.ToPotentialChartsChartFun, GroundTheory.HeightsAndTheta.Heights.Regularisation.ProjLineChartsNotSubsetBall
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.Regularisation.ToPotentialChartsChartFun =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.Regularisation.ToPotentialChartsChartFun", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.Regularisation.Statements\npublic import GroundTheory.HeightsAndTheta.Heights.Regularisation.IsOpenKappaOpenNeighbourhood\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.ContinuousTmaxShift\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular
+
+open MeasureTheory Metric Set
+open scoped ContDiff
+open ReciprocityTheory.AnForm (levi)
+open ReciprocityTheory.AnForm.A (Mollifier molli regMax tmax kθ le_tmax tmax_le kθ_integral abs_le_of_kθ_ne)
+open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot IsPotential IsPosPot IsCompatChart)
+open GroundTheory.Heights₂.Heights.Regular (PotentialCharts)
+
+noncomputable section
+
+theorem closure_image_subset {X Y : Type*} [TopologicalSpace X] [CompactSpace X] [TopologicalSpace Y]
+    [T2Space Y] (e : OpenPartialHomeomorph X Y) {s : Set X} (hs : closure s ⊆ e.source) :
+    IsCompact (e '' closure s) ∧ closure (e.target ∩ e.symm ⁻¹' s) ⊆ e '' closure s := by
+  have hK : IsCompact (e '' closure s) :=
+    isClosed_closure.isCompact.image_of_continuousOn (e.continuousOn.mono hs)
+  refine ⟨hK, closure_minimal ?_ hK.isClosed⟩
+  rintro y ⟨hy, hys⟩
+  exact ⟨e.symm y, subset_closure hys, e.right_inv hy⟩
+
+variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X}
+
+namespace RegCharts
+
+def ofPotentialCharts [CompactSpace X] (P : PotentialCharts A) (om : LocPot X)
+    (om_pot : IsPotential A om) (om_pos : IsPosPot A om) : RegCharts A where
+  n := P.N
+  ψ := P.chart
+  compat := P.compat
+  W j := (P.chart j).target
+  W' j := (P.chart j).target ∩ (P.chart j).symm ⁻¹' P.mid j
+  W'' j := (P.chart j).target ∩ (P.chart j).symm ⁻¹' P.inner j
+  isOpen_kappaOpenNeighbourhood j := (P.chart j).open_target
+  isOpen_alt j := (P.chart j).isOpen_inter_preimage_symm (P.isOpen_mid j)
+  isOpen_alt_alt j := (P.chart j).isOpen_inter_preimage_symm (P.isOpen_inner j)
+  W_subset _ := subset_rfl
+  isCompact_closure_middle j :=
+    (closure_image_subset (P.chart j) (P.closure_mid j)).1.of_isClosed_subset isClosed_closure
+      (closure_image_subset (P.chart j) (P.closure_mid j)).2
+  closure_W'_subset j := (closure_image_subset (P.chart j) (P.closure_mid j)).2.trans
+    (image_subset_iff.2 fun _ hx => (P.chart j).map_source (P.closure_mid j hx))
+  closure_W''_subset j := by
+    have hs := (P.closure_inner j).trans (P.mid_subset_source j)
+    refine (closure_image_subset (P.chart j) hs).2.trans ?_
+    rintro _ ⟨x, hx, rfl⟩
+    refine ⟨(P.chart j).map_source (hs hx), ?_⟩
+    show (P.chart j).symm (P.chart j x) ∈ P.mid j
+    rw [(P.chart j).left_inv (hs hx)]
+    exact P.closure_inner j hx
+  cover x := by
+    obtain ⟨j, hj⟩ := P.cover x
+    have hs : x ∈ (P.chart j).source := P.mid_subset_source j (P.inner_subset_mid j hj)
+    refine ⟨j, hs, (P.chart j).map_source hs, ?_⟩
+    show (P.chart j).symm (P.chart j x) ∈ P.inner j
+    rw [(P.chart j).left_inv hs]
+    exact hj
+  θ := P.th
+  θ_pot := P.th_pot
+  om := om
+  om_pot := om_pot
+  om_pos := om_pos
+  q := P.q
+  q_smooth := P.q_smooth
+  q_θ j y hy _ := by
+    obtain ⟨V, hV, hyV, G, hG, hq⟩ := P.q_th j y y ⟨P.th.mem_U y, hy⟩
+    refine ⟨V, hV, hyV, fun x => -G x, fun k => (hG k).neg, fun x hx _ => ?_⟩
+    have := hq x hx
+    simp only [Complex.neg_re]
+    linarith
+
+variable [CompactSpace X] (P : PotentialCharts A) (om : LocPot X) (om_pot : IsPotential A om)
+  (om_pos : IsPosPot A om)
+
+end RegCharts
+
+namespace RegCharts
+
+variable (R : RegCharts A)
+
+variable [T2Space X] (hW : ∀ j, R.W j ⊆ ball 0 1)
+
+end RegCharts
+
+section RoundTrip
+
+variable [CompactSpace X] [T2Space X]
+
+end RoundTrip
+
+namespace PotentialCharts
+
+variable (P : PotentialCharts A)
+
+
+end PotentialCharts
+
+end
+
+end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.Regularisation.ToPotentialChartsChartFun =====
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.Regularisation.ProjLineChartsNotSubsetBall =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.Regularisation.ProjLineChartsNotSubsetBall", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.Regularisation.ToPotentialChartsChartFun\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -135,3 +214,6 @@ end BoundedThPsh
 end
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.Regularisation.ProjLineChartsNotSubsetBall =====

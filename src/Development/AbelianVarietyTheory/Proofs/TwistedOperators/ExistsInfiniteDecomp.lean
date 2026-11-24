@@ -82,14 +82,6 @@ theorem norm_pi {A ι : Type} [Field A] [Fintype ι] {B : ι → Type} [∀ i, C
 
 variable (F K : Type) [Field F] [NumberField F] [Field K] [NumberField K] [Algebra F K]
 
-theorem finite_fibre (v : HeightOneSpectrum (𝓞 F)) :
-    {w : HeightOneSpectrum (𝓞 K) | w.under (𝓞 F) = v}.Finite := by
-  have := v.isMaximal
-  refine Set.Finite.of_finite_image (f := fun w => w.asIdeal) ?_ fun a _ b _ h => HeightOneSpectrum.ext h
-  refine (IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 K)).subset ?_
-  rintro _ ⟨w, rfl, rfl⟩
-  exact ⟨w.isPrime, ⟨rfl⟩⟩
-
 theorem exists_finite_decomp :
     ∃ ψ : ∀ (v : HeightOneSpectrum (𝓞 F)) (w : {w : HeightOneSpectrum (𝓞 K) // w.under (𝓞 F) = v}),
       v.adicCompletion F ⊗[F] K →+* w.1.adicCompletion K,
@@ -112,7 +104,7 @@ theorem exists_finite_decomp :
             (GlobalTheory.AdelicU.evalV_singleFin_ne e), map_zero]
           rfl
     rw [← h1, (map_eq_zero_iff _ (GlobalTheory.LFun.finAdEquiv F K).injective).1 h2, map_zero]
-  · have hf := finite_fibre F K v
+  · have hf := _root_.GlobalTheory.QNorm.finite_places_over F K v
     obtain ⟨Y, hY⟩ := (GlobalTheory.LFun.finAdEquiv F K).surjective
       ⟨fun u => if h : u.under (𝓞 F) = v then z ⟨u, h⟩ else 0, by
         refine hf.subset fun u hu => ?_
@@ -340,15 +332,15 @@ theorem exists_global {E : Type} [Field E] [NumberField E] [Algebra F E] [Algebr
   let X : FinFam K := fun w => Units.map (ψ _ ⟨w, rfl⟩ : _ →* _) (x (w.under (𝓞 F)))
   let Y : InfFam K := fun w => Units.map (χ _ ⟨w, rfl⟩ : _ →* _) (y (w.comap (algebraMap F K)))
   have hT : ((fun w : HeightOneSpectrum (𝓞 K) => w.under (𝓞 F)) ⁻¹' hx.toFinset).Finite :=
-    hx.toFinset.finite_toSet.preimage' fun v _ => finite_fibre F K v
+    hx.toFinset.finite_toSet.preimage' fun v _ => _root_.GlobalTheory.QNorm.finite_places_over F K v
   have hX : ∀ w, w.under (𝓞 F) ∉ hx.toFinset → X w ∈ normGroup K L _ := fun w hw =>
     (mem_normGroup_iff_form e h0 h1).2 ((form_iff (ψ _) (g1 _) (gb _) d _).1 (by simpa using hw) ⟨w, rfl⟩)
   have hA : AlmostNorm K L X := hT.subset fun w hw => by
     by_contra h
     exact hw (hX w h)
   have hfib : ∀ v, eta F E _ (finDiag F δ v) =
-      ∏ w ∈ (finite_fibre F K v).toFinset, eta K L _ (X w) := fun v => by
-    haveI : Fintype {w : HeightOneSpectrum (𝓞 K) // w.under (𝓞 F) = v} := (finite_fibre F K v).fintype
+      ∏ w ∈ (_root_.GlobalTheory.QNorm.finite_places_over F K v).toFinset, eta K L _ (X w) := fun v => by
+    haveI : Fintype {w : HeightOneSpectrum (𝓞 K) // w.under (𝓞 F) = v} := (_root_.GlobalTheory.QNorm.finite_places_over F K v).fintype
     rw [Finset.prod_subtype (p := fun w => w.under (𝓞 F) = v) _ (by simp)]
     refine (eta_eq_of_div_mem (hf v)).symm.trans
       ((eta_norm_eq_prod (ψ v) (g1 v) (gb v) (bf v) (mf v) (x v)).trans ?_)

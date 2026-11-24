@@ -53,7 +53,7 @@ open Formalism.FourierDecayAlt
 def PStdOfHeads : Prop := KB.RadHead → KB.HeadTop → KB.PStd
 
 theorem pStdOfHeads : PStdOfHeads := fun hRH hHT =>
-  pStdOfParts hRH hHT Formalism.FourierDecayAlt.P.module_form_eq_radial_form_one Formalism.FourierDecayAlt.P.exists_zeta_normalized_haar
+  pStdOfParts hRH hHT _root_.Formalism.FourierDecayAlt.P.PBF.formOne Formalism.FourierDecayAlt.P.exists_zeta_normalized_haar
 
 theorem pStdCpt_of_heads (hP : P5.ThmPActualCpt) (hRH : KB.RadHead) (hHT : KB.HeadTop) :
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -65,7 +65,7 @@ theorem pStdCpt_of_heads (hP : P5.ThmPActualCpt) (hRH : KB.RadHead) (hHT : KB.He
       (∀ c : ℂ, c ≠ 0 → φ c = (KB.levW P (j + 1) c : ℂ) * p.RR F (j + 1) w (h ++ [(1, c)]) (h' ++ [(1, c)])) ∧
       ∀ s : ℂ, ∫ c, P5.fsv s c * φ c =
         p.form j hj w (KB.waveG (p.T.bs j) s w (KB.slv p.T F j hj w h hh.2)) (KB.slv p.T F j hj w h' hh'.2) :=
-  pStd_cpt_of_parts hP hRH hHT Formalism.FourierDecayAlt.P.module_form_eq_radial_form_one Formalism.FourierDecayAlt.P.exists_zeta_normalized_haar
+  pStd_cpt_of_parts hP hRH hHT _root_.Formalism.FourierDecayAlt.P.PBF.formOne Formalism.FourierDecayAlt.P.exists_zeta_normalized_haar
 
 end Formalism.FourierDecayAlt.P.PBO
 

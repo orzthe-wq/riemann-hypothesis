@@ -1,9 +1,10 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.DefsTw
+public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ClsBasic
+public import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.QmapPres
 public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExSummand
 public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.GalCentral
-public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.TwCls
 public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.TwUnitary
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -27,7 +28,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -41,7 +41,84 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.TwCls, Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjCarries
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.TwCls =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.TwCls", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.DefsTw\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ClsBasic\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.QmapPres\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory NumberField IsDedekindDomain
+open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
+open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
+open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
+open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
+
+theorem UpperTheory.ConvolutionTheory.Dp.twCls :
+    UpperTheory.ConvolutionTheory.Dp.TwCls := by
+  intro K _ _ n μ _ θ φ hφ ψ hψ
+  have hmemS : ∀ g, θ.e.symm g ∈ rationalGLOne (K := K) (n := n) ↔ g ∈ rationalGLOne (K := K) (n := n) := fun g => by
+    have h := θ.mem_gam (θ.e.symm g)
+    rw [ContinuousMulEquiv.apply_symm_apply] at h
+    exact h.symm
+  have hpresS : MeasurePreserving θ.e.symm μ μ :=
+    MeasurePreserving.symm θ.e.toHomeomorph.toMeasurableEquiv θ.pres
+  obtain ⟨hmk, hT⟩ := UpperTheory.ConvolutionTheory.K.qmapPres (rationalGLOne (K := K) (n := n)) μ θ.e.symm hmemS hpresS
+  let T : RightCosetSpace (rationalGLOne (K := K) (n := n)) → RightCosetSpace (rationalGLOne (K := K) (n := n)) :=
+    fun y => mk _ (θ.e.symm (Quotient.out y))
+  have hTmk : ∀ x, T (mk _ x) = mk _ (θ.e.symm x) := hmk
+  have hTc : Continuous T := by
+    refine (isOpenQuotientMap_mk (rationalGLOne (K := K) (n := n))).isQuotientMap.continuous_iff.2 ?_
+    have h : T ∘ mk _ = mk _ ∘ θ.e.symm := funext hTmk
+    rw [h]
+    exact (continuous_mk _).comp θ.e.symm.continuous
+  let Φ := cuspQuot φ.2.1.isLeftInvariant
+  let Ψ := cuspQuot ψ.2.1.isLeftInvariant
+  have hΦc : Continuous Φ := continuous_cuspQuot _ φ.2.1.continuous
+  have hΨc : Continuous Ψ := continuous_cuspQuot _ ψ.2.1.continuous
+  have hb := (UpperTheory.ConvolutionTheory.Dp.clsBasic K n μ).2.2.2
+  have hout : ∀ (χ : cuspForms K n) (y : RightCosetSpace (rationalGLOne (K := K) (n := n))),
+      χ.1 ((Quotient.out y : normOneGL (K := K) (n := n)) : AdelicGLn.AdelicGL K n) =
+        cuspQuot χ.2.1.isLeftInvariant y := fun χ y => by
+    have h : mk (rationalGLOne (K := K) (n := n)) (Quotient.out y) = y := Quotient.out_eq y
+    conv_rhs => rw [← h]
+    rw [cuspQuot_mk]
+  have hφa : (clsL μ φ : RightCosetSpace (rationalGLOne (K := K) (n := n)) → ℂ)
+      =ᵐ[quotientMeasure (rationalGLOne (K := K) (n := n)) μ] Φ :=
+    (hb φ hφ).trans (Filter.Eventually.of_forall (hout φ))
+  have hψa : (clsL μ ψ : RightCosetSpace (rationalGLOne (K := K) (n := n)) → ℂ)
+      =ᵐ[quotientMeasure (rationalGLOne (K := K) (n := n)) μ] Ψ :=
+    (hb ψ hψ).trans (Filter.Eventually.of_forall (hout ψ))
+  have hU : (θ.U (clsL μ ψ) : RightCosetSpace (rationalGLOne (K := K) (n := n)) → ℂ)
+      =ᵐ[quotientMeasure (rationalGLOne (K := K) (n := n)) μ] Ψ ∘ T :=
+    (θ.U_spec _).trans (hT.quasiMeasurePreserving.ae_eq_comp hψa)
+  constructor
+  · intro h x
+    have h1 : Ψ ∘ T =ᵐ[quotientMeasure (rationalGLOne (K := K) (n := n)) μ] Φ := by
+      rw [h] at hU
+      exact hU.symm.trans hφa
+    have h2 : Ψ ∘ T = Φ := (Continuous.ae_eq_iff_eq _ (hΨc.comp hTc) hΦc).1 h1
+    have h3 := congrFun h2 (mk _ (θ.e x))
+    simp only [Function.comp_apply, hTmk, ContinuousMulEquiv.symm_apply_apply] at h3
+    simpa only [Ψ, Φ, cuspQuot_mk] using h3
+  · intro h
+    have h2 : Ψ ∘ T = Φ := by
+      funext y
+      obtain ⟨x, rfl⟩ := mk_surjective _ y
+      simp only [Function.comp_apply, hTmk, Ψ, Φ, cuspQuot_mk]
+      rw [h, ContinuousMulEquiv.apply_symm_apply]
+    rw [h2] at hU
+    exact Lp.ext (hU.trans hφa.symm)
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.TwCls =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjCarries =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjCarries", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.DefsTw\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExSummand\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.GalCentral\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.TwCls\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.TwUnitary\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory NumberField IsDedekindDomain
@@ -114,3 +191,6 @@ theorem UpperTheory.ConvolutionTheory.Dp.conjCarries :
       exact Submodule.mem_map.2 ⟨φ, hφ, (hU φ hφ ψ hψ e).symm⟩
   rw [e]
   exact map_closure θ.U (twUnitary E n μ θ).1 _ _
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjCarries =====

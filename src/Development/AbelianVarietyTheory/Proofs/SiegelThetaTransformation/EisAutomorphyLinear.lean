@@ -1,17 +1,14 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaEisensteinConvergeBoundedStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicitStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctionsStatement
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PosSemidefSubSmulOne
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.QuadCocycle
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatInnerProductSelfNonnegBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UnitaryActHalfSpace
+public import Mathlib.Analysis.Matrix.PosDef
+public import Mathlib.Algebra.Star.UnitaryStarAlgAut
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaEisensteinConvergeBounded
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatInnerProductSelfNonnegBounds
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -26,7 +23,6 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
@@ -53,7 +49,67 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicit
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctions
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.QuadCocycle
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UnitaryActHalfSpace
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.PiTensorProduct
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PosSemidefSubSmulOne, Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EisAutomorphyLinear
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PosSemidefSubSmulOne =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PosSemidefSubSmulOne", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Matrix.PosDef\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Star.UnitaryStarAlgAut\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix Complex Unitary
+open scoped ComplexOrder
+
+namespace GlobalTheory.PosSemidefShiftByScalar
+
+theorem posSemidef_sub_smul_one {n : Type} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
+    (hA : A.PosDef) :
+    ∃ δ : ℝ, 0 < δ ∧ ∀ δ' : ℝ, δ' ≤ δ → (A - (δ' : ℂ) • (1 : Matrix n n ℂ)).PosSemidef := by
+  have hH := hA.isHermitian
+  obtain ⟨δ, hδ, hle⟩ : ∃ δ : ℝ, 0 < δ ∧ ∀ i, δ ≤ hH.eigenvalues i := by
+    rcases isEmpty_or_nonempty n with h | h
+    · exact ⟨1, one_pos, fun i => (IsEmpty.false i).elim⟩
+    · obtain ⟨i0, -, hi0⟩ :=
+        Finset.exists_min_image Finset.univ hH.eigenvalues Finset.univ_nonempty
+      exact ⟨_, hA.eigenvalues_pos i0, fun i => hi0 i (Finset.mem_univ i)⟩
+  refine ⟨δ, hδ, fun δ' hδ' => ?_⟩
+  have e : A - (δ' : ℂ) • (1 : Matrix n n ℂ) = conjStarAlgAut ℂ _ hH.eigenvectorUnitary
+      (diagonal (fun i => ((hH.eigenvalues i - δ' : ℝ) : ℂ))) := by
+    have d : diagonal (fun i => ((hH.eigenvalues i - δ' : ℝ) : ℂ)) =
+        diagonal (RCLike.ofReal ∘ hH.eigenvalues) - (δ' : ℂ) • (1 : Matrix n n ℂ) := by
+      ext i j; by_cases h : i = j <;> simp [diagonal, h]
+    conv_lhs => rw [hH.spectral_theorem]
+    rw [d, map_sub, map_smul, map_one]
+  rw [e, conjStarAlgAut_apply, isUnit_coe.posSemidef_star_right_conjugate_iff]
+  exact PosSemidef.diagonal fun i =>
+    Complex.zero_le_real.2 (sub_nonneg.2 (hδ'.trans (hle i)))
+
+theorem exists_pos_mem_HnGe {N : ℕ} {E : Type} [Field E] (Ψ : Finset (E →+* ℂ))
+    {Z : GlobalTheory.SW.CM Ψ N N} (hZ : Z ∈ GlobalTheory.SW.Hn Ψ N) :
+    ∃ δ : ℝ, (0 : ℝ) < δ ∧ Z ∈ GlobalTheory.SW.HnGe Ψ N δ := by
+  choose d hd h using fun τ : Ψ => posSemidef_sub_smul_one (hZ τ)
+  rcases isEmpty_or_nonempty Ψ with hΨ | hΨ
+  · exact ⟨1, one_pos, fun τ => (IsEmpty.false τ).elim⟩
+  · obtain ⟨τ0, -, hτ0⟩ := Finset.exists_min_image Finset.univ d Finset.univ_nonempty
+    exact ⟨d τ0, hd τ0, fun τ => h τ _ (hτ0 τ (Finset.mem_univ τ))⟩
+
+alias main := _root_.GlobalTheory.PosSemidefShiftByScalar.exists_pos_mem_HnGe
+
+end GlobalTheory.PosSemidefShiftByScalar
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PosSemidefSubSmulOne =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EisAutomorphyLinear =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EisAutomorphyLinear", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaEisensteinConvergeBounded\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.PosSemidefSubSmulOne\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatInnerProductSelfNonnegBounds\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicit\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctions\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.QuadCocycle\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UnitaryActHalfSpace\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix Complex NumberField GlobalTheory.SW Filter Topology
@@ -65,15 +121,7 @@ namespace GlobalTheory.SW.EisTrans
 variable {N : ℕ}
 
 
-theorem exists_mem_HnGe {E : Type} [Field E] (Ψ : Finset (E →+* ℂ)) {Z : CM Ψ N N}
-    (hZ : Z ∈ Hn Ψ N) : ∃ δ : ℝ, 0 < δ ∧ Z ∈ HnGe Ψ N δ := by
-  first
-  | exact @_root_.GlobalTheory.PosSemidefShiftByScalar.main
-  | exact _root_.GlobalTheory.PosSemidefShiftByScalar.main
-  | (apply _root_.GlobalTheory.PosSemidefShiftByScalar.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.PosSemidefShiftByScalar.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.PosSemidefShiftByScalar.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.PosSemidefShiftByScalar.main ..)
+alias exists_mem_HnGe := _root_.GlobalTheory.PosSemidefShiftByScalar.exists_pos_mem_HnGe
 
 theorem entry_bound {C D Z : Matrix (Fin N) (Fin N) ℂ} {δ : ℝ} (hδ : 0 < δ)
     (h : D * Cᴴ = C * Dᴴ) (hQ : (C * Z + D).det ≠ 0)
@@ -183,8 +231,8 @@ theorem GlobalTheory.SW.eis_automorphy_linear : ∀ (E : Type) [Field E] [Number
       Summable fun U : Lag E N => ‖eisTerm Ψ U.2.choose φ Z z z'‖ := by
     rintro φ ⟨R, hR, hφ⟩ Z hZ z z'
     obtain ⟨δ, hδ, hZ'⟩ := exists_mem_HnGe Ψ hZ
-    obtain ⟨B, hB⟩ := (GlobalTheory.T.schwartzBruhatInnerProduct_self_nonneg_bounds E _ _ R φ hR hφ).2.2.2.2.1
-    obtain ⟨C, hC⟩ := GlobalTheory.T.hermitianTheta_eisenstein_converge_bounded E Ψ hΨ n N hn hN R δ hR hδ
+    obtain ⟨B, hB⟩ := (_root_.GlobalTheory.SW.ip_self_nonneg_and_bounds E _ _ R φ hR hφ).2.2.2.2.1
+    obtain ⟨C, hC⟩ := _root_.GlobalTheory.SW.theta_eis_bounded E Ψ hΨ n N hn hN R δ hR hδ
     obtain ⟨K, hK⟩ := hFac_inv_bound Ψ hZ z z'
     refine Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun U => ?_)
       ((hC φ hφ B hB Z hZ').1.mul_left K)
@@ -196,7 +244,7 @@ theorem GlobalTheory.SW.eis_automorphy_linear : ∀ (E : Type) [Field E] [Number
     rw [← (lagEquiv hγ).tsum_eq (fun U => eisTerm Ψ U.2.choose φ Z 0 0), ← tsum_mul_left]
     refine tsum_congr fun U => ?_
     have hg := U.2.choose_spec.1
-    rw [(GlobalTheory.T.hermitianWeilAction_siegelParabolic_explicit E Ψ hΨ n N hn φ hφ).2 _ (lagEquiv hγ U).2.choose_spec.1 _
+    rw [(_root_.GlobalTheory.SW.weil_parabolic E Ψ hΨ n N hn φ hφ).2 _ (lagEquiv hγ U).2.choose_spec.1 _
       (HAct.mul_mem hγ hg) (by
         rw [(lagEquiv hγ U).2.choose_spec.2, botSpan_mul, U.2.choose_spec.2]; rfl) Z hZ]
     have ha := (unitary_act_halfSpace E Ψ N γ hγ).2 Z hZ
@@ -206,15 +254,18 @@ theorem GlobalTheory.SW.eis_automorphy_linear : ∀ (E : Type) [Field E] [Number
     have h1 : hFac Ψ (U.2.choose * γ) Z (0 : CM Ψ n N) 0 =
         hFac Ψ U.2.choose (hAct Ψ γ Z) (0 : CM Ψ n N) 0 * hFac Ψ γ Z (0 : CM Ψ n N) 0 := by
       simp only [hFac_zero, (ha.2.2.2 _ hg).2.1, det_mul, mul_pow, Finset.prod_mul_distrib]
-    rw [eisTerm, eisTerm, h1, (GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ φ hφ).2.2.2.2.2.1 _ hg, mul_inv]
+    rw [eisTerm, eisTerm, h1, (_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ φ hφ).2.2.2.2.2.1 _ hg, mul_inv]
     field_simp
   · unfold eis
     rw [← (hs φ hφ Z hZ z z').of_norm.tsum_add (hs ψ hψ Z hZ z z').of_norm]
     refine tsum_congr fun U => ?_
     rw [eisTerm, eisTerm, eisTerm,
-      ((GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn _ U.2.choose_spec.1 φ hφ).2.2.2.1 ψ hψ).2, Pi.add_apply, add_mul]
+      ((_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn _ U.2.choose_spec.1 φ hφ).2.2.2.1 ψ hψ).2, Pi.add_apply, add_mul]
   · unfold eis
     rw [← tsum_mul_left]
     refine tsum_congr fun U => ?_
-    rw [eisTerm, eisTerm, (GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn _ U.2.choose_spec.1 φ hφ).2.2.2.2.1 c,
+    rw [eisTerm, eisTerm, (_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn _ U.2.choose_spec.1 φ hφ).2.2.2.2.1 c,
       Pi.smul_apply, smul_eq_mul, mul_assoc]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EisAutomorphyLinear =====

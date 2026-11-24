@@ -66,7 +66,7 @@ theorem inCone_of_strict {m' n : ℕ} {σ : Fin m' → LinearMap.BilinForm ℤ X
         simp only [Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, hrel,
           add_neg_cancel])
     rw [Fintype.sum_sum_type] at this
-    simp only [Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib] at this
+    simp only [Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib] at this
     linarith
   have hφ : ∑ i, a i * φ.evalZ (β i) = ∑ j, b j * φ.evalZ (σ j) := by
     rw [← hlin, hrel]; exact (linearOn_iff φ σ).1 hσl b hb

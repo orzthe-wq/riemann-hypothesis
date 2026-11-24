@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
 
 @[expose] public section
 
@@ -89,16 +90,11 @@ theorem locDual_dualAt_anti (h : V →ₗ⋆[K] V →ₗ[K] K) (p : Ideal R) {L 
   rw [locDual_mem_dualAt] at hx ⊢
   exact fun y hy => hx y (hLM hy)
 
-private theorem mem_dual_iff_forall_mem_one (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule R V) (x : V) :
-    x ∈ dual h L ↔ ∀ y ∈ L, h y x ∈ (1 : Submodule R K) := by
-  simp only [dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
-    LinearMap.restrictScalars_apply]
-
 theorem locDual_loc_dual_le (h : V →ₗ⋆[K] V →ₗ[K] K) (p : Ideal R) (L : Submodule R V) :
     loc (K := K) p (dual h L) ≤ dualAt h p L := by
   intro x hx
   obtain ⟨s, hs, hsx⟩ : ∃ s ∈ hcompl (K := K) p, s • x ∈ dual h L := hx
-  rw [mem_dual_iff_forall_mem_one] at hsx
+  rw [_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual] at hsx
   rw [locDual_mem_dualAt]
   intro y hy
   rw [locDual_mem_locR]
@@ -119,7 +115,7 @@ theorem locDual_dualAt_le (h : V →ₗ⋆[K] V →ₗ[K] K)
     fun y hy => (locDual_mem_locR p _).mp (hx y (Submodule.subset_span hy))
   choose! s hs hsy using hloc
   refine ⟨∏ y ∈ t, s y, Submonoid.prod_mem _ (fun y hy => hs y hy), ?_⟩
-  rw [mem_dual_iff_forall_mem_one]
+  rw [_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual]
   intro y hy
   induction hy using Submodule.span_induction with
   | mem y hy =>

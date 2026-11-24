@@ -55,8 +55,7 @@ open GlobalTheory.SplitHecke
 
 variable {D : D7} {S T : HSp D}
 
-theorem act_add (g : GA D S) (h : GA D T) (x y : WO S T) :
-    actO S T g h (x + y) = actO S T g h x + actO S T g h y := map_add (actAdd S T g h) x y
+alias act_add := _root_.GlobalTheory.WeilVacMove.actO_add
 
 theorem act_nsmul (g : GA D S) (h : GA D T) (k : ℕ) (x : WO S T) :
     actO S T g h (k • x) = k • actO S T g h x := map_nsmul (actAdd S T g h) k x
@@ -91,11 +90,7 @@ theorem halfInd_act {e : AE D} {Λ : AddSubgroup (WO S T)} (g : GA D S) (h : GA 
   · rw [if_pos ht, if_pos (this.2 ht)]
   · rw [if_neg ht, if_neg (fun hh => ht (this.1 hh))]
 
-theorem heisO_smul' (ψ : AddChar (AF D.host.F) ℂ) (w : WO S T) (c : ℂ) (f : WO S T → ℂ) :
-    heisO ψ S T w (c • f) = c • heisO ψ S T w f := by
-  funext t
-  simp only [heisO, Pi.smul_apply, smul_eq_mul]
-  ring
+alias heisO_smul' := _root_.GlobalTheory.LatVac.heisO_smul
 
 theorem om_theta_eq_smul : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (e : AE D) (Λ : AddSubgroup (WO S T)) (f₀ Φ f : WO S T → ℂ), (∀ Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ), IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Tm → ∀ Ψ, IsSBHalf e Λ Ψ → IsThetaFunO ψ S T (Tm Ψ)) → IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Φ f → ∀ (g : GA D S) (h : GA D T), (∀ u, u ∈ Λ ↔ actO S T g h u ∈ Λ) → ∀ c c' : ℂ, c ≠ 0 → om (g, h) f₀ = c • f₀ → (∀ x, Φ (actO S T g⁻¹ h⁻¹ x) = c' * Φ x) → om (g, h) f = (c * c') • f := by
   intro D ψ S T χS χT om hom e Λ f₀ Φ f hth hΘ g h hΛ c c' hc hf₀ hΦ

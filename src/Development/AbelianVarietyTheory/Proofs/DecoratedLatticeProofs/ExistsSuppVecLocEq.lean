@@ -75,7 +75,7 @@ theorem mem_latV_iff_latLoc (V : HSp D) (L : Lat V) (hL : L.FG) (v : Pl D) (y : 
 
 theorem exists_supp_vecLoc_eq {n : ℕ} (v : Pl D) (z : Fin n → Fv D.host.F v ⊗[D.host.F] D.host.E) :
     ∃ y : Fin n → AE D, (∀ i, y i ∈ idAt D (· = v)) ∧ GlobalTheory.AdelicU.vecLoc v (finPart D ∘ y) = z := by
-  choose lift hl1 hl2 using GlobalTheory.KStabBridge.exists_fin_lift (D := D)
+  choose lift hl1 hl2 using _root_.GlobalTheory.VacInert.exists_lift (D := D)
   let y' : Fin n → Af D.host.F ⊗[D.host.F] D.host.E := fun i =>
     GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (GlobalTheory.AdelicU.singleFin v) (GlobalTheory.AdelicU.singleFin_mul v) (z i)
   have h1 : GlobalTheory.AdelicU.vecLoc v y' = z :=

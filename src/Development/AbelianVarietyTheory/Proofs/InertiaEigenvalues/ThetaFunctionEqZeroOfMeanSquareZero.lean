@@ -4,9 +4,11 @@ public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasDerivAtZeroAndIsTheta
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HomSymplecticHalfFormAlgebraicLawsContinuous
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchurLemmaThetaFunctionsOrientedPair
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DescMk
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CocompactTensor
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RationalSymplecticPointsSelfAnnihilator
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDescendPeriodicTrig
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -166,7 +168,7 @@ theorem trig_approx (hψ : IsStdChar D ψ (-1)) {q : WO S T → ℂ} (hq : Conti
   obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T S
   haveI : BorelSpace (WO S T) := ⟨rfl⟩
   obtain ⟨l1, l2, -, l4, -⟩ := GlobalTheory.OrientedFormLaws.symplOH_laws D S T
-  exact GlobalTheory.trigPoly_dense_periodic (WO S T) (ratL T S) K hK hKc (ratL T S)
+  exact _root_.GlobalTheory.QuotientDescentTwistedOperators.approx (WO S T) (ratL T S) K hK hKc (ratL T S)
     (fun γ x => ψ (symplO S T x γ))
     (fun γ => by
       have : Continuous fun x : WO S T => symplOH S T x (γ : WO S T) :=

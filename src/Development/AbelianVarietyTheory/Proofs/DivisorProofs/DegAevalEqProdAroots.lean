@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -59,8 +60,8 @@ theorem deg_aeval_eq_prod_aroots :
         ((((charpoly f).map (Int.castRingHom ℚ)).aroots Ω).map
           (fun a => Polynomial.aeval a R)).prod := by
   intro K _ A f Ω _ _ _ R
-  obtain ⟨⟨hm, hd, hev⟩, -⟩ := GlobalTheory.T.abelianVarietyEndCharpoly_spec K A f
-  refine GlobalTheory.T.multiplicative_polynomialFunction_eq_normForm Ω A.dim
+  obtain ⟨⟨hm, hd, hev⟩, -⟩ := _root_.GlobalTheory.AV.AbVar.isCharpoly_charpoly_unique K A f
+  refine _root_.GlobalTheory.MulPolyNorm.eq_prod_aroots Ω A.dim
     (fun F => (deg (Polynomial.aeval f F).asHom : ℚ))
     ((charpoly f).map (Int.castRingHom ℚ)) ?_ ?_ ?_ ?_ ?_ R
   · intro F G
@@ -68,7 +69,7 @@ theorem deg_aeval_eq_prod_aroots :
       (Polynomial.aeval f G).asHom (Polynomial.aeval f F).asHom rfl rfl).2
     rw [map_mul, End.mul_asHom, h, Nat.cast_mul, mul_comm]
   · intro n u
-    obtain ⟨Φ, hΦ, hΦev⟩ := GlobalTheory.T.homDegree_integerCombination_isHomogeneous
+    obtain ⟨Φ, hΦ, hΦev⟩ := _root_.GlobalTheory.AV.AbVar.deg_isHomogeneousPoly
       K A A rfl n (fun i => (Polynomial.aeval f (u i)).asHom)
     refine ⟨Φ, hΦ, fun m => ?_⟩
     rw [hΦev m]

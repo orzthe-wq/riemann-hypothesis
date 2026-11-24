@@ -69,11 +69,7 @@ theorem gs_sum (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) {I : Type} [F
 
   simp only [gs_eq r z U h, map_sum]
 
-theorem sec_ext {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j = s'.f j) : s = s' := by
-  obtain ⟨f, _⟩ := s
-  obtain ⟨f', _⟩ := s'
-  obtain rfl : f = f' := funext h
-  rfl
+alias sec_ext := _root_.ReciprocityTheory.ChartRestriction.G.DVR.SecOps.sec_ext
 
 theorem gs_rp (h : X' ⟶ X) {U : X.Opens} {V : X'.Opens} (le : V ≤ h ⁻¹ᵁ U) (r : Z ⟶ X') (z : Z) (hz : r z ∈ V)
     (a : Γ(X, U)) : gs r z V ((X'.presheaf.map (homOfLE le).op).hom ((h.app U).hom a)) = gs (r ≫ h) z U a :=

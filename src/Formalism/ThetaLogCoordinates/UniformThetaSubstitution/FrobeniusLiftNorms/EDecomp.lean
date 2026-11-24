@@ -124,11 +124,9 @@ theorem lowGe_X_pow (x : Lw) (m : ℕ) :
   rw [MvPowerSeries.coeff_X_pow] at h
   split_ifs at h with e
   · subst e
-    unfold lowDeg
-    refine le_trans ?_ (Finset.single_le_sum
+    simpa [lowDeg] using Finset.single_le_sum
       (f := fun y : Lw => (Finsupp.single (Sum.inr x : Tp ⊕ Lw) m) (Sum.inr y))
-      (fun _ _ => Nat.zero_le _) (Finset.mem_univ x))
-    simp
+      (fun _ _ => Nat.zero_le _) (Finset.mem_univ x)
   · exact absurd rfl h
 
 end LowGe
@@ -184,12 +182,8 @@ theorem cg_first {p : ℕ} (hp : p.Prime) (h2 : 2 < p) (hn : ‖(p : K)‖ = (p 
 theorem exists_of_cg {p : ℕ} (hp : p.Prime) (hn : ‖(p : K)‖ = (p : ℝ)⁻¹) {f g : MvPowerSeries ι K}
     (h : Cg p f g) : ∃ Y : MvPowerSeries ι K, Integral Y ∧ f = g + MvPowerSeries.C (p : K) * Y := by
   have hp0 : (p : K) ≠ 0 := by
-    intro h0
-    rw [h0, norm_zero] at hn
-    have : (0 : ℝ) < (p : ℝ)⁻¹ := by
-      have := hp.pos
-      positivity
-    linarith
+    rw [← norm_ne_zero_iff, hn]
+    exact inv_ne_zero (Nat.cast_ne_zero.mpr hp.ne_zero)
   refine ⟨MvPowerSeries.C ((p : K)⁻¹) * (f - g), fun n => ?_, ?_⟩
   · rw [MvPowerSeries.coeff_C_mul, norm_mul, norm_inv, hn, inv_inv]
     have hpp : (0 : ℝ) < p := by exact_mod_cast hp.pos
@@ -360,8 +354,7 @@ theorem topMonoS_single {Tp Lw : Type} (a : Tp) (m : ℕ) :
 
 theorem topMonoS_add {Tp Lw : Type} (d d' : Tp →₀ ℕ) :
     topMonoS (K := K) (Lw := Lw) (d + d') = topMonoS d * topMonoS d' := by
-  rw [topMonoS, topMonoS, topMonoS, Finsupp.mapDomain_add, MvPowerSeries.monomial_mul_monomial,
-    one_mul]
+  simp [topMonoS, Finsupp.mapDomain_add, MvPowerSeries.monomial_mul_monomial]
 
 theorem tpS_pos {TT : Finset (ZMod (2 * ν))} (ξ : ZMod (2 * ν) → Fin r0 → K) {x : ZV ν r0 r1}
     (h : x.1 ∈ TT) : tpS TT ξ x =

@@ -58,9 +58,7 @@ namespace GlobalTheory.PullLinear
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.TorusCoord
 
-theorem map_left_fst {S T : Scheme.{0}} (f : S ⟶ T) {A B : Over T} (g : A ⟶ B) :
-    ((Over.pullback f).map g).left ≫ pullback.fst B.hom f = pullback.fst A.hom f ≫ g.left :=
-  pullback.lift_fst _ _ _
+alias map_left_fst := _root_.GlobalTheory.SplitTorusPoints.map_left_fst
 
 theorem ext_of_iso_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) {A : Over S} {A' Z : Over S'}
     (e : A' ≅ (Over.pullback f).obj A) {a b : Z ⟶ A'}
@@ -88,7 +86,7 @@ section One
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
 
-theorem pG_left : g.pG.left = g.q.left ≫ pullback.fst D.P.A.hom (thick R I e) := rfl
+alias pG_left := _root_.GlobalTheory.TorusCoord.pG_left
 
 theorem im_torus {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (τ : Z ⟶ WeightPf.Te D I e) :
     im g (τ ≫ g.i) = 1 := by

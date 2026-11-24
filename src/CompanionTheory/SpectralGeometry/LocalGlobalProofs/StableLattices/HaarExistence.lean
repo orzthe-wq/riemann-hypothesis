@@ -74,7 +74,7 @@ theorem keeps_iff_forall_mem (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) (S : Submodule
       rw [Matrix.toLin'_apply]
       exact h v hv
     let e : (Fin n → ℂ) ≃ₗ[ℂ] (Fin n → ℂ) :=
-      LinearEquiv.ofLinear (Matrix.toLin' (g : Matrix (Fin n) (Fin n) ℂ))
+      LinearEquiv.ofLinearMap (Matrix.toLin' (g : Matrix (Fin n) (Fin n) ℂ))
         (Matrix.toLin' ((g⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))
         (by rw [← Matrix.toLin'_mul, Units.mul_inv, Matrix.toLin'_one])
         (by rw [← Matrix.toLin'_mul, Units.inv_mul, Matrix.toLin'_one])
@@ -87,7 +87,7 @@ theorem isClosed_keeps (ε : Fin n → Bool) (S : Submodule ℂ (Fin n → ℂ))
   have hset : {g : S7.UJ ε | Keeps (S7.toM g) S} =
       ⋂ v ∈ S, {g : S7.UJ ε | S7.toM g *ᵥ v ∈ S} := by
     ext g
-    simp only [Set.mem_setOf_eq, Set.mem_iInter]
+    simp only [Set.mem_ofPred_eq, Set.mem_iInter]
     exact keeps_iff_forall_mem (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) S
   rw [hset]
   refine isClosed_biInter fun v _ => ?_

@@ -168,10 +168,7 @@ theorem sub_finite (N : Submodule (𝓞 E) (Fin M → E)) (hN : N.FG) (n : ℕ) 
       have h2 : ((a g : ℤ) : E) = ((a g % n : ℤ) : E) + (n : E) * ((a g / n : ℤ) : E) := by
         have hdm : a g % (n : ℤ) + (n : ℤ) * (a g / n) = a g := by
           first
-            | exact Int.emod_add_ediv _ _
-            | exact Int.emod_add_ediv' _ _
             | (rw [Int.emod_def]; ring)
-            | exact EuclideanDomain.mod_add_div _ _
         have := congrArg (fun q : ℤ => (q : E)) hdm
         push_cast at this
         rw [this]

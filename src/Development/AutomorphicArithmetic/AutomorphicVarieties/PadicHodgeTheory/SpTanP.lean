@@ -163,7 +163,7 @@ private theorem core [CharZero E] (χ : Fin 4 → H →* Eˣ) (θ : H → E) (I 
       · rcases h3 g with h4 | h4
         · exact hn' _ h4 a b
         · exact hI a b _ h4.1 (h4.2 _ h4.1)
-      · simp [mul_right_comm]
+      · simp
     choose X hX0 hX using hx
     refine ⟨Matrix.of X, ?_, fun g a b h => hX a b h g⟩
     show adj _ = -_
@@ -339,4 +339,4 @@ theorem UpperTheory.V.Loc.spTanP :
         have h2 := mul_mem h1 (hn.conj_mem _ (inv_mem h1) g)
         rw [← mul_assoc, ← mul_assoc] at h2
         exact h2
-      · simp [MonoidHom.mem_ker, mul_right_comm]
+      · simp

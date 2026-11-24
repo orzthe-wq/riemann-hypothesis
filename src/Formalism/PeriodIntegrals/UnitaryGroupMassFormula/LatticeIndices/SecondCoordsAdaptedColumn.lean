@@ -92,12 +92,10 @@ theorem secondCoords_adapted_column (c : GL (IdxD D) (OvA X p))
 theorem frame_castSucc_vector_eq (a : Fin D.R.rS) :
     F0 (frameOf X u) (Fin.castSucc a) = crdOf X.B.I X.ιE X.bas (X.eX a) := by
   first
-  | rfl
   | simp [F0, frameOf]
 
 theorem frame_last_vector_eq : F0 (frameOf X u) (Fin.last D.R.rS) = crdOf X.B.I X.ιE X.bas (X.zu u) := by
   first
-  | rfl
   | simp [F0, frameOf]
 
 end Loc

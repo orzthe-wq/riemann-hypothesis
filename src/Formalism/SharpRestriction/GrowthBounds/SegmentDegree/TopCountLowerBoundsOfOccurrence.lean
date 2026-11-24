@@ -168,8 +168,7 @@ theorem Et_le (hOcc : LeadingLetterInAtMostTwoSegments) (hX : X.Hyp p K) (t : Fi
     intro j x hx
     apply Finset.card_le_card_of_injOn (fun i => X.row j x i)
     · intro i hi
-      simp only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq,
-        Finset.mem_coe, Finset.mem_filter] at hi ⊢
+      simp only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hi ⊢
       exact ⟨late_index_map_mem_letters hX j x hx i, hi⟩
     · intro i _ i' _ h
       exact late_index_map_injective hX j x hx h

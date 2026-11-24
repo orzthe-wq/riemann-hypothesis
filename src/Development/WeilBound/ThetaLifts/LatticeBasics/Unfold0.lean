@@ -82,7 +82,7 @@ theorem Law.hasSum (h : Law χ z f) (hχ : IsHecke F E χ) (hJ : Aniso σ Y.J) (
         ((par2 σ Y).subgroupOf (rat2 σ Y))) h)))
       change IsPar (e (1, δ') * (e (1, δ))⁻¹) t at ht
       rw [← map_inv, ← map_mul, isPar_iff, he] at ht
-      simp only [diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.mul_one, Matrix.zero_mul, add_zero, zero_add,
+      simp only [diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.mul_one, add_zero, zero_add,
         Matrix.one_mul] at ht
       obtain ⟨a, b⟩ := Matrix.fromRows_inj ht
       have : (1 : UA σ Y.J) * 1⁻¹ = δ'.1 * δ.1⁻¹ := Subtype.ext (Units.ext (a.trans b.symm))

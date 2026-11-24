@@ -66,7 +66,7 @@ theorem length_localizedModule_quotient {A : Type*} [CommRing A] (K W : Ideal A)
     Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (A ⧸ K)) =
       Module.length (Localization.AtPrime W)
         (Localization.AtPrime W ⧸ K.map (algebraMap A (Localization.AtPrime W))) := by
-  apply _root_.GroundTheory.Heights₂.Heights.NumbersDVR.length_localizedModule_quotient_eq <;> assumption
+  apply _root_.GroundTheory.Heights₂.Heights.NumbersDVR.length_localizedModule_quotient_eq
 
 theorem length_self_eq_of_ringEquiv {Q Q' : Type*} [CommRing Q] [CommRing Q'] (τ : Q ≃+* Q') :
     Module.length Q Q = Module.length Q' Q' := by

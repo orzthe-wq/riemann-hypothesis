@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedNeBotOfMemSupport
 public import Formalism.LocalToGlobal.UnitaryNorms.CharTied
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterSplitPlaceComponentUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameHeckeCharacterSplitPlaceLocalComponentStatement
+public import Formalism.LocalToGlobal.GaloisLevelStructure.DefsLevel
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameHeckeCharacterSplitPlaceLocalComponent
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,7 +51,7 @@ theorem compAt_eq_one_of_tameAt {L : Type} [Field L] [NumberField L] [IsCMField 
     (hχ : χ.TameAt s.w) (ξ : (s.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ) (hξ : NG.IsCompAt χ s ξ)
     (u : (s.v.adicCompletion (maximalRealSubfield L))ˣ)
     (hu : Valued.v ((u : s.v.adicCompletion (maximalRealSubfield L)) - 1) < 1) : ξ u = 1 := by
-  obtain ⟨ξ', hξ', hv⟩ := GlobalTheory.T.tame_heckeCharacter_split_place_local_component L s χ hχ
+  obtain ⟨ξ', hξ', hv⟩ := _root_.GlobalTheory.HeckeSplitComp.main L s χ hχ
   have e : ξ = ξ' := GlobalTheory.T.heckeCharacter_splitPlaceComponent_unique L χ s ξ ξ' hξ hξ'
   have hu1 : Valued.v (u : s.v.adicCompletion (maximalRealSubfield L)) = 1 := by
     have h := Valuation.map_one_add_of_lt (Valued.v : Valuation (s.v.adicCompletion (maximalRealSubfield L)) _) hu

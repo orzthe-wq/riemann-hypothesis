@@ -1,55 +1,97 @@
 module
 
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.MeasMulF
+public import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
+public import Formalism.SharpRestriction.CuspSpanNormBounds.NormalizedLocalScale
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationContinuousOnInvertible
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationInvarianceEverySetting
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SigmaFiniteOfB
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LocWSOf
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.OppositeWeylSubgroupClosed
 import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.EnergyIntLoc
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.EnergyIntTor
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.Choice
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.MeasMulF, Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.MeasurableSetNotUH
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.MeasMulF =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.MeasMulF", "h": "module\n\npublic import Formalism.HermitianCurvature.WeylElementCommutesLevelOne\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.NormalizedLocalScale\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationContinuousOnInvertible\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationInvarianceEverySetting\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.OppositeWeylSubgroupClosed\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SigmaFiniteOfB\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix Formalism.QuantumDeterminants
+
+namespace Formalism.L2.SG.RealObj.EnergyConvJ
+
+variable {k r : ℕ}
+
+def mulF (p : Mt k r × Mt k r) : Mt k r := fun i j => (Matrix.of p.1 * Matrix.of p.2) i j
+
+theorem meas_mulF : Measurable (mulF (k := k) (r := r)) :=
+  Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.RI.meas_mulP
+
+theorem muS_eq (μW μN : Measure (Mt k r)) : Formalism.MainNotions.S.muS μW μN = (μW.prod μN).map mulF := rfl
+
+theorem muS_inv {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) {μW μN : Measure (Mt k r)}
+    (hW : Formalism.FourierDecayAlt.B.IsHaarOn (UWset k r z) μW) (hN : Formalism.FourierDecayAlt.B.IsHaarOn (Nset k r) μN) :
+    (Formalism.MainNotions.S.muS μW μN).map Formalism.FourierDecayAlt.B2.invM = Formalism.MainNotions.S.muS μW μN := by
+  have sW := Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.RI.sigmaFinite_of_b hW
+  have sN := Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.RI.sigmaFinite_of_b hN
+  have hinvm : Measurable (Formalism.FourierDecayAlt.B2.invM : Mt k r → Mt k r) := Formalism.FourierDecayAlt.P.B2x2.invM_meas
+  have hWi : μW.map Formalism.FourierDecayAlt.B2.invM = μW :=
+    Formalism.FourierDecayAlt.P.haar_measure_inversion k r (UWset k r z) μW (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) hW
+  have hNi : μN.map Formalism.FourierDecayAlt.B2.invM = μN :=
+    Formalism.FourierDecayAlt.P.haar_measure_inversion k r (Nset k r) μN (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) hN
+  have hNc : ∀ h ∈ UWset k r z, μN.map (conjM h) = μN := Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r z μN hz hT hN
+
+  let g : Mt k r → Mt k r → Mt k r := fun h n => mulF (mulF (h, Formalism.FourierDecayAlt.B2.invM n), Formalism.FourierDecayAlt.B2.invM h)
+  have hgm : Measurable (Function.uncurry g) :=
+    meas_mulF.comp ((meas_mulF.comp (measurable_fst.prodMk (hinvm.comp measurable_snd))).prodMk
+      (hinvm.comp measurable_fst))
+  have hW0 : ∀ᵐ h ∂μW, Matrix.of h ∈ UWset k r z := by rw [ae_iff]; exact hW.conc
+  have hg : ∀ᵐ h ∂μW, μN.map (g h) = μN := by
+    filter_upwards [hW0] with h hh
+    have e : g h = conjM (Matrix.of h) ∘ Formalism.FourierDecayAlt.B2.invM := rfl
+    rw [e, ← Measure.map_map (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.RI.meas_conj _) hinvm, hNi, hNc _ hh]
+  have hmp : MeasurePreserving (fun p : Mt k r × Mt k r => (Formalism.FourierDecayAlt.B2.invM p.1, g p.1 p.2))
+      (μW.prod μN) (μW.prod μN) :=
+    MeasurePreserving.skew_product (μb := μW) (μd := μN) ⟨hinvm, hWi⟩ hgm hg
+  have hFm : Measurable (fun p : Mt k r × Mt k r => (Formalism.FourierDecayAlt.B2.invM p.1, g p.1 p.2)) :=
+    (hinvm.comp measurable_fst).prodMk hgm
+  have hae : (Formalism.FourierDecayAlt.B2.invM ∘ mulF) =ᵐ[μW.prod μN]
+      (mulF ∘ fun p : Mt k r × Mt k r => (Formalism.FourierDecayAlt.B2.invM p.1, g p.1 p.2)) := by
+    have h1 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z := by
+      rw [ae_iff]
+      have es : {p : Mt k r × Mt k r | ¬ Matrix.of p.1 ∈ UWset k r z} =
+          {x : Mt k r | Matrix.of x ∉ UWset k r z} ×ˢ Set.univ := by
+        ext p; simp
+      rw [es, Measure.prod_prod]
+      have : μW {x : Mt k r | Matrix.of x ∉ UWset k r z} = 0 := hW.conc
+      rw [this, zero_mul]
+    filter_upwards [h1] with p hp
+    have hu : IsUnit (Matrix.of p.1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ).det :=
+      Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.RI.det_unit_of_UH hp.1
+    have hii : (Matrix.of p.1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)⁻¹ * Matrix.of p.1 = 1 :=
+      Matrix.nonsing_inv_mul _ hu
+    show ((Matrix.of p.1 * Matrix.of p.2 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)⁻¹ :
+        Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) =
+      (Matrix.of p.1)⁻¹ * (Matrix.of p.1 * (Matrix.of p.2)⁻¹ * (Matrix.of p.1)⁻¹)
+    rw [Matrix.mul_inv_rev, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hii, Matrix.one_mul]
+  rw [muS_eq, Measure.map_map hinvm meas_mulF, Measure.map_congr hae, ← Measure.map_map meas_mulF hFm, hmp.map_eq]
+
+end Formalism.L2.SG.RealObj.EnergyConvJ
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.MeasMulF =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.MeasurableSetNotUH =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.MeasurableSetNotUH", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.MeasMulF\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LocWSOf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Algebra.Group.Units\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.EnergyIntLoc\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.EnergyIntTor\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.Choice\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -65,34 +107,13 @@ variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 def Tm (C : Choice X θ) (τ : D.what₂.Tau) (x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS :=
   Matrix.of.symm (Formalism.L2.SG.RealObj.trG (Qcs C τ) (Qics C τ) x)
 
-private theorem muT_ne_zero (D : D7) : Formalism.L2.SG.LocWSOf.muT D ≠ 0 := by
-  have hrd : 0 < D.host.rdE := by
-    unfold Formalism.BasicNotions.Host.rdE
-    exact Real.rpow_pos_of_pos (abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero _))) _
-  have hka : 0 < D.host.ka := by
-    unfold Formalism.BasicNotions.Host.ka Formalism.BasicNotions.Host.v
-    exact div_pos Real.pi_pos (half_pos hrd)
-  have hg : (D.host.g 0 * D.host.g 1 : ℕ) ≠ 0 :=
-    Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero
-  have hfr : Formalism.L2.SG.LocWSOf.frS D ≠ 0 := by
-    unfold Formalism.L2.SG.LocWSOf.frS
-    exact Complex.ofReal_ne_zero.mpr (div_pos hka (by positivity : (0:ℝ) < 2 * Real.pi)).ne'
-  have hcf : Formalism.L2.SG.LocWSOf.cfS D ≠ 0 := by
-    unfold Formalism.L2.SG.LocWSOf.cfS
-    have hpi : (2 * (Real.pi : ℂ)) ≠ 0 :=
-      mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero)
-    refine div_ne_zero (neg_ne_zero.mpr (mul_ne_zero Complex.I_ne_zero ?_)) hpi
-    exact Complex.ofReal_ne_zero.mpr (Nat.cast_ne_zero.mpr hg)
-  unfold Formalism.L2.SG.LocWSOf.muT
-  exact div_ne_zero hcf hfr
-
 private theorem torS_mul_torS_inv_eq_one {μ : ℂ} (hμ : μ ≠ 0) (k r : ℕ) :
     Formalism.L2.SG.LocWSOf.torS μ k r * Formalism.L2.SG.LocWSOf.torS μ⁻¹ k r = 1 := by
   unfold Formalism.L2.SG.LocWSOf.torS
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
   funext i
-  split_ifs <;> first | (simp [hμ]; done) | (field_simp; done) | (simp [hμ, inv_pow, star_inv']; done)
+  split_ifs <;> first | (simp [hμ]; done)
 
 private theorem torS_conjTranspose_mul_Hpk_mul_torS_eq_Hpk {μ : ℂ} (hμ : μ ≠ 0) (k r : ℕ) :
     (Formalism.L2.SG.LocWSOf.torS μ k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r * Formalism.L2.SG.LocWSOf.torS μ k r =
@@ -107,13 +128,12 @@ private theorem torS_conjTranspose_mul_Hpk_mul_torS_eq_Hpk {μ : ℂ} (hμ : μ 
     | (simp; done)
     | (rw [show 2 * r + k - (j : ℕ) = (i : ℕ) by omega]; simp [hμ]; done)
     | (rw [show 2 * r + k - (i : ℕ) = (j : ℕ) by omega]; simp [hμ]; done)
-    | (simp [hμ]; done)
 
 private theorem Qics_mul_Qcs_eq_one (C : Choice X θ) (τ : D.what₂.Tau) : Qics C τ * Qcs C τ = 1 := by
   have hT := C.isT τ
   unfold Formalism.L2.SG.LocWSOf.IsTranspC at hT
   obtain ⟨h1, -, -, -⟩ := hT
-  have ht := torS_mul_torS_inv_eq_one (inv_ne_zero (muT_ne_zero D)) D.R.k D.R.rS
+  have ht := torS_mul_torS_inv_eq_one (inv_ne_zero (_root_.Formalism.L2.SG.Pf.muT_ne D)) D.R.k D.R.rS
   rw [inv_inv] at ht
   unfold Formalism.L2.SG.LocWSOf.Qics Formalism.L2.SG.LocWSOf.Qcs
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc (C.Qi τ), h1, Matrix.one_mul, ht]
@@ -124,7 +144,7 @@ private theorem Qcs_mul_Qics_eq_one (C : Choice X θ) (τ : D.what₂.Tau) : Qcs
   obtain ⟨-, h2, -, -⟩ := hT
   unfold Formalism.L2.SG.LocWSOf.Qics Formalism.L2.SG.LocWSOf.Qcs
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc (Formalism.L2.SG.LocWSOf.torS (Formalism.L2.SG.LocWSOf.muT D) D.R.k D.R.rS),
-    torS_mul_torS_inv_eq_one (muT_ne_zero D), Matrix.one_mul, h2]
+    torS_mul_torS_inv_eq_one (_root_.Formalism.L2.SG.Pf.muT_ne D), Matrix.one_mul, h2]
 
 private theorem Qcs_conjTranspose_mul_Jm_mul_Qcs_eq_Hpk (C : Choice X θ) (τ : D.what₂.Tau) :
     (Qcs C τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * Qcs C τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS := by
@@ -137,7 +157,7 @@ private theorem Qcs_conjTranspose_mul_Jm_mul_Qcs_eq_Hpk (C : Choice X θ) (τ : 
         ((C.Q τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * C.Q τ) *
         Formalism.L2.SG.LocWSOf.torS (Formalism.L2.SG.LocWSOf.muT D) D.R.k D.R.rS := by
         simp only [Matrix.mul_assoc]
-    _ = _ := by rw [h3, torS_conjTranspose_mul_Hpk_mul_torS_eq_Hpk (muT_ne_zero D)]
+    _ = _ := by rw [h3, torS_conjTranspose_mul_Hpk_mul_torS_eq_Hpk (_root_.Formalism.L2.SG.Pf.muT_ne D)]
 
 private theorem of_Tm_eq_Qics_mul_mul_Qcs (C : Choice X θ) (τ : D.what₂.Tau) (x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     Matrix.of (Tm C τ x) = Qics C τ * ((x : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) * Qcs C τ := rfl
@@ -146,13 +166,6 @@ private theorem Qics_mul_Qcs_conj_mul_conj_eq_conj_mul (C : Choice X θ) (τ : D
     Qics C τ * U * Qcs C τ * (Qics C τ * V * Qcs C τ) = Qics C τ * (U * V) * Qcs C τ := by
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (Qcs C τ) (Qics C τ), Qcs_mul_Qics_eq_one, Matrix.one_mul]
-
-private theorem Jm_mul_self_eq_one {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
 
 private theorem Qcs_conj_conjTranspose_Jm_eq_Jm_of_mem_UH (C : Choice X θ) (τ : D.what₂.Tau) (m : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)
     (hm : Matrix.of m ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) :
@@ -197,9 +210,9 @@ private theorem mem_range_Tm_of_of_mem_UH (C : Choice X θ) (τ : D.what₂.Tau)
   have hU := Qcs_conj_conjTranspose_Jm_eq_Jm_of_mem_UH C τ m hm
   have hl : Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (Qcs C τ * Matrix.of m * Qics C τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (Qcs C τ * Matrix.of m * Qics C τ) = 1 := by
     rw [show ∀ A B : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ, A * Bᴴ * A * B = A * (Bᴴ * A * B) from fun A B => by
-      simp only [Matrix.mul_assoc], hU, Jm_mul_self_eq_one]
+      simp only [Matrix.mul_assoc], hU, _root_.Formalism.REAL.Jm_mul_self]
   refine ⟨⟨⟨Qcs C τ * Matrix.of m * Qics C τ, Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (Qcs C τ * Matrix.of m * Qics C τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)),
-    (by first | exact Matrix.mul_eq_one_comm.mp (hl) | exact mul_eq_one_comm.mp (hl) | exact Matrix.mul_eq_one_symm (hl) | exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp (hl)), hl⟩, hU⟩, ?_⟩
+    (by first | exact mul_eq_one_comm.mp (hl)), hl⟩, hU⟩, ?_⟩
   apply Matrix.of.injective
   rw [of_Tm_eq_Qics_mul_mul_Qcs]
   exact Qics_mul_Qcs_conj_mul_Qcs_eq_self C τ (Matrix.of m)
@@ -236,10 +249,10 @@ theorem Tm_emb (C : Choice X θ) (τ : D.what₂.Tau) : MeasurableEmbedding (Tm 
       (Qcs C τ * Matrix.of m.1 * Qics C τ) = 1 := by
     intro m
     rw [show ∀ A B : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ, A * Bᴴ * A * B = A * (Bᴴ * A * B) from fun A B => by
-      simp only [Matrix.mul_assoc], hUJ m, Jm_mul_self_eq_one]
+      simp only [Matrix.mul_assoc], hUJ m, _root_.Formalism.REAL.Jm_mul_self]
   let g : Set.range (Tm C τ) → Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) := fun m =>
     ⟨⟨Qcs C τ * Matrix.of m.1 * Qics C τ, Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (Qcs C τ * Matrix.of m.1 * Qics C τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)),
-      (by first | exact Matrix.mul_eq_one_comm.mp (hl m) | exact mul_eq_one_comm.mp (hl m) | exact Matrix.mul_eq_one_symm (hl m) | exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp (hl m)), hl m⟩, hUJ m⟩
+      (by first | exact mul_eq_one_comm.mp (hl m)), hl m⟩, hUJ m⟩
   have hv : Continuous fun m : Set.range (Tm C τ) => Qcs C τ * Matrix.of m.1 * Qics C τ := by
     have h0 : Continuous fun m : Set.range (Tm C τ) => (Matrix.of m.1 : Matrix (Fin (2 * D.R.rS + D.R.k + 1))
         (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) := continuous_subtype_val
@@ -265,7 +278,7 @@ theorem Tm_mul (C : Choice X θ) (τ : D.what₂.Tau) (a b : Formalism.REAL.UJ (
   apply Matrix.of.injective
   show Matrix.of (Tm C τ (a * b)) = Matrix.of (Tm C τ a) * Matrix.of (Tm C τ b)
   rw [of_Tm_eq_Qics_mul_mul_Qcs, of_Tm_eq_Qics_mul_mul_Qcs, of_Tm_eq_Qics_mul_mul_Qcs, Qics_mul_Qcs_conj_mul_conj_eq_conj_mul]
-  all_goals first | rfl | simp [Subgroup.coe_mul, Units.val_mul]
+  all_goals first | rfl
 
 theorem Tm_inv (C : Choice X θ) (τ : D.what₂.Tau) (a : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     Tm C τ a⁻¹ = Formalism.FourierDecayAlt.B2.invM (Tm C τ a) := by
@@ -277,11 +290,9 @@ theorem Tm_inv (C : Choice X θ) (τ : D.what₂.Tau) (a : Formalism.REAL.UJ (X.
   rw [Qics_mul_Qcs_conj_mul_conj_eq_conj_mul]
   simp only [Subgroup.coe_inv, Units.mul_inv, Matrix.mul_one, Qics_mul_Qcs_eq_one]
 
-theorem Tm_mem (C : Choice X θ) (τ : D.what₂.Tau) (x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
-    Matrix.of (Tm C τ x) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) := of_Tm_mem_UH_Hpk C τ x
+alias Tm_mem := _root_.Formalism.L2.SG.RealObj.EnergyConvJ.of_Tm_mem_UH_Hpk
 
-theorem mem_range_Tm (C : Choice X θ) (τ : D.what₂.Tau) {m : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS}
-    (hm : Matrix.of m ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) : m ∈ Set.range (Tm C τ) := mem_range_Tm_of_of_mem_UH C τ hm
+alias mem_range_Tm := _root_.Formalism.L2.SG.RealObj.EnergyConvJ.mem_range_Tm_of_of_mem_UH
 
 theorem comap_lint (C : Choice X θ) (τ : D.what₂.Tau) {μ : Measure (Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)}
     (hμ : μ {m | Matrix.of m ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)} = 0)
@@ -301,13 +312,11 @@ theorem sigmaFinite_comap (C : Choice X θ) (τ : D.what₂.Tau) {μ : Measure (
   have hE := Tm_emb C τ
   first
     | exact SigmaFinite.of_map _ hE.measurable.aemeasurable (by rw [hE.map_comap]; infer_instance)
-    | infer_instance
 
 theorem sFinite_comap (C : Choice X θ) (τ : D.what₂.Tau) {μ : Measure (Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)}
     [SFinite μ] : SFinite (μ.comap (Tm C τ)) := by
   have hE := Tm_emb C τ
   first
-    | infer_instance
     | (have h : μ.comap (Tm C τ) = Measure.sum (fun n => (sfiniteSeq μ n).comap (Tm C τ)) := by
           ext s hs
           rw [hE.comap_apply, Measure.sum_apply _ hs]
@@ -355,12 +364,12 @@ theorem quot_conc {μG μS ν : Measure (Formalism.QuantumDeterminants.Mt D.R.k 
       refine lintegral_mono fun s => ?_
       by_cases hs : s ∈ S
       · have hs2 : s ∉ Sᶜ := fun h2 => h2 hs
-        first | rw [Set.indicator_of_not_mem hs2] | rw [Set.indicator_of_notMem hs2]
-        first | exact zero_le | exact zero_le _ | positivity
+        first | rw [Set.indicator_of_notMem hs2]
+        first | exact zero_le
       · rw [Set.indicator_of_mem (Set.mem_compl hs), Set.indicator_of_mem (key s x hs hx)]
         all_goals exact le_rfl
-    · first | rw [Set.indicator_of_not_mem hx] | rw [Set.indicator_of_notMem hx]
-      first | exact zero_le | exact zero_le _ | positivity
+    · first | rw [Set.indicator_of_notMem hx]
+      first | exact zero_le
   rw [← h, lintegral_indicator_const hSm] at hle
   exact (mul_eq_zero.mp (le_zero_iff.mp hle)).resolve_left hne
 
@@ -403,7 +412,7 @@ private theorem measurable_invM' (k r : ℕ) : Measurable (Formalism.FourierDeca
     funext x i j
     show ((Matrix.of x)⁻¹ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) i j = _
     rw [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul]
-    first | rw [Ring.inverse_eq_inv'] | rw [Ring.inverse_eq_inv] | simp
+    first | rw [Ring.inverse_eq_inv']
   rw [e]
   refine Measurable.of_eval fun i => Measurable.of_eval fun j => ?_
   exact hinv.mul ((continuous_apply j).comp ((continuous_apply i).comp hadj)).measurable
@@ -426,3 +435,7 @@ theorem inv_comap (C : Choice X θ) (τ : D.what₂.Tau) {μS : Measure (Formali
     Measure.restrict_eq_self_of_ae_mem hae, hinv]
 
 end Formalism.L2.SG.RealObj.EnergyConvJ
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.MeasurableSetNotUH =====

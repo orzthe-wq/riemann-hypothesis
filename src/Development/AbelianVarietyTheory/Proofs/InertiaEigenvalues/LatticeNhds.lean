@@ -235,7 +235,7 @@ theorem perfect_Cb : PerfectRing (Cb l) l := by
   obtain ⟨a', rfl⟩ := surjective_frobenius (OCb l) l a
   obtain ⟨b', rfl⟩ := surjective_frobenius (OCb l) l b
   refine ⟨algebraMap _ _ a' / algebraMap _ _ b', ?_⟩
-  simp [frobenius_def, div_pow]
+  simp [frobenius_def]
 
 theorem exists_trace {P : LocPrime l} (AI : LocAinf l P) (K : FinExt l) {G : Type} [Group G]
     [TopologicalSpace G] (ι : G →* GQ l) (hι : Topology.IsEmbedding ι) (hr : ι.range = Hinf K)

@@ -4,13 +4,16 @@ public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilGramS
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
 public import Formalism.LocalToGlobal.ProjectiveLattices.ThClass
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaAtOfIsEtaConj
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeckeCharacterOfUnitaryTensorIdeles
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumeratorIdealOfAntiInvariantDivisorStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumeratorIdealOfAntiInvariantDivisor
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdelicCharacterEqProdUnramifiedValueZpowStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanDetSetIffAdelicLatticeValuationStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
+public import Mathlib.RingTheory.DedekindDomain.FiniteAdeleRing
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanDetSetIffAdelicLatticeValuation
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OscillatorModelValuesThird
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceIdempotentComponentsConjValuationStatement
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AbsNormSqOfMulConjEqDifferentIdeal
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHeckeCharacterOfUnitaryTensorIdeles
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceIdempotentComponentsConjValuationStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBaseChangeFiniteAdeleRingEquiv
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinitePlaceIdempotentBaseChangeAdeles
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeCharEqProdLocalComponentsApproximating
@@ -56,7 +59,6 @@ import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.DatEqZero
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
-public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrAtEmb
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReadingsExistRow
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibExtMarked
@@ -305,7 +307,7 @@ theorem exists_ideal_conj (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hLat V 1 = 
     by_contra hn
     rw [Finset.mem_coe, Finset.mem_union, not_or] at hn
     exact hQ (δ0 Q hn.1 fun h => hn.2 (Finset.mem_image.2 ⟨_, h, GlobalTheory.ClassScalarValue.cP_cP Q⟩))
-  obtain ⟨cc, c0, c1, c2, c3, c4⟩ := GlobalTheory.T.exists_numeratorIdeal_of_antiInvariant_divisor D.host.E (GlobalTheory.IdemSupport.cO D) GlobalTheory.IdemSupport.cP GlobalTheory.IdemSupport.cO_cO GlobalTheory.IdemSupport.mem_cP δ hfin δ1
+  obtain ⟨cc, c0, c1, c2, c3, c4⟩ := _root_.GlobalTheory.NumeratorIdeal.exists_numerator D.host.E (GlobalTheory.IdemSupport.cO D) GlobalTheory.IdemSupport.cP GlobalTheory.IdemSupport.cO_cO GlobalTheory.IdemSupport.mem_cP δ hfin δ1
   have hy' : (y : AE D) = e * d + (1 - e) := hd ▸ hy
   have y0 : infPart D (y : AE D) = 1 := by
     rw [hy', RingHom.map_add (f := _), RingHom.map_mul, RingHom.map_sub, e0, RingHom.map_one, zero_mul, zero_add, sub_zero]
@@ -317,7 +319,7 @@ theorem exists_ideal_conj (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hLat V 1 = 
       sub_zero]
   refine ⟨cc, c0, c1, c3 _ fun Q hQ hm => ?_, c4 _ fun x => ?_, ?_, ?_, y0⟩
   · exact hQ (δ0 Q (fun h' => hb Q h' hm) fun h' => hb _ h' ((hbc Q).2 hm))
-  · rw [GlobalTheory.T.mem_span_detSet_iff_adelicLattice_valuation D.host.E _ _ _ (GlobalTheory.ClassScalarValue.mem_hLat ι h1 h2 V hL (FWT.fin V h)) x]
+  · rw [_root_.GlobalTheory.AdelicDetSpan.mem_span_detSet_iff D.host.E _ _ _ (GlobalTheory.ClassScalarValue.mem_hLat ι h1 h2 V hL (FWT.fin V h)) x]
     refine forall_congr' fun Q => ?_
     rw [← hδ, hev, hd]
     have a : ι (finPart D (Formalism.L2.Theta.mt V h).det) =

@@ -8,7 +8,8 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HodgeIPIffHodgeFormConj
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FiniteExtensionCoordsCompare
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsArithVarOfBlockAlgebraicStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsArithVarOfBlockAlgebraic
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.IsHomogeneousGrL
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -51,7 +52,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.IsHomogeneousGrL
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
 
 @[expose] public section
@@ -87,11 +87,6 @@ theorem hom_C (n : ℤ) : IsMultiHomog (MvPolynomial.C n : MRing ι) 0 := by
     exact hm rfl
   simp [this]
 
-theorem hom_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
-    IsMultiHomog (f * g) (a + b) := by
-  classical
-  exact ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hf hg
-
 theorem Q_chart (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (hc : (∏ k, y ⟨k, c k⟩) ≠ 0) :
     ∀ a ∈ Algebra.adjoin ℤ (Set.range fun j : (k : K) → ι k => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩), Q y a := by
   classical
@@ -108,13 +103,13 @@ theorem Q_chart (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (hc : (∏ k, y
   | add a b _ _ h1 h2 =>
     obtain ⟨d, g, h, hg, hh, h0, e⟩ := h1
     obtain ⟨d', g', h', hg', hh', h0', e'⟩ := h2
-    refine ⟨d + d', g * h' + h * g', h * h', hom_add (hom_mul hg hh') (hom_mul hh hg'), hom_mul hh hh', ?_, ?_⟩
+    refine ⟨d + d', g * h' + h * g', h * h', hom_add (_root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hg hh') (_root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hh hg'), _root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hh hh', ?_, ?_⟩
     · rw [map_mul]; exact mul_ne_zero h0 h0'
     · simp only [map_add (f := _), map_mul, e, e']; ring
   | mul a b _ _ h1 h2 =>
     obtain ⟨d, g, h, hg, hh, h0, e⟩ := h1
     obtain ⟨d', g', h', hg', hh', h0', e'⟩ := h2
-    refine ⟨d + d', g * g', h * h', hom_mul hg hg', hom_mul hh hh', ?_, ?_⟩
+    refine ⟨d + d', g * g', h * h', _root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hg hg', _root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hh hh', ?_, ?_⟩
     · rw [map_mul]; exact mul_ne_zero h0 h0'
     · simp only [map_mul, e, e']; ring
 
@@ -131,7 +126,7 @@ theorem birational_of_tie {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   obtain ⟨t, ht, ht0, hts⟩ := GlobalTheory.CompanionTheory.Ar.HtJoin.exists_mul_mem h hc s
   obtain ⟨d, g, k, hg, hk, k0, e⟩ := Q_chart y c hc _ ht
   obtain ⟨d', g', k', hg', hk', k0', e'⟩ := Q_chart y c hc _ hts
-  refine ⟨d' + d, g' * k, k' * g, hom_mul hg' hk, hom_mul hk' hg, ?_, ?_⟩
+  refine ⟨d' + d, g' * k, k' * g, _root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hg' hk, _root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul hk' hg, ?_, ?_⟩
   · rw [map_mul, e]; exact mul_ne_zero k0' (mul_ne_zero ht0 k0)
   · simp only [map_mul, e, e']; ring
 
@@ -261,7 +256,7 @@ theorem j_normal_of (hjoin : ∀ (Ω₁ Ω₂ Ω : Type) [Field Ω₁] [Field Ω
     exact this
   refine ⟨K₁ ⊕ K₂ ⊕ Unit, inferInstance, ι, inst, Sum.inl, v₁, fun k => .inr (.inl k), v₂, y, Z, ξ, h₁, h₂, hv₁, hv₂,
     y1, y2, ?_, hb, hg, ht, hN, hd₁, hd₂, relfinrank_eq i₁ _ _ F₁ F, relfinrank_eq i₂ _ _ F₂ F⟩
-  refine GlobalTheory.T.isArithVar_of_block_algebraic K₁ ι₁ _ ι Sum.inl v₁ Ω y d hv₁
+  refine _root_.GlobalTheory.CompanionTheory.Ar.Cmp.isArithVar_of_isAlgebraic_image K₁ ι₁ _ ι Sum.inl v₁ Ω y d hv₁
     (fun k => ⟨c k, Finset.prod_ne_zero_iff.1 hc k (Finset.mem_univ k)⟩) ?_
     (fun t _ => Algebra.IsAlgebraic.isAlgebraic t)
   rw [y1, mCoordIdeal_map]

@@ -236,7 +236,7 @@ lemma bounded_map (φ : (m → ℂ) →ₗ[ℂ] (m → ℂ))
     by_cases h : j = i
     · subst h
       simp [Complex.real_smul]
-    · simp [Pi.single_apply, h]
+    · simp [h]
   rw [e, map_add (f := _), map_smul, map_smul, smul_add, nsmul_intCast_smul_comm, nsmul_intCast_smul_comm]
   exact add_mem (zsmul_mem (k1 i) _) (zsmul_mem (k2 i) _)
 

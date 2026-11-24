@@ -100,5 +100,3 @@ theorem estBlockOfSumForm_ok : EstBlockOfSumForm := by
 
 end Formalism.FourierDecayAlt.P.BaseGramNonnegativity
 
-theorem Formalism.FourierDecayAlt.P.blockEstimateOfCosetSum : Formalism.FourierDecayAlt.crystallineComparison.EstBlockOfSumForm :=
-  Formalism.FourierDecayAlt.P.BaseGramNonnegativity.estBlockOfSumForm_ok

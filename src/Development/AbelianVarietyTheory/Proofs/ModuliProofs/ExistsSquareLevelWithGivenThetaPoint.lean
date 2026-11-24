@@ -60,9 +60,7 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.LevelTheta
 
-theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := by
-  rw [← Spec.map_comp]; rfl
+alias spMap_comp := _root_.GlobalTheory.ThetaClosed.spMap_comp'
 
 theorem spMap_id {A : Type} [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := Spec.map_id _
 

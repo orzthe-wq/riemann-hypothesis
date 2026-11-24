@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice
+import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.ScalingSwapLemmas
 
 @[expose] public section
 
@@ -315,7 +316,7 @@ theorem exists_cofactor (l d N0 N1 : ℕ) [NeZero d] (σ : K0 →+* K0) (j : K0 
     exact subst_xOfZ_zXY hl hd j σ hfix hTr s a b
   have hlg : HasSubst (entLog (K := K) (d := d) (N0 := N0) (N1 := N1) l) :=
     hasSubst_of_constantCoeff_zero fun v =>
-      ((Formalism.L2.Th1.D.letterShift K l d (RingHom.id K) hU.1).2.2 N0 N1 v.2.1 v.2.2 v.1).1
+      ((_root_.Formalism.L2.Th1.D.letter_shift K l d (RingHom.id K) hU.1).2.2 N0 N1 v.2.1 v.2.2 v.1).1
   have hinv : ∀ f : MvPowerSeries (ZV d N0 N1) K, subst g (subst (entLog (K := K) l) f) = f := by
     intro f
     rw [subst_comp_subst_apply hlg hgs]
@@ -325,7 +326,7 @@ theorem exists_cofactor (l d N0 N1 : ℕ) [NeZero d] (σ : K0 →+* K0) (j : K0 
 
   obtain ⟨B, hB⟩ : ∃ B : MvPowerSeries (Bool × ι × Fin N0 × Fin N1) K, B = ∑ ab : Fin N0 × Fin N1,
       subst (rho ab.1 ab.2) (map j (subst (zXY l σ om oms) (beMean (d := d) l σ be0 om oms ζ))) := ⟨_, rfl⟩
-  have hSm := (Formalism.InvariantFactorPaths.G7.Top.mapSimeq K0 K _ j hj).1 _ _ hS
+  have hSm := (_root_.Formalism.InvariantFactorPaths.G7.mapSimeq_statement K0 K _ j hj).1 _ _ hS
   have hR := Formalism.InvariantFactorPaths.G7.Top.simeqRules K (Bool × ι × Fin N0 × Fin N1)
   have hBS : Simeq B (sumE (ι := ι) (N0 := N0) (N1 := N1) (map j be0)) := by
     rw [hB, ← sum_subst_rho_beXY]

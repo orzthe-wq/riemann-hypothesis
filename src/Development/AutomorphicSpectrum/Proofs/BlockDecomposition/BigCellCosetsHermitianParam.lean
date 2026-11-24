@@ -76,9 +76,7 @@ theorem cT_blk4 (σ : K →+* K) (a b c d : Matrix (Fin n) (Fin n) K) :
   simp only [cT, blk4, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply]
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl
 
-theorem block_identity_eq_one {R : Type} [CommRing R] : blk4 (1 : Matrix (Fin n) (Fin n) R) 0 0 1 = 1 := by
-  unfold blk4
-  rw [Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
+alias block_identity_eq_one := _root_.GlobalTheory.StdUnn.Model.block_matrix_one
 
 theorem lowerLeft_block {R : Type} (a b c d : Matrix (Fin n) (Fin n) R) : lowerC (blk4 a b c d) = c := by
   ext i j

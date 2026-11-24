@@ -283,7 +283,6 @@ theorem exists_opens_smooth (h : IsArithVar p D) (hr : ∀ x, IsRegularLocalRing
   obtain ⟨W, hW, hs⟩ := GenSpread.exists_opens_smoothOfRelativeDimension_of_isPullback H D
     (y' (IsLocalRing.closedPoint ℂ))
   refine ⟨W, mem_ptsIn.2 ?_, hs⟩
-  change y.1 (IsLocalRing.closedPoint ℂ) ∈ W
   rw [← hy']
   exact hW
 

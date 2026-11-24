@@ -54,6 +54,7 @@ import Std.Tactic.BVDecide.Normalize.Prop
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsFinsetOfEventually
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsUniqueIsProdMeasureFinAway
 public import Development.AbelianVarietyTheory.Definitions.Foundations.GLintEqKOAndPrincEqKOne
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

@@ -77,7 +77,7 @@ theorem exists_inertDatum_of : ∀ (L : Type) [Field L] [NumberField L] [IsCMFie
     rwa [hunder] at h
   obtain ⟨c, hc, -⟩ := GlobalTheory.LFun.InertChart.existsUnique_isConjAt
     (IsCMField.complexConj L).toAlgHom hw hunder
-  obtain ⟨ϖ', hU'⟩ := GlobalTheory.LFun.InertChart.exists_isUnramInv (GlobalTheory.InertDatumExist.isCMExt L) hw hc
+  obtain ⟨ϖ', hU'⟩ := GlobalTheory.LFun.InertChart.exists_isUnramInv (_root_.GlobalTheory.AdelicU.isCMExt_of_isCMField L) hw hc
   have hsc : s = c := by
     apply DFunLike.coe_injective
     refine GlobalTheory.UnramCompletion.ringHom_ext_of_continuous w (continuous_of_valued_eq s hU.2.1)

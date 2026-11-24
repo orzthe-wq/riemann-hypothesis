@@ -136,7 +136,7 @@ theorem h1_mk_mem_f1_of_isRep_zero : ∀ (R : Type) [CommRing R] (X : Scheme.{0}
   have ex : ∀ U : X.affineOpens, ∃ f : Γ(X, U.1), ∀ (j : J) (P : Pt s), P.In (U.1 ⊓ W j) →
       FU U P = valR P.x U.1 f := by
     intro U
-    refine GlobalTheory.T.exists_section_of_natural_on_algebraPoints_of_cover R X s J (fun j ↦ U.1 ⊓ W j) U.1 (fun j ↦ inf_le_left) ?_ (FU U) ?_
+    refine _root_.GlobalTheory.CechKS.exists_sec_of_isNat R X s J (fun j ↦ U.1 ⊓ W j) U.1 (fun j ↦ inf_le_left) ?_ (FU U) ?_
     · rw [← inf_iSup_eq, hW, inf_top_eq]
     · intro j P Q φ hP
       have hU : P.In U.1 := hP.mono inf_le_left

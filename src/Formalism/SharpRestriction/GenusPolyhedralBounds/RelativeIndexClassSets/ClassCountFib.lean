@@ -63,7 +63,7 @@ def Gam (Γ K : Subgroup G) (g : G) : Subgroup G :=
   Γ ⊓ K.comap (MulAut.conj g⁻¹).toMonoidHom
 
 theorem mem_Gam {Γ K : Subgroup G} {g x : G} : x ∈ Gam Γ K g ↔ x ∈ Γ ∧ g⁻¹ * x * g ∈ K := by
-  simp [Gam, Subgroup.mem_inf, Subgroup.mem_comap, MulAut.conj_apply]
+  simp [Gam, Subgroup.mem_inf, Subgroup.mem_comap]
 
 theorem Gam_eq_map (Γ K : Subgroup G) (g : G) :
     Gam Γ K g = Γ ⊓ K.map (MulAut.conj g).toMonoidHom := by

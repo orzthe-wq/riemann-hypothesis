@@ -116,7 +116,7 @@ theorem ann_obox (ι : Type) [Fintype ι] :
       rw [Finset.sum_eq_single i]
       · simp
       · intro j _ hj
-        simp [Pi.single_apply, hj]
+        simp [hj]
       · simp
     simp only [chi] at h
     rwa [hs] at h

@@ -197,8 +197,7 @@ theorem cj_bRaw_single (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (F
     (y' : Fin (r + 1) → O) :
     cj (bRaw O cj Z (Pi.single (Fin.last r) 1) y') = lamS O cj Z y' := by
 
-  simp only [bRaw, lamS, lamStarC, coe_single, Matrix.mulVec_single_one, map_sum, map_mul, hcj,
-  Matrix.transpose_apply]
+  simp only [bRaw, lamS, lamStarC, coe_single, Matrix.mulVec_single_one, map_sum, map_mul, hcj]
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 end Formalism.L2.SG.LocalCountModules.UnramifiedPairingLinear

@@ -152,7 +152,7 @@ theorem sum_mem_DdR {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K�
   rw [h1, Finset.sum_eq_single i]
   · simp
   · intro j _ hij
-    simp [Finsupp.single_apply, hij]
+    simp [hij]
   · simp
 
 

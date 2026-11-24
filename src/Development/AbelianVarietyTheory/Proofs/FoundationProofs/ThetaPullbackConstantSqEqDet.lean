@@ -80,17 +80,10 @@ theorem exists_basis_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hC 
   refine ⟨L.ω₁, L.ω₂, L.indep, AddSubgroup.ext fun z => ?_⟩
   rw [hL, PeriodPair.lattice, ← Submodule.span_int_eq_addSubgroupClosure, Submodule.mem_toAddSubgroup]
 
-theorem parity_mod_two : ∀ a b c d s₁ s₂ x₁ x₂ : ZMod 2,
-    a * a + b * c = a → a * b + b * d = b → c * a + d * c = c → c * b + d * d = d →
-    ¬ (a * s₁ + c * s₂ = 0 ∧ b * s₁ + d * s₂ = 0) →
-    ¬ (s₁ - (a * s₁ + c * s₂) = 0 ∧ s₂ - (b * s₁ + d * s₂) = 0) →
-    (((a * x₁ + c * x₂) * x₂ - (b * x₁ + d * x₂) * x₁) + (x₁ * s₂ - x₂ * s₁) = 0 ↔ x₁ = 0 ∧ x₂ = 0) := by
-  decide
-
 theorem exists_orthonormal_basis_family (Λ : AddSubgroup ℂ) (ω t : ℂ) (G : ℂ → ℂ) (z : ℂ) :
     U1 Λ ω (U1 Λ t G) z =
       Complex.exp (-(Real.pi : ℂ) * Complex.I * (gl3FieldFirst Λ ω (2 * t) : ℂ)) * U1 Λ t (U1 Λ ω G) z := by
-  apply GlobalTheory.HalfPeriodTheta.exists_orthonormal_basis_family <;> assumption
+  apply GlobalTheory.HalfPeriodTheta.exists_orthonormal_basis_family
 
 theorem even_im_hermitian_sub (Λ : AddSubgroup ℂ) (w₁ w₂ : ℂ) (hi : LinearIndependent ℝ ![w₁, w₂])
     (hΛ : Λ = AddSubgroup.closure {w₁, w₂})

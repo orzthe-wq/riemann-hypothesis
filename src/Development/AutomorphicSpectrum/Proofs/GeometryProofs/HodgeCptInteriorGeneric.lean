@@ -1,9 +1,12 @@
 module
 
-import Development.WeilBound.CoreStatements.HodgeTatePoints.MlLift
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceDecompositionInternalStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenspaceDecompositionInternal
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializes
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
+import Development.WeilBound.CoreStatements.HodgeTatePoints.MlLift
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,7 +53,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 
 @[expose] public section
 
@@ -350,7 +352,7 @@ theorem HodgeCpt.basic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   letI : Fintype (CMType H) := Fintype.ofFinite _
   have hcard : Fintype.card (CMType H ⊕ CMType H) = Module.finrank ℚ E := by
     rw [Fintype.card_of_bijective (HodgeBasic.labelHom_bijective H), Embeddings.card]
-  have hint := GlobalTheory.T.eigenspace_decomposition_internal Ω 𝔐.Li E 𝔐.ρ (CMType H ⊕ CMType H) 𝔐.emb hinj hcard
+  have hint := _root_.GlobalTheory.CompanionTheory.Ar.isInternal_eigSp Ω 𝔐.Li E 𝔐.ρ (CMType H ⊕ CMType H) 𝔐.emb hinj hcard
   refine ⟨?_, ⟨IsOpenImmersion.lift Y.jQ g hran, ?_⟩, hchar, hinj, ?_, hint.submodule_iSup_eq_top,
     hint.submodule_iSupIndep, ?_⟩
   · refine HodgeBasic.mem_abLocus_of_map 𝔐.m.cart.1 ?_

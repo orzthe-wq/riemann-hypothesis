@@ -2,10 +2,13 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValueDoubleUnif
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceSectionAddComplementMul
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdicCompletionValuationMapUniformiserStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CardResidueFieldOfRingEquivAdicCompletionStatement
+public import Mathlib.NumberTheory.LocalField.Basic
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdicCompletionValuationMapUniformiser
+public import Mathlib.RingTheory.Ideal.Norm.AbsNorm
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CardResidueFieldOfRingEquivAdicCompletion
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLinearModelLatticeVacuumBase
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryGroupCharacterOfHeckeChar
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsPlaceChartOfSplitIdempotent
 import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
@@ -45,6 +48,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsFundamentalDomainOfHaar
 
 @[expose] public section
 
@@ -93,9 +97,6 @@ end GlobalTheory.LinExactAt
 
 namespace GlobalTheory.LinExactAt
 
-theorem algebraMap_inj (D : D7) : Function.Injective (algebraMap (AF D.host.F) (AE D)) :=
-  Algebra.TensorProduct.includeLeft_injective (S := AF D.host.F) (algebraMap D.host.F D.host.E).injective
-
 theorem idem_calc {R : Type} [CommRing R] (E C s t : R) (he : E * E = E) (hcc : C * C = C) (hc : E * C = 0)
     (hs : E * s = s) (hcs : C * t = t) : (1 - E + s) * (1 - C + t) * (1 - (E + C)) = 1 - (E + C) := by
   have h1 : (1 - E + s) * (1 - C + t) = 1 - E - C + s + t := by
@@ -107,7 +108,7 @@ theorem idem_calc {R : Type} [CommRing R] (E C s t : R) (he : E * E = E) (hcc : 
 theorem norm_idele_mul {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (a : kˣ) (ε : AF D.host.F) (hε : p.e + cA D p.e = algebraMap (AF D.host.F) (AE D) ε) :
     Algebra.norm (AF D.host.F) (p.idele a : AE D) * (1 - ε) = 1 - ε := by
-  apply algebraMap_inj D
+  apply _root_.GlobalTheory.VolHeckeCompare.algebraMap_AE_injective D
   rw [map_mul, GlobalTheory.SplitDetCharacter.algebraMap_norm, map_sub, map_one, ← hε, p.idele_val]
   have he : p.e * p.e = p.e := p.split.1
   have hc : p.e * cA D p.e = 0 := p.split.2.1
@@ -196,10 +197,10 @@ theorem absAt : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalS
     GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV D.host.F p.v (GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.normV D p.v (p.idele q.unit)) = ((resCard k : ℕ) : ℝ)⁻¹ := by
   intro D k _ _ _ _ p q
   obtain ⟨φ, hφ, hn⟩ := chartAt D k p
-  have h1 := GlobalTheory.T.valued_v_map_irreducible_eq_ofAdd_neg_one D.host.F p.v k φ hφ q.1 q.2
-  have h2 := GlobalTheory.T.card_residueField_of_ringEquiv_adicCompletion D.host.F p.v k φ hφ
+  have h1 := _root_.GlobalTheory.adicCompletion_valuation_map_uniformiser D.host.F p.v k φ hφ q.1 q.2
+  have h2 := _root_.GlobalTheory.LocalResidue.card_residue_of_ringEquiv D.host.F p.v k φ hφ
   have h3 : (((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))).log = -1 := by
-    first | rfl | simp [WithZero.log] | exact WithZero.log_coe _
+    first | rfl
   rw [GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV, hn, GlobalTheory.LatPair.Unif.unit, Units.val_mk0, h1, resCard, h2, h3, zpow_neg_one]
 
 open GlobalTheory.SplitLinAt GlobalTheory.SplitLinear

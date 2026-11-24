@@ -147,7 +147,7 @@ theorem exists_levIs : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : T
     exact Ideal.map_comap_le
   have hlift : Lev.LiftsExist (Wc D i) (R.βW i) (R.datWp i R.triv) := by
     obtain ⟨c, hc⟩ := hβ
-    refine GlobalTheory.T.parahoricLevel_liftsExist _ _ _ _ _ hc (fun PP h PP' h' => ?_) (Finset.disjoint_empty_right _)
+    refine _root_.GlobalTheory.ParahoricLift.liftsExist _ _ _ _ _ hc (fun PP h PP' h' => ?_) (Finset.disjoint_empty_right _)
     rcases h' with h' | h'
     · exact not_isConjPl T.Q.l (hle PP h) (hle PP' h')
     · exact absurd h' (Finset.notMem_empty _)

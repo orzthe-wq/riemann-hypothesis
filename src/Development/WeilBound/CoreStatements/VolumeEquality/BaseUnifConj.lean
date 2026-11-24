@@ -1,9 +1,11 @@
 module
 
 public import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifDefs
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicFamilyConjugateStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicFamilyConjugate
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugateUniversalFamilyStatement
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsFundSet
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ConjugateUniversalFamily
 public import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifConjA
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -81,7 +83,7 @@ theorem vecAt_conj {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ}
 
 theorem kUnifConj : KUnifConj := by
   rintro E _ _ _ H D l Xo c Y sm j j' n g q κ ⟨U⟩
-  choose F' hq hσ hform hR using fun k => GlobalTheory.T.conjugate_universal_family E (CMType H) j j' n g (U.Di k).La (U.F k)
+  choose F' hq hσ hform hR using fun k => _root_.GlobalTheory.CompanionTheory.Ar.Cusp.exists_conj_univFam E (CMType H) j j' n g (U.Di k).La (U.F k)
   have hcanc : ∀ {X : Scheme.{0}} {a b : Sp ℂ ⟶ X}, spMap (starRingEnd ℂ) ≫ a = spMap (starRingEnd ℂ) ≫ b → a = b :=
     fun {X a b} e => by rw [← Cj.cj_cj a, e, Cj.cj_cj]
   have hs : spMap (((starRingEnd ℂ).comp κ).comp (algebraMap (𝓞 c.F) c.F)) =
@@ -119,7 +121,7 @@ theorem kUnifConj : KUnifConj := by
   · have h := U.arith k
     unfold UnivFam.IsArith at h ⊢
     rwa [hform, Cj.autGrp_neg]
-  · have h := GlobalTheory.T.holomorphic_family_conjugate _ _ _ _ (U.hol k)
+  · have h := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.isHolTo_conj _ _ _ _ (U.hol k)
     rwa [Cj.preimage_star_ballDom] at h
   · rw [Category.assoc, U.comp_s_eq_spMap_of_isOver k _ (Cj.star_mem_ballDom ht), hs]
   · rw [Cj.centre_conj]
@@ -145,7 +147,7 @@ theorem kUnifConj : KUnifConj := by
     exact ⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, fun a => a.elim⟩
   · refine vecAt_conj 𝔐 (U.F k).R (F' k).R z t₀ (hR k) ?_
     refine U.vec S Ω K J y 𝔐 k (star ⁻¹' V) _ (hV.preimage continuous_star) (fun t ht => ?_)
-      (GlobalTheory.T.holomorphic_family_conjugate _ _ _ _ hz) (fun t ht => ?_) _ (by simpa using ht₀)
+      (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.isHolTo_conj _ _ _ _ hz) (fun t ht => ?_) _ (by simpa using ht₀)
     · simpa using Cj.star_mem_ballDom (hVs ht)
     · rw [Category.assoc, hzf _ ht, Cj.cj_cj, star_star]
   · have hpre : IsPreconnected (star ⁻¹' T : Set (Fin m → ℂ)) := by
@@ -159,7 +161,7 @@ theorem kUnifConj : KUnifConj := by
           rwa [star_star]
       rw [e₀]
       exact hTc.image _ continuous_star.continuousOn
-    refine U.locc m (star ⁻¹' T) _ (hT.preimage continuous_star) hpre (GlobalTheory.T.holomorphic_family_conjugate _ _ _ _ hy) (fun a ha => ?_)
+    refine U.locc m (star ⁻¹' T) _ (hT.preimage continuous_star) hpre (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.isHolTo_conj _ _ _ _ hy) (fun a ha => ?_)
       (fun a ha => ?_) (star b) (by simpa using hb) (star b') (by simpa using hb') k k' _ (Cj.star_mem_ballDom ht) _
       (Cj.star_mem_ballDom ht') ?_ ?_
     · rw [Cj.centre_conj]

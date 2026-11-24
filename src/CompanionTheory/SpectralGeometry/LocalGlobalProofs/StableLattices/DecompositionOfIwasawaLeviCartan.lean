@@ -113,7 +113,7 @@ end general
 variable {k r : ℕ}
 
 theorem hq_sq : Hq k r * Hq k r = 1 := by
-  apply GlobalTheory.CompanionTheory.BesselLevi.Hq_sq <;> assumption
+  apply GlobalTheory.CompanionTheory.BesselLevi.Hq_sq
 
 theorem hq_e (a : Fin r) : Hq k r *ᵥ bvec (eI k r a) = bvec (esI k r a) := by
   ext i

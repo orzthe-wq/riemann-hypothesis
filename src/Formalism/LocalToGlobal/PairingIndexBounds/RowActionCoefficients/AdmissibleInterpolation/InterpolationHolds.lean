@@ -71,7 +71,7 @@ theorem interpolation_holds : Interp := by
     simp only [P, coeff_sum, coeff_monomial]
     rw [Finset.sum_ite_eq' S m]
     rw [if_pos hm]
-  simp only [hP, AddMonoidAlgebra.coeff_zero, Pi.zero_apply] at hc
+  simp only [hP, AddMonoidAlgebra.coeff_zero] at hc
   exact hφ hc.symm
 
 theorem prod_span {ι R A : Type*} [Fintype ι] [DecidableEq ι] [CommRing R] [CommRing A] [Algebra R A] (S : ι → Set A)

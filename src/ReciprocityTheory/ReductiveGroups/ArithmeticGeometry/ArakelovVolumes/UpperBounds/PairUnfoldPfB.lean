@@ -1,53 +1,12 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.PairUnfoldPfA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsIntegralCc
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientDomain
 
 @[expose] public section
 
@@ -61,13 +20,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data E r}
   {x0 : Frame X.Ψ r} (D : ExtFPf.LUData X x0) (FF : Set (V (nd X)))
 
-private theorem gram_eq_lemma (τ' : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
-    (Y : Matrix (Fin r) (Fin r) ℂ) :
-    ReciprocityTheory.ChartRestriction.G.FD.gram τ' G Y = Yᵀ * G.map τ' * Y.map (starRingEnd ℂ) := by
-  ext a c
-  simp only [ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply,
-    Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
-  exact Finset.sum_comm
+private alias gram_eq_lemma := _root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_eq
 
 private theorem transpose_mul_mul_map_cc_eq_of_herm_mulVec (G : Matrix (Fin r) (Fin r) E) (γ : GL (Fin r) E)
     (hγ : ∀ v w : Fin r → E, ReciprocityTheory.ChartRestriction.G.FD.herm G ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v)
@@ -85,7 +38,7 @@ private theorem transpose_mul_mul_map_cc_eq_of_herm_mulVec (G : Matrix (Fin r) (
     by_cases hq : q = b
     · subst hq
       simp [ReciprocityTheory.ChartRestriction.G.FD.cc]
-    · simp [Pi.single_apply, hq, ReciprocityTheory.ChartRestriction.G.FD.cc]
+    · simp [hq, ReciprocityTheory.ChartRestriction.G.FD.cc]
   have h := hγ (Pi.single a 1) (Pi.single b 1)
   rw [hv, hv] at h
   unfold ReciprocityTheory.ChartRestriction.G.FD.herm at h
@@ -249,41 +202,7 @@ private theorem rmul_rmul_inv_mat_eq_self {y b : Frame X.Ψ r} (hb : b ∈ Bor X
   rw [Matrix.mul_nonsing_inv_cancel_right _ _ (Ne.isUnit (hb τ).1)]
   rfl
 
-private theorem rmul_mem_T_iff {y b : Frame X.Ψ r} (hy : y ∈ X.dom) (hb : b ∈ Bor X.Ψ r) :
-    rmul y b ∈ T D FF ↔ y ∈ T D FF := by
-  have hyb : rmul y b ∈ X.dom := rmul_mem_dom_of_mem_dom hb hy
-  by_cases hΔ : D.Δ y = 0
-  · have hn : ¬ y ∈ T D FF := fun h => (show _ ∧ _ ∧ _ from h).2.1 hΔ
-    refine iff_of_false ?_ hn
-    intro h
-    have hΔ' : D.Δ (rmul y b) ≠ 0 := (show _ ∧ _ ∧ _ from h).2.1
-    obtain ⟨hz, hb', he⟩ := D.split _ hyb hΔ'
-    have hy' : y = rmul (cpt X x0 (D.zOf (rmul y b)))
-        (rmul (D.bOf (rmul y b)) (fun τ => ((ReciprocityTheory.ChartRestriction.G.FD.mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) : Frame X.Ψ r)) := by
-      calc y = rmul (rmul y b) (fun τ => ((ReciprocityTheory.ChartRestriction.G.FD.mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) : Frame X.Ψ r) := (rmul_rmul_inv_mat_eq_self hb).symm
-        _ = rmul (rmul (cpt X x0 (D.zOf (rmul y b))) (D.bOf (rmul y b))) (fun τ => ((ReciprocityTheory.ChartRestriction.G.FD.mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) : Frame X.Ψ r) :=
-          congrArg (fun w => rmul w (fun τ => ((ReciprocityTheory.ChartRestriction.G.FD.mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) : Frame X.Ψ r)) he
-        _ = _ := rmul_assoc_frame _ _ _
-    have h2 := (D.uniq _ hz _ (mem_bor_rmul hb' (FD_mat_inv_mem_bor hb))).1
-    rw [← hy'] at h2
-    exact h2 hΔ
-  · obtain ⟨hz, hb0, he⟩ := D.split y hy hΔ
-    have hyb' : rmul y b = rmul (cpt X x0 (D.zOf y)) (rmul (D.bOf y) b) :=
-      (congrArg (fun w => rmul w b) he).trans (rmul_assoc_frame _ _ _)
-    obtain ⟨hΔ1, hz1, -⟩ := D.uniq _ hz _ (mem_bor_rmul hb0 hb)
-    rw [← hyb'] at hΔ1 hz1
-    constructor
-    · intro h
-      have hF : D.zOf (rmul y b) ∈ FF := (show _ ∧ _ ∧ _ from h).2.2
-      rw [hz1] at hF
-      show _ ∧ _ ∧ _
-      exact ⟨hy, hΔ, hF⟩
-    · intro h
-      have hF : D.zOf y ∈ FF := (show _ ∧ _ ∧ _ from h).2.2
-      show _ ∧ _ ∧ _
-      refine ⟨hyb, hΔ1, ?_⟩
-      rw [hz1]
-      exact hF
+private alias rmul_mem_T_iff := _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.T_rmul
 
 theorem ind_rmul {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x b : Frame X.Ψ r} (hx : x ∈ X.dom)
     (hb : b ∈ Bor X.Ψ r) {M : Type*} [One M] [Zero M] :
@@ -386,32 +305,6 @@ private theorem lact_inv_apply_lact (γ : GL (Fin r) E) (y : Frame X.Ψ r) : lac
     Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
   rfl
 
-private theorem continuous_FD_dmin (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
-    Continuous fun x : Frame X.Ψ r => ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm x τ i := by
-  unfold ReciprocityTheory.ChartRestriction.G.FD.dmin ReciprocityTheory.ChartRestriction.G.FD.lminor ReciprocityTheory.ChartRestriction.G.FD.gram
-    ReciprocityTheory.ChartRestriction.G.FD.hermC ReciprocityTheory.ChartRestriction.G.FD.col ReciprocityTheory.ChartRestriction.G.FD.mat
-  refine Continuous.matrix_det ?_
-  refine Continuous.matrix_submatrix ?_ _ _
-  refine continuous_pi fun a => continuous_pi fun b => ?_
-  simp only [Matrix.of_apply]
-  refine continuous_finsetSum _ fun c _ => continuous_finsetSum _ fun d _ => ?_
-  refine Continuous.mul (Continuous.mul ?_ continuous_const) ?_
-  · exact (continuous_apply _).comp ((continuous_apply _).comp (continuous_apply τ))
-  · exact Complex.continuous_conj.comp
-      ((continuous_apply _).comp ((continuous_apply _).comp (continuous_apply τ)))
-
-private theorem isOpen_dom_of_data (X : Data E r) : IsOpen X.dom := by
-  show IsOpen {x : Frame X.Ψ r | ∀ τ : X.Ψ, (ReciprocityTheory.ChartRestriction.G.FD.mat x τ).det ≠ 0 ∧
-    ∀ i : Fin (r + 1), 0 < ReciprocityTheory.ChartRestriction.G.FD.psgn X.p0 i * (ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm x τ i).re}
-  simp only [Set.setOf_forall, Set.setOf_and]
-  refine isOpen_iInter_of_finite fun τ => ?_
-  refine IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)
-  · refine isOpen_ne_fun (Continuous.matrix_det ?_) continuous_const
-    unfold ReciprocityTheory.ChartRestriction.G.FD.mat
-    exact continuous_apply τ
-  · exact isOpen_lt continuous_const
-      (continuous_const.mul (Complex.continuous_re.comp (continuous_FD_dmin X τ i)))
-
 private theorem muF_lact_upper_bounds {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (y0 : Frame X.Ψ r) :
     muF X (lact γ y0) = muF X y0 := by
   have hOm : OmF X (lact γ y0) = OmF X y0 := by
@@ -439,32 +332,6 @@ private theorem isOrth_lact' {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {y0 : Frame
   rw [gram_mat_lact_of_mem_Γ hγ]
   exact h τ
 
-private theorem measurableSet_T (hF : MeasurableSet FF) : MeasurableSet (T D FF) := by
-  classical
-  have hUo : IsOpen {x : Frame X.Ψ r | x ∈ X.dom ∧ D.Δ x ≠ 0} :=
-    (isOpen_dom_of_data X).inter (isOpen_ne_fun D.hΔ.continuous continuous_const)
-  have hpw : Measurable ({x : Frame X.Ψ r | x ∈ X.dom ∧ D.Δ x ≠ 0}.piecewise D.zOf fun _ => 0) :=
-    D.hz.continuousOn.measurable_piecewise continuousOn_const hUo.measurableSet
-  have hT : T D FF = {x : Frame X.Ψ r | x ∈ X.dom ∧ D.Δ x ≠ 0} ∩
-      ({x : Frame X.Ψ r | x ∈ X.dom ∧ D.Δ x ≠ 0}.piecewise D.zOf fun _ => 0) ⁻¹' FF := by
-    ext x
-    constructor
-    · intro h
-      obtain ⟨h1, h2, h3⟩ := (show _ ∧ _ ∧ _ from h)
-      refine ⟨⟨h1, h2⟩, ?_⟩
-      show ({x : Frame X.Ψ r | x ∈ X.dom ∧ D.Δ x ≠ 0}.piecewise D.zOf fun _ => 0) x ∈ FF
-      rw [Set.piecewise_eq_of_mem _ _ _
-        (show x ∈ {x : Frame X.Ψ r | x ∈ X.dom ∧ D.Δ x ≠ 0} from ⟨h1, h2⟩)]
-      exact h3
-    · rintro ⟨⟨h1, h2⟩, h3⟩
-      have h3' : ({x : Frame X.Ψ r | x ∈ X.dom ∧ D.Δ x ≠ 0}.piecewise D.zOf fun _ => 0) x ∈ FF := h3
-      rw [Set.piecewise_eq_of_mem _ _ _
-        (show x ∈ {x : Frame X.Ψ r | x ∈ X.dom ∧ D.Δ x ≠ 0} from ⟨h1, h2⟩)] at h3'
-      show _ ∧ _ ∧ _
-      exact ⟨h1, h2, h3'⟩
-  rw [hT]
-  exact hUo.measurableSet.inter (hpw hF)
-
 private theorem measurable_lact (γ : GL (Fin r) E) : Measurable fun x : Frame X.Ψ r => lact γ x := by
   refine Continuous.measurable ?_
   unfold lact ReciprocityTheory.ChartRestriction.G.FD.mat
@@ -472,7 +339,7 @@ private theorem measurable_lact (γ : GL (Fin r) E) : Measurable fun x : Frame X
 
 private theorem ae_mem_omF (y0 : Frame X.Ψ r) : ∀ᵐ z ∂muF X y0, z ∈ OmF X y0 := by
   have hOm : MeasurableSet (OmF X y0) :=
-    ((isOpen_dom_of_data X).preimage (continuous_cpt_apply y0)).measurableSet
+    ((_root_.ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom X).preimage (continuous_cpt_apply y0)).measurableSet
   have hac : muF X y0 ≪ volume.restrict (OmF X y0) := by
     unfold ReciprocityTheory.ChartRestriction.G.AR.Up.muF
     exact withDensity_absolutelyContinuous _ _
@@ -544,7 +411,7 @@ theorem lunfold_one (hM : MeasInvStatement (E := E)) (hx0 : IsOrth X x0) (hFF : 
       Fn = fun x => (T D FF).indicator (1 : Frame X.Ψ r → ℝ≥0∞) (lact γ⁻¹ x) * φ x := ⟨_, rfl⟩
   have hFm : Measurable Fn := by
     rw [hFn]
-    exact ((measurable_one.indicator (measurableSet_T D FF hFF.1)).comp (measurable_lact γ⁻¹)).mul hφ
+    exact ((measurable_one.indicator (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.T_meas D FF hFF.1)).comp (measurable_lact γ⁻¹)).mul hφ
   have hFB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, Fn (rmul x b) = Fn x := by
     intro x hx b hb
     rw [hFn]
@@ -580,7 +447,7 @@ theorem lunfold (hM : MeasInvStatement (E := E)) (hx0 : IsOrth X x0) (hFF : IsFu
   rw [← lintegral_tsum]
   swap
   · intro γ
-    exact (((measurable_one.indicator (measurableSet_T D FF hFF.1)).comp
+    exact (((measurable_one.indicator (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.T_meas D FF hFF.1)).comp
       ((measurable_lact γ.1⁻¹).comp (continuous_cpt_apply x0).measurable)).mul
       (hφ.comp (continuous_cpt_apply x0).measurable)).aemeasurable
   apply lintegral_congr_ae
@@ -684,7 +551,7 @@ theorem cunfold_one (hM : MeasInvStatement (E := E)) (hx0 : IsOrth X x0) (hFF : 
       Fn = fun x => (T D FF).indicator (1 : Frame X.Ψ r → ℂ) (lact γ⁻¹ x) * G x := ⟨_, rfl⟩
   have hFm : Measurable Fn := by
     rw [hFn]
-    exact ((measurable_one.indicator (measurableSet_T D FF hFF.1)).comp (measurable_lact γ⁻¹)).mul hG
+    exact ((measurable_one.indicator (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.T_meas D FF hFF.1)).comp (measurable_lact γ⁻¹)).mul hG
   have hFB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, Fn (rmul x b) = Fn x := by
     intro x hx b hb
     rw [hFn]

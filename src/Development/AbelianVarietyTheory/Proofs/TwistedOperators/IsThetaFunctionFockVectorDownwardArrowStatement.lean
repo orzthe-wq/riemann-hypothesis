@@ -48,4 +48,4 @@ theorem _root_.GlobalTheory.T.isThetaFunction_fock_vector_downward_arrow : ∀ {
     ∀ {φ f : WO (G.pS (.mu t i j)) (G.pT (.mu t i j)) → ℂ}, IsLocVec W (.mu t i j) e (vacOf ρ (.down t i j)) φ f →
     ∀ Q : PolF D (G.pT (.mu t i j)).rank (G.pS (.mu t i j)).rank,
       IsThetaFunO W.ψ (G.pS (.mu t i j)) (G.pT (.mu t i j)) (W.fock (.mu t i j) f Q) := by
-  first | exact @GlobalTheory.DownFock.isThetaFunO_fock_down | exact GlobalTheory.DownFock.isThetaFunO_fock_down | (intros; apply GlobalTheory.DownFock.isThetaFunO_fock_down <;> assumption)
+  first | exact @GlobalTheory.DownFock.isThetaFunO_fock_down

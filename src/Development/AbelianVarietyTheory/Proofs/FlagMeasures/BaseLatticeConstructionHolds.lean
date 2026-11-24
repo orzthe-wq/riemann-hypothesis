@@ -2,9 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EmbeddedDatumOfTermDefiniteSpace
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FixedFrameSelfNormalFormExistsProofStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FixedFrameSelfNormalFormExistsProof
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FlagPairDefinitePartLatticeDiscriminantEqQuotien
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryHostFieldArithmeticConditionsProofStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryHostFieldArithmeticConditionsProof
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -56,9 +56,6 @@ variable {K V W : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] 
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
   [IsScalarTower (𝓞 K) K W] {H : HermSpace K V} {HW : HermSpace K W} {r : ℕ}
 
-theorem B_swap {x y : V} (h : H.B x y = 0) : H.B y x = 0 := by
-  rw [← H.herm, h, star_zero]
-
 theorem X_B_e (F : FlagD H r) (a : Fin (r + 1)) (x : V) (hx : x ∈ F.X) : H.B x (F.e a) = 0 := by
   have key : ∀ b : Fin r, H.B (F.e b.castSucc) (F.e a) = 0 := by
     intro b
@@ -91,9 +88,9 @@ theorem mem_wSp (F : FlagD H r) (v : V) : v ∈ wSp F F ↔ ∀ a, H.B (F.e a) v
   rw [wSp, mem_perp_iff]
   constructor
   · intro h a
-    exact B_swap (h _ (flag_vector_mem_base_lattice F a))
+    exact GlobalTheory.ModIdent.orth_symm (h _ (flag_vector_mem_base_lattice F a))
   · intro h x hx
-    apply B_swap
+    apply GlobalTheory.ModIdent.orth_symm
     have : V0 F F ≤ LinearMap.ker (H.B.flip v) := by
       unfold V0
       refine sup_le (sup_le ?_ ?_) (Submodule.span_le.2 ?_)
@@ -121,7 +118,7 @@ theorem e_perp (hE : IsEmb F HW e) (w : W) (a : Fin (r + 1)) : H.B (F.e a) (e w)
 theorem e_wSp (hE : IsEmb F HW e) (w : W) : e w ∈ wSp F F := (mem_wSp F _).2 (e_perp hE w)
 
 theorem X_wSp (x : V) (hx : x ∈ F.X) : x ∈ wSp F F :=
-  (mem_wSp F _).2 fun a => B_swap (X_B_e F a x hx)
+  (mem_wSp F _).2 fun a => GlobalTheory.ModIdent.orth_symm (X_B_e F a x hx)
 
 theorem decomp (hE : IsEmb F HW e) {v : V} (hv : v ∈ wSp F F) : ∃ w, v - e w ∈ F.X := by
   obtain ⟨_, ⟨w, rfl⟩, z, hz, h⟩ := Submodule.mem_sup.1 ((hE.2 v).1 ((mem_wSp F v).1 hv))
@@ -157,7 +154,7 @@ theorem quotEquiv (hE : IsEmb F HW e) (Λ : Submodule (𝓞 K) V)
     have hw'M : w' ∈ M := (memL_e hE Λ w').1 (by simpa using L.sub_mem hx (X_L Λ _ hw'))
     have h1 : H.B (e w) x = HW.B w w' := by
       have e1 : x = e w' + (x - e w') := by abel
-      rw [e1, map_add (f := _), B_swap (XB_e hE _ hw' w), add_zero, hE.1]
+      rw [e1, map_add (f := _), GlobalTheory.ModIdent.orth_symm (XB_e hE _ hw' w), add_zero, hE.1]
     rw [h1]
     exact (hmemW w).1 hw w' hw'M
   let f : DW →ₗ[𝓞 K] DV :=
@@ -202,8 +199,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem lat0C : LatticeNormalizationCondition := by
   intro D large₂ X Y u hS W HW hE Λ hΛ
-  obtain ⟨hCM, -, -, -, -, -, -, -, -, -, -, hg, -⟩ := GlobalTheory.T.unitaryHostFieldArithmeticConditions D large₂ hS
-  obtain ⟨N, hF, hF', -, hT, -, hTerm, -, -⟩ := GlobalTheory.T.fixedFrameSelfNormalFormExists_proof D large₂ X Y u hS Λ (Or.inl hΛ)
+  obtain ⟨hCM, -, -, -, -, -, -, -, -, -, -, hg, -⟩ := _root_.GlobalTheory.TypeAsm.hostC D large₂ hS
+  obtain ⟨N, hF, hF', -, hT, -, hTerm, -, -⟩ := _root_.GlobalTheory.IdNF.idNFC_holds D large₂ X Y u hS Λ (Or.inl hΛ)
   have hg1 : 1 ≤ gS D := by omega
   obtain ⟨-, -, -, hLat, -, hNe⟩ := GlobalTheory.DegCnt.PrimPerp.main _ _ (HV D) hCM D.R.rS N (gS D) Λ hg1 hTerm
   rw [hF, hF'] at hLat hNe

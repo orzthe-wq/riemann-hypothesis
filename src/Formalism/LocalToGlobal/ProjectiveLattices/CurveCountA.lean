@@ -290,7 +290,7 @@ theorem countCore {K κ Ω : Type*} [Field K] [Field κ] [Field Ω] [Algebra K �
   have hT2 := htrans _ hT
 
   rw [map_sum, Finset.sum_range_succ'] at hT2
-  simp only [map_mul, map_pow, aeval_rename, hσP, ne_eq, Nat.add_eq_zero, one_ne_zero, and_false,
+  simp only [map_mul, map_pow, aeval_rename, hσP, ne_eq, Nat.add_eq_zero_iff, one_ne_zero, and_false,
     not_false_eq_true, zero_pow, mul_zero, Finset.sum_const_zero, zero_add, pow_zero, mul_one] at hT2
   rw [h3] at hT2
   have h4 := (algebraicIndependent_iff.mp hy) _ hT2

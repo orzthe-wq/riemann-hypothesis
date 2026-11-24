@@ -168,7 +168,7 @@ theorem isField_aic_tensor_fractionRing_of_strictlyHenselian :
   obtain ⟨hH, -⟩ := hO
   haveI := hH
   haveI := isDomain_of_indEt h
-  haveI : IsAlgClosed (FractionRing A) := GlobalTheory.T.isAlgClosed_fractionRing_of_monic_polynomials_have_roots A hA
+  haveI : IsAlgClosed (FractionRing A) := _root_.GlobalTheory.FractionRingRootRange.isAlgClosed_fractionRing A hA
   haveI : IsLocalization (Algebra.algebraMapSubmonoid O (nonZeroDivisors A))
       (O ⊗[A] FractionRing A) := by
     rw [Algebra.isLocalization_iff_isPushout (nonZeroDivisors A) (FractionRing A)]

@@ -75,11 +75,8 @@ def Fr (T' : Subalgebra O (X' → O)) : Subring (X' → FractionRing O) :=
 lemma mem_Fr {T' : Subalgebra O (X' → O)} {φ : X' → FractionRing O} :
     φ ∈ Fr T' ↔ ∃ f ∈ T', ∀ x', algebraMap O (FractionRing O) (f x') = φ x' := by
   simp only [Fr, Subring.mem_map, Subalgebra.mem_toSubring]
-  constructor
-  · rintro ⟨f, hf, rfl⟩
-    exact ⟨f, hf, fun x' => rfl⟩
-  · rintro ⟨f, hf, h⟩
-    exact ⟨f, hf, funext h⟩
+  exact ⟨fun ⟨f, hf, hφ⟩ => ⟨f, hf, fun x' => congrFun hφ x'⟩,
+    fun ⟨f, hf, h⟩ => ⟨f, hf, funext h⟩⟩
 
 def goodS (T' : Subalgebra O (X' → O)) : Subring (PowerSeries (X' → FractionRing O)) where
   carrier := {φ | ∀ n, PowerSeries.coeff n φ ∈ Fr T'}
@@ -174,8 +171,7 @@ lemma coeff_det_congr {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ)
       Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries K) ^ (m + 1)}) V.det := by
     rw [RingHom.map_det, RingHom.map_det, hUV]
   have hd := Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 hdet)
-  have h0 := PowerSeries.X_pow_dvd_iff.1 hd m (by omega)
-  rwa [map_sub, sub_eq_zero] at h0
+  simpa [map_sub, sub_eq_zero] using PowerSeries.X_pow_dvd_iff.1 hd m (by omega)
 
 def wt {m : ℕ} (e : Fin m →₀ ℕ) : ℕ := ∑ j, (j.1 + 1) * e j
 
@@ -308,8 +304,7 @@ variable {d : Type} [Fintype d] [DecidableEq d]
 lemma isUnit_det_of_const {ι : Type} [Fintype ι] [DecidableEq ι]
     (A : Matrix ι ι (PowerSeries (X' → FractionRing O)))
     (hA : (PowerSeries.constantCoeff).mapMatrix A = 1) : IsUnit A.det := by
-  rw [PowerSeries.isUnit_iff_constantCoeff, RingHom.map_det, hA, Matrix.det_one]
-  exact isUnit_one
+  simpa only [PowerSeries.isUnit_iff_constantCoeff, RingHom.map_det, hA, Matrix.det_one] using isUnit_one
 
 lemma invGood (R' : Subalgebra O (X' → Matrix d d (FractionRing O)))
     {A : Matrix d d (PowerSeries (X' → FractionRing O))} (hA : A ∈ goodM R')
@@ -452,7 +447,7 @@ lemma phiMat_block (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) {g :
   simp only [coefMat, phiMat, Matrix.of_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, map_sub, hX,
     Matrix.one_apply, Prod.mk.injEq]
   by_cases hn0 : n = 0 <;> by_cases hn1 : n = 1 <;> by_cases hpq : p = q <;> by_cases hij : i = j <;>
-    simp [hn0, hn1, hpq, hij, PowerSeries.coeff_one, Matrix.one_apply] <;> omega
+    simp [hn0, hn1, hpq, hij, PowerSeries.coeff_one]
 
 lemma phiMat_good (R' : Subalgebra O (X' → Matrix d d (FractionRing O))) {g : Type} [Fintype g]
     [DecidableEq g] (Θ : Matrix g g R') (p q : g) :
@@ -491,7 +486,7 @@ lemma phiMat_eval [IsDomain O] (R' : Subalgebra O (X' → Matrix d d (FractionRi
           (bigMat (fun r : R' => (r : X' → Matrix d d (FractionRing O)) x') Θ).map Polynomial.C) := by
     ext P Q
     by_cases hPQ : P = Q <;>
-      simp [phiMat, bigMat, Matrix.one_apply, hPQ, Polynomial.coe_X, Polynomial.coe_C] <;> ring
+      simp [phiMat, bigMat, hPQ, Polynomial.coe_X, Polynomial.coe_C] <;> ring
   rw [hL, hM, ← RingHom.map_det]
   rw [show (Polynomial.coeToPowerSeries.ringHom : Polynomial (FractionRing O) →+* PowerSeries (FractionRing O))
       (Matrix.det (1 - (Polynomial.X : Polynomial (FractionRing O)) •

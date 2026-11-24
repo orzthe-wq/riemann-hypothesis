@@ -38,30 +38,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-
-namespace I195MixedCoordinates_a63f0715cbf334f1e52c5d7b
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-public noncomputable abbrev target
-    {D : D7} {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D ρ S.rank))
-    (𝓕 : Set (Mx D ρ S.rank)) (f : WO S T → ℂ) (y : Mx D S.rank ρ) : WO S T₀ → ℂ :=
-  fun w₀ => ∫ ξ in 𝓕, heisO ψ S T (d.jX * ξ)
-    (heisO ψ S T (d.jY * (incA D (-D.host.xi0⁻¹) • (adj y * gA S)))
-      (heisO ψ S T (d.j0 * w₀) f)) 0 ∂μ
-
-end I195MixedCoordinates_a63f0715cbf334f1e52c5d7b
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -96,22 +73,22 @@ structure FormulasS {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (ψ : A
     (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) : Prop where
 
   target : ∀ (h : GA D T) (x : Mx D T.rank ρ),
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 (om (1, h) f) x = om₀ (1, h) ((_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 f (mt T h⁻¹ ⬝ x))
+    (_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 (om (1, h) f) x = om₀ (1, h) ((_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 f (mt T h⁻¹ ⬝ x))
 
   core : ∀ (g₀ : GA D S₀) (x : Mx D T.rank ρ),
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 (om (d.emb0 g₀, 1) f) x = om₀ (g₀, 1) ((_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 f x)
+    (_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 (om (d.emb0 g₀, 1) f) x = om₀ (g₀, 1) ((_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 f x)
 
   levi : ∀ (a : GL (Fin ρ) (AE D)) (x : Mx D T.rank ρ),
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 (om (d.levi a, 1) f) x =
+    (_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 (om (d.levi a, 1) f) x =
       ((((χT (Matrix.GeneralLinearGroup.det a))⁻¹ : Circle) : ℂ) * (halfMod T.rank a : ℂ)) •
-        (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 f (x ⬝ a.1)
+        (_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 f (x ⬝ a.1)
 
   unip : ∀ (b : Mx D ρ S₀.rank) (x : Mx D T.rank ρ),
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 (om (d.nB b, 1) f) x = heisO ψ S₀ T (x ⬝ b) ((_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 f x)
+    (_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 (om (d.nB b, 1) f) x = heisO ψ S₀ T (x ⬝ b) ((_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 f x)
 
   centre : ∀ (c : skewA D ρ) (x : Mx D T.rank ρ),
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 (om (d.nC c, 1) f) x =
-      ψ (symplOH S T (d.extX T x) (d.extY T (x ⬝ c.1))) • (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 f x
+    (_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 (om (d.nC c, 1) f) x =
+      ψ (symplOH S T (d.extX T x) (d.extY T (x ⬝ c.1))) • (_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 f x
 
 structure FormulasT {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (ψ : AddChar (AF D.host.F) ℂ)
     (χS : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ))
@@ -119,21 +96,21 @@ structure FormulasT {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (ψ : A
     (μ : Measure (Mx D ρ S.rank)) (𝓕 : Set (Mx D ρ S.rank)) (f : WO S T → ℂ) : Prop where
 
   source : ∀ (g : GA D S) (y : Mx D S.rank ρ),
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 (om (g, 1) f) y = om₀ (g, 1) ((_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 f (mt S g⁻¹ ⬝ y))
+    (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 (om (g, 1) f) y = om₀ (g, 1) ((_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f (mt S g⁻¹ ⬝ y))
 
   core : ∀ (h₀ : GA D T₀) (y : Mx D S.rank ρ),
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 (om (1, d.emb0 h₀) f) y = om₀ (1, h₀) ((_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 f y)
+    (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 (om (1, d.emb0 h₀) f) y = om₀ (1, h₀) ((_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f y)
 
   levi : ∀ (a : GL (Fin ρ) (AE D)) (y : Mx D S.rank ρ),
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 (om (1, d.levi a) f) y =
+    (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 (om (1, d.levi a) f) y =
       (((χS (Matrix.GeneralLinearGroup.det a) : Circle) : ℂ) * (halfMod S.rank a : ℂ)) •
-        (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 f (y ⬝ a.1)
+        (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f (y ⬝ a.1)
 
   unip : ∀ (b : Mx D ρ T₀.rank) (y : Mx D S.rank ρ),
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 (om (1, d.nB b) f) y = heisO ψ S T₀ (ofAdj S T₀ (y ⬝ b)) ((_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 f y)
+    (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 (om (1, d.nB b) f) y = heisO ψ S T₀ (ofAdj S T₀ (y ⬝ b)) ((_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f y)
 
   centre : ∀ (c : skewA D ρ) (y : Mx D S.rank ρ),
-    (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 (om (1, d.nC c) f) y = ψ (d.qT S c y) • (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 f y
+    (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 (om (1, d.nC c) f) y = ψ (d.qT S c y) • (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f y
 
 def MixedSource (D : D7) : Prop :=
   ∀ (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (χS χT : (AE D)ˣ →* Circle)
@@ -154,9 +131,9 @@ def MixedModelFormulas (D : D7) : Prop := MixedSource D ∧ MixedTarget D
 def MixedValues (D : D7) : Prop :=
   ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) →
     (∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)),
-      IsCovolOne (ratMx D T.rank ρ) μ 𝓕 → ∀ f, IsThetaFunO ψ S T f → ∀ x, IsThetaFunO ψ S₀ T ((_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d) T ψ μ 𝓕 f x)) ∧
+      IsCovolOne (ratMx D T.rank ρ) μ 𝓕 → ∀ f, IsThetaFunO ψ S T f → ∀ x, IsThetaFunO ψ S₀ T ((_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 f x)) ∧
     ∀ (S T T₀ : HSp D) (ρ : ℕ) (d : HypDec T T₀ ρ) (μ : Measure (Mx D ρ S.rank)) (𝓕 : Set (Mx D ρ S.rank)),
-      IsCovolOne (ratMx D ρ S.rank) μ 𝓕 → ∀ f, IsThetaFunO ψ S T f → ∀ y, IsThetaFunO ψ S T₀ ((_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 f y)
+      IsCovolOne (ratMx D ρ S.rank) μ 𝓕 → ∀ f, IsThetaFunO ψ S T f → ∀ y, IsThetaFunO ψ S T₀ ((_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f y)
 
 def gramSkew (T : HSp D) {ρ : ℕ} (x : Mx D T.rank ρ) : Mx D ρ ρ :=
   (-incA D D.host.xi0) • (adj x ⬝ (gA T ⬝ x))ᵀ
@@ -180,11 +157,11 @@ def HeisenbergTarget (D : D7) : Prop :=
   ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) →
     ∀ (S T T₀ : HSp D) (ρ : ℕ) (d : HypDec T T₀ ρ) (μ : Measure (Mx D ρ S.rank)) (𝓕 : Set (Mx D ρ S.rank)),
       IsCovolOne (ratMx D ρ S.rank) μ 𝓕 → ∀ f, IsThetaFunO ψ S T f →
-        (∀ (ξ : Mx D ρ S.rank) (y : Mx D S.rank ρ), (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 (heisO ψ S T (d.incX S ξ) f) y =
-          ψ (symplO S T (d.incAdj S y) (d.incX S ξ)) • (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 f y) ∧
-        (∀ (w₀ : WO S T₀) (y : Mx D S.rank ρ), (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 (heisO ψ S T (d.inc0 S w₀) f) y =
-          heisO ψ S T₀ w₀ ((_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 f y)) ∧
-        HasSum (fun y : Matrix (Fin S.rank) (Fin ρ) D.host.E => (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target d) S ψ μ 𝓕 f (rat y) 0) (f 0)
+        (∀ (ξ : Mx D ρ S.rank) (y : Mx D S.rank ρ), (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 (heisO ψ S T (d.incX S ξ) f) y =
+          ψ (symplO S T (d.incAdj S y) (d.incX S ξ)) • (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f y) ∧
+        (∀ (w₀ : WO S T₀) (y : Mx D S.rank ρ), (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 (heisO ψ S T (d.inc0 S w₀) f) y =
+          heisO ψ S T₀ w₀ ((_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f y)) ∧
+        HasSum (fun y : Matrix (Fin S.rank) (Fin ρ) D.host.E => (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f (rat y) 0) (f 0)
 
 theorem halfMod_pos {ρ : ℕ} (n : ℕ) (a : GL (Fin ρ) (AE D)) : 0 < halfMod n a := by
   refine Real.rpow_pos_of_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 fun h => ?_)) _

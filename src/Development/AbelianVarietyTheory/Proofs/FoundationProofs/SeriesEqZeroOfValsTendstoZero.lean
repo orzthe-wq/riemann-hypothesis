@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.HTLawAt
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoefficientCongruenceOfTwistedValuesStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoefficientCongruenceOfTwistedValues
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -70,6 +70,6 @@ theorem KZ.series_eq_zero_of_vals_tendsto_zero : ∀ (l : ℕ) [Fact l.Prime] (c
   apply KZ.eq_zero_of_cg_all l
   intro k
   obtain ⟨m₁, hm⟩ := hv k
-  exact GlobalTheory.T.coefficient_congruence_of_twisted_values l c F k m₁ hO hm n
+  exact _root_.GlobalTheory.KZ.CoefVal.coeff_cg_of_values l c F k m₁ hO hm n
 
 end GlobalTheory

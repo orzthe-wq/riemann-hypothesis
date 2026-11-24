@@ -78,17 +78,6 @@ theorem norm_eq_one_of_eigen (hF : IsTotallyReal F) {κ G : Type} [Fintype κ] [
     simp only [HasFiniteIntegral, enorm_mul] at h3
     simpa only [pow_two] using h3.ne
 
-variable (F) in
-theorem continuous_ofMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
-  refine continuous_pi fun v => ?_
-  rcases v.isReal_or_isComplex with hv | hv
-  · rw [(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]
-    exact ((continuous_apply _).comp continuous_fst).congr fun y =>
-      (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
-  · rw [(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]
-    exact ((continuous_apply _).comp continuous_snd).congr fun y =>
-      (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
-
 theorem lDiag_box_ne_zero (hF : IsTotallyReal F) {κ : Type} [Fintype κ] {Ψ : (κ → AF F) → ℂ}
     (hΨ : Ψ ∈ schA F κ) (h0 : Ψ ≠ 0) : DiagForm.lDiag F κ (boxFun Ψ fun x => star (Ψ x)) ≠ 0 := by
   classical
@@ -103,9 +92,27 @@ theorem lDiag_box_ne_zero (hF : IsTotallyReal F) {κ : Type} [Fintype κ] {Ψ : 
     letI : MeasurableSpace (κ → AF F) := borel _
     haveI : BorelSpace (κ → AF F) := ⟨rfl⟩
     exact (GlobalTheory.SplitSvN.schA_facts hF hΨ).1
+  have hsymm : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
+    refine continuous_pi fun v => ?_
+    rcases v.isReal_or_isComplex with hv | hv
+    · rw [(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]
+      exact ((continuous_apply _).comp continuous_fst).congr fun y =>
+        (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
+    · rw [(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]
+      exact ((continuous_apply _).comp continuous_snd).congr fun y =>
+        (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
   have hg : Continuous (DiagForm.glue : DiagForm.Vi F κ × DiagForm.Vf F κ → κ → AF F) := by
+    have hsymm : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
+      refine continuous_pi fun v => ?_
+      rcases v.isReal_or_isComplex with hv | hv
+      · rw [(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]
+        exact ((continuous_apply _).comp continuous_fst).congr fun y =>
+          (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
+      · rw [(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]
+        exact ((continuous_apply _).comp continuous_snd).congr fun y =>
+          (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
     refine continuous_pi fun i => Continuous.prodMk ?_ ((continuous_apply i).comp continuous_snd)
-    exact (continuous_ofMixed F).comp ((continuous_apply i).comp ((DiagForm.eI F κ).continuous.comp continuous_fst))
+    exact hsymm.comp ((continuous_apply i).comp ((DiagForm.eI F κ).continuous.comp continuous_fst))
   have e : DiagForm.resD F κ (boxFun Ψ fun x => star (Ψ x)) =
       fun p => ((Complex.normSq (Ψ (DiagForm.glue p)) : ℝ) : ℂ) := funext fun p => Complex.mul_conj _
   rw [DiagForm.lDiag, LinearMap.comp_apply, DiagForm.Lext_apply _ hi, e, integral_complex_ofReal,

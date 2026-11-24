@@ -54,7 +54,7 @@ namespace CupPull
 theorem sub_map {E E' : Spc} (f : E ⟶ E') {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (x.map f).sub j l h = (x.sub j l h).map f := by
   have := ConcreteCategory.congr_hom (NatTrans.congr_app (f.naturality (SimplexCategory.subinterval j l h).op) (op U)) x
-  simp only [NatTrans.comp_app, types_comp_apply, ConcreteCategory.comp_apply] at this
+  simp only [NatTrans.comp_app, ConcreteCategory.comp_apply] at this
   exact this.symm
 
 theorem isAW_pull {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E E' : Spc} (f : E ⟶ E') {n m k : ℤ}

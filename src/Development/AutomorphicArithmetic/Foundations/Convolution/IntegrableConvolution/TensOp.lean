@@ -141,7 +141,7 @@ private theorem inner_ofFn_prod (μ : Measure G) [SigmaFinite μ] [IsFiniteMeasu
       ← integral_const_mul]
     refine integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)
     simp only [MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.prod_univ_succ, List.ofFn_succ,
-      List.prod_cons, Fin.insertNthEquiv_zero, Fin.cons_zero, Fin.cons_succ]
+      List.prod_cons, Fin.insertNthEquiv_zero]
     show _ = (φ 0 x * ∏ i, φ i.succ (g i)) *
       ⟪w, π (s 0 x * (List.ofFn fun i => s i.succ (g i)).prod) v⟫_ℂ
     rw [UnitaryRep.map_mul_apply, UnitaryRep.inner_map_right π (s 0 x) w]

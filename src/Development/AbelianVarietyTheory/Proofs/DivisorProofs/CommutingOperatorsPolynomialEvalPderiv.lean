@@ -58,7 +58,7 @@ theorem polEval_pderiv :
   have hX : ∀ (j : ι) (q : MvPolynomial ι ℂ),
       polEval m hm f₀ (MvPolynomial.X j * q) = m j (polEval m hm f₀ q) := by
     intro j q
-    simp [polEval, Module.End.mul_apply]
+    simp [polEval]
   have h1 : polEval m hm f₀ 1 = f₀ := by simp [polEval]
   induction p using MvPolynomial.induction_on with
   | C a =>

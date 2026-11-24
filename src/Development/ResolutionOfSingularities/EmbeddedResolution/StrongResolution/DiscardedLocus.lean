@@ -72,10 +72,7 @@ private theorem noetherianSpace_of_isOpenImmersion {A B : Scheme.{u}} (f : A ⟶
   have := h
   exact f.isOpenEmbedding.toIsEmbedding.toIsInducing.noetherianSpace
 
-private theorem range_comp_base {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) :
-    Set.range ⇑(f ≫ g).base = ⇑g.base '' Set.range ⇑f.base := by
-  ext x
-  simp [Set.range_comp]
+private alias range_comp_base := _root_.AlgebraicGeometry.Scheme.Hom.range_comp_base
 
 private theorem quasiCompact_strictTransformι_of_noetherianSpace_source {X X₁ : Scheme.{u}}
     (π : X₁ ⟶ X) (Z D : X.IdealSheafData) (h : TopologicalSpace.NoetherianSpace ↥X₁) :
@@ -216,10 +213,7 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   {pY : Y ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType pY]
   (S : AffineSpacePrincipalizationData k Y pY)
 
-theorem strictTransformIdeal_succ_eq_strictTransform (i : ℕ) :
-    S.strictTransformIdeal (i + 1) =
-      Blowup.strictTransform (S.ambientBlowupMorphism i) (S.ambientCenter i) (S.strictTransformIdeal i) :=
-  S.strictTransformIdeal_succ i
+alias strictTransformIdeal_succ_eq_strictTransform := _root_.FunctorialResolution.EmbeddedResolution.AffineSpacePrincipalizationData.strictTransformIdeal_succ
 
 theorem strictTransformι_eq_subschemeι (j : ℕ) : S.strictTransformι j = (S.strictTransformIdeal j).subschemeι := rfl
 

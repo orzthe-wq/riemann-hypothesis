@@ -91,12 +91,10 @@ lemma mem_support_mul {f g : MvPolynomial σ K} {m : σ →₀ ℕ} (hm : m ∈ 
 omit [Nontrivial K] in
 lemma mem_support_add {f g : MvPolynomial σ K} {m : σ →₀ ℕ} (hm : m ∈ (f + g).support) :
     m ∈ f.support ∨ m ∈ g.support := by
-  have := support_add hm
-  simpa [Finset.mem_union] using this
+  simpa [Finset.mem_union] using support_add hm
 
 lemma mem_support_monomial_one {s m : σ →₀ ℕ} (hm : m ∈ (monomial s (1 : K)).support) : m = s := by
-  have := support_monomial_subset hm
-  simpa using this
+  simpa using support_monomial_subset hm
 
 lemma Good.mul {f g : MvPolynomial σ K} {a b : ι → ℕ} {s s' : σ →₀ ℕ}
     (hf : Good sv f a s) (hg : Good sv g b s') : Good sv (f * g) (a + b) (s + s') := by
@@ -158,9 +156,7 @@ lemma SFree.mul {f g : MvPolynomial σ K} (hf : SFree sv f) (hg : SFree sv g) : 
 omit [Nontrivial K] in
 lemma SFree.add {f g : MvPolynomial σ K} (hf : SFree sv f) (hg : SFree sv g) : SFree sv (f + g) := by
   intro m hm
-  rcases mem_support_add hm with h | h
-  · exact hf m h
-  · exact hg m h
+  exact (mem_support_add hm).elim (hf m) (hg m)
 
 omit [Nontrivial K] in
 lemma SFree.C (c : K) : SFree sv (C c : MvPolynomial σ K) := by
@@ -501,8 +497,7 @@ lemma good_tie (i : Fin (t + 1)) (e : MvPolynomial (BVar N r t) ℚ_[p]) (he : S
     intro m hm
     rw [he m hm]
     refine ⟨fun k => Nat.zero_le _, fun h => ?_⟩
-    have := congrFun h i
-    simp at this
+    exact absurd (congrFun h i) (by simp)
 
 lemma sfree_pair (u w : Fin r → Fin (N + 1) × Fin r) :
     SFree (scalS N r t) (∑ c, X (Sum.inl (u c)) * X (Sum.inl (w c)) : MvPolynomial (BVar N r t) ℚ_[p]) :=
@@ -515,7 +510,7 @@ lemma lv_castSucc (j : Fin t → ℕ) (jp : ℕ) (k : Fin t) : lv j jp (Fin.cast
   simp [lv, Finset.sum_apply, Pi.single_apply, Fin.castSucc_inj, Fin.castSucc_ne_last]
 
 lemma lv_last (j : Fin t → ℕ) (jp : ℕ) : lv j jp (Fin.last t) = jp := by
-  simp [lv, Finset.sum_apply, Pi.single_apply, (Fin.castSucc_ne_last _).symm]
+  simp [lv, Finset.sum_apply, (Fin.castSucc_ne_last _).symm]
 
 lemma lv_inj {j j' : Fin t → ℕ} {jp jp' : ℕ} (h : lv j jp = lv j' jp') : j = j' ∧ jp = jp' := by
   refine ⟨funext fun k => ?_, ?_⟩
@@ -545,7 +540,7 @@ lemma intPol_iff_isInt (f : MvPolynomial σ ℚ_[p]) : f ∈ IntPol p σ ↔ IsI
 
 lemma intPol_iff' (F : MvPolynomial σ ℚ_[p]) :
     F ∈ IntPol p σ ↔ ∃ F₀ : MvPolynomial σ ℤ_[p], map (algebraMap ℤ_[p] ℚ_[p]) F₀ = F := by
-  simp [IntPol, LinearMap.mem_range, MvPolynomial.mapAlgHom_apply, Algebra.ofId_apply]
+  simp [IntPol, LinearMap.mem_range, MvPolynomial.mapAlgHom_apply]
 
 lemma intPol_mul' {F G : MvPolynomial σ ℚ_[p]} (hF : F ∈ IntPol p σ) (hG : G ∈ IntPol p σ) :
     F * G ∈ IntPol p σ := by
@@ -611,8 +606,7 @@ def Bset (j : Fin D.T.t → ℕ) (jp : ℕ) : Set (MvPolynomial (BVar N r D.T.t)
 lemma gens_sub (j : Fin D.T.t → ℕ) (jp : ℕ) (x : MvPolynomial (BVar N r D.T.t) ℚ_[p])
     (hx : x ∈ D.gens p (r := r) j jp) : ∃ b ∈ Bset (p := p) D j jp, x = pre D j jp * b := by
   obtain ⟨y, hy, g, hg, rfl⟩ := hx
-  refine ⟨_, ⟨y, hy, g, hg, rfl⟩, ?_⟩
-  rw [pre, ← zmon_eq]; ring
+  exact ⟨_, ⟨y, hy, g, hg, rfl⟩, by rw [pre, ← zmon_eq]; ring⟩
 
 lemma memV (j : Fin D.T.t → ℕ) (jp : ℕ) (v : MvPolynomial (BVar N r D.T.t) ℚ_[p])
     (hv : v ∈ Submodule.span ℚ_[p] (D.gens p (r := r) j jp)) :
@@ -751,10 +745,7 @@ lemma SSZ_int (x : MvPolynomial (BVar N r D.T.t) ℚ_[p]) (hx : x ∈ D.SSZ p (r
 
 lemma chainEmb_inj : Function.Injective (chainEmb N r D.T.t) := by
   rintro ⟨a, c⟩ ⟨b, d⟩ h
-  simp only [chainEmb, Sum.inl.injEq, Prod.mk.injEq] at h
-  obtain ⟨h1, h2⟩ := h
-  rw [Fin.castSucc_inj] at h1
-  rw [h1, h2]
+  simpa only [chainEmb, Sum.inl.injEq, Prod.mk.injEq, Fin.castSucc_inj] using h
 
 lemma xiVar_inj : Function.Injective (xiVar N r D.T.t) := by
   intro a b h; simpa [xiVar] using h

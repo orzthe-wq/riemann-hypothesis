@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTraceCompatibleTorusEmbeddingStandardTorus
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugateStatement
+public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugate
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoordsAlongOrthonormalRealSubfieldBasis
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
 import Mathlib.Algebra.Order.Floor.Extended
@@ -79,7 +80,7 @@ theorem normalisedThetaPullback_mem_torsionTranslatesSpan (D : D7) (cc : Ideal (
     rw [two_nsmul, coordB_add, hco, ← two_mul]
     exact ht.1
   have hq : U1 (lamOf D cc δ) t0 (sgStar (lamOf D cc δ)) 0 ∈ Qbar := by
-    have := (GlobalTheory.T.forall_use1 D cc δ hc).1 t0 ⟨2, two_pos, by exact_mod_cast ht.1⟩ 0
+    have := (_root_.GlobalTheory.ThetaConj.cmTheta_taylorCoeff_algebraic_and_conjugate D cc δ hc).1 t0 ⟨2, two_pos, by exact_mod_cast ht.1⟩ 0
     simpa [coef1] using this
   have hmem : U D (tor0 D cc δ) t (pullB D (tor0 D cc δ) b (sgStar (lamOf D cc δ))) ∈
       Tr D (tor0 D cc δ) b := Submodule.subset_span ⟨t, ⟨2, two_pos, h2⟩, rfl⟩

@@ -130,12 +130,12 @@ private theorem elem_mem {i j : Fin n} (h : i < j) (a : 𝒪[k]) :
     have : ¬ (i = a ∧ j = b) := by
       rintro ⟨rfl, rfl⟩
       exact absurd hab h.asymm
-    simp [one_apply_ne hab.ne', single_apply, this]
+    simp [one_apply_ne hab.ne', this]
   · show (1 + single i j _ : Matrix (Fin n) (Fin n) k) a a = _
     have : ¬ (i = a ∧ j = a) := by
       rintro ⟨rfl, rfl⟩
       exact h.ne rfl
-    simp [single_apply, this]
+    simp [this]
   · ext p q
     show algebraMap 𝒪[k] k ((1 + single i j a : Matrix (Fin n) (Fin n) 𝒪[k]) p q) =
       (1 + single i j _ : Matrix (Fin n) (Fin n) k) p q
@@ -176,7 +176,7 @@ theorem UpperTheory.V.AlgebraTools.simpleOrbit :
         conj_mem hij (mul_mem (inv_mem (hx c)) (hx d)), hL] at h2
       have h3 : valuation k (algebraMap 𝒪[k] k (r d - r c)) < 1 := by
         convert h2 using 2
-        simp [elem, one_apply_ne hlt.ne, single_apply, hlt.ne]
+        simp [elem, one_apply_ne hlt.ne, hlt.ne]
       have h4 := (res_zero _).2 h3
       rwa [map_sub, hr, hr, sub_eq_zero] at h4
     · rintro ⟨c, rfl, -⟩

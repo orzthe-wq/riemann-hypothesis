@@ -68,23 +68,17 @@ theorem coe_idealUnit (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) :
 open NumberField IsDedekindDomain in
 open scoped nonZeroDivisors in
 variable {K : Type} [Field K] [NumberField K] in
-private lemma coe_idealUnit_eq (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) :
-    ((_root_.GlobalTheory.Mem.RayData.idealUnit I hI : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) = I := rfl
-
-open NumberField IsDedekindDomain in
-open scoped nonZeroDivisors in
-variable {K : Type} [Field K] [NumberField K] in
 theorem _root_.GlobalTheory.Mem.RayData.idealUnit_mul (I J : Ideal (𝓞 K)) (hI : I ≠ ⊥) (hJ : J ≠ ⊥) (h : I * J ≠ ⊥) :
     _root_.GlobalTheory.Mem.RayData.idealUnit (I * J) h = _root_.GlobalTheory.Mem.RayData.idealUnit I hI * _root_.GlobalTheory.Mem.RayData.idealUnit J hJ := by
   ext
-  simp [coe_idealUnit_eq, FractionalIdeal.coeIdeal_mul]
+  simp [_root_.GlobalTheory.Mem.RayData.coe_idealUnit, FractionalIdeal.coeIdeal_mul]
 
 open NumberField IsDedekindDomain in
 open scoped nonZeroDivisors in
 variable {K : Type} [Field K] [NumberField K] in
 theorem _root_.GlobalTheory.Mem.RayData.idealUnit_congr {I J : Ideal (𝓞 K)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) :
     _root_.GlobalTheory.Mem.RayData.idealUnit I hI = _root_.GlobalTheory.Mem.RayData.idealUnit J hJ ↔ I = J := by
-  rw [Units.ext_iff, coe_idealUnit_eq, coe_idealUnit_eq, FractionalIdeal.coeIdeal_inj]
+  rw [Units.ext_iff, _root_.GlobalTheory.Mem.RayData.coe_idealUnit, _root_.GlobalTheory.Mem.RayData.coe_idealUnit, FractionalIdeal.coeIdeal_inj]
 
 open NumberField IsDedekindDomain in
 open scoped nonZeroDivisors in
@@ -118,7 +112,7 @@ theorem _root_.GlobalTheory.Mem.RayData.mem_principalRay_iff (𝔮 : Ideal (𝓞
         exact y.ne_zero (by rw [hya]; simp)
       refine ⟨a, 1, ha, one_ne_zero, ha1, by simp, ?_⟩
       ext
-      simp [coe_idealUnit_eq, hya]
+      simp [_root_.GlobalTheory.Mem.RayData.coe_idealUnit, hya]
     | one =>
       exact ⟨1, 1, one_ne_zero, one_ne_zero, by simp, by simp, one_mul _⟩
     | mul y z _ _ hy hz =>
@@ -132,7 +126,7 @@ theorem _root_.GlobalTheory.Mem.RayData.mem_principalRay_iff (𝔮 : Ideal (𝓞
         rw [e]
         exact 𝔮.add_mem (𝔮.mul_mem_left _ hd1) hb1
       · rw [Units.ext_iff] at hyab hzcd ⊢
-        simp only [Units.val_mul, coe_idealUnit_eq] at hyab hzcd ⊢
+        simp only [Units.val_mul, _root_.GlobalTheory.Mem.RayData.coe_idealUnit] at hyab hzcd ⊢
         rw [← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_mul_span_singleton,
           FractionalIdeal.coeIdeal_mul, FractionalIdeal.coeIdeal_mul, ← hyab, ← hzcd]
         ring
@@ -229,7 +223,7 @@ theorem _root_.GlobalTheory.Mem.RayData.card_eq_rayNo : ∀ (K : Type) [Field K]
       refine ⟨⊤, top_ne_bot, Ideal.isCoprime_iff_sup_eq.mpr (top_sup_eq _), ?_⟩
       have e : _root_.GlobalTheory.Mem.RayData.idealUnit (⊤ : Ideal (𝓞 K)) top_ne_bot = 1 := by
         ext
-        simp [coe_idealUnit_eq]
+        simp [_root_.GlobalTheory.Mem.RayData.coe_idealUnit]
       rw [e, mul_one, inv_one]
       exact one_mem _
     | mul y z _ _ hy hz =>

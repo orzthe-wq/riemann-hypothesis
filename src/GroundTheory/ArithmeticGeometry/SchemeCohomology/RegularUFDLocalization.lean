@@ -388,7 +388,7 @@ theorem isRegularLocalRing_of_hasProjectiveDimensionLT [IsLocalRing R] [IsNoethe
     have h1 : f v0 = 1 := hf
     simp only [LinearMap.comp_apply, Submodule.mkQ_apply, ι, Submodule.liftQ_apply, ι₀,
       LinearMap.toSpanSingleton_apply, one_smul, ρ, LinearMap.extendScalarsOfSurjective_apply,
-      ρ₀, φ, LinearMap.coe_comp, Function.comp_apply, LinearMap.id_apply]
+      ρ₀, φ, LinearMap.id_apply]
     change q (f v0) = _
     rw [h1, map_one]
     rfl

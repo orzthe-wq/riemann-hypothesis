@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RankOfMulEqOne
 public import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocE
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WachRingFactsUnramifiedLevelOneStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WachRingFactsUnramifiedLevelOne
 public import Formalism.PieriBlockIdeals.PieriColumnMinors.HeckeLFunctionIdealEulerProduct
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -284,7 +284,7 @@ theorem exists_mapMat_redHom : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H 
   intro l _ P H K LL hA T T' n n' γ b b' N N' u un g hT hT' hF hF' hχ hun
   have hl : l ≠ 2 := hA.2.1
   have := charP_residueField_of_irreducible LL
-  obtain ⟨hφ, -, hγ, -, hRF, -⟩ := GlobalTheory.T.wachRingFacts_unramified_levelOne H K LL hA
+  obtain ⟨hφ, -, hγ, -, hRF, -⟩ := _root_.GlobalTheory.WachPlace.ringFacts_of_caseA H K LL hA
   have RF : ∀ a : (↥(OL LL))⟦X⟧, (∀ δ ∈ (H.W K 1 LL hA.2.2).DelF, (H.W K 1 LL hA.2.2).γ₀ δ a = a) →
       ∃ y, inc l ↥(OL LL) y = a := fun a ha => (hRF a).mp ha
   obtain ⟨A, hAm⟩ := exists_mapMat (H.W K 1 LL hA.2.2) b b' RF g hT hT' hF.1 hF'.1

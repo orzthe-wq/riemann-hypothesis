@@ -69,10 +69,6 @@ section Gen
 
 variable {X Y Z : Scheme.{0}} {L : LB X}
 
-theorem g_self (hL : L.IsLB) (f : Y ⟶ X) (y : Y) {i : L.ι} (hi : f y ∈ L.U i) :
-    gm f y (L.U i ⊓ L.U i) (L.g i i) = 1 :=
-  mul_eq_left.1 (gm_cocycle hL f y hi hi hi)
-
 theorem mem_twoPullbackChart_iff {φ : Fin 2 → (Y ⟶ X)} (r : Z ⟶ Y) (z : Z) (a b : L.ι) :
     r z ∈ LB.wchart L φ ![a, b] ↔ (r ≫ φ 0) z ∈ L.U a ∧ (r ≫ φ 1) z ∈ L.U b := by
   constructor
@@ -179,7 +175,7 @@ theorem W_trans (hβ : β.IsGen) (hβ₀ : β₀.IsGen) (a : Over.mk x ⟶ A) (�
   rw [gv_trans hβ₀ (rpt a) cpt (fiberComplexPoint_mem_thetaTraceChart_of_mem a hk hj) (fiberComplexPoint_mem_thetaTraceChart_of_mem a hk' hj'),
     gv_trans hβ (rpt a) cpt (fiberComplexPoint_mem_thetaTraceIsoChart_of_comp a ψa ha hk hi) (fiberComplexPoint_mem_thetaTraceIsoChart_of_comp a ψa ha hk' hi'), e0, e0', e1, f1]
   apply Additive.ofMul.injective
-  simp only [ofMul_mul, ofMul_inv, ofMul_zpow, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_zero]
+  simp only [ofMul_mul, ofMul_inv, ofMul_zpow, Matrix.cons_val_one, Matrix.cons_val_zero]
   abel
 
 end Core
@@ -201,7 +197,7 @@ theorem W_eq (hβ : β.IsGen) (hβ₀ : β₀.IsGen) (a : Over.mk x ⟶ A) (ψa 
     {k j i : L.L.ι} (hk : pl a cpt ∈ L.L.U k) (hj : pl (a ^ p) cpt ∈ L.L.U j) (hi : pl ψa cpt ∈ L.L.U i) :
     W L β β₀ (rpt a) k j i = W L β β₀ (rpt a) (kc L a) j i := by
   have e := W_trans hβ hβ₀ a ψa ha hk (kc_mem L a) hj hj hi hi
-  rwa [g_self L.isLB _ _ hj, g_self L.isLB _ _ hi, _root_.mul_one, _root_.one_mul] at e
+  rwa [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_self L.isLB _ _ hj, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_self L.isLB _ _ hi, _root_.mul_one, _root_.one_mul] at e
 
 theorem bv_trans (hβ : β.IsGen) (hβ₀ : β₀.IsGen) (a : Over.mk x ⟶ A) (ψa : Over.mk x' ⟶ A) (ha : rpt a ≫ Ψ = rpt ψa)
     {i j i' j' : L.L.ι} (hi : pl ψa cpt ∈ L.L.U i) (hi' : pl ψa cpt ∈ L.L.U i')
@@ -275,7 +271,7 @@ theorem bv_values (hβ : β.IsGen) (hβ₀ : β₀.IsGen) {s : LB.Sec (LPow A L.
   have hk : pl c cpt ∈ L.L.U (J (pl c)) := hJ _
   have hj' : pl (c ^ p) cpt ∈ L.L.U (J (pl (c ^ p))) := hJ _
   have et := W_trans hβ hβ₀ c ψa hcΨ hk (kc_mem L c) hj' (hj m) hi hi
-  rw [g_self L.isLB _ _ hi, _root_.one_mul] at et
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_self L.isLB _ _ hi, _root_.one_mul] at et
   have st : gs (rpt (c ^ p)) cpt ((LPow A L.L 1 (Over.mk x)).U (fun _ => J (pl (c ^ p))))
       (s.f (fun _ => J (pl (c ^ p)))) =
       (gm (pl (c ^ p)) cpt (L.L.U (J (pl (c ^ p))) ⊓ L.L.U (jm m)) (L.L.g (J (pl (c ^ p))) (jm m))).val *

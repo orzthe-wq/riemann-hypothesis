@@ -4,11 +4,13 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValua
 public import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ProdSumReindex
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AdicSumSectionsOfFiniteSumsOnThickeningsStatement
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFrameRatio
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.StalkMapInjectiveOfFlat
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SumFCalculus
-public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SvalEqZeroOfIndepCombStatement
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsExtensionPullOver
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SvalEqZeroOfIndepComb
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SvalEqZeroOfSumMulCoord
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.SectionArithmetic
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFrameRatio
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -54,7 +56,6 @@ import Mathlib.Tactic.TypeStar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ExistsZeroGt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.GenCalc
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.SectionArithmetic
 
 @[expose] public section
 
@@ -389,7 +390,7 @@ theorem core (hL : LL) (hR : AdmBase R I) (j j' : ℕ) {N : Type} [Fintype N] (�
     (sval_sum' (π := D.toPre.P.A.hom) hJ _ _ _).trans (Finset.sum_congr rfl fun ν _ =>
       (sval_smul' (π := D.toPre.P.A.hom) hJ _ _ _).trans (congrArg _ (hn ν α p Z r z J hJ)))
   obtain ⟨τ, hτ, hv⟩ := exists_frame E.aB α g hg.1 w w' hw hw'
-  refine GlobalTheory.T.adicSum_sections_of_finite_sums_on_thickenings hL R I hR D F _ (mixφ D.toPre E.aB α) (mixε j j') _ (m α)
+  refine _root_.GlobalTheory.SecAdicSum.sumF_of_sum_on_thickenings hL R I hR D F _ (mixφ D.toPre E.aB α) (mixε j j') _ (m α)
     (0 : SecOver D.toPre.P.A.hom _) (fun e => ?_) g.b τ hτ _ 0 fun z J hJ => ⟨fun p => ?_, ?_⟩
   · obtain ⟨S, hS⟩ := level E j j' e ρ σ σ' f f' (fun ν => hE ν e) (fun ν => hE' ν e) hrel m hm α
     exact ⟨S, fun Z r z J hJ => ⟨(hS Z r z J hJ).1,
@@ -466,7 +467,7 @@ theorem sumF_comb {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hR : AdmBa
   classical
   induction S using Finset.induction_on with
   | empty =>
-    letI : Module R F := Module.compHom F (algebraMap R (FractionRing R))
+    let : Module R F := Module.compHom F (algebraMap R (FractionRing R))
     refine ⟨⊥, Submodule.fg_bot, Submodule.zero_mem _, fun i => ?_, fun n => ⟨∅, fun T _ => ?_⟩⟩
     · simp only [Finset.sum_empty]; exact Submodule.zero_mem _
     · simp only [Finset.sum_empty, Finset.sum_const_zero, sub_zero]; exact Submodule.zero_mem _
@@ -585,7 +586,7 @@ theorem coreF [CharZero R] [IsAlgClosed F] (hL : LL) (hR : AdmBase R I) (j j' : 
       (sval_smul' (π := G.hom) hJ _ _ _).trans (congrArg _ ((H1.SectionArithmetic.sval_mulSec _ _ _ z hJ).trans
         (congrArg₂ (· * ·) (H1.SectionArithmetic.sval_pullSec _ _ _ z hJ) rfl))))
   have := U.smooth
-  have h₀ := GlobalTheory.T.sval_eq_zero_of_linearIndependent_comb R F _ _ _ _ G.hom (strF G F) _ isPullback_GF U.LG.L U.LG.isLB _ _ _ _ β hβ d
+  have h₀ := _root_.GlobalTheory.sval_eq_zero_of_indep_comb R F _ _ _ _ G.hom (strF G F) _ isPullback_GF U.LG.L U.LG.isLB _ _ _ _ β hβ d
     (fun y J hJ => by
       refine Eq.trans ?_ (hrel y J hJ)
 

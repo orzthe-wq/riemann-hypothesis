@@ -58,6 +58,7 @@ public import Mathlib.RingTheory.Jacobson.Ring
 import Mathlib.Topology.Sheaves.Presheaf
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
+import ReciprocityTheory.AnalyticForms.RegularLocalRings.IntToRatA
 
 @[expose] public section
 
@@ -104,25 +105,10 @@ theorem nonempty_algHom_complex_of_countable (R K : Type) [CommRing R] [IsDomain
   rw [IsScalarTower.algebraMap_apply R S K r, g.commutes]
   exact φ.commutes r
 
-private theorem isJacobsonRing_int' : IsJacobsonRing ℤ := by
-  rw [isJacobsonRing_iff_prime_eq]
-  intro P hP
-  by_cases hbot : P = ⊥
-  · subst hbot
-    refine le_antisymm (fun x hx => ?_) Ideal.le_jacobson
-    obtain ⟨z, hz⟩ := (Ideal.mem_jacobson_iff.1 hx) x
-    rw [Ideal.mem_bot] at hz ⊢
-    have hu : IsUnit (x * x + 1) := IsUnit.of_mul_eq_one z (by linear_combination hz)
-    rcases Int.isUnit_iff.1 hu with h | h
-    · exact mul_self_eq_zero.1 (by linarith)
-    · nlinarith [mul_self_nonneg x]
-  · haveI := hP.isMaximal hbot
-    exact Ideal.jacobson_eq_self_of_isMaximal
-
 theorem injective_of_finiteType_int_of_charZero {o K : Type} [CommRing o] [IsDomain o]
     [Ring.DimensionLEOne o] [Algebra.FiniteType ℤ o] [Field K] [CharZero K] (β : o →+* K) :
     Function.Injective β := by
-  haveI := isJacobsonRing_int'
+  haveI := _root_.ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int
   by_contra hβ
   have hker : RingHom.ker β ≠ ⊥ := fun h => hβ ((RingHom.injective_iff_ker_eq_bot β).2 h)
   haveI : (RingHom.ker β).IsMaximal := (RingHom.ker_isPrime β).isMaximal hker

@@ -504,7 +504,7 @@ theorem T_rtr (s : Bool) (Z h : Mat n) (hh : h ∈ GLs n) :
     (T s Z * rtr h hh : Module.End ℂ (Sm n V)) = rtr h hh * T s (h⁻¹ * Z * h) := by
   have e : h⁻¹ * (Complex.I • Z) * h = Complex.I • (h⁻¹ * Z * h) := by
     simp only [mul_smul_comm, smul_mul_assoc]
-  simp only [T, smul_mul_assoc, mul_smul_comm, add_mul, mul_add, rd_rtr, e]
+  simp only [T, smul_mul_assoc, mul_smul_comm, add_mul, mul_add, rd_rtr]
 
 theorem rd_ltr (X h : Mat n) (hh : h ∈ GLs n) (x : Sm n V) : ltr h hh (rd X x) = rd X (ltr h hh x) := by
   refine Sm.ext' fun g hg => ?_

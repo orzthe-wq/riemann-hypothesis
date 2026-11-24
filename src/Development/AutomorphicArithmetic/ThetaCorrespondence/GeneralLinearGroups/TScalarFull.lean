@@ -93,8 +93,8 @@ private theorem parInd_scalar {k : Type} [Field k] [ValuativeRel k] [Topological
   have hproj : leviProj k e ⟨_, hmem⟩ = fun a => Matrix.GeneralLinearGroup.scalar (m a) t := by
     funext a
     ext i j
-    simp [leviProj, diagBlock, Matrix.GeneralLinearGroup.scalar, Matrix.one_apply, e.injective.eq_iff,
-      Matrix.diagonal_apply, Sigma.mk.inj_iff]
+    simp [leviProj, diagBlock, Matrix.GeneralLinearGroup.scalar, e.injective.eq_iff,
+      Matrix.diagonal_apply]
   have hcomm : ∀ x : GL n k, x * Matrix.GeneralLinearGroup.scalar n t = Matrix.GeneralLinearGroup.scalar n t * x := by
     intro x
     ext i j

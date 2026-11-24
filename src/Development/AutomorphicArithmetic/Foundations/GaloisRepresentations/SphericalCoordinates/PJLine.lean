@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.PerCApply
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -108,8 +109,8 @@ private lemma core {n : ℕ} (M J : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) (ht : 
     ext k
     by_cases h : k = i
     · subst h
-      simp [Pi.single_apply, Matrix.one_apply]
-    · simp [Pi.single_apply, Matrix.one_apply, h]
+      simp
+    · simp [h]
   refine ⟨hpos, ?_, ?_, ?_⟩
   · intro hneg
     apply hall

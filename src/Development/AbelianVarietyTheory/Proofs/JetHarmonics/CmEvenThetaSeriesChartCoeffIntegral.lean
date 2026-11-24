@@ -6,7 +6,7 @@ public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpBinomialPow
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesInChartRingHomLaws
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesMultiplicativeChart
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ImagQuadraticMaximalOrderArithmeticAtSplitPrime
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaNormQuotientEllipticUnitSeriesStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaNormQuotientEllipticUnitSeries
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -90,7 +90,7 @@ theorem theta_series_integral : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω :
       · exact hα0 (by simpa using h)
     · simp at hmn
     · omega
-  obtain ⟨ε, -, hεa, -, hεb, hfe, -⟩ := GlobalTheory.T.thetaNormQuotient_elliptic_unitSeries d q M ω θ hd h16 hs hL hM hθ α m hα hα0 hm
+  obtain ⟨ε, -, hεa, -, hεb, hfe, -⟩ := _root_.GlobalTheory.MomOne.ThetaQuot.theta_quot d q M ω θ hd h16 hs hL hM hθ α m hα hα0 hm
   obtain ⟨hmul, -⟩ := GlobalTheory.MomOne.MulSeries.mulS_laws q
   obtain ⟨hb, hc0, hc1, -⟩ := hmul a
   have hℓ : constantCoeff (C ω * logS : ℂ_[q]⟦X⟧) = 0 := by

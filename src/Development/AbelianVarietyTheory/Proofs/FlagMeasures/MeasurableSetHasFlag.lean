@@ -63,7 +63,7 @@ theorem totCx (I : AutInst) : IsTotallyComplex I.E := by
   exact h
 
 theorem frm_unit (I : AutInst) (x : I.GA) (w : InfinitePlace I.E) : IsUnit (frm I x w).det := by
-  apply GlobalTheory.NearLowerCompare.frm_isUnit <;> assumption
+  apply GlobalTheory.NearLowerCompare.frm_isUnit
 
 abbrev rho (I : AutInst) (x : I.GA) := Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)
 

@@ -93,7 +93,6 @@ theorem isCompact_of_unitary {T : Set (Matrix n n ℂ)} (hT : IsClosed T)
 private theorem mul_star_eq_one_of_star_mul_eq_one {M : Matrix n n ℂ} (h : star M * M = 1) : M * star M = 1 := by
   first
   | exact mul_eq_one_comm.mp h
-  | (rw [← Matrix.inv_eq_left_inv h]; exact Matrix.mul_nonsing_inv M (Matrix.isUnit_det_of_left_inverse h))
 
 theorem isCompact_units_of_unitary {T : Set (Matrix n n ℂ)} (hT : IsClosed T)
     (hU : ∀ M ∈ T, star M * M = 1) :
@@ -121,7 +120,6 @@ theorem mem_Upq_iff (p q : ℕ) (g : GL (Fin p ⊕ Fin q) ℂ) :
   unfold Formalism.UG.Upq UJ
   first
   | (simp [cT_conj_eq_star]; done)
-  | done
 
 theorem Jpq_zero (p : ℕ) : Formalism.UG.Jpq p 0 = 1 := by
   unfold Formalism.UG.Jpq
@@ -144,10 +142,10 @@ theorem Jpq_eq_diagonal (p q : ℕ) :
   unfold Formalism.UG.Jpq
   ext i j
   rcases i with i | i <;> rcases j with j | j
-  · by_cases h : i = j <;> simp [h, Matrix.one_apply, Matrix.diagonal_apply]
-  · simp [Matrix.diagonal_apply]
-  · simp [Matrix.diagonal_apply]
-  · by_cases h : i = j <;> simp [h, Matrix.one_apply, Matrix.diagonal_apply]
+  · by_cases h : i = j <;> simp [h]
+  · simp
+  · simp
+  · by_cases h : i = j <;> simp [h]
 
 theorem Jpq_mul_self (p q : ℕ) : Formalism.UG.Jpq p q * Formalism.UG.Jpq p q = 1 := by
   rw [Jpq_eq_diagonal, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]

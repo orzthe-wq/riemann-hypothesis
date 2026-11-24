@@ -127,7 +127,7 @@ theorem resSec (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}) :
     have hex : ((res R F).sc' m n k).Exact :=
       (HomologicalComplex.exactAt_iff' _ m n k (by simp; omega) (by simp; omega)).1
         (chosenInjectiveResolutionEtaleSheaf_exactAt_ne_zero R F n (by omega))
-    exact (GlobalTheory.T.etaleSheaf_shortComplex_exact_iff_locally R ((res R F).sc' m n k)).1 hex U z hz
+    exact (_root_.GlobalTheory.EtC.exactIff R ((res R F).sc' m n k)).1 hex U z hz
   · intro n hn
     haveI : (res R F).IsStrictlyGE 0 := (inferInstance : I.cochainComplex.IsStrictlyGE 0)
     have h0 : IsZero ((res R F).X n) := CochainComplex.isZero_of_isStrictlyGE _ 0 n hn

@@ -57,6 +57,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Std.Tactic.BVDecide.Normalize.Prop
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -118,9 +119,9 @@ theorem evalAt_rad (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : Bes
   have t4 := (FT _ (hom'.om_pres (1, k) G hGt)).source (B.o.emb (h₀, 1)) y₀
   have t5 : om' (1, k) G = om' (1, J.d.nB b) (om' (1, J.d.nC c) (om' (1, J.d.emb0 h') G)) := by
     rw [e2, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]
-  change (_root_.I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.source B.d) J.W ψ s.vS.μ s.vS.𝓕 _ _ = _ at s1
+  change (_root_.I195MixedCoordinates.source B.d) J.W ψ s.vS.μ s.vS.𝓕 _ _ = _ at s1
   rw [evalAt, s1]
-  change (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target J.d) B.V₀ ψ s.vT.μ s.vT.𝓕 _ _ = _
+  change (_root_.I195MixedCoordinates.target J.d) B.V₀ ψ s.vT.μ s.vT.𝓕 _ _ = _
   rw [t4, hy, t5, t3, t2, t1]
   show _ = s.om₀ (B.o.emb (h₀, 1), 1) (jacT ψ J.d B.V₀ y₀ (J.d.nB b * J.d.nC c) (s.om₀ (1, h') _))
   unfold jacT
@@ -138,10 +139,10 @@ theorem evalAt_levi (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : Be
     rw [← map_inv, ← Matrix.mul_assoc, levi_xZero, Matrix.mul_assoc, Subgroup.coe_mul, Subgroup.coe_inv,
       Units.val_mul]
   have ht := (FS _ hΨ).target (J.d.levi γ.1) (xZero J.d ⬝ u.1.1)
-  change (_root_.I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.source B.d) J.W ψ s.vS.μ s.vS.𝓕 _ _ = _ at ht
+  change (_root_.I195MixedCoordinates.source B.d) J.W ψ s.vS.μ s.vS.𝓕 _ _ = _ at ht
   have hl := (FT _ (MV (xZero J.d ⬝ (γ⁻¹ * u).1.1))).levi γ.1 (yZero B.V₀ ρ (vecB B.o B.ζ))
   rw [evalAt, evalAt, ht, e0]
-  change (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target J.d) B.V₀ ψ s.vT.μ s.vT.𝓕 _ _ = _
+  change (_root_.I195MixedCoordinates.target J.d) B.V₀ ψ s.vT.μ s.vT.𝓕 _ _ = _
   rw [hl, yZero_mul B.V₀ _ γ.2, det_UX, halfMod_UX, map_one,
     Circle.coe_one, Complex.ofReal_one, mul_one, one_smul]
 

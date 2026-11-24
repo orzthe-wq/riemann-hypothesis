@@ -44,10 +44,7 @@ open Formalism.L2.Pj
 
 namespace GlobalTheory.Mem
 
-theorem Base.OtoLL_injective' (B : Base) : Function.Injective B.OtoLL := by
-  intro x y h
-  apply RingOfIntegers.ext
-  exact Subtype.ext h
+alias Base.OtoLL_injective' := _root_.GlobalTheory.Mem.Base.OtoLL_injective
 
 theorem hermitianCodeWordStages_ringOfIntegers_full : ∀ X : Stages, OFull X.toD7 := by
   intro X

@@ -1,12 +1,13 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuityStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresTransitivityStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuity
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresTransitivity
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalGramFiberRankOneSetFormula
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+import Formalism.UnipotentAdelicQuotients.SWXSDefs
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -89,11 +90,11 @@ theorem masses_field (R : Type) [Field R] [Algebra F R] [TopologicalSpace R] [Me
   haveI := h2
   haveI := h3
   haveI := h4
-  obtain ⟨-, -, -, hT2, -, htr, -, hBor, -, hgr⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ h R
+  obtain ⟨-, -, -, hT2, -, htr, -, hBor, -, hgr⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ h R
   haveI := hT2
   haveI := hBor 1 M
   haveI : BorelSpace (HermR R σ 1) := ⟨rfl⟩
-  have hHaar := GlobalTheory.T.coordinate_haar_measure F E σ h R d b lam hlam
+  have hHaar := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ h R d b lam hlam
   have hμ := hHaar.2.1 1 M
   have hν := hHaar.2.2 1
   have hAm : MeasurableSet A := hAo.measurableSet
@@ -103,9 +104,9 @@ theorem masses_field (R : Type) [Field R] [Algebra F R] [TopologicalSpace R] [Me
     continuous_indicator (by simp [hAclopen.frontier_eq]) continuousOn_const
   have hφs : HasCompactSupport φ :=
     HasCompactSupport.intro hAc fun x hx => Set.indicator_of_notMem hx _
-  obtain ⟨⟨hg, -⟩, -⟩ := GlobalTheory.T.gram_fiber_integral_isContDensityOn F E σ h M J hJ R hloc 1 _ _ m hμ hν hfib φ hφc hφs
+  obtain ⟨⟨hg, -⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramDensity.isContDensityOn_gram F E σ h M J hJ R hloc 1 _ _ m hμ hν hfib φ hφc hφs
   have hfin : ∀ S, m S A < ⊤ := fun S => by
-    haveI := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ h M J hJ R hloc 1 _ _ m hμ hν hfib S).1
+    haveI := (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ h M J hJ R hloc 1 _ _ m hμ hν hfib S).1
     exact hAc.measure_lt_top
   have hint : ∀ S, ∫ X, φ X ∂(m S) = (((m S A).toReal : ℝ) : ℂ) := fun S => by
     rw [hφ, integral_indicator_const _ hAm]
@@ -215,6 +216,6 @@ theorem fibre_masses : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   ENNReal.ofReal (∫ s, (m (hermScal (Fv F v) σ s) A).toReal ∂lam) = coordW (Fv F v) b lam 1 2 A := by
   intro F E _ _ _ _ _ σ hσ J hJ d b v lam hlam m hfib A hAc hAo hAU
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-  exact masses_field (Fv F v) (GlobalTheory.T.completion_is_local_ring F v) hσ hJ b lam hlam.1 m hfib A hAc hAo hAU
+  exact masses_field (Fv F v) (_root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v) hσ hJ b lam hlam.1 m hfib A hAc hAo hAU
 
 end GlobalTheory.CompanionTheory.SW.FibreCpt

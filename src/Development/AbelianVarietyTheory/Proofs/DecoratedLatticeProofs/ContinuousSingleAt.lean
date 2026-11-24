@@ -57,7 +57,7 @@ open GlobalTheory.IdemModTwo GlobalTheory.SplitIdem GlobalTheory.SplitChart Glob
 open Classical in
 theorem continuous_single_at (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (singleV F v) := by
-  apply _root_.GlobalTheory.LocalComponentChar.continuous_singleV <;> assumption
+  apply _root_.GlobalTheory.LocalComponentChar.continuous_singleV
 
 theorem continuous_eval_at (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (evalV F v) :=

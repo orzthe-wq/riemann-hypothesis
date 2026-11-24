@@ -164,7 +164,6 @@ theorem map_sup_ker : (S' ⊔ ρ.ker).map ρ = S'.map ρ := by
 theorem mem_sup_ker {x : K} : x ∈ S' ⊔ ρ.ker ↔ ∃ s ∈ S', ∃ κ ∈ ρ.ker, s * κ = x := by
   first
     | exact Subgroup.mem_sup_of_normal_right
-    | exact Subgroup.mem_sup_of_normal_right (s := S') (t := ρ.ker)
 
 theorem map_eq_conj (ψ : K →* Q) (hψ : Function.Surjective ψ) (S' : Subgroup K) (H : Subgroup Q) (c : Q)
     (h : ∀ x, x ∈ S' ↔ c⁻¹ * ψ x * c ∈ H) : S'.map ψ = H.map (MulAut.conj c).toMonoidHom := by

@@ -70,9 +70,7 @@ theorem projD_add {m : ℕ} (Y D : Fin m → Fin n → E) (s : Set (Fin m)) (x y
   unfold projD
   rw [← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun a _ => ?_
-  split_ifs
-  · rw [dotProduct_add, add_smul]
-  · rw [zero_smul, add_zero]
+  split_ifs <;> simp [dotProduct_add, add_smul]
 
 theorem projD_smul {m : ℕ} (Y D : Fin m → Fin n → E) (s : Set (Fin m)) (c : R ⊗[F] E)
     (y : Fin n → R ⊗[F] E) :
@@ -80,17 +78,11 @@ theorem projD_smul {m : ℕ} (Y D : Fin m → Fin n → E) (s : Set (Fin m)) (c 
   unfold projD
   rw [Finset.smul_sum]
   refine Finset.sum_congr rfl fun a _ => ?_
-  split_ifs
-  · rw [dotProduct_smul, smul_eq_mul, mul_smul]
-  · rw [zero_smul, smul_zero]
+  split_ifs <;> simp [dotProduct_smul, smul_eq_mul, mul_smul]
 
 theorem projD_zero {m : ℕ} (Y D : Fin m → Fin n → E) (s : Set (Fin m)) :
     projD R σ J Y D s 0 = 0 := by
-  unfold projD
-  refine Finset.sum_eq_zero fun a _ => ?_
-  split_ifs
-  · rw [dotProduct_zero, zero_smul]
-  · rw [zero_smul]
+  simp [projD, dotProduct_zero]
 
 theorem mem_spanR_iff {m : ℕ} (Y D : Fin m → Fin n → E)
     (hD : ∀ a a', hE σ J (D a') (Y a) = if a = a' then 1 else 0) (s : Set (Fin m))
@@ -186,11 +178,8 @@ theorem isClosed_spanR {m : ℕ} (Y D : Fin m → Fin n → E)
 
 theorem continuous_lin (v : Fin n → Af F ⊗[F] E) :
     Continuous (fun g : HA (Af F) σ J => lin (Af F) σ J g v) := by
-  have hv : Continuous (fun g : HA (Af F) σ J =>
-      ((HA.mat (Af F) σ J g : GL (Fin n) (Af F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E))) :=
-    Units.continuous_val.comp continuous_subtype_val
   simp only [lin, Matrix.mulVecLin_apply]
-  exact hv.matrix_mulVec continuous_const
+  exact (Units.continuous_val.comp continuous_subtype_val).matrix_mulVec continuous_const
 
 theorem isClosed_uniFlag {m : ℕ} (Y D : Fin m → Fin n → E)
     (hD : ∀ a a', hE σ J (D a') (Y a) = if a = a' then 1 else 0) :

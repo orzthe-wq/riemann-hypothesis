@@ -4,52 +4,14 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExi
 public import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.InnerProductSpace.Calculus
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import Mathlib.Topology.UniformSpace.Matrix
 import Mathlib.Topology.UniformSpace.Uniformizable
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Closure
+import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSchur
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.FormulaFA
 
 @[expose] public section
 
@@ -68,8 +30,6 @@ local instance : ProperSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.p
 
 section Bump
 
-def hsOne (g : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∑ i, ∑ j, ‖(g - 1) i j‖ ^ 2
-
 theorem sum_sq_norm_eq_trace (A : Matrix (Fin n) (Fin n) ℂ) :
     ∑ i, ∑ j, ‖A i j‖ ^ 2 = (trace (Aᴴ * A)).re := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]
@@ -80,7 +40,7 @@ theorem sum_sq_norm_eq_trace (A : Matrix (Fin n) (Fin n) ℂ) :
   ring
 
 theorem hsOne_conj {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ)
-    (g : Matrix (Fin n) (Fin n) ℂ) : hsOne (k * g * star k) = hsOne g := by
+    (g : Matrix (Fin n) (Fin n) ℂ) : _root_.ReciprocityTheory.ChartRestriction.DS.hsdA (k * g * star k) = _root_.ReciprocityTheory.ChartRestriction.DS.hsdA g := by
   have h1' : k * kᴴ = 1 := by
     have := Matrix.mem_unitaryGroup_iff.1 hk
     rwa [Matrix.star_eq_conjTranspose] at this
@@ -92,19 +52,16 @@ theorem hsOne_conj {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGr
   have e2 : (k * (g - 1) * kᴴ)ᴴ * (k * (g - 1) * kᴴ) = k * ((g - 1)ᴴ * (g - 1)) * kᴴ := by
     simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]
     rw [← Matrix.mul_assoc kᴴ k, h2, Matrix.one_mul]
-  unfold hsOne
+  unfold _root_.ReciprocityTheory.ChartRestriction.DS.hsdA
   rw [sum_sq_norm_eq_trace, sum_sq_norm_eq_trace, e, e2, Matrix.trace_mul_comm, ← Matrix.mul_assoc, h2,
     Matrix.one_mul]
 
-theorem contDiff_entry (i j : Fin n) : ContDiff ℝ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => g i j) :=
-  (contDiff_apply ℝ (fun _ => ℂ) j).comp (contDiff_apply ℝ (fun _ => (Fin n → ℂ)) i)
-
-theorem contDiff_hsOne : ContDiff ℝ ∞ (hsOne (n := n)) := by
-  unfold hsOne
+theorem contDiff_hsOne : ContDiff ℝ ∞ (_root_.ReciprocityTheory.ChartRestriction.DS.hsdA (n := n)) := by
+  unfold _root_.ReciprocityTheory.ChartRestriction.DS.hsdA
   refine ContDiff.sum fun i _ => ContDiff.sum fun j _ => ?_
-  exact (contDiff_norm_sq ℂ).comp ((contDiff_entry i j).sub contDiff_const)
+  exact (contDiff_norm_sq ℂ).comp ((_root_.ReciprocityTheory.ChartRestriction.DS.contDiff_entryA i j).sub contDiff_const)
 
-def arbB (r : ℝ) (g : Matrix (Fin n) (Fin n) ℂ) : ℝ := Real.smoothTransition (r ^ 2 - hsOne g)
+def arbB (r : ℝ) (g : Matrix (Fin n) (Fin n) ℂ) : ℝ := Real.smoothTransition (r ^ 2 - _root_.ReciprocityTheory.ChartRestriction.DS.hsdA g)
 
 theorem contDiff_arbB (r : ℝ) : ContDiff ℝ ∞ (arbB (n := n) r) :=
   (Real.smoothTransition.contDiff (n := ⊤)).comp (contDiff_const.sub contDiff_hsOne)
@@ -113,21 +70,21 @@ theorem arbB_nonneg (r : ℝ) (g : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ arbB r g 
   Real.smoothTransition.nonneg _
 
 theorem arbB_one_pos {r : ℝ} (hr : 0 < r) : 0 < arbB r (1 : Matrix (Fin n) (Fin n) ℂ) := by
-  have h0 : hsOne (1 : Matrix (Fin n) (Fin n) ℂ) = 0 := by simp [hsOne]
+  have h0 : _root_.ReciprocityTheory.ChartRestriction.DS.hsdA (1 : Matrix (Fin n) (Fin n) ℂ) = 0 := by simp [_root_.ReciprocityTheory.ChartRestriction.DS.hsdA]
   unfold arbB
   rw [h0, sub_zero]
   exact Real.smoothTransition.pos_of_pos (by positivity)
 
 theorem norm_lt_of_arbB_ne {r : ℝ} (hr : 0 < r) {g : Matrix (Fin n) (Fin n) ℂ} (h : arbB r g ≠ 0) :
     ‖g - 1‖ < r := by
-  have hlt : hsOne g < r ^ 2 := by
+  have hlt : _root_.ReciprocityTheory.ChartRestriction.DS.hsdA g < r ^ 2 := by
     by_contra hc
     push Not at hc
     exact h (Real.smoothTransition.zero_of_nonpos (by linarith))
   rw [Matrix.norm_lt_iff hr]
   intro i j
-  have h1 : ‖(g - 1) i j‖ ^ 2 ≤ hsOne g := by
-    unfold hsOne
+  have h1 : ‖(g - 1) i j‖ ^ 2 ≤ _root_.ReciprocityTheory.ChartRestriction.DS.hsdA g := by
+    unfold _root_.ReciprocityTheory.ChartRestriction.DS.hsdA
     calc ‖(g - 1) i j‖ ^ 2 ≤ ∑ j', ‖(g - 1) i j'‖ ^ 2 :=
           Finset.single_le_sum (f := fun j' => ‖(g - 1) i j'‖ ^ 2) (fun _ _ => by positivity)
             (Finset.mem_univ j)
@@ -154,30 +111,17 @@ section Conv
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
-theorem arb_umat_cont : Continuous (fun y : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat y) :=
-  (Formalism.REAL.isClosedEmbeddingMatrix n ε).1.continuous
-
 theorem arb_umat_mem (y : Formalism.REAL.UJ ε) : Formalism.MainNotions.S.umat y ∈ UJset ε := y.2
-
-theorem arb_orbit_cont (hσ : IsURepOn (UJset ε) σ) (w : H) :
-    Continuous (fun y : Formalism.REAL.UJ ε => σ (Formalism.MainNotions.S.umat y) w) :=
-  (hσ.2.2 w).comp_continuous arb_umat_cont arb_umat_mem
 
 theorem arb_rep_mul (hσ : IsURepOn (UJset ε) σ) (a b : Formalism.REAL.UJ ε) (v : H) :
     σ (Formalism.MainNotions.S.umat (a * b)) v = σ (Formalism.MainNotions.S.umat a) (σ (Formalism.MainNotions.S.umat b) v) := by
   show σ (Formalism.MainNotions.S.umat a * Formalism.MainNotions.S.umat b) v = _
   rw [hσ.1.2 _ (arb_umat_mem a) _ (arb_umat_mem b), ContinuousLinearMap.comp_apply]
 
-theorem arb_exists_umat {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
-    ∃ γ : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat γ = g := by
-  have : g ∈ Set.range (fun y : Formalism.REAL.UJ ε => ((y : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) := by
-    rw [(Formalism.REAL.isClosedEmbeddingMatrix n ε).2]; exact hg
-  exact this
-
 theorem arb_integrable (hσ : IsURepOn (UJset ε) σ) (w : H) {α : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hα : Continuous α) (hαc : HasCompactSupport α) :
     Integrable (fun y : Formalism.REAL.UJ ε => α (Formalism.MainNotions.S.umat y) • σ (Formalism.MainNotions.S.umat y) w) (Formalism.REAL.muG ε) :=
-  ((hα.comp arb_umat_cont).smul (arb_orbit_cont hσ w)).integrable_of_hasCompactSupport
+  ((hα.comp _root_.Formalism.MainNotions.BridgeCSchur.continuous_umat).smul (_root_.ReciprocityTheory.ChartRestriction.DS.continuous_orbitA hσ w)).integrable_of_hasCompactSupport
     ((hαc.comp_isClosedEmbedding (Formalism.REAL.isClosedEmbeddingMatrix n ε).1).smul_right)
 
 theorem opConv_add (hσ : IsURepOn (UJset ε) σ) {α : Matrix (Fin n) (Fin n) ℂ → ℂ} (hα : Continuous α)
@@ -201,7 +145,7 @@ theorem opConv_comm_K (hσ : IsURepOn (UJset ε) σ) {α : Matrix (Fin n) (Fin n
     (hαc : HasCompactSupport α) (hαK : IsAdKInv ε α) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
     (v : H) : σ k (opConv ε σ α v) = opConv ε σ α (σ k v) := by
   have hkU : k ∈ UJset ε := closure_inUJ_of_mem_Kset hk
-  obtain ⟨κ, hκ⟩ := arb_exists_umat hkU
+  obtain ⟨κ, hκ⟩ := _root_.ReciprocityTheory.ChartRestriction.DS.ffa_UJ_lift hkU
   have hku : kᴴ * k = 1 := by
     have := Matrix.mem_unitaryGroup_iff'.1 hk.1
     rwa [Matrix.star_eq_conjTranspose] at this

@@ -48,4 +48,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.conj_weil_datum_via_adjoint_exchanged_pair : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → IsWeilDatumO ψ T S χT χS (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjAdjoint om) := by
-  first | exact @GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint | exact GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint | (intros; apply GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint <;> assumption)
+  first | exact @GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint

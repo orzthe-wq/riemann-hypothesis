@@ -61,12 +61,6 @@ theorem evGd_of_ev {p : Ctx → Prop} (hp : Ev p) : EvGd p := by
   obtain ⟨a3, ha3⟩ := ha2 ch hch
   exact ⟨a3, fun X h1 h2 h3 h4 hx _ => ha3 X h1 h2 h3 h4 hx⟩
 
-theorem large_of_sup {C : FC} {K K' : TransportedAlt} {CH : ℝ} (h : C.Large (K.sup K') CH) : C.Large K CH ∧ C.Large K' CH :=
-  ⟨⟨fun c hc => (le_max_left _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_left _ _).trans (h.2.2.1 c hc),
-      fun c hc => (le_max_left _ _).trans (h.2.2.2 c hc)⟩,
-    ⟨fun c hc => (le_max_right _ _).trans (h.1 c hc), trivial, fun c hc => (le_max_right _ _).trans (h.2.2.1 c hc),
-      fun c hc => (le_max_right _ _).trans (h.2.2.2 c hc)⟩⟩
-
 structure BPt (K : Ctx) : Type 1 where
   X : Stages
   f : Fr X.B.toPre
@@ -132,8 +126,8 @@ theorem ParEv.and {p q : Par → Prop} (hp : ParEv p) (hq : ParEv q) : ParEv fun
   obtain ⟨K, hK⟩ := hp e C8 C5 c6 Cb he (hle.trans (min_le_left _ _)) h52 h8
   obtain ⟨K', hK'⟩ := hq e C8 C5 c6 Cb he (hle.trans (min_le_right _ _)) h52 h8
   refine ⟨K.sup K', fun C hC hC8 hL => ?_⟩
-  obtain ⟨a1, ha1⟩ := hK C hC hC8 (large_of_sup hL).1
-  obtain ⟨b1, hb1⟩ := hK' C hC hC8 (large_of_sup hL).2
+  obtain ⟨a1, ha1⟩ := hK C hC hC8 (_root_.GlobalTheory.EX.fc_large_of_sup hL).1
+  obtain ⟨b1, hb1⟩ := hK' C hC hC8 (_root_.GlobalTheory.EX.fc_large_of_sup hL).2
   refine ⟨max a1 b1, fun cD hcD => ?_⟩
   obtain ⟨a2, ha2⟩ := ha1 cD (le_trans (le_max_left _ _) hcD)
   obtain ⟨b2, hb2⟩ := hb1 cD (le_trans (le_max_right _ _) hcD)

@@ -1,19 +1,14 @@
 module
 
+public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 public import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalAboveOfDvdNormHost
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleIntegralSeparatedComplete
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHalfIdem
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIdeleGenerator
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Hilbert90IntegralIdelesOfMovedPrimes
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RationalPointsIntegralPointsMembership
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryHeckeCharacterValues
-import Formalism.LocalToGlobal.ProjectiveLattices.HostInt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -25,8 +20,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -46,10 +39,58 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleIntegralSeparatedComplete
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIdeleGenerator
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RationalPointsIntegralPointsMembership
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryHeckeCharacterValues
+import Formalism.LocalToGlobal.ProjectiveLattices.HostInt
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVecEq
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalAboveOfDvdNormHost, Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSkewLatticeMoverWithDeterminant
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalAboveOfDvdNormHost =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalAboveOfDvdNormHost", "h": "module\n\npublic import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField
+
+namespace GlobalTheory.MaximalIdealDividingNorm
+
+theorem exists_maximal_above_of_dvd_norm {K : Type*} [Field K] [NumberField K]
+    (𝔪 : Ideal (𝓞 K)) {p : ℕ} (hp : p.Prime) (hd : p ∣ Ideal.absNorm 𝔪) :
+    ∃ P : Ideal (𝓞 K), P.IsMaximal ∧ 𝔪 ≤ P ∧ (p : 𝓞 K) ∈ P := by
+  obtain ⟨P, hmax, hunder, hdiv⟩ := Ideal.exists_isMaximal_dvd_of_dvd_absNorm' hp 𝔪 hd
+  refine ⟨P, hmax, Ideal.le_of_dvd hdiv, ?_⟩
+  have h1 : (p : ℤ) ∈ Ideal.under ℤ P := by
+    rw [hunder]
+    exact Ideal.mem_span_singleton_self _
+  have h2 : algebraMap ℤ (𝓞 K) (p : ℤ) ∈ P := Ideal.mem_comap.mp h1
+  rwa [map_natCast] at h2
+
+theorem exists_maximal_above_of_dvd_norm_host (D : Formalism.BasicNotions.D7)
+    (𝔪 : Ideal (𝓞 (Formalism.BasicNotions.D7.host D).E)) (_h𝔪 : 𝔪 ≠ ⊥)
+    {p : ℕ} (hp : p.Prime) (hd : p ∣ Ideal.absNorm 𝔪) :
+    ∃ P : Ideal (𝓞 (Formalism.BasicNotions.D7.host D).E),
+      P.IsMaximal ∧ 𝔪 ≤ P ∧ (p : 𝓞 (Formalism.BasicNotions.D7.host D).E) ∈ P :=
+  exists_maximal_above_of_dvd_norm 𝔪 hp hd
+
+end GlobalTheory.MaximalIdealDividingNorm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalAboveOfDvdNormHost =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSkewLatticeMoverWithDeterminant =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSkewLatticeMoverWithDeterminant", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsMaximalAboveOfDvdNormHost\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleIntegralSeparatedComplete\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHalfIdem\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIdeleGenerator\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Hilbert90IntegralIdelesOfMovedPrimes\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.RationalPointsIntegralPointsMembership\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryHeckeCharacterValues\nimport Formalism.LocalToGlobal.ProjectiveLattices.HostInt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVecEq\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open scoped Pointwise
@@ -112,21 +153,11 @@ theorem exists_sym_idem (D : D7) (m : ℕ) (hm : 0 < m) : ∃ e ∈ OhE D, e * e
     obtain ⟨v, hv, e⟩ := h2 k
     exact ⟨v * sgA D f, mul_mem hv (VacMove.sgA_mem D hf), by rw [e]; ring⟩
 
-theorem exists_max_over (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h0 : 𝔪 ≠ ⊥) {p : ℕ} (hp : p.Prime)
-    (hd : p ∣ Ideal.absNorm 𝔪) : ∃ P : Ideal (𝓞 D.host.E), P.IsMaximal ∧ 𝔪 ≤ P ∧ (p : 𝓞 D.host.E) ∈ P := by
-  first
-  | exact @_root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host
-  | exact _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host
-  | (apply _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host <;> assumption)
-  | (intros; apply _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host ..)
-
 theorem coprime_of_inert (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h0 : 𝔪 ≠ ⊥) (hc : IsCoprime 𝔪 (D.host.conj • 𝔪))
     {q : ℕ} (hq : q.Prime) (hi : InertQ D q) : Nat.Coprime q (Ideal.absNorm 𝔪) := by
   rw [Nat.Prime.coprime_iff_not_dvd hq]
   intro hd
-  obtain ⟨P, hP, hle, hqP⟩ := exists_max_over D 𝔪 h0 hq hd
+  obtain ⟨P, hP, hle, hqP⟩ := _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host D 𝔪 h0 hq hd
   have hP0 : P ≠ ⊥ := by
     intro h
     rw [h, Ideal.mem_bot] at hqP
@@ -139,7 +170,7 @@ theorem coprime_of_inert (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h0 : 𝔪 ≠ 
 theorem dvd_of_mem (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (h0 : 𝔪 ≠ ⊥) {p : ℕ} (hp : p.Prime)
     (hd : p ∣ Ideal.absNorm 𝔪) {m : ℕ} (hm : (m : 𝓞 D.host.E) ∈ 𝔪) : p ∣ m := by
   by_contra h
-  obtain ⟨P, hP, hle, hpP⟩ := exists_max_over D 𝔪 h0 hp hd
+  obtain ⟨P, hP, hle, hpP⟩ := _root_.GlobalTheory.MaximalIdealDividingNorm.exists_maximal_above_of_dvd_norm_host D 𝔪 h0 hp hd
   have hcop : IsCoprime (p : ℤ) (m : ℤ) := Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hp).2 h)
   obtain ⟨u, v, e⟩ := hcop
   have e' := congrArg (Int.cast : ℤ → 𝓞 D.host.E) e
@@ -397,3 +428,7 @@ theorem exists_central_skew_move : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 
     exact (Matrix.scalar_commute (s : AE D) (fun _ => Commute.all _ _) _).eq.symm
 
 end GlobalTheory.SkewCentral
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSkewLatticeMoverWithDeterminant =====

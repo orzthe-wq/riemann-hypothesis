@@ -1,12 +1,9 @@
 module
 
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.FixedPointCriteria.Cond
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.ExistsUnitSmulOrderOfMemGs
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.IrreducibleParity.NotEvenIrr
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.IsFixPOrderPowIffLeAndAssocPow
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.NcardUnitTranslatesOrderEqRelIndex
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.OrderLevelInjectiveOfSmulEq
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.CintIdx
-import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.IrreducibleParity.NotEvenIrr
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -30,8 +27,6 @@ import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -54,8 +49,233 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.ExistsUnitSmulOrderOfMemGs, Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.NcardUnitTranslatesOrderEqRelIndex, Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.OrderLevelInjectiveOfSmulEq, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.FixedPointCriteria.FixMlIff
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.ExistsUnitSmulOrderOfMemGs =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.ExistsUnitSmulOrderOfMemGs", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.FixedPointCriteria.Cond\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.CintIdx\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Loc.PK
+
+theorem UpperTheory.exists_unit_smul_order_of_mem_gs :
+    ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ → τ ^ 2 - 4 ≠ 0 → ∀ (π : O) (n : ℕ) (e : Oˣ) (h : O) (x : Etau K τ), Cond π n e h x → ∀ (t : Kˣ) (S : Set (Etau K τ)), S ∈ PS.Gs O τ t 1 → ∃ (m : ℕ) (r : Kˣ) (u : (Etau K τ)ˣ), u ∈ Gu O τ ∧ S = PS.ml (PS.sc τ r * u) (Ord O (yy π m x)) := by
+  intro O K _ _ _ _ _ Δ τ hL hτ π n e h x hC t S hS
+  obtain ⟨hfix, c, hc, hgen⟩ := hS
+  rw [one_mul] at hgen
+  obtain ⟨r, u, hu1, hu2, hcu⟩ := hC.gen.cint hL hc
+  obtain ⟨s0, hs0⟩ := hfix.fg
+  subst hs0
+  set N : Submodule O (Etau K τ) := Submodule.span O (s0 : Set (Etau K τ)) with hN
+  have hcS : (c : Etau K τ) ∈ N := hgen.1
+  have hint : ∀ w ∈ N, ∃ a b : O, ((c⁻¹ : (Etau K τ)ˣ) : Etau K τ) * w
+      = algebraMap O (Etau K τ) a + algebraMap O (Etau K τ) b * x :=
+    fun w hw => (hC.gen.int_iff hL _).1 (hgen.2 w hw)
+  let B : Ideal O :=
+    { carrier := {b | ∃ a : O,
+        (c : Etau K τ) * (algebraMap O (Etau K τ) a + algebraMap O (Etau K τ) b * x) ∈ N}
+      add_mem' := by
+        rintro b1 b2 ⟨a1, h1⟩ ⟨a2, h2⟩
+        refine ⟨a1 + a2, ?_⟩
+        have key : (c : Etau K τ) * (algebraMap O (Etau K τ) (a1 + a2) + algebraMap O (Etau K τ) (b1 + b2) * x)
+            = (c : Etau K τ) * (algebraMap O (Etau K τ) a1 + algebraMap O (Etau K τ) b1 * x)
+              + (c : Etau K τ) * (algebraMap O (Etau K τ) a2 + algebraMap O (Etau K τ) b2 * x) := by
+          simp only [map_add (f := _)]
+          ring
+        rw [key]
+        exact N.add_mem h1 h2
+      zero_mem' := by
+        refine ⟨0, ?_⟩
+        simp only [map_zero, zero_mul, add_zero, mul_zero]
+        exact N.zero_mem
+      smul_mem' := by
+        rintro k b ⟨a, hab⟩
+        refine ⟨k * a, ?_⟩
+        have key : (c : Etau K τ) * (algebraMap O (Etau K τ) (k * a) + algebraMap O (Etau K τ) (k • b) * x)
+            = k • ((c : Etau K τ) * (algebraMap O (Etau K τ) a + algebraMap O (Etau K τ) b * x)) := by
+          rw [smul_eq_mul, Algebra.smul_def, map_mul, map_mul]
+          ring
+        rw [key]
+        exact N.smul_mem k hab }
+  have hB : B ≠ ⊥ := by
+    have hωc : ω * (c : Etau K τ) ∈ N := hfix.stab _ hcS
+    obtain ⟨a, b, hab⟩ := hint _ hωc
+    have hω : (ω : Etau K τ) = algebraMap O (Etau K τ) a + algebraMap O (Etau K τ) b * x := by
+      rw [← hab, mul_left_comm, Units.inv_mul, mul_one]
+    have hb : b ∈ B := ⟨a, by rw [← hω, mul_comm]; exact hωc⟩
+    intro hbot
+    rw [hbot] at hb
+    have hb0 : b = 0 := (Submodule.mem_bot O).1 hb
+    rw [hb0, map_zero, zero_mul, add_zero] at hω
+    have him := congrArg QuadraticAlgebra.im hω
+    rw [algebraMap_etau, QuadraticAlgebra.algebraMap_im] at him
+    exact one_ne_zero him
+  obtain ⟨m, hm⟩ := IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hB hC.irr
+  have hyy : yy π m x = algebraMap O (Etau K τ) (π ^ m) * x := by
+    rw [yy, Algebra.smul_def, algebraMap_etau (O := O) (π ^ m)]
+  have hpm : π ^ m ∈ B := by
+    rw [hm]
+    exact Ideal.mem_span_singleton_self _
+  obtain ⟨a0, ha0⟩ := hpm
+  refine ⟨m, r, u, ⟨hu1, hu2⟩, ?_⟩
+  rw [← hcu]
+  ext w
+  rw [PS.mem_ml]
+  show w ∈ N ↔ _ ∈ Submodule.span O {1, yy π m x}
+  rw [Submodule.mem_span_pair]
+  constructor
+  · intro hw
+    obtain ⟨a, b, hab⟩ := hint w hw
+    have hbB : b ∈ B := ⟨a, by rw [← hab, ← mul_assoc, Units.mul_inv, one_mul]; exact hw⟩
+    rw [hm, Ideal.mem_span_singleton'] at hbB
+    obtain ⟨k, rfl⟩ := hbB
+    refine ⟨a, k, ?_⟩
+    rw [hab, hyy, Algebra.smul_def, Algebra.smul_def, map_mul]
+    ring
+  · rintro ⟨a, k, hak⟩
+    have hw : w = (c : Etau K τ) * (a • 1 + k • yy π m x) := by
+      rw [hak, ← mul_assoc, Units.mul_inv, one_mul]
+    rw [hw, mul_add, hyy]
+    apply N.add_mem
+    · rw [mul_smul_comm, mul_one]
+      exact N.smul_mem a hcS
+    · rw [mul_smul_comm]
+      apply N.smul_mem
+      have key : (c : Etau K τ) * (algebraMap O (Etau K τ) (π ^ m) * x)
+          = (c : Etau K τ) * (algebraMap O (Etau K τ) a0 + algebraMap O (Etau K τ) (π ^ m) * x)
+            - a0 • (c : Etau K τ) := by
+        rw [Algebra.smul_def]
+        ring
+      rw [key]
+      exact N.sub_mem ha0 (N.smul_mem a0 hcS)
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.ExistsUnitSmulOrderOfMemGs =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.NcardUnitTranslatesOrderEqRelIndex =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.NcardUnitTranslatesOrderEqRelIndex", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.FixedPointCriteria.Cond\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.IrreducibleParity.NotEvenIrr\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Loc.PK
+
+theorem UpperTheory.ncard_unit_translates_order_eq_relIndex :
+    ∀ (O K : Type) [CommRing O] [Field K] [Algebra O K] (τ : K) (a : (Etau K τ)ˣ) (y : Etau K τ), {S : Set (Etau K τ) | ∃ u ∈ Gu O τ, S = PS.ml (a * u) (Ord O y)}.ncard = (Hu O y).relIndex (Gu O τ) := by
+  intro O K _ _ _ τ a y
+  set G := Gu O τ
+  set H := (Hu O y).subgroupOf G
+  have key : ∀ g₁ g₂ : G, PS.ml (a * (g₁ : (Etau K τ)ˣ)) (PK.Ord O y) =
+      PS.ml (a * (g₂ : (Etau K τ)ˣ)) (PK.Ord O y) ↔ g₁⁻¹ * g₂ ∈ H := by
+    intro g₁ g₂
+    rw [Subgroup.mem_subgroupOf]
+    show _ ↔ PS.ml (((g₁⁻¹ * g₂ : G)) : (Etau K τ)ˣ) (PK.Ord O y) = PK.Ord O y
+    rw [PS.ml_mul, PS.ml_mul, (PS.ml_inj a).eq_iff, Subgroup.coe_mul, Subgroup.coe_inv, PS.ml_mul]
+    constructor
+    · intro h
+      rw [← h, ← PS.ml_mul, inv_mul_cancel, PS.ml_one]
+    · intro h
+      conv_lhs => rw [← h]
+      rw [← PS.ml_mul, mul_inv_cancel, PS.ml_one]
+  let f : G ⧸ H → Set (Etau K τ) :=
+    Quotient.lift (fun g : G => PS.ml (a * (g : (Etau K τ)ˣ)) (PK.Ord O y))
+      (fun g₁ g₂ hg => (key g₁ g₂).2 (QuotientGroup.leftRel_apply.1 hg))
+  have hf : Function.Injective f := by
+    intro q₁ q₂ hq
+    obtain ⟨g₁, rfl⟩ := QuotientGroup.mk_surjective q₁
+    obtain ⟨g₂, rfl⟩ := QuotientGroup.mk_surjective q₂
+    exact QuotientGroup.eq.2 ((key _ _).1 hq)
+  have hrange : {S : Set (Etau K τ) | ∃ u ∈ G, S = PS.ml (a * u) (PK.Ord O y)} = Set.range f := by
+    ext S
+    constructor
+    · rintro ⟨u, hu, rfl⟩
+      exact ⟨((⟨u, hu⟩ : G) : G ⧸ H), rfl⟩
+    · rintro ⟨q, rfl⟩
+      obtain ⟨g, rfl⟩ := QuotientGroup.mk_surjective q
+      exact ⟨g, g.2, rfl⟩
+  rw [hrange, Set.ncard_range_of_injective hf]
+  rfl
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.NcardUnitTranslatesOrderEqRelIndex =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.OrderLevelInjectiveOfSmulEq =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.OrderLevelInjectiveOfSmulEq", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.FixedPointCriteria.Cond\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Loc.PK
+
+section
+variable {O K : Type} [CommRing O] [Field K] [Algebra O K] {τ : K}
+
+private theorem ord_mem {y z : Etau K τ} :
+    z ∈ PK.Ord (O := O) y ↔ ∃ a b : O, a • (1 : Etau K τ) + b • y = z :=
+  Submodule.mem_span_pair
+
+private theorem ord_one (y : Etau K τ) : (1 : Etau K τ) ∈ PK.Ord (O := O) y :=
+  ord_mem.2 ⟨1, 0, by simp⟩
+
+private theorem ord_mul {y : Etau K τ} {c : O} (hy : y * y = algebraMap O (Etau K τ) c)
+    {z z' : Etau K τ} (hz : z ∈ PK.Ord (O := O) y) (hz' : z' ∈ PK.Ord (O := O) y) : z * z' ∈ PK.Ord (O := O) y := by
+  obtain ⟨a, b, rfl⟩ := ord_mem.1 hz
+  obtain ⟨p, q, rfl⟩ := ord_mem.1 hz'
+  refine ord_mem.2 ⟨a * p + b * q * c, a * q + b * p, ?_⟩
+  simp only [Algebra.smul_def, map_add (f := _), map_mul]
+  linear_combination (-(algebraMap O (Etau K τ) b * algebraMap O (Etau K τ) q)) * hy
+
+private theorem ord_sub {y y' : Etau K τ} {c c' : O} (hy : y * y = algebraMap O (Etau K τ) c)
+    (hy' : y' * y' = algebraMap O (Etau K τ) c') {w : (Etau K τ)ˣ}
+    (hw : PS.ml w (PK.Ord (O := O) y) = PK.Ord (O := O) y') {z : Etau K τ} (hz : z ∈ PK.Ord (O := O) y) : z ∈ PK.Ord (O := O) y' := by
+  have hw1 : ((w⁻¹ : (Etau K τ)ˣ) : Etau K τ) ∈ PK.Ord (O := O) y := by
+    have := ord_one (O := O) y'
+    rw [← hw, PS.mem_ml, mul_one] at this
+    exact this
+  rw [← hw, PS.mem_ml]
+  exact ord_mul hy hw1 hz
+end
+
+private theorem lvl_le {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
+    [Algebra O K] [IsFractionRing O K] {τ : K} {π : O} (hπ : Irreducible π) {x : Etau K τ}
+    (hx : x.im ≠ 0) {m m' : ℕ} (h : yy π m x ∈ PK.Ord (O := O) (yy π m' x)) : m' ≤ m := by
+  obtain ⟨a, b, hab⟩ := ord_mem.1 h
+  have him := congrArg QuadraticAlgebra.im hab
+  simp only [yy, ← algebraMap_smul K a, ← algebraMap_smul K b, im_add, im_smul, im_one, mul_zero, zero_add,
+    smul_eq_mul] at him
+  have hk : algebraMap O K (b * π ^ m') = algebraMap O K (π ^ m) := by
+    rw [map_mul]
+    exact mul_right_cancel₀ hx (by rw [← him]; ring)
+  have hd : π ^ m' ∣ π ^ m := ⟨b, by rw [IsFractionRing.injective O K hk.symm, mul_comm]⟩
+  exact (pow_dvd_pow_iff hπ.ne_zero hπ.not_isUnit).1 hd
+
+theorem UpperTheory.order_level_injective_of_smul_eq :
+    ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ → τ ^ 2 - 4 ≠ 0 → ∀ (π : O) (n : ℕ) (e : Oˣ) (h : O) (x : Etau K τ), Cond π n e h x → ∀ (w : (Etau K τ)ˣ) (m m' : ℕ), PS.ml w (PK.Ord (O := O) (yy π m x)) = PK.Ord (O := O) (yy π m' x) → m = m' := by
+  intro O K _ _ _ _ _ Δ τ L hD π n e h x hc w m m' hw
+  haveI := L.frac
+  have hx : x.im ≠ 0 := hc.gen.im_ne
+  have hsq : ∀ j : ℕ, yy π j x * yy π j x = algebraMap O (Etau K τ) (π ^ j * π ^ j * e) := by
+    intro j
+    simp only [yy, smul_mul_smul_comm, hc.sq]
+    rw [IsScalarTower.algebraMap_apply O K (Etau K τ), IsScalarTower.algebraMap_apply O K (Etau K τ),
+      Algebra.smul_def, ← map_mul, map_mul (algebraMap O K) (π ^ j * π ^ j), map_mul (algebraMap O K) (π ^ j)]
+  have self_mem : ∀ j : ℕ, yy π j x ∈ PK.Ord (O := O) (yy π j x) := fun j => ord_mem.2 ⟨0, 1, by simp⟩
+  have hw' : PS.ml w⁻¹ (PK.Ord (O := O) (yy π m' x)) = PK.Ord (O := O) (yy π m x) := by
+    rw [← hw, ← PS.ml_mul, inv_mul_cancel, PS.ml_one]
+  have h1 : m' ≤ m := lvl_le hc.irr hx (ord_sub (hsq m) (hsq m') hw (self_mem m))
+  have h2 : m ≤ m' := lvl_le hc.irr hx (ord_sub (hsq m') (hsq m) hw' (self_mem m'))
+  omega
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.OrderLevelInjectiveOfSmulEq =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.FixedPointCriteria.FixMlIff =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.FixedPointCriteria.FixMlIff", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.FixedPointCriteria.Cond\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.ExistsUnitSmulOrderOfMemGs\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.IsFixPOrderPowIffLeAndAssocPow\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.NcardUnitTranslatesOrderEqRelIndex\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.OrderLevelInjectiveOfSmulEq\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.CintIdx\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.IrreducibleParity.NotEvenIrr\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -271,3 +491,7 @@ theorem gs_count (L : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) {π : O} {n : ℕ} {e
     exact hab (eq_of_ml_ord_yy_eq L hτ C (ha.symm.trans hb))
 
 end UpperTheory.V.Z.Sym.Loc.PK
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.LocalHermitianForms.FixedPointCriteria.FixMlIff =====

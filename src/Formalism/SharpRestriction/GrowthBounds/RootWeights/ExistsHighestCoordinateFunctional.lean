@@ -183,7 +183,6 @@ theorem exists_highest_coordinate_functional [NeZero n] [CharZero (KK O)] {E : G
     have h8 : ∀ s : KK O, ((e s : Submodule.span (KK O) {v}) : V) = s • v := fun s => by
       first
         | rfl
-        | simp [e, LinearEquiv.toSpanNonzeroSingleton_apply]
     have h3 : (e.symm (P x)) • v = (P x : V) := by
       rw [← h8, LinearEquiv.apply_symm_apply]
     show x - (e.symm (P x)) • v ∈ otherWts E lam

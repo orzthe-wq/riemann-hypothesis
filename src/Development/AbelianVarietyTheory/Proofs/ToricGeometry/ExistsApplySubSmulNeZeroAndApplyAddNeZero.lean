@@ -110,8 +110,7 @@ theorem _root_.GlobalTheory.exists_level_apply_ne_zero_of_two_le :
     apply hne
     funext w
     have := congr_fun h0 (-(M : ℂ)⁻¹ • (w - z))
-    simp only [smul_neg, smul_smul, mul_inv_cancel₀ hM, one_smul, sub_neg_eq_add,
-      add_sub_cancel, Pi.zero_apply] at this
+    simp only [smul_smul, Pi.zero_apply] at this
     simpa [mul_inv_cancel₀ hM] using this
   have hopen : IsOpen {u | _root_.ReciprocityTheory.PTheta.theta 0 0 (z + u) τ ≠ 0} :=
     isOpen_ne_fun hd1.continuous continuous_const

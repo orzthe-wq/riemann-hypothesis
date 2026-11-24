@@ -105,7 +105,7 @@ theorem okpNeg_holds (D : D7) : OkpNeg D := by
   have hl : lamC lam (-1 : ℂ) = -1 := by
     unfold lamC
     rw [dite_eq_left hQ]
-    have e : (⟨-1, hQ⟩ : Qbar) = -1 := Subtype.ext (by first | rfl | simp | norm_num)
+    have e : (⟨-1, hQ⟩ : Qbar) = -1 := Subtype.ext (by first | rfl)
     rw [e, map_neg, map_one]
   have hc : D.host.conj (-1 : D.host.E) = -1 := by simp
   unfold OKp
@@ -117,34 +117,26 @@ theorem okpTwo_holds (D : D7) : OkpTwo D := by
   have hQ : (2 : ℂ) ∈ Qbar := by
     first
       | norm_num
-      | simp
-      | (have h := add_mem (one_mem Qbar) (one_mem Qbar); rwa [one_add_one_eq_two] at h)
   have hl : lamC lam (2 : ℂ) = 2 := by
     unfold lamC
     rw [dite_eq_left hQ]
     have e : (⟨2, hQ⟩ : Qbar) = 1 + 1 := Subtype.ext (by
       first
-        | (show (2 : ℂ) = ((1 : Qbar) : ℂ) + ((1 : Qbar) : ℂ); norm_num)
-        | (push_cast; norm_num)
-        | rfl)
+        | (show (2 : ℂ) = ((1 : Qbar) : ℂ) + ((1 : Qbar) : ℂ); norm_num))
     rw [e, map_add (f := _), map_one] <;> norm_num
   have hc : D.host.conj (2 : D.host.E) = 2 := by
     first
       | (rw [show (2 : D.host.E) = 1 + 1 by norm_num, map_add (f := _), map_one])
-      | exact map_ofNat _ 2
   have hz : (((2 : NumberField.RingOfIntegers D.host.K) : D.host.K) : D.host.E) = 2 := by
     rw [show (2 : NumberField.RingOfIntegers D.host.K) = 1 + 1 by norm_num]
     first
       | (push_cast; norm_num)
-      | simp
-      | norm_num
   have hφ : D.host.φ₀ (2 : D.host.E) = 2 := by
     first
       | (rw [show (2 : D.host.E) = 1 + 1 by norm_num, map_add (f := _), map_one]; norm_num)
-      | simp
   unfold OKp
   refine subset_closure ⟨2, ?_⟩
-  simp only [tauK, tauKc, hz, hc, hφ, hl, Prod.mk.injEq, and_self]
+  simp only [tauK, tauKc, hz, hc, hφ, hl]
 
 theorem cube_of (H : CubeOfTwoIdentities) (D : D7) (h2 : cube2 D) (h3 : cube3 D) : cube D := by
   intro p _ cc δ g hA

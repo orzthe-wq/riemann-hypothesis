@@ -1,10 +1,10 @@
 module
 
-import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSectionBounded
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals.MemMCoordIdealOfAevalEqZero
+import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSectionBounded
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -94,7 +94,7 @@ theorem homog_C (n : ℤ) : IsMultiHomog (C n : MRing J) (0 : K → ℕ) := by
   simp [this]
 
 theorem homog_X [DecidableEq K] (p : Σ k, J k) : IsMultiHomog (X p : MRing J) (Pi.single p.1 1) := by
-  apply GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBounded.homog_X <;> assumption
+  apply GroundTheory.Heights₂.Heights.HilbertSamuel.SectionBounded.homog_X
 
 def cMon (c : ∀ k, J k) (d : K → ℕ) : MRing J := ∏ k, X ⟨k, c k⟩ ^ d k
 
@@ -401,7 +401,7 @@ theorem regAt_iff (p : Cpt ξ) (a : Ω) :
     Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)
   constructor
   · intro ha
-    obtain ⟨s, hs, hu, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization Sc Ω ξ ℤ _ (seg y) tie c p hp a).1 ha
+    obtain ⟨s, hs, hu, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction Sc Ω ξ ℤ _ (seg y) tie c p hp a).1 ha
     rw [adjoin_eq hc] at hs hsa
     obtain ⟨f₁, rfl⟩ := hs
     obtain ⟨f₂, e₂⟩ := hsa

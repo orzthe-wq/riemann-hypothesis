@@ -102,8 +102,8 @@ theorem secM_one (pr_sec : ∀ a, pr (sec a) = a) (sec_pr : ∀ x, sec (pr x) = 
   have h1 : sec 1 = e := by rw [← map_one pr, sec_pr, mul_one]
   ext i j
   by_cases h : i = j
-  · subst h; simp [Matrix.one_apply, h1]
-  · simp [Matrix.one_apply, h]
+  · subst h; simp [h1]
+  · simp [h]
 
 theorem secM_supp (pr_sec : ∀ a, pr (sec a) = a) (sec_pr : ∀ x, sec (pr x) = e * x) (Z : Matrix m m k) :
     e • Z.map sec = Z.map sec := by

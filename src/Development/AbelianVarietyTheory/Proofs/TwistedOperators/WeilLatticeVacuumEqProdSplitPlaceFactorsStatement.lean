@@ -65,4 +65,4 @@ theorem _root_.GlobalTheory.T.weilLatticeVacuum_eq_prod_splitPlace_factors : ∀
     IsLatVac (heisO ψ S T) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) f →
     om (g, h) f = (∏ w ∈ P, ((splitFacO χS χT (GlobalTheory.RowVacScalar.detIdl (GlobalTheory.RowVacScalar.idemAt w) S g)
       (GlobalTheory.RowVacScalar.detIdl (GlobalTheory.RowVacScalar.idemAt w) T h) : Circle) : ℂ)) • f := by
-  first | exact @GlobalTheory.LatStabScalar.om_eq_prod_splitFac | exact GlobalTheory.LatStabScalar.om_eq_prod_splitFac | (intros; apply GlobalTheory.LatStabScalar.om_eq_prod_splitFac <;> assumption)
+  first | exact @GlobalTheory.LatStabScalar.om_eq_prod_splitFac

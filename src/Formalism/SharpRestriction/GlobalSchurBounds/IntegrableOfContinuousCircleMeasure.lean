@@ -1,19 +1,21 @@
 module
 
-public import Formalism.SharpRestriction.GlobalSchurBounds.FlipTwoThree
 public import Formalism.GL3MeanSquares.ConcavityEquidistribution
-public import Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentArithmeticBound
-public import Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentFromBound
+public import Formalism.SharpRestriction.GlobalSchurBounds.FlipTwoThree
 public import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -21,7 +23,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -29,6 +30,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,29 +44,388 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.Tactic.Basify
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentArithmeticBound, Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentFromBound, Formalism.SharpRestriction.GlobalSchurBounds.IntegrableOfContinuousCircleMeasure
+
+-- ===== clump member: Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentArithmeticBound =====
+-- clump-header: {"m": "Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentArithmeticBound", "h": "module\n\npublic import Formalism.GL3MeanSquares.ConcavityEquidistribution\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.HermitianLattices.TraceIntegrality
+
+open Finset
+open Formalism.LogVandermondeBounds.flipTwoThree (hookF Interlace B0 len)
+
+private lemma zii_plus_nonneg {κ : ℕ} (lam : Fin (κ + 1) → ℤ) (h : Antitone lam) (i : Fin (κ + 1)) :
+    0 ≤ plus lam i := by
+  simp only [plus]
+  exact sub_nonneg.2 (h (Fin.le_last i))
+
+private lemma zii_plus0_le {κ : ℕ} (lam : Fin (κ + 1) → ℤ) (h : Antitone lam) :
+    plus lam 0 ≤ wt (plus lam) := by
+  unfold wt
+  exact Finset.single_le_sum (f := plus lam) (fun i _ => zii_plus_nonneg lam h i) (Finset.mem_univ 0)
+
+private lemma zii_log_le {a L v W : ℝ} (ha : 1 ≤ a) (hv : 1 ≤ v) (hL : 1 ≤ L)
+    (hlog : Real.log (a * v) ≤ L) (hW0 : 0 < W) (hW : W ≤ 9 * a ^ 2) : Real.log W ≤ 10 * L := by
+  have ha0 : 0 < a := by linarith
+  have h1 : Real.log W ≤ Real.log (9 * a ^ 2) := Real.log_le_log hW0 hW
+  have h2 : Real.log (9 * a ^ 2) = Real.log 9 + 2 * Real.log a := by
+    rw [Real.log_mul (by norm_num) (pow_pos ha0 2).ne', Real.log_pow, Nat.cast_ofNat]
+  have h3 : Real.log 9 ≤ 8 := by
+    have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 9)
+    linarith
+  have h4 : Real.log a ≤ L := by
+    have : Real.log a ≤ Real.log (a * v) := Real.log_le_log ha0 (le_mul_of_one_le_right ha0.le hv)
+    linarith
+  linarith
+
+theorem zeta_proposition_second : PropZ_ii := by
+  intro C₀ hC
+  refine ⟨11 + C₀, ?_⟩
+  intro ι X _ _ _ _ TT κ m t N lam A bt a b' L v logT logg eta S muM muV muDelta muNabla muMaxNabla
+    hN hanti hTT hwt hwtp hwtp' hwt' hM hV hD hNab hMax
+  have hL1 := hN.one_le_L
+  have hv1 := hN.one_le_v
+  have hb1 := hN.one_le_b'
+  have hba := hN.b'_le_a
+  have hT0 := hN.logT_nonneg
+  have hS0 := hN.S_nonneg
+  have hκ0 : (0:ℝ) ≤ κ := Nat.cast_nonneg κ
+  have hK1 : (1:ℝ) ≤ (κ:ℝ) + 1 := by linarith
+  have hK0 : (0:ℝ) < (κ:ℝ) + 1 := by linarith
+  have hKN : (κ:ℝ) + 1 ≤ N := by
+    have : κ + 1 ≤ N := by rw [hN.N_eq]; exact Nat.le_add_right _ _
+    exact_mod_cast this
+  have hNL : (N:ℝ) * L ≤ b' := by linarith [hN.lin]
+  have hNNL : (N:ℝ) ≤ N * L := le_mul_of_one_le_right (Nat.cast_nonneg N) hL1
+  have hKb : (κ:ℝ) + 1 ≤ b' := by linarith
+  have hKa : (κ:ℝ) + 1 ≤ a := le_trans hKb hba
+  have hSb : S ≤ b' := by
+    have := hN.small
+    have := hN.eta_nonneg
+    have : (0:ℝ) ≤ (m:ℝ) * t := by positivity
+    linarith
+  have ha1 : 1 ≤ a := le_trans hb1 hba
+  have haa : a ≤ a ^ 2 := le_self_pow₀ ha1 two_ne_zero
+  have hlogK0 : 0 ≤ Real.log ((κ:ℝ) + 1) := Real.log_nonneg hK1
+  have hKbS : 0 ≤ ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1) :=
+    mul_nonneg (mul_nonneg hK0.le (by linarith)) hlogK0
+  have hZ4 : ∀ ρ, MeanSquareWeightBound (lam ρ) ≤ (if ρ ∈ TT then 2 * a * Real.log ((κ:ℝ) + 1) else 0)
+      + (4 * ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1) + 10 * ((κ:ℝ) + 1) ^ 2 * L) := by
+    intro ρ
+    have hp0 : (0:ℝ) ≤ (plus (lam ρ) 0 : ℝ) := by exact_mod_cast zii_plus_nonneg (lam ρ) (hanti ρ) 0
+    have hpW : (plus (lam ρ) 0 : ℝ) ≤ (wt (plus (lam ρ)) : ℝ) := by
+      exact_mod_cast zii_plus0_le (lam ρ) (hanti ρ)
+    unfold MeanSquareWeightBound
+    by_cases hρ : ρ ∈ TT
+    · rw [if_pos hρ]
+      obtain ⟨h1, h2, h3, h4⟩ := hTT ρ hρ
+      have hw := hwtp ρ hρ
+      have e1 : ((κ:ℝ) + 1) * (bt ρ + S) ≤ ((κ:ℝ) + 1) * (2 * (b' + S)) :=
+        mul_le_mul_of_nonneg_left (by linarith) hK0.le
+      have hWb : (wt (plus (lam ρ)) : ℝ) ≤ 2 * a + 2 * (((κ:ℝ) + 1) * (b' + S)) := by linarith
+      have e2 : ((κ:ℝ) + 1) * (b' + S) ≤ a * (2 * a) :=
+        mul_le_mul hKa (by linarith) (by linarith) (by linarith)
+      have hlog : Real.log ((plus (lam ρ) 0 : ℝ) + (κ:ℝ) + 1) ≤ 10 * L :=
+        zii_log_le ha1 hv1 hL1 hN.log_av (by linarith) (by
+          have : a * (2 * a) = 2 * a ^ 2 := by ring
+          linarith)
+      have f1 := mul_le_mul_of_nonneg_right hWb hlogK0
+      have f2 := mul_le_mul_of_nonneg_left hlog (sq_nonneg ((κ:ℝ) + 1))
+      linarith [f1, f2, hKbS]
+    · rw [if_neg hρ]
+      have hw := hwtp' ρ hρ
+      have e1 : ((κ:ℝ) + 1 + 3) * S ≤ 4 * (((κ:ℝ) + 1) * (b' + S)) := by
+        have hKS : S ≤ ((κ:ℝ) + 1) * S := le_mul_of_one_le_left hS0 hK1
+        have hKb' : 0 ≤ ((κ:ℝ) + 1) * b' := mul_nonneg hK0.le (by linarith)
+        linarith
+      have e2 : ((κ:ℝ) + 1 + 3) * S ≤ (4 * a) * a := mul_le_mul (by linarith) (by linarith) hS0 (by linarith)
+      have hlog : Real.log ((plus (lam ρ) 0 : ℝ) + (κ:ℝ) + 1) ≤ 10 * L :=
+        zii_log_le ha1 hv1 hL1 hN.log_av (by linarith) (by
+          have : (4 * a) * a = 4 * a ^ 2 := by ring
+          linarith)
+      have f1 := mul_le_mul_of_nonneg_right (hw.trans e1) hlogK0
+      have f2 := mul_le_mul_of_nonneg_left hlog (sq_nonneg ((κ:ℝ) + 1))
+      linarith [f1, f2, hKbS]
+  have hsumZ4 : ∑ ρ, MeanSquareWeightBound (lam ρ) ≤ (TT.card : ℝ) * (2 * a * Real.log ((κ:ℝ) + 1))
+      + (Fintype.card ι : ℝ) * (4 * ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1)
+        + 10 * ((κ:ℝ) + 1) ^ 2 * L) := by
+    have e1 : ∑ ρ, (if ρ ∈ TT then 2 * a * Real.log ((κ:ℝ) + 1) else 0)
+        = (TT.card : ℝ) * (2 * a * Real.log ((κ:ℝ) + 1)) := by
+      rw [Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul]
+    have e2 : ∑ _ρ : ι, (4 * ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1) + 10 * ((κ:ℝ) + 1) ^ 2 * L)
+        = (Fintype.card ι : ℝ) * (4 * ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1)
+          + 10 * ((κ:ℝ) + 1) ^ 2 * L) := by
+      rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+    calc ∑ ρ, MeanSquareWeightBound (lam ρ) ≤ ∑ ρ, ((if ρ ∈ TT then 2 * a * Real.log ((κ:ℝ) + 1) else 0)
+          + (4 * ((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1) + 10 * ((κ:ℝ) + 1) ^ 2 * L)) :=
+          Finset.sum_le_sum fun ρ _ => hZ4 ρ
+      _ = _ := by rw [Finset.sum_add_distrib, e1, e2]
+  have hwtbound : ∀ ρ, (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) * logT
+      ≤ (if ρ ∈ TT then A ρ / ((κ:ℝ) + 1) * logT else 0) + (1 + C₀) * S * logT := by
+    intro ρ
+    have h3 : 0 ≤ C₀ * S * logT := mul_nonneg (mul_nonneg hC hS0) hT0
+    have h4 : 0 ≤ S * logT := mul_nonneg hS0 hT0
+    by_cases hρ : ρ ∈ TT
+    · rw [if_pos hρ]
+      have h := hwt ρ hρ
+      have h1 : (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) ≤ A ρ / ((κ:ℝ) + 1) + S := by
+        rw [div_le_iff₀ hK0, add_mul, div_mul_cancel₀ _ hK0.ne']
+        linarith
+      have h2 := mul_le_mul_of_nonneg_right h1 hT0
+      linarith
+    · rw [if_neg hρ]
+      have h := hwt' ρ hρ
+      have h1 : (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) ≤ C₀ * S := by
+        rw [div_le_iff₀ hK0]
+        linarith
+      have h2 := mul_le_mul_of_nonneg_right h1 hT0
+      linarith
+  have hsumwt : ∑ ρ, (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) * logT
+      ≤ ∑ τ ∈ TT, A τ / ((κ:ℝ) + 1) * logT + (Fintype.card ι : ℝ) * ((1 + C₀) * S * logT) := by
+    have e1 : ∑ ρ, (if ρ ∈ TT then A ρ / ((κ:ℝ) + 1) * logT else 0)
+        = ∑ τ ∈ TT, A τ / ((κ:ℝ) + 1) * logT := by
+      rw [Finset.sum_ite_mem, Finset.univ_inter]
+    have e2 : ∑ _ρ : ι, (1 + C₀) * S * logT = (Fintype.card ι : ℝ) * ((1 + C₀) * S * logT) := by
+      rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+    calc ∑ ρ, (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) * logT
+        ≤ ∑ ρ, ((if ρ ∈ TT then A ρ / ((κ:ℝ) + 1) * logT else 0) + (1 + C₀) * S * logT) :=
+          Finset.sum_le_sum fun ρ _ => hwtbound ρ
+      _ = _ := by rw [Finset.sum_add_distrib, e1, e2]
+  have hmean : muM = -(∑ ρ, (wt (lam ρ) : ℝ) / ((κ:ℝ) + 1) * logT) + ∑ ρ, muDelta ρ := by
+    rw [hM]
+    have hc : (0:ℝ) < (Fintype.card X : ℝ) := by exact_mod_cast Fintype.card_pos
+    unfold mean
+    simp only [hV]
+    rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_div_cancel_left₀ _ hc.ne']
+  have hDel : -(∑ ρ, MeanSquareWeightBound (lam ρ)) ≤ ∑ ρ, muDelta ρ := by
+    rw [← Finset.sum_neg_distrib]
+    exact Finset.sum_le_sum fun ρ _ => by rw [hD ρ]; linarith [hNab ρ, hMax ρ]
+  have hcard0 : (0:ℝ) ≤ (Fintype.card ι : ℝ) := Nat.cast_nonneg _
+  have n1 : 0 ≤ (TT.card : ℝ) * a * Real.log ((κ:ℝ) + 1) :=
+    mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (by linarith)) hlogK0
+  have m1 : 0 ≤ C₀ * ((TT.card : ℝ) * a * Real.log ((κ:ℝ) + 1)) := mul_nonneg hC n1
+  have n2 : 0 ≤ (Fintype.card ι : ℝ) * S * logT := mul_nonneg (mul_nonneg hcard0 hS0) hT0
+  have n3 : 0 ≤ (Fintype.card ι : ℝ) * (((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1)) :=
+    mul_nonneg hcard0 hKbS
+  have m3 : 0 ≤ C₀ * ((Fintype.card ι : ℝ) * (((κ:ℝ) + 1) * (b' + S) * Real.log ((κ:ℝ) + 1))) :=
+    mul_nonneg hC n3
+  have n4 : 0 ≤ (Fintype.card ι : ℝ) * (((κ:ℝ) + 1) ^ 2 * L) :=
+    mul_nonneg hcard0 (mul_nonneg (sq_nonneg _) (by linarith))
+  have m4 : 0 ≤ C₀ * ((Fintype.card ι : ℝ) * (((κ:ℝ) + 1) ^ 2 * L)) := mul_nonneg hC n4
+  linarith [hmean, hDel, hsumZ4, hsumwt, n1, m1, n2, n3, m3, n4, m4]
+
+private lemma positive_part_head_le_weight {κ : ℕ} (lam : Fin (κ + 1) → ℤ) (h : Antitone lam) :
+    0 ≤ plus lam 0 ∧ plus lam 0 ≤ wt (plus lam) := ⟨zii_plus_nonneg lam h 0, zii_plus0_le lam h⟩
+
+private lemma ziii_log {a L v x : ℝ} (ha : 1 ≤ a) (hv : 1 ≤ v) (hL : 1 ≤ L)
+    (hlog : Real.log (a * v) ≤ L) (hx0 : 0 < x) (hx : x ≤ 7 * a ^ 2) : Real.log x ≤ 8 * L := by
+  have ha0 : 0 < a := by linarith
+  have h1 : Real.log x ≤ Real.log (7 * a ^ 2) := Real.log_le_log hx0 hx
+  have h2 : Real.log (7 * a ^ 2) = Real.log 7 + 2 * Real.log a := by
+    rw [Real.log_mul (by norm_num) (pow_pos ha0 2).ne', Real.log_pow, Nat.cast_ofNat]
+  have h3 : Real.log 7 ≤ 6 := by
+    have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 7)
+    linarith
+  have h4 : Real.log a ≤ L := by
+    have : Real.log a ≤ Real.log (a * v) := Real.log_le_log ha0 (le_mul_of_one_le_right ha0.le hv)
+    linarith
+  linarith
+
+private lemma ziii_place {C₀ K b' S L lkv logT W lst lg U : ℝ} (hC : 0 ≤ C₀) (hK : 1 ≤ K)
+    (hlkv : 0 ≤ lkv) (hT : 0 ≤ logT)
+    (hW : W ≤ U + 4 * K * (b' + S)) (hlg : lg ≤ 8 * L) (hlst : lst ≤ (2 + C₀) * (b' + S)) :
+    W * (C₀ * lkv) + K ^ 2 * lg + lst * logT ≤
+      U * (C₀ * lkv) + (4 * C₀ * K * (b' + S) * lkv + (2 + C₀) * (b' + S) * logT + 8 * K ^ 2 * L) := by
+  have h0 : 0 ≤ C₀ * lkv := mul_nonneg hC hlkv
+  have h1 := mul_le_mul_of_nonneg_right hW h0
+  have h2 := mul_le_mul_of_nonneg_left hlg (sq_nonneg K)
+  have h3 := mul_le_mul_of_nonneg_right hlst hT
+  linarith [h1, h2, h3]
+
+private lemma ziii_top {C₀ K a b' S L v logT W p lst At bt : ℝ} (hC : 0 ≤ C₀) (hK : 1 ≤ K)
+    (hKa : K ≤ a) (hb1 : 1 ≤ b') (hba : b' ≤ a) (hS : 0 ≤ S) (hSb : S ≤ b') (hL : 1 ≤ L) (hv : 1 ≤ v)
+    (hlog : Real.log (a * v) ≤ L) (hT : 0 ≤ logT) (hp0 : 0 ≤ p) (hpW : p ≤ W)
+    (hA2 : At ≤ 2 * a) (hbt2 : bt ≤ 2 * b') (hW : W ≤ At + K * (bt + S)) (hl : lst ≤ bt) :
+    W * (C₀ * Real.log (K * v)) + K ^ 2 * Real.log (p + K) + lst * logT ≤
+      2 * a * (C₀ * Real.log (K * v)) + (4 * C₀ * K * (b' + S) * Real.log (K * v)
+        + (2 + C₀) * (b' + S) * logT + 8 * K ^ 2 * L) := by
+  have hK0 : 0 ≤ K := by linarith
+  have ha0 : 0 ≤ a := by linarith
+  have hlkv : 0 ≤ Real.log (K * v) := Real.log_nonneg (one_le_mul_of_one_le_of_one_le hK hv)
+  have hbS : bt + S ≤ 3 * a := by linarith
+  have hKbt : K * (bt + S) ≤ a * (3 * a) :=
+    (mul_le_mul_of_nonneg_left hbS hK0).trans (mul_le_mul_of_nonneg_right hKa (by linarith))
+  have hW' : W ≤ 2 * a + 4 * K * (b' + S) := by
+    have : K * (bt + S) ≤ K * (4 * (b' + S)) := mul_le_mul_of_nonneg_left (by linarith) hK0
+    linarith
+  have haa : a ≤ a ^ 2 := le_self_pow₀ (le_trans hb1 hba) two_ne_zero
+  have hlg : Real.log (p + K) ≤ 8 * L :=
+    ziii_log (by linarith) hv hL hlog (by linarith) (by
+      have : a * (3 * a) = 3 * a ^ 2 := by ring
+      linarith)
+  have hlst : lst ≤ (2 + C₀) * (b' + S) := by
+    linarith [mul_nonneg hC (by linarith : (0:ℝ) ≤ b' + S)]
+  have := ziii_place (U := 2 * a) hC hK hlkv hT hW' hlg hlst
+  linarith
+
+private lemma ziii_other {C₀ K a b' S L v logT W p lst : ℝ} (hC : 0 ≤ C₀) (hK : 1 ≤ K)
+    (hKa : K ≤ a) (hb1 : 1 ≤ b') (hba : b' ≤ a) (hS : 0 ≤ S) (hSb : S ≤ b') (hL : 1 ≤ L) (hv : 1 ≤ v)
+    (hlog : Real.log (a * v) ≤ L) (hT : 0 ≤ logT) (hp0 : 0 ≤ p) (hpW : p ≤ W)
+    (hW : W ≤ (K + 3) * S) (hl : lst ≤ C₀ * S) :
+    W * (C₀ * Real.log (K * v)) + K ^ 2 * Real.log (p + K) + lst * logT ≤
+      0 + (4 * C₀ * K * (b' + S) * Real.log (K * v)
+        + (2 + C₀) * (b' + S) * logT + 8 * K ^ 2 * L) := by
+  have hK0 : 0 ≤ K := by linarith
+  have ha0 : 0 ≤ a := by linarith
+  have hlkv : 0 ≤ Real.log (K * v) := Real.log_nonneg (one_le_mul_of_one_le_of_one_le hK hv)
+  have hW' : W ≤ 0 + 4 * K * (b' + S) := by
+    have h1 : 1 * S ≤ K * S := mul_le_mul_of_nonneg_right hK hS
+    have h2 : 0 ≤ K * b' := mul_nonneg hK0 (by linarith)
+    linarith
+  have hK3 : K + 3 ≤ 4 * a := by linarith
+  have hSa : S ≤ a := by linarith
+  have hKS : (K + 3) * S ≤ 4 * a * a := mul_le_mul hK3 hSa hS (by linarith)
+  have haa : a ≤ a ^ 2 := le_self_pow₀ (le_trans hb1 hba) two_ne_zero
+  have hlg : Real.log (p + K) ≤ 8 * L :=
+    ziii_log (by linarith) hv hL hlog (by linarith) (by
+      have : 4 * a * a = 4 * a ^ 2 := by ring
+      linarith)
+  have hlst : lst ≤ (2 + C₀) * (b' + S) := by
+    linarith [mul_nonneg hC (by linarith : (0:ℝ) ≤ b')]
+  have := ziii_place (U := 0) hC hK hlkv hT hW' hlg hlst
+  linarith
+
+private lemma final_part_arithmetic_bound {C₀ nT f a lkv K b' S logT L : ℝ} (hC : 0 ≤ C₀) (hnT : 0 ≤ nT) (hf : 0 ≤ f)
+    (ha : 0 ≤ a) (hlkv : 0 ≤ lkv) (hK : 0 ≤ K) (hbS : 0 ≤ b' + S) (hT : 0 ≤ logT) (hL : 0 ≤ L) :
+    nT * (2 * a * (C₀ * lkv)) + f * (4 * C₀ * K * (b' + S) * lkv + (2 + C₀) * (b' + S) * logT
+        + 8 * K ^ 2 * L) ≤
+      (8 + 4 * C₀) * nT * a * lkv + (8 + 4 * C₀) * f * (b' + S) * (K * lkv + logT)
+        + (8 + 4 * C₀) * f * K ^ 2 * L := by
+  have p1 : 0 ≤ nT * a * lkv := mul_nonneg (mul_nonneg hnT ha) hlkv
+  have q1 : 0 ≤ C₀ * (nT * a * lkv) := mul_nonneg hC p1
+  have p2 : 0 ≤ f * (b' + S) * K * lkv := mul_nonneg (mul_nonneg (mul_nonneg hf hbS) hK) hlkv
+  have p3 : 0 ≤ f * (b' + S) * logT := mul_nonneg (mul_nonneg hf hbS) hT
+  have q3 : 0 ≤ C₀ * (f * (b' + S) * logT) := mul_nonneg hC p3
+  have q4 : 0 ≤ C₀ * (f * K ^ 2 * L) := mul_nonneg hC (mul_nonneg (mul_nonneg hf (sq_nonneg K)) hL)
+  linarith [p1, q1, p2, p3, q3, q4]
+
+theorem zeta_proposition_third : PropZ_iii := by
+  intro C₀ hC
+  refine ⟨8 + 4 * C₀, ?_⟩
+  intro ι X _ _ _ _ TT κ m t N lam A bt a b' L v logT logg eta S muMaxM muMaxV hN hanti hTT hWT hlT
+    hWo hlo hex hV
+  obtain ⟨c, hc⟩ := hex
+  have hL := hN.one_le_L
+  have hv := hN.one_le_v
+  have hb1 := hN.one_le_b'
+  have hba := hN.b'_le_a
+  have hT := hN.logT_nonneg
+  have hS := hN.S_nonneg
+  have ha : 1 ≤ a := le_trans hb1 hba
+  have hmt : (0:ℝ) ≤ (m : ℝ) * t := by positivity
+  have hSb : S ≤ b' := by have := hN.small; have := hN.eta_nonneg; linarith
+  have hKN : (κ : ℝ) + 1 ≤ N := by
+    have : κ + 1 ≤ N := by rw [hN.N_eq]; exact Nat.le_add_right _ _
+    exact_mod_cast this
+  have hN0 : (0:ℝ) ≤ N := Nat.cast_nonneg N
+  have hNb : (N : ℝ) ≤ b' := by
+    have h1 := hN.lin
+    have h2 : (N : ℝ) * 1 ≤ N * L := mul_le_mul_of_nonneg_left hL hN0
+    linarith
+  have hK1 : (1:ℝ) ≤ (κ : ℝ) + 1 := by
+    have : (0:ℝ) ≤ κ := Nat.cast_nonneg κ
+    linarith
+  have hKa : (κ : ℝ) + 1 ≤ a := by linarith
+  have hlkv : 0 ≤ Real.log (((κ : ℝ) + 1) * v) := Real.log_nonneg (one_le_mul_of_one_le_of_one_le hK1 hv)
+  have key : ∀ ρ, ((wt (plus (lam ρ)) : ℝ) * (C₀ * Real.log (((κ : ℝ) + 1) * v))
+        + ((κ : ℝ) + 1) ^ 2 * Real.log ((plus (lam ρ) 0 : ℝ) + (κ : ℝ) + 1)
+        + |(lam ρ (Fin.last κ) : ℝ)| * logT) ≤
+      (if ρ ∈ TT then 2 * a * (C₀ * Real.log (((κ : ℝ) + 1) * v)) else 0)
+        + (4 * C₀ * ((κ : ℝ) + 1) * (b' + S) * Real.log (((κ : ℝ) + 1) * v)
+          + (2 + C₀) * (b' + S) * logT + 8 * ((κ : ℝ) + 1) ^ 2 * L) := by
+    intro ρ
+    obtain ⟨hp0, hpW⟩ := positive_part_head_le_weight (lam ρ) (hanti ρ)
+    have hp0' : (0:ℝ) ≤ (plus (lam ρ) 0 : ℝ) := by exact_mod_cast hp0
+    have hpW' : (plus (lam ρ) 0 : ℝ) ≤ (wt (plus (lam ρ)) : ℝ) := by exact_mod_cast hpW
+    rw [add_assoc ((plus (lam ρ) 0 : ℤ) : ℝ) (κ : ℝ) 1]
+    by_cases hρ : ρ ∈ TT
+    · obtain ⟨hA1, hA2, hbt1, hbt2⟩ := hTT ρ hρ
+      rw [if_pos hρ]
+      exact ziii_top hC hK1 hKa hb1 hba hS hSb hL hv hN.log_av hT hp0' hpW' hA2 hbt2 (hWT ρ hρ)
+        (hlT ρ hρ)
+    · rw [if_neg hρ]
+      exact ziii_other hC hK1 hKa hb1 hba hS hSb hL hv hN.log_av hT hp0' hpW' (hWo ρ hρ) (hlo ρ hρ)
+  have hsum := Finset.sum_le_sum (s := (Finset.univ : Finset ι)) (fun ρ _ => key ρ)
+  have hrhs : ∀ x y : ℝ, ∑ ρ : ι, ((if ρ ∈ TT then x else 0) + y)
+      = (TT.card : ℝ) * x + (Fintype.card ι : ℝ) * y := by
+    intro x y
+    rw [Finset.sum_add_distrib, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const,
+      Finset.sum_const, nsmul_eq_mul, nsmul_eq_mul, Finset.card_univ]
+  rw [hrhs] at hsum
+  refine le_trans (le_trans hc (le_trans (hV c) hsum)) ?_
+  exact final_part_arithmetic_bound hC (Nat.cast_nonneg _) (Nat.cast_nonneg _) (by linarith) hlkv (by linarith)
+    (by linarith) hT (by linarith)
+
+
+end Formalism.HermitianLattices.TraceIntegrality
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentArithmeticBound =====
+
+-- ===== clump member: Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentFromBound =====
+-- clump-header: {"m": "Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentFromBound", "h": "module\n\npublic import Formalism.GL3MeanSquares.ConcavityEquidistribution\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.HermitianLattices.TraceIntegrality
+
+open Finset
+open Formalism.LogVandermondeBounds.flipTwoThree (hookF Interlace B0 len)
+
+theorem column_top_entry : LastColumnBound := by
+  intro κ lam A bt S hbt hS h0 hl hmid
+  have hsucc : ∀ j : Fin (κ + 1), lam j.succ ≤ S := by
+    intro j
+    by_cases hj : j.succ = Fin.last (κ + 1)
+    · rw [hj, hl]; linarith
+    · exact (hmid j.succ (Fin.succ_ne_zero j) hj).2
+  have hsum : ∑ j : Fin (κ + 1), lam j.succ ≤ (κ + 1) * S := by
+    calc ∑ j : Fin (κ + 1), lam j.succ ≤ ∑ _j : Fin (κ + 1), S := Finset.sum_le_sum fun j _ => hsucc j
+      _ = (κ + 1) * S := by
+        rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; push_cast; ring
+  constructor
+  · unfold wt
+    rw [Fin.sum_univ_succ, h0]
+    linarith
+  · unfold wt plus
+    rw [Fin.sum_univ_succ, h0, hl]
+    have e : ∑ j : Fin (κ + 1), (lam j.succ - -bt) = ∑ j : Fin (κ + 1), lam j.succ + (κ + 1) * bt := by
+      rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+      push_cast; ring
+    rw [e]
+    linarith
+
+end Formalism.HermitianLattices.TraceIntegrality
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentFromBound =====
+
+-- ===== clump member: Formalism.SharpRestriction.GlobalSchurBounds.IntegrableOfContinuousCircleMeasure =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GlobalSchurBounds.IntegrableOfContinuousCircleMeasure", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.FlipTwoThree\npublic import Formalism.GL3MeanSquares.ConcavityEquidistribution\npublic import Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentArithmeticBound\npublic import Formalism.GL3MeanSquares.HookFormulaTorsion.SquareMomentFromBound\npublic import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
 
 namespace Formalism.MainNotions.flipTwoThree
-
-section PA
-open Formalism.BasicNotions NumberField Finset
-
-section Use
-
-open Formalism.HermitianLattices.TraceIntegrality Formalism.LogVandermondeBounds.flipTwoThree
-
-end Use
-
-end PA
-
-section PB
-open Formalism.BasicNotions NumberField Finset
-
-end PB
 
 section PC
 open Formalism.BasicNotions NumberField Finset
@@ -77,15 +438,17 @@ theorem b_nums {D : D7} {T g1 g2 : ℕ} {Cn x b L b' Sc eta : ℝ} (h : Nums D T
   have hbb' : b' ≤ b := by rwa [mul_div_cancel_left₀ b hx0.ne'] at hbb
   have hm2 : (2 : ℝ) ≤ D.R.m := by exact_mod_cast D.R.two_le_m
   have ht1 : (1 : ℝ) ≤ D.R.t := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr D.R.t_odd.pos.ne'
-  have hmt : (2 : ℝ) ≤ D.R.m * D.R.t := by nlinarith [mul_nonneg (sub_nonneg.2 hm2) (sub_nonneg.2 ht1)]
+  have hmt : (2 : ℝ) ≤ D.R.m * D.R.t := by linarith [mul_nonneg (sub_nonneg.2 hm2) (sub_nonneg.2 ht1)]
   have hq : 4 ≤ b' / x := by linarith
   have hb'4x : 4 * x ≤ b' := by rwa [le_div_iff₀ hx0] at hq
   have hb'0 : 0 ≤ b' := by linarith
   have hb'4 : 4 ≤ b' := by linarith
   have hdiv : b' / x ≤ b' := div_le_self hb'0 (by linarith)
   have h8 : 8 ≤ x * b * D.host.v := by
-    have hxb : 16 ≤ x * b := by nlinarith
-    nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ x * b) (by linarith : (0 : ℝ) ≤ D.host.v - 1)]
+    have hxb : 16 ≤ x * b := by
+      calc (16 : ℝ) = 2 * 8 := by norm_num
+        _ ≤ x * b := mul_le_mul (by linarith) (by linarith) (by norm_num) (by linarith)
+    linarith [mul_nonneg (by linarith : (0 : ℝ) ≤ x * b) (by linarith : (0 : ℝ) ≤ D.host.v - 1)]
   have hL1 : 1 ≤ L := by
     have h1 : (1 : ℝ) < Real.log 8 := by
       rw [Real.lt_log_iff_exp_lt (by norm_num)]
@@ -100,11 +463,11 @@ theorem b_nums {D : D7} {T g1 g2 : ℕ} {Cn x b L b' Sc eta : ℝ} (h : Nums D T
   have hNb : (D.R.N D.R.m : ℝ) ≤ b' := by
     have hN0 : (0 : ℝ) ≤ D.R.N D.R.m := Nat.cast_nonneg _
     have hm3 : (8 : ℝ) ≤ (D.R.m : ℝ) ^ 3 := by
-      nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ (D.R.m : ℝ) - 2)
+      linarith [mul_nonneg (by linarith : (0 : ℝ) ≤ (D.R.m : ℝ) - 2)
         (by positivity : (0 : ℝ) ≤ (D.R.m : ℝ) ^ 2 + 2 * D.R.m + 4)]
     have hA : (1 : ℝ) ≤ (1 + 2 * (2 * Cn + 4)) * (D.R.m : ℝ) ^ 3 := by
-      nlinarith [mul_nonneg hCn (by positivity : (0 : ℝ) ≤ (D.R.m : ℝ) ^ 3)]
-    nlinarith [mul_nonneg (sub_nonneg.2 hA) hN0]
+      linarith [mul_nonneg hCn (by positivity : (0 : ℝ) ≤ (D.R.m : ℝ) ^ 3)]
+    linarith [mul_nonneg (sub_nonneg.2 hA) hN0]
   exact ⟨hL1, hCn, hb'4, hbb', hNb, hSe.trans hdiv, hL, h8⟩
 
 theorem b_lam_eq (D : D7) (u : D.what₂.Word) (j : ℕ) (hj : j ≤ D.R.m) (τ : D.what₂.Tau) (i : Fin (D.R.N j)) :
@@ -144,26 +507,6 @@ theorem b_Tu_pos (D : D7) (u : D.what₂.Word) : (0 : ℝ) < (Tu D u : ℝ) := b
 
 end PC
 
-section PD
-open Formalism.BasicNotions NumberField Finset
-
-end PD
-
-section PE
-open Formalism.BasicNotions NumberField Finset
-
-end PE
-
-section PF
-open Formalism.BasicNotions NumberField Finset
-
-end PF
-
-section PG
-open Formalism.BasicNotions NumberField Finset
-
-end PG
-
 section PH
 open Formalism.BasicNotions NumberField Finset
 
@@ -186,11 +529,6 @@ theorem b_finrank_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   ring
 
 end PI
-
-section Z2
-open Formalism.BasicNotions
-
-end Z2
 
 section Z56a
 open Formalism.BasicNotions NumberField
@@ -221,9 +559,10 @@ theorem numbers_of_nums {D : D7} {T g1 g2 : ℕ} {Cn x b L b' Sc eta : ℝ} (K :
   have hm0 : (0 : ℝ) ≤ (D.R.m : ℝ) := by positivity
   refine ⟨hL1, hv, hL, by linarith, ?_, Real.log_natCast_nonneg _, ?_, ?_, ?_, ?_, ?_, rfl, by linarith,
     by positivity, ?_, hsq, hlin, hpow⟩
-  · nlinarith
-  · have : 0 ≤ (D.R.m : ℝ) * L := by positivity
-    nlinarith
+  · exact hbb.trans (le_mul_of_one_le_left (by linarith) (by linarith))
+  · have h1 : Cn * ((D.R.m : ℝ) * L) ≤ (2 * Cn + 4) * ((D.R.m : ℝ) * L) :=
+      mul_le_mul_of_nonneg_right (by linarith) (by positivity)
+    linarith
   · have : ((g1 : ℝ) * g2) = ((g1 * g2 : ℕ) : ℝ) := by push_cast; ring
     rw [this]; exact Real.log_natCast_nonneg _
   · by_cases h1 : (g1 : ℝ) = 0
@@ -231,14 +570,14 @@ theorem numbers_of_nums {D : D7} {T g1 g2 : ℕ} {Cn x b L b' Sc eta : ℝ} (K :
     by_cases h2 : (g2 : ℝ) = 0
     · rw [h2, mul_zero, Real.log_zero]; positivity
     rw [Real.log_mul h1 h2]
-    nlinarith
+    linarith
   · have := D.R.m_add_three_le_k; omega
   · have := D.R.two_le_m; omega
   · have h1 : x * (Sc + eta + (D.R.m : ℝ) * D.R.t) ≤ b' := by
       rw [le_div_iff₀ hx0] at hsm; linarith
     have h2 : K * (Sc + eta + (D.R.m : ℝ) * D.R.t) ≤ x * (Sc + eta + (D.R.m : ℝ) * D.R.t) :=
       mul_le_mul_of_nonneg_right hKx (by linarith)
-    nlinarith
+    linarith [le_mul_of_one_le_left (by linarith : (0 : ℝ) ≤ eta) hK1, le_mul_of_one_le_left hmt hK1]
 
 theorem lamCol_stepB (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ) (h : i + 1 < D.R.k) :
     lamCol D u τ (i + 1) < lamCol D u τ i + 1 := by
@@ -249,12 +588,6 @@ theorem lamCol_stepB (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ
   have h2 := (D.hcW u τ).v_gt_u ⟨i, by omega⟩
   push_cast
   linarith
-
-theorem mem_tops (D : D7) (τ : D.what₂.Tau) : τ ∈ tops D ↔ IsTop D τ := by
-  exact b_mem_tops D τ
-
-theorem tops_card (D : D7) : (tops D).card = D.host.TT.card := by
-  exact b_card_tops D
 
 theorem col_setup (D : D7) (u : D.what₂.Word) (Cn x b L b' Sc eta K : ℝ) (hK1 : 1 ≤ K) (hKC : Cn ≤ K)
     (hN : Nums D (Tu D u) (D.host.g 0) (D.host.g 1) Cn x b L b' Sc eta) (hW : Wts D u Cn x b b' Sc eta) :
@@ -292,7 +625,7 @@ theorem col_setup (D : D7) (u : D.what₂.Word) (Cn x b L b' Sc eta K : ℝ) (hK
     rw [h2, h3] at h1
     have h4 : lam τ i.succ < lam τ i.castSucc + 1 := by exact_mod_cast h1
     omega
-  have hKSc : Sc ≤ K * Sc := by nlinarith
+  have hKSc : Sc ≤ K * Sc := le_mul_of_one_le_left (by linarith) hK1
   have hwt : ∀ τ, colAbs D u τ = (wt (lam τ) : ℝ) := fun τ => by
     unfold colAbs wt
     rw [hκ, Finset.sum_range]
@@ -309,7 +642,7 @@ theorem col_setup (D : D7) (u : D.what₂.Word) (Cn x b L b' Sc eta K : ℝ) (hK
   have htop : ∀ τ ∈ tops D, ((wt (lam τ) : ℝ) ≤ aT D u τ + (((κ + 1 : ℕ) : ℝ) + 1) * (K * Sc)) ∧
       ((wt (plus (lam τ)) : ℝ) ≤ aT D u τ + (((κ + 1 : ℕ) : ℝ) + 1) * (bT D u τ + K * Sc)) := by
     intro τ hτ
-    obtain ⟨-, -, hb1, -, hmid⟩ := (hW τ).2.1 ((mem_tops D τ).1 hτ)
+    obtain ⟨-, -, hb1, -, hmid⟩ := (hW τ).2.1 ((_root_.Formalism.MainNotions.flipTwoThree.b_mem_tops D τ).1 hτ)
     rw [hlk τ] at hb1
     have hbt : (0 : ℤ) ≤ -lam τ (Fin.last (κ + 1)) := by
       have : (0 : ℝ) ≤ ((-lam τ (Fin.last (κ + 1)) : ℤ) : ℝ) := by push_cast; linarith
@@ -336,18 +669,18 @@ theorem col_setup (D : D7) (u : D.what₂.Word) (Cn x b L b' Sc eta K : ℝ) (hK
     rw [hl0 τ, hlk τ]
     push_cast
     constructor
-    · nlinarith [mul_le_mul_of_nonneg_left hfl hκ0]
-    · nlinarith [mul_le_mul_of_nonneg_left hfl hκ0]
+    · linarith [mul_le_mul_of_nonneg_left hfl hκ0]
+    · linarith [mul_le_mul_of_nonneg_left hfl hκ0]
   have hnt : ∀ τ, τ ∉ tops D → ∀ i : Fin (κ + 1 + 1), 0 ≤ (lam τ i : ℝ) ∧ (lam τ i : ℝ) ≤ Cn * Sc := by
     intro τ hτ i
-    have := (hW τ).2.2.1 (fun h => hτ ((mem_tops D τ).2 h)) i (by have := i.2; omega)
+    have := (hW τ).2.2.1 (fun h => hτ ((_root_.Formalism.MainNotions.flipTwoThree.b_mem_tops D τ).2 h)) i (by have := i.2; omega)
     rwa [hl τ i] at this
   have hCS : Cn * Sc ≤ K * Sc := mul_le_mul_of_nonneg_right hKC (by linarith)
   have hKS0 : 0 ≤ K * Sc := by positivity
   refine ⟨κ, lam, hκ, hanti, hwt, hwtp, hp1, hlk, ?_, fun τ hτ => (htop τ hτ).1, fun τ hτ => (htop τ hτ).2,
     ?_, ?_, ?_⟩
   · intro τ hτ
-    obtain ⟨t1, t2, t3, t4, -⟩ := (hW τ).2.1 ((mem_tops D τ).1 hτ)
+    obtain ⟨t1, t2, t3, t4, -⟩ := (hW τ).2.1 ((_root_.Formalism.MainNotions.flipTwoThree.b_mem_tops D τ).1 hτ)
     exact ⟨t1, t2, t3, t4.le⟩
   · intro τ hτ
     have h1 : (wt (plus (lam τ)) : ℝ) ≤ ∑ _i : Fin (κ + 1 + 1), K * Sc := by
@@ -359,7 +692,7 @@ theorem col_setup (D : D7) (u : D.what₂.Word) (Cn x b L b' Sc eta K : ℝ) (hK
       linarith
     rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h1
     push_cast at h1 ⊢
-    nlinarith
+    linarith
   · intro τ hτ
     have h1 : (wt (lam τ) : ℝ) ≤ ∑ _i : Fin (κ + 1 + 1), K * Sc := by
       unfold wt
@@ -370,11 +703,13 @@ theorem col_setup (D : D7) (u : D.what₂.Word) (Cn x b L b' Sc eta K : ℝ) (hK
     rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h1
     push_cast at h1 ⊢
     have hκ0 : (0 : ℝ) ≤ ((κ : ℝ) + 1 + 1) * (K * Sc) := by positivity
-    nlinarith
+    have hle := le_mul_of_one_le_left hκ0 (by linarith : (1 : ℝ) ≤ 2 * Cn + 4)
+    linarith
   · intro τ hτ
     have := hnt τ hτ (Fin.last (κ + 1))
     rw [abs_of_nonneg this.1]
-    nlinarith
+    have hle := le_mul_of_one_le_left hKS0 (by linarith : (1 : ℝ) ≤ 2 * Cn + 4)
+    linarith
 
 end Z56a
 
@@ -411,7 +746,7 @@ theorem arith5 (C K n a lk f k b' Sc lT L : ℝ) (hK1 : 1 ≤ K) (hn : 0 ≤ n) 
     C * f * (K * Sc) * lT ≤ max C 0 * K * f * Sc * lT ∧
     C * f * k ^ 2 * L ≤ max C 0 * K * f * k ^ 2 * L := by
   have hK0 : 0 ≤ K := by linarith
-  have hX2 : b' + K * Sc ≤ K * (b' + Sc) := by nlinarith [mul_nonneg (sub_nonneg.2 hK1) hb]
+  have hX2 : b' + K * Sc ≤ K * (b' + Sc) := by linarith [mul_nonneg (sub_nonneg.2 hK1) hb]
   refine ⟨?_, ?_, ?_, ?_⟩
   · calc C * n * a * lk = C * ((n * a * lk) * 1) := by ring
       _ ≤ max C 0 * K * ((n * a * lk) * 1) :=
@@ -481,7 +816,7 @@ theorem ramifiedLattice_of_chain_estimates (Cn : ℝ) : ∃ C : ℝ, ∀ (D : D7
     (fun τ => by ring) (fun τ => le_rfl)
     (fun τ => by have : 0 ≤ δ / (Fintype.card D.what₂.Tau : ℝ) := by positivity
                  linarith)
-  rw [← hkR, hf, tops_card] at key
+  rw [← hkR, hf, _root_.Formalism.MainNotions.flipTwoThree.b_card_tops] at key
   refine le_trans ?_ key
   have hlk0 : 0 ≤ Real.log (D.R.k : ℝ) := Real.log_natCast_nonneg _
   have hlT0 : 0 ≤ lT := Real.log_natCast_nonneg _
@@ -494,7 +829,7 @@ theorem arith6 (C K n a l f k b' Sc lT L : ℝ) (hK1 : 1 ≤ K) (hn : 0 ≤ n) (
     C * n * a * l + C * f * (b' + K * Sc) * (k * l + lT) + C * f * k ^ 2 * L ≤
       max C 0 * K * n * a * l + max C 0 * K * f * (b' + Sc) * (k * l + lT) + max C 0 * K * f * k ^ 2 * L := by
   have hK0 : 0 ≤ K := by linarith
-  have hX2 : b' + K * Sc ≤ K * (b' + Sc) := by nlinarith [mul_nonneg (sub_nonneg.2 hK1) hb]
+  have hX2 : b' + K * Sc ≤ K * (b' + Sc) := by linarith [mul_nonneg (sub_nonneg.2 hK1) hb]
   have h1 : C * n * a * l ≤ max C 0 * K * n * a * l := by
     calc C * n * a * l = C * ((n * a * l) * 1) := by ring
       _ ≤ max C 0 * K * ((n * a * l) * 1) :=
@@ -544,7 +879,8 @@ theorem classMap_estimate_of_partial (Cn C5 : ℝ) : ∃ C : ℝ, ∀ (D : D7) (
   have hlT0 : 0 ≤ lT := Real.log_natCast_nonneg _
   have hk1 : (1 : ℝ) ≤ (D.R.k : ℝ) := by rw [hkR]; have : (0 : ℝ) ≤ ((κ + 1 : ℕ) : ℝ) := by positivity
                                          linarith
-  have hlkv : 0 ≤ Real.log ((D.R.k : ℝ) * D.host.v) := Real.log_nonneg (by nlinarith)
+  have hlkv : 0 ≤ Real.log ((D.R.k : ℝ) * D.host.v) :=
+    Real.log_nonneg (one_le_mul_of_one_le_of_one_le hk1 hv1)
   have hplus0 : ∀ τ i, 0 ≤ plus (lam τ) i := fun τ i => by
     unfold plus
     have := hanti τ (Fin.le_last i)
@@ -589,7 +925,7 @@ theorem classMap_estimate_of_partial (Cn C5 : ℝ) : ∃ C : ℝ, ∀ (D : D7) (
       rw [hlk τ] at h1 ⊢
       rw [abs_of_nonpos (by linarith)])
     hn1 hn3 ⟨(), by rw [div_le_iff₀ hK'0]; linarith⟩ (fun _ => le_rfl)
-  rw [← hkR, hf, tops_card, div_le_iff₀ hK'0] at key
+  rw [← hkR, hf, _root_.Formalism.MainNotions.flipTwoThree.b_card_tops, div_le_iff₀ hK'0] at key
   have ar := arith6 C K (D.host.TT.card : ℝ) (x * b) (Real.log ((D.R.k : ℝ) * D.host.v)) D.R.f D.R.k b' Sc lT L hK1
     (by positivity) (by positivity) hlkv (by positivity) (by positivity) (by linarith) (by linarith) hlT0 (by linarith)
   have := le_trans key (mul_le_mul_of_nonneg_right ar hK'0.le)
@@ -616,68 +952,6 @@ theorem familySlopeMax_of_open {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
 
 end Z56
 
-section Ms
-open Formalism.BasicNotions NumberField
-
-end Ms
-
-section Z1a
-open Formalism.BasicNotions NumberField
-
-end Z1a
-
-section Z1b
-open Formalism.BasicNotions NumberField
-
-end Z1b
-
-section continuousCocycles
-open Formalism.BasicNotions NumberField
-
-end continuousCocycles
-
-section JI
-open Formalism.BasicNotions NumberField
-
-end JI
-
-section JG
-open MeasureTheory
-
-end JG
-
-section GrowthPolynomialOperator
-open MeasureTheory Complex
-
-end GrowthPolynomialOperator
-
-section HilbertSchmidtNorm
-open MeasureTheory Complex
-
-variable {ι : Type} [Fintype ι]
-
-end HilbertSchmidtNorm
-
-section PB3
-open MeasureTheory Complex
-
-end PB3
-
-section Z1d
-open Formalism.BasicNotions
-
-end Z1d
-
-section UF
-open Formalism.BasicNotions NumberField MeasureTheory
-
-end UF
-
-section MV1
-open Formalism.BasicNotions NumberField MeasureTheory Complex
-
-end MV1
-
 section MV2
 open Formalism.BasicNotions NumberField MeasureTheory Complex
 
@@ -686,14 +960,8 @@ def rho (D : D7) (i : ℕ) (s : D.what₂.LL →+* ℂ) (w : Gx D i → ℂ) : �
 
 end MV2
 
-section crystallineCocycles
-open Formalism.BasicNotions
-
-end crystallineCocycles
-
-section PJ
-open Formalism.BasicNotions NumberField
-
-end PJ
-
 end Formalism.MainNotions.flipTwoThree
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GlobalSchurBounds.IntegrableOfContinuousCircleMeasure =====

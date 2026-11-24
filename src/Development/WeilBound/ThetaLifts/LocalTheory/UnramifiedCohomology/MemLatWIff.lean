@@ -1,5 +1,10 @@
 module
 
+public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.UnitaryLatticeOrthogonal
+public import Development.AbelianVarietyTheory.Definitions.Foundations.HermitianSpaceBaseLatticeEqFrameLattice
+public import Formalism.SatakeDualWeyl.StatementG
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaIsotropicStabiliserSplitPlace
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaIsotropicStabilizerInertPlace
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 public import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.InertDef
 public import Development.AbelianVarietyTheory.Definitions.Foundations.EqPlaceIdemOfIsPrimeIdem
@@ -7,7 +12,7 @@ public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsInteger
 public import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.Inertof
 public import Development.WeilBound.CoreStatements.LocalThetaKernels.IwasAd
 public import Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.ExistsSelfDual
-public import Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.MemLineStab
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDualFamilyOfIsLattice
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -22,7 +27,13 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,7 +41,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,7 +53,185 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.MemLineStab, Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.MemLatWIff
+
+-- ===== clump member: Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.MemLineStab =====
+-- clump-header: {"m": "Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.MemLineStab", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.UnitaryLatticeOrthogonal\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.HermitianSpaceBaseLatticeEqFrameLattice\npublic import Formalism.SatakeDualWeyl.StatementG\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaIsotropicStabiliserSplitPlace\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaIsotropicStabilizerInertPlace\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDualFamilyOfIsLattice\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PositivityTheory.ThKG.Loc.Iwa
+
+open scoped TensorProduct Matrix
+open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU
+
+theorem exists_frame {K : Type} [Field K] {n : ℕ} (x y : Fin n → K) (φ : Fin n → K) (hx : x ≠ 0) (h0 : φ ⬝ᵥ x = 0)
+    (h1 : φ ⬝ᵥ y = 1) : ∃ (m : ℕ) (i : Matrix (Fin n) (Fin m) K) (q : Matrix (Fin m) (Fin n) K) (p : Fin n → K),
+      n = m + 2 ∧ p ⬝ᵥ x = 1 ∧ Matrix.vecMulVec x p + i * q + Matrix.vecMulVec y φ = 1 := by
+  classical
+  obtain ⟨j, hj⟩ := Function.ne_iff.1 hx
+  have hj' : x j ≠ 0 := hj
+  let p₀ : Fin n → K := Pi.single j (x j)⁻¹
+  have hp₀ : p₀ ⬝ᵥ x = 1 := by simp [p₀, hj']
+  let p : Fin n → K := p₀ - (p₀ ⬝ᵥ y) • φ
+  have hpx : p ⬝ᵥ x = 1 := by simp [p, sub_dotProduct, smul_dotProduct, h0, hp₀]
+  have hpy : p ⬝ᵥ y = 0 := by simp [p, sub_dotProduct, smul_dotProduct, h1]
+  let f : (Fin n → K) →ₗ[K] K × K := ((dotProductBilin K K p).prod (dotProductBilin K K φ))
+  have hf : ∀ z, f z = (p ⬝ᵥ z, φ ⬝ᵥ z) := fun _ => rfl
+  have hs : LinearMap.range f = ⊤ := LinearMap.range_eq_top.2 fun ⟨a, b⟩ => ⟨a • x + b • y, by
+    simp [hf, dotProduct_add, dotProduct_smul, hpx, hpy, h0, h1]⟩
+  have hr := LinearMap.finrank_range_add_finrank_ker f
+  rw [hs] at hr
+  simp only [finrank_top, Module.finrank_prod, Module.finrank_self, Module.finrank_fin_fun] at hr
+  let b := Module.finBasis K (LinearMap.ker f)
+  let P : (Fin n → K) →ₗ[K] LinearMap.ker f := LinearMap.codRestrict _
+    (LinearMap.id - (dotProductBilin K K p).smulRight x - (dotProductBilin K K φ).smulRight y) fun z => by
+      simp [LinearMap.mem_ker, hf, dotProduct_sub, dotProduct_smul, hpx, hpy, h0, h1]
+  refine ⟨_, Matrix.of fun r k => (b k).1 r, Matrix.of fun k c => b.repr (P (Pi.single c 1)) k, p, by omega, hpx, ?_⟩
+  ext r c
+  have e := congrArg (fun z : LinearMap.ker f => z.1 r) (b.sum_repr (P (Pi.single c 1)))
+  have e2 : (P (Pi.single c 1)).1 r = (Pi.single c 1 : Fin n → K) r - p c * x r - φ c * y r := by
+    simp [P]
+  simp only [AddSubmonoidClass.coe_finsetSum, Finset.sum_apply, SetLike.val_smul, Pi.smul_apply, smul_eq_mul] at e
+  simp only [Matrix.add_apply, Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.of_apply, mul_comm ((b _).1 r), e, e2,
+    Matrix.one_apply, Pi.single_apply]
+  ring
+
+variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
+  {J : Matrix (Fin n) (Fin n) E} {v : HeightOneSpectrum (𝓞 F)}
+
+def lineStab (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) : Subgroup (GAd σ J) where
+  carrier := {g | ∃ t : (AF F ⊗[F] E)ˣ, (matHom _ σ J g).1 *ᵥ (fun i => inclR (AF F) (x i)) = t.1 • fun i => inclR (AF F) (x i)}
+  one_mem' := ⟨1, by simp⟩
+  mul_mem' := by
+    rintro a b ⟨s, hs⟩ ⟨t, ht⟩
+    exact ⟨t * s, by rw [map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ht, Matrix.mulVec_smul, hs, smul_smul, Units.val_mul]⟩
+  inv_mem' := by
+    rintro a ⟨s, hs⟩
+    refine ⟨s⁻¹, ?_⟩
+    have := congrArg (fun z => (s⁻¹).1 • ((matHom _ σ J a⁻¹).1 *ᵥ z)) hs
+    simp only [Matrix.mulVec_mulVec, map_inv, Units.inv_mul, Matrix.one_mulVec, Matrix.mulVec_smul, smul_smul, one_smul] at this
+    rw [map_inv]
+    exact this.symm
+
+theorem mem_lineStab {x : Fin n → E} {g : GAd σ J} (β : GL (Fin 1) (AF F ⊗[F] E))
+    (h : (matHom _ σ J g).1 * (Matrix.replicateCol (Fin 1) x).map (inclR (AF F)) =
+      (Matrix.replicateCol (Fin 1) x).map (inclR (AF F)) * β.1) : g ∈ lineStab σ J x := by
+  refine ⟨Matrix.GeneralLinearGroup.det β, funext fun i => ?_⟩
+  have : (matHom _ σ J g).1 i ⬝ᵥ (fun j => inclR (AF F) (x j)) = ∑ k : Fin 1, inclR (AF F) (x i) * β.1 k 0 :=
+    congrFun (congrFun h i) 0
+  rw [Fin.sum_univ_one] at this
+  rw [Pi.smul_apply, smul_eq_mul, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one, mul_comm]
+  exact this
+
+theorem core (hσ : IsCMExt F E σ) {c : 𝓞 E} (hc : (c : E) + σ c = 1) (hJ : IsHermND σ J)
+    (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] (hv : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.UnramAt F E v)
+    (hsi : Nonempty (E →ₐ[F] Fv F v) ∨ ∃ w, Formalism.UG.IsInertAt F E v w) (hL : IsSelfDualAt σ J L v) {x : Fin n → E}
+    (hx : x ≠ 0) (h0 : ((fun i => σ (x i)) ᵥ* J) ⬝ᵥ x = 0) (g : GLoc σ J v) :
+    ∃ q k : GLoc σ J v, emb σ J v q ∈ lineStab σ J x ∧ k ∈ stabLoc σ J L v ∧ g = q * k := by
+  classical
+  have : Submodule.IsFullLattice E L := by
+    let S := Submodule.span E (L : Set (Fin n → E))
+    let b := Pi.basisFun E (Fin n)
+    let M := L ⊔ Submodule.span (𝓞 E) (Set.range b)
+    have hLM : L ≤ M := le_sup_left
+    have hM : Submodule.IsFullLattice E M := by
+      refine { toIsLattice := ?_, span_eq_top := ?_ }
+      · exact Submodule.IsLattice.of_fg E
+          ((Submodule.IsLattice.fg E L).sup (Submodule.fg_span (Set.finite_range b)))
+      · apply top_unique
+        rw [← b.span_eq]
+        exact Submodule.span_mono fun _ hz =>
+          (show Submodule.span (𝓞 E) (Set.range b) ≤ M from le_sup_right) (Submodule.subset_span hz)
+    have hloc : latLoc F L v ≤ latLoc F M v := by
+      intro z hz
+      exact latLoc_induction (p := fun z => z ∈ latLoc F M v)
+        (fun _ ha _ hx => tmul_mem_latLoc ha (hLM hx)) (zero_mem _)
+        (fun _ _ => add_mem) (fun _ => neg_mem) hz
+    -- The scalar extension of the quotient map vanishes on the completed lattice.
+    let f := ((S.mkQ.restrictScalars F).baseChange (Fv F v)).comp
+      (TensorProduct.piRight F (Fv F v) (Fv F v) (fun _ : Fin n => E)).symm.toLinearMap
+    have hgen (a : Fv F v) (z : Fin n → E) :
+        f (fun i => a ⊗ₜ[F] z i) = a ⊗ₜ[F] S.mkQ z := by
+      simp [f, LinearMap.restrictScalars_apply]
+    have hker : ∀ z ∈ latLoc F L v, f z = 0 := by
+      intro z hz
+      refine latLoc_induction (p := fun z => f z = 0) ?_ (map_zero f)
+        (fun y z hy hz => by rw [map_add, hy, hz, add_zero])
+        (fun y hy => by rw [map_neg, hy, neg_zero]) hz
+      intro a _ y hy
+      rw [hgen, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero S).2 (Submodule.subset_span hy),
+        TensorProduct.tmul_zero]
+    refine ⟨top_unique ?_⟩
+    change ⊤ ≤ S
+    rw [← Submodule.IsFullLattice.span_eq_top (self := SelfDual.isLattice_dualGlob (σ := σ) hJ.2 hM)]
+    refine Submodule.span_le.mpr fun y hy => ?_
+    have hyLoc : (fun i => (1 : Fv F v) ⊗ₜ[F] y i) ∈ latLoc F L v := by
+      rw [show latLoc F L v = dualLoc σ J L v from hL]
+      have hyDual : (fun i => (1 : Fv F v) ⊗ₜ[F] y i) ∈ dualLoc σ J M v := by
+        rw [← SelfDual.latLoc_dualGlob hJ.2 hM]
+        exact tmul_mem_latLoc (one_mem _) hy
+      exact fun z hz => hyDual z (hloc hz)
+    have hyZero := hker _ hyLoc
+    rw [hgen, Module.FaithfullyFlat.one_tmul_eq_zero_iff, Submodule.mkQ_apply] at hyZero
+    exact (Submodule.Quotient.mk_eq_zero S).1 hyZero
+  have hφ : (fun i => σ (x i)) ᵥ* J ≠ 0 := fun h => hx (funext fun i => σ.injective (by
+    have := Matrix.eq_zero_of_vecMul_eq_zero hJ.2 h
+    simpa using congrFun this i))
+  obtain ⟨j, hj⟩ := Function.ne_iff.1 hφ
+  have hj' : ((fun i => σ (x i)) ᵥ* J) j ≠ 0 := hj
+  obtain ⟨m, i, q, p, hn, hp, hsum⟩ := exists_frame x (Pi.single j (((fun i => σ (x i)) ᵥ* J) j)⁻¹) _ hx h0 (by simp [hj'])
+  set y : Fin n → E := Pi.single j (((fun i => σ (x i)) ᵥ* J) j)⁻¹ with hy
+  have hp' : Matrix.replicateRow (Fin 1) p * Matrix.replicateCol (Fin 1) x = 1 := by
+    ext a b; rw [Subsingleton.elim a b, Matrix.one_apply_eq, ← hp]; rfl
+  have hrow : ((Matrix.replicateCol (Fin 1) x).map σ)ᵀ * J = Matrix.replicateRow (Fin 1) ((fun i => σ (x i)) ᵥ* J) := by
+    ext a b; rfl
+  rcases hsi with ⟨⟨τ⟩⟩ | ⟨w, hw⟩
+  · obtain ⟨B, lv, hB⟩ := GlobalTheory.Core.Rk.IwFlagSplit.exists_flag_basis (v := v) τ hJ (e := Matrix.replicateCol (Fin 1) x)
+      (e' := Matrix.replicateCol (Fin 1) y) (i := i) (p := Matrix.replicateRow (Fin 1) p) (q := q)
+      (Fintype.equivOfCardEq (by simp; omega))
+      (by rw [hrow, ← hsum]; ext a b; simp [Matrix.mul_apply, Matrix.vecMulVec_apply])
+      (by rw [hrow]; ext a b; rw [Subsingleton.elim a b, Matrix.one_apply_eq]
+          change _ ⬝ᵥ y = 1
+          simp [hy, hj'])
+    refine GlobalTheory.Core.Rk.IwFlagSplit.iwasawa_of_triangular hσ hJ τ L hL ((lineStab σ J x).comap (emb σ J v)) B lv
+      (fun g hg => ?_) g
+    obtain ⟨⟨a, ha⟩, a', ha'⟩ := hB g hg
+    have hpA : (Matrix.replicateRow (Fin 1) p).map (inclR (F := F) (AF F)) * (Matrix.replicateCol (Fin 1) x).map (inclR (F := F) (AF F)) = 1 := by
+      rw [← Matrix.map_mul, hp', Matrix.map_one _ (map_zero _) (map_one _)]
+    have h1 := GlobalTheory.Core.Rk.IwFlagSplit.emb_keeps hσ τ g hpA rfl ha ha'
+    rw [Subgroup.mem_comap]
+    generalize emb σ J v g = z at h1 ⊢
+    set X := (Matrix.replicateCol (Fin 1) x).map (inclR (F := F) (AF F))
+    set P := (Matrix.replicateRow (Fin 1) p).map (inclR (F := F) (AF F))
+    have h2 : (P * ((matHom _ σ J z⁻¹).1 * X)) * (P * ((matHom _ σ J z).1 * X)) = 1 := by
+      rw [Matrix.mul_assoc P, Matrix.mul_assoc (matHom _ σ J z⁻¹).1, ← h1, ← Matrix.mul_assoc (matHom _ σ J z⁻¹).1,
+        map_inv, Units.inv_mul, Matrix.one_mul, hpA]
+    exact mem_lineStab ⟨_, _, mul_eq_one_comm.1 h2, h2⟩ h1
+  · obtain ⟨q', k, ⟨β, hβ⟩, hk, e⟩ := GlobalTheory.InertIwasawaIso.exists_of_inert hσ hc hJ hw hv hL hp'
+      (by
+        change ((Matrix.replicateCol (Fin 1) x).map σ)ᵀ * J * _ = 0
+        rw [hrow]; ext a b; exact h0) g
+    exact ⟨q', k, mem_lineStab β hβ, hk, e⟩
+
+end PositivityTheory.ThKG.Loc.Iwa
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.MemLineStab =====
+
+-- ===== clump member: Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.MemLatWIff =====
+-- clump-header: {"m": "Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.MemLatWIff", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone\npublic import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.InertDef\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.EqPlaceIdemOfIsPrimeIdem\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIntegerAddConjEqOneOfFormallyUnramified\npublic import Development.WeilBound.CoreStatements.CompactAveragingSplitting.EigenvectorLifting.Inertof\npublic import Development.WeilBound.CoreStatements.LocalThetaKernels.IwasAd\npublic import Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.ExistsSelfDual\npublic import Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.MemLineStab\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -193,3 +381,6 @@ theorem iwaLoc {B : Base F E} (hB : B.IsGood σ) {Y : Spc F E n} {r s : ℕ} (hY
 end PositivityTheory.ThKG.Loc.Iwa
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.ThetaLifts.LocalTheory.UnramifiedCohomology.MemLatWIff =====

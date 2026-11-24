@@ -213,7 +213,7 @@ theorem LeafKumMuSurjRoot_of (hP : LeafKumMuSurjPrim) (hW : LeafKumMuSurjPow) : 
     rw [← ofMul_pow]
     congr 1
     apply Units.ext
-    simp only [Units.val_pow_eq_pow_val, IsUnit.unit_spec, Units.coe_map, MonoidHom.coe_coe]
+    simp only [Units.val_pow_eq_pow_val, IsUnit.unit_spec]
     show ((Scheme.Γ.map g.op).hom ζ.1) ^ a = _
     rw [← ha]
     simp [uV, op_comp]

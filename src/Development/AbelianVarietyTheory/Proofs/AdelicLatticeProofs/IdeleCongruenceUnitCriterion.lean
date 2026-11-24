@@ -55,7 +55,7 @@ variable (K : Type) [Field K] [NumberField K]
 theorem exists_level (U : Set (FiniteAdeleRing (𝓞 K) K)) (hU : U ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 K) K)) :
     ∃ M : ℕ, M ≠ 0 ∧ ∀ a : FiniteAdeleRing (𝓞 K) K,
       (∀ P : HeightOneSpectrum (𝓞 K), Valued.v (a P) ≤ P.intValuation (M : 𝓞 K)) → a ∈ U := by
-  obtain ⟨M, hM, h⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele K U hU
+  obtain ⟨M, hM, h⟩ := _root_.GlobalTheory.LocalNormBound.main K U hU
   refine ⟨M, hM.ne', fun a ha => ?_⟩
   have hM0 : (M : K) ≠ 0 := Nat.cast_ne_zero.mpr hM.ne'
   have hM1 : (M : 𝓞 K) ≠ 0 := Nat.cast_ne_zero.mpr hM.ne'

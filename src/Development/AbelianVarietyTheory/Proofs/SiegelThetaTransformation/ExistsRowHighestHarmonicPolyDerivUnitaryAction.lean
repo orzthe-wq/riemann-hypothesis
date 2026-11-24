@@ -164,7 +164,7 @@ theorem GlobalTheory.Dict.exists_rowHighest_polyDeriv_hAct : ∀ (E : Type) [Fie
       simp [hAct, letterDir, Pi.single_apply, Finset.sum_apply, s, j, ite_apply, mul_ite,
         Finset.sum_ite_eq, Finset.sum_ite_eq']
     · simp only [rowOf_apply] at hi
-      simp [hAct, letterDir, Pi.single_apply, Finset.sum_apply, s, j, hi, ite_apply, mul_ite]
+      simp [hAct, letterDir, Pi.single_apply, Finset.sum_apply, s, j, hi, ite_apply]
   refine ⟨GlobalTheory.Harm.colSubst A B P, GlobalTheory.Harm.colSubst_mem_rowHighest hAB hP, fun F hF => ?_⟩
   have hF' : ContDiff ℂ (⊤ : ℕ∞) F := contDiffOn_univ.1 (hF.contDiffOn uniqueDiffOn_univ)
   have e0 := polyDeriv_comp_linear hF' (hActL X idx h) P (letterDir X hr idx) 0

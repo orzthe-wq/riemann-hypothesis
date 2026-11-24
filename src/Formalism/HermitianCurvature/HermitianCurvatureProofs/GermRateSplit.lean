@@ -117,6 +117,3 @@ end
 
 end Formalism.FourierDecayAlt.P.GermRateSplit
 
-theorem Formalism.FourierDecayAlt.P.germ_rate_bound_of_split :
-    Formalism.FourierDecayAlt.P.GermRateSplit.GermRateLowB → Formalism.FourierDecayAlt.P.GermRateSplit.GermRateTopB → Formalism.FourierDecayAlt.P.GermFibreKernels.GermRateB :=
-  Formalism.FourierDecayAlt.P.GermRateSplit.germRateB_of

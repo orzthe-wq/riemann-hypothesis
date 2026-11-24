@@ -60,7 +60,6 @@ theorem serOver_iff (S : Subring K) {σ : Type*} (f : MvPowerSeries σ K) :
     ext n
     first
     | rfl
-    | simp [MvPowerSeries.coeff_map]
   · rintro ⟨g, rfl⟩ n
     rw [MvPowerSeries.coeff_map]
     exact (MvPowerSeries.coeff n g).2

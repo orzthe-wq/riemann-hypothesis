@@ -72,7 +72,6 @@ theorem one_le_abs_norm {K : Type*} [Field K] [NumberField K] (x : K) (hx : IsIn
     apply h0
     first
     | exact congrArg Subtype.val h
-    | simpa [y] using congrArg (algebraMap (𝓞 K) K) h
   have hN : Algebra.norm ℤ y ≠ 0 := Algebra.norm_ne_zero_iff.mpr hy
   have hc : ((Algebra.norm ℤ y : ℤ) : ℚ) = Algebra.norm ℚ x := Algebra.coe_norm_int y
   rw [← hc]
@@ -184,8 +183,6 @@ theorem pair_int {Λ : Submodule (𝓞 D.host.E) (hS D).V} (hU : Formalism.Hermi
   rw [hr']
   first
   | exact r.2
-  | exact RingOfIntegers.isIntegral_coe r
-  | exact RingOfIntegers.isIntegral r
 
 end Fr
 

@@ -4,9 +4,11 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMMemFr
 public import Mathlib.Probability.Kernel.Defs
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.DisintegrationDensityContinuous
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberConsProductFubini
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorelStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpenStatement
+public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpen
+import Formalism.UnipotentAdelicQuotients.SWXSDefs
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -82,13 +84,13 @@ theorem gramFibFree_basic : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
   intro F E _ _ _ _ _ σ hCM N n J₂ hJ R _ _ _ _ _ hR d b lam hlam m hm
   obtain ⟨iTR, iLC, iSC, iT2, -⟩ := id hR
   haveI := iTR; haveI := iLC; haveI := iSC; haveI := iT2
-  obtain ⟨kTR, kLC, kSC, kT2, -, -, -, kB, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R
+  obtain ⟨kTR, kLC, kSC, kT2, -, -, -, kB, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R
   haveI := kTR; haveI := kLC; haveI := kSC; haveI := kT2
   haveI := kB n N
-  obtain ⟨hLC, hSC, hT2, hB, -⟩ := GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hCM R n
+  obtain ⟨hLC, hSC, hT2, hB, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hCM R n
   haveI := hLC; haveI := hSC; haveI := hT2; haveI := hB
   have hU : IsOpen {X : Fin n → Fin N → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X} :=
-    GlobalTheory.T.linearly_independent_frames_open F E σ hCM R hR n N
+    _root_.GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen.isOpen_free F E σ hCM R hR n N
   obtain ⟨h1, -, h3⟩ := hm
   have hbf : GlobalTheory.CompanionTheory.SW.FibreFam.BumpFamily {X : Fin n → Fin N → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X}
       (Set.univ : Set (HermR R σ n)) m :=

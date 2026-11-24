@@ -90,9 +90,7 @@ private theorem contDiffOn_modA_ann (P : M.Par) (ρ : M.Ty P) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (modA P ρ) (Ann P) := by
   have hs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => star ζ) := by
     first
-    | exact contDiff_id.star
     | exact Complex.conjCLE.contDiff
-    | simpa using (Complex.conjCLE.contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞)))
   have h : modA P ρ = fun ζ : ℂ => (M.aC P ρ : ℂ) * star ζ * (ζ * star ζ - (P.TT : ℂ))⁻¹ := by
     funext ζ
     simp only [modA, div_eq_mul_inv]

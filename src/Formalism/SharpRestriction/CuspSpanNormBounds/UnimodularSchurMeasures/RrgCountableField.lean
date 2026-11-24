@@ -64,9 +64,7 @@ theorem rrg_P_inv_mul (I : AutInst) (v : InfinitePlace I.F) : (I.P v)⁻¹ * I.P
   Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))
 
 theorem rrg_one_mem (I : AutInst) : (1 : I.GA) ∈ I.GFset := by
-  refine ⟨1, Subgroup.one_mem _, fun v => ?_, ?_⟩
-  · simp [rrg_P_inv_mul]
-  · simp
+  refine ⟨1, Subgroup.one_mem _, fun v => ?_, ?_⟩ <;> simp [rrg_P_inv_mul]
 
 theorem rrg_mul_mem (I : AutInst) {x y : I.GA} (hx : x ∈ I.GFset) (hy : y ∈ I.GFset) : x * y ∈ I.GFset := by
   obtain ⟨γ, hγ, hx1, hx2⟩ := hx

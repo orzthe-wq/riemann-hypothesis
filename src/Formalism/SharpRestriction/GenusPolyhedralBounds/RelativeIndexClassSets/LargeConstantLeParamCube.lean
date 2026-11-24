@@ -88,15 +88,15 @@ theorem ATO : 10 ^ 100 * (A ^ 2 * TO ^ 2) ≤ sb := by
 theorem sb_ge : (10 : ℝ) ^ 100 ≤ sb := by
   have hA1 : (1 : ℝ) ≤ A := by linarith [h.forty_eight_le_constant]
   have hT1 := h.one_le_order_alt
-  have hAT : (1 : ℝ) ≤ A * TO := by nlinarith
-  have hQ : (1 : ℝ) ≤ A ^ 2 * TO ^ 2 := by nlinarith
+  have hAT : (1 : ℝ) ≤ A * TO := one_le_mul_of_one_le_of_one_le hA1 hT1
+  have hQ : (1 : ℝ) ≤ A ^ 2 * TO ^ 2 := by linarith [one_le_pow₀ (n := 2) hAT]
   have := h.ATO
-  nlinarith
+  linarith
 
 theorem sb_le_b : sb ≤ b := by
   have h1 := h.sb_ge
   rw [← h.sb_sq]
-  nlinarith
+  exact le_mul_of_one_le_left (by linarith) (by linarith)
 
 theorem b_ge : (10 : ℝ) ^ 100 ≤ b := le_trans h.sb_ge h.sb_le_b
 
@@ -114,7 +114,7 @@ theorem PP_le_sb : PP ≤ sb := by
 
 theorem param_cube_le_bound : PP ^ 3 ≤ sb := by
   have hP : (0 : ℝ) ≤ PP := le_trans (by norm_num) h.PP_ge
-  have hT : (1 : ℝ) ≤ TO ^ 2 := by nlinarith [h.one_le_order_alt]
+  have hT : (1 : ℝ) ≤ TO ^ 2 := one_le_pow₀ h.one_le_order_alt
   have h1 : PP ^ 3 * 1 ≤ PP ^ 3 * TO ^ 2 := mul_le_mul_of_nonneg_left hT (pow_nonneg hP 3)
   linarith [h.h32]
 
@@ -148,11 +148,11 @@ theorem modulus_pos_alt : 0 < q0 := by
   have hb := h.toBs.b_ge
   have h1 := h.q0lo
   have h2 := h.one_le_order_alt
-  nlinarith
+  exact pos_of_mul_pos_right (lt_of_lt_of_le (by linarith [hb]) h1) (by linarith [h2])
 
 theorem TO_le_sq : TO ≤ TO ^ 2 := by
   have h1 : TO * 1 ≤ TO * TO := mul_le_mul_of_nonneg_left h.one_le_order_alt (by linarith [h.one_le_order_alt])
-  nlinarith
+  linarith
 
 theorem kl_le : D2 * nW + 2 * r + (TO + D2) * q0 ≤ 3 * TO + 2 * b := by
   have hq := h.modulus_pos_alt
@@ -217,7 +217,7 @@ theorem sK {s : ℝ} (hs : s ≤ A * (D2 * nW + 2 * r + (TO + D2) * q0 + r * ((T
   have hP0 : (0 : ℝ) ≤ A ^ 2 * TO ^ 2 := by positivity
   have f3 : A * b = A * b := rfl
   have hAb : b ≤ A * b := hBA
-  nlinarith
+  linarith [hD2, hr0]
 
 theorem sL {s : ℝ} (hs : s ≤ A * (q0 + r * (TO + D2 + 2 * r)) + A * nW + 1) : s * TO ≤ 2 * A * b := by
   have hT1 := h.one_le_order_alt
@@ -271,7 +271,7 @@ theorem dL {d : ℝ} (hd : d ≤ A * (q0 + r * (TO + D2 + 2 * r))) : d ≤ 2 * A
   have hATO : 1 ≤ A * TO := one_le_mul_of_one_le_of_one_le hA1 hT1
   have p1 : A * TO * 1 ≤ A * TO * (A * TO) := mul_le_mul_of_nonneg_left hATO (by linarith)
   have hTT : A * A * TO ≤ A * A * (TO * TO) :=
-    mul_le_mul_of_nonneg_left (by nlinarith) (by positivity)
+    mul_le_mul_of_nonneg_left (le_mul_of_one_le_left hT0 hT1) (by positivity)
   have eA : A * (b + TO + A * (3 * TO)) = A * b + A * TO + 3 * (A * A * TO) := by ring
   have eP : A * TO * (A * TO) = A ^ 2 * TO ^ 2 := by ring
   have eQ : A * A * (TO * TO) = A ^ 2 * TO ^ 2 := by ring
@@ -390,18 +390,18 @@ theorem h3f {d q : ℝ} (hd0 : 0 ≤ d) (hd : d ≤ 2 * A * b) (hq : (k * b) ^ 8
   have h1 : D2 + 2 ≤ 2 * b := by linarith [h.forty_mul_degree_le_order, h.one_le_order_alt, B.b_ge]
   have h2 := h.d_le hd
   have h3 : (D2 + 2) * d ≤ 2 * b * (4 * k ^ 2 * b) := mul_le_mul h1 h2 hd0 (by linarith)
-  have hk1 : (1 : ℝ) ≤ k ^ 2 := by nlinarith [h.k1]
-  have hb2 : (1 : ℝ) ≤ b ^ 2 := by nlinarith
+  have hk1 : (1 : ℝ) ≤ k ^ 2 := one_le_pow₀ h.k1
+  have hb2 : (1 : ℝ) ≤ b ^ 2 := one_le_pow₀ hb1
   have h4 : 1 * 1 ≤ k ^ 2 * b ^ 2 := mul_le_mul hk1 hb2 zero_le_one (by linarith)
   have h5 : 10 * k ^ 2 * b ^ 2 ≤ (k * b) ^ 8 :=
     absorb h.k1 B.b_ge (by norm_num) (by norm_num) (by norm_num) (by norm_num)
-  nlinarith
+  linarith [hT]
 
 theorem g_gt {s q : ℝ} (hs : s ≤ 4 * A * b) (hq : (k * b) ^ 8 ≤ q) : 2 * s + 2 < q := by
   have B := h.toBs
   have hb1 : (1 : ℝ) ≤ b := le_trans (by norm_num) B.b_ge
   have h1 : A * b ≤ 2 * k ^ 2 * b := mul_le_mul_of_nonneg_right h.Ak (by linarith)
-  have hk : (64 : ℝ) ≤ k ^ 2 := by nlinarith [h.k8]
+  have hk : (64 : ℝ) ≤ k ^ 2 := by linarith [pow_le_pow_left₀ (by norm_num) h.k8 2]
   have h2 : 64 * 1 ≤ k ^ 2 * b := mul_le_mul hk hb1 zero_le_one (by linarith)
   have h3 : 18 * k ^ 2 * b ^ 1 ≤ (k * b) ^ 8 :=
     absorb h.k1 B.b_ge (by norm_num) (by norm_num) (by norm_num) (by norm_num)

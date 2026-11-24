@@ -1,7 +1,8 @@
 module
 
 public import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.FullOfSoLoc
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OmegaEquivInducedFibreStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibRepApply
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OmegaEquivInducedFibre
 import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.ExistsExtZ
 import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.TopOfMap
 import Mathlib.Algebra.Order.Floor.Extended
@@ -160,7 +161,7 @@ theorem irrF' (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) {
     (∀ Φ, Full Φ → Φ ∈ N) ∨ ∀ Φ ∈ N, Full Φ → Φ ∈ augF n d ν α := by
   obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hnd
   have hμ : IsSmoothChar ν⁻¹ := IsSmoothChar.inv hν.2
-  obtain ⟨E⟩ := GlobalTheory.T.omega_equiv_induced_fibre k (Fin n) (Fin (n + t)) (Fin n) (Fin t) (stdSum rfl) n (Fintype.card_fin n).symm ν⁻¹ hμ
+  obtain ⟨E⟩ := _root_.GlobalTheory.CompanionTheory.ThetaGLLen.fibStr k (Fin n) (Fin (n + t)) (Fin n) (Fin t) (stdSum rfl) n (Fintype.card_fin n).symm ν⁻¹ hμ
   have hR : twRel ((omegaOn (Fin n) (Fin (n + t)) ν⁻¹ {n}).comp (MonoidHom.inl _ _)) 1 ≤
       (augF n (n + t) ν α).comap extZ := Submodule.span_le.2 (by
     rintro _ ⟨g, φ, rfl⟩
@@ -214,7 +215,7 @@ theorem rank_SB (V : Type) [TopologicalSpace V] [SecondCountableTopology V] [T2S
       rw [Finset.sum_apply, Finset.sum_eq_single (f y)]
       · simp
       · intro c _ hc
-        simp [Set.indicator_apply, hc.symm]
+        simp [hc.symm]
       · intro h
         have : f y = 0 := by
           by_contra h0

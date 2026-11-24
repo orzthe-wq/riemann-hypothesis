@@ -1,54 +1,13 @@
 module
 
 public import Mathlib.Analysis.CStarAlgebra.Classes
-public import Mathlib.Analysis.Calculus.FDeriv.Defs
-public import Mathlib.Analysis.Normed.Operator.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Calculus.Deriv.Add
 public import Mathlib.Analysis.Calculus.Deriv.Comp
 public import Mathlib.Analysis.Calculus.Deriv.Mul
 public import Mathlib.Analysis.Calculus.DiffContOnCl
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
 public import Mathlib.Analysis.Complex.Liouville
+public import Mathlib.Analysis.Normed.Operator.Basic
 
 @[expose] public section
 
@@ -56,56 +15,35 @@ universe u_1
 
 namespace Bl.general_b_fact_bis_form
 
-theorem goal1 :
-  ∀ {F : Type u_1} [inst : NormedAddCommGroup.{u_1} F] [inst_1 : NormedSpace.{0, u_1} Complex F] {U : Set.{u_1} F},
-  IsOpen.{u_1} U →
-    ∀ {G : F → Complex},
-      DifferentiableOn.{0, u_1, 0} Complex G U →
-        ∀ {y : F} {R C : Real},
-          LT.lt.{0} 0 R →
-            LE.le.{u_1} (Metric.closedBall.{u_1} y R) U →
-              (∀ (z : F),
-                  Membership.mem.{u_1, u_1} (Metric.closedBall.{u_1} y R) z → LE.le.{0} (Norm.norm.{0} (G z)) C) →
-                LE.le.{0} (Norm.norm.{u_1} (fderiv.{0, u_1, 0} Complex G y)) (HDiv.hDiv.{0, 0, 0} C R) := by
-  intro F _ _ U hU G hG y R C hR hsub hC
-  have hyU : y ∈ U := hsub (Metric.mem_closedBall_self hR.le)
+theorem goal1 {F : Type u_1} [NormedAddCommGroup F] [NormedSpace ℂ F] {U : Set F}
+    (hU : IsOpen U) {G : F → ℂ} (hG : DifferentiableOn ℂ G U) {y : F} {R C : ℝ}
+    (hR : 0 < R) (hsub : Metric.closedBall y R ⊆ U)
+    (hC : ∀ z ∈ Metric.closedBall y R, ‖G z‖ ≤ C) :
+    ‖fderiv ℂ G y‖ ≤ C / R := by
   have hC0 : 0 ≤ C := (norm_nonneg _).trans (hC y (Metric.mem_closedBall_self hR.le))
-  refine ContinuousLinearMap.opNorm_le_bound _ (div_nonneg hC0 hR.le) ?_
-  intro v
-  by_cases hv : v = 0
-  · simp [hv]
-  have hv' : ‖v‖ ≠ 0 := norm_ne_zero_iff.mpr hv
+  have hGy : HasFDerivAt G (fderiv ℂ G y) y :=
+    (hG.differentiableAt (hU.mem_nhds (hsub (Metric.mem_closedBall_self hR.le)))).hasFDerivAt
+  refine ContinuousLinearMap.opNorm_le_bound _ (div_nonneg hC0 hR.le) fun v => ?_
+  rcases eq_or_ne v 0 with rfl | hv
+  · simp
   have hvpos : 0 < ‖v‖ := norm_pos_iff.mpr hv
-  set r : ℝ := R / ‖v‖ with hr_def
+  set r : ℝ := R / ‖v‖
   have hr : 0 < r := div_pos hR hvpos
-  have key : ∀ t : ℂ, ‖t‖ ≤ r → y + t • v ∈ Metric.closedBall y R := by
-    intro t ht
+  have key {t : ℂ} (ht : ‖t‖ ≤ r) : y + t • v ∈ Metric.closedBall y R := by
     rw [Metric.mem_closedBall, dist_eq_norm, add_sub_cancel_left, norm_smul]
-    calc ‖t‖ * ‖v‖ ≤ r * ‖v‖ := by gcongr
-      _ = R := div_mul_cancel₀ R hv'
-  set g : ℂ → ℂ := G ∘ (fun t : ℂ => y + t • v) with hg_def
-  have hl : ∀ t : ℂ, HasDerivAt (fun s : ℂ => y + s • v) v t := by
-    intro t
+    exact (mul_le_mul_of_nonneg_right ht hvpos.le).trans_eq (div_mul_cancel₀ R hvpos.ne')
+  have hl (t : ℂ) : HasDerivAt (fun s : ℂ => y + s • v) v t := by
     simpa using ((hasDerivAt_id t).smul_const v).const_add y
-  have hgd : DifferentiableOn ℂ g (Metric.closedBall (0 : ℂ) r) := by
-    intro t ht
-    have hmem : y + t • v ∈ U := hsub (key t (by simpa using ht))
-    have hGt : DifferentiableAt ℂ G (y + t • v) := hG.differentiableAt (hU.mem_nhds hmem)
-    exact (hGt.comp t (hl t).differentiableAt).differentiableWithinAt
-  have hdc : DiffContOnCl ℂ g (Metric.ball (0 : ℂ) r) := by
-    apply DifferentiableOn.diffContOnCl
+  have hdc : DiffContOnCl ℂ (G ∘ fun t : ℂ => y + t • v) (Metric.ball (0 : ℂ) r) := by
+    refine DifferentiableOn.diffContOnCl ?_
     rw [closure_ball (0 : ℂ) hr.ne']
-    exact hgd
-  have hbd : ∀ z ∈ Metric.sphere (0 : ℂ) r, ‖g z‖ ≤ C := by
-    intro z hz
-    have hz' : ‖z‖ = r := by simpa using hz
-    exact hC _ (key z hz'.le)
+    exact fun t ht =>
+      ((hG.differentiableAt (hU.mem_nhds (hsub (key (by simpa using ht))))).comp t
+        (hl t).differentiableAt).differentiableWithinAt
+  have hbd : ∀ z ∈ Metric.sphere (0 : ℂ) r, ‖(G ∘ fun t : ℂ => y + t • v) z‖ ≤ C :=
+    fun z hz => hC _ (key (mem_sphere_zero_iff_norm.mp hz).le)
   have hest := Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hr hdc hbd
-  have hGy : HasFDerivAt G (fderiv ℂ G y) y := (hG.differentiableAt (hU.mem_nhds hyU)).hasFDerivAt
-  have hder : HasDerivAt g (fderiv ℂ G y v) 0 :=
-    hGy.comp_hasDerivAt_of_eq (0 : ℂ) (hl 0) (by simp)
-  rw [hder.deriv] at hest
-  calc ‖fderiv ℂ G y v‖ ≤ C / r := hest
-    _ = C / R * ‖v‖ := by rw [hr_def, div_div_eq_mul_div, mul_div_right_comm]
+  rw [(hGy.comp_hasDerivAt_of_eq (0 : ℂ) (hl 0) (by simp)).deriv] at hest
+  exact hest.trans_eq (by rw [div_div_eq_mul_div, mul_div_right_comm])
 
 end Bl.general_b_fact_bis_form

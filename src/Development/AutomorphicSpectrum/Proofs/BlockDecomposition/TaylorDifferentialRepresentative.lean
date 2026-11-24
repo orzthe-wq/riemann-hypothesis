@@ -144,7 +144,7 @@ theorem alt_sum_form {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (s : Com
       · rw [hu, hv]
         dsimp only
         rw [← ga_add]
-        refine ga_congr E σ _ s _ _ ?_ ?_ <;> simp [sa_val] <;> (try split_ifs) <;> simp_all <;> omega
+        refine ga_congr E σ _ s _ _ ?_ ?_ <;> simp <;> (try split_ifs)
       · refine Finset.prod_congr rfl fun k hk => ?_
         have hki : (k : ℕ) ≠ i := fun h => Finset.ne_of_mem_erase hk (Fin.ext h)
         split_ifs with h
@@ -208,7 +208,7 @@ theorem form_snoc {j : ℕ} (I : Fin j → Fin d) (k : Fin d) (z : Φ.A.obj E.D)
   · congr 1
     rw [Fin.snoc_last (α := fun _ => Fin d)]
     refine ga_congr E σ _ s (Fin.castSucc_lt_succ (i := Fin.last j)).le _ ?_ ?_
-    · simp [sa_val]
+    · simp
     · simp
 
 theorem ga_last {j : ℕ} (k : Fin d) (s : ComposableArrows C (j + 1)) (q : Fin (j + 2)) (h : q ≤ Fin.last (j + 1)) :

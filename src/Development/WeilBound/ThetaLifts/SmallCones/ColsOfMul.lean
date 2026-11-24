@@ -236,7 +236,7 @@ theorem IsFr.stab (h : IsFr c ε J J₁ ι x y A') {t t' : R} (ht : t * t' = 1) 
   rw [Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_map,
     Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj] at hQ'
   obtain ⟨e11, e12, -, -⟩ := hQ'
-  simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e11 e12
+  simp only [Matrix.mul_zero, add_zero, zero_add] at e11 e12
   have ha1 : ∀ i, a0 1 i = 0 := by
     intro i
     have h12 := congrFun (congrFun e12 i) 0
@@ -284,12 +284,7 @@ theorem IsFr.span (h : IsFr c ε J J₁ ι x y A') (z : d → R) : ∃ (u : e �
     · fin_cases k <;> rfl
   rw [hw, Matrix.mulVec_mulVec, h.inv1, Matrix.one_mulVec]
 
-theorem IsFr.indep (h : IsFr c ε J J₁ ι x y A') {u u' : e → R} {s t s' t' : R}
-    (e1 : ι *ᵥ u + s • x + t • y = ι *ᵥ u' + s' • x + t' • y) : u = u' ∧ s = s' ∧ t = t' := by
-  rw [← fr_mulVec, ← fr_mulVec] at e1
-  have := congrArg (A' *ᵥ ·) e1
-  simp only [mulVec_mulVec, h.inv2, one_mulVec] at this
-  exact ⟨funext fun j => congrFun this (Sum.inl j), congrFun this (Sum.inr 0), congrFun this (Sum.inr 1)⟩
+alias IsFr.indep := _root_.PositivityTheory.ThKCT.Fr.eq_of_iota_mulVec_add_smul_eq
 
 theorem IsFr.fix_y (h : IsFr c ε J J₁ ι x y A') (hcc : ∀ a, c (c a) = a) {p : Matrix d d R}
     (hp : pᵀ * J * p.map c = J) (hx : p *ᵥ x = x) : ∃ (u : e → R) (s : R), p *ᵥ y = y + ι *ᵥ u + s • x := by
@@ -308,7 +303,7 @@ theorem IsFr.fix_y (h : IsFr c ε J J₁ ι x y A') (hcc : ∀ a, c (c a) = a) {
   rw [Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_map,
     Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj] at hQ'
   obtain ⟨-, -, -, e22⟩ := hQ'
-  simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e22
+  simp only [Matrix.mul_zero, add_zero, zero_add] at e22
   have h22 := congrFun (congrFun e22 0) 1
   simp [Matrix.mul_apply, Fin.sum_univ_two, hb0', ← hs00, ← hs10] at h22
   have hs11 : s0 1 1 = 1 := by rw [← hcc (s0 1 1), h22, map_one]

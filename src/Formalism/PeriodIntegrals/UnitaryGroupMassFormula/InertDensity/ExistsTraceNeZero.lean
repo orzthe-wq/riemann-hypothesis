@@ -191,9 +191,7 @@ theorem card_norm_fibre [DecidableEq L] (h2 : Module.finrank K L = 2) (a : L) (h
 omit [Fintype K] [Algebra K L] in
 theorem card_norm_zero [DecidableEq L] (n : ℕ) : #{x : L | x ^ (n + 1) = 0} = 1 := by
   rw [card_eq_one]
-  refine ⟨0, ?_⟩
-  ext x
-  simp
+  exact ⟨0, by ext x; simp⟩
 
 theorem exists_trace_ne_zero (h2 : Module.finrank K L = 2) (z : L) (hz : z ≠ 0) :
     ∃ c : L, c * z + (c * z) ^ Fintype.card K ≠ 0 := by

@@ -5,51 +5,11 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.Unita
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.ConcreteLevelAdelicSubset
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.RegUnitary
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.RationalPointsLeHolds
 
 @[expose] public section
 
@@ -472,16 +432,9 @@ section Dual
 
 variable {D : D7} (X : HidaSetting D)
 
-theorem hE_f_e (a b : Fin D.R.rS) : hE X (X.fR a) (X.eR b) = if b = a then 1 else 0 := by
-  apply X.ιE.injective
-  show X.ιE (Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (X.crd (X.fY a)) (X.crd (X.eX b))) = _
-  rw [Formalism.L2.SG.PoincareInHH.Cut.hform_crd, hT_f_e X a b]
-  split_ifs <;> simp
+alias hE_f_e := _root_.Formalism.L2.SG.Pf.Level.hE_f_e
 
-theorem hermitian_f_z_zero (u : D.what₂.Word) (a : Fin D.R.rS) : hE X (X.fR a) (X.zR u) = 0 := by
-  apply X.ιE.injective
-  show X.ιE (Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (X.crd (X.fY a)) (X.crd (X.zu u))) = _
-  rw [Formalism.L2.SG.PoincareInHH.Cut.hform_crd, (X.zu_orth u a).2, map_zero]
+alias hermitian_f_z_zero := _root_.Formalism.L2.SG.Pf.Level.hermitian_f_z_zero
 
 end Dual
 
@@ -669,7 +622,7 @@ theorem ratPt_holds : Formalism.L2.SG.TermOp.Vanish.RatPt := by
     rw [Formalism.L2.SG.PoincareInHH.Cut.hform_crd, Formalism.L2.SG.PoincareInHH.Cut.hform_crd, hn]
   have hf : Formalism.UG.bc (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) γ ∈
       Formalism.UG.UPts X.B.I.cm.sig X.B.I.J (Af X.B.I.F) :=
-    Formalism.UG.Final.RatPtsLe X.B.I.F X.B.I.E (Fin X.B.I.n) X.B.I.cm.sig X.B.I.J (Af X.B.I.F)
+    _root_.Formalism.UG.P.rational_points_le_holds X.B.I.F X.B.I.E (Fin X.B.I.n) X.B.I.cm.sig X.B.I.J (Af X.B.I.F)
       (Subgroup.mem_map_of_mem _ hγ)
   exact ⟨(fun v => rtReal' X.B.I γ hγ v, ⟨_, hf⟩), γ, hγ, fun v => rfl, rfl, crd_matOf X n⟩
 

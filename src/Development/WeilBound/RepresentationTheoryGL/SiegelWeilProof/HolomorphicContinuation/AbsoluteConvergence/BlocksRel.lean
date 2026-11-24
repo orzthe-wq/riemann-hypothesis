@@ -113,8 +113,7 @@ theorem cont_dil {X : Fin n → ℝ} {a : ℝ → GR n} (ha : ∀ s, IsDil X s (
   rfl
 
 theorem JJ_mul_self : JJ n * JJ n = -1 := by
-  simp only [JJ, fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul,
-    Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add]
+  simp only [JJ, fromBlocks_multiply, Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, add_zero, zero_add]
   rw [← fromBlocks_one, fromBlocks_neg, neg_zero]
 
 end PositivityTheory.Rg.Sw.AbsSt.DF

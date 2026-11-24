@@ -66,13 +66,6 @@ namespace Formalism.FourierDecayAlt.P.PBO
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.P5
 
-theorem hsInner_zero_left' {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) : B.hsInner (0 : Wq →L[ℂ] Wp) A = 0 := by
-  unfold B.hsInner B.hsVec
-  have : (WithLp.toLp 2 fun i : Fin (Module.finrank ℂ Wq) => (0 : Wq →L[ℂ] Wp) (stdOrthonormalBasis ℂ Wq i)) = 0 := by
-    simp; rfl
-  rw [this, inner_zero_right]
-
 section vec
 
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -150,7 +143,7 @@ theorem rr_top_small {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   · omega
   · have hv : D.vecV p.T.base p.ν' p.m₀ F (h ++ [(1, c)]) = 0 :=
       vecV_zero_small p.T.base p.ν' p.m₀ (fun g hg h0 => le_trans hεF' (hGF g hg h0)) _ hpt
-    rw [hv, hsInner_zero_left']
+    rw [hv, _root_.Formalism.FourierDecayAlt.P.PBD.hsInner_zero_left]
   · unfold Top.topOf
     refine Finset.sum_eq_zero fun e _ => Finset.sum_eq_zero fun ρ _ => ?_
     have hv : D.vecV p.T.base p.ν' p.m₀ (p.Θ.Θ w e F) (h ++ [(1, c)]) = 0 := by
@@ -158,7 +151,7 @@ theorem rr_top_small {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
       unfold KB.Pl.V at this
       rw [this]
       exact vecV_zero_small p.T.base p.ν' p.m₀ (fun g hg h0 => le_trans (hεe' e) (hGe e g hg h0)) _ hpt
-    rw [hv, ContinuousLinearMap.comp_zero, hsInner_zero_left', mul_zero]
+    rw [hv, ContinuousLinearMap.comp_zero, _root_.Formalism.FourierDecayAlt.P.PBD.hsInner_zero_left, mul_zero]
   · omega
   · rfl
 

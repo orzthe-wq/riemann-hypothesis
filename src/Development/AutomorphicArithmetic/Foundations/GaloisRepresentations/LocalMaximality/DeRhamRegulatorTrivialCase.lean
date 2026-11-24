@@ -221,7 +221,7 @@ private lemma exists_phi {F : Type} [Field F] [Algebra ℂ F] {d : ℕ} (x : Fin
       (∀ l, φ (MvPolynomial.X l) = ((x (j.succAbove l) : F) / x j) ⊗ₜ[ℂ] (1 : F)) ∧
       (∀ a, φ (MvPolynomial.C a) = (1 : F) ⊗ₜ[ℂ] (a : F)) ∧
       ∀ (a : rA ℂ (xv x) {j}) (b : rA ℂ (xv x) J), (a : F) ⊗ₜ[ℂ] (b : F) ∈ φ.range := by
-  obtain ⟨e, he⟩ := GlobalTheory.T.standardAffineOpen_ring_polynomialEquiv ℂ F d (xv x) h j
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.PD.rA_single_polyEquiv ℂ F d (xv x) h j
   let Φ : (rA ℂ (xv x) J) ⊗[ℂ] MvPolynomial (Fin d) ℂ ≃ₐ[rA ℂ (xv x) J] MvPolynomial (Fin d) (rA ℂ (xv x) J) :=
     MvPolynomial.algebraTensorAlgEquiv ℂ (rA ℂ (xv x) J)
   let Θ : MvPolynomial (Fin d) ℂ ⊗[ℂ] (rA ℂ (xv x) J) →ₐ[ℂ] F ⊗[ℂ] F :=
@@ -294,7 +294,7 @@ theorem UpperTheory.Gal.productCup_of_system.deRhamRegulator_trivial_case :
     induction w using TensorProduct.induction_on with
     | zero => exact ⟨0, by simpa using φ.range.zero_mem⟩
     | tmul a b =>
-      obtain ⟨N, hN⟩ := (GlobalTheory.T.mem_standardOpenCoordinateRing_iff_localization_chart ℂ F d (xv x) h I j hjI a).1 a.2
+      obtain ⟨N, hN⟩ := (_root_.GlobalTheory.PD.rA_eq_loc ℂ F d (xv x) h I j hjI a).1 a.2
       refine ⟨N, ?_⟩
       have h1 := hr ⟨_, hN⟩ b
       convert h1 using 1

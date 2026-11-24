@@ -146,7 +146,7 @@ theorem quad_form (q : MvPowerSeries (Fin 1 × Fin N) S) (hq0 : constantCoeff q 
         have hbi : b = i := by
           by_contra hb
           simp [Ne.symm hi, hb] at hi'
-          split_ifs at hi' <;> omega
+          split_ifs at hi'
         subst hbi
         have haj : a = j := by
           by_contra ha

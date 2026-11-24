@@ -74,7 +74,7 @@ def Good (L : LocBessel k r) (x : PairSp k r) : Prop :=
     Matrix.of x.2.1 ∈ UWset k r L.z'
 
 theorem nset_closed : IsClosed (Nset k r) := by
-  apply PI.AmpOrbQuot.isClosed_Nset <;> assumption
+  apply PI.AmpOrbQuot.isClosed_Nset
 
 theorem uw_closed (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (UWset k r z) := by
   have hU : IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | gᴴ * Hpk k r * g = Hpk k r} :=

@@ -155,16 +155,18 @@ theorem pairing (hS : HidaSetting p n' W Qq O Kf ι σ jO w) (φ : WF p n' ≃+*
   have hP : Θ F = thK P := Subtype.ext (by rw [hΘ, hthK]; rfl)
   have hQ : Θ' F' = thK Q := Subtype.ext (by rw [hΘ', hthK]; rfl)
   have hk := congrArg (kapR hS) hy
-  rw [map_mul, kapR_alg, kapR_zTen, fock_eq_fockR, ← fockR_map,
+  simp_rw [map_mul, kapR_alg, kapR_zTen, fock_eq_fockR, ← FockPairing.pair_map,
     lift_one hS φ hφ m TT aT bT b hb F.1 F.2, lift_one hS φ hφ m TT aT bT _ hb' F'.1 F'.2,
-    tsact_smul_left, tsact_smul_right] at hk
+    FockPairing.pair_smul_left, FockPairing.pair_smul_right] at hk
   have hdual : ∀ x : TT × Bool,
       Aa x.2 (la_tw ι σ x.1.val.val ((b⁻¹).transpose * dE (m + 1) 1 ((p : ℕ) : Qq)) * lb_D (m + 1) 1 c) *
         (Aa x.2 (la_tw ι σ x.1.val.val b * lb_D (m + 1) 1 c)).transpose = 1 := by
     intro x
     rw [hc, dualM hS x.1.val.val 1 b hb]
     exact Aa_dual' x.2 _ (by rw [Matrix.det_mul]; exact (la_tw_det _ _ _ _ hb).mul (lb_D_det _ _ _ hw))
-  rw [fockR_Lin_dual _ _ hdual] at hk
+  have hadjoint := fockR_Lin_dual _ _ hdual
+  simp only [fockR] at hadjoint
+  rw [hadjoint] at hk
   unfold beHH
   rw [hP, hQ, map_smul, XiH_apply, smul_eq_mul, ← hk]
   have hpA : (p : Kf) ^ AHH TT aT bT = c ^ Avec (vecH TT) (hhDegs TT aT bT) * c ^ Avec (vecH TT) (hhDegs TT aT bT) := by

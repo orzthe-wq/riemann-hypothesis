@@ -311,7 +311,7 @@ theorem _root_.GlobalTheory.SmoothForms.SecondKind.sm_iff (H : _root_.GlobalTheo
           rw [list_prod_ofFn_eq_of_eq_one_of_ne _ _ i]
           · simp
           · intro m hm
-            simp [Pi.single_apply, hm]
+            simp [hm]
         show r • (x • Y i) = Λ (Φ (id r • Pi.single i x))
         rw [hprod, hr, mul_smul]
       have := h1.unique (h2.congr_of_eventuallyEq hev.symm)

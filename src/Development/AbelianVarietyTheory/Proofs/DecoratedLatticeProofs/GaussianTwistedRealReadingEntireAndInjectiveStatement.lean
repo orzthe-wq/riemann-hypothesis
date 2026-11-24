@@ -46,4 +46,4 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.gaussianTwistedRealReading_entire_and_injective : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → (∀ f, IsHol θ S T ψ f → Differentiable ℂ (xiN θ S T hS hT δ sc f)) ∧ ∀ f, IsThetaFunO ψ S T f → xiN θ S T hS hT δ sc f = 0 → f = 0 := by
-  first | exact @GlobalTheory.AdForm.VacRead.xiN_entire_and_injective | exact GlobalTheory.AdForm.VacRead.xiN_entire_and_injective | (intros; apply GlobalTheory.AdForm.VacRead.xiN_entire_and_injective <;> assumption)
+  first | exact @GlobalTheory.AdForm.VacRead.xiN_entire_and_injective

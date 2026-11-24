@@ -58,4 +58,4 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 theorem UpperTheory.exists_int_eq_prod_of_galois_permuted_integral :
     ∀ (T : Type) [Fintype T] (f : T → ℂ), (∀ t, IsIntegral ℤ (f t)) → (∀ σ : ℂ ≃+* ℂ, ∃ u : T ≃ T, ∀ t, f (u t) = σ (f t)) → ∃ n : ℤ, (n : ℂ) = ∏ t, f t := by
-  apply UpperTheory.V.CongNum.exists_int_prod <;> assumption
+  apply UpperTheory.V.CongNum.exists_int_prod

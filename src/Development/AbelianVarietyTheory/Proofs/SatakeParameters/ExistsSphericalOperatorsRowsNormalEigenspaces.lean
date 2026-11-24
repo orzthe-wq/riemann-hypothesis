@@ -101,8 +101,7 @@ theorem rep_of_not {V : HSp D} {P : Pl D.host.E} {d : List ℤ} (h : ¬ IsLab V 
   unfold rep
   rw [dite_eq_right h]
 
-theorem dualLab_dualLab (d : List ℤ) : dualLab (dualLab d) = d := by
-  simp [dualLab, List.map_reverse]
+alias dualLab_dualLab := _root_.GlobalTheory.SphLabelOps.dualLab_dualLab
 
 theorem eq_conj {P P' : Pl D.host.E} (h : Formalism.IndefR.Lev.IsConjPl P P') : P' = Formalism.DivisionValues.conjPl P := by
   apply HeightOneSpectrum.ext

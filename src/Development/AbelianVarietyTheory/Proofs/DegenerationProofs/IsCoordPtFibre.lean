@@ -156,12 +156,12 @@ theorem exists_pointMap (hL : Laws) {K K' : Type} [Field K] [IsAlgClosed K] [Cha
   have hr : ∀ x, (r x).left ≫ φ = spMap f ≫ x.left := fun x =>
     (he _).symm.trans (congrArg (fun q => q.left) (e.apply_symm_apply (U ≫ x)))
   have inj : Function.Injective r := by
-    letI := f.toAlgebra
-    haveI : Flat (spMap f) := by
+    let := f.toAlgebra
+    have : Flat (spMap f) := by
       rw [HasRingHomProperty.Spec_iff (P := @Flat)]
       exact (inferInstance : Module.Flat K K')
-    haveI : Surjective (spMap f) := ⟨fun p => ⟨(⊥ : PrimeSpectrum K'), Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩
-    haveI : Epi (spMap f) := Flat.epi_of_flat_of_surjective (spMap f)
+    have : Surjective (spMap f) := ⟨fun p => ⟨(⊥ : PrimeSpectrum K'), Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩
+    have : Epi (spMap f) := Flat.epi_of_flat_of_surjective (spMap f)
     exact fun x y E => Over.OverMorphism.ext ((cancel_epi (spMap f)).1
       ((hr x).symm.trans ((congrArg (fun q => q.left ≫ φ) E).trans (hr y))))
   refine ⟨r, hr, inj, fun n hn y hy => ?_, fun n x y c H => ?_⟩
@@ -172,7 +172,7 @@ theorem exists_pointMap (hL : Laws) {K K' : Type} [Field K] [IsAlgClosed K] [Cha
     let F : {x : baseOver (Sp K) ⟶ P.A // x ^ n = 1} → {x : baseOver (Sp K') ⟶ P'.A // x ^ n = 1} :=
       fun x => ⟨r x.1, by rw [← map_pow, x.2, map_one]⟩
     have hF : Function.Injective F := fun a b E => Subtype.ext (inj (congrArg Subtype.val E))
-    haveI : Finite {x : baseOver (Sp K') ⟶ P'.A // x ^ n = 1} :=
+    have : Finite {x : baseOver (Sp K') ⟶ P'.A // x ^ n = 1} :=
       Nat.finite_of_card_ne_zero (c₂.trans_ne (by positivity))
     obtain ⟨x, hx⟩ := (hF.bijective_of_nat_card_le (c₂.trans (by rw [h.1]; exact c₁.symm)).le).2 ⟨y, hy⟩
     exact ⟨x.1, x.2, congrArg Subtype.val hx⟩
@@ -195,7 +195,7 @@ theorem exists_fullExt (hL : Laws) {E : Type} [Field E] [NumberField E] [IsCMFie
         ∀ n v, 0 < n → (o'.I.ev n v).left ≫ φ = spMap f ≫ (o.I.ev n v).left) ∧
       (∀ m v, o.Theta m v → o'.Theta m fun x => f (v x)) ∧
       ∀ m j z v, o.Coord m (o.I.ev j z) v → o'.Coord m (o'.I.ev j z) fun x => f (v x) := by
-  letI := H.starRing
+  let := H.starRing
   obtain ⟨P', φ, hφ, hg, hm, hw⟩ := hL.polBaseChange _ _ (spMap f) o.P
   have hp : IsGrpPullback P'.A o.P.A (spMap f) φ := ⟨hφ, fun T x y x₀ y₀ hx hy => by
     obtain rfl : x₀ = toBase hφ.w x := Over.OverMorphism.ext hx

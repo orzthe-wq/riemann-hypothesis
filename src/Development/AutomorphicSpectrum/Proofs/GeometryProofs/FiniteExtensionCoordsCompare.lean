@@ -3,12 +3,13 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
 public import Mathlib.RingTheory.IntegralClosure.IntegrallyClosed
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsNormalisationStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueDominatingMapStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModelNonempty
+public import Mathlib.AlgebraicGeometry.Morphisms.Finite
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsNormalisation
 public import Development.WeilBound.CoreStatements.VolumeEquality.PrimeIdealOfFromSpec
 public import Development.WeilBound.CoreStatements.VolumeEquality.RegularFunctionChartAdjoin
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueDominatingMap
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProjectiveModelNonempty
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -103,13 +104,9 @@ theorem inChart_down {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRing
   rw [e]
   exact mul_mem (hd.2 j) hu.2.2
 
-theorem inChart_gen {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hg : IsCptGen ξ) {ι : Type} {v : ι → Ω} {c : ι} (hc : v c ≠ 0) :
-    InChart ξ v c ⟨genPt ξ, specializes_rfl⟩ :=
-  ⟨hc, fun _ => SheetDecomposition.BBase.mem_regAt_gen hg _⟩
-
 theorem exists_mul_mem {ξ : Spec (CommRingCat.of Ω) ⟶ X} {κ : Type} {x : κ → Ω} (h : CoordTie ℤ ξ x) {c : κ}
     (hc : x c ≠ 0) (a : Ω) : ∃ t ∈ chRing ℤ x c, t ≠ 0 ∧ t * a ∈ chRing ℤ x c := by
-  obtain ⟨t, ht, hu, hta⟩ := (SheetDecomposition.regular_function_chart_adjoin X Ω ξ ℤ κ x h c ⟨genPt ξ, specializes_rfl⟩ (inChart_gen h.gen hc) a).1
+  obtain ⟨t, ht, hu, hta⟩ := (SheetDecomposition.regular_function_chart_adjoin X Ω ξ ℤ κ x h c ⟨genPt ξ, specializes_rfl⟩ (_root_.GlobalTheory.CompanionTheory.Ar.ChartFin.inChart_genPt h.gen hc) a).1
     (SheetDecomposition.BBase.mem_regAt_gen h.gen a)
   exact ⟨t, ht, hu.1, hta⟩
 
@@ -244,7 +241,7 @@ theorem exists_normal_pModel [Finite κ] [Finite κ₃] (hs : ∀ c, s c = u₁ 
     exact ⟨t * a, hle _ hta, t, hle _ ht, by rw [mul_div_cancel_left₀ _ h0]⟩
   refine ⟨N, ?_⟩
 
-  obtain ⟨g, hg, -⟩ := GlobalTheory.T.existsUnique_dominating_map ℤ Ω κ₃ u₃ M ℤ Ω κ s N (RingHom.id Ω) fun p' => by
+  obtain ⟨g, hg, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ChMorph.existsUnique_dominates ℤ Ω κ₃ u₃ M ℤ Ω κ s N (RingHom.id Ω) fun p' => by
     obtain ⟨c, hc⟩ := N.tie.cover p'
     exact mem_ctrSet (RingHom.id Ω) (inChart_parts hs ho hc).2.2
   intro q a ha
@@ -338,7 +335,7 @@ theorem exists_normal_model {κ₁ κ₂ : Type} [Finite κ₁] [Finite κ₂] (
       Subring.closure_eq (chRing ℤ s c₀).toSubring
     rw [hcl] at hy hz
     exact ⟨y, hy, z, hz, e.symm⟩
-  obtain ⟨κ', hκ', y', M', f, hf, hnorm, -, -⟩ := GlobalTheory.T.exists_normal_dominating_model ℤ Ω _ s M₀ Ω
+  obtain ⟨κ', hκ', y', M', f, hf, hnorm, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.NormEx.exists_normalisation ℤ Ω _ s M₀ Ω
   have hf' : Dominates M'.ξ M₀.ξ f (RingHom.id Ω) := hf
   refine ⟨κ', hκ', y', M', hnorm, fun p => ?_, fun p => ?_⟩
   · obtain ⟨h, hctr⟩ := exists_isCtrOf hf' M'.tie.gen p
@@ -416,10 +413,10 @@ theorem exists_normal_join : ∀ (Ω₁ Ω₂ Ω : Type) [Field Ω₁] [Field Ω
   obtain ⟨N, hNN⟩ := exists_normal_pModel (u₁ := U₁) (u₂ := U₂) hs ho M' hN hc₁ hc₂
   have key : ∀ {c p}, InChart N.ξ s c p → InChart N.ξ U₁ (π₁ c) p ∧ InChart N.ξ U₂ (π₂ c) p ∧ InChart N.ξ y' (π₃ c) p :=
     fun h => inChart_parts hs ho h
-  obtain ⟨h₁, hh₁, -⟩ := GlobalTheory.T.existsUnique_dominating_map ℤ Ω₁ _ _ (pModelOfTie ha₁ ht₁) ℤ Ω _ s N i₁ fun p' => by
+  obtain ⟨h₁, hh₁, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ChMorph.existsUnique_dominates ℤ Ω₁ _ _ (pModelOfTie ha₁ ht₁) ℤ Ω _ s N i₁ fun p' => by
     obtain ⟨c, hc⟩ := N.tie.cover p'
     exact mem_ctrSet (x := x₁) i₁ (key hc).1
-  obtain ⟨h₂, hh₂, -⟩ := GlobalTheory.T.existsUnique_dominating_map ℤ Ω₂ _ _ (pModelOfTie ha₂ ht₂) ℤ Ω _ s N i₂ fun p' => by
+  obtain ⟨h₂, hh₂, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ChMorph.existsUnique_dominates ℤ Ω₂ _ _ (pModelOfTie ha₂ ht₂) ℤ Ω _ s N i₂ fun p' => by
     obtain ⟨c, hc⟩ := N.tie.cover p'
     exact mem_ctrSet (x := x₂) i₂ (key hc).2.1
   exact ⟨m, w, y, N.X, N.ξ, h₁, h₂, fun _ _ => rfl, fun _ _ => rfl, fun _ => rfl, N.all, N.tie, stalk_normal N hNN, hh₁, hh₂⟩

@@ -75,19 +75,10 @@ private theorem crd_mul_lemma_2 (i : I) (c : W) (y : O ⊗[Z] W) :
     exact (mul_smul_comm _ _ _).symm
   | add y z hy hz => rw [mul_add, map_add (f := _), map_add (f := _), hy, hz, mul_add]
 
-private theorem sum_basis_tmul_crd_eq (y : O ⊗[Z] W) : ∑ i, b i ⊗ₜ[Z] crd b i y = y := by
-  induction y using TensorProduct.induction_on with
-  | zero => simp
-  | tmul o v =>
-    simp_rw [crd_tmul_lemma, Module.Basis.coord_apply, ← TensorProduct.smul_tmul,
-      ← TensorProduct.sum_tmul, Module.Basis.sum_repr]
-  | add y z hy hz =>
-    simp_rw [map_add (f := _), TensorProduct.tmul_add, Finset.sum_add_distrib, hy, hz]
-
 private theorem crd_sum_lemma_4 (j : I) (v : I → W) : crd b j (∑ i, b i ⊗ₜ[Z] v i) = v j := by
   classical
   set_option synthInstance.maxHeartbeats 100000 in
-    simp [map_sum, crd_tmul_lemma, Module.Basis.coord_apply, Finsupp.single_apply]
+    simp [map_sum, Finsupp.single_apply]
 
 theorem mem_pow_iff (w : W) (n : ℕ) (x : O ⊗[Z] W) :
     x ∈ Ideal.span {((1 : O) ⊗ₜ[Z] w) ^ n} ↔ ∀ i, crd b i x ∈ Ideal.span {w ^ n} := by
@@ -99,7 +90,7 @@ theorem mem_pow_iff (w : W) (n : ℕ) (x : O ⊗[Z] W) :
   · intro h
     choose c hc using h
     refine ⟨∑ i, b i ⊗ₜ[Z] c i, ?_⟩
-    conv_lhs => rw [← sum_basis_tmul_crd_eq b x]
+    conv_lhs => rw [← _root_.GlobalTheory.Decompl.sum_crd b x]
     rw [Finset.mul_sum]
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [hc i, Algebra.TensorProduct.tmul_mul_tmul, one_mul]
@@ -120,7 +111,7 @@ theorem complete_tensor (w : W) [h : IsAdicComplete (Ideal.span {w}) W] :
       IsHausdorff.haus h.toIsHausdorff _ fun n => by
         rw [SModEq.sub_mem, sub_zero]
         exact (key n x).1 (by simpa [SModEq.sub_mem] using hx n) i
-    rw [← sum_basis_tmul_crd_eq b x]
+    rw [← _root_.GlobalTheory.Decompl.sum_crd b x]
     simp [hi]
   have H2 : IsPrecomplete (Ideal.span {(1 : O) ⊗ₜ[Z] w}) (O ⊗[Z] W) := by
     refine ⟨fun f hf => ?_⟩
@@ -164,7 +155,7 @@ theorem ainf_saturated_in_tiltWitt_prime (a : Loc.Ainf l) (w : WCb l) (h : inclW
   simp only [inclW, WittVector.map_coeff] at h1
   rw [mul_comm, WittVector.mul_charP_coeff_succ] at h1
   apply frobenius_inj (Cb l) l
-  simp only [inclW, WittVector.map_coeff, WittVector.coeff_mk]
+  simp only [inclW, WittVector.map_coeff]
   rw [← RingHom.map_frobenius, frobenius_apply_frobeniusEquiv_symm, h1, frobenius_def]
 
 theorem not_isUnit_teich (e : OCb l) (he : ¬ IsUnit (e - 1)) :
@@ -187,7 +178,7 @@ private theorem crd_tensorProduct_map_eq {Z O I W W' : Type} [CommRing Z] [CommR
 private theorem tensor_eq_of_crd_eq {Z O I W : Type} [CommRing Z] [CommRing O] [Algebra Z O]
     [Fintype I] (b : Module.Basis I Z O) [CommRing W] [Algebra Z W] {y y' : O ⊗[Z] W}
     (h : ∀ i, crd b i y = crd b i y') : y = y' := by
-  rw [← sum_basis_tmul_crd_eq b y, ← sum_basis_tmul_crd_eq b y']
+  rw [← _root_.GlobalTheory.Decompl.sum_crd b y, ← _root_.GlobalTheory.Decompl.sum_crd b y']
   simp_rw [h]
 
 private theorem exists_basis_padicInt_OL (l : ℕ) [Fact l.Prime] (LL : FinExt l) :

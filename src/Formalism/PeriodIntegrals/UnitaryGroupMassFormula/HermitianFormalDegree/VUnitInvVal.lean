@@ -65,8 +65,6 @@ theorem fdegOf_eq {ε : Fin n → Bool} (μ : Measure (UJ ε)) {H : Type} [Norme
     intro g
     first
     | (rw [RCLike.star_def, RCLike.mul_conj]; push_cast; rfl)
-    | (rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]; push_cast; rfl)
-    | (rw [Complex.star_def, Complex.mul_conj']; push_cast; rfl)
   simp_rw [h1] at heq
   rw [integral_complex_ofReal, inner_self_eq_norm_sq_to_K] at heq
   have key : ∫ g, ‖coefOn σ w w g‖ ^ 2 ∂μ = ‖w‖ ^ 4 / d := by
@@ -75,8 +73,6 @@ theorem fdegOf_eq {ε : Fin n → Bool} (μ : Measure (UJ ε)) {H : Type} [Norme
       ring
     first
     | exact_mod_cast heq.trans h2
-    | (apply Complex.ofReal_injective; rw [heq]; push_cast; ring)
-    | (apply Complex.ofReal_injective; rw [heq, ← h2])
   rw [key]
   field_simp
 

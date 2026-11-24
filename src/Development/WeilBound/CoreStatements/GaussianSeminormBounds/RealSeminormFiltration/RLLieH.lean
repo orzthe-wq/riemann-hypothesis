@@ -246,11 +246,11 @@ theorem fock_eq {Y : Mat R S} (hY : Y ∈ upq R S) :
       rw [← ofReal_mul, mul_mul_mul_comm, eps_sq, eps_sq, mul_one, ofReal_one]
     rw [show (1 / 2 : ℂ) = (1 / 4) * 2 by norm_num, mul_smul, smul_add (2 : ℂ), a1, a2, inv_smul_eq_iff₀ (by simp [hπ])]
     simp only [Fintype.sum_bool, cu, cv, heis_smul, r1, r2, r3, r4, if_true, Bool.false_eq_true, if_false, ← hk]
-    simp only [ofReal_div, ofReal_ofNat, star_mul', star_div₀, star_ofNat, star_one, star_neg, star_def, conj_I, conj_ofReal, map_neg, map_one]
+    simp only [ofReal_div, ofReal_ofNat, star_mul', star_div₀, star_ofNat, star_one, star_neg, star_def, conj_I, conj_ofReal]
     generalize ((eps a * eps b : ℝ) : ℂ) = s at hs
     generalize (∑ b', Y b' b • raiB (a, b') : Module.End ℂ (Pol P Q R S)) = Rp
     generalize (∑ b', Y b b' • lowB (a, b') : Module.End ℂ (Pol P Q R S)) = Lp
-    simp only [mul_sub, sub_mul, mul_add, add_mul, smul_mul_assoc, mul_smul_comm, mul_neg, neg_mul]
+    simp only [mul_sub, sub_mul, smul_mul_assoc, mul_smul_comm, mul_neg, neg_mul]
     match_scalars <;> first | ring1 | linear_combination (I * s ^ 2) * hk2 + (2 * π * I) * hs
   rw [Fintype.sum_prod_type, Fintype.sum_prod_type, Finset.smul_sum]
   simp only [Finset.smul_sum (r := (8 * π * I : ℂ)⁻¹) (s := (Finset.univ : Finset (Ix R S))), one]

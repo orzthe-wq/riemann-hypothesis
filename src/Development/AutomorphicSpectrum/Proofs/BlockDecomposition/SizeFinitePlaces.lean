@@ -51,7 +51,7 @@ theorem finite_one_lt_norm_cW {E : Type} [Field E] [NumberField E] [_root_.Numbe
   have h := RestrictedProduct.eventually _ _ (RingHom.snd (InfiniteAdeleRing E) (Af E) a)
   refine (Filter.eventually_cofinite.mp h).subset ?_
   intro w hw
-  simp only [Set.mem_ofPred_eq, RingHom.comp_apply, RestrictedProduct.evalRingHom_apply] at hw ⊢
+  simp only [Set.mem_ofPred_eq] at hw ⊢
   intro hmem
   exact absurd hw (not_lt.mpr (Valued.toNormedField.norm_le_one_iff.mpr
     ((IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mp hmem)))

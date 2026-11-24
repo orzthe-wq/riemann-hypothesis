@@ -85,10 +85,6 @@ private theorem GL_inv_mulVec_mulVec {K : Type} [Field K] {n : ℕ} (ga : GL (Fi
     ((ga⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ ((ga : Matrix (Fin n) (Fin n) K) *ᵥ u) = u := by
   rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
 
-private theorem GL_mulVec_inv_mulVec {K : Type} [Field K] {n : ℕ} (ga : GL (Fin n) K) (u : Fin n → K) :
-    (ga : Matrix (Fin n) (Fin n) K) *ᵥ (((ga⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ u) = u := by
-  rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
-
 private theorem mem_mapL_iff (ga : GL (Fin r) E) (L : Lt E r) (v : Fin r → E) :
     v ∈ mapL ga L ↔ ∃ u ∈ L, v = (ga : Matrix (Fin r) (Fin r) E) *ᵥ u := by
   unfold mapL
@@ -140,13 +136,13 @@ theorem anFib_move : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
       obtain ⟨k, hk⟩ := (hmem u).1 hu u' hu'
       exact ⟨k, by rw [EF_mulVec_of_isUn hga, ← h.EF_eq]; exact hk⟩
     · intro hv
-      refine ⟨((ga⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v, ?_, (GL_mulVec_inv_mulVec ga v).symm⟩
+      refine ⟨((ga⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v, ?_, (_root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec ga v).symm⟩
       rw [hmem]
       intro u' hu'
       obtain ⟨k, hk⟩ := hv _ ((mem_mapL_iff ga L _).2 ⟨u', hu', rfl⟩)
       refine ⟨k, ?_⟩
       rw [h.EF_eq, ← EF_mulVec_of_isUn hga (((ga⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v) u',
-        GL_mulVec_inv_mulVec]
+        _root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec]
       exact hk
   have hT : ∀ z, (∃ v ∈ L, z = pv X' idx' x v) ↔
       ∃ v ∈ mapL ga L, z = pv X idx (lact ga (castFr h.psi x)) v := by

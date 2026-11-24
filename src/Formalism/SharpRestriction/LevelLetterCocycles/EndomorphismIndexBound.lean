@@ -1,21 +1,23 @@
 module
 
-public import Formalism.SharpRestriction.LevelLetterCocycles.DecompositionData
+public import Mathlib.NumberTheory.Padics.PadicVal.Basic
+public import Mathlib.NumberTheory.Multiplicity
 public import Formalism.CharacterColumnKernels.StatementN
-public import Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelLengthBound
-public import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero
 public import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthQuotSmulRangeFree
-public import Formalism.CharacterColumnKernels.IdempotentNormalForms.SumIteLe
+public import Formalism.SharpRestriction.LevelLetterCocycles.DecompositionData
+public import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -23,8 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,7 +32,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,10 +44,180 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Lemma
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Tactic.TypeStar
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.CharacterColumnKernels.CharacterColumnKernelLengthBound, Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelLengthBound, Formalism.CharacterColumnKernels.StatementNG, Formalism.CharacterColumnKernels.IdempotentNormalForms.SumIteLe, Formalism.SharpRestriction.LevelLetterCocycles.EndomorphismIndexBound
+
+-- ===== clump member: Formalism.CharacterColumnKernels.CharacterColumnKernelLengthBound =====
+-- clump-header: {"m": "Formalism.CharacterColumnKernels.CharacterColumnKernelLengthBound", "h": "module\n\npublic import Mathlib.NumberTheory.Padics.PadicVal.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.NG
+
+def characterColumnKernelLengthBound : Prop :=
+  ∀ (l : ℕ) [Fact l.Prime] (s₀ : ℕ), 1 ≤ s₀ → (l = 2 → 2 ≤ s₀) →
+    ∀ (x : ℤ), (l : ℤ) ^ s₀ ∣ x - 1 → ¬ (l : ℤ) ^ (s₀ + 1) ∣ x - 1 →
+    ∀ a b : ℕ, a < b → padicValInt l (x ^ b - x ^ a) = s₀ + padicValNat l (b - a)
+
+end Formalism.NG
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CharacterColumnKernels.CharacterColumnKernelLengthBound =====
+
+-- ===== clump member: Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelLengthBound =====
+-- clump-header: {"m": "Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelLengthBound", "h": "module\n\npublic import Formalism.CharacterColumnKernels.CharacterColumnKernelLengthBound\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\npublic import Mathlib.NumberTheory.Multiplicity\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+namespace Formalism.NG
+
+private lemma padicValInt_eq_emultiplicity (l : ℕ) [hl : Fact l.Prime] {z : ℤ} (hz : z ≠ 0) :
+    (padicValInt l z : ℕ∞) = emultiplicity (l : ℤ) z := by
+  have hz' : z.natAbs ≠ 0 := Int.natAbs_ne_zero.mpr hz
+  change (multiplicity l z.natAbs : ℕ∞) = emultiplicity (l : ℤ) z
+  rw [multiplicity_eq_emultiplicity hz',
+    ← Int.natCast_emultiplicity, Int.natCast_natAbs]
+  rcases abs_choice z with h | h
+  · rw [h]
+  · rw [h, emultiplicity_neg]
+
+private lemma padicValInt_pow_sub_one_eq_add (l : ℕ) [hl : Fact l.Prime] (s₀ : ℕ) (hs : 1 ≤ s₀) (hs2 : l = 2 → 2 ≤ s₀)
+    (x : ℤ) (hx1 : (l : ℤ) ^ s₀ ∣ x - 1) (hx2 : ¬ (l : ℤ) ^ (s₀ + 1) ∣ x - 1)
+    (n : ℕ) (hn0 : n ≠ 0) :
+    x ^ n - 1 ≠ 0 ∧ padicValInt l (x ^ n - 1) = s₀ + padicValNat l n := by
+  have hlp := hl.out
+  have hE1 : emultiplicity (l : ℤ) (x - 1) = s₀ := emultiplicity_eq_coe.mpr ⟨hx1, hx2⟩
+  have hdvd : (l : ℤ) ∣ x - 1 := (dvd_pow_self (l : ℤ) (by omega)).trans hx1
+  have hlx : ¬ (l : ℤ) ∣ x := by
+    intro h
+    have h1 : (l : ℤ) ∣ 1 := by have := dvd_sub h hdvd; simpa using this
+    exact (Nat.prime_iff_prime_int.mp hlp).not_dvd_one h1
+  have hE : emultiplicity (l : ℤ) (x ^ n - 1) = (s₀ : ℕ∞) + emultiplicity l n := by
+    rcases hlp.eq_two_or_odd' with h2 | hodd
+    · subst h2
+      have h4 : (4 : ℤ) ∣ x - 1 := by
+        have := (pow_dvd_pow ((2 : ℕ) : ℤ) (hs2 rfl)).trans hx1
+        norm_num at this
+        exact this
+      push_cast at hlx hE1 ⊢
+      have := Int.two_pow_sub_pow' n h4 hlx
+      rw [one_pow] at this
+      have hc := Int.natCast_emultiplicity 2 n
+      push_cast at hc
+      rw [this, hE1, hc]
+    · have := Int.emultiplicity_pow_sub_pow hlp hodd (y := 1) hdvd hlx n
+      rw [one_pow] at this
+      rw [this, hE1]
+  have hfin : emultiplicity (l : ℤ) (x ^ n - 1) = ((s₀ + padicValNat l n : ℕ) : ℕ∞) := by
+    rw [hE, ← multiplicity_eq_emultiplicity hn0, Nat.padicValNat_def]
+    norm_cast
+  have hne : x ^ n - 1 ≠ 0 := by
+    intro h
+    rw [h, emultiplicity_zero] at hfin
+    exact ENat.top_ne_coe _ hfin
+  refine ⟨hne, ?_⟩
+  have := padicValInt_eq_emultiplicity l hne
+  rw [hfin] at this
+  exact_mod_cast this
+
+theorem character_column_kernel_length_bound : characterColumnKernelLengthBound := by
+  intro l hl s₀ hs hs2 x hx1 hx2 a b hab
+  have hlp := Nat.prime_iff_prime_int.mp hl.out
+  obtain ⟨hne, hv⟩ := padicValInt_pow_sub_one_eq_add l s₀ hs hs2 x hx1 hx2 (b - a) (by omega)
+  have hdvd : (l : ℤ) ∣ x - 1 := (dvd_pow_self (l : ℤ) (by omega)).trans hx1
+  have hlx : ¬ (l : ℤ) ∣ x ^ a := by
+    intro h
+    have h' : (l : ℤ) ∣ x := hlp.dvd_of_dvd_pow h
+    have h1 : (l : ℤ) ∣ 1 := by have := dvd_sub h' hdvd; simpa using this
+    exact hlp.not_dvd_one h1
+  have hxa : x ^ a ≠ 0 := fun h ↦ hlx (h ▸ dvd_zero _)
+  have e : x ^ b - x ^ a = x ^ a * (x ^ (b - a) - 1) := by
+    rw [mul_sub, ← pow_add, Nat.add_sub_of_le hab.le, mul_one]
+  rw [e, padicValInt.mul hxa hne, padicValInt.eq_zero_of_not_dvd hlx, zero_add, hv]
+
+end Formalism.NG
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelLengthBound =====
+
+-- ===== clump member: Formalism.CharacterColumnKernels.StatementNG =====
+-- clump-header: {"m": "Formalism.CharacterColumnKernels.StatementNG", "h": "module\n\npublic import Formalism.CharacterColumnKernels.StatementN\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+noncomputable section
+
+namespace Formalism.NG
+
+def LocalSubalgebraEtaBound : Prop :=
+  ∀ (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (X : Type*) [Finite X]
+    (T : Subalgebra O (X → O)) [IsLocalRing T], (∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) →
+    ∀ (V : Type*) [AddCommGroup V] [Module (FractionRing O) V] [FiniteDimensional (FractionRing O) V]
+      [Module O V] [IsScalarTower O (FractionRing O) V]
+      (act : T →+* Module.End (FractionRing O) V), (⨆ x, Vx T act x) = ⊤ →
+    ∀ L : Submodule O V, L.FG → Submodule.span (FractionRing O) (L : Set V) = ⊤ →
+      (∀ f : T, ∀ v ∈ L, act f v ∈ L) →
+    ∀ (Z Zg : Finset X), Zg ⊆ Z → ∀ (a : Module.End (FractionRing O) V) (A : ℤ),
+      (∀ v ∈ L, a v ∈ L) → (∀ f : T, a * act f = act f * a) →
+      (∀ x ∈ Zg, ∀ v ∈ Vx T act x, a v = (A : FractionRing O) • v) →
+      (∀ x ∈ Z, x ∉ Zg → ∀ v ∈ Vx T act x, a v = 0) →
+    ∀ B : X → ℕ∞, (∀ x ∈ Zg, vcc T (Z : Set X) x ≤ B x) →
+      Module.length O (CongMod T act L (Zg : Set X)) ≤
+        ∑ x ∈ Zg, (Module.finrank (FractionRing O) (Vx T act x) : ℕ∞) *
+          (B x + IsDiscreteValuationRing.addVal O (A : O))
+
+end Formalism.NG
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CharacterColumnKernels.StatementNG =====
+
+-- ===== clump member: Formalism.CharacterColumnKernels.IdempotentNormalForms.SumIteLe =====
+-- clump-header: {"m": "Formalism.CharacterColumnKernels.IdempotentNormalForms.SumIteLe", "h": "module\n\npublic import Formalism.CharacterColumnKernels.StatementNG\npublic import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthQuotSmulRangeFree\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+noncomputable section
+
+namespace Formalism.NG
+
+theorem etaBound : LocalSubalgebraEtaBound := by
+  intro O _ _ _ X _ T _ hsep V _ _ _ _ _ act hsum L hL hspan hLT Z Zg hZg a A haL hacomm haG haB
+    B hB
+  refine (congBoundGood O X T hsep V act hsum L hL hspan hLT Z Zg hZg a A haL hacomm haG
+    haB).trans ?_
+  refine sum_le_sum fun x hx => ?_
+  gcongr
+  exact hB x hx
+
+end Formalism.NG
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CharacterColumnKernels.IdempotentNormalForms.SumIteLe =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.EndomorphismIndexBound =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.EndomorphismIndexBound", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DecompositionData\npublic import Formalism.CharacterColumnKernels.StatementN\npublic import Formalism.CharacterColumnKernels.IdempotentNormalForms.CharacterColumnKernelLengthBound\npublic import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero\npublic import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthQuotSmulRangeFree\npublic import Formalism.CharacterColumnKernels.IdempotentNormalForms.SumIteLe\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -114,13 +283,11 @@ theorem coe_prod' {ι : Type*} (s : Finset ι) (h : ι → T) (z : X) :
     ((∏ y ∈ s, h y : T) : X → O) z = ∏ y ∈ s, ((h y : T) : X → O) z := by
   first
   | rw [SubmonoidClass.coe_finsetProd, Finset.prod_apply]
-  | simp [Finset.prod_apply]
 
 theorem coe_sum' {ι : Type*} (s : Finset ι) (h : ι → T) (z : X) :
     ((∑ y ∈ s, h y : T) : X → O) z = ∑ y ∈ s, ((h y : T) : X → O) z := by
   first
   | rw [AddSubmonoidClass.coe_finsetSum, Finset.sum_apply]
-  | simp [Finset.sum_apply]
 
 theorem exists_bump (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (x : X) :
     ∃ g : T, (g : X → O) x ≠ 0 ∧ ∀ y, y ≠ x → (g : X → O) y = 0 := by
@@ -669,3 +836,7 @@ theorem second_statement (D : Formalism.BasicNotions.D7) : HodgeTateFromSandwich
   exact fun i => endomorphism_index_bound i
 
 end Formalism.MainNotions.TruncatedSeriesCountingIdentities
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.EndomorphismIndexBound =====

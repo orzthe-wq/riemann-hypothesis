@@ -167,11 +167,6 @@ theorem intA_mul (hg : ∀ k l m, algebraMap F (Fv F v) (b.repr (b k * b l) m) �
   rw [smul_mul_smul_comm, hB, hB, ← map_mul]
   exact intA_smul (mul_mem (hz k) (hw l)) (intA_incl _ (hg k l))
 
-theorem sigR_incl (σ : E →ₐ[F] E) (e : E) :
-    sigR (Fv F v) σ (inclR (Fv F v) e) = inclR (Fv F v) (σ e) := by
-
-  simp [sigR, inclR, Algebra.TensorProduct.map_tmul]
-
 theorem sigR_smul (σ : E →ₐ[F] E) (c : Fv F v) (z : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (c • z) = c • sigR (Fv F v) σ z := by
 
@@ -195,10 +190,6 @@ theorem aaInt (x : F) : ∀ᶠ v in cofinite,
 
   first
   | exact (algebraMap F (FiniteAdeleRing (𝓞 F) F) x).2
-  | (rw [Filter.eventually_cofinite]
-     refine (HeightOneSpectrum.Support.finite (𝓞 F) x).subset fun v hv => ?_
-     simp only [Set.mem_setOf_eq, HeightOneSpectrum.mem_adicCompletionIntegers, not_le] at hv
-     simpa [HeightOneSpectrum.Support, HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] using hv)
 
 def GoodV (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) {M a : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (Tinv : Matrix (Fin a) (Fin a) E) : Prop :=

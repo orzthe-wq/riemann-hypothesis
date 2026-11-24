@@ -164,28 +164,15 @@ end Cplx
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
 
-theorem emb_cc (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) :=
-  IsCMField.complexEmbedding_complexConj E τ x
+alias emb_cc := _root_.GlobalTheory.SW.Base.map_cc
 
-theorem ccT_mul {α β δ : Type} [Fintype β] (X : Matrix α β E) (Y : Matrix β δ E) :
-    ccT (X * Y) = ccT Y * ccT X := by
-  ext i j
-  simp [ccT, cc, Matrix.mul_apply, mul_comm]
+alias ccT_mul := _root_.GlobalTheory.SW.Base.ccT_mul
 
-theorem ccT_ccT {α β : Type} (X : Matrix α β E) : ccT (ccT X) = X := by
-  ext i j
-  simp [ccT, cc]
+alias ccT_ccT := _root_.GlobalTheory.SW.Base.ccT_ccT
 
-theorem ccT_one {α : Type} [DecidableEq α] : ccT (1 : Matrix α α E) = 1 := by
-  ext i j
-  by_cases h : i = j
-  · subst h; simp [ccT, cc]
-  · simp [ccT, cc, Matrix.one_apply, h, Ne.symm h]
+alias ccT_one := _root_.GlobalTheory.SW.Base.ccT_one
 
-theorem map_ccT {α β : Type} (τ : E →+* ℂ) (X : Matrix α β E) :
-    (ccT X).map τ = (X.map τ)ᴴ := by
-  ext i j
-  simp [ccT, emb_cc]
+alias map_ccT := _root_.GlobalTheory.SW.Base.ccT_map
 
 theorem left_inv {γ : M2 E N} (h : γ ∈ UU E N) :
     -(Matrix.J (Fin N) E * ccT γ * Matrix.J (Fin N) E) * γ = 1 := by
@@ -233,7 +220,7 @@ theorem map_mem (τ : E →+* ℂ) {γ : M2 E N} (h : γ ∈ UU E N) :
   have hJ : (Matrix.J (Fin N) E).map τ = Matrix.J (Fin N) ℂ := by
     ext i j
     rcases i with i | i <;> rcases j with j | j <;> by_cases hij : i = j <;>
-      simp [Matrix.J, Matrix.one_apply, hij]
+      simp [Matrix.J, hij]
   have h2 := congrArg (fun X => X.map τ) h1
   simp only [Matrix.map_mul, map_ccT, hJ] at h2
   exact h2

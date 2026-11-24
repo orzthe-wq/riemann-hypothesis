@@ -312,7 +312,7 @@ theorem IsSesq.polarisation {F : V → V → M} (hF : IsSesq F) (x y : V) :
   have h : ∀ v : V, -v = (-1 : ℂ) • v := fun v => by simp
   simp only [sub_eq_add_neg, h, hF.add_left, hF.add_right, hF.smul_left, hF.smul_right, conj_I,
     map_neg, map_one]
-  match_scalars <;> (ring_nf; try simp only [I_sq, I_pow_three]; try ring_nf)
+  match_scalars <;> (ring_nf; try simp only [I_sq]; try ring_nf)
 
 end Sesq
 

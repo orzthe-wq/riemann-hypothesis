@@ -1,12 +1,15 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMMemFramesEIff
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
+public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryActionPreservesHaarLocalStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpenStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableEmbeddingOfInjectiveProperStatement
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryActionPreservesHaarLocal
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearlyIndependentFramesOpen
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeasurableEmbeddingOfInjectiveProper
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -109,11 +112,11 @@ theorem map_actW_fibre_free : ∀ (F E : Type) [Field F] [NumberField F] [Field 
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm h S
   have hR' := hR
   obtain ⟨_, _, _, _, -, -, -, -⟩ := hR'
-  obtain ⟨_, _, _, _, -, -, -, hbor, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R
+  obtain ⟨_, _, _, _, -, -, -, hbor, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ R
   have hbor' := hbor n M
   obtain ⟨_, _, _, _, hlift⟩ := GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R n
   obtain ⟨g, hgc, hgf⟩ := hlift M J hJ
-  obtain ⟨_, -, -, -, -, hact⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ R
+  obtain ⟨_, -, -, -, -, hact⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ M J hJ R
   obtain ⟨hcont, hone, hmul, hgr⟩ := hact n
   have hcg : ∀ k : HA R σ J, Continuous (actW R σ J k : (Fin n → Fin M → R ⊗[F] E) → _) := fun k =>
     hcont.comp (Continuous.prodMk_right k)
@@ -125,7 +128,7 @@ theorem map_actW_fibre_free : ∀ (F E : Type) [Field F] [NumberField F] [Field 
       continuous_toFun := hcg h
       continuous_invFun := hcg h⁻¹ }
   let W : Set (Fin n → Fin M → R ⊗[F] E) := {X | LinearIndependent (R ⊗[F] E) X}
-  have hWo : IsOpen W := GlobalTheory.T.linearly_independent_frames_open F E σ hσ R hR n M
+  have hWo : IsOpen W := _root_.GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen.isOpen_free F E σ hσ R hR n M
   have hfree : ∀ (k : HA R σ J) (X : Fin n → Fin M → R ⊗[F] E), X ∈ W → actW R σ J k X ∈ W :=
     fun k X hX => linearIndependent_mulVec (HA.mat R σ J k) X hX
   have hU : e ⁻¹' W = W := by
@@ -135,7 +138,7 @@ theorem map_actW_fibre_free : ∀ (F E : Type) [Field F] [NumberField F] [Field 
     have h3 : actW R σ J h⁻¹ (actW R σ J h X) = X := by rw [← hmul, inv_mul_cancel, hone]
     rw [h3] at h2
     exact h2
-  have hμm : μ.map e = μ := GlobalTheory.T.unitary_action_preserves_haar_local F E σ hσ M J hJ R hR n μ hμ h
+  have hμm : μ.map e = μ := _root_.GlobalTheory.CompanionTheory.SW.HInv.map_actW_eq F E σ hσ M J hJ R hR n μ hμ h
   have ht := isFibreFamily_map_homeo μ ν (gramR R σ J) Subtype.val e (fun X => hgr h X) W hU hμm
     Set.univ m hm
   have hm0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (g ⁻¹' Set.univ ∩ W) ν Set.univ m := by
@@ -145,7 +148,7 @@ theorem map_actW_fibre_free : ∀ (F E : Type) [Field F] [NumberField F] [Field 
       (fun b => (m b).map e) := by
     rw [Set.preimage_univ, Set.univ_inter]
     exact ht
-  exact GlobalTheory.T.measurable_embedding_of_injective_proper _ _ _ μ ν (gramR R σ J) g Subtype.val Subtype.val_injective hgc hgf W hWo Set.univ Set.univ
+  exact _root_.GlobalTheory.CompanionTheory.SW.FibreUniq.fibreFamily_eq_inter _ _ _ μ ν (gramR R σ J) g Subtype.val Subtype.val_injective hgc hgf W hWo Set.univ Set.univ
     isOpen_univ isOpen_univ subset_rfl m (fun b => (m b).map e) hm0 ht0 S (Set.mem_univ S)
 
 end GlobalTheory.CompanionTheory.WeilSiegel.Free.FibreInv

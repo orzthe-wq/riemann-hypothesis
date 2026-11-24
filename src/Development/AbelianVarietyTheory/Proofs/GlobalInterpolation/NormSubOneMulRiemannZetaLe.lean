@@ -71,8 +71,9 @@ lemma hasDerivAt_shift_cpow {a t : ℝ} (h : 0 < a + t) (c : ℂ) :
     left; simpa using h
   simpa using h1.cpow_const (c := c) h2
 
-lemma norm_emE_le {a : ℝ} (ha : 1 ≤ a) {s : ℂ} (hs : -(15/8 : ℝ) ≤ s.re) :
-    ‖emE a s‖ ≤ (‖s‖ + 2) ^ 4 * a ^ (-(9/8 : ℝ)) := by
+lemma norm_emE_le_of_lower_bound {σ a : ℝ} (hσ : -3 ≤ σ) (ha : 1 ≤ a)
+    {s : ℂ} (hs : σ ≤ s.re) :
+    ‖emE a s‖ ≤ (‖s‖ + 2) ^ 4 * a ^ (-σ - 3) := by
   set w : ℂ := 1 - s with hw
   let G : ℂ → ℂ := fun z => ((a : ℂ) + z) ^ w - (z - 1/2) * (w * ((a : ℂ) + z) ^ (w - 1))
     + (z ^ 2 - z + 1/6) / 2 * (w * (w - 1) * ((a : ℂ) + z) ^ (w - 1 - 1))
@@ -99,7 +100,7 @@ lemma norm_emE_le {a : ℝ} (ha : 1 ≤ a) {s : ℂ} (hs : -(15/8 : ℝ) ≤ s.r
         (p3.mul ((hasDerivAt_shift_cpow h (w - 1 - 1 - 1)).const_mul (w * (w - 1) * (w - 1 - 1))))
       exact this.congr_deriv (by simp only [G']; ring)
     exact hG.comp_ofReal
-  have hb : ∀ t ∈ Set.Ico (0 : ℝ) 1, ‖G' t‖ ≤ (‖s‖ + 2) ^ 4 * a ^ (-(9/8 : ℝ)) := by
+  have hb : ∀ t ∈ Set.Ico (0 : ℝ) 1, ‖G' t‖ ≤ (‖s‖ + 2) ^ 4 * a ^ (-σ - 3) := by
     intro t ht
     have h : 0 < a + t := by linarith [ht.1]
     have b1 : ‖- (((t : ℂ) ^ 3 - 3/2 * t ^ 2 + t / 2) / 6)‖ ≤ 1 := by
@@ -123,15 +124,15 @@ lemma norm_emE_le {a : ℝ} (ha : 1 ≤ a) {s : ℂ} (hs : -(15/8 : ℝ) ≤ s.r
       convert key (-1) (by norm_num) using 2; rw [hw]; push_cast; ring
     have c3 : ‖w - 1 - 1 - 1‖ ≤ ‖s‖ + 2 := by
       convert key (-2) (by norm_num) using 2; rw [hw]; push_cast; ring
-    have c4 : ‖((a : ℂ) + t) ^ (w - 1 - 1 - 1 - 1)‖ ≤ a ^ (-(9/8 : ℝ)) := by
+    have c4 : ‖((a : ℂ) + t) ^ (w - 1 - 1 - 1 - 1)‖ ≤ a ^ (-σ - 3) := by
       rw [← Complex.ofReal_add, Complex.norm_cpow_eq_rpow_re_of_pos h]
-      have e : (w - 1 - 1 - 1 - 1).re ≤ -(9/8 : ℝ) := by
+      have e : (w - 1 - 1 - 1 - 1).re ≤ -σ - 3 := by
         simp [hw]; linarith
-      calc _ ≤ (a + t) ^ (-(9/8 : ℝ)) :=
+      calc _ ≤ (a + t) ^ (-σ - 3) :=
             Real.rpow_le_rpow_of_exponent_le (by linarith [ht.1]) e
-        _ ≤ _ := Real.rpow_le_rpow_of_nonpos (by linarith) (by linarith [ht.1]) (by norm_num)
+        _ ≤ _ := Real.rpow_le_rpow_of_nonpos (by linarith) (by linarith [ht.1]) (by linarith)
     simp only [G', norm_mul]
-    calc _ ≤ 1 * ((‖s‖ + 2) * (‖s‖ + 2) * (‖s‖ + 2) * (‖s‖ + 2) * a ^ (-(9/8 : ℝ))) := by
+    calc _ ≤ 1 * ((‖s‖ + 2) * (‖s‖ + 2) * (‖s‖ + 2) * (‖s‖ + 2) * a ^ (-σ - 3)) := by
           gcongr
       _ = _ := by ring
   have := norm_image_sub_le_of_norm_deriv_le_segment_01' (f := fun y : ℝ => G y) (f' := G')
@@ -141,6 +142,10 @@ lemma norm_emE_le {a : ℝ} (ha : 1 ≤ a) {s : ℂ} (hs : -(15/8 : ℝ) ≤ s.r
   push_cast
   simp only [add_zero]
   ring
+
+lemma norm_emE_le {a : ℝ} (ha : 1 ≤ a) {s : ℂ} (hs : -(15/8 : ℝ) ≤ s.re) :
+    ‖emE a s‖ ≤ (‖s‖ + 2) ^ 4 * a ^ (-(9/8 : ℝ)) := by
+  convert norm_emE_le_of_lower_bound (σ := -(15/8 : ℝ)) (by norm_num) ha hs using 1 <;> norm_num
 
 lemma summable_nine_pow_mul_inv_sq_succ : Summable (fun n : ℕ => ((n : ℝ) + 1) ^ (-(9/8 : ℝ))) := by
   have := (summable_nat_add_iff 1).2 (Real.summable_nat_rpow.2 (by norm_num : -(9/8 : ℝ) < -1))
@@ -160,21 +165,32 @@ lemma differentiable_emE {x : ℝ} (hx : 0 < x) : Differentiable ℂ (emE x) := 
   unfold emE
   fun_prop
 
-lemma differentiableOn_tsum_emE :
-    DifferentiableOn ℂ (fun s => ∑' n : ℕ, emE ((n : ℝ) + 1) s) {s : ℂ | -(15/8 : ℝ) < s.re} := by
+lemma differentiableOn_tsum_emE_of_neg_two_lt :
+    DifferentiableOn ℂ (fun s => ∑' n : ℕ, emE ((n : ℝ) + 1) s) {s : ℂ | -2 < s.re} := by
   intro s hs
-  have ho : IsOpen ({z : ℂ | -(15/8 : ℝ) < z.re} ∩ Metric.ball 0 (‖s‖ + 1)) :=
+  change -2 < s.re at hs
+  let σ : ℝ := (s.re - 2) / 2
+  have hσ : -2 < σ := by dsimp [σ]; linarith
+  have hσs : σ < s.re := by dsimp [σ]; linarith
+  have hsum : Summable (fun n : ℕ => ((n : ℝ) + 1) ^ (-σ - 3)) := by
+    simpa using (summable_nat_add_iff 1).2
+      (Real.summable_nat_rpow.2 (by linarith : -σ - 3 < -1))
+  have ho : IsOpen ({z : ℂ | σ < z.re} ∩ Metric.ball 0 (‖s‖ + 1)) :=
     (isOpen_lt continuous_const Complex.continuous_re).inter Metric.isOpen_ball
   have := Complex.differentiableOn_tsum_of_summable_norm
     (F := fun (n : ℕ) (z : ℂ) => emE ((n : ℝ) + 1) z)
-    (summable_nine_pow_mul_inv_sq_succ.mul_left ((‖s‖ + 3) ^ 4))
+    (hsum.mul_left ((‖s‖ + 3) ^ 4))
     (fun n => (differentiable_emE (by positivity)).differentiableOn) ho (by
       intro n z hz
       have h1 : ‖z‖ < ‖s‖ + 1 := by simpa using hz.2
-      refine (norm_emE_le (by simp) (le_of_lt hz.1)).trans ?_
+      refine (norm_emE_le_of_lower_bound (by linarith) (by simp) (le_of_lt hz.1)).trans ?_
       have h2 : ‖z‖ + 2 ≤ ‖s‖ + 3 := by linarith
       gcongr)
-  exact (this.differentiableAt (ho.mem_nhds ⟨hs, by simp⟩)).differentiableWithinAt
+  exact (this.differentiableAt (ho.mem_nhds ⟨hσs, by simp⟩)).differentiableWithinAt
+
+lemma differentiableOn_tsum_emE :
+    DifferentiableOn ℂ (fun s => ∑' n : ℕ, emE ((n : ℝ) + 1) s) {s : ℂ | -(15/8 : ℝ) < s.re} := by
+  exact differentiableOn_tsum_emE_of_neg_two_lt.mono (fun s hs => by dsimp at hs ⊢; linarith)
 
 lemma tendsto_cpow_zero {c : ℂ} (hc : c.re < 0) :
     Tendsto (fun n : ℕ => (((n : ℝ) + 1 : ℝ) : ℂ) ^ c) atTop (𝓝 0) := by
@@ -218,19 +234,19 @@ lemma eq_of_one_lt {s : ℂ} (hs : 1 < s.re) :
   rw [tendsto_nhds_unique h2 h1]
   ring
 
-lemma eq_of_lt {s : ℂ} (hs : -(15/8 : ℝ) < s.re) (h1 : s ≠ 1) :
+lemma eq_of_neg_two_lt {s : ℂ} (hs : (-2 : ℝ) < s.re) (h1 : s ≠ 1) :
     (s - 1) * riemannZeta s = emT 1 s + ∑' n : ℕ, emE ((n : ℝ) + 1) s := by
-  have ho : IsOpen {z : ℂ | -(15/8 : ℝ) < z.re} := isOpen_lt continuous_const Complex.continuous_re
+  have ho : IsOpen {z : ℂ | (-2 : ℝ) < z.re} := isOpen_lt continuous_const Complex.continuous_re
   have hf : ∀ z : ℂ, z ≠ 1 → LFunctionTrivChar₁ 1 z = (z - 1) * riemannZeta z := by
     intro z hz
     rw [LFunctionTrivChar₁, Function.update_of_ne hz, LFunctionTrivChar, LFunction_modOne_eq]
-  have hA : AnalyticOnNhd ℂ (LFunctionTrivChar₁ 1) {z : ℂ | -(15/8 : ℝ) < z.re} :=
+  have hA : AnalyticOnNhd ℂ (LFunctionTrivChar₁ 1) {z : ℂ | (-2 : ℝ) < z.re} :=
     (differentiable_LFunctionTrivChar₁ 1).differentiableOn.analyticOnNhd ho
   have hB : AnalyticOnNhd ℂ (fun s => emT 1 s + ∑' n : ℕ, emE ((n : ℝ) + 1) s)
-      {z : ℂ | -(15/8 : ℝ) < z.re} :=
-    ((differentiable_emT one_pos).differentiableOn.add differentiableOn_tsum_emE).analyticOnNhd ho
+      {z : ℂ | (-2 : ℝ) < z.re} :=
+    ((differentiable_emT one_pos).differentiableOn.add differentiableOn_tsum_emE_of_neg_two_lt).analyticOnNhd ho
   have := hA.eqOn_of_preconnected_of_eventuallyEq hB
-    (convex_halfSpace_re_gt _).isPreconnected (z₀ := 2) (by simp; norm_num) (by
+    (convex_halfSpace_re_gt _).isPreconnected (z₀ := 2) (by norm_num) (by
       have : {z : ℂ | 1 < z.re} ∈ 𝓝 (2 : ℂ) :=
         (isOpen_lt continuous_const Complex.continuous_re).mem_nhds (by simp)
       filter_upwards [this] with z hz
@@ -238,18 +254,26 @@ lemma eq_of_lt {s : ℂ} (hs : -(15/8 : ℝ) < s.re) (h1 : s ≠ 1) :
   rw [← hf s h1]
   exact this hs
 
-theorem norm_sub_one_mul_riemannZeta_le :
-    ∃ C : ℝ, 0 < C ∧ ∀ s : ℂ, -(7/4 : ℝ) ≤ s.re → s ≠ 1 →
+lemma eq_of_lt {s : ℂ} (hs : -(15/8 : ℝ) < s.re) (h1 : s ≠ 1) :
+    (s - 1) * riemannZeta s = emT 1 s + ∑' n : ℕ, emE ((n : ℝ) + 1) s := by
+  exact eq_of_neg_two_lt (by linarith) h1
+
+/-- Polynomial growth on every closed half-plane strictly to the right of `-2`. -/
+theorem norm_sub_one_mul_riemannZeta_le_of_neg_two_lt {σ : ℝ} (hσ : -2 < σ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ s : ℂ, σ ≤ s.re → s ≠ 1 →
       ‖(s - 1) * riemannZeta s‖ ≤ C * (‖s‖ + 2) ^ 5 := by
-  set K : ℝ := ∑' n : ℕ, ((n : ℝ) + 1) ^ (-(9/8 : ℝ)) with hK
+  set K : ℝ := ∑' n : ℕ, ((n : ℝ) + 1) ^ (-σ - 3) with hK
+  have hsum : Summable (fun n : ℕ => ((n : ℝ) + 1) ^ (-σ - 3)) := by
+    simpa using (summable_nat_add_iff 1).2
+      (Real.summable_nat_rpow.2 (by linarith : -σ - 3 < -1))
   have hK0 : 0 ≤ K := tsum_nonneg fun n => by positivity
   refine ⟨3 + K, by linarith, fun s hs h1 => ?_⟩
-  rw [eq_of_lt (by linarith) h1]
+  rw [eq_of_neg_two_lt (by linarith) h1]
   set R := ‖s‖ + 2 with hR
   have hR1 : 1 ≤ R := by have := norm_nonneg s; linarith
   have h2 : ‖∑' n : ℕ, emE ((n : ℝ) + 1) s‖ ≤ R ^ 4 * K :=
-    tsum_of_norm_bounded (summable_nine_pow_mul_inv_sq_succ.hasSum.mul_left (R ^ 4))
-      (fun n => norm_emE_le (by simp) (by linarith))
+    tsum_of_norm_bounded (hsum.hasSum.mul_left (R ^ 4))
+      (fun n => norm_emE_le_of_lower_bound (by linarith) (by simp) hs)
   have c0 : ‖1 - s‖ ≤ R := by
     have := norm_sub_le 1 s
     rw [norm_one] at this; linarith
@@ -266,5 +290,10 @@ theorem norm_sub_one_mul_riemannZeta_le :
   have p5 : R ^ 4 * K ≤ R ^ 5 * K := by gcongr
   refine (norm_add_le _ _).trans ?_
   nlinarith
+
+theorem norm_sub_one_mul_riemannZeta_le :
+    ∃ C : ℝ, 0 < C ∧ ∀ s : ℂ, -(7/4 : ℝ) ≤ s.re → s ≠ 1 →
+      ‖(s - 1) * riemannZeta s‖ ≤ C * (‖s‖ + 2) ^ 5 := by
+  exact norm_sub_one_mul_riemannZeta_le_of_neg_two_lt (by norm_num)
 
 end GlobalTheory.ZetaLeft

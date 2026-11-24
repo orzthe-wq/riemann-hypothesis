@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExpoConjOfIsCsd
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartUnipotentFderivContinuousOnStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartUnipotentFderivContinuousOn
 public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.AdlEqZeroOfMemNbhd
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -106,8 +106,8 @@ theorem chart_cont_bound {r : ℕ} {φ : Sm E a} (hφ : IsAutForm φ) (g : GA E 
     (∀ y ∈ invSet E a, Continuous fun x : BlockIx a r → Ad E => fderiv ℝ (chart φ.1 (unip x * g)) y X) ∧
     ∀ S : Set (Lie E a), IsCompact S → S ⊆ invSet E a → ∃ C, ∀ x : BlockIx a r → Ad E, ∀ y ∈ S,
       ‖chart φ.1 (unip x * g) y‖ ≤ C ∧ ‖fderiv ℝ (chart φ.1 (unip x * g)) y X‖ ≤ C := by
-  have h1 := (GlobalTheory.T.chart_unipotent_fderiv_continuousOn E a r φ hφ g X).1
-  have h2 := (GlobalTheory.T.chart_unipotent_fderiv_continuousOn E a r φ hφ g X).2
+  have h1 := (_root_.GlobalTheory.CuspRep.JointCont.chart_jointCont E a r φ hφ g X).1
+  have h2 := (_root_.GlobalTheory.CuspRep.JointCont.chart_jointCont E a r φ hφ g X).2
   have hm : ∀ y ∈ invSet E a, ∀ x : BlockIx a r → Ad E,
       ((x, y) : (BlockIx a r → Ad E) × Lie E a) ∈ Set.univ ×ˢ invSet E a :=
     fun y hy x => Set.mem_prod.2 ⟨Set.mem_univ _, hy⟩

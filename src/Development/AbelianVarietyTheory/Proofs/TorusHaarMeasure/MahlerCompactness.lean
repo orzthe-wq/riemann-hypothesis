@@ -213,7 +213,6 @@ open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 theorem _root_.GlobalTheory.FlagMahler.Kset_compact (R : ℝ) :
     IsCompact (_root_.GlobalTheory.FlagMahler.Kset X R) := by
-  change IsCompact (_root_.GlobalTheory.FlagMahler.Kset X R : Set (X.Ψ → Fin r → Fin r → ℂ))
   refine Metric.isCompact_of_isClosed_isBounded ?_ ?_
   · have : (_root_.GlobalTheory.FlagMahler.Kset X R : Set (X.Ψ → Fin r → Fin r → ℂ)) = ⋂ τ : X.Ψ,
         ({w : X.Ψ → Fin r → Fin r → ℂ | _root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (Matrix.of (w τ)) =
@@ -475,7 +474,7 @@ private theorem gram_map_mul_of_isUStab {γ : GL (Fin r) E} (hγ : _root_.Recipr
     ext a b
     have := hγ.1 (Pi.single a 1) (Pi.single b 1)
     unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.herm at this
-    simp [mulVec_single, Pi.single_apply, apply_ite _root_.ReciprocityTheory.ChartRestriction.G.FD.cc, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc_one, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc_zero] at this
+    simp [mulVec_single, Pi.single_apply, apply_ite _root_.ReciprocityTheory.ChartRestriction.G.FD.cc] at this
     rw [← this]
     simp only [Matrix.mul_apply, transpose_apply, map_apply, Finset.sum_mul]
     rw [Finset.sum_comm]

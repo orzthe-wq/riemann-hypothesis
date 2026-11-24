@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible
 public import Mathlib.Data.Matrix.ColumnRowPartitioned
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctionsStatement
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctions
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThHEqThSDictionary
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UnitaryActHalfSpace
 import Mathlib.Algebra.Order.Floor.Extended
@@ -336,7 +336,7 @@ open GlobalTheory.SW.HeisH in
 theorem GlobalTheory.SW.heisH_laws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → ∀ (d b : Matrix (Fin n) (Fin N) E) (φ : Matrix (Fin n) (Fin N) E → ℂ), IsSB φ → IsSB (heisH d b φ) ∧ (∀ Z ∈ Hn Ψ N, ∀ z z' : CM Ψ n N, thH Ψ (heisH d b φ) Z z z' = cexp (2 * π * I * expo Ψ d Z z z' + π * I * ((Algebra.trace ℚ E (∑ k, ∑ a, b k a * cc (d k a)) : ℚ) : ℂ)) * thH Ψ φ Z (fun τ => z τ + (b.map τ.1).map conj + (d.map τ.1).map conj * (Z τ)ᵀ) (fun τ => z' τ + b.map τ.1 + d.map τ.1 * Z τ)) ∧ ∀ γ ∈ UU E N, weil Ψ γ (heisH d b φ) = heisH (Matrix.fromCols d b * γ⁻¹).toCols₁ (Matrix.fromCols d b * γ⁻¹).toCols₂ (weil Ψ γ φ) := by
   intro E _ _ _ Ψ hΨ n N hn d b φ hφ
   refine ⟨isSB_heisH d b hφ, fun Z _ z z' => thH_heisH hΨ d b φ Z z z', fun γ hγ => ?_⟩
-  obtain ⟨h1, h2, -⟩ := GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ φ hφ
+  obtain ⟨h1, h2, -⟩ := _root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ φ hφ
   have h3 := transH_heisH hΨ hγ (fromCols d b * γ⁻¹).toCols₁ (fromCols d b * γ⁻¹).toCols₂ h2
   rw [← (cols_eq hγ d b).1, ← (cols_eq hγ d b).2] at h3
-  exact ((GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ _ (isSB_heisH d b hφ)).2.2.1 _ (isSB_heisH _ _ h1) h3).symm
+  exact ((_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ _ (isSB_heisH d b hφ)).2.2.1 _ (isSB_heisH _ _ h1) h3).symm

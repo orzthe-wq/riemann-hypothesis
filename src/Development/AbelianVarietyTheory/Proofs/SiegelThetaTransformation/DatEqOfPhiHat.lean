@@ -50,10 +50,6 @@ open scoped Classical
 
 namespace GlobalTheory.ClsVal
 
-private theorem host_bar_bar' {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (a : 𝓞 E) :
-    H.bar (H.bar a) = a :=
-  RingOfIntegers.ext (by rw [H.bar_eq, H.bar_eq, NumberField.IsCMField.complexConj_apply_apply])
-
 private theorem levelM_mem_Mb_and_Mfr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     (l : Geo.Tor.Level H) : (l.M : 𝓞 E) ∈ l.Mb ∧ (l.M : 𝓞 E) ∈ Mfr l := by
   have h : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) := by
@@ -103,7 +99,7 @@ private theorem dvd_EF_cSep_of_mem_Mfr_left {E : Type} [Field E] [NumberField E]
     show (l.M : ℤ) ∣ Dw.EF (μ • y) (cSep l • v)
     obtain ⟨α, hα, rfl⟩ := (Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 hμ
     obtain ⟨γ, hγ⟩ := exists_mul_eq_M_mul_of_mem_Mb_Mfr l hα (cSep_mem_Mfr l)
-    have hb : H.bar ((H.bar : 𝓞 E →+* 𝓞 E) α) = α := host_bar_bar' H α
+    have hb : H.bar ((H.bar : 𝓞 E →+* 𝓞 E) α) = α := _root_.GlobalTheory.DatumInverseCharacter.bar_bar H α
     rw [Dw.adj, hb, smul_smul, hγ]
     exact dvd_EF_M_mul_smul_right Dw l.M γ y v
   · intro a b ha hb
@@ -204,17 +200,6 @@ private theorem zpow_eq_zpow_of_dvd_sub_of_pow_eq_one {K : Type} [Field K] (z : 
     exact zero_ne_one hz
   have e : a = b + M * j := by omega
   rw [e, zpow_add₀ hz0, _root_.zpow_mul, zpow_natCast, hz, _root_.one_zpow, mul_one]
-
-private theorem quotient_mk_qRep {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
-    {Dw : Datum H} {K : Submodule (𝓞 E) Dw.La} (q : Dw.La ⧸ K) :
-    (Submodule.Quotient.mk (qRep q) : Dw.La ⧸ K) = q :=
-  Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)
-
-private theorem quotient_mk_levRep {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
-    {Dw : Datum H} {l : Geo.Tor.Level H} (q : LevQ Dw l) :
-    (Submodule.Quotient.mk (levRep q) : LevQ Dw l) = q :=
-  Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)
-
 
 open GlobalTheory.DatumInverseCharacter in
 theorem datEq_of_phiHat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n), d.IsLev → ∀ (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ) (φ : (Fin n → LevQc Dw d.l₂) → c.F) (w : (Fin n → LevQ Dw d.l₂) → c.F), (∀ q, d.eF (w q) = phiHat d.c₂ (fun x => d.eF (φ x)) q) → (∀ (kI : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) (σq : LevQ Dw d.l₂ ≃ₗ[𝓞 E] LevQ Dw d.l₂) (σc : LevQc Dw d.l₂ ≃ₗ[𝓞 E] LevQc Dw d.l₂), (∀ a b : Dw.La, σq (Submodule.Quotient.mk a) = Submodule.Quotient.mk b → a - b ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La) ∧ kI (Submodule.Quotient.mk a) = Submodule.Quotient.mk b) → (∀ (x : LevQc Dw d.l₂) (q : LevQ Dw d.l₂), (d.l₂.M : ℤ) ∣ Dw.EF (qRep (σc x)) (cSep d.l₂ • levRep (σq q)) - Dw.EF (qRep x) (cSep d.l₂ • levRep q)) → ∀ x, φ (fun b => σc.symm (x b)) = (((ψ kI)⁻¹ : c.Fˣ) : c.F) * φ x) → DatEq d ψ w := by
@@ -317,9 +302,9 @@ theorem datEq_of_phiHat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
       have hσc : ∀ a : Dw.La, σc (Submodule.Quotient.mk a) = Submodule.Quotient.mk (t a) := fun a => rfl
       refine ⟨σc, fun x y => ?_⟩
       have hu : qRep (σc x) - t (qRep x) ∈ Mfr d.l₂ • (⊤ : Submodule (𝓞 E) Dw.La) := by
-        rw [← Submodule.Quotient.eq, quotient_mk_qRep, ← hσc, quotient_mk_qRep]
+        rw [← Submodule.Quotient.eq, _root_.GlobalTheory.DatumInverseCharacter.qRep_spec, ← hσc, _root_.GlobalTheory.DatumInverseCharacter.qRep_spec]
       have hv : levRep (σL y) - s.f d.l₂.M (levRep y) ∈ d.l₂.Mb • (⊤ : Submodule (𝓞 E) Dw.La) := by
-        rw [← Submodule.Quotient.eq, quotient_mk_levRep, ← hσq, quotient_mk_levRep]
+        rw [← Submodule.Quotient.eq, _root_.GlobalTheory.DatumInverseCharacter.levRep_spec, ← hσq, _root_.GlobalTheory.DatumInverseCharacter.levRep_spec]
         rfl
       have A1 := dvd_EF_cSep_of_mem_Mfr_left d.l₂ hu (levRep (σL y))
       have A2 := dvd_EF_cSep_of_mem_Mb_right d.l₂ (t (qRep x)) hv

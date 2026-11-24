@@ -75,7 +75,6 @@ theorem etale_of_isZTorsor (B D : Type) [CommRing B] [CommRing D] [Algebra B D] 
     obtain ⟨e, he⟩ := hbij.2 (1 - Pi.single (1 : Multiplicative (ZMod q)) (1 : D))
     have heI : e ∈ KaehlerDifferential.ideal B D := by
       rw [KaehlerDifferential.ideal, RingHom.mem_ker]
-      change Algebra.TensorProduct.lmul' B e = 0
       rw [hmul, he]; simp
     apply le_antisymm Ideal.mul_le_left
     intro x hx
@@ -88,7 +87,7 @@ theorem etale_of_isZTorsor (B D : Type) [CommRing B] [CommRing D] [Algebra B D] 
       funext g
       by_cases hg : g = 1
       · subst hg; simp [hx0]
-      · simp [Pi.single_apply, hg]
+      · simp [hg]
     rw [hxe]
     exact Ideal.mul_mem_mul hx heI
   haveI : Subsingleton Ω[D⁄B] := (Ideal.cotangent_subsingleton_iff _).2 hidem

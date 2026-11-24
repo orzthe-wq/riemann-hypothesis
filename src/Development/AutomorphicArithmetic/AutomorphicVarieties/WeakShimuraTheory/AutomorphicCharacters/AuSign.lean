@@ -59,7 +59,7 @@ theorem UpperTheory.V.Ws.auSign :
   let σ : Ω ≃ₐ[ℚ] Ω := AlgHom.restrictNormal' j'.toRatAlgHom Ω
   have hσ : ∀ x, j (σ x) = j' x := fun x => by
     have h := AlgHom.restrictNormal_commutes j'.toRatAlgHom Ω x
-    simp only [RingHom.algebraMap_toAlgebra, Algebra.algebraMap_self, RingHom.id_apply,
+    simp only [RingHom.algebraMap_toAlgebra, RingHom.id_apply,
       RingHom.toRatAlgHom_apply] at h
     exact h
   have key : σ * c' = c * σ := by

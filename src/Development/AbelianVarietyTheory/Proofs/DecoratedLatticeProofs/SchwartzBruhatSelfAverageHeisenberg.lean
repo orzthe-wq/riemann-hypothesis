@@ -1,13 +1,16 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ToOneSucc
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSchwartzBruhatSupportedNhdsIntegralOneStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSchwartzBruhatSupportedNhdsIntegralOne
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeakIntegralOfIsLocallyConstantOfIsCompact
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralMulOfSupport
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OrbitLocallyConstant
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeOperatorWeilRowUnipotentStatement
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FourierJacobiAverage
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeOperatorWeilRowUnipotent
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeSupportAndFourierRelation
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzFourierTransformPiSurjectiveSchwartzBruhStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzFourierTransformPiSurjectiveSchwartzBruh
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -48,7 +51,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
 
 @[expose] public section
 
@@ -66,7 +68,7 @@ theorem avg_self_and_props : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologi
   have := hν.1
   have := secondCountable k
   have := t2Space k
-  have hF := GlobalTheory.T.schwartzFourierTransformPi_surjective_schwartzBruhat k n' ψ hψ hψ1 ν hν
+  have hF := _root_.GlobalTheory.SplitWeil.FourierSurj.hat_surjective k n' ψ hψ hψ1 ν hν
   have main : ∀ Φ₀ : SB (n' → k),
       ∃ w : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k), GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.avg ψ ν μ p Φ₀.1 Φ.1 = w.1 ∧
       (∀ h, opE ψ ν p (om μ 1 h w.1) = opEFJ ψ ν p Φ₀.1 (om μ 1 h Φ.1)) ∧
@@ -88,7 +90,7 @@ theorem avg_self_and_props : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologi
       congr 1; funext u
       simp only [T, LinearMap.comp_apply, map_smul, smul_eq_mul]
       congr 1
-      have := GlobalTheory.T.rootExchangeOperator_weil_rowUnipotent k n n' c p hp1 hpc ψ hψ ν μ (omR μ (1, h) Φ) u x₀
+      have := _root_.GlobalTheory.RootEx.RowSign.opE_om_rowE k n n' c p hp1 hpc ψ hψ ν μ (omR μ (1, h) Φ) u x₀
       rw [← omR_val, omR_mul, one_mul, mul_one] at this
       rw [omR_mul, one_mul, mul_one]
       exact this
@@ -100,7 +102,7 @@ theorem avg_self_and_props : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologi
       ((omR_smooth hμ' Φ).preimage (ExchangeSupport.continuous_rowE.prodMk continuous_const)).mem_nhds (by
         change omR μ (rowE (c + 1) p 0, 1) Φ = Φ
         rw [ExchangeSupport.rowE_zero, ← Prod.one_eq_mk, map_one, Module.End.one_apply])
-    obtain ⟨g, a, a1⟩ := GlobalTheory.T.exists_schwartzBruhat_supported_nhds_integral_one k n' ν _ hU
+    obtain ⟨g, a, a1⟩ := _root_.GlobalTheory.RootEx.exists_SB_supported_integral_one k n' ν _ hU
     obtain ⟨Φ₀, h0⟩ := hF.2 g
     refine ⟨Φ₀, funext fun x => ?_⟩
     rw [GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.avg, h0, GlobalTheory.RootEx.FourierJacobi.integral_mul_of_support (z := Φ.1 x) a, a1, one_mul]

@@ -78,11 +78,7 @@ namespace SequenceOfBlowups
 
 variable {X : Scheme.{u}}
 
-theorem withoutIsoBlowups_projectionToBase (s : SequenceOfBlowups X) (j : ℕ) :
-    s.withoutIsoBlowups.projectionToBase j = s.projectionToBase (s.nontrivialIndex j) := by
-  have h0 : s.withoutIsoBlowups.isoZero.hom = s.projectionToBase (s.nontrivialIndex 0) := s.objNontrivialIndexZeroIso_hom
-  rw [projectionToBase_def, withoutIsoBlowups_transitionMap, h0]
-  exact s.transitionMap_comp_projectionToBase (s.nontrivialIndex_monotone (Nat.zero_le j))
+alias withoutIsoBlowups_projectionToBase := _root_.FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.withoutIsoBlowups_projectionToBase_eq_nontrivialIndex
 
 theorem exists_nontrivialIndex_eq_of_center_ne_top (s : SequenceOfBlowups X) {i : ℕ} (hi : i < s.length)
     (h : s.center i ≠ ⊤) :

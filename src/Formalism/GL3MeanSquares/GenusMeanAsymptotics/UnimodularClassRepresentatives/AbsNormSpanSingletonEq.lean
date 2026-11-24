@@ -83,7 +83,7 @@ theorem discrIdeal_span {h : V →ₗ⋆[K] V →ₗ[K] K} (b : Basis (Fin (finr
     have hz' : z = conjO K d * g₀ * d := by
       apply IsFractionRing.injective (𝓞 K) K
       have e1 : algebraMap (𝓞 K) K (conjO K d) = star (algebraMap (𝓞 K) K d) := by
-        first | rfl | simp [conjO]
+        first | rfl
       rw [hz, map_mul, map_mul, e1, hd, hg]
     rw [hz', Ideal.mem_span_singleton]
     exact ⟨conjO K d * d, by ring⟩
@@ -115,7 +115,7 @@ theorem normD_mul_relIndex (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) 
     (hidx : (Submodule.span (𝓞 K) (Set.range b)).toAddSubgroup.relIndex L.toAddSubgroup ≠ 0) :
     normD h L * ((Submodule.span (𝓞 K) (Set.range b)).toAddSubgroup.relIndex L.toAddSubgroup : ℝ) =
       ∏ w : InfinitePlace K, w (gdet h b) := by
-  haveI : IsTotallyComplex K := hK.1
+  have : IsTotallyComplex K := hK.1
   have hint : ∀ i j, ∃ c : 𝓞 K, algebraMap (𝓞 K) K c = h (b i) (b j) := fun i j =>
     Submodule.mem_one.1 (hLi _ (hb i) _ (hb j))
   choose c hc using hint

@@ -5,12 +5,16 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncPts
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDomainAndIsIntegrallyClosedAtPrimeOfSmoothOfCo
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordOverIntOfFiniteOrderStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsSingleBlockSegreStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsNormalisationStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalIsoOfIntegrallyClosedStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtFractionNoetherianClosedStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncPointsTransferDominatingStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordOverIntOfFiniteOrder
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordsSingleBlockSegre
+public import Mathlib.AlgebraicGeometry.Morphisms.Finite
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsNormalisation
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalIsoOfIntegrallyClosed
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
+public import Mathlib.RingTheory.IntegralClosure.IntegrallyClosed
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtFractionNoetherianClosed
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncPointsTransferDominating
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -106,18 +110,18 @@ theorem GlobalTheory.CompanionTheory.Ar.GeoModel.NormPatch.exists_normal_model :
   intro Ω _ _ X ξ N x e Ab hall htie hsnc
   let M0 : PModel ℤ x :=
     { X := X, ξ := ξ, s := specZIsTerminal.from X, hover := specZIsTerminal.hom_ext _ _, all := hall, tie := htie }
-  obtain ⟨κ', _, y, M', f, hdom, hnorm, -, hat⟩ := GlobalTheory.T.exists_normal_dominating_model ℤ Ω (Fin (N + 1)) x M0 Ω
+  obtain ⟨κ', _, y, M', f, hdom, hnorm, -, hat⟩ := _root_.GlobalTheory.CompanionTheory.Ar.NormEx.exists_normalisation ℤ Ω (Fin (N + 1)) x M0 Ω
   have hdom' : GlobalTheory.CompanionTheory.Ar.Dominates M'.ξ ξ f (RingHom.id Ω) := hdom
   have hiso : ∀ q ∈ genFib ξ, IsoAt M'.ξ f (RingHom.id Ω) q := by
     intro q hq
     have hc : Char0 ξ q := fun r hr hf => hf (hq r hr.pos)
     obtain ⟨A, z, n, P, hp, hP, hloc⟩ := hsnc q hc
-    haveI := (GlobalTheory.T.regAt_fraction_noetherian_closed X Ω ξ htie.gen q).1
-    exact GlobalTheory.T.normal_iso_of_integrally_closed X Ω ξ M'.X M'.ξ f q (hat q)
+    haveI := (_root_.GlobalTheory.CompanionTheory.Ar.RegAtRing.regAt_ring X Ω ξ htie.gen q).1
+    exact _root_.GlobalTheory.CompanionTheory.Ar.NormAt.isoAt_of_integrallyClosed X Ω ξ M'.X M'.ξ f q (hat q)
       (fun a ha => mem_of_isIntegral_of_isLocAt _ A hp.smooth P hP hloc a ha)
-  obtain ⟨N', x', hx'⟩ := GlobalTheory.T.coord_over_int_of_finite_order M'.X Ω M'.ξ ℤ κ' y M'.tie
-  have hone := GlobalTheory.T.coords_single_block_segre M'.X Ω M'.ξ N' x' hx'
-  have hsnc' := GlobalTheory.T.snc_points_transfer_dominating Ω (Fin (N + 1)) _ x _ X M'.X ξ M'.ξ f e Ab hall M'.all htie hone hdom' hiso hsnc
+  obtain ⟨N', x', hx'⟩ := _root_.GlobalTheory.CompanionTheory.Ar.coordTie_int_of_finite M'.X Ω M'.ξ ℤ κ' y M'.tie
+  have hone := _root_.GlobalTheory.CompanionTheory.Ar.SncBase.Reindex.coordTie_one_block M'.X Ω M'.ξ N' x' hx'
+  have hsnc' := _root_.GlobalTheory.CompanionTheory.Ar.PatchIso.sncPts_of_isoAt Ω (Fin (N + 1)) _ x _ X M'.X ξ M'.ξ f e Ab hall M'.all htie hone hdom' hiso hsnc
   exact ⟨Unit, inferInstance, fun _ => Fin (N' + 1), fun _ => inferInstance, fun p => x' p.2,
     { X := M'.X, ξ := M'.ξ, s := M'.s, hover := M'.hover, all := M'.all, tie := hone }, f,
     inferInstance, hdom', hnorm, hsnc'⟩

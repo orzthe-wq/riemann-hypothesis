@@ -136,13 +136,13 @@ theorem _root_.GlobalTheory.TestLat.SlopeModel.sumGram_posDef (lam : ι → _roo
     conv_lhs =>
       enter [2, c, 2, i, 2]
       rw [← e.symm.sum_comp, Fintype.sum_prod_type]
-    simp only [Equiv.apply_symm_apply, ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_irrel,
+    simp only [Equiv.apply_symm_apply, ite_mul, zero_mul, Finset.sum_ite_irrel,
       Finset.sum_const_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
     rw [hW, Finset.mul_sum]
     refine Finset.sum_congr rfl fun c _ => ?_
 
     simp only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
-    Finset.mul_sum, Finset.sum_mul]
+    Finset.mul_sum]
     rw [Finset.sum_comm (γ := _root_.Formalism.L2.DIV.VVIdx lam) (f := fun i j => D * _)]
     simp only [Complex.star_def, RingHom.id_apply]
     exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring

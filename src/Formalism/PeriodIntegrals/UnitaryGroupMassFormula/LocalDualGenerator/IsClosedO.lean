@@ -89,7 +89,7 @@ theorem iota_mem (hcont : Continuous (algebraMap ℚ_[l] K)) (a : ℤ_[l]) :
     (isClosed_O (K := K)).preimage (hcont.comp continuous_subtype_val)
   refine PadicInt.denseRange_intCast.induction_on a hcl ?_
   intro n
-  simp only [Set.mem_setOf_eq, PadicInt.coe_intCast, map_intCast]
+  simp only [PadicInt.coe_intCast, map_intCast]
   exact intCast_mem _ n
 
 def iotaR (hcont : Continuous (algebraMap ℚ_[l] K)) : ℤ_[l] →+* 𝒪[K] :=

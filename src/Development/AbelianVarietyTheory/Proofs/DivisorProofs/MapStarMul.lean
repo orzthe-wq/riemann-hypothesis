@@ -200,46 +200,6 @@ theorem Adj.one : Adj N 1 1 := by
 
 variable {p r q θ Z : Matrix m m ℂ}
 
-theorem adj_parts (h : Grading p r q θ) (hp : Adj N p q) (hq : Adj N q p) (hθ : Adj N θ θ) (hZ : Adj N Z (-Z)) :
-    Adj N (up p r q (Z - θ * Z * θ)) (-up p r q (Z - θ * Z * θ)) ∧ Adj N (mid p r q Z) (-mid p r q Z) ∧
-      Adj N (low p r q Z + θ * low p r q Z * θ) (-(low p r q Z + θ * low p r q Z * θ)) := by
-  have hr : Adj N r r := by
-    have := (Adj.one.sub hp).sub hq
-    rwa [sub_sub 1 q p, add_comm q p, ← sub_sub, ← h.sum] at this
-  have hl : Adj N (low p r q Z) (-low p r q Z) := by
-    have := (((hr.mul hZ).mul hp).add ((hq.mul hZ).mul hp)).add ((hq.mul hZ).mul hr)
-    convert this using 1 <;> (simp only [low]; try noncomm_ring)
-  refine ⟨?_, ?_, ?_⟩
-  · have hZ' := hZ.sub ((hθ.mul hZ).mul hθ)
-    have := (((hp.mul hZ').mul hr).add ((hp.mul hZ').mul hq)).add ((hr.mul hZ').mul hq)
-    convert this using 1 <;> (simp only [up]; try noncomm_ring)
-  · have := (((hp.mul hZ).mul hp).add ((hr.mul hZ).mul hr)).add ((hq.mul hZ).mul hq)
-    convert this using 1 <;> (simp only [mid]; try noncomm_ring)
-  · have := hl.add ((hθ.mul hl).mul hθ)
-    convert this using 1
-    noncomm_ring
-
-theorem exp_up (h : Grading p r q θ) (Z : Matrix m m ℂ) (t : ℝ) :
-    NormedSpace.exp (t • up p r q Z) * p = p ∧ (1 - p) * NormedSpace.exp (t • up p r q Z) * r = r := by
-  set A := t • up p r q Z with hA
-  have a1 : A * p = 0 := by rw [hA, Matrix.smul_mul, h.up_p, smul_zero]
-  have a2 : A * r = p * (t • Z) * r := by rw [hA, Matrix.smul_mul, h.up_r, Matrix.mul_smul, Matrix.smul_mul]
-  have e1 : NormedSpace.exp A * p = p := by
-    rw [exp_mul_eq (D := 0) (by rw [a1, Matrix.mul_zero]), NormedSpace.exp_zero, Matrix.mul_one]
-  refine ⟨e1, ?_⟩
-  have e2 : NormedSpace.exp A * (p + r) = (p + r) * NormedSpace.exp (A * r) := by
-    refine exp_mul_eq ?_
-    rw [Matrix.mul_add, a1, zero_add, a2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.add_mul, h.pp, h.rp, add_zero]
-  have e3 : r * NormedSpace.exp (A * r) = r := by
-    rw [← exp_mul_eq (A := 0) (by rw [a2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h.rp]; simp), NormedSpace.exp_zero,
-      Matrix.one_mul]
-  have e4 : (1 - p) * (p + r) = r := by
-    rw [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_add, h.pp, h.pr]; abel
-  have e5 : (1 - p) * p = 0 := by rw [Matrix.sub_mul, Matrix.one_mul, h.pp, sub_self]
-  calc (1 - p) * NormedSpace.exp A * r = (1 - p) * (NormedSpace.exp A * (p + r)) - (1 - p) * (NormedSpace.exp A * p) := by
-        noncomm_ring
-    _ = r := by rw [e1, e2, e5, sub_zero, ← Matrix.mul_assoc, e4, e3]
-
 end Adj
 
 section Plane

@@ -1,9 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsMetricFrOfIsMetricOn
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvatureMatrixPowProductEntrySmoothDbarClosedStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarOperatorLocalCalculusComplexFormsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothCoefficientFormsClosedUnderOperationsStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CurvatureMatrixPowProductEntrySmoothDbarClosed
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarOperatorLocalCalculusComplexForms
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothCoefficientFormsClosedUnderOperations
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -71,12 +72,12 @@ theorem transAt_eq_sum {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G G' : 
 
 theorem powAt_transAt_smooth : ∀ (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G G' : V n → Matrix r r ℂ) (v : V n), MContDiffAt ∞ G v → IsUnit (G v).det → MContDiffAt ∞ G' v → IsUnit (G' v).det → ∀ k, (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr ((powAt G x k : Alt n)) S) v) ∧ dbarAt (fun x => (powAt G x k : Alt n)) v = 0 ∧ (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (transAt G G' x k) S) v) := by
   intro n r _ _ G G' v hG hGu hG' hG'u k
-  obtain ⟨hconst, hsum, hsmul, hmul⟩ := GlobalTheory.T.smooth_coefficient_forms_closed_under_operations n v
-  obtain ⟨_, hdsum, _, _, _⟩ := GlobalTheory.T.dbar_operator_local_calculus_complex_forms n v
+  obtain ⟨hconst, hsum, hsmul, hmul⟩ := _root_.GlobalTheory.ChernCalc.smooth_coeff_closure n v
+  obtain ⟨_, hdsum, _, _, _⟩ := _root_.GlobalTheory.CxForm.dbarAt_local_calculus n v
   have hpe : ∀ i, (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr
       (((curvEv G x ^ k * curvEv G' x ^ 0) i i : Ev n) : Alt n) S) v) ∧
       dbarAt (fun x => (((curvEv G x ^ k * curvEv G' x ^ 0) i i : Ev n) : Alt n)) v = 0 :=
-    fun i => GlobalTheory.T.curvatureMatrix_powProduct_entry_smooth_dbarClosed n r G G' v hG hGu hG' hG'u k 0 i i
+    fun i => _root_.GlobalTheory.ChernCalc.powCurv_entry_smooth_dbar n r G G' v hG hGu hG' hG'u k 0 i i
   have hpf : (fun x => ((powAt G x k : Ev n) : Alt n)) =
       fun x => ∑ i ∈ Finset.univ, (((curvEv G x ^ k * curvEv G' x ^ 0) i i : Ev n) : Alt n) :=
     funext fun x => powAt_coe_eq_sum G G' x k
@@ -92,6 +93,6 @@ theorem powAt_transAt_smooth : ∀ (n : ℕ) (r : Type) [Fintype r] [DecidableEq
     simp only [transAt_eq_sum]
     refine hsum _ Finset.univ _ fun a _ => hsum _ _ _ fun i _ => hsum _ Finset.univ _ fun p _ =>
       hsum _ Finset.univ _ fun q _ => hsmul _ _ (hη a p q) ?_
-    exact hmul _ _ (GlobalTheory.T.curvatureMatrix_powProduct_entry_smooth_dbarClosed n r G' G v hG' hG'u hG hGu (k - 1 - i) i q p).1 (hconst (dz a))
+    exact hmul _ _ (_root_.GlobalTheory.ChernCalc.powCurv_entry_smooth_dbar n r G' G v hG' hG'u hG hGu (k - 1 - i) i q p).1 (hconst (dz a))
 
 end GlobalTheory.ChernCalc

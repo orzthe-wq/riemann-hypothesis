@@ -69,9 +69,7 @@ theorem UpperTheory.V.Ws.Lk.prFacts :
         CommGroup.primaryComponent (TopologicalAbelianization (Dec (F := L) (s.A v))) l := hg
     obtain ⟨a, ha⟩ : ∃ a : ℕ, (QuotientGroup.mk' _ g : TopologicalAbelianization (Dec (F := L) (s.A v))) ^ l ^ a = 1 := by
       first
-      | exact exists_orderOf_eq_prime_pow_iff.1 hg'
       | exact hg'
-      | simpa using hg'
     refine ⟨a, ?_⟩
     rw [← map_pow, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff] at ha
     have hle : (commutator (Dec (F := L) (s.A v))).topologicalClosure ≤

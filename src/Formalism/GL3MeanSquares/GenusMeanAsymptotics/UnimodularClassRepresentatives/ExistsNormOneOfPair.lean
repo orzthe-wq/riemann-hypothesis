@@ -120,7 +120,6 @@ theorem exists_norm_one_mul_mem (hS : IsHermSemilocal S) {a : K} (ha : star a * 
   · have e : a * (star α / α) = star x * (a * α⁻¹) + star y * (star a * a) * (1 * α⁻¹) := by
       rw [hsα]
       field_simp
-      try ring
     rw [e]
     exact S.add_mem (S.mul_mem (hS.star_mem x hx) haα)
       (S.mul_mem (S.mul_mem (hS.star_mem y hy) ha) h1inv)

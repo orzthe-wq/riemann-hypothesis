@@ -94,15 +94,15 @@ lemma vy (hW : IntegralModel W) {x y : K} (h : W.toAffine.Equation x y) (hx : 1 
     linear_combination h
   have hX0 : 0 ≤ ‖x‖ := norm_nonneg _
   have hc : ‖W.a₁ * x + W.a₃‖ ≤ ‖x‖ := add_le (mul_le_of_one h1) (h3.trans hx.le)
-  have hXX : ‖x‖ ≤ ‖x‖ ^ 2 := by nlinarith
+  have hXX : ‖x‖ ≤ ‖x‖ ^ 2 := by simpa [sq] using le_mul_of_one_le_right hX0 hx.le
   have hr : ‖W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ ≤ ‖x‖ ^ 2 := by
     refine add_le (add_le ?_ ?_) ?_
     · exact (mul_le_of_one h2).trans (by rw [norm_pow])
     · exact (mul_le_of_one h4).trans hXX
-    · nlinarith
+    · linarith
   have hR : ‖x ^ 3 + (W.a₂ * x ^ 2 + W.a₄ * x + W.a₆)‖ = ‖x‖ ^ 3 := by
     have : ‖W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ < ‖x ^ 3‖ := by
-      rw [norm_pow]; nlinarith
+      rw [norm_pow]; exact hr.trans_lt (by rw [pow_succ]; exact lt_mul_of_one_lt_right (pow_pos (by linarith) 2) hx)
     rw [dom this, norm_pow]
   have hyx : ‖x‖ < ‖y‖ := by
     by_contra hle
@@ -112,7 +112,7 @@ lemma vy (hW : IntegralModel W) {x y : K} (h : W.toAffine.Equation x y) (hx : 1 
       · rw [norm_pow]; exact pow_le_pow_left₀ (norm_nonneg _) hle 2
       · rw [norm_mul, sq]; exact mul_le_mul hc hle (norm_nonneg _) hX0
     rw [key, hR] at this
-    nlinarith
+    exact absurd this (not_le_of_gt (by rw [pow_succ]; exact lt_mul_of_one_lt_right (pow_pos (by linarith) 2) hx))
   refine ⟨?_, hyx⟩
   have hlt : ‖(W.a₁ * x + W.a₃) * y‖ < ‖y ^ 2‖ := by
     rw [norm_mul, norm_pow, sq]
@@ -130,7 +130,7 @@ lemma zfacts (hW : IntegralModel W) {x y : K} (h : W.toAffine.Equation x y) (hx 
   · rw [norm_div, div_lt_one hYp]; exact hxy
   · rw [norm_div, div_pow]
     field_simp
-    nlinarith [hy2]
+    linarith [hy2]
 
 lemma negz (hW : IntegralModel W) {x y : K} (h : W.toAffine.Equation x y) (hx : 1 < ‖x‖) :
     ‖x / W.toAffine.negY x y + x / y‖ ≤ ‖x / y‖ ^ 2 := by
@@ -156,7 +156,7 @@ lemma lsq {l a b : K} {M : ℝ} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) (hM : 
   · push_neg at hL
     have h1 : ‖a * l - b‖ < ‖l ^ 2‖ := by
       have : ‖a * l - b‖ ≤ ‖l‖ := sub_le (mul_le_of_one ha) (hb.trans hL.le)
-      rw [norm_pow]; nlinarith
+      rw [norm_pow]; exact this.trans_lt (by rw [sq]; exact lt_mul_of_one_lt_right (by linarith) hL)
     rw [add_sub_assoc, dom h1, norm_pow] at h
     exact h
 
@@ -164,10 +164,10 @@ lemma realC {L V M : ℝ} (hL0 : 0 ≤ L) (hV0 : 0 ≤ V) (hLM : L ^ 2 ≤ M) (h
     (hV : V ≤ max 1 L) : L ≤ M ∧ V ≤ M ∧ L * V ≤ M := by
   rcases le_total L 1 with h | h
   · have hV' : V ≤ 1 := by rw [max_eq_left h] at hV; exact hV
-    refine ⟨by linarith, by linarith, ?_⟩
-    nlinarith
+    refine ⟨by linarith, by linarith, (mul_le_one₀ h hV0 hV').trans hM⟩
   · have hV' : V ≤ L := by rw [max_eq_right h] at hV; exact hV
-    refine ⟨by nlinarith, by nlinarith, by nlinarith⟩
+    have hLL : L ≤ L ^ 2 := by simpa [sq] using le_mul_of_one_le_right hL0 h
+    refine ⟨hLL.trans hLM, (hV'.trans hLL).trans hLM, (mul_le_mul_of_nonneg_left hV' hL0).trans (by rwa [← sq])⟩
 
 lemma bigx3 (hW : IntegralModel W) {x1 x2 x3 y3 l v : K} (hX1 : 1 < ‖x1‖) (hX2 : 1 < ‖x2‖)
     (h3 : W.toAffine.Equation x3 y3) (hy3 : y3 = l * x3 + v)
@@ -192,9 +192,9 @@ lemma bigx3 (hW : IntegralModel W) {x1 x2 x3 y3 l v : K} (hX1 : 1 < ‖x1‖) (h
       · exact (mul_le_of_one h4).trans hx3
     have hR : ‖-((W.a₁ * x3 + W.a₃) * y3) + (x3 ^ 3 + W.a₂ * x3 ^ 2 + W.a₄ * x3 + W.a₆)‖ ≤ ‖y3‖ := by
       refine add_le ?_ (hB.trans hy.le)
-      rw [norm_neg, norm_mul]; nlinarith [norm_nonneg (W.a₁ * x3 + W.a₃), norm_nonneg y3]
+      rw [norm_neg, norm_mul]; exact mul_le_of_le_one_left (norm_nonneg _) hA
     rw [← key, norm_pow] at hR
-    nlinarith
+    exact absurd hR (not_le_of_gt (by rw [sq]; exact lt_mul_of_one_lt_right (by linarith) hy))
   set M := max ‖x1‖ ‖x2‖ with hMdef
   have hM1 : 1 < M := lt_max_of_lt_left hX1
   have hs : ‖x1 + x2 + x3‖ ≤ M :=
@@ -214,8 +214,8 @@ lemma bigx3 (hW : IntegralModel W) {x1 x2 x3 y3 l v : K} (hX1 : 1 < ‖x1‖) (h
   have hprod : M < ‖x1 * x2‖ := by
     rw [norm_mul]
     rcases le_total ‖x1‖ ‖x2‖ with h | h
-    · rw [hMdef, max_eq_right h]; nlinarith
-    · rw [hMdef, max_eq_left h]; nlinarith
+    · rw [hMdef, max_eq_right h]; exact lt_mul_of_one_lt_left (by linarith) hX1
+    · rw [hMdef, max_eq_left h]; exact lt_mul_of_one_lt_right (by linarith) hX2
   have hsmall : ‖x3 * (x1 + x2)‖ < ‖x1 * x2‖ := by
     have : ‖x3 * (x1 + x2)‖ ≤ M := by
       rw [norm_mul]
@@ -244,12 +244,14 @@ lemma realB {t1 t2 X1 X2 X3 V L : ℝ} (ht1 : 0 < t1) (ht2 : 0 < t2)
     have : X1 * X3 = t2 ^ 2 * V ^ 2 := by rw [hV]; linear_combination (-(X1 * X3)) * h2
     rw [this, mul_pow]; exact mul_le_mul_of_nonneg_right (by assumption) (sq_nonneg _)
   constructor
-  · have : 1 < (S * V) ^ 2 := by nlinarith
-    by_contra hc; push_neg at hc
-    nlinarith
+  · have h1A : 1 < (S * V) ^ 2 := (hX2.trans (lt_mul_of_one_lt_right (by linarith) hX3)).trans_le hA
+    by_contra hc
+    exact absurd (pow_le_one₀ hSV0 (le_of_not_gt hc)) (not_le_of_gt h1A)
   · have : L ^ 2 < (S * V) ^ 2 := by
       refine hL.trans_lt ?_
-      refine max_lt (max_lt ?_ ?_) ?_ <;> nlinarith
+      exact max_lt (max_lt ((lt_mul_of_one_lt_right (by linarith) hX3).trans_le hB)
+        ((lt_mul_of_one_lt_right (by linarith) hX3).trans_le hA))
+        ((lt_mul_of_one_lt_left (by linarith) hX2).trans_le hA)
     exact lt_of_pow_lt_pow_left₀ 2 hSV0 this
 
 lemma sumz (hW : IntegralModel W) {x1 x2 x3 y1 y2 y3 l v : K}
@@ -272,8 +274,8 @@ lemma sumz (hW : IntegralModel W) {x1 x2 x3 y1 y2 y3 l v : K}
 
   have hP : 1 < ‖x1 * x2 * x3‖ := by
     rw [norm_mul, norm_mul]
-    have : 1 < ‖x1‖ * ‖x2‖ := by nlinarith
-    nlinarith
+    have h12 : 1 < ‖x1‖ * ‖x2‖ := hX1.trans (lt_mul_of_one_lt_right (by linarith) hX2)
+    exact h12.trans (lt_mul_of_one_lt_right (by linarith) hX3)
   have hV1 : 1 < ‖v‖ := by
     by_contra hc; push_neg at hc
     have : ‖v ^ 2 + W.a₃ * v - W.a₆‖ ≤ 1 :=
@@ -283,7 +285,7 @@ lemma sumz (hW : IntegralModel W) {x1 x2 x3 y1 y2 y3 l v : K}
   have hV : ‖v‖ ^ 2 = ‖x1‖ * ‖x2‖ * ‖x3‖ := by
     have hlt : ‖W.a₃ * v - W.a₆‖ < ‖v ^ 2‖ := by
       have : ‖W.a₃ * v - W.a₆‖ ≤ ‖v‖ := sub_le (mul_le_of_one h3) (h6.trans hV1.le)
-      rw [norm_pow]; nlinarith
+      rw [norm_pow]; exact this.trans_lt (by rw [sq]; exact lt_mul_of_one_lt_right (by linarith) hV1)
     have := dom hlt
     rw [← add_sub_assoc, e3, norm_pow, norm_mul, norm_mul] at this
     exact this.symm
@@ -333,12 +335,10 @@ lemma sumz (hW : IntegralModel W) {x1 x2 x3 y1 y2 y3 l v : K}
       linarith [show S * V * V ^ 2 = S * V ^ 3 by ring]
     · refine (mul_le_of_one h3).trans_lt ?_
       rw [norm_mul, norm_pow]
-      have := mul_lt_mul_of_pos_right hL2 hV0
-      linarith [show (S * V) ^ 2 * V = S * S * V ^ 2 * V by ring,
-        mul_le_mul_of_nonneg_right hSV2 hV0.le, show S * V ^ 3 * V = S * V ^ 3 * V by ring,
-        show S * S * V ^ 2 * V ≤ S * V ^ 3 * 1 by
-          have : S * S * V ^ 2 * V ≤ S * S * V ^ 2 * V := le_rfl
-          nlinarith [mul_pos hS0 hS0, pow_pos hV0 3]]
+      calc L ^ 2 * V < (S * V) ^ 2 * V := mul_lt_mul_of_pos_right hL2 hV0
+        _ = S * (S * V ^ 3) := by ring
+        _ ≤ 1 * (S * V ^ 3) := mul_le_mul_of_nonneg_right hS1.le (by positivity)
+        _ = S * V ^ 3 := one_mul _
     · refine (mul_le_of_one h2a4).trans_lt ?_
       rw [norm_mul]
       have : S * V * V ≤ S * V * V * V := le_mul_of_one_le_right (by positivity) hV1.le
@@ -404,8 +404,7 @@ lemma chord [DecidableEq K] (hW : IntegralModel W) {x1 x2 y1 y2 : K}
     have : x3 / y3 = (x1 / y1 + x2 / y2 + x3 / y3) - x1 / y1 - x2 / y2 := by ring
     rw [this]; exact sub_le (sub_le hs.le (le_max_left _ _)) (le_max_right _ _)
   have hsq : ‖x3 / y3‖ ^ 2 < S := by
-    have := pow_le_pow_left₀ (norm_nonneg _) ht3S 2
-    nlinarith
+    exact (pow_le_pow_left₀ (norm_nonneg _) ht3S 2).trans_lt (by rw [sq]; exact mul_lt_of_lt_one_left hS0 hS1)
   have : x3 / W.toAffine.negY x3 y3 - x1 / y1 - x2 / y2 =
       (x3 / W.toAffine.negY x3 y3 + x3 / y3) - (x1 / y1 + x2 / y2 + x3 / y3) := by ring
   rw [this]
@@ -432,7 +431,7 @@ lemma key [DecidableEq K] (hW : IntegralModel W) (P Q : W.toAffine.Point) (hP : 
     rw [hz]
     refine ⟨hP, ?_⟩
     obtain ⟨-, ht, -, -⟩ := zfacts hW h1.1 hP
-    simp only [zf, sub_zero, sub_self, norm_zero]
+    simp only [zf, sub_self, norm_zero]
     exact lt_max_of_lt_left ht
   · by_cases hxy : x1 = x2 ∧ y1 = W.toAffine.negY x2 y2
     · rw [Affine.Point.add_of_Y_eq hxy.1 hxy.2, Affine.Point.zero_def]
@@ -444,7 +443,8 @@ lemma key [DecidableEq K] (hW : IntegralModel W) (P Q : W.toAffine.Point) (hP : 
       rw [this, norm_neg]
       have hng := negz hW h2.1 hQ
       obtain ⟨-, ht, ht', -⟩ := zfacts hW h2.1 hQ
-      have : ‖x2 / y2‖ ^ 2 < ‖x2 / y2‖ := by nlinarith
+      have _ := ht'
+      have : ‖x2 / y2‖ ^ 2 < ‖x2 / y2‖ := by rw [sq]; exact mul_lt_of_lt_one_left ht ht'
       exact (hng.trans_lt this).trans_le (le_max_right _ _)
     · rw [Affine.Point.add_some hxy]
       exact chord hW h1.1 h2.1 hP hQ hxy

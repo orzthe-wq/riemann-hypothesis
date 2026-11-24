@@ -45,4 +45,4 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.parahoricLevel_liftsExist : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank), ∀ (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsBaseFrame V β Λ N → (∀ PP ∈ L.Pg, ∀ PP', PP' ∈ L.Pg ∨ PP' ∈ L.Q → ¬ IsConjPl PP PP') → Disjoint L.Pg L.Q → LiftsExist V β L := by
-  first | exact @GlobalTheory.ParahoricLift.liftsExist | exact GlobalTheory.ParahoricLift.liftsExist | (intros; apply GlobalTheory.ParahoricLift.liftsExist <;> assumption)
+  first | exact @GlobalTheory.ParahoricLift.liftsExist

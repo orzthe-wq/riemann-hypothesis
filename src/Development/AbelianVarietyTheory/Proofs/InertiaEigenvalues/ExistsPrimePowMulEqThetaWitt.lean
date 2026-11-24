@@ -60,9 +60,6 @@ theorem coeC (z : Om l) : (z : ℂ_[l]) = algebraMap (Om l) ℂ_[l] z := rfl
 theorem norm_l_C : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   rw [← map_natCast (algebraMap ℚ_[l] ℂ_[l]) l, norm_algebraMap', Padic.norm_p]
 
-theorem norm_l_Om : ‖(l : Om l)‖ = (l : ℝ)⁻¹ := by
-  rw [← PadicComplex.norm_extends l (l : Om l), coeC, map_natCast, norm_l_C]
-
 theorem norm_OC_le (x : OC l) : ‖(x : ℂ_[l])‖ ≤ 1 := (GlobalTheory.RingBasics.mem_OC _).1 x.2
 
 theorem mem_OL_of_norm_le (K : FinExt l) (y : ↥K.1) (h : ‖(y : Om l)‖ ≤ 1) : y ∈ OL K := by
@@ -194,7 +191,7 @@ theorem step {K : FinExt l} (bk : BK K) (y : Om l) (hyK : y ∈ K.1) (hyU : y �
   have hl0 : (l : Om l) ≠ 0 := Nat.cast_ne_zero.2 hl.out.ne_zero
   refine ⟨WittVector.teichmuller l z, (y - yt) / (l : Om l), div_mem hdK (natCast_mem _ l),
     div_mem hdU (natCast_mem _ l), ?_, ?_⟩
-  · rw [norm_div, norm_l_Om, div_inv_eq_mul]
+  · rw [norm_div, _root_.GlobalTheory.UnramValue.norm_l, div_inv_eq_mul]
     calc ‖y - yt‖ * l ≤ (l : ℝ)⁻¹ * l := by gcongr
       _ = 1 := inv_mul_cancel₀ (by positivity)
   · have hlC : (l : ℂ_[l]) ≠ 0 := Nat.cast_ne_zero.2 hl.out.ne_zero
@@ -273,7 +270,7 @@ theorem exists_pow_mul_eq_theta : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (b
   have hl1 : (1 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).one_lt
   obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt ‖x‖ hl1
   have h1 : ‖(l : Om l) ^ n * x‖ ≤ 1 := by
-    rw [norm_mul, norm_pow, norm_l_Om, inv_pow]
+    rw [norm_mul, norm_pow, _root_.GlobalTheory.UnramValue.norm_l, inv_pow]
     rw [inv_mul_le_iff₀ (by positivity), mul_one]
     exact hn.le
   obtain ⟨w, hw⟩ := exists_of_int bk _ (mul_mem (pow_mem (natCast_mem _ l) n) hxK)

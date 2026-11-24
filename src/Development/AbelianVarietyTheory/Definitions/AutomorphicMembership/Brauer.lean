@@ -21,7 +21,7 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry�
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.GelfandKazhdanDual
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.CaraianiLocalGlobalDual
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.GaloisRepOfPolarizedPair
-public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalLanglandsExists
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Langlands
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.DepthZeroCuspidalLL
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LocalConverseGL
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.LanglandsExhaustionGL
@@ -84,31 +84,6 @@ namespace GlobalTheory.Mem.LiteralAutomorphy
 
 open ReciprocityTheory.Gal Formalism.GaloisCohomology GlobalTheory.Published
 
-structure LitLoc : Prop where
-  bz : BernsteinZelevinskyFiniteness
-  bern : BernsteinUnitaryProductIrreducible
-  geo : GeometricLemma
-  zel : ZelevinskyPolynomialRing
-  disj : TotallyDisjointProductIrreducible
-  mp : MoyPrasadJacquetIso
-  theta : MinguezThetaGL
-  temp : TemperedProductOfSquareIntegrable
-  seg : EssSquareIntegrableSegments
-  sq : SquareIntegrableSegment
-  unit : UnitaryDualGL
-  gen : GenericUnlinkedGL
-  multi : LanglandsMultisegments
-  exh : LanglandsExhaustionGL
-  cos : StandardCosocleGL
-  llc : LocalLanglandsExists
-  conv : LocalConverseGL
-  dzc : DepthZeroCuspidalLL
-  dzi : DepthZeroInduction
-  dzt : DepthZeroTypeInertia
-  brauer : BrauerDegreeZero
-  chev : ChevalleyUnits
-  green : GreenRegularCharacters
-
 structure LitAut : Prop where
   decay : CuspRapidDecay
   hc : HarishChandraFinite
@@ -156,11 +131,5 @@ structure LitCM : Prop where
   dri : SiegelKlingenDeligneRibet
   pz : PartialZetaFunctionalEquation
   fe : HeckeTateFunctionalEquation
-
-structure LitN : Prop where
-  loc : LitLoc
-  aut : LitAut
-  coh : LitCoh
-  cm : LitCM
 
 end GlobalTheory.Mem.LiteralAutomorphy

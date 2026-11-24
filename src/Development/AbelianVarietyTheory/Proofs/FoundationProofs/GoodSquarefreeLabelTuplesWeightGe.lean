@@ -1,12 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MassNotRootsAvoidLeStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OneSubTwoDivLeSquarefreeLabelMassStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassDivisorBoundStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassHasDivisorOfDegreeLeStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassNoLargePrimeFactorLeStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassRootsNotDistinctLeStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MassNotRootsAvoidLe
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OneSubTwoDivLeSquarefreeLabelMass
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassDivisorBound
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassHasDivisorOfDegreeLe
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassNoLargePrimeFactorLe
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassRootsNotDistinctLe
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -141,7 +141,7 @@ theorem goodSet_weight_ge : ∀ (g : ℕ) [Fact g.Prime], ∀ (N m q d : ℕ) (�
   have hm : ∀ B : (ZMod g)[X] → Prop, 0 ≤ mass g N B := fun B => by
     unfold mass
     exact Finset.sum_nonneg fun _ _ => inv_nonneg.mpr (Nat.cast_nonneg _)
-  have h1 : (mass g N fun _ => True) ≤ 1 := (GlobalTheory.T.squarefreeLabelTorusMass_divisor_bound g).1 N
+  have h1 : (mass g N fun _ => True) ≤ 1 := (_root_.GlobalTheory.BadShare.divisor_bound g).1 N
   have hg0 : (0 : ℝ) < g := by exact_mod_cast (Fact.out : g.Prime).pos
   have hg4 : (4096 : ℝ) ≤ g := by exact_mod_cast hg
   have hN' : (100000 : ℝ) ≤ N := by exact_mod_cast hN
@@ -157,7 +157,7 @@ theorem goodSet_weight_ge : ∀ (g : ℕ) [Fact g.Prime], ∀ (N m q d : ℕ) (�
       _ ≤ (1 + (-2 / (g : ℝ))) ^ Fintype.card ι := one_add_mul_le_pow h3 _
       _ = ∏ _v : ι, (1 - 2 / (g : ℝ)) := by rw [Finset.prod_const, Finset.card_univ]; ring
       _ ≤ ∏ _v : ι, mass g N (fun _ => True) :=
-        Finset.prod_le_prod₀ (fun _ _ => h2) (fun _ _ => GlobalTheory.T.one_sub_two_div_le_squarefreeLabelMass g N)
+        Finset.prod_le_prod₀ (fun _ _ => h2) (fun _ _ => _root_.GlobalTheory.BadShare.one_sub_two_div_le_mass_true g N)
   have hsq : ∀ f ∈ sqSet g N, (f.Monic ∧ f.natDegree = N ∧ f.coeff 0 ≠ 0) ∧ Squarefree f := by
     intro f hf
     unfold sqSet at hf
@@ -171,7 +171,7 @@ theorem goodSet_weight_ge : ∀ (g : ℕ) [Fact g.Prime], ∀ (N m q d : ℕ) (�
     calc _ ≤ ∑ v ∈ Finset.univ, tupleMass g N (fun F : ι → (ZMod g)[X] => ¬ RootsApart g N (F v)) :=
           tupleMass_exists_le (Finset.univ : Finset ι) (fun (v : ι) (F : ι → (ZMod g)[X]) => ¬ RootsApart g N (F v))
       _ ≤ ∑ _v ∈ (Finset.univ : Finset ι), (23 * Real.log g / Real.sqrt g) :=
-          Finset.sum_le_sum fun v _ => (tupleMass_single_le h1 v _).trans (GlobalTheory.T.squarefreeLabelTorusMass_rootsNotDistinct_le g N hg)
+          Finset.sum_le_sum fun v _ => (tupleMass_single_le h1 v _).trans (_root_.GlobalTheory.BadShare.mass_not_rootsApart_le g N hg)
       _ = _ := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
   have hE2 : ∀ c : ι → Fin m → (ZMod g)ˣ,
       tupleMass g N (fun F : ι → (ZMod g)[X] =>
@@ -184,7 +184,7 @@ theorem goodSet_weight_ge : ∀ (g : ℕ) [Fact g.Prime], ∀ (N m q d : ℕ) (�
             (fun (p : ι × Fin m) (F : ι → (ZMod g)[X]) => ¬ RootsAvoid g (c p.1 p.2) (F p.1))
       _ ≤ ∑ _p ∈ (Finset.univ : Finset (ι × Fin m)),
             (1 / (4 * ((min q d : ℕ) : ℝ)) + (1 + Real.log N) / ((g : ℝ) - 1)) :=
-          Finset.sum_le_sum fun p _ => (tupleMass_single_le h1 p.1 _).trans (GlobalTheory.T.mass_not_rootsAvoid_le' g N q d _ hqd)
+          Finset.sum_le_sum fun p _ => (tupleMass_single_le h1 p.1 _).trans (_root_.GlobalTheory.BadShare.mass_not_rootsAvoid_le g N q d _ hqd)
       _ = _ := by
           rw [Finset.sum_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, nsmul_eq_mul]
           push_cast; ring
@@ -198,7 +198,7 @@ theorem goodSet_weight_ge : ∀ (g : ℕ) [Fact g.Prime], ∀ (N m q d : ℕ) (�
           refine Finset.sum_le_sum fun a ha => ?_
           rw [Finset.mem_Icc] at ha
           calc ∏ _v : ι, mass g N (HasDiv g a) ≤ ∏ _v : ι, ((7 : ℝ) / 8) :=
-                Finset.prod_le_prod₀ (fun _ _ => hm _) (fun _ _ => GlobalTheory.T.squarefreeLabelTorusMass_hasDivisorOfDegree_le g N a (by omega) (by omega))
+                Finset.prod_le_prod₀ (fun _ _ => hm _) (fun _ _ => _root_.GlobalTheory.BadShare.mass_hasDiv_le g N a (by omega) (by omega))
             _ = _ := by rw [Finset.prod_const, Finset.card_univ]
       _ = ((N / 2 : ℕ) : ℝ) * (7 / 8) ^ Fintype.card ι := by
           rw [Finset.sum_const, Nat.card_Icc, nsmul_eq_mul, Nat.add_sub_cancel]
@@ -213,7 +213,7 @@ theorem goodSet_weight_ge : ∀ (g : ℕ) [Fact g.Prime], ∀ (N m q d : ℕ) (�
     calc _ = ∏ _v : ι, mass g N (fun f => ¬ HasPrimeFactor g N f) :=
           tupleMass_forall (fun _ f => ¬ HasPrimeFactor g N f)
       _ ≤ ∏ _v : ι, (1 - 1 / (10 * Real.log N)) :=
-          Finset.prod_le_prod₀ (fun _ _ => hm _) (fun _ _ => GlobalTheory.T.squarefreeLabelTorusMass_no_large_prime_factor_le g N hN)
+          Finset.prod_le_prod₀ (fun _ _ => hm _) (fun _ _ => _root_.GlobalTheory.BadShare.mass_not_hasPrimeFactor_le g N hN)
       _ = (1 + (-(1 / (10 * Real.log N)))) ^ Fintype.card ι := by
           rw [Finset.prod_const, Finset.card_univ]; ring
       _ ≤ (Real.exp (-(1 / (10 * Real.log N)))) ^ Fintype.card ι := by

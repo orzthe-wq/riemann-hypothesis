@@ -1,11 +1,11 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRationalUnitaryDeterminantMapRationalUnitaryTo
 public import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 public import Mathlib.NumberTheory.NumberField.Discriminant.Defs
 public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.NotDvdTorsionOrder
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.RedUnique
-import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.HeckeCharacterChoice.ExtAlg
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.CharZeroAdicCompletion
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -31,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -45,15 +44,159 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRationalUnitaryDeterminantMapRationalUnitaryTo
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.RestrictionMemInvariantH1
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IntegralFiniteAdeleCompleteSeparated
+import Formalism.LocalToGlobal.SiegelLatticeTheory.TraceIntegralEstimates.PsiTrCoreApprox
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelaf
+import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.HeckeCharacterChoice.ExtAlg
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Algebra.Group.Units
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHeckeCharTrivOnRealSubfieldInfinityType
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.RedUnique, Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.ContinuousKap
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.RedUnique =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.RedUnique", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRationalUnitaryDeterminantMapRationalUnitaryTo\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.CharZeroAdicCompletion\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.RestrictionMemInvariantH1\nimport Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IntegralFiniteAdeleCompleteSeparated\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.TraceIntegralEstimates.PsiTrCoreApprox\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelaf\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.HeckeGal UpperTheory.V.Base
+
+namespace UpperTheory.V.Sd.Tw
+
+variable {K : Type} [Field K] [NumberField K]
+
+private theorem red_approx (v : HeightOneSpectrum (𝓞 K)) {n : 𝓞 K} (hn : n ≠ 0)
+    {y : v.adicCompletion K} (hy : Valued.v y ≤ 1) :
+    ∃ a : 𝓞 K, Valued.v (y - algebraMap K (v.adicCompletion K) (a : K)) ≤ v.intValuation n := by
+  have h0 : v.intValuation n ≠ 0 := v.intValuation_ne_zero n hn
+  have ho : IsOpen {y : v.adicCompletion K | Valued.v y < 1} := by
+    have := Valued.isOpen_ball (v.adicCompletion K) 1
+    simpa only [Valuation.restrict_lt_one_iff] using this
+  have h1 : IsOpen {z : v.adicCompletion K |
+      Valued.v ((y - z) * (algebraMap K (v.adicCompletion K) (n : K))⁻¹) < 1} :=
+    ho.preimage ((continuous_const.sub continuous_id).mul continuous_const)
+  obtain ⟨t, ht⟩ := (HeightOneSpectrum.denseRange_algebraMap K v).exists_mem_open h1
+    ⟨y, by simp⟩
+  have ht : Valued.v ((y - algebraMap K (v.adicCompletion K) t) *
+    (algebraMap K (v.adicCompletion K) (n : K))⁻¹) < 1 := ht
+  rw [map_mul, map_inv₀, _root_.Formalism.L2.S.Pv.PsiTrCore.valued_algebraMap_int, mul_inv_lt_iff₀ (zero_lt_iff.2 h0), one_mul] at ht
+  have ht1 : v.valuation K t ≤ 1 := by
+    rw [← _root_.Formalism.UG.P.levelaf_valued_algebraMap, ← sub_sub_cancel y (algebraMap K (v.adicCompletion K) t)]
+    exact Valuation.map_sub_le _ hy (ht.le.trans (v.intValuation_le_one n))
+  obtain ⟨a, ha⟩ := v.exists_valuation_sub_lt_of_integer ht1 (Units.mk0 _ h0)
+  refine ⟨a, ?_⟩
+  have e : y - algebraMap K (v.adicCompletion K) (a : K) =
+      (y - algebraMap K (v.adicCompletion K) t) -
+        algebraMap K (v.adicCompletion K) (algebraMap (𝓞 K) K a - t) := by
+    rw [map_sub]; ring
+  rw [e]
+  refine Valuation.map_sub_le _ ht.le ?_
+  rw [_root_.Formalism.UG.P.levelaf_valued_algebraMap]
+  exact ha.le
+
+private theorem red_exists {n : 𝓞 K} (hn : n ≠ 0)
+    (y : ∀ v : HeightOneSpectrum (𝓞 K), v.adicCompletion K) (hy : ∀ v, Valued.v (y v) ≤ 1) :
+    ∃ a : 𝓞 K, ∀ v : HeightOneSpectrum (𝓞 K), n ∈ v.asIdeal →
+      Valued.v (y v - algebraMap K (v.adicCompletion K) (a : K)) ≤ v.intValuation n := by
+  classical
+  have hS : {v : HeightOneSpectrum (𝓞 K) | n ∈ v.asIdeal}.Finite := by
+    have := Ideal.finite_factors (I := Ideal.span {n}) (by simpa using hn)
+    simpa only [Ideal.dvd_span_singleton] using this
+  choose f hf using fun v : HeightOneSpectrum (𝓞 K) => red_approx v hn (hy v)
+  have he : ∀ v : HeightOneSpectrum (𝓞 K), ∃ e : ℕ, v.intValuation n = WithZero.exp (-(e : ℤ)) :=
+    fun v => ⟨_, v.intValuation_if_neg hn⟩
+  choose e he using he
+  obtain ⟨a, ha⟩ := IsDedekindDomain.exists_forall_sub_mem_ideal (s := hS.toFinset)
+    (fun v => v.asIdeal) e (fun v _ => v.prime)
+    (fun i _ j _ hij h => hij (HeightOneSpectrum.ext h)) (fun v => f v.1)
+  refine ⟨a, fun v hv => ?_⟩
+  have h1 := ha v (hS.mem_toFinset.2 hv)
+  rw [← v.intValuation_le_pow_iff_mem, ← he, ← _root_.Formalism.L2.S.Pv.PsiTrCore.valued_algebraMap_int] at h1
+  have e1 : y v - algebraMap K (v.adicCompletion K) (a : K) =
+      (y v - algebraMap K (v.adicCompletion K) (f v : K)) -
+        algebraMap K (v.adicCompletion K) ((a - f v : 𝓞 K) : K) := by
+    have : ((a - f v : 𝓞 K) : K) = (a : K) - (f v : K) := map_sub (algebraMap (𝓞 K) K) _ _
+    rw [this, map_sub]; ring
+  rw [e1]
+  exact Valuation.map_sub_le _ (hf v) h1
+
+private theorem red_unique {n : 𝓞 K} (hn : n ≠ 0)
+    (y : ∀ v : HeightOneSpectrum (𝓞 K), v.adicCompletion K) {a b : 𝓞 K}
+    (ha : ∀ v : HeightOneSpectrum (𝓞 K), n ∈ v.asIdeal →
+      Valued.v (y v - algebraMap K (v.adicCompletion K) (a : K)) ≤ v.intValuation n)
+    (hb : ∀ v : HeightOneSpectrum (𝓞 K), n ∈ v.asIdeal →
+      Valued.v (y v - algebraMap K (v.adicCompletion K) (b : K)) ≤ v.intValuation n) :
+    Ideal.Quotient.mk (Ideal.span {n}) a = Ideal.Quotient.mk (Ideal.span {n}) b := by
+  rw [Ideal.Quotient.eq, Ideal.mem_span_singleton]
+  have hle : ∀ v : HeightOneSpectrum (𝓞 K), v.intValuation (a - b) ≤ v.intValuation n := by
+    intro v
+    by_cases hv : n ∈ v.asIdeal
+    · have := Valuation.map_sub_le _ (hb v hv) (ha v hv)
+      rw [sub_sub_sub_cancel_left, ← map_sub] at this
+      have e : ((a - b : 𝓞 K) : K) = (a : K) - (b : K) := map_sub (algebraMap (𝓞 K) K) _ _
+      rwa [← e, _root_.Formalism.L2.S.Pv.PsiTrCore.valued_algebraMap_int] at this
+    · rw [v.intValuation_eq_one_iff.2 hv]
+      exact v.intValuation_le_one _
+  have hn' : algebraMap (𝓞 K) K n ≠ 0 := by simpa using hn
+  obtain ⟨c, hc⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K
+    (algebraMap (𝓞 K) K (a - b) / algebraMap (𝓞 K) K n) (fun v => by
+      rw [map_div₀, v.valuation_of_algebraMap, v.valuation_of_algebraMap]
+      exact div_le_one_of_le₀ (hle v) zero_le)
+  refine ⟨c, IsFractionRing.injective (𝓞 K) K ?_⟩
+  rw [map_mul, hc, mul_div_cancel₀ _ hn']
+
+end UpperTheory.V.Sd.Tw
+
+theorem UpperTheory.V.Sd.Tw.red :
+    ∀ (K : Type) [Field K] [NumberField K] (N : ℕ), N ≠ 0 →
+        ∃ red : ↥(GlobalTheory.Mem.Chr.unitIdl K) →* (𝓞 K ⧸ Ideal.span {(N : 𝓞 K)})ˣ,
+          ∀ (a : ↥(GlobalTheory.Mem.Chr.unitIdl K)) (r : 𝓞 K),
+            (∀ v : HeightOneSpectrum (𝓞 K), (N : 𝓞 K) ∈ v.asIdeal →
+              Valued.v (((a : Ideles K) : AdeleRing (𝓞 K) K).2 v - algebraMap K (v.adicCompletion K) (r : K)) ≤
+                Valued.v (N : v.adicCompletion K)) →
+            ((red a : (𝓞 K ⧸ Ideal.span {(N : 𝓞 K)})ˣ) : 𝓞 K ⧸ Ideal.span {(N : 𝓞 K)}) = Ideal.Quotient.mk _ r := by
+  intro K _ _ N hN
+  have hn : (N : 𝓞 K) ≠ 0 := Nat.cast_ne_zero.2 hN
+  choose f hf using fun a : GlobalTheory.Mem.Chr.unitIdl K =>
+    red_exists hn (fun v => ((a : Ideles K) : AdeleRing (𝓞 K) K).2 v) (fun v => (a.2 v).le)
+  let φ : GlobalTheory.Mem.Chr.unitIdl K →* (𝓞 K ⧸ Ideal.span {(N : 𝓞 K)}) :=
+    { toFun := fun a => Ideal.Quotient.mk _ (f a)
+      map_one' := by
+        rw [← map_one (Ideal.Quotient.mk _)]
+        refine red_unique hn _ (hf 1) fun v _ => ?_
+        show Valued.v ((1 : v.adicCompletion K) - _) ≤ _
+        simp
+      map_mul' := fun a b => by
+        rw [← map_mul]
+        refine red_unique hn _ (hf (a * b)) fun v hv => ?_
+        show Valued.v (((a : Ideles K) : AdeleRing (𝓞 K) K).2 v *
+          ((b : Ideles K) : AdeleRing (𝓞 K) K).2 v - _) ≤ _
+        have e0 : ((f a * f b : 𝓞 K) : K) = (f a : K) * (f b : K) := map_mul (algebraMap (𝓞 K) K) _ _
+        have e1 : ∀ x y p q : v.adicCompletion K, x * y - p * q = x * (y - q) + q * (x - p) :=
+          fun x y p q => by ring
+        rw [e0, map_mul, e1]
+        refine Valuation.map_add_le _ ?_ ?_
+        · rw [map_mul, a.2 v, one_mul]
+          exact hf b v hv
+        · rw [map_mul, _root_.Formalism.L2.S.Pv.PsiTrCore.valued_algebraMap_int]
+          exact (mul_le_of_le_one_left' (v.intValuation_le_one _)).trans (hf a v hv) }
+  refine ⟨φ.toHomUnits, fun a r h => ?_⟩
+  show Ideal.Quotient.mk _ (f a) = _
+  exact red_unique hn _ (hf a) fun v hv => by rw [← _root_.GlobalTheory.AdLat.valued_natCast_eq]; exact h v hv
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.RedUnique =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.ContinuousKap =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.ContinuousKap", "h": "module\n\npublic import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf\npublic import Mathlib.NumberTheory.NumberField.Discriminant.Defs\npublic import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.NotDvdTorsionOrder\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.RedUnique\nimport Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.HeckeCharacterChoice.ExtAlg\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Algebra.Group.Units\nimport Mathlib.Topology.Sheaves.Init\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRationalUnitaryDeterminantMapRationalUnitaryTo\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.RestrictionMemInvariantH1\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHeckeCharTrivOnRealSubfieldInfinityType\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelaf\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.HeckeGal UpperTheory.V.Base
@@ -191,42 +334,17 @@ private theorem prod_type (E : Type) [Field E] [NumberField E] (a : ℤ) (k : E)
   · intro φ hφ hne
     rw [(Finset.mem_filter.1 hφ).2, if_neg hne.symm, zpow_zero]
 
-private theorem loc_self {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E))
-    (x : (v.adicCompletion E)ˣ) : ((localIdele E v x : Ideles E) : AdeleRing (𝓞 E) E).2 v = x := by
-  classical
-  show (Pi.mulSingle v (x : v.adicCompletion E) : ∀ w : HeightOneSpectrum (𝓞 E), w.adicCompletion E) v = x
-  convert Pi.mulSingle_eq_same v (x : v.adicCompletion E)
-
-private theorem loc_ne {E : Type} [Field E] [NumberField E] {v w : HeightOneSpectrum (𝓞 E)} (h : w ≠ v)
-    (x : (v.adicCompletion E)ˣ) : ((localIdele E v x : Ideles E) : AdeleRing (𝓞 E) E).2 w = 1 := by
-  classical
-  show (Pi.mulSingle v (x : v.adicCompletion E) : ∀ w : HeightOneSpectrum (𝓞 E), w.adicCompletion E) w = 1
-  convert Pi.mulSingle_eq_of_ne h (x : v.adicCompletion E)
-
-private theorem loc_mem {E : Type} [Field E] [NumberField E] {v : HeightOneSpectrum (𝓞 E)}
-    {x : (v.adicCompletion E)ˣ} (hx : IsUnitAt v x) : localIdele E v x ∈ GlobalTheory.Mem.Chr.unitIdl E := by
-  intro w
-  by_cases h : w = v
-  · subst h
-    rw [loc_self]
-    exact hx
-  · rw [loc_ne h, map_one]
-
 private theorem kap_loc {E : Type} [Field E] [NumberField E] (a : ℤ) (v : HeightOneSpectrum (𝓞 E))
     (x : (v.adicCompletion E)ˣ) : kap E a (localIdele E v x) = 1 := by
   apply Units.ext
   rw [kap_of_fst a _ 1 (by rw [map_one]; rfl)]
   simp
 
-private theorem val_alg {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) (a : E) :
-    Valued.v (algebraMap E (v.adicCompletion E) a) = v.valuation E a :=
-  HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a
-
 private theorem exists_unit {E : Type} [Field E] [NumberField E] (k : Eˣ)
     (h : diagUnits E k ∈ GlobalTheory.Mem.Chr.unitIdl E) : ∃ u : (𝓞 E)ˣ, ((u : 𝓞 E) : E) = k := by
   have key : ∀ k : Eˣ, diagUnits E k ∈ GlobalTheory.Mem.Chr.unitIdl E → ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = k :=
     fun k h => HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E (k : E) fun v => by
-      rw [← val_alg]
+      rw [← _root_.Formalism.UG.P.levelaf_valued_algebraMap]
       exact (h v).le
   obtain ⟨r, hr⟩ := key k h
   obtain ⟨s, hs⟩ := key k⁻¹ (by rw [map_inv]; exact inv_mem h)
@@ -288,9 +406,9 @@ theorem UpperTheory.V.Sd.Tw.hecke :
   let Y : HChar K := ⟨ξ, hcont, hdiag⟩
   have hunr : ∀ v : HeightOneSpectrum (𝓞 K), (N : 𝓞 K) ∉ v.asIdeal → Y.UnrAt v := fun v hv x hx => by
     change ξ (localIdele K v x) = 1
-    rw [hu1 _ (loc_mem hx), kap_loc]
+    rw [hu1 _ (_root_.GlobalTheory.Mem.Chr.AntiExist.loc_mem hx), kap_loc]
     intro w hw
-    rw [loc_ne (fun h : w = v => hv (h ▸ hw)), sub_self, map_zero]
+    rw [_root_.GlobalTheory.Mem.Chr.AntiExist.loc_ne (fun h : w = v => hv (h ▸ hw)), sub_self, map_zero]
     exact zero_le
   refine ⟨Y, fun φ => if (InfinitePlace.mk φ).embedding = φ then -1 else 0, w₀.embedding, fun k => ?_, ?_, ?_,
     hunr, ⟨m, hm, hlm, fun v x hx => ?_⟩, fun p hp w hw => ?_⟩
@@ -310,7 +428,7 @@ theorem UpperTheory.V.Sd.Tw.hecke :
     intro h
     exact IsTotallyComplex.complexEmbedding_not_isReal _ (ComplexEmbedding.isReal_iff.2 h.symm)
   · change ξ (localIdele K v x) ^ m = 1
-    rw [hu _ (loc_mem hx), kap_loc, one_mul, hem]
+    rw [hu _ (_root_.GlobalTheory.Mem.Chr.AntiExist.loc_mem hx), kap_loc, one_mul, hem]
   · have hp0 : (p : 𝓞 K) ≠ 0 := fun h => w.ne_bot (by rw [hw, h, Ideal.span_singleton_eq_bot])
     have hpw : (p : 𝓞 K) ∈ w.asIdeal := hw ▸ Ideal.mem_span_singleton_self _
     have hNw : (N : 𝓞 K) ∉ w.asIdeal := fun h => by
@@ -320,20 +438,20 @@ theorem UpperTheory.V.Sd.Tw.hecke :
     let k : Kˣ := Units.mk0 ((p : 𝓞 K) : K) (by simpa using hp0)
     have hval : ∀ v : HeightOneSpectrum (𝓞 K),
         Valued.v (algebraMap K (v.adicCompletion K) k) = v.intValuation (p : 𝓞 K) := fun v => by
-      rw [val_alg]
+      rw [_root_.Formalism.UG.P.levelaf_valued_algebraMap]
       exact v.valuation_of_algebraMap _
     have hun : IsUnifAt w (atFin w k) := (hval w).trans (w.intValuation_singleton hp0 hw)
     let b : Ideles K := diagUnits K k * localIdele K w (atFin w k)⁻¹
     have hb2 : ∀ v : HeightOneSpectrum (𝓞 K), v ≠ w →
         (b : AdeleRing (𝓞 K) K).2 v = algebraMap K (v.adicCompletion K) k := fun v hv => by
       change algebraMap K (v.adicCompletion K) k * (localIdele K w (atFin w k)⁻¹).val.2 v = _
-      rw [loc_ne hv, mul_one]
+      rw [_root_.GlobalTheory.Mem.Chr.AntiExist.loc_ne hv, mul_one]
     have hb : b ∈ GlobalTheory.Mem.Chr.unitIdl K := fun v => by
       by_cases hv : v = w
       · subst hv
         change Valued.v (((atFin v k : (v.adicCompletion K)ˣ) : v.adicCompletion K) *
           (localIdele K v (atFin v k)⁻¹).val.2 v) = 1
-        rw [loc_self, Units.mul_inv, map_one]
+        rw [_root_.GlobalTheory.Mem.Chr.AntiExist.loc_self, Units.mul_inv, map_one]
       · rw [hb2 v hv, hval, v.intValuation_eq_one_iff]
         intro h
         refine hv (HeightOneSpectrum.ext (w.isMaximal.eq_of_le v.isPrime.ne_top ?_).symm)
@@ -353,3 +471,6 @@ theorem UpperTheory.V.Sd.Tw.hecke :
       rw [← Y.val_eq (hunr w hNw) _ hun, map_mul, hdiag, one_mul, map_inv, map_inv]
       rfl
     rw [← inv_inv (Y.val w), ← h4, hu b hb, h1, mul_inv, Units.val_mul, Units.val_inv_eq_inv_val, h3, inv_inv]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.TorsionOrderFrobenius.ContinuousKap =====

@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalEquationEffectiveQCartierDivisorStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalLocalEquationAddSmulDivisorStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalEquationEffectiveQCartierDivisor
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanonicalMultipleCanonical
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalLocalEquationAddSmulDivisor
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -51,14 +52,14 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 theorem GlobalTheory.PairStep.kltAt_lcAt_of_le_coeff : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Γ B : X → ℚ) (a b : ℚ) (x : X), IsQCart B → a ≤ b → (KltAt p n (Γ + b • B) x → KltAt p n (Γ + a • B) x) ∧ (LcAt p n (Γ + b • B) x → LcAt p n (Γ + a • B) x) := by
   intro X _ _ _ p n _ _ Γ B a b x hB hab
-  obtain ⟨m', f, hm', hf, hBf⟩ := GlobalTheory.T.exists_localEquation_effectiveQCartierDivisor X p B hB x
+  obtain ⟨m', f, hm', hf, hBf⟩ := _root_.GlobalTheory.PairStep.exists_localEqn_of_isQCart X p B hB x
   have key : ∀ (η : RatForms p n) (m : ℕ) (g : X.functionFieldˣ), 0 < m →
       IsLogEqn p (Γ + b • B) η x m g →
       ∃ (m'' : ℕ) (g'' : X.functionFieldˣ), 0 < m'' ∧ IsLogEqn p (Γ + a • B) η x m'' g'' ∧
         ∀ E : DivOver p, E.Through x → discrep E η m g ≤ discrep E η m'' g'' := by
     intro η m g hm hlog
     obtain ⟨m'', g'', hm'', hlog'', hd⟩ :=
-      GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n (Γ + b • B) B η x m m' g f (a - b) hm hm' hlog hBf
+      _root_.GlobalTheory.PairStep.isLogEqn_add_smul X p n (Γ + b • B) B η x m m' g f (a - b) hm hm' hlog hBf
     have e : Γ + b • B + (a - b) • B = Γ + a • B := by
       funext z
       simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]

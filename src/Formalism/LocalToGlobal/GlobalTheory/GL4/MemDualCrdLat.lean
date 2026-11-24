@@ -1,58 +1,80 @@
 module
 
-public import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.ClsSum
 public import Formalism.QuotientMetricDivisors.Statement
+public import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+public import Formalism.LocalRingCardinality.DataArith
+public import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.ClsSum
 public import Formalism.SharpRestriction.GlobalSchurBounds.FlipTwoThree
 public import Formalism.LocalToGlobal.GlobalTheory.GL4.PMuFrames
 public import Formalism.LocalToGlobal.HermitianColumns.InLocalDiscriminantKernel
 public import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.ExistsFrameOfSig
-public import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.SingleFacts
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.IdxChange
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LcvBasis
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LocBasis
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ProdFormula
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.RatHerm
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ReductionSecondStep
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
 import Formalism.SizeWindowBrackets.ChainSlopeWindows.TruncatedLatticeHolds
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.SingleFacts, Formalism.LocalToGlobal.GlobalTheory.GL4.MemDualCrdLat
+
+-- ===== clump member: Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.SingleFacts =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.SingleFacts", "h": "module\n\npublic import Formalism.QuotientMetricDivisors.Statement\npublic import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.LocalRingCardinality.DataArith\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Module Matrix NumberField Formalism.BasicNotions Formalism.HN
+
+namespace Formalism.L2.Geo.Def.G1
+
+section Line
+
+variable {K : Type} [Field K] [NumberField K] [StarRing K] [_root_.NumberField.IsTotallyComplex K]
+
+section Single
+
+variable {V ι : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι]
+  [DecidableEq ι]
+
+
+end Single
+
+theorem lcv_eq_mu {n : ℕ} (hn : 0 < n) (Y : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hY : ∀ v, IsUnit (Y v).det)
+    (T : Submodule (𝓞 K) (Fin n → K)) (hfg : T.FG) (hrk : rkK T = n) :
+    Formalism.DivisionValues.lcv Y T = -(n : ℝ) * muDef (Pi.basisFun K (Fin n)) Y T := by
+  have hsp : Submodule.span K (T : Set (Fin n → K)) = ⊤ := by
+    apply Submodule.eq_top_of_finrank_eq
+    have : finrank K (Submodule.span K (T : Set (Fin n → K))) = n := hrk
+    rw [this]; simp
+  let B : HLat K := { V := Fin n → K, ι := Fin n, b := Pi.basisFun K (Fin n), X := Y, L := T }
+  have hB : B.Good := ⟨hY, hfg, hsp⟩
+  have hBr : B.rank = n := hrk
+  have h := bridge_hn_mu_holds K B hB (by rw [hBr]; exact hn)
+  rw [hBr] at h
+  have h1 : B.mu = muDef (Pi.basisFun K (Fin n)) Y T := rfl
+  have h2 : B.lcv = Formalism.DivisionValues.lcv Y T := rfl
+  rw [← h1, ← h2, h]
+  have : (n : ℝ) ≠ 0 := by exact_mod_cast hn.ne'
+  field_simp
+
+end Line
+
+end Formalism.L2.Geo.Def.G1
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.SingleFacts =====
+
+-- ===== clump member: Formalism.LocalToGlobal.GlobalTheory.GL4.MemDualCrdLat =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.GlobalTheory.GL4.MemDualCrdLat", "h": "module\n\npublic import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.ClsSum\npublic import Formalism.QuotientMetricDivisors.Statement\npublic import Formalism.SharpRestriction.GlobalSchurBounds.FlipTwoThree\npublic import Formalism.LocalToGlobal.GlobalTheory.GL4.PMuFrames\npublic import Formalism.LocalToGlobal.HermitianColumns.InLocalDiscriminantKernel\npublic import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.ExistsFrameOfSig\npublic import Formalism.LocalToGlobal.LatticeGeometry.GeometryDefinitions.SingleFacts\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.IdxChange\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LcvBasis\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LocBasis\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ProdFormula\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.RatHerm\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ReductionSecondStep\nimport Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic\nimport Formalism.SizeWindowBrackets.ChainSlopeWindows.TruncatedLatticeHolds\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Module NumberField IsDedekindDomain
@@ -92,8 +114,7 @@ theorem mem_dual_crdLat (hc : CMData F E) (S : HSpace E) (L : Submodule (𝓞 E)
   simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
     LinearMap.restrictScalars_apply, Submodule.mem_one, crdLat, Submodule.mem_map,
     forall_exists_index, and_imp, forall_apply_eq_imp_iff₂, LinearEquiv.coe_coe,
-    LinearMap.coe_restrictScalars, hform_crd_lemma, Submodule.mem_mk, AddSubmonoid.mem_mk,
-    AddSubsemigroup.mem_mk, Set.mem_setOf_eq, RingHom.mem_range]
+    hform_crd_lemma, RingHom.mem_range]
   exact Iff.rfl
 
 theorem relIndex_crdLat (hc : CMData F E) (S : HSpace E) (L : Submodule (𝓞 E) S.V) :
@@ -241,3 +262,6 @@ end E
 end Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.GlobalTheory.GL4.MemDualCrdLat =====

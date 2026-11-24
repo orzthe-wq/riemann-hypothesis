@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CounitCotangentClassPowerSeriesEvalAtNilpotentStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionsEqSeriesInChartStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CounitCotangentClassPowerSeriesEvalAtNilpotent
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqZeroOfCobOneEqZero
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionsEqSeriesInChart
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -82,7 +83,7 @@ theorem exists_eq_sum (hsurj : Function.Surjective (evA k x hx)) (u : Cot k A) :
     ∃ w : Fin d → k, u = ∑ i, w i • dUnit (R := k) (x i) := by
   obtain ⟨a, rfl⟩ := AugCot.d_surjective _ u
   obtain ⟨f, rfl⟩ := hsurj a
-  exact ⟨lin f, (GlobalTheory.T.counit_cotangentClass_powerSeriesEvalAtNilpotent k d A x hx haug f).2⟩
+  exact ⟨lin f, (_root_.GlobalTheory.Katz.counit_dUnit_evA k d A x hx haug f).2⟩
 
 
 include haug in
@@ -94,10 +95,10 @@ theorem eq_zero_of_sum (hsurj : Function.Surjective (evA k x hx))
     funext i
     simp [f, lin, coeff_X, Finsupp.single_eq_single_iff]
   have hcc : constantCoeff f = 0 := by simp [f]
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.counit_cotangentClass_powerSeriesEvalAtNilpotent k d A x hx haug f
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.Katz.counit_dUnit_evA k d A x hx haug f
   have hd : dUnit (R := k) (evA k x hx f) = 0 := by rw [h2, hlin, hw]
   have hε : ∀ g, Bialgebra.counitAlgHom k A (evA k x hx g) = constantCoeff g := fun g =>
-    (GlobalTheory.T.counit_cotangentClass_powerSeriesEvalAtNilpotent k d A x hx haug g).1
+    (_root_.GlobalTheory.Katz.counit_dUnit_evA k d A x hx haug g).1
   rw [dUnit, AugCot.d_eq_zero_iff, hε, hcc, map_zero, sub_zero] at hd
   have hK : RingHom.ker (Bialgebra.counitAlgHom k A) =
       Ideal.map (evA k x hx) (RingHom.ker (constantCoeff (R := k) (σ := Fin d))) := by
@@ -137,7 +138,7 @@ theorem omega_coord : ∀ (p : ℕ) (k : Type) [CommRing k] (d : ℕ) (G : PDivG
   refine ⟨fun w n => hres n w, fun u => ?_⟩
   have hu : ∀ n, cotMap (G.res n) (u.1 (n + 1)) = u.1 n := u.2
   obtain ⟨n0, hn0⟩ := c.presents.2 2
-  have hone := (GlobalTheory.T.functions_eq_series_in_chart p k d G c).1
+  have hone := (_root_.GlobalTheory.Katz.Chart.functions_are_series p k d G c).1
   have hker : ∀ j f, c.ev (n0 + j) f = 0 → ∀ α : Fin d →₀ ℕ, α.degree < 2 → coeff α f = 0 := by
     intro j
     induction j with

@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 
 @[expose] public section
 
@@ -106,12 +107,8 @@ theorem stabClassFinite_of (hMono : ClassSetMono) (hIdx : ClassSetFinIdx) (hMap 
   have hStd : Formalism.UG.CS.StdLatFull := by
     first
       | exact Formalism.UG.P.standard_lattice_full_holds
-      | exact Formalism.UG.P.stdLatFull
-      | exact Formalism.UG.P.stdLatFull_holds
-      | exact Formalism.UG.P.CsEasy.stdLatFull
-      | exact Formalism.UG.Final.StdLatFull
   obtain ⟨hfin, hspan⟩ := hStd I.E (Fin k)
-  have hL := Formalism.UG.Final.ClassSetFiniteL I.F I.E (Fin k) I.cm.sig J' (hSig I) hH hU hD _ hfin hspan
+  have hL := _root_.Formalism.UG.P.lattice_class_set_finite_local_holds I.F I.E (Fin k) I.cm.sig J' (hSig I) hH hU hD _ hfin hspan
   have h2 := hIdx _ _ _ _ inf_le_left (hidx g' hg') hL
   exact hMono _ _ _ _ inf_le_right h2
 

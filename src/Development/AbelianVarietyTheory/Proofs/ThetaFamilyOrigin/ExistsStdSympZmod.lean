@@ -241,7 +241,7 @@ theorem exists_stdSymp_of_alternating_pairing :
     exact congrArg _ (Subtype.ext (map_mul (w x.toMul) y.toMul y'.toMul))
   have βw : ∀ x y (n : ℤ), β x y = n ↔ w x.toMul y.toMul = ze ^ n := fun x y n => by
     simp only [β]
-    rw [AddEquiv.symm_apply_eq, hz.zmodEquivZPowers_apply_coe_int]
+    rw [AddEquiv.symm_apply_eq, hz.zmodEquivZPowers_apply_intCast]
     exact Subtype.ext_iff
   let B : LinearMap.BilinForm (ZMod M) (Additive G) := LinearMap.mk₂ _ β βl
     (fun c x y => ZMod.map_smul (AddMonoidHom.mk' (β · y) fun x x' => βl x x' y) c x) βr

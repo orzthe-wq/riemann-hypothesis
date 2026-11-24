@@ -528,9 +528,10 @@ theorem gap_hypothesis_of_hypotheses {D : D7} {large₂ : SizeData₂ D} {C' Cl 
   have hn0 : (0 : ℝ) ≤ (D.R.r : ℝ) ^ 19 := by positivity
   have hf5 : (1 : ℝ) ≤ (D.R.f : ℝ) ^ 5 := one_le_pow₀ (by linarith)
   have h16 : 16 * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L := by
-    have a1 : 16 * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 := by nlinarith
+    have a1 : 16 * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 :=
+      mul_le_mul_of_nonneg_right hCl hn0
     have a2 : Cl * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 * ((D.R.f : ℝ) ^ 5 * large₂.sc.L) :=
-      le_mul_of_one_le_right (by positivity) (by nlinarith)
+      le_mul_of_one_le_right (by positivity) (hf5.trans (le_mul_of_one_le_right (by linarith) hL.le))
     linarith [show Cl * (D.R.r : ℝ) ^ 19 * ((D.R.f : ℝ) ^ 5 * large₂.sc.L) =
       Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L by ring]
   have hR : ((16 * (D.R.r : ℚ) ^ 19 : ℚ) : ℝ) ≤ (((D.hc τ).b ⟨j.1 + 1, hj⟩ - (D.hc τ).b j : ℚ) : ℝ) := by
@@ -556,19 +557,24 @@ theorem size_numbers_of_hypotheses {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg
     calc (16 : ℝ) = 2 ^ 4 := by norm_num
       _ ≤ (D.R.m : ℝ) ^ 4 := pow_le_pow_left₀ (by norm_num) hm 4
   have hm5 : 16 * (D.R.m : ℝ) ≤ (D.R.m : ℝ) ^ 5 := by
-    have e : (D.R.m : ℝ) ^ 5 = (D.R.m : ℝ) * (D.R.m : ℝ) ^ 4 := by ring
-    rw [e]; nlinarith
+    calc 16 * (D.R.m : ℝ) = (D.R.m : ℝ) * 16 := by ring
+      _ ≤ (D.R.m : ℝ) * (D.R.m : ℝ) ^ 4 := mul_le_mul_of_nonneg_left hm4 (by linarith)
+      _ = (D.R.m : ℝ) ^ 5 := by ring
   have hX : 256 * (D.R.m : ℝ) * large₂.sc.L ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L := by
-    have : 256 * (D.R.m : ℝ) ≤ (D.R.m : ℝ) ^ 5 * D.R.f := by nlinarith
-    nlinarith
+    have h1 : 256 * (D.R.m : ℝ) ≤ (D.R.m : ℝ) ^ 5 * D.R.f := by
+      calc 256 * (D.R.m : ℝ) = (16 * (D.R.m : ℝ)) * 16 := by ring
+        _ ≤ (D.R.m : ℝ) ^ 5 * D.R.f := mul_le_mul hm5 hf (by norm_num) (by positivity)
+    exact mul_le_mul_of_nonneg_right h1 (by linarith)
+  have hX' : 256 * (D.R.m : ℝ) ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L :=
+    (le_mul_of_one_le_right (by linarith) hL.le).trans hX
   have hX0 : 0 ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L := by positivity
   have hkX : 70 * ((D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L) ≤ D.R.k := by
     have : 70 * ((D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L) ≤ C' * ((D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L) :=
       mul_le_mul_of_nonneg_right hC' hX0
     have e : C' * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L = C' * ((D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L) := by ring
     linarith
-  have hkR : (35840 : ℝ) ≤ D.R.k := by nlinarith
-  have hkm : 2 * (D.R.m : ℝ) + 8 ≤ D.R.k := by nlinarith
+  have hkR : (35840 : ℝ) ≤ D.R.k := by linarith
+  have hkm : 2 * (D.R.m : ℝ) + 8 ≤ D.R.k := by linarith
   have hkm' : 2 * D.R.m + 8 ≤ D.R.k := by exact_mod_cast hkm
   have hm2r : 2 * D.R.rS + 2 = D.R.m := by
     unfold Formalism.BasicNotions.Ranks.rS; obtain ⟨j, hj⟩ := D.R.m_even; omega
@@ -582,13 +588,20 @@ theorem size_numbers_of_hypotheses {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg
     have h3 := hb1.2
     rw [Real.rpow_two] at h3
     exact le_trans h1 (le_trans h2 h3)
-  refine ⟨by nlinarith, by exact_mod_cast (show (32 : ℝ) ≤ D.R.k by linarith), hfk, by omega, hg1, hg2, ?_, ?_, ?_⟩
-  · rw [hlogb]; nlinarith
+  refine ⟨?_, by exact_mod_cast (show (32 : ℝ) ≤ D.R.k by linarith), hfk, by omega, hg1, hg2, ?_, ?_, ?_⟩
+  · by_contra hc
+    push Not at hc
+    have : large₂.sc.b ^ 2 < (16 : ℝ) ^ 2 := pow_lt_pow_left₀ hc (by linarith) (by norm_num)
+    linarith
+  · rw [hlogb]
+    have hLle : large₂.sc.L ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L :=
+      (le_mul_of_one_le_left (by linarith) (by linarith : (1 : ℝ) ≤ 256 * D.R.m)).trans hX
+    linarith
   · have hlk : (1 : ℝ) ≤ Real.log D.R.k := by
       rw [Real.le_log_iff_exp_le (by linarith)]
       have := Real.exp_one_lt_d9
       linarith
-    nlinarith
+    exact (by linarith : (1 : ℝ) ≤ 5 * (1 / 3) * D.R.f).trans (le_mul_of_one_le_right (by linarith) hlk)
   · rw [hm2r, hlogb]
     have : 8 * (Cn * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L) = (8 * Cn) * ((D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L) := by ring
     rw [this]
@@ -755,7 +768,7 @@ theorem splitsCompl_of_equiv {E E' : Type} [Field E] [NumberField E] [Field E'] 
     rwa [map_natCast, Ideal.map_pow] at this
 
 theorem rowsTieP_of {D : D7} (T : Formalism.L2.SG.SpectralTiesReal.STies D) : CountE.RowsTieP CountE.PLev D T.X.B := by
-  have hK := Formalism.L2.SG.Closed.level_subgroup_is_group T.X
+  have hK := _root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary T.X
   have hKL := Formalism.L2.SG.Closed.level_subgroup_properties T.X
   have hcl := Formalism.L2.SG.PoincareInHH.Cut.level_subgroup_isClopen T.X hK hKL
   refine ⟨(Formalism.MainNotions.S.Inh.aut_rowsTie_iff D T.X.B).2 ⟨⟨T.X.pl, T.autTie⟩, fun h => ?_⟩,

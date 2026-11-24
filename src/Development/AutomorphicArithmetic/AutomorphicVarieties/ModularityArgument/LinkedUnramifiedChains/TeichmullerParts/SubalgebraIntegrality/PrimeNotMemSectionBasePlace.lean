@@ -179,7 +179,7 @@ private theorem loc_one (hU : GlobalTheory.BCT.Unr E) (hn : 1 ≤ n) {σ : Submo
   obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (GlobalTheory.T.unramifiedVector_gives_localComponent_sphericalVector E hU n σ hσ w τ hτ h)
   obtain ⟨θ, h1, h2, h3⟩ := GlobalTheory.BCT.SphLine.exists_gelfand_anti E hU n w
   obtain ⟨hKo, hKc⟩ := GlobalTheory.BCT.LocCompU.isOpen_isCompact_KL hU n w
-  rw [GlobalTheory.fixed_eq_span_of_gelfandPair (UL n w) (KL n w) hKo hKc θ h1 h2 h3 τ.V τ.ρ τ.irred
+  rw [_root_.GlobalTheory.GroupAverageProjection.main (UL n w) (KL n w) hKo hKc θ h1 h2 h3 τ.V τ.ρ τ.irred
     ⟨τ.smooth, fun K hK _ => loc_adm hU hn hσ w τ hτ K hK⟩ x hx hx0, finrank_span_singleton hx0]
 
 private theorem loc_deep (hU : GlobalTheory.BCT.Unr E) (hn : 1 ≤ n) {σ : Submodule ℂ (UA E n → ℂ)} (hσ : IsAutRepU σ) (w : Plc E)
@@ -277,7 +277,7 @@ private theorem glob_dim (hU : GlobalTheory.BCT.Unr E) (hn : 1 ≤ n) {σ : Subm
   · rintro _ ⟨k, hk, rfl⟩
     rw [GlobalTheory.SmGL.SphCompletion.KO_completion w n]
     exact h2 w hk
-  · rw [GlobalTheory.T.finrank_levelFixedVectors_definiteUnitary_eq_prod E hU n hn σ hσ _ hS lam hlam K hK τ hτ, finprod_mem_range hinj, Nat.cast_prod]
+  · rw [_root_.GlobalTheory.BCT.DimFac.finrank_inf_fixed_globLev E hU n hn σ hσ _ hS lam hlam K hK τ hτ, finprod_mem_range hinj, Nat.cast_prod]
     congr 1
     refine finprod_eq_prod_of_mulSupport_subset _ fun v hv => by_contra fun h => hv ?_
     have h' : (sw v).under (𝓞 (Lp E)) ∉ T := by rwa [hsw]

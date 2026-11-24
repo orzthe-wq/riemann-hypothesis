@@ -3,10 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaConstantsLocallyOnBaseStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChangeStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsUniqueUpToUnitStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaCosetNonvanishingOfHasThStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaConstantsLocallyOnBase
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChange
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaConstantsUniqueUpToUnit
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaCosetNonvanishingOfHasTh
+public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SpanEqTopOfFunctionals
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsThetaPtOverMove
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -50,7 +51,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SpanEqTopOfFunctionals
 
 @[expose] public section
 
@@ -260,12 +260,12 @@ theorem exists_ideal_hasTh_iff : Out.Laws → Out.Laws2 → ∀ (o : Type) [Comm
   intro h₁ h₂ o _ g N' J b R _ s t v ho h3 hv
   have bc : ∀ (R' R'' : Type) [CommRing R'] [CommRing R''] (y : R →+* R') (φ : R' →+* R'') (w : Ix g (N' ^ 2) → R'),
       t.HasTh (spMap y) w → t.HasTh (spMap (φ.comp y)) (fun a => φ (w a)) := fun R' R'' _ _ y φ w H =>
-    spMap_comp' y φ ▸ T.hasThetaConstants_ring_baseChange h₂ o g N' J b _ s t R' R'' φ _ w H
+    spMap_comp' y φ ▸ _root_.GlobalTheory.hasTh_baseChange h₂ o g N' J b _ s t R' R'' φ _ w H
   refine exists_ideal_of_locally (fun R' _ y => t.HasTh (spMap y) (fun a => y (v a)))
     (fun R' R'' _ _ y φ H => bc R' R'' y φ _ H) (fun R' _ y H => hasTh_of_local t ho fun q hq => ?_) fun p => ?_
   · obtain ⟨f, hf, H⟩ := H q hq
     exact ⟨f, hf, by rw [spMap_comp']; exact H⟩
-  obtain ⟨R₁, _, x, w₁, hx, hp, H₁⟩ := T.exists_thetaConstants_locally_on_base h₁ h₂ o g N' J b _ s t ho p
+  obtain ⟨R₁, _, x, w₁, hx, hp, H₁⟩ := _root_.GlobalTheory.ThetaLocal.exists_hasTh h₁ h₂ o g N' J b _ s t ho p
   obtain ⟨φ, rfl⟩ := Spec.map_surjective x
   obtain ⟨_, ⟨f, rfl⟩, hf, hle⟩ := PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hp
     (Spec.map φ).isOpenEmbedding.isOpen_range
@@ -281,7 +281,7 @@ theorem exists_ideal_hasTh_iff : Out.Laws → Out.Laws2 → ∀ (o : Type) [Comm
   have hw : Ideal.span (Set.range w) = ⊤ := by
     by_contra h
     obtain ⟨m, hm, hle⟩ := Ideal.exists_le_maximal _ h
-    obtain ⟨c, hc⟩ := T.thetaCosetNonvanishing_of_hasTh h₁ h₂ o g N' J b _ s t N' L _ w m (by omega) dvd_rfl H hm.isPrime 0
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.coset_of_hasTh h₁ h₂ o g N' J b _ s t N' L _ w m (by omega) dvd_rfl H hm.isPrime 0
     exact hc (hle (Ideal.subset_span ⟨_, rfl⟩))
   let M : Ideal L := Ideal.span {m | ∃ a c, m = algebraMap R L (v a) * w c - algebraMap R L (v c) * w a}
   refine ⟨f, hf, M.comap (algebraMap R L), fun R' _ y hy => ?_⟩
@@ -289,7 +289,7 @@ theorem exists_ideal_hasTh_iff : Out.Laws → Out.Laws2 → ∀ (o : Type) [Comm
     ⟨IsLocalization.Away.lift f hy, (IsLocalization.Away.lift_comp f hy).symm⟩
   have H' := bc L R' _ z w H
   refine ⟨fun Hy r hr => ?_, fun Hy => ?_⟩
-  · obtain ⟨u, hu⟩ := T.thetaConstants_unique_up_to_unit h₁ h₂ o g N' J b _ s t R' _ _ _ Hy H' (span_map_eq_top _ hv)
+  · obtain ⟨u, hu⟩ := _root_.GlobalTheory.hasTh_unique_unit h₁ h₂ o g N' J b _ s t R' _ _ _ Hy H' (span_map_eq_top _ hv)
     have : M ≤ RingHom.ker z := Ideal.span_le.2 (by
       rintro _ ⟨a, c, rfl⟩
       rw [SetLike.mem_coe, RingHom.mem_ker, map_sub, map_mul, map_mul, hu, hu]

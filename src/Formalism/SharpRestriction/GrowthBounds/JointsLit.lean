@@ -72,7 +72,7 @@ theorem antitone_of_succ {n : ℕ} (μ : Fin n → ℤ) (h : ∀ (a : Fin n) (ha
 theorem stCount_eq_dGT (n : ℕ) (μ : Fin n → ℤ) (hμ : Antitone μ) :
     Formalism.MainNotions.SelectionLemmas.stCount n μ = Formalism.InvariantFactorPaths.GelfandTsetlinBases.dGT n μ := by
   unfold Formalism.MainNotions.SelectionLemmas.stCount
-  rw [← (Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top.stdCountGT n μ hμ).2]
+  rw [← (_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.standard_count_gt n μ hμ).2]
   exact Nat.card_congr (Equiv.subtypeEquivRight fun I => Formalism.MainNotions.G.ColumnFamilies.restStd n 0 (fun _ => μ) I)
 
 theorem weyl_dimension_formula_index_sets (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.SelectionLemmas.admB3 D := by
@@ -80,7 +80,7 @@ theorem weyl_dimension_formula_index_sets (D : Formalism.BasicNotions.D7) : Form
   have e : Nat.card {I : ℤ → Finset (Fin n) // IsSt mu I} =
       Nat.card {I : ℤ → Finset (Fin n) // Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsStd (pEnd mu) I} :=
     Nat.card_congr (Equiv.subtypeEquivRight fun I => Formalism.MainNotions.G.ColumnFamilies.restStd n N mu I)
-  rw [e, (Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top.stdCountGT n (pEnd mu) hdom).2]
+  rw [e, (_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.standard_count_gt n (pEnd mu) hdom).2]
   exact Formalism.L2.G.Model.weylQ n (pEnd mu) hdom
 
 theorem branching_rule_count_form (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.SelectionLemmas.ColumnFamilyLowerSet D := by
@@ -110,7 +110,7 @@ theorem strip_down_antitone {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (hν : A
 open Classical in
 theorem pieri_rule_count_form (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.SelectionLemmas.GenericProjectionCriterion D := by
   intro m ν b hν
-  obtain ⟨hup, hdown⟩ := Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top.gtPieri (m + 1) ν b hν
+  obtain ⟨hup, hdown⟩ := _root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.gelfand_tsetlin_pieri (m + 1) ν b hν
   have hc : (m + 1 + b - 1).choose b = (b + m).choose m := by
     rw [show m + 1 + b - 1 = b + m by omega, Nat.choose_symm_add]
   rw [stCount_eq_dGT (m + 1) ν hν]
@@ -164,8 +164,8 @@ theorem span_inf_span {A K : Type*} [CommRing A] [IsDedekindDomain A] [Field K] 
     convert h using 1
     funext i
     rcases i with i | i
-    · ext <;> simp [φ', b', Module.Basis.prod_apply_inl_fst, Module.Basis.prod_apply_inl_snd]
-    · ext <;> simp [φ', b', Module.Basis.prod_apply_inr_fst, Module.Basis.prod_apply_inr_snd]
+    · ext <;> simp [φ', b']
+    · ext <;> simp [φ', b']
   let U : Submodule K (V × V) := LinearMap.range ((LinearMap.id : V →ₗ[K] V).prod LinearMap.id)
   have key := (FBC.flat_ext (V := V × V) (W := W × W) w σ hσ φ' hφ' b' hb').2 (L1.prod L2) U
   have hL : ∀ y ∈ Submodule.span O (φ '' (L1 : Set V)), (y, (0 : W)) ∈ Submodule.span O (φ' '' ((L1.prod L2 : Submodule A (V × V)) : Set (V × V))) := by

@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatticeCompletionIffSupportedMapsStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatticeCompletionIffSupportedMaps
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,10 +51,10 @@ namespace GlobalTheory.ContrComb
 
 theorem extL_mem_latO : ∀ (D : D7) (V₀ A L S : HSp D) (o : OrthDec V₀ A L) (P : Pl D → Prop) (LA : Lat A) (LS : Lat S) (M : Lat V₀), IsSelfDualC A LA → IsSelfDualC S LS → IsSelfDualC V₀ M → (∀ v, P v → ∃ LL, OrthAt o M LA LL v) → ∀ u ∈ latO A S (LA : Set _) (LS : Set _) P, (o.resS S).symm (u, 0) ∈ latO V₀ S (M : Set _) (LS : Set _) P := by
   intro D V₀ A L S o P LA LS M hA hS hM hO u hu
-  rw [GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D A S LA LS hA hS P u] at hu
+  rw [_root_.GlobalTheory.FinPl.LatMem.mem_latO_iff D A S LA LS hA hS P u] at hu
   obtain ⟨huP, huL⟩ := hu
-  rw [GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D V₀ S M LS hM hS P, OrthDec.resS_symm_apply, Matrix.zero_mul, add_zero]
-  have hloc := (GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2
+  rw [_root_.GlobalTheory.FinPl.LatMem.mem_latO_iff D V₀ S M LS hM hS P, OrthDec.resS_symm_apply, Matrix.zero_mul, add_zero]
+  have hloc := (_root_.GlobalTheory.FinPl.localComponents D P).2
   refine ⟨fun i j => ?_, fun y hy => ?_⟩
   · rw [Matrix.mul_apply]
     exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (huP i k)

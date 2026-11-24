@@ -112,7 +112,7 @@ lemma ldrow_weight_rowW {k n : ℕ} (m : Fin k × Fin n →₀ ℕ) (a : Fin k) 
   · intro b _ hb
     apply Finset.sum_eq_zero
     intro s _
-    simp [rowW, Pi.single_apply, Ne.symm hb]
+    simp [rowW, Ne.symm hb]
   · intro h
     exact absurd (Finset.mem_univ a) h
 

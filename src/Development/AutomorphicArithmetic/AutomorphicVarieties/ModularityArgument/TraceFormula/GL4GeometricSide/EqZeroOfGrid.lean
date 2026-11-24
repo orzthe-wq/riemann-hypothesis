@@ -59,20 +59,6 @@ open scoped Classical
 
 namespace UpperTheory.V.Z.GSp4Splitting.RealLieFiniteness
 
-private theorem exists_detect {U : Type} (C : Submodule ℂ (U → ℂ)) [FiniteDimensional ℂ C] :
-    ∃ s : Finset U, ∀ f ∈ C, (∀ a ∈ s, f a = 0) → f = 0 := by
-  let ev : U → Module.Dual ℂ C := fun a => (LinearMap.proj a).comp C.subtype
-  have hfg : (Submodule.span ℂ (ev '' Set.univ)).FG := IsNoetherian.noetherian _
-  obtain ⟨t, ht, e⟩ := (Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg
-  obtain ⟨s, -, rfl⟩ := Finset.subset_set_image_iff.1 ht
-  refine ⟨s, fun f hf h0 => funext fun a => ?_⟩
-  have hle : Submodule.span ℂ (ev '' Set.univ) ≤ LinearMap.ker (Module.Dual.eval ℂ C ⟨f, hf⟩) := by
-    rw [e, Submodule.span_le]
-    intro l hl
-    obtain ⟨b, hb, rfl⟩ := Finset.mem_image.1 (Finset.mem_coe.1 hl)
-    exact h0 b hb
-  exact hle (Submodule.subset_span ⟨a, trivial, rfl⟩)
-
 private theorem eq_zero_of_grid {ι U : Type} [Fintype ι] (C : ι → Submodule ℂ (U → ℂ)) (s : ι → Finset U)
     (hs : ∀ i, ∀ f ∈ C i, (∀ a ∈ s i, f a = 0) → f = 0) (F : (ι → U) → ℂ)
     (hF : ∀ i k, (fun a => F (Function.update k i a)) ∈ C i) (h0 : ∀ k, (∀ i, k i ∈ s i) → F k = 0) (k : ι → U) :
@@ -137,7 +123,7 @@ private def box (C : InfinitePlace E → Submodule ℂ (Un n → ℂ)) : Submodu
 
 private theorem box_fin (C : InfinitePlace E → Submodule ℂ (Un n → ℂ)) [∀ w, FiniteDimensional ℂ (C w)] :
     FiniteDimensional ℂ (box C) := by
-  choose s hs using fun w => exists_detect (C w)
+  choose s hs using fun w => _root_.UpperTheory.Reformulated.B.Qp2.exists_finset_separating (C w)
   let L : box C →ₗ[ℂ] ((∀ w, s w) → ℂ) := (LinearMap.funLeft ℂ ℂ fun k => glue fun w => (k w).1).comp (box C).subtype
   refine FiniteDimensional.of_injective L ((injective_iff_map_eq_zero L).2 fun f hf => Subtype.ext (funext fun x => ?_))
   obtain ⟨k, rfl⟩ := glue_surj x

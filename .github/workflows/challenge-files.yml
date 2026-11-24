@@ -2,8 +2,10 @@ name: challenge files
 
 # The Comparator challenge files say what the proof is judged against, so a pull request may not
 # change them. This runs the base branch's copy of the workflow and nothing from the pull
-# request: it reads file hashes through the API. A pull request cannot switch it off, and it
-# needs no approval to run on a pull request from a fork.
+# request: it fetches commits and trees, without file contents, and reads the file hashes with
+# git. A pull request cannot switch it off, and it needs no approval to run on a pull request
+# from a fork. (GitHub's compare API, which this used to ask for the merge base, timed out on a
+# pull request that changes 148,106 files.)
 
 on:
   pull_request_target:
@@ -22,6 +24,7 @@ jobs:
   frozen:
     name: Comparator challenge files are unchanged
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Compare the files where the pull request branched off and at its head
         env:
@@ -35,32 +38,42 @@ jobs:
 
           base=$(gh api "repos/$REPO/pulls/$PR" --jq .base.sha)
           head=$(gh api "repos/$REPO/pulls/$PR" --jq .head.sha)
-          fork=$(gh api "repos/$REPO/compare/$base...$head?per_page=1" --jq .merge_base_commit.sha)
-          echo "pull request $PR: branched off at $fork, head $head"
+          git init -q pr
+          git -C pr fetch -q --no-tags --filter=blob:none "https://github.com/$REPO" "$base" "$head"
+          # A head that has merged two main commits, neither containing the other, has more than
+          # one merge base, and GitHub's merge uses all of them.
+          forks=$(git -C pr merge-base --all "$base" "$head")
+          echo "pull request $PR: branched off at ${forks//$'\n'/ }, head $head"
 
-          # The blob hash of a file at a commit; nothing if the file is not there. Any other API
-          # failure stops the job.
-          blob() {
-            local out
-            if out=$(gh api "repos/$REPO/contents/$2?ref=$1" --jq .sha 2>&1); then
-              printf '%s\n' "$out"
-            elif ! grep -q 'HTTP 404' <<<"$out"; then
-              printf '%s\n' "$out" >&2
-              return 1
-            fi
+          # A file's mode, type and blob hash at a commit; nothing if the file is not there. The
+          # mode matters: a symlink whose target is the old contents has the old hash. If git
+          # cannot read a tree on the way, it fails and so does the job.
+          entry() {
+            git -C pr ls-tree --format='%(objectmode) %(objecttype) %(objectname)' "$1" -- "$2"
           }
 
           status=0
           for path in $frozen; do
-            old=$(blob "$fork" "$path")
-            new=$(blob "$head" "$path")
-            # A file that was not there before is being added, not changed.
-            if [ -n "$old" ] && [ "$old" != "$new" ]; then
-              echo "::error file=$path::This pull request changes $path, a Comparator challenge file."
+            new=$(entry "$head" "$path")
+            ours=$(entry "$base" "$path")
+            seen='' verdict="unchanged: $path"
+            for fork in $forks; do
+              old=$(entry "$fork" "$path")
+              [ -n "$old" ] || continue
+              seen=1
+              if [ "$old" != "$new" ]; then
+                verdict="::error file=$path::This pull request changes $path, a Comparator challenge file."
+                status=1
+              fi
+            done
+            # Where the pull request branched off without the file, a change to the path it was
+            # moved from can land in it when the branch is merged, so that is not checked as an
+            # added file unless the base branch does not have it either.
+            if [ -z "$seen" ] && [ -n "$ours" ]; then
+              verdict="::error file=$path::This pull request branched off before $path was there. Merge main into it so the file can be compared."
               status=1
-            else
-              echo "unchanged: $path"
             fi
+            echo "$verdict"
           done
           if [ "$status" != 0 ]; then
             echo "These files say what the proof is judged against, and pull requests may not change them."

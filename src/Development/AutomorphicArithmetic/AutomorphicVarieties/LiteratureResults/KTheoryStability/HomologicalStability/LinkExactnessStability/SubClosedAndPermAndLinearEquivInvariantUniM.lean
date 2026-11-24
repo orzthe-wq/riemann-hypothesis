@@ -140,12 +140,3 @@ theorem main : ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M], SubC
 
 end GlobalTheory.UniSeqBasic
 
-section
-open GlobalTheory.SeqCx Matrix
-theorem _root_.GlobalTheory.T.subClosed_and_perm_and_linearEquiv_invariant_uniM : ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M], SubClosed (uniM R M) ∧ (∀ l l' : List M, l.Perm l' → l ∈ uniM R M → l' ∈ uniM R M) ∧ ∀ (ψ : M ≃ₗ[R] M) (l : List M), l.map ψ ∈ uniM R M ↔ l ∈ uniM R M := by
-  first
-  | exact @GlobalTheory.UniSeqBasic.main
-  | exact @GlobalTheory.UniSeqBasic.mem_uniM_iff
-  | exact @GlobalTheory.UniSeqBasic.orth_symm
-  | exact @GlobalTheory.UniSeqBasic.perm_lift
-end

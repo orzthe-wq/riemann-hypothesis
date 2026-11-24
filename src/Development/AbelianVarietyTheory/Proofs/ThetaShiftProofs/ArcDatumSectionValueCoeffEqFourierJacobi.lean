@@ -1,30 +1,28 @@
 module
 
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajPos
+public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfArcBaseChange
+public import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcLineFunctions.ArcSPin
 public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsThetaL2NormSquared
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsLetterRingBaseChange
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 public import Development.AbelianVarietyTheory.Counterexamples.ModuliSurvey.MemOfPowEqInt
-public import Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.FirstMinimumRankZero
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsSchemeTheoreticallyDominantSpecOfInjective
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFrameChangeByConstantsStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFramedPointUniqueAndBaseChangeStatement
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFrameChangeByConstants
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFramedPointUniqueAndBaseChange
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFramedPointValueIsHomogeneousLetters
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcPointTangentPart
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.DegenerationDataBaseChangesExistPid
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNeZeroIff
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArcStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeComposeInvertBaseChangeTriangularStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeExistsUniqueInvertible
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FramedPointEvalNaturalWeightScalingStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfArcBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsIntegralElemOfIsAlgebraicInt
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsOpenImmersionJKPowerSeries
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LaurentCoeffSectionValueArcEqFourierJacobiStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyUnifWitnessDataOfIsUnfStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusExtExponentialDerivativeBijectiveTangentStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
-public import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcLineFunctions.ArcSPin
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FramedPointEvalNaturalWeightScaling
+public import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArchimedeanUniqueness.MetricDef
+public import Mathlib.NumberTheory.NumberField.Discriminant.Defs
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LaurentCoeffSectionValueArcEqFourierJacobi
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyUnifWitnessDataOfIsUnf
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BoundedSectionAlgebra
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -42,10 +40,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PicardGroup
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -65,10 +60,87 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantFamilyNorms
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNeZeroIff
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeComposeInvertBaseChangeTriangular
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeExistsUniqueInvertible
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsIntegralElemOfIsAlgebraicInt
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsOpenImmersionJKPowerSeries
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusExtExponentialDerivativeBijectiveTangent
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigidSys
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BoundedSectionAlgebra
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.FirstMinimumRankZero, Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfArcBaseChangeStatement, Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcDatumSectionValueCoeffEqFourierJacobi
+
+-- ===== clump member: Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.FirstMinimumRankZero =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.FirstMinimumRankZero", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajPos\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.MajorantFamilyNorms\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.FlagFlowCheck
+
+open NumberField Complex ReciprocityTheory.ChartRestriction.G.FD
+open scoped ComplexConjugate
+
+variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
+
+theorem tt_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) {ξ : Fin r → E} (hξ : ξ ≠ 0) (τ : X.Ψ) :
+    0 < X.tt ξ x τ := by
+  have hv : Data.emb τ.1 ξ ≠ 0 := by
+    intro h
+    apply hξ
+    funext a
+    exact (map_eq_zero_iff τ.1 τ.1.injective).1 (congrFun h a)
+  have := X.maj_pos hx τ hv
+  have := _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantFamilyNorms.c_pos X τ
+  unfold Data.tt
+  positivity
+
+end GlobalTheory.FlagFlowCheck
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.FirstMinimumRankZero =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfArcBaseChangeStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfArcBaseChangeStatement", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfArcBaseChange\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcLineFunctions.ArcSPin\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.L2.Pj.QAt GlobalTheory.ArcQ GlobalTheory.Frames
+
+theorem _root_.GlobalTheory.T.isFramedPoint_of_arc_baseChange :
+    Out.Laws → Out.Laws2 →
+    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
+      (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)
+      (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β)
+      (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A]
+      (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ)
+      (A' : Type) [CommRing A'] [IsDomain A'] [IsLocalRing A'] [IsNoetherianRing A']
+      (b' : O →+* A') (a' : ArcIn Dw l β A' b') (f : A →+* A')
+      (p : Out.IsPullDeg f a.D₀ a'.D₀) (W' : Wit Y a' (spMap (PowerSeries.map f) ≫ χ)),
+      Mono Y.j → InBC f a a' p → WitBC f p W W' →
+      ∀ (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR A))
+        (e' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a'.D₀ (epsR A')) th th',
+        (∀ τ k, GlobalTheory.ArcQ.LetBC p (e τ k) (e' τ k)) → ThBC p th th' →
+        ∀ (S : Type) [CommRing S] [Algebra c.F S] (ι' : PowerSeries A' →+* S) (y : FrPt Xo c S),
+          GlobalTheory.ArcQ.IsArcFr W e th (ι'.comp (PowerSeries.map f)) y →
+            GlobalTheory.ArcQ.IsArcFr W' e' th' ι' y :=
+  @GlobalTheory.ArcQ.isArcFr_witBC
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfArcBaseChangeStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcDatumSectionValueCoeffEqFourierJacobi =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcDatumSectionValueCoeffEqFourierJacobi", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsThetaL2NormSquared\npublic import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsLetterRingBaseChange\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt\npublic import Development.AbelianVarietyTheory.Counterexamples.ModuliSurvey.MemOfPowEqInt\npublic import Development.AbelianVarietyTheory.Counterexamples.UpperHalfSurvey.FirstMinimumRankZero\npublic import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsSchemeTheoreticallyDominantSpecOfInjective\npublic import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFrameChangeByConstants\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFramedPointUniqueAndBaseChange\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcFramedPointValueIsHomogeneousLetters\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcPointTangentPart\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.DegenerationDataBaseChangesExistPid\npublic import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FramedPointEvalNaturalWeightScaling\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsFramedPointOfArcBaseChangeStatement\npublic import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArchimedeanUniqueness.MetricDef\npublic import Mathlib.NumberTheory.NumberField.Discriminant.Defs\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LaurentCoeffSectionValueArcEqFourierJacobi\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyUnifWitnessDataOfIsUnf\npublic import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcLineFunctions.ArcSPin\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.BoundedSectionAlgebra\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsNeZeroIff\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeComposeInvertBaseChangeTriangular\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeExistsUniqueInvertible\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsIntegralElemOfIsAlgebraicInt\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsOpenImmersionJKPowerSeries\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorusExtExponentialDerivativeBijectiveTangent\nimport Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PicardGroup\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RigidSys\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField
@@ -106,8 +178,7 @@ end Freq
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
-theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
-    spMap f ≫ spMap g = spMap (f.comp g) := (Spec.map_comp _ _).symm
+alias sp_comp := _root_.Formalism.L2.Pj.spMap_comp_ring
 
 theorem gtTanR_of_isArcFr (hG : Out.GlobalFnsSt) {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
     {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] {b : O →+* A} {a : ArcIn Dw l β A b}
@@ -117,7 +188,7 @@ theorem gtTanR_of_isArcFr (hG : Out.GlobalFnsSt) {O : Type} [CommRing O] {β : O
     {y : FrPt Xo c S} (h : IsArcFr W e th ι y) (τ : E →+* ℂ) (k : Fin (Dw.mult τ)) : GtTanR (e τ k) := by
   obtain ⟨z, t', m1, m2, φ, -, -, -, -, -, hu, -⟩ := h
   obtain ⟨v, u', hv, h1, h2, h3⟩ := hu τ k
-  refine ((GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W (e τ k)).2 v hv).2 ?_
+  refine ((_root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W (e τ k)).2 v hv).2 ?_
   have e1 : eSec t'.G ≫ m1.φ = y.x ≫ eSec Xo.univ.t.G := m1.cm.e_comm.trans (congrArg (· ≫ _) m1.base)
   have e2 : eSec t'.G ≫ m2.φ = spMap ι ≫ eSec W.t.G := m2.cm.e_comm.trans (congrArg (· ≫ _) m2.base)
   have h0 : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ u' = eSec t'.G := by
@@ -209,13 +280,13 @@ theorem exists_frPt_at (h1 : Out.Laws) (h2 : Out.Laws2) (hev : GlobalTheory.Reg.
         rfl }
   obtain ⟨y₁, hy₁⟩ := hev.bc _ _ φ y₀
   obtain ⟨z₁, hz₁⟩ := hev.bc _ _ φ d.yF
-  have a₀ := (GlobalTheory.T.arcFramedPoint_unique_and_baseChange h1 h2 E H Dw l Xo c _ _ d.Y K₁ _ _ d.χ d.W e₀ d.th hth _ _ y₀ hy₀).2 hY _ φ y₁ hy₁
+  have a₀ := (_root_.GlobalTheory.ArcQ.isArcFr_unique_baseChange h1 h2 E H Dw l Xo c _ _ d.Y K₁ _ _ d.χ d.W e₀ d.th hth _ _ y₀ hy₀).2 hY _ φ y₁ hy₁
   have hι : φ.toRingHom.comp (arcι Dw K₁) = (HahnSeries.ofPowerSeries ℤ ℂ).comp (PowerSeries.map ι) :=
     RingHom.ext fun g => evS_arcι ι hx g
   rw [hι] at a₀
   have b₁ := GlobalTheory.T.isFramedPoint_of_arc_baseChange h1 h2 E H Dw l Xo c _ _ d.Y K₁ _ _ d.χ d.W ℂ b' a₁ ι p W₁ hY hp hW e₀ e₁ d.th th₁ he ht
     _ _ y₁ a₀
-  have c₁ := ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c (ArcS Dw K₁)).2.2.1 _ φ _ _ _ _ _ _ hc hy₁).1 hz₁
+  have c₁ := ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c (ArcS Dw K₁)).2.2.1 _ φ _ _ _ _ _ _ hc hy₁).1 hz₁
   let g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ := fun τ => Matrix.of fun i k => x ⟨τ, (i, k)⟩
   have hM : ∀ τ, (letM Dw K₁ τ).map φ = 1 * (g τ).map cstL := fun τ => by
     rw [one_mul]
@@ -229,15 +300,15 @@ theorem exists_frPt_at (h1 : Out.Laws) (h2 : Out.Laws2) (hev : GlobalTheory.Reg.
   have hu := (GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c ℂ⸨X⸩ _ _ y₁).2.2.1 z₁ c₁
   obtain ⟨y₂, hy₂⟩ := (GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c ℂ⸨X⸩ (fun τ => (g τ).map cstL) 1 y₁).1
     (fun τ => by simpa only [one_mul] using hu.1 τ) isUnit_one
-  have c₂ : FrChg (fun _ => 1) (cstL (ι ζ)) y₂ z₁ := ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c ℂ⸨X⸩).1 _ _ _ _ _ _ _ hy₂).2 c₁
+  have c₂ : FrChg (fun _ => 1) (cstL (ι ζ)) y₂ z₁ := ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c ℂ⸨X⸩).1 _ _ _ _ _ _ _ hy₂).2 c₁
   refine ⟨fun h0 => hu.2.ne_zero (by rw [h0, map_zero, zero_mul]), y₂, ?_, fun F hF => ?_⟩
-  · refine GlobalTheory.T.arcFrame_change_by_constants h1 h2 E H Dw l Xo c _ _ d.Y ℂ b' a₁ _ W₁ e₁ e₂ th₁ th₁ g 1 hth₁ he₂ (ThMul.refl _) _ _ y₁ y₂
+  · refine _root_.GlobalTheory.ArcQ.isArcFr_of_frChg_const h1 h2 E H Dw l Xo c _ _ d.Y ℂ b' a₁ _ W₁ e₁ e₂ th₁ th₁ g 1 hth₁ he₂ (ThMul.refl _) _ _ y₁ y₂
       hY b₁ ?_
     rw [map_one, map_one]
     exact hy₂
   · obtain ⟨P, hP, -⟩ := evR_arc_isHomogeneous h1 h2 E H Dw l Xo c hev K₁ d a' n F hF
-    have eS := (GlobalTheory.T.framedPoint_eval_natural_weight_scaling E H Dw l Xo c hev a' n F hF (ArcS Dw K₁)).1 _ φ _ _ hz₁
-    have eT := ((GlobalTheory.T.framedPoint_eval_natural_weight_scaling E H Dw l Xo c hev a' n F hF ℂ⸨X⸩).2 inferInstance).2 _ _ _ c₂
+    have eS := (_root_.GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hev a' n F hF (ArcS Dw K₁)).1 _ φ _ _ hz₁
+    have eT := ((_root_.GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hev a' n F hF ℂ⸨X⸩).2 inferInstance).2 _ _ _ c₂
     have e3 : evP ι x P = cstL (ι ζ ^ n) * evR Xo c F y₂ := by
       rw [map_pow, ← eT, eS, ← hP]
       exact (evS_algebraMap ι hx P).symm
@@ -272,7 +343,7 @@ theorem ajAt_eq_fj_of_overBase : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt
   letI : Algebra (FractionRing ℂ) ℂ := FractionRing.liftAlgebra ℂ ℂ
   haveI : IsScalarTower ℂ (FractionRing ℂ) ℂ := FractionRing.isScalarTower_liftAlgebra ℂ ℂ
   letI : Algebra c.F ℂ⸨X⸩ := (cstL.comp (ι.comp (algebraMap c.F K₁))).toAlgebra
-  obtain ⟨Uw⟩ := GlobalTheory.T.nonempty_unifWitnessData_of_isUnf E H Dw l Xo c _ r U hunf
+  obtain ⟨Uw⟩ := _root_.GlobalTheory.ArcQ.nonempty_unfWit_of_isUnf E H Dw l Xo c _ r U hunf
   obtain ⟨ζ, e₀, y₀, hy₀, hc⟩ := d.exists_normal_tangent h1 h2
   have hth : ThNZ d.th := by
     obtain ⟨_, _, _, _, hne, -⟩ := d.isArc3
@@ -295,14 +366,14 @@ theorem ajAt_eq_fj_of_overBase : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt
     ((GlobalTheory.Relab.relab_good E H l c _ hgood).2.2.2 Dw Uw.g Uw.e) (GlobalTheory.ArcInTest.exists_values c d.Wp) hover₁
     (generic_mem d ι)
   let f : a₁.D₀.X ≃ₗ[𝓞 E] d.a.D₀.X := { p.xe with map_smul' := hp.2.1 }
-  obtain ⟨k, ξ', sE, C, hiso, -, -, -, hC, -, hmain⟩ := GlobalTheory.T.laurentCoeff_sectionValue_arc_eq_fourierJacobi h1 h2 E H Dw l Xo c _ r U Uw _ _ d.Y a₁ _ W₁ Ha
+  obtain ⟨k, ξ', sE, C, hiso, -, -, -, hC, -, hmain⟩ := _root_.GlobalTheory.ArcCoeff.coeff_evR_eq_fj h1 h2 E H Dw l Xo c _ r U Uw _ _ d.Y a₁ _ W₁ Ha
     th₁ (ξ.comp (f.toLinearMap.restrictScalars ℤ)) ν₀ d.jj a' n hev hgood hunf (fun _ => rfl) hover₁
     (mono_spMap_subtype _) hpush (hnz _ _ hth₁ hth) (f.finrank_eq.trans hrk)
     (fun h => hξ (LinearMap.ext fun y => by
       obtain ⟨y, rfl⟩ := f.surjective y
       exact LinearMap.congr_fun h y))
     (betaAt_comp f ξ hp.2.2.1 hbeta) hdom htv (((Ha.T + 1 : ℝ) : ℂ) * Complex.I) (by simp)
-  obtain ⟨v₁, v₂, -, v₄⟩ := GlobalTheory.T.torusExt_exponential_derivative_bijective_tangent h1.globalFns E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha
+  obtain ⟨v₁, v₂, -, v₄⟩ := _root_.GlobalTheory.ExpTan.anVec_bijective h1.globalFns E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha
   choose z₁ hz₁ using fun τ i =>
     (v₁ (e₁ τ i) (htan _ _ (he₁ τ i) (gtTanR_of_isArcFr h1.globalFns hι hy₀ τ i))).exists
   have key : ∀ x, InvBl x → ∃ (fr : (U.X k).dom) (κ : ℂ), κ ≠ 0 ∧
@@ -335,3 +406,7 @@ theorem ajAt_eq_fj : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt → Out.Law
     ajAt_eq_fj_of_overBase h1 h2 hU h5 hN E H Dw l Xo c K₁ d ι r U ξ ν₀ a' n hev hgood hunf hover
 
 end GlobalTheory.ArcId
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ArcDatumSectionValueCoeffEqFourierJacobi =====

@@ -1,9 +1,11 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LocalAtPlaces
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LocalizationModelOverPlaceStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PointIdealComapPrimeLiftStatement
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ResidueModelAtPrimeStatement
+public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.LaurentCechNerveLevelSpecTensorPower
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LocalizationModelOverPlace
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PointIdealComapPrimeLift
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ResidueModelAtPrime
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PMinimalPrimeMultiHomog
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -218,7 +220,7 @@ theorem intNumL_of_isFibreComp {K : Type} [Fintype K] [DecidableEq K] {ι : K �
   have hJ : IsMultiHomogIdeal (pointIdeal O y ⊔ (IsLocalRing.maximalIdeal O).map (C : O →+* MRing ι O)) :=
     isMultiHomogIdeal_pointIdeal_sup_map_C y _
   have hWh : IsMultiHomogIdeal W' := MinimalPrimeMultiHomog.proof.{0} O K ι _ W' hJ hW.1
-  exact GlobalTheory.T.residue_model_at_prime K ι Ω y A hconst p m O hpm fd hcard W' hW.1.1.1 hWh (le_sup_left.trans hW.1.1.2)
+  exact _root_.GlobalTheory.CompanionTheory.Ar.Num.intNumL_zmod_eq_residueDegree_mul_vNumL K ι Ω y A hconst p m O hpm fd hcard W' hW.1.1.1 hWh (le_sup_left.trans hW.1.1.2)
     (le_sup_right.trans hW.1.1.2) l
 
 theorem classNum_eq_zero_of_vNumL_eq {K : Type} [DecidableEq K] {ι : K → Type} {O O' : Type} [CommRing O]
@@ -245,13 +247,13 @@ theorem powerSumsVanish_extTo_of_atPlacesOver : ∀ (K : Type) [Fintype K] [Deci
   obtain ⟨algZ, towZ⟩ := exists_algebra_of_injective ℤ Ω hinjZ (Ideal.span {((p : ℕ) : ℤ)}) (ZP p)
   have hcastZ : algebraMap ℤ (ZP p) = Int.castRingHom (ZP p) := RingHom.ext_int _ _
   have hP0 : pointIdeal ℤ y = mCoordIdeal y := by
-    have h := (GlobalTheory.T.point_ideal_comap_prime_lift K ι Ω y ℤ (fun c _ a => Subalgebra.algebraMap_mem _ a)).1
+    have h := (_root_.GlobalTheory.CompanionTheory.Ar.Num.pl_corr K ι Ω y ℤ (fun c _ a => Subalgebra.algebraMap_mem _ a)).1
     have e : (MvPolynomial.map (Int.castRingHom ℤ) : MRing ι ℤ →+* MRing ι ℤ) = RingHom.id _ := by
       rw [show Int.castRingHom ℤ = RingHom.id ℤ from RingHom.ext_int _ _]
       exact RingHom.ext fun f => MvPolynomial.map_id f
     rw [e, Ideal.comap_id] at h
     exact h
-  have hZ' := (GlobalTheory.T.localization_model_over_place K ι Ω y ℤ hinjZ hconstZ D harith (Ideal.span {((p : ℕ) : ℤ)}) (ZP p)).1
+  have hZ' := (_root_.GlobalTheory.CompanionTheory.Ar.Num.pl_model K ι Ω y ℤ hinjZ hconstZ D harith (Ideal.span {((p : ℕ) : ℤ)}) (ZP p)).1
   rw [hP0] at hZ'
   have hZ : extTo (ZP p) (mCoordIdeal y) = pointIdeal (ZP p) y := by
     rw [hZ', hcastZ]
@@ -272,7 +274,7 @@ theorem powerSumsVanish_extTo_of_atPlacesOver : ∀ (K : Type) [Fintype K] [Deci
     rw [hW₀, Ideal.mem_comap, map_X] at h
     exact h
   have hle : mCoordIdeal y ≤ W₀ := le_sup_left.trans hW0min.1.2
-  obtain ⟨hcomp, hex, -⟩ := GlobalTheory.T.point_ideal_comap_prime_lift K ι Ω y A hconst
+  obtain ⟨hcomp, hex, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Num.pl_corr K ι Ω y A hconst
   obtain ⟨Wa, ⟨hWap, hWapt, hWac⟩, hu⟩ := hex W₀ hW0p hW0rel hle
   obtain ⟨m, hm⟩ : ∃ m, m = Wa.comap (C : A →+* MRing ι A) := ⟨_, rfl⟩
   haveI hmp : m.IsPrime := hm ▸ Ideal.comap_isPrime _ _
@@ -299,7 +301,7 @@ theorem powerSumsVanish_extTo_of_atPlacesOver : ∀ (K : Type) [Fintype K] [Deci
   haveI hdvr : IsDiscreteValuationRing (Localization.AtPrime m) :=
     IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain A hmne (Localization.AtPrime m)
   obtain ⟨algO, towO⟩ := exists_algebra_of_injective A Ω hinj m (Localization.AtPrime m)
-  have hO := (GlobalTheory.T.localization_model_over_place K ι Ω y A hinj hconst D harith m (Localization.AtPrime m)).1
+  have hO := (_root_.GlobalTheory.CompanionTheory.Ar.Num.pl_model K ι Ω y A hinj hconst D harith m (Localization.AtPrime m)).1
   have hWaMin : Wa ∈ (pointIdeal A y ⊔ m.map (C : A →+* MRing ι A)).minimalPrimes := by
     refine mem_minimalPrimes_of_unique_contraction
       (MvPolynomial.map (Int.castRingHom A) : MRing ι ℤ →+* MRing ι A) hW0min hWap

@@ -106,13 +106,13 @@ private theorem tf_one_not_mem (T : TyLev X M) (y : X) (hy : y ∉ T.K) : T.tf 1
     rw [DoubleCoset.mem_doubleCoset]
     rintro ⟨a, ha, b, hb, rfl⟩
     exact hy (by simpa using T.K.mul_mem ha hb)
-  simp [TyLev.tf, dosetInd, Set.indicator_apply, hn]
+  simp [TyLev.tf, dosetInd, hn]
 
 private theorem tf_one_one (T : TyLev X M) : T.tf 1 1 = ((T.K₀.relIndex T.K : ℕ) : ℂ)⁻¹ := by
   have h1 : (1 : X) ∈ DoubleCoset.doubleCoset (1 : X) (T.K : Set X) T.K :=
     DoubleCoset.mem_doubleCoset.2 ⟨1, T.K.one_mem, 1, T.K.one_mem, by simp⟩
   have h2 : T.ψ ⟨1, T.J.one_mem⟩ = 1 := map_one T.ψ
-  simp [TyLev.tf, tyFn, dosetInd, Set.indicator_apply, h1, T.J.one_mem, h2]
+  simp [TyLev.tf, tyFn, dosetInd, h1, T.J.one_mem, h2]
 
 private theorem finsum_cosets (K K₀ : Subgroup X) (hle : K₀ ≤ K) (hi : K₀.relIndex K ≠ 0) (c : ℂ)
     (G : X ⧸ K₀ → ℂ) (h1 : ∀ z : X ⧸ K₀, z.out ∈ K → G z = c)

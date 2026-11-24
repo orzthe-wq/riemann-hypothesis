@@ -11,49 +11,8 @@ public import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSB
 public import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeLemma3
 import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.NumericSettingWithGapSatisfiable
 public import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.TopsChoicePartA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.FormalDegreeBessel.FormalDegreeRatio.IOCentral
 
 @[expose] public section
 
@@ -91,12 +50,10 @@ theorem measurable_aff (A B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
 
 theorem uw_inv_eq {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : h⁻¹ = Hpk k r * hᴴ * Hpk k r := by
-  have hH : hᴴ * Hpk k r * h = Hpk k r := by
-    obtain ⟨hU, -, -⟩ := hh
-    exact hU
+  obtain ⟨hU, -, -⟩ := hh
   apply Matrix.inv_eq_left_inv
   calc Hpk k r * hᴴ * Hpk k r * h = Hpk k r * (hᴴ * Hpk k r * h) := by simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [hH, Formalism.QuantumDeterminants.GBasic.Hpk_sq]
+    _ = 1 := by rw [hU, Formalism.QuantumDeterminants.GBasic.Hpk_sq]
 
 theorem uw_inv_mem {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : h⁻¹ ∈ UWset k r z := by
@@ -422,18 +379,10 @@ theorem lowKSub_map {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ ρ : Matrix 
     exact le_sSup (ktype_map U V hVU hUV hρ hS)
   exact hle hw
 
-theorem inUJ_mul {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha : Formalism.REAL.inUJ ε a) (hb : Formalism.REAL.inUJ ε b) :
-    Formalism.REAL.inUJ ε (a * b) := by
-  unfold Formalism.REAL.inUJ at ha hb ⊢
-  calc (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = bᴴ * (aᴴ * Formalism.REAL.Jm ε * a) * b := by
-        simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
-    _ = Formalism.REAL.Jm ε := by rw [ha, hb]
-
 theorem kset_sub {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) : Formalism.REAL.inUJ ε g := by
   obtain ⟨hu, hc⟩ := hg
   have h1 : gᴴ * g = 1 := by
-    rw [← Matrix.star_eq_conjTranspose]
-    exact Matrix.mem_unitaryGroup_iff'.mp hu
+    simpa only [← Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff'.mp hu
   unfold Formalism.REAL.inUJ
   rw [Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
@@ -504,7 +453,7 @@ theorem y_exists {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (ε' :
     · have hgU : Formalism.REAL.inUJ ε g := kset_sub hg
       have e1 : Q * (P⁻¹ * g * P) * Qi = Q * P⁻¹ * g * (P * Qi) := by simp only [Matrix.mul_assoc]
       show σ (Q * (P⁻¹ * g * P) * Qi) x = σ (Q * P⁻¹) (σ g (σ (P * Qi) x))
-      rw [e1, hmul _ (inUJ_mul hh hgU) _ hh', hmul _ hh _ hgU]
+      rw [e1, hmul _ (_root_.Formalism.QuantumDeterminants.io_inUJ_mul hh hgU) _ hh', hmul _ hh _ hgU]
       rfl
 
 end Y
@@ -532,10 +481,9 @@ theorem host_v_pos (D : D7) : 0 < D.host.v := by
   exact half_pos h
 
 theorem frS_ne (D : D7) : frS D ≠ 0 := by
-  have hv := host_v_pos D
   have hka : 0 < D.host.ka := by
     unfold Formalism.BasicNotions.Host.ka
-    exact div_pos Real.pi_pos hv
+    exact div_pos Real.pi_pos (host_v_pos D)
   unfold Formalism.L2.SG.LocWSOf.frS
   exact Complex.ofReal_ne_zero.mpr (div_pos hka (by positivity)).ne'
 
@@ -552,10 +500,6 @@ theorem Tr_pos (D : D7) (u : D.what₂.Word) : 0 < Tr D u := by
   unfold Tr
   exact_mod_cast (D.mem u).A.T_prime.pos
 
-theorem hJ_frame (v : InfinitePlace X.B.I.F) (p q : (VS D).V) :
-    hJ (X.B.I.ε v) (rv X.B.I v (X.crd p)) (rv X.B.I v (X.crd q)) = embS D (X.pl v) ((VS D).hT p q) :=
-  Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p q
-
 theorem transpC_exists (u0 : D.what₂.Word) (τ : D.what₂.Tau) :
     ∃ (Q : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ)
       (Qi : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ),
@@ -565,7 +509,7 @@ theorem transpC_exists (u0 : D.what₂.Word) (τ : D.what₂.Tau) :
   have hT := Tr_pos D u0
   set c : ℂ := (((Real.sqrt T)⁻¹ : ℝ) : ℂ) with hc
   have hzz0 : hJ (X.B.I.ε v) (rv X.B.I v (X.crd (X.zu u0))) (rv X.B.I v (X.crd (X.zu u0))) = -(T : ℂ) := by
-    rw [hJ_frame, X.zu_norm, map_neg, map_natCast]
+    rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.zu_norm, map_neg, map_natCast]
     simp [hTdef, Tr]
   have hcc : star c * (c * -(T : ℂ)) = -1 := by
     have h1 : ((Real.sqrt T)⁻¹) ^ 2 * T = 1 := by
@@ -578,13 +522,13 @@ theorem transpC_exists (u0 : D.what₂.Word) (τ : D.what₂.Tau) :
   obtain ⟨Q, Qi, h1, h2, hg, hcol⟩ := transp_exists (n_eq' X) (X.B.I.ε v) (frS D) (frS_ne D)
     (fun a => rv X.B.I v (X.crd (X.eX a))) (fun a => rv X.B.I v (X.crd (X.fY a))) (X.wfr u0 v)
     (c • rv X.B.I v (X.crd (X.zu u0)))
-    (fun a b => by rw [hJ_frame, X.ee, map_zero])
-    (fun a b => by rw [hJ_frame, X.ff, map_zero])
+    (fun a b => by rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ee, map_zero])
+    (fun a b => by rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ff, map_zero])
     (fun a b => by
-      rw [hJ_frame, X.ef]
+      rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ef]
       split_ifs <;> simp)
-    (fun a => by rw [hJ_smul_right', hJ_frame, (X.zu_orth u0 a).1, map_zero, mul_zero])
-    (fun a => by rw [hJ_smul_right', hJ_frame, (X.zu_orth u0 a).2, map_zero, mul_zero])
+    (fun a => by rw [hJ_smul_right', _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, (X.zu_orth u0 a).1, map_zero, mul_zero])
+    (fun a => by rw [hJ_smul_right', _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, (X.zu_orth u0 a).2, map_zero, mul_zero])
     (by rw [hJ_smul_left', hJ_smul_right', hzz0, hcc])
     (X.wfr_on u0 v)
     (fun c' a => ((X.wfr_perp u0 v a).1 c').1)
@@ -604,11 +548,11 @@ theorem zTr_of {v : InfinitePlace X.B.I.F} {lam : ℂ} {Q : Matrix (Fin X.B.I.n)
   obtain ⟨hz, hT⟩ := z_tr (n_eq' X) (X.B.I.ε v) h2 hg (rv X.B.I v (X.zR u)) (fun a => by
     obtain ⟨he, hf⟩ := hcol a a rfl
     rw [he, hf, hJ_smul_left', hJ_smul_left', show X.eR a = X.crd (X.eX a) from rfl,
-      show X.fR a = X.crd (X.fY a) from rfl, show X.zR u = X.crd (X.zu u) from rfl, hJ_frame, hJ_frame,
+      show X.fR a = X.crd (X.fY a) from rfl, show X.zR u = X.crd (X.zu u) from rfl, _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd,
       (X.zu_orth u a).1, (X.zu_orth u a).2, map_zero]
     simp)
   refine ⟨hz, ?_⟩
-  rw [hT, show X.zR u = X.crd (X.zu u) from rfl, hJ_frame, X.zu_norm, map_neg, map_natCast]
+  rw [hT, show X.zR u = X.crd (X.zu u) from rfl, _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.zu_norm, map_neg, map_natCast]
   simp [Tr]
 
 end Exist
@@ -694,8 +638,7 @@ theorem tE_inv_mul (μ : ℂ) (hμ : μ ≠ 0) (i : Fin (2 * r + k + 1)) : tE μ
   · rw [one_mul]
 
 theorem tE_mul_inv (μ : ℂ) (hμ : μ ≠ 0) (i : Fin (2 * r + k + 1)) : tE μ k r i * tE μ⁻¹ k r i = 1 := by
-  rw [mul_comm]
-  exact tE_inv_mul μ hμ i
+  exact (mul_comm (tE μ k r i) (tE μ⁻¹ k r i)).trans (tE_inv_mul μ hμ i)
 
 theorem tE_sig (μ : ℂ) (hμ : μ ≠ 0) (i : Fin (2 * r + k + 1)) : star (tE μ k r i) * tE μ k r (sig k r i) = 1 := by
   have hs := Formalism.QuantumDeterminants.GBasic.sig_val k r i
@@ -719,14 +662,12 @@ theorem tE_sig (μ : ℂ) (hμ : μ ≠ 0) (i : Fin (2 * r + k + 1)) : star (tE 
 theorem torS_inv_mul (μ : ℂ) (hμ : μ ≠ 0) : torS μ⁻¹ k r * torS μ k r = 1 := by
   rw [torS_eq, torS_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
-  funext i
-  exact tE_inv_mul μ hμ i
+  exact funext fun i => tE_inv_mul μ hμ i
 
 theorem torS_mul_inv (μ : ℂ) (hμ : μ ≠ 0) : torS μ k r * torS μ⁻¹ k r = 1 := by
   rw [torS_eq, torS_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
-  funext i
-  exact tE_mul_inv μ hμ i
+  exact funext fun i => tE_mul_inv μ hμ i
 
 theorem torS_gram (μ : ℂ) (hμ : μ ≠ 0) : (torS μ k r)ᴴ * Hpk k r * torS μ k r = Hpk k r := by
   ext i j
@@ -747,7 +688,7 @@ theorem torS_single (μ : ℂ) (i : Fin (2 * r + k + 1)) :
   rw [Matrix.mulVec_diagonal]
   by_cases h : j = i
   · subst h; simp
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 end Tor
 
@@ -822,7 +763,6 @@ theorem isFrameJ_scaled {ε : Fin (2 * r + k + 1) → Bool} (lam : ℂ) (hlam : 
       first
         | (rw [mul_one]; exact mul_inv_cancel₀ hs)
         | (rw [mul_one]; exact inv_mul_cancel₀ hs)
-        | field_simp
     · rw [mul_zero, mul_zero]
   · simp only [hJ_smul_left', hez, mul_zero]
   · simp only [hJ_smul_left', hfz, mul_zero]
@@ -909,7 +849,7 @@ theorem colsTypeTr_of {v : InfinitePlace X.B.I.F} {lam : ℂ} (hlam : lam ≠ 0)
   have hT := Tr_pos D u
   set c : ℂ := (((Real.sqrt T)⁻¹ : ℝ) : ℂ) with hc
   have hzz0 : hJ (X.B.I.ε v) (rv X.B.I v (X.crd (X.zu u))) (rv X.B.I v (X.crd (X.zu u))) = -(T : ℂ) := by
-    rw [hJ_frame, X.zu_norm, map_neg, map_natCast]
+    rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.zu_norm, map_neg, map_natCast]
     simp [hTdef, Tr]
   have hcc : star c * (c * -(T : ℂ)) = -1 := by
     have h1 : ((Real.sqrt T)⁻¹) ^ 2 * T = 1 := by
@@ -923,13 +863,13 @@ theorem colsTypeTr_of {v : InfinitePlace X.B.I.F} {lam : ℂ} (hlam : lam ≠ 0)
   exact colsType_loc (n_eq' X) (X.B.I.ε v) Q Qi h1 h2 hg lam hlam
     (fun a => rv X.B.I v (X.crd (X.eX a))) (fun a => rv X.B.I v (X.crd (X.fY a))) (X.wfr u v)
     (rv X.B.I v (X.crd (X.zu u))) hT
-    (fun a b => by rw [hJ_frame, X.ee, map_zero])
-    (fun a b => by rw [hJ_frame, X.ff, map_zero])
+    (fun a b => by rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ee, map_zero])
+    (fun a b => by rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ff, map_zero])
     (fun a b => by
-      rw [hJ_frame, X.ef]
+      rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ef]
       split_ifs <;> simp)
-    (fun a => by rw [Formalism.L2.SG.Pf.WFL.z0v, hJ_smul_right', hJ_frame, (X.zu_orth u a).1, map_zero, mul_zero])
-    (fun a => by rw [Formalism.L2.SG.Pf.WFL.z0v, hJ_smul_right', hJ_frame, (X.zu_orth u a).2, map_zero, mul_zero])
+    (fun a => by rw [Formalism.L2.SG.Pf.WFL.z0v, hJ_smul_right', _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, (X.zu_orth u a).1, map_zero, mul_zero])
+    (fun a => by rw [Formalism.L2.SG.Pf.WFL.z0v, hJ_smul_right', _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, (X.zu_orth u a).2, map_zero, mul_zero])
     (by rw [Formalism.L2.SG.Pf.WFL.z0v, hJ_smul_left', hJ_smul_right', hzz0, ← hc, hcc])
     (X.wfr_on u v)
     (fun c' a => ((X.wfr_perp u v a).1 c').1)
@@ -951,8 +891,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.
 theorem colsTypeTr {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     ColsTypeTr C u τ := by
   have h := colsTypeTr_of X (frS_ne D) (C.isT τ) u
-  rw [show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ] at h
-  exact h
+  rwa [show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ] at h
 
 end Formalism.L2.SG.Pf
 
@@ -973,7 +912,7 @@ theorem star_single_dot {N : ℕ} (i : Fin N) (w : Fin N → ℂ) : star (Pi.sin
     ext j
     by_cases hj : j = i
     · subst hj; simp
-    · simp [Pi.single_apply, hj]
+    · simp [hj]
   rw [h]
   simp
 
@@ -1098,9 +1037,9 @@ theorem isDS_conj {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ : Matrix (Fin 
     (hds : IsDS ε lam σ) {h h' : Matrix (Fin n) (Fin n) ℂ} (hh : Formalism.REAL.inUJ ε h) (hh' : Formalism.REAL.inUJ ε h')
     (hhh' : h * h' = 1) (hh'h : h' * h = 1) : IsDS ε lam (fun g => σ (h * g * h')) := by
   obtain ⟨hc, hnt, hrep, hirr, hsq, ⟨S0, hS0⟩, hmin⟩ := hds
-  have hcon : ∀ {g}, Formalism.REAL.inUJ ε g → Formalism.REAL.inUJ ε (h * g * h') := fun hg => inUJ_mul (inUJ_mul hh hg) hh'
+  have hcon : ∀ {g}, Formalism.REAL.inUJ ε g → Formalism.REAL.inUJ ε (h * g * h') := fun hg => _root_.Formalism.QuantumDeterminants.io_inUJ_mul (_root_.Formalism.QuantumDeterminants.io_inUJ_mul hh hg) hh'
   have hsplit : ∀ g, Formalism.REAL.inUJ ε g → ∀ x, σ (h * g * h') x = σ h (σ g (σ h' x)) := fun g hg x => by
-    rw [hrep.1.2 _ (inUJ_mul hh hg) _ hh', hrep.1.2 _ hh _ hg]; rfl
+    rw [hrep.1.2 _ (_root_.Formalism.QuantumDeterminants.io_inUJ_mul hh hg) _ hh', hrep.1.2 _ hh _ hg]; rfl
   have hVU : ∀ x, σ h' (σ h x) = x := fun x => by
     rw [← ContinuousLinearMap.comp_apply, ← hrep.1.2 _ hh' _ hh, hh'h, hrep.1.1]; rfl
   have hUV : ∀ x, σ h (σ h' x) = x := fun x => by
@@ -1124,7 +1063,7 @@ theorem isDS_conj {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ : Matrix (Fin 
     exact (hrep.2.2 v).comp ((continuous_const.mul continuous_id).mul continuous_const).continuousOn hmaps
   · intro S hS hst
     refine hirr S hS fun g hg v hv => ?_
-    have hg' : Formalism.REAL.inUJ ε (h' * g * h) := inUJ_mul (inUJ_mul hh' hg) hh
+    have hg' : Formalism.REAL.inUJ ε (h' * g * h) := _root_.Formalism.QuantumDeterminants.io_inUJ_mul (_root_.Formalism.QuantumDeterminants.io_inUJ_mul hh' hg) hh
     have : σ g v = σ (h * (h' * g * h) * h') v := by
       congr 2
       calc g = (h * h') * g * (h * h') := by rw [hhh', Matrix.one_mul, Matrix.mul_one]
@@ -1148,7 +1087,7 @@ theorem isFdeg_conj {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (
     IsFdeg μ (fun g => σ (h * g * h')) d := by
   obtain ⟨hd0, hdi⟩ := hd
   have hsplit : ∀ g, Formalism.REAL.inUJ ε g → ∀ x, σ (h * g * h') x = σ h (σ g (σ h' x)) := fun g hg x => by
-    rw [hrep.1.2 _ (inUJ_mul hh hg) _ hh', hrep.1.2 _ hh _ hg]; rfl
+    rw [hrep.1.2 _ (_root_.Formalism.QuantumDeterminants.io_inUJ_mul hh hg) _ hh', hrep.1.2 _ hh _ hg]; rfl
   have heq : ∀ v w, coefOn (ε := ε) (fun g => σ (h * g * h')) v w = coefOn (ε := ε) σ (σ h' v) (σ h' w) := by
     intro v w
     funext γ
@@ -1213,8 +1152,7 @@ theorem dsHpk_tr {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (ε' :
   subst hεe
   subst hle
   obtain ⟨c1, c2, c3, c4⟩ := cay_facts h2 hg hP
-  have := isDS_conj hds c1 c2 c3 c4
-  simpa only [Matrix.mul_assoc] using this
+  simpa only [Matrix.mul_assoc] using isDS_conj hds c1 c2 c3 c4
 
 theorem fdegHpk_tr {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (ε' : Fin (2 * r + k + 1) → Bool)
     (hε : ∀ i, ε' i = ε (Fin.cast hn.symm i)) {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -1228,8 +1166,7 @@ theorem fdegHpk_tr {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (ε'
   have hεe : ε' = ε := funext fun i => by rw [hε]; rfl
   subst hεe
   obtain ⟨c1, c2, c3, -⟩ := cay_facts h2 hg hP
-  have := isFdeg_conj hrep c1 c2 c3 hd
-  simpa only [Matrix.mul_assoc] using this
+  simpa only [Matrix.mul_assoc] using isFdeg_conj hrep c1 c2 c3 hd
 
 end DSTr
 
@@ -1242,14 +1179,13 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.
 theorem dsTr {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (τ : D.what₂.Tau) :
     IsDSHpk D.R.k D.R.rS (epsSH D.R) (lamD D τ) (sigB X (C.Q τ) (C.Qi τ) τ) := by
   obtain ⟨P, hP⟩ := Formalism.MainNotions.S.Inh.obj_cayleyU_rows D
-  refine ⟨P, hP, ?_⟩
-  exact dsHpk_tr (n_eq' X) (X.B.I.ε (vOf X τ)) (epsSH D.R)
+  exact ⟨P, hP, dsHpk_tr (n_eq' X) (X.B.I.ε (vOf X τ)) (epsSH D.R)
     (fun i => by rw [X.eps_eq]; exact congrArg (epsS D.R) (Fin.ext rfl))
     (X.B.lam (vOf X τ)) (lamD D τ)
     (fun i => by
       rw [X.lam_eq, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]
       exact congrArg (lamS D.R (D.hc τ)) (Fin.ext rfl))
-    (X.B.σ (vOf X τ)) (X.ds (vOf X τ)) (C.Q τ) (C.Qi τ) (C.isT τ).2.1 (C.isT τ).2.2.1 P hP
+    (X.B.σ (vOf X τ)) (X.ds (vOf X τ)) (C.Q τ) (C.Qi τ) (C.isT τ).2.1 (C.isT τ).2.2.1 P hP⟩
 
 end Formalism.L2.SG.Pf
 

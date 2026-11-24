@@ -1,17 +1,19 @@
 module
 
+public import Formalism.CMTypeGalois.StatementField
+public import Formalism.CMTypeGalois.CMTypeFrobenius.MQGalois
 public import Formalism.DirichletDensity.Statement
 public import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
-public import Formalism.CMTypeGalois.CMTypeFrobenius.MQGalois
-public import Formalism.CMTypeGalois.HalfTypesFromGeneral
+public import Mathlib.NumberTheory.NumberField.Discriminant.Different
+public import Mathlib.RingTheory.Prime
+public import Mathlib.NumberTheory.NumberField.Discriminant.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -22,13 +24,13 @@ import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-public import Mathlib.NumberTheory.NumberField.Discriminant.Different
 import Mathlib.NumberTheory.SelbergSieve
-public import Mathlib.RingTheory.Prime
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,7 +38,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,9 +51,258 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.NumberTheory.NumberField.Discriminant.Basic
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.CMTypeGalois.CMTypeFrobenius.MQKummer, Formalism.CMTypeGalois.HalfTypesFromGeneral, Formalism.DirichletDensity.DirichletDensityProofs.MQDiscr
+
+-- ===== clump member: Formalism.CMTypeGalois.CMTypeFrobenius.MQKummer =====
+-- clump-header: {"m": "Formalism.CMTypeGalois.CMTypeFrobenius.MQKummer", "h": "module\n\npublic import Formalism.CMTypeGalois.StatementField\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial
+
+noncomputable section
+
+namespace Formalism.Q3
+
+section KummerAux
+
+variable {F : Type*} [Field F] {E : Type*} [Field E] [Algebra F E]
+
+lemma mqk_mem_adjoin_form (K : IntermediateField F E) (β b : E) (hb : b ∈ K) (hβ : β ^ 2 = b)
+    {y : E} (hy : y ∈ IntermediateField.adjoin K {β}) :
+    ∃ u ∈ K, ∃ v ∈ K, y = u + v * β := by
+  have hint : IsIntegral K β := by
+    refine ⟨X ^ 2 - C ⟨b, hb⟩, monic_X_pow_sub_C _ two_ne_zero, ?_⟩
+    simp [hβ]
+  have hy' : y ∈ Algebra.adjoin K {β} := by
+    rw [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]
+    exact hy
+  clear hy
+  induction hy' using Algebra.adjoin_induction with
+  | mem x hx =>
+    rw [Set.mem_singleton_iff] at hx
+    exact ⟨0, K.zero_mem, 1, K.one_mem, by simp [hx]⟩
+  | algebraMap r =>
+    exact ⟨r, r.2, 0, K.zero_mem, by simp⟩
+  | add x z _ _ hx hz =>
+    obtain ⟨u, hu, v, hv, rfl⟩ := hx
+    obtain ⟨u', hu', v', hv', rfl⟩ := hz
+    exact ⟨u + u', K.add_mem hu hu', v + v', K.add_mem hv hv', by ring⟩
+  | mul x z _ _ hx hz =>
+    obtain ⟨u, hu, v, hv, rfl⟩ := hx
+    obtain ⟨u', hu', v', hv', rfl⟩ := hz
+    refine ⟨u * u' + v * v' * b, K.add_mem (K.mul_mem hu hu') (K.mul_mem (K.mul_mem hv hv') hb),
+      u * v' + v * u', K.add_mem (K.mul_mem hu hv') (K.mul_mem hv hu'), ?_⟩
+    rw [← hβ]
+    ring
+
+lemma mqk_sq_step [CharZero E] (K : IntermediateField F E) (β b d : E) (hb : b ∈ K) (hd : d ∈ K)
+    (hβ : β ^ 2 = b) (hβK : β ∉ K) {y : E} (hy : y ∈ IntermediateField.adjoin K {β})
+    (hyd : y ^ 2 = d) :
+    (∃ z ∈ K, z ^ 2 = d) ∨ (∃ z ∈ K, z ^ 2 = d * b) := by
+  obtain ⟨u, hu, v, hv, rfl⟩ := mqk_mem_adjoin_form K β b hb hβ hy
+  have key : (u + v * β) ^ 2 = u ^ 2 + v ^ 2 * b + 2 * u * v * β := by rw [← hβ]; ring
+  by_cases huv : u * v = 0
+  · rcases mul_eq_zero.1 huv with h | h
+    · right
+      refine ⟨v * b, K.mul_mem hv hb, ?_⟩
+      rw [← hyd, h, ← hβ]
+      ring
+    · left
+      refine ⟨u, hu, ?_⟩
+      rw [← hyd, h]
+      ring
+  · exfalso
+    apply hβK
+    have h2 : (2 : E) * u * v ≠ 0 := by
+      rw [mul_assoc]
+      exact mul_ne_zero two_ne_zero huv
+    have hβeq : β = (d - u ^ 2 - v ^ 2 * b) / (2 * u * v) := by
+      rw [eq_div_iff h2, ← hyd, key]
+      ring
+    have h2K : (2 : E) ∈ K := by
+      have := K.add_mem K.one_mem K.one_mem
+      rw [one_add_one_eq_two] at this
+      exact this
+    rw [hβeq]
+    exact K.div_mem (K.sub_mem (K.sub_mem hd (_root_.pow_mem hu 2)) (K.mul_mem (_root_.pow_mem hv 2) hb))
+      (K.mul_mem (K.mul_mem h2K hu) hv)
+
+lemma mqk_finrank_two (K : IntermediateField F E) (β b : E) (hb : b ∈ K) (hβ : β ^ 2 = b)
+    (hns : ∀ z ∈ K, z ^ 2 ≠ b) :
+    Module.finrank K (IntermediateField.adjoin K {β}) = 2 := by
+  set b' : K := ⟨b, hb⟩ with hb'
+  have hmon : (X ^ 2 - C b' : K[X]).Monic := monic_X_pow_sub_C _ two_ne_zero
+  have hev : aeval β (X ^ 2 - C b' : K[X]) = 0 := by simp [b', hβ]
+  have hint : IsIntegral K β := ⟨X ^ 2 - C b', hmon, by simpa [aeval_def] using hev⟩
+  have hirr : Irreducible (X ^ 2 - C b' : K[X]) :=
+    X_pow_sub_C_irreducible_of_prime Nat.prime_two fun z hz =>
+      hns z z.2 (by simpa [b'] using congrArg Subtype.val hz)
+  have hmin : minpoly K β = X ^ 2 - C b' := (minpoly.eq_of_irreducible_of_monic hirr hev hmon).symm
+  rw [IntermediateField.adjoin.finrank hint, hmin, natDegree_X_pow_sub_C _]
+
+end KummerAux
+
+section KummerInd
+
+variable {E : Type*} [Field E] [CharZero E]
+
+def mqkField (F : Type*) [Field F] [Algebra F E] {k : ℕ} (α : Fin k → E) (T : Finset (Fin k)) : IntermediateField F E :=
+  IntermediateField.adjoin F (α '' (T : Set (Fin k)))
+
+omit [CharZero E] in
+lemma mqk_insert (F : Type*) [Field F] [Algebra F E] {k : ℕ} (α : Fin k → E) (T : Finset (Fin k)) (j : Fin k) :
+    mqkField F α (insert j T) =
+      (IntermediateField.adjoin (mqkField F α T) {α j}).restrictScalars F := by
+  have h := IntermediateField.adjoin_adjoin_left F (α '' (T : Set (Fin k))) {α j}
+  refine Eq.trans ?_ h.symm
+  unfold mqkField
+  rw [Set.union_singleton, Finset.coe_insert, Set.image_insert_eq]
+
+lemma mqk_induction (F : Type*) [Field F] [Algebra F E] {k : ℕ} (a : Fin k → ℤ) (α : Fin k → E) (hα : ∀ i, α i ^ 2 = (a i : E))
+    (hns : ∀ S : Finset (Fin k), S.Nonempty → ¬ IsSquare (∏ i ∈ S, (a i : F))) :
+    ∀ T : Finset (Fin k), Module.finrank F (mqkField F α T) = 2 ^ T.card ∧
+      ∀ d : F, ∀ y ∈ mqkField F α T, y ^ 2 = algebraMap F E d →
+        ∃ S ⊆ T, IsSquare (d * ∏ i ∈ S, (a i : F)) := by
+  intro T
+  classical
+  induction T using Finset.induction_on with
+  | empty =>
+    have hbot : mqkField F α ∅ = ⊥ := by
+      simp only [mqkField, Finset.coe_empty, Set.image_empty]
+      exact IntermediateField.adjoin_empty F E
+    refine ⟨?_, ?_⟩
+    · rw [hbot, IntermediateField.finrank_bot]
+      simp
+    · intro d y hy hyd
+      rw [hbot, IntermediateField.mem_bot] at hy
+      obtain ⟨z, rfl⟩ := hy
+      refine ⟨∅, Finset.empty_subset _, ?_⟩
+      have hz : z ^ 2 = d := (algebraMap F E).injective (by rw [map_pow]; exact hyd)
+      exact ⟨z, by rw [Finset.prod_empty, mul_one, ← hz, sq]⟩
+  | @insert j T hj ih =>
+    obtain ⟨ihr, ihs⟩ := ih
+    set K := mqkField F α T with hK
+    have hb : (a j : E) ∈ K := by
+      have := K.algebraMap_mem ((a j : ℤ) : F)
+      simpa using this
+    have hsq_a : ∀ z ∈ K, z ^ 2 ≠ (a j : E) := by
+      intro z hz hz2
+      obtain ⟨S, hS, hsq⟩ := ihs ((a j : ℤ) : F) z hz (by simpa using hz2)
+      have hjS : j ∉ S := fun h => hj (hS h)
+      apply hns (insert j S) (Finset.insert_nonempty j S)
+      rw [Finset.prod_insert hjS]
+      exact hsq
+    have hβK : α j ∉ K := fun h => hsq_a (α j) h (hα j)
+    have hfr := mqk_finrank_two K (α j) (a j : E) hb (hα j) hsq_a
+    have hcard : (insert j T).card = T.card + 1 := by
+      first
+      | exact Finset.card_insert_of_notMem hj
+    refine ⟨?_, ?_⟩
+    · rw [mqk_insert, hcard, pow_succ, ← ihr, ← hfr]
+      set_option synthInstance.maxHeartbeats 200000 in
+        exact (Module.finrank_mul_finrank F K (IntermediateField.adjoin K {α j})).symm
+    · intro d y hy hyd
+      rw [mqk_insert] at hy
+      have hdK : algebraMap F E d ∈ K := K.algebraMap_mem d
+      rcases mqk_sq_step K (α j) (a j : E) (algebraMap F E d) hb hdK (hα j) hβK hy hyd with
+        ⟨z, hz, hz2⟩ | ⟨z, hz, hz2⟩
+      · obtain ⟨S, hS, hsq⟩ := ihs d z hz hz2
+        exact ⟨S, hS.trans (Finset.subset_insert j T), hsq⟩
+      · obtain ⟨S, hS, hsq⟩ := ihs (d * ((a j : ℤ) : F)) z hz (by rw [hz2]; simp)
+        have hjS : j ∉ S := fun h => hj (hS h)
+        refine ⟨insert j S, Finset.insert_subset_insert j hS, ?_⟩
+        rw [Finset.prod_insert hjS, ← mul_assoc]
+        exact hsq
+
+end KummerInd
+
+theorem mqKummer_of (hG : MQGalois) : MQKummer := by
+  unfold MQGalois at hG
+  unfold MQKummer
+  intro k E _ _ a α hα hns
+  have hα' := hα
+  obtain ⟨hsq, htop⟩ := hα
+  have hne : ∀ i, a i ≠ 0 := by
+    intro i h0
+    apply hns {i} (Finset.singleton_nonempty i)
+    rw [Finset.prod_singleton, h0]
+    exact ⟨0, by simp⟩
+  obtain ⟨hgal, -, -, hinj⟩ := hG k E a α hα' hne
+  obtain ⟨hfr0, hsqs⟩ := mqk_induction ℚ a α hsq hns Finset.univ
+  have huniv : mqkField ℚ α Finset.univ = ⊤ := by
+    rw [← htop]
+    simp only [mqkField, Finset.coe_univ, Set.image_univ]
+  have hfr : Module.finrank ℚ E = 2 ^ k := by
+    rw [huniv, IntermediateField.finrank_top'] at hfr0
+    simpa using hfr0
+  refine ⟨hfr, ?_, ?_⟩
+  · refine (Fintype.bijective_iff_injective_and_card _).2 ⟨hinj, ?_⟩
+    have h1 : Fintype.card Gal(E/ℚ) = 2 ^ k := by
+      rw [← hfr]
+      first
+      | (rw [← Nat.card_eq_fintype_card]; exact IsGalois.card_aut_eq_finrank (F := ℚ) (E := E))
+    rw [h1]
+    simp [Fintype.card_units_int]
+  · intro d
+    constructor
+    · rintro ⟨r, hr⟩
+      have hr2 : r ^ 2 = algebraMap ℚ E d := by rw [hr, sq]
+      obtain ⟨S, -, hS⟩ := hsqs d r (by rw [huniv]; exact IntermediateField.mem_top) hr2
+      exact ⟨S, hS⟩
+    · rintro ⟨S, t, ht⟩
+      have hαne : ∀ i, α i ≠ 0 := by
+        intro i h
+        have h2 := hsq i
+        rw [h, zero_pow two_ne_zero] at h2
+        exact hne i (by exact_mod_cast h2.symm)
+      set P := ∏ i ∈ S, α i with hP
+      have hPne : P ≠ 0 := Finset.prod_ne_zero_iff.2 fun i _ => hαne i
+      have hcast : algebraMap ℚ E d * P ^ 2 = algebraMap ℚ E t * algebraMap ℚ E t := by
+        have h1 := congrArg (algebraMap ℚ E) ht
+        rw [map_mul, map_mul, map_prod] at h1
+        rw [← h1, hP, ← Finset.prod_pow]
+        congr 1
+        exact Finset.prod_congr rfl fun i _ => by rw [hsq i]; simp
+      refine ⟨algebraMap ℚ E t / P, ?_⟩
+      field_simp
+      linear_combination hcast
+
+end Formalism.Q3
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CMTypeGalois.CMTypeFrobenius.MQKummer =====
+
+-- ===== clump member: Formalism.CMTypeGalois.HalfTypesFromGeneral =====
+-- clump-header: {"m": "Formalism.CMTypeGalois.HalfTypesFromGeneral", "h": "module\n\npublic import Formalism.CMTypeGalois.StatementField\npublic import Formalism.CMTypeGalois.CMTypeFrobenius.MQGalois\npublic import Formalism.CMTypeGalois.CMTypeFrobenius.MQKummer\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Ideal
+
+namespace Formalism.Q3
+
+theorem mqKummer : MQKummer := mqKummer_of mqGalois
+
+end Formalism.Q3
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CMTypeGalois.HalfTypesFromGeneral =====
+
+-- ===== clump member: Formalism.DirichletDensity.DirichletDensityProofs.MQDiscr =====
+-- clump-header: {"m": "Formalism.DirichletDensity.DirichletDensityProofs.MQDiscr", "h": "module\n\npublic import Formalism.DirichletDensity.Statement\npublic import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic\npublic import Formalism.CMTypeGalois.CMTypeFrobenius.MQGalois\npublic import Formalism.CMTypeGalois.HalfTypesFromGeneral\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\npublic import Mathlib.NumberTheory.NumberField.Discriminant.Different\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RingTheory.Prime\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.NumberTheory.NumberField.Discriminant.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IntermediateField NumberField.InfinitePlace Formalism.Q3
@@ -223,3 +474,7 @@ theorem mqDiscr_of (hQ : QuadDiscr) : MQDiscr := by
   simp
 
 end Formalism.HF
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.DirichletDensity.DirichletDensityProofs.MQDiscr =====

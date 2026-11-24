@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.LiftMemMatrixAlgebra
 
 @[expose] public section
 
@@ -286,7 +287,7 @@ theorem datumCoef_adj (Φ Φa : FMap S v) (hΦ : FibreMapOK S T v Φ Φa) (x : B
 
 theorem kap_gpos_sgs {p : B.SS S.G.k S.G.r} (hp : (T v).base.inSS p) {g : B.Mat S.G.k S.G.r}
     (hg : g ∈ B.GV S.G.k S.G.r) : B.sgs p g ∈ B.GPos (T v).base ↔ g ∈ B.GPos (T v).base := by
-  have e := Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AC.gf_sgs (T v).base hp g
+  have e := _root_.Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs (T v).base hp g
   constructor
   · intro h; exact ⟨hg, e ▸ h.2⟩
   · intro h; exact ⟨Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AC.sgs_mem (T v).base hp hg, e.symm ▸ h.2⟩
@@ -406,13 +407,6 @@ theorem kap_hsInner_sum_right {ι : Type*} (s : Finset ι) (A : Wq →L[ℂ] Wp)
     B.hsInner A (∑ i ∈ s, B' i) = ∑ i ∈ s, B.hsInner A (B' i) := by
   unfold B.hsInner; rw [kap_hsVec_sum, sum_inner]
 
-theorem kap_hsInner_smul_left (c : ℂ) (A B' : Wq →L[ℂ] Wp) : B.hsInner (c • A) B' = c * B.hsInner A B' := by
-  unfold B.hsInner; rw [Formalism.FourierDecayAlt.P.JCTx2.hsVec_smul', inner_smul_right]
-
-theorem kap_hsInner_smul_right (c : ℂ) (A B' : Wq →L[ℂ] Wp) :
-    B.hsInner A (c • B') = (starRingEnd ℂ) c * B.hsInner A B' := by
-  unfold B.hsInner; rw [Formalism.FourierDecayAlt.P.JCTx2.hsVec_smul', inner_smul_left]
-
 end tp
 
 theorem kapRep_of_typeProj (h : TypeProj) : KapRep := by
@@ -433,7 +427,7 @@ theorem kapRep_of_typeProj (h : TypeProj) : KapRep := by
     simp only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply]
     rw [kap_hsInner_sum_left, kap_hsInner_sum_right]
     refine Finset.sum_congr rfl fun σ _ => ?_
-    rw [kap_hsInner_smul_left, kap_hsInner_smul_right, hadj, Complex.conj_conj]
+    rw [_root_.Formalism.FourierDecayAlt.P5.hsInner_smul_left, _root_.Formalism.FourierDecayAlt.P5.HerB.hs_smul_right, hadj, Complex.conj_conj]
   · intro h hh h' hh' a a' ι X
     constructor
     · simp only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, heq _ h hh h' hh']

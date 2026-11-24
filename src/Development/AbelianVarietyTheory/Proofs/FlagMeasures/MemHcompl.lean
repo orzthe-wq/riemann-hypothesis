@@ -101,7 +101,7 @@ theorem refl {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {Λ : AddSubgrou
   · intro v w
     rw [hg, hg, hsv, hsv]
     simp only [map_sub, map_smul, LinearMap.map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply,
-      smul_eq_mul, starRingEnd_apply, star_mul', star_inv₀, symm' hs, RingHom.id_apply]
+      smul_eq_mul, starRingEnd_apply, star_mul', star_inv₀, symm' hs]
     linear_combination (-(h v u) * (h u w)) * e1
   · have := mem _ hc' _ hv
     rwa [hg, inv _ _ e2] at this

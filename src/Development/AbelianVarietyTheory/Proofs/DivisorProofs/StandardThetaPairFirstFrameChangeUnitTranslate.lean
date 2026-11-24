@@ -311,12 +311,4 @@ end GlobalTheory.frameChangeUnitDeterminant
 
 end
 
-theorem _root_.GlobalTheory.T.standardThetaPair_first_frameChange_unitTranslate : ∀ {D : D7} (ν : (AE D)ˣ →* Circle) (e : AE D) (S : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e S →
-    ∀ (I : Ideal (𝓞 D.host.E)) (A WW : HSp D) (ΛA : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E))
-    (βA βA' : GL (Fin A.rank) (EAf D)), Formalism.L2.DIV.IsFrame βA ΛA → Formalism.L2.DIV.IsFrame βA' ΛA →
-    ∀ (βW βW' : GL (Fin WW.rank) (EAf D)) (k : GA D WW), SuppAt e WW k →
-    (∀ i j, toEAf D e * (Formalism.IndefR.Lev.finE WW k).1 i j = toEAf D e * (βW' * βW⁻¹).1 i j) →
-    ∃ x : (AE D)ˣ, Formalism.L2.Pj.FinUnit x ∧ ∀ y : WO A WW,
-      GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst ν e I A WW βA' βW' y =
-        ((ν x : Circle) : ℂ) * GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst ν e I A WW βA βW (GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.pullPt (GlobalTheory.Grid.neg A) WW 1 k y) :=
-  GlobalTheory.frameChangeUnitDeterminant.stdFst_change_frames
+alias _root_.GlobalTheory.T.standardThetaPair_first_frameChange_unitTranslate := _root_.GlobalTheory.frameChangeUnitDeterminant.stdFst_change_frames

@@ -46,4 +46,4 @@ import Mathlib.Tactic.NormNum.RealSqrt
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct GlobalTheory.EtC
 
 theorem _root_.GlobalTheory.T.integralSurjection_cechDescent_tateTwist : GlobalTheory.EtC.B4 := by
-  first | (exact @GlobalTheory.EtC.b4) | (exact GlobalTheory.EtC.b4) | (intros; apply GlobalTheory.EtC.b4  <;> assumption)
+  first | (exact @GlobalTheory.EtC.b4)

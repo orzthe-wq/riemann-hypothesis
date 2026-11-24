@@ -2,13 +2,13 @@ module
 
 public import Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.CoreDefs
 public import Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.CoreHarm
+public import Formalism.PeriodIntegrals.FockDegreeTwoParts
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockHarmonicSplitting.MinusPartOfMem
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockWeightDegree.ExistsMonomialWeight
 import Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.CoreLie
-public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FockHarmSplit
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FockRaiseLow
-public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FockWtDeg
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockDegreeOne.RedOps
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockHarmonicSplitting.ConjTransposeOneKronecker
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockHarmonicSplitting.MinusPartOfMem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -136,7 +136,7 @@ theorem polChi_small (c : ℂ) (c0 : ℚ) (hc : c = c0) (d : ℕ)
     (hd : (d : ℚ) < degW (cPair r s) (fun _ : Ix p q => c0)) {g : Pol p q r s}
     (hg : g ∈ homog (Ix p q × Ix r s) d) (hχ : g ∈ polChi p q r s c) : g = 0 := by
   by_contra h0
-  have := (highestWeightDegree_le p q r s).1 d (fun _ => c0) g hg ⟨h0, (mem_polChi_iff_hw c c0 hc g).1 hχ⟩
+  have := (_root_.PI.FockWtDegWork.wtDeg p q r s).1 d (fun _ => c0) g hg ⟨h0, (mem_polChi_iff_hw c c0 hc g).1 hχ⟩
   linarith
 
 theorem th_small (c : ℂ) (c0 : ℚ) (hc : c = c0) (d : ℕ)
@@ -160,7 +160,7 @@ theorem th_next (c : ℂ) (c0 : ℚ) (hc : c = c0) (d0 : ℕ)
     (hd : (d0 : ℚ) = degW (cPair r s) (fun _ : Ix p q => c0)) :
     (homog (Ix p q × Ix r s) (d0 + 2)).map (thMkC p q r s c) ≤
       (harm1 p q r s ⊓ polChi p q r s c ⊓ homog (Ix p q × Ix r s) (d0 + 2)).map (thMkC p q r s c) := by
-  have hs := harmonicSplitting_holds p q r s true false rfl d0
+  have hs := _root_.PI.FHS.harmSplit p q r s true false rfl d0
   have hR : (Submodule.span ℂ (raised p q r s true false d0)).map (thMkC p q r s c) = ⊥ := by
     rw [Submodule.map_span, Submodule.span_eq_bot]
     rintro _ ⟨_, ⟨Q, hQ, (⟨-, Z, hZ, rfl⟩ | ⟨h, -⟩)⟩, rfl⟩

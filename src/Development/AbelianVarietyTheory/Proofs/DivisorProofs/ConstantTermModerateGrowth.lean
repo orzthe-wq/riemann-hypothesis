@@ -41,6 +41,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceAdelicGeneralLinearGroupNumberField
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinGLMemOfPow
 
 @[expose] public section
 
@@ -52,13 +53,8 @@ namespace GlobalTheory.ConstTermGrowth
 
 variable {E : Type} [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] {a : ℕ}
 
-theorem continuous_pInf_alt : Continuous (pInf E) :=
-  continuous_pi fun w =>
-    ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
-      (continuous_apply w)).comp continuous_fst
-
 theorem continuous_mapInf : Continuous (Matrix.GeneralLinearGroup.map (n := Fin a) (pInf E)) :=
-  Continuous.units_map _ (continuous_id.matrix_map continuous_pInf_alt)
+  Continuous.units_map _ (continuous_id.matrix_map _root_.GlobalTheory.CuspRep.RankOne.continuous_pInf)
 
 theorem continuous_mapFin : Continuous (Matrix.GeneralLinearGroup.map (n := Fin a) (pFin E)) :=
   Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))
@@ -117,7 +113,7 @@ theorem uniform_growth (φ : Sm E a) (hopen : IsOpen {k | finRep E a k φ = φ})
       finGL E a (t⁻¹ * Matrix.GeneralLinearGroup.map (pFin E) h) := by
     apply ga_ext
     · simp only [map_mul, pInf_infGL, pInf_finGL, one_mul, mul_one]
-    · simp only [map_mul, pFin_infGL, pFin_finGL, one_mul, mul_one, mul_inv_cancel_left]
+    · simp only [map_mul, pFin_infGL, pFin_finGL, mul_one, mul_inv_cancel_left]
   rw [e, hS _ hkt]
   have hcy := hB _ ⟨h, hh, rfl⟩ y
   have h0 := one_le_height (Matrix.GeneralLinearGroup.map (pInf E) h * y)

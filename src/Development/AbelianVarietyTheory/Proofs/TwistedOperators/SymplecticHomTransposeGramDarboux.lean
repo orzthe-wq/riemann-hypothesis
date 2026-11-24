@@ -37,6 +37,8 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.StarPurelyImaginaryEqNeg
+import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil
 
 @[expose] public section
 
@@ -50,20 +52,9 @@ namespace GlobalTheory.DarbouxSymp
 
 variable {D : D7}
 
-theorem cA_incA_eq (a : D.host.E) : cA D (incA D a) = incA D (star a) := by
-  simp only [cA, sigR, incA, inclR]
-  simp
-  rfl
-
-theorem gram_star_eq (V : HSp D) (i j) : star (V.gram i j) = V.gram j i :=
-  V.herm.eq (V.frame i) (V.frame j)
-
-theorem gram_det_ne_zero (V : HSp D) : V.gram.det ≠ 0 := by
-  apply GlobalTheory.SplitOnto.gram_det_ne <;> assumption
-
 theorem gram_map_mul_inv (V : HSp D) :
     HMul.hMul (V.gram.map (incA D) : Matrix (Fin V.rank) (Fin V.rank) (AE D)) (V.gram⁻¹.map (incA D) : Matrix (Fin V.rank) (Fin V.rank) (AE D)) = 1 := by
-  rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (gram_det_ne_zero V))]
+  rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (_root_.Formalism.L2.Theta.gram_det_ne V))]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 theorem hO_rearr (S T : HSp D) (X Y : WO S T) : hO S T X Y =
@@ -99,7 +90,7 @@ theorem hO_darboux (S T S' T' : HSp D) (e₁ : Fin T'.rank ≃ Fin S.rank) (e₂
 
     rw [Matrix.mul_apply, map_sum]
     refine Finset.sum_congr rfl fun k _ => ?_
-    rw [map_mul, Matrix.map_apply, cA_incA_eq, gram_star_eq]
+    rw [map_mul, Matrix.map_apply, _root_.GlobalTheory.DualPairCheck.cA_incA, _root_.GlobalTheory.DualPairCheck.gram_star]
     rfl
   have E1 : ∀ a b, S'.gram⁻¹ a b = -T.gram (e₂ b) (e₂ a) := fun a b => by
     rw [hS']; rfl

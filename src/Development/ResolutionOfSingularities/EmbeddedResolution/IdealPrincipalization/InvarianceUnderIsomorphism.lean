@@ -137,35 +137,30 @@ private theorem preimage_preimageOpensIso_hom {X Y : Scheme.{u}} (e : X ≅ Y) (
       ⇑(Scheme.Opens.ι ((Opens.map e.hom.base).obj U)).base ⁻¹' (⇑e.hom.base ⁻¹' Mem) := by
   rw [preimage_comp_base, preimage_comp_base, preimageOpensIso_hom_comp_ι]
 
-private theorem principalizationCertificate_congr {k : Type u} [Field k] {W : Scheme.{u}}
+private theorem resolutionCertificate_congr {k : Type u} [Field k] {isOrder : Bool} {W : Scheme.{u}}
     {p p' : W ⟶ Spec (CommRingCat.of k)} {I I' : W.IdealSheafData} {m : ℕ}
     {Mem Mem' : Set ↥W} {Z Z' : W.IdealSheafData} (hp : p = p') (hI : I = I')
-    (hMem : Mem = Mem') (hZ : Z = Z') (h : PrincipalizationCertificate W p I m Mem Z) :
-    PrincipalizationCertificate W p' I' m Mem' Z' := by
+    (hMem : Mem = Mem') (hZ : Z = Z') (h : ResolutionCertificate isOrder W p I m Mem Z) :
+    ResolutionCertificate isOrder W p' I' m Mem' Z' := by
   subst hp hI hMem hZ
   exact h
 
-private theorem orderCertificate_congr {k : Type u} [Field k] {W : Scheme.{u}}
-    {p p' : W ⟶ Spec (CommRingCat.of k)} {N N' : W.IdealSheafData} {μ : ℕ}
-    {Mem Mem' : Set ↥W} {Z Z' : W.IdealSheafData} (hp : p = p') (hN : N = N')
-    (hMem : Mem = Mem') (hZ : Z = Z') (h : OrderCertificate W p N μ Mem Z) :
-    OrderCertificate W p' N' μ Mem' Z' := by
-  subst hp hN hMem hZ
-  exact h
-
-private theorem principalizationCertificate_comap_iso_of_support_subset {k : Type u} [Field k] (W : Scheme.{u})
-    (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W)
-    (Z : W.IdealSheafData) (h : (Z.support : Set ↥W) ⊆ Mem) (W' : Scheme.{u}) (e : W' ≅ W) :
-    PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) := by
-  refine PrincipalizationCertificate.memory ?_
+private theorem certificate_comap_iso_of_support_subset {k : Type u} [Field k] {isOrder : Bool}
+    (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ)
+    (Mem : Set ↥W) (Z : W.IdealSheafData) (h : (Z.support : Set ↥W) ⊆ Mem)
+    (W' : Scheme.{u}) (e : W' ≅ W) :
+    ResolutionCertificate isOrder W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem)
+      (Z.comap e.hom) := by
+  refine ResolutionCertificate.memory ?_
   rw [coe_support_comap_iso_hom e Z]
   exact Set.preimage_mono h
 
-private theorem principalizationCertificate_comap_iso_of_two_le {k : Type u} [Field k] (W : Scheme.{u})
-    (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W)
-    (Z : W.IdealSheafData) (hm : 2 ≤ m) (W' : Scheme.{u}) (e : W' ≅ W) :
-    PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
-  PrincipalizationCertificate.large hm
+private theorem certificate_comap_iso_of_two_le {k : Type u} [Field k] {isOrder : Bool}
+    (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ)
+    (Mem : Set ↥W) (Z : W.IdealSheafData) (hm : 2 ≤ m) (W' : Scheme.{u}) (e : W' ≅ W) :
+    ResolutionCertificate isOrder W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem)
+      (Z.comap e.hom) :=
+  ResolutionCertificate.large hm
 
 private theorem principalizationCertificate_comap_iso_of_orderCertificate {k : Type u} [Field k] (W : Scheme.{u})
     (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W)
@@ -183,19 +178,21 @@ private theorem principalizationCertificate_comap_iso_of_orderCertificate {k : T
   · rw [coe_support_comap_iso_hom e Z, orderAtLeastLocus_comap_iso_hom_eq_preimage e N μ]
     exact Set.preimage_mono hZ
 
-private theorem principalizationCertificate_comap_iso_of_opens_cover {k : Type u} [Field k] (W : Scheme.{u})
-    (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W)
-    (Z : W.IdealSheafData) (U : ∀ z : ↥W, z ∈ Z.support → W.Opens)
+private theorem certificate_comap_iso_of_opens_cover {k : Type u} [Field k] {isOrder : Bool}
+    (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ)
+    (Mem : Set ↥W) (Z : W.IdealSheafData) (U : ∀ z : ↥W, z ∈ Z.support → W.Opens)
     (hU : ∀ (z : ↥W) (hz : z ∈ Z.support), z ∈ U z hz)
     (_hcert : ∀ (z : ↥W) (hz : z ∈ Z.support),
-      PrincipalizationCertificate (U z hz).toScheme ((U z hz).ι ≫ p) (I.comap (U z hz).ι) m
+      ResolutionCertificate isOrder (U z hz).toScheme ((U z hz).ι ≫ p) (I.comap (U z hz).ι) m
         (⇑(U z hz).ι.base ⁻¹' Mem) (Z.comap (U z hz).ι))
     (ih : ∀ (z : ↥W) (hz : z ∈ Z.support) (X : Scheme.{u}) (f : X ≅ (U z hz).toScheme),
-      PrincipalizationCertificate X (f.hom ≫ ((U z hz).ι ≫ p)) ((I.comap (U z hz).ι).comap f.hom) m
+      ResolutionCertificate isOrder X (f.hom ≫ ((U z hz).ι ≫ p))
+        ((I.comap (U z hz).ι).comap f.hom) m
         (⇑f.hom.base ⁻¹' (⇑(U z hz).ι.base ⁻¹' Mem)) ((Z.comap (U z hz).ι).comap f.hom))
     (W' : Scheme.{u}) (e : W' ≅ W) :
-    PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) := by
-  refine PrincipalizationCertificate.localize
+    ResolutionCertificate isOrder W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem)
+      (Z.comap e.hom) := by
+  refine ResolutionCertificate.localize
     (fun z' hz' =>
       (Opens.map e.hom.base).obj
         (U (e.hom.base z') (by rwa [Scheme.IdealSheafData.mem_support_comap] at hz')))
@@ -204,49 +201,8 @@ private theorem principalizationCertificate_comap_iso_of_opens_cover {k : Type u
   · intro z' hz'
     have hz : e.hom.base z' ∈ Z.support := by
       rwa [Scheme.IdealSheafData.mem_support_comap] at hz'
-    exact principalizationCertificate_congr (preimageOpensIso_hom_comp_ι_comp p e (U (e.hom.base z') hz))
+    exact resolutionCertificate_congr (preimageOpensIso_hom_comp_ι_comp p e (U (e.hom.base z') hz))
       (comap_preimageOpensIso_hom e (U (e.hom.base z') hz) I)
-      (preimage_preimageOpensIso_hom e (U (e.hom.base z') hz) Mem)
-      (comap_preimageOpensIso_hom e (U (e.hom.base z') hz) Z)
-      (ih (e.hom.base z') hz _ (preimageOpensIso e (U (e.hom.base z') hz)))
-
-private theorem orderCertificate_comap_iso_of_support_subset {k : Type u} [Field k] (W : Scheme.{u})
-    (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ) (Mem : Set ↥W)
-    (Z : W.IdealSheafData) (h : (Z.support : Set ↥W) ⊆ Mem) (W' : Scheme.{u}) (e : W' ≅ W) :
-    OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) := by
-  refine OrderCertificate.memory ?_
-  rw [coe_support_comap_iso_hom e Z]
-  exact Set.preimage_mono h
-
-private theorem orderCertificate_comap_iso_of_two_le {k : Type u} [Field k] (W : Scheme.{u})
-    (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ) (Mem : Set ↥W)
-    (Z : W.IdealSheafData) (hmu : 2 ≤ μ) (W' : Scheme.{u}) (e : W' ≅ W) :
-    OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
-  OrderCertificate.large hmu
-
-private theorem orderCertificate_comap_iso_of_opens_cover {k : Type u} [Field k] (W : Scheme.{u})
-    (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ) (Mem : Set ↥W)
-    (Z : W.IdealSheafData) (U : ∀ z : ↥W, z ∈ Z.support → W.Opens)
-    (hU : ∀ (z : ↥W) (hz : z ∈ Z.support), z ∈ U z hz)
-    (_hcert : ∀ (z : ↥W) (hz : z ∈ Z.support),
-      OrderCertificate (U z hz).toScheme ((U z hz).ι ≫ p) (N.comap (U z hz).ι) μ
-        (⇑(U z hz).ι.base ⁻¹' Mem) (Z.comap (U z hz).ι))
-    (ih : ∀ (z : ↥W) (hz : z ∈ Z.support) (X : Scheme.{u}) (f : X ≅ (U z hz).toScheme),
-      OrderCertificate X (f.hom ≫ ((U z hz).ι ≫ p)) ((N.comap (U z hz).ι).comap f.hom) μ
-        (⇑f.hom.base ⁻¹' (⇑(U z hz).ι.base ⁻¹' Mem)) ((Z.comap (U z hz).ι).comap f.hom))
-    (W' : Scheme.{u}) (e : W' ≅ W) :
-    OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) := by
-  refine OrderCertificate.localize
-    (fun z' hz' =>
-      (Opens.map e.hom.base).obj
-        (U (e.hom.base z') (by rwa [Scheme.IdealSheafData.mem_support_comap] at hz')))
-    (fun z' hz' => ?_) ?_
-  · exact hU (e.hom.base z') (by rwa [Scheme.IdealSheafData.mem_support_comap] at hz')
-  · intro z' hz'
-    have hz : e.hom.base z' ∈ Z.support := by
-      rwa [Scheme.IdealSheafData.mem_support_comap] at hz'
-    exact orderCertificate_congr (preimageOpensIso_hom_comp_ι_comp p e (U (e.hom.base z') hz))
-      (comap_preimageOpensIso_hom e (U (e.hom.base z') hz) N)
       (preimage_preimageOpensIso_hom e (U (e.hom.base z') hz) Mem)
       (comap_preimageOpensIso_hom e (U (e.hom.base z') hz) Z)
       (ih (e.hom.base z') hz _ (preimageOpensIso e (U (e.hom.base z') hz)))
@@ -292,67 +248,40 @@ private theorem orderCertificate_comap_iso_of_smoothDivisor_cover (hT : OrderCer
     OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
   hT k W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc hJcert ih W' e
 
-private theorem principalizationCertificate_comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
-    (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k)) (I : W.IdealSheafData) (m : ℕ)
-    (Mem : Set ↥W) (Z : W.IdealSheafData) (h : PrincipalizationCertificate W p I m Mem Z) :
+private theorem resolutionCertificate_comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u})
+    {k : Type u} [Field k] {isOrder : Bool} (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k))
+    (I : W.IdealSheafData) (m : ℕ) (Mem : Set ↥W) (Z : W.IdealSheafData)
+    (h : ResolutionCertificate isOrder W p I m Mem Z) :
     ∀ (W' : Scheme.{u}) (e : W' ≅ W),
-      PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
-  @PrincipalizationCertificate.rec k _
-    (fun W p I m Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W),
-      PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom))
-    (fun W p N μ Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W),
-      OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom))
-    (fun {W p I m Mem Z} h => principalizationCertificate_comap_iso_of_support_subset W p I m Mem Z h)
-    (fun {W p I m Mem Z} hm => principalizationCertificate_comap_iso_of_two_le W p I m Mem Z hm)
+      ResolutionCertificate isOrder W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem)
+        (Z.comap e.hom) :=
+  @ResolutionCertificate.rec k _
+    (fun isOrder W p I m Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W),
+      ResolutionCertificate isOrder W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem)
+        (Z.comap e.hom))
+    (fun {_ W p I m Mem Z} h => certificate_comap_iso_of_support_subset W p I m Mem Z h)
+    (fun {_ W p I m Mem Z} hm => certificate_comap_iso_of_two_le W p I m Mem Z hm)
     (fun {W p I m Mem Z} M N μ hI hM hmu hZ hcert ihc =>
-      principalizationCertificate_comap_iso_of_orderCertificate W p I m Mem Z M N μ hI hM hmu hZ hcert ihc)
-    (fun {W p I m Mem Z} U hU hcert ihc =>
-      principalizationCertificate_comap_iso_of_opens_cover W p I m Mem Z U hU hcert ihc)
-    (fun {W p N μ Mem Z} h => orderCertificate_comap_iso_of_support_subset W p N μ Mem Z h)
-    (fun {W p N μ Mem Z} hmu => orderCertificate_comap_iso_of_two_le W p N μ Mem Z hmu)
-    (fun {W p N μ Mem Z} U hU hcert ihc =>
-      orderCertificate_comap_iso_of_opens_cover W p N μ Mem Z U hU hcert ihc)
+      principalizationCertificate_comap_iso_of_orderCertificate W p I m Mem Z M N μ hI hM hmu hZ
+        hcert ihc)
+    (fun {_ W p I m Mem Z} U hU hcert ihc =>
+      certificate_comap_iso_of_opens_cover W p I m Mem Z U hU hcert ihc)
     (fun {W p N μ Mem Z} U hU H hH hNsubH hZH J hJnone hJcomp hJloc hJcert ihc =>
-      orderCertificate_comap_iso_of_smoothDivisor_cover hT W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc
-        hJcert ihc)
-    W p I m Mem Z h
-
-private theorem orderCertificate_comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
-    (W : Scheme.{u}) (p : W ⟶ Spec (CommRingCat.of k)) (N : W.IdealSheafData) (μ : ℕ)
-    (Mem : Set ↥W) (Z : W.IdealSheafData) (h : OrderCertificate W p N μ Mem Z) :
-    ∀ (W' : Scheme.{u}) (e : W' ≅ W),
-      OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
-  @OrderCertificate.rec k _
-    (fun W p I m Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W),
-      PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom))
-    (fun W p N μ Mem Z _ => ∀ (W' : Scheme.{u}) (e : W' ≅ W),
-      OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom))
-    (fun {W p I m Mem Z} h => principalizationCertificate_comap_iso_of_support_subset W p I m Mem Z h)
-    (fun {W p I m Mem Z} hm => principalizationCertificate_comap_iso_of_two_le W p I m Mem Z hm)
-    (fun {W p I m Mem Z} M N μ hI hM hmu hZ hcert ihc =>
-      principalizationCertificate_comap_iso_of_orderCertificate W p I m Mem Z M N μ hI hM hmu hZ hcert ihc)
-    (fun {W p I m Mem Z} U hU hcert ihc =>
-      principalizationCertificate_comap_iso_of_opens_cover W p I m Mem Z U hU hcert ihc)
-    (fun {W p N μ Mem Z} h => orderCertificate_comap_iso_of_support_subset W p N μ Mem Z h)
-    (fun {W p N μ Mem Z} hmu => orderCertificate_comap_iso_of_two_le W p N μ Mem Z hmu)
-    (fun {W p N μ Mem Z} U hU hcert ihc =>
-      orderCertificate_comap_iso_of_opens_cover W p N μ Mem Z U hU hcert ihc)
-    (fun {W p N μ Mem Z} U hU H hH hNsubH hZH J hJnone hJcomp hJloc hJcert ihc =>
-      orderCertificate_comap_iso_of_smoothDivisor_cover hT W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc
-        hJcert ihc)
-    W p N μ Mem Z h
+      orderCertificate_comap_iso_of_smoothDivisor_cover hT W p N μ Mem Z U hU H hH hNsubH hZH J
+        hJnone hJcomp hJloc hJcert ihc)
+    isOrder W p I m Mem Z h
 
 theorem PrincipalizationCertificate.comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     {W W' : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ}
     {Mem : Set ↥W} {Z : W.IdealSheafData} (e : W' ≅ W) (h : PrincipalizationCertificate W p I m Mem Z) :
     PrincipalizationCertificate W' (e.hom ≫ p) (I.comap e.hom) m (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
-  principalizationCertificate_comap_iso hT W p I m Mem Z h W' e
+  resolutionCertificate_comap_iso hT W p I m Mem Z h W' e
 
 theorem OrderCertificate.comap_iso (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     {W W' : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
     {Mem : Set ↥W} {Z : W.IdealSheafData} (e : W' ≅ W) (h : OrderCertificate W p N μ Mem Z) :
     OrderCertificate W' (e.hom ≫ p) (N.comap e.hom) μ (⇑e.hom.base ⁻¹' Mem) (Z.comap e.hom) :=
-  orderCertificate_comap_iso hT W p N μ Mem Z h W' e
+  resolutionCertificate_comap_iso hT W p N μ Mem Z h W' e
 
 theorem PrincipalizationCertificate.comap_iso_of_eq (hT : OrderCertificateIsoInvariantOfMaxContact.{u}) {k : Type u} [Field k]
     {W W' : Scheme.{u}} {p : W ⟶ Spec (CommRingCat.of k)}

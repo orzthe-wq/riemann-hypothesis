@@ -48,4 +48,4 @@ open NumberField IsDedekindDomain GlobalTheory.QSA
 open scoped Quaternion Topology
 
 theorem _root_.GlobalTheory.T.squaringOpenAtOne_of_complete_two_ne_zero : ∀ (K : Type) [NormedField K] [CompleteSpace K], (2 : K) ≠ 0 → SqOpen K := by
-  first | exact @GlobalTheory.sqOpen_of_two_ne_zero | exact GlobalTheory.sqOpen_of_two_ne_zero | (intros; apply GlobalTheory.sqOpen_of_two_ne_zero <;> assumption)
+  first | exact @GlobalTheory.sqOpen_of_two_ne_zero

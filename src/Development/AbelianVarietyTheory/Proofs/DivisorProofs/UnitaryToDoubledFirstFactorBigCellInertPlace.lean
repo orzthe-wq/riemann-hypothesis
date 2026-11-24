@@ -218,7 +218,7 @@ theorem exists_nab (Z : Matrix (Fin d) (Fin d) (AE F E))
     rw [fromBlocks_transpose, dbl, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]
     simp only [transpose_add, transpose_sub, transpose_neg, transpose_one, hmap, map_add (f := _), map_sub, map_neg, map_one]
     rw [hmap] at hZ
-    simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
+    simp only [Matrix.mul_zero, add_zero, zero_add]
     congr 1 <;> rw [← sub_eq_zero] <;> convert hZ using 1 <;> noncomm_ring
   let n : UD σ W := ⟨⟨_, _, hinv1, hinv2⟩, hU⟩
   refine ⟨n, ⟨⟨?_, fun z hz => ⟨?_, ?_⟩⟩, ?_, Z + Z, ?_⟩, rfl⟩
@@ -270,7 +270,7 @@ theorem inlD_eq_nab_mul_par (h2 : (2 : 𝓞 F) ∉ v.asIdeal) (k : UA σ W.J) (h
   rw [hninv, matD_inlD, fromBlocks_multiply]
   rw [show diagCols (Fin d) = Matrix.fromRows (1 : Matrix (Fin d) (Fin d) (AE F E)) 1 from rfl]
   erw [fromBlocks_mul_fromRows, fromRows_mul]
-  simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul]
+  simp only [Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul]
   congr 1
   · calc (1 - Z) * K + -Z = K - Z * (1 + K) := by noncomm_ring
       _ = ((⅟(2 : AF F)) • K + (⅟(2 : AF F)) • K) - ((⅟(2 : AF F)) • K - (⅟(2 : AF F)) • 1) := by

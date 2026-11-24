@@ -100,7 +100,7 @@ theorem exists_proj (L : Submodule (𝓞 K) V) (hfg : L.FG) (hsp : Submodule.spa
     exact ⟨d, nonZeroDivisors.coe_ne_zero d, hd⟩
   have hunit : ∀ x : nonZeroDivisors (𝓞 K), IsUnit (algebraMap (𝓞 K) (Module.End (𝓞 K) V) x) :=
     (isLocalizedModule_id (nonZeroDivisors (𝓞 K)) V K).map_units
-  haveI hloc : IsLocalizedModule (nonZeroDivisors (𝓞 K)) L.subtype := by
+  have hloc : IsLocalizedModule (nonZeroDivisors (𝓞 K)) L.subtype := by
     refine ⟨hunit, fun v => ?_, fun {x y} h => ⟨1, by simpa using Subtype.ext h⟩⟩
     obtain ⟨d, hd, hv⟩ := hden v
     exact ⟨(⟨d • v, hv⟩, ⟨d, mem_nonZeroDivisors_of_ne_zero hd⟩), rfl⟩

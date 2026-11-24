@@ -169,7 +169,7 @@ theorem theta_comb {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE
     (fun g y => ?_) (fun d => ?_) (fun w => ?_) g
   · have := (GlobalTheory.thetaKO_rat_left_and_eigen_right ψ S T χS χT om hW _ (hL w).1).1 γ hγ 1 (one_mem _) h g
     rwa [one_mul] at this
-  · exact GlobalTheory.WeilParts.integrableOn_theta_definite D ψ hW.std S T χS χT om hW hpos X L (fun w => (hL w).1)
+  · exact _root_.GlobalTheory.DefiniteQuotient.integrableOn_theta D ψ hW.std S T χS χT om hW hpos X L (fun w => (hL w).1)
       (fun h => F (h * y)) (hc.comp (continuous_mul_const y)) (fun γ hγ h => by rw [mul_assoc, hFl γ hγ]) ν 𝓕 hν h𝓕 g
   · obtain ⟨α, -, R', h1, h2, h3, h4⟩ := ThetaIntHecke.exists_dual_rep S P d
     exact ⟨α, R', h1, h2, h3, fun w => h4 _ (om.comp (MonoidHom.inl _ _)) (L w) (hfS w)⟩

@@ -236,7 +236,7 @@ lemma liftF (k : ZMod q) : ∃ (N : ℕ) (t : Tor f g hε),
   show algebraMap S _ f ^ (∑ m, n m) * x j = _
   by_cases h : j = k
   · subst h; simp [x]
-  · simp [x, Pi.single_apply, h]
+  · simp [x, h]
 
 lemma liftG (k : ZMod q) : ∃ (N : ℕ) (t : Tor f g hε),
     (t : Amb f g q).2 = Pi.single k (algebraMap S (Localization.Away g) g ^ N) := by
@@ -260,7 +260,7 @@ lemma liftG (k : ZMod q) : ∃ (N : ℕ) (t : Tor f g hε),
   show algebraMap S _ g ^ (∑ m, n m) * y j = _
   by_cases h : j = k
   · subst h; simp [y]
-  · simp [y, Pi.single_apply, h]
+  · simp [y, h]
 end Main
 
 section IF
@@ -301,7 +301,7 @@ lemma uniformF : ∃ (N : ℕ) (t : ZMod q → Tor f g hε),
   rw [ht k]
   by_cases h : i = k
   · subst h; simp only [Pi.single_eq_same, map_pow]; rw [← pow_add, Nat.sub_add_cancel (hle i)]
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 lemma uniformG : ∃ (N : ℕ) (t : ZMod q → Tor f g hε),
     ∀ k, (t k : Amb f g q).2 = Pi.single k (algebraMap S (Localization.Away g) g ^ N) := by
@@ -314,7 +314,7 @@ lemma uniformG : ∃ (N : ℕ) (t : ZMod q → Tor f g hε),
   rw [ht k]
   by_cases h : i = k
   · subst h; simp only [Pi.single_eq_same, map_pow]; rw [← pow_add, Nat.sub_add_cancel (hle i)]
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 lemma coe_sum_tor (t : ZMod q → Tor f g hε) : ((∑ k, t k : Tor f g hε) : Amb f g q) = ∑ k, (t k : Amb f g q) :=
   map_sum (Tor f g hε).subtype _ _
@@ -390,7 +390,7 @@ lemma sheetG (s : Tor f g hε →+* S) (hs : ∀ a, s (torMap f g hε a) = a) :
     rw [ht m]; funext i
     by_cases h : i = m
     · subst h; simp only [Pi.sub_apply, Pi.mul_apply, Pi.single_eq_same, Pi.zero_apply, map_pow, ← hb]; ring
-    · simp [Pi.single_apply, h])
+    · simp [h])
   simp only [map_sub, map_mul, hs, map_pow] at e1
   rw [hσ m] at e1
   have hu : IsUnit (algebraMap S (Localization.Away g) g ^ j * algebraMap S (Localization.Away g) g ^ N) :=

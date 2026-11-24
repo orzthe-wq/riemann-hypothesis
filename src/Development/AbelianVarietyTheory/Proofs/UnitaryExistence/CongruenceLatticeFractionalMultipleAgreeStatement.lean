@@ -45,4 +45,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Member
 
 theorem _root_.GlobalTheory.T.congruence_lattice_fractionalMultiple_agree : ∀ (D : D7) (V : HSp D), ∀ k : GA D V, ((∀ z ∈ latGHat V 1, (finHom V k).1 *ᵥ z ∈ latGHat V 1) ↔ FinCong V 1 k) ∧ ∀ (M : ℕ) (I : Ideal (𝓞 D.host.E)), (∀ b ∈ I, ∀ z ∈ latHat V, ∃ y ∈ latHat V, (finHom V k).1 *ᵥ halfVec V b z - halfVec V b z = M • y) ↔ ∀ a ∈ I • latG V 1, ∃ w ∈ latGHat V 1, (finHom V k).1 *ᵥ finVec V a - finVec V a = M • w := by
-  first | exact @GlobalTheory.Member.AALev.congruences_agree | exact GlobalTheory.Member.AALev.congruences_agree | (intros; apply GlobalTheory.Member.AALev.congruences_agree <;> assumption)
+  first | exact @GlobalTheory.Member.AALev.congruences_agree

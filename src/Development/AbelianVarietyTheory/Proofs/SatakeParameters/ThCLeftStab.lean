@@ -1,5 +1,7 @@
 module
 
+public import Formalism.LocalToGlobal.KernelLattices.XiIndCClass
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralDensEqZero
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EmbHInjective
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslateMomentsAll
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
@@ -7,34 +9,30 @@ public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpac
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AddSubgroupRepsExistenceCardSum
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DeltaNeZero
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FieldIsoSelfDualAndPeriodLatticesAgree
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HeisenbergCocycleFormIntegralSelfDual
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InterTransport
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsSdLatTwOExpS
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocPAAAndPrimesNe
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MovedVacuumMemThetaFunctionsAndMoves
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsWeilOThZeroTriv
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormalisedFamilySatisfiesEquivarianceLaws
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmulLatMatOf
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanRangeEmb4EqTop
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SumRepsEquiv
 public import Development.AutomorphicArithmetic.CyclotomicBounds.RamifiedDiscriminants.OffSmall
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HESmulRight
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
@@ -45,8 +43,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -56,14 +52,189 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FieldIsoSelfDualAndPeriodLatticesAgree
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InterTransport
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MovedVacuumMemThetaFunctionsAndMoves
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanRangeEmb4EqTop
+import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HESmulRight
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralDensEqZero
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.SatakeParameters.SumRepsEquiv, Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThCLeftStab
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.SumRepsEquiv =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.SumRepsEquiv", "h": "module\n\npublic import Formalism.LocalToGlobal.KernelLattices.XiIndCClass\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralDensEqZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.L2.Ker Formalism.L2.Th1.H GlobalTheory.ThetaInter
+
+noncomputable section
+
+namespace GlobalTheory.KerLaw
+
+variable {V : Type} [AddCommGroup V] [Module ℂ V]
+
+omit [Module ℂ V] in
+theorem sum_reps {Λ₁ Λ₂ : AddSubgroup V} {S S' : Finset V} (h : IsReps Λ₁ Λ₂ S) (h' : IsReps Λ₁ Λ₂ S') (f : V → ℂ)
+    (hf : ∀ x ∈ Λ₂, ∀ l ∈ Λ₂, l ∈ Λ₁ → f (x + l) = f x) : ∑ x ∈ S, f x = ∑ x ∈ S', f x := by
+  choose! r hr hr' using h'.2.2
+  refine Finset.sum_bij (fun x _ => r x) (fun x hx => hr x (h.1 x hx)) (fun x hx y hy e => ?_) (fun y hy => ?_) fun x hx => ?_
+  · refine h.2.1 x hx y hy ?_
+    have := Λ₁.sub_mem (hr' x (h.1 x hx)) (hr' y (h.1 y hy))
+    rwa [e, sub_sub_sub_cancel_right] at this
+  · obtain ⟨x, hx, e⟩ := h.2.2 y (h'.1 y hy)
+    refine ⟨x, hx, h'.2.1 _ (hr x (h.1 x hx)) _ hy ?_⟩
+    have := Λ₁.neg_mem (Λ₁.add_mem e (hr' x (h.1 x hx)))
+    rwa [sub_add_sub_cancel, neg_sub] at this
+  · have h2 := h'.1 _ (hr x (h.1 x hx))
+    rw [← hf _ h2 _ (Λ₂.sub_mem (h.1 x hx) h2) (hr' x (h.1 x hx)), add_sub_cancel]
+
+omit [Module ℂ V] in
+theorem sum_reps_equiv {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (h : IsReps Λ₁ Λ₂ S) (φ : V ≃ V)
+    (h2 : ∀ x, φ x ∈ Λ₂ ↔ x ∈ Λ₂) (h1 : ∀ x y, φ x - φ y ∈ Λ₁ ↔ x - y ∈ Λ₁) (f : V → ℂ)
+    (hf : ∀ x ∈ Λ₂, ∀ l ∈ Λ₂, l ∈ Λ₁ → f (x + l) = f x) : ∑ x ∈ S, f (φ x) = ∑ x ∈ S, f x := by
+  rw [← sum_reps (S := S.map φ.toEmbedding) ?_ h f hf, Finset.sum_map]
+  · rfl
+  refine ⟨fun x hx => ?_, fun x hx y hy e => ?_, fun y hy => ?_⟩
+  · obtain ⟨x, hx', rfl⟩ := Finset.mem_map.1 hx
+    exact (h2 x).2 (h.1 x hx')
+  · obtain ⟨x, hx', rfl⟩ := Finset.mem_map.1 hx
+    obtain ⟨y, hy', rfl⟩ := Finset.mem_map.1 hy
+    rw [h.2.1 x hx' y hy' ((h1 x y).1 e)]
+  · obtain ⟨y, rfl⟩ := φ.surjective y
+    obtain ⟨x, hx, e⟩ := h.2.2 y ((h2 y).1 hy)
+    exact ⟨φ x, Finset.mem_map_of_mem _ hx, (h1 y x).2 e⟩
+
+variable {H : Sesq V} {α : V → ℂ}
+
+theorem brk_eq (y t : V) : brk H y t = chi H t y := by
+  unfold brk chi
+  congr 1
+  ring
+
+theorem int_of_semi {A : AddSubgroup V} (hs : IsSemiChar H A α) {x y : V} (hx : x ∈ A) (hy : y ∈ A) : chi H x y = 1 := by
+  have h1 := alpha_sq hs (A.add_mem hx hy)
+  have h2 := alpha_sq hs hx
+  have h3 := alpha_sq hs hy
+  rw [hs.2 x hx y hy] at h1
+  have h4 : Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H x y : ℂ)) *
+      Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H x y : ℂ)) = 1 := by
+    linear_combination h1 - (α y * α y * h2 + h3) * Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H x y : ℂ)) ^ 2
+  rw [← Complex.exp_add] at h4
+  rw [chi, Complex.exp_neg, ← inv_one, ← h4]
+  congr 2
+  ring
+
+theorem w_add (hH : IsHerm H) {A : AddSubgroup V} (hs : IsSemiChar H A α) {x y : V} (hx : x ∈ A) (hy : y ∈ A)
+    (F : V → ℂ) (z : V) : α (x + y) * opU H (x + y) F z = α x * opU H x (fun w => α y * opU H y F w) z := by
+  have h := int_of_semi hs hx hy
+  have e : Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H x y : ℂ)) =
+      Complex.exp (-(Real.pi * Complex.I * (altE H x y : ℂ))) := by
+    rw [← mul_one (Complex.exp ((Real.pi : ℂ) * _ * _)), ← h, chi, ← Complex.exp_add]
+    congr 1
+    ring
+  rw [opU_mul, opU_opU hH, hs.2 x hx y hy, e]
+  ring
+
+theorem chi_ne (x y : V) : chi H x y ≠ 0 := Complex.exp_ne_zero _
+
+theorem xiL_stab (hH : IsHerm H) {A B Λ : AddSubgroup V} (hA : IsSemiChar H A α) (hB : IsSemiChar H B α)
+    (hΛ : IsSemiChar H Λ α) {SX SA SB : Finset V} (hX : IsReps Λ A SX) (hSA : IsReps B (Λ ⊓ A) SA) (hSB : IsReps Λ B SB)
+    (vol : ℝ) {θ : V → ℂ} (hθ : θ ∈ fixedBy H α Λ) {Φ : V → ℂ} (hΦ : InvOn A B Φ) (T : V ≃+ V)
+    (tH : ∀ x y, H (T x) (T y) = H x y) (tα : ∀ x, α (T x) = α x) (tA : ∀ x, T x ∈ A ↔ x ∈ A) (tB : ∀ x, T x ∈ B ↔ x ∈ B)
+    (tΛ : ∀ x, T x ∈ Λ ↔ x ∈ Λ) (tθ : ∀ z, θ (T z) = θ z) (k : ℂ) (tΦ : ∀ x, Φ (T x) = k * Φ x) (z : V) :
+    xiL H α vol SX SA SB Φ θ (T z) = k * xiL H α vol SX SA SB Φ θ z := by
+  have tU : ∀ x F w, opU H (T x) F (T w) = opU H x (fun v => F (T v)) w := fun x F w => by
+    simp only [opU, tH, map_add (f := _)]
+  have tc : ∀ x y, chi H (T x) (T y) = chi H x y := fun x y => by simp only [chi, altE, tH]
+  have invA : ∀ x ∈ A, ∀ y ∈ B, ∀ t ∈ Λ ⊓ A, ∀ l ∈ Λ ⊓ A, l ∈ B →
+      Φ (t + l - x) * (brk H y (t + l))⁻¹ = Φ (t - x) * (brk H y t)⁻¹ := fun x hx y hy t ht l hl hl' => by
+    rw [add_sub_right_comm, hΦ _ (A.sub_mem ht.2 hx) l hl.2 hl', brk_eq, brk_eq, chi_add_left, int_of_semi hB hl' hy, mul_one]
+  have hatT : ∀ x ∈ A, ∀ y ∈ B, hatS H vol SA (fun s => Φ (s - T x)) (T y) = k * hatS H vol SA (fun s => Φ (s - x)) y := by
+    intro x hx y hy
+    unfold hatS
+    rw [← sum_reps_equiv hSA T.toEquiv (fun t => and_congr (tΛ t) (tA t)) (fun t u => by
+      change T t - T u ∈ B ↔ _
+      rw [← map_sub, tB]) (fun t => Φ (t - T x) * (brk H (T y) t)⁻¹) (invA _ ((tA x).2 hx) _ ((tB y).2 hy))]
+    have : ∀ t, Φ (T.toEquiv t - T x) * (brk H (T y) (T.toEquiv t))⁻¹ = k * (Φ (t - x) * (brk H y t)⁻¹) := fun t => by
+      change Φ (T t - T x) * (brk H (T y) (T t))⁻¹ = _
+      rw [← map_sub, tΦ, brk_eq, brk_eq, tc, mul_assoc]
+    simp only [this, ← Finset.mul_sum]
+    ring
+  have hatL : ∀ x ∈ A, ∀ y ∈ B, ∀ l ∈ A, l ∈ Λ →
+      hatS H vol SA (fun s => Φ (s - (x + l))) y = (chi H l y)⁻¹ * hatS H vol SA (fun s => Φ (s - x)) y := by
+    intro x hx y hy l hl hl'
+    unfold hatS
+    rw [← sum_reps_equiv hSA (Equiv.addRight l) (fun t => (Λ ⊓ A).add_mem_cancel_right ⟨hl', hl⟩) (fun t u => by simp)
+      (fun t => Φ (t - (x + l)) * (brk H y t)⁻¹) (invA _ (A.add_mem hx hl) _ hy)]
+    have : ∀ t, Φ (Equiv.addRight l t - (x + l)) * (brk H y (Equiv.addRight l t))⁻¹ =
+        (chi H l y)⁻¹ * (Φ (t - x) * (brk H y t)⁻¹) := fun t => by
+      rw [Equiv.coe_addRight, add_sub_add_right_eq_sub, brk_eq, brk_eq, chi_add_left, mul_inv]
+      ring
+    simp only [this, ← Finset.mul_sum]
+    ring
+  have invB : ∀ (Ψ : V → ℂ) w, ∀ y ∈ B, ∀ l ∈ B, l ∈ Λ →
+      hatS H vol SA Ψ (y + l) * α (y + l) * opU H (y + l) θ w = hatS H vol SA Ψ y * α y * opU H y θ w := by
+    intro Ψ w y hy l hl hl'
+    have e1 : hatS H vol SA Ψ (y + l) = hatS H vol SA Ψ y := by
+      unfold hatS
+      congr 2
+      refine Finset.sum_congr rfl fun t ht => ?_
+      rw [brk_eq, brk_eq, chi_add_right, int_of_semi hΛ (hSA.1 t ht).1 hl', mul_one]
+    rw [e1, mul_assoc, w_add hH hB hy hl, funext (hθ l hl'), mul_assoc]
+  have xiT : ∀ x ∈ A, ∀ w, xiS H α vol SA SB (fun s => Φ (s - T x)) θ (T w) = k * xiS H α vol SA SB (fun s => Φ (s - x)) θ w := by
+    intro x hx w
+    unfold xiS sumU
+    rw [← sum_reps_equiv hSB T.toEquiv tB (fun t u => by
+      change T t - T u ∈ Λ ↔ _
+      rw [← map_sub, tΛ]) _ (invB _ _), Finset.mul_sum]
+    refine Finset.sum_congr rfl fun y hy => ?_
+    change hatS H vol SA _ (T y) * α (T y) * opU H (T y) θ (T w) = _
+    rw [hatT x hx y (hSB.1 y hy), tα, tU, funext tθ]
+    ring
+  have invX : ∀ w, ∀ x ∈ A, ∀ l ∈ A, l ∈ Λ →
+      α (x + l) * opU H (x + l) (xiS H α vol SA SB (fun s => Φ (s - (x + l))) θ) w =
+        α x * opU H x (xiS H α vol SA SB (fun s => Φ (s - x)) θ) w := by
+    intro w x hx l hl hl'
+    rw [w_add hH hA hx hl]
+    congr 2
+    funext v
+    unfold xiS sumU
+    rw [opU_sum, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun y hy => ?_
+    beta_reduce
+    rw [opU_mul, opU_comm hH, hatL x hx y (hSB.1 y hy) l hl hl', opU_of_fixed hΛ hθ hl', opU_mul]
+    have h1 := alpha_sq hΛ hl'
+    have h2 := chi_ne (H := H) l y
+    field_simp
+    linear_combination (hatS H vol SA (fun s => Φ (s - x)) y * α y * opU H y θ v) * h1
+  unfold xiL
+  rw [← sum_reps_equiv hX T.toEquiv tA (fun t u => by
+      change T t - T u ∈ Λ ↔ _
+      rw [← map_sub, tΛ]) _ (invX _), Finset.mul_sum]
+  refine Finset.sum_congr rfl fun x hx => ?_
+  change α (T x) * opU H (T x) (xiS H α vol SA SB (fun s => Φ (s - T x)) θ) (T z) = _
+  rw [tα, tU, funext (xiT x (hX.1 x hx)), opU_mul]
+  ring
+
+end GlobalTheory.KerLaw
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.SumRepsEquiv =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThCLeftStab =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThCLeftStab", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EmbHInjective\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslateMomentsAll\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AddSubgroupRepsExistenceCardSum\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DeltaNeZero\nimport Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FieldIsoSelfDualAndPeriodLatticesAgree\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HeisenbergCocycleFormIntegralSelfDual\nimport Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InterTransport\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsSdLatTwOExpS\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocPAAAndPrimesNe\nimport Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MovedVacuumMemThetaFunctionsAndMoves\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsWeilOThZeroTriv\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormalisedFamilySatisfiesEquivarianceLaws\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmulLatMatOf\nimport Development.AbelianVarietyTheory.Proofs.SatakeParameters.SpanRangeEmb4EqTop\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SumRepsEquiv\npublic import Development.AutomorphicArithmetic.CyclotomicBounds.RamifiedDiscriminants.OffSmall\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.FreeModule.IdealQuotient\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HESmulRight\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralDensEqZero\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker Formalism.L2.Th1.H NumberField IsDedekindDomain Classical
@@ -490,3 +661,7 @@ theorem thC_left_stab : ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (�
     (vac_leftE s B χ cD hok (GlobalTheory.Mem.NatEqui.eqP D cc δ B χ hcc hδ hχ) hA γ hγ) hk z
 
 end GlobalTheory.KerLaw
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThCLeftStab =====

@@ -87,7 +87,6 @@ theorem ja_integral (m : IntAf F E) : IsIntegral (jaT F E) m := by
       have h0 : IsIntegral ℤ o := by
         first
           | exact Algebra.IsIntegral.isIntegral o
-          | exact NumberField.RingOfIntegers.isIntegral o
       have h1 : IsIntegral ℤ (jaL F E o) := h0.map (jaL F E).toIntAlgHom
       show jaL F E o ∈ integralClosure (jaT F E) (IntAf F E)
       exact h1.tower_top

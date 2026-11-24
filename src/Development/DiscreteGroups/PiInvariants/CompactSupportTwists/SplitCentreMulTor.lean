@@ -48,6 +48,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.T2SpaceAdelicGeneralLinearGroupNumberField
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DegreePairingIdentity
 
 @[expose] public section
 
@@ -63,10 +64,7 @@ namespace DiscreteGroups.T1.G.Dcy
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
-theorem logSizeM_nonneg (A : Matrix (Fin n) (Fin n) (Ad E)) : 0 ≤ logSizeM A :=
-  add_nonneg (Finset.sum_nonneg fun _ _ => Real.posLog_nonneg) (finsum_nonneg fun _ => Real.posLog_nonneg)
-
-theorem logSize_nonneg (g : GA E n) : 0 ≤ logSize g := add_nonneg (logSizeM_nonneg _) (logSizeM_nonneg _)
+theorem logSize_nonneg (g : GA E n) : 0 ≤ logSize g := add_nonneg (_root_.GlobalTheory.CompanionTheory.DegPairingProof.logSizeM_nonneg _) (_root_.GlobalTheory.CompanionTheory.DegPairingProof.logSizeM_nonneg _)
 
 theorem redSize_nonneg (g : GA E n) : 0 ≤ redSize g := by
   unfold redSize

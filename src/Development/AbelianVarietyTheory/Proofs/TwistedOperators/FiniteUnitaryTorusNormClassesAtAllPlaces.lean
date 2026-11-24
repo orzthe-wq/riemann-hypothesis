@@ -48,6 +48,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHasCls
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

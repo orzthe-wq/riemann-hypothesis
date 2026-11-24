@@ -155,7 +155,7 @@ theorem map_mulLeft_comp (r s : Pl.R.BdR) (x : V ⊗[ℚ_[l]] Pl.R.BdR) :
     AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (LinearMap.mulLeft ℚ_[l] (r * s)) x := by
   induction x using TensorProduct.induction_on with
   | zero => simp only [map_zero]
-  | tmul v b => simp [mul_assoc]
+  | tmul v b => simp
   | add y z hy hz => simp only [map_add (f := _), hy, hz]
 
 theorem map_mulLeft_one (x : V ⊗[ℚ_[l]] Pl.R.BdR) :

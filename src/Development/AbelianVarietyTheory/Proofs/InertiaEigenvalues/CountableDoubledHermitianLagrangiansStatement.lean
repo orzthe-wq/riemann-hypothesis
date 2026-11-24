@@ -48,4 +48,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 
 theorem _root_.GlobalTheory.T.countable_doubled_hermitian_lagrangians : ∀ (D : D7) (W : HSp D), Countable (Lag W) := by
-  first | exact @GlobalTheory.RawLift.lag_countable | exact GlobalTheory.RawLift.lag_countable | (intros; apply GlobalTheory.RawLift.lag_countable <;> assumption)
+  first | exact @GlobalTheory.RawLift.lag_countable

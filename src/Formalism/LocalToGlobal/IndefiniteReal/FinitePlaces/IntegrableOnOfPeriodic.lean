@@ -2,43 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.CharLem
 public import Formalism.LocalToGlobal.IndefiniteReal.PHeisThA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -96,7 +60,6 @@ theorem cont_symplO : Continuous fun p : MO S T × MO S T => symplO S T p.1 p.2 
   delta symplO
   first
     | exact ht.comp (continuous_const.mul hh)
-    | fun_prop
 
 theorem cont_symplO_left (w : MO S T) : Continuous fun z : MO S T => symplO S T z w := by
   have h : Continuous (Function.uncurry (symplO S T)) := cont_symplO S T
@@ -141,7 +104,7 @@ theorem theta_add {f g : MO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThe
     funext z
     have z1 := congrFun e1 z
     have z2 := congrFun e2 z
-    simp only [heisO, Pi.add_apply, Pi.zero_apply] at z1 z2 ⊢
+    simp only [heisO, Pi.add_apply] at z1 z2 ⊢
     rw [mul_add, z1, z2]
 
 theorem theta_smul (c : ℂ) {f : MO S T → ℂ} (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (c • f) := by
@@ -153,7 +116,7 @@ theorem theta_smul (c : ℂ) {f : MO S T → ℂ} (hf : IsThetaFunO ψ S T f) : 
   · have e1 := hl1 u hu h0
     funext z
     have z1 := congrFun e1 z
-    simp only [heisO, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at z1 ⊢
+    simp only [heisO, Pi.smul_apply, smul_eq_mul] at z1 ⊢
     rw [mul_left_comm, z1]
 
 end Theta

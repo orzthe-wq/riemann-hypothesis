@@ -49,4 +49,4 @@ open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham Glob
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.hodgeFiltrations_orthogonal_lineBundlePairing_product : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left, P.IsLB → ∀ φ : HdR A →ₗ[R] HdR B →ₗ[R] R, AbDual.IsCorrForm (dp0 R) (𝟙 _) A B P φ → ∀ x ∈ Fil A, ∀ y ∈ Fil B, φ x y = 0 := by
-  first | exact @GlobalTheory.PtExt.HodgeOrth.fil_orthogonal | exact GlobalTheory.PtExt.HodgeOrth.fil_orthogonal | (intros; apply GlobalTheory.PtExt.HodgeOrth.fil_orthogonal <;> assumption)
+  first | exact @GlobalTheory.PtExt.HodgeOrth.fil_orthogonal

@@ -93,10 +93,6 @@ theorem hasFDerivAt_diag {f f' : P → ℝ → ℂ} {A : P →L[ℝ] ℂ} (l : P
 variable {𝔸 L G : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [FiniteDimensional ℝ 𝔸] [NormedAddCommGroup L]
   [NormedSpace ℝ L] [Group G] {σ : 𝔸 →ₗ[ℝ] 𝔸} {j : L →ₗ[ℝ] 𝔸} {s : 𝔸 → G}
 
-omit [FiniteDimensional ℝ 𝔸] in
-theorem unit_mul (H : IsLieData σ j s) {a b : 𝔸} (ha : σ a * a = 1) (hb : σ b * b = 1) : σ (a * b) * (a * b) = 1 := by
-  rw [H.anti, mul_assoc, ← mul_assoc (σ a), ha, one_mul, hb]
-
 theorem expMap_add (H : IsLieData σ j s) (X : L) (t u : ℝ) :
     expMap j s ((t + u) • X) = expMap j s (t • X) * expMap j s (u • X) := by
   have : CompleteSpace 𝔸 := FiniteDimensional.complete ℝ 𝔸
@@ -125,7 +121,7 @@ theorem exists_coord (H : IsLieData σ j s) (J : L →L[ℝ] 𝔸) (hJ : ∀ X, 
     let A : P →L[ℝ] L := (l i).smulRight (b i)
     have hA : ContDiff ℝ ∞ fun p => exp (J (A p)) := contDiff_exp.comp (J ∘L A).contDiff
     have hu : ∀ X, σ (exp (J X)) * exp (J X) = 1 := fun p => by rw [hJ]; exact exp_unitary H _
-    refine ⟨fun p => c p * exp (J (A p)), h1.mul hA, fun p => unit_mul H (h2 p) (hu _), by simp [h4], ?_, ?_⟩
+    refine ⟨fun p => c p * exp (J (A p)), h1.mul hA, fun p => _root_.GlobalTheory.SmoothForms.Bracket.unitary_mul H (h2 p) (hu _), by simp [h4], ?_, ?_⟩
     · have hd : HasFDerivAt (fun p => exp (J (A p))) (J ∘L A) 0 := by
         have := HasFDerivAt.comp (g := (exp : 𝔸 → 𝔸)) (g' := 1) (0 : P)
           (by simpa using hasFDerivAt_exp_zero (𝕂 := ℝ) (𝔸 := 𝔸)) (J ∘L A).hasFDerivAt
@@ -146,7 +142,7 @@ theorem exists_coord (H : IsLieData σ j s) (J : L →L[ℝ] 𝔸) (hJ : ∀ X, 
         beta_reduce
         rw [e, e, mul_assoc, mul_assoc, ← expMap_add H, add_sub_cancel]
       · refine ((hc i).comp_continuous (f := fun q : P × ℝ => c q.1 * exp (J (q.2 • b i))) ?_
-          fun q => unit_mul H (h2 _) (hu _)).continuousAt
+          fun q => _root_.GlobalTheory.SmoothForms.Bracket.unitary_mul H (h2 _) (hu _)).continuousAt
         exact (h1.continuous.comp continuous_fst).mul (contDiff_exp.continuous.comp (by fun_prop))
 
 theorem hasFDerivAt_expMap (H : IsLieData σ j s) (hl : HasLog σ j) {ι : Type} [Fintype ι] (l : ι → L →L[ℝ] ℝ)
@@ -229,7 +225,7 @@ theorem sm_of_closed (H : IsLieData σ j s) (hl : HasLog σ j) (T : Set L) (hT :
           have := hd.continuousAt.tendsto
           rwa [hu p₀] at this
         have hu' : ∀ p, σ (σ (c p₀) * c p) * (σ (c p₀) * c p) = 1 := fun p =>
-          unit_mul H (by rw [H.invol, hr]) (hu p)
+          _root_.GlobalTheory.SmoothForms.Bracket.unitary_mul H (by rw [H.invol, hr]) (hu p)
         have h4 := HasFDerivAt.comp (g := Λ) (g' := fderiv ℝ Λ 1) p₀
           (by rw [hu p₀]; exact (h1.differentiableAt (by simp)).hasFDerivAt) hd
         have h5 := HasFDerivAt.comp (g := fun X : L => φ (g * s (c p₀) * expMap j s X)) p₀

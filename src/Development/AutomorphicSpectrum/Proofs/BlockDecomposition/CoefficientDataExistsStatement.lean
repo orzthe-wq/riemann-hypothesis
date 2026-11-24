@@ -47,4 +47,4 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.coefficient_data_exists : PositivityTheory.PfSWUS.CoefDataExists := by
-  first | exact @GlobalTheory.CompanionTheory.SWCoef.coefDataExists | exact GlobalTheory.CompanionTheory.SWCoef.coefDataExists | (intros; apply GlobalTheory.CompanionTheory.SWCoef.coefDataExists <;> assumption)
+  first | exact @GlobalTheory.CompanionTheory.SWCoef.coefDataExists

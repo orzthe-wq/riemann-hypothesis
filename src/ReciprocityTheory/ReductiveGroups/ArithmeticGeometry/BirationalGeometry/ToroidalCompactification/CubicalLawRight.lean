@@ -2,46 +2,6 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.DegProd
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullFEPf
 
@@ -180,8 +140,8 @@ theorem adv_mul (a b : O) (x x' y : T ⟶ A) :
       abel) (hW (a * b) (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3)) U h).symm))
     (pullGen_isGen _ _ _ _ (hw (a * b)) (lift (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3))).left)
     (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ (hw a) (lift ((powPr A (0 : Fin 3)) ≫ o.act b) (powPr A (2 : Fin 3))).left) (pullGen_isGen _ _ _ _ (hw b) (lift (powPr A (0 : Fin 3)) ((powPr A (2 : Fin 3)) ≫ o.act (star a))).left)) x x' y hJ
-  simp only [val_mul hJ, val_ros _ _ hJ, val_cubG c _ hJ, MonObj.comp_mul, ← Category.assoc, tup_0, tup_1, tup_2,
-    MonObj.one_comp, _root_.mul_one, h1, face] at key
+  simp only [val_mul hJ, val_ros _ _ hJ, ← Category.assoc, tup_0, tup_2,
+    MonObj.one_comp, _root_.mul_one, h1] at key
   exact key
 
 theorem adv_add (a b : O) (x x' y : T ⟶ A) :
@@ -200,7 +160,7 @@ theorem adv_add (a b : O) (x x' y : T ⟶ A) :
       abel) (prod_sum₂ (K := K) (K' := thK.{0}) (U := U) _ (hW (a + b) (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3)) U h) (prod_cubφ ((powPr A (0 : Fin 3)) ≫ o.act a) ((powPr A (0 : Fin 3)) ≫ o.act b) (powPr A (2 : Fin 3)) h)).symm))
     (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ (hw (a + b)) (lift (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3))).left) (cubG_isGen c ((powPr A (0 : Fin 3)) ≫ o.act a) ((powPr A (0 : Fin 3)) ≫ o.act b) (powPr A (2 : Fin 3))))
     (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ (hw a) (lift (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3))).left) (pullGen_isGen _ _ _ _ (hw b) (lift (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3))).left)) (cubG_isGen c (powPr A (0 : Fin 3)) ((powPr A (2 : Fin 3)) ≫ o.act (star a)) ((powPr A (2 : Fin 3)) ≫ o.act (star b)))) x x' y hJ
-  simp only [val_mul hJ, val_ros _ _ hJ, val_cubG c _ hJ, MonObj.comp_mul, ← Category.assoc, tup_0, tup_1, tup_2,
+  simp only [val_mul hJ, val_ros _ _ hJ, val_cubG c _ hJ, ← Category.assoc, tup_0, tup_2,
     MonObj.one_comp, _root_.mul_one, h1, face] at key
   exact key
 
@@ -219,8 +179,8 @@ theorem adv_sy (a : O) (x x' y : T ⟶ A) :
       abel) (prod_sum₂ (K := (K ⊕ K)) (K' := K) (U := U) _ (prod_sum₂ (K := K) (K' := K) (U := U) _ (hW a (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3)) U h) (hW (star a) (powPr A (2 : Fin 3)) (powPr A (0 : Fin 3)) U h)) (hW 1 (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3)) U h)).symm))
     (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ (hw a) (lift (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3))).left) (pullGen_isGen _ _ _ _ (hw (star a)) (lift (powPr A (2 : Fin 3)) (powPr A (0 : Fin 3))).left)) (pullGen_isGen _ _ _ _ (hw 1) (lift (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3))).left))
     (pullGen_isGen _ _ _ _ (hw 1) (lift (powPr A (0 : Fin 3)) (powPr A (2 : Fin 3))).left) x x' y hJ
-  simp only [val_mul hJ, val_ros _ _ hJ, val_cubG c _ hJ, MonObj.comp_mul, ← Category.assoc, tup_0, tup_1, tup_2,
-    MonObj.one_comp, _root_.mul_one, h1, face] at key
+  simp only [val_mul hJ, val_ros _ _ hJ, val_cubG c _ hJ, MonObj.comp_mul, ← Category.assoc, tup_0, tup_2,
+    _root_.mul_one, h1] at key
   exact key
 
 theorem adv_one (x y : T ⟶ A) : val₂ (w 1) z J x y = 1 := by

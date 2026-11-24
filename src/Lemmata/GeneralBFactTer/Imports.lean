@@ -1,47 +1,6 @@
 module
 
-public import Mathlib.Basic.Complex.Basic
-public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
-public import Mathlib.LinearAlgebra.Matrix.Block
+public import Lemmata.GeneralBFactForm.Imports
 
 @[expose] public section
 
@@ -57,49 +16,9 @@ theorem goal1 :
             (∀ (a c : Fin r), LT.lt.{0} c a → Eq.{1} (B' a c) 0) →
               Ne.{1} (Matrix.det.{0, 0} B) 0 →
                 Eq.{1} (HMul.hMul.{0, 0, 0} N B) (HMul.hMul.{0, 0, 0} N' B') → Eq.{1} N N'  := by
-  intro r N N' B B' hN0 hN1 hN'0 hN'1 hB0 hB'0 hdet hEq
-  have lN : N.BlockTriangular OrderDual.toDual := fun i j hij =>
-    hN0 i j (OrderDual.toDual_lt_toDual.mp hij)
-  have lN' : N'.BlockTriangular OrderDual.toDual := fun i j hij =>
-    hN'0 i j (OrderDual.toDual_lt_toDual.mp hij)
-  have uB : B.BlockTriangular id := fun i j hij => hB0 i j hij
-  have uB' : B'.BlockTriangular id := fun i j hij => hB'0 i j hij
-  have dN' : N'.det = 1 := by
-    rw [Matrix.det_of_isLowerTriangular N' lN']
-    simp [hN'1]
-  have uN' : IsUnit N'.det := by rw [dN']; exact isUnit_one
-  have uBd : IsUnit B.det := isUnit_iff_ne_zero.mpr hdet
-  have iN' : Invertible N' := Matrix.invertibleOfIsUnitDet N' uN'
-  have iB : Invertible B := Matrix.invertibleOfIsUnitDet B uBd
-  have hM2 : N'⁻¹ * N = B' * B⁻¹ := by
-    calc N'⁻¹ * N = N'⁻¹ * N * B * B⁻¹ := by
-          rw [Matrix.mul_assoc (N'⁻¹ * N), Matrix.mul_nonsing_inv B uBd, Matrix.mul_one]
-      _ = N'⁻¹ * (N' * B') * B⁻¹ := by rw [Matrix.mul_assoc N'⁻¹ N B, hEq]
-      _ = B' * B⁻¹ := by
-          rw [← Matrix.mul_assoc N'⁻¹ N' B', Matrix.nonsing_inv_mul N' uN', Matrix.one_mul]
-  obtain ⟨M, hM⟩ : ∃ M, M = N'⁻¹ * N := ⟨_, rfl⟩
-  have lM : M.BlockTriangular OrderDual.toDual := by
-    rw [hM]; exact (Matrix.blockTriangular_inv_of_blockTriangular lN').mul lN
-  have uM : M.BlockTriangular id := by
-    rw [hM, hM2]; exact uB'.mul (Matrix.blockTriangular_inv_of_blockTriangular uB)
-  have hNM : N = N' * M := by
-    rw [hM, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv N' uN', Matrix.one_mul]
-  have hoff : ∀ a c, a ≠ c → M a c = 0 := by
-    intro a c hac
-    rcases lt_or_gt_of_ne hac with h | h
-    · exact lM (OrderDual.toDual_lt_toDual.mpr h)
-    · exact uM h
-  have hdiag : ∀ a, M a a = 1 := by
-    intro a
-    have h := congrFun (congrFun hNM a) a
-    rw [Matrix.mul_apply, Finset.sum_eq_single a (fun k _ hk => by rw [hoff k a hk, mul_zero])
-      (fun h => absurd (Finset.mem_univ a) h), hN'1, one_mul, hN1] at h
-    exact h.symm
-  have hM1 : M = 1 := by
-    ext a c
-    by_cases h : a = c
-    · subst h; rw [hdiag, Matrix.one_apply_eq]
-    · rw [hoff a c h, Matrix.one_apply_ne h]
-  rw [hNM, hM1, Matrix.mul_one]
+  intro r N N' B B' hN hNd hN' hN'd hB hB' hdet hEq
+  exact (Bl.general_b_fact_form.goal1 (fun _ _ h => hN' _ _ h) hN'd
+    (fun _ _ h => hN _ _ h) hNd (fun _ _ h => hB' _ _ h) (fun _ _ h => hB _ _ h)
+    hdet hEq.symm).1.symm
 
 end Bl.general_b_fact_ter

@@ -65,12 +65,6 @@ theorem ratMat_spec (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E
   first
   | exact Classical.choose_spec (p := fun m => m ∈ UJ (σ : E →+* E) J ∧
       bc (inclR (AF F)) m = (γ.1 : HR (AF F) σ J).1) _
-  | (generalize_proofs h1 h2 h3 h4 h5 h6
-     first
-     | exact Classical.choose_spec h4
-     | exact Classical.choose_spec h5
-     | exact Classical.choose_spec h6
-     | exact Classical.choose_spec h1)
 
 def ratU (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (γ : GamG σ J) :
     UJ (σ : E →+* E) J :=
@@ -89,7 +83,7 @@ theorem Lam_mul_sfin (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) 
   simp only [UJClassFin.abelian₂, Set.mem_setOf_eq, mul_inv_rev]
   unfold finMat at hk ⊢
   unfold HA.mat at hk ⊢
-  simp only [Subgroup.coe_mul, Units.val_mul, ← AlgHom.mapMatrix_apply, map_mul] at hk ⊢
+  simp only [← AlgHom.mapMatrix_apply] at hk ⊢
   have e : ∀ a c : HA (AF F) σ J, (a * c).1 = a.1 * c.1 := fun a c => rfl
   rw [e, Units.val_mul, map_mul]
   simp only [AlgHom.mapMatrix_apply, ← Matrix.mulVec_mulVec] at hk ⊢
@@ -105,9 +99,6 @@ theorem equivFun_linOf {M : ℕ} (b : Module.Basis (Fin M) E V) (u : GL (Fin M) 
     b.equivFun (linOf b u v) = (u : Matrix (Fin M) (Fin M) E).mulVec (b.equivFun v) := by
   unfold linOf
   first
-  | simp only [LinearEquiv.ofLinear_apply, Matrix.toLin_apply, Basis.equivFun_apply,
-      Basis.repr_sum_self]
-  | simp [Matrix.toLin_apply, Basis.repr_sum_self]
   | (simp [Matrix.toLin_apply]
      ext j
      simp [Finset.sum_apply, Finsupp.single_apply])
@@ -117,7 +108,6 @@ theorem linOf_basis {M : ℕ} (b : Module.Basis (Fin M) E V) (u : GL (Fin M) E) 
   unfold linOf
   first
   | simp [Matrix.toLin_self]
-  | rw [LinearEquiv.ofLinear_apply, Matrix.toLin_self]
 
 end Coord
 
@@ -135,13 +125,11 @@ theorem isomStep : IsomStep := by
     rw [show h (b i) (b j) = gramOf h b i j from (hG i j).symm, ← hU]
 
     simp only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hG,
-    AlgHom.coe_toRingHom, RingHom.coe_coe, hσ, Finset.sum_mul, Finset.mul_sum, map_sum,
+    RingHom.coe_coe, hσ, Finset.sum_mul, Finset.mul_sum, map_sum,
     map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply,
     RingHom.id_apply]
     first
     | exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring
-    | (rw [Finset.sum_comm]
-       exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring)
   show ∀ x y, h (linOf b u x) (linOf b u y) = h x y
   intro x y
   conv_rhs => rw [← key]

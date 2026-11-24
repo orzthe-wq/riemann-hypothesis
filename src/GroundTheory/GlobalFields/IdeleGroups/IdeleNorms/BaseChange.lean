@@ -1,51 +1,162 @@
 module
 
-public import GroundTheory.GlobalFields.Adele.BaseChange
+public import GroundTheory.GlobalFields.Adele.BaseChange.AdeleEquiv
 public import GroundTheory.GlobalFields.IdeleGroups.InfiniteProjInfiniteEmbeddingOfNe
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.GlobalFields.Adele.BaseChange, GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.BaseChange
+
+-- ===== clump member: GroundTheory.GlobalFields.Adele.BaseChange =====
+-- clump-header: {"m": "GroundTheory.GlobalFields.Adele.BaseChange", "h": "module\n\npublic import GroundTheory.GlobalFields.Adele.BaseChange.AdeleEquiv\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Global
+
+open IsDedekindDomain NumberField TensorProduct Module Topology
+open scoped NumberField.AdeleRing RestrictedProduct
+
+noncomputable section
+
+namespace AdeleBaseChange
+
+variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
+
+attribute [local instance] Algebra.TensorProduct.rightAlgebra
+
+def tmulLeft (l : L) : 𝔸[K] →ₗ[𝔸[K]] L ⊗[K] 𝔸[K] where
+  toFun x := l ⊗ₜ x
+  map_add' x y := TensorProduct.tmul_add _ _ _
+  map_smul' c x := by
+    change l ⊗ₜ (c * x) = (1 ⊗ₜ c) * (l ⊗ₜ x)
+    rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
+
+theorem adeleTensorEquiv_one_tmul_mul (a : 𝔸[K]) (t : L ⊗[K] 𝔸[K]) :
+    adeleTensorEquiv K L ((1 ⊗ₜ a) * t) = adeleMap K L a * adeleTensorEquiv K L t := by
+  rw [map_mul, adeleTensorEquiv_tmul, map_one, one_mul]
+
+
+variable (K L) in
+def adeleTensorSemilinear : L ⊗[K] 𝔸[K] →ₛₗ[adeleMap K L] 𝔸[L] where
+  toFun := adeleTensorEquiv K L
+  map_add' := map_add _
+  map_smul' c t := adeleTensorEquiv_one_tmul_mul c t
+
+
+variable (K L) in
+def adeleTensorHomeomorph :
+    letI := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
+    L ⊗[K] 𝔸[K] ≃ₜ 𝔸[L] :=
+  letI := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
+  haveI : IsModuleTopology 𝔸[K] (L ⊗[K] 𝔸[K]) := ⟨rfl⟩
+  haveI := IsModuleTopology.toContinuousAdd 𝔸[K] (L ⊗[K] 𝔸[K])
+  { toEquiv := (adeleTensorEquiv K L).toEquiv
+    continuous_toFun :=
+      IsModuleTopology.continuous_of_linearMapₛₗ continuous_adeleMap (adeleTensorSemilinear K L)
+    continuous_invFun := by
+      have h : ∀ y, (adeleTensorEquiv K L).symm y =
+          ∑ i, tmulLeft (Module.finBasis K L i) (coord (Module.finBasis K L) i y) :=
+        adeleTensorEquiv_symm_apply (Module.finBasis K L)
+      change Continuous fun y ↦ (adeleTensorEquiv K L).symm y
+      simp_rw [h]
+      exact continuous_finsetSum _ fun i _ ↦
+        (IsModuleTopology.continuous_of_linearMap (tmulLeft (Module.finBasis K L i))).comp
+          (continuous_coord _ i) }
+
+
+scoped instance algebraAdeleRing : Algebra 𝔸[K] 𝔸[L] :=
+  (adeleMap K L).toAlgebra
+
+theorem algebraMap_adeleRing : algebraMap 𝔸[K] 𝔸[L] = adeleMap K L :=
+  rfl
+
+scoped instance continuousSMul_adeleRing : ContinuousSMul 𝔸[K] 𝔸[L] :=
+  continuousSMul_of_algebraMap _ _ continuous_adeleMap
+
+
+variable (K L) in
+def adeleTensorAlgEquivAdele : L ⊗[K] 𝔸[K] ≃ₐ[𝔸[K]] 𝔸[L] :=
+  AlgEquiv.ofRingEquiv (f := (adeleTensorEquiv K L).toRingEquiv) fun a ↦ by
+    change adeleTensorEquiv K L (1 ⊗ₜ a) = adeleMap K L a
+    rw [adeleTensorEquiv_tmul, map_one, one_mul]
+
+
+theorem isModuleTopology_adeleRing : IsModuleTopology 𝔸[K] 𝔸[L] := by
+  let := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
+  have : IsModuleTopology 𝔸[K] (L ⊗[K] 𝔸[K]) := ⟨rfl⟩
+  exact IsModuleTopology.iso
+    { (adeleTensorAlgEquivAdele K L).toLinearEquiv with
+      continuous_toFun := (adeleTensorHomeomorph K L).continuous_toFun
+      continuous_invFun := (adeleTensorHomeomorph K L).continuous_invFun }
+
+
+variable (K L) in
+def normalizedTrace : L →ₗ[K] K :=
+  (finrank K L : K)⁻¹ • Algebra.trace K L
+
+theorem normalizedTrace_one : normalizedTrace K L 1 = 1 := by
+  rw [normalizedTrace, LinearMap.smul_apply, ← map_one (algebraMap K L), Algebra.trace_algebraMap,
+    nsmul_eq_mul, mul_one, smul_eq_mul, inv_mul_cancel₀]
+  exact Nat.cast_ne_zero.2 Module.finrank_pos.ne'
+
+
+variable (K L) in
+def traceRetraction : L ⊗[K] 𝔸[K] →ₗ[𝔸[K]] 𝔸[K] where
+  toFun t := TensorProduct.lid K 𝔸[K] (LinearMap.rTensor 𝔸[K] (normalizedTrace K L) t)
+  map_add' s t := by simp only [map_add (f := _)]
+  map_smul' c t := by
+    change _ = c * _
+    induction t using TensorProduct.induction_on with
+    | zero => simp
+    | tmul l a =>
+      change TensorProduct.lid K 𝔸[K] (LinearMap.rTensor 𝔸[K] (normalizedTrace K L)
+        ((1 ⊗ₜ c) * (l ⊗ₜ a))) = _
+      rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, LinearMap.rTensor_tmul,
+        LinearMap.rTensor_tmul, TensorProduct.lid_tmul, TensorProduct.lid_tmul, mul_smul_comm]
+    | add s t hs ht => simp only [smul_add, map_add (f := _), hs, ht, mul_add]
+
+theorem traceRetraction_one_tmul (a : 𝔸[K]) : traceRetraction K L (1 ⊗ₜ a) = a := by
+  change TensorProduct.lid K 𝔸[K] (LinearMap.rTensor 𝔸[K] (normalizedTrace K L) (1 ⊗ₜ a)) = a
+  rw [LinearMap.rTensor_tmul, TensorProduct.lid_tmul, normalizedTrace_one, one_smul]
+
+
+variable (K L) in
+def adeleRetraction (y : 𝔸[L]) : 𝔸[K] :=
+  traceRetraction K L ((adeleTensorEquiv K L).symm y)
+
+theorem adeleRetraction_adeleMap (a : 𝔸[K]) : adeleRetraction K L (adeleMap K L a) = a := by
+  have : (adeleTensorEquiv K L).symm (adeleMap K L a) = 1 ⊗ₜ a := by
+    rw [AlgEquiv.symm_apply_eq, adeleTensorEquiv_tmul, map_one, one_mul]
+  rw [adeleRetraction, this, traceRetraction_one_tmul]
+
+theorem continuous_adeleRetraction : Continuous (adeleRetraction K L) := by
+  let := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
+  have : IsModuleTopology 𝔸[K] (L ⊗[K] 𝔸[K]) := ⟨rfl⟩
+  exact (IsModuleTopology.continuous_of_linearMap (traceRetraction K L)).comp
+    (adeleTensorHomeomorph K L).symm.continuous
+
+theorem adeleMap_injective : Function.Injective (adeleMap K L) :=
+  Function.LeftInverse.injective (g := adeleRetraction K L) adeleRetraction_adeleMap
+
+
+end AdeleBaseChange
+
+end
+
+end GroundTheory.Global
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.GlobalFields.Adele.BaseChange =====
+
+-- ===== clump member: GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.BaseChange =====
+-- clump-header: {"m": "GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.BaseChange", "h": "module\n\npublic import GroundTheory.GlobalFields.Adele.BaseChange\npublic import GroundTheory.GlobalFields.IdeleGroups.InfiniteProjInfiniteEmbeddingOfNe\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace GroundTheory.Global
@@ -279,3 +390,6 @@ theorem ideleClassMap_injective : Function.Injective (ideleClassMap K L) := by
 end
 
 end GroundTheory.Global
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.BaseChange =====

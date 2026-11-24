@@ -45,6 +45,8 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Mathlib.RingTheory.MvPolynomial
 
 @[expose] public section
 
@@ -66,7 +68,7 @@ theorem dofN_chain {m : ℕ} (F : Fin d → PS k 2 d) (b : Fin n) (u : Fin d →
     DofN F b u (ev a g) = ∑ c : Fin m, ∑ l : Fin d, ev a (pderiv (R := k) (c, l) g) * DofN F b u (a c l) := by
   unfold DofN
   simp only [pderiv_ev ha]
-  simp only [Finset.mul_sum (s := (Finset.univ : Finset (Fin m))), Finset.mul_sum (f := fun l => ev a _ * _)]
+  simp only [Finset.mul_sum (s := (Finset.univ : Finset (Fin m)))]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun c _ => ?_
   simp only [Finset.mul_sum]

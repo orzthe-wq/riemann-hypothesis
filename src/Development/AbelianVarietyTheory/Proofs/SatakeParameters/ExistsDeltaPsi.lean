@@ -6,16 +6,17 @@ public import Formalism.QuotientMetricDivisors.Statement
 public import Formalism.SatakeDualWeyl.StatementF
 public import Formalism.SatakeDualWeyl.StatementG
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIntegralSplitIdempotentOverTwo
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUniqueIdeleOfLinearEquivQuotientLocal
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnramifiedConjugatePlaceUniformiser
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicUnitarySupportedAtFinitePlaceEqLocalUnitarStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsRingEquivTensorInertAdicCompletionStatement
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AdelicUnitarySupportedAtFinitePlaceEqLocalUnitar
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteResidueFieldAdicCompletionIntegers
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsRingEquivTensorInertAdicCompletion
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertPlaceHeckeDoubleCosetsInverseRepsLabel
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntegralFiniteAdelesTensorIffLocalOrdersStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StabilisesCompletedLatticeIffLocalMatrixIntegralStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
 public import Formalism.SharpRestriction.Divisibility.KudlaSiegelWeil
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUniqueIdeleOfLinearEquivQuotientLocal
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntegralFiniteAdelesTensorIffLocalOrders
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.StabilisesCompletedLatticeIffLocalMatrixIntegral
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -157,7 +158,7 @@ theorem exists_chart_cm (hc : CMData (maximalRealSubfield E) E)
         ∀ g, (IsFin hc V (ι g) ∧ Stab hc V (ι g)) ↔ g.1 ∈ GLint (Fin V.rank) (intL _) := by
   have hur := unramified hc
   obtain ⟨σ, ϖ, hσE, hU⟩ := GlobalTheory.FixedPrime.exists_isUnramInv v P hin
-  obtain ⟨ψ, hψE, hψσ, hψO⟩ := GlobalTheory.T.exists_ringEquiv_tensor_inert_adicCompletion E v P hin σ hσE hU.2.1
+  obtain ⟨ψ, hψE, hψσ, hψO⟩ := _root_.GlobalTheory.InertCompletion.exists_ringEquiv_completion E v P hin σ hσE hU.2.1
   let ψ' : LocAlg v →+* P.adicCompletion E := ψ
   have hO : ∀ z, z ∈ ordAt E v ↔ ψ' z ∈ intL _ := fun z => (mem_ordAt_iff v z).trans (hψO z)
   let π : AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* P.adicCompletion E :=
@@ -171,7 +172,7 @@ theorem exists_chart_cm (hc : CMData (maximalRealSubfield E) E)
   · obtain ⟨a, ha⟩ : ∃ a, finP _ E a = sgT E v (ψ.symm z) :=
       Algebra.TensorProduct.map_surjective _ _ (fun b => ⟨pairA _ 0 b, rfl⟩) Function.surjective_id _
     exact ⟨a, by rw [hπ, ha, evF_sgT_self, ψ.apply_symm_apply]⟩
-  · refine GlobalTheory.LatVac.tensor_prod_eq_zero (F := maximalRealSubfield E) (A := Ainf (maximalRealSubfield E))
+  · refine _root_.GlobalTheory.ProductLeftMaps.main (F := maximalRealSubfield E) (A := Ainf (maximalRealSubfield E))
       (B := Af (maximalRealSubfield E)) _ ?_ ?_
     · show infP _ E (e * a) = 0
       rw [map_mul, he.1, zero_mul]
@@ -191,13 +192,13 @@ theorem exists_chart_cm (hc : CMData (maximalRealSubfield E) E)
     | zero => simp only [map_zero]
     | add x y hx hy => simp only [map_add (f := _), hx, hy]
     | tmul a x => rfl
-  · rw [GlobalTheory.T.mem_integralFiniteAdelesTensor_iff_localOrders]
+  · rw [_root_.GlobalTheory.PlaceComp.IntLocal.mem_intA_iff]
     refine Iff.trans ⟨fun h => hev a ▸ h v, fun h w => ?_⟩ (hO _)
     by_cases hw : w = v
     · subst hw; rwa [hev]
     · rw [hew a w hw]; exact zero_mem _
   obtain ⟨h, hfr, hon⟩ := exists_orthonormal hc V v
-  obtain ⟨s1, s2, s3⟩ := GlobalTheory.T.adelicUnitary_supportedAtFinitePlace_eq_localUnitary _ E hc V v e he
+  obtain ⟨s1, s2, s3⟩ := _root_.GlobalTheory.SuppLocal.supp_local _ E hc V v e he
   let χ : P.adicCompletion E →+* LocAlg v := ψ.symm
   have hback' : ∀ x : GL (Fin V.rank) (P.adicCompletion E), bc ψ' (bc χ x) = x :=
     fun x => Units.ext (Matrix.ext fun i j => ψ.apply_symm_apply _)
@@ -243,7 +244,7 @@ theorem exists_chart_cm (hc : CMData (maximalRealSubfield E) E)
     group
   · have h1 := (s1 _).1 (hι1 g)
     show IsFin hc V (ι g) ∧ Stab hc V (ι g) ↔ _
-    rw [and_iff_right h1.1, GlobalTheory.T.stabilises_completedLattice_iff_localMatrix_integral _ E hc V v h hfr _ h1.2, hι2, bc_mem_range_iff ψ' hO,
+    rw [and_iff_right h1.1, _root_.GlobalTheory.PlaceComp.StabLoc.stab_iff _ E hc V v h hfr _ h1.2, hι2, bc_mem_range_iff ψ' hO,
       show h⁻¹ * (h * bc χ g.1 * h⁻¹) * h = bc χ g.1 by group, hback']
     rfl
 

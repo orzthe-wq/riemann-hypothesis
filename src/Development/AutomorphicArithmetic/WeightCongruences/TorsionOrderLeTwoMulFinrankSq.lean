@@ -97,8 +97,8 @@ private theorem le_mul_totient_sq (n : ℕ) : n ≤ (if Even n then 2 else 1) * 
         have h := Nat.dvd_gcd h2a h2b
         rw [Nat.Coprime.gcd_eq_one hab] at h
         omega
-      · simp [ha, hb, Nat.even_mul]
-      · simp [ha, hb, Nat.even_mul]
+      · simp [ha, hb]
+      · simp [ha, hb]
       · have : ¬ Even (a * b) := by rw [Nat.even_mul]; tauto
         simp [ha, hb, this]
     rw [hc]
@@ -136,7 +136,4 @@ private theorem torsion_order_le_two_mul_finrank_sq (E : Type) [Field E] [Number
   calc Units.torsionOrder E ≤ 2 * (Units.torsionOrder E).totient ^ 2 := le_two_totient_sq _
     _ ≤ 2 * (Module.finrank ℚ E) ^ 2 := Nat.mul_le_mul_left _ (Nat.pow_le_pow_left hdeg 2)
 
-theorem UpperTheory.torsionOrder_le_two_mul_finrank_sq :
-    ∀ (E : Type) [Field E] [NumberField E], NumberField.Units.torsionOrder E ≤ 2 * Module.finrank ℚ E ^ 2 := by
-  intro E _ _
-  exact torsion_order_le_two_mul_finrank_sq E
+alias UpperTheory.torsionOrder_le_two_mul_finrank_sq := _root_.torsion_order_le_two_mul_finrank_sq

@@ -4,9 +4,10 @@ public import Development.AbelianVarietyTheory.CrystallinePeriods.CrisMapsLoc
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadicStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineXiPowSaturatedQuotientCompleteStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElementStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadic
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineXiPowSaturatedQuotientComplete
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -58,7 +59,7 @@ namespace GlobalTheory.MemLoc.CrisUnique
 variable {l : ℕ} [Fact l.Prime]
 
 theorem exists_isEps (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps e := by
-  obtain ⟨ζ, e, h0, -, h1, h⟩ := GlobalTheory.T.exists_compatible_rootsOfUnity_and_tilt_padic l
+  obtain ⟨ζ, e, h0, -, h1, h⟩ := _root_.GlobalTheory.MemLoc.exists_zeta_eps l
   refine ⟨e, ?_, fun h' => h1 ?_⟩
   · have := h 0
     rw [h0, map_one] at this
@@ -112,10 +113,10 @@ theorem sep (n : ℕ) (q : Per.AinfP l ⧸ Per.kerP l ^ n)
     (hq : ∀ r : ℕ, ∃ a : Per.Ainf l, q = (l : Per.AinfP l ⧸ Per.kerP l ^ n) ^ r *
       Ideal.Quotient.mk _ (algebraMap (Per.Ainf l) (Per.AinfP l) a)) : q = 0 := by
   obtain ⟨e, he⟩ := exists_isEps l
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.fontaineXi_pow_saturated_quotient_complete l e he n
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.MemLoc.XiSat.xi_sat l e he n
   have hk : ∀ y : Per.AinfP l, y ∈ Per.kerP l ^ n ↔ algebraMap (Per.Ainf l) (Per.AinfP l) (xi e ^ n) ∣ y := by
     intro y
-    rw [GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he, Ideal.span_singleton_pow, Ideal.mem_span_singleton, map_pow]
+    rw [_root_.GlobalTheory.MemLoc.ker_localizedTheta_eq_span_xi l e he, Ideal.span_singleton_pow, Ideal.mem_span_singleton, map_pow]
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective q
   rw [Ideal.Quotient.eq_zero_iff_mem, hk]
   refine localization_quotient_separated_dvd (xi e ^ n) (l : Per.Ainf l) h1 ?_ y fun r => ?_
@@ -160,7 +161,7 @@ private theorem mem_map_of_ev (n : ℕ) (w : Per.BdRp l) (h : Per.ev l n w = 0) 
     w ∈ (Per.kerP l ^ n).map (algebraMap (Per.AinfP l) (Per.BdRp l)) := by
   obtain ⟨ε, hε⟩ := exists_isEps l
   have fg : (Per.kerP l).FG := by
-    rw [GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l ε hε]
+    rw [_root_.GlobalTheory.MemLoc.ker_localizedTheta_eq_span_xi l ε hε]
     exact Submodule.fg_span_singleton _
   obtain ⟨e, he, hev⟩ := GlobalTheory.RingIface.exists_bdRp_equiv l
   have h1 : e w ∈ RingHom.ker (AdicCompletion.evalₐ (Per.kerP l) n) := by

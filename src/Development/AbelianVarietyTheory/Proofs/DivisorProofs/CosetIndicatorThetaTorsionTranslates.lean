@@ -1,15 +1,18 @@
 module
 
+public import Formalism.LocalToGlobal.KernelLattices.XiIndCClass
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AddSubgroupRepsExistenceCardSum
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RelIndexLocPNeZero
+public import Mathlib.GroupTheory.IndexNSmul
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EmbHInjective
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLatticeTransportPreservesSelfDual
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalPoints
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexOfLeNsmul
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
-import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -23,7 +26,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
@@ -45,13 +47,136 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TopPlaceLogTheta
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
+import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexOfLeNsmul, Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetIndicatorThetaTorsionTranslates
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexOfLeNsmul =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexOfLeNsmul", "h": "module\n\npublic import Formalism.LocalToGlobal.KernelLattices.XiIndCClass\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AddSubgroupRepsExistenceCardSum\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RelIndexLocPNeZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.GroupTheory.IndexNSmul\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TopPlaceLogTheta\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EmbHInjective\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColNorms
+open scoped ComplexOrder
+
+namespace GlobalTheory.ColNorms.HalfReps
+
+section Group
+
+variable {H : Type} [AddCommGroup H] [Module ℚ H] [Module.Finite ℚ H]
+
+theorem relIndex_nsmul (Λ : AddSubgroup H) (hΛ : Module.Finite ℤ Λ) {c : ℕ} (hc : 0 < c) :
+    (Λ.map (nsmulAddMonoidHom c)).relIndex Λ ≠ 0 ∧
+      (Λ.map (nsmulAddMonoidHom c)).relIndex Λ ≤ c ^ Module.finrank ℚ H := by
+  have : HasUniqueDiv H := HasUniqueDiv.of_module_rat H
+  have : Module.Finite ℤ Λ.toIntSubmodule := hΛ
+  have : Module.Free ℤ Λ.toIntSubmodule := inferInstance
+  rw [AddSubgroup.relIndex_map_nsmul]
+  refine ⟨pow_ne_zero _ hc.ne', Nat.pow_le_pow_right hc ?_⟩
+  have hb := (Module.finBasis ℤ Λ.toIntSubmodule).linearIndependent.map' Λ.toIntSubmodule.subtype
+    (Submodule.ker_subtype _)
+  have := ((LinearIndependent.iff_fractionRing ℤ ℚ).1 hb).fintype_card_le_finrank
+  rw [Fintype.card_fin] at this
+  exact this
+
+theorem relIndex_of_nsmul_le (Λ B : AddSubgroup H) (hΛ : Module.Finite ℤ Λ) {c : ℕ} (hc : 0 < c)
+    (hB : ∀ x ∈ B, c • x ∈ Λ) : Λ.relIndex B ≠ 0 ∧ Λ.relIndex B ≤ c ^ Module.finrank ℚ H := by
+  have : HasUniqueDiv H := HasUniqueDiv.of_module_rat H
+  obtain ⟨h0, h1⟩ := relIndex_nsmul Λ hΛ hc
+  have hle : B.map (nsmulAddMonoidHom c) ≤ Λ := by
+    rintro _ ⟨x, hx, rfl⟩
+    exact hB x hx
+  rw [← AddSubgroup.relIndex_map_map_of_injective (f := nsmulAddMonoidHom c) Λ B (nsmul_right_injective hc.ne')]
+  exact ⟨fun h => h0 (AddSubgroup.relIndex_eq_zero_of_le_right hle h),
+    (AddSubgroup.relIndex_le_of_le_right hle h0).trans h1⟩
+
+theorem relIndex_of_le_nsmul (Λ A B : AddSubgroup H) (hΛ : Module.Finite ℤ Λ) {c : ℕ} (hc : 0 < c)
+    (hB : ∀ x ∈ Λ, c • x ∈ B) : B.relIndex (Λ ⊓ A) ≠ 0 := by
+  obtain ⟨h0, -⟩ := relIndex_nsmul Λ hΛ hc
+  have hle : Λ.map (nsmulAddMonoidHom c) ≤ B := by
+    rintro _ ⟨x, hx, rfl⟩
+    exact hB x hx
+  exact fun h => h0 (AddSubgroup.relIndex_eq_zero_of_le_left hle
+    (AddSubgroup.relIndex_eq_zero_of_le_right inf_le_left h))
+
+end Group
+
+section Twist
+
+variable {E : Type} [Field E] [NumberField E] {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W]
+  [IsScalarTower (𝓞 E) E W]
+
+theorem mem_twO (M : Submodule (𝓞 E) W) (c : ℕ) (e : HeightOneSpectrum (𝓞 E) → ℤ) (y : W) :
+    y ∈ twist₂ M c e ↔ ∀ Q : HeightOneSpectrum (𝓞 E), ((c : E) ^ e Q)⁻¹ • y ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal M := by
+  simp [twist₂, Submodule.mem_iInf]
+
+theorem nsmul_mem_twO (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c) {e : HeightOneSpectrum (𝓞 E) → ℤ}
+    (he : ∀ Q, e Q ≤ 1) {x : W} (hx : x ∈ M) : c • x ∈ twist₂ M c e := by
+  have hcE : (c : E) ≠ 0 := by exact_mod_cast hc.ne'
+  refine (mem_twO M c e _).2 fun Q => GlobalTheory.ThetaMove.mem_localization_of_mem Q ?_
+  obtain ⟨m, hm⟩ := Int.eq_ofNat_of_zero_le (show 0 ≤ 1 - e Q by have := he Q; omega)
+  have : ((c : E) ^ e Q)⁻¹ • c • x = (c ^ m) • x := by
+    rw [← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, smul_smul, Nat.cast_pow, ← zpow_natCast, ← hm,
+      zpow_sub₀ hcE, zpow_one, div_eq_inv_mul]
+  rw [this]
+  exact nsmul_mem hx _
+
+theorem nsmul_mem_of_twO (M : Submodule (𝓞 E) W) {c : ℕ} (hc : 0 < c) {e : HeightOneSpectrum (𝓞 E) → ℤ}
+    (he : ∀ Q, -1 ≤ e Q) {x : W} (hx : x ∈ twist₂ M c e) : c • x ∈ M := by
+  have hcE : (c : E) ≠ 0 := by exact_mod_cast hc.ne'
+  refine GlobalTheory.ThetaMove.mem_of_locP fun Q => ?_
+  obtain ⟨m, hm⟩ := Int.eq_ofNat_of_zero_le (show 0 ≤ 1 + e Q by have := he Q; omega)
+  have : c • x = (c ^ m) • ((c : E) ^ e Q)⁻¹ • x := by
+    rw [← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, smul_smul, Nat.cast_pow, ← zpow_natCast, ← hm,
+      zpow_add₀ hcE, zpow_one, mul_assoc, mul_inv_cancel₀ (zpow_ne_zero _ hcE), mul_one]
+  rw [this]
+  exact nsmul_mem ((mem_twO M c e x).1 hx Q) _
+
+end Twist
+
+theorem half_reps : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (ι : Type) [Fintype ι] [Nonempty ι] (a b : ℕ) (emb : ι → E →+* ℂ) (dl : ℂ) (AA : Submodule (𝓞 E) E) (S : Finset (HeightOneSpectrum (𝓞 E))) (L : Submodule (𝓞 E) (Sp E a)) (L' : Submodule (𝓞 E) (Sp E b)) (c : ℕ), dl ≠ 0 → AA.FG → Submodule.IsFullLattice E L → Submodule.IsLattice E L' → 0 < c → Formalism.L2.Th1.H.IsReps (BC emb dl AA S L L' c) (LamC emb dl AA L L' ⊓ AC emb dl AA S L L' c) (repsOf (BC emb dl AA S L L' c) (LamC emb dl AA L L' ⊓ AC emb dl AA S L L' c)) ∧ Formalism.L2.Th1.H.IsReps (LamC emb dl AA L L') (BC emb dl AA S L L' c) (repsOf (LamC emb dl AA L L') (BC emb dl AA S L L' c)) ∧ (repsOf (LamC emb dl AA L L') (BC emb dl AA S L L' c)).card ≤ c ^ (Module.finrank ℚ E * a * b) := by
+  intro E _ _ _ ι _ _ a b emb dl AA S L L' c hdl hA hL hL' hc
+  have hinj := GlobalTheory.ThetaMove.embH_injective (a := a) (b := b) emb hdl
+  have hfg : (perO AA L L').FG :=
+    GlobalTheory.ThetaMove.VolumePos.perO_fg hA
+      (GlobalTheory.ThetaMove.VolumePos.homO_fg hL.fg hL'.fg
+        (Submodule.IsFullLattice.span_eq_top (self := hL)))
+  have : Module.Finite (𝓞 E) (perO AA L L') := Module.Finite.iff_fg.2 hfg
+  have hfin : Module.Finite ℤ (perO AA L L') := Module.Finite.trans (𝓞 E) _
+  have : Module.Finite ℚ (Formalism.L2.Col.HomE E a b) := Module.Finite.trans E _
+  have hrk : Module.finrank ℚ (Formalism.L2.Col.HomE E a b) = Module.finrank ℚ E * a * b := by
+    rw [← Module.finrank_mul_finrank ℚ E, Module.finrank_linearMap]
+    simp [mul_assoc]
+  have h1 := relIndex_of_le_nsmul (perO AA L L').toAddSubgroup (halfAO S (perO AA L L') c).toAddSubgroup
+    (halfBO S (perO AA L L') c).toAddSubgroup hfin hc
+    (fun x hx => nsmul_mem_twO _ hc (fun Q => (GlobalTheory.ThetaMove.expS_bound S Q).2) hx)
+  have h2 := relIndex_of_nsmul_le (perO AA L L').toAddSubgroup
+    (halfBO S (perO AA L L') c).toAddSubgroup hfin hc
+    (fun x hx => nsmul_mem_of_twO _ hc (fun Q => (GlobalTheory.ThetaMove.expS_bound S Q).1) hx)
+  rw [← AddSubgroup.relIndex_map_map_of_injective _ _ hinj, AddSubgroup.map_inf _ _ _ hinj] at h1
+  rw [← AddSubgroup.relIndex_map_map_of_injective _ _ hinj, hrk] at h2
+  have r2 := Classical.epsilon_spec (GlobalTheory.RepsMod.exists_reps _ _ h2.1)
+  refine ⟨Classical.epsilon_spec (GlobalTheory.RepsMod.exists_reps _ _ h1), r2, ?_⟩
+  exact (GlobalTheory.RepsMod.card_reps _ _ _ r2).le.trans h2.2
+
+end GlobalTheory.ColNorms.HalfReps
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexOfLeNsmul =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetIndicatorThetaTorsionTranslates =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetIndicatorThetaTorsionTranslates", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLatticeTransportPreservesSelfDual\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalPoints\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexOfLeNsmul\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes\nimport Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TopPlaceLogTheta\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColNorms
@@ -178,12 +303,6 @@ theorem pres_of_finset (D : D7) (T : TaylorLogMetric.Tor D) {a b : ℕ} (L : Sub
     rw [hF, StandardLatticesGL3.comb, ← Finset.sum_coe_sort R]
     exact (R.equivFin.symm.sum_comp (fun x : R => r x * TaylorLogMetric.U D T (y x) G w)).symm
 
-theorem HV_herm {ι : Type} [Fintype ι] {a b : ℕ} (sc : ℝ) : IsHerm (Formalism.L2.Ker.HV sc : Sesq (Formalism.L2.Ker.VV ι a b)) := by
-  intro x y
-
-  simp only [Formalism.L2.Ker.HV, LinearMap.mk₂'ₛₗ_apply, map_mul, map_sum, Complex.conj_ofReal, Complex.conj_conj]
-  simp only [mul_comm]
-
 section Host
 
 variable {D : D7} {X : Fields} (s : Seam D X) {a b : ℕ}
@@ -263,7 +382,7 @@ theorem pres_thInd : ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 
       smul_left_injective X.E (fun hz => hx₀ (e.map_eq_zero_iff.mp hz)) (congrArg Subtype.val hab)
     exact RingOfIntegers.not_isField X.E
       (isField_of_isIntegral_of_isField (IsFractionRing.injective (𝓞 X.E) X.E) (Field.toIsField X.E))
-  obtain ⟨hA, hB, hcard⟩ := GlobalTheory.ColNorms.HalfReps.half_reps X.E X.Tau a b (X.embC s.σ₀) dl (ambOf s B χ cD).AA S L L' c hdl (AA_fg s cc dl B χ cD) (by first | exact hfull | exact hfull.toIsLattice) hL'.1 hc
+  obtain ⟨hA, hB, hcard⟩ := GlobalTheory.ColNorms.HalfReps.half_reps X.E X.Tau a b (X.embC s.σ₀) dl (ambOf s B χ cD).AA S L L' c hdl (AA_fg s cc dl B χ cD) (by first | exact hfull) hL'.1 hc
   obtain ⟨hQ, hrat⟩ := GlobalTheory.RationalPoints.rational_points D cc dl hC a b _ _ ((GlobalTheory.SeamSelfDual.seam_selfDual D X s hs a).2 L hL) ((GlobalTheory.SeamSelfDual.seam_selfDual D X s hs b).2 L' hL')
   set Hh : Sesq (Formalism.L2.Ker.VV X.Tau a b) := Formalism.L2.Ker.HV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc dl))⁻¹ with hHh
   have hQ' : ∀ u : HomE X.E a b, StandardLatticesGL3.LaQ D (TaylorLogMetric.tor0 D cc dl) (s.lat L) (s.lat L') (rel s (embH (X.embC s.σ₀) dl u)) := fun u => by
@@ -308,7 +427,7 @@ theorem pres_thInd : ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 
     exact hQ' _
   · exact_mod_cast hcard
   · intro w
-    have h1 := xiInd_expand Hh (HV_herm _) (alV D.host.d (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc dl))⁻¹) v
+    have h1 := xiInd_expand Hh (_root_.GlobalTheory.ThetaMove.isHerm_HV _) (alV D.host.d (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc dl))⁻¹) v
       (BC (X.embC s.σ₀) dl (ambOf s B χ cD).AA S L L' c) SA SB ((ambOf s B χ cD).e a b L L') p (fun τ => w (s.iT τ))
     have h2 : toHost s (fun z => k⁻¹ * (ambOf s B χ cD).thInd S L L' c x z) w = k⁻¹ * (((Real.sqrt v : ℝ) : ℂ)⁻¹ *
       xiInd Hh (alV D.host.d (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc dl))⁻¹) v
@@ -328,3 +447,7 @@ theorem pres_thInd : ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 
     ring
 
 end GlobalTheory.ColNorms.IndPres
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetIndicatorThetaTorsionTranslates =====

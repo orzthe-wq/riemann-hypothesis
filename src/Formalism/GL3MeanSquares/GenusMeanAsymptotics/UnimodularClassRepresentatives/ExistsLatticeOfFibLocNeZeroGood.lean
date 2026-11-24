@@ -136,11 +136,8 @@ theorem unimod_of_unimod_adjoin (hs : h.IsSymm) (S : VecSplit h h') {p : Ideal (
   ext a
   have h1 := LocalizedFibreSets.comb_mem_dualAt_iff hs S p L' 0 a
   rw [hU, S.comb_mem_loc_adjoin_iff, zero_mul] at h1
-  constructor
-  · intro ha
-    exact (h1.mpr ⟨Submodule.zero_mem _, ha⟩).2
-  · intro ha
-    exact (h1.mp ⟨Submodule.zero_mem _, ha⟩).2
+  exact ⟨fun ha => (h1.mpr ⟨Submodule.zero_mem _, ha⟩).2,
+    fun ha => (h1.mp ⟨Submodule.zero_mem _, ha⟩).2⟩
 
 theorem isIntegralLat_cut (S : VecSplit h h') {B : Submodule (𝓞 K) V}
     (hBi : Formalism.HermitianLatticesTheory.IsIntegralLat h B) : Formalism.HermitianLatticesTheory.IsIntegralLat h' (S.cut B) := by
@@ -342,8 +339,7 @@ theorem exists_of_fibLoc_ne_zero (S : VecSplit h h') {L : Submodule (𝓞 K) V} 
 
 theorem fibLoc_locF (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F))
     (T : Submodule (𝓞 K) V') : fibLoc S L 𝔭 (locF 𝔭 T) = fibLoc S L 𝔭 T := by
-  unfold fibLoc
-  rw [LocF.locF_idem]
+  simp only [fibLoc, LocF.locF_idem]
 
 theorem fibLoc_congr (S : VecSplit h h') (L : Submodule (𝓞 K) V) {𝔭 : Ideal (𝓞 F)}
     {T T' : Submodule (𝓞 K) V'} (e : locF 𝔭 T = locF 𝔭 T') :

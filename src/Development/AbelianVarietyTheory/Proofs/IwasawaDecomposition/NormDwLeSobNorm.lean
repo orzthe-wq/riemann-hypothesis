@@ -146,7 +146,7 @@ end Banach
 
 variable {ε : Fin n → Bool} {σ : Mx n → (H →L[ℂ] H)}
 
-theorem isUnit_Jm (ε : Fin n → Bool) : IsUnit (Jm ε) := IsUnit.of_mul_eq_one _ (Jm_mul_self ε)
+alias isUnit_Jm := _root_.Formalism.REAL.f1alg_isUnit_J
 
 theorem lieSet_eq_lie (ε : Fin n → Bool) : lieSet ε = (lie (Jm ε) : Set (Mx n)) := rfl
 

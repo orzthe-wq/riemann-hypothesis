@@ -92,7 +92,7 @@ private theorem cw_two (w : InfinitePlace F) : cw w (2 : A F) = 2 := by
 private theorem p_apply (δ : F) (O : Ops F) (w : InfinitePlace F) (i : Fin 4) (φ : S4 F) (y : V4 F) :
     (O.p δ w i φ).1 y = cc * cw w (B4 δ y (Pi.single i 1)) * φ.1 y := by
   fin_cases i <;>
-    simp [Ops.p, B4, O.x_apply, cw_add, cw_sub, cw_mul, cw_neg, cw_two] <;> ring
+    simp [Ops.p, B4, O.x_apply, cw_mul, cw_neg, cw_two] <;> ring
 
 private theorem psi_shift (δ : F) (w : InfinitePlace F) (i : Fin 4) (y v : V4 F) (t : ℝ) :
     ψ (B4 δ y (v + Pi.single i (at1 w t))) =

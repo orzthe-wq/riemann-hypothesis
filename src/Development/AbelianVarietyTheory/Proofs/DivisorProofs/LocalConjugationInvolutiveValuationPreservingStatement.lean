@@ -47,4 +47,4 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 theorem _root_.GlobalTheory.T.localConjugation_involutive_valuation_preserving : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E),
     (∀ x, cj w (cj w x) = x) ∧ ∀ x, Valued.v (cj w x) = Valued.v x := by
-  first | exact @GlobalTheory.BCT.cj_involutive_valuation | exact GlobalTheory.BCT.cj_involutive_valuation | (intros; apply GlobalTheory.BCT.cj_involutive_valuation <;> assumption)
+  first | exact @GlobalTheory.BCT.cj_involutive_valuation

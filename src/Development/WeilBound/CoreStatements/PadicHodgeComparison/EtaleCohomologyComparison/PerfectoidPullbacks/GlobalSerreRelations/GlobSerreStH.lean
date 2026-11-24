@@ -53,9 +53,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 
 namespace CrystallineSemistableComparison.Pb
 
-theorem locGr_h : KH.LocGr := loc_gr
+theorem locGr_h : KH.LocGr := _root_.GlobalTheory.CompanionTheory.LocGrInd.loc_gr
 theorem locVan_h : KH.LocVan := loc_van
-theorem polyTf_h : KH.PolyTf := poly_tf
+theorem polyTf_h : KH.PolyTf := _root_.CrystallineSemistableComparison.Pb.Site.poly_tf'
 theorem globSerreSt_h : KH.GlobSerreSt := glob_serre_st
 theorem globVanSt_h : KH.GlobVanSt := glob_van_st
 

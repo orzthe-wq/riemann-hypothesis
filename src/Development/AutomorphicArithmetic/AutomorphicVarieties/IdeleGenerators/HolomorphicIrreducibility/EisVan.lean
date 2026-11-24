@@ -62,7 +62,7 @@ private lemma vecMul_mem_cSet {N : ℕ} {b : Fin 2 → ZMod N} {v : Fin 2 → �
   change (Int.cast : ℤ → ZMod N) ∘ (v ᵥ* (γ : Matrix (Fin 2) (Fin 2) ℤ)) = b ᵥ* _
   funext i
   rw [Function.comp_apply, this i, hv']
-  simp [SpecialLinearGroup.map_apply_coe, RingHom.mapMatrix_apply]
+  simp [SpecialLinearGroup.map_apply_coe]
 
 private def cEquiv {N : ℕ} (b : Fin 2 → ZMod N) (γ : SL(2, ℤ)) : cSet b ≃ cSet (b ᵥ* γ) where
   toFun v := ⟨v.1 ᵥ* γ, vecMul_mem_cSet v.2 γ⟩
@@ -213,8 +213,7 @@ theorem UpperTheory.V.Sd.eisVan :
     rw [Ne, ZMod.intCast_zmod_eq_zero_iff_dvd]
     exact hγ
   have e : (![0, a] ᵥ* ((γ : SL(2, ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N))) 0 = a * ((γ 1 0 : ℤ) : ZMod N) := by
-    simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, SpecialLinearGroup.map_apply_coe,
-      RingHom.mapMatrix_apply]
+    simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two]
   rw [e]
   intro h
   exact hc ((ha.mul_right_eq_zero).mp h)

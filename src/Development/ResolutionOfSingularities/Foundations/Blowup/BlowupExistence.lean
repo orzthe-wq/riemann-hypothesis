@@ -83,11 +83,7 @@ theorem IsBlowupAlongIdealSheaf.lift_comp {X X' : Scheme.{u}} {π : X' ⟶ X} {I
 
 end
 
-theorem IsBlowupAlongIdealSheaf.hom_ext {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
-    (h : IsBlowupAlongIdealSheaf π I) {W : Scheme.{u}} {g : W ⟶ X}
-    (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) {a b : W ⟶ X'}
-    (ha : a ≫ π = g) (hb : b ≫ π = g) : a = b :=
-  h.hom_ext_of_comp_eq hg ha hb
+alias IsBlowupAlongIdealSheaf.hom_ext := _root_.FunctorialResolution.Blowup.IsBlowupAlongIdealSheaf.hom_ext_of_comp_eq
 
 theorem IsBlowupAlongIdealSheaf.comp_iso_hom {X X' Y : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) (e : X ≅ Y) :

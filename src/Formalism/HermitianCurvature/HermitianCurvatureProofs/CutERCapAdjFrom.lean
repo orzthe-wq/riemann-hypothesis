@@ -56,6 +56,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.TriangleInequalityAtPlace
 
 @[expose] public section
 
@@ -122,11 +123,6 @@ theorem opAdj_capTh_contDiff (s Y : ℂ) {ψ : B.Mat k r → (Wq →L[ℂ] Wp)} 
   show ContDiff ℝ ∞ (fun x => (conj c • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)) (ψ x))
   simpa using hψ.const_smul (conj c)
 
-theorem hsVec_smul (c : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (c • A) = c • B.hsVec A := by
-  have h := (Formalism.FourierDecayAlt.P.B5.hsL (Wp := Wp) (Wq := Wq)).map_smul c A
-  rw [Formalism.FourierDecayAlt.P.B5.hsL_apply, Formalism.FourierDecayAlt.P.B5.hsL_apply] at h
-  exact h
-
 theorem hsVec_sub (A C : Wq →L[ℂ] Wp) : B.hsVec (A - C) = B.hsVec A - B.hsVec C := by
   have h := (Formalism.FourierDecayAlt.P.B5.hsL (Wp := Wp) (Wq := Wq)).map_sub A C
   rw [Formalism.FourierDecayAlt.P.B5.hsL_apply, Formalism.FourierDecayAlt.P.B5.hsL_apply, Formalism.FourierDecayAlt.P.B5.hsL_apply] at h
@@ -139,7 +135,7 @@ theorem hs_sub_right (A C D : Wq →L[ℂ] Wp) : B.hsInner A (C - D) = B.hsInner
 theorem hsInner_smul_self (c : ℂ) (A : Wq →L[ℂ] Wp) :
     B.hsInner (c • A) A = c * ((‖B.hsVec A‖ ^ 2 : ℝ) : ℂ) := by
   unfold B.hsInner
-  rw [hsVec_smul, inner_smul_right, inner_self_eq_norm_sq_to_K]
+  rw [_root_.Formalism.FourierDecayAlt.P.TBBx2.Tri.hsVec_smul, inner_smul_right, inner_self_eq_norm_sq_to_K]
   simp
 
 theorem pt_of_int (hI : CapAdjInt) {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (B.GV k r) μ) (s Y : ℂ)

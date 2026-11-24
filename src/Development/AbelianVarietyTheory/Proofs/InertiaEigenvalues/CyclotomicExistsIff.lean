@@ -1,11 +1,12 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.PowerSeriesOneAddConstMulXMulInv
+public import Mathlib.NumberTheory.Padics.MahlerBasis
+public import Mathlib.RingTheory.PowerSeries.Binomial
 public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.OnePlusPowerAssembly
-public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.KernelCharacterDelta
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -20,13 +21,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -46,10 +41,91 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.KernelCharacterDelta, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicExistsIff
+
+-- ===== clump member: Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.KernelCharacterDelta =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.KernelCharacterDelta", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.PowerSeriesOneAddConstMulXMulInv\npublic import Mathlib.NumberTheory.Padics.MahlerBasis\npublic import Mathlib.RingTheory.PowerSeries.Binomial\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+namespace GlobalTheory.IndefiniteRowSideFullHecke.FrobeniusBinomialReduction
+open GlobalTheory.PhiGam
+open scoped LaurentSeries PowerSeries
+
+section Rings
+variable {k : Type} [Field k]
+
+def substL (f : k⟦X⟧) (x : k⸨X⸩) : k⸨X⸩ :=
+  (f : k⸨X⸩) ^ x.order * ((PowerSeries.subst f (LaurentSeries.powerSeriesPart x) : k⟦X⟧) : k⸨X⸩)
+
+variable (k) (l : ℕ) [Fact l.Prime] [CharP k l]
+
+def red : ℤ_[l] →+* k := (ZMod.castHom (dvd_refl l) k).comp PadicInt.toZMod
+
+def binomPow (t : ℤ_[l]) : k⟦X⟧ := PowerSeries.map (red k l) (PowerSeries.binomialSeries ℤ_[l] t)
+
+def frobπ (x : k⸨X⸩) : k⸨X⸩ := substL ((PowerSeries.X : k⟦X⟧) ^ l) x
+
+def gamπ (x : k⸨X⸩) : k⸨X⸩ := substL ((1 + PowerSeries.X : k⟦X⟧) ^ (1 + l) - 1) x
+
+def actπ (t : ℤ_[l]ˣ) (x : k⸨X⸩) : k⸨X⸩ := substL (binomPow k l t - 1) x
+
+def DeltaInv (x : k⸨X⸩) : Prop := ∀ t : ℤ_[l]ˣ, t ^ (l - 1) = 1 → actπ k l t x = x
+
+variable {k l}
+
+def IsCyclotomic (R : RingPG k l) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) : Prop :=
+  Set.range ι = {y | DeltaInv k l y} ∧
+  Set.range (fun a : k⟦X⟧ => ι (a : k⸨X⸩)) = {y | (∃ b : k⟦X⟧, y = (b : k⸨X⸩)) ∧ DeltaInv k l y} ∧
+  (∃ u : (k⟦X⟧)ˣ, ι (vv k) = ((u : k⟦X⟧) : k⸨X⸩) * vv k ^ (l - 1)) ∧
+  (∀ x, ι (R.φ x) = frobπ k l (ι x)) ∧
+  (∀ x, ι (R.γ x) = gamπ k l (ι x))
+
+def PsiRing (R : RingPG k l) (ψ₀ : k⸨X⸩ →ₗ[k] k⸨X⸩) : Prop :=
+  (∀ a b, ψ₀ (R.φ a * b) = a * ψ₀ b) ∧ ψ₀ 1 = 1 ∧ (∀ a, ψ₀ (R.γ a) = R.γ (ψ₀ a)) ∧
+  ∀ a : ℤ, 2 - (l : ℤ) ≤ a → a ≤ 1 →
+    ψ₀ '' {x | ∃ b : k⟦X⟧, x = vv k ^ a * (b : k⸨X⸩)} = Set.range (fun b : k⟦X⟧ => (b : k⸨X⸩))
+
+end Rings
+
+section Modules
+variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
+  [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V]
+
+def kerPsi (ψ : V →ₗ[k] V) (M : Submodule k⟦X⟧ V) (a : ℤ) : Set V := {x | x ∈ sh a M ∧ ψ x = 0}
+
+def PsiShift (l : ℕ) (g ψ : V →ₗ[k] V) (M : Submodule k⟦X⟧ V) : Prop :=
+  ∀ a : ℤ, 2 - (l : ℤ) ≤ a → a ≤ 0 → (fun x => g x - x) '' kerPsi ψ M a = kerPsi ψ M (a + 1)
+
+end Modules
+
+theorem binomPow_natCast (k : Type) [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (m : ℕ) :
+    binomPow k l (m : ℤ_[l]) = (1 + PowerSeries.X) ^ m := by
+  rw [binomPow, PowerSeries.binomialSeries_nat]
+  simp
+
+end GlobalTheory.IndefiniteRowSideFullHecke.FrobeniusBinomialReduction
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.KernelCharacterDelta =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicExistsIff =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicExistsIff", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.OnePlusPowerAssembly\npublic import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.KernelCharacterDelta\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -413,3 +489,7 @@ theorem psiMod_iff {l : ℕ} (R : RingPG k l) (ψ : k⸨X⸩ →ₗ[k] k⸨X⸩)
 end Mod
 
 end GlobalTheory.PsiLemmaCompare
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicExistsIff =====

@@ -70,7 +70,6 @@ private theorem flat_complex_at {L : Type} [Field L] [NumberField L] (σ : L →
     apply hr0
     first
       | exact RingOfIntegers.coe_eq_zero_iff.mp h
-      | exact_mod_cast h
   have hσ : σ (r : L) ≠ 0 := (map_ne_zero σ).mpr hrL
   change r • z = 0 at hrz
   rw [ComplexAt.smul_def] at hrz
@@ -106,7 +105,7 @@ private theorem linear_independent_one_tmul {L : Type} [Field L] [NumberField L]
 
   simp only [hT, map_sum, LinearMap.lTensor_tmul, Finsupp.lapply_apply, TensorProduct.rid_tmul,
   Finsupp.single_apply, map_zero, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq',
-  Finset.sum_ite_eq, Finset.mem_univ, if_true] at h3
+  Finset.mem_univ, if_true] at h3
   exact (ComplexAt.ofComplex σ).injective (h3.trans (map_zero _).symm)
 
 theorem gramMat_posDef_and_conj : ∀ (L : Type) [Field L] [NumberField L] (B : HermitianBundle.{0} L)

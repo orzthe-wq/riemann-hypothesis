@@ -2,50 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.StatementF
 public import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.StatementB
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.SqrtInUnramifiedCompletion
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.MatrixFormDiagBlocksBlockEmbed
 
@@ -202,7 +159,7 @@ theorem GramBasic_of (hG : GramTransfer) (hI : IotaOK) : GramBasic := by
   have hS : ∀ B1 B2 : J → ℂ_[p], ∑ x, ∑ y, ext B1 x * W x y * ext B2 y =
       ∑ j, ∑ k, B1 j * ι (hOK (cmL a b d ha hd lam hlam) h (v j) (v k)) * B2 k := by
     intro B1 B2
-    simp [ext, W, Fintype.sum_prod_type, Fin.sum_univ_four]
+    simp [ext, W, Fintype.sum_prod_type]
   have hbb := fun B1 B2 => bb_eq W q0 D (ι (Complex.I * ((Real.sqrt d : ℝ) : ℂ))) hQ (ext B1) (ext B2)
   have hPn : ∀ B1 B2 : J → ℂ_[p], (∀ j, ‖B1 j‖ ≤ 1) → (∀ j, ‖B2 j‖ ≤ 1) →
       ‖∑ w, (∑ x, ext B1 x * D w x) * (∑ y, ext B2 y * D w y)‖ ≤ 1 := fun B1 B2 h1 h2 =>

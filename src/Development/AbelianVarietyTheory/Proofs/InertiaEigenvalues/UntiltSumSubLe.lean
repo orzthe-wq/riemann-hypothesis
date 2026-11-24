@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ImportsAlt
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltAddEstimateLeStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltUntiltAddEstimateLe
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,7 +62,7 @@ theorem untilt_sum_sub_le : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) (s : Finset
   | insert a t ha ih =>
     have ih' := ih (fun i hi => hs i (Finset.mem_insert_of_mem hi))
     have hxa : ‖sh (x a)‖ ≤ r := hs a (Finset.mem_insert_self a t)
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.tiltUntilt_add_estimate_le l r (x a) (∑ i ∈ t, x i) hxa ih'.2
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.PSer.sh_add_le l r (x a) (∑ i ∈ t, x i) hxa ih'.2
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     refine ⟨?_, h2⟩
     have : sh (x a + ∑ i ∈ t, x i) - (sh (x a) + ∑ i ∈ t, sh (x i)) =

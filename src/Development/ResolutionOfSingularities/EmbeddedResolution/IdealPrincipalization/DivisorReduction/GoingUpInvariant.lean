@@ -71,7 +71,7 @@ def StrictNormalCrossingsLiftFromDivisor : Prop :=
     InStrictNormalCrossingPosition p (H :: N) →
     ∀ Z : H.subscheme.IdealSheafData,
       HasStrictNormalCrossingsWith (H.subschemeι ≫ p) Z (N.map (fun D => D.comap H.subschemeι)) →
-      HasStrictNormalCrossingsWith p (imageIdealSheaf H.subschemeι Z) (H :: N)
+      HasStrictNormalCrossingsWith p (_root_.FunctorialResolution.Blowup.schemeImageIdeal H.subschemeι Z) (H :: N)
 
 theorem derivIdealSheafIterate_congr {k : Type u} [Field k] {Y : Scheme.{u}}
     (p q : Y ⟶ Spec (CommRingCat.of k))
@@ -90,7 +90,7 @@ theorem logDerivIdealSheafIterate_congr {k : Type u} [Field k] {Y : Scheme.{u}}
   rfl
 
 theorem imageIdealSheaf_hom_eq_comap_inv {A B : Scheme.{u}} (e : A ≅ B) (J : A.IdealSheafData) :
-    imageIdealSheaf e.hom J = J.comap e.inv := by
+    _root_.FunctorialResolution.Blowup.schemeImageIdeal e.hom J = J.comap e.inv := by
   rw [FunctorialResolution.EmbeddedResolution.imageIdealSheaf_eq_comap_inv e.hom J,
     CategoryTheory.IsIso.Iso.inv_hom]
 
@@ -158,15 +158,7 @@ private theorem le_length_imp_isNoetherian_ambientBlowupSeq_schemeAt
         exact hn
       exact isNoetherian_of_isBlowupAlongIdealSheaf ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isBlowup n hlen)
 
-theorem isNoetherian_ambientBlowupSeq_schemeAt (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
-    (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
-    [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
-    (I₀ : T.scheme.IdealSheafData) (E₀ : List T.scheme.IdealSheafData)
-    (s : (restrictToBoundaryDivisor T j hj I₀ E₀).SequenceOfBlowups)
-    (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
-    (t : ℕ) (ht : t ≤ s.length) :
-    AlgebraicGeometry.IsNoetherian ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj t) :=
-  le_length_imp_isNoetherian_ambientBlowupSeq_schemeAt hres hno T j hj I₀ E₀ s hpr t ht
+alias isNoetherian_ambientBlowupSeq_schemeAt := _root_.FunctorialResolution.EmbeddedResolution.DivisorReduction.le_length_imp_isNoetherian_ambientBlowupSeq_schemeAt
 
 theorem ker_embeddingIntoAmbient_le_center (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -180,7 +172,7 @@ theorem ker_embeddingIntoAmbient_le_center (hres : FunctorialResolution.Blowup.S
       Scheme.Hom.ker ((s.center t).subschemeι ≫
         embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) := by
     apply Scheme.Hom.le_ker_comp
-  have h2 := (imageIdealSheaf_eq_ker_subschemeι_comp
+  have h2 := (_root_.FunctorialResolution.EmbeddedResolution.imageIdealSheaf_eq_ker
     (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (s.center t)).symm
   have h3 := (ambientBlowupSeq_center_eq_imageIdealSheaf hres hno T j hj I₀ E₀ s hpr t).symm
   exact le_of_le_of_eq key (h2.trans h3)
@@ -355,7 +347,7 @@ private theorem exists_iso_ker_subschemeι {S X : Scheme.{u}} (f : S ⟶ X)
 
 private theorem imageIdealSheaf_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (J : A.IdealSheafData) :
-    imageIdealSheaf g (imageIdealSheaf f J) = imageIdealSheaf (f ≫ g) J :=
+    _root_.FunctorialResolution.Blowup.schemeImageIdeal g (_root_.FunctorialResolution.Blowup.schemeImageIdeal f J) = _root_.FunctorialResolution.Blowup.schemeImageIdeal (f ≫ g) J :=
   (Scheme.IdealSheafData.map_comp J f g).symm
 
 private theorem hasStrictNormalCrossingsWith_imageIdealSheaf_of_restriction {k : Type u} [Field k] [CharZero k]
@@ -368,7 +360,7 @@ private theorem hasStrictNormalCrossingsWith_imageIdealSheaf_of_restriction {k :
     (hsnc : InStrictNormalCrossingPosition p (Scheme.Hom.ker ι :: N))
     (hlow : HasStrictNormalCrossingsWith q Zs Bs)
     (hlift : StrictNormalCrossingsLiftFromDivisor.{u}) :
-    HasStrictNormalCrossingsWith p (imageIdealSheaf ι Zs) (Scheme.Hom.ker ι :: N) := by
+    HasStrictNormalCrossingsWith p (_root_.FunctorialResolution.Blowup.schemeImageIdeal ι Zs) (Scheme.Hom.ker ι :: N) := by
   obtain ⟨e, he⟩ := exists_iso_ker_subschemeι ι
   have hinv : e.inv ≫ ι = (Scheme.Hom.ker ι).subschemeι := by
     have h := congrArg (fun m => e.inv ≫ m) he.symm
@@ -392,8 +384,8 @@ private theorem hasStrictNormalCrossingsWith_imageIdealSheaf_of_restriction {k :
     rw [hq', hlist] at h
     exact h
   have hfin := hlift k P p (Scheme.Hom.ker ι) N hsnc (Zs.comap e.inv) hZ
-  have himg : imageIdealSheaf (Scheme.Hom.ker ι).subschemeι (Zs.comap e.inv)
-      = imageIdealSheaf ι Zs := by
+  have himg : _root_.FunctorialResolution.Blowup.schemeImageIdeal (Scheme.Hom.ker ι).subschemeι (Zs.comap e.inv)
+      = _root_.FunctorialResolution.Blowup.schemeImageIdeal ι Zs := by
     rw [← imageIdealSheaf_hom_eq_comap_inv e Zs, imageIdealSheaf_comp e.hom _ Zs, he]
   rwa [himg] at hfin
 

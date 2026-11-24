@@ -179,7 +179,7 @@ theorem dualLattice_repr {ι : Type*} [Fintype ι] [DecidableEq ι] (h : V →�
   have hwb : ∀ i, h w (b i) = algebraMap R K (f ⟨b i, hb i⟩) := by
     intro i
 
-    simp [w, map_sum, LinearMap.map_smulₛₗ₂, hsym, starRingEnd_apply, star_star, Algebra.smul_def]
+    simp [w, map_sum, hsym, starRingEnd_apply, star_star, Algebra.smul_def]
   have hspL : Submodule.span R (Set.range b) ≤ L :=
     Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hb i)
   have hspan : ∀ z ∈ Submodule.span R (Set.range b), ∀ hz : z ∈ L,
@@ -265,7 +265,7 @@ theorem dualLattice :
       obtain ⟨r', hr'⟩ := hst r
       refine ⟨r' * r1, ?_⟩
       rw [map_mul, hr', hr1, ← algebraMap_smul K r x, LinearMap.map_smulₛₗ₂]
-      simp only [LinearMap.smul_apply, starRingEnd_apply, smul_eq_mul]
+      simp only [starRingEnd_apply, smul_eq_mul]
 
   have hle : dual h L ≤ Submodule.span R (Set.range bs) := by
     intro x hx
@@ -290,7 +290,7 @@ theorem dualLattice :
         rw [← algebraMap_smul K d' (bs j), LinearMap.map_smul, smul_eq_mul]
       have e2 : h (d • y) (bs j) = star (algebraMap R K d) * h y (bs j) := by
         rw [← algebraMap_smul K d y, LinearMap.map_smulₛₗ₂]
-        simp only [LinearMap.smul_apply, starRingEnd_apply, smul_eq_mul]
+        simp only [starRingEnd_apply, smul_eq_mul]
       rw [hr, e1, e2, hd']
     have e : bs j = (algebraMap R K d')⁻¹ • (d' • bs j) := by
       rw [← algebraMap_smul K d' (bs j), smul_smul, inv_mul_cancel₀ hd'0, one_smul]
@@ -344,7 +344,7 @@ theorem dualLattice :
       obtain ⟨r, hr⟩ := hx (a • z) ⟨z, hz, rfl⟩
       refine ⟨r, ?_⟩
       rw [hr, LinearMap.map_smulₛₗ₂, LinearMap.map_smul]
-      simp only [LinearMap.smul_apply, starRingEnd_apply, smul_eq_mul]
+      simp only [starRingEnd_apply, smul_eq_mul]
     · rintro ⟨y, hy, rfl⟩
       rw [mem_dual] at hy ⊢
       rintro _ ⟨z, hz, rfl⟩
@@ -352,7 +352,7 @@ theorem dualLattice :
       refine ⟨r, ?_⟩
       simp only [LinearMap.restrictScalars_apply, LinearMap.lsmul_apply]
       rw [hr, LinearMap.map_smulₛₗ₂, LinearMap.map_smul]
-      simp only [LinearMap.smul_apply, starRingEnd_apply, smul_eq_mul]
+      simp only [starRingEnd_apply, smul_eq_mul]
       rw [← mul_assoc, mul_inv_cancel₀ hsa, one_mul]
 
 end Formalism.HermitianLatticesTheory

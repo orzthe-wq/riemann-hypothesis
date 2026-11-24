@@ -260,14 +260,14 @@ noncomputable def realExt (Q : QuadraticMap ℤ X ℝ) : QuadraticForm ℝ (ℝ 
 
 @[simp] theorem realExt_tmul (Q : QuadraticMap ℤ X ℝ) (s : ℝ) (x : X) :
     realExt Q (s ⊗ₜ x) = s * s * Q x := by
-  simp only [realExt, QuadraticMap.smul_apply, LinearMap.BilinMap.toQuadraticMap_apply,
+  simp only [realExt, smul_apply, LinearMap.BilinMap.toQuadraticMap_apply,
     realExtBilin_tmul, QuadraticMap.polarBilin_apply_apply, QuadraticMap.polar_self, smul_eq_mul,
     two_smul]
   ring
 
 theorem realExt_apply (Q : QuadraticMap ℤ X ℝ) (v : ℝ ⊗[ℤ] X) :
     realExt Q v = realExtBilin Q.polarBilin v v / 2 := by
-  simp only [realExt, QuadraticMap.smul_apply, LinearMap.BilinMap.toQuadraticMap_apply,
+  simp only [realExt, smul_apply, LinearMap.BilinMap.toQuadraticMap_apply,
     smul_eq_mul]
   ring
 

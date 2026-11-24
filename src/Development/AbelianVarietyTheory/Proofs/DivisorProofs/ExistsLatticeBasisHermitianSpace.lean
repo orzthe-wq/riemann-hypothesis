@@ -1,31 +1,32 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.Basic
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TameInvariantLevelAction
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatMulIntegral
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IsPrincipalIdealRingLoc
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CompletedLatticeEqAdelicCompletionAndGram
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsRootNear
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNatSmulMem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -47,8 +48,98 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FactorResIEqResS
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatMulIntegral, Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeBasisHermitianSpace
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatMulIntegral =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatMulIntegral", "h": "module\n\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNatSmulMem\npublic import Mathlib.NumberTheory.NumberField.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.CoordinateBasisBounds
+
+open NumberField
+
+theorem nat_mul_integral {E : Type} [Field E] [NumberField E] (x : E) :
+    ∃ m : ℕ, 0 < m ∧ ∃ o : 𝓞 E, (m : E) * x = algebraMap (𝓞 E) E o := by
+  have hx : IsAlgebraic ℤ x := IsFractionRing.isAlgebraic_iff ℤ ℚ E |>.mpr (.of_finite ℚ x)
+  obtain ⟨m, s, hm, h⟩ := IsAlgebraic.exists_nsmul_eq (𝓞 E) hx
+  exact ⟨m, Nat.pos_of_ne_zero hm, s, by rw [← h, nsmul_eq_mul]⟩
+
+theorem coord_bound {E : Type} [Field E] [NumberField E] {n : ℕ}
+    (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
+    ∃ N : ℕ, 0 < N ∧ ∀ x ∈ L, ∀ i : Fin n, ∃ o : 𝓞 E, (N : E) * x i = algebraMap (𝓞 E) E o := by
+  obtain ⟨S, hS⟩ := hL
+  have key : ∀ v ∈ S, ∃ m : ℕ, 0 < m ∧ ∀ i : Fin n, ∃ o : 𝓞 E, (m : E) * v i = algebraMap (𝓞 E) E o := by
+    intro v _
+    choose m hm o ho using fun i : Fin n => nat_mul_integral (v i)
+    refine ⟨∏ i, m i, Finset.prod_pos (fun i _ => hm i), fun i => ?_⟩
+    have hd : m i ∣ ∏ j, m j := Finset.dvd_prod_of_mem _ (Finset.mem_univ i)
+    obtain ⟨k, hk⟩ := hd
+    refine ⟨(k : 𝓞 E) * o i, ?_⟩
+    rw [hk, map_mul, ← ho i, map_natCast]; push_cast; ring
+  classical
+  choose! m hm hv using key
+  refine ⟨∏ v ∈ S, m v, Finset.prod_pos (fun v hv' => hm v hv'), ?_⟩
+  intro x hx
+  rw [← hS] at hx
+  induction hx using Submodule.span_induction with
+  | mem v hvS =>
+    intro i
+    obtain ⟨o, ho⟩ := hv v hvS i
+    obtain ⟨k, hk⟩ := Finset.dvd_prod_of_mem m hvS
+    refine ⟨(k : 𝓞 E) * o, ?_⟩
+    rw [hk, map_mul, ← ho, map_natCast]; push_cast; ring
+  | zero => intro i; exact ⟨0, by simp⟩
+  | add x y _ _ hx hy =>
+    intro i
+    obtain ⟨a, ha⟩ := hx i
+    obtain ⟨b, hb⟩ := hy i
+    exact ⟨a + b, by rw [map_add (f := _), ← ha, ← hb, Pi.add_apply]; ring⟩
+  | smul c x _ hx =>
+    intro i
+    obtain ⟨a, ha⟩ := hx i
+    refine ⟨c * a, ?_⟩
+    rw [map_mul, ← ha, Pi.smul_apply, Algebra.smul_def]; ring
+
+theorem basis_bound {E : Type} [Field E] [NumberField E] {n : ℕ}
+    (L : Submodule (𝓞 E) (Fin n → E))
+    (hspan : Submodule.span E (L : Set (Fin n → E)) = ⊤) (y : Fin n → E) :
+    ∃ d : ℕ, 0 < d ∧ (d : E) • y ∈ L := by
+  apply GlobalTheory.PrincLat.exists_nat_smul_mem <;> assumption
+
+theorem main : ∀ {E : Type} [inst : Field E] [NumberField E] {n : ℕ} (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)), Submodule.FG L → Submodule.span E (↑L : Set (Fin n → E)) = ⊤ → ∃ (N : ℕ), (0 : ℕ) < N ∧ (∀ (j : Fin n), (↑N : E) • Pi.single j (1 : E) ∈ L) ∧ ∀ x ∈ L, ∀ (i : Fin n), ∃ (o : NumberField.RingOfIntegers E), (↑N : E) * x i = (Algebra.algebraMap (NumberField.RingOfIntegers E) E : NumberField.RingOfIntegers E → E) o := by
+  intro E _ _ n L hL hspan
+  obtain ⟨M, hM, hcoord⟩ := GlobalTheory.CoordinateBasisBounds.coord_bound L hL
+  choose d hd hdL using fun j : Fin n => GlobalTheory.CoordinateBasisBounds.basis_bound L hspan (Pi.single j (1 : E))
+  refine ⟨M * ∏ j, d j, Nat.mul_pos hM (Finset.prod_pos fun j _ => hd j), ?_, ?_⟩
+  · intro j
+    obtain ⟨k, hk⟩ := Finset.dvd_prod_of_mem d (Finset.mem_univ j)
+    have e : ((M * ∏ j, d j : ℕ) : E) • Pi.single j (1 : E) = (M * k) • ((d j : E) • Pi.single j (1 : E)) := by
+      rw [← Nat.cast_smul_eq_nsmul E, smul_smul, hk]; push_cast; ring_nf
+    rw [e]
+    exact nsmul_mem (hdL j) _
+  · intro x hx i
+    obtain ⟨o, ho⟩ := hcoord x hx i
+    refine ⟨((∏ j, d j : ℕ) : 𝓞 E) * o, ?_⟩
+    rw [map_mul, ← ho, map_natCast]; push_cast; ring
+
+end GlobalTheory.CoordinateBasisBounds
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatMulIntegral =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeBasisHermitianSpace =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeBasisHermitianSpace", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TameInvariantLevelAction\npublic import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatMulIntegral\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.IsPrincipalIdealRingLoc\npublic import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CompletedLatticeEqAdelicCompletionAndGram\npublic import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsRootNear\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.FactorResIEqResS\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -121,7 +212,7 @@ theorem exists_glued {O E R : Type} [CommRing O] [Field E] [Algebra O E] [CommRi
       change ∑ j, (e • γ.val.map φ + (1 - e) • (1 : Matrix (Fin n) (Fin n) R)) i j * w j = _
       refine Finset.sum_congr rfl fun j _ => ?_
       rw [hef]
-      by_cases h : i = j <;> simp [h, Matrix.one_apply, Pi.single_apply] <;> ring
+      by_cases h : i = j <;> simp [h] <;> ring
     rw [hz']
     refine Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (add_mem ?_ ?_)
     · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, h3 j, rfl⟩)
@@ -138,17 +229,7 @@ theorem exists_nat_multiples {E : Type} [Field E] [NumberField E] (s : Finset E)
     rw [← Int.cast_natCast, h0, Int.cast_mul]
   rw [this, map_mul, map_intCast, hp, zsmul_eq_mul, mul_assoc]
 
-theorem exists_level {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
-    (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
-    ∃ N : ℕ, 0 < N ∧ (∀ j, (N : E) • (Pi.single j 1 : Fin n → E) ∈ L) ∧
-      ∀ x ∈ L, ∀ i, ∃ o : 𝓞 E, (N : E) * x i = algebraMap (𝓞 E) E o := by
-  first
-  | exact @_root_.GlobalTheory.CoordinateBasisBounds.main
-  | exact _root_.GlobalTheory.CoordinateBasisBounds.main
-  | (apply _root_.GlobalTheory.CoordinateBasisBounds.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.CoordinateBasisBounds.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.CoordinateBasisBounds.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.CoordinateBasisBounds.main ..)
+alias exists_level := _root_.GlobalTheory.CoordinateBasisBounds.main
 
 theorem exists_gl {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
     (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) (N : ℕ) (hN : 0 < N) :
@@ -316,3 +397,7 @@ theorem exists_isLatBasis : ∀ (D : D7) (V : HSp D) (r : ℕ) (hr : V.rank = r)
   exact hβ z
 
 end GlobalTheory.LatAdelicBasis
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLatticeBasisHermitianSpace =====

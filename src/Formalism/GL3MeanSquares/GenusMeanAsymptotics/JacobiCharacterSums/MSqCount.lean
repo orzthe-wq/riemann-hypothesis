@@ -111,13 +111,10 @@ theorem liX_sub_ge {a b : ℝ} (ha : 2 ≤ a) (hab : a ≤ b) :
   exact one_div_le_one_div_of_le hlogt (Real.log_le_log (by linarith) ht.2)
 
 theorem liX_two : liX 2 = 0 := by
-  unfold liX
-  simp
+  simp [liX]
 
 theorem liX_nonneg {a : ℝ} (ha : 2 ≤ a) : 0 ≤ liX a := by
-  have h := liX_sub_ge (le_refl (2:ℝ)) ha
-  rw [liX_two, sub_zero] at h
-  exact le_trans (div_nonneg (by linarith) (Real.log_nonneg (by linarith))) h
+  simpa [liX_two] using le_trans (div_nonneg (by linarith) (Real.log_nonneg (by linarith))) (liX_sub_ge (le_refl (2:ℝ)) ha)
 
 theorem exp_neg_le_one_sub_half {w : ℝ} (h0 : 0 ≤ w) (h1 : w ≤ 1) : Real.exp (-w) ≤ 1 - w / 2 := by
   have he1 : Real.exp (-1) ≤ 1 / 2 := by
@@ -128,7 +125,7 @@ theorem exp_neg_le_one_sub_half {w : ℝ} (h0 : 0 ≤ w) (h1 : w ≤ 1) : Real.e
   have hconv := convexOn_exp.2 (Set.mem_univ (0:ℝ)) (Set.mem_univ (-1:ℝ))
     (by linarith : (0:ℝ) ≤ 1 - w) h0 (by ring : (1 - w) + w = 1)
   rw [hx, smul_eq_mul, smul_eq_mul, Real.exp_zero] at hconv
-  nlinarith [mul_le_mul_of_nonneg_left he1 h0]
+  linarith [mul_le_mul_of_nonneg_left he1 h0]
 
 theorem mainAP_lower {M : ℕ} [NeZero M] (h8 : 8 ∣ M) (e : Option (DirichletCharacter ℂ M × ℝ))
     (he : ∀ p : DirichletCharacter ℂ M × ℝ, e = some p → IsExcPair p.1 p.2)
@@ -206,7 +203,7 @@ theorem mainAP_lower {M : ℕ} [NeZero M] (h8 : 8 ∣ M) (e : Option (DirichletC
       have h1 : X * Real.exp (-(c / M)) ≤ X * (1 - c / M / 2) := mul_le_mul_of_nonneg_left hexp hX.le
       have e2 : c * X / (2 * M) = X * (c / M / 2) := by ring
       rw [e2]
-      nlinarith
+      linarith
     have hθ : (χ₁ (b : ZMod M)).re ≤ 1 :=
       le_trans (Complex.re_le_norm _) (DirichletCharacter.norm_le_one χ₁ _)
     have hL0' : 0 ≤ liX (X ^ β₁) := liX_nonneg hXβ2
@@ -217,7 +214,7 @@ theorem mainAP_lower {M : ℕ} [NeZero M] (h8 : 8 ∣ M) (e : Option (DirichletC
     rw [hT]
     have h3 : (c * X / (2 * M)) / Real.log X ≤ (X - X ^ β₁) / Real.log X :=
       div_le_div_of_nonneg_right hgap hlogX.le
-    nlinarith [mul_le_mul_of_nonneg_right hθ hL0']
+    linarith [mul_le_mul_of_nonneg_right hθ hL0']
 
 theorem size_ineq {c Y Λ : ℝ} (hc0 : 0 < c) (hY0 : 0 < Y) (h80 : 80 * Λ ≤ Y)
     (hlog : Real.log (320 / c) ≤ Y / 20) :
@@ -247,7 +244,7 @@ theorem size_ineq {c Y Λ : ℝ} (hc0 : 0 < c) (hY0 : 0 < Y) (h80 : 80 * Λ ≤ 
     linarith
   rw [le_div_iff₀ (mul_pos (mul_pos two_pos hY0) hLpos), hexpY]
   have h4 := mul_le_mul_of_nonneg_left h2 hDpos.le
-  nlinarith
+  linarith
 
 theorem err_le_half {A c₃ Y Λ l : ℝ} (hc₃ : 0 < c₃) (hΛ : 0 < Λ) (hYΛ : l ^ 2 / 4 * Λ ≤ Y)
     (hYl : l ^ 2 / 4 ≤ Y)
@@ -281,7 +278,7 @@ theorem err_le_half {A c₃ Y Λ l : ℝ} (hc₃ : 0 < c₃) (hΛ : 0 < Λ) (hY�
       ≤ |A| * (2 / (4 * (|A| + 1))) := mul_le_mul_of_nonneg_left hsum (abs_nonneg A)
     _ ≤ 1 / 2 := by
       rw [mul_div_assoc', div_le_iff₀ hA1]
-      nlinarith [abs_nonneg A]
+      linarith [abs_nonneg A]
 
 theorem range_ok {C₀ ε x Λ Y : ℝ} (hε : 0 < ε) (hx : 1 ≤ x) (hΛ : 1 ≤ Λ) (hl1 : 1 ≤ Real.log x)
     (hl : 4 * |C₀| * (5 + ε / 5) ≤ Real.log x)
@@ -302,15 +299,14 @@ theorem range_ok {C₀ ε x Λ Y : ℝ} (hε : 0 < ε) (hx : 1 ≤ x) (hΛ : 1 �
     rw [Real.log_mul (by norm_num) hxr.ne', Real.log_rpow hxpos] at h
     exact h
   have hlog6 : Real.log 6 ≤ 5 := by
-    have := Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 6)
-    linarith
+    linarith [Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 6)]
   have hlogpos : 0 ≤ Real.log (Λ + 2) := Real.log_nonneg (by linarith)
   have hkey : |C₀| * Real.log (Λ + 2) ≤ L ^ 2 / 4 := by
     have hA0 := abs_nonneg C₀
-    have hb : Real.log (Λ + 2) ≤ L * (5 + ε / 5) := by nlinarith
+    have hb : Real.log (Λ + 2) ≤ L * (5 + ε / 5) := by linarith
     have h1' : |C₀| * Real.log (Λ + 2) ≤ |C₀| * (L * (5 + ε / 5)) := mul_le_mul_of_nonneg_left hb hA0
     have h2' : (4 * |C₀| * (5 + ε / 5)) * L ≤ L * L := mul_le_mul_of_nonneg_right hl hL0.le
-    nlinarith
+    linarith
   have hΛlog : 0 ≤ Λ * Real.log (Λ + 2) := mul_nonneg (by linarith) hlogpos
   calc C₀ * Λ * Real.log (Λ + 2) = C₀ * (Λ * Real.log (Λ + 2)) := by ring
     _ ≤ |C₀| * (Λ * Real.log (Λ + 2)) := mul_le_mul_of_nonneg_right (le_abs_self C₀) hΛlog
@@ -349,7 +345,7 @@ theorem count_pos {c₃ A₀ C₀ c ε : ℝ} (hc₃ : 0 < c₃) (hcpos : 0 < c)
   have hl2 : 320 * Real.log x ≤ Real.log x ^ 2 := by nlinarith
   have hYl : Real.log x ^ 2 / 4 ≤ Real.log X := by nlinarith
   have hY80 : 80 * Real.log m₀ ≤ Real.log X := by
-    nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ Real.log m₀) (by nlinarith : (0:ℝ) ≤ Real.log x ^ 2 / 4 - 80)]
+    linarith [mul_nonneg (by linarith : (0:ℝ) ≤ Real.log m₀) (by linarith : (0:ℝ) ≤ Real.log x ^ 2 / 4 - 80)]
   have hY4 : 4 ≤ Real.log X := by linarith
   have hY0 : 0 < Real.log X := by linarith
   have hX2 : 2 ≤ X := by
@@ -360,13 +356,13 @@ theorem count_pos {c₃ A₀ C₀ c ε : ℝ} (hc₃ : 0 < c₃) (hcpos : 0 < c)
   have hrange : C₀ * Real.log m₀ * Real.log (Real.log m₀ + 2) ≤ Real.log X :=
     range_ok hε hx1 hΛ1 hl1 hlC h1 h3
   have hmain := he3 X a₀ hX2 hrange hcop
-  have hll : Real.log x ≤ Real.log x ^ 2 := by nlinarith
+  have hll : Real.log x ≤ Real.log x ^ 2 := by linarith
   have hK1 : Real.log (4 * (|A₀| + 1)) ≤ c₃ * (Real.log x ^ 2 / 4) := by
     rw [div_le_iff₀ hc₃] at hlK1
-    nlinarith [mul_le_mul_of_nonneg_left hll hc₃.le]
+    linarith [mul_le_mul_of_nonneg_left hll hc₃.le]
   have hK2 : Real.log (4 * (|A₀| + 1)) ^ 2 ≤ c₃ * (Real.log x ^ 2 / 4) := by
     rw [div_le_iff₀ hc₃] at hlK2
-    nlinarith [mul_le_mul_of_nonneg_left hll hc₃.le]
+    linarith [mul_le_mul_of_nonneg_left hll hc₃.le]
   have herr := err_le_half (A := A₀) hc₃ (by linarith : 0 < Real.log m₀)
     (by linarith : Real.log x ^ 2 / 4 * Real.log m₀ ≤ Real.log X) hYl hK1 hK2
   have hlow := mainAP_lower h8 e he1 c hcpos hc1 hcb a₀ X hpos hY4
@@ -429,7 +425,7 @@ theorem count_a (hP : PNTAPRelW) (hE : Formalism.ZeroFreeDirichlet.ExcBound) (ε
     intro χ β h1' h2' h3'
     have h := hcb0 m₀ χ β h1' h2' h3'
     have hpow : 0 ≤ (m₀ : ℝ) ^ (-1 : ℝ) := Real.rpow_nonneg (Nat.cast_nonneg _) _
-    nlinarith [mul_le_mul_of_nonneg_right (min_le_left c0 1) hpow]
+    linarith [mul_le_mul_of_nonneg_right (min_le_left c0 1) hpow]
   by_cases hpos : 0 < X
   · exact count_pos hc₃ hcpos hc1 hε h8 a₀ hcop e he1 he3 hcb x X hx1 hl320 hlC hlK1 hlK2 hlc h1 h3 hpos
   · have hXle : X ≤ 0 := not_lt.mp hpos

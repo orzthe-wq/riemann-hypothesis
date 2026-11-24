@@ -71,7 +71,7 @@ theorem actMat_props {Z O N C : Type} [CommRing Z] [CommRing O] [Algebra Z O] [A
     by_cases h : i = j
     · subst h
       simp
-    · simp [Finsupp.single_apply, Matrix.one_apply, h, Ne.symm h]
+    · simp [h]
   · ext i j
     rw [Matrix.mul_apply, hA, mul_smul]
     conv_lhs => rw [← b.sum_repr (a' • b j)]

@@ -65,11 +65,10 @@ theorem isBlockUT_mul {ι : Type} [Fintype ι] {s : ℕ} (b : ι → Fin s) {A B
     (hA : IsBlockUT K b A) (hB : IsBlockUT K b B) : IsBlockUT K b (A * B) := by
   intro i j h
   simp only [Matrix.mul_apply]
-  apply Finset.sum_eq_zero
-  intro k _
-  by_cases hk : b k < b i
+  refine Finset.sum_eq_zero fun k _ => ?_
+  rcases lt_or_ge (b k) (b i) with hk | hk
   · simp [hA i k hk]
-  · simp [hB k j (lt_of_lt_of_le h (not_lt.mp hk))]
+  · simp [hB k j (lt_of_lt_of_le h hk)]
 
 def parab {ι : Type} [Fintype ι] [DecidableEq ι] {s : ℕ} (b : ι → Fin s) : Subgroup (GL ι K) where
   carrier := {g | IsBlockUT K b (g : Matrix ι ι K) ∧ IsBlockUT K b ((g⁻¹ : GL ι K) : Matrix ι ι K)}
@@ -106,11 +105,10 @@ theorem blk_mul {ι : Type} [Fintype ι] [DecidableEq ι] {s : ℕ} (b : ι → 
   simp only [blk, Matrix.submatrix_apply, Matrix.mul_apply]
   rw [← Fintype.sum_subtype_add_sum_subtype (fun k => b k = c)]
   have h0 : ∑ k : {k // ¬ b k = c}, A i k * B k j = 0 := by
-    apply Finset.sum_eq_zero
-    rintro ⟨k, hk⟩ _
+    refine Finset.sum_eq_zero fun ⟨k, hk⟩ _ => ?_
     rcases lt_or_gt_of_ne hk with h | h
-    · rw [hA i k (by rw [hi]; exact h)]; simp
-    · rw [hB k j (by rw [hj]; exact h)]; simp
+    · simp [hA i k (by rw [hi]; exact h)]
+    · simp [hB k j (by rw [hj]; exact h)]
   rw [h0, add_zero]
 
 def levi {ι : Type} [Fintype ι] [DecidableEq ι] {s : ℕ} (b : ι → Fin s) (c : Fin s)

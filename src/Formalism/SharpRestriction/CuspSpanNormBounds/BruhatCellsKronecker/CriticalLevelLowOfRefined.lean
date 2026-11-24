@@ -98,12 +98,10 @@ theorem five_le_k_real (D : D7) : (5 : ℝ) ≤ D.R.k := by
   exact_mod_cast (by omega : 5 ≤ D.R.k)
 
 theorem one_le_scale_log (large₂ : SizeData₂ D) : 1 ≤ large₂.sc.L := by
-  unfold Scale.L
-  exact Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le
+  simpa [Scale.L] using Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le
 
 theorem one_le_scale_base_alt (large₂ : SizeData₂ D) : 1 ≤ large₂.sc.b := by
-  unfold Scale.b
-  exact Real.one_le_exp (le_trans zero_le_one (one_le_scale_log large₂))
+  simpa [Scale.b] using Real.one_le_exp (le_trans zero_le_one (one_le_scale_log large₂))
 
 theorem two_le_degree_bis (D : D7) : (2 : ℝ) ≤ D.R.f := by
   have : 2 ≤ D.R.f := by
@@ -115,30 +113,30 @@ theorem two_le_degree_bis (D : D7) : (2 : ℝ) ≤ D.R.f := by
 theorem TfFacts.Del1 (F : TfFacts D large₂ C' Cl Cu C0) : (1 : ℝ) ≤ D.s.Del := by
   refine le_trans ?_ F.hDel
   refine Real.one_le_rpow ?_ F.hCl0.le
-  have h1 := five_le_k_real D
-  have h2 := two_le_degree_bis D
-  have h3 := one_le_scale_log large₂
-  nlinarith [mul_le_mul h1 h2 (by norm_num) (by linarith)]
+  have h1 : (1 : ℝ) ≤ D.R.k := le_trans (by norm_num) (five_le_k_real D)
+  have h2 : (1 : ℝ) ≤ D.R.f := le_trans (by norm_num) (two_le_degree_bis D)
+  exact one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h1 h2) (one_le_scale_log large₂)
 
 theorem tf_logk (D : D7) : 1 ≤ Real.log D.R.k := by
   rw [Real.le_log_iff_exp_le (by linarith [five_le_k_real D])]
-  have := Real.exp_one_lt_d9
-  linarith [five_le_k_real D]
+  linarith [Real.exp_one_lt_d9, five_le_k_real D]
 
 theorem TfFacts.aEff_bd (F : TfFacts D large₂ C' Cl Cu C0) (hCl : 4 ≤ Cl) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     0 < aEff D u τ ∧ aEff D u τ ≤ bOne D τ 1 * large₂.sc.b ^ Cu := by
   have hK := five_le_k_real D
   have hDel := F.Del1
   have hm2 : (2 : ℝ) ≤ D.R.m := by exact_mod_cast D.R.two_le_m
-  have hKD : 1 ≤ (D.R.k : ℝ) * D.s.Del := by nlinarith
+  have hKD : 1 ≤ (D.R.k : ℝ) * D.s.Del := one_le_mul_of_one_le_of_one_le (by linarith) hDel
   have hv1 : 0 ≤ vOne D τ 1 := F.dv τ 1 le_rfl (by have := D.R.m_add_three_le_k; omega)
   have hu := F.du u τ
-  have hu1 : 1 ≤ uOne D u τ 1 := by nlinarith
+  have hu1 : 1 ≤ uOne D u τ 1 := by grind
   have hbC : 1 ≤ large₂.sc.b ^ Cu := le_trans hu1 (F.hu1 u τ)
   have hb := F.hb1 τ 1 le_rfl (by have := D.R.two_le_m; omega)
   have hb8 : 8 * ((D.R.k : ℝ) * D.s.Del) ≤ bOne D τ 1 := by
     refine le_trans ?_ hb
-    have : (8 : ℝ) ≤ Cl * D.R.m := by nlinarith
+    have : (8 : ℝ) ≤ Cl * D.R.m := by
+      calc (8 : ℝ) = 4 * 2 := by norm_num
+        _ ≤ Cl * D.R.m := mul_le_mul hCl hm2 (by norm_num) (by linarith)
     calc 8 * ((D.R.k : ℝ) * D.s.Del) ≤ (Cl * D.R.m) * ((D.R.k : ℝ) * D.s.Del) := by gcongr
       _ = Cl * ((D.R.m : ℝ) * D.R.k * D.s.Del) := by ring
   have hb0 : 0 < bOne D τ 1 := by linarith
@@ -151,9 +149,10 @@ theorem TfFacts.aEff_bd (F : TfFacts D large₂ C' Cl Cu C0) (hCl : 4 ≤ Cl) (u
     rw [mul_comm]
     exact mul_le_mul (by linarith) (F.hu1 u τ) (by linarith) hb0.le
   · rw [aEff, if_neg hT]
-    refine ⟨by nlinarith, ?_⟩
-    have := F.dn u τ hT
-    nlinarith
+    refine ⟨by linarith, ?_⟩
+    have hdn := F.dn u τ hT
+    rw [mul_assoc] at hdn
+    exact le_trans (le_trans hdn hb8) (le_mul_of_one_le_right hb0.le hbC)
 
 theorem TfFacts.core (F : TfFacts D large₂ C' Cl Cu C0) {C3 : ℝ} (hCl : 4 ≤ Cl) (hC3 : 2 * C3 ≤ D.R.m)
     (hCu : Cu * large₂.sc.L ≤ (D.R.m : ℝ) - 1) (u : D.what₂.Word) (τ : D.what₂.Tau) :
@@ -193,7 +192,7 @@ theorem TfFacts.core (F : TfFacts D large₂ C' Cl Cu C0) {C3 : ℝ} (hCl : 4 �
     have h1 := tf_logk D
     have h2 : Cu * large₂.sc.L ≤ ((2 * D.R.rS + 1 : ℕ) : ℝ) := by push_cast; linarith
     have h3 : (0 : ℝ) ≤ ((2 * D.R.rS + 1 : ℕ) : ℝ) := Nat.cast_nonneg _
-    nlinarith
+    exact le_trans h2 (le_mul_of_one_le_left h3 h1)
   have hk3 : (D.R.k : ℝ) ^ C3 ≤ (D.R.k : ℝ) ^ (D.R.rS + 1) := by
     rw [← Real.rpow_natCast]
     refine Real.rpow_le_rpow_of_exponent_le hK1 ?_
@@ -231,7 +230,7 @@ theorem TfFacts.gg_ge (F : TfFacts D large₂ C' Cl Cu C0) : (D.R.k : ℝ) ^ 2 �
   have hK := five_le_k_real D
   have hb := one_le_scale_base_alt large₂
   have h1 : (D.R.k : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8 := by
-    have h2 : (D.R.k : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b := by nlinarith
+    have h2 : (D.R.k : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b := le_mul_of_one_le_right (by linarith) hb
     have h3 : (1 : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b := by linarith
     calc (D.R.k : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b := h2
       _ = ((D.R.k : ℝ) * large₂.sc.b) ^ 1 := (pow_one _).symm
@@ -294,9 +293,8 @@ theorem TfFacts.frame_tcrit (F : TfFacts D large₂ C' Cl Cu C0) {C3 : ℝ} (hCl
     calc Real.pi = Real.pi ^ 1 := (pow_one _).symm
       _ ≤ Real.pi ^ (2 * D.R.rS + 1) := pow_le_pow_right₀ (by linarith [Real.pi_gt_three]) (by omega)
   have hs0 : 0 < kaS D ^ (2 * D.R.rS) := by unfold kaS; positivity
-  have hx : D.host.ka ≤ Real.pi ^ (2 * D.R.rS + 1) * (D.R.k : ℝ) ^ (3 * D.R.rS) := by
-    have : 0 < Real.pi ^ (2 * D.R.rS + 1) := by positivity
-    nlinarith
+  have hx : D.host.ka ≤ Real.pi ^ (2 * D.R.rS + 1) * (D.R.k : ℝ) ^ (3 * D.R.rS) :=
+    le_trans hpi (le_mul_of_one_le_right (by positivity) hK1)
   calc gg D ^ 2 = kaS D ^ (2 * D.R.rS) * (gg D ^ (2 * D.R.rS + 2) * (D.host.ka ^ (2 * D.R.rS + 1))⁻¹ * D.host.ka) := by
         unfold kaS; rw [div_pow]; field_simp; ring
     _ ≤ kaS D ^ (2 * D.R.rS) * (gg D ^ (2 * D.R.rS + 2) * (D.host.ka ^ (2 * D.R.rS + 1))⁻¹ *
@@ -314,11 +312,10 @@ theorem TfFacts.E_le (F : TfFacts D large₂ C' Cl Cu C0) : (D.R.f : ℝ) * (2 :
     have : D.R.f ≤ 2 ^ D.R.k := le_trans F.hfk (Nat.lt_two_pow_self).le
     exact_mod_cast this
   rw [Real.rpow_sub (by norm_num), Real.rpow_natCast]
-  have h2 : (0 : ℝ) < (2 : ℝ) ^ D.R.k := by positivity
   have h3 : (2 : ℝ) ^ (3 : ℝ) = 8 := by
     rw [show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]; norm_num
-  rw [h3, ← mul_div_assoc, div_le_iff₀ h2]
-  nlinarith
+  rw [h3, ← mul_div_assoc, div_le_iff₀ (show (0 : ℝ) < (2 : ℝ) ^ D.R.k by positivity)]
+  linarith
 
 theorem TfFacts.Gam_le (F : TfFacts D large₂ C' Cl Cu C0) (u : D.what₂.Word) :
     (D.mem u).A.GamP ^ 2 ≤ Real.exp ((D.R.k : ℝ) / 4) := by
@@ -329,9 +326,7 @@ theorem TfFacts.Gam_le (F : TfFacts D large₂ C' Cl Cu C0) (u : D.what₂.Word)
   have hx : 0 ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L := by
     have := one_le_scale_log large₂
     positivity
-  have h1 := F.hGam
-  have h2 := F.hk
-  nlinarith
+  nlinarith [F.hGam, F.hk]
 
 theorem TfFacts.ratio_le (F : TfFacts D large₂ C' Cl Cu C0) (u : D.what₂.Word) :
     D.what₂.Dstar / (D.duS u : ℝ) ≤ C0 * (D.mem u).A.GamP ^ 2 := by
@@ -371,7 +366,16 @@ theorem TfFacts.tframe (F : TfFacts D large₂ C' Cl Cu C0) {C3 : ℝ} (hCl : 4 
       _ = (Tr D w * kaS D ^ (2 * D.R.rS)) * Tcrit D w τ := by ring
       _ ≤ 1 * Tcrit D w τ := by gcongr
       _ = Tcrit D w τ := one_mul _
-  have hg1 : 1 ≤ (gg D ^ 2) ^ D.R.k := one_le_pow₀ (one_le_pow₀ (by nlinarith))
+  have h25 : (25 : ℝ) ≤ gg D := by
+    calc (25 : ℝ) = 5 ^ 2 := by norm_num
+      _ ≤ (D.R.k : ℝ) ^ 2 := pow_le_pow_left₀ (by norm_num) hK 2
+      _ ≤ gg D := hgg
+  have hkg : (D.R.k : ℝ) < gg D := by
+    have hk2 : 5 * (D.R.k : ℝ) ≤ (D.R.k : ℝ) ^ 2 := by
+      rw [sq]
+      exact mul_le_mul_of_nonneg_right hK (by linarith)
+    linarith
+  have hg1 : 1 ≤ (gg D ^ 2) ^ D.R.k := one_le_pow₀ (one_le_pow₀ (by linarith))
   have hprod : (gg D ^ 2) ^ D.R.k ≤ ∏ τ, (Tcrit D w τ / Tr D w) ^ D.R.k := by
     have h1 : ∏ _τ : D.what₂.Tau, (gg D ^ 2) ^ D.R.k ≤ ∏ τ, (Tcrit D w τ / Tr D w) ^ D.R.k :=
       Finset.prod_le_prod₀ (fun τ _ => by positivity) (fun τ _ => pow_le_pow_left₀ (by positivity) (hτ τ) _)
@@ -404,12 +408,12 @@ theorem TfFacts.tframe (F : TfFacts D large₂ C' Cl Cu C0) {C3 : ℝ} (hCl : 4 
   have hlow1 : C0 * Real.exp 8 < gg D ^ D.R.k := by
     have h1 : gg D ≤ gg D ^ D.R.k := by
       calc gg D = gg D ^ 1 := (pow_one _).symm
-        _ ≤ gg D ^ D.R.k := pow_le_pow_right₀ (by nlinarith) hk1
-    nlinarith
+        _ ≤ gg D ^ D.R.k := pow_le_pow_right₀ (by linarith) hk1
+    linarith
   have hlow2 : Real.exp ((D.R.k : ℝ) / 4) ≤ gg D ^ D.R.k := by
     have h1 : Real.exp 1 ≤ gg D := by
       have := Real.exp_one_lt_d9
-      nlinarith
+      linarith
     calc Real.exp ((D.R.k : ℝ) / 4) ≤ Real.exp ((D.R.k : ℝ) * 1) := Real.exp_le_exp.2 (by linarith)
       _ = Real.exp 1 ^ D.R.k := Real.exp_natCast_mul D.R.k 1
       _ ≤ gg D ^ D.R.k := pow_le_pow_left₀ (Real.exp_pos _).le h1 _
@@ -430,21 +434,19 @@ variable {eps : ℝ} (Fm : FamP eps)
 
 theorem tf_ev_CL (C : ℝ) : ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x,
     C * (Fm.L x i).sc.L ≤ ((Fm.D x i).R.m : ℝ) - 1 := by
-  have he := eps_pos Fm
-  have hl := eps_lt Fm
-  obtain ⟨a, ha1, ha⟩ := ev_rpow (show (0 : ℝ) < 1 / 4 - eps by linarith) (|C| + 1)
+  obtain ⟨a, ha1, ha⟩ := ev_rpow (show (0 : ℝ) < 1 / 4 - eps by linarith [eps_lt Fm]) (|C| + 1)
   refine ⟨a, fun x hx hx1 i => ?_⟩
   have h1 : 1 < x := one_lt_of Fm hx1
-  have h0 : 0 < x := by linarith
   rw [sc_L Fm hx1]
   have hm := m_ge Fm hx1 i
-  have hL : 1 ≤ x ^ eps := Real.one_le_rpow h1.le he.le
+  have hL : 1 ≤ x ^ eps := Real.one_le_rpow h1.le (eps_pos Fm).le
   have hs : x ^ ((1 : ℝ) / 4) = x ^ eps * x ^ ((1 : ℝ) / 4 - eps) := by
-    rw [← Real.rpow_add h0]; congr 1; ring
+    rw [← Real.rpow_add (by linarith)]; congr 1; ring
   have h2 := ha x hx
-  have h3 : C ≤ |C| := le_abs_self C
-  have h4 : x ^ eps * (|C| + 1) ≤ x ^ ((1 : ℝ) / 4) := by rw [hs]; gcongr
-  nlinarith [abs_nonneg C]
+  have h4 : x ^ eps * (|C| + 1) ≤ x ^ ((1 : ℝ) / 4) := by
+    rw [hs]; exact mul_le_mul_of_nonneg_left h2 (le_trans zero_le_one hL)
+  have hCP : C * x ^ eps ≤ |C| * x ^ eps := mul_le_mul_of_nonneg_right (le_abs_self C) (le_trans zero_le_one hL)
+  grind
 
 theorem TFrame_of_sizes (Cg cb Cu cT CT C0 C3 : ℝ) (hCl : 4 ≤ sCl Fm)
     (hA : OwnEv Fm fun C' Cl x i => Hyp0 (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 → cTvA (Fm.D x i))
@@ -456,14 +458,8 @@ theorem TFrame_of_sizes (Cg cb Cu cT CT C0 C3 : ℝ) (hCl : 4 ≤ sCl Fm)
   obtain ⟨x4, H4⟩ := tf_ev_CL Fm Cu
   obtain ⟨x5, _, H5⟩ := ev_k Fm (C0 * Real.exp 8)
   refine ownEv_intro Fm (max x1 (max x2 (max x3 (max x4 x5)))) (fun x hx hx1 i => ?_)
-  have hy1 : x1 ≤ x := le_trans (le_max_left _ _) hx
-  have hr1 := le_trans (le_max_right _ _) hx
-  have hy2 : x2 ≤ x := le_trans (le_max_left _ _) hr1
-  have hr2 := le_trans (le_max_right _ _) hr1
-  have hy3 : x3 ≤ x := le_trans (le_max_left _ _) hr2
-  have hr3 := le_trans (le_max_right _ _) hr2
-  have hy4 : x4 ≤ x := le_trans (le_max_left _ _) hr3
-  have hy5 : x5 ≤ x := le_trans (le_max_right _ _) hr3
+  simp only [max_le_iff] at hx
+  obtain ⟨hy1, hy2, hy3, hy4, hy5⟩ := hx
   intro hyp w
   exact (tfFacts_of hyp).tframe hCl (H3 x hy3 i) (H4 x hy4 hx1 i) (HA x hy1 i hyp) (H x hy2 i hyp) (H5 x hy5 i) w
 

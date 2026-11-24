@@ -1,49 +1,11 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.HidaSetting
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHDef
 
 @[expose] public section
 
@@ -64,12 +26,6 @@ theorem hJ_add_right (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + h
 theorem hJ_add_left (x x' y : Fin n → ℂ) : hJ ε (x + x') y = hJ ε x y + hJ ε x' y := by
   unfold hJ; rw [star_add, add_dotProduct]
 
-theorem hJ_sub_right' (x y y' : Fin n → ℂ) : hJ ε x (y - y') = hJ ε x y - hJ ε x y' := by
-  unfold hJ; rw [Matrix.mulVec_sub, dotProduct_sub]
-
-theorem hJ_sub_left' (x x' y : Fin n → ℂ) : hJ ε (x - x') y = hJ ε x y - hJ ε x' y := by
-  unfold hJ; rw [star_sub, sub_dotProduct]
-
 theorem hJ_smul_right (c : ℂ) (x y : Fin n → ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   unfold hJ; rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
@@ -78,17 +34,11 @@ theorem hJ_smul_left (c : ℂ) (x y : Fin n → ℂ) : hJ ε (c • x) y = conj 
 
 theorem hJ_sum_right {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (y : ι → Fin n → ℂ) :
     hJ ε x (∑ i ∈ s, y i) = ∑ i ∈ s, hJ ε x (y i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp [hJ]
-  | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hJ_add_right, ih]
+  simp [hJ, Matrix.mulVec_sum, dotProduct_sum]
 
 theorem hJ_sum_left {ι : Type*} (s : Finset ι) (x : ι → Fin n → ℂ) (y : Fin n → ℂ) :
     hJ ε (∑ i ∈ s, x i) y = ∑ i ∈ s, hJ ε (x i) y := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp [hJ]
-  | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hJ_add_left, ih]
+  simp [hJ, star_sum, sum_dotProduct]
 
 theorem hJ_zero_right (x : Fin n → ℂ) : hJ ε x 0 = 0 := by
   simp [hJ]
@@ -108,10 +58,9 @@ theorem hJ_mulVec (A : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
 theorem unitary_of_hJ (A : Matrix (Fin n) (Fin n) ℂ) (h : ∀ x y, hJ ε (A *ᵥ x) (A *ᵥ y) = hJ ε x y) :
     Aᴴ * Formalism.REAL.Jm ε * A = Formalism.REAL.Jm ε := by
   ext i j
-  have := h (Pi.single i 1) (Pi.single j 1)
-  rw [hJ_mulVec] at this
-  unfold hJ at this
-  simpa [Matrix.mulVec_single_one, Pi.star_single] using this
+  have hsingle := h (Pi.single i 1) (Pi.single j 1)
+  rw [hJ_mulVec] at hsingle
+  simpa [hJ, Matrix.mulVec_single_one, Pi.star_single] using hsingle
 
 variable {r k : ℕ}
 
@@ -133,10 +82,7 @@ variable {ε} {e f : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {w : Fin k →
 abbrev Xs (e : Fin r → Fin n → ℂ) : Submodule ℂ (Fin n → ℂ) := Submodule.span ℂ (Set.range e)
 
 theorem spanLt_top (e : Fin r → Fin n → ℂ) : spanLt e r = Xs e := by
-  unfold spanLt
-  congr 1
-  ext v
-  simp
+  simp [spanLt, Xs]
 
 theorem spanLt_le (e : Fin r → Fin n → ℂ) (a : ℕ) : spanLt e a ≤ Xs e := Submodule.span_mono (Set.image_subset_range _ _)
 
@@ -167,16 +113,14 @@ theorem hJ_cmb (p : Fin n → ℂ) (α β : Fin r → ℂ) (γ : ℂ) (δ : Fin 
 
 theorem cmb_e (H : Frame ε e f z w) (α β : Fin r → ℂ) (γ : ℂ) (δ : Fin k → ℂ) (c : Fin r) :
     hJ ε (e c) (cmb e f z w α β γ δ) = β c := by
-  rw [hJ_cmb]
-  simp [H.ee, H.ef, H.ez, H.ew]
+  simp [hJ_cmb, H.ee, H.ef, H.ez, H.ew]
 
 theorem cmb_f (H : Frame ε e f z w) (α β : Fin r → ℂ) (γ : ℂ) (δ : Fin k → ℂ) (c : Fin r) :
     hJ ε (f c) (cmb e f z w α β γ δ) = α c := by
   rw [hJ_cmb]
   have h1 : ∀ a, hJ ε (f c) (e a) = if a = c then 1 else 0 := fun a => by
-    rw [← hJ_conj_lemma, H.ef]; split_ifs <;> simp
-  have h2 : ∀ a, hJ ε (f c) (f a) = 0 := fun a => H.ff c a
-  simp [h1, h2, H.fz, H.fw]
+    simpa [hJ_conj_lemma] using congrArg star (H.ef a c)
+  simp [h1, H.ff c, H.fz, H.fw]
 
 theorem hermitian_combination_z (H : Frame ε e f z w) (α β : Fin r → ℂ) (γ : ℂ) (δ : Fin k → ℂ) :
     hJ ε z (cmb e f z w α β γ δ) = γ * hJ ε z z := by
@@ -270,15 +214,11 @@ theorem U_X (hS : InS e z (U : Matrix (Fin n) (Fin n) ℂ)) {x : Fin n → ℂ} 
   induction hx using Submodule.span_induction with
   | mem v hv =>
     obtain ⟨a, rfl⟩ := hv
-    have h1 := spanLt_le e a.1 (hS.1 a)
-    have e1 : (U : Matrix (Fin n) (Fin n) ℂ) *ᵥ e a =
-        ((U : Matrix (Fin n) (Fin n) ℂ) - 1) *ᵥ e a + e a := by
-      rw [Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel]
-    rw [e1]
-    exact Submodule.add_mem _ h1 (e_mem e a)
-  | zero => rw [Matrix.mulVec_zero]; exact Submodule.zero_mem _
-  | add u v _ _ hu hv => rw [Matrix.mulVec_add]; exact Submodule.add_mem _ hu hv
-  | smul c u _ hu => rw [Matrix.mulVec_smul]; exact Submodule.smul_mem _ _ hu
+    simpa [Matrix.sub_mulVec, Matrix.one_mulVec] using
+      Submodule.add_mem _ (spanLt_le e a.1 (hS.1 a)) (e_mem e a)
+  | zero => simp
+  | add u v _ _ hu hv => simpa [Matrix.mulVec_add] using Submodule.add_mem _ hu hv
+  | smul c u _ hu => simpa [Matrix.mulVec_smul] using Submodule.smul_mem _ c hu
 
 theorem U_X_surj (hS : InS e z (U : Matrix (Fin n) (Fin n) ℂ)) {x : Fin n → ℂ} (hx : x ∈ Xs e) :
     ∃ x' ∈ Xs e, (U : Matrix (Fin n) (Fin n) ℂ) *ᵥ x' = x := by
@@ -339,7 +279,7 @@ theorem Uw (H : Frame ε e f z w) (hU : (U : Matrix (Fin n) (Fin n) ℂ)ᴴ * Fo
     obtain ⟨x1, hx1, hx1e⟩ := U_X_surj U hS h0
     have e1 : z = (U : Matrix (Fin n) (Fin n) ℂ) *ᵥ (z - x1) := by
       rw [Matrix.mulVec_sub, hx1e, Matrix.sub_mulVec, Matrix.one_mulVec, sub_sub_cancel]
-    rw [e1, hJ_U U hU, hJ_sub_left', H.zw, hJ_X_left hx1 (fun c => H.ew c b), sub_zero]
+    rw [e1, hJ_U U hU, _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_sub_left, H.zw, hJ_X_left hx1 (fun c => H.ew c b), sub_zero]
   have := perp_e H _ hUe
   rw [hUz, zero_div, zero_smul, sub_zero] at this
   unfold uu Mm
@@ -381,7 +321,7 @@ theorem Vm_mulVec (w : Fin k → Fin n → ℂ) (y : Fin n → ℂ) :
   have hv : ∀ a b : Fin n → ℂ, vecMulVec a b *ᵥ y = (b ⬝ᵥ y) • a := by
     intro a b
     ext i
-    simp [Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply, Finset.sum_mul, mul_comm, mul_left_comm]
+    simp [Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply, mul_comm]
     rw [Finset.mul_sum]
     exact Finset.sum_congr rfl fun _ _ => by ring
   unfold Vm
@@ -392,19 +332,16 @@ theorem Vm_mulVec (w : Fin k → Fin n → ℂ) (y : Fin n → ℂ) :
   rfl
 
 theorem Vm_fix (p : Fin n → ℂ) (hp : ∀ b, hJ ε (w b) p = 0) : Vm (ε := ε) U w *ᵥ p = p := by
-  rw [Vm_mulVec]
-  simp [hp]
+  simp [Vm_mulVec, hp]
 
 theorem Vm_w (H : Frame ε e f z w) (c : Fin k) : Vm (ε := ε) U w *ᵥ w c = uu (ε := ε) U w c := by
-  rw [Vm_mulVec]
-  simp [H.ww]
+  simp [Vm_mulVec, H.ww]
 
 theorem hJ_orth (q : Fin k → Fin n → ℂ) (hq : ∀ a b, hJ ε (q a) (q b) = if a = b then 1 else 0)
     (p p' : Fin n → ℂ) (hp : ∀ b, hJ ε p (q b) = 0) (hp' : ∀ b, hJ ε (q b) p' = 0) (c d : Fin k → ℂ) :
     hJ ε (p + ∑ b, c b • q b) (p' + ∑ b, d b • q b) = hJ ε p p' + ∑ b, conj (c b) * d b := by
-  simp [hJ_add_left, hJ_add_right, hJ_sum_left, hJ_sum_right, hJ_smul_left, hJ_smul_right, hp, hp',
-    hq]
-  exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
+  simp [hJ_add_left, hJ_add_right, hJ_sum_left, hJ_sum_right, hJ_smul_left, hJ_smul_right, hp,
+    hp', hq, mul_comm]
 
 theorem Vm_hJ (H : Frame ε e f z w) (hU : (U : Matrix (Fin n) (Fin n) ℂ)ᴴ * Formalism.REAL.Jm ε * U = Formalism.REAL.Jm ε)
     (hS : InS e z (U : Matrix (Fin n) (Fin n) ℂ)) (x y : Fin n → ℂ) :
@@ -413,7 +350,7 @@ theorem Vm_hJ (H : Frame ε e f z w) (hU : (U : Matrix (Fin n) (Fin n) ℂ)ᴴ *
   have huu := uu_on H hU hS
   have hperp : ∀ v : Fin n → ℂ, ∀ c, hJ ε (w c) (v - ∑ b, hJ ε (w b) v • w b) = 0 := by
     intro v c
-    rw [hJ_sub_right', hJ_sum_right]
+    rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_sub_right, hJ_sum_right]
     simp [hJ_smul_right, hww]
   have hperp' : ∀ v : Fin n → ℂ, ∀ c, hJ ε (v - ∑ b, hJ ε (w b) v • w b) (w c) = 0 := fun v c => by
     rw [← hJ_conj_lemma, hperp, star_zero]
@@ -464,7 +401,6 @@ theorem levi_place (H : Frame ε e f z w) (U : (Matrix (Fin n) (Fin n) ℂ)ˣ)
   have hright : Vm (ε := ε) U w * (Formalism.REAL.Jm ε * (Vm (ε := ε) U w)ᴴ * Formalism.REAL.Jm ε) = 1 :=
     by first
       | exact mul_eq_one_comm.1 hleft
-      | exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 hleft
   have hfe : ∀ a, Vm (ε := ε) U w *ᵥ e a = e a := fun a =>
     Vm_fix _ (fun b => by rw [← hJ_conj_lemma, H.ew, star_zero])
   refine ⟨⟨Vm (ε := ε) U w, Formalism.REAL.Jm ε * (Vm (ε := ε) U w)ᴴ * Formalism.REAL.Jm ε, hright, hleft⟩,

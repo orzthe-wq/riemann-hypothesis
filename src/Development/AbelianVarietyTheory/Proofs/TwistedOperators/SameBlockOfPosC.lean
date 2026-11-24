@@ -62,7 +62,7 @@ theorem star_sgnIx {p q : ℕ} (a : Ix p q) : star (sgnIx a) = sgnIx a := by
 
 theorem Jm_eq_diagonal (p q : ℕ) : Jm p q = Matrix.diagonal sgnIx := by
   unfold Jm Formalism.UG.Jpq
-  ext (i | i) (j | j) <;> simp [sgnIx, Matrix.diagonal_apply, Matrix.one_apply] <;> split_ifs <;> simp
+  ext (i | i) (j | j) <;> simp [sgnIx, Matrix.diagonal_apply, Matrix.one_apply]; split_ifs <;> simp
 
 theorem adjZ_apply {p q : ℕ} (Z : Mat p q) (a b : Ix p q) :
     adjZ Z a b = sgnIx a * sgnIx b * star (Z b a) := by
@@ -143,7 +143,7 @@ theorem sameBlock_of_posC {p q : ℕ} {a b : Ix p q} (h : posC a b) : sameBlock 
 
 theorem exists_upq_add {p q : ℕ} (Z : Mat p q) :
     ∃ X ∈ upq p q, ∃ Y ∈ upq p q, Z = X + Complex.I • Y := by
-  apply GlobalTheory.CoverDS.exists_decomp <;> assumption
+  apply GlobalTheory.CoverDS.exists_decomp
 
 theorem hasDerivAt_orbit {p q : ℕ} {T : GrpData p q} (πU : URep T) {Y : Mat p q} (hY : Y ∈ upq p q)
     {x y : πU.H} (h : HasDerivAt (fun t : ℝ => πU.π (T.expt (t • Y)) x) y 0) (t : ℝ) :

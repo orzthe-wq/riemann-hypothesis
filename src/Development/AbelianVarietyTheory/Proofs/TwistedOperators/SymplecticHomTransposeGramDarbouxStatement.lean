@@ -52,4 +52,4 @@ theorem _root_.GlobalTheory.T.symplectic_hom_transpose_gram_darboux : ∀ (D : D
       symplO S T (HMul.hMul (xᵀ.submatrix e₂.symm e₁.symm) (S.gram.map (incA D)) : Matrix (Fin T.rank) (Fin S.rank) (AE D))
         (HMul.hMul (yᵀ.submatrix e₂.symm e₁.symm) (S.gram.map (incA D)) : Matrix (Fin T.rank) (Fin S.rank) (AE D)) =
       symplO S' T' x y := by
-  first | exact @GlobalTheory.DarbouxSymp.symplO_darboux | exact GlobalTheory.DarbouxSymp.symplO_darboux | (intros; apply GlobalTheory.DarbouxSymp.symplO_darboux <;> assumption)
+  first | exact @GlobalTheory.DarbouxSymp.symplO_darboux

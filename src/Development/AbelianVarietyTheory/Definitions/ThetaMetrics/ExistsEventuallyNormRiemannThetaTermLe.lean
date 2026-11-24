@@ -546,7 +546,7 @@ theorem riemannTheta_half_neg (α β : ι → ℤ) (Ω : Matrix ι ι ℂ) (v : 
     simp
   rw [this]
   congr 1
-  simp only [dotProduct, Finset.mul_sum, Finset.sum_mul, Pi.neg_apply]
+  simp only [dotProduct, Finset.mul_sum, Pi.neg_apply]
   push_cast
   rw [Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ => by ring

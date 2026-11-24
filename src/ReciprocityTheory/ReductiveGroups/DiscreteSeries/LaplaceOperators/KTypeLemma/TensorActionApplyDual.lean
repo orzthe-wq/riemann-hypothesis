@@ -1,45 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.QuotientHighestWeightTensorStandard
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.VkGenSubStable
 
 @[expose] public section
 
@@ -101,10 +64,6 @@ theorem sθ_single (V : Submodule ℂ M) (EM : Fin n → Fin n → Module.End �
     sθ V EM φ ℓ (Finsupp.single (w, c) v) = Pi.single c (ℓ v • wordE EM w φ) := by
   simp [sθ]
 
-theorem tensorAction_apply (E : Fin n → Fin n → Module.End ℂ M) (f : Fin n → M) (d : Fin n) :
-    eeV E f d = ∑ c, E c d (f c) := by
-  simp [eeV, prj, LinearMap.sum_apply]
-
 theorem tensorAction_apply_dual (E : Fin n → Fin n → Module.End ℂ MM) (f : Fin n → MM) (d : Fin n) :
     eeV E f d = ∑ c, E c d (f c) := by
   simp [eeV, prj, LinearMap.sum_apply]
@@ -125,15 +84,15 @@ theorem sT_sES (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) 
   | single p v =>
     obtain ⟨w, c⟩ := p
     funext d'
-    rw [sT_single, tensorAction_apply]
+    rw [sT_single, _root_.ReciprocityTheory.ChartRestriction.DS.Lap.LemK.vk_eeV_apply]
 
     simp only [sES, Finsupp.lsum_single, LinearMap.sum_apply, Finset.sum_apply, Finsupp.lsingle_apply,
     map_sum, sT_single, wordAction_cons]
     rw [Finset.sum_eq_single d', Finset.sum_eq_single c]
     · simp
-    · intro c' _ hc'; simp [Pi.single_apply, hc']
+    · intro c' _ hc'; simp [hc']
     · simp
-    · intro d _ hd; simp [Pi.single_apply, Ne.symm hd]
+    · intro d _ hd; simp [Ne.symm hd]
     · simp
 
 theorem sθ_sES (V : Submodule ℂ M) (EM : Fin n → Fin n → Module.End ℂ MM) (φ : MM) (ℓ : V →ₗ[ℂ] ℂ)
@@ -150,9 +109,9 @@ theorem sθ_sES (V : Submodule ℂ M) (EM : Fin n → Fin n → Module.End ℂ M
     map_sum, sθ_single, wordAction_cons_dual]
     rw [Finset.sum_eq_single d', Finset.sum_eq_single c]
     · simp
-    · intro c' _ hc'; simp [Pi.single_apply, hc']
+    · intro c' _ hc'; simp [hc']
     · simp
-    · intro d _ hd; simp [Pi.single_apply, Ne.symm hd]
+    · intro d _ hd; simp [Ne.symm hd]
     · simp
 
 theorem tensorWord_prepend (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (a b : Fin n)
@@ -167,7 +126,7 @@ theorem tensorWord_prepend (E : Fin n → Fin n → Module.End ℂ M) (V : Submo
     rw [Finsupp.mapDomain_single, sT_single, sT_single, wordAction_cons]
     by_cases h : c' = c
     · subst h; simp
-    · simp [Pi.single_apply, h]
+    · simp [h]
 
 theorem sT_surj (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (f : Fin n → M)
     (hf : ∀ c, f c ∈ genSub E V) : ∃ x, sT E V x = f := by
@@ -192,7 +151,7 @@ theorem sT_surj (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     rw [tensorWord_prepend, hx]
     by_cases h : c' = c
     · subst h; simp
-    · simp [Pi.single_apply, h]
+    · simp [h]
   have hgen : genSub E V ≤ S := sInf_le ⟨hVS, hst⟩
   have hmem : f ∈ LinearMap.range (sT E V) := by
     rw [← Finset.univ_sum_single f]

@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Mathlib.RingTheory.Derivation.Lie
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.DiscriminantLemmas.WickFormula.GenPow
 
 @[expose] public section
 
@@ -128,11 +129,6 @@ end
 
 section
 variable {K I J : Type} [CommRing K] [Fintype I] [Fintype J]
-
-theorem gdelta_apply (κ : I → J → K) (R : MvPolynomial (I ⊕ J) K) :
-    gdelta κ R = ∑ i, ∑ j, κ i j • pderiv (Sum.inl i) (pderiv (Sum.inr j) R) := by
-  unfold gdelta
-  simp [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply]
 
 theorem gdelta_mem_lowDeg_inl (κ : I → J → K) {t : ℕ} {R : MvPolynomial (I ⊕ J) K}
     (h : R ∈ lowDeg (Sum.inl : I → I ⊕ J) (t + 1)) :

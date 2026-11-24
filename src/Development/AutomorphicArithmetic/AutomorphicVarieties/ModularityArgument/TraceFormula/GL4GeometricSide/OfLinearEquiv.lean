@@ -73,7 +73,7 @@ private theorem wc_of_basis {W ι : Type} [AddCommGroup W] [Module ℂ W] [Finty
     funext g
 
     conv_lhs => rw [← b.sum_repr (f g), map_sum]
-    simp only [map_smul, smul_eq_mul, Module.Basis.coord_apply]
+    simp only [map_smul, smul_eq_mul]
   rw [e]
   exact continuous_finsetSum _ fun i _ => (h i).mul continuous_const
 

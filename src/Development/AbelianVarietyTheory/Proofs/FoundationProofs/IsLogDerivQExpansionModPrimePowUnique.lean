@@ -5,10 +5,11 @@ public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
 public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTranslationInvariantSubfieldIffExponentsStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MulOfIsPrimitiveIntegralHahnGaussStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveHahnSeriesNotZeroDivisorModPrimePowStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaDerivationHahnSeriesLeibnizAddConstStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTranslationInvariantSubfieldIffExponents
+public import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MulOfIsPrimitiveIntegralHahnGauss
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveHahnSeriesNotZeroDivisorModPrimePow
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaDerivationHahnSeriesLeibnizAddConst
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -127,7 +128,7 @@ theorem isDl_unique : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
   intro Ω _ _ _ ε X _ l _ A hl n s f φ φ' h1 h2
   obtain ⟨hφA, a, b, κ, hκ, hab, hPa, hPb, hφ⟩ := h1
   obtain ⟨hφ'A, a2, b2, κ2, hκ2, hab2, hPa2, hPb2, hφ'⟩ := h2
-  have hth := fun P Q => (GlobalTheory.T.thetaDerivationHahnSeries_leibniz_add_const (Ω := Ω) s P Q)
+  have hth := fun P Q => (_root_.GlobalTheory.Glue.theta_leibniz_add_const (Ω := Ω) s P Q)
 
   have hK : algebraMap Ω X.K κ * a * b2 = algebraMap Ω X.K κ2 * a2 * b := by
     rw [← hab, ← hab2]; ring
@@ -140,11 +141,11 @@ theorem isDl_unique : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
   have hkey := key (theta s) (fun P Q => (hth P Q).1) (fun c => (hth 0 0).2.2 c) κ κ2 hκ _ _ _ _ hE
 
   set P := X.exp a * X.exp b * (X.exp a2 * X.exp b2) with hP
-  have hPab := GlobalTheory.T.mul_of_isPrimitiveIntegral_hahn_gauss A _ _ hPa hPb
-  have hPab2 := GlobalTheory.T.mul_of_isPrimitiveIntegral_hahn_gauss A _ _ hPa2 hPb2
-  have hPP : Prim A P := GlobalTheory.T.mul_of_isPrimitiveIntegral_hahn_gauss A _ _ hPab hPab2
+  have hPab := _root_.GlobalTheory.Glue.Prim.mul A _ _ hPa hPb
+  have hPab2 := _root_.GlobalTheory.Glue.Prim.mul A _ _ hPa2 hPb2
+  have hPP : Prim A P := _root_.GlobalTheory.Glue.Prim.mul A _ _ hPab hPab2
   obtain ⟨M, hM, hMK⟩ := mem_KT X (a * b * (a2 * b2))
-  have hsupp := (GlobalTheory.T.mem_translationInvariantSubfield_iff_exponents ε X M hM _).mp hMK
+  have hsupp := (_root_.GlobalTheory.Glue.KTExp.mem_KT_iff ε X M hM _).mp hMK
   have hsuppP : ∀ r : ℚ, P.coeff r ≠ 0 → (r * M).den = 1 := by
     simpa [hP, map_mul] using hsupp
   have hD1 := cg_mul A l n _ _ (cg_of A l n _ _ hφ) hPab2.1
@@ -157,7 +158,7 @@ theorem isDl_unique : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
   rw [hid] at hdiff
   have hint : ∀ r, (φ - φ').coeff r ∈ A := fun r => by
     rw [HahnSeries.coeff_sub]; exact sub_mem (hφA r) (hφ'A r)
-  have hfin := GlobalTheory.T.primitiveHahnSeries_not_zeroDivisor_modPrimePow l A hl n M P (φ - φ') hM hPP hsuppP hint hdiff
+  have hfin := _root_.GlobalTheory.primCan l A hl n M P (φ - φ') hM hPP hsuppP hint hdiff
   intro r
   obtain ⟨z, hz, e⟩ := hfin r
   exact ⟨z, hz, by rw [← e, HahnSeries.coeff_sub, sub_zero]⟩

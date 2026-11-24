@@ -40,9 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegralIoiFsDensRadial
 public import ReciprocityTheory.AnalyticForms.PotentialTheory.PLCurveA
-public import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
 
 @[expose] public section
 
@@ -66,8 +64,7 @@ def TailLogOfMass.Statement : Prop :=
 
 section Inhabitants
 
-open ReciprocityTheory.AnForm (fsDens fsDens_pos levi)
-open ReciprocityTheory.AnForm.M (p1 fsPot projLine_isSmoothPotential projLine_isPlurisubharmonic projectiveLine_fubiniStudy_mass_one)
+open ReciprocityTheory.AnForm (levi)
 open ReciprocityTheory.AnForm.M.PLC (locDens_congr_phi mInt_congr_phi)
 
 end Inhabitants

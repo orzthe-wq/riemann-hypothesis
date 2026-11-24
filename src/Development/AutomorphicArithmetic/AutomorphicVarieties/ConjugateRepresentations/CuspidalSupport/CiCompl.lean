@@ -78,7 +78,6 @@ private theorem exists_twist (ha : 1 ≤ a) (c : ℂ) :
     change Matrix.trace (1 : Matrix (Fin a) (Fin a) (Cinf E)) = _
     simp
   rw [e, map_nsmul, GlobalTheory.GKCoh.Tests.dchi_absC_one, nsmul_eq_mul]
-  push_cast
   field_simp
 
 private theorem compl_zero {C : Submodule ℂ (Sm E a)} (hc : ∀ φ ∈ C, IsCuspForm φ)

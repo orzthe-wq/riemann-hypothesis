@@ -58,6 +58,8 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.Point
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
+import Formalism.LocalToGlobal.ProjectiveLattices.RdOrbIntOfLatZ
+import Formalism.LocalToGlobal.ProjectiveLattices.UnifDom
 
 @[expose] public section
 
@@ -69,17 +71,6 @@ namespace GlobalTheory.FrameDom
 open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
-
-lemma emb_cc' (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) := by
-  simp only [ReciprocityTheory.ChartRestriction.G.FD.cc]
-  exact IsCMField.complexEmbedding_complexConj E τ x
-
-lemma gram_eq {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
-    gram τ G x = xᵀ * G.map τ * x.map (starRingEnd ℂ) := by
-  ext a b
-  simp only [ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply,
-    Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
-  rw [Finset.sum_comm]
 
 lemma gm_eq {r : ℕ} (G G' : Matrix (Fin r) (Fin r) E) (γ : Matrix (Fin r) (Fin r) E)
     (h : ∀ v w, herm G (γ.mulVec v) (γ.mulVec w) = herm G' v w) :
@@ -107,10 +98,10 @@ lemma gram_mul {r : ℕ} (G G' : Matrix (Fin r) (Fin r) E) (γ : Matrix (Fin r) 
     rw [Matrix.map_mul]
     congr 1
     ext a b
-    simp only [Matrix.map_apply, emb_cc']
+    simp only [Matrix.map_apply, _root_.Formalism.L2.Pj.FJ.emb_cc']
   have h2 : (γᵀ * G * γ.map cc).map τ = (γ.map τ)ᵀ * G.map τ * (γ.map cc).map τ := by
     rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]
-  rw [gram_eq, gram_eq, gm_eq G G' γ h, h2, h1, Matrix.transpose_mul]
+  rw [_root_.Formalism.L2.Pj.gram_eq, _root_.Formalism.L2.Pj.gram_eq, gm_eq G G' γ h, h2, h1, Matrix.transpose_mul]
   simp only [Matrix.mul_assoc]
 
 theorem mem_dom_of_isometry :

@@ -73,11 +73,6 @@ theorem h_sum_left {ι : Type} [Fintype ι] (c : ι → E) (g : ι → V) (y : V
   rw [this]
   exact Finset.sum_congr rfl fun b _ => H.h_smul_left _ _ _
 
-theorem h_sub_left (x y z : V) : H.h (x - y) z = H.h x z - H.h y z := by
-  have e : x - y = x + (-1 : E) • y := by simp [sub_eq_add_neg]
-  rw [e, H.h_add_left, H.h_smul_left]
-  ring
-
 theorem dl_last {r : ℕ} (f g : Fin (r + 1) → V) : H.Dl f g (r + 1) = (H.Zhat f g).det := by
   unfold Loc.HermSp.Dl
   rw [dite_eq_left le_rfl]
@@ -192,7 +187,7 @@ theorem omL_eq {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (G : Fin (D.R.rS + 1)
   refine uniq_loc (locH Zd p) _ _ hdet (Submodule.sub_mem _ (Submodule.smul_mem _ _ ?_)
     (Submodule.smul_mem _ _ (bcP_sp Zd p G hsp))) fun a => ?_
   · exact Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)
-  · rw [h_sub_left, (locH Zd p).h_smul_left, (locH Zd p).h_smul_left, om_pair, h_bcP_f, hΩ]
+  · rw [_root_.Formalism.L2.SG.Pf.ScalarFramePf.h_sub_left, (locH Zd p).h_smul_left, (locH Zd p).h_smul_left, om_pair, h_bcP_f, hΩ]
     by_cases ha : a = Fin.last D.R.rS
     · subst ha; simp; ring
     · simp [ha]

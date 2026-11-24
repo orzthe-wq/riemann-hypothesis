@@ -50,6 +50,11 @@ open scoped TensorProduct ContDiff
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+-- Prune dead-end `StarRing` instances tried during failed `CoeT` lookups on rectangular
+-- `Mx D m n` matrix multiplications.
+attribute [-instance] IsCMField.starRing CStarAlgebra.toStarRing NonUnitalCStarAlgebra.toStarRing
+  RCLike.toStarRing Matrix.SpecialLinearGroup.instCoeInt
+
 namespace GlobalTheory.MixModel
 
 variable {D : D7}

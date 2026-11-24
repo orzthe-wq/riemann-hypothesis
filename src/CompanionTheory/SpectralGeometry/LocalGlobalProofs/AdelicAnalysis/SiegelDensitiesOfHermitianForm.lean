@@ -2,64 +2,22 @@ module
 
 public import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductLocallyFiniteStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsGramFiberMeasuresStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsIsCharAF
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsStandardLocalMeasuresStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnitScalingSelfdualAdelicMeasuresStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnitScalingSelfdualHermMeasuresStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuityStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresScalingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresTransitivityStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelMeanValueIntegrableStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfRankSmallOrZeroStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitProductClosurePropertiesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolume
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductLocallyFinite
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsGramFiberMeasures
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsIsCharAF
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsStandardLocalMeasures
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnitScalingSelfdualAdelicMeasures
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnitScalingSelfdualHermMeasures
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuity
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresTransitivity
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelMeanValueIntegrable
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfRankSmallOrZero
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresScaling
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitProductClosureProperties
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolume
 
 @[expose] public section
 
@@ -97,12 +55,12 @@ theorem siegelDensities (F E : Type) [Field F] [NumberField F] [Field E] [Number
   have hfv : FinVol F E σ M J := GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM M J hJ
   refine ⟨hfv.1, fun μ hμ => ⟨(hfv.2 μ hμ).1, fun 𝓕 h𝓕 =>
     ⟨GlobalTheory.CompanionTheory.SW.CharEx.exists_isCharAF F, fun ψ hψ => ?_⟩⟩⟩
-  obtain ⟨⟨laminf, hli⟩, hlv⟩ := GlobalTheory.T.exists_standard_local_measures F
+  obtain ⟨⟨laminf, hli⟩, hlv⟩ := _root_.GlobalTheory.CompanionTheory.SW.StdEx.exists_std F
   choose lam hlam using hlv
-  obtain ⟨ci, c, hc1, hWi, hWv⟩ := GlobalTheory.T.exists_unit_scaling_selfdual_adelic_measures F E σ hCM M J hJ d b laminf lam hli hlam ψ hψ n
-  obtain ⟨ei, e, he1, hHi, hHv⟩ := GlobalTheory.T.exists_unit_scaling_selfdual_herm_measures F E σ hCM d b laminf lam hli hlam ψ hψ n
-  obtain ⟨hci0, hc0, -, -, hdiv, -⟩ := GlobalTheory.T.unit_product_closure_properties F ci ei c e hc1 he1
-  obtain ⟨hei0, he0, -⟩ := GlobalTheory.T.unit_product_closure_properties F ei ci e c he1 hc1
+  obtain ⟨ci, c, hc1, hWi, hWv⟩ := _root_.GlobalTheory.CompanionTheory.SW.SdTuples.sdW_coord F E σ hCM M J hJ d b laminf lam hli hlam ψ hψ n
+  obtain ⟨ei, e, he1, hHi, hHv⟩ := _root_.GlobalTheory.CompanionTheory.SW.sdHerm_eq_coord F E σ hCM d b laminf lam hli hlam ψ hψ n
+  obtain ⟨hci0, hc0, -, -, hdiv, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.UnitProdAlg.main F ci ei c e hc1 he1
+  obtain ⟨hei0, he0, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.UnitProdAlg.main F ei ci e c he1 hc1
   refine ⟨⟨_, (hWi _).2 rfl⟩, fun μinf hμinf => ⟨⟨_, (hHi _).2 rfl⟩, fun νinf hνinf =>
     ⟨⟨_, fun v => (hWv v _).2 rfl⟩, fun μv hμv => ⟨⟨_, fun v => (hHv v _).2 rfl⟩, fun νv hνv => ?_⟩⟩⟩⟩
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩
@@ -121,12 +79,12 @@ theorem siegelDensities (F E : Type) [Field F] [NumberField F] [Field E] [Number
             (fun S => (a / a') • ∫ X, φ X ∂(m S)) := by
     intro R _ _ _ _ _ hR l hl
     obtain ⟨i1, i2, i3, i4, -⟩ := id hR
-    obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b l hl
-    obtain ⟨m, hm⟩ := GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ R hR n _ _ (hW n M) (hH n)
-    refine ⟨m, hm, fun S => (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ R hR n _ _ m (hW n M) (hH n) hm S).1, ?_⟩
+    obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM R d b l hl
+    obtain ⟨m, hm⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM M J hJ R hR n _ _ (hW n M) (hH n)
+    refine ⟨m, hm, fun S => (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hCM M J hJ R hR n _ _ m (hW n M) (hH n) hm S).1, ?_⟩
     intro a a' ha ha' h1 h2 φ hφ hφc
-    have h3 := GlobalTheory.T.gram_fiber_measures_scaling F E σ hCM M J hJ R hR n _ _ m (hW n M) (hH n) hm a a' ha ha'
-    have h4 := (GlobalTheory.T.gram_fiber_integral_isContDensityOn F E σ hCM M J hJ R hR n _ _ _ h1 h2 h3 φ hφ hφc).1
+    have h3 := _root_.GlobalTheory.CompanionTheory.SW.Rescale.isGramFib_rescale F E σ hCM M J hJ R hR n _ _ m (hW n M) (hH n) hm a a' ha ha'
+    have h4 := (_root_.GlobalTheory.CompanionTheory.SW.GramDensity.isContDensityOn_gram F E σ hCM M J hJ R hR n _ _ _ h1 h2 h3 φ hφ hφc).1
     simpa only [integral_smul_nnreal_measure] using h4
   obtain ⟨minf, hmi, hfi, hdi⟩ := key (Ainf F) hLi laminf hli.1
   choose m hm hf hd using fun v => key (Fv F v) (hLv v) (lam v) (hlam v).1
@@ -135,10 +93,10 @@ theorem siegelDensities (F E : Type) [Field F] [NumberField F] [Field E] [Number
   have e3 := fun v => (hWv v (μv v)).1 (hμv v)
   have e4 := fun v => (hHv v (νv v)).1 (hνv v)
   have hnM : n = 0 ∨ n + 2 ≤ M := by omega
-  have hE := GlobalTheory.T.siegel_weil_measure_of_rank_small_or_zero F E σ hCM n M J hJ hnM T hT hdet d b laminf lam hli hlam μ 𝓕 hμ h𝓕 minf m hmi hm
-  obtain ⟨hmeas, hint, hmul, hI⟩ := GlobalTheory.T.integral_pure_tensor_eq_prod_of_isEulerProd F E σ hCM d b n M _ _ _ hE (hfi _) (fun v => hf v _)
+  have hE := _root_.GlobalTheory.CompanionTheory.SW.AllFrames.swMeas_all F E σ hCM n M J hJ hnM T hT hdet d b laminf lam hli hlam μ 𝓕 hμ h𝓕 minf m hmi hm
+  obtain ⟨hmeas, hint, hmul, hI⟩ := _root_.GlobalTheory.CompanionTheory.SW.EulerInt.euler_int F E σ hCM d b n M _ _ _ hE (hfi _) (fun v => hf v _)
     Φ Φinf Φf Φv hc hsm.1 hpure hprod
-  have hθ := GlobalTheory.T.siegel_mean_value_integrable F E σ hCM M J hJ μ 𝓕 hμ h𝓕 n _ Φ hmeas hint
+  have hθ := _root_.GlobalTheory.CompanionTheory.SW.ThetaMean.mean_thetaS_eq_integral F E σ hCM M J hJ μ 𝓕 hμ h𝓕 n _ Φ hmeas hint
   obtain ⟨r1, r2⟩ := rescale_tprod (ci / ei) (fun v => c v / e v) hdiv.1 hdiv.2
     (∫ X, Φinf X ∂(minf (hermOf (Ainf F) σ T hT))) _ hmul
   refine ⟨fun S => (ci / ei) • ∫ X, Φinf X ∂(minf S), fun v S => (c v / e v) • ∫ X, Φv v X ∂(m v S),

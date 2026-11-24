@@ -59,4 +59,4 @@ theorem _root_.GlobalTheory.T.exists_gaussianDatum_flippedFiniteTensor_bigRoute 
     ∀ φ, IsFinPart Γ.M X.T φ →
     (∀ w ∈ locPl G t, IsLocFn W B t e Γ w (w.under (𝓞 D.host.F)) (flipAt W t i j w (n w) (Φ w)) (φ (w.under (𝓞 D.host.F)))) →
     ∃ f₀, f₀ ≠ 0 ∧ Γ.M.IsGauss Bs.ψ Bs.emb f₀ ∧ IsDatumA W e Γ τ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ φ) := by
-  first | exact @GlobalTheory.BigDat.exists_gauss_datum | exact GlobalTheory.BigDat.exists_gauss_datum | (intros; apply GlobalTheory.BigDat.exists_gauss_datum <;> assumption)
+  first | exact @GlobalTheory.BigDat.exists_gauss_datum

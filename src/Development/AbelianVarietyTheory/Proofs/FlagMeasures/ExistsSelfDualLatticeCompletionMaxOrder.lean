@@ -112,7 +112,7 @@ theorem exists_isSelfDualLattice : ∀ (F E : Type) [Field F] [NumberField F] [F
         | mem x hx =>
           have hh := hden (hE σ J x y) (Finset.mem_image.mpr ⟨x, hx, rfl⟩)
           convert hh using 1 <;> simp [hE, Formalism.UG.hform, Pi.smul_apply,
-            smul_eq_mul, Finset.mul_sum, Finset.sum_mul, zsmul_eq_mul, mul_comm, mul_left_comm, mul_assoc]
+            smul_eq_mul, Finset.mul_sum, zsmul_eq_mul, mul_comm, mul_left_comm, mul_assoc]
         | zero => simpa [hE, Formalism.UG.hform] using (isIntegral_zero : IsIntegral ℤ (0 : E))
         | add x z _ _ hx hz =>
           convert hx.add hz using 1 <;>

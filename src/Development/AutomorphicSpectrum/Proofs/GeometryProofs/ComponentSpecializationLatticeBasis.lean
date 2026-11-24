@@ -5,8 +5,11 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeAt
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EventuallyOneTmulAdicIntegralCoords
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRingStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeStableUnderActionStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRing
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeStableUnderAction
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackEquivalence
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundle
@@ -92,7 +95,7 @@ theorem exists_model_of_frame [IsCommMonObj G] [Smooth G.hom] (hξ : IsCptGen ξ
     ∃ MY : LieModel G z (Fin g → K), ∀ x : Fin g → regAt ξ ⟨_, h⟩,
       M.ValAt z (comb ℓ x) (MY.pt fun i => ψ (x i)) := by
   obtain ⟨F, _, _, ⟨MF⟩⟩ := lieModel_exists X G K z
-  obtain ⟨ev, hev, hsm, hsp⟩ := GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ V M K z h F MF hξ inferInstance
+  obtain ⟨ev, hev, hsm, hsp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieLat_val X G Ω ξ V M K z h F MF hξ inferInstance
   have hmem : ∀ i, ℓ i ∈ M.lat ⟨_, h⟩ := fun i => by
     rw [hℓ.2]
     exact Submodule.subset_span ⟨i, rfl⟩
@@ -172,7 +175,7 @@ theorem isActOf_of_frame {E : Type} [Field E] [NumberField E] (hξ : IsCptGen ξ
       simp [x]
     · simp [x, hj]
   have hmem : ρ a (comb ℓ x) ∈ M.lat ⟨_, h⟩ := by
-    refine GlobalTheory.T.lie_lattice_stable_under_action X Ω ξ G V M (𝓞 E) act ρ hact ⟨_, h⟩ a _ ?_
+    refine _root_.GlobalTheory.CompanionTheory.Ar.LieStable.lat_stable X Ω ξ G V M (𝓞 E) act ρ hact ⟨_, h⟩ a _ ?_
     rw [hℓ.2]
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
   rw [hℓ.2, Submodule.mem_span_range_iff_exists_fun] at hmem

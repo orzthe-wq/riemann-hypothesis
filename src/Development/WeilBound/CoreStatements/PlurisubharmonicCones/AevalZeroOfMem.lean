@@ -1,9 +1,10 @@
 module
 
+public import Mathlib.RingTheory.Valuation.ValuationSubring
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideRest
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.GfForms
 public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
+public import Mathlib.RingTheory.Valuation.LocalSubring
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -18,15 +19,11 @@ import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
+import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-public import Mathlib.RingTheory.Valuation.LocalSubring
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -46,10 +43,42 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideRest, Development.WeilBound.CoreStatements.PlurisubharmonicCones.AevalZeroOfMem
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideRest =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideRest", "h": "module\n\npublic import Mathlib.RingTheory.Valuation.ValuationSubring\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.Reformulated.B.Yla8.main :
+    ∀ {Ω : Type} [inst : Field Ω] (A : ValuationSubring Ω) {T : Type} [Finite T] (y : T → Ω),
+      (∃ (x : T), y x ≠ (0 : Ω)) → ∃ (x₀ : T), y x₀ ≠ (0 : Ω) ∧ ∀ (x : T), y x / y x₀ ∈ A := by
+  intro Ω _ A T _ y ⟨x1, hx1⟩
+  have : Nonempty {x : T // y x ≠ 0} := ⟨⟨x1, hx1⟩⟩
+  obtain ⟨⟨x₀, h0⟩, hmax⟩ := Finite.exists_max (fun z : {x : T // y x ≠ 0} => A.valuation (y z.1))
+  refine ⟨x₀, h0, fun x => ?_⟩
+  by_cases hx : y x = 0
+  · rw [hx, zero_div]; exact A.zero_mem
+  · rw [← A.valuation_le_one_iff, map_div₀]
+    have hpos : (0 : A.ValueGroup) < A.valuation (y x₀) := by
+      rw [zero_lt_iff]; exact (Valuation.ne_zero_iff _).mpr h0
+    exact (div_le_one₀ hpos).mpr (hmax ⟨x, hx⟩)
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideRest =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.PlurisubharmonicCones.AevalZeroOfMem =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.PlurisubharmonicCones.AevalZeroOfMem", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideRest\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.GfForms\npublic import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\npublic import Mathlib.RingTheory.Valuation.LocalSubring\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo PositivityTheory.HtPt
@@ -115,10 +144,6 @@ theorem hom_eq_aeval {B : Type} [CommRing B] (F : MRing J →+* B) (z : (Σ k, J
   | add p q hp hq => simp [hp, hq]
   | mul_X p q hp => simp [hp, h]
 
-theorem exists_val {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {T : Type} [Finite T] (y : T → Ω)
-    (h : ∃ x, y x ≠ 0) : ∃ x₀, y x₀ ≠ 0 ∧ ∀ x, y x / y x₀ ∈ A :=
-  _root_.UpperTheory.Reformulated.B.Yla8.main A y h
-
 variable {K' : Type} [Fintype K'] {J' : K' → Type} [∀ k, Fintype (J' k)]
 
 theorem exists_lift_blk {Ω L : Type} [Field Ω] [Field L] (y' : (Σ k, J' k) → Ω) (bk : K → K')
@@ -175,7 +200,7 @@ theorem exists_lift_blk {Ω L : Type} [Field Ω] [Field L] (y' : (Σ k, J' k) �
         simpa [φ, ratioPt, hz] using this
       · obtain rfl := hbk h
         rfl
-    · obtain ⟨x₀, h1, h2⟩ := exists_val A (fun x => y' ⟨k', x⟩) (hy' k')
+    · obtain ⟨x₀, h1, h2⟩ := _root_.UpperTheory.Reformulated.B.Yla8.main A (fun x => y' ⟨k', x⟩) (hy' k')
       exact ⟨x₀, h1, h2, fun k h => absurd ⟨k, h⟩ hk⟩
   choose c' hc'0 hc'A hc'z using hch
   let u : (Σ k, J' k) → A := fun p => ⟨ratioPt y' c' p, hc'A p.1 p.2⟩
@@ -223,3 +248,6 @@ theorem exists_lift_blk {Ω L : Type} [Field Ω] [Field L] (y' : (Σ k, J' k) �
     exact h5.symm.trans (Ideal.Quotient.eq_zero_iff_mem.2 (hEm h2))
 
 end LevelTowerAlt
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.PlurisubharmonicCones.AevalZeroOfMem =====

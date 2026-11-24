@@ -1,16 +1,19 @@
 module
 
-import Development.WeilBound.ThetaLifts.LatticeBasics.RealInvL
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
+public import Mathlib.Analysis.Calculus.ContDiff.Bounds
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
-public import Development.WeilBound.ThetaLifts.SchwartzMoments.NormIterComp
 public import Development.WeilBound.ThetaLifts.SchwartzMoments.SchwartzDqTendsto
-import Mathlib.Algebra.Order.Archimedean.Real.Hom
+public import Mathlib.Analysis.Normed.Module.HahnBanach
+public import Mathlib.Analysis.Calculus.BumpFunction.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.Normed.Module.HahnBanach
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -21,11 +24,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -33,7 +32,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,11 +44,92 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.WeilBound.ThetaLifts.LatticeBasics.RealInvL
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
+import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Analysis.Calculus.BumpFunction.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.ThetaLifts.SchwartzMoments.NormIterComp, Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.EvIHalfTrace
+
+-- ===== clump member: Development.WeilBound.ThetaLifts.SchwartzMoments.NormIterComp =====
+-- clump-header: {"m": "Development.WeilBound.ThetaLifts.SchwartzMoments.NormIterComp", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Distribution.SchwartzSpace.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.ContDiff.Bounds\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PositivityTheory.ThKOwn
+
+open scoped SchwartzMap ContDiff
+
+variable {A B : Type} [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
+
+theorem norm_iter_comp {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (p : E →L[ℝ] A) (φ : 𝓢(A, ℂ)) (i : ℕ) (x : E) :
+    ‖iteratedFDeriv ℝ i (⇑φ ∘ p) x‖ ≤ ‖iteratedFDeriv ℝ i φ (p x)‖ * ‖p‖ ^ i := by
+  rw [p.iteratedFDeriv_comp_right (φ.smooth ⊤) _ (by exact_mod_cast le_top)]
+  simpa using ContinuousMultilinearMap.norm_compContinuousLinearMap_le (iteratedFDeriv ℝ i φ (p x)) (fun _ => p)
+
+theorem norm_le_prod (x : WithLp 2 (A × B)) :
+    ‖x‖ ≤ (1 + ‖WithLp.fstL 2 ℝ A B x‖) * (1 + ‖WithLp.sndL 2 ℝ A B x‖) := by
+  have h := WithLp.prod_norm_sq_eq_of_L2 x
+  have h1 := norm_nonneg x.fst
+  have h2 := norm_nonneg x.snd
+  have h3 : ‖x‖ ≤ ‖x.fst‖ + ‖x.snd‖ := by
+    refine abs_le_of_sq_le_sq' ?_ (by positivity) |>.2
+    nlinarith [mul_nonneg h1 h2]
+  change ‖x‖ ≤ (1 + ‖x.fst‖) * (1 + ‖x.snd‖)
+  nlinarith [mul_nonneg h1 h2]
+
+def tens (φ : 𝓢(A, ℂ)) (f : 𝓢(B, ℂ)) : 𝓢(WithLp 2 (A × B), ℂ) where
+  toFun x := (⇑φ ∘ WithLp.fstL 2 ℝ A B) x * (⇑f ∘ WithLp.sndL 2 ℝ A B) x
+  smooth' := ((φ.smooth ⊤).comp (WithLp.fstL 2 ℝ A B).contDiff).mul ((f.smooth ⊤).comp (WithLp.sndL 2 ℝ A B).contDiff)
+  decay' k n := by
+    set p := WithLp.fstL 2 ℝ A B
+    set q := WithLp.sndL 2 ℝ A B
+    set S : ℝ := 2 ^ k * ((Finset.Iic (k, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) φ
+    set T : ℝ := 2 ^ k * ((Finset.Iic (k, n)).sup fun m => SchwartzMap.seminorm ℂ m.1 m.2) f
+    refine ⟨∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (S * ‖p‖ ^ i) * (T * ‖q‖ ^ (n - i)), fun x => ?_⟩
+    have h1 := norm_iteratedFDeriv_mul_le ((φ.smooth ⊤).comp p.contDiff) ((f.smooth ⊤).comp q.contDiff) x (n := n)
+      (by exact_mod_cast le_top)
+    refine (mul_le_mul_of_nonneg_left h1 (by positivity)).trans ?_
+    rw [Finset.mul_sum]
+    refine Finset.sum_le_sum fun i hi => ?_
+    have hi' : i ≤ n := Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)
+    have h2 : (1 + ‖p x‖) ^ k * ‖iteratedFDeriv ℝ i φ (p x)‖ ≤ S :=
+      SchwartzMap.one_add_le_sup_seminorm_apply (m := (k, n)) le_rfl hi' φ _
+    have h3 : (1 + ‖q x‖) ^ k * ‖iteratedFDeriv ℝ (n - i) f (q x)‖ ≤ T :=
+      SchwartzMap.one_add_le_sup_seminorm_apply (m := (k, n)) le_rfl (Nat.sub_le _ _) f _
+    have h4 := norm_iter_comp p φ i x
+    have h5 := norm_iter_comp q f (n - i) x
+    have h6 : ‖x‖ ≤ (1 + ‖p x‖) * (1 + ‖q x‖) := norm_le_prod x
+    have hS : 0 ≤ S := le_trans (by positivity) h2
+    calc _ ≤ ((1 + ‖p x‖) * (1 + ‖q x‖)) ^ k * ((n.choose i : ℝ) * (‖iteratedFDeriv ℝ i φ (p x)‖ * ‖p‖ ^ i) *
+          (‖iteratedFDeriv ℝ (n - i) f (q x)‖ * ‖q‖ ^ (n - i))) := by gcongr
+      _ = (n.choose i : ℝ) * (((1 + ‖p x‖) ^ k * ‖iteratedFDeriv ℝ i φ (p x)‖) * ‖p‖ ^ i) *
+          (((1 + ‖q x‖) ^ k * ‖iteratedFDeriv ℝ (n - i) f (q x)‖) * ‖q‖ ^ (n - i)) := by
+          rw [mul_pow]; ring
+      _ ≤ _ := by gcongr
+
+theorem tens_apply (φ : 𝓢(A, ℂ)) (f : 𝓢(B, ℂ)) (a : A) (b : B) : tens φ f (WithLp.toLp 2 (a, b)) = φ a * f b := rfl
+
+end PositivityTheory.ThKOwn
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.ThetaLifts.SchwartzMoments.NormIterComp =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.EvIHalfTrace =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.EvIHalfTrace", "h": "module\n\nimport Development.WeilBound.ThetaLifts.LatticeBasics.RealInvL\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap\npublic import Development.WeilBound.ThetaLifts.SchwartzMoments.NormIterComp\npublic import Development.WeilBound.ThetaLifts.SchwartzMoments.SchwartzDqTendsto\nimport Mathlib.Algebra.Order.Archimedean.Real.Hom\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Normed.Module.HahnBanach\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Calculus.BumpFunction.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -79,27 +158,12 @@ theorem dop_apply (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) (x : V) :
 
 theorem hasDerivAt_hl (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) (x : V) :
     HasDerivAt (fun t : ℝ => hl a L t f x) (dop a L f x) 0 := by
-  apply GlobalTheory.ThK.Dbl.Dense.hasDerivAt_hl <;> assumption
+  apply GlobalTheory.ThK.Dbl.Dense.hasDerivAt_hl
 end Line
 
 
 open Complex in
-theorem temperate_exp : Function.HasTemperateGrowth (fun t : ℝ => cexp (I * t)) := by
-  have hd : ∀ n : ℕ, iteratedDeriv n (fun t : ℝ => cexp (I * t)) = fun t : ℝ => I ^ n * cexp (I * t) := by
-    intro n
-    induction n with
-    | zero => simp
-    | succ n ih =>
-      funext t
-      rw [iteratedDeriv_succ, ih]
-      have : HasDerivAt (fun t : ℝ => I ^ n * cexp (I * t)) (I ^ n * (cexp (I * t) * (I * 1))) t :=
-        (((hasDerivAt_id (t : ℂ)).const_mul I).cexp.const_mul _).comp_ofReal
-      rw [this.deriv]; ring
-  refine ⟨Complex.contDiff_exp.comp (contDiff_const.mul Complex.ofRealCLM.contDiff),
-    fun n => ⟨0, 1, fun t => ?_⟩⟩
-  rw [norm_iteratedFDeriv_eq_norm_iteratedDeriv, hd, norm_mul, norm_pow,
-    Complex.norm_I, one_pow, one_mul, Complex.norm_exp_I_mul_ofReal]
-  simp
+alias temperate_exp := _root_.GlobalTheory.CompanionTheory.OM.SchDiff.temperate_exp
 
 section LineProof
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
@@ -137,7 +201,7 @@ theorem hl_schwartz (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) (t : ℝ) :
 theorem hl_line_deriv (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) :
     ∃ G : ℝ → 𝓢(V, ℂ), (∀ t x, G t x = hl a L t f x) ∧
       (a ≠ 0 → ∀ T : 𝓢(V, ℂ) →L[ℂ] ℂ, HasDerivAt (fun t => T (G t)) (T (dop a L f)) 0) := by
-  apply GlobalTheory.ThK.Dbl.Dense.hl_line_deriv <;> assumption
+  apply GlobalTheory.ThK.Dbl.Dense.hl_line_deriv
 
 theorem exists_bump : ∃ φ : 𝓢(ℝ, ℂ), ∀ᶠ t in 𝓝 (0 : ℝ), φ t = 1 := by
   let b : ContDiffBump (0 : ℝ) := default
@@ -197,8 +261,7 @@ theorem dopL_apply (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) : dopL a L f
   ext x
   have hT : (fun x => ((L x : ℝ) : ℂ)).HasTemperateGrowth := (Complex.ofRealCLM ∘L L).hasTemperateGrowth
   rw [dop_apply]
-  simp only [dopL, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, SchwartzMap.add_apply,
-    SchwartzMap.smul_apply, SchwartzMap.smulLeftCLM_apply_apply hT, LineDeriv.lineDerivOpCLM_apply,
+  simp only [dopL, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, SchwartzMap.smulLeftCLM_apply_apply hT, LineDeriv.lineDerivOpCLM_apply,
     SchwartzMap.lineDerivOp_apply_eq_fderiv, smul_eq_mul]
   ring
 
@@ -233,7 +296,7 @@ def linForm (B : κ → mixedEmbedding.mixedSpace F) : (κ → mixedEmbedding.mi
 theorem linForm_apply (B y : κ → mixedEmbedding.mixedSpace F) :
     linForm B y = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, y i * B i) := by
   set_option synthInstance.maxHeartbeats 100000 in
-    simp [linForm, map_sum, LinearMap.sum_apply]
+    simp [linForm, map_sum]
 
 
 open scoped Classical in
@@ -337,3 +400,6 @@ theorem derEx : GlobalTheory.RealLift.DerEx := by
 end PositivityTheory.RL
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.GaussianSeminormBounds.RealSeminormFiltration.EvIHalfTrace =====

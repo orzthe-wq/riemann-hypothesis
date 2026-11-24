@@ -2,50 +2,8 @@ module
 
 public import GroundTheory.PAdicHodge.PerfectoidField
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LeSpanSingletonOfForallMemEq
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -65,11 +23,6 @@ theorem smodEq_span_singleton_pow_iff (a x y : R) (n : ℕ) :
     x ≡ y [SMOD (Ideal.span {a} ^ n • ⊤ : Submodule R R)] ↔ a ^ n ∣ x - y := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow,
     Ideal.mem_span_singleton]
-
-theorem le_span_singleton_of_forall_mem_eq {π ξ : R} [IsAdicComplete (Ideal.span {π}) R]
-    {J : Ideal R} (h : ∀ x ∈ J, ∃ a z, z ∈ J ∧ x = a * ξ + z * π) :
-    J ≤ Ideal.span {ξ} :=
-  _root_.UpperTheory.Reformulated.B.Yhc2.le_span_singleton_of_forall_mem_eq h
 
 end Adic
 
@@ -370,7 +323,7 @@ theorem ker_fontaineTheta_eq_span {ξ : 𝕎𝒪♭} (hξ : ξ ∈ RingHom.ker �
       intro h
       rw [h, untilt_zero, ZeroMemClass.coe_zero, norm_zero] at hnξ0
       exact hpK (norm_eq_zero.1 hnξ0.symm)
-    refine le_span_singleton_of_forall_mem_eq (π := (p : 𝕎𝒪♭)) fun x hx => ?_
+    refine _root_.UpperTheory.Reformulated.B.Yhc2.le_span_singleton_of_forall_mem_eq (π := (p : 𝕎𝒪♭)) fun x hx => ?_
     obtain ⟨y, hy⟩ := exists_eq_teichmuller_add_mul_p x
     have hθx := untilt_coeff_zero_add_eq_zero hx hy
     have hnx0 : ‖((PreTilt.untilt (x.coeff 0) : 𝒪) : K)‖ ≤ ‖(p : K)‖ := by

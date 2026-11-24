@@ -220,12 +220,6 @@ theorem pairAt_eq (v : InfinitePlace K) (x : S.V) :
 
 end Forms
 
-section Int
-
-variable {K : Type} [Field K] [NumberField K] (Pl : Rows.Places K) (w : Pl.Pl)
-
-end Int
-
 section Coeff
 
 open GlobalTheory.TestLat.Compare
@@ -244,9 +238,6 @@ theorem pairBDualK : PairBDualK := by
   rw [e] at h
   rw [← h.1, ← h.2]
   simp [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, e2]
-
-theorem pairBDual : PairBDual := fun E K _ _ _ _ ι _ n emb lam L hL x =>
-  pairBDualK K ι n lam _ (fun τ => GlobalTheory.TauLat.tauLatLattice E K ι n emb τ L hL) x
 
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
 
@@ -273,13 +264,6 @@ theorem map_pairBK (φ : K →+* ℂ) (x y : VV K lam) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 end Coeff
-
-section Level
-
-variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (C C' : CoefPk X n (DecoSet (E := X.E) (n := n) (ST := ST) (SG := SG)))
-  (Λ : LevFam X.E X.K n SG)
-
-end Level
 
 section Concrete
 
@@ -308,17 +292,5 @@ variable (h : (mtildeGSD W Ch sel mu P).Ok) (h' : (dualGSD W Ch sel mu P).Ok)
 variable {W Ch sel mu P h h'}
 
 end Concrete
-
-section Record
-
-open ColumnAvoidanceConditions
-
-variable (D : D7) (EX : ErrX D) (Ch : Chars (fieldsOf D) (primesOf D EX) D.R.m)
-  (sel : HeightOneSpectrum (𝓞 (fieldsOf D).F) → HeightOneSpectrum (𝓞 (fieldsOf D).E)) {S : Set ℕ}
-
-variable (tw : D.what₂.Tup → Tup (fieldsOf D).F (fieldsOf D).E (fieldsOf D).K S) (Tw : TwForms D)
-  (A : AmbForm D (RowSide.sharp D)) (u : D.what₂.Word)
-
-end Record
 
 end GlobalTheory.PeriodClassSum

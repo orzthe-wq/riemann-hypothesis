@@ -95,8 +95,7 @@ theorem ker_localizedTheta_eq_span_eisenstein : Per.kerP l = RingHom.ker (Per.θ
   rw [← hx] at h3
   exact (Ideal.mul_unit_mem_iff_mem _ (IsLocalization.map_units (Per.AinfP l) s)).1 h3
 
-theorem fontaineTheta_algebraMap₂ (a : Per.Ainf l) : Per.θP l (algebraMap _ _ a) = (Per.θ l a : ℂ_[l]) :=
-  GlobalTheory.RingIface.fontaineTheta_algebraMap l a
+alias fontaineTheta_algebraMap₂ := _root_.GlobalTheory.RingIface.fontaineTheta_algebraMap
 
 theorem θ_surjective : Function.Surjective (Per.θ l) := by
   refine surjective_fontaineTheta fun x => ?_

@@ -41,6 +41,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.RealLeviDescent.IsCoreMod
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.RealDescent.RealLoc
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryMemGLs
 
 @[expose] public section
 
@@ -55,7 +56,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.ModelS
 
 theorem one_mem_GLs (n : ℕ) : (1 : Mat n) ∈ GLs n :=
-  unit_mem (1 : Matrix.unitaryGroup (Fin n) ℂ)
+  _root_.GlobalTheory.CompanionTheory.RCalc.unitary_mem_GLs (1 : Matrix.unitaryGroup (Fin n) ℂ)
 
 theorem ini_injective {n : ℕ} (j : Fin n) : Function.Injective (ini j) :=
   Fin.castLE_injective j.isLt

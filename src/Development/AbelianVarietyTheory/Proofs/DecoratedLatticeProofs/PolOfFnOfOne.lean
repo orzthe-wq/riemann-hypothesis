@@ -537,7 +537,7 @@ theorem scal_theta {e : X.Tau → ℤ} (hC : A.ThCEq a b Sa) (hχ : A.ChiLaw a b
   have d0' : ∀ τ, X.embC A.σ₀ τ ((LinearEquiv.det γ'.1 : X.Eˣ) : X.E) ≠ 0 := fun τ => (map_ne_zero _).2 (Units.ne_zero _)
   have e1 : ∀ τ (w : X.E) (k : ℤ), A.σ₀ (X.emb τ w ^ k) = X.embC A.σ₀ τ w ^ k := fun τ w k => map_zpow₀ _ _ _
   simp only [e1]
-  simp only [zpow_sub₀ (d0 _), zpow_sub₀ (d0' _), zpow_neg, Finset.prod_div_distrib, Finset.prod_inv_distrib, Finset.prod_zpow,
+  simp only [zpow_sub₀ (d0 _), zpow_sub₀ (d0' _), zpow_neg, Finset.prod_inv_distrib, Finset.prod_zpow,
     mul_inv, inv_inv, div_eq_mul_inv, Finset.prod_mul_distrib]
   generalize thC (X.embC A.σ₀) A.δ A.d A.sc A.AA Sa (gmap γ.1 N) (gmap γ'.1 N') (cA * cB) (fun x => A.σ₀ (Ξ' x))
     (A.e a b (gmap γ.1 N) (gmap γ'.1 N')) z = t' at h3 ⊢
@@ -560,14 +560,6 @@ include h in
 theorem th_contDiff : ContDiff ℂ ⊤ (I.th u a i b b' q q') :=
   thC_contDiff _ _ _ _ _ _ _ _ _ _ ((ana I h a u i (i + 1)).2.2 _ _ ⟨q.1.1.deco.2.lat, q.1.1.deco.2.uni⟩
     ⟨q'.1.1.deco.2.lat, q'.1.1.deco.2.uni⟩)
-
-theorem half_cast (R : Ranks) (k : ℕ) : (((R.N k / 2 : ℕ) : ℤ) : ℚ) = (R.N k : ℚ) / 2 := by
-  obtain ⟨c, hc⟩ := N_even R k
-  have : R.N k / 2 = c := by omega
-  rw [this, hc]
-  push_cast
-  ring
-
 
 include h in
 
@@ -603,11 +595,11 @@ theorem th_move (g : (I.stp u a i).G b) (g' : (I.stp u a (i + 1)).G b') (z : VCx
   have r2 := GlobalTheory.LvT.Built.KMap.rhoIs I h a u hi b ((I.stp u a i).act b g q) b' ((I.stp u a (i + 1)).act b' g' q')
   have s1 : (I.chain l u a).sSharp i = fun τ => ez τ - ((B.R.N (i + 1) / 2 : ℕ) : ℤ) := funext fun τ => by
     apply Int.cast_injective (α := ℚ)
-    rw [Int.cast_sub, half_cast, ← hez]
+    rw [Int.cast_sub, _root_.GlobalTheory.CharVal.half_N, ← hez]
     exact (congrArg _ (dif_pos hi)).trans (floor_sub_half _ _ _)
   have s2 : (I.chain l u a).sDiv i = fun τ => ez τ - ((B.R.N i / 2 : ℕ) : ℤ) := funext fun τ => by
     apply Int.cast_injective (α := ℚ)
-    rw [Int.cast_sub, half_cast, ← hez]
+    rw [Int.cast_sub, _root_.GlobalTheory.CharVal.half_N, ← hez]
     exact (congrArg _ (dif_pos hi)).trans (floor_sub_half _ _ _)
   have d1 : ∀ {n : ℕ} (γ : UF B.fields.E n) (s : B.fields.Tau → ℤ), detPow B.fields.emb B.embLL (ufGL B.fields.E n γ) s =
       ∏ τ, B.fields.embC I.A.σ₀ τ ((LinearEquiv.det γ.1 : B.fields.Eˣ) : B.fields.E) ^ s τ := fun γ s => by

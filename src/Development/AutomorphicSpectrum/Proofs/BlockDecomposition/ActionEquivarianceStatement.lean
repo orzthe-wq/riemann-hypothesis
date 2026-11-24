@@ -63,9 +63,6 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
-lemma jm_inv (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)⁻¹ = Formalism.REAL.Jm ε :=
-  Matrix.inv_eq_left_inv (signature_matrix_sq ε)
-
 lemma hinvol (ε : Fin n → Bool) : AAInvW.HInvol (Formalism.REAL.Jm ε) := by
   refine ⟨?_, signature_matrix_sq ε⟩
   unfold Formalism.REAL.Jm
@@ -79,10 +76,10 @@ lemma eabH_eq (a b : Fin n) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) :
   funext g
   have h1 : Formalism.QuantumDeterminants.hpart1 (Formalism.REAL.Jm ε) (Matrix.single a b 1) = Formalism.REAL.cpart1 ε (Matrix.single a b 1) := by
     unfold Formalism.QuantumDeterminants.hpart1 Formalism.REAL.cpart1
-    rw [jm_inv]
+    rw [_root_.Formalism.REAL.f1alg_inv_J]
   have h2 : Formalism.QuantumDeterminants.hpart2 (Formalism.REAL.Jm ε) (Matrix.single a b 1) = Formalism.REAL.cpart2 ε (Matrix.single a b 1) := by
     unfold Formalism.QuantumDeterminants.hpart2 Formalism.REAL.cpart2
-    rw [jm_inv]
+    rw [_root_.Formalism.REAL.f1alg_inv_J]
   unfold Formalism.QuantumDeterminants.EabH
   rw [h1, h2]
   rfl
@@ -106,10 +103,6 @@ lemma eab_local {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n)
     (hg : Formalism.REAL.inUJ ε g) : Formalism.REAL.Eab ε a b f g = Formalism.REAL.Eab ε a b f' g := by
   rw [← eabH_eq, ← eabH_eq]
   exact AAInvW.eab_h_local n (Formalism.REAL.Jm ε) ℂ f f' a b g (hinvol ε) h hg
-
-lemma eab_zero (a b : Fin n) (g : Matrix (Fin n) (Fin n) ℂ) :
-    Formalism.REAL.Eab ε a b (fun _ => (0 : ℂ)) g = 0 := by
-  simp [Formalism.REAL.Eab, Formalism.REAL.Ec, Formalism.REAL.Rd]
 
 lemma eab_lin {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ) (a b : Fin n)
     (hf : Formalism.REAL.SmoothOnG ε f) (hf' : Formalism.REAL.SmoothOnG ε f')
@@ -136,7 +129,7 @@ lemma eab_sum {ι : Type*} (s : Finset ι) (c : ι → ℂ) (F : ι → Matrix (
       ∑ i ∈ s, c i * Formalism.REAL.Eab ε a b (F i) g := by
   classical
   induction s using Finset.induction_on with
-  | empty => simpa using eab_zero (ε := ε) a b g
+  | empty => simpa using _root_.Formalism.REAL.lie_derivative_const_zero (ε := ε) a b g
   | insert i s hi ih =>
     simp only [Finset.sum_insert hi]
     have e : (fun x => c i * F i x + ∑ j ∈ s, c j * F j x) =

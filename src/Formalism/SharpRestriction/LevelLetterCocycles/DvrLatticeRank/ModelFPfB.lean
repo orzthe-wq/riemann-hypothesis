@@ -87,14 +87,7 @@ theorem γLA_smulLA (a : LetA O n) (x : LA W T π' c) :
     rfl
   | add x y hx hy => simp only [map_add (f := _), hx, hy]
 
-theorem γA_comm (g h : W.Gam) (a : LetA O n) : W.γA g (W.γA h a) = W.γA h (W.γA g a) := by
-  funext i
-  show W.γ₀ g (W.γ₀ h (a i)) = W.γ₀ h (W.γ₀ g (a i))
-  rw [← AlgHom.mul_apply, ← map_mul, mul_comm g h, map_mul, AlgHom.mul_apply]
-
-theorem γA_mem_AΔ (g : W.Gam) {a : LetA O n} (ha : a ∈ W.AΔ) : W.γA g a ∈ W.AΔ := by
-  intro δ hδ
-  rw [γA_comm, ha δ hδ]
+alias γA_mem_AΔ := _root_.Formalism.MainNotions.LiftingTheory.tr_γA_mem
 
 theorem range_rep (u : LA W T π' c) (hu : u ∈ LinearMap.range (toLA W T π' c ⊤)) :
     ∃ (m : ℕ) (a : Fin m → ↥W.AΔ) (y : Fin m → W.DD T) (hy : ∀ j, y j ∈ NcS W T (c - 1)),
@@ -144,7 +137,7 @@ theorem γLA_rep {m : ℕ} (a : Fin m → LetA O n) (z : Fin m → LcQ W T π' c
   rw [γLA_tmul, W.γE_ext]
   congr 2
   show W.γA W.gamK ((letE c : LetA O n) * a j) = _
-  rw [map_mul, Formalism.MainNotions.LiftingTheory.wmap_γA_letE]
+  rw [map_mul, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent]
 
 theorem range_smul {b : LetA O n} (hb : b ∈ W.AΔ) {u : LA W T π' c}
     (hu : u ∈ LinearMap.range (toLA W T π' c ⊤)) :
@@ -198,7 +191,7 @@ theorem φspan_γ (g : W.Gam) {z : W.DD T} (hz : z ∈ Formalism.MainNotions.Del
     exact ⟨W.γD T g x₀, W.N_Γ T g x₀ hx₀, rfl⟩
   | zero => rw [map_zero]; exact Submodule.zero_mem _
   | add x y _ _ hx hy => rw [map_add (f := _)]; exact Submodule.add_mem _ hx hy
-  | smul a x _ hx => rw [Formalism.MainNotions.LiftingTheory.wmap_γD_smul]; exact Submodule.smul_mem _ _ hx
+  | smul a x _ hx => rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear]; exact Submodule.smul_mem _ _ hx
 
 theorem DelS_γ (g : W.Gam) {x : W.DD T} (hx : x ∈ DelS W T) : W.γD T g x ∈ DelS W T := by
   rw [mem_DelS] at hx ⊢
@@ -212,7 +205,7 @@ theorem LamPS_γ {u u' : LetA O n} (huu : u' * u = 1) (hγE : W.γA W.gamK Eπ =
   refine ⟨?_, ?_, ?_⟩
   · have e : Eπ ^ h' = u' ^ h' * W.γA W.gamK (Eπ ^ h') := by
       rw [map_pow, hγE, mul_pow, ← mul_assoc, ← mul_pow, huu, one_pow, one_mul]
-    rw [e, mul_smul, ← Formalism.MainNotions.LiftingTheory.wmap_γD_smul]
+    rw [e, mul_smul, ← _root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear]
     exact Submodule.smul_mem _ _ (φspan_γ W T c _ h1)
   · exact (mem_DelS W T _).1 (DelS_γ W T _ ((mem_DelS W T y).2 h2))
   · rw [← γD_letE, h3]
@@ -225,7 +218,7 @@ theorem LamPS_smul {a : LetA O n} (ha : a ∈ W.AΔ) {y : W.DD T} (hy : y ∈ La
   · rw [smul_comm]
     exact Submodule.smul_mem _ _ h1
   · intro δ hδ
-    rw [Formalism.MainNotions.LiftingTheory.wmap_γD_smul, ha δ hδ, h2 δ hδ]
+    rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, ha δ hδ, h2 δ hδ]
   · rw [smul_comm, h3]
 
 theorem Eπ_φspan {w : LetA O n} {w' : LetA O n} (hww : w' * w = 1) (hQ : W.Q = w * Eπ)

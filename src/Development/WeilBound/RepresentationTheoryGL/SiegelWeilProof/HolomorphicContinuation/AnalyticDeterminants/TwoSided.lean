@@ -59,6 +59,4 @@ open LVs
 theorem lv : LV :=
   lv_of cayley uAct (djSec_of cayley) (dpDual cayley uAct) holInt holZero singToDiff topComp infInv
 
-theorem twoSided' : TwoSided := LVs.twoSided
-
 end PositivityTheory.Rg.Sw

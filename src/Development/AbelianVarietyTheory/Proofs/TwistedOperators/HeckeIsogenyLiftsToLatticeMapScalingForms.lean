@@ -73,8 +73,6 @@ theorem int_eq_of_exp_eq_coprime {m n : ℤ} {p : ℕ} (hp : 0 < p)
     rw [hK]
     first
       | exact (Nat.coprime_add_mul_right_left 1 p _).2 (Nat.coprime_one_left p)
-      | exact (Nat.coprime_add_mul_left_left 1 p _).2 (Nat.coprime_one_left p)
-      | simp
   obtain ⟨j, hj⟩ := Complex.exp_eq_exp_iff_exists_int.1 (h K hk hcop)
   have h0 : ((K : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hk.ne'
   have h1 : ((n - m : ℤ) : ℂ) = (((K : ℕ) : ℤ) * j : ℤ) := by

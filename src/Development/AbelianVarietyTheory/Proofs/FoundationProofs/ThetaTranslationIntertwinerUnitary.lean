@@ -146,4 +146,4 @@ end GlobalTheory.ThetaInter
 
 open GlobalTheory.ThetaInter in
 theorem GlobalTheory.theta_translation_intertwiner_unitary : ∀ D : D7, IntertwinerUnitary D := by
-  apply _root_.GlobalTheory.ConjNorm.unitary_all <;> assumption
+  apply _root_.GlobalTheory.ConjNorm.unitary_all

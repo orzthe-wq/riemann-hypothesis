@@ -112,7 +112,6 @@ theorem smooth_right' : SmoothRight := by
     funext x
     first
     | rfl
-    | simp
   intro g₀ hg₀
   obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf (g₀ * s) (ana_mul hg₀ hs)
   refine ⟨(fun x => x * s) ⁻¹' U, fun x => F (x * s), hU.preimage hL.continuous, hgU, ?_, ?_⟩
@@ -144,13 +143,9 @@ lemma ana_rdLin (hH : HInvol H) {f f' : Matrix (Fin n) (Fin n) ℂ → E} (c : �
   have hd1 : DifferentiableAt ℝ F g := by
     first
     | exact (hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hgU)
-    | exact (hF.contDiffAt (hU.mem_nhds hgU)).differentiableAt (by simp)
-    | exact (hF.differentiableOn le_top).differentiableAt (hU.mem_nhds hgU)
   have hd2 : DifferentiableAt ℝ F' g := by
     first
     | exact (hF'.differentiableOn (by simp)).differentiableAt (hU'.mem_nhds hgU')
-    | exact (hF'.contDiffAt (hU'.mem_nhds hgU')).differentiableAt (by simp)
-    | exact (hF'.differentiableOn le_top).differentiableAt (hU'.mem_nhds hgU')
   have e0 := rd_extension_h n H E (fun x => f x + c • f' x) (fun x => F x + c • F' x) (U ∩ U') g X hH
     (hU.inter hU') ⟨hgU, hgU'⟩ hg
     ((hF.mono Set.inter_subset_left).add ((hF'.mono Set.inter_subset_right).const_smul c))
@@ -162,7 +157,6 @@ lemma ana_rdLin (hH : HInvol H) {f f' : Matrix (Fin n) (Fin n) ℂ → E} (c : �
   rw [hD.fderiv]
   first
   | rfl
-  | simp
 
 lemma ana_rdAdd (hH : HInvol H) {f : Matrix (Fin n) (Fin n) ℂ → E} {A B g : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnH H f) (hA : inLH H A) (hB : inLH H B) (hg : inUH H g) :

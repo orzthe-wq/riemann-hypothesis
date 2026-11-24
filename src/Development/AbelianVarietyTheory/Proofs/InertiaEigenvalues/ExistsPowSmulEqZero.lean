@@ -1,32 +1,36 @@
 module
 
+public import Mathlib.RingTheory.AdicCompletion.Basic
+public import Mathlib.Topology.Algebra.Monoid.Defs
+public import ReciprocityTheory.BasicDefinitions.AdRep
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
+public import Mathlib.Topology.Algebra.Module.ModuleTopology
+public import Mathlib.Topology.Algebra.GroupWithZero
 public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.InvariantsVanishing
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicallyCompleteLatticeReductionActionStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticePowSmulNhdsZeroBasisStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeTwistExactSequenceCohomologyStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteResidueField
 public import Mathlib.Algebra.Module.Lattice.Full
+public import Mathlib.RingTheory.AdicCompletion.AsTensorProduct
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt
+public import Mathlib.Algebra.Module.Lattice.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-public import Mathlib.RingTheory.AdicCompletion.AsTensorProduct
-import Mathlib.RingTheory.AdicCompletion.Noetherian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -34,6 +38,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,11 +51,465 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Std.Tactic.BVDecide.Normalize.Prop
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt
-public import Mathlib.Algebra.Module.Lattice.Basic
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.BasicDefinitions.ExistsUnique
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.RingTheory.AdicCompletion.Noetherian
+import Mathlib.Tactic.Basify
+import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicallyCompleteLatticeReductionAction, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticePowSmulNhdsZeroBasis, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeTwistExactSequenceCohomology, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowSmulEqZero
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicallyCompleteLatticeReductionAction =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicallyCompleteLatticeReductionAction", "h": "module\n\npublic import Mathlib.RingTheory.AdicCompletion.Basic\npublic import Mathlib.Topology.Algebra.Monoid.Defs\npublic import ReciprocityTheory.BasicDefinitions.AdRep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open GlobalTheory.AdmLoc Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Filter Topology
+open scoped TensorProduct
+
+namespace GlobalTheory.CocycleLift
+
+variable {O G T M : Type} [CommRing O] [Group G] [TopologicalSpace G] [ContinuousMul G]
+  [AddCommGroup T] [Module O T] [AddCommGroup M] [Module O M]
+
+theorem pow_smul_eq_zero (lam : O) (htf : ∀ t : T, lam • t = 0 → t = 0) (n : ℕ) (t : T)
+    (h : lam ^ n • t = 0) : t = 0 := by
+  induction n generalizing t with
+  | zero => simpa using h
+  | succ n ih =>
+    rw [pow_succ, mul_smul] at h
+    exact htf _ (ih _ h)
+
+theorem smodeq_iff (lam : O) (n : ℕ) (x y : T) :
+    x ≡ y [SMOD ((Ideal.span {lam}) ^ n • ⊤ : Submodule O T)] ↔ ∃ t, x - y = lam ^ n • t := by
+  rw [SModEq.sub_mem, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul,
+    Submodule.mem_smul_pointwise_iff_exists]
+  constructor
+  · rintro ⟨b, -, hb⟩; exact ⟨b, hb.symm⟩
+  · rintro ⟨b, hb⟩; exact ⟨b, trivial, hb.symm⟩
+
+theorem step (lam : O) (π : Representation O G T) (π' : Representation O G M) (q : T →ₗ[O] M)
+    (htf : ∀ t : T, lam • t = 0 → t = 0) (hq : Function.Surjective q)
+    (hker : ∀ t, q t = 0 ↔ ∃ y, t = lam • y) (heq : ∀ g t, q (π g t) = π' g (q t))
+    (hcont : ∀ (a : ℕ) (t : T) (g₀ : G), ∀ᶠ g in 𝓝 g₀, ∃ y, π g t - π g₀ t = lam ^ a • y)
+    (hH : Subsingleton (ReciprocityTheory.Def.H2 π' ⊤)) (a : ℕ) (c : G → T) (hc : IsLocallyConstant c)
+    (hd : ∀ x, ∃ y, ReciprocityTheory.Def.d1 π c x = lam ^ (a + 1) • y) :
+    ∃ c' : G → T, (IsLocallyConstant c' ∧ ∀ x, ∃ y, ReciprocityTheory.Def.d1 π c' x = lam ^ (a + 1 + 1) • y) ∧
+      ∀ g, ∃ y, c' g - c g = lam ^ (a + 1) • y := by
+  choose w hw using hd
+  have hw' : ∀ g h, π g (c h) - c (g * h) + c g = lam ^ (a + 1) • w (g, h) := fun g h => hw (g, h)
+  have hlc : IsLocallyConstant (fun x => q (w x)) := by
+    rw [IsLocallyConstant.iff_eventually_eq]
+    rintro ⟨g₀, h₀⟩
+    have e1 : ∀ᶠ x : G × G in 𝓝 (g₀, h₀), c x.1 = c g₀ :=
+      (hc.comp_continuous continuous_fst).eventually_eq (g₀, h₀)
+    have e2 : ∀ᶠ x : G × G in 𝓝 (g₀, h₀), c x.2 = c h₀ :=
+      (hc.comp_continuous continuous_snd).eventually_eq (g₀, h₀)
+    have e3 : ∀ᶠ x : G × G in 𝓝 (g₀, h₀), c (x.1 * x.2) = c (g₀ * h₀) :=
+      (hc.comp_continuous continuous_mul).eventually_eq (g₀, h₀)
+    have e4 : ∀ᶠ x : G × G in 𝓝 (g₀, h₀),
+        ∃ y, π x.1 (c h₀) - π g₀ (c h₀) = lam ^ (a + 1 + 1) • y :=
+      (continuous_fst.tendsto (g₀, h₀)).eventually (hcont (a + 1 + 1) (c h₀) g₀)
+    filter_upwards [e1, e2, e3, e4] with x h1 h2 h3 ⟨y, h4⟩
+    obtain ⟨g, h⟩ := x
+    simp only at h1 h2 h3 h4
+    rw [← sub_eq_zero, ← map_sub, hker]
+    refine ⟨y, ?_⟩
+    rw [← sub_eq_zero]
+    apply pow_smul_eq_zero lam htf (a + 1)
+    rw [smul_sub, smul_sub, ← hw', ← hw', h1, h2, h3, ← mul_smul, ← pow_succ, ← h4]
+    abel
+  have hcoc : ∀ g h l, π g (w (h, l)) - w (g * h, l) + w (g, h * l) - w (g, h) = 0 := by
+    intro g h l
+    apply pow_smul_eq_zero lam htf (a + 1)
+    rw [smul_sub, smul_add, smul_sub, ← map_smul, ← hw', ← hw', ← hw', ← hw']
+    simp only [map_add (f := _), map_sub, map_mul, Module.End.mul_apply, mul_assoc]
+    abel
+  have hZ : (fun x => q (w x)) ∈ ReciprocityTheory.Def.Z2 π' ⊤ := by
+    refine ⟨⟨hlc, fun _ => trivial⟩, ?_⟩
+    show ReciprocityTheory.Def.d2 π' _ = 0
+    funext ⟨g, h, l⟩
+    have := congrArg q (hcoc g h l)
+    simp only [map_add (f := _), map_sub, heq, map_zero] at this
+    exact this
+  have h0 : (Submodule.Quotient.mk ⟨_, hZ⟩ : ReciprocityTheory.Def.H2 π' ⊤) = 0 := Subsingleton.elim _ _
+  rw [Submodule.Quotient.mk_eq_zero] at h0
+  obtain ⟨b, ⟨hb, -⟩, hbd⟩ := h0
+  have hbd' : ∀ g h, π' g (b h) - b (g * h) + b g = q (w (g, h)) := fun g h => congrFun hbd (g, h)
+  choose s hs using hq
+  refine ⟨fun g => c g - lam ^ (a + 1) • s (b g), ⟨?_, ?_⟩, fun g => ⟨- s (b g), by simp⟩⟩
+  · exact hc.sub (hb.comp (fun m => lam ^ (a + 1) • s m))
+  · rintro ⟨g, h⟩
+    obtain ⟨y, hy⟩ := (hker (w (g, h) - (π g (s (b h)) - s (b (g * h)) + s (b g)))).1 (by
+      simp only [map_add (f := _), map_sub, heq, hs, hbd', sub_self])
+    refine ⟨y, ?_⟩
+    show π g (c h - lam ^ (a + 1) • s (b h)) - (c (g * h) - lam ^ (a + 1) • s (b (g * h)))
+      + (c g - lam ^ (a + 1) • s (b g)) = _
+    rw [pow_succ lam (a + 1), mul_smul, ← hy, smul_sub, ← hw', map_sub, map_smul, smul_add, smul_sub]
+    abel
+
+theorem exists_lift : ∀ (O G T M : Type) [CommRing O] [Group G] [TopologicalSpace G] [ContinuousMul G] [AddCommGroup T] [Module O T] [AddCommGroup M] [Module O M] (lam : O) (π : Representation O G T) (π' : Representation O G M) (q : T →ₗ[O] M), IsAdicComplete (Ideal.span {lam}) T → (∀ t : T, lam • t = 0 → t = 0) → Function.Surjective q → (∀ t, q t = 0 ↔ ∃ y, t = lam • y) → (∀ g t, q (π g t) = π' g (q t)) → (∀ (a : ℕ) (t : T) (g₀ : G), ∀ᶠ g in 𝓝 g₀, ∃ y, π g t - π g₀ t = lam ^ a • y) → Subsingleton (ReciprocityTheory.Def.H2 π' ⊤) → ∀ z ∈ ReciprocityTheory.Def.Z1 π' ⊤, ∃ c : G → T, (∀ g h, c (g * h) = c g + π g (c h)) ∧ (∀ g, q (c g) = z g) ∧ ∀ (a : ℕ) (g₀ : G), ∀ᶠ g in 𝓝 g₀, ∃ y, c g - c g₀ = lam ^ a • y := by
+  intro O G T M _ _ _ _ _ _ _ _ lam π π' q hcomp htf hq hker heq hcont hH z hz
+  have hst := step lam π π' q htf hq hker heq hcont hH
+  obtain ⟨⟨hz1, -⟩, hz2⟩ := hz
+  have hz3 : ∀ g h, π' g (z h) - z (g * h) + z g = 0 := fun g h => congrFun hz2 (g, h)
+  choose s hs using hq
+  let P : ℕ → (G → T) → Prop := fun a c =>
+    IsLocallyConstant c ∧ ∀ x, ∃ y, ReciprocityTheory.Def.d1 π c x = lam ^ (a + 1) • y
+  have P0 : P 0 (fun g => s (z g)) := by
+    refine ⟨hz1.comp s, ?_⟩
+    rintro ⟨g, h⟩
+    rw [zero_add, pow_one, ← hker]
+    show q (π g (s (z h)) - s (z (g * h)) + s (z g)) = 0
+    simp only [map_add (f := _), map_sub, heq, hs, hz3]
+  have hst' : ∀ a (c : {c // P a c}), ∃ c' : {c // P (a + 1) c},
+      ∀ g, ∃ y, c'.1 g - c.1 g = lam ^ (a + 1) • y := by
+    intro a c
+    obtain ⟨c', h1, h2⟩ := hst a c.1 c.2.1 c.2.2
+    exact ⟨⟨c', h1⟩, h2⟩
+  choose F hF using hst'
+  let u : ∀ a, {c // P a c} := fun a => Nat.rec ⟨_, P0⟩ F a
+  have hu : ∀ a g, ∃ y, (u (a + 1)).1 g - (u a).1 g = lam ^ (a + 1) • y := fun a => hF a (u a)
+  have hcau : ∀ g m n, m ≤ n → ∃ y, (u n).1 g - (u m).1 g = lam ^ (m + 1) • y := by
+    intro g m n hmn
+    induction n, hmn using Nat.le_induction with
+    | base => exact ⟨0, by simp⟩
+    | succ n hmn ih =>
+      obtain ⟨y, hy⟩ := ih
+      obtain ⟨y', hy'⟩ := hu n g
+      obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hmn
+      refine ⟨y + lam ^ k • y', ?_⟩
+      rw [smul_add, ← mul_smul, ← pow_add, show m + 1 + k = m + k + 1 by ring, ← hy, ← hy']
+      abel
+  have hlim : ∀ g, ∃ L, ∀ n, ∃ y, (u n).1 g - L = lam ^ n • y := by
+    intro g
+    obtain ⟨L, hL⟩ := IsPrecomplete.prec hcomp.toIsPrecomplete (f := fun n => (u n).1 g) (by
+      intro m n hmn
+      apply SModEq.symm
+      rw [smodeq_iff]
+      obtain ⟨y, hy⟩ := hcau g m n hmn
+      exact ⟨lam • y, by rw [hy, pow_succ, mul_smul]⟩)
+    exact ⟨L, fun n => (smodeq_iff lam n _ _).1 (hL n)⟩
+  choose c hc using hlim
+  refine ⟨c, fun g h => ?_, fun g => ?_, fun a g₀ => ?_⟩
+  · rw [← sub_eq_zero]
+    apply IsHausdorff.haus hcomp.toIsHausdorff
+    intro n
+    rw [smodeq_iff]
+    obtain ⟨y1, h1⟩ := hc g n
+    obtain ⟨y2, h2⟩ := hc h n
+    obtain ⟨y3, h3⟩ := hc (g * h) n
+    obtain ⟨y4, h4⟩ := (u n).2.2 (g, h)
+    have h4' : π g ((u n).1 h) - (u n).1 (g * h) + (u n).1 g = lam ^ n • lam • y4 := by
+      rw [← mul_smul, ← pow_succ]; exact h4
+    refine ⟨y1 + π g y2 - y3 - lam • y4, ?_⟩
+    rw [smul_sub, smul_sub, smul_add, ← map_smul, ← h1, ← h2, ← h3, ← h4', map_sub]
+    abel
+  · obtain ⟨y1, h1⟩ := hc g 1
+    obtain ⟨y2, h2⟩ := hcau g 0 1 (by norm_num)
+    have h0 : q ((u 0).1 g) = z g := hs _
+    rw [← h0, ← sub_eq_zero, ← map_sub, hker]
+    refine ⟨y2 - y1, ?_⟩
+    rw [zero_add, pow_one] at h2
+    rw [pow_one] at h1
+    rw [smul_sub, ← h1, ← h2]
+    abel
+  · filter_upwards [(u a).2.1.eventually_eq g₀] with g hg
+    obtain ⟨y1, h1⟩ := hc g a
+    obtain ⟨y2, h2⟩ := hc g₀ a
+    refine ⟨y2 - y1, ?_⟩
+    rw [smul_sub, ← h1, ← h2, hg]
+    abel
+
+end GlobalTheory.CocycleLift
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicallyCompleteLatticeReductionAction =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticePowSmulNhdsZeroBasis =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticePowSmulNhdsZeroBasis", "h": "module\n\npublic import Mathlib.Topology.Algebra.Module.ModuleTopology\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Topology.Algebra.GroupWithZero\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open GlobalTheory.AdmLoc Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Filter Topology
+open scoped TensorProduct
+
+namespace GlobalTheory
+
+
+open Filter Topology in
+open scoped TensorProduct in
+theorem _root_.GlobalTheory.lattice_multiples_nhds_basis :
+    ∀ (LL O V : Type) [Field LL] [TopologicalSpace LL] [IsTopologicalRing LL] [CommRing O] [Algebra O LL] [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] [TopologicalSpace V] [IsModuleTopology LL V] (T : Submodule O V) (lam : O), T.FG → Submodule.span LL (T : Set V) = ⊤ → IsOpen (Set.range (algebraMap O LL)) → algebraMap O LL lam ≠ 0 → (∀ U ∈ 𝓝 (0 : LL), ∃ a : ℕ, ∀ x : O, algebraMap O LL (lam ^ a * x) ∈ U) → (∀ a : ℕ, {v : V | ∃ t ∈ T, v = lam ^ a • t} ∈ 𝓝 (0 : V)) ∧ ∀ U ∈ 𝓝 (0 : V), ∃ a : ℕ, ∀ t ∈ T, lam ^ a • t ∈ U := by
+  intro LL O V _ _ _ _ _ _ _ _ _ _ _ T lam hT hspan hopen hlam hsmall
+  obtain ⟨n, s, rfl⟩ := Submodule.fg_iff_exists_fin_generating_family.mp hT
+  set φ : (Fin n → LL) →ₗ[LL] V := Fintype.linearCombination LL s with hφ
+  have key : ∀ (a : ℕ) (c : Fin n → O),
+      φ (fun i => algebraMap O LL (lam ^ a * c i)) = lam ^ a • ∑ i, c i • s i := by
+    intro a c
+    simp only [hφ, Fintype.linearCombination_apply, Finset.smul_sum, map_mul, mul_smul,
+      algebraMap_smul]
+  have hsurj : Function.Surjective φ := by
+    rw [← LinearMap.range_eq_top, eq_top_iff, ← hspan, Submodule.span_le]
+    intro t ht
+    obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun O).mp ht
+    exact ⟨_, by rw [key 0 c, pow_zero, one_smul]⟩
+  have hq := IsModuleTopology.isOpenQuotientMap_of_surjective hsurj
+  refine ⟨fun a => ?_, fun U hU => ?_⟩
+  · have hc : algebraMap O LL (lam ^ a) ≠ 0 := by rw [map_pow]; exact pow_ne_zero _ hlam
+    set W : Set LL := Set.range fun x : O => algebraMap O LL (lam ^ a * x) with hW
+    have hWeq : W = (Homeomorph.mulLeft₀ _ hc) '' Set.range (algebraMap O LL) := by
+      ext y; simp [hW, map_mul]
+    have hWo : IsOpen W := hWeq ▸ (Homeomorph.mulLeft₀ _ hc).isOpenMap _ hopen
+    have hPo : IsOpen (φ '' Set.univ.pi fun _ => W) :=
+      hq.isOpenMap _ (isOpen_set_pi Set.finite_univ fun _ _ => hWo)
+    refine mem_of_superset (hPo.mem_nhds ⟨0, fun i _ => ⟨0, by simp⟩, map_zero φ⟩) ?_
+    rintro v ⟨y, hy, rfl⟩
+    choose c hc' using fun i => hy i (Set.mem_univ i)
+    have : y = fun i => algebraMap O LL (lam ^ a * c i) := funext fun i => (hc' i).symm
+    subst this
+    exact ⟨_, (Submodule.mem_span_range_iff_exists_fun O).mpr ⟨c, rfl⟩, key a c⟩
+  · have h0 : φ ⁻¹' U ∈ 𝓝 (0 : Fin n → LL) :=
+      hq.continuous.continuousAt.preimage_mem_nhds (by simpa using hU)
+    rw [nhds_pi, Filter.mem_pi'] at h0
+    obtain ⟨I, t, ht, hsub⟩ := h0
+    obtain ⟨a, ha⟩ := hsmall (⋂ i, t i) (Filter.iInter_mem.mpr ht)
+    refine ⟨a, fun v hv => ?_⟩
+    obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun O).mp hv
+    rw [← key a c]
+    exact hsub fun i _ => Set.mem_iInter.mp (ha (c i)) i
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticePowSmulNhdsZeroBasis =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeTwistExactSequenceCohomology =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeTwistExactSequenceCohomology", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport ReciprocityTheory.BasicDefinitions.ExistsUnique\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open GlobalTheory.AdmLoc Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Filter Topology
+open scoped TensorProduct
+
+namespace GlobalTheory.TensIsoExt
+
+open ReciprocityTheory.Def (Z1 B1 H1 d0 d1 C1)
+
+section Abstract
+
+variable {O G : Type} [CommRing O] [Group G]
+variable {A B C : Type} [AddCommGroup A] [Module O A] [AddCommGroup B] [Module O B]
+  [AddCommGroup C] [Module O C]
+
+def ambMap {π : Representation O G A} {π' : Representation O G B} (f : A →ₗ[O] B)
+    (hf : ∀ g m, f (π g m) = π' g (f m)) : Amb π →ₗ[O] Amb π' :=
+  Submodule.mapQ _ _ (f.compLeft G) (by
+    rintro z ⟨b, -, hb⟩
+    refine ⟨f b, Submodule.mem_top, ?_⟩
+    funext g
+    have h1 : π g b - b = z g := congrFun hb g
+    change π' g (f b) - f b = f (z g)
+    rw [← h1, map_sub, hf])
+
+theorem ambMap_mk {π : Representation O G A} {π' : Representation O G B} (f : A →ₗ[O] B)
+    (hf : ∀ g m, f (π g m) = π' g (f m)) (u : G → A) :
+    ambMap f hf (Submodule.Quotient.mk u) = Submodule.Quotient.mk (fun g => f (u g)) := rfl
+
+theorem amb_eq_iff {π : Representation O G A} (u v : G → A) :
+    (Submodule.Quotient.mk u : Amb π) = Submodule.Quotient.mk v ↔ ∃ m, ∀ g, π g m - m = u g - v g := by
+  rw [Submodule.Quotient.eq, ReciprocityTheory.Def.B1, Submodule.mem_map]
+  constructor
+  · rintro ⟨m, -, hm⟩
+    exact ⟨m, fun g => congrFun hm g⟩
+  · rintro ⟨m, hm⟩
+    exact ⟨m, Submodule.mem_top, funext hm⟩
+
+variable [TopologicalSpace G]
+
+theorem mem_range_toAmb {π : Representation O G A} (x : Amb π) :
+    x ∈ LinearMap.range (toAmb π) ↔ ∃ z ∈ Z1 π ⊤, Submodule.Quotient.mk z = x := by
+  constructor
+  · rintro ⟨y, rfl⟩
+    obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ y
+    exact ⟨z, z.2, rfl⟩
+  · rintro ⟨z, hz, rfl⟩
+    exact ⟨Submodule.Quotient.mk ⟨z, hz⟩, rfl⟩
+
+theorem mem_cocycles_units_iff {π : Representation O G A} (z : G → A) :
+    z ∈ Z1 π ⊤ ↔ IsLocallyConstant z ∧ ∀ g h, π g (z h) - z (g * h) + z g = 0 := by
+  rw [Z1, Submodule.mem_inf, LinearMap.mem_ker]
+  constructor
+  · rintro ⟨hc, hd⟩
+    exact ⟨hc.1, fun g h => congrFun hd (g, h)⟩
+  · rintro ⟨hlc, hd⟩
+    refine ⟨⟨hlc, fun _ => Submodule.mem_top⟩, ?_⟩
+    funext x
+    exact hd x.1 x.2
+
+variable {HA HB HC : Type} [AddCommGroup HA] [Module O HA] [AddCommGroup HB] [Module O HB]
+  [AddCommGroup HC] [Module O HC]
+
+private theorem ambMap_injective_lemma {πA : Representation O G A} {πB : Representation O G B}
+    {πC : Representation O G C} (α : A →ₗ[O] B) (β : B →ₗ[O] C) (hα : ∀ g m, α (πA g m) = πB g (α m))
+    (hβ : ∀ g m, β (πB g m) = πC g (β m)) (αinj : Function.Injective α) (ex : Function.Exact α β)
+    (hinv : πC.invariants = ⊥) : Function.Injective (ambMap α hα) := by
+  rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+  intro x hx
+  obtain ⟨u, rfl⟩ := Submodule.Quotient.mk_surjective _ x
+  have h0 : (Submodule.Quotient.mk (fun g => α (u g)) : Amb πB) = Submodule.Quotient.mk 0 := by
+    rw [Submodule.Quotient.mk_zero, ← hx, ambMap_mk]
+  obtain ⟨m, hm⟩ := (amb_eq_iff _ _).1 h0
+  have hm' : ∀ g, πB g m - m = α (u g) := fun g => by simpa using hm g
+  have hfix : β m ∈ πC.invariants := by
+    rw [Representation.mem_invariants]
+    intro g
+    have e := congrArg β (hm' g)
+    rw [map_sub, hβ, ex.apply_apply_eq_zero] at e
+    exact sub_eq_zero.1 e
+  rw [hinv, Submodule.mem_bot] at hfix
+  obtain ⟨a₀, ha₀⟩ := (ex m).1 hfix
+  rw [← Submodule.Quotient.mk_zero, amb_eq_iff]
+  refine ⟨a₀, fun g => αinj ?_⟩
+  rw [map_sub, hα, ha₀, hm' g, Pi.zero_apply, sub_zero]
+
+theorem five {πA : Representation O G A} {πB : Representation O G B} {πC : Representation O G C}
+    (α : A →ₗ[O] B) (β : B →ₗ[O] C) (hα : ∀ g m, α (πA g m) = πB g (α m))
+    (hβ : ∀ g m, β (πB g m) = πC g (β m)) (αinj : Function.Injective α) (ex : Function.Exact α β)
+    (βsurj : Function.Surjective β)
+    (a : HA →ₗ[O] HB) (b : HB →ₗ[O] HC) (ex' : Function.Exact a b) (bsurj : Function.Surjective b)
+    (φA : HA →ₗ[O] Amb πA) (φB : HB →ₗ[O] Amb πB) (φC : HC →ₗ[O] Amb πC)
+    (sqa : ∀ y, ambMap α hα (φA y) = φB (a y)) (sqb : ∀ y, ambMap β hβ (φB y) = φC (b y))
+    (hle : LinearMap.range φB ≤ LinearMap.range (toAmb πB))
+    (hlc : ∀ m, IsLocallyConstant fun g => πB g m) (hinv : πC.invariants = ⊥)
+    (hA : Function.Injective φA ∧ LinearMap.range φA = LinearMap.range (toAmb πA))
+    (hC : Function.Injective φC ∧ LinearMap.range φC = LinearMap.range (toAmb πC)) :
+    Function.Injective φB ∧ LinearMap.range φB = LinearMap.range (toAmb πB) := by
+  have hαi := ambMap_injective_lemma α β hα hβ αinj ex hinv
+  refine ⟨?_, le_antisymm hle ?_⟩
+  · rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+    intro y hy
+    have h1 : φC (b y) = 0 := by rw [← sqb, hy, map_zero]
+    have h2 : b y = 0 := hC.1 (by rw [h1, map_zero])
+    obtain ⟨x, rfl⟩ := (ex' y).1 h2
+    have h3 : φA x = 0 := hαi (by rw [sqa, hy, map_zero])
+    have h4 : x = 0 := hA.1 (by rw [h3, map_zero])
+    rw [h4, map_zero]
+  · rintro _ ⟨ζ, rfl⟩
+    obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ ζ
+    obtain ⟨hzlc, hzc⟩ := (mem_cocycles_units_iff (z : G → B)).1 z.2
+    have hβz : (fun g => β ((z : G → B) g)) ∈ Z1 πC ⊤ := by
+      refine (mem_cocycles_units_iff _).2 ⟨hzlc.comp β, fun g h => ?_⟩
+      rw [← hβ, ← map_sub, ← map_add (f := _), hzc g h, map_zero]
+    have hC' := (mem_range_toAmb (Submodule.Quotient.mk (fun g => β ((z : G → B) g)) : Amb πC)).2
+      ⟨_, hβz, rfl⟩
+    rw [← hC.2] at hC'
+    obtain ⟨w, hw⟩ := hC'
+    obtain ⟨y, rfl⟩ := bsurj w
+    obtain ⟨z', hz'mem, hz'eq⟩ := (mem_range_toAmb (φB y)).1 (hle (LinearMap.mem_range_self φB y))
+    obtain ⟨hz'lc, hz'c⟩ := (mem_cocycles_units_iff z').1 hz'mem
+    have hcl : (Submodule.Quotient.mk (fun g => β (z' g)) : Amb πC) =
+        Submodule.Quotient.mk (fun g => β ((z : G → B) g)) := by
+      rw [← ambMap_mk β hβ, hz'eq, sqb, hw]
+    obtain ⟨c, hc⟩ := (amb_eq_iff _ _).1 hcl
+    obtain ⟨m₀, hm₀⟩ := βsurj c
+    have hk : ∀ g, β ((z : G → B) g - z' g + (πB g m₀ - m₀)) = 0 := by
+      intro g
+      have e := hc g
+      rw [map_add (f := _), map_sub, map_sub, hβ, hm₀, e]
+      abel
+    choose u hu using fun g => (ex ((z : G → B) g - z' g + (πB g m₀ - m₀))).1 (hk g)
+    have hulc : IsLocallyConstant u := by
+      refine IsLocallyConstant.desc u α ?_ αinj
+      have e : α ∘ u = fun g => (z : G → B) g - z' g + (πB g m₀ - m₀) := funext hu
+      rw [e]
+      exact (hzlc.sub hz'lc).add ((hlc m₀).sub (IsLocallyConstant.const m₀))
+    have hum : u ∈ Z1 πA ⊤ := by
+      refine (mem_cocycles_units_iff u).2 ⟨hulc, fun g h => αinj ?_⟩
+      have e1 : (z : G → B) (g * h) = πB g ((z : G → B) h) + (z : G → B) g := by
+        have e := hzc g h
+        rw [sub_add_eq_add_sub, sub_eq_zero] at e
+        exact e.symm
+      have e2 : z' (g * h) = πB g (z' h) + z' g := by
+        have e := hz'c g h
+        rw [sub_add_eq_add_sub, sub_eq_zero] at e
+        exact e.symm
+      rw [map_zero, map_add (f := _), map_sub, hα, hu, hu, hu, e1, e2, map_mul, Module.End.mul_apply]
+      simp only [map_add (f := _), map_sub]
+      abel
+    obtain ⟨x, hx⟩ : Submodule.Quotient.mk u ∈ LinearMap.range φA := by
+      rw [hA.2]
+      exact (mem_range_toAmb _).2 ⟨u, hum, rfl⟩
+    refine ⟨y + a x, ?_⟩
+    rw [map_add (f := _), ← sqa, hx, ambMap_mk, ← hz'eq, ← Submodule.Quotient.mk_add]
+    change _ = (Submodule.Quotient.mk (z : G → B) : Amb πB)
+    rw [amb_eq_iff]
+    refine ⟨m₀, fun g => ?_⟩
+    rw [Pi.add_apply, hu]
+    abel
+
+end Abstract
+section Tens
+
+variable {G LL O V : Type} [Group G] [TopologicalSpace G] [Field LL] [CommRing O] [Algebra O LL]
+  [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] [TopologicalSpace V] [ContinuousAdd V]
+  [ContinuousConstSMul LL V] {ρ : Representation LL G V} (L : Lattice (O := O) ρ) (χ : G →* Oˣ)
+  {X X' : Type} [AddCommGroup X] [Module O X] [AddCommGroup X'] [Module O X']
+
+
+omit [TopologicalSpace G] [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V] in
+theorem lTensor_equivariant (f : X →ₗ[O] X') (g : G) (m : ↥L.T ⊗[O] X) :
+    f.lTensor ↥L.T (twCoef (latRep L) χ X g m) = twCoef (latRep L) χ X' g (f.lTensor ↥L.T m) := by
+  induction m using TensorProduct.induction_on with
+  | zero => simp only [map_zero]
+  | tmul t x => simp only [twCoef, coefRep_tmul, LinearMap.lTensor_tmul]
+  | add p q hp hq => simp only [map_add (f := _), hp, hq]
+
+theorem tensAmb_natural (f : X →ₗ[O] X') (y : H1tw L χ ⊗[O] X) :
+    ambMap (f.lTensor ↥L.T) (lTensor_equivariant L χ f) (tensAmb L χ X y) =
+      tensAmb L χ X' (f.lTensor (H1tw L χ) y) := by
+  induction y using TensorProduct.induction_on with
+  | zero => simp only [map_zero]
+  | tmul c x =>
+    obtain ⟨c, rfl⟩ := Submodule.Quotient.mk_surjective _ c
+    rw [LinearMap.lTensor_tmul, tensAmb_tmul, tensAmb_tmul, ambMap_mk]
+    congr 1
+  | add p q hp hq => simp only [map_add (f := _), hp, hq]
+
+end Tens
+
+theorem tensIso_of_exact : ∀ (G LL O V : Type) [Group G] [TopologicalSpace G] [Field LL] [CommRing O] [Algebra O LL] [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V] (ρ : Representation LL G V) (L : Lattice (O := O) ρ) (χ : G →* Oˣ) (S X Y : Type) [AddCommGroup S] [Module O S] [AddCommGroup X] [Module O X] [AddCommGroup Y] [Module O Y] (i : S →ₗ[O] X) (p : X →ₗ[O] Y), Function.Injective i → Function.Exact i p → Function.Surjective p → (∀ c x, tensCoc L χ X c x ∈ ReciprocityTheory.Def.Z1 (twCoef (latRep L) χ X) ⊤) → (∀ m, IsLocallyConstant fun g => twCoef (latRep L) χ X g m) → (twCoef (latRep L) χ Y).invariants = ⊥ → TensIso L χ S → TensIso L χ Y → TensIso L χ X := by
+  intro G LL O V _ _ _ _ _ _ _ _ _ _ _ _ ρ L χ S X Y _ _ _ _ _ _ i p hi hex hp hcoc hlc hinv hS hY
+  have := L.free
+  refine five (i.lTensor ↥L.T) (p.lTensor ↥L.T) (lTensor_equivariant L χ i) (lTensor_equivariant L χ p)
+    (Module.Flat.lTensor_preserves_injective_linearMap i hi) (lTensor_exact _ hex hp)
+    (LinearMap.lTensor_surjective _ hp) (i.lTensor (H1tw L χ)) (p.lTensor (H1tw L χ))
+    (lTensor_exact _ hex hp) (LinearMap.lTensor_surjective _ hp)
+    (tensAmb L χ S) (tensAmb L χ X) (tensAmb L χ Y) (fun y => tensAmb_natural L χ i y)
+    (fun y => tensAmb_natural L χ p y) ?_ hlc hinv hS hY
+  rintro _ ⟨y, rfl⟩
+  induction y using TensorProduct.induction_on with
+  | zero => rw [map_zero]; exact Submodule.zero_mem _
+  | tmul c x =>
+    obtain ⟨c, rfl⟩ := Submodule.Quotient.mk_surjective _ c
+    rw [tensAmb_tmul]
+    exact (mem_range_toAmb _).2 ⟨_, hcoc c x, rfl⟩
+  | add p q hp hq => rw [map_add (f := _)]; exact Submodule.add_mem _ hp hq
+
+end GlobalTheory.TensIsoExt
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeTwistExactSequenceCohomology =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowSmulEqZero =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowSmulEqZero", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.InvariantsVanishing\npublic import Mathlib.RingTheory.AdicCompletion.Basic\npublic import Mathlib.Topology.Algebra.Monoid.Defs\npublic import ReciprocityTheory.BasicDefinitions.AdRep\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicallyCompleteLatticeReductionAction\npublic import Mathlib.Topology.Algebra.Module.ModuleTopology\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticePowSmulNhdsZeroBasis\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LatticeTwistExactSequenceCohomology\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteResidueField\npublic import Mathlib.Algebra.Module.Lattice.Full\npublic import Mathlib.RingTheory.AdicCompletion.AsTensorProduct\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt\npublic import Mathlib.Algebra.Module.Lattice.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.AdicCompletion.Noetherian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport ReciprocityTheory.BasicDefinitions.ExistsUnique\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open GlobalTheory.AdmLoc Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Filter Topology
@@ -315,7 +774,7 @@ theorem tensIso_res [ContinuousMul G] [IsAdicComplete (Ideal.span {lam}) ↥L.T]
     exact ⟨Submodule.Quotient.mk ⟨_, tensCoc_mem χ hB hX c 1⟩, rfl⟩
   · rintro _ ⟨y, rfl⟩
     obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ y
-    obtain ⟨c, hc1, hc2, hc3⟩ := GlobalTheory.T.exists_continuous_cocycle_lift_of_subsingleton_H2 O G ↥L.T _ lam (act L χ) _
+    obtain ⟨c, hc1, hc2, hc3⟩ := _root_.GlobalTheory.CocycleLift.exists_lift O G ↥L.T _ lam (act L χ) _
       ((TensorProduct.mk O ↥L.T (O ⧸ Ideal.span {lam})).flip 1) inferInstance (eq_zero_of_smul hl)
       tmul_one_surj tmul_one_eq_zero (fun _ _ => rfl)
       (fun a t => (continuous_iff_adic hB fun g => act L χ g t).mp (by simpa only [act_coe] using hc t) a)
@@ -448,7 +907,7 @@ theorem free_and_tensIso [ContinuousMul G] [IsDomain O] [IsDiscreteValuationRing
   · refine (finite_induction hi (fun X _ _ => (twCoef (latRep L) χ X).invariants = ⊥ ∧ TensIso L χ X)
       (fun X _ _ _ => ⟨Subsingleton.elim _ _, fun _ _ _ => Subsingleton.elim _ _, ?_⟩)
       (fun X Y _ _ _ _ _ i p hi' he hp hY => ⟨inv_ext _ i p hi' he hp h0 hY.1,
-        GlobalTheory.T.lattice_twist_exact_sequence_cohomology G LL O V ρ L χ _ X Y i p hi' he hp
+        _root_.GlobalTheory.TensIsoExt.tensIso_of_exact G LL O V ρ L χ _ X Y i p hi' he hp
           (tensCoc_mem χ hB (exists_pow_smul_eq_zero hi.not_isUnit))
           (lc_act χ hB hc (exists_pow_smul_eq_zero hi.not_isUnit)) hY.1 hk hY.2⟩) X).2
     have : Subsingleton (Amb (twCoef (latRep L) χ X)) := (Submodule.mkQ_surjective _).subsingleton
@@ -495,7 +954,7 @@ theorem free_and_tensIso_gal {G Qp LL O : Type} [Group G] [TopologicalSpace G] [
   rw [hm] at hA hF'
   rw [← hr]
   refine free_and_tensIso Γ.χ₁ hi
-    (GlobalTheory.T.lattice_pow_smul_nhds_zero_basis LL O Γ.T₀.V Γ.T₀.L.T Γ.lam Γ.T₀.L.fg Γ.T₀.L.span hO hl0 hU) (fun v => ?_) hl0 h0 h2
+    (_root_.GlobalTheory.lattice_multiples_nhds_basis LL O Γ.T₀.V Γ.T₀.L.T Γ.lam Γ.T₀.L.fg Γ.T₀.L.span hO hl0 hU) (fun v => ?_) hl0 h0 h2
     fun _ hlc => hE _ _ (fun m => ?_) hlc h0 h2
   · have h := (hχ.comp continuous_inv).smul (Γ.T₀.cont v)
     refine h.congr fun g => ?_
@@ -509,3 +968,7 @@ theorem free_and_tensIso_gal {G Qp LL O : Type} [Group G] [TopologicalSpace G] [
 
 
 end GlobalTheory.FreeCoh
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowSmulEqZero =====

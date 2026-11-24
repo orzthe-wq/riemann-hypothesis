@@ -115,10 +115,6 @@ theorem length_quotient_span_singleton_dvr (a : R) :
     Module.length R (R ⧸ Ideal.span {a}) = addVal R a :=
   Ring.ord_eq_addVal a
 
-theorem addVal_irreducible_pow {ϖ : R} (hϖ : Irreducible ϖ) (e : ℕ) :
-    addVal R (ϖ ^ e) = e := by
-  rw [addVal_pow, addVal_uniformizer hϖ, nsmul_one]
-
 section Free
 
 variable (M : Type*) [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
@@ -143,7 +139,7 @@ theorem relLength_smul_self_of_addVal_eq (hA : A.FG) {a : R} {n : ℕ} (hn : add
 
 theorem relLength_irreducible_pow_smul_self (hA : A.FG) {ϖ : R} (hϖ : Irreducible ϖ) (e : ℕ) :
     relLength A (ϖ ^ e • A) = ((e * Module.finrank R A : ℕ) : ℕ∞) :=
-  relLength_smul_self_of_addVal_eq hA (addVal_irreducible_pow hϖ e)
+  relLength_smul_self_of_addVal_eq hA (Irreducible.addVal_pow hϖ e)
 
 theorem relLength_smul_self_ne_top (hA : A.FG) {a : R} (ha : a ≠ 0) :
     relLength A (a • A) ≠ ⊤ := by

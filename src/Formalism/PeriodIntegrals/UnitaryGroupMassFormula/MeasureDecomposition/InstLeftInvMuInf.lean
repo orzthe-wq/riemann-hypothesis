@@ -100,7 +100,6 @@ theorem target_of (h1 : GenHaarSub) (h2 : GenSemi) (h3 : GenWeil) (h4 : SubFacts
 
 theorem target_of_steps (h1 : GenHaarSub) (h2 : GenSemi) (h3 : GenWeil) (h4 : SubFacts) (hm : GenModOne)
     (hd : InstDecomp) (h6 : InstProper) : PI.ScMuExists.Target := by
-  have h5 : InstConj := instConj_of hm hd h4
-  exact target_of h1 h2 h3 h4 h5 h6
+  exact target_of h1 h2 h3 h4 (instConj_of hm hd h4) h6
 
 end PI.ScMuExists.UnitaryGroupMassFormula

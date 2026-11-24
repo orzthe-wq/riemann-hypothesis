@@ -4,12 +4,12 @@ public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerPr
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.BlockOneDetHermitianGram
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductLocalDensitiesConvergesStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureZeroStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsGramFiberMeasuresStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuityStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductLocalDensitiesConverges
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureZero
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureRankOneStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureRankOne
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsGramFiberMeasures
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuity
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -92,7 +92,7 @@ theorem fibre_zero_of_one (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ}
   have hempty : (gramR R σ J ⁻¹' {(hermOf R σ (blockOne (algebraMap F E t) T) hT').1} ∩
       {X | IsUnit (gramR R σ J X).det}) = ∅ := by
     ext Y
-    simp only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq,
+    simp only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_ofPred_eq,
       Set.mem_empty_iff_false, iff_false, not_and]
     intro hY _
     have h00 : hR R σ J (Y 0) (Y 0) = inclR R (algebraMap F E t) := by
@@ -106,9 +106,9 @@ theorem fibre_zero_of_one (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ}
     have hu : IsUnit (gramR R σ J x).det := by
       rw [hx]
       subst hT1e
-      simp only [hermOf, Matrix.det_fin_one, Matrix.map_apply]
+      simp only [hermOf, Matrix.det_fin_one]
       exact (IsUnit.mk0 _ ((map_ne_zero _).2 ht)).map (inclR R)
-    have := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ R hLoc 1 _ _ m1 (hH.2.1 1 M) (hH.2.2 1) hm1
+    have := (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hCM M J hJ R hLoc 1 _ _ m1 (hH.2.1 1 M) (hH.2.2 1) hm1
       (hermOf R σ T1 hT1)).2 Set.univ isOpen_univ ⟨x, trivial, hx, hu⟩
     exact this (by rw [h0]; rfl)
   have h1 := hm.1 (hermOf R σ (blockOne (algebraMap F E t) T) hT')
@@ -122,8 +122,8 @@ namespace GlobalTheory.CompanionTheory.SW
 theorem swMeas_of_not_represented : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ t : F, t ≠ 0 → ∀ n : ℕ, n + 3 ≤ M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b), (∀ x : Fin M → E, hE σ J x x ≠ algebraMap F E t) → SWMeas σ J (blockOne (algebraMap F E t) T) hT' := by
   intro F E _ _ _ _ _ σ hCM M J hJ t ht n hn T hT hdet hT' hne
   intro d b laminf lam hinf hv μ 𝓕 hμ h𝓕 minf m hminf hm
-  haveI : BorelSpace (Ainf F) := ⟨rfl⟩
-  haveI : ∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (Fv F v) := fun _ => ⟨rfl⟩
+  have : BorelSpace (Ainf F) := ⟨rfl⟩
+  have : ∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (Fv F v) := fun _ => ⟨rfl⟩
   have hLinf : IsLocR (Ainf F) := GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1
   have hLv : ∀ v : HeightOneSpectrum (𝓞 F), IsLocR (Fv F v) := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F
   have haarOf : ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R]
@@ -138,27 +138,27 @@ theorem swMeas_of_not_represented : ∀ (F E : Type) [Field F] [NumberField F] [
   have htE : algebraMap F E t ≠ 0 := (map_ne_zero _).2 ht
   have hdet1 : T1.det ≠ 0 := by
     rw [Matrix.det_fin_one]; exact htE
-  have hsw := GlobalTheory.T.siegel_weil_measure_rank_one F E σ hCM M J hJ (by omega) T1 hT1 hdet1
-  obtain ⟨minf1, hminf1⟩ := GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Ainf F) hLinf 1 _ _
+  have hsw := _root_.GlobalTheory.CompanionTheory.SW.OneVector.siegel_one_vector F E σ hCM M J hJ (by omega) T1 hT1 hdet1
+  obtain ⟨minf1, hminf1⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM M J hJ (Ainf F) hLinf 1 _ _
     ((haarOf _ hLinf laminf hinf.1).1 1 M) ((haarOf _ hLinf laminf hinf.1).2 1)
   have hex : ∀ v : HeightOneSpectrum (𝓞 F), ∃ m' : HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin M → Fv F v ⊗[F] E),
       IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 M) (coordHerm (Fv F v) σ b (lam v) 1) m' :=
-    fun v => GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Fv F v) (hLv v) 1 _ _
+    fun v => _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM M J hJ (Fv F v) (hLv v) 1 _ _
       ((haarOf _ (hLv v) (lam v) (hv v).1).1 1 M) ((haarOf _ (hLv v) (lam v) (hv v).1).2 1)
   choose m1 hm1 using hex
   have hEul := hsw d b laminf lam hinf hv μ 𝓕 hμ h𝓕 minf1 m1 hminf1 hm1
   have hS1 : {X : Fin 1 → Fin M → E | gramE σ J X = T1} = ∅ := by
     ext X
-    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
     intro hX
     exact hne (X 0) (congrFun (congrFun hX 0) 0)
   have hS : {X : Fin (n + 1) → Fin M → E | gramE σ J X = blockOne (algebraMap F E t) T} = ∅ := by
     ext X
-    simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+    simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]
     intro hX
     apply hne (X 0)
     simpa [gramE, blockOne] using congrFun (congrFun hX 0) 0
-  have hz := ((GlobalTheory.T.euler_product_measure_zero F E σ hCM d b 1 M _ 1 _ _).1 hEul
+  have hz := ((_root_.GlobalTheory.CompanionTheory.SW.EulerZero.euler_zero F E σ hCM d b 1 M _ 1 _ _).1 hEul
     (SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS1))
   have hvan : minf (hermOf (Ainf F) σ (blockOne (algebraMap F E t) T) hT') = 0 ∨
       ∃ v, m v (hermOf (Fv F v) σ (blockOne (algebraMap F E t) T) hT') = 0 := by
@@ -171,9 +171,9 @@ theorem swMeas_of_not_represented : ∀ (F E : Type) [Field F] [NumberField F] [
   have hdetB : (blockOne (algebraMap F E t) T).det ≠ 0 := by
     rw [((GlobalTheory.CompanionTheory.SW.BlockAlg.block_alg F E σ hCM n T t).1)]
     exact mul_ne_zero htE hdet
-  obtain ⟨hfin, hsum⟩ := GlobalTheory.T.euler_product_local_densities_converges F E σ hCM M J hJ (n + 1) (Or.inr (by omega))
+  obtain ⟨hfin, hsum⟩ := _root_.GlobalTheory.CompanionTheory.SW.mass_fibre_summable F E σ hCM M J hJ (n + 1) (Or.inr (by omega))
     (blockOne (algebraMap F E t) T) hT' hdetB d b lam (fun v => hv v) m hm
   rw [SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS]
-  exact (GlobalTheory.T.euler_product_measure_zero F E σ hCM d b (n + 1) M 0 1 _ _).2.2 hfin hsum hvan
+  exact (_root_.GlobalTheory.CompanionTheory.SW.EulerZero.euler_zero F E σ hCM d b (n + 1) M 0 1 _ _).2.2 hfin hsum hvan
 
 end GlobalTheory.CompanionTheory.SW

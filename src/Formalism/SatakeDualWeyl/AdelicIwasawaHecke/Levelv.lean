@@ -118,7 +118,7 @@ theorem levelv_tmul_mem_range (e : 𝓞 E) (x : v.adicCompletionIntegers F) :
     rw [Finset.sum_eq_single i]
     · simp
     · intro j _ hj
-      simp [Pi.single_apply, hj]
+      simp [hj]
     · intro h
       exact absurd (Finset.mem_univ i) h
   show φ e ∈ _
@@ -165,8 +165,6 @@ theorem levelv_S_le_range (y : E ⊗[F] v.adicCompletion F) (hy : y ∈ lvS F E 
       have h := levelv_tmul_mem_range (E := E) v 1 ⟨x, hx⟩
       first
         | exact h
-        | (rw [map_one] at h; exact h)
-        | simpa using h
   exact hle hy
 
 theorem levelv_denom (y : E ⊗[F] v.adicCompletion F) : ∃ N : ℕ, N ≠ 0 ∧ N • y ∈ lvS F E v := by
@@ -186,7 +184,7 @@ theorem levelv_denom (y : E ⊗[F] v.adicCompletion F) : ∃ N : ℕ, N ≠ 0 �
     · refine RingHom.mem_range.mpr ⟨t * a, ?_⟩
       have hs' : algebraMap (𝓞 E) E s ≠ 0 := IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs
       rw [nsmul_eq_mul, ← map_natCast (algebraMap (𝓞 E) E), ← ht, map_mul, map_mul]
-      field_simp <;> ring
+      field_simp
   have hF : ∀ x : v.adicCompletion F, ∃ N : ℕ, N ≠ 0 ∧ N • x ∈ v.adicCompletionIntegers F := by
     intro x
     obtain ⟨b, hb, hbx⟩ :=

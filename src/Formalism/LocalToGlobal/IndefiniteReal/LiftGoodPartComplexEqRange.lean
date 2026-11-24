@@ -2,50 +2,6 @@ module
 
 public import Formalism.LocalToGlobal.IndefiniteReal.LiftCoordinatesInGoodPartOfDefinite
 import Formalism.LocalToGlobal.Divisibility.ProjLemmas
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -82,7 +38,7 @@ theorem opF_eq_lift (r : Representation K G F) (a : MonoidAlgebra K G) :
 theorem opF_mul (r : Representation K G F) (a b : MonoidAlgebra K G) :
     opF r (a * b) = opF r a ∘ₗ opF r b := by
   rw [opF_eq_lift, opF_eq_lift, opF_eq_lift, map_mul]
-  first | rfl | exact LinearMap.mul_eq_comp _ _
+  first | rfl
 
 theorem opF_smul (r : Representation K G F) (c : K) (a : MonoidAlgebra K G) : opF r (c • a) = c • opF r a := by
   rw [opF_eq_lift, opF_eq_lift, map_smul]
@@ -94,8 +50,6 @@ private theorem opV_add_lemma (σ : K →+* ℂ) {M : Type} [AddCommGroup M] [Mo
     (a b : MonoidAlgebra K G) : opV σ T (a + b) = opV σ T a + opV σ T b := by
   first
   | (simp only [opV, ← Finset.sum_add_distrib, ← add_smul, ← map_add (f := _)]; rfl)
-  | (simp [opV, add_smul, Finset.sum_add_distrib, MonoidAlgebra.coeff_add]; done)
-  | (simp [opV, add_smul, Finset.sum_add_distrib]; done)
 
 private theorem opV_single_lemma_2 (σ : K →+* ℂ) {M : Type} [AddCommGroup M] [Module ℂ M] (T : G → M →ₗ[ℂ] M)
     (g : G) (c : K) : opV σ T (MonoidAlgebra.single g c) = σ c • T g := by
@@ -104,13 +58,9 @@ private theorem opV_single_lemma_2 (σ : K →+* ℂ) {M : Type} [AddCommGroup M
   rw [Finset.sum_eq_single g]
   · first
     | (simp; done)
-    | (simp [MonoidAlgebra.coeff_single]; done)
-    | (simp [MonoidAlgebra.single_apply]; done)
   · intro b _ hb
     first
-    | (simp [hb, Ne.symm hb]; done)
-    | (simp [MonoidAlgebra.coeff_single, Finsupp.single_apply, hb, Ne.symm hb]; done)
-    | (simp [MonoidAlgebra.single_apply, hb, Ne.symm hb]; done)
+    | (simp [hb]; done)
   · intro h
     exact absurd (Finset.mem_univ g) h
 
@@ -118,10 +68,6 @@ private theorem opV_zero_lemma_3 (σ : K →+* ℂ) {M : Type} [AddCommGroup M] 
     opV σ T 0 = 0 := by
   first
   | (simp [opV]; done)
-  | (simp [opV, MonoidAlgebra.coeff_zero]; done)
-  | (have h := opV_add_lemma σ T 0 0
-     rw [add_zero] at h
-     simpa using h)
 
 theorem opV_sum_single (σ : K →+* ℂ) {M : Type} [AddCommGroup M] [Module ℂ M] (T : G → M →ₗ[ℂ] M) {ι : Type}
     (s : Finset ι) (f : ι → G) (c : ι → K) :
@@ -148,7 +94,6 @@ theorem opV_lvlIdem [CharZero K] (σ : K →+* ℂ) {M : Type} [AddCommGroup M] 
     refine mul_inv_cancel₀ ?_
     first
     | exact Nat.cast_ne_zero.mpr Nat.card_pos.ne'
-    | exact Nat.cast_ne_zero.mpr (Nat.card_ne_zero.mpr ⟨inferInstance, inferInstance⟩)
   rw [← Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, hc, one_smul]
 
 variable {σ : K →+* ℂ}
@@ -165,8 +110,6 @@ theorem j_opF (hjr : ∀ g x, j (r g x) = ρ g (j x)) (a : MonoidAlgebra K G) (x
     j (opF r a x) = opV σ ρ a (j x) := by
   first
   | (simp only [opF, opV, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, LinearMap.map_smulₛₗ, hjr]; done)
-  | (simp [opF, opV, map_sum, hjr]; done)
-  | (simp only [opF, opV, LinearMap.coeFn_sum, Finset.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, hjr]; done)
 
 theorem opV_mul (hsp : Submodule.span ℂ (Set.range j) = ⊤) (hjr : ∀ g x, j (r g x) = ρ g (j x))
     (a b : MonoidAlgebra K G) : opV σ ρ (a * b) = opV σ ρ a ∘ₗ opV σ ρ b := by
@@ -210,7 +153,6 @@ theorem rho_unitary (hsp : Submodule.span ℂ (Set.range j) = ⊤) (hjr : ∀ g 
         rw [← hjr, ← hjr, hiso])
     first
     | exact LinearMap.congr_fun hext w
-    | simpa using LinearMap.congr_fun hext w
   have h2 : ∀ w u, ⟪ρ g w, ρ g u⟫_ℂ = ⟪w, u⟫_ℂ := by
     intro w u
     have hext := LinearMap.ext_on_range hsp (f := (innerₛₗ ℂ (ρ g w)).comp (ρ g))
@@ -219,7 +161,6 @@ theorem rho_unitary (hsp : Submodule.span ℂ (Set.range j) = ⊤) (hjr : ∀ g 
         rw [← inner_conj_symm (ρ g w) (ρ g (j y)), h1, inner_conj_symm])
     first
     | exact LinearMap.congr_fun hext u
-    | simpa using LinearMap.congr_fun hext u
   exact h2 u w
 
 variable {gE : Representation ℂ G E} {Θ : V →ₗ[ℂ] E}
@@ -233,8 +174,6 @@ theorem theta_rho (hsp : Submodule.span ℂ (Set.range j) = ⊤) (hjr : ∀ g x,
 theorem gE_inv_apply (g : G) (z : E) : gE g (gE g⁻¹ z) = z := by
   first
   | (rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply])
-  | (simp [← Module.End.mul_apply, ← map_mul]; done)
-  | (show (gE g * gE g⁻¹) z = z; rw [← map_mul]; simp)
 
 theorem rho_adj (hsp : Submodule.span ℂ (Set.range j) = ⊤) (hjr : ∀ g x, j (r g x) = ρ g (j x))
     (hiso : ∀ g x y, ⟪j (r g x), j (r g y)⟫_ℂ = ⟪j x, j y⟫_ℂ) (heq : ∀ g x, Θ (j (r g x)) = gE g (Θ (j x)))
@@ -349,32 +288,13 @@ theorem dn (e : MonoidAlgebra K G) (he : opF r e ∘ₗ opF r e = opF r e) {u : 
   have hdec : ∃ p ∈ LinearMap.range (LinearMap.adjoint Θ),
       ∃ k ∈ (LinearMap.range (LinearMap.adjoint Θ))ᗮ, u = p + k := by
     first
-    | exact Submodule.exists_add_mem_mem_orthogonal _ u
-    | exact ⟨_, Submodule.coe_mem ((LinearMap.range (LinearMap.adjoint Θ)).orthogonalProjection u), _,
-        Submodule.sub_orthogonalProjection_mem_orthogonal u, by abel⟩
     | exact ⟨_, Submodule.starProjection_apply_mem _ u, _,
         Submodule.sub_starProjection_mem_orthogonal u, by abel⟩
-    | exact ⟨_, Submodule.coe_mem (orthogonalProjection (LinearMap.range (LinearMap.adjoint Θ)) u), _,
-        sub_orthogonalProjection_mem_orthogonal u, by abel⟩
-    | (have hu' : u ∈ (⊤ : Submodule ℂ V) := Submodule.mem_top
-       rw [← Submodule.sup_orthogonal_of_hasOrthogonalProjection (K := LinearMap.range (LinearMap.adjoint Θ)),
-         Submodule.mem_sup] at hu'
-       obtain ⟨p, hp, k, hk, hpk⟩ := hu'
-       exact ⟨p, hp, k, hk, hpk.symm⟩)
-    | (have hu' : u ∈ (⊤ : Submodule ℂ V) := Submodule.mem_top
-       rw [← (Submodule.isCompl_orthogonal_of_hasOrthogonalProjection
-         (K := LinearMap.range (LinearMap.adjoint Θ))).sup_eq_top, Submodule.mem_sup] at hu'
-       obtain ⟨p, hp, k, hk, hpk⟩ := hu'
-       exact ⟨p, hp, k, hk, hpk.symm⟩)
   obtain ⟨p, hp, k, hk, rfl⟩ := hdec
   have hk0 : Θ k = 0 := by
     rw [← inner_self_eq_zero (𝕜 := ℂ), ← LinearMap.adjoint_inner_right]
     first
     | exact Submodule.inner_left_of_mem_orthogonal (LinearMap.mem_range_self _ _) hk
-    | exact Submodule.inner_right_of_mem_orthogonal (LinearMap.mem_range_self _ _) hk
-    | (rw [inner_eq_zero_symm]
-       exact (Submodule.mem_orthogonal _ _).mp hk _ (LinearMap.mem_range_self _ _))
-    | exact (Submodule.mem_orthogonal _ _).mp hk _ (LinearMap.mem_range_self _ _)
   have hfix := H.fix_of_idem e he hu
   refine ⟨opV σ ρ e p, ⟨H.mem_R e hp, LinearMap.mem_range_self _ _⟩, ?_⟩
   have h1 : Θ (opV σ ρ e k) = 0 := H.ker e k hk0
@@ -402,7 +322,6 @@ theorem range_le (Xc : Finset (G → K)) (P : Subgroup G) (ψ : P →* Kˣ) :
   rw [opV_mul H.sp H.jr]
   first
   | exact LinearMap.range_comp_le_range _ _
-  | (rw [LinearMap.range_comp]; exact LinearMap.map_le_range)
 
 end Hyp
 
@@ -439,7 +358,6 @@ theorem goodAt_bot (Xc : Finset (G → K)) (ψ : (⊥ : Subgroup G) →* Kˣ) : 
   have hc : Nat.card (⊥ : Subgroup G) = 1 := by
     first
     | exact Subgroup.card_bot
-    | simp
   have h1 : lvlIdem (⊥ : Subgroup G) ψ = 1 := by
     unfold lvlIdem
     rw [Finset.sum_eq_single (1 : (⊥ : Subgroup G))]
@@ -452,7 +370,6 @@ theorem goodAt_bot (Xc : Finset (G → K)) (ψ : (⊥ : Subgroup G) →* Kˣ) : 
       apply h
       first
       | convert Finset.mem_univ (1 : (⊥ : Subgroup G))
-      | simp
   rw [h1, mul_one]
 
 end Alg
@@ -469,8 +386,6 @@ theorem actMat_coord' (g : G) (w : Fin B.S.dim → K) :
   conv_lhs => rw [hw]
   first
   | exact LinearMap.toMatrix_mulVec_repr B.S.basis B.S.basis (B.r g) (B.S.basis.equivFun.symm w)
-  | exact LinearMap.toMatrix_mulVec_repr (B.r g) (B.S.basis.equivFun.symm w)
-  | exact LinearMap.toMatrix_mulVec_repr _ _ _ _
 
 theorem gaMat_mulVec (a : MonoidAlgebra K G) (w : Fin B.S.dim → K) :
     (B.S.gaMat B.r a).mulVec w = B.S.basis.equivFun (opF B.r a (B.S.basis.equivFun.symm w)) := by
@@ -481,10 +396,6 @@ theorem gaMat_mulVec (a : MonoidAlgebra K G) (w : Fin B.S.dim → K) :
     rw [ha, hb]
   · intro g c
     first
-    | (simp only [CSD.gaMat_eq_lift, opF_eq_lift, MonoidAlgebra.lift_single, Matrix.smul_mulVec_assoc,
-        LinearMap.smul_apply, map_smul]
-       rw [← actMat_coord' B g w]
-       rfl)
     | (simp only [CSD.gaMat_eq_lift, opF_eq_lift, MonoidAlgebra.lift_single, Matrix.smul_mulVec,
         LinearMap.smul_apply, map_smul]
        rw [← actMat_coord' B g w]

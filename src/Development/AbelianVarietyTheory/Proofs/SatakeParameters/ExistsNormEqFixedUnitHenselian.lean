@@ -1,7 +1,10 @@
 module
 
 public import Mathlib.RingTheory.Henselian
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteInvolutionFixedUnitEqMulConjStatement
+public import Mathlib.Algebra.Group.Units.Defs
+public import Mathlib.Algebra.Ring.Hom.Defs
+public import Mathlib.Basic.Finite.Defs
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteInvolutionFixedUnitEqMulConj
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -117,7 +120,7 @@ theorem exists_norm_eq : ∀ (R : Type) [CommRing R] (I : Ideal R) [HenselianRin
   have hunit : IsUnit (Ideal.Quotient.mk I ω - cb (Ideal.Quotient.mk I ω)) := by
     rw [hmk, ← map_sub, ← hD]
     exact D.isUnit.map _
-  obtain ⟨xb, hxb⟩ := GlobalTheory.T.finite_involution_fixed_unit_eq_mul_conj (R ⧸ I) cb hcb ⟨_, hunit⟩ (Ideal.Quotient.mk I u)
+  obtain ⟨xb, hxb⟩ := _root_.GlobalTheory.finite_involution_fixed_unit_isNorm (R ⧸ I) cb hcb ⟨_, hunit⟩ (Ideal.Quotient.mk I u)
     (by rw [hmk, hcu]) (hu.map _)
   obtain ⟨x₀, rfl⟩ := Ideal.Quotient.mk_surjective xb
   rw [hmk, ← map_mul] at hxb

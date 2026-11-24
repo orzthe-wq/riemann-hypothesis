@@ -47,4 +47,4 @@ open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.thetaChain_level_properties : ∀ D : D7, LevFacts D := by
-  first | exact @GlobalTheory.ChainOnto.LevelFacts.levFacts | exact GlobalTheory.ChainOnto.LevelFacts.levFacts | (intros; apply GlobalTheory.ChainOnto.LevelFacts.levFacts <;> assumption)
+  first | exact @GlobalTheory.ChainOnto.LevelFacts.levFacts

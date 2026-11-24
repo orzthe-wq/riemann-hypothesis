@@ -1082,9 +1082,9 @@ theorem isGroupLikeElem_tensor_map {A B K K' : Type*} [CommSemiring A] [Algebra 
   rw [e2, h2, map_mul]
   congr 1
   · rw [← AlgHom.comp_apply, ← AlgHom.comp_apply]; congr 1
-    ext <;> simp [Algebra.TensorProduct.one_def]
+    ext <;> simp
   · rw [← AlgHom.comp_apply, ← AlgHom.comp_apply]; congr 1
-    ext <;> simp [Algebra.TensorProduct.one_def]
+    ext <;> simp
 
 variable {H K : Type*} [CommSemiring H] [Bialgebra R H] [CommSemiring K] [Bialgebra R K]
   {u : H ⊗[R] K}

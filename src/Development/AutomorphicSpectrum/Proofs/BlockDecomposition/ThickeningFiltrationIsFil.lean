@@ -49,6 +49,6 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistable
 namespace GlobalTheory.CompanionTheory.DPFil
 
 theorem isFil_thFil : ∀ {b : Base} (L : b.Fun), IsFil (thP L) (thFil L) := by
-  apply GlobalTheory.CompanionTheory.OmCls.isFil_thFil <;> assumption
+  apply GlobalTheory.CompanionTheory.OmCls.isFil_thFil
 
 end GlobalTheory.CompanionTheory.DPFil

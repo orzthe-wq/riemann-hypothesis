@@ -115,8 +115,7 @@ theorem heis_slice {S A L T : HSp D} (d : OrthDec S A L) (ψ : AddChar (AF D.hos
   rw [d.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, GlobalTheory.MixModel.symplOH_zero_right, zero_add,
     ← map_add, Prod.mk_add_mk, add_zero]
 
-theorem symplO_zero_right' (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
-  simp [symplO, hO]
+alias symplO_zero_right' := _root_.GlobalTheory.PlaceModel.symplO_zero_right
 
 theorem isHalf_slice {S A L T : HSp D} (d : OrthDec S A L) {a : AE D} {y : WO L T} (hy : IsHalf a y) :
     IsHalf a ((d.resS T).symm (0, y)) := by

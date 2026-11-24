@@ -79,7 +79,7 @@ theorem exists_pow_smul_mem {A₀ : Submodule (𝓞 K) V} (hA₀ : Submodule.IsF
     {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {π : 𝓞 F} (hπ : π ∈ 𝔭) (w : V) :
     ∃ n : ℕ, algebraMap F K (π : F) ^ n • w ∈ locF 𝔭 A₀ := by
   have := h𝔭.isPrime
-  obtain ⟨n, hn, hnw⟩ := Formalism.HermitianLatticesTheory.traceReal_mult A₀ hA₀ w
+  obtain ⟨n, hn, hnw⟩ := _root_.Bl.general_b_fact_second'''''.goal1 A₀ hA₀ w
   have hc : ((n : ℤ) : 𝓞 F) ≠ 0 := by exact_mod_cast hn
   obtain ⟨r, u, hu, hdvd⟩ := exists_mul_dvd h𝔭 hc
   obtain ⟨v, hv⟩ := hdvd (π ^ r) (Ideal.pow_mem_pow hπ r)

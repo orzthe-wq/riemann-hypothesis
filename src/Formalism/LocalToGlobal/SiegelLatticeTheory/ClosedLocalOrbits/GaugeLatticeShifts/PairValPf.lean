@@ -2,49 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.PairVal
 public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellBru
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -291,7 +249,7 @@ theorem cell_move {L U L' U' P P' : Matrix (Fin N) (Fin N) K} (hL : IsLoUni L) (
       L' * (L'⁻¹ * L) = L ∧ (U' * U⁻¹) * U = U' := by
   obtain ⟨hLi, hL1, hL2⟩ := loUni_inv hL'
   obtain ⟨hUi, hU1, hU2⟩ := upUni_inv hU
-  refine ⟨Formalism.MainNotions.BridgeLemma.bru_lo_mul hLi hL, Formalism.MainNotions.BridgeLemma.bru_up_mul hU' hUi, ?_, ?_, ?_⟩
+  refine ⟨Formalism.MainNotions.BridgeLemma.bru_lo_mul hLi hL, _root_.GlobalTheory.UpperUnipotentMul.isUpUni_mul hU' hUi, ?_, ?_, ?_⟩
   · have : L'⁻¹ * (L * P * U) * U⁻¹ = L'⁻¹ * (L' * P' * U') * U⁻¹ := by rw [e]
     calc (L'⁻¹ * L) * P = L'⁻¹ * (L * P * U) * U⁻¹ := by
             simp only [Matrix.mul_assoc, hU2, Matrix.mul_one]
@@ -481,10 +439,10 @@ theorem simple_eq (p : Point K N) {n m : Matrix (Fin N) (Fin N) K} (hn : IsLoUni
       Fin.ext (by show pσ p.1 a = pσ p.1 (a + 1) + 1; omega)
     have orbitMap_conj_smul_one : fσ p ⟨a + 1, ha1⟩ = ⟨pσ p.1 (a + 1), by omega⟩ := Fin.ext rfl
     rw [eA, orbitMap_conj_smul_one] at k
-    simp only [Fin.val_mk] at k
+    simp only at k
     rw [hb3] at k
     have hv := pv_ne' p ⟨pσ p.1 (a + 1), by omega⟩
-    simp only [Fin.val_mk] at hv
+    simp only at hv
     simp only [F, G]; rw [dite_eq_left ha1, dite_eq_left hb1]
     exact mul_left_cancel₀ hv (k.symm.trans (mul_comm _ _))
   rw [eLo, eUp, ← Finset.sum_filter_of_ne hF, ← Finset.sum_filter_of_ne hG]
@@ -565,8 +523,7 @@ theorem nlam_frame (Λ : Submodule (𝓞 E) S.V) {T : E} (F : LFlag S r T) {s : 
   · intro b
     induction b using Fin.lastCases with
     | last =>
-      simp only [frame, FlagG.fvec, Fin.snoc_last, Fin.sum_univ_castSucc, Fin.snoc_castSucc, if_pos rfl,
-        one_smul, col, Fin.lastCases_last, Fin.lastCases_castSucc, if_neg (Fin.castSucc_lt_last _).ne]
+      simp only [frame, FlagG.fvec, Fin.snoc_last, Fin.sum_univ_castSucc, Fin.snoc_castSucc, col, Fin.lastCases_last, Fin.lastCases_castSucc, if_neg (Fin.castSucc_lt_last _).ne]
       rw [hcz, add_comm]; simp
     | cast i =>
       simp only [frame, FlagG.fvec, Fin.snoc_last, Fin.sum_univ_castSucc, Fin.snoc_castSucc,
@@ -593,8 +550,7 @@ theorem zhat_move {T T' : E} (F : LFlag S r T) (F' : LFlag S r T') {s : S.V ≃�
   simp only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ₂, map_smul, Matrix.mul_apply,
   Matrix.conjTranspose_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]
   refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_
-  simp only [show ∀ x y, ZhatL F F' x y = S.hT (frame F x) (frame F' y) from fun _ _ => rfl, starRingEnd_apply,
-    RingHom.id_apply]
+  simp only [show ∀ x y, ZhatL F F' x y = S.hT (frame F x) (frame F' y) from fun _ _ => rfl, starRingEnd_apply]
   ring
 
 end Frame
@@ -614,12 +570,6 @@ theorem ptMat_sq (p : Point K N) :
   by_cases h : j = i
   · subst h; simp
   · rw [if_neg h, if_neg (Ne.symm h), mul_zero]
-
-theorem det_ptMat_ne (p : Point K N) : (ptMat p).det ≠ 0 := by
-  intro h0
-  have := congrArg Matrix.det (ptMat_sq p)
-  rw [Matrix.det_mul, h0, zero_mul, Matrix.det_diagonal] at this
-  exact (Finset.prod_ne_zero_iff.mpr fun i _ => mul_ne_zero (pv_ne' p i) (pv_ne' p _)) this.symm
 
 theorem zhatOM_eq_pv {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     ZhatOM Z = Z * Matrix.diagonal (fun b : Fin (r + 1) => (-1 : K) ^ (r - b.val)) := by
@@ -697,7 +647,7 @@ theorem phaseWellDef_of (hDS : DecompSimple) (hM : NormRepMove D u u') (hrows : 
   obtain ⟨A, B, hA, hB, eZ, hψ⟩ :=
     hM F0 t.lam (hrows.1 _ t.mem) t.cls hrel F₁ F₂ hR₁ hA₁ hR₂ hA₂ w ⟨L₁, U₁, hL₁, hU₁, e₁⟩
   have hAL := Formalism.MainNotions.BridgeLemma.bru_lo_mul hA hL₁
-  have hUB := Formalism.MainNotions.BridgeLemma.bru_up_mul hU₁ hB
+  have hUB := _root_.GlobalTheory.UpperUnipotentMul.isUpUni_mul hU₁ hB
   have key : (A * L₁) * ptMat w * (U₁ * B) = L₂ * ptMat w * U₂ := by
     rw [← e₂, eZ, e₁]; simp only [Matrix.mul_assoc]
   have hs := hDS D.host.E _ w (A * L₁) (U₁ * B) L₂ U₂ hAL hUB hL₂ hU₂ key
@@ -711,15 +661,6 @@ theorem autFin_of (hAF : AutLzFin D) (hsig : (VS D).SigOK) (hT : 0 < Tu D u) (hr
   fun Λ hΛ => hAF hsig _ hT F0 Λ (hrows.1 Λ hΛ)
 
 end Proofs
-
-section VolProofs
-
-variable {D : D7} {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
-  {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
-  {δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp}
-  {M : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
-
-end VolProofs
 
 section Final
 

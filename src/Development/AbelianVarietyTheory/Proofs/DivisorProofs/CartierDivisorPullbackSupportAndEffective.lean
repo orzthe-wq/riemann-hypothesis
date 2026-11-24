@@ -53,16 +53,6 @@ namespace GlobalTheory.Discrepancy
 
 set_option autoImplicit false in
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter in
-private theorem unitAt_functionFieldMap_of_unitAt {X Y : Scheme} [IsIntegral X]
-    [IsIntegral Y] (s : Y ⟶ X) [IsDominant s] {y : Y} {f : X.functionField}
-    (hf : _root_.GlobalTheory.Cartier.UnitAt (s y) f) :
-    _root_.GlobalTheory.Cartier.UnitAt y (_root_.GlobalTheory.functionFieldMap s f) := by
-  obtain ⟨a, hunit, ha⟩ := hf
-  exact ⟨ConcreteCategory.hom (s.stalkMap y) a, hunit.map _, by
-    rw [← _root_.GlobalTheory.functionFieldMap_algebraMap, ha]⟩
-
-set_option autoImplicit false in
-open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter in
 private theorem regAt_functionFieldMap_of_regAt {X Y : Scheme} [IsIntegral X]
     [IsIntegral Y] (s : Y ⟶ X) [IsDominant s] {y : Y} {f : X.functionField}
     (hf : _root_.GlobalTheory.Cartier.RegAt (s y) f) :
@@ -86,7 +76,7 @@ theorem _root_.GlobalTheory.Discrepancy.pullCart_supp_and_eff : ∀ (X Y : Schem
     rw [hg'.mem_supp_iff] at hy
     rw [hg.mem_supp_iff]
     intro hunit
-    exact hy (unitAt_functionFieldMap_of_unitAt s hunit)
+    exact hy (_root_.GlobalTheory.Cartier.DomPull.unitAt_map s hunit)
   · rw [_root_.GlobalTheory.Cartier.CartierDiv.eff_iff] at hD ⊢
     intro y g' hg'
     obtain ⟨g, hg⟩ := D.exists_isEqn (s y)

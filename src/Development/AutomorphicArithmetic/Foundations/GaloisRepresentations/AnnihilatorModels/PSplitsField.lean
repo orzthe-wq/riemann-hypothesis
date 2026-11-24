@@ -77,11 +77,11 @@ private theorem exists_forall_algHom_pi_eq_apply_of_finite {K P : Type} [Field K
       rw [← map_mul]
       congr 1
       ext i
-      by_cases h : i = p <;> simp [Pi.single_apply, h]
+      by_cases h : i = p <;> simp [h]
     exact (mul_left_inj' hp).1 (h2.trans (one_mul _).symm)
   have hx : x * Pi.single p 1 = algebraMap K (P → K) (x p) * Pi.single p 1 := by
     ext i
-    by_cases h : i = p <;> simp [Pi.single_apply, h]
+    by_cases h : i = p <;> simp [h]
   have h3 := congrArg ψ hx
   rw [map_mul, map_mul, AlgHom.commutes, hid] at h3
   simpa using h3
@@ -120,10 +120,9 @@ theorem UpperTheory.Gal.crystallineComparison.splitsField_of :
     refine ⟨ψ, ?_⟩
     have h1 := hLe ψ (e.symm (Pi.single p 1))
     rw [hg] at h1
-    simp only [g, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, AlgHom.coe_coe,
-      AlgEquiv.apply_symm_apply, Pi.evalAlgHom_apply] at h1
+    simp only [g, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, AlgEquiv.apply_symm_apply, Pi.evalAlgHom_apply] at h1
     by_contra hne
-    simp [Pi.single_apply, hne] at h1
+    simp [hne] at h1
   refine ⟨Finite.of_injective q qinj, ?_⟩
   show Function.Bijective F
   constructor

@@ -11,9 +11,10 @@ public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsMem
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPrincipalLevelSubgroupOpen
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniformisationDictionaryCharacterLaws
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnitaryOfTraceEq
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsWeightZeroSectionOfPeriodSpaceFunctionStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsWeightZeroSectionOfPeriodSpaceFunction
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LiftDatumAlternatingFormSignEqOne
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompatStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -88,8 +89,8 @@ theorem exists_sec_char_val (D : D7) (H : ReciprocityTheory.ChartRestriction.G.G
     · obtain ⟨a, ha⟩ := h3 1
       exact ⟨a, ⟨_, ha⟩, fun h γ hm hi => absurd ⟨h, γ, hm, hi⟩ hex⟩
   choose v hv1 hv2 using hv
-  obtain ⟨f, hf, hf1, hf2⟩ := GlobalTheory.T.exists_weightZero_section_of_periodSpace_function D.host.E H Dw l Xo c σ g _ F hpos hgood
-    ((GlobalTheory.T.relabelEmbeddings_good_bijective_conj_compat _ H l c σ hgood).2.2.2 Dw g e) hA hcl v
+  obtain ⟨f, hf, hf1, hf2⟩ := _root_.GlobalTheory.CompFun.exists_section_of_function D.host.E H Dw l Xo c σ g _ F hpos hgood
+    ((_root_.GlobalTheory.Relab.relab_good _ H l c σ hgood).2.2.2 Dw g e) hA hcl v
   refine ⟨f, hf, fun m hm => hf1 m fun i => σ.injective ?_, fun y => ?_, fun h γ hm => ?_⟩
   · obtain ⟨u, hu⟩ := hv1 i
     rw [map_pow, map_one, hu, ← Units.val_pow_eq_pow_val, hm u, Units.val_one]

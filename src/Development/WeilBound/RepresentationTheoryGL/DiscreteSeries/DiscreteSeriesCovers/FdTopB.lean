@@ -1,15 +1,43 @@
 module
 
-public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FormalDegreeCompactDualIff
+public import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSeriesCovers.DiscreteSeriesHilbert.StepFormulaF
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.MeasureTheory.Function.L2Space
+public import Mathlib.MeasureTheory.Measure.Haar.Basic
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.Bridge
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.InfCharDataA
+public import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSeriesCovers.DiscreteSeriesHilbert.StepSqInt
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSchur
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SigLamMemLpOfNe
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.Arbitrary
+public import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSeriesCovers.InConeRefl
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CharacterFormulaOfDiscreteSeriesDatum
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IrreducibleOfDiscreteSeriesDatum
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MollifierApproximationHilbert
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.VoganMinimalTypeStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WeightVectorsSpanDense
+public import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSeriesCovers.EquivariantSections.EquivSection
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ActionEquivarianceStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BetaWeightOfTorusFacts
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactExhaustionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HolomorphicFunctionFacts
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KeyPropositionOfComponents
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LowDegreeAlgebraFacts
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusRestrictionRepresentation
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TorusWeightDecomposition
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TransferStatement
+public import Development.WeilBound.RepresentationTheoryGL.FormalDegree.FormalDegreeHilbert.FormalDegreeFormula.ModelFunctionsMultiply
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ModelTwist
 public import Development.WeilBound.RepresentationTheoryGL.FormalDegree.FormalDegreeHilbert.HlamStable
-public import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSeriesCovers.DiscreteSeriesHilbert.HilbertSpaceRealisationHolds
-public import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSeriesCovers.EquivariantSections.KeyIdentityHolds
-public import Development.WeilBound.RepresentationTheoryGL.FormalDegree.FormalDegreeHilbert.ExplicitFunctionSquareIntegrable
-import Development.WeilBound.RepresentationTheoryGL.FormalDegree.FormalDegreeHilbert.NormIndOfSteps
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormInductionOfEstimates
+public import Development.WeilBound.RepresentationTheoryGL.FormalDegree.FormalDegreeHilbert.NormIndOfSteps
+public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FormalDegreeCompactDualIff
+import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.HilbertSpaceModels.HilbertConeOfStableMollifier
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -41,8 +69,74 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Algebra.Group.Units
+import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.HilbertSpaceModels.HilbertLowestWeightOfInputs
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.BridgeExpK
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.BridgeHW
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.BridgeWt
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.RregRep
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.VNormSqLowKSubRootLt
+import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.HilbertSpaceModels.HilbertSignatureHolds
+import Mathlib.Tactic.Linter.Style
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.Weight
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.RigidityTheorems.IrredA
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.RigidityTheorems.MultOneA
+import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.HilbertSpaceModels.HilbertSquareIntegrableOfSignature
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SqIntA
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Closure
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.BridgeKType
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DatumIrr
+import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.HilbertSpaceModels.WeightSpaceLeHilbert
+import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.RhoRepresentations.EquivSection
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.RhoRepresentations.RhoRep
+import Mathlib.Tactic.Lemma
+import Std.Tactic.BVDecide.Normalize.Prop
+import CompanionTheory.RealGroups.FormalDegrees.ArchimedeanFormalDegrees.FormalDegreeFormula.CkModel
+import Aesop.Frontend.Tactic
+import Aesop.Main
+import Mathlib.RingTheory.PiTensorProduct
+import CompanionTheory.RealGroups.FormalDegrees.ArchimedeanFormalDegrees.FormalDegreeFormula.CkTwist
+import Mathlib.Algebra.Order.Star.Real
+
+import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.KTypesAbove
 
 @[expose] public section
+
+namespace PositivityTheory.RgDs.Hilb
+
+theorem hilbert_space_realisation_holds : PositivityTheory.RgDs.Hilb :=
+  CompanionTheory.RgDs.Hilb.hilbert_space_realisation_holds
+
+end PositivityTheory.RgDs.Hilb
+
+namespace PositivityTheory.RgDs.K
+
+theorem key_identity_holds : PositivityTheory.RgDs.Key :=
+  CompanionTheory.RgDs.K.key_identity_holds
+
+end PositivityTheory.RgDs.K
+
+namespace PositivityTheory.RgFd
+
+open PositivityTheory.RgDs
+
+theorem psiNorm : PsiNorm := CompanionTheory.RgFd.psiNorm
+
+theorem fdAll_of_key (hK : Key) (hH : Hilb) : FdAll := fdAll_of_norm psiNorm hK hH
+
+end PositivityTheory.RgFd
 
 namespace PositivityTheory.RgFd.B
 

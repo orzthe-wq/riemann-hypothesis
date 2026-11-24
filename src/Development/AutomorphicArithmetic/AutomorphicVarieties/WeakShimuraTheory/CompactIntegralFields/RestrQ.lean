@@ -84,7 +84,7 @@ private theorem low_desc {A V : Type} [CommRing A] [CommRing V] [IsLocalRing V] 
     have := congrFun (congrFun h i) j
     rw [Matrix.map_apply] at this
     rw [this]
-    by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+    by_cases hij : i = j <;> simp [hij]
   have hμ : f ((adj X * X) 0 0) = ν := by
     have h := hX
     unfold IsGSp at h

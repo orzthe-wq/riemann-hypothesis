@@ -71,5 +71,5 @@ open Formalism.MainNotions
 open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.Mult Formalism.BasicNotions.TH Formalism.L2.Theta
 
 theorem _root_.GlobalTheory.T.fundamentalDomain_volume_ne_zero : ∀ (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0) (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ) (μ : MeasureTheory.Measure (GA D (Wc D i))) (𝓕 : Set (GA D (Wc D i))) (hF : IsMeasFD (Wc D i) (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i P) μ 𝓕), μ 𝓕 ≠ 0 := by
-  first | exact @_root_.GlobalTheory.CovTop.haarMeasure_fundamentalDomain_ne_zero_of_cocompact | exact _root_.GlobalTheory.CovTop.haarMeasure_fundamentalDomain_ne_zero_of_cocompact | (intros; apply _root_.GlobalTheory.CovTop.haarMeasure_fundamentalDomain_ne_zero_of_cocompact <;> assumption)
+  first | exact @_root_.GlobalTheory.CovTop.haarMeasure_fundamentalDomain_ne_zero_of_cocompact
 end

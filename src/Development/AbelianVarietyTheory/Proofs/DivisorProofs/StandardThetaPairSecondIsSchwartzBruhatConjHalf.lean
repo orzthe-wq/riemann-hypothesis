@@ -222,10 +222,4 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem _root_.GlobalTheory.T.standardThetaPair_second_isSchwartzBruhat_conjHalf : ∀ {D : D7} (ν : (AE D)ˣ →* Circle), Continuous ν → ∀ (e : AE D) (S : Finset (Formalism.L2.DIV.Pl D.host.E)),
-    IsIdemSum e S → ∀ (I : Ideal (𝓞 D.host.E)), I ≠ ⊥ → ∀ (a : ℕ) (A' WW : HSp D)
-    (ΛA : Submodule (𝓞 D.host.E) (Fin A'.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin WW.rank → D.host.E)),
-    IsSelfDualC A' ΛA → IsSelfDualC WW ΛW → ∀ (βA : GL (Fin A'.rank) (EAf D)) (βW : GL (Fin WW.rank) (EAf D)),
-    IsSBHalf (cA D e) (latO A' WW (ΛA : Set (Fin A'.rank → D.host.E)) (ΛW : Set (Fin WW.rank → D.host.E)) fun _ => True)
-      (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd ν e I a A' WW βA βW) :=
-  fun ν hν e S he I hI a A WW ΛA ΛW hA hW βA βW => GlobalTheory.StdSndSB.main ν hν e S he I hI a A WW ΛA ΛW hA hW βA βW
+alias _root_.GlobalTheory.T.standardThetaPair_second_isSchwartzBruhat_conjHalf := _root_.GlobalTheory.StdSndSB.main

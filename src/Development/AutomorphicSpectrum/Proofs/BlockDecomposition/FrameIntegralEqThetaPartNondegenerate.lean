@@ -2,13 +2,15 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaPartD
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.WeilSiegelTheta.BigCellDefs
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountableStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
+public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundUnitary
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocallyCompactSecondCountableT2
 public import Development.AbelianVarietyTheory.PublishedTheorems.GlobalTheta.IsSchwartzBruhatOfProd
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftInvSubtypeSum
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocallyCompactSecondCountableT2
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzBoundFiniteInfinite
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemElt
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
@@ -49,6 +51,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.GlobalSchurBounds.LocalCountingBounds
 
 @[expose] public section
 
@@ -69,10 +72,10 @@ theorem meanC_thetaS_of_lintegral (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M
     (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ) (hm : Measurable Φ)
     (hfin : ∫⁻ h in 𝓕, ∑' x : S, ‖Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) (x : Fin n → Fin M → E)))‖ₑ ∂μ < ⊤) :
     meanC μ 𝓕 (thetaS F E σ M J Φ S) = ∫ X, Φ X ∂(thetaMeas σ J μ 𝓕 S) := by
-  obtain ⟨⟨_, _, _⟩, -⟩ := GlobalTheory.T.adeles_locally_compact_second_countable F
-  obtain ⟨_, _, _, _, -, -, -, hB, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)
+  obtain ⟨⟨_, _, _⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.AdeleTop.adele_top F
+  obtain ⟨_, _, _, _, -, -, -, hB, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)
   have := hB n M
-  obtain ⟨_, _, _, _, _, hact⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ (AF F)
+  obtain ⟨_, _, _, _, _, hact⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hCM M J hJ (AF F)
   have ha : ∀ X, Measurable fun h : HA (AF F) σ J => actW (AF F) σ J h⁻¹ X := fun X =>
     ((hact n).1.comp (continuous_inv.prodMk continuous_const)).measurable
   have : Countable E := Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.symm.toEquiv
@@ -152,7 +155,7 @@ theorem average_eq_meanC (V : HSp D) (ν μH : Measure (GA D V)) (hν : ν.IsHaa
     ⨍ q, descend (GQ V) f q ∂autMeasure V ν = HeckeCharacterZeroLocus.SiegelWeilU.meanC μH 𝓕 f := by
   have : BorelSpace (GA D V) := ⟨rfl⟩
   obtain ⟨i1, i2, i3⟩ := GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V
-  obtain ⟨h0, h1, -⟩ := GlobalTheory.Published.SiegelOneVector.normalise D.sp.cm.sig V.gram (GlobalTheory.DefiniteQuotient.cmExt D)
+  obtain ⟨h0, h1, -⟩ := GlobalTheory.Published.SiegelOneVector.normalise D.sp.cm.sig V.gram (_root_.Formalism.MainNotions.UnusedSlot34.isCMExt_D D)
     (GlobalTheory.DefiniteQuotient.gram_hermND V) μH 𝓕 hμ h𝓕
   have e := Measure.isMulLeftInvariant_eq_smul μH ν
   set c := Measure.haarScalarFactor μH ν
@@ -205,15 +208,15 @@ theorem ifrB_eq_thetaPartD : ∀ (D : D7) (r : ℕ) (V : HSp D) (θ : InfFam D),
     ∀ (μH : Measure (GA D V)) (𝓕 : Set (GA D V)), μH.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μH →
     ∀ β : HermE D r, β.1.det ≠ 0 → IfrB V ν φ β = thetaPartD V μH 𝓕 φ β := by
   intro D r V θ hθ ν hν φ hφ habs μH 𝓕 hμ h𝓕 β hβ
-  have hcm := GlobalTheory.DefiniteQuotient.cmExt D
+  have hcm := _root_.Formalism.MainNotions.UnusedSlot34.isCMExt_D D
   have hJ := GlobalTheory.DefiniteQuotient.gram_hermND V
   have hcont : Continuous φ :=
     (GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ φ hφ).1
-  obtain ⟨⟨lcA, scA, t2A⟩, -⟩ := GlobalTheory.T.adeles_locally_compact_second_countable D.host.F
+  obtain ⟨⟨lcA, scA, t2A⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.AdeleTop.adele_top D.host.F
   haveI := lcA
   haveI := scA
   haveI := t2A
-  obtain ⟨-, -, sc, -, -, -, -, borelK, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring D.host.F D.host.E D.sp.cm.sig hcm (AF D.host.F)
+  obtain ⟨-, -, sc, -, -, -, -, borelK, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props D.host.F D.host.E D.sp.cm.sig hcm (AF D.host.F)
   haveI := sc
   haveI := borelK r V.rank
   have hrank : ∀ (δ : GL (Fin V.rank) D.host.E) (ξ : Matrix (Fin V.rank) (Fin r) D.host.E),

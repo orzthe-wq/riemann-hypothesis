@@ -3,7 +3,7 @@ module
 public import Formalism.PeriodIntegrals.QuotInv
 public import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsIsFolnerUWset
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MatGroupHaarUniqueFiniteCompactOpenPosStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MatGroupHaarUniqueFiniteCompactOpenPos
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryQuotientCompactness.MaximalCompactIsCompact
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -59,7 +59,7 @@ theorem unitaryGroup_matGroup_unimodular : ∀ (k r : ℕ), PI.IsMatGroup (GG k 
   refine ⟨hμ', ?_⟩
   obtain ⟨μ, h1, h2, -⟩ := GlobalTheory.SgInf.exists_unimod_GG (k := k) (r := r)
   have h1' : PI.IsHaarOnM (GG k r) μ := h1
-  obtain ⟨c, -, -, hc⟩ := (GlobalTheory.T.matGroupHaar_unique_finite_compact_openPos _ (GG k r) μ hG h1').1 μG hμ'
+  obtain ⟨c, -, -, hc⟩ := (_root_.GlobalTheory.MatHaar.haar_unique_locFinite_openPos _ (GG k r) μ hG h1').1 μG hμ'
   intro s hs
   have h3 : μ.map (PI.rmulQ s) = μ := h2 s hs
   rw [hc, Measure.map_smul, h3]

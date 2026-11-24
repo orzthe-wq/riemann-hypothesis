@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AmplePt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -50,15 +51,7 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum.OriginSec
 
-theorem isUnit_sval_iff' {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
-    (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
-    IsUnit (sval s r z J) ↔ r z ∈ nonzeroLocus s := by
-  have key : ∀ (U : Y.Opens) (_ : r z ∈ U) (f : Γ(Y, U)), IsUnit (gs r z U f) ↔ IsUnit (gs (𝟙 Y) (r z) U f) :=
-    fun U h f => by rw [gs_stalkMap r z U h, isUnit_map_iff]
-  refine ⟨fun h => (mem_nonzeroLocus s _).2 ⟨_, hJ.mem φ r, (key _ (hJ.mem φ r) _).1 h⟩, fun h => ?_⟩
-  obtain ⟨j, hj, hu⟩ := (mem_nonzeroLocus s _).1 h
-  rw [sval, sec_trans s r z (hJ.mem φ r) hj]
-  exact (Units.isUnit _).mul ((key _ hj _).2 hu)
+alias isUnit_sval_iff' := _root_.GlobalTheory.Ex.OneGen.isUnit_sval_iff
 
 theorem c_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) : D.c 0 = η[D.P.A] := by
   have h := D.c_add 0 0

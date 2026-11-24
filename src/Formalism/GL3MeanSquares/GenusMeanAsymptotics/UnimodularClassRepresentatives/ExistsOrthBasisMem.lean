@@ -66,8 +66,8 @@ theorem exists_orth_basis_mem [FiniteDimensional K V] (hK : Formalism.HermitianL
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsFullLattice K L) :
     ∃ b : Basis (Fin (finrank K V)) K V, (∀ i, b i ∈ L) ∧ ∀ i j, i ≠ j → h (b i) (b j) = 0 := by
-  obtain ⟨e, he, -⟩ := orthBasisPos K hK V h hs hd
-  choose n hn hnx using fun i => Formalism.HermitianLatticesTheory.traceReal_mult L hL (e i)
+  obtain ⟨e, he, -⟩ := _root_.Formalism.HermitianLattices.Ext.L3.orthBasisPos_holds K hK V h hs hd
+  choose n hn hnx using fun i => _root_.Bl.general_b_fact_second'''''.goal1 L hL (e i)
   have hb : ∀ i, e.unitsSMul (fun i => Units.mk0 (n i : K) (Int.cast_ne_zero.2 (hn i))) i =
       (n i : K) • e i := fun i => by rw [Basis.unitsSMul_apply]; rfl
   refine ⟨e.unitsSMul fun i => Units.mk0 (n i : K) (Int.cast_ne_zero.2 (hn i)), fun i => ?_,

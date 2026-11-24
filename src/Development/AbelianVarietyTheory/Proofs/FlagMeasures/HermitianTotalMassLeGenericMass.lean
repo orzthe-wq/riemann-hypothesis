@@ -1,31 +1,32 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GgNone
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolume
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDataMassEqSumFrameClasses
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameClassTermsLeOverlatticeMasses
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LatticeCountBoundFrames
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RmulMul
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualHermitianLatticeMassOfTrace
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumClsLeEncard
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GgNone
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Equality
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsWtEqMulNuStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesLocalHeightEqResidueCardStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportUnitaryMassStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFrameClassProperties
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairAmplitudeMassRepsEqOrbitsStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairCoordinatesTransportInnerDataStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairTsumRepsEqConstMulOrbitsStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesComplementUnitaryActsOnTerms
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTerms
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InfStabilizerSmulEqConj
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsWtEqMulNu
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesLocalHeightEqResidueCard
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportUnitaryMass
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairAmplitudeMassRepsEqOrbits
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairCoordinatesTransportInnerData
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairTsumRepsEqConstMulOrbits
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassOrbitClass
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NotField
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToZero
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnesses
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermOverFrameCoordinatesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermsCorrespondStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotalLeGeneric
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermOverFrameCoordinates
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TsumOrbitNormaliser
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TsumTransversalEqTsumOrbitQuotientGeneral
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -44,7 +45,6 @@ import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -67,8 +67,187 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFrameClassProperties
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesComplementUnitaryActsOnTerms
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTerms
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InfStabilizerSmulEqConj
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToZero
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnesses
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermsCorrespond
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TsumTransversalEqTsumOrbitQuotientGeneral
+import Mathlib.Tactic.ENatToNat
 import Formalism.SharpRestriction.CuspSpanNormBounds.Point
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotalLeGeneric, Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTotalMassLeGenericMass
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotalLeGeneric =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotalLeGeneric", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolume\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDataMassEqSumFrameClasses\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameClassTermsLeOverlatticeMasses\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LatticeCountBoundFrames\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RmulMul\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualHermitianLatticeMassOfTrace\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumClsLeEncard\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
+open scoped Pointwise ENNReal Classical
+
+namespace GlobalTheory.HL.GenMass
+
+variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F]
+variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
+variable {L : LocE F E} {r k : ℕ}
+
+
+omit [IsNonarchimedeanLocalField F] [CharZero F] in
+theorem pair_mem_cls (S : Frames L r k) (g g' : Fin (r + 1) → S.V) : (g, g') ∈ S.frameCls g g' := by
+  have h1 : IsIntM L (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) := fun i j => by
+    rw [Matrix.one_apply]
+    split_ifs
+    · exact one_mem _
+    · exact zero_mem _
+  refine ⟨1, 1, h1, h1, fun i j h => ?_, fun i => by simp, fun i j => ⟨0, zero_mem _, by simp⟩,
+    fun j => ?_, fun j => ?_⟩
+  · simp [Matrix.one_apply_ne h.ne']
+  · simp [Matrix.one_apply]
+  · simp [Matrix.one_apply]
+
+
+omit [IsNonarchimedeanLocalField F] [CharZero F] in
+theorem sumCls_le (S : Frames L r k) (φ : Set S.FrP → ℝ≥0∞) (c : ℝ≥0∞) (h : ∀ C, S.IsCls C → φ C ≤ c) :
+    S.sumCls φ ≤ (S.sumCls fun _ => 1) * c := by
+  unfold Frames.sumCls
+  rw [← ENNReal.tsum_mul_right]
+  refine ENNReal.tsum_le_tsum fun o => ?_
+  split_ifs with ho
+  · rw [mul_one]
+    gcongr
+    exact h _ ho.1
+  · simp
+
+theorem q_pow_le (S : Frames L r k) (e : ℤ) (he0 : 0 ≤ e) (he : e ≤ S.vth + S.a + S.vD) (m : ℕ) :
+    (S.q : ℝ≥0∞) ^ (m * e.toNat) ≤ ENNReal.ofReal (S.Hp ^ m) := by
+  have hq : 2 ≤ S.q := (GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.2.2.2.1
+  have hq1 : (1 : ℝ) ≤ S.q := by exact_mod_cast (by omega : 1 ≤ S.q)
+  rw [← ENNReal.ofReal_natCast, ← ENNReal.ofReal_pow (by positivity)]
+  refine ENNReal.ofReal_le_ofReal ?_
+  rw [mul_comm, pow_mul]
+  refine pow_le_pow_left₀ (by positivity) ?_ _
+  rw [← zpow_natCast, Int.toNat_of_nonneg he0]
+  exact zpow_le_zpow_right₀ hq1 he
+
+omit [IsNonarchimedeanLocalField F] [CharZero F] in
+theorem vth_nonneg (S : Frames L r k) : 0 ≤ S.vth := by
+  unfold Frames.vth
+  split_ifs <;> norm_num
+
+theorem total_weight_le (S : Frames L r k) (ha : 0 ≤ S.a) (hD : 0 ≤ S.vD) :
+    (S.sumCls fun _ => 1) ≤ ENNReal.ofReal (S.Hp ^ (r * (r + 1))) := by
+  have hv := vth_nonneg S
+  exact ((GlobalTheory.HL.ClassCount.sumCls_le_encard L r k S).trans (GlobalTheory.IntClsCount.main L r k S hD)).trans
+    (q_pow_le S _ (by omega) (by omega) _)
+
+theorem sumCls_eq_single (S : Frames L r k) (h1 : (S.sumCls fun _ => 1) ≤ 1) (φ : Set S.FrP → ℝ≥0∞)
+    (hφ : ∀ h ∈ S.St, ∀ C, φ (h • C) = φ C) (C : Set S.FrP) (hC : S.IsIntCls C) :
+    S.sumCls φ = ENNReal.ofReal (S.wC C) * φ C := by
+  let o' : MulAction.orbitRel.Quotient S.St (Set S.FrP) := Quotient.mk _ C
+  obtain ⟨h, hh⟩ : o'.out ∈ MulAction.orbit S.St C :=
+    MulAction.orbitRel_apply.1 (Quotient.mk_out (s := MulAction.orbitRel S.St (Set S.FrP)) _)
+  have hh' : h.1 • C = o'.out := hh
+  have ho' : S.IsIntCls o'.out := hh' ▸ GlobalTheory.HL.ClassCount.isIntCls_smul S h.2 hC
+  unfold Frames.sumCls at h1 ⊢
+  rw [tsum_eq_single o', if_pos ho', ← hh', hφ _ h.2, ((GlobalTheory.HL.volSt L r k S).2 C hC.1).2.2.2 _ h.2]
+  intro o hne
+  refine if_neg fun ho => ?_
+  have h2 := (ENNReal.sum_le_tsum {o, o'}).trans h1
+  rw [Finset.sum_pair hne, if_pos ho, if_pos ho', mul_one, mul_one] at h2
+  have h3 := ENNReal.one_le_ofReal.2 ((GlobalTheory.HL.volSt L r k S).2 _ ho.1).2.2.1
+  have h4 := ENNReal.one_le_ofReal.2 ((GlobalTheory.HL.volSt L r k S).2 _ ho'.1).2.2.1
+  have h5 := (add_le_add h3 h4).trans h2
+  norm_num at h5
+
+end GlobalTheory.HL.GenMass
+
+
+open GlobalTheory.HL.GenMass in
+theorem GlobalTheory.HL.GenMass.total_le_generic : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → ∀ d₁ Λ₁, S.IsTerm d₁ Λ₁ → ∀ g : ℝ≥0∞, g = ENNReal.ofReal (S.wC (S.Fr d₁ Λ₁)) * (S.sumData fun d => S.nT d (S.Fr d₁ Λ₁) fun Λ => S.BBzero d Λ) → 0 < g ∧ g < ⊤ ∧ S.nn ≤ ENNReal.ofReal (8 * S.Hp ^ (9 * (r + 1) ^ 2 + 2 * (2 * r + 2))) * g ∧ (S.Hp = 1 → S.nn = g) := by
+  intro F _ _ _ _ _ E _ _ _ L r k S hk d₁ Λ₁ hT g hg
+  obtain ⟨hSD, -, hMs, -, -, -, hI, -⟩ := GlobalTheory.HL.TermBasic.term_basic L r k S d₁ Λ₁ hT
+  obtain ⟨ha, hD, -, -, hH, -⟩ := GlobalTheory.HL.Defect.exponents_and_defect L r k S d₁ Λ₁ hT
+  obtain ⟨κ, hκ, hU⟩ := _root_.GlobalTheory.HL.FrameMass.mass_trace L r k S (by omega) ⟨Λ₁, hSD⟩
+  have hv := vth_nonneg S
+  have hp : (S.fr d₁ Λ₁, S.fr' d₁ Λ₁) ∈ S.Fr d₁ Λ₁ := pair_mem_cls S _ _
+  have hsw := _root_.GlobalTheory.HL.sumData_mass_eq_sumCls L r k S (fun _ _ => True) (fun _ _ _ _ _ _ => trivial)
+  have hnn : S.nn = S.sumCls fun C => S.sumData fun d => S.nT d C fun _ => True := hsw.1
+  have hM := hU _ hI.1 _ hp (S.M d₁ Λ₁) le_rfl (fun x hx => (hMs hx).2)
+    (fun x hx y hy => (hSD.2 y).2 (hMs hy).1 x (hMs hx).1)
+  have hM' : ENNReal.ofReal (κ / 2) ≤ S.massSig (S.M d₁ Λ₁) ∧
+      S.massSig (S.M d₁ Λ₁) ≤ ENNReal.ofReal (2 * κ) := by
+    simpa [Frames.M] using hM
+  have hg' : g = ENNReal.ofReal (S.wC (S.Fr d₁ Λ₁)) * S.massSig (S.M d₁ Λ₁) := by
+    rw [hg, (_root_.GlobalTheory.HL.ClassMass.class_mass L r k S _ hI.1 _ hp).2]
+    rfl
+  have hw := ENNReal.one_le_ofReal.2 ((GlobalTheory.HL.volSt L r k S).2 _ hI.1).2.2.1
+  have hlow : ENNReal.ofReal (κ / 2) ≤ g := by
+    rw [hg', ← one_mul (ENNReal.ofReal (κ / 2))]
+    exact mul_le_mul' hw hM'.1
+  refine ⟨(ENNReal.ofReal_pos.2 (by positivity)).trans_le hlow, ?_, ?_, fun h1 => ?_⟩
+  · rw [hg']
+    exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hM'.2.trans_lt ENNReal.ofReal_lt_top)
+  · have hφ : ∀ C, S.IsCls C → (S.sumData fun d => S.nT d C fun _ => True) ≤
+        ENNReal.ofReal (S.Hp ^ (2 * (2 * r + 2))) * ENNReal.ofReal (2 * κ) := by
+      intro C hC
+      obtain ⟨p, hpC⟩ : ∃ p, p ∈ C := by
+        obtain ⟨n, -, n', -, rfl⟩ := hC
+        exact ⟨_, pair_mem_cls S _ _⟩
+      refine ((_root_.GlobalTheory.HL.ClassMass.class_mass L r k S C hC p hpC).1 fun _ => True).trans ?_
+      refine (ENNReal.tsum_le_tsum (g := fun _ => ENNReal.ofReal (2 * κ)) fun Mh => ?_).trans ?_
+      · refine (hU C hC p hpC Mh.1 Mh.2.1 Mh.2.2.1 Mh.2.2.2.1).2.trans (ENNReal.ofReal_le_ofReal ?_)
+        refine mul_le_of_le_one_right (by positivity) ?_
+        rw [← Nat.cast_pow]
+        exact Nat.cast_inv_le_one _
+      · have hc := GlobalTheory.FrameOver.encard_overlattices_le L r k S C hC p hpC ha
+        have he : 2 * S.a.toNat * (2 * r + 2) = 2 * (2 * r + 2) * S.a.toNat := by ring
+        rw [he] at hc
+        have hc' := hc.trans (q_pow_le S _ ha (by omega) _)
+        rw [ENNReal.tsum_const]
+        refine mul_le_mul_left (le_trans (le_of_eq ?_) hc') _
+        simp only [and_true]
+        rfl
+    rw [hnn]
+    refine (sumCls_le S _ _ hφ).trans ?_
+    refine (mul_le_mul_left (total_weight_le S ha hD) _).trans ?_
+    refine le_trans ?_ (mul_le_mul_right hlow _)
+    rw [← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity),
+      ← ENNReal.ofReal_mul (by positivity)]
+    refine ENNReal.ofReal_le_ofReal ?_
+    have h2 : S.Hp ^ (r * (r + 1)) * S.Hp ^ (2 * (2 * r + 2)) ≤
+        S.Hp ^ (9 * (r + 1) ^ 2 + 2 * (2 * r + 2)) := by
+      rw [← pow_add]
+      exact pow_le_pow_right₀ hH (by nlinarith)
+    have h3 : 0 ≤ S.Hp ^ (9 * (r + 1) ^ 2 + 2 * (2 * r + 2)) := by positivity
+    nlinarith [mul_le_mul_of_nonneg_right h2 hκ.le, mul_nonneg h3 hκ.le]
+  · have hq : 2 ≤ S.q := (GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.2.2.2.1
+    have hB : ∀ d Λ, S.IsTerm d Λ → S.BBzero d Λ := fun d Λ h => by
+      by_contra hc
+      have h2 := (GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ h).2.2.2.2.2.2.2.1 hc
+      rw [h1] at h2
+      have : S.q ≤ 1 := by exact_mod_cast h2
+      omega
+    have htw := total_weight_le S ha hD
+    rw [h1, one_pow, ENNReal.ofReal_one] at htw
+    rw [hnn, sumCls_eq_single S htw _ (fun h hh C => by simp only [hsw.2 h hh]) _ hI, hg]
+    congr 2
+    funext d
+    unfold Frames.nT
+    congr 2
+    ext Λ
+    exact ⟨fun h => ⟨h.1, hB _ _ h.1, h.2.2⟩, fun h => ⟨h.1, trivial, h.2.2⟩⟩
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotalLeGeneric =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTotalMassLeGenericMass =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTotalMassLeGenericMass", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GgNone\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolume\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.Equality\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsWtEqMulNu\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesLocalHeightEqResidueCard\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportUnitaryMass\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairAmplitudeMassRepsEqOrbits\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairCoordinatesTransportInnerData\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramePairTsumRepsEqConstMulOrbits\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassOrbitClass\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NotField\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermOverFrameCoordinates\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TotalLeGeneric\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TsumOrbitNormaliser\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFrameClassProperties\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesComplementUnitaryActsOnTerms\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTerms\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.InfStabilizerSmulEqConj\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToZero\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnesses\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermsCorrespond\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.TsumTransversalEqTsumOrbitQuotientGeneral\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.SharpRestriction.CuspSpanNormBounds.Point\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open ValuativeRel Formalism.MainNotions.S Formalism.MainNotions.S.Loc GlobalTheory.HL
@@ -94,7 +273,7 @@ theorem fr_eq (hM : M.OK) (c : Coord P S) (d : LocNG.Datum P) (t : Term V M r)
       simp only at hT hT' hf hf'
       subst hf hf' hT hT'
       rfl
-  have hW := (GlobalTheory.T.term_over_frame_coordinates M hM H r k P S c d n n' t.abelian₂).mp ⟨by rw [heq]; exact ht0, hn, hn', hΛ, hΛ'⟩
+  have hW := (_root_.GlobalTheory.HL.CoordTerm.isTermW_iff M hM H r k P S c d n n' t.abelian₂).mp ⟨by rw [heq]; exact ht0, hn, hn', hΛ, hΛ'⟩
   rw [(GlobalTheory.HL.WitIndep.witness_independence M.L r k S _ _ _ _ hW).2.2.1]
   congr 1 <;> funext b
   · rw [c.f_eq b, GlobalTheory.HL.CoordUnip.grp_apply c, hf]
@@ -107,8 +286,8 @@ theorem sum_eq_mass (hM : M.OK) (c : Coord P S) (R : LocNG.Reps P) (d : LocNG.Da
     ∑' t : {t // t ∈ R.RT d ∧ C t}, ENNReal.ofReal (LocNG.mu P t.1) = S.mass (c.dat d) Q := by
   have := hM.loc
   have := hM.char0
-  have T17 := GlobalTheory.T.framePairCoordinates_transport_unitary_mass M hM H r k P S c
-  have T22 := GlobalTheory.T.isTerm_and_om_eq_of_coord_isTermOver M hM H r k P S c
+  have T17 := _root_.GlobalTheory.HL.CoordMass.transport M hM H r k P S c
+  have T22 := _root_.GlobalTheory.HL.CoordTermWt.terms_correspond M hM H r k P S c
   have TR := GlobalTheory.HL.CoordUnip.transport M hM H r k P S c
   have hSt : ∀ g, g ∈ P.St ↔ c.grp g ∈ S.St := TR.2.2.2.1
   have hlat : ∀ g Λ, c.lat (LocNG.img g Λ) = c.grp g • c.lat Λ := T17.2.2.2.1
@@ -161,9 +340,9 @@ theorem exists_wt_one (hM : M.OK) (c : Coord P S) (R : LocNG.Reps P) (d0 : LocNG
   have := hM.loc
   have := hM.char0
   obtain ⟨d, hdR, g, hg, hmv⟩ := R.hRD.2.1 d0 (Set.mem_univ _)
-  have T20 := GlobalTheory.T.hermitianFramePairCoordinates_transport_innerData M hM H r k P S c
-  have T17 := GlobalTheory.T.framePairCoordinates_transport_unitary_mass M hM H r k P S c
-  have T22 := GlobalTheory.T.isTerm_and_om_eq_of_coord_isTermOver M hM H r k P S c
+  have T20 := _root_.GlobalTheory.HL.CoordDatum.transport M hM H r k P S c
+  have T17 := _root_.GlobalTheory.HL.CoordMass.transport M hM H r k P S c
+  have T22 := _root_.GlobalTheory.HL.CoordTermWt.terms_correspond M hM H r k P S c
   have hdat : c.grp g • c.dat d = c.dat d0 := (T20.2.1 g hg d d0).mp hmv
   have hgH : c.grp g ∈ S.H0 := (T17.1 g).mp hg
   have hterm0 : S.IsTerm (c.dat d0) (c.lat t.abelian₂) := (T22.1 d0 t ht).1
@@ -171,7 +350,7 @@ theorem exists_wt_one (hM : M.OK) (c : Coord P S) (R : LocNG.Reps P) (d0 : LocNG
     have := (GlobalTheory.HL.ComplAct.main M.L r k S (c.dat d0) (c.lat t.abelian₂) hterm0 (c.grp g)⁻¹ (inv_mem hgH)).1
     rwa [← hdat, inv_smul_smul] at this
   refine ⟨d, hdR, ⟨_, hterm⟩, ?_⟩
-  obtain ⟨κ, -, hκ⟩ := GlobalTheory.T.exists_wt_eq_mul_nu' M hM H r k P S c d0
+  obtain ⟨κ, -, hκ⟩ := _root_.GlobalTheory.HL.CoordDatum.exists_wt_eq_mul_nu M hM H r k P S c d0
   have h1 := hκ d0 _ hterm0
   have h2 := hκ d _ hterm
   have hnu := (GlobalTheory.HL.Frames.nu_pos_and_smul M.L r k S (c.dat d) _ hterm).2 (c.grp g) hgH
@@ -185,12 +364,12 @@ theorem total_le_generic : ∀ {F : Type} [Field F] [ValuativeRel F] [Topologica
   have := hM.loc
   have := hM.char0
   obtain ⟨S, ⟨c⟩⟩ := GlobalTheory.HL.CoordExist.exists_coord M hM H r k P hrank hrel
-  have T22 := GlobalTheory.T.isTerm_and_om_eq_of_coord_isTermOver M hM H r k P S c
-  have T23 := GlobalTheory.T.hermitianFramePair_amplitude_mass_reps_eq_orbits M hM H r k P S c
-  have T28 := GlobalTheory.T.framePairCoordinates_localHeight_eq_residueCard M hM H r k P S c
+  have T22 := _root_.GlobalTheory.HL.CoordTermWt.terms_correspond M hM H r k P S c
+  have T23 := _root_.GlobalTheory.HL.CoordAmp.amp_mass_eq M hM H r k P S c
+  have T28 := _root_.GlobalTheory.HL.CoordHeight.height_eq M hM H r k P S c
   have TR := GlobalTheory.HL.CoordUnip.transport M hM H r k P S c
   have h₁ : S.IsTerm (c.dat d₁) (c.lat t₁.abelian₂) := (T22.1 d₁ t₁ ht₁).1
-  obtain ⟨κ, -, hκ⟩ := GlobalTheory.T.hermitianFramePair_tsum_reps_eq_const_mul_orbits M hM H r k P S c R d0
+  obtain ⟨κ, -, hκ⟩ := _root_.GlobalTheory.HL.CoordSum.tsum_reps_eq M hM H r k P S c R d0
   obtain ⟨Qd, hQd⟩ : ∃ Qd : S.Datum → Submodule M.L.O S.V → Prop, Qd = fun δ Λ =>
       S.BBzero δ Λ ∧ ∃ s ∈ S.St, S.Fr δ Λ = s • S.Fr (c.dat d₁) (c.lat t₁.abelian₂) := ⟨_, rfl⟩
   have hvan : ∀ (δ : S.Datum) (Q : Submodule M.L.O S.V → Prop), (¬ ∃ Λ, S.IsTerm δ Λ) →
@@ -329,3 +508,6 @@ theorem total_le_generic : ∀ {F : Type} [Field F] [ValuativeRel F] [Topologica
     exact absurd hle1 (by norm_num)
 
 end GlobalTheory.HL.AbsGenMass
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTotalMassLeGenericMass =====

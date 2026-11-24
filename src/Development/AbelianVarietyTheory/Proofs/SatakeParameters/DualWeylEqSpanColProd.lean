@@ -78,7 +78,7 @@ theorem rowGen_gdet (R : Type) [CommRing R] (n : ℕ) (a b : Fin n) :
     by_cases hp : p = b
     · subst hp
       simp [rowGen, hM]
-    · simp [rowGen, hM, hp, Matrix.updateRow_ne hp]
+    · simp [rowGen, hM, hp]
   rw [h1, h2]
   by_cases hab : a = b
   · subst hab

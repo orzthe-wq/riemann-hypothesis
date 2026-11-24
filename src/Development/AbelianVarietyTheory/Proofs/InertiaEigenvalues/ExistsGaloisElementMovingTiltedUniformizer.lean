@@ -101,7 +101,6 @@ theorem untilt_root_kummer (ϖ : PiSys l e) (g : GQ l) (j : ℕ) :
   refine Perfection.teichmuller_spec (I := Ideal.span {((l : ℕ) : OC l)}) fun n => ⟨ϖ.ratio g (n + j), ?_, ?_⟩
   · rw [← PreTilt.coeff_def, PreTilt.coeff_iterate_frobeniusEquiv_symm, PiSys.coeff_kummer]
   · have : ϖ.ratio g (n + j) ^ l ^ n = ϖ.ratio g j := by
-      clear * -
       induction n with
       | zero => simp
       | succ n ih =>

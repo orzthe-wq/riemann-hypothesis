@@ -2,55 +2,12 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.IsInfUnitary
 public import Formalism.RealPlaceAnalysis.StatementKT
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.LinearAlgebra.Eigenspace.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.UniqueA
 public import Mathlib.LinearAlgebra.Dimension.Finite
 
@@ -179,9 +136,7 @@ theorem highest_weight_differences_nat (hF : Formalism.REAL.KRel ε F) (S : Subm
   obtain ⟨m, hm⟩ := exists_nat_weight_sub_eq_of_highest_vector_in_stable hF (ne_of_lt hab) he S (fun y hy => hS b a he.symm y hy) hv hv0
     (hw.1 a) (hw.1 b) (hw.2 a b hab he)
   refine ⟨m, ?_⟩
-  apply Complex.ofReal_injective
-  push_cast
-  exact hm
+  exact Complex.ofReal_injective (by push_cast; exact hm)
 
 end SL2
 
@@ -197,9 +152,7 @@ theorem lowest_weight_differences_nat {ε : Fin n → Bool} {ι : Type*} [Fintyp
     (fun _ _ => Submodule.mem_top) Submodule.mem_top hf0 (la := ((ν b : ℝ) : ℂ)) (lb := ((ν a : ℝ) : ℂ))
     (by rw [happ]; exact hfw b) (by rw [happ]; exact hfw a) (by rw [happ]; exact hfl b a hab he.symm)
   refine ⟨m, ?_⟩
-  apply Complex.ofReal_injective
-  push_cast
-  exact hm
+  exact Complex.ofReal_injective (by push_cast; exact hm)
 
 theorem block_weights_integral {ε : Fin n → Bool} {M : Type*} [AddCommGroup M] [Module ℂ M]
     {F : Fin n → Fin n → Module.End ℂ M} (hF : Formalism.REAL.KRel ε F) (S : Submodule ℂ M) [FiniteDimensional ℂ S]
@@ -219,8 +172,7 @@ theorem block_weights_integral {ε : Fin n → Bool} {M : Type*} [AddCommGroup M
   intro a b he
   rcases lt_trichotomy a b with h | h | h
   · exact key a b h he
-  · subst h
-    exact ⟨0, by simp⟩
+  · exact ⟨0, by simp [h]⟩
   · obtain ⟨z, hz⟩ := key b a h he.symm
     exact ⟨-z, by push_cast; linarith⟩
 

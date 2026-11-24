@@ -77,7 +77,7 @@ theorem ker_sec {F G : Shv R} (φ : F ⟶ G) (U : Scheme.{0}) (b : Sec F U) (hb 
 
 theorem exact_iff (S : ShortComplex (Shv R)) : S.Exact ↔ ∀ U (b : Sec S.X₂ U), Sec.map S.g b = 0 →
     Loc U fun V g => ∃ a : Sec S.X₁ V, Sec.map S.f a = Sec.res g b := by
-  apply LateralTheory.EtaleFoundations.acycIffPf.exact_iff <;> assumption
+  apply LateralTheory.EtaleFoundations.acycIffPf.exact_iff
 
 end LateralTheory.EtaleFoundations.ExactIffPf
 

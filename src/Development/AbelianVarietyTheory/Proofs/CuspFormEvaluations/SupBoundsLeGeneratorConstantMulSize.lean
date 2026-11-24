@@ -55,20 +55,20 @@ theorem gc_arith (f r L A n s lam lp a b M : ℝ) (hf : 2 ≤ f) (hr : 6 ≤ r) 
       (1009 * (f * r * L) + (3 * L + 2 * M) + 2 * f * r * (lam + 2 * lp) + 31 * (f * r * L)) * s) ∧
     ((lam + 2 * lp) * s + (400 * (f * r * L) * s + 3 * f * r * n * L + 5 * a + b + 2) ≤
       (1009 * (f * r * L) + (3 * L + 2 * M) + 2 * f * r * (lam + 2 * lp) + 31 * (f * r * L)) * s) := by
-  have hfr : 12 ≤ f * r := by nlinarith
-  have hrf : r ≤ f * r := by nlinarith
+  have hfr : 12 ≤ f * r := by linarith [mul_le_mul hf hr (by norm_num) (by linarith)]
+  have hrf : r ≤ f * r := le_mul_of_one_le_left (by linarith) (by linarith)
   obtain ⟨F, hF⟩ : ∃ F, F = f * r := ⟨_, rfl⟩
   rw [← hF] at hfr hrf hs
-  have hFn : F ≤ F * n := by nlinarith
-  have hnF : n ≤ F * n := by nlinarith
+  have hFn : F ≤ F * n := le_mul_of_one_le_right (by linarith) hn
+  have hnF : n ≤ F * n := le_mul_of_one_le_left (by linarith) (by linarith)
   have hs3 : 13 ≤ s := by linarith
   have hAs : A ≤ s := by linarith
   have hns : n ≤ s := by linarith
   have hFns : F * n ≤ s := by linarith
-  have hZ : 24 ≤ F * L := by nlinarith
-  have hLZ : L ≤ F * L := by nlinarith
-  have hrL : r * L ≤ F * L := by nlinarith
-  have hZs : 24 ≤ F * L * s := by nlinarith
+  have hZ : 24 ≤ F * L := by linarith [mul_le_mul hfr hL (by norm_num) (by linarith)]
+  have hLZ : L ≤ F * L := le_mul_of_one_le_left (by linarith) (by linarith)
+  have hrL : r * L ≤ F * L := mul_le_mul_of_nonneg_right hrf (by linarith)
+  have hZs : 24 ≤ F * L * s := by linarith [mul_le_mul hZ hs3 (by norm_num) (by linarith)]
   have h1 : r * L * A ≤ F * L * s := mul_le_mul hrL hAs hA (by linarith)
   have h2 : L * A ≤ F * L * s := mul_le_mul hLZ hAs hA (by linarith)
   have h3 : F * L * n ≤ F * L * s := mul_le_mul_of_nonneg_left hns (by linarith)

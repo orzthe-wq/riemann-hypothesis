@@ -1,12 +1,13 @@
 module
 
-public import Formalism.GL3MeanSquares.PrimeCountAsymptoticInProgressions
+public import Formalism.GL3MeanSquares.SmoothedRemainderRealIntegralFormula
 public import Formalism.LandauZeroFreeBounds.SiegelWalfiszAPOfSiegelLower
+public import Mathlib.NumberTheory.LSeries.SumCoeff
+public import Formalism.LandauZeroFreeBounds.SiegelWalfiszAP
+public import Mathlib.NumberTheory.AbelSummation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -15,18 +16,12 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.MeasureTheory.Function.Floor
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LSeries.Nonvanishing
-public import Mathlib.NumberTheory.LSeries.SumCoeff
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -34,7 +29,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,13 +41,54 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.MeasureTheory.Function.Floor
+import Mathlib.NumberTheory.LSeries.Nonvanishing
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Formalism.LandauZeroFreeBounds.SiegelWalfiszAP
-public import Mathlib.NumberTheory.AbelSummation
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.GL3MeanSquares.PrimeCountAsymptoticInProgressions, Formalism.GL3MeanSquares.HookFormulaTorsion.PsiZeroIntegral
+
+-- ===== clump member: Formalism.GL3MeanSquares.PrimeCountAsymptoticInProgressions =====
+-- clump-header: {"m": "Formalism.GL3MeanSquares.PrimeCountAsymptoticInProgressions", "h": "module\n\npublic import Formalism.GL3MeanSquares.SmoothedRemainderRealIntegralFormula\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset Filter Topology ArithmeticFunction
+open scoped ENNReal
+
+noncomputable section
+
+namespace Formalism.HermitianLattices.GL2a2
+
+open Formalism.HermitianLattices.GL2PrimeSums
+
+def LogDerivSeries : Prop :=
+  ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 →
+    Tendsto (fun N : ℕ => ∑ n ∈ Icc 1 N, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) / (n : ℂ)) atTop
+      (𝓝 (-(deriv (DirichletCharacter.LFunction χ) 1 / DirichletCharacter.LFunction χ 1)))
+
+def PsiZeroConst : Prop :=
+  Tendsto (fun U : ℝ => ∫ u in (1 : ℝ)..U, (psumR (fun n => Λ n) u - u) / u ^ 2) atTop
+    (𝓝 (-1 - Real.eulerMascheroniConstant))
+
+end Formalism.HermitianLattices.GL2a2
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GL3MeanSquares.PrimeCountAsymptoticInProgressions =====
+
+-- ===== clump member: Formalism.GL3MeanSquares.HookFormulaTorsion.PsiZeroIntegral =====
+-- clump-header: {"m": "Formalism.GL3MeanSquares.HookFormulaTorsion.PsiZeroIntegral", "h": "module\n\npublic import Formalism.GL3MeanSquares.PrimeCountAsymptoticInProgressions\npublic import Formalism.LandauZeroFreeBounds.SiegelWalfiszAPOfSiegelLower\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.MeasureTheory.Function.Floor\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LSeries.Nonvanishing\npublic import Mathlib.NumberTheory.LSeries.SumCoeff\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Formalism.LandauZeroFreeBounds.SiegelWalfiszAP\npublic import Mathlib.NumberTheory.AbelSummation\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Finset Filter Topology ArithmeticFunction MeasureTheory
@@ -76,8 +111,6 @@ private lemma dom_integrableOn {a : ℝ} (ha : 1 < a) : IntegrableOn dom (Set.Io
     unfold dom
     first
       | (rw [neg_div, neg_neg, one_div, mul_inv, div_eq_mul_inv])
-      | (field_simp; done)
-      | (field_simp; ring)
   · intro x hx
     have hx1 : (1 : ℝ) < x := lt_trans ha hx
     unfold dom
@@ -266,7 +299,7 @@ private lemma zeta_logderiv_limit :
       (𝓝 (Real.eulerMascheroniConstant : ℂ)) := by
   obtain ⟨g, hg⟩ : ∃ g : ℂ → ℂ, g = Function.update (fun s => (s - 1) * riemannZeta s) 1 1 := ⟨_, rfl⟩
   have hgs : ∀ s : ℂ, s ≠ 1 → g s = (s - 1) * riemannZeta s := fun s hs => by
-    simp [hg, Function.update_apply, hs]
+    simp [hg, hs]
   have h1 : g 1 = 1 := by simp [hg]
   have hdiff : Differentiable ℂ g := by
     have hon : DifferentiableOn ℂ g (Set.univ \ {1}) := by
@@ -293,7 +326,6 @@ private lemma zeta_logderiv_limit :
       rw [slope_def_field, hgs s hs, h1]
       first
         | (field_simp; done)
-        | (field_simp; ring)
     exact tendsto_nhds_unique h2 h3
   have hcd : ContinuousAt (deriv g) 1 := ((hdiff.analyticAt 1).deriv).continuousAt
   have hlim : Tendsto (fun s => deriv g s / g s) (𝓝[≠] 1) (𝓝 (Real.eulerMascheroniConstant : ℂ)) := by
@@ -453,7 +485,6 @@ private theorem logDerivSeries_main : Formalism.HermitianLattices.GL2a2.LogDeriv
     rw [← neg_div, ← hI, zero_sub, ← integral_neg]
     refine setIntegral_congr_fun measurableSet_Ioi (fun t ht => ?_)
     have ht0 : t ≠ 0 := (show (0 : ℝ) < t from lt_trans one_pos ht).ne'
-    beta_reduce
     rw [hdf t ht0, sum_Icc_zero hc0, show -(((1 : ℝ) : ℂ) + 1) = -((2 : ℕ) : ℂ) by norm_num,
       Complex.cpow_neg, Complex.cpow_natCast]
     simp only [rem, zero_mul, sub_zero]
@@ -461,7 +492,6 @@ private theorem logDerivSeries_main : Formalism.HermitianLattices.GL2a2.LogDeriv
     ring
   rw [hval] at hT
   refine hT.congr (fun N => ?_)
-  beta_reduce
   rw [sum_Icc_zero (b := fun k : ℕ => ((((k : ℝ))⁻¹ : ℝ) : ℂ) * (((Λ k : ℝ) : ℂ) * χ (k : ZMod q)))
     (by simp) N]
   refine Finset.sum_congr rfl (fun k _ => ?_)
@@ -474,7 +504,6 @@ private theorem psiZeroConst_main : Formalism.HermitianLattices.GL2a2.PsiZeroCon
   have hone : ∀ n : ℕ, (1 : DirichletCharacter ℂ 1) (n : ZMod 1) = 1 := fun n => by
     first
       | exact MulChar.one_apply (isUnit_of_subsingleton _)
-      | simp
   have h : RemBound (fun n : ℕ => ((Λ n : ℝ) : ℂ)) 1 := by
     have h0 := sw_bound 1 (1 : DirichletCharacter ℂ 1)
     rw [if_pos rfl] at h0
@@ -495,7 +524,6 @@ private theorem psiZeroConst_main : Formalism.HermitianLattices.GL2a2.PsiZeroCon
     have hsum : LSeriesSummable (fun n : ℕ => ((Λ n : ℝ) : ℂ)) σ := by
       first
         | exact ArithmeticFunction.LSeriesSummable_vonMangoldt hre
-        | exact LSeriesSummable_vonMangoldt hre
     have hL := LSeries_eq_mul_integral (fun n : ℕ => ((Λ n : ℝ) : ℂ)) zero_le_one hre hsum (rem_bigO h)
     have key : LSeries (fun n : ℕ => ((Λ n : ℝ) : ℂ)) σ = -deriv riemannZeta σ / riemannZeta σ :=
       LSeries_vonMangoldt_eq_deriv_riemannZeta_div hre
@@ -560,7 +588,6 @@ private theorem psiZeroConst_main : Formalism.HermitianLattices.GL2a2.PsiZeroCon
         = ((∫ u in Set.Ioi (1 : ℝ), (Formalism.HermitianLattices.GL2PrimeSums.psumR (fun n => Λ n) u - u) / u ^ 2 : ℝ) : ℂ) := by
       first
         | exact integral_complex_ofReal
-        | exact integral_ofReal
     rw [← e0, e1, hlim]
     push_cast
     ring
@@ -572,10 +599,12 @@ end Formalism.HermitianLattices.P.PsiZeroIntegral
 
 namespace Formalism.HermitianLattices.GL2a2
 
-theorem log_deriv_series : Formalism.HermitianLattices.GL2a2.LogDerivSeries := by
-  exact Formalism.HermitianLattices.P.PsiZeroIntegral.logDerivSeries_main
+alias log_deriv_series := _root_.Formalism.HermitianLattices.P.PsiZeroIntegral.logDerivSeries_main
 
-theorem psi_zero_integral_constant : Formalism.HermitianLattices.GL2a2.PsiZeroConst := by
-  exact Formalism.HermitianLattices.P.PsiZeroIntegral.psiZeroConst_main
+alias psi_zero_integral_constant := _root_.Formalism.HermitianLattices.P.PsiZeroIntegral.psiZeroConst_main
 
 end Formalism.HermitianLattices.GL2a2
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GL3MeanSquares.HookFormulaTorsion.PsiZeroIntegral =====

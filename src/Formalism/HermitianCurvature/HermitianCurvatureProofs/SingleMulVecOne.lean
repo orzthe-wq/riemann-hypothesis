@@ -127,7 +127,7 @@ theorem single_mulVec_one {n : ℕ} (x y : Fin n) (v : Fin n → ℂ) : Matrix.s
   by_cases h : l = x
   · subst h
     simp [bvec]
-  · simp [bvec, Pi.single_apply, h]
+  · simp [bvec, h]
 
 theorem unitB_fr (hgU : g ∈ UH (Hpk k r)) (a b : Fin k) :
     unitB (Hpk k r) (fr k r g) a b = g * Matrix.single (wI k r a.castSucc) (wI k r b.castSucc) (1 : ℂ) * g⁻¹ := by
@@ -141,7 +141,7 @@ end Frame
 
 theorem unitB_adj {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a b : Fin m) :
     (Hpk k r)⁻¹ * (unitB (Hpk k r) Bs a b)ᴴ * Hpk k r = unitB (Hpk k r) Bs b a := by
-  apply Formalism.FourierDecayAlt.P.Qx8.unitB_adj <;> assumption
+  apply Formalism.FourierDecayAlt.P.Qx8.unitB_adj
 
 theorem hpart1_self {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a : Fin m) :
     hpart1 (Hpk k r) (unitB (Hpk k r) Bs a a) = 0 := by

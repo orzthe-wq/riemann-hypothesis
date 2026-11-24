@@ -124,7 +124,7 @@ theorem adAt_finM_eq_one : ∀ (D : D7) (V : HSp D) {n : ℕ} (hn : V.rank = n) 
     rw [Matrix.sub_apply, sub_add_cancel]
   rw [e, RingHom.map_add (toEAf D), RingHom.map_add (GlobalTheory.Mem.Col2.adAt D.host.F P), hz, zero_add]
   by_cases hrk : r = k
-  · subst hrk; simp [Matrix.one_apply]
-  · simp [Matrix.one_apply, hrk]
+  · subst hrk; simp
+  · simp [hrk]
 
 end GlobalTheory.FinMComp

@@ -4,7 +4,7 @@ public import Formalism.LocalToGlobal.ProjectiveLattices.IntAllProofFree
 public import Formalism.LocalToGlobal.ProjectiveLattices.IsChartIff
 public import Formalism.LocalToGlobal.ProjectiveLattices.IntFrames
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointFieldFromTestRingStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointFieldFromTestRing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -63,65 +63,6 @@ namespace GlobalTheory.IntRebase
 open Formalism.L2.Pj
 open Formalism.L2.PjFree (spMap_comp' epsMul_comp_alg)
 
-section Ext
-
-open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Geo.Tor
-
-theorem spec_ext_two {R A : Type} [CommRing R] [CommRing A] (p1 p2 : R →+* A)
-    (hs : Function.Surjective p1) (hn : ∀ x, p1 x = 0 → x * x = 0)
-    (hk : ∀ x, p1 x = 0 → p2 x = 0 → x = 0) {X : Scheme.{0}} (f g : Sp R ⟶ X)
-    (h1 : spMap p1 ≫ f = spMap p1 ≫ g) (h2 : spMap p2 ≫ f = spMap p2 ≫ g) : f = g := by
-  have hl1 : equalizer.lift (spMap p1) h1 ≫ equalizer.ι f g = spMap p1 := equalizer.lift_ι _ _
-  have hl2 : equalizer.lift (spMap p2) h2 ≫ equalizer.ι f g = spMap p2 := equalizer.lift_ι _ _
-  have hrange : Set.range (equalizer.ι f g) = Set.univ := by
-    rw [Set.eq_univ_iff_forall]
-    intro x
-    have hx : (show PrimeSpectrum R from x) ∈ Set.range (PrimeSpectrum.comap p1) := by
-      rw [range_comap_of_surjective _ _ hs]
-      intro a ha
-      have h3 : a * a ∈ (show PrimeSpectrum R from x).asIdeal := by
-        rw [hn a ha]; exact Ideal.zero_mem _
-      exact ((show PrimeSpectrum R from x).isPrime.mem_or_mem h3).elim id id
-    obtain ⟨y, hy⟩ := hx
-    refine ⟨equalizer.lift (spMap p1) h1 (show Sp A from y), ?_⟩
-    have h4 := congrArg (fun φ : Sp A ⟶ Sp R => φ (show Sp A from y)) hl1
-    exact h4.trans hy
-  have hc : (equalizer.ι f g).coborderRange = ⊤ := by
-    apply TopologicalSpace.Opens.ext
-    have h5 : Set.range (equalizer.ι f g) ⊆ coborder (Set.range (equalizer.ι f g)) := subset_coborder
-    rw [hrange] at h5
-    have h5' : (↑(equalizer.ι f g).coborderRange : Set (Sp R)) = coborder (Set.range (equalizer.ι f g)) := rfl
-    rw [h5', hrange]
-    exact Set.univ_subset_iff.1 h5
-  have hci : IsClosedImmersion (equalizer.ι f g) := by
-    have : IsIso (equalizer.ι f g).coborderRange.ι := by rw [hc, ← Scheme.topIso_hom]; infer_instance
-    rw [← (equalizer.ι f g).liftCoborder_ι]
-    infer_instance
-  obtain ⟨I, e, he⟩ := IsClosedImmersion.Spec_iff.mp hci
-  have hI : ∀ (p : R →+* A) (l : Sp A ⟶ equalizer f g), l ≫ equalizer.ι f g = spMap p → ∀ x ∈ I, p x = 0 := by
-    intro p l hl x hx
-    rw [he, ← Category.assoc] at hl
-    have h6 : Spec.map (Spec.preimage (l ≫ e.hom)) ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) =
-        Spec.map (CommRingCat.ofHom p) := by rw [Spec.map_preimage]; exact hl
-    rw [← Spec.map_comp] at h6
-    have h7 := Spec.map_injective h6
-    have h8 := congrArg (fun φ => φ.hom x) h7
-    simp only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply] at h8
-    rw [← h8, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]
-  have hbot : I = ⊥ := by
-    refine le_bot_iff.mp fun x hx => ?_
-    exact hk x (hI p1 _ hl1 x hx) (hI p2 _ hl2 x hx)
-  subst hbot
-  have hiso : IsIso (equalizer.ι f g) := by
-    rw [he]
-    have : IsIso (CommRingCat.ofHom (Ideal.Quotient.mk (⊥ : Ideal (CommRingCat.of R)))) := by
-      rw [ConcreteCategory.isIso_iff_bijective]
-      exact (RingEquiv.quotientBot R).symm.bijective
-    infer_instance
-  rw [← cancel_epi (equalizer.ι f g), equalizer.condition]
-
-end Ext
-
 section Tan
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
@@ -130,17 +71,6 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 variable {X0 : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X0)
-
-theorem homAt_comp {A B C : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] [CommRing C] [Algebra S C]
-    (f : A →ₐ[S] B) (g : B →ₐ[S] C) : homAt x0 g ≫ homAt x0 f = homAt x0 (g.comp f) := by
-  apply Over.OverMorphism.ext
-  simp only [homAt, Over.comp_left, Over.homMk_left, spMap, ← Spec.map_comp]
-  rfl
-
-theorem homAt_id {A : Type} [CommRing A] [Algebra S A] : homAt x0 (AlgHom.id S A) = 𝟙 _ := by
-  apply Over.OverMorphism.ext
-  simp only [homAt, Over.homMk_left, Over.id_left, spMap]
-  exact Spec.map_id _
 
 abbrev tm {M N : Type} [AddCommGroup M] [Module S M] [AddCommGroup N] [Module S N]
     [Module Sᵐᵒᵖ M] [IsCentralScalar S M] [Module Sᵐᵒᵖ N] [IsCentralScalar S N] (L : M →ₗ[S] N) :
@@ -160,14 +90,14 @@ theorem smT_one' (a : S) : smT x0 a (1 : overAt x0 (DualNumber S) ⟶ G) = 1 := 
 
 theorem smT_smT (a b : S) (v : overAt x0 (DualNumber S) ⟶ G) : smT x0 a (smT x0 b v) = smT x0 (a * b) v := by
   simp only [smT]
-  rw [← Category.assoc, homAt_comp, ← TrivSqZeroExt.map_comp_map]
+  rw [← Category.assoc, _root_.GlobalTheory.TanMod.homAt_comp, ← TrivSqZeroExt.map_comp_map]
   congr 3
   ext
   simp
 
 theorem smT_unit (v : overAt x0 (DualNumber S) ⟶ G) : smT x0 1 v = v := by
   simp only [smT, one_smul, tm]
-  rw [TrivSqZeroExt.map_id, homAt_id, Category.id_comp]
+  rw [TrivSqZeroExt.map_id, _root_.GlobalTheory.TanMod.homAt_id, Category.id_comp]
 
 theorem smT_add (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (a b : S) :
     smT x0 (a + b) v = smT x0 a v * smT x0 b v := by
@@ -175,7 +105,7 @@ theorem smT_add (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (a b 
       (homAt x0 (tm (LinearMap.inl S S S)) ≫ v) * (homAt x0 (tm (LinearMap.inr S S S)) ≫ v) := by
     have hz : (0 : S →ₗ[S] S) = (0 : S) • (LinearMap.id : S →ₗ[S] S) := by simp
     apply Over.OverMorphism.ext
-    apply spec_ext_two (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S)
+    apply _root_.GlobalTheory.TanMod.spec_ext_two (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S)
       (tm (LinearMap.snd S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S)
     · intro y
       refine ⟨tm (LinearMap.inl S S S) y, ?_⟩
@@ -192,8 +122,8 @@ theorem smT_add (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (a b 
           homAt x0 (tm (LinearMap.prod LinearMap.id LinearMap.id : S →ₗ[S] S × S)) ≫ v =
           homAt x0 (tm (LinearMap.fst S S S)) ≫
             ((homAt x0 (tm (LinearMap.inl S S S)) ≫ v) * (homAt x0 (tm (LinearMap.inr S S S)) ≫ v)) := by
-        rw [MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp,
-          homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map,
+        rw [MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, _root_.GlobalTheory.TanMod.homAt_comp, _root_.GlobalTheory.TanMod.homAt_comp,
+          _root_.GlobalTheory.TanMod.homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map,
           LinearMap.fst_prod, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, hz]
         change _ = _ * smT x0 0 v
         rw [h0, _root_.mul_one]
@@ -202,8 +132,8 @@ theorem smT_add (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (a b 
           homAt x0 (tm (LinearMap.prod LinearMap.id LinearMap.id : S →ₗ[S] S × S)) ≫ v =
           homAt x0 (tm (LinearMap.snd S S S)) ≫
             ((homAt x0 (tm (LinearMap.inl S S S)) ≫ v) * (homAt x0 (tm (LinearMap.inr S S S)) ≫ v)) := by
-        rw [MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp,
-          homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map,
+        rw [MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, _root_.GlobalTheory.TanMod.homAt_comp, _root_.GlobalTheory.TanMod.homAt_comp,
+          _root_.GlobalTheory.TanMod.homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map,
           LinearMap.snd_prod, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, hz]
         change _ = smT x0 0 v * _
         rw [h0, _root_.one_mul]
@@ -211,8 +141,8 @@ theorem smT_add (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) (a b 
   have h := congrArg (fun φ => homAt x0 (tm (LinearMap.coprod (a • (LinearMap.id : S →ₗ[S] S))
     (b • (LinearMap.id : S →ₗ[S] S)))) ≫ φ) key
   beta_reduce at h
-  rw [MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, homAt_comp, homAt_comp,
-    homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map,
+  rw [MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, _root_.GlobalTheory.TanMod.homAt_comp, _root_.GlobalTheory.TanMod.homAt_comp,
+    _root_.GlobalTheory.TanMod.homAt_comp, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map,
     LinearMap.coprod_inl, LinearMap.coprod_inr] at h
   have hs : (LinearMap.coprod (a • (LinearMap.id : S →ₗ[S] S)) (b • (LinearMap.id : S →ₗ[S] S))).comp
       (LinearMap.prod LinearMap.id LinearMap.id) = (a + b) • (LinearMap.id : S →ₗ[S] S) := by
@@ -593,17 +523,9 @@ theorem isEigV_kapI_iff {Fr : Type} [Field Fr] [Algebra V Fr] (io : c.F →+* Fr
 
 end KapMore
 
-theorem dualMap_comp_alg {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
-    (dualMap f).comp (algebraMap A (DualNumber A)) = (algebraMap B (DualNumber B)).comp f := by
-  apply RingHom.ext
-  intro r
-  ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
+alias dualMap_comp_alg := _root_.Formalism.L2.Pj.dualMap_alg
 
-theorem dualMap_comp_epsMul {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (a : A) :
-    (dualMap f).comp (epsMul a) = (epsMul (f a)).comp (dualMap f) := by
-  apply RingHom.ext
-  intro r
-  ext <;> simp [dualMap, epsMul, _root_.mul_comm]
+alias dualMap_comp_epsMul := _root_.Formalism.L2.Pj.dualMap_eps
 
 theorem integral_reb (T : CDVR) (io : c.F →+* T.Fr) : letI := io.toAlgebra
     ∀ (y : FrPt Xo c T.Fr), Integral T io y →
@@ -686,26 +608,7 @@ theorem id_appLE_apply (X : Scheme.{0}) (U : X.Opens) (h : U ≤ (𝟙 X) ⁻¹�
   erw [CategoryTheory.Functor.map_id, Category.comp_id]
   rfl
 
-theorem scal_mul' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a b : S) (i : (PPx x).ι) :
-    scal x (a * b) i = scal x a i * scal x b i := by
-  simp [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_mul]
-
-theorem scal_one' {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) : scal x 1 i = 1 := by
-  simp [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_one]
-
-theorem gen_unit' {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} (s s' : ReciprocityTheory.ChartRestriction.G.Semi.LB.Sec (PPx x))
-    (hs : ∀ s'' : ReciprocityTheory.ChartRestriction.G.Semi.LB.Sec (PPx x), ∃! a : S, ∀ i, s''.f i = scal x a i * s.f i)
-    (hs' : ∀ s'' : ReciprocityTheory.ChartRestriction.G.Semi.LB.Sec (PPx x), ∃! a : S, ∀ i, s''.f i = scal x a i * s'.f i) :
-    ∃ u : Sˣ, ∀ i, s'.f i = scal x (u : S) i * s.f i := by
-  obtain ⟨a, ha, -⟩ := hs s'
-  obtain ⟨b, hb, -⟩ := hs' s
-  obtain ⟨c1, -, hc1⟩ := hs s
-  have h1 : b * a = 1 := by
-    have e1 : ∀ i, s.f i = scal x (b * a) i * s.f i := fun i => by
-      rw [scal_mul', _root_.mul_assoc, ← ha i, ← hb i]
-    have e2 : ∀ i, s.f i = scal x 1 i * s.f i := fun i => by rw [scal_one', _root_.one_mul]
-    exact (hc1 _ e1).trans (hc1 _ e2).symm
-  exact ⟨⟨a, b, by rw [_root_.mul_comm]; exact h1, h1⟩, ha⟩
+alias scal_one' := _root_.GlobalTheory.Frames.SecCalc.scal_one'
 
 theorem intRebase_of (hA : SpreadSt Xo c) : Formalism.L2.PjFree.IntRebase Xo c := by
   intro T io
@@ -719,7 +622,7 @@ theorem intRebase_of (hA : SpreadSt Xo c) : Formalism.L2.PjFree.IntRebase Xo c :
   obtain ⟨zx, zo, zu, zt, ze, zb, zs, zg⟩ := z
   simp only at hx
   subst hx
-  obtain ⟨u0, hu0⟩ := gen_unit' (x := y0.1.x) zs y0.1.s zg y0.1.gen
+  obtain ⟨u0, hu0⟩ := _root_.GlobalTheory.Frames.ChgOf.gen_unit' (x := y0.1.x) zs y0.1.s zg y0.1.gen
   refine ⟨⟨rebase₂ y0.1 _ hK, hA T.Fr _, integral_reb T io y0.1 y0.2.2 k hk hK⟩, u0, rfl, fun τ i => ?_,
     𝟙 _, Category.id_comp _, Category.id_comp _, ?_⟩
   · exact (isCombAtG_iff Xo.univ.t y0.1.x (fun j => ovT (t := Xo.univ.t) (y0.1.tan τ j)) _ _).2 rfl
@@ -736,4 +639,4 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 
 theorem GlobalTheory.IntRebase.intRebase : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), Formalism.L2.PjFree.IntRebase Xo c :=
-  fun h E _ _ _ H Dw l Xo c => GlobalTheory.IntRebase.intRebase_of (GlobalTheory.T.framedPoint_field_from_testRing h E H Dw l Xo c)
+  fun h E _ _ _ H Dw l Xo c => GlobalTheory.IntRebase.intRebase_of (_root_.GlobalTheory.Frames.framedPoint_field_fromTest h E H Dw l Xo c)

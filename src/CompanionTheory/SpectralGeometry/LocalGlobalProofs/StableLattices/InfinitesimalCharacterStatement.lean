@@ -1,57 +1,13 @@
 module
 
 public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.DiscreteSeriesExhaustion.HeckeAlgebraActions.BackStable
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CayleyHamiltonStatementStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensorStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.CayleyHamiltonStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.QuantumDeterminantTensor
 import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
 import Mathlib.Algebra.Module.StablyFree.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -415,13 +371,6 @@ theorem compLeft_pow_apply {V : Type*} [AddCommGroup V] [Module ℂ V] {I : Type
     rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih]
     simp [Module.algebraMap_end_apply]
 
-theorem commute_C_om (X : GMod n) (u : ℂ) : Commute ((qdet X.E u).compLeft (Fin n)) (om X) := by
-  refine LinearMap.ext fun f => funext fun b => ?_
-
-  simp only [Module.End.mul_apply, om_apply, LinearMap.compLeft_apply, Function.comp, map_sum]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  exact LinearMap.congr_fun (Formalism.REAL.qDetCentral _ n X.E X.gl u a b) (f a)
-
 theorem commute_T_om (X : GMod n) (u : ℂ) : Commute (qdet (tensE X) u) (om X) :=
   (commute_qdet (om X) (fun a b => (commute_om X a b).symm) u).symm
 
@@ -449,7 +398,7 @@ theorem stepChar_of (hT : QdetTens) (hC : CayleyHam) : StepChar := by
   let ν : Module.End ℂ (stepSub X z) :=
     (om X - a • (1 : Module.End ℂ (Fin n → X.V))).restrict (hstab _ hcomν)
   let c : ℂ → Module.End ℂ (stepSub X z) := fun u =>
-    ((qdet X.E u).compLeft (Fin n)).restrict (hstab _ (commute_C_om X u))
+    ((qdet X.E u).compLeft (Fin n)).restrict (hstab _ (_root_.GlobalTheory.CompanionTheory.RgExh.commute_compLeft_om X u))
   let D : ℂ → Module.End ℂ (stepSub X z) := fun u => qdet (step X z).E u
   have hRν : Rs ν (om X - a • (1 : Module.End ℂ (Fin n → X.V))) := fun _ => rfl
   have hRc : ∀ u, Rs (c u) ((qdet X.E u).compLeft (Fin n)) := fun _ _ => rfl
@@ -457,7 +406,7 @@ theorem stepChar_of (hT : QdetTens) (hC : CayleyHam) : StepChar := by
   have hν : ν ^ M = 0 := (hRν.pow M).ext fun x => by
     simpa using (hM x x.2).symm
   have hcν : ∀ u, Commute (c u) ν := fun u =>
-    (hRc u).commute hRν ((commute_C_om X u).sub_right ((Commute.one_right _).smul_right a))
+    (hRc u).commute hRν ((_root_.GlobalTheory.CompanionTheory.RgExh.commute_compLeft_om X u).sub_right ((Commute.one_right _).smul_right a))
   have hDν : ∀ u, Commute (D u) ν := fun u =>
     (hRD u).commute hRν ((commute_T_om X u).sub_right ((Commute.one_right _).smul_right a))
   have hadd : ∀ u : ℂ, Rs (algebraMap ℂ (Module.End ℂ (stepSub X z)) (u + a) + ν)
@@ -533,6 +482,6 @@ theorem stepChar_of (hT : QdetTens) (hC : CayleyHam) : StepChar := by
 
 end Main
 
-theorem stepChar : CompanionTheory.RgExh.StepChar := stepChar_of GlobalTheory.T.QuantumDeterminantTensor GlobalTheory.T.CayleyHamiltonHk
+theorem stepChar : CompanionTheory.RgExh.StepChar := stepChar_of _root_.GlobalTheory.CompanionTheory.RgExh.qdetTens _root_.GlobalTheory.CompanionTheory.RgExhHecke.CayleyOm.cayleyHam
 
 end GlobalTheory.CompanionTheory.RgExhHecke.StepCharPf

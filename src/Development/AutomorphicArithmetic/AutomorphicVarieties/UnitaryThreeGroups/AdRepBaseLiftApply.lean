@@ -53,7 +53,7 @@ private theorem UpperTheory.V.U3.theta_lie_apply {R : Type} [CommRing R] (X : Ma
     (a b : Fin 3) : thetaLie X a b = -X b.rev a.rev := by
   simp only [thetaLie, Matrix.neg_apply, Matrix.mul_apply, Jmat, Matrix.transpose_apply]
   congr 1
-  simp only [ite_mul, mul_ite, one_mul, zero_mul, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  simp only [ite_mul, mul_ite, one_mul, zero_mul, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   rw [Finset.sum_eq_single b.rev]
   · simp
   · intro x _ hx

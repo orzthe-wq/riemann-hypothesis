@@ -3,7 +3,6 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RowRatW
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.LocalTypeDictionary.MultiplicityCoverHypotheses
 public import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.DiscreteSeriesClassificationIff
-public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleCoefficientsAnalytic
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.CuspDiscreteDecompositionOfTraceClass
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsFactorisationCuspidal
 import Mathlib.Algebra.Order.Floor.Extended
@@ -50,13 +49,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.Col2
 open GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw
 structure MemberHypotheses : Prop where
-  m1 : GlobalTheory.Published.HarishChandraAnalyticity
   m2 : GlobalTheory.Published.DiscreteSeriesClassification
   m3 : GlobalTheory.Published.CuspRapidDecay
   m4 : GlobalTheory.Published.HarishChandraFinite
   m5 : GlobalTheory.Published.CuspTraceClass
   m6 : GlobalTheory.Published.DixmierMalliavinFactorisation
-  m7 : GlobalTheory.Published.FlathFactorisation
   m12 : GlobalTheory.Published.ZelevinskyPolynomialRing
   m13 : GlobalTheory.Published.GeometricLemma
   m14 : GlobalTheory.Published.GreenCuspidal

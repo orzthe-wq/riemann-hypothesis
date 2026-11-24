@@ -161,14 +161,14 @@ theorem nonempty_equiv_piTensor_contra [∀ a, T2Space (Γ a)]
   choose K0 hK1 hK2 using hK
   have hschur : ∀ a, ∀ φ : X a →ₗ[ℂ] X a, (∀ g x, φ (ρ a g x) = ρ a g (φ x)) →
       ∃ c : ℂ, φ = c • LinearMap.id := fun a =>
-    GlobalTheory.SchurAdm.schur_admissible (Γ a) (K0 a) (hK1 a) (hK2 a) (X a) (ρ a) (hi a) (hρ a)
+    _root_.GlobalTheory.SchurAdmissibility.schur_admissible (Γ a) (K0 a) (hK1 a) (hK2 a) (X a) (ρ a) (hi a) (hρ a)
   have hci : ∀ a, (contra (ρ a)).IsIrreducible := fun a =>
     GlobalTheory.ContraRefl.contra_isIrreducible (hG a) (hρ a) (hi a)
   have hca : ∀ a, IsAdmissible (contra (ρ a)) := fun a =>
     GlobalTheory.SmGL.ContraTrace.isAdmissible_contra (hρ a)
   have hcschur : ∀ a, ∀ φ : smoothPart (ρ a).dual →ₗ[ℂ] smoothPart (ρ a).dual,
       (∀ g x, φ (contra (ρ a) g x) = contra (ρ a) g (φ x)) → ∃ c : ℂ, φ = c • LinearMap.id := fun a =>
-    GlobalTheory.SchurAdm.schur_admissible (Γ a) (K0 a) (hK1 a) (hK2 a) _ (contra (ρ a)) (hci a) (hca a)
+    _root_.GlobalTheory.SchurAdmissibility.schur_admissible (Γ a) (K0 a) (hK1 a) (hK2 a) _ (contra (ρ a)) (hci a) (hca a)
   have hI : (piTensor ρ).IsIrreducible :=
     GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur ρ hi hschur
   have hI' : (piTensor fun a => contra (ρ a)).IsIrreducible :=

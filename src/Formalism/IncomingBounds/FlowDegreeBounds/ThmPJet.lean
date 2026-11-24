@@ -72,7 +72,7 @@ private theorem mem_support_or_of_mem_support_add {σ : Type} (P Q : MvPolynomia
 
 theorem tpjet_jetAt0_add {σ : Type} (P Q : MvPolynomial σ C) (G : MvPowerSeries σ C) :
     jetAt0 (P + Q) G = jetAt0 P G + jetAt0 Q G := by
-  apply GlobalTheory.MinorShiftJet.jetAt0_add_left <;> assumption
+  apply GlobalTheory.MinorShiftJet.jetAt0_add_left
 
 theorem tpjet_jetAt0_zero {σ : Type} (G : MvPowerSeries σ C) :
     jetAt0 (0 : MvPolynomial σ C) G = 0 := by

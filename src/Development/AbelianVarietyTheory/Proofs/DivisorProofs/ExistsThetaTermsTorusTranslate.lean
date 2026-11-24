@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -133,11 +134,11 @@ attribute [local instance] GlobalTheory.TorusExt.gtGroup in
 theorem exists_terms_translate : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ), ∀ (C : Type) (lab : C → X₁.S.Gam), (∀ c, lab c ∈ X₁.S.HH X₁.M z₁) → ∀ T : (Fin 8 → X) → C → V, 𝔪.Terms x₀ lab T → ∀ (c : C), ∀ τ ∈ X₁.S.TT X₁.M z₁, ∃ T' : (Fin 8 → X) → Unit → V, 𝔪.Terms x₀ (fun _ : Unit => lab c + τ) T' := by
   intro g n F W Z i X₁ z₁ act x₀ _ V _ _ _ ev X _ m t δ 𝔪 C lab _ T hT c τ hτ
   obtain ⟨x, fr, th, w₀, s, g', w, hx, hfr, hth, hw₀, hexp, hg', hTc⟩ := hT
-  obtain ⟨χ, hχ1, hχ⟩ := GlobalTheory.T.exists_torusTorsionPoint_of_label_orthogonal g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 τ hτ
+  obtain ⟨χ, hχ1, hχ⟩ := _root_.GlobalTheory.Poinc.Sep.TorPt.exists_torus_char g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 τ hτ
   obtain ⟨p₀, hp₀y, hg₀⟩ := GlobalTheory.ZH.TorusPerp.exists_qkPt_tor 𝔪.D.3 χ hχ1
   obtain ⟨p, xτ, hpy, hpg, hpq, hxτ⟩ := hχ p₀.g hg₀
-  have hxadd := GlobalTheory.T.memberTorsionPoints_additive_label g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x hx (lab c) τ xτ hxτ
-  obtain ⟨ρA, hρA, hρfr⟩ := GlobalTheory.T.exists_rigidification_matchingFrames_torsionFrames g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x fr hx hfr
+  have hxadd := _root_.GlobalTheory.Poinc.PtAdd.x_add g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x hx (lab c) τ xτ hxτ
+  obtain ⟨ρA, hρA, hρfr⟩ := _root_.GlobalTheory.Poinc.IntTerm.exists_rig_torsFrame_of_match g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x fr hx hfr
   obtain ⟨hg'o, hwc, hover⟩ := hg' c
   have hadd : (g' c).IsAdd p₀.g (g' c + p₀.g) := (GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).mpr rfl
   obtain ⟨hb, -⟩ := GlobalTheory.UT.ThetaAverage.val_translate hg₀ hadd
@@ -146,7 +147,7 @@ theorem exists_terms_translate : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W 
     generalize (g' c + p₀.g).b = b at hb ⊢
     subst hb
     exact ⟨w c, hwc, fun _ _ _ => rfl⟩
-  obtain ⟨e₂, he₂t, he₂o⟩ := GlobalTheory.T.torusExtension_translate_liesOver_product_torsionFrame g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 w₀ hw₀ ρA hρA (x (lab c)) (fr (lab c))
+  obtain ⟨e₂, he₂t, he₂o⟩ := _root_.GlobalTheory.Poinc.Tors.Translate.over_translate g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 w₀ hw₀ ρA hρA (x (lab c)) (fr (lab c))
     (hρfr _) (g' c) (w c) hg'o hwc hover χ hχ1 p₀.g hg₀ p xτ hpy hpg hpq (g' c + p₀.g) hadd w₂ hw₂ (x (lab c + τ)) hxadd
   obtain ⟨κ, hκ0, hκ⟩ := exists_frAt_ratio he₂t.2.1 (hfr (lab c + τ)).1
   obtain ⟨w', hw'gen, hw'⟩ := GlobalTheory.UT.TorsionValue.exists_frm_scale w₂ hw₂gen (inv_ne_zero hκ0)

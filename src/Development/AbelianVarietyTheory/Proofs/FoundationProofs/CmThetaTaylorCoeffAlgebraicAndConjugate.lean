@@ -2,22 +2,22 @@ module
 
 public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
 public import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaComplexConjugationCompatibleStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLatticeStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaComplexConjugationCompatible
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTaylorThetaTranslate
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData
+public import Mathlib.Algebra.AlgebraicCard
+public import Mathlib.Analysis.Calculus.Deriv.Star
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalStarComplexMultiplicationPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTaylorThetaTranslateStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalStarComplexMultiplicationPoints
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicDataStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
 import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsRingEquivOfIsTranscendenceBasis
-public import Mathlib.Algebra.AlgebraicCard
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.Calculus.Deriv.Star
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -308,7 +308,7 @@ theorem isLat_lamOf {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Crv D 
 theorem coef_translate_mem {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Crv D cc δ) {x : ℂ}
     (hx : InRationalLattice (lamOf D cc δ) x) (n : ℕ) :
     coef1 (U1 (lamOf D cc δ) x (sgStar (lamOf D cc δ))) n ∈ TaylorLogMetric.Qbar := by
-  obtain ⟨⟨-, hg2, hg3⟩, htor⟩ := (GlobalTheory.T.admJ_and_torsion_data_algebraic D (GlobalTheory.InducedType.induced_type D).1).2 cc δ h
+  obtain ⟨⟨-, hg2, hg3⟩, htor⟩ := (_root_.GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D (GlobalTheory.InducedType.induced_type D).1).2 cc δ h
   obtain ⟨m, hm, hmx⟩ := hx
   obtain ⟨y, hy⟩ := GlobalTheory.GaloisDescent.complex_mem_range_of_forall_algEquiv (K := TaylorLogMetric.Qbar)
     (coef1 (U1 (lamOf D cc δ) x (sgStar (lamOf D cc δ))) n) (fun σ => by
@@ -319,7 +319,7 @@ theorem coef_translate_mem {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h :
         exact (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (a : D.host.E)).algHom D.host.φ₀.toRatAlgHom)⟩
       have hL := lamConj_eq_self (isLat_lamOf h) (hσ _ hg2) (hσ _ hg3)
       have hm0 : (m : ℂ) ≠ 0 := by exact_mod_cast hm.ne'
-      have hg := GlobalTheory.T.galois_conj_taylor_thetaTranslate D cc δ h ⊤ _ hK IntermediateField.mem_top IntermediateField.mem_top x x (2 * m)
+      have hg := _root_.GlobalTheory.JetConj.galois_translate_sgStar D cc δ h ⊤ _ hK IntermediateField.mem_top IntermediateField.mem_top x x (2 * m)
         (by omega) (by convert hmx using 1; push_cast; ring) (by
           unfold Adp1 StarPt
           rw [hL]
@@ -363,13 +363,13 @@ theorem embeddingConj_evenTheta_coeff_of_fixes_field {D : D7} {cc : Ideal (𝓞 
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t) (ht' : GL3Theta.IsTwoTorsionPointUnkilled D (lamConj ⊤ ρ (lamOf D cc δ)) t') (n : ℕ) :
     cj ⊤ ρ (coef1 (GL3Theta.th0 (lamOf D cc δ) t) n) = coef1 (GL3Theta.th0 (lamConj ⊤ ρ (lamOf D cc δ)) t') n := by
   obtain ⟨hex, -, -, hadd, hmul, hord, -⟩ :=
-    GlobalTheory.T.galStar_complexMultiplication_points D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top
+    _root_.GlobalTheory.ConjPoint.galStar_holds D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top
   obtain ⟨cc', δ', h', -, hL⟩ :=
-    GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top 1 one_pos
+    _root_.GlobalTheory.ConjCurve.galCurve_holds D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top 1 one_pos
   rw [twoTorsionCMPoint_iff] at ht ht'
   obtain ⟨u, hu⟩ := hex (t / 8) ⟨16, by norm_num, by convert ht.1 using 1; push_cast; ring⟩
     (Or.inr ⟨IntermediateField.mem_top, IntermediateField.mem_top⟩)
-  have hg := GlobalTheory.T.galois_conj_taylor_thetaTranslate D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top t (8 * u) 4
+  have hg := _root_.GlobalTheory.JetConj.galois_translate_sgStar D cc δ h ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top t (8 * u) 4
     (by norm_num) (by convert ht.1 using 1; push_cast; ring)
     (by unfold Adp1; convert hu using 1 <;> push_cast <;> ring) (fun _ => IntermediateField.mem_top)
   have h2 := hadd _ _ _ _ hu hu
@@ -406,14 +406,14 @@ theorem embeddingConj_evenTheta_coeff_top {D : D7} {cc : Ideal (𝓞 D.host.K)} 
     (ρ : (⊤ : IntermediateField ℚ ℂ) →ₐ[ℚ] ℂ) {t t' : ℂ}
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t) (ht' : GL3Theta.IsTwoTorsionPointUnkilled D (lamConj ⊤ ρ (lamOf D cc δ)) t') (n : ℕ) :
     cj ⊤ ρ (coef1 (GL3Theta.th0 (lamOf D cc δ) t) n) = coef1 (GL3Theta.th0 (lamConj ⊤ ρ (lamOf D cc δ)) t') n := by
-  obtain ⟨hK, hT, -⟩ := GlobalTheory.T.cmTheta_complexConjugation_compatible D cc δ h ⊤ ρ
+  obtain ⟨hK, hT, -⟩ := _root_.GlobalTheory.ThetaConj.useBar_holds D cc δ h ⊤ ρ
     ⟨fun _ _ => IntermediateField.mem_top, IntermediateField.mem_top, IntermediateField.mem_top⟩
   rcases hK with hK | hK
   · exact embeddingConj_evenTheta_coeff_of_fixes_field h ρ hK ht ht' n
   · have hL : lamConj ⊤ (rhoBar ⊤ ρ) (lamOf D cc δ) =
         (lamConj ⊤ ρ (lamOf D cc δ)).map (starRingEnd ℂ).toAddMonoidHom := congrArg Tor.abelian₂ hT
     obtain ⟨cc', δ', h', -, hL'⟩ :=
-      GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ h ⊤ _ hK IntermediateField.mem_top IntermediateField.mem_top 1 one_pos
+      _root_.GlobalTheory.ConjCurve.galCurve_holds D cc δ h ⊤ _ hK IntermediateField.mem_top IntermediateField.mem_top 1 one_pos
     have hlat : IsLat (lamConj ⊤ ρ (lamOf D cc δ)) := by
       rw [← conj_conj_lat (lamConj ⊤ ρ (lamOf D cc δ)), ← hL, hL']
       exact (isLat_lamOf h').conj
@@ -425,7 +425,7 @@ theorem cmTheta_taylorCoeff_algebraic_and_conjugate : ∀ D : D7, use1 D := by
   intro D cc δ h
   refine ⟨fun x hx n => coef_translate_mem h hx n, fun t ht n => taylorCoeff_evenTheta_cmCurve_algebraic h ht n, ?_⟩
   intro M ρ h2 h3 t t' ht ht' hM n
-  obtain ⟨⟨-, hg2, hg3⟩, -⟩ := (GlobalTheory.T.admJ_and_torsion_data_algebraic D (GlobalTheory.InducedType.induced_type D).1).2 cc δ h
+  obtain ⟨⟨-, hg2, hg3⟩, -⟩ := (_root_.GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D (GlobalTheory.InducedType.induced_type D).1).2 cc δ h
   obtain ⟨σ, hσ⟩ := exists_ext M ρ
   have hL : lamConj M ρ (lamOf D cc δ) = lamConj ⊤ (topHom σ) (lamOf D cc δ) :=
     lamConj_congr (by rw [cj_top]; exact hσ _ h2 hg2) (by rw [cj_top]; exact hσ _ h3 hg3)

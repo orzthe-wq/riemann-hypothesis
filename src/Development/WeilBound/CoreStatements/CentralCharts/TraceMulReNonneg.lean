@@ -175,7 +175,7 @@ theorem le_of_inv_ge {Γ : Matrix (Fin r) (Fin r) ℂ} {c : ℝ} (hc : 0 < c) (h
   convert h1.add h2 using 1
   rw [conjTranspose_sub, conjTranspose_one, conjTranspose_smul, hΓ.1.eq]
   simp only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul,
-    nonsing_inv_mul _ hu, mul_nonsing_inv _ hu, smul_sub, smul_smul, Complex.star_def, Complex.conj_ofReal]
+    mul_nonsing_inv _ hu, smul_sub, smul_smul, Complex.star_def, Complex.conj_ofReal]
   push_cast
   have e1 : (c : ℂ)⁻¹ * c = 1 := by field_simp
   have e2 : (c : ℂ) * (c : ℂ)⁻¹ = 1 := by field_simp

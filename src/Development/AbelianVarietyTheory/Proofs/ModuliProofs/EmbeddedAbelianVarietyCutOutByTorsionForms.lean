@@ -3,9 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.SectionsHaveFiniteDimension
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianVarietyCutOutBoundedDegreeTorsionStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalPolarisationVolumeFormSymmetricAmpleStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsHaveFiniteDimensionInvarianceIsomorphismStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianVarietyCutOutBoundedDegreeTorsion
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalPolarisationVolumeFormSymmetricAmple
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionsHaveFiniteDimensionInvarianceIsomorphism
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaSectionsVeryAmplePeriodicStatement
 import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsBasisOfIsField
 import Mathlib.Algebra.Order.Floor.Extended
@@ -75,26 +75,26 @@ theorem symB_of_iso {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {L : LB A.
     SymB (A := A) (M.pull e.inv) := by
   have h1 : LBIso (M.pull e.inv) (lbPow L N) :=
     LBIso.chartPull (Geo.Tor.chartPullPull M e.inv e.inv rfl) (Geo.Tor.chartPullSec _ e.hom e.inv e.inv_hom_id) h
-  have hN := powIsLB hL N
+  have hN := _root_.GlobalTheory.isLB_lbPow hL N
   have hM' := LB.isLB_pull hM e.inv
-  obtain ⟨-, a, -, -, c, -⟩ := GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K A.left A.hom L hL
+  obtain ⟨-, a, -, -, c, -⟩ := _root_.GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K A.left A.hom L hL
   exact LBIso.trans hM' hN (LB.isLB_pull hM' _) h1 (LBIso.trans hN (LB.isLB_pull hN _) (LB.isLB_pull hM' _)
-    (LBIso.trans hN (powIsLB (LB.isLB_pull hL _) N) (LB.isLB_pull hN _) ((a _ (LB.isLB_pull hL _) hs).2 N) (c _ _ N))
+    (LBIso.trans hN (_root_.GlobalTheory.isLB_lbPow (LB.isLB_pull hL _) N) (LB.isLB_pull hN _) ((a _ (LB.isLB_pull hL _) hs).2 N) (c _ _ N))
     (isoPullAlong h1.symm _))
 
 theorem sectionsHaveFiniteDimension_of_iso_pulled_pow {K : Type} [Field K] {X Y : Scheme.{0}} (p : X ⟶ Sp K) {L : LB X} (hL : L.IsLB)
     (e : Y ≅ X) {M : LB Y} (hM : M.IsLB) (N : ℕ) (h : LBIso M ((lbPow L N).pull e.hom)) (n r : ℕ)
     (hr : SectionsHaveFiniteDimension p (lbPow L (N * n)) r) : SectionsHaveFiniteDimension (e.hom ≫ p) (lbPow M n) r := by
-  have hN := powIsLB hL N
+  have hN := _root_.GlobalTheory.isLB_lbPow hL N
   have h1 : SectionsHaveFiniteDimension p (lbPow (lbPow L N) n) r :=
-    ((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K X p _ (powIsLB hL (N * n))).2.1 _ (powIsLB hN n)
-      ((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K X p L hL).2.2.1 N n).symm).1 r hr
-  have h2 := ((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K X p _ (powIsLB hN n)).2.2.2.2.2 Y e r).1 h1
+    ((_root_.GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K X p _ (powIsLB hL (N * n))).2.1 _ (powIsLB hN n)
+      ((_root_.GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K X p L hL).2.2.1 N n).symm).1 r hr
+  have h2 := ((_root_.GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K X p _ (powIsLB hN n)).2.2.2.2.2 Y e r).1 h1
   have h3 : LBIso (lbPow M n) ((lbPow (lbPow L N) n).pull e.hom) :=
     LBIso.trans (powIsLB hM n) (powIsLB (LB.isLB_pull hN _) n) (LB.isLB_pull (powIsLB hN n) _)
-      (((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K Y (e.hom ≫ p) M hM).2.1 _ (LB.isLB_pull hN _) h).2 n)
-      ((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K X p _ hN).2.2.2.2.1 Y e.hom n)
-  exact ((GlobalTheory.T.sectionsHaveFiniteDimension_invariance_isomorphisms K Y (e.hom ≫ p) _ (LB.isLB_pull (powIsLB hN n) _)).2.1 _ (powIsLB hM n) h3.symm).1 r h2
+      (((_root_.GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K Y (e.hom ≫ p) M hM).2.1 _ (LB.isLB_pull hN _) h).2 n)
+      ((_root_.GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K X p _ hN).2.2.2.2.1 Y e.hom n)
+  exact ((_root_.GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K Y (e.hom ≫ p) _ (LB.isLB_pull (powIsLB hN n) _)).2.1 _ (powIsLB hM n) h3.symm).1 r h2
 
 end GlobalTheory.EmbCut
 
@@ -106,7 +106,7 @@ theorem cutBy_embedded_abelian : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : T
   intro H H2 g J _ Mat κ n hn hodd
   have hn2 := hn.two_le
   haveI : NeZero ((n ^ 2) ^ 2) := ⟨by positivity⟩
-  obtain ⟨d, k₀, hd⟩ := GlobalTheory.T.abelianVariety_cut_out_bounded_degree_torsion H H2 g ((n ^ 2) ^ 2) (Ix g ((n ^ 2) ^ 2))
+  obtain ⟨d, k₀, hd⟩ := _root_.GlobalTheory.cutBy_idealOf_torsion H H2 g ((n ^ 2) ^ 2) (Ix g ((n ^ 2) ^ 2))
   refine ⟨max 2 k₀, fun j hj o _ b => ?_⟩
   haveI : NeZero ((n ^ j) ^ 2) := ⟨by positivity⟩
   have hdvd : n ^ 2 ∣ n ^ j := pow_dvd_pow n (le_of_max_le_left hj)
@@ -126,7 +126,7 @@ theorem cutBy_embedded_abelian : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : T
     rw [map_natCast, Nat.cast_pow, h] at this
     exact this (by simp)
   have key := hQ K t.pol rfl _ e _ σ (n ^ j) _ (fun h => t.lab h ^ n ^ j) p hM
-    (symB_of_iso t.isLB (GlobalTheory.T.principalPolarisation_volume_form_symmetric_ample H H2 K t.pol).2.2.1 e hM _ hL) (he.symm ▸ hV)
+    (symB_of_iso t.isLB (_root_.GlobalTheory.principal_polarisation_numerics H H2 K t.pol).2.2.1 e hM _ hL) (he.symm ▸ hV)
     (fun a a' h => hmod a a' fun i => by
       have := congrFun h i
       rw [← ZMod.natCast_eq_natCast_iff]

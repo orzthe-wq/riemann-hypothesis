@@ -101,8 +101,6 @@ theorem realize_smul_eq (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι
     simp only [Formalism.HermitianLatticesTheory.fcoord, hi]
     first
       | exact Matrix.smul_mulVec _ _ _
-      | exact Matrix.smul_mulVec_assoc _ _ _
-      | (funext i; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc])
   ext p
   rw [rscMap_apply]
   by_cases h : p.2.2 = 0
@@ -112,14 +110,14 @@ theorem realize_smul_eq (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι
     have e2 : (Formalism.HermitianLatticesTheory.realize b X x) p = (Formalism.HermitianLatticesTheory.fcoord b X p.1 x p.2.1).re := by
       simp [Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw, h]
     rw [e1, e2, hf]
-    simp [← Complex.ofReal_inv, Complex.re_ofReal_mul]
+    simp [← Complex.ofReal_inv]
   · have e1 : (Formalism.HermitianLatticesTheory.realize b (fun v => ((c v : ℂ)) • X v) x) p =
         (Formalism.HermitianLatticesTheory.fcoord b (fun v => ((c v : ℂ)) • X v) p.1 x p.2.1).im := by
       simp [Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw, h]
     have e2 : (Formalism.HermitianLatticesTheory.realize b X x) p = (Formalism.HermitianLatticesTheory.fcoord b X p.1 x p.2.1).im := by
       simp [Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw, h]
     rw [e1, e2, hf]
-    simp [← Complex.ofReal_inv, Complex.im_ofReal_mul]
+    simp [← Complex.ofReal_inv]
 end
 
 theorem rescaleCovol_of (h1 : PlaceSplit) (h2 : GramBlock) (h3 : PlLat) : RescaleCovol := by

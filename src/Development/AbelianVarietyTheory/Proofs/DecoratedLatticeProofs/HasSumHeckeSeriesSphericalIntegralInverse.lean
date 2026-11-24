@@ -77,7 +77,7 @@ private lemma isBorelSph_comp_invRevT {γ : Fin n → ℂ}
     show φ (_root_.GlobalTheory.SatakeFlip.invRevT b) = _
     rw [hB _ hb' (fun i => (t i.rev)⁻¹) ?_]
     · refine Fintype.prod_equiv Fin.revPerm _ _ fun i => ?_
-      simp [_root_.GlobalTheory.SatakeFlip.ord_inv_eq_neg, zpow_neg, inv_zpow]
+      simp [_root_.GlobalTheory.SatakeFlip.ord_inv_eq_neg, zpow_neg]
     · intro i
       rw [_root_.GlobalTheory.SatakeFlip.invRevT_apply]
       have hi := _root_.GlobalTheory.SatakeFlip.inv_diag_mul hb i.rev

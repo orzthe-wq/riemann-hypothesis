@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.TransvectionPeriodicity
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.GamAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermitianTraceFormVanishing
 
 @[expose] public section
 
@@ -61,7 +62,7 @@ theorem herm_smul_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {r : �
   induction hx using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨a, ha, u, hu, rfl⟩ := hx
-    rw [GlobalTheory.TransvLevel.herm_smul_left, mul_smul, hΛ]
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_left, mul_smul, hΛ]
     exact Submodule.subset_span ⟨a, ha, _, GlobalTheory.FlagData.smul_mem_of_isIntegral _ (X.L'_int u hu v hv) hv, rfl⟩
   | zero => simp [FD.herm]
   | add x y _ _ hx hy =>
@@ -69,7 +70,7 @@ theorem herm_smul_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {r : �
     rw [this, add_smul]
     exact Submodule.add_mem _ hx hy
   | smul c x _ hx =>
-    rw [← algebraMap_smul E c x, GlobalTheory.TransvLevel.herm_smul_left, mul_smul, algebraMap_smul]
+    rw [← algebraMap_smul E c x, _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_left, mul_smul, algebraMap_smul]
     exact Submodule.smul_mem _ c hx
 
 theorem transv_mem_of_span {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : DataX E r) (S : Set E)

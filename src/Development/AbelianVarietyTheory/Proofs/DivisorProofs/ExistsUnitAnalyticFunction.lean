@@ -93,7 +93,7 @@ theorem rB_mono_loc : ∀ (k : Type) [Field k] [CharZero k] (F K : Type) [Field 
   constructor
   · rintro ⟨p, hm, he⟩
     have hc : ∀ m, ∃ N : ℕ, (p.coeff m : F) * s ^ N ∈ rA k x {i} := fun m =>
-      (GlobalTheory.T.mem_standardOpenCoordinateRing_iff_localization_chart k F d x hK.pd I i hi (p.coeff m : F)).1 (p.coeff m).2
+      (_root_.GlobalTheory.PD.rA_eq_loc k F d x hK.pd I i hi (p.coeff m : F)).1 (p.coeff m).2
     choose Nf hNf using hc
     set N := (Finset.range (p.natDegree + 1)).sup Nf
     have hcN : ∀ m, (p.coeff m : F) * s ^ N ∈ rA k x {i} := by

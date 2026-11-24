@@ -94,12 +94,12 @@ def dopL (w : V × V) : 𝓢(V, ℂ) →ₗ[ℂ] 𝓢(V, ℂ) where
   map_add' f g := by
     ext x
     have : fderiv ℝ (f + g : 𝓢(V, ℂ)) x = fderiv ℝ f x + fderiv ℝ g x := ((f.hasFDerivAt x).add (g.hasFDerivAt x)).fderiv
-    simp only [SchwartzMap.add_apply, dop_apply, this, ContinuousLinearMap.add_apply]
+    simp only [SchwartzMap.add_apply, dop_apply, this]
     ring
   map_smul' c f := by
     ext x
     have : fderiv ℝ (c • f : 𝓢(V, ℂ)) x = c • fderiv ℝ f x := ((f.hasFDerivAt x).const_smul c).fderiv
-    simp only [SchwartzMap.smul_apply, dop_apply, this, ContinuousLinearMap.smul_apply, smul_eq_mul, RingHom.id_apply]
+    simp only [SchwartzMap.smul_apply, dop_apply, this, smul_eq_mul, RingHom.id_apply]
     ring
 
 theorem dopL_apply (w : V × V) (f : 𝓢(V, ℂ)) : dopL lam w f = dop w.1 (lam w.2) f := rfl

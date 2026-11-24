@@ -52,4 +52,4 @@ open GroundTheory.Automorphic (permGL indRep)
 open DoubleCoset (doubleCoset)
 
 theorem _root_.GlobalTheory.T.jacquet_of_induced_filtration : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.SmGL.JacquetOfInducedFiltration k := by
-  first | exact @GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration | exact GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration | (intros; apply GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration <;> assumption)
+  first | exact @GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration

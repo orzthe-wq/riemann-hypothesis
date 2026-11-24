@@ -188,10 +188,6 @@ theorem lin_pt_iff {N n : ℕ} {T₁' T₂' : Over Z'} {T₁ T₂ : Over Z} {κ�
     rw [Category.assoc, ← hs, ← Category.assoc, Rb i Y _ y J J' hJ hJ', Category.assoc, whisker_snd, mul_left_comm]
   rw [R Y r y J J' hJ hJ', Finset.sum_congr rfl fun i _ => e i, ← Finset.mul_sum, Units.mul_right_inj]
 
-theorem good_ex {X Y : Scheme.{0}} {M : LB X} (hM : M.IsLB) (y : Y) : ∃ J, Good M y J := by
-  choose I hI using fun χ : Y ⟶ X => exists_chart hM (χ y)
-  exact ⟨I, hI⟩
-
 theorem lin_down (hL : L.IsLB) {N n : ℕ} {T₁' T₂' : Over Z'} {T₁ T₂ : Over Z} {κ₁ : (T₁' ⊗ G').left ⟶ (T₁ ⊗ G).left}
     {κ₂ : (T₂' ⊗ G').left ⟶ (T₂ ⊗ G).left} {h' : T₁' ⟶ T₂'} {h : T₁ ⟶ T₂}
     (hs : (h' ▷ G').left ≫ κ₂ = κ₁ ≫ (h ▷ G).left) {e : T₁'.left ⟶ T₁.left}
@@ -199,7 +195,7 @@ theorem lin_down (hL : L.IsLB) {N n : ℕ} {T₁' T₂' : Over Z'} {T₁ T₂ : 
     {b : Fin n → LB.Sec (LPow G L (N : ℤ) T₂)} {b'} (Rb : ∀ i, Rel w κ₂ (b i) (b' i)) {c}
     (H : Lin G L N h b c s) : Lin G' L' N h' b' (fun i => e.appTop.hom (c i)) s' := by
   intro y J' hJ'
-  obtain ⟨J, hJ⟩ := good_ex hL y
+  obtain ⟨J, hJ⟩ := _root_.GlobalTheory.UU.exists_good_pt hL y
   have := (lin_pt_iff hs R Rb (𝟙 _) y hJ hJ' _).1 (lin_gen hL H (𝟙 _ ≫ κ₁) y J hJ)
   refine this.trans (Finset.sum_congr rfl fun i _ => ?_)
   rw [Category.id_comp, Category.id_comp, he, ← gs_pull _ e y ⊤ trivial]
@@ -213,7 +209,7 @@ theorem lin_up (hL' : L'.IsLB) {N n : ℕ} {T₁' T₂' : Over Z'} {T₁ T₂ : 
     {b : Fin n → LB.Sec (LPow G L (N : ℤ) T₂)} {b'} (Rb : ∀ i, Rel w κ₂ (b i) (b' i)) {c : Fin n → Γ(T₁.left, ⊤)}
     (H : Lin G' L' N h' b' (fun i => e.appTop.hom (c i)) s') : Lin G L N h b c s := by
   intro y J hJ
-  obtain ⟨J', hJ'⟩ := good_ex hL' y
+  obtain ⟨J', hJ'⟩ := _root_.GlobalTheory.UU.exists_good_pt hL' y
   have := (lin_pt_iff hs R Rb κ' y hJ hJ' _).2 (lin_gen hL' H κ' y J' hJ')
   rw [hκ, Category.id_comp] at this
   refine this.trans (Finset.sum_congr rfl fun i _ => congrArg (· * _) ?_)

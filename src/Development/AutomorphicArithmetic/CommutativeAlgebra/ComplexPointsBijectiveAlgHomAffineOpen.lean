@@ -50,7 +50,7 @@ private theorem germ_algX {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp ℂ) (V 
   simp only [RingHom.comp_apply] at h
   rw [← h]
   simp only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG, TopCat.Presheaf.germ_res_apply]
-  simp only [algX, GlobalTheory.PD.ffAlg, RingHom.algebraMap_toAlgebra, RingHom.comp_apply, Scheme.Hom.appLE]
+  simp only [algX, RingHom.algebraMap_toAlgebra, RingHom.comp_apply, Scheme.Hom.appLE]
   simp only [CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply]
   rfl
 

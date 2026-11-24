@@ -161,14 +161,14 @@ theorem exists_root_preTilt {P : (PreTilt O p)[X]} (hP : P.Monic) (hd0 : P.natDe
     ∃ x, P.eval x = 0 := by
   classical
   set d := P.natDegree with hd
-  haveI : Nontrivial (ModP O p) := CharP.nontrivial_of_char_ne_one (Fact.out : p.Prime).ne_one
+  have : Nontrivial (ModP O p) := CharP.nontrivial_of_char_ne_one (Fact.out : p.Prime).ne_one
   have key := fun n => roots_modP K (hP.map (PreTilt.coeff (O := O) (p := p) n))
     (hP.natDegree_map _) hd0
   simp only [Polynomial.eval_map] at key
   let α : ℕ → Type _ := fun n =>
     {y : ModP O p | ∃ x, P.eval₂ (PreTilt.coeff (n + d)) x = 0 ∧ y = x ^ p ^ d}
-  haveI hfin : ∀ n, Finite (α n) := fun n => (key (n + d)).2.to_subtype
-  haveI : ∀ n, Nonempty (α n) := fun n => by
+  have hfin : ∀ n, Finite (α n) := fun n => (key (n + d)).2.to_subtype
+  have : ∀ n, Nonempty (α n) := fun n => by
     obtain ⟨x, hx⟩ := (key (n + d)).1
     exact ⟨⟨_, x, hx, rfl⟩⟩
   let π : {i j : ℕ} → (hij : i ≤ j) → α j → α i := fun {i j} hij b =>
@@ -296,7 +296,7 @@ theorem isAlgClosed_tilt_and_valuationRing :
   intro l _
   refine ⟨isAlgClosed_of_monic_root (OCb l) (Cb l) fun P hP hd =>
     exists_root_preTilt (PadicComplex l) hP hd, ?_⟩
-  haveI : IsAdicComplete (span {((l : ℕ) : OC l)}) (OC l) := by
+  have : IsAdicComplete (span {((l : ℕ) : OC l)}) (OC l) := by
     open scoped Formalism.Per in infer_instance
   rw [ValuationRing.iff_dvd_total]
   exact ⟨fun x y => dvd_total_preTilt x y⟩

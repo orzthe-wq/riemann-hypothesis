@@ -49,7 +49,7 @@ namespace GlobalTheory.BCT.HintInv
 theorem rStab_comp_equiv {H : Type} [Group H] (φ : H ≃* H) (u : H → ℂ) :
     rStab (u ∘ φ) = (rStab u).comap (φ : H →* H) := by
   ext k
-  simp only [Subgroup.mem_comap, MulEquiv.coe_toMonoidHom]
+  simp only [Subgroup.mem_comap]
   show (∀ x, u (φ (x * k)) = u (φ x)) ↔ ∀ x, u (x * φ k) = u x
   constructor
   · intro h x

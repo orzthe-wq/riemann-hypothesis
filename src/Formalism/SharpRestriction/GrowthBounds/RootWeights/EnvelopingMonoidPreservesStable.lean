@@ -86,9 +86,9 @@ theorem operator_shifts_weight_by_root {E : GLOps n K V}
   rw [gl_operator_commutator hrel c c a b x, hx c, map_smul]
   by_cases hca : c = a <;> by_cases hcb : c = b
   · subst hca; subst hcb; simp [rootW]
-  · subst hca; simp [rootW, Pi.single_apply, hcb, Ne.symm hcb, add_smul]
-  · subst hcb; simp [rootW, Pi.single_apply, hca, sub_smul, add_smul]
-  · simp [rootW, Pi.single_apply, hca, hcb, Ne.symm hcb]
+  · subst hca; simp [rootW, hcb, Ne.symm hcb, add_smul]
+  · subst hcb; simp [rootW, hca, add_smul]
+  · simp [rootW, hca, hcb, Ne.symm hcb]
 
 inductive LoweringWordAlt (E : GLOps n K V) (h : V) : ℕ → V → Prop
   | zero : LoweringWordAlt E h 0 h

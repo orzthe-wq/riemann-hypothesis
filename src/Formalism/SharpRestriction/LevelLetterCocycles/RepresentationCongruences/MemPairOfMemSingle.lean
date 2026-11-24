@@ -1,14 +1,7 @@
 module
 
 public import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.QuotientDistinguishedTorsionFree
-import Mathlib.Data.Nat.Totient
-import Mathlib.Data.Rat.Floor
 public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
-import Mathlib.RingTheory.PowerSeries.NoZeroDivisors
-import Mathlib.Tactic.Continuity.Init
-import Mathlib.Tactic.NormNum.GCD
-import Mathlib.Tactic.Positivity.Finset
-import Mathlib.Tactic.TypeStar
 
 @[expose] public section
 
@@ -22,17 +15,8 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 noncomputable def cont (ϖ : O) (g f : O⟦X⟧) : ℕ∞ :=
   ⨆ (k : ℕ) (_ : f ∈ Ideal.span {C ϖ ^ k, g}), (k : ℕ∞)
 
-theorem Cont.enat_le_of_forall {a b : ℕ∞} (h : ∀ k : ℕ, (k : ℕ∞) ≤ a → (k : ℕ∞) ≤ b) : a ≤ b := by
-  by_contra hlt
-  push_neg at hlt
-  have hb : b ≠ ⊤ := ne_top_of_lt hlt
-  obtain ⟨n, rfl⟩ := ENat.ne_top_iff_exists.1 hb
-  have h1 : ((n + 1 : ℕ) : ℕ∞) ≤ a := by
-    have h2 := (ENat.add_one_le_iff hb).2 hlt
-    exact_mod_cast h2
-  have h2 := h (n + 1) h1
-  norm_cast at h2
-  omega
+theorem Cont.enat_le_of_forall {a b : ℕ∞} (h : ∀ k : ℕ, (k : ℕ∞) ≤ a → (k : ℕ∞) ≤ b) : a ≤ b :=
+  ENat.forall_natCast_le_iff_le.mp h
 
 theorem Cont.mem_pair_mono (ϖ : O) (g f : O⟦X⟧) {j k : ℕ} (hjk : j ≤ k)
     (h : f ∈ Ideal.span {C ϖ ^ k, g}) : f ∈ Ideal.span {C ϖ ^ j, g} := by
@@ -74,24 +58,14 @@ theorem Cont.mem_iff_le (ϖ : O) (g f : O⟦X⟧) (k : ℕ) :
 theorem Cont.residue_unif {ϖ : O} (hϖ : Irreducible ϖ) : IsLocalRing.residue O ϖ = 0 := by
   exact (IsLocalRing.residue_eq_zero_iff ϖ).2 hϖ.not_isUnit
 
-theorem Cont.C_unif_ne_zero {ϖ : O} (hϖ : Irreducible ϖ) : (C ϖ : O⟦X⟧) ≠ 0 := by
-  intro h
-  apply hϖ.ne_zero
-  have h1 := congrArg PowerSeries.constantCoeff h
-  simpa using h1
+theorem Cont.C_unif_ne_zero {ϖ : O} (hϖ : Irreducible ϖ) : (C ϖ : O⟦X⟧) ≠ 0 :=
+  (map_ne_zero_iff C C_injective).mpr hϖ.ne_zero
 
 theorem Cont.C_dvd_of_map_eq_zero {ϖ : O} (hϖ : Irreducible ϖ) (f : O⟦X⟧)
     (hf : f.map (IsLocalRing.residue O) = 0) : C ϖ ∣ f := by
-  have hmax : IsLocalRing.maximalIdeal O = Ideal.span {ϖ} :=
-    (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ
-  have hc : ∀ n, ∃ c, PowerSeries.coeff n f = ϖ * c := by
-    intro n
-    have h1 : IsLocalRing.residue O (PowerSeries.coeff n f) = 0 := by
-      have h2 := congrArg (PowerSeries.coeff n) hf
-      simpa [PowerSeries.coeff_map] using h2
-    rw [IsLocalRing.residue_eq_zero_iff, hmax, Ideal.mem_span_singleton'] at h1
-    obtain ⟨c, hc⟩ := h1
-    exact ⟨c, by rw [← hc, mul_comm]⟩
+  have hc (n : ℕ) : ϖ ∣ coeff n f := by
+    rw [← Ideal.mem_span_singleton, ← hϖ.maximalIdeal_eq, ← IsLocalRing.residue_eq_zero_iff]
+    simpa only [coeff_map, map_zero] using congrArg (coeff n) hf
   choose c hc using hc
   refine ⟨PowerSeries.mk c, ?_⟩
   ext n
@@ -119,21 +93,12 @@ theorem Cont.not_C_dvd {ϖ : O} (hϖ : Irreducible ϖ) {g : O⟦X⟧} (hg : IsDi
 
 theorem Cont.mem_of_pow_mul_mem {ϖ : O} (hϖ : Irreducible ϖ) {g : O⟦X⟧} (hg : IsDist g) (n : ℕ)
     (h : O⟦X⟧) (hm : C ϖ ^ n * h ∈ Ideal.span {g}) : h ∈ Ideal.span {g} := by
-  induction n generalizing h with
-  | zero => simpa using hm
-  | succ n ih =>
-    apply ih
-    obtain ⟨q, hq⟩ := Ideal.mem_span_singleton'.1 hm
-    have hdvd : C ϖ ∣ q * g := ⟨C ϖ ^ n * h, by rw [hq, pow_succ]; ring⟩
-    rcases (Cont.prime_C_unif hϖ).2.2 q g hdvd with ⟨q', rfl⟩ | hg'
-    · rw [Ideal.mem_span_singleton']
-      refine ⟨q', ?_⟩
-      have h1 : C ϖ * (q' * g) = C ϖ * (C ϖ ^ n * h) := by
-        calc C ϖ * (q' * g) = C ϖ * q' * g := by ring
-          _ = C ϖ ^ (n + 1) * h := hq
-          _ = C ϖ * (C ϖ ^ n * h) := by ring
-      exact mul_left_cancel₀ (Cont.C_unif_ne_zero hϖ) h1
-    · exact absurd hg' (Cont.not_C_dvd hϖ hg)
+  obtain ⟨q, hq⟩ := Ideal.mem_span_singleton'.mp hm
+  obtain ⟨r, rfl⟩ := (Cont.prime_C_unif hϖ).pow_dvd_of_dvd_mul_right n
+    (Cont.not_C_dvd hϖ hg) ⟨h, hq⟩
+  refine Ideal.mem_span_singleton'.mpr ⟨r, ?_⟩
+  apply mul_left_cancel₀ (pow_ne_zero n (Cont.C_unif_ne_zero hϖ))
+  simpa only [mul_assoc] using hq
 
 variable {ϖ : O} (hϖ : Irreducible ϖ)
 include hϖ

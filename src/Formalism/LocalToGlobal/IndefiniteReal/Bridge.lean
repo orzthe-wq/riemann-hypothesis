@@ -2,43 +2,6 @@ module
 
 public import Formalism.LocalToGlobal.Divisibility.LiftLat
 public import Formalism.LocalToGlobal.BesselHermitianTheta.IsAutFunDef
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -71,14 +34,13 @@ def AdForms (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ)
 def stab (J : Subgroup G) (y : G) : Subgroup Γ := J.comap ((MulAut.conj y⁻¹).toMonoidHom.comp ι)
 
 theorem mem_stab {J : Subgroup G} {y : G} {γ : Γ} : γ ∈ stab ι J y ↔ y⁻¹ * ι γ * y ∈ J := by
-  simp [stab, MulAut.conj_apply]
+  simp [stab]
 
 def stabK {J : Subgroup G} {y : G} (γ : stab ι J y) : J :=
   ⟨(y⁻¹ * ι (γ : Γ) * y)⁻¹, J.inv_mem ((mem_stab ι).1 γ.2)⟩
 
 theorem stabK_spec {J : Subgroup G} {y : G} (γ : stab ι J y) : ι (γ : Γ) * y * (stabK ι γ : G) = y := by
-  simp only [stabK]
-  group
+  simp [stabK, mul_assoc, mul_inv_rev, mul_inv_cancel_left, inv_inv]
 
 def IsReps (J : Subgroup G) {I : Type} (y : I → G) : Prop :=
   ∀ h : G, ∃! i : I, ∃ (γ : Γ) (k : J), h = ι γ * y i * k

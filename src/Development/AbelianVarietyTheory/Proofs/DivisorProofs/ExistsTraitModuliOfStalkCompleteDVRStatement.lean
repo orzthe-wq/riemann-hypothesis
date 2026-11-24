@@ -50,4 +50,4 @@ open Classical
 
 
 theorem _root_.GlobalTheory.T.exists_trait_moduli_of_stalk_completeDVR : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [CharZero Ω] (M : RatModel o' Ω) (y₀ : Sp Ω ⟶ F.X) (x : M.Z) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V], IsAdicComplete (maximalIdeal V) V → ∀ θ : M.Z.presheaf.stalk x →+* V, Function.Injective θ → ∃ (T : Trait F) (f : V →+* T.V) (γ : Ω →+* FractionRing T.V), Function.Injective f ∧ IsLocalHom f ∧ (∀ a, γ (M.stalkHom x a) = algebraMap T.V (FractionRing T.V) (f (θ a))) ∧ jK T.V ≫ spMap (f.comp θ) ≫ M.Z.fromSpecStalk x = spMap γ ≫ M.pt ∧ T.y = spMap γ ≫ y₀ := by
-  first | exact @GlobalTheory.Poinc.exists_trait_of_stalk_dvr | exact GlobalTheory.Poinc.exists_trait_of_stalk_dvr | (intros; apply GlobalTheory.Poinc.exists_trait_of_stalk_dvr <;> assumption)
+  first | exact @GlobalTheory.Poinc.exists_trait_of_stalk_dvr

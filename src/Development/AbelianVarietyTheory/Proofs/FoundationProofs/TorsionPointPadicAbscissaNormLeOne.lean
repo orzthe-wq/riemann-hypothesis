@@ -95,7 +95,7 @@ theorem Rel.variableChange {K : Type*} [CommRing K] {W : WeierstrassCurve K}
     ring
   have hs : sumF (C • W) ((C.u⁻¹ : Kˣ) ^ 2 * (X₁ - C.r * Z₁)) Z₁ ((C.u⁻¹ : Kˣ) ^ 2 * (X₂ - C.r * Z₂)) Z₂ =
       ((C.u⁻¹ : Kˣ) : K) ^ 6 * (sumF W X₁ Z₁ X₂ Z₂ - 2 * C.r * (X₁ * Z₂ - X₂ * Z₁) ^ 2) := by
-    simp only [prodF, sumF, WeierstrassCurve.variableChange_b₄, WeierstrassCurve.variableChange_b₆,
+    simp only [sumF, WeierstrassCurve.variableChange_b₄, WeierstrassCurve.variableChange_b₆,
       WeierstrassCurve.variableChange_b₂]
     ring
   rw [hp, hs]
@@ -216,7 +216,7 @@ theorem rel_lattice (L : PeriodPair) (z : ℂ) {w : ℂ} (hw : w ∉ L.lattice) 
       ((GlobalTheory.weierstrassP_eq_iff L hz hw).1 h).elim hm hp
     obtain ⟨hs, hq⟩ := GlobalTheory.TorsionIntegral.sum_prod L hz hw hne
     refine rel_of_smul ((L.weierstrassP z - L.weierstrassP w) ^ 2) ?_ ?_ ?_ <;>
-      simp only [hX, hZ, hz, hw, hm, hp, prodF, sumF, if_true, if_false, WeierstrassCurve.b₂,
+      simp only [hX, hZ, hz, hw, hm, hp, prodF, sumF, if_false, WeierstrassCurve.b₂,
         WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]
     · linear_combination -hq
     · linear_combination -hs

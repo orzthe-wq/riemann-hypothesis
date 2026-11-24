@@ -5,50 +5,9 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnimodularity.ConstructionA
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnimodularity.ConstructionB
 public import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RrsSecondCountableAbs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -420,8 +379,7 @@ def trC (x : I.E) : I.E ⊗[I.F] Af I.F →ₗ[I.F] Af I.F :=
 theorem trC_tmul (x y : I.E) (a : Af I.F) : trC I x (y ⊗ₜ a) = Algebra.trace I.F I.E (x * y) • a := rfl
 
 theorem nt_trace_int (x : 𝓞 I.E) : Algebra.trace I.F I.E (x : I.E) ∈ (algebraMap (𝓞 I.F) I.F).range := by
-  have : IsIntegral ℤ (Algebra.trace I.F I.E (x : I.E)) := Algebra.isIntegral_trace (RingOfIntegers.isIntegral_coe x)
-  exact ⟨⟨_, this⟩, rfl⟩
+  exact ⟨⟨_, Algebra.isIntegral_trace (RingOfIntegers.isIntegral_coe x)⟩, rfl⟩
 
 theorem nt_intAd_of_int (t : 𝓞 I.F) : algebraMap I.F (Af I.F) (t : I.F) ∈ Formalism.UG.intAd I.F := by
   intro v
@@ -433,9 +391,7 @@ theorem nt_int_of_intAd (c : I.F) (h : algebraMap I.F (Af I.F) c ∈ Formalism.U
     c ∈ (algebraMap (𝓞 I.F) I.F).range := by
   refine mem_integers_of_valuation_le_one (R := 𝓞 I.F) (K := I.F) _ fun v => ?_
   rw [← valuedAdicCompletion_eq_valuation', ← mem_adicCompletionIntegers]
-  have h2 := h v
-  rw [FiniteAdeleRing.algebraMap_apply] at h2
-  exact h2
+  simpa [FiniteAdeleRing.algebraMap_apply] using h v
 
 def phiInt : 𝓞 I.E ⊗[ℤ] Formalism.UG.intAd I.F →ₐ[ℤ] I.E ⊗[I.F] Af I.F :=
   Algebra.TensorProduct.productMap
@@ -497,9 +453,7 @@ open scoped TensorProduct
 variable (I : AutInst)
 
 theorem nt_int_mul_of (x : I.E) : ∃ m : ℤ, m ≠ 0 ∧ IsIntegral ℤ ((m : I.E) * x) := by
-  have h1 : IsAlgebraic ℚ x := Algebra.IsAlgebraic.isAlgebraic x
-  have h2 : IsAlgebraic ℤ x := (IsFractionRing.isAlgebraic_iff ℤ ℚ I.E).2 h1
-  obtain ⟨y, hy, hi⟩ := h2.exists_integral_multiple
+  obtain ⟨y, hy, hi⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ I.E).2 (Algebra.IsAlgebraic.isAlgebraic x)).exists_integral_multiple
   exact ⟨y, hy, by rwa [zsmul_eq_mul] at hi⟩
 
 theorem nt_dual : ∃ c : ℤ, c ≠ 0 ∧ ∀ a : I.E,
@@ -623,8 +577,7 @@ theorem kset_open : IsOpen I.Kset := by
   constructor
   · intro hx
     refine ⟨hx, fun y hy => ⟨(((x : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) - 1 : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F))) *ᵥ y, ?_, ?_⟩⟩
-    · rw [Matrix.sub_mulVec, Matrix.one_mulVec]
-      exact sub_mem ((hx y).1 hy) hy
+    · simpa [Matrix.sub_mulVec] using sub_mem ((hx y).1 hy) hy
     · simp
   · exact fun hx => hx.1
 
@@ -765,8 +718,7 @@ theorem wz_lemma (γ δ : WithZero (Multiplicative ℤ)) (h : γ < 1) (hδ : ∀
   have hk := hδ ((-(Multiplicative.toAdd d)).toNat + 1)
   rw [← WithZero.coe_pow, WithZero.coe_le_coe] at hk
   have h2 : Multiplicative.toAdd d ≤ (((-(Multiplicative.toAdd d)).toNat + 1 : ℕ) : ℤ) * Multiplicative.toAdd t := by
-    have := Multiplicative.toAdd_le.2 hk
-    rwa [toAdd_pow, nsmul_eq_mul] at this
+    simpa [toAdd_pow, nsmul_eq_mul] using Multiplicative.toAdd_le.2 hk
   have h3 : (0 : ℤ) ≤ ((-(Multiplicative.toAdd d)).toNat : ℤ) := Nat.cast_nonneg _
   have h4 : -(Multiplicative.toAdd d) ≤ ((-(Multiplicative.toAdd d)).toNat : ℤ) := Int.self_le_toNat _
   push_cast at h2
@@ -801,10 +753,7 @@ theorem nt_intBasis : ∃ b : Module.Basis (Fin (Module.finrank I.F I.E)) I.F I.
   let b0 := Module.finBasis I.F I.E
   choose n hn0 hnI using fun i => nt_int_mul_of I (b0 i)
   refine ⟨b0.isUnitSMul (w := fun i => ((n i : ℤ) : I.F)) (fun i => (Int.cast_ne_zero.2 (hn0 i)).isUnit), fun i => ?_⟩
-  have : b0.isUnitSMul (w := fun i => ((n i : ℤ) : I.F)) (fun i => (Int.cast_ne_zero.2 (hn0 i)).isUnit) i =
-      ((n i : ℤ) : I.E) * b0 i := by
-    simp only [Module.Basis.isUnitSMul_apply, Algebra.smul_def, map_intCast]
-  rw [this]; exact hnI i
+  simpa only [Module.Basis.isUnitSMul_apply, Algebra.smul_def, map_intCast] using hnI i
 
 theorem trC_intAf (x : 𝓞 I.E) {t : I.E ⊗[I.F] Af I.F} (ht : t ∈ IntAf I.F I.E) : trC I x t ∈ Formalism.UG.intAd I.F := by
   obtain ⟨t', rfl⟩ := intAf_le_range I ht
@@ -1003,9 +952,7 @@ theorem gmap_inv {a : S.V ≃ₗ[E] S.V} {L L' : Submodule (𝓞 E) S.V} (h : Fo
     Formalism.HermitianLatticesTheory.gmap a⁻¹ L = L' := by
   rw [← h, ← gmap_mul, inv_mul_cancel, gmap_one]
 
-theorem xflag_zero : Xflag F 0 = ⊥ := by
-  show Submodule.span E (F.fl.e '' {i | i.1 < 0}) = ⊥
-  simp
+alias xflag_zero := _root_.Formalism.L2.SG.FourParts.Xflag_zero
 
 theorem xflag_mono (j : ℕ) : Xflag F j ≤ Xflag F (j + 1) :=
   Submodule.span_mono (Set.image_mono fun i (hi : i.1 < j) => Nat.lt_succ_of_lt hi)
@@ -1147,8 +1094,7 @@ theorem ginf_disc_of_lat (Sg : Subgroup I.Ginf) (s : Finset (Fin I.n → I.E))
 
 theorem isSFund_of_discrete (Sg : Subgroup I.Ginf) [DiscreteTopology Sg] :
     ∃ Ω, Formalism.L2.SG.HidaSetting.IsSFund I (Sg : Set I.Ginf) Ω := by
-  obtain ⟨F, hF, h1, h2⟩ := exists_strictFund Sg
-  exact ⟨F, hF, h1, h2⟩
+  exact exists_strictFund Sg
 
 end GinfDisc
 
@@ -1206,22 +1152,22 @@ theorem dcrel_of {Λ Λ' : Submodule (𝓞 E) S.V} {T T' : E} (F : LFlag S r T) 
       rw [xa_mapFlag] at hx ⊢
       obtain ⟨y, hy, rfl⟩ := hx
       refine ⟨n' y - y, hn'.2.1 j y hy, ?_⟩
-      simp [le_mul_app, le_inv_app, map_sub]
+      simp [le_inv_app, map_sub]
     · change x ∈ orth S (mapFlag γ hγ F'.fl).X at hx
       change _ ∈ (mapFlag γ hγ F'.fl).X
       rw [x_mapFlag] at hx ⊢
       have hy := orth_map γ hγ _ x hx
       refine ⟨n' (γ.symm x) - γ.symm x, hn'.2.2 _ hy, ?_⟩
-      simp [le_mul_app, le_inv_app, map_sub]
+      simp [le_inv_app, map_sub]
   refine ⟨n, hn, γ * n' * γ⁻¹, hm, fun a => ?_, ?_⟩
   · rw [mapLF, mapLF, dite_eq_left hγ, dite_eq_left hγ₂]
     show (mapFlag γ₂ hγ₂ F'.fl).fvec a = n ((γ * n' * γ⁻¹) ((mapFlag γ hγ F'.fl).fvec a))
     rw [fvec_mapFlag, fvec_mapFlag, h]
-    simp [le_mul_app, le_inv_app]
+    simp [le_inv_app]
   · rw [mapLF, mapLF, dite_eq_left hγ, dite_eq_left hγ₂]
     show γ₂ F'.zt = n ((γ * n' * γ⁻¹) (γ F'.zt))
     rw [h]
-    simp [le_mul_app, le_inv_app]
+    simp [le_inv_app]
 
 end Gen
 
@@ -1419,20 +1365,17 @@ theorem NOsub_discrete (hK : X.LevelSubgroupCharacter) : DiscreteTopology (NOsub
       have hk : (X.xu u)⁻¹ * γ.2 * X.xu u ∈ X.B.I.Kset := h3.1
       have hxu := X.xu_K u
       have hγK : γ.2 ∈ X.B.I.Kset := by
-        have := kset_mul X (kset_mul X hxu hk) (kset_inv X hxu)
-        simpa [mul_assoc] using this
+        simpa [mul_assoc] using kset_mul X (kset_mul X hxu hk) (kset_inv X hxu)
       have := hW γ hγ h hγK
       simp [this]
-  rw [e]
-  exact hWo.preimage continuous_subtype_val
+  simpa [e] using hWo.preimage continuous_subtype_val
 
 theorem fundNC_holds : ∀ (D : Formalism.BasicNotions.D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D), X.LevelSubgroupCharacter →
     ∀ u : D.what₂.Word, ∃ FN : Set X.B.I.Ginf, IsSFund X.B.I (NOinf X u) FN := by
   intro D X hK u
   have := NOsub_discrete X u hK
   obtain ⟨Ω, hΩ⟩ := isSFund_of_discrete X.B.I (NOsub X u hK)
-  rw [NOsub_coe] at hΩ
-  exact ⟨Ω, hΩ⟩
+  exact ⟨Ω, NOsub_coe X u hK ▸ hΩ⟩
 
 end NO
 

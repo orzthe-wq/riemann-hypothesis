@@ -159,7 +159,7 @@ theorem kummer_generator_of_char : ∀ (K Ω : Type) [Field K] [CharZero K] [Fie
     have hb : Function.Bijective e := Finite.injective_iff_bijective.mp he
 
     rw [map_sum, Finset.mul_sum]
-    simp only [map_mul, hfix, w, map_inv₀, hafix]
+    simp only [map_mul, w, map_inv₀, hafix]
     refine (Fintype.sum_bijective e hb _ _ ?_)
     intro i
     have h3 := hwe i

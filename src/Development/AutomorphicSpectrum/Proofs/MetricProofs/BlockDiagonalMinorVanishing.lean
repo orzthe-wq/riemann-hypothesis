@@ -179,14 +179,7 @@ theorem support_stepCols {N j : ℕ} {i : Fin N} (hj : j ≤ N) (bb : Matrix (Fi
     omega
   · exact absurd (by omega) hk
 
-theorem isBlockDiag_mul {j : ℕ} {T h : Matrix (Fin N) (Fin N) R} (hT : IsBlockDiag j T) (hh : IsBlockDiag j h) :
-    IsBlockDiag j (T * h) := by
-  intro a b hab
-  rw [Matrix.mul_apply]
-  refine Finset.sum_eq_zero fun k _ => ?_
-  by_cases hk : ((a : ℕ) < N - j ↔ (k : ℕ) < N - j)
-  · rw [hh k b (fun h' => hab (hk.trans h')), mul_zero]
-  · rw [hT a k hk, zero_mul]
+alias isBlockDiag_mul := _root_.GlobalTheory.CompanionTheory.Ar.PB.IsBlockDiag.mul
 
 theorem support_wIdx {j : ℕ} {h : Matrix (Fin N) (Fin N) R} (hh : IsBlockDiag j h) (k c : Fin N)
     (hc : c ∈ wIdx N j) (hk : k ∉ wIdx N j) : h k c = 0 := by

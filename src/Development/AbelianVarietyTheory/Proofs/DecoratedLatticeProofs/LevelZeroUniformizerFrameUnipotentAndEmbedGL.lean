@@ -111,22 +111,22 @@ theorem upZero_mem_N {n : GL (Fin κ ⊕ Fin (s + 1)) k} (hn : n ∈ N k (Fin κ
     · rw [back_eps, back_eps, hn _ _ (by simp [lev])]
       by_cases e : r = c
       · subst e; simp [scal]
-      · simp [scal, Matrix.one_apply, e]
+      · simp [scal, e]
     · exact c.elim0
     · exact c.elim0
     · rw [back_eps, levelZeroOldIndexOfNew_inr, hn _ _ (by simpa [lev] using h)]
-      simp [Matrix.one_apply]
+      simp
   · exact r.elim0
   · exact r.elim0
   · rcases c with ((c | c) | ⟨c, _⟩) | c
     · rw [back_eps, levelZeroOldIndexOfNew_inr, hn _ _ (by simpa [lev] using h)]
-      simp [Matrix.one_apply]
+      simp
     · exact c.elim0
     · exact c.elim0
     · rw [levelZeroOldIndexOfNew_inr, levelZeroOldIndexOfNew_inr, hn _ _ (by simpa [lev] using h)]
       by_cases e : r = c
-      · subst e; simp [scal, Matrix.one_apply]
-      · simp [Matrix.one_apply, e]
+      · subst e; simp [scal]
+      · simp [e]
 
 theorem simpleSum_upZero (n : GL (Fin κ ⊕ Fin (s + 1)) k) :
     simpleSum (upZero S t n) = ((S.ϖ⁻¹ : kˣ) : k) * simpleSum n := by
@@ -148,7 +148,7 @@ theorem superSum_one : superSum Fin.val (1 : Matrix (Fin κ) (Fin κ) k) = 0 := 
   refine Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_
   split_ifs with h
   · have : i ≠ j := by rintro rfl; omega
-    simp [Matrix.one_apply, this]
+    simp [this]
   · rfl
 
 theorem lam_eq (n : S.P.J) (hn : n.1 ∈ N k (Fin κ) (s + 1) (S.ρ + 1)) :
@@ -182,8 +182,8 @@ theorem upZero_embX (γ : GL (Fin κ) k) :
     · exact c.elim0
     · rw [levelZeroOldIndexOfNew_inr, levelZeroOldIndexOfNew_inr]
       by_cases e : r = c
-      · subst e; simp [embX, scal, Matrix.one_apply]
-      · simp [embX, Matrix.one_apply, e]
+      · subst e; simp [embX, scal]
+      · simp [embX, e]
 
 theorem upZero_N_embX : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (s κ : ℕ) (S : GlobalTheory.SymChain.SymData k s κ) (t : Type) [Fintype t] [DecidableEq t], (∀ n : S.P.J, n.1 ∈ GlobalTheory.RootEx.N k (Fin κ) (s + 1) (S.ρ + 1) → GlobalTheory.LevZeroGen.upZero S t n.1 ∈ GlobalTheory.RootEx.N k (GlobalTheory.StepData.XIx (Fin κ) t 0) (s + 1) (S.ρ + 1) ∧ ((S.P.lam n : ℂˣ) : ℂ) = (S.ψ (GlobalTheory.RootEx.simpleSum (GlobalTheory.LevZeroGen.upZero S t n.1)) : ℂ)) ∧ ∀ γ : GL (Fin κ) k, GlobalTheory.LevZeroGen.upZero S t (GlobalTheory.RootEx.embX (s + 1) γ) = GlobalTheory.RootEx.embX (s + 1) (GlobalTheory.StepData.reGL (GlobalTheory.LevZeroGen.xZero (Fin κ) t) γ) := by
   intro k _ _ _ _ s κ S t _ _

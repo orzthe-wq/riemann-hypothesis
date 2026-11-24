@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RankTwoDimensionFormula.IndexGe
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RankTwoDimensionFormula.IdxDAsm
 
 @[expose] public section
 
@@ -56,25 +57,10 @@ section AlgL
 
 variable {A : Type} [CommRing A] (σ : A →+* A) {n k : ℕ} (J : Matrix (Fin n) (Fin n) A)
 
-theorem hrow_dot (x y : Fin n → A) : hrow σ J x ⬝ᵥ y = Formalism.UG.hform σ J x y := by
-  simp only [dotProduct, hrow, Formalism.UG.hform, Finset.sum_mul]
-  exact Finset.sum_comm
-
 private lemma vecMulVec_mulVec_rank_two_dimension_formula (u v y : Fin n → A) : Matrix.vecMulVec u v *ᵥ y = (v ⬝ᵥ y) • u := by
   ext q
   simp only [Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]
   exact Finset.sum_congr rfl fun r _ => by ring
-
-theorem sMat_mulVec (b bs : Fin k → Fin n → A) (C D : Matrix (Fin k) (Fin k) A) (y : Fin n → A) :
-    sMat σ J b bs C D *ᵥ y = y + ∑ i, ∑ j, (((C - 1) i j * Formalism.UG.hform σ J (bs j) y) • b i +
-      ((D - 1) i j * Formalism.UG.hform σ J (b j) y) • bs i) := by
-  rw [sMat, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.sum_mulVec]
-  congr 1
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [Matrix.sum_mulVec]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  rw [Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, vecMulVec_mulVec_rank_two_dimension_formula,
-    vecMulVec_mulVec_rank_two_dimension_formula, hrow_dot, hrow_dot, smul_smul, smul_smul]
 
 end AlgL
 

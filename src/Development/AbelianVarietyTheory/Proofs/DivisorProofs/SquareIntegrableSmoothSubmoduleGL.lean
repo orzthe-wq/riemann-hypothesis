@@ -89,9 +89,6 @@ theorem re_l2Form_pos {x : Sm E a} (hx : x ∈ squareIntegrableSmoothSubmoduleGL
   have : ((mem_l2Sub μ).1 hx).toL2 ≠ 0 := toL2_ne_zero _ hc fun e => h0 (Subtype.ext e)
   first
     | exact (re_inner_self_pos (𝕜 := ℂ)).2 this
-    | exact inner_self_pos.2 this
-    | exact (RCLike.inner_self_pos).2 this
-    | (rw [inner_self_eq_norm_sq_to_K]; norm_cast; simpa using this)
 
 theorem mem_l2Sub_of_isAutForm {ψ : Sm E a} (h : IsAutForm ψ) (h' : IsSqInt ψ.1) : ψ ∈ squareIntegrableSmoothSubmoduleGL μ :=
   memL2_of_isAutForm h h'

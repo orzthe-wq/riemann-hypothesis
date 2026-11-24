@@ -62,7 +62,7 @@ variable {l : ℕ} [hl : Fact l.Prime]
 theorem norm_eq_spectralValue (x : PadicAlgCl l) : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
 
 theorem isIntegral_iff_norm_le (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  apply CrystallineSemistableComparison.isIntegral_iff_norm_le <;> assumption
+  apply CrystallineSemistableComparison.isIntegral_iff_norm_le
 
 variable (LL : FinExt l)
 

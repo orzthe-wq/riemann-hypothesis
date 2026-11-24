@@ -171,7 +171,6 @@ theorem bump : Bump := by
   have hopen : IsOpen (Euler.intGrp σ X v : Set (UA σ X.J)) := by
     first
     | exact Euler.isOpen_int (Euler.herm_full hp.herm) v
-    | exact Euler.isOpen_int hp.herm.lat v
   have n1 := near_UA h hG.uA (hopen.mem_nhds (one_mem _))
   have hv1 : ∀ᶠ y in 𝓝 (1 : Fv F v), ValuativeRel.valuation (Fv F v) y = 1 := by
     simpa [Filter.Eventually] using (ValuativeRel.valuation (Fv F v)).locally_const (x := 1) (by simp)

@@ -2,14 +2,15 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 public import Mathlib.RingTheory.Polynomial.Eisenstein.Distinguished
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClosedDiscGaugeCompletionZeroOnePropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClosedDiscGaugeCompletionZeroOneProperties
+public import Mathlib.Analysis.Normed.Group.ControlledClosure
+public import Mathlib.RingTheory.PowerSeries.WeierstrassPreparation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-public import Mathlib.Analysis.Normed.Group.ControlledClosure
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -23,7 +24,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-public import Mathlib.RingTheory.PowerSeries.WeierstrassPreparation
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.DiscreteValuationRing
 import Mathlib.Tactic.Basify
@@ -314,6 +314,6 @@ theorem weierstrass_div : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K
   obtain ⟨z, hz⟩ := eq_X_pow_add bk.monic bk.dvd_coeff
   rw [Polynomial.degree_eq_natDegree bk.monic.ne_zero]
   exact div_disc_poly hρ0 (div_monomial hl.out.pos he hρ0 hρ1.le hρe z hz (exists_div hdist hI))
-    (GlobalTheory.T.closedDiscGaugeCompletion_zero_one_properties l K bk).2.1 y
+    (_root_.GlobalTheory.BSP.disc_zero_one l K bk).2.1 y
 
 end GlobalTheory.BSP.WDiv

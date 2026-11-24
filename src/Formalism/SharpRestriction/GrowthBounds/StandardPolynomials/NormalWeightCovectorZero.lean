@@ -70,7 +70,7 @@ theorem wN_covS (x : X.TT) (c : Fin X.m) : wN X ((x, false), c.succ) = 0 := by
 
 theorem wN_pair (x : X.TT) (a : Fin (X.m + 1)) : wN X ((x, true), a) + wN X ((x, false), a) = 1 := by
   unfold wN
-  split_ifs <;> simp_all <;> omega
+  split_ifs <;> simp_all
 
 variable {K : Type} [CommRing K] {σ : Type}
 

@@ -114,9 +114,9 @@ namespace Place
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k)
 variable {n : Type} [Fintype n] [DecidableEq n] {ρ : ℕ} {s : k}
 
-theorem xi_ne_zero : p.xi ≠ 0 := (map_ne_zero (p.π.comp (incA D))).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)
+alias xi_ne_zero := _root_.GlobalTheory.LocMod.Witness.xi_ne
 
-theorem hz_ne_zero (B : BesLev D ρ) : p.hz B ≠ 0 := (map_ne_zero (p.π.comp (incA D))).2 B.line.2
+alias hz_ne_zero := _root_.GlobalTheory.LocMod.Witness.hz_ne
 
 theorem exists_isCoreFrame (hs : s ≠ 0) (B : BesLev D ρ) (FA : GlobalTheory.LocMod.Frame k B.A.rank n) :
     ∃ F, p.IsCoreFrame B s FA F := by

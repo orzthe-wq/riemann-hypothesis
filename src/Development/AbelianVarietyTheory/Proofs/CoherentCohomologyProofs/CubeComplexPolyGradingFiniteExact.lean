@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.ExistsAwayFracOfMemHomLoc
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CubeComplexExactAtOfMonomialBasis
-public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsMonomialBasisCechCubePolynomialGradingStatement
+public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsMonomialBasisCechCubePolynomialGrading
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.TopClassSurjective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -67,7 +67,7 @@ theorem finite_neg_sum_eq (ι : Type) [Fintype ι] (n : ℤ) :
 
 theorem cubeComplex_polyGrading_finite_exact : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] (n : ℤ), (∀ p, Module.Finite R ((cubeComplex (grCube ι (polyGrading ι R) n)).homology p)) ∧ (1 ≤ n → ∀ p, (cubeComplex (grCube ι (polyGrading ι R) n)).ExactAt p) := by
   intro ι _ _ R _ n
-  obtain ⟨b, hb⟩ := GlobalTheory.T.exists_monomial_basis_cechCube_polynomialGrading ι R n
+  obtain ⟨b, hb⟩ := _root_.GlobalTheory.exists_basis_grCube_polyGrading ι R n
   have h1 := GlobalTheory.cubeComplex_exactAt_of_monomialBasis ι R _ _ _ b hb
   have h2 := GlobalTheory.CubeTop.main ι R _ _ _ b hb
   refine ⟨fun p => ?_, fun hn p => ?_⟩

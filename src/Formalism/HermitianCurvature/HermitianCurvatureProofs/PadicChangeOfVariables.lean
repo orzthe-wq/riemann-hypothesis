@@ -61,9 +61,8 @@ theorem nat_tri (m : ℕ) : m * (m + 1) / 2 = m * (m - 1) / 2 + m := by
   cases m with
   | zero => simp
   | succ k =>
-    have : (k + 1) * (k + 1 + 1) = (k + 1) * (k + 1 - 1) + 2 * (k + 1) := by
-      simp only [Nat.add_sub_cancel]; ring
-    rw [this, Nat.add_mul_div_left _ _ (by norm_num)]
+    rw [show (k + 1) * (k + 1 + 1) = (k + 1) * (k + 1 - 1) + 2 * (k + 1) by
+      simp only [Nat.add_sub_cancel]; ring, Nat.add_mul_div_left _ _ (by norm_num)]
 
 theorem modK_pow {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K}
     {ψ : AddChar K ℂ} (hd : LocalDatum K R ψ) {x : K} (hx : IsUnit x) (n : ℕ) :
@@ -80,8 +79,7 @@ theorem vnr [IsArtinianRing K] [IsReduced K] (a : K) : ∃ y, a = a ^ 2 * y := b
   obtain ⟨n, y, hy⟩ := IsArtinian.exists_pow_succ_smul_dvd a (1 : K)
   have hy' : a ^ (n + 1) * y = a ^ n := by simpa using hy
   have hz : a - a ^ 2 * y = 0 := by
-    apply IsNilpotent.eq_zero
-    refine ⟨n + 1, ?_⟩
+    refine IsNilpotent.eq_zero ⟨n + 1, ?_⟩
     have e : (a - a ^ 2 * y) ^ (n + 1) = a * (a ^ n - a ^ (n + 1) * y) * (1 - a * y) ^ n := by
       have : a - a ^ 2 * y = a * (1 - a * y) := by ring
       rw [this, mul_pow]; ring
@@ -96,10 +94,8 @@ variable [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K} {ψ : AddCha
 theorem isUnit_natSub (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) (n m : ℕ) (h : n ≠ m) :
     IsUnit ((n : K) - (m : K)) := by
   rcases lt_or_gt_of_ne h with h | h
-  · have := hn (m - n) (by omega)
-    rw [Nat.cast_sub h.le] at this
-    have h2 := this.neg
-    simpa using h2
+  · rw [← neg_sub, ← Nat.cast_sub h.le]
+    exact (hn (m - n) (by omega)).neg
   · have := hn (n - m) (by omega)
     rwa [Nat.cast_sub h.le] at this
 
@@ -160,13 +156,11 @@ theorem iInter_zero (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUn
   intro y
   obtain ⟨m, hm⟩ := hπ' y
   obtain ⟨r, hr, rfl⟩ := mem_mulR.1 (hx m)
-  have : y * ((π : K) ^ m * r) = ((π : K) ^ m * y) * r := by ring
-  rw [this]
+  rw [show y * ((π : K) ^ m * r) = ((π : K) ^ m * y) * r by ring]
   exact R.mul_mem hm hr
 
 theorem lat_J (hd : LocalDatum K R ψ) (n : ℕ) : A5x5.Lat (mulR R ((π : K) ^ n)) := by
-  have := A5x5.lat_mulR hd.isOpen hd.isCompact (π ^ n)
-  simpa using this
+  simpa using A5x5.lat_mulR hd.isOpen hd.isCompact (π ^ n)
 
 theorem J_anti (hπ : (π : K) ∈ R) {n m : ℕ} (h : n ≤ m) :
     mulR R ((π : K) ^ m) ≤ mulR R ((π : K) ^ n) := by
@@ -237,22 +231,18 @@ theorem one_add_unit (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsU
       refine ⟨∑ i ∈ Finset.range n, (-a) ^ i, R.sum_mem fun i _ =>
         R.pow_mem (R.neg_mem (J_sub_R π hπ ha)) i, ?_⟩
       have h1 := geom_sum_mul (-a) n
-      have h2 : (1 + a) * ∑ i ∈ Finset.range n, (-a) ^ i - 1 = -(-a) ^ n := by
-        linear_combination -h1
-      rw [h2]
+      rw [show (1 + a) * ∑ i ∈ Finset.range n, (-a) ^ i - 1 = -(-a) ^ n by
+        linear_combination -h1]
       apply AddSubgroup.neg_mem
       obtain ⟨r, hr, rfl⟩ := mem_mulR.1 ha
       exact mem_mulR.2 ⟨(-r) ^ n, R.pow_mem (R.neg_mem hr) n, by
         rw [pow_one, ← mul_pow]; ring⟩)
-  exact ⟨u, hu, by linear_combination h⟩
+  exact ⟨u, hu, sub_eq_zero.1 h⟩
 
 theorem sub_one_mul (hπ : (π : K) ∈ R) {n : ℕ} {x y : K} (hx : x - 1 ∈ mulR R ((π : K) ^ n))
     (hy : y - 1 ∈ mulR R ((π : K) ^ n)) : x * y - 1 ∈ mulR R ((π : K) ^ n) := by
-  have hyR : y ∈ R := by
-    have := R.add_mem (J_sub_R π hπ hy) R.one_mem
-    simpa using this
-  have e : x * y - 1 = (x - 1) * y + (y - 1) := by ring
-  rw [e]
+  have hyR : y ∈ R := by simpa using R.add_mem (J_sub_R π hπ hy) R.one_mem
+  rw [show x * y - 1 = (x - 1) * y + (y - 1) by ring]
   exact AddSubgroup.add_mem _ (mulR_mul hx hyR) hy
 
 theorem sub_one_pow (hπ : (π : K) ∈ R) {n : ℕ} {x : K} (hx : x - 1 ∈ mulR R ((π : K) ^ n))
@@ -286,8 +276,7 @@ theorem pow_diff (hπ : (π : K) ∈ R) {s k : ℕ} {si : K} (hs : (s : K) * si 
 theorem pow_diff0 (hπ : (π : K) ∈ R) {s k : ℕ} {si : K} (hs : (s : K) * si = 1)
     (hk : (π : K) ^ k * si ∈ R) {a : K} (ha : a ∈ mulR R ((π : K) ^ (k + 1))) :
     ∃ e ∈ mulR R ((π : K) ^ 1), (1 + a) ^ s - 1 = (s : K) * a * (1 + e) := by
-  obtain ⟨e, he, h⟩ := pow_diff π hπ hs hk ha (AddSubgroup.zero_mem _)
-  exact ⟨e, he, by simpa using h⟩
+  simpa using pow_diff π hπ hs hk ha (AddSubgroup.zero_mem _)
 
 theorem one_add_mem (hπ : (π : K) ∈ R) {n : ℕ} {e : K} (he : e ∈ mulR R ((π : K) ^ n)) :
     1 + e ∈ R := R.add_mem R.one_mem (J_sub_R π hπ he)
@@ -331,8 +320,7 @@ theorem root_exists (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUn
 theorem pow_mem_mono (hπ : (π : K) ∈ R) {k k' : ℕ} (h : k ≤ k') {z : K} (hz : (π : K) ^ k * z ∈ R) :
     (π : K) ^ k' * z ∈ R := by
   obtain ⟨j, rfl⟩ := Nat.exists_eq_add_of_le h
-  have : (π : K) ^ (k + j) * z = (π : K) ^ j * ((π : K) ^ k * z) := by ring
-  rw [this]
+  rw [show (π : K) ^ (k + j) * z = (π : K) ^ j * ((π : K) ^ k * z) by ring]
   exact R.mul_mem (R.pow_mem hπ j) hz
 
 theorem bdd_of_compact (hd : LocalDatum K R ψ) (hπ : (π : K) ∈ R)
@@ -367,8 +355,7 @@ theorem inv_bdd (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (
       filter_upwards [hnb] with z hz
       obtain ⟨u, hu, hu2⟩ := one_add_unit π hd hn hπ hπ' _ hz
       refine ⟨zi0 * u, ?_, ?_⟩
-      · have hu2 : (1 + zi0 * (z - z0)) * u = 1 := hu2
-        linear_combination hu2 + u * h0
+      · linear_combination hu2 + u * h0
       · rw [← mul_assoc]; exact R.mul_mem h1 hu)
     (fun z hz => by
       obtain ⟨u, rfl⟩ := hU z hz
@@ -379,8 +366,7 @@ theorem inv_bdd (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (
       exact ⟨zi, h0, pow_mem_mono π hπ hij h1⟩))
   refine ⟨k, fun z hz zi hzi => ?_⟩
   obtain ⟨zi', h0, h1⟩ := hk hz
-  have : zi = zi' := by linear_combination zi' * hzi - zi * h0
-  rwa [this]
+  rwa [show zi = zi' by linear_combination zi' * hzi - zi * h0]
 
 section Local
 
@@ -444,8 +430,7 @@ theorem hb3 {b : K} (hb : b ∈ mulR R ((π : K) ^ (k + 1 + k' + i))) :
   have h3 : z0 * l = b * u := by
     linear_combination (-(z0 * u)) * h2 - z0 * l * hu2 + b * u * hz0
   refine ⟨z0 * (1 + l), ?_, ?_⟩
-  · have : z0 * (1 + l) - z0 = b * u := by linear_combination h3
-    rw [this]
+  · rw [show z0 * (1 + l) - z0 = b * u by linear_combination h3]
     exact mulR_mul hb hu
   · rw [mul_pow, h]
     linear_combination ((m + 1 : ℕ) : K) * z0 ^ m * b * hz0
@@ -549,14 +534,11 @@ theorem finite_cosets {B : AddSubgroup K} (hB : IsOpen (B : Set K)) {Om : Set K}
   obtain ⟨w', hw', h⟩ := Set.mem_iUnion₂.1 (hT hw)
   have h : ((Quotient.out w : K) : K ⧸ B) = w' := h
   rw [QuotientAddGroup.out_eq'] at h
-  rw [h]
-  exact hw'
+  rwa [h]
 
 theorem out_sub_mem' {B : AddSubgroup K} (z : K) :
     (Quotient.out ((z : K) : K ⧸ B) : K) - z ∈ B := by
-  have h : ((Quotient.out ((z : K) : K ⧸ B) : K) : K ⧸ B) = ((z : K) : K ⧸ B) :=
-    QuotientAddGroup.out_eq' _
-  have := (QuotientAddGroup.eq).1 h.symm
+  have := (QuotientAddGroup.eq).1 (QuotientAddGroup.out_eq' ((z : K) : K ⧸ B)).symm
   rwa [neg_add_eq_sub] at this
 
 end GroundTheory
@@ -890,9 +872,7 @@ theorem head_size_add_block : Formalism.FourierDecayAlt.A6.CSizeAddBlock := by
 
 theorem gram_equality_of_vectors : Formalism.FourierDecayAlt.A6.UGramEq := by
   intro hP hC hM K _ _ _ R ψ hD m h h' t t' cr hs hcr
-  have hsz : (addBlock h m t).1.sum = (addBlock h' m t').1.sum := by
-    simp [addBlock, hs]
-  obtain ⟨_, h2⟩ := hP K R ψ hD (addBlock h m t) (addBlock h' m t') hsz cr hcr
+  obtain ⟨_, h2⟩ := hP K R ψ hD (addBlock h m t) (addBlock h' m t') (by simp [addBlock, hs]) cr hcr
   have e1 : ∀ x, Ns R ψ 1 (addBlock h m t) (addBlock h' m t') (cr x) (cr x) =
       Kp R ψ (pt2 h m t (cr x)) (pt2 h' m t' (cr x)) := by
     intro x; simp [Ns, pt2]
@@ -904,11 +884,9 @@ theorem gram_equality_of_vectors : Formalism.FourierDecayAlt.A6.UGramEq := by
   obtain ⟨ha, hab⟩ := hM K R ψ hD t t'
   obtain ⟨hb, _⟩ := hM K R ψ hD t' t
   rw [nat_tri m, hab]
-  have ha' : (modK R (t : K)) ≠ 0 := ne_of_gt ha
-  have hb' : (modK R (t' : K)) ≠ 0 := ne_of_gt hb
   push_cast
-  have ha'' : ((modK R (t : K) : ℝ) : ℂ) ≠ 0 := by exact_mod_cast ha'
-  have hb'' : ((modK R (t' : K) : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hb'
+  have ha'' : ((modK R (t : K) : ℝ) : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt ha
+  have hb'' : ((modK R (t' : K) : ℝ) : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt hb
   field_simp
   ring
 

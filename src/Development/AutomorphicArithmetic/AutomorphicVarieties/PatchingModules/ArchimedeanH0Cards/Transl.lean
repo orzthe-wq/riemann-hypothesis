@@ -1,8 +1,10 @@
 module
 
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.PairedDualFirstOrderDualMatrixSpace
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.TyCard
+public import Mathlib.RingTheory.PowerSeries.Inverse
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.PushforwardPreservesSelmerCocycles
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.ObstructionBoundFromDuality
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslDD
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslGen
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.AdExExt
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.AdicLC
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.DdSumZero
@@ -28,13 +30,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.AdicCompletion.Noetherian
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,8 +39,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -59,8 +54,330 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
+import Mathlib.RingTheory.AdicCompletion.Noetherian
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslDD, Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslGen, Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.Transl
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslDD =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslDD", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.PairedDualFirstOrderDualMatrixSpace\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.TyCard\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RingTheory.PowerSeries.Inverse\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix UpperTheory.V.Alg UpperTheory.V.W
+
+namespace UpperTheory.V.Pa.B2
+
+section
+
+variable {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {g n : ℕ}
+
+def mk2 (P : Fin g → Matrix (Fin n) (Fin n) X) (Z : Matrix (Fin n) (Fin n) X) : Matrix (Fin n) (Fin n) (DD X g) :=
+  Matrix.of fun a b => ⟨0, 0, fun j => P j a b, Z a b⟩
+
+private theorem sum_a {ι : Type} (s : Finset ι) (f : ι → DD X g) : (∑ i ∈ s, f i).a = ∑ i ∈ s, (f i).a :=
+  map_sum (AddMonoidHom.mk' DD.a DD.add_a) f s
+
+private theorem sum_ep {ι : Type} (s : Finset ι) (f : ι → DD X g) (j) :
+    (∑ i ∈ s, f i).ep j = ∑ i ∈ s, (f i).ep j :=
+  map_sum (AddMonoidHom.mk' (fun d : DD X g => d.ep j) fun x y => DD.add_ep x y j) f s
+
+private theorem sum_ep' {ι : Type} (s : Finset ι) (f : ι → DD X g) (j) :
+    (∑ i ∈ s, f i).ep' j = ∑ i ∈ s, (f i).ep' j :=
+  map_sum (AddMonoidHom.mk' (fun d : DD X g => d.ep' j) fun x y => DD.add_ep' x y j) f s
+
+private theorem sum_eta {ι : Type} (s : Finset ι) (f : ι → DD X g) : (∑ i ∈ s, f i).eta = ∑ i ∈ s, (f i).eta :=
+  map_sum (AddMonoidHom.mk' DD.eta DD.add_eta) f s
+
+private theorem alg_eq (c : A) : algebraMap A (DD X g) c = DD.C (algebraMap A X c) := rfl
+
+theorem epsPrimeEtaMatrix_add (P P' : Fin g → Matrix (Fin n) (Fin n) X) (Z Z') :
+    mk2 P Z + mk2 P' Z' = mk2 (fun j => P j + P' j) (Z + Z') := by
+  ext a b <;> simp [mk2]
+
+theorem epsPrimeEtaMatrix_sub (P P' : Fin g → Matrix (Fin n) (Fin n) X) (Z Z') :
+    mk2 P Z - mk2 P' Z' = mk2 (fun j => P j - P' j) (Z - Z') := by
+  ext a b <;> simp [mk2, sub_eq_add_neg]
+
+theorem epsPrimeEtaMatrix_smul (c : A) (P : Fin g → Matrix (Fin n) (Fin n) X) (Z) :
+    c • mk2 P Z = mk2 (fun j => c • P j) (c • Z) := by
+  ext a b <;> simp [mk2, Algebra.smul_def, alg_eq]
+
+theorem neg_transpose_epsPrimeEtaMatrix (P : Fin g → Matrix (Fin n) (Fin n) X) (Z) :
+    -(mk2 P Z)ᵀ = mk2 (fun j => -(P j)ᵀ) (-Zᵀ) := by
+  ext a b <;> simp [mk2]
+
+theorem epsPrimeEtaMatrix_apply_eq_zero_iff {P : Fin g → Matrix (Fin n) (Fin n) X} {Z} {a b} :
+    mk2 P Z a b = 0 ↔ (∀ j, P j a b = 0) ∧ Z a b = 0 :=
+  ⟨fun h => ⟨fun j => congrArg (fun d : DD X g => d.ep' j) h, congrArg DD.eta h⟩,
+    fun h => DD.ext rfl rfl (funext h.1) h.2⟩
+
+theorem epsPrimeEtaMatrix_injective_pair {P P' : Fin g → Matrix (Fin n) (Fin n) X} {Z Z'} (h : mk2 P Z = mk2 P' Z') : P = P' ∧ Z = Z' :=
+  ⟨funext fun j => Matrix.ext fun a b => congrArg (fun M : Matrix (Fin n) (Fin n) (DD X g) => (M a b).ep' j) h,
+    Matrix.ext fun a b => congrArg (fun M : Matrix (Fin n) (Fin n) (DD X g) => (M a b).eta) h⟩
+
+theorem evenOddBlockMatrix_mem_adjointDeformSubspace {a : ℕ} {P : Fin g → Matrix (Fin n) (Fin n) X} {Z} (hP : ∀ j, P j ∈ Ev A X n a)
+    (hZ : Z ∈ Od A X n a) : mk2 P Z ∈ W2 n A X g a := fun i j =>
+  ⟨fun e => ⟨fun _ => rfl, fun _ => rfl, fun h => by simp at h, fun _ => (hZ i j).1 e⟩,
+    fun e => ⟨fun _ => rfl, fun _ => rfl, fun _ => funext fun m => (hP m i j).2 e, fun h => by simp at h⟩⟩
+
+theorem exists_evenOddBlock_decomposition_of_mem {a : ℕ} {M : Matrix (Fin n) (Fin n) (DD X g)} (h : M ∈ W2 n A X g a) :
+    ∃ P Z, (∀ j, P j ∈ Ev A X n a) ∧ Z ∈ Od A X n a ∧ M = mk2 P Z := by
+  refine ⟨fun j => M.map fun d => d.ep' j, M.map DD.eta, fun m i j => ⟨fun _ => trivial, fun e => ?_⟩,
+    fun i j => ⟨fun e => ((h i j).1 e).2.2.2 rfl, fun _ => trivial⟩, Matrix.ext fun i j => ?_⟩
+  · exact congrFun (((h i j).2 e).2.2.1 rfl) m
+  · by_cases e : ((i : ℕ) < a) ↔ ((j : ℕ) < a)
+    · exact DD.ext (((h i j).1 e).1 rfl) (((h i j).1 e).2.1 rfl) rfl rfl
+    · exact DD.ext (((h i j).2 e).1 rfl) (((h i j).2 e).2.1 rfl) rfl rfl
+
+theorem algebraMap_matrix_mul_epsPrimeEtaMatrix (M : Matrix (Fin n) (Fin n) A) (P : Fin g → Matrix (Fin n) (Fin n) X) (Z) :
+    M.map (algebraMap A (DD X g)) * mk2 P Z =
+      mk2 (fun j => M.map (algebraMap A X) * P j) (M.map (algebraMap A X) * Z) := by
+  ext a b <;> simp [Matrix.mul_apply, mk2, sum_a, sum_ep, sum_ep', sum_eta, alg_eq]
+
+theorem epsPrimeEtaMatrix_mul_algebraMap_matrix (M : Matrix (Fin n) (Fin n) A) (P : Fin g → Matrix (Fin n) (Fin n) X) (Z) :
+    mk2 P Z * M.map (algebraMap A (DD X g)) =
+      mk2 (fun j => P j * M.map (algebraMap A X)) (Z * M.map (algebraMap A X)) := by
+  ext a b <;> simp [Matrix.mul_apply, mk2, sum_a, sum_ep, sum_ep', sum_eta, alg_eq]
+
+theorem epM_mul_epsPrimeEtaMatrix (Y P : Fin g → Matrix (Fin n) (Fin n) X) (Z) :
+    DD.epM Y * mk2 P Z = mk2 (fun _ => 0) (∑ j, Y j * P j) := by
+  ext a b <;> simp [Matrix.mul_apply, mk2, DD.epM, sum_a, sum_ep, sum_ep', sum_eta, Matrix.sum_apply]
+  exact Finset.sum_comm
+
+theorem epsPrimeEtaMatrix_mul_epM (Y P : Fin g → Matrix (Fin n) (Fin n) X) (Z) :
+    mk2 P Z * DD.epM Y = mk2 (fun _ => 0) (∑ j, P j * Y j) := by
+  ext a b <;> simp [Matrix.mul_apply, mk2, DD.epM, sum_a, sum_ep, sum_ep', sum_eta, Matrix.sum_apply]
+  exact Finset.sum_comm
+
+private theorem ev_od {a : ℕ} {P Y : Matrix (Fin n) (Fin n) X} (hP : P ∈ Ev A X n a) (hY : Y ∈ Od A X n a) :
+    Y * P - P * Y ∈ Od A X n a := by
+  refine sub_mem (fun i j => ⟨fun e => ?_, fun _ => trivial⟩) (fun i j => ⟨fun e => ?_, fun _ => trivial⟩)
+  · refine (Submodule.mem_bot A).2 ?_
+    rw [Matrix.mul_apply]
+    refine Finset.sum_eq_zero fun c _ => ?_
+    by_cases h : ((i : ℕ) < a) ↔ ((c : ℕ) < a)
+    · rw [(Submodule.mem_bot A).1 ((hY i c).1 h), zero_mul]
+    · rw [(Submodule.mem_bot A).1 ((hP c j).2 (by tauto)), mul_zero]
+  · refine (Submodule.mem_bot A).2 ?_
+    rw [Matrix.mul_apply]
+    refine Finset.sum_eq_zero fun c _ => ?_
+    by_cases h : ((i : ℕ) < a) ↔ ((c : ℕ) < a)
+    · rw [(Submodule.mem_bot A).1 ((hY c j).1 (by tauto)), mul_zero]
+    · rw [(Submodule.mem_bot A).1 ((hP i c).2 h), zero_mul]
+
+end
+
+variable {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) (X : Type) [CommRing X] [Algebra x.A X]
+
+theorem rho1_conj_block_matrix (g g' : F.G₀) (P : Fin k.g → Matrix (Fin n) (Fin n) X) (Z) :
+    ∃ Z', k.ρ1 X g * mk2 P Z * k.ρ1 X g' = mk2 (fun j => x.ρX X g * P j * x.ρX X g') Z' := by
+  simp only [Kap.ρ1, NP.ρX]
+  rw [mul_assoc (1 + _), algebraMap_matrix_mul_epsPrimeEtaMatrix, add_mul, one_mul, epM_mul_epsPrimeEtaMatrix, epsPrimeEtaMatrix_add, ← mul_assoc, mul_add, mul_one,
+    epsPrimeEtaMatrix_mul_epM, epsPrimeEtaMatrix_add, epsPrimeEtaMatrix_mul_algebraMap_matrix]
+  simp only [add_zero]
+  exact ⟨_, rfl⟩
+
+theorem rho1_conj_block_zero (g g' : F.G₀) (Z) :
+    k.ρ1 X g * mk2 (fun _ => 0) Z * k.ρ1 X g' = mk2 (fun _ => 0) (x.ρX X g * Z * x.ρX X g') := by
+  simp only [Kap.ρ1, NP.ρX]
+  rw [mul_assoc (1 + _), algebraMap_matrix_mul_epsPrimeEtaMatrix, add_mul, one_mul, epM_mul_epsPrimeEtaMatrix, epsPrimeEtaMatrix_add, ← mul_assoc, mul_add, mul_one,
+    epsPrimeEtaMatrix_mul_epM, epsPrimeEtaMatrix_add, epsPrimeEtaMatrix_mul_algebraMap_matrix]
+  simp
+
+noncomputable def cmm (v : F.Vl) (P : Fin k.g → Matrix (Fin n) (Fin n) X) : Matrix (Fin n) (Fin n) X :=
+  ∑ j, ((k.Y j v).map (algebraMap x.A X) * P j - P j * (k.Y j v).map (algebraMap x.A X))
+
+theorem weyl_conj_block_matrix (v : F.Vl) (P : Fin k.g → Matrix (Fin n) (Fin n) X) (Z) :
+    k.wi1 X v * mk2 P Z * k.w1 X v =
+      mk2 (fun j => x.wiX X v * P j * x.wX X v) (x.wiX X v * (Z + cmm k X v P) * x.wX X v) := by
+  simp only [Kap.w1, Kap.wi1, NP.wX, NP.wiX, cmm]
+  rw [mul_assoc _ (1 + _), add_mul, one_mul, epM_mul_epsPrimeEtaMatrix, epsPrimeEtaMatrix_add, mul_assoc, ← mul_assoc (mk2 _ _), mul_sub, mul_one,
+    epsPrimeEtaMatrix_mul_epM, epsPrimeEtaMatrix_sub, epsPrimeEtaMatrix_mul_algebraMap_matrix, algebraMap_matrix_mul_epsPrimeEtaMatrix]
+  simp only [add_zero, sub_zero, Finset.sum_sub_distrib, mul_assoc, add_sub_assoc]
+
+theorem cmm_mem (v : F.Vl) {P : Fin k.g → Matrix (Fin n) (Fin n) X} (hP : ∀ j, P j ∈ Ev x.A X n x.a) :
+    cmm k X v P ∈ Od x.A X n x.a :=
+  Submodule.sum_mem _ fun j _ => ev_od (hP j) fun a b => ⟨fun e => by
+    have : k.Y j v a b = 0 := (k.Y_mem j v a b).1 e
+    simp [this], fun _ => trivial⟩
+
+theorem od_diag (v : F.Vl) {Z : Matrix (Fin n) (Fin n) X} (hZ : Z ∈ Od x.A X n x.a) (i : Fin n) :
+    (x.wiX X v * Z * x.wX X v) i i = 0 := by
+  rw [Matrix.mul_apply]
+  refine Finset.sum_eq_zero fun b _ => ?_
+  by_cases hb : decide ((b : ℕ) < x.a) = x.ty v i
+  · rw [Matrix.mul_apply, Finset.sum_eq_zero, zero_mul]
+    intro a _
+    by_cases ha : x.ty v i = decide ((a : ℕ) < x.a)
+    · rw [(Submodule.mem_bot x.A).1 ((hZ a b).1 (by simpa using (hb.trans ha).symm)), mul_zero]
+    · have := (tyCard l F n x v 0).2.2.2 i a ha
+      simp only [NP.wiX, Matrix.map_apply, this, map_zero, zero_mul]
+  · simp only [NP.wX, Matrix.map_apply, x.w_blk v b i hb, map_zero, mul_zero]
+
+theorem isLocallyConstant_rho1_of_algebraMap_pow_eq_zero (m : ℕ) (hm : algebraMap x.A X (x.t ^ m) = 0) : IsLocallyConstant (k.ρ1 X) := by
+  have aux : ∀ f : F.G₀ → Matrix (Fin n) (Fin n) x.A,
+      (∀ i j, AdicCont (Ideal.span {x.t}) fun g => f g i j) → ∀ (R : Type) [CommRing R] [Algebra x.A R],
+      algebraMap x.A R (x.t ^ m) = 0 → ∀ g0, ∀ᶠ g in nhds g0, (f g).map (algebraMap x.A R) = (f g0).map (algebraMap x.A R) := by
+    intro f hf R _ _ hR g0
+    filter_upwards [Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (hf i j m).eventually_eq g0]
+      with g hg
+    refine Matrix.ext fun i j => ?_
+    have h2 := Ideal.Quotient.eq.1 (hg i j)
+    rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton] at h2
+    obtain ⟨c, hc⟩ := h2
+    have h3 := congrArg (algebraMap x.A R) hc
+    rw [RingHom.map_sub, map_mul, hR, zero_mul, sub_eq_zero] at h3
+    exact h3
+  rw [IsLocallyConstant.iff_eventually_eq]
+  intro g0
+  filter_upwards [Filter.eventually_all.2 fun j => aux (k.κ j) (k.mem j).2.1 X hm g0,
+    aux (mat x.ρ) (by rw [← PowerSeries.maximalIdeal_eq_span_X]; exact x.cont) (DD X k.g)
+      (by rw [alg_eq, hm, map_zero]) g0] with g h1 h2
+  simp only [Kap.ρ1, NP.ρX, h1, h2]
+
+end UpperTheory.V.Pa.B2
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslDD =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslGen =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslGen", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.PushforwardPreservesSelmerCocycles\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open ReciprocityTheory.Gal
+
+namespace UpperTheory.V.Pa.B2
+
+variable {A Γ : Type} [CommRing A] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
+
+theorem continuous_differential_one (M : FRep A Γ) {x : Γ → M.X} (hx : Continuous x) : Continuous (d1 M.ρ x) :=
+  ((M.cont.comp (continuous_fst.prodMk (hx.comp continuous_snd))).sub (hx.comp continuous_mul)).add
+    (hx.comp continuous_fst)
+
+theorem urLift {l : ℕ} {J : Subgroup Γ} (H : UrAx l J) (M : FRep A Γ) (hl : ∀ m : M.X, l • m = 0)
+    (hJ : ∀ g ∈ J, ∀ m, M.ρ g m = m) (S : Submodule A M.X) (hS : ∀ g, S ≤ S.comap (M.ρ g)) (x : Γ → M.X)
+    (hx : Continuous x) (hd : ∀ s, d1 M.ρ x s ∈ S) (h0 : ∀ g ∈ J, x g ∈ S) :
+    ∃ b ∈ Z1 M.ρ, (∀ g ∈ J, b g = 0) ∧ ∀ g, x g - b g ∈ S := by
+  letI : TopologicalSpace (M.X ⧸ S) := ⊥
+  haveI : DiscreteTopology (M.X ⧸ S) := ⟨rfl⟩
+  haveI : Finite (M.X ⧸ S) := Finite.of_surjective _ S.mkQ_surjective
+  let M' : FRep A Γ :=
+    { X := M.X ⧸ S
+      ρ := Representation.quotient M.ρ S hS
+      cont := by
+        refine continuous_prod_of_discrete_right.2 fun q => ?_
+        obtain ⟨m, rfl⟩ := S.mkQ_surjective q
+        exact (continuous_of_discreteTopology (f := S.mkQ)).comp
+          (M.cont.comp (continuous_id.prodMk continuous_const)) }
+  obtain ⟨b, hb, h1, h2⟩ := (H A M hl hJ).2 M' S.mkQ (fun _ _ => rfl) S.mkQ_surjective (fun g => S.mkQ (x g))
+    ⟨(continuous_of_discreteTopology (f := S.mkQ)).comp hx, fun g h => by
+      show S.mkQ (x (g * h)) = S.mkQ (x g) + S.mkQ (M.ρ g (x h))
+      rw [← map_add (f := _)]
+      refine (Submodule.Quotient.eq S).2 ?_
+      convert S.neg_mem (hd (g, h)) using 1
+      rw [d1_apply]; abel⟩
+    (fun g hg => (Submodule.Quotient.mk_eq_zero S).2 (h0 g hg))
+  exact ⟨b, hb, h1, fun g => (Submodule.Quotient.eq S).1 (h2 g).symm⟩
+
+theorem translGen {P : Pl Γ} (D : Dat A P) (M : FRep A Γ) (ι : D.M.X →ₗ[A] M.X) (hi : Function.Injective ι)
+    (he : ∀ g m, ι (D.M.ρ g m) = M.ρ g (ι m)) (N : P.ι → Submodule A M.X)
+    (hN : ∀ w g, ∀ m ∈ N w, M.ρ (P.φ w g) m ∈ N w) (hk : ∀ w m, D.π w m = 0 ↔ ι m ∈ N w) (c0 : Γ)
+    (hc : c0 * c0 = 1) (h2 : IsUnit (2 : A)) {e : ℕ} (x : Fin e → Γ → M.X) (hx : ∀ i, Continuous (x i))
+    (hd : ∀ i s, d1 M.ρ (x i) s ∈ LinearMap.range ι) (hxc : ∀ i, x i c0 ∈ LinearMap.range ι)
+    (b : Fin e → ∀ w, P.G w → M.X) (hb : ∀ i w, Continuous (b i w))
+    (hb' : ∀ i w g h, b i w (g * h) = b i w g + M.ρ (P.φ w g) (b i w h))
+    (hxb : ∀ i w g, ∃ m, x i (P.φ w g) - b i w g - ι m ∈ N w) :
+    ∃ ξ : Fin e → D.selmerSecondCocycles, ∀ c : Fin e → A, ((∑ i, c i • ξ i : D.selmerSecondCocycles) : D.C2) ∈ D.selmerSecondCoboundaries →
+      ∃ Ψ ∈ Z1 M.ρ, Ψ c0 = 0 ∧ (∀ γ, Ψ γ - ∑ i, c i • x i γ ∈ LinearMap.range ι) ∧
+        ∀ w, ∃ m, ∀ g ∈ P.J w, Ψ (P.φ w g) - ∑ i, c i • b i w g - (M.ρ (P.φ w g) (ι m) - ι m) ∈ N w := by
+  classical
+  obtain ⟨r, hr⟩ := hi.hasLeftInverse
+  have hr' : ∀ i s, ι (r (d1 M.ρ (x i) s)) = d1 M.ρ (x i) s := fun i s => by
+    obtain ⟨m, hm⟩ := hd i s
+    rw [← hm, hr]
+  let σ : P.ι → M.X → D.M.X := fun w s => Classical.epsilon fun m => s - ι m ∈ N w
+  let τ : Fin e → ∀ w, P.G w → D.M.X := fun i w g => σ w (x i (P.φ w g) - b i w g)
+  have hτ : ∀ i w g, x i (P.φ w g) - b i w g - ι (τ i w g) ∈ N w := fun i w g =>
+    Classical.epsilon_spec (hxb i w g)
+  have mem : ∀ i, ((fun s => r (d1 M.ρ (x i) s), fun w g => D.π w (τ i w g)) : D.C2) ∈ D.selmerSecondCocycles := by
+    intro i
+    refine ⟨⟨(continuous_of_discreteTopology (f := r)).comp (continuous_differential_one M (hx i)), fun g h k => hi ?_⟩,
+      fun w => ⟨?_, fun g h => ?_⟩⟩
+    · simp only [map_add (f := _), map_sub, map_zero, he, hr']
+      simp only [d1_apply, map_add (f := _), map_sub, map_mul, mul_apply_eq_comp, mul_assoc]
+      abel
+    · exact (continuous_of_discreteTopology (f := fun s => D.π w (σ w s))).comp
+        (((hx i).comp (P.cont w)).sub (hb i w))
+    · simp only [d1_apply (D.Q w).ρ, ← D.equiv]
+      rw [← map_sub, ← map_add (f := _), ← sub_eq_zero, ← map_sub, hk]
+      simp only [map_add (f := _), map_sub, he, hr']
+      convert add_mem (sub_mem (hN w g _ (hτ i w h)) (hτ i w (g * h))) (hτ i w g) using 1
+      simp only [d1_apply, map_sub, map_mul, hb']
+      abel
+  refine ⟨fun i => ⟨_, mem i⟩, fun c hB => ?_⟩
+  obtain ⟨x0, c1, e1, e2⟩ := hB
+  have e1' : ∀ s, ∑ i, c i • d1 M.ρ (x i) s = ι (d1 D.M.ρ x0 s) := fun s => by
+    rw [← e1]
+    simp [Prod.fst_sum, Finset.sum_apply, hr']
+  have hΨ : (fun γ => ∑ i, c i • x i γ - ι (x0 γ)) ∈ Z1 M.ρ := by
+    refine ⟨(continuous_finsetSum _ fun i _ => (hx i).const_smul _).sub
+      ((continuous_of_discreteTopology (f := ι)).comp c1), fun g h => ?_⟩
+    have := e1' (g, h)
+    simp only [d1_apply, map_add (f := _), map_sub, he, smul_add, smul_sub, Finset.sum_add_distrib,
+      Finset.sum_sub_distrib] at this
+
+    simp only [map_sub, map_sum, map_smul]
+    rw [← sub_eq_zero] at this ⊢
+    rw [← neg_eq_zero, ← this]
+    abel
+  obtain ⟨m0, hm0⟩ : ∑ i, c i • x i c0 - ι (x0 c0) ∈ LinearMap.range ι :=
+    sub_mem (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hxc i)) ⟨_, rfl⟩
+  have hneg : M.ρ c0 (ι m0) = -ι m0 := by
+    have a1 := hΨ.2 1 1
+    have a2 := hΨ.2 c0 c0
+    simp only [mul_one, map_one, one_apply_eq_self, left_eq_add] at a1
+    simp only [hc, a1, ← hm0] at a2
+    exact eq_neg_of_add_eq_zero_right a2.symm
+  obtain ⟨t, ht⟩ := h2.exists_left_inv
+  refine ⟨(fun γ => ∑ i, c i • x i γ - ι (x0 γ)) + d0 M.ρ (ι (t • m0)), add_mem hΨ ⟨?_, fun g h => ?_⟩, ?_,
+    fun γ => ?_, fun w => ?_⟩
+  · exact (M.cont.comp (continuous_id.prodMk continuous_const)).sub continuous_const
+  · simp only [amitsur_d0_apply, map_mul, map_sub, mul_apply_eq_comp]; abel
+  · simp only [Pi.add_apply, amitsur_d0_apply, ← hm0]
+    rw [map_smul, map_smul, hneg, ← smul_sub, ← neg_add', ← two_smul A, smul_neg, smul_smul, ht, one_smul, add_neg_cancel]
+  · refine ⟨D.M.ρ γ (t • m0) - t • m0 - x0 γ, ?_⟩
+    simp only [Pi.add_apply, amitsur_d0_apply, map_sub, he]
+    abel
+  · obtain ⟨-, Y, hY⟩ := e2 w
+    obtain ⟨m, rfl⟩ := D.surj w Y
+    refine ⟨m + t • m0, fun g hg => ?_⟩
+    have a1 : D.π w (∑ i, c i • τ i w g - x0 (P.φ w g) - (D.M.ρ (P.φ w g) m - m)) = 0 := by
+      have := hY g hg
+      simp only [map_sub, D.equiv, ← this]
+      simp [Prod.snd_sum, Finset.sum_apply]
+    rw [hk] at a1
+    convert add_mem a1 (Submodule.sum_mem _ fun i (_ : i ∈ Finset.univ) => (N w).smul_mem (c i) (hτ i w g)) using 1
+
+    simp only [Pi.add_apply, amitsur_d0_apply, map_sub, map_add (f := _), map_sum, he, smul_sub, Finset.sum_sub_distrib, map_smul ι (c _)]
+    abel
+
+end UpperTheory.V.Pa.B2
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslGen =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.Transl =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.Transl", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.ObstructionBoundFromDuality\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslDD\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.TranslGen\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.AdExExt\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.AdicLC\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.DdSumZero\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.EvIff\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.GaloisLiftMemFirstOrderDeformations\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DegreeCountCohomology.PolZCases\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.EpsilonEtaMatrices.MemW1IffPattern\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.AdicCompletion.Noetherian\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix Filter ReciprocityTheory.Gal UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.B2
@@ -420,3 +737,6 @@ theorem UpperTheory.V.Pa.B2.transl :
     · intro (g : L.Gu u)
       obtain ⟨m', hm'⟩ := hb3 i u g
       exact ⟨m', (Submodule.mem_bot _).2 (sub_eq_zero.2 hm'.symm)⟩
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.ArchimedeanH0Cards.Transl =====

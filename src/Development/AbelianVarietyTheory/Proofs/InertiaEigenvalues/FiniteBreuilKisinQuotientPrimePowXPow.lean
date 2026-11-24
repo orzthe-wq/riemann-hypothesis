@@ -100,6 +100,6 @@ theorem finite_quot : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (n
     exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
   · rw [Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]
     intro m hm
-    simp [PowerSeries.coeff_C_mul_X_pow, Finset.sum_ite_eq', hm]
+    simp [hm]
 
 end GlobalTheory.BKFin

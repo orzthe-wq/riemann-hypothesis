@@ -73,7 +73,7 @@ theorem re_mul [IsTotallyReal F] (x y : Ainf F) (w : InfinitePlace F) :
   have hw : w.IsReal := IsTotallyReal.isReal w
   have : (x * y) w = x w * y w := rfl
   simp only [re, this, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw, map_mul,
-    Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero]
+    Complex.ofReal_re]
 
 theorem re_sum [IsTotallyReal F] {ι : Type} (s : Finset ι) (f : ι → Ainf F) (w : InfinitePlace F) :
     re (∑ i ∈ s, f i) w = ∑ i ∈ s, re (f i) w := by
@@ -258,9 +258,8 @@ theorem decay_ops : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) (ψ : Add
   · let g : GL (Fin N) (AF F) := Units.map (Matrix.scalar (Fin N) : AF F →+* Matrix (Fin N) (Fin N) (AF F)).toMonoidHom ht.unit
     have h := hGL g
     convert h using 1
-    congr 1
     funext l
-    simp [Da, g, Matrix.mulVec_diagonal]
+    simp [Da, g]
   · have h := decay_of_comp hΦ id continuous_id (fun _ => c) continuous_const ‖c‖ (fun _ => le_rfl)
       (fun K hK => ⟨K, hK, fun u h => h⟩) 1 0 zero_le_one le_rfl (fun u => by simp)
     convert h using 1

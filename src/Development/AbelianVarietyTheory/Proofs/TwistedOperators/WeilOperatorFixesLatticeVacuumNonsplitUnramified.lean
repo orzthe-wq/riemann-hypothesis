@@ -83,11 +83,7 @@ theorem mem_latO_place_iff (hε : IsPlaceIdem D v ε) (u : WO S T) :
   ⟨fun h => ⟨GlobalTheory.PlaceModel.latO_le_top _ h, placeIdem_smul_eq hε h⟩,
     fun h => h.2 ▸ GlobalTheory.PlaceModel.placeIdem_smul_mem hε h.1⟩
 
-theorem actO_inv_actO (g : GA D S) (h : GA D T) (u : WO S T) : actO S T g⁻¹ h⁻¹ (actO S T g h u) = u := by
-  unfold actO
-  rw [inv_inv, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, ← GlobalTheory.FinWeilO.mt_mul, inv_mul_cancel,
-    GlobalTheory.FinWeilO.mt_one, Matrix.mul_one, ← Matrix.mul_assoc, ← GlobalTheory.FinWeilO.mt_mul, inv_mul_cancel,
-    GlobalTheory.FinWeilO.mt_one, Matrix.one_mul]
+alias actO_inv_actO := _root_.GlobalTheory.WeilVacMove.actO_inv_actO
 
 theorem actO_injective (g : GA D S) (h : GA D T) : Function.Injective (actO S T g h) :=
   Function.LeftInverse.injective (actO_inv_actO g h)

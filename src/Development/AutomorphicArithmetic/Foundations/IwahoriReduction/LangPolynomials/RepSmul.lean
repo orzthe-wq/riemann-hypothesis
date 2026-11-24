@@ -215,7 +215,6 @@ theorem UpperTheory.Kd.C7.pRepSmul :
       exact rs_kum hprim.pow_eq_one s _ k hk (a i)
     · refine rs_cg β hval b n _ (fun k' => (k k').val)
         (fun i => (((∑ k', a i k' * (k k').val : ℕ) : ZMod (l ^ n))).val) hcg fun i => ?_
-      beta_reduce
       refine ⟨((∑ k', a i k' * (k k').val) / l ^ n : ℕ) + ∑ k', t i k' * ((k k').val : ℤ_[l]), ?_⟩
       have hcast : ((∑ k', a i k' * (k k').val : ℕ) : ℤ_[l])
           = ((∑ k', a i k' * (k k').val) % l ^ n : ℕ) + (l : ℤ_[l]) ^ n * ((∑ k', a i k' * (k k').val) / l ^ n : ℕ) := by

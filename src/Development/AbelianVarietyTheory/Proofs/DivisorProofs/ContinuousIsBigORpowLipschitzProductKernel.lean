@@ -107,7 +107,7 @@ theorem continuous_lipschitzOneVariableKernel {k : ℕ} (hk : 2 ≤ k) {w : ℂ}
   refine continuous_if (fun a ha => ?_) hg.continuousOn continuous_const.continuousOn
   have h0 := frontier_lt_subset_eq (continuous_const (y := (0 : ℝ)))
     (continuous_const.mul continuous_id (f := fun _ : ℝ => (SignType.sign w.im : ℝ))) ha
-  simp only [Set.mem_setOf_eq, id] at h0
+  simp only [Set.mem_setOf_eq] at h0
   have ha0 : a = 0 := by
     rcases mul_eq_zero.1 h0.symm with h | h
     · exfalso

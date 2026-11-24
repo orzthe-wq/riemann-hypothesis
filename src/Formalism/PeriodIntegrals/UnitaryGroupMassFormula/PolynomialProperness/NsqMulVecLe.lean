@@ -62,9 +62,7 @@ theorem gvGroup : GVGroup := fun _ _ =>
   ⟨fun _ hg _ hh => GN.mul_mem hg hh,
     fun _ hg => ⟨GN.inv_eq hg, GN.inv_mem hg, GN.mul_inv hg, GN.inv_mul hg⟩⟩
 
-theorem normInv : NormInv := GN.polynomial_normInv
-
-theorem zhatBound : ZhatBound := GN.zhat_norm_linear_bound
+alias normInv := _root_.PI.PolynomialProperness.GN.polynomial_normInv
 
 theorem nsq_eq_norm {n : ℕ} (x : Fin n → ℂ) : nsq x = ∑ i, ‖x i‖ ^ 2 := by
   unfold nsq

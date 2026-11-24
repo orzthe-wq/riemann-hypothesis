@@ -83,8 +83,6 @@ private theorem iqb_frob : ∃ g : GQ l, IsFrob g := by
   have := lt_of_le_of_ne hle hne
   simpa [hy] using this
 
-private theorem iqb_norm (g : GQ l) (x : Om l) : ‖g x‖ = ‖x‖ := KStar.IdealValuations.norm_aut_and_roots.1 g x
-
 private theorem iqb_sub {x y : Om l} (hx : ‖x‖ < 1) (hy : ‖y‖ < 1) : ‖x - y‖ < 1 := by
   rw [sub_eq_add_neg]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hx (by rwa [norm_neg]))
@@ -94,13 +92,13 @@ private theorem iqb_mem (g : GQ l) : g ∈ Iq l ↔ ∀ x : Om l, ‖x‖ ≤ 1 
   constructor
   · intro hg x hx
     rcases lt_or_eq_of_le hx with hlt | heq
-    · exact iqb_sub (by rwa [iqb_norm]) hlt
-    · obtain ⟨m, ζ, hm, hζ, hxζ⟩ := KStar.IdealValuations.exists_root_congr heq
+    · exact iqb_sub (by rwa [_root_.GlobalTheory.MemLoc.FrobLaws.norm_gal]) hlt
+    · obtain ⟨m, ζ, hm, hζ, hxζ⟩ := _root_.UpperTheory.Reformulated.B.ExistsRootCongruence.exists_root_congr heq
       have hm0 : 0 < m := Nat.pos_of_ne_zero (by rintro rfl; exact hm (dvd_zero l))
       have h1 : g ζ = ζ := hg ζ (IntermediateField.subset_adjoin _ _ ⟨m, hm0, hm, hζ⟩)
       have h2 : g x - x = g (x - ζ) - (x - ζ) := by rw [map_sub, h1]; ring
       rw [h2]
-      exact iqb_sub (by rwa [iqb_norm]) hxζ
+      exact iqb_sub (by rwa [_root_.GlobalTheory.MemLoc.FrobLaws.norm_gal]) hxζ
   · intro hg x hx
     have hle : MaximalUnramifiedExtension l ≤ IntermediateField.fixedField (Subgroup.zpowers g) := by
       rw [MaximalUnramifiedExtension, IntermediateField.adjoin_le_iff]
@@ -123,15 +121,15 @@ theorem UpperTheory.V.Loc.iqBasic :
   refine ⟨⟨fun n hn g => ?_⟩, ?_, iqb_mem, iqb_frob, fun σ σ' hσ => ?_⟩
   · rw [iqb_mem] at hn ⊢
     intro x hx
-    have h := hn (g⁻¹ x) (by rwa [iqb_norm])
+    have h := hn (g⁻¹ x) (by rwa [_root_.GlobalTheory.MemLoc.FrobLaws.norm_gal])
     have e : (g * n * g⁻¹) x - x = g (n (g⁻¹ x) - g⁻¹ x) := by
       rw [map_sub, AlgEquiv.mul_apply, AlgEquiv.mul_apply, ← AlgEquiv.mul_apply g g⁻¹ x, mul_inv_cancel,
         AlgEquiv.one_apply]
-    rwa [e, iqb_norm]
+    rwa [e, _root_.GlobalTheory.MemLoc.FrobLaws.norm_gal]
   · have : IsGalois ℚ_[v] (Om v) := {}
     exact InfiniteGalois.fixingSubgroup_isClosed (MaximalUnramifiedExtension v)
   · have e : ∀ x : Om v, ‖(σ⁻¹ * σ') x - x‖ = ‖σ' x - σ x‖ := fun x => by
-      rw [← iqb_norm σ, map_sub, ← AlgEquiv.mul_apply, mul_inv_cancel_left]
+      rw [← _root_.GlobalTheory.MemLoc.FrobLaws.norm_gal σ, map_sub, ← AlgEquiv.mul_apply, mul_inv_cancel_left]
     rw [iqb_mem]
     simp only [e]
     constructor

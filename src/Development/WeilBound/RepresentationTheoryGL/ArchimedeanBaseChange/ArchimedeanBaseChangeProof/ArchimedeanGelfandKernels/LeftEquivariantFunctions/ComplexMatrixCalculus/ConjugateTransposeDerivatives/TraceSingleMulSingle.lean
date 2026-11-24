@@ -57,7 +57,7 @@ variable {n : ℕ}
 theorem trace_single_mul_single (a b c d : Fin n) (x y : ℂ) :
     (single a b x * single c d y).trace = if b = c ∧ a = d then x * y else 0 := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.single_apply, ite_and]
-  simp [Finset.sum_ite_eq, Finset.sum_ite_eq', ite_and]
+  simp [Finset.sum_ite_eq]
   by_cases h1 : a = d <;> by_cases h2 : b = c <;> simp [h1, h2]
 
 theorem sq_inv_sqrt_two : ((Real.sqrt 2 : ℂ))⁻¹ * ((Real.sqrt 2 : ℂ))⁻¹ = 1 / 2 := by
@@ -69,7 +69,7 @@ theorem hb_herm (p : Fin n × Fin n) : (hb p).IsHermitian := by
   split_ifs with h1 h2
   · rw [h1]
     simp [IsHermitian, conjTranspose_single]
-  · simp [IsHermitian, conjTranspose_smul, conjTranspose_add, conjTranspose_single, add_comm]
+  · simp [IsHermitian, conjTranspose_add, conjTranspose_single, add_comm]
   · simp [IsHermitian, conjTranspose_smul, conjTranspose_sub, conjTranspose_single]
     rw [← smul_neg, neg_sub]
 
@@ -92,7 +92,7 @@ theorem hb_ortho (p q : Fin n × Fin n) : (hb p * hb q).trace = if p = q then 1 
 
 theorem trace_mul_single (D : Mat n) (a b : Fin n) (c : ℂ) : (D * single a b c).trace = D b a * c := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.single_apply, ite_and]
-  simp [Finset.sum_ite_eq, Finset.sum_ite_eq']
+  simp [Finset.sum_ite_eq]
 
 theorem hbM_eq (m : Md n) : hbM m = hb (finProdFinEquiv.symm m) := rfl
 

@@ -174,7 +174,7 @@ theorem der_plus (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ) (hp 
     fun c k => rowDer_X _ vPlus_inj i j k c, der_minorProd_zero _ (zMinus p q n) am _ fun _ c k => ?_]
   · simp [mul_comm]
   · rw [← rowOp_eq_rowDer, rowOp_apply]
-    simp [zMinus, vPlus, pderiv_X, Pi.single_apply]
+    simp [zMinus, vPlus, pderiv_X]
 
 theorem der_minus (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ) (hm : Antitone am) {i j : Fin q}
     (hij : i ≤ j) :
@@ -183,7 +183,7 @@ theorem der_minus (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ) (hm
     fun c k => rowDer_X _ vMinus_inj i j k c, der_minorProd_zero _ (zPlus p q n) ap _ fun _ c k => ?_]
   · simp
   · rw [← rowOp_eq_rowDer, rowOp_apply]
-    simp [zPlus, vMinus, pderiv_X, Pi.single_apply]
+    simp [zPlus, vMinus, pderiv_X]
 
 theorem lower (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ) :
     KilledByLower (fockAct1 p q n 0) (delta hn ap am) := by

@@ -51,16 +51,6 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL
 
-theorem index_comap_of_dense_image {A B : Type} [Group A] [Group B] (f : A →* B) (H : Subgroup B)
-    (hf : ∀ b, ∃ a, (f a)⁻¹ * b ∈ H) : (H.comap f).index = H.index := by
-  first
-  | exact @_root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit
-  | exact _root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit
-  | (apply _root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit <;> assumption)
-  | (intros; apply _root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit ..)
-
 theorem relIndex_comap_of_dense_image {Γ G : Type} [Group Γ] [Group G] (φ : Γ →* G)
     (K U : Subgroup G) (h : ∀ g ∈ U, ∃ γ, (φ γ)⁻¹ * g ∈ K ⊓ U) :
     (K.comap φ).relIndex (U.comap φ) = K.relIndex U := by
@@ -68,7 +58,7 @@ theorem relIndex_comap_of_dense_image {Γ G : Type} [Group Γ] [Group G] (φ : �
   have hc : (K.comap φ).subgroupOf (U.comap φ) = (K.subgroupOf U).comap f := by
     ext x
     exact Iff.rfl
-  have key := index_comap_of_dense_image f (K.subgroupOf U) (by
+  have key := _root_.GlobalTheory.IndexComapCosets.index_comap_eq_of_cosets_hit f (K.subgroupOf U) (by
     rintro ⟨b, hb⟩
     obtain ⟨γ, hγK, hγU⟩ := h b hb
     have hγ : φ γ ∈ U := by

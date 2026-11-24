@@ -97,7 +97,7 @@ theorem UpperTheory.V.Ws.P1.condC :
         show residue c'.O (algebraMap ℤ_[l] c'.O ↑(cycZ (↥T.L) Ω l (e.symm g))) = 1
         rw [hc, key, ← ResidueField.map_residue]
         have hb' : residue c.O (algebraMap ℤ_[l] c.O ↑(cycZ ℚ Ω l (resQ T.L (e.symm g)))) = 1 := by
-          first | exact hb | exact hb.symm
+          first | exact hb.symm
         rw [hb', map_one]
       have hη1 : η (K.V.pr (e.symm g)) = 1 := hker heps
       apply Units.ext

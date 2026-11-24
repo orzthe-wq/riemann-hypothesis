@@ -83,38 +83,10 @@ theorem det_mulL {ι : Type} [Fintype ι] [DecidableEq ι] (z : ι → Fv F v �
   rw [LinearMap.det_pi]
   simp only [Algebra.norm_apply]
 
-private theorem absV_mul_lemma (x y : Fv F v) : absV v (x * y) = absV v x * absV v y := by
-  have hq : ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ≠ 0 := by
-    exact_mod_cast (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)
-  by_cases hx : Valued.v x = 0
-  · have hxy : Valued.v (x * y) = 0 := by rw [map_mul, hx, zero_mul]
-    simp [absV, hx, hxy]
-  by_cases hy : Valued.v y = 0
-  · have hxy : Valued.v (x * y) = 0 := by rw [map_mul, hy, mul_zero]
-    simp [absV, hy, hxy]
-  have hxy : Valued.v (x * y) ≠ 0 := by
-    rw [map_mul]
-    exact mul_ne_zero hx hy
-  unfold absV
-  rw [dite_eq_right hx, dite_eq_right hy, dite_eq_right hxy, ← zpow_add₀ hq, ← toAdd_mul]
-  congr 2
-  rw [← WithZero.coe_inj, WithZero.coe_mul, WithZero.coe_unzero, WithZero.coe_unzero,
-    WithZero.coe_unzero, map_mul]
-
-private theorem absV_one_lemma_2 : absV v (1 : Fv F v) = 1 := by
-  have h1 : Valued.v (1 : Fv F v) ≠ 0 := by
-    rw [map_one]
-    exact one_ne_zero
-  unfold absV
-  rw [dite_eq_right h1]
-  have h2 : WithZero.unzero h1 = 1 := by
-    rw [← WithZero.coe_inj, WithZero.coe_unzero, map_one, WithZero.coe_one]
-  rw [h2, toAdd_one, zpow_zero]
-
 theorem absV_prod {ι : Type} [Fintype ι] (a : ι → Fv F v) :
     absV v (∏ i, a i) = ∏ i, absV v (a i) := by
   let f : Fv F v →* ℝ :=
-    { toFun := absV v, map_one' := absV_one_lemma_2 v, map_mul' := absV_mul_lemma v }
+    { toFun := absV v, map_one' := _root_.PI.UnitaryGroupMassFormula.LocJacTyp.absV_one v, map_mul' := _root_.PI.UnitaryGroupMassFormula.LocJacTyp.absV_mul v }
   exact map_prod f a Finset.univ
 
 theorem box_measure_mul : BoxMul (E := E) v := by

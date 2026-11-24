@@ -6,51 +6,11 @@ public import Formalism.FormalDegreeBessel.FinalG
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.OppositeWeylSubgroupClosed
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentHeisenbergDecomposition
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.ToMKMulInv
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.Unique
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.TransportGeo
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.JHaarSF
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -65,9 +25,7 @@ open Formalism.QuantumDeterminants
 
 namespace Transport
 
-theorem uh_mul {k r : ℕ} {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) :
-    a * b ∈ UH (Hpk k r) := by
-  exact (Formalism.QuantumDeterminants.uHGroup _ (Hpk k r) (Formalism.FourierDecayAlt.P.B2x2.hpk_unit k r)).2.1 a ha b hb
+alias uh_mul := _root_.ReciprocityTheory.ChartRestriction.DS.Lap.TransportGeo.uh_mul
 
 theorem uh_facts {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
     {a : Mat k r} (ha : a ∈ UH (Hpk k r)) :
@@ -275,27 +233,6 @@ theorem haar_conj {k r : ℕ} {S S' : Set (Mat k r)} {a : Mat k r} (ha : IsUnit 
       simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ ha]
     rw [Measure.map_map (hl s) hmeas, hcomp, ← Measure.map_map hmeas (hl _), hleft _ hs']
 
-theorem conj_data {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {c c' : Fin r → ℂ}
-    (hz : inWb k r z) (hT : 0 < Tz k r z) (hc : ∀ a, c a ≠ 0)
-    (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hc' : ∀ a, c' a ≠ 0) :
-    ∃ a : Mat k r, a ∈ UH (Hpk k r) ∧ IsUnit a.det ∧
-      (∀ h, h ∈ UWset k r z ↔ a * h * a⁻¹ ∈ UWset k r z') ∧
-      (∀ m, m ∈ Nset k r ↔ a * m * a⁻¹ ∈ Nset k r) ∧
-      (∀ m ∈ Nset k r, Formalism.MainNotions.S.psiGen k r z' c' (a * m * a⁻¹) = Formalism.MainNotions.S.psiGen k r z c m) ∧
-      (∀ g, Formalism.MainNotions.S.IsFrameW k r z g → ∃ g', Formalism.MainNotions.S.IsFrameW k r z' g' ∧
-        ∀ h, a * (g * Formalism.MainNotions.S.blockW k r h * g⁻¹) * a⁻¹ = g' * Formalism.MainNotions.S.blockW k r h * g'⁻¹) := TransportGeo.conj_data hz hT hc hz' hT' hc'
-
-theorem pi_conj {k r : ℕ} {u : Fin k → ℝ}
-    {Vp Vp' : Type} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [NormedAddCommGroup Vp']
-    [InnerProductSpace ℂ Vp'] {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mat k r → (Vp →L[ℂ] Vp)}
-    {π' : Mat k r → (Vp' →L[ℂ] Vp')} {a : Mat k r} (ha : IsUnit a.det)
-    (hz : inWb k r z) (hT : 0 < Tz k r z) (hz' : inWb k r z') (hT' : 0 < Tz k r z')
-    (hUW : ∀ h, h ∈ UWset k r z ↔ a * h * a⁻¹ ∈ UWset k r z')
-    (hfr : ∀ g, Formalism.MainNotions.S.IsFrameW k r z g → ∃ g', Formalism.MainNotions.S.IsFrameW k r z' g' ∧
-      ∀ h, a * (g * Formalism.MainNotions.S.blockW k r h * g⁻¹) * a⁻¹ = g' * Formalism.MainNotions.S.blockW k r h * g'⁻¹)
-    (hπ : Formalism.MainNotions.S.IsHCTypeW k r z u π) (hπ' : Formalism.MainNotions.S.IsHCTypeW k r z' u π') :
-    ∃ U : Vp ≃ₗᵢ[ℂ] Vp', ∀ h ∈ UWset k r z, ∀ ξ : Vp, π' (a * h * a⁻¹) (U ξ) = U (π h ξ) := TransportGeo.pi_conj ha hz hT hz' hT' hUW hfr hπ hπ'
-
 theorem aaFun_data {k r : ℕ} {u : Fin k → ℝ}
     {Vp Vp' : Type} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp]
     [NormedAddCommGroup Vp'] [InnerProductSpace ℂ Vp'] [CompleteSpace Vp']
@@ -309,8 +246,8 @@ theorem aaFun_data {k r : ℕ} {u : Fin k → ℝ}
           κ • U (aaFun T μ P μW μN (Formalism.MainNotions.S.psiGen k r z c) π v₁ v₂ ξ (a⁻¹ * x₀) (a⁻¹ * x)) := by
   obtain ⟨hz, hT, hc, hπ, hW, hN⟩ := hB
   obtain ⟨hz', hT', hc', hπ', hW', hN'⟩ := hB'
-  obtain ⟨a, ha, had, hUW, hNN, hψ, hfr⟩ := conj_data hz hT hc hz' hT' hc'
-  obtain ⟨U, hU⟩ := pi_conj had hz hT hz' hT' hUW hfr hπ hπ'
+  obtain ⟨a, ha, had, hUW, hNN, hψ, hfr⟩ := _root_.ReciprocityTheory.ChartRestriction.DS.Lap.TransportGeo.conj_data hz hT hc hz' hT' hc'
+  obtain ⟨U, hU⟩ := _root_.ReciprocityTheory.ChartRestriction.DS.Lap.TransportGeo.pi_conj had hz hT hz' hT' hUW hfr hπ hπ'
   obtain ⟨κW, hκW, hWeq⟩ := haar_unique (uw_closedSubgroup k r z')
     (Formalism.FourierDecayAlt.P.weyl_haar_exists k r z' hz' hT') (haar_conj had hUW hW) hW'
   obtain ⟨κN, hκN, hNeq⟩ := haar_unique (n_closedSubgroup k r)

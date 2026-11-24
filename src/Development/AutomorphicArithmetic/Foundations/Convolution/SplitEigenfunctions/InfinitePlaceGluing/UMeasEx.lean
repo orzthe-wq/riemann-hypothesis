@@ -118,7 +118,7 @@ theorem uMeasEx_of :
     convert measure_empty (μ := finiteIdeleMeasure ℚ)
     ext x
     simp only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_compl_iff, SetLike.mem_coe,
-      Set.mem_empty_iff_false, iff_false, not_and, not_not]
+      Set.mem_empty_iff_false, iff_false, not_and]
     intro hx hxU
     exact hx ((mem_UU_iff _).2 ⟨toInfinite_ef x, by rwa [toFinite_ef]⟩)
   · intro t ht

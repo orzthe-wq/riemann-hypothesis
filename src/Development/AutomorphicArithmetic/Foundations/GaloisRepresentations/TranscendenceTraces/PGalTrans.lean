@@ -109,7 +109,7 @@ private lemma eq_of_fixed (A L Ω : Type) [CommRing A] [IsDomain A] [IsIntegrall
       rw [map_natCast, map_zero, CharP.cast_eq_zero]
     have hΩ : (q : Ω) = 0 := by
       have := congrArg (fun f : A →+* Ω => f q) h
-      simp only [RingHom.comp_apply, map_natCast] at this
+      simp only [map_natCast] at this
       rw [← map_natCast (φ.comp (algebraMap A _)) q, hA, map_zero]
     haveI : CharP Ω q := (CharP.charP_iff_prime_eq_zero hp).mpr hΩ
     haveI : ExpChar Ω q := ExpChar.prime hp

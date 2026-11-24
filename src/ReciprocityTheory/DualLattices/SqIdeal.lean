@@ -1,62 +1,138 @@
 module
 
+public import Mathlib.Basic.NNReal.Defs
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.RingTheory.Valuation.Integers
+public import ReciprocityTheory.DualLattices.IsUnitDetOfSpanEq
+public import ReciprocityTheory.DualLattices.ValuationDetEqOfSpanEq
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.LinearAlgebra.Vandermonde
+public import ReciprocityTheory.DualLattices.TensorSpan
 public import ReciprocityTheory.DualLattices.PrimeHopfOrderStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.DualLattices.FourierMapSmulLambdaWeight
 public import ReciprocityTheory.DualLattices.ImportsAlt
-import ReciprocityTheory.DualLattices.VIntCastLtOneOfDvd
-public import ReciprocityTheory.DualLattices.VdetLeOfSpanLe
 public import Mathlib.Analysis.Real.Sqrt
 public import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.PiTensorProduct
+import ReciprocityTheory.DualLattices.VIntCastLtOneOfDvd
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.DualLattices.VdetLeOfSpanLe, ReciprocityTheory.DualLattices.SqIdeal
+
+-- ===== clump member: ReciprocityTheory.DualLattices.VdetLeOfSpanLe =====
+-- clump-header: {"m": "ReciprocityTheory.DualLattices.VdetLeOfSpanLe", "h": "module\n\npublic import Mathlib.Basic.NNReal.Defs\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Mathlib.RingTheory.Valuation.Integers\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.DualLattices.IsUnitDetOfSpanEq\npublic import ReciprocityTheory.DualLattices.ValuationDetEqOfSpanEq\npublic import Mathlib.LinearAlgebra.Matrix.NonsingularInverse\npublic import Mathlib.LinearAlgebra.Vandermonde\npublic import ReciprocityTheory.DualLattices.TensorSpan\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset Matrix
+
+namespace ReciprocityTheory.PGsh.Up.U3
+
+open ReciprocityTheory.PGsh.L2
+
+variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C] {v : Valuation C NNReal}
+variable {X : Type} [Fintype X] [DecidableEq X]
+
+theorem vdet_le_of_span_le (hv : v.Integers R) {B B' : Matrix X X C}
+    (hle : Submodule.span R (Set.range fun j x => B x j) ≤
+      Submodule.span R (Set.range fun j x => B' x j)) : v B.det ≤ v B'.det := by
+  have hcol : ∀ j, ∃ w ∈ intFun (C := C) R X, (fun x => B x j) = B' *ᵥ w := fun j =>
+    (mem_spanCols_iff B' _).1 (hle (Submodule.subset_span ⟨j, rfl⟩))
+  choose w hw hBw using hcol
+  have hBP : B = B' * Matrix.of fun x j => w j x := by
+    ext x j
+    have := congrFun (hBw j) x
+    simpa [Matrix.mul_apply, Matrix.mulVec, dotProduct] using this
+  have hle1 : v (Matrix.of fun x j => w j x).det ≤ 1 :=
+    valuation_det_le_one v hv _ fun x j => hw j x
+  rw [hBP, Matrix.det_mul, map_mul]
+  exact mul_le_of_le_one_right' hle1
+
+theorem span_eq_of_vdet_eq (hv : v.Integers R) {B B' : Matrix X X C} (hB' : IsUnit B'.det)
+    (hle : Submodule.span R (Set.range fun j x => B x j) ≤
+      Submodule.span R (Set.range fun j x => B' x j)) (hdet : v B.det = v B'.det) :
+    Submodule.span R (Set.range fun j x => B x j) =
+      Submodule.span R (Set.range fun j x => B' x j) := by
+  refine le_antisymm hle ?_
+  have hcol : ∀ j, ∃ w ∈ intFun (C := C) R X, (fun x => B x j) = B' *ᵥ w := fun j =>
+    (mem_spanCols_iff B' _).1 (hle (Submodule.subset_span ⟨j, rfl⟩))
+  choose w hw hBw using hcol
+  choose r hr using hw
+  set W0 : Matrix X X R := Matrix.of fun x j => r j x with hW0
+  have hBW : B = B' * W0.map (algebraMap R C) := by
+    ext x j
+    rw [show B x j = (B' *ᵥ w j) x from congrFun (hBw j) x]
+    simp [Matrix.mul_apply, Matrix.mulVec, dotProduct, W0, hr]
+  have hne : v B'.det ≠ 0 := (Valuation.ne_zero_iff v).2 hB'.ne_zero
+  have hW1 : v (algebraMap R C W0.det) = 1 := by
+    have h := hdet
+    rw [hBW, Matrix.det_mul, map_mul, det_map_algebraMap] at h
+    exact mul_left_cancel₀ hne (h.trans (mul_one _).symm)
+  have hU : IsUnit W0.det := hv.isUnit_of_one' hW1
+  have hB'eq : B' = B * (W0⁻¹).map (algebraMap R C) := by
+    rw [hBW, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv W0 hU,
+      Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]
+  rw [Submodule.span_le]
+  rintro _ ⟨j, rfl⟩
+  rw [SetLike.mem_coe, mem_spanCols_iff]
+  refine ⟨fun k => algebraMap R C (W0⁻¹ k j), fun k => ⟨_, rfl⟩, ?_⟩
+  ext x
+  conv_lhs => rw [hB'eq]
+  simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
+
+variable {p : ℕ} [hp : Fact p.Prime]
+
+def finZ (p : ℕ) [NeZero p] : Fin p ≃ ZMod p where
+  toFun i := ((i : ℕ) : ZMod p)
+  invFun a := ⟨a.val, a.val_lt⟩
+  left_inv i := Fin.ext (ZMod.val_cast_of_lt i.2)
+  right_inv a := ZMod.natCast_zmod_val a
+
+theorem finZ_val [NeZero p] (i : Fin p) : (finZ p i).val = i := ZMod.val_cast_of_lt i.2
+
+theorem sum_val [NeZero p] : ∑ j : ZMod p, j.val = p * (p - 1) / 2 := by
+  rw [← Finset.sum_range_id, Finset.sum_range (fun i => i)]
+  exact (Fintype.sum_equiv (finZ p) (fun i : Fin p => (i : ℕ)) (fun j => j.val)
+    (fun i => (finZ_val i).symm)).symm
+
+theorem vdet_vandermonde [NeZero p] (ω : ZMod p → C)
+    (hω : ∀ a b, a ≠ b → v (ω a - ω b) = 1) :
+    v (Matrix.of fun a j : ZMod p => ω a ^ j.val).det = 1 := by
+  rw [← Matrix.det_submatrix_equiv_self (finZ p)]
+  have e : (Matrix.of fun a j : ZMod p => ω a ^ j.val).submatrix (finZ p) (finZ p) =
+      Matrix.vandermonde (ω ∘ finZ p) := by
+    ext i j
+    simp [Matrix.vandermonde, finZ_val]
+  rw [e, Matrix.det_vandermonde, map_prod]
+  refine Finset.prod_eq_one fun i _ => ?_
+  rw [map_prod]
+  refine Finset.prod_eq_one fun j hj => ?_
+  exact hω _ _ fun h => (ne_of_gt (Finset.mem_Ioi.1 hj)) ((finZ p).injective h)
+
+theorem vdet_pow [NeZero p] (ω : ZMod p → C) (hω : ∀ a b, a ≠ b → v (ω a - ω b) = 1) (c : C) :
+    v (Matrix.of fun a j : ZMod p => (c * ω a) ^ j.val).det = v c ^ (p * (p - 1) / 2) := by
+  have e : (Matrix.of fun a j : ZMod p => (c * ω a) ^ j.val) =
+      Matrix.of fun a j => c ^ j.val * (Matrix.of fun a j : ZMod p => ω a ^ j.val) a j := by
+    ext a j
+    simp [mul_pow]
+  rw [e, Matrix.det_mul_row, map_mul, vdet_vandermonde ω hω, mul_one, map_prod]
+  simp_rw [map_pow]
+  rw [Finset.prod_pow_eq_pow_sum, sum_val]
+
+end ReciprocityTheory.PGsh.Up.U3
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.DualLattices.VdetLeOfSpanLe =====
+
+-- ===== clump member: ReciprocityTheory.DualLattices.SqIdeal =====
+-- clump-header: {"m": "ReciprocityTheory.DualLattices.SqIdeal", "h": "module\n\npublic import ReciprocityTheory.DualLattices.PrimeHopfOrderStatement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.DualLattices.FourierMapSmulLambdaWeight\npublic import ReciprocityTheory.DualLattices.ImportsAlt\nimport ReciprocityTheory.DualLattices.VIntCastLtOneOfDvd\npublic import ReciprocityTheory.DualLattices.VdetLeOfSpanLe\npublic import Mathlib.Analysis.Real.Sqrt\npublic import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -170,7 +246,7 @@ private theorem augIdeal_eq_span_pow_of_span_pow {p : ℕ} [Fact p.Prime] {C : T
       subst hj0
       have hz : cf ⟨0, hpos⟩ • x ^ ((⟨0, hpos⟩ : Fin p) : ℕ) = 0 := by
         funext a
-        simp only [Pi.smul_apply, Pi.pow_apply, Fin.val_mk, pow_zero, Pi.zero_apply,
+        simp only [Pi.smul_apply, pow_zero, Pi.zero_apply,
           Algebra.smul_def, hc0, zero_mul]
       rw [hz]
       exact Submodule.zero_mem _
@@ -483,3 +559,7 @@ theorem u3 : PrimeHopfOrderStatement := by
     simp only [hω1, mul_one]
 
 end ReciprocityTheory.PGsh.Up
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.DualLattices.SqIdeal =====

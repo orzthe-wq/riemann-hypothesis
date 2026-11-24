@@ -99,7 +99,7 @@ theorem exists_contr_ne_zero {v : V ⊗[ℂ] W} (hv : v ≠ 0) : ∃ l, contr v 
     intro w i
     induction w using TensorProduct.induction_on with
     | zero => simp [contr_apply]
-    | tmul a c => simp [contr_tmul, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]
+    | tmul a c => simp [contr_tmul]
     | add x y hx hy => simp only [map_add (f := _), Finsupp.add_apply, contr_add, hx, hy]
   apply (TensorProduct.equivFinsuppOfBasisLeft (N := W) b).injective
   ext i : 1

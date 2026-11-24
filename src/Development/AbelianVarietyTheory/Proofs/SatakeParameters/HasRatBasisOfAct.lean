@@ -75,7 +75,7 @@ theorem coordMap_sum (F : Subfield K) (b : Module.Basis ι K V) (φ : K →ₗ[F
   ext i
   rw [repr_coordMap]
 
-  simp only [map_sum, map_smul, Finset.sum_apply', Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]
+  simp only [map_sum, map_smul, Finset.sum_apply', Finsupp.smul_apply, smul_eq_mul]
   refine Finset.sum_congr rfl fun a _ => ?_
   have h := φ.map_smul (⟨b.repr (w a) i, hw a i⟩ : F) (x a)
   simp only [Subfield.smul_def, smul_eq_mul] at h

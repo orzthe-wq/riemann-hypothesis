@@ -68,10 +68,6 @@ theorem gp_pair {n : ℕ} {x y : Pt k n d} (hx : GP x) (hy : GP y) :
     ∀ j, GP ((![x, y] : Fin 2 → Pt k n d) j) := by
   intro j; fin_cases j; exacts [hx, hy]
 
-theorem gp_single {n : ℕ} {x : Pt k n d} (hx : GP x) :
-    ∀ j, GP ((![x] : Fin 1 → Pt k n d) j) := by
-  intro j; fin_cases j; exact hx
-
 theorem ev_pt {n : ℕ} (f : PS k n d) : ev (fun j => pt k d j) f = f :=
   congrFun subst_self f
 
@@ -110,13 +106,13 @@ theorem ev_addOf {m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, GP (V j)) (F 
 theorem zero_addOf {n : ℕ} (G : FGLaw k d) {x : Pt k n d} (hx : GP x) : addOf G.F 0 x = x := by
   funext i
   have h := congrArg (ev ![x]) (G.unit i)
-  rw [gt_ev_ev _ _ (gp_single hx) (gp_pair gp_zero₂ (gp_pt 0)),
-    gt_ev_X _ (gp_single hx)] at h
+  rw [gt_ev_ev _ _ (_root_.ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.single_point_zero_constant hx) (gp_pair gp_zero₂ (gp_pt 0)),
+    gt_ev_X _ (_root_.ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.single_point_zero_constant hx)] at h
   refine Eq.trans ?_ h
   unfold addOf
   congr 1
   funext j i
-  fin_cases j <;> simp [ev_pt_apply (gp_single hx), gt_ev_zero _ (gp_single hx)]
+  fin_cases j <;> simp [ev_pt_apply (_root_.ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.single_point_zero_constant hx), gt_ev_zero _ (_root_.ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.single_point_zero_constant hx)]
 
 theorem addOf_zero {n : ℕ} (G : FGLaw k d) {x : Pt k n d} (hx : GP x) : addOf G.F x 0 = x := by
   funext i

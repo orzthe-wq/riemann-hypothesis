@@ -686,9 +686,6 @@ variable (k : Type*) {R P M : Type*} [CommRing k] [AddCommGroup M] [Module k M] 
 theorem perm_tensor_apply (σ : Equiv.Perm (Fin n)) (z : Tens R P M n) (g : Fin n → R × P) :
     perm k σ z g = z (g ∘ σ) := rfl
 
-theorem permSecond_apply_comp (σ : Equiv.Perm (Fin n)) (z : Tens R P M n) (g : Fin n → R × P) :
-    permY k σ z g = z (fun s => ((g (σ s)).1, (g s).2)) := rfl
-
 theorem contract_apply_insertNth (j : Fin (n + 1)) (v : R × P) (z : Tens R P M (n + 1)) (g : Fin n → R × P) :
     contr k j v z g = z (j.insertNth v g) := rfl
 
@@ -701,12 +698,6 @@ theorem onModule_apply_eval (T : Module.End k M) (z : Tens R P M n) (g : Fin n �
 
 variable [DecidableEq R] [DecidableEq P]
 
-theorem unitSecond_apply_formula (j : Fin n) (a b : R) (z : Tens R P M n) (g : Fin n → R × P) :
-    unitY k j a b z g = if (g j).1 = a then z (Function.update g j (b, (g j).2)) else 0 := by
-  unfold unitY
-  rw [LinearMap.pi_apply]
-  split_ifs <;> rfl
-
 theorem unitFirst_apply_formula (j : Fin n) (a b : P) (z : Tens R P M n) (g : Fin n → R × P) :
     unitX k j a b z g = if (g j).2 = a then z (Function.update g j ((g j).1, b)) else 0 := by
   unfold unitX
@@ -717,7 +708,7 @@ theorem mixedCasimir_apply_sum [Fintype R] (EM : R → R → Module.End k M) (j 
     (g : Fin n → R × P) :
     Om k EM j z g = ∑ b', EM b' (g j).1 (z (Function.update g j (b', (g j).2))) := by
   unfold Om
-  simp only [LinearMap.sum_apply, Finset.sum_apply, Module.End.mul_apply, unitSecond_apply_formula,
+  simp only [LinearMap.sum_apply, Finset.sum_apply, Module.End.mul_apply, _root_.Formalism.CohomologicalDescent.Symmetrization.unitOnTensor_apply,
     onModule_apply_eval]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun b' _ => ?_
@@ -928,7 +919,7 @@ theorem contract_zero_diagSecond (n : ℕ) (c d : R) (v : R × P) (z : Tens R P 
       diagY k S.EW c d (contr k 0 v z) + (if v.1 = c then contr k 0 (d, v.2) z else 0) := by
   funext g
   simp only [contract_zero_apply_cons, diagY, LinearMap.add_apply, Pi.add_apply, LinearMap.sum_apply,
-    Finset.sum_apply, onModule_apply_eval, unitSecond_apply_formula, Fin.sum_univ_succ, Fin.cons_zero,
+    Finset.sum_apply, onModule_apply_eval, _root_.Formalism.CohomologicalDescent.Symmetrization.unitOnTensor_apply, Fin.sum_univ_succ, Fin.cons_zero,
     Fin.cons_succ, Fin.update_cons_zero, ← Fin.cons_update]
   by_cases hc : v.1 = c
   · simp only [hc, if_true, contract_zero_apply_cons]
@@ -1059,7 +1050,7 @@ def flippedLetterTerm (n : ℕ) (v0 : R × P) (z : Tens R P S.W (n + 1)) (t : Fi
 theorem contract_zero_swap_succ_apply (n : ℕ) (v0 : R × P) (z : Tens R P S.W (n + 1)) (t : Fin n) (g : Fin n → R × P) :
     contr k 0 v0 (permY k (Equiv.swap 0 t.succ) z) g =
       z (Fin.cons ((g t).1, v0.2) (Function.update g t (v0.1, (g t).2))) := by
-  rw [contract_apply_insertNth, permSecond_apply_comp, Equiv.swap_comm]
+  rw [contract_apply_insertNth, _root_.Formalism.CohomologicalDescent.Symmetrization.permSecond_apply, Equiv.swap_comm]
   have h := swap_insertNth_eq_update (0 : Fin (n + 1)) t v0 g
   rw [Fin.zero_succAbove] at h
   rw [h, Fin.insertNth_zero']
@@ -1083,7 +1074,7 @@ theorem contraction_remainder_eq (n : ℕ) (v0 : R × P) (z : Tens R P S.W (n + 
         ∑ j, (if (g j).1 = b then z (Fin.cons (b, v0.2) (Function.update g j (v0.1, (g j).2))) else 0) := by
     intro b
     simp only [diagY, LinearMap.add_apply, Pi.add_apply, LinearMap.sum_apply, Finset.sum_apply,
-      unitSecond_apply_formula, contract_zero_apply_cons, onModule_apply_eval]
+      _root_.Formalism.CohomologicalDescent.Symmetrization.unitOnTensor_apply, contract_zero_apply_cons, onModule_apply_eval]
   simp only [leviRemainder, Pi.sub_apply, Finset.sum_apply, hX, hY, contract_zero_swap_succ_apply, flippedLetterTerm]
   simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib, contract_zero_apply_cons, Pi.smul_apply,
     Pi.sub_apply, mixedCasimir_apply_sum, Fin.cons_zero, Fin.update_cons_zero]
@@ -1098,7 +1089,7 @@ theorem symMap_swap_contraction_eq (m : ℕ) (v0 : R × P) (z : Tens R P S.W (m 
   refine Finset.sum_congr rfl fun v _ => ?_
   congr 2
   funext g
-  rw [contract_apply_insertNth, contract_zero_apply_cons, contract_apply_insertNth, permSecond_apply_comp]
+  rw [contract_apply_insertNth, contract_zero_apply_cons, contract_apply_insertNth, _root_.Formalism.CohomologicalDescent.Symmetrization.permSecond_apply]
   have h := swap_insertNth_eq_update t.succ (0 : Fin (m + 1)) v0 (Fin.cons v g)
   rw [Fin.succ_succAbove_zero] at h
   rw [h]
@@ -1133,7 +1124,7 @@ theorem contract_zero_positionCasimir_succ (m : ℕ) (j : Fin m) (v : R × P) (z
 theorem contract_zero_permSecond_swap_succ (m : ℕ) (j l : Fin m) (v : R × P) (z : Tens R P S.W (m + 1)) :
     contr k 0 v (permY k (Equiv.swap j.succ l.succ) z) = permY k (Equiv.swap j l) (contr k 0 v z) := by
   funext g
-  rw [contract_zero_apply_cons, permSecond_apply_comp, permSecond_apply_comp, contract_zero_apply_cons]
+  rw [contract_zero_apply_cons, _root_.Formalism.CohomologicalDescent.Symmetrization.permSecond_apply, _root_.Formalism.CohomologicalDescent.Symmetrization.permSecond_apply, contract_zero_apply_cons]
   congr 1
   funext s
   refine Fin.cases ?_ (fun t => ?_) s
@@ -1202,7 +1193,7 @@ theorem raisingRemainder_of_perm_invariant (n : ℕ) (v : R × P) (z : Tens R P 
       contr k (Fin.last n) v (permY k (Equiv.swap t.castSucc (Fin.last n)) z) := by
     intro s t
     funext g
-    rw [contract_apply_insertNth, permSecond_apply_comp, swap_insertNth_eq_update, contract_apply_insertNth, permSecond_apply_comp]
+    rw [contract_apply_insertNth, _root_.Formalism.CohomologicalDescent.Symmetrization.permSecond_apply, swap_insertNth_eq_update, contract_apply_insertNth, _root_.Formalism.CohomologicalDescent.Symmetrization.permSecond_apply]
     have h := swap_insertNth_eq_update (Fin.last n) t v g
     rw [Fin.succAbove_last] at h
     rw [h]
@@ -1446,10 +1437,7 @@ namespace Formalism.CohomologicalDescent.Symmetrization
 section Comb
 variable {ι : Type*} {n : ℕ}
 
-theorem content_comp_perm_eq (g : Fin n → ι) (σ : Equiv.Perm (Fin n)) : cont (g ∘ σ) = cont g := by
-  apply Subtype.ext
-  change Finset.univ.val.map (g ∘ σ) = Finset.univ.val.map g
-  rw [← Multiset.map_map, Multiset.map_univ_val_equiv]
+alias content_comp_perm_eq := _root_.Formalism.CohomologicalDescent.Symmetrization.content_comp_perm
 
 theorem content_surjective : Function.Surjective (cont : (Fin n → ι) → Sym ι n) := by
   rintro ⟨m, hm⟩

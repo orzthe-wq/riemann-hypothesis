@@ -119,9 +119,7 @@ theorem resM_mul {s : R} (hs : s * s = s) (A B : Matrix n n R) : resM s A * resM
 theorem resM_orth {s t : R} (hst : s * t = 0) (A B : Matrix n n R) :
     resM s A * resM t B = 1 + s • (A - 1) + t • (B - 1) := by
   have hts : t * s = 0 := by rw [mul_comm, hst]
-  simp only [resM, hts, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul, hst,
-    zero_smul, add_zero]
-  try abel
+  simp only [resM, hts, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul, zero_smul, add_zero]
 
 theorem resM_add {s t : R} (hst : s * t = 0) (A : Matrix n n R) : resM s A * resM t A = resM (s + t) A := by
   rw [resM_orth hst]
@@ -139,7 +137,7 @@ theorem resM_one_right (s : R) : resM s (1 : Matrix n n R) = 1 := by
 theorem resM_map {R' : Type*} [CommRing R'] (f : R →+* R') (s : R) (A : Matrix n n R) :
     (resM s A).map f = resM (f s) (A.map f) := by
   ext i j
-  by_cases h : i = j <;> simp [resM, Matrix.one_apply, h]
+  by_cases h : i = j <;> simp [resM, h]
 
 theorem resM_transpose (s : R) (A : Matrix n n R) : (resM s A)ᵀ = resM s Aᵀ := by
   simp [resM, Matrix.transpose_sub]
@@ -565,9 +563,6 @@ theorem infPart_idemAt {e : AE D} {PP : Formalism.L2.DIV.Pl D.host.E} (hPP : For
     simp only [infPart, pairA, fstA]
     first
       | (erw [Algebra.TensorProduct.map_tmul]; exact TensorProduct.zero_tmul _ _)
-      | (erw [Algebra.TensorProduct.map_tmul]; show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) = 0; simp)
-      | exact TensorProduct.zero_tmul _ _
-      | rfl
   have hz : infPart D e * infPart D e = infPart D e := by rw [← map_mul, h1]
   linear_combination -hz + (infPart D e) * hy - hx
 

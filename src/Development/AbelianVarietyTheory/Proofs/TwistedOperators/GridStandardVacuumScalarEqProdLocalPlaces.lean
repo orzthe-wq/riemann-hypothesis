@@ -68,8 +68,6 @@ theorem isIdemAt_idemAt {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (t : T
     · exact b ▸ G.pl.w_split _ a
     · first
       | exact GlobalTheory.ParahoricLift.exists_isIdemAt fun h => (hL.Q_pl t w b).2 w b h
-      | exact GlobalTheory.ParahoricLift.exists_isIdemAt fun h => (hL.Q_pl t w b).2 w b ((GlobalTheory.IdemSupport.isConjPl_iff _ _).2 h)
-      | exact GlobalTheory.ParahoricLift.exists_isIdemAt fun h => (hL.Q_pl t w b).2 w b ((GlobalTheory.IdemSupport.isConjPl_iff _ _).1 h)
   exact Classical.epsilon_spec h
 
 theorem chi_charUnramAt (G : GridData L sc) {k : ℕ} (h1 : 1 ≤ k) (h2 : k ≤ D.R.m) {v : HeightOneSpectrum (𝓞 D.host.F)}
@@ -114,7 +112,7 @@ theorem GlobalTheory.RowVacScalar.vacScalar_eq_prod : ∀ {D : D7} {T : Type} {L
   intro D T L sc G W U S μ₀ hL t i hi q hq1 hq2 hS hT c hc
   classical
   have hp : (Pair.chi i D.R.m : Pair T).InRange D.R.m := by
-    simp only [Pair.InRange, Pair.big, Node.InRange]; omega
+    simp only [Pair.InRange, Node.InRange]; omega
   have hW := W.om_is (.chi i D.R.m) hp
   have sd := GlobalTheory.RowVertexInv.FactorTheta.selfDual S hi
   have hv := (S.Z.vac_is (.chi i D.R.m) ⟨hi, rfl⟩).2

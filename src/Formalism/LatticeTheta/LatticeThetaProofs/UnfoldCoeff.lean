@@ -117,7 +117,6 @@ theorem unfoldCoeff_main (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattic
 
 theorem unfolding_fourier_coefficient (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] : UnfoldCoeff V := by
-  intro Λ _ _ f hf D hD μ hμ
-  exact unfoldCoeff_main Λ f hf D hD μ hμ
+  exact fun Λ _ _ f hf D hD μ hμ => unfoldCoeff_main Λ f hf D hD μ hμ
 
 end Formalism.H

@@ -132,7 +132,7 @@ private lemma trace_quadratic_form_shift_expand {n N : ℕ} (X Y : Matrix (Fin n
       Matrix.mul_assoc]
   simp only [conjTranspose_add, conjTranspose_smul, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul,
     Matrix.mul_smul, trace_add, trace_smul, smul_eq_mul, star_add, star_mul', star_natCast, star_ofNat,
-    star_pow, Nat.cast_mul, Nat.cast_ofNat, ha, hb, star_star]
+    star_pow, Nat.cast_mul, Nat.cast_ofNat, ha, hb]
   ring
 
 
@@ -402,13 +402,13 @@ private lemma transH_chiH_mul_comp_of_toBlocks₂₁_eq_zero {E : Type} [Field E
       change τ.1.mapMatrix (-(B * _root_.GlobalTheory.SW.ccT A)) = _
       rw [map_neg, map_mul, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply,
         _root_.GlobalTheory.SW.HAct.map_ccT]
-    simp only [of_apply, hadj, hden]
+    simp only [hadj, hden]
     have := hermitian_parabolic_exponent_rows_eq (y.map τ.1) (z τ) (z' τ) (A.map τ.1) (B.map τ.1) (D.map τ.1) (Z τ)
       (map_toBlocks₁₁_conjTranspose_mul_toBlocks₂₂_eq_one hγ h0 τ.1).1 (map_toBlocks₁₁_conjTranspose_mul_toBlocks₂₂_eq_one hγ h0 τ.1).2 k
     rw [← hey, ← hβ] at this
     exact this
   rw [← hkey]
-  simp only [hden, h0, Matrix.map_zero _ (map_zero _), Matrix.mul_zero, Matrix.zero_mulVec, dotProduct_zero,
+  simp only [hden, h0, Matrix.map_zero _ (map_zero _), Matrix.zero_mulVec, dotProduct_zero,
     Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one]
   rw [hyA]
   have hdet : ∀ τ : Ψ, (D.map τ).det = τ.1 D.det := fun τ => by
@@ -446,7 +446,7 @@ private lemma hFac_eq_prod_det_pow_of_toBlocks₂₁_eq_zero {E : Type} [Field E
     (Z : _root_.GlobalTheory.SW.CM Ψ N N) (z z' : _root_.GlobalTheory.SW.CM Ψ n N) :
     _root_.GlobalTheory.SW.hFac Ψ γ Z z z' = ∏ τ : Ψ, τ.1 γ.toBlocks₂₂.det ^ n := by
   unfold _root_.GlobalTheory.SW.hFac _root_.GlobalTheory.SW.hDen
-  simp only [h0, Matrix.map_zero _ (map_zero _), Matrix.zero_mul, zero_add, Matrix.mul_zero, Matrix.zero_mulVec,
+  simp only [h0, Matrix.map_zero _ (map_zero _), Matrix.zero_mul, zero_add, Matrix.zero_mulVec,
     dotProduct_zero, Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one]
   refine Finset.prod_congr rfl fun τ _ => ?_
   rw [RingHom.map_det]

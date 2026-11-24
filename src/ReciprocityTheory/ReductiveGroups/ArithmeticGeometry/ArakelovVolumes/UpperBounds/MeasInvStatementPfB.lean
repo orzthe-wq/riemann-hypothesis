@@ -3,50 +3,8 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfA
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
 public import Lemmata.GeneralBFactForm.Imports
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.DetSubUpper
 
 @[expose] public section
@@ -70,13 +28,6 @@ lemma det_lowerUni {N : Matrix (Fin n) (Fin n) ℂ} (hN : N.BlockTriangular Orde
     (h1 : ∀ a, N a a = 1) : N.det = 1 := by
   rw [Matrix.det_of_lowerTriangular N hN]
   simp [h1]
-
-theorem lu_unique {N N' U U' : Matrix (Fin n) (Fin n) ℂ}
-    (hN : N.BlockTriangular OrderDual.toDual) (hN1 : ∀ a, N a a = 1)
-    (hN' : N'.BlockTriangular OrderDual.toDual) (hN'1 : ∀ a, N' a a = 1)
-    (hU : U.BlockTriangular id) (hU' : U'.BlockTriangular id) (hd : U'.det ≠ 0)
-    (h : N * U = N' * U') : N = N' ∧ U = U' := by
-  first | exact Bl.general_b_fact_form.goal1 .. | (apply Bl.general_b_fact_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_form.goal1 <;> assumption)
 
 lemma lminor_last' (M : Matrix (Fin n) (Fin n) ℂ) : lminor M (Fin.last n) = M.det := by
   rfl
@@ -215,7 +166,7 @@ theorem lu_injOn : Set.InjOn (lu (ι := ι) (r := r)) (sS ι r) := by
     intro τ
     have hM : (1 + sl w τ) * up w τ = (1 + sl w' τ) * up w' τ := by
       rw [← Mt_lu, ← Mt_lu, h]
-    exact lu_unique (one_add_sl_low w τ) (one_add_sl_diag w τ) (one_add_sl_low w' τ)
+    exact _root_.Bl.general_b_fact_form.goal1 (one_add_sl_low w τ) (one_add_sl_diag w τ) (one_add_sl_low w' τ)
       (one_add_sl_diag w' τ) (up_upper w τ) (up_upper w' τ) (det_up_ne hw' τ) hM
   exact eq_of_sl_up (fun τ => add_left_cancel (key τ).1) (fun τ => (key τ).2)
 

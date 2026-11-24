@@ -36,6 +36,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemAbLocusIff
 
 @[expose] public section
 
@@ -57,13 +58,6 @@ theorem log_h_torus (A : HermLine ι) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {w
   rw [A.smul c w hc, Real.log_mul (Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (h0 k))
     (A.pos w hw).ne', Real.log_prod (fun k _ => zpow_ne_zero _ (h0 k))]
   simp only [Real.log_zpow]
-
-theorem log_sub_of_sameOrbit {A B : HermLine ι} (hAB : A.a = B.a) {z w : (Σ k, ι k) → ℂ}
-    (h : SameOrbit z w) (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) :
-    Real.log (A.h z) - Real.log (B.h z) = Real.log (A.h w) - Real.log (B.h w) := by
-  obtain ⟨c, hc, rfl⟩ := h
-  rw [log_h_torus A hc hw, log_h_torus B hc hw, hAB]
-  ring
 
 theorem log_add_sum_of_sameOrbit {α : Type} (T : Finset α) {A : HermLine ι} (B : α → HermLine ι)
     (hA : A.a = -∑ j ∈ T, (B j).a) {z w : (Σ k, ι k) → ℂ} (h : SameOrbit z w)
@@ -89,7 +83,7 @@ theorem defect_eq_regWeight_add_bracket :
 
   have hreg := o.fund_reg τ p t ht0 htle w₁ hw₁
   have hline := o.Re.line_eq (some (τ, p)) t ht0 htle x
-  have hsc := log_sub_of_sameOrbit (o.Re.line_deg (some (τ, p)) t) hx hw₁.1
+  have hsc := _root_.GlobalTheory.CompanionTheory.Ar.Chg.log_sub_orbit (o.Re.line_deg (some (τ, p)) t) hx hw₁.1
 
   have hs := o.fund_sing τ p x hop
   have hs₀ := o₀.fund_sing τ p x' hop₀

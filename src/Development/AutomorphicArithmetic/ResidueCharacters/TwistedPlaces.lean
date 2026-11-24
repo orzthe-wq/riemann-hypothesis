@@ -119,9 +119,7 @@ def TwLoc (D : D7) (i : D.nd.Loc) : Prop := TwPl D (D.nd.w i)
 
 theorem TwPl.twLoc {D : D7} {w : D.what₂.places.Pl} (h : TwPl D w) {j : ℕ} {i : D.nd.Loc}
     (hi : i ∈ D.nd.locs j w) : TwLoc D i := by
-  unfold TwLoc
-  rw [((D.nd.locs_mem j w i).1 hi).2]
-  exact h
+  simpa only [TwLoc, ((D.nd.locs_mem j w i).1 hi).2] using h
 
 structure Tab (L : SizeData₂ D) where
   s : ∀ i : D.nd.Loc, D.nd.X i → ℝ
@@ -146,8 +144,7 @@ def twAt (L : SizeData₂ D) (l : ℕ) : Finset D.what₂.places.Pl :=
 open Classical in
 theorem mem_twAt {L : SizeData₂ D} {l : ℕ} {w : D.what₂.places.Pl} :
     w ∈ twAt L l ↔ w ∈ L.supp ∧ TwPl D w ∧ D.what₂.places.resChar w = l := by
-  unfold twAt TwPl
-  exact Finset.mem_filter
+  simp only [twAt, TwPl, Finset.mem_filter]
 
 def etaAt (L : SizeData₂ D) (j l : ℕ) : ℝ :=
   ∑ w ∈ twAt L l, SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ) * (D.what₂.etaJ j w : ℝ)
@@ -308,8 +305,7 @@ theorem liesOver_resChar (D : D7) (w : D.what₂.places.Pl) :
   have := (D.plEq w).isPrime
   constructor
   apply hmax.eq_of_le (Ideal.IsPrime.under ℤ (D.plEq w).asIdeal).ne_top
-  rw [Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]
-  simpa using h5
+  simpa [Ideal.under_def, Ideal.mem_comap, Ideal.span_singleton_le_iff_mem] using h5
 
 theorem admissibleMeanCondition_holds (L : SizeData₂ D) : TwistedWeightMeanBound L := by
   classical
@@ -320,8 +316,7 @@ theorem admissibleMeanCondition_holds (L : SizeData₂ D) : TwistedWeightMeanBou
   rw [RingOfIntegers.rank] at hsum
   have hsum' : ∑ q ∈ ((Ideal.span {(l : ℤ)}).primesOver (𝓞 D.what₂.LL)).toFinset,
       q.ramificationIdx ℤ * q.inertiaDeg ℤ = Module.finrank ℚ D.what₂.LL := by
-    rw [← hsum]
-    exact (Finset.sum_set_coe (f := fun q : Ideal (𝓞 D.what₂.LL) => q.ramificationIdx ℤ * q.inertiaDeg ℤ) _).symm
+    simpa only [← hsum] using (Finset.sum_set_coe (f := fun q : Ideal (𝓞 D.what₂.LL) => q.ramificationIdx ℤ * q.inertiaDeg ℤ) _).symm
   have hn : (0 : ℝ) < (Module.finrank ℚ D.what₂.LL : ℝ) := by exact_mod_cast Module.finrank_pos
   have hlog : 0 ≤ Real.log (l : ℝ) := Real.log_natCast_nonneg l
   set G : Ideal (𝓞 D.what₂.LL) → ℝ := fun q =>
@@ -330,7 +325,6 @@ theorem admissibleMeanCondition_holds (L : SizeData₂ D) : TwistedWeightMeanBou
   have hterm : ∀ w ∈ S, SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ) = G (D.plEq w).asIdeal := by
     intro w hw
     have hwl : D.what₂.places.resChar w = l := (mem_twAt.1 hw).2.2
-    have := (D.plEq w).isPrime
     have : (D.plEq w).asIdeal.LiesOver (Ideal.span {(l : ℤ)}) := hwl ▸ liesOver_resChar D w
     have hN := Ideal.pow_inertiaDeg l (D.plEq w).asIdeal
     simp only [hG, SizeData₂.lwP, lw, D.ram_eq w, eWL, ← hN]

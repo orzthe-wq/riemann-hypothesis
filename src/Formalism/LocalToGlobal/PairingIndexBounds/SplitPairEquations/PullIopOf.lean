@@ -1,52 +1,107 @@
 module
 
+public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.IsSemiChar
+public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharacterIdentityReformulated2
 public import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.GMConjTranspose
 public import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 public import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.Reduction
 public import Formalism.LocalRingCardinality.SpanPowerMembership.RelDet
 public import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.NormOneUnitIdealAlt
-public import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.SemiCharImg
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.SemiCharImg, Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.PullIopOf
+
+-- ===== clump member: Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.SemiCharImg =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.SemiCharImg", "h": "module\n\npublic import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.IsSemiChar\npublic import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharacterIdentityReformulated2\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+open Classical
+
+namespace Formalism.L2.PairingIndexBounds.Eq
+
+open Formalism.L2.Th1.H
+
+section
+variable {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (δ : V ≃ₗ[ℂ] V)
+
+theorem semiChar_img (hI : IsIsom H H (δ : V →ₗ[ℂ] V)) (hα : ∀ x, α (δ x) = α x) {Λ : AddSubgroup V}
+    (h : IsSemiChar H Λ α) : IsSemiChar H (imgLat (δ : V →ₗ[ℂ] V) Λ) α := by
+  refine ⟨?_, ?_⟩
+  · rintro _ ⟨x, hx, rfl⟩
+    show α (δ x) = 1 ∨ α (δ x) = -1
+    rw [hα]; exact h.1 x hx
+  · rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩
+    show α (δ x + δ y) = α (δ x) * α (δ y) * Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H (δ x) (δ y) : ℂ))
+    have : altE H (δ x) (δ y) = altE H x y := by simp only [altE]; rw [show H (δ x) (δ y) = H x y from hI x y]
+    rw [← map_add (f := _), hα, hα, hα, this, h.2 x hx y hy]
+
+theorem fixed_img (hI : IsIsom H H (δ : V →ₗ[ℂ] V)) (hα : ∀ x, α (δ x) = α x) {Λ : AddSubgroup V} {F : V → ℂ}
+    (hF : F ∈ fixedBy H α Λ) : pullInv δ F ∈ fixedBy H α (imgLat (δ : V →ₗ[ℂ] V) Λ) := by
+  rintro _ ⟨x, hx, rfl⟩ z
+  show α (δ x) * opU H (δ x) (pullInv δ F) z = pullInv δ F z
+  rw [← pullOpU V H δ hI x F z, hα]
+  exact hF x hx (δ.symm z)
+
+theorem reps_img {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : IsReps Λ₁ Λ₂ S) :
+    IsReps (imgLat (δ : V →ₗ[ℂ] V) Λ₁) (imgLat (δ : V →ₗ[ℂ] V) Λ₂) (S.image δ) := by
+  obtain ⟨h1, h2, h3⟩ := hS
+  refine ⟨?_, ?_, ?_⟩
+  · intro x hx
+    obtain ⟨s, hs, rfl⟩ := Finset.mem_image.mp hx
+    exact ⟨s, h1 s hs, rfl⟩
+  · intro x hx y hy hxy
+    obtain ⟨s, hs, rfl⟩ := Finset.mem_image.mp hx
+    obtain ⟨t, ht, rfl⟩ := Finset.mem_image.mp hy
+    obtain ⟨u, hu, hu'⟩ := hxy
+    have e : u = s - t := δ.injective (by rw [map_sub]; exact hu')
+    rw [h2 s hs t ht (e ▸ hu)]
+  · rintro _ ⟨u, hu, rfl⟩
+    obtain ⟨s, hs, hus⟩ := h3 u hu
+    refine ⟨δ s, Finset.mem_image.mpr ⟨s, hs, rfl⟩, ⟨u - s, hus, ?_⟩⟩
+    show δ (u - s) = δ u - δ s
+    rw [map_sub]
+
+theorem relIdx_img (Λ₁ Λ₂ : AddSubgroup V) :
+    relIdx (imgLat (δ : V →ₗ[ℂ] V) Λ₁) (imgLat (δ : V →ₗ[ℂ] V) Λ₂) = relIdx Λ₁ Λ₂ :=
+  AddSubgroup.relIndex_map_map_of_injective Λ₁ Λ₂ (f := ((δ : V →ₗ[ℂ] V).toAddMonoidHom)) δ.injective
+
+theorem sumU_pull (hI : IsIsom H H (δ : V →ₗ[ℂ] V)) (hα : ∀ x, α (δ x) = α x) (S : Finset V) (F : V → ℂ) (z : V) :
+    pullInv δ (sumU H α S F) z = sumU H α (S.image δ) (pullInv δ F) z := by
+  unfold sumU
+  rw [Finset.sum_image (fun x _ y _ h => δ.injective h)]
+  show ∑ x ∈ S, α x * opU H x F (δ.symm z) = _
+  refine Finset.sum_congr rfl fun x _ => ?_
+  rw [hα, ← pullOpU V H δ hI x F z]
+  rfl
+
+theorem inter_pull (hH : IsHerm H) (hI : IsIsom H H (δ : V →ₗ[ℂ] V)) (hα : ∀ x, α (δ x) = α x)
+    (Λ₁ Λ₂ : AddSubgroup V) (hs : IsSemiChar H Λ₂ α) (hidx : relIdx Λ₁ Λ₂ ≠ 0) {F : V → ℂ}
+    (hF : F ∈ fixedBy H α Λ₁) :
+    pullInv δ (inter H α Λ₁ Λ₂ F) =
+      inter H α (imgLat (δ : V →ₗ[ℂ] V) Λ₁) (imgLat (δ : V →ₗ[ℂ] V) Λ₂) (pullInv δ F) := by
+  funext z
+  obtain ⟨S, hS⟩ := (repsExist V Λ₁ Λ₂ hidx).1
+  rw [interReps V H hH _ _ α (semiChar_img H α δ hI hα hs) _ (fixed_img H α δ hI hα hF) _ (reps_img δ hS) z,
+    relIdx_img, ← sumU_pull H α δ hI hα]
+  show inter H α Λ₁ Λ₂ F (δ.symm z) = _
+  rw [interReps V H hH _ _ α hs _ hF _ hS]
+  rfl
+
+end
+
+end Formalism.L2.PairingIndexBounds.Eq
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.SemiCharImg =====
+
+-- ===== clump member: Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.PullIopOf =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.PullIopOf", "h": "module\n\npublic import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.GMConjTranspose\npublic import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators\npublic import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.Reduction\npublic import Formalism.LocalRingCardinality.SpanPowerMembership.RelDet\npublic import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.NormOneUnitIdealAlt\npublic import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.SemiCharImg\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -190,3 +245,7 @@ theorem pullIop_of {B : Ker.Base D cc δ} (hL : B.LatAll) : PullIop D B.tor := b
   exact hc
 
 end Formalism.L2.PairingIndexBounds.Eq
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.PullIopOf =====

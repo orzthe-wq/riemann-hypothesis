@@ -162,7 +162,7 @@ private theorem secMap_self {X : Sch R} (f : X ⟶ X) (hf : f = 𝟙 X) {U : X.l
     (h : U ≤ f.left ⁻¹ᵁ U) (x : Sec X U) : secMap f h x = x := by
   subst hf
   show (Scheme.Hom.appLE (𝟙 X.left) U U h).hom x = x
-  simp only [Scheme.Hom.appLE, Scheme.Hom.id_app, Category.id_comp]
+  simp only [Scheme.Hom.appLE, Scheme.Hom.id_app]
   exact congrArg (fun φ => φ.hom x) (X.left.presheaf.map_id (Opposite.op U))
 
 private theorem secRes_apply (X : Sch R) {U V : X.left.Opens} (h : V ≤ U) (x : Sec X U) :

@@ -289,15 +289,6 @@ theorem isAmpleLB_of_isQuasiAffine [X.IsQuasiAffine] (hL : L.IsLB) : IsAmpleLB L
 
 theorem isAmpleLB_of_isAffine [IsAffine X] (hL : L.IsLB) : IsAmpleLB L := isAmpleLB_of_isQuasiAffine hL
 
-theorem isAmpleLB_triv_iff : IsAmpleLB (LB.triv X) ↔ X.IsQuasiAffine := by
-  refine ⟨fun h => ?_, fun _ => isAmpleLB_of_isQuasiAffine (LB.isLB_triv X)⟩
-  have := h.compactSpace
-  refine Scheme.IsQuasiAffine.of_forall_exists_mem_basicOpen X fun x => ?_
-  obtain ⟨n, -, s, hs, ha⟩ := h.exists_affine x
-  have e : nonzeroLocus s = X.basicOpen (U := ⊤) (powSecFn s PUnit.unit) :=
-    (inf_top_eq _).symm.trans (nonzeroLocus_inf_powSecFn s PUnit.unit)
-  exact ⟨powSecFn s PUnit.unit, e ▸ ha, e.le hs⟩
-
 theorem isGenerated_O1 (R : Type) [CommRing R] (N : ℕ) : IsGenerated (ProjSpace.O1 R N) :=
   ⟨N + 1, ProjSpace.coord R N, ProjSpace.iSup_nonzeroLocus_coord R N⟩
 

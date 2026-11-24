@@ -5,15 +5,16 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDiagon
 public import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MulVecCEApply
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharEqOfIsOpenEmbeddingRestrictStatement
+public import Mathlib.MeasureTheory.Measure.Haar.MulEquivHaarChar
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharEqOfIsOpenEmbeddingRestrict
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddHaarLeftRightMulAdelicMatricesModule
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorIdeleNormalizedAbsEqAdelicAbsNormStatement
+public import Mathlib.Analysis.Calculus.BumpFunction.Normed
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TensorIdeleNormalizedAbsEqAdelicAbsNorm
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdicIntegersCompact.IsCompactAdicCompletionIntegers
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
-public import Mathlib.Analysis.Calculus.BumpFunction.Normed
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -77,7 +78,7 @@ theorem distrib_eq [IsTotallyReal F] (u : (AF F)ˣ) :
       continuous_invFun := continuous_const.mul continuous_id }
   let j : AF F →+ (Unit → AF F) := { toFun := fun x _ => x, map_zero' := rfl, map_add' := fun _ _ => rfl }
   have hj : IsOpenEmbedding j := (Homeomorph.funUnique Unit (AF F)).symm.isOpenEmbedding
-  rw [GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict _ _ j hj _ e (fun x => by funext i; simp [mulVecCE_apply, Matrix.mulVec_diagonal, j, e])]
+  rw [_root_.GlobalTheory.HaarOpenEmb.addEquivAddHaarChar_eq_of_isOpenEmbedding _ _ j hj _ e (fun x => by funext i; simp [mulVecCE_apply, Matrix.mulVec_diagonal, j, e])]
   congr 1
   obtain ⟨K, hK⟩ := exists_compact_mem_nhds (0 : AF F)
   let μ : Measure (AF F) := Measure.addHaar
@@ -93,7 +94,7 @@ theorem chi_eq [IsTotallyReal F] [DecidableEq κ] (M : Matrix κ κ (AF F)) (hM 
 
 theorem absE_eq [IsTotallyReal F] {E : Type} [Field E] [NumberField E] [Algebra F E] (t : (AF F ⊗[F] E)ˣ) :
     GlobalTheory.Doubling.absE F E t = distribHaarChar (AF F) (Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) t) :=
-  NNReal.coe_injective (by rw [distrib_eq, ← GlobalTheory.T.tensorIdeleNormalizedAbs_eq_adelic_abs_norm]; rfl)
+  NNReal.coe_injective (by rw [distrib_eq, ← _root_.GlobalTheory.absE_eq_prod_norm_fstA_sndA]; rfl)
 
 theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   refine Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)

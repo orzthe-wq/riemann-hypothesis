@@ -1,24 +1,19 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatInnerProductSelfNonnegBounds
 public import Mathlib.Data.Matrix.ColumnRowPartitioned
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.DifferentiableOnDetHMat
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionSpecStatement
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledThetaTestFunctionSesquilinearHeisenbergStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EqOfSiegelThetaSeriesRationalEq
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeisenbergOperatorRationalPointLawsStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TestFunctionWitness
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionSpec
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledThetaTestFunctionSesquilinearHeisenberg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -30,11 +25,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -54,10 +45,70 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EqOfSiegelThetaSeriesRationalEq
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeisenbergOperatorRationalPointLaws
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TestFunctionWitness, Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionZeroAndNorm
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TestFunctionWitness =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TestFunctionWitness", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix Complex
+open scoped Classical
+namespace GlobalTheory.SW
+
+private theorem intM_add_iff_of_intM_right {K : Type} [Field K] {κ ι : Type} {x y : Matrix κ ι K} (hy : IntM y) :
+    IntM (x + y) ↔ IntM x :=
+  ⟨fun h k i => by simpa using (h k i).sub (hy k i), fun h k i => (h k i).add (hy k i)⟩
+
+
+open Classical in
+theorem ind_sb {K : Type} [Field K] [NumberField K] {κ ι : Type} [Fintype κ] [Fintype ι] :
+    HasLevel 1 (fun x : Matrix κ ι K => if IntM x then (1:ℂ) else 0) := by
+  refine ⟨fun x hx => ?_, fun x y hy => ?_⟩
+  · rw [Nat.cast_one, one_smul]
+    by_contra h
+    exact hx (if_neg h)
+  · rw [Nat.cast_one, one_smul]
+    exact if_congr (intM_add_iff_of_intM_right hy) rfl rfl
+
+
+open Classical in
+theorem ind_isSB {K : Type} [Field K] [NumberField K] {κ ι : Type} [Fintype κ] [Fintype ι] :
+    IsSB (fun x : Matrix κ ι K => if IntM x then (1:ℂ) else 0) := ⟨1, one_pos, ind_sb⟩
+
+
+open Classical in
+theorem ind_ne_zero {K : Type} [Field K] [NumberField K] {κ ι : Type} [Fintype κ] [Fintype ι] :
+    (fun x : Matrix κ ι K => if IntM x then (1:ℂ) else 0) ≠ 0 := by
+  intro h
+  have h0 := congrFun h 0
+  rw [if_pos (show IntM (0 : Matrix κ ι K) from fun k i => by simpa using isIntegral_zero)] at h0
+  exact one_ne_zero h0
+
+end GlobalTheory.SW
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TestFunctionWitness =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionZeroAndNorm =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionZeroAndNorm", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatInnerProductSelfNonnegBounds\npublic import Mathlib.Data.Matrix.ColumnRowPartitioned\npublic import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.DifferentiableOnDetHMat\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionSpec\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledThetaTestFunctionSesquilinearHeisenberg\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TestFunctionWitness\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EqOfSiegelThetaSeriesRationalEq\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd\nimport Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeisenbergOperatorRationalPointLaws\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix Complex NumberField MeasureTheory GlobalTheory GlobalTheory.SW GlobalTheory.ThFr ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD
@@ -84,21 +135,21 @@ theorem ip_self_ne_zero (h : IsSB φ) (h0 : φ ≠ 0) : ip φ φ ≠ 0 := by
   rw [e]; exact_mod_cast ht.ne'
 
 theorem isSB_mul_conj (h : IsSB φ) (h' : IsSB ψ) : IsSB fun x => φ x * conj (ψ x) :=
-  (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h' h').2.2.2.1).2.2.1
+  (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ h (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ h' h').2.2.2.1).2.2.1
 
 theorem ip_add_left (h : IsSB φ) (h' : IsSB φ') (k : IsSB ψ) :
     ip (φ + φ') ψ = ip φ ψ + ip φ' ψ := by
-  rw [ip, ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h' k)).2.2.2.2.1]
+  rw [ip, ip, ip, ← (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h' k)).2.2.2.2.1]
   congr 1; funext x; simp [add_mul]
 
 theorem ip_add_right (h : IsSB φ) (k : IsSB ψ) (k' : IsSB ψ') :
     ip φ (ψ + ψ') = ip φ ψ + ip φ ψ' := by
-  rw [ip, ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k')).2.2.2.2.1]
+  rw [ip, ip, ip, ← (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k')).2.2.2.2.1]
   congr 1; funext x; simp [mul_add]
 
 theorem ip_smul (h : IsSB φ) (k : IsSB ψ) (a b : ℂ) :
     ip (a • φ) (b • ψ) = a * conj b * ip φ ψ := by
-  rw [ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.1]
+  rw [ip, ip, ← (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.1]
   congr 1; funext x; simp; ring
 
 end Ip
@@ -133,7 +184,7 @@ theorem heisS_cosetInd_zero (R : ℕ) (q : Matrix κ ι ℚ ⧸ perSub ℚ κ ι
 theorem isSB_cosetInd {R : ℕ} (hR : 0 < R) (q : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) :
     IsSB (cosetInd R q) := by
   rw [← heisS_cosetInd_zero]
-  exact (GlobalTheory.T.heisenbergOperatorRationalPoint_laws _ _ _ _ _ ⟨R, hR, hasLevel_cosetInd_zero R⟩).1
+  exact (_root_.GlobalTheory.SW.heisS_laws _ _ _ _ _ ⟨R, hR, hasLevel_cosetInd_zero R⟩).1
 
 theorem heisS_cosetInd_char {R : ℕ} (hR : 0 < R) (q : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) (k : κ) (i : ι) :
     heisS (Matrix.single k i (R : ℚ)⁻¹) 0 (cosetInd R q) =
@@ -142,7 +193,7 @@ theorem heisS_cosetInd_char {R : ℕ} (hR : 0 < R) (q : Matrix κ ι ℚ ⧸ per
   have h : ∀ k, (0 : Matrix κ ι ℚ) k = 0 := fun _ => rfl
   have hs : (∑ k', (2 * (x k' ⬝ᵥ Matrix.single k i (R : ℚ)⁻¹ k') -
       Matrix.single k i (R : ℚ)⁻¹ k' ⬝ᵥ (0 : Matrix κ ι ℚ) k') : ℚ) = 2 * (x k i / R) := by
-    simp [h, dotProduct, Matrix.single, ite_and, div_eq_mul_inv, ← Finset.mul_sum]
+    simp [dotProduct, Matrix.single, ite_and, div_eq_mul_inv, ← Finset.mul_sum]
   rw [heisS, hs, sub_zero, Pi.smul_apply, smul_eq_mul, mul_comm]
   by_cases hx : (x : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) = q
   · congr 1
@@ -185,7 +236,7 @@ theorem map_sum_of_isSB {α : Type} (m : (Matrix κ ι ℚ → ℂ) → ℂ) (h0
   | empty => exact ⟨by simpa using isSB_zero, by simpa using h0⟩
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hadd _ _ (hf a) ih.1, ih.2]
-    exact ⟨(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (hf a) ih.1).1, rfl⟩
+    exact ⟨(_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ (hf a) ih.1).1, rfl⟩
 
 theorem exists_eq_mul_ip (l : (Matrix κ ι ℚ → ℂ) → (Matrix κ ι ℚ → ℂ) → ℂ)
     (h1 : ∀ φ φ' ψ, IsSB φ → IsSB φ' → IsSB ψ → l (φ + φ') ψ = l φ ψ + l φ' ψ)
@@ -194,7 +245,7 @@ theorem exists_eq_mul_ip (l : (Matrix κ ι ℚ → ℂ) → (Matrix κ ι ℚ �
     (hi : ∀ a b φ ψ, IsSB φ → IsSB ψ → l (heisS a b φ) (heisS a b ψ) = l φ ψ) :
     ∃ c : ℂ, ∀ φ ψ, IsSB φ → IsSB ψ → l φ ψ = c * ip φ ψ := by
   have sm : ∀ (c : ℂ) (φ : Matrix κ ι ℚ → ℂ), IsSB φ → IsSB (c • φ) := fun c φ h =>
-    (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h h).2.1 c
+    (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ h h).2.1 c
   have lev : ∀ R : ℕ, 0 < R → ∃ c : ℂ, ∀ φ ψ, HasLevel R φ → HasLevel R ψ →
       l φ ψ = c * ip φ ψ := by
     intro R hR
@@ -265,7 +316,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : D
 
 theorem ip_heisH (d b : Matrix (Fin n) (Fin r) E) {φ ψ : Matrix (Fin n) (Fin r) E → ℂ}
     (h : IsSB φ) (k : IsSB ψ) : ip (heisH d b φ) (heisH d b ψ) = ip φ ψ := by
-  rw [ip, ip, ← ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.2.2 d).2]
+  rw [ip, ip, ← ((_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.2.2 d).2]
   congr 1; funext x
   have e : ∀ t : ℚ, cexp (π * I * t) * conj (cexp (π * I * t)) = 1 := fun t => by
     rw [← Complex.exp_conj, ← Complex.exp_add]; simp
@@ -282,26 +333,13 @@ theorem toCols₁_dblT (y₁ y₂ : Matrix (Fin n) (Fin r) E) :
   rw [dblT, Matrix.fromCols_mul_fromBlocks, Matrix.toCols₁_fromCols]
   simp [sub_eq_add_neg]
 
-theorem dom_nonempty (X : Data E r) : X.dom.Nonempty := by
-  choose P hP hg using X.signature
-  have hs : ∀ a : ℕ, sgn X.p0 a ≠ 0 := fun a => by unfold sgn; split_ifs <;> norm_num
-  refine ⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩
-  have e : dmin X.Gm (fun τ => P τ) τ i = ((psgn X.p0 i : ℝ) : ℂ) := by
-    unfold dmin lminor
-    rw [show gram τ.1 X.Gm (mat (fun τ => P τ) τ) = gram τ.1 X.Gm (P τ) from rfl, hg τ,
-      Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]
-    unfold psgn
-    push_cast
-    exact Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) (i : ℕ)
-  rw [e, Complex.ofReal_re]
-  have h0 : psgn X.p0 i ≠ 0 := Finset.prod_ne_zero_iff.2 fun a _ => hs a
-  exact mul_self_pos.2 h0
+alias dom_nonempty := _root_.GlobalTheory.FiniteNet.dom_nonempty
 
 theorem dbl_self_ne_zero (hs : IsSympl X bas) (hn : Even n) {φ : TF n g} (h : IsSB φ)
     (h0 : φ ≠ 0) : dbl X bas idx φ φ ≠ 0 := by
   intro e
   obtain ⟨x, hx⟩ := dom_nonempty X
-  have hd := (GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hs hn φ φ h h).2.1 x hx x hx
+  have hd := (_root_.GlobalTheory.SW.DblEx.dbl_spec E r X g bas idx n hs hn φ φ h h).2.1 x hx x hx
   refine h0 (eq_of_thS_eq _ _ φ 0 h isSB_zero _
     ⟨tauMat_isSymm idx hs hx, tauMat_im_posDef idx hs hx⟩ fun ζ => ?_)
   have h1 := hd (fun k => perMat X bas idx Sum.inl x *ᵥ ζ k)
@@ -323,8 +361,8 @@ end GlobalTheory.SW.DblZero
 open GlobalTheory.SW.DblZero in
 theorem GlobalTheory.SW.dbl_zero_and_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∃ a : ℂ, a ≠ 0 ∧ ∃ b : ℝ, 0 < b ∧ ∀ φ₁ φ₂ : TF n g, IsSB φ₁ → IsSB φ₂ → dbl X bas idx φ₁ φ₂ 0 = a * ip φ₁ φ₂ ∧ ip (dbl X bas idx φ₁ φ₂) (dbl X bas idx φ₁ φ₂) = b * (ip φ₁ φ₁ * ip φ₂ φ₂) := by
   intro E _ _ _ r X g bas idx n hs hn
-  have sb := fun φ ψ h k => (GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hs hn φ ψ h k).1
-  have lin := GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn
+  have sb := fun φ ψ h k => (_root_.GlobalTheory.SW.DblEx.dbl_spec E r X g bas idx n hs hn φ ψ h k).1
+  have lin := _root_.GlobalTheory.SW.DblLin.dbl_lin E r X g bas idx n hs hn
   have law := (heisG_laws E r X g bas idx n hs hn).2.2.2
   have add1 := fun φ φ' ψ h h' k => ((lin φ ψ h k).1 φ' h').1
   have add2 := fun φ ψ ψ' h k k' => ((lin φ ψ h k).1 ψ' k').2
@@ -401,3 +439,6 @@ theorem GlobalTheory.SW.dbl_zero_and_norm : ∀ (E : Type) [Field E] [NumberFiel
     rw [e3]
     field_simp
     linear_combination (-ip φ φ) * e1
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionZeroAndNorm =====

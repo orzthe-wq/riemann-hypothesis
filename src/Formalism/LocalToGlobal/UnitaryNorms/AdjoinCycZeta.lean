@@ -65,7 +65,7 @@ variable {φ : Frame} (H : HostRaw φ)
 def EQ : Fld := ⨆ j : H.E →ₐ[ℚ] Qb, j.fieldRange
 
 def FI : IntermediateField ℚ H.E := H.F.toIntermediateField fun x => by
-  simpa using SubfieldClass.ratCast_mem H.F x
+  simp
 
 def FQ : Fld := ⨆ j : H.E →ₐ[ℚ] Qb, H.FI.map j
 
@@ -140,11 +140,9 @@ theorem actsAs_of_one {s : H.EQ →ₐ[ℚ] Qb} {g : φ.GG} (j : H.E →ₐ[ℚ]
 variable (H)
 
 theorem adjoin_cycZeta : IntermediateField.adjoin ℚ ({H.cycZeta} : Set (Cond.Cyc H.condN)) = ⊤ := by
-  rw [eq_top_iff]
-  intro x _
-  have h1 : x ∈ Algebra.adjoin ℚ ({H.cycZeta} : Set (Cond.Cyc H.condN)) := by
-    rw [IsCyclotomicExtension.adjoin_primitive_root_eq_top H.cycZeta_prim]; trivial
-  exact algebra_adjoin_le_adjoin ℚ _ h1
+  have h := algebra_adjoin_le_adjoin ℚ ({H.cycZeta} : Set (Cond.Cyc H.condN))
+  rw [IsCyclotomicExtension.adjoin_primitive_root_eq_top H.cycZeta_prim, top_le_iff] at h
+  exact IntermediateField.toSubalgebra_injective h
 
 theorem EQ_le_cycQ : H.EQ ≤ cycQ H.condN := by
   let κ : Cond.Cyc H.condN →ₐ[ℚ] Qb := (by

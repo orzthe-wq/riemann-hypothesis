@@ -68,7 +68,7 @@ private lemma rW_mulVec_adjugate_zhat_single_last (z z' : Fin (2 * r + k + 1) �
         ((_root_.Formalism.QuantumDeterminants.Zhat k r z z' g).adjugateᴴ *ᵥ Pi.single (Fin.last r) 1)) := by
   unfold _root_.GlobalTheory.WigSh.omg
   rw [← mulVec_mulVec _ (_root_.Formalism.QuantumDeterminants.Hpk k r * gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r) (_root_.GlobalTheory.LeadingMinorInv.flagMat k r z), flagMat_mulVec_eq_sum_fvec]
-  simp [mulVec_single_one, conjTranspose_apply]
+  simp [conjTranspose_apply]
 
 open Matrix in
 variable {k r : ℕ} in

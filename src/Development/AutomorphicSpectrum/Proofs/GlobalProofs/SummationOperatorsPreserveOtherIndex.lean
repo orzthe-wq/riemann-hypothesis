@@ -167,9 +167,4 @@ theorem good_support_other (r l : ℕ) (i k : Fin r) (v : (Fin r → ℕ) → �
   · unfold Bop
     rw [meanP_support l h hs m hm, ite_self]
 
-theorem otherVar_main : ∀ (r l : ℕ) (i k : Fin r) (v : (Fin r → ℕ) → ℚ), k ≠ i →
-    (GoodAt l k v → GoodAt l k (Aop l i v) ∧ GoodAt l k (Bop l i v)) ∧
-    ((∀ m, m k ≠ 0 → v m = 0) → (∀ m, m k ≠ 0 → Aop l i v m = 0) ∧ (∀ m, m k ≠ 0 → Bop l i v m = 0)) :=
-  fun r l i k v h => good_support_other r l i k v h
-
 end GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.OtherVar

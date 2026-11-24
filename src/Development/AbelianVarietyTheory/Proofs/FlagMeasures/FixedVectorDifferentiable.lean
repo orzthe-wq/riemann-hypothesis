@@ -51,6 +51,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.EigenfunctionFiniteCoefficients
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactHaarRightInvariantInst
 
 @[expose] public section
 
@@ -165,10 +166,6 @@ theorem tendsto_slope_exp {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) :
       (NormedSpace.exp ((s : ℂ) • X) * X) s := h2.congr_deriv (by rw [Complex.ofRealCLM_apply, Complex.ofReal_one, one_smul]; rfl)
   exact h3.tendsto_slope
 
-theorem continuous_exp_curve {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
-    Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) :=
-  NormedSpace.exp_continuous.comp (Complex.continuous_ofReal.smul continuous_const)
-
 end
 
 theorem hasDerivAt_exp_mul {n : ℕ} (X y : Matrix (Fin n) (Fin n) ℂ) (s : ℝ) :
@@ -238,12 +235,12 @@ theorem fixed_vector_differentiable : ∀ (n : ℕ) (ε : Fin n → Bool) (H : T
       exact Matrix.coe_units_inv _
     have he : Continuous e := by
       rw [(isClosedEmbeddingMatrix n ε).1.isInducing.continuous_iff]
-      exact continuous_exp_curve X
+      exact _root_.Formalism.REAL.continuous_exp_real_smul X
     have he0 : e 0 = 1 := by
       apply Subtype.ext; apply Units.ext
       show umat (e 0) = 1
       rw [hev]; simp
-    have hcE := continuous_exp_curve (-X)
+    have hcE := _root_.Formalism.REAL.continuous_exp_real_smul (-X)
     have key := hasDerivAt_orbit (muG ε) (fun g => σ (umat g)) w hmul hc _ ha hs hw' e he he0
       (fun s y => fderiv ℝ F (NormedSpace.exp ((s : ℂ) • (-X)) * umat y : Matrix _ _ ℂ)
         (NormedSpace.exp ((s : ℂ) • (-X)) * (-X) * umat y : Matrix _ _ ℂ))

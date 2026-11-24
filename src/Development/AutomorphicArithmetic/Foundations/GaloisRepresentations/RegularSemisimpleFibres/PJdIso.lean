@@ -62,11 +62,11 @@ private def phiE (n : ℕ) : GL (Fin n) F ≃ GL (Fin n) F' where
   left_inv x := by
     apply Units.ext
     ext i j
-    simp [Matrix.GeneralLinearGroup.map_apply]
+    simp
   right_inv x := by
     apply Units.ext
     ext i j
-    simp [Matrix.GeneralLinearGroup.map_apply]
+    simp
 
 private theorem inPar_phi (a : ℕ) {n : ℕ} (x : GL (Fin n) F) :
     InPar a (Matrix.GeneralLinearGroup.map r.toRingHom x) ↔ InPar a x := by
@@ -135,7 +135,7 @@ private theorem card_phi (a n : ℕ) :
 private theorem gal_id {K : Type} [Field K] (n : ℕ) (y : GL (Fin n) K) : gal (RingHom.id K) n y = y := by
   apply Units.ext
   ext i j
-  simp [gal, Matrix.GeneralLinearGroup.map_apply]
+  simp [gal]
 
 private theorem hc_phi (a b : ℕ) (α : GL (Fin a) F' → ℂ) (β : GL (Fin b) F' → ℂ) (n : ℕ)
     (g : GL (Fin n) F) :

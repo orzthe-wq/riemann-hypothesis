@@ -103,7 +103,7 @@ theorem beta_congr_right (Bs : RealPlaceData k r Wp Wq) {F G G₂ : Mat k r → 
         (hsVec (JF Bs F (bigCell k r q.1 (Bs.μsec q.2))))
     rw [Formalism.FourierDecayAlt.P.JCx2.sq_jf_congr Bs h hg]
   · have hw : bcWeight k r (Tz k r Bs.z) (Tz k r Bs.z') q = 0 :=
-      le_antisymm (not_lt.1 hQ) (Formalism.FourierDecayAlt.P.JCx2.sq_bcWeight_nonneg _ _ q)
+      le_antisymm (not_lt.1 hQ) (Formalism.FourierDecayAlt.P.B7.boundary_weight_nonneg _ _ q)
     show (bcWeight k r (Tz k r Bs.z) (Tz k r Bs.z') q : ℂ) * _ = (bcWeight k r (Tz k r Bs.z) (Tz k r Bs.z') q : ℂ) * _
     rw [hw]
     simp

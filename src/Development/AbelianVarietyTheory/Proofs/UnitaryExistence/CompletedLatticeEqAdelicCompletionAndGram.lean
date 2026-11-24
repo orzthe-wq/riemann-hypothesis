@@ -60,14 +60,6 @@ theorem hT_symm_equivFun {D : D7} (V : HSp D) (x y : Fin V.rank → D.host.E) :
   simp only [Matrix.transpose_apply, HSpace.gram]
   ring
 
-theorem mem_latC {D : D7} (V : HSp D) (v : Fin V.rank → D.host.E) :
-    v ∈ latC V ↔ V.frame.equivFun.symm v ∈ V.L0 := by
-  constructor
-  · rintro ⟨x, hx, rfl⟩
-    simpa using hx
-  · intro h
-    exact ⟨_, h, V.frame.equivFun.apply_symm_apply v⟩
-
 theorem gram_transpose_det_ne_zero {D : D7} (V : HSp D) : V.gramᵀ.det ≠ 0 := by
   intro h
   obtain ⟨v, hv, h0⟩ := Matrix.exists_vecMul_eq_zero_iff.2 h
@@ -150,7 +142,7 @@ theorem latHat_eq_hat_and_gram :
     simp only [herm, Matrix.neg_apply, mul_neg, neg_mul, Finset.sum_neg_distrib, neg_neg]
     rfl
   · intro v
-    rw [mem_latC]
+    rw [_root_.GlobalTheory.Member.mem_latC_iff_symm_mem]
     conv_rhs => rw [← V.baseLattice_isUnimodular]
     have key : V.frame.equivFun.symm v ∈ Formalism.HermitianLatticesTheory.dual V.hT V.L0 ↔
         ∀ y ∈ V.L0, V.hT y (V.frame.equivFun.symm v) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by
@@ -161,9 +153,9 @@ theorem latHat_eq_hat_and_gram :
     · intro h y hy
       obtain ⟨y, rfl⟩ := V.frame.equivFun.symm.surjective y
       rw [hT_symm_equivFun, Submodule.mem_one]
-      exact (FractionalIdeal.mem_one_iff _).1 (h y ((mem_latC V y).2 hy))
+      exact (FractionalIdeal.mem_one_iff _).1 (h y ((_root_.GlobalTheory.Member.mem_latC_iff_symm_mem V y).2 hy))
     · intro h y hy
-      have := h _ ((mem_latC V y).1 hy)
+      have := h _ ((_root_.GlobalTheory.Member.mem_latC_iff_symm_mem V y).1 hy)
       rw [hT_symm_equivFun, Submodule.mem_one] at this
       exact (FractionalIdeal.mem_one_iff _).2 this
 

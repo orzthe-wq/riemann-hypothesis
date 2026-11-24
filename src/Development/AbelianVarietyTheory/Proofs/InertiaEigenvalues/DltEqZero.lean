@@ -140,4 +140,26 @@ theorem dlt_eq_zero {A : Type} [CommMonoid A] (π : ι → A) (I : Finset ι) (f
   rw [Finset.prod_insert hJ', Finset.card_insert_of_notMem hJ', mul_assoc, h J (Finset.mem_powerset.1 hJ)]
   ring
 
+theorem isIntegral_sigma {r : B.A} (hr : IsIntegral K.O r) : IsIntegral K.O (B.σ r) := by
+  obtain ⟨q, hq, h0⟩ := hr
+  have hsub : ∀ x : K.O, K.c (algebraMap K.O K.E x) ∈ (algebraMap K.O K.E).range := fun x => by
+    obtain ⟨y, hy⟩ := K.c_int x; exact ⟨y, hy.symm⟩
+  let ψ : K.O ≃+* (algebraMap K.O K.E).range :=
+    RingEquiv.ofBijective (algebraMap K.O K.E).rangeRestrict
+      ⟨fun x y h => IsFractionRing.injective K.O K.E (congrArg Subtype.val h), (algebraMap K.O K.E).rangeRestrict_surjective⟩
+  let cO : K.O →+* K.O := ψ.symm.toRingHom.comp
+    (((K.c : K.E →+* K.E).comp (algebraMap K.O K.E)).codRestrict _ hsub)
+  have hcO : ∀ x, algebraMap K.O K.E (cO x) = K.c (algebraMap K.O K.E x) := fun x => by
+    have := ψ.apply_symm_apply ⟨K.c (algebraMap K.O K.E x), hsub x⟩
+    exact congrArg Subtype.val this
+  have hcomp : (algebraMap K.O B.A).comp cO = (B.σ : B.A →+* B.A).comp (algebraMap K.O B.A) := by
+    ext x
+    simp only [RingHom.comp_apply, RingHom.coe_coe]
+    rw [IsScalarTower.algebraMap_apply K.O K.E B.A, IsScalarTower.algebraMap_apply K.O K.E B.A x, B.σ_alg, hcO]
+  refine ⟨q.map cO, hq.map cO, ?_⟩
+  rw [eval₂_map, hcomp]
+  have := hom_eval₂ q (algebraMap K.O B.A) (B.σ : B.A →+* B.A) r
+  rw [h0, map_zero] at this
+  exact this.symm
+
 end GlobalTheory.UnitLemma.Desc

@@ -8,47 +8,7 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Gaug
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.BridgeOf
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.BridgeOrbVec
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CarrierSizes
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeCountingBound.ArchPlace
 
 @[expose] public section
 
@@ -191,7 +151,7 @@ theorem orbVec_vecV (sc : ℝ) (hsc : 0 < sc) (i0 i0' : ∀ _ : InfinitePlace X.
   have h1 := Bridge.zhat_cs hTr hTr' (sc := sc) hsc.ne' (Formalism.MainNotions.S.uMat ((h v)⁻¹ * γ v * h' v))
   have h2 : RealObj.Zhat (X.B.I.ε v) (frm X u sc v) (frm X u' sc v) (Formalism.MainNotions.S.uMat ((h v)⁻¹ * γ v * h' v)) =
       ZX X u u' sc γ v :=
-    zhat_conj_frames (uMat_unitary (h v)) (uMat_mul_inv (h v))
+    zhat_conj_frames (_root_.PI.UnitaryGroupMassFormula.LCG.ap_inUJ (h v)) (uMat_mul_inv (h v))
       (Bridge.fix_famSc (PtRepPf.frU X u v).e (PtRepPf.frU X u v).z hHe hHz sc)
       (Bridge.fix_famSc (PtRepPf.frU X u' v).e (PtRepPf.frU X u' v).z hH'e hH'z sc)
   have hZ : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (T j).base.z (T j).base.z'
@@ -242,7 +202,7 @@ theorem orbVec_vecV (sc : ℝ) (hsc : 0 < sc) (i0 i0' : ∀ _ : InfinitePlace X.
     rw [(hT j).1, (hT j).2]
     have hdet1 : (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)).det =
         RealObj.Dl (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)) (D.R.rS + 1) :=
-      (Bridge.dl_top' _).symm
+      (_root_.Formalism.L2.SG.RealObj.InfCut.PtRepPf.dl_top _).symm
     have hdet2 : (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) D.R.rS).det =
         RealObj.Dl (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)) D.R.rS := by
       unfold RealObj.Dl; rw [dite_eq_left (Nat.le_succ _)]; rfl
@@ -265,7 +225,7 @@ theorem orbVec_vecV (sc : ℝ) (hsc : 0 < sc) (i0 i0' : ∀ _ : InfinitePlace X.
       pow_pos (mul_pos (norm_pos_iff.mpr hne1) (norm_pos_iff.mpr hne2)) 2
     unfold Tw at hG1
     exact mul_pos hpos hG1
-  have hGV := Bridge.delta_GV hTr (uMat_unitary ((h v)⁻¹ * γ v * h' v))
+  have hGV := Bridge.delta_GV hTr (_root_.PI.UnitaryGroupMassFormula.LCG.ap_inUJ ((h v)⁻¹ * γ v * h' v))
   have hDF := dFrameBridge_carrierOf X u u' e he hv C CA de de' l grid grid1 T hT fc χ sg ν' m₀ top A₀ Mo sc
     hsc.ne' i0 i0' hFX hB γ h h' hD v
   have hZ' : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (T j).base.z (T j).base.z' (trG Qm Qim ((h v)⁻¹ * γ v * h' v)) =
@@ -374,7 +334,7 @@ theorem orbVec_data (sc : ℝ) (hsc : 0 < sc) (i0 i0' : ∀ _ : InfinitePlace X.
   have h1 := Bridge.zhat_cs hTr hTr' (sc := sc) hsc.ne' (Formalism.MainNotions.S.uMat ((h v)⁻¹ * γ v * h' v))
   have h2 : RealObj.Zhat (X.B.I.ε v) (frm X u sc v) (frm X u' sc v) (Formalism.MainNotions.S.uMat ((h v)⁻¹ * γ v * h' v)) =
       ZX X u u' sc γ v :=
-    zhat_conj_frames (uMat_unitary (h v)) (uMat_mul_inv (h v))
+    zhat_conj_frames (_root_.PI.UnitaryGroupMassFormula.LCG.ap_inUJ (h v)) (uMat_mul_inv (h v))
       (Bridge.fix_famSc (PtRepPf.frU X u v).e (PtRepPf.frU X u v).z hHe hHz sc)
       (Bridge.fix_famSc (PtRepPf.frU X u' v).e (PtRepPf.frU X u' v).z hH'e hH'z sc)
   have hZ : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (T j).base.z (T j).base.z'
@@ -425,7 +385,7 @@ theorem orbVec_data (sc : ℝ) (hsc : 0 < sc) (i0 i0' : ∀ _ : InfinitePlace X.
     rw [(hT j).1, (hT j).2]
     have hdet1 : (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)).det =
         RealObj.Dl (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)) (D.R.rS + 1) :=
-      (Bridge.dl_top' _).symm
+      (_root_.Formalism.L2.SG.RealObj.InfCut.PtRepPf.dl_top _).symm
     have hdet2 : (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) D.R.rS).det =
         RealObj.Dl (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)) D.R.rS := by
       unfold RealObj.Dl; rw [dite_eq_left (Nat.le_succ _)]; rfl
@@ -448,7 +408,7 @@ theorem orbVec_data (sc : ℝ) (hsc : 0 < sc) (i0 i0' : ∀ _ : InfinitePlace X.
       pow_pos (mul_pos (norm_pos_iff.mpr hne1) (norm_pos_iff.mpr hne2)) 2
     unfold Tw at hG1
     exact mul_pos hpos hG1
-  have hGV := Bridge.delta_GV hTr (uMat_unitary ((h v)⁻¹ * γ v * h' v))
+  have hGV := Bridge.delta_GV hTr (_root_.PI.UnitaryGroupMassFormula.LCG.ap_inUJ ((h v)⁻¹ * γ v * h' v))
   have hZ' : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (T j).base.z (T j).base.z' (trG Qm Qim ((h v)⁻¹ * γ v * h' v)) =
       Formalism.FourierDecayAlt.D.ptMatN (Formalism.FourierDecayAlt.D.toStd (PP).S.G.r (PP).S.g 1 (Formalism.FourierDecayAlt.C.loc ((PP).S.emb j) p)) (D.R.rS + 1) := by
     rw [hstd]; exact hZ

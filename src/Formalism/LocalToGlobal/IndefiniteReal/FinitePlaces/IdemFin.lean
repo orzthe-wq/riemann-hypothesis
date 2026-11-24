@@ -94,31 +94,12 @@ theorem conj_idem_eq {P Q : HeightOneSpectrum (𝓞 D.host.E)} {x y : AE D} (hx 
     exact hsp hc
   · rw [h, hx0]
 
-private theorem ne_zero_of_isIdemAt' {P : HeightOneSpectrum (𝓞 D.host.E)} {e : AE D}
-    (he : Formalism.L2.NTheta.IsIdemAt e P) : e ≠ 0 := by
-  intro h0
-  obtain ⟨c, hcP, hc0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot
-  have h := (he.2 c hc0).1 hcP
-  rw [h0, zero_mul] at h
-  first
-  | exact h (by simp)
-  | simp at h
-  | exact h (map_zero (finPart D) ▸ (intAE D).zero_mem)
-
-private theorem not_isConjPl_of_isIdemAt {P : HeightOneSpectrum (𝓞 D.host.E)} {e : AE D}
-    (he : Formalism.L2.NTheta.IsIdemAt e P) : ¬ Lev.IsConjPl (D := D) P P := by
-  intro hc
-  have h1 : e = cA D e := conj_idem_eq he he hc
-  have h2 : e * cA D e = 0 := he.1.2.1
-  rw [← h1, he.1.1] at h2
-  exact ne_zero_of_isIdemAt' he h2
-
 theorem idemSum_orth (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D) (he : Formalism.IndefR.Datum.IsIdemSum e P) :
     ∃ es : Formalism.L2.DIV.Pl D.host.E → AE D, (∀ PP ∈ P, IsSplitIdem D (es PP)) ∧ e = ∑ PP ∈ P, es PP ∧
       ∀ PP ∈ P, ∀ PP' ∈ P, PP ≠ PP' → es PP * es PP' = 0 ∧ es PP * cA D (es PP') = 0 := by
   obtain ⟨⟨es, hes, hsum⟩, hc⟩ := he
   refine ⟨es, fun PP hPP => (hes PP hPP).1, hsum, fun PP hPP PP' hPP' hne => ⟨?_, ?_⟩⟩
-  · exact idem_orth (not_isConjPl_of_isIdemAt (hes PP hPP)) (hes PP hPP) (hes PP' hPP') hne
+  · exact idem_orth (_root_.Formalism.IndefR.Fin.idemAt_split (hes PP hPP)) (hes PP hPP) (hes PP' hPP') hne
   · by_cases hcj : Lev.IsConjPl (D := D) PP PP'
     · exfalso
       have hy : es PP' = cA D (es PP) := conj_idem_eq (hes PP hPP) (hes PP' hPP') hcj
@@ -126,7 +107,7 @@ theorem idemSum_orth (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D) (he 
         rw [hsum, Finset.mul_sum, Finset.sum_eq_single PP]
         · exact (hes PP hPP).1.1
         · intro b hb hbne
-          exact idem_orth (not_isConjPl_of_isIdemAt (hes PP hPP)) (hes PP hPP) (hes b hb) (Ne.symm hbne)
+          exact idem_orth (_root_.Formalism.IndefR.Fin.idemAt_split (hes PP hPP)) (hes PP hPP) (hes b hb) (Ne.symm hbne)
         · intro h; exact absurd hPP h
       have hR : es PP * cA D e = es PP := by
 
@@ -135,7 +116,7 @@ theorem idemSum_orth (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D) (he 
         · intro b hb hbne
           by_cases hb0 : b = PP
           · rw [hb0]; exact (hes PP hPP).1.2.1
-          · refine idem_orth_conj (not_isConjPl_of_isIdemAt (hes PP hPP)) (hes PP hPP) (hes b hb) (fun hcb => hbne ?_)
+          · refine idem_orth_conj (_root_.Formalism.IndefR.Fin.idemAt_split (hes PP hPP)) (hes PP hPP) (hes b hb) (fun hcb => hbne ?_)
             have hyb : es b = cA D (es PP) := conj_idem_eq (hes PP hPP) (hes b hb) hcb
             rw [← hy] at hyb
             have hb' := hes b hb
@@ -144,8 +125,8 @@ theorem idemSum_orth (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D) (he 
         · intro h; exact absurd hPP' h
       have h0 : es PP * (e * cA D e) = 0 := by rw [hc, mul_zero]
       rw [← mul_assoc, hL, hR] at h0
-      exact ne_zero_of_isIdemAt' (hes PP hPP) h0
-    · exact idem_orth_conj (not_isConjPl_of_isIdemAt (hes PP hPP)) (hes PP hPP) (hes PP' hPP') hcj
+      exact _root_.Formalism.IndefR.Fin.idemAt_ne_zero (hes PP hPP) h0
+    · exact idem_orth_conj (_root_.Formalism.IndefR.Fin.idemAt_split (hes PP hPP)) (hes PP hPP) (hes PP' hPP') hcj
 
 end Formalism.IndefR.Fin
 

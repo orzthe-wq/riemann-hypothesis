@@ -525,7 +525,7 @@ theorem iter_single {T : LocLat G Qp LL O} (j : ℕ) (c : T.V ⊗[Qp] B) :
     funext k
     by_cases hk : k = 0
     · subst hk; simp [PhiSeq]
-    · simp [PhiSeq, Pi.single_apply, hk]
+    · simp [PhiSeq, hk]
 
 theorem tHor_of (Ct : CmpTie W E ιdR p1 tS zS) (hinj : Function.Injective (algebraMap O LL))
     {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} (h4 : Formalism.MainNotions.DeltaInvariantLattices.P4W W Pt) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
@@ -722,7 +722,7 @@ theorem tHor_of (Ct : CmpTie W E ιdR p1 tS zS) (hinj : Function.Injective (alge
       iter_single, Pi.add_apply, LB_iter hEh'LB _ kk (lt_of_lt_of_le hkk (by exact_mod_cast hF1)), add_zero, hφiter]
     by_cases h0 : kk = 0
     · subst h0; simp
-    · simp [Pi.single_apply, h0]
+    · simp [h0]
   have hErr : LB (R₀ : ℤ) (Stuff - Pi.single (0 : ℤ)
       ((PD.p : LL) ^ σ • ((PD.p : LL) ^ (jj + eY PD.p (max M X + 1)) •
         (φVB PD (LL := LL) (V := T.V))^[j' + 1] (W.cmp T ⟨w, hw⟩)))) := fun kk hkk => by

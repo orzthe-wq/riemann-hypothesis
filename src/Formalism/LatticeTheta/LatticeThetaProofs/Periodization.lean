@@ -70,7 +70,6 @@ lemma exists_global_bound {f : V → ℂ} (hf : Continuous f) {b : ℝ} (hb : 0 
   obtain ⟨c, hc⟩ := hO.bound
   first
     | rw [← cobounded_eq_cocompact] at hc
-    | rw [← Metric.cobounded_eq_cocompact] at hc
   rw [← comap_norm_atTop, Filter.eventually_comap, Filter.eventually_atTop] at hc
   obtain ⟨r, hr⟩ := hc
   set r' := max r 1 with hr'
@@ -142,7 +141,7 @@ lemma summable_one_add_norm (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLat
     (hs.add (hasSum_ite_eq (0 : Λ) (1 : ℝ)).summable)
   by_cases h : l = 0
   · subst h
-    simp only [if_pos rfl, ZeroMemClass.coe_zero, norm_zero, add_zero, Real.one_rpow, if_true, ↓reduceIte]
+    simp only [ZeroMemClass.coe_zero, norm_zero, add_zero, Real.one_rpow, ↓reduceIte]
     linarith [Real.rpow_nonneg (le_refl (0 : ℝ)) (-b)]
   · have hl : 0 < ‖(l : V)‖ := norm_pos_iff.mpr (by simpa using h)
     rw [if_neg h, add_zero]
@@ -173,8 +172,6 @@ theorem poisson_periodization (V : Type*) [NormedAddCommGroup V] [InnerProductSp
   · intro x
     first
       | exact Summable.of_norm_bounded (hS.mul_left (C * (1 + ‖x‖) ^ b))
-          (fun l => hbound ‖x‖ (norm_nonneg _) l x le_rfl)
-      | exact Summable.of_norm_bounded _ (hS.mul_left (C * (1 + ‖x‖) ^ b))
           (fun l => hbound ‖x‖ (norm_nonneg _) l x le_rfl)
   · refine continuous_iff_continuousAt.mpr (fun x₀ => ?_)
     have hcont : ContinuousOn (fun x => ∑' l : Λ, f (↑l + x)) (Metric.ball (0 : V) (‖x₀‖ + 1)) := by

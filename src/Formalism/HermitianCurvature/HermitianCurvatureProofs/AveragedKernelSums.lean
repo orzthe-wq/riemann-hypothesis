@@ -118,8 +118,7 @@ variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R :
   {ψ : AddChar K ℂ}
 
 theorem psi_R (hL : LocalDatum K R ψ) {r : K} (hr : r ∈ R) : ψ r = 1 := by
-  have := (hL.selfDual 1).2 R.one_mem r hr
-  rwa [one_mul] at this
+  simpa using (hL.selfDual 1).2 R.one_mem r hr
 
 theorem thx_periodic (hD : LocalDatum K R ψ) (m : ℕ) (A B : Finset K) (τ : K → Kˣ)
     (cr : K ⧸ R.toAddSubgroup → Kˣ) (hB : ∀ b ∈ B, b ∈ R) (z r : K) (hr : r ∈ R) :
@@ -248,18 +247,12 @@ section Sum
 variable {K : Type} [CommRing K] {R : Subring K} {ψ : AddChar K ℂ}
 
 theorem out_sub_mem (z : K) : Quotient.out ((z : K) : K ⧸ R.toAddSubgroup) - z ∈ R := by
-  have h1 : ((Quotient.out ((z : K) : K ⧸ R.toAddSubgroup) : K) : K ⧸ R.toAddSubgroup) =
-      (z : K ⧸ R.toAddSubgroup) := QuotientAddGroup.out_eq' _
-  have h3 := R.toAddSubgroup.neg_mem (QuotientAddGroup.eq.mp h1)
-  have e : -(-(Quotient.out ((z : K) : K ⧸ R.toAddSubgroup)) + z) =
-      Quotient.out ((z : K) : K ⧸ R.toAddSubgroup) - z := by ring
-  rw [e] at h3; exact h3
+  simpa [sub_eq_add_neg, add_comm] using
+    R.toAddSubgroup.neg_mem (QuotientAddGroup.eq.mp (QuotientAddGroup.out_eq' ((z : K) : K ⧸ R.toAddSubgroup)))
 
 theorem psi_out (hψ : ∀ r ∈ R, ψ r = 1) {c : K} (hc : c ∈ R) (z : K) :
     ψ (Quotient.out ((z : K) : K ⧸ R.toAddSubgroup) * c) = ψ (z * c) := by
-  have e : Quotient.out ((z : K) : K ⧸ R.toAddSubgroup) * c =
-      z * c + (Quotient.out ((z : K) : K ⧸ R.toAddSubgroup) - z) * c := by ring
-  rw [e, AddChar.map_add_eq_mul, hψ _ (R.mul_mem (out_sub_mem z) hc), mul_one]
+  rw [show Quotient.out ((z : K) : K ⧸ R.toAddSubgroup) * c = z * c + (Quotient.out ((z : K) : K ⧸ R.toAddSubgroup) - z) * c by ring, AddChar.map_add_eq_mul, hψ _ (R.mul_mem (out_sub_mem z) hc), mul_one]
 
 theorem mem_out {P : AddSubgroup K} (hRP : R.toAddSubgroup ≤ P) (z : K) :
     Quotient.out ((z : K) : K ⧸ R.toAddSubgroup) ∈ P ↔ z ∈ P := by
@@ -354,8 +347,7 @@ variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R :
 
 theorem R_le_perp (hL : LocalDatum K R ψ) {L₁ : AddSubgroup K} (hle : L₁ ≤ R.toAddSubgroup) :
     R.toAddSubgroup ≤ perp ψ L₁ := by
-  intro a ha l hl
-  exact psi_R hL (R.mul_mem ha (hle hl))
+  exact fun a ha l hl => psi_R hL (R.mul_mem ha (hle hl))
 
 theorem card_eq (hL : LocalDatum K R ψ) {L₁ : AddSubgroup K} (hle : L₁ ≤ R.toAddSubgroup)
     (B : Finset K) (hB : IsReps B R.toAddSubgroup L₁)

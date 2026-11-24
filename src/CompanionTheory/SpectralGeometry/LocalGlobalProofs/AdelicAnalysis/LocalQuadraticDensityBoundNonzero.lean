@@ -1,8 +1,8 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalQuadraticDensityNearOneStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardLocalHaarPropertiesStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalQuadraticDensityNearOne
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardLocalHaarProperties
 import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -67,19 +67,9 @@ theorem exists_unif (v : HeightOneSpectrum (𝓞 F)) : ∃ π : Fv F v, Valued.v
   obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer F
   exact ⟨((π : v.adicCompletion F) : Fv F v), by rw [v.valuedAdicCompletion_eq_valuation', hπ]⟩
 
-theorem le_exp_of_lt_one {a : WithZero (Multiplicative ℤ)} (h : a < 1) : a ≤ WithZero.exp (-1 : ℤ) := by
-  rcases eq_or_ne a 0 with rfl | ha
-  · exact zero_le
-  · rw [← WithZero.exp_log ha] at h ⊢
-    have h' : WithZero.log a < 0 := by
-      rw [← WithZero.exp_lt_exp, WithZero.exp_zero]; exact h
-    rw [WithZero.exp_le_exp]
-    omega
-
 variable {v : HeightOneSpectrum (𝓞 F)} {ι : Type} [Fintype ι]
 
-theorem mem_int {x : Fv F v} : x ∈ v.adicCompletionIntegers F ↔ Valued.v x ≤ 1 := by
-  exact Iff.rfl
+alias mem_int := _root_.GlobalTheory.CompanionTheory.SW.Hensel.mem_int
 
 theorem q_int (h2 : Valued.v (2 : Fv F v) = 1) {B : Matrix ι ι (Fv F v)}
     (hB : ∀ i j, B i j ∈ v.adicCompletionIntegers F) {y : ι → Fv F v}
@@ -110,7 +100,7 @@ private theorem sigmaFinite_nnreal_smul {X : Type} [MeasurableSpace X] (ν : Mea
 theorem pi_const_smul (ι : Type) [Fintype ι] {X : Type} [MeasurableSpace X] (ν : Measure X) [SigmaFinite ν]
     (c : ℝ≥0) :
     Measure.pi (fun _ : ι => (c : ℝ≥0∞) • ν) = ((c : ℝ≥0∞) ^ Fintype.card ι) • Measure.pi (fun _ : ι => ν) := by
-  haveI := sigmaFinite_nnreal_smul ν c
+  have := sigmaFinite_nnreal_smul ν c
   refine Measure.pi_eq fun s hs => ?_
   rw [Measure.smul_apply, Measure.pi_pi, smul_eq_mul]
   simp only [Measure.smul_apply, smul_eq_mul]
@@ -118,9 +108,9 @@ theorem pi_const_smul (ι : Type) [Fintype ι] {X : Type} [MeasurableSpace X] (�
 
 private theorem sigmaFinite_of_isStdV {lam : Measure (Fv F v)} (hstd : IsStdV v lam) :
     SigmaFinite lam := by
-  haveI := borel_Fv (F := F) (v := v)
+  have := borel_Fv (F := F) (v := v)
   obtain ⟨π, hπ⟩ := exists_unif v
-  obtain ⟨-, hmap, -, -⟩ := GlobalTheory.T.standard_local_haar_properties F v lam hstd
+  obtain ⟨-, hmap, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Vol.volumes_in_completion F v lam hstd
   have hm := hmap π hπ
   have hO : MeasurableSet (v.adicCompletionIntegers F : Set (Fv F v)) :=
     (Valued.isOpen_valuationSubring (Fv F v)).measurableSet
@@ -168,20 +158,20 @@ theorem pi_scale {lam : Measure (Fv F v)} (hstd : IsStdV v lam) {π : Fv F v}
     (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) (T : Set (ι → Fv F v)) :
     (Measure.pi fun _ : ι => lam) {y | (fun i => π * y i) ∈ T} =
       (Ideal.absNorm v.asIdeal : ℝ≥0∞) ^ Fintype.card ι * (Measure.pi fun _ : ι => lam) T := by
-  haveI := borel_Fv (F := F) (v := v)
-  haveI := sigmaFinite_of_isStdV hstd
+  have := borel_Fv (F := F) (v := v)
+  have := sigmaFinite_of_isStdV hstd
   have hπ0 : π ≠ 0 := by
     intro h0
     rw [h0, map_zero] at hπ
     exact WithZero.exp_ne_zero hπ.symm
-  obtain ⟨-, hmap, -, -⟩ := GlobalTheory.T.standard_local_haar_properties F v lam hstd
+  obtain ⟨-, hmap, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Vol.volumes_in_completion F v lam hstd
   have hm := hmap π hπ
   have hN : (Ideal.absNorm v.asIdeal : ℝ≥0∞) = ((Ideal.absNorm v.asIdeal : ℝ≥0) : ℝ≥0∞) :=
     (ENNReal.coe_natCast _).symm
   let e : (ι → Fv F v) ≃ᵐ (ι → Fv F v) :=
     MeasurableEquiv.piCongrRight (fun _ : ι => MeasurableEquiv.mulLeft₀ π hπ0)
   have hpre : {y : ι → Fv F v | (fun i => π * y i) ∈ T} = e ⁻¹' T := rfl
-  haveI hsf : SigmaFinite (lam.map (fun t => π * t)) := by
+  have hsf : SigmaFinite (lam.map (fun t => π * t)) := by
     rw [hm, hN]; exact sigmaFinite_nnreal_smul lam _
   have hmapPi : (Measure.pi fun _ : ι => lam).map (fun x i => π * x i) =
       Measure.pi (fun _ : ι => lam.map (fun t => π * t)) :=
@@ -194,11 +184,11 @@ theorem lam_scale {lam : Measure (Fv F v)} (hstd : IsStdV v lam) {π : Fv F v}
     (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) {A : Set (Fv F v)} (hA : MeasurableSet A) :
     MeasurableSet {z | π * (π * z) ∈ A} ∧
     lam {z | π * (π * z) ∈ A} = (Ideal.absNorm v.asIdeal : ℝ≥0∞) ^ 2 * lam A := by
-  haveI := borel_Fv (F := F) (v := v)
+  have := borel_Fv (F := F) (v := v)
   have hmeas : Measurable (fun z : Fv F v => π * (π * z)) :=
     (measurable_const_mul π).comp (measurable_const_mul π)
   refine ⟨hmeas hA, ?_⟩
-  obtain ⟨-, hmap, -, -⟩ := GlobalTheory.T.standard_local_haar_properties F v lam hstd
+  obtain ⟨-, hmap, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Vol.volumes_in_completion F v lam hstd
   have hm := hmap π hπ
   have h1 : (lam.map (fun t => π * t)).map (fun t => π * t) A = lam {z | π * (π * z) ∈ A} := by
     rw [Measure.map_map (measurable_const_mul π) (measurable_const_mul π), Measure.map_apply ((measurable_const_mul π).comp (measurable_const_mul π)) hA]
@@ -217,7 +207,7 @@ theorem isOpen_unit_sphere : IsOpen {x : Fv F v | Valued.v x = 1} := by
   intro x hx
   refine ⟨(fun y => π⁻¹ * (y - x)) ⁻¹' {x : Fv F v | Valued.v x ≤ 1}, ?_, ?_, ?_⟩
   · intro y hy
-    simp only [Set.mem_preimage, Set.mem_setOf_eq] at hy hx ⊢
+    simp only [Set.mem_preimage, Set.mem_ofPred_eq] at hy hx ⊢
     have h1 : Valued.v (y - x) < Valued.v x := by
       have he : y - x = π * (π⁻¹ * (y - x)) := by
         rw [← mul_assoc, mul_inv_cancel₀ hπ0, one_mul]
@@ -230,11 +220,11 @@ theorem isOpen_unit_sphere : IsOpen {x : Fv F v | Valued.v x = 1} := by
     rw [← hx]
     exact Valuation.map_eq_of_sub_lt _ h1
   · exact hO.preimage (continuous_const.mul (continuous_id.sub continuous_const))
-  · simp only [Set.mem_preimage, Set.mem_setOf_eq, sub_self, mul_zero, map_zero]
+  · simp only [Set.mem_preimage, Set.mem_ofPred_eq, sub_self, mul_zero, map_zero]
     exact zero_le
 
 theorem meas_prim : MeasurableSet {x : ι → Fv F v | ∃ i, Valued.v (x i) = 1} := by
-  haveI := borel_Fv (F := F) (v := v)
+  have := borel_Fv (F := F) (v := v)
   have he : {x : ι → Fv F v | ∃ i, Valued.v (x i) = 1} =
       ⋃ i, (fun x : ι → Fv F v => x i) ⁻¹' {z | Valued.v z = 1} := by
     ext x; simp
@@ -253,7 +243,7 @@ theorem pi_ne_zero {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) :
 theorem div_int {π : Fv F v} (hπ : Valued.v π = WithZero.exp (-1 : ℤ)) {a : Fv F v}
     (h1 : Valued.v a ≤ 1) (h2 : Valued.v a ≠ 1) : Valued.v (π⁻¹ * a) ≤ 1 := by
   have hlt : Valued.v a < 1 := lt_of_le_of_ne h1 h2
-  have hle := le_exp_of_lt_one hlt
+  have hle := _root_.GlobalTheory.CompanionTheory.SW.QuadIso.le_exp_neg_one hlt
   rw [map_mul, val_inv hπ]
   calc WithZero.exp (1 : ℤ) * Valued.v a ≤ WithZero.exp (1 : ℤ) * WithZero.exp (-1 : ℤ) :=
         mul_le_mul_of_nonneg_left hle zero_le
@@ -338,7 +328,7 @@ theorem local_quadratic_density_bound_at_level {lam : Measure (Fv F v)} (hstd : 
         ∀ A : Set (Fv F v), MeasurableSet A → A ⊆ {z | Valued.v (z - s) < Valued.v s} →
           (Measure.pi fun _ : ι => lam) {x | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧
             (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} = (D : ℝ≥0∞) * lam A := by
-  haveI := borel_Fv (F := F) (v := v)
+  have := borel_Fv (F := F) (v := v)
   induction n using Nat.strong_induction_on with
   | _ n ih =>
   intro s hs hs0 hsn
@@ -349,7 +339,7 @@ theorem local_quadratic_density_bound_at_level {lam : Measure (Fv F v)} (hstd : 
   have hq2 : (2 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) := by
     have : 2 ≤ Ideal.absNorm v.asIdeal := by omega
     exact_mod_cast this
-  obtain ⟨Dp, hDpb, hP⟩ := GlobalTheory.T.local_quadratic_density_near_one F v lam hstd h2 ι B hsym hB hdet M hc (by omega) s hs
+  obtain ⟨Dp, hDpb, hP⟩ := _root_.GlobalTheory.CompanionTheory.SW.LGPrim.density_primitive F v lam hstd h2 ι B hsym hB hdet M hc (by omega) s hs
   have hvs0 : Valued.v s ≠ 0 := (Valuation.ne_zero_iff _).mpr hs0
   have hL : Valued.v s = WithZero.exp (WithZero.log (Valued.v s)) := (WithZero.exp_log hvs0).symm
   have hLn : -(n : ℤ) ≤ WithZero.log (Valued.v s) := by
@@ -365,7 +355,7 @@ theorem local_quadratic_density_bound_at_level {lam : Measure (Fv F v)} (hstd : 
         (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} := by
     intro A
     ext x
-    simp only [Set.mem_inter_iff, Set.mem_setOf_eq]
+    simp only [Set.mem_inter_iff, Set.mem_ofPred_eq]
     tauto
   have hsplit : ∀ A : Set (Fv F v),
       (Measure.pi fun _ : ι => lam)
@@ -441,7 +431,7 @@ theorem local_quadratic_density_bound_at_level {lam : Measure (Fv F v)} (hstd : 
       have hA'sub : {z | π * (π * z) ∈ A} ⊆ {z | Valued.v (z - s') < Valued.v s'} := by
         intro z hz
         have h := hA' hz
-        simp only [Set.mem_setOf_eq] at h ⊢
+        simp only [Set.mem_ofPred_eq] at h ⊢
         have he : π * (π * z) - s = π * (π * (z - s')) := by rw [← hss]; ring
         rw [he, val_pp hπ, hrel] at h
         by_contra hcon
@@ -454,7 +444,7 @@ theorem local_quadratic_density_bound_at_level {lam : Measure (Fv F v)} (hstd : 
           {y | (∀ i, y i ∈ v.adicCompletionIntegers F) ∧
             (2 : Fv F v)⁻¹ * (y ⬝ᵥ (B *ᵥ y)) ∈ {z | π * (π * z) ∈ A}} := by
         ext y
-        simp only [Set.mem_setOf_eq, Set.mem_diff]
+        simp only [Set.mem_ofPred_eq, Set.mem_sdiff]
         constructor
         · rintro ⟨⟨hint, hQ⟩, hnp⟩
           refine ⟨fun i => ?_, ?_⟩

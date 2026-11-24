@@ -202,7 +202,6 @@ theorem exists_kap [IsNoetherianRing R] (hM : MulPullSt) (n : ℕ) :
       simp [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]
       module)
     (fun y J hJ => by
-      beta_reduce
       rw [Category.comp_id, MonObj.comp_one, mul_inv_cancel])
   exact ⟨s, hs⟩
 
@@ -218,7 +217,6 @@ theorem exists_nu [IsNoetherianRing R] (hM : MulPullSt) (n : ℕ) : ∃ ν : LB.
       simp [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]
       module)
     (fun y J hJ => by
-      beta_reduce
       rw [Category.comp_id, normd_one hκ hJ, normd_one hκ' hJ, mul_inv_cancel])
   exact ⟨s, hs⟩
 
@@ -268,7 +266,6 @@ theorem univ_identity (hG : GlobalFnsSt) {N : ℕ} {ν : LB.Gen (nuLB D N)} (hν
       have C : IsCub (cubV D.cub (T := 𝟙_ _) y J) := isCub_cubV D.cub hJ
       have e : (1 : 𝟙_ _ ⟶ D.P.A) ≫ 𝟙 D.P.A ^ N = 1 :=
         (comp_id_pow _ _).trans (one_pow _)
-      beta_reduce
       rw [e, C.face₃, C.N_one, Category.comp_id, normd_one hν hJ, normd_one hκ hJ,
         normd_one (u := D.sym) ⟨D.sym_gen, D.sym_rig⟩ hJ]
       simp) Y b z J hJ
@@ -352,7 +349,7 @@ theorem main : LL → AllD fun {R} _ _ {I} D F _ _ => ∀ (N : ℕ), Odd N → �
       have hk' : (N : ℤ) = 2 * k + 1 := by exact_mod_cast hk
       rw [hk']
       apply Additive.ofMul.injective
-      simp only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, ofMul_one]
+      simp only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]
       module)
   have key : ∀ z J, Good D.toPre.P.L z J →
       val w (𝟙 _) z J ^ 2 = val (p.g.s p.y) (𝟙 _) z J * val ν p.g.b.left z J ∧

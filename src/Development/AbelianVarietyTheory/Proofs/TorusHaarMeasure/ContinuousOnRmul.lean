@@ -57,6 +57,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.D
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthogonalFrameDomain
 import Std.Tactic.BVDecide.Normalize.Prop
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustFStatementPfC
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.FundSetPf
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientDomain
 
 @[expose] public section
 
@@ -168,7 +170,7 @@ theorem _root_.GlobalTheory.UnitaryInvMeasure.gram_lmulC {n : X.Ψ → Matrix (F
     intro c
     unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.col
     ext k
-    simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.mat, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.lmulC, Matrix.mulVec, dotProduct, Matrix.mul_apply]
+    simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.mat, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.lmulC, Matrix.mulVec, dotProduct]
     rfl
   rw [key, key, hn τ]
 
@@ -196,45 +198,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 variable (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 private theorem continuous_frame_mat (τ : X.Ψ) : Continuous fun x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r => _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ :=
   continuous_apply τ
-
-open NumberField MeasureTheory Topology in
-open scoped ContDiff ENNReal Matrix in
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
-variable (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
-private theorem continuous_dmin_torus_haar_measure (τ : X.Ψ) (i : Fin (r + 1)) :
-    Continuous fun x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r => _root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm x τ i := by
-  unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.dmin _root_.ReciprocityTheory.ChartRestriction.G.FD.lminor
-  simp only [_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_eq]
-  have h := continuous_frame_mat X τ
-  refine Continuous.matrix_det (Continuous.matrix_submatrix ?_ _ _)
-  exact (h.matrix_transpose.matrix_mul continuous_const).matrix_mul
-    (h.matrix_map continuous_star)
-
-open NumberField MeasureTheory Topology in
-open scoped ContDiff ENNReal Matrix in
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
-variable (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
-private theorem isOpen_X_dom : IsOpen X.dom := by
-  unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.dom _root_.ReciprocityTheory.ChartRestriction.G.FD.GG
-  simp only [Set.setOf_forall, Set.setOf_and]
-  refine isOpen_iInter_of_finite fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)
-  · exact isOpen_ne_fun (continuous_frame_mat X τ).matrix_det continuous_const
-  · exact isOpen_lt continuous_const
-      (continuous_const.mul (Complex.continuous_re.comp (continuous_dmin_torus_haar_measure X τ i)))
-
-open NumberField MeasureTheory Topology in
-open scoped ContDiff ENNReal Matrix in
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
-variable (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
-private theorem continuous_cpt_torus_haar_measure (x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r) : Continuous (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0) := by
-  refine continuous_pi fun τ => continuous_pi fun a => continuous_pi fun c => ?_
-  have : ∀ z, _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 z τ a c = ∑ k, x0 τ a k * _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExF.nM X z τ k c := by
-    intro z
-    have h := congrFun (congrFun (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExF.mat_cpt X x0 z τ) a) c
-    exact h
-  simp_rw [this]
-  refine continuous_finsetSum _ fun k _ => continuous_const.mul ?_
-  exact (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExF.cd_nM X τ k c).continuous
 
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
@@ -400,7 +363,7 @@ theorem _root_.GlobalTheory.UnitaryInvMeasure.invMeas :
     (fun p => ι (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul p.1 (β p.1)) (_root_.GlobalTheory.UnitaryInvMeasure.diagF X p.2))) (fun _ => 1)
   have hPm : Measurable P := by
     refine ContinuousOn.measurable_piecewise ?_ continuousOn_const
-      ((isOpen_X_dom X).measurableSet.prod MeasurableSet.univ)
+      ((_root_.ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom X).measurableSet.prod MeasurableSet.univ)
     have h3 : ContinuousOn (fun p : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r × _root_.GlobalTheory.UnitaryInvMeasure.Torus X =>
         _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul p.1 (β p.1)) S :=
       (_root_.GlobalTheory.UnitaryInvMeasure.continuous_rmul X).comp_continuousOn
@@ -422,7 +385,7 @@ theorem _root_.GlobalTheory.UnitaryInvMeasure.invMeas :
     (hf.comp hPm).lintegral_prod_right'
   have hQm : Measurable fun p : _root_.ReciprocityTheory.L2DbarEstimates.V (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X) × _root_.GlobalTheory.UnitaryInvMeasure.Torus X =>
       P (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 p.1, p.2) :=
-    hPm.comp (((continuous_cpt_torus_haar_measure X x0).measurable.comp measurable_fst).prodMk measurable_snd)
+    hPm.comp (((_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.cont_cpt X x0).measurable.comp measurable_fst).prodMk measurable_snd)
   let ν : Measure H := ((_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.muF X x0).prod (_root_.GlobalTheory.UnitaryInvMeasure.haarT X)).map
     fun p => P (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 p.1, p.2)
   have hK : ∀ f : H → ℝ≥0∞, Measurable f →
@@ -430,7 +393,7 @@ theorem _root_.GlobalTheory.UnitaryInvMeasure.invMeas :
     intro f hf
     rw [lintegral_map hf hQm]
     exact lintegral_prod (fun p => f (P (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 p.1, p.2))) (hf.comp hQm).aemeasurable
-  have hOm : MeasurableSet (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OmF X x0) := ((isOpen_X_dom X).preimage (continuous_cpt_torus_haar_measure X x0)).measurableSet
+  have hOm : MeasurableSet (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OmF X x0) := ((_root_.ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom X).preimage (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.cont_cpt X x0)).measurableSet
   have hae : ∀ᵐ z ∂_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.muF X x0, _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 z ∈ X.dom := by
     have h1 : ∀ᵐ z ∂(volume.restrict (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OmF X x0)), z ∈ _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OmF X x0 := ae_restrict_mem hOm
     unfold _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.muF

@@ -103,7 +103,7 @@ theorem map_mul_left_volM (h : GL n k) :
     Real.one_rpow, mul_one] at key
   have h2 : (c : ℝ) = nabs k (Matrix.GeneralLinearGroup.det h) ^ (-(Fintype.card n : ℝ)) := by
     refine mul_right_cancel₀ hr ?_
-    simp only [NNReal.smul_def, smul_smul, Complex.real_smul, mul_one] at key
+    simp only [NNReal.smul_def, Complex.real_smul, mul_one] at key
     exact_mod_cast key
   rw [hc, ← h2, ENNReal.ofReal_coe_nnreal]
   rfl

@@ -145,15 +145,13 @@ theorem a_big (hX : X.Hyp p K) : 416 * (X.Ns : ℝ) ≤ X.a := by
     _ ≤ X.a := hX.P3
 
 theorem four_hundred_sixteen_le_a (hX : X.Hyp p K) : 416 ≤ X.a := by
-  have h1 := a_big hX
   have h2 : (6 : ℝ) ≤ X.Ns := by exact_mod_cast six_le_Ns hX
-  linarith
+  linarith [a_big hX]
 
 theorem log_a_ge (hX : X.Hyp p K) : 1 ≤ Real.log X.a := by
   have h := four_hundred_sixteen_le_a hX
   rw [Real.le_log_iff_exp_le (by linarith)]
-  have h2 := Real.exp_one_lt_d9
-  linarith
+  linarith [Real.exp_one_lt_d9]
 
 theorem k_big (hX : X.Hyp p K) (hk : 1088 ≤ X.Ck) : 1088 * (X.Ns : ℝ) ^ 2 ≤ ((r + K : ℕ) : ℝ) := by
   have hl := log_a_ge hX

@@ -277,14 +277,14 @@ theorem framepf_JLA_sat {r : ℕ} (eL : LcQ W T π' c ≃ₗ[O] (Fin r → O)) (
       rw [← sub_eq_zero]
       apply hA
       have h2 := congrArg (W.γA δ) hb'
-      rw [map_mul, map_mul, map_pow, map_natCast, hb δ hδ, Formalism.MainNotions.LiftingTheory.wmap_γA_letE] at h2
+      rw [map_mul, map_mul, map_pow, map_natCast, hb δ hδ, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent] at h2
       rw [mul_sub, ← h2, hb', sub_self]
     refine ⟨b', hb'Δ, ?_⟩
     have h3 : ((PD.p : ℕ) : LetA O n) ^ j *
         ((letE c : LetA O n) * a - Eπ ^ h' * (π' ^ M * Eπ ^ (3 * h')) * ((letE c : LetA O n) * b')) = 0 := by
       apply W.EE_inj
       have h4 : ((PD.p : ℕ) : LetA O n) ^ j * ((letE c : LetA O n) * b') = (letE c : LetA O n) * b := by
-        rw [mul_left_comm, ← hb', ← mul_assoc, Formalism.MainNotions.LiftingTheory.wmap_letE_idem]
+        rw [mul_left_comm, ← hb', ← mul_assoc, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
       rw [mul_sub, mul_left_comm _ (Eπ ^ h' * _), h4, map_sub, map_mul, ← hae,
         map_mul (algebraMap (LetA O n) W.EE) (Eπ ^ h' * _), map_mul (algebraMap (LetA O n) W.EE) (Eπ ^ h'),
         ← hbe, ← hge, ← hΛe, map_pow, map_natCast, map_zero, mul_assoc, h1]
@@ -330,10 +330,10 @@ theorem framepf_Ψα_nat (hu : IsUnit (algebraMap (LetA O n) W.EE π'))
       · show _ ∈ DelS W T₂
         rw [mem_DelS]
         intro δ hδ
-        rw [gradNPf_γD_smul, ← W.φγ_comm, hdΔ.2 δ hδ, map_mul, map_mul, huΔ δ hδ, a.2 δ hδ,
-          Formalism.MainNotions.LiftingTheory.wmap_γA_letE]
+        rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, ← W.φγ_comm, hdΔ.2 δ hδ, map_mul, map_mul, huΔ δ hδ, a.2 δ hδ,
+          _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent]
       · show _ ∈ letS W T₂ c
-        rw [mem_letS, smul_smul, ← mul_assoc, ← mul_assoc, Formalism.MainNotions.LiftingTheory.wmap_letE_idem]
+        rw [mem_letS, smul_smul, ← mul_assoc, ← mul_assoc, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
       · rw [e, LinearMap.lTensor_tmul, hΨ₂, hΨ₁, map_smul, W.map_φ, ← smul_sub, ← map_sub, ← hde,
           Formalism.MainNotions.LiftingTheory.wmap_φD_smul, map_pow, hφ, algebraMap_smul, smul_smul, smul_smul]
         congr 1

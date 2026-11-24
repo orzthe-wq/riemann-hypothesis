@@ -2,7 +2,8 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptFlagXdeg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -52,7 +53,7 @@ namespace GlobalTheory.CompanionTheory.Ar.BdSym
 
 theorem boundary_closed_torus_conj : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (T : Set X) (bd : Ideal (MRing J)), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → (∀ (z : Spec (CommRingCat.of ℂ) ⟶ X) w, CoordsAt ξ y z w → (w ∈ mcPts bd ↔ centre z ∉ T)) → IsClosed ((↑) ⁻¹' (mcPts (mCoordIdeal y) ∩ mcPts bd) : Set (mcPts (mCoordIdeal y))) ∧ (∀ z ∈ mcPts (mCoordIdeal y) ∩ mcPts bd, ∀ c : K → ℂ, (∀ k, c k ≠ 0) → torusSmul c z ∈ mcPts (mCoordIdeal y) ∩ mcPts bd) ∧ ∀ z ∈ mcPts (mCoordIdeal y) ∩ mcPts bd, conjVec z ∈ mcPts (mCoordIdeal y) ∩ mcPts bd := by
   intro X Ω _ ξ K _ J _ y T bd hT hbd
-  have key := GlobalTheory.T.complex_points_iff_centres X Ω ξ K J y hT
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt X Ω ξ K J y hT
   refine ⟨?_, ?_, ?_⟩
   · have e : ((↑) ⁻¹' (mcPts (mCoordIdeal y) ∩ mcPts bd) : Set (mcPts (mCoordIdeal y))) =
         ⋂ f ∈ bd, {w : mcPts (mCoordIdeal y) |
@@ -60,7 +61,7 @@ theorem boundary_closed_torus_conj : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω]
       ext w
       have hw : w.1 ∈ mcPts (mCoordIdeal y) := w.2
       rw [Set.mem_iInter₂]
-      simp only [mcPts, Set.mem_preimage, Set.mem_inter_iff, Set.mem_ofPred_eq] at hw ⊢
+      simp only [mcPts, Set.mem_ofPred_eq] at hw ⊢
       exact ⟨fun h => h.2.2, fun h => ⟨hw, hw.1, h⟩⟩
     rw [e]
     refine isClosed_iInter fun f => isClosed_iInter fun _ => isClosed_eq ?_ continuous_const

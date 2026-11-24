@@ -132,7 +132,7 @@ theorem ratE_inj (he : ∀ h h', IsEmb h h' (e (h, h'))) : Function.Injective fu
     obtain ⟨t, ht⟩ := mem_parabolic_GL2_iff.1 ((cos_eq (a := ratE he δ) (b := ratE he δ')).1 h)
     change IsPar (e (1, δ') * (e (1, δ))⁻¹) t at ht
     rw [← map_inv, ← map_mul, isPar_iff, he] at ht
-    simp only [diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.mul_one, Matrix.zero_mul, add_zero, zero_add,
+    simp only [diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.mul_one, add_zero, zero_add,
       Matrix.one_mul] at ht
     obtain ⟨a, b⟩ := Matrix.fromRows_inj ht
     have : (1 : UA σ Y.J) * 1⁻¹ = δ'.1 * δ.1⁻¹ := Subtype.ext (Units.ext (a.trans b.symm))

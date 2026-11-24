@@ -1,7 +1,7 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.UpVApply
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestrictionStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestriction
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartSixth
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSecond
 import Mathlib.Algebra.Order.Floor.Extended
@@ -77,7 +77,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc
   obtain ⟨hBM, hkp, -, hBC, hr, hrc, -⟩ := hc
   have hmaps : Set.MapsTo (pBase M v) (mcPts (mCoordIdeal (y ∘ v))) (mcPts (mCoordIdeal M.x)) :=
-    (GlobalTheory.T.blockMap_frame_restriction K ι Φ y Ψ N j M keep Kk ιk κ v hBM hkp).1
+    (_root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main K ι Φ y Ψ N j M keep Kk ιk κ v hBM hkp).1
   have key : ∀ z₀ ∈ pO M Rb keep v F kb V r h,
       pO M Rb keep v F kb V r h ∈ 𝓝[mcPts (mCoordIdeal (y ∘ v))] z₀ := by
     rintro z₀ ⟨hz₀, hsrc, hV₀, hm⟩

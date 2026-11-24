@@ -84,7 +84,7 @@ theorem trace_mul_eq_sum (bb : Module.Basis (Fin r) F K) (hb : ∀ i, bb i = τ 
     Algebra.trace F K (x * a) = ∑ j, bb.repr x j * Algebra.trace F K (τ ^ (j : ℕ) * a) := by
   conv_lhs => rw [← bb.sum_repr x]
 
-  simp [Finset.sum_mul, smul_mul_assoc, map_sum, hb]
+  simp [Finset.sum_mul, map_sum, hb]
 
 end Gen
 
@@ -147,7 +147,7 @@ theorem invK_regular_iff_isUnit :
   let Ψ : A.K →ₗ[F] (Fin r → F) :=
     { toFun := fun a i => Algebra.trace F A.K (τ ^ (i : ℕ) * a)
       map_add' := fun a a' => by funext i; simp [mul_add]
-      map_smul' := fun c a => by funext i; simp [mul_smul_comm] }
+      map_smul' := fun c a => by funext i; simp }
   have hΨ : ∀ a, Ψ a = fun i : Fin r => Algebra.trace F A.K (τ ^ (i : ℕ) * a) := fun _ => rfl
   have hinj : Function.Injective Ψ := by
     rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']

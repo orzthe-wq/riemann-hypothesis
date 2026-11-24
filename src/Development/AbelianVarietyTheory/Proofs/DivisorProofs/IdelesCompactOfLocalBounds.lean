@@ -87,7 +87,7 @@ theorem isCompact_restrictedProduct_forall_mem {ι : Type} (R : ι → Type) [�
 theorem repr_tmul_basis {n : ℕ} {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (b : Module.Basis (Fin n) F E) (a : R) (x : E) (j : Fin n) :
     (Algebra.TensorProduct.basis R b).repr (a ⊗ₜ[F] x) j = a * algebraMap F R (b.repr x j) := by
-  simp [Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def, mul_comm]
+  simp [Algebra.TensorProduct.basis_repr_tmul]
 
 theorem eventually_repr_mem_of_mem_intLoc (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [Module.Finite F E] (j : Fin (Module.finrank F E)) : ∀ᶠ v in Filter.cofinite, ∀ y ∈ intLoc F E v,

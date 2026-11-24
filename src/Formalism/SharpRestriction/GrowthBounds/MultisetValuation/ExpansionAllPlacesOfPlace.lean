@@ -186,18 +186,6 @@ section Places
 
 variable {p : ℕ} [hp : Fact p.Prime]
 
-theorem th_Gt_sigma {Pl : Type} [Fintype Pl] (E : Pl → Type) [∀ v, Fintype (E v)] (c c' : K0 p) :
-    Gt p (Σ v, E v) c c' = ∑ v, ren (Sum.map (Sigma.mk v) (Sigma.mk v)) (Gt p (E v) c c') := by
-  unfold Gt
-  rw [Fintype.sum_sigma]
-  refine Finset.sum_congr rfl fun v _ => ?_
-  rw [th_ren_sum]
-  refine Finset.sum_congr rfl fun e _ => ?_
-  rw [th_ren_ren]
-  congr 1
-  funext k
-  fin_cases k <;> rfl
-
 theorem th_Gt_const (E : Type) [Fintype E] (c c' : K0 p) : MvPowerSeries.constantCoeff (Gt p E c c') = 0 := by
   unfold Gt
 
@@ -221,42 +209,6 @@ theorem th_coordZA_eq (K' : Type) [Field K'] [Algebra (K0 p) K'] (j : ℕ) (v : 
       ren (fun z => (⟨v, z⟩ : X.ZA j)) (coordZ (X.om v) K' 1 x) := by
   rcases x with ⟨r, a, b⟩ | ⟨r, a, b⟩ <;>
   · simp only [Sum.map_inl, Sum.map_inr, Sys.coordZA, coordZ, th_ren_sum, th_ren_mul, th_ren_C, th_ren_X, one_mul]
-
-theorem restGcA_of (hG : RestGc p) : RestGcA X := by
-  intro c hc j K' _ _ vp hvp μ h0 h1
-  have hcz := charZero_K' p K'
-  choose u hu V hV hEq using fun v : X.Pl => hG (X.std v).five_le c hc (X.G.P.n' v) (NN X.G.P.m X.t j)
-    (NN X.G.P.m X.t (j + 1)) (X.std v).two_le (X.std v).even (X.om v) K' vp hvp μ h0 h1
-  refine ⟨u, hu, ∏ v, ren (fun z => (⟨v, z⟩ : X.ZA j)) (V v),
-    IntR_prod _ _ fun v _ => th_IntR_ren _ (hV v), ?_⟩
-  have hT0 := th_tOf_const vp μ h0 (X.coordZA K' j) (coordZA_const X K' j)
-  have hT := MvPowerSeries.hasSubst_of_constantCoeff_zero hT0
-  have hmG : ∀ v : X.Pl, MvPowerSeries.constantCoeff (MvPowerSeries.map (algebraMap (K0 p) K')
-      (Gt p (Eidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1))) (wK p c) (wK p (sigW p c)))) = 0 := by
-    intro v
-    rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map,
-      MvPowerSeries.coeff_zero_eq_constantCoeff_apply, th_Gt_const, map_zero]
-  have e1 : expK (-(MvPowerSeries.map (algebraMap (K0 p) K') (Gt p (X.EA j) (wK p c) (wK p (sigW p c))))) =
-      ∏ v : X.Pl, ren (Sum.map (Sigma.mk v) (Sigma.mk v)) (expK (-(MvPowerSeries.map (algebraMap (K0 p) K')
-        (Gt p (Eidx (X.G.P.n' v) (NN X.G.P.m X.t j) (NN X.G.P.m X.t (j + 1))) (wK p c) (wK p (sigW p c)))))) := by
-
-    rw [th_Gt_sigma, map_sum, ← Finset.sum_neg_distrib, th_expK_sum]
-    · refine Finset.prod_congr rfl fun v _ => ?_
-      rw [th_ren_expK _ (by rw [map_neg, hmG v, neg_zero]), th_ren_neg, th_map_ren]
-    · intro v _
-      rw [map_neg, th_map_ren, th_ren_const _ (hmG v), neg_zero]
-  rw [e1, ← MvPowerSeries.coe_substAlgHom hT, map_prod, ← Finset.prod_mul_distrib]
-  refine Finset.prod_congr rfl fun v _ => ?_
-  rw [MvPowerSeries.coe_substAlgHom hT, th_subst_ren _ hT]
-  have e2 : (fun k => tOf vp μ (X.coordZA K' j) (Sum.map (Sigma.mk v) (Sigma.mk v) k)) =
-      fun k => ren (fun z => (⟨v, z⟩ : X.ZA j)) (tOf vp μ (coordZ (X.om v) K' 1) k) := by
-    funext k
-    unfold tOf
-    rw [th_coordZA_eq, th_ren_psubst _ (coordZ_const (X.om v) K' 1 k)]
-  rw [e2, ← th_ren_subst _ (MvPowerSeries.hasSubst_of_constantCoeff_zero
-    (th_tOf_const vp μ h0 _ (coordZ_const (X.om v) K' 1))), hEq v, th_ren_mul,
-    th_ren_expK _ (by rw [map_neg, map_mul, hhS_const, mul_zero, neg_zero]), th_ren_neg, th_ren_mul, th_ren_C,
-    th_hhA_eq]
 
 end Places
 

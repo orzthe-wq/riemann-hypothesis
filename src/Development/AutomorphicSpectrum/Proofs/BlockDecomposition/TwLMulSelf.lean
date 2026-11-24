@@ -234,13 +234,13 @@ theorem liftL_annL (T : Module.End ℂ V) (l : Lt n) :
     ((liftL n T : Module.End ℂ (Cq n V)) * annL l : Module.End ℂ (Cq n V)) = annL l * (liftL n T : Module.End ℂ (Cq n V)) := by
   refine LinearMap.ext fun x => funext fun A => ?_
   simp only [Module.End.mul_apply, liftL_apply, annL_apply]
-  split_ifs <;> simp [liftL_apply]
+  split_ifs <;> simp
 
 theorem liftL_creL (T : Module.End ℂ V) (l : Lt n) :
     ((liftL n T : Module.End ℂ (Cq n V)) * creL l : Module.End ℂ (Cq n V)) = creL l * (liftL n T : Module.End ℂ (Cq n V)) := by
   refine LinearMap.ext fun x => funext fun A => ?_
   simp only [Module.End.mul_apply, liftL_apply, creL_apply]
-  split_ifs <;> simp [liftL_apply]
+  split_ifs <;> simp
 
 def adS (S : Lt n → Prop) (s : Bool) (p q : Fin n) : Module.End ℂ (Cq n V) :=
   open Classical in ∑ l : Lt n, ∑ k : Lt n, if S l then adCL s p q l k • (creL k * annL l) else 0

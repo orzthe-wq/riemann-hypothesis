@@ -110,12 +110,7 @@ private theorem forall_avoidsCenters_strictTransformι_of_isGenericPoint [Algebr
     · rw [← key]
       exact ih (Nat.le_of_succ_le hi) C' hC' _ hη'
 
-theorem avoidsCenters_strictTransformι_of_isGenericPoint [AlgebraicGeometry.IsReduced Y] (S : EmbeddedBlowupSequence k Y pY)
-    (hN : ∀ j ≤ S.length, AlgebraicGeometry.IsNoetherian (S.schemeAt j)) (i : ℕ) (hi : i ≤ S.length)
-    (C : Set ↥(S.strictTransform i)) (hC : C ∈ irreducibleComponents ↥(S.strictTransform i))
-    (ξ : ↥(S.strictTransform i)) (hξ : IsGenericPoint ξ C) :
-    S.AvoidsCenters i ((S.strictTransformι i).base ξ) :=
-  forall_avoidsCenters_strictTransformι_of_isGenericPoint S hN i hi C hC ξ hξ
+alias avoidsCenters_strictTransformι_of_isGenericPoint := _root_.FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.forall_avoidsCenters_strictTransformι_of_isGenericPoint
 
 theorem isOpenImmersion_ι_comp_blowdown (S : EmbeddedBlowupSequence k Y pY) (i : ℕ) (hi : i < S.length)
     (U : (S.schemeAt (i + 1)).Opens)
@@ -377,14 +372,7 @@ private theorem forall_not_avoidsCenters_of_mem_boundary_support (D : EmbeddingD
             ((principalizationOfEmbedding k Y pY D A).center i) x hx
         exact hcl'.1 hmem2
 
-theorem not_avoidsCenters_of_mem_boundary_support (D : EmbeddingDatum k Y pY) (A : PrincipalizationAlgorithm.{u})
-    (i : ℕ) (hi : i ≤ (D.toEmbeddedBlowupSequence A).length)
-    (E : ((principalizationOfEmbedding k Y pY D A).schemeAt i).IdealSheafData)
-    (hE : E ∈ (principalizationOfEmbedding k Y pY D A).boundary i)
-    (x : ↥((D.toEmbeddedBlowupSequence A).schemeAt i))
-    (hx : x ∈ (E.support : Set ↥((principalizationOfEmbedding k Y pY D A).schemeAt i))) :
-    ¬ (D.toEmbeddedBlowupSequence A).AvoidsCenters i x :=
-  forall_not_avoidsCenters_of_mem_boundary_support D A i hi E hE x hx
+alias not_avoidsCenters_of_mem_boundary_support := _root_.FunctorialResolution.EmbeddedResolution.OpenImmersionRestriction.forall_not_avoidsCenters_of_mem_boundary_support
 
 private theorem ker_congr {A B : Scheme.{u}} {f g : A ⟶ B}
     [AlgebraicGeometry.QuasiCompact f] [AlgebraicGeometry.QuasiCompact g] (h : f = g) :

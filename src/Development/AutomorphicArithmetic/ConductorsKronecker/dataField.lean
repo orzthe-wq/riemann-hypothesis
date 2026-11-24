@@ -51,11 +51,6 @@ private theorem UpperTheory.GL.df_modEq_iff {N M : ℕ} [NeZero N] (x : ZMod N) 
     x.val ≡ a [MOD M] ↔ (x.cast : ZMod M) = (a : ZMod M) := by
   rw [← ZMod.natCast_val, ZMod.natCast_eq_natCast_iff]
 
-private theorem UpperTheory.GL.df_mem_local {N : ℕ} [NeZero N] (p : ℕ) (u : (ZMod N)ˣ) :
-    u ∈ Formalism.LFunctionChainParameters.LHost.localUnits N p ↔ (u : ZMod N).val ≡ 1 [MOD ordCompl[p] N] := by
-  rw [UpperTheory.GL.df_modEq_iff, Nat.cast_one, Formalism.LFunctionChainParameters.LHost.localUnits, MonoidHom.mem_ker, Units.ext_iff,
-    ZMod.unitsMap_val, Units.val_one]
-
 private theorem UpperTheory.GL.df_mem_frob {N : ℕ} [NeZero N] (p : ℕ) (hp : p.Prime) (u : (ZMod N)ˣ) :
     u * (frobUnit N p)⁻¹ ∈ Formalism.LFunctionChainParameters.LHost.localUnits N p ↔ (u : ZMod N).val ≡ p [MOD ordCompl[p] N] := by
   have hw := (frobenius_unit_spec N p (NeZero.ne N) hp).1.1
@@ -80,10 +75,10 @@ theorem UpperTheory.GL.dataField :
       (IsArithFrobAt ℤ σ P ↔ (toE φ (H.gal σ)).toAdd - (arith H.toHostRaw).frob p ∈ (arith H.toHostRaw).inertia p) := by
   intro φ H p _ P _ _ σ
   have hp : p.Prime := Fact.out
-  haveI : NeZero H.condN := ⟨(Nat.mul_pos (Nat.mul_pos H.QS_pos H.hyp.1.pos) H.hyp.2.1.pos).ne'⟩
+  have : NeZero H.condN := ⟨(Nat.mul_pos (Nat.mul_pos H.QS_pos H.hyp.1.pos) H.hyp.2.1.pos).ne'⟩
   constructor
   · rw [H.der.inertia p P σ, UpperTheory.GL.df_inertia]
-    simp only [UpperTheory.GL.df_mem_local]
+    simp only [_root_.Formalism.LFunctionChainParameters.LHost.mem_localUnits_iff]
   · have hfr : (arith H.toHostRaw).frob p =
         (toE φ (H.art (Formalism.LFunctionChainParameters.LHost.frobUnit H.condN p))).toAdd := rfl
     rw [hfr, ← toAdd_div, ← map_div, UpperTheory.GL.df_inertia, H.der.frob_any p P σ]

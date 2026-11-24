@@ -67,7 +67,7 @@ theorem intF_isOpen (M : ℕ) (hM : 0 < M) : IsOpen (intF F M) := by
         rintro _ ⟨a, ha, rfl⟩
         exact ⟨-a, fun v => neg_mem (ha v), (smul_neg M a).symm⟩ }
   have hS : IsOpen (S : Set (Af F)) :=
-    S.isOpen_of_mem_nhds (g := 0) (GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds F M hM)
+    S.isOpen_of_mem_nhds (g := 0) (_root_.GlobalTheory.IntegralNeighbourhoodZero.nsmul_integral_mem_nhds_zero F M hM)
   have e : intF F M = Prod.snd ⁻¹' (S : Set (Af F)) := by
     ext x
     constructor

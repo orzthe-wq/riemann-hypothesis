@@ -109,7 +109,7 @@ theorem wtPQ_mid (mm a b : ℕ) (j : Fin mm) : wtPQ (mm + 1) a b (midI mm j) = 0
 
 theorem nuOf_wt_zero (mm a b : ℕ) : nuOf (wtPQ (mm + 1) a b) 0 = a + b := by
   have hne : (Fin.last (mm + 1)) ≠ 0 := by simp [Fin.ext_iff]
-  simp only [nuOf, wtPQ, if_pos rfl, if_neg hne, if_true]
+  simp only [nuOf, wtPQ, if_neg hne, if_true]
   omega
 
 theorem nuOf_wt_mid (mm a b : ℕ) (j : Fin mm) : nuOf (wtPQ (mm + 1) a b) (midI mm j) = b := by
@@ -123,7 +123,7 @@ theorem nuOf_wt_add (mm a b a' b' : ℕ) :
     nuOf (wtPQ (mm + 1) (a + a') (b + b')) = nuOf (wtPQ (mm + 1) a b) + nuOf (wtPQ (mm + 1) a' b') := by
   funext t
   have hne : (Fin.last (mm + 1)) ≠ 0 := by simp [Fin.ext_iff]
-  simp only [Pi.add_apply, nuOf, wtPQ, if_neg hne, if_pos rfl]
+  simp only [Pi.add_apply, nuOf, wtPQ, if_neg hne]
   split_ifs <;> push_cast <;> omega
 
 section Data
@@ -218,13 +218,6 @@ theorem shapeC_lo' : shapeC (2 * ccl) (fun j => nuOf (dualWt (lam - wtPQ (mm + 1
 
 end Data
 
-theorem qsDualWt_anti {m : ℕ} (mu : Fin (m + 1) → ℤ) (h : Antitone mu) : Antitone (dualWt mu) := by
-  intro i j hij
-  exact neg_le_neg (h (Fin.rev_le_rev.mpr hij))
-
-theorem rowDeg_add {k n : ℕ} (u v : Fin k × Fin n →₀ ℕ) (a : Fin k) : rowDeg (u + v) a = rowDeg u a + rowDeg v a := by
-  simp only [rowDeg, Finsupp.add_apply, Finset.sum_add_distrib]
-
 theorem rowA_mul {K : Type} [CommRing K] {k n : ℕ} (a : Fin k) (f g : MvPolynomial (Fin k × Fin n) K) (d d' : ℕ)
     (hf : RowA a f d) (hg : RowA a g d') : RowA a (f * g) (d + d') := by
   classical
@@ -233,7 +226,7 @@ theorem rowA_mul {K : Type} [CommRing K] {k n : ℕ} (a : Fin k) (f g : MvPolyno
   obtain ⟨x, hx, hne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hu
   have h1 : AddMonoidAlgebra.coeff f x.1 ≠ 0 := fun h => hne (by rw [h, zero_mul])
   have h2 : AddMonoidAlgebra.coeff g x.2 ≠ 0 := fun h => hne (by rw [h, mul_zero])
-  rw [← Finset.HasAntidiagonal.mem_antidiagonal.1 hx, rowDeg_add, hf _ h1, hg _ h2]
+  rw [← Finset.HasAntidiagonal.mem_antidiagonal.1 hx, _root_.Formalism.GradedWeylDivisibility.rowDeg_add, hf _ h1, hg _ h2]
 
 theorem rowA_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {k n : ℕ} (a : Fin k)
     (f : MvPolynomial (Fin k × Fin n) A) (d : ℕ) (hf : RowA a f d) : RowA a (map φ f) d := by
@@ -265,7 +258,7 @@ private theorem rowA_X_lemma_3 {K : Type} [CommRing K] {k n : ℕ} (a : Fin k) (
     by_cases hb : b = a
     · subst hb
       simp [rowDeg, Finsupp.single_apply, Prod.mk.injEq]
-    · simp [rowDeg, Finsupp.single_apply, Prod.mk.injEq, hb]
+    · simp [rowDeg, Prod.mk.injEq, hb]
   · exact absurd rfl hu
 
 private theorem rowA_add_lemma_4 {K : Type} [CommRing K] {k n : ℕ} (a : Fin k)
@@ -323,7 +316,7 @@ private theorem cnt_lemma_9 {k : ℕ} (a : Fin k) (s : ℕ) (hr : s ≤ k) :
     (∑ p : Fin s, if Fin.castLE hr p = a then 1 else 0) = if a.val < s then 1 else 0 := by
   split_ifs with h
   · rw [Finset.sum_eq_single ⟨a.val, h⟩]
-    · simp [Fin.ext_iff]
+    · simp
     · intro b _ hb
       rw [if_neg]
       intro hc
@@ -349,7 +342,7 @@ private theorem tele_lemma_10 {k : ℕ} (ν : Fin k → ℕ) (hν : Antitone ν)
   have hanti : ∀ m n, m ≤ n → g n ≤ g m := by
     intro m n hmn
     simp only [hg]
-    split_ifs <;> first | exact hν (Fin.mk_le_mk.mpr hmn) | omega | exact Nat.zero_le _
+    split_ifs <;> first | exact hν (Fin.mk_le_mk.mpr hmn) | omega
   have key : ∀ n, n ≤ k → (∑ i ∈ Finset.range n, (g i - g (i + 1)) * (if a.val < i + 1 then 1 else 0)) =
       if a.val < n then g a.val - g n else 0 := by
     intro n
@@ -402,7 +395,7 @@ theorem rowA_lam (hC : LamCoeffP) (hR : SubRowP) (K : Type) [Field K] (r : ℕ)
   obtain ⟨x, hx, hne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hu
   have h1 : AddMonoidAlgebra.coeff (subY K r v) x.1 ≠ 0 := fun h => hne (by rw [h, map_zero, zero_mul, map_zero])
   have h2 : AddMonoidAlgebra.coeff (subY K r t) x.2 ≠ 0 := fun h => hne (by rw [h, map_zero, mul_zero, map_zero])
-  rw [← Finset.HasAntidiagonal.mem_antidiagonal.1 hx, rowDeg_add, hR K r a d v hv _ h1, hR K r a d' t ht _ h2]
+  rw [← Finset.HasAntidiagonal.mem_antidiagonal.1 hx, _root_.Formalism.GradedWeylDivisibility.rowDeg_add, hR K r a d v hv _ h1, hR K r a d' t ht _ h2]
 
 theorem evalId_map {A B : Type} [CommRing A] [CommRing B] (ψ : A →+* B) (k n : ℕ) (h : MvPolynomial (Fin k × Fin n) A) :
     eval (idPoint B k n) (map ψ h) = ψ (eval (idPoint A k n) h) := by

@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -197,8 +198,7 @@ theorem Fam.rank_le [IsNoetherianRing R] (C : Fam Xo c R) :
   obtain ⟨τ₁, τ₂, h₁, h₂⟩ := GlobalTheory.CharRank.exists_chars H K _ hr
   exact le_min (bound τ₁ _ ((hdet τ₁).1 h₁)) (bound τ₂ _ ((hdet τ₂).2 h₂))
 
-theorem level_pos (l : Geo.Tor.Level H) : 0 < l.M' :=
-  Nat.lcm_pos (by have := l.three_le; omega) l.A_pos
+alias level_pos := _root_.GlobalTheory.LevelExist.M'_pos
 
 theorem MonoFam.s_ne_zero (C : MonoFam Xo c φ R) (i : Fin C.m) : C.s i ≠ 0 := by
   intro h0

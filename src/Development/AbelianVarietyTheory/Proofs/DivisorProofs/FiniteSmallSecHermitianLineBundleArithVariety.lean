@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionBallFiniteStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.CharZeroFunctionField
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionBallFinite
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentedBundleSectionsRationalFunctionsDict
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RepresentsBaseBundlesAndTrivial
 import Mathlib.Algebra.Order.Floor.Extended
@@ -41,7 +42,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.AbelianVarietyTheory.Definitions.Divisors.CharZeroFunctionField
 import Development.AbelianVarietyTheory.Definitions.Divisors.SmallFam
 
 @[expose] public section
@@ -59,7 +59,7 @@ theorem smallSec_finite : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegr
   subst hL
   have hrep : P.Rep 1 0 P.L := (GlobalTheory.VolBr.Pair.rep_base k X p P).1
   obtain ⟨e, he, hrange, hnorm, -⟩ := GlobalTheory.VolBr.RepDict.rep_dict k X p P 1 0 P.L hrep
-  have hfin : (P.Bl 1 0 1).Finite := GlobalTheory.T.hermLineBundlePair_sectionBall_finite k X p D hX P 1 0 1
+  have hfin : (P.Bl 1 0 1).Finite := _root_.GlobalTheory.HSNef.bl_finite k X p D hX P 1 0 1
   refine (hfin.preimage he.injOn).subset ?_
   intro u hu
   refine ⟨?_, fun σ y => ?_⟩

@@ -57,32 +57,19 @@ theorem lminor_neg' {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (k : Fin (m + 1))
   unfold lminor
   rw [submatrix_neg, Pi.neg_apply, Pi.neg_apply, det_neg, Fintype.card_fin]
 
-theorem psgn_of_le' {q i : ℕ} (h : i ≤ q) : psgn q i = 1 :=
-  Finset.prod_eq_one fun a ha => by
-    have := Finset.mem_range.1 ha
-    simp [sgn, show a < q by omega]
-
-theorem psgn_add' (q k : ℕ) : psgn q (q + k) = (-1) ^ k := by
-  induction k with
-  | zero => simpa using psgn_of_le' (le_refl q)
-  | succ k ih =>
-    have : psgn q (q + (k + 1)) = psgn q (q + k) * sgn q (q + k) := Finset.prod_range_succ _ _
-    rw [this, ih]
-    simp [sgn, pow_succ]
-
 theorem signs_of_blocks {r p q : ℕ} {e : Fin r ≃ Fin p ⊕ Fin q} (he : IsBlockSL2Embedding e) (H : Matrix (Fin r) (Fin r) ℂ)
     (h2 : (reindex e e H).toBlocks₂₂.PosDef) (hs : (-schur (reindex e e H)).PosDef) (i : Fin (r + 1)) :
     0 < psgn q i * (lminor H i).re := by
   obtain ⟨h₁, h₂⟩ := GlobalTheory.FlagFibre.lminor_block r p q e he H h2.det_pos.ne'.isUnit
   have hr := he.card
   by_cases hi : (i : ℕ) ≤ q
-  · rw [psgn_of_le' hi, one_mul, h₁ i ⟨i, by omega⟩ rfl]
+  · rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.psgn_eq_one hi, one_mul, h₁ i ⟨i, by omega⟩ rfl]
     exact (Complex.pos_iff.1 (lminor_pos_of_posDef h2 _)).1
   · have hi2 := i.2
     obtain ⟨k, hk⟩ : ∃ k : Fin (p + 1), (i : ℕ) = q + k := ⟨⟨i - q, by omega⟩, by simp only; omega⟩
     have h3 := mul_pos h2.det_pos (lminor_pos_of_posDef hs k)
     rw [lminor_neg'] at h3
-    rw [h₂ i k hk, hk, psgn_add', ← Complex.re_ofReal_mul]
+    rw [h₂ i k hk, hk, _root_.ReciprocityTheory.ChartRestriction.G.FD.OrthonormalChartBounds.psgn_add, ← Complex.re_ofReal_mul]
     have h4 := (Complex.pos_iff.1 h3).1
     convert h4 using 2
     push_cast

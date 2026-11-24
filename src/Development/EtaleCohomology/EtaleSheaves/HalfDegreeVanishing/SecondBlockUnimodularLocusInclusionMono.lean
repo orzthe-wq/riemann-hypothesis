@@ -57,11 +57,8 @@ def pe {n : ℕ} {X : Scheme.{0}} (x : Sx (PB (bsumOf V W)) n X) : Sx E n X :=
 def pw {n : ℕ} {X : Scheme.{0}} (e : Sx E n X) : Fin (n + 1) ⥤ SingleObj (GL (Fin b) (Scheme.Γ.obj (op X))) :=
   (W.app (op (SimplexCategory.mk n))).app (op X) e
 
-def pV {n : ℕ} {X : Scheme.{0}} (e : Sx E n X) : Fin (n + 1) ⥤ SingleObj (GL (Fin a) (Scheme.Γ.obj (op X))) :=
-  (V.app (op (SimplexCategory.mk n))).app (op X) e
-
 theorem cond {n : ℕ} {X : Scheme.{0}} (x : Sx (PB (bsumOf V W)) n X) {i j : Fin (n + 1)} (f : i ⟶ j) :
-    ((pv V W x).map f).1.1 = blockGL a b _ ((pV V (pe V W x)).map f) ((pw W (pe V W x)).map f) := by
+    ((pv V W x).map f).1.1 = blockGL a b _ ((_root_.LateralTheory.E.HalfDegreeVanishing.pw V (pe V W x)).map f) ((pw W (pe V W x)).map f) := by
   have h := ConcreteCategory.congr_hom (NatTrans.congr_app (pullback.condition (f := bsumOf V W) (g := PGL.pr (a + b)))
     (op (SimplexCategory.mk n)) |> fun h => NatTrans.congr_app h (op X)) x
   have h2 := Functor.hcongr_hom h f

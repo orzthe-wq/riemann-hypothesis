@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupExpTwoSidedInverseUniqueStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupExpTwoSidedInverseUnique
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -111,7 +111,7 @@ variable {C : Type} [Field C] [CharZero C] {v : AddValuation C (WithTop ℝ)}
 theorem constantCoeff_expAlong {κ : Type} {d : κ → ℕ} (G : ∀ b, LogFGL v (d b)) {ι : κ → Type}
     [∀ b, Fintype (ι b)] (u : ∀ b, ι b → Fin (d b) → C) (x : Σ b, Fin (d b)) :
     constantCoeff (expAlong G u x) = 0 := by
-  have hE := (GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v (d x.1) (G x.1)).1
+  have hE := (_root_.GlobalTheory.FGDepth.expOf_twoSided_unique C v (d x.1) (G x.1)).1
   unfold IsExp at hE
   simp only [expAlong]
   refine constantCoeff_subst_eq_zero ?_ ?_ (hE.1 x.2)
@@ -144,7 +144,7 @@ theorem depth_rename (κ : Type) [Fintype κ] [DecidableEq κ] (d : κ → ℕ)
     split_ifs <;> simp
   have hE : ∀ b (k : Fin (d b)), constantCoeff (expOf (G b) k) = 0 := by
     intro b k
-    have h := (GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v (d b) (G b)).1
+    have h := (_root_.GlobalTheory.FGDepth.expOf_twoSided_unique C v (d b) (G b)).1
     unfold IsExp at h
     exact h.1 k
   have hA : HasSubst (expAlong G u) := hasSubst_of_constantCoeff_zero (constantCoeff_expAlong G u)

@@ -61,7 +61,7 @@ variable {R ι : Type*} [Ring R] [Fintype ι] [DecidableEq ι]
 
 theorem sum_xor {M : Type*} [AddCommMonoid M] (r : Bool) (f : Bool → M) :
     ∑ s, f (xor r s) = ∑ s, f s := by
-  cases r <;> simp [Fintype.sum_bool, add_comm]
+  cases r <;> simp [add_comm]
 
 theorem xor_xor_self (r t : Bool) : xor r (xor r t) = t := by cases r <;> cases t <;> rfl
 
@@ -144,7 +144,7 @@ theorem ad_A (haa : ∀ s a b t c d, A s a b * A t c d + A t c d * A s a b = 0)
     by_cases e : a = p
     · subst e
       by_cases hs : Sx a c
-      · simp [hs, xor_xor_self]
+      · simp [hs]
       · simp [hs, a0 _ _ _ (mt (hp c).2 hs)]
     · simp [e]
   have h2 : (∑ t, ∑ b, C (xor r t) b q * A t b p) * A u a c - A u a c * (∑ t, ∑ b, C (xor r t) b q * A t b p) =
@@ -156,7 +156,7 @@ theorem ad_A (haa : ∀ s a b t c d, A s a b * A t c d + A t c d * A s a b = 0)
     by_cases e : c = q
     · subst e
       by_cases hs : Sx a c
-      · simp [hs, xor_xor_self]
+      · simp [hs]
       · simp [hs, a0 _ _ _ (mt (hq a).1 hs)]
     · simp [e]
   unfold adA
@@ -177,7 +177,7 @@ theorem comm_alt_ter (hA : ∀ s a b, D * A s a b - A s a b * D =
   unfold Wf
   simp only [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, comm_mul, hA, hC]
   simp only [sub_mul, mul_sub, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_add_distrib, Finset.sum_sub_distrib,
-    sum_ite_const, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    sum_ite_const, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   have h4 : ∑ x, C (xor s x) a q * A (xor r x) b p = ∑ x, C (xor r (xor s x)) a q * A x b p := by
     rw [← sum_xor r (fun x => C (xor r (xor s x)) a q * A x b p)]
     simp only [xor_xor_xor]
@@ -352,7 +352,7 @@ theorem xE_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hE : IsPairA E1 
   have c1 := hE.2.2 p q a b
   have c2 := hE.2.2 a b p q
   cases r <;> cases s <;> simp only [xE, kA, pA, Bool.false_eq_true, if_false, if_true, Bool.xor_false,
-    Bool.false_xor, Bool.xor_true, Bool.not_true, Bool.not_false, Bool.true_xor, LinearMap.add_apply]
+    Bool.xor_true, Bool.not_true, Bool.not_false]
   all_goals
     simp only [mul_add, add_mul, mul_sub, sub_mul, c1, ← c2, g1, g2]
   all_goals split_ifs <;> abel
@@ -393,12 +393,12 @@ theorem row_bracket (lev : Fin n → ℕ) (s : Bool) {a b : Fin n} (h : Sx lev a
   rw [Finset.sum_eq_single b]
   · refine Finset.sum_congr rfl fun c _ => ?_
     by_cases hc : Sx lev b c
-    · simp [hc, aE]
+    · simp [aE]
     · simp [hc, aE]
   · intro b' _ hb'
     refine Finset.sum_eq_zero fun c _ => ?_
     by_cases hc : Sx lev b' c
-    · simp [hc, Ne.symm hb']
+    · simp [Ne.symm hb']
     · simp [hc]
   · simp
 

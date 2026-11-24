@@ -103,17 +103,11 @@ theorem idemSum_left {e : AE D} {P Q : Finset (Pl D.host.E)} (h : IsIdemSum e (P
   obtain ⟨e₁, h₁⟩ := GlobalTheory.ExportSeries.SplitSet.mono ⟨e, h⟩ Finset.subset_union_left
   exact ⟨e₁, h₁⟩
 
-theorem isIntM_smul' {b a : ℕ} {c : EAf D} (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
-    {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) : IsIntM (c • N) := by
-  intro i j
-  rw [Matrix.smul_apply, smul_eq_mul]
-  exact mul_mem hc (hN i j)
-
 theorem redM_smul_of_res {b a : ℕ} {c : EAf D} (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (PP : Pl D.host.E)
     (h1 : Formalism.L2.DIV.resS D.host.F PP ⟨c, hc⟩ = 1) {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) :
     redM PP (c • N) = redM PP N := by
   ext i j
-  have h2 : (c • N) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := isIntM_smul' hc hN i j
+  have h2 : (c • N) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := _root_.GlobalTheory.HalfUnit.isIntM_smul hc hN i j
   have hsub : (⟨(c • N) i j, h2⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ⟨c, hc⟩ * ⟨N i j, hN i j⟩ :=
     Subtype.ext (by simp [Matrix.smul_apply])
   unfold redM
@@ -166,10 +160,10 @@ theorem finE_gAt_mem : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.
   have hI2' : IsIntM (frMapO S T βS βT x * (γ⁻¹ : GL (Fin S.rank) (Lev.EAf D)).val) := by
     rw [← hact]
     exact hI2
-  have hu1 : IsIntM (toEAf D e₁ • frMapO S T βS βT x) := isIntM_smul' hc hI1
+  have hu1 : IsIntM (toEAf D e₁ • frMapO S T βS βT x) := _root_.GlobalTheory.HalfUnit.isIntM_smul hc hI1
   have hu1g : IsIntM (toEAf D e₁ • frMapO S T βS βT x * (γ⁻¹ : GL (Fin S.rank) (Lev.EAf D)).val) := by
     rw [hmul]
-    exact isIntM_smul' hc hI2'
+    exact _root_.GlobalTheory.HalfUnit.isIntM_smul hc hI2'
   have hsupp : ∀ i j, toEAf D e₁ * (toEAf D e₁ • frMapO S T βS βT x) i j = (toEAf D e₁ • frMapO S T βS βT x) i j := by
     intro i j
     rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hcc]

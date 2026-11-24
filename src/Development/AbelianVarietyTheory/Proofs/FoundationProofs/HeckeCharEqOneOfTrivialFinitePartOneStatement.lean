@@ -46,4 +46,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.heckeChar_eq_one_of_trivial_finitePartOne : ∀ (D : D7) (c : (AE D)ˣ →* Circle), IsHeckeChar D c → (∀ x : (AE D)ˣ, infPart D (x : AE D) = 1 → c x = 1) → ∀ x, c x = 1 := by
-  first | exact @GlobalTheory.HeckeFinTrivial.eq_one_of_trivial_on_finite | exact GlobalTheory.HeckeFinTrivial.eq_one_of_trivial_on_finite | (intros; apply GlobalTheory.HeckeFinTrivial.eq_one_of_trivial_on_finite <;> assumption)
+  first | exact @GlobalTheory.HeckeFinTrivial.eq_one_of_trivial_on_finite

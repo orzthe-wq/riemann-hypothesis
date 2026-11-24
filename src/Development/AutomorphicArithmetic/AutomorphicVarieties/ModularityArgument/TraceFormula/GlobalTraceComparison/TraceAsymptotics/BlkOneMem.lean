@@ -92,7 +92,7 @@ private theorem blk_one_mem (h : a + b = n) (w : Pl E) (Y : Matrix (Fin a) (Fin 
   let N : Matrix (Fin n) (Fin n) (Ov E w) := Matrix.reindex (eIdx h) (eIdx h) (Matrix.fromBlocks 1 Y' 0 1)
   have hN : IsUnit N := by
     rw [Matrix.isUnit_iff_isUnit_det]
-    simp [N, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]
+    simp [N]
   refine ⟨hN.unit, Units.ext ?_⟩
   rw [blk_val]
   refine Matrix.ext fun i j => ?_

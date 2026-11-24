@@ -122,7 +122,7 @@ theorem exists_averaging_operator : ExistsAvg := by
     have hcont : Continuous fun x => ‖⟪σ x v, w⟫_ℂ‖ ^ 2 := (hcoef v w).norm.pow 2
     have h1 := (integral_eq_zero_iff_of_nonneg (fun x => sq_nonneg _) (integrable_cont hcont)).1 hw
     have h2 : ‖⟪σ 1 v, w⟫_ℂ‖ ^ 2 = 0 := congrFun ((hcont.ae_eq_iff_eq μ continuous_const).1 h1) 1
-    simp only [map_one, ContinuousLinearMap.one_apply, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true,
+    simp only [map_one, one_apply_eq_self, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true,
       pow_eq_zero_iff, norm_eq_zero] at h2
     exact inner_eq_zero_symm.1 h2
   set R : Submodule ℂ H := S.map L with hR
@@ -151,7 +151,7 @@ theorem exists_averaging_operator : ExistsAvg := by
     rw [Submodule.coe_sum] at this
     exact this.symm
   show ⟪σ (x * k⁻¹) v, b⟫_ℂ = _
-  rw [map_mul, ContinuousLinearMap.mul_apply]
+  rw [map_mul, mul_apply_eq_comp]
   conv_lhs => rw [e1]
 
   simp only [map_sum, map_smul, sum_inner, inner_smul_left]

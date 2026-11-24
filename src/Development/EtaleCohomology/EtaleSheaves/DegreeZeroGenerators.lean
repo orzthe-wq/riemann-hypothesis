@@ -72,7 +72,7 @@ theorem gen_nat {B : Scheme.{0}} {q : ℕ} {U U' : B.Etale} (a : U' ⟶ U) :
   · rfl
   · refine Eq.trans ?_ h2
     congr 1
-    simp only [Gq, Functor.comp_map]
+    simp only [Gq]
     erw [ModuleCat.free_map_apply, ModuleCat.free_map_apply]
     show ModuleCat.freeMk (ULift.up (𝟙 U' ≫ a)) = ModuleCat.freeMk (ULift.up (a ≫ 𝟙 U))
     simp
@@ -85,7 +85,7 @@ theorem free_etale_sheaf_zmod_exists_hom_sending_generator {B : Scheme.{0}} {q :
         intro W W' f
         apply ModuleCat.free_hom_ext
         intro y
-        simp only [Gq, ConcreteCategory.comp_apply, Functor.comp_map]
+        simp only [ConcreteCategory.comp_apply]
         erw [ModuleCat.free_map_apply, ModuleCat.freeDesc_apply, ModuleCat.freeDesc_apply]
         show H.obj.map (f.unop ≫ y.down).op x = H.obj.map f (H.obj.map y.down.op x)
         simp }

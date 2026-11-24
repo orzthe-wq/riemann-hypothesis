@@ -77,8 +77,7 @@ lemma io_one : (io (1 : A) : SlopeTestRemainingChoices S A) = 1 := by
   exact map_one _
 
 lemma io_comm {x y : A} (h : Commute x y) : Commute (io x : SlopeTestRemainingChoices S A) (io y) := by
-  unfold Commute SemiconjBy
-  rw [← io_mul, ← io_mul, h.eq]
+  simp only [Commute, SemiconjBy, ← io_mul, h.eq]
 
 lemma io_star [StarRing A] (x : A) : star (io x : SlopeTestRemainingChoices S A) = io (star x) := by
   unfold io
@@ -102,23 +101,17 @@ lemma zc {x y : A} (hx : x ∈ zfns L) (hy : y ∈ zfns L) : Commute x y :=
   L.fns_comm x (zsub L hx) y (zsub L hy)
 
 lemma mζ : L.ζ ∈ zfns L := by
-  unfold zfns
-  simp
+  simp [zfns]
 lemma mζi : L.ζi ∈ zfns L := by
-  unfold zfns
-  simp
+  simp [zfns]
 lemma mζb : L.ζb ∈ zfns L := by
-  unfold zfns
-  simp
+  simp [zfns]
 lemma mζbi : L.ζbi ∈ zfns L := by
-  unfold zfns
-  simp
+  simp [zfns]
 lemma mGG : L.GG ∈ zfns L := by
-  unfold zfns
-  simp
+  simp [zfns]
 lemma mGGi : L.GGi ∈ zfns L := by
-  unfold zfns
-  simp
+  simp [zfns]
 
 lemma l0_constant_part_commute (Y : ℂ) {g : A} (hg : g ∈ zfns L) :
     Commute (algebraMap ℂ A (Y + 1 / 2) * (L.ζb * L.GGi)) g :=
@@ -204,8 +197,7 @@ lemma wt_star (hL : IsStarLevel L) : star (wt L : SlopeTestRemainingChoices S A)
     ((zc L (mGGi L) (mζ L)).mul_right (zc L (mGGi L) (mζb L))).eq]
 
 lemma c_wt (hf : IsFrame L f) : Commute f.c (wt L) := by
-  unfold wt; rw [io_mul, io_mul]
-  exact ((hf.c_fn _ (mζ L)).mul_right (hf.c_fn _ (mζb L))).mul_right (hf.c_fn _ (mGGi L))
+  simpa [wt, io_mul] using ((hf.c_fn _ (mζ L)).mul_right (hf.c_fn _ (mζb L))).mul_right (hf.c_fn _ (mGGi L))
 
 lemma d_star (hL : IsStarLevel L) (hf : IsFrame L f) : star (f.d L) = f.d L := by
   unfold FrameData.d
@@ -235,8 +227,7 @@ lemma cancel2 {B : Type} [Ring B] {P Pi Q Qi X Y : B} (h1 : Pi * P = 1) (h2 : Q 
     (h : P * X * Q = P * Y * Q) : X = Y := by
   calc X = Pi * P * X * (Q * Qi) := by rw [h1, h2, one_mul, mul_one]
     _ = Pi * (P * X * Q) * Qi := by noncomm_ring
-    _ = Pi * (P * Y * Q) * Qi := by rw [h]
-    _ = Pi * P * Y * (Q * Qi) := by noncomm_ring
+    _ = Pi * P * Y * (Q * Qi) := by rw [h]; noncomm_ring
     _ = Y := by rw [h1, h2, one_mul, mul_one]
 
 lemma hat_herm (hf : IsFrame L f) {Z : ℂ} (hZ : Z ∈ f.reg) (hr : star Z = Z) (i j : Fin 2) :

@@ -97,9 +97,7 @@ def turnPt {r : ℕ} (p : Point ℂ (r + 1)) : Point ℂ (r + 1) :=
 
 theorem ptMat_turnPt {r : ℕ} (p : Point ℂ (r + 1)) (a b : Fin (r + 1)) :
     ptMat (turnPt p) a b = (-1 : ℂ) ^ r * (-Complex.I) ^ (a.val + b.val) * ptMat p a b := by
-  show ptEntry (tB r 0 p.1) a.val b.val = _
-  rw [ptEntry_tB]
-  simp [ptMat]
+  simpa [ptMat, turnPt] using ptEntry_tB r p.1 0 a.val b.val
 
 theorem blockIdx_tB (r : ℕ) : ∀ (bs : List (ℂ × ℕ)) (o q : ℕ), blockIdx (tB r o bs) q = blockIdx bs q
   | [], _, _ => rfl
@@ -110,8 +108,7 @@ theorem blockIdx_tB (r : ℕ) : ∀ (bs : List (ℂ × ℕ)) (o q : ℕ), blockI
     · rw [blockIdx_tB r bs (o + s)]
 
 theorem rootPat_turnPt {r : ℕ} (p : Point ℂ (r + 1)) : rootPat (turnPt p) = rootPat p := by
-  unfold rootPat
-  simp only [turnPt, blockIdx_tB]
+  simp only [rootPat, turnPt, blockIdx_tB]
 
 theorem ptWeightFrom_tB (k r : ℕ) (T T' : ℝ) : ∀ (bs : List (ℂ × ℕ)) (o a : ℕ),
     ptWeightFrom k r T T' a (tB r o bs) = ptWeightFrom k r T T' a bs
@@ -120,13 +117,7 @@ theorem ptWeightFrom_tB (k r : ℕ) (T T' : ℝ) : ∀ (bs : List (ℂ × ℕ)) 
     simp only [tB, ptWeightFrom]
     rw [ptWeightFrom_tB k r T T' bs (o + s) (a + s)]
     congr 1
-    have h1 : Complex.normSq ((-1 : ℂ) ^ r * (-Complex.I) ^ (2 * o + s - 1) * t) = Complex.normSq t := by
-      rw [map_mul, unit_normSq, one_mul]
-    have h2 : ‖(-1 : ℂ) ^ r * (-Complex.I) ^ (2 * o + s - 1) * t‖ = ‖t‖ := by
-      rw [norm_mul]
-      have : ‖(-1 : ℂ) ^ r * (-Complex.I) ^ (2 * o + s - 1)‖ = 1 := by simp
-      rw [this, one_mul]
-    rw [h1, h2]
+    simp [map_mul]
 
 theorem ptWeight_turnPt (k r : ℕ) (T T' : ℝ) (p : Point ℂ (r + 1)) : ptWeight k r T T' (turnPt p) = ptWeight k r T T' p :=
   ptWeightFrom_tB k r T T' p.1 0 0
@@ -143,19 +134,14 @@ theorem leadMinor_turnPt {r : ℕ} (p : Point ℂ (r + 1)) (l : ℕ) (hl : l ≤
     ring
   rw [hM, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, map_mul, map_mul, map_prod,
     map_prod]
-  have h1 : ∀ a : Fin l, Complex.normSq ((-1 : ℂ) ^ r * (-Complex.I) ^ (e a).val) = 1 := fun a => unit_normSq _ _
-  have h2 : ∀ b : Fin l, Complex.normSq ((-Complex.I) ^ (e b).val) = 1 := fun b => by simp [map_pow]
-  simp only [h1, h2, Finset.prod_const_one, one_mul, mul_one]
+  simp [unit_normSq, map_pow]
 
 theorem GPoint_turnPt {r : ℕ} (T T' : ℝ) (p : Point ℂ (r + 1)) : Gpt T T' (turnPt p) = Gpt T T' p := by
-  unfold Gpt
-  rw [leadMinor_turnPt, leadMinor_turnPt]
+  simp [Gpt, leadMinor_turnPt]
 
 theorem tT_mulVec_bvec {k r : ℕ} (i : Fin (2 * r + k + 1)) : tT k r *ᵥ bvec i = dT k r i • bvec i := by
   funext j
-  unfold tT bvec
-  rw [Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul]
-  simp only [Pi.single_apply]
+  simp only [tT, bvec, Matrix.mulVec_diagonal, Pi.smul_apply, smul_eq_mul, Pi.single_apply]
   split_ifs with h
   · rw [h]
   · ring
@@ -165,9 +151,7 @@ theorem tT_mulVec_fvec {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb 
   unfold fvec
   split_ifs with h
   · rw [tT_mulVec_bvec, dT_eI]
-  · rw [tT_mulVec_Wb hz]
-    have : a.val = r := by have := a.isLt; omega
-    rw [this]
+  · rw [tT_mulVec_Wb hz, show a.val = r by have := a.isLt; omega]
 
 theorem Hpk_tTi {k r : ℕ} : Hpk k r * tTi k r = (tT k r)ᴴ * Hpk k r := by
   have h : (tT k r)ᴴ * Hpk k r * tT k r = Hpk k r := tT_mem_UH k r
@@ -181,13 +165,11 @@ theorem herm_tTi {k r : ℕ} (v w : Fin (2 * r + k + 1) → ℂ) :
 
 theorem herm_smul_left {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (c : ℂ) (v w : Fin m → ℂ) :
     herm H (c • v) w = c * herm H v w := by
-  unfold herm
-  rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
+  simp [herm, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 theorem herm_smul_right {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (c : ℂ) (v w : Fin m → ℂ) :
     herm H v (c • w) = star c * herm H v w := by
-  unfold herm
-  rw [star_smul, smul_dotProduct, smul_eq_mul]
+  simp [herm, star_smul, smul_dotProduct, smul_eq_mul]
 
 theorem Zhat_conjI {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     (g : Mx k r) (a b : Fin (r + 1)) :

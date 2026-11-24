@@ -58,12 +58,11 @@ import Mathlib.Topology.Sheaves.Init
 namespace Formalism.REAL
 theorem expUJ : ExpUJ := exp_indefinite_unitary_holds
 theorem uJInv : UJInv := indefinite_unitary_inv_closed
-theorem oneParam : OneParam := one_parameter_subgroup_holds
+alias oneParam := _root_.Formalism.REAL.one_parameter_subgroup_holds
 theorem kFacts : KFacts := maximal_compact_facts
 theorem pChar : PChar := parabolic_character_holds
 theorem polar : Polar := polar_decomposition_holds
 theorem hSBall : HSBall := hermitian_small_ball
-theorem ballOpen : BallOpen := ball_open_holds
 theorem uJEmb : UJEmb := isClosedEmbeddingMatrix
 theorem unimodular : Unimodular := indefinite_unitary_unimodular
 theorem invInvariant : InvInvariant := by
@@ -98,12 +97,12 @@ theorem invInvariant : InvInvariant := by
     push_cast
     nlinarith
   rw [key, hc1, one_smul]
-theorem ballFinite : BallFinite := ball_finite_measure_holds
-theorem volGrowth : VolGrowth := volume_growth
-theorem cpartMem : CpartMem := complex_parts_mem_lie_algebra_holds
-theorem rdExt : RdExt := right_derivative_extends
-theorem rdLeft : RdLeft := right_derivative_left_invariant
-theorem rdLin : RdLin := right_derivative_linear
+alias ballFinite := _root_.Formalism.REAL.ball_finite_measure_holds
+alias volGrowth := _root_.Formalism.REAL.volume_growth
+alias cpartMem := _root_.Formalism.REAL.complex_parts_mem_lie_algebra_holds
+alias rdExt := _root_.Formalism.REAL.right_derivative_extends
+alias rdLeft := _root_.Formalism.REAL.right_derivative_left_invariant
+alias rdLin := _root_.Formalism.REAL.right_derivative_linear
 theorem rdSmooth : RdSmooth := rdSmooth_of right_derivative_extends
 theorem eabGl : EabGl := eabGl_of complex_parts_mem_lie_algebra_holds (rdLin_of right_derivative_extends)
   (rdBracket_of right_derivative_extends (rdSmooth_of right_derivative_extends)) (rdSmooth_of right_derivative_extends)

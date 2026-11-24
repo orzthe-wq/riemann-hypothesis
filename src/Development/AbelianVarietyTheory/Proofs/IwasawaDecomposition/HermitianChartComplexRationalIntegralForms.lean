@@ -535,7 +535,7 @@ theorem val_tied : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.P
     have hbel : ∀ τ, (((I.rec7 l Z).what₂.places.resChar w : ℕ) : 𝓞 B.fields.E) ∈ (bcBelow (B.fields.emb τ) w).asIdeal := fun τ => by
       show bcO (B.fields.emb τ) _ ∈ w.asIdeal
       rw [map_natCast]
-      exact GlobalTheory.LvT.Inh.resChar_mem_plEq (I.rec7 l Z) w
+      exact _root_.Formalism.BasicNotions.resChar_mem (I.rec7 l Z) w
     have key : ∀ Bm : GL (Fin (B.R.N i)) B.host.E,
         Formalism.L2.Forms.IsLocBasis ((I.rec7 l Z).what₂.places.resChar w) (((I.stp u a i).rep c).1.1.deco.1.Lsh : Set _) Bm →
         (x.1 c ∈ localization₂ w.asIdeal
@@ -544,7 +544,7 @@ theorem val_tied : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.P
           fnOf _ (shiftOf (lamTG (D := I.rec7 l Z) (I.fm l u a) i))
             (atInf (Formalism.L2.Forms.embT (I.rec7 l Z)) (Bm⁻¹ : GL (Fin (B.R.N i)) B.host.E).1) P (eY z)) := by
       intro Bm hB
-      refine (mem_localization_delAtr_fn B.fields.emb B.embLL (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) w (by first | exact l1 | exact l1.toIsLattice) (fun _ => Bm)
+      refine (mem_localization_delAtr_fn B.fields.emb B.embLL (GlobalTheory.Mem.Col2.lamT (B.hcW u) i) w (by first | exact l1) (fun _ => Bm)
         (fun τ => isBasisAt_of_isLocBasis hp _ (hbel τ) hB) (x.1 c)).trans ?_
       constructor
       · rintro ⟨z, hz, e⟩

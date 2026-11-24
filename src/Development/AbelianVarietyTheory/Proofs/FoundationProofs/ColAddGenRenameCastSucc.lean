@@ -71,8 +71,7 @@ theorem weight_mapDomain (r n : ℕ) (u : Fin r × Fin n →₀ ℕ) :
   | single v k =>
     refine ⟨fun i => ?_, ?_⟩
     · simp [Finsupp.mapDomain_single, Finsupp.weight_single, colW, Pi.single_apply]
-    · simp [Finsupp.mapDomain_single, Finsupp.weight_single, colW, Pi.single_apply,
-        (Fin.castSucc_lt_last v.2).ne']
+    · simp [Finsupp.mapDomain_single, Finsupp.weight_single, colW, (Fin.castSucc_lt_last v.2).ne']
 
 theorem colAddGen_rename_castSucc (R : Type*) [CommRing R] {r n : ℕ} (l j : Fin n)
     (f : MvPolynomial (Fin r × Fin n) R) :

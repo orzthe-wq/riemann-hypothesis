@@ -72,7 +72,7 @@ def basePoint (n a : ℕ) : Fin n → ℂ := fun k => if k.val < a then -1 else 
 theorem basePoint_mem {n a : ℕ} (h : a ≤ n) : basePoint n a ∈ logCover h := by
   refine ⟨fun i => ?_, fun k hk => ?_⟩
   · have : (Fin.castLE h i).val < a := i.isLt
-    simp [basePoint, this]
+    simp [basePoint]
   · have : ¬ k.val < a := by omega
     simp [basePoint, this]
 
@@ -81,15 +81,15 @@ theorem shift_mem {n a : ℕ} (h : a ≤ n) (i : Fin a) :
   refine ⟨fun j => ?_, fun k hk => ?_⟩
   · have hj : (Fin.castLE h j).val < a := j.isLt
     by_cases hji : Fin.castLE h j = Fin.castLE h i
-    · simp [basePoint, hj, hji, Pi.single_apply]
-    · simp [basePoint, hj, Pi.single_apply, hji]
+    · simp [basePoint, hji]
+    · simp [basePoint, hji]
   · have hk' : ¬ k.val < a := by omega
     have hne : k ≠ Fin.castLE h i := by
       intro e
       apply hk'
       rw [e]
       exact i.isLt
-    simp [basePoint, hk', Pi.single_apply, hne]
+    simp [basePoint, hk', hne]
 
 theorem expCover_shift {n a : ℕ} (h : a ≤ n) (i : Fin a) (w : Fin n → ℂ) :
     expCover a (w + Pi.single (Fin.castLE h i) (2 * Real.pi * Complex.I)) = expCover a w := by
@@ -97,8 +97,8 @@ theorem expCover_shift {n a : ℕ} (h : a ≤ n) (i : Fin a) (w : Fin n → ℂ)
   by_cases hk : k = Fin.castLE h i
   · subst hk
     have : (Fin.castLE h i).val < a := i.isLt
-    simp [expCover, this, Complex.exp_add, Complex.exp_two_pi_mul_I]
-  · simp [expCover, Pi.single_apply, hk]
+    simp [expCover, Complex.exp_add, Complex.exp_two_pi_mul_I]
+  · simp [expCover, hk]
 
 theorem monodromy_preserves_form {n a g : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.LogPeriods n a g Λ) (i : Fin a) (x y : Λ) :
     L.E (L.T i x) (L.T i y) = L.E x y := by

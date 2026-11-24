@@ -119,7 +119,7 @@ theorem card_ker_int_matrix_four (G : Type) [CommGroup G] (m r : ℕ)
   have hdvd : ∀ i, (a i).natAbs ∣ m := by
     intro i
     have hmem : (m : ℤ) • b i ∈ N := ⟨al.transpose.mulVec (b i), by
-      simp [hf, Matrix.mulVec_mulVec, hal', Matrix.smul_mulVec]⟩
+      simp [hf, Matrix.mulVec_mulVec, hal']⟩
     have h1 := congrArg (fun x : N => b.repr (x : Fin 4 → ℤ) i) (c.sum_repr ⟨_, hmem⟩)
 
     simp only [Submodule.coe_sum, Submodule.coe_smul, hc, map_sum, map_smul, Basis.repr_self,

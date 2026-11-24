@@ -74,11 +74,11 @@ private theorem adj (h : IsPair E1 E2) {a : Module.End ℂ V} (ha : a ∈ alg E1
     · exact ⟨_, mem1 b a, fun x y => (key a b x y).2⟩
   | algebraMap c =>
     refine ⟨algebraMap ℂ _ (starRingEnd ℂ c), Subalgebra.algebraMap_mem _ _, fun x y => ?_⟩
-    simp [Module.algebraMap_end_apply, inner_smul_left, inner_smul_right, mul_comm]
+    simp [Module.algebraMap_end_apply, mul_comm]
   | add u v _ _ hu hv =>
     obtain ⟨u', hu', hu⟩ := hu
     obtain ⟨v', hv', hv⟩ := hv
-    exact ⟨u' + v', add_mem hu' hv', fun x y => by simp [inner_add_left, inner_add_right, hu, hv]⟩
+    exact ⟨u' + v', add_mem hu' hv', fun x y => by simp [hu, hv]⟩
   | mul u v _ _ hu hv =>
     obtain ⟨u', hu', hu⟩ := hu
     obtain ⟨v', hv', hv⟩ := hv
@@ -96,7 +96,7 @@ private theorem twist {A : Module.End ℂ V} (hA : A * A = 1) (hE : ∀ a b, A *
   | add u v _ _ hu hv => rw [mul_add, add_mul]; exact add_mem hu hv
   | mul u v _ _ hu hv =>
     have : A * (u * v) * A = (A * u * A) * (A * v * A) := by
-      calc A * (u * v) * A = A * u * (A * A) * v * A := by rw [hA]; simp only [mul_assoc, mul_one, one_mul]
+      calc A * (u * v) * A = A * u * (A * A) * v * A := by rw [hA]; simp only [mul_assoc, mul_one]
         _ = _ := by simp only [mul_assoc]
     rw [this]; exact mul_mem hu hv
 

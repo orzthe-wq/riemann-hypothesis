@@ -52,4 +52,4 @@ open GlobalTheory.Core.Rk.IP
 
 
 theorem _root_.GlobalTheory.T.unramifiedDoublingIntegral_splitPlace_adelic : GlobalTheory.Published.UnramifiedDoublingGL → ∀ D : D7, LocalZetaOn D fun v => Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v := by
-  first | exact @GlobalTheory.Core.Rk.IP.localZetaOn_split | exact GlobalTheory.Core.Rk.IP.localZetaOn_split | (intros; apply GlobalTheory.Core.Rk.IP.localZetaOn_split <;> assumption)
+  first | exact @GlobalTheory.Core.Rk.IP.localZetaOn_split

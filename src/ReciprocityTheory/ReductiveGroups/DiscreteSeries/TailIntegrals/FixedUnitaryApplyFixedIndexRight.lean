@@ -1,53 +1,8 @@
 module
 
 public import Formalism.HermitianCurvature.StatementB
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
 
 @[expose] public section
@@ -82,12 +37,12 @@ lemma hpk0 (k : ℕ) : Hpk k 0 = 1 - 2 • Pk k := by
   by_cases hij : i = j
   · subst hij
     by_cases hik : i.val = k
-    · simp [Hpk, Pk, iK, wI, Matrix.one_apply, Matrix.single_apply, Fin.ext_iff, hik]
+    · simp [Hpk, Pk, iK, wI, Matrix.single_apply, Fin.ext_iff, hik]
       norm_num
     · have hik' : k ≠ i.val := fun h => hik h.symm
-      simp [Hpk, Pk, iK, wI, Matrix.one_apply, Matrix.single_apply, Fin.ext_iff, hik, hik', hle]
+      simp [Hpk, Pk, iK, wI, Fin.ext_iff, hik, hik', hle]
   · have hv : i.val ≠ j.val := fun h => hij (Fin.ext h)
-    simp [Hpk, Pk, iK, wI, Matrix.one_apply, Matrix.single_apply, Fin.ext_iff, hv]
+    simp [Hpk, Pk, iK, wI, Matrix.single_apply, Fin.ext_iff, hv]
     omega
 
 lemma Pk_mul_self (k : ℕ) : Pk k * Pk k = Pk k := by
@@ -117,7 +72,7 @@ lemma fixedUnitary_projection_identities {k : ℕ} {h : Mat k 0} (hh : h ∈ U0 
         simp [Pk, Matrix.mul_apply, Matrix.single_apply, hcol]
       · have hi' : iK k ≠ i := fun e => hi e.symm
         simp [Pk, Matrix.mul_apply, Matrix.single_apply, hcol, hi, hi']
-    · simp [Pk, Matrix.mul_apply, Matrix.single_apply, hj]
+    · simp [Pk, Matrix.mul_apply, hj]
   have hsP : hᴴ * Pk k = Pk k := by
     have e1 : hᴴ * Hpk k 0 * h * Pk k = Hpk k 0 * Pk k := by rw [hU']
     rw [Matrix.mul_assoc, hP, hpk0, Matrix.mul_assoc, one_sub_mul_Pk, Matrix.mul_neg] at e1
@@ -212,13 +167,13 @@ lemma exists_fixedUnitary_sending_basis {k : ℕ} (hk : 1 ≤ k) (u : Fin (2 * 0
     by_cases hi : i = iK k
     · subst hi
       simp [Matrix.diagonal_mul, hdo _ (Ne.symm hWK)]
-    · simp [Matrix.diagonal_mul, Pk, Matrix.single_apply, Ne.symm hi]
+    · simp [Matrix.diagonal_mul, Pk, Ne.symm hi]
   have hDe : Matrix.diagonal d *ᵥ bvec (iW k) = μ • bvec (iW k) := by
     ext i
     by_cases hi : i = iW k
     · subst hi
       simp [Matrix.mulVec_diagonal, hdW, bvec]
-    · simp [Matrix.mulVec_diagonal, bvec, Pi.single_apply, hi]
+    · simp [Matrix.mulVec_diagonal, bvec, hi]
   obtain ⟨x, hx⟩ : ∃ x : Fin (2 * 0 + k + 1) → ℂ, x = μ • bvec (iW k) := ⟨_, rfl⟩
   by_cases hxu : x = u
   · refine ⟨Matrix.diagonal d, mem_fixedUnitary_of_unitary_fixes hDu hDP, ?_⟩
@@ -273,7 +228,7 @@ lemma exists_fixedUnitary_sending_basis {k : ℕ} (hk : 1 ≤ k) (u : Fin (2 * 0
     rw [Finset.sum_eq_single (iW k)]
     · simp [bvec]
     · intro j _ hj
-      simp [bvec, Pi.single_apply, hj]
+      simp [bvec, hj]
     · intro h
       exact absurd (Finset.mem_univ _) h
   have hvx : ∀ v, star v ⬝ᵥ x = star (v (iW k)) * μ := by
@@ -283,7 +238,7 @@ lemma exists_fixedUnitary_sending_basis {k : ℕ} (hk : 1 ≤ k) (u : Fin (2 * 0
     rw [Finset.sum_eq_single (iW k)]
     · simp [bvec]
     · intro j _ hj
-      simp [bvec, Pi.single_apply, hj]
+      simp [bvec, hj]
     · intro h
       exact absurd (Finset.mem_univ _) h
   have hxx : star x ⬝ᵥ x = 1 := by
@@ -312,7 +267,7 @@ lemma exists_fixedUnitary_sending_basis {k : ℕ} (hk : 1 ≤ k) (u : Fin (2 * 0
       Matrix.one_mul, hDu]
   · have hwk : w (iK k) = 0 := by
       rw [hw, hx]
-      simp [hu0, bvec, Pi.single_apply, Ne.symm hWK]
+      simp [hu0, bvec, Ne.symm hWK]
     have hWP : W * Pk k = 0 := by
       ext i j
       simp [hW, Pk, Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.single_apply]

@@ -86,7 +86,7 @@ theorem not_mem_of_mod {l : ℕ} (h : l % (H.QS * H.q * H.d) = 1) : l ∉ H.smal
 theorem factorization_eq_zero {l : ℕ} (h : l ∉ H.small) : H.QS.factorization l = 0 := by
   rw [Nat.factorization_eq_zero_iff]
   by_contra hc
-  push_neg at hc
+  push Not at hc
   apply h
   simp only [Formalism.HC.HostRaw.small, Nat.mem_primeFactors]
   exact ⟨hc.1, hc.2.1, hc.2.2⟩

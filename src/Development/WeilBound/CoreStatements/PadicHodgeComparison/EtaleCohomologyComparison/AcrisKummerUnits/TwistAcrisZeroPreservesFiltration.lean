@@ -72,13 +72,13 @@ def fromBase : base l ⟶ A := ⟨A.s, rfl⟩
 
 theorem fromBase_comp {B : PAlg l} (f : A ⟶ B) : A.fromBase ≫ f = B.fromBase := Hom.ext (Hom.comm f)
 
-def pdFil (n : ℕ) : DividedPowers (A.Fil n 1) := (RL.pd_ex A n).1.choose
+def pdFil (n : ℕ) : DividedPowers (A.Fil n 1) := (_root_.GlobalTheory.CompanionTheory.PerfFil.exists_dividedPowers_fil_pfil A n).1.choose
 
-theorem isPd_pdFil (n : ℕ) : R.IsPd (A.mkAcr n) (A.Fil0 1) (A.pdFil n) := (RL.pd_ex A n).1.choose_spec
+theorem isPd_pdFil (n : ℕ) : R.IsPd (A.mkAcr n) (A.Fil0 1) (A.pdFil n) := (_root_.GlobalTheory.CompanionTheory.PerfFil.exists_dividedPowers_fil_pfil A n).1.choose_spec
 
-def pdPFil (n : ℕ) : DividedPowers (A.PFil n) := (RL.pd_ex A n).2.choose
+def pdPFil (n : ℕ) : DividedPowers (A.PFil n) := (_root_.GlobalTheory.CompanionTheory.PerfFil.exists_dividedPowers_fil_pfil A n).2.choose
 
-theorem isPd_pdPFil (n : ℕ) : R.IsPd (A.mkAcr n) A.PFil0 (A.pdPFil n) := (RL.pd_ex A n).2.choose_spec
+theorem isPd_pdPFil (n : ℕ) : R.IsPd (A.mkAcr n) A.PFil0 (A.pdPFil n) := (_root_.GlobalTheory.CompanionTheory.PerfFil.exists_dividedPowers_fil_pfil A n).2.choose_spec
 
 def thetaN (n : ℕ) : A.Acr n →+* A.Un n := (RL.theta_ex A n).choose
 
@@ -87,7 +87,7 @@ theorem thetaN_toAcr (n : ℕ) (x : A.W) : A.thetaN n (A.toAcr n x) = Ideal.Quot
 
 theorem ker_thetaN (n : ℕ) : RingHom.ker (A.thetaN n) = A.Fil n 1 := (RL.theta_ex A n).choose_spec.2
 
-theorem mkAcr_surjective (n : ℕ) : Function.Surjective (A.mkAcr n) := Ideal.Quotient.mk_surjective
+alias mkAcr_surjective := _root_.GlobalTheory.CompanionTheory.PerfFil.GradedFiltration.mkAcr_surjective
 
 theorem dpow_dxi (n k : ℕ) : (A.pdFil n).dpow k (A.dxi n 1) = A.dxi n k :=
   (A.isPd_pdFil n).2 k _ _ (Ideal.subset_span ⟨1, le_rfl, rfl⟩) (by
@@ -145,18 +145,18 @@ theorem dpP_red {m n : ℕ} (h : n ≤ m) : DividedPowers.IsDPMorphism (A.pdPFil
 
 theorem dpP_phi (n : ℕ) : DividedPowers.IsDPMorphism (A.pdPFil n) (A.pdPFil n) (A.phi n) :=
   RL.pd_mor _ _ _ _ _ _ A.pdOk_frob.acr0 _ (A.mkAcr_surjective n) (RL.pdi A).2.1 (A.isPd_pdPFil n) (A.isPd_pdPFil n)
-    (fun x hx => Ideal.mem_sup_left ((RL.tw_fil A (1 : Gal(PadicAlgCl l/(⊥ : IntermediateField ℚ_[l] (PadicAlgCl l))))).2.1 x hx))
+    (fun x hx => Ideal.mem_sup_left ((_root_.GlobalTheory.CompanionTheory.TwFil.tw_fil A (1 : Gal(PadicAlgCl l/(⊥ : IntermediateField ℚ_[l] (PadicAlgCl l))))).2.1 x hx))
     fun _ => rfl
 
 theorem dp_twAcr (σ : Gal(PadicAlgCl l/K)) (n : ℕ) :
     DividedPowers.IsDPMorphism ((tw σ A).pdFil n) (A.pdFil n) (twAcr σ A n) :=
   RL.pd_mor _ _ _ _ _ _ (pdOk_twId σ A).acr0 _ ((tw σ A).mkAcr_surjective n) (RL.pdi _).1 ((tw σ A).isPd_pdFil n)
-    (A.isPd_pdFil n) (RL.tw_fil A σ).1 fun _ => rfl
+    (A.isPd_pdFil n) (_root_.GlobalTheory.CompanionTheory.TwFil.tw_fil A σ).1 fun _ => rfl
 
 theorem dpP_twAcr (σ : Gal(PadicAlgCl l/K)) (n : ℕ) :
     DividedPowers.IsDPMorphism ((tw σ A).pdPFil n) (A.pdPFil n) (twAcr σ A n) :=
   RL.pd_mor _ _ _ _ _ _ (pdOk_twId σ A).acr0 _ ((tw σ A).mkAcr_surjective n) (RL.pdi _).2.1 ((tw σ A).isPd_pdPFil n)
-    (A.isPd_pdPFil n) ((pdOk_twId σ A).acris_positive_filtration fun x hx => Ideal.mem_sup_right ((RL.tw_fil A σ).1 x hx)) fun _ => rfl
+    (A.isPd_pdPFil n) ((pdOk_twId σ A).acris_positive_filtration fun x hx => Ideal.mem_sup_right ((_root_.GlobalTheory.CompanionTheory.TwFil.tw_fil A σ).1 x hx)) fun _ => rfl
 
 def baseTw (σ : Gal(PadicAlgCl l/K)) : base l ⟶ tw σ (base l) := (tw σ (base l)).fromBase
 

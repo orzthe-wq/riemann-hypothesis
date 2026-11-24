@@ -361,22 +361,19 @@ theorem lp_dual (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) (τ : 
     obtain ⟨a, b, rfl⟩ := (lp_mem ω₁ ω₂ hω z).1 hz
     simpa [lp_psi] using h a b
 
-theorem lp_ne : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := by
-  simp [Real.pi_ne_zero, Complex.I_ne_zero]
-
 def lp_eqv (ω₁ ω₂ : ℂ) (hω : (conj ω₁ * ω₂).im ≠ 0) :
     {σ : ℂ // TBB.InDual ω₁ ω₂ σ} ≃ crystallineComparison.dualSet (Submodule.span ℤ (Set.range (lp_b ω₁ ω₂ hω))) where
   toFun σ := ⟨fun _ => σ.1 / (2 * Real.pi * Complex.I),
-    (lp_dual ω₁ ω₂ hω _).2 (by rw [mul_div_cancel₀ _ lp_ne]; exact σ.2)⟩
+    (lp_dual ω₁ ω₂ hω _).2 (by rw [mul_div_cancel₀ _ Complex.two_pi_I_ne_zero]; exact σ.2)⟩
   invFun τ := ⟨2 * Real.pi * Complex.I * τ.1 0, (lp_dual ω₁ ω₂ hω _).1 τ.2⟩
-  left_inv σ := Subtype.ext (mul_div_cancel₀ _ lp_ne)
+  left_inv σ := Subtype.ext (mul_div_cancel₀ _ Complex.two_pi_I_ne_zero)
   right_inv τ := by
     apply Subtype.ext
     funext i
     have hi : i = 0 := Subsingleton.elim _ _
     subst hi
     show 2 * Real.pi * Complex.I * τ.1 0 / (2 * Real.pi * Complex.I) = τ.1 0
-    rw [mul_div_cancel_left₀ _ lp_ne]
+    rw [mul_div_cancel_left₀ _ Complex.two_pi_I_ne_zero]
 
 theorem lp_fourier (E : ℂ → ℝ) (τ : Fin 1 → ℂ) :
     crystallineComparison.fourier (fun z => E (z 0)) τ = ∫ c : ℂ, P5.fsv (2 * Real.pi * Complex.I * τ 0) c * (E c : ℂ) := by

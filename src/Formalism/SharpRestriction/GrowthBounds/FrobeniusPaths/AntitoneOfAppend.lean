@@ -50,8 +50,7 @@ namespace Formalism.MainNotions.LemmaBAlt
 
 lemma app_lt {r K : ℕ} (u : Fin r → ℤ) (v : Fin K → ℤ) (x : Fin (r + K)) (h : x.val < r) :
     Fin.append u v x = u ⟨x.val, h⟩ := by
-  have hx : x = Fin.castAdd K ⟨x.val, h⟩ := Fin.ext rfl
-  calc Fin.append u v x = Fin.append u v (Fin.castAdd K ⟨x.val, h⟩) := congrArg (Fin.append u v) hx
+  calc Fin.append u v x = Fin.append u v (Fin.castAdd K ⟨x.val, h⟩) := congrArg (Fin.append u v) (Fin.ext rfl)
     _ = u ⟨x.val, h⟩ := Fin.append_left u v _
 
 lemma app_ge {r K : ℕ} (u : Fin r → ℤ) (v : Fin K → ℤ) (x : Fin (r + K)) (h : r ≤ x.val) :
@@ -80,21 +79,21 @@ lemma hstrip_append {r K : ℕ} [NeZero r] [NeZero K] (n1 n2 : Fin r → ℤ) (k
       rwa [hR, hR] at this
     have a2 : ∀ (a : Fin r) (h : a.1 + 1 < r), n2 ⟨a.1 + 1, h⟩ ≤ n1 a := by
       intro a h
-      have hh : (Fin.castAdd K a).1 + 1 < r + K := by simp <;> omega
+      have hh : (Fin.castAdd K a).1 + 1 < r + K := by simp; omega
       have e1 : (⟨(Fin.castAdd K a).1 + 1, hh⟩ : Fin (r + K)) = Fin.castAdd K ⟨a.1 + 1, h⟩ := Fin.ext rfl
       have := h2 (Fin.castAdd K a) hh
       rwa [e1, hL, hL] at this
     have b2 : ∀ (a : Fin K) (h : a.1 + 1 < K), k2 ⟨a.1 + 1, h⟩ ≤ k1 a := by
       intro a h
-      have hh : (Fin.natAdd r a).1 + 1 < r + K := by simp <;> omega
+      have hh : (Fin.natAdd r a).1 + 1 < r + K := by simp; omega
       have e1 : (⟨(Fin.natAdd r a).1 + 1, hh⟩ : Fin (r + K)) = Fin.natAdd r ⟨a.1 + 1, h⟩ :=
-        Fin.ext (by simp <;> omega)
+        Fin.ext (by simp; omega)
       have := h2 (Fin.natAdd r a) hh
       rwa [e1, hR, hR] at this
     have hj : k2 0 ≤ n1 (lastIdx r) := by
-      have hh : (Fin.castAdd K (lastIdx r)).1 + 1 < r + K := by simp [lastIdx] <;> omega
+      have hh : (Fin.castAdd K (lastIdx r)).1 + 1 < r + K := by simp [lastIdx]; omega
       have e1 : (⟨(Fin.castAdd K (lastIdx r)).1 + 1, hh⟩ : Fin (r + K)) = Fin.natAdd r 0 :=
-        Fin.ext (by simp [lastIdx] <;> omega)
+        Fin.ext (by simp [lastIdx]; omega)
       have := h2 (Fin.castAdd K (lastIdx r)) hh
       rwa [e1, hR, hL] at this
     simp only [Fin.sum_univ_add, hL, hR] at h3
@@ -120,17 +119,17 @@ lemma hstrip_append {r K : ℕ} [NeZero r] [NeZero K] (n1 n2 : Fin r → ℤ) (k
           rw [e1, hL, hL]
           exact a2 a ha
         · have e1 : (⟨(Fin.castAdd K a).1 + 1, h⟩ : Fin (r + K)) = Fin.natAdd r 0 :=
-            Fin.ext (by simp <;> omega)
-          have e2 : a = lastIdx r := Fin.ext (by simp [lastIdx] <;> omega)
+            Fin.ext (by simp; omega)
+          have e2 : a = lastIdx r := Fin.ext (by simp [lastIdx]; omega)
           rw [e1, hR, hL, e2]
           exact hj
       | right a =>
         intro h
         have ha : a.1 + 1 < K := by
           have h' := h
-          simp at h' <;> omega
+          simp at h'; omega
         have e1 : (⟨(Fin.natAdd r a).1 + 1, h⟩ : Fin (r + K)) = Fin.natAdd r ⟨a.1 + 1, ha⟩ :=
-          Fin.ext (by simp <;> omega)
+          Fin.ext (by simp; omega)
         rw [e1, hR, hR]
         exact b2 a ha
     · simp only [Fin.sum_univ_add, hL, hR]
@@ -164,10 +163,7 @@ lemma antitone_of_append {r K : ℕ} (n1 : Fin r → ℤ) (k1 : Fin K → ℤ) (
     have := h (show Fin.castAdd K a ≤ Fin.castAdd K b from hab)
     rwa [Fin.append_left, Fin.append_left] at this
   · intro a b hab
-    have hab' : r + a.val ≤ r + b.val := by
-      have : a.val ≤ b.val := hab
-      omega
-    have := h (show Fin.natAdd r a ≤ Fin.natAdd r b from hab')
+    have := h (show Fin.natAdd r a ≤ Fin.natAdd r b from Nat.add_le_add_left (show a.val ≤ b.val from hab) r)
     rwa [Fin.append_right, Fin.append_right] at this
 
 theorem prvB1_of_D7 (D : Formalism.BasicNotions.D7) : RotatedSumBound D := by

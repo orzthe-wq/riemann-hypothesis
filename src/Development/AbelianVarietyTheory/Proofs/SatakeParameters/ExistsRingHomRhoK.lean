@@ -117,6 +117,6 @@ theorem sigma_rhoK (D : D7) {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) 
 
 theorem norm_sigma_eq (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (hσ : UnrOK (MaximalUnramifiedExtension p) p σ) (x : MaximalUnramifiedExtension p) :
     ‖σ x‖ = ‖x‖ :=
-  Formalism.L2.Th1.D.sigmaIsom (MaximalUnramifiedExtension p) p σ hσ x
+  _root_.Formalism.L2.Th1.D.sigma_isometry (MaximalUnramifiedExtension p) p σ hσ x
 
 end GlobalTheory.KerStd.HypCoord

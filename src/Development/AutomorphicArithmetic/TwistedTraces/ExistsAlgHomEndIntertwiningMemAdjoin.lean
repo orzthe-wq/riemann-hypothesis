@@ -61,7 +61,7 @@ private theorem burnside_endomorphism {S A : Type} [AddCommGroup S] [Module ℂ 
       map_smul' := by
         intro d m
         obtain ⟨c, rfl⟩ := hb.2 d
-        simp [Module.algebraMap_end_apply] }
+        simp }
   let b := Module.finBasis ℂ S
   obtain ⟨a, ha⟩ := jacobson_density f (Finset.univ.image b)
   refine ⟨a, fun m => ?_⟩
@@ -119,7 +119,7 @@ theorem UpperTheory.exists_algHom_end_intertwining_mem_adjoin :
       have h2 := LinearMap.congr_fun hb x
       have h1 := LinearMap.congr_fun ha (b.1 x)
       simp only [LinearMap.comp_apply] at h1 h2
-      simp [Module.End.mul_apply, h1, h2]
+      simp [h1, h2]
   let φ : Q →ₐ[ℂ] Module.End ℂ S := π₁.comp Q.val
   let ψ : Q →ₐ[ℂ] Module.End ℂ X := π₂.comp Q.val
   have hinj : Function.Injective φ := by

@@ -91,7 +91,7 @@ private theorem lift_inter [Nontrivial W] [Nontrivial V] (σ : Representation �
   induction p using FreeAlgebra.induction with
   | grade0 r => intro x; simp [Algebra.algebraMap_eq_smul_one]
   | grade1 f => intro x; simp [lv_inter σ ρ T hT]
-  | mul a b ha hb => intro x; simp [map_mul, Module.End.mul_apply, ha, hb]
+  | mul a b ha hb => intro x; simp [map_mul, ha, hb]
   | add a b ha hb => intro x; simp [map_add (f := _), LinearMap.add_apply, ha, hb]
 
 private def isoM (σ : Representation ℂ G W) (ρ : Representation ℂ G V) (H : Subgroup G) : Submodule ℂ V :=

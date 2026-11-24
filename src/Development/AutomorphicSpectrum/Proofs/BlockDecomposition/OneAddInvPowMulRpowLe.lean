@@ -1,17 +1,24 @@
 module
 
+public import Mathlib.Analysis.Normed.Module.Basic
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Mathlib.MeasureTheory.Group.Measure
+public import Mathlib.Analysis.SpecialFunctions.JapaneseBracket
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+public import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 public import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.IsEpCont
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousAdeleWeight
 public import GroundTheory.AutomorphicForms.GL2.AdelicFourier2TensorCosetIndicatorAlgebraMap
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsExtra
 public import GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform
-import GroundTheory.GlobalFields.TateThesis.AdelicCharDual
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -23,9 +30,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
+import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -35,7 +41,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,12 +53,161 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import GroundTheory.GlobalFields.TateThesis.AdelicCharDual
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsExtra, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneAddInvPowMulRpowLe
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsExtra =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsExtra", "h": "module\n\npublic import Mathlib.Analysis.Normed.Module.Basic\npublic import Mathlib.LinearAlgebra.FiniteDimensional.Defs\npublic import Mathlib.MeasureTheory.Group.Measure\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.SpecialFunctions.JapaneseBracket\npublic import Mathlib.MeasureTheory.Integral.Bochner.Basic\npublic import Mathlib.MeasureTheory.Integral.Bochner.Set\npublic import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.Reformulated.B.DYga2.main.{u_1} :
+    ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] [FiniteDimensional ℝ E]
+      [inst_3 : MeasurableSpace E] [BorelSpace E] (μ : MeasureTheory.Measure E) [μ.IsAddHaarMeasure] {A : ℕ},
+      Module.finrank ℝ E < A →
+        (0 : ℕ) < Module.finrank ℝ E →
+          ∃ (c : ℝ),
+            (0 : ℝ) ≤ c ∧
+              ∀ (η : ℝ),
+                (0 : ℝ) < η →
+                  ∀ (F : Finset E),
+                    (∀ y ∈ F, ∀ y' ∈ F, y ≠ y' → η ≤ ‖y - y'‖ ^ Module.finrank ℝ E) →
+                      ∑ y ∈ F, (((1 : ℝ) + ‖y‖) ^ A)⁻¹ ≤ c * ((1 : ℝ) + η⁻¹) := by
+  intro E _ _ _ _ _ μ _ A hA hd
+  set d := Module.finrank ℝ E with hd_def
+
+  set w : E → ℝ := fun x => ((1 + ‖x‖) ^ A)⁻¹ with hw
+  have hwpos : ∀ x, 0 < w x := fun x => by
+    have : (0:ℝ) < 1 + ‖x‖ := by positivity
+    simp only [hw]; positivity
+  have hint : MeasureTheory.Integrable w μ := by
+    have h := integrable_one_add_norm (E := E) (μ := μ) (r := (A:ℝ)) (by exact_mod_cast hA)
+    refine h.congr (Filter.Eventually.of_forall fun x => ?_)
+    have : (0:ℝ) < 1 + ‖x‖ := by positivity
+    simp only [hw]
+    rw [Real.rpow_neg this.le, Real.rpow_natCast]
+  set I : ℝ := ∫ x, w x ∂μ with hI
+  have hI0 : 0 ≤ I := MeasureTheory.integral_nonneg fun x => (hwpos x).le
+  set V : ℝ := μ.real (Metric.ball (0:E) 1) with hV
+  have hVpos : 0 < V := by
+    refine ENNReal.toReal_pos ?_ ?_
+    · exact (Metric.measure_ball_pos μ 0 one_pos).ne'
+    · exact MeasureTheory.measure_ball_lt_top.ne
+  refine ⟨2 ^ A * I / V * 2 ^ d, by positivity, ?_⟩
+  intro η hη F hF
+  have hdR : (d:ℝ) ≠ 0 := by exact_mod_cast hd.ne'
+  set r : ℝ := η ^ ((d:ℝ)⁻¹) with hr
+  have hrpos : 0 < r := Real.rpow_pos_of_pos hη _
+  have hrd : r ^ d = η := by
+    rw [hr, ← Real.rpow_natCast, ← Real.rpow_mul hη.le, inv_mul_cancel₀ hdR, Real.rpow_one]
+  set s : ℝ := min (r / 2) 1 with hs
+  have hspos : 0 < s := lt_min (by positivity) one_pos
+  have hs1 : s ≤ 1 := min_le_right _ _
+  have hs2 : 2 * s ≤ r := by
+    have : s ≤ r / 2 := min_le_left _ _
+    linarith
+
+  have hkey : 1 ≤ s ^ d * (2 ^ d * (1 + η⁻¹)) := by
+    have hη' : 0 < η⁻¹ := inv_pos.mpr hη
+    rcases le_total (r / 2) 1 with h | h
+    · have : s = r / 2 := min_eq_left h
+      rw [this, div_pow, hrd]
+      have h2 : (2:ℝ) ^ d ≠ 0 := by positivity
+      have : η / 2 ^ d * (2 ^ d * (1 + η⁻¹)) = η + 1 := by
+        field_simp
+      rw [this]; linarith
+    · have : s = 1 := min_eq_right h
+      rw [this, one_pow, one_mul]
+      have : (1:ℝ) ≤ 2 ^ d := one_le_pow₀ (by norm_num)
+      nlinarith
+
+  have hball : ∀ y : E, μ.real (Metric.ball y s) = s ^ d * V := by
+    intro y
+    have := MeasureTheory.Measure.addHaar_ball_of_pos μ y hspos
+    simp only [MeasureTheory.Measure.real, hV]
+    rw [this, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]
+
+  have hcomp : ∀ y x : E, x ∈ Metric.ball y s → (2 ^ A)⁻¹ * w y ≤ w x := by
+    intro y x hx
+    have hxy : ‖x‖ ≤ ‖y‖ + s := by
+      have h1 : ‖x - y‖ < s := by simpa [dist_eq_norm] using hx
+      have h2 : ‖x‖ ≤ ‖y‖ + ‖x - y‖ := by
+        have := norm_add_le y (x - y)
+        simpa using this
+      linarith
+    have hle : 1 + ‖x‖ ≤ 2 * (1 + ‖y‖) := by
+      have := norm_nonneg y
+      linarith
+    have hx0 : (0:ℝ) < 1 + ‖x‖ := by positivity
+    have hy0 : (0:ℝ) < 1 + ‖y‖ := by positivity
+    have hp : (1 + ‖x‖) ^ A ≤ 2 ^ A * (1 + ‖y‖) ^ A := by
+      rw [← mul_pow]; exact pow_le_pow_left₀ hx0.le hle A
+    simp only [hw]
+    rw [← mul_inv]
+    exact inv_anti₀ (by positivity) hp
+
+  have hone : ∀ y : E, (2 ^ A)⁻¹ * w y * (s ^ d * V) ≤ ∫ x in Metric.ball y s, w x ∂μ := by
+    intro y
+    have := MeasureTheory.setIntegral_ge_of_const_le_real (μ := μ) (f := w) (c := (2 ^ A)⁻¹ * w y)
+      (s := Metric.ball y s) Metric.isOpen_ball.measurableSet MeasureTheory.measure_ball_lt_top.ne
+      (fun x hx => hcomp y x hx) hint.integrableOn
+    rw [hball] at this
+    exact this
+
+  have hdisj : Set.Pairwise (F : Set E) (Function.onFun Disjoint fun y => Metric.ball y s) := by
+    intro y hy y' hy' hne
+    refine Metric.ball_disjoint_ball ?_
+    have h1 := hF y hy y' hy' hne
+    have h2 : r ≤ ‖y - y'‖ := by
+      rw [← hrd] at h1
+      exact le_of_pow_le_pow_left₀ hd.ne' (norm_nonneg _) h1
+    rw [dist_eq_norm]
+    linarith
+  have hsum : ∑ y ∈ F, ∫ x in Metric.ball y s, w x ∂μ ≤ I := by
+    rw [← MeasureTheory.integral_biUnion_finset F (fun y _ => Metric.isOpen_ball.measurableSet) hdisj
+      (fun y _ => hint.integrableOn)]
+    exact MeasureTheory.setIntegral_le_integral hint
+      (Filter.Eventually.of_forall fun x => (hwpos x).le)
+  have htot : (2 ^ A)⁻¹ * (s ^ d * V) * ∑ y ∈ F, w y ≤ I := by
+    refine le_trans ?_ hsum
+    rw [Finset.mul_sum]
+    refine Finset.sum_le_sum fun y _ => ?_
+    calc _ = (2 ^ A)⁻¹ * w y * (s ^ d * V) := by ring
+      _ ≤ _ := hone y
+  have hS0 : 0 ≤ ∑ y ∈ F, w y := Finset.sum_nonneg fun y _ => (hwpos y).le
+  have hsd : 0 < s ^ d := by positivity
+  have hfin : ∑ y ∈ F, w y ≤ 2 ^ A * I / V * (1 / s ^ d) := by
+    have h2 : (0:ℝ) < 2 ^ A := by positivity
+    rw [show 2 ^ A * I / V * (1 / s ^ d) = (2 ^ A * I) / (s ^ d * V) by field_simp]
+    rw [le_div_iff₀ (by positivity)]
+    have := mul_le_mul_of_nonneg_left htot h2.le
+    calc _ = 2 ^ A * ((2 ^ A)⁻¹ * (s ^ d * V) * ∑ y ∈ F, w y) := by field_simp
+      _ ≤ _ := this
+  have hinv : 1 / s ^ d ≤ 2 ^ d * (1 + η⁻¹) := by
+    rw [div_le_iff₀ hsd]
+    linarith [hkey, mul_comm (s ^ d) (2 ^ d * (1 + η⁻¹))]
+  calc ∑ y ∈ F, ((1 + ‖y‖) ^ A)⁻¹ = ∑ y ∈ F, w y := rfl
+    _ ≤ 2 ^ A * I / V * (1 / s ^ d) := hfin
+    _ ≤ 2 ^ A * I / V * (2 ^ d * (1 + η⁻¹)) :=
+        mul_le_mul_of_nonneg_left hinv (by positivity)
+    _ = 2 ^ A * I / V * 2 ^ d * (1 + η⁻¹) := by ring
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsExtra =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneAddInvPowMulRpowLe =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneAddInvPowMulRpowLe", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.IsEpCont\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousAdeleWeight\npublic import GroundTheory.AutomorphicForms.GL2.AdelicFourier2TensorCosetIndicatorAlgebraMap\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsExtra\npublic import GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform\nimport GroundTheory.GlobalFields.TateThesis.AdelicCharDual\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -286,14 +440,6 @@ theorem exists_majorant {Ψ : (ι → 𝔸[K]) → ℂ} (hΨ : Ψ ∈ GJMatrix.s
     rw [Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (hb m hm y) (norm_nonneg r)
 
-theorem packing {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
-    [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] {A : ℕ}
-    (hA : Module.finrank ℝ E < A) (hd : 0 < Module.finrank ℝ E) :
-    ∃ c : ℝ, 0 ≤ c ∧ ∀ η : ℝ, 0 < η → ∀ F : Finset E,
-      (∀ y ∈ F, ∀ y' ∈ F, y ≠ y' → η ≤ ‖y - y'‖ ^ Module.finrank ℝ E) →
-      ∑ y ∈ F, ((1 + ‖y‖) ^ A)⁻¹ ≤ c * (1 + η⁻¹) :=
-  _root_.UpperTheory.Reformulated.B.DYga2.main μ hA hd
-
 theorem exists_finiteModule_le (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ∃ c : ℝ, 0 < c ∧ ∀ τ : IdeleGroup K, (τ : 𝔸[K]).2 ∈ idealFiniteAdeles L → finiteModule τ ≤ c := by
   obtain ⟨d, hd0, hd⟩ := exists_mul_mem_integralFiniteAdeles_of_isCompact (isCompact_idealFiniteAdeles L)
@@ -353,7 +499,7 @@ theorem theta_bound (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {A : ℕ} (hA : Modu
         c * (1 + ((ideleModule K t : ℝ))⁻¹) := by
   have hfr : Module.finrank ℝ (mixedSpace K) = Module.finrank ℚ K := mixedEmbedding.finrank K
   have hd : 0 < Module.finrank ℚ K := Module.finrank_pos
-  obtain ⟨P, hP, hpack⟩ := packing (E := mixedSpace K) (volume : Measure (mixedSpace K)) (A := A)
+  obtain ⟨P, hP, hpack⟩ := _root_.UpperTheory.Reformulated.B.DYga2.main (E := mixedSpace K) (volume : Measure (mixedSpace K)) (A := A)
     (by rw [hfr]; exact hA) (by rw [hfr]; exact hd)
   obtain ⟨c₁, hc₁, hfin⟩ := exists_finiteModule_le L
   refine ⟨P * max 1 c₁, by positivity, fun t ↦ ?_⟩
@@ -673,3 +819,6 @@ theorem epConv : EpConv := fun _ _ _ _ _ _ _ hΨ ↦
 end
 
 end GlobalTheory.CompanionTheory.EpConvB
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneAddInvPowMulRpowLe =====

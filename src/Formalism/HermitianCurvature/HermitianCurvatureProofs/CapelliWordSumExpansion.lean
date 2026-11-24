@@ -185,7 +185,7 @@ theorem Xb_unit (a b : Fin (2 * r + k + 1)) : unitLie k r (Xb k r a b) := by
     (((Hpk k r)⁻¹ * (Matrix.single a b (1 : ℂ))ᴴ * Hpk k r) i j)
   have h4 := norm_sub_le ((Matrix.single a b (1 : ℂ) : Mat k r) i j)
     (((Hpk k r)⁻¹ * (Matrix.single a b (1 : ℂ))ᴴ * Hpk k r) i j)
-  simp only [Xb, hpart2, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, smul_eq_mul, norm_mul]
+  simp only [Xb, hpart2, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, norm_mul]
   norm_num at h1 h2 h3 h4 ⊢
   linarith
 

@@ -63,7 +63,6 @@ noncomputable def tauKp : D.host.K →+* ℂ_[p] :=
 theorem tauKp_apply (x : D.host.K) : tauKp D lam x = lamC lam (D.host.φ₀ (x : D.host.E)) := by
   unfold tauKp lamC
   first
-  | rfl
   | (simp [test_vector_mem_schwartz_bruhat]; done)
   | (rw [dif_pos (test_vector_mem_schwartz_bruhat D _)]; rfl)
 

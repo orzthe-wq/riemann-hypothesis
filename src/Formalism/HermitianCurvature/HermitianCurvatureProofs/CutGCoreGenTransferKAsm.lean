@@ -63,7 +63,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
 theorem hs_expand (A C : Wq →L[ℂ] Wp) :
     inner ℂ (B.hsVec A) (B.hsVec C) =
       ∑ i, inner ℂ (A (stdOrthonormalBasis ℂ Wq i)) (C (stdOrthonormalBasis ℂ Wq i)) := by
-  simp only [B.hsVec, PiLp.inner_apply, PiLp.toLp_apply]
+  simp only [B.hsVec, PiLp.inner_apply]
 
 theorem hs_comp_right (A C : Wq →L[ℂ] Wp) (Q : Wq →L[ℂ] Wq) (hQ : ∀ v w, inner ℂ (Q v) w = inner ℂ v (Q w)) :
     inner ℂ (B.hsVec A) (B.hsVec (C.comp Q)) = inner ℂ (B.hsVec (A.comp Q)) (B.hsVec C) := by
@@ -91,7 +91,7 @@ theorem comp_sum_eq {ι : Type} [Fintype ι] (C : Wq →L[ℂ] Wp) (Q : ι → (
     C.comp (∑ σ, Q σ) = ∑ σ, C.comp (Q σ) := by
   ext v
 
-  simp [ContinuousLinearMap.sum_apply, map_sum]
+  simp [map_sum]
 
 end hs
 
@@ -151,7 +151,7 @@ theorem gauge_kappa_of_point_line : GTKapOfCut := by
     have hsum : (∑ σ, f σ • Qr σ) = Qr ρ := by
       simp [f, Finset.sum_ite_eq']
     rw [hsum] at hk
-    have hmem := Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _
+    have hmem := _root_.Formalism.FourierDecayAlt.P.NFRadRedA.radRedMem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _
       ((d.κ f).1 ⟨Φ, hΦ⟩).2
     have h2 := hmem.2.1 (c0, ζ0) hq0
     simp only [NF.radR, Set.indicator_of_mem hq0] at h2

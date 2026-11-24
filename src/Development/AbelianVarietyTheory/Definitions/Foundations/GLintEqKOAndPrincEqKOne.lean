@@ -700,9 +700,9 @@ theorem GLint_eq_KO_and_princ_eq_KOne (v : HeightOneSpectrum (𝓞 F)) (n : ℕ)
     haveI := GlobalTheory.LocalData.isLocalField v
     GLint (Fin n) (v.adicCompletionIntegers F).toSubring = GlobalTheory.SplitWeil.KO (Fv F v) (Fin n) ∧
       princ (v.adicCompletionIntegers F).subtype (IsLocalRing.maximalIdeal _) = GlobalTheory.SplitWeil.KOne (Fv F v) (Fin n) := by
-  letI := GlobalTheory.LocalData.complRel v
-  haveI := GlobalTheory.LocalData.isLocalField v
-  haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
+  let := GlobalTheory.LocalData.complRel v
+  have := GlobalTheory.LocalData.isLocalField v
+  have : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
   have he := isEquiv (valuation (Fv F v)) (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ)))
   have hO : 𝒪[Fv F v] = (v.adicCompletionIntegers F).toSubring := by
     ext y
@@ -711,7 +711,7 @@ theorem GLint_eq_KO_and_princ_eq_KOne (v : HeightOneSpectrum (𝓞 F)) (n : ℕ)
   have key : ∀ (O O' : Subring (Fv F v)) [IsLocalRing O] [IsLocalRing O'], O = O' →
       princ (n := Fin n) O.subtype (IsLocalRing.maximalIdeal _) = princ O'.subtype (IsLocalRing.maximalIdeal _) := by
     rintro O _ _ _ rfl; rfl
-  haveI : IsLocalRing (v.adicCompletionIntegers F).toSubring :=
+  have : IsLocalRing (v.adicCompletionIntegers F).toSubring :=
     inferInstanceAs (IsLocalRing (v.adicCompletionIntegers F))
   exact ⟨hO ▸ rfl, key _ _ hO.symm⟩
 

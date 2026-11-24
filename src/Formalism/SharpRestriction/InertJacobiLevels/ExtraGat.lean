@@ -81,10 +81,7 @@ theorem subst_one : P.subst (fun _ _ => 1) = AlgHom.id Kf P.Xsp := by
   · intro h; exact absurd (Finset.mem_univ _) h
 
 theorem natAct_one : P.natAct (fun _ => 1) = LinearMap.id := by
-  unfold Places.natAct
-  simp only [Units.val_one, inv_one, gPos_one, Matrix.det_one, one_zpow, Finset.prod_const_one, one_smul,
-    subst_one]
-  rfl
+  simp [Places.natAct, gPos_one, subst_one]
 
 def sgnEl : (levAll P).Γ := ((1 : ∀ v, GL (Fin (P.m + 1)) (P.Qq v)), (-1 : ℤˣ))
 
@@ -131,8 +128,7 @@ theorem gat_M_bot (G : GAtP p) (h : ∀ c, (G.lev c).M = ⊥) : G.M = ⊥ := by
 
 theorem gat_d_zero (G : GAtP p) (h : G.M = ⊥) : G.d = 0 := by
   unfold GAtP.d
-  rw [h]
-  exact finrank_bot _ _
+  rw [h, finrank_bot]
 
 end Formalism.MainNotions.Inhab
 

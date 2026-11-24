@@ -75,7 +75,7 @@ theorem gm_spMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (u : Aˣ
   rw [dite_eq_left (show (spMap f) z ∈ (⊤ : (Sp A).Opens) from trivial)]
   rw [dite_eq_left (show (𝟙 (Sp B)) z ∈ (⊤ : (Sp B).Opens) from trivial)]
   apply Units.ext
-  simp only [MonoidHom.comp_apply, Units.coe_map, pullU, unitΓ, toΓ, MonoidHom.coe_coe, Scheme.Hom.id_app, CommRingCat.hom_id, RingHom.id_apply]
+  simp only [MonoidHom.comp_apply, Units.coe_map, pullU, unitΓ, toΓ, MonoidHom.coe_coe, Scheme.Hom.id_app]
   erw [key]
   rfl
 
@@ -115,7 +115,7 @@ theorem jet_left_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
         rw [MvPolynomial.mem_ideal_span_X_image]
         intro m hm
         by_contra hc
-        push_neg at hc
+        push Not at hc
         have hm0 : m = 0 := by ext i; exact hc i (Set.mem_univ i)
         subst hm0
         rw [MvPolynomial.mem_support_iff, ← MvPolynomial.constantCoeff_eq] at hm

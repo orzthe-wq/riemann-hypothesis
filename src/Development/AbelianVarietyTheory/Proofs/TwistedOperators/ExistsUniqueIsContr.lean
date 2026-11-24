@@ -91,9 +91,9 @@ theorem existsUnique_isContr [CompleteSpace H₁] {Tm : H₁ →ₗ[ℂ] H₂ �
   · intro c a y
     exact ext_inner_left ℂ fun x => by simp [hw, inner_smul_right]
   · intro a y z
-    exact ext_inner_left ℂ fun x => by simp [hw, inner_add_right, inner_add_left]
+    exact ext_inner_left ℂ fun x => by simp [hw, inner_add_right]
   · intro c a y
-    exact ext_inner_left ℂ fun x => by simp [hw, inner_smul_right, inner_smul_left, mul_comm]
+    exact ext_inner_left ℂ fun x => by simp [hw, inner_smul_right, mul_comm]
   · intro It hIt
     ext φ y
     exact ext_inner_left ℂ fun x => (hIt φ y x).trans (hw φ y x).symm

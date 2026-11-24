@@ -56,6 +56,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LminorSubmatrixCastSucc
 import Std.Tactic.BVDecide.Normalize.Prop
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.EmbeddingHermitianPairs
 
 @[expose] public section
 
@@ -170,21 +171,10 @@ section Flow
 
 variable (ξ : Fin r → E)
 
-theorem flowMat_mulVec_eq (τ : X.Ψ) (s : ℂ) (v : Fin r → ℂ) : X.flowMat ξ τ s *ᵥ v =
-    v + (-(I * X.c τ * s) * hermC τ.1 X.Gm v (Data.emb τ.1 ξ)) • Data.emb τ.1 ξ := by
-  funext a
-  simp only [Data.flowMat, mulVec, dotProduct, of_apply, Pi.add_apply, Pi.smul_apply,
-    smul_eq_mul, hermC, Data.emb, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul,
-    Finset.sum_ite_eq, Finset.mem_univ, if_true]
-  rw [sub_eq_add_neg]
-  congr 1
-  simp only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_neg_distrib]
-  exact Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => by ring
-
 theorem col_flow_eq (s : X.Ψ → ℂ) (x : Frame X.Ψ r) (τ : X.Ψ) (a : Fin r) :
     FD.col (mat (X.flow ξ s x) τ) a = FD.col (mat x τ) a +
       (-(I * X.c τ * s τ) * hermC τ.1 X.Gm (FD.col (mat x τ) a) (Data.emb τ.1 ξ)) •
-        Data.emb τ.1 ξ := flowMat_mulVec_eq X ξ τ (s τ) _
+        Data.emb τ.1 ξ := _root_.ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs.flowMat_mulVec X ξ τ (s τ) _
 
 theorem flow_rmul (s : X.Ψ → ℂ) (x b : Frame X.Ψ r) :
     X.flow ξ s (rmul x b) = rmul (X.flow ξ s x) b := by
@@ -196,7 +186,7 @@ include hξ
 
 theorem flowMat_neg_mul (τ : X.Ψ) (s : ℂ) : X.flowMat ξ τ (-s) * X.flowMat ξ τ s = 1 := by
   refine Matrix.toLin'.injective (LinearMap.ext fun v => ?_)
-  rw [toLin'_apply, toLin'_apply, ← mulVec_mulVec, flowMat_mulVec_eq, flowMat_mulVec_eq,
+  rw [toLin'_apply, toLin'_apply, ← mulVec_mulVec, _root_.ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs.flowMat_mulVec, _root_.ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs.flowMat_mulVec,
     hermC_add_left, hermC_smul_left, hermC_emb, hξ, one_mulVec]
   funext a
   simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_zero]
@@ -207,7 +197,7 @@ theorem inv_flow_mulVec (s : X.Ψ → ℂ) (x : Frame X.Ψ r) (τ : X.Ψ) (v : F
       (I * X.c τ * s τ * hermC τ.1 X.Gm v (Data.emb τ.1 ξ)) • ((mat x τ)⁻¹ *ᵥ Data.emb τ.1 ξ) := by
   change (X.flowMat ξ τ (s τ) * mat x τ)⁻¹ *ᵥ v = _
   rw [Matrix.mul_inv_rev, inv_eq_left_inv (flowMat_neg_mul hξ τ _), ← mulVec_mulVec,
-    flowMat_mulVec_eq, mulVec_add, mulVec_smul, mul_neg, neg_neg]
+    _root_.ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs.flowMat_mulVec, mulVec_add, mulVec_smul, mul_neg, neg_neg]
 
 theorem per_flow (s : X.Ψ → ℂ) (x : Frame X.Ψ r) (v : Fin r → E) (p : X.Ψ × Fin r) :
     per X (X.flow ξ s x) v p =
@@ -563,9 +553,9 @@ theorem sum_letterDir_xVar {n : ℕ} (y : Frame X.Ψ r) (v : Fin r → E) (τ : 
       rcases ρ with i | i
       · simp [letterDir, perGe, Pi.single_apply]
       · have := i.isLt
-        simp [letterDir, perGe, Pi.single_apply]
+        simp [letterDir, perGe]
         omega
-    · simp [letterDir, perGe, Pi.single_apply, ht]
+    · simp [letterDir, perGe, ht]
   · simp [letterDir, hk]
 
 theorem sum_letterDir_yVar {n : ℕ} (y : Frame X.Ψ r) (v : Fin r → E) (τ : X.Ψ) (k : Fin n) :
@@ -579,11 +569,11 @@ theorem sum_letterDir_yVar {n : ℕ} (y : Frame X.Ψ r) (v : Fin r → E) (τ : 
     by_cases ht : t = τ
     · subst ht
       rcases ρ with i | i
-      · simp [letterDir, perLt, Pi.single_apply]
+      · simp [letterDir, perLt]
       · have := i.isLt
         simp [letterDir, perLt, Pi.single_apply]
         omega
-    · simp [letterDir, perLt, Pi.single_apply, ht]
+    · simp [letterDir, perLt, ht]
   · simp [letterDir, hk]
 
 variable {X bas} (hs : IsSympl X bas)

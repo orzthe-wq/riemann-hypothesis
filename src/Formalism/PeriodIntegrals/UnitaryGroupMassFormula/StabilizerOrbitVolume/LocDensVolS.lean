@@ -92,15 +92,11 @@ theorem ev_pow_mul_sub (v : HeightOneSpectrum (𝓞 F)) {W : Set (Fv F v)} (hW :
   have hs'' : Valued.v.restrict s ≤ 1 := by
     first
       | simpa using hs'
-      | exact_mod_cast hs'
-      | (rw [← map_one Valued.v.restrict]; simpa [Valuation.restrict_le_iff] using hs')
   show Valued.v.restrict (unifV v ^ n * s) < _
   rw [map_mul]
   have h1 : Valued.v.restrict (unifV v ^ n) * Valued.v.restrict s ≤ Valued.v.restrict (unifV v ^ n) := by
     first
       | exact mul_le_of_le_one_right' hs''
-      | exact (mul_le_mul' le_rfl hs'').trans (mul_one _).le
-      | exact mul_le_of_le_one_right (zero_le _) hs''
   exact lt_of_le_of_lt h1 hn
 
 def U0 (I : Finset (HeightOneSpectrum (𝓞 F))) (n : HeightOneSpectrum (𝓞 F) → ℕ) :
@@ -125,17 +121,13 @@ theorem isOpen_adelic_neighbourhood (I : Finset (HeightOneSpectrum (𝓞 F))) (n
     intro w
     first
       | exact Valued.isOpen_valuationSubring _
-      | exact Valued.valuationSubring_isOpen _
-      | exact (w.adicCompletionIntegers F).isOpen
   have hev : ∀ w : HeightOneSpectrum (𝓞 F), Continuous fun y : Af F => y w := by
     intro w
     first
       | exact RestrictedProduct.continuous_eval w
-      | exact RestrictedProduct.continuous_apply w
   have h1 : IsOpen {y : Af F | ∀ w, y w ∈ w.adicCompletionIntegers F} := by
     first
       | exact RestrictedProduct.isOpen_forall_mem hO
-      | exact RestrictedProduct.isOpen_forall_mem (fun w => hO w)
   have h2 : IsOpen {y : Af F | ∀ w ∈ I, (unifV w ^ n w)⁻¹ * y w ∈ w.adicCompletionIntegers F} := by
     have e : {y : Af F | ∀ w ∈ I, (unifV w ^ n w)⁻¹ * y w ∈ w.adicCompletionIntegers F} =
         ⋂ w ∈ I, {y : Af F | (unifV w ^ n w)⁻¹ * y w ∈ w.adicCompletionIntegers F} := by

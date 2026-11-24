@@ -66,6 +66,6 @@ theorem infScale_mul_snd (s : ℝ) (x : AF F) : (infScale F s * x).2 = x.2 := by
 theorem evI_infScale_mul (s : ℝ) (x : AF F) : evI F (infScale F s * x) = s • evI F x := by
   unfold evI
   rw [infScale_mul_fst, map_mul]
-  simp only [infScale, Prod.fst, RingEquiv.apply_symm_apply, Algebra.smul_def]
+  simp only [infScale, RingEquiv.apply_symm_apply, Algebra.smul_def]
 
 end GlobalTheory.TorusTheta

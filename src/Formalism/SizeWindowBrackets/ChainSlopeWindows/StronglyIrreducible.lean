@@ -119,7 +119,6 @@ lemma card_notPhi : (univ.filter (fun g : E0 × H => ¬ InPhi g)).card = (PhiSet
 lemma conj_eq_neg (ψ : AddChar (E0 × H) ℂ) (g : E0 × H) : starRingEnd ℂ (ψ g) = ψ (-g) := by
   first
   | exact (AddChar.map_neg_eq_conj ψ g).symm
-  | rw [AddChar.map_neg_eq_inv, Complex.inv_eq_conj (AddChar.norm_apply ψ g)]
 
 lemma ortho (g h : E0 × H) :
     ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ψ h
@@ -145,8 +144,6 @@ lemma chC_sq (g : E0 × H) : (chC : AddChar (E0 × H) ℂ) g * chC g = 1 := by
 private theorem zero_apply_lemma (g : E0 × H) : (0 : AddChar (E0 × H) ℂ) g = 1 := by
   first
   | exact AddChar.zero_apply g
-  | rfl
-  | simp
 
 lemma chC_mul_self : (chC : AddChar (E0 × H) ℂ) * chC = 0 := by
   ext g
@@ -254,7 +251,6 @@ theorem primitive_value_pow : PrimValPow (H := H) := by
   first
   | rw [Nat.primeFactors_prime_pow (by omega) hp, Finset.prod_singleton, hp.factorization_pow,
       Finsupp.single_eq_same]
-  | simp [Nat.primeFactors_prime_pow (by omega : i ≠ 0) hp, hp.factorization_pow]
 
 end
 
@@ -265,8 +261,6 @@ lemma natCard_eq_filter (I : AddSubgroup (E0 × H)) [DecidablePred (fun x => x �
     Nat.card I = (univ.filter (fun x => x ∈ I)).card := by
   first
   | (rw [Nat.card_eq_fintype_card]; exact Fintype.card_subtype _)
-  | (rw [Nat.card_eq_fintype_card]; convert Fintype.card_subtype (fun x => x ∈ I))
-  | simp [Nat.card_eq_fintype_card, Fintype.card_subtype]
 
 open Classical in
 lemma ortho_coset (I : AddSubgroup (E0 × H)) (h g : E0 × H) :
@@ -291,14 +285,13 @@ lemma ortho_coset (I : AddSubgroup (E0 × H)) (h g : E0 × H) :
   have e3 : ∀ x : E0 × H, (h + x = g) ↔ (x = g - h) := fun x => by
     rw [eq_sub_iff_add_eq, add_comm]
   simp_rw [ortho, e3]
-  simp only [Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_filter, Finset.mem_univ, true_and]
+  simp only [Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and]
   rw [hS]
   have hΦ := phi_card_ne_zero (H := H)
   split_ifs
   · rw [card_G]
     first
     | (field_simp; done)
-    | (field_simp; ring)
   · simp
 
 end
@@ -362,7 +355,6 @@ lemma sum_vonMangoldt_primePow (N : ℕ) (X : ℕ → ℂ)
     have h2 : k < p ^ k := by
       first
       | exact Nat.lt_pow_self hp.one_lt
-      | exact Nat.lt_pow_self hp.one_lt k
     refine ⟨(p, k), ?_, ?_, rfl⟩
     · rw [Finset.mem_product, Finset.mem_filter, Finset.mem_range, Finset.mem_Icc]
       exact ⟨⟨Nat.lt_succ_of_le (h1.trans hn.2), hp⟩, hk, (h2.trans_le hn.2).le⟩
@@ -417,47 +409,33 @@ section
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
 lemma term_real (a w : ℝ) (hw : w ≠ 0) (n : ℕ) : a / n - w = w * (a / w / n - 1) := by
-  have hw' : w * (a / w) = a := by
-    first
-    | field_simp
-    | rw [mul_div_assoc', mul_comm, mul_div_assoc, div_self hw, mul_one]
-  rw [mul_sub, mul_one, mul_div_assoc', hw']
+  rw [mul_sub, mul_one, mul_div_assoc', mul_div_cancel₀ a hw]
 
 lemma sum_cut (D : ArithData H) (ψ : AddChar (E0 × H) ℂ) (N : ℕ) (a W : ℝ) (ha : 0 < a) (hW : 0 < W)
     (hN : a / W ≤ N) :
     ∑ n ∈ Icc 1 N, (Λ n : ℂ) * primVal D ψ n * ((max (a / n - W) 0 : ℝ) : ℂ)
       = ∑ n ∈ Icc 1 ⌊a / W⌋₊, (Λ n : ℂ) * primVal D ψ n * ((a / n - W : ℝ) : ℂ) := by
-  have hMN : ⌊a / W⌋₊ ≤ N := by
-    have h1 : ((⌊a / W⌋₊ : ℕ) : ℝ) ≤ N := (Nat.floor_le (by positivity)).trans hN
-    exact_mod_cast h1
-  have hterm : ∀ n ∈ Icc 1 N, (Λ n : ℂ) * primVal D ψ n * ((max (a / n - W) 0 : ℝ) : ℂ)
-      = if n ≤ ⌊a / W⌋₊ then (Λ n : ℂ) * primVal D ψ n * ((a / n - W : ℝ) : ℂ) else 0 := by
-    intro n hn
-    have hn1 : (1 : ℝ) ≤ n := by exact_mod_cast (Finset.mem_Icc.1 hn).1
-    have hn0 : (0 : ℝ) < n := by linarith
-    split_ifs with h
-    · have h2 : (n : ℝ) ≤ a / W := (Nat.le_floor_iff (by positivity)).1 h
-      rw [le_div_iff₀ hW] at h2
-      have h3 : W ≤ a / n := by
-        rw [le_div_iff₀ hn0]
-        linarith [mul_comm W (n : ℝ)]
-      rw [max_eq_left (by linarith)]
-    · have h2 : a / W < n := (Nat.floor_lt (by positivity)).1 (not_le.1 h)
-      rw [div_lt_iff₀ hW] at h2
-      have h3 : a / n < W := by
-        rw [div_lt_iff₀ hn0]
-        linarith [mul_comm W (n : ℝ)]
-      rw [max_eq_right (by linarith)]
-      simp
-  rw [Finset.sum_congr rfl hterm, ← Finset.sum_filter]
-  refine Finset.sum_congr ?_ (fun _ _ => rfl)
-  ext n
-  simp only [Finset.mem_filter, Finset.mem_Icc]
-  constructor
-  · rintro ⟨⟨h1, _⟩, h2⟩
-    exact ⟨h1, h2⟩
-  · rintro ⟨h1, h2⟩
-    exact ⟨⟨h1, h2.trans hMN⟩, h2⟩
+  have hMN : ⌊a / W⌋₊ ≤ N := Nat.floor_le_of_le hN
+  calc
+    _ = ∑ n ∈ Icc 1 ⌊a / W⌋₊,
+        (Λ n : ℂ) * primVal D ψ n * ((max (a / n - W) 0 : ℝ) : ℂ) := by
+      symm
+      refine Finset.sum_subset (Finset.Icc_subset_Icc_right hMN) fun n hn hnot => ?_
+      have hn0 : (0 : ℝ) < n := by exact_mod_cast (mem_Icc.mp hn).1
+      have hlt : a / W < n := (Nat.floor_lt (by positivity)).mp (by
+        simp only [mem_Icc, not_and] at hnot
+        exact Nat.lt_of_not_ge (hnot (mem_Icc.mp hn).1))
+      have hneg : a / n - W ≤ 0 := by
+        rw [sub_nonpos, div_le_iff₀ hn0]
+        simpa [mul_comm] using ((div_lt_iff₀ hW).mp hlt).le
+      simp [max_eq_right hneg]
+    _ = _ := by
+      refine Finset.sum_congr rfl fun n hn => ?_
+      have hn0 : (0 : ℝ) < n := by exact_mod_cast (mem_Icc.mp hn).1
+      have hle : (n : ℝ) ≤ a / W := (Nat.le_floor_iff (by positivity)).mp (mem_Icc.mp hn).2
+      rw [max_eq_left]
+      rw [sub_nonneg, le_div_iff₀ hn0]
+      simpa [mul_comm] using (le_div_iff₀ hW).mp hle
 
 lemma inner_eq (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : AddChar (E0 × H) ℂ) (a w : ℝ)
     (ha : 0 < a) (hw : 0 < w) :
@@ -465,33 +443,27 @@ lemma inner_eq (D : ArithData H) (ell : AddChar (E0 × H) ℂ → ℂ) (ψ : Add
       = (w : ℂ) * GPsi D ell ψ (a / w) + (if ψ = 0 then
           ((a * Real.log a - a * Real.log w - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ)
           else -(a : ℂ) * ell ψ) := by
+  have hscale : (∑ n ∈ Icc 1 ⌊a / w⌋₊,
+      (Λ n : ℂ) * primVal D ψ n * ((a / n - w : ℝ) : ℂ)) =
+      (w : ℂ) * ∑ n ∈ Icc 1 ⌊a / w⌋₊,
+        (Λ n : ℂ) * primVal D ψ n * ((a / w / n - 1 : ℝ) : ℂ) := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun n _ => ?_
+    rw [term_real a w hw.ne' n]
+    push_cast
+    ring
+  rw [hscale]
+  have hwa : w * (a / w) = a := mul_div_cancel₀ a hw.ne'
   unfold GPsi
   split_ifs with h0
   · subst h0
-    simp only [Gz, Sz]
-    simp_rw [primitive_value_trivial D, mul_one, ← Complex.ofReal_mul]
-    rw [← Complex.ofReal_sum, ← Complex.ofReal_add]
+    simp only [Gz, Sz, primitive_value_trivial D, mul_one]
+    simp only [← Complex.ofReal_mul, ← Complex.ofReal_sum, ← Complex.ofReal_add]
     congr 1
-    have hS : w * ∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n * (a / w / n - 1)
-        = ∑ n ∈ Icc 1 ⌊a / w⌋₊, Λ n * (a / n - w) := by
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl (fun n _ => ?_)
-      rw [term_real a w hw.ne' n]
-      ring
-    have hwa' : w * (a / w) = a := by field_simp
-    rw [Real.log_div ha.ne' hw.ne', ← hS]
-    linear_combination (Real.log a - Real.log w - (1 + Real.eulerMascheroniConstant)) * hwa'
-  · have hwa' : w * (a / w) = a := by field_simp
-    have hwa : (w : ℂ) * ((a / w : ℝ) : ℂ) = a := by
-      rw [← Complex.ofReal_mul, hwa']
-    rw [mul_add, Finset.mul_sum]
-    have hs : ∀ n ∈ Icc 1 ⌊a / w⌋₊, (w : ℂ) * ((Λ n : ℂ) * primVal D ψ n * ((a / w / n - 1 : ℝ) : ℂ))
-        = (Λ n : ℂ) * primVal D ψ n * ((a / n - w : ℝ) : ℂ) := by
-      intro n _
-      rw [term_real a w hw.ne' n]
-      push_cast
-      ring
-    rw [Finset.sum_congr rfl hs, ← mul_assoc, hwa]
+    rw [Real.log_div ha.ne' hw.ne']
+    linear_combination (Real.log a - Real.log w - (1 + Real.eulerMascheroniConstant)) * hwa
+  · have hwaC : (w : ℂ) * ((a / w : ℝ) : ℂ) = a := by exact_mod_cast hwa
+    rw [mul_add, ← mul_assoc, hwaC]
     ring
 
 end

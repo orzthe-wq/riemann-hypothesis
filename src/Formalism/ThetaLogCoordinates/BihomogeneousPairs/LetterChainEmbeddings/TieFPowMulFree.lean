@@ -97,7 +97,7 @@ noncomputable def ehP : MvPolynomial σ k := X zv * X sv + ∑ c, X (w c) * X (e
 private lemma pderiv_X_pow_of_ne' (i j : σ) (h : i ≠ j) (n : ℕ) : pderiv i (X j ^ n : MvPolynomial σ k) = 0 := by
   classical
   rw [Derivation.leibniz_pow]
-  simp [pderiv_X, Pi.single_apply, Ne.symm h]
+  simp [pderiv_X, Ne.symm h]
 
 theorem harmonicProjection_expand (hz : ∀ c, w c ≠ zv ∧ e c ≠ zv) (o n z : ℕ) (x : MvPolynomial σ k) :
     M.tieP w e zv sv o n z x = ∑ m ∈ range (o + 1),
@@ -323,7 +323,7 @@ theorem decomp [CharZero k] (hr : 1 ≤ r) (hz : ∀ c, w c ≠ zv ∧ e c ≠ z
     · intro m _ hm
       simp only [Finset.mem_range, not_lt] at hm
       have h0 : (tieF w e ^ (l + m)) x = 0 := hv (l + m) (by omega)
-      simp [LinearMap.map_smul, hT, h0]
+      simp [hT, h0]
   have hre : ∀ l ∈ range (min o n + 1),
       ∑ m ∈ range (min o n - l + 1), ((-1 : k) ^ m / (((m).factorial : k) ^ 2 * ((o - l + (n - l) + r + z - 1).choose (m) : k)) *
           (((l).factorial : k) ^ 2 * ((o + n + r + z - l).choose l : k))⁻¹) • (ehP w e zv sv ^ (l + m) * (X zv ^ z * (tieF w e ^ (l + m)) x)) =

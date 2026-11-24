@@ -60,7 +60,7 @@ theorem divided_power_xi_zero : A.dxi0 0 = 1 :=
 
 theorem divided_power_xi_mul (i j : ℕ) :
     A.dxi0 i * A.dxi0 j = (((i + j).choose i : ℕ) : A.Acr0) * A.dxi0 (i + j) := by
-  apply GlobalTheory.CompanionTheory.FilMul.divided_power_xi_mul <;> assumption
+  apply GlobalTheory.CompanionTheory.FilMul.divided_power_xi_mul
 
 def spanFrom (r : ℕ) : Submodule A.W A.Acr0 :=
   Submodule.span A.W {z : A.Acr0 | ∃ k, r ≤ k ∧ z = A.dxi0 k}

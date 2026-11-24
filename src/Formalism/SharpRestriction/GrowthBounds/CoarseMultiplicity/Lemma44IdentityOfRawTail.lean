@@ -155,13 +155,7 @@ theorem ioBlock_add (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m)
   unfold ioBlock
   rw [map_add (f := _), mul_add]
 
-theorem symFam_span (β : GlobalTheory X)
-    (G : ∀ j : Fin (numSeg X.TT), Set (MvPolynomial (BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) (KK O)))
-    (M : Submodule O (MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) (KK O)))
-    (hM : ∀ s : Syms O C0 CE1 CE2 X, (∀ j, s j ∈ G j) → symFam (KK O) X.p C0 CE1 CE2 X β s ∈ M)
-    (s : Syms O C0 CE1 CE2 X) (hs : ∀ j, s j ∈ Submodule.span O (G j)) :
-    symFam (KK O) X.p C0 CE1 CE2 X β s ∈ M :=
-  _root_.UpperTheory.Reformulated.B.SymmetricFamilySpan.symFam_span β G M hM s hs
+alias symFam_span := _root_.UpperTheory.Reformulated.B.SymmetricFamilySpan.symFam_span
 
 end Multi
 

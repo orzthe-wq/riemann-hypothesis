@@ -190,7 +190,7 @@ theorem uh_of_herm {m : ℕ} {H g : Matrix (Fin m) (Fin m) ℂ}
       by_cases hk : k = i
       · subst hk
         simp
-      · simp [Pi.single_apply, hk]
+      · simp [hk]
     unfold herm
     rw [hs]
     simp [Matrix.mulVec, dotProduct, Pi.single_apply]

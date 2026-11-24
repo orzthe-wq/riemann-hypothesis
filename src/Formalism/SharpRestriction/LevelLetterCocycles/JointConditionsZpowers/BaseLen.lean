@@ -121,7 +121,6 @@ theorem length_torsionBy_pow_le {M : Type} [AddCommGroup M] [Module O M] (a : O)
         | exact Module.length_eq_zero_iff.2 hs
     rw [h0]
     first
-      | exact zero_le _
       | exact zero_le
   | succ c ih =>
     have hpow : a * a ^ c = a ^ (c + 1) := by ring

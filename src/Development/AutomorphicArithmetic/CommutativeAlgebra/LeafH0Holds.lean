@@ -71,15 +71,11 @@ private theorem mod_eq_of_nsmul_eq {q : ℕ} [NeZero q] {i : ℤ} {U : Scheme.{0
     have h0 : d • twGen i ζ = 0 := by
       have h' := h.symm
       rwa [add_eq_left] at h'
-    obtain ⟨k, rfl⟩ := (GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.1 U ζ d h0
+    obtain ⟨k, rfl⟩ := (_root_.GlobalTheory.EtC.twist_sections q i).2.2.1 U ζ d h0
     rw [Nat.add_mul_mod_self_left]
   rcases le_total c c' with hle | hle
   · exact key hle h
   · exact (key hle h.symm).symm
-
-private theorem res_nsmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (k : V ⟶ U) (n : ℕ)
-    (a : Sec F U) : Sec.res k (n • a) = n • Sec.res k a :=
-  map_nsmul (F.obj.map k.op).hom n a
 
 private theorem exists_prim (q : ℕ) [NeZero q] (Ω : Type) [Field Ω] [IsAlgClosed Ω] (hq : IsUnit (q : Ω)) :
     Nonempty (Prim q Ω) := by
@@ -114,17 +110,17 @@ theorem UpperTheory.leafH0_holds :
     have hres : Function.Bijective (Sec.res (F := tw q i) c) := by
       have ht : Sec.res c (twGen i ζ) =
           twGen i (Prim.map (CommRingCat.Hom.hom (Scheme.Hom.appTop c)) ζ) :=
-        (GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.2.1 X (Sp Ω) c ζ
+        (_root_.GlobalTheory.EtC.twist_sections q i).2.2.2.1 X (Sp Ω) c ζ
       constructor
       · intro s s' hss
         obtain ⟨c1, -, rfl⟩ := hsec ζ s
         obtain ⟨c2, -, rfl⟩ := hsec ζ s'
-        rw [res_nsmul, res_nsmul, ht] at hss
+        rw [_root_.GlobalTheory.TwSec.res_nsmul, _root_.GlobalTheory.TwSec.res_nsmul, ht] at hss
         have hm := mod_eq_of_nsmul_eq _ hss
         rw [tw_nsmul_mod _ c1, tw_nsmul_mod _ c2, hm]
       · intro y
         obtain ⟨c1, -, rfl⟩ := hsec (Prim.map (CommRingCat.Hom.hom (Scheme.Hom.appTop c)) ζ) y
-        exact ⟨c1 • twGen i ζ, by rw [res_nsmul, ht]⟩
+        exact ⟨c1 • twGen i ζ, by rw [_root_.GlobalTheory.TwSec.res_nsmul, ht]⟩
     have hfun : (pl q i c 0 : _ → _) = (e X) ∘ Sec.res c ∘ (e (Sp Ω)).symm := by
       funext x
       simp only [Function.comp]

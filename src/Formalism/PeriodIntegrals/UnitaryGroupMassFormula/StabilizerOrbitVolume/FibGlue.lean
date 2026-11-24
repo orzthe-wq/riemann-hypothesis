@@ -229,7 +229,7 @@ theorem G_nonneg (hD : DensAll μ f ι ν U) {φ : V → ℝ} (hφ : IsCcOn U φ
     0 ≤ G hD φ := by
   intro b
   have hs := G_spec hD hφ
-  refine dens_nonneg (ν := ν) hs.1 (fun S hS => ?_) b
+  refine _root_.PI.VolStabSW.Glue.nonneg_of_setIntegral_compact_nonneg (ν := ν) hs.1 (fun S hS => ?_) b
   rw [← hs.2 S hS]
   exact integral_nonneg (fun v => h0 v)
 

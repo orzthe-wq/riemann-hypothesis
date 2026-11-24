@@ -5,8 +5,10 @@ public import Mathlib.Algebra.Polynomial.Homogenize
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.LeviCivita
 public import Mathlib.NumberTheory.ModularForms.QExpansion
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerIntegralFromISlashChangeOfVariablesStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerPeriodCocycleMemCocyclesAndEqStatement
+public import Mathlib.Analysis.Complex.UpperHalfPlane.Manifold
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerIntegralFromISlashChangeOfVariables
+public import Mathlib.NumberTheory.ModularForms.Basic
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EichlerPeriodCocycleMemCocyclesAndEq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -94,17 +96,11 @@ lemma lam_lin_pow (a b x y : ℂ) (i : ℕ) : lam i x y ((C a * X + C b) ^ i) = 
     simp [lam_apply, Finset.sum_range_succ, coeff_X, coeff_C]
     ring
 
-lemma polySlash_sum (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (p : ℂ[X]) :
-    slP w g p = ∑ i ∈ Finset.range (w + 1), p.coeff i •
-      ((C ((g 0 0 : ℤ) : ℂ) * X + C ((g 0 1 : ℤ) : ℂ)) ^ i *
-        (C ((g 1 0 : ℤ) : ℂ) * X + C ((g 1 1 : ℤ) : ℂ)) ^ (w - i)) := by
-  simp only [slP, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.toSpanSingleton_apply, lcoeff_apply]
-
 lemma lam_slP (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (x y : ℂ) (p : ℂ[X]) :
     lam w x y (slP w g p) =
       lam w ((g 0 0 : ℤ) * x + (g 0 1 : ℤ) * y) ((g 1 0 : ℤ) * x + (g 1 1 : ℤ) * y) p := by
 
-  rw [polySlash_sum, map_sum, lam_apply w _ _ p]
+  rw [_root_.GlobalTheory.EichlerChange.polySlash_apply, map_sum, lam_apply w _ _ p]
   refine Finset.sum_congr rfl fun i hi => ?_
   have hi' : i ≤ w := Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)
   rw [map_smul, smul_eq_mul]
@@ -202,13 +198,13 @@ lemma lam_per {Γ : Subgroup SL(2, ℤ)} [Γ.FiniteIndex] {k : ℕ} (hk : 2 ≤ 
     (σ : SL(2, ℤ)) (γ : Γ) (n : ℕ) (hn : 0 < n) (h : γ * σ = σ * ModularGroup.T ^ (n : ℤ)) :
     lam (k - 2) (mat σ 0 0 : ℤ) (mat σ 1 0 : ℤ) (per Γ (k - 2) f γ) =
       n * valueAtInfty ((f : ℍ → ℂ) ∣[(k : ℤ)] σ) := by
-  obtain ⟨c, hc⟩ := GlobalTheory.T.eichlerIntegralFromI_slash_change_of_variables k hk f f.holo' σ
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.EichlerChange.polySlash_eichler_smul k hk f f.holo' σ
   have key : ∀ τ : ℍ, lam (k - 2) (mat σ 0 0 : ℤ) (mat σ 1 0 : ℤ) (eichler (k - 2) f (σ • τ)) =
       (eichler (k - 2) ((f : ℍ → ℂ) ∣[(k : ℤ)] σ) τ).coeff (k - 2) + c.coeff (k - 2) := by
     intro τ
     rw [← coeff_add, ← hc τ, ← lam_one_zero, lam_slP]
     simp
-  rw [(GlobalTheory.T.eichlerPeriodCocycle_mem_cocycles_and_eq Γ k hk f).2 γ (σ • UpperHalfPlane.I), map_sub, lambda_slParabolic _ σ γ n h, ← mul_smul, h,
+  rw [(_root_.GlobalTheory.HeckeFamilyMatrices.PerCoc.per_mem_Z1_and_eq_slP_eichler_sub Γ k hk f).2 γ (σ • UpperHalfPlane.I), map_sub, lambda_slParabolic _ σ γ n h, ← mul_smul, h,
     mul_smul, key, key, modular_T_zpow_smul, coeff_eichler_period _ n hn, coeff_eichler]
   · simp
   · simpa using periodic_slash f σ γ n γ.2 h

@@ -117,7 +117,6 @@ private theorem coset_sum {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
   symm
   refine finsum_mem_eq_of_bijOn _ hb fun y hy => ?_
   obtain ⟨u, hu⟩ := QuotientGroup.mk_out_eq_mul W y.out
-  change c • φ (h * y.out) = f (Quotient.out ((y.out : G) : G ⧸ W)) • φ (h * Quotient.out ((y.out : G) : G ⧸ W))
   rw [hu, hinv, hval _ hy]
 
 section Loc
@@ -129,7 +128,7 @@ private theorem scalar_eq (n : ℕ) (z : kˣ) :
   apply Units.ext
   rw [val_diagT]
   ext i j
-  simp [Matrix.diagonal_apply, Matrix.one_apply, Matrix.scalar_apply]
+  simp [Matrix.diagonal_apply, Matrix.scalar_apply]
 
 private theorem gl_uniq (V : Lev k) (d : Fin 2 → kˣ) (hd : Dom d) {Y u : GL (Fin 2) k} (hY : Y ∈ V.DC d) (hYu : Y * u ∈ V.DC d)
     (z : kˣ) (j : GL (Fin 2) k) (hj : j ∈ V.J 2) (hu : u = Matrix.GeneralLinearGroup.scalar (Fin 2) z * j) : u ∈ V.J 2 := by
@@ -205,7 +204,7 @@ section Glb
 variable {F : Type} [Field F] [NumberField F] {Δ : F} (A : SD Δ)
 
 private theorem scal_one' {K : Type} [Field K] {Δ : K} : IsScal (1 : Kˣ) (1 : DX Δ) := by
-  simp [IsScal, mt]
+  simp [IsScal]
 
 private theorem scal_comm' {K : Type} [Field K] {Δ : K} {z : Kˣ} {s : DX Δ} (h : IsScal z s) (y : DX Δ) : s * y = y * s := by
   apply Subtype.ext

@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeUOperatorLowersLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletionStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeUOperatorLowersLevel
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletion
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,7 +72,7 @@ theorem iterU_level_val_stable : ∀ (k N l m : ℕ) (ε : DirichletCharacter �
     | succ m ih =>
       intro a ha
       have hU : MF k (N * l ^ (m + 1)) (ch ε) (Uo l a) := by
-        refine GlobalTheory.T.coeffHeckeUOperator_lowers_level k (N * l ^ (m + 1)) l (ch ε) a hk hl ?_ ?_ ?_
+        refine _root_.GlobalTheory.Uo_lowers_level k (N * l ^ (m + 1)) l (ch ε) a hk hl ?_ ?_ ?_
         · exact Dvd.dvd.mul_left (dvd_pow_self l (Nat.succ_ne_zero m)) N
         · exact ch_periodic_of_dvd ε (Dvd.intro _ rfl)
         · simpa [pow_succ, mul_assoc] using ha
@@ -87,7 +87,7 @@ theorem iterU_level_val_stable : ∀ (k N l m : ℕ) (ε : DirichletCharacter �
     | zero => simpa using hb
     | succ j ih =>
       rw [Function.iterate_succ_apply']
-      exact (GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion k (N * l) l (ch ε) _ hk hl (Dvd.intro_left _ rfl) per ih).1
+      exact (_root_.GlobalTheory.depletion_mf k (N * l) l (ch ε) _ hk hl (Dvd.intro_left _ rfl) per ih).1
   have lamj : ∀ j, lam B c ((Uo l)^[j] ((Uo l)^[m] a)) = α ^ j * lam B c ((Uo l)^[m] a) := by
     intro j
     induction j with

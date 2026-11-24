@@ -71,9 +71,9 @@ theorem rowDiv_raise_eq_zero (k : Type) [Field k] (N : ℕ) (ν : Fin N → ℕ)
   have hrow : ∀ i, ((rowDeg m i : ℕ) : ℤ) = (ν i : ℤ) + (j : ℤ) * ((Pi.single a (1:ℤ) : Fin N → ℤ) i - (Pi.single b (1:ℤ) : Fin N → ℤ) i) := by
     intro i
     have := congrFun e i
-    rw [GlobalTheory.LvT.KerLat.weight_rowZ, GlobalTheory.LvT.KerLat.weight_rowW] at this
+    rw [GlobalTheory.LvT.KerLat.weight_rowZ, _root_.Formalism.GradedWeylDivisibility.ldrow_weight_rowW] at this
     rw [this]
-    simp [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+    simp [Pi.add_apply]
   have hcast : ((∑ i : Fin N with i.val < a.val + 1, rowDeg m i : ℕ) : ℤ) =
       ((∑ i : Fin N with i.val < a.val + 1, ν i : ℕ) : ℤ) + j := by
     push_cast
@@ -82,7 +82,7 @@ theorem rowDiv_raise_eq_zero (k : Type) [Field k] (N : ℕ) (ν : Fin N → ℕ)
     have ha : (∑ i : Fin N with i.val < a.val + 1, (Pi.single a (1:ℤ) : Fin N → ℤ) i) = 1 := by
       rw [Finset.sum_eq_single a]
       · simp
-      · intro i _ hi; simp [Pi.single_apply, hi]
+      · intro i _ hi; simp [hi]
       · intro h; simp at h
     have hb : (∑ i : Fin N with i.val < a.val + 1, (Pi.single b (1:ℤ) : Fin N → ℤ) i) = 0 := by
       apply Finset.sum_eq_zero
@@ -92,7 +92,7 @@ theorem rowDiv_raise_eq_zero (k : Type) [Field k] (N : ℕ) (ν : Fin N → ℕ)
         simp at hi
         have : a.val < i.val := hab
         omega
-      simp [Pi.single_apply, this]
+      simp [this]
     rw [ha, hb]; ring
   have hj' : (1 : ℤ) ≤ j := by exact_mod_cast hj
   have : ((∑ i : Fin N with i.val < a.val + 1, rowDeg m i : ℕ) : ℤ) ≤

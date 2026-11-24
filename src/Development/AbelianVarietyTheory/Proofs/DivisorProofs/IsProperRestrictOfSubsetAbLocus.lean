@@ -5,7 +5,10 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsIntegralOfSmoothFieldOfConnectedSpace
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NonemptyUniformisationTraitInAbelianLocus
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfProperSpecialFibreUniversallyOpenDvrStatement
+public import Mathlib.AlgebraicGeometry.Geometrically.Irreducible
+public import Mathlib.AlgebraicGeometry.Morphisms.Proper
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfProperSpecialFibreUniversallyOpenDvr
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeometricallyIntegralIffGeometricallyConnectedOf
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsProperOfCompleteDVRLiftGenericPointStatement
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianLocusIsOpenOfOpenImmersionCover
@@ -52,6 +55,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -71,7 +75,7 @@ theorem isProper_dvr (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRi
   have := hG.geomConnected
   have := GlobalTheory.grpObj_geometricallyIntegral_of_smooth (Sp V) G
   have p : Sp (ResidueField V) := IsLocalRing.closedPoint (ResidueField V)
-  refine GlobalTheory.T.isProper_of_properSpecialFibre_universallyOpen_dvr V G.left G.hom inferInstance inferInstance inferInstance inferInstance inferInstance ?_
+  refine _root_.GlobalTheory.FibreProperDvr.isProper_of_specialFibre V G.left G.hom inferInstance inferInstance inferInstance inferInstance inferInstance ?_
   exact GlobalTheory.AbelianTrait.isProper_snd_of_mem_abLocus G (K := ResidueField V)
     (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V))) p (by rw [hab]; trivial)
 
@@ -134,6 +138,6 @@ theorem isProper_restrict_of_subset_abLocus : ∀ (R : Type) [CommRing R] [IsDom
     have hr : r ≠ 0 := fun h0 => hzr (by rw [h0]; exact zero_mem _)
     let i : I := ⟨r, hr, hrW⟩
     obtain ⟨y, hy⟩ : z ∈ Set.range (t i) := by rw [hrange i]; exact hzr
-    exact ⟨i, ⟨y, trivial⟩, by first | exact hy | (erw [Scheme.Hom.comp_apply]; exact hy) | simpa using hy⟩
+    exact ⟨i, ⟨y, trivial⟩, by first | exact hy | simpa using hy⟩
 
 end GlobalTheory.AbLocusProperNormal

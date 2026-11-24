@@ -5,7 +5,6 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.Complexified
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsHermitianJmBracket
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsKFinDRep
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothVectorsModerateGrowthSmoothFrechetRep
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothVectorsModerateGrowthSmoothFrechetRepStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -164,12 +163,6 @@ private theorem isKFin_zero {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAd
   rw [hx, map_zero]
   exact Submodule.zero_mem _
 
-private theorem mem_UJset_of_mem_Kset_iwasawa_decomposition {n : ℕ} {ε : Fin n → Bool} {k : Mx n} (hk : k ∈ Kset ε) : k ∈ UJset ε := by
-  obtain ⟨hu, hc⟩ := hk
-  have hu' : star k * k = 1 := Matrix.mem_unitaryGroup_iff'.1 hu
-  show kᴴ * Jm ε * k = Jm ε
-  rw [Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, show kᴴ * k = 1 from hu', Matrix.one_mul]
-
 private theorem dw_apply_sigma_eq_sigma_dw_conj {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)} (h : Std ε σ) {g : Mx n}
     (hg : g ∈ UJset ε) (l : List (Mx n)) (hl : ∀ X ∈ l, X ∈ lieSet ε) {w : H} (hw : Sm ε σ w) :
@@ -196,7 +189,7 @@ end SlopeTestRemainingChoices
 theorem casselmanWallach_banach : GlobalTheory.Published.CasselmanWallach → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] (ρ : Mx n → (E →L[ℂ] E)), ModRep ε ρ → ∀ T₀ : H →ₗ[ℂ] E, (∀ k ∈ Kset ε, ∀ v, IsKFin ε σ v → T₀ (σ k v) = ρ k (T₀ v)) → (∀ X ∈ lieSet ε, ∀ v, IsKFin ε σ v → HasDerivAt (fun t : ℝ => ρ (NormedSpace.exp (t • X)) (T₀ v)) (T₀ (dRep σ X v)) 0) → ∃ T : H →ₗ[ℂ] E, (∀ v, IsKFin ε σ v → T v = T₀ v) ∧ (∀ g ∈ UJset ε, ∀ w, Sm ε σ w → T (σ g w) = ρ g (T w)) ∧ ∃ (S : List (List (Mx n))) (C : ℝ), Words (lieSet ε) S ∧ ∀ w, Sm ε σ w → ‖T w‖ ≤ C * sobNorm σ S w := by
   intro hCW n ε H _ _ _ σ hσ E _ _ _ ρ hρ T₀ hK hd
   unfold GlobalTheory.Published.CasselmanWallach at hCW
-  obtain ⟨hcl, p, π, dπ, hsm, hπ, hdπ, hp0⟩ := GlobalTheory.T.smooth_vectors_moderate_growth_smooth_frechet_rep n ε E ρ hρ
+  obtain ⟨hcl, p, π, dπ, hsm, hπ, hdπ, hp0⟩ := _root_.GlobalTheory.TypeSum.SmoothFrechet.smooth_frechet_rep n ε E ρ hρ
   haveI : IsUniformAddGroup (Fam ε ρ) := (Fam ε ρ).toAddSubgroup.isUniformAddGroup
   haveI : CompleteSpace (Fam ε ρ) := hcl.completeSpace_coe
   have hG : IsUnit (Formalism.REAL.Jm ε) := GlobalTheory.SmVec.gram_unit (ε := ε) (P := 1) isUnit_one (by simp)
@@ -234,7 +227,7 @@ theorem casselmanWallach_banach : GlobalTheory.Published.CasselmanWallach → �
   have hGK : IsGKMap ε σ π dπ T₁ := by
     refine ⟨?_, ?_⟩
     · intro k hk v hv
-      have hk' : k ∈ UJset ε := mem_UJset_of_mem_Kset_iwasawa_decomposition hk
+      have hk' : k ∈ UJset ε := _root_.GlobalTheory.TypeSum.K_le_UJ hk
       have hkv : IsKFin ε σ (σ k v) := by
         obtain ⟨S, hS, hvS, hSK⟩ := hv
         exact ⟨S, hS, hSK k hk v hvS, hSK⟩
@@ -253,7 +246,6 @@ theorem casselmanWallach_banach : GlobalTheory.Published.CasselmanWallach → �
       funext l
       rw [show (dπ X (J ⟨v, hv⟩)).1 l = (J ⟨v, hv⟩).1 (l ++ [⟨X, hX⟩]) from hdπ ⟨X, hX⟩ _ l, hJ, hJ]
       simp only [List.map_append, List.map_cons, List.map_nil, happ, hcons, hnil]
-      try rfl
   obtain ⟨T', hT'0, hSG, -⟩ := hCW n ε H σ hσ.1 hσ.2.1 (Fam ε ρ) p π dπ hsm T₁ hGK
   unfold IsSmoothGMap at hSG
   obtain ⟨hTeq, hTbd⟩ := hSG

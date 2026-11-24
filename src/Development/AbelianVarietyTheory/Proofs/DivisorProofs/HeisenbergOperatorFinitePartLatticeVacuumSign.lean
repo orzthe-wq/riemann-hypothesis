@@ -49,6 +49,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CmHostImaginaryGene
 import Development.AbelianVarietyTheory.Definitions.Divisors.KernelNormConstantSpec
 import Development.AbelianVarietyTheory.Definitions.Foundations.StrictInterlaceIffDescEnum
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Mathlib.Algebra.Azumaya.Basic
+import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.StarPurelyImaginaryEqNeg
 
 @[expose] public section
 
@@ -63,8 +65,6 @@ namespace GlobalTheory.LatVacSign
 
 variable {D : D7} {S T : HSp D}
 
-theorem cA_incA' (w : D.host.E) : cA D (incA D w) = incA D (star w) := rfl
-
 theorem hO_smul_smul (c c' : AE D) (x y : WO S T) :
     hO S T (c • x) (c' • y) = c * cA D c' * hO S T x y := by
   unfold hO
@@ -76,7 +76,7 @@ theorem hO_smul_smul (c c' : AE D) (x y : WO S T) :
 theorem symplO_smul_smul (w w' : D.host.E) (x y : WO S T) :
     symplO S T (incA D w • x) (incA D w' • y) =
       Algebra.trace (AF D.host.F) (AE D) (incA D (D.host.xi0 * (w * star w')) * hO S T x y) := by
-  rw [symplO, hO_smul_smul, cA_incA', map_mul (incA D), map_mul (incA D)]
+  rw [symplO, hO_smul_smul, _root_.GlobalTheory.DualPairCheck.cA_incA, map_mul (incA D), map_mul (incA D)]
   congr 1
   ring
 

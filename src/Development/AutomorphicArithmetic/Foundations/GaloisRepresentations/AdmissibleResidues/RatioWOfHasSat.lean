@@ -1,15 +1,18 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.RealDefs
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Hypotheses2
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Brauer
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SemisimpleLevels.SsMonoOdd
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.QuadBC0OfQuadBaseChange
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParameterSphericalProductSpehQuotients
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPolarizedTwistAbsPow
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsPowHeckeCharUnramifiedEverywhere
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeCharacterAbsoluteValuePower
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivOfMapEq
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilDeligneParamMonodromyEqZeroIff
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.AbsPowOneNotIsAlgRat
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LevelIso
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.LocCompR
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.SatLoc
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.HeckeCharParallelWeight
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.SphericalOfHasSat
 public import Formalism.LocalToGlobal.UnitaryNorms.CharProd
@@ -149,15 +152,6 @@ theorem ratio_roots {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : G F Ω →* GL (Fin n
   have pc := norm_pos_iff.2 c0
   rw [← div_eq_mul_inv, inv_eq_one_div, div_lt_div_iff₀ pc pb, one_mul] at k
   exact k
-
-theorem ratioW_of_hasSat [IsTotallyReal F] (P : Hypotheses₂) {n : ℕ} {π : TR.CuspSub F n} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
-    {wt : ℤ} {HT : (F →+* Qbar l) → Multiset ℤ} (H : IsGalRU π ι r wt HT) {w : HeightOneSpectrum (𝓞 F)}
-    (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) {A : ValuationSubring Ω} (h : IsPlaceOver A w) {B : Multiset ℂˣ} (hB : π.HasSat w B) :
-    RatioW (wdOf h hl ι r) := by
-  obtain ⟨⟨σ, hσ⟩, hiso⟩ := locCompR P F n π w
-  obtain ⟨rc, hrc⟩ := P.exists_rec h
-  exact H.ratio w hl A h rc hrc σ hσ
-    (WD.unr_mono0 _ (unr_algNorm hrc σ B (((satLoc P F n w σ).2 _ π.finPart (hiso σ hσ) B).1 hB)))
 
 theorem isWDOf_satR [IsTotallyReal F] {n : ℕ} {π : TR.CuspSub F n} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
     {wt : ℤ} {HT : (F →+* Qbar l) → Multiset ℤ} (H : IsGalRU π ι r wt HT) {w : HeightOneSpectrum (𝓞 F)}

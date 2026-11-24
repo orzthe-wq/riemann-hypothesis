@@ -154,7 +154,7 @@ theorem A_tr (S : Finset (Pl E))
       constructor
       · intro h; simpa using h
       · intro h; rw [h, add_zero]
-    · have e1 : (Finsupp.single w x + l) v = l v := by simp [Finsupp.single_apply, Ne.symm hv]
+    · have e1 : (Finsupp.single w x + l) v = l v := by simp [Ne.symm hv]
       rw [hoff w.1 v.1 _ (fun h => hv (Subtype.ext h)), one_mul, e1]
   exact forall_congr' key
 

@@ -116,7 +116,6 @@ theorem lower_triv (hsm : ∀ (a : E) (x : R), σ (a • x) = c a • σ x) (h1 
         zero_add, h2, h2', one_smul]
       first
         | exact hef
-        | (rw [add_comm]; exact hef)
     obtain ⟨td, htd⟩ := hsurj d hσd
     have htdinv : φ td⁻¹ = d' := by
       have h0 : d * φ td⁻¹ = 1 := by rw [← htd, ← map_mul, mul_inv_cancel, map_one]
@@ -201,7 +200,7 @@ theorem cell_triv (hmul : ∀ x y, σ (x * y) = σ y * σ x) (h1 : σ 1 = 1) (hu
     simp only [mul_assoc, hf2]
   have haa' : e * x * e * (e * w * e) = e := by
     have h := congrArg (fun z => e * z * e) huw
-    simp only [add_mul, mul_add, mul_assoc, hef2, add_zero, one_mul, mul_one, hee] at h
+    simp only [add_mul, mul_add, mul_assoc, hef2, add_zero, mul_one, hee] at h
     simp only [mul_assoc, he2]
     exact h
   have hσ3 : ∀ a b d : R, σ (a * b * d) = σ d * σ b * σ a := by
@@ -407,7 +406,7 @@ theorem triv_of_cell {F : Type} [Field F] [Infinite F] {E : Type} [CommRing E] [
       have h0 : (x + 1) * e + (x + 1) * f = x + 1 := by rw [← mul_add, hef, mul_one]
       have h3 : N * e + D * f = ((x + 1) * e + (x + 1) * f) + algebraMap F E s • ((x - 1) * (e - f)) := by
         rw [hNdef, hDdef]
-        simp only [add_mul, mul_add, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, neg_mul, mul_neg, smul_sub, smul_add, smul_neg, one_mul, mul_one, mul_assoc]
+        simp only [add_mul, sub_mul, mul_sub, smul_mul_assoc, neg_mul, smul_sub, smul_neg, one_mul]
         abel
       rw [h3, h0]
     have hla : lam ga = 1 := by
@@ -425,7 +424,7 @@ theorem triv_of_cell {F : Type} [Field F] [Infinite F] {E : Type} [CommRing E] [
         _ = D * Ni := by rw [mul_assoc (D * Ni) (N * Di) (φ ga⁻¹), ← hga, h0, mul_one]
     have hDxeNf : D * x * e + N * f = (x + 1) * (x * e + f) + algebraMap F E s • ((x - 1) * (f - x * e)) := by
       rw [hNdef, hDdef]
-      simp only [add_mul, mul_add, sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, neg_mul, mul_neg, smul_sub, smul_add, smul_neg, one_mul, mul_one, mul_assoc]
+      simp only [add_mul, mul_add, sub_mul, mul_sub, smul_mul_assoc, neg_mul, smul_sub, smul_neg, one_mul, mul_assoc]
       abel
     have hlb : lam (ga⁻¹ * g) = 1 := by
       apply hcell
@@ -470,7 +469,7 @@ theorem triv_of_cell {F : Type} [Field F] [Infinite F] {E : Type} [CommRing E] [
     rw [hgz, smul_mul_assoc, one_mul]
     apply hunit_of _ (c z • e + f)
     simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, hee, hff, hef0, hfe0,
-      smul_zero, add_zero, zero_add, hzc, hcz, one_smul, hef]
+      smul_zero, add_zero, zero_add, hcz, one_smul, hef]
   have hlg' : lam (g * gz) = 1 := by
     apply main
     rw [map_mul, ← hx, hgz, mul_smul_comm, mul_one]

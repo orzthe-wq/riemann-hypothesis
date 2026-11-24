@@ -1,9 +1,10 @@
 module
 
-public import Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.PlaneCoeffOneTTens
 public import Formalism.SharpRestriction.GrowthBounds.TwistedSubstitution.SymGSupport
+public import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembDd
+public import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.SlackBoundReal
+public import Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.PlaneCoeffOneTTens
 public import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembVB
-public import Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.FrameZeroLe
 public import Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.TensZeroRight
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -20,8 +21,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -29,7 +28,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,9 +40,121 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.FrameZeroLe, Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.RenameMemSupported
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.FrameZeroLe =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.FrameZeroLe", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.TwistedSubstitution.SymGSupport\npublic import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembDd\npublic import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.SlackBoundReal\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MvPolynomial Finset Classical
+
+namespace Formalism.MainNotions.PairMembershipBlocks
+
+open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideCounting Formalism.MainNotions.TestSideWords Formalism.MainNotions.Proposition5Numerics
+open Formalism.MainNotions.G.WittFrameLocaliserOrders
+
+namespace G2
+
+variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {L₁ N₁ : ℕ}
+
+theorem frame_zero_le (hV : Fr.Valid L₁ N₁) (j : ℤ) : Fr.fr j 0 ≤ Fr.fr j (r - 1) := by
+  obtain ⟨_, _, hinc, _⟩ := hV
+  have key : ∀ i, i ≤ r - 1 → Fr.fr j 0 ≤ Fr.fr j i := by
+    intro i
+    induction i with
+    | zero => intro _; exact le_rfl
+    | succ i ih => intro hi; exact (ih (by omega)).trans (hinc j i (by omega)).le
+  exact key (r - 1) le_rfl
+
+theorem zstep (hV : Fr.Valid L₁ N₁) (a : ℤ) : Fr.fr a (r - 1) < Fr.fr (a + 1) (r - 1) := (hV.2.2.2.1 a).trans_le (frame_zero_le hV (a + 1))
+
+theorem zmono (hV : Fr.Valid L₁ N₁) (a b : ℤ) (hab : a ≤ b) : Fr.fr a (r - 1) ≤ Fr.fr b (r - 1) := by
+  have key : ∀ k : ℕ, Fr.fr a (r - 1) ≤ Fr.fr (a + k) (r - 1) := by
+    intro k
+    induction k with
+    | zero => simpa using (le_rfl : Fr.fr a (r - 1) ≤ Fr.fr a (r - 1))
+    | succ k ih =>
+      have h := ih.trans (zstep hV (a + k)).le
+      simpa only [Nat.cast_succ, add_assoc] using h
+  have h := key (b - a).toNat
+  have heq : a + (↑(b - a).toNat : ℤ) = b := by omega
+  simpa only [heq] using h
+
+theorem seg' (hV : Fr.Valid L₁ N₁) {J : ℕ} [NeZero J] {nL : ZMod J → ℕ}
+    (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (x : TL J nL r) :
+    Fr.fr (segZ x.1 - 1) (r - 1) < posTL Fr x ∧ posTL Fr x ≤ Fr.fr (segZ x.1) (r - 1) := by
+  obtain ⟨j, l | m⟩ := x
+  · have h := (mem_LLset Fr _ _).1 (llPos_mem Fr (segZ j) l.val (by rw [← hnL]; exact l.isLt))
+    exact ⟨h.1.1, le_trans (le_of_lt h.1.2) (frame_zero_le hV (segZ j))⟩
+  · have hr : 1 ≤ r := by have := m.isLt; omega
+    have h := posTL_seg Fr hV hr hnL (⟨j, Sum.inr m⟩ : TL J nL r)
+    exact ⟨h.1, h.2.1⟩
+
+end G2
+
+theorem restGeo : RestGeo := by
+  intro n' r _ Fr L₁ N₁ hV p J _ nL hJ hnL j hj y hy x' hpos
+  unfold lowP
+  apply pow_dvd_pow
+  obtain ⟨h1, h2⟩ := G2.seg' hV hnL x'
+  have s0 := segZ_nonneg x'.1
+  have s1 := segZ_lt x'.1
+  simp only [Frames.letters, Finset.mem_filter, Finset.mem_Icc] at hy
+  obtain ⟨⟨y1, y2⟩, -⟩ := hy
+  have hper := hV.2.1
+  have hJ' : (J : ℤ) = (Fr.J : ℤ) := by exact_mod_cast hJ
+  have hjJ : (j : ℤ) < (Fr.J : ℤ) := by exact_mod_cast hj
+  have hj0 : (0 : ℤ) ≤ (j : ℤ) := by positivity
+  have hlast : Fr.fr ((Fr.J : ℤ) - 1) (r - 1) = Fr.fr (-1) (r - 1) + n' := by
+    have := hper (-1) (r - 1)
+    rw [← this]; congr 1
+  have w1 := G2.zmono hV (-1) (segZ x'.1 - 1) (by omega)
+  have w2 := G2.zmono hV (segZ x'.1) ((Fr.J : ℤ) - 1) (by omega)
+  have w3 := G2.zmono hV (j : ℤ) ((Fr.J : ℤ) - 1) (by omega)
+  have hwin : Fr.fr (-1) (r - 1) + 1 ≤ posTL Fr x' ∧ posTL Fr x' < Fr.fr (-1) (r - 1) + 1 + n' := by
+    constructor <;> omega
+  unfold Frames.dist
+  apply Int.toNat_le_toNat
+  by_cases hc : Fr.fr (-1) (r - 1) + 1 ≤ y
+  · have hy' : posTL Fr x' = y := residue_position_injective_window n' _ _ _ hwin ⟨hc, by omega⟩ hpos
+    have hs : segZ x'.1 ≤ (j : ℤ) := by
+      by_contra hlt
+      have := G2.zmono hV (j : ℤ) (segZ x'.1 - 1) (by omega)
+      omega
+    have := G2.zmono hV (segZ x'.1) (j : ℤ) hs
+    omega
+  · have a1 : Fr.fr ((j : ℤ) - 1 + Fr.J) 0 = Fr.fr ((j : ℤ) - 1) 0 + n' := hper _ _
+    have a2 := hV.2.2.2.1 ((j : ℤ) - 2 + Fr.J)
+    have a3 : (j : ℤ) - 2 + Fr.J + 1 = (j : ℤ) - 1 + Fr.J := by ring
+    rw [a3] at a2
+    have hJ1 : (1 : ℤ) ≤ (Fr.J : ℤ) := by omega
+    have a4 := G2.zmono hV (-1) ((j : ℤ) - 2 + Fr.J) (by omega)
+    have hy' : posTL Fr x' = y + n' :=
+      residue_position_injective_window n' _ _ _ hwin ⟨by omega, by omega⟩ (by rw [DdG.posOf_add_n]; exact hpos)
+    have a5 : Fr.fr ((j : ℤ) + Fr.J) (r - 1) = Fr.fr (j : ℤ) (r - 1) + n' := hper _ _
+    have a6 := G2.zmono hV (segZ x'.1) ((j : ℤ) + Fr.J) (by omega)
+    omega
+
+end Formalism.MainNotions.PairMembershipBlocks
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.FrameZeroLe =====
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.RenameMemSupported =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.RenameMemSupported", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.PlaneCoeffOneTTens\npublic import Formalism.SharpRestriction.GrowthBounds.TwistedSubstitution.SymGSupport\npublic import Formalism.SharpRestriction.GrowthBounds.DiagonalSupport.MembVB\npublic import Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.FrameZeroLe\npublic import Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.TensZeroRight\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -185,3 +295,7 @@ theorem restT_of (hGeo : RestGeo) : RestT := by
 theorem restT : RestT := restT_of restGeo
 
 end Formalism.MainNotions.PairMembershipBlocks
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.PlaneCoefficients.RenameMemSupported =====

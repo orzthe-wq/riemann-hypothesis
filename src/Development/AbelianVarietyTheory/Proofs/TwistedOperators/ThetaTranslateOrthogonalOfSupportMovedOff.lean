@@ -93,20 +93,10 @@ theorem symplO_neg_right (S T : HSp D) (x y : WO S T) :
     symplO S T x (-y) = -symplO S T x y := by
   simp only [symplO, hO, Matrix.neg_apply, map_neg, mul_neg, neg_mul, Finset.sum_neg_distrib]
 
-theorem isHalf_nsmul {m n : ℕ} {b : AE D} {y : Mx D m n} (hy : IsHalf b y) (N : ℕ) : IsHalf b (N • y) := by
-  intro i j
-  have e : (N • y) i j = N • y i j := rfl
-  rw [e, nsmul_eq_mul, mul_left_comm, hy i j]
-
 theorem isHalf_neg {m n : ℕ} {b : AE D} {y : Mx D m n} (hy : IsHalf b y) : IsHalf b (-y) := by
   intro i j
   have e : (-y) i j = -y i j := rfl
   rw [e, mul_neg, hy i j]
-
-theorem isHalf_add {m n : ℕ} {b : AE D} {x y : Mx D m n} (hx : IsHalf b x) (hy : IsHalf b y) : IsHalf b (x + y) := by
-  intro i j
-  have e : (x + y) i j = x i j + y i j := rfl
-  rw [e, mul_add, hx i j, hy i j]
 
 theorem nsmul_add_neg {A : Type} [AddCommGroup A] (N k : ℕ) (t u v : A) (h : N • t = u + (N * k) • v) :
     N • (t + k • (-v)) = u := by
@@ -139,9 +129,9 @@ theorem exists_char_of_wave {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {a : 
   | mem Ψ h =>
     obtain ⟨x, y, hx, hy, rfl⟩ := h
     by_cases hxΛ : x ∈ Λ
-    · refine ⟨fun t => ψ (symplO S T t (N • y)), Submodule.subset_span ⟨N • y, isHalf_nsmul hy N, rfl⟩, fun t ht htΛ => ?_⟩
+    · refine ⟨fun t => ψ (symplO S T t (N • y)), Submodule.subset_span ⟨N • y, _root_.GlobalTheory.SplitScalar.isHalf_nsmul hy N, rfl⟩, fun t ht htΛ => ?_⟩
       have h1 : halfInd a Λ (N • t + x) = 1 :=
-        if_pos ⟨Λ.add_mem htΛ hxΛ, isHalf_add (isHalf_nsmul ht N) hx⟩
+        if_pos ⟨Λ.add_mem htΛ hxΛ, _root_.GlobalTheory.SplitScalar.isHalf_add (_root_.GlobalTheory.SplitScalar.isHalf_nsmul ht N) hx⟩
       show ψ (symplO S T (N • t) y) * halfInd a Λ (N • t + x) = _
       rw [h1, mul_one, symplO_nsmul]
     · refine ⟨0, Submodule.zero_mem _, fun t ht htΛ => ?_⟩
@@ -259,7 +249,7 @@ theorem orth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS 
     · have : ∃ t, Φ t ≠ 0 ∧ N • t = u := by
         by_contra h; exact hu (if_neg h)
       obtain ⟨t, ht, rfl⟩ := this
-      exact isHalf_nsmul (hΦ.1 t ht) N
+      exact _root_.GlobalTheory.SplitScalar.isHalf_nsmul (hΦ.1 t ht) N
     · have key : (∃ t, Φ t ≠ 0 ∧ N • t = u + (N * k) • v) ↔ ∃ t, Φ t ≠ 0 ∧ N • t = u := by
         constructor
         · rintro ⟨t, ht, h⟩

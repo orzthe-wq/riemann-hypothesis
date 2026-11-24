@@ -6,48 +6,9 @@ public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
 public import Formalism.LocalToGlobal.Divisibility.DefGroupLemmas
 public import Formalism.LocalToGlobal.GroupLattices.LevelCharts.SplitIntPI
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -122,12 +83,8 @@ theorem glo_res_zero (x : v.adicCompletionIntegers F) (h : Valued.v (x : v.adicC
   rw [h2] at h5
   exact absurd h (not_lt.2 h5)
 
-theorem glo_algMap_int (r : 𝓞 F) : algebraMap (𝓞 F) (v.adicCompletion F) r ∈ v.adicCompletionIntegers F := by
-  rw [HeightOneSpectrum.mem_adicCompletionIntegers, csApprox_val_int]
-  exact HeightOneSpectrum.intValuation_le_one v r
-
 theorem glo_res_surj (z : kv F v) : ∃ r : 𝓞 F,
-    IsLocalRing.residue (v.adicCompletionIntegers F) ⟨algebraMap (𝓞 F) (v.adicCompletion F) r, glo_algMap_int v r⟩ = z := by
+    IsLocalRing.residue (v.adicCompletionIntegers F) ⟨algebraMap (𝓞 F) (v.adicCompletion F) r, _root_.Formalism.UG.P.levelaf_int_mem_v v r⟩ = z := by
   obtain ⟨x, rfl⟩ := IsLocalRing.residue_surjective z
   obtain ⟨D, hDv, hD⟩ := Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot
   obtain ⟨r, y, hy, e⟩ := integral_adele_approximation_holds F D hD (afsplitI v (x : v.adicCompletion F)) (afsplitI_mem_intAd v _ x.2)
@@ -145,11 +102,11 @@ theorem glo_res_surj (z : kv F v) : ∃ r : 𝓞 F,
     exact lt_of_le_of_lt (mul_le_of_le_one_right' hyv) hDval
   have hmem : algebraMap (𝓞 F) (v.adicCompletion F) D * y v ∈ v.adicCompletionIntegers F :=
     (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hlt.le
-  have hx : x = ⟨algebraMap (𝓞 F) (v.adicCompletion F) r, glo_algMap_int v r⟩ + ⟨_, hmem⟩ := Subtype.ext ev
+  have hx : x = ⟨algebraMap (𝓞 F) (v.adicCompletion F) r, _root_.Formalism.UG.P.levelaf_int_mem_v v r⟩ + ⟨_, hmem⟩ := Subtype.ext ev
   rw [hx, map_add (f := _), glo_res_zero v ⟨_, hmem⟩ hlt, add_zero]
 
 theorem gloRho_algMap (r : 𝓞 F) : gloRho v spl halg (oToS F E (algebraMap (𝓞 F) (𝓞 E) r)) =
-    IsLocalRing.residue (v.adicCompletionIntegers F) ⟨algebraMap (𝓞 F) (v.adicCompletion F) r, glo_algMap_int v r⟩ := by
+    IsLocalRing.residue (v.adicCompletionIntegers F) ⟨algebraMap (𝓞 F) (v.adicCompletion F) r, _root_.Formalism.UG.P.levelaf_int_mem_v v r⟩ := by
   rw [gloRho_apply]
   congr 1
   apply Subtype.ext

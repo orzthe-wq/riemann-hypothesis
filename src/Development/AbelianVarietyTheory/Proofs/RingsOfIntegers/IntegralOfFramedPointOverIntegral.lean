@@ -48,6 +48,7 @@ import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndRaw
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

@@ -85,7 +85,7 @@ theorem mul_adaptedFrame_of_blocks {N r c N' : ℕ} (A : Matrix (Fin N) (Fin N) 
   rw [hL, Matrix.mul_fromCols, Matrix.fromCols_mul_fromBlocks, h3]
   congr 2
   · rw [← Matrix.mul_assoc, h1, h2]
-    simp only [Fin.cast_eq_self, Matrix.submatrix_id_id, Matrix.mul_zero, add_zero, Matrix.mul_assoc,
+    simp only [Matrix.mul_zero, add_zero, Matrix.mul_assoc,
       Matrix.nonsing_inv_mul _ hO, Matrix.mul_one]
     congr 2
   · simp

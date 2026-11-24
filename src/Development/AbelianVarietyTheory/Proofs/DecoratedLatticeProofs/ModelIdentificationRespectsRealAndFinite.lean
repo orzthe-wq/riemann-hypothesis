@@ -118,7 +118,7 @@ theorem realSplit_gen {I : Formalism.MainNotions.S.AutInst} (h : I = Formalism.L
           (Formalism.L2.SG.EvalTIota.Pi (Formalism.L2.Host.tauPl D ρ))⁻¹ = (1 : Matrix (Fin (D.sp.Y 0).rank) (Fin (D.sp.Y 0).rank) ℂ) := by
         rw [← hbr ρ, hk.2.2 ρ hρ]
       have e1 := eq_of_conj (hP _) e0
-      simp only [Formalism.L2.SG.EvalTIota.Pi, Formalism.L2.SG.EvalTIota.uM'] at e1
+      simp only [Formalism.L2.SG.EvalTIota.uM'] at e1
       have e2 : uMat (x.1 (Formalism.L2.Host.tauPl D ρ)) = 1 := by
         rw [e1]
         erw [Matrix.mul_one]

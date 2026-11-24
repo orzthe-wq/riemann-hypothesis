@@ -4,49 +4,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.Unita
 public import Formalism.LocalToGlobal.Columns.DecorationStabilizerTrivialUnipotent
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.ReHermitianCombinationNonpos
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHDef
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -107,7 +64,7 @@ theorem matE_crdC (M : GL (Fin X.B.I.n) X.B.I.E) (y : (VS D).V) :
 
   simp only [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, h, Matrix.mulVec, dotProduct, mapMC,
   RingHom.mapMatrix_apply, Matrix.map_apply, map_sum, map_mul, RingEquiv.coe_toRingHom,
-  RingEquiv.symm_apply_apply, Module.Basis.equivFun_apply]
+  RingEquiv.symm_apply_apply]
 
 theorem matE_inclC (M : GL (Fin X.B.I.n) X.B.I.E) (y : (VS D).V) :
     incl X.B.I (X.crd (matEC X M y)) =
@@ -148,7 +105,6 @@ theorem mapM_unitaryC (M : GL (Fin X.B.I.n) X.B.I.E) (hM : M ∈ Formalism.UG.UJ
     apply D.host.φ₀.injective
     rw [← D.embE_φ₀, RingHom.comp_apply, RingHom.comp_apply, D.embE_conj, D.starLL_cx]
     first
-    | exact (NumberField.IsCMField.complexEmbedding_complexConj (D.what₂.embLL.comp D.embE) y).symm
     | exact (NumberField.IsCMField.complexEmbedding_complexConj (K := D.host.E) (D.what₂.embLL.comp D.embE) y).symm
   have hc : ∀ x : X.B.I.E, X.ιE (star x) = star (X.ιE x) := fun x => by
     rw [X.ιE_conj, hstar]
@@ -157,10 +113,9 @@ theorem mapM_unitaryC (M : GL (Fin X.B.I.n) X.B.I.E) (hM : M ∈ Formalism.UG.UJ
   rw [map_mul, map_mul] at h1
   have h2 : mapMC X (Formalism.UG.cT (starRingEnd X.B.I.E) (M : Matrix _ _ _)) = (mapMC X (M : Matrix _ _ _))ᴴ := by
     ext i j
-    simp [Formalism.UG.cT, Matrix.conjTranspose_apply, hc]
+    simp [Formalism.UG.cT, Matrix.conjTranspose_apply]
     all_goals first
       | (rw [starRingEnd_apply]; exact hc _)
-      | exact hc _
   rw [h2] at h1
   exact h1
 
@@ -177,15 +132,13 @@ end NormLeOneOfIntegral
 
 theorem af_nontrivC (F : Type) [Field F] [NumberField F] : Nontrivial (Af F) := by
   first
-  | infer_instance
   | (unfold Af; infer_instance)
   | (obtain ⟨p, hp0, hp⟩ := (Ring.not_isField_iff_exists_prime).1 (NumberField.RingOfIntegers.not_isField F)
      let v : IsDedekindDomain.HeightOneSpectrum (𝓞 F) := ⟨p, hp, hp0⟩
      refine ⟨⟨0, 1, fun h => ?_⟩⟩
      have h' := congrArg (fun z : Af F => (z : ∀ w, IsDedekindDomain.HeightOneSpectrum.adicCompletion F w) v) h
      first
-     | exact (zero_ne_one (α := IsDedekindDomain.HeightOneSpectrum.adicCompletion F v)) h'
-     | exact zero_ne_one h')
+     | exact (zero_ne_one (α := IsDedekindDomain.HeightOneSpectrum.adicCompletion F v)) h')
 
 theorem inclInjC {D : D7} (X : HidaSetting D) : Function.Injective (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) : X.B.I.E → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) := by
   haveI := af_nontrivC X.B.I.F
@@ -215,7 +168,6 @@ theorem gf_eq_one_of_snd (y : X.B.I.GA) (hy : y ∈ X.B.I.GFset) (h2 : y.2 = 1) 
       Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (X.B.I.P_unit v))] at hv
     first
     | exact Subtype.ext (Units.ext hv)
-    | (apply Subtype.ext; apply Units.ext; simpa using hv)
   exact Prod.ext h1 h2
 
 theorem crd_bas (i : Fin X.B.I.n) : X.crd (X.bas i) = Pi.single i 1 := by
@@ -223,7 +175,7 @@ theorem crd_bas (i : Fin X.B.I.n) : X.crd (X.bas i) = Pi.single i 1 := by
   by_cases h : j = i
   · subst h
     simp [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf]
-  · simp [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, h, Ne.symm h, Finsupp.single_apply]
+  · simp [Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, h]
 
 theorem incl_single (i : Fin X.B.I.n) : incl X.B.I (Pi.single i 1) = Pi.single i 1 := by
   funext j
@@ -241,7 +193,6 @@ theorem fmat_eq_one_of_fix (g : X.B.I.Gf) (hg : ∀ y, X.B.I.fmat g *ᵥ incl X.
     have h2 : X.B.I.fmat g i j = (Pi.single j 1 : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) i := by
       first
       | exact h
-      | simpa using h
     rw [Pi.single_apply] at h2
     rw [Matrix.one_apply]
     exact h2
@@ -252,7 +203,6 @@ theorem decomp (v : (VS D).V) : ∃ s ∈ Submodule.span D.host.E (Set.range X.e
   have hs : ∀ x y, (VS D).hT y x = star ((VS D).hT x y) := fun x y => by
     first
     | exact ((VS D).herm.eq x y).symm
-    | exact ((VS D).herm x y).symm
   have hzz : (VS D).hT (X.zu u) (X.zu u) ≠ 0 := by
     rw [X.zu_norm u, neg_ne_zero, Nat.cast_ne_zero]
 
@@ -263,8 +213,6 @@ theorem decomp (v : (VS D).V) : ∃ s ∈ Submodule.span D.host.E (Set.range X.e
     rw [hc, Nat.dvd_one] at hdvd
     first
     | exact absurd hdvd (by simp)
-    | simp at hdvd
-    | omega
   have hfe : ∀ a b, (VS D).hT (X.fY b) (X.eX a) = if a = b then 1 else 0 := fun a b => by
     rw [hs, X.ef]
     split_ifs <;> simp
@@ -288,10 +236,10 @@ theorem decomp (v : (VS D).V) : ∃ s ∈ Submodule.span D.host.E (Set.range X.e
       rcases hx with (⟨b, rfl⟩ | ⟨b, rfl⟩) | hz
 
       · simp [map_sub, map_add (f := _), map_sum, map_smul, smul_eq_mul, X.ee, X.ef, (X.zu_orth u b).1,
-        mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']
+        mul_ite, Finset.sum_ite_eq]
 
       · simp [map_sub, map_add (f := _), map_sum, map_smul, smul_eq_mul, X.ff, hfe, (X.zu_orth u b).2,
-        mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']
+        mul_ite, Finset.sum_ite_eq']
       · rw [Set.mem_singleton_iff] at hz
         subst hz
 
@@ -451,7 +399,7 @@ theorem gam_pow_eq_one (γ : X.B.I.GA) (hGF : γ ∈ Formalism.MainNotions.LeviC
     | zero =>
       intro y
       rw [pow_zero, pow_zero, Prod.snd_one, fmat_one', Matrix.one_mulVec]
-      all_goals first | rfl | simp
+      all_goals first | rfl
     | succ k ih =>
       intro y
       have e1 : (δ ^ (k + 1)) y = (δ ^ k) (δ y) := by
@@ -459,7 +407,7 @@ theorem gam_pow_eq_one (γ : X.B.I.GA) (hGF : γ ∈ Formalism.MainNotions.LeviC
         rfl
       have e2 : X.B.I.fmat (γ ^ (k + 1)).2 = X.B.I.fmat (γ ^ k).2 * X.B.I.fmat γ.2 := by
         rw [pow_succ, Prod.snd_mul]
-        first | rfl | simp
+        first | rfl
       rw [e1, ih, hincl, e2, Matrix.mulVec_mulVec]
   have hfix : ∀ y, X.B.I.fmat (γ ^ m).2 *ᵥ incl X.B.I (X.crd y) = incl X.B.I (X.crd y) := by
     intro y
@@ -533,7 +481,7 @@ theorem gamFinKu_of (hK : X.LevelSubgroupCharacter) (hL : LatOfLattice X u) : Ga
       X.B.I.fmat (((h : X.B.I.Gf) * X.xu u)⁻¹ * (γ : X.B.I.GA).2 * ((h : X.B.I.Gf) * X.xu u)) *
         X.B.I.fmat ((h : X.B.I.Gf) * X.xu u)⁻¹ := by
     have hmul : ∀ a b : X.B.I.Gf, X.B.I.fmat (a * b) = X.B.I.fmat a * X.B.I.fmat b :=
-      fun a b => by first | rfl | simp
+      fun a b => by first | rfl
     rw [← hmul, ← hmul]
     congr 1
     group

@@ -64,11 +64,11 @@ def twCent (θ : G →* G) (δ : G) : Subgroup G where
   one_mem' := by simp
   mul_mem' := by
     intro a b ha hb
-    simp only [Set.mem_setOf_eq, map_mul] at *
+    simp only [Set.mem_ofPred_eq, map_mul] at *
     rw [mul_assoc, hb, ← mul_assoc, ha, mul_assoc]
   inv_mem' := by
     intro a ha
-    simp only [Set.mem_setOf_eq, map_inv] at *
+    simp only [Set.mem_ofPred_eq, map_inv] at *
     rw [inv_mul_eq_iff_eq_mul, ← mul_assoc, ha, mul_inv_cancel_right]
 
 def TwCl (θ : G →* G) : Type := Quot fun x y : G => ∃ g, y = g⁻¹ * x * θ g

@@ -287,7 +287,7 @@ theorem im_Hf_scaled (u v : Fin r → E) :
   refine (congrArg _ h).trans ?_
   have h0 := re_map_xi_eq_zero X τ.1
   have hs := X.κ0_sign τ
-  rw [hermC_emb_eq_map_herm, c_eq_two_mul_abs_im, map_mul, Complex.mul_re]
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, c_eq_two_mul_abs_im, map_mul, Complex.mul_re]
   rcases X.κ0_xi with h | h <;> rw [h] at hs ⊢ <;>
     simp only [map_neg, map_mul, map_div₀, map_ofNat] at hs ⊢
   · have : (τ.1 X.ξ0).im < 0 := by simp at hs; linarith

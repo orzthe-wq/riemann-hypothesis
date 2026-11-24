@@ -95,7 +95,7 @@ theorem qFw_norm_sq (k : ℕ) (x : TrE k) : ‖qFw k x‖ ^ 2 = ‖x‖ ^ 2 := b
   rw [WithLp.prod_norm_sq_eq_of_L2]
   simp only [qFw, wlp_fst_toLp, wlp_snd_toLp]
   rw [EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, Fintype.sum_option, Fintype.sum_prod_type]
-  simp only [PiLp.toLp_apply, Fintype.sum_bool, Complex.sq_norm, Complex.normSq_apply, Real.norm_eq_abs,
+  simp only [Fintype.sum_bool, Complex.sq_norm, Complex.normSq_apply, Real.norm_eq_abs,
     sq_abs, Complex.add_re, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im, Complex.mul_re,
     Complex.mul_im, Complex.I_re, Complex.I_im]
   rw [add_comm]

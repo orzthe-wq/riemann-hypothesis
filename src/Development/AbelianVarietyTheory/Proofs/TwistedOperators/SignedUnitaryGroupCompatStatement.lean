@@ -46,4 +46,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PairLift
 
 theorem _root_.GlobalTheory.T.signedUnitaryGroup_compat : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (ε : Bool) (V : HSp D), SgnLaw θ ε V := by
-  first | exact @GlobalTheory.SgnIdent.sgnLaw_holds | exact GlobalTheory.SgnIdent.sgnLaw_holds | (intros; apply GlobalTheory.SgnIdent.sgnLaw_holds <;> assumption)
+  first | exact @GlobalTheory.SgnIdent.sgnLaw_holds

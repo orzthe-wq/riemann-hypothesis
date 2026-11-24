@@ -383,7 +383,7 @@ theorem exists_const {I : Ideal R} (D : DegData R I) (k : ℕ) (ρ mu : D.toPre.
   · have hc : ∀ χ, D.toPre.P.A.hom ≫ (D.toPre.c χ).left = (cQ D.toPre D.toPre.P.A χ).left := fun χ => by simp [cQ]
     have he : D.toPre.P.A.hom ≫ eSec D.toPre.P.A = (1 : D.toPre.P.A ⟶ D.toPre.P.A).left := by
       rw [Hom.one_def]; simp [eSec]
-    simp only [Fintype.prod_sum_type, Fintype.prod_prod_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, hc, he,
+    simp only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, hc, he,
       cQ_add, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Fintype.card_punit, Fintype.card_prod,
       _root_.mul_one]
     rw [mul_comm (cQ D.toPre D.toPre.P.A mu)]

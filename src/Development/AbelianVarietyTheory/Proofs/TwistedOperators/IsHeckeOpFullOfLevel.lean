@@ -59,6 +59,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.IndefiniteWeightData
 public import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GapAtLeast
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

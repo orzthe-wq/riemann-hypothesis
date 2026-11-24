@@ -6,55 +6,11 @@ public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
 public import Mathlib.RingTheory.Valuation.LocalSubring
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.GaloisValuations.GlobalA
 public import ReciprocityTheory.GaloisValuations.GlobalB
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
 public import Mathlib.RingTheory.LocalRing.LocalSubring
 
@@ -79,17 +35,15 @@ theorem apply_mem_iff_of_mem_Dec {A : ValuationSubring (Ω)} {σ : G F Ω}
     (hσ : σ ∈ Dec (F := F) A) (x : Ω) : σ x ∈ A ↔ x ∈ A := by
   have h := mem_Dec.mp hσ
   have key : σ • x ∈ σ • A ↔ x ∈ A := ValuationSubring.smul_mem_pointwise_smul_iff
-  rw [h] at key
-  exact key
+  rwa [h] at key
 
 theorem valuation_lt_one_iff' (A : ValuationSubring (Ω)) (y : Ω) :
     A.valuation y < 1 ↔ y ∈ A ∧ (y = 0 ∨ y⁻¹ ∉ A) := by
   rcases eq_or_ne y 0 with rfl | hy
   · simp
-  · rw [← A.valuation_le_one_iff, ← A.valuation_le_one_iff, not_le,
-      Valuation.one_lt_val_iff _ (inv_ne_zero hy), inv_inv]
+  · rw [← A.valuation_le_one_iff, ← A.valuation_le_one_iff, not_le, Valuation.one_lt_val_iff _ (inv_ne_zero hy), inv_inv]
     simp only [hy, false_or]
-    exact ⟨fun h => ⟨h.le, h⟩, fun h => h.2⟩
+    exact ⟨fun h => ⟨h.le, h⟩, And.right⟩
 
 theorem valuation_apply_lt_one_iff {A : ValuationSubring (Ω)} {σ : G F Ω}
     (hσ : σ ∈ Dec (F := F) A) (y : Ω) :
@@ -130,8 +84,7 @@ theorem conj_mem_Ine {A : ValuationSubring (Ω)} {g σ : G F Ω} (hg : g ∈ Dec
     (hσ : σ ∈ Ine (F := F) A) : g * σ * g⁻¹ ∈ Ine (F := F) A := by
   refine ⟨(Dec (F := F) A).mul_mem ((Dec (F := F) A).mul_mem hg hσ.1) ((Dec (F := F) A).inv_mem hg), fun x hx => ?_⟩
   have hy : A.valuation ((g⁻¹ : G F Ω) x) ≤ 1 := by
-    rw [A.valuation_le_one_iff, ← apply_mem_iff_of_mem_Dec hg, mul_inv_apply]
-    exact (A.valuation_le_one_iff x).mp hx
+    rwa [A.valuation_le_one_iff, ← apply_mem_iff_of_mem_Dec hg, mul_inv_apply, ← A.valuation_le_one_iff]
   have e : (g * σ * g⁻¹) x - x = g (σ ((g⁻¹ : G F Ω) x) - (g⁻¹ : G F Ω) x) := by
     rw [map_sub, mul_inv_apply]; rfl
   rw [e, valuation_apply_lt_one_iff hg]
@@ -204,7 +157,6 @@ def toGS : G F Ω →* GS Ω S := QuotientGroup.mk' (NS Ω S)
 
 variable (Ω) in
 theorem continuous_toGS : Continuous (toGS Ω S) := by
-  unfold toGS
   exact continuous_quot_mk
 
 def locHom (A : ValuationSubring (Ω)) : Dec (F := F) A →* GS Ω S :=
@@ -233,9 +185,8 @@ theorem unramOutside_iff {H : Type*} [Group H] [TopologicalSpace H] [T2Space H]
         simp only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_compl_iff, exists_prop] at hτ
         obtain ⟨v, hv, A, hA, hτ⟩ := hτ
         exact MonoidHom.mem_ker.mpr (h v hv A hA τ hτ)
-      · rw [MonoidHom.coe_ker]
-        exact isClosed_singleton.preimage hρ
-    exact MonoidHom.mem_ker.mp (hker hσ)
+      · simpa [MonoidHom.coe_ker] using isClosed_singleton.preimage hρ
+    simpa only [MonoidHom.mem_ker] using hker hσ
 
 end unram
 
@@ -249,10 +200,9 @@ theorem not_valuation_lt_one_of_isPlaceOver {l : ℕ} {A : ValuationSubring (Ω)
     (n : ℕ) : ¬ A.valuation (((l ^ n : ℕ) : Ω)) < 1 := by
   unfold Formalism.ConjugateSelfDual.IsPlaceOver at h
   intro hlt
-  have hc : algebraMap F Ω (((l ^ n : ℕ) : 𝓞 F) : F) = ((l ^ n : ℕ) : Ω) := by
-    simp
-  rw [← hc, h] at hlt
-  exact hl (v.isPrime.mem_of_pow_mem n (by simpa using hlt))
+  refine hl (v.isPrime.mem_of_pow_mem n ?_)
+  rw [← h]
+  simpa using hlt
 
 theorem cycZ_toZModPow_eq [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring (Ω)}
     {v : HeightOneSpectrum (𝓞 F)} (hl : ((l : ℕ) : 𝓞 F) ∉ v.asIdeal) (h : IsPlaceOver A v)
@@ -268,10 +218,9 @@ theorem cycZ_toZModPow_eq [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : Valu
     (MulSemiringAction.toRingAut (G F Ω) (Ω) σ) ζ hζ.pow_eq_one
   set m := (((cyclotomicCharacter (Ω) l)
     (MulSemiringAction.toRingAut (G F Ω) (Ω) σ)) : ℤ_[l]).toZModPow n |>.val with hm
-  have hσζ : σ ζ = ζ ^ m := hspec
   have hζA : A.valuation ζ ≤ 1 := (valuation_eq_one_of_pow_eq_one A hN0 hζ.pow_eq_one).le
   have hlt := hσ ζ hζA
-  rw [hσζ] at hlt
+  rw [show σ ζ = ζ ^ m from hspec] at hlt
   have heq : ζ ^ m = ζ ^ q := by
     refine eq_of_pow_eq_one A (not_valuation_lt_one_of_isPlaceOver hl h n) ?_ ?_ hlt
     · rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]
@@ -289,19 +238,16 @@ theorem cycZ_toZModPow_eq [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : Valu
 theorem eq_of_isPlaceOver {A : ValuationSubring (Ω)} {v v' : HeightOneSpectrum (𝓞 F)}
     (h : IsPlaceOver A v) (h' : IsPlaceOver A v') : v = v' := by
   unfold Formalism.ConjugateSelfDual.IsPlaceOver at h h'
-  have e : v.asIdeal = v'.asIdeal := by
-    ext x
-    rw [← h x, ← h' x]
-  exact IsDedekindDomain.HeightOneSpectrum.ext e
+  apply IsDedekindDomain.HeightOneSpectrum.ext
+  ext x
+  rw [← h x, ← h' x]
 
 theorem inv_mul_mem_Ine_of_isFrob {A : ValuationSubring (Ω)} {q : ℕ} {σ τ : G F Ω}
     (hσ : IsFrob A q σ) (hτ : IsFrob A q τ) : σ⁻¹ * τ ∈ Ine (F := F) A := by
   obtain ⟨hσD, hσF⟩ := hσ
   obtain ⟨hτD, hτF⟩ := hτ
-  have hσD' : σ ∈ Dec (F := F) A := mem_Dec.mpr hσD
-  have hτD' : τ ∈ Dec (F := F) A := mem_Dec.mpr hτD
-  refine mem_Ine.mpr ⟨(Dec (F := F) A).mul_mem ((Dec (F := F) A).inv_mem hσD') hτD', fun x hx => ?_⟩
-  rw [← valuation_apply_lt_one_iff hσD']
+  refine mem_Ine.mpr ⟨(Dec (F := F) A).mul_mem ((Dec (F := F) A).inv_mem (mem_Dec.mpr hσD)) (mem_Dec.mpr hτD), fun x hx => ?_⟩
+  rw [← valuation_apply_lt_one_iff (mem_Dec.mpr hσD)]
   have e : σ ((σ⁻¹ * τ) x - x) = (τ x - x ^ q) - (σ x - x ^ q) := by
     rw [map_sub, AlgEquiv.mul_apply, mul_inv_apply]; ring
   rw [e]
@@ -311,12 +257,11 @@ theorem isFrob_mul_of_mem_Ine {A : ValuationSubring (Ω)} {q : ℕ} {σ ι : G F
     (hσ : IsFrob A q σ) (hι : ι ∈ Ine (F := F) A) : IsFrob A q (σ * ι) := by
   obtain ⟨hσD, hσF⟩ := hσ
   obtain ⟨hιD, hιI⟩ := mem_Ine.mp hι
-  have hσD' : σ ∈ Dec (F := F) A := mem_Dec.mpr hσD
-  refine ⟨mem_Dec.mp ((Dec (F := F) A).mul_mem hσD' hιD), fun x hx => ?_⟩
+  refine ⟨mem_Dec.mp ((Dec (F := F) A).mul_mem (mem_Dec.mpr hσD) hιD), fun x hx => ?_⟩
   have e : (σ * ι) x - x ^ q = σ (ι x - x) + (σ x - x ^ q) := by
     rw [AlgEquiv.mul_apply, map_sub]; ring
   rw [e]
-  exact Valuation.map_add_lt _ ((valuation_apply_lt_one_iff hσD' _).mpr (hιI x hx)) (hσF x hx)
+  exact Valuation.map_add_lt _ ((valuation_apply_lt_one_iff (mem_Dec.mpr hσD) _).mpr (hιI x hx)) (hσF x hx)
 
 
 variable (Ω) in
@@ -422,8 +367,7 @@ theorem cyc_eq_one_of_mem_Ine [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : 
 theorem cycZ_of_isFrob [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring (Ω)}
     {v : HeightOneSpectrum (𝓞 F)} (hl : ((l : ℕ) : 𝓞 F) ∉ v.asIdeal) (h : IsPlaceOver A v)
     {σ : G F Ω} (hσ : IsFrob A (normV v) σ) : ((cycZ F Ω l σ : ℤ_[l]ˣ) : ℤ_[l]) = (normV v : ℤ_[l]) := by
-  obtain ⟨-, hF⟩ := hσ
-  exact PadicInt.ext_of_toZModPow.mp (cycZ_toZModPow_eq hl h hF)
+  exact PadicInt.ext_of_toZModPow.mp (cycZ_toZModPow_eq hl h hσ.2)
 
 private theorem isClosed_setOf_apply_lemma [IsAlgClosure F Ω] (x : Ω) (P : Ω → Prop) :
     IsClosed {τ : G F Ω | P (τ x)} := by

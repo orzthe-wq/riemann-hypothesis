@@ -95,7 +95,7 @@ theorem wordAct_sum (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D
 theorem entry_bound (θ : InfFam D) (A : Matrix (Fin W.rank) (Fin W.rank) ℂ) (B : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (i0 : Fin W.rank) (j0 : Fin V.rank) (c : ℂ) (i : Fin W.rank) (j : Fin V.rank) :
     (A * Matrix.single i0 j0 c * B) i j = A i i0 * c * B j0 j := by
-  simp [Matrix.mul_apply, Matrix.single_apply, ite_and, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']
+  simp [Matrix.mul_apply, Matrix.single_apply, ite_and, ite_mul, Finset.sum_ite_eq]
 
 end GlobalTheory.WeilWordGrowth
 

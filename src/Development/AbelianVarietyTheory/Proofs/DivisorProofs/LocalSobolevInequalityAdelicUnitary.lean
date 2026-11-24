@@ -3,14 +3,22 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DifferentiableOneP
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArchimedeanLiftUnitaryGroupProduct
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeMulSetIntegralImage2OfForallLeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralLeOfExpandingStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SobolevIteratedOneParameterSubgroupsWordsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryGroupSecondKindCoordinatesNearOneStatement
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeMulSetIntegralImage2OfForallLe
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralLeOfExpanding
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.Deriv.Basic
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SobolevIteratedOneParameterSubgroupsWords
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryGroupSecondKindCoordinatesNearOne
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocallyCompactSecondCountableT2
+public import Mathlib.Analysis.Calculus.Deriv.Prod
+public import Mathlib.Data.Set.Finite.List
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SobolevIteratedOneParameterSubgroups
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocallyCompactSecondCountableT2
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ArchimedeanMatrixUnitaryContinuousMultiplicative
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RealAdelesCmFieldEquivComplexCmType
 import Formalism.LocalToGlobal.GlobalTheory.GL5.FamilyMassVolumeIdentityOfClassDecomp
@@ -18,14 +26,12 @@ import Mathlib.Algebra.Order.Archimedean.Real.Hom
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.Calculus.Deriv.Prod
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
-public import Mathlib.Data.Set.Finite.List
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -162,7 +168,7 @@ theorem exists_chart (Hm : ι → Mt n) (hH : ∀ τ, (Hm τ).IsHermitian) (hd :
   obtain ⟨N, τs, Xs, hX, hl, hs⟩ := exists_basis Hm
   have h1 := fun τ => Matrix.nonsing_inv_mul _ (hd τ).isUnit
   have h2 := fun τ => Matrix.mul_nonsing_inv _ (hd τ).isUnit
-  obtain ⟨s, S, K, W, hs0, hK, hW, h⟩ := GlobalTheory.T.unitaryGroup_secondKind_coordinates_near_one (ι → Mt n) (adj Hm) N
+  obtain ⟨s, S, K, W, hs0, hK, hW, h⟩ := _root_.GlobalTheory.UnitaryChart.second_kind_chart (ι → Mt n) (adj Hm) N
     (fun i => Pi.single (τs i) (Xs i)) (fun i t => Pi.mulSingle (τs i) (NormedSpace.exp (t • Xs i)))
     (fun a => funext fun τ => by
       simp only [adj_apply, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, (hH τ).eq]
@@ -315,9 +321,9 @@ theorem local_sobolev : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ �
   obtain ⟨B, hB, hBW, hBc⟩ := local_compact_nhds hW
   have hc := fun i => oneP_spec hθ V (hH (τs i)).2 (hX i)
   have hΘ := GlobalTheory.continuous_prod_ofFn_curves N (fun i => oneP θ V (τs i) (Xs i)) fun i => (hc i).1
-  obtain ⟨C₁, hC₁, h₁⟩ := GlobalTheory.T.le_mul_setIntegral_image2_of_forall_le_alt (GA D V) μ N _ (Metric.closedBall 0 S) B (K ^ N) hΘ
+  obtain ⟨C₁, hC₁, h₁⟩ := _root_.GlobalTheory.le_mul_setIntegral_image2_of_forall_le (GA D V) μ N _ (Metric.closedBall 0 S) B (K ^ N) hΘ
     (isCompact_closedBall _ _) hBc hB (pow_nonneg hK _)
-  obtain ⟨C₂, hC₂, h₂⟩ := GlobalTheory.T.sq_norm_le_mul_of_iterated_one_parameter_integral_le (GA D V) N (fun i => oneP θ V (τs i) (Xs i)) s hs hc
+  obtain ⟨C₂, hC₂, h₂⟩ := _root_.GlobalTheory.sobolev_iterated_one_parameter_subgroups_words (GA D V) N (fun i => oneP θ V (τs i) (Xs i)) s hs hc
   let w : List (Fin N) → List (D.what₂.Tau × Mt V.rank) := List.map fun i => (τs i, Xs i)
   have hw : ∀ l, ∀ p ∈ w l, p.2 ∈ lieAt V p.1 := fun l p hp => by
     obtain ⟨i, -, rfl⟩ := List.mem_map.1 hp
@@ -342,7 +348,7 @@ theorem local_sobolev : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ �
     (mul_le_mul_of_nonneg_left ?_ hC₁)
   · obtain ⟨f, a, haU, ha, hf, hf'⟩ := h x (hBW hx)
     clear_value F
-    refine GlobalTheory.T.setIntegral_le_pow_mul_setIntegral_of_expanding N _ _ K f
+    refine _root_.GlobalTheory.setIntegral_le_of_expanding N _ _ K f
       (fun t => ‖F l (y * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)‖ ^ 2)
       (fun t => ‖F l (y * ((List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * x))‖ ^ 2)
       (isCompact_univ_pi fun _ => isCompact_Icc) (isCompact_closedBall _ _) hK

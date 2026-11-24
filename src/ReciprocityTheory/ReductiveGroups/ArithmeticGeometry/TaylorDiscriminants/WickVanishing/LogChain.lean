@@ -66,7 +66,6 @@ theorem low_pderiv {N : ℕ} {g : MvPowerSeries τ k} (hg : Low (N + 1) g) (t : 
   have e : Finsupp.degree (d + Finsupp.single t 1) = Finsupp.degree d + 1 := by
     first
     | rw [map_add (f := _), Finsupp.degree_single]
-    | (unfold Finsupp.degree; rw [Finsupp.sum_add_index' (by simp) (by simp)]; simp)
   omega
 
 private theorem low_mul_lemma {m n : ℕ} {f g : MvPowerSeries τ k} (hf : Low m f) (hg : Low n g) :
@@ -139,8 +138,7 @@ theorem pderiv_aeval [Fintype σ] (a : σ → MvPowerSeries τ k) (p : MvPolynom
   next p s0 hp =>
     rw [map_mul, MvPolynomial.aeval_X, Derivation.leibniz, hp, smul_eq_mul, smul_eq_mul, Finset.mul_sum]
     simp only [Derivation.leibniz, MvPolynomial.pderiv_X, Pi.single_apply, smul_eq_mul, map_add (f := _), map_mul,
-      MvPolynomial.aeval_X, add_mul, Finset.sum_add_distrib, mul_ite, mul_one, mul_zero, map_one, map_zero,
-      ite_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+      MvPolynomial.aeval_X, add_mul, Finset.sum_add_distrib, mul_ite, mul_one, mul_zero]
     simp only [apply_ite (MvPolynomial.aeval a), map_zero, ite_mul, zero_mul, Finset.sum_ite_eq,
       Finset.mem_univ, if_true, mul_assoc]
     try ring
@@ -179,7 +177,6 @@ theorem pderiv_subst [Fintype σ] {a : σ → MvPowerSeries τ k} (ha : ∀ s, c
     have h1 := finsupp_apply_le_degree' m s
     first
     | (change m s ≤ M; omega)
-    | (simp; omega)
   ext d
   obtain ⟨p, hp⟩ := hpoly (d.degree + 1 + 1)
   have hf : f = (f - (p : MvPowerSeries σ k)) + (p : MvPowerSeries σ k) := (sub_add_cancel _ _).symm
@@ -200,8 +197,8 @@ theorem pderiv_comm (u v : τ) (g : MvPowerSeries τ k) : pderiv u (pderiv v g) 
   by_cases huv : u = v
   · subst huv
     rfl
-  · have h1 : (n + Finsupp.single u 1 : τ →₀ ℕ) v = n v := by simp [Finsupp.single_apply, huv]
-    have h2 : (n + Finsupp.single v 1 : τ →₀ ℕ) u = n u := by simp [Finsupp.single_apply, Ne.symm huv]
+  · have h1 : (n + Finsupp.single u 1 : τ →₀ ℕ) v = n v := by simp [huv]
+    have h2 : (n + Finsupp.single v 1 : τ →₀ ℕ) u = n u := by simp [Ne.symm huv]
     rw [h1, h2, add_right_comm n]
     ring
 

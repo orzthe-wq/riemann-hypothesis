@@ -126,7 +126,7 @@ theorem symB (hG : Out.GlobalFnsSt) (P : Out.PolAV (Sp K)) : SymB P.L := by
   · exact (gm_pull_g P.L _ _ y j.1 j'.1 hj.1 hj'.1).trans (zpow_one _).symm
   · exact (zpow_neg_one _).symm
 
-theorem mapDeg_id (X : Scheme.{0}) : MapDeg (𝟙 X) 1 := MapDeg.id_one X
+alias mapDeg_id := _root_.GlobalTheory.ZV.MapDeg.id_one
 
 theorem exists_basis_of_pairing {k g : ℕ} (hk : 0 < k) {G R : Type} [CommGroup G] [CommRing R] [IsDomain R]
     (hc : ∀ d, d ∣ k → Nat.card {x : G // x ^ d = 1} = d ^ (2 * g)) {ze : Rˣ} (hz : IsPrimitiveRoot ze k)

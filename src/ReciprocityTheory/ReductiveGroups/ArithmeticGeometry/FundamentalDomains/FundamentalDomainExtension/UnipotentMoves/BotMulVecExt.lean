@@ -67,9 +67,6 @@ def en {n : ℕ} (v : Fin n → ℂ) : ℝ := ‖(WithLp.toLp 2 v : EuclideanSpa
 lemma en_nonneg {n : ℕ} (v : Fin n → ℂ) : 0 ≤ en v := by
   exact norm_nonneg _
 
-private lemma nsq_nonneg_unipotent_moves {n : ℕ} (v : Fin n → ℂ) : 0 ≤ nsq v :=
-  Finset.sum_nonneg fun j _ => sq_nonneg _
-
 lemma en_sq {n : ℕ} (v : Fin n → ℂ) : en v ^ 2 = nsq v := by
   have e : en v = Real.sqrt (nsq v) := by
     unfold en nsq
@@ -77,7 +74,7 @@ lemma en_sq {n : ℕ} (v : Fin n → ℂ) : en v ^ 2 = nsq v := by
       | (rw [EuclideanSpace.norm_eq]; rfl)
       | (rw [EuclideanSpace.norm_eq]; simp)
       | simp [EuclideanSpace.norm_eq]
-  rw [e, Real.sq_sqrt (nsq_nonneg_unipotent_moves v)]
+  rw [e, Real.sq_sqrt (_root_.ReciprocityTheory.ChartRestriction.G.FD.OrthonormalChartBounds.nsq_nonneg v)]
 
 lemma en_eq_sqrt {n : ℕ} (v : Fin n → ℂ) : en v = Real.sqrt (nsq v) := by
   unfold en nsq
@@ -97,7 +94,7 @@ lemma en_sub_le {n : ℕ} (u v : Fin n → ℂ) : en (u - v) ≤ en u + en v := 
     | (rw [WithLp.toLp_sub]; exact norm_sub_le _ _)
 
 lemma eq_zero_of_en {n : ℕ} (d : Fin n → ℂ) (h : en d = 0) : d = 0 := by
-  rw [en_eq_sqrt, Real.sqrt_eq_zero (nsq_nonneg_unipotent_moves d)] at h
+  rw [en_eq_sqrt, Real.sqrt_eq_zero (_root_.ReciprocityTheory.ChartRestriction.G.FD.OrthonormalChartBounds.nsq_nonneg d)] at h
   have hs : ∀ j ∈ Finset.univ, ‖d j‖ ^ 2 = 0 :=
     (Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg ‖d j‖)).mp h
   funext j
@@ -164,14 +161,14 @@ lemma nsq_split (w : Fin r → ℂ) : nsq w = nsq (top X w) + nsq (bot X w) := b
 lemma en_top_le (w : Fin r → ℂ) : en (top X w) ≤ en w := by
   rw [en_eq_sqrt, en_eq_sqrt]
   apply Real.sqrt_le_sqrt
-  have h0 := nsq_nonneg_unipotent_moves (bot X w)
+  have h0 := _root_.ReciprocityTheory.ChartRestriction.G.FD.OrthonormalChartBounds.nsq_nonneg (bot X w)
   rw [nsq_split X w]
   linarith
 
 lemma en_bot_le (w : Fin r → ℂ) : en (bot X w) ≤ en w := by
   rw [en_eq_sqrt, en_eq_sqrt]
   apply Real.sqrt_le_sqrt
-  have h0 := nsq_nonneg_unipotent_moves (top X w)
+  have h0 := _root_.ReciprocityTheory.ChartRestriction.G.FD.OrthonormalChartBounds.nsq_nonneg (top X w)
   rw [nsq_split X w]
   linarith
 
@@ -221,7 +218,7 @@ lemma blkB_low (Z : X.Coord) (τ : X.Ψ) : blkB X (X.lowBlock Z τ) = Matrix.of 
   have hb := b.isLt
   have hne : X.p0 + (m : ℕ) ≠ (b : ℕ) := by omega
   first
-    | simp [blkB, Data.lowBlock, nI, Fin.ext_iff, hne, hb]
+    | simp [blkB, Data.lowBlock, nI, Fin.ext_iff, hne]
 
 end Blocks
 
@@ -352,20 +349,6 @@ lemma maj_ortho {x : Frame X.Ψ r} (ho : X.IsOrtho x) (τ : X.Ψ) (c : Fin r →
   simp only [h1, h2, one_mul, neg_one_mul, Finset.sum_neg_distrib]
   ring
 
-private lemma nsq_mulVec_le_sum_norm_sq_mul_nsq {m n : ℕ} (W : Matrix (Fin m) (Fin n) ℂ) (v : Fin n → ℂ) :
-    nsq (W *ᵥ v) ≤ (∑ i, ∑ j, ‖W i j‖ ^ 2) * nsq v := by
-  unfold nsq
-  rw [Finset.sum_mul]
-  apply Finset.sum_le_sum
-  intro i _
-  have h1 : ‖(W *ᵥ v) i‖ ≤ ∑ j, ‖W i j‖ * ‖v j‖ := by
-    calc ‖(W *ᵥ v) i‖ = ‖∑ j, W i j * v j‖ := rfl
-      _ ≤ ∑ j, ‖W i j * v j‖ := norm_sum_le _ _
-      _ = ∑ j, ‖W i j‖ * ‖v j‖ := Finset.sum_congr rfl fun j _ => norm_mul _ _
-  have h2 := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => ‖W i j‖) (fun j => ‖v j‖)
-  calc ‖(W *ᵥ v) i‖ ^ 2 ≤ (∑ j, ‖W i j‖ * ‖v j‖) ^ 2 := by gcongr
-    _ ≤ _ := h2
-
 private lemma en_mulVec_le_opN_mul_en {m n : ℕ} (W : Matrix (Fin m) (Fin n) ℂ) (v : Fin n → ℂ) :
     en (W *ᵥ v) ≤ Data.opN W * en v := by
   by_cases hv : v = 0
@@ -375,7 +358,7 @@ private lemma en_mulVec_le_opN_mul_en {m n : ℕ} (W : Matrix (Fin m) (Fin n) �
     have hF : 0 ≤ ∑ i, ∑ j, ‖W i j‖ ^ 2 :=
       Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _
     have hC : ∀ u, en (W *ᵥ u) ≤ Real.sqrt (∑ i, ∑ j, ‖W i j‖ ^ 2) * en u := fun u =>
-      en_le_of_nsq _ _ (Real.sqrt_nonneg _) (by rw [Real.sq_sqrt hF]; exact nsq_mulVec_le_sum_norm_sq_mul_nsq W u)
+      en_le_of_nsq _ _ (Real.sqrt_nonneg _) (by rw [Real.sq_sqrt hF]; exact _root_.ReciprocityTheory.ChartRestriction.G.FD.OrthonormalChartBounds.nsq_mulVec_le W u)
     have hmem : en (W *ᵥ v) / en v ∈ {t | ∃ v : Fin n → ℂ, v ≠ 0 ∧
         t = Real.sqrt (∑ i, ‖Matrix.mulVec W v i‖ ^ 2) / Real.sqrt (∑ j, ‖v j‖ ^ 2)} :=
       ⟨v, hv, by rw [en_eq_sqrt, en_eq_sqrt]; rfl⟩

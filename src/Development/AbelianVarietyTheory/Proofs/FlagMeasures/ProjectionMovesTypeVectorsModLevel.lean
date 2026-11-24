@@ -52,22 +52,10 @@ namespace GlobalTheory.St.G.FrameClose
 
 variable {I : AutInst}
 
-theorem hform_mulVec_mulVec {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A)
-    (J M : Matrix n n A) (x y : n → A) :
-    Formalism.UG.hform σ J (M *ᵥ x) (M *ᵥ y) = Formalism.UG.hform σ (Formalism.UG.cT σ M * J * M) x y := by
-  have e : ∀ (N : Matrix n n A) (u v : n → A), Formalism.UG.hform σ N u v = (σ ∘ u) ⬝ᵥ (N *ᵥ v) := by
-    intro N u v
-    simp only [Formalism.UG.hform, dotProduct, mulVec, Function.comp_apply, Finset.mul_sum, mul_assoc]
-  have hσ : σ ∘ (M *ᵥ x) = M.map σ *ᵥ (σ ∘ x) := by
-    funext i
-    exact RingHom.map_mulVec σ M x i
-  rw [e, e, hσ, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec,
-    mulVec_mulVec, Formalism.UG.cT, Matrix.mul_assoc]
-
 theorem hA_unitary (x : I.Gf) (v w : VA I) :
     Formalism.L2.SG.HidaSetting.hA I (I.fmat x *ᵥ v) (I.fmat x *ᵥ w) = Formalism.L2.SG.HidaSetting.hA I v w := by
   unfold Formalism.L2.SG.HidaSetting.hA
-  rw [hform_mulVec_mulVec]
+  rw [_root_.Formalism.UG.P.hform_mulVec]
   have h : Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) (I.fmat x) * I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) *
       I.fmat x = I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) := x.2
   rw [h]

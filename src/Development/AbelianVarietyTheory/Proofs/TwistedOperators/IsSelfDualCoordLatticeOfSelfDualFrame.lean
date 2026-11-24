@@ -76,7 +76,7 @@ theorem mem_dualL_iff {D : D7} (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin 
     | smul a z _ hz =>
       obtain ⟨b, hb⟩ := hz
       refine ⟨a * b, ?_⟩
-      have e1 : ((a * b : 𝓞 D.host.E) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E a * b := by first | (push_cast; ring) | push_cast | simp
+      have e1 : ((a * b : 𝓞 D.host.E) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E a * b := by first | (push_cast; ring)
       rw [e1, hb, Finset.mul_sum]
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [Finset.mul_sum]

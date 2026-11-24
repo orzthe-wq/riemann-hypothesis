@@ -1,9 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselSubgroupProductMeasureIsHaarStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsQuotientMeasureWeilStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitaryGroupMatGroupUnimodularStatement
+public import Formalism.PeriodIntegrals.QuotInv
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselSubgroupProductMeasureIsHaar
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsQuotientMeasureWeil
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitaryGroupMatGroupUnimodular
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,10 +58,10 @@ theorem exists_isQuotMeas_bessel_subgroup : ∀ (k r : ℕ) (z : Fin (2 * r + k 
     PI.BesselPeriodGGP.IsHaarOn (GG k r) μG →
     ∃ νq, PI.BesselPeriodGGP.IsQuotMeas μG (muSof μW μN) νq := by
   intro k r z μW μN μG hz hT hW hN hG
-  obtain ⟨hGgrp, hGinv⟩ := GlobalTheory.T.isMatGroup_GG_and_haar_right_invariant k r
+  obtain ⟨hGgrp, hGinv⟩ := _root_.GlobalTheory.unitaryGroup_matGroup_unimodular k r
   obtain ⟨hGhaar, _⟩ := hGinv μG hG
-  obtain ⟨hSgrp, hSsub, hShaar, hSright⟩ := GlobalTheory.T.besselSubgroup_product_measure_isHaar k r z μW μN hz hT hW hN
-  exact GlobalTheory.T.exists_quotientMeasure_weil (2 * r + k + 1) (GG k r) (Formalism.QuantumDeterminants.Sset k r z) μG (muSof μW μN)
+  obtain ⟨hSgrp, hSsub, hShaar, hSright⟩ := _root_.GlobalTheory.muSof_isHaar k r z μW μN hz hT hW hN
+  exact _root_.GlobalTheory.QuotWeil.exists_isQuotM (2 * r + k + 1) (GG k r) (Formalism.QuantumDeterminants.Sset k r z) μG (muSof μW μN)
     hGgrp hSgrp hSsub hGhaar hShaar hSright
 
 end GlobalTheory

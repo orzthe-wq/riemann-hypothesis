@@ -1,7 +1,7 @@
 module
 
 public import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusIntegralityWittTiltAinfStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusIntegralityWittTiltAinf
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -180,6 +180,6 @@ theorem frobenius_integrality_coeff : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt 
   have := module_free_zpadic_OL l LL
   have := module_finite_zpadic_OL l LL
   exact integrality_baseChange (R := ℤ_[l]) (O := OL LL) (inclWA l) (frobW l)
-    (fun p q _ _ Z S S' Y h => GlobalTheory.T.frobeniusIntegrality_wittTilt_ainf l p q Z S S' Y h) p q Z S S' Y h a b
+    (fun p q _ _ Z S S' Y h => _root_.GlobalTheory.FrobInt.frobenius_integrality l p q Z S S' Y h) p q Z S S' Y h a b
 
 end GlobalTheory.FrobIntegralCoeff

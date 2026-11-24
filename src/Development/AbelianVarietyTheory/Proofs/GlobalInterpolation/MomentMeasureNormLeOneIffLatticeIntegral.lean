@@ -1,18 +1,18 @@
 module
 
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsMeasureOfBoundedMoments
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice
+public import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommutatorPairingPowEqOneOfGoodLift
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LatIntZero
 public import Formalism.LocalToGlobal.KernelLattices.DeterminantCokernelCount.CokernelIndexFactors.StatementB
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsDualBasisOfUnimodularLatticeAtPrimeStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsDualBasisOfUnimodularLatticeAtPrime
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JetsAreBoundedMeasureMomentsPadicIntMatrixChange
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeJetsAreBoundedMomentsOfSpanImagQuadraticStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MeasureEqOfMoments
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeJetsAreBoundedMomentsOfSpanImagQuadratic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -23,14 +23,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -38,6 +31,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,8 +46,215 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Compactness.CompactlyGeneratedSpace
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Topology.UniformSpace.Uniformizable
+import Formalism.LocalToGlobal.KernelLattices.LateralTheory
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsMahlerExpansion, Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MeasureEqOfMoments, Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MomentMeasureNormLeOneIffLatticeIntegral
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsMahlerExpansion =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsMahlerExpansion", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsMeasureOfBoundedMoments\npublic import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Compactness.CompactlyGeneratedSpace\nimport Mathlib.Topology.Connected.Separation\nimport Mathlib.Topology.MetricSpace.Ultra.TotallySeparated\nimport Mathlib.Topology.Sheaves.Init\nimport Mathlib.Topology.UniformSpace.Uniformizable\nimport Formalism.LocalToGlobal.KernelLattices.LateralTheory\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker
+
+namespace GlobalTheory.MonomialDense
+open GlobalTheory.MultiMahler
+
+variable {p : ℕ} [Fact p.Prime]
+
+noncomputable def incl (p : ℕ) [Fact p.Prime] : ℤ_[p] →+* ℂ_[p] :=
+  (algebraMap ℚ_[p] ℂ_[p]).comp PadicInt.Coe.ringHom
+
+theorem continuous_incl : Continuous (incl p) :=
+  (continuous_algebraMap ℚ_[p] ℂ_[p]).comp continuous_subtype_val
+
+theorem factorial_mul_binomC (k : ℕ) (x : ℤ_[p]) :
+    (k.factorial : ℂ_[p]) * binomC k x
+      = incl p (Polynomial.aeval x (descPochhammer ℤ k)) := by
+  have h1 : binomC k x = incl p (Ring.choose x k) := rfl
+  have h2 := Ring.descPochhammer_eq_factorial_smul_choose x k
+  rw [← Polynomial.aeval_eq_smeval] at h2
+  rw [h1, h2, nsmul_eq_mul, map_mul, map_natCast]
+
+theorem exists_mahler_expansion {E : Type*} [NormedAddCommGroup E] [NormedSpace ℚ_[p] E]
+    [IsUltrametricDist E] [CompleteSpace E] (f : C(ℤ_[p], E)) :
+    ∃ t : ℕ → C(ℤ_[p], E), HasSum t f ∧
+      ∀ n, ∃ a : E, ∀ x, t n x = ((mahler n x : ℤ_[p]) : ℚ_[p]) • a := by
+  letI : Module ℤ_[p] E := Module.compHom E (algebraMap ℤ_[p] ℚ_[p])
+  haveI : IsBoundedSMul ℤ_[p] E := IsBoundedSMul.of_norm_smul_le fun r x =>
+    norm_smul_le (r : ℚ_[p]) x
+  exact ⟨_, PadicInt.hasSum_mahler f, fun n => ⟨_, fun _ => rfl⟩⟩
+
+variable {Z : Type} [TopologicalSpace Z] [CompactSpace Z]
+
+omit [CompactSpace Z] in
+theorem binomC_comp_mem (S : Subalgebra ℂ_[p] C(Z, ℂ_[p])) (φ : C(Z, ℤ_[p]))
+    (X : C(Z, ℂ_[p])) (hX : ∀ z, X z = incl p (φ z)) (hS : X ∈ S) (k : ℕ) :
+    (binomC k).comp φ ∈ S := by
+  have hmem : ∀ P : Polynomial ℤ, ∃ G ∈ S, ∀ z, G z = incl p (Polynomial.aeval (φ z) P) := by
+    intro P
+    induction P using Polynomial.induction_on' with
+    | add P Q hP hQ =>
+      obtain ⟨G, hG, hG'⟩ := hP
+      obtain ⟨G₂, hG₂, hG₂'⟩ := hQ
+      exact ⟨G + G₂, S.add_mem hG hG₂, fun z => by simp [hG', hG₂']⟩
+    | monomial n a =>
+      refine ⟨(a : ℂ_[p]) • X ^ n, S.smul_mem (S.pow_mem hS n) _, fun z => ?_⟩
+      simp [hX, Polynomial.aeval_monomial]
+  obtain ⟨G, hG, hG'⟩ := hmem (descPochhammer ℤ k)
+  have hk : (k.factorial : ℂ_[p]) ≠ 0 := Nat.cast_ne_zero.mpr k.factorial_ne_zero
+  have : (binomC k).comp φ = (k.factorial : ℂ_[p])⁻¹ • G := by
+    ext z
+    change binomC k (φ z) = (k.factorial : ℂ_[p])⁻¹ * G z
+    rw [hG', ← factorial_mul_binomC, inv_mul_cancel_left₀ hk]
+  rw [this]
+  exact S.smul_mem hG _
+
+noncomputable def evalAlong {Y : Type} [TopologicalSpace Y] [CompactSpace Y] [T2Space Y]
+    (φ : C(Z, ℤ_[p])) (ψ : C(Z, Y)) :
+    C(ℤ_[p], C(Y, ℂ_[p])) →L[ℂ_[p]] C(Z, ℂ_[p]) :=
+  LinearMap.mkContinuous
+    { toFun := fun G => ⟨fun z => G (φ z) (ψ z), by fun_prop⟩
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl } 1 (fun G => by
+      rw [one_mul, ContinuousMap.norm_le _ (norm_nonneg _)]
+      intro z
+      exact ((G (φ z)).norm_coe_le_norm _).trans (G.norm_coe_le_norm _))
+
+theorem comp_mem (S : Subalgebra ℂ_[p] C(Z, ℂ_[p])) (hS : IsClosed (S : Set C(Z, ℂ_[p])))
+    (g : ℕ) : ∀ (φ : C(Z, Fin g → ℤ_[p])),
+      (∀ i, ∃ X ∈ S, ∀ z, X z = incl p (φ z i)) →
+      ∀ F : C(Fin g → ℤ_[p], ℂ_[p]), F.comp φ ∈ S := by
+  induction g with
+  | zero =>
+    intro φ _ F
+    have : F.comp φ = algebraMap ℂ_[p] C(Z, ℂ_[p]) (F 0) := by
+      ext z
+      simp [Subsingleton.elim (φ z) 0]
+    rw [this]
+    exact S.algebraMap_mem _
+  | succ g ih =>
+    intro φ hφ F
+    obtain ⟨t, ht, ht'⟩ := exists_mahler_expansion (curryFirst F)
+    let φ0 : C(Z, ℤ_[p]) := ⟨fun z => φ z 0, by fun_prop⟩
+    let ψ : C(Z, Fin g → ℤ_[p]) := ⟨fun z i => φ z i.succ, by fun_prop⟩
+    have h := (evalAlong φ0 ψ).hasSum ht
+    have e : evalAlong φ0 ψ (curryFirst F) = F.comp φ := by
+      ext z
+      exact congrArg F (Fin.cons_self_tail (φ z))
+    rw [e] at h
+    refine hS.mem_of_tendsto h (Filter.Eventually.of_forall fun s => S.sum_mem fun n _ => ?_)
+    obtain ⟨a, ha⟩ := ht' n
+    have e2 : evalAlong φ0 ψ (t n) = (binomC n).comp φ0 * a.comp ψ := by
+      ext z
+      change t n (φ0 z) (ψ z) = _
+      rw [ha]
+      change ((mahler n (φ0 z) : ℤ_[p]) : ℚ_[p]) • a (ψ z) = _
+      rw [Algebra.smul_def]
+      rfl
+    rw [e2]
+    obtain ⟨X, hX, hX'⟩ := hφ 0
+    exact S.mul_mem (binomC_comp_mem S φ0 X hX' hX n) (ih ψ (fun i => hφ i.succ) a)
+
+theorem eq_zero_of_monomials : ∀ (p r : ℕ) [Fact p.Prime] (μ : C(Fin r → ℤ_[p], ℂ_[p]) →L[ℂ_[p]] ℂ_[p]), (∀ (m : ℕ) (k : Fin m → Fin r) (g : C(Fin r → ℤ_[p], ℂ_[p])), (∀ a, g a = ∏ j, zc (a (k j))) → μ g = 0) → μ = 0 := by
+  intro p r _ μ hμ
+  let X : Fin r → C(Fin r → ℤ_[p], ℂ_[p]) := fun i =>
+    ⟨fun a => incl p (a i), continuous_incl.comp (continuous_apply i)⟩
+  let A : Subalgebra ℂ_[p] C(Fin r → ℤ_[p], ℂ_[p]) := Algebra.adjoin ℂ_[p] (Set.range X)
+  have hA : ∀ f ∈ A, μ f = 0 := by
+    intro f hf
+    have hf' : f ∈ Submodule.span ℂ_[p] (Submonoid.closure (Set.range X) : Set _) := by
+      rw [← Algebra.adjoin_eq_span]; exact hf
+    refine (Submodule.span_le (p := LinearMap.ker μ.toLinearMap)).mpr ?_ hf'
+    intro g hg
+    have : ∃ (m : ℕ) (k : Fin m → Fin r), ∀ a, g a = ∏ j, zc (a (k j)) := by
+      induction hg using Submonoid.closure_induction_left with
+      | one => exact ⟨0, Fin.elim0, fun a => by simp⟩
+      | mul_left x hx y _ ih =>
+        obtain ⟨i, rfl⟩ := hx
+        obtain ⟨m, k, hk⟩ := ih
+        refine ⟨m + 1, Fin.cons i k, fun a => ?_⟩
+        rw [Fin.prod_univ_succ, ContinuousMap.mul_apply, hk]
+        rfl
+    obtain ⟨m, k, hk⟩ := this
+    exact hμ m k g hk
+  ext F
+  have hF := comp_mem A.topologicalClosure A.isClosed_topologicalClosure r (ContinuousMap.id _)
+    (fun i => ⟨X i, A.le_topologicalClosure (Algebra.subset_adjoin ⟨i, rfl⟩), fun _ => rfl⟩) F
+  have hcl : closure (A : Set C(Fin r → ℤ_[p], ℂ_[p])) ⊆ {f | μ f = 0} :=
+    closure_minimal hA (isClosed_eq μ.continuous continuous_const)
+  exact hcl hF
+
+end GlobalTheory.MonomialDense
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsMahlerExpansion =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MeasureEqOfMoments =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MeasureEqOfMoments", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommutatorPairingPowEqOneOfGoodLift\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsMahlerExpansion\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LatIntZero\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open GlobalTheory.MomOne GlobalTheory.MomN PowerSeries
+open scoped ComplexConjugate
+
+namespace GlobalTheory.MomN
+
+theorem measure_eq_of_moments : ∀ (q : ℕ) [Fact q.Prime] (κ : Type) [Fintype κ]
+    (μ μ' : C(κ → ℤ_[q], ℂ_[q]) →L[ℂ_[q]] ℂ_[q]),
+    (∀ (k : ℕ) (j : Fin k → κ) (f : C(κ → ℤ_[q], ℂ_[q])),
+      (∀ a, f a = ∏ l, zc (a (j l))) → μ f = μ' f) → μ = μ' := by
+  intro q _ κ _ μ μ' h
+  let e := Fintype.equivFin κ
+  let π : C(κ → ℤ_[q], Fin (Fintype.card κ) → ℤ_[q]) :=
+    ⟨fun b i => b (e.symm i), by fun_prop⟩
+  let π' : C(Fin (Fintype.card κ) → ℤ_[q], κ → ℤ_[q]) :=
+    ⟨fun a i => a (e i), by fun_prop⟩
+  let Φ : C(Fin (Fintype.card κ) → ℤ_[q], ℂ_[q]) →L[ℂ_[q]] C(κ → ℤ_[q], ℂ_[q]) :=
+    { toFun := fun G => G.comp π
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl
+      cont := ContinuousMap.continuous_precomp π }
+  have hz : (μ - μ').comp Φ = 0 := by
+    exact GlobalTheory.MonomialDense.eq_zero_of_monomials q _ _ fun m k g hg => by
+      have := h m (fun l => e.symm (k l)) (Φ g) fun b => hg (π b)
+      simp [this]
+  ext F
+  have hF : Φ (F.comp π') = F := by
+    ext b
+    change F (π' (π b)) = F b
+    congr 1
+    funext i
+    simp [π, π']
+  have := congrArg (fun ν => ν (F.comp π')) hz
+  simp only [ContinuousLinearMap.comp_apply, hF, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.zero_apply] at this
+  exact sub_eq_zero.mp this
+
+end GlobalTheory.MomN
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MeasureEqOfMoments =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MomentMeasureNormLeOneIffLatticeIntegral =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MomentMeasureNormLeOneIffLatticeIntegral", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LatIntZero\npublic import Formalism.LocalToGlobal.KernelLattices.DeterminantCokernelCount.CokernelIndexFactors.StatementB\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsDualBasisOfUnimodularLatticeAtPrime\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JetsAreBoundedMeasureMomentsPadicIntMatrixChange\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeJetsAreBoundedMomentsOfSpanImagQuadratic\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MeasureEqOfMoments\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open GlobalTheory.MomN Formalism.L2.Ker.JMB
@@ -223,7 +424,7 @@ theorem norm_le_one_iff_latInt : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* �
     MomentProperty lam Ω δ₀ S b (fun _ : Fin 1 => t) μ G → (‖μ‖ ≤ 1 ↔ LatInt ι (Ω / ι δ₀) S.La.toAddSubgroup G) := by
   intro q _ ι lam δ₀ Ω g S r b t G μ hι hδ hΩ hOk hsplit hb ht _ hM
   have hΩ0 : Ω ≠ 0 := by rintro rfl; simp at hΩ
-  obtain ⟨s', c, hs'q, hcLa, hcb, hsp⟩ := GlobalTheory.T.exists_dualBasis_of_unimodular_lattice_at_prime q g S r b hOk hb
+  obtain ⟨s', c, hs'q, hcLa, hcb, hsp⟩ := _root_.GlobalTheory.MomDual.dual_basis q g S r b hOk hb
   have hs'0 : s' ≠ 0 := by
     rintro rfl
     exact (Fact.out : q.Prime).one_lt.ne' (Nat.coprime_zero_left q |>.1 hs'q)
@@ -237,7 +438,7 @@ theorem norm_le_one_iff_latInt : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* �
           fun j => (ι.symm (Ω / ι δ₀) / (s' : ℂ)) • c j := by
         funext j; simp only [smul_smul, div_eq_mul_inv]
       rw [e]; exact hmom
-    refine GlobalTheory.T.latticeJetsAreBoundedMoments_of_span_imagQuadratic q ι (Fin g → ℂ) S.d (Ω / ι δ₀) S.La.toAddSubgroup (Fin r) (fun j => (s' : ℂ)⁻¹ • c j) G
+    refine _root_.GlobalTheory.MomN.latInt_of_span q ι (Fin g → ℂ) S.d (Ω / ι δ₀) S.La.toAddSubgroup (Fin r) (fun j => (s' : ℂ)⁻¹ • c j) G
       hdp hd16 hsplit ?_ hM'
     intro x hx
     rw [Submodule.mem_toAddSubgroup] at hx
@@ -271,3 +472,7 @@ theorem norm_le_one_iff_latInt : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* �
       rw [smul_smul, div_eq_mul_inv, mul_comm]
 
 end GlobalTheory.MomN
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MomentMeasureNormLeOneIffLatticeIntegral =====

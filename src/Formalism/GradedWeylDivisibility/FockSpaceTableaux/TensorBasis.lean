@@ -112,8 +112,7 @@ theorem ldtensor_glue_injective :
   intro α β h
   funext s
   ext v
-  have e := congrArg (fun f => f (s, v)) h
-  simpa [ldtensor_glue_apply] using e
+  simpa [ldtensor_glue_apply] using congrArg (fun f => f (s, v)) h
 
 theorem ldtensor_prod_monomial (α : S → (Fin k × Fin n →₀ ℕ)) :
     ∏ s, blockEmb K s (monomial (α s) (1 : K)) = monomial (∑ t, (α t).mapDomain (Prod.mk t)) 1 := by
@@ -136,19 +135,15 @@ theorem ldtensor_psi_injective : Function.Injective (ldtensor_psi K (S := S) (k 
   have hB : ∀ α, B α = tprod K (fun s => monomial (α s) (1 : K)) := fun α => by
     simp [B, Basis.piTensorProduct_apply, MvPolynomial.coe_basisMonomials]
   have hli : LinearIndependent K (ldtensor_psi K ∘ B) := by
-    have e : ldtensor_psi K ∘ B = fun α => monomial (∑ t, (α t).mapDomain (Prod.mk t)) (1 : K) := by
-      funext α
-      simp only [Function.comp_apply, hB, ldtensor_psi_tprod, ldtensor_prod_monomial]
-    rw [e]
-    have h := (MvPolynomial.basisMonomials (S × (Fin k × Fin n)) K).linearIndependent.comp _
-      (ldtensor_glue_injective (S := S) (k := k) (n := n))
-    have e2 : (fun α : S → (Fin k × Fin n →₀ ℕ) => monomial (∑ t, (α t).mapDomain (Prod.mk t)) (1 : K)) =
+    have e : ldtensor_psi K ∘ B =
         ⇑(MvPolynomial.basisMonomials (S × (Fin k × Fin n)) K) ∘
-          (fun α => ∑ t, (α t).mapDomain (Prod.mk t)) := by
+          (fun α : S → (Fin k × Fin n →₀ ℕ) => ∑ t, (α t).mapDomain (Prod.mk t)) := by
       funext α
-      simp [MvPolynomial.coe_basisMonomials]
-    rw [e2]
-    exact h
+      simp [Function.comp_apply, hB, ldtensor_psi_tprod, ldtensor_prod_monomial,
+        MvPolynomial.coe_basisMonomials]
+    rw [e]
+    exact (MvPolynomial.basisMonomials (S × (Fin k × Fin n)) K).linearIndependent.comp _
+      (ldtensor_glue_injective (S := S) (k := k) (n := n))
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro x hx
   rw [← B.linearCombination_repr x] at hx ⊢
@@ -165,26 +160,22 @@ theorem ldtensor_tprod_linInd {ι : S → Type*} (b : ∀ s, ι s → MvPolynomi
   have hp : Function.Injective p := by
     intro i j h
     funext s
-    have := congrArg (fun q => ((q s : _) : MvPolynomial (Fin k × Fin n) K)) h
-    exact (hb s).injective this
-  have := (Basis.piTensorProduct E).linearIndependent.comp p hp
+    exact (hb s).injective (congrArg (fun q => ((q s : _) : MvPolynomial (Fin k × Fin n) K)) h)
   have e : (fun i : (∀ s, ι s) => tprod K (fun s => b s (i s))) = (Basis.piTensorProduct E) ∘ p := by
     funext i
     simp [E, p, Basis.piTensorProduct_apply, Basis.coe_extend]
   rw [e]
-  exact this
+  exact (Basis.piTensorProduct E).linearIndependent.comp p hp
 
 theorem ldtensor_prod_linInd_field {ι : S → Type*} (b : ∀ s, ι s → MvPolynomial (Fin k × Fin n) K)
     (hb : ∀ s, LinearIndependent K (b s)) :
     LinearIndependent K (fun i : (∀ s, ι s) => ∏ s, blockEmb K s (b s (i s))) := by
-  have h := (ldtensor_tprod_linInd K b hb).map' (ldtensor_psi K)
-    (LinearMap.ker_eq_bot.mpr (ldtensor_psi_injective K))
-  have e : (fun i : (∀ s, ι s) => ∏ s, blockEmb K s (b s (i s))) =
-      ldtensor_psi K ∘ (fun i => tprod K fun s => b s (i s)) := by
+  rw [show (fun i : (∀ s, ι s) => ∏ s, blockEmb K s (b s (i s))) =
+      ldtensor_psi K ∘ (fun i => tprod K fun s => b s (i s)) by
     funext i
-    simp [ldtensor_psi_tprod]
-  rw [e]
-  exact h
+    simp [ldtensor_psi_tprod]]
+  exact (ldtensor_tprod_linInd K b hb).map' (ldtensor_psi K)
+    (LinearMap.ker_eq_bot.mpr (ldtensor_psi_injective K))
 
 end Field
 

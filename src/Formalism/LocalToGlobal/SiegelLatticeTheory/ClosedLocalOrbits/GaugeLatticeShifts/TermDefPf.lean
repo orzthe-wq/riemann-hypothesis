@@ -1,46 +1,6 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermDef
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -74,14 +34,11 @@ theorem gmap_eq_iff {Λ : Submodule (𝓞 E) S.V} (g : S.V ≃ₗ[E] S.V) :
     Formalism.HermitianLatticesTheory.gmap g Λ = Λ ↔ ∀ x, g x ∈ Λ ↔ x ∈ Λ := by
   constructor
   · intro h x
-    have := (mem_gmap_iff (Λ := Λ) g (g x))
-    rw [h] at this
-    simpa using this
+    simpa [h] using (mem_gmap_iff (Λ := Λ) g (g x))
   · intro h
     ext x
     rw [mem_gmap_iff]
-    have := h (g.symm x)
-    simpa using this.symm
+    simpa using (h (g.symm x)).symm
 
 theorem isAutLam_iff (Λ : Submodule (𝓞 E) S.V) (g : S.V ≃ₗ[E] S.V) :
     IsAutLam S Λ g ↔ (∀ x y, S.hT (g x) (g y) = S.hT x y) ∧ ∀ x, g x ∈ Λ ↔ x ∈ Λ := by
@@ -102,16 +59,11 @@ theorem isAutLam_inv {Λ : Submodule (𝓞 E) S.V} {g : S.V ≃ₗ[E] S.V} (hg :
     IsAutLam S Λ g⁻¹ := by
   rw [isAutLam_iff] at *
   refine ⟨fun x y => ?_, fun x => ?_⟩
-  · have := hg.1 (g⁻¹ x) (g⁻¹ y)
-    simpa using this.symm
-  · have := hg.2 (g⁻¹ x)
-    simpa using this.symm
+  · simpa using (hg.1 (g⁻¹ x) (g⁻¹ y)).symm
+  · simpa using (hg.2 (g⁻¹ x)).symm
 
 theorem xflag_mono_td {T : E} (F : LFlag S r T) {j k : ℕ} (h : j ≤ k) : Xflag F j ≤ Xflag F k := by
-  apply Submodule.span_mono
-  apply Set.image_mono
-  intro i hi
-  exact lt_of_lt_of_le hi h
+  exact Submodule.span_mono (Set.image_mono (fun i hi => lt_of_lt_of_le hi h))
 
 theorem xflag_zero_td {T : E} (F : LFlag S r T) : Xflag F 0 = ⊥ := by
   simp [Xflag, FlagG.Xa]
@@ -169,43 +121,38 @@ theorem nlam_orth_map_eq {Λ : Submodule (𝓞 E) S.V} {T : E} {F : LFlag S r T}
 
 theorem nlamPf_mul {Λ : Submodule (𝓞 E) S.V} {T : E} {F : LFlag S r T} {n p : S.V ≃ₗ[E] S.V}
     (hn : n ∈ NLam Λ F) (hp : p ∈ NLam Λ F) : n * p ∈ NLam Λ F := by
+  have e : ∀ x, (n * p) x - x = (n (p x) - p x) + (p x - x) := fun x => by
+    simp only [LinearEquiv.mul_apply]
+    abel
   refine ⟨isAutLam_mul hn.1 hp.1, ?_, ?_⟩
   · intro j x hx
-    have e : (n * p) x - x = (n (p x) - p x) + (p x - x) := by
-      simp only [LinearEquiv.mul_apply]; abel
-    rw [e]
+    rw [e x]
     exact Submodule.add_mem _ (hn.2.1 j _ (nlam_mapsTo hp (j + 1) x hx)) (hp.2.1 j x hx)
   · intro x hx
-    have e : (n * p) x - x = (n (p x) - p x) + (p x - x) := by
-      simp only [LinearEquiv.mul_apply]; abel
-    rw [e]
+    rw [e x]
     exact Submodule.add_mem _ (hn.2.2 _ (nlam_orth_mapsTo hp x hx)) (hp.2.2 x hx)
 
 theorem nlamPf_inv {Λ : Submodule (𝓞 E) S.V} {T : E} {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V}
     (hn : n ∈ NLam Λ F) : n⁻¹ ∈ NLam Λ F := by
+  have e : ∀ x, n⁻¹ ((n : S.V →ₗ[E] S.V) x) - (n : S.V →ₗ[E] S.V) x = -(n x - x) := fun x => by
+    simp
   refine ⟨isAutLam_inv hn.1, ?_, ?_⟩
   · intro j x hx
     rw [← nlam_map_eq hn (j + 1)] at hx
     obtain ⟨y, hy, rfl⟩ := hx
-    have e : n⁻¹ ((n : S.V →ₗ[E] S.V) y) - (n : S.V →ₗ[E] S.V) y = -(n y - y) := by
-      simp
-    rw [e]
+    rw [e y]
     exact Submodule.neg_mem _ (hn.2.1 j y hy)
   · intro x hx
     rw [← nlam_orth_map_eq hn] at hx
     obtain ⟨y, hy, rfl⟩ := hx
-    have e : n⁻¹ ((n : S.V →ₗ[E] S.V) y) - (n : S.V →ₗ[E] S.V) y = -(n y - y) := by
-      simp
-    rw [e]
+    rw [e y]
     exact Submodule.neg_mem _ (hn.2.2 y hy)
 
 theorem mem_xflag_of_frame {T₁ T₂ : E} {F₁ : LFlag S r T₁} {F₂ : LFlag S r T₂} {γ : S.V ≃ₗ[E] S.V}
     (hF : ∀ a, frame F₂ a = γ (frame F₁ a)) (j : ℕ) (x : S.V) :
     x ∈ Xflag F₂ j ↔ γ.symm x ∈ Xflag F₁ j := by
-  have he : ∀ i, F₂.fl.e i = γ (F₁.fl.e i) := by
-    intro i
-    have := hF i.castSucc
-    rwa [frame_castSucc_td, frame_castSucc_td] at this
+  have he : ∀ i, F₂.fl.e i = γ (F₁.fl.e i) := fun i => by
+    simpa [frame_castSucc_td] using hF i.castSucc
   have hm : Xflag F₂ j = (Xflag F₁ j).map (γ : S.V →ₗ[E] S.V) := by
     simp only [Xflag, FlagG.Xa, Submodule.map_span]
     congr 1
@@ -242,23 +189,20 @@ theorem nlam_conj {Λ : Submodule (𝓞 E) S.V} {T₁ T₂ : E} {F₁ : LFlag S 
     (hγ : IsAutLam S Λ γ) (hF : ∀ a, frame F₂ a = γ (frame F₁ a)) (hp : p ∈ NLam Λ F₁) :
     γ * p * γ⁻¹ ∈ NLam Λ F₂ := by
   have hiso := ((isAutLam_iff Λ γ).1 hγ).1
+  have e : ∀ x, γ.symm ((γ * p * γ⁻¹) x - x) = p (γ.symm x) - γ.symm x := fun x => by
+    simp only [LinearEquiv.mul_apply, map_sub]
+    simp [LinearEquiv.coe_inv]
   refine ⟨isAutLam_mul (isAutLam_mul hγ hp.1) (isAutLam_inv hγ), ?_, ?_⟩
   · intro j x hx
     rw [mem_xflag_of_frame hF] at hx ⊢
     have := hp.2.1 j _ hx
-    have e : γ.symm ((γ * p * γ⁻¹) x - x) = p (γ.symm x) - γ.symm x := by
-      simp only [LinearEquiv.mul_apply, map_sub]
-      simp [LinearEquiv.coe_inv]
-    rw [e]
+    rw [e x]
     exact this
   · intro x hx
     rw [mem_orth_of_frame hF hiso] at hx
     rw [mem_xsp_of_frame hF]
     have := hp.2.2 _ hx
-    have e : γ.symm ((γ * p * γ⁻¹) x - x) = p (γ.symm x) - γ.symm x := by
-      simp only [LinearEquiv.mul_apply, map_sub]
-      simp [LinearEquiv.coe_inv]
-    rw [e]
+    rw [e x]
     exact this
 
 variable (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T)
@@ -268,14 +212,13 @@ theorem dcrel_symm {F₁ F₂ : LFlag S r T'} (h : DCRel Λ F F₁ F₂) : DCRel
   have hγ : IsAutLam S Λ (n * m) := isAutLam_mul hn.1 hm.1
   have hF : ∀ a, frame F₂ a = (n * m) (frame F₁ a) := fun a => by simpa using hfr a
   have hm' := nlam_conj hγ hF (nlamPf_inv hm)
+  have key : n⁻¹ * (n * m * m⁻¹ * (n * m)⁻¹) * (n * m) = 1 := by group
   refine ⟨n⁻¹, nlamPf_inv hn, n * m * m⁻¹ * (n * m)⁻¹, hm', fun a => ?_, ?_⟩
-  · have key : n⁻¹ * (n * m * m⁻¹ * (n * m)⁻¹) * (n * m) = 1 := by group
-    have := congrArg (fun q : S.V ≃ₗ[E] S.V => q (frame F₁ a)) key
+  · have := congrArg (fun q : S.V ≃ₗ[E] S.V => q (frame F₁ a)) key
     simp only [LinearEquiv.mul_apply] at this
     rw [hfr a]
     simpa using this.symm
-  · have key : n⁻¹ * (n * m * m⁻¹ * (n * m)⁻¹) * (n * m) = 1 := by group
-    have := congrArg (fun q : S.V ≃ₗ[E] S.V => q F₁.zt) key
+  · have := congrArg (fun q : S.V ≃ₗ[E] S.V => q F₁.zt) key
     simp only [LinearEquiv.mul_apply] at this
     rw [hzt]
     simpa using this.symm
@@ -288,14 +231,13 @@ theorem dcrel_trans {F₁ F₂ F₃ : LFlag S r T'} (h : DCRel Λ F F₁ F₂) (
   have hF : ∀ a, frame F₁ a = (n * m)⁻¹ (frame F₂ a) := fun a => by
     rw [hfr a]; simp [LinearEquiv.coe_inv]
   have hm'' := nlam_conj hγ hF hm'
+  have key : (n' * n) * (m * ((n * m)⁻¹ * m' * (n * m)⁻¹⁻¹)) = n' * m' * (n * m) := by group
   refine ⟨n' * n, nlamPf_mul hn' hn, m * ((n * m)⁻¹ * m' * (n * m)⁻¹⁻¹), nlamPf_mul hm hm'', fun a => ?_, ?_⟩
-  · have key : (n' * n) * (m * ((n * m)⁻¹ * m' * (n * m)⁻¹⁻¹)) = n' * m' * (n * m) := by group
-    have := congrArg (fun q : S.V ≃ₗ[E] S.V => q (frame F₁ a)) key
+  · have := congrArg (fun q : S.V ≃ₗ[E] S.V => q (frame F₁ a)) key
     rw [hfr' a, hfr a]
     simp only [LinearEquiv.mul_apply] at this ⊢
     exact this.symm
-  · have key : (n' * n) * (m * ((n * m)⁻¹ * m' * (n * m)⁻¹⁻¹)) = n' * m' * (n * m) := by group
-    have := congrArg (fun q : S.V ≃ₗ[E] S.V => q F₁.zt) key
+  · have := congrArg (fun q : S.V ≃ₗ[E] S.V => q F₁.zt) key
     rw [hzt', hzt]
     simp only [LinearEquiv.mul_apply] at this ⊢
     exact this.symm
@@ -427,18 +369,12 @@ theorem leadMinor_uni {N : ℕ} (A Z B : Matrix (Fin N) (Fin N) E) (hA0 : ∀ a 
       rw [Matrix.det_of_lowerTriangular]
       · simp [hA1]
       · intro i j hij
-        exact hA0 _ _ (by
-          have : i < j := hij
-          rw [Fin.lt_def] at this ⊢
-          simpa using this)
+        exact hA0 _ _ (by simpa using hij)
     have hB : (B.submatrix (Fin.castLE h) (Fin.castLE h)).det = 1 := by
       rw [Matrix.det_of_upperTriangular]
       · simp [hB1]
       · intro i j hij
-        exact hB0 _ _ (by
-          have : j < i := hij
-          rw [Fin.lt_def] at this ⊢
-          simpa using this)
+        exact hB0 _ _ (by simpa using hij)
     rw [hA, hB, one_mul, mul_one]
   · rfl
 
@@ -535,16 +471,5 @@ theorem cell_function_holds : CellFun Λ F P := fun _ _ h w =>
 end Props
 
 end Gen
-
-section D7
-
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-variable (D : D7)
-
-theorem term_equivalence_iff (u u' : D.what₂.Word) : TermEqIff D u u' :=
-  fun F0 Λ _ => double_coset_equivalence Λ (lf D F0) _
-
-end D7
 
 end Formalism.L2.SG.Pf

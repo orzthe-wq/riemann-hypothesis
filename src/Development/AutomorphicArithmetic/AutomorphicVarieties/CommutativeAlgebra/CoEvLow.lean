@@ -83,7 +83,7 @@ private theorem mvPowerSeries_mem_span_X_of_constantCoeff_zero {σ R : Type} [Fi
       rw [MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h0]
       refine (Finset.sum_eq_zero fun s _ => ?_).symm
       rw [if_neg]
-      simp [Finsupp.single_le_iff]
+      simp
     · obtain ⟨s0, hs0, hds0⟩ := hsel d hd
       have hle0 : Finsupp.single s0 1 ≤ d := Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hds0)
       rw [Finset.sum_eq_single s0]

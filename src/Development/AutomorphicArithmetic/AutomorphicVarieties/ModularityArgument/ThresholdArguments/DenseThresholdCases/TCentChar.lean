@@ -116,10 +116,10 @@ private abbrev sc (y : Rˣ) : GL (Fin 2) R := GeneralLinearGroup.scalar (Fin 2) 
 private theorem corner_scalar (s : R →ₙ+* S) (y : Rˣ) : cornerGL 2 s (sc y) = sc (Units.map (corner s) y) := by
   ext i j
   change (1 : Matrix (Fin 2) (Fin 2) S) i j - s ((1 : Matrix (Fin 2) (Fin 2) R) i j) + s (sc y i j) = _
-  fin_cases i <;> fin_cases j <;> simp [corner, GeneralLinearGroup.scalar]
+  fin_cases i <;> fin_cases j <;> simp [corner]
 private theorem sc_comm (y : Rˣ) (g : GL (Fin 2) R) : g * sc y = sc y * g := by
   ext i j
-  fin_cases i <;> fin_cases j <;> simp [GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_succ, mul_comm]
+  fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, mul_comm]
 private theorem continuous_sc [TopologicalSpace R] : Continuous (sc : Rˣ → GL (Fin 2) R) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · exact (continuous_pi fun _ => Units.continuous_val : Continuous fun (y : Rˣ) (_ : Fin 2) => (y : R)).matrix_diagonal
@@ -233,7 +233,7 @@ private theorem scal_sign (h : UpperTheory.V.Published.AdmissibleReal) (π : Cus
   have hk : (sc s).val ∈ Matrix.unitaryGroup (Fin 2) (Rinf F) := by
     rw [Matrix.mem_unitaryGroup_iff]
     ext i j : 1
-    fin_cases i <;> fin_cases j <;> simp [GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_succ, hs']
+    fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, hs']
   have e : Unitary.toUnits (⟨_, hk⟩ : Kinf F 2) = sc s := Units.ext rfl
   refine schur h π _ (fun φ hφ => ?_) fun o => ?_
   · rw [← inf_sc, ← e]; exact π.stable (.cpt _) φ hφ
@@ -349,7 +349,7 @@ private theorem main (h : UpperTheory.V.Published.AdmissibleReal) (π : CuspSub 
   refine Subtype.ext (funext fun x => ?_)
   have e : sc (diagUnits F k) = ratGL F 2 (sc k) := by
     ext i j
-    fin_cases i <;> fin_cases j <;> simp [GeneralLinearGroup.scalar, ratGL, diagUnits]
+    fin_cases i <;> fin_cases j <;> simp [ratGL, diagUnits]
   rw [rt_apply, sc_comm, e]
   exact (π.cusp φ hφ).1.left _ _
 end UpperTheory.V.Sd.Wc.CentralCharacter

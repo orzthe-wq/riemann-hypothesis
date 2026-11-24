@@ -2,49 +2,8 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StepPtRepPfB
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StepPtRepPfA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -313,7 +272,7 @@ private lemma eq_frame_expansion_hJ (G : PtRepPf.Fr ε r k) (v : Fin n → ℂ) 
       Finset.mem_univ, if_true, sub_self]
   · intro b
     simp only [PtRepPf.hJ_sub_right, PtRepPf.hJ_add_right, hJ_sum_right_root_lattice_thresholds, PtRepPf.hJ_smul_right, fe, G.ff,
-      G.fz, G.fw, mul_zero, Finset.sum_const_zero, zero_add, add_zero, mul_ite, mul_one, Finset.sum_ite_eq',
+      G.fz, G.fw, mul_zero, Finset.sum_const_zero, add_zero, mul_ite, mul_one, Finset.sum_ite_eq',
       Finset.mem_univ, if_true, sub_self]
   · simp only [PtRepPf.hJ_sub_right, PtRepPf.hJ_add_right, hJ_sum_right_root_lattice_thresholds, PtRepPf.hJ_smul_right, ze, zf,
       G.zz, G.zw, mul_zero, Finset.sum_const_zero, zero_add, add_zero]
@@ -531,7 +490,7 @@ theorem bridge_place (hT : TrHyp F Qm Qim c) (hT' : TrHyp F' Qm Qim c) {sc : ℝ
   have hdet : (Formalism.QuantumDeterminants.Zhat k r Bs.z Bs.z' (Qim * (Hi * g * H') * Qm)).det = pL * pS * Z.det := by
     rw [hZC, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal]
     ring
-  have hDl : Formalism.L2.SG.RealObj.Dl Z (r + 1) = Z.det := dl_top' Z
+  have hDl : Formalism.L2.SG.RealObj.Dl Z (r + 1) = Z.det := _root_.Formalism.L2.SG.RealObj.InfCut.PtRepPf.dl_top Z
   have hMM : star M * M = 1 := Matrix.mem_unitaryGroup_iff'.mp hMu
   have hMM' : star M' * M' = 1 := Matrix.mem_unitaryGroup_iff'.mp hM'u
   refine ⟨?_, ?_, ?_⟩

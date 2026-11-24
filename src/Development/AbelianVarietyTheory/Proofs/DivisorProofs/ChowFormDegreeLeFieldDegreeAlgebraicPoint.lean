@@ -63,7 +63,7 @@ private theorem aeval_det_linear_form_eq_det_map {K Ω ι : Type} [Field K] [Fie
   rw [AlgHom.map_det]
   congr 1
   ext l k
-  simp [RingHom.mapMatrix_apply, Matrix.map_apply]
+  simp [Matrix.map_apply]
 
 open MvPolynomial in
 private theorem det_linear_form_ne_zero_of_eq_one {K ι : Type} [Field K] {N d : ℕ}
@@ -157,7 +157,7 @@ private theorem exists_algHom_adjoin_of_ker_le {K Ω : Type} [Field K] [Field Ω
     simp [e, φ]
   rw [hX]
   simp only [lift, AlgHom.comp_apply, AlgEquiv.coe_toAlgHom,
-    AlgEquiv.symm_apply_apply, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.lift_mk]
+    AlgEquiv.symm_apply_apply, Ideal.Quotient.liftₐ_apply]
   exact aeval_X w i
 
 open MvPolynomial in

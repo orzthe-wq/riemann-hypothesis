@@ -1,9 +1,11 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EvenOrderNormsOneAddFourMulOfNoRoot
 public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
+public import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentatives
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormalFormNonsquareAdicCompletion
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitEvenOrderQuadraticNormValuesOneModFour
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,8 +52,98 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitEvenOrderQuadraticNormValuesOneModFour, Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsLocalNonnormOfNonsquareAdicCompletion
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitEvenOrderQuadraticNormValuesOneModFour =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitEvenOrderQuadraticNormValuesOneModFour", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EvenOrderNormsOneAddFourMulOfNoRoot\npublic import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion\npublic import Mathlib.RingTheory.Ideal.Norm.AbsNorm\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentatives\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain GlobalTheory.QNorm
+open scoped WithZero
+
+namespace GlobalTheory.QNorm
+
+theorem exists_not_mem_sq_add_sub (F : Type) [Field F] [NumberField F]
+    (v : HeightOneSpectrum (𝓞 F)) :
+    ∃ ρ : 𝓞 F, ∀ a : 𝓞 F, a ^ 2 + a - ρ ∉ v.asIdeal := by
+  have : v.asIdeal.IsMaximal := v.isMaximal
+  let f : 𝓞 F ⧸ v.asIdeal → 𝓞 F ⧸ v.asIdeal := fun x => x ^ 2 + x
+  have hni : ¬ Function.Injective f := by
+    intro h
+    have h0 : (0 : 𝓞 F ⧸ v.asIdeal) = -1 := h (by simp [f])
+    exact one_ne_zero (neg_eq_zero.mp h0.symm)
+  have hns : ¬ Function.Surjective f := fun hs => hni (Finite.injective_iff_surjective.mpr hs)
+  simp only [Function.Surjective, not_forall, not_exists] at hns
+  obtain ⟨r, hr⟩ := hns
+  obtain ⟨ρ, rfl⟩ := Ideal.Quotient.mk_surjective r
+  refine ⟨ρ, fun a ha => hr (Ideal.Quotient.mk _ a) ?_⟩
+  have h := (Ideal.Quotient.eq_zero_iff_mem).mpr ha
+  simp only [map_sub, map_add (f := _), map_pow] at h
+  exact sub_eq_zero.mp h
+
+theorem exists_evenNorms_unit : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)), ∃ Δ : v.adicCompletion F, EvenNorms Valued.v Δ ∧ Valued.v Δ = 1 ∧ Valued.v (Δ - 1) ≤ Valued.v (4 : v.adicCompletion F) := by
+  intro F _ _ v
+  obtain ⟨_, hval, hrep, -⟩ := _root_.GlobalTheory.QNorm.exists_uniformizer_and_residue_representatives F v
+  obtain ⟨ρ, hρ⟩ := exists_not_mem_sq_add_sub F v
+  set r : v.adicCompletion F := algebraMap F (v.adicCompletion F) (ρ : F) with hr
+  have h2 : (2 : v.adicCompletion F) ≠ 0 := by
+    have h := (map_ne_zero (algebraMap F (v.adicCompletion F))).mpr (two_ne_zero (α := F))
+    rwa [map_ofNat] at h
+  have hint : ∀ a : 𝓞 F, Valued.v (algebraMap F (v.adicCompletion F) (a : F)) ≤ 1 := fun a => by
+    rw [hval]; exact v.valuation_le_one a
+  have hone : ∀ a : 𝓞 F, a ∉ v.asIdeal →
+      Valued.v (algebraMap F (v.adicCompletion F) (a : F)) = 1 := fun a ha => by
+    rw [hval]; exact v.valuation_eq_one_iff_notMem.mpr ha
+  have key : ∀ x : v.adicCompletion F, Valued.v x ≤ 1 → Valued.v (x ^ 2 + x - r) = 1 := by
+    intro x hx
+    obtain ⟨a, ha⟩ := hrep x hx
+    set b : v.adicCompletion F := algebraMap F (v.adicCompletion F) (a : F) with hb_def
+    have hb : Valued.v b ≤ 1 := hint a
+    have hab : Valued.v (b ^ 2 + b - r) = 1 := by
+      have h := hone (a ^ 2 + a - ρ) (hρ a)
+      push_cast at h
+      simpa [hb_def, hr] using h
+    have h3 : Valued.v (x + b + 1) ≤ 1 :=
+      Valuation.map_add_le _ (Valuation.map_add_le _ hx hb) (by simp)
+    have hsmall : Valued.v ((x - b) * (x + b + 1)) < Valued.v (b ^ 2 + b - r) := by
+      rw [hab, map_mul]
+      exact lt_of_le_of_lt (mul_le_of_le_one_right' h3) ha
+    have e : x ^ 2 + x - r = (x - b) * (x + b + 1) + (b ^ 2 + b - r) := by ring
+    rw [e, Valuation.map_add_eq_of_lt_right _ hsmall, hab]
+  refine ⟨1 + 4 * r, _root_.GlobalTheory.QNorm.evenNorms_one_add_four_mul _ Valued.v r h2 (hint ρ) key, ?_, ?_⟩
+  · have h2le : Valued.v (2 : v.adicCompletion F) ≤ 1 := by
+      rw [← one_add_one_eq_two]
+      exact Valuation.map_add_le _ (by simp) (by simp)
+    have h4 : (4 : v.adicCompletion F) = 2 * 2 := by norm_num
+    by_cases h2v : Valued.v (2 : v.adicCompletion F) = 1
+    · have hx : Valued.v (-(2 : v.adicCompletion F)⁻¹) = 1 := by
+        rw [Valuation.map_neg, map_inv₀, h2v, inv_one]
+      have hk := key (-(2 : v.adicCompletion F)⁻¹) hx.le
+      have h22 : (2 : v.adicCompletion F) * 2⁻¹ = 1 := mul_inv_cancel₀ h2
+      have e : 1 + 4 * r = -(2 * 2) *
+          ((-(2 : v.adicCompletion F)⁻¹) ^ 2 + (-(2 : v.adicCompletion F)⁻¹) - r) := by
+        linear_combination (2 * (2 : v.adicCompletion F)⁻¹ - 1) * h22
+      rw [e, map_mul, hk, mul_one, Valuation.map_neg, map_mul, h2v, mul_one]
+    · have h2lt : Valued.v (2 : v.adicCompletion F) < 1 := lt_of_le_of_ne h2le h2v
+      have h4r : Valued.v (4 * r) < Valued.v (1 : v.adicCompletion F) := by
+        rw [map_one, map_mul, h4, map_mul]
+        exact lt_of_le_of_lt (mul_le_of_le_one_right' (hint ρ))
+          (lt_of_le_of_lt (mul_le_of_le_one_right' h2le) h2lt)
+      rw [Valuation.map_add_eq_of_lt_left _ h4r, map_one]
+  · rw [add_sub_cancel_left, map_mul]
+    exact mul_le_of_le_one_right' (hint ρ)
+
+end GlobalTheory.QNorm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitEvenOrderQuadraticNormValuesOneModFour =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsLocalNonnormOfNonsquareAdicCompletion =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsLocalNonnormOfNonsquareAdicCompletion", "h": "module\n\npublic import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentatives\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormalFormNonsquareAdicCompletion\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitEvenOrderQuadraticNormValuesOneModFour\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain GlobalTheory.QNorm
@@ -188,3 +280,6 @@ theorem _root_.GlobalTheory.QNorm.exists_local_nonnorm : ∀ (F : Type) [Field F
     omega
 
 end GlobalTheory.QNorm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsLocalNonnormOfNonsquareAdicCompletion =====

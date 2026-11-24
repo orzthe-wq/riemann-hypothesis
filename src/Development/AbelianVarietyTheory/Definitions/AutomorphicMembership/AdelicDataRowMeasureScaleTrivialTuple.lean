@@ -1,19 +1,17 @@
 module
 
+public import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 public import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.OmegaUpDownForms
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.MemberDatumOfFlagTie
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsTopologicalRingAE
 public import Formalism.LocalToGlobal.BesselHermitianTheta.TiedType
 public import Formalism.LocalToGlobal.BesselHermitianTheta.TiedWeilUnr
-public import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.NotHasInfExpThird
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.EqNegOfCommute
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSubmoduleThetaFunctions
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.FrameBasisMatrixOrthogonalPropertiesStatement
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.HaarUpqEqOfOmegaDensity
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsCuspFunIffConstTerm
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiagSingleSingle
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsInfFamFamily
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+public import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.AdelicUnitaryGroups
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -29,8 +27,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -50,11 +46,46 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSubmoduleThetaFunctions
+import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.AdelicUnitaryGroups
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.NotHasInfExpThird, Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple
+
+-- ===== clump member: Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.NotHasInfExpThird =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.NotHasInfExpThird", "h": "module\n\npublic import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta MeasureTheory Matrix
+open scoped TensorProduct
+
+namespace GlobalTheory.VolHeckeCheck
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem isWittLower_self (D : D7) (V : HSp D) : IsWittLower V V 0 := by
+  refine ⟨rfl, LinearMap.id, fun _ _ => rfl, 0, ⟨linearIndependent_empty_type, ?_⟩, ?_⟩
+  · exact Subsingleton.elim _ _
+  · exact Subsingleton.elim _ _
+
+end GlobalTheory.VolHeckeCheck
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.NotHasInfExpThird =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple", "h": "module\n\npublic import Mathlib.LinearAlgebra.QuadraticForm.Basic\npublic import Mathlib.LinearAlgebra.BilinearForm.Orthogonal\npublic import Mathlib.Analysis.Real.Sqrt\npublic import Mathlib.Analysis.Normed.Module.Basic\npublic import Mathlib.Analysis.Complex.Conformal\npublic import Mathlib.Algebra.Module.ZLattice.Basic\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.SymplecticValTauCompat\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.SymplecticRealPartVanish\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.SpanRealProjectionRationalPointsEqTop\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.SmoothIffRealCoordinatesAndRealLines\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.RealAdeleExtAndStandardCharacterFormula\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.HeisenbergDirectionalDerivFormulaAndSmooth\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.HeisenbergDerivativeCommutatorRelation\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsRealPointUnitaryWithComponents\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsPosNatMemOpenAdeleSubgroup\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsHeisenbergDerivativeLinearOperators\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.ContinuousOfHeisenbergLevelAndSmooth\npublic import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.OmegaUpDownForms\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.MemberDatumOfFlagTie\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsTopologicalRingAE\npublic import Formalism.LocalToGlobal.BesselHermitianTheta.TiedType\npublic import Formalism.LocalToGlobal.BesselHermitianTheta.TiedWeilUnr\npublic import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.NotHasInfExpThird\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.EqNegOfCommute\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSubmoduleThetaFunctions\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.HaarUpqEqOfOmegaDensity\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsCuspFunIffConstTerm\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiagSingleSingle\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsInfFamFamily\nimport Formalism.LocalRingCardinality.RankBoundMonotoneInDimension\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.AdelicUnitaryGroups\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -157,28 +188,6 @@ theorem nonempty_orthDec (h : OrthEx D) : Nonempty (OrthDec D) := by
 
 def KfinS (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF D) (Dc : OrthDec D) (V W : HSp D) : Submodule ℂ (ThS ψ V W) :=
   Submodule.span ℂ {Φ | IsPolFock ψ θ V W (Dc.cpt V) (Dc.cpt W) Φ.1}
-
-theorem OrthDec.exists_rel (Dc : OrthDec D) {V : HSp D} (hV : V.SigOK) :
-    ∃ s : GlobalTheory.IndefiniteRowSideFullHecke.FockOrthogonalDecomposition.InvFam V, ∀ τ, GlobalTheory.FockCompare.Rel V τ (Dc.cpt V τ) (s τ) := by
-  classical
-  obtain ⟨b, hb⟩ := (GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).1 _ (Dc.bas_unit V hV)
-  have ho : ∀ i j, i ≠ j → V.hT (b i) (b j) = 0 := fun i j hij => by
-    rw [← ((GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 b).2.1 i j, ← hb]
-    exact Dc.bas_orth V hV i j hij
-  refine ⟨fun τ => b.constr D.host.E fun i => if 0 < (tauE D τ (V.hT (b i) (b i))).re then b i else -b i, fun τ =>
-    GlobalTheory.FockCompare.rel_of_monomial hV τ b ho (fun i => b.constr_basis _ _ i) (Dc.cpt_gram V hV τ) ?_⟩
-  rw [← hb]
-  exact Dc.cpt_bas V hV τ
-
-theorem mem_KfinS {ψ : AddChar (AF D.host.F) ℂ} {θ : InfF D} (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (Dc : OrthDec D)
-    {V W : HSp D} (hV : V.SigOK) (hW : W.SigOK) (Φ : ThS ψ V W) :
-    Φ ∈ KfinS ψ θ Dc V W ↔ IsPolFock ψ θ V W (Dc.cpt V) (Dc.cpt W) Φ.1 := by
-  obtain ⟨s, hs⟩ := Dc.exists_rel hV
-  obtain ⟨s', hs'⟩ := Dc.exists_rel hW
-  have key := fun Φ : ThS ψ V W => GlobalTheory.FockCompare.isPolFock_iff hθ hψ hV hW hs hs' (mem_ThS.1 Φ.2)
-  refine ⟨fun h => (key Φ).2 ?_, fun h => Submodule.subset_span h⟩
-  exact (Submodule.span_le.2 fun g hg => (key g).1 hg :
-    KfinS ψ θ Dc V W ≤ (GlobalTheory.IndefiniteRowSideFullHecke.FockOrthogonalDecomposition.polFun ψ θ V W s s').comap (ThS ψ V W).subtype) h
 
 def admitted (V W : HSp D) (χ χ' : IdC D) : Prop :=
   V.rank ≠ W.rank ∧ IsHC D χ ∧ IsHC D χ' ∧ ResEta D χ V.rank ∧ ResEta D χ' W.rank
@@ -657,3 +666,6 @@ end Realises
 end GlobalTheory.Mem.Th
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple =====

@@ -78,10 +78,6 @@ theorem lvBasis_letE_idem (i : ZMod n) (x : W.DD T) :
     (letE i : LetA O n) • (letE i : LetA O n) • x = (letE i : LetA O n) • x := by
   rw [smul_smul, letE_mul_self]
 
-theorem lvBasis_sum_letE : ∑ i : ZMod n, (letE i : LetA O n) = 1 := by
-  funext j
-  simp [letE, Finset.sum_apply, Pi.single_apply]
-
 theorem lvBasis_cmp_of_eq {w z y : W.DD T} (hw : w ∈ W.N T) (hz : z ∈ W.N T) (hy : y ∈ W.N T)
     (o : O) (h : y = o • w + (letπ : LetA O n) • z) :
     W.cmp T ⟨y, hy⟩ = algebraMap O LL o • W.cmp T ⟨w, hw⟩ := by
@@ -176,7 +172,7 @@ theorem lvBasis_letter_span (hspan : Submodule.span LL (Set.range (W.cmp T)) = D
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun x _ => ?_
 
-    rw [← Finset.smul_sum, ← map_sum, ← Finset.sum_smul, lvBasis_sum_letE, one_smul]
+    rw [← Finset.smul_sum, ← map_sum, ← Finset.sum_smul, _root_.Formalism.MainNotions.WachCoordinates.Br.sum_letE, one_smul]
   have key := lvBasis_indep W.emb W.emb_bij.1
     (fun i => z i - if i = j then (f.sum fun x a => a • W.cmp T x) else 0) (fun i c => by
       have h1 := ((lvBasis_mem_DcrisL PD T.ρ _ _).1 (hzi i)).2 c

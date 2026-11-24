@@ -78,7 +78,7 @@ theorem homog_X [DecidableEq K] (p : Σ k, ι k) : IsMultiHomog (X p : MRing ι)
   · subst h
     simp [Finsupp.single_apply]
   · have h' : ∀ i : ι k, ¬ ((⟨k0, i0⟩ : Σ k, ι k) = ⟨k, i⟩) := fun i e => h (congrArg Sigma.fst e).symm
-    simp [Finsupp.single_apply, h', h]
+    simp [h]
 
 theorem homog_sub {g h : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) (hh : IsMultiHomog h d) :
     IsMultiHomog (g - h) d := by

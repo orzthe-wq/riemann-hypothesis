@@ -51,4 +51,4 @@ theorem _root_.GlobalTheory.T.inert_integral_twistedConjugates_twistedCentralize
       (∀ i, v.coeff i ∈ w.adicCompletionIntegers E) ∧
       u * (nrmL n w y).val.charpoly + v * derivative (nrmL n w y).val.charpoly = 1) →
     g⁻¹ * y * thL n w g ∈ GlobalTheory.LFun.KGL w (n := n) → ∃ t ∈ twCent (thL n w) y, ∃ k ∈ GlobalTheory.LFun.KGL w (n := n), g = t * k := by
-  first | exact @GlobalTheory.InertUniq.eq_twCent_mul_KGL | exact GlobalTheory.InertUniq.eq_twCent_mul_KGL | (intros; apply GlobalTheory.InertUniq.eq_twCent_mul_KGL <;> assumption)
+  first | exact @GlobalTheory.InertUniq.eq_twCent_mul_KGL

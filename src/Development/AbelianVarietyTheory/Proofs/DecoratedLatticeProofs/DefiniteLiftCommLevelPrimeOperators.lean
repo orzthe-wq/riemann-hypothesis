@@ -1,13 +1,15 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TailRd
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DataAsCombinationsAtSplitPlacesProofStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DataAsCombinationsAtSplitPlacesProof
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationCommFockPolynomialVectors
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OmZeroRat
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OverAllExists
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RamifiedOperatorBijectiveFiniteTranslationCombinStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RamifiedOperatorBijectiveFiniteTranslationCombin
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RamifiedOperatorsBijectiveAtPlaces
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RamifiedThetaLiftCommutesSplitPlaceOperatorsStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RamifiedThetaLiftCommutesSplitPlaceOperators
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PtYAndItYOfPair
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FockVectorsChainIsVacuumOffThetaLevels
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeisenbergOrientedFiniteFixesFockPolynomialVecto
@@ -48,7 +50,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
 
 @[expose] public section
 
@@ -94,10 +95,10 @@ theorem vac_pureTensorO {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : 
   refine ⟨hth φ, fun u hu => ?_, fun e he u hu hh => ?_⟩
   · have hu' := hle hu
     exact GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite ψ θ S T hvac.2.inf x.s y.s x.B y.B f₀ hth (2 • u)
-      (GlobalTheory.VacGood.infPart_latO (AddSubgroup.nsmul_mem _ hu' 2)) (hvac.2.lat.1 u hu') φ
+      (_root_.GlobalTheory.SplitScalar.latO_fin (AddSubgroup.nsmul_mem _ hu' 2)) (hvac.2.lat.1 u hu') φ
   · have hu' := hle hu
     exact GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite ψ θ S T hvac.2.inf x.s y.s x.B y.B f₀ hth u
-      (GlobalTheory.VacGood.infPart_latO hu') (hvac.2.lat.2 e he u hu' hh) φ
+      (_root_.GlobalTheory.SplitScalar.latO_fin hu') (hvac.2.lat.2 e he u hu' hh) φ
 
 section Local
 
@@ -109,7 +110,7 @@ theorem sOp_ram {ι : Type} {p : ι → SplitPt D k} (hinj : Function.Injective 
     (hφ : IsContAut S φ ∧ ∀ i', RamAt (β i') (Q i') φ) :
     IsContAut S (sOp (β i) (Q i) q (resChar (χ₀ i) (hχ i) q) ε φ) ∧
       ∀ i', RamAt (β i') (Q i') (sOp (β i) (Q i) q (resChar (χ₀ i) (hχ i) q) ε φ) := by
-  obtain ⟨hbij, -, c, c', hc, -⟩ := GlobalTheory.T.ramifiedOperator_bijective_finite_translation_combination D k (p i) n q (χ₀ i) (hχ i) _ rfl ε S (β i) (Q i)
+  obtain ⟨hbij, -, c, c', hc, -⟩ := _root_.GlobalTheory.FinPl.ramBijective_holds D k (p i) n q (χ₀ i) (hχ i) _ rfl ε S (β i) (Q i)
   have hT : ∀ φ, sOp (β i) (Q i) q (resChar (χ₀ i) (hχ i) q) ε φ = AllBij.act (Finsupp.mapDomain (β i).gl c) φ :=
     fun φ => (hc φ).trans (AllBij.sum_rep_eq _ _ _)
   have hC := AllBij.mapDomain_mem _ (AllBij.gl_mem (β i)) c
@@ -169,7 +170,7 @@ theorem pt_over {D : D7} {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [Top
   have hrep := hSh.rep j hj f (hfV _)
   have hpl : Places o.p o.I (· ∈ v.tP) :=
     ⟨hSh.pre.nodup, hSh.pre.all, hSh.pre.inj, hSh.pre.tP, fun i => (hSh.pre.char i).2⟩
-  have hAC := (GlobalTheory.T.dataAsCombinationsAtSplitPlaces_proof D k ι o.p o.I (· ∈ v.tP) hpl (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank) c.ψ hstd
+  have hAC := (_root_.GlobalTheory.FinPl.allComb D k ι o.p o.I (· ∈ v.tP) hpl (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank) c.ψ hstd
     (c.X j) (c.X (j + 1)) (o.β j) (o.β (j + 1)) (c.x j).L (c.x (j + 1)).L hxS.sd hxT.sd
     (fun i => phiOne (o.Q j i) (o.Q (j + 1) i))).2.2
   have hdG : CombAt (fun x => ¬ x ∈ v.tP) (v.dG j) :=
@@ -206,7 +207,7 @@ theorem GlobalTheory.SeeSaw.liftS_of_exact : ∀ (D : D7) (c : Comm D) (k : Type
     · rw [← hlift]
       exact (GlobalTheory.SeeSaw.LiftSumProof.liftSum D c.ψ c.θ hc.inf _ _ (c.x j) (c.x (j + 1)) hxS hxT _ hk P).2.1 φ' h'.1
     · obtain ⟨f₀, hf₀⟩ := hOv i
-      obtain ⟨c₀, -, H⟩ := GlobalTheory.T.ramifiedThetaLift_commutes_splitPlace_operators D k (o.p i) (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank) o.q (o.χ i) (o.hχ i) c.ψ
+      obtain ⟨c₀, -, H⟩ := _root_.GlobalTheory.FinPl.lift_sOp_comm D k (o.p i) (Fin (c.X (j + 1)).rank) (Fin (c.X j).rank) o.q (o.χ i) (o.hχ i) c.ψ
         (c.X j) (c.X (j + 1)) hxS.cpt (c.x j).vol μ μ (t.kom j) hW (hU i) (hU i) (o.β j i) (o.β (j + 1) i) (o.Q j i)
         (o.Q (j + 1) i)
       exact (H _ _ f₀ F hf₀ φ' (h'.2 i)).1

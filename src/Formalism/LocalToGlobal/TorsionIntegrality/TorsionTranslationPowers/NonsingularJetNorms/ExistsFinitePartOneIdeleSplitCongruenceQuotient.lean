@@ -4,51 +4,10 @@ public import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPower
 public import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.EllipticOnePole
 public import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.SigmaLogDeriv2
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -150,7 +109,7 @@ theorem collinear (z w : ℂ) (hz : z ∉ L.lattice) (hw : w ∉ L.lattice) (hp 
     ring
   have hu := ((hasDerivAt_P L (z + w) hp).comp_add_const z w).unique (hg.congr_of_eventuallyEq hev)
   beta_reduce at hu
-  simp only [Pi.div_apply, Pi.mul_apply, Pi.sub_apply] at hu
+  simp only [Pi.div_apply] at hu
   have hF : (L.derivWeierstrassP z - L.derivWeierstrassP w) / (L.weierstrassP z - L.weierstrassP w) * (L.weierstrassP z - L.weierstrassP w) = L.derivWeierstrassP z - L.derivWeierstrassP w := div_mul_cancel₀ _ hne
   have hFz : ((6 * L.weierstrassP z ^ 2 - L.g₂ / 2) * (L.weierstrassP z - L.weierstrassP w) - (L.derivWeierstrassP z - L.derivWeierstrassP w) * L.derivWeierstrassP z) / (L.weierstrassP z - L.weierstrassP w) ^ 2 * (L.weierstrassP z - L.weierstrassP w) ^ 2 = (6 * L.weierstrassP z ^ 2 - L.g₂ / 2) * (L.weierstrassP z - L.weierstrassP w) - (L.derivWeierstrassP z - L.derivWeierstrassP w) * L.derivWeierstrassP z :=
     div_mul_cancel₀ _ (pow_ne_zero 2 hne)
@@ -198,7 +157,7 @@ theorem nonsing (t : ℂ) (ht : t ∉ L.lattice) :
   haveI : (curveL l L ι).IsElliptic := ⟨(disc_ne l L ι).isUnit⟩
   rw [← WeierstrassCurve.Affine.equation_iff_nonsingular, WeierstrassCurve.Affine.equation_iff]
   have h := congrArg ι (L.derivWeierstrassP_sq t ht)
-  simp only [map_sub, map_mul, map_pow, map_ofNat, map_add (f := _)] at h
+  simp only [map_sub, map_mul, map_pow, map_ofNat] at h
   simp only [curveL, Formalism.L2.Th1.A.shortW]
   linear_combination (1 / 4 : ℂ_[l]) * h
 
@@ -222,7 +181,7 @@ theorem ptOf_add_lattice (t ω : ℂ) (hω : ω ∈ L.lattice) : ptOf l L ι (t 
   by_cases ht : t ∈ L.lattice
   · rw [ptOf_lattice l L ι t ht, ptOf_lattice l L ι (t + ω) (h3.mpr ht)]
   · rw [ptOf_some l L ι t ht, ptOf_some l L ι (t + ω) (fun h => ht (h3.mp h))]
-    simp only [WeierstrassCurve.Affine.Point.some.injEq, h1, h2, and_self]
+    simp only [h1, h2]
 
 theorem ptOf_neg (t : ℂ) : ptOf l L ι (-t) = -ptOf l L ι t := by
   by_cases ht : t ∈ L.lattice

@@ -3,9 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
 public import Mathlib.RingTheory.AdicCompletion.Noetherian
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCoefficientRingFiniteExtensionPadicStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing.DirichletPrimeToLPartMulLPowerPart
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCoefficientRingFiniteExtensionPadic
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRepDefinedOverFiniteExtension
+public import ReciprocityTheory.GaloisValuations.ArithOfA
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosurePadicInt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -47,7 +49,6 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Baire.LocallyCompactRegular
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
-public import ReciprocityTheory.GaloisValuations.ArithOfA
 
 @[expose] public section
 
@@ -244,7 +245,7 @@ theorem integral_after_scaling : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field
     hK₁E (le_sup_right (a := K₀) (IntermediateField.subset_adjoin _ _ ⟨p, rfl⟩))
   have hOE : ∀ y ∈ c.O, y ∈ E := fun y hy =>
     hK₁E (le_sup_left (b := IntermediateField.adjoin ℚ_[l] (Set.range f)) (hK₀ y hy))
-  obtain ⟨c', hc'⟩ := GlobalTheory.T.exists_coefficientRing_finiteExtension_padic l E hEfd
+  obtain ⟨c', hc'⟩ := _root_.GlobalTheory.CoefJoin.coef_of_finite l E hEfd
 
   obtain ⟨C, hC⟩ := (isCompact_univ.image ((mem_Z1_iff_cocycle _ _).1 hz).1).isBounded.exists_norm_le
   let M : ℝ := max C 0 + ∑ p, ‖f p‖

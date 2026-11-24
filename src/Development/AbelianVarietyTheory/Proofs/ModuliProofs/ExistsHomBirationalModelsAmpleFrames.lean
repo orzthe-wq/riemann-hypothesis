@@ -12,11 +12,13 @@ public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCanc
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabMapIdOfCommonGeneric
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSiegelObjectOfDescendedData
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueLiftOfDensePart
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoOfDensePartOfIsIntegral
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoStalkMapOfFlatOfSurjectiveOnStalks
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LineBundleIsoOfAmpleDeterminantFramesStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LineBundleIsoOfAmpleDeterminantFrames
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LocallyQuasiFiniteOfTrivialOnFibres
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ThetaLevelObjectDescendsFgSubfield
+public import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMemIrreducibleComponentsOfFinite
+public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.ExistsSecNonzeroLocusEqOfLbIso
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoOfDensePartOfIsIntegral
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoStalkMapOfFlatOfSurjectiveOnStalks
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,8 +66,6 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRin
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AuxiliaryInertOddPrime
-public import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMemIrreducibleComponentsOfFinite
-public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.ExistsSecNonzeroLocusEqOfLbIso
 
 @[expose] public section
 
@@ -318,7 +318,7 @@ theorem exists_hom_of_ampFrames : GlobalTheory.LN.HomExtSt → ∀ (E : Type) [F
     tW _ _ a₁ a₂ inferInstance
   obtain ⟨n₂', -⟩ := ObjMaps.exists_sab_comp n₂ b
   rw [Category.id_comp] at n₂'
-  have hA := GlobalTheory.T.lineBundleIso_of_ampleDeterminantFrames E H _ Z₁ Z₂ ((p₁ ≫ s₁) ≫ z₀) _ t₁ t₂ p₁ p₂ n₁ n₂' N A₁ A₂ hZ inferInstance
+  have hA := _root_.GlobalTheory.FrameCmp.lbIso_of_ampFrames E H _ Z₁ Z₂ ((p₁ ≫ s₁) ≫ z₀) _ t₁ t₂ p₁ p₂ n₁ n₂' N A₁ A₂ hZ inferInstance
     (genericPoints_subset_abLocus u a₁.cart.1) hr hs
   have : IsFinite p₁ := isFinite_fst s₁ s₂ f.fromNormalization A₁.isLB A₂.isLB A₂.ample hA
   obtain ⟨h, ⟨h₁, -⟩, -⟩ := existsUnique_lift_of_densePart Z₁ W Z₁ f.normalization j hn inferInstance inferInstance

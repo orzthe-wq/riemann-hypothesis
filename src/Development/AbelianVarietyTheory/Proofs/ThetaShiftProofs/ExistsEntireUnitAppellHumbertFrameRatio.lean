@@ -164,7 +164,6 @@ theorem exists_entire_unit_automorphy :
     simp only [hermForm]
     generalize χ l * Complex.exp _ = c at n4 ⊢
     generalize valAt' _ _ (w.s (ix φ j i)).val = a at n3 ⊢
-    beta_reduce
     field_simp
 
 end GlobalTheory.FrameCompare

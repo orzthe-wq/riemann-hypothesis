@@ -1,8 +1,8 @@
 module
 
 public import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTotalMassLeGenericMassStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermOverRelationUniquenessStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTotalMassLeGenericMass
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermOverRelationUniqueness
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -82,7 +82,7 @@ theorem mass_pairingClass_bounds : ∀ {F : Type} [Field F] [ValuativeRel F] [To
 
   have hCl : ∀ (d' : LocNG.Datum P) (t' : Term V M r), LocNG.IsTermOver P d' t' →
       (H.Zhat t'.f t'.f' ∈ c1 ↔ Cl t') := fun d' t' h' =>
-    GlobalTheory.T.term_over_relation_uniqueness M hM H r k P hdim hrel d d' t t' hdt h' Y0 c1 hc1 ht
+    _root_.GlobalTheory.HL.PairingClass.mem_class_iff M hM H r k P hdim hrel d d' t t' hdt h' Y0 c1 hc1 ht
 
   have hg' : g = ∑' d' : R.RD, ENNReal.ofReal (LocNG.Datum.wt d0 d'.1) *
       ∑' t' : {t' // t' ∈ R.RT d'.1 ∧ ¬ LocNG.BBne (H := H) t' ∧ Cl t'},
@@ -96,7 +96,7 @@ theorem mass_pairingClass_bounds : ∀ {F : Type} [Field F] [ValuativeRel F] [To
       (fun t' ht' => and_congr_right fun _ => (hCl d'.1 t' ((R.hRT d'.1).1 ht')).symm)
     convert e.symm
   obtain ⟨hne, hle, hprime, hpos⟩ :=
-    GlobalTheory.T.hermitian_total_mass_le_generic_mass M hM H r k P hk hdim hrel R d0 d t hdt Cl (fun _ => Iff.rfl) g hg'
+    _root_.GlobalTheory.HL.AbsGenMass.total_le_generic M hM H r k P hk hdim hrel R d0 d t hdt Cl (fun _ => Iff.rfl) g hg'
   exact ⟨pos_iff_ne_zero.mpr (hpos ⟨t0, ht0⟩), hne, hprime, hle⟩
 
 end GlobalTheory

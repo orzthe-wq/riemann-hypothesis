@@ -669,7 +669,7 @@ theorem min_parD {y : ℚ} (hy : y ∈ entries ((Γ).parD D.R.m D.R.m)) :
         have := num_b_le D C τ (i := l) (j := D.R.m) h1 (by rw [← hm]; exact h2) le_rfl
         linarith
     · obtain ⟨l, hl, hy⟩ := mem_biUnion.1 hy
-      simp only [mem_Icc, hm] at hl
+      simp only [mem_Icc] at hl
       have e1 := (blockM_bd D C τ hy).1
       have e2 : ((Γ).e l : ℚ) ≤ (Γ).e D.R.m := by
         rcases hl.2.eq_or_lt with h | h

@@ -152,9 +152,9 @@ theorem indicator_bi {H : Type} [Group H] (K : Subgroup H) :
   have : k * g * k' ∈ K ↔ g ∈ K := by
     rw [K.mul_mem_cancel_right hk', K.mul_mem_cancel_left hk]
   by_cases hg : g ∈ K
-  · simp [Set.indicator_apply, hg, this.2 hg]
+  · simp [hg, this.2 hg]
   · have h2 : k * g * k' ∉ K := fun h => hg (this.1 h)
-    simp [Set.indicator_apply, hg, h2]
+    simp [hg, h2]
 
 end HeckeTraceExample
 

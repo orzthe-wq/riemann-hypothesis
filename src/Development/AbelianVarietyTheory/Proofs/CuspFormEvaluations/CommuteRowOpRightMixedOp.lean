@@ -159,14 +159,12 @@ theorem commute_colOp_colOp [Fintype I] [Fintype I'] (z : I × J → σ) (y : I'
 theorem commute_rowOp_rowOp [Fintype J] [Fintype J'] (z : I × J → σ) (y : I' × J' → σ)
     (hzy : ∀ u w, z u ≠ y w) (a b : I) (c d : I') :
     Commute (rowOp K z a b) (rowOp K y c d) :=
-  Commute.sum_left _ _ _ fun _ _ => Commute.sum_right _ _ _ fun _ _ =>
-    commute_polar (hzy _ _) (hzy _ _).symm
+  commute_colOp_colOp (z ∘ Prod.swap) (y ∘ Prod.swap) (fun _ _ => hzy _ _) a b c d
 
 theorem commute_rowOp_colOp [Fintype J] [Fintype I'] (z : I × J → σ) (y : I' × J' → σ)
     (hzy : ∀ u w, z u ≠ y w) (a b : I) (k l : J') :
     Commute (rowOp K z a b) (colOp K y k l) :=
-  Commute.sum_left _ _ _ fun _ _ => Commute.sum_right _ _ _ fun _ _ =>
-    commute_polar (hzy _ _) (hzy _ _).symm
+  commute_colOp_colOp (z ∘ Prod.swap) y (fun _ _ => hzy _ _) a b k l
 
 theorem commute_rowOp_colOp_self [Fintype I] [Fintype J] (z : I × J → σ)
     (hz : Function.Injective z) (a b : I) (k l : J) :

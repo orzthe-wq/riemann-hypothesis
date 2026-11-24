@@ -70,27 +70,13 @@ theorem pureTensorL_one {ι X : Type} (A : ι → (X → ℂ) → (X → ℂ)) (
   rw [this, pureTensorL, Module.Basis.constr_basis]
   simp [opPow]
 
-theorem jm_mul_jm {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  cases ε a <;> simp
-
-theorem jm_herm {n : ℕ} (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_conjTranspose]
-  congr 1
-  funext a
-  cases h : ε a <;> simp [h]
-
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 theorem isCartanInv_cart (M : Formalism.IndefR.Mult.DSModel V S) (τ : D.what₂.Tau) : IsCartanInv (gramAt D V τ) (cart M τ) := by
   have hu := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
   have h1 := Matrix.mul_nonsing_inv _ hu
   have h2 := Matrix.nonsing_inv_mul _ hu
-  have hJ := jm_mul_jm (M.ε τ)
+  have hJ := _root_.Formalism.REAL.Jm_mul_self (M.ε τ)
   have c1 : ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, M.fr τ * ((M.fr τ)⁻¹ * X) = X := fun X => by
     rw [← Matrix.mul_assoc, h1, Matrix.one_mul]
   have cJ : ∀ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, Formalism.REAL.Jm (M.ε τ) * (Formalism.REAL.Jm (M.ε τ) * X) = X := fun X => by
@@ -101,7 +87,7 @@ theorem isCartanInv_cart (M : Formalism.IndefR.Mult.DSModel V S) (τ : D.what₂
   unfold cart
   refine ⟨?_, ?_, ?_⟩
   · simp only [Matrix.mul_assoc, c1, cJ, h2]
-  · simp only [Matrix.conjTranspose_mul, jm_herm, Matrix.mul_assoc, c1, cJ, c2]
+  · simp only [Matrix.conjTranspose_mul, _root_.Formalism.REAL.Jm_conjTranspose, Matrix.mul_assoc, c1, cJ, c2]
   · simp only [Matrix.mul_assoc, c1, cJ]
     exact Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 (M.fr_unit τ))
 

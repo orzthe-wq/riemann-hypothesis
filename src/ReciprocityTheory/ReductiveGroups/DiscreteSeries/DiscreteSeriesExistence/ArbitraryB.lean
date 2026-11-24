@@ -3,49 +3,13 @@ module
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SigLamLeOfKTypes
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
 import Mathlib.Algebra.Order.Archimedean.Real.Hom
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.ArbitraryA
 public import Mathlib.Analysis.Calculus.BumpFunction.Basic
 public import Mathlib.Analysis.Calculus.ContDiff.Convolution
+import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSchur
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.FormulaFA
 
 @[expose] public section
 
@@ -118,7 +82,7 @@ theorem arb_locInt (hσ : IsURepOn (UJset ε) σ) (w : H) :
   intro x
   refine ⟨Metric.closedBall x 1, Metric.closedBall_mem_nhds x one_pos, ?_⟩
   rw [hemb.integrableOn_map_iff]
-  exact (arb_orbit_cont hσ w).continuousOn.integrableOn_compact
+  exact (_root_.ReciprocityTheory.ChartRestriction.DS.continuous_orbitA hσ w).continuousOn.integrableOn_compact
     ((Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isCompact_preimage (isCompact_closedBall x 1))
 
 theorem arb_param_integral {E P V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [MeasurableSpace E]
@@ -167,7 +131,7 @@ theorem opConv_smooth (hσ : IsURepOn (UJset ε) σ) (w : H) {α : Matrix (Fin n
       ∂((Formalism.REAL.muG ε).map (fun y : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat y)),
     Metric.isOpen_ball, Metric.mem_ball_self one_pos, key.contDiffOn, ?_⟩
   · intro g hg hgU
-    obtain ⟨γ, rfl⟩ := arb_exists_umat (ε := ε) hgU
+    obtain ⟨γ, rfl⟩ := _root_.ReciprocityTheory.ChartRestriction.DS.ffa_UJ_lift (ε := ε) hgU
     beta_reduce
     rw [opConv_translate hσ w hα.continuous hαc γ, (Formalism.REAL.isClosedEmbeddingMatrix n ε).1.integral_map]
     congr 1
@@ -218,7 +182,7 @@ theorem exists_good_moll (hσ : IsURepOn (UJset ε) σ) (S : Submodule ℂ H) [F
       _ ≤ (1 / 2) * ‖(⟨w, hw⟩ : S)‖ := mul_le_mul_of_nonneg_right h2.le (norm_nonneg _)
       _ = ‖w‖ / 2 := by rw [show ‖(⟨w, hw⟩ : S)‖ = ‖w‖ from rfl]; ring
   have hbc : Continuous (fun y : Formalism.REAL.UJ ε => arbB δ (Formalism.MainNotions.S.umat y)) :=
-    (contDiff_arbB δ).continuous.comp arb_umat_cont
+    (contDiff_arbB δ).continuous.comp _root_.Formalism.MainNotions.BridgeCSchur.continuous_umat
   have hbs : HasCompactSupport (fun y : Formalism.REAL.UJ ε => arbB δ (Formalism.MainNotions.S.umat y)) :=
     (hasCompactSupport_arbB hδ).comp_isClosedEmbedding (Formalism.REAL.isClosedEmbeddingMatrix n ε).1
   set c : ℝ := ∫ y, arbB δ (Formalism.MainNotions.S.umat y) ∂(Formalism.REAL.muG ε) with hc
@@ -244,7 +208,7 @@ theorem exists_good_moll (hσ : IsURepOn (UJset ε) σ) (S : Submodule ℂ H) [F
       (RCLike.real_smul_eq_coe_smul (K := ℂ) _ _).symm
     have hi2 : Integrable (fun y : Formalism.REAL.UJ ε => (arbB δ (Formalism.MainNotions.S.umat y) / c) • σ (Formalism.MainNotions.S.umat y) w)
         (Formalism.REAL.muG ε) :=
-      (hφc.smul (arb_orbit_cont hσ w)).integrable_of_hasCompactSupport hφs.smul_right
+      (hφc.smul (_root_.ReciprocityTheory.ChartRestriction.DS.continuous_orbitA hσ w)).integrable_of_hasCompactSupport hφs.smul_right
     have hi3 : Integrable (fun y : Formalism.REAL.UJ ε => (arbB δ (Formalism.MainNotions.S.umat y) / c) • w) (Formalism.REAL.muG ε) :=
       hbi.smul_const w
     have e : opConv ε σ (fun g => ((arbB δ g / c : ℝ) : ℂ)) w - w =

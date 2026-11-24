@@ -56,7 +56,7 @@ variable {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Modul
 
 theorem lretr_den (A : Set V) (y : V) (hy : y ∈ Submodule.span E A) :
     ∃ d : 𝓞 E, d ≠ 0 ∧ d • y ∈ Submodule.span (𝓞 E) A := by
-  first | exact Bl.general_b_fact_right_alt_form.goal1 .. | (apply Bl.general_b_fact_right_alt_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_alt_form.goal1 <;> assumption)
+  first | (apply Bl.general_b_fact_right_alt_form.goal1 <;> assumption)
 
 theorem lretr_cancel (d : 𝓞 E) (hd : d ≠ 0) (x y : V) (h : d • x = d • y) : x = y := by
   have hdE : algebraMap (𝓞 E) E d ≠ 0 := by
@@ -85,7 +85,7 @@ theorem l_retr : IntegralRetraction := by
   have hK : Disjoint K X := by
     rw [Submodule.disjoint_def]
     intro x hxK hxX
-    obtain ⟨d, hd, hdx⟩ := lretr_den (N : Set S.V) x hxK
+    obtain ⟨d, hd, hdx⟩ := _root_.Bl.general_b_fact_right_alt_form.goal1 (N : Set S.V) x hxK
     have hdxN : d • x ∈ N := by
       simpa only [Submodule.span_eq] using hdx
     obtain ⟨n, hn, he⟩ := Submodule.mem_map.mp hdxN

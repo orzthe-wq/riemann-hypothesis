@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -53,27 +54,14 @@ open MonObj
 
 namespace GlobalTheory.Poinc.DeepLab
 
-theorem epi_spMap_field {K L : Type} [Field K] [Field L] (f : K →+* L) : Epi (spMap f) := by
-  letI := f.toAlgebra
-  haveI : Flat (spMap f) := by
-    rw [spMap, HasRingHomProperty.Spec_iff (P := @Flat)]
-    exact (show Module.Flat K L from inferInstance)
-  haveI : Surjective (spMap f) := ⟨fun z => ⟨⟨⊥, Ideal.isPrime_bot⟩, Subsingleton.elim _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective _
-
-theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+alias spMap_comp := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp
 
 section Push
 variable {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S} {φ : A'.left ⟶ A.left}
 
-theorem pushHom_injective (h : IsGrpPullback A' A f φ) (T : Over S') : Function.Injective (pushHom h T) :=
-  fun _ _ e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w]))
+alias pushHom_injective := _root_.GlobalTheory.SiegelPull.push_injective
 
-theorem pushHom_surjective (h : IsGrpPullback A' A f φ) (T : Over S') : Function.Surjective (pushHom h T) :=
-  fun x₀ => ⟨Over.homMk (h.1.lift x₀.left T.hom (Over.w x₀)) (h.1.lift_snd _ _ _),
-    Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩
+alias pushHom_surjective := _root_.GlobalTheory.SiegelPull.push_surjective
 
 end Push
 
@@ -86,9 +74,7 @@ theorem exists_lab {Γ₁ Γ₂ H : Type} [AddCommGroup Γ₁] [AddCommGroup Γ�
   refine ⟨AddMonoidHom.mk' l fun a b => (hu (a + b) _ ?_).symm, hl⟩
   simp only [ofAdd_add, map_mul, hl]
 
-theorem nsmul_self_eq_zero {κ : Type} (L : ℕ) (a : κ → ZMod L) : L • a = 0 := by
-  funext i
-  rw [Pi.smul_apply, nsmul_eq_mul, ZMod.natCast_self, zero_mul, Pi.zero_apply]
+alias nsmul_self_eq_zero := _root_.GlobalTheory.ThetaReal.nsmul_self
 
 theorem map_pow_self {κ H : Type} [Group H] (L : ℕ) (p : Multiplicative (κ → ZMod L) →* H) (a : κ → ZMod L) :
     p (Multiplicative.ofAdd a) ^ L = 1 := by
@@ -132,7 +118,7 @@ theorem exists_lab_same : ∀ {o₁ Ω₁ o₂ Ω₂ : Type} [CommRing o₁] [Fi
   obtain ⟨lab, hlab⟩ := exists_lab _ _ _ uniq hsL
   have hlabl : ∀ a : S₁.Gam, x₀ ≫ (ρ₂.pt (lab a)).left = x₀ ≫ (σ (Multiplicative.ofAdd a)).left := fun a =>
     congrArg (fun q => q.left) (hlab a)
-  haveI := epi_spMap_field (algebraMap Ω₂ K)
+  haveI := _root_.GlobalTheory.ThetaDescent.epi_spMap (algebraMap Ω₂ K)
   refine ⟨lab, ?_, ?_⟩
   · let P₀ := GlobalTheory.StrictPull.polPull ρ₂.P (spMap S₂.R.val.toRingHom)
     refine ⟨P₀, pullback.fst ρ₂.P.A.hom (spMap S₂.R.val.toRingHom) ≫ ψ,

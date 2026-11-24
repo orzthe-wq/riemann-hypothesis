@@ -311,7 +311,7 @@ theorem lat_translate_of_prime {Q : Finset (Pl D.host.E)} (hS : SplitSet Q) (hl 
   obtain ⟨c, h1, h2⟩ := GlobalTheory.LatCmpQ.latAt_translate_bounded D ρ hρ i j b Q h hQ hS hsupp
   have hN0 : normProd Q ^ c ≠ 0 := pow_ne_zero _ (GlobalTheory.LatTranslate.normProd_ne_zero Q)
   obtain ⟨a, ha⟩ := GlobalTheory.NabScale.nabAtr_smul_pow_mem _ _ _ _ (labLL0 D) (ρ.B i j b).w.lam _ _ (normProd Q ^ c) hN0
-    (by first | exact GlobalTheory.LatFull.latAt_isFullLattice D ρ hρ i j b h | exact (GlobalTheory.LatFull.latAt_isFullLattice D ρ hρ i j b h).toIsLattice) (by first | exact GlobalTheory.LatFull.latAt_isFullLattice D ρ hρ i j b (h * hQ) | exact (GlobalTheory.LatFull.latAt_isFullLattice D ρ hρ i j b (h * hQ)).toIsLattice) h1 h2
+    (by first | exact GlobalTheory.LatFull.latAt_isFullLattice D ρ hρ i j b h) (by first | exact GlobalTheory.LatFull.latAt_isFullLattice D ρ hρ i j b (h * hQ)) h1 h2
   have hu : ((normProd Q : ℕ) : ℂ)⁻¹ ∈ (ρ.eO i b).range := by
     have hcop : Nat.Coprime (D.ntw.l i) (normProd Q) :=
       Nat.Coprime.prod_right fun P hP => GlobalTheory.NormUnit.coprime_absNorm _ (D.ntw.lPrime i).out P (hl P hP)

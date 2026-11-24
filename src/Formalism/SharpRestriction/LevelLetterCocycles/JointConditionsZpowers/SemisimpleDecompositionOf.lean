@@ -160,11 +160,6 @@ theorem semisimple_decomposition_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (G
     intro d
     first
     | exact Matrix.charpoly_diagonal d
-    | (unfold Matrix.charpoly
-       rw [show Matrix.charmatrix (Matrix.diagonal d) = Matrix.diagonal fun c => X - C (d c) from by
-         ext a b
-         by_cases h : a = b <;> simp [Matrix.charmatrix_apply, Matrix.diagonal_apply, h]]
-       exact Matrix.det_diagonal)
   obtain ⟨Pm, hPm⟩ := hBN (KK D.nd i) (D.R.r + D.R.t) (mapRep (toK D.nd i) (r π)) (rhoChiK D i (ρ π))
     hSS1 hSS (by
       intro g

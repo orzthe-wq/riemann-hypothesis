@@ -56,14 +56,6 @@ def SExt.none : SExt := fun _ _ _ _ _ _ _ _ _ _ _ => PUnit
 
 def SXE (E : SExt) : SPosition := fun K B f T w Z Wt p0 r col => Σ a : SX K B f T w Z Wt p0 r col, E K B f T w Z Wt p0 r col a
 
-structure Prm (hL : GlobalTheory.Published.LocalLanglandsGL) : Type 2 where
-  R : RPosition
-  N : NExt hL
-  S : SExt
-  Γ : GeoP
-
-variable {hL : GlobalTheory.Published.LocalLanglandsGL}
-
 structure KPin {𝒮 : Slots} {K : Ctx} (q : WPt 𝒮 K) (t : Formalism.L2.Ker.KerEntTied q.O.ex) : Prop where
   std : TC.StdKer q.w.I q.w.l q.Z t
   O : t.O = q.x.ker.O

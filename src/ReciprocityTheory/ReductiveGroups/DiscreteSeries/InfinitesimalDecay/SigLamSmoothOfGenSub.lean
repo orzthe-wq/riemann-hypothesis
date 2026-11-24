@@ -4,44 +4,7 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficien
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DatumEmbeddingMemHlam
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.InfinitesimalDecay.DecBoundJ
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.MultiplicityOne.MultiplicityDescent.JKFinA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.IdThmA
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.KFacts
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.FormulaFA
@@ -108,8 +71,7 @@ theorem kfin_integral (hσ : IsURepOn (UJset ε) σ) (u : H) {α : C(S7.KG ε, �
       show ∫ κ, ∑ i, a i k₀⁻¹ • (β i κ • σ (S7.toMK κ) u) ∂(S7.muK ε) = _
       rw [integral_finsetSum Finset.univ (f := fun i κ => a i k₀⁻¹ • (β i κ • σ (S7.toMK κ) u))
         (fun i _ => (hint (β i)).smul (a i k₀⁻¹))]
-      refine Finset.sum_congr rfl fun i _ => ?_
-      rw [integral_smul]
+      simp only [integral_smul]
     rw [e1, e2, e3]
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
   set S : Submodule ℂ H := Submodule.span ℂ (Set.range fun k : S7.KG ε => σ (S7.toMK k) x)
@@ -134,13 +96,11 @@ theorem dSW_integral (hσ : IsURepOn (UJset ε) σ)
     (α : C(S7.KG ε, ℂ)) (hx : IsSmoothVecU ε σ (∫ k, α k • σ (S7.toMK k) u ∂(S7.muK ε))) :
     dSW σ w (∫ k, α k • σ (S7.toMK k) u ∂(S7.muK ε)) =
       ∫ k, α k • dSW σ w (σ (S7.toMK k) u) ∂(S7.muK ε) := by
-  have := S7.compactSpace_KG ε
   have hint1 : Integrable (fun k => α k • σ (S7.toMK k) u) (S7.muK ε) :=
     intK (α.continuous.smul (orbitK_continuous hσ u))
   have hint2 : Integrable (fun k => α k • dSW σ w (σ (S7.toMK k) u)) (S7.muK ε) :=
     intK (α.continuous.smul (continuous_dSW_orbit hσ hw hu))
   refine sub_eq_zero.1 (hsep _ fun y hy => ?_)
-  have hwr : ∀ X ∈ w.reverse, inG ε X := fun X hX => hw X (List.mem_reverse.1 hX)
   rw [inner_sub_right, sub_eq_zero, inner_dSW hσ hw hy hx, ← integral_inner hint1, ← integral_inner hint2,
     ← integral_const_mul]
   refine integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)

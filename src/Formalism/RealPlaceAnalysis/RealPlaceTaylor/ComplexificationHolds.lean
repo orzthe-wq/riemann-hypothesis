@@ -74,7 +74,7 @@ lemma f1auxiliary_hs_eq {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : hs g = (tra
   conv_lhs => rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [Complex.sq_norm, Complex.normSq_apply]
-  simp [Complex.star_def, Complex.mul_re]
+  simp [Complex.mul_re]
 
 lemma continuous_hs_real_place_taylor {n : ℕ} : Continuous (hs : Matrix (Fin n) (Fin n) ℂ → ℝ) := by
   unfold hs

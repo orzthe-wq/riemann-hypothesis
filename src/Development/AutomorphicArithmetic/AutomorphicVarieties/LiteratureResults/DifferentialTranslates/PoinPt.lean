@@ -99,11 +99,11 @@ theorem poinPt : PoinPt := by
         Fin.removeNth i.succ (Matrix.vecCons d v) = Matrix.vecCons d (Fin.removeNth i v) := by
       intro i
       funext j
-      cases j using Fin.cases <;> simp [Fin.removeNth_apply, Fin.succ_succAbove_zero, Fin.succ_succAbove_succ]
+      cases j using Fin.cases <;> simp [Fin.removeNth_apply, Fin.succ_succAbove_succ]
     have h0 := congrArg (fun f => f (Matrix.vecCons d v)) hd
     simp only [extDeriv, ← hAdef, alternatizeUncurryFin_apply] at h0
     rw [Fin.sum_univ_succ] at h0
-    simp only [hrm, Fin.removeNth_zero, Matrix.tail_cons, Matrix.cons_val_zero, Matrix.cons_val_succ,
+    simp only [hrm, Fin.removeNth_zero, Matrix.cons_val_zero, Matrix.cons_val_succ,
       Fin.val_zero, pow_zero, one_smul, Fin.val_succ, pow_succ, mul_neg_one, neg_smul,
       Finset.sum_neg_distrib] at h0
     have ht : Fin.tail (Matrix.vecCons d v) = v := by

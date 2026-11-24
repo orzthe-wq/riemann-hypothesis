@@ -51,21 +51,12 @@ open Matrix
 
 namespace GlobalTheory.CharDotKill
 
-theorem pow_near_one {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
-  first
-  | exact @_root_.GlobalTheory.KeyLemmaTwo.main
-  | exact _root_.GlobalTheory.KeyLemmaTwo.main
-  | (apply _root_.GlobalTheory.KeyLemmaTwo.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.KeyLemmaTwo.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.KeyLemmaTwo.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.KeyLemmaTwo.main ..)
-
 theorem exists_open_ker {K : Type} [AddCommGroup K] [TopologicalSpace K] [NonarchimedeanAddGroup K]
     (ψ : AddChar K ℂ) (hψ : Continuous ψ) : ∃ U : OpenAddSubgroup K, ∀ t ∈ U, ψ t = 1 := by
   have hV : {t : K | ‖ψ t - 1‖ < 1 / 2} ∈ nhds (0 : K) :=
     (isOpen_lt (hψ.sub continuous_const).norm continuous_const).mem_nhds (by simp)
   obtain ⟨V, hV⟩ := NonarchimedeanAddGroup.is_nonarchimedean _ hV
-  refine ⟨V, fun t ht => pow_near_one fun n => ?_⟩
+  refine ⟨V, fun t ht => _root_.GlobalTheory.KeyLemmaTwo.main fun n => ?_⟩
   rw [← AddChar.map_nsmul_eq_pow]
   exact hV (V.toAddSubgroup.nsmul_mem ht n)
 

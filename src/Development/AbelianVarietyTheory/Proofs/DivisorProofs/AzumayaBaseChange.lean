@@ -119,7 +119,7 @@ lemma mulLeftRight_envBaseChange (x : S ⊗[A] (Λ ⊗[A] Λᵐᵒᵖ)) :
       | tmul t y =>
         simp [envBaseChange, opBaseChange, endBaseChangeMap_tmul,
           AlgebraTensorModule.distribBaseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul,
-          smul_tmul', mul_comm, mul_left_comm]
+          smul_tmul']
 
 theorem isAzumaya_baseChange [IsAzumaya A Λ] [Module.Free A Λ] :
     IsAzumaya S (S ⊗[A] Λ) := by

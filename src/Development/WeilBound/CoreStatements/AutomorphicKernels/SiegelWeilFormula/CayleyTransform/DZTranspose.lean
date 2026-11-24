@@ -74,9 +74,9 @@ theorem dZ_transpose (a : ℂ) : (dZ n a)ᵀ = dZ n a := by
 theorem dZ_map_star (a : ℂ) : (dZ n a).map star = dZ n (star a) := by
   unfold dZ
   rw [Matrix.fromBlocks_map]
-  simp [mapStar_one]
+  simp
   ext i j
-  by_cases h : i = j <;> simp [h, Matrix.one_apply]
+  by_cases h : i = j <;> simp [h]
 
 theorem dZ_inv_mul {ζ : ℂ} (h : ζ ≠ 0) : dZ n ζ⁻¹ * dZ n ζ = 1 := by
   rw [dZ_mul, inv_mul_cancel₀ h, dZ_one]
@@ -92,13 +92,13 @@ theorem zeta_ne {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧
 theorem mid {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) :
     dZ n ζ⁻¹ * Qc n ε * dZ n (star ζ⁻¹) = ζ • JJ n := by
   rcases hζ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-  · simp [Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul]
-  · simp [Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul, smul_smul, Complex.inv_I]
+  · simp [Qc, JJ, dZ]
+  · simp [Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul, Complex.inv_I]
 
 theorem outer {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) :
     dZ n ζ * (ζ • JJ n) * dZ n (star ζ) = Qc n ε := by
   rcases hζ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-  · simp [Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul]
+  · simp [Qc, JJ, dZ]
   · simp [Qc, JJ, dZ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_smul, smul_smul]
 
 theorem key {ε : ℤˣ} {ζ : ℂ} (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) (g : M2 n) :
@@ -118,9 +118,9 @@ theorem conj_JJ (g : M2 n) : gᵀ * JJ n * g.map star = JJ n ↔ gᴴ * JJ n * g
   have hJ : (JJ n).map star = JJ n := by
     unfold JJ
     rw [Matrix.fromBlocks_map]
-    simp [mapStar_one]
+    simp
     ext i j
-    by_cases h : i = j <;> simp [h, Matrix.one_apply]
+    by_cases h : i = j <;> simp [h]
   have e : (gᵀ * JJ n * g.map star).map star = gᴴ * JJ n * g := by
     rw [mapStar_mul, mapStar_mul, hJ, key2]
     rfl

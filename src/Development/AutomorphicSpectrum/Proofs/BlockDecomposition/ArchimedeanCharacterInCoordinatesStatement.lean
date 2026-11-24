@@ -74,4 +74,4 @@ theorem _root_.GlobalTheory.T.archimedean_character_in_coordinates : ∀ (F E : 
       (Matrix.trace (B * gramR (Ainf F) σ J X))) =
     Complex.exp (2 * Real.pi * Complex.I * ((phaseM (fun w => ((ρ w a : ℝ) : ℂ) • J.map (τ w))
       (fun w => matC Θ B w) (tupC Θ X) : ℝ) : ℂ)) := by
-  first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.PhaseCoord.psiInf_phase | exact GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.PhaseCoord.psiInf_phase | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.PhaseCoord.psiInf_phase <;> assumption)
+  first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.PhaseCoord.psiInf_phase

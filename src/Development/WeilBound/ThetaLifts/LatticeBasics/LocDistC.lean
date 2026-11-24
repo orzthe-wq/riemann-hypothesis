@@ -83,7 +83,7 @@ theorem blk_comm (a : k) (b b' : Fin d → k) (hb : b = (a - 1) • b') :
   ext i j
   rw [← Matrix.mul_assoc]
   refine Fin.cases ?_ (fun j => ?_) j <;> simp only [mul_blk_zero, mul_blk_succ] <;>
-    refine Fin.cases ?_ (fun i => ?_) i <;> simp [blk, hsum, one_apply]
+    refine Fin.cases ?_ (fun i => ?_) i <;> simp [blk, hsum]
   ring
 
 def chE (X : Matrix (Fin (n + 1)) (Fin (d + 1)) k) : ((Fin (n + 1) → k) × (Fin d → k)) × Matrix (Fin n) (Fin d) k :=
@@ -112,8 +112,8 @@ theorem chE_unip (X : Matrix (Fin (n + 1)) (Fin (d + 1)) k) (hX : X 0 0 ≠ 0) (
     simpa [Matrix.vecMul, dotProduct] using congrFun (Matrix.vecMul_one f) j
   refine Prod.ext (Prod.ext ?_ ?_) ?_
   · ext i; simp [chE, mul_blk_zero]
-  · ext j; simp [chE, mul_blk_zero, mul_blk_succ, hsum, one_apply]; field_simp; ring
-  · ext i j; simp [chE, mul_blk_zero, mul_blk_succ, hsum, one_apply]; field_simp; ring
+  · ext j; simp [chE, mul_blk_zero, mul_blk_succ, hsum]; field_simp; ring
+  · ext i j; simp [chE, mul_blk_zero, mul_blk_succ, hsum]; field_simp; ring
 
 theorem chE_levi (X : Matrix (Fin (n + 1)) (Fin (d + 1)) k) (h : Matrix (Fin d) (Fin d) k) :
     chE (X * blk 1 0 h) = (((chE X).1.1, (chE X).1.2 ᵥ* h), (chE X).2 * h) := by

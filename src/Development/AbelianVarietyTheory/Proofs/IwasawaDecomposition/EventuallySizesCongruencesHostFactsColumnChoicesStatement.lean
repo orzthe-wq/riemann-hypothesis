@@ -48,4 +48,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 
 theorem _root_.GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices : EvLgG fun K B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt), 100 ≤ (w.D Z).R.r ∧ (∀ k, 2 * (w.D Z).R.r ≤ (w.D Z).host.g k) ∧ RootsLL (w.D Z) ∧ SphericalInertData.HypEFK (w.D Z) ∧ SphericalInertData.HypCM (w.D Z) ∧ (∀ j, 1 ≤ j → j ≤ (w.D Z).R.m → ((w.D Z).sp.V j).IsDefinite) ∧ ∃ w0, GlobalTheory.LamTie.PlacesOk (w.D Z).host (AbsolutelyIrreducibleSpan.q0 (w.D Z)) w0 := by
-  first | exact @GlobalTheory.HeightCounting.Up.sizes_host_at_record | exact GlobalTheory.HeightCounting.Up.sizes_host_at_record | (intros; apply GlobalTheory.HeightCounting.Up.sizes_host_at_record <;> assumption)
+  first | exact @GlobalTheory.HeightCounting.Up.sizes_host_at_record

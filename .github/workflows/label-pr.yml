@@ -54,7 +54,9 @@ jobs:
                 lake+="  $path"$'\n' ;;
             esac
             case "$path" in
-              src/Challenge.lean | comparator.json | export-targets.txt)
+              src/Challenge.lean | comparator.json | export-targets.txt | \
+              comparator/FormalConjecturesChallenge.lean | comparator/formal-conjectures.json | \
+              comparator/formal-conjectures-export-targets.txt)
                 challenge+="  $path"$'\n' ;;
             esac
             case "$path" in

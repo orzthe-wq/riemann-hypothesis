@@ -66,7 +66,7 @@ theorem matrix_exists_sub_mem_trace_orthogonal {ι : Type} [Fintype ι] [Decidab
       map_smul' := fun c A => rfl }
   have hin : ∀ A B : Matrix ι ι ℂ, inner ℂ (e A) (e B) = (Aᴴ * B).trace := by
     intro A B
-    simp only [e, LinearMap.coe_mk, AddHom.coe_mk, PiLp.inner_apply, Matrix.trace,
+    simp only [e, PiLp.inner_apply, Matrix.trace,
       Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Fintype.sum_prod_type]
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_

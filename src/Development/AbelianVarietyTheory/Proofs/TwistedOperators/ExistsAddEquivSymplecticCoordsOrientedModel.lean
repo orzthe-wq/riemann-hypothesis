@@ -61,33 +61,11 @@ namespace GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel
 
 variable {D : D7}
 
-theorem gram_det_ne_zero (S : HSp D) : S.gram.det ≠ 0 := by
-  intro h
-  obtain ⟨v, hv0, hv⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h
-  apply hv0
-  set x : S.V := ∑ j, v j • S.frame j with hxdef
-  have hfr : ∀ i, S.hT (S.frame i) x = 0 := by
-    intro i
-    have := congrFun hv i
-    simp only [Matrix.mulVec, dotProduct, Pi.zero_apply] at this
-
-    rw [hxdef, map_sum]
-    simp only [map_smul, smul_eq_mul]
-    rw [← this]
-    refine Finset.sum_congr rfl fun j _ => ?_
-    simp [Formalism.BasicNotions.HSpace.gram, mul_comm]
-  have hx : S.hT.flip x = 0 := S.frame.ext fun i => by simpa using hfr i
-  have hx0 : x = 0 := S.nondeg.2 x fun y => by
-    have := LinearMap.congr_fun hx y
-    simpa using this
-  funext j
-  exact Fintype.linearIndependent_iff.1 S.frame.linearIndependent v hx0 j
-
 theorem isUnit_det_incM (S : HSp D) (c : D.host.E) (hc : c ≠ 0) :
     IsUnit (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (c • S.gram)).det := by
   have h1 : (c • S.gram).det ≠ 0 := by
     rw [Matrix.det_smul]
-    exact mul_ne_zero (pow_ne_zero _ hc) (gram_det_ne_zero S)
+    exact mul_ne_zero (pow_ne_zero _ hc) (_root_.Formalism.L2.Theta.gram_det_ne S)
   have h2 : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (c • S.gram)).det =
       (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := D.host.F) (AF D.host.F)) (c • S.gram).det := by
     rw [RingHom.map_det]; rfl

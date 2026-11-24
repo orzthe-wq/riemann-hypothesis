@@ -6,45 +6,7 @@ public import GroundTheory.PAdicHodge.TateCpTwist
 public import GroundTheory.PAdicHodge.ACrisBdRGalois
 import GroundTheory.PAdicHodge.ACrisBdRInj
 public import GroundTheory.PAdicHodge.BdRTGalois
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import GroundTheory.PAdicHodge.ACrisBdR
 
 @[expose] public section
@@ -86,6 +48,25 @@ end AwayAction
 
 namespace ACris
 
+section AwaySMulHomB
+
+variable {F : Type*} [NontriviallyNormedField F] [IsUltrametricDist F] {p : ℕ} [hp : Fact p.Prime]
+  [IsPerfectoidField F p] {ε : PreTilt (normInteger F) p} (hε : PreTilt.untilt ε = 1)
+  {G : Type*} [Monoid G] [MulSemiringAction G (BCrisPlus F p)]
+
+/-- `awaySMulHom` on `BCris hε`, for a general perfectoid field `F`; `galB` is the case of the
+Galois action over `ℂ_[p]`.
+
+`galB` is defined through this map so that its value contains no instance proof specialised to
+`ℂ_[p]`. Lean moves such proofs into auxiliary theorems in the value of a definition but leaves
+them in its type, and the kernel is slow to identify the two forms of the ring structure on
+`BCris hε`. -/
+def awaySMulHomB (h : ∀ σ : G, IsUnit (algebraMap (BCrisPlus F p) (BCris hε)
+    (σ • algebraMap (ACris F p) (BCrisPlus F p) (periodT hε)))) (σ : G) : BCris hε →+* BCris hε :=
+  awaySMulHom _ h σ
+
+end AwaySMulHomB
+
 variable {p : ℕ} [hp : Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 def chiCris (σ : Gal(PadicAlgCl p/K)) : ACris ℂ_[p] p :=
@@ -125,13 +106,13 @@ theorem isUnit_gal_smul_periodT (σ : Gal(PadicAlgCl p/K)) :
     ((isUnit_chiCris σ).map _) (IsLocalization.Away.algebraMap_isUnit (S := BCris hε) _)
 
 def galB (σ : Gal(PadicAlgCl p/K)) : BCris hε →+* BCris hε :=
-  awaySMulHom _ (isUnit_gal_smul_periodT hε) σ
+  awaySMulHomB hε (isUnit_gal_smul_periodT hε) σ
 
 theorem galB_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : BCrisPlus ℂ_[p] p) :
     galB hε σ (algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) x) =
       algebraMap (BCrisPlus ℂ_[p] p) (BCris hε) (σ • x) := by
   -- Infer the localization arguments from the unfolded action.
-  delta galB
+  delta galB awaySMulHomB
   apply @awaySMulHom_algebraMap
 
 theorem phiB_galB (σ : Gal(PadicAlgCl p/K)) (x : BCris hε) :

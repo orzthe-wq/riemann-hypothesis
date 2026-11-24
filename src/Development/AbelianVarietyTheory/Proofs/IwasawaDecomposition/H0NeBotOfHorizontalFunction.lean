@@ -1,7 +1,11 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannExtensionOfLogGrowthStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
+public import Mathlib.Analysis.SpecialFunctions.Log.Basic
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannExtensionOfLogGrowth
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -36,6 +40,8 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -182,7 +188,7 @@ theorem exists_extension (R : AnRead p σ' d) (π : Y ⟶ gen Z)
     (hφ0 _ (hTN z hz)).trans (inner_iff (ha z hz.1))
   have hB' : IsOpen {b ∈ B | φ (a (c.e.symm b)).1 ≠ 0} :=
     hφB.continuousOn.isOpen_inter_preimage hB isOpen_ne
-  obtain ⟨u, hu, he⟩ := GlobalTheory.T.riemann_extension_of_log_growth _ B _ (fun b => h (a (c.e.symm b))) hB hφB
+  obtain ⟨u, hu, he⟩ := _root_.GlobalTheory.LogExt.riemann_extension_log _ B _ (fun b => h (a (c.e.symm b))) hB hφB
     (hh _ _ _ hB' (hfam hB' (sep_subset _ _)) fun b hb => (hφ0 _ (hTN _ hb.1.2)).1 hb.2)
     (fun b hb => by
       have hs := c.e.map_target hb.1

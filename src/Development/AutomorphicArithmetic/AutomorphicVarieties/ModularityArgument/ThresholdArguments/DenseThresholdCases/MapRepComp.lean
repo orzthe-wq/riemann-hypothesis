@@ -49,8 +49,6 @@ import Mathlib.Tactic.ReduceModChar
 
 @[expose] public section
 
-attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
-
 
 
 section
@@ -139,7 +137,7 @@ private theorem gsp_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R'
   have e : adj (X.map f) = (adj X).map f := by ext i j; simp [adj_apply]
   rw [IsGSp, e, ← Matrix.map_mul, h]
   ext i j
-  by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+  by_cases hij : i = j <;> simp [hij]
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 private theorem aut_conj (ι : PadicAlgCl l ≃+* ℂ) {r r' : G ℚ Ω →* M4 (PadicAlgCl l)} (h : IsConj4 r r') (_hi : Irr r)
     (ha : _root_.UpperTheory.V.Aut.IsAut4Alt ι r') : _root_.UpperTheory.V.Aut.IsAut4Alt ι r := by

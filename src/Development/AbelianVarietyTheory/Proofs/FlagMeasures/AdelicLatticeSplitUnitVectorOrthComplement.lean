@@ -79,7 +79,7 @@ theorem IsPerp.exists_split {I : AutInst} {D : Sib I} {s : Bool} {x : Fin I.n �
     refine h1.symm.trans ?_
     congr 1
     ext i
-    simp [mulVec, dotProduct, vecMulVec, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]
+    simp [mulVec, dotProduct, vecMulVec, Finset.mul_sum, mul_comm, mul_left_comm]
 
   have hpair : ∀ (c : I.E) (w : Fin D.n → I.E), y = c • x + A *ᵥ w →
       star x ⬝ᵥ (I.J *ᵥ y) = c * sgn I.E s := by

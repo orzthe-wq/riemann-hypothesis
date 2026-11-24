@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicTowerFixesEpsilonRootsResGammaTrivialStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffZeroEqZeroIff
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicTowerFixesEpsilonRootsResGammaTrivial
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RootEqOfNormLt
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TiltSeparatedCompleteEpsilonRootSubOne
 import Mathlib.Algebra.Order.Floor.Extended
@@ -91,7 +92,7 @@ theorem flat_invariant_approx : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (A
   have hfix : ∀ g ∈ Hinf K, AI.actT g z = z := fun g hg => by
     apply IsFractionRing.injective (OCb l) (Cb l)
     rw [← autCb_alg, ← hz, map_mul, hw g hg, autCb_alg, map_pow (AI.actT g), map_sub (AI.actT g), map_one (AI.actT g),
-      (GlobalTheory.T.cyclotomicTower_fixes_epsilonRoots_resGamma_trivial l P AI K).1 g hg s]
+      (_root_.GlobalTheory.Decompl.hinf_fixes_εroot_and_resΓ_eq_one l P AI K).1 g hg s]
   obtain ⟨u, hu, hd⟩ := GlobalTheory.TiltInvariants.invariant_approx l P AI K z hfix (N + m)
   obtain ⟨v, hv⟩ := (pow_dvd_pow_of_dvd (root_sub_dvd AI s) (N + m)).trans hd
   exact ⟨u, hu, v, by rw [hz, ← hv, add_sub_cancel]⟩

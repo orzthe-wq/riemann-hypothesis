@@ -2,8 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.EqOfPowEqOneOfNormSubLt
 public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSemistablePeriodMatrixOfIsSemistableStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorProductBasisCoordinatesStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSemistablePeriodMatrixOfIsSemistable
+import Mathlib.LinearAlgebra.Matrix.ToLin
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorProductBasisCoordinates
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -56,8 +57,8 @@ namespace GlobalTheory.Pst
 theorem Dst_spans_tensor_Bst : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V), IsSst P ρ → ∀ v : V, ∃ (k : ℕ) (a : Fin k → Bst P) (x : Fin k → V ⊗[ℚ_[l]] Bst P), (∀ i, x i ∈ Dst P ρ) ∧ v ⊗ₜ[ℚ_[l]] (1 : Bst P) = ∑ i, onB P ℚ_[l] V (LinearMap.mulLeft ℚ_[l] (a i)) (x i) := by
   intro l _ P AI T K V _ _ _ ρ hS v
   set b := Module.finBasis ℚ_[l] V with hb
-  obtain ⟨Q, hQ⟩ := GlobalTheory.T.exists_semistable_period_matrix_of_isSemistable l P AI T (Fin (finrank ℚ_[l] V)) K V b ρ hS
-  obtain ⟨e, he1, he2, he3⟩ := GlobalTheory.T.tensorProduct_basis_coordinates ℚ_[l] (Bst P) V (Fin (finrank ℚ_[l] V)) b
+  obtain ⟨Q, hQ⟩ := _root_.GlobalTheory.PMon.exists_periodMatrix_of_isSst l P AI T (Fin (finrank ℚ_[l] V)) K V b ρ hS
+  obtain ⟨e, he1, he2, he3⟩ := _root_.GlobalTheory.tensorBasisCoords ℚ_[l] (Bst P) V (Fin (finrank ℚ_[l] V)) b
 
   have hst : ∀ g : ↥(GK K), (stRep P ρ g : V ⊗[ℚ_[l]] Bst P →ₗ[ℚ_[l]] V ⊗[ℚ_[l]] Bst P) =
       TensorProduct.map (ρ g) (actSt P (g : GQ l)).toLinearMap := by

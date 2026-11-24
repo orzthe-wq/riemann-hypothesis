@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticSiegelActionMemUpperHalfSpaceAndCocycl
 
 @[expose] public section
 
@@ -68,26 +69,10 @@ theorem isUnit_det_im_of_mem_siegel {ι : Type} [Fintype ι] [DecidableEq ι] {�
 open Matrix Complex in
 open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] [DecidableEq ι] in
-private lemma qm_add' {α β : Type} (M N : Matrix α β ℚ) :
-    _root_.GlobalTheory.SW.qm (M + N) = _root_.GlobalTheory.SW.qm M + _root_.GlobalTheory.SW.qm N := by
-  ext i j
-  simp [_root_.GlobalTheory.SW.qm]
-
-open Matrix Complex in
-open scoped ComplexConjugate Real in
-variable {ι : Type} [Fintype ι] [DecidableEq ι] in
 private lemma qm_neg' {α β : Type} (M : Matrix α β ℚ) :
     _root_.GlobalTheory.SW.qm (-M) = -_root_.GlobalTheory.SW.qm M := by
   ext i j
   simp [_root_.GlobalTheory.SW.qm]
-
-open Matrix Complex in
-open scoped ComplexConjugate Real in
-variable {ι : Type} [Fintype ι] [DecidableEq ι] in
-private lemma qm_mul_siegel_theta_transformation {α β γ : Type} [Fintype β] (M : Matrix α β ℚ) (N : Matrix β γ ℚ) :
-    _root_.GlobalTheory.SW.qm (M * N) = _root_.GlobalTheory.SW.qm M * _root_.GlobalTheory.SW.qm N := by
-  ext i j
-  simp [_root_.GlobalTheory.SW.qm, Matrix.mul_apply]
 
 open Matrix Complex in
 open scoped ComplexConjugate Real in
@@ -163,7 +148,7 @@ theorem _root_.GlobalTheory.SW.canon_exponent_invariant : ∀ (ι : Type) [Finty
   replace r2 := congrArg _root_.GlobalTheory.SW.qm r2
   replace r3 := congrArg _root_.GlobalTheory.SW.qm r3
   replace r4 := congrArg _root_.GlobalTheory.SW.qm r4
-  simp only [qm_add', qm_neg', qm_mul_siegel_theta_transformation, qm_transpose',
+  simp only [_root_.GlobalTheory.SiegelAction.qm_add, qm_neg', _root_.GlobalTheory.SiegelAction.qm_mul, qm_transpose',
     qm_zero', qm_one'] at r1 r2 r3 r4
   set A := _root_.GlobalTheory.SW.qm σ.toBlocks₁₁ with hA
   set B := _root_.GlobalTheory.SW.qm σ.toBlocks₁₂ with hB

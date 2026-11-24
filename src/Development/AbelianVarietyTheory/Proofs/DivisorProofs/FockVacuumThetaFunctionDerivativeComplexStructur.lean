@@ -116,7 +116,7 @@ theorem realAd_smul_eq_sum {m n : ℕ} {θ : InfFam D} (hθ : IsInfFam θ) {σ :
     generalize (Finset.univ : Finset D.what₂.Tau) = s
     induction s using Finset.induction_on with
     | empty => simp
-    | @insert a s ha ih => simp [Finset.sum_insert ha, AddMonoidHom.add_apply, Matrix.add_apply, ih]
+    | @insert a s ha ih => simp [Finset.sum_insert ha, AddMonoidHom.add_apply, Matrix.add_apply]
   refine hσ.ext _ ?_ fun τ' => ?_
 
   · rw [map_sub, hs, map_sum, Matrix.smul_apply, finPart_realAd_smul, zero_sub, neg_eq_zero]

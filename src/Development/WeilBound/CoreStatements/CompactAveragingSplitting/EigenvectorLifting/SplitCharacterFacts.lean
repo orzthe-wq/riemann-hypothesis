@@ -73,7 +73,6 @@ theorem val_eq_one_iff (x : Fv F v) : valuation (Fv F v) x = 1 ↔ Valued.v x = 
   haveI hc : (Valued.v : Valuation (Fv F v) _).Compatible := by
     first
     | exact ⟨fun _ _ => Iff.rfl⟩
-    | (delta GlobalTheory.LocalData.complRel; infer_instance)
   have he : (valuation (Fv F v)).IsEquiv (Valued.v : Valuation (Fv F v) _) := ValuativeRel.isEquiv _ _
   have h1 := he.le_iff_le (x := x) (y := 1)
   have h2 := he.le_iff_le (x := 1) (y := x)

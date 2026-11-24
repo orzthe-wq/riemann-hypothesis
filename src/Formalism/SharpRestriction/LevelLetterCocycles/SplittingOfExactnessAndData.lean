@@ -487,8 +487,6 @@ theorem map_φpow {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (k : ℕ) (x :
     rw [PhiPowers.pow_apply_succ, PhiPowers.pow_apply_succ, ← ih]
     first
     | exact W.map_φ f _
-    | exact (W.map_φ f _).symm
-    | simp [W.map_φ]
 
 theorem φpow_smulA (T : LocLat G Qp LL O) (k : ℕ) (a : LetA O n) (x : W.DD T) :
     ((W.φD T) ^ k) (a • x) = (W.φA ^ k) a • ((W.φD T) ^ k) x := by
@@ -509,13 +507,6 @@ theorem φpow_smulO (T : LocLat G Qp LL O) (k : ℕ) (r : O) (x : W.DD T) :
     rw [PhiPowers.pow_apply_succ, ih, PhiPowers.pow_apply_succ]
     first
     | exact map_smul (W.φD T) r _
-    | exact W.φD_smulO T r _
-    | (rw [← algebraMap_smul (LetA O n) r, φD_smulA, ← algebraMap_smul (LetA O n) r]
-       congr 1
-       first
-       | exact AlgHom.commutes _ r
-       | exact W.φA_alg r
-       | simp)
 
 theorem φ_letE_e (e : W.DD W.one) (he : W.φD W.one e = e) (i : ZMod n) (k : ℕ) :
     ((W.φD W.one) ^ k) ((letE i : LetA O n) • e) = (letE (i + (k : ZMod n)) : LetA O n) • e := by
@@ -534,9 +525,6 @@ theorem γ_φpow (T : LocLat G Qp LL O) (k : ℕ) (x : W.DD T) :
     rw [PhiPowers.pow_apply_succ, PhiPowers.pow_apply_succ, ← ih]
     first
     | exact (W.φγ_comm _ _ _).symm
-    | exact W.φγ_comm _ _ _
-    | (simp only [LocWach.γ]; exact (W.φγ_comm _ _ _).symm)
-    | (simp only [LocWach.γ]; exact W.φγ_comm _ _ _)
 
 theorem φpow_add (T : LocLat G Qp LL O) (a b : ℕ) (x : W.DD T) :
     ((W.φD T) ^ a) (((W.φD T) ^ b) x) = ((W.φD T) ^ (b + a)) x := by

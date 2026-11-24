@@ -1,10 +1,11 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountableStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 public import Development.WeilBound.CoreStatements.ThetaDilations.SdTransport
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -62,10 +63,10 @@ theorem euler_move : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   classical
   obtain ⟨S₁, hS₁⟩ := up_fin.1 hc
   have hG' := Filter.eventually_cofinite.1 hG
-  obtain ⟨r1, r2, r3, r4, r5, -⟩ := GlobalTheory.T.adelic_tuple_projections F E σ hcm d b n M
+  obtain ⟨r1, r2, r3, r4, r5, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d b n M
   have hBv : ∀ v, BorelSpace (Fin n → Fin M → Fv F v ⊗[F] E) := fun v => by
-    obtain ⟨_, _, _, _, -⟩ := GlobalTheory.T.completion_is_local_ring F v
-    exact (GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)).2.2.2.2.2.2.2.1 n M
+    obtain ⟨_, _, _, _, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
+    exact (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Fv F v)).2.2.2.2.2.2.2.1 n M
   have gd : ∀ v, v ∉ S₁ ∪ hG'.toFinset → ∀ X, ev v X ∈ latV b v ↔ X ∈ latV b v := fun v hv =>
     not_not.1 (mt hG'.mem_toFinset.2 fun h => hv (Finset.mem_union_right _ h))
   have hoff : ∀ v, v ∉ S₁ ∪ hG'.toFinset → m' v (latV b v) = m v (latV b v) := fun v hv => by
@@ -77,8 +78,8 @@ theorem euler_move : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     S₀ ∪ (S₁ ∪ hG'.toFinset), fun S hS φi φ hφi hφ => ?_⟩
   have hS' : ∀ v, v ∉ S → v ∉ S₁ ∪ hG'.toFinset := fun v h h' => h (hS (Finset.mem_union_right _ h'))
   obtain ⟨-, u2⟩ := hS₁ S ((Finset.subset_union_left.trans Finset.subset_union_right).trans hS)
-  obtain ⟨⟨_, _, _⟩, _, _, _⟩ := GlobalTheory.T.adeles_locally_compact_second_countable F
-  have := (GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)).2.2.2.2.2.2.2.1 n M
+  obtain ⟨⟨_, _, _⟩, _, _, _⟩ := _root_.GlobalTheory.CompanionTheory.AdeleTop.adele_top F
+  have := (_root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (AF F)).2.2.2.2.2.2.2.1 n M
   have hm : Measurable (pureL b S φi φ) := by
     have h3 : Measurable (projInf : (Fin n → Fin M → AF F ⊗[F] E) → _) := by
       have : BorelSpace (Ainf F ⊗[F] E) := ⟨rfl⟩
@@ -101,7 +102,7 @@ theorem euler_move : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     Finset.prod_congr rfl fun v _ => (lintegral_map (hφ v) (mev v)).symm,
     tprod_congr fun v : {v // v ∉ S} => congrArg ENNReal.toReal (hoff v.1 (hS' _ v.2)).symm]
   simp only [h2, ENNReal.smul_def, lintegral_smul_measure, smul_eq_mul, Finset.prod_mul_distrib]
-  rw [mul_mul_mul_comm, ← ENNReal.coe_finsetProd, ← ENNReal.coe_mul, u2, ENNReal.coe_one]
+  rw [mul_mul_mul_comm, ← ENNReal.ofNNReal_finsetProd, ← ENNReal.coe_mul, u2, ENNReal.coe_one]
   simp
 
 end PositivityTheory.PlacePermOperatorBicommutantSpan

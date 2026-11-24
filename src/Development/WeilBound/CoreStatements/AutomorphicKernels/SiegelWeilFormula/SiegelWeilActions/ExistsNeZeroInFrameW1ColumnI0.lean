@@ -72,24 +72,6 @@ variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' :
 
 namespace N
 
-theorem fix_of_col {w x : d.G}
-    (hc : ∀ r, inFrame d.b x r (Sum.inl L.i₀) = inFrame d.b w r (Sum.inl L.i₀)) : Fix L (w⁻¹ * x) := by
-  intro k
-  rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply]
-  simp_rw [hc]
-  rw [← Matrix.mul_apply, ← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, inv_mul_cancel, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]
-
-theorem exists_ne_zero_inFrame_w1_column_i0 (h : Hyp L nb uM nb' w₁ cM δ) : ∃ b₀ : E, b₀ ≠ 0 ∧ ∀ r, inFrame d.b w₁ r (Sum.inl L.i₀) =
-    inclR (F := F) (AF F) ((Pi.single (Sum.inr L.i₀) b₀ : Fin d.n ⊕ Fin d.n → E) r) := by
-  obtain ⟨a, b, -, hb, hw⟩ := h.wf
-  refine ⟨b, hb, fun r => ?_⟩
-  rw [hw]
-  rcases r with i | i <;> by_cases hi : i = L.i₀
-  · subst hi; simp [Matrix.single_apply, Matrix.one_apply, Pi.single_apply]
-  · simp [Matrix.single_apply, Matrix.one_apply, Pi.single_apply, hi, Ne.symm hi]
-  · subst hi; simp [Matrix.single_apply, Matrix.one_apply, Pi.single_apply]
-  · simp [Matrix.single_apply, Matrix.one_apply, Pi.single_apply, hi, Ne.symm hi]
-
 theorem nCond_of_E {n : ℕ} (ε : ℤˣ) {β0 : Matrix (Fin n) (Fin n) E}
     (hβ : β0ᵀ = -((((ε : ℤ) : E)) • β0.map σ)) : incM F β0 ∈ kfour.nCond σ n ε := by
   show (incM F β0)ᵀ = -((((ε : ℤ) : AE F E)) • (incM F β0).map (cA σ))
@@ -211,41 +193,6 @@ theorem exists_E {n : ℕ} (i₀ : Fin n) (hσ : ∀ a, σ (σ a) = a) (ε : ℤ
       by_cases hi : i = i₀
       · subst hi; simp
       · rw [Matrix.one_apply_ne hi, zero_mul, Pi.single_eq_of_ne (by simp [hi])]
-
-theorem normalize (h : Hyp L nb uM nb' w₁ cM δ) {γ : d.G} (hγ : γ ∈ rat2 σ d.Y) (hn : ¬ LagrangianCondition L γ) :
-    ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧ Fix L (w₁⁻¹ * (p * γ)) := by
-  have hσ := kfour.sigma_sigma_of_good d.ok.good
-  obtain ⟨⟨ε, hε⟩, -⟩ := d.ok.frame
-  obtain ⟨G0, hG0⟩ := Afc.rat_frame (b := d.b) γ hγ
-  have hform := Bq.form_E hε γ hG0
-  obtain ⟨b₀, hb₀, hw1⟩ := exists_ne_zero_inFrame_w1_column_i0 h
-  have hy : (fun k => G0 (Sum.inr k) (Sum.inl L.i₀)) ≠ 0 := by
-    intro h0
-    apply hn
-    intro i
-    rw [hG0]
-    show inclR (F := F) (AF F) (G0 (Sum.inr i) (Sum.inl L.i₀)) = 0
-    rw [congrFun h0 i, Pi.zero_apply, map_zero]
-  obtain ⟨A, β0, hβ, hcol⟩ := exists_E L.i₀ hσ ε hform hb₀ hy
-  obtain ⟨pm, hpmr, hpm⟩ := Afc.levi_ex hσ d.ok.frame A
-  have hpmP : pm ∈ par2 σ d.Y :=
-    (ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame pm).2 (by rw [hpm, Matrix.toBlocks_fromBlocks₂₁])
-  have hβA : incM F β0 ∈ nA σ d.Y d.b := (kfour.mem_nA_iff hσ hε _).2 (nCond_of_E ε hβ)
-  set pn := nb ⟨incM F β0, hβA⟩ with hpn_def
-  have hpn : inFrame d.b pn = Matrix.fromBlocks 1 (incM F β0) 0 1 := h.nb _
-  have hpnP : pn ∈ par2 σ d.Y :=
-    (ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame pn).2 (by rw [hpn, Matrix.toBlocks_fromBlocks₂₁])
-  have hpnr : pn ∈ rat2 σ d.Y :=
-    kunf.rat_of_inFrame (M := Matrix.fromBlocks 1 β0 0 1) (by rw [hpn, kfour.incM_nM]; rfl)
-  refine ⟨pn * pm, mul_mem hpnP hpmP, mul_mem hpnr hpmr, fix_of_col fun r => ?_⟩
-  have hF : inFrame d.b (pn * pm * γ) =
-      incM F (Matrix.fromBlocks 1 β0 0 1 * Matrix.fromBlocks A.1 0 0 (((A⁻¹).1)ᵀ.map σ) * G0) := by
-    rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hpn, hpm, hG0, kfour.incM_mul', kfour.incM_mul',
-      kfour.incM_nM, Afc.incM_fromBlocks, kfour.incM_zero]
-    rfl
-  rw [hF, hw1 r]
-  show inclR (F := F) (AF F) _ = _
-  rw [hcol r]
 
 end N
 

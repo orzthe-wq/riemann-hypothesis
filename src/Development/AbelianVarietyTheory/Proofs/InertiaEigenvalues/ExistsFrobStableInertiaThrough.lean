@@ -224,22 +224,4 @@ theorem exists_frobStable_inertiaThrough {ι : Type} (ρ : ι → Representation
 
 end InertialCharacters
 
-theorem frobStable_inertial_subset : ∀ {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} [Field Qp] [Field K₀] [Field K] [Field K₀'] [Field K']
-    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
-    [Algebra Qp K₀'] [Algebra Qp K'] [Algebra K₀' K'] [IsScalarTower Qp K₀' K']
-    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
-    [Algebra K₀' B] [IsScalarTower Qp K₀' B]
-    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
-    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
-    [Algebra K₀' BdR] [Algebra K' BdR] [IsScalarTower Qp K' BdR]
-    [IsScalarTower K₀' K' BdR] [IsScalarTower Qp K₀' BdR]
-    (PC : PotCrysData G Qp K₀ K K₀' K' B BdR) {LL : Type} [Field LL] [Algebra Qp LL]
-    {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
-    {ι : Type} (ρ : ι → Representation LL G V) (F : G) (S : Finset (PC.Iner →* LLˣ)),
-    1 ∈ S → (∀ x, PC.InertiaThrough (ρ x) S) →
-    ∃ Sig : Finset (PC.Iner →* LLˣ), Sig ⊆ S ∧ 1 ∈ Sig ∧ FrobStable PC.Iner F Sig ∧
-      ∀ x, PC.InertiaThrough (ρ x) Sig := by
-  intros
-  apply exists_frobStable_inertiaThrough <;> assumption
-
 end GlobalTheory

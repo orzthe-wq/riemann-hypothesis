@@ -1,8 +1,9 @@
 module
 
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.UnitaryThreeReflectionRight
+public import Mathlib.RingTheory.Ideal.BigOperators
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PresDefs
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.JconjApply
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm1
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrOfbox
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -22,8 +23,10 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -47,7 +50,216 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ContinuousCoboundaries2
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.JconjApply, Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm1, Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.JconjApply =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.JconjApply", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.UnitaryThreeReflectionRight\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ContinuousCoboundaries2\npublic import Mathlib.RingTheory.Ideal.BigOperators\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+
+private theorem jconj_apply {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
+    (Jmat (R := R) n * Mᵀ * Jmat (R := R) n) i j = M j.rev i.rev := by
+  have h1 : ∀ k, (Jmat (R := R) n * Mᵀ) i k = M k i.rev := by
+    intro k
+    rw [Matrix.mul_apply, Finset.sum_eq_single i.rev]
+    · simp [Jmat]
+    · intro b _ hb
+      simp [Jmat, hb]
+    · simp
+  rw [Matrix.mul_apply, Finset.sum_eq_single j.rev]
+  · rw [h1]
+    simp [Jmat]
+  · intro b _ hb
+    have : j ≠ b.rev := by
+      intro h
+      apply hb
+      rw [h, Fin.rev_rev]
+    simp [Jmat, this]
+  · simp
+
+theorem UpperTheory.V.Fr.pr_norm2 :
+    ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (C' : Type) [CommRing C'] [Algebra O C'] [IsCO O C'] (C : Type) [CommRing C] [Algebra O C] (p : C' →ₐ[O] C) (n : ℕ) (Z : Matrix (Fin n) (Fin n) C'), maximalIdeal C' * RingHom.ker p = ⊥ → RingHom.ker p ≤ maximalIdeal C' → thetaLie Z = Z → (∀ i j, i ≠ j → p (Z i j) = 0) → (∀ i j, i ≠ j → res O C' (Z i i) ≠ res O C' (Z j j)) → ∃ h : GL (Fin n) C', (h : Matrix (Fin n) (Fin n) C').map p = 1 ∧ theta h = h ∧ ∀ i j, i ≠ j → ((h : Matrix (Fin n) (Fin n) C') * Z * ((h⁻¹ : GL (Fin n) C') : Matrix (Fin n) (Fin n) C')) i j = 0 := by
+  intro O _ _ C' _ _ _ C _ _ p n Z hmI hIm hZ hoff hdiag
+  classical
+  have hII : ∀ a b : C', a ∈ RingHom.ker p → b ∈ RingHom.ker p → a * b = 0 := by
+    intro a b ha hb
+    have hab : a * b ∈ maximalIdeal C' * RingHom.ker p := Ideal.mul_mem_mul (hIm ha) hb
+    rw [hmI] at hab
+    simpa using hab
+  have hZI : ∀ i j, i ≠ j → Z i j ∈ RingHom.ker p := by
+    intro i j hij
+    rw [RingHom.mem_ker]
+    exact hoff i j hij
+  have hunit : ∀ i j, i ≠ j → IsUnit (Z i i - Z j j) := by
+    intro i j hij
+    by_contra hu
+    have hm : Z i i - Z j j ∈ maximalIdeal C' := (IsLocalRing.mem_maximalIdeal _).2 hu
+    rw [← res_eq_zero_iff O C', map_sub, sub_eq_zero] at hm
+    exact hdiag i j hij hm
+  have hZr : ∀ i j, Z j.rev i.rev = -Z i j := by
+    intro i j
+    have hij := congrFun (congrFun hZ i) j
+    simp only [thetaLie, Matrix.neg_apply, jconj_apply] at hij
+    rw [← hij, neg_neg]
+  obtain ⟨A, hA⟩ : ∃ A : Matrix (Fin n) (Fin n) C', ∀ i j,
+      A i j = if i = j then 0 else Z i j * Ring.inverse (Z i i - Z j j) :=
+    ⟨Matrix.of fun i j => if i = j then 0 else Z i j * Ring.inverse (Z i i - Z j j), fun i j => rfl⟩
+  have hAI : ∀ i j, A i j ∈ RingHom.ker p := by
+    intro i j
+    rw [hA]
+    split_ifs with h
+    · exact Ideal.zero_mem _
+    · exact Ideal.mul_mem_right _ _ (hZI i j h)
+  have hAA : A * A = 0 := by
+    ext i j
+    rw [Matrix.mul_apply, Matrix.zero_apply]
+    exact Finset.sum_eq_zero fun k _ => hII _ _ (hAI i k) (hAI k j)
+  have hAr : ∀ i j, A j.rev i.rev = -A i j := by
+    intro i j
+    rw [hA, hA]
+    by_cases hij : i = j
+    · subst hij
+      simp
+    · have hrev : j.rev ≠ i.rev := fun h => hij (Fin.rev_injective h).symm
+      rw [if_neg hrev, if_neg hij, hZr i j, hZr j j, hZr i i]
+      have hd : -Z j j - -Z i i = Z i i - Z j j := by ring
+      rw [hd]
+      ring
+  have h1 : (1 + A) * (1 - A) = 1 := by
+    rw [show (1 + A) * (1 - A) = 1 - A * A by noncomm_ring, hAA, sub_zero]
+  have h2 : (1 - A) * (1 + A) = 1 := by
+    rw [show (1 - A) * (1 + A) = 1 - A * A by noncomm_ring, hAA, sub_zero]
+  refine ⟨⟨1 + A, 1 - A, h1, h2⟩, ?_, ?_, ?_⟩
+  · ext i j
+    have h0 : p (A i j) = 0 := by
+      have := hAI i j
+      rwa [RingHom.mem_ker] at this
+    simp only [Matrix.map_apply, Matrix.add_apply, map_add (f := _), h0, add_zero,
+      Matrix.one_apply]
+    split_ifs <;> simp
+  · apply Units.ext
+    rw [theta_val]
+    show Jmat (R := C') n * (1 - A)ᵀ * Jmat (R := C') n = 1 + A
+    rw [Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one,
+      Jmat_mul_Jmat, sub_eq_add_neg]
+    congr 1
+    ext i j
+    rw [Matrix.neg_apply, jconj_apply, hAr, neg_neg]
+  · intro i j hij
+    show ((1 + A) * Z * (1 - A)) i j = 0
+    rw [show (1 + A) * Z * (1 - A) = Z + A * Z - Z * A - A * Z * A by noncomm_ring]
+    have hAZ : (A * Z) i j = A i j * Z j j := by
+      rw [Matrix.mul_apply, Finset.sum_eq_single j]
+      · intro k _ hk
+        exact hII _ _ (hAI i k) (hZI k j hk)
+      · simp
+    have hZA : (Z * A) i j = Z i i * A i j := by
+      rw [Matrix.mul_apply, Finset.sum_eq_single i]
+      · intro k _ hk
+        exact hII _ _ (hZI i k (Ne.symm hk)) (hAI k j)
+      · simp
+    have hAZA : (A * Z * A) i j = 0 := by
+      rw [Matrix.mul_apply]
+      refine Finset.sum_eq_zero fun k _ => hII _ _ ?_ (hAI k j)
+      rw [Matrix.mul_apply]
+      exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hAI i l)
+    rw [Matrix.sub_apply, Matrix.sub_apply, Matrix.add_apply, hAZ, hZA, hAZA, hA, if_neg hij]
+    have hu := Ring.inverse_mul_cancel _ (hunit i j hij)
+    linear_combination (-(Z i j)) * hu
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.JconjApply =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm1 =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm1", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.UnitaryThreeReflectionRight\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.ContinuousCoboundaries2\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
+
+theorem UpperTheory.V.Fr.pr_norm1 :
+    ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (C' : Type) [CommRing C'] [Algebra O C'] [IsCO O C'] (C : Type) [CommRing C] [Algebra O C] (p : C' →ₐ[O] C) (n : ℕ) (x : GG (m := n) (R := C')), maximalIdeal C' * RingHom.ker p = ⊥ → RingHom.ker p ≤ maximalIdeal C' → (2 : ResidueField O) ≠ 0 → x * x = 1 → x.right = -1 → x.mat.map p = 1 → ∃ h : GL (Fin n) C', (h : Matrix (Fin n) (Fin n) C').map p = 1 ∧ (GG.ofGL h * x * (GG.ofGL h)⁻¹).mat = 1 := by
+  intro O _ _ C' _ _ _ C _ _ p n x hmI hle h2R hxx hr hmap
+  have hgt : x.left * theta x.left = 1 := by
+    have hl := congrArg SemidirectProduct.left hxx
+    simpa [SemidirectProduct.mul_left, hr] using hl
+  have hθ : ∀ u : GL (Fin n) C', ((theta u⁻¹ : GL (Fin n) C') : Matrix (Fin n) (Fin n) C') =
+      Jmat (R := C') n * (u : Matrix (Fin n) (Fin n) C')ᵀ * Jmat (R := C') n := by
+    intro u
+    rw [show theta u⁻¹ = (theta u)⁻¹ from map_inv (thetaAut (m := n) (R := C')) u, theta_inv_val]
+  have hgg : (x.left : Matrix (Fin n) (Fin n) C') =
+      Jmat (R := C') n * (x.left : Matrix (Fin n) (Fin n) C')ᵀ * Jmat (R := C') n := by
+    have h1 : (theta x.left)⁻¹ = x.left := inv_eq_of_mul_eq_one_left hgt
+    rw [← theta_inv_val x.left, h1]
+  have hsq : ∀ a b : C', a ∈ RingHom.ker p → b ∈ RingHom.ker p → a * b = 0 := by
+    intro a b ha hb
+    have hab : a * b ∈ maximalIdeal C' * RingHom.ker p := Ideal.mul_mem_mul (hle ha) hb
+    rw [hmI] at hab
+    exact (Ideal.mem_bot).mp hab
+  have hp1 : ∀ i j : Fin n,
+      p ((1 : Matrix (Fin n) (Fin n) C') i j) = (1 : Matrix (Fin n) (Fin n) C) i j := by
+    intro i j
+    rw [Matrix.one_apply, Matrix.one_apply]
+    split_ifs <;> simp
+  set X : Matrix (Fin n) (Fin n) C' := (x.left : Matrix (Fin n) (Fin n) C') - 1 with hXdef
+  have hX : ∀ i j, X i j ∈ RingHom.ker p := by
+    intro i j
+    have hgij : p ((x.left : Matrix (Fin n) (Fin n) C') i j) = (1 : Matrix (Fin n) (Fin n) C) i j :=
+      congrFun (congrFun hmap i) j
+    rw [RingHom.mem_ker, hXdef, Matrix.sub_apply, map_sub, hp1, hgij, sub_self]
+  have hXX : X * X = 0 := by
+    ext i j
+    rw [Matrix.mul_apply, Matrix.zero_apply]
+    exact Finset.sum_eq_zero fun k _ => hsq _ _ (hX i k) (hX k j)
+  have hXJ : Jmat (R := C') n * Xᵀ * Jmat (R := C') n = X := by
+    rw [hXdef, Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.sub_mul,
+      Matrix.mul_one, Jmat_mul_Jmat, ← hgg]
+  have hO : IsUnit (2 : O) := by
+    rw [← IsLocalRing.notMem_maximalIdeal, ← IsLocalRing.residue_eq_zero_iff, map_ofNat]
+    exact h2R
+  have h2 : IsUnit (2 : C') := by
+    have h2' := hO.map (algebraMap O C')
+    rwa [map_ofNat] at h2'
+  have hc2 : (↑h2.unit⁻¹ : C') * 2 = 1 := h2.val_inv_mul
+  set Y : Matrix (Fin n) (Fin n) C' := (↑h2.unit⁻¹ : C') • X with hYdef
+  have hYX : Y * X = 0 := by rw [hYdef, Matrix.smul_mul, hXX, smul_zero]
+  have hXY : X * Y = 0 := by rw [hYdef, Matrix.mul_smul, hXX, smul_zero]
+  have hYY : Y * Y = 0 := by rw [hYdef, Matrix.mul_smul, hYX, smul_zero]
+  have hY2 : Y + Y = X := by rw [hYdef, ← add_smul, ← mul_two, hc2, one_smul]
+  have e1 : (1 - Y) * (1 + Y) = 1 := by
+    rw [sub_mul, one_mul, mul_add, mul_one, hYY, add_zero, add_sub_cancel_right]
+  have e2 : (1 + Y) * (1 - Y) = 1 := by
+    rw [add_mul, one_mul, mul_sub, mul_one, hYY, sub_zero, sub_add_cancel]
+  have hpY : ∀ i j, p (Y i j) = 0 := by
+    intro i j
+    rw [hYdef, Matrix.smul_apply, smul_eq_mul, map_mul, (RingHom.mem_ker).mp (hX i j), mul_zero]
+  obtain ⟨U, hU⟩ : ∃ U : GL (Fin n) C', (U : Matrix (Fin n) (Fin n) C') = 1 - Y :=
+    ⟨⟨1 - Y, 1 + Y, e1, e2⟩, rfl⟩
+  have hJ : Jmat (R := C') n * (1 - Y)ᵀ * Jmat (R := C') n = 1 - Y := by
+    rw [Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one,
+      Jmat_mul_Jmat, hYdef, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, hXJ]
+  have hg1 : (x.left : Matrix (Fin n) (Fin n) C') = 1 + X := by rw [hXdef, add_sub_cancel]
+  have key : (1 - Y) * (1 + X) * (1 - Y) =
+      1 + X - (Y + Y) - Y * X - X * Y + Y * Y + Y * X * Y := by noncomm_ring
+  refine ⟨U, ?_, ?_⟩
+  · ext i j
+    show p ((U : Matrix (Fin n) (Fin n) C') i j) = (1 : Matrix (Fin n) (Fin n) C) i j
+    rw [hU, Matrix.sub_apply, map_sub, hp1, hpY, sub_zero]
+  · simp [GG.mat, SemidirectProduct.mul_left, hr]
+    rw [hθ, hU, hJ, hg1, key, hYX, hXY, hYY, hY2, zero_mul]
+    simp
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm1 =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PresDefs\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.JconjApply\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm1\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrOfbox\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
@@ -61,7 +273,7 @@ variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ}
 private theorem conj_left {G : Type} [Group G] (h : GL (Fin n) C)
     (r : G →* GG (m := n) (R := C)) (s : G) :
     (conjBy h r s).left = h * (r s).left * sgnAct n C (r s).right h⁻¹ := by
-  simp [conjBy, GG.ofGL, MulAut.conj_apply, SemidirectProduct.mul_left, SemidirectProduct.mul_right, mul_assoc]
+  simp [conjBy, GG.ofGL, MulAut.conj_apply, SemidirectProduct.mul_left, mul_assoc]
 
 private theorem conj_right {G : Type} [Group G] (h : GL (Fin n) C)
     (r : G →* GG (m := n) (R := C)) (s : G) :
@@ -80,7 +292,7 @@ private theorem conj_mul {G : Type} [Group G] (h h' : GL (Fin n) C)
     conjBy (h * h') r = conjBy h (conjBy h' r) := by
   apply MonoidHom.ext
   intro s
-  simp [conjBy, MulAut.conj_apply, _root_.mul_inv_rev, mul_assoc]
+  simp [conjBy, MulAut.conj_apply, mul_assoc]
 
 private theorem frame_right_eq_one_of_G0 (B : Box F n C) (s : F.G0) : (B.r s).right = 1 := by
   exact (B.nu s).trans (MonoidHom.mem_ker.mp s.2)
@@ -155,7 +367,7 @@ private theorem star_mat (hc : F.del F.c = -1) (B : Box F n C) (h1 : (B.r F.c).m
   have hX : B.r F.c = ⟨1, -1⟩ := SemidirectProduct.ext (Units.ext (by simpa [GG.mat] using h1)) ((B.nu _).trans hc)
   have hY : B.r (g : F.Γ) = ⟨(B.r g).left, 1⟩ := SemidirectProduct.ext rfl (frame_right_eq_one_of_G0 B g)
   rw [show ((F.star g : F.G0) : F.Γ) = F.c * (g : F.Γ)⁻¹ * F.c⁻¹ from rfl, map_mul, map_mul, map_inv, map_inv, hX, hY]
-  simp [GG.mat, SemidirectProduct.mul_left, SemidirectProduct.inv_left, map_inv, sgnAct_neg_one, sgnAct_one, theta_inv_val]
+  simp [GG.mat, SemidirectProduct.mul_left, SemidirectProduct.inv_left, map_inv, sgnAct_neg_one]
   rw [t1, t1, Units.val_one, mul_one, ← Matrix.coe_units_inv, theta_inv_val]
 
 end SlopeTestRemainingChoices
@@ -233,3 +445,6 @@ theorem UpperTheory.V.Fr.pr_norm :
   · intro s
     rw [conj_mul]
     exact hof'.res s
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVectors.PrNorm =====

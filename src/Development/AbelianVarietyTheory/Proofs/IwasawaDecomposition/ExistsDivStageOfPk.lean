@@ -90,6 +90,9 @@ end GlobalTheory.Mem.R3.Rw
 
 namespace GlobalTheory.Mem.R3.Rw
 
+/-- Constructs the common integral lattice `Lr` over `𝓞 B.LL` place by place: a vector `x` lies
+in `prescribedRowLat W jE` iff for every finite place `w`, some `w`-unit `d ∈ 𝓞 B.LL` scales `x`
+into the `𝓞 B.LL`-span of `{y | jE y ∈ W.what₂.RRset (W.what₂.muAt w)}`. -/
 def prescribedRowLat {B : Base} {C : Cols B} (W : RowsRest B C) {m : ℕ} (jE : (Fin m → B.LL) →ₛₗ[B.embLL] W.EE) :
     Submodule (𝓞 B.LL) (Fin m → B.LL) where
   carrier := {x | ∀ w : W.what₂.places.Pl, ∃ d : 𝓞 B.LL, d ∉ (w : HeightOneSpectrum (𝓞 B.LL)).asIdeal ∧
@@ -112,6 +115,9 @@ end GlobalTheory.Mem.R3.Rw
 
 namespace GlobalTheory.Mem.R3.Rw
 
+/-- Assembles a `DivStage` from a `PkB` package, gluing the place-by-place common lattice
+`RR` (`prescribedRowLat`), the per-word restricted lattices `Nu`, and the bilinear pairing
+`Bk = bkOf` into a single `DivData` structure with `HH = sFrame Nu h + RR.muMax`. -/
 theorem exists_divStage_of_pk : ∀ (B : Base) (C : Cols B) (G : Type) [Group G] (p : PkB B C G) (e : PerD p) (W₀ : RowsRest B C) (n : Nums p W₀) (η : ℕ → B.places.Pl → ℚ) (hη : ∀ j w, 0 ≤ η j w), (∀ v, IsUnit (p.Xo v).det) → ∀ (Ln : ∀ u, Submodule (𝓞 B.LL) ((C.fm u).lat 0).V) (h : B.Word → ℝ) (etaF : ℝ), ∃ V : DivStage B C (p.what₂ e W₀ n η hη), DivIs p V ∧ (∀ u x, x ∈ (V.div.Nu u).L ↔ V.nuIn u x ∈ Ln u) ∧ V.div.h = h ∧ V.div.etaF = etaF ∧ V.div.HH = sFrame V.div.Nu V.div.h + V.div.RR.muMax ∧ ((∀ u φ x, n.Bu u (V.jN u φ) (V.jEE x) ∈ Set.range B.embLL) → ∀ u φ x, n.Bu u (V.jN u φ) (V.jEE x) = B.embLL (V.div.Bk u φ x)) := by
   intro B C G _ p e W₀ n η hη hXo Ln h etaF
   classical

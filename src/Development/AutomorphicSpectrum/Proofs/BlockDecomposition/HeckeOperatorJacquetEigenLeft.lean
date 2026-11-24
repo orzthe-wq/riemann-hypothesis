@@ -94,21 +94,17 @@ theorem mem_Km_of_entries {N : ℕ} (m : ℕ) (g : GL (Fin N) k)
   rw [key]
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
-theorem Km_le_KO (N m : ℕ) : Zls.Km k N m ≤ KO k (Fin N) := by
-  rintro _ ⟨u, -, rfl⟩
-  exact ⟨u, rfl⟩
-
 theorem unif_pow_ne_zero (m : ℕ) : (((Zls.unif k ^ m : 𝒪[k])) : k) ≠ 0 := by
   have h : Zls.unif k ≠ 0 := Zls.irreducible_unif.ne_zero
   have := pow_ne_zero m h
   simpa using this
 
 theorem isOpen_Km (N m : ℕ) : IsOpen (Zls.Km k N m : Set (GL (Fin N) k)) := by
-  apply GlobalTheory.CompanionTheory.KmTop.isOpen_Km <;> assumption
+  apply GlobalTheory.CompanionTheory.KmTop.isOpen_Km
 
 theorem isCompact_Km (N m : ℕ) : IsCompact (Zls.Km k N m : Set (GL (Fin N) k)) :=
   GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset
-    (Subgroup.isClosed_of_isOpen _ (isOpen_Km N m)) (Km_le_KO N m)
+    (Subgroup.isClosed_of_isOpen _ (isOpen_Km N m)) (_root_.GlobalTheory.CompanionTheory.HeckeOpMul.Km_le_KO N m)
 
 theorem eq_zero_of_forms {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin N) k) V} (hπ : IsSmooth π) {m : ℕ} {w : V}
@@ -171,7 +167,7 @@ theorem antitone_omegaVec (N j : ℕ) : Antitone (Zls.omegaVec N j) := by
   intro a b hab
   have hab' : (a : ℕ) ≤ b := hab
   unfold Zls.omegaVec
-  split_ifs <;> first | omega | exact le_rfl | norm_num
+  split_ifs <;> first | omega
 
 theorem antitone_nsmul_omegaVec (N j r : ℕ) : Antitone (r • Zls.omegaVec N j) := by
   intro a b hab
@@ -297,7 +293,7 @@ theorem conj_entries {m r : ℕ} (hmr : m ≤ r) (x : GL (Fin N) k)
       rfl
     rw [hu]
     push_cast
-    simp only [neg_zero, zpow_zero, Units.val_one, mul_one, sub_zero]
+    simp only [zpow_zero, mul_one, sub_zero]
     rw [mul_assoc, ← pow_add, Nat.sub_add_cancel hmr, mul_comm]
   · have hne : i ≠ j := fun h => h1 (h ▸ h2)
     rw [if_neg h1, if_pos h2, Matrix.one_apply_ne hne, unipRad_lower d hd x hx i j (by omega) h2]

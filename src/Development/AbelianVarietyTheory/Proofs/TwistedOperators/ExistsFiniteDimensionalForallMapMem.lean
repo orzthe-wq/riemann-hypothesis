@@ -1,7 +1,7 @@
 module
 
 public import Formalism.SharpRestriction.Divisibility.SchurIrreducible
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlBlockFiniteDimModuleStructureStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlBlockFiniteDimModuleStructure
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -46,21 +46,6 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 
 namespace GlobalTheory.KHomFinite
 
-theorem isKC_Eab_of_sameBlock {p q : ℕ} {a b : Ix p q} (h : sameBlock a b) : IsKC (Eab a b) := by
-  intro c d hcd
-  unfold Eab
-  rw [Matrix.single_apply]
-  split_ifs with hc
-  · obtain ⟨rfl, rfl⟩ := hc
-    exact absurd h hcd
-  · rfl
-
-theorem sameBlock_self {p q : ℕ} (a : Ix p q) : sameBlock a a := by
-  cases a <;> trivial
-
-theorem sameBlock_of_posC {p q : ℕ} {a b : Ix p q} (h : posC a b) : sameBlock a b := by
-  cases a <;> cases b <;> first | trivial | exact h.elim
-
 theorem map_mem_hwSub {p q : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V']
     [Module ℂ V'] (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (act' : Mat p q →ₗ[ℂ] Module.End ℂ V')
     (φ : V →ₗ[ℂ] V') (hφ : ∀ Z, IsKC Z → ∀ v, φ (act Z v) = act' Z (φ v))
@@ -69,16 +54,8 @@ theorem map_mem_hwSub {p q : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] 
     LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at hv ⊢
   obtain ⟨hw, hhi⟩ := hv
   refine ⟨fun a => ?_, fun a b hab => ?_⟩
-  · rw [← hφ _ (isKC_Eab_of_sameBlock (sameBlock_self a)), ← map_smul, ← map_sub, hw a, map_zero]
-  · rw [← hφ _ (isKC_Eab_of_sameBlock (sameBlock_of_posC hab)), hhi a b hab, map_zero]
-
-theorem kStable_sup {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
-    {act : Mat p q →ₗ[ℂ] Module.End ℂ V} {A B : Submodule ℂ V} (hA : KStable act A)
-    (hB : KStable act B) : KStable act (A ⊔ B) := by
-  intro X hX w hw
-  obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.mp hw
-  rw [map_add (f := _)]
-  exact Submodule.add_mem_sup (hA X hX y hy) (hB X hX z hz)
+  · rw [← hφ _ (_root_.GlobalTheory.TensorHW.isKC_Eab (_root_.GlobalTheory.TensorHW.same_refl a)), ← map_smul, ← map_sub, hw a, map_zero]
+  · rw [← hφ _ (_root_.GlobalTheory.TensorHW.isKC_Eab (_root_.GlobalTheory.TensorHW.same_of_pos hab)), hhi a b hab, map_zero]
 
 theorem exists_kStable_ge {p q : ℕ} (M : GKMod p q) (H : Submodule ℂ M.V)
     (hH : FiniteDimensional ℂ H) :
@@ -96,7 +73,7 @@ theorem exists_kStable_ge {p q : ℕ} (M : GKMod p q) (H : Submodule ℂ M.V)
     · intro x t _ ih
       obtain ⟨E₁, hE₁, hx, hK₁⟩ := M.kfin x
       obtain ⟨E₂, hE₂, ht, hK₂⟩ := ih
-      refine ⟨E₁ ⊔ E₂, inferInstance, ?_, kStable_sup hK₁ hK₂⟩
+      refine ⟨E₁ ⊔ E₂, inferInstance, ?_, _root_.GlobalTheory.BlockReps.stable_sup hK₁ hK₂⟩
       rw [Finset.coe_insert, Submodule.span_insert]
       exact sup_le_sup ((Submodule.span_singleton_le_iff_mem _ _).mpr hx) ht
   obtain ⟨E, hE, hsE, hK⟩ := key s
@@ -115,7 +92,7 @@ theorem exists_finiteDimensional_forall_map_mem :
   refine Nat.strong_induction_on n ?_
   intro n ih U hUW hUK hn
   have hUfd : FiniteDimensional ℂ U := Submodule.finiteDimensional_of_le hUW
-  obtain ⟨hsplit, hhw, -, -⟩ := GlobalTheory.T.glBlock_finiteDim_module_structure p q V act hact U hUfd hUK
+  obtain ⟨hsplit, hhw, -, -⟩ := _root_.GlobalTheory.BlockReps.finite_module_structure p q V act hact U hUfd hUK
     (fun v hv => hWwt v (hUW hv))
   by_cases hU0 : U = ⊥
   · refine ⟨⊥, inferInstance, fun φ _ v hv => ?_⟩

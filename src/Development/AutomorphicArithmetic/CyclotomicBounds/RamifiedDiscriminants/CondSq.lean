@@ -76,7 +76,7 @@ variable {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R)
 
 theorem mem_sq_of_dvd_condN {p : ℕ} (hp : p.Prime) (h : p ∣ H.QS * H.q * H.d) (P : Ideal (𝓞 H.E)) (hP : P.IsPrime)
     (hv : (p : 𝓞 H.E) ∈ P) : (p : 𝓞 H.E) ∈ P ^ 2 := by
-  haveI := hP
+  have := hP
   have hc : p ∣ H.condN := h
   rcases (H.dvd_condN_iff hp).1 hc with hq | rfl | rfl
   · exact H.toHostAx.mem_sq_of_dvd_QS H.QS_exact hp hq P hv
@@ -85,9 +85,9 @@ theorem mem_sq_of_dvd_condN {p : ℕ} (hp : p.Prime) (h : p ∣ H.QS * H.q * H.d
 
 theorem exists_place_over (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
     ∃ w : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ w.asIdeal := by
-  haveI : Fact p.Prime := ⟨hp⟩
+  have : Fact p.Prime := ⟨hp⟩
   set pZ : Ideal ℤ := Ideal.span {((p : ℕ) : ℤ)}
-  haveI : pZ.IsMaximal := Int.ideal_span_isMaximal_of_prime p
+  have : pZ.IsMaximal := Int.ideal_span_isMaximal_of_prime p
   obtain ⟨⟨P, hP, hl⟩⟩ := (inferInstance : Nonempty (pZ.primesOver (𝓞 E)))
   have hz : ((p : ℕ) : ℤ) ∈ Ideal.under ℤ P := by
     rw [← (Ideal.liesOver_iff P pZ).1 hl]

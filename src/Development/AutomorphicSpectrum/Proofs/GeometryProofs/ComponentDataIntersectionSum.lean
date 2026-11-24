@@ -1,12 +1,14 @@
 module
 
-import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DeterminantLatticeGenerator
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.PotentialsBoundedRegSettingEqReference
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.AlternatingMapSumSmulEqDetSmul
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsChartBundle
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueLatOfChartBundle
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundleStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
+public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundle
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.DeterminantLatticeGenerator
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -142,7 +144,7 @@ theorem tens_isGenAt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (C
     exact Submodule.subset_span ⟨t, ht, rfl⟩
 
 theorem detLat_isGenAt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (P : Type) [AddCommGroup P] [Module Ω P] (L : Lat ξ P) (r : ℕ) (s b : Fin r → P) (T : Matrix (Fin r) (Fin r) Ω) (p : Cpt ξ), LinearIndependent Ω s → L.IsFrameAt b p → (∀ k, b k = ∑ k', T k' k • s k') → (Cusp.detLat L s).IsGenAt p T.det := by
-  apply LevelTowerAlt.determinant_lattice_generator <;> assumption
+  apply LevelTowerAlt.determinant_lattice_generator
 
 theorem exists_block_frame : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (P Wv : Type) [AddCommGroup P] [Module Ω P] [AddCommGroup Wv] [Module Ω Wv] (i : Wv →ₗ[Ω] P) (A B : Lat ξ P) (Va Vb : Submodule Ω P) (N j : ℕ) (hj : j ≤ N), Function.Injective i → LinearMap.range i = Va ⊔ Vb → A.IsVB j Va → B.IsVB (N - j) Vb → (Lat.comap (fun p => A p ⊔ B p) i).IsVB N ⊤ → ∀ p : Cpt ξ, ∃ U : X.Opens, p.1 ∈ U ∧ ∃ b : Fin N → Wv, Submodule.span Ω (Set.range b) = ⊤ ∧ Submodule.span Ω (Set.range (b ∘ headIdx hj)) = Va.comap i ∧ (∀ a, i (b (tailIdx hj a)) ∈ Vb) ∧ ∀ q : Cpt ξ, q.1 ∈ U → (Lat.comap (fun p => A p ⊔ B p) i).IsFrameAt b q ∧ B.IsFrameAt (fun a => i (b (tailIdx hj a))) q := by
   intro X Ω _ ξ P Wv _ _ _ _ i A B Va Vb N j hj hinj hrange hA hB hL p
@@ -287,7 +289,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
         e₀⁻¹ • Pw = (u * chartMono Dc.y c aMu) • PiTensorProduct.tprod Ω fun τ => quotWedge (F τ) hj (b τ) := by
     intro l hfl
     obtain ⟨V, ⟨b, hspan, hhead, hmem, hfr⟩, hV⟩ := hl l
-    refine ⟨b, fun τ => ⟨(GlobalTheory.T.segre_chart_bundle 𝔐.X Ω 𝔐.ξ K J Dc.y (W τ) Dc.N (Dc.W τ) _ hT (hvb τ) (hch τ) c (f l) (b τ) hc (hf l) hfl).2
+    refine ⟨b, fun τ => ⟨(_root_.GlobalTheory.CompanionTheory.Ar.isFrameOver_iff_forall_isFrameAt 𝔐.X Ω 𝔐.ξ K J Dc.y (W τ) Dc.N (Dc.W τ) _ hT (hvb τ) (hch τ) c (f l) (b τ) hc (hf l) hfl).2
       fun p hp hu => (hfr τ p (hV p hp hu)).1, hspan τ, hhead τ⟩, ?_⟩
     have hex : ∀ τ, ∃ T : Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) Ω,
         ∀ a, i τ (b τ (tailIdx hj a)) = ∑ a', T a' a • s τ a' := fun τ => by

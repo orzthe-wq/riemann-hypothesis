@@ -97,7 +97,6 @@ theorem pullHyp2_restrict_surjective : ∀ {R : Type} [CommRing R] {C : Type} [C
     linear_combination (norm := abel1) e
   obtain ⟨β, hβ, θ', hθ'⟩ := hl (fun t t' a ↦ a₀ _ _ (G.map a) - a2 t t' a) (by
       intro t t' t'' a b
-      beta_reduce
       rw [G.map_comp, ha2, ha₀']
       simp only [a2, map_sub]
       abel)

@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SmallFam
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqOfIsometricTrivShift
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLBLeBySmallSectionIffLocalQuotientsStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLBLeBySmallSectionIffLocalQuotients
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClassInt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -94,8 +94,8 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k
 
 theorem Le.shift {A B : HermLB p} (t : ℝ) (h : Le B A) :
     Le (B.shift (fun _ => t) fun _ => rfl) (A.shift (fun _ => t) fun _ => rfl) := by
-  obtain ⟨r, r', hr, hr', hreg, hn⟩ := (GlobalTheory.T.hermLBLeBySmallSection_iff_localQuotients k X p A B).1 h
-  refine (GlobalTheory.T.hermLBLeBySmallSection_iff_localQuotients k X p _ _).2 ⟨r, r', hr, hr', hreg, fun σ y i j hi hj => ?_⟩
+  obtain ⟨r, r', hr, hr', hreg, hn⟩ := (_root_.GlobalTheory.HSNef.le_iff_local k X p A B).1 h
+  refine (_root_.GlobalTheory.HSNef.le_iff_local k X p _ _).2 ⟨r, r', hr, hr', hreg, fun σ y i j hi hj => ?_⟩
   have e : ((A.shift (fun _ => t) fun _ => rfl).φ σ).φ i y - ((B.shift (fun _ => t) fun _ => rfl).φ σ).φ j y =
       (A.φ σ).φ i y - (B.φ σ).φ j y := by
     simp only [HermLB.shift, Weight.addFn]; ring
@@ -103,8 +103,8 @@ theorem Le.shift {A B : HermLB p} (t : ℝ) (h : Le B A) :
   exact hn σ y i j hi hj
 
 theorem Le.trans {A B M : HermLB p} (h₁ : Le B A) (h₂ : Le A M) : Le B M := by
-  obtain ⟨r₁, r₁', hr₁, hr₁', hreg₁, hn₁⟩ := (GlobalTheory.T.hermLBLeBySmallSection_iff_localQuotients k X p A B).1 h₁
-  obtain ⟨r₂, r₂', hr₂, hr₂', hreg₂, hn₂⟩ := (GlobalTheory.T.hermLBLeBySmallSection_iff_localQuotients k X p M A).1 h₂
+  obtain ⟨r₁, r₁', hr₁, hr₁', hreg₁, hn₁⟩ := (_root_.GlobalTheory.HSNef.le_iff_local k X p A B).1 h₁
+  obtain ⟨r₂, r₂', hr₂, hr₂', hreg₂, hn₂⟩ := (_root_.GlobalTheory.HSNef.le_iff_local k X p M A).1 h₂
   obtain ⟨a₀, h₀⟩ := exists_chart A.isLB (genericPoint X)
   let c : X.functionFieldˣ := r₂' a₀ / r₁ a₀
   have hs : IsRatSec B.B fun j => r₁' j * c := fun i j h => by
@@ -122,7 +122,7 @@ theorem Le.trans {A B M : HermLB p} (h₁ : Le B A) (h₂ : Le A M) : Le B M := 
     simp only [c, Units.val_mul, Units.val_div_eq_div_val]
     rw [div_mul_div_comm, div_eq_div_iff (mul_ne_zero n₄ (div_ne_zero n₂ n₁)) (mul_ne_zero n₃ n₄), e₁, e₂]
     field_simp
-  refine (GlobalTheory.T.hermLBLeBySmallSection_iff_localQuotients k X p M B).2 ⟨r₂, _, hr₂, hs, fun x i j hi hj => ?_, fun σ y i j hi hj => ?_⟩
+  refine (_root_.GlobalTheory.HSNef.le_iff_local k X p M B).2 ⟨r₂, _, hr₂, hs, fun x i j hi hj => ?_, fun σ y i j hi hj => ?_⟩
   · obtain ⟨a, ha⟩ := exists_chart A.isLB x
     rw [key a (gen_mem ha)]
     exact (hreg₂ x i a hi ha).mul (hreg₁ x a j ha hj)
@@ -146,7 +146,7 @@ namespace GlobalTheory.HSNef
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 theorem Le.tens {A B : HermLB p} (M : HermLB p) (h : Le B A) : Le (M.tens B) (M.tens A) := by
-  obtain ⟨r, r', hr, hr', hreg, hn⟩ := (GlobalTheory.T.hermLBLeBySmallSection_iff_localQuotients k X p A B).1 h
+  obtain ⟨r, r', hr, hr', hreg, hn⟩ := (_root_.GlobalTheory.HSNef.le_iff_local k X p A B).1 h
   obtain ⟨ρ, hρ⟩ := exists_isRatSec M.isLB
   have hs := ((presents_divOfRatSec M.isLB hρ).tens (presents_divOfRatSec A.isLB hr)).isRatSec
   have hs' := ((presents_divOfRatSec M.isLB hρ).tens (presents_divOfRatSec B.isLB hr')).isRatSec
@@ -154,7 +154,7 @@ theorem Le.tens {A B : HermLB p} (M : HermLB p) (h : Le B A) : Le (M.tens B) (M.
       ((ρ c.1 * r c.2 : X.functionFieldˣ) : X.functionField) / ((ρ d.1 * r' d.2 : X.functionFieldˣ) : X.functionField) =
         (ρ c.1 : X.functionField) / (ρ d.1 : X.functionField) * ((r c.2 : X.functionField) / (r' d.2 : X.functionField)) := by
     rw [Units.val_mul, Units.val_mul, mul_div_mul_comm]
-  refine (GlobalTheory.T.hermLBLeBySmallSection_iff_localQuotients k X p (M.tens A) (M.tens B)).2 ⟨fun c => ρ c.1 * r c.2, fun d => ρ d.1 * r' d.2, hs, hs',
+  refine (_root_.GlobalTheory.HSNef.le_iff_local k X p (M.tens A) (M.tens B)).2 ⟨fun c => ρ c.1 * r c.2, fun d => ρ d.1 * r' d.2, hs, hs',
     fun x c d hc hd => ?_, fun σ y c d hc hd => ?_⟩
   · beta_reduce
     erw [key c d]
@@ -205,12 +205,11 @@ theorem le_of_isometric {A B : HermLB p} (hi : B.Isometric A) : Le B A := by
     rw [div_eq_iff (r b).ne_zero, ← hF, hr b b₀ (memInf h'.2 h₀), ← hF _ (B.B.g b b₀), ← Units.val_mul, ← Units.val_mul,
       hw' a a b b₀ h'.1 h'.1 h'.2 h₀, hM a h'.1, one_mul, mul_comm (F _ (B.B.g b b₀))⁻¹, mul_assoc,
       inv_mul_cancel_left]
-  refine (GlobalTheory.T.hermLBLeBySmallSection_iff_localQuotients k X p A B).2 ⟨_, r, hr', hr, fun x a b ha hb => ?_, fun σ y a b ha hb => ?_⟩
+  refine (_root_.GlobalTheory.HSNef.le_iff_local k X p A B).2 ⟨_, r, hr', hr, fun x a b ha hb => ?_, fun σ y a b ha hb => ?_⟩
   · beta_reduce
     rw [key a b (gen_mem (memInf ha hb))]
     exact regAt_fnOf (memInf ha hb) _ _
   · have hab := mem_ptsIn_inf.2 ⟨ha, hb⟩
-    beta_reduce
     rw [key a b (gen_mem (mem_ptsIn.1 hab)), ratVal_fnOf hab, h σ a b y ha hb, add_sub_cancel_left, logSq,
       norm_mul_exp_neg_log_normSq (ev_ne_zero hab (Units.isUnit _))]
 

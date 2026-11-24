@@ -81,7 +81,7 @@ theorem distribHaarChar_norm {k k' : Type} [Field k] [ValuativeRel k] [Topologic
   rw [← h1, GroundTheory.Automorphic.Measures.distribHaarChar_pi_eq]
   congr 1
   ext
-  simp only [Units.coe_map, MonoidHom.coe_coe, LinearEquiv.coe_det, Lz, Algebra.norm_apply]
+  simp only [Units.coe_map, LinearEquiv.coe_det, Lz, Algebra.norm_apply]
   symm
   show LinearMap.det (e.toLinearMap ∘ₗ M.toLinearMap ∘ₗ e.symm.toLinearMap) = _
   rw [LinearMap.det_conj]

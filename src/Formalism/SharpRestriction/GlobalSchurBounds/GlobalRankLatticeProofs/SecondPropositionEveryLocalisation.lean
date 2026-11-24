@@ -58,9 +58,6 @@ namespace SlopeTestRemainingChoices
 theorem ord_five (e : ℕ) : orderOf (hcl e (u5 (e + 2))) = 2 ^ e :=
   (hostGroup e).2.2.2.2.2.2.2.1
 
-theorem card_HGrp (e : ℕ) : Nat.card (HGrp e) = 2 ^ e :=
-  (hostGroup e).2.2.2.2.2.2.1
-
 theorem iotaH_add (e : ℕ) (i j : ZMod (2 ^ e)) : iotaH e (i + j) = iotaH e i * iotaH e j := by
   unfold iotaH
   have h := pow_mod_orderOf (hcl e (u5 (e + 2))) (i.val + j.val)
@@ -76,9 +73,9 @@ theorem iotaH_injective (e : ℕ) : Function.Injective (iotaH e) := by
   exact ZMod.val_injective _ hij
 
 theorem iotaH_bijective (e : ℕ) : Function.Bijective (iotaH e) := by
-  have : Finite (HGrp e) := Nat.finite_of_card_ne_zero (by rw [card_HGrp]; positivity)
+  have : Finite (HGrp e) := Nat.finite_of_card_ne_zero (by rw [_root_.Formalism.FrobeniusOrbits.Group.card_H]; positivity)
   refine (iotaH_injective e).bijective_of_nat_card_le ?_
-  rw [card_HGrp, Nat.card_zmod]
+  rw [_root_.Formalism.FrobeniusOrbits.Group.card_H, Nat.card_zmod]
 
 theorem iotaH_iotaHInv (e : ℕ) (x : HGrp e) : iotaH e (iotaHInv e x) = x :=
   Function.rightInverse_invFun (iotaH_bijective e).2 x
@@ -90,8 +87,6 @@ theorem orderOf_iotaH (e : ℕ) (i : ZMod (2 ^ e)) : orderOf (iotaH e i) = addOr
   have h := orderOf_injective (iotaHom e) (iotaH_injective e) (Multiplicative.ofAdd i)
   rw [orderOf_ofAdd_eq_addOrderOf] at h
   exact h
-
-theorem cc_mul_cc (φ : Formalism.HC.Frame) : φ.cc * φ.cc = 1 := φ.cc_mul_cc
 
 section Emb
 

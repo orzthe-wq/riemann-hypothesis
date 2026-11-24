@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.PerCApply
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -90,7 +91,7 @@ private theorem form_ext {F : Type} [Field F] [NumberField F] [IsCMField F] {n :
       ext k
       by_cases hk : k = i
       · subst hk; simp
-      · simp [Pi.single_apply, hk]
+      · simp [hk]
     rw [e1, Matrix.mulVec_smul, Matrix.mulVec_single_one, single_one_dotProduct]
     simp [mul_comm]
   rwa [e M, e N] at this

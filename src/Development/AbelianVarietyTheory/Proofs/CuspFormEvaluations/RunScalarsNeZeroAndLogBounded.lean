@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ThetaValues.SWEqSOf
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.RamifiedPrimePowersSizeBounds
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaLatticeWeightScalarNeZeroAndLogBoundsStatement
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaLatticeWeightScalarNeZeroAndLogBounds
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -122,15 +122,15 @@ theorem comb_eq (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂
 theorem comb_ne_zero (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) (hp : 0 < p)
     (G wL wF : WeightFamilies.Wt D j) (T : ℕ) : comb B hinj EX p G wL wF T ≠ 0 := by
   unfold comb
-  refine mul_ne_zero (mul_ne_zero ?_ (pow_ne_zero _ (GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wL).1)) (GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wF).1
+  refine mul_ne_zero (mul_ne_zero ?_ (pow_ne_zero _ (_root_.GlobalTheory.RunIn.sOf_ne_zero_and_log_bounds D B hinj EX j wL).1)) (_root_.GlobalTheory.RunIn.sOf_ne_zero_and_log_bounds D B hinj EX j wF).1
   exact Nat.cast_ne_zero.2 (pow_ne_zero _ hp.ne')
 
 theorem log_comb_le (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) (hp : 0 < p)
     (G wL wF : WeightFamilies.Wt D j) (T : ℕ) (σ : B.KO →+* ℂ) :
     Real.log ‖σ (comb B hinj EX p G wL wF T : B.KO)‖ ≤
       2 * Real.log p * G.size + lamStar D * (T * wL.size + wF.size) := by
-  obtain ⟨hL0, hL⟩ := GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wL
-  obtain ⟨hF0, hF⟩ := GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wF
+  obtain ⟨hL0, hL⟩ := _root_.GlobalTheory.RunIn.sOf_ne_zero_and_log_bounds D B hinj EX j wL
+  obtain ⟨hF0, hF⟩ := _root_.GlobalTheory.RunIn.sOf_ne_zero_and_log_bounds D B hinj EX j wF
   have hL1 := (hL σ).2.2.2
   have hF1 := (hF σ).2.2.2
   have nz : ∀ x : 𝓞 B.KO, x ≠ 0 → ‖σ (x : B.KO)‖ ≠ 0 := fun x hx => by
@@ -201,7 +201,7 @@ theorem GlobalTheory.RunIn.scalOfP_size : ∀ (D : D7) (B : WeightFamilies.Prov 
   rw [eF, e0, eK, sW_eq_sOf]
   refine ⟨comb_ne_zero B hinj EX p hp _ _ _ _, comb_ne_zero B hinj EX p hp _ _ _ _,
     comb_ne_zero B hinj EX p hp _ _ _ _, fun σ => ⟨?_, ?_, log_comb_le' B hinj EX p hp wL wF hn1 _ σ, ?_⟩⟩
-  · have h := ((GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wL).2 σ).2.2.2
+  · have h := ((_root_.GlobalTheory.RunIn.sOf_ne_zero_and_log_bounds D B hinj EX j wL).2 σ).2.2.2
     nlinarith [mul_nonneg hl (le_trans zero_le_one wL.one_le_size)]
   · have h := log_comb_le B hinj EX p hp wF wL wF 0 σ
     push_cast at h

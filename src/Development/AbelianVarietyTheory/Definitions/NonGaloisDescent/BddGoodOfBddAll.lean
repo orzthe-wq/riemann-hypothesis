@@ -87,15 +87,10 @@ theorem bddAll_iff_smul (κ : c.F) (f : Rul Xo c) : BddAll Xo c la κ f ↔ BddA
   unfold BddAll
   simp only [map_one, one_mul, evI_smul]
 
-private theorem evI_add_non_galois_descent {T : CDVR} {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f g : Rul Xo c) :
-    evI y (f + g) = evI y f + evI y g := by
-  letI := io.toAlgebra
-  exact evalAt_add _ _ f g _
-
 theorem bddAll_add {κ : c.F} {f g : Rul Xo c} (hf : BddAll Xo c la κ f) (hg : BddAll Xo c la κ g) :
     BddAll Xo c la κ (f + g) := by
   intro T io e ho y hy
-  rw [evI_add_non_galois_descent, mul_add]
+  rw [_root_.Formalism.L2.Pj.evI_add, mul_add]
   exact (algebraMap T.V T.Fr).range.add_mem (hf T io e ho y hy) (hg T io e ho y hy)
 
 theorem inV_io {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ} (ho : OverLa la T.V io e) {a : c.F} (ha : a ≠ 0) :

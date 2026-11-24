@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.CMLattices.IsDiffOf
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IntegersOfCmFieldConjStructureStatement
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IntegersOfCmFieldConjStructure
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,12 +57,12 @@ theorem kFun_coe {H : Host E} (D : Datum H) (ε : ℤˣ) (x y : D.La) : ((kFun D
   simp only [kFun, wK, Subalgebra.coe_add, Subalgebra.coe_mul, SubringClass.coe_intCast]
 
 theorem kform_w0_sq (H : Host E) : H.w0 * H.w0 = H.w0 - (((1 + H.d) / 4 : ℕ) : 𝓞 E) := by
-  have h := congrArg (fun a : OK H => (a : 𝓞 E)) (GlobalTheory.T.integers_of_cm_field_conj_structure E H).2.2.2.1
+  have h := congrArg (fun a : OK H => (a : 𝓞 E)) (_root_.GlobalTheory.CM.OK_isDedekindDomain_and_projective E H).2.2.2.1
   simp only [wK, Subalgebra.coe_add, SubmonoidClass.coe_pow, SubringClass.coe_natCast] at h
   linear_combination h
 
 theorem kform_bar_w0 (H : Host E) : H.bar H.w0 = 1 - H.w0 := by
-  obtain ⟨br, h1, h2, -⟩ := (GlobalTheory.T.integers_of_cm_field_conj_structure E H).2.2.1
+  obtain ⟨br, h1, h2, -⟩ := (_root_.GlobalTheory.CM.OK_isDedekindDomain_and_projective E H).2.2.1
   have h := congrArg (fun a : OK H => (a : 𝓞 E)) h2
   simp only [Subalgebra.coe_add, h1, Subalgebra.coe_one] at h
   simp only [wK] at h
@@ -102,7 +102,7 @@ theorem kFun_w0 {H : Host E} (D : Datum H) (ε : ℤˣ) (x y : D.La) :
 
 theorem kFun_smul {H : Host E} (D : Datum H) (ε : ℤˣ) (a : OK H) (x y : D.La) :
     kFun D ε (a • x) y = a * kFun D ε x y := by
-  obtain ⟨⟨m, n⟩, rfl, -⟩ := (GlobalTheory.T.integers_of_cm_field_conj_structure E H).2.1 a
+  obtain ⟨⟨m, n⟩, rfl, -⟩ := (_root_.GlobalTheory.CM.OK_isDedekindDomain_and_projective E H).2.1 a
   have : ((m : OK H) + (n : OK H) * wK H) • x = m • x + n • H.w0 • x := by
     rw [add_smul, mul_smul, Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul]; rfl
   simp only
@@ -117,13 +117,13 @@ theorem kLin_apply {H : Host E} (D : Datum H) (ε : ℤˣ) (x y : D.La) : kLin D
 
 theorem kform_coeff_unique (H : Host E) {a b c d : ℤ}
     (h : (a : OK H) + (b : OK H) * wK H = (c : OK H) + (d : OK H) * wK H) : a = c ∧ b = d := by
-  have := ((GlobalTheory.T.integers_of_cm_field_conj_structure E H).2.1 ((a : OK H) + (b : OK H) * wK H)).unique (y₁ := (a, b)) (y₂ := (c, d)) rfl h
+  have := ((_root_.GlobalTheory.CM.OK_isDedekindDomain_and_projective E H).2.1 ((a : OK H) + (b : OK H) * wK H)).unique (y₁ := (a, b)) (y₂ := (c, d)) rfl h
   exact Prod.mk.inj this
 
 theorem kLin_perfect {H : Host E} (D : Datum H) (ε : ℤˣ) (f : D.La →ₗ[OK H] OK H) :
     ∃! y, ∀ x, f x = kLin D ε x y := by
   have hε : (ε : ℤ) * ε = 1 := by rw [← Units.val_mul, Int.units_mul_self, Units.val_one]
-  choose c hc using fun a => ((GlobalTheory.T.integers_of_cm_field_conj_structure E H).2.1 a).exists
+  choose c hc using fun a => ((_root_.GlobalTheory.CM.OK_isDedekindDomain_and_projective E H).2.1 a).exists
   let b : D.La →+ ℤ := AddMonoidHom.mk' (fun x => -(ε : ℤ) * (c (f x)).2) (by
     intro x x'
     have : (((c (f (x + x'))).1 : ℤ) : OK H) + ((c (f (x + x'))).2 : OK H) * wK H =
@@ -178,7 +178,7 @@ theorem exists_kForm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   · rw [kLin_apply, kLin_apply, kFun, kFun, smul_comm H.w0 s x, D.adj, D.adj s]
   · rw [kLin_apply, kFun_coe, D.alt]
     push_cast; ring
-  · obtain ⟨h1, h2, -⟩ := (GlobalTheory.T.integers_of_cm_field_conj_structure E H).2.2.2.2.2 D.La D.fin D.proj
+  · obtain ⟨h1, h2, -⟩ := (_root_.GlobalTheory.CM.OK_isDedekindDomain_and_projective E H).2.2.2.2.2 D.La D.fin D.proj
     obtain ⟨n, π, hπ⟩ := Module.Finite.exists_fin' (OK H) D.La
     obtain ⟨s, hs⟩ := Module.projective_lifting_property π LinearMap.id hπ
     choose y hy using fun i : Fin n => (kLin_perfect D ε ((LinearMap.proj i).comp s)).exists

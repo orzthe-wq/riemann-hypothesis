@@ -145,8 +145,6 @@ theorem exists_measure_of_positive (Λ : C(X, ℂ) →ₗ[ℂ] ℂ)
   have hI : Integrable (fun x => f x) (RealRMK.rieszMeasure Lp) := by
     first
       | exact f.continuous.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
-      | exact ContinuousMap.integrable f
-      | exact (integrableOn_univ).1 (f.continuous.continuousOn.integrableOn_compact isCompact_univ)
   conv_lhs => rw [eq_ofR_re_add_im f]
   rw [map_add (f := _), map_smul, ofR_eq_re Λ hΛ, ofR_eq_re Λ hΛ (imC f), ← hint, ← hint, smul_eq_mul,
     ← integral_re_add_im hI]

@@ -95,14 +95,6 @@ def IsPhi (n : ℕ) (B : W.UniversalOrdinaryDeterminantRing K.r) (φ : B.B →�
 
 end Link
 
-structure UIn : Prop where
-  coh : CohomologyHyp
-  pr : Af.HypothesesH
-  modU : W.ModU
-  lev : W.LevEx
-  lam : W.LamEx
-  b0 : W.ProModularRingExists
-
 end UpperTheory.V.Ws
 
 end

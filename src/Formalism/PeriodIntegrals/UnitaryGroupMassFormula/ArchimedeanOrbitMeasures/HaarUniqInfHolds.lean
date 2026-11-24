@@ -65,7 +65,7 @@ theorem haarUniqInf_holds : HaarUniqInf := by
   refine ⟨(Measure.haarScalarFactor m X.measG.μGinf : ENNReal), ENNReal.coe_ne_top, ?_⟩
   conv_lhs => rw [Measure.isMulLeftInvariant_eq_smul m X.measG.μGinf]
   ext s hs
-  simp [Measure.smul_apply]
+  simp
 
 def WittInf : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ) hT μinf νinf fibInf,
     PushHyp X u' ψ hT μinf νinf fibInf → FbI X u' hT ⊆ Set.range (orbM X u')

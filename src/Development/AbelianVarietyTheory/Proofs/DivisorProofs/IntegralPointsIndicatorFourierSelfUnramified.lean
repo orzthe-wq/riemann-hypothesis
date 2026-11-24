@@ -89,7 +89,7 @@ theorem ind_fourier_self : ∀ (F : Type) [Field F] [NumberField F] (v : Pl (F :
     have hs : ∀ j, (Pi.single i t : κ → Fv F v) j ∈ v.adicCompletionIntegers F := fun j => by
       by_cases hj : j = i
       · subst hj; simpa using ht
-      · simp [Pi.single_apply, hj]
+      · simp [hj]
     have hind : ∀ x, ind κ v (Pi.single i t + x) = ind κ v x := fun x => by
       have : (∀ j, ((Pi.single i t : κ → Fv F v) + x) j ∈ v.adicCompletionIntegers F) ↔ ∀ j, x j ∈ v.adicCompletionIntegers F := by
         constructor

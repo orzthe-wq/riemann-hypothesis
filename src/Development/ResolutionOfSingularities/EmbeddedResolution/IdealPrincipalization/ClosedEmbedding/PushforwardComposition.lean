@@ -87,7 +87,7 @@ theorem comp {Y H X : Scheme.{u}} (σ : Y ⟶ H) [IsClosedImmersion σ]
     have hit : i < t.length := by omega
     have := haci i hi.le
     have := hbci i hit.le
-    show u.center i = imageIdealSheaf (a i hi.le ≫ b i hit.le) (s.center i)
+    show u.center i = _root_.FunctorialResolution.Blowup.schemeImageIdeal (a i hi.le ≫ b i hit.le) (s.center i)
     rw [hbc i hit, hac i hi, imageIdealSheaf_comp]
   · intro i hi
     have hit : i < t.length := by omega
@@ -140,8 +140,8 @@ theorem of_isomorphic_source {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion
       exact IsPullback.of_horiz_isIso ⟨hsq⟩
     · intro i hi
       have hi' : i < s.length := by omega
-      have h1 : imageIdealSheaf (e i hi'.le).hom ((s'.center i).comap (e i hi'.le).hom)
-          = imageIdealSheaf (e i hi'.le).hom (s.center i) := by rw [hce i hi']
+      have h1 : _root_.FunctorialResolution.Blowup.schemeImageIdeal (e i hi'.le).hom ((s'.center i).comap (e i hi'.le).hom)
+          = _root_.FunctorialResolution.Blowup.schemeImageIdeal (e i hi'.le).hom (s.center i) := by rw [hce i hi']
       rw [imageIdealSheaf_comap] at h1
       have h2 : inv (e i hi'.le).hom = (e i hi'.le).inv :=
         IsIso.inv_eq_of_hom_inv_id (Iso.hom_inv_id (e i hi'.le))

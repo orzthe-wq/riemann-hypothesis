@@ -174,8 +174,7 @@ theorem exp_neg_phla_le {r : ℕ} {X : Data E r} {x0 : Frame X.Ψ r} (h0 : IsOrt
     _ ≤ |(a' τ : ℝ) - a τ| * (-l) := mul_le_mul_of_nonneg_right (neg_le_abs _) (by linarith)
     _ ≤ _ := mul_le_mul_of_nonneg_left h4 (abs_nonneg _)
 
-theorem ae_mem_OmF {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r) : ∀ᵐ z ∂muF X x0, z ∈ OmF X x0 :=
-  (withDensity_absolutelyContinuous _ _).ae_le (ae_restrict_mem (OntoB.isOpen_OmF X x0).measurableSet)
+alias ae_mem_OmF := _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.ae_OmF'
 
 theorem lintegral_lt_top (hMI : MeasInvStatement (E := E)) {r : ℕ} {X : Data E r} {x0 : Frame X.Ψ r}
     (h0 : IsOrth X x0) {la : Wt X.Ψ r} (hla : BlockConst X la) {bb ε : ℝ} (hbb : 0 ≤ bb)

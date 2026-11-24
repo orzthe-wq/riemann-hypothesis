@@ -108,8 +108,7 @@ theorem tval_hasDerivAt {Ψ : V → E'} (hΨ : ContDiff ℝ ((⊤ : ℕ∞) : Wi
   have hD := (hA.hasFDerivAt).continuousMultilinearMap_apply (fun i => (hv i).hasFDerivAt)
   refine hD.hasDerivAt.congr_deriv ?_
   simp only [crv_zero, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp', Function.comp_apply,
-    ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.smulRight_apply,
-    ContinuousLinearMap.one_apply, one_smul, ContinuousMultilinearMap.apply_apply,
+    ContinuousLinearMap.coe_sum', Finset.sum_apply, one_smul, ContinuousMultilinearMap.apply_apply,
     ContinuousMultilinearMap.toContinuousLinearMap_apply, ContinuousLinearMap.toSpanSingleton_apply]
   simp only [tnext, List.map_cons, List.sum_cons, List.map_ofFn, List.sum_ofFn]
   congr 1
@@ -120,7 +119,7 @@ theorem tval_hasDerivAt {Ψ : V → E'} (hΨ : ContDiff ℝ ((⊤ : ℕ∞) : Wi
   by_cases h : l = i
   · subst h
     simp
-  · simp [Function.update_apply, h]
+  · simp [h]
 
 theorem expand {Ψ : V → E'} (hΨ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Ψ) {F : Mat k r → V}
     {U : Set (Mat k r)} (hU : IsOpen U) (hF : CkOn ⊤ (U ∩ GV k r) F) :
@@ -174,7 +173,7 @@ theorem expand {Ψ : V → E'} (hΨ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ
             by_cases h : l = i
             · subst h
               simp
-            · simp [Function.update_apply, h]
+            · simp [h]
           simp only [e, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, hsum,
             List.length_cons]
         · intro l

@@ -210,12 +210,12 @@ theorem exp_sum (S : Finset ℕ) (a : ℕ → ℂ) (l : ℕ → ℝ) (T : ℝ) (
         gcongr; exact h2.trans h3
     _ = _ := by ring
 
-theorem gallagher : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (a : ℕ → ℂ) (T : ℝ), 1 ≤ T →
+theorem gallagher_of_pos : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (a : ℕ → ℂ) (T : ℝ), 0 < T →
     (∫ t in (-T)..T, ‖∑ n ∈ Finset.Icc 1 N, a n * (n : ℂ) ^ (-(t * I))‖ ^ 2) ≤
       C * T ^ 2 * ∫ x in Set.Ioi (0 : ℝ), ‖∑ n ∈ (Finset.Icc 1 N).filter
         (fun n : ℕ => x < n ∧ (n : ℝ) ≤ x * Real.exp (1 / T)), a n‖ ^ 2 / x := by
   refine ⟨8 * π, by positivity, fun N a T hT => ?_⟩
-  have h := exp_sum (Finset.Icc 1 N) a (fun n => Real.log n) T (by linarith)
+  have h := exp_sum (Finset.Icc 1 N) a (fun n => Real.log n) T hT
   convert h using 2
   · funext t
     congr 2
@@ -243,5 +243,12 @@ theorem gallagher : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (a : ℕ → ℂ) (T : 
     refine if_congr ?_ rfl rfl
     rw [Set.mem_Ico, ← Real.lt_log_iff_exp_lt hn0, ← Real.log_le_iff_le_exp hn0]
     constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> linarith
+
+theorem gallagher : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) (a : ℕ → ℂ) (T : ℝ), 1 ≤ T →
+    (∫ t in (-T)..T, ‖∑ n ∈ Finset.Icc 1 N, a n * (n : ℂ) ^ (-(t * I))‖ ^ 2) ≤
+      C * T ^ 2 * ∫ x in Set.Ioi (0 : ℝ), ‖∑ n ∈ (Finset.Icc 1 N).filter
+        (fun n : ℕ => x < n ∧ (n : ℝ) ≤ x * Real.exp (1 / T)), a n‖ ^ 2 / x := by
+  obtain ⟨C, hC, H⟩ := gallagher_of_pos
+  exact ⟨C, hC, fun N a T hT => H N a T (zero_lt_one.trans_le hT)⟩
 
 end GlobalTheory.GallagherLemma

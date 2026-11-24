@@ -1,15 +1,17 @@
 module
 
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.Development
+public import Formalism.PeriodIntegrals.HasseOrdBd
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.CompositionalInverseSymm
 public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ZeroGeneratorsLeThetaSpan
 public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.IntegralFormsEqSpan
-public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HasseOrdBd
-public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HassePresH
+public import Formalism.PeriodIntegrals.HassePresH
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseDerivativeFiltration.HasseMemHfr
 public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.FinitePtsOfCurve
 public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ThetaLeMsupOfSetC
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -29,6 +31,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -41,10 +44,201 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.AddPreservesExpCongruence, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.OrthogonalSplitPolarizationVanishes, Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HasseOrdBd, Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ReductionUniformizerSmulMem
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.AddPreservesExpCongruence =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.AddPreservesExpCongruence", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.Development\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.BasicNotions NumberField IsDedekindDomain Module Formalism.MainNotions.Gaps.EtaleWeightGaps
+
+namespace PI.HasseOrdBdW
+
+variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
+
+theorem kp_charZero (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) : CharZero (Kp X la N) := by
+  have := Kl_charZero X la
+  exact charZero_of_injective_algebraMap (algebraMap (X.Kl la) (Kp X la N)).injective
+
+theorem isUnif_unifO (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
+    (hfd : FiniteDimensional (Kp X la G.N) (OsK X la G.w)) :
+    IsUnif (OsK X la G.w) (unifO X la G.N) := by
+  have : Algebra.IsIntegral (Kp X la G.N) (OsK X la G.w) := Algebra.IsIntegral.of_finite _ _
+  exact isUnif_of_field (Kp X la G.N)
+    (Op.irreducible_map X la G.N (Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible (X.Ol la))))
+
+theorem isDVRAt_pt (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (hP : PublishedIntClos)
+    (hfd : FiniteDimensional (Kp X la G.N) (OsK X la G.w)) (hred : IsReduced (OsK X la G.w))
+    (ζ : PtsG G la) : IsDVRAt ζ := by
+  have := kp_charZero (X := X) la G.N
+  exact (hP (Op X la G.N) (Kp X la G.N) (OsK X la G.w)).2 ζ
+
+theorem addPreservesExpCongruence : S3 := by
+  intro D B P j X ka wL wF G la Q hP hC ζ
+  obtain ⟨hfd, hred, hgen⟩ := hC
+  have hU := isUnif_unifO G la hfd
+  have := isDVRAt_pt G la hP hfd hred ζ
+  refine ⟨ordV_zero Q.c ζ hU hgen, fun m v => ?_⟩
+  show ordV (unifO X la G.N) ζ Q.e Q.c v ≤ ordV (unifO X la G.N) ζ Q.e Q.c (m • v)
+  rw [← Int.cast_smul_eq_zsmul (OsK X la G.w) m v, ordV_smul Q.c ζ hU hgen]
+  exact le_add_of_nonneg_left (ord_nonneg ζ hU (intCast_mem _ m))
+
+theorem expCongruenceExtendsToSum : S4 := by
+  intro e vf vg d T n hvf h
+  refine mul_le_mul_of_nonneg_left ?_ (by exact_mod_cast Nat.zero_le e)
+  have e1 : (T : EReal) * (d : EReal) = ((T * d : ℝ) : EReal) := by rw [EReal.coe_mul]; rfl
+  have e2 : ((T + n : ℕ) : EReal) * (d : EReal) = ((((T + n : ℕ) : ℝ) * d : ℝ) : EReal) := by
+    rw [EReal.coe_mul]; rfl
+  rw [e1, e2]
+  induction vf using EReal.rec with
+  | bot => exact absurd rfl hvf
+  | top =>
+    have hg : vg = ⊤ := by
+      rw [EReal.top_add_coe] at h
+      exact top_le_iff.mp h
+    rw [hg, EReal.top_sub_coe, EReal.top_sub_coe]
+  | coe a =>
+    induction vg using EReal.rec with
+    | bot =>
+      rw [← EReal.coe_add] at h
+      exact absurd (le_bot_iff.mp h) (EReal.coe_ne_bot _)
+    | top =>
+      rw [EReal.top_sub_coe]
+      exact le_top
+    | coe b =>
+      have h' : a + n * d ≤ b := by
+        rw [← EReal.coe_add] at h
+        exact EReal.coe_le_coe_iff.mp h
+      rw [← EReal.coe_sub, ← EReal.coe_sub, EReal.coe_le_coe_iff]
+      push_cast
+      nlinarith
+
+end PI.HasseOrdBdW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.AddPreservesExpCongruence =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.OrthogonalSplitPolarizationVanishes =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.OrthogonalSplitPolarizationVanishes", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.Development\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.BasicNotions NumberField IsDedekindDomain Module Formalism.MainNotions.Gaps.EtaleWeightGaps
+
+namespace PI.HasseOrdBdW
+
+section
+
+variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : PJ D B P j)
+
+def Rep (u : WeightFamilies.Wt D j) (F : X.Forms) : Prop := ∃ g : B.Cusp j u, X.inc u g = F
+
+variable {X}
+
+theorem rep_mul {wL u : WeightFamilies.Wt D j} (x : B.Cusp j wL) {F : X.Forms} (hF : Rep X u F) :
+    Rep X (wadd wL u) (X.inc wL x * F) := by
+  obtain ⟨g, rfl⟩ := hF
+  obtain ⟨H, hH⟩ := X.inc_mul wL u x g
+  exact ⟨H, hH.symm⟩
+
+theorem rep_pow (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) {wL wF : WeightFamilies.Wt D j} (x : B.Cusp j wL) (d : ℝ)
+    (hd : (d : EReal) ≤ X.vAt la y (X.inc wL x)) :
+    ∀ (a m : ℕ) (F : X.Forms), Rep X (addL wF wL m) F →
+      Rep X (addL wF wL (m + a)) (X.inc wL x ^ a * F) ∧
+      X.vAt la y F + (((a : ℝ) * d : ℝ) : EReal) ≤ X.vAt la y (X.inc wL x ^ a * F) := by
+  intro a
+  induction a with
+  | zero =>
+    intro m F hF
+    simp only [pow_zero, one_mul, Nat.cast_zero, zero_mul, EReal.coe_zero, add_zero]
+    exact ⟨hF, le_rfl⟩
+  | succ a ih =>
+    intro m F hF
+    obtain ⟨hR, hv⟩ := ih m F hF
+    have hR' := rep_mul x hR
+    rw [wadd_addL] at hR'
+    refine ⟨by rw [pow_succ', mul_assoc]; exact hR', ?_⟩
+    obtain ⟨g, hg⟩ := hR
+    rw [pow_succ', mul_assoc, ← hg, X.vAt_mul]
+    rw [← hg] at hv
+    have e1 : ((((a + 1 : ℕ) : ℝ) * d : ℝ)) = (a : ℝ) * d + d := by push_cast; ring
+    rw [e1, EReal.coe_add]
+    calc X.vAt la y F + ((((a : ℝ) * d : ℝ) : EReal) + (d : EReal))
+        = (d : EReal) + (X.vAt la y F + (((a : ℝ) * d : ℝ) : EReal)) := by ac_rfl
+      _ ≤ _ := add_le_add hd hv
+
+theorem rep_prod (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) {N : ℕ} {wL wF : WeightFamilies.Wt D j}
+    (w : Fin N → B.Cusp j wL) (d : ℝ) (hd : ∀ k, (d : EReal) ≤ X.vAt la y (X.inc wL (w k))) (e : Fin N → ℕ) :
+    ∀ (s : Finset (Fin N)) (m : ℕ) (F : X.Forms), Rep X (addL wF wL m) F →
+      Rep X (addL wF wL (m + ∑ k ∈ s, e k)) ((∏ k ∈ s, X.inc wL (w k) ^ e k) * F) ∧
+      X.vAt la y F + ((((∑ k ∈ s, e k : ℕ) : ℝ) * d : ℝ) : EReal) ≤
+        X.vAt la y ((∏ k ∈ s, X.inc wL (w k) ^ e k) * F) := by
+  classical
+  intro s
+  induction s using Finset.induction_on with
+  | empty =>
+    intro m F hF
+    simp only [Finset.prod_empty, Finset.sum_empty, one_mul, add_zero, Nat.cast_zero, zero_mul, EReal.coe_zero]
+    exact ⟨hF, le_rfl⟩
+  | @insert a s ha ih =>
+    intro m F hF
+    obtain ⟨hR, hv⟩ := ih m F hF
+    obtain ⟨hR2, hv2⟩ := rep_pow la y (w a) d (hd a) (e a) _ _ hR
+    rw [Finset.prod_insert ha, Finset.sum_insert ha, mul_assoc]
+    refine ⟨?_, ?_⟩
+    · have h3 : m + (e a + ∑ k ∈ s, e k) = m + ∑ k ∈ s, e k + e a := by ring
+      rw [h3]
+      exact hR2
+    · calc _ = X.vAt la y F + ((((∑ k ∈ s, e k : ℕ) : ℝ) * d : ℝ) : EReal) + (((e a : ℝ) * d : ℝ) : EReal) := by
+            rw [add_assoc, ← EReal.coe_add]
+            congr 2
+            push_cast
+            ring
+        _ ≤ _ := le_trans (add_le_add hv le_rfl) hv2
+
+end
+
+theorem orthogonalSplitPolarizationVanishes : S2 := by
+  intro D B P j X la y N wL wF w d hd m g e n hn
+  subst hn
+  obtain ⟨⟨g', hg'⟩, hv⟩ := rep_prod la y w d hd e Finset.univ m (X.inc _ g) ⟨g, rfl⟩
+  refine ⟨g', by rw [mul_comm, hg'], ?_⟩
+  rw [hg']
+  exact hv
+
+end PI.HasseOrdBdW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.OrthogonalSplitPolarizationVanishes =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HasseOrdBd =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HasseOrdBd", "h": "module\n\npublic import Formalism.PeriodIntegrals.HasseOrdBd\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.AddPreservesExpCongruence\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.CompositionalInverseSymm\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseOrderBound.OrthogonalSplitPolarizationVanishes\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem hasse_order_bound : PI.HasseOrdBd :=
+  PI.HasseOrdBdW.hasseOrdBd_of PI.HasseOrdBdW.compositionalInverseSymm PI.HasseOrdBdW.orthogonalSplitPolarizationVanishes PI.HasseOrdBdW.addPreservesExpCongruence
+    PI.HasseOrdBdW.expCongruenceExtendsToSum
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HasseOrdBd =====
+
+-- ===== clump member: Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ReductionUniformizerSmulMem =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ReductionUniformizerSmulMem", "h": "module\n\npublic import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ZeroGeneratorsLeThetaSpan\npublic import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.IntegralFormsEqSpan\npublic import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HasseOrdBd\npublic import Formalism.PeriodIntegrals.HassePresH\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseDerivativeFiltration.HasseMemHfr\npublic import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.FinitePtsOfCurve\npublic import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ThetaLeMsupOfSetC\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -132,7 +326,7 @@ theorem rhoO_embV_mem_AAp (hC : Q.InCurve) (hT : Q.InTie S) (hw : ∀ k, G.w k �
       (X.vAt la (Q.y ζ) (X.inc _ f) - (T : EReal) * X.depth S.sW wL la (Q.y ζ))) :
     rhoO G la (embV X la G.N _ f) ∈ Q.AAp T m := by
   refine Submodule.subset_span ⟨toHK X la G.w wF T (embV X la G.N _ f), ⟨fun β _ => ?_, fun β hβ ζ => ?_⟩, rfl⟩
-  · exact (mem_HK X la G.w).2 (hasse_presentation X la G.w wF β _
+  · exact (mem_HK X la G.w).2 (_root_.PI.UnitaryGroupMassFormula.HassePresH.main X la G.w wF β _
       ((mem_HK X la G.w).1 (toHK X la G.w wF T (embV X la G.N _ f)).2))
   · exact le_of_coe_le_toE ((hf ζ).trans (hasse_order_bound G la Q S T integralClosure_dvr' hC hT hw f β hβ _ ζ))
 
@@ -195,7 +389,6 @@ theorem smul_AAp_mem (hC : Q.InCurve) (e : ℕ) (m m' : PtsG G la → ℕ)
       rw [← WithTop.coe_add]
       refine WithTop.coe_le_coe.2 ?_
       have := h ζ
-      push_cast
       have h2 : ((m' ζ : ℕ) : ℤ) ≤ (m ζ : ℤ) + (e : ℤ) * (ep (unifO X la G.N) ζ : ℤ) := by exact_mod_cast this
       linarith
     · rw [LinearMap.map_smul_of_tower]
@@ -288,3 +481,7 @@ theorem reduced_generators_le (hC : Q.InCurve) (hT : Q.InTie S) (hw : ∀ k, G.w
 end AA
 
 end Formalism.MainNotions.Gaps.EtaleWeightGaps
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ReductionUniformizerSmulMem =====

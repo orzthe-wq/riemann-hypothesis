@@ -2,46 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StepPtRepPf
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StepPtRepPfA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.BigCellConjI
 
 @[expose] public section
 
@@ -98,8 +59,7 @@ theorem gram_eq (F G : PtRepPf.Fr ε r k) (hT : F.T = G.T) (i j : PtRepPf.Fr.Ix 
           F.ew, G.ew, F.fw, G.fw, F.zw, G.zw]; done)
       | (conv_lhs => rw [← PtRepPf.hJ_conj]
          conv_rhs => rw [← PtRepPf.hJ_conj]
-         simp [F.ee, G.ee, F.ff, G.ff, F.ef, G.ef, F.ez, G.ez, F.fz, G.fz, F.zz, G.zz, hT, F.ww, G.ww,
-          F.ew, G.ew, F.fw, G.fw, F.zw, G.zw])
+         simp [F.ef, G.ef, F.ez, G.ez, F.fz, G.fz, F.ew, G.ew, F.fw, G.fw, F.zw, G.zw])
 
 def trL (F G : PtRepPf.Fr ε r k) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ) where
   toFun y := ∑ i, hJ ε (F.dv i) y • G.bv i
@@ -153,8 +113,6 @@ theorem trM_isom (F G : PtRepPf.Fr ε r k) (hT : F.T = G.T) (x y : Fin n → ℂ
       simp [PtRepPf.Fr.Ix]
     first
       | exact hli.span_eq_top_of_card_eq_finrank hcard
-      | exact span_eq_top_of_linearIndependent_of_card_eq_finrank hli hcard
-      | exact hli.span_eq_top_of_card_eq_finrank' hcard
   have hmem : ∀ z : Fin n → ℂ, ∃ c : PtRepPf.Fr.Ix r k → ℂ, ∑ i, c i • F.bv i = z := fun z =>
     (Submodule.mem_span_range_iff_exists_fun ℂ).1 (by rw [hspan]; exact Submodule.mem_top)
   have hM : ∀ c : PtRepPf.Fr.Ix r k → ℂ, trM F G *ᵥ ∑ i, c i • F.bv i = ∑ i, c i • G.bv i := by
@@ -221,18 +179,6 @@ theorem herm_Qi (hQ : IsTransp X v g k r Qm Qim) (x y : Fin X.B.I.n → ℂ) :
     Matrix.mulVec_mulVec _ Qm Qim, Matrix.mulVec_mulVec _ Qm Qim, hQ.2.1, Matrix.one_mulVec, Matrix.one_mulVec]
   rfl
 
-theorem hpk_row_esI (a : Fin r) (b : Fin (2 * r + k + 1)) :
-    Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.esI k r a) b = if b = Formalism.QuantumDeterminants.eI k r a then 1 else 0 := by
-  simp only [Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.esI, Formalism.QuantumDeterminants.eI, Fin.ext_iff]
-  have ha := a.2
-  split_ifs <;> first | rfl | (exfalso; omega)
-
-theorem hpk_row_eI (a : Fin r) (b : Fin (2 * r + k + 1)) :
-    Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.eI k r a) b = if b = Formalism.QuantumDeterminants.esI k r a then 1 else 0 := by
-  simp only [Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.esI, Formalism.QuantumDeterminants.eI, Fin.ext_iff]
-  have ha := a.2
-  split_ifs <;> first | rfl | (exfalso; omega)
-
 theorem herm_bvec (y : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) :
     Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) y (Formalism.QuantumDeterminants.bvec j) = (Formalism.QuantumDeterminants.Hpk k r *ᵥ y) j := by
   unfold Formalism.QuantumDeterminants.herm Formalism.QuantumDeterminants.bvec
@@ -240,11 +186,11 @@ theorem herm_bvec (y : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) :
 
 theorem hpk_mulVec_esI (y : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (Formalism.QuantumDeterminants.Hpk k r *ᵥ y) (Formalism.QuantumDeterminants.esI k r a) = y (Formalism.QuantumDeterminants.eI k r a) := by
-  simp [Matrix.mulVec, dotProduct, hpk_row_esI]
+  simp [Matrix.mulVec, dotProduct, _root_.Formalism.MainNotions.S.Pv.Frames.Hpk_esI_row]
 
 theorem hpk_mulVec_eI (y : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (Formalism.QuantumDeterminants.Hpk k r *ᵥ y) (Formalism.QuantumDeterminants.eI k r a) = y (Formalism.QuantumDeterminants.esI k r a) := by
-  simp [Matrix.mulVec, dotProduct, hpk_row_eI]
+  simp [Matrix.mulVec, dotProduct, _root_.Formalism.MainNotions.S.Pv.Frames.Hpk_eI_row]
 
 theorem inWb_Qi (hr : r = D.R.rS) (hQ : IsTransp X v g k r Qm Qim) (w : Fin X.B.I.n → ℂ)
     (hwe : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) w = 0) (hwf : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) w = 0) :

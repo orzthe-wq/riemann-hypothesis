@@ -218,16 +218,11 @@ theorem csScale_glob (σ : E →ₐ[F] E) (J : Matrix n n E) (Λ : Submodule (�
     ιA ((m : E) * hform (σ : E →+* E) J x y) ∈ 𝒮 := by
   have hg0 : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) (g : Matrix n n 𝒜) * J.map ιA *
       (g : Matrix n n 𝒜) = J.map ιA := hg
-  have hback : ∀ v : n → 𝒜, (g : Matrix n n 𝒜) *ᵥ (((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ v) = v := by
-    intro v
+  have hback : ∀ v : n → 𝒜, (g : Matrix n n 𝒜) *ᵥ (((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ v) = v := fun v => by
     rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
-  have hu : ((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun i => ιA (x i)) ∈
-      latS (F := F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ := hx
-  have hw : ((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun i => ιA (y i)) ∈
-      latS (F := F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ := hy
   rw [map_mul, ← csScale_hform_incl, ← hback (fun i => ιA (x i)), ← hback (fun i => ιA (y i)),
     hform_mulVec_mulVec', hg0]
-  exact csScale_latS σ J Λ m hm hu hw
+  exact csScale_latS σ J Λ m hm hx hy
 
 end Main
 

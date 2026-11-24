@@ -109,12 +109,9 @@ variable {l : ℕ} [hlp : Fact l.Prime] {p1 e u : O⟦X⟧}
 theorem residue_map_p1_eq (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hp : p1 = C (l : O) * e + u * X ^ l) :
     p1.map (IsLocalRing.residue O) = u.map (IsLocalRing.residue O) * X ^ l := by
   have h0 : IsLocalRing.residue O (l : O) = 0 := (IsLocalRing.residue_eq_zero_iff _).mpr hl
-  have h0' : (l : IsLocalRing.ResidueField O) = 0 := by
-    rw [← map_natCast (IsLocalRing.residue O)]; exact h0
-  have h0'' : ((l : ℕ) : (IsLocalRing.ResidueField O)⟦X⟧) = 0 := by
-    rw [← map_natCast (C : IsLocalRing.ResidueField O →+* (IsLocalRing.ResidueField O)⟦X⟧) l, h0', map_zero]
   rw [hp]
-  simp [h0, h0', h0'']
+  simp only [map_add, map_mul, map_pow, PowerSeries.map_C, h0, map_zero, zero_mul, zero_add,
+    PowerSeries.map_X]
 
 theorem addVal_coef (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : (l : O) ≠ 0) {a i : ℕ} (hi : i ≤ a) :
     IsDiscreteValuationRing.addVal O ((a.choose i : O) * (l : O) ^ (a - i)) =
@@ -129,60 +126,46 @@ theorem addVal_coef (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : (l : O)
 theorem coef_ne_zero (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hl0 : (l : O) ≠ 0) {a i : ℕ} (hi : i ≤ a) :
     (a.choose i : O) * (l : O) ^ (a - i) ≠ 0 := mul_ne_zero (natCast_ne_zero' hl hl0 (Nat.choose_pos hi).ne') (pow_ne_zero _ hl0)
 
+private theorem order_residue_pow_p1 (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hu : IsUnit u)
+    (hp : p1 = C (l : O) * e + u * X ^ l) (y : ℕ) :
+    ((p1 ^ y).map (IsLocalRing.residue O)).order = ((l * y : ℕ) : ℕ∞) := by
+  rw [map_pow, order_pow, residue_map_p1_eq hl hp, order_unit_mul_X_pow_lemma_3 (hu.map _) l,
+    nsmul_eq_mul, ENat.natCast_mul, mul_comm]
+
 variable {ϖ : O} (hϖ : Irreducible ϖ)
 include hϖ
+
+private theorem content_eq_zero_of_residue_order_lt {g f : O⟦X⟧}
+    (hlt : (f.map (IsLocalRing.residue O)).order < (g.map (IsLocalRing.residue O)).order) :
+    cont ϖ g f = 0 := by
+  refine le_antisymm ?_ (by simp)
+  unfold cont
+  refine iSup₂_le fun k hk => ?_
+  rcases Nat.eq_zero_or_pos k with rfl | hk0
+  · simp
+  · exfalso
+    obtain ⟨a, c, hac⟩ := Ideal.mem_span_pair.mp hk
+    have hm := congrArg (PowerSeries.map (IsLocalRing.residue O)) hac
+    simp only [map_add, map_mul, map_pow, PowerSeries.map_C, Cont.residue_unif hϖ, map_zero,
+      zero_pow hk0.ne', mul_zero, zero_add] at hm
+    have hle : (g.map (IsLocalRing.residue O)).order ≤ (f.map (IsLocalRing.residue O)).order := by
+      rw [← hm, order_mul]
+      exact le_add_self
+    exact (not_lt_of_ge hle) hlt
 
 theorem content_p1_pow_X_pow_eq_zero (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hu : IsUnit u)
     (hp : p1 = C (l : O) * e + u * X ^ l) (y b : ℕ) (hlt : b < l * y) :
     cont ϖ (p1 ^ y) ((X : O⟦X⟧) ^ b) = 0 := by
-  refine le_antisymm ?_ (by simp)
-  unfold cont
-  refine iSup₂_le fun k hk => ?_
-  rcases Nat.eq_zero_or_pos k with rfl | hk0
-  · simp
-  · exfalso
-    obtain ⟨a', c', hac⟩ := Ideal.mem_span_pair.mp hk
-    have hϖ0 : IsLocalRing.residue O ϖ = 0 := (IsLocalRing.residue_eq_zero_iff ϖ).mpr
-      ((IsLocalRing.mem_maximalIdeal ϖ).mpr (mem_nonunits_iff.mpr hϖ.not_isUnit))
-    have hm := congrArg (PowerSeries.map (IsLocalRing.residue O)) hac
-    simp only [map_add (f := _), map_mul, map_pow, PowerSeries.map_C, PowerSeries.map_X, hϖ0, map_zero,
-      zero_pow hk0.ne', mul_zero, zero_add, residue_map_p1_eq hl hp] at hm
-    have e1 : (PowerSeries.map (IsLocalRing.residue O) u * X ^ l) ^ y =
-        PowerSeries.map (IsLocalRing.residue O) u ^ y * X ^ (l * y) := by ring
-    rw [e1] at hm
-    have ho := congrArg PowerSeries.order hm
-    rw [PowerSeries.order_mul, order_unit_mul_X_pow_lemma_3 ((hu.map _).pow y), PowerSeries.order_X_pow] at ho
-    have h2 : ((l * y : ℕ) : ℕ∞) ≤ PowerSeries.order (PowerSeries.map (IsLocalRing.residue O) c') + ((l * y : ℕ) : ℕ∞) :=
-      le_add_self
-    rw [ho] at h2
-    have h3 : l * y ≤ b := by exact_mod_cast h2
-    omega
+  apply content_eq_zero_of_residue_order_lt hϖ
+  rw [order_residue_pow_p1 hl hu hp, map_pow, map_X, order_X_pow]
+  exact ENat.natCast_lt_natCast.mpr hlt
 
 theorem content_X_pow_p1_pow_eq_zero (hl : (l : O) ∈ IsLocalRing.maximalIdeal O) (hu : IsUnit u)
     (hp : p1 = C (l : O) * e + u * X ^ l) (B y : ℕ) (hlt : l * y < B) :
     cont ϖ ((X : O⟦X⟧) ^ B) (p1 ^ y) = 0 := by
-  refine le_antisymm ?_ (by simp)
-  unfold cont
-  refine iSup₂_le fun k hk => ?_
-  rcases Nat.eq_zero_or_pos k with rfl | hk0
-  · simp
-  · exfalso
-    obtain ⟨a', c', hac⟩ := Ideal.mem_span_pair.mp hk
-    have hϖ0 : IsLocalRing.residue O ϖ = 0 := (IsLocalRing.residue_eq_zero_iff ϖ).mpr
-      ((IsLocalRing.mem_maximalIdeal ϖ).mpr (mem_nonunits_iff.mpr hϖ.not_isUnit))
-    have hm := congrArg (PowerSeries.map (IsLocalRing.residue O)) hac
-    simp only [map_add (f := _), map_mul, map_pow, PowerSeries.map_C, PowerSeries.map_X, hϖ0, map_zero,
-      zero_pow hk0.ne', mul_zero, zero_add, residue_map_p1_eq hl hp] at hm
-    have e1 : (PowerSeries.map (IsLocalRing.residue O) u * X ^ l) ^ y =
-        PowerSeries.map (IsLocalRing.residue O) u ^ y * X ^ (l * y) := by ring
-    rw [e1] at hm
-    have ho := congrArg PowerSeries.order hm
-    rw [PowerSeries.order_mul, order_unit_mul_X_pow_lemma_3 ((hu.map _).pow y), PowerSeries.order_X_pow] at ho
-    have h2 : (B : ℕ∞) ≤ PowerSeries.order (PowerSeries.map (IsLocalRing.residue O) c') + (B : ℕ∞) :=
-      le_add_self
-    rw [ho] at h2
-    have h3 : B ≤ l * y := by exact_mod_cast h2
-    omega
+  apply content_eq_zero_of_residue_order_lt hϖ
+  rw [order_residue_pow_p1 hl hu hp, map_pow, map_X, order_X_pow]
+  exact ENat.natCast_lt_natCast.mpr hlt
 
 
 

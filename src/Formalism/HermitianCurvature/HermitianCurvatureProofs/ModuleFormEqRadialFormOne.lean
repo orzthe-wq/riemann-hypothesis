@@ -326,8 +326,6 @@ end Formalism.FourierDecayAlt.P.PBF
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem module_form_eq_radial_form_one : Formalism.FourierDecayAlt.P.PBO.FormOne := PBF.formOne
-
-theorem exists_zeta_normalized_haar : Formalism.FourierDecayAlt.P.PBO.ZetaNormExists := PBF.zetaNormExists
+alias exists_zeta_normalized_haar := _root_.Formalism.FourierDecayAlt.P.PBF.zetaNormExists
 
 end Formalism.FourierDecayAlt.P

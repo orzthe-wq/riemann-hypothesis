@@ -54,6 +54,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Prop
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.DimStatement
 
 @[expose] public section
 
@@ -138,9 +139,6 @@ def TwistedLaw (Y : GT ι) (k : ℕ) (c : EuclideanSpace ℂ ι) (F : EuclideanS
   Differentiable ℂ F ∧ ∀ γ ∈ lat Y.b, ∀ v, F (v + γ) = Y.ka γ ^ k *
     cexp (k * Real.pi * Hf v γ + Real.pi * Hf c γ + k * Real.pi * Hf γ γ / 2) * F v
 
-theorem Hf_add_left (v w γ : EuclideanSpace ℂ ι) : Hf (v + w) γ = Hf v γ + Hf w γ := by
-  simp [Hf, add_mul, Finset.sum_add_distrib]
-
 theorem twistedLaw_zero_iff (Y : GT ι) (k : ℕ) (F : EuclideanSpace ℂ ι → ℂ) :
     TwistedLaw Y k 0 F ↔ F ∈ (powTorus Y k).Sec k := by
   have : ∀ γ : EuclideanSpace ℂ ι, Hf 0 γ = 0 := fun γ => by simp [Hf]
@@ -152,7 +150,7 @@ theorem TwistedLaw.mul {Y : GT ι} {k l : ℕ} {c d : EuclideanSpace ℂ ι}
     TwistedLaw Y (k + l) (c + d) (F * G) := by
   refine ⟨hF.1.mul hG.1, fun γ hγ v => ?_⟩
   simp only [Pi.mul_apply]
-  rw [hF.2 γ hγ, hG.2 γ hγ, Hf_add_left]
+  rw [hF.2 γ hγ, hG.2 γ hγ, _root_.ReciprocityTheory.ChartRestriction.G.I2.DimC.Hf_add_l]
   have e : ((k + l : ℕ) : ℂ) * Real.pi * Hf v γ + Real.pi * (Hf c γ + Hf d γ)
       + ((k + l : ℕ) : ℂ) * Real.pi * Hf γ γ / 2 =
       (k * Real.pi * Hf v γ + Real.pi * Hf c γ + k * Real.pi * Hf γ γ / 2) +
@@ -165,7 +163,7 @@ theorem twistedLaw_translate {Y : GT ι} {θ : EuclideanSpace ℂ ι → ℂ} (h
     (a : EuclideanSpace ℂ ι) : TwistedLaw Y 1 a (fun v => θ (v + a)) := by
   refine ⟨hθ.1.comp (differentiable_id.add_const a), fun γ hγ v => ?_⟩
   have := hθ.2 γ hγ (v + a)
-  rw [Hf_add_left] at this
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.DimC.Hf_add_l] at this
   simp only
   rw [add_right_comm, this]
   congr 2

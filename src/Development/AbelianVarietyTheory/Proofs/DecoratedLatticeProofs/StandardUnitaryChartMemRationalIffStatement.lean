@@ -50,4 +50,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 
 theorem _root_.GlobalTheory.T.standardUnitaryChart_mem_rational_iff : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∀ g, g ∈ GQ (dblSp A) ↔ κ g ∈ GF D A.rank := by
-  first | exact @GlobalTheory.StdUnn.chart_mem_GF_iff | exact GlobalTheory.StdUnn.chart_mem_GF_iff | (intros; apply GlobalTheory.StdUnn.chart_mem_GF_iff <;> assumption)
+  first | exact @GlobalTheory.StdUnn.chart_mem_GF_iff

@@ -8,50 +8,9 @@ public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.W
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.EqWSerSubst
 import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.Laurent
 import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.ToLTDenMulInv
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.FlowTwoTorsionWp
+import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowTwo
 
 @[expose] public section
 
@@ -65,15 +24,15 @@ namespace Formalism.L2.Th1.A
 
 theorem two_torsion_unit : TwoTorsionU.{u} := by
   intro R _ W xT yT hT h2
-  obtain ⟨hDer, hConst, hC, hD⟩ := dLSpec R W
+  obtain ⟨hDer, hConst, hC, hD⟩ := _root_.Formalism.L2.Th1.A.invariant_derivation_spec R W
   have hx := (plusChord R W xT yT hT).1
   have h2' : 2 * (HahnSeries.C yT : LaurentSeries R) + (curveL W).a₁ * HahnSeries.C xT
       + (curveL W).a₃ = 0 := by
     have h := congrArg (HahnSeries.C : R →+* LaurentSeries R) h2
     simpa only [map_add (f := _), map_mul, map_ofNat, map_zero, WeierstrassCurve.map_a₁,
       WeierstrassCurve.map_a₃] using h
-  obtain ⟨a, b, c⟩ := flowTwoTorsion _ (curveL W) (DL W) (xL W) (yL W) (HahnSeries.C xT)
-    (HahnSeries.C yT) (toL (tS W xT)) hDer hConst (flowL R W).1 (Plus.equation_C W hT) (hC xT)
+  obtain ⟨a, b, c⟩ := _root_.Formalism.L2.Th1.A.twoTorsionTranslation _ (curveL W) (DL W) (xL W) (yL W) (HahnSeries.C xT)
+    (HahnSeries.C yT) (toL (tS W xT)) hDer hConst (_root_.Formalism.L2.Th1.A.invariant_flow R W).1 (Plus.equation_C W hT) (hC xT)
     (hC yT) h2' (Plus.toL_tS_mul W xT)
   rw [hD] at b c
   rw [hD] at c
@@ -143,7 +102,7 @@ theorem tS_mul (xP : K) :
 theorem chordZ {xP yP : K} (hP : W.toAffine.Equation xP yP) :
     toL ((xPlus W xP yP).subst (expSer W)) = (curveL W).toAffine.addX (xZ W) (HahnSeries.C xP)
       ((yZ W - HahnSeries.C yP) * toL ((tS W xP).subst (expSer W))) := by
-  obtain ⟨hX, -⟩ := chordRegular _ (curveL W) (xZ W) (yZ W) (HahnSeries.C xP)
+  obtain ⟨hX, -⟩ := _root_.Formalism.L2.Th1.A.chordFormula _ (curveL W) (xZ W) (yZ W) (HahnSeries.C xP)
     (HahnSeries.C yP) (toL ((tS W xP).subst (expSer W))) (flowZ K W).1.1 (Plus.equation_C W hP)
     (tS_mul W xP)
   have h := exp_mul_inv W
@@ -243,7 +202,7 @@ open Two
 theorem addition_integral : PlusZ.{u} := by
   intro K _ _ W xP yP hP
   refine ⟨isFlow_subst W (plusFlow K W xP yP hP).1, tS_mul W xP, ?_⟩
-  have h := flowLogDeriv _ (curveL W) dL (xZ W) (yZ W) (HahnSeries.C xP) (HahnSeries.C yP)
+  have h := _root_.Formalism.L2.Th1.A.flowLogDerivative _ (curveL W) dL (xZ W) (yZ W) (HahnSeries.C xP) (HahnSeries.C yP)
     (toL ((tS W xP).subst (expSer W))) Wp.isDer_dL' (Wp.constCurve_dL W) (flowZ K W).1
     (Plus.equation_C W hP) (dL_C _) (dL_C _) (tS_mul W xP)
   rw [WeierstrassCurve.Affine.map_negY] at h
@@ -288,11 +247,11 @@ theorem two_torsion_integral : TwoTorsionZ.{u} := by
     simpa only [map_add (f := _), map_mul, map_ofNat, map_zero, WeierstrassCurve.map_a₁,
       WeierstrassCurve.map_a₃] using h
   have ht : toL w₁ * (xZ W - HahnSeries.C xT) = 1 := by rw [hw₁]; exact tS_mul W xT
-  obtain ⟨p1, p2, -, p4, p5⟩ := flowTwoTorsionWp _ (curveL W) dL (xZ W) (yZ W) (HahnSeries.C xT)
+  obtain ⟨p1, p2, -, p4, p5⟩ := _root_.Formalism.L2.Th1.A.twoTorsionTranslationWeierstrassForm _ (curveL W) dL (xZ W) (yZ W) (HahnSeries.C xT)
     (HahnSeries.C yT) (toL w₁) (HahnSeries.C (W.b₂ / 12)) (HahnSeries.C (g₂ W))
     (HahnSeries.C (g₃ W)) (HahnSeries.C kap) Wp.isDer_dL' (Wp.constCurve_dL W) (flowZ K W).1
     (Plus.equation_C W hT) (dL_C _) (dL_C _) h2' ht h6 hb hg2 hg3 hk
-  obtain ⟨-, -, s3⟩ := flowTwoTorsion _ (curveL W) dL (xZ W) (yZ W) (HahnSeries.C xT)
+  obtain ⟨-, -, s3⟩ := _root_.Formalism.L2.Th1.A.twoTorsionTranslation _ (curveL W) dL (xZ W) (yZ W) (HahnSeries.C xT)
     (HahnSeries.C yT) (toL w₁) Wp.isDer_dL' (Wp.constCurve_dL W) (flowZ K W).1
     (Plus.equation_C W hT) (dL_C _) (dL_C _) h2' ht
   rw [← cE] at p1 p4 p5
@@ -388,7 +347,7 @@ theorem wpInU_of (hS : WpShape.{u}) : WpInU.{u} := by
   have e4' : PowerSeries.subst (logSer W : K⟦X⟧) (C (W.b₂ / 12) : K⟦X⟧) = C (W.b₂ / 12) := by
     rw [← PowerSeries.coe_substAlgHom hl]
     exact (PowerSeries.substAlgHom hl).commutes _
-  simp only [e1, e2, e3, e4, hel, e3', e4'] at h2
+  simp only [hel, e3', e4'] at h2
   exact h2
 
 theorem tInZ_of (hS : WpShape.{u}) : TInZ.{u} := by

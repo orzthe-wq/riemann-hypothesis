@@ -73,10 +73,6 @@ variable {l : ℕ} [Fact l.Prime] (A : PAlg l) (n : ℕ)
 theorem l_mem_pfil : (l : A.Acr n) ∈ A.PFil n :=
   Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)
 
-theorem sharp_zero : A.sharp 0 = 0 := by
-  change A.th (WittVector.teichmuller l 0) = 0
-  rw [WittVector.teichmuller_zero, map_zero]
-
 theorem uToPQ_th (x : A.W) : A.uToPQ n (A.th x) = Ideal.Quotient.mk _ (A.toAcr n x) := by
   rw [uToPQ, RingHom.comp_apply, uToQ_th, Ideal.Quotient.factor_mk]
 
@@ -104,7 +100,7 @@ theorem exists_pi : ∃ π : A.A →+* A.Acr n ⧸ A.PFil n,
     exact Ideal.Quotient.eq_zero_iff_mem.2 (l_mem_pfil A n)
   · ext a
     have h := (RL.sharp_cong A).2.1 a 0
-    rw [sharp_zero, sub_zero, sub_zero] at h
+    rw [_root_.GlobalTheory.CompanionTheory.RootsLC.sharp_zero, sub_zero, sub_zero] at h
     rw [RingHom.mem_ker, hs, ← RingHom.mem_ker, (RL.uToQ A n).2.2.2 hn, h]
 
 theorem fil_eq_map (r : ℕ) : A.Fil n r = ((base l).Fil n r).map (mapAcr A.fromBase n) := by

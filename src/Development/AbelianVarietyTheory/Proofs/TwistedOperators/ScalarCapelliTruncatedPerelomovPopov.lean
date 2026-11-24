@@ -78,7 +78,7 @@ theorem sum_adjugate_eq {R : Type*} [CommRing R] [IsDomain R] {ι : Type*} [Fint
   change _ = ((M + Matrix.of fun _ _ => (1 : R)).map φ).det - (M.map φ).det
   rw [hJ, key, det_unique (n := Unit), Matrix.inv_def, Ring.inverse_eq_inv']
   simp only [Matrix.add_apply, Matrix.one_apply_eq, Matrix.mul_apply, replicateRow_apply, replicateCol_apply,
-    Matrix.smul_apply, smul_eq_mul, one_mul, mul_one, Finset.univ_unique, Finset.sum_singleton]
+    Matrix.smul_apply, smul_eq_mul, one_mul, mul_one]
   rw [Finset.sum_comm]
   simp only [← Finset.mul_sum]
   rw [mul_add, ← mul_assoc, mul_inv_cancel₀ hd0]
@@ -109,8 +109,8 @@ theorem pmat_apply (a b : Fin (m + 1)) : pmat m χ a b =
     congr 1
     ring
   · by_cases h2 : a < b
-    · simp [pmat, amat, Formalism.REAL.Amat, h1, h2, Matrix.one_apply]
-    · simp [pmat, amat, Formalism.REAL.Amat, h1, h2, Matrix.one_apply]
+    · simp [pmat, amat, Formalism.REAL.Amat, h1, h2]
+    · simp [pmat, amat, Formalism.REAL.Amat, h1, h2]
 
 theorem pmat_eq : pmat m χ = (X - C (m : ℂ)) • (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ[X]) + (amat m χ).map C := by
   refine Matrix.ext fun a b => ?_
@@ -118,7 +118,7 @@ theorem pmat_eq : pmat m χ = (X - C (m : ℂ)) • (1 : Matrix (Fin (m + 1)) (F
   · subst h1
     simp [pmat]
     ring
-  · simp [pmat, h1, Matrix.one_apply]
+  · simp [pmat, h1]
 
 theorem det_pmat : (pmat m χ).det = ∏ s, (X + C (χ s - (m : ℂ) / 2)) := by
   rw [Matrix.det_of_upperTriangular]

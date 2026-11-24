@@ -1,47 +1,10 @@
 module
 
+import Formalism.LatticeRigidity.HeightMinimum.PackingCountGeometricMean
 public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLattice
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -57,44 +20,7 @@ theorem card_le_of_separated_of_norm_le {W : Type*} [NormedAddCommGroup W] [Norm
     [FiniteDimensional ℝ W] (s : Finset W) {lam r : ℝ} (hlam : 0 < lam) (hr : 0 ≤ r)
     (hs : ∀ x ∈ s, ‖x‖ ≤ r) (hsep : ∀ x ∈ s, ∀ y ∈ s, x ≠ y → lam ≤ ‖x - y‖) :
     (s.card : ℝ) ≤ (1 + 2 * r / lam) ^ finrank ℝ W := by
-  classical
-  let _ : MeasurableSpace W := borel W
-  have : BorelSpace W := ⟨rfl⟩
-  set μ : Measure W := (Module.finBasis ℝ W).addHaar with hμ
-  have hl2 : 0 < lam / 2 := half_pos hlam
-  have hdisj : Set.PairwiseDisjoint (s : Set W) fun w => ball w (lam / 2) := by
-    intro w hw w' hw' hne
-    apply ball_disjoint_ball
-    rw [add_halves, dist_eq_norm]
-    exact hsep w hw w' hw' hne
-  have hsubset : (⋃ w ∈ s, ball w (lam / 2)) ⊆ ball (0 : W) (r + lam / 2) := by
-    intro x hx
-    simp only [Set.mem_iUnion] at hx
-    obtain ⟨w, hw, hxw⟩ := hx
-    rw [mem_ball_zero_iff]
-    rw [mem_ball, dist_eq_norm] at hxw
-    calc ‖x‖ = ‖w + (x - w)‖ := by rw [add_sub_cancel]
-      _ ≤ ‖w‖ + ‖x - w‖ := norm_add_le _ _
-      _ < r + lam / 2 := by linarith [hs w hw]
-  have hmeas := measure_biUnion_finset (μ := μ) hdisj fun w _ => measurableSet_ball
-  have hle := measure_mono (μ := μ) hsubset
-  rw [hmeas] at hle
-  simp only [Measure.addHaar_ball_of_pos μ _ hl2, Finset.sum_const, nsmul_eq_mul] at hle
-  rw [Measure.addHaar_ball_of_pos μ _ (by linarith : 0 < r + lam / 2)] at hle
-  have hc0 : μ (ball 0 1) ≠ 0 := (measure_ball_pos μ 0 one_pos).ne'
-  have hct : μ (ball 0 1) ≠ ⊤ := measure_ball_lt_top.ne
-  rw [← mul_assoc] at hle
-  have hle' := (ENNReal.mul_le_mul_iff_left hc0 hct).1 hle
-  rw [show ((s.card : ℕ) : ENNReal) = ENNReal.ofReal (s.card : ℝ) by simp,
-    ← ENNReal.ofReal_mul (by positivity),
-    ENNReal.ofReal_le_ofReal_iff (pow_nonneg (by linarith) _)] at hle'
-  have hpos : 0 < (lam / 2) ^ finrank ℝ W := by positivity
-  have key : (1 + 2 * r / lam) ^ finrank ℝ W = ((r + lam / 2) / (lam / 2)) ^ finrank ℝ W := by
-    congr 1
-    field_simp
-    ring
-  rw [key, div_pow, le_div_iff₀ hpos]
-  exact hle'
+  exact Formalism.SA.P.card_le_of_separated s id lam r hlam hr hsep hs
 
 theorem finrank_span_le_finrank_int {V : Type*} [AddCommGroup V] [Module ℝ V]
     (La : Submodule ℤ V) [Module.Finite ℤ La] :

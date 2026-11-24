@@ -63,14 +63,7 @@ namespace GlobalTheory.KZ.GamComm
 theorem intCast_eq_of_dvd {K M : ℕ} (hK : K ∣ M) {x y : ℤ} (h : (x : ZMod M) = y) : (x : ZMod K) = y := by
   simpa only [map_intCast] using congrArg (ZMod.castHom hK (ZMod K)) h
 
-theorem gamma_le_of_dvd {K M : ℕ} (hK : K ∣ M) : CongruenceSubgroup.Gamma M ≤ CongruenceSubgroup.Gamma K := by
-  intro γ hγ
-  obtain ⟨h1, h2, h3, h4⟩ := CongruenceSubgroup.Gamma_mem.1 hγ
-  refine CongruenceSubgroup.Gamma_mem.2 ⟨?_, ?_, ?_, ?_⟩
-  · simpa using intCast_eq_of_dvd hK (y := 1) (by simpa using h1)
-  · simpa using intCast_eq_of_dvd hK (y := 0) (by simpa using h2)
-  · simpa using intCast_eq_of_dvd hK (y := 0) (by simpa using h3)
-  · simpa using intCast_eq_of_dvd hK (y := 1) (by simpa using h4)
+alias gamma_le_of_dvd := _root_.GlobalTheory.KZ.gamma_le_of_dvd
 
 theorem mul_inv_mem_Gam (N l : ℕ) (g δ : SL(2, ℤ))
     (hg : g ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l)

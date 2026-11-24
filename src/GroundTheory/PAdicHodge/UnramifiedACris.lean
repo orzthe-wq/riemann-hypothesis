@@ -42,6 +42,8 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 
+open scoped GroundTheory.PAdicHodge.LocalBridge
+
 @[expose] public section
 
 set_option maxSynthPendingDepth 1

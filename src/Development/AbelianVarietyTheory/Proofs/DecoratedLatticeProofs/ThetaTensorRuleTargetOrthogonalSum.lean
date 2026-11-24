@@ -58,9 +58,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger
 
 variable {D : D7}
 
-theorem heisO_zero' (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
-  funext w
-  simp [heisO, symplOH, symplO, hO]
+alias heisO_zero' := _root_.GlobalTheory.SplitScalar.heisO_zero
 
 theorem dagger_resT_symm {T A B : HSp D} (d : OrthDec T A B) (S : HSp D) (u : WO S A) (v : WO S B) :
     dagger S T ((d.resT S).symm (u, v)) = (d.resS S).symm (dagger S A u, dagger S B v) := by

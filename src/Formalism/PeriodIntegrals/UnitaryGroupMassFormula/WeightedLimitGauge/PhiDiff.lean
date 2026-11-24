@@ -232,9 +232,9 @@ theorem phiT_strict (T' : ℝ) (hT : 0 < T') : HasStrictFDerivAt (phiT k r T') (
     refine H.congr_fderiv (ContinuousLinearMap.ext fun q => ?_)
     have hsq : (Real.sqrt T' : ℂ) ≠ 0 := by rw [Complex.ofReal_ne_zero]; positivity
     simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars',
-      ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.one_apply, ContinuousLinearMap.proj_apply,
+      ContinuousLinearMap.one_apply, ContinuousLinearMap.proj_apply,
       opGenL_apply, mvL_apply, mulVec_base, opGen_c, psiV_last_zero, Complex.imCLM_apply, PiLp.proj_apply,
-      DL_apply, dgn, one_mul, smul_eq_mul]
+      DL_apply, dgn, one_mul]
     have : (Real.sqrt T' : ℂ) * ((q none : ℂ) * Complex.I) * (Real.sqrt T' : ℂ)⁻¹ = (q none : ℂ) * Complex.I := by
       field_simp
     rw [ContinuousLinearMap.toSpanSingleton_apply, smul_eq_mul, this]; simp
@@ -243,15 +243,13 @@ theorem phiT_strict (T' : ℝ) (hT : 0 < T') : HasStrictFDerivAt (phiT k r T') (
     cases b
     · have H := Complex.reCLM.hasStrictFDerivAt.comp (0 : TrE k) Hj
       refine H.congr_fderiv (ContinuousLinearMap.ext fun q => ?_)
-      simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, dpsi_apply, opGen_y,
-        beta_re_im, Complex.reCLM_apply, PiLp.proj_apply, DL_apply, dgn]
+      simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, Complex.reCLM_apply, PiLp.proj_apply, DL_apply, dgn]
       change ((opGen k r q *ᵥ opBase k r T') (wI k r a.castSucc)).re = _
       rw [mulVec_base, opGen_y, beta_re_im]
       simp
     · have H := Complex.imCLM.hasStrictFDerivAt.comp (0 : TrE k) Hj
       refine H.congr_fderiv (ContinuousLinearMap.ext fun q => ?_)
-      simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, dpsi_apply, opGen_y,
-        beta_re_im, Complex.imCLM_apply, PiLp.proj_apply, DL_apply, dgn]
+      simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, Complex.imCLM_apply, PiLp.proj_apply, DL_apply, dgn]
       change ((opGen k r q *ᵥ opBase k r T') (wI k r a.castSucc)).im = _
       rw [mulVec_base, opGen_y, beta_re_im]
       simp

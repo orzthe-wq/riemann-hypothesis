@@ -1072,10 +1072,6 @@ def retract (P : Summand O M) : Retract H (powObj G P.n) where
   r := (pow (powIsPowGrp G P.n) a).mapLeft h P.proj
   retract := by rw [← mapLeft_comp, P.proj_incl, mapLeft_id]
 
-theorem tmul_mapLeft_self (t : M →ₗ[O] O) {m : M} (hm : t m = 1) :
-    h.tmul m ≫ h.mapLeft (self a) t = 𝟙 G := by
-  rw [tmul_mapLeft, self_tmul, hm, a.one]
-
 variable [Module.Finite O M] [Module.Projective O M]
 include h
 

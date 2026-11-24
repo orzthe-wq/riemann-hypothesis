@@ -85,7 +85,7 @@ theorem toGen_injective (z : (TK R).left) : Function.Injective (toGen z) := by
   have e := fun c => congrArg (fun q => q.hom c)
     (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))
   simp only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e
-  simp only [RingHom.comp_apply, toOpen_top] at h1
+  simp only [RingHom.comp_apply] at h1
   exact IsFractionRing.injective R (FractionRing R) (hi ((e a).trans (h1.trans (e b).symm)))
 
 theorem toGen_eq (z : (TK R).left) (r : R) : toGen z r = gs (jK R) z ⊤ (DegPre.toOpen (R := R) ⊤ r) :=
@@ -134,7 +134,7 @@ theorem val_mem {Y : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ D.P.A
 theorem coord_val (hJ : Good D.P.L z J) {χ : D.X} {r : R} (hr : PsiCoord D χ r) :
     ∃ u ∈ intU z, toGen z r = (u * val (D.psi χ) (𝟙 _) z J).val := by
   obtain ⟨j, hj, h, e⟩ := hr
-  have hx : D.xK χ = jK R ≫ (D.c χ).left := by simp [ptK]
+  have hx : D.xK χ = jK R ≫ (D.c χ).left := by simp
   have hz : (𝟙 (TK R).left : _ ⟶ _) z ∈ LB.wchart D.P.L (K := PUnit) (fun _ => D.xK χ) j := h trivial
   have hz' := hJ.mem (K := PUnit) (fun _ => D.xK χ) (𝟙 _)
   have tr := gen_trans (D.psi_gen χ) (𝟙 _) z hz hz'
@@ -159,7 +159,7 @@ theorem exists_coord [IsLocalRing R] (Dg : DegData R (maximalIdeal R)) (χ : Dg.
     · exact (GlobalTheory.PsiZero.main R Dg.toPre).2 χ _ _ le_top (Dg.psi_pos χ h)
   obtain ⟨i, hi⟩ := exists_chart Dg.toPre.P.isLB ((Dg.toPre.c χ).left (closedPoint R))
   have htop : ⊤ ≤ (Dg.toPre.c χ).left ⁻¹ᵁ Dg.toPre.P.L.U i := (DVR.eq_top_of_closedPoint_mem _ hi).ge
-  have hx : Dg.toPre.xK χ = jK R ≫ (Dg.toPre.c χ).left := by simp [ptK]
+  have hx : Dg.toPre.xK χ = jK R ≫ (Dg.toPre.c χ).left := by simp
   have h : jK R ⁻¹ᵁ ⊤ ≤ (LB.LinComb Dg.toPre.P.L (K := PUnit) (fun _ => Dg.toPre.xK χ) (fun _ => -1)).U (fun _ => i) :=
     fun y _ => Set.mem_iInter.2 fun _ => by
       rw [hx]; exact htop (show jK R y ∈ (⊤ : (Spec (CommRingCat.of R)).Opens) from trivial)
@@ -249,7 +249,7 @@ theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CharZer
       · fin_cases k
         · exact over_sec _ _
         · exact over_sec (D.c a) (𝟙 _)
-      · simp [ptK]
+      · simp
     rw [map_mul, vs, _root_.mul_one] at e
     rw [hv, hv, norm_eq f hf z (hur (-a)) (hur a) ((hP _).trans (e.trans (hP _).symm))]
   refine ⟨hadd, fun a => ?_⟩

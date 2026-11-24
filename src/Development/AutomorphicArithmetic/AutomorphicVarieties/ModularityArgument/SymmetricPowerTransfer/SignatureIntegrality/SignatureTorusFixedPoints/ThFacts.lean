@@ -58,7 +58,7 @@ private theorem nu_eq_one_of_mem_n_of_good_of_ok {k : Type} [Field k] (g : GL (F
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [th', th, GlobalTheory.CuspRep.invT, Reformulated.TransposeInverseTheory.transposeInv,
-      Reformulated.TransposeInverseTheory.transposeInvFun, Phi, MulAut.conj, Matrix.mul_apply, Fin.sum_univ_three,
+      Phi, MulAut.conj, Matrix.mul_apply, Fin.sum_univ_three,
       Matrix.vecMul, dotProduct] <;>
     rw [← Matrix.GeneralLinearGroup.coe_inv] <;> rfl
 
@@ -194,7 +194,6 @@ theorem UpperTheory.V.Z.Sym.Sig.thFacts : UpperTheory.V.Z.Sym.Sig.ThFacts := by
     fin_cases i <;> simp <;>
       first
         | exact ht _ (Set.mem_univ _)
-        | exact inv_mem (ht _ (Set.mem_univ _))
   have hP : Pres V (th' k) :=
     ⟨continuous_th'', th'_th', th'_mem_n, hT, th'_mem_nm, exists_rt_ne_cycF_of_good_of_ok⟩
   refine ⟨hP, ?_, ?_, ?_, ?_, ?_, ?_⟩

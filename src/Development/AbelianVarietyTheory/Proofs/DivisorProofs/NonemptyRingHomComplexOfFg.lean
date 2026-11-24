@@ -88,7 +88,7 @@ theorem nonempty_ringHom_complex_of_fg :
   refine le_trans ?_ Cardinal.aleph0_le_continuum
   refine (IntermediateField.cardinalMk_adjoin_le ℚ (t : Set K)).trans ?_
   refine max_le (max_le ?_ ?_) le_rfl
-  · simp [Cardinal.mkRat]
+  · simp
   · exact (Cardinal.lt_aleph0_of_finite _).le
 
 end GlobalTheory.FGFieldEmb

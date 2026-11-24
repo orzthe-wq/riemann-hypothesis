@@ -91,7 +91,7 @@ theorem det_ptMatN_ne (h : C.LPt) (n : ℕ) (hh : D.IsLocPt h n) : (D.ptMatN h n
   obtain ⟨hb, hs⟩ := hh
   subst hs
   have hM : D.ptMatN h (D.ptSize h) = U.hMat (D.ptPerm h) (D.ptDiag h) :=
-    (ptPerm_spec h _ ⟨hb, rfl⟩).2.2
+    (_root_.Formalism.FourierDecayAlt.P.Dx1.d_ptPermSpec h _ ⟨hb, rfl⟩).2.2
   rw [hM, U.hMat, Matrix.det_mul, Matrix.det_diagonal]
   refine mul_ne_zero ?_ (Finset.prod_ne_zero_iff.mpr fun a _ => Dx1.Rel.scal_ne h hb a a.2)
 

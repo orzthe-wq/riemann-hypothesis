@@ -1,18 +1,25 @@
 module
 
+public import Mathlib.Analysis.Complex.Order
+public import Mathlib.LinearAlgebra.Matrix.Block
+public import Mathlib.LinearAlgebra.Matrix.PosDef
+public import Mathlib.Analysis.Matrix.Spectrum
+public import Mathlib.Algebra.Star.Unitary
+public import Mathlib.Algebra.Star.UnitaryStarAlgAut
 public import Development.WeilBound.ThetaLifts.Reductions.SiegelCore
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqDiagonalOfUpperTriangularOfUnitary
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsAdaptedMajorant
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnitaryCommuting
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Matrix.Order
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -27,6 +34,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -39,10 +47,259 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.Matrix.Order
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqDiagonalOfUpperTriangularOfUnitary, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsAdaptedMajorant, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjArchOfInfEmbArchPi
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqDiagonalOfUpperTriangularOfUnitary =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqDiagonalOfUpperTriangularOfUnitary", "h": "module\n\npublic import Mathlib.Analysis.Complex.Order\npublic import Mathlib.LinearAlgebra.Matrix.Block\npublic import Mathlib.LinearAlgebra.Matrix.PosDef\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+open scoped ComplexOrder
+
+namespace GlobalTheory.CompanionTheory.RealPlace
+
+theorem eq_diagonal_of_upperTriangular_of_unitary {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ)
+    (hB : B.BlockTriangular id) (hBB : Bᴴ * B = 1) : B = diagonal (fun i => B i i) := by
+  have hinv : B⁻¹ = Bᴴ := Matrix.inv_eq_left_inv hBB
+  haveI : Invertible B := Matrix.invertibleOfIsUnitDet B (Matrix.isUnit_det_of_left_inverse hBB)
+  have hT : B⁻¹.BlockTriangular id := Matrix.blockTriangular_inv_of_blockTriangular hB
+  rw [hinv] at hT
+  ext i j
+  rcases lt_trichotomy i j with h | rfl | h
+  · have h1 : Bᴴ j i = 0 := hT h
+    rw [Matrix.conjTranspose_apply, star_eq_zero] at h1
+    rw [h1, Matrix.diagonal_apply_ne _ (ne_of_lt h)]
+  · simp
+  · rw [hB h, Matrix.diagonal_apply_ne _ (ne_of_gt h)]
+
+theorem flag_isometry_diagonal_on_frame (n r : ℕ) (J P p : Matrix (Fin n) (Fin n) ℂ)
+    (X Y : Matrix (Fin n) (Fin r) ℂ) (hJ : IsUnit J.det) (hXY : Xᴴ * J * Y = 1)
+    (_hP : P.PosDef) (_hPJ : P * J⁻¹ * P = J) (hPX : P * X = J * Y)
+    (hpJ : pᴴ * J * p = J) (hpP : pᴴ * P * p = P)
+    (B : Matrix (Fin r) (Fin r) ℂ) (hB : B.BlockTriangular id) (hpX : p * X = X * B) :
+    ∃ d : Fin r → ℂ, p * X = X * diagonal d ∧ p * Y = Y * diagonal d := by
+  have hXPX : Xᴴ * P * X = 1 := by
+    rw [Matrix.mul_assoc, hPX, ← Matrix.mul_assoc]
+    exact hXY
+  have hBB : Bᴴ * B = 1 := by
+    calc Bᴴ * B = Bᴴ * (Xᴴ * P * X) * B := by rw [hXPX, Matrix.mul_one]
+      _ = (X * B)ᴴ * P * (X * B) := by
+          rw [Matrix.conjTranspose_mul]
+          simp only [Matrix.mul_assoc]
+      _ = (p * X)ᴴ * P * (p * X) := by rw [hpX]
+      _ = Xᴴ * (pᴴ * P * p) * X := by
+          rw [Matrix.conjTranspose_mul]
+          simp only [Matrix.mul_assoc]
+      _ = 1 := by
+          rw [hpP]
+          exact hXPX
+  have hBd := eq_diagonal_of_upperTriangular_of_unitary B hB hBB
+  obtain ⟨D, hD⟩ : ∃ D : Matrix (Fin r) (Fin r) ℂ, D = diagonal (fun i => B i i) := ⟨_, rfl⟩
+  have hBD : B = D := hBd.trans hD.symm
+  have hpXD : p * X = X * D := by
+    rw [hpX, hBD]
+  have hr : pᴴ * (J * p * J⁻¹) = 1 := by
+    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hpJ, Matrix.mul_nonsing_inv J hJ]
+  have hr' : (J * p * J⁻¹) * pᴴ = 1 := mul_eq_one_comm.mp hr
+  have key : J * (p * Y) = J * (Y * D) := by
+    calc J * (p * Y) = (J * p * J⁻¹) * pᴴ * (J * (p * Y)) := by rw [hr', Matrix.one_mul]
+      _ = (J * p * J⁻¹) * (pᴴ * J * p) * Y := by simp only [Matrix.mul_assoc]
+      _ = (J * p * J⁻¹) * (J * Y) := by
+          rw [hpJ]
+          simp only [Matrix.mul_assoc]
+      _ = (J * p * J⁻¹) * (pᴴ * P * p * X) := by rw [hpP, hPX]
+      _ = (J * p * J⁻¹) * pᴴ * (P * (p * X)) := by simp only [Matrix.mul_assoc]
+      _ = (J * p * J⁻¹) * pᴴ * (P * X * D) := by
+          rw [hpXD]
+          simp only [Matrix.mul_assoc]
+      _ = (J * p * J⁻¹) * pᴴ * (J * (Y * D)) := by
+          rw [hPX]
+          simp only [Matrix.mul_assoc]
+      _ = J * (Y * D) := by rw [hr', Matrix.one_mul]
+  have hpYD : p * Y = Y * D := by
+    calc p * Y = J⁻¹ * (J * (p * Y)) := by
+          simp only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul J hJ, Matrix.one_mul]
+      _ = J⁻¹ * (J * (Y * D)) := by rw [key]
+      _ = Y * D := by
+          simp only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul J hJ, Matrix.one_mul]
+  exact ⟨fun i => B i i, hD ▸ hpXD, hD ▸ hpYD⟩
+
+end GlobalTheory.CompanionTheory.RealPlace
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqDiagonalOfUpperTriangularOfUnitary =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsAdaptedMajorant =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsAdaptedMajorant", "h": "module\n\npublic import Mathlib.Analysis.Complex.Order\npublic import Mathlib.LinearAlgebra.Matrix.PosDef\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Matrix.Spectrum\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Star.Unitary\npublic import Mathlib.Algebra.Star.UnitaryStarAlgAut\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+open scoped ComplexOrder
+
+namespace GlobalTheory.CompanionTheory.WittMajorant
+
+variable {n : ℕ}
+
+private theorem conj_mul (U V D E : Matrix (Fin n) (Fin n) ℂ) (h : V * U = 1) :
+    (U * D * V) * (U * E * V) = U * (D * E) * V := by
+  calc (U * D * V) * (U * E * V) = U * D * (V * U) * E * V := by
+        simp only [Matrix.mul_assoc]
+    _ = U * (D * E) * V := by
+        rw [h]; simp only [Matrix.mul_one, Matrix.mul_assoc]
+
+theorem exists_abs_sign {R : Matrix (Fin n) (Fin n) ℂ} (hR : R.IsHermitian) :
+    ∃ A S : Matrix (Fin n) (Fin n) ℂ,
+      A.PosSemidef ∧ A = S * R ∧ A = R * S ∧ S * S * R = R := by
+  set U : Matrix (Fin n) (Fin n) ℂ := (hR.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU
+  have hUU : Uᴴ * U = 1 := by
+    have := Unitary.star_mul_self_of_mem hR.eigenvectorUnitary.2
+    simpa [star_eq_conjTranspose] using this
+  have hspec : R = U * diagonal (fun i => ((hR.eigenvalues i : ℝ) : ℂ)) * Uᴴ := by
+    have := hR.spectral_theorem
+    simpa [Unitary.conjStarAlgAut_apply, star_eq_conjTranspose, Function.comp_def] using this
+  set d : Fin n → ℂ := fun i => ((hR.eigenvalues i : ℝ) : ℂ) with hd
+  set a : Fin n → ℂ := fun i => ((|hR.eigenvalues i| : ℝ) : ℂ) with ha
+  set s : Fin n → ℂ := fun i => (((SignType.sign (hR.eigenvalues i) : SignType) : ℝ) : ℂ) with hs
+  have hsd : ∀ i, s i * d i = a i := by
+    intro i
+    simp only [hs, hd, ha]
+    rw [← Complex.ofReal_mul, sign_mul_self]
+  have hds : ∀ i, d i * s i = a i := fun i => by rw [mul_comm, hsd]
+  have hssd : ∀ i, s i * s i * d i = d i := by
+    intro i
+    simp only [hs, hd]
+    rcases lt_trichotomy (hR.eigenvalues i) 0 with h | h | h
+    · simp [sign_neg h]
+    · simp [h]
+    · simp [sign_pos h]
+  refine ⟨U * diagonal a * Uᴴ, U * diagonal s * Uᴴ, ?_, ?_, ?_, ?_⟩
+  · have h0 : (diagonal a).PosSemidef := by
+      rw [posSemidef_diagonal_iff]
+      intro i
+      simp only [ha]
+      exact_mod_cast abs_nonneg _
+    have := h0.conjTranspose_mul_mul_same Uᴴ
+    simpa using this
+  · conv_rhs => rw [hspec]
+    rw [conj_mul _ _ _ _ hUU, diagonal_mul_diagonal]
+    simp only [hsd]
+  · conv_rhs => rw [hspec]
+    rw [conj_mul _ _ _ _ hUU, diagonal_mul_diagonal]
+    simp only [hds]
+  · conv_lhs => rw [hspec]
+    rw [conj_mul _ _ _ _ hUU, conj_mul _ _ _ _ hUU, diagonal_mul_diagonal, diagonal_mul_diagonal]
+    simp only [hssd]
+    exact hspec.symm
+
+theorem exists_adapted_majorant (n r : ℕ) (J : Matrix (Fin n) (Fin n) ℂ)
+    (X Y : Matrix (Fin n) (Fin r) ℂ) (hJ : J.IsHermitian) (hdet : IsUnit J.det)
+    (hXX : Xᴴ * J * X = 0) (hYY : Yᴴ * J * Y = 0) (hXY : Xᴴ * J * Y = 1) :
+    ∃ P : Matrix (Fin n) (Fin n) ℂ, P.PosDef ∧ P * J⁻¹ * P = J ∧ P * X = J * Y := by
+  have hJi : J⁻¹ * J = 1 := nonsing_inv_mul J hdet
+  have hJi' : J * J⁻¹ = 1 := mul_nonsing_inv J hdet
+  have hYX : Yᴴ * J * X = 1 := by
+    have := congrArg conjTranspose hXY
+    simpa [conjTranspose_mul, hJ.eq, Matrix.mul_assoc] using this
+  have xx : Xᴴ * (J * X) = 0 := by rw [← Matrix.mul_assoc]; exact hXX
+  have yy : Yᴴ * (J * Y) = 0 := by rw [← Matrix.mul_assoc]; exact hYY
+  have xy : Xᴴ * (J * Y) = 1 := by rw [← Matrix.mul_assoc]; exact hXY
+  have yx : Yᴴ * (J * X) = 1 := by rw [← Matrix.mul_assoc]; exact hYX
+  set R : Matrix (Fin n) (Fin n) ℂ := J⁻¹ - X * Yᴴ - Y * Xᴴ with hRdef
+  have hRh : R.IsHermitian := by
+    have hi : (J⁻¹)ᴴ = J⁻¹ := (IsHermitian.inv hJ).eq
+    unfold IsHermitian
+    rw [hRdef, conjTranspose_sub, conjTranspose_sub, hi, conjTranspose_mul, conjTranspose_mul,
+      conjTranspose_conjTranspose, conjTranspose_conjTranspose]
+    abel
+  have hRX : R * (J * X) = 0 := by
+    rw [hRdef, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, yx, xx,
+      ← Matrix.mul_assoc J⁻¹, hJi]
+    simp
+  have hRY : R * (J * Y) = 0 := by
+    rw [hRdef, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, yy, xy,
+      ← Matrix.mul_assoc J⁻¹, hJi]
+    simp
+  have hRJR : R * (J * R) = R := by
+    have e : J * R = 1 - (J * X) * Yᴴ - (J * Y) * Xᴴ := by
+      rw [hRdef, Matrix.mul_sub, Matrix.mul_sub, hJi', Matrix.mul_assoc, Matrix.mul_assoc]
+    have e1 : R * (J * X * Yᴴ) = (R * (J * X)) * Yᴴ := (Matrix.mul_assoc _ _ _).symm
+    have e2 : R * (J * Y * Xᴴ) = (R * (J * Y)) * Xᴴ := (Matrix.mul_assoc _ _ _).symm
+    rw [e, Matrix.mul_sub, Matrix.mul_sub, e1, e2, hRX, hRY]
+    simp
+  obtain ⟨A, S, hA, hAS, hAR, hSSR⟩ := exists_abs_sign hRh
+  have hAh : Aᴴ = A := hA.isHermitian.eq
+  have hAX : A * (J * X) = 0 := by
+    rw [hAS, Matrix.mul_assoc, hRX, Matrix.mul_zero]
+  have hAY : A * (J * Y) = 0 := by
+    rw [hAS, Matrix.mul_assoc, hRY, Matrix.mul_zero]
+  have hXA : Xᴴ * (J * A) = 0 := by
+    have := congrArg conjTranspose hAX
+    simpa [conjTranspose_mul, hJ.eq, hAh, Matrix.mul_assoc] using this
+  have hYA : Yᴴ * (J * A) = 0 := by
+    have := congrArg conjTranspose hAY
+    simpa [conjTranspose_mul, hJ.eq, hAh, Matrix.mul_assoc] using this
+  have hAJA : A * (J * A) = R := by
+    calc A * (J * A) = (S * R) * (J * (R * S)) := by rw [← hAS, ← hAR]
+      _ = S * (R * (J * R)) * S := by simp only [Matrix.mul_assoc]
+      _ = S * (R * S) := by rw [hRJR, Matrix.mul_assoc]
+      _ = S * (S * R) := by rw [← hAR, hAS]
+      _ = R := by rw [← Matrix.mul_assoc, hSSR]
+  set T : Matrix (Fin n) (Fin n) ℂ := X * Xᴴ + Y * Yᴴ + A with hTdef
+  have hTX : T * (J * X) = Y := by
+    rw [hTdef, Matrix.add_mul, Matrix.add_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, xx, yx, hAX]
+    simp
+  have hTY : T * (J * Y) = X := by
+    rw [hTdef, Matrix.add_mul, Matrix.add_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, xy, yy, hAY]
+    simp
+  have hTA : T * (J * A) = R := by
+    rw [hTdef, Matrix.add_mul, Matrix.add_mul, Matrix.mul_assoc X, Matrix.mul_assoc Y, hXA, hYA,
+      hAJA]
+    simp
+  have hTJT : T * (J * T) = J⁻¹ := by
+    have e : J * T = (J * X) * Xᴴ + (J * Y) * Yᴴ + J * A := by
+      rw [hTdef, Matrix.mul_add, Matrix.mul_add, Matrix.mul_assoc, Matrix.mul_assoc]
+    have e1 : T * (J * X * Xᴴ) = (T * (J * X)) * Xᴴ := (Matrix.mul_assoc _ _ _).symm
+    have e2 : T * (J * Y * Yᴴ) = (T * (J * Y)) * Yᴴ := (Matrix.mul_assoc _ _ _).symm
+    rw [e, Matrix.mul_add, Matrix.mul_add, e1, e2, hTX, hTY, hTA, hRdef]
+    abel
+  have hTpsd : T.PosSemidef :=
+    ((posSemidef_self_mul_conjTranspose X).add (posSemidef_self_mul_conjTranspose Y)).add hA
+  have hTunit : IsUnit T := by
+    have h1 : T * (J * T * J) = 1 := by
+      calc T * (J * T * J) = (T * (J * T)) * J := by simp only [Matrix.mul_assoc]
+        _ = 1 := by rw [hTJT, hJi]
+    exact (Matrix.isUnit_iff_isUnit_det T).2 (Matrix.isUnit_det_of_right_inverse h1)
+  have hTpd : T.PosDef := hTpsd.posDef_iff_isUnit.2 hTunit
+  have hJinj : Function.Injective J.mulVec :=
+    Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det J).2 hdet)
+  refine ⟨J * T * J, ?_, ?_, ?_⟩
+  · have := hTpd.conjTranspose_mul_mul_same hJinj
+    rwa [hJ.eq] at this
+  · calc J * T * J * J⁻¹ * (J * T * J) = J * (T * (J * T)) * J := by
+          have h2 : J * T * J * J⁻¹ = J * T := by
+            rw [Matrix.mul_assoc (J * T), hJi', Matrix.mul_one]
+          rw [h2]
+          simp only [Matrix.mul_assoc]
+      _ = J := by rw [hTJT, hJi', Matrix.one_mul]
+  · rw [Matrix.mul_assoc, Matrix.mul_assoc, hTX]
+
+end GlobalTheory.CompanionTheory.WittMajorant
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsAdaptedMajorant =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjArchOfInfEmbArchPi =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjArchOfInfEmbArchPi", "h": "module\n\npublic import Development.WeilBound.ThetaLifts.Reductions.SiegelCore\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqDiagonalOfUpperTriangularOfUnitary\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsAdaptedMajorant\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUnitaryCommuting\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Matrix.Order\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option linter.unusedSectionVars false
@@ -118,15 +375,11 @@ theorem conjT_map (hcm : IsCMExt F E σ) (τ : E →+* ℂ) {a b : Type} (M : Ma
   ext i j
   simp [cT, conjTranspose_apply, hcm.2.2.2 τ]
 
-theorem cT_conj {a b : Type} (M : Matrix a b ℂ) : cT (starRingEnd ℂ) M = Mᴴ := by
-  ext i j
-  simp [cT, conjTranspose_apply]
-
 theorem arch_unitary (hcm : IsCMExt F E σ) (τ : EmbOver E w) (y : GArch σ J w) :
     (archMat σ J τ y)ᴴ * J.map τ.1 * archMat σ J τ y = J.map τ.1 := by
   have h : cT (starRingEnd ℂ) (archEquiv J hcm τ y).1.1 * J.map τ.1 * (archEquiv J hcm τ y).1.1 = J.map τ.1 :=
     (archEquiv J hcm τ y).2
-  rw [cT_conj] at h
+  rw [_root_.Formalism.UG.P.cT_conj_eq] at h
   exact h
 
 theorem det_map_ne (hdet : J.det ≠ 0) (τ : E →+* ℂ) : (J.map τ).det ≠ 0 := by
@@ -145,7 +398,7 @@ theorem exists_lift (hcm : IsCMExt F E σ) (hdet : J.det ≠ 0) (τ : EmbOver E 
   let u : GL (Fin n) ℂ := Matrix.nonsingInvUnit m (isUnit_iff_ne_zero.2 hd)
   have hu : u ∈ Formalism.UG.UJ (starRingEnd ℂ) (J.map τ.1) := by
     change cT (starRingEnd ℂ) m * J.map τ.1 * m = J.map τ.1
-    rw [cT_conj]
+    rw [_root_.Formalism.UG.P.cT_conj_eq]
     exact hm
   refine ⟨(archEquiv J hcm τ).symm ⟨u, hu⟩, ?_⟩
   rw [GlobalTheory.Orb.archMat_eq_archEquiv J hcm, MulEquiv.apply_symm_apply]
@@ -437,3 +690,7 @@ theorem exists_kInf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
       GlobalTheory.CompanionTheory.RealPlace.flag_isometry_diagonal_on_frame n r _ _ p _ _ (hu w) (hxy w) (hPd w) (hPJ w) (hPX w) h1 h2 B hB hpB
 
 end GlobalTheory.CompanionTheory.SiegelArch
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProjArchOfInfEmbArchPi =====

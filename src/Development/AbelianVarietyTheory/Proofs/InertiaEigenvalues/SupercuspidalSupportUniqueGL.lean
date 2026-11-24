@@ -390,7 +390,7 @@ theorem exists_scalar_multiProd {h N : ℕ} {d : Fin h → ℕ} (e : (Σ a, Fin 
       rw [leviEmb_apply_same]
       simp [g, GeneralLinearGroup.scalar, diagonal_apply]
     · rw [leviEmb_apply_ne k e g hab]
-      simp [GeneralLinearGroup.scalar, diagonal_apply, hab]
+      simp [GeneralLinearGroup.scalar, hab]
   have h2 : ∀ y, piTensor σ g y = (∏ a, (ω a z : ℂ)) • y := by
     intro y
     induction y using PiTensorProduct.induction_on with

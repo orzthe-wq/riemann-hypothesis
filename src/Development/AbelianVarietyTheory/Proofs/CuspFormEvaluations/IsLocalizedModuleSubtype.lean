@@ -170,7 +170,7 @@ private lemma exists_linearForm_extend_of_span_eq_univ {n : ℕ} (Λ : Submodule
     rw [Submodule.coe_smul, ← algebraMap_smul E (a i), ha i, smul_assoc]
   have hg := congrArg (fun z => ((g z : 𝓞 E) : E)) hdy
 
-  simp only [map_smul, map_sum, smul_eq_mul, RingOfIntegers.coe_eq_algebraMap, map_mul] at hg
+  simp only [map_smul, map_sum, smul_eq_mul, map_mul] at hg
   simp only [RingOfIntegers.coe_eq_algebraMap]
   have hd0 : algebraMap (𝓞 E) E d ≠ 0 :=
     IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors d.2

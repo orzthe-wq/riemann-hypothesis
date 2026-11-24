@@ -96,7 +96,7 @@ theorem coef_of_mem {n : ℕ} (Y : Fin n → Fin r → ℂ) (S : Set (Fin n)) {v
     obtain ⟨j, hj, rfl⟩ := hx
     refine ⟨Pi.single j 1, fun i hi => ?_, ?_⟩
     · have hij : i ≠ j := fun e => hi (e ▸ hj)
-      simp [Pi.single_apply, hij]
+      simp [hij]
     · simp [Pi.single_apply]
   | zero => exact ⟨0, fun _ _ => rfl, by simp⟩
   | add x y _ _ hx hy =>
@@ -125,8 +125,6 @@ theorem hC_self_im (v : Fin r → ℂ) : (hermC τ G v v).im = 0 := by
     intro a b
     rw [← hG a b]
     first
-    | exact (NumberField.IsCMField.complexEmbedding_complexConj τ (G a b)).symm
-    | exact (IsCMField.complexEmbedding_complexConj τ (G a b)).symm
     | (simp only [cc]; exact (NumberField.IsCMField.complexEmbedding_complexConj τ (G a b)).symm)
     | (simp [cc])
   have hc : conj (hermC τ G v v) = hermC τ G v v := by
@@ -158,8 +156,6 @@ theorem gs_exists {n : ℕ} (p : ℕ) (Y : Fin n → Fin r → ℂ) (hind : Line
     intro a b
     rw [← hG a b]
     first
-    | exact (NumberField.IsCMField.complexEmbedding_complexConj τ (G a b)).symm
-    | exact (IsCMField.complexEmbedding_complexConj τ (G a b)).symm
     | (simp only [cc]; exact (NumberField.IsCMField.complexEmbedding_complexConj τ (G a b)).symm)
     | (simp [cc])
   have csym : ∀ u w, conj (hermC τ G u w) = hermC τ G w u := by
@@ -271,7 +267,6 @@ theorem gs_exists {n : ℕ} (p : ℕ) (Y : Fin n → Fin r → ℂ) (hind : Line
         have hnot : c₀ ∉ {j : Fin n | (j : ℕ) < m} := by
           simp [hc₀]
         first
-        | exact hind.not_mem_span_image hnot hin
         | exact hind.notMem_span_image hnot hin
 
       have hsign : 0 < (ε c₀ * hermC τ G v v).re := by

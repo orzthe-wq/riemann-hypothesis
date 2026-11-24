@@ -79,23 +79,15 @@ open GlobalTheory
 
 variable {D : D7}
 
-theorem mt_mul_eq (V : HSp D) (g h : GA D V) :
-    Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := by
-  unfold Formalism.L2.Theta.mt; rw [map_mul]; rfl
-
-theorem mt_one_eq (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by
-  unfold Formalism.L2.Theta.mt; rw [map_one]; rfl
-
-theorem continuous_mt_eq (V : HSp D) : Continuous (Formalism.L2.Theta.mt V) :=
-  Units.continuous_val.comp continuous_subtype_val
+alias continuous_mt_eq := _root_.GlobalTheory.MixModel.continuous_mt
 
 theorem actO_actO_inv {S T : HSp D} (g : GA D S) (h : GA D T) (x : WO S T) :
     Formalism.IndefR.Datum.actO S T g h (Formalism.IndefR.Datum.actO S T g⁻¹ h⁻¹ x) = x := by
   unfold Formalism.IndefR.Datum.actO
   rw [inv_inv]
   simp only [Matrix.mul_assoc]
-  rw [← Matrix.mul_assoc (Formalism.L2.Theta.mt T h), ← mt_mul_eq, ← mt_mul_eq, mul_inv_cancel, mul_inv_cancel,
-    mt_one_eq, mt_one_eq, Matrix.one_mul, Matrix.mul_one]
+  rw [← Matrix.mul_assoc (Formalism.L2.Theta.mt T h), ← _root_.GlobalTheory.BesselCompare.mt_mul, ← _root_.GlobalTheory.BesselCompare.mt_mul, mul_inv_cancel, mul_inv_cancel,
+    _root_.GlobalTheory.BesselCompare.mt_one, _root_.GlobalTheory.BesselCompare.mt_one, Matrix.one_mul, Matrix.mul_one]
 
 
 open GlobalTheory.Size in
@@ -131,10 +123,7 @@ theorem continuous_dirSize {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) : C
     (if a.2.2.2 then Complex.I else 1)))).matrix_mul h2).matrix_elem i j
   exact (continuous_abs.comp (Complex.continuous_re.comp h3)).add (continuous_abs.comp (Complex.continuous_im.comp h3))
 
-theorem actO_add' {S T : HSp D} (g : GA D S) (h : GA D T) (x y : WO S T) :
-    Formalism.IndefR.Datum.actO S T g h (x + y) = Formalism.IndefR.Datum.actO S T g h x + Formalism.IndefR.Datum.actO S T g h y := by
-  unfold Formalism.IndefR.Datum.actO
-  rw [Matrix.mul_add, Matrix.add_mul]
+alias actO_add' := _root_.GlobalTheory.WeilVacMove.actO_add
 
 theorem actO_zero' {S T : HSp D} (g : GA D S) (h : GA D T) : Formalism.IndefR.Datum.actO S T g h 0 = 0 := by
   unfold Formalism.IndefR.Datum.actO
@@ -265,23 +254,6 @@ open GlobalTheory.Size (sobO thetaLevel)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ThetaDens
 
-theorem _root_.UpperTheory.Lit.Rallis.T.exists_common_level_sobolev_bound_weil_compact : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ K : Set (GA D S × GA D T), IsCompact K → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∃ U' : AddSubgroup (WO S T), IsOpen (U' : Set (WO S T)) ∧ (∀ f ∈ thetaLevel ψ S T U, ∀ x ∈ K, om x f ∈ thetaLevel ψ S T U') ∧ ∀ d : ℕ, ∃ (d' : ℕ) (C : ℝ≥0), ∀ f ∈ thetaLevel ψ S T U, ∀ x ∈ K, sobO ψ θ μ 𝓕 d (om x f) ≤ C * sobO ψ θ μ 𝓕 d' f := by
-  first | exact @UpperTheory.Lit.Rallis.ThetaDens.om_compact_sobCont | exact UpperTheory.Lit.Rallis.ThetaDens.om_compact_sobCont | (intros; apply UpperTheory.Lit.Rallis.ThetaDens.om_compact_sobCont <;> assumption)
-end
-
-section
-open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical
-open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
-open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.Eis GlobalTheory.MixModel GlobalTheory.RegSW GlobalTheory.RegSch
-open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFockVec)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero IsKFinVec delta ThetaClause)
-open GlobalTheory.Core.Rk.SW (sch)
-open GlobalTheory.Mem.AutSpace (SmFun)
-open GlobalTheory.Size (sobO thetaLevel)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-open GlobalTheory.ThetaDens
-
 noncomputable section
 
 namespace UpperTheory.Lit.Rallis.ThetaDensSup
@@ -315,23 +287,6 @@ open GlobalTheory.Size (sobO thetaLevel)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ThetaDens
 
-theorem _root_.UpperTheory.Lit.Rallis.T.exists_sobolev_bound_theta_pointwise : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∃ (d : ℕ) (C : ℝ≥0), ∀ f ∈ thetaLevel ψ S T U, ∀ w, ‖f w‖ₑ ≤ C * sobO ψ θ μ 𝓕 d f := by
-  first | exact @UpperTheory.Lit.Rallis.ThetaDensSup.sup_le_sobO | exact UpperTheory.Lit.Rallis.ThetaDensSup.sup_le_sobO | (intros; apply UpperTheory.Lit.Rallis.ThetaDensSup.sup_le_sobO <;> assumption)
-end
-
-section
-open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical
-open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
-open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.Eis GlobalTheory.MixModel GlobalTheory.RegSW GlobalTheory.RegSch
-open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFockVec)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero IsKFinVec delta ThetaClause)
-open GlobalTheory.Core.Rk.SW (sch)
-open GlobalTheory.Mem.AutSpace (SmFun)
-open GlobalTheory.Size (sobO thetaLevel)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-open GlobalTheory.ThetaDens
-
 noncomputable section
 
 namespace UpperTheory.Lit.Rallis.ThetaDensCauchy
@@ -342,16 +297,6 @@ open GlobalTheory.Size
 section
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
-
-theorem word_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool))
-    {f f' : WO S T → ℂ} (h : IsThetaFunO ψ S T f) (h' : IsThetaFunO ψ S T f') :
-    GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (f + f') =
-      GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l f + GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l f' := by
-  induction l with
-  | nil => rfl
-  | cons a l ih =>
-    rw [GlobalTheory.Size.wordAct_cons, ih]
-    exact GlobalTheory.Size.dRho_add hψ hθ a.1 _ (GlobalTheory.Size.theta_word hψ hθ l h) (GlobalTheory.Size.theta_word hψ hθ l h')
 
 theorem word_mem (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool))
     {U : AddSubgroup (WO S T)} {f : WO S T → ℂ} (h : f ∈ thetaLevel ψ S T U) :
@@ -385,7 +330,7 @@ theorem uniformCauchySeqOn_word : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ),
   obtain ⟨J, hJ⟩ := hC (d₀ + l.length) (ENNReal.ofReal (ε / (C + 1))) (ENNReal.ofReal_pos.2 hη)
   refine ⟨J, fun i hi j hj w _ => ?_⟩
   have hd : u i - u j ∈ thetaLevel ψ S T U := Submodule.sub_mem _ (hu i) (hu j)
-  have he := word_add hψ hθ l hd.1 (hu j).1
+  have he := _root_.GlobalTheory.HeisTaylor.word_add hψ hθ l hd.1 (hu j).1
   rw [sub_add_cancel] at he
   have h1 := (hb _ (word_mem hψ hθ l hd) w).trans
     (mul_le_mul_right ((sobO_word_le μ 𝓕 l _ d₀).trans (hJ i hi j hj).le) _)
@@ -398,23 +343,6 @@ theorem uniformCauchySeqOn_word : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ),
 
 end UpperTheory.Lit.Rallis.ThetaDensCauchy
 end
-end
-
-section
-open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical
-open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
-open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.Eis GlobalTheory.MixModel GlobalTheory.RegSW GlobalTheory.RegSch
-open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFockVec)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero IsKFinVec delta ThetaClause)
-open GlobalTheory.Core.Rk.SW (sch)
-open GlobalTheory.Mem.AutSpace (SmFun)
-open GlobalTheory.Size (sobO thetaLevel)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-open GlobalTheory.ThetaDens
-
-theorem _root_.UpperTheory.Lit.Rallis.T.uniformCauchySeqOn_heisenbergWord_sobolevCauchy : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∀ u : ℕ → WO S T → ℂ, (∀ j, u j ∈ thetaLevel ψ S T U) → (∀ d, ∀ ε : ℝ≥0∞, 0 < ε → ∃ J, ∀ i ≥ J, ∀ j ≥ J, sobO ψ θ μ 𝓕 d (u i - u j) < ε) → ∀ l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), UniformCauchySeqOn (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) Filter.atTop Set.univ := by
-  first | exact @UpperTheory.Lit.Rallis.ThetaDensCauchy.uniformCauchySeqOn_word | exact UpperTheory.Lit.Rallis.ThetaDensCauchy.uniformCauchySeqOn_word | (intros; apply UpperTheory.Lit.Rallis.ThetaDensCauchy.uniformCauchySeqOn_word <;> assumption)
 end
 
 section
@@ -483,23 +411,6 @@ end UpperTheory.Lit.Rallis.ThetaDens
 end
 
 section
-open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical
-open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
-open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.Eis GlobalTheory.MixModel GlobalTheory.RegSW GlobalTheory.RegSch
-open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFockVec)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero IsKFinVec delta ThetaClause)
-open GlobalTheory.Core.Rk.SW (sch)
-open GlobalTheory.Mem.AutSpace (SmFun)
-open GlobalTheory.Size (sobO thetaLevel)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-open GlobalTheory.ThetaDens
-
-theorem _root_.UpperTheory.Lit.Rallis.T.thetaSobolevSeminorm_sub_tendsto_zero_of_words_unif : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ (u : ℕ → WO S T → ℂ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → (∀ j, IsThetaFunO ψ S T (u j)) → (∀ l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), TendstoUniformly (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) (GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l f) Filter.atTop) → ∀ d, Filter.Tendsto (fun j => sobO ψ θ μ 𝓕 d (u j - f)) Filter.atTop (nhds 0) := by
-  first | exact @UpperTheory.Lit.Rallis.ThetaDens.sobO_sub_tendsto_zero | exact UpperTheory.Lit.Rallis.ThetaDens.sobO_sub_tendsto_zero | (intros; apply UpperTheory.Lit.Rallis.ThetaDens.sobO_sub_tendsto_zero <;> assumption)
-end
-
-section
 
 noncomputable section
 
@@ -551,23 +462,6 @@ theorem heisDer_of_tendstoUniformly : ∀ (D : D7) (ψ : AddChar (AF D.host.F) �
 end UpperTheory.Lit.Rallis.ThetaLimDeriv
 
 end
-end
-
-section
-open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical
-open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
-open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.Eis GlobalTheory.MixModel GlobalTheory.RegSW GlobalTheory.RegSch
-open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFockVec)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero IsKFinVec delta ThetaClause)
-open GlobalTheory.Core.Rk.SW (sch)
-open GlobalTheory.Mem.AutSpace (SmFun)
-open GlobalTheory.Size (sobO thetaLevel)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-open GlobalTheory.ThetaDens
-
-theorem _root_.UpperTheory.Lit.Rallis.T.heisenbergBasisDeriv_eq_of_uniform_limits : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T : HSp D) (G : ℕ → WO S T → ℂ) (F F' : WO S T → ℂ), (∀ j, IsThetaFunO ψ S T (G j)) → TendstoUniformly G F Filter.atTop → ∀ a : (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), TendstoUniformly (fun j => GlobalTheory.Size.heisDer ψ θ a (G j)) F' Filter.atTop → GlobalTheory.Size.heisDer ψ θ a F = F' := by
-  first | exact @UpperTheory.Lit.Rallis.ThetaLimDeriv.heisDer_of_tendstoUniformly | exact UpperTheory.Lit.Rallis.ThetaLimDeriv.heisDer_of_tendstoUniformly | (intros; apply UpperTheory.Lit.Rallis.ThetaLimDeriv.heisDer_of_tendstoUniformly <;> assumption)
 end
 
 section
@@ -635,13 +529,6 @@ end
 section
 open scoped ContDiff Topology
 
-theorem _root_.UpperTheory.Lit.Rallis.T.differentiableAt_limit_of_directional_derivs_converge : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {A : Type} [Fintype A] (v : A → E) (c : A → E →L[ℝ] ℝ), (∀ x, ∑ a, c a x • v a = x) → ∀ (φ : E → ℂ) (g : ℕ → E → ℂ) (ψ : A → E → ℂ), (∀ j, Differentiable ℝ (g j)) → TendstoLocallyUniformly g φ Filter.atTop → (∀ a, TendstoLocallyUniformly (fun j y => fderiv ℝ (g j) y (v a)) (ψ a) Filter.atTop) → ∀ y, DifferentiableAt ℝ φ y ∧ ∀ a, fderiv ℝ φ y (v a) = ψ a y := by
-  first | exact @UpperTheory.Lit.Rallis.differentiableAt_of_tendstoLocallyUniformly_directional | exact UpperTheory.Lit.Rallis.differentiableAt_of_tendstoLocallyUniformly_directional | (intros; apply UpperTheory.Lit.Rallis.differentiableAt_of_tendstoLocallyUniformly_directional <;> assumption)
-end
-
-section
-open scoped ContDiff Topology
-
 namespace UpperTheory.Lit.Rallis
 open GlobalTheory
 
@@ -653,7 +540,7 @@ theorem contDiff_of_class_tendstoLocallyUniformly : ∀ {E : Type} [NormedAddCom
     intro φ hφ
     obtain ⟨g, hg, hlim, hd⟩ := hP φ hφ
     choose α hα χ hχ hlim' using hd
-    have h := UpperTheory.Lit.Rallis.T.differentiableAt_limit_of_directional_derivs_converge v c hc φ g (fun a y => α a y * φ y + χ a y) hg hlim hlim'
+    have h := _root_.UpperTheory.Lit.Rallis.differentiableAt_of_tendstoLocallyUniformly_directional v c hc φ g (fun a y => α a y * φ y + χ a y) hg hlim hlim'
     refine ⟨fun y => (h y).1, α, χ, hα, hχ, ?_⟩
     funext y
     ext x
@@ -688,13 +575,6 @@ end UpperTheory.Lit.Rallis
 end
 
 section
-open scoped ContDiff Topology
-
-theorem _root_.UpperTheory.Lit.Rallis.T.smooth_of_limit_class_stable_under_directional_derivs : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {A : Type} [Fintype A] (v : A → E) (c : A → E →L[ℝ] ℝ), (∀ x, ∑ a, c a x • v a = x) → ∀ P : (E → ℂ) → Prop, (∀ φ, P φ → ∃ g : ℕ → E → ℂ, (∀ j, Differentiable ℝ (g j)) ∧ TendstoLocallyUniformly g φ Filter.atTop ∧ ∀ a, ∃ α : E → ℂ, ContDiff ℝ ∞ α ∧ ∃ χ, P χ ∧ TendstoLocallyUniformly (fun j y => fderiv ℝ (g j) y (v a)) (fun y => α y * φ y + χ y) Filter.atTop) → ∀ φ, P φ → ContDiff ℝ ∞ φ := by
-  first | exact @UpperTheory.Lit.Rallis.contDiff_of_class_tendstoLocallyUniformly | exact UpperTheory.Lit.Rallis.contDiff_of_class_tendstoLocallyUniformly | (intros; apply UpperTheory.Lit.Rallis.contDiff_of_class_tendstoLocallyUniformly <;> assumption)
-end
-
-section
 
 open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical
 open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
@@ -719,7 +599,7 @@ theorem sm_of_tendstoUniformly_words {G R A : Type} [AddCommGroup G] [NormedAddC
     (hg : ∀ l j, Sm ι (g l j)) (hd : ∀ a l j, g (a :: l) j = hD ι p om (v a) (g l j)) (F : List A → G → ℂ)
     (hF : ∀ l, TendstoUniformly (g l) (F l) Filter.atTop) (l : List A) : Sm ι (F l) := by
   intro w
-  refine UpperTheory.Lit.Rallis.T.smooth_of_limit_class_stable_under_directional_derivs v c hv (fun φ => ∃ l, φ = fun y => F l (w + ι y)) ?_ _ ⟨l, rfl⟩
+  refine _root_.UpperTheory.Lit.Rallis.contDiff_of_class_tendstoLocallyUniformly v c hv (fun φ => ∃ l, φ = fun y => F l (w + ι y)) ?_ _ ⟨l, rfl⟩
   rintro _ ⟨l, rfl⟩
   have hU : ∀ l, TendstoLocallyUniformly (fun j y => g l j (w + ι y)) (fun y => F l (w + ι y)) Filter.atTop :=
     fun l => ((hF l).comp fun y => w + ι y).tendstoLocallyUniformly
@@ -806,23 +686,6 @@ open GlobalTheory.Size (sobO thetaLevel)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ThetaDens
 
-theorem _root_.UpperTheory.Lit.Rallis.T.theta_word_limits_smooth_along_real_points : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T : HSp D) (u : ℕ → WO S T → ℂ), (∀ j, IsThetaFunO ψ S T (u j)) → ∀ F : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool) → WO S T → ℂ, (∀ l, TendstoUniformly (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) (F l) Filter.atTop) → ∀ (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) (k : ℕ) (L : (Fin k → ℝ) →+ WO S T), Continuous L → (∀ t, (L t).map (finPart D) = 0) → ∀ w, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => F l (w + L t) := by
-  first | exact @UpperTheory.Lit.Rallis.ThetaDens.contDiff_of_tendstoUniformly_words | exact UpperTheory.Lit.Rallis.ThetaDens.contDiff_of_tendstoUniformly_words | (intros; apply UpperTheory.Lit.Rallis.ThetaDens.contDiff_of_tendstoUniformly_words <;> assumption)
-end
-
-section
-open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical
-open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
-open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.Eis GlobalTheory.MixModel GlobalTheory.RegSW GlobalTheory.RegSch
-open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFockVec)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero IsKFinVec delta ThetaClause)
-open GlobalTheory.Core.Rk.SW (sch)
-open GlobalTheory.Mem.AutSpace (SmFun)
-open GlobalTheory.Size (sobO thetaLevel)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-open GlobalTheory.ThetaDens
-
 namespace UpperTheory.Lit.Rallis.ThetaComplete
 open GlobalTheory
 
@@ -842,53 +705,33 @@ theorem lim_clauses : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D
     rw [e]
     exact ht w
 
-theorem lim_deriv : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T : HSp D) (G : ℕ → WO S T → ℂ) (F F' : WO S T → ℂ), (∀ j, IsThetaFunO ψ S T (G j)) → TendstoUniformly G F Filter.atTop → ∀ a : (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), TendstoUniformly (fun j => GlobalTheory.Size.heisDer ψ θ a (G j)) F' Filter.atTop → GlobalTheory.Size.heisDer ψ θ a F = F' := UpperTheory.Lit.Rallis.T.heisenbergBasisDeriv_eq_of_uniform_limits
-theorem lim_smooth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T : HSp D) (u : ℕ → WO S T → ℂ), (∀ j, IsThetaFunO ψ S T (u j)) → ∀ F : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool) → WO S T → ℂ, (∀ l, TendstoUniformly (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) (F l) Filter.atTop) → ∀ (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) (k : ℕ) (L : (Fin k → ℝ) →+ WO S T), Continuous L → (∀ t, (L t).map (finPart D) = 0) → ∀ w, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => F l (w + L t) := UpperTheory.Lit.Rallis.T.theta_word_limits_smooth_along_real_points
-
 theorem limit_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∀ u : ℕ → WO S T → ℂ, (∀ j, u j ∈ thetaLevel ψ S T U) → ∀ F : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool) → WO S T → ℂ, (∀ l, TendstoUniformly (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) (F l) Filter.atTop) → F [] ∈ thetaLevel ψ S T U ∧ ∀ l, GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (F []) = F l := by
   intro D ψ hψ θ hθ S T U hU u hu F hF
   have h0 := lim_clauses D ψ S T U u hu (F []) (hF [])
   have hth : IsThetaFunO ψ S T (F []) :=
-    ⟨h0.1, ⟨U, hU, h0.2.1⟩, h0.2.2, lim_smooth D ψ hψ θ hθ S T u (fun j => (hu j).1) F hF []⟩
+    ⟨h0.1, ⟨U, hU, h0.2.1⟩, h0.2.2, _root_.UpperTheory.Lit.Rallis.ThetaDens.contDiff_of_tendstoUniformly_words D ψ hψ θ hθ S T u (fun j => (hu j).1) F hF []⟩
   refine ⟨⟨hth, h0.2.1⟩, fun l => ?_⟩
   induction l with
   | nil => rfl
   | cons a l ih =>
     rw [GlobalTheory.Size.wordAct_cons, ih]
-    exact lim_deriv D ψ hψ θ hθ S T (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) (F l) (F (a :: l))
+    exact _root_.UpperTheory.Lit.Rallis.ThetaLimDeriv.heisDer_of_tendstoUniformly D ψ hψ θ hθ S T (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) (F l) (F (a :: l))
       (fun j => GlobalTheory.Size.theta_word hψ hθ l (hu j).1) (hF l) a (hF (a :: l))
 
 theorem complete : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∀ u : ℕ → WO S T → ℂ, (∀ j, u j ∈ thetaLevel ψ S T U) → (∀ d, ∀ ε : ℝ≥0∞, 0 < ε → ∃ J, ∀ i ≥ J, ∀ j ≥ J, sobO ψ θ μ 𝓕 d (u i - u j) < ε) → ∃ f ∈ thetaLevel ψ S T U, ∀ d, Filter.Tendsto (fun j => sobO ψ θ μ 𝓕 d (u j - f)) Filter.atTop (nhds 0) := by
   intro D ψ hψ θ hθ S T μ 𝓕 hμ U hU u hu hc
-  have hC := UpperTheory.Lit.Rallis.T.uniformCauchySeqOn_heisenbergWord_sobolevCauchy D ψ hψ θ hθ S T μ 𝓕 hμ U hU u hu hc
+  have hC := _root_.UpperTheory.Lit.Rallis.ThetaDensCauchy.uniformCauchySeqOn_word D ψ hψ θ hθ S T μ 𝓕 hμ U hU u hu hc
   have hlim : ∀ l w, ∃ z, Filter.Tendsto (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j) w) Filter.atTop (nhds z) :=
     fun l w => cauchySeq_tendsto_of_complete ((hC l).cauchySeq (Set.mem_univ w))
   choose F hF using hlim
   have hFu : ∀ l, TendstoUniformly (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) (F l) Filter.atTop :=
     fun l => tendstoUniformlyOn_univ.1 ((hC l).tendstoUniformlyOn_of_tendsto fun w _ => hF l w)
   obtain ⟨h1, h2⟩ := limit_theta D ψ hψ θ hθ S T U hU u hu F hFu
-  refine ⟨F [], h1, UpperTheory.Lit.Rallis.T.thetaSobolevSeminorm_sub_tendsto_zero_of_words_unif D ψ hψ θ hθ S T μ 𝓕 hμ u (F []) h1.1 (fun j => (hu j).1) fun l => ?_⟩
+  refine ⟨F [], h1, _root_.UpperTheory.Lit.Rallis.ThetaDens.sobO_sub_tendsto_zero D ψ hψ θ hθ S T μ 𝓕 hμ u (F []) h1.1 (fun j => (hu j).1) fun l => ?_⟩
   rw [h2 l]
   exact hFu l
 
 end UpperTheory.Lit.Rallis.ThetaComplete
-end
-
-section
-open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical
-open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
-open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.Eis GlobalTheory.MixModel GlobalTheory.RegSW GlobalTheory.RegSch
-open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFockVec)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero IsKFinVec delta ThetaClause)
-open GlobalTheory.Core.Rk.SW (sch)
-open GlobalTheory.Mem.AutSpace (SmFun)
-open GlobalTheory.Size (sobO thetaLevel)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-open GlobalTheory.ThetaDens
-
-theorem _root_.UpperTheory.Lit.Rallis.T.thetaFunctions_open_level_complete_sobolev : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∀ u : ℕ → WO S T → ℂ, (∀ j, u j ∈ thetaLevel ψ S T U) → (∀ d, ∀ ε : ℝ≥0∞, 0 < ε → ∃ J, ∀ i ≥ J, ∀ j ≥ J, sobO ψ θ μ 𝓕 d (u i - u j) < ε) → ∃ f ∈ thetaLevel ψ S T U, ∀ d, Filter.Tendsto (fun j => sobO ψ θ μ 𝓕 d (u j - f)) Filter.atTop (nhds 0) := by
-  first | exact @UpperTheory.Lit.Rallis.ThetaComplete.complete | exact UpperTheory.Lit.Rallis.ThetaComplete.complete | (intros; apply UpperTheory.Lit.Rallis.ThetaComplete.complete <;> assumption)
 end
 
 section
@@ -964,7 +807,7 @@ open Filter Topology
 
 theorem le_mul_sobO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∀ N : (WO S T → ℂ) → ℝ≥0∞, (∀ f ∈ thetaLevel ψ S T U, ∀ g ∈ thetaLevel ψ S T U, N (f + g) ≤ N f + N g) → (∀ (c : ℂ), ∀ f ∈ thetaLevel ψ S T U, N (c • f) = ‖c‖ₑ * N f) → (∀ f ∈ thetaLevel ψ S T U, N f ≠ ⊤) → (∀ (u : ℕ → WO S T → ℂ), (∀ j, u j ∈ thetaLevel ψ S T U) → ∀ f ∈ thetaLevel ψ S T U, (∀ d, Filter.Tendsto (fun j => sobO ψ θ μ 𝓕 d (u j - f)) Filter.atTop (nhds 0)) → N f ≤ Filter.liminf (fun j => N (u j)) Filter.atTop) → ∃ (d : ℕ) (C : ℝ≥0), ∀ f ∈ thetaLevel ψ S T U, N f ≤ C * sobO ψ θ μ 𝓕 d f := by
   intro D ψ hψ θ hθ S T μ 𝓕 hm U hU N hadd hsmul hfin hlsc
-  have hB := UpperTheory.Lit.Rallis.T.thetaFunctions_open_level_complete_sobolev D ψ hψ θ hθ S T μ 𝓕 hm U hU
+  have hB := _root_.UpperTheory.Lit.Rallis.ThetaComplete.complete D ψ hψ θ hθ S T μ 𝓕 hm U hU
   let E := thetaLevel ψ S T U
   have hsf : ∀ d (f : E), sobO ψ θ μ 𝓕 d (f : WO S T → ℂ) ≠ ⊤ := fun d f =>
     GlobalTheory.Size.sobO_ne_top hψ hθ hm.1 hm.2.1 f.2.1 d
@@ -1040,23 +883,6 @@ open GlobalTheory.Size (sobO thetaLevel)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ThetaDens
 
-theorem _root_.UpperTheory.Lit.Rallis.T.lsc_seminorm_thetaFunctionsLevel_le_sobolev : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∀ N : (WO S T → ℂ) → ℝ≥0∞, (∀ f ∈ thetaLevel ψ S T U, ∀ g ∈ thetaLevel ψ S T U, N (f + g) ≤ N f + N g) → (∀ (c : ℂ), ∀ f ∈ thetaLevel ψ S T U, N (c • f) = ‖c‖ₑ * N f) → (∀ f ∈ thetaLevel ψ S T U, N f ≠ ⊤) → (∀ (u : ℕ → WO S T → ℂ), (∀ j, u j ∈ thetaLevel ψ S T U) → ∀ f ∈ thetaLevel ψ S T U, (∀ d, Filter.Tendsto (fun j => sobO ψ θ μ 𝓕 d (u j - f)) Filter.atTop (nhds 0)) → N f ≤ Filter.liminf (fun j => N (u j)) Filter.atTop) → ∃ (d : ℕ) (C : ℝ≥0), ∀ f ∈ thetaLevel ψ S T U, N f ≤ C * sobO ψ θ μ 𝓕 d f := by
-  first | exact @UpperTheory.Lit.Rallis.SobBaire.le_mul_sobO | exact UpperTheory.Lit.Rallis.SobBaire.le_mul_sobO | (intros; apply UpperTheory.Lit.Rallis.SobBaire.le_mul_sobO <;> assumption)
-end
-
-section
-open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical
-open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
-open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.Eis GlobalTheory.MixModel GlobalTheory.RegSW GlobalTheory.RegSch
-open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFockVec)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero IsKFinVec delta ThetaClause)
-open GlobalTheory.Core.Rk.SW (sch)
-open GlobalTheory.Mem.AutSpace (SmFun)
-open GlobalTheory.Size (sobO thetaLevel)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-open GlobalTheory.ThetaDens
-
 namespace UpperTheory.Lit.Rallis.ThetaDens
 open GlobalTheory
 
@@ -1071,15 +897,15 @@ theorem tendsto_enorm_of_le {v : ℕ → ℂ} {a : ℂ} {s : ℕ → ℝ≥0∞}
 
 theorem sobBdd_absThetaInt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ m : Measure (GA D T), m.IsHaarMeasure → ∀ Z : (WO S T → ℂ) → WO S T → ℂ, (∀ f f', IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → Z (f + f') = Z f + Z f') → (∀ (c : ℂ) f, IsThetaFunO ψ S T f → Z (c • f) = c • Z f) → Sobolev₂ ψ θ μ 𝓕 μ 𝓕 Z → (∀ f, IsThetaFunO ψ S T f → ∀ x, om (x, 1) (Z f) = Z (om (x, 1) f)) → (∀ f, IsThetaFunO ψ S T f → Integrable (descend (GQ T) fun h => thetaKO om 1 h (Z f)) (autMeasure T m)) → SobBdd ψ θ μ 𝓕 fun f x => ∫⁻ q, ‖descend (GQ T) (fun h => thetaKO om x h (Z f)) q‖ₑ ∂autMeasure T m := by
   intro D ψ S T χS χT om hom θ hθ μ 𝓕 hc m _ Z hadd hsm hZ hcomm hint U hU K hK
-  obtain ⟨U', hU', hl, hb⟩ := UpperTheory.Lit.Rallis.T.exists_common_level_sobolev_bound_weil_compact D ψ S T χS χT om hom θ hθ μ 𝓕 hc (K ×ˢ {1})
+  obtain ⟨U', hU', hl, hb⟩ := _root_.UpperTheory.Lit.Rallis.ThetaDens.om_compact_sobCont D ψ S T χS χT om hom θ hθ μ 𝓕 hc (K ×ˢ {1})
     (hK.prod isCompact_singleton) U hU
   have pt : ∀ h : GA D T, ∃ (d : ℕ) (C : ℝ≥0), ∀ g ∈ thetaLevel ψ S T U',
       ‖thetaKO om 1 h (Z g)‖ₑ ≤ C * sobO ψ θ μ 𝓕 d g := by
     intro h
     obtain ⟨U₁, hU₁, hl₁, hb₁⟩ := hZ U' hU'
-    obtain ⟨U₂, hU₂, hl₂, hb₂⟩ := UpperTheory.Lit.Rallis.T.exists_common_level_sobolev_bound_weil_compact D ψ S T χS χT om hom θ hθ μ 𝓕 hc {(1, h)}
+    obtain ⟨U₂, hU₂, hl₂, hb₂⟩ := _root_.UpperTheory.Lit.Rallis.ThetaDens.om_compact_sobCont D ψ S T χS χT om hom θ hθ μ 𝓕 hc {(1, h)}
       isCompact_singleton U₁ hU₁
-    obtain ⟨d₃, C₃, hb₃⟩ := UpperTheory.Lit.Rallis.T.exists_sobolev_bound_theta_pointwise D ψ hom.std θ hθ S T μ 𝓕 hc U₂ hU₂
+    obtain ⟨d₃, C₃, hb₃⟩ := _root_.UpperTheory.Lit.Rallis.ThetaDensSup.sup_le_sobO D ψ hom.std θ hθ S T μ 𝓕 hc U₂ hU₂
     obtain ⟨d₂, C₂, hb₂⟩ := hb₂ d₃
     obtain ⟨d₁, C₁, hb₁⟩ := hb₁ d₂
     refine ⟨d₁, C₃ * (C₂ * C₁), fun g hg => ?_⟩
@@ -1089,7 +915,7 @@ theorem sobBdd_absThetaInt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T 
     refine (hb₂ _ (hl₁ g hg) _ rfl).trans ?_
     gcongr
     exact hb₁ g hg
-  obtain ⟨d, C, hN⟩ := UpperTheory.Lit.Rallis.T.lsc_seminorm_thetaFunctionsLevel_le_sobolev D ψ hom.std θ hθ S T μ 𝓕 hc U' hU'
+  obtain ⟨d, C, hN⟩ := _root_.UpperTheory.Lit.Rallis.SobBaire.le_mul_sobO D ψ hom.std θ hθ S T μ 𝓕 hc U' hU'
     (fun f => ∫⁻ q, ‖descend (GQ T) (fun h => thetaKO om 1 h (Z f)) q‖ₑ ∂autMeasure T m)
     (fun f hf g hg => by
       rw [← lintegral_add_left' (hint f hf.1).1.enorm]
@@ -1125,19 +951,3 @@ theorem sobBdd_absThetaInt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T 
 end UpperTheory.Lit.Rallis.ThetaDens
 end
 
-section
-open scoped ComplexConjugate Matrix NNReal ENNReal TensorProduct Classical
-open MeasureTheory NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum
-open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.Eis GlobalTheory.MixModel GlobalTheory.RegSW GlobalTheory.RegSch
-open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (RealMat IsFockVec)
-open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero IsKFinVec delta ThetaClause)
-open GlobalTheory.Core.Rk.SW (sch)
-open GlobalTheory.Mem.AutSpace (SmFun)
-open GlobalTheory.Size (sobO thetaLevel)
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-open GlobalTheory.ThetaDens
-
-theorem _root_.UpperTheory.Lit.Rallis.T.absThetaIntegral_le_sobolevSeminorm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ m : Measure (GA D T), m.IsHaarMeasure → ∀ Z : (WO S T → ℂ) → WO S T → ℂ, (∀ f f', IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → Z (f + f') = Z f + Z f') → (∀ (c : ℂ) f, IsThetaFunO ψ S T f → Z (c • f) = c • Z f) → Sobolev₂ ψ θ μ 𝓕 μ 𝓕 Z → (∀ f, IsThetaFunO ψ S T f → ∀ x, om (x, 1) (Z f) = Z (om (x, 1) f)) → (∀ f, IsThetaFunO ψ S T f → Integrable (descend (GQ T) fun h => thetaKO om 1 h (Z f)) (autMeasure T m)) → SobBdd ψ θ μ 𝓕 fun f x => ∫⁻ q, ‖descend (GQ T) (fun h => thetaKO om x h (Z f)) q‖ₑ ∂autMeasure T m := by
-  first | exact @UpperTheory.Lit.Rallis.ThetaDens.sobBdd_absThetaInt | exact UpperTheory.Lit.Rallis.ThetaDens.sobBdd_absThetaInt | (intros; apply UpperTheory.Lit.Rallis.ThetaDens.sobBdd_absThetaInt <;> assumption)
-end

@@ -1,12 +1,13 @@
 module
 
 public import Mathlib.MeasureTheory.Measure.Haar.MulEquivHaarChar
+public import Formalism.UnipotentAdelicQuotients.HaarProductClosedCompact
+public import Mathlib.MeasureTheory.Measure.Regular
 public import Mathlib.RingTheory.WittVector.IsPoly
 public import Mathlib.Tactic.ReduceModChar
-import Batteries.Tactic.Lint.Basic
-import Batteries.Tactic.Lint.Misc
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SmulNn
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarProductClosedCompactHolds
+public import Mathlib.MeasureTheory.Constructions.Polish.Basic
+public import Mathlib.MeasureTheory.Group.LIntegral
+public import Mathlib.MeasureTheory.Measure.Haar.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -26,8 +27,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,6 +34,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,10 +47,399 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Topology.Compactness.Paracompact
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Polynomial.Basic
+import Std.Tactic.BVDecide.Normalize.Prop
+import Batteries.Tactic.Lint.Basic
+import Batteries.Tactic.Lint.Misc
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Topology.Compactness.Paracompact
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SmulNn, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarProductClosedCompactHolds, Development.WeilBound.ThetaLifts.Reductions.SiegelHaar
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SmulNn =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SmulNn", "h": "module\n\npublic import Mathlib.MeasureTheory.Measure.Haar.MulEquivHaarChar\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace MulEquivHaarCharEqOfProjection
+open MeasureTheory
+
+private lemma smul_nn {α : Type*} [MeasurableSpace α] (c : NNReal) (μ : Measure α) (s : Set α) :
+    (c • μ) s = (c : ENNReal) * μ s := Measure.coe_nnreal_smul_apply c μ s
+
+end MulEquivHaarCharEqOfProjection
+
+open MeasureTheory MeasureTheory.Measure in
+theorem UpperTheory.Reformulated.B.Yhb4.main :
+    ∀ {H N : Type} [inst : Group H] [inst_1 : TopologicalSpace H] [inst_2 : IsTopologicalGroup H]
+      [inst_3 : LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [inst_6 : MeasurableSpace H]
+      [inst_7 : BorelSpace H] [inst_8 : Group N] [inst_9 : TopologicalSpace N] [inst_10 : IsTopologicalGroup N]
+      [inst_11 : LocallyCompactSpace N] [SecondCountableTopology N] [T2Space N] [inst_14 : MeasurableSpace N]
+      [inst_15 : BorelSpace N] (ι : N →* H),
+      Continuous (⇑ι : N → H) →
+        ∀ (π : H → N),
+          Continuous π →
+            (∀ (x : N) (p : H), π ((ι : N → H) x * p) = x * π p) →
+              ∀ (φ : H ≃ₜ* H) (ψ : N ≃ₜ* N),
+                (∀ (p : H), π ((φ : H → H) p) = (ψ : N → N) (π p)) →
+                  (∀ (p : H), ((ι : N → H) (π ((φ : H → H) p)))⁻¹ * (φ : H → H) p = ((ι : N → H) (π p))⁻¹ * p) →
+                    MeasureTheory.mulEquivHaarChar φ = MeasureTheory.mulEquivHaarChar ψ := by
+  intro H N _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ι hι π hπ hπι φ ψ hφψ hσ
+  classical
+  let σ : H → H := fun p => (ι (π p))⁻¹ * p
+  have hσc : Continuous σ := ((hι.comp hπ).inv).mul continuous_id
+  have hsplit : ∀ p, ι (π p) * σ p = p := by intro p; simp [σ]
+  have hσmul : ∀ x p, σ (ι x * p) = σ p := by
+    intro x p; simp [σ, hπι, mul_assoc]
+  have hσφ : ∀ p, σ (φ p) = σ p := fun p => hσ p
+  obtain ⟨C, hCc, hCn⟩ := exists_compact_mem_nhds (σ 1)
+  let μH : Measure H := Measure.haar
+  let μN : Measure N := Measure.haar
+  let m : Measure N := Measure.map π (μH.restrict (σ ⁻¹' C))
+  have hσC : MeasurableSet (σ ⁻¹' C) := (hCc.isClosed.preimage hσc).measurableSet
+  have hmA : ∀ A, MeasurableSet A → m A = μH (π ⁻¹' A ∩ σ ⁻¹' C) := by
+    intro A hA
+    rw [Measure.map_apply hπ.measurable hA, Measure.restrict_apply (hπ.measurable hA)]
+  have hinv : m.IsMulLeftInvariant := by
+    refine ⟨fun x => ?_⟩
+    ext A hA
+    rw [Measure.map_apply (measurable_const_mul x) hA, hmA _ hA, hmA _ ((measurable_const_mul x) hA)]
+    have : π ⁻¹' ((fun y => x * y) ⁻¹' A) ∩ σ ⁻¹' C
+        = (fun p => ι x * p) ⁻¹' (π ⁻¹' A ∩ σ ⁻¹' C) := by
+      ext p; simp [hπι, hσmul]
+    rw [this, measure_preimage_mul]
+  have hfin : IsFiniteMeasureOnCompacts m := by
+    refine ⟨fun K hK => ?_⟩
+    rw [hmA _ hK.isClosed.measurableSet]
+    have hcomp : IsCompact ((fun q : N × H => ι q.1 * q.2) '' (K ×ˢ C)) :=
+      (hK.prod hCc).image ((hι.comp continuous_fst).mul continuous_snd)
+    refine lt_of_le_of_lt (measure_mono ?_) hcomp.measure_lt_top
+    rintro p ⟨hp1, hp2⟩
+    exact ⟨(π p, σ p), ⟨hp1, hp2⟩, hsplit p⟩
+  have hc : m = haarScalarFactor m μN • μN := isMulLeftInvariant_eq_smul m μN
+  set c := haarScalarFactor m μN with hcdef
+  have hmuniv : 0 < m Set.univ := by
+    rw [hmA _ MeasurableSet.univ, Set.preimage_univ, Set.univ_inter]
+    have h1 : σ ⁻¹' C ∈ nhds (1 : H) := hσc.continuousAt.preimage_mem_nhds hCn
+    exact measure_pos_of_nonempty_interior μH ⟨1, mem_interior_iff_mem_nhds.2 h1⟩
+  have hc0 : (c : ENNReal) ≠ 0 := by
+    intro h0
+    rw [hc, MulEquivHaarCharEqOfProjection.smul_nn, h0, zero_mul] at hmuniv
+    exact lt_irrefl _ hmuniv
+  obtain ⟨K, hKc, hKn⟩ := exists_compact_mem_nhds (1 : N)
+  let A : Set N := ψ.symm ⁻¹' K
+  have hAm : MeasurableSet A := (hKc.isClosed.preimage ψ.symm.continuous).measurableSet
+  have hApre : ψ ⁻¹' A = K := by ext x; simp [A]
+  have hK0 : μN K ≠ 0 :=
+    (measure_pos_of_nonempty_interior μN ⟨1, mem_interior_iff_mem_nhds.2 hKn⟩).ne'
+  have hKt : μN K ≠ ⊤ := hKc.measure_lt_top.ne
+
+  have e1 := mulEquivHaarChar_smul_preimage μH (X := π ⁻¹' A ∩ σ ⁻¹' C) φ
+  have hpre : ⇑φ ⁻¹' (π ⁻¹' A ∩ σ ⁻¹' C) = π ⁻¹' K ∩ σ ⁻¹' C := by
+    ext p; simp [A, hφψ, hσφ]
+  rw [hpre, ← hmA _ hKc.isClosed.measurableSet, ← hmA _ hAm, hc, ENNReal.smul_def,
+    MulEquivHaarCharEqOfProjection.smul_nn, MulEquivHaarCharEqOfProjection.smul_nn] at e1
+  have e2 := mulEquivHaarChar_smul_preimage μN (X := A) ψ
+  rw [hApre] at e2
+  simp only [ENNReal.smul_def, smul_eq_mul] at e1 e2
+  have key : ((c : ENNReal) * μN K) * (mulEquivHaarChar φ : ENNReal)
+      = ((c : ENNReal) * μN K) * (mulEquivHaarChar ψ : ENNReal) := by
+    calc ((c : ENNReal) * μN K) * (mulEquivHaarChar φ : ENNReal)
+        = (mulEquivHaarChar φ : ENNReal) * ((c : ENNReal) * μN K) := by ring
+      _ = (c : ENNReal) * μN A := e1
+      _ = (c : ENNReal) * ((mulEquivHaarChar ψ : ENNReal) * μN K) := by rw [e2]
+      _ = ((c : ENNReal) * μN K) * (mulEquivHaarChar ψ : ENNReal) := by ring
+  rw [ENNReal.mul_right_inj (mul_ne_zero hc0 hK0) (ENNReal.mul_ne_top ENNReal.coe_ne_top hKt)] at key
+  exact_mod_cast key
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SmulNn =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarProductClosedCompactHolds =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarProductClosedCompactHolds", "h": "module\n\npublic import Formalism.UnipotentAdelicQuotients.HaarProductClosedCompact\npublic import Mathlib.MeasureTheory.Measure.Regular\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.MeasureTheory.Constructions.Polish.Basic\npublic import Mathlib.MeasureTheory.Group.LIntegral\npublic import Mathlib.MeasureTheory.Measure.Haar.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Set Filter Topology TopologicalSpace
+open scoped ENNReal Pointwise
+
+namespace GlobalTheory.CompanionTheory.HaarPK
+
+variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+  [MeasurableSpace G] [BorelSpace G]
+
+theorem exists_eq_smul [LocallyCompactSpace G] [SecondCountableTopology G] (μ ν : Measure G)
+    [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ] [ν.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts ν]
+    (hμ : μ ≠ 0) (hν : ν ≠ 0) : ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ μ = c • ν := by
+  obtain ⟨K₀⟩ : Nonempty (PositiveCompacts G) := inferInstance
+  have h1 := Measure.haarMeasure_unique μ K₀
+  have h2 := Measure.haarMeasure_unique ν K₀
+  have a0 : μ K₀ ≠ 0 := fun h => hμ (by rw [h1, h, zero_smul])
+  have b0 : ν K₀ ≠ 0 := fun h => hν (by rw [h2, h, zero_smul])
+  have at' : μ K₀ ≠ ⊤ := K₀.isCompact.measure_lt_top.ne
+  have bt : ν K₀ ≠ ⊤ := K₀.isCompact.measure_lt_top.ne
+  refine ⟨μ K₀ / ν K₀, ENNReal.div_ne_zero.2 ⟨a0, bt⟩, ENNReal.div_ne_top at' b0, ?_⟩
+  conv_lhs => rw [h1]
+  conv_rhs => rw [h2]
+  rw [smul_smul, ← h2, ENNReal.div_mul_cancel b0 bt]
+
+theorem map_mul_right_eq [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] (μ : Measure G)
+    [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ] (hμ : μ ≠ 0) (K : Subgroup G)
+    (hK : IsCompact (K : Set G)) {k : G} (hk : k ∈ K) : μ.map (fun x => x * k) = μ := by
+  obtain ⟨K₀⟩ : Nonempty (PositiveCompacts G) := inferInstance
+  have h1 := Measure.haarMeasure_unique μ K₀
+  have a0 : μ K₀ ≠ 0 := fun h => hμ (by rw [h1, h, zero_smul])
+  haveI : IsFiniteMeasureOnCompacts (μ.map (fun x => x * k)) :=
+    ⟨fun C hC => by
+      rw [Measure.map_apply (measurable_mul_const k) hC.measurableSet]
+      exact ((Homeomorph.mulRight k).isCompact_preimage.2 hC).measure_lt_top⟩
+  have hne : μ.map (fun x => x * k) ≠ 0 := by
+    rwa [Ne, Measure.map_eq_zero_iff (measurable_mul_const k).aemeasurable]
+  obtain ⟨c, -, -, hc⟩ := exists_eq_smul (μ.map (fun x => x * k)) μ hne hμ
+  have hC : IsCompact ((K₀ : Set G) * (K : Set G)) := K₀.isCompact.mul hK
+  have hpre : (fun x => x * k) ⁻¹' ((K₀ : Set G) * (K : Set G)) = (K₀ : Set G) * (K : Set G) := by
+    ext x
+    constructor
+    · rintro ⟨a, ha, b, hb, hab⟩
+      exact ⟨a, ha, b * k⁻¹, K.mul_mem hb (K.inv_mem hk), by
+        simp only at hab ⊢; rw [← mul_assoc, hab]; simp⟩
+    · rintro ⟨a, ha, b, hb, hab⟩
+      exact ⟨a, ha, b * k, K.mul_mem hb hk, by
+        simp only at hab ⊢; rw [← mul_assoc, hab]⟩
+  have h0 : μ ((K₀ : Set G) * (K : Set G)) ≠ 0 := fun h =>
+    a0 (measure_mono_null (fun x hx => Set.mem_mul.2 ⟨x, hx, 1, K.one_mem, mul_one x⟩) h)
+  have h2 := congrArg (fun m : Measure G => m ((K₀ : Set G) * (K : Set G))) hc
+  simp only [Measure.smul_apply, smul_eq_mul] at h2
+  rw [Measure.map_apply (measurable_mul_const k) hC.measurableSet, hpre] at h2
+  have hc1 : c = 1 := by
+    have := (ENNReal.mul_left_inj h0 hC.measure_lt_top.ne).1 ((one_mul _).trans h2)
+    exact this.symm
+  rw [hc, hc1, one_smul]
+
+def transl (M : Subgroup G) (η : Measure M) (x : G) : Measure G := η.map (fun m : M => x * m)
+
+theorem measurable_transl_fun (M : Subgroup G) (x : G) : Measurable (fun m : M => x * (m : G)) :=
+  measurable_subtype_coe.const_mul x
+
+theorem transl_mul_mem (M : Subgroup G) (η : Measure M) [η.IsMulLeftInvariant] (x : G) {m : G} (hm : m ∈ M) :
+    transl M η (x * m) = transl M η x := by
+  unfold transl
+  conv_rhs => rw [← map_mul_left_eq_self η ⟨m, hm⟩]
+  rw [Measure.map_map (measurable_transl_fun M x) (measurable_const_mul _)]
+  congr 1
+  ext y
+  simp [mul_assoc]
+
+theorem transl_mul (M : Subgroup G) (η : Measure M) (q x : G) :
+    transl M η (q * x) = (transl M η x).map (fun y => q * y) := by
+  unfold transl
+  rw [Measure.map_map (measurable_const_mul _) (measurable_transl_fun M x)]
+  congr 1
+  ext y
+  simp [mul_assoc]
+
+theorem isClosed_transl_le (M : Subgroup G) (η : Measure M) [η.Regular] {U : Set G} (hU : IsOpen U) (t : ℝ≥0∞) :
+    IsClosed {x | transl M η x U ≤ t} := by
+  rw [← isOpen_compl_iff, isOpen_iff_mem_nhds]
+  intro x hx
+  simp only [mem_compl_iff, mem_setOf_eq, not_le, transl] at hx
+  rw [Measure.map_apply (measurable_transl_fun M x) hU.measurableSet] at hx
+  have hopen : IsOpen ((fun m : M => x * (m : G)) ⁻¹' U) := hU.preimage (by fun_prop)
+  obtain ⟨C, hCU, hC, ht⟩ := hopen.exists_lt_isCompact hx
+  have : ∀ᶠ y in 𝓝 x, ∀ m ∈ C, y * (m : G) ∈ U := by
+    apply hC.eventually_forall_of_forall_eventually
+    intro m hm
+    have hcont : Continuous (fun z : G × M => z.1 * (z.2 : G)) := by fun_prop
+    exact hcont.continuousAt.eventually_mem (hU.mem_nhds (hCU hm))
+  filter_upwards [this] with y hy
+  simp only [mem_compl_iff, mem_setOf_eq, not_le, transl]
+  rw [Measure.map_apply (measurable_transl_fun M y) hU.measurableSet]
+  exact ht.trans_le (measure_mono hy)
+
+theorem exists_lift [SecondCountableTopology G] [T2Space G] (μ : Measure G)
+    [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ] (P K : Subgroup G) (hP : IsClosed (P : Set G))
+    (hK : IsCompact (K : Set G)) (hPK : ∀ g, ∃ p ∈ P, ∃ k ∈ K, g = p * k) :
+    ∃ l : Measure G, l (P : Set G)ᶜ = 0 ∧ (∀ p ∈ P, l.map (fun x => p * x) = l) ∧
+      (∀ s : Set G, IsCompact s → l s ≠ ⊤) ∧
+      ∀ φ : G → ℝ≥0∞, Measurable φ → (∀ x, ∀ k ∈ K, φ (x * k) = φ x) → ∫⁻ x, φ x ∂l = ∫⁻ x, φ x ∂μ := by
+  set M : Subgroup G := P ⊓ K with hM
+  have hMc : IsCompact (M : Set G) := hK.inter_left hP
+  haveI : CompactSpace M := isCompact_iff_compactSpace.1 hMc
+  let η : Measure M := Measure.haarMeasure (⊤ : PositiveCompacts M)
+  haveI : IsProbabilityMeasure η := ⟨by
+    have := Measure.haarMeasure_self (K₀ := (⊤ : PositiveCompacts M))
+    simpa using this⟩
+  choose s hs r hr hsr using hPK
+  let κ : G → Measure G := fun g => transl M η (s g)
+  haveI hκp : ∀ g, IsProbabilityMeasure (κ g) := fun g => by
+    change IsProbabilityMeasure (η.map _)
+    infer_instance
+  have hκ : ∀ p ∈ P, ∀ k ∈ K, κ (p * k) = transl M η p := by
+    intro p hp k hk
+    have h := hsr (p * k)
+    have e : p⁻¹ * s (p * k) = k * (r (p * k))⁻¹ := by
+      rw [inv_mul_eq_iff_eq_mul, ← mul_assoc, eq_mul_inv_iff_mul_eq]; exact h.symm
+    have hm : p⁻¹ * s (p * k) ∈ M :=
+      ⟨P.mul_mem (P.inv_mem hp) (hs _), by rw [e]; exact K.mul_mem hk (K.inv_mem (hr _))⟩
+    rw [← transl_mul_mem M η p hm]
+    simp [κ]
+  have hmeas : Measurable κ := by
+    apply Measure.measurable_of_measurable_coe
+    intro A hA
+    induction A, hA using MeasurableSet.induction_on_open with
+    | isOpen U hU =>
+      apply measurable_of_Iic
+      intro t
+      have : (fun g => κ g U) ⁻¹' Iic t = ({x | transl M η x U ≤ t} ∩ (P : Set G)) * (K : Set G) := by
+        ext g
+        constructor
+        · intro hg
+          exact ⟨s g, ⟨hg, hs g⟩, r g, hr g, (hsr g).symm⟩
+        · rintro ⟨p, ⟨hp1, hp2⟩, k, hk, rfl⟩
+          simp only [mem_preimage, mem_Iic]
+          rw [hκ p hp2 k hk]
+          exact hp1
+      rw [this]
+      exact (((isClosed_transl_le M η hU t).inter hP).mul_right_of_isCompact hK).measurableSet
+    | compl A hA ih =>
+      simp only [prob_compl_eq_one_sub hA]
+      exact ih.const_sub 1
+    | iUnion f hd hf ih =>
+      simp only [measure_iUnion hd hf]
+      exact Measurable.tsum ih
+  have happ : ∀ g, ∀ A, MeasurableSet A → κ g A = η ((fun m : M => s g * (m : G)) ⁻¹' A) := fun g A hA =>
+    Measure.map_apply (measurable_transl_fun M _) hA
+  refine ⟨μ.bind κ, ?_, ?_, ?_, ?_⟩
+  · rw [Measure.bind_apply hP.measurableSet.compl hmeas.aemeasurable]
+    have : ∀ g, κ g (P : Set G)ᶜ = 0 := by
+      intro g
+      rw [happ g _ hP.measurableSet.compl]
+      convert measure_empty (μ := η)
+      ext m
+      simpa using P.mul_mem (hs g) m.2.1
+    simp [this]
+  · intro p hp
+    ext A hA
+    have hA' : MeasurableSet ((fun x => p * x) ⁻¹' A) := measurable_const_mul p hA
+    rw [Measure.map_apply (measurable_const_mul p) hA, Measure.bind_apply hA' hmeas.aemeasurable,
+      Measure.bind_apply hA hmeas.aemeasurable, ← lintegral_mul_left_eq_self (fun g => κ g A) p]
+    refine lintegral_congr fun g => ?_
+    have : κ (p * g) = (κ g).map (fun x => p * x) := by
+      conv_lhs => rw [hsr g, ← mul_assoc, hκ _ (P.mul_mem hp (hs g)) _ (hr g), transl_mul]
+    rw [this, Measure.map_apply (measurable_const_mul p) hA]
+  · intro C hC
+    have hCK : IsCompact (C * (K : Set G)) := hC.mul hK
+    rw [Measure.bind_apply hC.measurableSet hmeas.aemeasurable]
+    refine ne_top_of_le_ne_top (hCK.measure_lt_top (μ := μ)).ne ?_
+    rw [← lintegral_indicator_one hCK.measurableSet]
+    refine lintegral_mono fun g => ?_
+    by_cases hg : g ∈ C * (K : Set G)
+    · rw [indicator_of_mem hg]
+      exact prob_le_one
+    · rw [indicator_of_notMem hg, happ g _ hC.measurableSet]
+      refine le_of_eq ?_
+      convert measure_empty (μ := η)
+      ext m
+      simp only [mem_preimage, mem_empty_iff_false, iff_false]
+      intro hm
+      refine hg ⟨_, hm, (m : G)⁻¹ * r g, K.mul_mem (K.inv_mem m.2.2) (hr g), ?_⟩
+      simp only
+      rw [mul_assoc, mul_inv_cancel_left, ← hsr]
+  · intro φ hφ hinv
+    rw [Measure.lintegral_bind hmeas.aemeasurable hφ.aemeasurable]
+    refine lintegral_congr fun g => ?_
+    simp only [κ, transl]
+    rw [lintegral_map hφ (measurable_transl_fun M _)]
+    have : ∀ m : M, φ (s g * m) = φ g := fun m => by
+      rw [hinv _ _ m.2.2]
+      conv_rhs => rw [hsr g, hinv _ _ (hr g)]
+    simp [this]
+
+theorem exists_eq_smul_subgroup [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
+    (P : Subgroup G) (hP : IsClosed (P : Set G)) (μ ν : Measure G)
+    (hμ1 : μ (P : Set G)ᶜ = 0) (hμ2 : ∀ p ∈ P, μ.map (fun x => p * x) = μ)
+    (hμ3 : ∀ s : Set G, IsCompact s → μ s ≠ ⊤) (hμ4 : μ ≠ 0)
+    (hν1 : ν (P : Set G)ᶜ = 0) (hν2 : ∀ p ∈ P, ν.map (fun x => p * x) = ν)
+    (hν3 : ∀ s : Set G, IsCompact s → ν s ≠ ⊤) (hν4 : ν ≠ 0) :
+    ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ μ = c • ν := by
+  have hemb : MeasurableEmbedding ((↑) : P → G) := MeasurableEmbedding.subtype_coe hP.measurableSet
+  haveI : LocallyCompactSpace P := hP.locallyCompactSpace
+  haveI : SecondCountableTopology P := inferInstanceAs (SecondCountableTopology (P : Set G))
+  have key : ∀ μ : Measure G, μ (P : Set G)ᶜ = 0 → (∀ p ∈ P, μ.map (fun x => p * x) = μ) →
+      (∀ s : Set G, IsCompact s → μ s ≠ ⊤) → μ ≠ 0 →
+      ∃ μ' : Measure P, μ'.IsMulLeftInvariant ∧ IsFiniteMeasureOnCompacts μ' ∧ μ' ≠ 0 ∧
+        μ = μ'.map (↑) := by
+    intro μ h1 h2 h3 h4
+    have hmap : μ = (μ.comap ((↑) : P → G)).map (↑) := by
+      rw [hemb.map_comap, Subtype.range_coe_subtype]
+      exact (Measure.restrict_eq_self_of_ae_mem h1).symm
+    refine ⟨μ.comap (↑), ⟨fun p => ?_⟩, ⟨fun C hC => ?_⟩, fun h => h4 (by rw [hmap, h, Measure.map_zero]), hmap⟩
+    · ext A hA
+      rw [Measure.map_apply (measurable_const_mul p) hA, hemb.comap_apply, hemb.comap_apply]
+      conv_rhs => rw [← h2 p p.2]
+      rw [Measure.map_apply (measurable_const_mul _) (hemb.measurableSet_image.2 hA)]
+      congr 1
+      ext x
+      constructor
+      · rintro ⟨y, hy, rfl⟩
+        exact ⟨p * y, hy, rfl⟩
+      · rintro ⟨y, hy, hxy⟩
+        refine ⟨p⁻¹ * y, by simpa using hy, ?_⟩
+        simp only at hxy
+        simp [hxy]
+    · rw [hemb.comap_apply]
+      exact (h3 _ (hC.image continuous_subtype_val)).lt_top
+  obtain ⟨μ', a1, a2, a3, a4⟩ := key μ hμ1 hμ2 hμ3 hμ4
+  obtain ⟨ν', b1, b2, b3, b4⟩ := key ν hν1 hν2 hν3 hν4
+  obtain ⟨c, c0, ct, hc⟩ := exists_eq_smul μ' ν' a3 b3
+  exact ⟨c, c0, ct, by rw [a4, b4, hc, Measure.map_smul c hemb.measurable.aemeasurable]⟩
+
+theorem haarProductClosedCompact_holds : Formalism.D.haarProductClosedCompact := by
+  intro G _ _ _ _ _ _ _ _ μ _ _ hμ P K hP hK hPK μP μK p1 p2 p3 p4 k1 k2 k3
+  haveI : IsProbabilityMeasure μK := ⟨k1⟩
+  obtain ⟨l, l1, l2, l3, l4⟩ := exists_lift μ P K hP hK hPK
+  have l0 : l ≠ 0 := by
+    intro h
+    have := l4 (fun _ => 1) measurable_const (fun _ _ _ => rfl)
+    rw [h] at this
+    simp only [lintegral_const, one_mul] at this
+    exact hμ (Measure.measure_univ_eq_zero.1 this.symm)
+  obtain ⟨c, c0, ct, hc⟩ := exists_eq_smul_subgroup P hP l μP l1 l2 l3 l0 p1 p2 p3 p4
+  refine ⟨c, c0, ct, fun Φ hΦ => ?_⟩
+  have hΦ2 : Measurable (fun z : G × G => Φ (z.1 * z.2)) := hΦ.comp measurable_mul
+  have hφ : Measurable (fun x => ∫⁻ k, Φ (x * k) ∂μK) := hΦ2.lintegral_prod_right'
+  have hinv : ∀ x, ∀ k ∈ K, ∫⁻ y, Φ (x * k * y) ∂μK = ∫⁻ y, Φ (x * y) ∂μK := by
+    intro x k hk
+    conv_rhs => rw [← k3 k hk]
+    rw [lintegral_map (f := fun y => Φ (x * y)) (hΦ.comp (measurable_const_mul x)) (measurable_const_mul k)]
+    simp [mul_assoc]
+  have h1 := l4 _ hφ hinv
+  rw [hc, lintegral_smul_measure, smul_eq_mul] at h1
+  rw [h1, lintegral_lintegral_swap hΦ2.aemeasurable]
+  have : ∀ᵐ k ∂μK, ∫⁻ x, Φ (x * k) ∂μ = ∫⁻ x, Φ x ∂μ := by
+    filter_upwards [(mem_ae_iff.2 k2 : (K : Set G) ∈ ae μK)] with k hk
+    conv_rhs => rw [← map_mul_right_eq μ hμ K hK hk]
+    rw [lintegral_map hΦ (measurable_mul_const k)]
+  rw [lintegral_congr_ae this]
+  simp
+
+end GlobalTheory.CompanionTheory.HaarPK
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarProductClosedCompactHolds =====
+
+-- ===== clump member: Development.WeilBound.ThetaLifts.Reductions.SiegelHaar =====
+-- clump-header: {"m": "Development.WeilBound.ThetaLifts.Reductions.SiegelHaar", "h": "module\n\npublic import Mathlib.MeasureTheory.Measure.Haar.MulEquivHaarChar\npublic import Mathlib.RingTheory.WittVector.IsPoly\npublic import Mathlib.Tactic.ReduceModChar\nimport Batteries.Tactic.Lint.Basic\nimport Batteries.Tactic.Lint.Misc\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SmulNn\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HaarProductClosedCompactHolds\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Topology.Compactness.Paracompact\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option linter.unusedSectionVars false
@@ -61,20 +450,6 @@ open MeasureTheory MeasureTheory.Measure Topology Set
 open scoped NNReal ENNReal Pointwise
 
 namespace PositivityTheory.ThKR.Sieg
-
-section Retract
-
-variable {H N : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H]
-  [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H]
-  [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N]
-  [SecondCountableTopology N] [T2Space N] [MeasurableSpace N] [BorelSpace N]
-
-theorem char_eq_of_retract (ι : N →* H) (hι : Continuous ι) (π : H → N) (hπ : Continuous π)
-    (hmul : ∀ x p, π (ι x * p) = x * π p) (φ : H ≃ₜ* H) (ψ : N ≃ₜ* N) (h1 : ∀ p, π (φ p) = ψ (π p))
-    (h2 : ∀ p, (ι (π (φ p)))⁻¹ * φ p = (ι (π p))⁻¹ * p) : mulEquivHaarChar φ = mulEquivHaarChar ψ :=
-  _root_.UpperTheory.Reformulated.B.Yhb4.main ι hι π hπ hmul φ ψ h1 h2
-
-end Retract
 
 section Heis
 
@@ -354,3 +729,6 @@ end Bound
 end PositivityTheory.ThKR.Sieg
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.ThetaLifts.Reductions.SiegelHaar =====

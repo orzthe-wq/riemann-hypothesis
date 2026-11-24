@@ -152,8 +152,7 @@ theorem pd_good_pow {d : ℕ} {c : B.Mat k r → ℂ} (hc : pdGood Wp Wq d c) :
   | e + 1 => pd_good_congr (fun g _ => (pow_succ (c g) e).symm)
       (pd_good_mul (by rw [Nat.mul_succ]) (pd_good_pow hc e) hc)
 
-theorem pd_good_of_poly {κ : ℕ} {c : B.Mat k r → ℂ} (hc : U.IsPolyDeg κ c) : pdGood Wp Wq κ c :=
-  pdGood_of_isPolyDeg hc
+alias pd_good_of_poly := _root_.Formalism.FourierDecayAlt.P.CutBP.pdGood_of_isPolyDeg
 
 end poly
 

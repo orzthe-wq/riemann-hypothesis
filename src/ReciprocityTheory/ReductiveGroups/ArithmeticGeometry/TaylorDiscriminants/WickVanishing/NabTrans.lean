@@ -63,14 +63,12 @@ theorem nt_ev_smul {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (
   have hs : MvPowerSeries.HasSubst (fun p : Fin m × Fin d => a p.1 p.2) := by
     first
     | exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => ha p.1 p.2)
-    | exact ⟨fun p => by rw [ha p.1 p.2]; exact IsNilpotent.zero, fun e => Set.toFinite _⟩
   unfold ev
   first
   | exact MvPowerSeries.subst_smul hs r f
-  | (rw [← MvPowerSeries.coe_substAlgHom hs]; exact map_smul _ r f)
 
 theorem nt_expS_zero [Algebra ℚ k] {n : ℕ} : FB.expS k (0 : PS k n d) = 1 := by
-  apply GlobalTheory.ChartCmp.GaugeDiff.expS_zero <;> assumption
+  apply GlobalTheory.ChartCmp.GaugeDiff.expS_zero
 
 theorem nt_const_smul {n : ℕ} (r : k) (f : PS k n d) : constantCoeff (r • f) = r * constantCoeff f := by
   rw [MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_C]

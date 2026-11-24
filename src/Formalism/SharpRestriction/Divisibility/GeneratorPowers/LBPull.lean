@@ -60,20 +60,6 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
-section Gen
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
-variable {Y Z : Scheme.{0}} {K : Type} [Fintype K]
-
-end Gen
-
-section GenX
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
-variable {Xo : Moduli Dw l} {Y Z : Scheme.{0}} {K : Type} [Fintype K]
-
-end GenX
-
 section Sec
 
 variable {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left) (a : ℤ)
@@ -143,13 +129,6 @@ end Val
 
 section Rig
 
-private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(X, U)ˣ) :
-    res h2 (res h1 x) = res (h2.trans h1) x := by
-  ext
-  simp only [res, Units.coe_map, MonoidHom.coe_coe]
-  rw [← CommRingCat.comp_apply, ← Functor.map_comp]
-  rfl
-
 theorem shape_rig {X T T' : Scheme.{0}} (g : T' ⟶ T) (f : T ⟶ X) (f' : T' ⟶ X) (hf : g ≫ f = f')
     {U : X.Opens} {W : T.Opens} (hW : W ≤ f ⁻¹ᵁ U) {V : T'.Opens} (hV : V ≤ g ⁻¹ᵁ W) {V' : T'.Opens}
     (hV' : V' ≤ f' ⁻¹ᵁ U) {O : T'.Opens} (o1 : O ≤ V) (o2 : O ≤ V') (x : Γ(X, U)ˣ) (k : ℤ) :
@@ -158,7 +137,7 @@ theorem shape_rig {X T T' : Scheme.{0}} (g : T' ⟶ T) (f : T ⟶ X) (f' : T' �
   have hA : V ≤ (g ≫ f) ⁻¹ᵁ U := fun y hy => hW (hV hy)
   simp only [map_zpow]
   congr 1
-  rw [← DVR.res_pullU_comp' g f hW hV hA x, res_res_lemma, res_res_lemma]
+  rw [← DVR.res_pullU_comp' g f hW hV hA x, _root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res', _root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res']
 
 variable {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left)
 
@@ -185,9 +164,8 @@ theorem isPullSec_comp {T T' T'' : Over S0} {h : T' ⊗ A ⟶ T ⊗ A} {hh : h �
     IsPullSec A L a (h' ≫ h) (by rw [Category.assoc, hh, hh']) s s'' := by
   intro j
   rw [h2 j, h1 j]
-  simp only [Over.comp_left, Scheme.Hom.comp_app, Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply,
-    Category.assoc, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE, Scheme.Hom.appLE_comp_appLE,
-    Scheme.Hom.appLE_map_assoc, Scheme.Hom.appLE_comp_appLE_assoc]
+  simp only [Over.comp_left, Scheme.Hom.app_eq_appLE, ← CommRingCat.comp_apply,
+    Scheme.Hom.appLE_map, Scheme.Hom.appLE_comp_appLE]
 
 end SecComp
 

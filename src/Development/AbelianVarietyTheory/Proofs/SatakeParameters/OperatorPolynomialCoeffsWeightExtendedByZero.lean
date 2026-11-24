@@ -79,8 +79,8 @@ theorem polDY_colSub (D : D7) {N N' : ℕ} (hN : N ≤ N') (s : D.what₂.Tau �
     have hc : (c : ℕ) < N' := lt_of_lt_of_le c.2 hN
     have h1 : ∀ r : Fin N, (r : ℕ) < N' := fun r => lt_of_lt_of_le r.2 hN
 
-    simp only [AlgHom.comp_apply, aeval_X, colSub, dif_pos hc, dif_pos (h1 _), map_sum, map_mul, MvPolynomial.mapAlgHom_apply,
-    map_X, map_C, algHom_C, algebraMap_eq, Matrix.submatrix_apply]
+    simp only [AlgHom.comp_apply, aeval_X, colSub, dif_pos (h1 _), map_sum, map_mul, MvPolynomial.mapAlgHom_apply,
+    map_X, map_C, algHom_C, Matrix.submatrix_apply]
 
     simp only [RingHom.coe_coe, aeval_C, aeval_X, map_sum, map_mul, algebraMap_eq, Finset.mul_sum, Finset.sum_mul]
     rw [Finset.sum_comm]

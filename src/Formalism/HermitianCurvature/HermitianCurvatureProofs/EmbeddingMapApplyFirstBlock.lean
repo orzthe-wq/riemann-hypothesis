@@ -113,10 +113,10 @@ theorem normal_form_left_hypothesis : NFHypL := by
   have hZ : (U.hMat (D.ptPerm a) (D.ptDiag a)).det ≠ 0 := Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne _ _ hd
   have hM : U.mMap k (D.ptSize a) (r - D.ptSize a) (U.hMat (D.ptPerm a) (D.ptDiag a)) g' ∈
       B.GV k (D.ptSize a + (r - D.ptSize a)) :=
-    (Formalism.FourierDecayAlt.P.slice_membership k (D.ptSize a) (r - D.ptSize a)).1 _ g' hZ hg'
+    (_root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem k (D.ptSize a) (r - D.ptSize a)).1 _ g' hZ hg'
   refine ⟨Formalism.FourierDecayAlt.P.PBE.castM_GV _ hM, fun a' q ha' => ?_, fun a' q ha' => ?_⟩
   · unfold PBG.xi0
-    rw [Formalism.FourierDecayAlt.P.PBM.herm_bvec_eI', Formalism.FourierDecayAlt.P.PBM.mulVec_bvec_apply]
+    rw [_root_.PI.StabPairsW.herm_e, Formalism.FourierDecayAlt.P.PBM.mulVec_bvec_apply]
     unfold levelZeroPointOver
     rw [castM_apply']
     have hi : (Fin.cast (by omega) (esI k r a') : Fin (2 * (D.ptSize a + (r - D.ptSize a)) + k + 1)) =

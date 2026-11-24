@@ -374,7 +374,7 @@ theorem UpperTheory.V.Ws.triV :
     unfold IsGSp at h ⊢
     rw [← hadj, ← map_mul, h]
     ext i j
-    by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+    by_cases hij : i = j <;> simp [hij]
   have hge : ∀ i j, Ge (mapRep 𝔞.toK r) i j ↔ Ge r i j := fun i j => by
     simp only [Ge, mapRep_apply, Ne, map_eq_zero_iff _ hinj]
   obtain ⟨-, grefl, gtr, h3, h5, -⟩ := geAlg 𝔞.K (mapRep 𝔞.toK r) _ (fun g => hgsp _ _ (hu.mult g)) fun i => push _ r i (hE i)

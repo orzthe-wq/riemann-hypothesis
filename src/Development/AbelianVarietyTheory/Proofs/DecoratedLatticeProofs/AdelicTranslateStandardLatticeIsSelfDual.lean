@@ -85,7 +85,7 @@ theorem isSdLat_of (V : HSp D) (hV : V.gram = 1) (N : Submodule (𝓞 D.host.E) 
   refine ⟨h.1, ?_⟩
   ext x
   rw [h.2 x]
-  simp only [Formalism.HermitianLatticesTheory.IsUnimodular, Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
+  simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
     LinearMap.restrictScalars_apply, Submodule.mem_one]
   refine forall_congr' fun y => imp_congr_right fun _ => ?_
   have e : Formalism.L2.Col.hStd D.host.E V.rank y x = ∑ i, ∑ j, star (y i) * V.gram i j * x j := by
@@ -100,6 +100,6 @@ theorem std_moved_lattice : ∀ (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n)
   have hsd := GlobalTheory.SplitMove.selfDual_move V hV g N hN
   refine ⟨isSdLat_of V hV N hsd, N, ?_, hsd⟩
   ext x
-  first | exact Iff.rfl | simp [GlobalTheory.AdForm.latFr]
+  first | exact Iff.rfl
 
 end GlobalTheory.StdMove

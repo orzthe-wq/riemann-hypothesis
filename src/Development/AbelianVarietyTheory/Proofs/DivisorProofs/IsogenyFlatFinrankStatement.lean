@@ -50,4 +50,4 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), IsIsogeny f → A.dim = B.dim ∧ Flat f.hom.left ∧ 0 < deg f ∧ ∀ y : B.X.left, f.hom.left.finrank y = deg f := by
-  first | exact @GlobalTheory.AV.AbVar.isogeny_flat_finrank | exact GlobalTheory.AV.AbVar.isogeny_flat_finrank | (intros; apply GlobalTheory.AV.AbVar.isogeny_flat_finrank <;> assumption)
+  first | exact @GlobalTheory.AV.AbVar.isogeny_flat_finrank

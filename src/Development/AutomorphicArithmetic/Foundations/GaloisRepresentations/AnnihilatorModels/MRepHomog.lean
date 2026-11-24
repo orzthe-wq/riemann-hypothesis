@@ -42,6 +42,9 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.NonemptyIsLimitBaseChange
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitive
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MemIdealOfOfDense
 
 @[expose] public section
 
@@ -54,26 +57,13 @@ open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison
 
 namespace UpperTheory.Gal.crystallineComparison.Mod
 
-private lemma spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
-    spMap g ≫ spMap f = spMap (g.comp f) := by
-  dsimp only [spMap]
-  rw [← Spec.map_comp]
-  rfl
-
-private lemma spMap_id' (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := by
-  simp [spMap]
-
-private lemma spMap_inj {R S : Type} [CommRing R] [CommRing S] {f g : R →+* S} (h : spMap f = spMap g) : f = g := by
-  have h' : CommRingCat.ofHom f = CommRingCat.ofHom g := Spec.map_injective h
-  exact congrArg CommRingCat.Hom.hom h'
-
 private lemma exists_algHom {κ B C : Type} [Field κ] [CommRing B] [CommRing C] [Algebra κ B] [Algebra κ C]
     (f : Sp C ⟶ Sp B) (hf : f ≫ spMap (algebraMap κ B) = spMap (algebraMap κ C)) :
     ∃ φ : B →ₐ[κ] C, spMap φ.toRingHom = f := by
   obtain ⟨φ, rfl⟩ : ∃ φ, f = Spec.map φ := ⟨Spec.preimage f, (Spec.map_preimage f).symm⟩
   have hφ : φ.hom.comp (algebraMap κ B) = algebraMap κ C := by
-    apply spMap_inj
-    rw [← spMap_comp']
+    apply _root_.GlobalTheory.ZM.DenseFib.spMap_inj
+    rw [← _root_.GlobalTheory.spMap_comp_ring]
     exact hf
   exact ⟨{ toRingHom := φ.hom, commutes' := fun r => RingHom.congr_fun hφ r }, rfl⟩
 
@@ -81,7 +71,7 @@ private noncomputable def ptOf {κ B : Type} [Field κ] [CommRing B] [Algebra κ
     𝟙_ (Over (Sp κ)) ⟶ algPt κ B :=
   Over.homMk (spMap ε.toRingHom) (by
     show spMap ε.toRingHom ≫ spMap (algebraMap κ B) = 𝟙 _
-    rw [spMap_comp', ← spMap_id']
+    rw [_root_.GlobalTheory.spMap_comp_ring, ← _root_.GlobalTheory.LevelFibre.spMap_id']
     congr 1
     ext r
     simp)
@@ -89,7 +79,7 @@ private noncomputable def ptOf {κ B : Type} [Field κ] [CommRing B] [Algebra κ
 private lemma ptOf_surj {κ B : Type} [Field κ] [CommRing B] [Algebra κ B] (y : 𝟙_ (Over (Sp κ)) ⟶ algPt κ B) :
     ∃ ε : B →ₐ[κ] κ, ptOf ε = y := by
   obtain ⟨ε, hε⟩ := exists_algHom (C := κ) y.left (by
-    rw [Algebra.algebraMap_self, spMap_id']
+    rw [Algebra.algebraMap_self, _root_.GlobalTheory.LevelFibre.spMap_id']
     exact Over.w y)
   refine ⟨ε, Over.OverMorphism.ext ?_⟩
   rw [← hε]
@@ -98,7 +88,7 @@ private lemma ptOf_surj {κ B : Type} [Field κ] [CommRing B] [Algebra κ B] (y 
 private lemma ptOf_inj {κ B : Type} [Field κ] [CommRing B] [Algebra κ B] {ε ε' : B →ₐ[κ] κ}
     (h : ptOf ε = ptOf ε') : ε = ε' := by
   have h1 : spMap ε.toRingHom = spMap ε'.toRingHom := congrArg CommaMorphism.left h
-  have h2 := spMap_inj h1
+  have h2 := _root_.GlobalTheory.ZM.DenseFib.spMap_inj h1
   ext x
   exact RingHom.congr_fun h2 x
 
@@ -155,18 +145,18 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.repHomog_of :
       obtain ⟨τ', hτ'⟩ := exists_algHom (C := B) s'.left (Over.w s')
       have e1 : τ.comp τ' = AlgHom.id κ B := by
         have h' : spMap (τ.comp τ').toRingHom = spMap (RingHom.id B) := by
-          rw [spMap_id']
+          rw [_root_.GlobalTheory.LevelFibre.spMap_id']
           show spMap (τ.toRingHom.comp τ'.toRingHom) = _
-          rw [← spMap_comp', hτ, hτ']
+          rw [← _root_.GlobalTheory.spMap_comp_ring, hτ, hτ']
           exact congrArg CommaMorphism.left h1
-        exact AlgHom.ext fun x => RingHom.congr_fun (spMap_inj h') x
+        exact AlgHom.ext fun x => RingHom.congr_fun (_root_.GlobalTheory.ZM.DenseFib.spMap_inj h') x
       have e2 : τ'.comp τ = AlgHom.id κ B := by
         have h' : spMap (τ'.comp τ).toRingHom = spMap (RingHom.id B) := by
-          rw [spMap_id']
+          rw [_root_.GlobalTheory.LevelFibre.spMap_id']
           show spMap (τ'.toRingHom.comp τ.toRingHom) = _
-          rw [← spMap_comp', hτ, hτ']
+          rw [← _root_.GlobalTheory.spMap_comp_ring, hτ, hτ']
           exact congrArg CommaMorphism.left h2
-        exact AlgHom.ext fun x => RingHom.congr_fun (spMap_inj h') x
+        exact AlgHom.ext fun x => RingHom.congr_fun (_root_.GlobalTheory.ZM.DenseFib.spMap_inj h') x
       refine ⟨AlgEquiv.ofAlgHom τ τ' e1 e2, ?_⟩
       rw [AlgEquiv.coe_algHom_ofAlgHom]
       apply ptOf_inj
@@ -174,4 +164,4 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.repHomog_of :
       show spMap (ε₀.toRingHom.comp τ.toRingHom) = (ptOf ε).left
       rw [← hpt]
       show _ = spMap ε₀.toRingHom ≫ s.left
-      rw [← hτ, spMap_comp']
+      rw [← hτ, _root_.GlobalTheory.spMap_comp_ring]

@@ -73,7 +73,7 @@ lemma uw_inWb {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {α : B.Mat k 
       star (α *ᵥ w) ⬝ᵥ (Hpk k r *ᵥ (α *ᵥ x)) = star w ⬝ᵥ (Hpk k r *ᵥ x) := by
     intro x w
     rw [Matrix.star_mulVec, ← dotProduct_mulVec]
-    simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc]
+    simp only [Matrix.mulVec_mulVec]
     rw [← Matrix.mul_assoc, hU]
   have hstar : ∀ (w : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)),
       star w ⬝ᵥ Pi.single j 1 = star (w j) := by
@@ -87,8 +87,8 @@ lemma uw_inWb {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {α : B.Mat k 
     have hi := i.isLt
     unfold Hpk bvec eI esI
     simp only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero,
-      Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, Fin.val_mk]
-    split_ifs <;> first | rfl | omega | (simp only [Fin.ext_iff, Fin.val_mk] at *; omega)
+      Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    split_ifs <;> first | rfl | omega | (simp only [Fin.ext_iff] at *; omega)
   have hHe' : ∀ a : Fin r, Hpk k r *ᵥ bvec (eI k r a) = bvec (esI k r a) := by
     intro a
     have ha := a.isLt
@@ -96,8 +96,8 @@ lemma uw_inWb {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {α : B.Mat k 
     have hi := i.isLt
     unfold Hpk bvec eI esI
     simp only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero,
-      Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, Fin.val_mk]
-    split_ifs <;> first | rfl | omega | (simp only [Fin.ext_iff, Fin.val_mk] at *; omega)
+      Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    split_ifs <;> first | rfl | omega | (simp only [Fin.ext_iff] at *; omega)
   intro i hi
   have hsi : star ((α *ᵥ u) i) = 0 := by
     rcases hi with hi | hi
@@ -117,7 +117,7 @@ lemma uw_inWb {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {α : B.Mat k 
         dsimp only
         congr 1
         ext
-        simp only [Fin.val_mk]
+        simp only
         omega
       calc star ((α *ᵥ u) i) = star (α *ᵥ u) ⬝ᵥ Pi.single i 1 := (hstar _ _).symm
         _ = star (α *ᵥ u) ⬝ᵥ (Hpk k r *ᵥ (α *ᵥ bvec (eI k r ⟨2 * r + k - i, h'⟩))) := by

@@ -104,7 +104,7 @@ theorem card_basis_eq [Nontrivial O] [NeZero n] (W : LocWach PD LL O v n) (T : L
     obtain ⟨a, ha, -⟩ := huniq x hx
     have : (⟨x, hx⟩ : ↥(W.N T)) = ∑ j, a j • w j := by
       apply Subtype.ext
-      simp [w, Submodule.coe_sum, ha]
+      simp [w, ha]
     rw [this]
     exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
   let bN := Module.Basis.mk hli hsp

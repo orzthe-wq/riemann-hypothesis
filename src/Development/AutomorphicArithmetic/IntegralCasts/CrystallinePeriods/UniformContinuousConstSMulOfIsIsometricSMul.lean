@@ -79,9 +79,7 @@ variable {O} in
 theorem dvd_iff_norm_le (x y : O) : x ∣ y ↔ ‖(y : C)‖ ≤ ‖(x : C)‖ := by
   constructor
   · rintro ⟨c, rfl⟩
-    push_cast
-    rw [norm_mul]
-    exact mul_le_of_le_one_right (norm_nonneg _) (norm_le_one c)
+    simpa [norm_mul] using mul_le_of_le_one_right (norm_nonneg (x : C)) (norm_le_one c)
   · intro h
     by_cases hx : (x : C) = 0
     · rw [hx, norm_zero, norm_le_zero_iff] at h
@@ -93,9 +91,7 @@ theorem dvd_iff_norm_le (x y : O) : x ∣ y ↔ ‖(y : C)‖ ≤ ‖(x : C)‖ 
 
 variable {O} in
 theorem isUnit_iff_norm_eq_one (x : O) : IsUnit x ↔ ‖(x : C)‖ = 1 := by
-  rw [isUnit_iff_dvd_one, dvd_iff_norm_le]
-  push_cast
-  rw [norm_one]
+  rw [isUnit_iff_dvd_one, dvd_iff_norm_le, show ‖((1 : O) : C)‖ = 1 by push_cast; rw [norm_one]]
   exact ⟨fun h => le_antisymm (norm_le_one x) h, fun h => h.ge⟩
 
 variable (p : ℕ)

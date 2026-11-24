@@ -50,6 +50,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
 import Formalism.AlgebraicWeights.IsAlgWeight
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.TypesDefs
 import ReciprocityTheory.Automorphisms.PlaceA
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

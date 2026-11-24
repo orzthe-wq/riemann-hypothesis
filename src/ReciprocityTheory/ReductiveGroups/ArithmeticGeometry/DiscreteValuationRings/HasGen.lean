@@ -1,47 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBTransport
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullUUnitsCompatGeneric
 
 @[expose] public section
@@ -94,8 +55,6 @@ lemma HasGen.add {F G : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) (hG : HasGen L G
       | (simp only [res, Units.coe_map, MonoidHom.coe_coe]
          rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]
          rfl)
-      | (simp [res, ← Functor.map_comp_apply])
-      | (simp [res]; rfl)
   obtain ⟨K, _, φ, ε, rfl, g, hg⟩ := hF
   obtain ⟨K', _, φ', ε', rfl, g', hg'⟩ := hG
   have hl : ∀ i : K ⊕ K' → L.ι, LB.wchart L (Sum.elim φ φ') i ≤ LB.wchart L φ (i ∘ Sum.inl) := by
@@ -116,11 +75,9 @@ lemma HasGen.add {F G : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) (hG : HasGen L G
         res hW ((LB.LinComb L φ ε).g (i ∘ Sum.inl) (j ∘ Sum.inl)) *
           res hW' ((LB.LinComb L φ' ε').g (i ∘ Sum.inr) (j ∘ Sum.inr)) := by
       first
-        | (simp only [LB.LinComb, Fintype.prod_sum_type, map_prod, map_zpow, res_res]; rfl)
+        | (simp only [LB.LinComb, Fintype.prod_sum_type, map_prod, map_zpow]; rfl)
         | (simp [LB.LinComb, Fintype.prod_sum_type, map_prod, map_zpow]
            congr 1 <;> refine Finset.prod_congr rfl fun k _ => ?_ <;> erw [res_res] <;> try rfl)
-        | (simp [LB.LinComb, Fintype.prod_sum_type, map_prod, map_zpow]
-           congr 1 <;> refine Finset.prod_congr rfl fun k _ => ?_ <;> rw [res_res])
     have e1 := congrArg (res hW) (hg (i ∘ Sum.inl) (j ∘ Sum.inl))
     have e2 := congrArg (res hW') (hg' (i ∘ Sum.inr) (j ∘ Sum.inr))
     erw [map_mul, res_res, res_res] at e1 e2
@@ -137,8 +94,6 @@ lemma HasGen.neg {F : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) : HasGen L (-F) :=
     have hgg : (LB.LinComb L φ (fun k => -ε k)).g i j = ((LB.LinComb L φ ε).g i j)⁻¹ := by
       first
         | (simp only [LB.LinComb, zpow_neg, Finset.prod_inv_distrib]; rfl)
-        | (simp [LB.LinComb, zpow_neg, Finset.prod_inv_distrib]; rfl)
-        | (unfold LB.LinComb; simp [zpow_neg, Finset.prod_inv_distrib])
     have hij := hg i j
     dsimp only
     rw [hgg]

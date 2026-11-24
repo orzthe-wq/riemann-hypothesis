@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CombAtS
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsNsmulHalf
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HomLatticeIndicatorOnSplitHalfEqHalfIndicatorStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceSchwartzBruhatActsAsSupportedCombinatiStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceSchwartzBruhatActsAsSupportedCombinati
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,7 +74,7 @@ theorem rebase : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topological
     refine ⟨hMS, hMT, hvacg, hf.2.2.2.1, ⟨Tm, hTm'⟩, fun T' hT' => ?_⟩
     rw [e2, ← e1]
     exact hf'.2.2.2.2.2 T' hT'
-  · obtain ⟨c, hc, hcomb⟩ := GlobalTheory.T.splitPlaceSchwartzBruhat_acts_as_supported_combination D k p n n' ψ hψ S T α β LS LT hLS hLT Ψ hΨ
+  · obtain ⟨c, hc, hcomb⟩ := _root_.GlobalTheory.FinPl.CombProof.extFun_comb D k p n n' ψ hψ S T α β LS LT hLS hLT Ψ hΨ
     refine ⟨c, hc, fun f₀ hvac => ?_⟩
     obtain ⟨f, hf, -⟩ := (hOB LS LT hLS hLT f₀ hvac).1 Ψ hΨ
     exact ⟨hLS, hLT, hvac, hΨ, hf.2.2.2.2.1, fun T' hT' => (hcomb f₀ T' hT').symm⟩

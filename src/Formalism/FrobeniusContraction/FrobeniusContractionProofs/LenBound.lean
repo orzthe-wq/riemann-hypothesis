@@ -87,7 +87,7 @@ theorem length_le_of_span {P : Type} [AddCommGroup P] [Module O P] {ι : Type} [
 
 theorem length_quot_pow_le (a : O) (e : ℕ) :
     Module.length O (O ⧸ Ideal.span {a ^ e}) ≤ (e : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) := by
-  apply GlobalTheory.length_quotient_span_pow_le <;> assumption
+  apply GlobalTheory.length_quotient_span_pow_le
 
 end PLenBound
 

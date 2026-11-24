@@ -83,8 +83,7 @@ theorem coeff_frobVar_of_not_dvd {K ι : Type} [Field K] {p : ℕ} (hp : p ≠ 0
 theorem coeff_frobVar_ne_zero {K ι : Type} [Field K] {p : ℕ} (hp : p ≠ 0)
     {f : MvPowerSeries ι K} {n : ι →₀ ℕ} (h : MvPowerSeries.coeff n (frobVar p f) ≠ 0) :
     ∃ m : ι →₀ ℕ, n = p • m ∧ MvPowerSeries.coeff m f ≠ 0 := by
-  have hd : ∀ i, p ∣ n i := by
-    intro i
+  have hd : ∀ i, p ∣ n i := fun i => by
     by_contra hc
     exact h (coeff_frobVar_of_not_dvd hp f hc)
   have hn : n = p • n.mapRange (· / p) (by simp) := by
@@ -162,12 +161,10 @@ theorem coeff_mvExp {K ι : Type} [NormedField K] [CharZero K] {f : MvPowerSerie
       (by omega), smul_zero]
 
 theorem powq_inj {p : ℕ} (hp : 2 ≤ p) {i j : ℕ} (h : (p ^ 2) ^ i = (p ^ 2) ^ j) : i = j := by
-  have h2 : 2 ≤ p ^ 2 := by nlinarith
-  exact Nat.pow_right_injective h2 h
+  exact Nat.pow_right_injective (by nlinarith) h
 
 theorem ppowq_inj {p : ℕ} (hp : 2 ≤ p) {i j : ℕ} (h : p * (p ^ 2) ^ i = p * (p ^ 2) ^ j) : i = j := by
-  have h' : (p ^ 2) ^ i = (p ^ 2) ^ j := Nat.eq_of_mul_eq_mul_left (by omega) h
-  exact powq_inj hp h'
+  exact powq_inj hp (Nat.eq_of_mul_eq_mul_left (by omega) h)
 
 private lemma lt_pow_self_of_two_le {b : ℕ} (hb : 2 ≤ b) (j : ℕ) : j < b ^ j := by
   induction j with

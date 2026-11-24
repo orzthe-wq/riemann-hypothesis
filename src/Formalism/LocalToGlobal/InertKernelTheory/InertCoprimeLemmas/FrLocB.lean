@@ -8,50 +8,10 @@ import Formalism.LocalToGlobal.GlobalTheory.GL3.PHfTrace
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PSelfDual
 public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.IntBasis
 import Mathlib.Algebra.AffineMonoid.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 public import Mathlib.RingTheory.DedekindDomain.PID
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -327,7 +287,6 @@ theorem norm_nat_coprime [Fact p.Prime] {s : ℕ} (h : Nat.Coprime s p) : ‖(s 
   rw [← h1, PadicComplex.norm_extends, PadicAlgCl.norm_extends, Padic.norm_natCast_eq_one_iff]
   first
   | exact h.symm
-  | exact (Nat.Prime.coprime_iff_not_dvd Fact.out).mp h.symm
 
 theorem norm_le_of_intAt [Fact p.Prime] (ψ : K →+* ℂ_[p]) {x : K} (h : IntAt p x) : ‖ψ x‖ ≤ 1 := by
   obtain ⟨s, hs, hx⟩ := h
@@ -535,9 +494,6 @@ theorem hK_sum_smul_right {ι : Type*} (s : Finset ι) (k : ι → D.host.K) (f 
 
   simp only [G0.hK, map_sum, Finset.mul_sum]
 
-theorem hK_smul_right (k : D.host.K) (x y : D.host.E) : G0.hK D x (k • y) = G0.cK D k * G0.hK D x y :=
-  hK_smul_right' D k x y
-
 theorem cK_nat (s : ℕ) : G0.cK D (s : D.host.K) = s := map_natCast _ s
 
 theorem cK_int {x : D.host.K} (h : IsIntegral ℤ x) : IsIntegral ℤ (G0.cK D x) :=
@@ -602,7 +558,7 @@ theorem local_orthonormal_basis : LocBasisMM := by
     have := hK_of_mem D h1 h2
     rw [show (s : D.host.E) * b m = (s : D.host.K) • b m from by rw [Algebra.smul_def, map_natCast],
       show (t : D.host.E) * b k = (t : D.host.K) • b k from by rw [Algebra.smul_def, map_natCast],
-      hK_smul_left, hK_smul_right, cK_nat] at this
+      hK_smul_left, _root_.Formalism.L2.KerInert.FrLocB.hK_smul_right', cK_nat] at this
     have e : ((s * t : ℕ) : D.host.K) * G m k = (s : D.host.K) * ((t : D.host.K) * G0.hK D (b m) (b k)) := by
       simp only [G, Matrix.of_apply]; rw [Nat.cast_mul]; ring
     rw [e]; exact isInt_cast this
@@ -625,7 +581,7 @@ theorem local_orthonormal_basis : LocBasisMM := by
     have e1 : G0.hK D ((S : D.host.K) • w n) y = G0.cK D (c n) := by
       rw [hK_smul_left, ← cK_nat D S]
       have e2 : G0.cK D (S : D.host.K) * G0.hK D (w n) y = G0.hK D (w n) ((S : D.host.K) • y) := by
-        rw [hK_smul_right]
+        rw [_root_.Formalism.L2.KerInert.FrLocB.hK_smul_right']
       rw [e2, hc, hK_sum_smul_right]
       rw [Finset.sum_eq_single n]
       · rw [hK_symm, hw, if_pos rfl, map_one, mul_one]
@@ -728,6 +684,6 @@ end Formalism.L2.KerInert.FrLocB
 
 namespace Formalism.L2.KerInert
 
-theorem local_orthonormal_basis : LocBasisMM := FrLocB.local_orthonormal_basis
+alias local_orthonormal_basis := _root_.Formalism.L2.KerInert.FrLocB.local_orthonormal_basis
 
 end Formalism.L2.KerInert

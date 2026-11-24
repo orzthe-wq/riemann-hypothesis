@@ -93,9 +93,6 @@ def ResidueCount : Prop :=
             ((epsQ D i g)⁻¹ ^ a)) →
     ∃ Ak : Fin Pa.length → Multiset ℕ, (∀ k, (Ak k).sum = (Pa.get k).a ∧ ∀ a ∈ Ak k, 1 ≤ a) ∧
       ∑ k, (Pa.get k).d • Ak k = D.R.r ::ₘ Multiset.replicate D.R.t 1
-def LocalGlobalCompatible (D : D7) : Prop :=
-  ∀ (i : D.nd.Loc) (r : D.nd.X i → (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r →
-    ∀ w : PlE D.host, (w ∈ D.nd.S i ∨ w ∈ D.nd.Q i) → _root_.UpperTheory.GalS.LGCatN D.nd r D.naut w
 end GlobalTheory.StringRepresentationDecomposition
 end
 end

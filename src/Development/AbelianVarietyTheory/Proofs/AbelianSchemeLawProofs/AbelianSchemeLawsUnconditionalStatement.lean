@@ -48,4 +48,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.abelianScheme_laws_unconditional : Laws ∧ Laws2 := by
-  first | exact @GlobalTheory.abelianSchemeLaws_all | exact GlobalTheory.abelianSchemeLaws_all | (intros; apply GlobalTheory.abelianSchemeLaws_all <;> assumption)
+  first | exact @GlobalTheory.abelianSchemeLaws_all

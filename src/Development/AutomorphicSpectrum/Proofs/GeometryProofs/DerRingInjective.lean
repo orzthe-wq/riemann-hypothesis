@@ -103,7 +103,7 @@ def derRing (ψ : (RingHom.ker ε).Cotangent →ₗ[R] V) : B →ₐ[R] TrivSqZe
     { toFun := fun f => TrivSqZeroExt.inl (ε f) + TrivSqZeroExt.inr (ψ ((RingHom.ker ε).toCotangent (augPart ε f)))
       map_add' := fun f g => by
         rw [augPart_add, map_add (f := _), map_add (f := _), map_add (f := _)]
-        ext <;> simp <;> abel
+        ext <;> simp
       map_smul' := fun r f => by
         rw [augPart_smul, map_smul]
         ext <;> simp }

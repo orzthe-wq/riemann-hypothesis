@@ -1,8 +1,10 @@
 module
 
-public import Formalism.CharacterColumnKernels.StatementRho
+public import Formalism.CharacterColumnKernels.Statement
+public import Aesop.BuiltinRules
 public import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero
-public import Formalism.CharacterColumnKernels.IdempotentNormalForms.RightMulEpsAlgebraMap
+public import Mathlib.Algebra.Module.PID
+public import Formalism.CharacterColumnKernels.StatementRho
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -22,7 +24,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,7 +45,171 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.LinearAlgebra.FreeProduct.Basic
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.CharacterColumnKernels.StatementMF, Formalism.CharacterColumnKernels.IdempotentNormalForms.RightMulEpsAlgebraMap, Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthEqKerAddRange
+
+-- ===== clump member: Formalism.CharacterColumnKernels.StatementMF =====
+-- clump-header: {"m": "Formalism.CharacterColumnKernels.StatementMF", "h": "module\n\npublic import Formalism.CharacterColumnKernels.Statement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+noncomputable section
+
+namespace Formalism.NG
+
+universe u
+
+def epsImg (O : Type*) {OO M : Type*} [CommRing O] [Ring OO] [Algebra O OO] [AddCommGroup M]
+    [Module OO M] [Module O M] [IsScalarTower O OO M] (ε : OO) : Submodule O M :=
+  LinearMap.range (DistribSMul.toLinearMap O M ε)
+
+def epsIdeal (O : Type*) {OO : Type*} [CommRing O] [Ring OO] [Algebra O OO] (ε : OO) :
+    Submodule O OO :=
+  LinearMap.range (LinearMap.mulLeft O ε)
+
+abbrev EpsDual (O OO Q : Type*) [CommRing O] [Ring OO] [Algebra O OO] [AddCommGroup Q] [Module O Q]
+    (ε : OO) : Type _ :=
+  epsIdeal O ε →ₗ[O] Q
+
+section EpsDual
+variable (O OO Q : Type*) [CommRing O] [Ring OO] [Algebra O OO] [AddCommGroup Q] [Module O Q]
+  (ε : OO)
+
+end EpsDual
+
+def StatMatlis : Prop :=
+  ∀ (O N : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [AddCommGroup N]
+    [Module O N], IsFiniteLength O N →
+    Module.length O (N →ₗ[O] KO O) = Module.length O N
+
+end Formalism.NG
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CharacterColumnKernels.StatementMF =====
+
+-- ===== clump member: Formalism.CharacterColumnKernels.IdempotentNormalForms.RightMulEpsAlgebraMap =====
+-- clump-header: {"m": "Formalism.CharacterColumnKernels.IdempotentNormalForms.RightMulEpsAlgebraMap", "h": "module\n\npublic import Formalism.CharacterColumnKernels.StatementMF\npublic import Aesop.BuiltinRules\npublic import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero\npublic import Mathlib.Algebra.Module.PID\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.FreeProduct.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Module IsDiscreteValuationRing
+
+noncomputable section
+
+namespace Formalism.NG
+
+namespace IdempotentImageSmul
+
+section Matlis
+
+variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
+
+def homQuotEquiv (a : O) :
+    ((O ⧸ Ideal.span ({a} : Set O)) →ₗ[O] KO O) ≃ₗ[O]
+      LinearMap.ker (matQ O (fun _ _ => a : Matrix Unit Unit O)) where
+  toFun φ := ⟨fun _ => φ (Submodule.Quotient.mk 1), by
+    rw [LinearMap.mem_ker]; funext i
+    show ∑ _j : Unit, a • φ (Submodule.Quotient.mk 1) = 0
+    rw [Fintype.sum_unique, ← map_smul, ← Submodule.Quotient.mk_smul, smul_eq_mul, mul_one,
+      (Submodule.Quotient.mk_eq_zero _).mpr (Ideal.mem_span_singleton_self a), map_zero]⟩
+  map_add' φ ψ := rfl
+  map_smul' c φ := rfl
+  invFun v := (Ideal.span ({a} : Set O)).liftQ (LinearMap.toSpanSingleton O _ (v.1 ())) (by
+    rw [Ideal.span, Submodule.span_le, Set.singleton_subset_iff]
+    show a • v.1 () = 0
+    have h : (∑ j : Unit, a • v.1 j) = 0 := congrFun (LinearMap.mem_ker.mp v.2) ()
+    rwa [Fintype.sum_unique] at h)
+  left_inv φ := by
+    apply LinearMap.ext; intro x
+    induction x using Submodule.Quotient.induction_on with
+    | H x =>
+      rw [Submodule.liftQ_apply, LinearMap.toSpanSingleton_apply]
+      show x • φ (Submodule.Quotient.mk 1) = φ (Submodule.Quotient.mk x)
+      rw [← map_smul, ← Submodule.Quotient.mk_smul, smul_eq_mul, mul_one]
+  right_inv v := by
+    apply Subtype.ext; funext i
+    show ((Ideal.span ({a} : Set O)).liftQ _ _) (Submodule.Quotient.mk 1) = v.1 i
+    rw [Submodule.liftQ_apply, LinearMap.toSpanSingleton_apply, one_smul]
+
+lemma length_hom_quot (a : O) :
+    Module.length O ((O ⧸ Ideal.span ({a} : Set O)) →ₗ[O] KO O) = addVal O a := by
+  rw [(homQuotEquiv a).length_eq, lenKer O Unit (fun _ _ => a)]
+  exact congrArg _ (Matrix.det_unique _)
+
+lemma length_self_top : Module.length O O = ⊤ := by
+  by_contra h
+  have hfl : IsFiniteLength O O := Module.length_ne_top_iff.mp h
+  rw [isFiniteLength_iff_isNoetherian_isArtinian] at hfl
+  haveI : IsArtinianRing O := hfl.2
+  exact IsDiscreteValuationRing.not_isField O (IsArtinianRing.isField_of_isDomain O)
+
+end Matlis
+
+end IdempotentImageSmul
+
+open IdempotentImageSmul
+
+theorem matlis : StatMatlis := by
+  classical
+  intro O N _ _ _ _ _ hN
+  have hNA := isFiniteLength_iff_isNoetherian_isArtinian.mp hN
+  have : IsNoetherian O N := hNA.1
+  obtain ⟨n, ι, _, p, -, e, ⟨f⟩⟩ := Module.equiv_free_prod_directSum (R := O) (M := N)
+  set A : ι → Type _ := fun i => O ⧸ O ∙ p i ^ e i with hA
+  let g : (DirectSum ι A) ≃ₗ[O] (Π i, A i) := DirectSum.linearEquivFunOnFintype O ι A
+  have hlenA : ∀ i, Module.length O (A i) = addVal O (p i ^ e i) := fun i =>
+    IdempotentNormalFormsLenFacts.length_quot_span (p i ^ e i)
+  have hlenH : ∀ i, Module.length O (A i →ₗ[O] KO O) = addVal O (p i ^ e i) := fun i =>
+    length_hom_quot (p i ^ e i)
+  have hN1 : Module.length O N =
+      Module.length O (Fin n →₀ O) + ∑ i, addVal O (p i ^ e i) := by
+    rw [f.length_eq, Module.length_prod, g.length_eq, Module.length_pi_of_fintype]
+    simp only [hlenA]
+  have hF : Module.length O (Fin n →₀ O) = 0 := by
+    rw [Module.length_finsupp, length_self_top]
+    rcases Nat.eq_zero_or_pos n with hn | hn
+    · subst hn; simp
+    · exfalso
+      have : Module.length O N = ⊤ := by
+        rw [hN1, Module.length_finsupp, length_self_top, ENat.card_eq_coe_fintype_card,
+          Fintype.card_fin, ENat.mul_top (by exact_mod_cast hn.ne'), top_add]
+      exact (Module.length_ne_top_iff.mpr hN) this
+  have : Subsingleton (Fin n →₀ O) := Module.length_eq_zero_iff.mp hF
+  have hFH : Module.length O ((Fin n →₀ O) →ₗ[O] KO O) = 0 := by
+    rw [Module.length_eq_zero_iff]
+    exact ⟨fun φ ψ => LinearMap.ext fun x => by rw [Subsingleton.elim x 0, map_zero, map_zero]⟩
+  let h1 : (N →ₗ[O] KO O) ≃ₗ[O] ((Fin n →₀ O) × DirectSum ι A →ₗ[O] KO O) :=
+    f.arrowCongr (LinearEquiv.refl O (KO O))
+  let h2 : (DirectSum ι A →ₗ[O] KO O) ≃ₗ[O] ((Π i, A i) →ₗ[O] KO O) :=
+    g.arrowCongr (LinearEquiv.refl O (KO O))
+  have h3 : Module.length O ((Π i, A i) →ₗ[O] KO O) = ∑ i, addVal O (p i ^ e i) := by
+    have := (LinearMap.lsum O A O : (Π i, A i →ₗ[O] KO O) ≃ₗ[O] _).length_eq
+    rw [← this, Module.length_pi_of_fintype]
+    simp only [hlenH]
+  rw [h1.length_eq, ← (LinearMap.coprodEquiv O).length_eq, Module.length_prod, h2.length_eq,
+    h3, hFH, hN1, hF]
+
+end Formalism.NG
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CharacterColumnKernels.IdempotentNormalForms.RightMulEpsAlgebraMap =====
+
+-- ===== clump member: Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthEqKerAddRange =====
+-- clump-header: {"m": "Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthEqKerAddRange", "h": "module\n\npublic import Formalism.CharacterColumnKernels.StatementRho\npublic import Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthKerOfDetEqZero\npublic import Formalism.CharacterColumnKernels.IdempotentNormalForms.RightMulEpsAlgebraMap\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Finset
@@ -252,3 +416,7 @@ lemma final_arith (R X Y Z s k : ℕ∞) (c N vδ : ℕ∞) (hk : k ≤ X + c * 
 end IdempotentNormalFormsRhoFacts
 
 end Formalism.NG
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.CharacterColumnKernels.IdempotentNormalForms.LengthEqKerAddRange =====

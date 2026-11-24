@@ -172,12 +172,12 @@ def T : Subgroup B.Aˣ where
   one_mem' := by simp
   mul_mem' := by
     intro a b ha hb
-    simp only [Set.mem_setOf_eq, Units.val_mul, map_mul] at ha hb ⊢
+    simp only [Set.mem_ofPred_eq, Units.val_mul, map_mul] at ha hb ⊢
     calc (a : B.A) * b * (B.σ a * B.σ b) = ((a : B.A) * B.σ a) * ((b : B.A) * B.σ b) := by ring
       _ = 1 := by rw [ha, hb, one_mul]
   inv_mem' := by
     intro a ha
-    simp only [Set.mem_setOf_eq] at ha ⊢
+    simp only [Set.mem_ofPred_eq] at ha ⊢
     have h1 : B.σ (a : B.A) * B.σ ((a⁻¹ : B.Aˣ) : B.A) = 1 := by rw [← map_mul, Units.mul_inv, map_one]
     calc ((a⁻¹ : B.Aˣ) : B.A) * B.σ ((a⁻¹ : B.Aˣ) : B.A)
         = ((a⁻¹ : B.Aˣ) : B.A) * B.σ ((a⁻¹ : B.Aˣ) : B.A) * ((a : B.A) * B.σ a) := by rw [ha, mul_one]

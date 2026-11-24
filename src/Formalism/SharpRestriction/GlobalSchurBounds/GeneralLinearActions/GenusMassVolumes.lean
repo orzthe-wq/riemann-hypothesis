@@ -211,9 +211,8 @@ theorem SelfDual.eq_of_test {V : Type} [AddCommGroup V] [TopologicalSpace V]
   have h4 : ((c : ℂ)) * (c : ℂ) = 1 := mul_right_cancel₀ hz (by rw [h2, one_mul])
   have h5 : c * c = 1 := by exact_mod_cast h4
   have h6 : c = 1 := by
-    have : (c : ℝ) * c = 1 := by exact_mod_cast h5
-    have h7 : (c : ℝ) = 1 := by nlinarith [c.coe_nonneg]
-    exact_mod_cast h7
+    have h5' : (c : ℝ) * c = 1 := by exact_mod_cast h5
+    exact_mod_cast (by nlinarith [c.coe_nonneg] : (c : ℝ) = 1)
   rw [e, h6, one_smul]
 
 def IsContDensity {V X Y : Type} [MeasurableSpace V] [TopologicalSpace X] [MeasurableSpace X]
@@ -351,8 +350,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
 
 theorem map_mem_HermR (σ : E →ₐ[F] E) {n : ℕ} (T : Matrix (Fin n) (Fin n) E)
     (hT : ∀ a b, σ (T b a) = T a b) : T.map (inclR R) ∈ HermR R σ n := by
-  intro a b
-  simp [sigR, inclR, Matrix.map_apply, hT a b]
+  simpa [HermR, sigR, inclR, Matrix.map_apply] using fun a b => congrArg (inclR R) (hT a b)
 
 def hermOf (σ : E →ₐ[F] E) {n : ℕ} (T : Matrix (Fin n) (Fin n) E)
     (hT : ∀ a b, σ (T b a) = T a b) : HermR R σ n :=

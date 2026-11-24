@@ -1,7 +1,9 @@
 module
 
 public import Mathlib.NumberTheory.Padics.PadicIntegers
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardDualZmodModuleEqCardStatement
+public import Mathlib.LinearAlgebra.Dual.Defs
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardDualZmodModuleEqCard
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.SoLevFacts
 public import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.SelmerDuality.ZModInj
 import Mathlib.Algebra.Order.Floor.Extended
@@ -145,7 +147,7 @@ theorem UpperTheory.V.X.So.dualGen :
     rw [← Nat.card_congr (QuotientAddGroup.quotientKerEquivRange Ψ).toEquiv,
       Nat.card_congr (QuotientAddGroup.quotientAddEquivOfEq hker).toEquiv]
     exact Nat.card_congr e.symm.toEquiv
-  have hcardD := GlobalTheory.T.card_dual_zmod_module_eq_card (l ^ r) M
+  have hcardD := _root_.GlobalTheory.ZModDual.card_dual_eq (l ^ r) M
   haveI : Finite (Module.Dual (ZMod (l ^ r)) M) :=
     Nat.finite_of_card_ne_zero (by rw [hcardD]; exact Nat.card_pos.ne')
   have htop : Ψ.range = ⊤ := AddSubgroup.eq_top_of_card_eq _ (by rw [hcardR, hcardD])

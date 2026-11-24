@@ -119,23 +119,12 @@ theorem single_apply_ne (x : (w.adicCompletion E)ˣ) {u : HeightOneSpectrum (�
   | (change (RestrictedProduct.mulSingle (fun u : HeightOneSpectrum (𝓞 E) => u.adicCompletionIntegers E) w
         (x : w.adicCompletion E)) u = 1
      exact RestrictedProduct.mulSingle_eq_of_ne _ _ hu)
-  | (unfold GlobalTheory.CMVal.single
-     simp only [Units.coe_map, Neutral.B1.finiteSingle, MonoidHom.coe_mk, OneHom.coe_mk,
-       RestrictedProduct.coe_mulSingle_apply]
-     simp [Pi.mulSingle, Function.update, hu])
 
 private lemma cmval_single_apply_self (x : (w.adicCompletion E)ˣ) :
     (GlobalTheory.CMVal.single w x : FiniteAdeleRing (𝓞 E) E) w = x := by
   classical
   first
   | (change (Pi.mulSingle w (x : w.adicCompletion E) : ∀ u : HeightOneSpectrum (𝓞 E), u.adicCompletion E) w = x
-     exact Pi.mulSingle_eq_same _ _)
-  | (change (RestrictedProduct.mulSingle (fun u : HeightOneSpectrum (𝓞 E) => u.adicCompletionIntegers E) w
-        (x : w.adicCompletion E)) w = x
-     exact RestrictedProduct.mulSingle_eq_same _ _)
-  | (unfold GlobalTheory.CMVal.single
-     simp only [Units.coe_map, Neutral.B1.finiteSingle, MonoidHom.coe_mk, OneHom.coe_mk,
-       RestrictedProduct.coe_mulSingle_apply]
      exact Pi.mulSingle_eq_same _ _)
 
 theorem sigR_single (hE : IsCMExt F E σ) (h : w.under (𝓞 F) = v) (h' : w'.under (𝓞 F) = v) (hne : w ≠ w')

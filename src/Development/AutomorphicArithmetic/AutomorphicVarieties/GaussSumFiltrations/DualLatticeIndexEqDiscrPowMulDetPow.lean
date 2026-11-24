@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall
+import Development.AutomorphicArithmetic.AutomorphicVarieties.GaussSumFiltrations.EvenPosGramFormIntegralLatticeProperties
 
 @[expose] public section
 
@@ -143,19 +144,13 @@ theorem mul_mem_trD {a w : F} (ha : IsIntegral ℤ a) (hw : w ∈ trD F) : a * w
 
 variable {κ : Type} [Fintype κ] [DecidableEq κ]
 
-theorem mem_LL {x : κ → F} : x ∈ LL F κ ↔ ∀ i, IsIntegral ℤ (x i) := by
-  unfold LL
-  rw [AddSubgroup.mem_pi]
-  simp only [Set.mem_univ, true_implies]
-  rfl
-
 theorem LL_eq_pi : LL F κ = AddSubgroup.pi Set.univ fun _ => intG F := by
   ext x
-  rw [mem_LL, AddSubgroup.mem_pi]
+  rw [_root_.GlobalTheory.HilbertThetaSeries.FormLat.mem_LL, AddSubgroup.mem_pi]
   simp [mem_intG]
 
 theorem smul_mem_LL {a : F} (ha : IsIntegral ℤ a) {x : κ → F} (hx : x ∈ LL F κ) : a • x ∈ LL F κ := by
-  rw [mem_LL] at hx ⊢
+  rw [_root_.GlobalTheory.HilbertThetaSeries.FormLat.mem_LL] at hx ⊢
   intro i
   simpa [Pi.smul_apply, smul_eq_mul] using ha.mul (hx i)
 
@@ -172,7 +167,7 @@ theorem mem_dualL_iff (G : Matrix κ κ ℤ) (y : κ → F) :
     rw [mem_trD]
     intro o ho
     obtain ⟨n, hn⟩ := h (Pi.single j o) (by
-      rw [mem_LL]
+      rw [_root_.GlobalTheory.HilbertThetaSeries.FormLat.mem_LL]
       intro i
       by_cases hij : i = j
       · subst hij
@@ -182,7 +177,7 @@ theorem mem_dualL_iff (G : Matrix κ κ ℤ) (y : κ → F) :
     refine ⟨n, ?_⟩
     rw [← hn, BF_eq_vecMul, dotProduct_single]
   · intro h l hl
-    rw [mem_LL] at hl
+    rw [_root_.GlobalTheory.HilbertThetaSeries.FormLat.mem_LL] at hl
     have hc : ∀ i, ∃ n : ℤ, Algebra.trace ℚ F ((y ᵥ* G.map (Int.cast : ℤ → F)) i * l i) = n :=
       fun i => mem_trD.1 (h i) (l i) (hl i)
     choose n hn using hc
@@ -213,8 +208,8 @@ theorem det_map_cast {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq 
 theorem map_LL_le {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ) :
     (LL F κ).map (Matrix.vecMulLinear (G.map (Int.cast : ℤ → F))).toAddMonoidHom ≤ LL F κ := by
   rintro _ ⟨x, hx, rfl⟩
-  rw [SetLike.mem_coe, mem_LL] at hx
-  rw [mem_LL]
+  rw [SetLike.mem_coe, _root_.GlobalTheory.HilbertThetaSeries.FormLat.mem_LL] at hx
+  rw [_root_.GlobalTheory.HilbertThetaSeries.FormLat.mem_LL]
   intro j
   have hx' : ∀ i, x i ∈ integralClosure ℤ F := hx
   show (x ᵥ* G.map (Int.cast : ℤ → F)) j ∈ integralClosure ℤ F
@@ -292,7 +287,7 @@ private theorem det_smul_eq_vecMul_adjugate (G : Matrix κ κ ℤ) (y : κ → F
 
 private theorem bf_isIntegral_of_mem_LL (G : Matrix κ κ ℤ) {x z : κ → F} (hx : x ∈ LL F κ)
     (hz : z ∈ LL F κ) : IsIntegral ℤ (BF G x z) := by
-  rw [mem_LL] at hx hz
+  rw [_root_.GlobalTheory.HilbertThetaSeries.FormLat.mem_LL] at hx hz
   have hx' : ∀ i, x i ∈ integralClosure ℤ F := hx
   have hz' : ∀ i, z i ∈ integralClosure ℤ F := hz
   show BF G x z ∈ integralClosure ℤ F
@@ -304,7 +299,7 @@ private theorem bf_isIntegral_of_mem_LL (G : Matrix κ κ ℤ) {x z : κ → F} 
 private theorem mul_det_smul_mem_LL_of_mem_dualL (G : Matrix κ κ ℤ) {y : κ → F} (hy : y ∈ dualL F G) {c : F}
     (hc : ∀ w ∈ trD F, IsIntegral ℤ (c * w)) : (c * (G.det : F)) • y ∈ LL F κ := by
   have hv := (mem_dualL_iff G y).1 hy
-  rw [mem_LL]
+  rw [_root_.GlobalTheory.HilbertThetaSeries.FormLat.mem_LL]
   intro j
   have he : ((c * (G.det : F)) • y) j =
       ∑ i, (c * (y ᵥ* G.map (Int.cast : ℤ → F)) i) * (G.adjugate i j : F) := by
@@ -376,7 +371,7 @@ theorem dual_level_index : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) 
       rw [hq]
       exact bf_isIntegral_of_mem_LL G hu hu
   · intro y hy
-    rw [mem_LL]
+    rw [_root_.GlobalTheory.HilbertThetaSeries.FormLat.mem_LL]
     intro j
     apply isIntegral_of_dual
     intro x hx
@@ -436,5 +431,3 @@ end GlobalTheory.HilbertThetaSeries.DualLevel
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 
-theorem _root_.GlobalTheory.T.dualLattice_index_eq_discr_pow_mul_det_pow : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → (∀ y : κ → F, y ∈ dualL F G → ∀ d : 𝓞 F, d ∈ differentIdeal ℤ (𝓞 F) → ((G.det : F) * d) • y ∈ LL F κ) ∧ (∃ N : ℕ, 0 < N ∧ ∀ y ∈ dualL F G, (N : F) • y ∈ LL F κ ∧ IsIntegral ℤ ((N : F) * QF G y)) ∧ (∀ y : κ → F, (∀ ν ∈ dualL F G, ∃ n : ℤ, Algebra.trace ℚ F (BF G y ν) = n) → y ∈ LL F κ) ∧ (∀ (a : F) (y : κ → F), IsIntegral ℤ a → y ∈ dualL F G → a • y ∈ dualL F G) ∧ ((LL F κ).relIndex (dualL F G) : ℤ) = ((discr F).natAbs : ℤ) ^ Fintype.card κ * G.det ^ Module.finrank ℚ F := by
-  first | exact @GlobalTheory.HilbertThetaSeries.DualLevel.dual_level_index | exact GlobalTheory.HilbertThetaSeries.DualLevel.dual_level_index | (intros; apply GlobalTheory.HilbertThetaSeries.DualLevel.dual_level_index <;> assumption)

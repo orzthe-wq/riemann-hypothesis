@@ -50,4 +50,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.Chain.RealIt
 
 theorem _root_.GlobalTheory.T.twisted_chain_step_weil_exponents_fock_vacuum : ∀ D : D7, ForStepQ D fun c _ k s s' p => ∀ hk : k < D.R.m, IsWeilExp c.ψ s.V s'.V (GlobalTheory.Chain.expS D ⟨k, hk⟩) (GlobalTheory.Chain.expT D ⟨k, hk⟩) p.ω ∧ GlobalTheory.Chain.IsVacVec c.ψ c.θ s.M s'.M p.f := by
-  first | exact @GlobalTheory.ChainTw.StepExpTw.twStepExpVac | exact GlobalTheory.ChainTw.StepExpTw.twStepExpVac | (intros; apply GlobalTheory.ChainTw.StepExpTw.twStepExpVac <;> assumption)
+  first | exact @GlobalTheory.ChainTw.StepExpTw.twStepExpVac

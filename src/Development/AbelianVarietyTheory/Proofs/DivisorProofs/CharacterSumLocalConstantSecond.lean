@@ -78,9 +78,7 @@ theorem exists_vG {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vGs) : ∃ i,
   · exact ⟨0, h⟩
   · exact ⟨1, h⟩
 
-theorem g_mem (hPr : Pr.Ok) {i : Fin 2} {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vG i) :
-    ((Pr.g i : ℕ) : 𝓞 X.E) ∈ P.asIdeal :=
-  hPr.piG_norm i ▸ Ideal.mul_mem_left _ _ (mem_of_mem_divs h)
+alias g_mem := _root_.Formalism.L2.Col.Primes.Ok.g_mem
 
 theorem T_mem (hPr : Pr.Ok) {u : Pr.Word} {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vT u) :
     ((Pr.T u : ℕ) : 𝓞 X.E) ∈ P.asIdeal :=

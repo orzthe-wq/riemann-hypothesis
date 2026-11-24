@@ -60,19 +60,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.TangentDim
 
-theorem ringHom_injective {E : Type} [Field E] [NumberField E] (s : 𝓞 E →+* ℂ) : Function.Injective s := by
-  rw [RingHom.injective_iff_ker_eq_bot]
-  apply Ideal.eq_bot_of_comap_eq_bot (R := ℤ)
-  ext n
-  simp [Ideal.mem_comap, RingHom.mem_ker]
-
 theorem restrict_bijective (E : Type) [Field E] [NumberField E] :
     Function.Bijective (fun f : E →+* ℂ => f.comp (algebraMap (𝓞 E) E)) := by
   constructor
   · intro f f' h
     exact IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h
   · intro s
-    refine ⟨IsFractionRing.lift (ringHom_injective s), ?_⟩
+    refine ⟨IsFractionRing.lift (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.intEmb_injective s), ?_⟩
     ext a
     simp
 

@@ -91,7 +91,6 @@ theorem product_haar_measure_holds : ProdHaarG := by
       rw [hA1]
       first
         | exact (continuous_fst.comp (hTc.comp (continuous_id.prodMk continuous_const))).measurable
-        | exact (continuous_fst.comp (hTc.comp (continuous_id.prod_mk continuous_const))).measurable
     have hCA : C = fun m => p0.1⁻¹ * A m := funext fun m => Subtype.ext (by
       simp only [A, C, Subgroup.coe_mul, Subgroup.coe_inv]
       group)
@@ -108,12 +107,10 @@ theorem product_haar_measure_holds : ProdHaarG := by
         rw [← lintegral_indicator_one (hCm (measurable_subtype_coe hB))]
         first
           | rfl
-          | (congr 1; funext n; simp [Set.indicator_apply, C])
       have e2 : ∫⁻ n, B.indicator 1 (n : X) ∂μN = μN (Subtype.val ⁻¹' B) := by
         rw [← lintegral_indicator_one (measurable_subtype_coe hB)]
         first
           | rfl
-          | (congr 1; funext n; simp [Set.indicator_apply])
       rw [← e1, key, e2]
     have hA : Measure.map A μN = μN := by
       have hAC : A = (fun m => p0.1 * m) ∘ C :=

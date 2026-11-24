@@ -64,23 +64,23 @@ private theorem comap_eq_ker_subschemeι_comp_inv {A B : Scheme.{u}} (f : A ⟶ 
 
 theorem imageIdealSheaf_eq_comap_inv {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (J : A.IdealSheafData) :
-    imageIdealSheaf f J = J.comap (inv f) := by
+    _root_.FunctorialResolution.Blowup.schemeImageIdeal f J = J.comap (inv f) := by
   rw [imageIdealSheaf_eq_ker, comap_eq_ker_subschemeι_comp_inv (inv f) J, IsIso.inv_inv]
 
 theorem imageIdealSheaf_comap {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (I : B.IdealSheafData) :
-    imageIdealSheaf f (I.comap f) = I := by
+    _root_.FunctorialResolution.Blowup.schemeImageIdeal f (I.comap f) = I := by
   rw [imageIdealSheaf_eq_comap_inv, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp,
     IsIso.inv_hom_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
 
 theorem comap_imageIdealSheaf {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (J : A.IdealSheafData) :
-    (imageIdealSheaf f J).comap f = J := by
+    (_root_.FunctorialResolution.Blowup.schemeImageIdeal f J).comap f = J := by
   rw [imageIdealSheaf_eq_comap_inv, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp,
     IsIso.hom_inv_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id]
 
 theorem ker_comp_eq_imageIdealSheaf_ker {W A B : Scheme.{u}} (g : W ⟶ A) (w : A ⟶ B) :
-    (g ≫ w).ker = imageIdealSheaf w g.ker := by
+    (g ≫ w).ker = _root_.FunctorialResolution.Blowup.schemeImageIdeal w g.ker := by
   rw [imageIdealSheaf_eq_ker, AlgebraicGeometry.Scheme.Hom.ker_comp,
     AlgebraicGeometry.Scheme.Hom.ker_comp, AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι]
 
@@ -110,7 +110,7 @@ private theorem exists_iso_subscheme_comap_of_isIso {A B : Scheme.{u}} (w : A �
 
 theorem imageIdealSheaf_comp_comap_of_isIso {A B C : Scheme.{u}} (w : A ⟶ B) [IsIso w] (g : B ⟶ C)
     (I : B.IdealSheafData) :
-    imageIdealSheaf (w ≫ g) (I.comap w) = imageIdealSheaf g I := by
+    _root_.FunctorialResolution.Blowup.schemeImageIdeal (w ≫ g) (I.comap w) = _root_.FunctorialResolution.Blowup.schemeImageIdeal g I := by
   obtain ⟨θ, hθ⟩ := exists_iso_subscheme_comap_of_isIso w I
   rw [imageIdealSheaf_eq_ker (w ≫ g) (I.comap w), imageIdealSheaf_eq_ker g I, ← Category.assoc, ← hθ,
     Category.assoc, AlgebraicGeometry.Scheme.Hom.ker_comp_of_isIso]
@@ -154,14 +154,14 @@ private theorem ker_eq_of_iso_comp {P Q T : Scheme.{u}} (c : Q ≅ P) (h₁ : P 
 theorem imageIdealSheaf_strictTransform_of_comm_sq {X X₁ Y Y₁ : Scheme.{u}}
     (φ : X₁ ⟶ X) (ψ : Y₁ ⟶ Y) (u : X ⟶ Y) (u₁ : X₁ ⟶ Y₁) [IsIso u] [IsIso u₁]
     (hsq : u₁ ≫ ψ = φ ≫ u) (Z D : X.IdealSheafData) :
-    imageIdealSheaf u₁ (Blowup.strictTransform φ Z D)
-      = Blowup.strictTransform ψ (imageIdealSheaf u Z) (imageIdealSheaf u D) := by
+    _root_.FunctorialResolution.Blowup.schemeImageIdeal u₁ (Blowup.strictTransform φ Z D)
+      = Blowup.strictTransform ψ (_root_.FunctorialResolution.Blowup.schemeImageIdeal u Z) (_root_.FunctorialResolution.Blowup.schemeImageIdeal u D) := by
   have hψ : ψ = inv u₁ ≫ φ ≫ u := by
     rw [← hsq, ← Category.assoc, IsIso.inv_hom_id, Category.id_comp]
   have hmaps : ψ ≫ inv u = inv u₁ ≫ φ := by
     rw [hψ, Category.assoc, Category.assoc, IsIso.hom_inv_id, Category.comp_id]
   have hcm : ∀ I : X.IdealSheafData,
-      (imageIdealSheaf u I).comap ψ = (I.comap φ).comap (inv u₁) := by
+      (_root_.FunctorialResolution.Blowup.schemeImageIdeal u I).comap ψ = (I.comap φ).comap (inv u₁) := by
     intro I
     rw [imageIdealSheaf_eq_comap_inv,
       ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp,
@@ -211,13 +211,13 @@ theorem of_isomorphic {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     exact hgoal
   · intro i hi
     have hiB : i < B.length := by omega
-    have hgoal : imageIdealSheaf (σ i hi.le ≫ (e i hiB.le).hom) (BS.center i) = B'.center i := by
+    have hgoal : _root_.FunctorialResolution.Blowup.schemeImageIdeal (σ i hi.le ≫ (e i hiB.le).hom) (BS.center i) = B'.center i := by
       rw [imageIdealSheaf_comp, ← hcent i hi, ← hecent' i hiB hiB.le,
         imageIdealSheaf_comap]
     exact hgoal.symm
   · intro i hi
     have hiB : i < B.length := by omega
-    have hcen : imageIdealSheaf (e i hiB.le).hom (B.center i) = B'.center i := by
+    have hcen : _root_.FunctorialResolution.Blowup.schemeImageIdeal (e i hiB.le).hom (B.center i) = B'.center i := by
       rw [← hecent' i hiB hiB.le, imageIdealSheaf_comap]
     have hgoal : (σ (i + 1) hi ≫ (e (i + 1) hiB).hom).ker
         = Blowup.strictTransform (B'.transitionMapSucc i) (B'.center i)
@@ -272,7 +272,7 @@ theorem isIso_comp {S' S X : Scheme.{u}} (e : S' ⟶ S) [IsIso e]
   · intro i hi
     have hiS : i < BS.length := by omega
     have := hiso i hi.le
-    have hgoal : imageIdealSheaf (τ i hi.le ≫ σ i hiS.le) (BS'.center i) = B.center i := by
+    have hgoal : _root_.FunctorialResolution.Blowup.schemeImageIdeal (τ i hi.le ≫ σ i hiS.le) (BS'.center i) = B.center i := by
       rw [hτcent i hi, hcent i hiS]
       exact imageIdealSheaf_comp_comap_of_isIso (τ i hi.le) (σ i hiS.le) (BS.center i)
     exact hgoal.symm

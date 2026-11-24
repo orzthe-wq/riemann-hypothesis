@@ -113,7 +113,7 @@ theorem scaled_auxiliary_vector_mem_lattice_completion {A B : HSp D} {c : ℕ} {
         · subst hp; simpa using ha
         · rw [Pi.single_eq_of_ne hp]; exact (𝔟 p).zero_mem
       · funext k
-        simp [Matrix.mulVec_single, mul_comm]
+        simp [Matrix.mulVec_single]
     · funext k
       simp only [Pi.smul_apply, smul_eq_mul, ratV, one_mul]
       show _ * (1 ⊗ₜ[D.host.F] d.a k q) = _

@@ -59,7 +59,7 @@ attribute [local instance] borelG borelF borelA borelH
 private theorem herm_chi {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (l : InfinitePlace E → DomWeight n) (v : InfinitePlace E) : IsHerm (chi l v) := by
   refine ⟨Equiv.refl _, fun i => ?_⟩
-  simp [chi, infOf, Complex.conj_ofReal, map_sub, map_add (f := _), map_div₀, map_natCast, map_intCast, map_one, map_ofNat]
+  simp [chi, infOf, map_sub, map_add (f := _), map_div₀, map_natCast, map_intCast, map_one, map_ofNat]
 
 private theorem mult_of_ker {n : ℕ} [MeasurableSpace (G n)] {μ : Measure (G n)} {M : KMod n}
     {w : List (Bool × ℕ)} {g : ℝ → ℝ} {T : ℝ} {k : Mat n → (M.V →L[ℂ] M.V)}

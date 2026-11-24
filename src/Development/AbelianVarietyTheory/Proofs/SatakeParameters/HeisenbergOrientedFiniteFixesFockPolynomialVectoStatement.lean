@@ -51,4 +51,4 @@ open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.heisenbergOriented_finite_fixes_fockPolynomialVectors : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsInfFam θ → ∀ sS sT BS BT f, (∀ φ, IsThetaFunO ψ S T (pureTensorO ψ θ S T sS sT BS BT f φ)) → ∀ u : WO S T, u.map (infPart D) = 0 → heisO ψ S T u f = f → ∀ φ, heisO ψ S T u (pureTensorO ψ θ S T sS sT BS BT f φ) = pureTensorO ψ θ S T sS sT BS BT f φ := by
-  first | exact @GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite | exact GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite | (intros; apply GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite <;> assumption)
+  first | exact @GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite

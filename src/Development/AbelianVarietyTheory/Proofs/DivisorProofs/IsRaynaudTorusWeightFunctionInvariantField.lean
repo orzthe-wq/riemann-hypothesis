@@ -113,7 +113,7 @@ theorem exists_tan_over {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [Is
       apply Over.OverMorphism.ext
       show (spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (dualMap φ)) ≫ spMap _ =
         spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (dualMap φ)
-      simp only [spMap, ← Spec.map_comp, Category.assoc]
+      simp only [spMap, ← Spec.map_comp]
       congr 1
       apply CommRingCat.hom_ext
       apply RingHom.ext

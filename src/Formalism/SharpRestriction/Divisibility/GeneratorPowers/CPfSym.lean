@@ -75,9 +75,6 @@ private theorem const_subst_lemma {σ τ : Type} [Finite σ] (a : σ → MvPower
   have hA : HasSubst a := by
     first
       | exact hasSubst_of_constantCoeff_zero ha
-      | exact HasSubst.of_constantCoeff_zero' ha
-      | exact hasSubst_of_constantCoeff_nilpotent fun s => by rw [ha s]; exact IsNilpotent.zero
-      | exact HasSubst.of_constantCoeff_nilpotent fun s => by rw [ha s]; exact IsNilpotent.zero
   rw [constantCoeff_subst hA, finsum_eq_single _ (0 : σ →₀ ℕ)]
   · simp
   · intro e he

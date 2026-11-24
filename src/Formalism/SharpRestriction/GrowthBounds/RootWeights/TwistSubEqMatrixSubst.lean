@@ -127,26 +127,24 @@ theorem map_matrixSubst (φ : R →+* B) (ψ : B →+* B') (m m' : Matrix (Fin n
     (F : MvPolynomial (ι × Fin n) R) :
     MvPolynomial.map ψ (matrixSubst LL S φ m m' F) = matrixSubst LL S (ψ.comp φ) (m.map ψ) (m'.map ψ) F := by
   classical
-  have : (MvPolynomial.map ψ).comp (matrixSubst LL S φ m m') = matrixSubst LL S (ψ.comp φ) (m.map ψ) (m'.map ψ) := by
-    apply MvPolynomial.ringHom_ext
-    · intro c
-      simp [matrixSubst_C]
-    · intro v
-      simp only [RingHom.comp_apply, matrixSubst_X]
-      split_ifs <;> simp
-  exact congrArg (fun f => f F) this
+  refine congrArg (fun f : MvPolynomial (ι × Fin n) R →+* MvPolynomial (ι × Fin n) B' => f F) (show (MvPolynomial.map ψ).comp (matrixSubst LL S φ m m') = matrixSubst LL S (ψ.comp φ) (m.map ψ) (m'.map ψ) from ?_)
+  apply MvPolynomial.ringHom_ext
+  · intro c
+    simp [matrixSubst_C]
+  · intro v
+    simp only [RingHom.comp_apply, matrixSubst_X]
+    split_ifs <;> simp
 
 theorem matrixSubst_one (φ : R →+* B) (F : MvPolynomial (ι × Fin n) R) :
     matrixSubst LL S φ 1 1 F = MvPolynomial.map φ F := by
   classical
-  have : matrixSubst LL S φ (1 : Matrix (Fin n) (Fin n) B) 1 = MvPolynomial.map φ := by
-    apply MvPolynomial.ringHom_ext
-    · intro c
-      simp [matrixSubst_C]
-    · intro v
-      simp only [matrixSubst_X, map_X]
-      split_ifs <;> simp [Matrix.one_apply]
-  exact congrArg (fun f => f F) this
+  refine congrArg (fun f : MvPolynomial (ι × Fin n) R →+* MvPolynomial (ι × Fin n) B => f F) ?_
+  apply MvPolynomial.ringHom_ext
+  · intro c
+    simp [matrixSubst_C]
+  · intro v
+    simp only [matrixSubst_X, map_X]
+    split_ifs <;> simp [Matrix.one_apply]
 
 theorem matrixSubst_map (φ : R →+* B) (m m' : Matrix (Fin n) (Fin n) B) (F : MvPolynomial (ι × Fin n) R) :
     matrixSubst LL S (RingHom.id B) m m' (MvPolynomial.map φ F) = matrixSubst LL S φ m m' F := by

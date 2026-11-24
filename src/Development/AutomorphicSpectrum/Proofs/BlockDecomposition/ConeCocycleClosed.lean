@@ -1,8 +1,9 @@
 module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.Precomp
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeLiftRatioMemIdealStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncatedLogMultiplicativeStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.IsTautologicalLineAt
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConeLiftRatioMemIdeal
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncatedLogMultiplicative
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -70,7 +71,7 @@ theorem plogK_four {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) 
     (hu : ∀ n : ℕ, n ≠ 0 → IsUnit (n : B)) {a b c d : B} (ha : a - 1 ∈ J) (hb : b - 1 ∈ J) (hc : c - 1 ∈ J)
     (hd : d - 1 ∈ J) (h : a * b = c * d) :
     plogK δ s (a - 1) + plogK δ s (b - 1) = plogK δ s (c - 1) + plogK δ s (d - 1) := by
-  rw [← GlobalTheory.T.truncated_log_multiplicative δ s hs hu ha hb, ← GlobalTheory.T.truncated_log_multiplicative δ s hs hu hc hd]
+  rw [← _root_.GlobalTheory.CompanionTheory.PlogMul.plogK_mul δ s hs hu ha hb, ← _root_.GlobalTheory.CompanionTheory.PlogMul.plogK_mul δ s hs hu hc hd]
   simp only [add_sub_cancel]
   rw [h]
 
@@ -103,12 +104,12 @@ theorem map_zK (Λ : CLiftK g D) (s : ℕ) (σ : ComposableArrows C 2) {c : C} (
     (show (g.obj c).B from ((g ⋙ O (smFun X q)).map ρ).hom (zK Λ s σ)) =
       plogK (g.obj c).δ s (((Units.map (g.map ρ).φ.toMonoidHom (Λ.r σ) : (g.obj c).Bˣ) : (g.obj c).B) - 1) := by
   change (g.map ρ).φ (plogK (g.obj (σ.obj (Fin.last 2))).δ s ((Λ.r σ : (g.obj (σ.obj (Fin.last 2))).B) - 1)) = _
-  rw [plogK_map (g.map ρ).dp s (GlobalTheory.T.cone_lift_ratio_mem_ideal Λ σ), map_sub, map_one]
+  rw [plogK_map (g.map ρ).dp s (_root_.GlobalTheory.CompanionTheory.ConeUnit.r_sub_one Λ σ), map_sub, map_one]
   rfl
 
 theorem mem_J (Λ : CLiftK g D) (σ : ComposableArrows C 2) {c : C} (ρ : σ.obj (Fin.last 2) ⟶ c) :
     ((Units.map (g.map ρ).φ.toMonoidHom (Λ.r σ) : (g.obj c).Bˣ) : (g.obj c).B) - 1 ∈ (g.obj c).J := by
-  have := (g.map ρ).hle (GlobalTheory.T.cone_lift_ratio_mem_ideal Λ σ)
+  have := (g.map ρ).hle (_root_.GlobalTheory.CompanionTheory.ConeUnit.r_sub_one Λ σ)
   rw [Ideal.mem_comap, map_sub, map_one] at this
   exact this
 

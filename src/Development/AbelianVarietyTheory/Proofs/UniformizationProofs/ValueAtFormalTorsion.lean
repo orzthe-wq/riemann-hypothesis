@@ -137,7 +137,7 @@ end
 
 theorem value_at_formal_torsion : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllUV fun {V} _ _ _ {ϖ} hϖ {D} Q {F} _ _ {v} hv {A} {G} _ _ U => ∀ w₀ ρ, NormW U.toUnifPre w₀ ρ → ∀ (n k : ℕ), 1 ≤ n → 1 ≤ k → ∀ (p : QkPt D.toPre F n) x, p.y = 0 → QkToAkU U.toUnifPre F n p x → ∀ e, IsTorsFrame A ρ n x e → ∃ ζ : F, v ζ = 0 ∧ ∀ (t : SecA A F k) s (c : F), U.ExpandsF F k w₀ t s → (∀ z J, Good A.L z J → sA t (ptSecT A.A x).left z J = @id ((TFK (R := V) F).left.presheaf.stalk z) (cst (R := V) F z c) * (val (powFrame A.A A.L x e k) (𝟙 _) z J).val) → (NuGe D Q F v k s 0 → ∀ (a : D.toPre.X) (q : ℚ), (∀ β, (∀ z : D.toPre.X, β ≠ a + k • z) → ∀ j, (s.s β).f j = 0) → (∀ z : D.toPre.X, q ≤ (Q (a + k • z) : ℚ) / k) → (q : WithTop ℚ) ≤ v c) ∧ ∀ τ, IsTor τ p.g → ∀ (o : GtPtF D.toPre F) (w₁ : Frm D.toPre F k o.b), o.IsZero → FrmOne w₁ → SumV v (fun α => (τ (Multiplicative.ofAdd α)).val * coef s o w₁ α) (ζ * c) := by
   intro hL hT hVR hTW hUU V _ _ _ _ hcpl ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN n k hn hk p x hy hx e he
-  obtain ⟨w₁, hw₁, hv₁, hsum⟩ := GlobalTheory.T.section_value_at_torsionPoint_eq_sum_terms hL hT hVR hTW hUU V hcpl ϖ hϖ D Q hQ F v hv A G hG U w₀ ρ hN n hn p x hx e he
+  obtain ⟨w₁, hw₁, hv₁, hsum⟩ := _root_.GlobalTheory.UT.TorsionValue.value_at_torsion hL hT hVR hTW hUU V hcpl ϖ hϖ D Q hQ F v hv A G hG U w₀ ρ hN n hn p x hx e he
   have hv₁ : GenV hϖ hv w₁ 0 := by
     have e0 : ((Q p.y : ℚ) / (n : ℚ) ^ 2) = 0 := by rw [hy, QForm.Q_zero hϖ D hQ]; simp
     rwa [e0] at hv₁

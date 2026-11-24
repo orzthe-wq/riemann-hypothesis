@@ -48,12 +48,12 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Forma
 private theorem chi_ofRep' {n : ℕ} {A Γ : Type} [CommRing A] [Group Γ] (ρ : Γ →* Matrix (Fin n) (Fin n) A) (g : Γ) :
     (W.GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
   simp only [W.GDet.chi, W.GDet.ofRep, W.GDet.repAlg, MonoidHom.coe_comp, Function.comp_apply,
-    map_sub, MonoidAlgebra.mapRingHom_single, AlgHom.toRingHom_eq_coe,
-    AlgHom.coe_toRingHom, MonoidAlgebra.lift_single, Matrix.coe_detMonoidHom, map_one]
+    MonoidAlgebra.mapRingHom_single, AlgHom.toRingHom_eq_coe,
+    Matrix.coe_detMonoidHom, map_one]
   rw [Matrix.charpoly, Matrix.charmatrix]
   congr 1
   ext i j
-  simp [Matrix.one_apply, Matrix.diagonal_apply, Matrix.algebraMap_matrix_apply, Matrix.scalar_apply, Matrix.sub_apply]
+  simp [Matrix.one_apply, Matrix.diagonal_apply, Matrix.scalar_apply, Matrix.sub_apply]
 
 private theorem chi_comap' {n : ℕ} {A Γ H : Type} [CommRing A] [Group Γ] [Group H] (D : W.GDet n A Γ) (φ : H →* Γ) (g : H) :
     (D.comap φ).chi (MonoidAlgebra.single g 1) = D.chi (MonoidAlgebra.single (φ g) 1) := by

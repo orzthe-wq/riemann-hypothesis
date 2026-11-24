@@ -4,7 +4,8 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityA
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ShapeFacts
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.FrobeniusPowerCompatibility
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.GaloisRepIrreducibilityCriterion
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.SchurTwistHolds
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.BcDefs
+public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SchurTwistHolds
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.TSelfTwGal
 import Formalism.SharpRestriction.GrowthBounds.MonomialOrderSegments.BrData
 import Mathlib.Algebra.Order.Floor.Extended
@@ -40,6 +41,7 @@ import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValSubLtIff
 
 @[expose] public section
 
@@ -49,14 +51,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal
   GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Base
-private theorem normV_under {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
-    (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
-  have : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩
-  have := w.isMaximal
-  have := (w.under (𝓞 K)).isMaximal
-  simp only [normV, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]
-  rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal,
-    Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 private theorem algSat_pow (n q f : ℕ) (B : Multiset ℂˣ) :
     algSat n (q ^ f) (B.map (· ^ f)) = (algSat n q B).map (· ^ f) := by
   have e : ∀ (q : ℕ) (B : Multiset ℂˣ),
@@ -84,7 +78,7 @@ theorem UpperTheory.V.Z.Bc.upCyc_of_alt (hA : _root_.UpperTheory.V.Af.Hypotheses
   rcases key with ⟨η, hη, hT⟩ | ⟨P, hinf, hbc⟩
   · obtain ⟨δ, hδ1, -, hiso, hres⟩ := _root_.UpperTheory.V.Sd.self_twist_galois_of_printed_results hA F Ω l ι n r (CG.mk π).HasSat
       (fun _ _ _ h h' => h.unique h') hr hatt η _ hp.pos hη.2.1 hη.1 hT
-    exact (hδ1 (UpperTheory.schur_twist_holds _ _ _ n r _ δ hirr (hres E hη) hiso)).elim
+    exact (hδ1 (_root_.UpperTheory.Reformulated.B.H13.schur_twist_holds _ _ _ n r _ δ hirr (hres E hη) hiso)).elim
   · refine ⟨P, (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_, (UpperTheory.galoisRep_irreducibility_criterion.1 _ Unit _ n _).2.1 hirr, ?_⟩
     · have h := hreg (τ.comp (algebraMap F E))
       have hm : π.HasInfChar (τ.comp (algebraMap F E)) ((CG.mk π).infChar (τ.comp (algebraMap F E))) :=
@@ -92,11 +86,11 @@ theorem UpperTheory.V.Z.Bc.upCyc_of_alt (hA : _root_.UpperTheory.V.Af.Hypotheses
       rw [CG.HasInfChar.infChar_eq (π := CG.mk P) (hinf τ _ hm)]
       exact h
     · filter_upwards [hbc, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under F E).eventually hatt.2] with w h1 h2
-      obtain ⟨B, hB, hPw⟩ := h1 _ (normV_under (K := F) w)
+      obtain ⟨B, hB, hPw⟩ := h1 _ (_root_.GlobalTheory.DelEps.WeilRes.normV_eq_pow (K := F) w)
       obtain ⟨B', hB', hF⟩ := h2
       obtain rfl := hB.unique hB'
       refine ⟨_, hPw, ?_⟩
-      have h3 := (UpperTheory.frobenius_power_compatibility F E Ω l ι w _ (normV_under (K := F) w)).1 n r _ hF
-      rw [← algSat_pow, ← normV_under] at h3
+      have h3 := (UpperTheory.frobenius_power_compatibility F E Ω l ι w _ (_root_.GlobalTheory.DelEps.WeilRes.normV_eq_pow (K := F) w)).1 n r _ hF
+      rw [← algSat_pow, ← _root_.GlobalTheory.DelEps.WeilRes.normV_eq_pow] at h3
       exact h3
 end

@@ -2,14 +2,16 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OrthKerEqRangeAdjoint
 public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SphericalHeckeScalarOnTypeSpacesAllPlacesStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.RowsExhaust
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SphericalHeckeScalarOnTypeSpacesAllPlaces
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CoeffMonicPolySum
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ComplexHeckeEigenvectorDescendsToCoefficientFiel
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteCosetsHeckeSetAtSplitPlaceOutsideLevelStatement
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitExEveryDatum
 public import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverEta
-import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverPoly
 public import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverStdB
+import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAut
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteCosetsHeckeSetAtSplitPlaceOutsideLevel
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitExEveryDatum
+import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverPoly
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.CoverThm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -108,7 +110,7 @@ theorem tN_lin (D : D7) (M : MtFam D) (HT : HeckeTied D M) (NL : NormalizedLocal
     (hu : IsUnif D.host.E s.v ϖ) (c : ℂ) (f f' : GAf D.host.E D.R.nV → (M.loc i).wt.W) :
     NG.tN (M.loc i).J s ϖ k (c • f + f') = c • NG.tN (M.loc i).J s ϖ k f + NG.tN (M.loc i).J s ϖ k f' := by
   have hbad : s.v ∉ badPl D i := genOutBad_of NL j w i h v k s hvk hc
-  have hfin := GlobalTheory.T.finite_cosets_heckeSet_at_splitPlace_outside_level D.host.E D.R.nV (M.loc i).J (M.loc i).χ (badPl D i) (HT.J_hyp i) s ϖ k hbad hu
+  have hfin := _root_.GlobalTheory.TSetFin.finite_image_tSet D.host.E D.R.nV (M.loc i).J (M.loc i).χ (badPl D i) (HT.J_hyp i) s ϖ k hbad hu
   simp only [NG.tN]
   rw [GlobalTheory.PtLocalEig.heckeD_add _ _ _ _ hfin c f f', smul_add, smul_comm]
 
@@ -198,8 +200,12 @@ theorem ptV_of_transport {D : D7} {M : MtFam D} (A : AVTied D M) (i' : D.nd.Loc)
   subst hV
   exact (A.ptV i' P' x').2 hev
 
-theorem main : ∀ (D : D7) (M : MtFam D), HeckeTied D M → AVTied D M → ∀ Tn : NormalizedLocalCompatibility D M, HeckeStdTw Tn.B → ∀ (i : D.nd.Loc) (σ : D.what₂.FT) (P : D.naut.AV i), thetaOf D.nd D.naut i σ P → ∃ i' ∈ D.nd.locs (D.nd.j i) (D.nd.w i), ∃ (P' : D.naut.AV i') (x' : D.nd.X i'), thetaOf D.nd D.naut i' σ P' ∧ D.naut.ptV i' P' = some x' := by
-  intro D M HT AV NL hstd i σ P hθ
+/-- Transport the type space of an arbitrary local representation to one with a point. -/
+theorem exists_point (D : D7) (M : MtFam D) (HT : HeckeTied D M) (AV : AVTied D M) (NL : NormalizedLocalCompatibility D M) (hstd : HeckeStdTw NL.B)
+    (i : D.nd.Loc) (P : D.naut.AV i) : ∃ i' ∈ D.nd.locs (D.nd.j i) (D.nd.w i),
+      ∃ (hμ' : D.nd.mu i = D.nd.mu i') (hj' : D.nd.j i = D.nd.j i') (P' : D.naut.AV i') (x' : D.nd.X i'),
+        (D.naut.typeV i P).map (GlobalTheory.EtaJoin.TypeSum.eqvMt hμ' hj').toLinearMap = D.naut.typeV i' P' ∧
+        D.naut.ptV i' P' = some x' := by
   classical
   have h : i ∈ D.nd.locs (D.nd.j i) (D.nd.w i) := (D.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩
   have hj1 := (D.nd.j_range i).1
@@ -233,7 +239,7 @@ theorem main : ∀ (D : D7) (M : MtFam D), HeckeTied D M → AVTied D M → ∀ 
     rw [← NL.phK_emb _ _ i h y, ← D.naut.iota_LL i y]
     exact congrArg (fun f : FractionRing (D.nd.O i) →+* ℂ => f (D.nd.embK i y)) hφK
 
-  have HS := GlobalTheory.T.sphericalHeckeScalarOnTypeSpaces_all_places D M HT AV i
+  have HS := _root_.GlobalTheory.HeckeScalarAll.heckeScalar_all D M HT AV i
   have key : ∀ v k, GenAt D (D.what₂.places.resChar (D.nd.w i)) (NL.B.Qc (D.nd.j i) (D.nd.w i)) v k →
       ∃ κ : NL.B.Oc (D.nd.j i) (D.nd.w i), ∀ (s : SplitPlace D.host.E)
         (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w → IsUnif D.host.E s.v ϖ →
@@ -307,7 +313,23 @@ theorem main : ∀ (D : D7) (M : MtFam D), HeckeTied D M → AVTied D M → ∀ 
       rw [← AV.typeV i P]; exact D.naut.typeV_ne i P)
   change Submodule.map _ ((NG.isoTyp (M.loc i).wt.ρ (AV.S i P)).comap (M.loc i).real) = _ at hP'
   rw [← AV.typeV i P] at hP'
-  refine ⟨i', hi', P', x', ⟨?_, ?_⟩, ?_⟩
+  refine ⟨i', hi', hμ', hj', P', x', hP', ?_⟩
+  refine ptV_of_transport AV i' P' x' hμ' hj' hj1 hj2 _ hP' ?_
+  intro v k s ϖ hv' hc hu hk1 hk2 y hy
+  have hvk := (genAt_iff NL hi' v k).1 ⟨hv', hk1, hk2⟩
+  change NG.tN (M.loc i).J s ϖ k ((M.loc i).real y) = _ • (M.loc i).real y
+  rw [hκF v k hvk s ϖ hc hu y hy]
+  congr 1
+  rw [NL.iotaC_coh _ _ i' hi', NL.ptX_hT _ _ i' hi' x' v k hvk]
+  show φ (algebraMap _ _ (κF v k)) = NL.iotaC _ _ (((NL.ptX _ _ i' hi') ((NL.ptX _ _ i' hi').symm ⟨ψ, hmx.symm, hW⟩)).1 _)
+  rw [Equiv.apply_symm_apply, hφalg]
+  show NL.iotaC _ _ (κF v k) = NL.iotaC _ _ (ψ ⟨NL.B.hK _ _ v k, _⟩)
+  rw [hψv v k hvk]
+
+theorem main : ∀ (D : D7) (M : MtFam D), HeckeTied D M → AVTied D M → ∀ Tn : NormalizedLocalCompatibility D M, HeckeStdTw Tn.B → ∀ (i : D.nd.Loc) (σ : D.what₂.FT) (P : D.naut.AV i), thetaOf D.nd D.naut i σ P → ∃ i' ∈ D.nd.locs (D.nd.j i) (D.nd.w i), ∃ (P' : D.naut.AV i') (x' : D.nd.X i'), thetaOf D.nd D.naut i' σ P' ∧ D.naut.ptV i' P' = some x' := by
+  intro D M HT AV NL hstd i σ P hθ
+  obtain ⟨i', hi', hμ', hj', P', x', hP', hx'⟩ := exists_point D M HT AV NL hstd i P
+  refine ⟨i', hi', P', x', ⟨?_, ?_⟩, hx'⟩
   · rw [← GlobalTheory.EtaJoin.TypeSum.map_eqvMt_thetaT_isot hμ' hj' σ]
     intro h0
     apply hθ.1
@@ -315,16 +337,5 @@ theorem main : ∀ (D : D7) (M : MtFam D), HeckeTied D M → AVTied D M → ∀ 
     rw [h0, Submodule.map_bot]
   · rw [← GlobalTheory.EtaJoin.TypeSum.map_eqvMt_thetaT_isot hμ' hj' σ, ← hP']
     exact Submodule.map_mono hθ.2
-  · refine ptV_of_transport AV i' P' x' hμ' hj' hj1 hj2 _ hP' ?_
-    intro v k s ϖ hv' hc hu hk1 hk2 y hy
-    have hvk := (genAt_iff NL hi' v k).1 ⟨hv', hk1, hk2⟩
-    change NG.tN (M.loc i).J s ϖ k ((M.loc i).real y) = _ • (M.loc i).real y
-    rw [hκF v k hvk s ϖ hc hu y hy]
-    congr 1
-    rw [NL.iotaC_coh _ _ i' hi', NL.ptX_hT _ _ i' hi' x' v k hvk]
-    show φ (algebraMap _ _ (κF v k)) = NL.iotaC _ _ (((NL.ptX _ _ i' hi') ((NL.ptX _ _ i' hi').symm ⟨ψ, hmx.symm, hW⟩)).1 _)
-    rw [Equiv.apply_symm_apply, hφalg]
-    show NL.iotaC _ _ (κF v k) = NL.iotaC _ _ (ψ ⟨NL.B.hK _ _ v k, _⟩)
-    rw [hψv v k hvk]
 
 end GlobalTheory.LiftPoint

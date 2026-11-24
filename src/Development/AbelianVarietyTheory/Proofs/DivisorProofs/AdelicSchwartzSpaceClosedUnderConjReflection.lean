@@ -117,9 +117,6 @@ section
 
 open NumberField IsDedekindDomain
 
-theorem _root_.GlobalTheory.Adopt.adelicSchwartzSpace_closed_under_conj_reflection : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
-    ∀ φ ∈ GlobalTheory.WeilM.schA F κ, (fun x => starRingEnd ℂ (φ (-x))) ∈ GlobalTheory.WeilM.schA F κ := by
-  intro F _ _ κ _ φ hφ
-  exact AdelicReflection.GlobalTheory.CompanionTheory.AdelicReflect.schA_conj_neg F κ φ hφ
+alias _root_.GlobalTheory.Adopt.adelicSchwartzSpace_closed_under_conj_reflection := _root_.AdelicReflection.GlobalTheory.CompanionTheory.AdelicReflect.schA_conj_neg
 
 end

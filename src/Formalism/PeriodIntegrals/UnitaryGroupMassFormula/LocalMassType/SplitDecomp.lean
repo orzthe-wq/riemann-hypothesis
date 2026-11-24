@@ -76,10 +76,6 @@ theorem hform_ext (σ : A →+* A) (M₁ M₂ : Matrix (Fin n) (Fin n) A)
   have hij := h (Pi.single i 1) (Pi.single j 1)
   first
     | simpa [Formalism.UG.hform, Pi.single_apply, apply_ite σ] using hij
-    | (simp only [Formalism.UG.hform, Pi.single_apply, apply_ite σ, map_one, map_zero, ite_mul, one_mul,
-        zero_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ,
-        if_true] at hij
-       exact hij)
 
 end Generic
 

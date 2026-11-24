@@ -88,7 +88,7 @@ private theorem exists_single_of_sum_star_mul {n : ℕ} [Star K]
   have hd : (0 : ℝ) < Module.finrank ℚ K := by exact_mod_cast Module.finrank_pos
   obtain ⟨i, hi⟩ : ∃ i, z i ≠ 0 := by
     by_contra hall
-    push_neg at hall
+    push Not at hall
     simp [hall] at h1
   refine ⟨i, fun j hji => ?_⟩
   by_contra hj
@@ -100,9 +100,6 @@ private theorem exists_single_of_sum_star_mul {n : ℕ} [Star K]
   have := finrank_le_sum_sq_of_isIntegral (hz i) hi
   have := finrank_le_sum_sq_of_isIntegral (hz j) hj
   linarith
-
-theorem torsionOrder_le (K : Type) [Field K] [NumberField K] : Units.torsionOrder K ≤ 2 * Module.finrank ℚ K ^ 2 :=
-  Formalism.L2.SG.NGCut.TorsionTotientBound.torsionOrder_le K
 
 theorem pow_torsionOrder_eq_one {x : K} (hx : IsIntegral ℤ x) (h : ∀ φ : K →+* ℂ, ‖φ x‖ = 1) :
     x ^ Units.torsionOrder K = 1 := by
@@ -182,7 +179,7 @@ theorem unitary_integral_finite_and_ncard_le [StarRing K]
     obtain ⟨t, σ, ht, rfl⟩ := exists_monomial hconj n g hg hint
     rw [Finset.coe_image]
     refine ⟨(t, σ), ?_, rfl⟩
-    simp [P, R, Finset.mem_coe, Finset.mem_product, Fintype.mem_piFinset, Multiset.mem_toFinset,
+    simp [P, R, Multiset.mem_toFinset,
       Polynomial.mem_nthRoots hT, ht]
   refine ⟨(P.image Φ).finite_toSet.subset hsub, ?_⟩
   calc _ ≤ (↑(P.image Φ) : Set (Matrix (Fin n) (Fin n) K)).ncard :=

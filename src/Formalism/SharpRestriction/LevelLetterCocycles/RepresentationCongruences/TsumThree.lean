@@ -71,18 +71,18 @@ private theorem reciprocal_bounds_of_eleven_le {L x y z : ℝ} (hL : 11 ≤ L) (
   have p0 : 0 < L⁻¹ := inv_pos.mpr h0
   have p1 : 0 < (L - 1)⁻¹ := inv_pos.mpr h1
   have p2 : 0 < (L - 2)⁻¹ := inv_pos.mpr h2
-  have q0 : L⁻¹ ≤ 1 / 11 := by nlinarith [mul_le_mul_of_nonneg_left hL p0.le]
+  have q0 : L⁻¹ ≤ 1 / 11 := by linarith [mul_le_mul_of_nonneg_left hL p0.le]
   have q1 : (L - 1)⁻¹ ≤ 1 / 10 := by
-    nlinarith [mul_le_mul_of_nonneg_left (show (10:ℝ) ≤ L - 1 by linarith) p1.le]
+    linarith [mul_le_mul_of_nonneg_left (show (10:ℝ) ≤ L - 1 by linarith) p1.le]
   have q2 : (L - 2)⁻¹ ≤ 1 / 9 := by
-    nlinarith [mul_le_mul_of_nonneg_left (show (9:ℝ) ≤ L - 2 by linarith) p2.le]
+    linarith [mul_le_mul_of_nonneg_left (show (9:ℝ) ≤ L - 2 by linarith) p2.le]
   have iy : (L - 1)⁻¹ = L⁻¹ + L⁻¹ * (L - 1)⁻¹ := by
     linear_combination (-(L - 1)⁻¹) * e0 + L⁻¹ * e1
   have iz : (L - 2)⁻¹ = L⁻¹ + 2 * (L⁻¹ * (L - 2)⁻¹) := by
     linear_combination (-(L - 2)⁻¹) * e0 + L⁻¹ * e2
   refine ⟨e0, by linear_combination e1, e2, p0, p1, p2, q0, q1, q2, ?_, ?_, iy⟩
-  · nlinarith [mul_le_mul_of_nonneg_left q1 p0.le]
-  · nlinarith [mul_le_mul_of_nonneg_left q2 p0.le]
+  · linarith [mul_le_mul_of_nonneg_left q1 p0.le]
+  · linarith [mul_le_mul_of_nonneg_left q2 p0.le]
 
 theorem tsum_three (l : ℕ) (hl : 11 ≤ l) (f : ℕ → ℝ) (x₀ x₁ X : ℝ) (hf : ∀ a, 0 ≤ f a)
     (h0 : f 0 ≤ x₀) (h1 : f 1 ≤ x₁) (h2 : ∀ a, 2 ≤ a → f a ≤ X) :
@@ -107,7 +107,7 @@ theorem tsum_three (l : ℕ) (hl : 11 ≤ l) (f : ℕ → ℝ) (x₀ x₁ X : �
     · by_cases hi1 : i = 1
       · subst hi1
         simp
-        nlinarith [mul_le_mul_of_nonneg_right h1 py.le]
+        linarith [mul_le_mul_of_nonneg_right h1 py.le]
       · rw [if_neg hi0, if_neg hi1, add_zero, add_zero]
         exact mul_le_mul_of_nonneg_right (h2 i (by omega)) (pow_nonneg py.le i)
   have H := ((hasSum_geometric_of_lt_one py.le hyl).mul_left X).add
@@ -139,7 +139,6 @@ theorem cW_le (l : ℕ) (hl : 11 ≤ l) (h η H : ℕ) (hη : η + 1 ≤ h) (hH 
   have hmono : Real.logb l ((H:ℝ) + 1) ≤ Real.logb l (2 * (h:ℝ)) := by
     first
       | exact Real.logb_le_logb_of_le hL hpos hH1
-      | exact (Real.logb_le_logb hL hpos (by linarith)).mpr hH1
   have hc := Nat.ceil_lt_add_one (show (0:ℝ) ≤ 1 + Real.logb l ((H:ℝ) + 1) by linarith)
   unfold cW
   linarith
@@ -150,22 +149,22 @@ private theorem reciprocal_product_bounds_of_eleven_le {x y z : ℝ} (px : 0 < x
     z * (y + y ^ 2) ≤ 3 / 2 * x ^ 2 ∧ z * (y + y ^ 2) ≤ 11 / 900 ∧ y ^ 2 ≤ 121 / 100 * x ^ 2 ∧
     y ^ 2 ≤ 1 / 100 ∧ y ^ 2 * z ≤ 121 / 900 * x ^ 2 ∧ y ^ 2 * z ≤ 1 / 900 ∧
     z * y ≤ 121 / 90 * x ^ 2 ∧ z * y ≤ 1 / 90 := by
-  have a1 : x ^ 2 ≤ x / 11 := by nlinarith [mul_le_mul_of_nonneg_left hx1 px.le]
-  have a2 : x * y ≤ 11 / 10 * x ^ 2 := by nlinarith [mul_le_mul_of_nonneg_left hyx px.le]
+  have a1 : x ^ 2 ≤ x / 11 := by linarith [mul_le_mul_of_nonneg_left hx1 px.le]
+  have a2 : x * y ≤ 11 / 10 * x ^ 2 := by linarith [mul_le_mul_of_nonneg_left hyx px.le]
   have hyy := mul_le_mul_of_nonneg_left hy1 py.le
-  have a3 : y + y ^ 2 ≤ 121 / 100 * x := by nlinarith
-  have a4 : y + y ^ 2 ≤ 11 / 100 := by nlinarith
+  have a3 : y + y ^ 2 ≤ 121 / 100 * x := by linarith
+  have a4 : y + y ^ 2 ≤ 11 / 100 := by linarith
   have hP0 : 0 ≤ y + y ^ 2 := add_nonneg py.le (sq_nonneg y)
   have a5 : z * (y + y ^ 2) ≤ 3 / 2 * x ^ 2 := by
     have := mul_le_mul hzx a3 hP0 (by linarith : (0:ℝ) ≤ 11 / 9 * x)
-    nlinarith [sq_nonneg x]
+    linarith [sq_nonneg x]
   have a6 : z * (y + y ^ 2) ≤ 11 / 900 := by
     have := mul_le_mul hz1 a4 hP0 (by norm_num : (0:ℝ) ≤ 1 / 9)
     linarith
   have a7 : y ^ 2 ≤ 121 / 100 * x ^ 2 := by
     have := mul_le_mul hyx hyx py.le (by linarith : (0:ℝ) ≤ 11 / 10 * x)
-    nlinarith
-  have a8 : y ^ 2 ≤ 1 / 100 := by nlinarith
+    linarith
+  have a8 : y ^ 2 ≤ 1 / 100 := by linarith
   have a9 : y ^ 2 * z ≤ 121 / 900 * x ^ 2 := by
     have := mul_le_mul a7 hz1 pz.le (by positivity : (0:ℝ) ≤ 121 / 100 * x ^ 2)
     linarith
@@ -174,7 +173,7 @@ private theorem reciprocal_product_bounds_of_eleven_le {x y z : ℝ} (px : 0 < x
     linarith
   have a11 : z * y ≤ 121 / 90 * x ^ 2 := by
     have := mul_le_mul hzx hyx py.le (by linarith : (0:ℝ) ≤ 11 / 9 * x)
-    nlinarith
+    linarith
   have a12 : z * y ≤ 1 / 90 := by
     have := mul_le_mul hz1 hy1 py.le (by norm_num : (0:ℝ) ≤ 1 / 9)
     linarith
@@ -257,7 +256,7 @@ theorem sig_le (l : ℕ) (hl : 11 ≤ l) (h w S η : ℕ) (h1 : 1 ≤ h) (hG : w
   have n2 : 0 ≤ (S:ℝ) * x := mul_nonneg (Nat.cast_nonneg _) px.le
   have n3 : 0 ≤ (η:ℝ) * x := mul_nonneg (Nat.cast_nonneg _) px.le
   have n4 : 0 ≤ (h:ℝ) * x ^ 2 := mul_nonneg (Nat.cast_nonneg _) (sq_nonneg x)
-  have hx2 : x ^ 2 ≤ x / 11 := by nlinarith [mul_le_mul_of_nonneg_left hx1 px.le]
+  have hx2 : x ^ 2 ≤ x / 11 := by linarith [mul_le_mul_of_nonneg_left hx1 px.le]
   have hg := logb_two_mul_natCast_nonneg_of_eleven_le l h hl
   have hl1 : ((l - 1 : ℕ) : ℝ) = (l:ℝ) - 1 := by
     rw [Nat.cast_sub (show 1 ≤ l by omega), Nat.cast_one]
@@ -273,7 +272,7 @@ theorem sig_le (l : ℕ) (hl : 11 ≤ l) (h w S η : ℕ) (h1 : 1 ≤ h) (hG : w
   · positivity
   rw [mul_div_sub_one_sq_eq_mul_add_sq _ _ _ hy eLy]
   have hP0 : 0 ≤ y + y ^ 2 := add_nonneg py.le (sq_nonneg y)
-  have hP1 : y + y ^ 2 ≤ 121 / 100 * x := by nlinarith [mul_le_mul_of_nonneg_left hy1 py.le]
+  have hP1 : y + y ^ 2 ≤ 121 / 100 * x := by linarith [mul_le_mul_of_nonneg_left hy1 py.le]
   have hhy : 0 ≤ (h:ℝ) * y := mul_nonneg (Nat.cast_nonneg _) py.le
   have hV : ((2 * (w + S) : ℕ) : ℝ) + ((2 * h / (l - 1) + 1 : ℕ) : ℝ) ≤
       2 * ((w:ℝ) + S) + 2 * (h:ℝ) * y + 1 := by
@@ -284,7 +283,7 @@ theorem sig_le (l : ℕ) (hl : 11 ≤ l) (h w S η : ℕ) (h1 : 1 ≤ h) (hG : w
     have hS0 : (0:ℝ) ≤ S := Nat.cast_nonneg _
     linarith
   have b1 := mul_le_mul hV hP1 hP0 hV0
-  have hxy : x * y ≤ 11 / 10 * x ^ 2 := by nlinarith [mul_le_mul_of_nonneg_left hyx px.le]
+  have hxy : x * y ≤ 11 / 10 * x ^ 2 := by linarith [mul_le_mul_of_nonneg_left hyx px.le]
   have b2 := mul_le_mul_of_nonneg_left hxy (Nat.cast_nonneg h : (0:ℝ) ≤ h)
   unfold Sg
   linarith

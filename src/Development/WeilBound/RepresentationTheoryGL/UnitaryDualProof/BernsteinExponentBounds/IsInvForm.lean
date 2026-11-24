@@ -3,57 +3,13 @@ module
 public import GroundTheory.AutomorphicForms.WhittakerLSpace
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.LeibnizDerivatives.HighestDerivProd
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
 noncomputable section
 
-open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GroundTheory.Automorphic.Whittaker
+open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL
+open GlobalTheory.BZMir GlobalTheory.BZMir.Leib GroundTheory.Automorphic.Whittaker
 
 namespace PositivityTheory.RgUd
 
@@ -61,12 +17,16 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 def IsInvForm {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) : Prop :=
-  (∀ v w, B w v = starRingEnd ℂ (B v w)) ∧ (∀ v, v ≠ 0 → 0 < (B v v).re) ∧ ∀ g v w, B (ρ g v) (ρ g w) = B v w
+  (∀ v w, B w v = starRingEnd ℂ (B v w)) ∧ (∀ v, v ≠ 0 → 0 < (B v v).re) ∧
+    ∀ g v w, B (ρ g v) (ρ g w) = B v w
 
 def aDiag (N m : ℕ) (z : kˣ) : GL (Fin N) k :=
-  ⟨diagonal fun i => if (i : ℕ) < m then (z : k) else 1, diagonal fun i => if (i : ℕ) < m then ((z⁻¹ : kˣ) : k) else 1,
-    by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; split_ifs <;> simp,
-    by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; split_ifs <;> simp⟩
+  ⟨diagonal fun i => if (i : ℕ) < m then (z : k) else 1,
+    diagonal fun i => if (i : ℕ) < m then ((z⁻¹ : kˣ) : k) else 1,
+    by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i
+       split_ifs <;> simp,
+    by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i
+       split_ifs <;> simp⟩
 
 def BesselSum : Prop :=
   ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
@@ -88,13 +48,14 @@ def OpenCell : Prop :=
 
 def ExpLow : Prop :=
   ∀ (r m : ℕ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
-    (A : Representation ℂ (GL (Fin r) k) V) (x : Representation ℂ (GL (Fin m) k) W) (ω : kˣ →* ℂˣ) (s : ℝ), 1 ≤ r → 1 ≤ m →
-    IsSmooth A → IsSmooth x → IsGeneric (prod₂ A x) → IsUnitarisable (prod₂ A x) → HasCentralChar x ω →
-    (∀ z, ‖(ω z : ℂ)‖ = nabs k z ^ ((m : ℝ) * s)) → -1 / 2 < s
+    (A : Representation ℂ (GL (Fin r) k) V) (x : Representation ℂ (GL (Fin m) k) W) (ω : kˣ →* ℂˣ) (s : ℝ),
+    1 ≤ r → 1 ≤ m → IsSmooth A → IsSmooth x → IsGeneric (prod₂ A x) → IsUnitarisable (prod₂ A x) →
+    HasCentralChar x ω → (∀ z, ‖(ω z : ℂ)‖ = nabs k z ^ ((m : ℝ) * s)) → -1 / 2 < s
 
 def ExpBound : Prop :=
-  ∀ (h N : ℕ) (x : Fin h → IrrGL (k := k)) (hd : ∑ a, (x a).1 = N), (prodIrr x hd).IsIrreducible → IsUnitarisable (prodIrr x hd) →
-    IsGeneric (prodIrr x hd) → ∀ (j : Fin h) (ω : kˣ →* ℂˣ) (s : ℝ), 0 < (x j).1 → HasCentralChar (x j).rep ω →
+  ∀ (h N : ℕ) (x : Fin h → IrrGL (k := k)) (hd : ∑ a, (x a).1 = N), (prodIrr x hd).IsIrreducible →
+    IsUnitarisable (prodIrr x hd) → IsGeneric (prodIrr x hd) → ∀ (j : Fin h) (ω : kˣ →* ℂˣ) (s : ℝ),
+    0 < (x j).1 → HasCentralChar (x j).rep ω →
     (∀ z, ‖(ω z : ℂ)‖ = nabs k z ^ (((x j).1 : ℝ) * s)) → |s| < 1 / 2
 
 def ThmT : Prop :=
@@ -109,7 +70,8 @@ def ThmT : Prop :=
 
 def ThmA : Prop :=
   ∀ (n : ℕ) (Λ : (GL (Fin (n + 1)) k → ℂ) →ₗ[ℂ] ℂ),
-    (∀ p ∈ Mir k n, ∀ f ∈ supportedIn (Set.univ : Set (GL (Fin (n + 1)) k)), Λ (fun g => f (p * g * p⁻¹)) = Λ f) →
+    (∀ p ∈ Mir k n, ∀ f ∈ supportedIn (Set.univ : Set (GL (Fin (n + 1)) k)),
+      Λ (fun g => f (p * g * p⁻¹)) = Λ f) →
     ∀ p, ∀ f ∈ supportedIn (Set.univ : Set (GL (Fin (n + 1)) k)), Λ (fun g => f (p * g * p⁻¹)) = Λ f
 
 def ThmB : Prop :=
@@ -121,14 +83,15 @@ def DerivTop : Prop :=
   ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (n h : ℕ) (π : GRep k (n + h)), 1 ≤ h → IsSmooth π.ρ →
     π.ρ.IsIrreducible → IsUnitarisable π.ρ → Nontrivial (derivB ψ h π).V →
     (∀ (n' h' : ℕ) (e : n + h = n' + h'), h < h' → Subsingleton (derivB ψ h' (π.cast e)).V) →
-    ((derivB ψ h π).tw ((1 - (h : ℝ)) / 2)).ρ.IsIrreducible ∧ IsUnitarisable ((derivB ψ h π).tw ((1 - (h : ℝ)) / 2)).ρ
+    ((derivB ψ h π).tw ((1 - (h : ℝ)) / 2)).ρ.IsIrreducible ∧
+      IsUnitarisable ((derivB ψ h π).tw ((1 - (h : ℝ)) / 2)).ρ
 
 def DerivPos : Prop :=
   ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (n i : ℕ) (π : GRep k (n + i)), 1 ≤ i → IsSmooth π.ρ →
     π.ρ.IsIrreducible → IsUnitarisable π.ρ →
     (∃ (n' h' : ℕ) (e : n + i = n' + h'), i < h' ∧ Nontrivial (derivB ψ h' (π.cast e)).V) →
-    ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin n) k) W) (ω : kˣ →* ℂˣ), Nontrivial W →
-      IsSubquotient σ ((derivB ψ i π).tw ((1 - (i : ℝ)) / 2)).ρ → HasCentralChar σ ω →
+    ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin n) k) W) (ω : kˣ →* ℂˣ),
+      Nontrivial W → IsSubquotient σ ((derivB ψ i π).tw ((1 - (i : ℝ)) / 2)).ρ → HasCentralChar σ ω →
       ∀ z : kˣ, nabs k z < 1 → ‖(ω z : ℂ)‖ < 1
 
 def BernAt : Prop :=

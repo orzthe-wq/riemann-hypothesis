@@ -4,47 +4,6 @@ public import Formalism.LocalToGlobal.GlobalTheory.IrreducibleOfCountSizes
 public import Formalism.PadicSubsetSums.StableGradedCounts.DominantNumbersEighthOfSharp
 public import Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateIVOfTypeSetWeight
 public import Formalism.SharpRestriction.LevelLetterCocycles.FamilyStatementsLocal
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -78,25 +37,25 @@ theorem third_fourth_terms_bound (f m P A B eu : ℝ) (hf0 : 0 ≤ f) (hm0 : 0 �
   have hAB : A + B ≤ eu + 2 * P * eu := add_le_add hA hB
   have h3 : f * m * (A + B) ≤ P * P * (eu + 2 * P * eu) :=
     mul_le_mul hfm hAB (add_nonneg hA0 hB0) (mul_nonneg hP0 hP0)
-  nlinarith [h3]
+  linarith [h3]
 
 theorem wsum (t1 t2 t34 t5 t6 : ℝ) (P eu X3 : ℝ) (hP1 : 1 ≤ P) (heu : 0 ≤ eu) (hX : 103 ≤ X3)
     (h1 : t1 ≤ 3 * P * eu) (h2 : t2 ≤ 92 * P * eu) (h34 : t34 ≤ 2 * (P * P) * (eu + 2 * P * eu))
     (h5 : t5 ≤ P * eu) (h6 : t6 ≤ eu) : t1 + t2 + t34 + t5 + t6 ≤ P ^ 3 * X3 * eu := by
   have hP0 : 0 ≤ P := le_trans zero_le_one hP1
-  have hPP : 1 ≤ P * P := by nlinarith
+  have hPP : 1 ≤ P * P := one_le_mul_of_one_le_of_one_le hP1 hP1
   have hP3 : P ^ 3 = P * P * P := by ring
   have a1 : P * eu ≤ P ^ 3 * eu := by
-    rw [hP3]; exact mul_le_mul_of_nonneg_right (by nlinarith) heu
+    rw [hP3]; exact mul_le_mul_of_nonneg_right (le_mul_of_one_le_left hP0 hPP) heu
   have a2 : P * P * eu ≤ P ^ 3 * eu := by
-    rw [hP3]; exact mul_le_mul_of_nonneg_right (by nlinarith) heu
+    rw [hP3]; exact mul_le_mul_of_nonneg_right (le_mul_of_one_le_right (mul_nonneg hP0 hP0) hP1) heu
   have a3 : eu ≤ P ^ 3 * eu := by
-    rw [hP3]; nlinarith [mul_nonneg (mul_nonneg hP0 hP0) heu]
+    rw [hP3]; exact le_mul_of_one_le_left heu (one_le_mul_of_one_le_of_one_le hPP hP1)
   have a4 : P ^ 3 * 103 * eu ≤ P ^ 3 * X3 * eu := by
     have h0 : 0 ≤ P ^ 3 * eu := mul_nonneg (pow_nonneg hP0 3) heu
-    nlinarith [h0]
+    linarith [mul_le_mul_of_nonneg_right hX h0]
   have e1 : 2 * (P * P) * (eu + 2 * P * eu) = 2 * (P * P * eu) + 4 * (P ^ 3 * eu) := by ring
-  nlinarith [a1, a2, a3, a4, e1]
+  linarith [a1, a2, a3, a4, e1]
 
 
 theorem weight_numbers_bound : WeightNumbersBound := by
@@ -280,7 +239,7 @@ theorem epsilon_bound_large_x : EpsilonBoundLargeX := by
   have hxc : 1 / c ≤ x := le_trans (le_max_right _ _) hx
   have hcx : 1 ≤ c * x := by
     rw [div_le_iff₀ hc] at hxc; linarith
-  have hcx2 : 1 ≤ c * x ^ 2 := by nlinarith
+  have hcx2 : 1 ≤ c * x ^ 2 := by linarith [mul_le_mul_of_nonneg_left (le_self_pow₀ hx1 two_ne_zero) hc.le]
   have hN' : (100 : ℝ) ≤ N := by exact_mod_cast hN
   have hlog : 1 ≤ Real.log N := by
     have h1 : Real.exp 1 ≤ (N : ℝ) := by
@@ -289,7 +248,7 @@ theorem epsilon_bound_large_x : EpsilonBoundLargeX := by
     have h2 := Real.log_le_log (Real.exp_pos 1) h1
     rwa [Real.log_exp] at h2
   have h2 : 1 ≤ c * f := le_trans hcx2 (mul_le_mul_of_nonneg_left hf hc.le)
-  have h3 : 1 ≤ (N : ℝ) * Real.log N := by nlinarith
+  have h3 : 1 ≤ (N : ℝ) * Real.log N := one_le_mul_of_one_le_of_one_le (by linarith) hlog
   have key : 1 ≤ c * (N : ℝ) * (f : ℝ) * Real.log (N : ℝ) := by
     calc (1 : ℝ) ≤ (c * f) * (N * Real.log N) := one_le_mul_of_one_le_of_one_le h2 h3
       _ = c * (N : ℝ) * (f : ℝ) * Real.log (N : ℝ) := by ring
@@ -300,7 +259,7 @@ theorem epsilon_bound_large_x : EpsilonBoundLargeX := by
   have hm : Real.exp (-1) * Real.exp 1 = 1 := by
     rw [← Real.exp_add]; norm_num
   have hp : 0 < Real.exp (-1) := Real.exp_pos _
-  nlinarith
+  linarith [mul_le_mul_of_nonneg_left he hp.le]
 
 section Rec
 
@@ -424,7 +383,7 @@ theorem delp_of_allRows (hSF : Formalism.IrreducibleCountingLemmas.GaloisIrreduc
     (hW 1 (Sk 1) (hSk 1)) hU (hK 0) (hK 1) hbadR
   have hApos : 0 < (D.what₂.Dall : ℝ) := by
     have := (abs_sub_le_iff.1 hU).2
-    nlinarith
+    linarith [mul_pos (show 0 < 1 - εC by linarith) hdSpos]
   have hbE : (D.what₂.Dall : ℝ) - (D.what₂.Drows : ℝ) ≤ LChain6.E7 x ε * (D.what₂.Dall : ℝ) := by
     have := hsh.trans hnum
     rwa [div_le_iff₀ hApos] at this

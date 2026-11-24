@@ -58,4 +58,4 @@ theorem _root_.GlobalTheory.T.exists_latticeVacuum_finitePlaces_rationalDarboux 
     ∀ M : Model σ X Y, (∀ x : Matrix (Fin n) (Fin d) E, ∃ y z : Fin n × Fin d → F,
         M.co.e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F x) = (fun k => algebraMap F (AF F) (y k), fun k => algebraMap F (AF F) (z k))) →
       ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl (F := F), ∃ φ : (Fin n × Fin d → Fv F v) → ℂ, M.IsVac B.ψ v φ := by
-  first | exact @GlobalTheory.LatVac.exists_isVac | exact GlobalTheory.LatVac.exists_isVac | (intros; apply GlobalTheory.LatVac.exists_isVac <;> assumption)
+  first | exact @GlobalTheory.LatVac.exists_isVac

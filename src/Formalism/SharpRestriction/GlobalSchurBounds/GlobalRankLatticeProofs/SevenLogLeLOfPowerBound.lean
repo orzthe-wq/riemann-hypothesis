@@ -77,7 +77,7 @@ theorem hc_u_step {R : Ranks} (h : HCParam R) (i : ℕ) (hi : i + 1 < R.k) :
 theorem lamCol_eq (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ) (hi : i < D.R.k) :
     lamCol D u τ i = (D.hcW u τ).u ⟨i, hi⟩ - (((D.R.k : ℚ) - 1) / 2 - i) := by
   rw [lamCol, dite_eq_left hi]
-  simp only [hcToWeightQ, rhoVec, Fin.val_mk]
+  simp only [hcToWeightQ, rhoVec]
 
 theorem wJ_eq (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (j : ℕ) (hj : j < D.R.m) :
     wJ D u τ j = (D.hc τ).e ⟨j, hj⟩ - (D.R.k : ℚ) / 2 - (2 * ((j : ℚ) + 1) - 1) * ((D.R.t : ℚ) + 1) / 2 := by
@@ -104,9 +104,7 @@ theorem lamCol_anti (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i j : �
   induction d with
   | zero => exact le_rfl
   | succ d ih =>
-    have h1 := lamCol_step D u τ (i + d) (by omega)
-    have h2 := ih (by omega) (by omega)
-    exact h1.trans h2
+    exact (lamCol_step D u τ (i + d) (by omega)).trans (ih (by omega) (by omega))
 
 theorem lamCol_int (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ) (hi : i < D.R.k) :
     ∃ z : ℤ, lamCol D u τ i = z := by
@@ -147,7 +145,7 @@ theorem base_sizes {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) :
   have hmη : (D.R.m : ℝ) * L.etaSz ≤ L.sc.w'' D.R.n := by
     refine le_trans ?_ h2
     have : 0 ≤ (D.R.m : ℝ) * L.etaSz * D.R.t := by positivity
-    nlinarith
+    linarith
   have hW0 : 0 ≤ L.sc.w'' D.R.n := le_trans (by positivity) hmη
   refine ⟨?_, ?_, ?_, ?_, ?_, hη, hb'⟩
   · calc (D.R.N D.R.m : ℝ) * (D.R.m : ℝ) ^ 12 = (D.R.m : ℝ) * ((D.R.N D.R.m : ℝ) * (D.R.m : ℝ) ^ 10 * D.R.m) := by ring
@@ -158,7 +156,7 @@ theorem base_sizes {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) :
     have hS := L.Sc_pos
     nlinarith
   · refine le_trans ?_ h2
-    have : (D.R.m : ℝ) * D.R.t ≤ (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) := by nlinarith
+    have : (D.R.m : ℝ) * D.R.t ≤ (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) := by linarith
     have h3 : 0 ≤ (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) := by positivity
     nlinarith
   · unfold Scale.w''
@@ -170,10 +168,7 @@ theorem top_is_tau_one_place (D : D7) (τ : D.what₂.Tau) (h : IsTop D τ) :
   obtain ⟨t0, ht0, ht0e⟩ := Finset.mem_image.mp h
   exact ⟨⟨t0, ht0⟩, ht0e.symm⟩
 
-theorem five_le_k (R : Ranks) : 5 ≤ R.k := by
-  have h1 := R.m_add_three_le_k
-  have h2 := R.two_le_m
-  omega
+alias five_le_k := _root_.Formalism.BasicNotions.Ranks.k_ge
 
 theorem lamCol_real (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : ℕ) (hi : i < D.R.k) :
     ((lamCol D u τ i : ℚ) : ℝ) = (((D.hcW u τ).u ⟨i, hi⟩ : ℚ) : ℝ) - (((D.R.k : ℝ) - 1) / 2 - i) := by
@@ -278,13 +273,10 @@ theorem base_sizes2 {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (hX 
   obtain ⟨s1, s2, s3, s4, s5, s6, s7⟩ := base_sizes P
   have hx := L.sc.one_lt_alt
   have hm2 : (2 : ℝ) ≤ D.R.m := by exact_mod_cast D.R.two_le_m
-  have hn1 : (1 : ℝ) ≤ D.R.n := by
-    have : 1 ≤ D.R.n := D.R.ord_pos
-    exact_mod_cast this
+  have hn1 : (1 : ℝ) ≤ D.R.n := by exact_mod_cast D.R.ord_pos
   have hN0 : (0 : ℝ) ≤ D.R.N D.R.m := Nat.cast_nonneg _
-  have hNW : (D.R.N D.R.m : ℝ) ≤ L.sc.w'' D.R.n := by
-    refine le_trans ?_ s1
-    exact le_mul_of_one_le_right hN0 (one_le_pow₀ (by linarith))
+  have hNW : (D.R.N D.R.m : ℝ) ≤ L.sc.w'' D.R.n :=
+    le_trans (le_mul_of_one_le_right hN0 (one_le_pow₀ (by linarith))) s1
   have hW0 : 0 ≤ L.sc.w'' D.R.n := le_trans hN0 hNW
   have hb0 : 0 < L.sc.b := Real.exp_pos _
   refine ⟨hNW, ?_, ?_⟩
@@ -302,13 +294,13 @@ theorem sub_aux (R : Ranks) (j : ℕ) :
   have ht : (0 : ℝ) ≤ (R.t : ℝ) + 1 := by positivity
   have h2 : (0 : ℝ) ≤ 2 * ((j : ℝ) + 1) - 1 := by linarith
   constructor
-  · nlinarith [mul_nonneg h2 ht]
+  · linarith [mul_nonneg h2 ht]
   · intro hj
     have hjm : (j : ℝ) + 1 ≤ R.m := by exact_mod_cast hj
     have hA : (0 : ℝ) ≤ 2 * (R.m : ℝ) - (2 * ((j : ℝ) + 1) - 1) := by linarith
     rw [Ranks.N]
     push_cast
-    nlinarith [mul_nonneg hA ht]
+    linarith [mul_nonneg hA ht]
 
 theorem wts_lam {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (Cn : ℝ) (hCn : 3 ≤ Cn) (u : D.what₂.Word)
     (τ : D.what₂.Tau) :
@@ -377,7 +369,7 @@ theorem wts_w {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (hx : 4 �
     have g2 := (D.hc τ).gap_eb ⟨j, by omega⟩ hj
     push_cast
     simp only at g2
-    nlinarith
+    linarith
   · intro hTh j hj
     rw [wJ_real D u τ j hj]
     have := (sub_aux D.R j).1
@@ -430,7 +422,7 @@ theorem wts_last {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (hX : L
   have h2 := (l2 D.R.m (by omega) (le_refl _)).2
   have hprod : 1 ≤ ((D.R.m : ℝ) - 1) * ((D.R.t : ℝ) + 1) := by nlinarith
   push_cast
-  nlinarith
+  linarith
 
 theorem wts_of_params {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (Cn : ℝ) (hCn : 3 ≤ Cn)
     (hx : 4 ≤ L.sc.x) (hX : L.sc.x ≤ L.sc.X') (u : D.what₂.Word) :
@@ -454,30 +446,30 @@ theorem nums_alg (N m l b' cL Cc Cn T G : ℝ) (hN : 1 ≤ N) (hm : 1 ≤ m) (hl
   have hml : 0 ≤ m * l := mul_nonneg hm0 hl0
   have hmm : 0 ≤ m * m := mul_nonneg hm0 hm0
   have hA1 : cL * l ≤ cL * m * l := by
-    nlinarith [mul_nonneg (mul_nonneg hcL0 hl0) (sub_nonneg.mpr hm)]
+    linarith [mul_nonneg (mul_nonneg hcL0 hl0) (sub_nonneg.mpr hm)]
   have hA2 : (cL + Cc) * (m * l) ≤ m * (m * l) := mul_le_mul_of_nonneg_right hcLm hml
   have hA3 : m * m * l ≤ m * m * m := mul_le_mul_of_nonneg_left hlm hmm
-  have hA : cL * l + Cc * m * l ≤ m ^ 3 := by nlinarith
-  have hm34 : m ^ 3 ≤ m ^ 4 := by nlinarith [mul_nonneg (pow_nonneg hm0 3) (sub_nonneg.mpr hm)]
-  have hNm3 : N * m ^ 3 ≤ b' := by nlinarith [mul_le_mul_of_nonneg_left hm34 hN0]
+  have hA : cL * l + Cc * m * l ≤ m ^ 3 := by linarith
+  have hm34 : m ^ 3 ≤ m ^ 4 := by linarith [mul_nonneg (pow_nonneg hm0 3) (sub_nonneg.mpr hm)]
+  have hNm3 : N * m ^ 3 ≤ b' := by linarith [mul_le_mul_of_nonneg_left hm34 hN0]
   have hX : N * (cL * l + T) ≤ b' := by
-    nlinarith [mul_le_mul_of_nonneg_left (show cL * l + T ≤ m ^ 3 by linarith) hN0]
+    linarith [mul_le_mul_of_nonneg_left (show cL * l + T ≤ m ^ 3 by linarith) hN0]
   have ga : N ^ 2 * (cL * l + T) ≤ N * b' := by
-    nlinarith [mul_le_mul_of_nonneg_left hX hN0]
+    linarith [mul_le_mul_of_nonneg_left hX hN0]
   have hCml : 0 ≤ Cc * m * l := mul_nonneg (mul_nonneg hCc hm0) hl0
   have gb : N * (cL * l) + T ≤ b' := by
-    nlinarith [mul_nonneg (sub_nonneg.mpr hN) hCml, mul_le_mul_of_nonneg_left hA hN0]
+    linarith [mul_nonneg (sub_nonneg.mpr hN) hCml, mul_le_mul_of_nonneg_left hA hN0]
   have hB2 : Cc * m ≤ m * m := mul_le_mul_of_nonneg_right hCcm hm0
   have hB : cL + Cc * m + 2 * Cn ≤ m ^ 2 * cL := by
-    nlinarith [hB2, mul_nonneg hm0 (sub_nonneg.mpr hm), mul_nonneg (sub_nonneg.mpr hcL) hmm]
+    linarith [hB2, mul_nonneg hm0 (sub_nonneg.mpr hm), mul_nonneg (sub_nonneg.mpr hcL) hmm]
   have hY : cL * l + T + G ≤ m ^ 2 * (cL * l) := by
-    nlinarith [mul_le_mul_of_nonneg_left hB hl0]
+    linarith [mul_le_mul_of_nonneg_left hB hl0]
   have hmN : 0 ≤ m ^ 2 * N ^ 2 := by positivity
   have hNcl : 0 ≤ N * (cL * l) := mul_nonneg hN0 (mul_nonneg hcL0 hl0)
   have gc : m ^ 2 * N ^ 2 * (cL * l + T + G) ≤ N * b' * (cL * l) := by
-    nlinarith [mul_le_mul_of_nonneg_left hY hmN, mul_le_mul_of_nonneg_right hb hNcl]
+    linarith [mul_le_mul_of_nonneg_left hY hmN, mul_le_mul_of_nonneg_right hb hNcl]
   have gd : (1 + 2 * (2 * Cn + 4)) * m ^ 3 * N ≤ b' := by
-    nlinarith [mul_nonneg (show (0 : ℝ) ≤ m - (1 + 2 * (2 * Cn + 4)) by linarith)
+    linarith [mul_nonneg (show (0 : ℝ) ≤ m - (1 + 2 * (2 * Cn + 4)) by linarith)
       (mul_nonneg (pow_nonneg hm0 3) hN0)]
   exact ⟨ga, gb, gc, gd⟩
 
@@ -487,7 +479,7 @@ theorem two_le_rdE {R : Ranks} (H : Host R) : 2 ≤ H.rdE := by
   have hd' : (7 : ℝ) ≤ H.d := by exact_mod_cast hd
   have h1 : (2 : ℝ) ≤ Real.sqrt (H.d : ℝ) := by
     apply Real.le_sqrt_of_sq_le
-    nlinarith
+    linarith
   have h2 : (1 : ℝ) ≤ (2 : ℝ) ^ ((R.e : ℝ) + 1 - (2 : ℝ) ^ (-(R.e : ℝ))) := by
     apply Real.one_le_rpow (by norm_num)
     have : (2 : ℝ) ^ (-(R.e : ℝ)) ≤ 1 :=
@@ -510,7 +502,7 @@ theorem log_g_le {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (i : Fi
   have h6 : Real.log 2 ≤ 1 := by
     have := Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 2)
     linarith
-  nlinarith
+  linarith
 
 theorem log_xbv_le {D : D7} (L : SizeData₂ D)
     (hlx : 7 * Real.log L.sc.x ≤ L.sc.L)
@@ -622,10 +614,8 @@ theorem nums_of_params {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) (
 
 theorem rdE_le {R : Ranks} (H : Host R) : H.rdE ≤ 2 * (R.n : ℝ) ^ 2 * Real.sqrt ((H.q : ℝ) * H.d) := by
   refine le_trans (factRd R H).2.1 ?_
-  apply mul_le_mul_of_nonneg_right _ (Real.sqrt_nonneg _)
   have h1 : (H.QS : ℝ) ≤ (R.n : ℝ) ^ 2 := by exact_mod_cast H.QS_le
-  have h2 : (0 : ℝ) ≤ (R.n : ℝ) ^ 2 := by positivity
-  linarith
+  exact mul_le_mul_of_nonneg_right (by linarith) (Real.sqrt_nonneg _)
 
 theorem pow_le_exp_rpow_for_large_x (K : ℕ) (e : ℝ) (he : 0 < e) :
     ∃ x0 : ℝ, ∀ x, x0 ≤ x → x ^ K ≤ Real.exp (x ^ e) := by
@@ -709,8 +699,7 @@ theorem size_bounds_of_scale {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 
     apply Real.rpow_le_rpow_of_exponent_le hx1
     linarith
   · unfold Scale.L
-    apply Real.rpow_le_rpow_of_exponent_le hx1
-    linarith
+    exact Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)
   · refine le_trans ?_ hn1
     have h1 : L.sc.x ^ (2 : ℝ) ≤ L.sc.x ^ (2 + 8 * L.sc.eps - L.sc.eps / 100) := by
       apply Real.rpow_le_rpow_of_exponent_le hx1
@@ -726,17 +715,14 @@ theorem size_bounds_of_scale {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 
     linarith
   · refine le_trans hq ?_
     unfold Scale.L
-    apply Real.rpow_le_rpow_of_exponent_le hx1
-    linarith
+    exact Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)
   · refine le_trans hd ?_
     unfold Scale.L
-    apply Real.rpow_le_rpow_of_exponent_le hx1
-    linarith
+    exact Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)
 
 theorem cyl_eq {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     (Fm.params x hx i).CYL = Fm.PK.getD 19 0 := by
-  have := congrArg (fun l => l.getD 19 0) (Fm.params_K x hx i)
-  simpa [parConsts] using this
+  simpa [parConsts] using congrArg (fun l => l.getD 19 0) (Fm.params_K x hx i)
 
 theorem nums_wts_of_fam {eps : ℝ} (Fm : FamP eps)
     (hT : ∃ Cc x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u,
@@ -768,11 +754,8 @@ theorem nums_wts_of_fam {eps : ℝ} (Fm : FamP eps)
     have := le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hx
     linarith
   have hsx : (Fm.L x i).sc.x = x := Fm.L_x x i hx1
-  have hse : (Fm.L x i).sc.eps = eps := Fm.L_eps x i
   have hX : (Fm.L x i).sc.x ^ 14 ≤ (Fm.L x i).sc.X' := by
-    unfold Scale.X'
-    rw [hsx, hse]
-    exact hA x hxA
+    simpa [Scale.X', hsx, Fm.L_eps x i] using hA x hxA
   have hx4' : 4 ≤ (Fm.L x i).sc.x := by rw [hsx]; exact hx4
   obtain ⟨c1, -⟩ := index_scalar_multiple_eq _ hX
   have c2 := seven_log_le_L_of_power_bound _ hX

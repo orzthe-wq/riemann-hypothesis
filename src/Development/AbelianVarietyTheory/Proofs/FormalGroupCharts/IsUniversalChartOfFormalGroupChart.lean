@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.UnivChartLoc
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.RestrictDiagCompInclFst
 
 @[expose] public section
 
@@ -76,11 +77,6 @@ theorem aug_comp_iff {κ κ' : Type} {m : ℕ} (ψ : JetR R κ m →ₐ[R] JetR 
     refine jet_ext fun j => ?_
     rw [AlgHom.comp_apply, jetAug_zR, jetAug_eq, AlgHom.comp_apply, h, map_zero]
 
-theorem spMap_id' (A : Type) [CommRing A] [Algebra R A] : spMap (R₀ := R) (AlgHom.id R A) = 𝟙 _ := by
-  apply Over.OverMorphism.ext
-  rw [spMap_left]
-  exact Spec.map_id _
-
 def jetRen {κ κ' : Type} (f : κ → κ') (m : ℕ) : JetR R κ m →ₐ[R] JetR R κ' m :=
   jetLift R (RingHom.ker (jetAug R κ' m)) (ker_jetAug_pow κ' m) (fun j => zR m (f j)) (fun j => zR_mem_ker m (f j))
 
@@ -106,7 +102,7 @@ theorem univ_all [IsLocalRing R] [Smooth G.hom] {κ : Type} {m : ℕ} (x : sp (R
     refine (hu κ x h0).unique ⟨(aug_comp_iff _).1 ?_, ?_⟩ ⟨fun j => jetZero_zR κ m j, ?_⟩
     · rw [← AlgHom.comp_assoc, ha1, hb1']
     · rw [← spMap_comp, Category.assoc, ← hb2, ← ha2]
-    · rw [spMap_id', Category.id_comp]
+    · rw [_root_.ReciprocityTheory.ChartRestriction.G.Chart.spMap_id, Category.id_comp]
   obtain ⟨ψ, ⟨h1, h2⟩, hψ⟩ := hzu A aug m hA y hy
   refine ⟨ψ.comp β, ⟨?_, ?_⟩, ?_⟩
   · rw [← AlgHom.comp_assoc, h1, hb1']

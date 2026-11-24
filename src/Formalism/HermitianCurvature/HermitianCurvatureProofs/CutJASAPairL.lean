@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutRegFF
 
 @[expose] public section
 
@@ -162,8 +163,8 @@ theorem sAPairL_of_one (hF : JAFFStable) (h1 : SAPairOne) : SAPairL := by
   obtain ⟨C2, h1'⟩ := h1
   refine ⟨max C1 C2, ?_⟩
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e he Θs hΘs K hK J hJ hKt
-  have hB1 : BuiltOW C1 S T f χ ν' m₀ top A₀ := ⟨isBuiltPlace_mono (le_max_left _ _) hB.1, hB.2⟩
-  have hB2 : BuiltOW C2 S T f χ ν' m₀ top A₀ := ⟨isBuiltPlace_mono (le_max_right _ _) hB.1, hB.2⟩
+  have hB1 : BuiltOW C1 S T f χ ν' m₀ top A₀ := ⟨_root_.Formalism.FourierDecayAlt.P.CutMP.isBuiltPlace_mono3 (le_max_left _ _) hB.1, hB.2⟩
+  have hB2 : BuiltOW C2 S T f χ ν' m₀ top A₀ := ⟨_root_.Formalism.FourierDecayAlt.P.CutMP.isBuiltPlace_mono3 (le_max_right _ _) hB.1, hB.2⟩
   have stab := hF' E Wp Wq S T f χ ν' m₀ top A₀ hB1 v
   have hmem : ∀ Θs : List (B.DiffOp S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))), (∀ Θ ∈ Θs, IsAAOp S T v Θ) →
       applyL S v Θs K ∈ smoothFormsPositiveCone S T v := by

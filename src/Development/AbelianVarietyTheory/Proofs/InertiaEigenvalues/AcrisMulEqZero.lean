@@ -2,7 +2,8 @@ module
 
 public import Formalism.LocalRingCardinality.AdicCompletionLocal.InstIsAdicCompleteOCSpanSingletonSetCast
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisGaussNormEventuallyMonomial
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefiniteStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefinite
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaussGCTarget
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -44,7 +45,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
 
 @[expose] public section
 
@@ -59,7 +59,7 @@ theorem acris_mul_eq_zero : ∀ (l : ℕ) [Fact l.Prime] (x y : Formalism.Per.Ac
   have hl0 : (0 : ℝ) < (l : ℝ) := by linarith
   have hρ1 : (l : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ hl
   have hρ0 : (0 : ℝ) < (l : ℝ)⁻¹ := inv_pos.mpr hl0
-  have hG := isGauss_gC_target l (l : ℝ)⁻¹ le_rfl hρ1
+  have hG := _root_.GlobalTheory.PMon.Gauss.isGauss_gC_of_le l (l : ℝ)⁻¹ le_rfl hρ1
   have hc : gC l (l : ℝ)⁻¹ (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l) (l : Formalism.Per.Ainf l)) = (l : ℝ)⁻¹ := by
     rw [hG.2.2.2.2]
     exact GlobalTheory.GaussSlope.gauss_l l hρ0.le
@@ -72,8 +72,8 @@ theorem acris_mul_eq_zero : ∀ (l : ℕ) [Fact l.Prime] (x y : Formalism.Per.Ac
     · linarith
   by_contra h
   push_neg at h
-  have hx := GlobalTheory.T.gaussNormAcrisRadius_pos_definite l x h.1 (l : ℝ)⁻¹ le_rfl hρ1
-  have hy := GlobalTheory.T.gaussNormAcrisRadius_pos_definite l y h.2 (l : ℝ)⁻¹ le_rfl hρ1
+  have hx := _root_.GlobalTheory.PMon.Gauss.gC_pos_target l x h.1 (l : ℝ)⁻¹ le_rfl hρ1
+  have hy := _root_.GlobalTheory.PMon.Gauss.gC_pos_target l y h.2 (l : ℝ)⁻¹ le_rfl hρ1
   have hm := hG.2.2.2.1 x y
   rw [hxy, h0] at hm
   have := mul_pos hx hy

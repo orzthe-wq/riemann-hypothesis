@@ -58,4 +58,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 
 theorem _root_.GlobalTheory.T.isHeckeChar_restrictionEta_inv : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (m : ℕ), IsHeckeChar D χ → ResEta D χ m → IsHeckeChar D χ⁻¹ ∧ ResEta D χ⁻¹ m := by
-  first | exact @GlobalTheory.StdUnn.isHeckeChar_resEta_inv | exact GlobalTheory.StdUnn.isHeckeChar_resEta_inv | (intros; apply GlobalTheory.StdUnn.isHeckeChar_resEta_inv <;> assumption)
+  first | exact @GlobalTheory.StdUnn.isHeckeChar_resEta_inv

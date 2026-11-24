@@ -3,48 +3,8 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.PropASt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.GaussianTailBound
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.PropABSt
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.PropAB
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.PropAC
 
@@ -75,8 +35,8 @@ theorem paTh_diff_le (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : G
       (2 ^ (1 + 3 * ((Fintype.card ι : ℝ) + c) / 2) *
         ∑' γ : lat Y.b, (if (γ : EuclideanSpace ℂ ι) = 0 then 0 else
           Real.exp (-(q * Real.pi) * ‖(γ : EuclideanSpace ℂ ι)‖ ^ 2 / 16))) * paN q F * paN q G := by
-  obtain ⟨hBs, -⟩ := paTail hP hA Y hq hR0 hlat hR
-  have hT := paTh_IP hP hA Y hq hR0 hlat hR hF hG
+  obtain ⟨hBs, -⟩ := _root_.ReciprocityTheory.ChartRestriction.G.I2.FPw.paTail hP hA Y hq hR0 hlat hR
+  have hT := _root_.ReciprocityTheory.ChartRestriction.G.I2.FPw.gaussianInner_theta' hP hA Y hq hR0 hlat hR hF hG
   have hg := hT.update 0 0
   have hf0 : Y.ka ((0 : lat Y.b) : EuclideanSpace ℂ ι) *
       paIP q (paU q ((0 : lat Y.b) : EuclideanSpace ℂ ι) F) G = paIP q F G := by
@@ -233,11 +193,11 @@ theorem propA_core (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT 
       paIP q (paJet c (paTh Y q F)) G = paIP q (paTh Y q F) G := by
     intro F G hF hG
     rw [gaussianInner_jet_eq_sum hq _ hG]
-    have h1 := paTh_IP hP hA Y hq hR0 hlat hR hF hG
+    have h1 := _root_.ReciprocityTheory.ChartRestriction.G.I2.FPw.gaussianInner_theta' hP hA Y hq hR0 hlat hR hF hG
     have h2 : ∀ γ : lat Y.b, Y.ka γ * paIP q (paU q γ F) G =
         ∑ α ∈ paS c, (Y.ka γ * paD α (paU q γ F)) / paFact α * paIP q (paMono α) G := by
       intro γ
-      rw [gaussianInner_jet hq _ hF hG, gaussianInner_jet_eq_sum hq _ hG, Finset.mul_sum]
+      rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.FPw.gaussianInner_jet' hq _ hF hG, gaussianInner_jet_eq_sum hq _ hG, Finset.mul_sum]
       refine Finset.sum_congr rfl fun α _ => ?_
       ring
     have h3 : HasSum (fun γ : lat Y.b => ∑ α ∈ paS c,
@@ -248,7 +208,7 @@ theorem propA_core (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT 
       exact (((hdata hF).2.2 α).div_const _).mul_right _
     rw [← funext h2] at h3
     exact h3.unique h1
-  obtain ⟨hBs2, hBt⟩ := paTail hP hA Y hq hR0 hlat hR
+  obtain ⟨hBs2, hBt⟩ := _root_.ReciprocityTheory.ChartRestriction.G.I2.FPw.paTail hP hA Y hq hR0 hlat hR
   have hK0 : (0 : ℝ) ≤ 2 ^ (1 + 3 * ((Fintype.card ι : ℝ) + c) / 2) := by positivity
   have hε := (mul_le_mul_of_nonneg_left hBt hK0).trans (paNum (Fintype.card ι) (c : ℝ) R0 hc0 h270 h90)
   have hclose : ∀ {F G : EuclideanSpace ℂ ι → ℂ}, F ∈ paPoly c → G ∈ paPoly c →
@@ -289,7 +249,7 @@ theorem propA_core (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT 
   refine ⟨paTh Y q F, paTh_sec Y hC (hdata hF).1 (hdata hF).2.1, fun α hα => ?_, ?_⟩
   · rw [← hFj']
     exact (paD_jet c _ hα).symm
-  · rw [paUnfold hP hA Y hq hR0 hC hlat hR hF, ← hJ hF hF, hFj']
+  · rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.FPw.paUnfold_w hP hA Y hq hR0 hC hlat hR hF, ← hJ hF hF, hFj']
     have hl := hlow hF
     rw [hFj'] at hl
     have hcs := norm_gaussianInner_le hq hj hF

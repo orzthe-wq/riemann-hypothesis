@@ -1,11 +1,15 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StableEig
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueCmEmbeddingEigenvectorSumStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.EmbKCoe
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueCmEmbeddingEigenvectorSum
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsActionStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsAction
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChangeStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -170,7 +174,7 @@ theorem splits_of {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
     {S : Type} [CommRing S] (κ : c.F →+* S) {N : Type} [AddCommGroup N] [Module S N]
     (ρ : 𝓞 E →+* Module.End S N) : Splits ρ (fun s : E →+* ℂ => κ.comp (tauIn c s)) := by
   letI : Algebra c.F S := κ.toAlgebra
-  exact fun m => GlobalTheory.T.existsUnique_cmEmbedding_eigenvector_sum E H l c S N ρ m
+  exact fun m => _root_.GlobalTheory.Frames.existsUnique_eigen_sum E H l c S N ρ m
 
 theorem exists_stableEig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (X : Scheme.{0}) (t : SAB H X) (A : Type) [CommRing A] [IsLocalRing A] (x : Sp A ⟶ X) (κ : c.F →+* A) (σ : E →+* ℂ), ∃ (r : ℕ) (e : Fin r → (epsAt x ⟶ t.G)), StableEig t x κ σ e := by
   classical
@@ -179,7 +183,7 @@ theorem exists_stableEig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   obtain ⟨N, _, _, ⟨M⟩⟩ := lieModel_exists X t.G A x
   obtain ⟨ρ, hρ, -⟩ := lieModel_exists_unique_act X t.G A x N M (𝓞 E) t.act.act t.act.hom t.act.one t.act.mul
     t.act.add
-  obtain ⟨hfin, hproj, -⟩ := GlobalTheory.T.lie_model_finite_base_change X t.G A x N M
+  obtain ⟨hfin, hproj, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange X t.G A x N M
   have hsp := splits_of c κ ρ
   obtain ⟨r, ⟨b⟩⟩ := exists_bases hsp
   refine ⟨r σ, fun i => M.pt (b σ i), ?_⟩
@@ -200,7 +204,7 @@ theorem exists_stableEig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   have hvv : v = fun k => M'.pt (β (b σ k)) := funext fun k => Over.OverMorphism.ext (by
     rw [hv k, hβ])
   rw [hvv]
-  exact (((GlobalTheory.T.lie_model_eigenvectors_action X T t.G (spMap θ ≫ x) N' M').2 (𝓞 E) t.act ρ' ((θ.comp κ).comp (tauIn c σ)) hρ').2 _ _).2
+  exact (((_root_.GlobalTheory.CompanionTheory.Ar.Fl.Bridge.comb_eig_frame X T t.G (spMap θ ≫ x) N' M').2 (𝓞 E) t.act ρ' ((θ.comp κ).comp (tauIn c σ)) hρ').2 _ _).2
     ⟨hli, hspan⟩
 
 end GlobalTheory.CompanionTheory.Ar.LocFn.EigStalk

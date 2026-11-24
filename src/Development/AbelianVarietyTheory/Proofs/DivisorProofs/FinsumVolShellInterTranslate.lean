@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.Tactic
 public import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExistsFrameMatrixFirstColumnBlock
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne

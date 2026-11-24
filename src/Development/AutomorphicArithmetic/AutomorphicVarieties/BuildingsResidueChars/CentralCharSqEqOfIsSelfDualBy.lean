@@ -71,7 +71,7 @@ theorem UpperTheory.central_char_sq_eq_of_isSelfDualBy :
   have h2 := mul_right_cancel₀ hψ h1
   have hdet : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 2) z) = z ^ 2 := by
     ext
-    simp [Matrix.GeneralLinearGroup.scalar, Matrix.det_fin_two, sq]
+    simp [Matrix.GeneralLinearGroup.scalar, sq]
   have h3 : chiDet 2 χ (finGL F 2 k) = χ.loc w (z ^ 2) := by
     rw [← hdet]
     exact TR.CuspSub.chiDet_locGL χ w _

@@ -410,7 +410,7 @@ private theorem finprod_split {ι α : Type*} [Fintype ι] (w : ι → α) (hw :
   rw [← h]
   congr 1
   refine finprod_congr fun u => ?_
-  simp [Set.mem_diff]
+  simp
 
 end SlopeTestRemainingChoices
 

@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LatIntZero
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JetsAreBoundedMeasureMomentsPadicIntMatrixChangeStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JetsAreBoundedMeasureMomentsPadicIntMatrixChange
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -77,7 +77,7 @@ theorem latInt_pull : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (V :
   choose u hu using fun i => isUnit_of_coprime q (s i) (hs i)
   have hM := hL κ (fun i => s i • g (v i)) hsΛ
   have hP : MomInt ι (fun i => ι.symm ω • g (v i)) G := by
-    refine GlobalTheory.T.jetsAreBoundedMeasureMoments_padicInt_matrix_change q ι V κ κ (fun i => ι.symm ω • s i • g (v i)) (fun i => ι.symm ω • g (v i))
+    refine _root_.GlobalTheory.MomN.momInt_push q ι V κ κ (fun i => ι.symm ω • s i • g (v i)) (fun i => ι.symm ω • g (v i))
       (fun i j => if i = j then (s i : ℂ)⁻¹ else 0) (fun i j => if i = j then ((u i)⁻¹ : ℤ_[q]ˣ).1 else 0) G ?_ ?_ hM
     · intro i j
       by_cases hij : i = j
@@ -98,6 +98,6 @@ theorem latInt_pull : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (V :
   have e := g.iteratedFDeriv_comp_right hG 0 (i := k) le_top
   have e2 : iteratedFDeriv ℂ k (fun z => G (g z)) 0 = iteratedFDeriv ℂ k (G ∘ g) 0 := rfl
   rw [e2, e]
-  simp [ContinuousMultilinearMap.compContinuousLinearMap_apply, Function.comp_def, map_smul]
+  simp [ContinuousMultilinearMap.compContinuousLinearMap_apply, map_smul]
 
 end GlobalTheory.MomN

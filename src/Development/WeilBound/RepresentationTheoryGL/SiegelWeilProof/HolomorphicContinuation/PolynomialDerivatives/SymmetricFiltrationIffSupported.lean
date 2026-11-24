@@ -51,6 +51,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Bool
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.PolynomialDerivatives.PderivPowMonomial
 
 @[expose] public section
 
@@ -91,9 +92,6 @@ theorem symmetric_filtration_add {ε : Fin m → Bool} {u v : Sym m n} (hu : Sym
 
 theorem symmetric_filtration_smul {ε : Fin m → Bool} (c : ℂ) {u : Sym m n} (hu : SymbolInFirstFamily ε u) : SymbolInFirstFamily ε (c • u) := by
   rw [symmetric_filtration_iff_supported] at *; exact Subalgebra.smul_mem _ hu c
-
-theorem symmetric_filtration_zero (ε : Fin m → Bool) : SymbolInFirstFamily ε (0 : Sym m n) := by
-  rw [symmetric_filtration_iff_supported]; exact Subalgebra.zero_mem _
 
 theorem symmetric_filtration_one (ε : Fin m → Bool) : SymbolInFirstFamily ε (1 : Sym m n) := by
   rw [symmetric_filtration_iff_supported]; exact Subalgebra.one_mem _
@@ -143,7 +141,7 @@ theorem etaEq_one : EtaEq (1 : Sym m n) 0 := by
 theorem etaEq_X_inl (k : Fin m × Fin n × Bool) : EtaEq (X (Sum.inl k) : Sym m n) 0 := by
   intro t ht
   rw [support_X, Finset.mem_singleton] at ht
-  subst ht; simp [ed, Finsupp.single_apply]
+  subst ht; simp [ed]
 
 theorem etaEq_X_inr (k : Fin m × Fin n × Bool) : EtaEq (X (Sum.inr k) : Sym m n) 1 := by
   intro t ht
@@ -248,37 +246,30 @@ theorem op_X_inr (k : Fin m × Fin n × Bool) (f : PX m n) : op (X (Sum.inr k) :
   have h := op_mul_X_inr (1 : Sym m n) k f
   rwa [one_mul, op_one] at h
 
-theorem op_sum' {ι : Type*} (T : Finset ι) (u : ι → Sym m n) (f : PX m n) :
-    op (∑ i ∈ T, u i) f = ∑ i ∈ T, op (u i) f := by
-  classical
-  induction T using Finset.induction_on with
-  | empty => simp [op_zero]
-  | insert a T ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, op_add, ih]
-
 theorem opL_pair (ε : Fin m → Bool) (c : ℝ) (hc : c ≠ 0) (a b : Fin m) :
     ∃ κ : ℂ, opL (pairSym (n := n) ε a b) = κ • firstFamilyOperatorEnd ε c a b := by
   have hc' : (c : ℂ) ≠ 0 := by exact_mod_cast hc
   have key : ∀ f, opL (pairSym (n := n) ε a b) f = ∑ i : Fin n, op (vecVar ε a i * covVar ε b i) f := by
     intro f
     rw [← op_eq_opL]
-    exact op_sum' _ _ f
+    exact _root_.PositivityTheory.Rg.Sw.LC.B1.op_sum _ _ f
   cases ha : ε a <;> cases hb : ε b
   · refine ⟨1, LinearMap.ext fun f => ?_⟩
     rw [key]
-    simp [firstFamilyOperatorEnd, D1, vecVar, covVar, ha, hb, op_mul_X_inl, op_mul_X_inr, op_X_inl, op_X_inr]
+    simp [firstFamilyOperatorEnd, D1, vecVar, covVar, ha, hb, op_mul_X_inl, op_X_inr]
   · refine ⟨1 / (2 * (c : ℂ)), LinearMap.ext fun f => ?_⟩
     rw [key]
-    simp [firstFamilyOperatorEnd, D1, vecVar, covVar, ha, hb, op_mul_X_inl, op_mul_X_inr, op_X_inl, op_X_inr]
+    simp [firstFamilyOperatorEnd, D1, vecVar, covVar, ha, hb, op_mul_X_inr, op_X_inr]
     rw [smul_smul, show ((c : ℂ)⁻¹ * 2⁻¹) * (2 * c) = 1 by field_simp, one_smul]
     exact Finset.sum_congr rfl fun i _ => pderiv_comm' _ _ f
   · refine ⟨-(2 * (c : ℂ)), LinearMap.ext fun f => ?_⟩
     rw [key]
-    simp [firstFamilyOperatorEnd, D1, vecVar, covVar, ha, hb, op_mul_X_inl, op_mul_X_inr, op_X_inl, op_X_inr]
+    simp [firstFamilyOperatorEnd, D1, vecVar, covVar, ha, hb, op_mul_X_inl, op_X_inl]
     rw [smul_smul, show (2 * (c : ℂ)) * ((c : ℂ)⁻¹ * 2⁻¹) = 1 by field_simp, one_smul]
     exact Finset.sum_congr rfl fun i _ => by ring
   · refine ⟨-1, LinearMap.ext fun f => ?_⟩
     rw [key]
-    simp [firstFamilyOperatorEnd, D1, vecVar, covVar, ha, hb, op_mul_X_inl, op_mul_X_inr, op_X_inl, op_X_inr]
+    simp [firstFamilyOperatorEnd, D1, vecVar, covVar, ha, hb, op_mul_X_inr, op_X_inl]
 
 theorem symK_pair (ε : Fin m → Bool) (i j : Fin n) (a b : Fin m) : symK ε i j (pairSym (n := n) ε a b) = 0 := by
   unfold pairSym
@@ -287,7 +278,7 @@ theorem symK_pair (ε : Fin m → Bool) (i j : Fin n) (a b : Fin m) : symK ε i 
   simp only [Derivation.leibniz, smul_eq_mul]
   unfold vecVar covVar
   cases ha : ε a <;> cases hb : ε b <;>
-    simp [symK, mkDerivation_X, ha, hb, mul_ite, ite_mul, Finset.sum_add_distrib] <;> ring
+    simp [symK, mkDerivation_X, ha, hb, mul_ite, Finset.sum_add_distrib] <;> ring
 
 theorem pair_comm_K (ε : Fin m → Bool) (a b : Fin m) (i j : Fin n) :
     opL (pairSym (n := n) ε a b) * KopL ε i j = KopL ε i j * opL (pairSym (n := n) ε a b) := by
@@ -322,21 +313,6 @@ theorem PA_le (ε : Fin m → Bool) (c : ℝ) (hc : c ≠ 0) :
   rw [hκ]
   exact Subalgebra.smul_mem _ (Algebra.subset_adjoin (Set.mem_range_self ab)) κ
 
-private theorem pderiv_pow_monomial' (k : Fin m × Fin n × Bool) (e : ℕ) (γ : Fin m × Fin n × Bool →₀ ℕ) (c : ℂ) :
-    (((pderiv k : Derivation ℂ (PX m n) (PX m n)) : PX m n →ₗ[ℂ] PX m n) ^ e) (monomial γ c) =
-      monomial (γ - Finsupp.single k e) (c * ((γ k).descFactorial e : ℂ)) := by
-  induction e with
-  | zero => simp
-  | succ e ih =>
-    rw [pow_succ', Module.End.mul_apply, ih]
-    show pderiv k (monomial _ _) = _
-    rw [pderiv_monomial]
-    congr 1
-    · rw [tsub_tsub, ← Finsupp.single_add]
-    · rw [Finsupp.tsub_apply, Finsupp.single_eq_same, Nat.descFactorial_succ]
-      push_cast
-      ring
-
 private theorem list_prod_pderiv_pow_monomial (e : Fin m × Fin n × Bool → ℕ) :
     ∀ (L : List (Fin m × Fin n × Bool)), L.Nodup → ∀ (γ : Fin m × Fin n × Bool →₀ ℕ) (c : ℂ),
       (L.map fun k => ((pderiv k : Derivation ℂ (PX m n) (PX m n)) : PX m n →ₗ[ℂ] PX m n) ^ e k).prod (monomial γ c) =
@@ -351,7 +327,7 @@ private theorem list_prod_pderiv_pow_monomial (e : Fin m × Fin n × Bool → �
     intro hL γ c
     rw [List.nodup_cons] at hL
     have haL : a ∉ L.toFinset := by simpa using hL.1
-    rw [List.map_cons, List.prod_cons, Module.End.mul_apply, ih hL.2, pderiv_pow_monomial', List.toFinset_cons,
+    rw [List.map_cons, List.prod_cons, Module.End.mul_apply, ih hL.2, _root_.PositivityTheory.Rg.Sw.LC.B1.pderiv_pow_monomial, List.toFinset_cons,
       Finset.sum_insert haL, Finset.prod_insert haL]
     have h0 : (∑ k ∈ L.toFinset, Finsupp.single k (e k)) a = 0 := by
       rw [Finsupp.finsetSum_apply]
@@ -396,7 +372,7 @@ theorem op_inj {s : Sym m n} (h : ∀ f, op s f = 0) : s = 0 := by
       rw [Finsupp.comapDomain_apply, Nat.descFactorial_self]
       exact_mod_cast Nat.factorial_ne_zero _
     · ext k
-      simp [Finsupp.tsub_apply, Finsupp.finsetSum_apply, Finsupp.single_apply]
+      simp [Finsupp.single_apply]
   · intro b hb hbt
     split_ifs with hc
     · apply mul_eq_zero_of_right
@@ -417,7 +393,7 @@ theorem op_inj {s : Sym m n} (h : ∀ f, op s f = 0) : s = 0 := by
       | inr k => exact heq k (Finset.mem_univ _)
       | inl k =>
         have hck := DFunLike.congr_fun hc k
-        simp [Finsupp.tsub_apply, Finsupp.finsetSum_apply, Finsupp.single_apply, heq k (Finset.mem_univ _)] at hck
+        simp [Finsupp.single_apply, heq k (Finset.mem_univ _)] at hck
         exact hck
     · rw [mul_zero]
   · intro hn
@@ -430,8 +406,8 @@ theorem closure_prop (hC : CompSt) (ε : Fin m → Bool) {x : Sym m n}
   | mem x hx =>
     obtain ⟨ab, rfl⟩ := hx
     exact ⟨_, etaEq_pair ε ab.1 ab.2, symmetric_filtration_pairing ε ab.1 ab.2, opL (pairSym ε ab.1 ab.2),
-      Algebra.subset_adjoin ⟨ab, rfl⟩, 0, symmetric_filtration_zero ε, etaLt_zero _, fun f => by rw [add_zero, op_eq_opL]⟩
-  | one => exact ⟨0, etaEq_one, symmetric_filtration_one ε, 1, Subalgebra.one_mem _, 0, symmetric_filtration_zero ε, etaLt_zero _,
+      Algebra.subset_adjoin ⟨ab, rfl⟩, 0, _root_.PositivityTheory.Rg.Sw.LC.B1.sf_zero ε, etaLt_zero _, fun f => by rw [add_zero, op_eq_opL]⟩
+  | one => exact ⟨0, etaEq_one, symmetric_filtration_one ε, 1, Subalgebra.one_mem _, 0, _root_.PositivityTheory.Rg.Sw.LC.B1.sf_zero ε, etaLt_zero _,
       fun f => by rw [add_zero, op_one]; rfl⟩
   | mul x y _ _ hx hy =>
     obtain ⟨d₁, he₁, hs₁, w₁, hw₁, r₁, hr₁, hl₁, hf₁⟩ := hx
@@ -495,7 +471,7 @@ theorem main (hC : CompSt) (hF : FFTSym) (hFFT : PositivityTheory.Rg.Sw.FFT) (ε
   set R := ∑ i ∈ Finset.univ.filter (fun i => d i ≤ N), c i • r i with hRdef
   have hopS : ∀ f, op s f = W f - op R f := by
     intro f
-    rw [hsT, op_sum', hRdef, op_sum', hWdef, LinearMap.sum_apply, ← Finset.sum_sub_distrib]
+    rw [hsT, _root_.PositivityTheory.Rg.Sw.LC.B1.op_sum, hRdef, _root_.PositivityTheory.Rg.Sw.LC.B1.op_sum, hWdef, LinearMap.sum_apply, ← Finset.sum_sub_distrib]
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [op_smul, op_smul, LinearMap.smul_apply, hop i f, op_add, smul_add, add_sub_cancel_right]
   have hR : ∀ f, op R f = W f - op s f := fun f => by

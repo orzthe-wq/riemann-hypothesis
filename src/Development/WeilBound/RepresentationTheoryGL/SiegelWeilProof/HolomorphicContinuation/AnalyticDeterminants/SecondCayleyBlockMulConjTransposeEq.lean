@@ -100,7 +100,7 @@ theorem first_cayley_block_mul_conjTranspose_eq {g : M2 n} (hg : InG g) :
   simp only [u1, conjTranspose_add, conjTranspose_smul, Complex.star_def, Complex.conj_I, Matrix.add_mul,
     Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul]
   rw [h]
-  match_scalars <;> simp [Complex.I_mul_I] <;> ring_nf <;> simp [Complex.I_sq]
+  match_scalars <;> simp [Complex.I_mul_I]
 
 theorem second_cayley_block_mul_conjTranspose_eq {g : M2 n} (hg : InG g) :
     u2 g * (u2 g)ᴴ = g.toBlocks₂₁ * g.toBlocks₂₁ᴴ + g.toBlocks₂₂ * g.toBlocks₂₂ᴴ := by
@@ -108,7 +108,7 @@ theorem second_cayley_block_mul_conjTranspose_eq {g : M2 n} (hg : InG g) :
   simp only [u2, conjTranspose_add, conjTranspose_neg, conjTranspose_smul, Complex.star_def, Complex.conj_I,
     Matrix.add_mul, Matrix.mul_add, Matrix.neg_mul, Matrix.mul_neg, Matrix.smul_mul, Matrix.mul_smul, smul_smul]
   rw [h]
-  match_scalars <;> simp [Complex.I_mul_I] <;> ring_nf <;> simp [Complex.I_sq]
+  match_scalars <;> simp [Complex.I_mul_I]
 
 theorem inv_eq_of_inG {g : M2 n} (hg : InG g) : g⁻¹ = -(JJ n) * gᴴ * JJ n := by
   have h1 : (-(JJ n) * gᴴ * JJ n) * g = 1 := by

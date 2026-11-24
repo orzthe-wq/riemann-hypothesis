@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedProductDropZeroFactorsStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InducedProductDropZeroFactors
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -58,7 +58,7 @@ theorem prodIrr_single : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalS
   subst hN
   refine ⟨(Y i₀).2, Sigma.eta _, ?_⟩
   have hd' : ∑ a : Fin 1, (Y ((fun _ : Fin 1 => i₀) a)).1 = (Y i₀).1 := by simp
-  obtain ⟨e₁⟩ := GlobalTheory.T.induced_product_drop_zero_factors Y hd (fun _ : Fin 1 => i₀) (Subsingleton.strictMono _)
+  obtain ⟨e₁⟩ := _root_.GlobalTheory.CompanionTheory.FineProd.ProdDrop.prodIrr_drop Y hd (fun _ : Fin 1 => i₀) (Subsingleton.strictMono _)
     (fun j hj => ⟨0, by
       by_contra hne
       exact hj (h0 j (fun e => hne e.symm))⟩) hd'

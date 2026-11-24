@@ -2,54 +2,55 @@ module
 
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.LowRankSiegelDensities.Reduce
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.BlockOneDetHermitianGram
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.BlockOneDetHermitianGramStatement
+public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureZeroStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsGramFiberMeasuresStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureZero
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsGramFiberMeasures
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsIsCharAF
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsStandardLocalMeasuresStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnitScalingSelfdualAdelicMeasuresStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnitScalingSelfdualHermMeasuresStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsStandardLocalMeasures
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnitScalingSelfdualAdelicMeasures
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnitScalingSelfdualHermMeasures
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteVolumeInductionCompactSum
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuityStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresScalingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresTransitivityStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuity
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresTransitivity
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HaarFundamentalDomainOrthogonalSumStatement
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianNondegRepresentsNonzeroScalar
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalarStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyRealStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductMultipliableStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlacesStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensitiesBlockOneAlmostAllStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
+public import Mathlib.Topology.Algebra.InfiniteSum.Defs
+public import Mathlib.Topology.MetricSpace.Pseudo.Defs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductMultipliable
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlaces
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensitiesBlockOneAlmostAll
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensitiesBoundedAlmostAll
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensitiesCongruentTargetAlmostAllStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensityBlockOneEventuallyStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensityBlockOneProductStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalGramFiberMeasuresAgreeAlmostAllStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalLatticeCompactOpenUnitVolumeStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensityBlockOneEventually
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalMeasuresOrthogonalSumAlmostAllPlacesStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PureAdelicFunctionMeasurableStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensityAlmostAllStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankZeroGramFiberMeasureStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ScalarMultiplicationEulerProductStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PureAdelicFunctionMeasurable
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ScalarMultiplicationEulerProduct
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelDensitiesOfHermitianForm
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelMeanValueIntegrableStatement
+public import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.LowRankSiegelDensities.EulerS
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresScaling
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensitiesCongruentTargetAlmostAll
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalDensityBlockOneProduct
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalGramFiberMeasuresAgreeAlmostAll
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalLatticeCompactOpenUnitVolume
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensityAlmostAll
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankZeroGramFiberMeasure
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelMeanValueIntegrable
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureAddBlockAnisotropic
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureAddRankOneBlock
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfCongruentFormStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfCongruentTargetStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfRankSmallOrZeroStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureRankOneStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureRankZeroStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfCongruentForm
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfCongruentTarget
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfRankSmallOrZero
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureRankOne
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureRankZero
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SplitAnisotropic
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SummableOneDivAbsNormSq
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitProductClosurePropertiesStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolumeStatement
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodingerModel.UnitarySchrodingerLemmas.LowRankSiegelDensities.EulerS
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitProductClosureProperties
+import Formalism.UnipotentAdelicQuotients.SiegelWeilUnitaryConvergent
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolume
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -184,7 +185,7 @@ theorem one_vec_sw (hE1 : OneVecBinary) : ∀ (F E : Type) [Field F] [NumberFiel
     T.det ≠ 0 → SWMeas σ J T hT := by
   intro F E _ _ _ _ _ σ hCM M J hJ hM ha T hT hd
   by_cases h : 3 ≤ M
-  · exact GlobalTheory.T.siegel_weil_measure_rank_one F E σ hCM M J hJ h T hT hd
+  · exact _root_.GlobalTheory.CompanionTheory.SW.OneVector.siegel_one_vector F E σ hCM M J hJ h T hT hd
   · exact hE1 F E σ hCM M J hJ (by omega) (ha.resolve_left h) T hT hd
 
 section Main
@@ -202,7 +203,7 @@ theorem one_vec_bound (hE2 : OneVecBinaryMass) (hcm : IsCMExt F E σ) (M : ℕ) 
         |(m (hermScal (Fv F v) σ s) (latV b v)).toReal - 1| ≤ C / (Ideal.absNorm v.asIdeal : ℝ) ^ 2 := by
   by_cases h : 3 ≤ M
   · refine ⟨2, ?_⟩
-    filter_upwards [GlobalTheory.T.rank_one_local_density_almost_all F E σ hcm M J hJ h d b] with v hv lam hl m hm s hs
+    filter_upwards [_root_.GlobalTheory.CompanionTheory.SW.LocGood.density_standard_lattice F E σ hcm M J hJ h d b] with v hv lam hl m hm s hs
     have hint : s ∈ v.adicCompletionIntegers F := by
       rw [HeightOneSpectrum.mem_adicCompletionIntegers]
       exact hs.le
@@ -229,7 +230,7 @@ theorem mass_good_lt (hE2 : OneVecBinaryMass) (hcm : IsCMExt F E σ) : ∀ (n M 
     refine ⟨0, Filter.Eventually.of_forall ?_⟩
     intro v lam hl m hm
     haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-    have h0 := GlobalTheory.T.rank_zero_gram_fiber_measure F E σ hcm M J hJ (Fv F v) (GlobalTheory.T.completion_is_local_ring F v) d b lam hl.1 m hm
+    have h0 := _root_.GlobalTheory.CompanionTheory.SW.GramEmpty.fibre_gram_zero F E σ hcm M J hJ (Fv F v) (_root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v) d b lam hl.1 m hm
       (hermOf (Fv F v) σ T hT)
     have hU : (latV b v : Set (Fin 0 → Fin M → Fv F v ⊗[F] E)) = Set.univ := by
       ext Y
@@ -252,10 +253,10 @@ theorem mass_good_lt (hE2 : OneVecBinaryMass) (hcm : IsCMExt F E σ) : ∀ (n M 
     obtain ⟨C₁, hC₁⟩ := ih M₁ 1 hone (by omega) T₁ hT₁.1 hT₁.2 d b
     obtain ⟨C₀, hC₀⟩ := one_vec_bound hE2 hcm (M₁ + 1) _ hJ' (by omega) b
     refine ⟨|C₀| + |C₁| + |C₀| * |C₁|, ?_⟩
-    have e1 := GlobalTheory.T.local_densities_congruent_target_almost_all F E σ hcm (M₁ + 1) J hJ (n + 1) T hT hdet g hgdet _ hbh hblock d b
-    have e2 := GlobalTheory.T.local_gram_fiber_measures_agree_almost_all F E σ hcm (M₁ + 1) J hJ _ hJ' d b (n + 1)
-    have e3 := GlobalTheory.T.local_densities_block_one_almost_all F E σ hcm M₁ 1 hone t ht n T₁ hT₁.1 hT₁.2 hbh d b
-    have e5 := (GlobalTheory.T.integral_almost_all_places F E σ hcm d b).2 t ht
+    have e1 := _root_.GlobalTheory.CompanionTheory.SW.GoodScale.mass_eq F E σ hcm (M₁ + 1) J hJ (n + 1) T hT hdet g hgdet _ hbh hblock d b
+    have e2 := _root_.GlobalTheory.CompanionTheory.SW.lattice_mass_fibre_eq F E σ hcm (M₁ + 1) J hJ _ hJ' d b (n + 1)
+    have e3 := _root_.GlobalTheory.CompanionTheory.SW.GoodStep.blockFibre_mass F E σ hcm M₁ 1 hone t ht n T₁ hT₁.1 hT₁.2 hbh d b
+    have e5 := (_root_.GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hcm d b).2 t ht
     filter_upwards [e1, e2, e3, hC₀, e5, hC₁] with v h1 h2 h3 h4 h5 h6 lam hl m hm
     obtain ⟨m', hm'⟩ := exists_family hcm hJ' b v lam hl (n + 1)
     obtain ⟨m₁, hm₁⟩ := exists_family hcm hJ' b v lam hl 1
@@ -275,19 +276,19 @@ theorem mass_summable_lt (hE2 : OneVecBinaryMass) :
   intro F E _ _ _ _ _ σ hCM M J hJ n hn T hT hdet d b lam hlam m hm
   refine ⟨?_, ?_⟩
   · intro v
-    have hloc : IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F v
+    have hloc : IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
     obtain ⟨hTR, hLC, hSC, hT2, -⟩ := id hloc
     haveI := hTR
     haveI := hLC
     haveI := hSC
     haveI := hT2
     haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-    have hh := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1
+    have hh := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) d b (lam v) (hlam v).1
     haveI hW := hh.2.1 n M
     haveI hH := hh.2.2 n
-    have hlf := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ (Fv F v) hloc n _ _ (m v) hW hH (hm v)
+    have hlf := (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hCM M J hJ (Fv F v) hloc n _ _ (m v) hW hH (hm v)
       (hermOf (Fv F v) σ T hT)).1
-    exact (GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b n M v).1.measure_lt_top
+    exact (_root_.GlobalTheory.CompanionTheory.SW.latV_compact_open_mass F E σ hCM d b n M v).1.measure_lt_top
   · obtain ⟨C, hC⟩ := mass_good_lt hE2 hCM n M J hJ hn T hT hdet d b
     refine Summable.of_norm_bounded_eventually
       (g := fun v : HeightOneSpectrum (𝓞 F) => C * (1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2))
@@ -317,11 +318,11 @@ theorem notRep_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Typ
   have hdet1 : T1.det ≠ 0 := by
     rw [Matrix.det_fin_one]; exact htE
   have hsw := one_vec_sw hE1 F E σ hCM M J hJ (by omega) hA T1 hT1 hdet1
-  obtain ⟨minf1, hminf1⟩ := GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Ainf F) hLinf 1 _ _
+  obtain ⟨minf1, hminf1⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM M J hJ (Ainf F) hLinf 1 _ _
     ((haarOf _ hLinf laminf hinf.1).1 1 M) ((haarOf _ hLinf laminf hinf.1).2 1)
   have hex : ∀ v : HeightOneSpectrum (𝓞 F), ∃ m' : HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin M → Fv F v ⊗[F] E),
       IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 M) (coordHerm (Fv F v) σ b (lam v) 1) m' :=
-    fun v => GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Fv F v) (hLv v) 1 _ _
+    fun v => _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM M J hJ (Fv F v) (hLv v) 1 _ _
       ((haarOf _ (hLv v) (lam v) (hv v).1).1 1 M) ((haarOf _ (hLv v) (lam v) (hv v).1).2 1)
   choose m1 hm1 using hex
   have hEul := hsw d b laminf lam hinf hv μ 𝓕 hμ h𝓕 minf1 m1 hminf1 hm1
@@ -336,7 +337,7 @@ theorem notRep_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Typ
     intro hX
     apply hne (X 0)
     simpa [gramE, blockOne] using congrFun (congrFun hX 0) 0
-  have hz := ((GlobalTheory.T.euler_product_measure_zero F E σ hCM d b 1 M _ 1 _ _).1 hEul
+  have hz := ((_root_.GlobalTheory.CompanionTheory.SW.EulerZero.euler_zero F E σ hCM d b 1 M _ 1 _ _).1 hEul
     (SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS1))
   have hvan : minf (hermOf (Ainf F) σ (blockOne (algebraMap F E t) T) hT') = 0 ∨
       ∃ v, m v (hermOf (Fv F v) σ (blockOne (algebraMap F E t) T) hT') = 0 := by
@@ -352,39 +353,39 @@ theorem notRep_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Typ
   obtain ⟨hfin, hsum⟩ := mass_summable_lt hE2 F E σ hCM M J hJ (n + 1) (by omega)
     (blockOne (algebraMap F E t) T) hT' hdetB d b lam (fun v => hv v) m hm
   rw [SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS]
-  exact (GlobalTheory.T.euler_product_measure_zero F E σ hCM d b (n + 1) M 0 1 _ _).2.2 hfin hsum hvan
+  exact (_root_.GlobalTheory.CompanionTheory.SW.EulerZero.euler_zero F E σ hCM d b (n + 1) M 0 1 _ _).2.2 hfin hsum hvan
 
 theorem step_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ t : F, t ≠ 0 → (2 ≤ M ∨ IsAnisoH σ (blockOne (algebraMap F E t) J)) → ∀ n : ℕ, n + 1 ≤ M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b), SWMeas σ J T hT → SWMeas σ (blockOne (algebraMap F E t) J) (blockOne (algebraMap F E t) T) hT' := by
   intro F E _ _ _ _ _ σ hCM M J hJ t ht hA n hn T hT hdet hT' hSW d b laminf lam hinf hlam μ 𝓕 hμ h𝓕 minf m hminf hm
   classical
-  have hLi : IsLocR (Ainf F) := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1
-  have hLv : ∀ v, IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F
+  have hLi : IsLocR (Ainf F) := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1
+  have hLv : ∀ v, IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F
   haveI hBi : BorelSpace (Ainf F) := ⟨rfl⟩
   haveI hBv : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩
   have hta : algebraMap F E t ≠ 0 := by simpa using ht
-  obtain ⟨hdetb, hhermb, -, -⟩ := GlobalTheory.T.block_one_det_hermitian_gram F E σ hCM M J t
+  obtain ⟨hdetb, hhermb, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.BlockAlg.block_alg F E σ hCM M J t
   have hJ' : IsHermND σ (blockOne (algebraMap F E t) J) :=
     ⟨hhermb hJ.1, by rw [hdetb]; exact mul_ne_zero hta hJ.2⟩
   have hdet' : (blockOne (algebraMap F E t) T).det ≠ 0 := by
-    rw [(GlobalTheory.T.block_one_det_hermitian_gram F E σ hCM n T t).1]; exact mul_ne_zero hta hdet
+    rw [(_root_.GlobalTheory.CompanionTheory.SW.BlockAlg.block_alg F E σ hCM n T t).1]; exact mul_ne_zero hta hdet
 
   obtain ⟨m₁inf, hm₁inf⟩ := Step.loc_families σ hCM _ hJ' (Ainf F) hLi b laminf hinf.1 1
   obtain ⟨m'inf, hm'inf⟩ := Step.loc_families σ hCM J hJ (Ainf F) hLi b laminf hinf.1 n
   choose m₁ hm₁ using fun v => Step.loc_families σ hCM _ hJ' (Fv F v) (hLv v) b (lam v) (hlam v).1 1
   choose m' hm' using fun v => Step.loc_families σ hCM J hJ (Fv F v) (hLv v) b (lam v) (hlam v).1 n
-  obtain ⟨⟨μ₁, hμ₁⟩, hFV⟩ := GlobalTheory.T.unitary_group_finite_volume F E σ hCM M J hJ
+  obtain ⟨⟨μ₁, hμ₁⟩, hFV⟩ := _root_.GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM M J hJ
   obtain ⟨⟨𝓕₁, h𝓕₁⟩, -⟩ := hFV μ₁ hμ₁
 
-  obtain ⟨cinf, c, hc, hcinf, hcv⟩ := GlobalTheory.T.scalar_multiplication_euler_product F E σ hCM (algebraMap F E t) hta
+  obtain ⟨cinf, c, hc, hcinf, hcv⟩ := _root_.GlobalTheory.CompanionTheory.SW.map_inclR_prodFormula F E σ hCM (algebraMap F E t) hta
   have hKi : (coordK (Ainf F) b laminf).map (fun y => inclR (Ainf F) (algebraMap F E t) * y) =
       cinf • coordK (Ainf F) b laminf := by
     obtain ⟨h1, h2, h3, h4, -⟩ := hLi
-    exact hcinf _ (GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) d b laminf hinf.1).1
+    exact hcinf _ (_root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Ainf F) d b laminf hinf.1).1
   have hKv : ∀ v, (coordK (Fv F v) b (lam v)).map (fun y => inclR (Fv F v) (algebraMap F E t) * y) =
       c v • coordK (Fv F v) b (lam v) := fun v => by
     obtain ⟨h1, h2, h3, h4, -⟩ := hLv v
-    exact hcv v _ (GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1).1
-  obtain ⟨-, -, -, -, -, -, -, S₃, hS₃⟩ := GlobalTheory.T.unit_product_closure_properties F cinf 1 c (fun _ => 1) hc ⟨by simp, by simp⟩
+    exact hcv v _ (_root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) d b (lam v) (hlam v).1).1
+  obtain ⟨-, -, -, -, -, -, -, S₃, hS₃⟩ := _root_.GlobalTheory.CompanionTheory.SW.UnitProdAlg.main F cinf 1 c (fun _ => 1) hc ⟨by simp, by simp⟩
 
   have hE' := hSW d b laminf lam hinf hlam μ₁ 𝓕₁ hμ₁ h𝓕₁ m'inf (fun v => m' v) hm'inf hm'
   let T1 : Matrix (Fin 1) (Fin 1) E := fun _ _ => algebraMap F E t
@@ -392,7 +393,7 @@ theorem step_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Type)
   have hdet1 : T1.det ≠ 0 := by rw [Matrix.det_fin_one]; exact hta
   have hE₁ := one_vec_sw hE1 F E σ hCM (M + 1) _ hJ' (by omega) (hA.imp_left (by omega)) T1 hT1 hdet1 d b laminf lam hinf hlam μ 𝓕 hμ h𝓕
     m₁inf m₁ hm₁inf hm₁
-  obtain ⟨β, hβ1, -, hβ2⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hCM T1 hT1
+  obtain ⟨β, hβ1, -, hβ2⟩ := _root_.GlobalTheory.CompanionTheory.SW.hermOne_eq_scal F E σ hCM T1 hT1
   have hβ : β = t := (algebraMap F E).injective (congrFun (congrFun hβ1 0) 0).symm
   rw [hβ] at hβ2
   simp only [hβ2] at hE₁
@@ -401,7 +402,7 @@ theorem step_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Type)
   have hgood := mass_summable_lt hE2 F E σ hCM (M + 1) _ hJ' (n + 1) (by omega) _ hT' hdet' d b lam hlam m hm
   refine ⟨hgood.1, hgood.2, ?_⟩
   obtain ⟨S₂, hS₂⟩ := Step.theta_hypothesis F E σ hCM M J hJ t ht n d b _ _ _ hE'
-  have hG := GlobalTheory.T.local_density_block_one_eventually F E σ hCM M J hJ t ht n T hT hdet hT' d b
+  have hG := _root_.GlobalTheory.CompanionTheory.SW.GoodMass.good_mass F E σ hCM M J hJ t ht n T hT hdet hT' d b
   have hSG := GlobalTheory.T.local_measures_orthogonal_sum_almost_all_places F E σ hCM M J hJ t ht n T hT hdet d b
   refine ⟨S₁ ∪ S₂ ∪ S₃ ∪ (Filter.eventually_cofinite.1 hG).toFinset ∪ (Filter.eventually_cofinite.1 hSG).toFinset,
     fun S hS φinf φ hφinf hφ => ?_⟩
@@ -413,20 +414,20 @@ theorem step_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Type)
   have hS5 : (Filter.eventually_cofinite.1 hSG).toFinset ⊆ S := fun x hx => hS (by
     simp only [Finset.mem_union]; exact Or.inr hx)
   obtain ⟨hc1, hc2⟩ := hS₃ S hS3
-  obtain ⟨Ψinf, hΨinfm, hΨinf1, hΨinf2⟩ := GlobalTheory.T.local_density_block_one_product F E σ hCM M J hJ t ht n T hT hdet hT' (Ainf F) hLi d b
+  obtain ⟨Ψinf, hΨinfm, hΨinf1, hΨinf2⟩ := _root_.GlobalTheory.CompanionTheory.SW.fibre_block_stages F E σ hCM M J hJ t ht n T hT hdet hT' (Ainf F) hLi d b
     laminf hinf.1 minf m₁inf m'inf hminf hm₁inf hm'inf cinf hKi φinf hφinf
-  choose Ψ hΨm hΨ1 hΨ2 using fun v => GlobalTheory.T.local_density_block_one_product F E σ hCM M J hJ t ht n T hT hdet hT' (Fv F v) (hLv v) d b
+  choose Ψ hΨm hΨ1 hΨ2 using fun v => _root_.GlobalTheory.CompanionTheory.SW.fibre_block_stages F E σ hCM M J hJ t ht n T hT hdet hT' (Fv F v) (hLv v) d b
     (lam v) (hlam v).1 (m v) (m₁ v) (m' v) (hm v) (hm₁ v) (hm' v) (c v) (hKv v) (φ v) (hφ v)
   have hHv : ∀ v, (coordW (Fv F v) b (lam v) n M).IsAddHaarMeasure ∧ (coordHerm (Fv F v) σ b (lam v) n).IsAddHaarMeasure := fun v => by
     obtain ⟨h1, h2, h3, h4, -⟩ := hLv v
-    have hh := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1
+    have hh := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Fv F v) d b (lam v) (hlam v).1
     exact ⟨hh.2.1 n M, hh.2.2 n⟩
   have hHyp := hS₂ S hS2 φinf φ Ψinf Ψ hφinf hφ hΨinf1 hΨ1 (fun v hv g =>
     Step.of_cofinite hSG hS5 hv _ _ (m' v) (hHv v).1 (hHv v).2 (hm' v) g)
   set τ' := ENNReal.ofReal (∏' v : {v // v ∉ S}, (m' v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal) with hτ'
-  have hPm : Measurable (pureL b S Ψinf Ψ) := GlobalTheory.T.pure_adelic_function_measurable F E σ hCM d b 1 (M + 1) S Ψinf Ψ hΨinfm hΨm
+  have hPm : Measurable (pureL b S Ψinf Ψ) := _root_.GlobalTheory.CompanionTheory.SW.PureMeas.measurable_pureL F E σ hCM d b 1 (M + 1) S Ψinf Ψ hΨinfm hΨm
   have hth := GlobalTheory.T.lintegral_thetaMeas_block_one_eq_rank_one F E σ hCM M J hJ t ht n T μ 𝓕 hμ h𝓕 μ₁ 𝓕₁ hμ₁ h𝓕₁ (pureL b S φinf φ)
-    (fun y => τ' * pureL b S Ψinf Ψ y) (GlobalTheory.T.pure_adelic_function_measurable F E σ hCM d b (n + 1) (M + 1) S φinf φ hφinf hφ)
+    (fun y => τ' * pureL b S Ψinf Ψ y) (_root_.GlobalTheory.CompanionTheory.SW.PureMeas.measurable_pureL F E σ hCM d b (n + 1) (M + 1) S φinf φ hφinf hφ)
     (hPm.const_mul τ') hHyp
   have hone := hS₁ S hS1 Ψinf Ψ hΨinfm hΨm
   rw [hth, lintegral_const_mul _ hPm]
@@ -442,9 +443,9 @@ theorem step_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Type)
       _ = _ := by rw [hone2, one_pow, one_mul]
   have htail : ENNReal.ofReal (∏' v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ _ hT') (latV b v.1)).toReal) =
       τ' * ENNReal.ofReal (∏' v : {v // v ∉ S}, (m₁ v.1 (hermScal (Fv F v.1) σ (algebraMap F (Fv F v.1) t)) (latV b v.1)).toReal) := by
-    have hA := GlobalTheory.T.infinite_product_multipliable {v // v ∉ S} (fun v => (m' v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal)
+    have hA := _root_.GlobalTheory.CompanionTheory.SW.AbsTprod.abs_tprod {v // v ∉ S} (fun v => (m' v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal)
       (hsum'.subtype _)
-    have hB := GlobalTheory.T.infinite_product_multipliable {v // v ∉ S} (fun v => (m₁ v.1 (hermScal (Fv F v.1) σ (algebraMap F (Fv F v.1) t)) (latV b v.1)).toReal)
+    have hB := _root_.GlobalTheory.CompanionTheory.SW.AbsTprod.abs_tprod {v // v ∉ S} (fun v => (m₁ v.1 (hermScal (Fv F v.1) σ (algebraMap F (Fv F v.1) t)) (latV b v.1)).toReal)
       (hsum₁.subtype _)
     have hcong : ∀ v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ _ hT') (latV b v.1)).toReal =
         (m' v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal * (m₁ v.1 (hermScal (Fv F v.1) σ (algebraMap F (Fv F v.1) t)) (latV b v.1)).toReal := fun v => by
@@ -463,11 +464,11 @@ theorem swMeas_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Typ
   induction n with
   | zero =>
     intro M J hJ _ _ T hT hd
-    exact GlobalTheory.T.siegel_weil_measure_rank_zero F E σ hσ M J hJ T hT hd
+    exact _root_.GlobalTheory.CompanionTheory.SW.ZeroTuple.swMeas_zero F E σ hσ M J hJ T hT hd
   | succ n ih =>
     intro M J hJ hn hR T hT hd
     by_cases hbig : n + 1 + 2 ≤ M
-    · exact GlobalTheory.T.siegel_weil_measure_of_rank_small_or_zero F E σ hσ (n + 1) M J hJ (Or.inr hbig) T hT hd
+    · exact _root_.GlobalTheory.CompanionTheory.SW.AllFrames.swMeas_all F E σ hσ (n + 1) M J hJ (Or.inr hbig) T hT hd
     have ha : IsAnisoH σ J := hR.resolve_left hbig
     have hM : n + 2 ≤ M := by omega
     obtain ⟨t, x, ht, hx⟩ := GlobalTheory.CompanionTheory.SW.HermRep.exists_repr F E σ hσ n T ⟨hT, hd⟩
@@ -480,7 +481,7 @@ theorem swMeas_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Typ
     have hd' : (blockOne (algebraMap F E t) T₁).det ≠ 0 := by
       rw [hdet]
       exact mul_ne_zero htE hT₁.2
-    refine GlobalTheory.T.siegel_weil_measure_of_congruent_target F E σ hσ M J hJ (n + 1) T hT hd g _ hT' hb ?_
+    refine _root_.GlobalTheory.CompanionTheory.SW.Scale.sw_scale F E σ hσ M J hJ (n + 1) T hT hd g _ hT' hb ?_
     by_cases hrep : ∃ y : Fin M → E, hE σ J y y = algebraMap F E t
     · obtain ⟨y, hy⟩ := hrep
       obtain ⟨M₁, rfl⟩ : ∃ M₁, M = M₁ + 1 := ⟨M - 1, by omega⟩
@@ -489,7 +490,7 @@ theorem swMeas_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Typ
       have ha' : IsAnisoH σ (blockOne (algebraMap F E t) J₁) := by
         rw [hb']
         exact isAnisoH_of_isometry σ J g' ha
-      refine GlobalTheory.T.siegel_weil_measure_of_congruent_form F E σ hσ (M₁ + 1) J hJ g' _ hb' (n + 1) _ hT' hd' ?_
+      refine _root_.GlobalTheory.CompanionTheory.SW.SWIsom.swMeas_of_isometry F E σ hσ (M₁ + 1) J hJ g' _ hb' (n + 1) _ hT' hd' ?_
       exact step_lt hE1 hE2 F E σ hσ M₁ J₁ hJ₁ t ht (Or.inr ha') n (by omega) T₁ hT₁.1 hT₁.2 hT'
         (ih M₁ J₁ hJ₁ (by omega) (Or.inr (isAnisoH_of_block σ _ J₁ ha')) T₁ hT₁.1 hT₁.2)
     · exact notRep_lt hE1 hE2 F E σ hσ M J hJ t ht (Or.inr ha) n hM T₁ hT₁.1 hT₁.2 hT'
@@ -524,15 +525,15 @@ def SiegelDensitiesLowA : Prop :=
 theorem siegelDensitiesLowA_of (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) (hB : SchwartzDensInf) :
     SiegelDensitiesLowA := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hn hR T hT hdet d b Φ Φinf Φf Φv hsch hpure hprod
-  have hfv : FinVol F E σ M J := GlobalTheory.T.unitary_group_finite_volume F E σ hCM M J hJ
+  have hfv : FinVol F E σ M J := _root_.GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM M J hJ
   refine ⟨hfv.1, fun μ hμ => ⟨(hfv.2 μ hμ).1, fun 𝓕 h𝓕 =>
     ⟨GlobalTheory.CompanionTheory.SW.CharEx.exists_isCharAF F, fun ψ hψ => ?_⟩⟩⟩
-  obtain ⟨⟨laminf, hli⟩, hlv⟩ := GlobalTheory.T.exists_standard_local_measures F
+  obtain ⟨⟨laminf, hli⟩, hlv⟩ := _root_.GlobalTheory.CompanionTheory.SW.StdEx.exists_std F
   choose lam hlam using hlv
-  obtain ⟨ci, c, hc1, hWi, hWv⟩ := GlobalTheory.T.exists_unit_scaling_selfdual_adelic_measures F E σ hCM M J hJ d b laminf lam hli hlam ψ hψ n
-  obtain ⟨ei, e, he1, hHi, hHv⟩ := GlobalTheory.T.exists_unit_scaling_selfdual_herm_measures F E σ hCM d b laminf lam hli hlam ψ hψ n
-  obtain ⟨hci0, hc0, -, -, hdiv, -⟩ := GlobalTheory.T.unit_product_closure_properties F ci ei c e hc1 he1
-  obtain ⟨hei0, he0, -⟩ := GlobalTheory.T.unit_product_closure_properties F ei ci e c he1 hc1
+  obtain ⟨ci, c, hc1, hWi, hWv⟩ := _root_.GlobalTheory.CompanionTheory.SW.SdTuples.sdW_coord F E σ hCM M J hJ d b laminf lam hli hlam ψ hψ n
+  obtain ⟨ei, e, he1, hHi, hHv⟩ := _root_.GlobalTheory.CompanionTheory.SW.sdHerm_eq_coord F E σ hCM d b laminf lam hli hlam ψ hψ n
+  obtain ⟨hci0, hc0, -, -, hdiv, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.UnitProdAlg.main F ci ei c e hc1 he1
+  obtain ⟨hei0, he0, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.UnitProdAlg.main F ei ci e c he1 hc1
   refine ⟨⟨_, (hWi _).2 rfl⟩, fun μinf hμinf => ⟨⟨_, (hHi _).2 rfl⟩, fun νinf hνinf =>
     ⟨⟨_, fun v => (hWv v _).2 rfl⟩, fun μv hμv => ⟨⟨_, fun v => (hHv v _).2 rfl⟩, fun νv hνv => ?_⟩⟩⟩⟩
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩
@@ -551,12 +552,12 @@ theorem siegelDensitiesLowA_of (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) (hB
             (fun S => (a / a') • ∫ X, φ X ∂(m S)) := by
     intro R _ _ _ _ _ hR l hl
     obtain ⟨i1, i2, i3, i4, -⟩ := id hR
-    obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b l hl
-    obtain ⟨m, hm⟩ := GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ R hR n _ _ (hW n M) (hH n)
-    refine ⟨m, hm, fun S => (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ R hR n _ _ m (hW n M) (hH n) hm S).1, ?_⟩
+    obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM R d b l hl
+    obtain ⟨m, hm⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM M J hJ R hR n _ _ (hW n M) (hH n)
+    refine ⟨m, hm, fun S => (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hCM M J hJ R hR n _ _ m (hW n M) (hH n) hm S).1, ?_⟩
     intro a a' ha ha' h1 h2 φ hφ hφc
-    have h3 := GlobalTheory.T.gram_fiber_measures_scaling F E σ hCM M J hJ R hR n _ _ m (hW n M) (hH n) hm a a' ha ha'
-    have h4 := (GlobalTheory.T.gram_fiber_integral_isContDensityOn F E σ hCM M J hJ R hR n _ _ _ h1 h2 h3 φ hφ hφc).1
+    have h3 := _root_.GlobalTheory.CompanionTheory.SW.Rescale.isGramFib_rescale F E σ hCM M J hJ R hR n _ _ m (hW n M) (hH n) hm a a' ha ha'
+    have h4 := (_root_.GlobalTheory.CompanionTheory.SW.GramDensity.isContDensityOn_gram F E σ hCM M J hJ R hR n _ _ _ h1 h2 h3 φ hφ hφc).1
     simpa only [integral_smul_nnreal_measure] using h4
   have keyi : ∃ m : HermR (Ainf F) σ n → Measure (Fin n → Fin M → Ainf F ⊗[F] E),
       IsGramFib (Ainf F) σ J n (coordW (Ainf F) b laminf n M) (coordHerm (Ainf F) σ b laminf n) m ∧
@@ -569,13 +570,13 @@ theorem siegelDensitiesLowA_of (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) (hB
           {S | IsUnit (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)).det} Φinf
           (fun S => (a / a') • ∫ X, Φinf X ∂(m S)) := by
     obtain ⟨i1, i2, i3, i4, -⟩ := id hLi
-    obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) d b laminf hli.1
-    obtain ⟨m, hm⟩ := GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Ainf F) hLi n _ _ (hW n M) (hH n)
+    obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM (Ainf F) d b laminf hli.1
+    obtain ⟨m, hm⟩ := _root_.GlobalTheory.CompanionTheory.SW.GramExist.exists_gramFib F E σ hCM M J hJ (Ainf F) hLi n _ _ (hW n M) (hH n)
     obtain ⟨hcI, -, hiI⟩ := hB F E σ hCM M J hJ n _ _ m (hW n M) (hH n) hm Φinf hsch
-    refine ⟨m, hm, fun S => (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ (Ainf F) hLi n _ _ m (hW n M) (hH n) hm S).1,
+    refine ⟨m, hm, fun S => (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hCM M J hJ (Ainf F) hLi n _ _ m (hW n M) (hH n) hm S).1,
       hcI, hiI, ?_⟩
     intro a a' ha ha' h1 h2
-    have h3 := GlobalTheory.T.gram_fiber_measures_scaling F E σ hCM M J hJ (Ainf F) hLi n _ _ m (hW n M) (hH n) hm a a' ha ha'
+    have h3 := _root_.GlobalTheory.CompanionTheory.SW.Rescale.isGramFib_rescale F E σ hCM M J hJ (Ainf F) hLi n _ _ m (hW n M) (hH n) hm a a' ha ha'
     have h4 := (hB F E σ hCM M J hJ n _ _ _ h1 h2 h3 Φinf hsch).2.1
     simpa only [integral_smul_nnreal_measure] using h4
   obtain ⟨minf, hmi, hfi, hcI, hiI, hdi⟩ := keyi
@@ -588,7 +589,7 @@ theorem siegelDensitiesLowA_of (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) (hB
   have hE := hSW d b laminf lam hli hlam μ 𝓕 hμ h𝓕 minf m hmi hm
   obtain ⟨hmeas, hint, hmul, hI⟩ := euler_int_integrable F E σ hCM d b n M _ _ _ hE (hfi _) (fun v => hf v _)
     Φ Φinf Φf Φv hcI (hiI _ (isUnit_det_hermOf (Ainf F) σ T hT hdet)) hpure hprod
-  have hθ := GlobalTheory.T.siegel_mean_value_integrable F E σ hCM M J hJ μ 𝓕 hμ h𝓕 n _ Φ hmeas hint
+  have hθ := _root_.GlobalTheory.CompanionTheory.SW.ThetaMean.mean_thetaS_eq_integral F E σ hCM M J hJ μ 𝓕 hμ h𝓕 n _ Φ hmeas hint
   obtain ⟨r1, r2⟩ := GlobalTheory.CompanionTheory.SW.TopDens.rescale_tprod (ci / ei) (fun v => c v / e v) hdiv.1 hdiv.2
     (∫ X, Φinf X ∂(minf (hermOf (Ainf F) σ T hT))) _ hmul
   refine ⟨fun S => (ci / ei) • ∫ X, Φinf X ∂(minf S), fun v S => (c v / e v) • ∫ X, Φv v X ∂(m v S),

@@ -48,6 +48,7 @@ import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Calculus.Deriv.Mul
 public import Mathlib.Analysis.Complex.RealDeriv
 public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormIteratedFDerivRemCompLe
 
 @[expose] public section
 
@@ -59,20 +60,7 @@ namespace GlobalTheory.LinPhaseSeminorm
 theorem iteratedDeriv_const_mul_cexp (a c : ℂ) (n : ℕ) :
     iteratedDeriv n (fun y : ℝ => c * Complex.exp (a * y)) =
       fun y : ℝ => c * a ^ n * Complex.exp (a * y) := by
-  induction n generalizing c with
-  | zero => funext y; simp
-  | succ n ih =>
-    rw [iteratedDeriv_succ']
-    have hd : deriv (fun y : ℝ => c * Complex.exp (a * y)) =
-        fun y : ℝ => (c * a) * Complex.exp (a * y) := by
-      funext y
-      have h1 : HasDerivAt (fun y : ℝ => (y : ℂ)) 1 y := by
-        simpa using (hasDerivAt_id y).ofReal_comp
-      have h : HasDerivAt (fun y : ℝ => c * Complex.exp (a * y))
-          (c * (Complex.exp (a * y) * (a * 1))) y :=
-        ((h1.const_mul a).cexp).const_mul c
-      rw [h.deriv]; ring
-    rw [hd, ih]; funext y; ring
+  exact GlobalTheory.CharFormDeriv.iteratedDeriv_const_mul_cexp a c n
 
 theorem norm_cexp_neg_two_pi_I_mul (r : ℝ) :
     ‖Complex.exp (-(2 * Real.pi * Complex.I) * (r : ℂ))‖ = 1 := by

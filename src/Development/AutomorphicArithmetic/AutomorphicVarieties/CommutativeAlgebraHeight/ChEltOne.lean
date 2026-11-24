@@ -185,7 +185,7 @@ private theorem chElt_one (S : Type) [CommRing S] [Algebra A S] {k : ℕ} (x : F
   induction w with
   | add a b ha hb => simp only [map_add (f := _), tmul_add, ha, hb]
   | tmul s y =>
-    simp [MvPolynomial.coeff_map, Algebra.ofId_apply, Algebra.algebraMap_eq_smul_one, smul_tmul]
+    simp [MvPolynomial.coeff_map, Algebra.algebraMap_eq_smul_one, smul_tmul]
 
 private theorem span_mul (S : Type) [CommRing S] [Algebra A S] (I : TwoSidedIdeal E) (w : S ⊗[A] E)
     (h : w ∈ Submodule.span S ((fun z : E => (1 : S) ⊗ₜ[A] z) '' (I : Set E))) (u : S ⊗[A] E) :

@@ -269,7 +269,7 @@ theorem sig_invol {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) 
 
 theorem sig_moves {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ x, σ x ≠ x := by
   by_contra hc
-  push_neg at hc
+  push Not at hc
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := ⟨(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom⟩
   have hr : NumberField.ComplexEmbedding.IsReal τ := by
     ext x

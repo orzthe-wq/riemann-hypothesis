@@ -48,6 +48,7 @@ import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ContinuousOfMemCcSmooth
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

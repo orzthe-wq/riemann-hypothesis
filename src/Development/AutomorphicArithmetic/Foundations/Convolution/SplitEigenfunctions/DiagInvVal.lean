@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.UnitaryActions.ContinuousAdelicGL2OfContinuousEntries
 
 @[expose] public section
 
@@ -141,12 +142,7 @@ private theorem cD_ratS {E : Type} [Field E] [NumberField E] (t : Eˣ)
   rw [M.val_ratS]
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [cD, cR, M.val_ratS, diag_inv_val, diag_val, UpperTheory.ConvolutionTheory.R2.rt, map_mul]
-
-private theorem cD_mem {E : Type} [Field E] [NumberField E] (t : Eˣ) {x : G1 E} (hx : x ∈ Gam E) :
-    cD (IdeleGroup.diagonal E t) x ∈ Gam E := by
-  obtain ⟨g, rfl⟩ := hx
-  exact ⟨cR t g, (cD_ratS t g).symm⟩
+    simp [cD, cR, M.val_ratS, diag_inv_val, UpperTheory.ConvolutionTheory.R2.rt, map_mul]
 
 private theorem conj_int {E : Type} [Field E] [NumberField E] (N : MeasE E) (u : G1 E → ℂ)
     (hu : ∀ γ g, u (ratS E γ * g) = u g) (t : Eˣ) :
@@ -162,8 +158,8 @@ private theorem conj_int {E : Type} [Field E] [NumberField E] (N : MeasE E) (u :
       continuous_toFun := M.continuous_cD T
       continuous_invFun := M.continuous_cD T⁻¹ }
   let eG : Gam E ≃ Gam E :=
-    { toFun := fun γ => ⟨cD T⁻¹ γ.1, by rw [hTi]; exact cD_mem t⁻¹ γ.2⟩
-      invFun := fun γ => ⟨cD T γ.1, cD_mem t γ.2⟩
+    { toFun := fun γ => ⟨cD T⁻¹ γ.1, by rw [hTi]; exact _root_.UpperTheory.ConvolutionTheory.R2.cD_diagonal_mem t⁻¹ γ.2⟩
+      invFun := fun γ => ⟨cD T γ.1, _root_.UpperTheory.ConvolutionTheory.R2.cD_diagonal_mem t γ.2⟩
       left_inv := fun γ => Subtype.ext (by
         show cD T (cD T⁻¹ γ.1) = γ.1
         rw [M.cD_cD, mul_inv_cancel, M.cD_one])
@@ -185,14 +181,11 @@ private theorem conj_int {E : Type} [Field E] [NumberField E] (N : MeasE E) (u :
   rw [hpre] at h1
   exact h1.trans (hD'.setIntegral_eq N.fund hinv)
 
-private theorem glRat {E : Type} [Field E] [NumberField E] (γ : Matrix.SpecialLinearGroup (Fin 2) E) :
-    gl (ratS E γ) = ratGL E 2 (Matrix.SpecialLinearGroup.toGL γ) := Units.ext rfl
-
 private theorem linv {E : Type} [Field E] [NumberField E] {Ψ : GL (Fin 2) (A E) → ℂ} (hΨ : LRat Ψ)
     (y : GL (Fin 2) (A E)) (γ : Matrix.SpecialLinearGroup (Fin 2) E) (g : G1 E) :
     Ψ (gl (ratS E γ * g) * y) = Ψ (gl g * y) := by
   have hm : gl (ratS E γ * g) = gl (ratS E γ) * gl g := map_mul _ _ _
-  rw [hm, glRat, mul_assoc]
+  rw [hm, _root_.UpperTheory.ConvolutionTheory.R2.gl_ratS, mul_assoc]
   exact hΨ _ _
 
 private def dR {E : Type} [Field E] (r : Eˣ) : GL (Fin 2) E :=
@@ -204,7 +197,7 @@ private theorem ratGL_dR {E : Type} [Field E] [NumberField E] (r : Eˣ) :
   refine Units.ext ?_
   show (dR r).val.map (algebraMap E (A E)) = (dM (IdeleGroup.diagonal E r)).val
   ext i j
-  fin_cases i <;> fin_cases j <;> simp [dR, dM, diag_val, UpperTheory.ConvolutionTheory.R2.rt]
+  fin_cases i <;> fin_cases j <;> simp [dR, dM]
 
 private theorem rat_decomp {E : Type} [Field E] [NumberField E] (γ : GL (Fin 2) E) :
     ∃ (r : Eˣ) (s : Matrix.SpecialLinearGroup (Fin 2) E),
@@ -220,7 +213,7 @@ private theorem rat_decomp {E : Type} [Field E] [NumberField E] (γ : GL (Fin 2)
     simpa [Matrix.GeneralLinearGroup.val_det_apply] using h1⟩
   have hs : Matrix.SpecialLinearGroup.toGL s = (dR r)⁻¹ * γ := Units.ext rfl
   refine ⟨r, s, ?_⟩
-  rw [glRat, hs, map_mul, ← ratGL_dR, ← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul]
+  rw [_root_.UpperTheory.ConvolutionTheory.R2.gl_ratS, hs, map_mul, ← ratGL_dR, ← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul]
 
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.invE :
     InvE := by

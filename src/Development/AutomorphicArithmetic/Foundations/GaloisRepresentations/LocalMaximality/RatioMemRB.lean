@@ -101,7 +101,7 @@ private lemma pair_prod {F : Type} [Field F] {d : ℕ} (x : Fin (d + 1) → Fˣ)
 
 private theorem key_lemma' {K : Type} [Field K] [Algebra ℂ K] (s t : K) (y z : DR ℂ K) :
     actZ K (s ⊗ₜ[ℂ] t) (y ⊗ₜ[ℂ] z) = (s • y) ⊗ₜ[ℂ] (t • z) := by
-  simp [actZ, Module.endTensorEndAlgHom, Module.endTensorEndAlgHom_apply]
+  simp [actZ, Module.endTensorEndAlgHom]
 
 private lemma key {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K]
     {d : ℕ} (x : Fin (d + 1) → Fˣ) (hc : IsFinCover ℂ K (xv x))
@@ -120,7 +120,7 @@ private lemma key {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ 
     have hy' : y ∈ omB ℂ K (rB ℂ K (xv x) {i, j}) (d - a) :=
       hmono (d - a) {j} {i, j} (Finset.singleton_nonempty j)
         (Finset.singleton_subset_iff.mpr (by simp)) hy
-    obtain ⟨N1, hN1⟩ := (GlobalTheory.T.kahlerFormsOverSubalgebra_standardOpen_iff_pow_smul ℂ F K d (xv x) hc {i, j} i (by simp) (d - a) y).mp hy'
+    obtain ⟨N1, hN1⟩ := (_root_.GlobalTheory.omB_iff_pow_smul ℂ F K d (xv x) hc {i, j} i (by simp) (d - a) y).mp hy'
     have hN1' : algebraMap F K ((x j : F) / x i) ^ N1 • y ∈ omB ℂ K (rB ℂ K (xv x) {i}) (d - a) := by
       rw [← pair_prod x i j]
       exact hN1

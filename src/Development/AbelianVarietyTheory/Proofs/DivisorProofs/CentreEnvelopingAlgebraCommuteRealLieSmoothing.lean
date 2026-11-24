@@ -1,24 +1,35 @@
 module
 
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.ContDiff.Defs
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.Analysis.Calculus.FDeriv.Mul
+public import Mathlib.Analysis.Calculus.ParametricIntegral
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfMemWeakIn
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FderivIntegralMulKernelApplyStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CapCommuteRtInfGL
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -42,8 +53,110 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrowthOfTame
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.FderivIntegralMulKernelApply, Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentreEnvelopingAlgebraCommuteRealLieSmoothing
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.FderivIntegralMulKernelApply =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.FderivIntegralMulKernelApply", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Calculus.ContDiff.Defs\npublic import Mathlib.Analysis.InnerProductSpace.Basic\npublic import Mathlib.MeasureTheory.Integral.Bochner.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Calculus.FDeriv.Mul\npublic import Mathlib.Analysis.Calculus.ParametricIntegral\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory Filter Topology Metric
+open scoped ContDiff
+
+namespace GlobalTheory
+
+theorem fderiv_integral_mul_kernel_apply :
+    ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V]
+      [BorelSpace V] (ν : Measure V) [ν.IsAddHaarMeasure] {U : Set V}, IsOpen U →
+      ∀ {α : V → ℂ}, Continuous α → HasCompactSupport α → tsupport α ⊆ U →
+      ∀ {K : V × V → ℂ}, ContDiffOn ℝ ∞ K (U ×ˢ U) → ∀ {x : V}, x ∈ U → ∀ v : V,
+      fderiv ℝ (fun x' => ∫ y, α y * K (x', y) ∂ν) x v =
+        ∫ y, α y * fderiv ℝ (fun x' => K (x', y)) x v ∂ν := by
+  intro V _ _ _ _ _ ν _ U hU α hα hαc hαU K hK x hx v
+  have hUU : IsOpen (U ×ˢ U) := hU.prod hU
+  have hα0 : ∀ y, y ∉ U → α y = 0 := fun y hy =>
+    image_eq_zero_of_notMem_tsupport (fun h => hy (hαU h))
+
+  have hKd : ∀ p ∈ U ×ˢ U, HasFDerivAt K (fderiv ℝ K p) p := fun p hp =>
+    ((hK.differentiableOn (by simp)) p hp).differentiableAt
+      (hUU.mem_nhds hp) |>.hasFDerivAt
+  have hKp : ∀ x' ∈ U, ∀ y ∈ U,
+      HasFDerivAt (fun x'' => K (x'', y)) ((fderiv ℝ K (x', y)).comp (ContinuousLinearMap.inl ℝ V V)) x' :=
+    fun x' hx' y hy => (hKd (x', y) ⟨hx', hy⟩).comp x' (hasFDerivAt_prodMk_left x' y)
+  have hcf : ContinuousOn (fderiv ℝ K) (U ×ˢ U) :=
+    hK.continuousOn_fderiv_of_isOpen hUU (by exact_mod_cast le_top)
+  obtain ⟨ε, εpos, hε⟩ := Metric.isOpen_iff.mp hU x hx
+  set r := ε / 2 with hr
+  have rpos : 0 < r := half_pos εpos
+  have hcb : closedBall x r ⊆ U := (closedBall_subset_ball (half_lt_self εpos)).trans hε
+  have hcomp : IsCompact (closedBall x r ×ˢ tsupport α) :=
+    (isCompact_closedBall x r).prod hαc
+  obtain ⟨C, hC⟩ := hcomp.exists_bound_of_continuousOn
+    (hcf.mono (Set.prod_mono hcb hαU))
+  set F' : V → V → V →L[ℝ] ℂ :=
+    fun x' y => α y • (fderiv ℝ K (x', y)).comp (ContinuousLinearMap.inl ℝ V V) with hF'
+  have hcontF : ∀ x' ∈ U, Continuous (fun y => α y * K (x', y)) := by
+    intro x' hx'
+    refine ContinuousOn.continuous_of_tsupport_subset ?_ hU
+      ((tsupport_mul_subset_left).trans hαU)
+    refine hα.continuousOn.mul ?_
+    exact hK.continuousOn.comp (Continuous.continuousOn (by fun_prop))
+      (fun y hy => ⟨hx', hy⟩)
+  have hcontF' : Continuous (F' x) := by
+    refine ContinuousOn.continuous_of_tsupport_subset ?_ hU
+      ((tsupport_smul_subset_left _ _).trans hαU)
+    refine hα.continuousOn.smul ?_
+    have h1 : ContinuousOn (fun y => fderiv ℝ K (x, y)) U :=
+      hcf.comp (Continuous.continuousOn (by fun_prop)) (fun y hy => ⟨hx, hy⟩)
+    exact h1.clm_comp continuousOn_const
+  have hbound : ∀ y, ∀ x' ∈ ball x r, ‖F' x' y‖ ≤ ‖α y‖ * C := by
+    intro y x' hx'
+    by_cases hy : y ∈ tsupport α
+    · rw [hF', norm_smul]
+      refine mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)
+      calc ‖(fderiv ℝ K (x', y)).comp (ContinuousLinearMap.inl ℝ V V)‖
+          ≤ ‖fderiv ℝ K (x', y)‖ * ‖ContinuousLinearMap.inl ℝ V V‖ :=
+            ContinuousLinearMap.opNorm_comp_le _ _
+        _ ≤ ‖fderiv ℝ K (x', y)‖ * 1 :=
+            mul_le_mul_of_nonneg_left (ContinuousLinearMap.norm_inl_le_one ℝ V V) (norm_nonneg _)
+        _ ≤ C := by rw [mul_one]; exact hC _ ⟨ball_subset_closedBall hx', hy⟩
+    · have : α y = 0 := image_eq_zero_of_notMem_tsupport hy
+      simp [hF', this]
+  have hαi : Integrable α ν := hα.integrable_of_hasCompactSupport hαc
+  have hF'i : Integrable (F' x) ν :=
+    Integrable.mono' (hαi.norm.mul_const C) hcontF'.aestronglyMeasurable
+      (Eventually.of_forall fun y => hbound y x (mem_ball_self rpos))
+  have hmain : HasFDerivAt (fun x' => ∫ y, α y * K (x', y) ∂ν) (∫ y, F' x y ∂ν) x := by
+    refine hasFDerivAt_integral_of_dominated_of_fderiv_le (s := ball x r) (bound := fun y => ‖α y‖ * C)
+      (ball_mem_nhds x rpos) ?_ ?_ hcontF'.aestronglyMeasurable
+      (Eventually.of_forall fun y => hbound y) (hαi.norm.mul_const C) ?_
+    · filter_upwards [hU.mem_nhds hx] with x' hx'
+      exact (hcontF x' hx').aestronglyMeasurable
+    · exact (hcontF x hx).integrable_of_hasCompactSupport (hαc.mul_right)
+    · refine Eventually.of_forall fun y x' hx' => ?_
+      by_cases hy : y ∈ U
+      · exact (hKp x' (hcb (ball_subset_closedBall hx')) y hy).const_mul (α y)
+      · have : α y = 0 := hα0 y hy
+        simp only [hF', this, zero_mul, zero_smul]
+        exact hasFDerivAt_const _ _
+  rw [hmain.fderiv, ContinuousLinearMap.integral_apply hF'i]
+  refine integral_congr_ae (Eventually.of_forall fun y => ?_)
+  by_cases hy : y ∈ U
+  · simp only [hF', ContinuousLinearMap.smul_apply, smul_eq_mul, (hKp x hx y hy).fderiv]
+  · simp [hF', hα0 y hy]
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.FderivIntegralMulKernelApply =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentreEnvelopingAlgebraCommuteRealLieSmoothing =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentreEnvelopingAlgebraCommuteRealLieSmoothing", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfMemWeakIn\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Calculus.ContDiff.Defs\npublic import Mathlib.Analysis.InnerProductSpace.Basic\npublic import Mathlib.MeasureTheory.Integral.Bochner.Basic\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FderivIntegralMulKernelApply\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CapCommuteRtInfGL\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrowthOfTame\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth MeasureTheory Filter Topology
@@ -77,7 +190,7 @@ theorem fderiv_integral_mul (ν : Measure V) [ν.IsAddHaarMeasure] (hU : IsOpen 
     (hα : IsTest U α) {K : V × V → ℂ} (hK : ContDiffOn ℝ ∞ K (U ×ˢ U)) {x : V} (hx : x ∈ U) (v : V) :
     fderiv ℝ (fun x' => ∫ y, α y * K (x', y) ∂ν) x v =
       ∫ y, α y * fderiv ℝ (fun x' => K (x', y)) x v ∂ν :=
-  GlobalTheory.T.fderiv_integral_mul_kernel_apply' ν hU hα.1.continuous hα.2.1 hα.2.2 hK hx v
+  _root_.GlobalTheory.fderiv_integral_mul_kernel_apply ν hU hα.1.continuous hα.2.1 hα.2.2 hK hx v
 
 end Analytic
 
@@ -213,7 +326,7 @@ theorem exists_good {D : Module.End ℂ (Sm E a)} (hD : D ∈ Algebra.adjoin ℂ
   | mul x y _ _ hx hy =>
     obtain ⟨D1, g1, c1⟩ := hx
     obtain ⟨D2, g2, c2⟩ := hy
-    exact ⟨D1 * D2, good_mul ν g1 g2, fun g φ => by simp [Module.End.mul_apply, c1, c2]⟩
+    exact ⟨D1 * D2, good_mul ν g1 g2, fun g φ => by simp [c1, c2]⟩
 
 theorem Eop_mem (τ : E →+* ℂ) (i j : Fin a) : Eop (a := a) τ i j ∈ Algebra.adjoin ℂ (Set.range (lie E a)) := by
   unfold Eop
@@ -365,3 +478,7 @@ theorem zalg_smoothing : ∀ (E : Type) [Field E] [NumberField E] [_root_.Number
     rw [Module.End.mul_apply, e, hx _ h', Module.End.mul_apply]
 
 end GlobalTheory.CentreSmooth
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentreEnvelopingAlgebraCommuteRealLieSmoothing =====

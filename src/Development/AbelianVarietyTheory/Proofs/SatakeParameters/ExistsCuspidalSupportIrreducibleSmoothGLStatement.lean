@@ -53,4 +53,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 theorem _root_.GlobalTheory.T.exists_cuspidalSupport_irreducibleSmoothGL : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (π : Irr k n), ∃ (s : ℕ) (d : Fin s → ℕ) (σ : ∀ a, Irr k (d a)), GlobalTheory.SmGL.IsCuspSupport π.π d (fun a => (σ a).π) := by
-  first | exact @GlobalTheory.CuspSupportExist.main | exact GlobalTheory.CuspSupportExist.main | (intros; apply GlobalTheory.CuspSupportExist.main <;> assumption)
+  first | exact @GlobalTheory.CuspSupportExist.main

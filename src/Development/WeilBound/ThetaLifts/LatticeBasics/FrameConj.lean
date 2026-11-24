@@ -2,7 +2,7 @@ module
 
 public import Development.WeilBound.ThetaLifts.LatticeBasics.HypothesesE
 public import Development.WeilBound.ThetaLifts.LatticeBasics.FrameA
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntAddConjEqOneOfBaseGood
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.ExistsIntAddConjEqOneOfBaseGood
 public import Development.WeilBound.ThetaLifts.LatticeBasics.FrameB
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -298,7 +298,7 @@ theorem frameConj : FrameConj := by
     rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]; simp
   choose gw hw using fun w => Frame.exists_arch c1 (c2 w).1 (Frame.isUnit_of_cartan (c2 w).2) (c2 w).2
   obtain ⟨a, g, ha, hg, hg'⟩ := exists_ad hB hY hJ gw
-  obtain ⟨t, ht⟩ := GlobalTheory.exists_int_add_conj_eq_one_of_base_good B hB
+  obtain ⟨t, ht⟩ := Tw.exists_int_add_conj_eq_one_of_base_good B hB
   let ι := inclR (F := F) (E := E) (AF F)
   let cc : AE F E →+* AE F E := cA σ
   have hι : ∀ z, ι (σ z) = cc (ι z) := fun z => rfl

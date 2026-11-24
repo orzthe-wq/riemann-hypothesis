@@ -72,8 +72,7 @@ def sub (k r : ℕ) (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
 
 lemma inB_bl (a : Fin k) : InB k r (bl k r a) := by
   have := a.isLt
-  show r ≤ (bl k r a).val ∧ (bl k r a).val < r + k
-  show r ≤ r + a.val ∧ r + a.val < r + k
+  change r ≤ r + a.val ∧ r + a.val < r + k
   omega
 
 lemma blockIndex_injective : Function.Injective (bl k r) := by
@@ -94,9 +93,7 @@ lemma block_mk {i : Fin (2 * r + k + 1)} (hi : InB k r i) (p : i.val - r < k) : 
   omega
 
 lemma ne_of_inB {i j : Fin (2 * r + k + 1)} (hi : InB k r i) (hj : ¬ InB k r j) : i ≠ j := by
-  intro h
-  subst h
-  exact hj hi
+  exact fun h => hj (h ▸ hi)
 
 lemma blockW_in (h : Matrix (Fin k) (Fin k) ℂ) {i j : Fin (2 * r + k + 1)} (hi : InB k r i)
     (hj : InB k r j) :
@@ -219,42 +216,25 @@ lemma piI_out {i : Fin (2 * r + k + 1)} (hi : ¬ InB k r i) : ¬ InB k r (piI k 
   · show ¬ (r ≤ 2 * r + k - i.val ∧ 2 * r + k - i.val < r + k)
     omega
 
-private lemma Hpk_apply_wp_eq_ite (i l : Fin (2 * r + k + 1)) :
-    Hpk k r i l = if l = piI k r i then epsI k r i else 0 := by
-  have hi := i.isLt
-  have hl := l.isLt
-  simp only [Hpk, piI, epsI, Fin.ext_iff]
-  split_ifs <;> (try dsimp only at *) <;> first | rfl | (exfalso; omega) | norm_num
-
 private lemma Hpk_apply_eq_ite_piI (l j : Fin (2 * r + k + 1)) :
     Hpk k r l j = if l = piI k r j then epsI k r j else 0 := by
   have hj := j.isLt
   have hl := l.isLt
   simp only [Hpk, piI, epsI, Fin.ext_iff]
-  split_ifs <;> (try dsimp only at *) <;> first | rfl | (exfalso; omega) | norm_num
+  split_ifs <;> (try dsimp only at *) <;> first | rfl | (exfalso; omega)
 
 private lemma mul_Hpk_apply_highest_weight_uniqueness (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (i j : Fin (2 * r + k + 1)) : (M * Hpk k r) i j = M i (piI k r j) * epsI k r j := by
   rw [Matrix.mul_apply, Finset.sum_eq_single (piI k r j)]
-  · rw [Hpk_apply_eq_ite_piI, if_pos rfl]
+  · simp [Hpk_apply_eq_ite_piI]
   · intro l _ hl
-    rw [Hpk_apply_eq_ite_piI, if_neg hl, mul_zero]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
-
-private lemma Hpk_mul_applyHighestWeightUniqueness (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
-    (i j : Fin (2 * r + k + 1)) : (Hpk k r * M) i j = epsI k r i * M (piI k r i) j := by
-  rw [Matrix.mul_apply, Finset.sum_eq_single (piI k r i)]
-  · rw [Hpk_apply_wp_eq_ite, if_pos rfl]
-  · intro l _ hl
-    rw [Hpk_apply_wp_eq_ite, if_neg hl, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+    simp [Hpk_apply_eq_ite_piI, hl]
+  · simp
 
 lemma Hpk_blockW_comm (a : Matrix (Fin k) (Fin k) ℂ) :
     Hpk k r * blockW k r a = blockW k r a * Hpk k r := by
   ext i j
-  rw [Hpk_mul_applyHighestWeightUniqueness, mul_Hpk_apply_highest_weight_uniqueness]
+  rw [_root_.PI.HwUniqW.Hpk_mul_apply, mul_Hpk_apply_highest_weight_uniqueness]
   by_cases hi : InB k r i
   · rw [piI_in hi, epsI_in hi, one_mul]
     by_cases hj : InB k r j
@@ -272,8 +252,7 @@ lemma Jm_allPos : Jm (allPos k) = 1 := by
 
 lemma mem_UJset_allPos {h : Matrix (Fin k) (Fin k) ℂ} : h ∈ UJset (allPos k) ↔ hᴴ * h = 1 := by
   show inUJ (allPos k) h ↔ hᴴ * h = 1
-  unfold inUJ
-  rw [Jm_allPos, mul_one]
+  simp [inUJ, Jm_allPos]
 
 lemma unitary_of_blockW_mem {h : Matrix (Fin k) (Fin k) ℂ} (hm : blockW k r h ∈ UH (Hpk k r)) :
     hᴴ * h = 1 := by
@@ -281,13 +260,9 @@ lemma unitary_of_blockW_mem {h : Matrix (Fin k) (Fin k) ℂ} (hm : blockW k r h 
   rw [mul_assoc, Hpk_blockW_comm, ← mul_assoc, blockW_conjTranspose, blockW_mul] at h0
   ext a b
   have e := congrFun (congrFun h0 (bl k r a)) (bl k r b)
-  rw [mul_Hpk_apply_highest_weight_uniqueness, Hpk_apply_wp_eq_ite, piI_in (inB_bl b), epsI_in (inB_bl b), mul_one, blockW_bl,
+  rw [mul_Hpk_apply_highest_weight_uniqueness, _root_.PI.HwUniqW.Hpk_apply, piI_in (inB_bl b), epsI_in (inB_bl b), mul_one, blockW_bl,
     piI_in (inB_bl a), epsI_in (inB_bl a)] at e
-  rw [e, Matrix.one_apply]
-  by_cases hab : a = b
-  · subst hab
-    simp
-  · rw [if_neg hab, if_neg (fun e' => hab (blockIndex_injective e').symm)]
+  simpa [Matrix.one_apply, blockIndex_injective.eq_iff, eq_comm] using e
 
 lemma mulVec_bvec_apply (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j) :
     (g *ᵥ bvec j) i = g i j := by
@@ -325,15 +300,7 @@ lemma fix_col {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hm :
           omega
         rw [e]
         exact (h1 _).2
-  have e := congrFun hcol i
-  rw [mulVec_bvec_apply, bvec_apply] at e
-  exact e
-
-private lemma piI_piI_highest_weight_uniqueness (i : Fin (2 * r + k + 1)) : piI k r (piI k r i) = i := by
-  have hi := i.isLt
-  apply Fin.ext
-  simp only [piI]
-  split_ifs <;> (try dsimp only at *) <;> omega
+  simpa [mulVec_bvec_apply, bvec_apply] using congrFun hcol i
 
 lemma fix_row {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU : m ∈ UH (Hpk k r))
     (hm : FixEW k r m) (i j : Fin (2 * r + k + 1)) (hi : ¬ InB k r i) (hj : InB k r j) : m i j = 0 := by
@@ -341,8 +308,8 @@ lemma fix_row {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU :
   have hpo : ¬ InB k r (piI k r i) := piI_out hi
   have e := congrFun (congrFun hU' (piI k r i)) j
   rw [mul_assoc, Matrix.mul_apply, Finset.sum_eq_single (piI k r i)] at e
-  · rw [Matrix.conjTranspose_apply, fix_col hm _ hpo, if_pos rfl, star_one, one_mul, Hpk_mul_applyHighestWeightUniqueness,
-      Hpk_apply_wp_eq_ite, piI_piI_highest_weight_uniqueness, if_neg (ne_of_inB hj hi)] at e
+  · rw [Matrix.conjTranspose_apply, fix_col hm _ hpo, if_pos rfl, star_one, one_mul, _root_.PI.HwUniqW.Hpk_mul_apply,
+      _root_.PI.HwUniqW.Hpk_apply, _root_.PI.HwUniqW.piI_piI, if_neg (ne_of_inB hj hi)] at e
     have hne : epsI k r (piI k r i) ≠ 0 := by
       unfold epsI
       split_ifs <;> norm_num

@@ -1,19 +1,19 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.InterPolyProdSum
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernDensityFrameIndepChartJacobianFactorStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicInvertibleFrameCoordinates
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GluedChartDensityMeasureAddOfCompatibleOnStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasChernIntegralOfEqMul
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableChernPolyTopDensityStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernDensityFrameIndepChartJacobianFactor
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ChartMeasApplyOfSubset
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GluedChartDensityMeasureAddOfCompatibleOn
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -21,6 +21,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -28,7 +29,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -41,7 +41,117 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicInvertibleFrameCoordinates
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasChernIntegralOfEqMul
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableChernPolyTopDensity, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasChernIntegralLinearOfDensityEqSum
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableChernPolyTopDensity =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableChernPolyTopDensity", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.InterPolyProdSum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+noncomputable section
+
+open MvPolynomial GlobalTheory GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric
+open ReciprocityTheory.L2DbarEstimates (V)
+
+namespace GlobalTheory.ChernMeas
+
+def measPoly (X σ : Type) [MeasurableSpace X] : Subalgebra ℝ (X → MvPolynomial σ ℂ) where
+  carrier := {f | ∀ d, Measurable fun x => AddMonoidAlgebra.coeff (f x) d}
+  mul_mem' := by
+    classical
+    intro f g hf hg d
+    simp only [Pi.mul_apply, coeff_mul]
+    exact Finset.measurable_sum _ fun p _ => (hf p.1).mul (hg p.2)
+  add_mem' := by
+    intro f g hf hg d
+    simp only [Pi.add_apply, MvPolynomial.coeff_add]
+    exact (hf d).add (hg d)
+  algebraMap_mem' := by
+    intro c d
+    exact measurable_const (a := AddMonoidAlgebra.coeff (algebraMap ℝ (MvPolynomial σ ℂ) c) d)
+
+theorem C_mem {X σ : Type} [MeasurableSpace X] {f : X → ℂ} (hf : Measurable f) :
+    (fun x => (C (f x) : MvPolynomial σ ℂ)) ∈ measPoly X σ := by
+  classical
+  intro d
+  simp only [coeff_C]
+  split_ifs
+  · exact hf
+  · exact measurable_const
+
+theorem const_mem {X σ : Type} [MeasurableSpace X] (p : MvPolynomial σ ℂ) :
+    (fun _ : X => p) ∈ measPoly X σ := fun _ => measurable_const
+
+def evalAt {X σ : Type} [MeasurableSpace X] (x : X) : measPoly X σ →ₐ[ℝ] MvPolynomial σ ℂ :=
+  (Pi.evalAlgHom ℝ (fun _ : X => MvPolynomial σ ℂ) x).comp (measPoly X σ).val
+
+theorem charpolyRev_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {r : Type} [Fintype r] [DecidableEq r]
+    (M : Matrix r r A) : (M.map f).charpolyRev = M.charpolyRev.map f := by
+  unfold Matrix.charpolyRev
+  rw [← Polynomial.coe_mapRingHom, RingHom.map_det]
+  congr 1
+  ext i j : 2
+  by_cases h : i = j <;> simp [h]
+
+theorem measurable_curv {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (ξ η : V n) (i j : r) :
+    Measurable fun v => curv G v ξ η i j := by
+  let f : V n → ℂ := fun x => conn G x ξ i j
+  change Measurable fun v => -((1 / 2 : ℂ) * (fderiv ℝ f v η + Complex.I * fderiv ℝ f v (Complex.I • η)))
+  exact (((measurable_fderiv_apply_const ℝ f η).add
+    ((measurable_fderiv_apply_const ℝ f (Complex.I • η)).const_mul _)).const_mul _).neg
+
+theorem curvPoly_mem {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (i j : r) :
+    (fun v => curvPoly G v i j) ∈ measPoly (V n) (Fin n × Fin n) := by
+  have e : (fun v => curvPoly G v i j) = ∑ a, ∑ b, (fun v => (C (curv G v (coordVec a) (coordVec b) i j) :
+      MvPolynomial (Fin n × Fin n) ℂ)) * fun _ => X (a, b) := by
+    funext v
+    simp [curvPoly, Finset.sum_apply]
+  rw [e]
+  exact Subalgebra.sum_mem _ fun a _ => Subalgebra.sum_mem _ fun b _ =>
+    Subalgebra.mul_mem _ (C_mem (measurable_curv G _ _ i j)) (const_mem _)
+
+theorem chernPoly_mem {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (G : V n → Matrix r r ℂ) (k : ℕ) :
+    (fun v => chernPoly G v k) ∈ measPoly (V n) (Fin n × Fin n) := by
+  let M : Matrix r r (measPoly (V n) (Fin n × Fin n)) := Matrix.of fun i j => ⟨_, curvPoly_mem G i j⟩
+  have e : (fun v => chernPoly G v k) = ((Matrix.charpolyRev (-M)).coeff k).1 := by
+    funext v
+    have h : -curvPoly G v = (-M).map (evalAt v).toRingHom := by
+      ext i j : 2
+      rfl
+    rw [chernPoly, h, charpolyRev_map, Polynomial.coeff_map]
+    rfl
+  rw [e]
+  exact Subtype.property _
+
+theorem measurable_chernTop {n : ℕ} {ι : Type} {m : ι → ℕ} (R : MvPolynomial (ι × ℕ) ℝ) (G : V n → Mat m ℂ) :
+    Measurable (fun v => chernTop R G v) := by
+  let P : measPoly (V n) (Fin n × Fin n) :=
+    aeval (fun x : ι × ℕ => (⟨_, chernPoly_mem (fun u => G u x.1) x.2⟩ : measPoly (V n) (Fin n × Fin n))) R
+  have e (v : V n) : aeval (fun x : ι × ℕ => chernPoly (fun u => G u x.1) v x.2) R = P.1 v := by
+    change _ = evalAt v P
+    rw [← AlgHom.comp_apply, comp_aeval]
+    rfl
+  simp only [chernTop, e, topCoeff]
+  refine Measurable.const_mul (Complex.measurable_re.comp ?_) _
+  exact Finset.measurable_sum _ fun w _ => (P.2 _).const_mul _
+
+end GlobalTheory.ChernMeas
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableChernPolyTopDensity =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasChernIntegralLinearOfDensityEqSum =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasChernIntegralLinearOfDensityEqSum", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.InterPolyProdSum\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChernDensityFrameIndepChartJacobianFactor\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.ChartMeasApplyOfSubset\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GluedChartDensityMeasureAddOfCompatibleOn\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableChernPolyTopDensity\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHolomorphicInvertibleFrameCoordinates\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasChernIntegralOfEqMul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry MvPolynomial GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.FlagBundle GlobalTheory.HermFrame GlobalTheory.GoodMetric
@@ -146,7 +256,7 @@ theorem glueMeas_sum {J : Type} (hd : ∀ i j, DifferentiableOn ℂ (e j ∘ (e 
   | insert a s ha ih =>
     simp only [Finset.sum_insert ha]
     rw [← ih]
-    exact GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS (ρ a) (fun i y => ∑ j ∈ s, ρ j i y) (hc a) (compat_sum s hc) (hm a)
+    exact _root_.GlobalTheory.ChartGlue.glueMeas_add_of_compat_on e hd hcov hS (ρ a) (fun i y => ∑ j ∈ s, ρ j i y) (hc a) (compat_sum s hc) (hm a)
 
 end Glue
 
@@ -177,11 +287,11 @@ theorem aemeasurable_dens (E : Fr (ratOf X) m 0) (O : X.X.Opens) (H : Mat m X.Fn
   haveI := hTc.to_subtype
   rw [hUT, aemeasurable_iUnion_iff]
   rintro ⟨A, -⟩
-  refine ((GlobalTheory.T.measurable_chernPolyTopDensity R fun w => H A (c.e.symm w)).aemeasurable).congr ?_
+  refine ((_root_.GlobalTheory.ChernMeas.measurable_chernTop R fun w => H A (c.e.symm w)).aemeasurable).congr ?_
   refine (ae_restrict_mem (hWo A).measurableSet).mono fun v hv => ?_
   obtain ⟨⟨hvt, hvS⟩, hvA⟩ := hv
   have hy : c.e.symm v ∈ c.e.source := c.e.map_target hvt
-  have := GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor E O H hH R hvS c c hy hy (E.nonempty (under (c.e.symm v))).choose_spec hvA
+  have := _root_.GlobalTheory.GoodMetric.chernTop_frame_chart_trans E O H hH R hvS c c hy hy (E.nonempty (under (c.e.symm v))).choose_spec hvA
   rw [c.transDet_self hy, norm_one, one_pow, one_mul, c.e.right_inv hvt] at this
   show chernTop R (fun w => H A (c.e.symm w)) v = chernTop R (fun w => H (E.nonempty (under (c.e.symm v))).choose (c.e.symm w)) (c.e (c.e.symm v))
   rw [c.e.right_inv hvt, this]
@@ -274,10 +384,10 @@ theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Fie
     chernTop R' (fun v => H' j ((E' j).nonempty (under y)).choose (c.e.symm v)) (c.e y)
   have fc : ∀ i k y, y ∈ S → y ∈ (e i).source → y ∈ (e k).source →
       f i y = ‖transDet (e i) (e k) y‖ ^ 2 * f k y := fun i k y hy hi hk =>
-    GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor E O H hH R hy i k hi hk (E.nonempty _).choose_spec (E.nonempty _).choose_spec
+    _root_.GlobalTheory.GoodMetric.chernTop_frame_chart_trans E O H hH R hy i k hi hk (E.nonempty _).choose_spec (E.nonempty _).choose_spec
   have gc : ∀ j, ∀ i k y, y ∈ S → y ∈ (e i).source → y ∈ (e k).source →
       g j i y = ‖transDet (e i) (e k) y‖ ^ 2 * g j k y := fun j i k y hy hi hk =>
-    GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor (E' j) O (H' j) (hH' j) R' hy i k hi hk ((E' j).nonempty _).choose_spec
+    _root_.GlobalTheory.GoodMetric.chernTop_frame_chart_trans (E' j) O (H' j) (hH' j) R' hy i k hi hk ((E' j).nonempty _).choose_spec
       ((E' j).nonempty _).choose_spec
   have fm : ∀ i, AEMeasurable (fun v => f i ((e i).symm v)) (volume.restrict ((e i).target ∩ (e i).symm ⁻¹' S)) :=
     fun i => aemeasurable_dens E O H hH R i
@@ -287,12 +397,12 @@ theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Fie
   have hfg : ∀ i, ∀ y ∈ (e i).source, y ∈ S → f i y = ∑ j, a j * g j i y := by
     intro c y hc hy
     obtain ⟨A, hA, B, hB, h⟩ := hlin y hy c hc
-    have h1 := GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor E O H hH R hy c c hc hc (E.nonempty (under y)).choose_spec hA
+    have h1 := _root_.GlobalTheory.GoodMetric.chernTop_frame_chart_trans E O H hH R hy c c hc hc (E.nonempty (under y)).choose_spec hA
     rw [c.transDet_self hc, norm_one, one_pow, one_mul] at h1
     show chernTop R _ (c.e y) = _
     rw [h1, h]
     refine Finset.sum_congr rfl fun j _ => ?_
-    have h2 := GlobalTheory.T.chern_density_frame_indep_chart_jacobian_factor (E' j) O (H' j) (hH' j) R' hy c c hc hc ((E' j).nonempty (under y)).choose_spec (hB j)
+    have h2 := _root_.GlobalTheory.GoodMetric.chernTop_frame_chart_trans (E' j) O (H' j) (hH' j) R' hy c c hc hc ((E' j).nonempty (under y)).choose_spec (hB j)
     rw [c.transDet_self hc, norm_one, one_pow, one_mul] at h2
     show _ = a j * chernTop R' _ (c.e y)
     rw [h2]
@@ -320,7 +430,7 @@ theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Fie
         (fun j => ((cg j 1).add (cg j (-1))).const_mul _) (fun j => ((mg j 1).add (mg j (-1))).const_mul _)]
       refine ENNReal.sum_ne_top.2 fun j _ => ?_
       rw [glueMeas_const_mul e hS _ ENNReal.ofReal_ne_top,
-        GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS (pg j 1) (pg j (-1)) (cg j 1) (cg j (-1)) (mg j 1)]
+        _root_.GlobalTheory.ChartGlue.glueMeas_add_of_compat_on e hd hcov hS (pg j 1) (pg j (-1)) (cg j 1) (cg j (-1)) (mg j 1)]
       exact ENNReal.mul_ne_top ENNReal.ofReal_ne_top
         (ENNReal.add_ne_top.2 ⟨hQ j 1 (Or.inl rfl), hQ j (-1) (Or.inr rfl)⟩)
     · show ENNReal.ofReal (s * f i y) ≤ _
@@ -335,13 +445,13 @@ theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Fie
   have hT : ∀ j (u w : ℝ), glueMeas e (fun i y => ENNReal.ofReal u * pg j 1 i y + ENNReal.ofReal w * pg j (-1) i y) S =
       ENNReal.ofReal u * glueMeas e (pg j 1) S + ENNReal.ofReal w * glueMeas e (pg j (-1)) S := by
     intro j u w
-    rw [GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS _ _ ((cg j 1).const_mul _) ((cg j (-1)).const_mul _) ((mg j 1).const_mul _),
+    rw [_root_.GlobalTheory.ChartGlue.glueMeas_add_of_compat_on e hd hcov hS _ _ ((cg j 1).const_mul _) ((cg j (-1)).const_mul _) ((mg j 1).const_mul _),
       glueMeas_const_mul e hS _ ENNReal.ofReal_ne_top, glueMeas_const_mul e hS _ ENNReal.ofReal_ne_top]
   have hside : ∀ (s : ℝ) (u w : J → ℝ), glueMeas e (fun i y => pf s i y + ∑ j, (ENNReal.ofReal (u j) * pg j 1 i y +
       ENNReal.ofReal (w j) * pg j (-1) i y)) S = glueMeas e (pf s) S + ∑ j, (ENNReal.ofReal (u j) *
       glueMeas e (pg j 1) S + ENNReal.ofReal (w j) * glueMeas e (pg j (-1)) S) := by
     intro s u w
-    rw [GlobalTheory.T.gluedChartDensityMeasure_add_of_compatible_on e hd hcov hS _ _ (cf s) (compat_sum _ fun j => ((cg j 1).const_mul _).add ((cg j (-1)).const_mul _))
+    rw [_root_.GlobalTheory.ChartGlue.glueMeas_add_of_compat_on e hd hcov hS _ _ (cf s) (compat_sum _ fun j => ((cg j 1).const_mul _).add ((cg j (-1)).const_mul _))
       (mf s), glueMeas_sum e hd hcov hS Finset.univ (fun j i y => ENNReal.ofReal (u j) * pg j 1 i y +
         ENNReal.ofReal (w j) * pg j (-1) i y) (fun j => ((cg j 1).const_mul _).add ((cg j (-1)).const_mul _))
         (fun j => ((mg j 1).const_mul _).add ((mg j (-1)).const_mul _))]
@@ -367,8 +477,7 @@ theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Fie
     ENNReal.toReal_sum fun j _ => ENNReal.add_ne_top.2
       ⟨ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hq1 j), ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hq2 j)⟩] at hr
   simp only [ENNReal.toReal_add (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hq1 _))
-      (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hq2 _)), ENNReal.toReal_mul,
-    ENNReal.toReal_ofReal (le_max_right _ _)] at hr
+      (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hq2 _)), ENNReal.toReal_mul] at hr
   have hap : ∀ j, (ENNReal.ofReal (ap j)).toReal = ap j := fun j => ENNReal.toReal_ofReal (le_max_right _ _)
   have han : ∀ j, (ENNReal.ofReal (an j)).toReal = an j := fun j => ENNReal.toReal_ofReal (le_max_right _ _)
   simp only [hap, han] at hr
@@ -386,3 +495,7 @@ theorem GlobalTheory.GoodMetric.hasChernIntegral_of_eq_sum : ∀ (F : Type) [Fie
     have ha : ap j - an j = a j := max_sub_max_neg (a j)
     linear_combination ((glueMeas e (pg j 1) S).toReal - (glueMeas e (pg j (-1)) S).toReal) * ha
   linarith
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasChernIntegralLinearOfDensityEqSum =====

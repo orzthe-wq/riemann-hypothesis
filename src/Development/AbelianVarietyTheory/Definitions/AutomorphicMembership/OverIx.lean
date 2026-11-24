@@ -44,10 +44,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-abbrev GeoP : Type 1 := ∀ D : D7, Formalism.L2.Pj.Core D → DivX D → Prop
-
-def anyGeometry : GeoP := fun _ _ _ => True
-
 section Reading
 
 open Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links
@@ -71,12 +67,11 @@ end Reading
 
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
 
-structure OAt (Γ : GeoP) {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0)
+structure OAt {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0)
     (X : DivX (w.D Z)) : Type 1 where
-  geo : Γ (w.st Z).toD7 t.r.z.core.toCore X
   lam : LamAre t.r.Z X
 
-def OX (Γ : GeoP) : OComponent₂ := fun _ _ _ _ _ _ _ O t => OAt Γ t O.X
+def OX : OComponent₂ := fun _ _ _ _ _ _ _ O t => OAt t O.X
 
 end GlobalTheory.Mem.Top.Bl
 

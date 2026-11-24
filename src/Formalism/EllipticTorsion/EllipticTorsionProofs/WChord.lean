@@ -196,9 +196,6 @@ lemma chord_field (a1 a2 a3 a4 a6 z1 z2 z3 v1 v2 v3 l n f u D : F)
     rw [hxd, hyd]
     first
       | rw [div_div_div_cancel_right₀ (mul_ne_zero h1 h2), mul_div_mul_right _ _ hz']
-      | (field_simp; done)
-      | (field_simp
-         ring)
   have hG : n ^ 2 * (z3 * (l * z1 + n) * (l * z2 + n) + z1 * (l * z2 + n) * (l * z3 + n) + z2 * (l * z1 + n) * (l * z3 + n)) - (l ^ 2 + a1 * l * n - a2 * n ^ 2) * ((l * z1 + n) * (l * z2 + n) * (l * z3 + n)) = 0 := by
     have hc : (1 + a2 * l + a4 * l ^ 2 + a6 * l ^ 3) * (n ^ 2 * (z3 * (l * z1 + n) * (l * z2 + n) + z1 * (l * z2 + n) * (l * z3 + n) + z2 * (l * z1 + n) * (l * z3 + n)) - (l ^ 2 + a1 * l * n - a2 * n ^ 2) * ((l * z1 + n) * (l * z2 + n) * (l * z3 + n))) = 0 := by
       linear_combination (n ^ 2 * (n ^ 2 - (l ^ 2 + a1 * l * n - a2 * n ^ 2) * l)) * he1 + (l * n * (2 * n ^ 2 - (l ^ 2 + a1 * l * n - a2 * n ^ 2) * l)) * he2 + (l ^ 2 * (3 * n ^ 2 - (l ^ 2 + a1 * l * n - a2 * n ^ 2) * l)) * he3
@@ -217,9 +214,6 @@ lemma chord_field (a1 a2 a3 a4 a6 z1 z2 z3 v1 v2 v3 l n f u D : F)
     rw [hf', hu']
     first
       | exact div_div_div_cancel_right₀ hD0 _ _
-      | (field_simp; done)
-      | (field_simp
-         ring)
   refine ⟨?_, ?_⟩
   · rw [hl, hx3]
     exact hsum
@@ -340,13 +334,13 @@ lemma eq_single_iff (e : Fin 2 →₀ ℕ) :
     (e = Finsupp.single 1 (e 1) ↔ e 0 = 0) ∧ (e = Finsupp.single 0 (e 0) ↔ e 1 = 0) := by
   refine ⟨⟨fun h => ?_, fun h => ?_⟩, ⟨fun h => ?_, fun h => ?_⟩⟩
   · rw [h]
-    simp [Finsupp.single_apply]
+    simp
   · ext j
-    fin_cases j <;> simp [h, Finsupp.single_apply]
+    fin_cases j <;> simp [h]
   · rw [h]
-    simp [Finsupp.single_apply]
+    simp
   · ext j
-    fin_cases j <;> simp [h, Finsupp.single_apply]
+    fin_cases j <;> simp [h]
 
 def lam (w : PowerSeries K) : MvPowerSeries (Fin 2) K := fun e => coeff (e 0 + e 1 + 1) w
 
@@ -392,18 +386,6 @@ private theorem single_one_le_iff_ne_zero (j : Fin 2) (e : Fin 2 →₀ ℕ) : F
   first
     | (rw [Finsupp.single_le_iff]
        exact Nat.one_le_iff_ne_zero)
-    | (rw [Finsupp.le_def]
-       constructor
-       · intro h
-         have := h j
-         simp at this
-         omega
-       · intro h k
-         by_cases hk : j = k
-         · subst hk
-           simp
-           omega
-         · simp [Finsupp.single_apply, hk])
 
 lemma lam_mul (w : PowerSeries K) :
     (MvPowerSeries.X 1 - MvPowerSeries.X 0) * lam w = Wi w 1 - Wi w 0 := by
@@ -417,8 +399,6 @@ lemma lam_mul (w : PowerSeries K) :
     first
       | (apply key; omega)
       | (rw [sub_eq_zero]; apply key; omega)
-      | (rw [neg_inj]; apply key; omega)
-      | (apply Eq.symm; apply key; omega)
 
 local notation "L" i => MvPowerSeries.coeff (Finsupp.single i 1)
 local notation "cc" => MvPowerSeries.constantCoeff
@@ -428,53 +408,6 @@ lemma L_mul (φ ψ : MvPowerSeries (Fin 2) K) (i : Fin 2) :
   first
     | (rw [MvPowerSeries.coeff_mul, Finsupp.antidiagonal_single, Finset.sum_map]
        simp [Finset.Nat.sum_antidiagonal_succ, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
-       try ring
-       done)
-    | (rw [MvPowerSeries.coeff_mul, Finset.sum_eq_add (0, Finsupp.single i 1) (Finsupp.single i 1, 0)]
-       · simp only [MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
-         try ring
-       · simp
-       · rintro ⟨a, b⟩ hab hne
-         rw [Finset.mem_antidiagonal] at hab
-         exfalso
-         have hj : ∀ j, a j + b j = (Finsupp.single i 1) j := fun j => by rw [← Finsupp.add_apply, hab]
-         by_cases ha : a i = 0
-         · apply hne.1
-           have a0 : a = 0 := by
-             ext j
-             have := hj j
-             by_cases hij : i = j
-             · subst hij
-               simp [ha]
-             · simp [Finsupp.single_apply, hij] at this
-               simp
-               omega
-           subst a0
-           simp at hab
-           rw [hab]
-         · apply hne.2
-           have b0 : b = 0 := by
-             ext j
-             have := hj j
-             by_cases hij : i = j
-             · subst hij
-               simp at this
-               simp
-               omega
-             · simp [Finsupp.single_apply, hij] at this
-               simp
-               omega
-           subst b0
-           simp at hab
-           rw [hab]
-       · intro h
-         exfalso
-         apply h
-         simp [Finset.mem_antidiagonal]
-       · intro h
-         exfalso
-         apply h
-         simp [Finset.mem_antidiagonal]
        done)
 
 lemma L_C (a : K) (i : Fin 2) : (L i) (MvPowerSeries.C a : MvPowerSeries (Fin 2) K) = 0 := by
@@ -514,14 +447,14 @@ variable {W w}
 
 lemma Wi_cc (hw : WFixed W w) (i : Fin 2) : cc (Wi w i) = 0 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_Wi]
-  simp [(w_low hw).1, hw.1]
+  simp [(w_low hw).1]
 
 lemma Wi_L (hw : WFixed W w) (i j : Fin 2) : (L j) (Wi w i) = 0 := by
   rw [coeff_Wi]
   by_cases h : j = i
   · subst h
     simp [(w_low hw).2.1]
-  · simp [Finsupp.single_apply, h, (w_low hw).1, hw.1]
+  · simp [h]
 
 lemma lam_cc (hw : WFixed W w) : cc (lam w) = 0 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_lam]
@@ -547,7 +480,6 @@ lemma nu_ne (hw : WFixed W w) : nu w ≠ 0 := by
   rw [nu, map_sub, coeff_mul_X_fin_two, coeff_Wi, coeff_lam] at this
   first
     | simp only [(eq_single_iff _).2, single_one_le_iff_ne_zero] at this
-    | skip
   simp [h3] at this
 
 lemma constantCoeff_chordCoeffCubic (hw : WFixed W w) : cc (C3 W w) = 1 := by
@@ -695,8 +627,6 @@ lemma weq_iff (W : WeierstrassCurve K) (s v : MvPowerSeries (Fin 2) K) :
   first
     | (simp only [MvPowerSeries.smul_eq_C_mul]
        rw [sub_eq_zero, eq_comm])
-    | (simp only [Algebra.smul_def, MvPowerSeries.algebraMap_apply, Algebra.id.map_eq_id, RingHom.id_apply]
-       rw [sub_eq_zero, eq_comm])
 
 lemma X_ne : (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) ≠ MvPowerSeries.X 1 := by
   intro h
@@ -721,13 +651,11 @@ lemma chord (hU : WSubstUnique.{u}) (hw : WFixed W w) :
     ChordAt W w (MvPowerSeries.X 0) (MvPowerSeries.X 1) (F2 W w) := by
   haveI hdom : IsDomain (MvPowerSeries (Fin 2) K) := by
     first
-      | infer_instance
       | exact NoZeroDivisors.to_isDomain _
   have hι : Function.Injective (algebraMap (MvPowerSeries (Fin 2) K) (FractionRing (MvPowerSeries (Fin 2) K))) := IsFractionRing.injective _ _
   have hCa : ∀ a : K, (algebraMap (MvPowerSeries (Fin 2) K) (FractionRing (MvPowerSeries (Fin 2) K))) (MvPowerSeries.C a) = algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)) a := fun a => by
     first
       | rfl
-      | (rw [IsScalarTower.algebraMap_apply K (MvPowerSeries (Fin 2) K) (FractionRing (MvPowerSeries (Fin 2) K))]; rfl)
   have hE : ∀ s : MvPowerSeries (Fin 2) K, MvPowerSeries.constantCoeff s = 0 →
       G (ca W.a₁) (ca W.a₂) (ca W.a₃) (ca W.a₄)
         (ca W.a₆) s (w.subst s) = 0 :=
@@ -810,12 +738,6 @@ lemma chord (hU : WSubstUnique.{u}) (hw : WFixed W w) :
   rw [← hsub]
   first
     | exact ⟨hx, hy⟩
-    | (refine ⟨?_, ?_⟩
-       · convert hx using 1
-       · convert hy using 1
-         simp only [WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negY,
-           WeierstrassCurve.Affine.negAddY, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃]
-         rfl)
 
 end Mser
 

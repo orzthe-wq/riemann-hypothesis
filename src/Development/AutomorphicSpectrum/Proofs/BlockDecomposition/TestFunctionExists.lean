@@ -127,11 +127,11 @@ theorem isOpen_unit (hcm : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
     (hloc : IsLocR R) (J : Matrix (Fin 2) (Fin 2) E) :
     IsOpen {X : Fin 1 → Fin 2 → R ⊗[F] E | IsUnit (gramR R σ J X).det} := by
   obtain ⟨hTR, hLC, hSC, hT2, -, -, hu, -⟩ := id hloc
-  haveI := hTR
-  haveI := hLC
-  haveI := hSC
-  haveI := hT2
-  haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
+  have := hTR
+  have := hLC
+  have := hSC
+  have := hT2
+  have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   obtain ⟨-, -, -, -, -, -, -, -, -, t10⟩ := GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
   have hO : IsOpen {r : R | IsUnit r} := hu.isOpen_range
   exact (PI.VolStabS.isOpen_isUnit_det R hO 1).preimage (t10 1 2 J)
@@ -144,17 +144,17 @@ theorem exists_test_fun (hcm : IsCMExt F E σ) {J : Matrix (Fin 2) (Fin 2) E} (h
       ∫⁻ X, ENNReal.ofReal (φ X) ∂(coordW R b lam 1 2) ≠ 0 ∧
       ∫⁻ X, ENNReal.ofReal (φ X) ∂(coordW R b lam 1 2) ≠ ⊤ := by
   obtain ⟨hTR, hLC, hSC, hT2, -⟩ := id hloc
-  haveI := hTR
-  haveI := hLC
-  haveI := hSC
-  haveI := hT2
+  have := hTR
+  have := hLC
+  have := hSC
+  have := hT2
   obtain ⟨t1, t2, t3, t4, -, -, -, t8, -, -⟩ := GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
-  haveI := t1
-  haveI := t2
-  haveI := t3
-  haveI := t4
-  haveI := t8 1 2
-  haveI := (coord_measures_haar F E σ hcm R d b lam hl).2.1 1 2
+  have := t1
+  have := t2
+  have := t3
+  have := t4
+  have := t8 1 2
+  have := (coord_measures_haar F E σ hcm R d b lam hl).2.1 1 2
   obtain ⟨X, hX⟩ := exists_unit_vector R hA
   exact exists_bump _ (isOpen_unit hcm R hloc J) hX
 
@@ -165,18 +165,18 @@ theorem exists_test_set (hcm : IsCMExt F E σ) {J : Matrix (Fin 2) (Fin 2) E} (h
     ∃ A : Set (Fin 1 → Fin 2 → R ⊗[F] E), IsCompact A ∧ IsOpen A ∧
       A ⊆ {X | IsUnit (gramR R σ J X).det} ∧ coordW R b lam 1 2 A ≠ 0 ∧ coordW R b lam 1 2 A ≠ ⊤ := by
   obtain ⟨hTR, hLC, hSC, hT2, -⟩ := id hloc
-  haveI := hTR
-  haveI := hLC
-  haveI := hSC
-  haveI := hT2
+  have := hTR
+  have := hLC
+  have := hSC
+  have := hT2
   obtain ⟨t1, t2, t3, t4, -, -, -, t8, -, -⟩ := GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
-  haveI := t1
-  haveI := t2
-  haveI := t3
-  haveI := t4
-  haveI := t8 1 2
-  haveI := (coord_measures_haar F E σ hcm R d b lam hl).2.1 1 2
-  haveI : TotallyDisconnectedSpace (R ⊗[F] E) := (GlobalTheory.CompanionTheory.SW.TopK.coordHomeo R b).symm.totallyDisconnectedSpace
+  have := t1
+  have := t2
+  have := t3
+  have := t4
+  have := t8 1 2
+  have := (coord_measures_haar F E σ hcm R d b lam hl).2.1 1 2
+  have : TotallyDisconnectedSpace (R ⊗[F] E) := (GlobalTheory.CompanionTheory.SW.TopK.coordHomeo R b).symm.totallyDisconnectedSpace
   obtain ⟨X, hX⟩ := exists_unit_vector R hA
   exact exists_compactOpen _ (isOpen_unit hcm R hloc J) hX
 
@@ -185,12 +185,12 @@ end Loc
 theorem testEx : TestEx := by
   intro F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam _ _ _ _ S
   have hLi : IsLocR (Ainf F) := GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hcm.1
-  haveI : BorelSpace (Ainf F) := ⟨rfl⟩
+  have : BorelSpace (Ainf F) := ⟨rfl⟩
   obtain ⟨φ, h1, h2, h3, h4, h5, h6⟩ := exists_test_fun hcm hA (Ainf F) hLi b li hli.1
   have hA' : ∀ v : HeightOneSpectrum (𝓞 F), ∃ A : Set (Fin 1 → Fin 2 → Fv F v ⊗[F] E), IsCompact A ∧ IsOpen A ∧
       A ⊆ {X | IsUnit (gramR (Fv F v) σ J X).det} ∧ coordW (Fv F v) b (lam v) 1 2 A ≠ 0 ∧
       coordW (Fv F v) b (lam v) 1 2 A ≠ ⊤ := fun v => by
-    haveI : BorelSpace (Fv F v) := ⟨rfl⟩
+    have : BorelSpace (Fv F v) := ⟨rfl⟩
     exact exists_test_set hcm hA (Fv F v) (GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v) b (lam v) (hlam v).1
   choose A0 hc ho hs hn ht using hA'
   classical

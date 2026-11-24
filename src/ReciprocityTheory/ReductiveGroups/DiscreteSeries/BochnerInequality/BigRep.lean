@@ -3,52 +3,8 @@ module
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.Permute
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.IsKUnitaryOfIsInfUnitary
 public import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -104,7 +60,7 @@ theorem mAct_rel (hE : IsGlRep E) (k : ℕ) (a b c d : Fin n) :
   have h := LinearMap.congr_fun (hE a b c d) (F κ)
   clear hE
   by_cases hbc : b = c <;> by_cases hda : d = a <;>
-    simp_all [mAct_apply, Module.End.mul_apply, PiLp.sub_apply]
+    simp_all [mAct_apply, PiLp.sub_apply]
 
 theorem mAct_factorAd_comm (k : ℕ) (i : Fin k) (a b c d : Fin n) :
     mAct E k a b * factorAd k i c d = factorAd k i c d * mAct E k a b := by
@@ -139,7 +95,7 @@ theorem factorAd_commutator (k : ℕ) (i : Fin k) (a b c d : Fin n) :
   generalize κ i = p <;>
   obtain ⟨p1, p2⟩ := p <;>
   simp only <;>
-  split_ifs <;> subst_vars <;> first | rfl | abel1 | (simp_all <;> abel1) | simp_all
+  split_ifs <;> subst_vars <;> first | rfl | abel1 | (simp_all <;> abel1)
 
 end BigRepA
 section BigRepB
@@ -238,9 +194,7 @@ theorem bAct_isKUnitary (hU : IsInfUnitary ε E) (k : ℕ) : IsKUnitary ε (bAct
   simp only [bAct, LinearMap.add_apply, LinearMap.sum_apply, inner_add_left, inner_add_right,
     sum_inner, inner_sum, factorAd_adjoint]
   congr 1
-  rw [PiLp.inner_apply, PiLp.inner_apply]
-  refine Finset.sum_congr rfl fun κ _ => ?_
-  rw [mAct_apply, mAct_apply, hU a b, adjSign, if_pos hab, one_mul]
+  simp [PiLp.inner_apply, mAct_apply, hU a b, adjSign, if_pos hab]
 
 theorem ncV_kStable (hV : IsKStableSub ε E V) (k : ℕ) :
     IsKStableSub ε (bAct E k) (ncV ε V k) := by
@@ -258,36 +212,27 @@ theorem ncV_kStable (hV : IsKStableSub ε E V) (k : ℕ) :
     rw [Submodule.mem_bot, ncV_eq_zero hF j hj, map_zero, zero_add]
     refine Finset.sum_eq_zero fun i _ => ?_
     rw [factorAd_apply]
-    by_cases hij : i = j
-    · subst hij
-      have z1 : (if (κ i).1 = a then F (Function.update κ i (b, (κ i).2)) else 0) = 0 := by
-        split_ifs with h1
-        · apply ncV_eq_zero hF i
-          simp only [Function.update_self]
-          rw [← hab, ← h1]
-          exact hj
-        · rfl
-      have z2 : (if (κ i).2 = b then F (Function.update κ i ((κ i).1, a)) else 0) = 0 := by
-        split_ifs with h2
-        · apply ncV_eq_zero hF i
-          simp only [Function.update_self]
-          rw [hab, ← h2]
-          exact hj
-        · rfl
-      rw [z1, z2, sub_zero]
-    · have hu : ∀ x : Fin n × Fin n, ε ((Function.update κ i x) j).1 = ε ((Function.update κ i x) j).2 := by
-        intro x
-        rw [Function.update_of_ne (Ne.symm hij)]
-        exact hj
-      have z1 : (if (κ i).1 = a then F (Function.update κ i (b, (κ i).2)) else 0) = 0 := by
-        split_ifs
-        · exact ncV_eq_zero hF j (hu _)
-        · rfl
-      have z2 : (if (κ i).2 = b then F (Function.update κ i ((κ i).1, a)) else 0) = 0 := by
-        split_ifs
-        · exact ncV_eq_zero hF j (hu _)
-        · rfl
-      rw [z1, z2, sub_zero]
+    have hzero : ∀ (x : Fin n × Fin n), (i = j → ε x.1 = ε x.2) →
+        F (Function.update κ i x) = 0 := by
+      intro x hx
+      apply ncV_eq_zero hF j
+      by_cases hij : i = j
+      · rw [hij]
+        simpa [Function.update_self] using hx hij
+      · rwa [Function.update_of_ne (Ne.symm hij)]
+    have z1 : (if (κ i).1 = a then F (Function.update κ i (b, (κ i).2)) else 0) = 0 := by
+      split_ifs with h1
+      · refine hzero _ ?_
+        intro hij
+        simpa [← hij, h1, hab] using hj
+      · rfl
+    have z2 : (if (κ i).2 = b then F (Function.update κ i ((κ i).1, a)) else 0) = 0 := by
+      split_ifs with h2
+      · refine hzero _ ?_
+        intro hij
+        simpa [← hij, h2, hab] using hj
+      · rfl
+    rw [z1, z2, sub_zero]
 
 theorem finiteDimensional_ncV (hV : FiniteDimensional ℂ V) (k : ℕ) :
     FiniteDimensional ℂ (ncV ε V k) := by
@@ -297,10 +242,7 @@ theorem finiteDimensional_ncV (hV : FiniteDimensional ℂ V) (k : ℕ) :
       (fun F => ncV_mem F.2 κ)
   refine FiniteDimensional.of_injective f ?_
   intro F G h
-  apply Subtype.ext
-  apply big_ext
-  intro κ
-  exact congrArg Subtype.val (congrFun h κ)
+  exact Subtype.ext (big_ext fun κ => congrArg Subtype.val (congrFun h κ))
 
 end BigRep
 

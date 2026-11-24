@@ -99,7 +99,7 @@ lemma esI_val (a : Fin r) : (esI k r a).val = 2 * r + k - a.val := rfl
 
 lemma sum_split {M : Type*} [AddCommMonoid M] (f : Fin (2 * r + k + 1) → M) :
     ∑ i, f i = ∑ a : Fin r, f (eI k r a) + ∑ j : Fin (k + 1), f (wI k r j) + ∑ a : Fin r, f (esI k r a) := by
-  apply WlocSk.NB.sum_split <;> assumption
+  apply WlocSk.NB.sum_split
 
 lemma cases3 {P : Fin (2 * r + k + 1) → Prop} (h1 : ∀ a, P (eI k r a)) (h2 : ∀ j, P (wI k r j))
     (h3 : ∀ a, P (esI k r a)) (i : Fin (2 * r + k + 1)) : P i := by
@@ -108,9 +108,9 @@ lemma cases3 {P : Fin (2 * r + k + 1) → Prop} (h1 : ∀ a, P (eI k r a)) (h2 :
   · have e : i = eI k r ⟨i.val, h⟩ := Fin.ext rfl
     rw [e]; exact h1 _
   · rcases Nat.lt_or_ge (r + k) i.val with h' | h'
-    · have e : i = esI k r ⟨2 * r + k - i.val, by omega⟩ := Fin.ext (by simp only [esI_val, Fin.val_mk]; omega)
+    · have e : i = esI k r ⟨2 * r + k - i.val, by omega⟩ := Fin.ext (by simp only [esI_val]; omega)
       rw [e]; exact h3 _
-    · have e : i = wI k r ⟨i.val - r, by omega⟩ := Fin.ext (by simp only [wI_val, Fin.val_mk]; omega)
+    · have e : i = wI k r ⟨i.val - r, by omega⟩ := Fin.ext (by simp only [wI_val]; omega)
       rw [e]; exact h2 _
 
 lemma piI_eI (a : Fin r) : piI k r (eI k r a) = esI k r a := Fin.ext (by
@@ -207,8 +207,8 @@ lemma Hpk_ss (a b : Fin r) : Hpk k r (esI k r a) (esI k r b) = 0 := by
 variable (Bm : Matrix (Fin r) (Fin (k + 1)) ℂ) (S : Matrix (Fin r) (Fin r) ℂ)
 
 lemma eI_back (a : Fin r) (h) : (⟨(eI k r a).val, h⟩ : Fin r) = a := Fin.ext rfl
-lemma wI_back (j : Fin (k + 1)) (h) : (⟨(wI k r j).val - r, h⟩ : Fin (k + 1)) = j := Fin.ext (by simp only [Fin.val_mk, wI_val]; omega)
-lemma esI_back (b : Fin r) (h) : (⟨2 * r + k - (esI k r b).val, h⟩ : Fin r) = b := Fin.ext (by simp only [Fin.val_mk, esI_val]; have := b.isLt; omega)
+lemma wI_back (j : Fin (k + 1)) (h) : (⟨(wI k r j).val - r, h⟩ : Fin (k + 1)) = j := Fin.ext (by simp only [wI_val]; omega)
+lemma esI_back (b : Fin r) (h) : (⟨2 * r + k - (esI k r b).val, h⟩ : Fin r) = b := Fin.ext (by simp only [esI_val]; have := b.isLt; omega)
 
 lemma nb_ee (a b : Fin r) : unipotentBlockMatrix k r Bm S (eI k r a) (eI k r b) = if a = b then 1 else 0 := by
   simp (disch := (simp only [eI_val]; omega)) only
@@ -293,12 +293,12 @@ theorem nb_UH (hS : Sᴴ = -S) : unipotentBlockMatrix k r Bm S ∈ UH (Hpk k r) 
     simp only [piI_eI, piI_wI, piI_esI, epsI_eI, epsI_wI, epsI_esI, one_mul, mul_one, mul_zero, zero_mul,
       nb_ee, nb_we, nb_se, nb_ew, nb_ww, nb_sw, nb_es, nb_ws, nb_ss, star_ite_one_zero, star_zero,
       Finset.sum_const_zero, add_zero, zero_add, Hpk_ee, Hpk_ew, Hpk_es, Hpk_we, Hpk_ww, Hpk_ws, Hpk_se,
-      Hpk_sw, Hpk_ss, ite_mul, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
+      Hpk_sw, Hpk_ss, ite_mul, mul_ite, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
   all_goals first
     | exact aux1 _ _
     | exact aux2 _ _
     | (rw [mid_sum]; linear_combination cm_skew Bm S hS _ _)
-    | (split_ifs <;> simp_all; done)
+    | (split_ifs <;> simp_all)
 
 lemma inWb_eI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin r) : z (eI k r a) = 0 := hz _ (Or.inl (by rw [eI_val]; exact a.isLt))
 lemma inWb_esI {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin r) : z (esI k r a) = 0 := hz _ (Or.inr (by rw [esI_val]; have := a.isLt; omega))
@@ -378,19 +378,16 @@ theorem nb_Nset (hS : Sᴴ = -S) : unipotentBlockMatrix k r Bm S ∈ Nset k r :=
 
 theorem nb_mem {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (hB : Bm *ᵥ zW k r z = 0) (hS : Sᴴ = -S) :
     unipotentBlockMatrix k r Bm S ∈ C2.N0set k r z := by
-  show _ ∧ _
   exact ⟨nb_Nset Bm S hS, nb_uMap Bm S hz hB⟩
 
 omit Bm S in
 lemma um_lt (z : Fin (2 * r + k + 1) → ℂ) (n : B.Mat k r) (a : Fin r) (b : Fin (r + 1)) :
     C2.uMap k r z n ⟨a.val, by omega⟩ b = (n *ᵥ fvec k r z b) (eI k r a) := by
-  simp only [C2.uMap]
-  rw [dif_pos a.isLt, herm_esI]
+  simp only [C2.uMap, dif_pos a.isLt, herm_esI]
 
 omit Bm S in
 lemma fvec_lt (z : Fin (2 * r + k + 1) → ℂ) (b : Fin r) : fvec k r z ⟨b.val, by omega⟩ = bvec (eI k r b) := by
-  simp only [fvec]
-  rw [dif_pos b.isLt]
+  simp only [fvec, dif_pos b.isLt]
 
 omit Bm S in
 lemma fvec_last (z : Fin (2 * r + k + 1) → ℂ) : fvec k r z (Fin.last r) = z := by
@@ -433,7 +430,7 @@ theorem nb_fwd {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (n : B.Mat
     · exact h1
     · intro h
       have h2 := congrArg Fin.val h
-      simp only [Fin.val_last, Fin.val_mk] at h2
+      simp only [Fin.val_last] at h2
       have := a.isLt
       omega
   obtain ⟨B0, hB0⟩ : ∃ B0 : Matrix (Fin r) (Fin (k + 1)) ℂ, ∀ a j, B0 a j = n (eI k r a) (wI k r j) :=
@@ -471,7 +468,7 @@ theorem nb_fwd {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (n : B.Mat
     rw [sum_split] at h
     simp only [piI_eI, piI_wI, piI_esI, epsI_eI, epsI_wI, epsI_esI, one_mul, hee, hwe, hse, star_ite_one_zero,
       star_zero, zero_mul, ite_mul, Finset.sum_const_zero, add_zero, Finset.sum_ite_eq',
-      Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte, Hpk_es] at h
+      Finset.mem_univ, ↓reduceIte, Hpk_es] at h
     exact h
   have hws : ∀ j b, n (wI k r j) (esI k r b) = -(hW k j) * star (B0 b j) := by
     intro j b
@@ -479,7 +476,7 @@ theorem nb_fwd {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (n : B.Mat
     rw [sum_split] at h
     simp only [piI_eI, piI_wI, piI_esI, epsI_eI, epsI_wI, epsI_esI, one_mul, hss, hww, hsw, star_ite_one_zero,
       star_zero, zero_mul, mul_zero, mul_one, ite_mul, mul_ite, Finset.sum_const_zero, add_zero,
-      Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte, Hpk_ws] at h
+      Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte, Hpk_ws] at h
     rw [hB0]
     linear_combination (hW k j) * h - n (wI k r j) (esI k r b) * hW_sq j
   have hcm : ∀ a b, C0 a b + star (C0 b a) + (B0 * Matrix.diagonal (hW k) * B0ᴴ) a b = 0 := by
@@ -487,8 +484,8 @@ theorem nb_fwd {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (n : B.Mat
     have h := hE (esI k r a) (esI k r b)
     rw [sum_split] at h
     simp only [piI_eI, piI_wI, piI_esI, epsI_eI, epsI_wI, epsI_esI, one_mul, hss, hws, star_ite_one_zero,
-      mul_one, mul_zero, zero_mul, ite_mul, mul_ite, Finset.sum_const_zero, Finset.sum_ite_eq',
-      Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte, Hpk_ss] at h
+      mul_one, mul_zero, zero_mul, ite_mul, mul_ite, Finset.sum_ite_eq',
+      Finset.mem_univ, ↓reduceIte, Hpk_ss] at h
     rw [mid_sum] at h
     rw [hC0, hC0]
     linear_combination h

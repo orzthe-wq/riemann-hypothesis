@@ -159,10 +159,10 @@ theorem UpperTheory.V.Fr.cone_u :
         erw [hdiag, hdiag]
         simp [w]
       · rw [hz, map_sub, hA, hA]
-        fin_cases i <;> simp [w] <;> ring
+        fin_cases i <;> simp [w]
     · refine ⟨S.aB F.g0 0 - S.aB F.g0 2, ?_, fun i => ?_⟩
       · rw [map_sub, hres, hres]
         erw [hdiag, hdiag]
         simp [w]
       · rw [hz, map_sub, hA, hA]
-        fin_cases i <;> simp [w] <;> ring
+        fin_cases i <;> simp [w]

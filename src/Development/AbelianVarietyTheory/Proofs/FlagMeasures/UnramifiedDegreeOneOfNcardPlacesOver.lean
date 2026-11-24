@@ -75,7 +75,7 @@ theorem _root_.GlobalTheory.unramified_degree_one_of_ncard_placesOver (E : Type)
     ((p : ℕ) : 𝓞 E) ∉ v.asIdeal ^ 2 ∧ v.asIdeal.ramificationIdx ℤ = 1 ∧
       v.asIdeal.inertiaDeg ℤ = 1 := by
   set q : Ideal ℤ := Ideal.span {(p : ℤ)} with hq
-  haveI hqmax : q.IsMaximal :=
+  have hqmax : q.IsMaximal :=
     PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible
   have hqbot : q ≠ ⊥ := by
     rw [hq, Ne, Ideal.span_singleton_eq_bot]
@@ -83,7 +83,7 @@ theorem _root_.GlobalTheory.unramified_degree_one_of_ncard_placesOver (E : Type)
   have hmemv : ((p : ℕ) : 𝓞 E) ∈ v.asIdeal := by
     unfold _root_.Formalism.BasicNotions.placesOver at hv
     exact hv
-  haveI : v.asIdeal.LiesOver q := (_root_.GlobalTheory.splitPrime_liesOver_span_iff hp v.asIdeal).2 hmemv
+  have : v.asIdeal.LiesOver q := (_root_.GlobalTheory.splitPrime_liesOver_span_iff hp v.asIdeal).2 hmemv
   have hcard : (IsDedekindDomain.primesOverFinset q (𝓞 E)).card = Module.finrank ℚ E := by
     rw [← h, ← Set.ncard_coe_finset, IsDedekindDomain.coe_primesOverFinset hqbot]
     have himage : (fun w : HeightOneSpectrum (𝓞 E) => w.asIdeal) '' _root_.Formalism.BasicNotions.placesOver E p =
@@ -112,8 +112,8 @@ theorem _root_.GlobalTheory.unramified_degree_one_of_ncard_placesOver (E : Type)
     intro P hP
     rw [IsDedekindDomain.mem_primesOverFinset_iff hqbot] at hP
     obtain ⟨hPp, hPl⟩ := hP
-    haveI := hPp
-    haveI := hPl
+    have := hPp
+    have := hPl
     have he : q.ramificationIdx' P ≠ 0 :=
       Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver P hqbot
     have hf : 0 < q.inertiaDeg' P := Ideal.inertiaDeg'_pos' q P
@@ -123,7 +123,7 @@ theorem _root_.GlobalTheory.unramified_degree_one_of_ncard_placesOver (E : Type)
     rw [IsDedekindDomain.mem_primesOverFinset_iff hqbot]
     exact ⟨v.isPrime, inferInstance⟩
   obtain ⟨he, hf⟩ := mul_eq_one.1 (hall _ hvmem).symm
-  haveI : v.asIdeal.IsMaximal := v.isMaximal
+  have : v.asIdeal.IsMaximal := v.isMaximal
   refine ⟨?_, ?_, ?_⟩
   · intro hsq
     have hle : Ideal.map (algebraMap ℤ (𝓞 E)) q ≤ v.asIdeal ^ 2 := by

@@ -39,22 +39,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-
-namespace I195MixedCoordinates_6edf13e9c2ea736a34004c3c
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-end I195MixedCoordinates_6edf13e9c2ea736a34004c3c
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -76,7 +61,7 @@ section Source
 variable {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ)
 
 theorem mixS_add (hψ : IsStdChar D ψ (-1)) {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g)
-    (x : Mx D T.rank ρ) : (_root_.I195MixedCoordinates_6edf13e9c2ea736a34004c3c.source d) T ψ v.μ v.𝓕 (f + g) x = (_root_.I195MixedCoordinates_6edf13e9c2ea736a34004c3c.source d) T ψ v.μ v.𝓕 f x + (_root_.I195MixedCoordinates_6edf13e9c2ea736a34004c3c.source d) T ψ v.μ v.𝓕 g x := by
+    (x : Mx D T.rank ρ) : (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 (f + g) x = (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f x + (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 g x := by
   funext w
   have h1 := d.integrableOn_mixS hψ.1.1 v.covol hf x w
   have h2 := d.integrableOn_mixS hψ.1.1 v.covol hg x w
@@ -85,7 +70,7 @@ theorem mixS_add (hψ : IsStdChar D ψ (-1)) {f g : WO S T → ℂ} (hf : IsThet
   exact integral_add h1 h2
 
 theorem mixS_smul (c : ℂ) (f : WO S T → ℂ) (x : Mx D T.rank ρ) :
-    (_root_.I195MixedCoordinates_6edf13e9c2ea736a34004c3c.source d) T ψ v.μ v.𝓕 (c • f) x = c • (_root_.I195MixedCoordinates_6edf13e9c2ea736a34004c3c.source d) T ψ v.μ v.𝓕 f x := by
+    (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 (c • f) x = c • (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f x := by
   funext w
   change d.mixS T ψ v.μ v.𝓕 (c • f) x w = c • d.mixS T ψ v.μ v.𝓕 f x w
   simp only [HypDec.mixS, HypDec.integrandS_eq, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]

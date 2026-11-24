@@ -3,8 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.NormConst
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtIffIsDerivAt0
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ThetaPointsChangeLevelIsometryLinearMapStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TriangularFrameMovesPeriodBlockTriangularStatement
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ThetaPointsChangeLevelIsometryLinearMap
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TriangularFrameMovesPeriodBlockTriangular
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -115,14 +116,14 @@ theorem normConst_ne_zero {E : Type} [Field E] {g : ℕ} (ty : Fin g → (E →+
 theorem normUn_bor : Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (k : Fin F.n) (T : ThetaData e F M k), GoodEmb c σ → ModelBase M → NegXi M → IsNormUn T (un k) → ∀ (x : (M.X k).dom) b (_hb : b ∈ Bor (M.X k).Ψ r) (h : rmul x.1 b ∈ (M.X k).dom), ∃ t : Ix Dw → (CAt σ)ˣ, FrBor t (un k x) (un k ⟨_, h⟩) ∧ ∀ a n, Dom a n → toC (wchar (ex Dw a n) t) = bchar (laU (unfOf e F M un) a n k) b := by
   intro hS E _ _ _ H Dw l Xo c σ g e F r M un k T hG hB hN hU x b hb h
   obtain ⟨h₀, hdet, hP, htri, -, -, hw⟩ :=
-    GlobalTheory.T.triangularFrame_moves_period_blockTriangular E H Dw l Xo c σ g e F r M hG hB hN k T.Pf T.per x.1 x.2 b hb
+    _root_.GlobalTheory.per_bor E H Dw l Xo c σ g e F r M hG hB hN k T.Pf T.per x.1 x.2 b hb
   obtain ⟨κ, hκ, hy⟩ := hU x
   obtain ⟨κ', hκ', hy'⟩ := hU ⟨_, h⟩
   have hx : T.co.symm x.1 ∈ T.co ⁻¹' (M.X k).dom := by
     simpa only [Set.mem_preimage, ContinuousLinearEquiv.apply_symm_apply] using x.2
   have hx' : T.co.symm (rmul x.1 b) ∈ T.co ⁻¹' (M.X k).dom := by
     simpa only [Set.mem_preimage, ContinuousLinearEquiv.apply_symm_apply] using h
-  obtain ⟨hxx, hder, t₀, hsec, ht₀⟩ := GlobalTheory.T.thetaPoints_change_levelIsometry_linearMap hS E H Dw l Xo c σ g e F r M k T _ hx _ hx' κ κ' _ _
+  obtain ⟨hxx, hder, t₀, hsec, ht₀⟩ := _root_.GlobalTheory.ThetaPtChg.thetaPt_change hS E H Dw l Xo c σ g e F r M k T _ hx _ hx' κ κ' _ _
     (LinearEquiv.refl _ _) h₀ hy hy'
     ⟨fun _ _ => rfl, fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩⟩
     (fun a => by

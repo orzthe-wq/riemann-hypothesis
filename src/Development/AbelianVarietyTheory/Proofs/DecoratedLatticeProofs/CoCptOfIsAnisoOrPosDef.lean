@@ -62,7 +62,7 @@ theorem coCpt_of_mul {D : D7} {V : HSp D}
 theorem coCpt_of_isAniso_or_posDef :
     ∀ (D : D7) (V : HSp D), (IsAniso V → CoCpt V) ∧ ((∀ τ, (gramAt D V τ).PosDef) → CoCpt V) :=
   fun D V => ⟨fun h => coCpt_of_mul (GlobalTheory.Mem.AnisoQuotient.exists_compact D V h),
-    fun h => coCpt_of_mul (GlobalTheory.definite_unitary_cocompact V h)⟩
+    fun h => coCpt_of_mul (_root_.GlobalTheory.DefiniteQuotient.exists_compact V h)⟩
 
 end GlobalTheory.Unf.CoCptOf
 

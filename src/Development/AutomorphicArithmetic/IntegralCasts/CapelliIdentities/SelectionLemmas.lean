@@ -1,6 +1,7 @@
 module
 
 public import Mathlib.NumberTheory.NumberField.Basic
+public import Formalism.HermitianLattices.LocS
 public import Mathlib.RingTheory.DedekindDomain.Factorization
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -115,44 +116,9 @@ noncomputable def hform : {K : Type} →
     [inst_1 : StarRing K] → {n : ℕ} → Matrix (Fin n) (Fin n) K → (Fin n → K) →ₗ⋆[K] (Fin n → K) →ₗ[K] K :=
   fun {K} [Field K] [StarRing K] {n} H => (Matrix.toLinearMapₛₗ₂' K (starRingEnd K) (RingHom.id K)) H
 
-theorem laurent_T_neg_one_mul_T_one.{u_1, u_2} : ∀ {R : Type u_2}
-  [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W] [inst_2 : Module R W] (S : Submonoid R)
-  (L : Submodule R W) {x y : W},
-  x ∈ {x | ∃ s ∈ S, s • x ∈ L} → y ∈ {x | ∃ s ∈ S, s • x ∈ L} → x + y ∈ {x | ∃ s ∈ S, s • x ∈ L} := by
-  intro R _ W _ _ S L x y hx hy
-  obtain ⟨s, hs, hx⟩ := hx
-  obtain ⟨t, ht, hy⟩ := hy
-  refine ⟨s * t, S.mul_mem hs ht, ?_⟩
-  rw [smul_add]
-  refine L.add_mem ?_ ?_
-  · rw [mul_comm, mul_smul]; exact L.smul_mem _ hx
-  · rw [mul_smul]; exact L.smul_mem _ hy
-
-theorem aux11.{u_1, u_2} : ∀ {R : Type u_1} [inst : CommRing R]
-  {W : Type u_2} [inst_1 : AddCommGroup W] [inst_2 : Module R W] (S : Submonoid R) (L : Submodule R W),
-  letI : Zero W := inst_1.toAddCommMonoid.toAddMonoid.toAddZeroClass.toAddZero.toZero
-  ∃ s ∈ S, s • 0 ∈ L := by
-  intro R _ W hW _ S L
-  letI : Zero W := hW.toAddCommMonoid.toAddMonoid.toAddZeroClass.toAddZero.toZero
-  exact ⟨1, S.one_mem, Eq.mpr (congrArg (fun w : W => w ∈ L) (smul_zero (1 : R))) L.zero_mem⟩
-
-theorem aux12.{u_1, u_2} : ∀ {R : Type u_2} [inst : CommRing R]
-  {W : Type u_1} [inst_1 : AddCommGroup W] [inst_2 : Module R W] (S : Submonoid R) (L : Submodule R W) (r : R) {x : W},
-  x ∈ {x | ∃ s ∈ S, s • x ∈ L} → r • x ∈ {x | ∃ s ∈ S, s • x ∈ L} := by
-  intro R _ W _ _ S L r x hx
-  obtain ⟨s, hs, hx⟩ := hx
-  refine ⟨s, hs, ?_⟩
-  rw [smul_comm]
-  exact L.smul_mem _ hx
-
-noncomputable def locS.{u_1, u_4} : {R : Type u_1} →
-  [inst : CommRing R] →
-    {W : Type u_4} → [inst_1 : AddCommGroup W] → [inst_2 : Module R W] → Submonoid R → Submodule R W → Submodule R W :=
-  fun {R} [inst : CommRing R] {W} [inst_1 : AddCommGroup W] [inst_2 : Module R W] S L =>
-    { carrier := {x | ∃ s ∈ S, s • x ∈ L},
-      add_mem' := @laurent_T_neg_one_mul_T_one R inst W inst_1 inst_2 S L,
-      zero_mem' := aux11 S L,
-      smul_mem' := aux12 S L }
+noncomputable def locS.{u_1, u_4} {R : Type u_1} [CommRing R] {W : Type u_4} [AddCommGroup W]
+    [Module R W] (S : Submonoid R) (L : Submodule R W) : Submodule R W :=
+  Formalism.HermitianLatticesTheory.locS S L
 
 noncomputable def hcompl.{u_1, u_2} : {R : Type u_1} →
   {K : Type u_2} → [inst : CommRing R] → [inst_1 : Field K] → [StarRing K] → [Algebra R K] → Ideal R → Submonoid R :=
@@ -216,9 +182,7 @@ open NumberField IsDedekindDomain Matrix
 
 private theorem star_int {K : Type} [Field K] [StarRing K] (a : 𝓞 K) :
     ∃ b : 𝓞 K, algebraMap (𝓞 K) K b = star (algebraMap (𝓞 K) K a) := by
-  have h : IsIntegral ℤ ((starRingEnd K).toIntAlgHom (algebraMap (𝓞 K) K a)) :=
-    (RingOfIntegers.isIntegral_coe a).map _
-  exact ⟨⟨_, h⟩, rfl⟩
+  exact ⟨⟨_, (RingOfIntegers.isIntegral_coe a).map ((starRingEnd K).toIntAlgHom)⟩, rfl⟩
 
 private theorem hcompl_spec {K : Type} [Field K] [StarRing K] (p : Ideal (𝓞 K)) (hp : p.IsPrime)
     (s : 𝓞 K) (hs : s ∈ hcompl (K := K) p) :
@@ -243,8 +207,7 @@ private theorem exists_uniform {R W : Type} [CommRing R] [AddCommGroup W] [Modul
     obtain ⟨s, hs, hx⟩ := h (Submodule.mem_span_singleton_self x)
     refine ⟨s, hs, fun y hy => ?_⟩
     obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.1 hy
-    rw [smul_comm]
-    exact L.smul_mem _ hx
+    simpa [smul_smul, mul_comm] using L.smul_mem a hx
   | sup N₁ N₂ _ _ h₁ h₂ =>
     obtain ⟨s, hs, h₁⟩ := h₁ (le_sup_left.trans h)
     obtain ⟨t, ht, h₂⟩ := h₂ (le_sup_right.trans h)
@@ -269,9 +232,7 @@ private theorem vw_pow {K : Type} [Field K] [NumberField K] (w : HeightOneSpectr
 
 private theorem vw_nonneg {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
     (a : 𝓞 K) : 0 ≤ vw w (algebraMap (𝓞 K) K a) := by
-  unfold vw
-  rw [← FractionalIdeal.coeIdeal_span_singleton]
-  exact FractionalIdeal.count_coe_nonneg K w _
+  simpa only [vw, ← FractionalIdeal.coeIdeal_span_singleton] using FractionalIdeal.count_coe_nonneg K w (Ideal.span {a})
 
 private theorem vw_eq_zero {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
     (a : 𝓞 K) (ha : a ∉ w.asIdeal) : vw w (algebraMap (𝓞 K) K a) = 0 := by
@@ -283,9 +244,7 @@ private theorem vw_eq_zero {K : Type} [Field K] [NumberField K] (w : HeightOneSp
   unfold vw
   rw [← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K w h0]
   by_contra hne
-  have hne' : (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {a})).factors ≠ 0 := by
-    exact_mod_cast hne
-  have := (Associates.count_ne_zero_iff_dvd h0 w.irreducible).1 hne'
+  have := (Associates.count_ne_zero_iff_dvd h0 w.irreducible).1 (by exact_mod_cast hne)
   exact ha (Ideal.dvd_span_singleton.1 this)
 
 private theorem det_int {K : Type} [Field K] {D : ℕ} (A : Matrix (Fin D) (Fin D) K)
@@ -294,9 +253,7 @@ private theorem det_int {K : Type} [Field K] {D : ℕ} (A : Matrix (Fin D) (Fin 
   choose B hB using h
   refine ⟨(Matrix.of B).det, ?_⟩
   rw [RingHom.map_det]
-  congr 1
-  ext i j
-  exact hB i j
+  exact congrArg Matrix.det (Matrix.ext fun i j => hB i j)
 
 private theorem core {K : Type} [Field K] [StarRing K] {n D : ℕ}
     (H : Matrix (Fin n) (Fin n) K) (hH : IsUnit H.det) (B : Matrix (Fin D) (Fin n) K)
@@ -317,15 +274,14 @@ private theorem core {K : Type} [Field K] [StarRing K] {n D : ℕ}
     rw [hb, ha, LinearMap.restrictScalars_apply, map_smul]
     unfold hform
     rw [Matrix.toLinearMapₛₗ₂'_apply]
-    have h1 : H *ᵥ (H⁻¹ *ᵥ star (B j)) = star (B j) := by
-      rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hH, Matrix.one_mulVec]
     have h2 : ∀ v : Fin n → K, ∑ a, ∑ b, (starRingEnd K) (y a) • (RingHom.id K) (v b) • H a b
         = star y ⬝ᵥ (H *ᵥ v) := by
       intro v
       simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, smul_eq_mul, RingHom.id_apply,
         starRingEnd_apply, Pi.star_apply]
       refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
-    rw [h2, h1, star_mul', ← ht, smul_eq_mul]
+    rw [h2, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hH, Matrix.one_mulVec,
+      star_mul', ← ht, smul_eq_mul]
     congr 1
     simp [dotProduct, Matrix.mulVec, star_sum, mul_comm]
   obtain ⟨a, ha⟩ := hs _ (hc _ hx) i
@@ -379,12 +335,12 @@ theorem main : ∀ {K : Type} [inst : Field K] [inst_1 : NumberField K]
   have hA : IsUnit (P * H⁻¹ * Pᴴ).det := by
     by_contra h
     rw [Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.det_zero] at hG'
-    all_goals first | exact hG' (by simp) | infer_instance
+    all_goals first | exact hG' (by simp)
   have hH : IsUnit H.det := by
     by_contra h
     rw [Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.mul_zero, Matrix.zero_mul,
       Matrix.det_zero] at hA
-    all_goals first | exact not_isUnit_zero hA | infer_instance
+    all_goals first | exact not_isUnit_zero hA
   have hle : matLat P M ≤ locS (hcompl (K := K) w.asIdeal) (Submodule.span (𝓞 K) (Set.range e)) := by
     intro x hx
     have h1 : x ∈ loc (K := K) w.asIdeal (matLat P M) :=

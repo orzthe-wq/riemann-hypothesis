@@ -67,7 +67,7 @@ theorem UpperTheory.ConvolutionTheory.L1.cutIrr :
   intro Γ G H _ _ _ _ _ _ π V m ι E A U h
   have hfix : ∀ v, v ∈ eigIn V E 1 ↔ v ∈ V ∧ E v = v := by
     intro v
-    simp [eigIn, Module.End.mem_eigenspace_iff]
+    simp [eigIn]
   refine ⟨?_, ?_, ?_⟩
   · have hset : (eigIn V E 1 : Set H) = (V : Set H) ∩ {v | E v = v} := by
       ext v
@@ -89,7 +89,7 @@ theorem UpperTheory.ConvolutionTheory.L1.cutIrr :
       induction hv using Submodule.span_induction with
       | mem x hx =>
         obtain ⟨γ, rfl⟩ := hx
-        exact Submodule.subset_span ⟨g * γ, by simp [UnitaryRep.map_mul_apply]⟩
+        exact Submodule.subset_span ⟨g * γ, by simp⟩
       | zero => simp
       | add x y _ _ hx hy =>
         rw [map_add (f := _)]

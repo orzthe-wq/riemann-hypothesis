@@ -200,7 +200,6 @@ theorem Formalism.FourierDecayAlt.P.point_bound_of_corollary_s : TBB.PtBoundOfCo
     obtain ⟨ε, ⟨w, hw, hle⟩, hall'⟩ := (hclaim.and hall).exists
     first
       | exact absurd hle (not_le.mpr (hall' w hw))
-      | exact hall' w hw hle
   obtain ⟨w, hw, hfw⟩ := hfreq
   have hlim := hLim w hw.1 hw.2
   rcases eq_or_lt_of_le hc0 with hc | hc

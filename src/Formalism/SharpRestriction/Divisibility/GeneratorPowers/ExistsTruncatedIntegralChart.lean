@@ -116,7 +116,6 @@ theorem dir_tan {d : ℕ} (xc : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G)
     rw [Category.comp_id]
     first
       | (rw [Algebra.algebraMap_self]; exact Spec.map_id _)
-      | simp [spMap]
   have h3 : ∀ (f g : Sp V ⟶ Sp V), f = g →
       (1 : Over.mk f ⟶ t.G).left = (1 : Over.mk g ⟶ t.G).left := by
     rintro f g rfl; rfl

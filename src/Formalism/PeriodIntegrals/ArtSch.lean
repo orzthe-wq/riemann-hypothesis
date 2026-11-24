@@ -58,7 +58,7 @@ section
 variable (l : ℕ) [Fact l.Prime]
 
 theorem OC_l_not_unit : ¬ IsUnit ((l : ℕ) : PadicComplexInt l) := by
-  apply Formalism.BasicNotions.Loc.OC_l_not_unit <;> assumption
+  apply Formalism.BasicNotions.Loc.OC_l_not_unit
 
 instance factOC : Fact (¬ IsUnit ((l : ℕ) : PadicComplexInt l)) := ⟨OC_l_not_unit l⟩
 

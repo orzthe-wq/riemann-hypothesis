@@ -272,7 +272,7 @@ theorem dualLattice_comp_integralMonoid_mem [CharZero (KK O)] (E : GLOps n (KK O
       have h3 : (∑ nu ∈ f.support, f nu) ∘ₗ binomE E a k =
           ∑ nu ∈ f.support, (Ring.choose (-(nu a)) k : ℤ) • f nu := by
         ext y
-        simp only [LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smul_apply]
+        simp only [LinearMap.comp_apply, LinearMap.sum_apply]
         refine Finset.sum_congr rfl fun nu _ => ?_
         rw [apply_binomial_of_dual_weightVector E a k (hfw nu) y, ← Int.cast_smul_eq_zsmul (KK O), LinearMap.smul_apply, smul_eq_mul]
       rw [h3]

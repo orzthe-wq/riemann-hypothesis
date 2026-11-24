@@ -121,9 +121,9 @@ private theorem integral_fourier_map_eq_neg_of_integrable (μ : Measure V) (χ :
   have hneg : e (-(e.symm z)) = -z := by
     have := map_neg (AddMonoidHom.mk' e he) (e.symm z)
     simpa using this
-  simp only [hF, hχ', Homeomorph.apply_symm_apply, Function.comp_apply, hneg] at key
+  simp only [hχ', Homeomorph.apply_symm_apply, Function.comp_apply, hneg] at key
   rw [hmap]
-  simp only [hFdef, hmap]
+  simp only [hmap]
   exact key
 
 private theorem false_of_degenerate_of_fourier_inversion (ν : Measure W) [ν.IsAddHaarMeasure] (β : W → W → ℝ)

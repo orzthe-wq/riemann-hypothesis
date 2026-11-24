@@ -1,56 +1,91 @@
 module
 
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLattice
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGramChiDerivative
 public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PIntegralOfBergman
-public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.HasDerivAtDet
 public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PMetricChange
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.HasDerivAtDet, GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGramChiDerivative
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.HasDerivAtDet =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.HasDerivAtDet", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLattice\npublic import Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.HilbertSamuel
+
+open Matrix Equiv
+open scoped ComplexOrder
+
+noncomputable section
+
+theorem LogDetDerivative.hasDerivAt_det {m : ℕ} {G : ℝ → Matrix (Fin m) (Fin m) ℂ}
+    {G' : Matrix (Fin m) (Fin m) ℂ} {t : ℝ} (h : ∀ i j, HasDerivAt (fun s ↦ G s i j) (G' i j) t) :
+    HasDerivAt (fun s ↦ (G s).det) (∑ i, (G t).cramer (fun k ↦ G' k i) i) t := by
+  have key : ∀ σ : Perm (Fin m), HasDerivAt (fun s ↦ ((Perm.sign σ : ℤ) : ℂ) * ∏ i, G s (σ i) i)
+      (((Perm.sign σ : ℤ) : ℂ) * ∑ i, (∏ j ∈ Finset.univ.erase i, G t (σ j) j) * G' (σ i) i) t := by
+    intro σ
+    have := HasDerivAt.fun_finsetProd (u := Finset.univ) (f := fun i s ↦ G s (σ i) i)
+      (f' := fun i ↦ G' (σ i) i) (x := t) (fun i _ ↦ h (σ i) i)
+    simpa [smul_eq_mul] using this.const_mul ((Perm.sign σ : ℤ) : ℂ)
+  have hsum := HasDerivAt.fun_sum (u := Finset.univ) (fun σ _ ↦ key σ)
+  have hfun : (fun s ↦ (G s).det) =
+      fun s ↦ ∑ σ : Perm (Fin m), ((Perm.sign σ : ℤ) : ℂ) * ∏ i, G s (σ i) i := by
+    ext s
+    exact det_apply' _
+  rw [hfun]
+  refine hsum.congr_deriv ?_
+  symm
+  rw [Finset.sum_congr rfl fun i _ ↦ cramer_apply (G t) (fun k ↦ G' k i) i]
+  simp only [det_apply', Finset.mul_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun σ _ ↦ Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
+  have hrest : ∏ j ∈ Finset.univ.erase i, (G t).updateCol i (fun k ↦ G' k i) (σ j) j =
+      ∏ j ∈ Finset.univ.erase i, G t (σ j) j := by
+    refine Finset.prod_congr rfl fun j hj ↦ ?_
+    rw [updateCol_ne (Finset.ne_of_mem_erase hj)]
+  rw [hrest, updateCol_self]
+  ring
+
+theorem LogDetDerivative.sum_cramer_eq {m : ℕ} (A B : Matrix (Fin m) (Fin m) ℂ)
+    (hA : IsUnit A.det) :
+    ∑ i, A.cramer (fun k ↦ B k i) i = A.det * (A⁻¹ * B).trace := by
+  simp only [← det_smul_inv_mulVec_eq_cramer A _ hA, Pi.smul_apply, smul_eq_mul, trace,
+    diag_apply, Matrix.mul_apply, mulVec, dotProduct, Finset.mul_sum]
+
+theorem LogDetDerivative.intersectionNumber_baseChange : LogDetDerivative.Statement := by
+  intro m G G' hpos hG t
+  have hdet := LogDetDerivative.hasDerivAt_det (hG t)
+  rw [LogDetDerivative.sum_cramer_eq _ _ (hpos t).det_pos.ne'.isUnit] at hdet
+  have hre : HasDerivAt (fun s ↦ (G s).det.re)
+      ((G t).det * ((G t)⁻¹ * G' t).trace).re t := by
+    exact Complex.reCLM.hasFDerivAt.comp_hasDerivAt t hdet
+  have hp := (hpos t).det_pos
+  rw [Complex.lt_def] at hp
+  obtain ⟨hre0, him0⟩ := hp
+  simp only [Complex.zero_re, Complex.zero_im] at hre0 him0
+  have hlog := (hre.log hre0.ne').const_mul (-(1 / 2) : ℝ)
+  refine hlog.congr_deriv ?_
+  rw [Complex.mul_re, ← him0, zero_mul, sub_zero]
+  field_simp
+
+end
+
+end GroundTheory.Heights₂.Heights.HilbertSamuel
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.HasDerivAtDet =====
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGramChiDerivative =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGramChiDerivative", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsGramChiDerivative\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PIntegralOfBergman\npublic import Mathlib.Analysis.LocallyConvex.AbsConvexOpen\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.HasDerivAtDet\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PMetricChange\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -168,7 +203,7 @@ lemma gram_posDef (W : Weight L) (dV : SmoothVolume A) {n : ℕ}
     rw [← integral_conj]
     congr 1
     funext x
-    simp only [ptInner, map_mul, starRingEnd_self_apply, Complex.conj_ofReal]
+    simp only [map_mul, starRingEnd_self_apply, Complex.conj_ofReal]
     ac_rfl
   · set v : V := ∑ a, conj (y a) • e a with hv
     have hv0 : v ≠ 0 := by
@@ -331,3 +366,6 @@ theorem GramChiDerivative.proof : GramChiDerivative.Statement := by
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PGramChiDerivative =====

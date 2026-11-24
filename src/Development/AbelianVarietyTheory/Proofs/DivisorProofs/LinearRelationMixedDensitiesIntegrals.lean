@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.DensConst
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousOnMixedChernFormDensityInChartStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixedChernFormSignedPartMeasureChartApplyStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousOnMixedChernFormDensityInChart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixedChernFormSignedPartMeasureChartApply
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasChernIntegralLinearOfDensityEqSum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -77,7 +77,7 @@ theorem GlobalTheory.Mix.sum_int_eq_zero_of_dens : ∀ (k : Type) [CommRing k] (
     ∑ j, (ENNReal.ofReal (u j) • P j 1 + ENNReal.ofReal (w j) • P j (-1))
 
   have hcont : ∀ j (c : AlgChart p σ D), ContinuousOn (fun v => dens (N j) c (c.e.symm v)) c.e.target :=
-    fun j c => (GlobalTheory.T.continuousOn_mixedChernFormDensityInChart k X p σ D (N j) c).comp c.e.continuousOn_symm c.e.mapsTo_symm
+    fun j c => (_root_.GlobalTheory.Mix.continuousOn_dens k X p σ D (N j) c).comp c.e.continuousOn_symm c.e.mapsTo_symm
 
   have hchart : ∀ (u w : J → ℝ) (c : AlgChart p σ D) (A : Set (CxPts p σ)), MeasurableSet A → A ⊆ c.e.source →
       μ u w A = ∫⁻ v in c.e '' A, ∑ j, (ENNReal.ofReal (u j) * ENNReal.ofReal (1 * dens (N j) c (c.e.symm v)) +
@@ -89,7 +89,7 @@ theorem GlobalTheory.Mix.sum_int_eq_zero_of_dens : ∀ (k : Type) [CommRing k] (
       ((((hcont j c).aemeasurable c.e.open_target.measurableSet).const_mul s).ennreal_ofReal).mono_measure
         (Measure.restrict_mono hsub le_rfl)
     have hP : ∀ j (ε : ℤˣ), P j ε A = ∫⁻ v in c.e '' A, ENNReal.ofReal ((ε : ℤ) * dens (N j) c (c.e.symm v)) :=
-      fun j ε => GlobalTheory.T.mixedChernFormSignedPartMeasure_chart_apply k X p σ D (N j) ε c A hA hAc
+      fun j ε => _root_.GlobalTheory.Mix.part_apply k X p σ D (N j) ε c A hA hAc
     have hm2 : ∀ j ∈ (Finset.univ : Finset J), AEMeasurable (fun v =>
         ENNReal.ofReal (u j) * ENNReal.ofReal (1 * dens (N j) c (c.e.symm v)) +
         ENNReal.ofReal (w j) * ENNReal.ofReal (-1 * dens (N j) c (c.e.symm v))) (volume.restrict (c.e '' A)) :=
@@ -108,7 +108,7 @@ theorem GlobalTheory.Mix.sum_int_eq_zero_of_dens : ∀ (k : Type) [CommRing k] (
     have h0 : ∀ j (ε : ℤˣ), P j ε Uᶜ = 0 := fun j ε =>
       GlobalTheory.Mix.part_eq_zero_off_charts (N j) ε hUo.measurableSet.compl fun c =>
         Set.disjoint_compl_right_iff_subset.2 (Set.subset_iUnion (fun c : AlgChart p σ D => c.e.source) c)
-    simp [μ, Measure.coe_finsetSum, Finset.sum_apply, Measure.add_apply, Measure.smul_apply, h0]
+    simp [μ, h0]
 
   have hbal : μ ap an = μ an ap := by
     obtain ⟨T, hTc, hT⟩ := TopologicalSpace.isOpen_iUnion_countable (fun c : AlgChart p σ D => c.e.source)

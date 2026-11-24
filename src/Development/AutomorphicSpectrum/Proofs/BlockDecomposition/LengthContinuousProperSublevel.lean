@@ -122,7 +122,7 @@ theorem isCompact_entryBox {n : ℕ} (r : ℝ) : IsCompact {m : Mat n | ∀ a b,
   exact h'
 
 theorem isCompact_lg_le {n : ℕ} (R : ℝ) : IsCompact {y : G n | lg y.val ≤ R} := by
-  apply GlobalTheory.CompanionTheory.LengthGL.isCompact_G <;> assumption
+  apply GlobalTheory.CompanionTheory.LengthGL.isCompact_G
 
 theorem lg_continuousOn_and_isCompact :
     ∀ n : ℕ, ContinuousOn (lg (n := n)) (GLs n) ∧ ∀ R : ℝ, IsCompact {y : G n | lg y.val ≤ R} :=

@@ -43,4 +43,4 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.exists_standardColumnComparisons_trueColumns : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∃ C : ColsTiedSym (I.rec7 l Z), I.StdC l Z C ∧ ∀ u, I.StdLvC l Z u (C.forms u) := by
-  first | exact @GlobalTheory.Mem.Col2.TC.colsTiedSym_std | exact GlobalTheory.Mem.Col2.TC.colsTiedSym_std | (intros; apply GlobalTheory.Mem.Col2.TC.colsTiedSym_std <;> assumption)
+  first | exact @GlobalTheory.Mem.Col2.TC.colsTiedSym_std

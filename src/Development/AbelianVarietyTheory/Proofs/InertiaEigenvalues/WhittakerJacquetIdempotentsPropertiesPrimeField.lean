@@ -391,8 +391,6 @@ end
 section
 open GlobalTheory.GLq Formalism.MainNotions.ArithmeticCylinders Polynomial
 open scoped Classical
-theorem _root_.GlobalTheory.Adopt.whittakerJacquetIdempotents_properties_primeField : ∀ (g : ℕ) [Fact g.Prime] (N k s : ℕ) (ψ : AddChar (ZMod g) ℂ), eU g N ψ * eU g N ψ = eU g N ψ ∧ (eU g N ψ).coeff 1 = ((g : ℂ) ^ (N * (N - 1) / 2))⁻¹ ∧ (N = k + 2 * s + 1 → eJ g N k s ψ * eJ g N k s ψ = eJ g N k s ψ ∧ (eJ g N k s ψ).coeff 1 = (g : ℂ) ^ k * ((g : ℂ) ^ (N * (N - 1) / 2))⁻¹) ∧ (k < N → eJ' g N k ψ * eJ' g N k ψ = eJ' g N k ψ ∧ (eJ' g N k ψ).coeff 1 = (g : ℂ) ^ k * ((g : ℂ) ^ (N * (N - 1) / 2))⁻¹) := by
-  intro g _ N k s ψ
-  exact CompanionTheory.Member.whittakerJacquetIdempotents_idem_coeff_one g N k s ψ
+alias _root_.GlobalTheory.Adopt.whittakerJacquetIdempotents_properties_primeField := _root_.CompanionTheory.Member.whittakerJacquetIdempotents_idem_coeff_one
 
 end

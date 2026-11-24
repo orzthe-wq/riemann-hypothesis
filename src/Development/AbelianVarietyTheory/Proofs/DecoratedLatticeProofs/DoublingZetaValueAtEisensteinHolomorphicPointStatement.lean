@@ -54,4 +54,4 @@ open GlobalTheory.Core.Rk.IP
 
 
 theorem _root_.GlobalTheory.T.doubling_zeta_value_at_eisenstein_holomorphic_point : ∀ (D : D7) (V : HSp D) (μ : (AE D)ˣ →* Circle), IsHeckeChar D μ → ∀ (m : Measure (GA D V)), m.IsHaarMeasure → ∀ (Φ : ℂ → GA D (dblSp V) → ℂ), GlobalTheory.Eis.EisContinues V Φ → (∀ g, AnalyticOnNhd ℂ (GlobalTheory.Eis.eisSer V Φ g) (rightOf (V.rank / 2))) → (∀ s₀, ∃ k, GlobalTheory.Eis.EisRegularAt V Φ s₀ k) → ∀ f₁ f₂ : GA D V → ℂ, GlobalTheory.Grow.RapidDec V f₁ → GlobalTheory.Grow.RapidDec V f₂ → GlobalTheory.Eis.IsZetaFamily V μ m Φ f₁ f₂ → ∀ (s₀ : ℂ) (E₀ : GA D (dblSp V) → ℂ), GlobalTheory.Eis.EisValueAt V Φ s₀ E₀ → GlobalTheory.Eis.DblConv V μ m E₀ f₁ f₂ ∧ GlobalTheory.Eis.ZetaHolValueAt V μ m Φ f₁ f₂ s₀ (GlobalTheory.Eis.dblInt V μ m E₀ f₁ f₂) := by
-  first | exact @GlobalTheory.Eis.zetaHolValueAt_of_eisValueAt | exact GlobalTheory.Eis.zetaHolValueAt_of_eisValueAt | (intros; apply GlobalTheory.Eis.zetaHolValueAt_of_eisValueAt <;> assumption)
+  first | exact @GlobalTheory.Eis.zetaHolValueAt_of_eisValueAt

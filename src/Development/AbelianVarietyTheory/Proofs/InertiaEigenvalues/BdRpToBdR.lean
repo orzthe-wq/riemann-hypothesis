@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalPeriodRingsDataUnramifiedLaws
 
 @[expose] public section
 
@@ -87,7 +88,7 @@ theorem iotaO_toB (C : GlobalTheory.MemLoc.Core l) (x : OA l O) : iotaO O C (toB
   | zero => simp only [map_zero]
   | tmul o w =>
     exact congrArg (fun y : Per.BdR l => o ⊗ₜ[ℤ_[l]] y)
-      ((congrArg C.ι (GlobalTheory.RingIface.aB_eq_alg l w).symm).trans (core_ι_aB C w))
+      ((congrArg C.ι (GlobalTheory.RingIface.aB_eq_alg l w).symm).trans (_root_.GlobalTheory.MemLoc.ULaws.iota_aB C w))
   | add x y hx hy => simp only [map_add (f := _), hx, hy]
 
 end GlobalTheory.BKGal.HatVal

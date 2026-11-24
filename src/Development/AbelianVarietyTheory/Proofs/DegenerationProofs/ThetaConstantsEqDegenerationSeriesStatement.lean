@@ -49,4 +49,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 
 theorem _root_.GlobalTheory.T.theta_constants_eq_degeneration_series : HV → BrGtSt → BrFamSt → TXSt := by
-  first | exact @GlobalTheory.Ex.ThetaSeries.theta_const_eq_series | exact GlobalTheory.Ex.ThetaSeries.theta_const_eq_series | (intros; apply GlobalTheory.Ex.ThetaSeries.theta_const_eq_series <;> assumption)
+  first | exact @GlobalTheory.Ex.ThetaSeries.theta_const_eq_series

@@ -4,7 +4,9 @@ public import Formalism.LocalToGlobal.ProjectiveLattices.HeckeStabSet
 public import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointBaseChangeAlgebraMap
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedModuliAlgebraicLawsChartWeightIntegralityStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.UnitIndepOfCharts
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedModuliAlgebraicLawsChartWeightIntegrality
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -103,7 +105,7 @@ theorem ptsDetect_framed : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   intro E _ _ _ H Dw l Xo c a n
   have hS : Out.SecBaseChangeSt := GlobalTheory.firstFiveLaws.1.secBaseChange
   exact GeometricValues.ptsDetect_of (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)
-    (fun t y y' => FrBor t y y') (GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hS E H Dw l Xo c).2.2.1
+    (fun t y y' => FrBor t y y') (_root_.GlobalTheory.Frames.algebraic_laws hS E H Dw l Xo c).2.2.1
     (fun S _ _ T _ _ φ y => GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c S T φ y) (ex Dw a n)
 
 end GlobalTheory.Frames

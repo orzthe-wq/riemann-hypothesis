@@ -62,14 +62,14 @@ noncomputable def contr (v : V ⊗[ℂ] W) : Module.Dual ℂ W →ₗ[ℂ] V whe
   map_add' l m := by
     induction v using TensorProduct.induction_on with
     | zero => simp
-    | tmul a b => simp [add_smul]
+    | tmul a b => simp
     | add s t hs ht =>
       simp only [map_add (f := _)] at hs ht ⊢
       rw [hs, ht]; abel
   map_smul' c l := by
     induction v using TensorProduct.induction_on with
     | zero => simp
-    | tmul a b => simp [mul_smul]
+    | tmul a b => simp
     | add s t hs ht =>
       simp only [map_add (f := _), RingHom.id_apply, smul_add] at hs ht ⊢
       rw [hs, ht]

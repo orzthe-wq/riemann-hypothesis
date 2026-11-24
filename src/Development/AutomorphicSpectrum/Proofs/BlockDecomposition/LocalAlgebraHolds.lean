@@ -402,7 +402,7 @@ theorem locAlg : LocAlg := by
     rw [hx]
     have hv : σ.ρ x₀ v.1 = v.1 := (GlobalTheory.TwTrLin.mem_fixed_iff σ.ρ K' v.1).mp v.2 x₀ hx₀
     have hne : ((K'.relIndex (KL n w) : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr hidx
-    simp only [LinearMap.smul_apply, hv, smul_smul, mul_inv_cancel₀ hne, one_smul]
+    simp only [hv, smul_smul, mul_inv_cancel₀ hne, one_smul]
     rfl
 
 end GlobalTheory.CompanionTheory.LocHecke

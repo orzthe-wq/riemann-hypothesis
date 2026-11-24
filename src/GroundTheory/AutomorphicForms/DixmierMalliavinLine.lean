@@ -1,57 +1,504 @@
 module
 
 public import GroundTheory.AutomorphicForms.DixmierMalliavinLineStage
-public import GroundTheory.AutomorphicForms.DixmierMalliavinLineBounds
-public import GroundTheory.AutomorphicForms.DixmierMalliavinLineLimit
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
+public import Mathlib.Analysis.Fourier.Convolution
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.ContDiff.Defs
+public import Mathlib.Analysis.Fourier.FourierTransform
+public import Mathlib.Analysis.Calculus.ContDiff.Polynomial
+public import Mathlib.Analysis.Distribution.AEEqOfIntegralContDiff
+public import Mathlib.Analysis.Distribution.SchwartzSpace.Fourier
+public import Mathlib.Analysis.Calculus.BumpFunction.Basic
+public import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
 public import Mathlib.Analysis.Calculus.SmoothSeries
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 public import Mathlib.Analysis.Normed.Group.Tannery
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Calculus.ContDiff.Convolution
 import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Presheaf
 import Mathlib.Topology.UniformSpace.Uniformizable
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.AutomorphicForms.DixmierMalliavinLineBounds, GroundTheory.AutomorphicForms.DixmierMalliavinLineLimit, GroundTheory.AutomorphicForms.DixmierMalliavinLine
+
+-- ===== clump member: GroundTheory.AutomorphicForms.DixmierMalliavinLineBounds =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.DixmierMalliavinLineBounds", "h": "module\n\npublic import GroundTheory.AutomorphicForms.DixmierMalliavinLineStage\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Calculus.ContDiff.Convolution\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Fourier.Convolution\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Automorphic
+
+open MeasureTheory Set Filter Topology Real Function ContinuousLinearMap
+open scoped ContDiff Convolution Pointwise FourierTransform
+
+set_option linter.unusedSectionVars false
+
+noncomputable section
+
+namespace LineKernel
+
+theorem tsupport_iteratedDeriv_subset {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {f : ℝ → E} (m : ℕ) : tsupport (iteratedDeriv m f) ⊆ tsupport f := by
+  induction m with
+  | zero => simp
+  | succ m ih => rw [iteratedDeriv_succ]; exact tsupport_deriv_subset.trans ih
+
+theorem iteratedDeriv_eq_of_deriv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {Φ : ℕ → ℝ → E} (h : ∀ m, deriv (Φ m) = Φ (m + 1)) (m : ℕ) : iteratedDeriv m (Φ 0) = Φ m := by
+  induction m with
+  | zero => simp
+  | succ m ih => rw [iteratedDeriv_succ, ih, h]
+
+theorem convolution_mul_eq_real (f g : ℝ → ℂ) : (f ⋆[mul ℂ ℂ] g) = (f ⋆[mul ℝ ℂ] g) := by
+  funext x; simp only [convolution_def, mul_apply']
+
+theorem iteratedDeriv_convolution {K g : ℝ → ℂ} (hK : LocallyIntegrable K) (hg : ContDiff ℝ ∞ g)
+    (hgc : HasCompactSupport g) (m : ℕ) :
+    iteratedDeriv m (K ⋆[mul ℂ ℂ] g) = K ⋆[mul ℂ ℂ] iteratedDeriv m g := by
+  have := iteratedDeriv_eq_of_deriv (Φ := fun m => K ⋆[mul ℂ ℂ] iteratedDeriv m g) (fun m => by
+    funext x
+    rw [convolution_mul_eq_real, convolution_mul_eq_real]
+    rw [((hasCompactSupport_iteratedDeriv hgc m).hasDerivAt_convolution_right (mul ℝ ℂ) hK
+      ((contDiff_iteratedDeriv_of_contDiff hg m).of_le (by simp)) x).deriv, ← iteratedDeriv_succ]) m
+  simpa using this
+
+theorem norm_convolution_le {K g : ℝ → ℂ} {B : ℝ} (hK : Integrable K) (hg : ∀ t, ‖g t‖ ≤ B)
+    (x : ℝ) : ‖(K ⋆[mul ℂ ℂ] g) x‖ ≤ B * ∫ t, ‖K t‖ := by
+  rw [convolution_mul, ← integral_const_mul]
+  refine (norm_integral_le_integral_norm _).trans (integral_mono_of_nonneg
+    (Eventually.of_forall fun t => norm_nonneg _) (hK.norm.const_mul B)
+    (Eventually.of_forall fun t => ?_))
+  simp only [norm_mul]
+  rw [mul_comm]
+  exact mul_le_mul_of_nonneg_right (hg _) (norm_nonneg _)
+
+section Bounds
+
+variable {a r : ℕ → ℝ} (ha : ∀ j, 0 < a j) (hr : ∀ j, 0 < r j)
+include ha hr
+
+theorem integral_norm_KC_le_one (n : ℕ) : ∫ t, ‖KC a r n t‖ ≤ 1 := by
+  have : (fun t => ‖KC a r n t‖) = Kc a r n := by
+    funext t; simp [KC, Complex.norm_real, abs_of_nonneg (Kc_nonneg ha hr n t)]
+  rw [this]; exact integral_Kc_le_one ha hr n
+
+theorem contDiff_ρ (n : ℕ) : ContDiff ℝ ∞ (ρ a r n) := by
+  cases n with
+  | zero => exact contDiff_ηC a r 0
+  | succ n =>
+    simp only [ρ]
+    exact ContDiff.sum fun p _ => contDiff_const.mul
+      (contDiff_iteratedDeriv_of_contDiff (contDiff_conv_ηC ha hr n) p)
+
+theorem support_ρ_subset (n : ℕ) : support (ρ a r n) ⊆ Icc 0 (Rs r n) := by
+  cases n with
+  | zero =>
+    intro t ht
+    have : t ∈ Icc (r 0) (2 * r 0) := by
+      by_contra h; exact ht (by simp [ρ, ηC, rem_eq_zero (hr 0) h])
+    exact ⟨(hr 0).le.trans this.1, by simpa [Rs] using this.2⟩
+  | succ n =>
+    have hs : tsupport (KC a r n ⋆[mul ℂ ℂ] ηC a r (n + 1)) ⊆ Icc 0 (Rs r (n + 1)) := by
+      refine closure_minimal ?_ isClosed_Icc
+      refine (support_convolution_subset (mul ℂ ℂ)).trans ?_
+      have h1 : support (KC a r n) ⊆ Icc 0 (Rs r n) := fun t ht =>
+        support_Kc_subset ha hr n (by simpa [KC] using ht)
+      have h2 : support (ηC a r (n + 1)) ⊆ Icc (r (n + 1)) (2 * r (n + 1)) := fun t ht =>
+        support_rem_subset (hr (n + 1)) (by simpa [ηC] using ht)
+      refine (Set.add_subset_add h1 h2).trans ((Set.Icc_add_Icc_subset _ _ _ _).trans
+        (Icc_subset_Icc (by linarith [hr (n + 1)]) (le_of_eq ?_)))
+      simp [Rs, Finset.sum_range_succ]
+    intro t ht
+    by_contra h
+    apply ht
+    simp only [ρ]
+    refine Finset.sum_eq_zero fun p _ => ?_
+    rw [image_eq_zero_of_notMem_tsupport (fun h' => h (hs (tsupport_iteratedDeriv_subset p h'))),
+      mul_zero]
+
+theorem norm_iteratedDeriv_ηC (j q : ℕ) (t : ℝ) :
+    ‖iteratedDeriv q (ηC a r j) t‖ = ‖iteratedDeriv q (rem (a j) (r j)) t‖ := by
+  have := iteratedDeriv_ofReal (contDiff_rem (a j) (r j)) q
+  show ‖iteratedDeriv q (fun t => ((rem (a j) (r j) t : ℝ) : ℂ)) t‖ = _
+  rw [this, Complex.norm_real]
+
+theorem norm_iteratedDeriv_ρ_succ_le (n m : ℕ) {B : ℕ → ℝ}
+    (hB : ∀ q t, ‖iteratedDeriv q (rem (a (n + 1)) (r (n + 1))) t‖ ≤ B q) (t : ℝ) :
+    ‖iteratedDeriv m (ρ a r (n + 1)) t‖ ≤
+      ∑ p ∈ Finset.range (n + 2), coef a (n + 1) p * B (p + m) := by
+  have hKi := (integrable_KC ha hr n).locallyIntegrable
+  have hηc := contDiff_ηC a r (n + 1)
+  have hηs := hasCompactSupport_ηC ha hr (n + 1)
+  set Φ : ℕ → ℝ → ℂ := fun m u => ∑ p ∈ Finset.range (n + 2),
+    (coef a (n + 1) p : ℂ) * (KC a r n ⋆[mul ℂ ℂ] iteratedDeriv (p + m) (ηC a r (n + 1))) u
+    with hΦ
+  have h0 : ρ a r (n + 1) = Φ 0 := by
+    funext u
+    simp only [ρ, hΦ, add_zero, iteratedDeriv_convolution hKi hηc hηs]
+  have hd : ∀ m, deriv (Φ m) = Φ (m + 1) := by
+    intro m; funext x
+    have hsum := HasDerivAt.sum (u := Finset.range (n + 2))
+      (A := fun p u => (coef a (n + 1) p : ℂ) *
+        (KC a r n ⋆[mul ℂ ℂ] iteratedDeriv (p + m) (ηC a r (n + 1))) u)
+      (A' := fun p => (coef a (n + 1) p : ℂ) *
+        (KC a r n ⋆[mul ℂ ℂ] iteratedDeriv (p + m + 1) (ηC a r (n + 1))) x) (x := x)
+      (fun p _ => by
+        refine HasDerivAt.const_mul _ ?_
+        rw [convolution_mul_eq_real, convolution_mul_eq_real, iteratedDeriv_succ]
+        exact (hasCompactSupport_iteratedDeriv hηs (p + m)).hasDerivAt_convolution_right
+          (mul ℝ ℂ) hKi ((contDiff_iteratedDeriv_of_contDiff hηc _).of_le (by simp)) x)
+    have e : Φ m = ∑ p ∈ Finset.range (n + 2), fun u => (coef a (n + 1) p : ℂ) *
+        (KC a r n ⋆[mul ℂ ℂ] iteratedDeriv (p + m) (ηC a r (n + 1))) u := by
+      funext u; simp [hΦ, Finset.sum_apply]
+    rw [e, hsum.deriv]
+    simp only [hΦ, add_assoc]
+  rw [h0, iteratedDeriv_eq_of_deriv hd m]
+  simp only [hΦ]
+  refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun p _ => ?_)
+  rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (coef_nonneg ha _ _)]
+  refine mul_le_mul_of_nonneg_left ?_ (coef_nonneg ha _ _)
+  have hB' : ∀ u, ‖iteratedDeriv (p + m) (ηC a r (n + 1)) u‖ ≤ B (p + m) := fun u => by
+    rw [norm_iteratedDeriv_ηC ha hr]; exact hB _ _
+  refine (norm_convolution_le (integrable_KC ha hr n) hB' t).trans ?_
+  have h1 := integral_norm_KC_le_one ha hr n
+  have h2 : 0 ≤ B (p + m) := (norm_nonneg _).trans (hB (p + m) 0)
+  have h3 : 0 ≤ ∫ t, ‖KC a r n t‖ := integral_nonneg fun t => norm_nonneg _
+  nlinarith
+
+theorem fourier_KC_zero (ξ : ℝ) : 𝓕 (KC a r 0) ξ = khat (a 0) (r 0) ξ := rfl
+
+theorem fourier_KC_succ (n : ℕ) (ξ : ℝ) :
+    𝓕 (KC a r (n + 1)) ξ = 𝓕 (KC a r n) ξ * khat (a (n + 1)) (r (n + 1)) ξ := by
+  rw [KC_succ ha hr n, fourier_mul_convolution_eq (f₂ := kC a r (n + 1)) (integrable_KC ha hr n)
+    (integrable_kern (ha (n + 1)).le (hr (n + 1))).ofReal]
+  rfl
+
+theorem norm_fourier_KC_le_one (n : ℕ) (ξ : ℝ) : ‖𝓕 (KC a r n) ξ‖ ≤ 1 := by
+  induction n with
+  | zero => rw [fourier_KC_zero ha hr]; exact norm_khat_le_one (ha 0) (hr 0) ξ
+  | succ n ih =>
+    rw [fourier_KC_succ ha hr, norm_mul]
+    exact mul_le_one₀ ih (norm_nonneg _) (norm_khat_le_one (ha _) (hr _) ξ)
+
+theorem norm_fourier_KC_succ_sub_le (n : ℕ) (ξ : ℝ) :
+    ‖𝓕 (KC a r (n + 1)) ξ - 𝓕 (KC a r n) ξ‖ ≤
+      4 * π * r (n + 1) * |ξ| + exp (-a (n + 1) * r (n + 1)) := by
+  rw [fourier_KC_succ ha hr, ← mul_sub_one, norm_mul]
+  calc ‖𝓕 (KC a r n) ξ‖ * ‖khat (a (n + 1)) (r (n + 1)) ξ - 1‖
+      ≤ 1 * (4 * π * r (n + 1) * |ξ| + exp (-a (n + 1) * r (n + 1))) :=
+        mul_le_mul (norm_fourier_KC_le_one ha hr n ξ) (norm_khat_sub_one_le (ha _) (hr _) ξ)
+          (norm_nonneg _) zero_le_one
+    _ = _ := one_mul _
+
+theorem abs_pow_mul_norm_fourier_KC_le (n m : ℕ) (hmn : m ≤ n + 1) (ξ : ℝ) :
+    |ξ| ^ m * ‖𝓕 (KC a r n) ξ‖ ≤ ∏ j ∈ Finset.range m, (a j / π) := by
+  induction n generalizing m with
+  | zero =>
+    interval_cases m
+    · simpa using norm_fourier_KC_le_one ha hr 0 ξ
+    · simpa [fourier_KC_zero ha hr] using abs_mul_norm_khat_le (ha 0) (hr 0) ξ
+  | succ n ih =>
+    rw [fourier_KC_succ ha hr, norm_mul]
+    rcases Nat.lt_or_ge m (n + 2) with h | h
+    · calc |ξ| ^ m * (‖𝓕 (KC a r n) ξ‖ * ‖khat (a (n + 1)) (r (n + 1)) ξ‖)
+          ≤ |ξ| ^ m * (‖𝓕 (KC a r n) ξ‖ * 1) := by
+            gcongr; exact norm_khat_le_one (ha _) (hr _) ξ
+        _ ≤ _ := by rw [mul_one]; exact ih m (by omega)
+    · obtain rfl : m = n + 2 := le_antisymm hmn h
+      rw [Finset.prod_range_succ, pow_succ]
+      calc |ξ| ^ (n + 1) * |ξ| * (‖𝓕 (KC a r n) ξ‖ * ‖khat (a (n + 1)) (r (n + 1)) ξ‖)
+          = (|ξ| ^ (n + 1) * ‖𝓕 (KC a r n) ξ‖) * (|ξ| * ‖khat (a (n + 1)) (r (n + 1)) ξ‖) := by
+            ring
+        _ ≤ (∏ j ∈ Finset.range (n + 1), (a j / π)) * (a (n + 1) / π) :=
+            mul_le_mul (ih (n + 1) le_rfl) (abs_mul_norm_khat_le (ha _) (hr _) ξ)
+              (by positivity) (Finset.prod_nonneg fun j _ => div_nonneg (ha j).le pi_pos.le)
+
+end Bounds
+
+theorem coef_mono {a : ℕ → ℝ} (ha : ∀ j, 0 < a j) (n p : ℕ) : coef a n p ≤ coef a (n + 1) p := by
+  cases p with
+  | zero => simp [coef]
+  | succ p => simp only [coef]; linarith [div_nonneg (coef_nonneg ha n p) (ha n).le]
+
+theorem coef_le_of {a β : ℕ → ℝ} (ha : ∀ j, 0 < a j) (hβ0 : β 0 = 1) (hβp : ∀ p, 0 ≤ β p)
+    (hβ : ∀ n p, 1 ≤ p → p ≤ n + 1 → (a n)⁻¹ * β (p - 1) ≤ (1 / 2) ^ (n + 1) * β p)
+    (n p : ℕ) : coef a n p ≤ β p := by
+  have key : ∀ n p, 1 ≤ p → coef a n p ≤ β p * (1 - (1 / 2) ^ n) := by
+    intro n
+    induction n with
+    | zero =>
+      intro p hp
+      obtain ⟨q, rfl⟩ : ∃ q, p = q + 1 := ⟨p - 1, by omega⟩
+      simp [coef]
+    | succ n ih =>
+      intro p hp
+      obtain ⟨q, rfl⟩ : ∃ q, p = q + 1 := ⟨p - 1, by omega⟩
+      simp only [coef]
+      have h1 := ih (q + 1) (by omega)
+      have h2 : coef a n q / a n ≤ (1 / 2) ^ (n + 1) * β (q + 1) := by
+        rcases Nat.lt_or_ge n q with hq | hq
+        · rw [coef_eq_zero a hq, zero_div]
+          have := hβ n (q + 1) (by omega)
+          have hb : 0 ≤ β (q + 1) := hβp _
+          positivity
+        · have hc : coef a n q ≤ β q := by
+            rcases Nat.eq_zero_or_pos q with rfl | hq0
+            · rw [coef_zero_right, hβ0]
+            · have := ih q hq0
+              have hbq : 0 ≤ β q := hβp q
+              nlinarith [pow_pos (by norm_num : (0 : ℝ) < 1 / 2) n]
+          have := hβ n (q + 1) (by omega) (by omega)
+          simp only [Nat.add_sub_cancel] at this
+          calc coef a n q / a n = (a n)⁻¹ * coef a n q := by ring
+            _ ≤ (a n)⁻¹ * β q := mul_le_mul_of_nonneg_left hc (inv_nonneg.2 (ha n).le)
+            _ ≤ _ := this
+      calc coef a n (q + 1) + coef a n q / a n
+          ≤ β (q + 1) * (1 - (1 / 2) ^ n) + (1 / 2) ^ (n + 1) * β (q + 1) := add_le_add h1 h2
+        _ = β (q + 1) * (1 - (1 / 2) ^ (n + 1)) := by ring
+  rcases Nat.eq_zero_or_pos p with rfl | hp
+  · rw [coef_zero_right, hβ0]
+  · have := key n p hp
+    nlinarith [hβp p, pow_pos (by norm_num : (0 : ℝ) < 1 / 2) n]
+
+end LineKernel
+
+end
+
+end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.DixmierMalliavinLineBounds =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.DixmierMalliavinLineLimit =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.DixmierMalliavinLineLimit", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Calculus.ContDiff.Defs\npublic import Mathlib.Analysis.Fourier.FourierTransform\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\npublic import Mathlib.Analysis.Calculus.ContDiff.Polynomial\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Distribution.AEEqOfIntegralContDiff\npublic import Mathlib.Analysis.Distribution.SchwartzSpace.Fourier\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Calculus.BumpFunction.Basic\npublic import Mathlib.Analysis.Distribution.SchwartzSpace.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Automorphic
+
+open MeasureTheory Filter Topology Set
+open scoped FourierTransform ContDiff
+
+namespace WeakLimit
+
+theorem integral_fourier_mul_eq {f g : ℝ → ℂ} (hf : Integrable f) (hg : Integrable g) :
+    ∫ ξ, 𝓕 f ξ * g ξ = ∫ x, f x * 𝓕 g x := by
+  simpa using! (VectorFourier.integral_fourierIntegral_smul_eq_flip (L := innerₗ ℝ)
+      Real.continuous_fourierChar continuous_inner hf hg)
+
+theorem integral_fourierInv_mul_eq {f g : ℝ → ℂ} (hf : Integrable f) (hg : Integrable g) :
+    ∫ ξ, 𝓕⁻ f ξ * g ξ = ∫ x, f x * 𝓕⁻ g x := by
+  rw [Real.fourierInv_eq_fourier_comp_neg, integral_fourier_mul_eq hf.comp_neg hg,
+    ← integral_neg_eq_self (fun x => f x * 𝓕⁻ g x)]
+  congr 1; funext x
+  simp [Real.fourierInv_eq_fourier_neg]
+
+theorem norm_fourier_le (f : ℝ → ℂ) (ξ : ℝ) : ‖𝓕 f ξ‖ ≤ ∫ x, ‖f x‖ :=
+  VectorFourier.norm_fourierIntegral_le_integral_norm _ _ _ _ _
+
+theorem continuous_fourier_of_integrable {f : ℝ → ℂ} (hf : Integrable f) : Continuous (𝓕 f) :=
+  VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar continuous_inner hf
+
+theorem exists_smooth_near (a b : ℝ) {ψ : ℝ → ℂ} (hψ : Continuous ψ) {η : ℝ} (hη : 0 < η) :
+    ∃ ψ' : ℝ → ℂ, ContDiff ℝ ∞ ψ' ∧ HasCompactSupport ψ' ∧ ∀ t ∈ Icc a b, ‖ψ t - ψ' t‖ ≤ η := by
+  obtain ⟨p, hp⟩ := exists_polynomial_near_of_continuousOn a b (fun t => (ψ t).re)
+    (Complex.continuous_re.comp hψ).continuousOn (η / 2) (by positivity)
+  obtain ⟨q, hq⟩ := exists_polynomial_near_of_continuousOn a b (fun t => (ψ t).im)
+    (Complex.continuous_im.comp hψ).continuousOn (η / 2) (by positivity)
+  have hpd : ∀ r : Polynomial ℝ, ContDiff ℝ ∞ (fun t : ℝ => r.eval t) := fun r => by
+    simpa [Polynomial.coe_aeval_eq_eval] using r.contDiff_aeval (𝕜 := ℝ) ∞
+  let χ : ContDiffBump ((a + b) / 2) := ⟨|b - a| + 1, |b - a| + 2, by positivity, by linarith⟩
+  refine ⟨fun t => (χ t : ℂ) * (((p.eval t : ℝ) : ℂ) + ((q.eval t : ℝ) : ℂ) * Complex.I), ?_, ?_, ?_⟩
+  · exact (Complex.ofRealCLM.contDiff.comp χ.contDiff).mul
+      ((Complex.ofRealCLM.contDiff.comp (hpd p)).add
+        ((Complex.ofRealCLM.contDiff.comp (hpd q)).mul contDiff_const))
+  · exact (χ.hasCompactSupport.comp_left Complex.ofReal_zero).mul_right
+  · intro t ht
+    have hχ : χ t = 1 := by
+      apply χ.one_of_mem_closedBall
+      rw [Metric.mem_closedBall, Real.dist_eq]
+      have := ht.1; have := ht.2
+      rw [abs_le]; constructor <;> cases abs_cases (b - a) <;> linarith
+    show ‖ψ t - (χ t : ℂ) * _‖ ≤ η
+    rw [hχ, Complex.ofReal_one, one_mul]
+    refine (Complex.norm_le_abs_re_add_abs_im _).trans ?_
+    have h1 := hp t ht
+    have h2 := hq t ht
+    simp only [Complex.sub_re, Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.I_re,
+      Complex.ofReal_im, Complex.I_im, Complex.sub_im, Complex.add_im, Complex.mul_im, mul_zero,
+      mul_one, sub_zero, add_zero, zero_add]
+    rw [abs_sub_comm] at h1 h2
+    linarith
+
+end WeakLimit
+
+theorem exists_smooth_weak_limit {K : ℕ → ℝ → ℝ} {a b : ℝ} (hKi : ∀ N, Integrable (K N))
+    (hK0 : ∀ N t, 0 ≤ K N t) (hK1 : ∀ N, ∫ t, K N t ≤ 1)
+    (hKs : ∀ N, Function.support (K N) ⊆ Icc a b)
+    (hconv : ∀ ξ : ℝ, ∃ l : ℂ, Tendsto (fun N => 𝓕 (fun t => (K N t : ℂ)) ξ) atTop (𝓝 l))
+    (hdecay : ∀ m : ℕ, ∃ C N₀, ∀ N ≥ N₀, ∀ ξ : ℝ,
+      ‖𝓕 (fun t => (K N t : ℂ)) ξ‖ ≤ C * (1 + |ξ|) ^ (-(m : ℝ))) :
+    ∃ g : ℝ → ℂ, ContDiff ℝ ∞ g ∧ tsupport g ⊆ Icc a b ∧
+      ∀ ψ : ℝ → ℂ, Continuous ψ →
+        Tendsto (fun N => ∫ t, ψ t * K N t) atTop (𝓝 (∫ t, ψ t * g t)) := by
+  set Kc : ℕ → ℝ → ℂ := fun N t => (K N t : ℂ) with hKc
+  have hKci : ∀ N, Integrable (Kc N) := fun N => (hKi N).ofReal
+  have hKn : ∀ N ξ, ‖𝓕 (Kc N) ξ‖ ≤ 1 := by
+    intro N ξ
+    refine (WeakLimit.norm_fourier_le _ ξ).trans ?_
+    simp only [Kc, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hK0 N _)]
+    exact hK1 N
+  choose Φ hΦ using hconv
+  have hΦd : ∀ m : ℕ, ∃ C, ∀ ξ, ‖Φ ξ‖ ≤ C * (1 + |ξ|) ^ (-(m : ℝ)) := by
+    intro m
+    obtain ⟨C, N₀, hC⟩ := hdecay m
+    exact ⟨C, fun ξ => le_of_tendsto ((hΦ ξ).norm) (eventually_atTop.2 ⟨N₀, fun N hN => hC N hN ξ⟩)⟩
+  have hΦm : AEStronglyMeasurable Φ :=
+    aestronglyMeasurable_of_tendsto_ae atTop
+      (fun N => (WeakLimit.continuous_fourier_of_integrable (hKci N)).aestronglyMeasurable)
+      (ae_of_all _ hΦ)
+  have hΦint : ∀ n : ℕ, Integrable (fun ξ : ℝ => ‖ξ‖ ^ n * ‖Φ ξ‖) := by
+    intro n
+    obtain ⟨C, hC⟩ := hΦd (n + 2)
+    have hI : Integrable (fun ξ : ℝ => C * (1 + ‖ξ‖) ^ (-(2 : ℝ))) :=
+      (integrable_one_add_norm (by norm_num)).const_mul C
+    refine hI.mono' ((continuous_norm.pow n).aestronglyMeasurable.mul hΦm.norm)
+      (ae_of_all _ fun ξ => ?_)
+    have h1 : 0 < 1 + |ξ| := by positivity
+    rw [norm_mul, norm_pow, norm_norm, norm_norm, Real.norm_eq_abs]
+    calc |ξ| ^ n * ‖Φ ξ‖ ≤ (1 + |ξ|) ^ n * (C * (1 + |ξ|) ^ (-((n + 2 : ℕ) : ℝ))) :=
+          mul_le_mul (pow_le_pow_left₀ (abs_nonneg _) (by linarith) n) (hC ξ) (norm_nonneg _)
+            (by positivity)
+      _ = C * (1 + |ξ|) ^ (-(2 : ℝ)) := by
+          rw [← Real.rpow_natCast, mul_left_comm, ← Real.rpow_add h1]
+          congr 2; push_cast; ring
+  have hΦi : Integrable Φ := (integrable_norm_iff hΦm).1 (by simpa using hΦint 0)
+  set g : ℝ → ℂ := 𝓕⁻ Φ with hgdef
+  have hg : ContDiff ℝ ∞ g := by
+    rw [hgdef, Real.fourierInv_eq_fourier_comp_neg]
+    exact Real.contDiff_fourier fun n _ => by simpa using (hΦint n).comp_neg
+
+  have hsmooth : ∀ ψ : ℝ → ℂ, ContDiff ℝ ∞ ψ → HasCompactSupport ψ →
+      Tendsto (fun N => ∫ t, ψ t * Kc N t) atTop (𝓝 (∫ t, ψ t * g t)) := by
+    intro ψ hψ hψc
+    let ψS := hψc.toSchwartzMap hψ
+    have hψi : Integrable ψ := hψ.continuous.integrable_of_hasCompactSupport hψc
+    have hθi : Integrable (𝓕⁻ ψ) := by
+      have := (𝓕⁻ ψS).integrable (μ := volume)
+      rwa [SchwartzMap.fourierInv_coe] at this
+    have hFψ : Integrable (𝓕 ψ) := by
+      have := (𝓕 ψS).integrable (μ := volume)
+      rwa [SchwartzMap.fourier_coe] at this
+    have hinv : 𝓕 (𝓕⁻ ψ) = ψ := hψ.continuous.fourier_fourierInv_eq hψi hFψ
+    have e1 : ∀ N, ∫ t, ψ t * Kc N t = ∫ ξ, 𝓕⁻ ψ ξ * 𝓕 (Kc N) ξ := by
+      intro N
+      conv_lhs => rw [← hinv]
+      exact WeakLimit.integral_fourier_mul_eq hθi (hKci N)
+    have e2 : ∫ t, ψ t * g t = ∫ ξ, 𝓕⁻ ψ ξ * Φ ξ :=
+      (WeakLimit.integral_fourierInv_mul_eq hψi hΦi).symm
+    simp_rw [e1, e2]
+    refine tendsto_integral_of_dominated_convergence (fun ξ => ‖𝓕⁻ ψ ξ‖) (fun N => ?_)
+      hθi.norm (fun N => ae_of_all _ fun ξ => ?_) (ae_of_all _ fun ξ => (hΦ ξ).const_mul _)
+    · exact hθi.aestronglyMeasurable.mul
+        (WeakLimit.continuous_fourier_of_integrable (hKci N)).aestronglyMeasurable
+    · rw [norm_mul]
+      exact mul_le_of_le_one_right (norm_nonneg _) (hKn N ξ)
+
+  have hgi : LocallyIntegrable g := hg.continuous.locallyIntegrable
+  have hsupp : Function.support g ⊆ Icc a b := by
+    have hae : ∀ᵐ x, x ∈ (Icc a b)ᶜ → g x = 0 := by
+      refine isClosed_Icc.isOpen_compl.ae_eq_zero_of_integral_contDiff_smul_eq_zero
+        (hgi.locallyIntegrableOn _) fun φ hφ hφc hφs => ?_
+      have hlim := hsmooth (fun x => (φ x : ℂ)) (Complex.ofRealCLM.contDiff.comp hφ)
+        (hφc.comp_left Complex.ofReal_zero)
+      have h0 : ∀ N, ∫ t, (φ t : ℂ) * Kc N t = 0 := by
+        intro N
+        refine integral_eq_zero_of_ae (ae_of_all _ fun t => ?_)
+        by_cases ht : t ∈ Icc a b
+        · have : φ t = 0 := image_eq_zero_of_notMem_tsupport fun h' => hφs h' ht
+          simp [this]
+        · have : K N t = 0 := Function.notMem_support.1 fun h' => ht (hKs N h')
+          simp [Kc, this]
+      simp_rw [h0] at hlim
+      simp_rw [Complex.real_smul]
+      exact tendsto_nhds_unique hlim tendsto_const_nhds
+    intro x hx
+    by_contra hxI
+    have hopen : IsOpen ((Icc a b)ᶜ ∩ Function.support g) :=
+      isClosed_Icc.isOpen_compl.inter hg.continuous.isOpen_support
+    have hnull : volume ((Icc a b)ᶜ ∩ Function.support g) = 0 := by
+      rw [measure_eq_zero_iff_ae_notMem]
+      exact hae.mono fun y hy hy' => hy'.2 (hy hy'.1)
+    exact (hopen.measure_ne_zero volume ⟨x, hxI, hx⟩) hnull
+  refine ⟨g, hg, closure_minimal hsupp isClosed_Icc, fun ψ hψ => ?_⟩
+  have hgc : HasCompactSupport g :=
+    isCompact_Icc.of_isClosed_subset (isClosed_tsupport g) (closure_minimal hsupp isClosed_Icc)
+  have hIK : ∀ φ : ℝ → ℂ, Continuous φ → ∀ N, Integrable (fun t => φ t * Kc N t) := by
+    intro φ hφ N
+    obtain ⟨B, hB⟩ := (isCompact_Icc (a := a) (b := b)).exists_bound_of_continuousOn hφ.continuousOn
+    refine ((hKi N).const_mul B).mono' (hφ.aestronglyMeasurable.mul (hKci N).aestronglyMeasurable)
+      (ae_of_all _ fun t => ?_)
+    by_cases ht : t ∈ Icc a b
+    · rw [norm_mul]
+      simp only [Kc, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hK0 N t)]
+      exact mul_le_mul_of_nonneg_right (hB t ht) (hK0 N t)
+    · have : K N t = 0 := Function.notMem_support.1 fun h' => ht (hKs N h')
+      simp [Kc, this]
+  have hIg : ∀ φ : ℝ → ℂ, Continuous φ → Integrable (fun t => φ t * g t) := fun φ hφ =>
+    (hφ.mul hg.continuous).integrable_of_hasCompactSupport hgc.mul_left
+  set L := ∫ t, ‖g t‖ with hLdef
+  have hL : 0 ≤ L := integral_nonneg fun _ => norm_nonneg _
+  rw [Metric.tendsto_atTop]
+  intro δ hδ
+  set η := δ / (4 * (L + 2)) with hη
+  have hηpos : 0 < η := by positivity
+  obtain ⟨ψ', hψ', hψ'c, hψψ'⟩ := WeakLimit.exists_smooth_near a b hψ hηpos
+  obtain ⟨N₀, hN₀⟩ := Metric.tendsto_atTop.1 (hsmooth ψ' hψ' hψ'c) (δ / 2) (by positivity)
+  refine ⟨N₀, fun N hN => ?_⟩
+  have hdiffK : ‖(∫ t, ψ t * Kc N t) - ∫ t, ψ' t * Kc N t‖ ≤ η := by
+    rw [← integral_sub (hIK ψ hψ N) (hIK ψ' hψ'.continuous N)]
+    refine (norm_integral_le_of_norm_le ((hKi N).const_mul η) (ae_of_all _ fun t => ?_)).trans ?_
+    · rw [← sub_mul, norm_mul]
+      by_cases ht : t ∈ Icc a b
+      · simp only [Kc, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hK0 N t)]
+        exact mul_le_mul_of_nonneg_right (hψψ' t ht) (hK0 N t)
+      · have : K N t = 0 := Function.notMem_support.1 fun h' => ht (hKs N h')
+        simp [Kc, this]
+    · rw [integral_const_mul]
+      exact mul_le_of_le_one_right hηpos.le (hK1 N)
+  have hdiffg : ‖(∫ t, ψ' t * g t) - ∫ t, ψ t * g t‖ ≤ η * L := by
+    rw [← integral_sub (hIg ψ' hψ'.continuous) (hIg ψ hψ), hLdef, ← integral_const_mul]
+    refine norm_integral_le_of_norm_le ((hg.continuous.norm.integrable_of_hasCompactSupport hgc.norm).const_mul η) (ae_of_all _ fun t => ?_)
+    rw [← sub_mul, norm_mul]
+    by_cases ht : t ∈ Icc a b
+    · rw [norm_sub_rev]
+      exact mul_le_mul_of_nonneg_right (hψψ' t ht) (norm_nonneg _)
+    · have : g t = 0 := Function.notMem_support.1 fun h' => ht (hsupp h')
+      simp [this]
+  have hmid : dist (∫ t, ψ' t * Kc N t) (∫ t, ψ' t * g t) < δ / 2 := hN₀ N hN
+  rw [dist_eq_norm] at hmid ⊢
+  have h3 : ‖(∫ t, ψ t * Kc N t) - ∫ t, ψ t * g t‖ ≤
+      ‖(∫ t, ψ t * Kc N t) - ∫ t, ψ' t * Kc N t‖ +
+        ‖(∫ t, ψ' t * Kc N t) - ∫ t, ψ' t * g t‖ + ‖(∫ t, ψ' t * g t) - ∫ t, ψ t * g t‖ :=
+    (norm_sub_le_norm_sub_add_norm_sub _ _ _).trans (by
+      linarith [norm_sub_le_norm_sub_add_norm_sub (∫ t, ψ' t * Kc N t) (∫ t, ψ' t * g t)
+        (∫ t, ψ t * g t)])
+  have h4 : η + η * L < δ / 2 := by
+    have hpos : 0 < 4 * (L + 2) := by positivity
+    have h5 : η * (4 * (L + 2)) = δ := by rw [hη]; field_simp
+    nlinarith [mul_nonneg hηpos.le hL]
+  show ‖(∫ t, ψ t * Kc N t) - ∫ t, ψ t * g t‖ < δ
+  linarith
+
+end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.DixmierMalliavinLineLimit =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.DixmierMalliavinLine =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.DixmierMalliavinLine", "h": "module\n\npublic import GroundTheory.AutomorphicForms.DixmierMalliavinLineStage\npublic import GroundTheory.AutomorphicForms.DixmierMalliavinLineBounds\npublic import GroundTheory.AutomorphicForms.DixmierMalliavinLineLimit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\npublic import Mathlib.Analysis.Calculus.SmoothSeries\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\npublic import Mathlib.Analysis.Normed.Group.Tannery\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Presheaf\nimport Mathlib.Topology.UniformSpace.Uniformizable\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace GroundTheory.Automorphic
@@ -439,3 +886,6 @@ theorem exists_dixmierMalliavin_line (M : ℕ → ℝ) {ε : ℝ} (hε : 0 < ε)
 end
 
 end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.DixmierMalliavinLine =====

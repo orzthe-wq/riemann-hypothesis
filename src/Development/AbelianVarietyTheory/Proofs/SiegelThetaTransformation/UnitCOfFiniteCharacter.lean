@@ -4,8 +4,10 @@ public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSt
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.LawsFieldsSeparately
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointBaseChangeAlgebraMap
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedModuliAlgebraicLawsChartWeightIntegrality
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointReducedFromTestRingStatement
 public import Formalism.LocalToGlobal.ProjectiveLattices.ReadAlg
+import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointReducedFromTestRing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,7 +63,7 @@ namespace GlobalTheory.Dict
 theorem unitC_of_finite_character : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (Cls : Type) [CommGroup Cls] [Finite Cls] (δ : Cls →* d.c₂.Fˣ) (gdet : FrPt d.Xo₂ d.c₂ (CAt d.c₂.F.val.toRingHom) → Cls), 1 ≤ Dw.p + Dw.q → CMP Xo c d _ Cls δ gdet false → UnitC d := by
   intro E _ _ _ H Dw l Xo c n d Cls _ _ δ gdet hpq hC
   have hSB := (@GlobalTheory.lawsFieldsSeparately).2.1
-  have hAT := @GlobalTheory.T.framedPoint_reduced_from_testRing hSB E _ _ _ H Dw d.l₂ d.Xo₂ d.c₂
+  have hAT := @_root_.GlobalTheory.Frames.allTest_of_secBaseChange hSB E _ _ _ H Dw d.l₂ d.Xo₂ d.c₂
   have hW := (GlobalTheory.Frames.algebraic_laws hSB E H Dw d.l₂ d.Xo₂ d.c₂).2.2.1
   obtain ⟨hs, hv⟩ := hC
   unfold Formalism.L2.Pj.sec Formalism.L2.Pj.secW at hs

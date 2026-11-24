@@ -143,17 +143,12 @@ theorem goodOf : GoodOf := by
       (IsLocalization.algEquiv (.powers r) _ Γ(M.X, M.X.basicOpen r)).toRingEquiv hr
     ext a
     dsimp
-    simp only [IsScalarTower.algebraMap_apply (OK l K) Γ(M.X, V) (Localization _),
-      IsLocalization.map_eq]
-    simp only [RingHom.algebraMap_toAlgebra, RingHomCompTriple.comp_apply,
-      ← ConcreteCategory.comp_apply, Scheme.Hom.appLE_map]
+    simp only [IsScalarTower.algebraMap_apply (OK l K) Γ(M.X, V) (Localization _)]
+    simp only [RingHom.algebraMap_toAlgebra, ← ConcreteCategory.comp_apply]
     rw [AlgEquiv.commutes]
     first
       | (rw [CommRingCat.comp_apply, ← Scheme.Hom.appLE_map (V := V) M.p le_top
             (homOfLE (M.X.basicOpen_le r)).op, CommRingCat.comp_apply]; rfl)
-      | (simp only [φ, e, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom,
-            Iso.commRingCatIsoToRingEquiv_symm_apply, ← CommRingCat.comp_apply,
-            ← ConcreteCategory.comp_apply, Scheme.Hom.appLE_map]; rfl)
   obtain ⟨k, g, hgC, hg⟩ := hstd.exists_etale_mvPolynomial
   refine ⟨M.X.basicOpen r, hV.basicOpen r, hxr, k + 1, 1, le_rfl, by omega,
     g.comp (chartEquiv (OK l K) ϖ k).toRingHom, ?_, ?_⟩

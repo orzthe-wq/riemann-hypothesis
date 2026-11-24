@@ -169,7 +169,6 @@ theorem Sw_rel {A fr fi : Matrix (Fin m) (Fin m) ℂ} {C bw biw : Matrix (Fin n 
     intro Y
     ext i j
     simp [PositivityTheory.SiegelWeilFormula.KK.jE, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
-    try ring
   have hts1 : ∀ (c : ℂ) (M : Matrix (Fin m) (Fin n ⊕ Fin n) ℂ), (c • M).toCols₁ = c • M.toCols₁ :=
     fun _ _ => Matrix.ext fun _ _ => rfl
   have hts2 : ∀ (c : ℂ) (M : Matrix (Fin m) (Fin n ⊕ Fin n) ℂ), (c • M).toCols₂ = c • M.toCols₂ :=
@@ -185,7 +184,7 @@ theorem Sw_rel {A fr fi : Matrix (Fin m) (Fin m) ℂ} {C bw biw : Matrix (Fin n 
   unfold PositivityTheory.SiegelWeilFormula.KK.Sw
   rw [hUb, hts1, hts2, hYS1, hYS2, smul_smul, hT, hT, hN, hN]
   rcases hζ with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> rcases Int.units_eq_one_or sg with rfl | rfl <;>
-    apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring
+    apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im]
 
 end Place
 

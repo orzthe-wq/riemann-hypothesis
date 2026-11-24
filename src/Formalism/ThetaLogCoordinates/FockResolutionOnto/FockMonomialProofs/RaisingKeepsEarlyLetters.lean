@@ -79,16 +79,6 @@ theorem glAct_succ_comm (LL : Letters (K + 1)) (s t a b : Fin r) (F : MvPolynomi
   rw [glRest_comm LL K (K + 1) (Nat.le_succ K) s t a b F, ← glAct_comm LL K s t a b F]
   abel
 
-theorem eulL_keep_supp {σ : Type} {s : ℕ} (t : Fin s → σ) (Q : Set (σ →₀ ℕ)) :
-    ∀ x ∈ restrictSupport ℚ_[p] Q, ProjS.eulL t x ∈ restrictSupport ℚ_[p] Q := by
-  intro x hx
-  rw [mem_restrictSupport_iff] at hx ⊢
-  intro m hm
-  apply hx
-  rw [Finset.mem_coe, mem_support_iff] at hm ⊢
-  rw [ProjS.coeff_eulL] at hm
-  exact left_ne_zero_of_mul hm
-
 theorem resL_eulL {σ : Type} {s : ℕ} (t : Fin s → σ) (v : σ) (e : ℕ) (x : MvPolynomial σ ℚ_[p]) :
     resL p v e (ProjS.eulL t x) = ProjS.eulL t (resL p v e x) := by
   ext m
@@ -133,7 +123,7 @@ theorem Uop_supp [NeZero r] (LL : Letters (K + 1)) (hv : LL.vec (Fin.last K) = t
   rw [Uop_apply]
   refine Submodule.sub_mem _ ?_ (Submodule.sum_mem _ fun b _ => ?_)
   · rw [X_mul_mem p]
-    refine restrictSupport_mono ℚ_[p] ?_ (Submodule.sub_mem _ (Submodule.smul_mem _ _ hF) (eulL_keep_supp _ _ F hF))
+    refine restrictSupport_mono ℚ_[p] ?_ (Submodule.sub_mem _ (Submodule.smul_mem _ _ hF) (_root_.Formalism.CountingSumsFrames.eul_keep_supp _ _ F hF))
     intro m hm
     simp only [Set.mem_ofPred_eq] at hm ⊢
     rw [last_wt LL (K + 1) le_rfl hv]

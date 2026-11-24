@@ -158,7 +158,7 @@ theorem capR_mul_capS (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
   · subst h
     exact (GlobalTheory.CompanionTheory.CTFin.CapFactor.capR_commute_capS r s τ u v).eq
   · unfold GlobalTheory.CompanionTheory.CTFin.capR GlobalTheory.CompanionTheory.CTFin.capS
-    exact qdet_commute_of _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _
+    exact qdet_commute_of (A := Module.End ℂ (Sm E (r + s))) _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _
 
 theorem capR_mul_capR (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
     GlobalTheory.CompanionTheory.CTFin.capR r s τ u * GlobalTheory.CompanionTheory.CTFin.capR r s τ' v =
@@ -167,7 +167,7 @@ theorem capR_mul_capR (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
   by_cases h : τ = τ'
   · subst h
     exact qdet_commute_self _ (glRel_comp (glRel_Eop τ) (Fin.castAdd_injective r s)) _ _
-  · exact qdet_commute_of _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _
+  · exact qdet_commute_of (A := Module.End ℂ (Sm E (r + s))) _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _
 
 theorem capS_mul_capS (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
     GlobalTheory.CompanionTheory.CTFin.capS r s τ u * GlobalTheory.CompanionTheory.CTFin.capS r s τ' v =
@@ -176,7 +176,7 @@ theorem capS_mul_capS (r s : ℕ) (τ τ' : E →+* ℂ) (u v : ℂ) :
   by_cases h : τ = τ'
   · subst h
     exact qdet_commute_self _ (glRel_comp (glRel_Eop τ) (Fin.natAdd_injective s r)) _ _
-  · exact qdet_commute_of _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _
+  · exact qdet_commute_of (A := Module.End ℂ (Sm E (r + s))) _ _ (fun i j k l => Eop_comm h _ _ _ _) _ _
 
 theorem gens_comm (r s : ℕ) : ∀ a ∈ gens E r s, ∀ b ∈ gens E r s, a * b = b * a := by
   rintro a (⟨⟨τ, u⟩, rfl⟩ | ⟨⟨τ, u⟩, rfl⟩) b (⟨⟨τ', v⟩, rfl⟩ | ⟨⟨τ', v⟩, rfl⟩)

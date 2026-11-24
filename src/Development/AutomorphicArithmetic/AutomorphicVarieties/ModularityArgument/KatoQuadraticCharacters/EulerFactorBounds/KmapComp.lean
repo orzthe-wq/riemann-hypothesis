@@ -126,8 +126,7 @@ theorem sApi : SApi := by
     rw [← map_sub]
     exact ev_map (idl l) _ n _ (h _)
   · funext u
-    simp only [Tower.galB, LinearMap.coe_mk, AddHom.coe_mk, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.head_cons]
+    simp only [Tower.galB, LinearMap.coe_mk, AddHom.coe_mk, Matrix.cons_val_zero, Matrix.cons_val_one]
     have hst : (s * t).toRingEquiv = s.toRingEquiv * t.toRingEquiv := rfl
     rw [hst, map_mul, Units.val_mul,
       show ((cyclotomicCharacter Ω l) s.toRingEquiv : ℤ_[l]) * ((cyclotomicCharacter Ω l) t.toRingEquiv) * u 1 =

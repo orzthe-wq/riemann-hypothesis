@@ -4,51 +4,6 @@ public import Formalism.LocalToGlobal.CharacterGerms.MemVarsProdAll
 public import Mathlib.Algebra.MvPolynomial.Supported
 public import Mathlib.Order.CompletePartialOrder
 public import Mathlib.RingTheory.MvPowerSeries.Rename
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -271,15 +226,14 @@ private theorem coeff_embDomain_rename_character_germs (e : σ ↪ τ) (F : MvPo
   · intro y hy hne
     exfalso
     apply hne
-    simp only [Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq,
-      Finsupp.embDomain_eq_mapDomain] at hy
+    simp only [Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff, Finsupp.embDomain_eq_mapDomain] at hy
     exact Finsupp.mapDomain_injective e.injective hy
 
 private theorem coeff_rename_eq_zero_of_ne_embDomain (e : σ ↪ τ) (F : MvPowerSeries σ K) (x : τ →₀ ℕ)
     (hx : ∀ d, Finsupp.embDomain e d ≠ x) : MvPowerSeries.coeff x (MvPowerSeries.rename e F) = 0 := by
   rw [MvPowerSeries.coeff_rename]
   refine Finset.sum_eq_zero fun y hy => ?_
-  simp only [Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq] at hy
+  simp only [Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff] at hy
   exact absurd (by rw [Finsupp.embDomain_eq_mapDomain]; exact hy) (hx y)
 
 theorem rtj_jet_rename (e : σ ↪ τ) (P : MvPolynomial σ K) (F : MvPowerSeries σ K) :
@@ -292,8 +246,7 @@ theorem rtj_jet_rename (e : σ ↪ τ) (P : MvPolynomial σ K) (F : MvPowerSerie
     · intro y hy hne
       exfalso
       apply hne
-      simp only [Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq,
-        Finsupp.embDomain_eq_mapDomain] at hy
+      simp only [Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff, Finsupp.embDomain_eq_mapDomain] at hy
       exact Finsupp.mapDomain_injective e.injective hy
   have hsupp : (MvPolynomial.rename e P).support ⊆ P.support.image (Finsupp.embDomain e) := by
     intro m hm
@@ -314,7 +267,7 @@ theorem rtj_serIn_rename (e : σ ↪ τ) (F : MvPowerSeries σ K) :
   intro μ hμ
   rw [MvPowerSeries.coeff_rename] at hμ
   obtain ⟨y, hy, -⟩ := Finset.exists_ne_zero_of_sum_ne_zero hμ
-  simp only [Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_setOf_eq] at hy
+  simp only [Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_singleton_iff] at hy
   subst hy
   intro i hi
   obtain ⟨j, -, rfl⟩ := Finset.mem_image.mp (Finsupp.mapDomain_support hi)

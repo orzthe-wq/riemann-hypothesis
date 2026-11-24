@@ -255,10 +255,10 @@ theorem glAct_eq_add_glAct_diff (S S' : Set (Fin N)) (h : S ⊆ S') (a b : Fin n
   refine Finset.sum_congr rfl fun l _ => ?_
   by_cases h1 : l ∈ S
   · have h2 : l ∈ S' := h h1
-    simp [h1, h2, Set.mem_diff]
+    simp [h1, h2]
   · by_cases h2 : l ∈ S'
-    · simp [h1, h2, Set.mem_diff]
-    · simp [h1, h2, Set.mem_diff]
+    · simp [h1, h2]
+    · simp [h1, h2]
 
 theorem lie_polarizationDer_eq_zero_of_disjoint (S T : Set (Fin N)) (hd : ∀ l, l ∈ S → l ∉ T) (a b c d : Fin n) :
     ⁅isoPolDer F LL S a b, isoPolDer F LL T c d⁆ = 0 := by

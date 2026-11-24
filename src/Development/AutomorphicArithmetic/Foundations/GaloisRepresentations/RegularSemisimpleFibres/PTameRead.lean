@@ -115,7 +115,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.tameRead :
   refine ⟨ι, fun t ϖ hϖ z hz => ?_⟩
   obtain ⟨t', x, ht, hx, hr⟩ := res_read hm D R hR t
   have hg := DiscreteGroups.sglob.DzType.natCast_mem_of_normV D.w' g m hm D.card
-  have h1 := UpperTheory.Zero.LLC.tameRecAll D.E' Ω g A D.w' D.h' hg D.unr D.a' D.ha' ϖ (by rw [D.card]; exact hϖ) t' x hx
+  have h1 := _root_.UpperTheory.localArtin_inertia_valuation_of_uniformizer_prime D.E' Ω g A D.w' D.h' hg D.unr D.a' D.ha' ϖ (by rw [D.card]; exact hϖ) t' x hx
   rw [hr, hι]
   refine (residue_eq_toRes z x ?_).symm
   rw [hz, ht]

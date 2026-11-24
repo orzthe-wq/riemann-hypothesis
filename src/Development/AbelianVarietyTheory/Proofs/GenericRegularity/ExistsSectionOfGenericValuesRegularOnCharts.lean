@@ -108,10 +108,6 @@ theorem liftF_gen_apply (h : GenFrEx Xo c) (Z : Comp Xo c) (p : Sp (Om Z)) :
   rw [liftF_gen, Scheme.Hom.comp_apply]
   exact Scheme.fromSpecResidueField_apply _ _
 
-theorem closure_gen (Z : Comp Xo c) : closure {genPt Z} = (Z : Set (Xo.XF c)) :=
-  ((Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).isGenericPoint_genericPoint
-    (isClosed_of_mem_irreducibleComponents _ Z.2)).def
-
 theorem chart_comp {h : GenFrEx Xo c} (Z : Comp Xo c) (C : FChart h) (ψ : C.R →ₐ[c.F] Om Z)
     (z : FrPt Xo c (Om Z)) (t : Ix Dw → (Om Z)ˣ) (h1 : FrMap ψ C.y z) (h2 : FrBor t z (genFr h Z)) : C.Z = Z := by
   have e1 : liftF (genFr h Z) = spMap ψ.toRingHom ≫ liftF C.y := by
@@ -135,9 +131,9 @@ theorem chart_comp {h : GenFrEx Xo c} (Z : Comp Xo c) (C : FChart h) (ψ : C.R �
   have hs' := hs.map (liftF C.y).continuous
   rw [f1, f2] at hs'
   have hm : genPt Z ∈ (C.Z : Set (Xo.XF c)) := by
-    rw [← closure_gen]; exact hs'.mem_closure
+    rw [← _root_.GlobalTheory.Reg.ChartCompat.closure_genPt']; exact hs'.mem_closure
   have hsub : (Z : Set (Xo.XF c)) ⊆ C.Z := by
-    rw [← closure_gen Z]
+    rw [← _root_.GlobalTheory.Reg.ChartCompat.closure_genPt' Z]
     exact closure_minimal (Set.singleton_subset_iff.2 hm) (isClosed_of_mem_irreducibleComponents _ C.Z.2)
   exact Subtype.ext (Set.Subset.antisymm (Z.2.2 C.Z.2.1 hsub) hsub)
 

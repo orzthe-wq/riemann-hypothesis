@@ -3,51 +3,11 @@ module
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.UnitaryIsometries
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.JacobianCoordinates
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHDef
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -96,19 +56,6 @@ theorem famSc_castSucc (sc : ℝ) (e : Fin r → Fin n → ℂ) (z : Fin n → �
 theorem famSc_last' (sc : ℝ) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : famSc sc e z (Fin.last r) = z := by
   simp only [famSc, fam, Fin.snoc_last, Fin.val_last, Nat.sub_self, pow_zero, inv_one, one_smul]
 
-private theorem hJ_smul_left_eq_conj_mul (a : ℂ) (x y : Fin n → ℂ) : hJ ε (a • x) y = conj a * hJ ε x y := by
-  simp only [hJ, star_smul, smul_dotProduct, smul_eq_mul, Complex.star_def]
-
-private theorem hJ_smul_right_eq_mul (a : ℂ) (x y : Fin n → ℂ) : hJ ε x (a • y) = a * hJ ε x y := by
-  simp only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
-
-private theorem hJ_eq_conj_hJ_swap (x y : Fin n → ℂ) : hJ ε x y = conj (hJ ε y x) := by
-
-  simp only [hJ, Formalism.REAL.Jm, Matrix.mulVec_diagonal, dotProduct, Pi.star_apply, map_sum, map_mul,
-  Complex.star_def, Complex.conj_conj]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  by_cases h : ε i <;> simp [h] <;> ring
-
 theorem hJ_famSc (sc : ℝ) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (T : ℂ)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hez : ∀ a, hJ ε (e a) z = 0) (hzz : hJ ε z z = -T)
     (a b : Fin (r + 1)) :
@@ -119,13 +66,13 @@ theorem hJ_famSc (sc : ℝ) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (T
     | last =>
       rw [famSc_last', if_pos ⟨rfl, rfl⟩, hzz]
     | cast b' =>
-      rw [famSc_last', famSc_castSucc, hJ_smul_right_eq_mul, hJ_eq_conj_hJ_swap, hez, map_zero, mul_zero,
+      rw [famSc_last', famSc_castSucc, _root_.Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.hJ_smul_right, _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_conj, hez, map_zero, mul_zero,
         if_neg (fun h => (Fin.castSucc_lt_last b').ne h.2)]
   | cast a' =>
-    rw [famSc_castSucc, hJ_smul_left_eq_conj_mul, if_neg (fun h => (Fin.castSucc_lt_last a').ne h.1)]
+    rw [famSc_castSucc, _root_.Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.hJ_smul_left, if_neg (fun h => (Fin.castSucc_lt_last a').ne h.1)]
     induction b using Fin.lastCases with
     | last => rw [famSc_last', hez, mul_zero]
-    | cast b' => rw [famSc_castSucc, hJ_smul_right_eq_mul, hee, mul_zero, mul_zero]
+    | cast b' => rw [famSc_castSucc, _root_.Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries.hJ_smul_right, hee, mul_zero, mul_zero]
 
 theorem dl_diag_last (c : Fin (r + 1) → ℂ) :
     Dl (Matrix.diagonal c) (r + 1) = (∏ i : Fin r, c (Fin.castSucc i)) * c (Fin.last r) := by
@@ -184,7 +131,7 @@ theorem diagDC_core (sc : ℝ) (e : Fin r → Fin n → ℂ) (z z' : Fin n → �
     fun g0 h a b => congrFun (congrFun h a) b
   have hBt : ∀ a b, hJ ε (Formalism.MainNotions.S.uMat g *ᵥ famSc sc e z' a) (famSc sc e z b) =
       Matrix.diagonal (fun i => conj (c i)) a b := fun a b => by
-    rw [hJ_eq_conj_hJ_swap ε, hB g h1 b a, Matrix.diagonal_apply, Matrix.diagonal_apply]
+    rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_conj ε, hB g h1 b a, Matrix.diagonal_apply, Matrix.diagonal_apply]
     by_cases hab : a = b
     · subst hab; simp
     · simp [hab, Ne.symm hab]
@@ -245,7 +192,7 @@ theorem diagDC_core (sc : ℝ) (e : Fin r → Fin n → ℂ) (z z' : Fin n → �
       rw [hB g h1, hB g' h2]
     · show hJ ε (Formalism.MainNotions.S.uMat g *ᵥ famSc sc e z' a) (famSc sc e z b) =
         hJ ε (Formalism.MainNotions.S.uMat g' *ᵥ famSc sc e z' a) (famSc sc e z b)
-      rw [hJ_eq_conj_hJ_swap ε (Formalism.MainNotions.S.uMat g *ᵥ _), hB g h1, hJ_eq_conj_hJ_swap ε (Formalism.MainNotions.S.uMat g' *ᵥ _), hB g' h2]
+      rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_conj ε (Formalism.MainNotions.S.uMat g *ᵥ _), hB g h1, _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_conj ε (Formalism.MainNotions.S.uMat g' *ᵥ _), hB g' h2]
     · show hJ ε (Formalism.MainNotions.S.uMat g *ᵥ famSc sc e z' a) (Formalism.MainNotions.S.uMat g *ᵥ famSc sc e z' b) =
         hJ ε (Formalism.MainNotions.S.uMat g' *ᵥ famSc sc e z' a) (Formalism.MainNotions.S.uMat g' *ᵥ famSc sc e z' b)
       rw [isIsom_uMat ε g, isIsom_uMat ε g']
@@ -266,9 +213,9 @@ theorem inS_of_fix {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {g : Matrix
     (he : ∀ a, g *ᵥ e a = e a) (hz : g *ᵥ z = z) : InS e z g := by
   refine ⟨fun a => ?_, ?_⟩
   · rw [Matrix.sub_mulVec, Matrix.one_mulVec, he, sub_self]
-    first | exact Submodule.zero_mem _ | exact zero_mem _
+    first | exact Submodule.zero_mem _
   · rw [Matrix.sub_mulVec, Matrix.one_mulVec, hz, sub_self]
-    first | exact Submodule.zero_mem _ | exact zero_mem _
+    first | exact Submodule.zero_mem _
 
 theorem diagDC_pair (sc : ℝ) (e : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ) (T T' : ℝ)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hez : ∀ a, hJ ε (e a) z = 0) (hez' : ∀ a, hJ ε (e a) z' = 0)
@@ -320,9 +267,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
-theorem hJ_rvX (v : InfinitePlace X.B.I.F) (p q : (VS D).V) :
-    hJ (X.B.I.ε v) (rv X.B.I v (X.crd p)) (rv X.B.I v (X.crd q)) = embS D (X.pl v) ((VS D).hT p q) :=
-  Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p q
+alias hJ_rvX := _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_crd
 
 theorem hermitian_z_z_eq_neg (v : InfinitePlace X.B.I.F) (u : D.what₂.Word) :
     hJ (X.B.I.ε v) (rv X.B.I v (X.zR u)) (rv X.B.I v (X.zR u)) = -((Tw u : ℝ) : ℂ) := by

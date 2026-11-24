@@ -221,7 +221,7 @@ private lemma exists_decomp_of_levelRep_good (hθ : S.th ≠ 0) {j : ℕ} {v : S
           (⟨c, hc⟩ : L.O) • g i + (⟨al' i, hb⟩ : L.O) •
             (algebraMap F E S.th⁻¹ • (g' i - g i)) := by
         rw [Subring.smul_def, Subring.smul_def, hal_eq]
-        match_scalars <;> first | ring1 | linear_combination c * ht | linear_combination (-c) * ht
+        match_scalars <;> first | ring1 | linear_combination c * ht
       rw [hrw]
       exact Submodule.add_mem _
         (Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl ⟨i, rfl⟩)))

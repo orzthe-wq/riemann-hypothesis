@@ -172,9 +172,7 @@ theorem gram_mulVec (X : Matrix (Fin n) (Fin r) E) (z : Fin n → E) (i : Fin r)
     ((cT (σ : E →+* E) X * J) *ᵥ z) i = toLinearMapₛₗ₂' E (σ : E →+* E) (RingHom.id E) J (Xᵀ i) z :=
   gram_apply (s := 1) X (of fun a _ => z a) i 0
 
-theorem sigma_sigma (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
+alias sigma_sigma := _root_.GlobalTheory.AdelicU.cm_conj_conj
 
 theorem exists_cons {E V : Type} [Field E] [CharZero E] [AddCommGroup V] [Module E V] {s : E →+* E}
     (B : V →ₛₗ[s] V →ₗ[E] E) (hs : ∀ u v, B u v = s (B v u)) {x y : Fin r → V} (hx : ∀ i j, B (x i) (x j) = 0)

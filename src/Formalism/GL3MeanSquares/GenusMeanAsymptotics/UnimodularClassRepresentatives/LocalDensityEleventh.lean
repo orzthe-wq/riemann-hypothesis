@@ -63,12 +63,12 @@ local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 
 theorem finite_vec {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     Finite (m → 𝓞 K ⧸ extP K 𝔭 ^ k) := by
-  haveI := finite_quot (K := K) h𝔭 k
+  have := finite_quot (K := K) h𝔭 k
   infer_instance
 
 theorem card_vec (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     Nat.card (m → 𝓞 K ⧸ extP K 𝔭 ^ k) = Ideal.absNorm 𝔭 ^ (k * (2 * Fintype.card m)) := by
-  haveI := finite_quot (K := K) h𝔭 k
+  have := finite_quot (K := K) h𝔭 k
   have h1 : Nat.card (m → 𝓞 K ⧸ extP K 𝔭 ^ k) =
       Nat.card (𝓞 K ⧸ extP K 𝔭 ^ k) ^ Fintype.card m := by
     rw [Nat.card_fun, ← Nat.card_eq_fintype_card]
@@ -79,7 +79,7 @@ theorem card_vec (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Id
 theorem card_sub_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ)
     (p : (m → 𝓞 K ⧸ extP K 𝔭 ^ k) → Prop) :
     Nat.card {x // p x} ≤ Ideal.absNorm 𝔭 ^ (k * (2 * Fintype.card m)) := by
-  haveI := finite_vec (m := m) (K := K) h𝔭 k
+  have := finite_vec (m := m) (K := K) h𝔭 k
   rw [← card_vec hK h𝔭 k]
   exact Finite.card_subtype_le p
 
@@ -133,7 +133,7 @@ def nkB (𝔭 : Ideal (𝓞 F)) (k c : ℕ) (H : Matrix m m (𝓞 K)) (n : 𝓞 
 theorem nkM_eq_add {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k c : ℕ) (H : Matrix m m (𝓞 K)) (n : 𝓞 F) :
     nkM 𝔭 k H n = nkQ 𝔭 k c H n + nkB 𝔭 k c H n := by
   classical
-  haveI := finite_vec (m := m) (K := K) h𝔭 k
+  have := finite_vec (m := m) (K := K) h𝔭 k
   unfold nkM nkQ nkB
   have e1 : Nat.card {x : m → 𝓞 K ⧸ extP K 𝔭 ^ k // Qc 𝔭 k c H x ∧
       fm (H.map (mkk K 𝔭 k)) x x = mkk K 𝔭 k (ι n)} =
@@ -155,10 +155,10 @@ theorem card_preimage_piQ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {
     Nat.card {x : m → 𝓞 K ⧸ extP K 𝔭 ^ (k + 1) // T (fun i => piQ K 𝔭 k (x i))} =
       Ideal.absNorm 𝔭 ^ (2 * Fintype.card m) * Nat.card {x // T x} := by
   classical
-  haveI := finite_quot (K := K) h𝔭 k
-  haveI := finite_quot (K := K) h𝔭 (k + 1)
-  haveI : Fintype (𝓞 K ⧸ extP K 𝔭 ^ k) := Fintype.ofFinite _
-  haveI : Fintype (𝓞 K ⧸ extP K 𝔭 ^ (k + 1)) := Fintype.ofFinite _
+  have := finite_quot (K := K) h𝔭 k
+  have := finite_quot (K := K) h𝔭 (k + 1)
+  have : Fintype (𝓞 K ⧸ extP K 𝔭 ^ k) := Fintype.ofFinite _
+  have : Fintype (𝓞 K ⧸ extP K 𝔭 ^ (k + 1)) := Fintype.ofFinite _
   have hF : IsFixF K F := Fact.out
   have hz : ∀ w : 𝓞 K ⧸ extP K 𝔭 ^ k, Nat.card {z // piQ K 𝔭 k z = w} = Ideal.absNorm 𝔭 ^ 2 := by
     intro w
@@ -203,8 +203,7 @@ theorem fm_smul (hF : IsFixF K F) (H : Matrix m m (𝓞 K)) (a : 𝓞 F) (y : m 
     fm H (fun i => ι a * y i) (fun i => ι a * y i) = ι (a * a) * fm H y y := by
   have hs : ∀ i, star (ι a * y i) = ι a * star (y i) := fun i => by
     rw [star_mul', idealPowerSpanBounds.star_def (ι a), conjO_map hF]
-  simp only [fm, dotProduct, Matrix.mulVec, Pi.star_apply, hs, map_mul, Finset.mul_sum,
-    Finset.sum_mul]
+  simp only [fm, dotProduct, Matrix.mulVec, Pi.star_apply, hs, map_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))
   ring
 

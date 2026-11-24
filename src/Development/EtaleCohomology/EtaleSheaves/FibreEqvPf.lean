@@ -145,11 +145,9 @@ end LateralTheory.E.FibreEqvPf
 
 namespace LateralTheory.E.FibreEqvPf
 
-def StalkAICRing : Prop := ∀ (S : Scheme.{0}), AICSch S → ∀ x : S, AIC (S.presheaf.stalk x)
-
 def SpecAIC : Prop := ∀ (B : CommRingCat.{0}), IsDomain B → AIC B → AICSch (Spec B)
 
-theorem StalkAIC_of (h1 : StalkAICRing) (h2 : SpecAIC) : StalkAIC := by
+theorem StalkAIC_of (h1 : _root_.LateralTheory.E.FibStalkPf.StalkAIC) (h2 : SpecAIC) : StalkAIC := by
   intro S hS x
   have : IsIntegral S := hS.1
   exact h2 _ inferInstance (h1 S hS x)

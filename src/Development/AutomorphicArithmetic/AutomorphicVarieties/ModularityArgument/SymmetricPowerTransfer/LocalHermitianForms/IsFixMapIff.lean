@@ -53,7 +53,7 @@ open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 variable {O K : Type} [CommRing O] [Field K] [Algebra O K] {Δ τ : K}
 
-theorem sigL_mul (x y : EL Δ τ) : sigL (x * y) = sigL x * sigL y := by ext <;> simp [sigL] <;> ring
+theorem sigL_mul (x y : EL Δ τ) : sigL (x * y) = sigL x * sigL y := by ext <;> simp [sigL]
 
 theorem sigL_sigL (x : EL Δ τ) : sigL (sigL x) = x := by ext <;> simp [sigL]
 

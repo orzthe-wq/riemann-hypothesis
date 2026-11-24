@@ -2,51 +2,8 @@ module
 
 public import Formalism.LocalToGlobal.CharacterGerms.Interface
 public import Formalism.LocalToGlobal.CharacterGerms.ExistsStrictMonoMinor
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -266,25 +223,6 @@ private theorem ch_core_lemma {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → T
     · exact ⟨fun _ _ => 0, fun _ _ => VF.Ge.zero (V := V) 0, fun S t _ ρ => zero_germ g t,
         fun h' => absurd h' hA, fun h' => absurd h' hall⟩
 
-theorem CH_of_lenCoker {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
-    [∀ g, Fintype (J g)] (G : ∀ g, Cart V d (I g) (J g)) (n j j' : ℕ)
-    (big : Fin 2 → ZMod d → Prop) (big_compl : ∀ g a, big (1 - g) a ↔ ¬ big g a)
-    (h : Fin 2 → ℕ)
-    (ht : ∀ g, Fin (h g) → I g → C) (ht_int : ∀ g i x, V.Ge 0 (ht g i x))
-    (hLen : ∀ g a, big g a → ∃ e : Fin (pT G g a) ≃ {x : I g // (G g).ty (Sum.inl x) = a},
-      ((Even d ∧ ∀ b : ZMod d, (big 0 b ↔ Even b.val)) →
-        S4.lenCoker V.v (Matrix.of fun c i => ht g i (e c)) ≤
-          (((n : ℝ) * gam V.l + ((j : ℝ) + j') / ((V.l : ℝ) - 1) : ℝ) : WithTop ℝ)) ∧
-      ((∀ b, big g b) →
-        S4.lenCoker V.v (Matrix.of fun c i => ht g i (e c)) ≤
-          ((((j : ℝ) + j') / ((V.l : ℝ) - 1) : ℝ) : WithTop ℝ)))
-    (hGerm : ∀ g (i : Fin (h g)) (S : ∀ g, Sys (G g)) (t : ∀ g, I g → MvPowerSeries (I g) C),
-      (∀ g, (S g).IsT (t g)) →
-      upG g (mvExp (∑ x : I g, ht g i x • (MvPowerSeries.X x : MvPowerSeries (I g) C))) ∈
-        IntGerm V t) :
-    CHProp G n j j' big := by
-  exact ch_core_lemma G n j j' big big_compl h ht ht_int hLen hGerm
-
 def upB (l rp rm : ℕ) (w : ℝ) : ℝ := ((rp : ℝ) - rm) * w + (rm : ℝ) / ((l : ℝ) - 1)
 
 theorem gam_le {l : ℕ} (hl : 1 < l) : gam l ≤ 1 / ((l : ℝ) - 1) := by
@@ -336,7 +274,7 @@ theorem CH_of_UP {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, 
     CHProp G n j j' big := by
   have hl1 : 1 < V.l := V.l_prime.one_lt
   obtain ⟨hb1, hb2⟩ := upB_le_bounds hl1 n j j'
-  refine CH_of_lenCoker G n j j' big big_compl h ht ht_int (fun g a hb => ?_) hGerm
+  refine _root_.Formalism.L2.FormalSeriesBounds.CharacteristicFromRanks.ch_core_lemma G n j j' big big_compl h ht ht_int (fun g a hb => ?_) hGerm
   obtain ⟨e, h1, h2⟩ := hUP g a hb
   exact ⟨e, fun hA => (h1 hA).trans (WithTop.coe_le_coe.2 hb1),
     fun hall => (h2 hall).trans (WithTop.coe_le_coe.2 hb2)⟩

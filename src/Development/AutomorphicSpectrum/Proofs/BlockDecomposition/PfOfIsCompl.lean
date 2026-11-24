@@ -120,7 +120,6 @@ theorem pf_of_isCompl : ∀ (p : ℕ) [Fact p.Prime] (B : Type) [CommRing B] (T 
       convert h2 using 1
       ring
     obtain ⟨L, hL⟩ := hC.compl.toIsPrecomplete.prec (f := fun n => g (e n)) (fun {m n} hmn => by
-      beta_reduce
       rw [SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow,
         Ideal.mem_span_singleton, ← map_sub, ← map_pow]
       exact map_dvd g (cauchy m n hmn))

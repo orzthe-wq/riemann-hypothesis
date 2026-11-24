@@ -50,9 +50,6 @@ namespace PIW.AdelClassFin
 open Formalism.MainNotions.S PI.AdelClassFin NumberField
 open scoped TensorProduct Matrix
 
-theorem dictTop_sig (I : AutInst) : ((I.cm.sig : I.E →ₐ[I.F] I.E) : I.E →+* I.E) = starRingEnd I.E :=
-  RingHom.ext fun _ => rfl
-
 theorem dictTop_mul_inv (I : AutInst) (x : I.Gf) : I.fmat x * I.fmat x⁻¹ = 1 := by
   simp [Formalism.MainNotions.S.AutInst.fmat]
 
@@ -184,7 +181,7 @@ theorem mInj_of (hG : MGen) : MInj := by
     exact dictTop_into hG I x y h z hz
   · intro hz
     have h2 := dictTop_into hG I y x h.symm _ hz
-    simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc] at h2
+    simp only [Matrix.mulVec_mulVec] at h2
     rwa [← Matrix.mul_assoc (I.fmat x), dictTop_mul_inv, Matrix.one_mul, dictTop_inv_mul,
       Matrix.one_mulVec] at h2
 

@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CartierDivisorMultCharacterize
 
 @[expose] public section
 
@@ -125,20 +126,6 @@ private theorem unitAt_of_ord_eq_zero_coheight_one {X : Scheme.{0}} [IsIntegral 
     obtain ⟨a, ha, rfl⟩ := hmem
     exact ⟨a, ha, rfl⟩
 
-private theorem Scheme_ord_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (v : X) :
-    Scheme.ord (1 : X.functionField) v = 0 := by
-  have h := Scheme.ord_mul (x := v) (one_ne_zero : (1 : X.functionField) ≠ 0) one_ne_zero
-  rw [mul_one] at h
-  omega
-
-private theorem Scheme_ord_units_inv {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
-    (g : (X.functionField)ˣ) (v : X) :
-    Scheme.ord ((g⁻¹ : (X.functionField)ˣ) : X.functionField) v =
-      - Scheme.ord (g : X.functionField) v := by
-  have h := Scheme.ord_mul (x := v) g.ne_zero (g⁻¹).ne_zero
-  rw [Units.mul_inv, Scheme_ord_one] at h
-  omega
-
 private theorem unitAt_of_ord_eq_zero_on_generizations {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hufd : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) {y : X}
     (h : (X.functionField)ˣ)
@@ -154,7 +141,7 @@ private theorem unitAt_of_ord_eq_zero_on_generizations {X : Scheme.{0}} [IsInteg
     intro z hz hz1
     exact (unitAt_of_ord_eq_zero_coheight_one hufd hz1 g.ne_zero (hg z hz hz1)).regAt
   obtain ⟨a, ha⟩ := key h hord
-  obtain ⟨b, hb⟩ := key h⁻¹ (fun v hv hv1 => by rw [Scheme_ord_units_inv, hord v hv hv1, neg_zero])
+  obtain ⟨b, hb⟩ := key h⁻¹ (fun v hv hv1 => by rw [_root_.GlobalTheory.Cartier.MultEff.ord_inv, hord v hv hv1, neg_zero])
   refine ⟨a, ?_, ha⟩
   have hab : algebraMap (X.presheaf.stalk y) X.functionField (a * b) =
       algebraMap (X.presheaf.stalk y) X.functionField 1 := by
@@ -193,6 +180,6 @@ theorem GlobalTheory.Discrepancy.IsSncChart.isEqn_monomial : ∀ (k : Type) [Fie
   rw [show D.germ y = germOf y h from hh, germOf_eq_iff]
   have hu := unitAt_of_ord_eq_zero_on_generizations hufd ((∏ j ∈ J, u j ^ D.mult (w j)) * h⁻¹)
     (fun v hv hv1 => by
-      rw [Units.val_mul, Scheme.ord_mul (Units.ne_zero _) (Units.ne_zero _), Scheme_ord_units_inv,
+      rw [Units.val_mul, Scheme.ord_mul (Units.ne_zero _) (Units.ne_zero _), _root_.GlobalTheory.Cartier.MultEff.ord_inv,
         key v hv hv1, ← (hW v (hv.mem_open W.isOpen hyW)).mult_eq, add_neg_cancel])
   simpa [div_eq_mul_inv] using hu

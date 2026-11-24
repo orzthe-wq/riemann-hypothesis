@@ -1,6 +1,7 @@
 module
 
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ExplicitFormula.GoodHeight
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DirichletLZerosInWindowFiniteAndPosOrder
+
 public import Mathlib.Analysis.Analytic.Order
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.NumberTheory.LSeries.DirichletContinuation
@@ -101,7 +102,10 @@ theorem exists_far (S : Finset ℝ) (T : ℝ) : ∃ T' : ℝ, T ≤ T' ∧ T' �
 
 theorem one_le_order {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {w : ℂ} (h1 : w ≠ 1)
     (hw : LFunction χ w = 0) : 1 ≤ analyticOrderNatAt (LFunction χ) w := by
-  apply PI.EF.one_le_mult <;> assumption
+  rw [Nat.one_le_iff_ne_zero, analyticOrderNatAt]
+  have htop := GlobalTheory.Mem.An.ZeroWindow.order_ne_top χ h1
+  have hzero := (GlobalTheory.Mem.An.ZeroWindow.analyticOff χ w h1).analyticOrderAt_ne_zero.mpr hw
+  simpa [htop, hzero]
 
 theorem exists_bound_right : ∃ B : ℝ, 0 ≤ B ∧ ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N)
     (s : ℂ), 2 ≤ s.re → ‖deriv (LFunction χ) s / LFunction χ s‖ ≤ B := by
@@ -152,7 +156,7 @@ theorem local_formula : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : Di
     obtain ⟨hfin, hcount, hbound⟩ := h₂ s hs1 hs2 hs1' hLs
     rw [finsum_mem_eq_finite_toFinset_sum _ hfin] at hcount hbound
     refine ⟨hfin.toFinset, fun w => by simp, ?_, ?_⟩
-    · nlinarith
+    · exact hcount.trans (mul_le_mul_of_nonneg_right (by linarith) (by linarith))
     · have hinv : ‖1 / (s - 1)‖ ≤ 1 / 2 := by
         have h : 2 ≤ ‖s - 1‖ := le_trans ht (by simpa using Complex.abs_im_le_norm (s - 1))
         rw [norm_div, norm_one]
@@ -166,7 +170,9 @@ theorem local_formula : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : Di
             - ∑ w ∈ hfin.toFinset, (analyticOrderNatAt riemannZeta w : ℂ) / (s - w)‖ + ‖1 / (s - 1)‖ :=
             norm_sub_le _ _
         _ ≤ C₂ * Real.log (|s.im| + 2) + 1 / 2 := add_le_add hbound hinv
-        _ ≤ (C₁ + C₂ + 1) * Real.log (|s.im| + 2) := by nlinarith
+        _ ≤ (C₁ + C₂ + 1) * Real.log (|s.im| + 2) := by
+          have : 0 ≤ C₁ * Real.log (|s.im| + 2) := mul_nonneg (by linarith) (by linarith)
+          linarith
   · obtain ⟨hfin, hcount, hbound⟩ := h₁ N χ hχ s hs1 hs2 hLs
     rw [finsum_mem_eq_finite_toFinset_sum _ hfin] at hcount hbound
     refine ⟨hfin.toFinset, fun w => ?_, ?_, ?_⟩
@@ -176,8 +182,8 @@ theorem local_formula : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : Di
         exact ⟨h1, fun h => LFunction_apply_one_ne_zero hχ (h ▸ h2), h2⟩
       · rintro ⟨h1, -, h2⟩
         exact ⟨h1, h2⟩
-    · nlinarith
-    · nlinarith
+    · exact hcount.trans (mul_le_mul_of_nonneg_right (by linarith) (by linarith))
+    · exact hbound.trans (mul_le_mul_of_nonneg_right (by linarith) (by linarith))
 
 theorem exists_height : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ.IsPrimitive → ∀ T : ℝ, 2 ≤ T → ∃ T' : ℝ, T ≤ T' ∧ T' ≤ T + 1 ∧ ∀ s : ℂ, -(1/2 : ℝ) ≤ s.re → s.re ≤ 3 → |s.im| = T' → LFunction χ s ≠ 0 ∧ ‖deriv (LFunction χ) s / LFunction χ s‖ ≤ C * Real.log (N * T) ^ 2 := by
   obtain ⟨C, hC, hloc⟩ := local_formula
@@ -185,7 +191,7 @@ theorem exists_height : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : Di
   refine ⟨6 * (3 * C) + 8 * (3 * C) ^ 2 + 4 * B + 1, by positivity, ?_⟩
   intro N _ χ hprim T hT
   have hN1 : (1 : ℝ) ≤ N := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
-  have hNT : 2 ≤ (N : ℝ) * T := by nlinarith
+  have hNT : 2 ≤ (N : ℝ) * T := le_trans hT (le_mul_of_one_le_left (by linarith) hN1)
   set L := Real.log (N * T) with hL
   have hLhalf : 1 / 2 ≤ L := by
     have h1 : Real.log 2 ≤ L := Real.log_le_log (by norm_num) hNT
@@ -194,11 +200,13 @@ theorem exists_height : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : Di
   have hlog3 : ∀ y : ℝ, |y| ≤ T + 1 → Real.log (N * (|y| + 2)) ≤ 3 * L := by
     intro y hy
     have hpos : 0 < (N : ℝ) * (|y| + 2) := by positivity
-    have h4 : 4 ≤ ((N : ℝ) * T) ^ 2 := by nlinarith
+    have h4 : 4 ≤ ((N : ℝ) * T) ^ 2 := by
+      calc (4 : ℝ) = 2 ^ 2 := by norm_num
+        _ ≤ ((N : ℝ) * T) ^ 2 := pow_le_pow_left₀ (by norm_num) hNT 2
     have hle : (N : ℝ) * (|y| + 2) ≤ ((N : ℝ) * T) ^ 3 := by
       have e : ((N : ℝ) * T) ^ 3 = (N * T) * (N * T) ^ 2 := by ring
       rw [e]
-      nlinarith [mul_le_mul_of_nonneg_left h4 (by linarith : (0 : ℝ) ≤ N * T),
+      linarith [mul_le_mul_of_nonneg_left h4 (by linarith : (0 : ℝ) ≤ N * T),
         mul_nonneg (by linarith : (0 : ℝ) ≤ N) (by linarith : (0 : ℝ) ≤ T + 1 - |y|),
         mul_nonneg (by linarith : (0 : ℝ) ≤ N) (by linarith : (0 : ℝ) ≤ T - 1)]
     calc Real.log (N * (|y| + 2)) ≤ Real.log (((N : ℝ) * T) ^ 3) := Real.log_le_log hpos hle
@@ -209,26 +217,30 @@ theorem exists_height : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : Di
     have e1 : (w - (2 + (y : ℂ) * I)).re = w.re - 2 := by simp
     have e2 : (w - (2 + (y : ℂ) * I)).im = w.im - y := by simp
     rw [← sq_le_sq₀ (norm_nonneg _) (by norm_num), Complex.sq_norm, Complex.normSq_apply, e1, e2]
-    constructor <;> intro h <;> nlinarith
+    constructor <;> intro h <;> linarith
   have hcover : ∀ (y₀ y : ℝ) (w : ℂ), y₀ ≤ y → y ≤ y₀ + 1 → -1 ≤ w.re → w.re < 1 →
       ‖w - (2 + (y : ℂ) * I)‖ ≤ 7 / 2 →
       ‖w - (2 + (y₀ : ℂ) * I)‖ ≤ 7 / 2 ∨ ‖w - (2 + ((y₀ + 1 : ℝ) : ℂ) * I)‖ ≤ 7 / 2 := by
     intro y₀ y w h1 h2 h3 h4 h5
     rw [hnorm] at h5
     rw [hnorm, hnorm]
-    have hx : (w.re - 2) ^ 2 ≤ 9 := by nlinarith
+    have hx : (w.re - 2) ^ 2 ≤ 9 := by
+      have hsub : (w.re - 2) ^ 2 = (2 - w.re) ^ 2 := by ring
+      rw [hsub]
+      calc (2 - w.re) ^ 2 ≤ 3 ^ 2 := pow_le_pow_left₀ (by linarith) (by linarith) 2
+        _ = 9 := by norm_num
     by_cases hv : w.im ≤ y₀ + 1 / 2
     · left
       by_cases hv' : y₀ ≤ w.im
-      · nlinarith [mul_nonneg (sub_nonneg.mpr hv') (sub_nonneg.mpr hv)]
+      · linarith [mul_nonneg (sub_nonneg.mpr hv') (sub_nonneg.mpr hv)]
       · push Not at hv'
-        nlinarith [mul_nonneg (sub_nonneg.mpr h1) (by linarith : (0 : ℝ) ≤ y + y₀ - 2 * w.im)]
+        linarith [mul_nonneg (sub_nonneg.mpr h1) (by linarith : (0 : ℝ) ≤ y + y₀ - 2 * w.im)]
     · right
       push Not at hv
       by_cases hv' : w.im ≤ y₀ + 1
-      · nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ w.im - y₀ - 1 / 2) (sub_nonneg.mpr hv')]
+      · linarith [mul_nonneg (by linarith : (0 : ℝ) ≤ w.im - y₀ - 1 / 2) (sub_nonneg.mpr hv')]
       · push Not at hv'
-        nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ y₀ + 1 - y)
+        linarith [mul_nonneg (by linarith : (0 : ℝ) ≤ y₀ + 1 - y)
           (by linarith : (0 : ℝ) ≤ 2 * w.im - y - y₀ - 1)]
   have hZ : ∀ y : ℝ, 2 ≤ |y| → ∃ Z : Finset ℂ,
       (∀ w, w ∈ Z ↔ ‖w - (2 + (y : ℂ) * I)‖ ≤ 7 / 2 ∧ w ≠ 1 ∧ LFunction χ w = 0) ∧
@@ -318,8 +330,11 @@ theorem exists_height : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : Di
       simp at hsim
       linarith
     have hd : ‖s - (2 + (s.im : ℂ) * I)‖ ≤ 7 / 2 := by
-      rw [hnorm]
-      nlinarith
+      rw [hnorm, sub_self, zero_pow two_ne_zero, add_zero]
+      have h1 : |s.re - 2| ≤ 7 / 2 := abs_le.mpr ⟨by linarith, by linarith⟩
+      calc (s.re - 2) ^ 2 = |s.re - 2| ^ 2 := (sq_abs _).symm
+        _ ≤ (7 / 2) ^ 2 := pow_le_pow_left₀ (abs_nonneg _) h1 2
+        _ = 49 / 4 := by norm_num
     have := hfar' s hsim s h0 hs1' (by linarith) hd
     simp at this
     linarith
@@ -328,12 +343,14 @@ theorem exists_height : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : Di
   have hKL : 0 ≤ 3 * C * L := by positivity
   by_cases hre : 2 ≤ s.re
   · have h := hright N χ s hre
-    have h4L : 0 ≤ 4 * L ^ 2 - 1 := by nlinarith
+    have h4L : 0 ≤ 4 * L ^ 2 - 1 := by
+      have : (1 / 2 : ℝ) ^ 2 ≤ L ^ 2 := pow_le_pow_left₀ (by norm_num) hLhalf 2
+      linarith
     have e1 : 0 ≤ B * (4 * L ^ 2 - 1) := mul_nonneg hB h4L
     have e2 : 0 ≤ C * L ^ 2 := mul_nonneg hC.le (sq_nonneg L)
     have e3 : 0 ≤ C ^ 2 * L ^ 2 := mul_nonneg (sq_nonneg C) (sq_nonneg L)
     have e4 : 0 ≤ L ^ 2 := sq_nonneg L
-    nlinarith
+    linarith
   · push Not at hre
     obtain ⟨Z, hZm, hZc, hdiff⟩ := hloc N χ hprim s (by linarith) hre.le (by rw [hsim]; linarith) hLs
     have hlogs : Real.log (N * (|s.im| + 2)) ≤ 3 * L := hlog3 _ (by rw [hsim]; linarith)
@@ -386,6 +403,6 @@ theorem exists_height : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : Di
       mul_nonneg hC.le (mul_nonneg hL0 (by linarith only [hLhalf]))
     have g2 : 0 ≤ B * L ^ 2 := mul_nonneg hB (sq_nonneg L)
     have g3 : 0 ≤ L ^ 2 := sq_nonneg L
-    nlinarith only [htri, hD, hsum2, g1, g2, g3]
+    linarith only [htri, hD, hsum2, g1, g2, g3]
 
 end GlobalTheory.GoodHeight

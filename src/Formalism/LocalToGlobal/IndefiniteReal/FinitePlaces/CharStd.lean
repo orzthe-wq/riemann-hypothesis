@@ -46,6 +46,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import Formalism.LocalToGlobal.GlobalTheory.GL1.CompactFixesLattice.CompactFixesLattice
 public import Formalism.LocalToGlobal.IndefiniteReal.PHeisFCA
+public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemUniq
 
 @[expose] public section
 
@@ -233,9 +234,6 @@ theorem isInt_of_intAf (y : Af D.host.F) (hy : y ∈ intAf D.host.F) : Reciproci
 theorem intAf_of_isInt (y : Af D.host.F) (hy : ReciprocityTheory.UG.AdeleIntA.IsInt y) : y ∈ intAf D.host.F := by
   simp only [Formalism.MainNotions.StandardLattice.intAf, ReciprocityTheory.UG.AdeleIntA.IsInt] at hy ⊢
   exact hy
-
-theorem intAf_mul {x y : Af D.host.F} (hx : x ∈ intAf D.host.F) (hy : y ∈ intAf D.host.F) : x * y ∈ intAf D.host.F := by
-  exact intAf_of_isInt _ (ReciprocityTheory.UG.AdeleIntA.isInt_mul (isInt_of_intAf _ hx) (isInt_of_intAf _ hy))
 
 theorem intAf_int (r : 𝓞 D.host.F) : algebraMap D.host.F (Af D.host.F) (r : D.host.F) ∈ intAf D.host.F := by
   have h := ReciprocityTheory.UG.AdeleIntA.isInt_R (K := D.host.F) r

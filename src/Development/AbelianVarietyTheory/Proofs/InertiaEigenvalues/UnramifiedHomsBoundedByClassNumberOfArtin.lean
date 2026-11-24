@@ -3,7 +3,8 @@ module
 public import Formalism.SharpRestriction.LevelLetterCocycles.DecompositionData
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 public import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedGaloisHomsBoundedClassNumberOfArtinRecStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedGaloisHomsBoundedClassNumberOfArtinRec
+public import Mathlib.RingTheory.OrderOfVanishing.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -21,7 +22,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.KrullDimension.PID
-public import Mathlib.RingTheory.OrderOfVanishing.Basic
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -106,7 +106,7 @@ theorem length_unrHom_le (h : ReciprocityTheory.ChartRestriction.T2.VhE) (D : D7
 theorem unramified_homs_bounded_by_class_number_of_artin :
     GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (i : D.nd.Loc), TruncatedSeriesCountingIdentities.UnramifiedClassFieldBound i := by
   intro hA D i
-  have h := length_unrHom_le (GlobalTheory.T.unramifiedGaloisHoms_bounded_classNumber_of_artinReciprocity hA) D i
+  have h := length_unrHom_le (_root_.GlobalTheory.UnramifiedClassBound.vhE_of_globalArtinReciprocity hA) D i
   have hfin : Module.length (D.nd.O i) (D.nd.O i ⧸ Ideal.span {((D.nd.l i : ℕ) : D.nd.O i)}) ≠ ⊤ :=
     Module.length_ne_top_iff.2
       (isFiniteLength_quotient_span_singleton _ (mem_nonZeroDivisors_of_ne_zero (l_ne_zero D i)))

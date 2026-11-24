@@ -149,7 +149,7 @@ private lemma genus_nontrivial {O : Type} [Ring O] {bar : O → O} {p N : ℕ} {
   obtain ⟨e, he⟩ := (hdiv (b i)).mp ⟨0, Subsingleton.elim _ _⟩
   have h1 := congrArg (b.coord i) he
   simp only [Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_eq_same, map_nsmul,
-    Finsupp.smul_apply, nsmul_eq_mul] at h1
+    nsmul_eq_mul] at h1
   have h2 := Int.eq_one_of_mul_eq_one_right (by positivity) h1.symm
   have := hp.two_le
   omega

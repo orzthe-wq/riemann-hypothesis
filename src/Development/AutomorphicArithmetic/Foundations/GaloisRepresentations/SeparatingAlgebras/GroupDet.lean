@@ -115,7 +115,7 @@ theorem UpperTheory.Gal.Gen.groupDet_pf :
       push_cast
       rfl
     simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, hA', hB, Matrix.of_apply, e,
-      mul_add, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum, mul_neg, Finset.sum_neg_distrib]
+      mul_add, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum, mul_neg]
     have : ∀ u, a u * ((l : k) * ((m u i j : ℤ) : k)) = (l : k) * (a u * ((m u i j : ℤ) : k)) :=
       fun u => by ring
     simp only [this]

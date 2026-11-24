@@ -1,6 +1,5 @@
 module
 
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.Unimod
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.VolStabFromSWS
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.AdeleLC
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
@@ -44,6 +43,11 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Formalism.PeriodIntegrals.VolFromSW
 
 @[expose] public section
 
@@ -231,7 +235,26 @@ open scoped TensorProduct
 theorem um_countable_HFinIn (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) :
     Countable (HFinIn (AF F) σ J) := by
-  apply PI.VolStabSW.um_countable_HFinIn <;> assumption
+  have : Countable E := Finsupp.Countable.of_moduleFinite (R := ℚ)
+  have : Countable (Matrix (Fin M) (Fin M) E) := inferInstanceAs (Countable (Fin M → Fin M → E))
+  have : Countable (GL (Fin M) E) :=
+    Function.Injective.countable (f := fun u : GL (Fin M) E => (u : Matrix (Fin M) (Fin M) E))
+      (fun _ _ h => Units.ext h)
+  have hx : ∀ x : HFinIn (AF F) σ J, ∃ u : GL (Fin M) E,
+      Formalism.UG.bc (inclR (AF F)) u = ((x : HR (AF F) σ J) : GL (Fin M) (AF F ⊗[F] E)) := by
+    intro x
+    have h : ((x : HR (AF F) σ J) : GL (Fin M) (AF F ⊗[F] E)) ∈ HFin (AF F) σ J :=
+      Subgroup.mem_subgroupOf.1 x.2
+    unfold HFin at h
+    obtain ⟨u, -, hu⟩ := Subgroup.mem_map.1 h
+    exact ⟨u, hu⟩
+  refine Function.Injective.countable (f := fun x => (hx x).choose) ?_
+  intro x y hxy
+  have h1 := (hx x).choose_spec
+  have h2 := (hx y).choose_spec
+  simp only at hxy
+  rw [hxy] at h1
+  exact Subtype.ext (Subtype.ext (h1.symm.trans h2))
 
 instance t2Space_adelic_unitary (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] [FiniteDimensional F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) :

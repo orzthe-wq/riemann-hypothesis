@@ -121,18 +121,17 @@ theorem fockT_single {D : D7} {m n : ℕ} (τ : D.what₂.Tau) (ε' : Fin m → 
   · simp only [Matrix.single_apply_same, one_smul, LinearMap.sum_apply, LinearMap.add_apply, Finset.sum_add_distrib]
     congr 1
     split_ifs with h
-    · simp only [LinearMap.smul_apply, Module.End.one_apply, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-        smul_smul]
+    · simp only [LinearMap.smul_apply, Module.End.one_apply, Finset.sum_const, Finset.card_univ, Fintype.card_fin]
       rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul]
       congr 1
       ring
     · simp
-  · intro k _ hk; simp [Matrix.single_apply, Ne.symm hk]
+  · intro k _ hk; simp [Ne.symm hk]
   · simp
   · intro k _ hk
     rw [Finset.sum_eq_zero]
     intro l' _
-    simp [Matrix.single_apply, Ne.symm hk]
+    simp [Ne.symm hk]
   · simp
 
 theorem low_eq {D : D7} {m n : ℕ} (τ : D.what₂.Tau) (ε' : Fin m → Bool) (i l : Fin m) (hi : ε' i = false)
@@ -193,7 +192,7 @@ theorem fockT_compact_harm : ∀ (D : D7) (n m : ℕ) (p : D.what₂.Tau → ℕ
       (hL τ' i l hi hl) ?_ ?_
     · by_cases h : τ = τ' ∧ a = l
       · obtain ⟨rfl, rfl⟩ := h
-        simp only [Prod.mk.injEq, true_and, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+        simp only [Prod.mk.injEq, true_and, Finset.sum_ite_eq', Finset.mem_univ, if_true]
         exact hL τ i b hi hb
       · refine Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => if_neg ?_
         intro e; simp only [Prod.mk.injEq] at e; exact h ⟨e.1, e.2.1⟩
@@ -216,7 +215,7 @@ theorem fockT_compact_harm : ∀ (D : D7) (n m : ℕ) (p : D.what₂.Tau → ℕ
       intro e; simp only [Prod.mk.injEq] at e; obtain ⟨rfl, rfl, -⟩ := e; omega
     · by_cases h : τ = τ' ∧ b = i
       · obtain ⟨rfl, rfl⟩ := h
-        simp only [Prod.mk.injEq, true_and, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+        simp only [Prod.mk.injEq, true_and, Finset.sum_ite_eq', Finset.mem_univ, if_true]
         simp only [pd_comm (τ, l, _) (τ, a, _)]
         exact hL τ a l (not_lt.1 ha) hl
       · refine Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => if_neg ?_

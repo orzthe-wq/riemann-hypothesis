@@ -459,7 +459,7 @@ namespace GlobalTheory.KeyOriginBC
 
 theorem mem_originIdeal_iff {R : Type} [CommRing R] [IsLocalRing R] (p : R[X]) :
     p ∈ GlobalTheory.KeyOriginCut.originIdeal R ↔ p.coeff 0 ∈ maximalIdeal R := by
-  apply GlobalTheory.VertUnitsNoeth.mem_originIdeal_iff' <;> assumption
+  apply GlobalTheory.VertUnitsNoeth.mem_originIdeal_iff'
 
 theorem comap_ideal₁_eq_origin {T O : Type} [CommRing T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
   [IsScalarTower T T[X] O]
@@ -579,7 +579,7 @@ theorem reduceLoc_algebraMap {T O : Type} [CommRing T] [CommRing O] [IsLocalRing
       (algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj)) = RingHom.id A₁ := by
   apply RingHom.ext; intro x
   rw [RingHom.comp_apply, IsScalarTower.algebraMap_apply A₁ (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj)]
-  simp only [reduceLoc, IsLocalization.lift_eq, algebraMap_ext, reduce_tmul]
+  simp only [reduceLoc, IsLocalization.lift_eq, algebraMap_ext]
   change Polynomial.eval 0 (Polynomial.C x) * _ = _
   simp
 end GlobalTheory.KeyOriginBC

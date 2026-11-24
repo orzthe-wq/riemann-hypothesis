@@ -2,9 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CrisToODToOCr
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.InstTameDescentExponentDataPadicThree
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BddCrisToODStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvdOfForallNearODStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLPowIHatToHatSSubDvdStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BddCrisToOD
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DvdOfForallNearOD
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLPowIHatToHatSSubDvd
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -112,7 +112,7 @@ theorem iSD_eq_iHat_of_hat : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a]
       simp only [hD, map_mul, map_pow, map_natCast]; ring
     have hdiv : ∀ m : ℕ, ξ ^ m ∣ D s := by
       intro m
-      obtain ⟨N, hN⟩ := GlobalTheory.T.exists_pow_mul_crisToOD_sub_toOD_dvd l e O K ϖ m
+      obtain ⟨N, hN⟩ := _root_.GlobalTheory.BKReal.CrisBounded.bdd_crisToOD l e O K ϖ m
       have hw : ∀ k : ℕ, ∃ y : OA l O, ξ ^ m ∣ (l : OD l O) ^ (N + m) * D s - (l : OD l O) ^ k * toOD l O y := by
         intro k
         obtain ⟨N0, hN0⟩ := exists_sum_monomial_add l e s.2 k
@@ -132,7 +132,7 @@ theorem iSD_eq_iHat_of_hat : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a]
           rw [← hS]
           exact iSD_eq_of_mem_invL_A l e O K ϖ _ hPA
         obtain ⟨y1, hy1⟩ := hN (ϖ.iS O K hS')
-        obtain ⟨y2, hy2⟩ := GlobalTheory.T.exists_pow_iHat_toHatS_sub_toOD_dvd l e O K ϖ m hS'
+        obtain ⟨y2, hy2⟩ := _root_.GlobalTheory.BKReal.exists_l_pow_iHat_toHatS_sub_dvd l e O K ϖ m hS'
         refine ⟨(l : OA l O) ^ m * y1 - (l : OA l O) ^ N * y2, ?_⟩
         have e1 : (l : OD l O) ^ (N + m) * D s - (l : OD l O) ^ k * toOD l O ((l : OA l O) ^ m * y1 - (l : OA l O) ^ N * y2) =
             (l : OD l O) ^ k * ((l : OD l O) ^ m * ((l : OD l O) ^ N * crisToOD l O (ϖ.iS O K hS') - toOD l O y1) -
@@ -142,7 +142,7 @@ theorem iSD_eq_iHat_of_hat : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a]
           ring
         rw [e1]
         exact dvd_mul_of_dvd_right (dvd_sub (dvd_mul_of_dvd_right hy1 _) (dvd_mul_of_dvd_right hy2 _)) _
-      have h1 := GlobalTheory.T.dvd_of_forall_approx_toOD l e O K ϖ m _ hw
+      have h1 := _root_.GlobalTheory.BKReal.SepFil.dvd_of_forall_near_OD l e O K ϖ m _ hw
       rw [pow_add, mul_assoc] at h1
       exact (((hlu.pow N).mul (hlu.pow m)).dvd_mul_left).1 (by rwa [← mul_assoc] at h1)
     have hc := ϖ.complete_OD O K

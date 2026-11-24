@@ -56,7 +56,7 @@ variable {m n : ℕ}
 theorem gramX_apply (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) (i j : Fin n) :
     gramX ε x i j = ∑ a, sgn ε a * (star (x a i) * x a j) := by
 
-  simp only [gramX, Qp, Qb, evX, map_sub, map_sum, map_mul, eval_X, Finset.sum_filter, if_true]
+  simp only [gramX, Qp, Qb, evX, map_sub, map_sum, Finset.sum_filter]
   rw [← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl (fun a _ => ?_)
   cases h : ε a <;> simp [sgn, h]
@@ -135,12 +135,12 @@ theorem evX_dil (c : ℝ) (X : Fin n → ℝ) (Q : PX m n) (v : Fin m → Fin n 
 
   simp only [dil, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.add_apply,
   LinearMap.sub_apply, LinearMap.id_apply, LinearMap.coe_comp, Function.comp_apply,
-  LinearMap.mulLeft_apply, MvPolynomial.smul_eq_C_mul, nsmul_eq_mul, map_sum, map_add, map_sub,
+  LinearMap.mulLeft_apply, MvPolynomial.smul_eq_C_mul, map_sum, map_add, map_sub,
   map_mul, eval_X, eval_C, map_natCast, ept_true, ept_false, Derivation.coeFn_coe, hn]
   rw [Fintype.sum_prod_type]
   simp only [Fintype.sum_prod_type, Fintype.sum_bool, ept_true, ept_false]
   rw [Finset.sum_comm (s := (Finset.univ : Finset (Fin m))), Finset.sum_comm (s := (Finset.univ : Finset (Fin m)))]
-  simp only [Finset.mul_sum, Finset.sum_mul, mul_add, add_mul, mul_sub, sub_mul, Finset.sum_add_distrib,
+  simp only [Finset.mul_sum, Finset.sum_mul, mul_add, mul_sub, Finset.sum_add_distrib,
     Finset.sum_sub_distrib]
   apply key
   · exact Finset.sum_congr rfl (fun _ _ => by ring)

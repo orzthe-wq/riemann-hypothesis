@@ -57,20 +57,13 @@ namespace Formalism.FourierDecayAlt.P.GramProductIdentities
 open Finset Formalism.FourierDecayAlt.FormPairingAction Formalism.FourierDecayAlt.Wd
 open scoped ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
-section Rep
-
-variable {A S V : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype S] [DecidableEq S]
-  [AddCommGroup V] [Module ℂ V] [Module A V] [IsScalarTower ℂ A V]
-
-end Rep
-
 section CS
 
 variable {M : Type} [AddCommGroup M] [Module ℂ M]
 
 theorem cs_of_pos (Ξ : F7.Sesq M) (h : ∀ m, 0 ≤ (Ξ m m).re ∧ (Ξ m m).im = 0) (x y : M) :
     ‖Ξ x y‖ ^ 2 ≤ (Ξ x x).re * (Ξ y y).re := by
-  first | exact Bl.HermitianSesquilinear.goal1 .. | (apply Bl.HermitianSesquilinear.goal1 <;> assumption) | (intros; apply Bl.HermitianSesquilinear.goal1 <;> assumption) | (apply @Bl.HermitianSesquilinear.goal1 <;> assumption) | (intros; apply @Bl.HermitianSesquilinear.goal1 <;> assumption) | (apply @Bl.HermitianSesquilinear.goal1 <;> first | assumption | infer_instance) | exact @Bl.HermitianSesquilinear.goal1 M ‹_› ‹_› Ξ h x y | exact @Bl.HermitianSesquilinear.goal1 M ‹_› ‹_› Ξ h x | exact @Bl.HermitianSesquilinear.goal1 M ‹_› ‹_› Ξ h | exact @Bl.HermitianSesquilinear.goal1 M ‹_› ‹_› Ξ | exact @Bl.HermitianSesquilinear.goal1 M ‹_› ‹_› | exact @Bl.HermitianSesquilinear.goal1 M ‹_› | exact @Bl.HermitianSesquilinear.goal1 M
+  first | (apply Bl.HermitianSesquilinear.goal1 <;> assumption)
 
 end CS
 
@@ -138,7 +131,6 @@ theorem qProduct : QProduct := by
       simp only [if_true]
       have h2 : Y - l.pt ≠ 0 := hl
       field_simp
-      try ring
 
 theorem lemmaQ : LemmaQ := by
   intro S _ _ q w N dl Y hN hw hdl hpts hq
@@ -205,4 +197,3 @@ theorem dkStep4 : DKStep4 := by
 
 end Formalism.FourierDecayAlt.P.GramProductIdentities
 
-theorem Formalism.FourierDecayAlt.P.lemma_Q_estimate : Formalism.FourierDecayAlt.FormPairingAction.LemmaQ := Formalism.FourierDecayAlt.P.GramProductIdentities.lemmaQ

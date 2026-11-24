@@ -70,7 +70,7 @@ theorem eventually_extends {V C : Type} [CommRing V] [IsLocalRing V] [CommRing C
   have hft : c.FiniteType := (q.finiteType_appLE (isAffineOpen_top _) hU le_top).comp
     (RingHom.FiniteType.of_surjective _
       (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of V)).inv).2)
-  letI := c.toAlgebra
+  let := c.toAlgebra
   obtain ⟨s, hs⟩ := (show Algebra.FiniteType V Γ(X, U) from hft).out
   have h1 : ∀ᶠ x : Sp C ⟶ X in 𝓝 (spMap σ ≫ y), ∀ f ∈ s, valR x U f ∈ Set.range σ := by
     refine (eventually_all_finset s).2 fun f _ => (continuousAt_valR f hy').eventually (ho.mem_nhds ?_)
@@ -177,10 +177,10 @@ theorem exists_pow_extends {V F : Type} [CommRing V] [IsLocalRing V] [NormedFiel
 
 theorem exists_pow_integral : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K] (G : Over (Sp (integralClosure ℤ_[p] K))) [GrpObj G] [LocallyOfFiniteType G.hom] [IsSeparated G.hom], IsProjOver (pullback.snd G.hom (spMap (algebraMap (integralClosure ℤ_[p] K) K))) → ∀ a : Over.mk (spMap (algebraMap (integralClosure ℤ_[p] K) K)) ⟶ G, ∃ k : ℕ, 1 ≤ k ∧ ∃ g : 𝟙_ (Over (Sp (integralClosure ℤ_[p] K))) ⟶ G, toUnit _ ≫ g = a ^ k := by
   intro p _ K _ G _ _ _ h a
-  letI : NormedField K := inferInstanceAs (NormedField K.toSubfield)
-  letI : NormedSpace ℚ_[p] K := ⟨fun c x => norm_smul_le c (x : PadicAlgCl p)⟩
-  haveI : ProperSpace K := FiniteDimensional.proper ℚ_[p] K
-  haveI : IsUltrametricDist K := ⟨fun x y z => IsUltrametricDist.dist_triangle_max (x : PadicAlgCl p) y z⟩
+  let : NormedField K := inferInstanceAs (NormedField K.toSubfield)
+  let : NormedSpace ℚ_[p] K := ⟨fun c x => norm_smul_le c (x : PadicAlgCl p)⟩
+  have : ProperSpace K := FiniteDimensional.proper ℚ_[p] K
+  have : IsUltrametricDist K := ⟨fun x y z => IsUltrametricDist.dist_triangle_max (x : PadicAlgCl p) y z⟩
   refine exists_pow_extends _ Subtype.val_injective ?_ G h a
   convert IsUltrametricDist.isOpen_closedBall (0 : K) one_ne_zero using 1
   ext x

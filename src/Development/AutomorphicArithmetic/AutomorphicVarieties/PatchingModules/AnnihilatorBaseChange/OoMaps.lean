@@ -62,7 +62,7 @@ private theorem comap_inj {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group
 private theorem comap_comp' {n : ℕ} {A G H K : Type} [CommRing A] [Group G] [Group H] [Group K] (φ : H →* G)
     (ψ : K →* H) (D : GDet n A G) : (D.comap φ).comap ψ = D.comap (φ.comp ψ) := by
   refine GDet.ext fun B _ _ x => ?_
-  simp [GDet.comap, MonoidAlgebra.mapDomainRingHom_apply, Finsupp.mapDomain_comp]
+  simp [GDet.comap, MonoidAlgebra.mapDomainRingHom_apply]
 
 private theorem map_comap' {n : ℕ} {A A' G H : Type} [CommRing A] [CommRing A'] [Group G] [Group H] (φ : H →* G)
     (f : A →+* A') (D : GDet n A G) : (D.map f).comap φ = (D.comap φ).map f := by

@@ -64,7 +64,7 @@ theorem sh_laws : ∀ (l : ℕ) [Fact l.Prime], sh (1 : Fl l) = 1 ∧ sh (0 : Fl
     simp only [sh, map_mul]; rfl
   have hpow : ∀ (x : Fl l) (n : ℕ), sh (x ^ n) = sh x ^ n := fun x n => by
     simp only [sh, map_pow]; norm_cast
-  refine ⟨by simp [sh], by simp [sh, untilt_zero], hmul, hpow, fun x => (GlobalTheory.RingBasics.mem_OC _).1 (x.untilt).2,
+  refine ⟨by simp [sh], by simp [sh], hmul, hpow, fun x => (GlobalTheory.RingBasics.mem_OC _).1 (x.untilt).2,
     fun c hc => ?_, fun x y => ?_, fun x => ?_⟩
   · obtain ⟨x, hx⟩ := GlobalTheory.MemLoc.FundOnto.untilt_surjective l ⟨c, (GlobalTheory.RingBasics.mem_OC c).2 hc⟩
     exact ⟨x, by simp [sh, hx]⟩

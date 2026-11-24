@@ -62,7 +62,7 @@ omit [CompleteSpace H] in
 theorem inner_map_left (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (g : G) (v w : H) : ⟪σ g v, w⟫_ℂ = ⟪v, σ g⁻¹ w⟫_ℂ := by
   have h := (⟨(σ g : H →ₗ[ℂ] H), hiso g⟩ : H →ₗᵢ[ℂ] H).inner_map_map v (σ g⁻¹ w)
   have e : σ g (σ g⁻¹ w) = w := by
-    rw [← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]; rfl
+    rw [← mul_apply_eq_comp, ← map_mul, mul_inv_cancel, map_one]; rfl
   rw [← h]
   show _ = ⟪σ g v, σ g (σ g⁻¹ w)⟫_ℂ
   rw [e]
@@ -149,7 +149,7 @@ theorem exists_op_of_form (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hiso' : ∀ 
     show ⟪σ g p.2, x⟫_ℂ = ⟪σ' g p.1, w⟫_ℂ
     rw [inner_map_left hiso, inner_map_left hiso']
     refine hp _ (hS _ x hx) _ fun y hy => ?_
-    rw [← hB g _ (hS _ x hx) y hy, ← inner_map_left hiso', ← hw _ (hS' g y hy), ← ContinuousLinearMap.mul_apply,
+    rw [← hB g _ (hS _ x hx) y hy, ← inner_map_left hiso', ← hw _ (hS' g y hy), ← mul_apply_eq_comp,
       ← map_mul, mul_inv_cancel, map_one]
     rfl
   obtain ⟨T, hT, hΓ⟩ := exists_graph hiso hiso' hs Γ hcl hinv (y₀ := y₀) (z₀ := z₀)

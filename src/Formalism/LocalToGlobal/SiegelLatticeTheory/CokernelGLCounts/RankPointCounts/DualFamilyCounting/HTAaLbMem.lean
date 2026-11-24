@@ -129,9 +129,6 @@ theorem smul_aaLb {d : Fin D.R.rS} {c : D.host.E} (hc : c ∈ (aaD D d)⁻¹) {y
     rw [smul_comm]
     exact Submodule.smul_mem _ o hx
 
-theorem Lb_le : X.Lb ≤ (VS D).L0 := by
-  rw [X.Lam_split]; exact le_sup_of_le_left le_sup_right
-
 theorem hT_aaLb_mem {b : Fin D.R.rS} {y : (VS D).V} (hy : y ∈ aaLb X b) {w : (VS D).V} (hw : w ∈ X.Lb) :
     (VS D).hT y w ∈ aaD D b := by
   have hy' : y ∈ Submodule.span (𝓞 D.host.E) {y | ∃ c ∈ (aaD D b : Set D.host.E), ∃ l ∈ X.Lb, y = c • l} := hy
@@ -139,7 +136,7 @@ theorem hT_aaLb_mem {b : Fin D.R.rS} {y : (VS D).V} (hy : y ∈ aaLb X b) {w : (
   induction hy' using Submodule.span_induction with
   | mem z hz =>
     obtain ⟨c, hc, l, hl, rfl⟩ := hz
-    obtain ⟨o, ho⟩ := Formalism.MainNotions.LatticeGluingRadicals.d_Lam_int (VS D).baseLattice_isUnimodular (Lb_le X hl) (Lb_le X hw)
+    obtain ⟨o, ho⟩ := Formalism.MainNotions.LatticeGluingRadicals.d_Lam_int (VS D).baseLattice_isUnimodular (_root_.Formalism.L2.SG.Pf.Level.Lb_le X hl) (_root_.Formalism.L2.SG.Pf.Level.Lb_le X hw)
     rw [hT_smulL, ← ho, mul_comm]
     exact fi_smul_mem (SS_aaD b c hc) o
   | zero => rw [map_zero, LinearMap.zero_apply]; exact Submodule.zero_mem _

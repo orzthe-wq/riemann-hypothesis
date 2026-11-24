@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.PerCApply
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -95,18 +96,12 @@ private theorem intL_sub {a b : Loc G} (ha : IntL a) (hb : IntL b) : IntL (a - b
   refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha w i) ?_)
   simpa only [norm_neg] using hb w i
 
-private theorem norm_p_lt : ‖((p : ℕ) : PadicAlgCl p)‖ < 1 := by
-  have h := norm_algebraMap' (PadicAlgCl p) (p : ℚ_[p])
-  rw [map_natCast] at h
-  rw [h]
-  exact Padic.norm_p_lt_one
-
 private theorem small (A : MF G) : ∀ᶠ k in Filter.atTop, IntM (sc k A : MF G) := by
   simp only [IntM, Filter.eventually_all]
   intro w i j
   have ht : Filter.Tendsto (fun k : ℕ => ‖((p : ℕ) : PadicAlgCl p)‖ ^ k * ‖(A w i j : PadicAlgCl p)‖)
       Filter.atTop (nhds 0) := by
-    simpa using (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) norm_p_lt).mul_const
+    simpa using (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) _root_.ReciprocityTheory.DiscreteGroups.LocalClassField.UnramifiedExtensions.norm_p_lt_one).mul_const
       ‖(A w i j : PadicAlgCl p)‖
   filter_upwards [ht.eventually (Iio_mem_nhds zero_lt_one)] with k hk
   have e : ((sc k A w i j : G.Fw w) : PadicAlgCl p) = ((p : ℕ) : PadicAlgCl p) ^ k * (A w i j : PadicAlgCl p) := by

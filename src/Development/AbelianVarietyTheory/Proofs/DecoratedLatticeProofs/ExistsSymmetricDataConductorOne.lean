@@ -54,11 +54,7 @@ open Formalism.L2.Col (IntAt)
 section Place
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k)
 
-theorem sec_one : q.sec 1 = q.e := by
-  have := q.sec_pr 1
-  rwa [map_one, mul_one] at this
-
-theorem pr_e : q.pr q.e = 1 := by rw [← sec_one, q.pr_sec]
+theorem pr_e : q.pr q.e = 1 := by rw [← _root_.GlobalTheory.FinPl.FrameLat.sec_one, q.pr_sec]
 
 theorem pr_e_mul (x : AE D) : q.pr (q.e * x) = q.pr x := by rw [map_mul, pr_e, one_mul]
 
@@ -86,7 +82,7 @@ theorem sec_mul (x y : k) : q.sec x * q.sec y = q.sec (x * y) := by
 
 theorem idl_mul (x y : k) (h : x * y = 1) : (q.sec x + (1 - q.e)) * (q.sec y + (1 - q.e)) = 1 := by
   have h1 := sec_mul q x y
-  rw [h, sec_one] at h1
+  rw [h, _root_.GlobalTheory.FinPl.FrameLat.sec_one] at h1
   have h2 := GlobalTheory.FrameGlob.sec_eq_mul q x
   have h3 := GlobalTheory.FrameGlob.sec_eq_mul q y
   have h4 := q.split.1

@@ -63,20 +63,20 @@ open Matrix
 variable {K : Type} [Field K]
 
 private def upU (x : K) : GL (Fin 2) K :=
-  ⟨!![1, x; 0, 1], !![1, -x; 0, 1], by simp [Matrix.mul_fin_two, Matrix.one_fin_two],
-    by simp [Matrix.mul_fin_two, Matrix.one_fin_two]⟩
+  ⟨!![1, x; 0, 1], !![1, -x; 0, 1], by simp [Matrix.one_fin_two],
+    by simp [Matrix.one_fin_two]⟩
 
 private def loU (x : K) : GL (Fin 2) K :=
-  ⟨!![1, 0; x, 1], !![1, 0; -x, 1], by simp [Matrix.mul_fin_two, Matrix.one_fin_two],
-    by simp [Matrix.mul_fin_two, Matrix.one_fin_two]⟩
+  ⟨!![1, 0; x, 1], !![1, 0; -x, 1], by simp [Matrix.one_fin_two],
+    by simp [Matrix.one_fin_two]⟩
 
 private def sc1 (h : (2 : K) ≠ 0) : GL (Fin 2) K :=
-  ⟨!![2, 0; 0, 1], !![2⁻¹, 0; 0, 1], by simp [Matrix.mul_fin_two, Matrix.one_fin_two, h],
-    by simp [Matrix.mul_fin_two, Matrix.one_fin_two, h]⟩
+  ⟨!![2, 0; 0, 1], !![2⁻¹, 0; 0, 1], by simp [Matrix.one_fin_two, h],
+    by simp [Matrix.one_fin_two, h]⟩
 
 private def sc2 (h : (2 : K) ≠ 0) : GL (Fin 2) K :=
-  ⟨!![1, 0; 0, 2], !![1, 0; 0, 2⁻¹], by simp [Matrix.mul_fin_two, Matrix.one_fin_two, h],
-    by simp [Matrix.mul_fin_two, Matrix.one_fin_two, h]⟩
+  ⟨!![1, 0; 0, 2], !![1, 0; 0, 2⁻¹], by simp [Matrix.one_fin_two, h],
+    by simp [Matrix.one_fin_two, h]⟩
 
 variable {C : Type} [CommGroup C] (D : GL (Fin 2) K →* C)
 
@@ -84,7 +84,7 @@ private theorem D_upU (h : (2 : K) ≠ 0) (x : K) : D (upU x) = 1 := by
   have e1 : sc1 h * upU x * (sc1 h)⁻¹ = upU x * upU x := by
     rw [mul_inv_eq_iff_eq_mul]
     apply Units.ext
-    simp [sc1, upU, Matrix.mul_fin_two]
+    simp [sc1, upU]
     ring
   have e2 := congrArg D e1
   rw [map_mul, map_mul, map_inv, map_mul, mul_comm (D (sc1 h)), mul_inv_cancel_right] at e2
@@ -94,7 +94,7 @@ private theorem D_loU (h : (2 : K) ≠ 0) (x : K) : D (loU x) = 1 := by
   have e1 : sc2 h * loU x * (sc2 h)⁻¹ = loU x * loU x := by
     rw [mul_inv_eq_iff_eq_mul]
     apply Units.ext
-    simp [sc2, loU, Matrix.mul_fin_two]
+    simp [sc2, loU]
     ring
   have e2 := congrArg D e1
   rw [map_mul, map_mul, map_inv, map_mul, mul_comm (D (sc2 h)), mul_inv_cancel_right] at e2

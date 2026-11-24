@@ -63,31 +63,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo NumberField GroundThe
 open ReciprocityTheory.AnForm.A (IsPsh)
 open scoped Matrix ComplexOrder
 
-section Gram
-
-variable {k : ℕ}
-
-variable {ρ m : Type} [Fintype ρ] [Fintype m]
-
-end Gram
-
 section Psh
 
 variable {d : ℕ}
-
-theorem isPsh_congr' {U : Set (Fin d → ℂ)} {φ ψ : (Fin d → ℂ) → ℝ} (h : Set.EqOn φ ψ U)
-    (hφ : IsPsh U φ) : IsPsh U ψ := by
-  refine ⟨fun z hz y hy => ?_, fun z w hd => ?_⟩
-  · have h1 : ∀ᶠ x in nhdsWithin z U, φ x < y := hφ.1 z hz y (by show φ z < y; rw [h hz]; exact hy)
-    filter_upwards [h1, self_mem_nhdsWithin] with x hx hxU
-    rwa [← h hxU]
-  · have hs : Set.EqOn (fun ζ : ℂ => φ (z + ζ • w)) (fun ζ => ψ (z + ζ • w)) (sphere 0 |(1 : ℝ)|) :=
-      fun ζ hζ => h (hd ζ (by simp at hζ; rw [hζ]))
-    obtain ⟨h1, h2⟩ := hφ.2 z w hd
-    refine ⟨(circleIntegrable_congr hs).1 h1, ?_⟩
-    have hz : z ∈ U := by simpa using hd 0 (by simp)
-    rw [← Real.circleAverage_congr_sphere hs, ← h hz]
-    exact h2
 
 theorem isPsh_add_re_add_const {U : Set (Fin d → ℂ)} (hU : IsOpen U) {φ : (Fin d → ℂ) → ℝ} (hφ : IsPsh U φ)
     {G : (Fin d → ℂ) → ℂ} (hG : DifferentiableOn ℂ G U) (c : ℝ) :
@@ -127,11 +105,5 @@ theorem isPsh_add_re_add_const {U : Set (Fin d → ℂ)} (hU : IsOpen U) {φ : (
   linarith
 
 end Psh
-
-section Hodge
-
-variable {Em : Type} [Field Em] [NumberField Em] [IsCMField Em] {Ψ : Type} [Fintype Ψ] {N j : ℕ}
-
-end Hodge
 
 end GroundTheory.Heights₂.Heights.NineStatements

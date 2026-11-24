@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CharacterIdempotents.Scalar
 
 @[expose] public section
 
@@ -53,10 +54,6 @@ namespace PI.CharIdemW
 open PI.CharIdem
 
 variable {G : Type} [Group G] [Fintype G]
-
-theorem act_single (W : FDRep ℂ G) (g : G) (r : ℂ) :
-    act W (MonoidAlgebra.single g r) = r • W.ρ g := by
-  simp [act, MonoidAlgebra.lift_single]
 
 theorem coeff_mul_charIdem (W : FDRep ℂ G) (x : MonoidAlgebra ℂ G) (h : G) :
     (x * charIdem W).coeff h =

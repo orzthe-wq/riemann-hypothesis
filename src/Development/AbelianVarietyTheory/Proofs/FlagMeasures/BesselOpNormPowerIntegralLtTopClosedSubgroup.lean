@@ -2,31 +2,27 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsIsFolnerUWset
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClosedSubgroupBesselHaarFiniteCompactPosOpenStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactNormBoundedBesselClosedSubgroupStatement
-import Mathlib.Algebra.Module.StablyFree.Basic
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormProperties
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClosedSubgroupBesselHaarFiniteCompactPosOpen
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Complex
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -34,8 +30,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,10 +42,58 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.RingTheory.Complex
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Topology.Separation.CompletelyRegular
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactNormBoundedBesselClosedSubgroup, Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOpNormPowerIntegralLtTopClosedSubgroup
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactNormBoundedBesselClosedSubgroup =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactNormBoundedBesselClosedSubgroup", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
+open scoped InnerProductSpace
+
+namespace GlobalTheory.SgInf
+
+
+open scoped Matrix.Norms.L2Operator in
+theorem isCompact_closed_inter_opn_le {n : ℕ} (S : Set (Matrix (Fin n) (Fin n) ℂ)) (hS : IsClosed S)
+    (R : ℝ) : IsCompact {g | g ∈ S ∧ opn g ≤ R} := by
+
+  let e := (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin n)).toAlgEquiv.toLinearEquiv.toContinuousLinearEquiv
+  have hK : IsCompact (e ⁻¹' Metric.closedBall 0 R) :=
+    e.toHomeomorph.isCompact_preimage.mpr (isCompact_closedBall _ _)
+  have hset : {g | g ∈ S ∧ opn g ≤ R} = S ∩ e ⁻¹' Metric.closedBall 0 R := by
+    ext g
+    simp [opn, e]
+  rw [hset]
+  exact hK.inter_left hS
+
+theorem isCompact_normBounded : ∀ (k r : ℕ) (S : Set (Mat k r)), IsClosedSub k r S →
+    ∀ R : ℝ, IsCompact {g | g ∈ S ∧ opn g ≤ R} := by
+  intro k r S hS R
+  exact isCompact_closed_inter_opn_le S hS.2.1 R
+
+end GlobalTheory.SgInf
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactNormBoundedBesselClosedSubgroup =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOpNormPowerIntegralLtTopClosedSubgroup =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOpNormPowerIntegralLtTopClosedSubgroup", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ExistsIsFolnerUWset\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormProperties\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ClosedSubgroupBesselHaarFiniteCompactPosOpen\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsCompactNormBoundedBesselClosedSubgroup\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Complex\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Separation.CompletelyRegular\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -96,11 +138,11 @@ theorem opn_zero' : opn (0 : Mat k r) = 0 := by
   unfold opn; rw [map_zero, norm_zero]
 
 theorem norm_le_opn (x : Mt k r) : ‖x‖ ≤ opn (Matrix.of x) := by
-  have h := (GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).2.2.2.1
+  have h := (_root_.GlobalTheory.SgInf.opn_facts k r).2.2.2.1
   exact (pi_norm_le_iff_of_nonneg (opn_nonneg _)).2 fun i =>
     (pi_norm_le_iff_of_nonneg (opn_nonneg _)).2 fun j => h _ i j
 
-theorem continuous_opn : Continuous (fun x : Mat k r => opn x) := (GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).2.2.1
+theorem continuous_opn : Continuous (fun x : Mat k r => opn x) := (_root_.GlobalTheory.SgInf.opn_facts k r).2.2.1
 
 def nbhdU (k r : ℕ) : Set (Mt k r) := {x | opn (Matrix.of x - 1) < 1 / 4}
 
@@ -180,7 +222,7 @@ theorem exists_max_pack {S : Set (Mat k r)} (hS : IsClosedSub k r S) (R : ℝ) :
 theorem ballS_subset {S : Set (Mat k r)} (hS : IsClosedSub k r S) {R : ℝ} {F : Finset (Mat k r)}
     (hF : Pack S R F) (hmax : ∀ G, Pack S R G → G.card ≤ F.card) :
     ballS S R ⊆ ⋃ h ∈ F, lmulM h ⁻¹' ballS S 2 := by
-  have N := GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r
+  have N := _root_.GlobalTheory.SgInf.opn_facts k r
   rintro x ⟨hxS, hxR⟩
   set s : Mat k r := Matrix.of x with hsdef
   have hsG := hS.1 hxS
@@ -277,7 +319,7 @@ theorem normInt_lt_top : ∀ (k r : ℕ) (S : Set (Mat k r)) (μ : Measure (Mt k
   have hA0 : 0 < A := lt_of_le_of_lt (Nat.cast_nonneg d) hdA
   set K := volume (Metric.ball (0 : Mt k r) 1) / volume (nbhdU k r) * μ (ballS S 2) with hKdef
   have hK : K < ⊤ := by
-    have hV : μ (ballS S 2) < ⊤ := (GlobalTheory.T.closedSubgroupBessel_haar_finite_compact_pos_open k r S μ hS hμ).1 _ (GlobalTheory.T.isCompact_normBounded_besselClosedSubgroup k r S hS 2)
+    have hV : μ (ballS S 2) < ⊤ := (_root_.GlobalTheory.SgInf.haarOn_locFinite_openPos k r S μ hS hμ).1 _ (_root_.GlobalTheory.SgInf.isCompact_normBounded k r S hS 2)
     exact ENNReal.mul_lt_top (ENNReal.div_lt_top measure_ball_lt_top.ne volume_nbhdU_ne_zero) hV
   set q : ℝ := (2 : ℝ) ^ d * (2 : ℝ) ^ (-A) with hqdef
   have hq0 : 0 ≤ q := by positivity
@@ -294,7 +336,7 @@ theorem normInt_lt_top : ∀ (k r : ℕ) (S : Set (Mat k r)) (μ : Measure (Mt k
   have hpt : ∀ᵐ x ∂μ, ENNReal.ofReal (opn (Matrix.of x) ^ (-A)) ≤
       ∑' j : ℕ, (ballS S ((2 : ℝ) ^ (j + 1))).indicator (fun _ => ENNReal.ofReal (((2 : ℝ) ^ j) ^ (-A))) x := by
     filter_upwards [hae] with x hx
-    have h1 : 1 ≤ opn (Matrix.of x) := ((GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).1 _ (hS.1 hx)).2
+    have h1 : 1 ≤ opn (Matrix.of x) := ((_root_.GlobalTheory.SgInf.opn_facts k r).1 _ (hS.1 hx)).2
     have hex : ∃ j : ℕ, opn (Matrix.of x) < (2 : ℝ) ^ (j + 1) := by
       obtain ⟨j, hj⟩ := pow_unbounded_of_one_lt (opn (Matrix.of x)) (by norm_num : (1 : ℝ) < 2)
       exact ⟨j, hj.trans (pow_lt_pow_right₀ (by norm_num) (Nat.lt_succ_self j))⟩
@@ -340,3 +382,7 @@ theorem normInt_lt_top : ∀ (k r : ℕ) (S : Set (Mat k r)) (μ : Measure (Mt k
         exact tsub_pos_of_lt (ENNReal.ofReal_lt_one.2 hq1)
 
 end GlobalTheory.SgGrowth
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOpNormPowerIntegralLtTopClosedSubgroup =====

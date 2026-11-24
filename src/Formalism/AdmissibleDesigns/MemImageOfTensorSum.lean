@@ -163,8 +163,6 @@ theorem kapG_mem' (j : ℕ) (a : Fin j) : Submodule.mkQ _ (kapG ρL iL Zf j a) �
   rw [Submodule.mem_comap, Submodule.restrictScalars_mem]
   exact kapG_fin ρL iL Zf j a
 
-theorem kapG_mem (j : ℕ) (a : Fin j) : Submodule.mkQ _ (kapG ρL iL Zf j a) ∈ FfG ρL iL Zf := kapG_mem' ρL iL Zf j a
-
 theorem latBasisG_of [IsPrincipalIdealRing O] (j : ℕ) (hfg : Module.Finite O ↥(FfG ρL iL Zf))
     (hrk : Module.finrank O (↥(FfG ρL iL Zf) ⧸ Submodule.torsion O ↥(FfG ρL iL Zf)) = j) :
     LatBasisG ρL iL Zf j := by
@@ -173,7 +171,6 @@ theorem latBasisG_of [IsPrincipalIdealRing O] (j : ℕ) (hfg : Module.Finite O �
   haveI hfree : Module.Free O (↥(FfG ρL iL Zf) ⧸ Submodule.torsion O ↥(FfG ρL iL Zf)) := by
     first
       | exact Module.free_of_finite_type_torsion_free'
-      | infer_instance
   let e := Module.finBasisOfFinrankEq _ _ hrk
   choose f hf using fun a => Submodule.Quotient.mk_surjective (Submodule.torsion O ↥(FfG ρL iL Zf)) (e a)
   have hw : ∀ a, ∃ w : ↥(coZ1s ρL), w ∈ (finPreG iL Zf).comap (coZ1s ρL).subtype ∧
@@ -205,7 +202,6 @@ theorem latBasisG_of [IsPrincipalIdealRing O] (j : ℕ) (hfg : Module.Finite O �
     refine ⟨(c : O), ?_, ?_⟩
     · first
         | exact nonZeroDivisors.coe_ne_zero c
-        | exact nonZeroDivisors.ne_zero c.2
     · have h2 := congrArg Subtype.val hc
       simpa [zF, Submonoid.smul_def, Submodule.coe_smul, Submodule.coe_sub, Submodule.coe_sum, ← hwf] using h2
   · intro b c hc hsum
@@ -358,7 +354,7 @@ theorem finRhoAt (l : K.Col i dc) (hB : CobFin i dc Dd l) (hL : LatBasis i dc Dd
   refine ⟨fun a g => (κ_mem i dc Dd ρ π l a g).symm, ?_, fun a => ?_, ?_, ?_⟩
   · intro c z hc hz
     exact FfG_sat _ _ _ _ hB (iL_equiv i dc Dd l) c z hc hz
-  · exact kapG_mem _ _ _ _ a
+  · exact _root_.Formalism.MainNotions.N.KFin.kapG_mem' _ _ _ _ a
   · exact (kapG_basis (ρL i dc Dd l) (iLr i Dd) (Zf i dc Dd l) hL).1
   · exact (kapG_basis (ρL i dc Dd l) (iLr i Dd) (Zf i dc Dd l) hL).2
 

@@ -693,7 +693,7 @@ theorem til_L_eq {N n : ℕ} (hN : N = n + 1) {ST SG : Finset (HeightOneSpectrum
     · simp [z0, eLast]
     · have h1 : ¬ (i.1 + 1 = n + 1) := by omega
       have h2 : i.1 ≠ n := i.2.ne
-      simp [z0, eLast, h1, h2, (Fin.castSucc_lt_last i).ne]
+      simp [z0, eLast, h2, (Fin.castSucc_lt_last i).ne]
   rw [e1, e2]
   show (DecoSet.til (ST := ST) pi d).1.L = _
   rw [DecoSet.til_val d hT hG]
@@ -1022,7 +1022,7 @@ theorem eq_extM_of_ext (φ : E →+* R) {a : E} (ha : a ≠ 0) {M : Matrix (Fin 
     rw [e]
     refine Fin.lastCases ?_ (fun i => ?_) b
     · have h3 : ∀ l : Fin n, Fin.last n ≠ Br.iC (rfl : n + 1 = n + 1) l := fun l => (Fin.castSucc_lt_last l).ne'
-      simp [hM, h3, extM_last_castSucc]
+      simp [hM, h3]
       exact (extM_last_castSucc g' j).symm
     · have h3 : ∀ l : Fin n, (i.castSucc = Br.iC (rfl : n + 1 = n + 1) l) ↔ i = l := fun l => Fin.castSucc_inj
       simp [hM, h3]

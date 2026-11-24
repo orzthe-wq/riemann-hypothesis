@@ -134,8 +134,6 @@ theorem vol : VolSt := by
     conv_lhs => rw [hscale]
     first
       | rw [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]
-      | simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]
-      | simp [Measure.smul_apply]
   have hac : μ1 ≪ μ := fun X hX => by
     rw [hμX] at hX
     exact (mul_eq_zero.1 hX).resolve_left hc0

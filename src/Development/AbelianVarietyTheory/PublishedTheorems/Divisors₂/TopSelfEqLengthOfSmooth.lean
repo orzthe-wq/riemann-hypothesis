@@ -63,28 +63,6 @@ open ReciprocityTheory.CA (IsCM)
 open GlobalTheory.Adelic (cutIdeal mem_support_cutIdeal)
 open GlobalTheory.QCoh GlobalTheory.Vanishing RingTheory.Sequence
 
-namespace GlobalTheory.Published
-
-def ProperIntersectionLength : Prop :=
-  ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (f : X ⟶ Sp k) (D : ℕ), IsProjOver f →
-    topologicalKrullDim X = D → ∀ (L : LB X) (hL : L.IsLB) (s : Fin D → L.Sec),
-    ((cutIdeal hL s).support : Set X).Finite →
-    (∀ y ∈ (cutIdeal hL s).support, IsCM (X.presheaf.stalk y)) →
-    letI := algebraΓOfHom f
-    letI := algebraΓOfHom ((cutIdeal hL s).subschemeι ≫ f)
-    IsFinite ((cutIdeal hL s).subschemeι ≫ f) ∧
-    (∀ y ∈ (cutIdeal hL s).support, ∀ (c : L.ι) (hc : y ∈ L.U c),
-      IsRegular (X.presheaf.stalk y) (List.ofFn fun i => X.presheaf.germ (L.U c) y hc ((s i).f c))) ∧
-    (∀ z : (cutIdeal hL s).subscheme, Module.length ((cutIdeal hL s).subscheme.presheaf.stalk z)
-      ((cutIdeal hL s).subscheme.presheaf.stalk z) ≠ ⊤) ∧
-    topSelfIntersection k L D = (∑ᶠ z : (cutIdeal hL s).subscheme, ((cutIdeal hL s).subschemeι ≫ f).residueDegree z *
-      (Module.length ((cutIdeal hL s).subscheme.presheaf.stalk z)
-        ((cutIdeal hL s).subscheme.presheaf.stalk z)).toNat : ℕ) ∧
-    Module.Finite k Γ((cutIdeal hL s).subscheme, ⊤) ∧
-    topSelfIntersection k L D = Module.finrank k Γ((cutIdeal hL s).subscheme, ⊤)
-
-end GlobalTheory.Published
-
 namespace GlobalTheory.ProperCut
 
 variable {k : Type} [Field k] {X : Scheme.{0}} (f : X ⟶ Sp k)
@@ -243,12 +221,3 @@ theorem topSelf_eq_length_of_smooth {D : ℕ} (hd : SmoothOfRelativeDimension D 
     fun y hy => (CutDegree.ringKrullDim_stalk hd (isClosed_singleton_of_finite f _ hfin hy)).ge
 
 end GlobalTheory.ProperCut
-
-namespace GlobalTheory.Published
-
-theorem ProperIntersectionLength_holds : ProperIntersectionLength := fun _ _ _ _ f _ hf hd _ hL s hfin hCM =>
-  have := ((isProjOver_iff_isProper_and_exists_isAmpleLB f).1 hf).1
-  ProperCut.topSelf_eq_length f hf hL s hfin hCM fun _ hy =>
-    ((ProperCut.ringKrullDim_stalk_eq f (ProperCut.isClosed_singleton_of_finite f _ hfin hy)).trans hd).ge
-
-end GlobalTheory.Published

@@ -110,7 +110,6 @@ lemma coeff_diag (u : AddMonoidAlgebra A X) (x y : X) [Decidable (x = y)] :
     simp only [AddMonoidAlgebra.mapDomainRingHom_apply, AddMonoidAlgebra.mapDomain_single,
       AddMonoidAlgebra.coeff_single, Finsupp.single_apply]
     by_cases h1 : a = x <;> by_cases h2 : x = y <;> simp [h1, h2]
-    all_goals aesop
 
 lemma IsMultiplicative.eq_single {u : AddMonoidAlgebra A X} (hu : IsMultiplicative u) {x : X}
     (hx : IsUnit (u.coeff x)) : u = single x 1 := by

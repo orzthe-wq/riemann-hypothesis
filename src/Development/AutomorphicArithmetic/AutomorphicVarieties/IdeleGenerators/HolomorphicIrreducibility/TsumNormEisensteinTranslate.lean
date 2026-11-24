@@ -127,12 +127,11 @@ private lemma tsum_norm_eisenstein_translate (k n : ℤ) (z : ℍ) :
     intro x
     have hx : vE (ModularGroup.T ^ n) x = ![x 0, x 0 * n + x 1] := by
       ext i
-      fin_cases i <;> simp [vE, ModularGroup.coe_T_zpow, Matrix.vecMul, dotProduct, Fin.sum_univ_two,
-        Matrix.vecHead, Matrix.vecTail]
+      fin_cases i <;> simp [vE, ModularGroup.coe_T_zpow, Matrix.vecHead, Matrix.vecTail]
     rw [hx]
     simp only [eisSummand, ModularGroup.coe_T_zpow_smul_eq]
     congr 1
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Int.cast_add,
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Int.cast_add,
       Int.cast_mul]
     ring
   simp_rw [key]

@@ -151,10 +151,7 @@ def SepLemma : Prop :=
 def StepOf : Prop := UnitriangularBlockExtension → ColFacts → ConjCol → RowExists → CharOrth → SepLemma → StepProp
 
 theorem claim_all (hb : BaseProp) (hs : StepProp) (F : Type) [Field F] [Fintype F] : ∀ n, Claim F n := by
-  intro n
-  induction n with
-  | zero => exact hb F
-  | succ n ih => exact hs F n ih
+  exact Nat.rec (hb F) (fun n ih => hs F n ih)
 
 theorem mirabolicBound_of (hb : BaseProp) (hs : StepProp) : MirabolicBound := by
   intro F _ _ k ψ₀ hψ V _ _ _ π _ hgen

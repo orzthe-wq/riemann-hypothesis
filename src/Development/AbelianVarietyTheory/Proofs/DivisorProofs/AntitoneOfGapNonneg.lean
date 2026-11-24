@@ -84,7 +84,7 @@ theorem GlobalTheory.CompHS.WtPar.antitone_wt_gap_bar : ∀ {E : Type} [Field E]
     have hr := (P.gap_rem τ k).1
     have hu1 : P.u₁ τ ⟨k + 1, h⟩ < P.u₁ τ ⟨k, by omega⟩ := hu τ (Fin.mk_lt_mk.2 (Nat.lt_succ_self k))
     have hk : -2 ≤ FlagTan.kap Dw τ ⟨k, by omega⟩ - FlagTan.kap Dw τ ⟨k + 1, h⟩ := by
-      simp only [FlagTan.kap, Fin.val_mk]
+      simp only [FlagTan.kap]
       split_ifs <;> push_cast <;> omega
     rw [gap, dite_eq_left h] at hr ⊢
     simp only [WtPar.wt, WtPar.uc, WtPar.u₂, Pi.add_apply, Pi.smul_apply] at hr ⊢

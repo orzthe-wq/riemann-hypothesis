@@ -175,8 +175,7 @@ theorem Vw_eq_span_image (u : WeightFamilies.Wt D j) {s : Set (B.Cusp j u)} (hs 
     exact Submodule.smul_mem _ _ hx
 
 theorem Vw_mul_le (u u' : WeightFamilies.Wt D j) : Vw X la N u * Vw X la N u' ≤ Vw X la N (wadd u u') := by
-  unfold Vw
-  rw [Submodule.span_mul_span]
+  simp only [Vw, Submodule.span_mul_span]
   refine Submodule.span_mono ?_
   rintro _ ⟨_, ⟨F, rfl⟩, _, ⟨G, rfl⟩, rfl⟩
   obtain ⟨H, hH⟩ := X.inc_mul u u' F G
@@ -225,16 +224,15 @@ def Mon (u : WeightFamilies.Wt D j) (a n : ℕ) : Submodule (Kp X la N) (Rp X la
 
 theorem sec_pow_mul_mem_Mon (u : WeightFamilies.Wt D j) (a n m : ℕ) {x : Rp X la N} (hx : x ∈ Mon X la w u a n) :
     sec X la w 0 ^ m * x ∈ Mon X la w u a (n + m) := by
-  have h : Mon X la w u a n ≤
-      (Mon X la w u a (n + m)).comap (LinearMap.mulLeft (Kp X la N) (sec X la w 0 ^ m)) := by
-    refine iSup₂_le fun α hα => ?_
-    rw [Submodule.map_le_iff_le_comap]
-    intro v hv
-    show sec X la w 0 ^ m * (secPow X la w α * v) ∈ Mon X la w u a (n + m)
-    rw [mul_left_comm]
-    exact Submodule.mem_iSup_of_mem α (Submodule.mem_iSup_of_mem hα
-      (Submodule.mem_map_of_mem (f := LinearMap.mulLeft (Kp X la N) (secPow X la w α))
-        (sec_pow_mul_mem X la w 0 u n m hv)))
+  have h : Mon X la w u a n ≤ (Mon X la w u a (n + m)).comap (LinearMap.mulLeft (Kp X la N) (sec X la w 0 ^ m)) :=
+    iSup₂_le fun α hα => by
+      rw [Submodule.map_le_iff_le_comap]
+      intro v hv
+      show sec X la w 0 ^ m * (secPow X la w α * v) ∈ Mon X la w u a (n + m)
+      rw [mul_left_comm]
+      exact Submodule.mem_iSup_of_mem α (Submodule.mem_iSup_of_mem hα
+        (Submodule.mem_map_of_mem (f := LinearMap.mulLeft (Kp X la N) (secPow X la w α))
+          (sec_pow_mul_mem X la w 0 u n m hv)))
   exact h hx
 
 def Fil (u : WeightFamilies.Wt D j) (a : ℕ) : Submodule (Kp X la N) (Rp X la N) where

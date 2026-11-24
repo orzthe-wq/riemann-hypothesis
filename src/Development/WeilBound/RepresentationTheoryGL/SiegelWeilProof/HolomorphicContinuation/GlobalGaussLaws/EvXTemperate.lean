@@ -62,7 +62,7 @@ theorem evX_temperate {m n : ℕ} (P : PX m n) :
         (ContinuousLinearMap.proj a : (Fin m → Fin n → ℂ) →L[ℝ] (Fin n → ℂ)))).hasTemperateGrowth
     convert h using 1
     funext u
-    simp [Complex.conjCLE_apply]
+    simp
   refine MvPolynomial.induction_on
     (motive := fun Q : PX m n =>
       Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => evX Q u)) P ?_ ?_ ?_

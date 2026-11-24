@@ -1,10 +1,12 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IntSOfMulEqOne
 public import Formalism.LocalToGlobal.CharacterGerms.RowTieSelf
 public import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIntegralEndOfLadicActionLimitStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FrobeniusLiftEmbeddingsUnitStatement
+public import Formalism.LocalToGlobal.CharacterGerms.RowTieFB
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ExistsIntegralEndOfLadicActionLimit
+public import Formalism.LocalToGlobal.CharacterGerms.Interface
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FrobeniusLiftEmbeddingsUnit
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.IntSOfMulEqOne
 import Formalism.LocalToGlobal.CharacterGerms.ConstMemTypeSetOfNonneg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -329,11 +331,11 @@ theorem teichSelf_mulVec {C : Type} [Field C] {dd : ℕ} (M : Matrix (Fin dd) (F
 
 theorem hasTeich_selfData : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I0 : Type) [Fintype I0] (p : SelfData Y d I0), ∀ g, HasTeich (Y.rawSelf p) V g := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p g
-  obtain ⟨N, ζ, s, hN, hζ, hinj, hfr, hs, hlim⟩ := GlobalTheory.T.frobenius_lift_embeddings_unit C V Y.cpl O d p.em p.em_int p.em_frob p.em_sep p.em_unr
+  obtain ⟨N, ζ, s, hN, hζ, hinj, hfr, hs, hlim⟩ := _root_.GlobalTheory.exists_teichmueller_sequence C V Y.cpl O d p.em p.em_int p.em_frob p.em_sep p.em_unr
   let X : RawChart C d (fun _ => I0) (Fin dd) :=
     { lg := fun i => un1 (Y.lg i), ex := fun i => un1 (Y.ex i), h := Y.h, k := 0, u := fun _ => p.e,
       ty := fun _ => p.ty0, n := 0, j := 0, j' := 0, big := fun _ _ => True }
-  obtain ⟨M, M', h1, h2, h3, h4⟩ := GlobalTheory.T.exists_integralEnd_of_ladic_action_limit C V O dd Y d _ X rfl rfl rfl s hs
+  obtain ⟨M, M', h1, h2, h3, h4⟩ := _root_.GlobalTheory.ActionLimit.exists_isEnd_of_limit_raw C V O dd Y d _ X rfl rfl rfl s hs
   have hlg : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0 := by
     intro i
     show MvPowerSeries.constantCoeff (un1 (Y.lg i)) = 0

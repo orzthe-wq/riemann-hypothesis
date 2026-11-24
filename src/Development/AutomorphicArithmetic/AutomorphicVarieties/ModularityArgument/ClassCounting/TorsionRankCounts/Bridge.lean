@@ -56,7 +56,7 @@ private theorem d_eq (A G : Type) [CommRing A] [Group G] (k : ℕ) (z : Ch A G (
   | add a b ha hb => rw [map_add (f := _), map_add (f := _), ha, hb]
   | single g c =>
     rw [groupHomology.inhomogeneousChains.d_single]
-    simp [bd, Finsupp.linearCombination_single, Finset.smul_sum, smul_smul, mul_comm c]
+    simp [bd, Finsupp.linearCombination_single, Finset.smul_sum, mul_comm c]
 
 private theorem i_inj (A G : Type) [CommRing A] [Group G] (k : ℕ) :
     Function.Injective (groupHomology.iCycles (Rep.trivial A G A) k) :=

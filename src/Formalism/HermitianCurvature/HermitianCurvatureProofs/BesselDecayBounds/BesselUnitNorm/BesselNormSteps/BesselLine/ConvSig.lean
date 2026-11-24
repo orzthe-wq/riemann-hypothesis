@@ -60,13 +60,9 @@ theorem sigAll : SigAll := by
   have hQ1 : Pᴴ * P = 1 := by
     first
     | exact Unitary.star_mul_self_of_mem hPu
-    | exact Matrix.mem_unitaryGroup_iff'.mp hPu
-    | exact hPu.1
   have hQ2 : P * Pᴴ = 1 := by
     first
     | exact Unitary.mul_star_self_of_mem hPu
-    | exact Matrix.mem_unitaryGroup_iff.mp hPu
-    | exact hPu.2
   have hinv : P⁻¹ = Pᴴ := Matrix.inv_eq_left_inv hQ1
   have hQ1' : ∀ x : Mx k r, Pᴴ * (P * x) = x := fun x => by rw [← mul_assoc, hQ1, one_mul]
   have hQ2' : ∀ x : Mx k r, P * (Pᴴ * x) = x := fun x => by rw [← mul_assoc, hQ2, one_mul]

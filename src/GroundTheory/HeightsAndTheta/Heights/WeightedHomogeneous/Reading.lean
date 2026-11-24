@@ -54,7 +54,7 @@ noncomputable section
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
-def HermLine.ofGeo (N : Geo.HermLine (blockIdx n)) (hN : Geo.IsSmoothHerm N) : HermLine n where
+def HermLine.ofGeo (N : Geo.HermLine (blockIdx n)) (hN : Geo.IsSmoothHerm N) : Heights.HermLine n where
   deg := N.a
   metric z := N.h (flatCone z)
   metric_pos z hz := N.pos _ ((blockNonzero_unflatCone_iff _).mp hz)

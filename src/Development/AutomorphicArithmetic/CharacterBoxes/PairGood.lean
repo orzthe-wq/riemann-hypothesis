@@ -71,15 +71,6 @@ def PairEx : Prop :=
   ∀ (M : ℕ), 0 < M → ∀ eps A : ℝ, 0 < eps → eps < 1 / 52 → 1 ≤ A →
     ∃ Y1 : ℝ, ∀ Y ≥ Y1, ∃ q d : ℕ, PairGood M eps Y (Y ^ A) q d
 
-def RealBox {φ : Frame} (H : HostRaw φ) : Prop :=
-  ∀ ψ : PChar, H.IsCharE ψ.χ → ψ.IsReal → (H.q ∣ ψ.N ∨ H.d ∣ ψ.N) →
-    ∀ β : ℝ, 1 - 1 / 400 < β → DirichletCharacter.LFunction ψ.χ β ≠ 0
-
-def ThinH : Prop :=
-  ∃ c : ℝ, 0 < c ∧ ∀ B eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (φ : Frame) (H : HostRaw φ),
-    ((ordCompl[2] H.QS : ℕ) : ℝ) ≤ B → Real.log (H.condN : ℝ) ≤ 2 * x ^ (eps / 5) * Real.log x ^ 2 → RealBox H →
-      H.ChebyshevCharacterBound x eps c
-
 theorem PairGood.mono {M : ℕ} {eps Y X X' : ℝ} {q d : ℕ} (h : PairGood M eps Y X q d) (hX : X' ≤ X) : PairGood M eps Y X' q d :=
   ⟨h.pair, h.coprime, fun ξ i j hij N _ χ hχ y a b => h.bounds ξ i j hij N χ hχ y a (b.trans hX), h.boxes⟩
 

@@ -134,13 +134,8 @@ theorem hform_isSymm {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (hherm : ∀ i j, 
     refine Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))
     first
       | (rw [← hherm b a]; ring)
-      | (rw [← hherm a b]; ring)
-      | (rw [hherm b a]; ring)
-      | (rw [hherm a b]; ring)
   first
-    | exact key
     | exact ⟨key⟩
-    | (constructor; exact key)
 
 theorem hform_sepRight {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (hdet : H.det ≠ 0) :
     (hform H).SeparatingRight := by
@@ -153,7 +148,6 @@ theorem hform_nondeg {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (hs : (hform H).Is
   have hsym : ∀ x y, starRingEnd K (hform H x y) = hform H y x := by
     intro x y
     first
-      | exact hs x y
       | exact hs.eq x y
   refine ⟨fun x hx => hform_sepRight H hdet x (fun y => ?_), hform_sepRight H hdet⟩
   rw [← hsym x y, hx y, map_zero]
@@ -179,7 +173,6 @@ theorem gramR_eq_std {d : ℕ} (H : Matrix (Fin d) (Fin d) K) (f : Fin d → Fin
     simp only [Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.transpose_apply,
       dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]
     first
-      | rfl
       | exact Finset.sum_comm
   rw [h1, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]
   ring

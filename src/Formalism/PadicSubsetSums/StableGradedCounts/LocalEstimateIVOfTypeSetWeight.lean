@@ -1,41 +1,38 @@
 module
 
+public import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility
+public import Mathlib.GroupTheory.Perm.Centralizer
+public import Lemmata.GeneralBFactRightRest.Imports
+public import Mathlib.Combinatorics.Derangements.Finite
 public import Formalism.PadicSubsetSums.CentralIdempotents.EigenbasisOfDistinctRoots
 public import Formalism.GaloisIrreducibility.NoSolvableTransitive
-public import Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbSum
-public import Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleTypeProb
-public import Formalism.PadicSubsetSums.StableGradedCounts.IRRDivisorDegreeSubSum
 public import Formalism.PadicSubsetSums.StableGradedCounts.IRRIrredCountUpper
-public import Formalism.PadicSubsetSums.StableGradedCounts.IRRLemmaP
 public import Formalism.PadicSubsetSums.StableGradedCounts.IRRPrimeRecipSum
 public import Formalism.PadicSubsetSums.StableGradedCounts.IRRSquarefreeCount
 public import Formalism.PadicSubsetSums.StableGradedCounts.IRRTypeCountExact
+public import Mathlib.FieldTheory.Finite.Extension
+public import Mathlib.Algebra.BigOperators.Field
+public import Mathlib.Algebra.Order.Group.Indicator
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.RegularizedHypergeometric
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
-public import Mathlib.FieldTheory.Finite.Extension
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -43,6 +40,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -55,50 +53,604 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Mathlib.Algebra.BigOperators.Field
-public import Mathlib.Algebra.Order.Group.Indicator
+import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.TypeStar
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Analysis.SpecialFunctions.RegularizedHypergeometric
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbPrime, Formalism.PadicSubsetSums.StableGradedCounts.IRRJoints, Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbSum, Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleTypeProb, Formalism.PadicSubsetSums.StableGradedCounts.IRRDivisorDegreeSubSum, Formalism.PadicSubsetSums.StableGradedCounts.IRRLemmaP, Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateIVOfTypeSetWeight
+
+-- ===== clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbPrime =====
+-- clump-header: {"m": "Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbPrime", "h": "module\n\npublic import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.GroupTheory.Perm.Centralizer\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
+open Equiv Equiv.Perm Finset
+
+namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+
+theorem card_disjoint_perm {α : Type} [Fintype α] [DecidableEq α] (c : Perm α)
+    (B : Finset (Perm α)) (hB : ∀ τ, τ ∈ B ↔ c.Disjoint τ) :
+    B.card = (Fintype.card α - c.support.card).factorial := by
+  classical
+  have hB' : B = Finset.univ.filter (fun τ => c.Disjoint τ) := by
+    ext τ
+    simp [hB]
+  rw [hB', ← Fintype.card_subtype]
+
+  have e : {τ : Perm α // c.Disjoint τ} ≃ {f : Perm α // ∀ a, ¬ (a ∉ c.support) → f a = a} :=
+    Equiv.subtypeEquivRight fun τ => by
+      constructor
+      · intro h a ha
+        rcases h a with h1 | h1
+        · exact absurd (Perm.mem_support.1 (not_not.1 ha)) (not_not.2 h1)
+        · exact h1
+      · intro h a
+        by_cases ha : a ∈ c.support
+        · exact Or.inr (h a (not_not.2 ha))
+        · left
+          by_contra h1
+          exact ha (Perm.mem_support.2 h1)
+  rw [Fintype.card_congr (e.trans (Equiv.Perm.subtypeEquivSubtypePerm _).symm), Fintype.card_perm,
+    Fintype.card_subtype_compl, Fintype.card_coe]
+
+theorem prime_cycle_perm_count (N p : ℕ) (hp : p.Prime) (hpN : p ≤ N) (hN2 : N < 2 * p)
+    (S : Finset (Perm (Fin N))) (hS : ∀ σ, σ ∈ S ↔ p ∈ σ.cycleType) :
+    p * S.card = N.factorial := by
+  classical
+  have hp2 : 2 ≤ p := hp.two_le
+  obtain ⟨C, hCdef⟩ : ∃ C : Finset (Perm (Fin N)), C = Finset.univ.filter (fun g => g.cycleType = {p}) :=
+    ⟨_, rfl⟩
+  have hmemT : ∀ σ : Perm (Fin N), p ∈ σ.cycleType ↔ ∃ c ∈ σ.cycleFactorsFinset, c.support.card = p := by
+    intro σ
+    rw [Equiv.Perm.cycleType_def, Multiset.mem_map]
+    simp only [Finset.mem_val, Function.comp_apply]
+
+  have hCsupp : ∀ c ∈ C, c.IsCycle ∧ c.support.card = p := by
+    intro c hc
+    rw [hCdef, Finset.mem_filter] at hc
+    have h2 : c.support.card = p := by rw [← Equiv.Perm.sum_cycleType, hc.2, Multiset.sum_singleton]
+    refine ⟨?_, h2⟩
+    rw [← Equiv.Perm.card_cycleType_eq_one, hc.2, Multiset.card_singleton]
+  have hmemC : ∀ c : Perm (Fin N), c.IsCycle → c.support.card = p → c ∈ C := by
+    intro c hc hs
+    rw [hCdef, Finset.mem_filter]
+    exact ⟨Finset.mem_univ _, by rw [hc.cycleType, hs]⟩
+
+  have hSU : S = C.biUnion (fun c => S.filter (fun σ => c ∈ σ.cycleFactorsFinset)) := by
+    ext σ
+    constructor
+    · intro hσ
+      obtain ⟨c, hc, hcp⟩ := (hmemT σ).1 ((hS σ).1 hσ)
+      exact Finset.mem_biUnion.2 ⟨c, hmemC c (Equiv.Perm.mem_cycleFactorsFinset_iff.1 hc).1 hcp,
+        Finset.mem_filter.2 ⟨hσ, hc⟩⟩
+    · intro h
+      obtain ⟨c, _, hσ⟩ := Finset.mem_biUnion.1 h
+      exact (Finset.mem_filter.1 hσ).1
+
+  have hdisj : (C : Set (Perm (Fin N))).PairwiseDisjoint
+      (fun c => S.filter (fun σ => c ∈ σ.cycleFactorsFinset)) := by
+    intro c hc c' hc' hne
+    show _root_.Disjoint _ _
+    rw [Finset.disjoint_left]
+    intro σ h1 h2
+    have hd := Equiv.Perm.cycleFactorsFinset_pairwise_disjoint σ
+      (Finset.mem_coe.2 (Finset.mem_filter.1 h1).2) (Finset.mem_coe.2 (Finset.mem_filter.1 h2).2) hne
+    have hcard := Finset.card_le_univ (c.support ∪ c'.support)
+    rw [Finset.card_union_of_disjoint hd.disjoint_support, (hCsupp c (Finset.mem_coe.1 hc)).2,
+      (hCsupp c' (Finset.mem_coe.1 hc')).2, Fintype.card_fin] at hcard
+    omega
+
+  have hF : ∀ c ∈ C, (S.filter (fun σ => c ∈ σ.cycleFactorsFinset)).card = (N - p).factorial := by
+    intro c hc
+    obtain ⟨hcyc, hcs⟩ := hCsupp c hc
+    have hB := card_disjoint_perm c (Finset.univ.filter fun τ => c.Disjoint τ) (fun τ => by simp)
+    rw [Fintype.card_fin, hcs] at hB
+    rw [← hB]
+    symm
+    refine Finset.card_bij (fun τ _ => c * τ) ?_ ?_ ?_
+    · intro τ hτ
+      have hd : c.Disjoint τ := (Finset.mem_filter.1 hτ).2
+      have hmem : c ∈ (c * τ).cycleFactorsFinset := by
+        rw [hd.cycleFactorsFinset_mul_eq_union, hcyc.cycleFactorsFinset_eq_singleton]
+        exact Finset.mem_union_left _ (Finset.mem_singleton_self _)
+      exact Finset.mem_filter.2 ⟨(hS _).2 ((hmemT _).2 ⟨c, hmem, hcs⟩), hmem⟩
+    · intro τ _ τ' _ h
+      exact mul_left_cancel h
+    · intro σ hσ
+      have hmem := (Finset.mem_filter.1 hσ).2
+      have hd : c.Disjoint (σ * c⁻¹) := (Equiv.Perm.disjoint_mul_inv_of_mem_cycleFactorsFinset hmem).symm
+      refine ⟨σ * c⁻¹, Finset.mem_filter.2 ⟨Finset.mem_univ _, hd⟩, ?_⟩
+      rw [hd.commute.eq, inv_mul_cancel_right]
+  have hcard : S.card = C.card * (N - p).factorial := by
+    rw [hSU, Finset.card_biUnion hdisj, Finset.sum_congr rfl hF, Finset.sum_const, smul_eq_mul]
+  have hC : C.card = (p - 1).factorial * N.choose p := by
+    have h := Equiv.Perm.card_of_cycleType_singleton (α := Fin N) hp2 (by rw [Fintype.card_fin]; exact hpN)
+    rw [Fintype.card_fin] at h
+    rw [hCdef]
+    exact h
+  rw [hcard, hC]
+  calc p * ((p - 1).factorial * N.choose p * (N - p).factorial)
+      = N.choose p * (p * (p - 1).factorial) * (N - p).factorial := by ring
+    _ = N.factorial := by
+      rw [Nat.mul_factorial_pred hp.ne_zero, Nat.choose_mul_factorial_mul_factorial hpN]
+
+theorem prime_cycle_probability : CycleProbPrime := by
+  intro N p hp hpN hN2
+  exact prime_cycle_perm_count N p hp hpN hN2 _ (fun σ => by simp)
+
+end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbPrime =====
+
+-- ===== clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRJoints =====
+-- clump-header: {"m": "Formalism.PadicSubsetSums.StableGradedCounts.IRRJoints", "h": "module\n\npublic import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+
+theorem cycleProbSum_of_cycleProbPrime : CycleProbPrime → CycleProbSum := by
+  unfold CycleProbPrime CycleProbSum
+  intro h N
+  classical
+  have hdisj : ∀ p ∈ (range (N + 1)).filter (fun p => Nat.Prime p ∧ N < 2 * p ∧ p + 3 ≤ N),
+      ∀ q ∈ (range (N + 1)).filter (fun p => Nat.Prime p ∧ N < 2 * p ∧ p + 3 ≤ N), p ≠ q →
+      Disjoint (univ.filter fun σ : Equiv.Perm (Fin N) => p ∈ σ.cycleType)
+        (univ.filter fun σ : Equiv.Perm (Fin N) => q ∈ σ.cycleType) := by
+    intro p hp q hq hpq
+    simp only [mem_filter, mem_range] at hp hq
+    rw [Finset.disjoint_left]
+    intro σ h1 h2
+    simp only [mem_filter, mem_univ, true_and] at h1 h2
+    have hq' : q ∈ σ.cycleType.erase p := (Multiset.mem_erase_of_ne hpq.symm).2 h2
+    have hsum : σ.cycleType.sum ≤ N := by
+      rw [Equiv.Perm.sum_cycleType]
+      exact (Finset.card_le_univ _).trans (by simp)
+    have hsplit : σ.cycleType.sum = p + (σ.cycleType.erase p).sum := by
+      conv_lhs => rw [← Multiset.cons_erase h1]
+      rw [Multiset.sum_cons]
+    have hle : q ≤ (σ.cycleType.erase p).sum := Multiset.le_sum_of_mem hq'
+    omega
+  have hset : (univ.filter fun σ : Equiv.Perm (Fin N) => ∃ p ∈ σ.cycleType, Nat.Prime p ∧ N < 2 * p ∧ p + 3 ≤ N) =
+      ((range (N + 1)).filter fun p => Nat.Prime p ∧ N < 2 * p ∧ p + 3 ≤ N).biUnion
+        (fun p => univ.filter fun σ : Equiv.Perm (Fin N) => p ∈ σ.cycleType) := by
+    ext σ
+    simp only [mem_filter, mem_univ, true_and, mem_biUnion, mem_range]
+    constructor
+    · rintro ⟨p, hp, hpr, h2, h3⟩
+      exact ⟨p, ⟨by omega, hpr, h2, h3⟩, hp⟩
+    · rintro ⟨p, ⟨-, hpr, h2, h3⟩, hp⟩
+      exact ⟨p, hp, hpr, h2, h3⟩
+  rw [hset, Finset.card_biUnion hdisj, Nat.cast_sum]
+  refine Finset.sum_congr rfl (fun p hp => ?_)
+  simp only [mem_filter, mem_range] at hp
+  obtain ⟨hpN, hpr, h2, h3⟩ := hp
+  have hk := h N p hpr (by omega) h2
+  have hp0 : (p : ℝ) ≠ 0 := by exact_mod_cast hpr.ne_zero
+  rw [eq_div_iff hp0, ← hk]
+  push_cast
+  ring
+
+end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRJoints =====
+
+-- ===== clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbSum =====
+-- clump-header: {"m": "Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbSum", "h": "module\n\npublic import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility\npublic import Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbPrime\npublic import Formalism.PadicSubsetSums.StableGradedCounts.IRRJoints\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+
+theorem prime_cycle_probability_sum : CycleProbSum := cycleProbSum_of_cycleProbPrime prime_cycle_probability
+
+end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbSum =====
+
+-- ===== clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleTypeProb =====
+-- clump-header: {"m": "Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleTypeProb", "h": "module\n\npublic import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.GroupTheory.Perm.Centralizer\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+
+private def typeMultiset (s : Finset ℕ) (n : ℕ → ℕ) : Multiset ℕ :=
+  ∑ d ∈ s, Multiset.replicate (n d) d
+
+private theorem typeMultiset_count (s : Finset ℕ) (n : ℕ → ℕ) (a : ℕ) :
+    (typeMultiset s n).count a = if a ∈ s then n a else 0 := by
+  classical
+  unfold typeMultiset
+  rw [Multiset.count_sum']
+  simp [Multiset.count_replicate]
+
+private theorem typeMultiset_sum (s : Finset ℕ) (n : ℕ → ℕ) :
+    (typeMultiset s n).sum = ∑ d ∈ s, d * n d := by
+  classical
+  unfold typeMultiset
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert a s ha ih =>
+    rw [Finset.sum_insert ha, Finset.sum_insert ha, Multiset.sum_add, ih, Multiset.sum_replicate,
+      smul_eq_mul, mul_comm]
+
+private theorem typeMultiset_prod (s : Finset ℕ) (n : ℕ → ℕ) :
+    (typeMultiset s n).prod = ∏ d ∈ s, d ^ n d := by
+  classical
+  unfold typeMultiset
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert a s ha ih =>
+    rw [Finset.sum_insert ha, Finset.prod_insert ha, Multiset.prod_add, ih, Multiset.prod_replicate]
+
+private theorem typeMultiset_fact (s : Finset ℕ) (n : ℕ → ℕ) :
+    ∏ a ∈ (typeMultiset s n).toFinset, ((typeMultiset s n).count a).factorial =
+      ∏ d ∈ s, (n d).factorial := by
+  classical
+  rw [Finset.prod_subset (s₁ := (typeMultiset s n).toFinset) (s₂ := s) ?_ ?_]
+  · refine Finset.prod_congr rfl fun d hd => ?_
+    rw [typeMultiset_count, if_pos hd]
+  · intro a ha
+    rw [Multiset.mem_toFinset, ← Multiset.count_pos, typeMultiset_count] at ha
+    by_contra h
+    rw [if_neg h] at ha
+    exact lt_irrefl 0 ha
+  · intro a _ ha
+    rw [Multiset.mem_toFinset, ← Multiset.count_eq_zero] at ha
+    rw [ha, Nat.factorial_zero]
+
+theorem cycle_type_probability : CycleTypeProb := by
+  unfold CycleTypeProb
+  intro N n hN
+  classical
+  have hsumle : (typeMultiset (Finset.Icc 2 N) n).sum ≤ N := by
+    rw [typeMultiset_sum]
+    exact le_trans (Finset.sum_le_sum_of_subset (Finset.Icc_subset_Icc_left (by norm_num : 1 ≤ 2))) hN.le
+  have htwo : ∀ a ∈ typeMultiset (Finset.Icc 2 N) n, 2 ≤ a := by
+    intro a ha
+    rw [← Multiset.count_pos, typeMultiset_count] at ha
+    split_ifs at ha with h
+    · exact (Finset.mem_Icc.1 h).1
+    · exact absurd ha (lt_irrefl 0)
+  have key := Equiv.Perm.card_of_cycleType_mul_eq (Fin N) (typeMultiset (Finset.Icc 2 N) n)
+  rw [if_pos ⟨by simpa using hsumle, htwo⟩, Fintype.card_fin, typeMultiset_prod, typeMultiset_fact] at key
+  have hprod : ∏ d ∈ Finset.Icc 1 N, (d ^ n d * (n d).factorial) =
+      (N - (typeMultiset (Finset.Icc 2 N) n).sum).factorial * (∏ d ∈ Finset.Icc 2 N, d ^ n d) *
+        ∏ d ∈ Finset.Icc 2 N, (n d).factorial := by
+    rw [typeMultiset_sum]
+    rcases Nat.eq_zero_or_pos N with rfl | hN1
+    · simp
+    · have hI : Finset.Icc 1 N = insert 1 (Finset.Icc 2 N) := (Finset.insert_Icc_add_one_left_eq_Icc hN1).symm
+      rw [hI, Finset.prod_insert (by simp)]
+      rw [hI, Finset.sum_insert (by simp)] at hN
+      have h1 : N - ∑ d ∈ Finset.Icc 2 N, d * n d = n 1 := by omega
+      rw [h1, one_pow, one_mul, Finset.prod_mul_distrib]
+      ring
+  rw [hprod]
+  convert key using 3
+  ext σ
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  constructor
+  · intro h
+    ext a
+    rw [typeMultiset_count]
+    split_ifs with ha
+    · exact h a ha
+    · rw [Multiset.count_eq_zero]
+      intro hmem
+      apply ha
+      rw [Finset.mem_Icc]
+      refine ⟨Equiv.Perm.two_le_of_mem_cycleType hmem, ?_⟩
+      calc a ≤ σ.support.card := Equiv.Perm.le_card_support_of_mem_cycleType hmem
+        _ ≤ Fintype.card (Fin N) := Finset.card_le_univ _
+        _ = N := Fintype.card_fin N
+  · intro h d hd
+    rw [h, typeMultiset_count, if_pos hd]
+
+end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleTypeProb =====
+
+-- ===== clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRDivisorDegreeSubSum =====
+-- clump-header: {"m": "Formalism.PadicSubsetSums.StableGradedCounts.IRRDivisorDegreeSubSum", "h": "module\n\npublic import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility\npublic import Lemmata.GeneralBFactRightRest.Imports\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial UniqueFactorizationMonoid
+
+namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+
+open Formalism.GaloisIrreducibility (IsSubSum)
+
+theorem divisor_degree_subsum : DivisorDegreeSubSum := by
+  classical
+  intro K _ f a hf
+  have hdeg : ∀ t : Multiset K[X], t ≤ normalizedFactors f →
+      t.prod.natDegree = (t.map natDegree).sum := by
+    intro t ht
+    apply natDegree_multiset_prod
+    intro h0
+    exact zero_notMem_normalizedFactors f (Multiset.mem_of_le ht h0)
+  constructor
+  · rintro ⟨h, hdvd, rfl⟩
+    have hh : h ≠ 0 := fun h0 => hf (by rw [h0] at hdvd; exact zero_dvd_iff.mp hdvd)
+    have hle : normalizedFactors h ≤ normalizedFactors f :=
+      (dvd_iff_normalizedFactors_le_normalizedFactors hh hf).mp hdvd
+    refine ⟨(normalizedFactors h).map natDegree, Multiset.map_le_map hle, ?_⟩
+    rw [← hdeg _ hle]
+    exact natDegree_eq_of_degree_eq (degree_eq_degree_of_associated (prod_normalizedFactors hh))
+  · rintro ⟨s, hs, rfl⟩
+    obtain ⟨u, hu, rfl⟩ := _root_.Bl.general_b_fact_right_rest.goal1 natDegree _ s hs
+    refine ⟨u.prod, ?_, hdeg u hu⟩
+    exact (Multiset.prod_dvd_prod_of_le hu).trans (prod_normalizedFactors hf).dvd
+
+end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRDivisorDegreeSubSum =====
+
+-- ===== clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRLemmaP =====
+-- clump-header: {"m": "Formalism.PadicSubsetSums.StableGradedCounts.IRRLemmaP", "h": "module\n\npublic import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility\npublic import Mathlib.Combinatorics.Derangements.Finite\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+
+theorem two_numDerangements_le (n : ℕ) (hn : 1 ≤ n) : 2 * numDerangements n ≤ n.factorial := by
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    match n, hn with
+    | 1, _ => simp [numDerangements_one]
+    | 2, _ => simp [numDerangements_add_two, numDerangements_zero, numDerangements_one, Nat.factorial]
+    | k + 3, _ =>
+      have h1 := ih (k + 1) (by omega) (by omega)
+      have h2 := ih (k + 2) (by omega) (by omega)
+      show 2 * numDerangements (k + 1 + 2) ≤ (k + 1 + 2).factorial
+      rw [numDerangements_add_two, Nat.factorial_succ (k + 1 + 1)]
+      rw [show k + 1 + 1 = k + 2 from rfl, Nat.factorial_succ (k + 1)] at *
+      nlinarith [h1, h2]
+
+theorem card_fixed_ge (β : Type) [Fintype β] [DecidableEq β] (hβ : 1 ≤ Fintype.card β) :
+    (Fintype.card β).factorial ≤
+      2 * ((univ : Finset (Equiv.Perm β)).filter (fun s => ∃ x, s x = x)).card := by
+  have hd := card_derangements_eq_numDerangements β
+  have h2 := two_numDerangements_le _ hβ
+  have hsplit : ((univ : Finset (Equiv.Perm β)).filter (fun s => ∃ x, s x = x)).card +
+      ((univ : Finset (Equiv.Perm β)).filter (fun s => ¬ ∃ x, s x = x)).card =
+      (Fintype.card β).factorial := by
+    rw [← Fintype.card_perm, ← Finset.card_univ]
+    first
+    | exact Finset.card_filter_add_card_filter_not _
+  have hneg : ((univ : Finset (Equiv.Perm β)).filter (fun s => ¬ ∃ x, s x = x)).card =
+      Fintype.card (derangements β) := by
+    rw [Fintype.card_subtype]
+    congr 1
+    ext s
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_exists]
+    exact Iff.rfl
+  omega
+
 section
+
+variable {N : ℕ}
+
+theorem stab_iff (A : Finset (Fin N)) (σ : Equiv.Perm (Fin N)) (h : ∀ x ∈ A, σ x ∈ A) (x : Fin N) :
+    σ x ∈ A ↔ x ∈ A := by
+  constructor
+  · intro hx
+    by_contra hxA
+    have hsub : A.image σ ⊆ A := fun y hy => by
+      obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hy
+      exact h z hz
+    have hcard : (A.image σ).card = A.card := Finset.card_image_of_injective A σ.injective
+    have heq := Finset.eq_of_subset_of_card_le hsub hcard.ge
+    rw [← heq] at hx
+    obtain ⟨z, hz, hzx⟩ := Finset.mem_image.mp hx
+    exact hxA (σ.injective hzx ▸ hz)
+  · exact h x
+
+theorem card_stab_le (A : Finset (Fin N)) :
+    ((univ : Finset (Equiv.Perm (Fin N))).filter (fun σ => ∀ x ∈ A, σ x ∈ A)).card ≤
+      A.card.factorial * (N - A.card).factorial := by
+  have key : Fintype.card {σ : Equiv.Perm (Fin N) // ∀ x ∈ A, σ x ∈ A} ≤
+      Fintype.card (Equiv.Perm {x // x ∈ A} × Equiv.Perm {x // x ∉ A}) := by
+    refine Fintype.card_le_of_injective
+      (fun σ => (σ.1.subtypePerm (fun x => stab_iff A σ.1 σ.2 x),
+        σ.1.subtypePerm (fun x => not_congr (stab_iff A σ.1 σ.2 x)))) ?_
+    rintro ⟨σ, hσ⟩ ⟨τ, hτ⟩ he
+    simp only [Prod.mk.injEq] at he
+    apply Subtype.ext
+    ext x
+    by_cases hx : x ∈ A
+    · have := congrArg (fun e => (e ⟨x, hx⟩ : Fin N)) he.1
+      exact congrArg Fin.val (by simpa using this)
+    · have := congrArg (fun e => (e ⟨x, hx⟩ : Fin N)) he.2
+      exact congrArg Fin.val (by simpa using this)
+  rw [Fintype.card_prod, Fintype.card_perm, Fintype.card_perm, Fintype.card_coe,
+    Fintype.card_subtype_compl, Fintype.card_fin, Fintype.card_coe] at key
+  calc _ = Fintype.card {σ : Equiv.Perm (Fin N) // ∀ x ∈ A, σ x ∈ A} := (Fintype.card_subtype _).symm
+    _ ≤ _ := key
+
+theorem card_good_ge (A : Finset (Fin N)) (h1 : 1 ≤ A.card) (h2 : 1 ≤ N - A.card) :
+    A.card.factorial * (N - A.card).factorial ≤
+      4 * ((univ : Finset (Equiv.Perm (Fin N))).filter (fun σ => (∀ x ∈ A, σ x ∈ A) ∧
+        (∃ x ∈ A, σ x = x) ∧ ∃ y, y ∉ A ∧ σ y = y)).card := by
+  set P : Finset (Equiv.Perm {x // x ∈ A}) := univ.filter (fun s => ∃ x, s x = x) with hP
+  set Q : Finset (Equiv.Perm {x // x ∉ A}) := univ.filter (fun s => ∃ x, s x = x) with hQ
+  have hP1 : A.card.factorial ≤ 2 * P.card := by
+    have := card_fixed_ge {x // x ∈ A} (by rw [Fintype.card_coe]; exact h1)
+    rwa [Fintype.card_coe] at this
+  have hc : Fintype.card {x // x ∉ A} = N - A.card := by
+    rw [Fintype.card_subtype_compl, Fintype.card_fin, Fintype.card_coe]
+  have hQ1 : (N - A.card).factorial ≤ 2 * Q.card := by
+    have := card_fixed_ge {x // x ∉ A} (by rw [hc]; exact h2)
+    rwa [hc] at this
+  have hinj : (P ×ˢ Q).card ≤ ((univ : Finset (Equiv.Perm (Fin N))).filter (fun σ => (∀ x ∈ A, σ x ∈ A) ∧
+      (∃ x ∈ A, σ x = x) ∧ ∃ y, y ∉ A ∧ σ y = y)).card := by
+    refine Finset.card_le_card_of_injOn (fun q => Equiv.Perm.subtypeCongr q.1 q.2) ?_ ?_
+    · rintro ⟨α, β⟩ hq
+      simp only [Finset.mem_coe, Finset.mem_product, hP, hQ, Finset.mem_filter, Finset.mem_univ,
+        true_and] at hq
+      obtain ⟨⟨x, hx⟩, ⟨y, hy⟩⟩ := hq
+      simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and]
+      refine ⟨fun z hz => ?_, ⟨x.1, x.2, ?_⟩, ⟨y.1, y.2, ?_⟩⟩
+      · simp [Equiv.Perm.subtypeCongr.left_apply, hz]
+      · simp [Equiv.Perm.subtypeCongr.left_apply, x.2, hx]
+      · simp [Equiv.Perm.subtypeCongr.right_apply, y.2, hy]
+    · rintro ⟨α, β⟩ _ ⟨α', β'⟩ _ he
+      simp only at he
+      have hA : α = α' := by
+        ext ⟨z, hz⟩
+        have := congrArg (fun e : Equiv.Perm (Fin N) => e z) he
+        have h' : α ⟨z, hz⟩ = α' ⟨z, hz⟩ := by
+          simpa [Equiv.Perm.subtypeCongr.left_apply, hz] using this
+        rw [h']
+      have hB : β = β' := by
+        ext ⟨z, hz⟩
+        have := congrArg (fun e : Equiv.Perm (Fin N) => e z) he
+        have h' : (β ⟨z, hz⟩ : Fin N) = β' ⟨z, hz⟩ := by
+          simpa [Equiv.Perm.subtypeCongr.right_apply, hz] using this
+        rw [h']
+      rw [hA, hB]
+  rw [Finset.card_product] at hinj
+  calc A.card.factorial * (N - A.card).factorial ≤ (2 * P.card) * (2 * Q.card) :=
+        Nat.mul_le_mul hP1 hQ1
+    _ = 4 * (P.card * Q.card) := by ring
+    _ ≤ _ := Nat.mul_le_mul_left 4 hinj
+
+end
+
+theorem prodMaxInvLeSq : LemmaP := by
+  intro N a ha haN
+  have key : ∀ σ : Equiv.Perm (Fin N),
+      2 * (if (∃ A : Finset (Fin N), A.card = a ∧ ∀ x ∈ A, σ x ∈ A) then 1 else 0) + (((univ : Finset (Fin N)).powersetCard a).filter (fun A => (∀ x ∈ A, σ x ∈ A) ∧ (∃ x ∈ A, σ x = x) ∧ ∃ y, y ∉ A ∧ σ y = y)).card ≤ 2 * (((univ : Finset (Fin N)).powersetCard a).filter (fun A => ∀ x ∈ A, σ x ∈ A)).card := by
+    intro σ
+    have hsub : ((univ : Finset (Fin N)).powersetCard a).filter (fun A => (∀ x ∈ A, σ x ∈ A) ∧ (∃ x ∈ A, σ x = x) ∧ ∃ y, y ∉ A ∧ σ y = y) ⊆ ((univ : Finset (Fin N)).powersetCard a).filter (fun A => ∀ x ∈ A, σ x ∈ A) := by
+      intro A hA
+      simp only [Finset.mem_filter] at hA ⊢
+      exact ⟨hA.1, hA.2.1⟩
+    have hle := Finset.card_le_card hsub
+    split_ifs with hX
+    · obtain ⟨A0, hA0c, hA0⟩ := hX
+      have h1 : 1 ≤ (((univ : Finset (Fin N)).powersetCard a).filter (fun A => ∀ x ∈ A, σ x ∈ A)).card := by
+        apply Finset.card_pos.mpr
+        exact ⟨A0, Finset.mem_filter.mpr ⟨Finset.mem_powersetCard.mpr ⟨Finset.subset_univ _, hA0c⟩, hA0⟩⟩
+      by_cases hg : (((univ : Finset (Fin N)).powersetCard a).filter (fun A => (∀ x ∈ A, σ x ∈ A) ∧ (∃ x ∈ A, σ x = x) ∧ ∃ y, y ∉ A ∧ σ y = y)).card = 0
+      · omega
+      · obtain ⟨A, hA⟩ := Finset.card_pos.mp (Nat.pos_of_ne_zero hg)
+        simp only [Finset.mem_filter, Finset.mem_powersetCard] at hA
+        obtain ⟨⟨-, hAc⟩, hinv, ⟨x, hxA, hx⟩, ⟨y, hyA, hy⟩⟩ := hA
+        have hyE : y ∉ A.erase x := fun h => hyA (Finset.mem_of_mem_erase h)
+        have h2 : 1 < (((univ : Finset (Fin N)).powersetCard a).filter (fun A => ∀ x ∈ A, σ x ∈ A)).card := by
+          rw [Finset.one_lt_card]
+          refine ⟨A, ?_, insert y (A.erase x), ?_, ?_⟩
+          · exact Finset.mem_filter.mpr ⟨Finset.mem_powersetCard.mpr ⟨Finset.subset_univ _, hAc⟩, hinv⟩
+          · simp only [Finset.mem_filter, Finset.mem_powersetCard, Finset.subset_univ, true_and]
+            refine ⟨?_, ?_⟩
+            · rw [Finset.card_insert_of_notMem hyE, Finset.card_erase_of_mem hxA]
+              have : 1 ≤ A.card := Finset.card_pos.mpr ⟨x, hxA⟩
+              omega
+            · intro z hz
+              rcases Finset.mem_insert.mp hz with rfl | hz
+              · rw [hy]
+                exact Finset.mem_insert_self _ _
+              · have hzA := Finset.mem_of_mem_erase hz
+                have hzx := Finset.ne_of_mem_erase hz
+                apply Finset.mem_insert_of_mem
+                refine Finset.mem_erase.mpr ⟨?_, hinv z hzA⟩
+                intro h
+                apply hzx
+                apply σ.injective
+                rw [h, hx]
+          · intro h
+            apply hyA
+            rw [h]
+            exact Finset.mem_insert_self _ _
+        omega
+    · omega
+  have hsum := Finset.sum_le_sum (fun σ (_ : σ ∈ (univ : Finset (Equiv.Perm (Fin N)))) => key σ)
+  rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum] at hsum
+  have hX : ∑ σ : Equiv.Perm (Fin N), (if (∃ A : Finset (Fin N), A.card = a ∧ ∀ x ∈ A, σ x ∈ A) then 1 else 0) =
+      ((univ : Finset (Equiv.Perm (Fin N))).filter (fun σ => (∃ A : Finset (Fin N), A.card = a ∧ ∀ x ∈ A, σ x ∈ A))).card :=
+    (Finset.card_filter _ _).symm
+  have hs1 : ∑ σ : Equiv.Perm (Fin N), (((univ : Finset (Fin N)).powersetCard a).filter (fun A => ∀ x ∈ A, σ x ∈ A)).card =
+      ∑ A ∈ ((univ : Finset (Fin N)).powersetCard a), ((univ : Finset (Equiv.Perm (Fin N))).filter (fun σ => ∀ x ∈ A, σ x ∈ A)).card := by
+    simp only [Finset.card_filter]
+    exact Finset.sum_comm
+  have hs2 : ∑ σ : Equiv.Perm (Fin N), (((univ : Finset (Fin N)).powersetCard a).filter (fun A => (∀ x ∈ A, σ x ∈ A) ∧ (∃ x ∈ A, σ x = x) ∧ ∃ y, y ∉ A ∧ σ y = y)).card =
+      ∑ A ∈ ((univ : Finset (Fin N)).powersetCard a), ((univ : Finset (Equiv.Perm (Fin N))).filter (fun σ => (∀ x ∈ A, σ x ∈ A) ∧ (∃ x ∈ A, σ x = x) ∧ ∃ y, y ∉ A ∧ σ y = y)).card := by
+    simp only [Finset.card_filter]
+    exact Finset.sum_comm
+  have hfac : ∑ _A ∈ ((univ : Finset (Fin N)).powersetCard a), a.factorial * (N - a).factorial = N.factorial := by
+    rw [Finset.sum_const, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin, smul_eq_mul,
+      ← mul_assoc]
+    exact Nat.choose_mul_factorial_mul_factorial haN.le
+  have hinv : ∑ A ∈ ((univ : Finset (Fin N)).powersetCard a), ((univ : Finset (Equiv.Perm (Fin N))).filter (fun σ => ∀ x ∈ A, σ x ∈ A)).card ≤ N.factorial := by
+    rw [← hfac]
+    apply Finset.sum_le_sum
+    intro A hA
+    rw [Finset.mem_powersetCard] at hA
+    have := card_stab_le A
+    rwa [hA.2] at this
+  have hgood : N.factorial ≤ 4 * ∑ A ∈ ((univ : Finset (Fin N)).powersetCard a), ((univ : Finset (Equiv.Perm (Fin N))).filter (fun σ => (∀ x ∈ A, σ x ∈ A) ∧ (∃ x ∈ A, σ x = x) ∧ ∃ y, y ∉ A ∧ σ y = y)).card := by
+    rw [← hfac, Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro A hA
+    rw [Finset.mem_powersetCard] at hA
+    have := card_good_ge A (by omega) (by omega)
+    rwa [hA.2] at this
+  rw [hX, hs1, hs2] at hsum
+  omega
+
+end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PadicSubsetSums.StableGradedCounts.IRRLemmaP =====
+
+-- ===== clump member: Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateIVOfTypeSetWeight =====
+-- clump-header: {"m": "Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateIVOfTypeSetWeight", "h": "module\n\npublic import Formalism.PadicSubsetSums.CentralIdempotents.EigenbasisOfDistinctRoots\npublic import Formalism.GaloisIrreducibility.NoSolvableTransitive\npublic import Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleProbSum\npublic import Formalism.PadicSubsetSums.StableGradedCounts.IRRCycleTypeProb\npublic import Formalism.PadicSubsetSums.StableGradedCounts.IRRDivisorDegreeSubSum\npublic import Formalism.PadicSubsetSums.StableGradedCounts.IRRIrredCountUpper\npublic import Formalism.PadicSubsetSums.StableGradedCounts.IRRLemmaP\npublic import Formalism.PadicSubsetSums.StableGradedCounts.IRRPrimeRecipSum\npublic import Formalism.PadicSubsetSums.StableGradedCounts.IRRSquarefreeCount\npublic import Formalism.PadicSubsetSums.StableGradedCounts.IRRTypeCountExact\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.RegularizedHypergeometric\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\npublic import Mathlib.FieldTheory.Finite.Extension\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Algebra.BigOperators.Field\npublic import Mathlib.Algebra.Order.Group.Indicator\nimport Formalism.GaloisIrreducibility.NoSolvableTransitive\n\n"}
+section -- clump:auto
+@[expose] public section
+
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
 section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
@@ -185,18 +737,12 @@ theorem comparison_transfer_holds : ComparisonTransfer := by
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 end
 
-section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
 section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
@@ -227,23 +773,14 @@ theorem share_from_count : ShareFromCount := by
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 end
 
-section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
-open Finset Polynomial
-open scoped ComplexOrder
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
 section
 open Finset Polynomial
 open scoped ComplexOrder
@@ -270,11 +807,9 @@ theorem primeToPart_unique {M : Type} [Monoid M] {l : ℕ} (hl : l.Prime) {x z :
   have hφz : 0 < Nat.totient oz := by
     first
     | exact Nat.totient_pos.2 hoz0
-    | exact Nat.totient_pos hoz0
   have hφm : 0 < Nat.totient m' := by
     first
     | exact Nat.totient_pos.2 hm'pos
-    | exact Nat.totient_pos hm'pos
   set j := (l ^ a) ^ Nat.totient oz with hj
   have hjz : j % oz = 1 % oz := Nat.ModEq.pow_totient hcz
   have hzj : z ^ j = z := by
@@ -339,7 +874,6 @@ private theorem ptp_lemma {M : Type} [Monoid M] {l : ℕ} (hl : l.Prime) {x : M}
   have hφm : 0 < Nat.totient (orderOf x / l ^ (orderOf x).factorization l) := by
     first
     | exact Nat.totient_pos.2 hm'pos
-    | exact Nat.totient_pos hm'pos
   have hP : primeToPart l x = x ^ ((l ^ (orderOf x).factorization l) ^
       Nat.totient (orderOf x / l ^ (orderOf x).factorization l)) := rfl
   set v := (orderOf x).factorization l with hv
@@ -419,21 +953,15 @@ theorem subsum_bound : LemmaPSubSum := by
   apply Finset.card_le_card
   intro σ hσ
   simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hσ ⊢
-  obtain ⟨A, hA, hc⟩ := Formalism.GaloisIrreducibility.permSubSumInv (Fin N) σ a hσ
+  obtain ⟨A, hA, hc⟩ := _root_.Formalism.GaloisIrreducibility.permutation_subset_sum_invariant (Fin N) σ a hσ
   exact ⟨A, hc, hA⟩
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 end
 
-section
-open Finset Polynomial
-open scoped ComplexOrder
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
 section
 open Finset Polynomial
 open scoped ComplexOrder
@@ -459,7 +987,7 @@ theorem of_mul_twistedIdem {G : Type} [Group G] [Fintype G] (J : Subgroup G) (χ
   have h1 := (χ v).ne_zero
   have h2 := (χ u).ne_zero
   simp only [Equiv.coe_mulLeft, map_mul, mul_inv_rev, Units.val_mul, Units.val_inv_eq_inv_val]
-  field_simp <;> ring
+  field_simp
 
 
 
@@ -467,43 +995,19 @@ theorem of_mul_twistedIdem {G : Type} [Group G] [Fintype G] (J : Subgroup G) (χ
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 end
-
-section
-open Finset Polynomial
-open scoped ComplexOrder
 
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
-open Finset Polynomial
-open scoped ComplexOrder
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
-open Finset Polynomial
-open scoped ComplexOrder
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
-open Finset Polynomial
-open scoped ComplexOrder
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
 section
 open Finset Polynomial
 open scoped ComplexOrder
@@ -674,50 +1178,23 @@ theorem type_weight_exact : TypeWeightExact := by
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 end
 
-section
-open Finset Polynomial
-open scoped ComplexOrder
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
-open Finset Polynomial
-open scoped ComplexOrder
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
-open Finset Polynomial
-open scoped ComplexOrder
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
-open Finset Polynomial
-open scoped ComplexOrder
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
 section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 open Polynomial Formalism.GaloisIrreducibility
-
-theorem monicOf_monic' {K : Type} [Field K] {N : ℕ} (c : Fin N → K) : (monicOf c).Monic := by
-  exact Polynomial.monic_X_pow_add (Polynomial.degree_sum_fin_lt c)
 
 theorem sqMassLeOne_of (h : TypeSetWeight) : SqMassLeOne := by
   intro K _ _ M
@@ -731,7 +1208,7 @@ theorem localEstimateIV_of (h : TypeSetWeight) (hP : LemmaPSubSum) (hD : Divisor
       (sqSet K N).filter (fun c => IsSubSum (degType (monicOf c)) a) := by
     apply Finset.filter_congr
     intro c _
-    exact hD K (monicOf c) a (monicOf_monic' c).ne_zero
+    exact hD K (monicOf c) a (_root_.Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf_monic c).ne_zero
   rw [hfilt]
   refine le_trans (h K N (fun m => IsSubSum m a)) ?_
   have hP' := hP N a ha haN
@@ -768,7 +1245,7 @@ theorem localEstimateV_of (h : TypeSetWeight) (hC : CycleProbSum) (hS : PrimeRec
       (sqSet K N).filter (fun c => ¬ ∃ p ∈ degType (monicOf c), p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N) := by
     apply Finset.filter_congr
     intro c _
-    rw [hiff _ (monicOf_monic' c).ne_zero]
+    rw [hiff _ (_root_.Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.monicOf_monic c).ne_zero]
   rw [hfilt]
   have hT := h K N (fun m => ¬ ∃ p ∈ m, p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N)
   have hparts : ∀ σ : Equiv.Perm (Fin N), (∃ p ∈ σ.partition.parts, p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N) ↔
@@ -792,7 +1269,6 @@ theorem localEstimateV_of (h : TypeSetWeight) (hC : CycleProbSum) (hS : PrimeRec
       (s := (Finset.univ : Finset (Equiv.Perm (Fin N))))
       (fun σ : Equiv.Perm (Fin N) => ∃ p ∈ σ.partition.parts, p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N)
     simp only [Finset.card_univ, Fintype.card_perm, Fintype.card_fin] at hadd
-    beta_reduce at hadd
     have hQ : (Finset.univ.filter fun σ : Equiv.Perm (Fin N) =>
         ∃ p ∈ σ.partition.parts, p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N) =
         Finset.univ.filter fun σ : Equiv.Perm (Fin N) =>
@@ -817,14 +1293,9 @@ theorem localEstimateV_of (h : TypeSetWeight) (hC : CycleProbSum) (hS : PrimeRec
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 end
 
-section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
-open Polynomial
-
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
 section
 open Finset Polynomial
 
@@ -1056,22 +1527,12 @@ theorem divisor_square_weight_sum_le (hM : SqMassLeOne) (K : Type) [Field K] [Fi
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 end
 
-section
-open Finset
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
-section
-open Finset
-
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
-end
-
 section
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
@@ -1241,7 +1702,7 @@ theorem propW_of (h1 : SqMassLower) (h3 : LocalEstimateII) (h4 : LocalEstimateII
     intro x hx
     by_contra hcon
     simp only [Set.mem_union, Set.mem_iUnion, not_or, not_exists, Set.mem_setOf_eq,
-      Finset.mem_univ, true_implies, forall_true_left] at hcon
+      Finset.mem_univ, true_implies] at hcon
     obtain ⟨⟨⟨⟨c1, c3⟩, c4⟩, c5⟩, c6⟩ := hcon
     have hsq : ∀ v, x v ∈ sqSet K N := by
       intro v
@@ -1345,3 +1806,6 @@ theorem propW_of_localEstimates (h3 : LocalEstimateII) (h4 : LocalEstimateIII) :
   exact propW_of square_mass_lower_bound h3 h4 local_estimate_fourth local_estimate_fifth
 
 end Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateIVOfTypeSetWeight =====

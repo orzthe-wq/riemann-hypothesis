@@ -108,7 +108,7 @@ theorem descend_mk (f : (∀ i, M i) →ₘₗ[ℂ] N) (hf : ∀ v i, ∀ w ∈ 
         funext i
         by_cases hi : i = a
         · subst hi; simp
-        · simp [Function.update_of_ne hi, F, Finset.mem_insert, hi]
+        · simp [F, Finset.mem_insert, hi]
       have h2 : F = Function.update F a (x a) := by
         funext i
         by_cases hi : i = a

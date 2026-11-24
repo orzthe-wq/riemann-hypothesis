@@ -87,7 +87,7 @@ def sStar (σ : Site A) : Site A := ⟨star σ.p, -star σ.ci, -star σ.c⟩
 theorem Ts_conj (σ : Site A) (Y : ℂ) : (Ts σ (star Y))ᴴ = Ts (sStar σ) Y := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [Ts, Tm, sStar, Matrix.conjTranspose_apply, algebraMap_star_comm]
+    simp [Ts, Tm, sStar, Matrix.conjTranspose_apply]
   rw [starRingEnd_apply, ← algebraMap_star_comm, star_star]
 
 theorem weyl_ci {p c ci : A} (h : WeylRel p c ci) : p * ci = ci * p - ci := by

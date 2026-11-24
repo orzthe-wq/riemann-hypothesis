@@ -251,16 +251,6 @@ section split
 variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
-theorem gpsi_add (β a b : ℂ) : G.psi β (a + b) = G.psi β a * G.psi β b := by
-  unfold G.psi
-  rw [← Complex.exp_add, mul_add, Complex.add_re, Complex.ofReal_add, mul_add]
-
-theorem cornerA_zero {p : ℕ} (a : Fin 0 → Fin p → ℂ) : U.cornerA a = 0 := by
-  unfold U.cornerA; rw [dite_eq_right (fun h => absurd h.1 (lt_irrefl 0))]
-
-theorem cornerB_zero {p : ℕ} (b : Fin p → Fin 0 → ℂ) : U.cornerB b = 0 := by
-  unfold U.cornerB; rw [dite_eq_right (fun h => absurd h.1 (lt_irrefl 0))]
-
 theorem of_levMt (x : Mt k ρ) : (Matrix.of (Formalism.FourierDecayAlt.P.PBM.levMt p ρ rfl x) : B.Mat k (p + ρ)) =
     U.embG k p ρ (Matrix.of x) := by
   unfold Formalism.FourierDecayAlt.P.PBM.levMt
@@ -305,7 +295,7 @@ theorem fl_split (hGS : GaXiSplit) (hPR : PsiRight) (hPA : PsiRnAct) (hPM : PsiM
         star (psi k (p + ρ) (liftVec k p ρ Bj.z') cStd (U.Rn k p ρ y.2.1)) *
         (G.psi U.betaU (U.subS (lhOf σ x.2.2.2)) * G.psi U.betaU (U.supS (G.upper y.2.2))) := by
     simp only [U.psiStar, U.psiH, splitE, MeasurableEquiv.symm_mk, MeasurableEquiv.coe_mk, Equiv.coe_fn_symm_mk,
-      cornerA_zero, cornerB_zero, add_zero, gpsi_add]
+      _root_.Formalism.FourierDecayAlt.P.Dx2.SL.cornerA_zero, _root_.Formalism.FourierDecayAlt.P.Dx2.SL.cornerB_zero, add_zero, _root_.Formalism.FourierDecayAlt.P.Dx2.SL.psi_add]
     rfl
   unfold FL ellL KrI
   rw [hpt, hpi, hS, hN]

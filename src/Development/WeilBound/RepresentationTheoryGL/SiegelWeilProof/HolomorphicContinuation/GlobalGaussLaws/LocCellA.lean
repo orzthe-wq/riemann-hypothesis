@@ -107,9 +107,9 @@ theorem wEx : WEx := by
   have hu : u ∈ HR (AF D.host.F) D.sp.cm.sig (Jst D n) := by
     show Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) M * JR (AF D.host.F) (Jst D n) * M = JR (AF D.host.F) (Jst D n)
     have hJ : JR (AF D.host.F) (Jst D n) = M := by
-      simp [JR, Jst, M, block_matrix_map, map_neg_one', map_one']
+      simp [JR, Jst, M, block_matrix_map, map_neg_one']
     rw [hJ]
-    simp [Formalism.UG.cT, M, block_matrix_map, blockMatrixTwoByTwoFin_transpose, block_matrix_mul_comm_ring, map_neg_one', map_one']
+    simp [Formalism.UG.cT, M, block_matrix_map, blockMatrixTwoByTwoFin_transpose, block_matrix_mul_comm_ring, map_neg_one']
   exact ⟨⟨u, hu⟩, rfl⟩
 
 end PositivityTheory.Rg.Sw.Glob

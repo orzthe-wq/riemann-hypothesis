@@ -54,13 +54,13 @@ theorem isIntegral_or_isIntegral_inv (O : Type) [CommRing O] [IsDomain O] [CharZ
     IsIntegral O x ∨ IsIntegral O x⁻¹ := by
   let K := FractionRing O
   let L : IntermediateField K F := IntermediateField.adjoin K {x}
-  haveI : FiniteDimensional K L :=
+  have : FiniteDimensional K L :=
     IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)
-  haveI : CharZero K := inferInstance
-  haveI : Module.Finite O (integralClosure O L) := IsIntegralClosure.finite O K L _
-  haveI : IsDiscreteValuationRing (integralClosure O L) :=
+  have : CharZero K := inferInstance
+  have : Module.Finite O (integralClosure O L) := IsIntegralClosure.finite O K L _
+  have : IsDiscreteValuationRing (integralClosure O L) :=
     ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr O K L
-  haveI : IsFractionRing (integralClosure O L) L :=
+  have : IsFractionRing (integralClosure O L) L :=
     integralClosure.isFractionRing_of_finite_extension K L
   let y : L := ⟨x, IntermediateField.mem_adjoin_simple_self K x⟩
   let f : L →ₐ[O] F := (IntermediateField.val L).restrictScalars O
@@ -79,9 +79,9 @@ theorem exists_valuationSubring_isIntegral : ∀ (O : Type) [CommRing O] [IsDoma
   · refine ⟨⊤, fun x => ⟨fun _ => ?_, fun _ => trivial⟩⟩
     have ha : IsAlgebraic O x :=
       (IsFractionRing.isAlgebraic_iff O (FractionRing O) F).2 (Algebra.IsAlgebraic.isAlgebraic x)
-    letI := hF.toField
+    let := hF.toField
     exact ha.isIntegral
-  · haveI : IsAdicComplete (maximalIdeal O) O := hirr.maximalIdeal_eq ▸ hc
+  · have : IsAdicComplete (maximalIdeal O) O := hirr.maximalIdeal_eq ▸ hc
     exact ⟨⟨(integralClosure O F).toSubring, fun x => isIntegral_or_isIntegral_inv O F x⟩,
       fun x => Iff.rfl⟩
 

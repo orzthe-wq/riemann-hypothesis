@@ -86,7 +86,7 @@ theorem symplOH_negSp (S T : HSp D) (x y : WO S T) :
 theorem star_psi {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) (a : AF D.host.F) :
     star (ψ a) = ψ (-a) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ a]
-  simp [Complex.star_def]
+  simp
 
 theorem heisO_negSp_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) (S T : HSp D) (w₀ : WO S T)
     (g : WO S T → ℂ) :

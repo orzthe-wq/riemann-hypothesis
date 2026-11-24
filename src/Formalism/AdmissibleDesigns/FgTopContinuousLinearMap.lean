@@ -271,7 +271,6 @@ theorem uStd_mk (x : n → FractionRing O) :
   funext a
   first
     | rfl
-    | exact (Submodule.quotientPi_apply _ _ _).symm
 
 def gamStd : (n → O) →ₗ[O] (n → KO O) →ₗ[O] KO O :=
   LinearMap.mk₂ O (fun t m => ∑ a, t a • m a)
@@ -415,8 +414,6 @@ theorem eps_cont (ℓ : ℕ) [hℓ : Fact ℓ.Prime] (hO : PadicCoeff ℓ O) {Ek
     have hfix : h ζ = ζ := by
       first
         | exact ((IntermediateField.mem_fixingSubgroup_iff _ _).1 hh) ζ (IntermediateField.mem_adjoin_simple_self Ek ζ)
-        | exact (IntermediateField.mem_fixingSubgroup_iff _).1 hh ζ (IntermediateField.mem_adjoin_simple_self Ek ζ)
-        | exact hh ⟨ζ, IntermediateField.mem_adjoin_simple_self Ek ζ⟩
     obtain ⟨a, ha1, ha2⟩ := hc h n ζ hprim.pow_eq_one
     rw [hfix] at ha1
     have hz : ζ ≠ 0 := hprim.ne_zero hN.ne'

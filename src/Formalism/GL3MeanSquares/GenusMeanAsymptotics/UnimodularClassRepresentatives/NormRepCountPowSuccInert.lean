@@ -56,11 +56,7 @@ namespace Formalism.HermitianLattices.Ext.L3.NormLifting
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
-theorem conjO_conjO (x : 𝓞 K) : conjO K (conjO K x) = x := by
-  first
-  | exact RingOfIntegers.ext (star_star (x : K))
-  | (apply RingOfIntegers.ext; simp [conjO])
-  | (apply RingOfIntegers.ext; unfold conjO; simp)
+alias conjO_conjO := _root_.Formalism.HermitianLattices.Ext.L3.conjO_conjO
 
 theorem eq_conjO_of {θ t : 𝓞 K} (h : algebraMap (𝓞 K) K t = star (algebraMap (𝓞 K) K θ)) :
     t = conjO K θ := by
@@ -69,8 +65,6 @@ theorem eq_conjO_of {θ t : 𝓞 K} (h : algebraMap (𝓞 K) K t = star (algebra
   rw [h']
   first
   | rfl
-  | simp [conjO]
-  | (unfold conjO; simp)
 
 def conjQ (J : Ideal (𝓞 K)) (hJ : ∀ a ∈ J, conjO K a ∈ J) : (𝓞 K ⧸ J) →+* (𝓞 K ⧸ J) :=
   Ideal.quotientMap J (conjO K) (fun a ha => hJ a ha)
@@ -79,8 +73,6 @@ theorem conjQ_mk (J : Ideal (𝓞 K)) (hJ : ∀ a ∈ J, conjO K a ∈ J) (a : �
     conjQ J hJ (Ideal.Quotient.mk J a) = Ideal.Quotient.mk J (conjO K a) := by
   first
   | rfl
-  | exact Ideal.quotientMap_mk
-  | simp [conjQ]
 
 theorem normRepCount_eq (J : Ideal (𝓞 K)) (hJ : ∀ a ∈ J, conjO K a ∈ J) (M : ℕ) (n : 𝓞 K) :
     normRepCount K J M n =
@@ -185,9 +177,6 @@ private lemma map_conjO_eq_conjIdeal (P : Ideal (𝓞 K)) :
     show ((conjO K s : 𝓞 K) : K) = star ((s : 𝓞 K) : K)
     first
     | rfl
-    | (symm; simp [conjO])
-    | simp [conjO]
-    | (unfold conjO; simp)
   · rintro ⟨s, hs, h⟩
     exact ⟨s, hs, (eq_conjO_of h).symm⟩
 

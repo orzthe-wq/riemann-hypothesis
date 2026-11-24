@@ -254,9 +254,7 @@ theorem _root_.GlobalTheory.ComplexPoints.over_hom_ext_of_complexPoints {A B : O
 set_option autoImplicit false in
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj in
 variable {X Y : Scheme.{0}} in
-theorem _root_.GlobalTheory.ComplexPoints.opens_le_of_complexPoints (p : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ) [LocallyOfFiniteType p] (U V : X.Opens)
-    (h : ∀ x : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ X, x ≫ p = 𝟙 _ → ⊤ ≤ x ⁻¹ᵁ U → ⊤ ≤ x ⁻¹ᵁ V) : U ≤ V :=
-  opens_le_of_forall_complex_section p U V h
+alias _root_.GlobalTheory.ComplexPoints.opens_le_of_complexPoints := _root_.GlobalTheory.ComplexPoints.opens_le_of_forall_complex_section
 
 
 set_option autoImplicit false in

@@ -72,7 +72,7 @@ theorem nat_mul_integral (k : ℕ) {x : Af E} (hx : ∀ v, x v ∈ v.adicComplet
 
 theorem exists_nat_mul_integral (a : Af E) :
     ∃ N : ℕ, 0 < N ∧ ∀ v, ((N : Af E) * a) v ∈ v.adicCompletionIntegers E := by
-  obtain ⟨N, hN, h⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele E (intAfter E a)
+  obtain ⟨N, hN, h⟩ := _root_.GlobalTheory.LocalNormBound.main E (intAfter E a)
     ((isOpen_intAfter E a).mem_nhds (by intro v; simp only [mul_zero]; exact zero_mem _))
   refine ⟨N, hN, fun v => ?_⟩
   have h1 := h 1 (fun v => one_mem _) v

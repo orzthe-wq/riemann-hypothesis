@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LatIntZero
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JetsAreBoundedMeasureMomentsPadicIntMatrixChangeStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.JetsAreBoundedMeasureMomentsPadicIntMatrixChange
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ImagQuadraticMaximalOrderArithmeticAtSplitPrime
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -90,7 +90,7 @@ theorem latInt_of_span : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (
     intro i
     have := congrArg (zc (q := q)) (hu i)
     simpa [zc] using this
-  refine GlobalTheory.T.jetsAreBoundedMeasureMoments_padicInt_matrix_change q ι V κ κ' (fun i => ι.symm ω • b i) (fun i => ι.symm ω • v i)
+  refine _root_.GlobalTheory.MomN.momInt_push q ι V κ κ' (fun i => ι.symm ω • b i) (fun i => ι.symm ω • v i)
     (fun i j => c i j / s i) (fun i j => a i j * u i) G ?_ ?_ hM
   · intro i j
     have hsq : (s i : ℂ_[q]) ≠ 0 := fun h0 => by

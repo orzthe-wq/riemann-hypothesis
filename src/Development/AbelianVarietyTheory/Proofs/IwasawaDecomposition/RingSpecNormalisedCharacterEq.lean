@@ -1,6 +1,6 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SignAtBasePlaceEqEmbedding
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CopyAll
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingSpecNormalisedCharacterEq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -48,21 +48,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HeightCounting.SideCopy
 
-structure CopyAll (D D' : D7) (ι : D.what₂.LL →+* D'.what₂.LL) (e : ↥D'.LL0 ≃+* ↥D.LL0) : Prop where
-  cp : CopyTw D D' ι e
-  jL : HEq D.ntw.jL D'.ntw.jL
-  s2 : HEq D.ntw.s2 D'.ntw.s2
-  lamG : HEq D.ntw.lamG D'.ntw.lamG
-  Xv : HEq D.ntw.Xv D'.ntw.Xv
-  qs : HEq D.ntw.qs D'.ntw.qs
-  pl : HEq D.naut.plGw D'.naut.plGw
-
-structure SameFrame {D D' : D7} (cf : CharFrame D) (cf' : CharFrame D') : Prop where
-  mu0 : HEq cf.mu0 cf'.mu0
-  eta : HEq cf.eta cf'.eta
-  del : HEq cf.del cf'.del
-  del' : HEq cf.del' cf'.del'
-
 structure RingPart (D : D7) (cf : CharFrame D) (low : Finset ℕ) where
   twF : TwFrameC D
   tw : TwistFrameLowIndexCompatibility D twF low
@@ -102,30 +87,44 @@ def RowEig (D : D7) (S : RatDat D.ntw) (eig : ℕ → D.what₂.FT → ℕ → P
 
 
 
-set_option maxRecDepth 100000 in
+private theorem sigSpan_copy_aux {R R' : Ranks} (hR : R = R') {H : Host R} {H' : Host R'} (hH : HEq H H')
+    {Tw Tw' : Type} (hTw : Tw = Tw')
+    {O : Tw → Type} {O' : Tw' → Type} {crO : ∀ i, CommRing (O i)} {crO' : ∀ i, CommRing (O' i)}
+    {B : Tw → ℕ → Bool → Type} {B' : Tw' → ℕ → Bool → Type}
+    {acgB : ∀ i j b, AddCommGroup (B i j b)} {acgB' : ∀ i j b, AddCommGroup (B' i j b)}
+    {modB : ∀ i j b, Module (O i) (B i j b)} {modB' : ∀ i j b, Module (O' i) (B' i j b)}
+    {Sig : Tw → Type} {Sig' : Tw' → Type}
+    {jS : ∀ i, Sig i → ℕ} {jS' : ∀ i, Sig' i → ℕ}
+    {side : ∀ i, Sig i → Bool} {side' : ∀ i, Sig' i → Bool}
+    {S0 : Tw → Finset (PlE H)} {S0' : Tw' → Finset (PlE H')}
+    {hk : ∀ i j b (_ : ℕ), PlE H → Module.End (O i) (B i j b)}
+    {hk' : ∀ i j b (_ : ℕ), PlE H' → Module.End (O' i) (B' i j b)}
+    {hEig : ∀ i, Sig i → ℕ → PlE H → O i} {hEig' : ∀ i, Sig' i → ℕ → PlE H' → O' i}
+    (hO : HEq O O') (hcrO : HEq crO crO') (hB : HEq B B') (hacgB : HEq acgB acgB') (hmodB : HEq modB modB')
+    (hSig : HEq Sig Sig') (hjS : HEq jS jS') (hside : HEq side side') (hS0 : HEq S0 S0')
+    (hhk : HEq hk hk') (hhEig : HEq hEig hEig')
+    (hs : ∀ i j b, 1 ≤ j → j ≤ R.m →
+      Submodule.span (FractionRing (O i))
+        {x : TensorProduct (O i) (FractionRing (O i)) (B i j b) | ∃ s : Sig i, jS i s = j ∧
+          side i s = b ∧ ∀ k P, 1 ≤ k → k ≤ R.r → IsSplitPl H P → P ∉ S0 i →
+            ((hk i j b k P).baseChange (FractionRing (O i))) x =
+              algebraMap (O i) (FractionRing (O i)) (hEig i s k P) • x} = ⊤) :
+    ∀ i j b, 1 ≤ j → j ≤ R'.m →
+      Submodule.span (FractionRing (O' i))
+        {x : TensorProduct (O' i) (FractionRing (O' i)) (B' i j b) | ∃ s : Sig' i, jS' i s = j ∧
+          side' i s = b ∧ ∀ k P, 1 ≤ k → k ≤ R'.r → IsSplitPl H' P → P ∉ S0' i →
+            ((hk' i j b k P).baseChange (FractionRing (O' i))) x =
+              algebraMap (O' i) (FractionRing (O' i)) (hEig' i s k P) • x} = ⊤ := by
+  subst hR hTw
+  cases hH; cases hO; cases hcrO; cases hB; cases hacgB; cases hmodB
+  cases hSig; cases hjS; cases hside; cases hS0; cases hhk; cases hhEig
+  exact hs
+
 theorem sigSpan_copy {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyAll D D' ι e)
-    (hs : D.ntw.SigSpan) : D'.ntw.SigSpan := by
-  have transfer {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
-      {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
-      (g : GlobalTheory.TwistChoice.SameGalois N N')
-      (t : GlobalTheory.TwistChoice.TwistDataAgreeAcrossCoefficients X X')
-      (b : HEq X.B X'.B) (ab : HEq X.acgB X'.acgB)
-      (mb : HEq X.modB X'.modB) (hk : HEq X.hk X'.hk)
-      (s : X.SigSpan) : X'.SigSpan := by
-    obtain ⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩ := g
-    obtain ⟨xcc, xTw, xl, xO0, xcrO0, xalgO0, xtopO0, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, xS0, xhEig, xLam, xsideL, xRCG, xgrpRCG, xfinRCG, xart, xth⟩ := t
-    cases D; cases D'
-    dsimp only at a1 a2 a3
-    subst a1; subst a2; subst a3
-    cases N; cases N'
-    dsimp only at nOm ninstOm nalgOm nplOm nPlG
-    subst nOm; subst ninstOm; subst nalgOm; subst nplOm; subst nPlG
-    cases X; cases X'
-    dsimp only at xcc xTw xl xO0 xcrO0 xalgO0 xtopO0 xO xcrO xalgO xOk xcrOk xalgOk xzk xpD xchi1 xSig xfinSig xjS xside xrhoS xS0 xhEig xLam xsideL xRCG xgrpRCG xfinRCG xart xth b ab mb hk
-    subst xcc; subst xTw; subst xl; subst xO0; subst xcrO0; subst xalgO0; subst xtopO0; subst xO; subst xcrO; subst xalgO; subst xOk; subst xcrOk; subst xalgOk; subst xzk; subst xpD; subst xchi1; subst xSig; subst xfinSig; subst xjS; subst xside; subst xrhoS; subst xS0; subst xhEig; subst xLam; subst xsideL; subst xRCG; subst xgrpRCG; subst xfinRCG; subst xart; subst xth
-    subst b; subst ab; subst mb; subst hk
-    exact s
-  exact transfer h.cp.gal h.cp.set h.cp.B h.cp.acgB h.cp.modB h.cp.hk hs
+    (hs : D.ntw.SigSpan) : D'.ntw.SigSpan :=
+  sigSpan_copy_aux h.cp.gal.R h.cp.gal.host (eq_of_heq h.cp.set.Tw)
+    h.cp.set.O h.cp.set.crO h.cp.B h.cp.acgB h.cp.modB
+    h.cp.set.Sig h.cp.set.jS h.cp.set.side h.cp.set.S0 h.cp.hk h.cp.set.hEig hs
 
 end GlobalTheory.HeightCounting.SideCopy
 

@@ -122,7 +122,7 @@ theorem emb_unitary (c : R →+* R) {A : Matrix n (Fin 2) R} {B : Matrix (Fin 2)
       J + cT c B * ((H * P + P' * H + P' * H * P) * B) := by
     have hAB' : ∀ {k : Type} (Z : Matrix (Fin 2) k R), cT c A * (cT c B * Z) = Z := fun Z => by
       rw [← Matrix.mul_assoc, ← cT_mul, hBA, cT_one, Matrix.one_mul]
-    simp only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, h1, h1'', h2', hBA', hAB']
+    simp only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, h1, h2', hBA']
     abel
   rw [e, key, Matrix.zero_mul, Matrix.mul_zero, add_zero]
 

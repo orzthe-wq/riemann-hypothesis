@@ -5,11 +5,13 @@ public import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
 public import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.FlatImageOfOverFractionFieldOfValuationRing
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoNormalizationPullbackOfToIntegralClosure
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EffCartierOfProportionalSectionsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOfProportionalToGeneratingSectionsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsProjMapProportionalSectionsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GeneratesAlong
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqOfProportionalToGeneratingSections
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsProjMapProportionalSections
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSectionOfIsIsoRestrict
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSchemeTheoreticallyDominantComplEffCartierStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SectionsGenerateIdealAlongComapOfTwistedStatement
+import Mathlib.AlgebraicGeometry.Morphisms.SchemeTheoreticallyDominant
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSchemeTheoreticallyDominantComplEffCartier
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SectionsGenerateIdealAlongComapOfTwisted
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,7 +76,7 @@ theorem exists_blowup_graph {R : Type} [CommRing R] [IsNoetherianRing R] {X : Sc
   have hU : ∀ x : U.toScheme, U.ι x ∉ J.support := fun x => x.2
   have htop : ∀ {W : Scheme.{0}} (g : W ⟶ X), (∀ w, g w ∉ J.support) → J.comap g = ⊤ := fun g hg =>
     eq_top_of_forall_notMem _ fun w hw => hg w ((mem_support_comap J g w).1 hw)
-  obtain ⟨φ, hφ, hφσ⟩ := GlobalTheory.T.exists_proj_map_proportional_sections R X U _ L m σ U.ι (U.ι ≫ s) (GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ U.ι hσ)
+  obtain ⟨φ, hφ, hφσ⟩ := _root_.GlobalTheory.ProjBlowup.exists_proportional R X U _ L m σ U.ι (U.ι ≫ s) (_root_.GlobalTheory.ProjBlowup.generatesAlong_comap_of_generates X _ J L m σ U.ι hσ)
     (by rw [htop _ hU]; exact effCartier_top _)
   let b := graphClosure.fst s (PSpace.str R m) U.ι φ hφ.symm
   let c := graphClosure.snd s (PSpace.str R m) U.ι φ hφ.symm
@@ -87,18 +89,18 @@ theorem exists_blowup_graph {R : Type} [CommRing R] [IsNoetherianRing R] {X : Sc
     apply pullback.hom_ext
     · rw [pullback.lift_fst]; rfl
     · rw [pullback.lift_snd]; rfl
-  refine ⟨_, b, c, hc, ⟨GlobalTheory.T.effCartier_of_proportional_sections R X _ U _ L m σ b c j (GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ b hσ) hbc inferInstance
+  refine ⟨_, b, c, hc, ⟨_root_.GlobalTheory.ProjBlowup.effCartier_of_proportional R X _ U _ L m σ b c j (_root_.GlobalTheory.ProjBlowup.generatesAlong_comap_of_generates X _ J L m σ b hσ) hbc inferInstance
     inferInstance fun t => ?_, fun W g hg => ?_⟩, hbc, ?_⟩
   · rw [mem_support_comap, ← Scheme.Hom.comp_apply, hjb]; exact hU t
-  · obtain ⟨ψ, hψ, hψσ⟩ := GlobalTheory.T.exists_proj_map_proportional_sections R X W _ L m σ g (g ≫ s) (GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ g hσ) hg
-    have hd := GlobalTheory.T.isSchemeTheoreticallyDominant_compl_effCartier W _ hg
+  · obtain ⟨ψ, hψ, hψσ⟩ := _root_.GlobalTheory.ProjBlowup.exists_proportional R X W _ L m σ g (g ≫ s) (_root_.GlobalTheory.ProjBlowup.generatesAlong_comap_of_generates X _ J L m σ g hσ) hg
+    have hd := _root_.GlobalTheory.ProjBlowup.isSchemeTheoreticallyDominant_compl_of_effCartier W _ hg
     let d := Scheme.Opens.ι (X := W) (J.comap g).support.compl
     have hdU : ∀ t, (d ≫ g) t ∉ J.support := fun t ht => t.2 ((mem_support_comap J g _).2 ht)
     let w := IsOpenImmersion.lift U.ι (d ≫ g) (by
       rintro _ ⟨t, rfl⟩
       exact ⟨⟨_, hdU t⟩, rfl⟩)
     have hw : w ≫ U.ι = d ≫ g := IsOpenImmersion.lift_fac ..
-    have hw' : d ≫ ψ = w ≫ φ := GlobalTheory.T.eq_of_proportional_to_generating_sections R X _ L m σ (d ≫ g) _ _ (htop _ hdU ▸ GlobalTheory.T.sectionsGenerateIdealAlong_comap_of_twisted X _ J L m σ (d ≫ g) hσ)
+    have hw' : d ≫ ψ = w ≫ φ := _root_.GlobalTheory.ProjBlowup.eq_of_proportional R X _ L m σ (d ≫ g) _ _ (htop _ hdU ▸ _root_.GlobalTheory.ProjBlowup.generatesAlong_comap_of_generates X _ J L m σ (d ≫ g) hσ)
       (by rw [Category.assoc, hψ, Category.assoc, hφ, reassoc_of% hw]) (hψσ.comp d) (hw ▸ hφσ.comp w)
     have key : ∀ h : W ⟶ _, h ≫ b = g → d ≫ h = w ≫ j := fun h hh => by
       have H := graphClosure.isPullback_incl s (PSpace.str R m) U.ι φ hφ.symm

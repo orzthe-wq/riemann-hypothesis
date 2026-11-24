@@ -47,7 +47,7 @@ import Mathlib.Topology.Sheaves.Init
 
 namespace Formalism.HF.Final
 
-theorem quadDiscr : Formalism.HF.QuadDiscr := Formalism.HF.quadDiscr
+alias quadDiscr := _root_.Formalism.HF.quadDiscr
 theorem mqDiscr : Formalism.HF.MQDiscr := Formalism.HF.mqDiscr_of quadDiscr
 
 end Formalism.HF.Final

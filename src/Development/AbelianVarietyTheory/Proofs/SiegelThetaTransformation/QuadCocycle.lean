@@ -112,7 +112,7 @@ private theorem inv_denominator_mul_lower_left_cocycle {N : ℕ}
     rw [Matrix.mul_assoc ((C * Z + D)⁻¹), ← Matrix.mul_assoc ((C' * W + D')⁻¹),
       Matrix.nonsing_inv_mul _ hunit, Matrix.one_mul]
   rw [hinv, Matrix.mul_inv_rev, hC]
-  simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]
+  simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.mul_assoc]
   abel
 
 open Matrix Complex NumberField Filter Topology in

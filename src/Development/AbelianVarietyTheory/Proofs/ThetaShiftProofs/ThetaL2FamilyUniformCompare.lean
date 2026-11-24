@@ -110,19 +110,6 @@ theorem norm_factor (Hm : Matrix (Fin g) (Fin g) ℂ) (z a : Fin g → ℂ) :
   rw [show (Real.pi / 2 : ℂ) = ((Real.pi / 2 : ℝ) : ℂ) by push_cast; rfl, Complex.add_re, Complex.re_ofReal_mul,
     Complex.re_ofReal_mul]
 
-theorem re_hermForm_add {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z a : Fin g → ℂ) :
-    (hermForm Hm (z + a) (z + a)).re =
-      (hermForm Hm z z).re + 2 * (hermForm Hm z a).re + (hermForm Hm a a).re := by
-  have h : hermForm Hm a z = star (hermForm Hm z a) := by
-    rw [hermForm, hermForm, ← Matrix.star_dotProduct_star, Matrix.star_mulVec, star_star, hH.eq,
-      ← Matrix.dotProduct_mulVec]
-  have e : hermForm Hm (z + a) (z + a) = hermForm Hm z z + hermForm Hm z a + hermForm Hm a z + hermForm Hm a a := by
-    simp only [hermForm, star_add, Matrix.mulVec_add, dotProduct_add, add_dotProduct]
-    ring
-  rw [e, h]
-  simp only [Complex.add_re, Complex.star_def, Complex.conj_re]
-  ring
-
 theorem density (P : L →+ (Fin g → ℂ)) {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (U : ι → (Fin g → ℂ) → Prop) (Uo : ∀ j, IsOpen {z | U j z}) (Uc : ∀ z, ∃ j, U j z)
     (Up : ∀ j z a, U j z → U j (z + P a)) (fr S : ι → (Fin g → ℂ) → ℂ) (θ : (Fin g → ℂ) → ℂ)
@@ -151,7 +138,7 @@ theorem density (P : L →+ (Fin g → ℂ)) {Hm : Matrix (Fin g) (Fin g) ℂ} (
     have h1 := congrArg norm (Sp a j z)
     rw [hθ j z hj, hθ j _ (Up j z a hj), norm_mul, norm_mul, p a j z hj, ← mul_assoc] at h1
     have h2 := mul_right_cancel₀ (norm_ne_zero_iff.2 (n _ _ (Up j z a hj))) h1
-    rw [h2, re_hermForm_add hH, mul_pow, mul_assoc, ← Real.exp_nat_mul, ← Real.exp_add]
+    rw [h2, _root_.GlobalTheory.AppellHumbertTrivial.re_hermForm_add_self hH, mul_pow, mul_assoc, ← Real.exp_nat_mul, ← Real.exp_add]
     congr 2
     push_cast
     ring

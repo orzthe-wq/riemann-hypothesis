@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertialOrderFifteenCharAuxiliaryPrimeSpec
 
 @[expose] public section
 
@@ -47,21 +48,12 @@ section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Sd
 section Hecke
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
-private theorem isAlgPos_mul {χ χ' : HChar F} {n n' : (F →+* ℂ) → ℤ} (h : IsAlgPos χ n) (h' : IsAlgPos χ' n') :
-    IsAlgPos (χ * χ') (n + n') := fun k hk => by
-  have e : (χ * χ').inf k = χ.inf k * χ'.inf k := rfl
-  rw [e, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib]
-  exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm
-private theorem isAlgPos_inv {χ : HChar F} {n : (F →+* ℂ) → ℤ} (h : IsAlgPos χ n) : IsAlgPos χ⁻¹ (-n) := fun k hk => by
-  have e : (χ⁻¹).inf k = (χ.inf k)⁻¹ := rfl
-  rw [e, Units.val_inv_eq_inv_val, h k hk, ← Finset.prod_inv_distrib]
-  exact Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm
 private theorem alg_mul {ι : Qbar l ≃+* ℂ} {κ κ' : G F Ω →* (Qbar l)ˣ} (h : IsAlgChar ι κ) (h' : IsAlgChar ι κ') :
     IsAlgChar ι (κ * κ') := by
   obtain ⟨hc, art, χ, a, ha, h1, h2⟩ := h
   obtain ⟨hc', art', χ', a', ha', h1', h2'⟩ := h'
   obtain rfl : art = art' := GlobalTheory.ArtinUniq.globalArtin_unique F Ω art art' ha ha'
-  exact ⟨hc.mul hc', art, _, _, ha, isAlgPos_mul h1 h1', h2.mul h2'⟩
+  exact ⟨hc.mul hc', art, _, _, ha, _root_.GlobalTheory.GalChar.isAlgPos_mul h1 h1', h2.mul h2'⟩
 private theorem alg_fin (H : GlobalTheory.Published.GlobalArtinReciprocity) (ι : Qbar l ≃+* ℂ) {φ : G F Ω →* (Qbar l)ˣ}
     (ho : IsOpen (φ.ker : Set (G F Ω))) : IsAlgChar ι φ := by
   obtain ⟨art, ha⟩ := H F Ω
@@ -85,5 +77,5 @@ theorem UpperTheory.V.Sd.alg_cyclotomic_of_printed_results :
   refine ⟨fun j χ ho => alg_mul (alg_cyc P.litN.aut.art ι j) (alg_fin P.litN.aut.art ι ho),
     fun _ _ h h' => alg_mul h h', ?_⟩
   rintro κ ⟨hc, art, χ, a, ha, h1, h2⟩
-  exact ⟨hc.inv, art, _, _, ha, isAlgPos_inv h1, h2.inv⟩
+  exact ⟨hc.inv, art, _, _, ha, _root_.GlobalTheory.GalChar.isAlgPos_inv h1, h2.inv⟩
 end

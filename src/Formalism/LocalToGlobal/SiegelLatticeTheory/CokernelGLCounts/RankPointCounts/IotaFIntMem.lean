@@ -2,54 +2,9 @@ module
 
 public import Formalism.SharpRestriction.CuspSpanNormBounds.PsiEDef
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.WithZeroLeOneEqExp
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -84,7 +39,6 @@ theorem clear_F (p : HeightOneSpectrum (𝓞 F)) (l : (A p).Fp) :
   have hπv : p.valuation F (algebraMap (𝓞 F) F π) < 1 := by
     first
     | exact (p.valuation_lt_one_iff_mem π).2 hπp
-    | exact (p.valuation_lt_one_iff_mem (K := F) π).2 hπp
   have hπF0 : algebraMap (𝓞 F) F π ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 hπ0
   obtain ⟨c, hc⟩ : ∃ c, c = (A p).ιF (algebraMap (𝓞 F) F π) := ⟨_, rfl⟩
   have hcint : c ∈ (ValuativeRel.valuation (A p).Fp).integer := by
@@ -105,8 +59,6 @@ theorem clear_F (p : HeightOneSpectrum (𝓞 F)) (l : (A p).Fp) :
         p.valuation F (algebraMap (𝓞 F) F π) * 1 := by
       first
       | gcongr
-      | exact mul_le_mul_right' h1 _
-      | exact mul_le_mul_of_nonneg_left h1 (zero_le _)
     rw [h3, mul_one] at h4
     exact absurd h4 (not_le.2 hπv)
   have hW : IsOpen ((fun z => (z * l - 1) * c⁻¹) ⁻¹'
@@ -175,9 +127,6 @@ theorem clear_one (p : HeightOneSpectrum (𝓞 F)) (z : (A p).Ep) :
     have hint : ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * e) := by
       first
       | (obtain ⟨⟨w, hw⟩, y, hy0, hyw⟩ := exists_integral_multiple hz inj
-         refine ⟨y, hy0, ?_⟩
-         rw [mul_comm]
-         have hw' : IsIntegral ℤ w := hw
          simpa [hyw] using hw')
       | (obtain ⟨y, hy0, hy⟩ := hz.exists_integral_multiple
          exact ⟨y, hy0, by simpa [zsmul_eq_mul] using hy⟩)

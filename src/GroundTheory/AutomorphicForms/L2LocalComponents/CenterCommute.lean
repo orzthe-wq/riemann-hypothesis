@@ -1,52 +1,81 @@
 module
 
-public import GroundTheory.AutomorphicForms.MultiplicityOne.GL2BumpFunctions.ParametrixLie
+public import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.ContinuousMultilinearOfFiniteDimensional
+public import Mathlib.Analysis.Calculus.BumpFunction.Basic
 public import GroundTheory.AutomorphicForms.GKModules.Garding
 public import GroundTheory.AutomorphicForms.GKModules.RightRegular
 public import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.Density
-import GroundTheory.AutomorphicForms.DixmierMalliavinBasic
 public import GroundTheory.AutomorphicForms.GKModules.ZKFinite
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import GroundTheory.AutomorphicForms.DixmierMalliavinBasic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.AutomorphicForms.MultiplicityOne.GL2BumpFunctions.ParametrixLie, GroundTheory.AutomorphicForms.L2LocalComponents.CenterCommute
+
+-- ===== clump member: GroundTheory.AutomorphicForms.MultiplicityOne.GL2BumpFunctions.ParametrixLie =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.MultiplicityOne.GL2BumpFunctions.ParametrixLie", "h": "module\n\npublic import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.ContinuousMultilinearOfFiniteDimensional\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Calculus.BumpFunction.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory Set Filter Topology
+open scoped ContDiff
+
+namespace GroundTheory.Automorphic
+
+noncomputable section
+
+set_option linter.unusedSectionVars false
+
+namespace IsExpLieAlgebra
+
+variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸]
+variable {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (π : BanachRep G E)
+
+def listOp : List 𝔤 → E → E
+  | [], v => v
+  | X :: L, v => h.derivOp π X (listOp L v)
+
+@[simp] theorem listOp_nil (v : E) : h.listOp π [] v = v := rfl
+
+theorem listOp_cons (X : 𝔤) (L : List 𝔤) (v : E) :
+    h.listOp π (X :: L) v = h.derivOp π X (h.listOp π L v) := rfl
+
+theorem listOp_append (L₁ L₂ : List 𝔤) (v : E) :
+    h.listOp π (L₁ ++ L₂) v = h.listOp π L₁ (h.listOp π L₂ v) := by
+  induction L₁ with
+  | nil => rfl
+  | cons X L ih => rw [List.cons_append, listOp_cons, listOp_cons, ih]
+
+theorem isSmoothVector_listOp {v : E} (hv : h.IsSmoothVector π v) :
+    ∀ L : List 𝔤, h.IsSmoothVector π (h.listOp π L v)
+  | [] => hv
+  | X :: L => h.isSmoothVector_derivOp π (isSmoothVector_listOp hv L) X
+
+theorem listOp_eq_wordOp (L : List 𝔤) (v : E) :
+    h.listOp π L v = h.wordOp π (fun i : Fin L.length => L[i]) v := by
+  induction L with
+  | nil => rfl
+  | cons X L ih =>
+    rw [listOp_cons, ih]
+    show _ = h.wordOp π (k := L.length + 1) (fun i : Fin (L.length + 1) => (X :: L)[i]) v
+    rw [wordOp_succ]
+    rfl
+
+variable [CompleteSpace E] (χ : ContDiffBump (0 : ℝ))
+
+end IsExpLieAlgebra
+
+end
+
+end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.MultiplicityOne.GL2BumpFunctions.ParametrixLie =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.L2LocalComponents.CenterCommute =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.L2LocalComponents.CenterCommute", "h": "module\n\npublic import GroundTheory.AutomorphicForms.MultiplicityOne.GL2BumpFunctions.ParametrixLie\npublic import GroundTheory.AutomorphicForms.GKModules.Garding\npublic import GroundTheory.AutomorphicForms.GKModules.RightRegular\npublic import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.Density\nimport GroundTheory.AutomorphicForms.DixmierMalliavinBasic\npublic import GroundTheory.AutomorphicForms.GKModules.ZKFinite\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory Filter Topology
@@ -294,3 +323,6 @@ end IsExpLieAlgebra
 end
 
 end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.L2LocalComponents.CenterCommute =====

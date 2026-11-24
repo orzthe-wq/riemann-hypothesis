@@ -1,24 +1,34 @@
 module
 
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Statements
+public import Mathlib.Order.CompletePartialOrder
+public import Mathlib.RingTheory.RegularLocalRing.Defs
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.MemMinimalPrimesIff
 public import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.GenIdeal
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KrullDimQuotientMinimalPrimeOverL
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RingKrullDimQuotientAddOneOfMemMinimalPrimesSup
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SpanFinrankMaximalIdealLeNcardOfLeSupSq
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TopologicalKrullDimEqSucc
+public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PIntDomainDim
 public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Imports
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCoordsBaseChange
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsConjFsBasisOfUnitary
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ResidueDegreeOfIsClosedImmersion
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SerreHolomorphicSections
-public import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.IsProjPrimeOfRelComps
-public import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.LeDimQuotientHorizontal
 public import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.ResGAppLE
 public import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.SpecializesIff
 public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.ChowDegree
 public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LowerBoundConditional
 public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PCharacterised
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnderEqGenericPoint
+import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PFundCycleBaseChange
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -30,8 +40,10 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -39,7 +51,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,9 +63,379 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallyExistsFiniteSubsetNonzeroLocus
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RingKrullDimQuotientEqOfMemMinimalPrimes
+import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
+import Mathlib.RingTheory.KrullDimension.PID
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AmpleOnAbelianBase
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemRiemannRochSpaceIffRegularAtEverywhere
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKrullDimIntegers
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsConjFsBasisOfUnitary
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnderEqGenericPoint
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.MinimalPrimeDimensions.IsProjPrimeOfRelComps, Development.WeilBound.CoreStatements.MinimalPrimeDimensions.LeDimQuotientHorizontal, Development.WeilBound.CoreStatements.MinimalPrimeDimensions.IsClosedOfCoheight
+
+-- ===== clump member: Development.WeilBound.CoreStatements.MinimalPrimeDimensions.IsProjPrimeOfRelComps =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.MinimalPrimeDimensions.IsProjPrimeOfRelComps", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Statements\npublic import Mathlib.Order.CompletePartialOrder\npublic import Mathlib.RingTheory.RegularLocalRing.Defs\npublic import Mathlib.RingTheory.SimpleRing.Principal\npublic import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.MemMinimalPrimesIff\nimport GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PFundCycleBaseChange\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+noncomputable section
+
+open MvPolynomial NumberField IsDedekindDomain
+open GroundTheory.Heights₂.Heights
+
+namespace ChowFormHeightComparison₂.CF.M
+
+attribute [local instance] MvPolynomial.algebraMvPolynomial
+
+variable {K : Type} [Field K] [NumberField K] {m : ℕ}
+
+local notation "φ" => (MvPolynomial.map (algebraMap (𝓞 K) K) :
+  MvPolynomial (Fin m) (𝓞 K) →+* MvPolynomial (Fin m) K)
+local notation "CC" => (C : 𝓞 K →+* MvPolynomial (Fin m) (𝓞 K))
+
+theorem disjoint_of_bot {W : Ideal (MvPolynomial (Fin m) (𝓞 K))} (h : W.comap CC = ⊥) :
+    Disjoint (((nonZeroDivisors (𝓞 K)).map CC : Submonoid _) : Set (MvPolynomial (Fin m) (𝓞 K))) W := by
+  rw [Set.disjoint_left]
+  rintro _ ⟨a, ha, rfl⟩ hW
+  exact nonZeroDivisors.ne_zero ha (Ideal.mem_bot.1 (h ▸ (show a ∈ W.comap CC from hW)))
+
+theorem comap_map {W : Ideal (MvPolynomial (Fin m) (𝓞 K))} (hW : W.IsPrime) (h : W.comap CC = ⊥) :
+    (W.map φ).comap φ = W :=
+  IsLocalization.under_map_of_isPrime_disjoint ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) hW
+    (disjoint_of_bot h)
+
+theorem isPrime_map {W : Ideal (MvPolynomial (Fin m) (𝓞 K))} (hW : W.IsPrime) (h : W.comap CC = ⊥) :
+    (W.map φ).IsPrime :=
+  IsLocalization.isPrime_of_isPrime_disjoint ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) W hW
+    (disjoint_of_bot h)
+
+theorem map_comap (W : Ideal (MvPolynomial (Fin m) K)) : (W.comap φ).map φ = W :=
+  IsLocalization.map_under ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) W
+
+theorem comap_bot {W : Ideal (MvPolynomial (Fin m) K)} (hW : W ≠ ⊤) : (W.comap φ).comap CC = ⊥ := by
+  refine le_bot_iff.1 fun a ha => ?_
+  by_contra h0
+  rw [Ideal.mem_comap, Ideal.mem_comap, map_C] at ha
+  exact hW (W.eq_top_of_isUnit_mem ha ((IsUnit.mk0 _ (by simpa using h0)).map C))
+
+theorem map_linForm (u : Fin m → 𝓞 K) : φ (linForm u) = linForm fun j => (u j : K) := by
+  simp [linForm]
+
+theorem isProjPrime_map {W : Ideal (MvPolynomial (Fin m) (𝓞 K))} (hW : IsProjPrime W) (h : W.comap CC = ⊥) :
+    IsProjPrime (W.map φ) := by
+  refine ⟨isPrime_map hW.isPrime h, ?_, (isRelevant_comap_map_iff _ _).1 ((comap_map hW.isPrime h).symm ▸ hW.isRelevant)⟩
+  intro f hf d
+  refine Submodule.span_induction (p := fun f _ => ∀ d, homogeneousComponent d f ∈ W.map φ) ?_ (by simp)
+    (fun a b _ _ ha hb d => by rw [map_add (f := _)]; exact Ideal.add_mem _ (ha d) (hb d)) ?_ hf d
+  · rintro _ ⟨g, hg, rfl⟩ d
+    have e : homogeneousComponent d (φ g) = φ (homogeneousComponent d g) := by
+      ext n
+      rw [coeff_homogeneousComponent, coeff_map, coeff_map, coeff_homogeneousComponent]
+      split_ifs <;> simp
+    rw [e]
+    exact Ideal.mem_map_of_mem _ (hW.isHomog g hg d)
+  · intro a b _ hb d
+
+    rw [smul_eq_mul, ← b.sum_homogeneousComponent, ← a.sum_homogeneousComponent, Finset.sum_mul_sum, map_sum]
+    refine Ideal.sum_mem _ fun i _ => ?_
+
+    rw [map_sum]
+    refine Ideal.sum_mem _ fun j _ => ?_
+    rw [homogeneousComponent_of_mem ((homogeneousComponent_isHomogeneous i a).mul
+      (homogeneousComponent_isHomogeneous j b))]
+    split_ifs
+    · exact Ideal.mul_mem_left _ _ (hb j)
+    · exact Ideal.zero_mem _
+
+theorem isProjPrime_of_relComps {R : Type} [CommRing R] {J W : Ideal (MvPolynomial (Fin m) R)} (hJ : IsHomogIdeal J)
+    (hW : W ∈ relComps J) : IsProjPrime W := by
+  have := hW.1.1.1
+  obtain ⟨W', h1, h2, h3, h4⟩ := A.exists_core W
+  have e : W' = W := le_antisymm h3 (hW.1.2 ⟨h1, fun g hg => h4 g fun d => hW.1.1.2 (hJ g hg d)⟩ h3)
+  exact ⟨this, e ▸ h2, hW.2⟩
+
+theorem mem_relComps_map {J : Ideal (MvPolynomial (Fin m) (𝓞 K))} {W : Ideal (MvPolynomial (Fin m) K)} :
+    W ∈ relComps (J.map φ) ↔ W.comap φ ∈ relComps J := by
+  have h := IsLocalization.minimalPrimes_map ((nonZeroDivisors (𝓞 K)).map CC) (MvPolynomial (Fin m) K) J
+  exact and_congr (Set.ext_iff.1 h W) (isRelevant_comap_map_iff _ _).symm
+
+theorem localMult_map' (J : Ideal (MvPolynomial (Fin m) (𝓞 K))) (W : Ideal (MvPolynomial (Fin m) K)) [hW : W.IsPrime] :
+    localMult (J.map φ) W = localMult J (W.comap φ) := by
+  refine A.localMult_map φ W J (fun b => ?_) ?_
+  · obtain ⟨⟨a, s⟩, e⟩ := IsLocalization.surj ((nonZeroDivisors (𝓞 K)).map CC) b
+    exact ⟨a, s, fun h => hW.ne_top (W.eq_top_of_isUnit_mem h
+      (IsLocalization.map_units (MvPolynomial (Fin m) K) s)), e⟩
+  · rw [(RingHom.injective_iff_ker_eq_bot _).1 (map_injective _ (FaithfulSMul.algebraMap_injective (𝓞 K) K))]
+    exact bot_le
+
+variable {P : Ideal (MvPolynomial (Fin m) (𝓞 K))} {u : Fin m → 𝓞 K} {ι : Type} {S : Finset ι}
+  {Pt : ι → Ideal (MvPolynomial (Fin m) (𝓞 K))} {μ : ι → ℤ}
+
+open Classical in
+theorem vertTerm_eq (hP : P.IsPrime) (h0 : P.comap CC = ⊥) (hi : Function.Injective Pt)
+    (hS : ∀ W, W ∈ relComps (P ⊔ Ideal.span {linForm u}) ↔ ∃ z ∈ S, Pt z = W)
+    (hμ : ∀ z ∈ S, μ z = localMult (P ⊔ Ideal.span {linForm u}) (Pt z)) (k : ℕ) (g : ι → ℝ)
+    (hg : ∀ z ∈ S, ∀ v : HeightOneSpectrum (𝓞 K), (Pt z).comap CC = v.asIdeal →
+      g z = chowDegree (reduceMod v (Pt z)) k * Real.log (Ideal.absNorm v.asIdeal)) :
+    vertTerm (P.map φ) k u = ∑ z ∈ S with (Pt z).comap CC ≠ ⊥, (μ z : ℝ) * g z := by
+  have hI : integralModel (P.map φ) = P := comap_map hP h0
+  have h1 (v : HeightOneSpectrum (𝓞 K)) : vertTermAt (P.map φ) k u v =
+      ∑ z ∈ S, if (Pt z).comap CC = v.asIdeal then (μ z : ℝ) * g z else 0 := by
+    have e : vertComps (P.map φ) u v = Pt '' (S.filter fun z => (Pt z).comap CC = v.asIdeal : Finset ι) := by
+      ext W
+      simp only [vertComps, hI, hS, Set.mem_ofPred_eq, Set.mem_image, Finset.coe_filter]
+      exact ⟨fun ⟨⟨z, hz, e⟩, h⟩ => ⟨z, ⟨hz, e ▸ h⟩, e⟩, fun ⟨z, ⟨hz, h⟩, e⟩ => ⟨⟨z, hz, e⟩, e ▸ h⟩⟩
+    rw [vertTermAt, e, finsum_mem_image hi.injOn, finsum_mem_coe_finset, ← Finset.sum_filter, hI]
+    refine Finset.sum_congr rfl fun z hz => ?_
+    rw [Finset.mem_filter] at hz
+    rw [hμ z hz.1, hg z hz.1 v hz.2, Int.cast_natCast, mul_assoc]
+  rw [vertTerm, finsum_congr h1, finsum_sum_comm, Finset.sum_filter]
+  · refine Finset.sum_congr rfl fun z hz => ?_
+    have hp : (Pt z).IsPrime := ((hS _).2 ⟨z, hz, rfl⟩).1.1.1
+    split_ifs with h
+    · refine (finsum_eq_single _ ⟨(Pt z).comap CC, Ideal.comap_isPrime _ _, h⟩ fun v hv => if_neg fun e => hv ?_).trans
+        (if_pos rfl)
+      exact HeightOneSpectrum.ext e.symm
+    · exact finsum_eq_zero_of_forall_eq_zero fun v => if_neg fun (e : (Pt z).comap CC = v.asIdeal) =>
+        h fun e' => v.ne_bot (e.symm.trans e')
+  · intro z _
+    refine Set.Subsingleton.finite fun v hv w hw => HeightOneSpectrum.ext ?_
+    have h1 : (Pt z).comap CC = v.asIdeal := by by_contra h; exact hv (if_neg h)
+    have h2 : (Pt z).comap CC = w.asIdeal := by by_contra h; exact hw (if_neg h)
+    exact h1.symm.trans h2
+
+open Classical in
+theorem divCycle_eq (hi : Function.Injective Pt)
+    (hS : ∀ W, W ∈ relComps (P ⊔ Ideal.span {linForm u}) ↔ ∃ z ∈ S, Pt z = W)
+    (hμ : ∀ z ∈ S, μ z = localMult (P ⊔ Ideal.span {linForm u}) (Pt z)) (hμ0 : ∀ z ∈ S, μ z ≠ 0) :
+    (∀ z ∈ S, (Pt z).comap CC = ⊥ → (Pt z).map φ ∈ (divCycle (P.map φ) fun j => (u j : K)).support) ∧
+    ∀ F : Ideal (MvPolynomial (Fin m) K) → ℝ,
+      ∑ W ∈ (divCycle (P.map φ) fun j => (u j : K)).support, ((divCycle (P.map φ) fun j => (u j : K)) W : ℝ) * F W =
+        ∑ z ∈ S with (Pt z).comap CC = ⊥, (μ z : ℝ) * F ((Pt z).map φ) := by
+  have hJ : P.map φ ⊔ Ideal.span {linForm fun j => (u j : K)} = (P ⊔ Ideal.span {linForm u}).map φ := by
+    rw [Ideal.map_sup, Ideal.map_span, Set.image_singleton, map_linForm]
+  have hp (z) (hz : z ∈ S) : (Pt z).IsPrime := ((hS _).2 ⟨z, hz, rfl⟩).1.1.1
+  have hval (z) (hz : z ∈ S) (h : (Pt z).comap CC = ⊥) :
+      ((divCycle (P.map φ) fun j => (u j : K)) ((Pt z).map φ) : ℤ) = μ z := by
+    have := isPrime_map (hp z hz) h
+    rw [divCycle, hJ, fundCycle_apply, if_pos (mem_relComps_map.2 (by
+      rw [comap_map (hp z hz) h]; exact (hS _).2 ⟨z, hz, rfl⟩)), localMult_map', comap_map (hp z hz) h, hμ z hz]
+  have hmem (z) (hz : z ∈ S) (h : (Pt z).comap CC = ⊥) :
+      (Pt z).map φ ∈ (divCycle (P.map φ) fun j => (u j : K)).support :=
+    Finsupp.mem_support_iff.2 fun e => hμ0 z hz ((hval z hz h).symm.trans (by rw [e]; rfl))
+  refine ⟨hmem, fun F => (Finset.sum_bij (fun z _ => (Pt z).map φ) (fun z hz => ?_) (fun z hz z' hz' e => ?_)
+    (fun W hW => ?_) fun z hz => ?_).symm⟩
+  · rw [Finset.mem_filter] at hz
+    exact hmem z hz.1 hz.2
+  · rw [Finset.mem_filter] at hz hz'
+    exact hi ((comap_map (hp z hz.1) hz.2).symm.trans ((congrArg _ e).trans (comap_map (hp z' hz'.1) hz'.2)))
+  · have h1 : W ∈ relComps ((P ⊔ Ideal.span {linForm u}).map φ) := by
+      by_contra hn
+      refine Finsupp.mem_support_iff.1 hW ?_
+      rw [divCycle, hJ, fundCycle_apply, if_neg hn]
+    obtain ⟨z, hz, e⟩ := (hS _).1 (mem_relComps_map.1 h1)
+    exact ⟨z, Finset.mem_filter.2 ⟨hz, e ▸ comap_bot h1.1.1.1.ne_top⟩, by rw [e, map_comap]⟩
+  · rw [Finset.mem_filter] at hz
+    rw [← hval z hz.1 hz.2, Int.cast_natCast]
+
+end ChowFormHeightComparison₂.CF.M
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.MinimalPrimeDimensions.IsProjPrimeOfRelComps =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.MinimalPrimeDimensions.LeDimQuotientHorizontal =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.MinimalPrimeDimensions.LeDimQuotientHorizontal", "h": "module\n\npublic import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.GenIdeal\nimport Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallyExistsFiniteSubsetNonzeroLocus\nimport Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.RingKrullDimQuotientEqOfMemMinimalPrimes\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.KrullDimQuotientMinimalPrimeOverL\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RingKrullDimQuotientAddOneOfMemMinimalPrimesSup\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SpanFinrankMaximalIdealLeNcardOfLeSupSq\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TopologicalKrullDimEqSucc\npublic import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PIntDomainDim\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Ideal.KrullsHeightTheorem\nimport Mathlib.RingTheory.KrullDimension.PID\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AmpleOnAbelianBase\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemRiemannRochSpaceIffRegularAtEverywhere\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RingKrullDimIntegers\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+noncomputable section
+
+open CategoryTheory AlgebraicGeometry TensorProduct ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad
+
+namespace ChowFormHeightComparison₂.CF
+
+attribute [local instance] Algebra.TensorProduct.rightAlgebra in
+theorem le_dim_quotient_horizontal (A : Type) [CommRing A] [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A]
+    (q : Ideal A) [q.IsPrime] (hq : q.height ≤ 1) (hinj : Function.Injective (algebraMap ℤ (A ⧸ q))) {d : ℕ}
+    (hd : Algebra.trdeg ℤ A = d) : (d : WithBot ℕ∞) ≤ ringKrullDim (A ⧸ q) := by
+  have : FaithfulSMul ℤ (A ⧸ q) := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj
+  have : Algebra.FiniteType ℤ (A ⧸ q) :=
+    Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℤ q) (Ideal.Quotient.mkₐ_surjective ℤ q)
+  obtain ⟨e, he⟩ := exists_trdeg_eq_natCast ℤ (A := A ⧸ q)
+  have h1 := GroundTheory.Heights₂.Heights.IntDomainDim.proof (A ⧸ q) hinj
+  rw [he, Cardinal.toENat_nat] at h1
+  have hB := ringKrullDim_genericFibre_eq ℤ ℚ hd
+  have hB' := ringKrullDim_genericFibre_eq ℤ ℚ he
+  have := IsLocalization.tensorRight (S := A) ℚ (nonZeroDivisors ℤ)
+  have := IsLocalization.tensorRight (S := A ⧸ q) ℚ (nonZeroDivisors ℤ)
+  have hle : Algebra.algebraMapSubmonoid A (nonZeroDivisors ℤ) ≤ nonZeroDivisors A :=
+    Submonoid.map_le_iff_le_comap.mpr fun x hx ↦ mem_nonZeroDivisors_of_ne_zero
+      (by simpa using nonZeroDivisors.ne_zero hx)
+  have hle' : Algebra.algebraMapSubmonoid (A ⧸ q) (nonZeroDivisors ℤ) ≤ nonZeroDivisors (A ⧸ q) :=
+    Submonoid.map_le_iff_le_comap.mpr fun x hx ↦ mem_nonZeroDivisors_of_ne_zero
+      ((map_ne_zero_iff _ hinj).2 (nonZeroDivisors.ne_zero hx))
+  have : IsDomain (ℚ ⊗[ℤ] A) := IsLocalization.isDomain_of_le_nonZeroDivisors _ hle
+  have : IsDomain (ℚ ⊗[ℤ] (A ⧸ q)) := IsLocalization.isDomain_of_le_nonZeroDivisors _ hle'
+  let φ : ℚ ⊗[ℤ] A →ₐ[ℚ] ℚ ⊗[ℤ] (A ⧸ q) := Algebra.TensorProduct.map (AlgHom.id ℚ ℚ) (Ideal.Quotient.mkₐ ℤ q)
+  have hφ : Function.Surjective φ := fun x => by
+    induction x using TensorProduct.induction_on with
+    | zero => exact ⟨0, map_zero _⟩
+    | tmul a b =>
+      obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective b
+      exact ⟨a ⊗ₜ b, rfl⟩
+    | add x y hx hy =>
+      obtain ⟨x, rfl⟩ := hx
+      obtain ⟨y, rfl⟩ := hy
+      exact ⟨x + y, map_add _ _ _⟩
+  have : (RingHom.ker φ).IsPrime := by
+    set_option synthInstance.maxHeartbeats 200000 in
+      exact RingHom.ker_isPrime _
+  have hc : (RingHom.ker φ).comap (algebraMap A (ℚ ⊗[ℤ] A)) = q := by
+    ext a
+    rw [Ideal.mem_comap, RingHom.mem_ker, ← Ideal.Quotient.eq_zero_iff_mem,
+      ← map_eq_zero_iff _ (IsLocalization.injective (ℚ ⊗[ℤ] (A ⧸ q)) hle')]
+    exact Iff.rfl
+  have h2 := IsLocalization.height_under (Algebra.algebraMapSubmonoid A (nonZeroDivisors ℤ)) (RingHom.ker φ)
+  replace h2 : q.height = (RingHom.ker φ).height := (congrArg Ideal.height hc).symm.trans h2
+  have h3 := height_add_ringKrullDim_quotient_of_finiteType ℚ (RingHom.ker φ)
+  have h4 : ringKrullDim ((ℚ ⊗[ℤ] A) ⧸ RingHom.ker φ) = ringKrullDim (ℚ ⊗[ℤ] (A ⧸ q)) :=
+    ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective (f := φ.toRingHom) hφ)
+  rw [h4, hB, hB', ← h2] at h3
+  rw [h1, ← h3, add_comm, WithBot.coe_add]
+  refine add_le_add (le_of_eq (by norm_cast)) ?_
+  exact_mod_cast hq
+
+theorem le_dim_quotient (A : Type) [CommRing A] [IsDomain A] [CharZero A] [Algebra.FiniteType ℤ A]
+    (q : Ideal A) [q.IsPrime] (hmin : ∀ f ∈ q, f ≠ 0 → q ∈ (Ideal.span {f}).minimalPrimes) {d : ℕ}
+    (hd : Algebra.trdeg ℤ A = d) : (d : WithBot ℕ∞) ≤ ringKrullDim (A ⧸ q) := by
+  have : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing ℤ A
+  obtain ⟨l, hl⟩ := CharP.exists (A ⧸ q)
+  rcases CharP.char_is_prime_or_zero (A ⧸ q) l with h | rfl
+  · have : Fact l.Prime := ⟨h⟩
+    have hlq : (l : A) ∈ q := by
+      rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
+      exact CharP.cast_eq_zero _ l
+    exact (GlobalTheory.ringKrullDim_quotient_eq_trdeg_of_mem_minimalPrimes_natPrime A l q
+      (hmin _ hlq (Nat.cast_ne_zero.2 h.ne_zero)) d hd).ge
+  · have : CharZero (A ⧸ q) := CharP.charP_to_charZero _
+    refine le_dim_quotient_horizontal A q ?_ (algebraMap ℤ (A ⧸ q)).injective_int hd
+    by_cases h0 : q = ⊥
+    · subst h0
+      rw [Ideal.height_bot]
+      exact zero_le_one
+    · obtain ⟨f, hf, hf0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot h0
+      exact Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ (hmin f hf hf0)
+
+theorem stDim : StDim := by
+  intro k _ X p D hX Z i _ _ hcoh
+  have := hX.isIntegral
+  generalize hiz : i (genericPoint Z) = z at hcoh
+  let t : X ⟶ Sp ℤ := p ≫ spMap (Int.castRingHom k)
+  have hrange : Set.range i = closure {z} := by
+    have h₁ := (genericPoint_spec Z).image i.continuous
+    rw [Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq, hiz] at h₁
+    exact h₁.def.symm
+  rw [← topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hrange]
+  have hgen : genericPoint X ∉ closure ({z} : Set X) := by
+    intro h
+    have e : z = genericPoint X :=
+      ((genericPoint_specializes z).antisymm (specializes_iff_mem_closure.2 h)).eq.symm
+    rw [e, Order.coheight_eq_zero.2 (fun y _ => genericPoint_specializes y)] at hcoh
+    exact zero_ne_one hcoh
+  have hX1 : topologicalKrullDim (Set.univ : Set X) = (D + 1 : ℕ) :=
+    (topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id).trans hX.dim_eq
+  have hup : topologicalKrullDim (closure ({z} : Set X)) + 1 ≤ (D + 1 : ℕ) :=
+    hX1 ▸ topologicalKrullDim_add_one_le isClosed_closure isClosed_univ
+      fun x hx => ⟨genericPoint X, trivial, hgen, genericPoint_specializes x⟩
+  obtain ⟨N, jN, _, hjN⟩ := hX.isProjOver
+  have := isProper_str k N
+  have : IsProper p := hjN ▸ inferInstance
+  have : IsFinite (spMap (Int.castRingHom k)) :=
+    (IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hX.finite)
+  have : LocallyOfFiniteType t := inferInstance
+  have : Flat t := hX.flat
+  obtain ⟨A, _, _, instA, _, _, j, _, ⟨a, ha⟩, hjt, hA⟩ := exists_affine_chart_trdeg_eq t z
+  obtain rfl : instA = Ring.toIntAlgebra A := Subsingleton.elim _ _
+  have : CharZero A := ⟨fun m n h => Nat.cast_injective (R := ℤ) (FaithfulSMul.algebraMap_injective ℤ A (by simpa using h))⟩
+  obtain ⟨d, hd⟩ := exists_trdeg_eq_natCast ℤ (A := A)
+  have hdimX : topologicalKrullDim X ≤ (d + 1 : ℕ) := by
+    refine topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_
+    obtain ⟨B, _, _, _, _, _, j', _, ⟨b, rfl⟩, -, hB⟩ := exists_affine_chart_trdeg_eq t x
+    refine ⟨Set.range j', j'.isOpenEmbedding.isOpen_range, ⟨b, rfl⟩, ?_⟩
+    rw [topologicalKrullDim_eq_of_isEmbedding j'.isOpenEmbedding.isEmbedding rfl]
+    refine (PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim B).le.trans ?_
+    have hdB : Algebra.trdeg ℤ B = d := hB.trans (hA.symm.trans hd)
+    have hZ1 : ringKrullDim ℤ ≤ 1 := by
+      exact_mod_cast Ring.krullDimLE_iff.mp (inferInstance : Ring.KrullDimLE 1 ℤ)
+    refine (IntModel.ringKrullDim_le_add (O := ℤ) ℚ).trans ?_
+    rw [ringKrullDim_genericFibre_eq ℤ ℚ hdB]
+    refine (add_le_add hZ1 (le_refl ((d : ℕ) : WithBot ℕ∞))).trans_eq ?_
+    push_cast
+    exact add_comm _ _
+  have hDd : D ≤ d := by
+    have := hX.dim_eq.symm.trans_le hdimX
+    have : ((D + 1 : ℕ) : WithBot ℕ∞) ≤ ((d + 1 : ℕ) : WithBot ℕ∞) := this
+    exact Nat.le_of_succ_le_succ (by exact_mod_cast this)
+  have : a.asIdeal.IsPrime := a.isPrime
+  have hmin : ∀ f ∈ a.asIdeal, f ≠ 0 → a.asIdeal ∈ (Ideal.span {f}).minimalPrimes := fun f hf hf0 => by
+    refine ⟨⟨a.isPrime, (Ideal.span_singleton_le_iff_mem _).2 hf⟩, fun q' hq' hle => ?_⟩
+    obtain ⟨hq'p, hlq'⟩ := hq'
+    by_contra hne
+    have hbot : (⊥ : Ideal A) ≠ q' := by
+      intro h0
+      have h1 : f ∈ q' := (Ideal.span_singleton_le_iff_mem _).1 hlq'
+      rw [← h0, Ideal.mem_bot] at h1
+      exact hf0 h1
+    let b' : PrimeSpectrum A := ⟨q', hq'p⟩
+    let g : PrimeSpectrum A := ⟨⊥, Ideal.isPrime_bot⟩
+    have hsp (u v : PrimeSpectrum A) : j u ⤳ j v ↔ u.asIdeal ≤ v.asIdeal :=
+      j.isOpenEmbedding.isInducing.specializes_iff.trans (PrimeSpectrum.le_iff_specializes u v).symm
+    have h₁ : z < j b' := by
+      rw [← ha]
+      exact ⟨(hsp b' a).2 hle, fun h => hne ((hsp a b').1 h)⟩
+    have h₂ : j b' < j g := ⟨(hsp g b').2 bot_le, fun h => hbot (le_bot_iff.1 ((hsp b' g).1 h)).symm⟩
+    have h₃ := Order.coheight_add_one_le h₁
+    have h₄ := Order.coheight_add_one_le h₂
+    rw [hcoh] at h₃
+    have h₅ : (1 : ℕ∞) + 1 ≤ 1 := (add_le_add_left (le_add_self.trans h₄) 1).trans h₃
+    exact absurd h₅ (by decide)
+  have hq := le_dim_quotient A a.asIdeal hmin hd
+  have hlow : topologicalKrullDim (Set.range j ∩ closure {j a} : Set X) ≤
+      topologicalKrullDim (closure ({z} : Set X)) := by
+    rw [ha]
+    exact (Topology.IsEmbedding.inclusion Set.inter_subset_right).isInducing.topologicalKrullDim_le
+  rw [topologicalKrullDim_range_inter_closure_eq j a] at hlow
+  replace hlow := hq.trans hlow
+  obtain ⟨e, he⟩ : ∃ e : ℕ, topologicalKrullDim (closure ({z} : Set X)) = e :=
+    have ⟨e, he⟩ := hX.exists_dim_eq i
+    ⟨e, (topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hrange).trans he⟩
+  rw [he] at hlow hup ⊢
+  have h1 : d ≤ e := by exact_mod_cast hlow
+  have h2 : e + 1 ≤ D + 1 := by exact_mod_cast hup
+  have : e = D := by omega
+  rw [this]
+
+end ChowFormHeightComparison₂.CF
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.MinimalPrimeDimensions.LeDimQuotientHorizontal =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.MinimalPrimeDimensions.IsClosedOfCoheight =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.MinimalPrimeDimensions.IsClosedOfCoheight", "h": "module\n\npublic import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.GenIdeal\npublic import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Imports\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCoordsBaseChange\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsConjFsBasisOfUnitary\npublic import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ResidueDegreeOfIsClosedImmersion\npublic import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.SerreHolomorphicSections\npublic import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.IsProjPrimeOfRelComps\npublic import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.LeDimQuotientHorizontal\npublic import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.ResGAppLE\npublic import Development.WeilBound.CoreStatements.MinimalPrimeDimensions.SpecializesIff\npublic import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.ChowDegree\npublic import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.LowerBoundConditional\npublic import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.PCharacterised\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnderEqGenericPoint\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -119,7 +500,7 @@ theorem isComb_single (k : Fin m) : IsComb p s (Pi.single k 1) (s k) := by
   rw [Finset.sum_eq_single k]
   · simp
   · intro j _ hj
-    simp [Pi.single_apply, hj]
+    simp [hj]
   · simp
 
 theorem secVal_comb (hB : B.IsLB) {u : Fin m → R} {su : B.Sec} (hu : IsComb p s u su) (y : CxPts p σ) :
@@ -731,3 +1112,7 @@ theorem stMain_of (hV : StVert) (hA : StArch) (hR : GroundTheory.Heights₂.Heig
   exact M.core hV hA hR hS hMul hPt hX hE hF hh e Z (𝟙 Z) ((M.charZero_iff hE).1 hX.charZero) hX.dim_eq δ f hf hδ
 
 end ChowFormHeightComparison₂.CF
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.MinimalPrimeDimensions.IsClosedOfCoheight =====

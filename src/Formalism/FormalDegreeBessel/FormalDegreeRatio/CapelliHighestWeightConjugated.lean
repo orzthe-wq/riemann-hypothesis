@@ -72,8 +72,7 @@ variable {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 lemma ioh_exp_conj (P Q X : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1) (hPQ : P * Q = 1) :
     NormedSpace.exp (P * X * Q) = P * NormedSpace.exp X * Q := by
-  let U : (Matrix (Fin n) (Fin n) ℂ)ˣ := ⟨P, Q, hPQ, hQP⟩
-  exact Matrix.exp_units_conj U X
+  exact Matrix.exp_units_conj ⟨P, Q, hPQ, hQP⟩ X
 
 lemma ioh_rdV (P Q X x : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (hQP : Q * P = 1) (hPQ : P * Q = 1) :
@@ -93,12 +92,11 @@ lemma ioh_rdV (P Q X x : Matrix (Fin n) (Fin n) ℂ) (f : Matrix (Fin n) (Fin n)
 lemma ioh_Hinv (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) : H⁻¹ = Q * Jm ε * Qᴴ := by
   apply Matrix.inv_eq_right_inv
-  have hc : Pᴴ * Qᴴ = 1 := by rw [← Matrix.conjTranspose_mul, hQP, Matrix.conjTranspose_one]
   calc H * (Q * Jm ε * Qᴴ) = Pᴴ * (Jm ε * ((P * Q) * (Jm ε * Qᴴ))) := by
         rw [hH]; simp only [Matrix.mul_assoc]
     _ = Pᴴ * Qᴴ := by
         rw [hPQ, Matrix.one_mul, ← Matrix.mul_assoc (Jm ε), Jm_mul_self, Matrix.one_mul]
-    _ = 1 := hc
+    _ = 1 := by rw [← Matrix.conjTranspose_mul, hQP, Matrix.conjTranspose_one]
 
 lemma ioh_conj_part (ε : Fin n → Bool) (H P Q Z : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) :
@@ -110,16 +108,14 @@ lemma ioh_conj_part (ε : Fin n → Bool) (H P Q Z : Matrix (Fin n) (Fin n) ℂ)
 lemma ioh_hpart1 (ε : Fin n → Bool) (H P Q Z : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) :
     P * hpart1 H Z * Q = cpart1 ε (P * Z * Q) := by
-  have h := ioh_conj_part ε H P Q Z hQP hPQ hH
   unfold hpart1 cpart1
-  rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, ← h]
+  rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, ← ioh_conj_part ε H P Q Z hQP hPQ hH]
 
 lemma ioh_hpart2 (ε : Fin n → Bool) (H P Q Z : Matrix (Fin n) (Fin n) ℂ) (hQP : Q * P = 1)
     (hPQ : P * Q = 1) (hH : H = Pᴴ * Jm ε * P) :
     P * hpart2 H Z * Q = cpart2 ε (P * Z * Q) := by
-  have h := ioh_conj_part ε H P Q Z hQP hPQ hH
   unfold hpart2 cpart2
-  rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, ← h]
+  rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, ← ioh_conj_part ε H P Q Z hQP hPQ hH]
 
 lemma ioh_EabH_eq (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ)
     (f : Matrix (Fin n) (Fin n) ℂ → E) (a b : Fin n) (hQP : Q * P = 1) (hPQ : P * Q = 1)
@@ -144,11 +140,10 @@ lemma ioh_inUJ (ε : Fin n → Bool) (H P Q g : Matrix (Fin n) (Fin n) ℂ) (hPQ
     (hH : H = Pᴴ * Jm ε * P) (hg : inUH H g) : inUJ ε (P * g * Q) := by
   unfold inUH at hg
   unfold inUJ
-  have hc : Qᴴ * Pᴴ = 1 := by rw [← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]
   calc (P * g * Q)ᴴ * Jm ε * (P * g * Q) = Qᴴ * (gᴴ * (Pᴴ * Jm ε * P) * g) * Q := by
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Qᴴ * Pᴴ * Jm ε * (P * Q) := by rw [← hH, hg, hH]; simp only [Matrix.mul_assoc]
-    _ = Jm ε := by rw [hc, hPQ]; simp
+    _ = Jm ε := by rw [← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]; simp
 
 lemma ioh_inUH (ε : Fin n → Bool) (H P Q x : Matrix (Fin n) (Fin n) ℂ) (hPQ : P * Q = 1)
     (hH : H = Pᴴ * Jm ε * P) (hx : inUJ ε x) : inUH H (Q * x * P) := by
@@ -173,12 +168,11 @@ lemma ioh_smooth (ε : Fin n → Bool) (H P Q : Matrix (Fin n) (Fin n) ℂ)
     ((LinearMap.mulLeft ℝ Q).comp (LinearMap.mulRight ℝ P)).toContinuousLinearMap
   have hL : ∀ x, L x = Q * x * P := by
     intro x; simp [L, Matrix.mul_assoc]
-  refine ⟨L ⁻¹' U, fun x => F (L x), hU.preimage L.continuous, by simpa [hL] using hg₀U, ?_, ?_⟩
-  · exact hF.comp L.contDiff.contDiffOn (fun x hx => hx)
-  · intro x hx hxJ
-    simp only [Set.mem_preimage, hL] at hx
-    simp only [hL]
-    exact hfF _ hx (ioh_inUH ε H P Q x hPQ hH hxJ)
+  refine ⟨L ⁻¹' U, fun x => F (L x), hU.preimage L.continuous, by simpa [hL] using hg₀U,
+    hF.comp L.contDiff.contDiffOn (fun x hx => hx), ?_⟩
+  intro x hx hxJ
+  simp only [Set.mem_preimage, hL] at hx
+  simpa only [hL] using hfF _ hx (ioh_inUH ε H P Q x hPQ hH hxJ)
 
 end Transport
 

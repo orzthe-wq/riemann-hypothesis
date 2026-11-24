@@ -743,9 +743,6 @@ end Generic
 
 section Heights
 
-lemma colH_spec {n : ℕ} {mu : Fin n → ℤ} (hd : Dominant mu) (c : ℤ) (m : Fin n) : c ≤ mu m ↔ m.val < colH mu c := by
-  first | exact Bl.general_b_fact_left_further.goal1 .. | (apply Bl.general_b_fact_left_further.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_further.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_further.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_further.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_further.goal1 <;> first | assumption | infer_instance)
-
 lemma colH_strip {n : ℕ} {nu mu : Fin n → ℤ} {b : ℕ} (hn : Dominant nu) (hm : Dominant mu) (h : HStrip nu mu b)
     (c : ℤ) : colH nu c ≤ colH mu c ∧ colH mu c ≤ colH nu c + 1 := by
   constructor
@@ -756,9 +753,9 @@ lemma colH_strip {n : ℕ} {nu mu : Fin n → ℤ} {b : ℕ} (hn : Dominant nu) 
   · by_contra hcon
     have hle := colH_le mu c
     have h1 : colH nu c + 1 < n := by omega
-    have h2 : c ≤ mu ⟨colH nu c + 1, h1⟩ := (colH_spec hm c _).mpr (by show colH nu c + 1 < _; omega)
+    have h2 : c ≤ mu ⟨colH nu c + 1, h1⟩ := (_root_.Bl.general_b_fact_left_further.goal1 hm c _).mpr (by show colH nu c + 1 < _; omega)
     have h3 := h.2.1 ⟨colH nu c, by omega⟩ h1
-    have h4 := (colH_spec hn c ⟨colH nu c, by omega⟩).mp (h2.trans h3)
+    have h4 := (_root_.Bl.general_b_fact_left_further.goal1 hn c ⟨colH nu c, by omega⟩).mp (h2.trans h3)
     simp at h4
 
 variable {r K : ℕ}
@@ -769,7 +766,7 @@ lemma colH_pl {mu : Fin (r + K) → ℤ} (hd : Dominant mu) (c : ℤ) :
     rw [Fin.le_def] at h ⊢; simpa using h)
   have hle := colH_le (fun a : Fin r => mu (Fin.castAdd K a)) c
   have key : ∀ a : Fin r, a.val < colH (fun a : Fin r => mu (Fin.castAdd K a)) c ↔ a.val < colH mu c := fun a => by
-    rw [← colH_spec hd' c a, colH_spec hd c (Fin.castAdd K a)]; simp
+    rw [← _root_.Bl.general_b_fact_left_further.goal1 hd' c a, _root_.Bl.general_b_fact_left_further.goal1 hd c (Fin.castAdd K a)]; simp
   rcases lt_trichotomy (colH (fun a : Fin r => mu (Fin.castAdd K a)) c) (min (colH mu c) r) with h | h | h
   · have := key ⟨colH (fun a : Fin r => mu (Fin.castAdd K a)) c, by omega⟩
     simp only at this; omega
@@ -784,7 +781,7 @@ lemma colH_tan {mu : Fin (r + K) → ℤ} (hd : Dominant mu) (c : ℤ) :
   have hle := colH_le (fun b : Fin K => mu (Fin.natAdd r b)) c
   have hle2 := colH_le mu c
   have key : ∀ b : Fin K, b.val < colH (fun b : Fin K => mu (Fin.natAdd r b)) c ↔ r + b.val < colH mu c := fun b => by
-    rw [← colH_spec hd' c b, colH_spec hd c (Fin.natAdd r b)]; simp
+    rw [← _root_.Bl.general_b_fact_left_further.goal1 hd' c b, _root_.Bl.general_b_fact_left_further.goal1 hd c (Fin.natAdd r b)]; simp
   rcases lt_trichotomy (colH (fun b : Fin K => mu (Fin.natAdd r b)) c) (colH mu c - r) with h | h | h
   · have := key ⟨colH (fun b : Fin K => mu (Fin.natAdd r b)) c, by omega⟩
     simp only at this; omega

@@ -85,13 +85,10 @@ lemma sgI_eq_iff (i : Fin (2 * r + k + 1)) : sgI k r i.val = r + k ↔ i.val = r
   split_ifs <;> constructor <;> intro <;> omega
 
 theorem hpk_mul_self : Hpk k r * Hpk k r = 1 := by
-  apply GlobalTheory.Amp.RConj.H_sq <;> assumption
+  apply GlobalTheory.Amp.RConj.H_sq
 
 theorem hpk_det_ne : (Hpk k r).det ≠ 0 := by
-  intro h
-  have h1 := congrArg Matrix.det (hpk_mul_self (k := k) (r := r))
-  rw [Matrix.det_mul, h, zero_mul, Matrix.det_one] at h1
-  exact zero_ne_one h1
+  exact Matrix.det_ne_zero_of_left_inverse (hpk_mul_self (k := k) (r := r))
 
 theorem hpk_conjTranspose : (Hpk k r)ᴴ = Hpk k r := by
   ext i l
@@ -112,9 +109,8 @@ theorem mem_GV_iff {g : B.Mat k r} : g ∈ B.GV k r ↔ gᴴ * Hpk k r * g = Hpk
 
 theorem mul_mem_GV {a b : B.Mat k r} (ha : a ∈ B.GV k r) (hb : b ∈ B.GV k r) : a * b ∈ B.GV k r := by
   rw [mem_GV_iff] at *
-  rw [Matrix.conjTranspose_mul]
-  calc bᴴ * aᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b := by
-        simp only [Matrix.mul_assoc]
+  calc (a * b)ᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b := by
+        simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Hpk k r := by rw [ha, hb]
 
 theorem det_ne_of_mem_GV {g : B.Mat k r} (hg : g ∈ B.GV k r) : g.det ≠ 0 := by
@@ -232,9 +228,7 @@ theorem herm_es (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
 theorem herm_sum_left (v : Fin (r + 1) → Fin (2 * r + k + 1) → ℂ) (c : Fin (r + 1) → ℂ)
     (w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (∑ a, c a • v a) w = ∑ a, c a * herm (Hpk k r) (v a) w := by
-  unfold herm
-  rw [Matrix.mulVec_sum, dotProduct_sum]
-  simp [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
+  simp [herm, Matrix.mulVec_sum, dotProduct_sum, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 theorem fvec_eI (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : Fin (r + 1)) (a : Fin r) :
     fvec k r z c (eI k r a) = if c.val = a.val then 1 else 0 := by
@@ -286,8 +280,7 @@ theorem herm_fvec_fvec (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (a b 
 
 theorem herm_self_re (v : Fin (2 * r + k + 1) → ℂ) :
     ((herm (Hpk k r) v v).re : ℂ) = herm (Hpk k r) v v := by
-  have h := herm_swap (k := k) (r := r) v v
-  exact Complex.conj_eq_iff_re.1 h.symm
+  exact Complex.conj_eq_iff_re.1 (herm_swap (k := k) (r := r) v v).symm
 
 theorem Adiag_apply (z : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 1)) :
     Adiag k r z a b = if a = Fin.last r ∧ b = Fin.last r then herm (Hpk k r) z z else 0 := by
@@ -319,13 +312,11 @@ theorem det_Zhat_ne (z z' : Fin (2 * r + k + 1) → ℂ) (hS : Std k r z z') (γ
   obtain ⟨_, ⟨_, hT⟩, ⟨_, hT'⟩⟩ := hS
   obtain ⟨_, hG⟩ := hP
   have hD : Dmin k r z z' γ (Fin.last (r + 1)) = 0 := by
-    unfold Dmin
     have h1 : (Zhat k r z z' γ).submatrix (Fin.castLE (Nat.le_of_lt_succ (Fin.last (r + 1)).isLt))
         (Fin.castLE (Nat.le_of_lt_succ (Fin.last (r + 1)).isLt)) = Zhat k r z z' γ := by
       ext i j
       rfl
-    rw [h1]
-    exact h0
+    simpa [Dmin, h1] using h0
   unfold Gf at hG
   rw [hD, Complex.normSq_zero, zero_sub] at hG
   have h2 : 0 ≤ Tz k r z * Tz k r z' * Complex.normSq (Dmin k r z z' γ ⟨r, by omega⟩) :=

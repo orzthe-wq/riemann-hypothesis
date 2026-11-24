@@ -74,7 +74,7 @@ theorem cm_apply {n : ℕ} (t : Idx n → ℝ) (i j : Fin n) :
   have key : ∀ f : Fin n → Fin n → ℂ, (∑ x, ∑ y, if x = i ∧ y = j then f x y else 0) = f i j := by
     intro f
     simp [ite_and, Finset.sum_ite_eq']
-  simp [Matrix.single_apply, Finset.sum_add_distrib, key]
+  simp [Matrix.single_apply, key]
 
 def cmE (n : ℕ) : (Idx n → ℝ) ≃ₗ[ℝ] Mat n where
   toFun := cm

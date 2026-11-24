@@ -133,7 +133,7 @@ theorem frameSign_eq_involution_scalar (d : _root_.PositivityTheory.SiegelWeilFo
 theorem rel_sign_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (ε : ℤˣ)
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :
     ((∀ i j, σ (d.Y.J j i) = -d.Y.J i j) → ε = -1) ∧ ((∀ i j, σ (d.Y.J j i) = d.Y.J i j) → ε = 1) := by
-  have hσ := rel_sigma_sigma d.ok.good.cm
+  have hσ := _root_.GlobalTheory.AdelicU.cm_conj_conj d.ok.good.cm
   have i : Fin d.n := ⟨0, d.ok.hn⟩
   constructor
   · intro h

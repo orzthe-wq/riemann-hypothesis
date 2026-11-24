@@ -76,9 +76,6 @@ def IsKStable (G : Set (Matrix (Fin n) (Fin n) ℂ)) (π : Matrix (Fin n) (Fin n
     (S : Submodule ℂ H) : Prop :=
   ∀ k ∈ maxCpt G, ∀ w ∈ S, π k w ∈ S
 
-def IsKFinOn (G : Set (Matrix (Fin n) (Fin n) ℂ)) (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (v : H) : Prop :=
-  ∃ S : Submodule ℂ H, FiniteDimensional ℂ S ∧ v ∈ S ∧ IsKStable G π S
-
 def IsAdmOn (G : Set (Matrix (Fin n) (Fin n) ℂ)) (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) : Prop :=
   Formalism.QuantumDeterminants.IsCRepOn G π ∧ (∀ v, ContinuousOn (fun g => π g v) G) ∧ (∀ k ∈ maxCpt G, ∀ v, ‖π k v‖ = ‖v‖) ∧
     ∀ S : Submodule ℂ H, FiniteDimensional ℂ S → IsKStable G π S →

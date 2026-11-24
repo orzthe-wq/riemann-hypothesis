@@ -44,30 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-
-namespace I195MixedCoordinates_14b5fd3aa93c7f4842f1a892
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-public noncomputable abbrev target
-    {D : D7} {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D ρ S.rank))
-    (𝓕 : Set (Mx D ρ S.rank)) (f : WO S T → ℂ) (y : Mx D S.rank ρ) : WO S T₀ → ℂ :=
-  fun w₀ => ∫ ξ in 𝓕, heisO ψ S T (d.jX * ξ)
-    (heisO ψ S T (d.jY * (incA D (-D.host.xi0⁻¹) • (adj y * gA S)))
-      (heisO ψ S T (d.j0 * w₀) f)) 0 ∂μ
-
-end I195MixedCoordinates_14b5fd3aa93c7f4842f1a892
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -300,7 +277,7 @@ variable (ψ : AddChar (AF D.host.F) ℂ) {V V₀ W W₀ : HSp D} {ρ σ : ℕ} 
   (μS : Measure (Mx D W.rank ρ)) (𝓕S : Set (Mx D W.rank ρ)) (μT : Measure (Mx D σ V₀.rank)) (𝓕T : Set (Mx D σ V₀.rank))
 
 def evalAt (Ψ : WO V W → ℂ) (x : Mx D W.rank ρ) (y : Mx D V₀.rank σ) : WO V₀ W₀ → ℂ :=
-  (_root_.I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.target dW) V₀ ψ μT 𝓕T ((_root_.I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.source dV) W ψ μS 𝓕S Ψ x) y
+  (_root_.I195MixedCoordinates.target dW) V₀ ψ μT 𝓕T ((_root_.I195MixedCoordinates.source dV) W ψ μS 𝓕S Ψ x) y
 
 def flatFun (x : Mx D W.rank ρ) (y : Mx D V₀.rank σ) (Ψ : WO V W → ℂ) (w : WO V₀ W₀) (u : UX D ρ) : ℂ :=
   star (psiUni ψ u.1) * evalAt ψ dV dW μS 𝓕S μT 𝓕T Ψ (x ⬝ u.1.1) y w

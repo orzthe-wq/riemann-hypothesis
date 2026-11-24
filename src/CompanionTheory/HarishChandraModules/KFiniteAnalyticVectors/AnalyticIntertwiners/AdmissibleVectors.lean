@@ -197,7 +197,7 @@ theorem harish_chandra_first_clause (hD : ForIrr fun _ ε H _ _ σ => Dense {v :
       have := ((((hasDerivAt_id (0 : ℝ)).ofReal_comp.mul_const X.trace).div_const 2).const_mul (j : ℂ)).cexp
       simpa using this
     have h := hc.fun_smul (hder.deriv _ (hex X hX).1 v)
-    simp only [(hex X hX).2, ContinuousLinearMap.smul_apply]
+    simp only [(hex X hX).2, _root_.smul_apply]
     convert h using 1
     rw [hL, twLC_apply, exp_zero_smul, hσ.1.1]
     simp
@@ -232,7 +232,7 @@ theorem harish_chandra_first_clause (hD : ForIrr fun _ ε H _ _ σ => Dense {v :
         fun a b h => Subtype.ext (hio (congrArg (Subtype.val : S → πU.H) h)), hv, fun X hX w hw => ?_⟩
       have key : ∀ Y ∈ upq p q, IsKC Y → act Y w ∈ S.comap io := fun Y hY hYK => by
         refine deriv_memC S.closed_of_finiteDimensional (hd Y hY w) fun t => ?_
-        rw [(hex Y hY).2, ContinuousLinearMap.smul_apply]
+        rw [(hex Y hY).2, _root_.smul_apply]
         refine S.smul_mem _ (hSK _ (exp_mem_Kset ⟨?_, ?_⟩) _ hw)
         · have h : (rx Y)ᴴ * Jm (epq p q) + Jm (epq p q) * rx Y = 0 := (hex Y hY).1
           show _ = (0 : Matrix _ _ ℂ)

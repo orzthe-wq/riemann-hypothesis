@@ -115,7 +115,7 @@ theorem principal_series_of_statement_w : _root_.UpperTheory.V.Z.Sym.W.PsOfAlt :
     refine hu _ (hmem j) _ (hmem i) ?_
     simp only [IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]
     exact e
-  obtain ⟨hi, hq⟩ := (UpperTheory.Gal.LocD.ofSupport_holds _ n τ.V τ.ρ ξ hξ).1 hs'
+  obtain ⟨hi, hq⟩ := (_root_.UpperTheory.Gal.LocD.ofSupport _ n τ.V τ.ρ ξ hξ).1 hs'
   obtain ⟨E⟩ := hq.nonempty_equiv hi (prinSeries_irreducible ξ hξ hne)
   exact ⟨ξ, hξ, ⟨E.symm⟩, fun i j => hne j i⟩
 end UpperTheory.V.Z.Sym.W

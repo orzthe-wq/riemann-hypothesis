@@ -101,9 +101,6 @@ theorem q_mem_Fil (q : ℚ_[l]) : algebraMap ℚ_[l] P.R.BdR q ∈ Fil P 0 := by
   rw [IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR]
   exact om_mem_Fil P _
 
-theorem iota_injective : Function.Injective P.ιB := fun a b h =>
-  (P.PD (botExt l)).ι_inj (by rw [P.PD_ι, P.PD_ι, h])
-
 theorem iota_act (g : GQ l) (b : P.R.B) : P.ιB (P.actQ g b) = P.actQdR g (P.ιB b) := by
   have := (P.PD (botExt l)).ι_comm ⟨g, mem_GK_botExt g⟩ b
   rwa [P.PD_actB, P.PD_ι, P.PD_ι, P.PD_actdR] at this

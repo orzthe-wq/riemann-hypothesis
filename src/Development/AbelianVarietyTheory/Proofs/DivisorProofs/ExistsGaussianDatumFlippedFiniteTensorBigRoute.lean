@@ -12,7 +12,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisen
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzEqPureTensorOfFiniteSlices
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AtWAtPlSelf
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoxGraphGraphHeis
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqAdeleSupportedAtFinitePlaceOfSupportedAt
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.EqAdeleSupportedAtFinitePlaceOfSupportedAt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsINeZeroKind
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockVacuumThetaFunctionDerivativeComplexStructur
@@ -107,7 +107,7 @@ theorem schr_slice (co : Darboux B κ) (ψ : AddChar (AF F) ℂ) {v : HeightOneS
   have hc : ∀ u : AF F, evFin F v u = 0 → u • co.e γ = 0 := fun u hu => by rw [← map_smul, hγ u hu, map_zero]
   have h1 : ∀ k, At (evFin F v) ((co.e γ).1 k) := fun k u hu => congrArg (fun z => z.1 k) (hc u hu)
   have h2 : ∀ k, At (evFin F v) ((co.e γ).2 k) := fun k u hu => congrArg (fun z => z.2 k) (hc u hu)
-  have hl : ∀ z : AF F, At (evFin F v) z → liftV v (evFin F v z) = z := fun z hz => (GlobalTheory.VacAny.eq_atPlace_of_at v z hz).symm
+  have hl : ∀ z : AF F, At (evFin F v) z → liftV v (evFin F v z) = z := fun z hz => (Tw.VacAny.eq_atPlace_of_at v z hz).symm
   conv_rhs => rw [← h]
   simp only [Darboux.rho, schr]
   congr 1
@@ -176,11 +176,7 @@ theorem thetaPt_smul {i j : ℕ} (Γ : GlobalTheory.IndefiniteRowSideFullHecke.U
     (Φ : (Ix G i j → AF D.host.F) → ℂ) (u : Pt G i j) : thetaPt Γ ψ (c • Φ) u = c * thetaPt Γ ψ Φ u :=
   (tsum_congr fun _ => mul_left_comm _ _ _).trans tsum_mul_left
 
-theorem splitIdem_conj {a : AE D} (h : IsSplitIdem D a) : IsSplitIdem D (cA D a) := by
-  obtain ⟨h1, h2, v, ε, h3, h4⟩ := h
-  refine ⟨by rw [← RingHom.map_mul, h1], ?_, v, ε, h3, ?_⟩
-  · rw [GlobalTheory.DualPairCheck.cA_cA, mul_comm, h2]
-  · rw [GlobalTheory.DualPairCheck.cA_cA, add_comm, h4]
+alias splitIdem_conj := _root_.GlobalTheory.SplitScalar.isSplitIdem_conj
 
 theorem vac_ne_zero {S T : HSp D} {ψ θ sS sT LS LT} {f : WO S T → ℂ} (h : IsVacO ψ θ S T sS sT LS LT f) : f ≠ 0 := by
   rintro rfl

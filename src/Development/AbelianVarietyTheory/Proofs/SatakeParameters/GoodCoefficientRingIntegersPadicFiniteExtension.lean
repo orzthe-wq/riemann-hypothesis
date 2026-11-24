@@ -50,8 +50,6 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 
 namespace GlobalTheory.HTW.Rec
 
-theorem goodO_finExt_integers :
-    ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l), GoodO (Qp := ℚ_[l]) ↥LL.1 ↥(OL LL) :=
-  GlobalTheory.Pass.goodO_ringOfIntegers
+alias goodO_finExt_integers := _root_.GlobalTheory.Pass.goodO_ringOfIntegers
 
 end GlobalTheory.HTW.Rec

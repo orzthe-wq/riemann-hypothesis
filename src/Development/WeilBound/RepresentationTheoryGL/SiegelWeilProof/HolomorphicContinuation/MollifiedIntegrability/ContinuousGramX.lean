@@ -64,7 +64,7 @@ namespace PositivityTheory.Rg.Sw.WR.G
 
 open PositivityTheory.Rg.Sw
 
-theorem integP : IntegP := GI.integP
+alias integP := _root_.PositivityTheory.Rg.Sw.WR.G.GI.integP
 
 lemma map_smul_volume {m n : ℕ} (ζ : ℂ) (hζ : ‖ζ‖ = 1) :
     Measure.map (fun x : Fin m → Fin n → ℂ => ζ • x) volume = volume := by

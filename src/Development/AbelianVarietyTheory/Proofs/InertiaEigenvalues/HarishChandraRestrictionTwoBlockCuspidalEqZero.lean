@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegreeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionCharacterRestrictionDecompStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegree
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionCharacterRestrictionDecomp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,11 +64,11 @@ theorem res_cusp_eq_zero : ∀ (g : ℕ) [Fact g.Prime] (d a : ℕ) (χ : Gn g d
   have hchar : IsChar χ := by
     obtain ⟨V, -, hV⟩ := hirr
     exact ⟨V, hV⟩
-  obtain ⟨L, hL, hres⟩ := (GlobalTheory.T.harishChandra_induction_character_restriction_decomp g a (d - a) d (by omega)).2 χ hchar
+  obtain ⟨L, hL, hres⟩ := (_root_.GlobalTheory.GLq.HCChar.hc_isChar_and_res_decomp g a (d - a) d (by omega)).2 χ hchar
   have hpos : ∀ p ∈ L, ∃ n : ℕ, 0 < n ∧ (fun p : (Gn g a → ℂ) × (Gn g (d - a) → ℂ) => p.1 1 * p.2 1) p = n := by
     intro p hp
-    obtain ⟨d₁, hd₁, h₁⟩ := (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree (Gn g a) 0 p.1).2.1 (hL p hp).1
-    obtain ⟨d₂, hd₂, h₂⟩ := (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree (Gn g (d - a)) 0 p.2).2.1 (hL p hp).2
+    obtain ⟨d₁, hd₁, h₁⟩ := (_root_.GlobalTheory.GLq.trIdem (Gn g a) 0 p.1).2.1 (hL p hp).1
+    obtain ⟨d₂, hd₂, h₂⟩ := (_root_.GlobalTheory.GLq.trIdem (Gn g (d - a)) 0 p.2).2.1 (hL p hp).2
     exact ⟨d₁ * d₂, Nat.mul_pos hd₁ hd₂, by simp [h₁, h₂]⟩
   obtain ⟨m, hm, hmpos⟩ := list_sum_posNat L _ hpos
   have hL0 : L = [] := by

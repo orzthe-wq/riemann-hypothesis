@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TwistedModelAdmissibleCocycles
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapExactMiddleStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapExactMiddle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -132,8 +132,8 @@ theorem model_pre : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Pri
     have h2 := F.map_comp K A₁ B i p oK o1 oB hi hp a
     rw [hcomm, h2] at h1
     exact (LinearMap.congr_fun h1 x).symm
-  have e1 := GlobalTheory.T.exact_map_of_exact F A B Q f q oB hf hq hfi hqs hfq
-  have e2 := GlobalTheory.T.exact_map_of_exact F K A₁ Q i (q ∘ₗ p) o1 hi hqp hii (hqs.comp hps) hex
+  have e1 := _root_.GlobalTheory.Models.DFun.map_exact_middle F A B Q f q oB hf hq hfi hqs hfq
+  have e2 := _root_.GlobalTheory.Models.DFun.map_exact_middle F K A₁ Q i (q ∘ₗ p) o1 hi hqp hii (hqs.comp hps) hex
   refine ⟨C, Nb, K, j ∘ₗ i, p', hb, IsHom.comp' hi hj, hji.comp hii, hp', hp's, ?_⟩
   funext a
   ext x

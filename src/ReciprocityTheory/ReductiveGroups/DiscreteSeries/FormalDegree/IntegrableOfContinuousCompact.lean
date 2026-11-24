@@ -1,51 +1,11 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PmatIsHermitian
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.CategoryTheory.Countable
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.EigenvectorUnitaryMulStar
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.KSchur
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.KinstSecondCountable
@@ -181,9 +141,7 @@ theorem KType_norm_op_apply {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KTyp
   first
   | exact ContinuousLinearMap.norm_map_of_mem_unitary (T.τ k).2 v
 
-theorem KType_continuous_op {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) :
-    Continuous (fun k => T.op k) := by
-  exact continuous_subtype_val.comp T.cont
+alias KType_continuous_op := _root_.ReciprocityTheory.ChartRestriction.DS.CompactHaarProbability.cont_op
 
 theorem integrable_dk_of_continuous {ε : Fin n → Bool} {E : Type*} [NormedAddCommGroup E] {g : KG ε → E} (hg : Continuous g) :
     Integrable g (dk ε) := by
@@ -207,8 +165,6 @@ theorem conj_projection_apply {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KT
     (T.op k * projW T * T.op k⁻¹) v = ⟪T.op k T.w, v⟫_ℂ • T.op k T.w := by
   rw [KType_op_inv_eq_adjoint]
   first
-  | (simp only [ContinuousLinearMap.mul_apply, projW, ContinuousLinearMap.smulRight_apply,
-      innerSL_apply, ContinuousLinearMap.adjoint_inner_right, map_smul]; done)
   | (simp [projW, ContinuousLinearMap.adjoint_inner_right]; done)
 
 theorem inner_fF_eq_integral {ε : Fin n → Bool} (lam : Fin n → ℝ) {Λ : Fin n → ℝ} (T : KType ε Λ) (z : PCoord ε → ℂ)
@@ -323,7 +279,7 @@ theorem lintegral_conj_invariant {ε : Fin n → Bool} (lam : Fin n → ℝ) (k 
   have hG : Measurable (fun y : PCoord ε → ℂ => ENNReal.ofReal (Real.exp (-2 * Ph lam (pmat y)) * Jac y)) :=
     ENNReal.measurable_ofReal.comp
       ((Real.continuous_exp.comp (continuous_const.mul (continuous_potential_pmat lam))).mul
-        (jac_continuous ε)).measurable
+        (_root_.ReciprocityTheory.ChartRestriction.DS.pb_jac_continuous ε)).measurable
   rw [← (adK_measurePreserving k⁻¹).lintegral_comp hG]
   refine lintegral_congr (fun z => ?_)
   simp only [conj_pmat_eq_adK, jac_adK]
@@ -354,7 +310,7 @@ theorem lemma6c {ε : Fin n → Bool} {lam : Fin n → ℝ} {H : Type*} [NormedA
     refine Measurable.aemeasurable ?_
     exact (ENNReal.measurable_ofReal.comp (Real.continuous_exp.comp
       (continuous_const.mul (continuous_potential_conj_prod lam))).measurable).mul
-      (ENNReal.measurable_ofReal.comp ((jac_continuous ε).comp continuous_fst).measurable)
+      (ENNReal.measurable_ofReal.comp ((_root_.ReciprocityTheory.ChartRestriction.DS.pb_jac_continuous ε).comp continuous_fst).measurable)
   have hIa : ∫⁻ z : PCoord ε → ℂ, ENNReal.ofReal (hsOp (fF ε lam T (pmat z)) * Jac z) ≤
       ENNReal.ofReal (Module.finrank ℂ T.V : ℝ) *
         ∫⁻ z : PCoord ε → ℂ, ENNReal.ofReal (Real.exp (-2 * Ph lam (pmat z)) * Jac z) := by

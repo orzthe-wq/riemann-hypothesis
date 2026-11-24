@@ -126,7 +126,7 @@ theorem schwartz_gs {m n : ℕ} (c : ℝ) (hc : 0 < c) : ∃ φ : 𝓢(Fin m →
   rw [Complex.ofReal_exp]
   congr 1
   rw [EuclideanSpace.norm_sq_eq]
-  simp [L, Fintype.sum_prod_type, Fintype.sum_bool, mul_pow, hs2, Complex.sq_norm, Complex.normSq_apply]
+  simp [L, Fintype.sum_prod_type, mul_pow, hs2, Complex.sq_norm, Complex.normSq_apply]
   have hpi : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
   simp only [Finset.mul_sum]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_

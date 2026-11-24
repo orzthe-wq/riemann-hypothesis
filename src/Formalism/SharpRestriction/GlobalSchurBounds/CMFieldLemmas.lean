@@ -105,28 +105,6 @@ def PointsLemma (D : D7) : Prop :=
         (D.R.h h ≠ 0 → Even (addOrderOf h)))
 
 
-open Classical in
-def Conclusion4 (D : D7) (C : ℝ) : Prop :=
-  (∀ l : ℕ, l.Prime → l ≠ 2 → ∀ j : ℕ, j ≤ D.R.e →
-    ((2 ^ j : ℕ) • hOf D.R.e l = 0 ↔
-      ((l : ZMod (4 * 2 ^ D.R.e / 2 ^ j)) = 1 ∨ (l : ZMod (4 * 2 ^ D.R.e / 2 ^ j)) = -1))) ∧
-  (∀ J : ℝ, 1 ≤ J → ∀ l : ℕ, l.Prime → l ≠ 2 → (ordH (hOf D.R.e l) : ℝ) ≤ J →
-    4 * ((2 ^ D.R.e : ℕ) : ℝ) / J - 1 ≤ l) ∧
-  (∀ J : ℝ, 1 ≤ J → ∀ S : Finset ℕ,
-    (∀ l ∈ S, l.Prime ∧ l ≠ 2 ∧ (ordH (hOf D.R.e l) : ℝ) ≤ J) →
-    ∑ l ∈ S, Real.log l / (l : ℝ) ^ 2 ≤
-      C * J ^ 2 * Real.log ((2 ^ D.R.e : ℕ) : ℝ) / ((2 ^ D.R.e : ℕ) : ℝ) ^ 2) ∧
-  (∀ J : ℝ, 1 ≤ J → ∀ Y : ℝ,
-    ∑ l ∈ (Finset.range (⌊Y⌋₊ + 1)).filter
-        (fun l => l.Prime ∧ l ≠ 2 ∧ (ordH (hOf D.R.e l) : ℝ) ≤ J),
-      Real.log l / (l : ℝ) ≤
-      C * J * Real.log (((2 ^ D.R.e : ℕ) : ℝ) * Y) ^ 2 / ((2 ^ D.R.e : ℕ) : ℝ))
-
-def NoThreeTermRelation (T : Finset ℕ) (L : ℕ) : Prop :=
-  ∀ s₁ ∈ T, ∀ s₂ ∈ T, ∀ s₃ ∈ T, s₁ ≠ s₂ → s₁ ≠ s₃ → s₂ ≠ s₃ →
-    ∀ i j : ℤ, 0 < |i| → |i| ≤ L → 0 < |j| → |j| ≤ L → i ≠ j →
-      j * ((s₂ : ℤ) - s₁) ≠ i * ((s₃ : ℤ) - s₁)
-
 def transl {φ : Formalism.HC.Frame} (T : Finset ℕ) (u₀ : φ.A) : Set φ.A := {x | ∃ s ∈ T, x = φ.dig s + u₀}
 
 def coset {G : Type} [AddCommGroup G] (t h : G) : Set G := {x | ∃ i : ℤ, x = t + i • h}
@@ -137,7 +115,7 @@ def Conclusion5 (D : D7) (C : ℝ) : Prop :=
   ∀ Lw : ℕ, 2 ≤ Lw → ∃ T₂ : Finset ℕ,
     (∀ s ∈ T₂, (s : ℝ) < (D.R.n0 : ℝ) / (4 * Lw)) ∧
     (D.R.n0 : ℝ) * Real.exp (-C * Real.sqrt (Real.log D.R.n0 * Real.log Lw)) / Lw ≤ T₂.card ∧
-    NoThreeTermRelation T₂ Lw ∧
+    _root_.Formalism.FrobeniusOrbits.NoRel T₂ Lw ∧
     ∀ u₀ t h : HH D,
       (4 * Lw < addOrderOf h → ∀ i₀ : ℤ,
         ((Finset.Ico i₀ (i₀ + Lw)).filter (fun i : ℤ => t + i • h ∈ transl T₂ u₀)).card ≤ 2) ∧
@@ -300,12 +278,6 @@ def Conclusion8 (D : D7) : Prop :=
         ∀ σ τ : D.host.E ≃ₐ[ℚ] D.host.E, τ ∈ MulAction.stabilizer (D.host.E ≃ₐ[ℚ] D.host.E) P →
           (D.host.galE (σ * τ) ∈ D.R.Psi ↔
             D.host.galE σ ∈ D.R.Psi))
-
-def Conclusion₂ (D : D7) (C₄ C₅ : ℝ) (sc : Scale) : Prop :=
-  Conclusion1 D ∧ Conclusion2 D ∧ PointsLemma D ∧ Conclusion4 D C₄ ∧ Conclusion5 D C₅ ∧ TorusPairsWithVariant D ∧ Conclusion6 D sc ∧ division_rows_rational_lattice D ∧ Conclusion8 D
-
-def ConclusionOnFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C₄ C₅ : ℝ) : Prop :=
-  ∀ x : ℝ, Fm.x1 < x → ∀ i : Fm.Ix x, Conclusion₂ (Fm.D x i) C₄ C₅ (Fm.L x i).sc
 
 end Formalism.MainNotions.UnusedSlot33
 

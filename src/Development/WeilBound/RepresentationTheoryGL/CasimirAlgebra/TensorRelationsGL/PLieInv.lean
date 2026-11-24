@@ -92,7 +92,7 @@ theorem hasDerivAt_det {n : ℕ} (A : ℝ → Matrix (Fin n) (Fin n) ℂ) (Y : M
   have hs := HasDerivAt.sum (u := Finset.univ) (fun σ _ => key σ)
   refine (hs.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)).congr_deriv ?_
   · simp [Matrix.det_apply', Finset.sum_apply]
-  · simp only [Finset.mul_sum, smul_eq_mul]
+  · simp only [Finset.mul_sum]
     rw [Finset.sum_comm, Matrix.trace]
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [Finset.sum_eq_single (1 : Equiv.Perm (Fin n))]
@@ -117,11 +117,11 @@ theorem Sop_single {ι : Type} {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ
     Sop E bar τ (Matrix.single p q z) = z • E τ p q + star z • E (bar τ) p q := by
   unfold Sop
   rw [Finset.sum_eq_single p, Finset.sum_eq_single q]
-  · simp [Matrix.single_apply]
-  · intro b _ hb; simp [Matrix.single_apply, hb, Ne.symm hb]
+  · simp
+  · intro b _ hb; simp [Ne.symm hb]
   · simp
   · intro a _ ha
-    exact Finset.sum_eq_zero fun b _ => by simp [Matrix.single_apply, ha, Ne.symm ha]
+    exact Finset.sum_eq_zero fun b _ => by simp [Ne.symm ha]
   · simp
 
 end LieInverse

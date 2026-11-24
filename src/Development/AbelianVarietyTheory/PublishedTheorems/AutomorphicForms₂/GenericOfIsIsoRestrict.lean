@@ -85,13 +85,4 @@ theorem _root_.GlobalTheory.Published.generic_of_isIso_restrict {X X' : Scheme.{
     _root_.GlobalTheory.CurveDegreesCompare.residueDegree_of_isOpenImmersion (π ∣_ U), hx] at h1
   simpa using h1
 
-
-open CategoryTheory AlgebraicGeometry TopologicalSpace in
-theorem _root_.GlobalTheory.Published.arBirational_of_arProj (H : _root_.GlobalTheory.Published.ArProj) :
-    _root_.GlobalTheory.Published.ArBirational := by
-  intro k _ X X' _ _ p p' D hp hp' _ _ π hπ U hU hiso L a hL
-  obtain ⟨hgen, hdeg⟩ := _root_.GlobalTheory.Published.generic_of_isIso_restrict π U hU
-  have := (H k X X' p p' D hp hp' π hπ hgen (by rw [hdeg]; exact one_ne_zero)).1 L a hL
-  simpa [hdeg] using this
-
 end GlobalTheory.Published

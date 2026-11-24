@@ -122,7 +122,7 @@ theorem dual_one [IsTotallyReal F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F �
 theorem dual_cpt [IsTotallyReal F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (U : Set (κ → Af F)) (hU : U ∈ 𝓝 0) :
     ∃ K, IsCompact K ∧ ∀ y : κ → Af F, (∀ u ∈ U, ψ (fi F (u ⬝ᵥ y)) = 1) → y ∈ K := by
   obtain ⟨C, hC, h⟩ := dual_one hψ
-  choose N hN hNU using fun i : κ => GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F ((fun x : Af F => (Pi.single i x : κ → Af F)) ⁻¹' U)
+  choose N hN hNU using fun i : κ => _root_.GlobalTheory.LocalNormBound.main F ((fun x : Af F => (Pi.single i x : κ → Af F)) ⁻¹' U)
     ((continuous_single (A := fun _ : κ => Af F) i).continuousAt.preimage_mem_nhds (show U ∈ 𝓝 (Pi.single i 0) by rwa [Pi.single_zero]))
   refine ⟨_, isCompact_univ_pi fun i => hC.image (f := (algebraMap F (Af F) (N i : F)⁻¹ * ·))
     (continuous_const.mul continuous_id), fun y hy i _ => ⟨N i • y i, h _ fun a ha => ?_, ?_⟩⟩

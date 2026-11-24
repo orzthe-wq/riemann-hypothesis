@@ -146,7 +146,6 @@ theorem form_nil (x y : S.V) :
     LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]
     refine Finset.sum_congr rfl fun c _ => ?_
     simp only [kap, star_add, star_neg, star_sum, star_mul']
-    all_goals ring
   have E2 : S.hT x (nilF e a s y) = ∑ c, (S.hT (e c) y * star (S.hT (a c) x) +
       (-S.hT (a c) y + ∑ d, s c d * S.hT (e d) y) * star (S.hT (e c) x)) := by
     rw [nilF_apply]
@@ -155,14 +154,13 @@ theorem form_nil (x y : S.V) :
     refine Finset.sum_congr rfl fun c _ => ?_
     rw [hsym, hsym]
     simp only [kap]
-    all_goals ring
   have E3 : S.hT (nilF e a s x) (nilF e a s y) =
       ∑ c, ∑ d, star (S.hT (e c) x) * S.hT (e d) y * S.hT (a c) (a d) := by
     rw [nilF_apply e a s x, nilF_apply e a s y]
 
-    simp only [map_sum, map_add (f := _), map_smulₛₗ, map_smul, LinearMap.sum_apply, LinearMap.add_apply,
+    simp only [map_sum, map_add (f := _), map_smulₛₗ, LinearMap.sum_apply, LinearMap.add_apply,
     LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hiso, hea, hae e a hea, mul_zero, add_zero,
-    zero_add, Finset.sum_const_zero, Finset.mul_sum, RingHom.id_apply]
+    Finset.sum_const_zero, Finset.mul_sum, RingHom.id_apply]
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_
     ring
@@ -183,7 +181,7 @@ theorem isO_sum {ι : Type} (t : Finset ι) (f : ι → E) (h : ∀ i ∈ t, ∃
   exact Finset.sum_induction f (fun z => ∃ o : 𝓞 E, (o : E) = z)
     (fun _ _ ⟨o1, h1⟩ ⟨o2, h2⟩ => ⟨o1 + o2, by
       rw [← h1, ← h2]
-      first | norm_cast | simp | exact map_add (algebraMap (𝓞 E) E) o1 o2⟩)
+      first | norm_cast | exact map_add (algebraMap (𝓞 E) E) o1 o2⟩)
     ⟨0, by first | simp | norm_cast⟩ h
 
 theorem smul_memO (Λ : Submodule (𝓞 E) S.V) {k : E} (hk : ∃ o : 𝓞 E, (o : E) = k) {x : S.V} (hx : x ∈ Λ) :
@@ -192,7 +190,6 @@ theorem smul_memO (Λ : Submodule (𝓞 E) S.V) {k : E} (hk : ∃ o : 𝓞 E, (o
   have h := Λ.smul_mem o hx
   first
     | (rw [← algebraMap_smul E o x] at h; exact h)
-    | simpa using h
 
 theorem nil_mem (Λ : Submodule (𝓞 E) S.V) (e a : Fin r → S.V) (s : Matrix (Fin r) (Fin r) E)
     (hint : ∀ x ∈ Λ, ∀ y ∈ Λ, ∃ o : 𝓞 E, (o : E) = S.hT x y)
@@ -207,11 +204,10 @@ theorem nil_mem (Λ : Submodule (𝓞 E) S.V) (e a : Fin r → S.V) (s : Matrix 
     obtain ⟨x2, hx2⟩ := hint _ (he d) _ hv
     exact ⟨x1 * x2, by
       rw [← hx1, ← hx2]
-      first | norm_cast | simp | exact map_mul (algebraMap (𝓞 E) E) x1 x2⟩)
-  beta_reduce at h2
+      first | norm_cast | exact map_mul (algebraMap (𝓞 E) E) x1 x2⟩)
   refine ⟨-o1 + o2, ?_⟩
   rw [kap, ← h1, ← h2]
-  first | norm_cast | simp
+  first | norm_cast
 
 end PI.TermsAtPtFiniteW.HeisW
 
@@ -233,7 +229,7 @@ theorem heisOp_holds : HeisOp := by
       (LinearMap.id + nilF F.fl.e a s) = LinearMap.id := by
     refine LinearMap.ext fun v => ?_
     simp only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply,
-      map_add, map_sub, h3]
+      map_add, h3]
     abel
   refine ⟨LinearEquiv.ofLinear _ _ hfg hgf, ?_, fun v => ?_⟩
   swap

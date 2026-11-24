@@ -143,7 +143,7 @@ theorem lDiag_box_ne : ∃ f : SInf F κ, lDiag F κ (boxFun (pure f (stdF κ)) 
   have g0 : g 0 = 1 := by
     rw [hgd, pf, finprod_eq_one_of_forall_eq_one]
     intro u
-    simp [stdF, Set.indicator_apply]
+    simp [stdF]
   have e : resD F κ (boxFun (pure f (stdF κ)) (pure f (stdF κ))) =
       fun p => (((b (eI F κ p.1)) ^ 2 : ℝ) : ℂ) * ((‖g p.2‖ : ℝ) : ℂ) := funext fun p => by
     have e1 : pure f (stdF κ) (glue p) = (b (eI F κ p.1) : ℂ) * g p.2 := by
@@ -160,7 +160,7 @@ theorem lDiag_box_ne : ∃ f : SInf F κ, lDiag F κ (boxFun (pure f (stdF κ)) 
   · refine ((b.continuous.comp (eI F κ).continuous).pow 2).integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 0)
       ?_ (fun u => sq_nonneg _) ?_
     · exact (b.hasCompactSupport.comp_homeomorph (eI F κ).toHomeomorph).comp_left (g := fun x : ℝ => x ^ 2) (by simp)
-    · simp only [Function.comp_apply, map_zero]
+    · simp only [map_zero]
       rw [b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]
       simp
   · exact hg.1.continuous.norm.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 0) hg.2.norm

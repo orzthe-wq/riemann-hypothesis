@@ -53,10 +53,7 @@ theorem isIdG_unique (X : Stages) {px : PreX X.B.toPre} {Pg : Finset (Pl X.toD7.
   subst hPg
   exact MulEquiv.ext fun g => funext fun P => (h g P.1 P.2 P.2).trans (h' g P.1 P.2 P.2).symm
 
-theorem isStdChar_unique {D : D7} {ψ ψ' : AddChar (AF D.host.F) ℂ} {s : ℤ} (h : IsStdChar D ψ s) (h' : IsStdChar D ψ' s) :
-    ψ = ψ' := by
-  obtain ⟨θ, hθ⟩ := h.2.1
-  exact GlobalTheory.StdAdelicChar.eq_of_psiInf_eq h.1 h'.1 fun x => (h.2.2 θ hθ x).trans (h'.2.2 θ hθ x).symm
+alias isStdChar_unique := _root_.GlobalTheory.StdAdelicChar.isStdChar_unique
 
 theorem isInfFam_unique {D : D7} {θ θ' : Formalism.IndefR.Datum.InfFam D} (h : IsInfFam θ) (h' : IsInfFam θ') : θ = θ' :=
   Formalism.IndefR.Eqv.infFamUnique_holds D θ θ' h h'

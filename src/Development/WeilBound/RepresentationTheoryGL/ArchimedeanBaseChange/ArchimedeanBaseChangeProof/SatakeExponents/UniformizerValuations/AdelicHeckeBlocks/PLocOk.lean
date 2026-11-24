@@ -121,9 +121,6 @@ theorem isOpen_KGL (w : Pl E) (a : ℕ) : IsOpen (GlobalTheory.LFun.KGL w (n := 
   rw [GlobalTheory.CompanionTheory.IwLevels.KGL_eq_KO]
   exact GlobalTheory.SplitFlip.isOpen_KO
 
-theorem isCompact_KGL (w : Pl E) (a : ℕ) : IsCompact (GlobalTheory.LFun.KGL w (n := a) : Set (GLw a w)) :=
-  GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a
-
 theorem thL_KGL (a : ℕ) (w : Pl E) (k : GLw a w) (hk : k ∈ GlobalTheory.LFun.KGL w (n := a)) : thL a w k ∈ GlobalTheory.LFun.KGL w (n := a) := by
   unfold thL
   split_ifs
@@ -416,7 +413,7 @@ theorem hc_H (h2 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], LocOp
     simp only [F, toSub, dif_pos hy]
   have hHk : IsHk (GlobalTheory.LFun.KGL w (n := n)) F := by
     rw [hF]
-    exact ⟨isOpen_KGL w n, isCompact_KGL w n, hcs_of_fin (isCompact_KGL w n) hT.2,
+    exact ⟨isOpen_KGL w n, _root_.GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w n, hcs_of_fin (_root_.GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w n) hT.2,
       fun k₁ hk₁ k₂ hk₂ g => hT.1 ⟨k₁, hk₁⟩ ⟨k₂, hk₂⟩ g⟩
   obtain ⟨c1, c2, -, -⟩ := h2 E n a (n - a) (Nat.add_sub_of_le ha) w (GlobalTheory.LFun.KGL w (n := n)) (isOpen_KGL w n) le_rfl
     (fun k hk k' hk' => mul_mem (mul_mem hk hk') (inv_mem hk)) {1} (by simp)

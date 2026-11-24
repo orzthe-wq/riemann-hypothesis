@@ -183,14 +183,12 @@ theorem mkCpt : MkCpt := by
     have e1 := PBI.djU_psiC (PBI.chart (Matrix.of.symm (D.castM e g)))
     rw [hpsi] at e1
     show (Matrix.of (PBI.chart (Matrix.of.symm (D.castM e g))).2.1).det = _
-    rw [← e1, ← Formalism.FourierDecayAlt.P.hat_z_minimum_degree P.k P.r (P.r - P.r) (D.castV e p.T.base.z) (D.castV e p.T.base.z'),
+    rw [← e1, ← _root_.Formalism.FourierDecayAlt.P.Ux3.zhDmin P.k P.r (P.r - P.r) (D.castV e p.T.base.z) (D.castV e p.T.base.z'),
       Formalism.FourierDecayAlt.P.PBG.Dmin_castM e _ _ g P.r, Formalism.FourierDecayAlt.P.Dx2.SL.castV_castV, Formalism.FourierDecayAlt.P.Dx2.SL.castV_castV,
       Formalism.FourierDecayAlt.P.JCTx6.Link2.castV_self, Formalism.FourierDecayAlt.P.JCTx6.Link2.castV_self]
 
 end Formalism.FourierDecayAlt.P.CutEX.MkCptPf
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem compact_truncation_construction : CutEX.MkCpt := CutEX.MkCptPf.mkCpt
 
 end Formalism.FourierDecayAlt.P

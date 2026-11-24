@@ -82,7 +82,7 @@ theorem coefMap_add (c : L →+ K) (p q : MvPolynomial I L) : coefMap c (p + q) 
 
 theorem coefMap_zero (c : L →+ K) : coefMap c (0 : MvPolynomial I L) = 0 := by
   ext m
-  simp only [coeff_coefMap, MvPolynomial.coeff_zero, map_zero]
+  simp only [coeff_coefMap, MvPolynomial.coeff_zero]
   change c 0 = 0
   exact map_zero c
 

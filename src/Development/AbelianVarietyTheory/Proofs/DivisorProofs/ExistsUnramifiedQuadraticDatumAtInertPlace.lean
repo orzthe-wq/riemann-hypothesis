@@ -49,6 +49,7 @@ import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexUpLatEqProd
 
 @[expose] public section
 
@@ -72,12 +73,6 @@ theorem mem_max_iff (x : w.adicCompletionIntegers E) :
     exact (hI.isUnit_iff_valuation_eq_one (x := x)).2 h
   · intro hlt hu
     exact (ne_of_lt hlt) ((hI.isUnit_iff_valuation_eq_one (x := x)).1 hu)
-
-private lemma withZero_lt_one_iff_le_exp_neg_one (g : WithZero (Multiplicative ℤ)) : g < 1 ↔ g ≤ WithZero.exp (-1 : ℤ) := by
-  rcases eq_or_ne g 0 with rfl | hg
-  · simp
-  · rw [← WithZero.exp_log hg, ← WithZero.exp_zero, WithZero.exp_lt_exp, WithZero.exp_le_exp]
-    omega
 
 private lemma mem_span_pow_iff_valuation_le_exp_neg_one_pow (p : w.adicCompletionIntegers E)
     (hp : Valued.v (p : w.adicCompletion E) = WithZero.exp (-1 : ℤ)) (n : ℕ)
@@ -111,7 +106,7 @@ private lemma maximalIdeal_eq_span_of_valuation_eq_exp_neg_one (p : w.adicComple
   ext a
   have h := mem_span_pow_iff_valuation_le_exp_neg_one_pow w p hp 1 a
   rw [pow_one, pow_one] at h
-  rw [h, mem_max_iff, withZero_lt_one_iff_le_exp_neg_one]
+  rw [h, mem_max_iff, _root_.GlobalTheory.BorelUMod.UpLatIndex.lt_one_iff]
 
 theorem valuation_max_eq (ϖ : w.adicCompletion E) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ))
     (x : w.adicCompletion E) :
@@ -119,7 +114,7 @@ theorem valuation_max_eq (ϖ : w.adicCompletion E) (hϖ : Valued.v ϖ = WithZero
       = Valued.v x := by
   have hϖ1 : Valued.v ϖ ≤ 1 := by
     rw [hϖ]
-    exact ((withZero_lt_one_iff_le_exp_neg_one _).2 le_rfl).le
+    exact ((_root_.GlobalTheory.BorelUMod.UpLatIndex.lt_one_iff _).2 le_rfl).le
   let p : w.adicCompletionIntegers E := ⟨ϖ, hϖ1⟩
   have hp : Valued.v (p : w.adicCompletion E) = WithZero.exp (-1 : ℤ) := hϖ
   have hϖ0 : ϖ ≠ 0 := by
@@ -169,7 +164,7 @@ private lemma isAdicComplete_maximalIdeal_adicCompletionIntegers (ϖ : w.adicCom
       (w.adicCompletionIntegers E) := by
   have hϖ1 : Valued.v ϖ ≤ 1 := by
     rw [hϖ]
-    exact ((withZero_lt_one_iff_le_exp_neg_one _).2 le_rfl).le
+    exact ((_root_.GlobalTheory.BorelUMod.UpLatIndex.lt_one_iff _).2 le_rfl).le
   have hϖ0 : ϖ ≠ 0 := by
     intro h
     rw [h, map_zero] at hϖ

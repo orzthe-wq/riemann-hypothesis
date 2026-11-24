@@ -72,8 +72,8 @@ def starFixed (K : Type) [Field K] [CharZero K] [StarRing K] : IntermediateField
 
 theorem exists_fixF (K : Type) [Field K] [NumberField K] [StarRing K] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) :
     ∃ (F : Type) (_ : Field F) (_ : NumberField F) (_ : Algebra F K), IsFixF K F := by
-  haveI : FiniteDimensional ℚ (starFixed K) := IntermediateField.finiteDimensional_left (starFixed K)
-  haveI : NumberField (starFixed K) := ⟨⟩
+  have : FiniteDimensional ℚ (starFixed K) := IntermediateField.finiteDimensional_left (starFixed K)
+  have : NumberField (starFixed K) := ⟨⟩
   refine ⟨starFixed K, inferInstance, inferInstance, inferInstance, fun a => ?_⟩
   constructor
   · intro ha

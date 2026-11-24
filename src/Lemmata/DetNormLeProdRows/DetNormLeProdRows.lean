@@ -49,6 +49,9 @@ public import Mathlib.Analysis.InnerProductSpace.GramSchmidtOrtho
 
 namespace Bl.DetNormLeProdRows
 
+/-- The Gram–Schmidt basis makes the row coordinate matrix triangular. Changing between
+orthonormal bases preserves the modulus of the determinant, and Cauchy–Schwarz bounds each
+diagonal entry in modulus by the norm of its row in the original matrix. -/
 private theorem det_norm_le_prod_rows (ρ : ℕ) (A : Matrix (Fin ρ) (Fin ρ) ℂ) :
     ‖A.det‖ ≤ ∏ i, ‖(WithLp.toLp 2 (A i) : EuclideanSpace ℂ (Fin ρ))‖ := by
   classical
@@ -72,12 +75,16 @@ private theorem det_norm_le_prod_rows (ρ : ℕ) (A : Matrix (Fin ρ) (Fin ρ) �
   calc ‖inner ℂ (b i) (v i)‖ ≤ ‖b i‖ * ‖v i‖ := norm_inner_le_norm _ _
     _ = ‖v i‖ := by rw [b.orthonormal.1 i, one_mul]
 
+/-- Hadamard's determinant inequality in squared form: the squared modulus of the determinant
+of a complex matrix is at most the product of the squared Euclidean norms of its rows.
+
+See [Hadamard (1893), §4, p. 242](https://zenodo.org/records/18674602).
+-/
 theorem goal1 :
   Formalism.HadamardInequality.Hadamard := by
   intro ρ A
-  have h0 := det_norm_le_prod_rows ρ A
   calc ‖A.det‖ ^ 2 ≤ (∏ i, ‖(WithLp.toLp 2 (A i) : EuclideanSpace ℂ (Fin ρ))‖) ^ 2 :=
-        pow_le_pow_left₀ (norm_nonneg _) h0 2
+        pow_le_pow_left₀ (norm_nonneg _) (det_norm_le_prod_rows ρ A) 2
     _ = ∏ i, ∑ j, ‖A i j‖ ^ 2 := by
         rw [← Finset.prod_pow]
         refine Finset.prod_congr rfl (fun i _ => ?_)

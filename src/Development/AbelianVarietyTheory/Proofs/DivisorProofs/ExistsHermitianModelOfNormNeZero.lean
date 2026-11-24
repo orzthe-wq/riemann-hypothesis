@@ -66,7 +66,7 @@ theorem sigma_smul {K : UQ} (B : InvAlg K) (e : K.E) (y : B.A) : B.σ (e • y) 
 
 theorem trace_sigma {K : UQ} (B : InvAlg K) (w : B.A) :
     Algebra.trace K.E B.A (B.σ w) = K.c (Algebra.trace K.E B.A w) := by
-  apply GlobalTheory.SesqAsym.trace_σ <;> assumption
+  apply GlobalTheory.SesqAsym.trace_σ
 
 section Abstract
 

@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+import Mathlib.Algebra.Azumaya.Basic
 
 @[expose] public section
 
@@ -176,6 +177,6 @@ theorem quadratic_subfield : ∀ D : D7, Module.finrank D.host.K D.host.E = fF D
     exact ⟨a, b, Subtype.ext (by simpa using h)⟩
   · have h := (Formalism.L2.Pj.LPb.w0K D).2
     convert h using 1
-    first | rfl | (apply Subtype.ext; simp [Formalism.L2.Pj.LPb.w0K])
+    first | rfl
 
 end GlobalTheory.QuadSubfield

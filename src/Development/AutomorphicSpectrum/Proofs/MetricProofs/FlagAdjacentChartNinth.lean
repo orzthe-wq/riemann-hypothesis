@@ -1,12 +1,12 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsBaseChart
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartFourthStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartSecondStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartFourth
+public import Mathlib.Analysis.Calculus.Deriv.Prod
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartSecond
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.Calculus.Deriv.Prod
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -263,7 +263,7 @@ theorem wPhi_diff (hc : IsWCtx M Rb τ a b k₀ ca cb d F kb V bl r h) {w : Fin 
   have hv : ∀ q I, DifferentiableAt ℂ (fun w' => valAt M.x (F.u q I) (bl (wB ε w'))) w := fun q I =>
     DifferentiableAt.comp (g := fun u => valAt M.x (F.u q I) (bl u)) w (hb.2.2.2.1 q I _ hw).differentiableAt (wB_diff w)
   have hH : ∀ τ' a b, DifferentiableAt ℂ (fun w' => wH h ε τ' w' a b) w := fun τ' a' b' =>
-    ((GlobalTheory.T.flag_adjacent_chart_second K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc).1 τ' a' b' w hw).differentiableAt
+    ((_root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.Exact.chart_exact K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc).1 τ' a' b' w hw).differentiableAt
   have hT : DifferentiableAt ℂ (wT ε) w := differentiableAt_apply _ _
   obtain ⟨o, m⟩ := q
   cases o with
@@ -351,8 +351,8 @@ theorem line_zero (hc : IsWCtx M Rb τ a b k₀ ca cb d F kb V bl r h) {w : Fin 
     {D : (Fin (d + 2) → ℂ) →L[ℂ] (Σ o : Option K, ι (o.getD k₀)) → ℂ}
     (hD : HasFDerivAt (fun w' => affCoord p (wPhi M F bl h ε k₀ τ ca cb w')) D w)
     {v : Fin (d + 2) → ℂ} (hv : D v = 0) (hb0 : wB ε v = 0) : v = 0 := by
-  have hE := GlobalTheory.T.flag_adjacent_chart_second K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc
-  have hR := GlobalTheory.T.flag_adjacent_chart_fourth K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc
+  have hE := _root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.Exact.chart_exact K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc
+  have hR := _root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.Read.chart_reads K ι Φ y Ψ N j M n d Rb τ a b k₀ ca cb F kb V bl r h ε hc
   have hwB : ∀ s : ℂ, wB ε (w + s • v) = wB ε w := fun s => by
     funext i
     have : v (ε (Sum.inl i)) = 0 := congrFun hb0 i

@@ -71,13 +71,17 @@ variable {N A}
 
 theorem Tm.of_unr {w : PlE H} {y : A.LP w} (h : A.unr y) : Tm N A y := fun σ hσ _ => ((A.unr_iff_ine y).1 h).2 σ hσ
 
-theorem Sqf.of_unr {w : PlE H} {y : A.LP w} (h : A.unr y) : Sqf N A y := fun γ hγ z hz => by
-  rw [((A.unr_iff_ine y).1 h).2 γ hγ.1] at hz
-  have h1 : ((X - 1 : ℂ[X]) ^ A.lpDim y).IsRoot z := (rootMultiplicity_pos'.1 (lt_of_lt_of_le (thr_pos w) hz)).2
+theorem eq_one_of_rootMultiplicity_X_sub_one_pos {n : ℕ} {z : ℂ}
+    (hz : 0 < ((X - 1 : ℂ[X]) ^ n).rootMultiplicity z) : z = 1 := by
+  have h1 : ((X - 1 : ℂ[X]) ^ n).IsRoot z := (rootMultiplicity_pos'.1 hz).2
   have h2 : z - 1 = 0 := by
     simp only [IsRoot, eval_pow, eval_sub, eval_X, eval_one] at h1
     exact pow_eq_zero_iff (by rintro e; rw [e] at h1; simp at h1) |>.1 h1
-  rw [sub_eq_zero.1 h2, one_pow]
+  exact sub_eq_zero.1 h2
+
+theorem Sqf.of_unr {w : PlE H} {y : A.LP w} (h : A.unr y) : Sqf N A y := fun γ hγ z hz => by
+  rw [((A.unr_iff_ine y).1 h).2 γ hγ.1] at hz
+  rw [eq_one_of_rootMultiplicity_X_sub_one_pos (lt_of_lt_of_le (thr_pos w) hz), one_pow]
 
 theorem Nc.of_unr {w : PlE H} {y : A.LP w} (h : A.unr y) : Nc N A y := ⟨.of_unr h, A.unr_mono0 y h, .of_unr h⟩
 
@@ -103,22 +107,14 @@ theorem nc_char (hLP : TieLP N A) {w : PlE H} (y k : A.LP w) (hk : A.lpDim k = 1
   rw [Nc, Nc, tm_char hLP y k hk hu, A.monomial_char_iff _ _ hk, sqf_char hLP y k hk hu]
 
 theorem tm_sum (hLP : TieLP N A) {w : PlE H} (y y' : A.LP w) : Tm N A (A.lpSum y y') ↔ Tm N A y ∧ Tm N A y' := by
-  have d1 : A.lpDim (A.lpUnr w {1}) = 1 := by rw [(A.lpUnr_spec w {1} (by simp)).2.2]; simp
-  have mon : ∀ (a : A.LP w), ∀ τ ∈ Ine (F := H.E) (N.plOm.1 w), (A.inePol a τ).Monic ∧ (A.inePol a τ).natDegree = A.lpDim a :=
-    fun a τ hτ => ((hLP w a a _ _ 0 d1 d1).2.2.2.2.2 τ hτ).1
   refine ⟨fun h => ⟨fun τ hτ hw => ?_, fun τ hτ hw => ?_⟩, fun h τ hτ hw => ?_⟩
   · have e := h τ hτ hw
     rw [A.inePol_sum] at e
-    rw [eq_pow_of_mul (mon y τ hτ).1 e, (mon y τ hτ).2]
+    rw [eq_pow_of_mul (inePol_monic hLP y τ hτ).1 e, (inePol_monic hLP y τ hτ).2]
   · have e := h τ hτ hw
     rw [A.inePol_sum, mul_comm] at e
-    rw [eq_pow_of_mul (mon y' τ hτ).1 e, (mon y' τ hτ).2]
+    rw [eq_pow_of_mul (inePol_monic hLP y' τ hτ).1 e, (inePol_monic hLP y' τ hτ).2]
   · rw [A.inePol_sum, h.1 τ hτ hw, h.2 τ hτ hw, A.lpDim_sum, pow_add]
-
-theorem inePol_monic (hLP : TieLP N A) {w : PlE H} (a : A.LP w) (τ) (hτ : τ ∈ Ine (F := H.E) (N.plOm.1 w)) :
-    (A.inePol a τ).Monic ∧ (A.inePol a τ).natDegree = A.lpDim a := by
-  have d1 : A.lpDim (A.lpUnr w {1}) = 1 := by rw [(A.lpUnr_spec w {1} (by simp)).2.2]; simp
-  exact ((hLP w a a _ _ 0 d1 d1).2.2.2.2.2 τ hτ).1
 
 theorem sqf_sum (hLP : TieLP N A) {w : PlE H} (y y' : A.LP w) (h : Sqf N A (A.lpSum y y')) : Sqf N A y ∧ Sqf N A y' := by
   have e : ∀ γ, TameGenAt (N.plOm.1 w) γ → ∀ z, (A.inePol (A.lpSum y y') γ).rootMultiplicity z =

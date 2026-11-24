@@ -207,29 +207,6 @@ theorem quasiCompact_saturationι_of_noetherianSpace {Y : Scheme.{u}}
     hemb.toIsInducing.noetherianSpace
   exact ⟨fun U _ _ => NoetherianSpace.isCompact _⟩
 
-private theorem ideal_comap_hom_id {R : CommRingCat.{u}} (I : Ideal R) :
-    Ideal.comap (CommRingCat.Hom.hom (𝟙 R)) I = I := by
-  ext x
-  simp only [Ideal.mem_comap, CommRingCat.hom_id, RingHom.id_apply]
-
-private theorem ker_comp_map_eqToHom {A : Scheme.{u}} {R : CommRingCat.{u}}
-    {P Q : A.Opens} (e : P = Q) (φ : R ⟶ A.presheaf.obj (Opposite.op Q)) :
-    RingHom.ker (CommRingCat.Hom.hom (φ ≫ A.presheaf.map (eqToHom e).op))
-      = RingHom.ker φ.hom := by
-  subst e
-  simp
-
-private theorem ker_comap_ι {A B : Scheme.{u}} (m : A ⟶ B) [QuasiCompact m]
-    (V : B.Opens) : m.ker.comap V.ι = (m ∣_ V).ker := by
-  have : QuasiCompact (m ∣_ V) := inferInstance
-  apply Scheme.IdealSheafData.ext
-  funext U
-  rw [Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion, Scheme.Hom.ker_apply,
-    Scheme.Hom.ker_apply, morphismRestrict_app]
-  refine Eq.trans ?_ (ker_comp_map_eqToHom _ _).symm
-  simp
-  exact ideal_comap_hom_id _
-
 private theorem quasiCompact_of_eq {A C : Scheme.{u}} {f g : A ⟶ C} (h : f = g)
     (hf : QuasiCompact g) : QuasiCompact f := by
   subst h
@@ -279,7 +256,7 @@ private theorem exists_factorizations_subscheme_restrict {Y : Scheme.{u}} (T : Y
         q ≫ (T.comap V.ι).subschemeι = T.subschemeι ∣_ V) := by
   have : IsClosedImmersion (T.subschemeι ∣_ V) := inferInstance
   have hker : (T.subschemeι ∣_ V).ker = ((T.comap V.ι).subschemeι).ker := by
-    rw [Scheme.IdealSheafData.ker_subschemeι, ← ker_comap_ι,
+    rw [Scheme.IdealSheafData.ker_subschemeι, ← _root_.FunctorialResolution.EmbeddedResolution.ker_comap_ι_eq_ker_morphismRestrict,
       Scheme.IdealSheafData.ker_subschemeι]
   refine ⟨⟨IsClosedImmersion.lift (T.subschemeι ∣_ V) ((T.comap V.ι).subschemeι) hker.le,
       by simp⟩,
@@ -417,7 +394,7 @@ theorem restrictIdeal_saturation {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     [QuasiCompact (saturationι F T)] (V : Y.Opens) :
     restrictIdeal (saturation F T) V = saturation (restrictIdeal F V) (restrictIdeal T V) := by
   have hqcR := quasiCompact_saturationι_restrictIdeal F T V
-  rw [restrictIdeal_eq_comap_ι, saturation_eq_ker_saturationι, ker_comap_ι, saturation_eq_ker_saturationι]
+  rw [restrictIdeal_eq_comap_ι, saturation_eq_ker_saturationι, _root_.FunctorialResolution.EmbeddedResolution.ker_comap_ι_eq_ker_morphismRestrict, saturation_eq_ker_saturationι]
   obtain ⟨a, ha⟩ := exists_comp_morphismRestrict_eq_saturationι F T V
   obtain ⟨b, hb⟩ := exists_comp_saturationι_eq_morphismRestrict F T V
   exact ker_eq_ker_of_factorizations _ _ inferInstance hqcR b a hb ha
@@ -482,11 +459,6 @@ private theorem map_basicOpen_eq_zero_iff {S : Scheme.{u}} {P : S.Opens} (hP : I
       (fun z => ((v⁻¹ : (Γ(S, S.basicOpen s))ˣ) : Γ(S, S.basicOpen s)) * z) h4
     simpa using h5
 
-private theorem ker_app_subschemeι {Y : Scheme.{u}} (T : Y.IdealSheafData) (U : Y.affineOpens) :
-    RingHom.ker ((T.subschemeι.app U.1)).hom = T.ideal U := by
-  have : QuasiCompact T.subschemeι := inferInstance
-  rw [← Scheme.Hom.ker_apply, Scheme.IdealSheafData.ker_subschemeι]
-
 theorem mem_saturation_ideal_iff {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     [QuasiCompact (saturationι F T)] (V : Y.affineOpens) (t : Γ(Y, V.1))
     (ht : F.ideal V = Ideal.span {t}) (f : Γ(Y, V.1)) :
@@ -515,7 +487,7 @@ theorem mem_saturation_ideal_iff {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     exact RingHom.mem_ker
   have hT : ∀ a : Γ(Y, V.1), a ∈ T.ideal V ↔ (T.subschemeι.app V.1).hom a = 0 := by
     intro a
-    rw [← ker_app_subschemeι T V]
+    rw [← _root_.AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι_app T V]
     exact RingHom.mem_ker
   have hmul : ∀ (n : ℕ) (a : Γ(Y, V.1)),
       (T.subschemeι.app V.1).hom (t ^ n * a)

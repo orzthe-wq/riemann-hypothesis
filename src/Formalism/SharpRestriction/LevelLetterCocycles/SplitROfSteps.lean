@@ -123,7 +123,7 @@ theorem split_local (W : LocWach PD LL O v n) (T Tp : LocLat G Qp LL O) (ι : La
     intro c
     refine (mem_NcS W W.one c _).2 ⟨(W.N W.one).smul_mem _ heN, fun δ _ => ?_, ?_⟩
     · rw [γD_letE, he.2.2]
-    · rw [smul_smul, Formalism.MainNotions.LiftingTheory.wmap_letE_idem]
+    · rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
   have hyγ : ∀ c g, W.γD W.one g ((letE c : LetA O n) • e) = (letE c : LetA O n) • e := by
     intro c g; rw [γD_letE, he.2.2]
   have hyφ : ∀ c, W.φD W.one ((letE (c - 1) : LetA O n) • e) = (letE c : LetA O n) • e := by

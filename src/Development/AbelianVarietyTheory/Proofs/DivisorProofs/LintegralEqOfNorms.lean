@@ -2,13 +2,15 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNormSqEqToL2
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfLintegralEqZero
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfAeFundamentalDomain
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FockVacuumAnnihilationEquationRealCoordinates
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfInf
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousFourierGau
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOscillatorActionUnitaryGroupHermitian
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergSmoothOfWeakDerivativeClosedSet
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfAeFundamentalDomain
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ThetaNormSqSumHeisenbergTranslatesDistinctChars
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOscillatorActionUnitaryGroupHermitianStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergSmoothOfWeakDerivativeClosedSetStatement
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.CocompactTensor
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.ContinuousOfHeisenbergLevelAndSmooth
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.MeanSquareAddFundamentalDomainOfCocompact
@@ -213,7 +215,7 @@ theorem sm_of_theta (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) (F : BB ψ S T
     rw [im_HM x y]
     rfl
   have hH : IsHeis (fun x y => om x y) (rhoV hψ σ S T) := e ▸ isHeis_rhoB h hψ
-  exact GlobalTheory.T.heisenberg_smooth_of_weak_derivative_closed_set _ _ om _ hH (WO S T) (ev _ _) norm_ev_le (fun b C => norm_QB_le b)
+  exact _root_.GlobalTheory.RealWeil.sm_of_weak_deriv_closed _ _ om _ hH (WO S T) (ev _ _) norm_ev_le (fun b C => norm_QB_le b)
     (fun x v => ⟨ψ (symplOH S T x (iotaV σ S T v)), x + iotaV σ S T v, fun b => congrFun (coe_rhoV hψ v b) x⟩)
     {F | IsThetaFunO ψ S T F.1} (differentiable_ev h hψ) (exists_deriv h hψ) F hF
 
@@ -315,7 +317,7 @@ theorem exists_isInfWeil : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdC
   intro D ψ hψ θ hθ S T
   obtain ⟨σ, h⟩ := GlobalTheory.RealLineAt.exists_inverse_chart hθ
   obtain ⟨Ω, ⟨hadd, hsmul, hsm, hone, hmul, hheis, hcomm, hunit⟩, htriv, hcont, hvac⟩ :=
-    GlobalTheory.T.exists_oscillatorAction_unitaryGroup_hermitian (Ix S T) (HM S T) HM_herm HM_det (BB ψ S T) (rhoV hψ σ S T) (isHeis_rhoB h hψ) (GA D S × GA D T)
+    _root_.GlobalTheory.RealWeil.UnitaryOsc.exists_osc (Ix S T) (HM S T) HM_herm HM_det (BB ψ S T) (rhoV hψ σ S T) (isHeis_rhoB h hψ) (GA D S × GA D T)
       (mM θ S T) (mM_unitary hθ)
   have sm := sm_of_theta (S := S) (T := T) h hψ
   have hfin : ∀ p {u : WO S T}, u.map (infPart D) = 0 → ∀ F, GlobalTheory.RealWeil.Sm (rhoV hψ σ S T) F →

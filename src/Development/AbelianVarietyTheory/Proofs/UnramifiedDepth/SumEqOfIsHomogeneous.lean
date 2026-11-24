@@ -1,23 +1,28 @@
 module
 
-public import Formalism.LocalToGlobal.CharacterGerms.BiadditiveInSingleVariables
-public import Mathlib.RingTheory.PowerSeries.Exp
+public import Mathlib.Analysis.SpecialFunctions.Log.Base
+public import Mathlib.RingTheory.Valuation.Basic
 public import ReciprocityTheory.DualLattices.FischerAdjointStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.BlockValueOnRowsEqStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DetFrobeniusSubPowSupportStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DeterminantPairingQuotientValuationLowerBoundStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FactorialWeightedPairingDetPowProportionalStatement
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreBoundsFactorialMultiIndexCapelli
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WtAddSingle
+public import ReciprocityTheory.DualLattices.DetPolyMulCayleyOmegaPow
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuation
+public import Formalism.LocalToGlobal.CharacterGerms.BiadditiveInSingleVariables
+public import Mathlib.Analysis.Complex.ExponentialBounds
+public import Mathlib.Algebra.Algebra.Rat
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.RingTheory.PowerSeries.Exp
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.BlockValueOnRowsEq
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DetFrobeniusSubPowSupport
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreAndCapelli
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreBoundsFactorialMultiIndexCapelliStatement
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NewtonBoundPosAndNewtonStep
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ProdIccMulFactorial
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RadiiValuationDifferences
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightNonnegExpOfWeightGeInvPrimeSubOneStatement
 public import Formalism.FormalGroupLog.FormalGroupLogProofs.ChainRule
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.CalcExp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -32,14 +37,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -48,7 +47,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -65,11 +63,729 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
-import ReciprocityTheory.DualLattices.DetPolyMulCayleyOmegaPow
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.CalcExp
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuation
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.Tactic.Basify
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Lemma
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DeterminantPairingQuotientValuationLowerBound, Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FactorialWeightedPairingDetPowProportional, Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NewtonBoundPosAndNewtonStep, Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RadiiValuationDifferences, Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightNonnegExpOfWeightGeInvPrimeSubOne, Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.SumEqOfIsHomogeneous
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DeterminantPairingQuotientValuationLowerBound =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DeterminantPairingQuotientValuationLowerBound", "h": "module\n\npublic import Mathlib.Analysis.SpecialFunctions.Log.Base\npublic import Mathlib.RingTheory.Valuation.Basic\npublic import ReciprocityTheory.DualLattices.FischerAdjointStatement\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreBoundsFactorialMultiIndexCapelli\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WtAddSingle\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Presheaf\nimport ReciprocityTheory.DualLattices.DetPolyMulCayleyOmegaPow\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuation\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open ReciprocityTheory.PGsh
+
+namespace GlobalTheory.DetPairingBound
+
+open MvPolynomial ReciprocityTheory.ChartRestriction.G.Sh.PowerSeriesCoeffGaps
+
+theorem cayDet_isHomogeneous (n : ℕ) (C : Type) [CommRing C] :
+    (cayDet n C).IsHomogeneous n := by
+  show (Matrix.mvPolynomialX (Fin n) (Fin n) C).det.IsHomogeneous n
+  rw [Matrix.det_apply']
+  refine IsHomogeneous.sum _ _ _ fun σ _ => ?_
+  rw [← map_intCast (MvPolynomial.C : C →+* MvPolynomial (Fin n × Fin n) C)]
+  refine IsHomogeneous.C_mul ?_ _
+  have h := IsHomogeneous.prod (Finset.univ : Finset (Fin n))
+    (fun i => Matrix.mvPolynomialX (Fin n) (Fin n) C (σ i) i) (fun _ => 1)
+    (fun i _ => by simpa [Matrix.mvPolynomialX_apply] using isHomogeneous_X (R := C) ((σ i, i) : Fin n × Fin n))
+  simpa using h
+
+theorem coeff_cayDet_pow_nonneg (C : Type) [Field C] (v : AddValuation C (WithTop ℝ))
+    (n x : ℕ) (A : Fin n × Fin n →₀ ℕ) : 0 ≤ v (AddMonoidAlgebra.coeff (cayDet n C ^ x) A) := by
+  rw [← cayDet_map (R := C), ← map_pow, coeff_map, eq_intCast]
+  exact intCast_nonneg v _
+
+theorem sum_eq_of_mem_support (C : Type) [CommRing C] (n x : ℕ) (A : Fin n × Fin n →₀ ℕ)
+    (hA : A ∈ (cayDet n C ^ x).support) : ∑ j, A j = n * x := by
+  have h := (cayDet_isHomogeneous n C).pow x
+  rw [← Finsupp.degree_eq_sum]
+  by_contra hne
+  exact (mem_support_iff.mp hA) (h.coeff_eq_zero hne)
+
+theorem le_val_div {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {N D : C} {a d r : ℝ}
+    (hN : (a : WithTop ℝ) ≤ v N) (hD : v D = d) (h : r ≤ a - d) : (r : WithTop ℝ) ≤ v (N / D) := by
+  have hD0 : D ≠ 0 := by
+    rintro rfl
+    simp at hD
+  rcases eq_or_ne N 0 with rfl | hN0
+  · simp
+  · obtain ⟨b, hb⟩ := exists_real v hN0
+    rw [div_eq_coe v hD0 hb hD]
+    rw [hb, WithTop.coe_le_coe] at hN
+    exact WithTop.coe_le_coe.mpr (by linarith)
+
+theorem main : (∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (l : ℕ), l.Prime → v (l : C) = 1 → ∀ (i n₀ s : ℕ) (Q : MvPolynomial (Fin n₀ × Fin n₀) C), 1 ≤ s → 1 ≤ n₀ →
+    (∀ A, (((s : ℝ) / 8 - (n₀ : ℝ) ^ 2 * (Real.logb l (n₀ * s) + 1) : ℝ) : WithTop ℝ) ≤ v (AddMonoidAlgebra.coeff Q A)) →
+    (((s : ℝ) / 8 - (n₀ : ℝ) ^ 2 * (3 * Real.logb l n₀ + 2 * Real.logb l s + i + 3) : ℝ) : WithTop ℝ) ≤
+      v ((∑ A ∈ (cayDet n₀ C ^ (l ^ i * s)).support, AddMonoidAlgebra.coeff (cayDet n₀ C ^ (l ^ i * s)) A * (A.prod fun _ e => (e.factorial : C)) * AddMonoidAlgebra.coeff (Q) A) / (∑ A ∈ (cayDet n₀ C ^ (l ^ i * s)).support, AddMonoidAlgebra.coeff (cayDet n₀ C ^ (l ^ i * s)) A * (A.prod fun _ e => (e.factorial : C)) * AddMonoidAlgebra.coeff (cayDet n₀ C ^ (l ^ i * s)) A))) := by
+  intro C _ _ v l hl hvl i n₀ s Q hs hn₀ hQ
+  have hvnat : ∀ m : ℕ, m ≠ 0 → v (m : C) = ((padicValNat l m : ℝ) : WithTop ℝ) := by
+    intro m hm
+    rw [natCast_eq_factorization v hl hvl hm, Nat.factorization_def m hl, ← Nat.padicValNat_def]
+  obtain ⟨-, hL2, hL3⟩ := GlobalTheory.LegendreBounds.legendre_bounds l hl
+  have hk0 : l ^ i * s ≠ 0 := Nat.mul_ne_zero (pow_ne_zero _ hl.ne_zero) (by omega)
+
+  have hP := GlobalTheory.DetPowPairing.main C n₀ (l ^ i * s)
+  rw [← Nat.cast_prod, ← Nat.cast_prod] at hP
+  have hF0 : (∏ c ∈ Finset.range n₀, c.factorial) ≠ 0 :=
+    Finset.prod_ne_zero_iff.mpr fun c _ => Nat.factorial_ne_zero c
+  have hF1 : (∏ c ∈ Finset.range n₀, (l ^ i * s + c).factorial) ≠ 0 :=
+    Finset.prod_ne_zero_iff.mpr fun c _ => Nat.factorial_ne_zero _
+  have hF0' : ((∏ c ∈ Finset.range n₀, c.factorial : ℕ) : C) ≠ 0 := Nat.cast_ne_zero.mpr hF0
+  have hDen := (eq_div_iff hF0').mpr ((mul_comm _ _).trans hP)
+  have hvD := div_eq_coe v hF0' (hvnat _ hF1) (hvnat _ hF0)
+  rw [← hDen] at hvD
+
+  obtain ⟨wb, hwb⟩ : ∃ wb : ℝ, wb = (n₀ : ℝ) * ((l : ℝ) ^ i * s) / ((l : ℝ) - 1) -
+      (n₀ : ℝ) ^ 2 * (Real.logb l ((n₀ : ℝ) * ((l : ℝ) ^ i * s)) + 1) := ⟨_, rfl⟩
+  obtain ⟨qb, hqb⟩ : ∃ qb : ℝ, qb = (s : ℝ) / 8 - (n₀ : ℝ) ^ 2 * (Real.logb l (n₀ * s) + 1) :=
+    ⟨_, rfl⟩
+  have hnum : ∀ A ∈ (cayDet n₀ C ^ (l ^ i * s)).support, ((wb + qb : ℝ) : WithTop ℝ) ≤
+      v (AddMonoidAlgebra.coeff (cayDet n₀ C ^ (l ^ i * s)) A * (A.prod fun _ e => (e.factorial : C)) *
+        AddMonoidAlgebra.coeff Q A) := by
+    intro A hA
+    have hsum := sum_eq_of_mem_support C n₀ (l ^ i * s) A hA
+    have hW := hL2 (Fin n₀ × Fin n₀) A
+      (by rw [hsum]; exact Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) hk0))
+    rw [hsum] at hW
+    simp only [Fintype.card_prod, Fintype.card_fin] at hW
+    push_cast at hW
+    have hwt : (A.prod fun _ e => (e.factorial : C)) = ((∏ j, (A j).factorial : ℕ) : C) := by
+      rw [Finsupp.prod_fintype _ _ (fun _ => by simp), Nat.cast_prod]
+    have hne : (∏ j, (A j).factorial) ≠ 0 :=
+      Finset.prod_ne_zero_iff.mpr fun j _ => Nat.factorial_ne_zero _
+    have h2 : (wb : WithTop ℝ) ≤ ((padicValNat l (∏ j, (A j).factorial) : ℝ) : WithTop ℝ) :=
+      WithTop.coe_le_coe.mpr (by rw [hwb, sq]; linarith)
+    have h3 : (qb : WithTop ℝ) ≤ v (AddMonoidAlgebra.coeff Q A) := by
+      rw [hqb]; exact hQ A
+    rw [AddValuation.map_mul, AddValuation.map_mul, hwt, hvnat _ hne]
+    calc ((wb + qb : ℝ) : WithTop ℝ) = 0 + (wb : WithTop ℝ) + (qb : WithTop ℝ) := by
+          rw [zero_add, WithTop.coe_add]
+      _ ≤ _ := add_le_add (add_le_add (coeff_cayDet_pow_nonneg C v n₀ _ A) h2) h3
+  refine le_val_div v (a := wb + qb) (AddValuation.map_le_sum v hnum) hvD ?_
+
+  have hl1 : (1 : ℝ) < l := by exact_mod_cast hl.one_lt
+  have hn1 : (1 : ℝ) ≤ n₀ := by exact_mod_cast hn₀
+  have hs1 : (1 : ℝ) ≤ s := by exact_mod_cast hs
+  have hn0 : (n₀ : ℝ) ≠ 0 := (by linarith : (0 : ℝ) < n₀).ne'
+  have hs0 : (s : ℝ) ≠ 0 := (by linarith : (0 : ℝ) < s).ne'
+  have hli : (l : ℝ) ^ i ≠ 0 := pow_ne_zero _ (by linarith : (0 : ℝ) < l).ne'
+  have hLn := Real.logb_nonneg hl1 hn1
+  have hLs := Real.logb_nonneg hl1 hs1
+  have hlK : Real.logb l ((n₀ : ℝ) * ((l : ℝ) ^ i * s)) =
+      Real.logb l n₀ + i + Real.logb l s := by
+    rw [Real.logb_mul hn0 (mul_ne_zero hli hs0), Real.logb_mul hli hs0, Real.logb_pow,
+      Real.logb_self_eq_one hl1]
+    ring
+  have hlQ : Real.logb l ((n₀ : ℝ) * s) = Real.logb l n₀ + Real.logb l s :=
+    Real.logb_mul hn0 hs0
+  have h3 := hL3 n₀ (l ^ i * s)
+  push_cast at h3
+  have hsq : (n₀ : ℝ) * (Real.logb l n₀ + 1) ≤ (n₀ : ℝ) ^ 2 * (Real.logb l n₀ + 1) :=
+    mul_le_mul_of_nonneg_right (by nlinarith) (by linarith)
+  rw [hwb, hqb, hlK, hlQ]
+  linarith
+
+end GlobalTheory.DetPairingBound
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DeterminantPairingQuotientValuationLowerBound =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FactorialWeightedPairingDetPowProportional =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FactorialWeightedPairingDetPowProportional", "h": "module\n\npublic import ReciprocityTheory.DualLattices.FischerAdjointStatement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.DualLattices.DetPolyMulCayleyOmegaPow\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open ReciprocityTheory.PGsh MvPolynomial
+
+namespace GlobalTheory.DetPowPairing
+
+section General
+
+variable {C : Type} [CommRing C] {κ : Type}
+
+noncomputable def pairing (F : MvPolynomial κ C) : MvPolynomial κ C →ₗ[C] C :=
+  ∑ A ∈ F.support, (AddMonoidAlgebra.coeff F A * (A.prod fun _ e => (e.factorial : C))) • lcoeff C A
+
+end General
+
+variable {C : Type} [CommRing C] {n : ℕ}
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] {κ : Type} in
+private theorem pairing_eq_sum_factorial (F G : MvPolynomial κ C) :
+    _root_.GlobalTheory.DetPowPairing.pairing F G =
+      ∑ A ∈ F.support, AddMonoidAlgebra.coeff F A * (A.prod fun _ e => (e.factorial : C)) * AddMonoidAlgebra.coeff G A := by
+  rw [_root_.GlobalTheory.DetPowPairing.pairing, LinearMap.sum_apply]
+  simp only [LinearMap.smul_apply, lcoeff_apply, smul_eq_mul]
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] in
+private theorem exists_cayOp_pow_cayDet_pow (n k Y : ℕ) :
+    ∃ c : ℕ, (_root_.ReciprocityTheory.PGsh.cayOp n C ^ k) (_root_.ReciprocityTheory.PGsh.cayDet n C ^ Y) = c • _root_.ReciprocityTheory.PGsh.cayDet n C ^ (Y - k) := by
+  induction k generalizing Y with
+  | zero => exact ⟨1, by simp⟩
+  | succ k ih =>
+    obtain ⟨c, hc⟩ := ih (Y - 1)
+    have hC := _root_.ReciprocityTheory.PGsh.cayley
+    unfold _root_.ReciprocityTheory.PGsh.CayleyStatement at hC
+    refine ⟨(∏ j ∈ Finset.range n, (Y + j)) * c, ?_⟩
+    rw [pow_succ, Module.End.mul_apply, hC, map_nsmul, hc, smul_smul]
+    have : Y - 1 - k = Y - (k + 1) := by omega
+    rw [this]
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] {κ : Type} in
+private theorem pairing_eq_sum_of_support_subset (F G : MvPolynomial κ C)
+    (S : Finset (κ →₀ ℕ)) (hS : F.support ⊆ S) :
+    _root_.GlobalTheory.DetPowPairing.pairing F G =
+      ∑ A ∈ S, AddMonoidAlgebra.coeff F A * (A.prod fun _ e => (e.factorial : C)) * AddMonoidAlgebra.coeff G A := by
+  rw [pairing_eq_sum_factorial]
+  refine Finset.sum_subset hS fun A _ hA => ?_
+  have h : AddMonoidAlgebra.coeff F A = 0 := by simpa using hA
+  rw [h]; ring
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] {κ : Type} in
+private theorem pairing_comm' (F G : MvPolynomial κ C) :
+    _root_.GlobalTheory.DetPowPairing.pairing F G = _root_.GlobalTheory.DetPowPairing.pairing G F := by
+  classical
+  rw [pairing_eq_sum_of_support_subset F G (F.support ∪ G.support)
+      Finset.subset_union_left,
+    pairing_eq_sum_of_support_subset G F (F.support ∪ G.support)
+      Finset.subset_union_right]
+  exact Finset.sum_congr rfl fun _ _ => by ring
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] {κ : Type} in
+private theorem pairing_monomial_eq_coeff_mul_prod_factorial_mul (F : MvPolynomial κ C) (A : κ →₀ ℕ) (b : C) :
+    _root_.GlobalTheory.DetPowPairing.pairing F (monomial A b) =
+      AddMonoidAlgebra.coeff F A * (A.prod fun _ e => (e.factorial : C)) * b := by
+  classical
+  rw [pairing_eq_sum_of_support_subset F _ (insert A F.support)
+      (Finset.subset_insert _ _), Finset.sum_eq_single A]
+  · rw [coeff_monomial, if_pos rfl]
+  · intro B _ hB
+    rw [coeff_monomial, if_neg (Ne.symm hB)]; ring
+  · intro h; exact absurd (Finset.mem_insert_self _ _) h
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] {κ : Type} in
+private theorem prod_factorial_add_single_one_eq_succ_mul_prod_factorial (B : κ →₀ ℕ) (x : κ) :
+    ((B + Finsupp.single x 1).prod fun _ e => (e.factorial : C)) =
+      ((B x + 1 : ℕ) : C) * (B.prod fun _ e => (e.factorial : C)) := by
+  classical
+  have h1 : (B + Finsupp.single x 1).support ⊆ insert x B.support := by
+    intro y hy
+    rw [Finset.mem_insert, Finsupp.mem_support_iff]
+    by_cases hxy : y = x
+    · exact Or.inl hxy
+    · right
+      have hxy' : x ≠ y := Ne.symm hxy
+      simpa [Finsupp.single_apply, hxy'] using hy
+  rw [Finsupp.prod_of_support_subset _ h1 _ (fun _ _ => by simp),
+    Finsupp.prod_of_support_subset B (Finset.subset_insert x B.support) _ (fun _ _ => by simp),
+    ← Finset.mul_prod_erase _ _ (Finset.mem_insert_self x B.support),
+    ← Finset.mul_prod_erase _ (fun y => ((B y).factorial : C)) (Finset.mem_insert_self x B.support)]
+  have h2 : ∏ y ∈ (insert x B.support).erase x, (((B + Finsupp.single x 1 : κ →₀ ℕ) y).factorial : C) =
+      ∏ y ∈ (insert x B.support).erase x, ((B y).factorial : C) := by
+    refine Finset.prod_congr rfl fun y hy => ?_
+    have hyx : y ≠ x := Finset.ne_of_mem_erase hy
+    have hxy : x ≠ y := Ne.symm hyx
+    simp [hxy]
+  rw [h2]
+  simp [Nat.factorial_succ]
+  ring
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] {κ : Type} in
+private theorem pairing_X_mul_eq_pairing_pderiv (x : κ) (F G : MvPolynomial κ C) :
+    _root_.GlobalTheory.DetPowPairing.pairing (X x * F) G =
+      _root_.GlobalTheory.DetPowPairing.pairing F (pderiv x G) := by
+  classical
+  induction G using MvPolynomial.induction_on' with
+  | monomial A b =>
+    rw [pairing_monomial_eq_coeff_mul_prod_factorial_mul, pderiv_monomial, pairing_monomial_eq_coeff_mul_prod_factorial_mul,
+      coeff_X_mul']
+    by_cases hx : A x = 0
+    · have : x ∉ A.support := by simpa using hx
+      rw [if_neg this, hx]; simp
+    · rw [if_pos (by simpa using hx)]
+      have hA : A = (A - Finsupp.single x 1) + Finsupp.single x 1 := by
+        ext y
+        by_cases hy : x = y
+        · subst hy; simp; omega
+        · simp [hy]
+      have hAx : (A - Finsupp.single x 1 : κ →₀ ℕ) x + 1 = A x := by simp; omega
+      have hf : (A.prod fun _ e => (e.factorial : C)) =
+          ((A x : ℕ) : C) * ((A - Finsupp.single x 1).prod fun _ e => (e.factorial : C)) := by
+        conv_lhs => rw [hA]
+        rw [prod_factorial_add_single_one_eq_succ_mul_prod_factorial, hAx]
+      rw [hf]; ring
+  | add p q hp hq => rw [map_add (f := _), map_add (f := _), map_add (f := _), hp, hq]
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] {κ : Type} in
+private theorem pairing_list_prod_X_mul_eq_pairing_list_prod_pderiv {ι : Type} (g : ι → κ) (L : List ι)
+    (F G : MvPolynomial κ C) :
+    _root_.GlobalTheory.DetPowPairing.pairing ((L.map fun j => X (g j)).prod * F) G =
+      _root_.GlobalTheory.DetPowPairing.pairing F
+        ((L.map fun j => ((pderiv (g j) : Derivation C (MvPolynomial κ C) (MvPolynomial κ C)).toLinearMap :
+          Module.End C (MvPolynomial κ C))).prod G) := by
+  induction L generalizing F with
+  | nil => simp
+  | cons a L ih =>
+    rw [List.map_cons, List.prod_cons, mul_assoc, mul_left_comm, ih,
+      pairing_X_mul_eq_pairing_pderiv, List.map_cons, List.prod_cons, Module.End.mul_apply]
+    rfl
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] in
+private theorem pairing_cayDet_mul' (n : ℕ) (F G : MvPolynomial (Fin n × Fin n) C) :
+    _root_.GlobalTheory.DetPowPairing.pairing (_root_.ReciprocityTheory.PGsh.cayDet n C * F) G =
+      _root_.GlobalTheory.DetPowPairing.pairing F (_root_.ReciprocityTheory.PGsh.cayOp n C G) := by
+  unfold _root_.ReciprocityTheory.PGsh.cayDet _root_.ReciprocityTheory.PGsh.cayOp _root_.ReciprocityTheory.PGsh.cayMono
+
+  rw [Matrix.det_apply, Finset.sum_mul, pairing_comm', map_sum,
+  LinearMap.sum_apply, map_sum]
+  refine Finset.sum_congr rfl fun σ _ => ?_
+  rw [Units.smul_def, smul_mul_assoc, map_zsmul, LinearMap.smul_apply, map_zsmul,
+    pairing_comm']
+  congr 1
+  have hprod : ∏ i, Matrix.mvPolynomialX (Fin n) (Fin n) C (σ i) i =
+      ((List.finRange n).map fun j => X (σ j, j)).prod := by
+    rw [Fin.prod_univ_def]; rfl
+  rw [hprod, pairing_list_prod_X_mul_eq_pairing_list_prod_pderiv (fun j => (σ j, j))]
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] in
+private theorem pairing_cayDet_pow_mul (n k : ℕ) (F G : MvPolynomial (Fin n × Fin n) C) :
+    _root_.GlobalTheory.DetPowPairing.pairing (_root_.ReciprocityTheory.PGsh.cayDet n C ^ k * F) G =
+      _root_.GlobalTheory.DetPowPairing.pairing F ((_root_.ReciprocityTheory.PGsh.cayOp n C ^ k) G) := by
+  induction k generalizing F with
+  | zero => simp
+  | succ k ih =>
+    rw [pow_succ, mul_assoc, ih, pairing_cayDet_mul', pow_succ', Module.End.mul_apply]
+
+
+open MvPolynomial in
+variable {C : Type} [CommRing C] {n : ℕ} in
+theorem _root_.GlobalTheory.DetPowPairing.pairing_pow_proportional :
+  (∀ (C : Type) [Field C] [CharZero C] (n₀ M Y : ℕ) (Q : MvPolynomial (Fin n₀ × Fin n₀) C), M ≤ Y → Q.IsHomogeneous (n₀ * M) →
+    (∑ A ∈ (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ Y).support, AddMonoidAlgebra.coeff (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ Y) A * (A.prod fun _ e => (e.factorial : C)) * AddMonoidAlgebra.coeff (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ (Y - M) * Q) A) * (∑ A ∈ (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ M).support, AddMonoidAlgebra.coeff (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ M) A * (A.prod fun _ e => (e.factorial : C)) * AddMonoidAlgebra.coeff (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ M) A) = (∑ A ∈ (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ M).support, AddMonoidAlgebra.coeff (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ M) A * (A.prod fun _ e => (e.factorial : C)) * AddMonoidAlgebra.coeff (Q) A) * (∑ A ∈ (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ Y).support, AddMonoidAlgebra.coeff (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ Y) A * (A.prod fun _ e => (e.factorial : C)) * AddMonoidAlgebra.coeff (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ Y) A)) := by
+  intro C _ _ n₀ M Y Q hMY _
+  simp only [← pairing_eq_sum_factorial]
+  obtain ⟨c, hc⟩ := exists_cayOp_pow_cayDet_pow (C := C) n₀ (Y - M) Y
+  have hYM : Y - (Y - M) = M := by omega
+  rw [hYM] at hc
+  have e1 : _root_.GlobalTheory.DetPowPairing.pairing (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ Y) (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ (Y - M) * Q) =
+      c * _root_.GlobalTheory.DetPowPairing.pairing (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ M) Q := by
+    rw [pairing_comm', pairing_cayDet_pow_mul, hc, map_nsmul,
+      pairing_comm', nsmul_eq_mul]
+  have e2 : _root_.GlobalTheory.DetPowPairing.pairing (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ Y) (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ Y) =
+      c * _root_.GlobalTheory.DetPowPairing.pairing (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ M) (_root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ M) := by
+    have hsplit : _root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ Y = _root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ (Y - M) * _root_.ReciprocityTheory.PGsh.cayDet n₀ C ^ M := by
+      rw [← pow_add]; congr 1; omega
+    nth_rewrite 1 [hsplit]
+    rw [pairing_cayDet_pow_mul, hc, map_nsmul, nsmul_eq_mul]
+  rw [e1, e2]; ring
+
+end GlobalTheory.DetPowPairing
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FactorialWeightedPairingDetPowProportional =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NewtonBoundPosAndNewtonStep =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NewtonBoundPosAndNewtonStep", "h": "module\n\npublic import Formalism.LocalToGlobal.CharacterGerms.BiadditiveInSingleVariables\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\npublic import Mathlib.Analysis.Complex.ExponentialBounds\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuation\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.L2.FormalSeriesBounds
+
+namespace GlobalTheory
+
+private lemma sum_range_succ_choose_mul_eq_add_shift {C : Type} [Field C] (f : ℕ → C) (y : ℕ) :
+    ∑ s ∈ Finset.range (y + 1 + 1), ((y + 1).choose s : C) * f s =
+      ∑ s ∈ Finset.range (y + 1), (y.choose s : C) * f s +
+        ∑ s ∈ Finset.range (y + 1), (y.choose s : C) * f (s + 1) := by
+  rw [Finset.sum_range_succ' (fun s => ((y + 1).choose s : C) * f s)]
+  simp_rw [Nat.choose_succ_succ', Nat.cast_add, add_mul, Finset.sum_add_distrib]
+  rw [Finset.sum_range_succ' (fun s => (y.choose s : C) * f s),
+    Finset.sum_range_succ (fun s => (y.choose (s + 1) : C) * f (s + 1)), Nat.choose_succ_self]
+  simp
+  ring
+
+theorem _root_.GlobalTheory.newtonBound_pos_and_newtonStep : _root_.Formalism.L2.FormalSeriesBounds.NewtonBoundPositive ∧ _root_.Formalism.L2.FormalSeriesBounds.P7 := by
+  refine ⟨?_, ?_⟩
+  · unfold _root_.Formalism.L2.FormalSeriesBounds.NewtonBoundPositive
+    intro l hl i n0 s hi hn hs
+    unfold _root_.Formalism.L2.FormalSeriesBounds.S0 at hs
+    have hl' : (5:ℝ) ≤ l := by exact_mod_cast hl
+    have hN : (1:ℝ) ≤ n0 := by exact_mod_cast hn
+    have hi' : (1:ℝ) ≤ i := by exact_mod_cast hi
+    have hlogl : 1 ≤ Real.log l := by
+      rw [Real.le_log_iff_exp_le (by linarith)]
+      have := Real.exp_one_lt_d9
+      linarith
+    have hlbN1 : 0 ≤ Real.logb l ((n0:ℝ) + 1) := Real.logb_nonneg (by linarith) (by linarith)
+    have hsK : 64 * (n0:ℝ) ^ 2 * ((i:ℝ) + 3 + 3 * Real.logb l ((n0:ℝ) + 1)) ≤ (s:ℝ) :=
+      (Nat.le_ceil _).trans (by exact_mod_cast hs)
+    have hN2 : 0 < 64 * (n0:ℝ) ^ 2 := by positivity
+    set t : ℝ := (s:ℝ) / (64 * (n0:ℝ) ^ 2) with ht
+    have hst : (s:ℝ) = t * 64 * (n0:ℝ) ^ 2 := by rw [ht]; field_simp
+    have htK : (i:ℝ) + 3 + 3 * Real.logb l ((n0:ℝ) + 1) ≤ t := by
+      rw [ht, le_div_iff₀ hN2]; linarith
+    have ht0 : 0 < t := by linarith
+    have hlogs : Real.logb l s = Real.logb l t + Real.logb l 64 + 2 * Real.logb l n0 := by
+      rw [hst, Real.logb_mul (by positivity) (by positivity), Real.logb_mul (by positivity) (by norm_num),
+        Real.logb_pow]
+      push_cast
+      ring
+    have hlbt : Real.logb l t ≤ t - 1 := by
+      have h1 := Real.log_le_sub_one_of_pos ht0
+      have h2 : 0 ≤ Real.log t := Real.log_nonneg (by linarith)
+      rw [Real.logb, div_le_iff₀ (by linarith)]
+      nlinarith
+    have hlb64 : Real.logb l 64 ≤ 3 := by
+      have h3 : Real.logb l ((l:ℝ) ^ 3) = 3 := by
+        rw [Real.logb_pow, Real.logb_self_eq_one (by linarith)]
+        norm_num
+      rw [← h3]
+      apply Real.logb_le_logb_of_le (by linarith) (by norm_num)
+      have hcube : (5:ℝ) ^ 3 ≤ (l:ℝ) ^ 3 := pow_le_pow_left₀ (by norm_num) hl' 3
+      linarith
+    have hlbN : Real.logb l n0 ≤ Real.logb l ((n0:ℝ) + 1) :=
+      Real.logb_le_logb_of_le (by linarith) (by linarith) (by linarith)
+    have key : 3 * Real.logb l n0 + 2 * Real.logb l s + i + 3 < 8 * t := by
+      rw [hlogs]
+      nlinarith
+    have hs8 : (s:ℝ) / 8 = 8 * t * (n0:ℝ) ^ 2 := by rw [hst]; ring
+    rw [hs8]
+    have hpos : 0 < (n0:ℝ) ^ 2 := by positivity
+    nlinarith [mul_lt_mul_of_pos_left key hpos]
+  · unfold _root_.Formalism.L2.FormalSeriesBounds.P7
+    intro C _ v S a hS ha0 hpos Y0
+    by_contra hcon
+    push_neg at hcon
+    have hadd : ∀ x y : C, 0 < v x → 0 < v y → 0 < v (x + y) := fun x y hx hy =>
+      lt_of_lt_of_le (lt_min hx hy) (v.map_add x y)
+    have hsub : ∀ x y : C, 0 < v x → 0 < v y → 0 < v (x - y) := fun x y hx hy => by
+      rw [sub_eq_add_neg]
+      exact hadd _ _ hx (by rwa [v.map_neg])
+    have hnat : ∀ (c : ℕ) (x : C), 0 < v x → 0 < v ((c : C) * x) := fun c x hx => by
+      rw [v.map_mul]
+      have h := _root_.ReciprocityTheory.ChartRestriction.G.Sh.PowerSeriesCoeffGaps.intCast_nonneg v (c : ℤ)
+      rw [Int.cast_natCast] at h
+      exact lt_of_lt_of_le hx (le_add_of_nonneg_left h)
+    have hsum : ∀ (s : Finset ℕ) (f : ℕ → C), (∀ j ∈ s, 0 < v (f j)) → 0 < v (∑ j ∈ s, f j) := by
+      intro s f hf
+      induction s using Finset.induction_on with
+      | empty => simp
+      | insert j s hj ih =>
+        rw [Finset.sum_insert hj]
+        exact hadd _ _ (hf j (Finset.mem_insert_self _ _))
+          (ih fun x hx => hf x (Finset.mem_insert_of_mem hx))
+    set B : ℕ → ℕ → C := fun k y => ∑ s ∈ Finset.range (y + 1), (y.choose s : C) * a (s + k) with hB
+    have hpascal : ∀ k y, B (k + 1) y = B k (y + 1) - B k y := by
+      intro k y
+      simp only [hB]
+      rw [sum_range_succ_choose_mul_eq_add_shift (fun s => a (s + k)) y]
+      have : ∀ s, a (s + 1 + k) = a (s + (k + 1)) := fun s => by rw [add_assoc, add_comm 1 k]
+      simp only [this]
+      ring
+    have hup : ∀ k, k < S → ∀ y, Y0 ≤ y → y + k < Y0 + S → 0 < v (B k y) := by
+      intro k
+      induction k with
+      | zero =>
+        intro _ y h1 h2
+        simpa [hB] using hcon y h1 (by omega)
+      | succ k ih =>
+        intro hk y h1 h2
+        rw [hpascal]
+        exact hsub _ _ (ih (by omega) (y + 1) (by omega) (by omega)) (ih (by omega) y h1 (by omega))
+    have hbig : ∀ k, S ≤ k → ∀ y, 0 < v (B k y) := fun k hk y =>
+      hsum _ _ fun s _ => hnat _ _ (hpos _ (by omega))
+    have hdown : ∀ d, d ≤ Y0 → ∀ k, 0 < v (B k (Y0 - d)) := by
+      intro d
+      induction d with
+      | zero =>
+        intro _ k
+        by_cases hk : k < S
+        · exact hup k hk Y0 le_rfl (by simpa using hk)
+        · exact hbig k (by omega) _
+      | succ d ih =>
+        intro hd
+        have hy : Y0 - d = Y0 - (d + 1) + 1 := by omega
+        have main : ∀ m k, S ≤ k + m → 0 < v (B k (Y0 - (d + 1))) := by
+          intro m
+          induction m with
+          | zero => intro k hk; exact hbig k (by omega) _
+          | succ m ihm =>
+            intro k hk
+            have e := hpascal k (Y0 - (d + 1))
+            have : B k (Y0 - (d + 1)) = B k (Y0 - (d + 1) + 1) - B (k + 1) (Y0 - (d + 1)) := by
+              rw [e]; ring
+            rw [this, ← hy]
+            exact hsub _ _ (ih (by omega) k) (ihm (k + 1) (by omega))
+        exact fun k => main S k (by omega)
+    have h0 := hdown Y0 le_rfl 0
+    simp [hB, ha0] at h0
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NewtonBoundPosAndNewtonStep =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RadiiValuationDifferences =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RadiiValuationDifferences", "h": "module\n\npublic import Formalism.LocalToGlobal.CharacterGerms.BiadditiveInSingleVariables\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Presheaf\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds
+
+namespace GlobalTheory
+
+namespace RadiiIdentities
+
+theorem sub_one_pos {l : ℕ} (hl : 2 ≤ l) : (0 : ℝ) < (l : ℝ) - 1 := by
+  have : (2 : ℝ) ≤ l := by exact_mod_cast hl
+  linarith
+
+theorem sq_sub_one_eq (l : ℕ) : (l : ℝ) ^ 2 - 1 = ((l : ℝ) - 1) * ((l : ℝ) + 1) := by
+  ring
+
+theorem exponent_integral : Formalism.L2.FormalSeriesBounds.EInt := by
+  intro l i hl hi
+  have h1 : (0 : ℝ) < (l : ℝ) - 1 := sub_one_pos hl
+  have hsq : ((l : ℝ) ^ 2 - 1) ≠ 0 := by
+    rw [sq_sub_one_eq]
+    have : (0 : ℝ) < (l : ℝ) + 1 := by linarith
+    positivity
+  constructor
+  · simp only [gam, rho]
+    field_simp
+  · obtain ⟨k, rfl⟩ := hi
+    have hk : (2 * k + 1 - 1) / 2 = k := by omega
+    have hne : ((l : ℝ) ^ 2) ≠ 1 := by
+      intro h
+      apply hsq
+      rw [h]
+      ring
+    simp only [expE, hk, Ereal, rho]
+    push_cast
+    rw [geom_sum_eq hne]
+    field_simp
+    ring
+
+theorem radii_sum : I1 := by
+  intro l i hl
+  have h1 : (0 : ℝ) < (l : ℝ) - 1 := sub_one_pos hl
+  have h2 : (0 : ℝ) < (l : ℝ) + 1 := by linarith
+  have hpow : ((l : ℝ) ^ i) ≠ 0 := by positivity
+  refine ⟨?_, ?_⟩
+  · simp only [r1, r2]
+    field_simp
+    ring
+  · simp only [Ereal, rho]
+    rw [sq_sub_one_eq]
+    field_simp
+    ring
+
+theorem slope_identity : I2 := by
+  intro l i hl hi
+  have h1 : (0 : ℝ) < (l : ℝ) - 1 := sub_one_pos hl
+  have h2 : (0 : ℝ) < (l : ℝ) + 1 := by linarith
+  have hsq : ((l : ℝ) ^ 2 - 1) = ((l : ℝ) - 1) * ((l : ℝ) + 1) := sq_sub_one_eq l
+  have hl2 : (2 : ℝ) ≤ l := by exact_mod_cast hl
+  have hli : (l : ℝ) ≤ (l : ℝ) ^ i := by
+    calc (l : ℝ) = (l : ℝ) ^ 1 := (pow_one _).symm
+      _ ≤ (l : ℝ) ^ i := pow_le_pow_right₀ (by linarith) hi
+  refine ⟨?_, ?_⟩
+  · simp only [Ereal, rho, gam]
+    rw [hsq]
+    field_simp
+    ring
+  · simp only [gam]
+    rw [hsq, sub_nonneg, mul_div_assoc', le_div_iff₀ (by positivity)]
+    nlinarith
+
+theorem val_natCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℕ) :
+    0 ≤ v (n : C) := by
+  induction n with
+  | zero => simp
+  | succ k ih =>
+    push_cast
+    calc (0 : WithTop ℝ) ≤ min (v (k : C)) (v 1) := by
+          rw [AddValuation.map_one]
+          exact le_min ih le_rfl
+      _ ≤ v ((k : C) + 1) := AddValuation.map_add v _ _
+
+theorem val_intCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℤ) :
+    0 ≤ v (n : C) := by
+  rcases Int.eq_nat_or_neg n with ⟨k, rfl | rfl⟩
+  · exact_mod_cast val_natCast_nonneg v k
+  · push_cast
+    rw [AddValuation.map_neg]
+    exact val_natCast_nonneg v k
+
+theorem val_other_prime : ValOther := by
+  intro C _ v l hl hvl p hp hpl
+  refine le_antisymm ?_ (val_natCast_nonneg v p)
+  by_contra hlt
+  rw [not_le] at hlt
+  have hcop : Nat.Coprime l p := (Nat.coprime_primes hl hp).2 (Ne.symm hpl)
+  have hbez : ((1 : ℤ) : C) = ((l : ℤ) * Nat.gcdA l p + (p : ℤ) * Nat.gcdB l p : ℤ) := by
+    rw [← Nat.gcd_eq_gcd_ab, hcop.gcd_eq_one]
+    simp
+  push_cast at hbez
+  have hA : (0 : WithTop ℝ) < v ((l : C) * (Nat.gcdA l p : C)) := by
+    rw [AddValuation.map_mul, hvl]
+    exact lt_of_lt_of_le (by exact_mod_cast (zero_lt_one : (0 : ℝ) < 1))
+      (le_add_of_nonneg_right (val_intCast_nonneg v _))
+  have hB : (0 : WithTop ℝ) < v ((p : C) * (Nat.gcdB l p : C)) := by
+    rw [AddValuation.map_mul]
+    exact lt_of_lt_of_le hlt (le_add_of_nonneg_right (val_intCast_nonneg v _))
+  have hsum := AddValuation.map_add v ((l : C) * (Nat.gcdA l p : C)) ((p : C) * (Nat.gcdB l p : C))
+  rw [← hbez, AddValuation.map_one] at hsum
+  exact absurd (lt_of_lt_of_le (lt_min hA hB) hsum) (lt_irrefl 0)
+
+theorem weight_forms_agree : WeightConditionIff := by
+  intro C _ v l i n0 h1
+  have e1 : rho l + 1 / (2 * (l : ℝ) ^ i) - 1 / (8 * (l : ℝ) ^ i) =
+      rho l + ((l : ℝ) ^ i)⁻¹ / 2 - ((l : ℝ) ^ i)⁻¹ / 8 := by ring
+  have e2 : rho l + 1 / 2 - 1 / (8 * (l : ℝ) ^ i) = rho l + 1 / 2 - ((l : ℝ) ^ i)⁻¹ / 8 := by ring
+  simp only [HM1, WeightCond, r1, r2, del, e1, e2]
+
+theorem binomial_differences : F5 := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro y s
+    have hf : (s.factorial : ℚ) ≠ 0 := by exact_mod_cast s.factorial_ne_zero
+    have key : (s.factorial : ℤ) * Ring.choose y s = ∏ j ∈ Finset.range s, (y - (j : ℤ)) := by
+      rw [← descPochhammer_eval_eq_prod_range, Polynomial.eval_eq_smeval,
+        Ring.descPochhammer_eq_factorial_smul_choose, nsmul_eq_mul]
+    rw [eq_div_iff hf, mul_comm]
+    exact_mod_cast key
+  · intro y s
+    rw [Ring.choose_succ_succ]
+    ring
+  · intro y
+    simp
+  · intro s
+    cases s with
+    | zero => simp
+    | succ k => simp [Ring.choose_zero_succ]
+
+end RadiiIdentities
+
+
+open RadiiIdentities in
+theorem radii_valuation_differences :
+    Formalism.L2.FormalSeriesBounds.EInt ∧ I1 ∧ I2 ∧ ValOther ∧ WeightConditionIff ∧ F5 :=
+  ⟨exponent_integral, radii_sum, slope_identity, val_other_prime, weight_forms_agree,
+    binomial_differences⟩
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RadiiValuationDifferences =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightNonnegExpOfWeightGeInvPrimeSubOne =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightNonnegExpOfWeightGeInvPrimeSubOne", "h": "module\n\npublic import Mathlib.Algebra.Algebra.Rat\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.RingTheory.PowerSeries.Exp\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreBoundsFactorialMultiIndexCapelli\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Presheaf\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuation\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open ReciprocityTheory.PGsh
+
+namespace GlobalTheory.ExpWeight
+
+variable {C : Type} [Field C] (v : AddValuation C (WithTop ℝ))
+  {σ : Type} [DecidableEq σ] (ρ : σ → ℝ)
+
+
+variable {C : Type} [Field C] (v : AddValuation C (WithTop ℝ))
+  {σ : Type} [DecidableEq σ] (ρ : σ → ℝ) in
+theorem _root_.GlobalTheory.ExpWeight.weight_exp :
+  (∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (l : ℕ), l.Prime → v (l : C) = 1 → ∀ (σ : Type) [Fintype σ] [DecidableEq σ] (ρ : σ → ℝ) (h : MvPowerSeries σ C), MvPowerSeries.constantCoeff h = 0 →
+    (∀ α, (((1 / (l - 1)) - α.sum (fun j e => ρ j * (e : ℝ)) : ℝ) : WithTop ℝ) ≤ v (MvPowerSeries.coeff α (h))) → (∀ α, (((0) - α.sum (fun j e => ρ j * (e : ℝ)) : ℝ) : WithTop ℝ) ≤ v (MvPowerSeries.coeff α (PowerSeries.subst (h) (PowerSeries.exp C))))) := by
+  intro C _ _ v l hl hvl σ _ _ ρ h h0 hh
+  set c : ℝ := 1 / ((l : ℝ) - 1) with hc
+  set w : (σ →₀ ℕ) → ℝ := fun α => α.sum (fun j e => ρ j * (e : ℝ)) with hw
+  have hwadd : ∀ α β : σ →₀ ℕ, w (α + β) = w α + w β := fun α β => by
+    simp only [hw]
+    exact Finsupp.sum_add_index' (fun j => by simp) (fun j a b => by push_cast; ring)
+  have hsumle : ∀ {ι : Type} (s : Finset ι) (f : ι → C) (r : ℝ),
+      (∀ i ∈ s, ((r : ℝ) : WithTop ℝ) ≤ v (f i)) → ((r : ℝ) : WithTop ℝ) ≤ v (∑ i ∈ s, f i) := by
+    intro ι s f r hf
+    refine Finset.sum_induction f (fun x => ((r : ℝ) : WithTop ℝ) ≤ v x) (fun a b ha hb => ?_) ?_ hf
+    · exact le_trans (le_min ha hb) (v.map_add a b)
+    · simp
+  have hpow : ∀ (d : ℕ) (α : σ →₀ ℕ), (((d : ℝ) * c - w α : ℝ) : WithTop ℝ) ≤ v (MvPowerSeries.coeff α (h ^ d)) := by
+    intro d
+    induction d with
+    | zero =>
+      intro α
+      rw [pow_zero, MvPowerSeries.coeff_one]
+      split_ifs with hα
+      · subst hα
+        simp [hw]
+      · simp
+    | succ d ih =>
+      intro α
+      rw [pow_succ, MvPowerSeries.coeff_mul]
+      refine hsumle _ _ _ fun p hp => ?_
+      rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp
+      rw [v.map_mul]
+      have e : ((((d + 1 : ℕ) : ℝ) * c - w α : ℝ) : WithTop ℝ) =
+          (((d : ℝ) * c - w p.1 : ℝ) : WithTop ℝ) + ((1 / ((l : ℝ) - 1) - w p.2 : ℝ) : WithTop ℝ) := by
+        rw [← WithTop.coe_add, ← hp, hwadd, hc]
+        congr 1
+        push_cast
+        ring
+      rw [e]
+      exact add_le_add (ih p.1) (hh p.2)
+  intro α
+  have hsub : PowerSeries.HasSubst h := PowerSeries.HasSubst.of_constantCoeff_zero h0
+  rw [PowerSeries.coeff_subst hsub]
+  refine finsum_induction (fun x => (((0 : ℝ) - w α : ℝ) : WithTop ℝ) ≤ v x) (by simp)
+    (fun a b ha hb => le_trans (le_min ha hb) (v.map_add a b)) fun d => ?_
+  simp only [PowerSeries.coeff_exp, smul_eq_mul, v.map_mul]
+  have hf : (d.factorial : C) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero d
+  have hinv : algebraMap ℚ C (1 / (d.factorial : ℚ)) = ((d.factorial : C))⁻¹ := by simp
+  rw [hinv]
+  obtain ⟨y, hy⟩ := _root_.ReciprocityTheory.ChartRestriction.G.Sh.PowerSeriesCoeffGaps.exists_real v (inv_ne_zero hf)
+  have hfact := _root_.ReciprocityTheory.ChartRestriction.G.Sh.PowerSeriesCoeffGaps.natCast_eq_factorization v hl hvl (Nat.factorial_ne_zero d)
+  have hprod : v ((d.factorial : C))⁻¹ + v (d.factorial : C) = 0 := by
+    rw [← v.map_mul, inv_mul_cancel₀ hf, v.map_one]
+  rw [hy, hfact, ← WithTop.coe_add, WithTop.coe_eq_zero] at hprod
+  have hle := _root_.GlobalTheory.LegendreBounds.upper l hl d
+  have hyr : y = -((d.factorial.factorization l : ℕ) : ℝ) := by linarith
+  simp only [Nat.padicValNat_def, ← Nat.factorization_def _ hl] at hle
+  have hdc : (d : ℝ) / ((l : ℝ) - 1) = d * c := by rw [hc]; ring
+  rw [hy]
+  calc (((0 : ℝ) - w α : ℝ) : WithTop ℝ) ≤ ((y + ((d : ℝ) * c - w α) : ℝ) : WithTop ℝ) :=
+        WithTop.coe_le_coe.mpr (by linarith)
+    _ = ((y : ℝ) : WithTop ℝ) + (((d : ℝ) * c - w α : ℝ) : WithTop ℝ) := WithTop.coe_add _ _
+    _ ≤ _ := add_le_add le_rfl (hpow d α)
+
+end GlobalTheory.ExpWeight
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightNonnegExpOfWeightGeInvPrimeSubOne =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.SumEqOfIsHomogeneous =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.SumEqOfIsHomogeneous", "h": "module\n\npublic import Formalism.LocalToGlobal.CharacterGerms.BiadditiveInSingleVariables\npublic import Mathlib.RingTheory.PowerSeries.Exp\npublic import ReciprocityTheory.DualLattices.FischerAdjointStatement\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.BlockValueOnRowsEq\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DetFrobeniusSubPowSupport\npublic import Mathlib.Analysis.SpecialFunctions.Log.Base\npublic import Mathlib.RingTheory.Valuation.Basic\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.DeterminantPairingQuotientValuationLowerBound\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FactorialWeightedPairingDetPowProportional\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreAndCapelli\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreBoundsFactorialMultiIndexCapelli\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.NewtonBoundPosAndNewtonStep\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.ProdIccMulFactorial\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.RadiiValuationDifferences\npublic import Mathlib.Algebra.Algebra.Rat\npublic import Mathlib.Basic.Real.Basic\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightNonnegExpOfWeightGeInvPrimeSubOne\npublic import Formalism.FormalGroupLog.FormalGroupLogProofs.ChainRule\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.CalcExp\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Presheaf\nimport ReciprocityTheory.DualLattices.DetPolyMulCayleyOmegaPow\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuation\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 section
@@ -373,17 +1089,6 @@ end
 section
 open ReciprocityTheory.PGsh
 
-theorem _root_.GlobalTheory.OddBlock.expShift : (∀ (C : Type) [Field C] [CharZero C] (κ κ' : Type) [Fintype κ] [Fintype κ'] [DecidableEq κ] [DecidableEq κ'] (ζ : κ' → MvPolynomial κ C) (F : MvPolynomial κ C) (G : MvPolynomial κ' C) (g : MvPowerSeries (κ ⊕ κ') C),
-    (∑ A ∈ ((MvPolynomial.rename Sum.inl F * MvPolynomial.rename Sum.inr G : MvPolynomial (κ ⊕ κ') C)).support, AddMonoidAlgebra.coeff ((MvPolynomial.rename Sum.inl F * MvPolynomial.rename Sum.inr G : MvPolynomial (κ ⊕ κ') C)) A * (A.prod fun _ e => (e.factorial : C)) * MvPowerSeries.coeff A (PowerSeries.subst (((∑ j, MvPolynomial.rename Sum.inl (ζ j) * MvPolynomial.X (Sum.inr j) : MvPolynomial (κ ⊕ κ') C) : MvPowerSeries (κ ⊕ κ') C)) (PowerSeries.exp C) * g)) =
-    ∑ m ∈ (MvPolynomial.aeval (fun j => (MvPolynomial.rename Sum.inl (ζ j) + MvPolynomial.X (Sum.inr j) : MvPolynomial (κ ⊕ κ') C)) G).support, AddMonoidAlgebra.coeff (MvPolynomial.aeval (fun j => (MvPolynomial.rename Sum.inl (ζ j) + MvPolynomial.X (Sum.inr j) : MvPolynomial (κ ⊕ κ') C)) G) m * ((Finsupp.sumFinsuppEquivProdFinsupp m).2.prod fun _ e => (e.factorial : C)) *
-      (∑ A ∈ (F).support, AddMonoidAlgebra.coeff (F) A * (A.prod fun _ e => (e.factorial : C)) * MvPowerSeries.coeff A (MvPowerSeries.monomial (Finsupp.sumFinsuppEquivProdFinsupp m).1 (1 : C) * (show MvPowerSeries κ C from fun A' => MvPowerSeries.coeff (Finsupp.sumFinsuppEquivProdFinsupp.symm (A', (Finsupp.sumFinsuppEquivProdFinsupp m).2)) g)))) := by
-  exact @GlobalTheory.OddBlock.ExpShift.main
-
-end
-
-section
-open ReciprocityTheory.PGsh
-
 noncomputable section
 
 namespace GlobalTheory.OddBlock.ExpBinomial
@@ -464,7 +1169,7 @@ def homPart (N : ℕ) (S : MvPowerSeries κ C) : MvPolynomial κ C :=
 theorem coeff_homPart (N : ℕ) (S : MvPowerSeries κ C) (A : κ →₀ ℕ) :
     AddMonoidAlgebra.coeff (homPart N S) A =
       if ∑ q, A q = N then MvPowerSeries.coeff A S else 0 := by
-  simp [homPart, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial,
+  simp [homPart, MvPolynomial.coeff_monomial,
     Finset.mem_finsuppAntidiag]
 
 omit [DecidableEq κ] in
@@ -507,18 +1212,6 @@ theorem pair_mul {F R : MvPolynomial κ C} {d N : ℕ} (hF : F.IsHomogeneous (d 
 
 end General
 
-theorem cayDet_isHomogeneous (n : ℕ) (C : Type) [CommRing C] : (cayDet n C).IsHomogeneous n := by
-  rw [cayDet, Matrix.det_apply]
-  refine MvPolynomial.IsHomogeneous.sum _ _ _ fun g _ => ?_
-  have h : (∏ i, (MvPolynomial.X (g i, i) : MvPolynomial (Fin n × Fin n) C)).IsHomogeneous n := by
-    have := MvPolynomial.IsHomogeneous.prod (Finset.univ : Finset (Fin n))
-      (fun i => (MvPolynomial.X (g i, i) : MvPolynomial (Fin n × Fin n) C)) (fun _ => 1)
-      (fun i _ => MvPolynomial.isHomogeneous_X _ _)
-    simpa using this
-  rcases Int.units_eq_one_or (Equiv.Perm.sign g) with e | e
-  · simpa [e] using h
-  · simpa [e] using h.neg
-
 def psi (l L E n : ℕ) : MvPolynomial ((Fin n × Fin n) ⊕ (Fin n × Fin n)) ℤ :=
   (Matrix.of fun b c : Fin n => (MvPolynomial.X (Sum.inl (b, c)) ^ L -
     MvPolynomial.C ((l : ℤ) ^ E) * MvPolynomial.X (Sum.inr (b, c)) :
@@ -551,7 +1244,7 @@ theorem aeval_cayDet (C : Type) [Field C] (l L E n : ℕ) (hl : (l : C) ≠ 0) :
   simp only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.mvPolynomialX_apply,
     MvPolynomial.aeval_X, map_mul, map_pow, MvPolynomial.rename_C, MvPolynomial.rename_X,
     Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.of_apply, map_sub, MvPolynomial.map_X,
-    MvPolynomial.map_C, smul_eq_mul, map_neg, map_natCast] at h ⊢
+    smul_eq_mul, map_neg, map_natCast] at h ⊢
   linear_combination (-MvPolynomial.X (Sum.inr (b, c))) * h
 
 open ReciprocityTheory.ChartRestriction.G.Sh.PowerSeriesCoeffGaps in
@@ -621,7 +1314,7 @@ theorem main :
     by_contra h
     obtain ⟨q, hq⟩ := hz 0 (by simpa using h)
     simp at hq
-  have hg := GlobalTheory.T.weight_nonneg_exp_of_weight_ge_inv_prime_sub_one C v l hl hv _ _ h₁ h0 hw
+  have hg := _root_.GlobalTheory.ExpWeight.weight_exp C v l hl hv _ _ h₁ h0 hw
   have hg0 := ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.constantCoeff_exp h0
   set g := PowerSeries.subst h₁ (PowerSeries.exp C) with hgdef
   set ψ := MvPolynomial.map (Int.castRingHom C) (psi l (l ^ i) E n) with hψ
@@ -659,7 +1352,7 @@ theorem main :
     rw [act_eq, map_sum]
     refine v.map_le_sum fun m hm => ?_
     rw [hψ, ← map_pow] at hm ⊢
-    obtain ⟨a1, a2, a3⟩ := GlobalTheory.T.det_frobenius_sub_pow_support_bounds l i E n s hl hi1 (psi l (l ^ i) E n) rfl m
+    obtain ⟨a1, a2, a3⟩ := _root_.GlobalTheory.det_frobenius_sub_pow_support l i E n s hl hi1 (psi l (l ^ i) E n) rfl m
       (MvPolynomial.support_map_subset _ _ hm)
     rw [actMon, LinearMap.map_smul, LinearMap.map_smul, MvPowerSeries.coeff_monomial_mul, smul_eq_mul, smul_eq_mul]
     split_ifs with hle
@@ -688,7 +1381,7 @@ theorem main :
       Finsupp.snd_sumFinsuppEquivProdFinsupp]
     have := real_bound (L := l ^ i) (E := E) h5 (Nat.one_le_pow _ _ hl.pos) (by push_cast; exact hE)
       hs hn a1 (padicValNat l (∏ j, (m (Sum.inr j)).factorial)) (by positivity) (fun hK => by
-        have := (GlobalTheory.T.legendre_bounds_factorial_multiIndex_capelli l hl).2.1 (Fin n × Fin n) (fun j => m (Sum.inr j)) hK
+        have := (_root_.GlobalTheory.LegendreBounds.legendre_bounds l hl).2.1 (Fin n × Fin n) (fun j => m (Sum.inr j)) hK
         simpa [sq] using this)
     simpa only [Nat.cast_mul, Nat.cast_pow] using this
   · intro y
@@ -699,7 +1392,7 @@ theorem main :
       rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPolynomial.coeff_coe,
         ← MvPolynomial.constantCoeff_eq]
       simp
-    have key := GlobalTheory.OddBlock.expShift C (Fin n × Fin n) (Fin n × Fin n)
+    have key := _root_.GlobalTheory.OddBlock.ExpShift.main C (Fin n × Fin n) (Fin n × Fin n)
       (fun j => MvPolynomial.C (-((l : C) ^ E)⁻¹) * MvPolynomial.X j ^ (l ^ i))
       (cayDet n C ^ (l ^ i * y)) (cayDet n C ^ y) g
     rw [map_pow (MvPolynomial.aeval _), aeval_cayDet C l (l ^ i) E n hlC, ← hψ] at key
@@ -725,25 +1418,13 @@ theorem main :
     rw [← map_pow (MvPolynomial.rename Sum.inl), ← pow_mul, Nat.mul_sub, mul_comm _ ((y.choose s : ℕ) : MvPolynomial _ C),
       ← nsmul_eq_mul, map_nsmul, map_nsmul, nsmul_eq_mul, mul_comm (ψ ^ s), act_mul]
     congr 1
-    refine pair_mul (d := n * (l ^ i * y - l ^ i * s)) ?_ ((cayDet_isHomogeneous n C).pow _) _
-    have := (cayDet_isHomogeneous n C).pow (l ^ i * y)
+    refine pair_mul (d := n * (l ^ i * y - l ^ i * s)) ?_ ((_root_.GlobalTheory.DetPairingBound.cayDet_isHomogeneous n C).pow _) _
+    have := (_root_.GlobalTheory.DetPairingBound.cayDet_isHomogeneous n C).pow (l ^ i * y)
     rwa [← mul_add, Nat.sub_add_cancel (Nat.mul_le_mul_left _ hsy)]
 
 end GlobalTheory.OddBlock.ExpBinomial
 
 end
-
-end
-
-section
-open ReciprocityTheory.PGsh
-
-theorem _root_.GlobalTheory.OddBlock.expBinomial : (∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (l : ℕ), l.Prime → v (l : C) = 1 → 5 ≤ l → ∀ (i E n₀ : ℕ), Odd i → (E : ℝ) = 1 + ((l : ℝ) ^ i - l) / ((l : ℝ) ^ 2 - 1) → ∀ h₁ : MvPowerSeries ((Fin n₀ × Fin n₀) ⊕ (Fin n₀ × Fin n₀)) C,
-    (∀ α, (((1 / (l - 1)) - α.sum (fun j e => Sum.elim (fun _ => 1 / ((l : ℝ) ^ 2 - 1) + 3 / (8 * (l : ℝ) ^ i)) (fun _ => 1 / ((l : ℝ) ^ 2 - 1) + 1 / 2 - 1 / (8 * (l : ℝ) ^ i)) j * (e : ℝ)) : ℝ) : WithTop ℝ) ≤ v (MvPowerSeries.coeff α (h₁))) → (∀ α, MvPowerSeries.coeff α h₁ ≠ 0 → ∃ q, α (Sum.inr q) ≠ 0) →
-    ∃ Q : ℕ → MvPolynomial (Fin n₀ × Fin n₀) C, Q 0 = 1 ∧ (∀ s, (Q s).IsHomogeneous (n₀ * (l ^ i * s))) ∧
-      (∀ s : ℕ, 1 ≤ s → 1 ≤ n₀ → ∀ A, (((s : ℝ) / 8 - (n₀ : ℝ) ^ 2 * (Real.logb l (n₀ * s) + 1) : ℝ) : WithTop ℝ) ≤ v (AddMonoidAlgebra.coeff (Q s) A)) ∧
-      ∀ y : ℕ, (∑ A ∈ ((MvPolynomial.rename Sum.inl (cayDet n₀ C) ^ (l ^ i * y) * MvPolynomial.rename Sum.inr (cayDet n₀ C) ^ y : MvPolynomial ((Fin n₀ × Fin n₀) ⊕ (Fin n₀ × Fin n₀)) C)).support, AddMonoidAlgebra.coeff ((MvPolynomial.rename Sum.inl (cayDet n₀ C) ^ (l ^ i * y) * MvPolynomial.rename Sum.inr (cayDet n₀ C) ^ y : MvPolynomial ((Fin n₀ × Fin n₀) ⊕ (Fin n₀ × Fin n₀)) C)) A * (A.prod fun _ e => (e.factorial : C)) * MvPowerSeries.coeff A (PowerSeries.subst (((∑ q : Fin n₀ × Fin n₀, MvPolynomial.C (-((l : C) ^ E)⁻¹) * MvPolynomial.X (Sum.inl q) ^ (l ^ i) * MvPolynomial.X (Sum.inr q) : MvPolynomial ((Fin n₀ × Fin n₀) ⊕ (Fin n₀ × Fin n₀)) C) : MvPowerSeries ((Fin n₀ × Fin n₀) ⊕ (Fin n₀ × Fin n₀)) C) + h₁) (PowerSeries.exp C))) = (-((l : C) ^ E)⁻¹) ^ (n₀ * y) * ∑ s ∈ Finset.range (y + 1), (y.choose s : C) * (∑ A ∈ (cayDet n₀ C ^ (l ^ i * y)).support, AddMonoidAlgebra.coeff (cayDet n₀ C ^ (l ^ i * y)) A * (A.prod fun _ e => (e.factorial : C)) * AddMonoidAlgebra.coeff (cayDet n₀ C ^ (l ^ i * y - l ^ i * s) * Q s) A)) := by
-  exact @GlobalTheory.OddBlock.ExpBinomial.main
 
 end
 
@@ -844,7 +1525,7 @@ theorem constantCoeff_hP (l i n : ℕ) (h1 : MvPowerSeries (PVar n) C) (h : HM2 
 theorem weight_sum (n : ℕ) (α : PVar n →₀ ℕ) (a b : ℝ) :
     α.sum (fun j e => Sum.elim (fun _ => a) (fun _ => b) j * (e : ℝ)) = (degL α : ℝ) * a + (degR α : ℝ) * b := by
   rw [Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sum_type, degL, degR]
-  simp only [Sum.elim_inl, Sum.elim_inr, Fintype.sum_prod_type, Nat.cast_sum, Finset.sum_mul, mul_comm]
+  simp only [Sum.elim_inl, Sum.elim_inr, Fintype.sum_prod_type, Nat.cast_sum, mul_comm]
   simp only [Finset.mul_sum]
 
 theorem lambdaFactor_zero_eq_one [CharZero C] (l i : ℕ) (h1 : MvPowerSeries (PVar 0) C) (y : ℕ) : LamP C l i 0 h1 y = 1 := by
@@ -866,7 +1547,7 @@ theorem main : CoefficientExpansionLambda := by
     · have : s ≠ 0 := by omega
       simp [this]
   have hl0 : (0 : ℝ) < (l : ℝ) ^ i := by have := hl.pos; positivity
-  obtain ⟨Q, hQ0, hQh, hQv, hQ⟩ := GlobalTheory.OddBlock.expBinomial C v l hl hv h5 i (expE l i) n0 hi (expE_cast hl.two_le hi) h1
+  obtain ⟨Q, hQ0, hQh, hQv, hQ⟩ := _root_.GlobalTheory.OddBlock.ExpBinomial.main C v l hl hv h5 i (expE l i) n0 hi (expE_cast hl.two_le hi) h1
     (fun α => by
       have h := hm1 α
       rw [weight_sum]
@@ -907,11 +1588,11 @@ theorem main : CoefficientExpansionLambda := by
     congr 1
     refine Finset.sum_congr rfl fun s hs => ?_
     have hsy : s ≤ y := Nat.lt_succ_iff.1 (Finset.mem_range.1 hs)
-    have h4 := GlobalTheory.T.factorialWeightedPairing_detPow_proportional C n0 (l ^ i * s) (l ^ i * y) (Q s) (Nat.mul_le_mul_left _ hsy) (hQh s)
+    have h4 := _root_.GlobalTheory.DetPowPairing.pairing_pow_proportional C n0 (l ^ i * s) (l ^ i * y) (Q s) (Nat.mul_le_mul_left _ hsy) (hQh s)
     rw [pair_self, pair_self] at h4
     rw [eq_div_of_mul_eq (hcap _) h4]
     ring
-  · have := GlobalTheory.T.determinantPairing_quotient_valuation_lower_bound C v l hl hv i n0 s (Q s) hs hn (hQv s hs hn)
+  · have := _root_.GlobalTheory.DetPairingBound.main C v l hl hv i n0 s (Q s) hs hn (hQv s hs hn)
     rw [pair_self] at this
     exact this
 
@@ -1035,18 +1716,6 @@ namespace GlobalTheory.OddBlock.BlockContent
 
 variable {C : Type} [Field C] (v : AddValuation C (WithTop ℝ))
 
-theorem val_natCast_nonneg (m : ℕ) : 0 ≤ v (m : C) := by
-  induction m with
-  | zero => simp
-  | succ k ih =>
-    rw [Nat.cast_succ]
-    exact v.map_le_add ih (by simp)
-
-theorem val_intCast_nonneg (m : ℤ) : 0 ≤ v (m : C) := by
-  obtain ⟨k, rfl | rfl⟩ := m.eq_nat_or_neg
-  · simpa using val_natCast_nonneg v k
-  · simpa using val_natCast_nonneg v k
-
 theorem val_coprime_le {l m : ℕ} (hv : v (l : C) = 1) (h : Nat.Coprime l m) : v (m : C) ≤ 0 := by
   by_contra hm
   push_neg at hm
@@ -1058,10 +1727,10 @@ theorem val_coprime_le {l m : ℕ} (hv : v (l : C) = 1) (h : Nat.Coprime l m) : 
     exact_mod_cast congrArg (fun z : ℤ => (z : C)) hb
   have h1 : 0 < v ((l : C) * (Nat.gcdA l m : C)) := by
     rw [v.map_mul, hv]
-    exact lt_of_lt_of_le zero_lt_one (le_add_of_nonneg_right (val_intCast_nonneg v _))
+    exact lt_of_lt_of_le zero_lt_one (le_add_of_nonneg_right (_root_.GlobalTheory.RadiiIdentities.val_intCast_nonneg v _))
   have h2 : 0 < v ((m : C) * (Nat.gcdB l m : C)) := by
     rw [v.map_mul]
-    exact lt_of_lt_of_le hm (le_add_of_nonneg_right (val_intCast_nonneg v _))
+    exact lt_of_lt_of_le hm (le_add_of_nonneg_right (_root_.GlobalTheory.RadiiIdentities.val_intCast_nonneg v _))
   have h3 := v.map_lt_add h1 h2
   rw [← hC, v.map_one] at h3
   exact lt_irrefl _ h3
@@ -1138,7 +1807,7 @@ theorem biWindow_of (hP : Formalism.L2.FormalSeriesBounds.ThmP) (hV : BiValue) :
   gcongr
 
 theorem biContent_and_biWindow : BiContent ∧ BiWindow :=
-  ⟨biContent, biWindow_of GlobalTheory.OddBlock.windowBound GlobalTheory.T.blockValue_on_rows_eq⟩
+  ⟨biContent, biWindow_of GlobalTheory.OddBlock.windowBound _root_.GlobalTheory.blockValue_rows⟩
 
 end GlobalTheory.OddBlock.BlockContent
 
@@ -1147,7 +1816,9 @@ end
 section
 open Formalism.L2.FormalSeriesBounds
 
-theorem _root_.GlobalTheory.OddBlock.content_and_window : BiContent ∧ BiWindow := by
-  exact @GlobalTheory.OddBlock.BlockContent.biContent_and_biWindow
+alias _root_.GlobalTheory.OddBlock.content_and_window := _root_.GlobalTheory.OddBlock.BlockContent.biContent_and_biWindow
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.SumEqOfIsHomogeneous =====

@@ -312,7 +312,7 @@ lemma sgn2_toAdd_eq_ite (s : ℤˣ) : Multiplicative.toAdd (sgn2 s) = if (s : �
   have : s = 1 ↔ (s : ℤ) = 1 := by rw [Units.ext_iff, Units.val_one]
   simp only [this]
 
-lemma zmod_two_eq_zero_or_eq_one (a : ZMod 2) : a = 0 ∨ a = 1 := by revert a; decide
+alias zmod_two_eq_zero_or_eq_one := _root_.Formalism.LFunctionChainParameters.characterSumData.PB.zmod_two_cases_bis
 
 section
 variable {e q d : ℕ} [Fact q.Prime] [Fact d.Prime]

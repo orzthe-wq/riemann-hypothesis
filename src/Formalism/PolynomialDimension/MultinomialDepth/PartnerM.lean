@@ -254,7 +254,7 @@ theorem ops_keep_supp (S : Set σ) (Q : Set (σ →₀ ℕ))
       rw [Finset.coe_singleton, Set.singleton_subset_iff]
       refine hQ m _ (fun w hw => ?_) (hz hm)
       have : u ≠ w := fun h => hw (h ▸ hu)
-      simp [Finsupp.single_apply, this]
+      simp [this]
     · intro z hz
       rw [MvPolynomial.mem_restrictSupport_iff] at hz
       show pderiv u z ∈ restrictSupport k Q
@@ -266,7 +266,7 @@ theorem ops_keep_supp (S : Set σ) (Q : Set (σ →₀ ℕ))
       rw [Finset.coe_singleton, Set.singleton_subset_iff]
       refine hQ m _ (fun w hw => ?_) (hz hm)
       have : u ≠ w := fun h => hw (h ▸ hu)
-      simp [Finsupp.single_apply, this]
+      simp [this]
   · rename_i c
     intro z hz
     rw [Module.algebraMap_end_apply]
@@ -601,7 +601,6 @@ theorem wt_shift (LL : Letters N) (j : ℕ) (c d c' : Fin r) (i : Fin N) (hi : (
     rw [wt_eq, wt_eq]
     simp only [hs, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, e1, hv]
     try simp
-    try (split_ifs <;> ring)
   · intro hv hm1
     have hs := fun w => shift_apply m (i, d) (i, c) w hm1
     rw [wt_eq, wt_eq]
@@ -785,7 +784,7 @@ private theorem pderiv_pderiv_lemma [DecidableEq σ] (i j : σ) (g : MvPolynomia
   · intro a; simp
   · intro p q hp hq; simp only [map_add (f := _), hp, hq]
   · intro p n hp
-    simp only [Derivation.leibniz, smul_eq_mul, map_add (f := _), hp, hX, mul_zero, zero_add, add_zero]
+    simp only [Derivation.leibniz, smul_eq_mul, map_add (f := _), hp, hX, mul_zero, zero_add]
     ring
 
 theorem comm_XD [DecidableEq σ] (u v u' v' : σ) (g : MvPolynomial σ k) :
@@ -860,7 +859,7 @@ theorem tm_comm_ne (LL : Letters N) (j : ℕ) (i i' : Fin N) (hii : i ≠ i') (c
       rfl
   obtain ⟨α, u, v, hα⟩ := hform i c d
   obtain ⟨β, u', v', hβ⟩ := hform i' a b
-  simp only [hα, hβ, Derivation.map_smul, map_smul, mul_smul_comm, smul_smul]
+  simp only [hα, hβ, Derivation.map_smul, mul_smul_comm, smul_smul]
   rw [mul_comm β α, hcomm (i, u) (i, v) (i', u') (i', v') rfl rfl rfl rfl]
 
 theorem tm_comm_eq (LL : Letters N) (j : ℕ) (i : Fin N) (c d a b : Fin r)
@@ -889,9 +888,9 @@ theorem tm_comm_eq (LL : Letters N) (j : ℕ) (i : Fin N) (c d a b : Fin r)
       rw [key2]
       rcases eq_or_ne d a with hda | hda <;> rcases eq_or_ne b c with hbc | hbc
       · subst hda; subst hbc; simp [sub_neg_eq_add, neg_add_eq_sub]
-      · subst hda; simp [hbc, hbc.symm, sub_neg_eq_add, neg_add_eq_sub]
-      · subst hbc; simp [hda, hda.symm, sub_neg_eq_add, neg_add_eq_sub]
-      · simp [hda, hbc, hda.symm, hbc.symm]
+      · subst hda; simp [hbc]
+      · subst hbc; simp [hda, sub_neg_eq_add]
+      · simp [hda, hbc]
   · simp only [tm, ite_eq_right hij]
     simp
 

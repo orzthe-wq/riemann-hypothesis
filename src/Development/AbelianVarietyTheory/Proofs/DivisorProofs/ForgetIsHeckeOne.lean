@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -57,7 +58,7 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p}
 
 theorem lattice_dvd (n : ℕ) (hn : 0 < n) (hp : n.Coprime p) (z : D.La)
     (h : ∃ w ∈ LaHat D, inAf D z = n • w) : ∃ u : D.La, z = n • u :=
-  GlobalTheory.T.exists_latticeVector_eq_nsmul_of_adelic_nsmul p D n hn hp (GlobalTheory.T.int_dvd_of_eq_nat_mul_integralAdeleAwayFromP p n hn hp) z h
+  _root_.GlobalTheory.LKGeo.LatDvd.exists_eq_nsmul_of_inAf p D n hn hp (_root_.GlobalTheory.LKGeo.IntDvd.int_dvd_of_eq_mul_isIntAf p n hn hp) z h
 
 def inAfHom (D : Datum p) : D.La →+ AfP p ⊗[ℚ] VQ D where
   toFun := inAf D

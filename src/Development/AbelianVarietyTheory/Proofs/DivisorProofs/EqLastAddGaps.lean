@@ -47,6 +47,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.CompHS
 open GlobalTheory.AllWt (Psi)
 open GlobalTheory.HSApp
+open scoped GlobalTheory.CompHt
 
 set_option autoImplicit false
 
@@ -109,8 +110,8 @@ theorem decomp (la : AllWt.Weight Dw) (hla : GapGe 0 la) (hN : 0 < Dw.p + Dw.q) 
   funext τ' i
   rw [Finset.sum_apply, Finset.sum_apply, Finset.sum_disjSum, Finset.sum_product, Finset.univ_product_univ.symm,
     Finset.sum_product]
-  simp only [Sum.elim_inl, Sum.elim_inr, Pi.smul_apply, smul_eq_mul, piece_apply, unitWt_apply, Fintype.sum_bool,
-    mul_ite, mul_zero, if_true, if_false]
+  simp only [Sum.elim_inl, Sum.elim_inr, Pi.smul_apply, piece_apply, unitWt_apply, Fintype.sum_bool,
+    if_true]
   rw [Finset.sum_eq_single (s := Finset.univ) τ' (fun x _ hx => by simp [Ne.symm hx]) (by simp),
     Finset.sum_eq_single (s := Finset.univ) τ' (fun x _ hx => by simp [Ne.symm hx]) (by simp)]
   simp only [if_true, nsmul_eq_mul, Bool.false_eq_true, if_false, mul_one]
@@ -122,7 +123,7 @@ theorem decomp (la : AllWt.Weight Dw) (hla : GapGe 0 la) (hN : 0 < Dw.p + Dw.q) 
     have hy' : y + 1 < Dw.p + Dw.q := by simp only [Finset.mem_range] at hy; omega
     have hg : 0 ≤ gap (la τ') y := hla τ' y hy'
     rw [Int.toNat_of_nonneg hg, if_pos hy']
-    split_ifs <;> first | omega | simp <;> omega
+    split_ifs <;> first | omega
   have hc := Int.toNat_sub_toNat_neg (cτ τ')
   have hcdef : cτ τ' = la τ' ⟨Dw.p + Dw.q - 1, by omega⟩ +
       ∑ k ∈ Finset.range (Dw.p + Dw.q - 1), if Dw.p ≤ k then gap (la τ') k else 0 := rfl

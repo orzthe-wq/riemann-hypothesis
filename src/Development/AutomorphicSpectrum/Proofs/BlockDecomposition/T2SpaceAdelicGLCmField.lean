@@ -324,7 +324,7 @@ section Top
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 theorem secondCountable_GA : SecondCountableTopology (GA E n) := by
-  haveI := GlobalTheory.AdelicFourierUniq.secondCountable_inf E
+  haveI := _root_.GlobalTheory.AdelicUnitaryTop.secondCountable_infiniteAdele E
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele E
   haveI : SecondCountableTopology (Ad E) :=
     inferInstanceAs (SecondCountableTopology (InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E))
@@ -338,7 +338,7 @@ theorem locallyCompact_GA : LocallyCompactSpace (GA E n) :=
   GroundTheory.Automorphic.AdelicGLn.locallyCompactSpace E n
 
 theorem t2Space_adelicGL_cmField : T2Space (GA E n) := by
-  haveI := GlobalTheory.AdelicFourierUniq.t2Space_infiniteAdeleRing_of_numberField E
+  haveI := _root_.GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field E
   haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E
   haveI : T2Space (Ad E) :=
     inferInstanceAs (T2Space (InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E))

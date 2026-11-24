@@ -97,7 +97,7 @@ theorem growth_of_tame {ψ : Sm E a} (h : ψ ∈ tame E a) : ψ.1 ∈ growth E a
 theorem lie_mem_tame (X : Lie E a) {ψ : Sm E a} (h : ψ ∈ tame E a) : lie E a X ψ ∈ tame E a := by
   intro l
   have e : (l.map (lie E a)).prod (lie E a X ψ) = ((l ++ [X]).map (lie E a)).prod ψ := by
-    simp [List.map_append, List.prod_append, Module.End.mul_apply]
+    simp [List.map_append, List.prod_append]
   rw [e]
   exact h _
 

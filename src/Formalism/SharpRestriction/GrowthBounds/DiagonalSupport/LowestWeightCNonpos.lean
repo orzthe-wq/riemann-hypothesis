@@ -239,7 +239,7 @@ theorem sum_of_span [Fintype G] [Nonempty G] {σ : Type} (X : G → Submodule O 
       show c • ∏ j, A i j = ∏ j, (if j = j0 then c • A i j else A i j)
       rw [← Finset.mul_prod_erase _ (fun j => A i j) (Finset.mem_univ j0),
         ← Finset.mul_prod_erase _ (fun j => if j = j0 then c • A i j else A i j) (Finset.mem_univ j0)]
-      simp only [if_pos rfl, eq_self_iff_true, if_true]
+      simp only [if_true]
       rw [Finset.prod_congr rfl (fun j hj => if_neg (Finset.ne_of_mem_erase hj)), smul_mul_assoc]
 
 theorem decGen (hA : ATL) (hS : ValSlice) [IsPrincipalIdealRing O] [Fintype G] [Nonempty G]

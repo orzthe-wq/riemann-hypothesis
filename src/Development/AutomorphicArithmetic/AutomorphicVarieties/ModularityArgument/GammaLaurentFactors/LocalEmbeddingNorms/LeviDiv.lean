@@ -51,6 +51,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.ExtremallyDisconnected
 import Mathlib.Topology.UniformSpace.Uniformizable
+import Mathlib.MeasureTheory.Measure.HasOuterApproxClosedProd
 
 @[expose] public section
 

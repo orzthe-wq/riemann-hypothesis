@@ -336,7 +336,7 @@ theorem resolves_field (hL : Out.Laws) (K : Type) [Field K] [IsAlgClosed K] (x :
       rw [hc]; exact hyU a
     · rw [show c t = c₀ t from Function.extend_apply' _ _ _ h]; exact hc₀ t
   have hfin : FinZ x s := (Set.finite_range y).subset fun t ht => hzero t ht
-  obtain ⟨h₁, h₂, h₃⟩ := GlobalTheory.T.koszul_sections_exact_algClosed_polarisedAV hL K x n l s b m c hn hl hfin hb hm hcU
+  obtain ⟨h₁, h₂, h₃⟩ := _root_.GlobalTheory.koszul_sections_exact_field hL K x n l s b m c hn hl hfin hb hm hcU
   have hl0 : l = l - 0 * n := by simp
   refine ⟨h₁, fun t => ?_, fun v hv => ?_⟩
   · obtain ⟨sg, hsg⟩ := h₂ fun q => gs (𝟙 _) q (x.P.L.U (c q)) (AbLaw.cst x.P.A.hom (x.P.L.U (c q)) (Function.extend y t 0 q))

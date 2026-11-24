@@ -1,12 +1,16 @@
 module
 
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RepresentsOfComputes
-public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.H1MapSubgroup
+public import Mathlib.Algebra.MvPolynomial.Basic
+public import Mathlib.Data.Finsupp.Weight
+public import Mathlib.RingTheory.Ideal.Defs
+public import Mathlib.RingTheory.Ideal.BigOperators
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTameInertiaElementAtTwistPrime
+public import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.CyclotomicTotient.OneAddPow
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Small2
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfPowMul
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfToLamMem
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CokEquivOfExact
+public import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DetMemSpanAdjugate
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqOneOfMemProKer
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisTwistedSelmerAuxprimesOfMatrixAndBounds
@@ -27,7 +31,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,6 +38,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,11 +51,553 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.RingTheory.MvPolynomial.Ideal
+import Mathlib.Tactic.Linter.HaveILetI
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsDualDualRep
+import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RepresentsOfComputes, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfPowMul, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfToLamMem, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CokEquivOfExact, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChebotarevInductionGrowBoundOfPresentation
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RepresentsOfComputes =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RepresentsOfComputes", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.H1MapSubgroup\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun
+
+namespace GlobalTheory.Growth
+
+section Chg
+
+variable {R R' : Type} [CommRing R] [CommRing R'] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
+  {M : Type} [AddCommGroup M] [Module R M] [Module R' M] [TopologicalSpace M] [IsTopologicalAddGroup M]
+  [ContinuousConstSMul R M] [ContinuousConstSMul R' M]
+  (rho : Representation R Γ M) (rho' : Representation R' Γ M) (h : ∀ g m, rho g m = rho' g m)
+
+theorem mk_eq_mk_iff (z w : Z1 rho) : (Submodule.Quotient.mk z : H1 rho) = Submodule.Quotient.mk w ↔
+    ∃ m, ∀ g, z.1 g - w.1 g = rho g m - m := by
+  rw [Submodule.Quotient.eq]
+  exact mem_coboundaries1 rho _
+
+def chgZ (z : Z1 rho) : Z1 rho' := ⟨z.1, z.2.1, fun g k => by rw [← h]; exact z.2.2 g k⟩
+
+def chg : H1 rho → H1 rho' :=
+  Quotient.map' (chgZ rho rho' h) fun z w hzw => by
+    obtain ⟨m, hm⟩ := (mk_eq_mk_iff rho z w).1 (Quotient.sound' hzw)
+    exact Quotient.exact' ((mk_eq_mk_iff rho' _ _).2 ⟨m, fun g => by rw [← h]; exact hm g⟩)
+
+theorem chg_mk (z : Z1 rho) : chg rho rho' h (Submodule.Quotient.mk z) = Submodule.Quotient.mk (chgZ rho rho' h z) := rfl
+
+theorem chg_zero : chg rho rho' h 0 = 0 := rfl
+
+theorem chg_add (x y : H1 rho) : chg rho rho' h (x + y) = chg rho rho' h x + chg rho rho' h y := by
+  induction x using Submodule.Quotient.induction_on with
+  | H z =>
+  induction y using Submodule.Quotient.induction_on with
+  | H w => rfl
+
+theorem chg_smul (a : R) (a' : R') (ha : ∀ m : M, a • m = a' • m) (x : H1 rho) :
+    chg rho rho' h (a • x) = a' • chg rho rho' h x := by
+  induction x using Submodule.Quotient.induction_on with
+  | H z =>
+    rw [← Submodule.Quotient.mk_smul, chg_mk, chg_mk, ← Submodule.Quotient.mk_smul]
+    exact congrArg _ (Subtype.ext (funext fun g => ha _))
+
+theorem chg_mem_span (hs : ∀ a : R, ∃ a' : R', ∀ m : M, a • m = a' • m) {S : Set (H1 rho)} {T : Submodule R' (H1 rho')}
+    (hS : ∀ x ∈ S, chg rho rho' h x ∈ T) {x : H1 rho} (hx : x ∈ Submodule.span R S) : chg rho rho' h x ∈ T := by
+  induction hx using Submodule.span_induction with
+  | mem x hx => exact hS x hx
+  | zero => rw [chg_zero]; exact T.zero_mem
+  | add x y _ _ hx hy => rw [chg_add]; exact T.add_mem hx hy
+  | smul a x _ hx =>
+    obtain ⟨a', ha⟩ := hs a
+    rw [chg_smul _ _ _ a a' ha]
+    exact T.smul_mem a' hx
+
+theorem chg_chg (x : H1 rho) : chg rho' rho (fun g m => (h g m).symm) (chg rho rho' h x) = x := by
+  induction x using Submodule.Quotient.induction_on with
+  | H z => rfl
+
+theorem res_chg {H : Type} [Group H] [TopologicalSpace H] (phi : H →* Γ) (hphi : Continuous phi) (x : H1 rho) :
+    resH1 rho' phi hphi (chg rho rho' h x) =
+      chg (rho.comp phi) (rho'.comp phi) (fun g m => h (phi g) m) (resH1 rho phi hphi x) := by
+  induction x using Submodule.Quotient.induction_on with
+  | H z => rfl
+
+theorem chg_ur (J : Subgroup Γ) (x : H1 rho) (hx : x ∈ H1ur rho J) : chg rho rho' h x ∈ H1ur rho' J := by
+  have h0 : resH1 rho J.subtype continuous_subtype_val x = 0 := hx
+  exact (res_chg rho rho' h J.subtype continuous_subtype_val x).trans
+    ((congrArg _ h0).trans (chg_zero _ _ _))
+
+end Chg
+
+variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (bkP : BKPh X)
+  (i : X.Tw)
+
+section Sel
+
+variable {r : ℕ} (ρ : GE N →* GL (Fin r) (X.O0 i)) {Λ Λ' : Type} [CommRing Λ] [Algebra (X.O0 i) Λ] [CommRing Λ']
+  [Algebra (X.O0 i) Λ'] (κ : GE N →* Λˣ) (κ' : GE N →* Λ'ˣ)
+  {B : Type} [AddCommGroup B] [Module Λ B] [Module Λ' B] [TopologicalSpace B] [DiscreteTopology B]
+  (h : ∀ g m, repOn ρ κ B g m = repOn ρ κ' B g m) (hs : ∀ a : Λ, ∃ a' : Λ', ∀ b : B, a • b = a' • b)
+  (ho : ∀ (y : X.O0 i) (b : B), algebraMap (X.O0 i) Λ y • b = algebraMap (X.O0 i) Λ' y • b)
+
+include hs ho
+
+theorem chg_mem_bkOn (v : PlE D.host) (x : H1 ((repOn ρ κ B).comp (DecV N v).subtype))
+    (hx : x ∈ bkOn bkP i ρ κ B v) :
+    chg _ ((repOn ρ κ' B).comp (DecV N v).subtype) (fun g m => h g.1 m) x ∈ bkOn bkP i ρ κ' B v := by
+  unfold bkOn at hx ⊢
+  split_ifs at hx ⊢ with hv
+  · refine chg_mem_span _ _ _ (fun a => (hs a).imp fun a' ha m => funext fun c => ha (m c)) ?_ hx
+    rintro x ⟨z, c, y, b, hc, hy, hz, rfl⟩
+    exact Submodule.subset_span ⟨chgZ _ _ (fun g m => h g.1 m) z, c, y, b, hc, hy,
+      fun g a => (hz g a).trans (ho _ _), rfl⟩
+  · rw [Submodule.mem_bot] at hx ⊢
+    rw [hx]
+    exact chg_zero _ _ _
+
+theorem chg_mem_selOn (Q : Finset (PlE D.host)) (x : H1 (repOn ρ κ B))
+    (hx : x ∈ selOn bkP i ρ κ B Q) : chg _ (repOn ρ κ' B) h x ∈ selOn bkP i ρ κ' B Q := by
+  refine (mem_Sel _ _ _ _ _).2 fun v => ?_
+  have hv := (mem_Sel _ _ _ _ _).1 hx v
+  refine (res_chg (repOn ρ κ B) (repOn ρ κ' B) h (Dec (F := D.host.E) (N.plOm.1 v)).subtype continuous_subtype_val x) ▸ ?_
+  unfold Formalism.GaloisCohomology.bkCond at hv ⊢
+  split_ifs at hv ⊢ with h1 h2
+  · exact chg_mem_bkOn bkP i ρ κ κ' h hs ho v _ hv
+  · exact Submodule.mem_top
+  · exact chg_ur _ _ _ _ _ hv
+
+end Sel
+
+def Represents {r : ℕ} (ρ : GE N →* GL (Fin r) (X.O0 i)) {R : Type} [CommRing R] [Algebra (X.O0 i) R] (κ : GE N →* Rˣ)
+    (Q : Finset (PlE D.host)) {a : ℕ} (Ψ : Matrix (Fin a) (Fin a) R) : Prop :=
+  ∃ E : ∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B],
+      (Fin a → B) → H1 (repOn ρ κ B),
+    (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (u : Fin a → B),
+      matAct Ψ u = 0 → E B u ∈ selOn bkP i ρ κ B Q) ∧
+    (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (u u' : Fin a → B),
+      matAct Ψ u = 0 → matAct Ψ u' = 0 → E B u = E B u' → u = u') ∧
+    (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B],
+      ∀ y ∈ selOn bkP i ρ κ B Q, ∃ u, matAct Ψ u = 0 ∧ E B u = y) ∧
+    ∀ (B B' : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B]
+      [AddCommGroup B'] [Module R B'] [TopologicalSpace B'] [DiscreteTopology B'] (f : B →ₗ[R] B') (u : Fin a → B),
+      matAct Ψ u = 0 → E B' (fun c => f (u c)) = h1Map ρ κ f (E B u)
+
+variable {bkP i}
+
+theorem represents_of_computes {s : X.Sig i} {M : ℕ} {ι : Type} {d : ι → (GE N →* Multiplicative (ZMod (X.l i ^ M)))}
+    {Q : Finset (PlE D.host)} {a : ℕ} {Φ : Matrix (Fin a) (Fin a) (abelian₂ X i M ι)} (hΦ : Computes bkP i s M d Q Φ)
+    {R : Type} [CommRing R] [Algebra (X.O0 i) R] (p : abelian₂ X i M ι →ₐ[X.O0 i] R) (hp : Function.Surjective p)
+    (κ : GE N →* Rˣ) (hκ : ∀ g, p (delInv i M d g : (abelian₂ X i M ι)ˣ) = κ g) (n : ℕ) (hn : ((X.l i ^ n : ℕ) : R) = 0) :
+    Represents bkP i (Tgl i s) κ Q (Φ.map p) := by
+  classical
+  obtain ⟨e, he⟩ := hΦ
+  have tor : ∀ (B : Type) [AddCommGroup B] [Module R B], ∀ b : B, ∃ n : ℕ, (X.l i ^ n) • b = 0 := fun B _ _ b =>
+    ⟨n, by rw [← Nat.cast_smul_eq_nsmul R, hn, zero_smul]⟩
+  let inst : ∀ (B : Type) [AddCommGroup B] [Module R B], Module (abelian₂ X i M ι) B := fun B _ _ =>
+    Module.compHom B p.toRingHom
+  have hsm : ∀ (B : Type) [AddCommGroup B] [Module R B] (x : abelian₂ X i M ι) (b : B), x • b = p x • b := fun _ _ _ _ _ => rfl
+  have hk : ∀ (B : Type) [AddCommGroup B] [Module R B] (u : Fin a → B), matAct (Φ.map p) u = matAct Φ u :=
+    fun _ _ _ _ => rfl
+  have ho : ∀ (B : Type) [AddCommGroup B] [Module R B] (y : X.O0 i) (b : B),
+      algebraMap (X.O0 i) (abelian₂ X i M ι) y • b = algebraMap (X.O0 i) R y • b := fun B _ _ y b => by
+    rw [hsm, AlgHom.commutes]
+  have hr : ∀ (B : Type) [AddCommGroup B] [Module R B] g m,
+      repOn (Tgl i s) (delInv i M d) B g m = repOn (Tgl i s) κ B g m := fun B _ _ g m => by
+    funext c
+    change (delInv i M d g : abelian₂ X i M ι) • ∑ j, algebraMap (X.O0 i) (abelian₂ X i M ι) _ • m j =
+      (κ g : R) • ∑ j, algebraMap (X.O0 i) R _ • m j
+    rw [hsm, hκ]
+    simp only [ho]
+  refine ⟨fun B _ _ _ _ u => if h : matAct Φ u = 0 then chg _ _ (hr B) (e B (tor B) ⟨u, h⟩).1 else 0,
+    fun B _ _ _ _ u hu => ?_, fun B _ _ _ _ u u' hu hu' huu => ?_, fun B _ _ _ _ y hy => ?_,
+    fun B B' _ _ _ _ _ _ _ _ f u hu => ?_⟩
+  · rw [hk] at hu
+    simp only [dif_pos hu]
+    exact chg_mem_selOn bkP i _ _ _ (hr B) (fun x => ⟨p x, hsm B x⟩) (ho B) Q _ (e B (tor B) ⟨u, hu⟩).2
+  · rw [hk] at hu hu'
+    simp only [dif_pos hu, dif_pos hu'] at huu
+    have h1 := congrArg (chg _ _ fun g m => (hr B g m).symm) huu
+    rw [chg_chg, chg_chg] at h1
+    exact congrArg Subtype.val ((e B (tor B)).injective (Subtype.ext h1))
+  · have h1 := chg_mem_selOn bkP i _ _ _ (fun g m => (hr B g m).symm)
+      (fun x => by obtain ⟨x', rfl⟩ := hp x; exact ⟨x', fun b => (hsm B x' b).symm⟩) (fun y b => (ho B y b).symm) Q y hy
+    obtain ⟨u, hu⟩ := (e B (tor B)).surjective ⟨_, h1⟩
+    have hu0 : matAct Φ u.1 = 0 := u.2
+    refine ⟨u.1, hu0, ?_⟩
+    simp only [dif_pos hu0]
+    rw [show (⟨u.1, hu0⟩ : LinearMap.ker (matAct (M := B) Φ)) = u from rfl, hu]
+    exact chg_chg _ _ _ y
+  · rw [hk] at hu
+    let f' : B →ₗ[abelian₂ X i M ι] B' := ⟨f.toAddHom, fun x b => f.map_smul (p x) b⟩
+    have hu' : matAct Φ (fun c => f (u c)) = 0 := by
+      show matAct Φ (fun c => f' (u c)) = 0
+      funext c
+      have := congrArg f' (congrFun hu c)
+
+      simpa [matAct, map_sum] using this
+    simp only [dif_pos hu, dif_pos hu']
+    obtain ⟨z, hz⟩ := Submodule.Quotient.mk_surjective _ (e B (tor B) ⟨u, hu⟩).1
+    rw [he B B' (tor B) (tor B') f' ⟨u, hu⟩ ⟨_, hu'⟩ z (cocycles1MapOfEquivariant _ _ (f'.compLeft _) continuous_of_discreteTopology
+      (repOn_map _ _ f') z) (fun _ => rfl) (fun _ _ => rfl) hz.symm, ← hz]
+    rfl
+
+end GlobalTheory.Growth
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RepresentsOfComputes =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfPowMul =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfPowMul", "h": "module\n\npublic import Mathlib.Algebra.MvPolynomial.Basic\npublic import Mathlib.Data.Finsupp.Weight\npublic import Mathlib.RingTheory.Ideal.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.RingTheory.Ideal.BigOperators\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.OrdMul
+
+open MvPolynomial
+
+theorem coeff_mem_of_mul {O : Type} [CommRing O] (I : Ideal O) {ι : Type} (K : Set ι) (q : ι)
+    (hq : q ∉ K) (a F : MvPolynomial ι O) (N : ℕ) (h0 : a.coeff 0 = 0)
+    (hu : IsUnit (a.coeff (Finsupp.single q 1)))
+    (H : ∀ m : ι →₀ ℕ, m.degree < N + 1 → (∀ j ∈ K, m j = 0) → (a * F).coeff m ∈ I) :
+    ∀ m : ι →₀ ℕ, m.degree < N → (∀ j ∈ K, m j = 0) → F.coeff m ∈ I := by
+  classical
+
+  have key : ∀ n : ℕ, ∀ m : ι →₀ ℕ, m q + 2 * (m.erase q).degree = n → m.degree < N →
+      (∀ j ∈ K, m j = 0) → F.coeff m ∈ I := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro m hμ hm hK
+      set m' : ι →₀ ℕ := m + Finsupp.single q 1 with hm'
+      have hdeg' : m'.degree < N + 1 := by
+        rw [hm', map_add (f := _), Finsupp.degree_single]; omega
+      have hK' : ∀ j ∈ K, m' j = 0 := by
+        intro j hj
+        have hqj : q ≠ j := fun h => hq (h ▸ hj)
+        simp [hm', hK j hj, hqj]
+      have hH := H m' hdeg' hK'
+      rw [MvPolynomial.coeff_mul] at hH
+      have hmem : (Finsupp.single q 1, m) ∈ Finset.HasAntidiagonal.antidiagonal m' := by
+        rw [Finset.HasAntidiagonal.mem_antidiagonal, hm']; exact add_comm _ _
+      rw [← Finset.add_sum_erase _ _ hmem] at hH
+      have hrest : ∑ x ∈ (Finset.HasAntidiagonal.antidiagonal m').erase (Finsupp.single q 1, m),
+          a.coeff x.1 * F.coeff x.2 ∈ I := by
+        refine Ideal.sum_mem _ (fun x hx => ?_)
+        obtain ⟨hne, hx⟩ := Finset.mem_erase.mp hx
+        rw [Finset.HasAntidiagonal.mem_antidiagonal] at hx
+        by_cases hi : x.1 = 0
+        · rw [hi, h0, zero_mul]; exact I.zero_mem
+        · apply I.mul_mem_left
+          have hiq : x.1 ≠ Finsupp.single q 1 := by
+            intro h
+            apply hne
+            refine Prod.ext h ?_
+            rw [h, hm', add_comm m] at hx
+            exact add_left_cancel hx
+          have hxq : x.1 q + x.2 q = m q + 1 := by
+            have := congrArg (fun f : ι →₀ ℕ => f q) hx
+            simpa [hm'] using this
+          have hxe : x.1.erase q + x.2.erase q = m.erase q := by
+            have := congrArg (Finsupp.erase q) hx
+            simpa [hm', Finsupp.erase_add] using this
+          have hD : (x.1.erase q).degree + (x.2.erase q).degree = (m.erase q).degree := by
+            rw [← map_add (f := _), hxe]
+          have hdx : x.1.degree + x.2.degree = m.degree + 1 := by
+            have := congrArg Finsupp.degree hx
+            simpa [hm'] using this
+          have hd1 : x.1.degree ≠ 0 := fun h => hi ((Finsupp.degree_eq_zero_iff _).mp h)
+
+          have hw : 2 ≤ x.1 q + 2 * (x.1.erase q).degree := by
+            by_cases he : x.1.erase q = 0
+            · have hs : Finsupp.single q (x.1 q) = x.1 := by
+                simpa [he] using Finsupp.single_add_erase q x.1
+              have h0' : x.1 q ≠ 0 := by
+                intro h; apply hi; rw [← hs, h, Finsupp.single_zero]
+              have h1' : x.1 q ≠ 1 := by
+                intro h; apply hiq; rw [← hs, h]
+              omega
+            · have : (x.1.erase q).degree ≠ 0 := fun h => he ((Finsupp.degree_eq_zero_iff _).mp h)
+              omega
+          refine ih (x.2 q + 2 * (x.2.erase q).degree) (by omega) x.2 rfl (by omega) ?_
+          intro j hj
+          have h1 := hK' j hj
+          rw [← hx] at h1
+          simp only [Finsupp.add_apply] at h1
+          omega
+      have hmain : a.coeff (Finsupp.single q 1) * F.coeff m ∈ I :=
+        (Ideal.add_mem_iff_left I hrest).mp hH
+      exact (Ideal.unit_mul_mem_iff_mem I hu).mp hmain
+  exact fun m hm hK => key _ m rfl hm hK
+
+theorem coeff_mem_of_pow_mul : ∀ (O : Type) [CommRing O] (I : Ideal O) (ι : Type) (K : Set ι) (q : ι), q ∉ K → ∀ (a F : MvPolynomial ι O) (N k : ℕ), a.coeff 0 = 0 → IsUnit (a.coeff (Finsupp.single q 1)) → (∀ m : ι →₀ ℕ, m.degree < N + k → (∀ j ∈ K, m j = 0) → (a ^ k * F).coeff m ∈ I) → ∀ m : ι →₀ ℕ, m.degree < N → (∀ j ∈ K, m j = 0) → F.coeff m ∈ I := by
+  intro O _ I ι K q hq a F N k h0 hu H
+  induction k generalizing F N with
+  | zero =>
+    intro m hm hK
+    simpa using H m (by simpa using hm) hK
+  | succ k ih =>
+    refine coeff_mem_of_mul I K q hq a F N h0 hu ?_
+    refine ih (a * F) (N + 1) ?_
+    intro m hm hK
+    have := H m (by omega) hK
+    rwa [pow_succ, mul_assoc] at this
+
+end GlobalTheory.OrdMul
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfPowMul =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfToLamMem =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfToLamMem", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTameInertiaElementAtTwistPrime\npublic import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.CyclotomicTotient.OneAddPow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.MvPolynomial.Ideal\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.H1MapSubgroup\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsDualDualRep\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Small2\nimport Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun GlobalTheory.Published GlobalTheory.ResSel GlobalTheory.StepTwo
+
+namespace GlobalTheory.StepTwo.LowCoeff
+
+def genChar {T ι : Type} [CommMonoid T] [Fintype ι] (n : ℕ) [NeZero n] (u : ι → T) (hu : ∀ q, u q ^ n = 1) :
+    Multiplicative (ι → ZMod n) →* T where
+  toFun g := ∏ q, u q ^ (g.toAdd q).val
+  map_one' := by simp
+  map_mul' g h := by
+    rw [← Finset.prod_mul_distrib]
+    refine Finset.prod_congr rfl fun q _ => ?_
+    rw [toAdd_mul, Pi.add_apply, ZMod.val_add, ← pow_eq_pow_mod _ (hu q), pow_add]
+
+open Classical in
+theorem genChar_single {T ι : Type} [CommMonoid T] [Fintype ι] (n : ℕ) [NeZero n] [Fact (1 < n)] (u : ι → T)
+    (hu : ∀ q, u q ^ n = 1) (q : ι) : genChar n u hu (Multiplicative.ofAdd (Pi.single q 1)) = u q := by
+  change ∏ p, u p ^ ((Pi.single q (1 : ZMod n) : ι → ZMod n) p).val = u q
+  rw [Finset.prod_eq_single q]
+  · simp [ZMod.val_one]
+  · intro p _ hp
+    simp [Pi.single_eq_of_ne hp]
+  · simp
+
+theorem coeff_mem_of_toLam_mem : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] (I : Ideal (X.O0 i)), 0 < nu X i → nu X i + 1 ≤ M → (X.l i : X.O0 i) ^ (nu X i + 1) ∈ I → ∀ F : MvPolynomial ι (X.O0 i), toLam X i M ι F ∈ I.map (algebraMap (X.O0 i) (abelian₂ X i M ι)) → ∀ m : ι →₀ ℕ, m.degree < X.l i ^ (M - nu X i - 1) → F.coeff m ∈ I := by
+  intro D N X i M ι _ I _ hM h4 F hF m hm
+  classical
+  have hp : (X.l i).Prime := (X.lPrime i).out
+  let J : Ideal (MvPolynomial ι (X.O0 i)) :=
+    I.map (MvPolynomial.C : X.O0 i →+* MvPolynomial ι (X.O0 i)) ⊔ MvPolynomial.idealOfVars ι (X.O0 i) ^ (X.l i ^ (M - nu X i - 1))
+  let π : MvPolynomial ι (X.O0 i) →ₐ[X.O0 i] (MvPolynomial ι (X.O0 i) ⧸ J) := Ideal.Quotient.mkₐ (X.O0 i) J
+  have hI : ∀ a ∈ I, algebraMap (X.O0 i) (MvPolynomial ι (X.O0 i) ⧸ J) a = 0 := by
+    intro a ha
+    rw [← π.commutes]
+    exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ ha))
+  have h4' : ((X.l i : ℕ) : MvPolynomial ι (X.O0 i) ⧸ J) ^ (nu X i + 1) = 0 := by
+    have := hI _ h4
+    rwa [map_pow, map_natCast] at this
+  have h1 : 1 < X.l i ^ M := Nat.one_lt_pow (by omega) hp.one_lt
+  haveI : Fact (1 < X.l i ^ M) := ⟨h1⟩
+  haveI : NeZero (X.l i ^ M) := ⟨by omega⟩
+  have hu : ∀ q, (1 + π (MvPolynomial.X q)) ^ (X.l i ^ M) = 1 := by
+    intro q
+    refine KStar.Tree.one_add_pow_prime_pow_eq_one hp h4' hM ?_
+    rw [← map_pow]
+    exact Ideal.Quotient.eq_zero_iff_mem.2
+      (Ideal.mem_sup_right (Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self q)) _))
+  let L := MonoidAlgebra.lift (X.O0 i) (MvPolynomial ι (X.O0 i) ⧸ J) (Del X i M ι)
+    (genChar (X.l i ^ M) (fun q => 1 + π (MvPolynomial.X q)) hu)
+  have hc : L.comp (toLam X i M ι) = π := by
+    refine MvPolynomial.algHom_ext fun q => ?_
+    rw [AlgHom.comp_apply, toLam, MvPolynomial.aeval_X, map_sub, map_one, MonoidAlgebra.lift_of]
+    have := genChar_single (X.l i ^ M) (fun q => 1 + π (MvPolynomial.X q)) hu q
+    rw [sub_eq_iff_eq_add']
+    convert this
+  have hker : I.map (algebraMap (X.O0 i) (abelian₂ X i M ι)) ≤ RingHom.ker L := by
+    rw [Ideal.map_le_iff_le_comap]
+    intro a ha
+    rw [Ideal.mem_comap, RingHom.mem_ker, L.commutes]
+    exact hI a ha
+  have hFJ : F ∈ J := by
+    have h0 : L (toLam X i M ι F) = 0 := hker hF
+    have : π F = 0 := by rw [← hc]; exact h0
+    exact Ideal.Quotient.eq_zero_iff_mem.1 this
+  obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.1 hFJ
+  have hb0 : b.coeff m = 0 := (MvPolynomial.mem_pow_idealOfVars_iff' _ b).1 hb m hm
+  rw [MvPolynomial.coeff_add, hb0, add_zero]
+  exact MvPolynomial.mem_map_C_iff.1 ha m
+
+end GlobalTheory.StepTwo.LowCoeff
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfToLamMem =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CokEquivOfExact =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CokEquivOfExact", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.H1MapSubgroup\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsDualDualRep\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTameInertiaElementAtTwistPrime\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Small2\nimport Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun GlobalTheory.Published GlobalTheory.ResSel GlobalTheory.StepTwo
+
+namespace GlobalTheory.MatKerCokernel
+
+section
+variable {R : Type} [CommRing R] {a : ℕ}
+
+abbrev Cok (Φ : Matrix (Fin a) (Fin a) R) : Type :=
+  (Fin a → R) ⧸ LinearMap.range Φ.transpose.mulVecLin
+
+def univ (Φ : Matrix (Fin a) (Fin a) R) (c : Fin a) : Cok Φ :=
+  (LinearMap.range Φ.transpose.mulVecLin).mkQ (Pi.single c 1)
+
+theorem matAct_apply' {B : Type} [AddCommGroup B] [Module R B] (Φ : Matrix (Fin a) (Fin a) R)
+    (u : Fin a → B) (i : Fin a) : matAct Φ u i = ∑ j, Φ i j • u j := rfl
+
+theorem mk_eq_sum (Φ : Matrix (Fin a) (Fin a) R) (y : Fin a → R) :
+    (LinearMap.range Φ.transpose.mulVecLin).mkQ y = ∑ c, y c • univ Φ c := by
+  have hy : y = ∑ c, y c • (Pi.single c 1 : Fin a → R) := by
+    ext j
+    simp [Finset.sum_apply, Pi.single_apply]
+  conv_lhs => rw [hy]
+
+  simp only [map_sum, map_smul, univ]
+
+theorem univ_ker (Φ : Matrix (Fin a) (Fin a) R) : matAct Φ (univ Φ) = 0 := by
+  funext i
+  rw [matAct_apply', Pi.zero_apply]
+  have h := mk_eq_sum Φ (fun j => Φ i j)
+  beta_reduce at h
+  rw [← h, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.mem_range]
+  refine ⟨Pi.single i 1, ?_⟩
+  ext j
+  simp
+
+theorem map_ker {B B' : Type} [AddCommGroup B] [Module R B] [AddCommGroup B'] [Module R B']
+    (Φ : Matrix (Fin a) (Fin a) R) (f : B →ₗ[R] B') (u : Fin a → B) (hu : matAct Φ u = 0) :
+    matAct Φ (fun c => f (u c)) = 0 := by
+  funext i
+  have h := congrFun hu i
+  rw [matAct_apply', Pi.zero_apply] at h
+  rw [matAct_apply', Pi.zero_apply]
+  calc ∑ j, Φ i j • f (u j) = f (∑ j, Φ i j • u j) := by
+
+        rw [map_sum]
+        simp only [map_smul]
+    _ = 0 := by rw [h, map_zero]
+
+theorem exists_lift {B : Type} [AddCommGroup B] [Module R B]
+    (Φ : Matrix (Fin a) (Fin a) R) (b : Fin a → B) (hb : matAct Φ b = 0) :
+    ∃ f : Cok Φ →ₗ[R] B, ∀ c, f (univ Φ c) = b c := by
+  obtain ⟨g, hg⟩ : ∃ g : (Fin a → R) →ₗ[R] B, ∀ y, g y = ∑ c, y c • b c :=
+    ⟨∑ c, (LinearMap.proj c).smulRight (b c), fun y => by simp [LinearMap.sum_apply]⟩
+  have key : ∀ j, ∑ c, Φ j c • b c = 0 := fun j => by
+    have h := congrFun hb j
+    rw [matAct_apply', Pi.zero_apply] at h
+    exact h
+  have hle : LinearMap.range Φ.transpose.mulVecLin ≤ LinearMap.ker g := by
+    rintro _ ⟨z, rfl⟩
+    rw [LinearMap.mem_ker, hg]
+    calc ∑ c, (Φ.transpose.mulVecLin z) c • b c
+        = ∑ c, ∑ j, z j • Φ j c • b c := by
+          refine Finset.sum_congr rfl fun c _ => ?_
+          simp only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.transpose_apply,
+            Finset.sum_smul]
+          refine Finset.sum_congr rfl fun j _ => ?_
+          rw [mul_comm, mul_smul]
+      _ = ∑ j, z j • ∑ c, Φ j c • b c := by
+          rw [Finset.sum_comm]
+          simp only [Finset.smul_sum]
+      _ = 0 := by simp [key]
+  refine ⟨(LinearMap.range Φ.transpose.mulVecLin).liftQ g hle, fun c => ?_⟩
+  rw [univ, Submodule.mkQ_apply, Submodule.liftQ_apply, hg]
+  simp [Pi.single_apply]
+
+theorem hom_ext {B : Type} [AddCommGroup B] [Module R B]
+    (Φ : Matrix (Fin a) (Fin a) R) (f g : Cok Φ →ₗ[R] B)
+    (h : ∀ c, f (univ Φ c) = g (univ Φ c)) : f = g := by
+  apply Submodule.linearMap_qext
+  refine LinearMap.ext fun y => ?_
+
+  simp only [LinearMap.comp_apply, mk_eq_sum, map_sum, map_smul, h]
+
+end
+
+theorem cok_equiv_of_exact : ∀ (R : Type) [CommRing R] (a a' k : ℕ) (Φ : Matrix (Fin a) (Fin a) R) (Φ' : Matrix (Fin a') (Fin a') R) (x : R) (rel : ∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B], (Fin a → B) → (Fin a' → B) → Prop) (t : ∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B], (Fin a' → B) → Fin k → B), (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (u u' : Fin a → B) (w : Fin a' → B), matAct Φ u = 0 → matAct Φ u' = 0 → rel B u w → rel B u' w → u = u') → (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (u : Fin a → B) (w w' : Fin a' → B), matAct Φ' w = 0 → matAct Φ' w' = 0 → rel B u w → rel B u w' → w = w') → (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (u : Fin a → B), matAct Φ u = 0 → ∃ w : Fin a' → B, matAct Φ' w = 0 ∧ rel B u w ∧ t B w = 0) → (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (w : Fin a' → B), matAct Φ' w = 0 → t B w = 0 → ∃ u : Fin a → B, matAct Φ u = 0 ∧ rel B u w) → (∀ (B : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] (w : Fin a' → B), matAct Φ' w = 0 → ∀ j, x • t B w j = 0) → (∀ (B B' : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] [AddCommGroup B'] [Module R B'] [TopologicalSpace B'] [DiscreteTopology B'] (f : B →ₗ[R] B') (u : Fin a → B) (w : Fin a' → B), matAct Φ u = 0 → matAct Φ' w = 0 → rel B u w → rel B' (fun c => f (u c)) (fun c => f (w c))) → (∀ (B B' : Type) [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B] [AddCommGroup B'] [Module R B'] [TopologicalSpace B'] [DiscreteTopology B'] (f : B →ₗ[R] B') (w : Fin a' → B), matAct Φ' w = 0 → t B' (fun c => f (w c)) = fun j => f (t B w j)) → ∃ v : Fin k → ((Fin a' → R) ⧸ LinearMap.range Φ'.transpose.mulVecLin), (∀ j, x • v j = 0) ∧ Nonempty ((((Fin a' → R) ⧸ LinearMap.range Φ'.transpose.mulVecLin) ⧸ Submodule.span R (Set.range v)) ≃ₗ[R] ((Fin a → R) ⧸ LinearMap.range Φ.transpose.mulVecLin)) := by
+  intro R _ a a' k Φ Φ' x rel t H1 H2 H3 H4 H5 H6 H7
+
+  let _ : TopologicalSpace (Cok Φ) := ⊥
+  have : DiscreteTopology (Cok Φ) := ⟨rfl⟩
+  let _ : TopologicalSpace (Cok Φ') := ⊥
+  have : DiscreteTopology (Cok Φ') := ⟨rfl⟩
+
+  obtain ⟨v, hv⟩ : ∃ v : Fin k → Cok Φ', v = t (Cok Φ') (univ Φ') := ⟨_, rfl⟩
+  refine ⟨v, fun j => by rw [hv]; exact H5 _ _ (univ_ker Φ') j, ?_⟩
+  obtain ⟨S, hS⟩ : ∃ S : Submodule R (Cok Φ'), S = Submodule.span R (Set.range v) := ⟨_, rfl⟩
+  rw [← hS]
+  let _ : TopologicalSpace (Cok Φ' ⧸ S) := ⊥
+  have : DiscreteTopology (Cok Φ' ⧸ S) := ⟨rfl⟩
+
+  have hw0 : matAct Φ' (fun c => S.mkQ (univ Φ' c)) = 0 := map_ker Φ' S.mkQ (univ Φ') (univ_ker Φ')
+  have ht0 : t (Cok Φ' ⧸ S) (fun c => S.mkQ (univ Φ' c)) = 0 := by
+    rw [H7 (Cok Φ') (Cok Φ' ⧸ S) S.mkQ (univ Φ') (univ_ker Φ'), ← hv]
+    funext j
+    simp only [Submodule.mkQ_apply, Pi.zero_apply, Submodule.Quotient.mk_eq_zero]
+    rw [hS]
+    exact Submodule.subset_span ⟨j, rfl⟩
+  obtain ⟨u0, hu0, hr0⟩ := H4 _ _ hw0 ht0
+  obtain ⟨φ, hφ⟩ := exists_lift Φ u0 hu0
+
+  obtain ⟨w1, hw1, hr1, ht1⟩ := H3 (Cok Φ) (univ Φ) (univ_ker Φ)
+  obtain ⟨ψ0, hψ0⟩ := exists_lift Φ' w1 hw1
+  have hψ0v : S ≤ LinearMap.ker ψ0 := by
+    rw [hS, Submodule.span_le]
+    rintro _ ⟨j, rfl⟩
+    rw [SetLike.mem_coe, LinearMap.mem_ker, hv]
+    have h := H7 (Cok Φ') (Cok Φ) ψ0 (univ Φ') (univ_ker Φ')
+    rw [show (fun c => ψ0 (univ Φ' c)) = w1 from funext hψ0, ht1] at h
+    exact (congrFun h j).symm
+  obtain ⟨ψ, hψ⟩ : ∃ ψ : (Cok Φ' ⧸ S) →ₗ[R] Cok Φ, ∀ c, ψ (S.mkQ (univ Φ' c)) = w1 c :=
+    ⟨S.liftQ ψ0 hψ0v, fun c => by rw [Submodule.mkQ_apply, Submodule.liftQ_apply, hψ0]⟩
+
+  have e1 : ψ.comp φ = LinearMap.id := by
+    apply hom_ext Φ
+    intro c
+    simp only [LinearMap.comp_apply, LinearMap.id_apply, hφ]
+    have hk : matAct Φ (fun c => ψ (u0 c)) = 0 := map_ker Φ ψ u0 hu0
+    have hr := H6 (Cok Φ' ⧸ S) (Cok Φ) ψ u0 (fun c => S.mkQ (univ Φ' c)) hu0 hw0 hr0
+    simp only [hψ] at hr
+    exact congrFun (H1 (Cok Φ) _ _ w1 hk (univ_ker Φ) hr hr1) c
+  have e2 : φ.comp ψ = LinearMap.id := by
+    apply Submodule.linearMap_qext
+    apply hom_ext Φ'
+    intro c
+    simp only [LinearMap.comp_apply, LinearMap.id_apply, hψ]
+    have hk : matAct Φ' (fun c => φ (w1 c)) = 0 := map_ker Φ' φ w1 hw1
+    have hr := H6 (Cok Φ) (Cok Φ' ⧸ S) φ (univ Φ) w1 (univ_ker Φ) hw1 hr1
+    simp only [hφ] at hr
+    exact congrFun (H2 _ u0 _ _ hk hw0 hr hr0) c
+  exact ⟨LinearEquiv.ofLinearMap ψ φ e1 e2⟩
+
+end GlobalTheory.MatKerCokernel
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CokEquivOfExact =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChebotarevInductionGrowBoundOfPresentation =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChebotarevInductionGrowBoundOfPresentation", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RepresentsOfComputes\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GaloisSideTwistedSelmerAuxiliaryPrimes\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Small2\npublic import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfPowMul\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoeffMemOfToLamMem\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CokEquivOfExact\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DetMemSpanAdjugate\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqOneOfMemProKer\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisTwistedSelmerAuxprimesOfMatrixAndBounds\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPlaceOverMoveValCc\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -550,3 +1096,7 @@ theorem grow : TameLocal → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R 
       exact hm0 j (by omega)
 
 end GlobalTheory.Growth
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChebotarevInductionGrowBoundOfPresentation =====

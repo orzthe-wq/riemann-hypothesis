@@ -59,10 +59,7 @@ def InW (D : Formalism.BasicNotions.D7) (y : (VS D).V) : Prop :=
 theorem hT_star (D : Formalism.BasicNotions.D7) (x y : (VS D).V) : star ((VS D).hT x y) = (VS D).hT y x := by
   have h := (VS D).herm
   first
-  | exact h x y
   | exact h.eq x y
-  | simpa using h x y
-  | simpa using h.eq x y
 
 theorem T_ne (D : Formalism.BasicNotions.D7) : (D.sp.T : D.host.E) ≠ 0 := by
   have h := D.sp.T_prime.ne_zero
@@ -101,9 +98,9 @@ theorem inW_pW (D : Formalism.BasicNotions.D7) (v : (VS D).V) : InW D (pW D v) :
 
   · simp [pW, map_sum, D.sp.hyp_ee, D.sp.hyp_ef, hEZ, mul_ite, Finset.sum_ite_eq]
 
-  · simp [pW, map_sum, hT_hypF_hypE, D.sp.hyp_ff, hFZ, mul_ite, Finset.sum_ite_eq']
+  · simp [pW, map_sum, hT_hypF_hypE, D.sp.hyp_ff, hFZ, mul_ite]
 
-  · simp [pW, map_sum, hZE, hZF, D.sp.zm_norm, div_mul_cancel₀, hT0]
+  · simp [pW, map_sum, hZE, hZF, D.sp.zm_norm, hT0]
 
 def eichL (D : Formalism.BasicNotions.D7) (e y : (VS D).V) (c : D.host.E) : (VS D).V →ₗ[D.host.E] (VS D).V :=
   LinearMap.id + ((VS D).hT e).smulRight y - ((VS D).hT y).smulRight e + c • ((VS D).hT e).smulRight e
@@ -119,7 +116,7 @@ theorem eich_inv (D : Formalism.BasicNotions.D7) {e y : (VS D).V} {c : D.host.E}
   have h1 : (VS D).hT e (eichL D e y c v) = (VS D).hT e v := by
     simp [eichL_apply, he, hey]
   have h2 : (VS D).hT y (eichL D e y c v) = (VS D).hT y v + (VS D).hT e v * (VS D).hT y y := by
-    simp [eichL_apply, hye] <;> ring
+    simp [eichL_apply, hye]
   have hc' : (VS D).hT e v * (c + c + (VS D).hT y y) = 0 := by rw [hc, mul_zero]
   rw [eichL_apply D e (-y) c (eichL D e y c v), h1]
   simp only [map_neg, LinearMap.neg_apply, h2]
@@ -132,11 +129,11 @@ theorem eich_isom (D : Formalism.BasicNotions.D7) {e y : (VS D).V} {c : D.host.E
   have hE : ∀ w, (VS D).hT e (eichL D e y c w) = (VS D).hT e w := fun w => by
     simp [eichL_apply, he, hey]
   have hY : ∀ w, (VS D).hT y (eichL D e y c w) = (VS D).hT y w + (VS D).hT e w * (VS D).hT y y := fun w => by
-    simp [eichL_apply, hye] <;> ring
+    simp [eichL_apply, hye]
   have hU : ∀ w, (VS D).hT u (eichL D e y c w) = (VS D).hT u w + (VS D).hT e w * star ((VS D).hT y u)
       - (VS D).hT y w * star ((VS D).hT e u) + c * (VS D).hT e w * star ((VS D).hT e u) := fun w => by
     rw [hT_star D y u, hT_star D e u]
-    simp [eichL_apply] <;> ring
+    simp [eichL_apply]
   rw [eichL_apply D e y c u]
   simp only [map_add (f := _), map_sub, map_smulₛₗ, LinearMap.add_apply, LinearMap.sub_apply,
     LinearMap.smul_apply, smul_eq_mul, hE, hY, hU, starRingEnd_apply, star_mul']

@@ -606,7 +606,6 @@ theorem orthogonal_projection_exists : OrthProjExists := by
         ((H.map v0.embedding) *ᵥ (fun i => v0.embedding ((E *ᵥ z) i))) := by
       first
         | exact hPD.dotProduct_mulVec_pos hne
-        | exact (Matrix.posDef_iff_dotProduct_mulVec.mp hPD).2 _ hne
     rw [hmap, h2, map_zero] at h3
     exact lt_irrefl _ h3
   exact ⟨hH, hdet, hZ, isOrthProj_formula H E hZ, fun Pr hO => isOrthProj_unique hZ hO⟩

@@ -78,21 +78,6 @@ theorem isHCParam_lam_of_setting {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaS
   rw [show X.B.lam v = _ from funext (X.lam_eq v)]
   exact isHCParam_comp_fin_cast X.n_eq (Formalism.MainNotions.S.Inh.aut_isHCParam_lamS D.R (D.hc (X.pl v)))
 
-private theorem card_filter_true_add_card_filter_false {n : ℕ} (ε : Fin n → Bool) :
-    (Finset.univ.filter fun a : Fin n => ε a = true).card +
-      (Finset.univ.filter fun a : Fin n => ε a = false).card = n := by
-  rw [Finset.card_filter, Finset.card_filter, ← Finset.sum_add_distrib]
-  have h1 : ∀ a : Fin n, ((if ε a = true then 1 else 0) + (if ε a = false then 1 else 0) : ℕ) = 1 := by
-    intro a
-    cases ε a <;> simp
-  simp only [h1, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]
-
-theorem two_mul_rkR_le {n : ℕ} (ε : Fin n → Bool) : 2 * GlobalTheory.Count.rkR ε ≤ n := by
-  have h1 : GlobalTheory.Count.rkR ε ≤ (Finset.univ.filter fun a : Fin n => ε a = true).card := min_le_left _ _
-  have h2 : GlobalTheory.Count.rkR ε ≤ (Finset.univ.filter fun a : Fin n => ε a = false).card := min_le_right _ _
-  have h3 := card_filter_true_add_card_filter_false ε
-  omega
-
 private theorem natCast_rpow_three_halves_le_sq (q : ℕ) : (q : ℝ) ^ ((3 : ℝ) / 2) ≤ (q : ℝ) ^ 2 := by
   rcases Nat.eq_zero_or_pos q with hq | hq
   · subst hq
@@ -121,7 +106,7 @@ private theorem mul_rpow_three_halves_le_pow_four (q n : ℕ) (h : 2 * q ≤ n) 
 
 theorem rkR_bound {n : ℕ} (ε : Fin n → Bool) :
     120 * (n : ℝ) * ((GlobalTheory.Count.rkR ε : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ 100 * (n : ℝ) ^ 4 :=
-  mul_rpow_three_halves_le_pow_four _ _ (two_mul_rkR_le ε)
+  mul_rpow_three_halves_le_pow_four _ _ (_root_.GlobalTheory.KernelExpansion.two_mul_rank_le ε)
 
 private theorem mul_sq_mul_sqrt_le_pow_four (q n : ℕ) (h : 2 * q ≤ n) :
     40 * (n : ℝ) ^ 2 * Real.sqrt (q : ℝ) ≤ 100 * (n : ℝ) ^ 4 := by
@@ -144,7 +129,7 @@ private theorem mul_sq_mul_sqrt_le_pow_four (q n : ℕ) (h : 2 * q ≤ n) :
 
 theorem rkR_bound_sqrt {n : ℕ} (ε : Fin n → Bool) :
     40 * (n : ℝ) ^ 2 * Real.sqrt (GlobalTheory.Count.rkR ε) ≤ 100 * (n : ℝ) ^ 4 :=
-  mul_sq_mul_sqrt_le_pow_four _ _ (two_mul_rkR_le ε)
+  mul_sq_mul_sqrt_le_pow_four _ _ (_root_.GlobalTheory.KernelExpansion.two_mul_rank_le ε)
 
 theorem seeData_of_gap : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D), GlobalTheory.Count.GapGe X.B (100 * (D.R.r : ℝ) ^ 4) → GlobalTheory.Count.IsDSData X.B X.dv ∧ GlobalTheory.Dec.LocDec X.B (100 * (D.R.r : ℝ) ^ 4) ∧ GlobalTheory.Dec.HBig X.B 40 (100 * (D.R.r : ℝ) ^ 4) ∧ (∀ v, 120 * (X.B.I.n : ℝ) * ((GlobalTheory.Count.rkR (X.B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ 100 * (D.R.r : ℝ) ^ 4) ∧ Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I) ∧ ∀ v, Integrable (Formalism.L2.SG.ProjRows.phLoc (ε := X.B.I.ε v) (X.B.σ v) (X.B.w v) (X.dv v)) (Formalism.REAL.muG (X.B.I.ε v)) := by
   intro D X hg

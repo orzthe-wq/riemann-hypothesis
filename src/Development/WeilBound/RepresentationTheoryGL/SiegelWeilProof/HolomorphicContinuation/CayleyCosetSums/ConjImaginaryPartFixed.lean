@@ -69,9 +69,6 @@ theorem JJ_inv : (JJ n)⁻¹ = -JJ n := by
   apply Matrix.inv_eq_left_inv
   rw [Matrix.neg_mul, JJ_mul_JJ, neg_neg]
 
-theorem JJ_conjT : (JJ n)ᴴ = -JJ n := by
-  simp [JJ, fromBlocks_conjTranspose, fromBlocks_neg]
-
 theorem sig_eq (X : M2 n) : sig X = JJ n * Xᴴ * JJ n := by
   simp [sig, JJ_inv]
 
@@ -80,7 +77,7 @@ theorem sig_sig (X : M2 n) : sig (sig X) = X := by
     intro B
     rw [← Matrix.mul_assoc, JJ_mul_JJ, Matrix.neg_mul, Matrix.one_mul]
   rw [sig_eq, sig_eq]
-  simp only [conjTranspose_mul, conjTranspose_conjTranspose, JJ_conjT, Matrix.mul_assoc,
+  simp only [conjTranspose_mul, conjTranspose_conjTranspose, _root_.PositivityTheory.Rg.Sw.LVs.II.JJ_conjTranspose, Matrix.mul_assoc,
     Matrix.neg_mul, Matrix.mul_neg, neg_neg, h1, JJ_mul_JJ, Matrix.mul_one]
 
 theorem sig_add (X Y : M2 n) : sig (X + Y) = sig X + sig Y := by

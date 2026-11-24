@@ -132,13 +132,12 @@ theorem exists_full_lattice (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     have e : starRingEnd K (h x y) = h y x := by
       first
       | exact hs.eq x y
-      | exact hs x y
     rw [hxy, map_zero] at e
     exact e.symm
 
   have form_smul_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (μ ν : K) (x y : V) :
       h (μ • x) (ν • y) = star μ * ν * h x y := by
-    simp only [LinearMap.map_smulₛₗ₂, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply]
+    simp only [LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul, starRingEnd_apply]
     ring
 
   have exists_normalise (hF : IsFixF K F) (h𝔭 : 𝔭.IsMaximal) {h : V →ₗ⋆[K] V →ₗ[K] K}
@@ -149,7 +148,6 @@ theorem exists_full_lattice (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
       have e' : starRingEnd K (h e e) = h e e := by
         first
         | exact hs.eq e e
-        | exact hs e e
       rwa [starRingEnd_apply] at e'
     obtain ⟨μ, -, hμs, a, ha, ha2⟩ := exists_scale_fixed hF h𝔭 hd0 hds
     exact ⟨μ, a, by rw [form_smul_smul, hμs, ha], ha2⟩

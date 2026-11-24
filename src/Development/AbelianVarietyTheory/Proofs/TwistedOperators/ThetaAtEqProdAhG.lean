@@ -1,26 +1,32 @@
 module
 
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RealPoints
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfInf
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGenReadsOfUnitAt
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergTranslateVacuumReadRationalPoints
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsNsmulIntegral
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.DifferentiableConjConj
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.PPSemichar
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -40,10 +46,67 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.Tactic.ReduceModChar
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.DifferentiableConjConj
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.PPSemichar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsNsmulIntegral, Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaAtEqProdAhG
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsNsmulIntegral =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsNsmulIntegral", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+private theorem UpperTheory.Reformulated.B.Uc15.exists_nsmul_integral {E : Type} [Field E] [NumberField E]
+    (a : E) : ∃ M : ℕ, M ≠ 0 ∧ ∃ b : NumberField.RingOfIntegers E, (b : E) = (M : E) * a := by
+  have halg : IsAlgebraic ℤ a :=
+    (IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic a)
+  obtain ⟨y, hy, hint⟩ := halg.exists_integral_multiple
+  have h2 : IsIntegral ℤ (y • (y • a)) := hint.smul y
+  refine ⟨(y * y).natAbs, Int.natAbs_ne_zero.mpr (mul_ne_zero hy hy), ⟨y • (y • a), h2⟩, ?_⟩
+  have h3 : (((y * y).natAbs : ℕ) : E) = ((y * y : ℤ) : E) := by
+    rw [← Int.cast_natCast, Int.natAbs_of_nonneg (mul_self_nonneg y)]
+  rw [h3]
+  change y • (y • a) = _
+  rw [smul_smul, zsmul_eq_mul]
+
+theorem UpperTheory.Reformulated.B.Uc15.exists_nsmul_mem :
+    ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] {r : ℕ}
+      (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (u : Fin r → E), ∃ (N : ℕ), N ≠ (0 : ℕ) ∧ N • u ∈ X.Λ := by
+  intro E _ _ _ r X u
+  have hu : u ∈ Submodule.span E (X.Λ : Set (Fin r → E)) := by
+    rw [X.Λ_span]; exact Submodule.mem_top
+  induction hu using Submodule.span_induction with
+  | mem x hx => exact ⟨1, one_ne_zero, by rw [one_nsmul]; exact hx⟩
+  | zero => exact ⟨1, one_ne_zero, by rw [one_nsmul]; exact X.Λ.zero_mem⟩
+  | add x y _ _ hx hy =>
+    obtain ⟨M, hM, hx⟩ := hx
+    obtain ⟨N, hN, hy⟩ := hy
+    refine ⟨M * N, mul_ne_zero hM hN, ?_⟩
+    rw [nsmul_add]
+    refine X.Λ.add_mem ?_ ?_
+    · rw [mul_comm, mul_smul]; exact nsmul_mem hx N
+    · rw [mul_smul]; exact nsmul_mem hy M
+  | smul a x _ hx =>
+    obtain ⟨N, hN, hx⟩ := hx
+    obtain ⟨M, hM, b, hb⟩ := UpperTheory.Reformulated.B.Uc15.exists_nsmul_integral a
+    refine ⟨M * N, mul_ne_zero hM hN, ?_⟩
+    have h : (M * N) • a • x = b • (N • x) := by
+      funext i
+      change (M * N) • (a * x i) = (b : E) * (N • x i)
+      rw [hb, nsmul_eq_mul, nsmul_eq_mul]
+      push_cast
+      ring
+    rw [h]
+    exact X.Λ.smul_mem b hx
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsNsmulIntegral =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaAtEqProdAhG =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaAtEqProdAhG", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RealPoints\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfInf\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGenReadsOfUnitAt\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeisenbergTranslateVacuumReadRationalPoints\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsNsmulIntegral\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.DifferentiableConjConj\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.PPSemichar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Datum ReciprocityTheory.ChartRestriction.G.PullbackSections ReciprocityTheory.ChartRestriction.G.Geo.Tor
@@ -176,9 +239,6 @@ theorem hermForm_nsmul {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (N M : ℕ) (
   rw [hermForm_smul_left, show ((M : ℂ) • w) = (((M : ℝ) : ℂ) • w) by norm_cast, hermForm_real_smul_right]
   push_cast; ring
 
-theorem exists_nsmul_mem (X : Data E r) (u : Fin r → E) : ∃ N : ℕ, N ≠ 0 ∧ N • u ∈ X.Λ :=
-  _root_.UpperTheory.Reformulated.B.Uc15.exists_nsmul_mem X u
-
 end GlobalTheory.AHPhase
 
 namespace GlobalTheory.AHPhase
@@ -191,8 +251,8 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 theorem im_hermForm_pv (W : UnfAt U k x) (Y : UnitAt W) (u v : Fin r → E) :
     (hermForm Y.Hm (pv W u) (pv W v)).im =
       ((Algebra.trace ℚ E (-(U.X k).ξ0 * herm (U.X k).Gm u v) : ℚ) : ℝ) := by
-  obtain ⟨N, hN, hu⟩ := exists_nsmul_mem (U.X k) u
-  obtain ⟨M, hM, hv⟩ := exists_nsmul_mem (U.X k) v
+  obtain ⟨N, hN, hu⟩ := _root_.UpperTheory.Reformulated.B.Uc15.exists_nsmul_mem (U.X k) u
+  obtain ⟨M, hM, hv⟩ := _root_.UpperTheory.Reformulated.B.Uc15.exists_nsmul_mem (U.X k) v
   set a := (W.φ k).symm ⟨N • u, hu⟩ with ha
   set b := (W.φ k).symm ⟨M • v, hv⟩ with hb
   have hau : (W.φ k a : Fin r → E) = (N : E) • u := by
@@ -229,17 +289,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues Globa
 
 variable {D : D7}
 
-theorem theta_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
-    IsThetaFunO ψ S T (c • f) := {
-  quasi γ w := by simp only [Pi.smul_apply, smul_eq_mul]; rw [hf.quasi]; ring
-  level := by
-    obtain ⟨U, hUo, hU⟩ := hf.level
-    refine ⟨U, hUo, fun u hu hi => ?_⟩
-    have e : heisO ψ S T u (c • f) = c • heisO ψ S T u f := by
-      funext w; simp only [heisO, Pi.smul_apply, smul_eq_mul]; ring
-    rw [e, hU u hu hi]
-  cont := continuous_const.mul hf.cont
-  smooth k L hL hfin w := (contDiff_const.mul (hf.smooth k L hL hfin w)) }
+alias theta_smul := _root_.GlobalTheory.OrientedHeis.theta_smul
 
 theorem realPt_add (S T : HSp D) (X Y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     realPt S T (X + Y) = realPt S T X + realPt S T Y := by
@@ -267,3 +317,7 @@ theorem theta_realPt_add {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f : WO 
   ring
 
 end GlobalTheory.AHPhase
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaAtEqProdAhG =====

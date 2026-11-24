@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.EpsilonPairingZeta
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfFrobeniusSemilinearEquationExistsUniqueStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfFrobeniusSemilinearEquationExistsUnique
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -235,7 +235,7 @@ theorem window_iso : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClo
   have hPP : Pd * P = (p : F.B) • 1 := by
     ext i j
     rcases i with i | i <;> rcases j with j | j <;>
-      simp [hP, hPd, blk, Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply, Matrix.one_apply]
+      simp [hP, hPd, blk, Matrix.diagonal_apply, Matrix.one_apply]
   have hUi : U⁻¹ * U = 1 := Matrix.nonsing_inv_mul U ((Matrix.isUnit_iff_isUnit_det U).1 hU)
   choose E hE using hUU'
   set M := U * P with hM
@@ -264,7 +264,7 @@ theorem window_iso : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClo
   have hnilA : IsNil (WittVector.fontaineTheta O p) (WittVector.frobenius : Ainf p O →+* Ainf p O) KA :=
     isNil_lift F.θ F.σ _ _ F.a I F.θ_a F.σ_a hθI hσI K KA (fun i j => hgI _)
       (isNil_kron F.θ F.σ M N hnil)
-  obtain ⟨vA, hvA⟩ := (GlobalTheory.T.ainf_frobenius_semilinear_equation_existsUnique p C v O hv ε hε _ KA hnilA).1 (fun y => g (c y.1 y.2))
+  obtain ⟨vA, hvA⟩ := (_root_.GlobalTheory.WSolve.main p C v O hv ε hε _ KA hnilA).1 (fun y => g (c y.1 y.2))
   set Z : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B := Matrix.of fun j m => F.a (vA (j, m)) with hZ
   have hΔ : ∀ i l, (Z - M * Z.map F.σ * N - c) i l ∈ I := by
     intro i l

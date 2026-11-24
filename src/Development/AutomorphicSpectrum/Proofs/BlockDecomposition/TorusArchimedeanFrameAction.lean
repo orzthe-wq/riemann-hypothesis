@@ -65,7 +65,7 @@ theorem mul_frameLine {n r : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} {P : Matrix (
     by_cases h : i = a
     · subst h
       simp [Matrix.diagonal_mul, Matrix.single_apply]
-    · simp [Matrix.diagonal_mul, Matrix.single_apply, h]
+    · simp [Matrix.diagonal_mul, h]
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hA, Matrix.mul_assoc P, e, Matrix.mul_smul, Matrix.smul_mul]
 
 theorem map_frameLine {E : Type} [Field E] {n r : ℕ} (f : E →+* ℂ) (P : Matrix (Fin n) (Fin r) E)
@@ -77,7 +77,7 @@ theorem map_frameLine {E : Type} [Field E] {n r : ℕ} (f : E →+* ℂ) (P : Ma
   by_cases h : a = i ∧ b = i
   · obtain ⟨rfl, rfl⟩ := h
     simp
-  · simp [Matrix.single_apply, show ¬(i = a ∧ i = b) from fun q => h ⟨q.1.symm, q.2.symm⟩]
+  · simp [show ¬(i = a ∧ i = b) from fun q => h ⟨q.1.symm, q.2.symm⟩]
 
 theorem torus_mul_frameIdem : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (t : Fin r → ℝ) (a : GAd σ J), IsTorusElt σ J X Y t a → (∀ i, 0 < t i) → ∀ (w : InfinitePlace F) (τ : EmbOver E w) (β : FrameIx r), archMat σ J τ (projArch σ J w a) * (frameIdem (σ : E →+* E) J X Y β).map τ.1 = ((frameWt t β : ℝ) : ℂ) • (frameIdem (σ : E →+* E) J X Y β).map τ.1 := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW t a ha _ w τ β

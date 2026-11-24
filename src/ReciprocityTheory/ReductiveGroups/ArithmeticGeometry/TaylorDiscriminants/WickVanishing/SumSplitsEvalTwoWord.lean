@@ -2,49 +2,6 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.EvalZeroReplicateAppend
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.CcTMulQ
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -125,12 +82,12 @@ theorem sum_splits_evalOne_word (g : ι → k) (Ls : List ι) (hnd : Ls.Nodup) (
       have e2 : word Ls (m - Finsupp.single y 1) = word Ls m :=
         word_congr_lemma_6 _ _ _ fun z hz => by
           have hyz : y ≠ z := fun h => hy (h ▸ hz)
-          simp [Finsupp.single_apply, hyz]
+          simp [hyz]
       rw [word_cons_lemma_5, e1, e2]
     · congr 1
       refine List.map_congr_left fun z hz => ?_
       have hzy : z ≠ y := fun h => hy (h ▸ hz)
-      have e : (m - Finsupp.single z 1 : ι →₀ ℕ) y = m y := by simp [Finsupp.single_apply, hzy]
+      have e : (m - Finsupp.single z 1 : ι →₀ ℕ) y = m y := by simp [hzy]
       rw [word_cons_lemma_5, e]
 
 theorem two_mul_choose_two (n : ℕ) : 2 * n.choose 2 = n * (n - 1) := by
@@ -144,7 +101,7 @@ theorem two_mul_choose_two (n : ℕ) : 2 * n.choose 2 = n * (n - 1) := by
 
 private theorem ev2_cons_lemma_7 (c : ι → ι → k) (l : ι) (t : List ι) :
     ev2 c (l :: t) = ev1 (c l) t := by
-  rcases t with _ | ⟨a, _ | ⟨b, t⟩⟩ <;> first | rfl | simp [ev1, ev2]
+  rcases t with _ | ⟨a, _ | ⟨b, t⟩⟩ <;> first | rfl
 
 private theorem t2_cons_lemma_8 (c : ι → ι → k) (l : ι) (w : List ι) (φ : List ι → k) :
     ((splits (l :: w)).map (fun p => φ p.1 * ev2 c p.2)).sum =
@@ -206,7 +163,7 @@ theorem sum_splits_evalTwo_word (c : ι → ι → k) (hc : ∀ x y, c x y = c y
         | (simp; done)
         | (simp; omega)
       have e3 : word Ls (m - Finsupp.single y0 1 - Finsupp.single y0 1) = word Ls m :=
-        word_congr_lemma_6 _ _ _ fun z hz => by simp [Finsupp.single_apply, hne z hz]
+        word_congr_lemma_6 _ _ _ fun z hz => by simp [hne z hz]
       rw [e1, word_cons_lemma_5, e2, e3, ← two_mul_choose_two]
       push_cast
       ring
@@ -218,9 +175,9 @@ theorem sum_splits_evalTwo_word (c : ι → ι → k) (hc : ∀ x y, c x y = c y
       congr 1
       refine List.map_congr_left fun y hyL => ?_
       have hyy : y0 ≠ y := hne y hyL
-      have e1 : (m - Finsupp.single y 1 : ι →₀ ℕ) y0 = m y0 := by simp [Finsupp.single_apply, hyy.symm]
+      have e1 : (m - Finsupp.single y 1 : ι →₀ ℕ) y0 = m y0 := by simp [hyy.symm]
       have e2 : (m - Finsupp.single y 1 - Finsupp.single y0 1 : ι →₀ ℕ) y0 = m y0 - 1 := by
-        simp [Finsupp.single_apply, hyy.symm]
+        simp [hyy.symm]
       have e3 : word Ls (m - Finsupp.single y 1 - Finsupp.single y0 1) = word Ls (m - Finsupp.single y 1) :=
         word_congr_lemma_6 _ _ _ fun z hz => by simp [Finsupp.single_apply, hne z hz]
       rw [e1, word_cons_lemma_5, e2, e3]
@@ -234,9 +191,9 @@ theorem sum_splits_evalTwo_word (c : ι → ι → k) (hc : ∀ x y, c x y = c y
       congr 1
       refine List.map_congr_left fun x hxL => ?_
       have hxx : y0 ≠ x := hne x hxL
-      have e1 : (m - Finsupp.single y0 1 : ι →₀ ℕ) x = m x := by simp [Finsupp.single_apply, hxx]
+      have e1 : (m - Finsupp.single y0 1 : ι →₀ ℕ) x = m x := by simp [hxx]
       have e2 : (m - Finsupp.single y0 1 - Finsupp.single x 1 : ι →₀ ℕ) y0 = m y0 - 1 := by
-        simp [Finsupp.single_apply, hxx.symm]
+        simp [hxx.symm]
       have e3 : word Ls (m - Finsupp.single y0 1 - Finsupp.single x 1) = word Ls (m - Finsupp.single x 1) :=
         word_congr_lemma_6 _ _ _ fun z hz => by simp [Finsupp.single_apply, hne z hz]
       rw [e1, word_cons_lemma_5, e2, e3, hc x y0]
@@ -251,7 +208,7 @@ theorem sum_splits_evalTwo_word (c : ι → ι → k) (hc : ∀ x y, c x y = c y
       congr 1
       refine List.map_congr_left fun y hyL => ?_
       have e : (m - Finsupp.single y 1 - Finsupp.single x 1 : ι →₀ ℕ) y0 = m y0 := by
-        simp [Finsupp.single_apply, (hne y hyL).symm, (hne x hxL).symm]
+        simp [(hne y hyL).symm, (hne x hxL).symm]
       rw [word_cons_lemma_5, e]
     linear_combination -ha - hb1 - hb2 - hcc
 

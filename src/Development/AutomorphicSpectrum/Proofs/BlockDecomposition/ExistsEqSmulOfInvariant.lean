@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.MemberDatumOfFlagTie
 
 @[expose] public section
 
@@ -158,9 +159,6 @@ theorem mt_mul (V : HSp D) (g h : GA D V) : Formalism.L2.Theta.mt V (g * h) = Fo
 theorem mt_one (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by
   simp [Formalism.L2.Theta.mt, map_one]
 
-theorem continuous_mt (V : HSp D) : Continuous (Formalism.L2.Theta.mt V) :=
-  Units.continuous_val.comp continuous_subtype_val
-
 theorem smul_sub_one_mul {R : Type*} [CommRing R] {n : ℕ} (e : R) (A B : Matrix (Fin n) (Fin n) R)
     (hA : e • (A - 1) = A - 1) (hB : e • (B - 1) = B - 1) : e • (A * B - 1) = A * B - 1 := by
   have h : A * B - 1 = (A - 1) * B + (B - 1) := by
@@ -191,7 +189,7 @@ def gS (V : HSp D) (e : AE D) : Subgroup (GA D V) where
 theorem isClosed_gS (V : HSp D) (e : AE D) : IsClosed (gS V e : Set (GA D V)) := by
   obtain ⟨h1, h2, h3, h4, h5⟩ := mx_facts D V.rank V.rank
   haveI : ContinuousSub (Matrix (Fin V.rank) (Fin V.rank) (AE D)) := @IsTopologicalAddGroup.to_continuousSub _ _ _ h4
-  have hc : Continuous fun h : GA D V => Formalism.L2.Theta.mt V h - 1 := (continuous_mt V).sub continuous_const
+  have hc : Continuous fun h : GA D V => Formalism.L2.Theta.mt V h - 1 := (_root_.GlobalTheory.MixModel.continuous_mt V).sub continuous_const
   exact isClosed_eq (hc.const_smul e) hc
 
 theorem act_alg {R : Type*} [CommRing R] {n r t : ℕ} (e : R) (A B : Matrix (Fin n) (Fin n) R)
@@ -209,21 +207,21 @@ theorem act_act (V : HSp D) (e : AE D) (g h : GA D V) (a b : Mx D r t) (z : Mx D
     act V e g a (act V e h b z) = act V e (g * h) (a + b) z := by
   refine Prod.ext ?_ ?_
   · change mm (Formalism.L2.Theta.mt V g) (mm (Formalism.L2.Theta.mt V h) z.1) = mm (Formalism.L2.Theta.mt V (g * h)) z.1
-    rw [mt_mul]
+    rw [_root_.GlobalTheory.BesselCompare.mt_mul]
     exact (Matrix.mul_assoc _ _ _).symm
   · change mm (Formalism.L2.Theta.mt V g) (mm (Formalism.L2.Theta.mt V h) (z.2 + mm z.1 (e • b)) +
         mm (mm (Formalism.L2.Theta.mt V h) z.1) (e • a)) = mm (Formalism.L2.Theta.mt V (g * h)) (z.2 + mm z.1 (e • (a + b)))
-    rw [mt_mul]
+    rw [_root_.GlobalTheory.BesselCompare.mt_mul]
     exact act_alg e _ _ a b z.1 z.2
 
 theorem act_one (V : HSp D) (e : AE D) (z : Mx D V.rank r × Mx D V.rank t) :
     act V e 1 (0 : Mx D r t) z = z := by
   refine Prod.ext ?_ ?_
   · change mm (Formalism.L2.Theta.mt V 1) z.1 = z.1
-    rw [mt_one]
+    rw [_root_.GlobalTheory.BesselCompare.mt_one]
     exact Matrix.one_mul _
   · change mm (Formalism.L2.Theta.mt V 1) (z.2 + mm z.1 (e • (0 : Mx D r t))) = z.2
-    rw [mt_one, smul_zero]
+    rw [_root_.GlobalTheory.BesselCompare.mt_one, smul_zero]
     refine (Matrix.one_mul _).trans ?_
     rw [show mm z.1 (0 : Mx D r t) = 0 from Matrix.mul_zero _, add_zero]
 
@@ -231,7 +229,7 @@ theorem continuous_act (V : HSp D) (e : AE D) :
     Continuous fun p : (GA D V × Mx D r t) × (Mx D V.rank r × Mx D V.rank t) => act V e p.1.1 p.1.2 p.2 := by
   obtain ⟨-, -, -, h4, -⟩ := mx_facts D r t
   have hm : Continuous fun p : (GA D V × Mx D r t) × (Mx D V.rank r × Mx D V.rank t) => Formalism.L2.Theta.mt V p.1.1 :=
-    (continuous_mt V).comp (continuous_fst.comp continuous_fst)
+    (_root_.GlobalTheory.MixModel.continuous_mt V).comp (continuous_fst.comp continuous_fst)
   have ha : Continuous fun p : (GA D V × Mx D r t) × (Mx D V.rank r × Mx D V.rank t) => e • p.1.2 :=
     (continuous_snd.comp continuous_fst).const_smul e
   have h1 : Continuous fun p : (GA D V × Mx D r t) × (Mx D V.rank r × Mx D V.rank t) => p.2.1 :=

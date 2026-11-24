@@ -66,12 +66,6 @@ def TrivMod (L : Lat ξ E) (ϖ : Ω) : Prop :=
     ∀ q : Cpt ξ, q.1 ∈ U → ¬ unitAt ξ q ϖ →
       t p ≠ 0 ∧ L q = Submodule.span (regAt ξ q) {t p} ∧ ∃ y ∈ L q, t p - t q = ϖ • y
 
-def TrivRed (L : Lat ξ E) (ϖ : Ω) : Prop :=
-  ∃ t : Cpt ξ → E, ∀ p : Cpt ξ, ¬ unitAt ξ p ϖ → ∃ U : X.Opens, p.1 ∈ U ∧
-    ∀ q : Cpt ξ, q.1 ∈ U → ¬ unitAt ξ q ϖ →
-      t p ≠ 0 ∧ L q = Submodule.span (regAt ξ q) {t p} ∧
-        ∃ c ∈ regAt ξ q, ¬ unitAt ξ q c ∧ t p - t q = c • t p
-
 def OrderAt (L : Lat ξ E) (σ : E) (ϖ : Ω) (M : ℕ) (a : ℤ) (p : Cpt ξ) : Prop :=
   ∃ (e : E) (c : Ω), e ≠ 0 ∧ L p = Submodule.span (regAt ξ p) {e} ∧ σ = c • e ∧ unitAt ξ p (c ^ M / ϖ ^ a)
 

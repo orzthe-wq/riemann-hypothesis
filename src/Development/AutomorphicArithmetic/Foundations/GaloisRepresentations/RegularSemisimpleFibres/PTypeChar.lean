@@ -1,9 +1,8 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.ResEmbCompat
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreduciblesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentsSimpleFDRepFiniteFinsumEqOne
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransportKeepsProductsCosocles
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreducibles
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubsingletonJacquetOfPerm
 public import Development.DiscreteGroups.GlobalIrreducibility.DzIsoKO
 public import Development.DiscreteGroups.GlobalIrreducibility.DzKSchur
@@ -11,6 +10,9 @@ public import Development.DiscreteGroups.GlobalIrreducibility.DzTwChar
 public import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal
 public import Development.WeilBound.RepresentationTheoryGL.GaloisPermutationReps.SubquotientEquivalence.ConjTorusSubApply
 public import Development.WeilBound.RepresentationTheoryGL.GaloisPermutationReps.SubquotientEquivalence.FiniteCuspidalOfIsCuspidal
+public import Development.DiscreteGroups.GlobalIrreducibility.DzIsoRes
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentsSimpleFDRepFiniteFinsumEqOne
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransportKeepsProductsCosocles
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -47,7 +49,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.PowerMatchingTraces.MatchCut
-public import Development.DiscreteGroups.GlobalIrreducibility.DzIsoRes
 
 @[expose] public section
 
@@ -79,7 +80,7 @@ private theorem resE_redK {n : ℕ} (x : KO (w.adicCompletion E) (Fin n)) (κ : 
   ext a b
   have hx : ((x : GL (Fin n) (w.adicCompletion E)) : Matrix _ _ _) a b = i (κ a b : ℚ_[g]) := by
     rw [← hκ]; rfl
-  simp only [GeneralLinearGroup.map_apply, RingHom.mapMatrix_apply, Matrix.map_apply, redK_apply]
+  simp only [GeneralLinearGroup.map_apply, redK_apply]
   have key : ∀ y : 𝒪[w.adicCompletion E], (y : w.adicCompletion E) = i (κ a b : ℚ_[g]) →
       (resE i hi).toRingHom (IsLocalRing.residue _ y) = PadicInt.toZMod (κ a b) := by
     intro y hy
@@ -105,7 +106,7 @@ private theorem finCusp_comp {n : ℕ} (τ : FDRep ℂ (Gn g n)) (hτ : IsCusp �
   rw [GlobalTheory.SmGL.CuspMax.mem_unipRad_iff_entries] at hu ⊢
   intro a b hab
   have h1 := hu a b hab
-  simp only [GeneralLinearGroup.map_apply, RingHom.mapMatrix_apply, Matrix.map_apply, h1]
+  simp only [GeneralLinearGroup.map_apply, h1]
   by_cases hab' : a = b
   · subst hab'; simp
   · simp [Matrix.one_apply_ne hab']
@@ -116,7 +117,7 @@ private theorem fixed_eq_range {n : ℕ} (τ : FDRep ℂ (Gn g n)) (hτ : IsCusp
     (hφ : ∀ (k : GL (Fin n) ℤ_[g]) (u : τ), φ (τ.ρ (GlobalTheory.GLp.red g n k) u) =
       σ.ρ (GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g n k)) (φ u)) :
     Function.Injective φ ∧ fixed σ.ρ (KOne (w.adicCompletion E) (Fin n)) = LinearMap.range φ := by
-  haveI hirr : Representation.IsIrreducible τ.ρ :=
+  have hirr : Representation.IsIrreducible τ.ρ :=
     GlobalTheory.SerOSys.ZSum.isIrreducible_of_simple τ (DiscreteGroups.sglob.DzType.Kon.simple_of_isIrr τ hτ.2.1)
   let U : Subrepresentation τ.ρ := ⟨LinearMap.ker φ, fun x v hv => by
     obtain ⟨k, rfl⟩ := GlobalTheory.GLp.Model.red_surjective n x
@@ -131,9 +132,9 @@ private theorem fixed_eq_range {n : ℕ} (τ : FDRep ℂ (Gn g n)) (hτ : IsCusp
       exact h0 (LinearMap.ker_eq_top.1 hk)
   obtain ⟨u0, hu0⟩ : ∃ u, φ u ≠ 0 := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     exact h0 (LinearMap.ext hcon)
-  haveI : Nontrivial τ := ⟨⟨u0, 0, fun e => hu0 (by rw [e, map_zero])⟩⟩
+  have : Nontrivial τ := ⟨⟨u0, 0, fun e => hu0 (by rw [e, map_zero])⟩⟩
   have hT : PositivityTheory.Rg.DzCount.IsTypeMap (τ.ρ.comp (GeneralLinearGroup.map (n := Fin n) (resE i hi).toRingHom)) σ.ρ φ :=
     ⟨hinj, fun x v => by
       obtain ⟨κ, hκ⟩ := DiscreteGroups.sglob.DzIso.exists_of_mem_KO i hi x.2
@@ -148,7 +149,7 @@ private theorem ringEquiv_eq {F : Type} [Field F] (r r' : F ≃+* ZMod g) : r = 
 
 omit hi in
 private theorem central (y : IrrGL (k := w.adicCompletion E)) : ∃ ω : (w.adicCompletion E)ˣ →* ℂˣ, HasCentralChar y.rep ω :=
-  (GlobalTheory.T.centralCharacter_subquotient_productIrreducibles (w.adicCompletion E)).1 y
+  (_root_.GlobalTheory.GamMul.centralChar_subquotient_prodIrr (w.adicCompletion E)).1 y
 
 private theorem trace_eq {n : ℕ} (τ : FDRep ℂ (Gn g n)) (hτ : IsCusp τ.character)
     (σ : IrrRep (GL (Fin n) (w.adicCompletion E))) (ω : (w.adicCompletion E)ˣ →* ℂˣ) (hω : HasCentralChar σ.ρ ω)

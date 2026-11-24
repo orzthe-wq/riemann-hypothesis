@@ -72,11 +72,11 @@ private theorem cyc {O : Type} [CommRing O] [IsLocalRing O] (B : Matrix (Fin 2) 
   by_cases hc : IsUnit c
   · refine mk !![1, a; 0, c] (by simpa [Matrix.det_fin_two_of] using hc) ?_
     ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;>
-      first | ring1 | linear_combination -hdet | linear_combination hdet
+      first | ring1 | linear_combination -hdet
   by_cases hb : IsUnit b
   · refine mk !![0, b; 1, d] (by simpa [Matrix.det_fin_two_of] using hb) ?_
     ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;>
-      first | ring1 | linear_combination -hdet | linear_combination hdet
+      first | ring1 | linear_combination -hdet
   have hm : ∀ x : O, ¬ IsUnit x → x ∈ IsLocalRing.maximalIdeal O := fun x hx => hx
   have hdet' : IsUnit (c + d - a - b) := by
     by_contra hn
@@ -92,7 +92,7 @@ private theorem cyc {O : Type} [CommRing O] [IsLocalRing O] (B : Matrix (Fin 2) 
     exact h3 hu
   refine mk !![1, a + b; 1, c + d] (by rw [Matrix.det_fin_two_of]; convert hdet' using 1; ring) ?_
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;>
-    first | ring1 | linear_combination -hdet | linear_combination hdet
+    first | ring1 | linear_combination -hdet
 
 section
 
@@ -140,7 +140,7 @@ private theorem coe_scal (s : Kˣ) :
     ((Matrix.GeneralLinearGroup.scalar (Fin 2) s : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) =
       (s : K) • (1 : Matrix (Fin 2) (Fin 2) K) := by
   ext a b
-  by_cases h : a = b <;> simp [Matrix.GeneralLinearGroup.scalar, Matrix.one_apply, h]
+  by_cases h : a = b <;> simp [Matrix.GeneralLinearGroup.scalar, h]
 
 private theorem lift_mat (A : Matrix (Fin 2) (Fin 2) K) (h : ∀ s t, A s t ∈ (algebraMap O K).range) :
     ∃ A₀ : Matrix (Fin 2) (Fin 2) O, A₀.map (algebraMap O K) = A := by

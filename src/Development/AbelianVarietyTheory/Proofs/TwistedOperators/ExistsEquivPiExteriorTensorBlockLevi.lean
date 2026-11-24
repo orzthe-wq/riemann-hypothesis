@@ -57,6 +57,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsIrreducibleIff
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -234,7 +235,7 @@ theorem exists_extTensor (C : Subgroup H) (hCo : IsOpen (C : Set H)) (hCc : IsCo
     exact mem_fix.1 hv.1 g hk.1
   obtain ⟨π, ⟨f, hf0, hf⟩, hπ⟩ := exists_irred hρ hKco h2 U hU hU0 hfin
   have hS : ∀ T : π.ρ.IntertwiningMap π.ρ, ∃ c : ℂ, ∀ v, T v = c • v := fun T => by
-    obtain ⟨c, hc⟩ := GlobalTheory.SchurAdm.schur_admissible H C hCo hCc π.V π.ρ π.irred hπ T.toLinearMap
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.SchurAdmissibility.schur_admissible H C hCo hCc π.V π.ρ π.irred hπ T.toLinearMap
       fun g v => T.isIntertwining _ _ g v
     exact ⟨c, fun v => LinearMap.congr_fun hc v⟩
   obtain ⟨X, _, _, σ, hσs, hσi, ⟨e⟩⟩ := TensorFactor.exists_equiv_extTensor G H V π.V τ π.ρ hs hirr π.irred

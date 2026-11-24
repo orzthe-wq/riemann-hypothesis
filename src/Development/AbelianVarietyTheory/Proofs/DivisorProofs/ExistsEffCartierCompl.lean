@@ -1,34 +1,31 @@
 module
 
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramesExist
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DualGramInterpGram
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundlePointFramesTriangularComponent
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagChartFramesEigenFramesLocalRing
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelCarriesSameFlagsSpecialiseValuationRing
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagDeterminantIso
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.AdmissibleBaseChartRing
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramesExist
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordProportionality
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
-import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallyExistsFiniteSubsetNonzeroLocus
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomOfFieldPointRelationProperStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundlePointFramesTriangularComponentStatement
+public import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMemIrreducibleComponentsOfFinite
+public import Mathlib.AlgebraicGeometry.Morphisms.Proper
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomOfFieldPointRelationProper
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagChartFramesEigenFramesLocalRingStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelCarriesSameFlagsFieldExtensionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelCarriesSameFlagsSpecialiseValuationRingStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelPointCarriesUniqueFlagBundlePointStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelToFlagBundleLocallyQuasiFiniteStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelCarriesSameFlagsFieldExtension
+public import Development.AbelianVarietyTheory.Definitions.Divisors.BarCompSubsetClosure
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelPointCarriesUniqueFlagBundlePoint
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelToFlagBundleLocallyQuasiFinite
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagSpaceComponentSmoothProjectiveConnected
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasFibrewiseNonvanishingThetaSectionOfSmoothMode
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoFlagModelFlagBundleOverModuliStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoExponentDivisorPullbackFlagCoverStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyIntegralFlagModelOfSmoothCoefficientFiel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PushInvertibleOfHasTheta
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SncToroidalGenericBoundaryOfSncBoundaryStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BijectiveAlgebraMapIntegralClosureOfBirational
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsBijectiveKappa
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivComp
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStalkFactor
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsVarietiesComponentsSmoothGenericFibreStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagSpaceDimensionEqSumChooseStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothOfAlgClosedUnif
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.FlagBasis
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagSpaceDimensionEqSumChoose
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SysExOfPol
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.GeometricallyReducedOfPerfectField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -44,7 +41,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -65,17 +61,271 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallyExistsFiniteSubsetNonzeroLocus
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoFlagModelFlagBundleOverModuli
+import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SncToroidalGenericBoundaryOfSncBoundary
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BijectiveAlgebraMapIntegralClosureOfBirational
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivComp
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStalkFactor
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemRiemannRochSpaceIffRegularAtEverywhere
+import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsVarietiesComponentsSmoothGenericFibre
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothOfAlgClosedUnif
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.GeometricallyReducedOfPerfectField
+import Mathlib.Tactic.Basify
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.Divisors.Multiplier
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoExponentDivisorPullbackFlagCover, Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEffCartierCompl
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoExponentDivisorPullbackFlagCover =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoExponentDivisorPullbackFlagCover", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramesExist\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DualGramInterpGram\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundlePointFramesTriangularComponent\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagChartFramesEigenFramesLocalRing\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelCarriesSameFlagsSpecialiseValuationRing\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagDeterminantIso\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
+open GlobalTheory GlobalTheory.CechPic GlobalTheory.Vanishing GlobalTheory.CompHS
+
+set_option autoImplicit false
+
+noncomputable section
+
+namespace GlobalTheory.VarFlagLL
+
+open GlobalTheory.FlagMod (FlagCover Frames ev)
+open GlobalTheory.ShFam (EigFrame FlagCpt stalkPt genericPt constF)
+open GlobalTheory.VarFlag GlobalTheory.VarFlagSpec
+open ReciprocityTheory.ChartRestriction.G.PullbackSections (tv)
+
+theorem spMap_alg_stalkPt {F : Type} [Field F] (Yv : GlobalTheory.ProjVar.Var F) (y : Yv.X) :
+    spMap (algebraMap (Yv.X.presheaf.stalk y) Yv.X.functionField) ≫ stalkPt Yv y = genericPt Yv :=
+  Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec Yv.X).specializes trivial)
+
+theorem mem_of_top_le {Xs Ys : Scheme.{0}} (x : Xs) (f : Xs ⟶ Ys) {V : Ys.Opens}
+    (h : ⊤ ≤ (Xs.fromSpecStalk x ≫ f) ⁻¹ᵁ V) : f x ∈ V := by
+  have h1 : f (Xs.fromSpecStalk x (IsLocalRing.closedPoint (Xs.presheaf.stalk x))) ∈ V := h trivial
+  rwa [Scheme.fromSpecStalk_closedPoint] at h1
+
+variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
+  {Xo : Moduli Dw l} {c : Coeff l}
+
+section Frames
+
+variable {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
+
+theorem exists_cast {R : Type} [CommRing R] {φ φ' : c.F →+* R} {x x' : Sp R ⟶ Z.X} (f : EigFrame Z φ x)
+    (hφ : φ' = φ) (hx : x' = x) : ∃ f' : EigFrame Z φ' x', ∀ τ i, f'.v τ i = f.v τ i := by
+  subst hφ hx
+  exact ⟨f, fun _ _ => rfl⟩
+
+theorem tri_cast {R R' : Type} [CommRing R] [CommRing R'] {φ : c.F →+* R} {φ' φ'' : c.F →+* R'} {x : Sp R ⟶ Z.X}
+    {x' x'' : Sp R' ⟶ Z.X} {f : EigFrame Z φ x} {ψ : R →+* R'} {g : EigFrame Z φ' x'} {g' : EigFrame Z φ'' x''}
+    {t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → R'ˣ} (h : f.Tri ψ g t) (hφ : φ'' = φ') (hx : x'' = x')
+    (hv : ∀ τ i, g'.v τ i = g.v τ i) : f.Tri ψ g' t := by
+  subst hφ hx
+  obtain ⟨h1, h2, h3⟩ := h
+  exact ⟨h1, h2, fun τ i => by rw [hv]; exact h3 τ i⟩
+
+end Frames
+
+variable {Y : Model Xo c (RingHom.id c.F)}
+
+theorem co_chart {Zs : Scheme.{0}} {π : Zs ⟶ Y.X} (F : Frames Y π) {R : Type} [CommRing R] {φ : c.F →+* R}
+    {x : Sp R ⟶ Y.X} (z z₁ z₂ : Sp R ⟶ Zs) (hx : x = z ≫ π) (h₁ : z₁ = z) (h₂ : z₂ = z) (k k' : F.J)
+    (hk : ⊤ ≤ z₁ ⁻¹ᵁ F.U k) (hk' : ⊤ ≤ z₂ ⁻¹ᵁ F.U k') (hh : ⊤ ≤ z ⁻¹ᵁ (F.U k ⊓ F.U k')) {g g' : EigFrame Y φ x}
+    (hg : ∀ σ i, g.v σ i = (tv (F.vecAt k z₁ hk rfl σ i)).left)
+    (hg' : ∀ σ i, g'.v σ i = (tv (F.vecAt k' z₂ hk' rfl σ i)).left) (τ : E →+* ℂ) :
+    g.co g' τ = (F.B k k' τ).map (ev z _ hh) := by
+  subst hx
+  subst h₁
+  subst h₂
+  exact EigFrame.co_eq fun i => by
+    rw [funext (hg τ), hg' τ i, GlobalTheory.LieMet.isComb_iff]
+    exact F.vecAt_eq_sum k k' _ hk hk' hh rfl τ i
+
+theorem gen_frame (X : FlagCover Y) (C : FlagCpt Y (RingEquiv.refl c.F)) (g : C.Y.X ⟶ X.YY)
+    (hg : g ≫ X.π = C.π ≫ GlobalTheory.Toroidal.genι Y) (hrel : Rel X.F C (genericPt C.Y ≫ g) (genericPt C.Y)) :
+    ∃ (k₀ : X.F.J) (hk₀ : ⊤ ≤ (genericPt C.Y ≫ g) ⁻¹ᵁ X.F.U k₀)
+      (G₀ : EigFrame Y (constF (RingEquiv.refl c.F) C.Y) (genericPt C.Y ≫ C.π ≫ GlobalTheory.Toroidal.genι Y))
+      (t₀ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C.Y.Fnˣ),
+      (∀ σ i, G₀.v σ i = (tv (X.F.vecAt k₀ _ hk₀ rfl σ i)).left) ∧
+      ∀ τ, (G₀.co C.f0 τ).BlockTriangular id ∧ ∀ i, G₀.co C.f0 τ i i = t₀ τ i := by
+  obtain ⟨φ₀, k₀, hz₀, g₀, -, hfr, hcar⟩ := hrel
+  have hx : (genericPt C.Y ≫ g) ≫ X.π = genericPt C.Y ≫ C.π ≫ GlobalTheory.Toroidal.genι Y := by
+    rw [Category.assoc, hg]
+  obtain ⟨g₁, hg₁⟩ := exists_cast g₀ (φ' := φ₀) rfl hx.symm
+  have hcar₁ : C.Carries (genericPt C.Y) g₁ := by
+    obtain ⟨y, ψ, φ₁, f, t, t', h1, h2, h3⟩ := hcar
+    exact ⟨y, ψ, φ₁, f, t, t', h1, h2, tri_cast h3 rfl hx.symm hg₁⟩
+  have hcf : C.Carries (genericPt C.Y) C.f0 := by
+    obtain ⟨φy, fy, ty, hT, -⟩ := C.gr_spec (genericPoint C.Y.X)
+    exact ⟨_, _, φy, fy, ty, ty, (spMap_alg_stalkPt C.Y _).symm, hT, hT⟩
+  obtain ⟨t₀, ht₀⟩ := tri_of_carries C hcar₁ hcf
+  obtain ⟨G₀, hG₀⟩ := g₁.exists_isMap (φ' := constF (RingEquiv.refl c.F) C.Y)
+    (x' := genericPt C.Y ≫ C.π ≫ GlobalTheory.Toroidal.genι Y) (RingHom.id _) ht₀.2.1 ht₀.1
+  refine ⟨k₀, hz₀, G₀, t₀, fun σ i => ?_, fun τ => ?_⟩
+  · rw [hG₀ σ i, spMap_dualMap_id, Category.id_comp, hg₁ σ i]
+    exact hfr σ i
+  · obtain ⟨h1, h2⟩ := ht₀.co τ hG₀
+    exact ⟨fun a i h => h1 a i h, h2⟩
+
+theorem isEqn_chart (X : FlagCover Y) (C : FlagCpt Y (RingEquiv.refl c.F)) (g : C.Y.X ⟶ X.YY)
+    (hg : g ≫ X.π = C.π ≫ GlobalTheory.Toroidal.genι Y) (hFE : FramesExist X) {k₀ : X.F.J}
+    {hk₀ : ⊤ ≤ (genericPt C.Y ≫ g) ⁻¹ᵁ X.F.U k₀}
+    {G₀ : EigFrame Y (constF (RingEquiv.refl c.F) C.Y) (genericPt C.Y ≫ C.π ≫ GlobalTheory.Toroidal.genι Y)}
+    {t₀ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C.Y.Fnˣ}
+    (hG₀v : ∀ σ i, G₀.v σ i = (tv (X.F.vecAt k₀ _ hk₀ rfl σ i)).left)
+    (hG₀ : ∀ τ, (G₀.co C.f0 τ).BlockTriangular id ∧ ∀ i, G₀.co C.f0 τ i i = t₀ τ i) (k : X.F.J) (y : C.Y.X)
+    (hy : g y ∈ X.F.U k) (hh : ⊤ ≤ (genericPt C.Y ≫ g) ⁻¹ᵁ (X.F.U k ⊓ X.F.U k₀)) (τ : E →+* ℂ)
+    (i : Fin (Dw.mult τ)) :
+    (C.gr τ i).IsEqn y (X.F.TAt k k₀ (genericPt C.Y ≫ g) hh (some ⟨τ, i⟩) * t₀ τ i) := by
+  classical
+  set α := algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField with hα_def
+  have hα : Function.Injective α := IsFractionRing.injective _ _
+  have hzy : ⊤ ≤ (stalkPt C.Y y ≫ g) ⁻¹ᵁ X.F.U k := GlobalTheory.ShFam.top_le_stalk_preimage y g hy
+  obtain ⟨φy, fy, ty, hT, hE⟩ := C.gr_spec y
+  have hgs : g ≫ X.π ≫ Y.s = C.π ≫ GlobalTheory.Toroidal.genι Y ≫ Y.s := by rw [← Category.assoc, hg, Category.assoc]
+  have hs : (stalkPt C.Y y ≫ g) ≫ X.π ≫ Y.s = spMap φy := by
+    rw [Category.assoc, hgs]
+    exact flagSpaceComponent_stalkPoint_over_coefficientField C y hT
+  obtain ⟨gy, hgy⟩ := hFE _ φy _ k hzy hs
+  have hzα : spMap α ≫ (stalkPt C.Y y ≫ g) = genericPt C.Y ≫ g := by
+    rw [← Category.assoc, spMap_alg_stalkPt]
+  have hxy : stalkPt C.Y y ≫ C.π ≫ GlobalTheory.Toroidal.genι Y = (stalkPt C.Y y ≫ g) ≫ X.π := by
+    rw [Category.assoc, hg]
+  have hx0 : genericPt C.Y ≫ C.π ≫ GlobalTheory.Toroidal.genι Y = spMap α ≫ ((stalkPt C.Y y ≫ g) ≫ X.π) := by
+    rw [← hxy]
+    exact hT.1
+  obtain ⟨gF, hgF⟩ := gy.exists_isMap (φ' := constF (RingEquiv.refl c.F) C.Y)
+    (x' := genericPt C.Y ≫ C.π ≫ GlobalTheory.Toroidal.genι Y) α hT.2.1 hx0
+  obtain ⟨gF₂, hgF₂⟩ := gy.exists_isMap α (x' := (spMap α ≫ (stalkPt C.Y y ≫ g)) ≫ X.π) hT.2.1
+    (Category.assoc _ _ _)
+  have hF₂ := isFrameAt_map X.F hgy α hgF₂
+  have hgFv : ∀ σ j, gF.v σ j = (tv (X.F.vecAt k (spMap α ≫ (stalkPt C.Y y ≫ g))
+      (GlobalTheory.FlagMod.le_preimage_comp _ hzy) rfl σ j)).left := fun σ j => by
+    rw [hgF σ j, ← hgF₂ σ j]
+    exact hF₂ σ j
+  have hB : gF.co G₀ τ = (X.F.B k k₀ τ).map (ev (genericPt C.Y ≫ g) _ hh) :=
+    co_chart X.F (genericPt C.Y ≫ g) _ _ (by rw [Category.assoc, hg]) hzα rfl k k₀ _ hk₀ hh hgFv hG₀v τ
+  obtain ⟨fF, hfF⟩ := fy.exists_isMap (φ' := constF (RingEquiv.refl c.F) C.Y)
+    (x' := genericPt C.Y ≫ C.π ≫ GlobalTheory.Toroidal.genι Y) α hT.2.1 hT.1
+  have hTf := hT.co τ hfF
+  obtain ⟨gy', hgy'⟩ := exists_cast gy (φ' := φy) rfl hxy
+  have hMap : gy'.IsMap α gF := fun σ j => by rw [hgF σ j, hgy' σ j]
+  have hco : gF.co fF τ = (gy'.co fy τ).map α := hMap.co τ hfF hT.1
+  set A := gF.co C.f0 τ with hA_def
+  set T := fF.co C.f0 τ with hT_def
+  set M := gy'.co fy τ with hM_def
+  have hA : A = (X.F.B k k₀ τ).map (ev _ _ hh) * G₀.co C.f0 τ := by rw [← hB, EigFrame.co_mul]
+  have hAt : A.BlockTriangular id := hA ▸ (X.F.B_map_tri k k₀ τ _).mul (hG₀ τ).1
+  have hAd : A i i = ev _ _ hh (X.F.B k k₀ τ i i) * t₀ τ i := by
+    rw [hA, GlobalTheory.FlagMod.tri_mul_diag (X.F.B_map_tri k k₀ τ _) (hG₀ τ).1, Matrix.map_apply, (hG₀ τ).2]
+  have hTt : T.BlockTriangular id := fun a b h => hTf.1 a b h
+  have hTT : T * C.f0.co fF τ = 1 := by rw [hT_def, EigFrame.co_mul, EigFrame.co_self]
+  letI : Invertible T := Matrix.invertibleOfIsUnitDet T (Matrix.isUnit_det_of_right_inverse hTT)
+  have hinv : C.f0.co fF τ = T⁻¹ := (Matrix.inv_eq_right_inv hTT).symm
+  have hTi : (T⁻¹).BlockTriangular id := Matrix.blockTriangular_inv_of_blockTriangular hTt
+  have hM' : M.map α = A * T⁻¹ := by rw [hM_def, ← hco, ← hinv, hA_def, EigFrame.co_mul]
+  have hMt : M.BlockTriangular id := fun a b h => by
+    have h1 := (hAt.mul hTi) h
+    rw [← hM', Matrix.map_apply] at h1
+    exact hα (h1.trans (map_zero α).symm)
+  have hMu : IsUnit (M i i) := by
+    have hdet := gy'.isUnit_det_co fy τ
+    rw [← hM_def, Matrix.det_of_upperTriangular hMt] at hdet
+    exact isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun j => M j j) (Finset.mem_univ i)) hdet
+  have hTd : T i i * T⁻¹ i i = 1 := by
+    rw [← GlobalTheory.FlagMod.tri_mul_diag hTt hTi, Matrix.mul_inv_of_invertible, Matrix.one_apply_eq]
+  have hMd : α (M i i) = A i i * ((ty τ i : C.Y.Fnˣ) : C.Y.Fn)⁻¹ := by
+    have e1 : α (M i i) = (A * T⁻¹) i i := by rw [← hM', Matrix.map_apply]
+    rw [e1, GlobalTheory.FlagMod.tri_mul_diag hAt hTi]
+    congr 1
+    rw [← hTf.2 i]
+    exact eq_inv_of_mul_eq_one_right hTd
+  refine (hE τ i).iff_unitAt.2 ⟨M i i, hMu, ?_⟩
+  rw [hMd, hAd, Units.val_mul, div_eq_mul_inv]
+  rfl
+
+theorem fnOf_pull_g {Xs Ys : Scheme.{0}} [IsIntegral Xs] (M : LB Ys) (f : Xs ⟶ Ys) (J J' : (M.pull f).ι)
+    (hgen : genericPoint Xs ∈ (M.pull f).U J ⊓ (M.pull f).U J')
+    (hh : ⊤ ≤ (Xs.fromSpecStalk (genericPoint Xs) ≫ f) ⁻¹ᵁ (M.U (J PUnit.unit) ⊓ M.U (J' PUnit.unit))) :
+    GlobalTheory.Cartier.fnOf _ hgen ((M.pull f).g J J' : Γ(Xs, _)) =
+      ev (Xs.fromSpecStalk (genericPoint Xs) ≫ f) _ hh (M.g (J PUnit.unit) (J' PUnit.unit)).val := by
+  show GlobalTheory.Cartier.fnOf _ hgen (Units.val (∏ _k : PUnit.{1}, _ ^ (1 : ℤ))) = _
+  rw [Fintype.prod_unique]
+  erw [zpow_one, LB.val_res, GlobalTheory.Cartier.fnOf_resG]
+  have hg' : genericPoint Xs ∈ f ⁻¹ᵁ (M.U (J PUnit.unit) ⊓ M.U (J' PUnit.unit)) :=
+    ⟨mem_pull.1 hgen.1, mem_pull.1 hgen.2⟩
+  exact GlobalTheory.ShFam.fnOf_app_eq_ev f hg' hh _
+
+end GlobalTheory.VarFlagLL
+
+
+open GlobalTheory.VarFlagLL GlobalTheory.ShFam GlobalTheory.VarFlag in
+theorem GlobalTheory.VarFlag.lbIso_LL_pull : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} (X : GlobalTheory.FlagMod.FlagCover Y) (C : GlobalTheory.ShFam.FlagCpt Y (RingEquiv.refl c.F)) (g : C.Y.X ⟶ X.YY), g ≫ X.π = C.π ≫ GlobalTheory.Toroidal.genι Y → (∀ (K : Type) [Field K] (p : Sp K ⟶ C.Y.X), GlobalTheory.VarFlag.Rel X.F C (p ≫ g) p) → ∀ ex : Ix Dw → ℤ, ex none = 0 → LBIso (C.Y.lb (C.LEx ex)) ((X.LL ex).pull g) := by
+  intro E _ _ _ H Dw l Xo c Y X C g hg hrel ex hex
+  classical
+  obtain ⟨k₀, hk₀, G₀, t₀, hG₀v, hG₀⟩ := gen_frame X C g hg (hrel _ (genericPt C.Y))
+  have hFE := framesExist_flagCover X
+  have hL : ((X.LL ex).pull g).IsLB := pull_isLB (X.F.isLB_LL ex) g
+  let J₀ : ((X.LL ex).pull g).ι := fun _ => k₀
+  have h₀ : genericPoint C.Y.X ∈ ((X.LL ex).pull g).U J₀ := mem_pull.2 (mem_of_top_le _ g hk₀)
+  let cst : C.Y.Fnˣ := ∏ x : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), t₀ x.1 x.2 ^ (-ex (some x))
+  let r : ((X.LL ex).pull g).ι → C.Y.X.functionFieldˣ := fun J => GlobalTheory.Cartier.frameRat _ J₀ h₀ J * cst
+  have hr : GlobalTheory.Cartier.IsRatSec ((X.LL ex).pull g) r := fun J J' h => by
+    simp only [r, Units.val_mul]
+    rw [GlobalTheory.Cartier.isRatSec_frameRat hL J₀ h₀ J J' h, mul_assoc]
+  have heq : ∀ J, ∀ y ∈ ((X.LL ex).pull g).U J, (C.LEx ex).IsEqn y (r J) := by
+    intro J y hy
+    have hyk : g y ∈ X.F.U (J PUnit.unit) := mem_pull.1 hy
+    have hgen : genericPoint C.Y.X ∈ ((X.LL ex).pull g).U J := GlobalTheory.Cartier.gen_mem hy
+    have hh : ⊤ ≤ (genericPt C.Y ≫ g) ⁻¹ᵁ (X.F.U (J PUnit.unit) ⊓ X.F.U k₀) :=
+      GlobalTheory.ShFam.top_le_stalk_preimage _ g ⟨mem_pull.1 hgen, mem_pull.1 h₀⟩
+    have hx := fun x : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) =>
+      isEqn_chart X C g hg hFE hG₀v hG₀ (J PUnit.unit) y hyk hh x.1 x.2
+    have h1 := (GlobalTheory.ShFam.isEqn_finset_sum Finset.univ
+      (fun x : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) => ex (some x) • C.gr x.1 x.2) y _
+      fun x => (hx x).zsmul (ex (some x))).neg
+    have hval : r J = (∏ x ∈ Finset.univ, (X.F.TAt (J PUnit.unit) k₀ (genericPt C.Y ≫ g) hh (some x) *
+        t₀ x.1 x.2) ^ ex (some x))⁻¹ := by
+      apply Units.ext
+      have e1 : (r J : C.Y.X.functionField) = (GlobalTheory.Cartier.frameRat _ J₀ h₀ J : C.Y.X.functionField) * cst :=
+        Units.val_mul _ _
+      rw [e1, GlobalTheory.Cartier.val_frameRat J₀ h₀ J hgen, fnOf_pull_g _ g J J₀ _ hh]
+      erw [GlobalTheory.FlagMod.Frames.ev_LL_g]
+      have hu : (∏ ix : Ix Dw, X.F.TAt (J PUnit.unit) k₀ (genericPt C.Y ≫ g) hh ix ^ (-ex ix)) * cst =
+          (∏ x ∈ Finset.univ, (X.F.TAt (J PUnit.unit) k₀ (genericPt C.Y ≫ g) hh (some x) *
+            t₀ x.1 x.2) ^ ex (some x))⁻¹ := by
+        rw [Fintype.prod_option, hex, neg_zero, zpow_zero, one_mul, ← Finset.prod_mul_distrib,
+          ← Finset.prod_inv_distrib]
+        refine Finset.prod_congr rfl fun x _ => ?_
+        rw [zpow_neg, zpow_neg, ← mul_inv, ← mul_zpow]
+      exact (Units.val_mul _ _).symm.trans (congrArg Units.val hu)
+    rw [hval]
+    exact h1
+  exact (GlobalTheory.Cartier.presents_toLB _).lbIso ⟨hL, hr, heq⟩
+
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoExponentDivisorPullbackFlagCover =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEffCartierCompl =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEffCartierCompl", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.AdmissibleBaseChartRing\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FramesExist\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.MumfordProportionality\npublic import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange\npublic import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMemIrreducibleComponentsOfFinite\npublic import Mathlib.AlgebraicGeometry.Morphisms.Proper\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHomOfFieldPointRelationProper\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagBundlePointFramesTriangularComponent\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagChartFramesEigenFramesLocalRingStatement\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelCarriesSameFlagsFieldExtension\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelCarriesSameFlagsSpecialiseValuationRing\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.BarCompSubsetClosure\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelPointCarriesUniqueFlagBundlePoint\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagModelToFlagBundleLocallyQuasiFinite\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagSpaceComponentSmoothProjectiveConnected\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasFibrewiseNonvanishingThetaSectionOfSmoothMode\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoExponentDivisorPullbackFlagCover\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NonemptyIntegralFlagModelOfSmoothCoefficientFiel\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PushInvertibleOfHasTheta\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsBijectiveKappa\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.FlagBasis\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FlagSpaceDimensionEqSumChoose\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SysExOfPol\nimport Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallyExistsFiniteSubsetNonzeroLocus\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoFlagModelFlagBundleOverModuli\nimport Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap\nimport Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.SncToroidalGenericBoundaryOfSncBoundary\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.BijectiveAlgebraMapIntegralClosureOfBirational\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivComp\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStalkFactor\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemRiemannRochSpaceIffRegularAtEverywhere\nimport Formalism.LocalToGlobal.ProjectiveLattices.CompHt\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsVarietiesComponentsSmoothGenericFibre\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothOfAlgClosedUnif\nimport Development.AbelianVarietyTheory.Proofs.UnitaryExistence.GeometricallyReducedOfPerfectField\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Definitions.Divisors.Multiplier\nimport Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Vanishing GlobalTheory.CompHS
 open Filter
+open scoped GlobalTheory.CompHt
 
 set_option autoImplicit false
 
@@ -242,102 +492,8 @@ theorem exists_iso (T : TorFlag Xo c) (Z : Comp Xo c) (B : Comp Xo c → GlobalT
       x ≫ genStr T.Y = spMap χ → ∀ g : EigFrame T.Y χ (x ≫ genι T.Y), ∃! p : Sp K ⟶ C.Y.X, p ≫ f = x' ∧ C.Carries p g) :
     ∃ h : Y₀ T.X Z ⟶ C.Y.X, IsIso h ∧ h ≫ C.π ≫ genι T.Y = inc₀ T.X Z ≫ T.X.π ∧ h ≫ C.Y.str = str₀ T.X Z ∧
       ∀ (K : Type) [Field K] (z : Sp K ⟶ Y₀ T.X Z), Rel T.X.F C (z ≫ inc₀ T.X Z) (z ≫ h) := by
-  have := (hB Z).1
-  have hJ : ∀ w : gen T.Y, genι T.Y w ∈ barComp T.Y Z ↔ w ∈ Set.range (j Z) :=
-    barComp_iff Z B j (fun i => (hB i).1) (fun i => (hB i).2.2.2) hcov
-  have hX := GlobalTheory.T.flagChartFrames_eigenFrames_localRing T.X
-  have hC := GlobalTheory.T.flagBundlePointFramesTriangular_component C
-
-  have hspid : spMap (RingEquiv.refl c.F).toRingHom = 𝟙 _ := Spec.map_id _
-  have hCs : C.π ≫ genStr T.Y = C.Y.str := by
-    have := C.π_str
-    rwa [hspid, Category.comp_id] at this
-  have hps : (C.π ≫ genι T.Y) ≫ T.Y.s = C.Y.str := by rw [Category.assoc, ← genStr_eq, hCs]
-  have : IsProper T.Y.s := projProper _ _ _ T.Y.proj
-  have : IsProper ((C.π ≫ genι T.Y) ≫ T.Y.s) := by rw [hps]; infer_instance
-  have : IsProper (C.π ≫ genι T.Y) := IsProper.of_comp _ T.Y.s
-
-  have hcl : IsClosed (barComp T.Y Z : Set T.Y.X) := by
-    rw [← isOpen_compl_iff, isOpen_iff_forall_mem_open]
-    intro y hy
-    obtain ⟨w, rfl⟩ : ∃ w, genι T.Y w = y :=
-      ⟨inv (genι T.Y) y, by rw [← Scheme.Hom.comp_apply, IsIso.inv_hom_id]; rfl⟩
-    obtain ⟨i, hi, -⟩ := hcov w
-    have := (hB i).1
-    refine ⟨genι T.Y '' Set.range (j i), ?_, ?_, ⟨w, hi, rfl⟩⟩
-    · rintro _ ⟨w', hw', rfl⟩ hb
-      obtain ⟨i', -, hu'⟩ := hcov w'
-      have e : i = Z := (hu' i hw').trans (hu' Z ((hJ w').1 hb)).symm
-      subst e
-      exact hy ((hJ w).2 hi)
-    · exact (genι T.Y).isOpenEmbedding.isOpenMap _ (j i).isOpenEmbedding.isOpen_range
-  have : IsClosedImmersion (inc₀ T.X Z) := IsClosedImmersion.of_isPreimmersion _ (by
-    rw [Scheme.Opens.range_ι]
-    exact hcl.preimage T.X.π.continuous)
-  have : IsProper T.X.π := T.X.proper
-  have : IsNormalScheme T.X.YY := GlobalTheory.IsNormalScheme.of_pred T.X.normal
-  have : IsLocallyNoetherian T.X.YY := LocallyOfFiniteType.isLocallyNoetherian (T.X.π ≫ T.Y.s)
-  have : CompactSpace T.Y.X := QuasiCompact.compactSpace_of_compactSpace T.Y.s
-  have : CompactSpace T.X.YY := QuasiCompact.compactSpace_of_compactSpace T.X.π
-  have : CompactSpace (Y₀ T.X Z) := QuasiCompact.compactSpace_of_compactSpace (inc₀ T.X Z)
-  have : IsNoetherian (Y₀ T.X Z) := {}
-  have hU : ∀ (K : Type) [Field K] (z : Sp K ⟶ Y₀ T.X Z), ∃! p : Sp K ⟶ C.Y.X, Rel T.X.F C (z ≫ inc₀ T.X Z) p :=
-    GlobalTheory.T.flagModel_point_carries_unique_flagBundle_point T.X Z hX C hC (B Z) (j Z) f hπ hl hJ
-  obtain ⟨h, hh, hR⟩ := GlobalTheory.T.exists_hom_of_fieldPoint_relation_proper (Y₀ T.X Z) C.Y.X T.Y.X (inc₀ T.X Z ≫ T.X.π) (C.π ≫ genι T.Y)
-    (fun K _ z w => Rel T.X.F C (z ≫ inc₀ T.X Z) w)
-    (fun K _ z w hw => by rw [← Category.assoc]; exact Rel.over T.X C hw)
-    (fun K _ z => hU K z)
-    (fun K K' _ _ ι z w hw => by
-      have := GlobalTheory.T.flagModel_carriesSameFlags_fieldExtension T.X hX C K K' ι _ _ hw
-      rwa [← Category.assoc] at this)
-    (fun A _ _ _ u v huv hr => by
-      have := GlobalTheory.T.flagModel_carriesSameFlags_specialise_valuationRing T.X hX C hC A (u ≫ inc₀ T.X Z) v (by simpa only [Category.assoc] using huv)
-        (by simpa only [Category.assoc] using hr)
-      simpa only [Category.assoc] using this)
-  have : IsProper (inc₀ T.X Z ≫ T.X.π) := inferInstance
-  have : IsProper (h ≫ C.π ≫ genι T.Y) := by rw [hh]; infer_instance
-  have : IsProper h := IsProper.of_comp h (C.π ≫ genι T.Y)
-  have := GlobalTheory.T.flagModel_to_flagBundle_locallyQuasiFinite T.flag C hC Z h hR
-  have hiso := GlobalTheory.T.isIso_flagModel_flagBundle_over_moduli T.X Z hX C hC (B Z) (j Z) f hπ hJ h hU hR
-  have hVo : Nonempty (Vo C) := by
-    refine ⟨⟨genericPoint C.Y.X, ?_⟩⟩
-    show C.π (genericPoint C.Y.X) ∈ Set.range T.Y.jQ
-    letI := (GlobalTheory.ShFam.constF (RingEquiv.refl c.F) C.Y).toAlgebra
-    have e1 := Scheme.Hom.comp_apply (GlobalTheory.ShFam.genericPt C.Y) C.π (IsLocalRing.closedPoint C.Y.Fn)
-    have e2 := Scheme.Hom.comp_apply (GlobalTheory.AllWt.ptF C.y0) T.Y.jQ (IsLocalRing.closedPoint C.Y.Fn)
-    rw [C.y0_x] at e2
-    have h1 := e1.symm.trans e2
-    have h2 : (GlobalTheory.ShFam.genericPt C.Y) (IsLocalRing.closedPoint C.Y.Fn) = genericPoint C.Y.X :=
-      Scheme.fromSpecStalk_closedPoint
-    rw [h2] at h1
-    exact ⟨_, h1.symm⟩
-  have hpre : (U₀ T.X Z : Set (Y₀ T.X Z)) ⊆ h ⁻¹ᵁ Vo C := by
-    intro y hy
-    show C.π (h y) ∈ Set.range T.Y.jQ
-    have e : genι T.Y (C.π (h y)) = T.X.π (inc₀ T.X Z y) := by
-      rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← hh]
-    obtain ⟨x, hx⟩ : T.X.π (inc₀ T.X Z y) ∈ Set.range T.Y.j := hy
-    refine ⟨x, (genι T.Y).isOpenEmbedding.injective ?_⟩
-    rw [e, ← hx, Model.j, Scheme.Hom.comp_apply]
-  have : Nonempty (h ⁻¹ᵁ Vo C) := by
-    obtain ⟨v⟩ := hVo
-    exact ⟨inv (h ∣_ Vo C) v⟩
-  have : IsIntegral (h ⁻¹ᵁ Vo C).toScheme := isIntegral_of_isOpenImmersion (h ∣_ Vo C)
-  have hirr : IsIrreducible ((h ⁻¹ᵁ Vo C : (Y₀ T.X Z).Opens) : Set (Y₀ T.X Z)) := by
-    rw [← Scheme.Opens.range_ι, ← Set.image_univ]
-    exact (IrreducibleSpace.isIrreducible_univ _).image _ (h ⁻¹ᵁ Vo C).ι.continuous.continuousOn
-  have hdense : closure ((h ⁻¹ᵁ Vo C : (Y₀ T.X Z).Opens) : Set (Y₀ T.X Z)) = Set.univ :=
-    ((dense_U₀ T.X Z).mono hpre).closure_eq
-  have : IrreducibleSpace (Y₀ T.X Z) := (irreducibleSpace_def _).2 (by
-    have := hirr.closure
-    rw [hdense] at this
-    exact this)
-  have : IsIntegral (Y₀ T.X Z) := isIntegral_of_irreducibleSpace_of_isReduced _
-  have := C.Y.isNormalScheme
-  have : IsIso h := GlobalTheory.isIso_of_isProper_of_quasiFinite_of_birational h
-    (fun y => inferInstance) (Vo C) hVo
-  refine ⟨h, this, hh, ?_, hR⟩
-  rw [← hps, ← Category.assoc, hh, Category.assoc]
+  exact GlobalTheory.VarFlag.exists_component_iso T Z B j
+    (fun i => ⟨(hB i).1, (hB i).2.2.2⟩) hcov C f hπ hl
 
 theorem exists_flagTor (T : TorFlag Xo c) (hF : FnAlgClosed (Xo := Xo) (c := c)) {σ : c.F →+* ℂ} {N : ℕ} (U : Formalism.L2.PjFree.Unf Xo c σ N)
     (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U) :
@@ -348,10 +504,10 @@ theorem exists_flagTor (T : TorFlag Xo c) (hF : FnAlgClosed (Xo := Xo) (c := c))
         ∀ (K : Type) [Field K] (z : Sp K ⟶ Y₀ T.X (q k)), Rel T.X.F (Φ.C k) (z ≫ inc₀ T.X (q k)) (z ≫ h) := by
   have hsm := smooth_gen T.smooth
   obtain ⟨q, hq⟩ := GlobalTheory.UnifComp.exists_equiv_comp E H Dw l Xo c σ N U hσ hU (fun k => GlobalTheory.CompBij.frames_nonempty _) hF
-  obtain ⟨B, j, hB, hcov⟩ := GlobalTheory.T.exists_varieties_components_smooth_genericFibre E H Dw l Xo c c.F (RingHom.id c.F) T.Y c.F (RingEquiv.refl _) hF hsm
+  obtain ⟨B, j, hB, hcov⟩ := _root_.GlobalTheory.GenFibreComp.exists_vars E H Dw l Xo c c.F (RingHom.id c.F) T.Y c.F (RingEquiv.refl _) hF hsm
   have key := fun i : U.Comp =>
     haveI := (hB (q i)).1
-    GlobalTheory.FlagBundle.exists_flagCpt T.Y (RingEquiv.refl _) (GlobalTheory.T.snc_toroidalGenericBoundary_of_snc_boundary T.snc) (B (q i)) (j (q i)) (hB (q i)).2.2.1
+    GlobalTheory.FlagBundle.exists_flagCpt T.Y (RingEquiv.refl _) (_root_.GlobalTheory.VarFlag.snc_genBdIdeal_of_snc_boundary T.snc) (B (q i)) (j (q i)) (hB (q i)).2.2.1
   choose C f hπ hdim hl using key
   have lift : ∀ (K : Type) [Field K] (x : Sp K ⟶ gen T.Y) (i : Comp Xo c),
       x (IsLocalRing.closedPoint K) ∈ Set.range (j i) → ∃ x' : Sp K ⟶ (B i).X, x' ≫ j i = x := fun K _ x i h => by
@@ -361,7 +517,7 @@ theorem exists_flagTor (T : TorFlag Xo c) (hF : FnAlgClosed (Xo := Xo) (c := c))
     rwa [show w = IsLocalRing.closedPoint K from Subsingleton.elim (α := PrimeSpectrum K) _ _]
   refine ⟨⟨C, fun k => ?_, fun K _ _ χ x hx g => ?_, fun i x s => ?_⟩, q, hq,
     fun k => exists_iso T (q k) B j hB hcov (C k) (f k) (hπ k) (hl k)⟩
-  · rw [hdim, (hB _).2.1, GlobalTheory.T.flag_space_dimension_eq_sum_choose E H Dw, hU.1]
+  · rw [hdim, (hB _).2.1, _root_.GlobalTheory.FlagDimSum.dim_add_sum_choose E H Dw, hU.1]
   · obtain ⟨i₀, hi, hi'⟩ := hcov (x (IsLocalRing.closedPoint K))
     obtain ⟨i, rfl⟩ := q.surjective i₀
     obtain ⟨x', hx'⟩ := lift K x _ hi
@@ -390,7 +546,7 @@ theorem topSelf_eq_inter (T : TorFlag Xo c) (Z : Comp Xo c) (C : FlagCpt T.Y (Ri
   letI := algebraΓOfHom (str₀ T.X Z)
   have hL := isLB_L₀ T.X Z la
   have hL' := T.X.F.isLB_LL (AllWt.exOf Dw la 0)
-  have e := GlobalTheory.T.lineBundleIso_exponentDivisor_pullback_flagCover T.X C (inv h ≫ inc₀ T.X Z) (by rw [Category.assoc, ← hh, IsIso.inv_hom_id_assoc])
+  have e := _root_.GlobalTheory.VarFlag.lbIso_LL_pull T.X C (inv h ≫ inc₀ T.X Z) (by rw [Category.assoc, ← hh, IsIso.inv_hom_id_assoc])
     (fun K _ p => by simpa using hR K (p ≫ inv h)) (AllWt.exOf Dw la 0) rfl
   have e' : topSelfIntersection c.F (C.Y.lb (C.Lw la)) C.Y.dim = topSelfIntersection c.F ((L₀ T.X Z la).pull (inv h)) C.Y.dim :=
     interNum_congr_cls _ _ (fun _ => Cartier.isLB_toLB _) (fun _ => LB.isLB_pull hL _) fun _ => by
@@ -420,7 +576,7 @@ theorem topSelf_eq_covol (hM : GlobalTheory.Published.MumfordProportionality) (T
   obtain ⟨BD, hBD⟩ := exists_effCartier_compl T.Y.X (LogKS.interior T.Y) (LogKS.dense_interior T.Y) T.snc
   have hab : ∀ x, x ∈ BD.idealSheaf.support ↔ x ∉ abLocus T.Y.t.G := fun x => by
     rw [hBD, ← LogKS.coe_interior]; rfl
-  let T' := GlobalTheory.TorRef.selfTor T.Y (smooth_gen T.smooth) (GlobalTheory.T.snc_toroidalGenericBoundary_of_snc_boundary T.snc) hc BD (fun x hx => (hab x).1 hx)
+  let T' := GlobalTheory.TorRef.selfTor T.Y (smooth_gen T.smooth) (_root_.GlobalTheory.VarFlag.snc_genBdIdeal_of_snc_boundary T.snc) hc BD (fun x hx => (hab x).1 hx)
     (fun x hx => (hab _).2 (GlobalTheory.Toroidal.mem_genBd_iff.1 hx)) 1 one_pos
   refine ⟨q, hq, fun k => ?_⟩
   obtain ⟨h, _, h1, h2, h3⟩ := hΦ k
@@ -458,3 +614,7 @@ theorem exists_torFlag_charts {E : Type} [Field E] [NumberField E] [IsCMField E]
 end Good
 
 end GlobalTheory.CompProport
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEffCartierCompl =====

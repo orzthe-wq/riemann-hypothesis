@@ -167,7 +167,7 @@ namespace PositivityTheory.RL
 open SeminormBoundRestriction
 
 theorem actsLaws : GlobalTheory.RealLift.ActsLaws := by
-  apply GlobalTheory.RealLift.actsLaws <;> assumption
+  apply GlobalTheory.RealLift.actsLaws
 
 end PositivityTheory.RL
 

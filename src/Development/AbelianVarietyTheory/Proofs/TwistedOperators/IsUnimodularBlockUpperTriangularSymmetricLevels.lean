@@ -310,7 +310,7 @@ theorem unimodular : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace
     change fromBlocks g'.val 0 0 1 r s = ((embX c g)⁻¹ : GL (n ⊕ Fin c) k).val (σ s) (σ r)
     rw [← map_inv, h]
     change _ = fromBlocks (g⁻¹ : GL n k).val 0 0 1 (σ s) (σ r)
-    rcases r with r | r <;> rcases s with s | s <;> simp [σ, Matrix.one_apply, eq_comm, Sum.inr.injEq]
+    rcases r with r | r <;> rcases s with s | s <;> simp [σ, Matrix.one_apply, eq_comm]
 
   have hconj : ∀ (t : kˣ), ∀ g ∈ S, (levDiag lev t)⁻¹ * g * levDiag lev t ∈ S := fun t g hg => by
     rw [hS]

@@ -75,7 +75,7 @@ theorem eq_torusToLevi (n : ℕ) (g : Levi k (fun _ : Fin n => Fin 1)) :
   funext j; ext a b
   rw [val_torusToLevi]
   fin_cases a; fin_cases b
-  simp [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_one]
+  simp [Matrix.GeneralLinearGroup.val_det_apply]
 
 theorem deltaHalf_eq (n : ℕ) (g : Levi k (fun _ : Fin n => Fin 1)) :
     deltaHalf k (fun _ : Fin n => Fin 1) g =

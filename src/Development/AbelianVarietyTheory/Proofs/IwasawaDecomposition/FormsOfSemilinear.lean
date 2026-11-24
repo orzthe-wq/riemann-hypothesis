@@ -160,7 +160,7 @@ theorem forms_of_semilinear (φ : K →+* K') (e : G ≃* G') (B : BlockDat K G 
       funext j
       by_cases h : j = k
       · subst h; simp
-      · simp [Finsupp.single_apply, Pi.single_apply, h, Ne.symm h]
+      · simp [h]
     have := congrFun (hv (B.S.basis k)) i
     rw [hs, Matrix.mulVec_single_one, Matrix.mulVec_single_one] at this
     exact this

@@ -1,129 +1,39 @@
 module
 
 public import Mathlib.Algebra.Algebra.Defs
-public import Mathlib.LinearAlgebra.Span.Defs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
 public import Mathlib.Algebra.Module.Submodule.Map
+public import Mathlib.LinearAlgebra.Span.Defs
+import Mathlib.Algebra.Algebra.Operations
 
 @[expose] public section
 
+open scoped Pointwise
+
 namespace Bl.general_b_fact_left'''''
 
-private lemma aux {O A I : Type} [CommRing O] [CommRing A] [Algebra O A]
+theorem goal1 {O A I : Type} [CommRing O] [CommRing A] [Algebra O A]
     [Fintype I] [DecidableEq I] {B : I → Type} [(i : I) → AddCommGroup (B i)]
-    [(i : I) → Module O (B i)] (ε : (i : I) → B i →ₗ[O] A)
-    (T : (i : I) → Set (B i)) (S : Submodule O A)
-    (hS : ∀ F : (i : I) → B i, (∀ i, F i ∈ T i) → ∏ i, ε i (F i) ∈ S) :
-    ∀ s : Finset I, ∀ F : (i : I) → B i, (∀ i ∈ s, F i ∈ Submodule.span O (T i)) →
-      (∀ i ∉ s, F i ∈ T i) → ∏ i, ε i (F i) ∈ S := by
-  intro s
-  induction s using Finset.induction_on with
-  | empty =>
-    intro F _ h2
-    exact hS F (fun i => h2 i (Finset.notMem_empty i))
-  | insert j s hj ih =>
-    intro F h1 h2
-    have key : ∀ x : B j, ∏ i, ε i (Function.update F j x i)
-        = ε j x * ∏ i ∈ Finset.univ \ {j}, ε i (F i) := by
-      intro x
-      have e : (fun i => ε i (Function.update F j x i))
-          = Function.update (fun k => ε k (F k)) j (ε j x) := by
-        funext i
-        exact Function.apply_update (fun k => (ε k : B k → A)) F j x i
-      rw [e, Finset.prod_update_of_mem (Finset.mem_univ j)]
-    have hT : T j ⊆ (S.comap ((LinearMap.mulRight O (∏ i ∈ Finset.univ \ {j}, ε i (F i))).comp (ε j)) :
-        Set (B j)) := by
-      intro x hx
-      show (LinearMap.mulRight O (∏ i ∈ Finset.univ \ {j}, ε i (F i))) (ε j x) ∈ S
-      rw [LinearMap.mulRight_apply, ← key x]
-      apply ih (Function.update F j x)
-      · intro i hi
-        have hij : i ≠ j := fun h => hj (h ▸ hi)
-        rw [Function.update_of_ne hij]
-        exact h1 i (Finset.mem_insert_of_mem hi)
-      · intro i hi
-        by_cases hij : i = j
-        · subst hij
-          rw [Function.update_self]
-          exact hx
-        · rw [Function.update_of_ne hij]
-          exact h2 i (by simp [hij, hi])
-    have hmem := Submodule.span_le.mpr hT (h1 j (Finset.mem_insert_self j s))
-    have k := key (F j)
-    rw [Function.update_eq_self] at k
-    rw [k]
-    exact hmem
-
-theorem goal1 :
-  ∀ {O A I : Type} [inst : CommRing.{0} O] [inst_1 : CommRing.{0} A] [inst_2 : Algebra.{0, 0} O A]
-  [inst_3 : Fintype.{0} I] [DecidableEq.{1} I] {B : I → Type} [inst_5 : (i : I) → AddCommGroup.{0} (B i)]
-  [inst_6 : (i : I) → Module.{0, 0} O (B i)] (ε : (i : I) → LinearMap.{0, 0, 0, 0} (RingHom.id.{0} O) (B i) A)
-  (T : (i : I) → Set.{0} (B i)),
-  Eq.{1}
-    (Submodule.span.{0, 0} O
-      (Set.ofPred.{0} fun (X : A) ↦
-        Exists.{1} fun (F : (i : I) → B i) ↦
-          And (∀ (i : I), Membership.mem.{0, 0} (Submodule.span.{0, 0} O (T i)) (F i))
-            (Eq.{1} X (Finset.prod.{0, 0} Finset.univ.{0} fun (i : I) ↦ DFunLike.coe.{1, 1, 1} (ε i) (F i)))))
-    (Submodule.span.{0, 0} O
-      (Set.ofPred.{0} fun (X : A) ↦
-        Exists.{1} fun (F : (i : I) → B i) ↦
-          And (∀ (i : I), Membership.mem.{0, 0} (T i) (F i))
-            (Eq.{1} X (Finset.prod.{0, 0} Finset.univ.{0} fun (i : I) ↦ DFunLike.coe.{1, 1, 1} (ε i) (F i))))) := by
-  intro O A I _ _ _ _ _ B _ _ ε T
-  apply le_antisymm
-  · rw [Submodule.span_le]
-    rintro X ⟨F, hF, rfl⟩
-    exact aux ε T _ (fun G hG => Submodule.subset_span
-      (show ∃ H : (i : I) → B i, (∀ i, H i ∈ T i) ∧ ∏ i, ε i (G i) = ∏ i, ε i (H i) from
-        ⟨G, hG, rfl⟩)) Finset.univ F
-      (fun i _ => hF i) (fun i hi => absurd (Finset.mem_univ i) hi)
-  · apply Submodule.span_mono
-    rintro X ⟨F, hF, rfl⟩
-    exact (show ∃ G : (i : I) → B i, (∀ i, G i ∈ Submodule.span O (T i)) ∧ _ from
-      ⟨F, fun i => Submodule.subset_span (hF i), rfl⟩)
+    [(i : I) → Module O (B i)] (ε : (i : I) → B i →ₗ[O] A) (T : (i : I) → Set (B i)) :
+    Submodule.span O {X : A | ∃ F : (i : I) → B i,
+      (∀ i, F i ∈ Submodule.span O (T i)) ∧ X = ∏ i, ε i (F i)} =
+    Submodule.span O {X : A | ∃ F : (i : I) → B i,
+      (∀ i, F i ∈ T i) ∧ X = ∏ i, ε i (F i)} := by
+  have product_image (S : (i : I) → Set (B i)) :
+      {X : A | ∃ F : (i : I) → B i, (∀ i, F i ∈ S i) ∧ X = ∏ i, ε i (F i)} =
+        ∏ i, ε i '' S i := by
+    ext x
+    rw [Set.mem_ofPred_eq, Set.mem_fintype_prod]
+    constructor
+    · rintro ⟨F, hF, rfl⟩
+      exact ⟨fun i => ε i (F i), fun i => ⟨F i, hF i, rfl⟩, rfl⟩
+    · rintro ⟨g, hg, rfl⟩
+      choose F hF he using hg
+      exact ⟨F, hF, Finset.prod_congr rfl fun i _ => (he i).symm⟩
+  have hspan := product_image (fun i => (Submodule.span O (T i) : Set (B i)))
+  simp only [SetLike.mem_coe] at hspan
+  rw [hspan, product_image T, ← Submodule.prod_span, ← Submodule.prod_span]
+  refine Finset.prod_congr rfl fun i _ => ?_
+  rw [← Submodule.map_coe, Submodule.span_eq, Submodule.map_span]
 
 end Bl.general_b_fact_left'''''

@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.EqOfPowEqOneOfNormSubLt
 public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineFormalismOfRegular
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemistablePeriodRingGaloisInvariantsIffConstStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalPrimeGaloisActionPeriodT
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemistablePeriodRingGaloisInvariantsIffConst
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -134,7 +135,7 @@ theorem isSst_of_periodMatrix : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (A
       rw [hact, hf, hmv, Matrix.mulVec_mulVec, hQ g]
       congr 1
       funext i
-      exact ((GlobalTheory.T.semistablePeriodRing_galois_invariants_iff_const l P AI T K (ι (c i))).mpr ⟨c i, hι _⟩) g
+      exact ((_root_.GlobalTheory.PMon.stInv_iff l P AI T K (ι (c i))).mpr ⟨c i, hι _⟩) g
     · intro hx
       set z := ((Q⁻¹ : GL n (Bst P)) : Matrix n n (Bst P)) *ᵥ crd x with hz
       have hy : crd x = (Q : Matrix n n (Bst P)) *ᵥ z := (hQinv' _).symm
@@ -145,7 +146,7 @@ theorem isSst_of_periodMatrix : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (A
         have h2 := congrArg (fun w => ((Q⁻¹ : GL n (Bst P)) : Matrix n n (Bst P)) *ᵥ w) h1
         simp only [hQinv] at h2
         exact congrFun h2 i
-      choose c hc using fun i => (GlobalTheory.T.semistablePeriodRing_galois_invariants_iff_const l P AI T K (z i)).mp (hinv i)
+      choose c hc using fun i => (_root_.GlobalTheory.PMon.stInv_iff l P AI T K (z i)).mp (hinv i)
       refine ⟨c, crd.injective ?_⟩
       rw [hf, hy]
       congr 1

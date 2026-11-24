@@ -2,49 +2,8 @@ module
 
 public import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.SaturationChartsHolds
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.SingleMemDegLE
 
 @[expose] public section
@@ -79,7 +38,7 @@ theorem jetAug_mk {ι : Type} (q : MvPolynomial ι V) :
 private lemma snd_tan_lemma (c x : V) : (algebraMap V (DualNumber V) c + x • DualNumber.eps).snd = x := by
   rw [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_smul, DualNumber.snd_eps, smul_eq_mul, mul_one]
   have h0 : (algebraMap V (DualNumber V) c).snd = 0 := by
-    first | rfl | simp [TrivSqZeroExt.algebraMap_eq_inl] | exact TrivSqZeroExt.snd_inl _ _
+    first | rfl
   rw [h0, zero_add]
 
 theorem snd_lin (φ : Jet V (Fin 1 × Fin d) 1 →ₐ[V] DualNumber V) (hφ : ∀ w, (φ w).fst = jetAug w)
@@ -91,7 +50,7 @@ theorem snd_lin (φ : Jet V (Fin 1 × Fin d) 1 →ₐ[V] DualNumber V) (hφ : �
     have h1 : (Ideal.Quotient.mk _ (C a) : Jet V (Fin 1 × Fin d) 1) = algebraMap V _ a := rfl
     have h2 : (φ (Ideal.Quotient.mk _ (C a))).snd = 0 := by
       rw [h1, AlgHom.commutes]
-      first | rfl | simp [TrivSqZeroExt.algebraMap_eq_inl] | exact TrivSqZeroExt.snd_inl _ _
+      first | rfl
     rw [h2]
     have hne : ∀ c : Fin d, (0 : Fin 1 × Fin d →₀ ℕ) ≠ Finsupp.single ((0 : Fin 1), c) 1 :=
       fun c => (Finsupp.single_ne_zero.2 one_ne_zero).symm

@@ -175,6 +175,14 @@ theorem WittVector.frobeniusEquiv_pow_teichmuller (a : R) (n : ℕ) :
 
 end Frobenius
 
+/-- The period ring `A_{inf} = W(R♭)` for `R = normInteger K`.
+
+See [Bhatt–Morrow–Scholze, *Integral p-adic Hodge theory*
+(§3.1, Definition 3.1, p. 244)][bhattMorrowScholze2018]. In the classical case
+`R = 𝒪_[ℂ_[p]]`, see [Fontaine, *Le corps des périodes p-adiques*
+(§1.3.3, p. 66, with `K = ℚ_[p]`)][fontaine1994].
+
+TODO: Unify this with `Reformulated.AutPerF.Ainf`. -/
 abbrev AInf (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K] (p : ℕ) [Fact p.Prime] :=
   WittVector p (PreTilt (normInteger K) p)
 

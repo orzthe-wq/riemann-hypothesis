@@ -54,5 +54,3 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheory.CechPic GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 
-theorem _root_.GlobalTheory.T.abelianScheme_field_smoothOfRelativeDimension_exists : ∀ (K : Type) [Field K] (X : Over (Sp K)) [GrpObj X], IsAbelianScheme X → ∃ g : ℕ, SmoothOfRelativeDimension g X.hom := by
-  first | (exact @GlobalTheory.AV.exists_smoothOfRelativeDimension_of_isAbelianScheme) | (exact GlobalTheory.AV.exists_smoothOfRelativeDimension_of_isAbelianScheme) | (intros; apply GlobalTheory.AV.exists_smoothOfRelativeDimension_of_isAbelianScheme  <;> assumption)

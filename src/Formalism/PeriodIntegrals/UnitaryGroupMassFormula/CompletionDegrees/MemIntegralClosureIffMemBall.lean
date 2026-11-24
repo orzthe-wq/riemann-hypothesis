@@ -96,7 +96,6 @@ theorem norm_le_one_iff_isIntegral (z : Om l) : ‖z‖ ≤ 1 ↔ IsIntegral ℤ
   have hzQ : IsIntegral ℚ_[l] z := by
     first
       | exact Algebra.IsIntegral.isIntegral z
-      | exact (Algebra.IsAlgebraic.isAlgebraic z).isIntegral
   have hnorm : ‖z‖ = spectralValue (minpoly ℚ_[l] z) := rfl
   rw [hnorm, spectralValue_le_one_iff_norm_coeff_le_one _ (minpoly.monic hzQ)]
   constructor
@@ -119,7 +118,6 @@ theorem mem_integralClosure_iff_mem_ball (K : FinExt l) (x : ↥K.1) :
   show IsIntegral ℤ_[l] x ↔ ‖((x : ↥K.1) : Om l)‖ ≤ 1
   rw [norm_le_one_iff_isIntegral]
   first
-    | exact (isIntegral_algebraMap_iff (A := ↥K.1) (B := Om l) ).symm
     | exact (isIntegral_algHom_iff ((K.1.val).restrictScalars ℤ_[l]) K.1.val.injective).symm
 
 theorem card_quot_l {C : Type} [CommRing C] [Algebra ℤ_[l] C] {n : ℕ} (b : Basis (Fin n) ℤ_[l] C) :

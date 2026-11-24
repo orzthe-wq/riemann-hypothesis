@@ -137,8 +137,6 @@ theorem lIdxH_eq_of_red (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what
     unfold glkC
     first
       | rfl
-      | (rw [Matrix.card_GL_field, ZMod.card]; done)
-      | done
   rw [hgl] at hmul
   rw [eq_div_iff (by exact_mod_cast hpos.ne'), ← hmul]
   push_cast

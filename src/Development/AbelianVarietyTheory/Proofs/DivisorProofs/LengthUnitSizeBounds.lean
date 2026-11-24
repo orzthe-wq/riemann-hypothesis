@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.MulSmulIdemMem
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CfgTopFalseIff
 
 @[expose] public section
 
@@ -83,18 +84,10 @@ theorem six_le_r (D : D7) : 6 ≤ D.R.r := by
   have h2 := D.R.m_add_three_le_k
   unfold Ranks.r; omega
 
-theorem one_le_scL (L : SizeData₂ D) : 1 ≤ L.sc.L :=
-  Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le
-
-theorem one_le_zBase (L : SizeData₂ D) : 1 ≤ zBase L := by
-  have hf : (1 : ℝ) ≤ D.R.f := by exact_mod_cast (by have := two_le_f D; omega : 1 ≤ D.R.f)
-  have hr : (1 : ℝ) ≤ D.R.r := by exact_mod_cast (by have := six_le_r D; omega : 1 ≤ D.R.r)
-  exact one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hf hr) (one_le_scL L)
-
 variable {L : SizeData₂ D} {P : ParameterChoice' D L}
 
 theorem pow_le_PP (T : ParamsT D L P) : zBase L ^ 12 ≤ T.PP := by
-  have hZ := one_le_zBase L
+  have hZ := _root_.Formalism.MainNotions.WeightFamilies.one_le_zBase L
   have h1 : zBase L ^ 12 ≤ zBase L ^ T.eP := by
     rw [← Real.rpow_natCast]
     exact Real.rpow_le_rpow_of_exponent_le hZ (by exact_mod_cast T.eP_ge)
@@ -104,7 +97,7 @@ theorem pow_le_PP (T : ParamsT D L P) : zBase L ^ 12 ≤ T.PP := by
 theorem ceil_le_TO (T : ParamsT D L P) :
     ⌈T.PP ^ 2 * (T.Dp : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)⌉₊ ≤ T.TO := by
   refine Nat.ceil_le.2 (le_trans ?_ T.TO_ge)
-  have hPP : 1 ≤ T.PP := (one_le_pow₀ (one_le_zBase L)).trans (pow_le_PP T)
+  have hPP : 1 ≤ T.PP := (one_le_pow₀ (_root_.Formalism.MainNotions.WeightFamilies.one_le_zBase L)).trans (pow_le_PP T)
   have hf : (1 : ℝ) ≤ D.R.f := by exact_mod_cast (by have := two_le_f D; omega : 1 ≤ D.R.f)
   have hD : (1 : ℝ) ≤ T.Dp := by
     have h1 : 0 < D.R.r.choose 2 := Nat.choose_pos (by have := six_le_r D; omega)
@@ -122,8 +115,8 @@ theorem ceil_le_TO (T : ParamsT D L P) :
 
 theorem ceil_mul_le_b (T : ParamsT D L P) :
     (⌈T.PP ^ 2 * (T.Dp : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)⌉₊ : ℝ) * zBase L ^ 12 ≤ L.sc.b := by
-  have hb : 1 ≤ L.sc.b := Real.one_le_exp (zero_le_one.trans (one_le_scL L))
-  have hZ := one_le_zBase L
+  have hb : 1 ≤ L.sc.b := Real.one_le_exp (zero_le_one.trans (_root_.Formalism.MainNotions.BridgeLemma.one_le_L L))
+  have hZ := _root_.Formalism.MainNotions.WeightFamilies.one_le_zBase L
   have h1 : (⌈T.PP ^ 2 * (T.Dp : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)⌉₊ : ℝ) ≤ T.TO := by exact_mod_cast ceil_le_TO T
   refine (mul_le_mul h1 (pow_le_PP T) (by positivity) (by positivity)).trans (T.TO_PP'.trans ?_)
   exact (Real.rpow_le_rpow_of_exponent_le hb (by norm_num : (1 / 2 : ℝ) ≤ 1)).trans (Real.rpow_one _).le
@@ -132,7 +125,7 @@ theorem lrd_le (P : ParameterChoice' D L) : lrd D.host.E ≤ 3 * L.sc.L := by
   have h := log_rdE_le_scL P
   have e : lrd D.host.E = Real.log D.host.rdE := by
     rw [lrd, rootDiscr_def, Formalism.BasicNotions.Host.rdE, one_div, Int.cast_abs]
-  have := one_le_scL L
+  have := _root_.Formalism.MainNotions.BridgeLemma.one_le_L L
   rw [e]; linarith
 
 theorem nCol_le_of_pins {T : Par D} (h : T.Pins) {j : ℕ} (hj : InR D j) :

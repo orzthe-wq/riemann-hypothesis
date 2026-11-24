@@ -1,60 +1,37 @@
 module
 
+public import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.StatementS
+public import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.OneLtNormXOfInKernel
 public import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.StatementW
 public import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.ThetaZeroLogDerivative
 public import Mathlib.Analysis.Normed.Field.Instances
 public import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.QuasiPeriodConstUnique
 public import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.AnalyticTransOfAdd
-import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.FacShapeZero
 public import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.AnaSysW
-public import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.OneLtNormXOfInKernel
+import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.FacShapeZero
 import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.Taylor0ConstMul
-public import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.ShiftPtsInt
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.ShiftPtsInt, Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.TransW
+
+-- ===== clump member: Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.ShiftPtsInt =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.ShiftPtsInt", "h": "module\n\npublic import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.StatementS\npublic import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.OneLtNormXOfInKernel\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.L2.Th1.E
+
+end Formalism.L2.Th1.E
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.ShiftPtsInt =====
+
+-- ===== clump member: Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.TransW =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.TransW", "h": "module\n\npublic import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.StatementW\npublic import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.ThetaZeroLogDerivative\npublic import Mathlib.Analysis.Normed.Field.Instances\npublic import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.QuasiPeriodConstUnique\npublic import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.AnalyticTransOfAdd\nimport Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.FacShapeZero\npublic import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.AnaSysW\npublic import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.OneLtNormXOfInKernel\nimport Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.Taylor0ConstMul\npublic import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.ShiftPtsInt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open PowerSeries
@@ -147,16 +124,13 @@ theorem inW_const_mul (a : ℂ) (f : ℂ → ℂ) :
     inW l ι W (fun z => a * f z) = C (ι a) * inW l ι W f := by
   have ht : Formalism.L2.Th1.F.taylor0 (fun z => a * f z) = C a * Formalism.L2.Th1.F.taylor0 f := by
     ext n
-    simp [Formalism.L2.Th1.F.taylor0, iteratedDeriv_const_mul_fun, mul_div_assoc]
+    simp [Formalism.L2.Th1.F.taylor0, mul_div_assoc]
   have hs : PowerSeries.HasSubst (Formalism.L2.Th1.A.logSer W) :=
     PowerSeries.HasSubst.of_constantCoeff_zero (by
       have h0 : PowerSeries.coeff 0 (Formalism.L2.Th1.A.logSer W) = 0 := by
         simp [Formalism.L2.Th1.A.logSer, Formalism.L2.Th1.A.integ]
       first
-        | exact (PowerSeries.coeff_zero_eq_constantCoeff_apply _).symm.trans h0
-        | exact h0
-        | simpa using h0
-        | (rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]; exact h0))
+        | exact (PowerSeries.coeff_zero_eq_constantCoeff_apply _).symm.trans h0)
   unfold inW
   rw [ht, map_mul, PowerSeries.map_C, ← PowerSeries.smul_eq_C_mul, ← PowerSeries.smul_eq_C_mul,
     PowerSeries.subst_smul hs]
@@ -192,7 +166,7 @@ open Classical in
 theorem ptW_int (hA : PtWAdd) (hZ : PtWZero) (hU : Unif l L ι W) (hW : IntCurve W) (t : ℂ) (N : ℕ)
     (hlN : ¬ l ∣ N) (hNt : (N : ℂ) * t ∈ L.lattice) (ht : t ∉ L.lattice) :
     ‖px W (ptW l L ι W t)‖ ≤ 1 ∧ ‖py W (ptW l L ι W t)‖ ≤ 1 :=
-  torsionIntegral ℂ_[l] W hW _ N (Tor.norm_natCast l hlN)
+  _root_.Formalism.L2.Th1.E.torsion_integral ℂ_[l] W hW _ N (Tor.norm_natCast l hlN)
     (by rw [nsmul_ptW hA hU]; exact (hZ l L ι W hU _).2 hNt)
     (fun h => ht ((hZ l L ι W hU t).1 h))
 
@@ -535,7 +509,7 @@ theorem oddCase (hS : AnalyticSysW) (hA : PtWAdd) (hZ : PtWZero) (hU : Unif l L 
   refine (hW_sim l L ι W (ω₀ / 2) s (2 * N) (by omega) (two_mem hNs) (half_mem hω N) hω2).gaussOne ?_
   refine Tor.gaussOne_C_mul (by rw [norm_inv, hc1, inv_one]) ?_
   rw [eW_eq]
-  exact gaussMul ℂ_[l] _ _ (gaussOne_of_oneUnit hE') (gW_gauss hS hA hZ hU hW _ (2 * N) hN2 m3)
+  exact _root_.Formalism.L2.Th1.E.gauss_multiplicative ℂ_[l] _ _ (gaussOne_of_oneUnit hE') (gW_gauss hS hA hZ hU hW _ (2 * N) hN2 m3)
 
 
 open Classical in
@@ -579,7 +553,7 @@ theorem shiftCase (hS : AnalyticSysW) (hA : PtWAdd) (hZ : PtWZero) (hU : Unif l 
     exact hS0 h1
   have hy : ‖py W (ptW l L ι W (ω₀ / 2))‖ ≤ 1 :=
     Shift.py_int W ⟨hW.1, hW.2.1, hW.2.2.1, hW.2.2.2.1, hW.2.2.2.2.1⟩ _ hx
-  obtain ⟨hAint, hSint⟩ := shiftPtsInt ℂ_[l] W hW (AddSubgroup.zmultiples (ptW l L ι W s)) hcard
+  obtain ⟨hAint, hSint⟩ := _root_.Formalism.L2.Th1.E.shifted_points_integral ℂ_[l] W hW (AddSubgroup.zmultiples (ptW l L ι W s)) hcard
     (ptW l L ι W (ω₀ / 2)) hSA hSS hx hy
 
   let rep : W.toAffine.Point → ℂ := fun P =>
@@ -644,7 +618,7 @@ theorem shiftCase (hS : AnalyticSysW) (hA : PtWAdd) (hZ : PtWZero) (hU : Unif l 
       rw [hadd, (repS _ hP).2, (repS _ hQ).2] at hk
       rw [hk, map_mul]
       ring
-  obtain ⟨hn, ho⟩ := (shiftUnit ℂ_[l] W hW (AddSubgroup.zmultiples (ptW l L ι W s)) hcard
+  obtain ⟨hn, ho⟩ := (_root_.Formalism.L2.Th1.E.shift_unit' ℂ_[l] W hW (AddSubgroup.zmultiples (ptW l L ι W s)) hcard
     (ptW l L ι W (ω₀ / 2)) hSA hAint hSint _ _ hsys).2 (ptW l L ι W s)
     (AddSubgroup.mem_zmultiples _)
   have hs := repS _ (AddSubgroup.mem_zmultiples (ptW l L ι W s))
@@ -667,3 +641,7 @@ theorem analytic_translate_model : AnalyticTransW := AnalyticTransW_of analytic_
 theorem shift_analytic_model : ShiftAnalyticW := ShiftAnalyticW_of analytic_translate_system_model analytic_point_map_add analytic_point_eq_zero_iff
 
 end Formalism.L2.Th1.E
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.TransW =====

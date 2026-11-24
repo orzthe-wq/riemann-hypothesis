@@ -91,7 +91,7 @@ theorem natActR_one (R : Type) [Field R] (Q : XR P R) : natActR P R (fun _ _ => 
     simp [ite_mul, Finset.sum_ite_eq]
   unfold natActR
   simp only [inv_one, Units.val_one, Matrix.det_one, one_zpow, Finset.prod_const_one, one_smul,
-    LinearMap.smul_apply, AlgHom.toLinearMap_apply]
+    AlgHom.toLinearMap_apply]
   rw [hs]
   rfl
 

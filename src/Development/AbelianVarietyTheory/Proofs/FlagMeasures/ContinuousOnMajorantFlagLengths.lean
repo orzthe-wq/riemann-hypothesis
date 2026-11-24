@@ -67,9 +67,6 @@ theorem opn_continuous {n : ℕ} : Continuous (opn (n := n)) := by
   exact LinearMap.continuous_of_finiteDimensional
     ((Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin n)).toAlgEquiv.toLinearMap)
 
-theorem opn_one {n : ℕ} : opn (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) = 1 := by
-  rw [opn, map_one, norm_one]
-
 def len {n : ℕ} (Y : Submodule ℂ (Fin n → ℂ)) (f : Fin n → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) : ℝ :=
   sInf {t | ∃ y ∈ Y, t = eucl (g⁻¹ *ᵥ (f - y))}
 
@@ -106,11 +103,11 @@ theorem len_continuousOn {n : ℕ} (Y : Submodule ℂ (Fin (n + 1) → ℂ)) (f 
   have h1 : Tendsto (fun x => opn (x⁻¹ * x₀)) (𝓝 x₀) (𝓝 1) := by
     have : ContinuousAt (fun x : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ => opn (x⁻¹ * x₀)) x₀ :=
       opn_continuous.continuousAt.comp (hinv.mul continuousAt_const)
-    simpa [ContinuousAt, Matrix.nonsing_inv_mul _ hx₀', opn_one] using this
+    simpa [ContinuousAt, Matrix.nonsing_inv_mul _ hx₀', _root_.GlobalTheory.SgInf.opn_one] using this
   have h2 : Tendsto (fun x => opn (x₀⁻¹ * x)) (𝓝 x₀) (𝓝 1) := by
     have : ContinuousAt (fun x : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ => opn (x₀⁻¹ * x)) x₀ :=
       opn_continuous.continuousAt.comp (continuousAt_const.mul continuousAt_id)
-    simpa [ContinuousAt, Matrix.nonsing_inv_mul _ hx₀', opn_one] using this
+    simpa [ContinuousAt, Matrix.nonsing_inv_mul _ hx₀', _root_.GlobalTheory.SgInf.opn_one] using this
   have hU : Tendsto (fun x => opn (x⁻¹ * x₀) * len Y f x₀) (𝓝 x₀) (𝓝 (len Y f x₀)) := by
     simpa using h1.mul_const (len Y f x₀)
   have hL : Tendsto (fun x => len Y f x₀ / opn (x₀⁻¹ * x)) (𝓝 x₀) (𝓝 (len Y f x₀)) := by

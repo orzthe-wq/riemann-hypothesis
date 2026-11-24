@@ -112,11 +112,11 @@ theorem alt_double_sum {M : Type*} [AddCommGroup M] (n : ℕ)
     by_cases h : j < i
     · simp only [h, if_true]
       rw [if_neg (by omega)]
-      simp only [Prod.mk.injEq, and_true, true_and]
+      simp only [Prod.mk.injEq, and_true]
       omega
     · simp only [h, if_false]
       rw [if_pos (by omega)]
-      simp only [Prod.mk.injEq, and_true, true_and]
+      simp only [Prod.mk.injEq, true_and]
       omega
 
 theorem dH_comp_dH (a b x y c d : ℕ) : dH a b x y ≫ dH x y c d = 0 := by

@@ -1,25 +1,30 @@
 module
 
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.RepresentationTheory.Basic
+public import Mathlib.Topology.Algebra.Group.Defs
+public import Mathlib.Topology.Bases
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivOfRangeEq
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeValuesSameParameters
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMultisetSatakeEigenvalueEqStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMultisetSatakeEigenvalueEq
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeVecMemFixed
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraMapIntertwiningMapBijectiveOfIsSmooth
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyMemFixed
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFixedOfMemISup
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsRestTail
 public import Formalism.LocalToGlobal.NumberFieldFamilies.ThetaCT
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FiniteCosetsInDoset
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -27,8 +32,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,7 +40,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,11 +52,51 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeVecMemFixed
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFixedOfMemISup
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FiniteCosetsInDoset
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsRestTail, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalSatakeAlmostAll
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsRestTail =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsRestTail", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.RepresentationTheory.Basic\npublic import Mathlib.Topology.Algebra.Group.Defs\npublic import Mathlib.Topology.Bases\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.Reformulated.B.Yhd2.main :
+    ∀ {G M : Type} [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
+      [inst_4 : AddCommGroup M] [inst_5 : _root_.Module ℂ M] (ρ : Representation ℂ G M) (x : M),
+      IsOpen {g : G | ((ρ : G → M →ₗ[ℂ] M) g : M → M) x = x} →
+        (Set.range fun (g : G) ↦ ((ρ : G → M →ₗ[ℂ] M) g : M → M) x).Countable := by
+  intro G M _ _ _ _ _ _ ρ x hS
+  obtain ⟨D, hDc, hDd⟩ := TopologicalSpace.exists_countable_dense G
+  apply (hDc.image (fun (g : G) ↦ ((ρ : G → M →ₗ[ℂ] M) g : M → M) x)).mono
+  rintro _ ⟨g, rfl⟩
+  have hU : IsOpen ((fun h : G ↦ g⁻¹ * h) ⁻¹' {g : G | ((ρ : G → M →ₗ[ℂ] M) g : M → M) x = x}) :=
+    hS.preimage (continuous_const.mul continuous_id)
+  have hne : ((fun h : G ↦ g⁻¹ * h) ⁻¹' {g : G | ((ρ : G → M →ₗ[ℂ] M) g : M → M) x = x}).Nonempty :=
+    ⟨g, by simp⟩
+  obtain ⟨d, hdD, hdU⟩ := hDd.exists_mem_open hU hne
+  refine ⟨d, hdD, ?_⟩
+  simp only [Set.mem_preimage, Set.mem_ofPred_eq] at hdU
+  have : d = g * (g⁻¹ * d) := by group
+  simp only
+  rw [this, map_mul, Module.End.mul_apply, hdU]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsRestTail =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalSatakeAlmostAll =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalSatakeAlmostAll", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivOfRangeEq\npublic import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.StrongMultiplicityOne\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeValuesSameParameters\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMultisetSatakeEigenvalueEq\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgebraMapIntertwiningMapBijectiveOfIsSmooth\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyMemFixed\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsRestTail\npublic import Formalism.LocalToGlobal.NumberFieldFamilies.ThetaCT\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeVecMemFixed\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFixedOfMemISup\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FiniteCosetsInDoset\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -147,18 +190,13 @@ theorem rank_le_of_simple {M ι : Type} [AddCommGroup M] [Module ℂ M] (S : Sub
   rw [← e]
   exact (rank_span_le _).trans (Cardinal.le_aleph0_iff_set_countable.2 hUc)
 
-theorem countable_orbit {G M : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
-    [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ G M) (x : M) (h : IsOpen {g | ρ g x = x}) :
-    (Set.range fun g => ρ g x).Countable :=
-  _root_.UpperTheory.Reformulated.B.Yhd2.main ρ x h
-
 section Cusp
 
 variable {E : Type} [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] {a : ℕ}
 
 omit [_root_.NumberField.IsTotallyComplex E] in
 theorem secondCountable_GL : SecondCountableTopology (GL (Fin a) (Af E)) := by
-  haveI := Formalism.L2.Fam.ThC.sc_Af E
+  haveI := _root_.GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele E
   haveI : SecondCountableTopology (Matrix (Fin a) (Fin a) (Af E)) :=
     inferInstanceAs (SecondCountableTopology (Fin a → Fin a → Af E))
   haveI : SecondCountableTopology (Matrix (Fin a) (Fin a) (Af E))ᵐᵒᵖ :=
@@ -174,7 +212,7 @@ theorem rank_cuspSub (π : CuspSub E a) : Module.rank ℂ π.V ≤ Cardinal.alep
     (Module.Finite.iff_fg.1 hk)
   let b := Module.finBasis ℝ (Lie E a)
   refine ⟨(Set.range fun g => finRep E a g x) ∪ ((s : Set (Sm E a)) ∪ Set.range fun i => lie E a (b i) x),
-    (countable_orbit _ _ hcusp.level).union (s.countable_toSet.union (Set.countable_range _)), ?_, fun o => ?_⟩
+    (_root_.UpperTheory.Reformulated.B.Yhd2.main _ _ hcusp.level).union (s.countable_toSet.union (Set.countable_range _)), ?_, fun o => ?_⟩
   · rintro y (⟨g, rfl⟩ | hy | ⟨i, rfl⟩)
     · exact π.stable (.fin g) x hx
     · obtain ⟨k, rfl⟩ := hs1 hy
@@ -357,7 +395,7 @@ theorem exists_hasSatGL_of_scalar {π : Representation ℂ (GL (Fin n) (w.adicCo
       refine ⟨_, ⟨Finset.mem_singleton_self _, ?_⟩, fun γ hγ => Finset.mem_singleton.1 hγ.1⟩
       rw [← tor_const_comm, mul_assoc, inv_mul_cancel_left]
       exact mul_mem ha hb
-  obtain ⟨B, hB, hBc⟩ := GlobalTheory.T.exists_multiset_satakeEigenvalue_eq (qV E w) n (qV_ne_zero w) c c0 cn
+  obtain ⟨B, hB, hBc⟩ := _root_.GlobalTheory.LFun.exists_satEig_eq (qV E w) n (qV_ne_zero w) c c0 cn
   refine ⟨B, hs, fun y hy hy0 => ⟨hy0, hy, hB, fun ϖ' hu' j hj => ?_⟩⟩
   have hv : Valued.v (ϖ' / ϖ) = 1 := by
     rw [map_div₀, hu, hu', div_self WithZero.coe_ne_zero]
@@ -420,3 +458,7 @@ theorem eventually_exists_hasSat : ∀ {E : Type} [Field E] [NumberField E] [_ro
 end Main
 
 end GlobalTheory.CompanionTheory.SatAe
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalSatakeAlmostAll =====

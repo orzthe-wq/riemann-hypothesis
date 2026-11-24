@@ -186,10 +186,6 @@ def projHom : LatHom Yt.L (trivZ S.G S.Qp S.LL S.O hinj).L :=
       obtain ⟨a, ha⟩ := hint x hx
       exact ⟨a, ha⟩ }
 
-include hpe in
-theorem p_smul (a : S.O) : p (a • e₀) = algebraMap S.O S.LL a := by
-  rw [← algebraMap_smul S.LL a e₀, map_smul, hpe, smul_eq_mul, mul_one]
-
 theorem ses : IsSESLat (Qp := S.Qp) (incHom S Yt p e₀ hpe hp hint he₀) (projHom S Yt p hp hint hinj) := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
   · intro a b h
@@ -200,7 +196,7 @@ theorem ses : IsSESLat (Qp := S.Qp) (incHom S Yt p e₀ hpe hp hint he₀) (proj
     change p (s • e₀) = s
     rw [map_smul, hpe, smul_eq_mul, mul_one]
   · rintro y ⟨a, rfl⟩
-    exact ⟨a • e₀, Yt.L.T.smul_mem a he₀, p_smul S Yt p e₀ hpe a⟩
+    exact ⟨a • e₀, Yt.L.T.smul_mem a he₀, GlobalTheory.TBLocal.p_smul S Yt p e₀ hpe a⟩
   · intro x
     change p x = 0 ↔ ∃ y : LinearMap.ker p, (y : Yt.V) = x
     constructor
@@ -210,7 +206,6 @@ theorem ses : IsSESLat (Qp := S.Qp) (incHom S Yt p e₀ hpe hp hint he₀) (proj
       exact y.2
   · intro y hy
     exact hy
-
 
 include hinj in
 theorem tb_part1 (E : S.Comparison₂) (hTB : TBat S E) (e M0 h0 cB : ℕ) (Ve : LocLat S.G S.Qp S.LL S.O)

@@ -94,7 +94,7 @@ theorem exists_valuationSubring_comap_eq_nonunits {K L : Type} [Field K] [Field 
 
 theorem exists_prime_natCast_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) :
     ∃ p : ℕ, p.Prime ∧ (p : 𝓞 K) ∈ la.asIdeal := by
-  apply GlobalTheory.Mem.FewPrimes.exists_prime_mem <;> assumption
+  apply GlobalTheory.Mem.FewPrimes.exists_prime_mem
 
 theorem modelAt_of_good_level : PartI → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (Xo : ∀ l : Level H, Moduli Dw l) (l : Level H) (c : Coeff l) (la : HeightOneSpectrum (𝓞 c.F)), (∀ p : ℕ, p.Prime → (p : 𝓞 c.F) ∈ la.asIdeal → l.GoodAt p) → ModelAt (Xo l) c la := by
   intro hI E _ _ _ H Dw hpq Xo l c la hgood

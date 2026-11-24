@@ -83,8 +83,7 @@ theorem middleSymmetricBasisVectors_gram_antiDiagonal (c : ℕ) (neg : Bool) (p 
   have hm : 2 * p.1 + 1 = c → (P ≤ p.1 ↔ neg = true) := by
     intro h; rw [hP]; cases neg <;> simp <;> omega
   rw [← hP]
-  simp only [middleSymmetricBasisVector, map_add (f := _), LinearMap.add_apply, Examples₂.diagForm_single_left, Pi.single_apply, Pi.add_apply,
-    GlobalTheory.UnitPerp.negFrom, Examples₂.sgn, antiDiagonalSignGramMatrix, Fin.ext_iff, Fin.val_rev, decide_eq_true_eq]
+  simp only [middleSymmetricBasisVector, map_add (f := _), LinearMap.add_apply, Examples₂.diagForm_single_left, Pi.single_apply, GlobalTheory.UnitPerp.negFrom, Examples₂.sgn, antiDiagonalSignGramMatrix, Fin.ext_iff, Fin.val_rev, decide_eq_true_eq]
   generalize p.1 = a at *
   generalize q.1 = b at *
   clear hP

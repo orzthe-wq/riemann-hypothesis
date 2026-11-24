@@ -180,7 +180,7 @@ theorem satEig_map_add_seg : ∀ (E : Type) [Field E] [NumberField E] (w : Heigh
     exact (by omega : qV E w ≠ 0) (by exact_mod_cast this)
   have hA : (B.map (z * y⁻¹ * ·)).map (fun b : ℂˣ => (b : ℂ)) =
       (B.map fun b : ℂˣ => (b : ℂ)).map fun x => ((z : ℂ) * (y : ℂ)⁻¹) * x := by
-    simp [Multiset.map_map, Function.comp_def]
+    simp [Multiset.map_map]
   have hBc : (B.map fun b : ℂˣ => (b : ℂ)).card = a := by simp [hB]
   set Q := qV E w with hQdef
   set s : ℂ := ((Real.sqrt Q : ℝ) : ℂ) with hsdef

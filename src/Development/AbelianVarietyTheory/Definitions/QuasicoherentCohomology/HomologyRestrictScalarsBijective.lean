@@ -143,9 +143,7 @@ theorem _root_.GlobalTheory.cechClass_zero_eq_zero_iff (A : _root_.GlobalTheory.
 
 open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
-theorem _root_.GlobalTheory.cechClass_zero_bijective (A : _root_.GlobalTheory.Cube.{v} ι R) :
-    Function.Bijective (_root_.GlobalTheory.cechClass A 0) :=
-  cechClass_zero_bijective' A
+alias _root_.GlobalTheory.cechClass_zero_bijective := _root_.GlobalTheory.cechClass_zero_bijective'
 
 
 open CategoryTheory Limits in

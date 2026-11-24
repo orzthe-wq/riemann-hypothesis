@@ -57,13 +57,6 @@ namespace GlobalTheory.Phase.VacShape
 
 open GlobalTheory.SW.Vac
 
-theorem ph_mul {a b : ℂ} (ha : Ph a) (hb : Ph b) : Ph (a * b) := by
-  obtain ⟨m, hm, ha⟩ := ha
-  obtain ⟨n, hn, hb⟩ := hb
-  refine ⟨m * n, Nat.mul_pos hm hn, ?_⟩
-  rw [norm_mul, Complex.ofReal_mul, mul_pow, mul_pow, pow_mul a, ha, pow_mul' b, hb, ← pow_mul,
-    ← pow_mul, mul_comm n m]
-
 theorem isMu_mul {a b : ℂ} (ha : IsMu a) (hb : IsMu b) : IsMu (a * b) := by
   obtain ⟨m, hm, ha⟩ := ha
   obtain ⟨n, hn, hb⟩ := hb
@@ -175,7 +168,7 @@ theorem pv_of_ph (h : VacS A ε φ) (a : Matrix κ ι ℚ) (ha : φ a ≠ 0) (hp
   refine ⟨⟨A, ε, h⟩, fun x => ?_⟩
   obtain ⟨S, f, hq, hx⟩ := shape_at h a ha
   by_cases hS : x - a ∈ S
-  · rw [(hx x).1 hS]; exact ph_mul hp (ph_of_isMu (hq.1 _ hS))
+  · rw [(hx x).1 hS]; exact _root_.GlobalTheory.Phase.Ph.mul hp (ph_of_isMu (hq.1 _ hS))
   · rw [(hx x).2 hS]; exact ph_zero
 
 theorem vacuum_shape : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι], ∀ φ : Matrix κ ι ℚ → ℂ, (∀ A ε, VacS A ε φ → ∀ a, φ a ≠ 0 → ∃ (S : AddSubgroup (Matrix κ ι ℚ)) (f : Matrix κ ι ℚ → ℂ), Quad S f ∧ ∀ x, (x - a ∈ S → φ x = φ a * f (x - a)) ∧ (x - a ∉ S → φ x = 0)) ∧ (PV φ → Shape φ) ∧ (∀ A ε, VacS A ε φ → ∃ u : ℂ, ‖u‖ = 1 ∧ PV (u • φ)) ∧ (PV φ → ∀ u : ℂ, Ph u → PV (u • φ)) ∧ ∀ A ε, VacS A ε φ → ∀ a, φ a ≠ 0 → Ph (φ a) → PV φ := by
@@ -205,6 +198,6 @@ theorem vacuum_shape : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq
     · push Not at h0
       exact ⟨1, norm_one, ⟨A, ε, vac_smul h _⟩, fun x => by simpa [h0] using ph_zero⟩
   · rintro ⟨⟨A, ε, h⟩, hp⟩ u hu
-    exact ⟨⟨A, ε, vac_smul h _⟩, fun x => ph_mul hu (hp x)⟩
+    exact ⟨⟨A, ε, vac_smul h _⟩, fun x => _root_.GlobalTheory.Phase.Ph.mul hu (hp x)⟩
 
 end GlobalTheory.Phase.VacShape

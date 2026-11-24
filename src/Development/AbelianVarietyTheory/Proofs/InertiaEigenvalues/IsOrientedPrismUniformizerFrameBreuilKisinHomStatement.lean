@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrismHomMapIdealEqStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.InvertibleSpanSingleton
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrismHomMapIdealEq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,7 +51,7 @@ theorem _root_.GlobalTheory.T.isOrientedPrismUniformizerFrame_breuilKisinHom : �
     IsFrame bk B (BK.hf (bk := bk) f bk.E) (BK.hf (bk := bk) f X) := by
   intro l _ K bk B f
   have hI : bk.prism.I.map f.f = B.I :=
-    GlobalTheory.T.prism_hom_map_ideal_eq l _ bk.prism B f
+    _root_.GlobalTheory.Prism.Rigid.map_I_eq l _ bk.prism B f
   refine ⟨hI.symm.trans ?_, ?_⟩
   · change (Ideal.span {bk.E}).map (BK.hf (bk := bk) f) = _
     rw [Ideal.map_span, Set.image_singleton]

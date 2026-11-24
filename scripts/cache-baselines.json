@@ -2,15 +2,6 @@
   "schema": 1,
   "active_toolchain": "leanprover/lean4:v4.37.0-rc1",
   "toolchains": {
-    "leanprover/lean4:v4.33.1": {
-      "commit": "819816b2e0a3bf405af45ae5c7af2491d8f5bee6",
-      "dependency_manifest_sha256": "fee57ee9ed399d0a638ca955e5ad40a37a36eeb9b6dfd9f5964114fa7bbe4774",
-      "baseline": {
-        "revision": "e50d09817ad81469f737e8f637561e6ccf86c670",
-        "map_sha256": "fed2443b161bd8194d9507e5c9c0e555b865dbba6963a0d57172723a439e6941",
-        "manifest_sha256": "292caa386a620d935cfc736b56fcceaab9fe7073086693b62e899c1ee4725f04"
-      }
-    },
     "leanprover/lean4:v4.36.0": {
       "commit": "611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9",
       "dependency_manifest_sha256": "ee003c5c7a9b2b2a82a142b6633916661c07117199dd143d94d1af63910237df",

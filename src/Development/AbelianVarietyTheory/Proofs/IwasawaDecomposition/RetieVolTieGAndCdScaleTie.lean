@@ -48,8 +48,8 @@ namespace GlobalTheory.Mem
 theorem retie_volTieG_and_cdScaleTie :
     ∀ D : D7, Formalism.L2.Theta.VolTieG (retie D) ∧ cdScaleTie (retie D) := by
   intro D
-  refine ⟨GlobalTheory.T.volumesAgreeAdelic_of_trueVolume (retie D) (fun _ => rfl), ?_⟩
+  refine ⟨_root_.GlobalTheory.Mem.Vol.volTieG_of_trueVol (retie D) (fun _ => rfl), ?_⟩
   rw [cdScaleTie_iff]
-  exact GlobalTheory.Mem.Vol.ScaleExists.trueScale_isScale D.cd
+  exact _root_.GlobalTheory.Mem.Vol.Scale.cdScaleIs_trueScale D.cd
 
 end GlobalTheory.Mem

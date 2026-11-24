@@ -63,7 +63,7 @@ theorem cutInside_of_built {E : Type} [Field E] [NumberField E] [IsCMField E] {W
     intro de
     unfold Sz.Cfg.u
     rw [if_neg hne1, if_neg hne2, Nat.add_sub_cancel]
-  simp only [D.parOf]
+  simp only
   unfold I.OnCut
   rw [hu S.de, hu S.de']
   rcases hw1.1 S.l with h | h <;> rcases hw2.1 S.l with h' | h'

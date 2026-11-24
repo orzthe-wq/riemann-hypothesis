@@ -204,7 +204,7 @@ theorem th_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ 
   · intro c n hn
     have hc : J.d.nC c ∈ flagN J.d := J.d.nC_mem_NFlag c
     rw [th, (hmul _ hc n hn).2.2, th, psiFlag_mul J.d ψ hc hn, psiFlag_nC, jacS_nC]
-    simp only [Pi.smul_apply, smul_eq_mul, star_mul', one_mul, star_one]
+    simp only [Pi.smul_apply, smul_eq_mul, star_mul', one_mul]
     ring
   · intro n hn u hu
     have hl : J.d.levi u ∈ flagN J.d := J.d.levi_mem_NFlag hu

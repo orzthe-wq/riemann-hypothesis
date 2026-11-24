@@ -72,19 +72,6 @@ lemma p0auxiliary_theta_single {n : ℕ} (ε : Fin n → Bool) (a b : Fin n) :
   ext i j
   simp only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply,
     Matrix.smul_apply, Matrix.single_apply, sgn, smul_eq_mul]
-  push_cast
-  split_ifs <;> simp_all
-
-private lemma Jm_mul_selfRealPlaceTaylor {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  rw [Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
-
-private lemma conjTranspose_Jm {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
-  rw [Jm, Matrix.diagonal_conjTranspose]
-  congr 1
-  funext a
   split_ifs <;> simp_all
 
 private lemma Jm_mul_conjTranspose_smul_mul_Jm {n : ℕ} (ε : Fin n → Bool) (c : ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) :
@@ -95,11 +82,11 @@ private lemma inG_cpart1_real_place_taylor {n : ℕ} (ε : Fin n → Bool) (Z : 
     inG ε (cpart1 ε Z) := by
   have hAH : (Jm ε * Zᴴ * Jm ε)ᴴ = Jm ε * Z * Jm ε := by
     rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose,
-      conjTranspose_Jm, Matrix.mul_assoc]
+      _root_.Formalism.REAL.Jm_conjTranspose, Matrix.mul_assoc]
   have h1 : Jm ε * Z * Jm ε * Jm ε = Jm ε * Z := by
-    rw [Matrix.mul_assoc, Jm_mul_selfRealPlaceTaylor, Matrix.mul_one]
+    rw [Matrix.mul_assoc, _root_.Formalism.REAL.Jm_mul_self, Matrix.mul_one]
   have h2 : Jm ε * (Jm ε * Zᴴ * Jm ε) = Zᴴ * Jm ε := by
-    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Jm_mul_selfRealPlaceTaylor, Matrix.one_mul]
+    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, _root_.Formalism.REAL.Jm_mul_self, Matrix.one_mul]
   rw [inG, cpart1, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, hAH, Matrix.smul_mul,
     Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, h1, h2]
   simp <;> module

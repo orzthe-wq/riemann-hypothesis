@@ -5,16 +5,17 @@ public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ResidualConstruction
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineFormalismOfRegular
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineSummandAndDualFromInverseCharacterTwiStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineSummandAndDualFromInverseCharacterTwi
+public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeRhamOfIsCrystallineSpan
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JumpIffMultNeZero
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodRingsRegularPhiSurjectiveFil
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PeriodDataProperties
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycZpowCrysDRJump
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensional
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrysIffOfTwist
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeRhamOfIsCrystallineSpanStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JumpIffMultNeZero
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocChiEpsU
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodRingsRegularPhiSurjectiveFilStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RatioInvariantInK0
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PeriodDataProperties
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitsOfConjugatesMem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -81,12 +82,9 @@ theorem fracInv_of_tied (T : LocTied l P AI) (K : FinExt l) : FracInv (P.PD K) :
 
 theorem lineUnit_of_tied (T : LocTied l P AI) (K : FinExt l) : LineUnit (P.PD K) := by
   intro b hb h
-  refine (GlobalTheory.T.periodRings_regular_phi_surjective_fil l P AI T).1 K b hb fun g hg => ?_
+  refine (_root_.GlobalTheory.MemLoc.tied_regular_and_onto l P AI T).1 K b hb fun g hg => ?_
   obtain ⟨x, hx⟩ := h ⟨g, hg⟩
   exact ⟨x, by rw [← P.PD_actB K ⟨g, hg⟩, hx, Algebra.smul_def]⟩
-
-theorem matRep_apply {L Γ : Type} [CommRing L] [Group Γ] {k : ℕ} (M : Γ →* Matrix (Fin k) (Fin k) L)
-    (g : Γ) (x : Fin k → L) : matRep M g x = (M g).mulVec x := rfl
 
 theorem dot_dual {L Γ : Type} [CommRing L] [Group Γ] {k : ℕ} (M : Γ →* Matrix (Fin k) (Fin k) L)
     (g : Γ) (x y : Fin k → L) : (M g).mulVec x ⬝ᵥ (M g⁻¹).transpose.mulVec y = x ⬝ᵥ y := by
@@ -118,14 +116,14 @@ theorem tateDual (T : LocTied l P AI) (K LL : FinExt l)
       LinearMap.id 1 rfl (fun g x => ?_) (fun g x => ?_)
       (GlobalTheory.CycPow.cyc_zpow_crys_dR_jump l P AI T K LL 1).1 h1
     · rw [zpow_one]; rfl
-    · rw [matRep_apply, hM, Matrix.smul_mulVec]; rfl
+    · rw [_root_.GlobalTheory.SummandJumps.matRep_apply, hM, Matrix.smul_mulVec]; rfl
   · intro τ a
     have h := (GlobalTheory.DRDual.twisted_dual_deRham l P AI T K LL _ (matRep M) _ (matRep M')
       (dotProductEquiv ↥LL.1 (Fin k)).toLinearMap 1 (dotProductEquiv ↥LL.1 (Fin k)).bijective
       (fun g x y => by
         change (M g).mulVec x ⬝ᵥ (M' g).mulVec y = _ * (x ⬝ᵥ y)
         rw [hM, Matrix.smul_mulVec, dotProduct_smul, dot_dual, zpow_one, smul_eq_mul])
-      (GlobalTheory.T.isDeRham_of_isCrystalline_span l P AI T K LL _ _ hc).1).2 τ (-a - 1) hs
+      (_root_.GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI T K LL _ _ hc).1).2 τ (-a - 1) hs
     rwa [show -(-a - 1) - 1 = a by ring] at h
 
 def sumRep {L Γ : Type} [CommRing L] [Group Γ] {m k : ℕ} (M : Fin m → (Γ →* Matrix (Fin k) (Fin k) L)) :
@@ -208,8 +206,8 @@ theorem crystalline_and_jumps : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectr
     refine (hj _ _ τ' _).2.2.2 ?_
     rw [← (hd x).2]
     exact (hj _ _ τ' _).2.2.1 hb
-  · obtain ⟨h1, h2⟩ := GlobalTheory.T.crystalline_summand_and_dual_from_inverse_character_twist D i w hw T LL' h r ρ π hπ
-    obtain ⟨-, -, h3⟩ := h2 (GlobalTheory.T.isDeRham_of_isCrystalline_span _ _ _ T (D.nbr i w hw).Kw LL' _ _ (hc π)).1
+  · obtain ⟨h1, h2⟩ := _root_.GlobalTheory.SummandJumps.main D i w hw T LL' h r ρ π hπ
+    obtain ⟨-, -, h3⟩ := h2 (_root_.GlobalTheory.Per.CrisDR.isDR_of_isCrys _ _ _ T (D.nbr i w hw).Kw LL' _ _ (hc π)).1
     refine ⟨(h1 (hc π)).2, fun τ' a => ?_⟩
     have e1 := (h3 τ' a).2
     have e2 := (h3 τ' (-a - 1)).1

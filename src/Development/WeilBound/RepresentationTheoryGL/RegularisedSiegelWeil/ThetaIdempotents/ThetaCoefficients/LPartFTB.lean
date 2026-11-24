@@ -111,7 +111,7 @@ theorem eId_eq {K : Type} [Field K] (hn : r + t = n) : eId K n r = bl hn 1 0 0 0
   rw [bl_ee, eId, Matrix.diagonal_apply]
   simp only [(ee hn).injective.eq_iff]
   rcases s with k | k <;> rcases s' with k' | k' <;>
-    simp [Matrix.one_apply, ee_inl_val, ee_inr_val]
+    simp [Matrix.one_apply]
 
 theorem cT_blk4 {K : Type} [Field K] (σ : K →+* K) (A B C E : Matrix (Fin n) (Fin n) K) :
     cT σ (blk4 A B C E) = blk4 (cT σ A) (cT σ C) (cT σ B) (cT σ E) := by
@@ -192,6 +192,6 @@ theorem eId_conj {K : Type} [Field K] (hn : r + t = n) :
   rcases s with k | k <;> rcases s' with k' | k' <;>
     simp only [bl_ee, Matrix.submatrix_apply, πe_symm_ee_inl, πe_symm_ee_inr] <;>
     rw [eId, Matrix.diagonal_apply] <;>
-    simp [(ff hn).injective.eq_iff, ff_inl_val, ff_inr_val, Matrix.one_apply] <;> simp [Fin.ext_iff] <;> omega
+    simp [Matrix.one_apply] <;> simp [Fin.ext_iff] <;> omega
 
 end PositivityTheory.Rg.Rsw.L.LPartFT

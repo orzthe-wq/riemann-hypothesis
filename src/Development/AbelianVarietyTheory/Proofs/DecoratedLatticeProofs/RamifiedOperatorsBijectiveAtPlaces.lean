@@ -1,9 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValueDoubleExact
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RamifiedOperatorBijectiveFiniteTranslationCombinStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHermitianFramePropertiesStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.RamifiedOperatorBijectiveFiniteTranslationCombin
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHermitianFrameProperties
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -186,7 +189,7 @@ theorem idAt_le_idOff {v w : Pl D} (h : v ≠ w) : idAt D (· = v) ≤ idOff D (
 
 theorem grpAt_comm (V : HSp D) {v w : Pl D} (h : v ≠ w) {x y : GA D V} (hx : x ∈ grpAt V (· = w))
     (hy : y ∈ grpAt V (· = v)) : x * y = y * x :=
-  (GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = w)).2 V |>.2.1 x hx y (congGrp_mono V (idAt_le_idOff h) hy)
+  (_root_.GlobalTheory.FinPl.localComponents D (· = w)).2 V |>.2.1 x hx y (congGrp_mono V (idAt_le_idOff h) hy)
 
 end GlobalTheory.FinPl.AllBij
 
@@ -198,7 +201,7 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   {p : ι → SplitPt D k} {n : Type} [Fintype n] [DecidableEq n] {A S : HSp D}
 
 theorem gl_mem {p₀ : SplitPt D k} (β : Frame p₀ A n) (g : GL n k) : β.gl g ∈ grpAt A (· = p₀.v) :=
-  ((GlobalTheory.T.splitPlaceHermitianFrame_properties D k p₀ A n β).1 _).2 ⟨g, rfl⟩
+  ((_root_.GlobalTheory.FrameAt.frame_facts D k p₀ A n β).1 _).2 ⟨g, rfl⟩
 
 theorem sAll_cons (a : PairDat p A S n) (q : Unif k) (χ : ι → AddChar 𝓀[k] ℂ) (ε : ι → 𝓀[k]ˣ) (i : ι) (l : List ι) :
     a.sAll q χ ε (i :: l) = sOp (a.α i) (a.P i) q (χ i) (ε i) ∘ a.sAll q χ ε l := rfl
@@ -210,7 +213,7 @@ theorem place (a : PairDat p A S n) (hinj : Function.Injective fun i => (p i).v)
       ∀ φ, a.Ram φ → a.Ram (act c' φ) ∧ sOp (a.α i) (a.P i) q (resChar χ hχ q) ε (act c' φ) = φ) ∧
     Set.MapsTo (sOp (a.α i) (a.P i) q (resChar χ hχ q) ε) {φ | a.Ram φ} {φ | a.Ram φ} ∧
     Set.InjOn (sOp (a.α i) (a.P i) q (resChar χ hχ q) ε) {φ | a.Ram φ} := by
-  obtain ⟨hbij, -, c, c', hc, hc'⟩ := GlobalTheory.T.ramifiedOperator_bijective_finite_translation_combination D k (p i) n q χ hχ _ rfl ε A (a.α i) (a.P i)
+  obtain ⟨hbij, -, c, c', hc, hc'⟩ := _root_.GlobalTheory.FinPl.ramBijective_holds D k (p i) n q χ hχ _ rfl ε A (a.α i) (a.P i)
   have hC := mapDomain_mem _ (gl_mem (a.α i)) c
   have hC' := mapDomain_mem _ (gl_mem (a.α i)) c'
   have hT : ∀ φ, sOp (a.α i) (a.P i) q (resChar χ hχ q) ε φ = act (Finsupp.mapDomain (a.α i).gl c) φ :=

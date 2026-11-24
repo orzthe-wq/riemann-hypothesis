@@ -46,4 +46,4 @@ open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.translateToSecondModel_cuspFormMap_value_automorphic : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (θ : InfFam D) (S : D.what₂.Tau → SPar) (M : DSModel (D.sp.Y 0) S) (J : Set (GA D (D.sp.Y 0))) (χ : GA D (D.sp.Y 0) → ℂ) (t : GA D (D.sp.Y 0)), IsInfFam θ → Matches X h J χ t → ∀ T ∈ Formalism.IndefR.Mult.MultT θ M J χ, ∀ x : SmT M, RowFun X (evS X h t (T x)) ∧ MemLp (evS X h t (T x)) 2 (muX X) := by
-  first | exact @GlobalTheory.Core.Mi.rowFun_evS | exact GlobalTheory.Core.Mi.rowFun_evS | (intros; apply GlobalTheory.Core.Mi.rowFun_evS <;> assumption)
+  first | exact @GlobalTheory.Core.Mi.rowFun_evS

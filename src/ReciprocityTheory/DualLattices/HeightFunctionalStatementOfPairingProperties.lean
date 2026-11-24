@@ -1,7 +1,11 @@
 module
 
+public import ReciprocityTheory.DualLattices.SqZeroOfSpan
 public import ReciprocityTheory.DualLattices.SeriesState
 public import ReciprocityTheory.DualLattices.ModuliPointsState
+public import ReciprocityTheory.DualLattices.IsFibreSq
+public import Mathlib.Algebra.Algebra.Prod
+public import Mathlib.Algebra.Algebra.Subalgebra.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -21,7 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -29,8 +32,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,13 +44,52 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.DualLattices.IsFibreSq
-public import ReciprocityTheory.DualLattices.ToSigmaAddFstZeroFst
-public import Mathlib.Algebra.Algebra.Prod
-public import Mathlib.Algebra.Algebra.Subalgebra.Basic
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Ring
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.DualLattices.ToSigmaAddFstZeroFst, ReciprocityTheory.DualLattices.HeightFunctionalStatementOfPairingProperties
+
+-- ===== clump member: ReciprocityTheory.DualLattices.ToSigmaAddFstZeroFst =====
+-- clump-header: {"m": "ReciprocityTheory.DualLattices.ToSigmaAddFstZeroFst", "h": "module\n\npublic import ReciprocityTheory.DualLattices.SqZeroOfSpan\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace ReciprocityTheory.PGsh
+
+universe u
+
+variable {R₀ : Type u} [CommRing R₀]
+
+namespace BX
+
+def tot (B : BX R₀) {R : LAlg R₀} {x y : B.G R} (u : B.P R x y) : Σ x y : B.G R, B.P R x y :=
+  ⟨x, y, u⟩
+
+def tmap (B : BX R₀) {R S : LAlg R₀} (f : LHom R S) (t : Σ x y : B.G R, B.P R x y) :
+    Σ x y : B.G S, B.P S x y :=
+  ⟨B.map f t.1, B.map f t.2.1, B.pmap f t.2.2⟩
+
+variable {B : BX R₀} {R S T : LAlg R₀}
+
+end BX
+
+end ReciprocityTheory.PGsh
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.DualLattices.ToSigmaAddFstZeroFst =====
+
+-- ===== clump member: ReciprocityTheory.DualLattices.HeightFunctionalStatementOfPairingProperties =====
+-- clump-header: {"m": "ReciprocityTheory.DualLattices.HeightFunctionalStatementOfPairingProperties", "h": "module\n\npublic import ReciprocityTheory.DualLattices.SeriesState\npublic import ReciprocityTheory.DualLattices.ModuliPointsState\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.DualLattices.IsFibreSq\npublic import ReciprocityTheory.DualLattices.ToSigmaAddFstZeroFst\npublic import Mathlib.Algebra.Algebra.Prod\npublic import Mathlib.Algebra.Algebra.Subalgebra.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -66,358 +106,213 @@ namespace BX
 
 variable {B : BX R₀}
 
-private lemma tot_eq_of_heq {R : LAlg R₀} {x y x' y' : B.G R} (u : B.P R x y) (u' : B.P R x' y')
+private lemma tot_eq {R : LAlg R₀} {x y x' y' : B.G R} {u : B.P R x y} {u' : B.P R x' y'}
     (hx : x = x') (hy : y = y') (h : HEq u u') : B.tot u = B.tot u' := by
-  subst hx
-  subst hy
-  rw [eq_of_heq h]
+  cases hx; cases hy; cases h; rfl
 
-private lemma heq_of_tot_eq {R : LAlg R₀} {x y x' y' : B.G R} (u : B.P R x y)
-    (u' : B.P R x' y') (h : B.tot u = B.tot u') : HEq u u' := by
-  have h' : (⟨x, y, u⟩ : Σ x y : B.G R, B.P R x y) = ⟨x', y', u'⟩ := h
-  obtain ⟨rfl, h2⟩ := Sigma.mk.inj_iff.mp h'
-  obtain ⟨rfl, h3⟩ := Sigma.mk.inj_iff.mp (eq_of_heq h2)
-  exact h3
-
-private lemma tot_pmap_comp' {R S T : LAlg R₀} (f : LHom R S) (g : LHom S T) {x y : B.G R}
-    (u : B.P R x y) : B.tot (B.pmap (g.comp f) u) = B.tot (B.pmap g (B.pmap f u)) :=
-  tot_eq_of_heq _ _ (B.map_comp f g x) (B.map_comp f g y) (B.pmap_comp f g u)
-
-private lemma dualPair_pi_comp_sigma {R : LAlg R₀} (Dp : DualPair R) : Dp.π.comp Dp.σ = LHom.id R :=
-  Subtype.ext (AlgHom.ext fun r => Dp.sect r)
-
-private lemma map_pi_map_sigma {R : LAlg R₀} (Dp : DualPair R) (y : B.G R) :
-    B.map Dp.π (B.map Dp.σ y) = y := by
-  rw [← B.map_comp, dualPair_pi_comp_sigma, B.map_id]
-
-private lemma zσ {R : LAlg R₀} (Dp : DualPair R) (y : B.G R) {x : B.G Dp.D}
-    (c : B.P Dp.D x (B.map Dp.σ y)) (hc : B.tot (B.pmap Dp.π c) = B.tot (B.zero1 y)) :
-    B.tot (B.pmap (Dp.σ.comp Dp.π) c) = B.tot (B.zero1 (B.map Dp.σ y)) := by
-  rw [tot_pmap_comp']
-  have e : B.tot (B.pmap Dp.σ (B.pmap Dp.π c)) = B.tmap Dp.σ (B.tot (B.pmap Dp.π c)) := rfl
-  rw [e, hc]
-  exact tot_eq_of_heq _ _ (map_zero (B.map Dp.σ)) rfl (B.zeroFst_nat Dp.σ y)
-
-private lemma dualPair_muL_zero {R : LAlg R₀} (Dp : DualPair R) : Dp.μL 0 = Dp.σ.comp Dp.π :=
-  Subtype.ext (AlgHom.ext fun a => by
-    show Dp.fμ 0 a = Dp.σ.1 (Dp.π.1 a)
-    simp [DualPair.fμ])
-
-private lemma tot_pmap_id' {R : LAlg R₀} {x y : B.G R} (u : B.P R x y) :
-    B.tot (B.pmap (LHom.id R) u) = B.tot u :=
-  tot_eq_of_heq _ _ (B.map_id R x) (B.map_id R y) (B.pmap_id u)
-
-private lemma tot_add1_congr {R : LAlg R₀} {x₁ x₂ y x₁' x₂' y' : B.G R} {u₁ : B.P R x₁ y}
-    {u₂ : B.P R x₂ y} {u₁' : B.P R x₁' y'} {u₂' : B.P R x₂' y'} (h₁ : B.tot u₁ = B.tot u₁')
-    (h₂ : B.tot u₂ = B.tot u₂') : B.tot (B.add1 u₁ u₂) = B.tot (B.add1 u₁' u₂') := by
-  have ex₁ : x₁ = x₁' := congrArg Sigma.fst h₁
-  have ey : y = y' := congrArg (fun t : (Σ x y : B.G R, B.P R x y) => t.2.1) h₁
-  have ex₂ : x₂ = x₂' := congrArg Sigma.fst h₂
-  subst ex₁
-  subst ey
-  subst ex₂
-  rw [eq_of_heq (heq_of_tot_eq _ _ h₁), eq_of_heq (heq_of_tot_eq _ _ h₂)]
-
-private lemma tot_pmap_add1 {R S : LAlg R₀} (f : LHom R S) {x x' y : B.G R}
-    (u : B.P R x y) (u' : B.P R x' y) :
-    B.tot (B.pmap f (B.add1 u u')) = B.tot (B.add1 (B.pmap f u) (B.pmap f u')) :=
-  tot_eq_of_heq _ _ (map_add (B.map f) x x') rfl (B.addFst_nat f u u')
-
-private lemma tot_pmap_tr2 {R S : LAlg R₀} (f : LHom R S) {x y y' : B.G R} (h : y = y')
-    (u : B.P R x y) : B.tot (B.pmap f (B.tr2 h u)) = B.tot (B.pmap f u) := by
-  subst h
-  rfl
-
-private lemma tot_add1_zero1_right {R : LAlg R₀} {x y : B.G R} (u : B.P R x y) :
-    B.tot (B.add1 u (B.zero1 y)) = B.tot u :=
-  (tot_eq_of_heq _ _ (add_comm x 0) rfl (B.addFst_comm u (B.zero1 y))).trans
-    (tot_eq_of_heq _ _ (zero_add x) rfl (B.zeroFst_add u))
-
-private lemma tot_add1_zero1_left {R : LAlg R₀} {x y : B.G R} (u : B.P R x y) :
-    B.tot (B.add1 (B.zero1 y) u) = B.tot u :=
-  tot_eq_of_heq _ _ (zero_add x) rfl (B.zeroFst_add u)
-
-private lemma dualPair_muL_one {R : LAlg R₀} (Dp : DualPair R) : Dp.μL 1 = LHom.id Dp.D :=
-  Subtype.ext (AlgHom.ext fun a => by
-    show Dp.fμ 1 a = a
-    simp [DualPair.fμ])
-
-private lemma dualPair_exists_lhom_mu_pair {R : LAlg R₀} (Dp : DualPair R) (c c' : (R : Type u)) :
-    ∃ k : LHom Dp.D Dp.F, Dp.p₁L.comp k = Dp.μL c ∧ Dp.p₂L.comp k = Dp.μL c' ∧
-      Dp.sL.comp k = Dp.μL (c + c') ∧
-      ∀ r, ((k.1 (Dp.σ.1 r) : Dp.fpS) : Prod (Dp.D : Type u) (Dp.D : Type u)) =
-        (Dp.σ.1 r, Dp.σ.1 r) := by
-  have hmem : ∀ d, (Dp.μA c d, Dp.μA c' d) ∈ Dp.fpS := fun d => by
-    show Dp.π.1 (Dp.μA c d) = Dp.π.1 (Dp.μA c' d)
-    rw [Dp.π_μA, Dp.π_μA]
-  refine ⟨mkLHom (AlgHom.codRestrict ((Dp.μA c).prod (Dp.μA c')) Dp.fpS hmem) fun a ha =>
-    Dp.isUnit_of_π ?_, ?_, ?_, ?_, ?_⟩
-  · have h := (ha.map ((AlgHom.fst R₀ _ _).comp Dp.fpS.val)).map Dp.π.1
-    rw [← Dp.π_μA c a]
-    exact h
-  · exact Subtype.ext (AlgHom.ext fun d => rfl)
-  · exact Subtype.ext (AlgHom.ext fun d => rfl)
-  · refine Subtype.ext (AlgHom.ext fun d => ?_)
-    show Dp.fμ c d + Dp.fμ c' d - Dp.σ.1 (Dp.π.1 (Dp.fμ c d)) = Dp.fμ (c + c') d
-    simp only [DualPair.fμ, map_add (f := _), map_mul, map_sub, Dp.sect]
-    ring
-  · intro r
-    show (Dp.fμ c (Dp.σ.1 r), Dp.fμ c' (Dp.σ.1 r)) = (Dp.σ.1 r, Dp.σ.1 r)
-    simp [DualPair.fμ, Dp.sect]
+private lemma heq_of_tot {R : LAlg R₀} {x y x' y' : B.G R} {u : B.P R x y} {u' : B.P R x' y'}
+    (h : B.tot u = B.tot u') : HEq u u' := by
+  obtain ⟨rfl, h⟩ := Sigma.mk.inj_iff.mp h
+  exact (Sigma.mk.inj_iff.mp (eq_of_heq h)).2
 
 private lemma tot_tr1 {R : LAlg R₀} {x x' y : B.G R} (h : x = x') (u : B.P R x y) :
     B.tot (B.tr1 h u) = B.tot u := by
-  subst h
-  rfl
+  subst h; rfl
 
-private lemma eh {R : LAlg R₀} (Dp : DualPair R) (y : B.G R) {x₁ x₂ : B.G Dp.D}
-    (a : B.P Dp.D x₁ (B.map Dp.σ y)) (b : B.P Dp.D x₂ (B.map Dp.σ y))
-    (ha : B.tot (B.pmap Dp.π a) = B.tot (B.zero1 y))
-    (hb : B.tot (B.pmap Dp.π b) = B.tot (B.zero1 y))
-    (w : Σ x y : B.G Dp.F, B.P Dp.F x y) (hw1 : B.tmap Dp.p₁L w = B.tot a)
-    (hw2 : B.tmap Dp.p₂L w = B.tot b) : B.tmap Dp.sL w = B.tot (B.add1 a b) := by
-  obtain ⟨j₁, h11, h12, h1s, h1σ⟩ := dualPair_exists_lhom_mu_pair Dp 1 0
-  obtain ⟨j₂, h21, h22, h2s, h2σ⟩ := dualPair_exists_lhom_mu_pair Dp 0 1
-  rw [dualPair_muL_one] at h11 h22
-  rw [dualPair_muL_zero] at h12 h21
-  rw [add_zero, dualPair_muL_one] at h1s
-  rw [zero_add, dualPair_muL_one] at h2s
-  have hjσ : j₁.comp Dp.σ = j₂.comp Dp.σ :=
-    Subtype.ext (AlgHom.ext fun r => Subtype.ext ((h1σ r).trans (h2σ r).symm))
-  have e : B.map j₁ (B.map Dp.σ y) = B.map j₂ (B.map Dp.σ y) := by
-    rw [← B.map_comp, ← B.map_comp, hjσ]
-  obtain ⟨t, ht⟩ : ∃ t, t = B.add1 (B.pmap j₁ a) (B.tr2 e.symm (B.pmap j₂ b)) := ⟨_, rfl⟩
-  have hA : B.tot (B.pmap Dp.p₁L t) = B.tot a := by
-    rw [ht, tot_pmap_add1]
-    have e1 : B.tot (B.pmap Dp.p₁L (B.pmap j₁ a)) = B.tot a := by
-      rw [← tot_pmap_comp', h11, tot_pmap_id']
-    have e2 : B.tot (B.pmap Dp.p₁L (B.tr2 e.symm (B.pmap j₂ b))) =
-        B.tot (B.zero1 (B.map Dp.σ y)) := by
-      rw [tot_pmap_tr2, ← tot_pmap_comp', h21]
-      exact zσ Dp y b hb
-    rw [tot_add1_congr e1 e2, tot_add1_zero1_right]
-  have hB : B.tot (B.pmap Dp.p₂L t) = B.tot b := by
-    rw [ht, tot_pmap_add1]
-    have e1 : B.tot (B.pmap Dp.p₂L (B.pmap j₁ a)) = B.tot (B.zero1 (B.map Dp.σ y)) := by
-      rw [← tot_pmap_comp', h12]
-      exact zσ Dp y a ha
-    have e2 : B.tot (B.pmap Dp.p₂L (B.tr2 e.symm (B.pmap j₂ b))) = B.tot b := by
-      rw [tot_pmap_tr2, ← tot_pmap_comp', h22, tot_pmap_id']
-    rw [tot_add1_congr e1 e2, tot_add1_zero1_left]
-  obtain ⟨c, -, huniq⟩ := B.fibre_P Dp.p₁L Dp.p₂L Dp.π Dp.π Dp.isFibreSq (B.tot a) (B.tot b)
-    (by
-      show B.tot (B.pmap Dp.π a) = B.tot (B.pmap Dp.π b)
-      rw [ha, hb])
-  have hw : w = c := huniq w ⟨hw1, hw2⟩
-  have htc : B.tot t = c := huniq (B.tot t) ⟨hA, hB⟩
-  rw [hw, ← htc]
-  show B.tot (B.pmap Dp.sL t) = _
-  rw [ht, tot_pmap_add1]
-  have e3 : B.tot (B.pmap Dp.sL (B.pmap j₁ a)) = B.tot a := by
-    rw [← tot_pmap_comp', h1s, tot_pmap_id']
-  have e4 : B.tot (B.pmap Dp.sL (B.tr2 e.symm (B.pmap j₂ b))) = B.tot b := by
-    rw [tot_pmap_tr2, ← tot_pmap_comp', h2s, tot_pmap_id']
-  exact tot_add1_congr e3 e4
+private lemma tot_pmap_tr2 {R S : LAlg R₀} (f : LHom R S) {x y y' : B.G R} (h : y = y')
+    (u : B.P R x y) : B.tot (B.pmap f (B.tr2 h u)) = B.tot (B.pmap f u) := by
+  subst h; rfl
+
+private lemma tot_add1_congr {R : LAlg R₀} {x₁ x₂ y x₁' x₂' y' : B.G R} {u₁ : B.P R x₁ y}
+    {u₂ : B.P R x₂ y} {u₁' : B.P R x₁' y'} {u₂' : B.P R x₂' y'}
+    (h₁ : B.tot u₁ = B.tot u₁') (h₂ : B.tot u₂ = B.tot u₂') :
+    B.tot (B.add1 u₁ u₂) = B.tot (B.add1 u₁' u₂') := by
+  obtain ⟨rfl, h₁⟩ := Sigma.mk.inj_iff.mp h₁
+  obtain ⟨rfl, h₁⟩ := Sigma.mk.inj_iff.mp (eq_of_heq h₁)
+  obtain ⟨rfl, h₂⟩ := Sigma.mk.inj_iff.mp h₂
+  obtain ⟨_, h₂⟩ := Sigma.mk.inj_iff.mp (eq_of_heq h₂)
+  cases h₁; cases h₂; rfl
+
+private def muPair {R : LAlg R₀} (Dp : DualPair R) (c c' : (R : Type u)) : LHom Dp.D Dp.F :=
+  mkLHom (AlgHom.codRestrict ((Dp.μA c).prod (Dp.μA c')) Dp.fpS fun d => by
+      show Dp.π.1 (Dp.μA c d) = Dp.π.1 (Dp.μA c' d); rw [Dp.π_μA, Dp.π_μA])
+    fun a ha => Dp.isUnit_of_π (by
+      have h : IsUnit (Dp.π.1 (Dp.μA c a)) :=
+        (ha.map ((AlgHom.fst R₀ _ _).comp Dp.fpS.val)).map Dp.π.1
+      rwa [Dp.π_μA c a] at h)
+
+private lemma zσ {R : LAlg R₀} (Dp : DualPair R) (y : B.G R) {x : B.G Dp.D}
+    (c : B.P Dp.D x (B.map Dp.σ y)) (hc : B.tot (B.pmap Dp.π c) = B.tot (B.zero1 y)) :
+    B.tot (B.pmap (Dp.μL 0) c) = B.tot (B.zero1 (B.map Dp.σ y)) := by
+  have hμ0 : Dp.μL 0 = Dp.σ.comp Dp.π :=
+    LHom.ext' fun a => by show Dp.fμ 0 a = Dp.σ.1 (Dp.π.1 a); simp [DualPair.fμ]
+  rw [hμ0, tot_eq (B.map_comp Dp.π Dp.σ x) (B.map_comp Dp.π Dp.σ _) (B.pmap_comp Dp.π Dp.σ c)]
+  change B.tmap Dp.σ (B.tot (B.pmap Dp.π c)) = _
+  rw [hc]
+  exact tot_eq (map_zero (B.map Dp.σ)) rfl (B.zeroFst_nat Dp.σ y)
 
 private lemma nsmul1_tot {R : LAlg R₀} (Dp : DualPair R) (y : B.G R) {x : B.G Dp.D}
     (u : B.P Dp.D x (B.map Dp.σ y)) (hu : B.tot (B.pmap Dp.π u) = B.tot (B.zero1 y)) (n : ℕ) :
     B.tot (B.nsmul1 u n) = B.tot (B.pmap (Dp.μL (n : (R : Type u))) u) := by
-  have hπμ : ∀ c, Dp.π.comp (Dp.μL c) = Dp.π := fun c =>
-    Subtype.ext (AlgHom.ext fun d => Dp.π_μA c d)
+  have hμ1 : Dp.μL 1 = LHom.id Dp.D :=
+    LHom.ext' fun a => by show Dp.fμ 1 a = a; simp [DualPair.fμ]
+  have hp1 (c c') : Dp.p₁L.comp (muPair Dp c c') = Dp.μL c := LHom.ext' fun _ => rfl
+  have hp2 (c c') : Dp.p₂L.comp (muPair Dp c c') = Dp.μL c' := LHom.ext' fun _ => rfl
+  have hps (c c') : Dp.sL.comp (muPair Dp c c') = Dp.μL (c + c') := LHom.ext' fun d => by
+    show Dp.fμ c d + Dp.fμ c' d - Dp.σ.1 (Dp.π.1 (Dp.fμ c d)) = Dp.fμ (c + c') d
+    simp only [DualPair.fμ, map_add (f := _), map_mul, map_sub, Dp.sect]; ring
+  have pcomp {S T : LAlg R₀} (f : LHom Dp.D S) (g : LHom S T) {x' y' : B.G Dp.D}
+      (v : B.P Dp.D x' y') : B.tot (B.pmap g (B.pmap f v)) = B.tot (B.pmap (g.comp f) v) :=
+    (tot_eq (B.map_comp f g x') (B.map_comp f g y') (B.pmap_comp f g v)).symm
+  have pid {x' y' : B.G Dp.D} (v : B.P Dp.D x' y') : B.tot (B.pmap (LHom.id Dp.D) v) = B.tot v :=
+    tot_eq (B.map_id Dp.D x') (B.map_id Dp.D y') (B.pmap_id v)
   induction n with
   | zero =>
     show B.tot (B.tr1 _ (B.zero1 (B.map Dp.σ y))) = _
-    rw [tot_tr1, Nat.cast_zero, dualPair_muL_zero]
-    exact (zσ Dp y u hu).symm
+    rw [tot_tr1, Nat.cast_zero, zσ Dp y u hu]
   | succ n ih =>
-    obtain ⟨k, hk1, hk2, hks, -⟩ := dualPair_exists_lhom_mu_pair Dp (n : (R : Type u)) 1
-    rw [dualPair_muL_one] at hk2
-    have ha : B.tot (B.pmap Dp.π (B.nsmul1 u n)) = B.tot (B.zero1 y) := by
-      have e : B.tot (B.pmap Dp.π (B.nsmul1 u n)) = B.tmap Dp.π (B.tot (B.nsmul1 u n)) := rfl
-      rw [e, ih]
+    set a := B.nsmul1 u n
+    have ha : B.tot (B.pmap Dp.π a) = B.tot (B.zero1 y) := by
+      change B.tmap Dp.π (B.tot a) = _
+      rw [ih]
       show B.tot (B.pmap Dp.π (B.pmap (Dp.μL (n : (R : Type u))) u)) = _
-      rw [← tot_pmap_comp', hπμ]
-      exact hu
-    have key := eh Dp y (B.nsmul1 u n) u ha hu (B.tot (B.pmap k u))
-      (by
-        show B.tot (B.pmap Dp.p₁L (B.pmap k u)) = _
-        rw [← tot_pmap_comp', hk1]
-        exact ih.symm)
-      (by
-        show B.tot (B.pmap Dp.p₂L (B.pmap k u)) = _
-        rw [← tot_pmap_comp', hk2, tot_pmap_id'])
-    show B.tot (B.tr1 _ (B.add1 (B.nsmul1 u n) u)) = _
-    rw [tot_tr1, ← key, Nat.cast_succ, ← hks]
-    exact (tot_pmap_comp' k Dp.sL u).symm
-
-private lemma part_a {R : LAlg R₀} (Dp : DualPair R) (N : ℕ) (hN : (N : (R : Type u)) = 0)
-    (y : B.G R) (v : B.gg) (u : B.P Dp.D (B.tg Dp.π Dp.sqZero (v ⊗ₜ Dp.ηk)) (B.map Dp.σ y))
-    (hu : HEq (B.pmap Dp.π u) (B.zero1 y)) : HEq (B.nsmul1 u N) (B.zero1 (B.map Dp.σ y)) := by
-  have hx : B.map Dp.π (B.tg Dp.π Dp.sqZero (v ⊗ₜ Dp.ηk)) = 0 :=
-    (B.tg_ker Dp.π Dp.sqZero _).mpr ⟨_, rfl⟩
-  have hu' : B.tot (B.pmap Dp.π u) = B.tot (B.zero1 y) :=
-    tot_eq_of_heq _ _ hx (map_pi_map_sigma Dp y) hu
-  apply heq_of_tot_eq
-  rw [nsmul1_tot Dp y u hu' N]
-  have hμ : Dp.μL ((N : ℕ) : (R : Type u)) = Dp.σ.comp Dp.π := by
-    rw [hN]
-    exact dualPair_muL_zero Dp
-  rw [hμ]
-  exact zσ Dp y u hu'
-
-private lemma nsmul_X {R : LAlg R₀} (Dp : DualPair R) (N : ℕ) (hN : (N : (R : Type u)) = 0)
-    (v : B.gg) : N • B.tg Dp.π Dp.sqZero (v ⊗ₜ Dp.ηk) = 0 := by
-  have hk : N • Dp.ηk = 0 := by
-    apply Subtype.ext
-    show N • Dp.η = (0 : (Dp.D : Type u))
-    rw [nsmul_eq_mul, ← map_natCast Dp.σ.1 N, hN, map_zero, zero_mul]
-  have ht : N • (v ⊗ₜ[R₀] Dp.ηk : B.gg ⊗[R₀] Dp.π.ker) = v ⊗ₜ[R₀] (N • Dp.ηk) :=
-    (map_nsmul (TensorProduct.mk R₀ B.gg Dp.π.ker v) N Dp.ηk).symm
-  rw [← map_nsmul, ht, hk, TensorProduct.tmul_zero, map_zero]
-
-private lemma pair_zero (h1 : PairingPropertiesStatement B) {S : LAlg R₀} (N : ℕ) (y : B.G S)
-    (w : (S : Type u)ˣ) (hw : B.IsPairing N 0 y w) : w = 1 := by
-  have h := h1.2.2.1 S N 0 0 y w w w hw hw (by rwa [add_zero])
-  have h' : w * 1 = w * w := by rw [mul_one]; exact h
-  exact (mul_left_cancel h').symm
+      rw [pcomp, show Dp.π.comp (Dp.μL (n : (R : Type u))) = Dp.π from LHom.ext' (Dp.π_μA _), hu]
+    have hjσ : (muPair Dp 0 1).comp Dp.σ = (muPair Dp 1 0).comp Dp.σ :=
+      LHom.ext' fun r => Subtype.ext (by show (Dp.fμ 0 (Dp.σ.1 r), Dp.fμ 1 (Dp.σ.1 r)) =
+        (Dp.fμ 1 (Dp.σ.1 r), Dp.fμ 0 (Dp.σ.1 r)); simp [DualPair.fμ, Dp.sect])
+    have ey : B.map (muPair Dp 0 1) (B.map Dp.σ y) = B.map (muPair Dp 1 0) (B.map Dp.σ y) := by
+      rw [← B.map_comp, ← B.map_comp, hjσ]
+    let t := B.add1 (B.pmap (muPair Dp 1 0) a) (B.tr2 ey (B.pmap (muPair Dp 0 1) u))
+    have padd (g : LHom Dp.F Dp.D) : B.tot (B.pmap g t) =
+        B.tot (B.add1 (B.pmap g (B.pmap (muPair Dp 1 0) a))
+          (B.pmap g (B.tr2 ey (B.pmap (muPair Dp 0 1) u)))) :=
+      tot_eq (map_add (B.map g) _ _) rfl (B.addFst_nat g _ _)
+    obtain ⟨c, -, huniq⟩ := B.fibre_P Dp.p₁L Dp.p₂L Dp.π Dp.π Dp.isFibreSq
+      (B.tot a) (B.tot u) (ha.trans hu.symm)
+    have htw : B.tot t = B.tot (B.pmap (muPair Dp (n : (R : Type u)) 1) u) := by
+      refine (huniq (B.tot t) ⟨?_, ?_⟩).trans
+        (huniq (B.tot (B.pmap (muPair Dp (n : (R : Type u)) 1) u)) ⟨?_, ?_⟩).symm
+      · exact (padd Dp.p₁L).trans ((tot_add1_congr (by rw [pcomp, hp1, hμ1, pid])
+          (by rw [tot_pmap_tr2, pcomp, hp1, zσ Dp y u hu])).trans
+          ((tot_eq (add_comm _ 0) rfl (B.addFst_comm a (B.zero1 _))).trans
+            (tot_eq (zero_add _) rfl (B.zeroFst_add a))))
+      · exact (padd Dp.p₂L).trans ((tot_add1_congr (by rw [pcomp, hp2, zσ Dp y a ha])
+          (by rw [tot_pmap_tr2, pcomp, hp2, hμ1, pid])).trans
+          (tot_eq (zero_add _) rfl (B.zeroFst_add u)))
+      · show B.tot (B.pmap Dp.p₁L (B.pmap (muPair Dp (n : (R : Type u)) 1) u)) = B.tot a
+        rw [pcomp, hp1, ih]
+      · show B.tot (B.pmap Dp.p₂L (B.pmap (muPair Dp (n : (R : Type u)) 1) u)) = B.tot u
+        rw [pcomp, hp2, hμ1, pid]
+    have hs : B.tot (B.pmap Dp.sL t) =
+        B.tot (B.pmap Dp.sL (B.pmap (muPair Dp (n : (R : Type u)) 1) u)) :=
+      congrArg (B.tmap Dp.sL) htw
+    have hL : B.tot (B.pmap Dp.sL t) = B.tot (B.add1 a u) :=
+      (padd Dp.sL).trans (tot_add1_congr (by rw [pcomp, hps, add_zero, hμ1, pid])
+        (by rw [tot_pmap_tr2, pcomp, hps, zero_add, hμ1, pid]))
+    rw [hL, pcomp, hps, ← Nat.cast_add_one] at hs
+    show B.tot (B.tr1 _ (B.add1 a u)) = _
+    rwa [tot_tr1]
 
 private lemma c_unique (h1 : PairingPropertiesStatement B) {R : LAlg R₀} (Dp : DualPair R) (N : ℕ)
-    (x y : B.G Dp.D) (c c' : (R : Type u)) (z z' : (Dp.D : Type u)ˣ)
+    (x y : B.G Dp.D) {c c' : (R : Type u)} {z z' : (Dp.D : Type u)ˣ}
     (hz : B.IsPairing N x y z) (hz' : B.IsPairing N x y z')
     (e : (z : (Dp.D : Type u)) = 1 + Dp.σ.1 c * Dp.η)
     (e' : (z' : (Dp.D : Type u)) = 1 + Dp.σ.1 c' * Dp.η) : c = c' := by
-  have hzz := h1.2.1 Dp.D N x y z z' hz hz'
-  have h : (z : (Dp.D : Type u)) = (z' : (Dp.D : Type u)) := by rw [hzz]
+  have h : (z : (Dp.D : Type u)) = z' := congrArg Units.val (h1.2.1 Dp.D N x y z z' hz hz')
   rw [e, e'] at h
-  apply sub_eq_zero.mp
-  apply Dp.free
-  rw [map_sub, sub_mul]
-  linear_combination h
+  exact sub_eq_zero.mp (Dp.free _ (by rw [map_sub, sub_mul]; linear_combination h))
 
 private lemma exists_c (h1 : PairingPropertiesStatement B) {R : LAlg R₀} (Dp : DualPair R) (N : ℕ)
     (hN : (N : (R : Type u)) = 0) (y : B.G R) (hy : N • y = 0) (v : B.gg) :
     ∃ c : (R : Type u), ∃ z : (Dp.D : Type u)ˣ,
       B.IsPairing N (B.tg Dp.π Dp.sqZero (v ⊗ₜ Dp.ηk)) (B.map Dp.σ y) z ∧
         (z : (Dp.D : Type u)) = 1 + Dp.σ.1 c * Dp.η := by
-  obtain ⟨z, hz⟩ := h1.1 Dp.D N _ (B.map Dp.σ y) (nsmul_X (B := B) Dp N hN v)
-    (by rw [← map_nsmul, hy, map_zero])
+  have hx0 : N • B.tg Dp.π Dp.sqZero (v ⊗ₜ Dp.ηk) = 0 := by
+    rw [← map_nsmul, ← TensorProduct.tmul_smul,
+      show N • Dp.ηk = 0 from Subtype.ext (by
+        show N • Dp.η = 0; rw [nsmul_eq_mul, ← map_natCast Dp.σ.1 N, hN, map_zero, zero_mul]),
+      TensorProduct.tmul_zero, map_zero]
+  obtain ⟨z, hz⟩ := h1.1 Dp.D N _ (B.map Dp.σ y) hx0 (by rw [← map_nsmul, hy, map_zero])
   have hp := h1.2.2.2.2.2.2.1 Dp.D R Dp.π N _ _ z hz
-  have hX : B.map Dp.π (B.tg Dp.π Dp.sqZero (v ⊗ₜ Dp.ηk)) = 0 :=
-    (B.tg_ker Dp.π Dp.sqZero _).mpr ⟨_, rfl⟩
-  rw [hX] at hp
-  have h1z := pair_zero h1 N _ _ hp
-  have hz1 : Dp.π.1 (z : (Dp.D : Type u)) = 1 := by
-    have := congrArg Units.val h1z
-    simpa using this
+  rw [(B.tg_ker Dp.π Dp.sqZero _).mpr ⟨_, rfl⟩] at hp
+  set w₀ := Units.map (Dp.π.1 : Dp.D →* R) z
+  have h1z : w₀ = 1 :=
+    (mul_left_cancel ((mul_one w₀).trans (h1.2.2.1 R N 0 0 _ w₀ w₀ w₀ hp hp (by rwa [add_zero])))).symm
   have hmem : (z : (Dp.D : Type u)) - 1 ∈ RingHom.ker Dp.π.1 := by
-    change Dp.π.1 ((z : (Dp.D : Type u)) - 1) = 0
-    rw [map_sub, hz1, map_one, sub_self]
+    rw [RingHom.mem_ker, map_sub, show Dp.π.1 z = 1 by simpa [w₀] using congrArg Units.val h1z,
+      map_one, sub_self]
   rw [Dp.ker_eq, Ideal.mem_span_singleton'] at hmem
   obtain ⟨d, hd⟩ := hmem
-  have hd' : d - Dp.σ.1 (Dp.π.1 d) ∈ RingHom.ker Dp.π.1 := by
-    rw [RingHom.mem_ker, map_sub, Dp.sect, sub_self]
-  rw [Dp.ker_eq, Ideal.mem_span_singleton'] at hd'
-  obtain ⟨e, he⟩ := hd'
-  exact ⟨Dp.π.1 d, z, hz, by linear_combination -hd - Dp.η * he + e * Dp.η_sq⟩
-
-private def cf (h1 : PairingPropertiesStatement B) {R : LAlg R₀} (Dp : DualPair R) (N : ℕ)
-    (hN : (N : (R : Type u)) = 0) (y : B.G R) (hy : N • y = 0) (v : B.gg) : (R : Type u) :=
-  Classical.choose (exists_c h1 Dp N hN y hy v)
-
-private lemma cf_spec (h1 : PairingPropertiesStatement B) {R : LAlg R₀} (Dp : DualPair R) (N : ℕ)
-    (hN : (N : (R : Type u)) = 0) (y : B.G R) (hy : N • y = 0) (v : B.gg) :
-    ∃ z : (Dp.D : Type u)ˣ,
-      B.IsPairing N (B.tg Dp.π Dp.sqZero (v ⊗ₜ Dp.ηk)) (B.map Dp.σ y) z ∧
-        (z : (Dp.D : Type u)) = 1 + Dp.σ.1 (cf h1 Dp N hN y hy v) * Dp.η :=
-  Classical.choose_spec (exists_c h1 Dp N hN y hy v)
-
-private lemma cf_add (h1 : PairingPropertiesStatement B) {R : LAlg R₀} (Dp : DualPair R) (N : ℕ)
-    (hN : (N : (R : Type u)) = 0) (y : B.G R) (hy : N • y = 0) (v v' : B.gg) :
-    cf h1 Dp N hN y hy (v + v') = cf h1 Dp N hN y hy v + cf h1 Dp N hN y hy v' := by
-  obtain ⟨z, hz, ez⟩ := cf_spec h1 Dp N hN y hy v
-  obtain ⟨z', hz', ez'⟩ := cf_spec h1 Dp N hN y hy v'
-  obtain ⟨w, hw, ew⟩ := cf_spec h1 Dp N hN y hy (v + v')
-  rw [TensorProduct.add_tmul, map_add (f := _)] at hw
-  have hwz := h1.2.2.1 Dp.D N _ _ _ z z' w hz hz' hw
-  have h : (w : (Dp.D : Type u)) = z * z' := by rw [hwz, Units.val_mul]
-  rw [ew, ez, ez'] at h
-  apply sub_eq_zero.mp
-  apply Dp.free
-  rw [map_sub, map_add (f := _)]
-  linear_combination h + (Dp.σ.1 (cf h1 Dp N hN y hy v) * Dp.σ.1 (cf h1 Dp N hN y hy v')) * Dp.η_sq
-
-private lemma cf_smul (h1 : PairingPropertiesStatement B) {R : LAlg R₀} (Dp : DualPair R) (N : ℕ)
-    (hN : (N : (R : Type u)) = 0) (y : B.G R) (hy : N • y = 0) (r : R₀) (v : B.gg) :
-    cf h1 Dp N hN y hy (r • v) = algebraMap R₀ (R : Type u) r * cf h1 Dp N hN y hy v := by
-  have hπη : Dp.π.1 Dp.η = 0 := by
-    have := Dp.η_mem
-    simpa [LHom.ker, RingHom.mem_ker] using this
-  set c := algebraMap R₀ (R : Type u) r with hc
-  have hf : ∀ a ∈ Dp.π.ker, (Dp.μL c).1.toLinearMap a ∈ Dp.π.ker := by
-    intro a ha
-    have ha' : Dp.π.1 a = 0 := by simpa [LHom.ker, RingHom.mem_ker] using ha
-    have h0 : Dp.π.1 (Dp.fμ c a) = 0 := by simp [DualPair.fμ, Dp.sect, ha']
-    have e : (Dp.μL c).1.toLinearMap a = Dp.fμ c a := rfl
-    rw [e]
-    simpa [LHom.ker, RingHom.mem_ker] using h0
-  have key := B.tg_nat Dp.π Dp.π Dp.sqZero Dp.sqZero (Dp.μL c) hf (v ⊗ₜ Dp.ηk)
-  have hv : LinearMap.lTensor B.gg ((Dp.μL c).1.toLinearMap.restrict hf) (v ⊗ₜ[R₀] Dp.ηk) =
-      (r • v) ⊗ₜ[R₀] Dp.ηk := by
-    rw [LinearMap.lTensor_tmul, TensorProduct.smul_tmul]
-    congr 1
-    apply Subtype.ext
-    show Dp.fμ c Dp.η = r • Dp.η
-    rw [Algebra.smul_def, ← Dp.σ.1.commutes r]
-    simp [DualPair.fμ, hπη, hc]
-  rw [hv] at key
-  have hμσ : (Dp.μL c).comp Dp.σ = Dp.σ := Subtype.ext (AlgHom.ext fun a => by
-    show Dp.fμ c (Dp.σ.1 a) = Dp.σ.1 a
-    simp [DualPair.fμ, Dp.sect])
-  obtain ⟨z, hz, ez⟩ := cf_spec h1 Dp N hN y hy v
-  obtain ⟨w, hw, ew⟩ := cf_spec h1 Dp N hN y hy (r • v)
-  have hp := h1.2.2.2.2.2.2.1 Dp.D Dp.D (Dp.μL c) N _ _ z hz
-  rw [← key, ← B.map_comp, hμσ] at hp
-  refine c_unique h1 Dp N _ _ _ _ _ _ hw hp ew ?_
-  rw [Units.coe_map]
-  show Dp.fμ c (z : (Dp.D : Type u)) = _
-  rw [ez]
-  simp [DualPair.fμ, Dp.sect, hπη] <;> ring
-
-private def hgt (h1 : PairingPropertiesStatement B) {R : LAlg R₀} (Dp : DualPair R) (N : ℕ)
-    (hN : (N : (R : Type u)) = 0) (y : B.G R) (hy : N • y = 0) : B.gg →ₗ[R₀] (R : Type u) where
-  toFun := cf h1 Dp N hN y hy
-  map_add' := cf_add h1 Dp N hN y hy
-  map_smul' r v := by rw [cf_smul h1 Dp N hN y hy, RingHom.id_apply, Algebra.smul_def]
-
-private lemma part_b (h1 : PairingPropertiesStatement B) {R : LAlg R₀} (Dp : DualPair R) (N : ℕ)
-    (hN : (N : (R : Type u)) = 0) (y : B.G R) (hy : N • y = 0) :
-    ∃! h : B.gg →ₗ[R₀] (R : Type u), B.IsHeight Dp N y h := by
-  refine ⟨hgt h1 Dp N hN y hy, fun v => cf_spec h1 Dp N hN y hy v, fun h' hh' => ?_⟩
-  ext v
-  obtain ⟨z, hz, ez⟩ := hh' v
-  obtain ⟨z0, hz0, ez0⟩ := cf_spec h1 Dp N hN y hy v
-  exact c_unique h1 Dp N _ _ _ _ z z0 hz hz0 ez ez0
-
-private lemma part_c (h1 : PairingPropertiesStatement B) {R : LAlg R₀} (Dp : DualPair R) (N : ℕ)
-    (y y' : B.G R) (h h' : B.gg →ₗ[R₀] (R : Type u)) (hh : B.IsHeight Dp N y h)
-    (hh' : B.IsHeight Dp N y' h') : B.IsHeight Dp N (y + y') (h + h') := by
-  intro v
-  obtain ⟨z, hz, ez⟩ := hh v
-  obtain ⟨z', hz', ez'⟩ := hh' v
-  obtain ⟨hx, hy1, -⟩ := id hz
-  obtain ⟨-, hy2, -⟩ := id hz'
-  obtain ⟨w, hw⟩ := h1.1 Dp.D N _ (B.map Dp.σ y + B.map Dp.σ y') hx
-    (by rw [nsmul_add, hy1, hy2, add_zero])
-  have hwz := h1.2.2.2.1 Dp.D N _ _ _ z z' w hz hz' hw
-  refine ⟨w, by rw [map_add (f := _)]; exact hw, ?_⟩
-  rw [hwz, Units.val_mul, ez, ez', LinearMap.add_apply, map_add (f := _)]
-  linear_combination (Dp.σ.1 (h v) * Dp.σ.1 (h' v)) * Dp.η_sq
+  exact ⟨Dp.π.1 d, z, hz, by linear_combination -hd + Dp.sq_ker (Dp.sub_mem d) Dp.η_mem⟩
 
 end BX
 
-theorem heightFunctionalStatement_of_pairingProperties (B : BX R₀) (h1 : PairingPropertiesStatement B) : HighestWeightVectorUniformBounds B := by
+theorem heightFunctionalStatement_of_pairingProperties (B : BX R₀)
+    (h1 : PairingPropertiesStatement B) : HighestWeightVectorUniformBounds B := by
   intro R Dp N hN
-  exact ⟨fun y v u hu => BX.part_a Dp N hN y v u hu, fun y hy => BX.part_b h1 Dp N hN y hy,
-    fun y y' h h' hh hh' => BX.part_c h1 Dp N y y' h h' hh hh'⟩
+  refine ⟨fun y v u hu => ?_, fun y hy => ?_, fun y y' h h' hh hh' v => ?_⟩
+  · have hu' : B.tot (B.pmap Dp.π u) = B.tot (B.zero1 y) :=
+      BX.tot_eq ((B.tg_ker Dp.π Dp.sqZero _).mpr ⟨_, rfl⟩)
+        (by rw [← B.map_comp, Dp.π_comp_σ, B.map_id]) hu
+    exact BX.heq_of_tot ((BX.nsmul1_tot Dp y u hu' N).trans (by rw [hN]; exact BX.zσ Dp y u hu'))
+  · choose cf hcf using BX.exists_c h1 Dp N hN y hy
+    refine ⟨{
+      toFun := cf
+      map_add' := fun v v' => by
+        obtain ⟨z, hz, ez⟩ := hcf v
+        obtain ⟨z', hz', ez'⟩ := hcf v'
+        obtain ⟨w, hw, ew⟩ := hcf (v + v')
+        rw [TensorProduct.add_tmul, map_add (f := _)] at hw
+        have hwz : (w : (Dp.D : Type u)) = z * z' :=
+          by rw [h1.2.2.1 Dp.D N _ _ _ z z' w hz hz' hw, Units.val_mul]
+        rw [ew, ez, ez'] at hwz
+        exact sub_eq_zero.mp (Dp.free _ (by
+          rw [map_sub, map_add (f := _)]
+          linear_combination hwz + (Dp.σ.1 (cf v) * Dp.σ.1 (cf v')) * Dp.η_sq))
+      map_smul' := fun r v => by
+        set c := algebraMap R₀ (R : Type u) r
+        have hf : ∀ a ∈ Dp.π.ker, (Dp.μL c).1.toLinearMap a ∈ Dp.π.ker := fun a ha => by
+          have ha' : Dp.π.1 a = 0 := ha
+          show Dp.π.1 (Dp.fμ c a) = 0
+          simp [DualPair.fμ, Dp.sect, ha']
+        have key := B.tg_nat Dp.π Dp.π Dp.sqZero Dp.sqZero (Dp.μL c) hf (v ⊗ₜ Dp.ηk)
+        have hv : LinearMap.lTensor B.gg ((Dp.μL c).1.toLinearMap.restrict hf) (v ⊗ₜ[R₀] Dp.ηk) =
+            (r • v) ⊗ₜ[R₀] Dp.ηk := by
+          rw [LinearMap.lTensor_tmul, TensorProduct.smul_tmul]
+          congr 1; apply Subtype.ext
+          show Dp.fμ c Dp.η = r • Dp.η
+          rw [Algebra.smul_def, ← Dp.σ.1.commutes r]
+          simp [DualPair.fμ, Dp.π_η, c]
+        rw [hv] at key
+        have hμσ : (Dp.μL c).comp Dp.σ = Dp.σ :=
+          LHom.ext' fun a => by show Dp.fμ c (Dp.σ.1 a) = Dp.σ.1 a; simp [DualPair.fμ, Dp.sect]
+        obtain ⟨z, hz, ez⟩ := hcf v
+        obtain ⟨w, hw, ew⟩ := hcf (r • v)
+        have hp := h1.2.2.2.2.2.2.1 Dp.D Dp.D (Dp.μL c) N _ _ z hz
+        rw [← key, ← B.map_comp, hμσ] at hp
+        rw [RingHom.id_apply, Algebra.smul_def]
+        refine BX.c_unique h1 Dp N _ _ hw hp ew ?_
+        rw [Units.coe_map]
+        show Dp.fμ c (z : (Dp.D : Type u)) = _
+        rw [ez]; simp only [DualPair.fμ, Dp.sect, Dp.π_η, map_add (f := _), map_one, map_mul,
+          mul_zero, add_zero, c, AlgHom.commutes]; ring
+    }, hcf, fun h' hh' => LinearMap.ext fun v => ?_⟩
+    obtain ⟨z, hz, ez⟩ := hh' v
+    obtain ⟨z0, hz0, ez0⟩ := hcf v
+    exact BX.c_unique h1 Dp N _ _ hz hz0 ez ez0
+  · obtain ⟨z, hz, ez⟩ := hh v
+    obtain ⟨z', hz', ez'⟩ := hh' v
+    obtain ⟨hx, hy1, -⟩ := id hz
+    obtain ⟨-, hy2, -⟩ := id hz'
+    obtain ⟨w, hw⟩ := h1.1 Dp.D N _ (B.map Dp.σ y + B.map Dp.σ y') hx
+      (by rw [nsmul_add, hy1, hy2, add_zero])
+    refine ⟨w, by rwa [map_add (f := _)], ?_⟩
+    rw [h1.2.2.2.1 Dp.D N _ _ _ z z' w hz hz' hw, Units.val_mul, ez, ez',
+      LinearMap.add_apply, map_add (f := _)]
+    linear_combination (Dp.σ.1 (h v) * Dp.σ.1 (h' v)) * Dp.η_sq
 
 end ReciprocityTheory.PGsh
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.DualLattices.HeightFunctionalStatementOfPairingProperties =====

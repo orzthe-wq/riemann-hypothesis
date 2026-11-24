@@ -1,7 +1,8 @@
 module
 
 public import Formalism.PeriodIntegrals.HasseJidPow
-public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HassePresH
+public import Formalism.PeriodIntegrals.HassePresH
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseDerivativeFiltration.HasseMemHfr
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseJacobsonPowers.SfrMulMemJHfr
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -41,4 +42,4 @@ import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
-theorem hasse_jid_power : PI.HasseJidPow := PI.HJP.hasseJidPow_of hasse_presentation
+theorem hasse_jid_power : PI.HasseJidPow := PI.HJP.hasseJidPow_of _root_.PI.UnitaryGroupMassFormula.HassePresH.main

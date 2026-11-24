@@ -230,7 +230,7 @@ theorem UpperTheory.WildA.bvvInt :
           ∑ x : {x // x ∈ ((bVV ℂ lam).repr v).support}, (bVV ℂ lam).repr v x.1 * A x.1 j.1 := by
         rw [hexp, MvPolynomial.coeff_sum, ← Finset.sum_coe_sort]
         refine Finset.sum_congr rfl fun x _ => ?_
-        rw [MvPolynomial.coeff_smul, smul_eq_mul] <;> rfl
+        rw [MvPolynomial.coeff_smul, smul_eq_mul]
       show ∑ x : {x // x ∈ ((bVV ℂ lam).repr v).support}, (bVV ℂ lam).repr v x.1 * A x.1 j.1 ∈ _
       rw [← hcoef]
       obtain ⟨z, hz⟩ := hv (L j.1)

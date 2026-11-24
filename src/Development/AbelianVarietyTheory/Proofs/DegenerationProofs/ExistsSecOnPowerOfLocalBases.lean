@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsRegularFnIffOfIsAffineOpen
 
 @[expose] public section
 
@@ -53,11 +54,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ZH
 open GlobalTheory.Points
-
-theorem resG_resG_apply {X : Scheme.{0}} {U V T : X.Opens} (h : V ≤ U) (h' : T ≤ V) (f : Γ(X, U)) :
-    resG X h' (resG X h f) = resG X (h'.trans h) f := by
-  rw [← CommRingCat.comp_apply, ← X.presheaf.map_comp]
-  rfl
 
 theorem exists_secOn_glue {X : Scheme.{0}} (B : LB X) (V : X.Opens) {κ : Type} (T : κ → X.Opens)
     (hT : ∀ k, T k ≤ V) (hV : ∀ x ∈ V, ∃ k, x ∈ T k) (σ : ∀ k j, Γ(X, T k ⊓ B.U j))
@@ -74,7 +70,7 @@ theorem exists_secOn_glue {X : Scheme.{0}} (B : LB X) (V : X.Opens) {κ : Type} 
         have e : (T k ⊓ B.U j) ⊓ (T k' ⊓ B.U j) ≤ (T k ⊓ T k') ⊓ B.U j :=
           fun x hx => ⟨⟨hx.1.1, hx.2.1⟩, hx.1.2⟩
         have := congrArg (resG X e) (hc k k' j)
-        rw [resG_resG_apply, resG_resG_apply] at this
+        rw [_root_.GlobalTheory.Cartier.resG_resG, _root_.GlobalTheory.Cartier.resG_resG] at this
         exact this)
     exact ⟨g, hg⟩
   choose τ hτ using H
@@ -85,17 +81,17 @@ theorem exists_secOn_glue {X : Scheme.{0}} (B : LB X) (V : X.Opens) {κ : Type} 
       obtain ⟨k, hk⟩ := hV x hx.1.1
       exact TopologicalSpace.Opens.mem_iSup.2 ⟨k, ⟨hk, hx.1.2⟩, hx.2⟩) _ _ fun k => ?_
   have h := hσ k i j
-  rw [← hτ i k, ← hτ j k, resG_resG_apply, resG_resG_apply] at h
+  rw [← hτ i k, ← hτ j k, _root_.GlobalTheory.Cartier.resG_resG, _root_.GlobalTheory.Cartier.resG_resG] at h
   change resG X (inf_le_inf_right _ (inf_le_inf_right _ (hT k))) _ =
     resG X (inf_le_inf_right _ (inf_le_inf_right _ (hT k))) _
-  rw [map_mul, resG_resG_apply, resG_resG_apply, resG_resG_apply]
+  rw [map_mul, _root_.GlobalTheory.Cartier.resG_resG, _root_.GlobalTheory.Cartier.resG_resG, _root_.GlobalTheory.Cartier.resG_resG]
   exact h
 
 theorem sum_mul_mem_secOn {X : Scheme.{0}} (B : LB X) (V : X.Opens) {I : Type} [Fintype I] (f : I → Γ(X, V))
     (σ : I → ∀ j, Γ(X, V ⊓ B.U j)) (hσ : ∀ i, σ i ∈ secOn B V) :
     (fun j => ∑ i, resG X inf_le_left (f i) * σ i j) ∈ secOn B V := fun j j' => by
 
-  simp only [map_sum, map_mul, Finset.mul_sum, resG_resG_apply]
+  simp only [map_sum, map_mul, Finset.mul_sum, _root_.GlobalTheory.Cartier.resG_resG]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [hσ i j j', mul_left_comm]
 

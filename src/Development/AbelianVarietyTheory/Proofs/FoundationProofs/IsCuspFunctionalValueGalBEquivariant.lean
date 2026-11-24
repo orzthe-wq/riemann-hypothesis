@@ -71,7 +71,7 @@ theorem gal_algebraMap (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (c : Ω) :
   ext r
   have hC : ∀ c : Ω, algebraMap Ω (HahnSeries ℚ Ω) c = HahnSeries.single 0 c := fun c => by
     rw [HahnSeries.algebraMap_apply']
-    simp [PowerSeries.algebraMap_apply, HahnSeries.ofPowerSeries_C, HahnSeries.C_apply]
+    simp [HahnSeries.ofPowerSeries_C, HahnSeries.C_apply]
   simp only [HahnSeries.map_coeff, hC, HahnSeries.coeff_single]
   split_ifs <;> simp
 
@@ -187,7 +187,7 @@ theorem exists_twist [IsAlgClosed Ω] (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) 
       simp only [Matrix.SpecialLinearGroup.coe_neg, Matrix.neg_apply, ModularGroup.coe_T_zpow, en]
       refine ⟨by simpa using g00, ?_, by simp, by simpa using g00⟩
       simp only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val',
-        Matrix.cons_val_fin_one, Matrix.head_cons, Int.cast_neg, Int.cast_mul]
+        Matrix.cons_val_fin_one, Int.cast_neg, Int.cast_mul]
       rw [mul_comm, ← neg_mul, g01, zero_mul]
     · apply recip_zmod X s M0 h0 f hlev ζ hζ d e hd hde δ
       · simp [en, ModularGroup.coe_T_zpow, a']

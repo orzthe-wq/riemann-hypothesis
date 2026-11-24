@@ -58,7 +58,7 @@ private lemma notInPhi_iff {φ : Frame} (H : HostAx φ) {p : ℕ} (hp : p.Prime)
   have hN0 : H.condN ≠ 0 := by
     simp only [HostRaw.condN]
     exact Nat.mul_ne_zero (Nat.mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero) hdp.ne_zero
-  haveI : NeZero H.condN := ⟨hN0⟩
+  have : NeZero H.condN := ⟨hN0⟩
   set u := frobUnit H.condN p with hu
   obtain ⟨h1, -⟩ := frobUnit_modEq (N := H.condN) hp
   have hcop : Nat.Coprime (p ^ H.condN.factorization p) H.d :=

@@ -107,7 +107,7 @@ theorem trace_hcRep_eq_hcL : ∀ (g : ℕ) [Fact g.Prime] (r s : ℕ) (b : Fin r
     have hg : GlobalTheory.GLq.toG ((y : Matrix (Fin r) (Fin r) (ZMod g)).submatrix (j c) (j c)) =
         glEquiv (ZMod g) (Fintype.equivFin {i // b i = c}) (levi (ZMod g) b c ⟨y, hy⟩) := by
       apply Units.ext
-      rw [GlobalTheory.TypeCharProduct.coe_toG (by rw [hu]; exact Units.isUnit _), hu]
+      rw [_root_.GlobalTheory.GLm.ParBasic.toG_val (by rw [hu]; exact Units.isUnit _), hu]
     show _ = (transp (Fintype.equivFin {i // b i = c}) (lam c)).character _
     rw [hg]
     show _ = LinearMap.trace ℂ _ ((lam c).ρ ((glEquiv (ZMod g) (Fintype.equivFin {i // b i = c})).symm _))

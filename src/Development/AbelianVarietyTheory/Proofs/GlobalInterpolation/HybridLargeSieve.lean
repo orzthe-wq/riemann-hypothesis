@@ -3,7 +3,8 @@ module
 public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 public import Mathlib.NumberTheory.DirichletCharacter.Basic
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralNormSqLp
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MultiplicativeLargeSieveStatement
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MultiplicativeLargeSieve
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -129,7 +130,7 @@ theorem window (Q N : ℕ) (a : ℕ → ℂ) (T x : ℝ) (hQ : 1 ≤ Q) (hT : 1 
     have h5 : x * (2 * (1 / T)) = 2 * x / T := by ring
     nlinarith
   let b : ℕ → ℂ := fun n => if n ∈ S then a n else 0
-  have key := GlobalTheory.T.sum_norm_sq_primitive_char_sum_le Q ⌊x⌋₊ (⌊x * Real.exp (1 / T)⌋₊ - ⌊x⌋₊) b hQ
+  have key := _root_.GlobalTheory.multiplicative_large_sieve Q ⌊x⌋₊ (⌊x * Real.exp (1 / T)⌋₊ - ⌊x⌋₊) b hQ
   have hinner : ∀ (q : ℕ) (χ : DirichletCharacter ℂ (q + 1)),
       ∑ n ∈ S, a n * χ (n : ZMod (q + 1)) =
         ∑ n ∈ Finset.Ioc ⌊x⌋₊ (⌊x⌋₊ + (⌊x * Real.exp (1 / T)⌋₊ - ⌊x⌋₊)), b n * χ (n : ZMod (q + 1)) := by
@@ -179,7 +180,7 @@ theorem hybrid_large_sieve : ∃ C : ℝ, 0 < C ∧ ∀ (Q N : ℕ) (a : ℕ →
       (∫ t in (-T)..T, ‖∑ n ∈ Finset.Icc 1 N,
         a n * χ (n : ZMod (q + 1)) * (n : ℂ) ^ (-(t * I))‖ ^ 2) ≤
       C * ∑ n ∈ Finset.Icc 1 N, ((Q : ℝ) ^ 2 * T + n) * ‖a n‖ ^ 2 := by
-  obtain ⟨C, hC, hGal⟩ := GlobalTheory.GallagherLemma.gallagher
+  obtain ⟨C, hC, hGal⟩ := GlobalTheory.GallagherLemma.gallagher_of_pos
   refine ⟨16 * C, by positivity, fun Q N a T hQ hT => ?_⟩
   have hT0 : 0 < T := by linarith
   have hδ0 : 0 ≤ 1 / T := by positivity
@@ -204,7 +205,7 @@ theorem hybrid_large_sieve : ∃ C : ℝ, 0 < C ∧ ∀ (Q N : ℕ) (a : ℕ →
         ∫ x in Set.Ioi (0 : ℝ), ‖W p x‖ ^ 2 / x := by
     refine (sum_finsum_primitive_eq_sum_sigma Q _).trans_le ?_
     rw [Finset.mul_sum]
-    exact Finset.sum_le_sum (fun p _ => hGal N (fun n => a n * p.2 (n : ZMod (p.1 + 1))) T hT)
+    exact Finset.sum_le_sum (fun p _ => hGal N (fun n => a n * p.2 (n : ZMod (p.1 + 1))) T hT0)
   have hstep2 : ∑ p ∈ (Finset.range Q).sigma
         (fun q => (Set.toFinite {χ : DirichletCharacter ℂ (q + 1) | χ.IsPrimitive}).toFinset),
         ∫ x in Set.Ioi (0 : ℝ), ‖W p x‖ ^ 2 / x ≤

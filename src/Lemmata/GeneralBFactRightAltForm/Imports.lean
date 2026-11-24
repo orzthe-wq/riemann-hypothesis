@@ -54,6 +54,6 @@ theorem goal1 :
     Exists.{1} fun (d : NumberField.RingOfIntegers.{0} E) ↦
       And (Ne.{1} d 0)
         (Membership.mem.{0, 0} (Submodule.span.{0, 0} (NumberField.RingOfIntegers.{0} E) A) (HSMul.hSMul.{0, 0, 0} d y)) := by
-  apply GlobalTheory.SmulMemSpanIntegers.exists_smul_mem_span_integers <;> assumption
+  apply GlobalTheory.SmulMemSpanIntegers.exists_smul_mem_span_integers
 
 end Bl.general_b_fact_right_alt_form

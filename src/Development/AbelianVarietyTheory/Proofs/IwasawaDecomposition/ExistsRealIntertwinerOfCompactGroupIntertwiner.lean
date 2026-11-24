@@ -166,8 +166,7 @@ theorem continuous_tprod (M : DSModel V S) (h : ∀ τ, FiniteDimensional ℂ (M
   exact continuous_finsetSum _ fun i _ => (continuous_finsetProd _ fun τ _ =>
     ((o τ).coord (i τ)).continuous_of_finiteDimensional.comp (continuous_apply τ)).mul continuous_const
 
-theorem one_mem_UH {n : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.QuantumDeterminants.UH G := by
-  simp [Formalism.QuantumDeterminants.UH]
+alias one_mem_UH := _root_.GlobalTheory.PointAtPlaceHom.one_mem_UH
 
 theorem hasDerivAt_pol {σ Z : Type} [Finite σ] (pt : MvPolynomial σ ℂ →ₗ[ℂ] (Z → ℂ)) (hpt : Function.Injective pt)
     (c : ℝ → MvPolynomial σ ℂ) (N : ℕ) (hc : ∀ t, (c t).totalDegree ≤ N) (y : MvPolynomial σ ℂ)

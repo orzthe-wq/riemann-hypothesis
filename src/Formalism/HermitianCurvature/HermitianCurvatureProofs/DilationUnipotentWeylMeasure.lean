@@ -196,7 +196,7 @@ private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
     ⟨(if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val), by split_ifs <;> omega⟩
     (Finset.mem_univ _)]
   · unfold Hpk
-    simp only [Fin.ext_iff, Fin.val_mk]
+    simp only [Fin.ext_iff]
     split_ifs <;> first | (exfalso; omega) | norm_num
   · intro l _ hl
     rw [key l (fun h => hl (Fin.ext h)), MulZeroClass.zero_mul]
@@ -308,13 +308,10 @@ lemma natCast_succ_le (m : ℕ) :
     (((m : ℕ) : ℕ∞) : WithTop ℕ∞) + 1 ≤ (((m + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) := by
   first
     | exact le_of_eq (by norm_cast)
-    | exact le_of_eq (by simp)
-    | simp
 
 lemma cast_ne_zero (m : ℕ) : (((m + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) ≠ 0 := by
   first
     | exact_mod_cast Nat.succ_ne_zero m
-    | simp
 
 def op' (b : Bool) (X : Mat k r) (f' : Mat k r → E) : Mat k r → E :=
   fun g => fderiv ℝ f' g (vf b X g)
@@ -416,13 +413,11 @@ lemma op_smul (b : Bool) (X : Mat k r) (a : ℂ) (f : Mat k r → E) : op b X (a
   simp only [op, Pi.smul_apply]
   first
     | exact deriv_const_smul_field (f := fun t : ℝ => f (cv b X t g)) (x := 0) a
-    | exact deriv_const_smul_field (f := fun t : ℝ => f (cv b X t g)) (x := 0) a
 
 lemma op_rsmul (b : Bool) (X : Mat k r) (a : ℝ) (f : Mat k r → E) : op b X (a • f) = a • op b X f := by
   funext g
   simp only [op, Pi.smul_apply]
   first
-    | exact deriv_const_smul_field (f := fun t : ℝ => f (cv b X t g)) (x := 0) a
     | exact deriv_const_smul_field (f := fun t : ℝ => f (cv b X t g)) (x := 0) a
 
 lemma cv_rsmul (b : Bool) (X g : Mat k r) (c t : ℝ) : cv b ((c : ℂ) • X) t g = cv b X (c * t) g := by
@@ -494,7 +489,6 @@ lemma smooth_on_of_word_derivatives {f : Mat k r → E} (w : List (Bool × Mat k
     rw [W_nil]
     first
       | exact hm
-      | simpa using hm
   | cons x w ih =>
     intro m hm
     rw [W_cons]
@@ -659,8 +653,6 @@ lemma lrt_lr (u v : List (Mat k r)) : LRt ((lr u v).map Prod.fst) := by
   refine ⟨u.length, v.length, ?_⟩
   first
     | (simp [lr, Function.comp_def]; done)
-    | (simp [lr, Function.comp_def, List.map_const']; done)
-    | (simp [lr, List.map_map, Function.comp_def, List.eq_replicate_iff]; done)
 
 lemma bound_tag {F : Mat k r → E} {A c : ℝ} {m : ℕ} (h : CCle A m F c) (w : List (Bool × Mat k r))
     (ht : LRt (w.map Prod.fst)) (hu : ∀ x ∈ w, unitLie k r x.2) (hl : w.length ≤ m) :
@@ -688,13 +680,11 @@ lemma nrm_smul (X : Mat k r) : X = ((‖X‖ : ℝ) : ℂ) • (((‖X‖⁻¹ :
 private lemma entry_le_lemma (A : Mat k r) (i j : Fin (2 * r + k + 1)) : ‖A i j‖ ≤ ‖A‖ := by
   first
     | exact Matrix.norm_entry_le_entrywise_sup_norm A
-    | exact (norm_le_pi_norm (A i) j).trans (norm_le_pi_norm A i)
 
 private lemma norm_le_lemma_2 {A : Mat k r} {c : ℝ} (hc : 0 ≤ c) (h : ∀ i j, ‖A i j‖ ≤ c) :
     ‖A‖ ≤ c := by
   first
     | exact (Matrix.norm_le_iff hc).mpr h
-    | exact (pi_norm_le_iff_of_nonneg hc).mpr fun i => (pi_norm_le_iff_of_nonneg hc).mpr (h i)
 
 lemma nrm_unit {x : Bool × Mat k r} (hx : inLie k r x.2) : unitLie k r (nrm x).2 := by
   refine ⟨inLie_rsmul hx _, fun i j => ?_⟩
@@ -905,8 +895,6 @@ private lemma exp_conj_lemma (a A : Mat k r) (ha : IsUnit a) :
     NormedSpace.exp (a⁻¹ * A * a) = a⁻¹ * NormedSpace.exp A * a := by
   first
     | exact Matrix.exp_conj' a A ha
-    | (have h := Matrix.exp_conj a⁻¹ A ((Matrix.isUnit_nonsing_inv_iff).mpr ha)
-       rwa [Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp ha)] at h)
 
 lemma cv_dil (t : ℝ × ℝ) (h1 : t.1 ≠ 0) (h2 : t.2 ≠ 0) (b : Bool) (X g : Mat k r) (s : ℝ) :
     (aDil k r t.1)⁻¹ * cv b X s g * aDil k r t.2 =
@@ -977,7 +965,6 @@ lemma abs_inv_sub_one {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : |t⁻¹ -
   have e : t⁻¹ - 1 = -(t - 1) * t⁻¹ := by
     first
       | (field_simp; ring)
-      | field_simp
   rw [e, abs_mul, abs_neg, abs_of_pos (inv_pos.mpr hpos), mul_comm]
   exact mul_le_mul_of_nonneg_right (inv_mem_I ht).2 (abs_nonneg _)
 
@@ -1285,7 +1272,6 @@ lemma mean_value {H : Mat k r → E} (hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r) H)
       _ = B * |s| := by
         first
           | (field_simp; done)
-          | (field_simp; ring)
 
 lemma abs_log_le {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : |Real.log t| ≤ 2 * |t - 1| := by
   have hpos : 0 < t := by linarith [ht.1]

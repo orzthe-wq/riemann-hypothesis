@@ -1,50 +1,6 @@
 module
 
 public import Formalism.LocalToGlobal.Columns.RecLevel
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -185,7 +141,7 @@ theorem levU_parFam_eq_lev :
   rw [mem_levU_iff, Formalism.L2.DIV.mem_lev]
   simp only [Formalism.L2.DIV.parLev, Subgroup.mem_inf, Subgroup.mem_iInf, Formalism.L2.DIV.mem_parah, LevFam.grp,
     Subgroup.mem_pi, Set.mem_univ, true_implies, parFam, mem_HPar_iff h ht hn, parDat,
-    Formalism.L2.DIV.LevelP.ofLocal, Formalism.L2.DIV.rTup]
+    Formalism.L2.DIV.LevelP.ofLocal]
   constructor
   · rintro ⟨h1, h2, -, h4⟩
     exact ⟨⟨⟨⟨h1, h2⟩, fun PP hP => ⟨h2, (h4 ⟨PP, hP⟩).1⟩⟩, fun _ hP => by simp at hP⟩, fun w _ => (h4 w).2⟩
@@ -205,7 +161,7 @@ theorem rld_ofLocal_chi (Hl : ∀ PP : SG, Subgroup (GL (Fin r) (kP PP.1))) (cl 
 
 omit [StarRing E] in
 theorem rld_parDat_cg (c : ℕ) (w : SG) : (parDat h t s P χ).cg (c + 1) w.1 = χ w c := by
-  simp only [parDat, dif_pos w.2, Nat.add_sub_cancel, Subtype.coe_eta]
+  simp only [parDat, dif_pos w.2, Nat.add_sub_cancel]
 
 
 include ht hn in
@@ -255,7 +211,7 @@ theorem levChr_parFam_eq_levChar (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af 
     congr 1
     rw [← Finset.prod_coe_sort SG]
     refine Finset.prod_congr rfl fun w _ => Finset.prod_congr rfl fun c _ => ?_
-    simp only [dif_pos w.2, Nat.add_sub_cancel, Subtype.coe_eta]
+    simp only [dif_pos w.2, Nat.add_sub_cancel]
   rw [eL, eR, Finset.prod_mul_distrib]
 
 end Cmp

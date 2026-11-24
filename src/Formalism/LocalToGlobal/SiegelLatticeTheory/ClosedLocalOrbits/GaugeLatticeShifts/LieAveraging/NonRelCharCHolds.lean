@@ -5,45 +5,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.Unita
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.LieAveraging.LiePowRPerp
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.NilradicalLatticeZMemSpan
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -66,16 +27,6 @@ theorem nxt_map {V W : Type} (g : V → W) (e : Fin r → V) (z : V) (a : Fin r)
     g (nxt e z a) = nxt (fun b => g (e b)) (g z) a := by
   simp only [nxt]
   split_ifs <;> rfl
-
-theorem mapFlag_Xa (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : FlagG S r T) (b : ℕ) :
-    (mapFlag γ hγ F).Xa b = (F.Xa b).map (γ : S.V →ₗ[E] S.V) := by
-  rw [FlagG.Xa, FlagG.Xa, Submodule.map_span, Set.image_image]
-  rfl
-
-theorem mapFlag_X (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : FlagG S r T) :
-    (mapFlag γ hγ F).X = F.X.map (γ : S.V →ₗ[E] S.V) := by
-  rw [FlagG.X, FlagG.X, Submodule.map_span, ← Set.range_comp]
-  rfl
 
 theorem mem_map_iff (γ : S.V ≃ₗ[E] S.V) (p : Submodule E S.V) (y : S.V) :
     y ∈ p.map (γ : S.V →ₗ[E] S.V) ↔ γ.symm y ∈ p := by
@@ -109,13 +60,7 @@ theorem hE_crd (p q : (VS D).V) : hE X (X.crd p) (X.crd q) = X.ιE.symm ((VS D).
   rw [Formalism.L2.SG.Pf.Level.iota_hE, Formalism.L2.SG.Pf.Level.toV_crd, Formalism.L2.SG.Pf.Level.toV_crd,
     RingEquiv.apply_symm_apply]
 
-theorem hTfe (a b : Fin D.R.rS) : (VS D).hT (X.fY a) (X.eX b) = if b = a then 1 else 0 := by
-  have h : starRingEnd D.host.E ((VS D).hT (X.eX b) (X.fY a)) = (VS D).hT (X.fY a) (X.eX b) := by
-    first
-      | exact (VS D).herm.eq _ _
-      | exact (VS D).herm _ _
-  rw [← h, X.ef b a]
-  split_ifs <;> simp
+alias hTfe := _root_.Formalism.L2.SG.Pf.Level.hT_f_e
 
 theorem psi_rat (w : D.what₂.Word) {x : X.B.I.GA} {m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x m) :
     X.psiInfU w x.1 = ∏ v, Complex.exp (2 * Real.pi * Complex.I *
@@ -147,16 +92,12 @@ def sigF (X : HidaSetting D) : D.host.E ≃ₐ[D.host.F] D.host.E :=
     exact star_F X c c.2
 
 theorem trace_zero (X : HidaSetting D) {y : D.host.E} (hy : y + star y = 0) : Algebra.trace D.host.F D.host.E y = 0 := by
-  have h1 : Algebra.trace D.host.F D.host.E (sigF X y) = Algebra.trace D.host.F D.host.E y :=
-    Algebra.trace_eq_of_algEquiv (sigF X) y
-  have h2 : sigF X y = star y := rfl
+  have h1 := Algebra.trace_eq_of_algEquiv (sigF X) y
   have h3 : star y = -y := eq_neg_of_add_eq_zero_right hy
-  rw [h2, h3, map_neg] at h1
+  rw [show sigF X y = star y from rfl, h3, map_neg] at h1
   have h4 : (2 : D.host.F) * Algebra.trace D.host.F D.host.E y = 0 := by
     linear_combination -h1
-  rcases mul_eq_zero.mp h4 with h5 | h5
-  · exact absurd h5 two_ne_zero
-  · exact h5
+  exact (mul_eq_zero.mp h4).resolve_left two_ne_zero
 
 
 open Formalism.L2.SG.TermOp.Vanish in
@@ -224,19 +165,19 @@ theorem nonRelCharC_holds : NonRelCharC := by
     refine ⟨⟨?_, hgtop n'⟩, fun j y hy => ?_, fun y hy => ?_⟩
     · exact Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ hiso) hnI) hiso
     · have h1 : t.lin y ∈ F'.Xa (j + 1) := by
-        rw [hF', mapFlag_Xa]; exact Submodule.mem_map_of_mem hy
+        rw [hF', _root_.Formalism.L2.SG.Pf.xa_mapFlag]; exact Submodule.mem_map_of_mem hy
       have h2 := nexp_Xa (s := s) hY2 j h1
-      rw [hF', mapFlag_Xa, mem_map_iff] at h2
+      rw [hF', _root_.Formalism.L2.SG.Pf.xa_mapFlag, mem_map_iff] at h2
       rw [hsub]; exact h2
     · have h1 : t.lin y ∈ perpS (VS D) F'.X := by
         show ∀ w ∈ F'.X, (VS D).hT w (t.lin y) = 0
         intro w hw
-        rw [hF', mapFlag_X, mem_map_iff] at hw
+        rw [hF', _root_.Formalism.L2.SG.Pf.x_mapFlag, mem_map_iff] at hw
         have := horth (X.Fu u') y hy _ hw
         rw [← hisoF (t.lin.symm w) y, LinearEquiv.apply_symm_apply] at this
         exact this
       have h2 := nexp_perp (s := s) hY2 h1
-      rw [hF', mapFlag_X, mem_map_iff] at h2
+      rw [hF', _root_.Formalism.L2.SG.Pf.x_mapFlag, mem_map_iff] at h2
       rw [hsub]; exact h2
   have hr2 : (t.pt⁻¹ * x * t.pt).1 ∈ X.NinfU u' := nLamNinf_holds D X u' ⊤ _ n' hx' hn'N
   refine ⟨x.1, ⟨hr1, hr2⟩, ?_⟩

@@ -82,8 +82,7 @@ theorem hE_swap (x y : Fin X.B.I.n → X.B.I.E) :
   rw [star_mul, star_mul, star_star, hJ]
   ring
 
-theorem std (u : D.what₂.Word) : (frameOf X u).IsStd X.B.I.cm.sig X.B.I.J (((D.mem u).A.T : ℕ) : X.B.I.F) :=
-  MassDataLevelSSteps.FrameW.frameOf_isStd X u
+alias std := _root_.MassDataLevelSSteps.FrameW.frameOf_isStd
 
 theorem hKf_f (u : D.what₂.Word) : ∀ a b, ∑ j, Kf X X.eR a j * X.fR b j = if a = b then 1 else 0 := by
   intro a b

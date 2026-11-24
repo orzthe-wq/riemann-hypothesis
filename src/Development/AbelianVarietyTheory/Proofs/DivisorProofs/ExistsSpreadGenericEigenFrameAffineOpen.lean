@@ -48,6 +48,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.FrM
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeC
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TangentVectorsUniversalBasis
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -255,7 +256,7 @@ theorem GlobalTheory.LogKSDiv.spread_genFrame : ∀ (E : Type) [Field E] [Number
         LinearMap.toMatrix' (proj (rho hx') (embK c) α τ) := by
       ext i j
       have s : (Pi.single j 1 : Fin n → k) = ψ ∘ Pi.single j 1 := funext fun r => by
-        by_cases hj : r = j <;> simp [hj, Pi.single_apply]
+        by_cases hj : r = j <;> simp [hj]
       rw [Matrix.map_apply, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, s]
       exact (congrFun (pr _ _) i).symm
     intro v
@@ -362,7 +363,7 @@ theorem GlobalTheory.LogKSDiv.spread_genFrame : ∀ (E : Type) [Field E] [Number
       funext j
       by_cases hjk : j = k
       · subst hjk; simp [cst_apply]
-      · simp [Matrix.diagonal_apply, Pi.single_apply, hjk, Ne.symm hjk]
+      · simp [hjk, Ne.symm hjk]
     have hc : IsCombAtG TF.Y.t (LogKS.chart ⟨_, hU'⟩) (fun j => vec TF.Y.t _ xcU (cU j))
         (Pi.single k (cst TF.Y.s (TF.Y.X.basicOpen g') (embK c (e.symm k).1 a)))
         (vec TF.Y.t _ xcU (cst TF.Y.s (TF.Y.X.basicOpen g') (embK c (e.symm k).1 a) • cU k)) := by

@@ -120,22 +120,9 @@ theorem TorusCompat.trans {f' : S'' ⟶ S'} {f : S' ⟶ S} {F' : G''.left ⟶ G'
   rw [torusCompat_iff] at h' h ⊢
   rw [bcMap_comp, Category.assoc, h, ← Category.assoc, h', Category.assoc]
 
-theorem torusCompat_id_iff {i' i : splitTorus S X ⟶ G} :
-    TorusCompat (𝟙 S) (𝟙 G.left) i' i ↔ i' = i := by
-  rw [torusCompat_iff, bcMap_id, Category.id_comp, Category.comp_id]
-  constructor
-  · intro h
-    exact Over.OverMorphism.ext h.symm
-  · rintro rfl
-    rfl
-
 theorem TorusCompat.of_comp {H : Over S} (i : splitTorus S X ⟶ G) (φ : G ⟶ H) :
     TorusCompat (𝟙 S) φ.left i (i ≫ φ) := by
   rw [torusCompat_iff, bcMap_id, Category.id_comp, Over.comp_left]
-
-theorem torusCompat_bcMap (f : S' ⟶ S) :
-    TorusCompat f (bcMap f X) (𝟙 (splitTorus S' X)) (𝟙 (splitTorus S X)) := by
-  rw [torusCompat_iff, Over.id_left, Over.id_left, Category.id_comp, Category.comp_id]
 
 theorem existsUnique_torusCompat {f : S' ⟶ S} {F : G'.left ⟶ G.left}
     (hF : IsPullback F G'.hom G.hom f) (i : splitTorus S X ⟶ G) :

@@ -66,11 +66,6 @@ private theorem hH_hP (D : D7) (p : ℕ) (hp : p.Prime) (hc : IsResidueClassZero
   obtain ⟨P, hPm, hPl⟩ : ∃ P : Ideal (𝓞 D.host.E), P.IsMaximal ∧ P.LiesOver (Ideal.span {(p : ℤ)}) := by
     first
     | exact Ideal.exists_maximal_ideal_liesOver_of_isIntegral _
-    | exact Ideal.exists_maximal_ideal_liesOver_of_isIntegral _ _
-    | exact Ideal.exists_ideal_liesOver_maximal_of_isIntegral _
-    | (obtain ⟨Q, hQm, hQc⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 D.host.E)
-          (Ideal.span {(p : ℤ)}) (by simp)
-       exact ⟨Q, hQm, ⟨hQc.symm⟩⟩)
   haveI : P.IsPrime := hPm.isPrime
   obtain ⟨⟨σ, hσ⟩, -, -, -⟩ := D.host.der.frob p hN P
   have hmem : D.host.galE σ ∈ frobSet D p := ⟨P, inferInstance, hPl, σ, hσ, rfl⟩

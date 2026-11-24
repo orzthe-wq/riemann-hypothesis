@@ -62,7 +62,7 @@ theorem noMonodromy_of_mem_weilDeligneListSum : ∀ (l : List (WD h)), (sumList 
     · exact hsum.1
     · exact noMonodromy_of_mem_weilDeligneListSum l hsum.2 y hy
 
-theorem lpTw_one_ne (x : WD h) (hx : 0 < x.lpDim) : x.lpTw 1 ≠ x := GlobalTheory.WeilDeligne.WD.lpTw_one_ne x hx
+alias lpTw_one_ne := _root_.GlobalTheory.WeilDeligne.WD.lpTw_one_ne
 
 section
 variable {V V' W W' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]

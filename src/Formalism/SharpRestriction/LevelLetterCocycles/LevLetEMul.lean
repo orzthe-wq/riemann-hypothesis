@@ -69,11 +69,6 @@ theorem letE_mem (a : ZMod n) : (letE a : LetA O n) ∈ W.AΔ := by
     Pi.single_apply]
   split_ifs <;> simp
 
-theorem letE_idem (a : ZMod n) : (letE a : LetA O n) * letE a = letE a := by
-  funext i
-  simp only [Pi.mul_apply, letE, Pi.single_apply]
-  split_ifs <;> simp
-
 theorem lev_letE' (a : ZMod n) (ζ : LL) : W.lev a ζ (letE a : LetA O n) = 1 := by
   have h : W.lev a ζ (1 - letE a) = 0 := W.lev_letter a ζ _ (by simp [letE])
   rw [map_sub, map_one, sub_eq_zero] at h
@@ -263,7 +258,7 @@ theorem divLev_of (hR : ToolsR.RingP W) (hpu : ¬ IsUnit ((PD.p : ℕ) : O))
     have hps : ps W 0 = qP W := by
       rw [ps, pow_zero]
       rfl
-    rw [hps, ← letE_idem a, mul_assoc, e1, mul_left_comm, e2, hps, ← mul_assoc, ← pow_succ']
+    rw [hps, ← _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq a, mul_assoc, e1, mul_left_comm, e2, hps, ← mul_assoc, ← pow_succ']
 
 end Div
 

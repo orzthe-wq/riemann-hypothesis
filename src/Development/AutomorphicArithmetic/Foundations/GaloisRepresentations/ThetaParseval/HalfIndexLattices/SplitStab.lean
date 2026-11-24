@@ -59,11 +59,14 @@ def HasK (E : Type) [Field E] : Prop := ∃ (x : E) (d : ℕ), 0 < d ∧ x ^ 2 =
 
 structure GoodK (σ : E →ₐ[F] E) (B : Base F E) : Prop where
   cm : IsCMExt F E σ
-  galois : HasK E
+  galois : HasK E ∨ IsGalois ℚ E
   unram : Algebra.Unramified (𝓞 F) (𝓞 E)
   std : IsStd B.ψ
   inert : ∀ v w, Formalism.UG.IsInertAt F E v w → (2 : 𝓞 F) ∉ v.asIdeal ∧ 3 < Ideal.absNorm v.asIdeal ∧ PsiUnr B.ψ v
   psiP : ∀ v ∈ B.P, PsiUnr B.ψ v
+
+theorem GoodK.of_isGood {σ : E →ₐ[F] E} {B : Base F E} (h : B.IsGood σ) : GoodK σ B :=
+  ⟨h.cm, .inr h.galois, h.unram, h.std, h.inert, h.psiP⟩
 
 structure IsKap (σ : E →ₐ[F] E) (lam : ℕ →* ℂ) (κ : (AEF F E)ˣ →* Circle) : Prop where
   cont : Continuous κ

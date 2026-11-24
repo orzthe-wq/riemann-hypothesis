@@ -48,16 +48,6 @@ namespace GlobalTheory.Diag.PG.Model0
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 
-section Rec
-
-open Formalism.BasicNotions.Examples₂ Formalism.BasicNotions.Examples₂.NZ
-
-
-end Rec
-
-
-theorem two_le_rd {R : Ranks} (H : Host R) : 2 ≤ H.rdE := UpperTheory.Ram.Rd.two_le_rdE H
-
 theorem logrd_le {D : D7} (L : SizeData₂ D) (SzN : SizeN L) (SzQ : SizeQD L) (h2 : 2 ≤ XX L) (h3 : 5 / szTh L ≤ XX L) :
     Real.log D.host.rdE ≤ L.sc.x ^ (L.sc.eps / 2) := by
   obtain ⟨-, -, q2, -, d2, -⟩ := SzQ
@@ -92,8 +82,8 @@ theorem globalRows_of_sizeData {D : D7} (L : SizeData₂ D) (P : ParameterChoice
   have hk := D.R.m_add_three_le_k
   have hm := D.R.two_le_m
   have hS := Sc_eq' L
-  refine ⟨⟨?_, ?_, ?_, ?_, ?_, Real.log_le_log (by norm_num) (two_le_rd _), logrd_le L SzN SzQ h2 h3, count_power_le_discriminant L P CD h0 hC, ?_⟩,
-    type_prime_size_bounds L P, fun τ j h => ?_, fun τ i => ?_, fun τ ht => ?_, two_le_rd _⟩
+  refine ⟨⟨?_, ?_, ?_, ?_, ?_, Real.log_le_log (by norm_num) (_root_.UpperTheory.Ram.Rd.two_le_rdE _), logrd_le L SzN SzQ h2 h3, count_power_le_discriminant L P CD h0 hC, ?_⟩,
+    type_prime_size_bounds L P, fun τ j h => ?_, fun τ i => ?_, fun τ ht => ?_, _root_.UpperTheory.Ram.Rd.two_le_rdE _⟩
   · have a := SzM.1
     rw [sqrt_xd L, ← Real.rpow_add hx] at a
     refine le_trans (Real.rpow_le_rpow_of_exponent_le hx1.le ?_) a

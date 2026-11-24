@@ -64,7 +64,6 @@ noncomputable def cosetMeasure (ν : Measure H) [ν.IsMulLeftInvariant] : G ⧸ 
     intro a b hab
     have hab' : a⁻¹ * b ∈ H := QuotientGroup.leftRel_apply.mp hab
     have h1 := map_mul_left_eq_self ν (⟨a⁻¹ * b, hab'⟩ : H)
-    beta_reduce
     conv_lhs => rw [← h1]
     rw [Measure.map_map (measurable_translate H a) (measurable_const_mul _)]
     congr 1

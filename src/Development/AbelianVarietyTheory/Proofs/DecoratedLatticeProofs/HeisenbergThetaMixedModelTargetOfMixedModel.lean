@@ -43,30 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ConjugateAdjointDagger
-
-namespace I195MixedCoordinates_1f38ee5ffec15f714787e016
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-public noncomputable abbrev target
-    {D : D7} {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D ρ S.rank))
-    (𝓕 : Set (Mx D ρ S.rank)) (f : WO S T → ℂ) (y : Mx D S.rank ρ) : WO S T₀ → ℂ :=
-  fun w₀ => ∫ ξ in 𝓕, heisO ψ S T (d.jX * ξ)
-    (heisO ψ S T (d.jY * (incA D (-D.host.xi0⁻¹) • (adj y * gA S)))
-      (heisO ψ S T (d.j0 * w₀) f)) 0 ∂μ
-
-end I195MixedCoordinates_1f38ee5ffec15f714787e016
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -82,20 +59,15 @@ namespace GlobalTheory.HeisTarget
 
 variable {D : D7}
 
-theorem symplOH_skew' (S T : HSp D) (x y : WO S T) : symplOH S T y x = -symplOH S T x y := by
-  unfold symplOH; rw [GlobalTheory.OrientedHeis.symplO_skew, mul_neg]
-
-theorem symplO_eq_two (S T : HSp D) (x y : WO S T) : symplO S T x y = symplOH S T x y + symplOH S T x y := by
-  unfold symplOH
-  rw [← add_mul, ← map_add (f := _), add_halves, map_one, one_mul]
+alias symplO_eq_two := _root_.GlobalTheory.RatSelfDual.symplO_eq_add
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ)
 
 theorem mixT_heis_incX {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.rank)}
     (hμ : IsCovolOne (ratMx D ρ S.rank) μ 𝓕) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (ξ : Mx D ρ S.rank) (y : Mx D S.rank ρ) :
-    (_root_.I195MixedCoordinates_1f38ee5ffec15f714787e016.target d) S ψ μ 𝓕 (heisO ψ S T (d.incX S ξ) f) y =
-      ψ (symplO S T (d.incAdj S y) (d.incX S ξ)) • (_root_.I195MixedCoordinates_1f38ee5ffec15f714787e016.target d) S ψ μ 𝓕 f y := by
+    (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 (heisO ψ S T (d.incX S ξ) f) y =
+      ψ (symplO S T (d.incAdj S y) (d.incX S ξ)) • (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f y := by
   funext w₀
   have key : ∀ ξ' : Mx D ρ S.rank,
       heisO ψ S T (d.incX S ξ') (heisO ψ S T (d.incAdj S y) (heisO ψ S T (d.inc0 S w₀)
@@ -110,9 +82,9 @@ theorem mixT_heis_incX {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.ra
     · congr 1
       have h1 := d.symplOH_incX_incX S ξ' ξ
       have h2 : symplOH S T (d.inc0 S w₀) (d.incX S ξ) = 0 := by
-        rw [symplOH_skew', d.wittDecomp_sympl_inclIsotropic_inclAnisotropic S ξ w₀, neg_zero]
-      have h3 := symplOH_skew' S T (d.incAdj S y) (d.incX S ξ)
-      simp only [GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_right, h1, h2, h3,
+        rw [_root_.GlobalTheory.MixModel.symplOH_skew, d.wittDecomp_sympl_inclIsotropic_inclAnisotropic S ξ w₀, neg_zero]
+      have h3 := _root_.GlobalTheory.MixModel.symplOH_skew S T (d.incAdj S y) (d.incX S ξ)
+      simp only [GlobalTheory.OrientedHeis.symplOH_add_left, h1, h2, h3,
         symplO_eq_two]
       ring
     · congr 1
@@ -126,7 +98,7 @@ theorem mixT_heis_incX {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.ra
 
 theorem mixedModelTarget_heisenberg_anisotropic_part {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.rank)}
     (f : WO S T → ℂ) (v : WO S T₀) (y : Mx D S.rank ρ) :
-    (_root_.I195MixedCoordinates_1f38ee5ffec15f714787e016.target d) S ψ μ 𝓕 (heisO ψ S T (d.inc0 S v) f) y = heisO ψ S T₀ v ((_root_.I195MixedCoordinates_1f38ee5ffec15f714787e016.target d) S ψ μ 𝓕 f y) := by
+    (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 (heisO ψ S T (d.inc0 S v) f) y = heisO ψ S T₀ v ((_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f y) := by
   funext w₀
   have key : ∀ ξ' : Mx D ρ S.rank,
       heisO ψ S T (d.incX S ξ') (heisO ψ S T (d.incAdj S y) (heisO ψ S T (d.inc0 S w₀)
@@ -160,7 +132,7 @@ variable {D : D7}
 theorem hasSum_mixT {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T T₀ : HSp D} {ρ : ℕ}
     (d : HypDec T T₀ ρ) {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.rank)}
     (hμ : IsCovolOne (ratMx D ρ S.rank) μ 𝓕) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
-    HasSum (fun y : Matrix (Fin S.rank) (Fin ρ) D.host.E => (_root_.I195MixedCoordinates_1f38ee5ffec15f714787e016.target d) S ψ μ 𝓕 f (rat y) 0) (f 0) := by
+    HasSum (fun y : Matrix (Fin S.rank) (Fin ρ) D.host.E => (_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f (rat y) 0) (f 0) := by
   obtain ⟨μ', 𝓕', hμ', -, -, -, hsw⟩ := GlobalTheory.T.wittMixedCoords_conj_hermitianAdjoint D ψ hψ S T T₀ ρ d μ 𝓕 hμ
   have hg : IsThetaFunO ψ T S (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger T S) f) :=
     ((GlobalTheory.T.hermitianAdjoint_symplectic_action_theta_heisenberg D ψ hψ S T).2.2.1 f).2 hf
@@ -173,16 +145,16 @@ theorem hasSum_mixT {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
       right_inv := fun y => by simp only [smul_smul, inv_mul_cancel₀ hx, one_smul] }
   rw [← σ.hasSum_iff] at h5
   have e : ∀ y : Matrix (Fin S.rank) (Fin ρ) D.host.E,
-      (_root_.I195MixedCoordinates_1f38ee5ffec15f714787e016.source d) S ψ μ' 𝓕' (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger T S) f) (rat (σ y)) 0 =
-        starRingEnd ℂ ((_root_.I195MixedCoordinates_1f38ee5ffec15f714787e016.target d) S ψ μ 𝓕 f (rat y) 0) := by
+      (_root_.I195MixedCoordinates.source d) S ψ μ' 𝓕' (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger T S) f) (rat (σ y)) 0 =
+        starRingEnd ℂ ((_root_.I195MixedCoordinates.target d) S ψ μ 𝓕 f (rat y) 0) := by
     intro y
-    show (_root_.I195MixedCoordinates_1f38ee5ffec15f714787e016.source d) S ψ μ' 𝓕' _ (rat (D.host.xi0⁻¹ • y)) 0 = _
+    show (_root_.I195MixedCoordinates.source d) S ψ μ' 𝓕' _ (rat (D.host.xi0⁻¹ • y)) 0 = _
     rw [rat_smul]
     have hh := congrFun (hsw f (rat y)) 0
-    simpa only [I195MixedCoordinates_79cab7195843a34bfe21655d.source,
-      I195MixedCoordinates_79cab7195843a34bfe21655d.target,
-      I195MixedCoordinates_1f38ee5ffec15f714787e016.source,
-      I195MixedCoordinates_1f38ee5ffec15f714787e016.target,
+    simpa only [I195MixedCoordinates.source,
+      I195MixedCoordinates.target,
+      I195MixedCoordinates.source,
+      I195MixedCoordinates.target,
       GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj,
       GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger,
       adj_zero, Matrix.zero_mul, Matrix.mul_zero] using hh
@@ -195,7 +167,7 @@ theorem heisenbergTarget (D : D7) : GlobalTheory.IndefiniteRowSideFullHecke.Skew
   intro ψ hψ S T T₀ ρ d μ 𝓕 hμ f hf
   exact ⟨fun ξ y => mixT_heis_incX d hμ hf ξ y, fun w₀ y => mixedModelTarget_heisenberg_anisotropic_part d f w₀ y, hasSum_mixT hψ d hμ hf⟩
 
-theorem main : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.HeisenbergTarget D := heisenbergTarget
+alias main := _root_.GlobalTheory.HeisTarget.heisenbergTarget
 
 end GlobalTheory.HeisTarget
 

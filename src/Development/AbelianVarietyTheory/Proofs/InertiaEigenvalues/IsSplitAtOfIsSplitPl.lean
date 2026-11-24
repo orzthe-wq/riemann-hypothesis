@@ -236,22 +236,10 @@ def RecSatake (rc : RecMap A) : Prop :=
   ∀ (w : PlE H) (n : ℕ) (σ : LocIrr w n) (S : Multiset ℂˣ), GlobalTheory.LFun.HasSatGL w σ.ρ S →
     A.unr (rc w n σ) ∧ A.frobEig (rc w n σ) = S.map fun z => ((z⁻¹ : ℂˣ) : ℂ)
 
-def CuspRead (rc : RecMap A) : Prop :=
-  ∀ (a : ℕ) (P : CuspSub H.E a), 1 ≤ a → P.IsCsd → ∃ π : A.CG a, A.csd π ∧
-    (∀ w σ, P.IsLocComp w σ → A.locG π w = rc w a σ) ∧ ∀ τ m, P.HasInfChar τ m → A.infG π τ = m
-
 def IsSatAt {n : ℕ} (U : Submodule ℂ (UA H.E n → ℂ)) (w : PlE H) (α : Fin (n / 2) → ℂˣ) : Prop :=
   ∃ (s : w.adicCompletion H.E →+* w.adicCompletion H.E) (ϖ : w.adicCompletion H.E) (q : ℕ),
     (∀ x : H.E, s (algebraMap H.E _ x) = algebraMap H.E _ (IsCMField.complexConj H.E x)) ∧
       Formalism.UG.IsUnramInv ϖ s q ∧ HasSatAt U w s ϖ q α
-
-def UnitaryRead (B : NBC A) (rc : RecMap A) : Prop :=
-  ∀ j : ℕ, 1 ≤ j → j ≤ R.m → ∀ π : B.AU j, ∃ U : Submodule ℂ (UA H.E R.nV → ℂ), IsAutRepU U ∧
-    (∀ w : PlE H, IsSplitPl H w → ∀ σ : LocIrr w R.nV,
-      IsCompAlong U (locU R.nV w) ((cLoc w).comp (locU R.nV w).subtype) σ.ρ → B.locAU j π w = rc w R.nV σ) ∧
-    (∀ w : PlE H, ¬ IsSplitPl H w → B.sphAU j π w →
-      ∃ α, IsSatAt U w α ∧ B.satAU j π w = Finset.univ.val.map fun i => (α i : ℂ)) ∧
-    ∀ τ : H.E →+* ℂ, ∃ lam, HasWeightAt U τ lam ∧ B.infW j (B.wtAU j π) τ = infOfWeight lam
 
 theorem host_unramified (H : Host R) (w : PlE H) :
     Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield H.E)) w.asIdeal := by

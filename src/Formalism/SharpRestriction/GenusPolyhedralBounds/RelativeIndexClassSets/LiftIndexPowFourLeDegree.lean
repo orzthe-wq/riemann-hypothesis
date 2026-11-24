@@ -1,16 +1,16 @@
 module
 
+public import Formalism.SharpRestriction.ElevenLe
 public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.CombBound4Of
 public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.VEtNonnegOfTied
 public import Formalism.FilteredPoleLength.LocalDescentLevels.FourTermSumBoundOfParameters
-public import Formalism.LocalRingCardinality.FourthPowerRankLeNF
 public import Formalism.LocalRingCardinality.HeightBoundGeFourthPowerRank
 public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.PvsDimYPos
-import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.QuotientParamNonneg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -29,6 +29,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,7 +43,80 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.QuotientParamNonneg
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalRingCardinality.FourthPowerRankLeNF, Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LiftIndexPowFourLeDegree
+
+-- ===== clump member: Formalism.LocalRingCardinality.FourthPowerRankLeNF =====
+-- clump-header: {"m": "Formalism.LocalRingCardinality.FourthPowerRankLeNF", "h": "module\n\npublic import Formalism.SharpRestriction.ElevenLe\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.BasicNotions
+
+open Formalism.MainNotions
+
+theorem m_pow_four_le_n {D : D7} (L : SizeData₂ D) (hN : SizeN L) (hM : SizeM L) : D.R.m ^ 4 ≤ D.R.n := by
+  obtain ⟨hNl, -⟩ := hN
+  obtain ⟨-, hMu⟩ := hM
+  have hx : 1 < L.sc.x := L.sc.one_lt_alt
+  have hx0 : 0 < L.sc.x := by linarith
+  have he : 0 < L.sc.eps := L.sc.eps_pos
+  have hd0 : 0 ≤ L.sc.delta1 := by
+    unfold Scale.delta1
+    exact Real.rpow_nonneg hx0.le _
+  have hsq : Real.sqrt (L.sc.x * L.sc.delta1) ^ 2 = L.sc.x * L.sc.delta1 :=
+    Real.sq_sqrt (mul_nonneg hx0.le hd0)
+  have hth : szTh L = L.sc.eps / 100 := rfl
+  have e1 : (L.sc.x ^ szTh L) ^ 4 = L.sc.x ^ (szTh L * 4) := by
+    rw [Real.rpow_mul hx0.le]
+    first
+      | (norm_num; done)
+  have e2 : Real.sqrt (L.sc.x * L.sc.delta1) ^ 4 = L.sc.x ^ (2 - L.sc.eps / 4) := by
+    have h4 : Real.sqrt (L.sc.x * L.sc.delta1) ^ 4 = (L.sc.x * L.sc.delta1) ^ 2 := by
+      calc Real.sqrt (L.sc.x * L.sc.delta1) ^ 4
+          = (Real.sqrt (L.sc.x * L.sc.delta1) ^ 2) ^ 2 := by ring
+        _ = (L.sc.x * L.sc.delta1) ^ 2 := by rw [hsq]
+    have h5 : L.sc.x ^ (2 - L.sc.eps / 4)
+        = L.sc.x ^ (2 : ℝ) * L.sc.x ^ (-(L.sc.eps / 8) * 2) := by
+      rw [← Real.rpow_add hx0]
+      congr 1
+      ring
+    rw [h4, h5, Real.rpow_mul hx0.le, mul_pow]
+    unfold Scale.delta1
+    rw [Real.rpow_two, Real.rpow_two]
+  have h1 : (D.R.m : ℝ) ^ 4 ≤ (L.sc.x ^ szTh L * Real.sqrt (L.sc.x * L.sc.delta1)) ^ 4 :=
+    by
+      first
+        | exact pow_le_pow_left₀ (Nat.cast_nonneg _) hMu 4
+  have h2 : (L.sc.x ^ szTh L * Real.sqrt (L.sc.x * L.sc.delta1)) ^ 4
+      = L.sc.x ^ (szTh L * 4 + (2 - L.sc.eps / 4)) := by
+    rw [mul_pow, e1, e2, ← Real.rpow_add hx0]
+  have h3 : L.sc.x ^ (szTh L * 4 + (2 - L.sc.eps / 4)) ≤ L.sc.x ^ (2 + 8 * L.sc.eps - szTh L) := by
+    apply Real.rpow_le_rpow_of_exponent_le hx.le
+    rw [hth]
+    linarith
+  have h6 : ((D.R.m ^ 4 : ℕ) : ℝ) ≤ ((D.R.n : ℕ) : ℝ) := by
+    push_cast
+    linarith
+  exact_mod_cast h6
+
+theorem m_pow_four_le_f {D : D7} (L : SizeData₂ D) (h : SizesAt L) : D.R.m ^ 4 ≤ D.R.f := by
+  obtain ⟨hN, hM, -⟩ := h
+  have h4 := m_pow_four_le_n L hN hM
+  show D.R.m ^ 4 ≤ 2 * D.R.n
+  first
+    | omega
+
+end Formalism.BasicNotions
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalRingCardinality.FourthPowerRankLeNF =====
+
+-- ===== clump member: Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LiftIndexPowFourLeDegree =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LiftIndexPowFourLeDegree", "h": "module\n\npublic import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.CombBound4Of\npublic import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.VEtNonnegOfTied\npublic import Formalism.FilteredPoleLength.LocalDescentLevels.FourTermSumBoundOfParameters\npublic import Formalism.LocalRingCardinality.FourthPowerRankLeNF\npublic import Formalism.LocalRingCardinality.HeightBoundGeFourthPowerRank\npublic import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.PvsDimYPos\nimport Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.QuotientParamNonneg\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -59,8 +133,7 @@ variable {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} {G : Glob
 
 theorem vEt_nonneg_comb4 {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ} {Qf : ∀ la, LocalPointData G la}
     (hB : CombBound4 G Qf S c nus) (la : HeightOneSpectrum (𝓞 B.KO)) (ζ : PtsG G la) : 0 ≤ vEt (Qf la) ζ := by
-  unfold vEt
-  split_ifs with hj
+  unfold vEt; split_ifs with hj
   · exact div_nonneg (EReal.toReal_nonneg (hB la ζ).1) (mul_nonneg (by norm_num) (Nat.cast_nonneg _))
   · exact le_rfl
 
@@ -108,8 +181,7 @@ theorem sixteen_le_rdE_of_parA {large₂ : SizeData₂ D} {CA : ℝ} (h : ParA l
   have hr : 2 * (D.R.f : ℝ) * D.R.m ≤ D.host.rdE := h.2.2.2.2.2.2.2.2.2
   have hf' : (8 : ℝ) ≤ (D.R.f : ℝ) := by exact_mod_cast D.eight_le_f
   have hm' : (1 : ℝ) ≤ (D.R.m : ℝ) := by
-    have : 1 ≤ D.R.m := by have := D.R.two_le_m; omega
-    exact_mod_cast this
+    exact_mod_cast le_trans (by norm_num : (1 : ℕ) ≤ 2) D.R.two_le_m
   nlinarith
 
 theorem tie_eqs {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR : ℝ} (ht : TieC K H Ch Ah Cq Aq C2 A2 CR) :
@@ -332,12 +404,10 @@ theorem sumGP4 (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (K : K
   have hq : (0 : ℝ) < qq D := by
     have : (0 : ℝ) ≤ ((WeightFamilies.dimY D j + 4) * DF wL : ℝ) := by positivity
     linarith
-
   have hkN := D.R.m_add_three_le_k
   have hmN := D.R.two_le_m
   have hfN : 1 ≤ D.R.f := by
-    have h0 : 0 < D.R.toFrame.ord := D.R.toFrame.ord_pos
-    have h1 : D.R.f = 2 * D.R.toFrame.ord := rfl
+    have := D.eight_le_f
     omega
   have hf1 : (1 : ℝ) ≤ (D.R.f : ℝ) := by exact_mod_cast hfN
   have hk1 : (1 : ℝ) ≤ (D.R.k : ℝ) := by exact_mod_cast (by omega : 1 ≤ D.R.k)
@@ -356,9 +426,7 @@ theorem sumGP4 (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (K : K
   have hL1 : 1 ≤ large₂.sc.L := Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le
   have hb : 0 < large₂.sc.b := Real.exp_pos _
   have hrd : 1 ≤ D.host.rdE := by
-    have e1 : 2 * (D.R.f : ℝ) * D.R.m ≤ D.host.rdE := hA.2.2.2.2.2.2.2.2.2
-    have e2 : (1 : ℝ) * 1 ≤ (D.R.f : ℝ) * D.R.m := mul_le_mul hf1 hm1 zero_le_one (by linarith)
-    linarith
+    linarith [sixteen_le_rdE_of_parA hA]
   have hRR : 1 ≤ WeightFamilies.RRv D CR := Real.one_le_rpow hrd hCR0
   have hPP : 0 ≤ WeightFamilies.PPv D large₂ C2 A2 := by linarith
   have hc0 : 0 ≤ cc D large₂ C2 A2 CR wL := by
@@ -396,7 +464,6 @@ theorem sumGP4 (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (K : K
     rw [show (T : ℝ) * (WeightFamilies.RRv D CR * WeightFamilies.PPv D large₂ C2 A2 * (DF wL : ℝ) ^ 2 / (qq D : ℝ)) * (g0 D : ℝ) =
       ((T : ℝ) * g0 D * WeightFamilies.RRv D CR * WeightFamilies.PPv D large₂ C2 A2 * (DF wL : ℝ) ^ 2) / (qq D : ℝ) by ring]
     exact (div_le_one hq).2 hq2
-
   have hE : 2 * (if j < D.R.m then (T : ℝ) * (max 0 (cc D large₂ C2 A2 CR wL) / (2 * (G.iet : ℝ))) *
         ∑' la, (Qf la).Net * X.lN la else 0) ≤
       (T : ℝ) * cc D large₂ C2 A2 CR wL * ((g0 D : ℝ) * (((WeightFamilies.dimY D j : ℝ) + 1) * G.del * (2 * Gc + 6 * PH) * wL.size +
@@ -441,3 +508,7 @@ theorem sumGC4 (large₂ : SizeData₂ D) (X : PJ D B P j) (h1 : 1 ≤ j) (K : K
     (fun i => (hth' i).2) hlogd hRδ hSh1 hSh2 hP Qf hHt
 
 end Formalism.MainNotions.Gaps.EtaleWeightGaps
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LiftIndexPowFourLeDegree =====

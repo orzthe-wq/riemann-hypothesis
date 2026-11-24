@@ -78,29 +78,11 @@ theorem bchar_add (la la' : Wt X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r
     bchar (la + la') b = bchar la b * bchar la' b := by
   apply ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.bchar_add <;> assumption
 
-private lemma exp_neg_neg_two_mul_log (P : ℝ) (hP : 0 < P) : Real.exp (-(-2 * Real.log P)) = P ^ 2 := by
-  rw [show -(-2 * Real.log P) = Real.log P + Real.log P by ring, Real.exp_add, Real.exp_log hP]
-  ring
-
-theorem exp_phla (la : Wt X.Ψ r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
-    Real.exp (-phla X la x) = X.nfac la x ^ 2 := by
-  unfold Data.dom GG at hx
-  have hd : ∀ τ (i : Fin (r + 1)), dmin X.Gm x τ i ≠ 0 := by
-    intro τ i h0
-    have h1 := (hx τ).2 i
-    rw [h0, Complex.zero_re, mul_zero] at h1
-    exact lt_irrefl _ h1
-  unfold phla Data.nfac
-  exact exp_neg_neg_two_mul_log _ (Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ =>
-    Real.rpow_pos_of_pos (norm_pos_iff.2 (div_ne_zero (hd τ _) (hd τ _))) _)
-
 theorem nfac_meas (la : Wt X.Ψ r) : Measurable (X.nfac la) := by
   have hc : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i := by
     intro τ i
     first
       | (unfold dmin lminor gram mat hermC col; fun_prop)
-      | (unfold dmin lminor gram mat hermC col; continuity)
-      | (unfold dmin lminor gram mat hermC col; exact Nat.zero)
   unfold Data.nfac
   refine Finset.measurable_prod _ fun τ _ => Finset.measurable_prod _ fun i _ => ?_
   exact (((hc τ _).measurable.div (hc τ _).measurable).norm).pow_const _
@@ -118,7 +100,7 @@ theorem metricW_exp (la : Wt X.Ψ r) :
         zpow_ne_zero _ (FrameDegreeData.bdiag_ne X hb τ i)
     have hn := FlowCoefficientBounds.nfac_pos X hx la
     simp only
-    rw [exp_phla X la hxb, exp_phla X la hx, normFactor_rightBorel_holds r X la x hx b hb, mul_pow, inv_pow,
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IW.exp_neg_phla X la hxb, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IW.exp_neg_phla X la hx, normFactor_rightBorel_holds r X la x hx b hb, mul_pow, inv_pow,
       ← ENNReal.ofReal_div_of_pos (by positivity)]
     congr 1
     field_simp

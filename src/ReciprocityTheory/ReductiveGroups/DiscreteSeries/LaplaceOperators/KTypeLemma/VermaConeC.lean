@@ -76,14 +76,6 @@ theorem vc_tensVd_single (E : Fin n → Fin n → Module.End ℂ M) (a b c : Fin
   by_cases hdc : d = c <;> by_cases hdb : d = b <;> by_cases hac : a = c <;>
     simp_all
 
-theorem vc_tensV_apply (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f : Fin n → M) (c : Fin n) :
-    tensV E a b f c = E a b (f c) + (if c = a then f b else 0) := by
-  by_cases h : c = a <;> simp [tensV, prj, h]
-
-theorem vc_tensVd_apply (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f : Fin n → M) (c : Fin n) :
-    tensVd E a b f c = E a b (f c) - (if c = b then f a else 0) := by
-  by_cases h : c = b <;> simp [tensVd, prj, h]
-
 theorem vc_eeV_single (E : Fin n → Fin n → Module.End ℂ M) (t e : Fin n) (m : M) :
     eeV E (Pi.single t m) e = E t e m := by
   simp [eeV, prj, Pi.single_apply, apply_ite]
@@ -104,7 +96,7 @@ theorem vc_commV (E : Fin n → Fin n → Module.End ℂ M) (hE : IsGlRep E) (a 
       (fun c => casimir E (tensV E a b g c)) = tensV E a b (fun c => casimir E (g c)) := by
     intro g
     funext c
-    rw [vc_tensV_apply, vc_tensV_apply, map_add (f := _)]
+    rw [ReciprocityTheory.ChartRestriction.DS.Lap.LemK.TensK.tensV_apply', ReciprocityTheory.ChartRestriction.DS.Lap.LemK.TensK.tensV_apply', map_add (f := _)]
     congr 1
     · rw [← Module.End.mul_apply, casimir_comm hE, Module.End.mul_apply]
     · split_ifs <;> simp
@@ -128,7 +120,7 @@ theorem vc_commVd (E : Fin n → Fin n → Module.End ℂ M) (hE : IsGlRep E) (a
       (fun c => casimir E (tensVd E a b g c)) = tensVd E a b (fun c => casimir E (g c)) := by
     intro g
     funext c
-    rw [vc_tensVd_apply, vc_tensVd_apply, map_sub]
+    rw [ReciprocityTheory.ChartRestriction.DS.Lap.LemK.TensK.tensVd_apply', ReciprocityTheory.ChartRestriction.DS.Lap.LemK.TensK.tensVd_apply', map_sub]
     congr 1
     · rw [← Module.End.mul_apply, casimir_comm hE, Module.End.mul_apply]
     · split_ifs <;> simp

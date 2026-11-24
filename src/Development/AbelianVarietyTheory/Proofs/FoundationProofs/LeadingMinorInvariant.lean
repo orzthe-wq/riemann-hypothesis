@@ -139,7 +139,7 @@ lemma exists_N (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
       by_cases har : a.val < r
       · simp only [fvec, dif_pos har, bvec]
         simp only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero,
-          Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+          Finset.sum_ite_eq', Finset.mem_univ, if_true]
         exact hm2 ⟨a.val, har⟩ i (by show a.val ≤ i.val; omega)
       · simp only [fvec, dif_neg har]
         have hterm : ∀ j, m i j * z j = if i = j then z j else 0 := by
@@ -162,7 +162,7 @@ lemma exists_N (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
   · ext i a
     rw [mul_flagMat, Matrix.mul_apply]
     simp only [flagMat, Matrix.of_apply, mul_add, Finset.sum_add_distrib, mul_ite, mul_one,
-      mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+      mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
     rw [key a i]
     congr 1
     have ha := a.isLt
@@ -179,7 +179,7 @@ lemma exists_N (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
             apply hb
             ext
             exact (congrArg Fin.val he).symm
-          simp [fvec, hbr, bvec, Pi.single_apply, hne]
+          simp [fvec, hbr, bvec, hne]
         · simp
       · simp
     · rw [if_neg hia]
@@ -193,7 +193,7 @@ lemma exists_N (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
           apply hia
           rw [he]
           exact hba
-        simp [fvec, hbr, bvec, Pi.single_apply, hne]
+        simp [fvec, hbr, bvec, hne]
       · simp
 
 lemma exists_S (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)

@@ -4,47 +4,6 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGenPf
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValuationMultiplicationInvariance
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdExpPf
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullGenPf
@@ -71,10 +30,10 @@ theorem cubN_mul {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A �
       have e := h.coc c (m ^ n) m x
       calc θ c (m ^ n) x * (∏ l ∈ Finset.range n, θ (m ^ l) m x) * θ (c * m ^ n) m x
           = (∏ l ∈ Finset.range n, θ (m ^ l) m x) * (θ (c * m ^ n) m x * θ c (m ^ n) x) := by
-            first | ac_rfl | simp only [_root_.mul_comm, _root_.mul_left_comm, _root_.mul_assoc]
+            first | ac_rfl
         _ = (∏ l ∈ Finset.range n, θ (m ^ l) m x) * (θ c (m ^ n * m) x * θ (m ^ n) m x) := by rw [e]
         _ = θ c (m ^ n * m) x * ((∏ l ∈ Finset.range n, θ (m ^ l) m x) * θ (m ^ n) m x) := by
-            first | ac_rfl | simp only [_root_.mul_comm, _root_.mul_left_comm, _root_.mul_assoc]
+            first | ac_rfl
   unfold cubN
   try simp only [_root_.one_mul]
   induction k with
@@ -87,7 +46,7 @@ theorem cubN_mul {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A �
       rw [pow_add, ← pow_mul, _root_.mul_comm n k, _root_.mul_assoc]
     simp only [e2]
     rw [L (b * (m ^ n) ^ k) n, pow_succ]
-    first | ac_rfl | simp only [_root_.mul_comm, _root_.mul_left_comm, _root_.mul_assoc] | simp only [_root_.one_mul, _root_.mul_comm, _root_.mul_left_comm, _root_.mul_assoc]
+    first | ac_rfl
 
 section Two
 

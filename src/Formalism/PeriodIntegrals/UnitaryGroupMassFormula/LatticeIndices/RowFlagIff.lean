@@ -77,7 +77,7 @@ theorem rowFlag_iff' (m : Matrix (Idx r k) (Idx r k) K) :
     exact forall_congr' fun a => imp_congr_right fun _ => ne_comm
   rw [h1]
   refine imp_congr_right fun _ => ?_
-  simp [Matrix.mulVec, dotProduct, Pi.single_apply, sub_eq_zero, Matrix.transpose_apply]
+  simp [Pi.single_apply, sub_eq_zero]
 
 theorem pf_castSucc (i : Fin r) : pf (k := k) (Fin.castSucc i) = Sum.inr (Sum.inr (Fin.rev i)) := by
   have h : ((Fin.castSucc i : Fin (r + 1)) : ℕ) < r := i.isLt

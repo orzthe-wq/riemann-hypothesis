@@ -65,15 +65,6 @@ section Alg
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
-theorem repr_map {R S : Type} [CommRing R] [CommRing S] [Algebra F R] [Algebra F S]
-    (g : R →ₐ[F] S) {d : ℕ} (b : Module.Basis (Fin d) F E) (y : R ⊗[F] E) (k : Fin d) :
-    (Algebra.TensorProduct.basis S b).repr (Algebra.TensorProduct.map g (AlgHom.id F E) y) k =
-      g ((Algebra.TensorProduct.basis R b).repr y k) := by
-  induction y with
-  | add x y hx hy => simp [map_add (f := _), hx, hy]
-  | tmul r e =>
-    simp [Algebra.TensorProduct.basis_repr_tmul]
-
 theorem repr_tmul_mul {R : Type} [CommRing R] [Algebra F R] {d : ℕ} (b : Module.Basis (Fin d) F E)
     (t : R) (y : R ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis R b).repr ((t ⊗ₜ[F] (1 : E)) * y) k =
@@ -98,13 +89,13 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
 
 theorem topRing : IsTopologicalRing (R ⊗[F] E) := by
-  haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
+  have : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
   exact IsModuleTopology.isTopologicalRing R _
 
 theorem cont_repr {d : ℕ} (b : Module.Basis (Fin d) F E) (k : Fin d) :
     Continuous fun y : R ⊗[F] E => (Algebra.TensorProduct.basis R b).repr y k := by
-  haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
-  haveI : IsTopologicalRing (R ⊗[F] E) := topRing R
+  have : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
+  have : IsTopologicalRing (R ⊗[F] E) := topRing R
   exact IsModuleTopology.continuous_of_linearMap
     ((Finsupp.lapply k).comp (Algebra.TensorProduct.basis R b).repr.toLinearMap)
 
@@ -142,8 +133,7 @@ theorem ainf_ball_cpt (r : ℝ) : IsCompact {y : Ainf F | ∀ w, ‖y w‖ ≤ r
 theorem cont_norm_w (w : InfinitePlace F) : Continuous fun y : Ainf F => ‖y w‖ :=
   continuous_norm.comp (continuous_apply (A := fun w : InfinitePlace F => w.Completion) w)
 
-theorem cont_fstA : Continuous (fstA F) :=
-  (continuous_fst : Continuous (Prod.fst : Ainf F × Af F → Ainf F))
+alias cont_fstA := _root_.GlobalTheory.CompanionTheory.SW.Glue.continuous_fstA
 
 theorem cont_sndA : Continuous (sndA F) :=
   (continuous_snd : Continuous (Prod.snd : Ainf F × Af F → Af F))
@@ -164,7 +154,7 @@ theorem intS_open (N : ℕ) : IsOpen (intS (F := F) N) := by
   have e : intS (F := F) N = (fun y : Af F => (N : Af F) * y) ⁻¹'
       {f : Af F | ∀ v, evalV F v f ∈ (v.adicCompletionIntegers F : Set (Fv F v))} := by
     ext y
-    simp only [intS, Set.mem_setOf_eq, Set.mem_preimage, map_mul, map_natCast]
+    simp only [intS, Set.mem_ofPred_eq, Set.mem_preimage, map_mul, map_natCast]
     rfl
   rw [e]
   exact h.preimage hc
@@ -216,18 +206,18 @@ theorem mem_lat_iff (N : ℕ) (v : HeightOneSpectrum (𝓞 F)) (Y : Fin n → Fi
     (fun a i => (N : Fv F v ⊗[F] E) * Y a i) ∈ latV b v ↔
       ∀ a i k, (N : Fv F v) * (Algebra.TensorProduct.basis (Fv F v) b).repr (Y a i) k ∈
         v.adicCompletionIntegers F := by
-  simp only [latV, Set.mem_setOf_eq, repr_nat_mul]
+  simp only [latV, Set.mem_ofPred_eq, repr_nat_mul]
 
 theorem comp_v (v : HeightOneSpectrum (𝓞 F)) (X : Fin n → Fin M → AF F ⊗[F] E) (a : Fin n) (i : Fin M)
     (k : Fin d) :
     (Algebra.TensorProduct.basis (Fv F v) b).repr (projV v (projFin X) a i) k =
       evalV F v (sndA F ((Algebra.TensorProduct.basis (AF F) b).repr (X a i) k)) := by
-  simp only [projV, projFin, repr_map]
+  simp only [projV, projFin, _root_.GlobalTheory.CompanionTheory.SW.Glue.repr_map]
 
 theorem size_eq (X : Fin n → Fin M → AF F ⊗[F] E) :
     sizeTup b (projInf X) = ∑ a, ∑ i, ∑ k, ∑ w : InfinitePlace F,
       ‖(fstA F ((Algebra.TensorProduct.basis (AF F) b).repr (X a i) k)) w‖ := by
-  simp only [sizeTup, sizeInf, projInf, repr_map]
+  simp only [sizeTup, sizeInf, projInf, _root_.GlobalTheory.CompanionTheory.SW.Glue.repr_map]
 
 theorem cont_size : Continuous fun X : Fin n → Fin M → AF F ⊗[F] E => sizeTup b (projInf X) := by
   simp only [size_eq]
@@ -252,7 +242,7 @@ theorem intT_open (N : ℕ) : IsOpen (intT (n := n) (M := M) b N) := by
 
 theorem mem_intT_iff (N : ℕ) (X : Fin n → Fin M → AF F ⊗[F] E) :
     X ∈ intT b N ↔ ∀ v, (fun a i => (N : Fv F v ⊗[F] E) * projV v (projFin X) a i) ∈ latV b v := by
-  simp only [mem_lat_iff, comp_v, intT, intS, Set.mem_setOf_eq]
+  simp only [mem_lat_iff, comp_v, intT, intS, Set.mem_ofPred_eq]
   exact ⟨fun h v a i k => h a i k v, fun h a i k v => h v a i k⟩
 
 theorem mem_box_iff (N : ℕ) (r : ℝ) (X : Fin n → Fin M → AF F ⊗[F] E) :
@@ -324,7 +314,7 @@ theorem cv_cpt (N : ℕ) (hN : 0 < N) (v : HeightOneSpectrum (𝓞 F))
     (hL : IsCompact (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))) :
     IsCompact {Y : Fin n → Fin M → Fv F v ⊗[F] E |
       (fun a i => (N : Fv F v ⊗[F] E) * Y a i) ∈ latV b v} := by
-  haveI : IsTopologicalRing (Fv F v ⊗[F] E) := topRing (Fv F v)
+  have : IsTopologicalRing (Fv F v ⊗[F] E) := topRing (Fv F v)
   have hN0 : (N : Fv F v) ≠ 0 := by
     have h0 : (N : F) ≠ 0 := Nat.cast_ne_zero.2 hN.ne'
     rw [← map_natCast (algebraMap F (Fv F v)) N]
@@ -403,7 +393,7 @@ end Scale
 
 theorem box_facts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ), (∀ (N : ℕ) (r : ℝ), 0 < N → IsCompact (box b N r : Set (Fin n → Fin M → AF F ⊗[F] E))) ∧ (∀ C : Set (Fin n → Fin M → AF F ⊗[F] E), IsCompact C → ∃ (N : ℕ) (r : ℝ), 0 < N ∧ 0 < r ∧ C ⊆ box b N r) ∧ ∀ τ : Multiplicative ℝ →* (AF F ⊗[F] E)ˣ, IsFlow τ → ∀ (N : ℕ) (r x : ℝ) (X : Fin n → Fin M → AF F ⊗[F] E), ((τ (Multiplicative.ofAdd (x)) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • X ∈ box b N (Real.exp x * r) ↔ X ∈ box b N r := by
   intro F E _ _ _ _ _ σ hcm d b n M
-  haveI : FiniteDimensional F E := Module.Finite.of_basis b
+  have : FiniteDimensional F E := Module.Finite.of_basis b
   refine ⟨fun N r hN => ?_, fun C hC => exhaust b C hC, fun τ hτ N r x X => ?_⟩
   · have hc := (GlobalTheory.CompanionTheory.SW.Glue.glue_main F E σ hcm d b n M).2.2.2 {Y | sizeTup b Y ≤ r}
       (fun v => {Y | (fun a i => (N : Fv F v ⊗[F] E) * Y a i) ∈ latV b v})
@@ -423,7 +413,7 @@ theorem box_facts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
     rw [hτx x]
     have hp := projFin_scale (E := E) (θ (Real.exp x)) X
     have hs := size_scale b (θ (Real.exp x)) (Real.exp x) hw X
-    simp only [box, Set.mem_setOf_eq, hp, hs]
+    simp only [box, Set.mem_ofPred_eq, hp, hs]
     refine and_congr_right fun _ => ?_
     exact ⟨fun h => le_of_mul_le_mul_left h (Real.exp_pos x),
       fun h => mul_le_mul_of_nonneg_left h (Real.exp_pos x).le⟩

@@ -46,6 +46,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsMonoFamNontri
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasRigidCoords
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.JacChartA
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

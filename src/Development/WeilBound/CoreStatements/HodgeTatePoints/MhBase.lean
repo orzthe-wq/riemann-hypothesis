@@ -174,15 +174,15 @@ theorem mem_top_iff (Γ : QFGroup R T) (f : T → R) : f ∈ Γ.btOrder ⊤ ↔
         have h2 : ⊤ ≤ (Γ.pt h).left ⁻¹ᵁ U g' :=
           (SubOrder.top_le_iff_mem _ _).2 fun z => ((SubOrder.top_le_iff_mem _ _).1 hh z).2
         refine (hsub _ _ hh _ _).trans ?_
-        erw [Twhopf.valAt_restrict _ _ hh h1, Twhopf.valAt_restrict _ _ hh h2]
+        erw [_root_.PositivityTheory.HtPt.Unc.valAt_restrict _ _ hh h1, _root_.PositivityTheory.HtPt.Unc.valAt_restrict _ _ hh h2]
         rw [hs, hs, sub_self])
     refine ⟨g0, fun h => ?_⟩
     have htop : ⊤ ≤ (Γ.pt h).left ⁻¹ᵁ ⊤ := (SubOrder.top_le_iff_mem _ _).2 fun _ => trivial
     let z : Spec (CommRingCat.of (FractionRing R)) := IsLocalRing.closedPoint (FractionRing R)
     have hh : ⊤ ≤ (Γ.pt h).left ⁻¹ᵁ U ((Γ.pt h).left z) :=
-      Twhopf.top_le_of_mem _ z (hgU _)
+      _root_.PositivityTheory.HtPt.Unc.top_le_of_mem _ z (hgU _)
     refine (valAt_top _ htop g0).symm.trans ?_
-    refine (Twhopf.valAt_restrict _ (homOfLE le_top) hh htop g0).symm.trans ?_
+    refine (_root_.PositivityTheory.HtPt.Unc.valAt_restrict _ (homOfLE le_top) hh htop g0).symm.trans ?_
     erw [hglue ((Γ.pt h).left z)]
     exact hs _ h hh
   · intro hf

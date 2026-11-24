@@ -69,15 +69,12 @@ private theorem unram_part (D : D7) (𝔭 : Ideal (𝓞 D.host.F)) (h𝔭 : 𝔭
   haveI : IsGalois D.host.F D.host.E := by
     first
     | infer_instance
-    | exact IsGalois.tower_top_of_isGalois ℚ D.host.F D.host.E
   have h3 : Module.finrank D.host.F D.host.E = 2 := by
     first
-    | exact IsQuadraticExtension.finrank_eq_two _ _
     | (have h4 := Module.finrank_mul_finrank ℚ D.host.F D.host.E; have h5 : 0 < Module.finrank ℚ D.host.F := Module.finrank_pos; rw [D.host.der.finrank_E] at h4; rw [D.host.der.finrank_F] at h4 h5; exact Nat.eq_of_mul_eq_mul_left h5 (by linarith))
   have h2 : Nat.card (D.host.E ≃ₐ[D.host.F] D.host.E) = 2 := by
     first
     | rw [IsGalois.card_aut_eq_finrank, h3]
-    | rw [Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, h3]
   have h1 := Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn 𝔭 (𝓞 D.host.E)
     (D.host.E ≃ₐ[D.host.F] D.host.E)
   rw [h2] at h1
@@ -113,7 +110,6 @@ private theorem split_part (D : D7) (p : ℕ) (hpp : p.Prime) (hp : p ∣ D.host
     haveI : P.LiesOver (span {(p : ℤ)}) := by
       first
       | exact Ideal.LiesOver.trans P 𝔭 (span {(p : ℤ)})
-      | infer_instance
     have h1 := D.host.der.eta.2.2 p hp P
     have hc : P.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = 𝔭 :=
       (Ideal.LiesOver.over (P := P) (p := 𝔭)).symm

@@ -127,7 +127,7 @@ private theorem eeN_mul_comm_of_ne_index {n' : ℕ} (S : UniformizedDVR p O) (hR
   have hA : ∀ c d, eeN D K Dt ⟨j, a⟩ mu * glOps (KK O) K Dt.trueLet (NSet Dt.nL j' b.val) c d =
       glOps (KK O) K Dt.trueLet (NSet Dt.nL j' b.val) c d * eeN D K Dt ⟨j, a⟩ mu :=
     hc.2.1 0 mu _ hdisj
-  have hpres := comm_pres_isoSub (E := glOps (KK O) K Dt.trueLet (NSet Dt.nL j' b.val)) _ hA
+  have hpres := _root_.Formalism.MainNotions.G.GLWeightTheory.isotypic_stable_commuting (E := glOps (KK O) K Dt.trueLet (NSet Dt.nL j' b.val)) _ hA
   exact (comm_isoProj (E := glOps (KK O) K Dt.trueLet (NSet Dt.nL j' b.val)) (eeN D K Dt ⟨j, a⟩ mu) hpres
     (eeN D K Dt ⟨j', b⟩) (eeN_spec D K Dt ⟨j', b⟩).1 (eeN_spec D K Dt ⟨j', b⟩).2 mu').symm
 
@@ -247,8 +247,6 @@ theorem jointE_int {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' 
   have hs : (List.map (costN K Dt dNo) (Finset.univ : Finset (NIdx Dt)).toList).sum = ∑ i : NIdx Dt, costN K Dt dNo i := by
     first
       | exact Finset.sum_map_toList _ _
-      | exact Finset.sum_toList _ _
-      | simp
   rw [hs] at h
   exact h
 
@@ -314,7 +312,7 @@ theorem greedy_one (S : UniformizedDVR p O) (i : NIdx Dt) (y : MvPolynomial (TL 
   rcases T.eq_empty_or_nonempty with hE | hne
   · refine ⟨0, ?_⟩
     have hy : y = 0 := by rw [hT, hE, Finset.sum_empty]
-    rw [hy, map_zero] <;> exact le_rfl
+    rw [hy, map_zero]
   · obtain ⟨mu, -, hinf⟩ := Finset.exists_mem_eq_inf T hne (fun mu => vBB (O := O) p (eeN D K Dt i mu y))
     refine ⟨mu, ?_⟩
     rw [← hinf]

@@ -187,7 +187,7 @@ private theorem isOpen_Jc {d : w.adicCompletion E} (hd : d ≠ 0) (hc : Valued.v
       (⋂ i, ⋂ j, {g : GL (Fin a) (w.adicCompletion E) | Valued.v ((g⁻¹).val i j -
         (1 : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i j) ≤ Valued.v d}) := by
     ext g
-    simp only [SetLike.mem_coe, mem_Jc, Mt, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, Matrix.sub_apply]
+    simp only [SetLike.mem_coe, mem_Jc, Mt, Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq, Matrix.sub_apply]
   rw [e]
   refine IsOpen.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_)
     (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_)
@@ -248,12 +248,12 @@ theorem UpperTheory.Gal.Gen.congSub_pf :
   refine ⟨J, ⟨hopen, hcomp, hanti, fun n g hg x hx => Jc_normal hg hx, ?_⟩, fun n x hx => ?_⟩
   · intro N hN
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     have hclosed : ∀ n, IsClosed ((J n : Set (GL (Fin a) F)) \ interior N) := fun n =>
       (Subgroup.isClosed_of_isOpen _ (hopen n)).sdiff isOpen_interior
     obtain ⟨g, hg⟩ := IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed
       (fun n => (J n : Set (GL (Fin a) F)) \ interior N)
-      (fun n => Set.diff_subset_diff_left (hanti (Nat.le_succ n)))
+      (fun n => Set.sdiff_subset_sdiff_left (hanti (Nat.le_succ n)))
       (fun n => by
         obtain ⟨x, hx, hxN⟩ := Set.not_subset.1 (hcon n)
         exact ⟨x, hx, fun h => hxN (interior_subset h)⟩)

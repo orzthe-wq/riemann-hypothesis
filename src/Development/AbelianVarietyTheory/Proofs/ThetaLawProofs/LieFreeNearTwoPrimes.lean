@@ -220,7 +220,7 @@ theorem exists_away_comb (hw : ∀ i, IsTangent (w i)) (hu : ∀ i, IsTangent (u
     obtain ⟨φ, -⟩ := hρ.lift (Algebra.ofId R p.asIdeal.ResidueField) ha'.isUnit
     have e₁ : φ.mapMatrix A = algebraMap R p.asIdeal.ResidueField a • 1 := by
       ext i j
-      by_cases hij : i = j <;> simp [-algebraMap_smul, A, hb', Matrix.one_apply, hij]
+      by_cases hij : i = j <;> simp [-algebraMap_smul, A, hb', hij]
     have e₂ := congrArg φ hd
     rw [map_mul, AlgHom.map_det, e₁, Matrix.det_smul, Matrix.det_one, mul_one, map_pow] at e₂
     simp only [IsScalarTower.coe_toAlgHom', AlgHom.commutes] at e₂

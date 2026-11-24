@@ -60,12 +60,19 @@ namespace Formalism.HermitianLatticeCounting.P
 
 theorem hyperbolicRatioSqLe : ChShSq := by
   intro sh ch hsh hch hc
+  have h1c : (1 + ch) ^ 2 ≤ 2 * (1 + ch ^ 2) := by
+    have hsq := sq_nonneg (ch - 1)
+    rw [sub_sq] at hsq
+    rw [add_sq]
+    linarith
   constructor
   · intro h1
     rw [div_pow, div_le_iff₀ (by positivity)]
-    nlinarith [sq_nonneg (ch - 1), mul_le_mul h1 h1 zero_le_one hsh.le]
+    have hsh2 : (1 : ℝ) ≤ sh ^ 2 := one_le_pow₀ h1
+    linarith
   · intro h1
-    nlinarith [sq_nonneg (ch - 1), mul_pos hsh (sub_pos.mpr h1)]
+    have hsh2 : sh ^ 2 ≤ 1 := by simpa using pow_le_pow_left₀ hsh.le h1.le 2
+    linarith
 
 theorem prodMaxLeProdMaxDiv : PThreshold := by
   intro ι _ x H hH hx
@@ -139,11 +146,11 @@ theorem prodMaxInvLeSq : LemmaP := by
 
 theorem hyperbolicRatioLe : ChShBound := by
   intro sh ch hsh hch hc
-  have hch2 : ch ≤ sh + 1 := by nlinarith
+  have hch2 : ch ≤ sh + 1 := (sq_le_sq₀ hch (by linarith)).mp (by rw [add_sq]; linarith)
   rcases le_or_gt 1 sh with h1 | h1
   · calc (1 + ch) / sh ≤ 3 := by rw [div_le_iff₀ hsh]; linarith
       _ ≤ 3 * max 1 (1 / sh) := by have := le_max_left 1 (1 / sh); linarith
-  · have hc2 : ch ≤ 2 := by nlinarith
+  · have hc2 : ch ≤ 2 := by linarith
     calc (1 + ch) / sh ≤ 3 / sh := div_le_div_of_nonneg_right (by linarith) hsh.le
       _ = 3 * (1 / sh) := by ring
       _ ≤ 3 * max 1 (1 / sh) := by have := le_max_right 1 (1 / sh); linarith
@@ -152,10 +159,11 @@ theorem hyperbolicPairRatioLe : ChShPair := by
   intro sh₁ ch₁ sh₂ ch₂ h1 hc1 e1 h2 hc2 e2
   have key : ∀ sh ch : ℝ, 0 < sh → 0 ≤ ch → ch ^ 2 = sh ^ 2 + 1 → ch * min 1 sh ≤ 2 * sh := by
     intro sh ch hs hc e
+    have hch1 : ch ≤ sh + 1 := (sq_le_sq₀ hc (by linarith)).mp (by rw [add_sq]; linarith)
     rcases le_or_gt 1 sh with h | h
-    · rw [min_eq_left h, mul_one]; nlinarith
+    · rw [min_eq_left h, mul_one]; linarith
     · rw [min_eq_right h.le]
-      have hc2 : ch ≤ 2 := by nlinarith
+      have hc2 : ch ≤ 2 := by linarith
       exact mul_le_mul_of_nonneg_right hc2 hs.le
   have m1 : 0 < min 1 sh₁ := lt_min one_pos h1
   have m2 : 0 < min 1 sh₂ := lt_min one_pos h2
@@ -164,8 +172,11 @@ theorem hyperbolicPairRatioLe : ChShPair := by
   have l1 : min 1 sh₁ ≤ sh₁ := min_le_right _ _
   have l2 : min 1 sh₂ ≤ sh₂ := min_le_right _ _
   rw [div_le_iff₀ (mul_pos h1 h2), div_mul_eq_mul_div, le_div_iff₀ (mul_pos m1 m2)]
-  nlinarith [mul_le_mul_of_nonneg_right k1 m2.le, mul_le_mul_of_nonneg_right k2 m1.le,
-    mul_le_mul_of_nonneg_left l2 h1.le, mul_le_mul_of_nonneg_left l1 h2.le]
+  have h12 : ch₁ * min 1 sh₁ * min 1 sh₂ ≤ (2 * sh₁) * sh₂ :=
+    mul_le_mul k1 l2 m2.le (by positivity)
+  have h21 : ch₂ * min 1 sh₂ * min 1 sh₁ ≤ (2 * sh₂) * sh₁ :=
+    mul_le_mul k2 l1 m1.le (by positivity)
+  linarith
 
 theorem invSqrtPowLeExp : GainSqrt := by
   intro k f b g hk hb hg
@@ -174,7 +185,7 @@ theorem invSqrtPowLeExp : GainSqrt := by
   have hk4pos : (0:ℝ) < (k:ℝ) ^ 4 := pow_pos hkpos 4
   have h8 : ((k:ℝ) ^ 4) ^ 2 ≤ g := by
     calc ((k:ℝ) ^ 4) ^ 2 = (k:ℝ) ^ 8 := by ring
-      _ ≤ ((k:ℝ) * b) ^ 8 := pow_le_pow_left₀ hkpos.le (by nlinarith) 8
+      _ ≤ ((k:ℝ) * b) ^ 8 := pow_le_pow_left₀ hkpos.le (le_mul_of_one_le_right hkpos.le hb) 8
       _ ≤ g := hg
   have hk4 : (k:ℝ) ^ 4 ≤ Real.sqrt g := by
     calc (k:ℝ) ^ 4 = Real.sqrt (((k:ℝ) ^ 4) ^ 2) := (Real.sqrt_sq hk4pos.le).symm
@@ -213,7 +224,8 @@ theorem minBoundSecondZero : MinIIZero := by
   have hbase : (t * T)⁻¹ ≤ CT / (k * g ^ (2 * r + 2)) := by
     rw [le_div_iff₀ (mul_pos hk0 hgp)]
     calc (t * T)⁻¹ * (k * g ^ (2 * r + 2)) ≤ (t * T)⁻¹ * (CT * T * t) :=
-          mul_le_mul_of_nonneg_left (by nlinarith) (inv_nonneg.mpr htT.le)
+          mul_le_mul_of_nonneg_left (hkey.trans (mul_le_mul_of_nonneg_right hCT' ht.le))
+            (inv_nonneg.mpr htT.le)
       _ = CT := by
           rw [show CT * T * t = (t * T) * CT by ring, ← mul_assoc, inv_mul_cancel₀ htT.ne',
             one_mul]
@@ -265,7 +277,9 @@ theorem piPowDivFactorialLt : PiPowFactorial := by
       rw [show m + 1 + 3 = (m + 3) + 1 by ring, Nat.factorial_succ, pow_succ]
       push_cast at ih ⊢
       have hf : (0:ℝ) ≤ ((m + 3).factorial : ℝ) := Nat.cast_nonneg _
-      nlinarith [mul_nonneg (Nat.cast_nonneg m : (0:ℝ) ≤ m) hf]
+      have hm4 : 4 * ((m + 3).factorial : ℝ) ≤ ((m : ℝ) + 3 + 1) * ((m + 3).factorial : ℝ) :=
+        mul_le_mul_of_nonneg_right (by linarith [Nat.cast_nonneg (α := ℝ) m]) hf
+      linarith
   have bound : (3.15:ℝ) ^ (n + 1) ≤ 17 * (n.factorial : ℝ) := by
     rcases (show n = 1 ∨ n = 2 ∨ 3 ≤ n by omega) with h | h | h
     · subst h; norm_num [Nat.factorial]
@@ -336,7 +350,7 @@ lemma volumeFactor_mul_sq_div_le (k r : ℕ) (C G T g v Dr loss' JHS Jop dim : �
           Dr⁻¹ ^ (2 * (k - 2 - r))) := by
   have hVF : 0 ≤ (Real.exp 1 * Real.pi / (k * v)) ^ k * (G / T) ^ k * (g⁻¹ ^ (2 * r + 2)) ^ k := by
     positivity
-  have h1 : JHS ^ 2 / dim ≤ Jop ^ 2 := by rw [div_le_iff₀ hdim]; nlinarith
+  have h1 : JHS ^ 2 / dim ≤ Jop ^ 2 := by rw [div_le_iff₀ hdim]; linarith
   have h2 : Jop ^ 2 ≤ (loss' * (C / (k * v)) ^ (r * (k - 2 - r)) * Dr⁻¹ ^ (k - 2 - r)) ^ 2 :=
     pow_le_pow_left₀ hJop hABS 2
   have h3 : (loss' * (C / (k * v)) ^ (r * (k - 2 - r)) * Dr⁻¹ ^ (k - 2 - r)) ^ 2 =
@@ -399,10 +413,8 @@ theorem minBoundSecond' : MinII' := by
   have hg0 : 0 < g := by linarith
   have hlossp : 0 < loss := lt_of_lt_of_le (pow_pos hDr _) hloss
   have hCTp : 0 < CT := lt_of_lt_of_le (div_pos hT' hT) hCT
-  have heπ : 1 ≤ Real.exp 1 * Real.pi := by
-    have := Real.add_one_le_exp 1
-    have := Real.pi_gt_three
-    nlinarith
+  have heπ : 1 ≤ Real.exp 1 * Real.pi :=
+    one_le_mul_of_one_le_of_one_le (by linarith [Real.add_one_le_exp 1]) (by linarith [Real.pi_gt_three])
   have hratio := hyperbolicRatioSqLe sh ch hsh hch hc
   rcases le_or_gt 1 sh with h1 | h1
   · have hz := minBoundSecondZero k r CT G T T' g v t loss JHS dim hr (by omega) hG hT hT' hg hv ht
@@ -419,7 +431,8 @@ theorem minBoundSecond' : MinII' := by
             (by positivity)
           apply pow_le_pow_left₀ (by positivity)
           apply div_le_div_of_nonneg_right _ (by positivity)
-          nlinarith
+          have := mul_le_mul_of_nonneg_right heπ hCTp.le
+          linarith
   · have h6 : (1 + ch) ^ 2 ≤ 6 := hratio.2 h1
     obtain ⟨q, hq⟩ : ∃ q, q = 1 + ch := ⟨_, rfl⟩
     rw [← hq] at h6 ⊢
@@ -461,7 +474,6 @@ theorem minBoundSecond' : MinII' := by
             CT ^ k * loss := by
           rw [hDD]
           gcongr
-          all_goals first | assumption | positivity | skip
       _ = loss * loss' ^ 2 * (6 * Real.exp 1 * Real.pi * CT / (k * g ^ (2 * r + 2))) ^ k := by
           ring
 
@@ -546,9 +558,9 @@ theorem prodMinLeOfProdRatio : SmallTerm := by
   have hmin : ∀ x : ℝ, 0 < x → min (T' * x ^ 2) T' = T' * (min 1 x) ^ 2 := by
     intro x hx
     rcases le_total x 1 with h | h
-    · have hx2 : x ^ 2 ≤ 1 := by nlinarith
+    · have hx2 : x ^ 2 ≤ 1 := pow_le_one₀ hx.le h
       rw [min_eq_right h, min_eq_left (mul_le_of_le_one_right hT'.le hx2)]
-    · have hx2 : 1 ≤ x ^ 2 := by nlinarith
+    · have hx2 : 1 ≤ x ^ 2 := one_le_pow₀ h
       rw [min_eq_left h, min_eq_right (le_mul_of_one_le_right hT'.le hx2), one_pow, mul_one]
   have hm₁ : ∀ v, 0 < min 1 (sh₁ v) := fun v => lt_min one_pos (h₁ v).1
   have hm₂ : ∀ v, 0 < min 1 (sh₂ v) := fun v => lt_min one_pos (h₂ v).1
@@ -607,8 +619,9 @@ theorem prodMinLeOfProdRatio : SmallTerm := by
   push_neg at hcon
   obtain ⟨ha, hb⟩ := hcon
   have hc0 : 0 ≤ (4 * Real.sqrt (T' / T) * g) ^ Fintype.card ι := by positivity
-  have := mul_lt_mul'' ha hb hc0 hc0
-  nlinarith
+  have hlt := mul_lt_mul'' ha hb hc0 hc0
+  rw [← sq] at hlt
+  linarith
 
 theorem adjugateLastColumnEqCofactor : CofVecAdjugate := by
   intro R _ r Z b
@@ -628,7 +641,9 @@ theorem expSumLe' : ExpSumLe' := by
     calc 3 * A = Real.exp (Real.log (3 * A)) := (Real.exp_log h3A).symm
       _ ≤ Real.exp (x / 6) := Real.exp_le_exp.mpr (by linarith)
   have hpos := Real.exp_pos (-x / 6)
-  have hA' : 3 * A * Real.exp (-x / 6) ≤ 1 := by nlinarith
+  have hA' : 3 * A * Real.exp (-x / 6) ≤ 1 := by
+    have := mul_le_mul_of_nonneg_right h3 hpos.le
+    linarith
   have hsplit : Real.exp (-x / 2) = Real.exp (-x / 3) * Real.exp (-x / 6) := by
     rw [← Real.exp_add]; congr 1; ring
   have t1 : Real.exp (-4 * x) ≤ Real.exp (-x / 2) := Real.exp_le_exp.mpr (by linarith)
@@ -682,7 +697,7 @@ theorem nondegenerateFactorBound : DeNonDegBound := by
   have hsq : Real.sqrt (G₁ * G₂) ≤ HH₁ * HH₂ := by
     calc Real.sqrt (G₁ * G₂) ≤ Real.sqrt (HH₁ * HH₂) :=
           Real.sqrt_le_sqrt (mul_le_mul h₁ h₂ hG₂ (by linarith))
-      _ ≤ Real.sqrt ((HH₁ * HH₂) ^ 2) := Real.sqrt_le_sqrt (by nlinarith)
+      _ ≤ Real.sqrt ((HH₁ * HH₂) ^ 2) := Real.sqrt_le_sqrt (le_self_pow₀ hH (by norm_num))
       _ = HH₁ * HH₂ := Real.sqrt_sq (by linarith)
   have h1 : (2 / g) ^ ((s - 1) * f) * Real.sqrt (G₁ * G₂) ≤ HH₁ * HH₂ := by
     calc (2 / g) ^ ((s - 1) * f) * Real.sqrt (G₁ * G₂) ≤ 1 * (HH₁ * HH₂) :=
@@ -836,7 +851,9 @@ lemma sum_zetaSeries_sub_one_le (N : ℕ) : ∑ j ∈ Finset.Icc 3 N, (zetaR j -
       exact (summable_one_div_add_two_pow 2 le_rfl).hasSum
     exact hasSum_inv_succ_sub_inv_succ_succ_eq_one.sub h2
   have hle := hasSum_le hb hH hS1
-  nlinarith [Real.pi_gt_d4]
+  have hpi2 : (3.1415 : ℝ) ^ 2 < Real.pi ^ 2 :=
+    pow_lt_pow_left₀ Real.pi_gt_d4 (by norm_num) (by norm_num)
+  linarith
 
 lemma one_le_zetaSeries (j : ℕ) (hj : 2 ≤ j) : 1 ≤ zetaR j := by
   rw [zetaSeries_eq_one_add_tsum j hj]
@@ -1021,7 +1038,7 @@ theorem massRatioBound : XiBound := by
       (prod_zetaSeries_le _ hB3) f)
   have hexp : Real.exp 0.356 ^ f * Real.exp 0.356 ^ f ≤ Real.exp (0.72 * f) := by
     rw [← Real.exp_nat_mul, ← Real.exp_add]
-    exact Real.exp_le_exp.mpr (by have := (Nat.cast_nonneg f : (0:ℝ) ≤ f); nlinarith)
+    exact Real.exp_le_exp.mpr (by have := (Nat.cast_nonneg f : (0:ℝ) ≤ f); linarith)
   have key : ∀ (M PA PB LA LB σ : ℝ) (a : ℕ), 0 < PB → 0 < LB → 0 < σ →
       M * (PA ^ f * σ⁻¹ ^ a * LA) / (PB ^ f * σ⁻¹ ^ (a + 2) * LB) =
         M * (PA / PB) ^ f * σ ^ 2 * (LA * LB⁻¹) := by

@@ -1,19 +1,22 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
+public import Development.WeilBound.CoreStatements.SesquilinearFractions.DOkBasis
+public import Mathlib.NumberTheory.NumberField.CMField
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Mathlib.RingTheory.Unramified.Basic
+public import Development.WeilBound.CoreStatements.SesquilinearFractions.ExistsUnitValueSkewHermitian
+public import Mathlib.LinearAlgebra.Matrix.IsDiag
+public import Mathlib.RingTheory.Spectrum.Maximal.Defs
 public import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
 public import Mathlib.Algebra.AffineMonoid.Basic
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsLocalBasisStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsNotMemSubConjStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsRealDifferentGeneratorStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDeterminantLogDifferentStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicIntegralIffDenominatorStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitianStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SkewHermitianDiagonalizableStatement
+public import Mathlib.RingTheory.DedekindDomain.Different
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsRealDifferentGenerator
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDeterminantLogDifferent
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicIntegralIffDenominator
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -28,12 +31,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -41,7 +39,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -54,10 +51,105 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitian
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.SesquilinearFractions.DLocBasis, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsLocalBasis, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsNotMemSubConj, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SkewHermitianDiagonalizable, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalBasisGramDeterminantBound
+
+-- ===== clump member: Development.WeilBound.CoreStatements.SesquilinearFractions.DLocBasis =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.SesquilinearFractions.DLocBasis", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition\npublic import Development.WeilBound.CoreStatements.SesquilinearFractions.DOkBasis\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
+open scoped ComplexOrder
+
+namespace PositivityTheory.Xgf
+
+theorem exists_local_basis' : ∀ (E : Type) [Field E] [NumberField E] (M : Type) [AddCommGroup M] [Module (𝓞 E) M] [Module.Finite (𝓞 E) M] [Module.IsTorsionFree (𝓞 E) M] (I : Type) [Fintype I] (ℓ : ℕ), ℓ.Prime → Fintype.card I = Module.finrank (𝓞 E) M → ∃ x : I → M, IsLocBasis (𝓞 E) ℓ x := by
+  intro E _ _ M _ _ _ _ I _ ℓ hℓ hcard
+  obtain ⟨b, hb⟩ := GlobalTheory.CompanionTheory.Ar.Fl.exists_local_basis_cm_order.locBasis' (𝓞 E) ℓ (M := M) hℓ
+  let e : I ≃ Fin (Module.finrank (𝓞 E) M) := Fintype.equivFinOfCardEq hcard
+  refine ⟨b ∘ e, hb.1.comp e e.injective, ?_⟩
+  obtain ⟨n, hn, hsp⟩ := hb.2
+  refine ⟨n, hn, fun y => ?_⟩
+  have : Set.range (b ∘ e) = Set.range b := e.surjective.range_comp b
+  rw [this]
+  exact hsp y
+
+end PositivityTheory.Xgf
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.SesquilinearFractions.DLocBasis =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsLocalBasis =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsLocalBasis", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition\npublic import Development.WeilBound.CoreStatements.SesquilinearFractions.DLocBasis\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
+open scoped ComplexOrder
+
+alias _root_.GlobalTheory.CompanionTheory.Relay.exists_local_basis' := _root_.PositivityTheory.Xgf.exists_local_basis'
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsLocalBasis =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsNotMemSubConj =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsNotMemSubConj", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.CMField\npublic import Mathlib.RingTheory.SimpleRing.Principal\npublic import Mathlib.RingTheory.Unramified.Basic\npublic import Development.WeilBound.CoreStatements.SesquilinearFractions.ExistsUnitValueSkewHermitian\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
+open scoped ComplexOrder
+
+namespace GlobalTheory.CompanionTheory.CommAlg
+
+theorem conj_not_trivial_mod_maximal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (bar : 𝓞 E ≃+* 𝓞 E), (∀ a : 𝓞 E, ((bar a : 𝓞 E) : E) = IsCMField.complexConj E (a : E)) → Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) → ∀ m : Ideal (𝓞 E), m.IsMaximal → ∃ a : 𝓞 E, a - bar a ∉ m :=
+  PositivityTheory.Xgf.exists_not_mem_sub_conj
+
+end GlobalTheory.CompanionTheory.CommAlg
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsNotMemSubConj =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SkewHermitianDiagonalizable =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SkewHermitianDiagonalizable", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.IsDiag\npublic import Mathlib.RingTheory.Spectrum.Maximal.Defs\npublic import Development.WeilBound.CoreStatements.SesquilinearFractions.ExistsUnitValueSkewHermitian\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
+open scoped ComplexOrder
+
+namespace GlobalTheory.CompanionTheory.CommAlg
+
+theorem skewHermitian_congr_diag : ∀ (R : Type) [CommRing R] [StarRing R] [Finite (MaximalSpectrum R)] (n : ℕ) (G : Matrix (Fin n) (Fin n) R), Gᴴ = -G → IsUnit G.det → (∀ m : Ideal R, m.IsMaximal → ∃ a : R, a - star a ∉ m) → ∃ T : Matrix (Fin n) (Fin n) R, IsUnit T.det ∧ (T * G * Tᴴ).IsDiag := by
+  exact @PositivityTheory.Xgf.skew_hermitian_diagonalizable
+
+end GlobalTheory.CompanionTheory.CommAlg
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SkewHermitianDiagonalizable =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalBasisGramDeterminantBound =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalBasisGramDeterminantBound", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition\npublic import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes\npublic import Mathlib.Algebra.AffineMonoid.Basic\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsLocalBasis\npublic import Mathlib.NumberTheory.NumberField.CMField\npublic import Mathlib.RingTheory.SimpleRing.Principal\npublic import Mathlib.RingTheory.Unramified.Basic\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsNotMemSubConj\npublic import Mathlib.RingTheory.DedekindDomain.Different\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsRealDifferentGenerator\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.GramDeterminantLogDifferent\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicIntegralIffDenominator\npublic import Mathlib.LinearAlgebra.Matrix.IsDiag\npublic import Mathlib.RingTheory.Spectrum.Maximal.Defs\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SkewHermitianDiagonalizable\nimport Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram\nimport Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitian\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -199,12 +291,12 @@ theorem exists_sub_star_notMem (H : Host E) (ℓ : Nat.Primes) (m : Ideal (locRi
   have key : ∃ a : 𝓞 E, a - H.bar a ∉ m.comap (ofInt ℓ) := by
     by_cases h0 : m.comap (ofInt ℓ) = ⊥
     · obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 E)
-      obtain ⟨a, ha⟩ := GlobalTheory.T.exists_not_mem_sub_conj E H.bar H.bar_eq H.unram M hM
+      obtain ⟨a, ha⟩ := _root_.GlobalTheory.CompanionTheory.CommAlg.conj_not_trivial_mod_maximal E H.bar H.bar_eq H.unram M hM
       refine ⟨a, ?_⟩
       rw [h0, Ideal.mem_bot]
       intro h
       exact ha (h ▸ M.zero_mem)
-    · exact GlobalTheory.T.exists_not_mem_sub_conj E H.bar H.bar_eq H.unram _ (Ideal.IsPrime.isMaximal inferInstance h0)
+    · exact _root_.GlobalTheory.CompanionTheory.CommAlg.conj_not_trivial_mod_maximal E H.bar H.bar_eq H.unram _ (Ideal.IsPrime.isMaximal inferInstance h0)
   obtain ⟨a, ha⟩ := key
   refine ⟨ofInt ℓ a, fun h => ha ?_⟩
   rw [Ideal.mem_comap, map_sub]
@@ -214,11 +306,11 @@ theorem exists_sub_star_notMem (H : Host E) (ℓ : Nat.Primes) (m : Ideal (locRi
 variable {H : Host E}
 
 theorem sesq_zero_left (D : Datum H) (y : D.La) : sesq D 0 y = 0 := by
-  have := (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.1 0 0 y
+  have := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.1 0 0 y
   simpa using this
 
 theorem sesq_zero_right (D : Datum H) (y : D.La) : sesq D y 0 = 0 := by
-  have := (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.1 0 y 0
+  have := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.1 0 y 0
   simpa using this
 
 theorem sesq_sum_left (D : Datum H) {ι : Type} (s : Finset ι) (a : ι → 𝓞 E) (x : ι → D.La) (y : D.La) :
@@ -227,8 +319,8 @@ theorem sesq_sum_left (D : Datum H) {ι : Type} (s : Finset ι) (a : ι → 𝓞
   induction s using Finset.induction_on with
   | empty => simp [sesq_zero_left]
   | insert i s hi ih =>
-    rw [Finset.sum_insert hi, Finset.sum_insert hi, (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.1, ih,
-      (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.1]
+    rw [Finset.sum_insert hi, Finset.sum_insert hi, (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.1, ih,
+      (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.1]
 
 theorem sesq_sum_right (D : Datum H) {ι : Type} (s : Finset ι) (a : ι → 𝓞 E) (x : ι → D.La) (y : D.La) :
     sesq D y (∑ i ∈ s, a i • x i) = ∑ i ∈ s, IsCMField.complexConj E (a i : E) * sesq D y (x i) := by
@@ -236,14 +328,14 @@ theorem sesq_sum_right (D : Datum H) {ι : Type} (s : Finset ι) (a : ι → �
   induction s using Finset.induction_on with
   | empty => simp [sesq_zero_right]
   | insert i s hi ih =>
-    rw [Finset.sum_insert hi, Finset.sum_insert hi, (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.1, ih,
-      (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.1]
+    rw [Finset.sum_insert hi, Finset.sum_insert hi, (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.1, ih,
+      (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.1]
 
 theorem eq_zero_of_sesq_eq_zero (D : Datum H) (y : D.La) (h : ∀ z, sesq D y z = 0) : y = 0 := by
   apply D.unimod.1
   rw [map_zero]
   ext z
-  have := (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).1 1 y z
+  have := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).1 1 y z
   rw [one_smul, h z] at this
   simpa using this.symm
 
@@ -274,12 +366,12 @@ theorem gram_det_ne_zero (D : Datum H) {I : Type} [Fintype I] [DecidableEq I] (x
     induction hw using Submodule.span_induction with
     | mem w hw => obtain ⟨n, rfl⟩ := hw; exact h1 n
     | zero => exact sesq_zero_right D y
-    | add u w _ _ hu hw => rw [(GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.1, hu, hw, add_zero]
-    | smul a w _ hw => rw [(GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.1, hw, mul_zero]
+    | add u w _ _ hu hw => rw [(_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.1, hu, hw, add_zero]
+    | smul a w _ hw => rw [(_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.1, hw, mul_zero]
   have h3 : y = 0 := by
     refine eq_zero_of_sesq_eq_zero D y fun z => ?_
     have := h2 _ (hspan z)
-    rw [← Nat.cast_smul_eq_nsmul (𝓞 E), (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.1] at this
+    rw [← Nat.cast_smul_eq_nsmul (𝓞 E), (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.1] at this
     simpa [hN0] using this
   have h4 := Fintype.linearIndependent_iff.1 hli c h3
   apply hv
@@ -293,7 +385,7 @@ end Form
 section Norm
 
 theorem norm_le_one {ℓ : Nat.Primes} (x : locRing E ℓ) (j : E →+* ℂ_[ℓ]) : ‖j (x : E)‖ ≤ 1 :=
-  (GlobalTheory.T.padic_integral_iff_denominator E ℓ (x : E)).2 x.2 j
+  (_root_.GlobalTheory.CompanionTheory.Relay.padic_integral_iff_denominator E ℓ (x : E)).2 x.2 j
 
 theorem norm_eq_one_of_isUnit {ℓ : Nat.Primes} {u : locRing E ℓ} (hu : IsUnit u) (j : E →+* ℂ_[ℓ]) :
     ‖j (u : E)‖ = 1 := by
@@ -307,7 +399,7 @@ theorem norm_eq_one_of_isUnit {ℓ : Nat.Primes} {u : locRing E ℓ} (hu : IsUni
 
 theorem isUnit_of_norm_eq_one {ℓ : Nat.Primes} (u : locRing E ℓ) (h0 : (u : E) ≠ 0)
     (h : ∀ j : E →+* ℂ_[ℓ], ‖j (u : E)‖ = 1) : IsUnit u := by
-  have h1 : (u : E)⁻¹ ∈ locRing E ℓ := (GlobalTheory.T.padic_integral_iff_denominator E ℓ _).1 fun j => by
+  have h1 : (u : E)⁻¹ ∈ locRing E ℓ := (_root_.GlobalTheory.CompanionTheory.Relay.padic_integral_iff_denominator E ℓ _).1 fun j => by
     rw [map_inv₀, norm_inv, h j, inv_one]
   exact IsUnit.of_mul_eq_one (⟨_, h1⟩ : locRing E ℓ) (Subtype.ext (by simp [h0]))
 
@@ -401,10 +493,10 @@ theorem exists_diag_basis (H : Host E) (D : Datum H) (n : ℕ) (hn : n = D.p + D
   haveI := finite_maxSpec (E := E) ℓ
   haveI := D.fin
   haveI := D.proj
-  obtain ⟨x, hx⟩ := GlobalTheory.T.exists_local_basis' E D.La (Fin n) (ℓ : ℕ) ℓ.2 (by simp [D.rank, hn])
-  obtain ⟨δ, hδ, hδ0, hδc, hδj⟩ := GlobalTheory.T.exists_real_different_generator E H.unram ℓ
+  obtain ⟨x, hx⟩ := _root_.GlobalTheory.CompanionTheory.Relay.exists_local_basis' E D.La (Fin n) (ℓ : ℕ) ℓ.2 (by simp [D.rank, hn])
+  obtain ⟨δ, hδ, hδ0, hδc, hδj⟩ := _root_.GlobalTheory.CompanionTheory.Relay.exists_real_different_generator E H.unram ℓ
   have hδE : (δ : E) ≠ 0 := by exact_mod_cast hδ0
-  have hint := (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.2.2 δ hδ
+  have hint := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.2.2 δ hδ
   have hmem : ∀ a b, (δ : E) * sesq D (x a) (x b) ∈ locRing E ℓ := fun a b => by
     obtain ⟨c, hc⟩ := hint (x a) (x b)
     rw [hc]
@@ -414,7 +506,7 @@ theorem exists_diag_basis (H : Host E) (D : Datum H) (n : ℕ) (hn : n = D.p + D
   have hG : Gᴴ = -G := by
     ext a b
     rw [Matrix.conjTranspose_apply, Matrix.neg_apply, coe_star_locRing, hGc, Subring.coe_neg, hGc, map_mul, hδc,
-      (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.2.1 (x b) (x a)]
+      (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D).2.2.2.2.2.1 (x b) (x a)]
     ring
   have hGdet : ((G.det : locRing E ℓ) : E) = (δ : E) ^ n * (gramE D x).det := by
     have h1 : (locRing E ℓ).subtype.mapMatrix G = (δ : E) • gramE D x := by
@@ -426,7 +518,7 @@ theorem exists_diag_basis (H : Host E) (D : Datum H) (n : ℕ) (hn : n = D.p + D
   have hd0 := gram_det_ne_zero D x ℓ ℓ.2 hx
   have hGu : IsUnit G.det := by
     refine isUnit_of_norm_eq_one _ (by rw [hGdet]; exact mul_ne_zero (pow_ne_zero _ hδE) hd0) fun j => ?_
-    have h1 := GlobalTheory.T.gram_determinant_log_different E H D (Fin n) x ℓ hx j
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Fl.GramDet.log_norm_det_gramE E H D (Fin n) x ℓ hx j
     have h2 := hδj j
     have h3 : 0 < ‖j (δ : E)‖ := norm_pos_iff.2 ((map_ne_zero j).2 hδE)
     have h4 : 0 < ‖j (gramE D x).det‖ := norm_pos_iff.2 ((map_ne_zero j).2 hd0)
@@ -434,7 +526,7 @@ theorem exists_diag_basis (H : Host E) (D : Datum H) (n : ℕ) (hn : n = D.p + D
     refine Real.eq_one_of_pos_of_log_eq_zero (by positivity) ?_
     rw [Real.log_mul (by positivity) h4.ne', Real.log_pow, h1, h2, Fintype.card_fin]
     ring
-  obtain ⟨T, hTu, hTd⟩ := GlobalTheory.T.skew_hermitian_diagonalizable _ n G hG hGu (exists_sub_star_notMem H ℓ)
+  obtain ⟨T, hTu, hTd⟩ := _root_.GlobalTheory.CompanionTheory.CommAlg.skewHermitian_congr_diag _ n G hG hGu (exists_sub_star_notMem H ℓ)
   obtain ⟨N, A, hN, hA⟩ := exists_common_denom (ι := Fin n × Fin n) (fun q => T q.1 q.2)
   obtain ⟨N', B, hN', hB⟩ := exists_common_denom (ι := Fin n × Fin n) (fun q => T⁻¹ q.1 q.2)
   have hN0 : (N : E) ≠ 0 := fun h => hN (by simp [Nat.cast_eq_zero.1 h])
@@ -566,3 +658,7 @@ theorem exists_locBasis_first_unimodular :
 end Target
 
 end GlobalTheory.CompanionTheory.Ar.Fl.LocR
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalBasisGramDeterminantBound =====

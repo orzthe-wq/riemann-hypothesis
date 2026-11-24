@@ -99,4 +99,4 @@ theorem _root_.GlobalTheory.T.generic_iso_agrees_on_complete_points_alt : Laws �
     e).hom.left (r z)) ∈ U.LG.L.U jL → (fstG I e G').left (r z) ∈ U'.LG.L.U jL' → Geo.Tor.gw hD.w (r
     ≫ (U'.gt e).pG.left) z jM jM' * Geo.Tor.gw (U'.w e) r z jM' (fun _ => jL') = Geo.Tor.gw (U.w
     e) (r ≫ (j e).hom.left) z jM (fun _ => jL) * gm ρ z ⊤ v := by
-  first | exact @GlobalTheory.generic_iso_agrees_on_complete_points | exact GlobalTheory.generic_iso_agrees_on_complete_points | (intros; apply GlobalTheory.generic_iso_agrees_on_complete_points <;> assumption)
+  first | exact @GlobalTheory.generic_iso_agrees_on_complete_points

@@ -3,51 +3,7 @@ module
 public import Mathlib.Order.CompletePartialOrder
 public import Mathlib.RingTheory.Jacobson.Ring
 public import Mathlib.RingTheory.KrullDimension.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.RingTheory.DedekindDomain.Basic
 
 @[expose] public section
@@ -75,8 +31,7 @@ theorem exists_ltSeries_lift {R S : Type*} [CommRing R] [CommRing S] [Algebra R 
     intro p hp
     obtain ⟨q', hq'len, hq'c⟩ := ih p.eraseLast (by
       first
-      | (show p.length - 1 = n; omega)
-      | simp [hp])
+      | (show p.length - 1 = n; omega))
     have hlt : p.eraseLast.last < p.last := p.eraseLast_last_rel_last (by omega)
     obtain ⟨Q, hQle, hQ, hQc⟩ := Ideal.exists_ideal_over_prime_of_isIntegral_of_isPrime
       p.last.asIdeal q'.last.asIdeal (by
@@ -132,8 +87,6 @@ theorem exists_gt_of_comap_int_eq_bot {σ A : Type*} [Finite σ] [CommRing A]
     have hint : (f.comp MvPolynomial.C).IsIntegral := by
       first
       | exact MvPolynomial.comp_C_integral_of_surjective_of_isJacobsonRing f hf
-      | exact Ideal.MvPolynomial.comp_C_integral_of_surjective_of_isJacobsonRing f hf
-      | exact MvPolynomial.comp_C_integral_of_surjective_of_isJacobson f hf
     have hinj : Function.Injective (f.comp MvPolynomial.C) := by
       rw [RingHom.injective_iff_ker_eq_bot, eq_bot_iff]
       intro x hx

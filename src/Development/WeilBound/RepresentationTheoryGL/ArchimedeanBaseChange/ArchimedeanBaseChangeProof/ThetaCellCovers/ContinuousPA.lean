@@ -50,6 +50,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IsotropicMahlerBounds.LogAbsoluteWedges.WedgeSub
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -73,7 +74,7 @@ theorem degCell_of (h1 : DegBasis) (h2 : DegAdelic) (h3 : DegBdd) (h4 : TorNorm)
   refine ⟨∑ i : Fin n, |c (Submodule.span E {Pi.single i 1})| + |c ⊤|, fun x o ho => ⟨fun i => ?_, ?_⟩⟩
   · set M : Matrix (Fin n) (Fin 1) E := Matrix.of fun j _ => (Pi.single i 1 : Fin n → E) j with hM
     have hr : Set.range Mᵀ = {Pi.single i 1} := by
-      ext v; simp only [Set.mem_range, Set.mem_singleton_iff]
+      ext v; simp only [Set.mem_singleton_iff]
       exact ⟨fun ⟨_, h⟩ => h.symm, fun h => ⟨0, h.symm⟩⟩
     have hl : LinearIndependent E Mᵀ := linearIndependent_unique_iff.2 (by
       change (Pi.single i 1 : Fin n → E) ≠ 0

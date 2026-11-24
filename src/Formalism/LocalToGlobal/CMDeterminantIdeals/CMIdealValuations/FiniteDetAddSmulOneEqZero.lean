@@ -78,7 +78,7 @@ private theorem exists_conjTranspose_mul_self {n : Type} [Fintype n] [DecidableE
   refine ⟨Matrix.diagonal d * star U, ?_⟩
   have h1 : (Matrix.diagonal d * star U)ᴴ * (Matrix.diagonal d * star U) =
       U * Matrix.diagonal (fun i => star (d i) * d i) * star U := by
-    simp only [Matrix.conjTranspose_mul, ← Matrix.star_eq_conjTranspose, star_mul, star_star, Matrix.mul_assoc]
+    simp only [← Matrix.star_eq_conjTranspose, star_mul, star_star, Matrix.mul_assoc]
     rw [← Matrix.mul_assoc (star (Matrix.diagonal d)), Matrix.star_eq_conjTranspose (Matrix.diagonal d),
       Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal]
     rfl
@@ -99,7 +99,7 @@ private theorem hq_eq {n : ℕ} (S : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → 
   simp only [dotProduct, Pi.star_apply, Complex.re_sum]
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [← Complex.normSq_eq_norm_sq]
-  simp [Complex.normSq_apply, Complex.mul_re, Complex.star_def]
+  simp [Complex.normSq_apply, Complex.mul_re]
 
 private def colE {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) : EuclideanSpace ℂ (Fin n) :=
   WithLp.toLp 2 (fun k => M k i)
@@ -112,7 +112,6 @@ private theorem colNormSq_eq {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (i : Fin
 private theorem colE_add {n : ℕ} (M N : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) : colE (M + N) i = colE M i + colE N i := by
   first
   | (ext k; simp [colE])
-  | (simp only [colE, ← WithLp.toLp_add]; rfl)
 
 private theorem norm_colE_smul_one {n : ℕ} (t : ℂ) (i : Fin n) : ‖colE (t • (1 : Matrix (Fin n) (Fin n) ℂ)) i‖ = ‖t‖ := by
   rw [← Real.sqrt_sq (norm_nonneg (colE _ i)), ← colNormSq_eq]

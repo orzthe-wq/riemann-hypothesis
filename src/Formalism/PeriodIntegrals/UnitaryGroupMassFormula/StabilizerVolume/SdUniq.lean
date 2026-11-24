@@ -83,13 +83,11 @@ theorem eq_of_testEx {V : Type} [AddCommGroup V] [TopologicalSpace V]
   obtain ⟨c, hνμ⟩ : ∃ c : NNReal, ν = c • μ := by
     first
     | exact ⟨_, Measure.isAddLeftInvariant_eq_smul ν μ⟩
-    | exact ⟨_, Measure.isAddHaarMeasure_eq_smul ν μ⟩
   have e1 := hμi Φ hc hcs hi z
   have hsm : ∀ w : ℂ, c • w = ((c : ℝ) : ℂ) * w := by
     intro w
     first
     | rw [NNReal.smul_def, Complex.real_smul]
-    | simp [NNReal.smul_def]
   have hTν : ∀ y, ∫ x, Φ x * χ x y ∂ν = ((c : ℝ) : ℂ) * ∫ x, Φ x * χ x y ∂μ := by
     intro y
     rw [hνμ, integral_smul_nnreal_measure, hsm]
@@ -98,7 +96,6 @@ theorem eq_of_testEx {V : Type} [AddCommGroup V] [TopologicalSpace V]
     rw [hνμ]
     first
     | exact (hi.const_mul _).smul_measure_nnreal
-    | exact (hi.const_mul _).smul_measure ENNReal.coe_ne_top
   have e2 := hνi Φ hc hcs hiν z
   simp_rw [hTν] at e2
   rw [hνμ, integral_smul_nnreal_measure, hsm] at e2
@@ -134,8 +131,8 @@ theorem transform_indicator (hLo : IsOpen (L : Set V)) (y : V) :
         (L : Set V).indicator (fun _ => (1 : ℂ)) := by
       funext x
       by_cases hx : x ∈ L
-      · simp [Set.indicator_apply, hx, hy x hx]
-      · simp [Set.indicator_apply, hx]
+      · simp [hx, hy x hx]
+      · simp [hx]
     rw [hfun, integral_indicator_const _ hLo.measurableSet]
     simp [Measure.real]
   · rw [Set.indicator_apply, if_neg hy]
@@ -149,9 +146,9 @@ theorem transform_indicator (hLo : IsOpen (L : Set V)) (y : V) :
       rw [hχ x x0 y]
       by_cases hx : x ∈ L
       · have hx' : x0 + x ∈ L := L.add_mem hx0 hx
-        simp [Set.indicator_apply, hx, hx']
+        simp [hx, hx']
       · have hx' : x0 + x ∉ L := fun h => hx (by simpa using L.sub_mem h hx0)
-        simp [Set.indicator_apply, hx, hx']
+        simp [hx, hx']
     simp_rw [hshift, integral_const_mul] at key
     have h2 : (χ x0 y - 1) * ∫ x, f x ∂μ = 0 := by rw [sub_mul, key, one_mul, sub_self]
     rcases mul_eq_zero.1 h2 with h | h
@@ -168,7 +165,6 @@ theorem testEx_of_lattice (hLc : IsCompact (L : Set V)) (hLo : IsOpen (L : Set V
   refine ⟨(L : Set V).indicator (fun _ => (1 : ℂ)), ?_, ?_, ?_, ⟨0, ?_⟩⟩
   · first
     | exact IsClopen.continuous_indicator ⟨hLcl, hLo⟩ continuous_const
-    | exact continuous_indicator (by simp [IsClopen.frontier_eq ⟨hLcl, hLo⟩]) continuous_const.continuousOn
   · exact HasCompactSupport.intro hLc (fun x hx => by simp [Set.indicator_apply, hx])
   · have hT : (fun y => ∫ x, (L : Set V).indicator (fun _ => (1 : ℂ)) x * χ x y ∂μ) =
         (ann χ (L : Set V)).indicator (fun _ => ((μ.real (L : Set V) : ℝ) : ℂ)) := by
@@ -178,10 +174,8 @@ theorem testEx_of_lattice (hLc : IsCompact (L : Set V)) (hLo : IsOpen (L : Set V
     have hfin : μ (ann χ (L : Set V)) < ⊤ := (measure_mono hAK).trans_lt hK.measure_lt_top
     refine IntegrableOn.integrable_indicator ?_ hA.measurableSet
     first
-    | exact integrableOn_const.2 (Or.inr hfin)
     | exact integrableOn_const hfin.ne
-    | exact integrableOn_const_iff.2 (Or.inr hfin)
-  · simp [Set.indicator_apply, L.zero_mem]
+  · simp [L.zero_mem]
 
 end Lattice
 
@@ -201,14 +195,11 @@ theorem testEx_of_trivial (hχ : ∀ x y, χ x y = 1) (L : AddSubgroup V)
   have hind : Continuous ((L : Set V).indicator (fun _ => (1 : ℂ))) := by
     first
     | exact IsClopen.continuous_indicator ⟨hLcl, hLo⟩ continuous_const
-    | exact continuous_indicator (by simp [IsClopen.frontier_eq ⟨hLcl, hLo⟩]) continuous_const.continuousOn
   have hfin : μ (L : Set V) < ⊤ := hLc.measure_lt_top
   have hint : Integrable ((L : Set V).indicator (fun _ => (1 : ℂ))) μ := by
     refine IntegrableOn.integrable_indicator ?_ hLo.measurableSet
     first
-    | exact integrableOn_const.2 (Or.inr hfin)
     | exact integrableOn_const hfin.ne
-    | exact integrableOn_const_iff.2 (Or.inr hfin)
   by_cases hL : ∀ t, t ∈ L
   · haveI : IsFiniteMeasure μ := ⟨(measure_mono (fun x _ => hL x)).trans_lt hfin⟩
     refine ⟨fun _ => 1, continuous_const, HasCompactSupport.intro hLc (fun x hx => absurd (hL x) hx), ?_, ⟨0, one_ne_zero⟩⟩
@@ -223,7 +214,7 @@ theorem testEx_of_trivial (hχ : ∀ x y, χ x y = 1) (L : AddSubgroup V)
       intro x hx
       have h1 : x ∉ L := fun h => hx (Or.inl h)
       have h2 : -t + x ∉ L := fun h => hx (Or.inr ⟨-t + x, h, by abel⟩)
-      simp [hg, Set.indicator_apply, h1, h2]
+      simp [hg, h1, h2]
     · have h0 : ∀ y, ∫ x, (g x - g (-t + x)) * χ x y ∂μ = 0 := by
         intro y
         simp only [hχ, mul_one]
@@ -231,7 +222,7 @@ theorem testEx_of_trivial (hχ : ∀ x y, χ x y = 1) (L : AddSubgroup V)
       simp only [h0]
       exact integrable_zero _ _ _
     · have hn : -t ∉ L := fun h => ht (by simpa using L.neg_mem h)
-      simp [hg, Set.indicator_apply, hn, ht, L.zero_mem]
+      simp [hg, hn, L.zero_mem]
 
 end Triv
 
@@ -294,10 +285,6 @@ theorem singleV_add (v : HeightOneSpectrum (𝓞 F)) (r s : Fv F v) :
   unfold singleV
   first
   | exact RestrictedProduct.single_add _ v r s
-  | (ext w
-     by_cases hw : w = v
-     · subst hw; simp [RestrictedProduct.single]
-     · simp [RestrictedProduct.single, hw])
 
 theorem psiV_add (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (r s : Fv F v) :
     psiV F ψ v (r + s) = psiV F ψ v r * psiV F ψ v s := by
@@ -318,14 +305,13 @@ theorem psiInf_add (ψ : AddChar (AF F) ℂ) (r s : Ainf F) :
   rw [e, AddChar.map_add_eq_mul]
 
 theorem continuous_singleV (v : HeightOneSpectrum (𝓞 F)) : Continuous (singleV F v) := by
-  apply PI.VolStabSW.SdUniqW.continuous_singleV <;> assumption
+  apply PI.VolStabSW.SdUniqW.continuous_singleV
 
 theorem continuous_psiV (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (psiV F ψ v) := by
   unfold psiV
   first
   | exact hψ.comp (continuous_const.prodMk (continuous_singleV (F := F) v))
-  | exact hψ.comp (continuous_const.prod_mk (continuous_singleV (F := F) v))
 
 variable (R : Type) [CommRing R] [Algebra F R]
 
@@ -333,13 +319,11 @@ theorem BR_add (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X T Y : Fin n → Fin M → R ⊗[F] E) : BR R σ J (T + X) Y = BR R σ J T Y + BR R σ J X Y := by
   first
   | simp only [BR, hR, Formalism.UG.hform, Pi.add_apply, map_add (f := _), add_mul, Finset.sum_add_distrib]
-  | simp [BR, hR, Formalism.UG.hform, map_add (f := _), add_mul, Finset.sum_add_distrib]
 
 theorem pairHerm_add (σ : E →ₐ[F] E) (n : ℕ) (S T U : HermR R σ n) :
     pairHerm R σ n (T + S) U = pairHerm R σ n T U + pairHerm R σ n S U := by
   first
   | simp only [pairHerm, AddSubgroup.coe_add, Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add (f := _), mul_add]
-  | simp [pairHerm, Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add (f := _), mul_add]
 
 end Add
 
@@ -352,17 +336,12 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
 theorem continuous_trace_tens : Continuous (Algebra.trace R (R ⊗[F] E)) := by
   first
   | exact IsModuleTopology.continuous_of_linearMap (Algebra.trace R (R ⊗[F] E))
-  | exact IsModuleTopology.continuous_of_linearMap _
-  | exact LinearMap.continuous_of_finiteDimensional _
-  | fun_prop
 
 theorem continuous_BR_right (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X : Fin n → Fin M → R ⊗[F] E) : Continuous (BR R σ J X) := by
   have ht := continuous_trace_tens (F := F) (E := E) R
   unfold BR hR Formalism.UG.hform
   first
-  | exact continuous_finset_sum _ fun a _ => ht.comp (continuous_finset_sum _ fun i _ =>
-      continuous_finset_sum _ fun j _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply a)))
   | fun_prop
 
 theorem continuous_pairHerm_right (σ : E →ₐ[F] E) (n : ℕ) (S : HermR R σ n) :

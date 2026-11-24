@@ -289,7 +289,7 @@ theorem henselianRing_of_finite (R : Type*) {S : Type*} [CommRing R]
     have hga : u * g.eval a₀ = 1 := by
       have := congr((derivative $hfg).eval a₀)
       simp only [derivative_mul, derivative_sub, derivative_X, derivative_C, eval_add, eval_mul,
-        eval_sub, eval_X, eval_C, sub_self, zero_mul, add_zero, eval_one, eval_zero, sub_zero,
+        eval_sub, eval_X, eval_C, sub_self, zero_mul, add_zero, sub_zero,
         one_mul] at this
       rw [this, hu]
     have hdeg : g.degree < f.degree :=

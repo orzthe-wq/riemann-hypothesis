@@ -28,10 +28,10 @@ It keeps the published Lean source unchanged and provides a prebuilt cache for i
 | Theorem | Statement |
 |---|---|
 | `riemannHypothesis` | Mathlib's `RiemannHypothesis` |
-| `riemannZeta_eq_zero_re` | An equivalent restatement of the Riemann Hypothesis not reliant on Mathlib directly: every zero of the Riemann Zeta function with 0 < Re s < 1 has Re s = 1/2 |
+| `riemannZeta_eq_zero_re` | the same statement as `riemannHypothesis`, spelled out: every zero of ζ other than −2, −4, −6, … has Re s = 1/2 |
 | `LFunction_ne_zero_of_half_lt_re` | L(χ, s) ≠ 0 for Re s > 1/2, for every modulus and every Dirichlet character, except the trivial character at s = 1 |
 | `LFunction_eq_zero_re` | every zero of L(χ, s) with 0 < Re s < 1 has Re s = 1/2 |
-| `LFunction_eq_zero_re_of_isPrimitive` | every zero of L(χ, s) for a Primitive Dirichlet character χ with 0 < Re s < 1 has Re s = 1/2 |
+| `LFunction_eq_zero_re_of_isPrimitive` | the special case of `LFunction_eq_zero_re` for primitive characters |
 
 [`src/Challenge.lean`](src/Challenge.lean) states the same five with `sorry` in place of the
 proofs, in a file that imports only Mathlib. Comparator checks that `Main.lean` proves exactly
@@ -70,7 +70,7 @@ Compiling the submission runs its code, so you may want to do it in a VM or your
 
 ```bash
 export LEAN_ABORT_ON_PANIC=1        # as Comparator does
-export LAKE_ARTIFACT_CACHE=false    # in case cache-env.sh was sourced
+export LAKE_ARTIFACT_CACHE=false    # compile everything; read nothing from a Lake cache
 
 # in a clone where the submission has not been compiled
 lake build Challenge
@@ -84,19 +84,6 @@ lake env leanexport Main -- $(cat export-targets.txt) > solution.export
 lake comparator --config comparator.json \
   --challenge-from-export challenge.export --solution-from-export solution.export
 ```
-
-The published source uses Lean 4.33.1, which has neither `lake comparator` nor `leanexport`.
-[An older version of this README](https://github.com/leanprover-community/riemann-hypothesis/blob/7cce738ba719a32964ca3822d0994f4c6952c7ae/README.md#checking-it)
-has the two-toolchain steps for checking it.
-
-## The formal-conjectures statement
-
-[`comparator/`](comparator/) holds a second Comparator setup. Its challenge states the Riemann
-Hypothesis and the Generalized Riemann Hypothesis the way
-[formal-conjectures](https://github.com/google-deepmind/formal-conjectures/blob/d8d031d4998c78575159ccab9a7a9e95ce043883/FormalConjectures/Millennium/RiemannHypothesis.lean)
-does, in statements that neither the author nor we wrote, and the files next to it prove them
-from `src/Main.lean`. [NOTES.md](verification/NOTES.md#formal-conjectures) says how to check it
-and what has been checked so far.
 
 ## CI
 

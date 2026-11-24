@@ -123,7 +123,7 @@ theorem UpperTheory.V.Z.Kato.Nb.sXiMul :
     rw [← smul_sub, ← smul_add, ← smul_sub, map_smul,
       term_mul X l n N _ _ _ _ (hab _ _ (hOk m hm)), smul_zero]
   · intro a k u
-    simp only [Pi.sub_apply, Pi.smul_apply]
+    simp only [Pi.smul_apply]
     unfold Xi
     beta_reduce
 

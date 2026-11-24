@@ -1,15 +1,20 @@
 module
 
+public import Mathlib.Algebra.Module.ZLattice.Covolume
+public import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+public import Mathlib.MeasureTheory.Constructions.Pi
+public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+public import Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup
+public import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
 public import Mathlib.NumberTheory.NumberField.Discriminant.Defs
 public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 public import Mathlib.NumberTheory.NumberField.Units.Regulator
 public import Mathlib.RingTheory.ClassGroup.Basic
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeLeSumVolumeOfCover
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumePosSimplexLe
+public import Mathlib.NumberTheory.NumberField.Discriminant.Basic
+public import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -23,15 +28,8 @@ import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-public import Mathlib.NumberTheory.NumberField.Discriminant.Basic
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -39,6 +37,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -51,10 +50,168 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Analysis.Real.Pi.Bounds
+import Aesop.Main
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeLeSumVolumeOfCover, Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumePosSimplexLe, Development.AbelianVarietyTheory.Proofs.FlagMeasures.RegulatorLeSumSmallIdealsInClass
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeLeSumVolumeOfCover =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeLeSumVolumeOfCover", "h": "module\n\npublic import Mathlib.Algebra.Module.ZLattice.Covolume\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory NumberField Finset
+
+namespace GlobalTheory
+
+
+open Pointwise in
+theorem covolume_le_sum_volume_of_cover (ι : Type) [Fintype ι] (L : Submodule ℤ (ι → ℝ))
+    [DiscreteTopology L] [IsZLattice ℝ L] (κ : Type) (T : Finset κ) (A : κ → Set (ι → ℝ))
+    (_hA : ∀ k, MeasurableSet (A k))
+    (hcov : ∀ t : ι → ℝ, ∃ k ∈ T, ∃ l ∈ L, t + l ∈ A k) :
+    ENNReal.ofReal (ZLattice.covolume L volume) ≤ ∑ k ∈ T, volume (A k) := by
+  classical
+  let b := Module.Free.chooseBasis ℤ L
+  have hF := ZLattice.isAddFundamentalDomain b (volume : Measure (ι → ℝ))
+  set F := ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ L) with hFdef
+  haveI : Countable L := b.repr.toEquiv.countable_iff.2 inferInstance
+  rw [ZLattice.covolume_eq_measure_fundamentalDomain L volume hF]
+  refine le_trans ENNReal.ofReal_toReal_le ?_
+  refine le_trans ?_ (measure_biUnion_finset_le T A)
+  set U := ⋃ k ∈ T, A k with hU
+  haveI : MeasurableConstVAdd L (ι → ℝ) :=
+    ⟨fun c => by
+      change Measurable fun x : ι → ℝ => (c : ι → ℝ) + x
+      exact measurable_const_add _⟩
+  haveI : VAddInvariantMeasure L (ι → ℝ) volume :=
+    ⟨fun c s _ => measure_preimage_add volume (c : ι → ℝ) s⟩
+  rw [hF.measure_eq_tsum U]
+  refine le_trans (measure_mono ?_) (measure_iUnion_le _)
+  intro t ht
+  obtain ⟨k, hk, l, hl, htl⟩ := hcov t
+  refine Set.mem_iUnion.2 ⟨-(⟨l, hl⟩ : L), ?_, ht⟩
+  rw [Set.mem_neg_vadd_set_iff]
+  have : (⟨l, hl⟩ : L) +ᵥ t = t + l := by
+    change l + t = t + l
+    exact add_comm _ _
+  rw [this]
+  exact Set.mem_biUnion hk htl
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeLeSumVolumeOfCover =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumePosSimplexLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumePosSimplexLe", "h": "module\n\npublic import Mathlib.MeasureTheory.Constructions.Pi\npublic import Mathlib.MeasureTheory.Measure.Haar.OfBasis\nimport Aesop.Main\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\npublic import Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Analysis.SpecialFunctions.Gamma.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory NumberField Finset
+
+namespace GlobalTheory.SimplexVolume
+
+theorem volume_l1_ball (ι : Type) [Fintype ι] [Nonempty ι] (L : ℝ) (hL : 0 ≤ L) :
+    volume {x : ι → ℝ | ∑ i, |x i| ≤ L} =
+      2 ^ Fintype.card ι * ENNReal.ofReal (L ^ Fintype.card ι / (Fintype.card ι).factorial) := by
+  have h := MeasureTheory.volume_sum_rpow_le ι (p := 1) le_rfl L
+  simp only [Real.rpow_one, div_one, one_add_one_eq_two, Real.Gamma_two, mul_one,
+    Real.Gamma_nat_eq_factorial] at h
+  rw [h, ← ENNReal.ofReal_pow hL, ← ENNReal.ofReal_mul (by positivity)]
+  have h2 : (2 : ENNReal) ^ Fintype.card ι = ENNReal.ofReal (2 ^ Fintype.card ι) := by
+    rw [ENNReal.ofReal_pow (by norm_num)]; simp
+  rw [h2, ← ENNReal.ofReal_mul (by positivity)]
+  congr 1
+  ring
+
+theorem volume_pos_simplex_le (ι : Type) [Fintype ι] [Nonempty ι] (L : ℝ) (hL : 0 ≤ L) :
+    volume {x : ι → ℝ | (∀ i, 0 < x i) ∧ ∑ i, x i ≤ L} ≤
+      ENNReal.ofReal (L ^ Fintype.card ι / (Fintype.card ι).factorial) := by
+  classical
+  set S : Set (ι → ℝ) := {x : ι → ℝ | (∀ i, 0 < x i) ∧ ∑ i, x i ≤ L} with hS
+  have hSm : MeasurableSet S := by
+    rw [hS]
+    measurability
+  let f : (ι → Bool) → ι → ℝ → ℝ := fun e i y => if e i then y else -y
+  have hf : ∀ e i, MeasurePreserving (f e i) volume volume := by
+    intro e i
+    by_cases h : e i
+    · simp only [f, h, if_true]
+      exact MeasurePreserving.id (volume : Measure ℝ)
+    · simpa [f, h] using Measure.measurePreserving_neg (volume : Measure ℝ)
+  let R : (ι → Bool) → (ι → ℝ) → (ι → ℝ) := fun e x i => f e i (x i)
+  have hR : ∀ e, MeasurePreserving (R e) volume volume := fun e =>
+    volume_preserving_pi (fun i => hf e i)
+  have hdisj : Pairwise (Function.onFun Disjoint fun e => R e ⁻¹' S) := by
+    intro e e' hne
+    rw [Function.onFun, Set.disjoint_left]
+    intro x hx hx'
+    apply hne
+    funext i
+    have h1 := hx.1 i
+    have h2 := hx'.1 i
+    simp only [R, f] at h1 h2
+    cases he : e i <;> cases he' : e' i <;> simp [he, he'] at h1 h2 ⊢ <;> linarith
+  have hsub : (⋃ e, R e ⁻¹' S) ⊆ {x : ι → ℝ | ∑ i, |x i| ≤ L} := by
+    intro x hx
+    obtain ⟨e, he⟩ := Set.mem_iUnion.1 hx
+    refine le_trans (le_of_eq (Finset.sum_congr rfl fun i _ => ?_)) he.2
+    have h1 := he.1 i
+    rw [← abs_of_pos h1]
+    simp only [R, f]
+    split_ifs <;> simp
+  have hU : volume (⋃ e, R e ⁻¹' S) = 2 ^ Fintype.card ι * volume S := by
+    rw [measure_iUnion hdisj (fun e => (hR e).measurable hSm)]
+    simp only [fun e => (hR e).measure_preimage hSm.nullMeasurableSet]
+    simp [tsum_fintype]
+  have hle := measure_mono (μ := volume) hsub
+  rw [hU, volume_l1_ball ι L hL] at hle
+  exact (ENNReal.mul_le_mul_iff_right (by simp) (by simp)).1 hle
+
+theorem volume_simplex_le (ι : Type) [Fintype ι] (a : ι → ℝ) (L : ℝ) (hL : 0 ≤ L) :
+    volume {t : ι → ℝ | (∀ i, a i ≤ t i) ∧ ∑ i, (t i - a i) ≤ L} ≤
+      ENNReal.ofReal (L ^ Fintype.card ι / (Fintype.card ι).factorial) := by
+  rcases isEmpty_or_nonempty ι with hι | hι
+  · refine le_trans (measure_mono (Set.subset_univ _)) ?_
+    simp [volume_pi]
+  · have hsub : {t : ι → ℝ | (∀ i, a i ≤ t i) ∧ ∑ i, (t i - a i) ≤ L} ⊆
+        ((fun t => t - a) ⁻¹' {x : ι → ℝ | (∀ i, 0 < x i) ∧ ∑ i, x i ≤ L}) ∪
+          ⋃ i, {t : ι → ℝ | t i = a i} := by
+      intro t ht
+      by_cases h : ∃ i, t i = a i
+      · exact Or.inr (Set.mem_iUnion.2 h)
+      · push Not at h
+        refine Or.inl ⟨fun i => ?_, ht.2⟩
+        exact sub_pos.2 (lt_of_le_of_ne (ht.1 i) (h i).symm)
+    have hnull : volume (⋃ i, {t : ι → ℝ | t i = a i}) = 0 :=
+      measure_iUnion_null fun i => Measure.pi_hyperplane (fun _ : ι => (volume : Measure ℝ)) i (a i)
+    refine le_trans (measure_mono hsub) (le_trans (measure_union_le _ _) ?_)
+    rw [hnull, add_zero]
+    simp only [sub_eq_add_neg]
+    rw [measure_preimage_add_right]
+    exact volume_pos_simplex_le ι L hL
+
+end GlobalTheory.SimplexVolume
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumePosSimplexLe =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.RegulatorLeSumSmallIdealsInClass =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.RegulatorLeSumSmallIdealsInClass", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.Discriminant.Defs\npublic import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex\npublic import Mathlib.NumberTheory.NumberField.Units.Regulator\npublic import Mathlib.RingTheory.ClassGroup.Basic\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeLeSumVolumeOfCover\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.VolumePosSimplexLe\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\npublic import Mathlib.NumberTheory.NumberField.Discriminant.Basic\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Real.Pi.Bounds\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory NumberField Finset
@@ -243,3 +400,6 @@ theorem regulator_le_sum_class : ∀ (K : Type) [Field K] [NumberField K], IsTot
   exact (ENNReal.ofReal_le_ofReal_iff (Finset.sum_nonneg hnn)).1 (h1.trans h2)
 
 end GlobalTheory.RegulatorClassBound
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.RegulatorLeSumSmallIdealsInClass =====

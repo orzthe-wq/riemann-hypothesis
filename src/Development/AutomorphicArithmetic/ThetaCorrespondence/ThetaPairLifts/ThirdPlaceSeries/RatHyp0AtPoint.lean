@@ -56,7 +56,7 @@ theorem ratHyp0_at_point_alt : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : F
     (Fm.D x i).host.pde * (Fm.D x i).host.pde') : ℕ) : 𝓞 (Fm.D x i).host.E) ∈ P.asIdeal → P ∈ (Fm.D x i).ntw.S0 t) →
   ∀ j : Fin (Fm.D x i).R.m, RatHyp0 p.T p.R (F2 p) p.κ p.v₀ p.O t j := by
   intro eps Fm x hx i p hp hM t ht hlow j
-  obtain ⟨hc, -, hu, -⟩ := _root_.GlobalTheory.T.links2_of_single_index_twisted _ _ _ _ _ _ _ _ _ _ p hp hM.1
+  obtain ⟨hc, -, hu, -⟩ := _root_.GlobalTheory.BigOn.links2_of_rows_alt _ _ _ _ _ _ _ _ _ _ p hp hM.1
   have hTie : TieIn p.T p.R.toRealDat p.κ p.v₀ :=
     ⟨p.fw.laws, p.fw.alg_eq, p.fw.kap, p.fw.hv₀, p.fw.chiR, p.fw.x0⟩
   exact

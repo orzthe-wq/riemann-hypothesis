@@ -80,7 +80,7 @@ theorem spec_comm {L L' : FinSub K Ω} (h : L ⟶ L') :
   change yoneda.map _ ≫ yoneda.map _ = yoneda.map _ ≫ 𝟙 _
   rw [Category.comp_id]
   refine (ym _ _).trans ?_
-  congr 2 <;> (ext; rfl)
+  congr 2
 
 def arr : (FinSub K Ω)ᵒᵖ ⥤ Arrow PSh where
   obj L := yArr K L.unop.1
@@ -103,7 +103,7 @@ def arrCone : Cone (arr K Ω) where
             change yoneda.map _ ≫ yoneda.map _ = yoneda.map _ ≫ 𝟙 _
             rw [Category.comp_id]
             refine (ym _ _).trans ?_
-            congr 2 <;> (ext; rfl))
+            congr 2)
          naturality := fun L L' h => by
             refine Arrow.hom_ext _ _ ?_ ?_
             · change 𝟙 _ ≫ yoneda.map (Spec.map _) = yoneda.map (Spec.map _) ≫ yoneda.map (Spec.map _)

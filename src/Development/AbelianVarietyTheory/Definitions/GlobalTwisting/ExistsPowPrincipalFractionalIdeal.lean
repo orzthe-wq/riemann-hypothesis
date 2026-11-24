@@ -1,24 +1,17 @@
 module
 
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugate
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleStrongApproxModAdelicIdeal
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaComplexConjugationCompatible
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTraceDualFamilyInverseHalfDifferent
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTwoTorsionCMPointAllConjugates
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeanSquareEvenThetaConjugateLattice
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthonormalRealBasisComplexCoordinates
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumTranslateConjugateJetBound
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegersMemInverseHalfDifferent
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -29,9 +22,7 @@ import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.NumberField.ClassNumber
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
@@ -42,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,13 +42,151 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaComplexConjugationCompatible
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData
+import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.NumberField.ClassNumber
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Linter.HaveILetI
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegersMemInverseHalfDifferent, Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ExistsPowPrincipalFractionalIdeal
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegersMemInverseHalfDifferent =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegersMemInverseHalfDifferent", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField
+
+namespace GlobalTheory.InverseHalfDifferent
+
+theorem exists_single_mem_span {E M ι : Type} [Field E] [NumberField E] [Field M] [NumberField M]
+    [Finite ι] [DecidableEq ι] (f : ι → E →+* M) (hf : Function.Injective f) (i : ι) :
+    ∃ s : M, s ≠ 0 ∧ (Pi.single i s : ι → M) ∈
+      Submodule.span (𝓞 M) (Set.range fun a : 𝓞 E => fun j => f j (a : E)) := by
+  classical
+  cases nonempty_fintype ι
+
+  let χ : ι → (𝓞 E →* M) := fun j => ((f j).comp (algebraMap (𝓞 E) E)).toMonoidHom
+  have hχ : Function.Injective χ := by
+    intro j k h
+    apply hf
+    apply IsFractionRing.ringHom_ext (A := 𝓞 E)
+    intro x
+    exact DFunLike.congr_fun h x
+  have hli : LinearIndependent M (fun j => (χ j : 𝓞 E → M)) :=
+    (linearIndependent_monoidHom (𝓞 E) M).comp χ hχ
+
+  have htop : Submodule.span M (Set.range fun a : 𝓞 E => fun j => f j (a : E)) = ⊤ := by
+    by_contra hne
+    obtain ⟨φ, hφ0, hφ⟩ := Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)
+    apply hφ0
+    have hc : ∀ j, φ (fun k => if j = k then 1 else 0) = 0 := by
+      have key : ∑ j, φ (fun k => if j = k then 1 else 0) • (χ j : 𝓞 E → M) = 0 := by
+        funext a
+        have ha : φ (fun j => f j (a : E)) = 0 := hφ (Submodule.subset_span ⟨a, rfl⟩)
+        rw [LinearMap.pi_apply_eq_sum_univ] at ha
+        simpa [χ, Finset.sum_apply, mul_comm] using ha
+      exact Fintype.linearIndependent_iff.mp hli _ key
+    refine LinearMap.ext fun x => ?_
+    rw [LinearMap.pi_apply_eq_sum_univ]
+    simp [hc]
+
+  have h1 : (Pi.single i 1 : ι → M) ∈ Submodule.span M (Set.range fun a : 𝓞 E => fun j => f j (a : E)) := by
+    rw [htop]; exact Submodule.mem_top
+  obtain ⟨y, hy, z, hz⟩ := (IsLocalization.mem_span_iff (nonZeroDivisors (𝓞 M))).mp h1
+  refine ⟨algebraMap (𝓞 M) M z, IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors z.2, ?_⟩
+  have hy' : y = algebraMap (𝓞 M) M z • (Pi.single i 1 : ι → M) := by
+    rw [hz, smul_smul, IsLocalization.mk'_spec', map_one, one_smul]
+  have : (Pi.single i (algebraMap (𝓞 M) M z) : ι → M) = y := by
+    rw [hy']
+    ext k
+    by_cases hk : k = i
+    · subst hk; simp
+    · simp [hk]
+  rw [this]
+  exact hy
+
+open Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric
+
+theorem integers_mem_inverse_half_different {R : Ranks} (H : Host R) (a : 𝓞 H.E) :
+    (a : H.E) ∈ (H.AA0 : Submodule (𝓞 H.E) H.E) := by
+
+  have hb : H.𝔟 ≠ ⊥ := by
+    intro h
+    have h2 := H.𝔟_spec.2
+    simp [h] at h2
+  have hle : (H.𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E) ≤ 1 := FractionalIdeal.coeIdeal_le_one
+  have hne : (H.𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E) ≠ 0 :=
+    FractionalIdeal.coeIdeal_ne_zero.mpr hb
+
+  have h1 : (1 : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E) ≤ H.AA0 := by
+    have := FractionalIdeal.inv_anti_mono hne hle
+    simpa [Host.AA0] using this
+  exact h1 ((FractionalIdeal.mem_one_iff _).mpr ⟨a, rfl⟩)
+
+theorem emb_injective {R : Ranks} (H : Host R) : Function.Injective H.emb := by
+  intro g g' h
+  have hσ : H.sigmaOf g = H.sigmaOf g' := by
+    ext x
+    have hx := DFunLike.congr_fun h x
+    simp only [Host.emb, RingHom.comp_apply] at hx
+    exact H.φ₀.injective hx
+  exact H.gal.symm.injective hσ
+
+theorem embT_injective (D : D7) : Function.Injective (embT D) := by
+  intro τ τ' h
+  exact D.eTau.injective (Subtype.ext (emb_injective D.host h))
+
+theorem ellT_ne_bot {D : D7} {M : IntermediateField ℚ ℂ} [NumberField M]
+    (hM : ∀ (τ : D.what₂.Tau) (x : D.host.E), (embT D τ : D.host.E → ℂ) x ∈ M)
+    (τ : D.what₂.Tau) : ellT D M τ ≠ ⊥ := by
+  classical
+
+  let f : D.what₂.Tau → D.host.E →+* M := fun σ => (embT D σ).codRestrict M (hM σ)
+  have hf : Function.Injective f := by
+    intro σ σ' h
+    apply embT_injective D
+    ext x
+    exact congrArg Subtype.val (DFunLike.congr_fun h x)
+  obtain ⟨s, hs0, hs⟩ := exists_single_mem_span f hf τ
+
+  have hle : Submodule.span (𝓞 M) (Set.range fun a : 𝓞 D.host.E => fun j => f j (a : D.host.E)) ≤ mmM D M := by
+    rw [Submodule.span_le]
+    rintro _ ⟨a, rfl⟩
+    refine Submodule.subset_span ⟨(a : D.host.E), integers_mem_inverse_half_different D.host a, ?_⟩
+    funext j
+    unfold Formalism.MainNotions.TaylorLogMetric.liftM
+    rw [dite_eq_left (hM j _)]
+    rfl
+  intro h
+  have hs' : s ∈ ellT D M τ := by
+    rw [ellT, Submodule.mem_comap]
+    simpa using hle hs
+  rw [h, Submodule.mem_bot] at hs'
+  exact hs0 hs'
+
+end GlobalTheory.InverseHalfDifferent
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegersMemInverseHalfDifferent =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ExistsPowPrincipalFractionalIdeal =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ExistsPowPrincipalFractionalIdeal", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugate\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleStrongApproxModAdelicIdeal\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaComplexConjugationCompatible\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTraceDualFamilyInverseHalfDifferent\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTwoTorsionCMPointAllConjugates\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeanSquareEvenThetaConjugateLattice\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthonormalRealBasisComplexCoordinates\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumTranslateConjugateJetBound\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegersMemInverseHalfDifferent\nimport Formalism.LocalRingCardinality.RankBoundMonotoneInDimension\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.NumberField.ClassNumber\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -183,19 +311,10 @@ section Line
 
 variable {D : D7} {M : IntermediateField ℚ ℂ} [NumberField M]
 
-theorem ellT_ne_bot (hM : ∀ τ x, embT D τ x ∈ M) (τ : D.what₂.Tau) : ellT D M τ ≠ ⊥ := by
-  first
-  | exact @_root_.GlobalTheory.InverseHalfDifferent.ellT_ne_bot
-  | exact _root_.GlobalTheory.InverseHalfDifferent.ellT_ne_bot
-  | (apply _root_.GlobalTheory.InverseHalfDifferent.ellT_ne_bot <;> assumption)
-  | (intros; apply _root_.GlobalTheory.InverseHalfDifferent.ellT_ne_bot <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.InverseHalfDifferent.ellT_ne_bot <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.InverseHalfDifferent.ellT_ne_bot ..)
-
 theorem ne_zero_of_span_eq (hM : ∀ τ x, embT D τ x ∈ M) {τ : D.what₂.Tau} {a : M}
     (ha : Submodule.span (𝓞 M) {a} = ellT D M τ) : a ≠ 0 := by
   rintro rfl
-  exact ellT_ne_bot hM τ (by rw [← ha, Submodule.span_singleton_eq_bot])
+  exact _root_.GlobalTheory.InverseHalfDifferent.ellT_ne_bot hM τ (by rw [← ha, Submodule.span_singleton_eq_bot])
 
 
 omit [NumberField M] in
@@ -233,8 +352,7 @@ theorem index_span_mul (c : 𝓞 M) {a : M} (ha : a ≠ 0) :
   have h2 : (Submodule.span (𝓞 M) {c • a}).toAddSubgroup =
       (Ideal.span {c} : Ideal (𝓞 M)).toAddSubgroup.map f.toAddMonoidHom := by
     ext x
-    simp only [Submodule.mem_toAddSubgroup, Submodule.mem_span_singleton, AddSubgroup.mem_map,
-      Ideal.mem_span_singleton']
+    simp only [Submodule.mem_toAddSubgroup, Submodule.mem_span_singleton, AddSubgroup.mem_map]
     constructor
     · rintro ⟨r, rfl⟩
       exact ⟨r * c, ⟨r, rfl⟩, by simp [f, mul_smul]⟩
@@ -369,15 +487,9 @@ theorem exists_extraTie (h : Crv D cc δ) (M : IntermediateField ℚ ℂ) [Numbe
 
 namespace ExtraTie
 
-variable {G : GlobalExtra LL D.what₂.Tau} {a : D.what₂.Tau → imM ι} (T : ExtraTie D cc δ ι G a)
-include T
-
 end ExtraTie
 
 namespace PerTie
-
-variable (T : PerTie D cc δ)
-include T
 
 end PerTie
 
@@ -574,3 +686,7 @@ theorem exists_extraTie_of_crv {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (h : Crv 
 end Free
 
 end GlobalTheory.Glob
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ExistsPowPrincipalFractionalIdeal =====

@@ -114,15 +114,12 @@ theorem szf_normDD (D : D7) (hd : NumberField.discr D.host.E = NumberField.discr
         (differentIdeal ℤ (𝓞 D.host.F))) : ℚ) := by
     first
     | exact FractionalIdeal.coeIdeal_absNorm _
-    | exact FractionalIdeal.absNorm_coeIdeal _
-    | exact FractionalIdeal.coe_absNorm _
   have hd2 : Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) = (NumberField.discr D.host.F).natAbs := by
     exact NumberField.absNorm_differentIdeal D.host.F (𝓞 D.host.F)
   rw [hc, key, hd2]
   push_cast
   first
   | simp [abs_pow, Nat.cast_natAbs]
-  | rw [Nat.cast_natAbs, Int.cast_abs, abs_pow]
 
 end Formalism.MainNotions.BridgeLemma
 

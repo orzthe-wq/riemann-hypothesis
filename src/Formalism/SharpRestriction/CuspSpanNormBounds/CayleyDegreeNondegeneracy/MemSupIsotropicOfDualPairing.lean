@@ -199,7 +199,7 @@ theorem mem_sup_isotropic_of_dual_pairing (hΛ : Submodule.IsFullLattice D.host.
         rfl
     by_cases h : a = b
     · subst b
-      simp only [if_pos rfl]
+      simp only
     · have hn : idx a ≠ idx b := fun hh => h (hi.mp hh.symm)
       simp only [if_neg h, if_neg hn]
   have DL := Formalism.HermitianLatticesTheory.dualLattice (𝓞 D.host.E) D.host.E (hS D).V (hS D).hT (hS D).herm (hS D).nondeg i_star_int

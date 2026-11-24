@@ -1,47 +1,8 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.RealObj
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHDef
 
 @[expose] public section
 
@@ -303,20 +264,13 @@ theorem hJ_sum_r' {ι : Type*} [Fintype ι] (x : Fin n → ℂ) (a : ι → ℂ)
     hJ ε x (∑ c, a c • y c) = ∑ c, a c * hJ ε x (y c) := by
   simp only [hJ, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]
 
-theorem hJ_cj' (x y : Fin n → ℂ) : hJ ε x y = conj (hJ ε y x) := by
-
-  simp only [hJ, Formalism.REAL.Jm, Matrix.mulVec_diagonal, dotProduct, Pi.star_apply, RCLike.star_def, map_sum,
-  map_mul, Complex.conj_conj]
-  refine Finset.sum_congr rfl fun a _ => ?_
-  split_ifs <;> simp <;> ring
-
 theorem hJ_sum_l' {ι : Type*} [Fintype ι] (x : Fin n → ℂ) (a : ι → ℂ) (y : ι → Fin n → ℂ) (w : Fin n → ℂ) :
     hJ ε (x + ∑ c, a c • y c) w = hJ ε x w + ∑ c, conj (a c) * hJ ε (y c) w := by
 
-  rw [hJ_cj' ε (x + ∑ c, a c • y c) w, hJ_add_r', hJ_sum_r', map_add (f := _), map_sum, ← hJ_cj' ε x w]
+  rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_conj ε (x + ∑ c, a c • y c) w, hJ_add_r', hJ_sum_r', map_add (f := _), map_sum, ← _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_conj ε x w]
   congr 1
   refine Finset.sum_congr rfl fun c _ => ?_
-  rw [map_mul, ← hJ_cj' ε (y c) w]
+  rw [map_mul, ← _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_conj ε (y c) w]
 
 theorem span_expand (e f : Fin r → Fin n → ℂ) (hfe : ∀ a b, hJ ε (f a) (e b) = if b = a then 1 else 0)
     (k : ℕ) (y : Fin n → ℂ) (hy : y ∈ spanLt e k) :

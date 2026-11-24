@@ -89,18 +89,10 @@ theorem conv_zc_of_scalar (χ : G → ℂ) (W : FDRep ℂ G) (c : ℂ) (h : op W
     show zc W.character x = W.character 1 / (Fintype.card G : ℂ) * W.character x⁻¹ from rfl]
   ring
 
-theorem op_conv_eq {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ G M) (a b : G → ℂ) :
-    op ρ (conv a b) = op ρ a * op ρ b := by
-  simp only [op, conv, Finset.sum_smul, Finset.sum_mul_sum, smul_mul_smul_comm, ← map_mul]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun y _ => ?_
-  refine (Fintype.sum_equiv (Equiv.mulLeft y) _ _ fun x => ?_).symm
-  simp
-
 theorem rk_eq_trace {M : Type} [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (ρ : Representation ℂ G M)
     (e : G → ℂ) (he : conv e e = e) : (rk ρ e : ℂ) = ∑ γ, e γ * LinearMap.trace ℂ M (ρ γ) := by
   have hi : IsIdempotentElem (op ρ e) := by
-    rw [IsIdempotentElem, ← op_conv_eq, he]
+    rw [IsIdempotentElem, ← _root_.GlobalTheory.BadShare.Basic.op_conv, he]
   have hp := (LinearMap.IsIdempotentElem.isProj_range _ hi).trace
 
   rw [rk, ← hp, op, map_sum]

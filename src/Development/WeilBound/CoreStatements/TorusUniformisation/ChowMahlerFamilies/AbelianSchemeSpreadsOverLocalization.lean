@@ -1,5 +1,22 @@
 module
 
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
+public import Mathlib.AlgebraicGeometry.Geometrically.Integral
+public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CubicalExtendsAndExtendGen
+public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsIntegralOfSmoothFieldOfConnectedSpace
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RangeSubsetAbLocusOfIsProper
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRigidifiedCubicalSymmetricExtensionNormalB
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSabExtension
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubicalPullBaseChangeSt
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubicalStructureAndSymmetricOfCubeGen
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLineBundleGeneratorExtendingDensePart
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabMapOfLbIso
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsPullCubicalId
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAbelianSchemeAway
 public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsGloballyGeneratedIffGeneratingSections
@@ -7,16 +24,12 @@ public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverI
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRelAmpleOfIsProjBy
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LineBundleSpreadsOutFromGenericFibreProper
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GenericExistsUniqueOActOfIsGrpPullback
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsSchemeTheoreticallyDominantSpecOfInjective
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.OActSpreadFromDenseFibresAbelianScheme
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSecOfFinite
-public import Development.WeilBound.CoreStatements.TorusUniformisation.SiegelCompactSupport.ExistsSabExtension
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoStalkMapOfFlatOfSurjectiveOnStalks
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Morphisms.QuasiFinite
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -31,11 +44,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.Tactic.Basify
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -43,6 +53,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -55,11 +66,199 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianLocusOpenFamilyOverLevel
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GenericExistsUniqueOActOfIsGrpPullback
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsSchemeTheoreticallyDominantSpecOfInjective
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSecOfFinite
+import Mathlib.AlgebraicGeometry.Morphisms.QuasiFinite
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Tactic.Basify
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LeOfPowLePolyMulPow
 import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
 import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.TorusUniformisation.SiegelCompactSupport.ExistsSabExtension, Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.AbelianSchemeSpreadsOverLocalization
+
+-- ===== clump member: Development.WeilBound.CoreStatements.TorusUniformisation.SiegelCompactSupport.ExistsSabExtension =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.TorusUniformisation.SiegelCompactSupport.ExistsSabExtension", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle\npublic import Mathlib.AlgebraicGeometry.Geometrically.Integral\npublic import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CubicalExtendsAndExtendGen\npublic import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsIntegralOfSmoothFieldOfConnectedSpace\npublic import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RangeSubsetAbLocusOfIsProper\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRigidifiedCubicalSymmetricExtensionNormalB\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSabExtension\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubicalPullBaseChangeSt\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubicalStructureAndSymmetricOfCubeGen\npublic import Mathlib.AlgebraicGeometry.Morphisms.Smooth\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLineBundleGeneratorExtendingDensePart\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabMapOfLbIso\npublic import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsPullCubicalId\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoStalkMapOfFlatOfSurjectiveOnStalks\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.AbelianLocusOpenFamilyOverLevel\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
+open scoped CategoryTheory.Obj
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open GlobalTheory GlobalTheory.CechPic GlobalTheory.TripleExt
+
+namespace PositivityTheory.Member.SiegelModularCharts.K6
+
+theorem pic_ext {X U : Scheme.{0}} [IsLocallyNoetherian X] (hX : Geo.Tor.IsNormalScheme X) (j : U ⟶ X)
+    [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j] (P : Over X) (e : X ⟶ P.left) {HU : Scheme.{0}}
+    (jH : HU ⟶ P.left) (pU : HU ⟶ U) (hp : Smooth P.hom) (hg : GeometricallyIntegral P.hom) (he : e ≫ P.hom = 𝟙 _)
+    (hj : IsPullback jH pU P.hom j) (α β : Pic P.left) (h₁ : pull jH α = pull jH β) (h₂ : pull e α = pull e β) :
+    α = β := by
+  obtain ⟨N, hN, hc⟩ := cls_surj (α - β)
+  refine sub_eq_zero.1 (hc ▸ (cls_eq_zero_iff hN).2 ?_)
+  refine _root_.GlobalTheory.GenericExtend.exists_isGen_of_densePart X U j hX inferInstance inferInstance inferInstance inferInstance P e N he hp hg hN
+    ((cls_eq_zero_iff (pull_isLB hN _)).1 ?_) ((cls_eq_zero_iff (pull_isLB hN _)).1 ?_)
+  · rw [cls_pull hN, hc, map_sub, h₂, sub_self]
+  · rw [cls_pull hN, hc, ← hj.isoPullback_inv_fst, pull_comp, map_sub, h₁, sub_self, map_zero]
+
+theorem isReduced_source {X U : Scheme.{0}} (hX : Geo.Tor.IsNormalScheme X) (j : U ⟶ X)
+    (h : ∀ u : U, IsIso (j.stalkMap u)) : IsReduced U := by
+  have : ∀ x : U, _root_.IsReduced (U.presheaf.stalk x) := fun x => by
+    have := (hX (j x)).1
+    have := h x
+    exact isReduced_of_injective (asIso (j.stalkMap x)).commRingCatIsoToRingEquiv.symm
+      (asIso (j.stalkMap x)).commRingCatIsoToRingEquiv.symm.injective
+  exact isReduced_of_isReduced_stalk U
+
+theorem exists_sab_extension {X U : Scheme.{0}} [IsLocallyNoetherian X] (hX : Geo.Tor.IsNormalScheme X) (j : U ⟶ X)
+    [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j] {E : Type} [Field E] [NumberField E] [IsCMField E]
+    (H : Host E) (G : Over X) [GrpObj G] [IsCommMonObj G] (semi : IsSemiAbelian G) (act : OAct (𝓞 E) G)
+    (t₀ : SAB H U) (a : t₀.G.left ⟶ G.left) [IsProper t₀.G.hom] (h : IsGrpPullback t₀.G G j a)
+    (hact : ∀ x, (t₀.act.act x).left ≫ a = a ≫ (act.act x).left) (M : LB G.left) (hM : M.IsLB)
+    (hMa : LBIso (M.pull a) t₀.PP.L) :
+    ∃ (PP : RigLB G) (cub : CubicalStr G PP) (h₁ : _) (h₂ : _) (h₃ : _)
+      (m : SABMap t₀ (SAB.mk G semi act PP cub h₁ h₂ h₃) j), m.φ = a := by
+  have := semi.smooth
+  have := semi.geomConnected
+  obtain ⟨hgen, hst, -, -⟩ := densePart_basic X U j inferInstance inferInstance inferInstance inferInstance
+  obtain ⟨PP, hPP⟩ := NormalCubeExt.exists_rigidified h t₀.PP hM hMa
+  have hc₀ : cls t₀.PP.L t₀.PP.isLB = pull a (cls PP.L PP.isLB) :=
+    (cls_eq_iff t₀.PP.isLB (pull_isLB PP.isLB _)).2 hPP
+  have hrig : pull (eSec G) (cls PP.L PP.isLB) = 0 :=
+    (cls_eq_zero_iff (pull_isLB PP.isLB _)).2 ⟨PP.rig, PP.rigGen⟩
+  have pa : ∀ {T : Over U} (x : T ⟶ t₀.G) b,
+      pushPt h.1.w (x ≫ t₀.act.act b) = pushPt h.1.w x ≫ act.act b := fun x b =>
+    Over.OverMorphism.ext (by
+      show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _
+      rw [Category.assoc, hact, Category.assoc])
+  have ha1 : ∀ b, η[G] ≫ act.act b = η[G] := fun b => by have := act.hom b; exact IsMonHom.one_hom _
+  have s₂ := CubeExtension.smooth_tensor G G
+  have s₃ := CubeExtension.smooth_tensor G (G ⊗ G)
+  have c₂ := CubeExtension.geometricallyConnected_tensor G G
+  have c₃ := CubeExtension.geometricallyConnected_tensor G (G ⊗ G)
+  have hy : ∀ (T : Over X) (y : T ⟶ G), ∃ y' : Over.mk (pullback.snd T.hom j) ⟶ t₀.G, pushPt h.1.w y' =
+      (Over.homMk (pullback.fst T.hom j) pullback.condition :
+        Over.mk ((Over.mk (pullback.snd T.hom j)).hom ≫ j) ⟶ T) ≫ y := fun T y =>
+    ⟨Over.homMk (h.1.lift (pullback.fst T.hom j ≫ y.left) (pullback.snd T.hom j)
+      (by rw [Category.assoc, Over.w]; exact pullback.condition)) (h.1.lift_snd _ _ _),
+      Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩
+  obtain ⟨hcub, hsym⟩ := _root_.GlobalTheory.CubeGen.cubical_and_symmetric X G PP semi
+    ⟨_root_.GlobalTheory.AbelianLocusNormalisation.isReduced_of_normal hX, hgen.trans (range_subset_abLocus_of_isProper semi h.1)⟩
+  obtain ⟨cub⟩ : Nonempty (CubicalStr G PP) := by
+    refine hcub ((cls_eq_zero_iff (isLB_cube (x3 G) PP.isLB)).1 ?_)
+    rw [cls_cube _ PP.isLB]
+    let T' : Over U := Over.mk (pullback.snd (G3 G).hom j)
+    let u : Over.mk (T'.hom ≫ j) ⟶ G3 G := Over.homMk (pullback.fst (G3 G).hom j) pullback.condition
+    choose y hy' using fun i => hy (G3 G) (x3 G i)
+    let e : 𝟙_ (Over X) ⟶ G3 G := lift η[G] (lift η[G] η[G])
+    refine pic_ext hX j (G3 G) e.left u.left T'.hom s₃
+      (geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres _) (Over.w e)
+      (IsPullback.of_hasPullback _ _) _ _ ?_ ?_
+    · have h₀ := (cls_eq_zero_iff (isLB_cube (x3 t₀.G) t₀.PP.isLB)).2 ⟨t₀.cub.t, t₀.cub.isGen⟩
+      rw [cls_cube _ t₀.PP.isLB, hc₀] at h₀
+      have h₁ := congrArg (pull (lift (y 0) (lift (y 1) (y 2))).left) h₀
+      rw [pull_cubeCls_pre, map_zero] at h₁
+      refine (pull_cubeCls_push h _ _ u (fun i => ?_) _).trans (h₁.trans (map_zero _).symm)
+      refine Eq.trans ?_ (hy' i)
+      congr 1
+      fin_cases i <;> simp [x3]
+    · refine (pull_cubeCls_pre e _ _).trans (Eq.trans ?_ (map_zero _).symm)
+      refine Eq.trans ?_ (cubeCls_one (n := 3) _ hrig)
+      congr 1
+      funext i
+      fin_cases i <;> simp [e, x3]
+  have hs : PP.IsSymmetric := by
+    refine hsym ((cls_eq_iff PP.isLB (pull_isLB PP.isLB _)).1 ?_)
+    have hι : (ι[t₀.G]).left ≫ a = a ≫ (ι[G]).left := by
+      have e := congrArg (fun q => q.left) (map_inv (pushHom h t₀.G) (𝟙 t₀.G))
+      simp only [Hom.inv_def, Category.id_comp] at e
+      refine e.trans ?_
+      show (𝟙 _ ≫ a) ≫ _ = _
+      rw [Category.id_comp]
+    have e₂ : eSec G ≫ (ι[G]).left = eSec G := by
+      rw [eSec, ← Over.comp_left, GrpObj.one_inv]
+    rw [cls_pull PP.isLB]
+    refine pic_ext hX j G (eSec G) a t₀.G.hom inferInstance
+      (geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres _) (Over.w η[G]) h.1 _ _ ?_ ?_
+    · obtain ⟨-, w, hw, -⟩ := t₀.sym
+      have h₀ := (cls_eq_iff t₀.PP.isLB (pull_isLB t₀.PP.isLB _)).2 ⟨w, hw⟩
+      rw [cls_pull t₀.PP.isLB, hc₀, ← pull_comp, hι, pull_comp] at h₀
+      exact h₀
+    · rw [← pull_comp, e₂]
+  have hadj : ∀ b, LBIso (cubeLB G ![fst G G ≫ act.act b, snd G G] PP.L)
+      (cubeLB G ![fst G G, snd G G ≫ act.act (H.bar b)] PP.L) := fun b => by
+    refine (cls_eq_iff (isLB_cube _ PP.isLB) (isLB_cube _ PP.isLB)).1 ?_
+    rw [cls_cube _ PP.isLB, cls_cube _ PP.isLB]
+    let T' : Over U := Over.mk (pullback.snd (G ⊗ G).hom j)
+    let u : Over.mk (T'.hom ≫ j) ⟶ G ⊗ G := Over.homMk (pullback.fst (G ⊗ G).hom j) pullback.condition
+    obtain ⟨y₁, hy₁⟩ : ∃ y' : T' ⟶ t₀.G, pushPt h.1.w y' = u ≫ fst G G := hy _ (fst G G)
+    obtain ⟨y₂, hy₂⟩ : ∃ y' : T' ⟶ t₀.G, pushPt h.1.w y' = u ≫ snd G G := hy _ (snd G G)
+    let e : 𝟙_ (Over X) ⟶ G ⊗ G := lift η[G] η[G]
+    refine pic_ext hX j (G ⊗ G) e.left u.left T'.hom s₂
+      (geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres _) (Over.w e)
+      (IsPullback.of_hasPullback _ _) _ _ ?_ ?_
+    · have h₀ := (cls_eq_iff (isLB_cube _ t₀.PP.isLB) (isLB_cube _ t₀.PP.isLB)).2 (t₀.adj b)
+      rw [cls_cube _ t₀.PP.isLB, cls_cube _ t₀.PP.isLB, hc₀] at h₀
+      have h₁ := congrArg (pull (lift y₁ y₂).left) h₀
+      rw [pull_cubeCls_pre, pull_cubeCls_pre] at h₁
+      refine (pull_cubeCls_push h _ _ u (fun i => ?_) _).trans
+        (h₁.trans (pull_cubeCls_push h _ _ u (fun i => ?_) _).symm)
+      · fin_cases i
+        · simp [pa, hy₁]
+        · simp [hy₂]
+      · fin_cases i
+        · simp [hy₁]
+        · simp [pa, hy₂]
+    · refine (pull_cubeCls_pre e _ _).trans (Eq.trans ?_ (pull_cubeCls_pre e _ _).symm)
+      congr 1
+      funext i
+      fin_cases i <;> simp [e, ha1]
+  have hprim : LBIso PP.L (cubeLB G ![𝟙 G, act.act H.w0] PP.L) := by
+    refine (cls_eq_iff PP.isLB (isLB_cube _ PP.isLB)).1 ?_
+    rw [cls_cube _ PP.isLB]
+    refine pic_ext hX j G (eSec G) a t₀.G.hom inferInstance
+      (geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres _) (Over.w η[G]) h.1 _ _ ?_ ?_
+    · have h₀ := (cls_eq_iff t₀.PP.isLB (isLB_cube _ t₀.PP.isLB)).2 t₀.prim
+      rw [cls_cube _ t₀.PP.isLB, hc₀] at h₀
+      have h₁ := pull_cubeCls_push h ![𝟙 t₀.G, t₀.act.act H.w0] ![𝟙 G, act.act H.w0] (pushPt h.1.w (𝟙 t₀.G))
+        (fun i => by
+          fin_cases i
+          · simp
+          · exact (congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pa _ _)) (cls PP.L PP.isLB)
+      have e : (pushPt h.1.w (𝟙 t₀.G)).left = a := Category.id_comp _
+      rw [e] at h₁
+      exact h₀.trans h₁.symm
+    · refine hrig.trans (Eq.trans ?_ (pull_cubeCls_pre η[G] _ _).symm)
+      refine (cubeCls_one (n := 2) _ hrig).symm.trans ?_
+      congr 1
+      funext i
+      fin_cases i <;> simp [ha1]
+  obtain ⟨m, hm⟩ := exists_sabMap_of_lbIso E H X U (SAB.mk G semi act PP cub hs hadj hprim) t₀ j a
+    ⟨isReduced_source hX j hst, fun x _ => range_subset_abLocus_of_isProper t₀.semi
+      (ObjRebase.isGrpPullback_id t₀.G).1 ⟨x, rfl⟩⟩ h hact hPP
+  exact ⟨PP, cub, hs, hadj, hprim, m, hm⟩
+
+end PositivityTheory.Member.SiegelModularCharts.K6
+
+namespace PositivityTheory.Member.SiegelModularCharts
+
+end PositivityTheory.Member.SiegelModularCharts
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.TorusUniformisation.SiegelCompactSupport.ExistsSabExtension =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.AbelianSchemeSpreadsOverLocalization =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.AbelianSchemeSpreadsOverLocalization", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsAbelianSchemeAway\npublic import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsGloballyGeneratedIffGeneratingSections\npublic import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB\npublic import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsRelAmpleOfIsProjBy\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LineBundleSpreadsOutFromGenericFibreProper\nimport Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.GenericExistsUniqueOActOfIsGrpPullback\nimport Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsSchemeTheoreticallyDominantSpecOfInjective\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.OActSpreadFromDenseFibresAbelianScheme\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing\nimport Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsSecOfFinite\npublic import Development.WeilBound.CoreStatements.TorusUniformisation.SiegelCompactSupport.ExistsSabExtension\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Morphisms.QuasiFinite\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LeOfPowLePolyMulPow\nimport Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes\nimport Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne\nimport Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -302,3 +501,6 @@ theorem PositivityTheory.Xgn.abelian_scheme_spreads_over_localization : ∀ (E :
   obtain ⟨PP, cub, h₁, h₂, h₃, m, -⟩ := PositivityTheory.Member.SiegelModularCharts.K6.exists_sab_extension hX (spMap (algebraMap R L)) H G
     (isSemiAbelian_of_isAbelianScheme G hG) r tL φ gp (hr _ _ tL.G φ tL.act gp hv) N hN hMN.symm
   exact ⟨n, hn, _, ψ, fun x => RingHom.congr_fun (toFrac_comp (𝓞 L) L hn) x, ⟨m⟩⟩
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.TorusUniformisation.ChowMahlerFamilies.AbelianSchemeSpreadsOverLocalization =====

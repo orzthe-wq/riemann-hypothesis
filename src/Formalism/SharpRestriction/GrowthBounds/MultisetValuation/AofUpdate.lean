@@ -131,7 +131,7 @@ theorem Aof_update (i0 : X.Pl → ℕ) (vs : List X.Pl) (v : X.Pl) (hv : v ∉ v
   by_cases hw : w = v
   · subst hw
     simp [hv]
-  · simp [hw, Function.update_apply]
+  · simp [hw]
 
 theorem Zop_gen (hfr : IsFractionRing X.G.O X.G.Kf) (hL : LinD X) (v : X.Pl) (u m : ℕ → X.G.Kf) (j : ℕ)
     (hj : j < X.mm) (hu : ∀ l ∈ Icc 1 X.mm, X.vEqK (u l) 0)

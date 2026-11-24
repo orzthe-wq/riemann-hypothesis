@@ -76,7 +76,7 @@ private theorem UpperTheory.V.Ws.Chain.rt_wt {O Γ : Type} [CommRing O] [Group �
     generalize Φ.χ 0 g = x at *
     generalize Φ.χ 1 g = y at *
     generalize Φ.χ 2 g = z at *
-    fin_cases k <;> simp [lamW, muW] <;> group
+    fin_cases k <;> simp [lamW, muW]
   have hrt : Φ.rt (wt i j) g = (Φ.χ 0 g * (Φ.χ 1 g)⁻¹) ^ (lamW i - lamW j) *
       (Φ.χ 0 g * (Φ.χ 2 g)⁻¹) ^ (muW i - muW j) := rfl
   rw [hrt, key i, key j]

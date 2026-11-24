@@ -64,12 +64,10 @@ theorem lre_le_apply {s r : ℕ} (I : Fin s → Fin r) (hI : StrictMono I) (p : 
   induction k with
   | zero => exact Nat.zero_le _
   | succ k ih =>
-    have h1 := ih (by omega)
-    have h2 : I ⟨k, by omega⟩ < I ⟨k + 1, hk⟩ := hI (by simp [Fin.lt_def])
-    have h3 : (I ⟨k, by omega⟩).val < (I ⟨k + 1, hk⟩).val := h2
-    show k + 1 ≤ (I ⟨k + 1, hk⟩).val
-    have h1' : k ≤ (I ⟨k, by omega⟩).val := h1
-    omega
+    have hk' : k < s := by omega
+    have h1 : k ≤ (I ⟨k, hk'⟩).val := ih hk'
+    have h2 : (I ⟨k, hk'⟩).val < (I ⟨k + 1, hk⟩).val := hI (by simp [Fin.lt_def])
+    exact Nat.succ_le_of_lt (lt_of_le_of_lt h1 h2)
 
 theorem lre_lowerTri {r n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin r)
     (hI : ∀ k, StrictMono (I k)) : LowerTri (bidetExp sz hsz I) := by
@@ -81,11 +79,9 @@ theorem lre_lowerTri {r n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n
   refine Finset.sum_eq_zero fun p _ => ?_
   rw [Finsupp.single_apply, if_neg]
   intro h
-  have h1 : I k p = a := congrArg Prod.fst h
-  have h2 : Fin.castLE (hsz k) p = s := congrArg Prod.snd h
+  have h1 : (I k p).val = a.val := congrArg Fin.val (congrArg Prod.fst h)
+  have h2 : p.val = s.val := by simpa using congrArg (fun x : Fin r × Fin n => x.2.val) h
   have h3 := lre_le_apply (I k) (hI k) p
-  have h4 : p.val = s.val := by rw [← h2]; rfl
-  rw [h1] at h3
   omega
 
 theorem lower_triangular_integral : LowerTriIntegral := by

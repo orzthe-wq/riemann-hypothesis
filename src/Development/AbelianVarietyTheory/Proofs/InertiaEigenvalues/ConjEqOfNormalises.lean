@@ -5,14 +5,16 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Development.AbelianVarietyTheory.Definitions.Divisors.InstCMHostS
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsEigenSysOfHeckeLin
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeEqSmulOfIsot
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeScalarOnSphericalVectors
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOne
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceDoubleCosetOperatorsCommuteSphericalStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryFiniteAdelesSplitPlaceDecompositionStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FixedVectorsNeBotOfMemSumIntertwiningRanges
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalReciprocityUnramifiedSpherical
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteTypeSpannedBySplitPlaceLocalComponent
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsotypicRowLocalSplitExists
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeScalarOnSphericalVectors
+import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAut
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SplitPlaceDoubleCosetOperatorsCommuteSpherical
+import Formalism.AlgebraicWeights.IsAlgWeight
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryFiniteAdelesSplitPlaceDecomposition
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFixedIff
 import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
 import Mathlib.Algebra.Module.StablyFree.Basic
@@ -329,7 +331,7 @@ theorem exists_scalar (π : NG.FinTyp L n) (s : SplitPlace L) : ∃ R : GAf L n 
     (∀ a, TrivOutside {s.v} a → Reps (locK n s.v) a (R a)) ∧ ∀ a, TrivOutside {s.v} a → ∃ c : ℂ, ∀ x ∈ π.S,
       (∀ κ ∈ locK n s.v, NG.rt L n κ x = x) → ∑ γ ∈ R a, rtHom L n ℂ γ x = c • x := by
   classical
-  obtain ⟨hdec, hcomm, -⟩ := GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s
+  obtain ⟨hdec, hcomm, -⟩ := _root_.GlobalTheory.SplitAdelic.main L n s
   choose R hR using exists_repsU (L := L) (n := n) s.v
   refine ⟨R, fun a ha => reps_of_repsU ha (hR a), fun α hα => ?_⟩
   have hRα := reps_of_repsU hα (hR α)
@@ -343,7 +345,7 @@ theorem exists_scalar (π : NG.FinTyp L n) (s : SplitPlace L) : ∃ R : GAf L n 
     ⟨fun ⟨k₁, h₁, k₂, h₂, t₁, t₂, e⟩ => ⟨k₁, ⟨h₁, t₁⟩, k₂, ⟨h₂, t₂⟩, e⟩,
       fun ⟨k₁, h₁, k₂, h₂, e⟩ => ⟨k₁, h₁.1, k₂, h₂.1, h₁.2, h₂.2, e⟩⟩
   obtain ⟨c, hc⟩ : ∃ c : ℂ, ∀ x ∈ GlobalTheory.SphScalar.fixS (rtHom L n ℂ) π.S (locK n s.v), T x = c • x := by
-    refine GlobalTheory.SphScalar.abs_scalar (rtHom L n ℂ) π.S (fun g x hx => π.stable g x hx) π.irr (GlobalTheory.SphScalar.countRank π)
+    refine GlobalTheory.SphScalar.abs_scalar (rtHom L n ℂ) π.S (fun g x hx => π.stable g x hx) π.irr (_root_.GlobalTheory.FinTyp.rank_le_aleph0 π)
       (locK n s.v) {x | TrivOutside {s.v} x} {y | TrivOutside {s.v}ᶜ y}
       (fun g => by obtain ⟨x, y, hx, hy, e⟩ := hdec g; exact ⟨x, hx, y, hy, e⟩)
       (fun κ hκ b hb => (hcomm κ b hκ.2 hb).eq) R (fun b hb => reps_of_repsU hb (hR b)) T ?_ ?_ ?_
@@ -362,17 +364,17 @@ theorem exists_scalar (π : NG.FinTyp L n) (s : SplitPlace L) : ∃ R : GAf L n 
       rw [← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, (hcomm γ b (hRtriv γ hγ) hb).eq]
     · intro b hb x hx
       rw [hT, hT]
-      exact GlobalTheory.T.splitPlace_doubleCosetOperators_commute_spherical L n ℂ s α b (R α) (R b) hα hb (fun y hy => (hR α).2 y (conv.1 hy))
+      exact _root_.GlobalTheory.SplitHeckeComm.doubleCoset_comm L n ℂ s α b (R α) (R b) hα hb (fun y hy => (hR α).2 y (conv.1 hy))
         (fun γ hγ => conv.2 ((hR α).1 γ hγ)) (fun y hy => (hR b).2 y (conv.1 hy))
         (fun γ hγ => conv.2 ((hR b).1 γ hγ)) x (fun κ h1 h2 => hx.2 κ ⟨h1, h2⟩)
   exact ⟨c, fun x hx hf => (hT x).symm.trans (hc x ⟨hx, hf⟩)⟩
 
 theorem exists_isLocS (π : NG.FinTyp L n) (s : SplitPlace L) {x : GAf L n → ℂ} (hx : x ∈ π.S) (h0 : x ≠ 0)
     (hK : ∀ κ ∈ locK n s.v, NG.rt L n κ x = x) : ∃ τ, IsLocS π.S s τ := by
-  obtain ⟨hdec, hcomm, -⟩ := GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s
+  obtain ⟨hdec, hcomm, -⟩ := _root_.GlobalTheory.SplitAdelic.main L n s
   obtain ⟨R, hR, hc⟩ := exists_scalar π s
   let Loc : Subgroup (GAf L n) := ⟨⟨⟨{a | TrivOutside {s.v} a}, triv_mul⟩, triv_one⟩, triv_inv⟩
-  refine GlobalTheory.RowLocal.isLocS_of_irr π s (Submodule.span ℂ {y | ∃ a ∈ Loc, y = rtHom L n ℂ a x})
+  refine _root_.GlobalTheory.blockFieldPairProjections.exists_local_component π s (Submodule.span ℂ {y | ∃ a ∈ Loc, y = rtHom L n ℂ a x})
     (Submodule.span_le.2 (by rintro _ ⟨a, -, rfl⟩; exact π.stable a x hx)) (fun h => h0 ?_) (fun g hg f hf => ?_)
     fun W' hle hst => irr_of_scalar (rtHom L n ℂ) π.S (fun g x hx => π.stable g x hx) π.irr (locK n s.v) Loc
       (fun κ hκ => hκ.2) {y | TrivOutside {s.v}ᶜ y}
@@ -422,7 +424,7 @@ theorem isSpherical_of_isLocS (π : NG.FinTyp L n) (s : SplitPlace L)
     (hf0 : f ≠ 0) (hfix : ∀ κ ∈ locK n s.v, NG.rt L n κ f = f) : GlobalTheory.SmGL.IsSpherical σ.ρ := by
   classical
   obtain ⟨i, T₀, hi, hic, -, -, -⟩ := id hσ
-  have hI := GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s
+  have hI := _root_.GlobalTheory.SplitAdelic.main L n s
   choose lift hlift using fun A => (hI.2.2 A).exists
   have huniq : ∀ A x, TrivOutside {s.v} x → s.loc n x = A → x = lift A := fun A x hx e =>
     (hI.2.2 A).unique ⟨hx, e⟩ (hlift A)

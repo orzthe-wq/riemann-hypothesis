@@ -57,6 +57,6 @@ variable {F : Type} [Field F] [NumberField F]
 
 theorem card_residue (v : HeightOneSpectrum (𝓞 F)) :
     Nat.card (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) = Nat.card (𝓞 F ⧸ v.asIdeal) := by
-  apply Formalism.MainNotions.Gaps.LG.fm_card_residue <;> assumption
+  apply Formalism.MainNotions.Gaps.LG.fm_card_residue
 
 end ReciprocityTheory.Bridge.ResidueFieldCardinality

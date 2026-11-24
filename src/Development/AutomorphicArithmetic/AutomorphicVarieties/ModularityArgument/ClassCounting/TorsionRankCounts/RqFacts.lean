@@ -59,7 +59,6 @@ theorem UpperTheory.V.ZK.Up.rqFacts : UpperTheory.V.ZK.Up.RqFacts := by
       simp only [bd, rq, Finsupp.mapRange.addMonoidHom_apply, Finsupp.mapRange_single,
         Finsupp.linearCombination_single, Finsupp.smul_apply, Finsupp.add_apply,
         Finsupp.finsetSum_apply, Finsupp.mapRange_apply, smul_eq_mul]
-      push_cast
       unfold Finsupp.single
       split_ifs <;> simp [Pi.single_apply, apply_ite]
   · intro G H _ _ f m z

@@ -84,8 +84,8 @@ theorem invariant_const_on_translate : ∀ (O K : Type) [CommRing O] [IsDomain O
   have key : M * e = e + ϖ • z := by
     ext (a | a) b <;>
       simp [hMdef, hedef, z₁, z₂, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks,
-        Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.toRows₁, Matrix.toRows₂, Matrix.one_apply, add_mul, Sum.elim_inl,
-        Sum.elim_inr, mul_ite, ite_mul, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq']
+        Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.toRows₁, Matrix.toRows₂, Matrix.one_apply, Sum.elim_inl,
+        Sum.elim_inr, mul_ite, Finset.sum_ite_eq']
   have h1 : ∀ a b, (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) O) (Sum.inl a) (Sum.inl b) -
       (1 : Matrix (Fin r) (Fin r) O) a b ∈ Ideal.span {ϖ} := by
     intro a b

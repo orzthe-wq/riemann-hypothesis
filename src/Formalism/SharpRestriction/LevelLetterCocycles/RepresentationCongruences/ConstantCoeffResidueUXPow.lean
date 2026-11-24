@@ -20,32 +20,13 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 theorem ContD.dvd_iff_map_eq_zero {ϖ : O} (hϖ : Irreducible ϖ) (f : O⟦X⟧) :
     C ϖ ∣ f ↔ f.map (IsLocalRing.residue O) = 0 := by
-  have hmax : IsLocalRing.maximalIdeal O = Ideal.span {ϖ} :=
-    (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ
-  constructor
-  · rintro ⟨g, rfl⟩
-    have h0 : IsLocalRing.residue O ϖ = 0 :=
-      (IsLocalRing.residue_eq_zero_iff ϖ).2 (hmax ▸ Ideal.mem_span_singleton_self ϖ)
-    rw [map_mul, PowerSeries.map_C, h0, map_zero, zero_mul]
-  · intro h
-    have hc : ∀ n, ∃ c : O, coeff n f = ϖ * c := by
-      intro n
-      have h1 : IsLocalRing.residue O (coeff n f) = 0 := by
-        have := congrArg (coeff n) h
-        simpa [PowerSeries.coeff_map] using this
-      rw [IsLocalRing.residue_eq_zero_iff, hmax, Ideal.mem_span_singleton] at h1
-      obtain ⟨c, hc⟩ := h1
-      exact ⟨c, hc⟩
-    choose c hc using hc
-    refine ⟨PowerSeries.mk c, ?_⟩
-    ext n
-    rw [PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, hc n]
+  refine ⟨?_, ContM_dvd_of_map_eq_zero hϖ⟩
+  rintro ⟨g, rfl⟩
+  rw [map_mul, ContM_map_C_unif hϖ, zero_mul]
 
 theorem ContD.C_ne_zero {ϖ : O} (hϖ : Irreducible ϖ) : (C ϖ : O⟦X⟧) ≠ 0 := by
   intro h
-  apply hϖ.ne_zero
-  have := congrArg constantCoeff h
-  simpa using this
+  exact hϖ.ne_zero (C_injective (h.trans (map_zero C).symm))
 
 theorem ContD.prime_C {ϖ : O} (hϖ : Irreducible ϖ) : Prime (C ϖ : O⟦X⟧) := by
   refine ⟨ContD.C_ne_zero hϖ, fun hu => hϖ.not_isUnit ?_, fun a b hab => ?_⟩
@@ -155,47 +136,28 @@ theorem ContD.mem_iff_le (ϖ : O) (g f : O⟦X⟧) (k : ℕ) :
   · intro h
     exact le_iSup₂ (f := fun (j : ℕ) (_ : f ∈ Ideal.span {C ϖ ^ j, g}) => (j : ℕ∞)) k h
   · intro h
-    by_contra hf
-    have hk0 : k ≠ 0 := by
-      rintro rfl
-      apply hf
-      have h1 : C ϖ ^ 0 ∈ Ideal.span {C ϖ ^ 0, g} := Ideal.subset_span (by simp)
-      have h2 := Ideal.mul_mem_left _ f h1
-      rwa [pow_zero, mul_one] at h2
-    have hle : (⨆ (j : ℕ) (_ : f ∈ Ideal.span {C ϖ ^ j, g}), (j : ℕ∞)) ≤ ((k - 1 : ℕ) : ℕ∞) := by
-      apply iSup₂_le
-      intro j hj
-      have hjk : j < k := by
-        by_contra hjk
-        push_neg at hjk
-        apply hf
-        have hsub : Ideal.span {C ϖ ^ j, g} ≤ Ideal.span {C ϖ ^ k, g} := by
-          rw [Ideal.span_le, Set.insert_subset_iff, Set.singleton_subset_iff]
-          refine ⟨?_, Ideal.subset_span (by simp)⟩
-          rw [show C ϖ ^ j = C ϖ ^ (j - k) * C ϖ ^ k by rw [← pow_add, Nat.sub_add_cancel hjk]]
-          exact Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))
-        exact hsub hj
-      exact_mod_cast (by omega : j ≤ k - 1)
-    have hlt : ((k - 1 : ℕ) : ℕ∞) < (k : ℕ∞) := by exact_mod_cast (by omega : k - 1 < k)
-    exact absurd (lt_of_le_of_lt hle hlt) (not_lt.2 h)
+    cases k with
+    | zero =>
+      rw [pow_zero]
+      have hone : (1 : O⟦X⟧) ∈ Ideal.span {1, g} := Ideal.subset_span (Set.mem_insert _ _)
+      simpa only [mul_one] using Ideal.mul_mem_left _ f hone
+    | succ k =>
+      have hlt := lt_of_lt_of_le (ENat.natCast_lt_natCast.mpr (Nat.lt_succ_self k)) h
+      obtain ⟨j, hj⟩ := lt_iSup_iff.mp hlt
+      obtain ⟨hjmem, hkj⟩ := lt_iSup_iff.mp hj
+      have hkj' : k + 1 ≤ j := Nat.succ_le_of_lt (ENat.natCast_lt_natCast.mp hkj)
+      refine (Ideal.span_le.2 fun x hx => ?_) hjmem
+      rcases hx with rfl | rfl
+      · rw [show C ϖ ^ j = C ϖ ^ (j - (k + 1)) * C ϖ ^ (k + 1) by
+          rw [← pow_add, Nat.sub_add_cancel hkj']]
+        exact Ideal.mul_mem_left _ _ (Ideal.subset_span (Set.mem_insert _ _))
+      · exact Ideal.subset_span (Set.mem_insert_of_mem _ (Set.mem_singleton _))
 
-theorem ContD.enat_le_of_forall {a b : ℕ∞} (h : ∀ k : ℕ, (k : ℕ∞) ≤ a → (k : ℕ∞) ≤ b) : a ≤ b := by
-  by_contra hab
-  push_neg at hab
-  have hb : b ≠ ⊤ := ne_top_of_lt hab
-  obtain ⟨m, rfl⟩ := ENat.ne_top_iff_exists.1 hb
-  have h1 : ((m + 1 : ℕ) : ℕ∞) ≤ a := by
-    first
-    | exact_mod_cast Order.add_one_le_of_lt hab
-    | exact_mod_cast (ENat.add_one_le_iff (ENat.coe_ne_top m)).2 hab
-  have h2 := h (m + 1) h1
-  norm_cast at h2
-  omega
+theorem ContD.enat_le_of_forall {a b : ℕ∞} (h : ∀ k : ℕ, (k : ℕ∞) ≤ a → (k : ℕ∞) ≤ b) : a ≤ b :=
+  Cont.enat_le_of_forall h
 
-theorem ContD.alg_C (ψ : O⟦X⟧ →ₐ[O] O⟦X⟧) (c : O) : ψ (C c) = C c := by
-  first
-  | exact ψ.commutes c
-  | simpa using ψ.commutes c
+theorem ContD.alg_C (ψ : O⟦X⟧ →ₐ[O] O⟦X⟧) (c : O) : ψ (C c) = C c :=
+  ψ.commutes c
 
 end ContDHelpers
 
@@ -259,14 +221,12 @@ theorem PhiData.ContD_eq_of_X (h : O⟦X⟧ →ₐ[O] O⟦X⟧) (hX : h X = P.φ
   · rw [P.ContD_map_phiX]
     exact P.constantCoeff_residue_u_X_pow
   · intro N
-    have hdvd : (X : O⟦X⟧) ^ N ∣ f - (PowerSeries.trunc N f : O⟦X⟧) := by
-      rw [PowerSeries.X_pow_dvd_iff]
-      intro m hm
-      simp [PowerSeries.coeff_trunc, hm]
-    obtain ⟨r, hr⟩ := hdvd
-    have hf : f = (PowerSeries.trunc N f : O⟦X⟧) + X ^ N * r := by rw [← hr]; ring
-    rw [hf, map_add (f := _), map_add (f := _), map_mul, map_mul, map_pow, map_pow, hX, hpoly]
-    exact ⟨h r - P.φ r, by ring⟩
+    let r := PowerSeries.mk fun i => coeff (i + N) f
+    have hf : f = X ^ N * r + (PowerSeries.trunc N f : O⟦X⟧) :=
+      eq_X_pow_mul_shift_add_trunc N f
+    rw [hf]
+    simp only [map_add, map_mul, map_pow, hX, hpoly, add_sub_add_right_eq_sub, ← mul_sub]
+    exact dvd_mul_right _ _
 
 theorem PhiData.exists_retraction :
     ∃ lam : O⟦X⟧ →ₗ[O] O⟦X⟧, (∀ a b : O⟦X⟧, lam (P.φ a * b) = a * lam b) ∧ (∀ a, lam (P.φ a) = a) := by

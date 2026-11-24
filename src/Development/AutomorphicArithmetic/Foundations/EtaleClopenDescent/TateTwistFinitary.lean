@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 public import Development.AbelianVarietyTheory.Definitions.Divisors.PullHlComp
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafOfRingFunctorIsFinitaryStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafOfRingFunctorIsFinitary
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistRingFunctorPreservesFilteredColimitsStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -50,4 +50,4 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 theorem UpperTheory.Cb.tateTwist_finitary :
     ∀ (q : ℕ) (i : ℤ), Finitary (R := ZMod q) (tw q i) := by
   intro q i
-  exact GlobalTheory.T.etaleSheafOfRingFunctor_isFinitary (ZMod q) (twF q i) (GlobalTheory.T.tateTwistRingFunctor_preservesFilteredColimits q i)
+  exact _root_.GlobalTheory.ofRings_finitary (ZMod q) (twF q i) (_root_.GlobalTheory.EtC.TwistFiltered.twF_preservesFilteredColimits q i)

@@ -49,6 +49,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ComplexifiedDerivativeCommutator
 
 @[expose] public section
 
@@ -193,14 +194,6 @@ theorem inG_of_lieOf {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ}
 
 end ExpD
 
-theorem inG_add {ε : Fin n → Bool} {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : Formalism.REAL.inG ε X) (hY : Formalism.REAL.inG ε Y) :
-    Formalism.REAL.inG ε (X + Y) := by
-  unfold Formalism.REAL.inG at *
-  rw [Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add]
-  calc Xᴴ * Formalism.REAL.Jm ε + Yᴴ * Formalism.REAL.Jm ε + (Formalism.REAL.Jm ε * X + Formalism.REAL.Jm ε * Y)
-      = (Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X) + (Yᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * Y) := by abel
-    _ = 0 := by rw [hX, hY, add_zero]
-
 theorem inG_smul {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : Formalism.REAL.inG ε X) (c : ℝ) :
     Formalism.REAL.inG ε ((c : ℂ) • X) := by
   unfold Formalism.REAL.inG at *
@@ -219,7 +212,7 @@ theorem inG_of_gLie (ε : Fin n → Bool) (x : gLie ε) :
     rw [unrealify_realify]
     exact inG_of_lieOf hX
   | zero => rw [unrealify_zero]; simp [Formalism.REAL.inG]
-  | add x y _ _ hx hy => rw [unrealify_add]; exact inG_add hx hy
+  | add x y _ _ hx hy => rw [unrealify_add]; exact _root_.Formalism.REAL.lie_algebra_add_mem_matrix hx hy
   | smul c x _ hx => rw [unrealify_smul]; exact inG_smul hx c
 
 theorem exists_uMat (ε : Fin n → Bool) (x : gLie ε) :

@@ -71,11 +71,7 @@ theorem isPullback_whisker {T T' : Over S} (h : T' ⟶ T) :
   · rw [← Over.comp_left, whiskerRight_snd, Over.w h]; exact h2
   · rw [← Over.comp_left, ← Over.comp_left, whiskerRight_fst]
 
-theorem sec_ext {X : Scheme.{0}} {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j = s'.f j) : s = s' := by
-  obtain ⟨f₁, p₁⟩ := s
-  obtain ⟨f₂, p₂⟩ := s'
-  obtain rfl : f₁ = f₂ := funext h
-  rfl
+alias sec_ext := _root_.ReciprocityTheory.ChartRestriction.G.DVR.SecOps.sec_ext
 
 omit [GrpObj A] in
 theorem chart_ge {T T' : Over S} (h : T' ⟶ T) (j : Fin 1 → L.ι) :

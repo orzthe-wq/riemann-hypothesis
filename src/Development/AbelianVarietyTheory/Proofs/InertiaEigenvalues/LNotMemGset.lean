@@ -46,7 +46,7 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.AtQDTypes
 
 theorem g_ne_q_d (D : D7) (k : Fin 2) : D.host.g k ≠ D.host.q ∧ D.host.g k ≠ D.host.d := by
-  apply GlobalTheory.HubFon.g_ne_q_d <;> assumption
+  apply GlobalTheory.HubFon.g_ne_q_d
 
 theorem l_not_mem_gset {D : D7} (i : D.nd.Loc) (h : D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d) :
     D.nd.l i ∉ TwistedPlaces.gset D := by

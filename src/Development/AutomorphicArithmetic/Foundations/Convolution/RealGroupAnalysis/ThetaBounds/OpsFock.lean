@@ -86,8 +86,8 @@ private lemma coord_shift (w w' : InfinitePlace F) (i j : Fin 4) (v : V4 F) (t :
     by_cases h' : w' = w
     · subst h'
       simp [map_add (f := _), infiniteProjection_placeEmbed]
-    · simp [map_add (f := _), infiniteProjection_placeEmbed, h', Pi.single_eq_of_ne h']
-  · simp [h, Pi.single_eq_of_ne h]
+    · simp [map_add (f := _), infiniteProjection_placeEmbed, h']
+  · simp [h]
 
 private lemma lin_der (a c : ℂ) : HasDerivAt (fun t : ℝ => a + c * (t : ℂ)) c 0 := by
   have h := ((hasDerivAt_id (0 : ℝ)).ofReal_comp.const_mul c).const_add a

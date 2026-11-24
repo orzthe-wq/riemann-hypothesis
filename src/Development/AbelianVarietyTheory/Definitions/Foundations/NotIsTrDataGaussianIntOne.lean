@@ -77,10 +77,7 @@ open GlobalTheory.K5
 
 variable {p : ℕ} [Fact p.Prime] {Ω : Type*} [Field Ω] [Algebra (O0 p) Ω]
 
-theorem qq_pow (T : Tower p Ω) (n : ℕ) : T.qq n ^ (p ^ n) = algebraMap (O0 p) Ω (qO p) := by
-  induction n with
-  | zero => simpa using T.q0
-  | succ n ih => rw [pow_succ', pow_mul, T.qpow, ih]
+alias qq_pow := _root_.GlobalTheory.K5.Basic.qq_pow
 
 def zS (T : Tower p Ω) (n : ℕ) : integralClosure (O0 p) Ω :=
   ⟨T.ζ n, IsIntegral.of_pow (pow_pos (Fact.out : p.Prime).pos n) (by

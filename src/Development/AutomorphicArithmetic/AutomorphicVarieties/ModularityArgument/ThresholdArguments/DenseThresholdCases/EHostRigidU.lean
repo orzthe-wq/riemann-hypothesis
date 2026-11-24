@@ -71,8 +71,6 @@ import Mathlib.Topology.Connected.Separation
 
 
 section
-attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing UpperTheory.V.Pr.IsCD.complete
-  UpperTheory.V.Pr.IsCD.fin UpperTheory.V.Pr.IsCD.isLocalHom
 section Local
 open NumberField Matrix IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Aut UpperTheory.V.UnitaryThreeInertia
 private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
@@ -255,29 +253,6 @@ private theorem conj_left {G R : Type} [Group G] [CommRing R] (r : G →* GG (m 
   rw [e, SemidirectProduct.mul_left, SemidirectProduct.mul_left, SemidirectProduct.left_inl,
     SemidirectProduct.left_inl, SemidirectProduct.right_inl, sgnAct_one, SemidirectProduct.mul_right,
     SemidirectProduct.right_inl, hg, mul_one, sgnAct_one]
-open Matrix in
-private theorem matIrr_conj {G R : Type} [Group G] [CommRing R] {m : ℕ} {U : Subgroup G}
-    {a a' : G → Matrix (Fin m) (Fin m) R} (h : GL (Fin m) R)
-    (e : ∀ g ∈ U, a g = ((h⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) * a' g * h) (H : MatIrr U a) :
-    MatIrr U a' := by
-  intro W hW
-  have hv : ∀ v : Fin m → R, (h : Matrix (Fin m) (Fin m) R) *ᵥ
-      (((h⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) *ᵥ v) = v := fun v => by
-    rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
-  rcases H (W.comap (Matrix.toLin' (h : Matrix (Fin m) (Fin m) R))) (fun g hg v hv' => by
-    rw [Submodule.mem_comap, Matrix.toLin'_apply] at hv' ⊢
-    rw [e g hg, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hv]
-    exact hW g hg _ hv') with h0 | h0
-  · refine Or.inl (eq_bot_iff.2 fun v hv' => ?_)
-    have : ((h⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) *ᵥ v ∈
-        W.comap (Matrix.toLin' (h : Matrix (Fin m) (Fin m) R)) := by
-      rwa [Submodule.mem_comap, Matrix.toLin'_apply, hv]
-    rw [h0, Submodule.mem_bot] at this
-    rw [Submodule.mem_bot, ← hv v, this, Matrix.mulVec_zero]
-  · refine Or.inr (eq_top_iff.2 fun v _ => ?_)
-    have : ((h⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) *ᵥ v ∈
-        W.comap (Matrix.toLin' (h : Matrix (Fin m) (Fin m) R)) := h0 ▸ Submodule.mem_top
-    rwa [Submodule.mem_comap, Matrix.toLin'_apply, hv] at this
 open TensorProduct in
 private theorem h1f_equiv_of_intertwiner {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime]
     {C V : Type} [CommRing C] [Algebra ℚ_[l] C] [AddCommGroup V] [Module C V] [Module ℚ_[l] V]
@@ -343,11 +318,6 @@ private theorem unl_iso {l : ℕ} [Fact l.Prime] {F Ω : Type} [Field F] [Number
     Th.Unl l M m r' := fun w hw => by
   obtain ⟨A, hA, κ, ⟨χ, h1, h2, h3⟩, h4⟩ := H w hw
   exact ⟨A, hA, κ, ⟨χ, h1, h2.of_iso h, h3⟩, h4⟩
-private theorem cont_hom {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [ContinuousInv Γ] [Monoid M] [TopologicalSpace M]
-    (f : Γ →* Mˣ) (h : Continuous fun g => (f g : M)) : Continuous f := by
-  refine Units.continuous_iff.2 ⟨h, ?_⟩
-  simp only [← map_inv]
-  exact h.comp continuous_inv
 open Formalism.GaloisCohomology UpperTheory.V.Base in
 private theorem selmer_h1_vanishes_at_rigid_point (hH : _root_.UpperTheory.V.Af.HypothesesH') (hL : _root_.UpperTheory.V.Th.AdjointLiftingTheorem) (hU : Z.J.UnlEndLogNorm) (K : Type) [Field K] [NumberField K] [IsCMField K] (hK : IsQi K)
     (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [hl : Fact l.Prime] (c : Coef l) (N : ℕ) [NeZero N] (e : ℕ)
@@ -406,7 +376,7 @@ private theorem selmer_h1_vanishes_at_rigid_point (hH : _root_.UpperTheory.V.Af.
       exact hs) v hv
   have hunl := _root_.UpperTheory.V.Z.J.hostUnlE_alt hH hU K hK Ω l c N e ψ o₁ hd S A F hF g₁ hg r hr hTI ρ hρ
   have hρc : Continuous ρ := by
-    refine cont_hom _ ?_
+    refine _root_.UpperTheory.Reformulated.B.ContinuousHomomorphism.cont_hom _ ?_
     simp only [hρ]
     exact (hc.comp (continuous_toGS Ω _)).comp (Base.galEmbTop ℚ K Ω).1.continuous
   obtain ⟨B, _, _, t, r', hr', ht⟩ := hr
@@ -437,7 +407,7 @@ private theorem selmer_h1_vanishes_at_rigid_point (hH : _root_.UpperTheory.V.Af.
       fin_cases i <;> fin_cases j <;> simp at hij ⊢ <;> omega) (unl_iso hunl hiso)
   rw [zpow_neg_one] at hAut'
   have key := _root_.UpperTheory.V.Z.Win.Dn.rigEnd3_alt hH hL Ω l ι c N e ψ (UnitaryThreeInertia.eta4 Ω) σ g (A F.vl) _ hk hΨ hfr B _ ho
-    (fun V hV hVη => matIrr_conj (tor _ t) (fun s hs => by
+    (fun V hV hVη => _root_.UpperTheory.Reformulated.B.G5.matIrr_conj (tor _ t) (fun s hs => by
       rw [mats, GG.mat, GG.mat, hle s (hVη hs), ← Units.val_mul, ← Units.val_mul]
       congr 1
       group) (hB.opens V hV hVη)) K hK.1 (by rw [← Base.range_galEmb]; exact hrg.symm) ρ' (fun s => rfl) hAut' hfree

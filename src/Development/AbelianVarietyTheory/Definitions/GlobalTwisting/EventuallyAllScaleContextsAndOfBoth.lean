@@ -51,8 +51,8 @@ theorem eventuallyAllScaleContexts_and_of_both {p q : Ctx → Prop} (hp : Ev p) 
   obtain ⟨K, hK⟩ := hp e C8 he (hle.trans (min_le_left _ _)) h52 h8
   obtain ⟨K', hK'⟩ := hq e C8 he (hle.trans (min_le_right _ _)) h52 h8
   refine ⟨K.sup K', fun C hC hC8 hL => ?_⟩
-  obtain ⟨a1, ha1⟩ := hK C hC hC8 (large_of_sup hL).1
-  obtain ⟨b1, hb1⟩ := hK' C hC hC8 (large_of_sup hL).2
+  obtain ⟨a1, ha1⟩ := hK C hC hC8 (_root_.GlobalTheory.EX.fc_large_of_sup hL).1
+  obtain ⟨b1, hb1⟩ := hK' C hC hC8 (_root_.GlobalTheory.EX.fc_large_of_sup hL).2
   refine ⟨max a1 b1, fun cD hcD => ?_⟩
   obtain ⟨a2, ha2⟩ := ha1 cD (le_trans (le_max_left _ _) hcD)
   obtain ⟨b2, hb2⟩ := hb1 cD (le_trans (le_max_right _ _) hcD)

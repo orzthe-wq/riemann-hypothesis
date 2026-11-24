@@ -148,7 +148,7 @@ theorem lawBasis_of_ok (h : (S.fam emb lam).Ok) : S.LawBasis emb σ lam h := by
       let A : (Fr emb σ n → ℂ) →ₗ[ℂ] (S.Cl → Fr emb σ n → ℂ) :=
         LinearMap.single ℂ (fun _ : S.Cl => Fr emb σ n → ℂ) c ∘ₗ ∑ g : S.Stab c, (S.tr emb σ c.1 g.1).toLinearMap
       have hA : ∀ w, A w = Pi.single c (∑ g : S.Stab c, S.tr emb σ c.1 g.1 w) := fun w => by
-        simp [A, LinearMap.sum_apply]
+        simp [A]
       have hle : ValC (Gr emb σ n) lam ≤ (Submodule.span ℂ
           (Set.range fun a => S.embF emb σ lam h ((S.hlat emb lam h).b a))).comap A := by
         rw [← span_evV, Submodule.span_le]

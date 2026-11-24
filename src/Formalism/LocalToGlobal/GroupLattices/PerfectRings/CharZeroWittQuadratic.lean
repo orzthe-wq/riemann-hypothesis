@@ -9,48 +9,7 @@ public import Mathlib.RingTheory.RegularLocalRing.Defs
 import Formalism.LocalRingCardinality.SpanPowerMembership.GatRing
 import Formalism.LocalToGlobal.GroupLattices.PerfectRings.AlgebraMapFinite
 public import Formalism.LocalToGlobal.GroupLattices.PerfectRings.IsLocalRingOfComplete
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.Complete
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -120,7 +79,7 @@ theorem range_le_simple (θ : LL) (hθ : ℚ⟮θ⟯ = ⊤) (x : LL) : τ x ∈ 
 
   let T : Subfield LL := ((KO p n)⟮τ θ⟯).toSubfield.comap τ
   have hQ : ∀ q : ℚ, algebraMap ℚ LL q ∈ T := fun q => by
-    simp [T, Subfield.mem_comap, eq_ratCast, map_ratCast, SubfieldClass.ratCast_mem]
+    simp [T, eq_ratCast, SubfieldClass.ratCast_mem]
   have key : ℚ⟮θ⟯ ≤ T.toIntermediateField hQ := by
     rw [IntermediateField.adjoin_simple_le_iff]
     exact IntermediateField.mem_adjoin_simple_self _ _
@@ -157,8 +116,7 @@ variable {p n} {LL : Type} [Field LL] [NumberField LL] (τ : LL →+* Om p n)
 theorem embL_integral (x : 𝓞 LL) :
     ((embL τ).comp (algebraMap (𝓞 LL) LL)) x ∈ integralClosure (OO p n) (Lt τ) := by
   rw [mem_integralClosure_iff]
-  have h : IsIntegral ℤ (algebraMap (𝓞 LL) LL x) := RingOfIntegers.isIntegral_coe x
-  exact (h.map (((embL τ).comp (RingHom.id LL)).toIntAlgHom)).tower_top
+  exact ((RingOfIntegers.isIntegral_coe x).map (((embL τ).comp (RingHom.id LL)).toIntAlgHom)).tower_top
 
 def embO : 𝓞 LL →+* Ot τ :=
   ((embL τ).comp (algebraMap (𝓞 LL) LL)).codRestrict (integralClosure (OO p n) (Lt τ)) (embL_integral τ)
@@ -180,8 +138,7 @@ theorem wU_mem_max : wU p n ∈ maximalIdeal (OO p n) := by
   have h1 : (1 : W2 p n) ∈ Ideal.span {(p : W2 p n)} := by
     rw [← Ideal.Quotient.eq_zero_iff_mem, map_one]
     exact h0.symm
-  rw [Ideal.mem_span_singleton] at h1
-  have hpu : IsUnit (p : W2 p n) := isUnit_of_dvd_one h1
+  have hpu : IsUnit (p : W2 p n) := isUnit_of_dvd_one (Ideal.mem_span_singleton.mp h1)
   have h2 : IsUnit ((p : W2 p n).coeff 0) := hpu.map (WittVector.constantCoeff (p := p) (R := F2 p n))
   rw [WittVector.coeff_p_zero] at h2
   exact not_isUnit_zero h2
@@ -196,13 +153,10 @@ theorem p_mem_max (L : Type) [Field L] [Algebra (KO p n) L] [FiniteDimensional (
   have hw2 : wU p n * wU p n = (p : OO p n) := by
     ext <;> simp [wU]
   have h1 : (p : OO p n) ∈ maximalIdeal (OO p n) := hw2 ▸ Ideal.mul_mem_left _ _ wU_mem_max
-  rw [← under_max L, Ideal.mem_comap, map_natCast] at h1
-  exact h1
+  simpa [← under_max L, Ideal.mem_comap, map_natCast] using h1
 
 theorem p_mem_placeIdeal : (p : 𝓞 LL) ∈ placeIdeal τ := by
-  show embO τ (p : 𝓞 LL) ∈ maximalIdeal (Ot τ)
-  rw [map_natCast]
-  exact p_mem_max (Lt τ)
+  simpa [placeIdeal, Ideal.mem_comap, map_natCast] using p_mem_max (Lt τ)
 
 def placeOf : HeightOneSpectrum (𝓞 LL) where
   asIdeal := placeIdeal τ

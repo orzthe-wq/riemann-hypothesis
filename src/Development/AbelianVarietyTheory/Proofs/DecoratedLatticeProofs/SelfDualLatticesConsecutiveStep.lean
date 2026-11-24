@@ -78,12 +78,8 @@ theorem smul_mem_latA {S : HSp D} {L : Lat S} {P : GlobalTheory.FinPl.Pl D → P
   | add z z' _ _ hz hz' => rw [smul_add]; exact add_mem hz hz'
   | neg z _ hz => rw [smul_neg]; exact neg_mem hz
 
-theorem mt_mul₀ (V : HSp D) (g h : GA D V) : mt V (g * h) = mt V g * mt V h := rfl
-
-theorem mt_one₀ (V : HSp D) : mt V 1 = 1 := rfl
-
 theorem mt_mul_inv (V : HSp D) (g : GA D V) (y : Fin V.rank → AE D) : mt V g *ᵥ (mt V g⁻¹ *ᵥ y) = y := by
-  rw [Matrix.mulVec_mulVec, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.one_mulVec]
+  rw [Matrix.mulVec_mulVec, ← _root_.GlobalTheory.BesselCompare.mt_mul, mul_inv_cancel, _root_.GlobalTheory.BesselCompare.mt_one, Matrix.one_mulVec]
 
 theorem mulVec_mem_idAt {n : ℕ} (A : Matrix (Fin n) (Fin n) (AE D)) {P : GlobalTheory.FinPl.Pl D → Prop} {y : Fin n → AE D}
     (hy : ∀ i, y i ∈ idAt D P) (i : Fin n) : (A *ᵥ y) i ∈ idAt D P := by
@@ -113,9 +109,6 @@ theorem mulVec_mem_latA {S : HSp D} {g : GA D S} {L M : Lat S} {P : GlobalTheory
   | add z z' _ _ hz hz' => rw [Matrix.mulVec_add]; exact add_mem hz hz'
   | neg z _ hz => rw [Matrix.mulVec_neg]; exact neg_mem hz
 
-theorem actO_eq (S T : HSp D) (g : GA D S) (h : GA D T) (u : WO S T) :
-    actO S T g h u = HMul.hMul (HMul.hMul (mt T h) (u : Matrix (Fin T.rank) (Fin S.rank) (AE D))) (mt S g⁻¹) := rfl
-
 theorem actO_mem_latO {S T : HSp D} {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M)
     (hΛ' : IsSelfDualC T Λ') (hM' : IsSelfDualC T M') {P : GlobalTheory.FinPl.Pl D → Prop} {g : GA D S} {h : GA D T}
     (hg : Moves S g Λ M P) (hh : Moves T h Λ' M' P) {u : WO S T}
@@ -124,7 +117,7 @@ theorem actO_mem_latO {S T : HSp D} {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSel
   rw [GlobalTheory.FinPl.LatMem.mem_latO_iff D S T M M' hM hM' P]
   obtain ⟨hmx, hmap⟩ := hu
   refine ⟨fun i j => ?_, fun y hy => ?_⟩
-  · rw [actO_eq, Matrix.mul_apply]
+  · rw [_root_.GlobalTheory.MixModel.actO_eq, Matrix.mul_apply]
     refine sum_mem fun l _ => Ideal.mul_mem_right _ _ ?_
     rw [Matrix.mul_apply]
     exact sum_mem fun k _ => Ideal.mul_mem_left _ _ (hmx k l)
@@ -135,8 +128,8 @@ theorem actO_mem_latO {S T : HSp D} {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSel
     exact mulVec_mem_latA hh (hmap _ h1)
 
 theorem actO_actO_inv {S T : HSp D} (g : GA D S) (h : GA D T) (u : WO S T) : actO S T g h (actO S T g⁻¹ h⁻¹ u) = u := by
-  rw [actO_eq, actO_eq, inv_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.one_mul,
-    Matrix.mul_assoc, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.mul_one]
+  rw [_root_.GlobalTheory.MixModel.actO_eq, _root_.GlobalTheory.MixModel.actO_eq, inv_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← _root_.GlobalTheory.BesselCompare.mt_mul, mul_inv_cancel, _root_.GlobalTheory.BesselCompare.mt_one, Matrix.one_mul,
+    Matrix.mul_assoc, ← _root_.GlobalTheory.BesselCompare.mt_mul, mul_inv_cancel, _root_.GlobalTheory.BesselCompare.mt_one, Matrix.mul_one]
 
 end Lattices
 
@@ -146,7 +139,7 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 theorem isHalf_actO (g : GA D S) (h : GA D T) {e : AE D} {u : WO S T} (hu : IsHalf e u) : IsHalf e (actO S T g h u) := by
   intro i j
-  rw [actO_eq]
+  rw [_root_.GlobalTheory.MixModel.actO_eq]
   simp only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_
   conv_rhs => rw [← hu k l]
@@ -162,7 +155,7 @@ theorem vac_move (hW : IsWeilDatumO ψ S T χS χT om) {Λ M : GlobalTheory.FinP
   refine ⟨hW.om_pres _ _ hf.1, fun u hu => ?_, fun e he u hu hh' => ?_⟩
   · have h1 := hf.2.1 _ (mem u hu)
     have h2 : (2 • actO S T g⁻¹ h⁻¹ u : WO S T) = actO S T g⁻¹ h⁻¹ (2 • u) := by
-      rw [actO_eq, actO_eq, two_nsmul, two_nsmul, Matrix.mul_add, Matrix.add_mul]
+      rw [_root_.GlobalTheory.MixModel.actO_eq, _root_.GlobalTheory.MixModel.actO_eq, two_nsmul, two_nsmul, Matrix.mul_add, Matrix.add_mul]
     have h3 := hW.om_heis g h (actO S T g⁻¹ h⁻¹ (2 • u)) f hf.1
     rw [back, ← h2, h1] at h3
     exact h3.symm

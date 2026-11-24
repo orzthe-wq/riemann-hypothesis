@@ -234,11 +234,11 @@ theorem kr_rule (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ
   set Λ : B.Mat k r → ℂ := fun X => ∑ a, ∑ b, X a b * C3.dpsiP k r Bs.z' a b with hΛ
   have hΛ1 : ell k r Bs.z' (hpart1 (Hpk k r) Z) - star (ell k r Bs.z' (hpart1 (Hpk k r) Z)) = Λ (hpart1 (Hpk k r) Z) := by
     rw [← dEll_eq_ell _ _ hr]
-    exact (Formalism.FourierDecayAlt.P.dpsi_is_derivation k r Bs.z' _ hr Bs.z'_mem (Formalism.FourierDecayAlt.P.PBG.hermitian_part_one_mem_lie Z)
+    exact (_root_.Formalism.FourierDecayAlt.P.SignAntidiagonal.dpsi_is_derivation k r Bs.z' _ hr Bs.z'_mem (_root_.Formalism.FourierDecayAlt.P.LieDecompositionLocal.hermitian_part_mem_lie Z)
       (pat_inNp (Formalism.FourierDecayAlt.Q.QRR.pat_hpart1 hl))).symm
   have hΛ2 : ell k r Bs.z' (hpart2 (Hpk k r) Z) - star (ell k r Bs.z' (hpart2 (Hpk k r) Z)) = Λ (hpart2 (Hpk k r) Z) := by
     rw [← dEll_eq_ell _ _ hr]
-    exact (Formalism.FourierDecayAlt.P.dpsi_is_derivation k r Bs.z' _ hr Bs.z'_mem (Formalism.FourierDecayAlt.P.PBG.hermitian_part_two_mem_lie Z)
+    exact (_root_.Formalism.FourierDecayAlt.P.SignAntidiagonal.dpsi_is_derivation k r Bs.z' _ hr Bs.z'_mem (_root_.Formalism.FourierDecayAlt.P.LieDecompositionLocal.antihermitian_part_mem_lie Z)
       (pat_inNp (Formalism.FourierDecayAlt.Q.QRR.pat_hpart2 hl))).symm
   have hsum : hpart1 (Hpk k r) Z + Complex.I • hpart2 (Hpk k r) Z = Z := by
     unfold hpart1 hpart2

@@ -1,12 +1,13 @@
 module
 
+public import Formalism.AdmissibleDesigns.TensSubsingleton
+public import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
+public import Formalism.AdmissibleDesigns.InvariantsEqBotIff
 public import Formalism.AdmissibleDesigns.CoboundaryMemFiniteClasses
 public import Formalism.AdmissibleDesigns.CohomZeroEquivContinuous
-public import Formalism.AdmissibleDesigns.TensSubsingleton
 public import Formalism.AdmissibleDesigns.YtTarget
 public import Formalism.AdmissibleDesigns.LocCont
 public import Formalism.AdmissibleDesigns.MsContW
-public import Formalism.AdmissibleDesigns.MultVZeroOfSubsingleton
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -30,6 +31,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -43,10 +45,216 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.AdmissibleDesigns.MultVZeroOfSubsingleton, Formalism.AdmissibleDesigns.IsDROfWpIso
+
+-- ===== clump member: Formalism.AdmissibleDesigns.MultVZeroOfSubsingleton =====
+-- clump-header: {"m": "Formalism.AdmissibleDesigns.MultVZeroOfSubsingleton", "h": "module\n\npublic import Formalism.AdmissibleDesigns.TensSubsingleton\npublic import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs\npublic import Formalism.AdmissibleDesigns.InvariantsEqBotIff\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
+
+noncomputable section
+
+open Classical
+
+namespace Formalism.MainNotions.N.K.Font
+
+open Module Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N TensorProduct Formalism.MainNotions.N.K.TBa
+
+section Gen
+
+variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
+    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
+    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
+    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
+    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
+    (PD : PeriodData G Qp K₀ K B BdR)
+    {LL : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [IsTopologicalRing LL]
+    {O : Type} [CommRing O] [Algebra O LL]
+
+theorem multV_zero_of_subsingleton {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V]
+    [IsScalarTower Qp LL V] [Subsingleton V] (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (a : ℤ) :
+    multV PD ρ τ a = 0 := by
+  have hs : ∀ b, Subsingleton ↥(FildR PD ρ τ b) := fun b =>
+    ⟨fun x y => Subtype.ext ((tens_subsingleton (x : V ⊗[Qp] BdR)).trans (tens_subsingleton (y : V ⊗[Qp] BdR)).symm)⟩
+  unfold multV
+  haveI := hs a
+  haveI := hs (a + 1)
+  rw [Module.finrank_zero_of_subsingleton, Module.finrank_zero_of_subsingleton]
+  rfl
+
+variable {ι : Type} {k : ℕ} (Ms : ι → G →* Matrix (Fin k) (Fin k) LL)
+  (hF : TruncatedSeriesCountingIdentities.FontaineAt PD LL O) (hMc : ∀ x, Continuous (Ms x))
+include hF hMc
+
+theorem mult_sum_neg : ∀ (m : ℕ) (xs : Fin m → ι), IsCrys PD (sumRep Ms xs) →
+    (∀ (j : Fin m) (τ : K →ₐ[Qp] LL) (b : ℤ), IsJumpV PD (matRep (Ms (xs j))) τ b → 0 ≤ b) →
+    ∀ (τ : K →ₐ[Qp] LL) (a : ℤ), a < 0 → multV PD (sumRep Ms xs) τ a = 0 := by
+  intro m
+  induction m with
+  | zero =>
+    intro xs _ _ τ a _
+    haveI : Subsingleton (Fin 0 → Fin k → LL) := inferInstance
+    exact multV_zero_of_subsingleton PD _ τ a
+  | succ m ih =>
+    intro xs hc hJ τ a ha
+    let A₀ : GRep G Qp LL O := sumG Ms hMc (fun a => xs a.succ)
+    let A₁ : GRep G Qp LL O := sumG Ms hMc xs
+    let A₂ : GRep G Qp LL O := matG Ms hMc (xs 0)
+    let ι₀ : A₀.V →ₗ[LL] A₁.V := consZ (W := Fin k → LL) m
+    let π₀ : A₁.V →ₗ[LL] A₂.V := LinearMap.proj (R := LL) (φ := fun _ : Fin (m + 1) => Fin k → LL) 0
+    let σ₀ : A₂.V →ₗ[LL] A₁.V := consV (W := Fin k → LL) m
+    have e1 : ∀ g x, ι₀ (A₀.ρ g x) = A₁.ρ g (ι₀ x) := fun g x => funext fun a => by
+      cases a using Fin.cases
+      · show (0 : Fin k → LL) = (Ms (xs 0) g).mulVec 0
+        rw [Matrix.mulVec_zero]
+      · rfl
+    have e2 : ∀ g x, π₀ (A₁.ρ g x) = A₂.ρ g (π₀ x) := fun g x => rfl
+    have hinj : Function.Injective ι₀ := consZ_inj (W := Fin k → LL) m
+    have hsurj : Function.Surjective π₀ := fun v => ⟨σ₀ v, proj_consV (W := Fin k → LL) m v⟩
+    have hex : LinearMap.range ι₀ = LinearMap.ker π₀ := range_consZ (W := Fin k → LL) m
+    have hF1 := hF.1 A₀ A₁ A₂ ι₀ π₀ e1 e2 hinj hsurj hex
+    obtain ⟨hc0, hc2, hadd⟩ := hF1.1 hc
+    have h0 : multV PD A₀.ρ τ a = 0 :=
+      ih (fun a => xs a.succ) hc0 (fun j => hJ j.succ) τ a ha
+    have h2 : multV PD A₂.ρ τ a = 0 := by
+      by_contra hne
+      have := hJ 0 τ a (jump_of_mult PD _ τ a hne)
+      omega
+    show multV PD A₁.ρ τ a = 0
+    rw [hadd τ a, h0, h2, add_zero]
+
+theorem decomp_neg (A₁ A₀ : GRep G Qp LL O) {m : ℕ} (xs : Fin m → ι)
+    (e : A₁.V ≃ₗ[LL] A₀.V × (Fin m → Fin k → LL))
+    (he : ∀ g v, e (A₁.ρ g v) = (A₀.ρ g (e v).1, sumRep Ms xs g (e v).2))
+    (hc : IsCrys PD A₁.ρ)
+    (hJ : ∀ (j : Fin m) (τ : K →ₐ[Qp] LL) (b : ℤ), IsJumpV PD (matRep (Ms (xs j))) τ b → 0 ≤ b) :
+    IsCrys PD A₀.ρ ∧ ∀ (τ : K →ₐ[Qp] LL) (a : ℤ), a < 0 → multV PD A₁.ρ τ a = multV PD A₀.ρ τ a := by
+  let A₂ : GRep G Qp LL O := sumG Ms hMc xs
+  let ι₀ : A₀.V →ₗ[LL] A₁.V := e.symm.toLinearMap ∘ₗ LinearMap.inl LL A₀.V (Fin m → Fin k → LL)
+  let π₀ : A₁.V →ₗ[LL] A₂.V := LinearMap.snd LL A₀.V (Fin m → Fin k → LL) ∘ₗ e.toLinearMap
+  have e1 : ∀ g x, ι₀ (A₀.ρ g x) = A₁.ρ g (ι₀ x) := by
+    intro g x
+    apply e.injective
+    show e (e.symm (A₀.ρ g x, 0)) = e (A₁.ρ g (e.symm (x, 0)))
+    rw [he, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, map_zero]
+  have e2 : ∀ g x, π₀ (A₁.ρ g x) = A₂.ρ g (π₀ x) := by
+    intro g x
+    show (e (A₁.ρ g x)).2 = sumRep Ms xs g (e x).2
+    rw [he]
+  have hinj : Function.Injective ι₀ := by
+    intro x y h
+    have h' : e.symm (x, 0) = e.symm (y, 0) := h
+    have := congrArg Prod.fst (e.symm.injective h')
+    exact this
+  have hsurj : Function.Surjective π₀ := by
+    intro y
+    refine ⟨e.symm (0, y), ?_⟩
+    show (e (e.symm (0, y))).2 = y
+    rw [LinearEquiv.apply_symm_apply]
+  have hex : LinearMap.range ι₀ = LinearMap.ker π₀ := by
+    ext v
+    constructor
+    · rintro ⟨x, rfl⟩
+      show (e (e.symm (x, 0))).2 = 0
+      rw [LinearEquiv.apply_symm_apply]
+    · intro hv
+      have hv' : (e v).2 = 0 := hv
+      refine ⟨(e v).1, ?_⟩
+      show e.symm ((e v).1, 0) = v
+      rw [← hv']
+      exact e.symm_apply_apply v
+  have hF1 := hF.1 A₀ A₁ A₂ ι₀ π₀ e1 e2 hinj hsurj hex
+  obtain ⟨hc0, hc2, hadd⟩ := hF1.1 hc
+  refine ⟨hc0, fun τ a ha => ?_⟩
+  have h2 : multV PD A₂.ρ τ a = 0 := mult_sum_neg PD Ms hF hMc m xs hc2 hJ τ a ha
+  rw [hadd τ a, h2, add_zero]
+
+end Gen
+
+section GenNT
+
+variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
+    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
+    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
+    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
+    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
+    (PD : PeriodData G Qp K₀ K B BdR)
+    {LL : Type} [Field LL] [Algebra Qp LL]
+
+section DR
+
+variable {V V' : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
+    [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
+    {ρ : Representation LL G V} {ρ' : Representation LL G V'} (e : V ≃ₗ[LL] V')
+    (he : ∀ g x, e (ρ g x) = ρ' g (e x))
+include he
+
+theorem isDR_congr (h : IsDR PD ρ) : IsDR PD ρ' := by
+  let E : V ⊗[Qp] BdR ≃ₗ[LL] V' ⊗[Qp] BdR := AlgebraTensorModule.congr e (LinearEquiv.refl Qp BdR)
+  have hE : ∀ g x, E (actVdR PD ρ g x) = actVdR PD ρ' g (E x) := by
+    intro g x
+    induction x using TensorProduct.induction_on with
+    | zero => simp
+    | tmul a b => simp [E, actVdR, he]
+    | add a b ha hb => rw [map_add (f := _), map_add (f := _), ha, hb, map_add (f := _), map_add (f := _)]
+  have hD : DdR PD ρ = (DdR PD ρ').comap (E : V ⊗[Qp] BdR →ₗ[LL] V' ⊗[Qp] BdR) := by
+    ext x
+    simp only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
+      LinearMap.id_apply, Submodule.mem_comap, sub_eq_zero]
+    constructor
+    · intro hx g
+      rw [LinearEquiv.coe_coe, ← hE, hx g]
+    · intro hx g
+      apply E.injective
+      rw [hE]
+      exact hx g
+  unfold IsDR at h ⊢
+  rw [← e.finrank_eq, ← h, hD]
+  exact (E.ofSubmodule' (DdR PD ρ')).finrank_eq.symm
+
+end DR
+
+section MatT
+
+variable {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] {k : ℕ}
+  (M : G →* Matrix (Fin k) (Fin k) LL) (ρ' : Representation LL G V) (e : V ≃ₗ[LL] (Fin k → LL))
+  (he : ∀ g x, e (ρ' g x) = matRep M g (e x))
+include he
+
+theorem crys_of_mat (h : IsCrys PD (matRep M)) : IsCrys PD ρ' := by
+  refine Norm.isCrys_congr PD e.symm (fun g y => ?_) h
+  apply e.injective
+  rw [LinearEquiv.apply_symm_apply, he, LinearEquiv.apply_symm_apply]
+
+theorem multV_mat (τ : K →ₐ[Qp] LL) (a : ℤ) : multV PD ρ' τ a = multV PD (matRep M) τ a :=
+  Norm.multV_congr PD e he τ a
+
+theorem dR_of_mat (h : IsDR PD (matRep M)) : IsDR PD ρ' := by
+  refine isDR_congr PD e.symm (fun g y => ?_) h
+  apply e.injective
+  rw [LinearEquiv.apply_symm_apply, he, LinearEquiv.apply_symm_apply]
+
+end MatT
+
+end GenNT
+
+end Formalism.MainNotions.N.K.Font
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.AdmissibleDesigns.MultVZeroOfSubsingleton =====
+
+-- ===== clump member: Formalism.AdmissibleDesigns.IsDROfWpIso =====
+-- clump-header: {"m": "Formalism.AdmissibleDesigns.IsDROfWpIso", "h": "module\n\npublic import Formalism.AdmissibleDesigns.CoboundaryMemFiniteClasses\npublic import Formalism.AdmissibleDesigns.CohomZeroEquivContinuous\npublic import Formalism.AdmissibleDesigns.TensSubsingleton\npublic import Formalism.AdmissibleDesigns.YtTarget\npublic import Formalism.AdmissibleDesigns.LocCont\npublic import Formalism.AdmissibleDesigns.MsContW\npublic import Formalism.AdmissibleDesigns.MultVZeroOfSubsingleton\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
@@ -118,8 +326,7 @@ theorem phiX_equiv (hD : Formalism.RepresentationBoundsCohomology.ringDataObject
     rw [← map_inv, hχ, map_inv]
   have hrep : ∀ (h : GE D.nd) (y : D.nd.X i), RepresentationBoundsCohomology.repX D.nd r h y = rO D.nd i r y h := fun _ _ => rfl
 
-  simp [Formalism.NG.uElt, hsm, hr, hu, hrep, MrTw, twistM, TruncatedSeriesCountingIdentities.locC, TruncatedSeriesCountingIdentities.chi1C, mapM, loc_apply, locChi_apply,
-  Matrix.mulVec, dotProduct, Matrix.smul_apply, Matrix.map_apply, map_sum, map_mul]
+  simp [Formalism.NG.uElt, hsm, hr, hu, hrep, MrTw, twistM, TruncatedSeriesCountingIdentities.locC, TruncatedSeriesCountingIdentities.chi1C, mapM, Matrix.mulVec, dotProduct, Matrix.smul_apply, Matrix.map_apply, map_sum, map_mul]
   refine Finset.sum_congr rfl fun k _ => ?_
   refine congrArg₂ (· * ·) (congrArg₂ (· * ·) ?_ ?_) ?_
   · exact ((Units.val_inv_eq_inv_val
@@ -274,7 +481,7 @@ theorem decomp_at (hDec : TruncatedSeriesCountingIdentities.SemisimpleDecomposit
       eK (D.nbr i w hw) ((toK D.nd i (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) • mapM (toK D.nd i) (rhoO D.nd i ρ π) h) a b) := by
     intro a b
     subst hh
-    simp [WpO, twistM, mapM, loc_apply] <;> rfl
+    simp [WpO, twistM, mapM, loc_apply]
   have hc : ∀ j : Fin D.R.t, MsC i hw j g 0 0 = eK (D.nbr i w hw) (toK D.nd i ((chiU D.nd i ((j : ℕ) + 1) h : (D.nd.O i)ˣ) : D.nd.O i) * toK D.nd i (((chiU D.nd i 1 h)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)) := by
     intro j
     subst hh
@@ -390,3 +597,6 @@ end RowDR
 end Formalism.MainNotions.N.K.Font
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.AdmissibleDesigns.IsDROfWpIso =====

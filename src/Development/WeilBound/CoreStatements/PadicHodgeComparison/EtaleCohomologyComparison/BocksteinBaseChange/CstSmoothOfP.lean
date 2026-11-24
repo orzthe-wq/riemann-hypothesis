@@ -66,10 +66,8 @@ theorem chapters_of (hP : BocksteinBaseChangeP) : Chapters :=
     main := fun l _ => B.main l
     compat := fun l _ => B.compat l
     compatH := fun l _ => B.compatH l
-    c1 := fun l _ => B.firstChern_compatible_l l
+    c1 := fun l _ => _root_.GlobalTheory.CompanionTheory.FirstChernComparison.main l
     p := hP }
-
-theorem etSideS (h4 : GlobalTheory.EtC.E4) (h8 : GlobalTheory.EtC.E8) : EtSideS := fun l _ K _ => (etSide (zIn formalIn h4 h8) l K).1
 
 theorem cstSmooth_of_p (hP : BocksteinBaseChangeP) (h : EtSideS) : CstSmooth :=
   cstSmooth_of_etSide glueL glueE glueB factsC resEx h (chapters_of hP)

@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
 
 @[expose] public section
 
@@ -73,8 +74,6 @@ def ιFin (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.F] AE D :=
 
 theorem infPart_tmul (a : AF D.host.F) (x : D.host.E) : infPart D (a ⊗ₜ[D.host.F] x) = fstA D.host.F a ⊗ₜ[D.host.F] x := rfl
 
-theorem finPart_tmul (a : AF D.host.F) (x : D.host.E) : finPart D (a ⊗ₜ[D.host.F] x) = sndA D.host.F a ⊗ₜ[D.host.F] x := rfl
-
 theorem ιInf_tmul (b : Ainf D.host.F) (x : D.host.E) : ιInf D (b ⊗ₜ[D.host.F] x) = inlA D b ⊗ₜ[D.host.F] x :=
   TensorProduct.map_tmul _ _ _ _
 
@@ -95,7 +94,7 @@ theorem eFin_mul (z : AE D) : eFin D * z = ιFin D (finPart D z) := by
   induction z using TensorProduct.induction_on with
   | zero => rw [mul_zero, RingHom.map_zero, LinearMap.map_zero]
   | tmul a x =>
-    rw [eFin, Algebra.TensorProduct.tmul_mul_tmul, one_mul, finPart_tmul, ιFin_tmul]
+    rw [eFin, Algebra.TensorProduct.tmul_mul_tmul, one_mul, _root_.GlobalTheory.LatVac.finPart_tmul, ιFin_tmul]
     congr 1
     exact Prod.ext (α := Ainf D.host.F) (β := Af D.host.F) (by change (0 : Ainf D.host.F) * a.1 = 0; exact zero_mul _)
       (by change (1 : Af D.host.F) * a.2 = a.2; exact one_mul _)
@@ -112,11 +111,11 @@ theorem eInf_mul_self : eInf D * eInf D = eInf D := by
   rfl
 
 theorem eFin_mul_self : eFin D * eFin D = eFin D := by
-  rw [eFin_mul, eFin, finPart_tmul, ιFin_tmul]
+  rw [eFin_mul, eFin, _root_.GlobalTheory.LatVac.finPart_tmul, ιFin_tmul]
   rfl
 
 theorem eFin_mul_eInf : eFin D * eInf D = 0 := by
-  rw [eFin_mul, eInf, finPart_tmul]
+  rw [eFin_mul, eInf, _root_.GlobalTheory.LatVac.finPart_tmul]
   have h : sndA D.host.F (aInf D) = 0 := rfl
   rw [h, TensorProduct.zero_tmul, LinearMap.map_zero]
 

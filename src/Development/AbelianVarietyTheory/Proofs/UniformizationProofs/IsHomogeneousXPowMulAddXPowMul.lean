@@ -161,11 +161,6 @@ theorem aeval_mem_formIdeal_iff (J : Ideal (MvPolynomial (Fin (n + 1)) R)) (i : 
   · rintro ⟨k, hk⟩
     exact ⟨k + t, X i ^ k * F, (isHomogeneous_X_pow i k).mul hF, hk, aeval_X_pow_mul hone k F⟩
 
-private theorem resG_refl' {Y : Scheme.{0}} {U : Y.Opens} (h : U ≤ U) (a : Γ(Y, U)) :
-    resG Y h a = a := by
-  have e : homOfLE h = 𝟙 U := Subsingleton.elim _ _
-  rw [resG, e, op_id, CategoryTheory.Functor.map_id, CommRingCat.hom_id, RingHom.id_apply]
-
 private theorem appLE_congr_of_eq' {Y Z : Scheme.{0}} (φ : Y ⟶ Z) {U : Z.Opens} {V : Y.Opens} (e : V ≤ φ ⁻¹ᵁ U)
     (a : Γ(Z, U)) : (φ.appLE U V e).hom a = resG Y e ((φ.app U).hom a) := by
   rw [Scheme.Hom.appLE, CommRingCat.comp_apply]
@@ -193,7 +188,7 @@ theorem eval₂Hom_secPull_coord {Y : Scheme.{0}} (φ : Y ⟶ PSpace R n) (k : P
       rw [eval₂Hom_C, aeval_C, algebraMap_sections_eq, CommRingCat.comp_apply]
       exact cst_comp_eq_resG_app φ (PSpace.str R n) _ _ hle le_top a
     · show _ = resG Y hle ((φ.app (chart R n (k ⟨⟩))).hom (aeval (ratio R n (k ⟨⟩)) (X j)))
-      rw [eval₂Hom_X', aeval_X, ← resG_refl' (le_refl (((O1 R n).pull φ).U k)) ((Cartier.secPull (coord R n j) φ).f k),
+      rw [eval₂Hom_X', aeval_X, ← _root_.GlobalTheory.Cartier.resG_self (le_refl (((O1 R n).pull φ).U k)) ((Cartier.secPull (coord R n j) φ).f k),
         resG_secPull_coord φ j k (le_refl _), pullRatio, appLE_congr_of_eq']
       rfl
   exact RingHom.congr_fun key F

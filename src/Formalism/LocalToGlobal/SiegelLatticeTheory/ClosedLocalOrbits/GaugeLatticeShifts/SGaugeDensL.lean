@@ -117,22 +117,20 @@ theorem one_mem_tOne (ε : Fin n → Bool) : (1 : MxC n) ∈ tOne ε := by
 theorem logM_one : logM n 1 = 0 := by
   have := logM_exp (n := n) zero_mem_eX; rwa [NormedSpace.exp_zero] at this
 
-theorem Jm_inv (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)⁻¹ = Formalism.REAL.Jm ε := Matrix.inv_eq_left_inv (Formalism.REAL.Jm_mul_self ε)
-
 theorem exp_fJ {ε : Fin n → Bool} {X : MxC n} (h : Formalism.REAL.inUJ ε (NormedSpace.exp X)) :
     NormedSpace.exp (fJ ε X) = NormedSpace.exp X := by
   have hJ := Formalism.REAL.Jm_mul_self ε
   have hu : IsUnit (Formalism.REAL.Jm ε) := IsUnit.of_mul_eq_one _ hJ
   set y := NormedSpace.exp X with hy
   have e1 : fJ ε X = Formalism.REAL.Jm ε * (-Xᴴ) * (Formalism.REAL.Jm ε)⁻¹ := by
-    rw [Jm_inv, fJ, Matrix.mul_neg, Matrix.neg_mul]
+    rw [_root_.Formalism.REAL.f1alg_inv_J, fJ, Matrix.mul_neg, Matrix.neg_mul]
   have e2 : ((yᴴ)⁻¹ : MxC n) = Formalism.REAL.Jm ε * y * Formalism.REAL.Jm ε := by
     apply Matrix.inv_eq_right_inv
     have h' : yᴴ * Formalism.REAL.Jm ε * y = Formalism.REAL.Jm ε := h
     calc yᴴ * (Formalism.REAL.Jm ε * y * Formalism.REAL.Jm ε) = (yᴴ * Formalism.REAL.Jm ε * y) * Formalism.REAL.Jm ε := by
           simp only [Matrix.mul_assoc]
       _ = 1 := by rw [h', hJ]
-  rw [e1, Matrix.exp_conj _ _ hu, Matrix.exp_neg, Matrix.exp_conjTranspose, ← hy, e2, Jm_inv]
+  rw [e1, Matrix.exp_conj _ _ hu, Matrix.exp_neg, Matrix.exp_conjTranspose, ← hy, e2, _root_.Formalism.REAL.f1alg_inv_J]
   calc Formalism.REAL.Jm ε * (Formalism.REAL.Jm ε * y * Formalism.REAL.Jm ε) * Formalism.REAL.Jm ε
       = (Formalism.REAL.Jm ε * Formalism.REAL.Jm ε) * y * (Formalism.REAL.Jm ε * Formalism.REAL.Jm ε) := by simp only [Matrix.mul_assoc]
     _ = y := by rw [hJ, Matrix.one_mul, Matrix.mul_one]

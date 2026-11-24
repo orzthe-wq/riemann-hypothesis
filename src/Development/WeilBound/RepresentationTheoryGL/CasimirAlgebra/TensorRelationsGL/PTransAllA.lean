@@ -127,7 +127,7 @@ theorem cA_lift {C : Type} [DecidableEq C] (col : P → C) (b : P → Fin n) (B 
     cA col b ∘ₗ lift B = B ∘ₗ (cA col b : TV n M P →ₗ[ℂ] M) := by
   refine LinearMap.ext fun x => ?_
 
-  simp [cA, alt, pm, lift, LinearMap.sum_apply, map_sum, map_zsmul]
+  simp [cA, alt, pm, lift, map_sum]
 
 def cj {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (e : V ≃ₗ[ℂ] W) :
     Module.End ℂ W →ₐ[ℂ] Module.End ℂ V where

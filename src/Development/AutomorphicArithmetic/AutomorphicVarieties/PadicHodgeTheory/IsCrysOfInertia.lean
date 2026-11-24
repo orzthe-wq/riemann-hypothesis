@@ -173,7 +173,7 @@ private theorem isCrys_of_inertia {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI 
     beta_reduce at h2
     rw [mul_zpow, ← map_zpow, ← map_zpow, Units.val_mul] at h2
     exact h2
-  refine GlobalTheory.T.isCrys_of_split_alt (P.PD K) ρ e (((u ^ (-w) : (P.R.B)ˣ) : P.R.B) • AI.ιA.mapMatrix W) ?_ fun g => ?_
+  refine _root_.GlobalTheory.SplitCrys.isCrys_of_split (P.PD K) ρ e (((u ^ (-w) : (P.R.B)ˣ) : P.R.B) • AI.ιA.mapMatrix W) ?_ fun g => ?_
   · rw [Matrix.det_smul, ← RingHom.map_det]
     exact ((Units.isUnit _).pow _).mul (hW.map _)
   · conv_rhs => rw [← hB g]

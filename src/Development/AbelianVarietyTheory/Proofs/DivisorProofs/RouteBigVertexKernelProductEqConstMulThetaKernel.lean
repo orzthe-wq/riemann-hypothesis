@@ -97,9 +97,7 @@ theorem data_theta {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridDa
 theorem dagger_zero {D : D7} (S T : HSp D) : dagger S T 0 = 0 := by
   simp [dagger]
 
-theorem hecke_mul' {D : D7} {χ ν : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hν : IsHeckeChar D ν) :
-    IsHeckeChar D (χ * ν) :=
-  ⟨hχ.1.mul hν.1, fun x => by rw [MonoidHom.mul_apply, hχ.2, hν.2, mul_one]⟩
+alias hecke_mul' := _root_.GlobalTheory.WeilChange.hecke_mul
 
 theorem splitFac_ratio {D : D7} (a b c : (AE D)ˣ →* Circle) (x y : (AE D)ˣ) :
     (splitFacO a c⁻¹ x y : ℂ) * (splitFacO b⁻¹ c⁻¹ x y : ℂ)⁻¹ = ((a y * b y : Circle) : ℂ) := by

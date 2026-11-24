@@ -8,47 +8,6 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSB
 import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeLemma3
 public import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.AmpTensorDSdNonemptyOfSubsingleton
 import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.TopsChoicePartA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -111,19 +70,10 @@ section Facts
 
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
-private theorem host_v_pos' (D : D7) : 0 < D.host.v := by
-  have hd : (0 : ℝ) < |(NumberField.discr D.host.E : ℝ)| :=
-    abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero D.host.E))
-  have hr : 0 < D.host.rdE := by
-    unfold Formalism.BasicNotions.Host.rdE
-    exact Real.rpow_pos_of_pos hd _
-  unfold Formalism.BasicNotions.Host.v
-  linarith
-
 theorem theta_pos (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) : 0 < θ := by
   by_contra hθ
   push_neg at hθ
-  have hv := host_v_pos' D
+  have hv := _root_.Formalism.L2.SG.Pf.Choice.host_v_pos D
   have hq := C.nuS_q u τ
   unfold muNB kapN haarLie muS at hq
   simp (disch := exact mul_nonpos_of_nonneg_of_nonpos (by first | positivity | exact Real.rpow_nonneg (by linarith) _ | exact zpow_nonneg (by linarith) _) hθ) only [ENNReal.ofReal_of_nonpos, zero_smul, Measure.prod_zero, Measure.map_zero] at hq
@@ -136,7 +86,7 @@ theorem theta_pos (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) : 
     unfold Formalism.REAL.muG
     exact (isOpen_univ.measure_pos _ Set.univ_nonempty).ne'
   have h1 := hq (fun _ => 1) measurable_const
-  simp only [lintegral_const, Measure.coe_zero, Pi.zero_apply, zero_mul, lintegral_zero, mul_one] at h1
+  simp only [lintegral_const, Measure.coe_zero, Pi.zero_apply] at h1
   unfold muGB at h1
   rw [Measure.map_apply hmeas MeasurableSet.univ, Set.preimage_univ] at h1
   simp only [one_mul, mul_zero, zero_mul] at h1
@@ -179,14 +129,13 @@ theorem sigB_rep (C : Choice X θ) (τ : D.what₂.Tau) :
 private theorem conj_mem_lemma (C : Choice X θ) (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     C.Qi τ * uMat γ * C.Q τ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) := by
   obtain ⟨h1, h2, h3, -⟩ := C.isT τ
-  have hγ : (uMat γ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * uMat γ = Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) := γ.2
   have hA : ∀ M : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ, (C.Qi τ)ᴴ * ((C.Q τ)ᴴ * M) = M := fun M => by
     rw [← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, h2, Matrix.conjTranspose_one, Matrix.one_mul]
   have hB : ∀ M : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ, C.Q τ * (C.Qi τ * M) = M := fun M => by
     rw [← Matrix.mul_assoc, h2, Matrix.one_mul]
   have hC : ∀ M : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ,
       (uMat γ)ᴴ * (Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (uMat γ * M)) = Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * M := fun M => by
-    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hγ]
+    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, γ.2]
   show (C.Qi τ * uMat γ * C.Q τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (C.Qi τ * uMat γ * C.Q τ) =
     Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS
   rw [← h3]
@@ -234,15 +183,13 @@ def cS (D : D7) : ℂ := ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : �
 theorem cS_ne (D : D7) : cS D ≠ 0 := by
   have hka : 0 < D.host.ka := by
     unfold Formalism.BasicNotions.Host.ka
-    exact div_pos Real.pi_pos (host_v_pos' D)
+    exact div_pos Real.pi_pos (_root_.Formalism.L2.SG.Pf.Choice.host_v_pos D)
   have hg0 : ((D.host.g 0 : ℕ) : ℝ) ≠ 0 := by exact_mod_cast (D.host.g_prime 0).ne_zero
   have hg1 : ((D.host.g 1 : ℕ) : ℝ) ≠ 0 := by exact_mod_cast (D.host.g_prime 1).ne_zero
   unfold cS
   exact Complex.ofReal_ne_zero.mpr (div_ne_zero (mul_ne_zero two_ne_zero hka.ne') (mul_ne_zero hg0 hg1))
 
-theorem conjUH (C : Choice X θ) (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
-    C.Qi τ * uMat γ * C.Q τ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) := by
-  exact conj_mem_lemma C τ γ
+alias conjUH := _root_.Formalism.L2.SG.Pf.WuBL.conj_mem_lemma
 
 theorem norm_psi (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (m : Formalism.FourierDecayAlt.B.Mat k r) :
     ‖Formalism.QuantumDeterminants.psi k r z c m‖ = 1 := by
@@ -271,12 +218,12 @@ theorem sideQ (hRT : ReproTr) (hL2 : L2RightTranslation) (hGp : GapOfHyp) {C : C
         rconv (muGB X (C.Q τ) (C.Qi τ) τ) (eFun (muGB X (C.Q τ) (C.Qi τ) τ) (sigB X (C.Q τ) (C.Qi τ) τ) (v0Of C τ))
           (fun x => wT C u τ (x * C.y τ)) x = wT C u τ (x * C.y τ)) ∧
       l2SG (C.nuS u τ) (fun x => wT C u τ (x * C.y τ)) ≠ 0 ∧ l2SG (C.nuS u τ) (fun x => wT C u τ (x * C.y τ)) < ⊤ := by
-  obtain ⟨hwsm, hw1, hSH, hWc, hWe, hWr, hne, hfin⟩ := hLF u τ
+  obtain ⟨_, hw1, hSH, hWc, hWe, hWr, hne, hfin⟩ := hLF u τ
   have hθ := theta_pos C u τ
   obtain ⟨h, hgap, hok⟩ := hGp D hG τ
   obtain ⟨hz, hTz⟩ := Formalism.L2.SG.Pf.zTr C u τ
   have hT : 0 < Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u τ) := by rw [hTz]; exact Tr_pos D u
-  obtain ⟨h1, h2, hg, -⟩ := C.isT τ
+  obtain ⟨_, h2, hg, -⟩ := C.isT τ
   have hy := C.y_mem τ
   obtain ⟨hrep, hiso⟩ := sigB_rep C τ
   have hHG := haarTr C τ
@@ -293,9 +240,7 @@ theorem sideQ (hRT : ReproTr) (hL2 : L2RightTranslation) (hGp : GapOfHyp) {C : C
   · obtain ⟨P, hP, hmem⟩ := C.y_low τ
     refine ⟨P, hP, ?_, hmem⟩
     show ‖X.B.σ (vOf X τ) (C.Q τ * C.y τ * C.Qi τ) (X.B.w (vOf X τ))‖ = 1
-    have := hiso (C.y τ) hy (X.B.w (vOf X τ))
-    rw [← hw1]
-    exact this
+    simpa only [sigB, ← hw1] using hiso (C.y τ) hy (X.B.w (vOf X τ))
   · exact hWc.comp (continuous_id.matrix_mul continuous_const).continuousOn hmaps
   · intro hh hhU m hm g hgU
     show wT C u τ (hh * m * g * C.y τ) = _ • _
@@ -350,8 +295,6 @@ theorem wuBesselOfLoc {D : D7} {X : HidaSetting D} {θ : ℝ} (hRT : ReproTr) (h
   have hyi2 : C.y τ * yi = 1 := by
     first
       | exact mul_eq_one_comm.mp hyi1
-      | exact (Matrix.mul_eq_one_comm (M := yi)).mp hyi1
-      | (letI := Matrix.invertibleOfLeftInverse (C.y τ) yi hyi1; exact Matrix.mul_invOf_self (C.y τ))
   have hyiU : yiᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * yi = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS := by
     calc yiᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * yi
         = yiᴴ * ((C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.y τ) * yi := by rw [hy]

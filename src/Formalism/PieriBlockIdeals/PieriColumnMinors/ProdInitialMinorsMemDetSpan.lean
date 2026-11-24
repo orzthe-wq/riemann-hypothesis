@@ -445,7 +445,7 @@ theorem la_mono_of_weight {m : Fin 2 × Fin 1 →₀ ℕ} {ν : Fin 1 → ℕ}
   simp [Fintype.sum_prod_type, Fin.sum_univ_two, colW] at h0
   refine ⟨?_, h0⟩
   ext ⟨i, j⟩
-  fin_cases i <;> fin_cases j <;> simp [la_mono, Finsupp.single_apply]
+  fin_cases i <;> fin_cases j <;> simp [la_mono]
 
 theorem la_nabla_r2n1 (R : Type) [CommRing R] (ν : Fin 1 → ℕ) :
     dualWeyl R 2 1 ν = la_monLat R (0 : Fin 1) (ν 0) := by

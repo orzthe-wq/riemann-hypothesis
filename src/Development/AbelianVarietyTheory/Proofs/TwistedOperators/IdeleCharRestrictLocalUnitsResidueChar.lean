@@ -57,9 +57,7 @@ namespace GlobalTheory.ResLoc
 
 open GlobalTheory.IdemSupport Formalism.L2.JoinChr Formalism.L2.Host
 
-theorem val_alg {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (a : E) :
-    Valued.v (algebraMap E (P.adicCompletion E) a) = P.valuation E a :=
-  P.valuedAdicCompletion_eq_valuation' a
+alias val_alg := _root_.Formalism.UG.P.levelaf_valued_algebraMap
 
 theorem le_exp_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) := by
   by_cases h0 : x = 0

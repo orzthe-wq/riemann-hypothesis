@@ -81,11 +81,11 @@ theorem _root_.GlobalTheory.UnitFrame.trace_eq_sum_re (Ψ : Finset (E →+* ℂ)
       = ∑ τ ∈ Finset.univ.filter (fun τ : E →+* ℂ => τ ∈ Ψ), conj (τ z) := by
     refine Finset.sum_nbij' ComplexEmbedding.conjugate ComplexEmbedding.conjugate ?_ ?_ ?_ ?_ ?_
     · intro τ hτ
-      simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢
       by_contra h
       exact hτ ((hΨ _).2 (by simpa using h))
     · intro τ hτ
-      simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢
       exact (hΨ τ).1 hτ
     · intro τ _; simp
     · intro τ _; simp
@@ -127,7 +127,7 @@ theorem _root_.GlobalTheory.UnitFrame.hermC_mulVec {r : ℕ} (τ : E →+* ℂ) 
     _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ G (x *ᵥ c) (x *ᵥ c') = c ⬝ᵥ (_root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ G x) *ᵥ (star c') := by
   have hstar : star (x *ᵥ c') = x.map conj *ᵥ star c' := by
     funext i
-    simp [mulVec, dotProduct, star_sum, mul_comm]
+    simp [mulVec, dotProduct, star_sum]
   rw [_root_.GlobalTheory.UnitFrame.hermC_eq, _root_.GlobalTheory.UnitFrame.gram_eq,
     ← mulVec_mulVec, ← mulVec_mulVec, hstar, dotProduct_mulVec c xᵀ, vecMul_transpose]
 
@@ -157,7 +157,7 @@ theorem _root_.GlobalTheory.UnitFrame.im_sum_periods {r : ℕ} (q : ℕ) (τ : E
   have hback : ∀ y : Fin r → ℂ, x *ᵥ (x⁻¹ *ᵥ y) = y := by
     intro y; rw [mulVec_mulVec, hx1, one_mulVec]
   have hcol : ∀ a, _root_.ReciprocityTheory.ChartRestriction.G.FD.col x a = x *ᵥ Pi.single a 1 := by
-    intro a; funext k; simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.col, mulVec_single_one]
+    intro a; funext k; simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.col]
   have hkey : ∀ a (y : Fin r → ℂ), _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC τ G (_root_.ReciprocityTheory.ChartRestriction.G.FD.col x a) y
       = ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ) * conj ((x⁻¹ *ᵥ y) a) := by
     intro a y

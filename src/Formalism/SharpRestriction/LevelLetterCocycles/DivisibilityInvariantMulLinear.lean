@@ -1,27 +1,31 @@
 module
 
+public import Formalism.TruncatedSeriesCounting.PowMemSpanOfMemSpanLinearDistinguished
+public import Formalism.WindowSums.PowerSeriesRelationList
 public import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
 public import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.AevalApplySubEvalOneMem
-public import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.KapWin
-import Formalism.WindowSums.PowerSeriesRelationList
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Rat
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.Order.Interval.Finset.Box
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,10 +46,100 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.KapWin, Formalism.SharpRestriction.LevelLetterCocycles.DivisibilityInvariantMulLinear
+
+-- ===== clump member: Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.KapWin =====
+-- clump-header: {"m": "Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.KapWin", "h": "module\n\npublic import Formalism.TruncatedSeriesCounting.PowMemSpanOfMemSpanLinearDistinguished\npublic import Formalism.WindowSums.PowerSeriesRelationList\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.Interval.Finset.Box\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingBounds
+
+open Finset
+
+private lemma sum_le_sum_cover {K : ℕ} (W : Fin K → Finset ℤ) (S : Finset ℤ)
+    (hS : ∀ i ∈ S, ∃ k, i ∈ W k) (g : ℤ → ℕ) :
+    ∑ i ∈ S, g i ≤ ∑ k, ∑ i ∈ S.filter (fun i => i ∈ W k), g i := by
+  calc ∑ i ∈ S, g i ≤ ∑ i ∈ S, ∑ k, if i ∈ W k then g i else 0 := by
+        apply Finset.sum_le_sum
+        intro i hi
+        obtain ⟨k, hk⟩ := hS i hi
+        calc g i = (fun k' => if i ∈ W k' then g i else 0) k := by simp [hk]
+          _ ≤ ∑ k', if i ∈ W k' then g i else 0 :=
+            Finset.single_le_sum (f := fun k' => if i ∈ W k' then g i else 0) (fun _ _ => Nat.zero_le _)
+              (Finset.mem_univ k)
+    _ = ∑ k, ∑ i ∈ S.filter (fun i => i ∈ W k), g i := by
+        rw [Finset.sum_comm]
+        refine Finset.sum_congr rfl fun k _ => ?_
+        rw [Finset.sum_filter]
+
+theorem kappa_window_bound : KapWin := by
+  intro ℓ _ hℓ χ hχ ell K D a L JJ hJJ hD
+  obtain ⟨hne, hv⟩ := Formalism.WindowSums.arc_KillerVal ℓ hℓ χ hχ ell JJ
+  refine ⟨hne, ?_⟩
+  rw [hv]
+  set S := JJ.erase 0 with hSdef
+  set W : Fin K → Finset ℤ := fun k => Finset.Ico (a k) (a k + (L k : ℤ)) with hWdef
+  have hcov : ∀ i ∈ S, ∃ k, i ∈ W k := by
+    intro i hi
+    have := hJJ (Finset.mem_of_mem_erase hi)
+    simpa [Finset.mem_biUnion, hWdef] using this
+  have hcard : S.card ≤ ∑ k, L k := by
+    have h := sum_le_sum_cover W S hcov (fun _ => 1)
+    rw [Finset.card_eq_sum_ones]
+    refine h.trans (Finset.sum_le_sum fun k _ => ?_)
+    rw [← Finset.card_eq_sum_ones]
+    calc (S.filter (fun i => i ∈ W k)).card ≤ (W k).card := by
+          apply Finset.card_le_card
+          intro i hi
+          exact (Finset.mem_filter.mp hi).2
+      _ = L k := by simp [hWdef]
+  have hsumv : ((∑ i ∈ S, padicValInt ℓ i : ℕ) : ℝ) ≤
+      ∑ k, ((L k : ℝ) / ((ℓ : ℝ) - 1) + Real.logb ℓ D) := by
+    calc ((∑ i ∈ S, padicValInt ℓ i : ℕ) : ℝ)
+        ≤ ((∑ k, ∑ i ∈ S.filter (fun i => i ∈ W k), padicValInt ℓ i : ℕ) : ℝ) := by
+          exact_mod_cast sum_le_sum_cover W S hcov (fun i => padicValInt ℓ i)
+      _ = ∑ k, ((∑ i ∈ S.filter (fun i => i ∈ W k), padicValInt ℓ i : ℕ) : ℝ) := by
+          push_cast; rfl
+      _ ≤ ∑ k, ((L k : ℝ) / ((ℓ : ℝ) - 1) + Real.logb ℓ D) := by
+          refine Finset.sum_le_sum fun k _ => ?_
+          refine _root_.Formalism.WindowSums.sum_padicValInt_le ℓ (a k) (L k) D _ ?_ ?_ ?_
+          · intro i hi
+            exact (Finset.mem_filter.mp hi).2
+          · intro h0
+            have := (Finset.mem_filter.mp h0).1
+            simp [hSdef] at this
+          · intro i hi
+            exact hD i (Finset.mem_of_mem_erase (Finset.mem_filter.mp hi).1)
+  have hsplit : ∑ i ∈ S, (1 + ell + padicValInt ℓ i) =
+      S.card * (1 + ell) + ∑ i ∈ S, padicValInt ℓ i := by
+    rw [Finset.sum_add_distrib, Finset.sum_const, smul_eq_mul]
+  rw [hsplit]
+  have hcardR : (S.card : ℝ) ≤ ((∑ k, L k : ℕ) : ℝ) := by exact_mod_cast hcard
+  have hmul : (S.card : ℝ) * (1 + ell) ≤ ((∑ k, L k : ℕ) : ℝ) * (1 + ell) :=
+    mul_le_mul_of_nonneg_right hcardR (by positivity)
+  have hgoal : ((S.card * (1 + ell) + ∑ i ∈ S, padicValInt ℓ i + ell : ℕ) : ℝ) =
+      (S.card : ℝ) * (1 + ell) + ((∑ i ∈ S, padicValInt ℓ i : ℕ) : ℝ) + ell := by
+    push_cast; ring
+  rw [hgoal]
+  linarith
+
+end Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingBounds
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.KapWin =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.DivisibilityInvariantMulLinear =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.DivisibilityInvariantMulLinear", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup\npublic import Formalism.DistinguishedUnitIdeals.DistinguishedOrderProofs.AevalApplySubEvalOneMem\npublic import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.KapWin\nimport Formalism.WindowSums.PowerSeriesRelationList\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -223,8 +317,6 @@ private lemma kappa_bound_logb (l : ℕ) [Fact l.Prime] (hl2 : l ≠ 2) (G S h e
   rw [Fin.sum_univ_succ, Fin.sum_univ_succ]
   simp only [Fin.cons_zero, Fin.cons_succ, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
     smul_eq_mul, nsmul_eq_mul]
-  try push_cast
-  try ring
 
 theorem killerKap_holds : KillerKap 8 := by
   intro l hl h5 G S h ell ro a hGh h1 ha JS
@@ -290,10 +382,6 @@ end Kap
 
 theorem content_divisibility_clause (D : Formalism.BasicNotions.D7) : adm9 D := content_divisibility
 
-theorem killerVal_holds : Formalism.WindowSums.KillerVal := Formalism.WindowSums.arc_KillerVal
-
-theorem killerKills_holds : Formalism.WindowSums.KillerKills := Formalism.WindowSums.arc_KillerKills
-
 theorem killerKap_of_le {C : ℝ} (hC : 8 ≤ C) : KillerKap C := by
   intro l hl hl5 G S h ell ro a hGh hh ha
   have h8 := killerKap_holds l hl hl5 G S h ell ro a hGh hh ha
@@ -306,7 +394,7 @@ theorem killerKap_of_le {C : ℝ} (hC : 8 ≤ C) : KillerKap C := by
 
 theorem lemma_M_prime_hypothesis (D : Formalism.BasicNotions.D7) (HW : Formalism.BasicNotions.HWOf D.loc) (F : Formalism.BasicNotions.FonOf D.loc D.locA HW) {C : ℝ} (hC : 8 ≤ C) (hLev : KillerLevL D.loc D.locA HW F)
     (hMod : KillerModL D.loc D.locA HW F) : adm8 D HW F C :=
-  ⟨killerVal_holds, killerKills_holds, hLev, hMod, killerKap_of_le hC⟩
+  ⟨_root_.Formalism.WindowSums.arc_KillerVal, _root_.Formalism.WindowSums.annihilatorPoly_kills, hLev, hMod, killerKap_of_le hC⟩
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
@@ -370,3 +458,7 @@ theorem pi_stability_content_clause (D : Formalism.BasicNotions.D7) (HW : HWOf D
   lemma_M_prime_hypothesis D HW F hC hLev (killerModL_of D.loc D.locA HW F h)
 
 end Formalism.MainNotions.ArcLiftingSetup
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.DivisibilityInvariantMulLinear =====

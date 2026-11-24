@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGapsStatement
+public import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps
 public import Formalism.FlagUnipotentLattices.AlgebraicIdentityHigherDegree
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -67,7 +68,7 @@ theorem bound_cast (k M n : ℕ) (hn : n = k + M) (lam mu : Fin n → ℝ) (u : 
   subst hn
   have hmem : ∀ i : Fin k, (i : ℕ) + 1 ∈ Icc 1 k := fun i => by
     rw [Finset.mem_Icc]; have := i.2; omega
-  have key := Formalism.HermitianLatticeCounting.Final.ExpansionTerms.sup_l2_ratio_majorant k M lam mu (fun i => u (i.val + 1)) b bv ga q0 s hk hM
+  have key := _root_.Formalism.HermitianLatticeCounting.P.first_operator_norm_bound k M lam mu (fun i => u (i.val + 1)) b bv ga q0 s hk hM
     ⟨h1, h2, fun a i => h3 a _ (hmem i), fun i => h4 (Fin.castAdd M i) i.2,
       fun i j hij => by
         have := h5 (Fin.castAdd M i) (by have := j.2; simp only [Fin.val_castAdd]; omega)
@@ -83,7 +84,7 @@ theorem bound_cast (k M n : ℕ) (hn : n = k + M) (lam mu : Fin n → ℝ) (u : 
 
 theorem lowering_bound : ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ), Num k r lam u b bv ga h q0 → ∀ ν : Fin (2 * r + k + 1) → ℤ, n1 ν ≤ q0 → ∀ s, (∏ i ∈ Icc 1 k, |lam s + (ν s : ℝ) - 1 / 2 - u i|) / ∏ t ∈ univ.erase s, |lam s + (ν s : ℝ) - 1 - (lam t + (ν t : ℝ))| ≤ b ^ 4 := by
   intro k r lam u b bv ga h q0 hN ν hν s
-  obtain ⟨⟨hb, hbv, -, hq, -⟩, hf⟩ := GlobalTheory.T.numericalFamily_shape_gaps k r lam u b bv ga h q0 hN
+  obtain ⟨⟨hb, hbv, -, hq, -⟩, hf⟩ := _root_.GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hN
   obtain ⟨-, -, -, hgap⟩ := hf ν hν
   obtain ⟨hk, hHC, h3, h4, h5, h6, h7, h8, h9, h10, -, -, hga, -, hbig⟩ := hN
   have hq0 : (0 : ℝ) ≤ q0 := Nat.cast_nonneg _

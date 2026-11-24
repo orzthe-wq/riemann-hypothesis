@@ -75,7 +75,7 @@ theorem laws_of_level {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (N : ℕ) (f :
     congr 1
     simp only [eC, ← Complex.exp_nat_mul, ← Complex.exp_add]
     congr 1
-    simp only [single_one_dotProduct, mulVec_single_one, Matrix.col_apply, transpose_apply]
+    simp only [single_one_dotProduct, mulVec_single_one, Matrix.col_apply]
     ring
 
 
@@ -88,7 +88,7 @@ theorem _root_.GlobalTheory.ThetaSpan.mem_span_theta_of_level :
   obtain ⟨hmem, hli⟩ := H g τ hτ N hN
   have hV : _root_.GlobalTheory.thetaLevel N τ = _root_.GlobalTheory.thetaLevelChar 0 0 N τ := by
     ext φ
-    simp [_root_.GlobalTheory.mem_thetaLevel, _root_.GlobalTheory.mem_thetaLevelChar, _root_.ReciprocityTheory.PTheta.eC_zero]
+    simp [_root_.GlobalTheory.mem_thetaLevel]
   have hsymm : τ.IsSymm := (_root_.GlobalTheory.isSiegel_iff_mem_siegelH.2 hτ).isSymm
   haveI : FiniteDimensional ℂ (_root_.GlobalTheory.thetaLevel N τ) := by
     rw [hV]

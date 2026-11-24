@@ -84,7 +84,7 @@ theorem _root_.GlobalTheory.lastComatrixRow_inverts_dual : ∀ (V : Type) [Norme
       unfold _root_.Formalism.REAL.exchangeTwo_self_eq_one
       simp only [_root_.Formalism.REAL.shiftedGenerator_eq_ite_smul_add, Fin.castSucc_inj, id]
     · intro j _ hj
-      simp [LinearMap.comp_apply, hproj, PiLp.ofLp_single, Pi.single_eq_of_ne hj]
+      simp [LinearMap.comp_apply, PiLp.ofLp_single, Pi.single_eq_of_ne hj]
     · simp
 
 end GlobalTheory

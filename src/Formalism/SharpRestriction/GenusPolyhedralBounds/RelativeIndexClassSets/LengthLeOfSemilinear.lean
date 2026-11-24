@@ -1,15 +1,19 @@
 module
 
+public import Formalism.FilteredPoleLength.ReducedBasisBounds.ReductionQuotient
+public import Formalism.FilteredPoleLength.ReducedBasisBounds.LengthBaseChangeLocal
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+public import Mathlib.Algebra.Order.Archimedean.Real.Basic
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Algebra.Order.BigOperators.Group.Finset
 public import Formalism.LogFactorialIndices.StatementIdx
+public import Formalism.LogFactorialIndices.SignedSubspaceIndex.IdxBase
+public import Formalism.LogFactorialIndices.SignedSubspaceIndex.IdxDet
 public import Formalism.FilteredPoleLength.LocalDescentLevels.MemSpanBasisFun
 public import Formalism.FilteredPoleLength.LocalDescentLevels.LengthBaseChange
-public import Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChain
-public import Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChainOfAddOneLe
-public import Formalism.IncomingBounds.FlowDegreeBounds.IndexLastReductionHolds
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -25,11 +29,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -37,7 +37,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -50,10 +49,465 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.FilteredPoleLength.LocalDescentLevels.BCount, Formalism.FilteredPoleLength.LocalDescentLevels.FilIntegerStep, Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChain, Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChainOfAddOneLe, Formalism.IncomingBounds.IndexLastStep, Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndex, Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndexSigned, Formalism.IncomingBounds.FlowDegreeBounds.IndexLastReductionHolds, Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LengthLeOfSemilinear
+
+-- ===== clump member: Formalism.FilteredPoleLength.LocalDescentLevels.BCount =====
+-- clump-header: {"m": "Formalism.FilteredPoleLength.LocalDescentLevels.BCount", "h": "module\n\npublic import Formalism.FilteredPoleLength.ReducedBasisBounds.ReductionQuotient\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.LatticeBaseChangeAlt
+
+open Finset
+
+theorem levelsSum : LevelsSum := by
+  intro ι _ ep f mm v T c' h
+  rw [Finset.mul_sum]
+  refine Finset.sum_le_sum fun z _ => ?_
+  have hf : (0 : ℝ) ≤ (f z : ℝ) := Nat.cast_nonneg _
+  calc (mm z : ℝ) * f z ≤ (ep z * T * c' * v z) * f z := mul_le_mul_of_nonneg_right (h z) hf
+    _ = T * c' * ((ep z : ℝ) * f z * v z) := by ring
+
+end Formalism.LatticeBaseChangeAlt
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.FilteredPoleLength.LocalDescentLevels.BCount =====
+
+-- ===== clump member: Formalism.FilteredPoleLength.LocalDescentLevels.FilIntegerStep =====
+-- clump-header: {"m": "Formalism.FilteredPoleLength.LocalDescentLevels.FilIntegerStep", "h": "module\n\npublic import Formalism.FilteredPoleLength.ReducedBasisBounds.ReductionQuotient\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.LatticeBaseChangeAlt
+
+theorem poleOrderGood : PoleOrderGood := by
+  intro ep T ν νs c' vet e hep hc hv hν ⟨n, hn⟩ he
+  have hepR : (1 : ℝ) ≤ ep := by exact_mod_cast hep
+  have hT0 : (0 : ℝ) ≤ T := by positivity
+  have hy : 0 ≤ (ep : ℝ) * (T * c' * vet) := by positivity
+  rw [div_le_iff₀ (by linarith)]
+  have hint : (ep : ℝ) * ((T : ℝ) * ν - e) = (((T : ℤ) * n - ep * e : ℤ) : ℝ) := by
+    push_cast; rw [← hn]; ring
+  rw [hint, Int.ceil_intCast, Int.cast_max]
+  apply max_le
+  · simpa [mul_comm] using hy
+  · rw [← hint]
+    have : (T : ℝ) * ν - e ≤ T * c' * vet := by nlinarith
+    nlinarith
+
+theorem poleOrderBad : PoleOrderBad := by
+  intro ep T ν νs c' vet hep hT hc hv hν e
+  have hepR : (1 : ℝ) ≤ ep := by exact_mod_cast hep
+  have hTR : (1 : ℝ) ≤ T := by exact_mod_cast hT
+  have he : (T : ℝ) * (νs + 1) ≤ (e : ℝ) := Int.le_ceil _
+  have hy : 0 ≤ (ep : ℝ) * (T * c' * vet) := by positivity
+  rw [div_le_iff₀ (by linarith)]
+  have hx : (ep : ℝ) * ((T : ℝ) * ν - e) ≤ (ep : ℝ) * (T * c' * vet) - ep := by
+    have : (T : ℝ) * ν - e ≤ T * c' * vet - 1 := by nlinarith
+    nlinarith
+  have hc1 : ((⌈(ep : ℝ) * ((T : ℝ) * ν - e)⌉ : ℤ) : ℝ) < (ep : ℝ) * ((T : ℝ) * ν - e) + 1 :=
+    Int.ceil_lt_add_one _
+  rw [Int.cast_max]
+  apply max_le
+  · simpa [mul_comm] using hy
+  · nlinarith
+
+end Formalism.LatticeBaseChangeAlt
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.FilteredPoleLength.LocalDescentLevels.FilIntegerStep =====
+
+-- ===== clump member: Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChain =====
+-- clump-header: {"m": "Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChain", "h": "module\n\npublic import Formalism.FilteredPoleLength.ReducedBasisBounds.LengthBaseChangeLocal\npublic import Formalism.FilteredPoleLength.LocalDescentLevels.BCount\npublic import Formalism.FilteredPoleLength.LocalDescentLevels.FilIntegerStep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.LatticeBaseChangeAlt
+
+open Module
+
+theorem levelsChain : LevelsChain := by
+  intro ι _ ep f ν v νs c' T e hep hT hc' hv hν hcase
+  apply levelsSum ι ep f (fun z => max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - e)⌉) v T c'
+  intro z
+  have hpos : (0 : ℝ) < ep z := by exact_mod_cast hep z
+  have h : ((max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - e)⌉ : ℤ) : ℝ) / ep z ≤ T * c' * v z := by
+    rcases hcase with ⟨h1, h2⟩ | h3
+    · exact poleOrderGood (ep z) T (ν z) νs c' (v z) e (hep z) hc' (hv z) (hν z) (h2 z) h1
+    · subst h3
+      exact poleOrderBad (ep z) T (ν z) νs c' (v z) (hep z) hT hc' (hv z) (hν z)
+  rw [div_le_iff₀ hpos] at h
+  linarith
+
+end Formalism.LatticeBaseChangeAlt
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChain =====
+
+-- ===== clump member: Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChainOfAddOneLe =====
+-- clump-header: {"m": "Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChainOfAddOneLe", "h": "module\n\npublic import Mathlib.Algebra.BigOperators.Group.Finset.Defs\npublic import Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.BigOperators.Ring.Finset\npublic import Mathlib.Algebra.Order.BigOperators.Group.Finset\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.LatticeBaseChangeAlt
+
+open Module
+
+theorem levelsChain_of_add_one_le (ι : Type) [Fintype ι] (ep f : ι → ℕ) (ν v : ι → ℝ) (νs c' : ℝ) (T : ℕ) (e : ℤ)
+    (hep : ∀ z, 1 ≤ ep z) (hT : 1 ≤ T) (hc : 0 ≤ c') (hv : ∀ z, 0 ≤ v z)
+    (hν : ∀ z, ν z ≤ νs + c' * v z) (he : (T : ℝ) * νs + 1 ≤ e) :
+    ∑ z, ((max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - e)⌉ : ℤ) : ℝ) * f z ≤
+        T * c' * ∑ z, ((ep z : ℝ) * f z) * v z := by
+  rw [Finset.mul_sum]
+  apply Finset.sum_le_sum
+  intro z _
+  have hf : (0 : ℝ) ≤ f z := Nat.cast_nonneg _
+  have hep0 : (1 : ℝ) ≤ ep z := by exact_mod_cast hep z
+  have hT0 : (1 : ℝ) ≤ T := by exact_mod_cast hT
+  have hbound : ((max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - e)⌉ : ℤ) : ℝ) ≤ (ep z : ℝ) * T * c' * v z := by
+    have hy : 0 ≤ (ep z : ℝ) * T * c' * v z := by
+      have := hv z
+      positivity
+    rw [Int.cast_max, Int.cast_zero]
+    apply max_le hy
+    have h1 := mul_le_mul_of_nonneg_left (hν z) (by linarith : (0 : ℝ) ≤ T)
+    have h2 : (T : ℝ) * ν z - e ≤ T * c' * v z - 1 := by nlinarith
+    have h3 : (ep z : ℝ) * ((T : ℝ) * ν z - e) ≤ (ep z) * (T * c' * v z - 1) :=
+      mul_le_mul_of_nonneg_left h2 (by linarith)
+    have h4 := Int.ceil_lt_add_one ((ep z : ℝ) * ((T : ℝ) * ν z - e))
+    nlinarith
+  calc ((max 0 ⌈(ep z : ℝ) * ((T : ℝ) * ν z - e)⌉ : ℤ) : ℝ) * f z
+      ≤ (ep z : ℝ) * T * c' * v z * f z := mul_le_mul_of_nonneg_right hbound hf
+    _ = T * c' * (((ep z : ℝ) * f z) * v z) := by ring
+
+end Formalism.LatticeBaseChangeAlt
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChainOfAddOneLe =====
+
+-- ===== clump member: Formalism.IncomingBounds.IndexLastStep =====
+-- clump-header: {"m": "Formalism.IncomingBounds.IndexLastStep", "h": "module\n\npublic import Formalism.LogFactorialIndices.StatementIdx\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.IncomingBounds
+
+open Module
+
+def IndexLastStep : Prop :=
+  ∀ (O K X : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
+    [IsFractionRing O K] [AddCommGroup X] [Module K X] [Module O X] [IsScalarTower O K X]
+    [FiniteDimensional K X] (ϖ : O), Irreducible ϖ →
+    ∀ (e : ℤ) (M Θ : Submodule O X), Formalism.LatticeIndexTer.IsLat O K X M → Formalism.LatticeIndexTer.IsLat O K X Θ →
+      ∀ W : Submodule K X,
+        Formalism.LatticeIndexTer.idx O X (M ⊓ W.restrictScalars O) (Θ ⊓ W.restrictScalars O) ≤
+          e * (finrank K W : ℤ) +
+            ((Formalism.LatticeIndexTer.qlen O X
+              (M.map ((((algebraMap O K ϖ) ^ e) • LinearMap.id : X →ₗ[K] X).restrictScalars O) ⊔ Θ)
+              Θ).toNat : ℤ)
+
+end Formalism.IncomingBounds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.IncomingBounds.IndexLastStep =====
+
+-- ===== clump member: Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndex =====
+-- clump-header: {"m": "Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndex", "h": "module\n\npublic import Formalism.LogFactorialIndices.StatementIdx\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped Pointwise
+
+noncomputable section
+
+namespace Formalism.LatticeIndexTer.subgroupData
+
+variable {O X : Type} [CommRing O] [AddCommGroup X] [Module O X]
+
+theorem length_le_of_le {S T A B : Submodule O X} (hST : S ≤ T) (hBA : B ≤ A)
+    (hSA : S ⊓ A ≤ B) :
+    Module.length O (S ⧸ B.comap S.subtype) ≤ Module.length O (T ⧸ A.comap T.subtype) := by
+  let f : (S ⧸ B.comap S.subtype) →ₗ[O] (T ⧸ A.comap T.subtype) :=
+    Submodule.mapQ _ _ (Submodule.inclusion hST) (fun x hx => by
+      simp only [Submodule.mem_comap, Submodule.coe_subtype, Submodule.coe_inclusion] at hx ⊢
+      exact hBA hx)
+  apply Module.length_le_of_injective f
+  intro x y hxy
+  obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
+  obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
+  simp only [f, Submodule.mapQ_apply] at hxy
+  rw [Submodule.Quotient.eq] at hxy ⊢
+  simp only [Submodule.mem_comap, Submodule.coe_subtype, map_sub, Submodule.coe_inclusion]
+    at hxy ⊢
+  exact hSA (Submodule.mem_inf.mpr ⟨S.sub_mem x.2 y.2, hxy⟩)
+
+theorem qlen_eq_zero {A B : Submodule O X} (h : A ≤ B) : qlen O X A B = 0 := by
+  unfold qlen
+  rw [Module.length_eq_zero_iff]
+  refine ⟨fun a b => ?_⟩
+  obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective _ a
+  obtain ⟨b, rfl⟩ := Submodule.Quotient.mk_surjective _ b
+  rw [Submodule.Quotient.eq]
+  exact h (a - b).2
+
+end Formalism.LatticeIndexTer.subgroupData
+
+namespace Formalism.LatticeIndexTer
+
+open Formalism.LatticeIndexTer.subgroupData
+
+end Formalism.LatticeIndexTer
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndex =====
+
+-- ===== clump member: Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndexSigned =====
+-- clump-header: {"m": "Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndexSigned", "h": "module\n\npublic import Formalism.LogFactorialIndices.StatementIdx\npublic import Formalism.LogFactorialIndices.SignedSubspaceIndex.IdxBase\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Module
+open scoped Pointwise
+
+namespace Formalism.LatticeIndexTer.LatticeIndexValuation
+
+theorem length_map_inj {O Y X : Type} [CommRing O] [AddCommGroup Y] [Module O Y]
+    [AddCommGroup X] [Module O X] (ι : Y →ₗ[O] X) (hι : Function.Injective ι)
+    (P Q : Submodule O Y) :
+    Module.length O (P ⧸ Q.comap P.subtype) =
+      Module.length O (P.map ι ⧸ (Q.map ι).comap (P.map ι).subtype) := by
+  have e : (Q.comap P.subtype).map (Submodule.equivMapOfInjective ι hι P).toLinearMap =
+      (Q.map ι).comap (P.map ι).subtype := by
+    ext ⟨z, hz⟩
+    obtain ⟨y, hy, rfl⟩ := Submodule.mem_map.mp hz
+    simp only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply, LinearEquiv.coe_coe]
+    constructor
+    · rintro ⟨⟨w, hw⟩, hwQ, hwe⟩
+      refine ⟨w, hwQ, ?_⟩
+      have := congrArg Subtype.val hwe
+      first
+        | exact this
+    · rintro ⟨w, hwQ, hwe⟩
+      refine ⟨⟨y, hy⟩, ?_, ?_⟩
+      · have : w = y := hι hwe
+        simpa [this] using hwQ
+      · ext
+        rfl
+  exact (Submodule.Quotient.equiv _ _ (Submodule.equivMapOfInjective ι hι P) e).length_eq
+
+end Formalism.LatticeIndexTer.LatticeIndexValuation
+
+namespace Formalism.LatticeIndexTer.LatticeIndexValuation
+
+section Sub
+
+variable {O K X : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
+  [Algebra O K] [IsFractionRing O K] [AddCommGroup X] [Module K X] [Module O X]
+  [IsScalarTower O K X]
+
+theorem isLat_comap (A : Submodule O X) (hA : IsLat O K X A) (W : Submodule K X) :
+    IsLat O K W (A.comap ((W.subtype).restrictScalars O)) := by
+  let ι : W →ₗ[O] X := (W.subtype).restrictScalars O
+  have hι : Function.Injective ι := Subtype.val_injective
+  constructor
+  · have : Module.Finite O A := Module.Finite.iff_fg.mpr hA.1
+    have hle : (A.comap ι).map ι ≤ A := Submodule.map_comap_le ι A
+    have : IsNoetherian O ((A.comap ι).map ι) := isNoetherian_of_le hle
+    have hfg : ((A.comap ι).map ι).FG := Module.Finite.iff_fg.mp inferInstance
+    exact Submodule.fg_of_fg_map_injective ι hι hfg
+  · rw [eq_top_iff]
+    rintro w -
+    obtain ⟨d, hd, hdw⟩ := LatticeIndexLength.exists_smul_mem_of_span (K := K) A hA.2 (w : X)
+    have hdK : algebraMap O K d ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hd
+    have hmem : d • w ∈ Submodule.span K (A.comap ι : Set W) := by
+      apply Submodule.subset_span
+      show ((d • w : W) : X) ∈ A
+      rw [Submodule.coe_smul_of_tower]
+      exact hdw
+    have hw : w = (algebraMap O K d)⁻¹ • (d • w) := by
+      rw [← algebraMap_smul K d w, smul_smul, inv_mul_cancel₀ hdK, one_smul]
+    rw [hw]
+    exact Submodule.smul_mem _ _ hmem
+
+end Sub
+
+end Formalism.LatticeIndexTer.LatticeIndexValuation
+
+namespace Formalism.LatticeIndexTer
+
+open LatticeIndexValuation
+
+end Formalism.LatticeIndexTer
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndexSigned =====
+
+-- ===== clump member: Formalism.IncomingBounds.FlowDegreeBounds.IndexLastReductionHolds =====
+-- clump-header: {"m": "Formalism.IncomingBounds.FlowDegreeBounds.IndexLastReductionHolds", "h": "module\n\npublic import Formalism.IncomingBounds.IndexLastStep\npublic import Formalism.LogFactorialIndices.SignedSubspaceIndex.IdxBase\npublic import Formalism.LogFactorialIndices.SignedSubspaceIndex.IdxDet\npublic import Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndex\npublic import Formalism.LogFactorialIndices.SignedSubspaceIndex.SubspaceLatticeIndexSigned\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Module
+open scoped Pointwise
+
+namespace Formalism.IncomingBounds.LatticeIndexAlt
+
+open Formalism.LatticeIndexTer
+
+variable {O K X : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
+  [Algebra O K] [IsFractionRing O K] [AddCommGroup X] [Module K X] [Module O X]
+  [IsScalarTower O K X]
+
+theorem map_comap_sub (W : Submodule K X) (A : Submodule O X) :
+    (A.comap ((W.subtype).restrictScalars O)).map ((W.subtype).restrictScalars O) =
+      A ⊓ W.restrictScalars O := by
+  ext x
+  simp only [Submodule.mem_map, Submodule.mem_comap, Submodule.mem_inf, Submodule.restrictScalars_mem]
+  constructor
+  · rintro ⟨y, hy, rfl⟩
+    exact ⟨hy, y.2⟩
+  · rintro ⟨hx, hW⟩
+    exact ⟨⟨x, hW⟩, hx, rfl⟩
+
+theorem qlen_comap (W : Submodule K X) (A B : Submodule O X) :
+    qlen O W (A.comap ((W.subtype).restrictScalars O)) (B.comap ((W.subtype).restrictScalars O)) =
+      qlen O X (A ⊓ W.restrictScalars O) (B ⊓ W.restrictScalars O) := by
+  unfold qlen
+  have hinj : Function.Injective ((W.subtype).restrictScalars O) := fun a b h => Subtype.ext h
+  let e : ↥(A.comap ((W.subtype).restrictScalars O)) ≃ₗ[O] ↥(A ⊓ W.restrictScalars O) :=
+    (Submodule.equivMapOfInjective _ hinj _).trans (LinearEquiv.ofEq _ _ (map_comap_sub W A))
+  refine LinearEquiv.length_eq (Submodule.Quotient.equiv _ _ e ?_)
+  ext z
+  rw [Submodule.mem_map_equiv]
+  have key : (((e.symm z : ↥(A.comap ((W.subtype).restrictScalars O))) : W) : X) = (z : X) :=
+    congrArg Subtype.val (e.apply_symm_apply z)
+  have hzW : (z : X) ∈ W := (Submodule.mem_inf.mp z.2).2
+  constructor
+  · intro h
+    have h' : (((e.symm z : ↥(A.comap ((W.subtype).restrictScalars O))) : W) : X) ∈ B := h
+    rw [key] at h'
+    show (z : X) ∈ B ⊓ W.restrictScalars O
+    exact Submodule.mem_inf.mpr ⟨h', hzW⟩
+  · intro h
+    have h2 : (z : X) ∈ B ⊓ W.restrictScalars O := h
+    have h' : (z : X) ∈ B := (Submodule.mem_inf.mp h2).1
+    rw [← key] at h'
+    exact h'
+
+theorem idx_comap (W : Submodule K X) (A B : Submodule O X) :
+    idx O W (A.comap ((W.subtype).restrictScalars O)) (B.comap ((W.subtype).restrictScalars O)) =
+      idx O X (A ⊓ W.restrictScalars O) (B ⊓ W.restrictScalars O) := by
+  unfold idx
+  rw [qlen_comap W A B, qlen_comap W B A]
+
+
+omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] in
+theorem isLat_scale {Y : Type} [AddCommGroup Y] [Module K Y] [Module O Y] [IsScalarTower O K Y]
+    (c : K) (hc : c ≠ 0) (A : Submodule O Y) (hA : IsLat O K Y A) :
+    IsLat O K Y (A.map ((c • LinearMap.id : Y →ₗ[K] Y).restrictScalars O)) := by
+  unfold IsLat at hA ⊢
+  refine ⟨hA.1.map _, ?_⟩
+  rw [Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hA.2, Submodule.map_top,
+    LinearMap.range_eq_top]
+  intro x
+  refine ⟨c⁻¹ • x, ?_⟩
+  simp [smul_smul, hc]
+
+omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] in
+theorem isLat_sup {Y : Type} [AddCommGroup Y] [Module K Y] [Module O Y] [IsScalarTower O K Y]
+    (A B : Submodule O Y) (hA : A.FG) (hB : IsLat O K Y B) : IsLat O K Y (A ⊔ B) := by
+  unfold IsLat at hB ⊢
+  refine ⟨hA.sup hB.1, ?_⟩
+  rw [eq_top_iff, ← hB.2]
+  exact Submodule.span_mono (fun x hx => Submodule.mem_sup_right hx)
+
+end Formalism.IncomingBounds.LatticeIndexAlt
+
+namespace Formalism.IncomingBounds
+
+open Formalism.LatticeIndexTer LatticeIndexAlt
+
+theorem index_last_reduction_holds : IndexLastStep := by
+  intro O K X _ _ _ _ _ _ _ _ _ _ _ ϖ hϖ e M Θ hM hΘ W
+  rw [← idx_comap W M Θ]
+  have hc : (algebraMap O K ϖ) ^ e ≠ 0 :=
+    zpow_ne_zero _ ((map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hϖ.ne_zero)
+  have hNl := isLat_sup (K := K)
+    (M.map ((((algebraMap O K ϖ) ^ e) • LinearMap.id : X →ₗ[K] X).restrictScalars O)) Θ
+    (hM.1.map _) hΘ
+  generalize hN : M.map ((((algebraMap O K ϖ) ^ e) • LinearMap.id : X →ₗ[K] X).restrictScalars O)
+    ⊔ Θ = N at hNl ⊢
+  have hMN : ∀ x ∈ M, (algebraMap O K ϖ) ^ e • x ∈ N := by
+    intro x hx
+    rw [← hN]
+    exact Submodule.mem_sup_left ⟨x, hx, by simp⟩
+  have hΘN : Θ ≤ N := hN ▸ le_sup_right
+  let ι : W →ₗ[O] X := (W.subtype).restrictScalars O
+  have hι : Function.Injective ι := Subtype.val_injective
+  let fW : W →ₗ[O] W := ((((algebraMap O K ϖ) ^ e) • LinearMap.id : W →ₗ[K] W).restrictScalars O)
+  have hA₀ : IsLat O K W (M.comap ι) := LatticeIndexValuation.isLat_comap M hM W
+  have hB₀ : IsLat O K W (Θ.comap ι) := LatticeIndexValuation.isLat_comap Θ hΘ W
+  have hN₀ : IsLat O K W (N.comap ι) := LatticeIndexValuation.isLat_comap N hNl W
+  have hS₀ : IsLat O K W ((M.comap ι).map fW) := isLat_scale _ hc _ hA₀
+  have hadd1 := lattice_index_add O K W (M.comap ι) ((M.comap ι).map fW) (Θ.comap ι) hA₀ hS₀ hB₀
+  have hadd2 := lattice_index_add O K W ((M.comap ι).map fW) (N.comap ι) (Θ.comap ι) hS₀ hN₀ hB₀
+  have h1 : idx O W (M.comap ι) ((M.comap ι).map fW) = e * (finrank K W : ℤ) := by
+    have hs := lattice_index_scale O K W ϖ hϖ (-e) (M.comap ι) hA₀
+    rw [neg_neg] at hs
+    exact hs
+  have hSN : (M.comap ι).map fW ≤ N.comap ι := by
+    rintro _ ⟨y, hy, rfl⟩
+    have := hMN _ hy
+    simpa [ι, fW] using this
+  have h2 : idx O W ((M.comap ι).map fW) (N.comap ι) ≤ 0 := by
+    unfold idx
+    rw [subgroupData.qlen_eq_zero hSN]
+    simp
+  have hle : qlen O W (N.comap ι) (Θ.comap ι) ≤ qlen O X N Θ := by
+    unfold qlen
+    rw [LatticeIndexValuation.length_map_inj ι hι]
+    refine subgroupData.length_le_of_le (Submodule.map_comap_le ι N) (Submodule.map_comap_le ι Θ) ?_
+    intro x hx
+    obtain ⟨⟨w, -, rfl⟩, hxΘ⟩ := Submodule.mem_inf.mp hx
+    exact ⟨w, hxΘ, rfl⟩
+  have h3 : idx O W (N.comap ι) (Θ.comap ι) ≤ ((qlen O X N Θ).toNat : ℤ) := by
+    have h4 : (qlen O W (N.comap ι) (Θ.comap ι)).toNat ≤ (qlen O X N Θ).toNat :=
+      ENat.toNat_le_toNat hle (lattice_quotient_finite O K X N Θ hNl hΘ)
+    unfold idx
+    omega
+  linarith
+
+end Formalism.IncomingBounds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.IncomingBounds.FlowDegreeBounds.IndexLastReductionHolds =====
+
+-- ===== clump member: Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LengthLeOfSemilinear =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LengthLeOfSemilinear", "h": "module\n\npublic import Formalism.LogFactorialIndices.StatementIdx\npublic import Formalism.FilteredPoleLength.LocalDescentLevels.MemSpanBasisFun\npublic import Formalism.FilteredPoleLength.LocalDescentLevels.LengthBaseChange\npublic import Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChain\npublic import Formalism.FilteredPoleLength.LocalDescentLevels.LevelsChainOfAddOneLe\npublic import Formalism.IncomingBounds.FlowDegreeBounds.IndexLastReductionHolds\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -299,3 +753,7 @@ theorem ql_span_le {V V₁ : Type} [AddCommGroup V] [Module O V] [AddCommGroup V
 end Semilinear
 
 end Formalism.MainNotions.Gaps.T0
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.LengthLeOfSemilinear =====

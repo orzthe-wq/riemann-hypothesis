@@ -5,8 +5,8 @@ public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.A
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnramifiedExtTorsionPointsGoodReduction
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFiniteAndFlatTorsion
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrame
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsMulEquivOfIsGrpPullback
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionArchimedeanFrameStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -278,10 +278,6 @@ theorem spMap_inj {R F : Type} [CommRing R] [CommRing F] {f f' : R →+* F} (h :
 theorem exists_spMap {R F : Type} [CommRing R] [CommRing F] (y : Sp F ⟶ Sp R) : ∃ p : R →+* F, spMap p = y :=
   ⟨(Spec.preimage y).hom, by simp [spMap]⟩
 
-theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp [spMap, ← Spec.map_comp, CommRingCat.ofHom_comp]
-
 theorem exists_ptEquiv {R F : Type} [CommRing R] [Algebra L R] [CommRing F] (io : L →+* F) :
     ∃ e : (Over.mk (spMap io) ⟶ Over.mk (spMap (algebraMap L R))) ≃
         {φ : R →+* F // φ.comp (algebraMap L R) = io}, ∀ y, spMap (e y).1 = y.left := by
@@ -290,12 +286,12 @@ theorem exists_ptEquiv {R F : Type} [CommRing R] [Algebra L R] [CommRing F] (io 
     intro y
     obtain ⟨p, hp⟩ := exists_spMap y.left
     refine ⟨p, spMap_inj ?_, hp⟩
-    rw [spMap_comp', hp]
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, hp]
     exact Over.w y
   choose p hp1 hp2 using h1
   refine ⟨⟨fun y => ⟨p y, hp1 y⟩, fun φ => Over.homMk (spMap φ.1) ?_, fun y => ?_, fun φ => ?_⟩, hp2⟩
   · show spMap φ.1 ≫ spMap (algebraMap L R) = spMap io
-    rw [← spMap_comp', φ.2]
+    rw [← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, φ.2]
   · exact Over.OverMorphism.ext (hp2 y)
   · exact Subtype.ext (spMap_inj (hp2 _))
 
@@ -323,7 +319,7 @@ theorem finite_split [NumberField L] (T : Over (Sp L)) (hT : IsFinite T.hom) (N 
       (e' (y ≫ iso.hom)).1 = f.comp (x i) := by
     intro i
     have h2 : (y ≫ iso.hom).left = y.left ≫ iso.hom.left := rfl
-    have h4 : spMap (f.comp (x i)) = spMap f ≫ spMap (x i) := spMap_comp' _ _
+    have h4 : spMap (f.comp (x i)) = spMap f ≫ spMap (x i) := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp _ _
     constructor
     · intro h
       apply spMap_inj
@@ -364,12 +360,12 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [Number
 theorem dim_eq (D : PPData H L) (hA : IsAbelianScheme D.tK.G) {g : ℕ}
     (hg : SmoothOfRelativeDimension g D.tK.G.hom) : g = D.g := by
   obtain ⟨σ⟩ : Nonempty (L →+* ℂ) := inferInstance
-  obtain ⟨a⟩ := (GlobalTheory.T.theta_function_archimedean_frame E H L D σ).1
+  obtain ⟨a⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Sl.frames_main E H L D σ).1
   have h1 := card_torsion_of_lattice a.u.ex a.u.ex_add a.u.ex_onto a.u.Λ a.u.ker a.u.discrete a.u.full 2
     (by norm_num)
   have h2 := card_points D.tK.G hA hg (spMap σ) 2 (by norm_num)
   obtain ⟨e1, -⟩ := GlobalTheory.exists_mulEquiv_of_isGrpPullback a.cart (𝟙 _) (emb σ) (Category.id_comp _).symm
-  obtain ⟨e2, -⟩ := GlobalTheory.exists_mulEquiv_of_isGrpPullback D.m.cart (spMap σ) (emb σ) (spMap_comp' _ _)
+  obtain ⟨e2, -⟩ := GlobalTheory.exists_mulEquiv_of_isGrpPullback D.m.cart (spMap σ) (emb σ) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp _ _)
   have h3 : Nat.card {q : 𝟙_ (Over (Sp ℂ)) ⟶ a.A // q ^ 2 = 1} =
       Nat.card {x : Over.mk (spMap σ) ⟶ D.tK.G // x ^ 2 = 1} :=
     Nat.card_congr ((e1.trans e2.symm).toEquiv.subtypeEquiv fun x => by
@@ -400,7 +396,7 @@ theorem torsion_rational : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     exact card_points _ hA hg _ m (Nat.cast_ne_zero.2 (by omega))
   obtain ⟨K, _, hK, _, x, hu⟩ := finite_split _ hfin _ (pow_ne_zero _ (by omega)) hc
   obtain ⟨e, he⟩ := GlobalTheory.exists_mulEquiv_of_isGrpPullback D.m.cart (spMap (algebraMap L K))
-    (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L))) (spMap_comp' _ _)
+    (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L))) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp _ _)
   have hτ : ∀ (Y : Over (Sp L)) (p : Y ⟶ torsion D.tK.G m),
       ((GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m Y p).1).left = p.left ≫ (torsion.ι D.tK.G m).left := fun _ _ => rfl
   refine ⟨K, inferInstance, hK, inferInstance,
@@ -410,7 +406,7 @@ theorem torsion_rational : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   subst hb
   have hb' : spMap f ≫ spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L)) =
       spMap (f.comp (algebraMap L K)) ≫ spMap (algebraMap (𝓞 L) L) := by
-    rw [spMap_comp', spMap_comp', Category.assoc]
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc]
   obtain ⟨e', he'⟩ := GlobalTheory.exists_mulEquiv_of_isGrpPullback D.m.cart (spMap (f.comp (algebraMap L K))) _ hb'
   have hy₀ : (e'.symm y) ^ m = 1 := by rw [← map_pow, hy, map_one]
   have hyl : (e'.symm y).left ≫ D.m.cm.F = y.left := by
@@ -429,7 +425,7 @@ theorem torsion_rational : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     · intro h
       have hz : (spMap f ≫ (x i).left) ≫ (torsion D.tK.G m).hom = spMap (f.comp (algebraMap L K)) := by
         have := Over.w (x i)
-        rw [Category.assoc, spMap_comp']
+        rw [Category.assoc, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]
         exact congrArg (spMap f ≫ ·) this
       let w' : Over.mk (spMap (f.comp (algebraMap L K))) ⟶ torsion D.tK.G m := Over.homMk _ hz
       have h2 : GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m _ w' = ⟨e'.symm y, hy₀⟩ := by

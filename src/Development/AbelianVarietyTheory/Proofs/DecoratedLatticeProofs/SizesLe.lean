@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.FiniteDimensionalMram
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CfgTopFalseIff
 
 @[expose] public section
 
@@ -44,19 +45,13 @@ open Formalism.BasicNotions Formalism.MainNotions.S GlobalTheory.Core.Rk
 
 namespace GlobalTheory.Core.Rk.HdGap
 
-theorem bOne_eq (D : D7) (τ : D.what₂.Tau) (j : ℕ) (hj : j < D.R.m) :
-    bOne D τ (j + 1) = (((D.hc τ).b ⟨j, hj⟩ : ℚ) : ℝ) := by
-  unfold bOne
-  rw [dite_eq_left (by omega)]
-  rfl
-
 theorem gap_of {D : D7} {L C' Cl Cg cb Cu cT CT : ℝ} (H : GlobalTheory.Core.Deg.HypL D L C' Cl Cg cb Cu cT CT)
     (τ : D.what₂.Tau) (j : ℕ) (hj : j + 1 < D.R.m) :
     Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L ≤
       (((D.hc τ).b ⟨j + 1, hj⟩ : ℚ) : ℝ) - (((D.hc τ).b ⟨j, by omega⟩ : ℚ) : ℝ) := by
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hg, -⟩ := H
   have h := hg τ (j + 1) (by omega) (by omega)
-  rwa [bOne_eq D τ (j + 1) hj, bOne_eq D τ j (by omega)] at h
+  rwa [_root_.Formalism.MainNotions.BridgeLemma.bOne_succ D τ (j + 1) hj, _root_.Formalism.MainNotions.BridgeLemma.bOne_succ D τ j (by omega)] at h
 
 theorem scale_of {D : D7} {L C' Cl Cg cb Cu cT CT : ℝ} (hCl : 1801 ≤ Cl)
     (H : GlobalTheory.Core.Deg.HypL D L C' Cl Cg cb Cu cT CT) :

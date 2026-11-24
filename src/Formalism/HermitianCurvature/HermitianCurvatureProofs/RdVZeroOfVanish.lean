@@ -67,6 +67,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.IntegrableCsmul
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.AutomorphicInSphericalLevel
 
 @[expose] public section
 
@@ -175,7 +176,7 @@ theorem norm_gI_le (Bj : B.RealPlaceData k ρ Wp Wq) (e : p + ρ = n) (Ψ : B.Ma
   unfold gI
   split_ifs with hx
   · refine (ContinuousLinearMap.opNorm_comp_le _ _).trans ?_
-    have := Formalism.FourierDecayAlt.P.LeftFubiniLemmas.opNorm_pi_le Bj hx.1
+    have := _root_.Formalism.FourierDecayAlt.P.SmoothExtensionClosedSet.norm_pi_le_one Bj hx.1
     exact (mul_le_of_le_one_left (norm_nonneg _) this)
   · simp
 

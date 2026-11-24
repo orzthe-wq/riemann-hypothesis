@@ -77,14 +77,14 @@ theorem polarization_commute (v w v' w' : σ) (h1 : w ≠ v') (h2 : w ≠ w') (h
     rw [Module.End.mul_apply, Module.End.mul_apply, polarization_monomial, polarization_monomial,
       polarization_monomial, polarization_monomial]
     have e1 : (m - Finsupp.single w' 1 + Finsupp.single v' 1 : σ →₀ ℕ) w = m w := by
-      simp [Finsupp.single_apply, h1, h2, Ne.symm h1, Ne.symm h2]
+      simp [h1, h2]
     have e2 : (m - Finsupp.single w 1 + Finsupp.single v 1 : σ →₀ ℕ) w' = m w' := by
-      simp [Finsupp.single_apply, h3, Ne.symm h2, Ne.symm h3, h2]
+      simp [h3, Ne.symm h2]
     have hexp : (m - Finsupp.single w' 1 + Finsupp.single v' 1 - Finsupp.single w 1
         + Finsupp.single v 1 : σ →₀ ℕ) =
         m - Finsupp.single w 1 + Finsupp.single v 1 - Finsupp.single w' 1 + Finsupp.single v' 1 := by
       ext x
-      simp only [Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_apply]
+      simp only [Finsupp.add_apply, Finsupp.tsub_apply]
       by_cases a1 : w = x <;> by_cases a2 : w' = x <;> by_cases a3 : v = x <;>
         by_cases a4 : v' = x <;> (try subst_vars) <;> (try simp_all) <;> omega
     rw [e1, e2, hexp]

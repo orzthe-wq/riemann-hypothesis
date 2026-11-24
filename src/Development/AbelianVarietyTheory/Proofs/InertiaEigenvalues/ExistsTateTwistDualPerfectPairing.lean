@@ -69,7 +69,7 @@ def dualEquiv : (Fin (finrank ℚ_[l] V) → ℚ_[l]) ≃ₗ[ℚ_[l]] Module.Dua
 
 theorem dualEquiv_basis (z : Fin (finrank ℚ_[l] V) → ℚ_[l]) (i : Fin (finrank ℚ_[l] V)) :
     dualEquiv z (Module.finBasis ℚ_[l] V i) = z i := by
-  simp [dualEquiv, Basis.equivFun_symm_apply, Finset.sum_apply, Basis.dualBasis_apply_self, Finsupp.single_apply]
+  simp [dualEquiv, Basis.equivFun_symm_apply, Finset.sum_apply, Finsupp.single_apply]
 
 theorem dualEquiv_symm_apply (f : Module.Dual ℚ_[l] V) (i : Fin (finrank ℚ_[l] V)) :
     (dualEquiv (V := V)).symm f i = f (Module.finBasis ℚ_[l] V i) := by

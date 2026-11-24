@@ -43,6 +43,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsMatchOver
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
 
 @[expose] public section
 
@@ -106,7 +107,7 @@ theorem finOf_fin (V : HSp D) (b : GfC V) : finOf V b = b := by
 
 theorem finOf_mul_inf (V : HSp D) (g : GA D V) (k : GinfC V) : finOf V (g * k) = finOf V g := by
   have h : ((infOf V g * k : GinfC V) : GA D V) * (finOf V g : GA D V) = g * k := by
-    have hc := GlobalTheory.AdelicSplit.commute_GinfC_GfC V k.2 (finOf V g).2
+    have hc := _root_.GlobalTheory.PointAtPlaceHom.comm_of_mem V k.2 (finOf V g).2
     conv_rhs => rw [← infOf_mul_finOf V g]
     rw [Subgroup.coe_mul, mul_assoc, hc, ← mul_assoc]
   rw [finOf, split_symm_eq V _ _ h]

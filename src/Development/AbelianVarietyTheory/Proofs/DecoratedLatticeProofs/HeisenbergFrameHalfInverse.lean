@@ -50,20 +50,11 @@ namespace GlobalTheory.LocSympl
 
 variable {D : D7}
 
-theorem conj_conj (z : AE D) : cA D (cA D z) = z := by
-  induction z using TensorProduct.induction_on with
-  | zero => rw [RingHom.map_zero, RingHom.map_zero]
-  | add x y hx hy => rw [RingHom.map_add (f := _), RingHom.map_add (f := _), hx, hy]
-  | tmul a x =>
-    change a ⊗ₜ[D.host.F] star (star x) = _
-    rw [star_star]
+alias conj_conj := _root_.Formalism.L2.Theta.cA_cA
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-theorem e_mul_ι (p : Place D k) (x : k) : p.e * p.ι x = p.ι x := by
-  have h := p.ι_π (p.ι x)
-  rw [p.π_ι] at h
-  exact h.symm
+alias e_mul_ι := _root_.GlobalTheory.LocMod.Witness.e_ι
 
 theorem conj_ι_mul_ι (p : Place D k) (u v : k) : cA D (p.ι u) * p.ι v = 0 := by
   calc cA D (p.ι u) * p.ι v = cA D (p.e * p.ι u) * (p.e * p.ι v) := by rw [e_mul_ι, e_mul_ι]

@@ -64,7 +64,7 @@ theorem sum_prod_partial_eq_zero (s : Finset δ) (a : δ → ℂ) (F : δ → �
     set c : δ → ℂ := fun d => a d * ((∏ i ∈ A, T i (F d i) (y i)) * ∏ i ∈ (insert b A)ᶜ, F d i (x i)) with hc
     have hbA : b ∈ Aᶜ := Finset.mem_compl.2 hb
     have hcompl : (insert b A)ᶜ = (Aᶜ).erase b := by
-      ext i; simp [Finset.mem_erase, and_comm]
+      ext i; simp [Finset.mem_erase]
     have hφ : (∑ d ∈ s, c d • F d b) = 0 := by
       funext z
       have := ih (Function.update x b z)

@@ -2,8 +2,10 @@ module
 
 public import Development.WeilBound.ThetaLifts.Reductions.SiegelHaar
 public import Formalism.SatakeDualWeyl.Statement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharEqOfIsOpenEmbeddingRestrictStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharProdCongrStatement
+public import Mathlib.MeasureTheory.Measure.Haar.MulEquivHaarChar
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharEqOfIsOpenEmbeddingRestrict
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MulVecCEApply
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AddEquivAddHaarCharProdCongr
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -344,7 +346,7 @@ theorem s_inv {u : Rˣ} (hu : s u = u) : s u⁻¹.1 = u⁻¹.1 :=
 theorem haar_character_frame_annihilator (h : Fr s J X Y) [LocallyCompactSpace (W1 s J X Y)] (u : Rˣ) :
     addEquivAddHaarChar (scalM n k u) = addEquivAddHaarChar (scal (W1 s J X Y) u (smul_mem_frame_annihilator _) (smul_mem_frame_annihilator _)) *
       (addEquivAddHaarChar (scalM k k u) * addEquivAddHaarChar (scalM k k u)) := by
-  rw [← GlobalTheory.T.addEquivAddHaarChar_prodCongr, ← GlobalTheory.T.addEquivAddHaarChar_prodCongr]
+  rw [← _root_.GlobalTheory.ModuLR.addEquivAddHaarChar_prodCE, ← _root_.GlobalTheory.ModuLR.addEquivAddHaarChar_prodCE]
   let e : (W1 s J X Y × Matrix (Fin k) (Fin k) R × Matrix (Fin k) (Fin k) R) ≃ₜ+ Matrix (Fin n) (Fin k) R :=
     { toFun := fun p => p.1.1 + X * p.2.1 + Y * p.2.2
       invFun := fun U => (⟨U - X * (cT s Y * J * U) - Y * (cT s X * J * U),
@@ -366,7 +368,7 @@ theorem haar_character_frame_annihilator (h : Fr s J X Y) [LocallyCompactSpace (
       continuous_invFun := (((continuous_id.sub (continuous_const.matrix_mul (continuous_const.matrix_mul continuous_id))).sub
         (continuous_const.matrix_mul (continuous_const.matrix_mul continuous_id))).subtype_mk _).prodMk
         ((continuous_const.matrix_mul continuous_id).prodMk (continuous_const.matrix_mul continuous_id)) }
-  refine GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict _ _ e.toAddMonoidHom e.toHomeomorph.isOpenEmbedding _ _ fun p => ?_
+  refine _root_.GlobalTheory.HaarOpenEmb.addEquivAddHaarChar_eq_of_isOpenEmbedding _ _ e.toAddMonoidHom e.toHomeomorph.isOpenEmbedding _ _ fun p => ?_
   change u.1 • (p.1.1 + X * p.2.1 + Y * p.2.2) = u.1 • p.1.1 + X * (u.1 • p.2.1) + Y * (u.1 • p.2.2)
   simp only [smul_add, Matrix.mul_smul]
 
@@ -374,7 +376,7 @@ theorem haar_character_skew_hermitian [Invertible (2 : R)] (hs : Continuous s) (
     (ω : Rˣ) (hω : s ω = -ω) {u : Rˣ} (hu : s u = u) :
     addEquivAddHaarChar (scalM k k u) = addEquivAddHaarChar (scal (W2 s k) u (smul_mem_skew_hermitian hu) (smul_mem_skew_hermitian (s_inv hu))) *
       addEquivAddHaarChar (scal (W2 s k) u (smul_mem_skew_hermitian hu) (smul_mem_skew_hermitian (s_inv hu))) := by
-  rw [← GlobalTheory.T.addEquivAddHaarChar_prodCongr]
+  rw [← _root_.GlobalTheory.ModuLR.addEquivAddHaarChar_prodCE]
   have cc : ∀ P : Matrix (Fin k) (Fin k) R, cT s (cT s P) = P := fun P => Matrix.ext fun _ _ => hss _
   have hω' : s ω⁻¹.1 = -ω⁻¹.1 := by
     have : s ω⁻¹.1 * ω = -1 := by rw [← neg_neg ω.1, ← hω, mul_neg, ← map_mul, Units.inv_mul, map_one]
@@ -402,7 +404,7 @@ theorem haar_character_skew_hermitian [Invertible (2 : R)] (hs : Continuous s) (
         ((continuous_subtype_val.comp continuous_snd).const_smul ω.1)
       continuous_invFun := (((continuous_id.sub (continuous_cT hs continuous_id)).const_smul (⅟2 : R)).subtype_mk _).prodMk
         ((((continuous_id.add (continuous_cT hs continuous_id)).const_smul (⅟2 : R)).const_smul ω⁻¹.1).subtype_mk _) }
-  refine GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict _ _ e.toAddMonoidHom e.toHomeomorph.isOpenEmbedding _ _ fun p => ?_
+  refine _root_.GlobalTheory.HaarOpenEmb.addEquivAddHaarChar_eq_of_isOpenEmbedding _ _ e.toAddMonoidHom e.toHomeomorph.isOpenEmbedding _ _ fun p => ?_
   change u.1 • (p.1.1 + ω.1 • p.2.1) = u.1 • p.1.1 + ω.1 • u.1 • p.2.1
   rw [smul_add, smul_comm]
 
@@ -519,7 +521,7 @@ theorem char_conj [Invertible (2 : R)] (h : Fr s J X Y) (hs : Continuous s) (ω 
     simp only [W]
     rw [e, hφ, map_mul, map_mul, Units.val_mul, Units.val_mul, Matrix.mul_assoc _ _ Y, bY']
     simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc])
-  have key := char_eq_of_retract ι cι π cπ (fun x p => h.nMat_inj (by
+  have key := _root_.UpperTheory.Reformulated.B.Yhb4.main ι cι π cπ (fun x p => h.nMat_inj (by
     have e : B (ι x * p) = B p := Beq _ _ (by
       rw [map_mul, Units.val_mul, Matrix.mul_assoc, hB, ← Matrix.mul_assoc, hι, nX])
     rw [hπ, map_mul, Matrix.mul_assoc, hπ]

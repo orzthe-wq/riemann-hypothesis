@@ -1,5 +1,6 @@
 module
 
+public import Formalism.QuotientMetricDivisors.StatementACE
 public import Formalism.QuotientMetricDivisors.RatHermLcvTwist
 public import Formalism.QuotientMetricDivisors.ProdFormula
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ImageLcv
@@ -8,20 +9,16 @@ public import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
 public import Formalism.HermitianLattices.HermitianLatticesProofs.IndexBasic
 public import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsChain
-public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsSum
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.IdxChange
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LcvBasis
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LocBasis
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ProdFormula
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.RatHerm
 public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ReductionSecondStep
-import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
 public import Formalism.QuotientMetricDivisors.ReductionLemmaZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -32,24 +29,12 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -57,7 +42,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Monotonicity.Lemmas
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -70,10 +54,118 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.LinearAlgebra.Matrix.Rank
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Monotonicity.Lemmas
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsSum, Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ConjugateWeightLatticeOfGeneral
+
+-- ===== clump member: Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsSum =====
+-- clump-header: {"m": "Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsSum", "h": "module\n\npublic import Formalism.QuotientMetricDivisors.StatementACE\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+noncomputable section
+
+namespace Formalism.DivisionValues
+
+theorem divisor_bounds_sum : BoundsSum := by
+  intro Pl J _ S D hD lcvR logκ LG E3 lcvM L E1 E2 l ell vG g I Ic jT F err Jx η hl h0 hvG hLG hL
+    hI hjT hE1 hE2 hE3
+  have hDr : (0 : ℝ) < D := by exact_mod_cast hD
+  have h1 : ∑ j, lcvM j ≤ (D : ℝ) * ∑ j, L j := by
+    rw [Finset.mul_sum]
+    exact Finset.sum_le_sum fun j _ => by
+      have := (div_le_iff₀ hDr).1 (hL j)
+      linarith
+  have h2 : ∑ w ∈ S, l w * vG w ≤ (D : ℝ) * LG := by
+    calc ∑ w ∈ S, l w * vG w ≤ ∑ w ∈ S, (D : ℝ) * (l w * g w) :=
+          Finset.sum_le_sum fun w hw => by
+            have := mul_le_mul_of_nonneg_left (hvG w hw) (hl w)
+            linarith
+      _ = (D : ℝ) * ∑ w ∈ S, l w * g w := by rw [Finset.mul_sum]
+      _ ≤ (D : ℝ) * LG := mul_le_mul_of_nonneg_left hLG hDr.le
+  have f1 : ∑ w ∈ S, l w * (vG w + ∑ j, (I w j + Ic w j + jT w j)) =
+      ∑ w ∈ S, l w * vG w + ∑ w ∈ S, l w * ∑ j, (I w j + Ic w j) +
+        ∑ w ∈ S, l w * ∑ j, jT w j := by
+    rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun w _ => ?_
+    rw [Finset.sum_add_distrib]
+    ring
+  have f4 : ∑ w ∈ S, l w * ∑ j, (I w j + Ic w j) ≤
+      (D : ℝ) * 2 * ∑ w ∈ S, l w * ∑ j, F w j + (D : ℝ) * ∑ w ∈ S, l w * ∑ j, err w j +
+        (D : ℝ) * ∑ w ∈ S, l w * (2 / ell w ^ 2) := by
+    rw [Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib,
+      ← Finset.sum_add_distrib]
+    refine Finset.sum_le_sum fun w hw => ?_
+    have h := mul_le_mul_of_nonneg_left (hI w hw) (hl w)
+    have e : ∑ j, (2 * F w j + err w j) = 2 * ∑ j, F w j + ∑ j, err w j := by
+      rw [Finset.sum_add_distrib, Finset.mul_sum]
+    rw [e] at h
+    linarith
+  have f6 : ∑ w ∈ S, l w * ∑ j, jT w j ≤
+      (D : ℝ) * ∑ w ∈ S, l w * ∑ j, Jx w j + ∑ w ∈ S, l w * ∑ j, η w j := by
+    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+    refine Finset.sum_le_sum fun w hw => ?_
+    have h : ∑ j, jT w j ≤ (D : ℝ) * ∑ j, Jx w j + ∑ j, η w j := by
+      rw [Finset.mul_sum, ← Finset.sum_add_distrib]
+      exact Finset.sum_le_sum fun j _ => by have := hjT w hw j; linarith
+    have := mul_le_mul_of_nonneg_left h (hl w)
+    linarith
+  have eswap : ∀ f : Pl → J → ℝ, ∑ j, ∑ w ∈ S, l w * f w j = ∑ w ∈ S, l w * ∑ j, f w j := by
+    intro f
+    rw [Finset.sum_comm]
+    simp only [Finset.mul_sum]
+  have f8 : ∑ w ∈ S, l w * ∑ j, err w j + ∑ w ∈ S, l w * ∑ j, Jx w j ≤ ∑ j, E1 j := by
+    rw [← eswap, ← eswap, ← Finset.sum_add_distrib]
+    exact Finset.sum_le_sum fun j _ => by
+      refine le_trans (le_of_eq ?_) (hE1 j)
+      rw [← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl fun w _ => by ring
+  have f9 : ∑ w ∈ S, l w * ∑ j, η w j ≤ (D : ℝ) * ∑ j, E2 j := by
+    rw [← eswap, Finset.mul_sum]
+    exact Finset.sum_le_sum fun j _ => by
+      have h := hE2 j
+      rw [← Finset.sum_div] at h
+      have := (div_le_iff₀ hDr).1 h
+      linarith
+  have f10 : (D : ℝ) * ∑ w ∈ S, l w * (2 / ell w ^ 2) ≤ (D : ℝ) * E3 :=
+    mul_le_mul_of_nonneg_left hE3 hDr.le
+  have f11 : ∑ j, (E1 j + E2 j) = ∑ j, E1 j + ∑ j, E2 j := Finset.sum_add_distrib
+  have eF := eswap F
+  rw [div_le_iff₀ hDr]
+  have hD0 : (0 : ℝ) ≤ D := hDr.le
+  nlinarith [h0, h1, h2, f1, f4, f6, f8, f9, f10, f11, eF, mul_le_mul_of_nonneg_left f8 hD0]
+
+end Formalism.DivisionValues
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsSum =====
+
+-- ===== clump member: Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ConjugateWeightLatticeOfGeneral =====
+-- clump-header: {"m": "Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ConjugateWeightLatticeOfGeneral", "h": "module\n\npublic import Formalism.QuotientMetricDivisors.RatHermLcvTwist\npublic import Formalism.QuotientMetricDivisors.ProdFormula\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ImageLcv\npublic import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic\npublic import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice\npublic import Formalism.HermitianLattices.HermitianLatticesProofs.IndexBasic\npublic import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsChain\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.BoundsSum\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.IdxChange\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LcvBasis\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.LocBasis\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ProdFormula\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.RatHerm\npublic import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ReductionSecondStep\nimport Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic\npublic import Formalism.QuotientMetricDivisors.ReductionLemmaZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.Rank\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Monotonicity.Lemmas\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Presheaf\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Module NumberField IsDedekindDomain
@@ -588,7 +680,7 @@ theorem second_step_refined_weak : StepBRW := by
     M hM HT XT hHT0 hHTw T hT θ hθ κ hκ ρ ρr hρr hρ0 hρpos hρv hdet0 hdet G e hLB hG n H hH hHpos P hP
     hQ Mt hMt hLamP hGR R hR hRloc
   have hLB0 : ∀ w, IsLocBasis (matLat P Mt) w (e μ0 w) := fun w => hLamP ▸ hLB μ0 w
-  have hRb := (lemmaRb K K0 hK0 v0 hv0 n D H hH hHpos P hP (XQ μ0) hQ Mt hMt.toIsLattice
+  have hRb := (_root_.Formalism.DivisionValues.reduction_lemma_second K K0 hK0 v0 hv0 n D H hH hHpos P hP (XQ μ0) hQ Mt hMt.toIsLattice
     (e μ0) hLB0).2
   have hbase : lcv (XQ μ0) (abelian₂ μ0) ≤ ∑ᶠ w, lw w * (vw w (G μ0 w) : ℝ) := by
     rw [hLamP]
@@ -767,3 +859,7 @@ end ConjugateWeightGram
 
 
 end Formalism.DivisionValues
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ConjugateWeightLatticeOfGeneral =====

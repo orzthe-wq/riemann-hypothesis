@@ -48,6 +48,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 import Development.AbelianVarietyTheory.Definitions.Divisors.SharpOverIff
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.JacChartA
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -88,7 +89,7 @@ theorem pr_pull : ∀ {T T' : Scheme.{0}} {t : T' ⟶ T} {B C : Over T} [GrpObj 
     rw [Category.assoc, h1, Category.assoc]
   refine ⟨pr', h1, fun a => ?_, fun T₁ y => ?_⟩
   · haveI := hpr a
-    refine isMonHom_of_mul_pts _ fun T₁ x y => ?_
+    refine _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isMonHom_of_mul _ fun T₁ x y => ?_
     apply Over.OverMorphism.ext
     apply hC.1.hom_ext
     · have e1 := hC.2 T₁ (x ≫ pr' a) (y ≫ pr' a) (pushPt hC.1.w (x ≫ pr' a))

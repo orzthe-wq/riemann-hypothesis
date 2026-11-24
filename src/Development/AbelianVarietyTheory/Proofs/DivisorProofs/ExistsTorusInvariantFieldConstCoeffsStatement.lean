@@ -53,4 +53,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 
 theorem _root_.GlobalTheory.T.exists_torus_invariantField_const_coeffs : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) (O : Type) [CommRing O] [StarRing O] [Module O Dd.toPre.X] (oa : Dd.toPre.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∀ ℓ : Dd.toPre.X →+ R, ∃ c : Fin n → R, GlobalTheory.HeatMod.IsTorField Y (GlobalTheory.HeatMod.combF Y.H.hom dd c) ℓ := by
-  first | exact @GlobalTheory.HeatMod.TorField.exists_isTorField | exact GlobalTheory.HeatMod.TorField.exists_isTorField | (intros; apply GlobalTheory.HeatMod.TorField.exists_isTorField <;> assumption)
+  first | exact @GlobalTheory.HeatMod.TorField.exists_isTorField

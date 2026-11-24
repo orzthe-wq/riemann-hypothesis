@@ -284,7 +284,7 @@ include hcc hinv
 theorem exists_frob_inert {P : HeightOneSpectrum (𝓞 E)} (h : ConjPl c.toRingEquiv P P) {A : ValuationSubring Ω}
     (hA : IsPlaceOver A P) : ∃ g g' : Formalism.ConjugateSelfDual.G E Ω, (∀ x, g' x = cc (g (cc.symm x))) ∧
       IsFrob (F := E) A (normV P) (g * g') := by
-  letI : Algebra F Ω := ((algebraMap E Ω).comp (algebraMap F E)).toAlgebra
+  let : Algebra F Ω := ((algebraMap E Ω).comp (algebraMap F E)).toAlgebra
   have : IsScalarTower F E Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl
   have : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic
   have : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.trans F E Ω⟩
@@ -302,10 +302,10 @@ theorem exists_frob_inert {P : HeightOneSpectrum (𝓞 E)} (h : ConjPl c.toRingE
     obtain ⟨y, -, hy⟩ := (Nat.card_eq_two_iff' (1 : E ≃ₐ[F] E)).1 hcard
     by_cases h1 : φ.restrictNormal E = 1
     · exfalso
-      haveI := P.isMaximal
-      letI := Ideal.Quotient.field P.asIdeal
-      haveI : Finite (𝓞 E ⧸ P.asIdeal) := P.asIdeal.finiteQuotientOfFreeOfNeBot P.ne_bot
-      letI := Fintype.ofFinite (𝓞 E ⧸ P.asIdeal)
+      have := P.isMaximal
+      let := Ideal.Quotient.field P.asIdeal
+      have : Finite (𝓞 E ⧸ P.asIdeal) := P.asIdeal.finiteQuotientOfFreeOfNeBot P.ne_bot
+      let := Fintype.ofFinite (𝓞 E ⧸ P.asIdeal)
       have hd := (FiniteField.forall_pow_eq_one_iff (𝓞 E ⧸ P.asIdeal) (q - 1)).1 fun u => by
         obtain ⟨x, hx⟩ := Ideal.Quotient.mk_surjective (u : 𝓞 E ⧸ P.asIdeal)
         have h3 := hφ (algebraMap E Ω (x : E)) ((A.valuation_le_one_iff _).2 (mem_of_isIntegral_int A
@@ -348,7 +348,7 @@ theorem exists_frob_inert {P : HeightOneSpectrum (𝓞 E)} (h : ConjPl c.toRingE
     have hxq : A.valuation (x ^ q) ≤ 1 := by rw [map_pow]; exact pow_le_one' hx _
     rw [← sub_add_sub_cancel _ (φ x ^ q), sq, pow_mul]
     exact Valuation.map_add_lt _ (hφ _ hx')
-      ((GlobalTheory.Mem.WildChar.val_pow_sub_pow_le _ hx' hxq q).trans_lt (hφ x hx))
+      ((_root_.GlobalTheory.ValuationPowSubPow.valuation_pow_sub_pow_le _ hx' hxq q).trans_lt (hφ x hx))
 
 theorem resFin_of_anti {art : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art) {r : Formalism.ConjugateSelfDual.G E Ω →* ℂˣ} {χ : HChar E}
     (h : Corr art r χ) (hr : AntiHom cc r) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) : χ.resFin v k = 1 := by

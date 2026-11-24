@@ -100,8 +100,7 @@ theorem halfIntegralGenerator_add_conj_eq_one (H : Host E) : (H.w0 : E) + cc (H.
   simp only [add_re, one_re, h5, add_zero, mul_re, re_ofNat, im_ofNat, zero_mul, sub_zero] at h6
   exact_mod_cast h6
 
-theorem sb_smul (a : ℂ) {φ : TF n g} (h : IsSB φ) : IsSB (a • φ) :=
-  (isSB_algebra_haar_linear ℚ _ _ φ φ h h).2.1 a
+alias sb_smul := _root_.GlobalTheory.Dict.ShortVal.isSB_smul
 
 theorem sb_finsum {Q : Type} (f : Q → TF n g) (hf : ∀ q, IsSB (f q)) : IsSB (∑ᶠ q, f q) :=
   finsum_induction (fun φ : TF n g => IsSB φ) isSB_zero

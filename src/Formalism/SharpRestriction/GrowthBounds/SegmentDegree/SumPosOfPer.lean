@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.OldestLetterInSegment
 
 @[expose] public section
 
@@ -60,14 +61,6 @@ variable {n' r : ℕ} [NeZero n'] [NeZero r] {F : Frames n' r} {L₁ N₁ : ℕ}
 theorem fr_add_mul_period (hV : F.Valid L₁ N₁) (j : ℤ) (i : ℕ) (m : ℤ) :
     F.fr (j + m * F.J) i = F.fr j i + m * n' :=
   fr_period hV j i m
-
-theorem fr_lt_fr_of_lt_of_valid (hV : F.Valid L₁ N₁) (j : ℤ) (i : ℕ) :
-    ∀ i', i < i' → i' < r → F.fr j i < F.fr j i' :=
-  TE.fr_lt hV j i
-
-theorem sum_fr_le (hV : F.Valid L₁ N₁) (j : ℤ) (i i' : ℕ) (h : i ≤ i') (h' : i' < r) :
-    F.fr j i ≤ F.fr j i' :=
-  TE.fr_le hV j i i' h h'
 
 theorem sum_posOf_per (x m : ℤ) : posOf n' (x + m * n') = posOf n' x := by
   unfold posOf
@@ -206,7 +199,7 @@ theorem sum_frlate (hV : X.F.Valid L₁ N₁) (j : ℤ) (i : Fin r) : X.F.fr j i
   · have h1 := hV.2.2.2.1 (j - 1)
     rw [sub_add_cancel] at h1
     exact lt_of_lt_of_le h1 (fr_zero_le hV j i.val i.isLt)
-  · exact sum_fr_le hV j i.val (r - 1) (by have := i.isLt; omega) (Nat.sub_lt (NeZero.pos r) Nat.one_pos)
+  · exact _root_.Formalism.MainNotions.SelectionLemmas.Pf.bk_fr_le hV j i.val (r - 1) (by have := i.isLt; omega) (Nat.sub_lt (NeZero.pos r) Nat.one_pos)
 
 theorem sum_split (hV : X.F.Valid L₁ N₁) (j : ℤ) (ψ : ℤ → ℝ) :
     ∏ x ∈ X.toLate j, ψ x = (∏ x ∈ X.F.LLset j, ψ x) * ∏ i : Fin r, ψ (X.F.fr j i.val) := by
@@ -215,8 +208,8 @@ theorem sum_split (hV : X.F.Valid L₁ N₁) (j : ℤ) (ψ : ℤ → ℝ) :
     intro a b hab
     by_contra hne
     rcases lt_or_gt_of_ne (fun h => hne (Fin.ext h)) with h | h
-    · exact absurd hab (ne_of_lt (fr_lt_fr_of_lt_of_valid hV j a.val b.val h b.isLt))
-    · exact absurd hab.symm (ne_of_lt (fr_lt_fr_of_lt_of_valid hV j b.val a.val h a.isLt))
+    · exact absurd hab (ne_of_lt (_root_.Formalism.MainNotions.SelectionLemmas.Pf.bk_fr_lt hV j a.val b.val h b.isLt))
+    · exact absurd hab.symm (ne_of_lt (_root_.Formalism.MainNotions.SelectionLemmas.Pf.bk_fr_lt hV j b.val a.val h a.isLt))
   have hU : X.toLate j = X.F.LLset j ∪ Finset.univ.image (fun i : Fin r => X.F.fr j i.val) := by
     ext x
     rw [Finset.mem_union, Finset.mem_image]

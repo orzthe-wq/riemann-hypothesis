@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslateMomentsAll
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HeisenbergCocycleFormIntegralSelfDual
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PerLatticeFactsStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PerLatticeFacts
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StandardRankOneLatticeOfLocal
 import Formalism.LocalToGlobal.Columns.BaseLemmas
 import Mathlib.Algebra.AffineMonoid.Basic
@@ -55,18 +55,6 @@ namespace GlobalTheory.MomT.HalfIncl
 section Loc
 
 variable {E : Type} [Field E] [NumberField E] {W : Type} [AddCommGroup W] [Module (𝓞 E) W]
-
-theorem mem_of_loc {M : Submodule (𝓞 E) W} {x : W} (h : ∀ Q : HeightOneSpectrum (𝓞 E), x ∈ localization₂ Q.asIdeal M) : x ∈ M := by
-  by_contra hx
-  have hne : M.comap (LinearMap.toSpanSingleton (𝓞 E) W x) ≠ ⊤ := fun e => hx (by
-    have : (1 : 𝓞 E) ∈ M.comap (LinearMap.toSpanSingleton (𝓞 E) W x) := e ▸ Submodule.mem_top
-    simpa using this)
-  obtain ⟨m, hm, hle⟩ := Ideal.exists_le_maximal _ hne
-  obtain ⟨s, hs, hsx⟩ := h ⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩
-  exact hs (hle (by simpa using hsx))
-
-theorem loc_self (Q : HeightOneSpectrum (𝓞 E)) {M : Submodule (𝓞 E) W} {x : W} (hx : x ∈ M) : x ∈ localization₂ Q.asIdeal M :=
-  ⟨1, Q.asIdeal.primeCompl.one_mem, by rwa [one_smul]⟩
 
 variable [Module E W] [IsScalarTower (𝓞 E) E W]
 
@@ -171,11 +159,11 @@ theorem half_inclusions : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S SG : Finse
       · exact hAS Q ((hS Q).2 (Or.inl h))
       · exact hAc Q ((mem_divs hwO Q).2 h)
     intro h0
-    have h2 : (1 : X.E) ∈ localization₂ Q.asIdeal A.AA := h1 ▸ loc_self Q (Submodule.mem_one.2 ⟨1, map_one _⟩)
+    have h2 : (1 : X.E) ∈ localization₂ Q.asIdeal A.AA := h1 ▸ _root_.GlobalTheory.ThetaMove.mem_localization_of_mem Q (Submodule.mem_one.2 ⟨1, map_one _⟩)
     obtain ⟨s, hs, h3⟩ := h2
     rw [h0, Submodule.mem_bot, Algebra.smul_def, mul_one, RingOfIntegers.coe_eq_zero_iff] at h3
     exact hs (h3 ▸ Q.asIdeal.zero_mem)
-  have hloc := fun P hP => (GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b N N' hfg hAA hN hN').2.2.2 P (hAS P hP)
+  have hloc := fun P hP => (_root_.GlobalTheory.MomT.LatFin.per_lattice_facts X A a b N N' hfg hAA hN hN').2.2.2 P (hAS P hP)
   have hhom : ∀ T : Finset (HeightOneSpectrum (𝓞 X.E)), (∀ P ∈ T, P ∈ S) → ∀ y : HomE X.E a b,
       y ∈ homAt T N N' ↔ ∀ P ∈ T, y ∈ localization₂ P.asIdeal (per A N N') := fun T hT y =>
     forall₂_congr fun P hP => (hloc P (hT P hP) y).symm
@@ -190,13 +178,13 @@ theorem half_inclusions : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S SG : Finse
   · refine (mem_twO _ _ _ _).2 fun Q => ?_
     rw [smul_smul]
     rcases expS_cases S Q with ⟨h1, e⟩ | ⟨h1, h2, e⟩ | ⟨h1, h2, e⟩ <;> rw [e]
-    · refine loc_smul' (loc_self Q hy) 1 (w * w) (hmul Q (hSw Q h1) (hSw Q h1)) ?_
+    · refine loc_smul' (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem Q hy) 1 (w * w) (hmul Q (hSw Q h1) (hSw Q h1)) ?_
       push_cast; simp only [hpE']; field_simp
-    · refine loc_smul' (loc_self Q hy) (g * g * ϖ * ϖ) 1 (hone Q) ?_
+    · refine loc_smul' (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem Q hy) (g * g * ϖ * ϖ) 1 (hone Q) ?_
       push_cast; simp only [hpE']; field_simp
-    · refine loc_smul' (loc_self Q hy) (g * ϖ) w (fun h => h2 (hconj Q h)) ?_
+    · refine loc_smul' (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem Q hy) (g * ϖ) w (fun h => h2 (hconj Q h)) ?_
       push_cast; field_simp
-  · refine mem_of_loc fun Q => ?_
+  · refine _root_.GlobalTheory.ThetaMove.mem_of_locP fun Q => ?_
     have h := (mem_twO _ _ _ _).1 hy Q
     rcases expS_cases S Q with ⟨h1, e⟩ | ⟨h1, h2, e⟩ | ⟨h1, h2, e⟩ <;> rw [e] at h
     · refine loc_smul h (g * g * w * w) 1 (hone Q) ?_
@@ -205,7 +193,7 @@ theorem half_inclusions : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S SG : Finse
       push_cast; simp only [hpE']; field_simp
     · refine loc_smul h (g * w) ϖ (hnS Q h1) ?_
       push_cast; field_simp
-  · refine mem_of_loc fun Q => ?_
+  · refine _root_.GlobalTheory.ThetaMove.mem_of_locP fun Q => ?_
     have h := (mem_twO _ _ _ _).1 ht Q
     rcases expS_cases S Q with ⟨h1, e⟩ | ⟨h1, h2, e⟩ | ⟨h1, h2, e⟩ <;> simp only [e, neg_zero, neg_neg] at h
     · by_cases hQ : ϖ ∈ Q.asIdeal
@@ -225,32 +213,32 @@ theorem half_inclusions : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S SG : Finse
       push_cast; field_simp
     · refine loc_smul h (cA * g) 1 (hone Q) ?_
       push_cast; field_simp
-  · exact (hhS y).2 fun P _ => loc_self P hy
+  · exact (hhS y).2 fun P _ => _root_.GlobalTheory.ThetaMove.mem_localization_of_mem P hy
   · refine (mem_twO _ _ _ _).2 fun Q => ?_
     rw [smul_smul]
     rcases expS_cases S Q with ⟨h1, e⟩ | ⟨h1, h2, e⟩ | ⟨h1, h2, e⟩ <;> simp only [e, neg_zero, neg_neg]
-    · refine loc_smul' (loc_self Q hy) (cA * (p * g) * (cA * g * w)) 1 (hone Q) ?_
+    · refine loc_smul' (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem Q hy) (cA * (p * g) * (cA * g * w)) 1 (hone Q) ?_
       push_cast; field_simp
-    · refine loc_smul' (loc_self Q hy) 1 ϖ (hnS Q h1) ?_
+    · refine loc_smul' (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem Q hy) 1 ϖ (hnS Q h1) ?_
       push_cast; simp only [hpE']; field_simp
-    · refine loc_smul' (loc_self Q hy) (cA * g * w) 1 (hone Q) ?_
+    · refine loc_smul' (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem Q hy) (cA * g * w) 1 (hone Q) ?_
       push_cast; field_simp
   · refine (mem_mulLat _ hpg _).2 ((hhG _).2 fun P hP => ?_)
     rw [smul_smul]
-    refine loc_smul' (loc_self P hy) cA ϖ (fun h => hSG P hP (hpm P h)) ?_
+    refine loc_smul' (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem P hy) cA ϖ (fun h => hSG P hP (hpm P h)) ?_
     push_cast; simp only [hpE']; field_simp
   · rw [mem_mulLat _ hpg, hhS, smul_smul, mem_smulLat]
     constructor
     · intro h
-      refine ⟨(ϖ : X.E)⁻¹ • y, mem_of_loc fun Q => ?_, by rw [smul_smul, mul_inv_cancel₀ hϖE, one_smul]⟩
+      refine ⟨(ϖ : X.E)⁻¹ • y, _root_.GlobalTheory.ThetaMove.mem_of_locP fun Q => ?_, by rw [smul_smul, mul_inv_cancel₀ hϖE, one_smul]⟩
       by_cases hQ : ϖ ∈ Q.asIdeal
       · refine loc_smul (h Q ((hS Q).2 (Or.inl hQ))) 1 cA (nat_notMem hcA (hpm Q hQ)) ?_
         push_cast; simp only [hpE']; field_simp
-      · refine loc_smul' (loc_self Q hy) 1 ϖ hQ ?_
+      · refine loc_smul' (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem Q hy) 1 ϖ hQ ?_
         push_cast; field_simp
     · rintro ⟨m, hm, rfl⟩ P _
       rw [smul_smul]
-      refine loc_smul' (loc_self P hm) cA 1 (hone P) ?_
+      refine loc_smul' (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem P hm) cA 1 (hone P) ?_
       push_cast; simp only [hpE']; field_simp
   · obtain ⟨m, hm, e⟩ := hy
     have hn0 : (n : X.E) ≠ 0 := by
@@ -263,7 +251,7 @@ theorem half_inclusions : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S SG : Finse
     have hP' := (mem_divs hϖO P).1 hP
     have hw' := hSw P ((hS P).2 (Or.inl hP'))
     rw [e', smul_smul]
-    refine loc_smul' (loc_self P hm) 1 (n * (w * w)) (hmul P (nat_notMem hn (hpm P hP')) (hmul P hw' hw')) ?_
+    refine loc_smul' (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem P hm) 1 (n * (w * w)) (hmul P (nat_notMem hn (hpm P hP')) (hmul P hw' hw')) ?_
     push_cast; simp only [hpE']; field_simp
   · refine hcoc x y fun Q => ⟨((p * g : ℕ) : X.E) ^ expS S Q, zpow_ne_zero _ (by exact_mod_cast hpg),
       (mem_twO _ _ _ _).1 hx Q, ?_⟩

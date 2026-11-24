@@ -2,16 +2,17 @@ module
 
 public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.DatDatum
 public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.AmpRep
-public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.BandRep
-import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.RepOps
-public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.KillOp
+public import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.RepOps
+public import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.AmpComm
+public import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Commute
+public import Development.AutomorphicArithmetic.Foundations.Convolution.TensFun
 public import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.EvExSub
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoefficientBounds.ExistsFinMap
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoefficientBounds.GenPiecesK
+import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.CapZcMemOfE
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Commute
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -24,7 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,7 +32,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,11 +44,367 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.RingTheory.MvPolynomial
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.BandRep, Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.KillOp, Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.KillCore
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.BandRep =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.BandRep", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.DatDatum\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.AmpRep\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.RepOps\nimport Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.CapZcMemOfE\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.AmpComm\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Commute\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField
+
+section SlopeTestRemainingChoices
+
+open MeasureTheory GlobalTheory.CuspRep UpperTheory.ConvolutionTheory.BW UpperTheory.ConvolutionTheory.C
+
+variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
+
+private theorem zop_mul (P Q : MvPolynomial ((E →+* ℂ) × Fin n) ℂ) : zop (P * Q) = zop P * zop Q := by
+  simp only [zop, map_mul, MulMemClass.coe_mul]
+
+private theorem zop_one : zop (1 : MvPolynomial ((E →+* ℂ) × Fin n) ℂ) = 1 := by
+  simp [zop]
+
+variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+private theorem inv_op (A : H →L[ℂ] H) (hA : 0 ≤ A) (η : ℝ) (hη : 0 < η) (χ : ℝ → ℝ) (hχ : Continuous χ)
+    (h0 : ∀ x ≤ η / 2, χ x = 0) :
+    ∃ T : H →L[ℂ] H, ‖T‖ ≤ 2 / η ∧ Commute A T ∧ A * T * fcalc χ A = fcalc χ A := by
+  have hs : IsSelfAdjoint A := IsSelfAdjoint.of_nonneg hA
+  have hp : 0 < η / 2 := half_pos hη
+  have hg : Continuous fun x : ℝ => (max x (η / 2))⁻¹ :=
+    (continuous_id.max continuous_const).inv₀ fun x => (lt_of_lt_of_le hp (le_max_right _ _)).ne'
+  refine ⟨cfc (fun x : ℝ => (max x (η / 2))⁻¹) A, ?_, ((Commute.refl A).cfc_real _).symm, ?_⟩
+  · refine norm_cfc_le (𝕜 := ℝ) (by positivity) fun x _ => ?_
+    have h2 : 0 < max x (η / 2) := lt_of_lt_of_le hp (le_max_right _ _)
+    rw [Real.norm_eq_abs, abs_of_pos (inv_pos.2 h2), show 2 / η = (η / 2)⁻¹ by rw [inv_div]]
+    exact inv_anti₀ hp (le_max_right _ _)
+  · have e : χ = fun x => x * (max x (η / 2))⁻¹ * χ x := by
+      funext x
+      rcases le_or_gt x (η / 2) with h | h
+      · simp [h0 x h]
+      · rw [max_eq_left h.le, mul_inv_cancel₀ (hp.trans h).ne', one_mul]
+    unfold fcalc
+    conv_rhs => rw [e]
+    rw [cfc_mul (fun x : ℝ => x * (max x (η / 2))⁻¹) χ A (continuous_id.mul hg).continuousOn hχ.continuousOn,
+      cfc_mul (fun x : ℝ => x) (fun x : ℝ => (max x (η / 2))⁻¹) A continuous_id.continuousOn hg.continuousOn,
+      cfc_id' ℝ A]
+
+private theorem norm_pow_apply_le (T : H →L[ℂ] H) (c : ℝ) (hc : 0 ≤ c) (hT : ‖T‖ ≤ c) (k : ℕ) (v : H) :
+    ‖(T ^ k) v‖ ≤ c ^ k * ‖v‖ := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    rw [pow_succ', ContinuousLinearMap.mul_apply]
+    calc ‖T ((T ^ k) v)‖ ≤ ‖T‖ * ‖(T ^ k) v‖ := T.le_opNorm _
+      _ ≤ c * (c ^ k * ‖v‖) := mul_le_mul hT ih (norm_nonneg _) hc
+      _ = c ^ (k + 1) * ‖v‖ := by ring
+
+end SlopeTestRemainingChoices
+
+open MeasureTheory GlobalTheory.CuspRep GroundTheory.Automorphic UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.BW UpperTheory.ConvolutionTheory.C in
+theorem UpperTheory.ConvolutionTheory.BW.bandRep :
+    ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.BandRep E := by
+  intro E _ _ _ n μ _ 𝔞 η hn hη
+  classical
+  obtain ⟨ρ, N, L, hL, hbd, hZ⟩ := UpperTheory.ConvolutionTheory.BW.ampRep E n μ 𝔞 hn
+  obtain ⟨h0, -, -, -, hAZ, -, -⟩ := UpperTheory.ConvolutionTheory.Tf.ampComm E n μ 𝔞 fun τ i => (UpperTheory.ConvolutionTheory.Dp.capZc E n τ).1 i
+  have uniq : ∀ v φ, Rep μ (𝔞.A v) φ → L v = φ := fun v φ h => (UpperTheory.ConvolutionTheory.BW.repOps E n μ hn _ _ (hL v).1).1 φ h
+  have hstep : ∀ x v, zop (MvPolynomial.X x) (L (𝔞.A v)) = L (𝔞.Z x v) := fun x v => by
+    refine (uniq _ _ ?_).symm
+    have e : 𝔞.A (𝔞.Z x v) = 𝔞.Z x (𝔞.A v) :=
+      congrArg (fun T : LL μ →L[ℂ] LL μ => T v) (hAZ x).eq
+    rw [e]
+    exact hZ x _
+  obtain ⟨D, hD0, hD⟩ : ∃ D : ℝ, 0 ≤ D ∧ ∀ x, ‖𝔞.Z x‖ ≤ D :=
+    ⟨∑ x : (E →+* ℂ) × Fin n, ‖𝔞.Z x‖, Finset.sum_nonneg fun _ _ => norm_nonneg _, fun x =>
+      Finset.single_le_sum (f := fun x : (E →+* ℂ) × Fin n => ‖𝔞.Z x‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ x)⟩
+  have hpow : ∀ (k : ℕ) (α : ((E →+* ℂ) × Fin n) →₀ ℕ), α.degree = k → ∀ y : LL μ, ∃ w : LL μ,
+      ‖w‖ ≤ D ^ k * ‖y‖ ∧ zop (MvPolynomial.monomial α 1) (L ((𝔞.A ^ k) y)) = L w := by
+    intro k
+    induction k with
+    | zero =>
+      intro α hα y
+      obtain rfl : α = 0 := (Finsupp.degree_eq_zero_iff α).1 hα
+      refine ⟨y, by simp, ?_⟩
+      have e : (MvPolynomial.monomial (0 : ((E →+* ℂ) × Fin n) →₀ ℕ) (1 : ℂ)) = 1 := rfl
+      rw [e, zop_one]
+      simp
+    | succ k ih =>
+      intro α hα y
+      have hne : α ≠ 0 := by
+        rintro rfl
+        simp at hα
+      obtain ⟨x, hx⟩ := Finsupp.support_nonempty_iff.2 hne
+      have hle : Finsupp.single x 1 ≤ α :=
+        Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 hx))
+      obtain ⟨β, rfl⟩ := exists_add_of_le hle
+      have hβ : β.degree = k := by
+        have := hα
+        rw [map_add (f := _), Finsupp.degree_single] at this
+        omega
+      obtain ⟨w, hw, hzw⟩ := ih β hβ (𝔞.Z x y)
+      refine ⟨w, ?_, ?_⟩
+      · calc ‖w‖ ≤ D ^ k * ‖𝔞.Z x y‖ := hw
+          _ ≤ D ^ k * (D * ‖y‖) := by
+            refine mul_le_mul_of_nonneg_left ?_ (pow_nonneg hD0 _)
+            exact ((𝔞.Z x).le_opNorm y).trans (mul_le_mul_of_nonneg_right (hD x) (norm_nonneg _))
+          _ = D ^ (k + 1) * ‖y‖ := by ring
+      · have e1 : (MvPolynomial.monomial (Finsupp.single x 1 + β) (1 : ℂ)) =
+            MvPolynomial.monomial β 1 * MvPolynomial.X x := by
+          rw [MvPolynomial.X, MvPolynomial.monomial_mul, add_comm, one_mul]
+        have e2 : (𝔞.A ^ (k + 1)) y = 𝔞.A ((𝔞.A ^ k) y) := by
+          rw [pow_succ', ContinuousLinearMap.mul_apply]
+        have e3 : 𝔞.Z x ((𝔞.A ^ k) y) = (𝔞.A ^ k) (𝔞.Z x y) :=
+          (congrArg (fun T : LL μ →L[ℂ] LL μ => T y) ((hAZ x).pow_left k).eq).symm
+        rw [e1, zop_mul, e2, Module.End.mul_apply, hstep, e3, hzw]
+  have hη2 : 0 ≤ 2 / η := by positivity
+  refine ⟨D * (2 / η), mul_nonneg hD0 hη2, fun χ hχ hχ0 u φ hrep => ?_⟩
+  obtain ⟨T, hT, hAT, hF⟩ := inv_op 𝔞.A h0 η hη χ hχ hχ0
+  set v₀ : LL μ := fcalc χ 𝔞.A u with hv₀
+  have hv : (𝔞.A * T) v₀ = v₀ := congrArg (fun S : LL μ →L[ℂ] LL μ => S u) hF
+  have hpw : ∀ k : ℕ, (𝔞.A ^ k) ((T ^ k) v₀) = v₀ := fun k => by
+    rw [← ContinuousLinearMap.mul_apply, ← hAT.mul_pow]
+    induction k with
+    | zero => simp
+    | succ k ih => rw [pow_succ, ContinuousLinearMap.mul_apply, hv, ih]
+  have hφ : ∀ k : ℕ, L ((𝔞.A ^ k) ((T ^ (k + 1)) v₀)) = φ := fun k => by
+    refine uniq _ _ ?_
+    have e : 𝔞.A ((𝔞.A ^ k) ((T ^ (k + 1)) v₀)) = v₀ := by
+      rw [← ContinuousLinearMap.mul_apply, ← pow_succ']
+      exact hpw (k + 1)
+    rw [e]
+    exact hrep
+  refine { toUmg := hrep.umg, band := ⟨N, fun a => ?_⟩ }
+  obtain ⟨B, hB⟩ := hbd a
+  refine ⟨|B| * (2 / η) * ‖v₀‖, fun α g => ?_⟩
+  obtain ⟨w, hw, hzw⟩ := hpow _ α rfl ((T ^ (α.degree + 1)) v₀)
+  rw [← hφ α.degree, hzw]
+  have hy := norm_pow_apply_le T (2 / η) hη2 hT (α.degree + 1) v₀
+  have hh : 0 ≤ AutomorphicForm.height g ^ N := pow_nonneg (AutomorphicForm.height_pos g).le _
+  have hw2 : ‖w‖ ≤ (D * (2 / η)) ^ α.degree * (2 / η) * ‖v₀‖ := by
+    calc ‖w‖ ≤ D ^ α.degree * ‖(T ^ (α.degree + 1)) v₀‖ := hw
+      _ ≤ D ^ α.degree * ((2 / η) ^ (α.degree + 1) * ‖v₀‖) := mul_le_mul_of_nonneg_left hy (pow_nonneg hD0 _)
+      _ = (D * (2 / η)) ^ α.degree * (2 / η) * ‖v₀‖ := by rw [mul_pow, pow_succ]; ring
+  calc ‖(UpperTheory.V.Cm.uC E n a (L w)).1 g‖ ≤ B * ‖w‖ * AutomorphicForm.height g ^ N := hB w g
+    _ ≤ |B| * ((D * (2 / η)) ^ α.degree * (2 / η) * ‖v₀‖) * AutomorphicForm.height g ^ N := by
+      refine mul_le_mul_of_nonneg_right ?_ hh
+      exact (mul_le_mul_of_nonneg_right (le_abs_self B) (norm_nonneg w)).trans
+        (mul_le_mul_of_nonneg_left hw2 (abs_nonneg B))
+    _ = |B| * (2 / η) * ‖v₀‖ * (D * (2 / η)) ^ α.degree * AutomorphicForm.height g ^ N := by ring
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.BandRep =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.KillOp =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.KillOp", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.TensFun\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory NumberField MvPolynomial Filter Topology UpperTheory.ConvolutionTheory PositivityTheory.Rg.Fx
+
+namespace UpperTheory.ConvolutionTheory.BW.Op
+
+variable {K : Type} [Field K] [NumberField K] {n : ℕ} {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H]
+  (ev : PR K n →+* (H →L[ℂ] H)) (B : H →L[ℂ] H)
+
+def am : H →L[ℂ] H := ev (C (X none))
+
+def zm (α : Ix K n →₀ ℕ) : H →L[ℂ] H := ev (C (rename some (monomial α 1)))
+
+def tp : MvPolynomial (Ix K n) ℂ →ₗ[ℂ] (H →L[ℂ] H) :=
+  (basisMonomials (Ix K n) ℂ).constr ℂ fun α => B ^ α.degree * zm ev α
+
+def yk (W : H →L[ℂ] H) (g : MvPolynomial (Pl K × Fin n) (MvPolynomial (Ix K n) ℂ)) : H →L[ℂ] H :=
+  ∑ β ∈ g.support, tp ev B (g.coeff β) * ev (monomial β 1) * W
+
+theorem tp_monomial (α : Ix K n →₀ ℕ) : tp ev B (monomial α 1) = B ^ α.degree * zm ev α := by
+  have := (basisMonomials (Ix K n) ℂ).constr_basis ℂ (fun α => B ^ α.degree * zm ev α) α
+  rwa [coe_basisMonomials] at this
+
+theorem tp_eq (p : MvPolynomial (Ix K n) ℂ) :
+    tp ev B p = ∑ α ∈ p.support, p.coeff α • (B ^ α.degree * zm ev α) := by
+  conv_lhs => rw [p.as_sum]
+
+  rw [map_sum]
+  refine Finset.sum_congr rfl fun α _ => ?_
+  rw [← tp_monomial, ← map_smul, smul_monomial, smul_eq_mul, mul_one]
+
+theorem ev_comm (a b : PR K n) : Commute (ev a) (ev b) := by
+  rw [Commute, SemiconjBy, ← map_mul, ← map_mul, mul_comm]
+
+theorem zm_zero : zm ev 0 = 1 := by simp [zm]
+
+theorem zm_add (α β : Ix K n →₀ ℕ) : zm ev (α + β) = zm ev α * zm ev β := by
+  rw [zm, zm, zm, ← map_mul, ← map_mul, ← map_mul, monomial_mul, one_mul]
+
+theorem zm_single (x : Ix K n) : zm ev (Finsupp.single x 1) = ev (C (X (some x))) := by
+  rw [zm, ← X, rename_X]
+
+theorem deg_le {ι : Type} {d : ℕ} {p : MvPolynomial ι ℂ} (h : p.totalDegree ≤ d) {α : ι →₀ ℕ}
+    (hα : α ∈ p.support) : α.degree ≤ d := by
+  have := (le_totalDegree hα).trans h
+  simpa [Finsupp.degree_apply, Finsupp.sum] using this
+
+theorem comm_yk {T W : H →L[ℂ] H} {g : MvPolynomial (Pl K × Fin n) (MvPolynomial (Ix K n) ℂ)} (hB : Commute T B)
+    (hW : Commute T W) (h1 : ∀ p, Commute T (ev (C p))) (h2 : ∀ β ∈ g.support, Commute T (ev (monomial β 1))) :
+    Commute T (yk ev B W g) := by
+  refine Commute.sum_right _ _ _ fun β hβ => (Commute.mul_right ?_ (h2 β hβ)).mul_right hW
+  rw [tp_eq]
+  exact Commute.sum_right _ _ _ fun α _ => ((hB.pow_right _).mul_right (h1 _)).smul_right _
+
+theorem mono_norm : ∃ D : ℝ, 1 ≤ D ∧ ∀ α : Ix K n →₀ ℕ, ‖B ^ α.degree * zm ev α‖ ≤ D ^ α.degree := by
+  have h1 : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := ContinuousLinearMap.norm_id_le
+  have h0 : 0 ≤ ∑ x, ‖zm ev (Finsupp.single x 1)‖ := Finset.sum_nonneg fun _ _ => norm_nonneg _
+  have hz : ∀ (m : ℕ) (α : Ix K n →₀ ℕ), α.degree = m → ‖zm ev α‖ ≤ (1 + ∑ x, ‖zm ev (Finsupp.single x 1)‖) ^ m := by
+    intro m α
+    induction α using Finsupp.induction_linear generalizing m with
+    | zero => rintro rfl; simpa [zm_zero] using h1
+    | add a b ha hb =>
+      rintro rfl
+      rw [zm_add, map_add (f := _), pow_add]
+      exact (norm_mul_le _ _).trans (mul_le_mul (ha _ rfl) (hb _ rfl) (norm_nonneg _) (by positivity))
+    | single i e =>
+      rintro rfl
+      rw [Finsupp.degree_single]
+      have hi := Finset.single_le_sum (f := fun x => ‖zm ev (Finsupp.single x 1)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)
+      induction e with
+      | zero => simpa [zm_zero] using h1
+      | succ e ih =>
+        rw [Finsupp.single_add, zm_add, pow_succ]
+        exact (norm_mul_le _ _).trans (mul_le_mul ih (by linarith) (norm_nonneg _) (by positivity))
+  have hb : ∀ m : ℕ, ‖B ^ m‖ ≤ (1 + ‖B‖) ^ m := by
+    intro m
+    induction m with
+    | zero => simpa using h1
+    | succ m ih =>
+      rw [pow_succ, pow_succ]
+      exact (norm_mul_le _ _).trans (mul_le_mul ih (by linarith) (norm_nonneg _) (by positivity))
+  refine ⟨(1 + ‖B‖) * (1 + ∑ x, ‖zm ev (Finsupp.single x 1)‖), ?_, fun α => ?_⟩
+  · nlinarith [norm_nonneg B, mul_nonneg (norm_nonneg B) h0]
+  · rw [mul_pow]
+    exact (norm_mul_le _ _).trans (mul_le_mul (hb _) (hz _ α rfl) (norm_nonneg _) (by positivity))
+
+theorem yk_norm (W : H →L[ℂ] H) (G : ℕ → MvPolynomial (Pl K × Fin n) (MvPolynomial (Ix K n) ℂ))
+    (s : Finset ((Pl K × Fin n) →₀ ℕ)) (K₀ : ℝ) (hs : ∀ k, (G k).support ⊆ s)
+    (hG : ∀ k β, ((G k).coeff β).totalDegree ≤ k ∧ l1 ((G k).coeff β) ≤ K₀ ^ (k + 1) / k.factorial) :
+    ∃ c x : ℝ, 0 ≤ c ∧ 1 ≤ x ∧ ∀ k, ‖yk ev B W (G k)‖ ≤ c * (x ^ k / k.factorial) := by
+  obtain ⟨D, hD, hb⟩ := mono_norm ev B
+  have ht : ∀ (k : ℕ) (p : MvPolynomial (Ix K n) ℂ), p.totalDegree ≤ k → ‖tp ev B p‖ ≤ l1 p * D ^ k := by
+    intro k p hp
+    rw [tp_eq, l1, Finset.sum_mul]
+    refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun α hα => ?_)
+    rw [norm_smul]
+    exact mul_le_mul_of_nonneg_left ((hb α).trans (pow_le_pow_right₀ hD (deg_le hp hα))) (norm_nonneg _)
+  set E : ℝ := |K₀| + 1 with hE
+  have hE1 : 1 ≤ E := by have := abs_nonneg K₀; linarith
+  have hM : 0 ≤ ∑ β ∈ s, ‖ev (monomial β 1) * W‖ := Finset.sum_nonneg fun _ _ => norm_nonneg _
+  refine ⟨E * ∑ β ∈ s, ‖ev (monomial β 1) * W‖, E * D, by positivity, by nlinarith, fun k => ?_⟩
+  have h3 : K₀ ^ (k + 1) ≤ E ^ (k + 1) :=
+    (le_abs_self _).trans (by rw [abs_pow]; exact pow_le_pow_left₀ (abs_nonneg _) (by linarith) _)
+  calc ‖yk ev B W (G k)‖ ≤ ∑ β ∈ (G k).support, E ^ (k + 1) / k.factorial * D ^ k * ‖ev (monomial β 1) * W‖ := by
+        refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun β _ => ?_)
+        rw [mul_assoc]
+        refine (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right ((ht k _ (hG k β).1).trans ?_) (norm_nonneg _))
+        exact mul_le_mul_of_nonneg_right ((hG k β).2.trans (by gcongr)) (by positivity)
+    _ ≤ ∑ β ∈ s, E ^ (k + 1) / k.factorial * D ^ k * ‖ev (monomial β 1) * W‖ :=
+        Finset.sum_le_sum_of_subset_of_nonneg (hs k) fun _ _ _ => by positivity
+    _ = _ := by rw [← Finset.mul_sum, mul_pow]; ring
+
+theorem tail {V : Type} [NormedAddCommGroup V] [CompleteSpace V] (y : ℕ → V) (c x : ℝ) (hc : 0 ≤ c) (hx : 1 ≤ x)
+    (h : ∀ k, ‖y k‖ ≤ c * (x ^ k / k.factorial)) (M : ℝ) (hM : 0 ≤ M) :
+    Summable y ∧ ∃ C' : ℝ, ∀ d : ℕ, ‖∑ k ∈ Finset.range (d + 1), y k - ∑' k, y k‖ * M ≤ C' ^ (d + 1) / d.factorial := by
+  have hs := Real.summable_pow_div_factorial x
+  have hy : Summable y := Summable.of_norm_bounded (hs.mul_left c) h
+  have hs0 : 0 ≤ ∑' k : ℕ, x ^ k / (k.factorial : ℝ) := tsum_nonneg fun _ => by positivity
+  set e := ∑' k : ℕ, x ^ k / (k.factorial : ℝ) with he
+  refine ⟨hy, (c * e * M + 1) * x, fun d => ?_⟩
+  rw [← hy.sum_add_tsum_nat_add (d + 1), sub_add_cancel_left, norm_neg]
+  have h1 : ‖∑' k, y (k + (d + 1))‖ ≤ c * (x ^ (d + 1) / d.factorial) * e := by
+    refine tsum_of_norm_bounded (hs.hasSum.mul_left _) fun k => (h _).trans ?_
+    rw [mul_assoc, div_mul_div_comm, ← pow_add, add_comm k]
+    refine mul_le_mul_of_nonneg_left (div_le_div_of_nonneg_left (by positivity) (by positivity) ?_) hc
+    have := (Nat.le_of_dvd (Nat.factorial_pos _) (Nat.factorial_mul_factorial_dvd_factorial_add d k)).trans
+      (Nat.factorial_le (show d + k ≤ d + 1 + k by omega))
+    exact_mod_cast this
+  have h0 : 0 ≤ c * e * M := by positivity
+  have h7 : c * e * M ≤ (c * e * M + 1) ^ (d + 1) :=
+    (by linarith : c * e * M ≤ c * e * M + 1).trans (le_self_pow₀ (by linarith) (Nat.succ_ne_zero d))
+  calc _ ≤ c * (x ^ (d + 1) / d.factorial) * e * M := mul_le_mul_of_nonneg_right h1 hM
+    _ = c * e * M * x ^ (d + 1) / d.factorial := by ring
+    _ ≤ (c * e * M + 1) ^ (d + 1) * x ^ (d + 1) / d.factorial := by gcongr
+    _ = _ := by rw [mul_pow]
+
+variable {ev B}
+
+theorem fix_mul (hB : ∀ R, Commute B (ev R)) {W T : H →L[ℂ] H} (hW : am ev * B * W = W) (h1 : Commute T (am ev)) (h2 : Commute T B) :
+    am ev * B * (T * W) = T * W := by
+  rw [← mul_assoc, ← (h1.mul_right h2).eq, mul_assoc, hW]
+
+theorem fix_pow (hB : ∀ R, Commute B (ev R)) {W : H →L[ℂ] H} (hW : am ev * B * W = W) (a : ℕ) :
+    am ev ^ a * (B ^ a * W) = W := by
+  have hc : Commute (am ev) B := (hB _).symm
+  rw [← mul_assoc, ← hc.mul_pow]
+  induction a with
+  | zero => simp
+  | succ a ih => rw [pow_succ, mul_assoc, hW, ih]
+
+theorem trunc_mul (hc : ∀ c : ℂ, ev (C (C c)) = c • 1) (hB : ∀ R, Commute B (ev R)) {W : H →L[ℂ] H} (hW : am ev * B * W = W)
+    (G : ℕ → MvPolynomial (Pl K × Fin n) (MvPolynomial (Ix K n) ℂ)) (hG : ∀ k β, ((G k).coeff β).totalDegree ≤ k) (d : ℕ) :
+    ev (trunc d G) * W = am ev ^ d * (am ev * ∑ k ∈ Finset.range (d + 1), yk ev B (B * W) (G k)) := by
+  have h1 : ∀ (p : MvPolynomial (Ix K n) ℂ) (V : H →L[ℂ] H), p.totalDegree ≤ d → am ev * B * V = V →
+      ev (C (homog d p)) * V = am ev ^ d * (tp ev B p * V) := by
+    intro p V hp hV
+
+    rw [homog, tp_eq, map_sum, map_sum, Finset.sum_mul, Finset.sum_mul, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun α hα => ?_
+    have hd := deg_le hp hα
+    have e : rename some (monomial α (p.coeff α) : MvPolynomial (Ix K n) ℂ) = C (p.coeff α) * rename some (monomial α 1) := by
+      rw [rename_monomial, rename_monomial, C_mul_monomial, mul_one]
+    have e2 : am ev ^ d = am ev ^ (d - α.degree) * am ev ^ α.degree := by rw [← pow_add]; congr 1; omega
+    have e3 := fix_pow hB (fix_mul hB hV (T := zm ev α) (ev_comm ev _ _) (hB _).symm) α.degree
+    rw [e, map_mul, map_mul, map_mul, map_mul, map_pow, map_pow, hc, e2]
+    simp only [smul_mul_assoc, mul_smul_comm, one_mul, mul_assoc, e3]
+    rfl
+
+  rw [trunc, map_sum, Finset.sum_mul, Finset.mul_sum, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun k hk => ?_
+
+  rw [yk, map_sum, Finset.sum_mul, Finset.mul_sum, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun β _ => ?_
+  have hd : ((G k).coeff β).totalDegree ≤ d := (hG k β).trans (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))
+  have e : (monomial β (homog d ((G k).coeff β)) : PR K n) = C (homog d ((G k).coeff β)) * monomial β 1 := by
+    rw [C_mul_monomial, mul_one]
+  have hA : Commute (am ev) (tp ev B ((G k).coeff β) * ev (monomial β 1)) := by
+    refine Commute.mul_right ?_ (ev_comm ev _ _)
+    rw [tp_eq]
+    exact Commute.sum_right _ _ _ fun α _ => (((hB _).symm.pow_right _).mul_right (ev_comm ev _ _)).smul_right _
+  rw [e, map_mul, mul_assoc, h1 _ _ hd (fix_mul hB hW (ev_comm ev _ _) (hB _).symm), ← mul_assoc (am ev), hA.eq,
+    mul_assoc _ (am ev), ← mul_assoc (am ev), hW, mul_assoc]
+
+end UpperTheory.ConvolutionTheory.BW.Op
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.KillOp =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.KillCore =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.KillCore", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.DatDatum\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.AmpRep\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.BandRep\nimport Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.CuspidalNormBounds.RepOps\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.KillOp\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.EvExSub\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoefficientBounds.ExistsFinMap\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoefficientBounds.GenPiecesK\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Commute\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Mathlib.RingTheory.MvPolynomial\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -308,3 +663,7 @@ theorem killCore (hn : 0 < n) (𝔞 : Amp μ) (η : ℝ) (hη : 0 < η) :
     exact this.trans (mul_le_mul_of_nonneg_right he' (pow_nonneg (AutomorphicForm.height_pos g).le _))
 
 end UpperTheory.ConvolutionTheory.BW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlices.KillCore =====

@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.LocalToGlobal.GlobalTheory.GL3.PLinkThIndep
 
 @[expose] public section
 
@@ -80,15 +81,15 @@ theorem conjFI_coe (I : Ideal (𝓞 D.host.E)) :
   · rintro ⟨r, hr, hx⟩
     refine ⟨D.host.conj • r, Ideal.smul_mem_pointwise_smul _ _ _ hr, ?_⟩
     show D.host.conj (r : D.host.E) = x
-    rw [show (r : D.host.E) = D.host.conj x from hx, GlobalTheory.SeeSaw.conj_conj_host]
+    rw [show (r : D.host.E) = D.host.conj x from hx, _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conj_conj]
   · rintro ⟨r, hr, rfl⟩
     refine ⟨D.host.conj⁻¹ • r, Ideal.mem_pointwise_smul_iff_inv_smul_mem.1 hr, ?_⟩
     show D.host.conj.symm (r : D.host.E) = D.host.conj (r : D.host.E)
-    rw [AlgEquiv.symm_apply_eq, GlobalTheory.SeeSaw.conj_conj_host]
+    rw [AlgEquiv.symm_apply_eq, _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conj_conj]
 
 theorem conjFI_conjFI (𝔞 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : GlobalTheory.SeeSaw.conjFI D (GlobalTheory.SeeSaw.conjFI D 𝔞) = 𝔞 := by
   ext x
-  rw [GlobalTheory.SeeSaw.mem_conjFI, GlobalTheory.SeeSaw.mem_conjFI, GlobalTheory.SeeSaw.conj_conj_host]
+  rw [GlobalTheory.SeeSaw.mem_conjFI, GlobalTheory.SeeSaw.mem_conjFI, _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conj_conj]
 
 theorem conjFI_shiftId {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) :
     GlobalTheory.SeeSaw.conjFI D (shiftId G) = (shiftId G)⁻¹ := by

@@ -203,7 +203,7 @@ theorem rd_right (hD : IsDom k r z z' (Fin.last r) D) (hπ' : IsCRepOn (UWset k 
       ((J g).comp ((dOp π' X).comp B)) 0 := by
     have h2 := L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd
     convert h2 using 1
-    all_goals first | rfl | (ext; rfl)
+    all_goals first | rfl
   exact key.deriv
 
 theorem rz_right (hD : IsDom k r z z' (Fin.last r) D) (hπ' : IsCRepOn (UWset k r z') π')
@@ -264,7 +264,7 @@ theorem right_type_action : Formalism.FourierDecayAlt.Q.RightTypeAction := by
   choose Bf hBf1 hBf2 using key
 
   simp only [id, Finset.sum_apply, Pi.smul_apply, ContinuousLinearMap.sum_apply,
-  ContinuousLinearMap.smul_apply, map_sum, map_zsmul, map_smul]
+  ContinuousLinearMap.smul_apply, map_sum, map_smul]
   refine Finset.sum_congr rfl fun σ _ => ?_
   rw [hBf1 σ g hg, ContinuousLinearMap.comp_apply, hBf2 σ v]
 

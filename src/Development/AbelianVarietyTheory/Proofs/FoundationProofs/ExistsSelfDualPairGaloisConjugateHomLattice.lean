@@ -112,7 +112,7 @@ def twist (σ : E ≃ₐ[ℚ] E) (C : Set E) {N : ℕ} (L : Submodule (𝓞 E) (
     have := L.add_mem (hv c hc) (hw c hc)
     convert this using 1
     funext i
-    simp [mul_add]
+    simp
   zero_mem' := by
     intro c hc
     have h : (σ.symm ∘ (star c • 0) : Fin N → E) = 0 := by

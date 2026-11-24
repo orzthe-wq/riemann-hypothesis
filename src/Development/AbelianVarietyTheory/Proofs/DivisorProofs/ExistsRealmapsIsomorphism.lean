@@ -125,7 +125,7 @@ theorem induced_apply {U V : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup
     induced π hπ D hD (π u) = π (D u) := by
   have e : (π.quotKerEquivOfSurjective hπ).symm (π u) = Submodule.Quotient.mk u := by
     rw [LinearEquiv.symm_apply_eq]; rfl
-  simp only [induced, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, e, Submodule.mapQ_apply]
+  simp only [induced, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, e]
   rfl
 
 end GlobalTheory.ThK.RealUniq

@@ -136,10 +136,10 @@ theorem contr (E₁ E₂ : Fin n → Fin n → Module.End ℂ M) {m : ℕ} (c : 
     funext x
     by_cases hxp : x = p
     · subst x
-      simp [hpj]
+      simp
     · by_cases hxj : x = j
       · subst x
-        simp [hxp, hpj]
+        simp [hxp]
       · simp only [Function.update_of_ne hxp, Function.update_of_ne hxj]
         change I x = I (Equiv.swap j p x)
         rw [Equiv.swap_apply_of_ne_of_ne hxj hxp]

@@ -86,7 +86,7 @@ section Real
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 theorem denseRange_places : DenseRange fun (x : E) (w : InfinitePlace E) => w.embedding x := by
-  apply GlobalTheory.UnitsDense.denseRange_embeddings' <;> assumption
+  apply GlobalTheory.UnitsDense.denseRange_embeddings'
 
 theorem map_herm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     τ (FD.herm G x y) = FD.hermC τ G (τ ∘ x) (τ ∘ y) := by

@@ -57,22 +57,6 @@ namespace GlobalTheory.LatMoveStd
 
 variable {D : D7}
 
-theorem mt_mul'' (V : HSp D) (g g' : GA D V) : mt V (g * g') = mt V g * mt V g' := by
-  show (matHom V (g * g')).1 = (matHom V g).1 * (matHom V g').1
-  rw [map_mul, Units.val_mul]
-
-theorem mt_one'' (V : HSp D) : mt V 1 = 1 := by
-  show (matHom V 1).1 = 1
-  rw [map_one, Units.val_one]
-
-theorem cA_cA'' (x : AE D) : cA D (cA D x) = x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp only [map_zero]
-  | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
-  | tmul a e =>
-    show (a ⊗ₜ[D.host.F] D.sp.cm.sig (D.sp.cm.sig e)) = _
-    rw [show D.sp.cm.sig (D.sp.cm.sig e) = e from star_star e]
-
 theorem unitary (V : HSp D) (hg : V.gram = 1) (g : GA D V) :
     ((mt V g).map (cA D))ᵀ * mt V g = 1 := by
   have h : ((mt V g).map (cA D))ᵀ * V.gram.map (incA D) * mt V g = V.gram.map (incA D) :=
@@ -82,7 +66,7 @@ theorem unitary (V : HSp D) (hg : V.gram = 1) (g : GA D V) :
 
 theorem mt_inv_eq (V : HSp D) (hg : V.gram = 1) (g : GA D V) : mt V g⁻¹ = ((mt V g).map (cA D))ᵀ := by
   have h1 := unitary V hg g
-  have h2 : mt V g * mt V g⁻¹ = 1 := by rw [← mt_mul'', mul_inv_cancel, mt_one'']
+  have h2 : mt V g * mt V g⁻¹ = 1 := by rw [← _root_.GlobalTheory.BesselCompare.mt_mul, mul_inv_cancel, _root_.GlobalTheory.BesselCompare.mt_one]
   calc mt V g⁻¹ = (((mt V g).map (cA D))ᵀ * mt V g) * mt V g⁻¹ := by rw [h1, Matrix.one_mul]
     _ = _ := by rw [Matrix.mul_assoc, h2, Matrix.mul_one]
 
@@ -123,7 +107,7 @@ theorem int_conj (V : HSp D) (hg : V.gram = 1) (g : GA D V) (N : Submodule (𝓞
     rw [mt_inv_eq V hg g, map_sum]
     simp only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Matrix.map_apply]
     refine Finset.sum_congr rfl fun l _ => ?_
-    rw [map_mul, cA_cA'', mul_comm]
+    rw [map_mul, _root_.Formalism.L2.Theta.cA_cA, mul_comm]
   rw [e]; exact int_of_moves V g N hM s hs j
 
 theorem single_mem (S T : HSp D) (hgS : S.gram = 1) (α : Af D.host.F) (hα : α ∈ intAf D.host.F) (c : D.host.E)
@@ -211,7 +195,7 @@ theorem latO_moved_onto : ∀ (D : D7) (S T : HSp D) (a b : ℕ) (hS : S.rank = 
       exact gen_mem S T hgS hgT g h N N' hN hN' α hα c hc s hs t ht
     exact key hu'
   · simp only [actO]
-    rw [inv_inv, Matrix.mul_assoc (mt T h), Matrix.mul_assoc (mt T h⁻¹ * u'), ← mt_mul'', mul_inv_cancel, mt_one'', Matrix.mul_one,
-      ← Matrix.mul_assoc, ← mt_mul'', mul_inv_cancel, mt_one'', Matrix.one_mul]
+    rw [inv_inv, Matrix.mul_assoc (mt T h), Matrix.mul_assoc (mt T h⁻¹ * u'), ← _root_.GlobalTheory.BesselCompare.mt_mul, mul_inv_cancel, _root_.GlobalTheory.BesselCompare.mt_one, Matrix.mul_one,
+      ← Matrix.mul_assoc, ← _root_.GlobalTheory.BesselCompare.mt_mul, mul_inv_cancel, _root_.GlobalTheory.BesselCompare.mt_one, Matrix.one_mul]
 
 end GlobalTheory.LatMoveStd

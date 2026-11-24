@@ -90,7 +90,7 @@ theorem fam_of_triv_mod_eps : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAb
   haveI : Module.Finite k (DualNumber k) := inferInstanceAs (Module.Finite k (k × k))
   haveI : IsNoetherianRing (DualNumber k) := IsNoetherianRing.of_finite k (DualNumber k)
   haveI : IsLocallyNoetherian (Over.mk s).left := (inferInstance : IsLocallyNoetherian (Sp (DualNumber k)))
-  refine ⟨hD, GlobalTheory.T.isAdditive_lineBundleFamily_of_geometricFibres S A (Over.mk s) hA D hD ?_ ?_⟩
+  refine ⟨hD, _root_.GlobalTheory.AddFib.isAdditive_of_geomFibres S A (Over.mk s) hA D hD ?_ ?_⟩
   · rw [triv_ev_iff hD]
     exact pic_sp_local_eq_zero _ _
   · intro K _ _ s' t

@@ -95,8 +95,7 @@ private theorem algEquiv_eqOn_K_of_eq_sqd (H : Host R) (σ τ : H.E ≃ₐ[ℚ] 
 
 private theorem algEquiv_fix_K_of_gal_eq_one (H : Host R) (σ : H.E ≃ₐ[ℚ] H.E) (h : (H.gal σ).1.2 = 1)
     (x : H.E) (hx : x ∈ H.K) : σ x = x := by
-  have h1 := algEquiv_eqOn_K_of_eq_sqd H σ 1 (by rw [H.gal_sqd, h, AlgEquiv.one_apply]; simp) x hx
-  rwa [AlgEquiv.one_apply] at h1
+  simpa [AlgEquiv.one_apply] using algEquiv_eqOn_K_of_eq_sqd H σ 1 (by rw [H.gal_sqd, h, AlgEquiv.one_apply]; simp) x hx
 
 theorem sigmaOf_fix_K (g : R.GG) (hg : g ∈ R.Psi) (x : H.E) (hx : x ∈ H.K) :
     H.sigmaOf g x = x := by
@@ -114,15 +113,11 @@ theorem conj_b : H.conj H.sqrtMinusD = - H.sqrtMinusD := by
 theorem b_ne_zero : H.sqrtMinusD ≠ 0 := by
   obtain ⟨-, hd, -⟩ := H.hyp
   intro h
-  have h2 := H.sqd_sq
-  change H.sqd = 0 at h
-  rw [h] at h2
-  have h3 : H.d = 0 := by simpa using h2
-  exact hd.ne_zero h3
+  apply hd.ne_zero
+  simpa [show H.sqd = 0 from h] using H.sqd_sq
 
 theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
-  have h : H.conj * H.conj = 1 := by
-    apply H.gal.injective
+  have h : H.conj * H.conj = 1 := H.gal.injective <| by
     rw [map_mul, map_one, show H.gal H.conj = R.cc from H.gal.apply_symm_apply _]
     exact Formalism.MainNotions.UnusedSlot33.HK.cc_mul_cc R.toFrame
   rw [← AlgEquiv.mul_apply, h, AlgEquiv.one_apply]
@@ -143,9 +138,8 @@ theorem eq_of_le_of_absNorm_eq {K : Type*} [Field K] [NumberField K] {I J : Idea
   have h1 : Ideal.absNorm M = 1 := by
     have h2 := congrArg Ideal.absNorm hM
     rw [map_mul, ← h] at h2
-    exact Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hI) (h2.symm.trans (mul_one _).symm)
-  rw [Ideal.absNorm_eq_one_iff] at h1
-  rw [hM, h1, Ideal.mul_top]
+    exact Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hI) (by simpa using h2.symm)
+  rw [hM, Ideal.absNorm_eq_one_iff.mp h1, Ideal.mul_top]
 
 theorem different_quad (K : Type) [Field K] [NumberField K] (a : ℤ) (x : K)
     (hx : x ^ 2 = (a : K)) (hadj : IntermediateField.adjoin ℚ {x} = ⊤) (hsf : Squarefree a)
@@ -241,16 +235,12 @@ theorem gen_top (H : Host R) (x : H.K) (hx : (x : H.E) = H.sqd) :
   rw [IntermediateField.adjoin_map, Set.image_singleton]
   first
   | rw [IntermediateField.map_top]
-  | rw [← AlgHom.fieldRange_eq_map]
   ext z
-  rw [AlgHom.mem_fieldRange]
-  have h1 : IsScalarTower.toAlgHom ℚ H.K H.E x = H.sqd := hx
-  rw [h1]
-  constructor
-  · intro hz
-    exact ⟨⟨z, hz⟩, rfl⟩
-  · rintro ⟨y, rfl⟩
-    exact y.2
+  rw [AlgHom.mem_fieldRange,
+    show IsScalarTower.toAlgHom ℚ H.K H.E x = H.sqd from hx]
+  exact ⟨fun hz => ⟨⟨z, hz⟩, rfl⟩, by
+    rintro ⟨y, rfl⟩
+    exact y.2⟩
 
 theorem diffK_holds (H : Host R) : DiffKH H := by
   obtain ⟨-, hd, -, hd16, -⟩ := H.hyp
@@ -284,8 +274,8 @@ theorem cases_K (σ : H.E ≃ₐ[ℚ] H.E) :
 theorem bE_mem : H.sqd ∈ H.K := IntermediateField.mem_adjoin_simple_self ℚ H.sqd
 
 theorem isGalK : IsGalois ℚ H.K := by
-  haveI : IsGalois ℚ H.E := H.galois
-  haveI hn : (IntermediateField.fixingSubgroup H.K).Normal := by
+  have : IsGalois ℚ H.E := H.galois
+  have hn : (IntermediateField.fixingSubgroup H.K).Normal := by
     constructor
     intro n hn g
     have hc : g * n * g⁻¹ = n := H.gal.injective (by
@@ -398,8 +388,7 @@ theorem absNorm_natK (N : ℕ) : Ideal.absNorm (Ideal.span {(N : 𝓞 H.K)}) = N
 theorem normK_holds (H : Host R) : NormKH H := by
   intro cc hcc
   have hN : Ideal.absNorm cc ≠ 0 := by
-    rw [Ne, Ideal.absNorm_eq_zero_iff]
-    exact hcc
+    simpa [Ideal.absNorm_eq_zero_iff] using hcc
   have e1 : Ideal.span {((Ideal.absNorm cc : ℕ) : 𝓞 H.E)} =
       Ideal.map (algebraMap (𝓞 H.K) (𝓞 H.E))
         (Ideal.span {((Ideal.absNorm cc : ℕ) : 𝓞 H.K)}) := by

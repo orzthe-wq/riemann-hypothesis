@@ -2,52 +2,10 @@ module
 
 public import GroundTheory.GlobalFields.CyclotomicCharacters.Character
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ContinuousToZModPow
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -71,16 +29,10 @@ theorem norm_sub_le_of_toZModPow_eq {x y : ℤ_[ℓ]} {n : ℕ}
   rw [PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub,
     h, sub_self]
 
-theorem exists_zpow_neg_lt {ε : ℝ} (hε : 0 < ε) : ∃ n : ℕ, (ℓ : ℝ) ^ (-(n : ℤ)) < ε :=
-  PadicInt.exists_pow_neg_lt ℓ hε
-
-theorem continuous_toZModPow (n : ℕ) : Continuous (PadicInt.toZModPow (p := ℓ) n) :=
-  _root_.UpperTheory.Reformulated.B.Yde3.continuous_toZModPow n
-
 theorem continuous_of_continuous_toZModPow {X : Type*} [TopologicalSpace X] {f : X → ℤ_[ℓ]}
     (h : ∀ n, Continuous fun x => PadicInt.toZModPow n (f x)) : Continuous f := by
   refine continuous_iff_continuousAt.2 fun x => Metric.tendsto_nhds.2 fun ε hε => ?_
-  obtain ⟨n, hn⟩ := exists_zpow_neg_lt (ℓ := ℓ) hε
+  obtain ⟨n, hn⟩ := PadicInt.exists_pow_neg_lt (p := ℓ) hε
   have hU : IsOpen {y | PadicInt.toZModPow n (f y) = PadicInt.toZModPow n (f x)} :=
     (isOpen_discrete {PadicInt.toZModPow n (f x)}).preimage (h n)
   filter_upwards [hU.mem_nhds rfl] with y hy

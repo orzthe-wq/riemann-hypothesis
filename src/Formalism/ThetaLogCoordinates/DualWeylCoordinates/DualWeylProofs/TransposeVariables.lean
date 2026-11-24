@@ -62,7 +62,7 @@ def transposeVariables (R : Type*) [CommRing R] (n : ℕ) :
 
 theorem transposeVariables_involutive (R : Type*) [CommRing R] (n : ℕ) (f : MvPolynomial (Fin n × Fin n) R) :
     transposeVariables R n (transposeVariables R n f) = f := by
-  simp only [transposeVariables, AlgHom.coe_comp, Function.comp_apply, MvPolynomial.rename_rename]
+  simp only [transposeVariables, MvPolynomial.rename_rename]
   have h : (Prod.swap ∘ Prod.swap : Fin n × Fin n → Fin n × Fin n) = id := by
     funext x
     simp
@@ -123,7 +123,7 @@ theorem qn_deriv_rowGen (n : ℕ) (a b : Fin n) (hab : a ≠ b) (f : MvPolynomia
     rw [hD]
     simp [transposeVariables, rowGen]
   | add p q hp hq =>
-    simp only [map_add (f := _), Polynomial.derivative_add, hp, hq]
+    simp only [map_add (f := _), hp, hq]
   | mul_X p i hp =>
     have hL : qn_D n a b (p * X i) = p * qn_D n a b (X i) + X i * qn_D n a b p := by
       rw [Derivation.leibniz]
@@ -152,7 +152,7 @@ theorem qn_deriv_rowGen_diag (n : ℕ) (a : Fin n) (f : MvPolynomial (Fin n × F
     rw [hD]
     simp [transposeVariables, rowGen]
   | add p q hp hq =>
-    simp only [map_add (f := _), Polynomial.derivative_add, mul_add, hp, hq]
+    simp only [map_add (f := _), mul_add, hp, hq]
   | mul_X p i hp =>
     have hL : qn_D n a a (p * X i) = p * qn_D n a a (X i) + X i * qn_D n a a p := by
       rw [Derivation.leibniz]

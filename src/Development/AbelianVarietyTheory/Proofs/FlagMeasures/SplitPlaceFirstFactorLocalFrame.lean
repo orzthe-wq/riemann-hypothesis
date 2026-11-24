@@ -2,10 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SelfDualAt
 public import Formalism.LocalToGlobal.HermitianForms.PsiZeroNontrivialCharacter
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FirstComponentsBasisLocalLatticeSplitStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLocalLevelUnitriangularIffStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralExtensionFiniteAdelesBasicPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SplitPlaceLatticeComponentsStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FirstComponentsBasisLocalLatticeSplit
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLocalLevelUnitriangularIff
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralExtensionFiniteAdelesBasicProperties
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SplitPlaceLatticeComponents
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -87,7 +87,7 @@ theorem resChar_residue {R : Type} [CommRing R] [IsLocalRing R] (f : R → ℂ) 
 theorem afsplitIE_mem_OAd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) (hx : x ∈ intV E v) :
     Formalism.UG.P.afsplitIE v x ∈ OAd F E := by
-  rw [(GlobalTheory.T.integralExtensionFiniteAdeles_basic_properties F E).1]
+  rw [(_root_.GlobalTheory.St.G.IntAd.integral_adeles_properties F E).1]
   intro w
   by_cases h : w = v
   · subst h; rw [Formalism.UG.P.afsplit_prV_IE]; exact hx
@@ -178,7 +178,7 @@ theorem local_frame_first_factor : ∀ (F E : Type) [Field F] [NumberField F] [F
     psi hpsi_add hpsi_int hne
   have hbd1 : ∀ i a, (sp (bd i a)).1 = 0 := fun i a => fst_of_sig cm.sig sp hsig e he (bd i) (hbde i) a
   have hb2 : ∀ j a, (sp (b j a)).2 = 0 := fun j a => snd_of_e sp e he (b j) (hbe j) a
-  obtain ⟨fr, hfr, hlat⟩ := GlobalTheory.T.first_components_basis_local_lattice_split F E cm n J hJ hdet v sp hsig halg hint g hgmax L hL b (Set.range bd) hb
+  obtain ⟨fr, hfr, hlat⟩ := _root_.GlobalTheory.St.G.first_components_basis F E cm n J hJ hdet v sp hsig halg hint g hgmax L hL b (Set.range bd) hb
     (by rintro x ⟨i, rfl⟩ a; exact hbd1 i a) hspan
   have hpsi0 : psi 0 = 1 := hpsi_int 0 (zero_mem _)
   have hgF : (g : F) ≠ 0 := by
@@ -233,7 +233,7 @@ theorem local_frame_first_factor : ∀ (F E : Type) [Field F] [NumberField F] [F
     rw [hea]
     exact h2.symm
   · intro y hy
-    obtain ⟨hMint, hiff⟩ := GlobalTheory.T.hermitian_local_level_unitriangular_iff F E cm n J hJ hdet v sp hsig halg hint g hgmax L hL b fr hb hb2 hfr hlat t y hy
+    obtain ⟨hMint, hiff⟩ := _root_.GlobalTheory.St.G.FirstColumn.unitriangular_iff F E cm n J hJ hdet v sp hsig halg hint g hgmax L hL b fr hb hb2 hfr hlat t y hy
     refine ⟨hiff, fun _ => ?_⟩
 
     choose s hs hsd using hdual
@@ -241,7 +241,7 @@ theorem local_frame_first_factor : ∀ (F E : Type) [Field F] [NumberField F] [F
     have hcol := fst_mulVec sp y b fr hfr
     generalize (fr⁻¹ * bc ((RingHom.fst _ _).comp sp.toRingHom) y * fr : GL (Fin n) (v.adicCompletion F)) = Mg at hMint hcol ⊢
     set M : Matrix (Fin n) (Fin n) (v.adicCompletion F) := (Mg : Matrix (Fin n) (Fin n) (v.adicCompletion F)) with hMdef
-    have hform1 := (GlobalTheory.T.split_place_lattice_components F E cm n J hJ hdet v sp hsig halg).2.2
+    have hform1 := (_root_.GlobalTheory.St.G.split_components F E cm n J hJ hdet v sp hsig halg).2.2
     have hdual1 : ∀ i l, (sp (hR cm.sig J (v.adicCompletion F) (bd i) (b l))).1 =
         (if i = l then 1 else 0) + (g : v.adicCompletion F) * (sp (s i l)).1 :=
       fun i l => fst_dual sp e he (i = l) _ _ g (hsd i l)
@@ -258,7 +258,7 @@ theorem local_frame_first_factor : ∀ (F E : Type) [Field F] [NumberField F] [F
       intro i hi
       rw [hfirst]
       simp only [hdual1, mul_add, Finset.sum_add_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq,
-        Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.mul_sum]
+        Finset.mem_univ, if_true, Finset.mul_sum]
       congr 1
       exact Finset.sum_congr rfl fun l _ => by ring
     set R0 : v.adicCompletion F := ∑ i : Fin n, if hi : i.1 + 1 < n then M i ⟨i.1 + 1, hi⟩ else 0 with hR0

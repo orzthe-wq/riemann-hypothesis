@@ -1,6 +1,8 @@
 module
 
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.ValNatCastOf
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.StRedOfSplit
+public import ReciprocityTheory.Automorphisms.InstMainA
+public import ReciprocityTheory.ResidueCardinality.ArtinOntoB
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.GOfPrime
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.LocDegOneBelow
 import Mathlib.Algebra.Order.Floor.Extended
@@ -41,6 +43,110 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.ValNatCastOf, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.SplitTransport
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.ValNatCastOf =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.ValNatCastOf", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.StRedOfSplit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.Automorphisms.InstMainA\npublic import ReciprocityTheory.ResidueCardinality.ArtinOntoB\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace MassDataIdxRes
+
+open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum IsLocalRing
+
+variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
+
+theorem val_natCast_of (g : ℕ) (hg1 : (g : 𝓞 F) ∈ v.asIdeal) (hg2 : (g : 𝓞 F) ∉ v.asIdeal ^ 2) :
+    Valued.v (((g : v.adicCompletionIntegers F) : v.adicCompletion F)) = WithZero.exp (-1 : ℤ) := by
+  have h0 : (g : 𝓞 F) ≠ 0 := fun h => hg2 (by rw [h]; exact zero_mem _)
+  have key := IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := F) v (g : 𝓞 F)
+  rw [IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap] at key
+  have e : (((g : v.adicCompletionIntegers F) : v.adicCompletion F)) =
+      algebraMap (𝓞 F) (v.adicCompletion F) (g : 𝓞 F) := by
+    rw [map_natCast]
+    simp
+  rw [e, show Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) (g : 𝓞 F)) = v.intValuation (g : 𝓞 F) from key]
+  have h1 : v.intValuation (g : 𝓞 F) ≤ WithZero.exp (-((1 : ℕ) : ℤ)) :=
+    (v.intValuation_le_pow_iff_mem _ 1).2 (by simpa using hg1)
+  have h2 : ¬ v.intValuation (g : 𝓞 F) ≤ WithZero.exp (-((2 : ℕ) : ℤ)) :=
+    fun h => hg2 ((v.intValuation_le_pow_iff_mem _ 2).1 h)
+  have hne : v.intValuation (g : 𝓞 F) ≠ 0 := by
+    exact v.intValuation_ne_zero _ h0
+  rw [← WithZero.exp_log hne] at h1 h2 ⊢
+  rw [WithZero.exp_le_exp] at h1 h2
+  congr 1
+  push_cast at h1 h2
+  omega
+
+theorem resZ_of (g : ℕ) [hgp : Fact g.Prime] (hcard : Nat.card (𝓞 F ⧸ v.asIdeal) = g)
+    (hg1 : (g : 𝓞 F) ∈ v.asIdeal) (hg2 : (g : 𝓞 F) ∉ v.asIdeal ^ 2) :
+    ∃ π : v.adicCompletionIntegers F →+* ZMod g, Function.Surjective π ∧
+      RingHom.ker π = Ideal.span {((g : ℕ) : v.adicCompletionIntegers F)} := by
+  have hv := val_natCast_of v g hg1 hg2
+  have hmax := ReciprocityTheory.Aut.maxIdeal_eq_span (F := F) (v := v)
+    (π := ((g : ℕ) : v.adicCompletionIntegers F)) hv
+  have hc : Nat.card (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) = g := by
+    rw [ReciprocityTheory.Bridge.ResidueFieldCardinality.card_residue, hcard]
+  haveI : Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) :=
+    Nat.finite_of_card_ne_zero (by rw [hc]; exact hgp.out.ne_zero)
+  letI := Fintype.ofFinite (IsLocalRing.ResidueField (v.adicCompletionIntegers F))
+  let e := ZMod.ringEquivOfPrime (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) hgp.out
+    (by rw [← Nat.card_eq_fintype_card]; exact hc)
+  refine ⟨(e.symm : IsLocalRing.ResidueField (v.adicCompletionIntegers F) →+* ZMod g).comp
+    (IsLocalRing.residue _), e.symm.surjective.comp IsLocalRing.residue_surjective, ?_⟩
+  ext x
+  rw [RingHom.mem_ker, RingHom.comp_apply, RingEquiv.coe_toRingHom, EmbeddingLike.map_eq_zero_iff,
+    IsLocalRing.residue_eq_zero_iff, hmax]
+
+end MassDataIdxRes
+
+namespace MassDataIdxSteps
+
+open NumberField Formalism.L2.SG.TypedSets Formalism.L2.SG.HidaSetting
+
+def ResArith {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (p : TypX X) : Prop :=
+  Nat.card (𝓞 X.B.I.F ⧸ p.1.asIdeal) = gOf p ∧ ((gOf p : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal ∧
+    ((gOf p : ℕ) : 𝓞 X.B.I.F) ∉ p.1.asIdeal ^ 2
+
+theorem stResZ_of {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (p : TypX X) (h : ResArith X p) : StResZ X p := by
+  obtain ⟨hc, h1, h2⟩ := h
+  have hg0 : gOf p ≠ 0 := by
+    intro h0
+    apply h2
+    rw [h0, Nat.cast_zero]
+    exact zero_mem _
+  haveI := p.1.isMaximal
+  haveI : Finite (𝓞 X.B.I.F ⧸ p.1.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hc]; exact hg0)
+  letI : Fintype (𝓞 X.B.I.F ⧸ p.1.asIdeal) := Fintype.ofFinite _
+  letI : Field (𝓞 X.B.I.F ⧸ p.1.asIdeal) := Ideal.Quotient.field _
+  obtain ⟨n, hl, hcard⟩ := FiniteField.card (𝓞 X.B.I.F ⧸ p.1.asIdeal) (ringChar (𝓞 X.B.I.F ⧸ p.1.asIdeal))
+  rw [← Nat.card_eq_fintype_card, hc] at hcard
+  have hlP : ((ringChar (𝓞 X.B.I.F ⧸ p.1.asIdeal) : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal := by
+    rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
+    exact ringChar.Nat.cast_ringChar
+  have hn : (n : ℕ) = 1 := by
+    by_contra hne
+    have h2n : 2 ≤ (n : ℕ) := by
+      have := n.pos
+      omega
+    apply h2
+    rw [hcard, Nat.cast_pow]
+    exact Ideal.pow_le_pow_right h2n (Ideal.pow_mem_pow hlP n)
+  haveI : Fact (gOf p).Prime := ⟨by rw [hcard, hn, pow_one]; exact hl⟩
+  exact MassDataIdxRes.resZ_of p.1 (gOf p) hc h1 h2
+
+end MassDataIdxSteps
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.ValNatCastOf =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.SplitTransport =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.SplitTransport", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.ValNatCastOf\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.GOfPrime\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.LocDegOneBelow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -126,3 +232,7 @@ theorem stResZ_holds {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (p : Ty
   stResZ_of X p (resArith_holds X p)
 
 end MassDataIdxSteps
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeIndices.SplitTransport =====

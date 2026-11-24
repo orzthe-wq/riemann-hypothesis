@@ -1,15 +1,17 @@
 module
 
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.NumberTheory.NumberField.Basic
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EqIffConjNe
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSmulMemRange
+public import Mathlib.Analysis.Matrix.Hermitian
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.Matrix.Hermitian
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -23,11 +25,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -47,10 +46,179 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EqIffConjNe, Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSmulMemRange, Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFrameOfIsPeriod
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EqIffConjNe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EqIffConjNe", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.ConjugateMembership
+
+open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor
+
+theorem conj_eq_neg_of_sq {x : ℂ} {d : ℝ} (hd : 0 < d) (hx : x ^ 2 = -(d : ℂ)) :
+    (starRingEnd ℂ) x = -x := by
+  have hre : x.re * x.re - x.im * x.im = -d := by
+    have := congrArg Complex.re hx
+    simpa [sq] using this
+  have him : x.re * x.im + x.im * x.re = 0 := by
+    have := congrArg Complex.im hx
+    simpa [sq] using this
+  have h0 : x.re = 0 := by
+    by_contra h
+    have hi : x.im = 0 := by
+      have h2 : x.re * x.im = 0 := by linarith
+      exact (mul_eq_zero.1 h2).resolve_left h
+    rw [hi] at hre
+    nlinarith [mul_self_nonneg x.re]
+  apply Complex.ext <;> simp [h0]
+
+theorem eq_iff_conj_ne {x r : ℂ} {d : ℝ} (hd : 0 < d) (hx : x ^ 2 = -(d : ℂ)) (hr : r ^ 2 = -(d : ℂ)) :
+    x = r ↔ ¬ (starRingEnd ℂ) x = r := by
+  rw [conj_eq_neg_of_sq hd hx]
+  constructor
+  · rintro rfl h
+    have h0 : x = 0 := by linear_combination (-1 / 2 : ℂ) * h
+    rw [h0] at hx
+    have : (d : ℂ) = 0 := by linear_combination hx
+    exact hd.ne' (by exact_mod_cast this)
+  · intro h
+    have : (x - r) * (-x - r) = 0 := by linear_combination hr - hx
+    rcases mul_eq_zero.1 this with h1 | h1
+    · exact sub_eq_zero.1 h1
+    · exact absurd (sub_eq_zero.1 h1) h
+
+theorem mem_iff_conjugate_notMem {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E)
+    (Ψ : Finset (E →+* ℂ)) (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ τ (H.rt : E) = H.rt0) (τ : E →+* ℂ) :
+    τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ := by
+  have hd : (0 : ℝ) < (H.d : ℝ) := by exact_mod_cast H.d_prime.pos
+  have hE : (H.rt : E) ^ 2 = -(H.d : E) := by
+    have := congrArg (algebraMap (𝓞 E) E) H.rt_sq
+    simpa using this
+  have hx : (τ (H.rt : E)) ^ 2 = -(((H.d : ℝ) : ℂ)) := by
+    rw [← map_pow, hE]; simp
+  have hr : H.rt0 ^ 2 = -(((H.d : ℝ) : ℂ)) := by
+    rw [H.sqrt_neg_disc_sq]; simp
+  rw [hΨ, hΨ, ComplexEmbedding.conjugate_coe_eq]
+  exact eq_iff_conj_ne hd hx hr
+
+end GlobalTheory.ConjugateMembership
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EqIffConjNe =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSmulMemRange =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSmulMemRange", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.NumberTheory.NumberField.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField
+
+namespace GlobalTheory.ExistsSmulMemRange
+
+theorem exists_smul_mem_range {E : Type} [Field E] [NumberField E] {Λ : Type} [AddCommGroup Λ]
+    [Module (RingOfIntegers E) Λ] {r : ℕ} (φ : Λ →ₗ[RingOfIntegers E] Fin r → E)
+    (w : Fin r → E) (hw : w ∈ Submodule.span E (Set.range (⇑φ : Λ → Fin r → E))) :
+    ∃ (a : RingOfIntegers E) (x : Λ), a ≠ 0 ∧ φ x = a • w := by
+  induction hw using Submodule.span_induction with
+  | mem w hw =>
+    obtain ⟨x, rfl⟩ := hw
+    exact ⟨1, x, one_ne_zero, (one_smul _ _).symm⟩
+  | zero => exact ⟨1, 0, one_ne_zero, by simp⟩
+  | add u v _ _ hu hv =>
+    obtain ⟨a, x, ha, hx⟩ := hu
+    obtain ⟨b, y, hb, hy⟩ := hv
+    refine ⟨a * b, b • x + a • y, mul_ne_zero ha hb, ?_⟩
+    rw [map_add (f := _), map_smul, map_smul, hx, hy, smul_add, smul_smul, smul_smul, mul_comm b a]
+  | smul t u _ hu =>
+    obtain ⟨a, x, ha, hx⟩ := hu
+    obtain ⟨p, q, hq, rfl⟩ := IsFractionRing.div_surjective (A := RingOfIntegers E) t
+    have hq0 : q ≠ 0 := nonZeroDivisors.ne_zero hq
+    have hq1 : algebraMap (RingOfIntegers E) E q ≠ 0 :=
+      fun h => hq0 (IsFractionRing.injective (RingOfIntegers E) E (by simpa using h))
+    refine ⟨a * q, p • x, mul_ne_zero ha hq0, ?_⟩
+    rw [map_smul, hx]
+    funext j
+    simp only [Pi.smul_apply, smul_eq_mul]
+    simp only [Algebra.smul_def, map_mul]
+    field_simp
+
+theorem exists_coeffs {E : Type} [Field E] [NumberField E] {Λ : Type} [AddCommGroup Λ]
+    [Module (RingOfIntegers E) Λ] {r : ℕ} (φ : Λ →ₗ[RingOfIntegers E] Fin r → E)
+    (hinj : Function.Injective (⇑φ : Λ → Fin r → E))
+    (hspan : Submodule.span E (Set.range (⇑φ : Λ → Fin r → E)) = ⊤)
+    (σ : E →+* ℂ) (f : Λ →+ ℂ)
+    (hf : ∀ (a : RingOfIntegers E) (x : Λ), f (a • x) = σ (↑a : E) * f x) :
+    ∃ (c : Fin r → ℂ), ∀ (v : Λ), f v = ∑ j : Fin r, c j * σ (φ v j) := by
+  classical
+  have h1 : ∀ j : Fin r, ∃ (a : RingOfIntegers E) (x : Λ), a ≠ 0 ∧
+      φ x = a • (Pi.single j (1 : E) : Fin r → E) :=
+    fun j => exists_smul_mem_range φ _ (by rw [hspan]; trivial)
+  choose a x ha hx using h1
+  have hne : ∀ q : RingOfIntegers E, q ≠ 0 → algebraMap (RingOfIntegers E) E q ≠ 0 :=
+    fun q hq0 h => hq0 (IsFractionRing.injective (RingOfIntegers E) E (by simpa using h))
+  refine ⟨fun j => f (x j) / σ (algebraMap (RingOfIntegers E) E (a j)), fun v => ?_⟩
+  obtain ⟨d, hd⟩ := IsLocalization.exist_integer_multiples_of_finite
+    (nonZeroDivisors (RingOfIntegers E))
+    (fun j : Fin r => φ v j / algebraMap (RingOfIntegers E) E (a j))
+  choose b hb using hd
+  have hd0 : algebraMap (RingOfIntegers E) E (d : RingOfIntegers E) ≠ 0 :=
+    hne _ (nonZeroDivisors.ne_zero d.2)
+  have hb' : ∀ j, algebraMap (RingOfIntegers E) E (b j) =
+      algebraMap (RingOfIntegers E) E (d : RingOfIntegers E) *
+        (φ v j / algebraMap (RingOfIntegers E) E (a j)) := by
+    intro j
+    rw [hb j, Algebra.smul_def]
+  have key : (d : RingOfIntegers E) • v = ∑ j, b j • x j := by
+    apply hinj
+
+    rw [map_smul, map_sum]
+    funext i
+    simp only [map_smul, hx, Finset.sum_apply, Pi.smul_apply, Algebra.smul_def, Pi.single_apply]
+    rw [Finset.sum_eq_single i]
+    · rw [hb' i]
+      have := hne _ (ha i)
+      simp only [if_true]
+      field_simp
+    · intro j _ hj
+      simp [hj.symm]
+    · simp
+  have h2 := congrArg f key
+
+  rw [hf, map_sum] at h2
+  have hσd : σ (algebraMap (RingOfIntegers E) E (d : RingOfIntegers E)) ≠ 0 :=
+    (map_ne_zero σ).2 hd0
+  apply mul_left_cancel₀ hσd
+  refine h2.trans ?_
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [hf]
+  change σ (algebraMap (RingOfIntegers E) E (b j)) * _ = _
+  rw [hb' j, map_mul, map_div₀]
+  ring
+
+end GlobalTheory.ExistsSmulMemRange
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSmulMemRange =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFrameOfIsPeriod =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFrameOfIsPeriod", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature\npublic import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.EqIffConjNe\npublic import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSmulMemRange\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Matrix.Hermitian\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField Matrix
@@ -407,17 +575,7 @@ section Field
 
 variable {E : Type} [Field E] [NumberField E]
 
-theorem exists_row {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] {r : ℕ} (φ : Λ →ₗ[𝓞 E] (Fin r → E))
-    (hinj : Function.Injective φ) (hsp : Submodule.span E (Set.range φ) = ⊤) (σ : E →+* ℂ) (f : Λ →+ ℂ)
-    (hf : ∀ (a : 𝓞 E) x, f (a • x) = σ (a : E) * f x) :
-    ∃ c : Fin r → ℂ, ∀ v, f v = ∑ j, c j * σ (φ v j) := by
-  first
-  | exact @_root_.GlobalTheory.ExistsSmulMemRange.exists_coeffs
-  | exact _root_.GlobalTheory.ExistsSmulMemRange.exists_coeffs
-  | (apply _root_.GlobalTheory.ExistsSmulMemRange.exists_coeffs <;> assumption)
-  | (intros; apply _root_.GlobalTheory.ExistsSmulMemRange.exists_coeffs <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.ExistsSmulMemRange.exists_coeffs <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.ExistsSmulMemRange.exists_coeffs ..)
+alias exists_row := _root_.GlobalTheory.ExistsSmulMemRange.exists_coeffs
 
 theorem trace_eq_sum_re (Ψ : Finset (E →+* ℂ))
     (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) (z : E) :
@@ -452,15 +610,7 @@ theorem trace_eq_sum_re (Ψ : Finset (E →+* ℂ))
 
 variable [IsCMField E]
 
-theorem cmType_host (H : Host E) (Ψ : Finset (E →+* ℂ)) (hΨ : ∀ τ, τ ∈ Ψ ↔ τ (H.rt : E) = H.rt0)
-    (τ : E →+* ℂ) : τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ := by
-  first
-  | exact @_root_.GlobalTheory.ConjugateMembership.mem_iff_conjugate_notMem
-  | exact _root_.GlobalTheory.ConjugateMembership.mem_iff_conjugate_notMem
-  | (apply _root_.GlobalTheory.ConjugateMembership.mem_iff_conjugate_notMem <;> assumption)
-  | (intros; apply _root_.GlobalTheory.ConjugateMembership.mem_iff_conjugate_notMem <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.ConjugateMembership.mem_iff_conjugate_notMem <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.ConjugateMembership.mem_iff_conjugate_notMem ..)
+alias cmType_host := _root_.GlobalTheory.ConjugateMembership.mem_iff_conjugate_notMem
 
 theorem hermC_eq {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u v : Fin r → ℂ) :
     FD.hermC τ G u v = u ⬝ᵥ G.map τ *ᵥ star v := by
@@ -541,3 +691,7 @@ theorem exists_frame_of_isPeriod : ∀ (E : Type) [Field E] [NumberField E] [IsC
     rfl
 
 end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFrameOfIsPeriod =====

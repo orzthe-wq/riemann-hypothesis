@@ -1,15 +1,16 @@
 module
 
-public import Formalism.HermitianCurvature.TopEntryWaveEquation
+public import Formalism.HermitianCurvature.TopDensNonnegOfKappa
+public import Formalism.HermitianCurvature.ActualZetaSmooth
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.FsvMulFsvNeg
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.InsCombineMk
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.LiftMemMatrixAlgebra
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.TopTwistDensOfWaveQQ
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BlockTwist
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -24,8 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -33,7 +32,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,8 +45,57 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BlockTwist
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.HermitianCurvature.TopEntryWaveEquation, Formalism.HermitianCurvature.HermitianCurvatureProofs.TopTwistDensOfZeta
+
+-- ===== clump member: Formalism.HermitianCurvature.TopEntryWaveEquation =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.TopEntryWaveEquation", "h": "module\n\npublic import Formalism.HermitianCurvature.TopDensNonnegOfKappa\npublic import Formalism.HermitianCurvature.ActualZetaSmooth\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory
+
+noncomputable section
+
+namespace Formalism.FourierDecayAlt.P5
+
+open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd
+
+def TopEntryWaveEquation : Prop :=
+  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
+    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
+    (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
+    (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)), IsPlace P z z' π π' →
+    ∀ (X : ActualOps P.k P.r z z' π π') (s : ℂ) (Wv Wv' : Module.End ℂ (RadSp P.k P.r z z' π π')),
+      multiplicationOperator Wv (fun _ g => fsv s (zeta P.k P.r z z' g)) → multiplicationOperator Wv' (fun _ g => fsv (-s) (zeta P.k P.r z z' g)) →
+      ∀ Y, mkP Wv' Wv * X.QQ Y 0 0 * mkP Wv Wv' =
+        (Matrix.conjTranspose (Formalism.YangianSpanCharacter.T.Um (R := ℂ) (A := Pr (RadSp P.k P.r z z' π π')) s) * X.QQ Y *
+          Formalism.YangianSpanCharacter.T.Um (R := ℂ) (A := Pr (RadSp P.k P.r z z' π π')) s : Matrix (Fin 2) (Fin 2) (Pr (RadSp P.k P.r z z' π π'))) 0 0
+
+def TopTwistDensOfZeta : Prop :=
+  NF.ActualZetaSmooth →
+  ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
+    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (S : Type) [Fintype S] [DecidableEq S]
+    (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
+    (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
+    (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r) (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (l0 : ℕ)
+    (K : Fin (P.r + 1) → Submodule ℂ (RadSp P.k P.r z z' π π')),
+    IsData P z z' π π' X μ L st l0 → TopTwistDens S P z z' π π' L st l0 K
+
+end Formalism.FourierDecayAlt.P5
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.TopEntryWaveEquation =====
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.TopTwistDensOfZeta =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.TopTwistDensOfZeta", "h": "module\n\npublic import Formalism.HermitianCurvature.TopEntryWaveEquation\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.FsvMulFsvNeg\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.InsCombineMk\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.LiftMemMatrixAlgebra\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.TopTwistDensOfWaveQQ\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.BlockTwist\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix MeasureTheory
@@ -86,7 +133,7 @@ theorem zeta_entries (hZ : NF.ActualZetaSmooth) {P : M.Par} {z z' : Fin (2 * P.r
     · rw [Set.indicator_of_mem hx]
       rfl
     · have hz : (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g = 0 := h0 (c, g) hx
-      simp [Set.indicator_apply, hx, hz]
+      simp [hx, hz]
 
   have hfun : (fun ζ : ℂ => fsv s ζ) =
       (fun y : ℂ => Complex.exp (s * id y - conj s * Complex.conjCLE y)) := funext fun y => rfl
@@ -101,16 +148,14 @@ theorem zeta_entries (hZ : NF.ActualZetaSmooth) {P : M.Par} {z z' : Fin (2 * P.r
     intro ζ
     rw [hfun2, (hder ζ).fderiv]
     simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.coe_id',
-        id_eq, Complex.conjCLE_apply, map_one, Complex.conj_I, smul_eq_mul, ContinuousLinearMap.coe_coe,
-        ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_one, Complex.conj_I]
+        id_eq, Complex.conjCLE_apply, map_one, smul_eq_mul, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_one]
     ring
   have hvI : ∀ ζ : ℂ, fderiv ℝ (fun y : ℂ => Complex.exp (s * y - conj s * conj y)) ζ Complex.I =
       Complex.exp (s * ζ - conj s * conj ζ) * ((s + conj s) * Complex.I) := by
     intro ζ
     rw [hfun2, (hder ζ).fderiv]
     simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.coe_id',
-        id_eq, Complex.conjCLE_apply, map_one, Complex.conj_I, smul_eq_mul, ContinuousLinearMap.coe_coe,
-        ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_one, Complex.conj_I]
+        id_eq, Complex.conjCLE_apply, Complex.conj_I, smul_eq_mul, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, Complex.conj_I]
     ring
   have hdZ : ∀ ζ, NF.dZ (fun ζ : ℂ => fsv s ζ) ζ = s * fsv s ζ := by
     intro ζ
@@ -267,3 +312,7 @@ theorem topTwistDensOfZeta : TopTwistDensOfZeta := by
   rw [← act_mul, hM, act_mul, act_io, hfst, hW1, hsInner_smul_left]
 
 end Formalism.FourierDecayAlt.P5
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.TopTwistDensOfZeta =====

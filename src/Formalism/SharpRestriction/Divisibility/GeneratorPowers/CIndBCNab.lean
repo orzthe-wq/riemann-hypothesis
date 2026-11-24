@@ -170,13 +170,13 @@ theorem map_hL (B : FB S d O) (B' : FB S' d O) (hA : ∀ a i, B'.A.act a i = map
   funext j i
   fin_cases j
   · simp [pt]
-  · simp only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.head_cons, comp1]
+  · simp only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one, comp1]
     rw [map_ev ψ _ h1]
     congr 1
     · funext j l
       fin_cases j
       simp [pt]
-    · simp [FB.actK, hid, hA]
+    · simp [FB.actK, hA]
 
 theorem const_hL (B : FB S d O) (h : PS S 2 d) (hh : B.IsCanonGauge S h) (w0 : O) :
     constantCoeff (B.hL S h w0) = 0 := by
@@ -200,7 +200,7 @@ theorem nabMap_holds : NabMapSt := by
     simp [MvPowerSeries.smul_eq_C_mul, const_hL B h hh w0]
   have hFK : (fun j => MvPowerSeries.map ψ (B.FK S j)) = B'.FK S' := by
     funext j
-    simp [FB.FK, FGLaw.mapF, hF, hid]
+    simp [FB.FK, FGLaw.mapF, hF]
   simp only [FB.nabVal]
   rw [← MvPowerSeries.constantCoeff_map, map_DpolyOf, map_mul, map_expS ψ _ hc, map_nsmul',
     map_hL ψ B B' hA, hFK]

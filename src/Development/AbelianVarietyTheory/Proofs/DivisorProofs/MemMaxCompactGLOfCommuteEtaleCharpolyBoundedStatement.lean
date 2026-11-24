@@ -57,4 +57,4 @@ theorem _root_.GlobalTheory.T.mem_maxCompactGL_of_commute_etale_charpoly_bounded
       (∀ i, v.coeff i ∈ w.adicCompletionIntegers E) ∧ u * N.val.charpoly + v * derivative N.val.charpoly = 1) →
     t * N = N * t → IsCompact (closure (Subgroup.zpowers t : Set (GL (Fin n) (w.adicCompletion E)))) →
     t ∈ GlobalTheory.LFun.KGL w (n := n) := by
-  first | exact @GlobalTheory.StabInt.mem_KGL_of_commute | exact GlobalTheory.StabInt.mem_KGL_of_commute | (intros; apply GlobalTheory.StabInt.mem_KGL_of_commute <;> assumption)
+  first | exact @GlobalTheory.StabInt.mem_KGL_of_commute

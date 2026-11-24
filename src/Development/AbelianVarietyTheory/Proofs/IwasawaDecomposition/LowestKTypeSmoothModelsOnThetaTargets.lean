@@ -67,13 +67,6 @@ def glue {S : D.what₂.Tau → D.what₂.Tau → SPar} (N : ∀ τ, DSModel V (
   fr_unit τ := (N τ).fr_unit τ
   fr_gram τ := (N τ).fr_gram τ
 
-theorem dualPar_dualPar (S : SPar) : dualPar (dualPar S) = S := by
-  unfold dualPar
-  ext x
-  simp only [Finset.mem_image]
-  exact ⟨fun ⟨_, ⟨y, hy, e⟩, e'⟩ => by subst e e'; simpa using hy,
-    fun hx => ⟨(-x.1, x.2), ⟨x, hx, rfl⟩, by simp⟩⟩
-
 theorem low_of_conj {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
     (h : lowKSub ((conjModel M).ε τ) ((conjModel M).lam τ) ((conjModel M).σ τ) ≤ (conjModel M).sm τ) :
     lowKSub (M.ε τ) (M.lam τ) (M.σ τ) ≤ M.sm τ := by
@@ -115,7 +108,7 @@ theorem lowSm_MW : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type)
     · exact ⟨_, R.MW i σ, shape_at _ τ (D.hc (lab σ τ)) (rank_Wc i) hpq (if_pos hb), id⟩
     · refine ⟨_, conjModel (R.MW i σ), shape_at _ τ (D.hc (lab σ τ)) (rank_Wc i) hpq ?_, low_of_conj _ τ⟩
       unfold Links.parAt
-      rw [if_neg hb, dualPar_dualPar]
+      rw [if_neg hb, _root_.Formalism.IndefR.Mult.dualPar_dualPar]
       rfl
   choose S N hN hL using key
   exact fun τ => hL τ ((GlobalTheory.HolLowOnce.lowSm_and_lowIrr D _ _ (glue N) hN).1 τ)

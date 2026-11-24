@@ -3,7 +3,7 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HodgeIPIffHodgeFormConj
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAtStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,7 +74,7 @@ theorem inChart_unitAt_of_inFrameDomain : ∀ (X : Scheme.{0}) (Ω : Type) [Fiel
     rw [e]
     exact reg (hp Finset.univ)
   · obtain ⟨v, hv, hv0⟩ := hd.2
-    have hf : ValAt ξ z f v := (GlobalTheory.T.valAt_iff_value_at X Ω ξ K J y hT z w h hw f v).2 hv
+    have hf : ValAt ξ z f v := (_root_.GlobalTheory.CompanionTheory.Ar.valAt_iff_isValueAt_coords X Ω ξ K J y hT z w h hw f v).2 hv
     refine ⟨?_, reg hf, reg (CxVal.inv hf hv0)⟩
     obtain ⟨_, s, hs, hsv⟩ := hf
     have hs0 : (Scheme.stalkClosedPointTo z).hom s ≠ 0 := by rw [hsv]; exact hv0

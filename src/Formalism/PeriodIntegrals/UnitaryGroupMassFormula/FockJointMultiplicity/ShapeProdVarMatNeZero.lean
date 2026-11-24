@@ -144,14 +144,12 @@ private theorem pderiv_eq_zero_of_mem_supported_of_not_mem {σ : Type*} {S : Set
   have hv : i ∉ P.vars := fun hmem => hi ((MvPolynomial.mem_supported.mp hP) (Finset.mem_coe.mpr hmem))
   first
   | exact MvPolynomial.pderiv_eq_zero_of_notMem_vars hv
-  | exact MvPolynomial.pderiv_eq_zero_of_not_mem_vars hv
 
 theorem dd_eq_zero {p q r s : ℕ} {S : Set (Ln p q r s)} {P : Pol p q r s}
     (hP : P ∈ MvPolynomial.supported ℂ S) {l l' : Ln p q r s} (h : l ∉ S ∨ l' ∉ S) : dd l l' P = 0 := by
   have key : PI.FJM.dd l l' P = MvPolynomial.pderiv l (MvPolynomial.pderiv l' P) := by
     first
     | rfl
-    | simp [PI.FJM.dd]
   rw [key]
   rcases h with h | h
   · rw [pderiv_pderiv_comm_of_complex, pderiv_eq_zero_of_mem_supported_of_not_mem hP h, map_zero]
@@ -177,7 +175,6 @@ private theorem varMat_apply_mem_supported {p q r s m k : ℕ} (ρ : Fin m → F
   rw [show PI.FJM.varMat ρ κ i j = MvPolynomial.X (ρ i, κ j) from rfl]
   first
   | exact MvPolynomial.X_mem_supported.mpr h
-  | exact MvPolynomial.mem_supported.mpr (by rw [MvPolynomial.vars_X]; simpa using h)
 
 theorem hwVec_mem_supported (p q r s : ℕ) (a b c d : List ℤ) :
     hwVec p q r s a b c d ∈ MvPolynomial.supported ℂ
@@ -237,7 +234,6 @@ private theorem moduleEnd_finset_sum_apply {V : Type*} [AddCommGroup V] [Module 
     (t : Finset ι) (f : ι → Module.End ℂ V) (v : V) : (∑ x ∈ t, f x) v = ∑ x ∈ t, f x v := by
   first
   | exact LinearMap.sum_apply t f v
-  | simp
 
 theorem vecJ_of (hF : FormJ) : VecJ := by
   intro p q r s a b c d h

@@ -53,10 +53,7 @@ section Unif
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
-theorem ex_zero : u.ex 0 = 1 := by
-  have h := u.ex_add 0 0
-  rw [add_zero] at h
-  exact left_eq_mul.1 h
+alias ex_zero := _root_.GlobalTheory.TangentOrigin.ex_zero
 
 theorem ex_natSmul (n : ℕ) (z : Fin g → ℂ) : u.ex ((n : ℂ) • z) = u.ex z ^ n := by
   induction n with

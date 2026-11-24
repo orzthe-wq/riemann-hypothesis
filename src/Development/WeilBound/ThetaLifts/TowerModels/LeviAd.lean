@@ -139,9 +139,7 @@ theorem piInf_cA (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (
   | tmul a x => rfl
   | add x y hx hy => simp only [map_add (f := _), hx, hy]
 
-theorem sig_sig (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
+alias sig_sig := _root_.GlobalTheory.AdelicU.cm_conj_conj
 
 theorem cA_cA (h : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with

@@ -54,6 +54,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 public import Mathlib.Topology.Algebra.MvPolynomial
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

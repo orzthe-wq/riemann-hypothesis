@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.MapWopWmap
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MemPadicAlgClValuationSubringIffNormLeOne
 
 @[expose] public section
 
@@ -94,12 +95,6 @@ private theorem val_rat_le {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [Number
   rw [hc, map_div₀, h1, div_one]
   exact w.valuation_le_one _
 
-private theorem mem_v_iff {p : ℕ} [Fact p.Prime] (x : PadicAlgCl p) :
-    x ∈ (PadicAlgCl.valued p).v.valuationSubring ↔ ‖x‖ ≤ 1 := by
-  rw [Valuation.mem_valuationSubring_iff]
-  show ‖x‖₊ ≤ 1 ↔ _
-  exact Iff.rfl
-
 private theorem val_le_one_of_forall {p : ℕ} [Fact p.Prime] {E : Type} [Field E] [NumberField E] (w : Plc E)
     (hw : (p : 𝓞 E) ∈ w.asIdeal) {x : E} (h : ∀ τ : E →+* PadicAlgCl p, ‖τ x‖ ≤ 1) : w.valuation E x ≤ 1 := by
   classical
@@ -120,11 +115,11 @@ private theorem val_le_one_of_forall {p : ℕ} [Fact p.Prime] {E : Type} [Field 
     refine Subsemiring.multiset_prod_mem _ _ ?_
     intro f hf
     obtain ⟨r, hr, rfl⟩ := Multiset.mem_map.1 hf
-    exact Polynomial.mem_lifts _ |>.2 ⟨Polynomial.X - Polynomial.C ⟨r, (mem_v_iff r).2 (hroots r hr)⟩, by simp⟩
+    exact Polynomial.mem_lifts _ |>.2 ⟨Polynomial.X - Polynomial.C ⟨r, (_root_.GlobalTheory.mem_padicAlgCl_valuationSubring_iff_norm_le_one r).2 (hroots r hr)⟩, by simp⟩
   have hco : ∀ n, ‖(((minpoly ℚ x).coeff n : ℚ) : ℚ_[p])‖ ≤ 1 := by
     intro n
     obtain ⟨a, ha⟩ := (Polynomial.lifts_iff_coeff_lifts _).1 hlift n
-    have h1 := (mem_v_iff _).1 a.2
+    have h1 := (_root_.GlobalTheory.mem_padicAlgCl_valuationSubring_iff_norm_le_one _).1 a.2
     have h2 : (a : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (((minpoly ℚ x).coeff n : ℚ) : ℚ_[p]) := by
       have : (a : PadicAlgCl p) = _ := ha
       rw [this, Polynomial.coeff_map]
@@ -256,7 +251,7 @@ private theorem norm_of_mem_intKQ {p : ℕ} [Fact p.Prime] (K : IntermediateFiel
       show (mulKQ K 1) (inclQ p K 1 b) ∈ (PadicAlgCl.valued p).v.valuationSubring
       rw [h]
       exact b.2
-  exact (mem_v_iff _).1 (hle hz)
+  exact (_root_.GlobalTheory.mem_padicAlgCl_valuationSubring_iff_norm_le_one _).1 (hle hz)
 
 private theorem norm_galois {p : ℕ} [Fact p.Prime] (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (z : PadicAlgCl p) :
     ‖σ z‖ = ‖z‖ := by
@@ -271,7 +266,7 @@ private theorem norm_of_Kint {p : ℕ} [Fact p.Prime] (t : ℚ_[p]ˣ)
     simpa using this
   have h1 : ((((k.val 0 0 : GlobalTheory.LKLoc.intR p (Q0 p) 1) : Qr p 1)) : PadicAlgCl p) ∈
       (PadicAlgCl.valued p).v.valuationSubring := (k.val 0 0).2
-  rw [e, mem_v_iff] at h1
+  rw [e, _root_.GlobalTheory.mem_padicAlgCl_valuationSubring_iff_norm_le_one] at h1
   have h2 : (((algebraMap ℚ_[p] (Qr p 1) (t : ℚ_[p])) : Qr p 1) : PadicAlgCl p) =
       algebraMap ℚ_[p] (PadicAlgCl p) (t : ℚ_[p]) := rfl
   rw [h2, PadicAlgCl.norm_extends] at h1

@@ -1,9 +1,10 @@
 module
 
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverFramesValueAtPoint
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HasStepCharts
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishingStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMetricGrassmannChartLocalStatement
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GenericBlockMatrixIsBlockDiag
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMetricGrassmannChartLocal
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverFramesValueAtPoint
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,15 +62,15 @@ theorem stepCols_ne_empty_of_le {N j : ℕ} (hj : j ≤ N) (i : Fin N) : stepCol
 
 theorem exists_plk_ne_zero : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (p : Ψ × Fin N) (k₀ : K) (l : Fin BM.q) (x₀ : BM.Rb.X) (z : (Σ k, ι k) → ℂ), M.blk p = some k₀ → x₀ ∈ BM.O l → z ∈ mcPts (mCoordIdeal y) → SameOrbit (basePart M.blk z) (BM.Rb.lift x₀ x₀) → ∃ I₀, IsStepRows N j p.2 I₀ ∧ plk M (BM.F l) k₀ z I₀ ≠ 0 := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n BM p k₀ l x₀ z hp hx hz hO
-  obtain ⟨h, a, hb, -, ha, hpl, hzk⟩ := GlobalTheory.T.block_metric_grassmann_chart_local K ι Φ y Ψ N j M n BM p k₀ l x₀ z hp hx hz hO
+  obtain ⟨h, a, hb, -, ha, hpl, hzk⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.FlagPoint.main K ι Φ y Ψ N j M n BM p k₀ l x₀ z hp hx hz hO
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   have hmin : ∀ I, minorIJ h I (stepCols N j p.2) = 0 := fun I => by
     by_cases hI : IsStepRows N j p.2 I
     · have e := hpl I hI
       rw [hcon I hI] at e
       exact (mul_eq_zero.1 e.symm).resolve_left ha
-    · exact ((GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le).2.1 h I hb hI).resolve_right
+    · exact ((_root_.GlobalTheory.CompanionTheory.Ar.PB.MinorCalc.minors_main ℂ N j p.2 M.j_le).2.1 h I hb hI).resolve_right
         (stepCols_ne_empty_of_le M.j_le p.2)
   obtain ⟨m, hm⟩ := hz.1 k₀
   exact hm (by rw [hzk m]; simp [hmin])

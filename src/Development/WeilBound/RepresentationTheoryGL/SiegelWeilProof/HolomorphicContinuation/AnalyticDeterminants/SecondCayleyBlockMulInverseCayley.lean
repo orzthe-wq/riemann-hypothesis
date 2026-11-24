@@ -71,7 +71,7 @@ theorem cm_mul_cmi : Cm n * Cmi n = 1 := by
   rw [Cm, Cmi, fromBlocks_multiply, ← fromBlocks_one]
   congr 1 <;> ext i j <;> by_cases h : i = j <;>
     simp [Matrix.one_apply, h, Matrix.add_apply, Matrix.smul_apply] <;> ring_nf <;>
-    simp [Complex.I_sq] <;> ring_nf
+    simp [Complex.I_sq]
 
 theorem cm_inv : (Cm n)⁻¹ = Cmi n := Matrix.inv_eq_right_inv cm_mul_cmi
 
@@ -150,7 +150,7 @@ theorem embOn_eq (s : Finset (Fin n)) (T : Matrix s s ℂ) : embOn s T = incl s 
 
 theorem incl_mul (s : Finset (Fin n)) (M : Matrix (Fin n) (Fin n) ℂ) : (incl s)ᵀ * M * incl s = subOn s M := by
   ext i j
-  simp [Matrix.mul_apply, incl, subOn, Matrix.transpose_apply]
+  simp [Matrix.mul_apply, incl, subOn]
 
 theorem det_one_add_mul_embOn (s : Finset (Fin n)) (M : Matrix (Fin n) (Fin n) ℂ) (T : Matrix s s ℂ) :
     (1 + M * embOn s T).det = (1 + subOn s M * T).det := by

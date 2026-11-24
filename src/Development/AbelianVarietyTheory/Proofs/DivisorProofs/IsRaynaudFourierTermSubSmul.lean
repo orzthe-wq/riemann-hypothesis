@@ -55,15 +55,12 @@ noncomputable section
 
 namespace GlobalTheory.HeatTermLin
 
-theorem gs_sub_fn {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a b : Γ(X, U)) :
-    gs r z U (a - b) = gs r z U a - gs r z U b := by simp only [gs_eq r z U h, map_sub]
-
 theorem sval_sub_smul {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (c : Γ(Y, ⊤)) (s t : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
     sval (s - c • t) r z J = sval s r z J - gs r z ⊤ c * sval t r z J := by
   have hm := hJ.mem φ r
   have h1 : sval (s - c • t) r z J = sval s r z J - sval (c • t) r z J :=
-    gs_sub_fn r z _ hm _ _
+    _root_.GlobalTheory.LBGerm.gs_sub r z _ hm _ _
   have h2 : sval (c • t) r z J = gs r z ⊤ c * sval t r z J :=
     (gs_mul r z _ hm _ _).trans (congrArg (· * _) (gs_res r z le_top hm c))
   rw [h1, h2]

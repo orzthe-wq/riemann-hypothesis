@@ -1,9 +1,8 @@
 module
 
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.InstAddCommGroup
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CxPairing
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NatTransUpToSqPullbackStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TotalComplexFlipIsomorphismStatement
-import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -23,7 +22,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -31,7 +29,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,11 +41,159 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NatTransUpToSqPullback, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TotalComplexFlipIsomorphism, Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DcColSurj
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NatTransUpToSqPullback =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NatTransUpToSqPullback", "h": "module\n\npublic import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.InstAddCommGroup\npublic import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option backward.isDefEq.respectTransparency false
+open CategoryTheory Opposite CrystallineSemistableComparison CrystallineSemistableComparison.CH
+universe w w' w'' t t' v u v' u' v'' u''
+
+namespace GlobalTheory.CompanionTheory.CoefUpTo
+
+theorem coef_upTo : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
+    {F F' : C ⥤ ModuleCat.{w} R} (α : F ⟶ F') (s : R), (∀ T, UpTo s (α.app T).hom) →
+    ∀ n, UpTo (s ^ 2) ((Mor.ofNatTrans α).pull n) := by
+  intro R _ C _ F F' α s h n
+  have inj : ∀ k (f : Cn F k), (Mor.ofNatTrans α).pullC k f = 0 → s • f = 0 := fun k f hf =>
+    funext fun c => (h _).1 (f c) (congrFun hf c)
+  have surj : ∀ k (g : Cn F' k), ∃ f : Cn F k, (Mor.ofNatTrans α).pullC k f = s • g := fun k g => by
+    choose f hf using fun c : ComposableArrows C k => (h (c.obj (Fin.last k))).2 (g c)
+    exact ⟨f, funext hf⟩
+  refine ⟨fun x hx => ?_, fun y => ?_⟩
+  · obtain ⟨a, ha, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj (cx F) n).1 x
+    have hz : (cx F').d n ((Mor.ofNatTrans α).pullC n a) = 0 := by
+      have ha' : d F n a = 0 := ha
+      change d F' n _ = 0
+      rw [Mor.d_pullC, ha', map_zero]
+    have hx' : (cx F').cls ((Mor.ofNatTrans α).pullC n a) hz = 0 := hx
+    rw [(CrystallineSemistableComparison.P.cls_surj (cx F') n).2.1] at hx'
+    have hd : (cx F).d n ((s ^ 2) • a) = 0 := by rw [map_smul, ha, smul_zero]
+    rw [← (CrystallineSemistableComparison.P.cls_surj (cx F) n).2.2.2.2 (s ^ 2) a ha hd, (CrystallineSemistableComparison.P.cls_surj (cx F) n).2.1]
+    cases n with
+    | zero =>
+      have h0 : (Mor.ofNatTrans α).pullC 0 a = 0 := hx'
+      have h1 : (s ^ 2) • a = 0 := by rw [pow_two, mul_smul, inj 0 a h0, smul_zero]
+      rw [h1]
+      exact Submodule.zero_mem _
+    | succ n =>
+      obtain ⟨g', hg'⟩ := hx'
+      have hg'' : d F' n g' = (Mor.ofNatTrans α).pullC (n + 1) a := hg'
+      obtain ⟨g, hg⟩ := surj n g'
+      have h0 : (Mor.ofNatTrans α).pullC (n + 1) (s • a - d F n g) = 0 := by
+        rw [map_sub, ← Mor.d_pullC, hg, map_smul, map_smul, hg'']
+        simp
+      have h1 := inj _ _ h0
+      rw [smul_sub, sub_eq_zero] at h1
+      refine ⟨s • g, ?_⟩
+      change d F n (s • g) = (s ^ 2) • a
+      rw [map_smul, ← h1, pow_two, mul_smul]
+  · obtain ⟨b, hb, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj (cx F') n).1 y
+    have hb' : d F' n b = 0 := hb
+    obtain ⟨f, hf⟩ := surj n b
+    have h0 : (Mor.ofNatTrans α).pullC (n + 1) (d F n f) = 0 := by
+      rw [← Mor.d_pullC, hf, map_smul, hb', smul_zero]
+    have h1 : d F n (s • f) = 0 := by rw [map_smul]; exact inj _ _ h0
+    have hd : (cx F').d n ((s ^ 2) • b) = 0 := by rw [map_smul, hb, smul_zero]
+    have e : (Mor.ofNatTrans α).pullC n (s • f) = (s ^ 2) • b := by
+      rw [map_smul, hf, pow_two, mul_smul]
+    refine ⟨(cx F).cls (s • f) h1, ?_⟩
+    rw [← (CrystallineSemistableComparison.P.cls_surj (cx F') n).2.2.2.2 (s ^ 2) b hb hd]
+    change (cx F').cls ((Mor.ofNatTrans α).pullC n (s • f)) _ = _
+    simp only [e]
+
+end GlobalTheory.CompanionTheory.CoefUpTo
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NatTransUpToSqPullback =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TotalComplexFlipIsomorphism =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TotalComplexFlipIsomorphism", "h": "module\n\npublic import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CxPairing\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option backward.isDefEq.respectTransparency false
+open CategoryTheory Opposite CrystallineSemistableComparison CrystallineSemistableComparison.CH
+universe w w' w'' t t' v u v' u' v'' u''
+
+namespace GlobalTheory.CompanionTheory.DCFlip
+
+variable {R : Type} [CommRing R]
+
+def sw (K : DCx.{w} R) (x : ∀ p q, K.X p q) : ∀ q p, K.flip.X q p :=
+  fun q p => (-1 : ℤ) ^ (p * q) • x p q
+
+theorem sw_apply (K : DCx.{w} R) (x : ∀ p q, K.X p q) (q p : ℕ) :
+    sw K x q p = (-1 : ℤ) ^ (p * q) • x p q := rfl
+
+theorem neg_one_pow_eq_of_even {m n : ℕ} (h : Even (m + n)) : (-1 : ℤ) ^ m = (-1 : ℤ) ^ n := by
+  have hm : (-1 : ℤ) ^ m * (-1 : ℤ) ^ n = 1 := by rw [← pow_add]; exact h.neg_one_pow
+  have hn : (-1 : ℤ) ^ n * (-1 : ℤ) ^ n = 1 := by rw [← mul_pow]; simp
+  exact mul_right_cancel₀ (pow_ne_zero n (by norm_num : (-1 : ℤ) ≠ 0)) (hm.trans hn.symm)
+
+theorem sign_smul_sign_smul {M : Type w} [AddCommGroup M] (k : ℕ) (z : M) :
+    (-1 : ℤ) ^ k • (-1 : ℤ) ^ k • z = z := by
+  rw [smul_smul, ← mul_pow]; simp
+
+theorem D_sw (K : DCx.{w} R) (x : ∀ p q, K.X p q) : K.flip.D (sw K x) = sw K (K.D x) := by
+  funext a b
+  rcases a with _ | a <;> rcases b with _ | b
+  · simp [DCx.D_apply, DCx.Dh, DCx.Dv, sw_apply]
+  · simp [DCx.D_apply, DCx.Dh, DCx.Dv, sw_apply]
+  · simp [DCx.D_apply, DCx.Dh, DCx.Dv, sw_apply]
+  · have e1 : (-1 : ℤ) ^ ((b + 1) * a) = (-1 : ℤ) ^ ((b + 1) * (a + 1) + (b + 1)) :=
+      neg_one_pow_eq_of_even ⟨(b + 1) * a + (b + 1), by ring⟩
+    have e2 : (-1 : ℤ) ^ (a + 1 + b * (a + 1)) = (-1 : ℤ) ^ ((b + 1) * (a + 1)) := by
+      congr 1; ring
+    simp only [DCx.D_apply, DCx.Dh, DCx.Dv, sw_apply, map_zsmul, smul_add, smul_smul, ← pow_add]
+    rw [e1, e2]
+    exact add_comm _ _
+
+def swHom (K : DCx.{w} R) : Cx.Hom K.tot K.flip.tot (RingHom.id R) where
+  f n :=
+    { toFun := fun x => ⟨sw K x.1, fun q p h => by
+        change (-1 : ℤ) ^ (p * q) • x.1 p q = 0
+        rw [x.2 p q (by omega), smul_zero]⟩
+      map_add' := fun x y => Subtype.ext (funext fun q => funext fun p =>
+        smul_add ((-1 : ℤ) ^ (p * q)) (x.1 p q) (y.1 p q))
+      map_smul' := fun c x => Subtype.ext (funext fun q => funext fun p =>
+        smul_comm ((-1 : ℤ) ^ (p * q)) c (x.1 p q)) }
+  comm n x := Subtype.ext (D_sw K x.1)
+
+theorem flip_tot : ∀ {R : Type} [CommRing R] (K : DCx.{w} R), ∃ φ : Cx.Hom K.tot K.flip.tot (RingHom.id R), (∀ n, Function.Bijective (φ.f n)) ∧ ∀ n (x : K.tot.X n) p q, (φ.f n x).1 q p = (-1 : ℤ) ^ (p * q) • x.1 p q := by
+  intro R _ K
+  refine ⟨swHom K, fun n => ⟨fun x y h => ?_, fun y => ?_⟩, fun n x p q => rfl⟩
+  · refine Subtype.ext (funext fun p => funext fun q => ?_)
+    have h' : (-1 : ℤ) ^ (p * q) • x.1 p q = (-1 : ℤ) ^ (p * q) • y.1 p q :=
+      congrFun (congrFun (congrArg Subtype.val h) q) p
+    have h'' := congrArg (fun z => (-1 : ℤ) ^ (p * q) • z) h'
+    simpa only [sign_smul_sign_smul] using h''
+  · refine ⟨⟨fun p q => (-1 : ℤ) ^ (p * q) • y.1 q p, fun p q h => ?_⟩, ?_⟩
+    · change (-1 : ℤ) ^ (p * q) • y.1 q p = 0
+      rw [y.2 q p (by omega), smul_zero]
+    · refine Subtype.ext (funext fun q => funext fun p => ?_)
+      exact sign_smul_sign_smul (p * q) (y.1 q p)
+
+end GlobalTheory.CompanionTheory.DCFlip
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TotalComplexFlipIsomorphism =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DcColSurj =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DcColSurj", "h": "module\n\npublic import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.CxPairing\npublic import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.InstAddCommGroup\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NatTransUpToSqPullback\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TotalComplexFlipIsomorphism\nimport Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
@@ -237,7 +382,7 @@ theorem CrystallineSemistableComparison.P.dc_col_inj : ∀ {R : Type} [CommRing 
     rw [map_smul, pow_two, mul_smul, h2, smul_smul, smul_smul]
     congr 1; ring
 
-theorem CrystallineSemistableComparison.P.dc_flip : ∀ {R : Type} [CommRing R] (K : DCx.{w} R), ∃ φ : Cx.Hom K.tot K.flip.tot (RingHom.id R), (∀ n, Function.Bijective (φ.f n)) ∧ ∀ n (x : K.tot.X n) p q, (φ.f n x).1 q p = (-1 : ℤ) ^ (p * q) • x.1 p q := GlobalTheory.T.total_complex_flip_isomorphism
+theorem CrystallineSemistableComparison.P.dc_flip : ∀ {R : Type} [CommRing R] (K : DCx.{w} R), ∃ φ : Cx.Hom K.tot K.flip.tot (RingHom.id R), (∀ n, Function.Bijective (φ.f n)) ∧ ∀ n (x : K.tot.X n) p q, (φ.f n x).1 q p = (-1 : ℤ) ^ (p * q) • x.1 p q := _root_.GlobalTheory.CompanionTheory.DCFlip.flip_tot
 
 theorem CrystallineSemistableComparison.P.dc_col : ∀ {R : Type} [CommRing R] {A : Cx.{w'} R} {K : DCx.{w} R} (e : DCx.AugCol A K) (s : R), (∀ p, (K.col p).ResUpTo s (e.η p)) → ∀ n, UpTo (s ^ (n + 2)) (e.edge.mapH n) := by
   intro R _ A K e s hres n
@@ -248,7 +393,7 @@ theorem CrystallineSemistableComparison.P.dc_row : ∀ {R : Type} [CommRing R] {
   intro R _ A K e s hres n
   let e' : DCx.AugCol A K.flip := ⟨e.ε, e.hε, e.comm⟩
   have hc := P.dc_col e' s (fun p => hres p) n
-  obtain ⟨φ, hbij, hφ⟩ := P.dc_flip K
+  obtain ⟨φ, hbij, hφ⟩ := _root_.GlobalTheory.CompanionTheory.DCFlip.flip_tot K
   have heq : (e.edge.comp φ : Cx.Hom A K.flip.tot (RingHom.id R)) = e'.edge := by
     apply Auxfb.hom_ext
     funext m
@@ -269,4 +414,7 @@ theorem CrystallineSemistableComparison.P.dc_row : ∀ {R : Type} [CommRing R] {
   have := (P.upTo_alg (e.edge.mapH n) (φ.mapH n) 1 (s ^ (n + 2))).2.2.1 hg (hcomp ▸ hc)
   rwa [one_mul] at this
 
-theorem CrystallineSemistableComparison.P.coef_upTo : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F F' : C ⥤ ModuleCat.{w} R} (α : F ⟶ F') (s : R), (∀ T, UpTo s (α.app T).hom) → ∀ n, UpTo (s ^ 2) ((Mor.ofNatTrans α).pull n) := GlobalTheory.T.natTrans_upTo_sq_pullback
+theorem CrystallineSemistableComparison.P.coef_upTo : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F F' : C ⥤ ModuleCat.{w} R} (α : F ⟶ F') (s : R), (∀ T, UpTo s (α.app T).hom) → ∀ n, UpTo (s ^ 2) ((Mor.ofNatTrans α).pull n) := _root_.GlobalTheory.CompanionTheory.CoefUpTo.coef_upTo
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.DcColSurj =====

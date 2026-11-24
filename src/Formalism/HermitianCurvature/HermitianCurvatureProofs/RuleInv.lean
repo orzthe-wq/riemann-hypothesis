@@ -63,7 +63,7 @@ theorem comm_mat_prod (x : A) :
       ∀ i j, Commute x (l.prod i j)
   | [], _ => by
       intro i j
-      by_cases h : i = j <;> simp [Matrix.one_apply, h]
+      by_cases h : i = j <;> simp [h]
   | M :: l, h => by
       intro i j
       rw [List.prod_cons, Matrix.mul_apply]
@@ -120,8 +120,7 @@ theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_comm_Tprod {x : A} (hp 
   obtain ⟨l, rfl⟩ := List.mem_ofFn.mp (List.mem_reverse.mp hM)
   intro i j
   fin_cases i <;> fin_cases j <;>
-    simp [LevelData.Tl, (hp l).add_left, Algebra.commutes, hc l, hci l, Commute.neg_right,
-      Commute.add_right, Commute.zero_right]
+    simp [LevelData.Tl, hc l, hci l, Commute.zero_right]
   exact Commute.add_right (Algebra.commute_algebraMap_right Y x) (hp l)
 
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_comm_Tvprod {x : A} (hp : ∀ l, Commute x (L.pb l)) (hc : ∀ l, Commute x (L.cb l))
@@ -283,4 +282,3 @@ theorem ruleInv : RuleInv := by
 
 end Formalism.FourierDecayAlt.R.PInv
 
-theorem Formalism.FourierDecayAlt.P.inverseCommutators : Formalism.FourierDecayAlt.R.RuleInv := Formalism.FourierDecayAlt.R.PInv.ruleInv

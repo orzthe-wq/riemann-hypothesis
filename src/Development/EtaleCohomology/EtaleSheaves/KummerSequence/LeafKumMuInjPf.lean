@@ -93,7 +93,7 @@ theorem kerGen_of (hG : GmSep) (hA : CycPow) (hE : EmptySec) : KerGen := by
       unfold ofRings.sec
       have ex : (⟨Additive.ofMul (u ^ c)⟩ : ↑((Scheme.Γ ⋙ unitsF).obj (op V))) =
           c • (⟨Additive.ofMul u⟩ : ↑((Scheme.Γ ⋙ unitsF).obj (op V))) := by
-        first | rfl | (apply ULift.ext; simp [ofMul_pow]) | (apply ULift.ext; rfl)
+        first | rfl
       erw [ex]
       exact map_nsmul _ _ _
     rw [e]
@@ -123,7 +123,6 @@ theorem LeafKumMuInj_of (hL : TwLocGen) (hG : GmSep) (hA : CycPow) (hE : EmptySe
       simp only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at this
       change (κ.hom.app (op V)).hom (((restr (Int.castRingHom (ZMod q))).obj (tw q 1)).obj.map g.op |>.hom y) = 0
       rw [this]
-      change (Gm.obj.map g.op).hom ((κ.hom.app (op U)).hom y) = 0
       rw [hy, map_zero]
     change Sec.res (F := tw q 1) g y = 0
     change Sec.map κ (U := V) (Sec.res (F := tw q 1) g y) = 0 at hn

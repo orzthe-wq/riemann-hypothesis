@@ -150,7 +150,7 @@ theorem PT.prod (ε Y : ℂ) (l : List (A × A × A)) :
     refine ⟨((hA.add hB).add (hC.add hD)).congr (fun s => ?_) ?_, hE.congr (fun s => ?_) ?_⟩
     · simp only [List.map_cons, List.prod_cons, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply,
         Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val',
-        Matrix.cons_val_fin_one, Matrix.head_cons, Matrix.head_fin_const]
+        Matrix.cons_val_fin_one]
       rw [Algebra.smul_def, map_add (f := _), mul_comm ε s, map_mul]
       noncomm_ring
     · simp [pow_succ', map_mul]
@@ -289,7 +289,7 @@ theorem basicLift : BasicLift := by
       omega
     have t4 := hS.mul (hS.mul (hS.mul hDb hgI) hx1) t3
     refine hS.mono (by simp) ?_ t4
-    simp only [zero_add, add_zero, Nat.mul_zero]
+    simp only [add_zero, Nat.mul_zero]
     nlinarith
   · rw [ha2]
     have t1 := hS.mul hbM' hDrb
@@ -306,7 +306,7 @@ theorem basicLift : BasicLift := by
     have t5 := hS.smul (-1 : ℂ) t4
     rw [neg_one_smul] at t5
     refine hS.mono (by simp) ?_ t5
-    simp only [zero_add, add_zero, Nat.mul_zero]
+    simp only [add_zero, Nat.mul_zero]
     nlinarith
 
 end Formalism.FourierDecayAlt.TL

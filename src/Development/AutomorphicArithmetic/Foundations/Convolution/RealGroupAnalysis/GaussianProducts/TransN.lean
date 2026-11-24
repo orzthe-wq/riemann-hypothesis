@@ -53,10 +53,6 @@ private theorem nu_nE {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
     exact Units.ext (nU (D.mkE (u 0) (u 1))).2
   simp only [nu, map_mul, hd, one_mul]
 
-private theorem cD_unit {F : Type} [Field F] [NumberField F] (g : G1 F) : cD (1 : (A F)ˣ) g = g := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [cD]
-
 private theorem om_L {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E] {D : Dat F E} (W : Weil D)
     (u : Fin 2 → A F) (h : GL (Fin 2) (A E)) (φ : S4 F) (g : G1 F) :
@@ -67,7 +63,7 @@ private theorem om_L {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     rw [this]
     simp [nu]
   have hc := W.comm (nE D u) g
-  rw [hn, cD_unit] at hc
+  rw [hn, _root_.UpperTheory.ConvolutionTheory.R2.M.cD_one] at hc
   rw [map_mul, Module.End.mul_apply]
   exact (LinearMap.congr_fun hc (W.L h φ)).symm
 

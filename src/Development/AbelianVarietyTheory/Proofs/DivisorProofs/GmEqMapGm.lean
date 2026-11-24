@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenOfRigid
 
 @[expose] public section
 
@@ -62,14 +63,6 @@ def FrameCarried {X : Scheme.{0}} (L : LB X) (W : X.Opens) (T : ∀ k, Γ(X, W �
   ∀ (z : X) (j k : L.ι), z ∈ W → f z ∈ W → z ∈ L.U k → f z ∈ L.U j →
     gm f z (W ⊓ L.U j) (T j) = gw w (𝟙 X) z j k * gm (𝟙 X) z (W ⊓ L.U k) (T k)
 
-theorem gm_eq_map_gm {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a : Γ(X, U)ˣ) :
-    gm f y U a = Units.map (f.stalkMap y).hom.toMonoidHom (gm (𝟙 X) (f y) U a) := by
-  apply Units.ext
-  rw [gm_val f y U h, Units.coe_map, gm_val (𝟙 X) (f y) U h]
-  have := congrArg (fun q => q.hom a.val) (f.germ_stalkMap U y h)
-  simp only [CommRingCat.hom_comp, RingHom.comp_apply] at this
-  exact this.symm
-
 end GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
@@ -86,9 +79,9 @@ theorem FrameCarried.ratio_fixed {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {W W'
   have hfx : f x ∈ O := h hx
   obtain ⟨j, hj⟩ := exists_chart hL (f x)
   have key : gm f x O r = gm (𝟙 X) x O r := by
-    rw [gm_eq_map_gm f x O hfx, hr (f x) j hfx hj, map_mul, map_inv,
-      ← gm_eq_map_gm f x (W' ⊓ L.U j) (show f x ∈ W' ⊓ L.U j from ⟨hOW' hfx, hj⟩),
-      ← gm_eq_map_gm f x (W ⊓ L.U j) (show f x ∈ W ⊓ L.U j from ⟨hOW hfx, hj⟩),
+    rw [_root_.GlobalTheory.RigidTriv.gm_stalk f x O hfx, hr (f x) j hfx hj, map_mul, map_inv,
+      ← _root_.GlobalTheory.RigidTriv.gm_stalk f x (W' ⊓ L.U j) (show f x ∈ W' ⊓ L.U j from ⟨hOW' hfx, hj⟩),
+      ← _root_.GlobalTheory.RigidTriv.gm_stalk f x (W ⊓ L.U j) (show f x ∈ W ⊓ L.U j from ⟨hOW hfx, hj⟩),
       hT' x j k (hOW' hx) (hOW' hfx) hk hj, hT x j k (hOW hx) (hOW hfx) hk hj, hr x k hx hk, _root_.mul_inv,
       _root_.mul_mul_mul_comm, mul_inv_cancel, _root_.one_mul]
   have e1 := congrArg Units.val key

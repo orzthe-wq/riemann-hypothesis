@@ -82,7 +82,7 @@ theorem etale_of_adjoin_root_of_unity {R B : Type} [CommRing R] [CommRing B] [Is
   have hd : IsUnit (aeval x (derivative (minpoly R x))) := by
     have h2 := congrArg (fun p => aeval x (derivative p)) hg
     simp only [derivative_mul, map_add (f := _), map_mul, minpoly.aeval, zero_mul, add_zero, derivative_sub,
-      derivative_X_pow, derivative_C, sub_zero, aeval_C, map_pow, aeval_X, map_natCast] at h2
+      derivative_X_pow, derivative_C, sub_zero, map_pow, aeval_X, map_natCast] at h2
     have hxu : IsUnit x := IsUnit.of_pow_eq_one h1 hn.ne'
     exact isUnit_of_mul_isUnit_left (h2 ▸ hu.mul (hxu.pow _))
   have het : Algebra.Etale R (AdjoinRoot (minpoly R x)) := by

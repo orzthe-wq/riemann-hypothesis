@@ -114,7 +114,7 @@ theorem coreLC_of' (hBi : Bicomm) (hEL : EquivLift) (hRep : RepB) (hFF : FormFac
     have h2 : ∀ i j, ∀ f ∈ box ε (R : Set (Fin m → ℕ)), t' (KopL ε i j f) = KopL ε i j (t' f) := by
       intro i j f hf
       have e := congrArg Subtype.val (LinearMap.congr_fun (ht (i, j)) ⟨f, hf⟩)
-      simp only [Module.End.mul_apply, LinearMap.restrict_apply, LinearMap.restrict_coe_apply, T] at e
+      simp only [Module.End.mul_apply, LinearMap.restrict_apply, T] at e
       rw [ht' _ (hKV (i, j) f hf), ht' f hf]
       exact e
     obtain ⟨w, hw, hwt⟩ := hEL m n ε c hc R t' h1 h2

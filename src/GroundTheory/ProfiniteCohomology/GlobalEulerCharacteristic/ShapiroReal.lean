@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.Tactic
 public import GroundTheory.ProfiniteCohomology.RealPlaces.VanishingMackey
 public import GroundTheory.ProfiniteCohomology.GlobalEulerCharacteristic.ShapiroCoind
 import GroundTheory.ProfiniteCohomology.MackeyFormula

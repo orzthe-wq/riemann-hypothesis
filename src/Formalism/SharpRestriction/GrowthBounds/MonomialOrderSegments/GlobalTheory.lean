@@ -100,9 +100,9 @@ theorem output_exponent_same_block {ζ ζ' : D.EM} (hb : D.SameBlockAlt ζ ζ') 
 theorem ldeg_eIn (ζ : D.EM) (i : D.ML) : ldeg (eIn D.outP ζ) i = if D.outP i then 0 else ldeg ζ i := by
   unfold ldeg eIn
   split_ifs with h
-  · simp [Finsupp.filter_apply, h]
+  · simp [h]
   · have h' : D.outB i = false := by simpa [outP] using h
-    simp [Finsupp.filter_apply, h']
+    simp [h']
 
 theorem tangent_exponent_same_block {ζ ζ' : D.EM} (hb : D.SameBlockAlt ζ ζ') : D.tpE ζ' = D.tpE ζ := by
   unfold SameBlockAlt at hb
@@ -128,7 +128,6 @@ theorem kapL_dUp (p : ℕ) : kapL p D.r D.dUp = kapL p D.r D.dO := by
   first
     | (simp [Fintype.sum_sum_type]; done)
     | (simp [Fintype.sum_sum_type]; rfl)
-    | (simp only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr]; simp; rfl)
 
 theorem ldeg_eIn_le {p : ℕ} (hp : 0 < p) {ζ : D.EM} (h : D.GoodE p ζ) (i : D.ML) :
     ldeg (eIn D.outP ζ) i ≤ D.dUp i := by

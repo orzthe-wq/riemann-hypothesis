@@ -90,7 +90,7 @@ theorem even_rkV_iff (D : D7) (i j : ℕ) : Even (rkV D i j) ↔ Odd (i + j) := 
   have e : rkV D i j = 2 * (u + j * c + i * (u + 3)) + (1 + j + i) := by
     unfold rkV sLen; rw [hr, hc]; ring
   rw [e, Nat.even_add, Nat.odd_add]
-  simp only [even_two, Even.mul_right, true_iff, Nat.even_add, Nat.odd_add]
+  simp only [even_two, Even.mul_right, true_iff, Nat.even_add]
   simp only [Nat.odd_iff, Nat.even_iff]; omega
 
 theorem isHCParam_parV : ∀ (D : D7), HostHyp D → ∀ (i j : ℕ), 1 ≤ i → i ≤ D.R.m → j ≤ D.R.m → ∀ (τ : D.what₂.Tau) (n : ℕ) (lam : Fin n → ℝ) (ε : Fin n → Bool), n = GlobalTheory.Grid.rkV D i j → IsEnum (GlobalTheory.Grid.parV D i j τ) lam ε → Formalism.QuantumDeterminants.IsHCParam lam := by

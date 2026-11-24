@@ -135,7 +135,7 @@ def D : LAlg R₀ := { carrier := DN R, loc := isLocal R }
 
 def dualPair : DualPair R where
   D := D R
-  π := ⟨evAlg R, TowerExample.isLocalHom_of_surj _ (ev_surj R)⟩
+  π := ⟨evAlg R, IsLocalHom.of_surjective _ (ev_surj R)⟩
   σ := ⟨IsScalarTower.toAlgHom R₀ (R : Type) (DN R),
     ⟨fun r hr => by
       have h := hr.map (ev R)

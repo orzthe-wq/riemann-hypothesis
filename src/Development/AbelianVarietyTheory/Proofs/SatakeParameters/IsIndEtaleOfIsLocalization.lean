@@ -201,7 +201,6 @@ def isColimitToLoc [IsFiltered J] (hs : IsColimit (Cocone.mk _ s)) :
       ⟨IsFiltered.max j k, (D.map v).hom m', by rw [app_map_apply, hm']; exact m.2⟩
     let p : Submonoid.powers a.e := ⟨a.e, Submonoid.mem_powers _⟩
     refine ⟨a, IsLocalization.mk' (Localization.Away a.e) ((D.map u).hom y') p, ?_⟩
-    change _ = leg S' a _
     rw [IsLocalization.mk'_eq_iff_eq_mul]
     have h1 := congrArg (leg S' a) (IsLocalization.mk'_spec (Localization.Away a.e)
       ((D.map u).hom y') p)
@@ -282,7 +281,6 @@ theorem isIndEtale_of_isLocalization : ∀ (R S S' : Type) [CommRing R] [CommRin
     change (s.app a.j).hom ((t.app a.j).hom x) = algebraMap R S x at h
     change leg S' a (algebraMap _ (Localization.Away a.e) ((t.app a.j).hom x)) = algebraMap R S' x
     rw [leg_algebraMap]
-    change algebraMap S S' ((s.app a.j).hom ((t.app a.j).hom x)) = _
     rw [h, ← IsScalarTower.algebraMap_apply]
 
 end GlobalTheory.IndEtaleLoc

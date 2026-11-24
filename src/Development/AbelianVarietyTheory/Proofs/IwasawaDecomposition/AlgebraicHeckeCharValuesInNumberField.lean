@@ -1,8 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRationalUnitaryDeterminantMapRationalUnitaryTo
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterUnramifiedAeAndExistsLevelStatement
+public import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterUnramifiedAeAndExistsLevel
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalIdeleSndSelf
+public import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -13,7 +15,6 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
@@ -115,7 +116,7 @@ theorem prod_rule_two (χ : HChar L) (S : Finset (HeightOneSpectrum (𝓞 L))) (
 
 theorem locK_pow (χ : HChar L) (w : HeightOneSpectrum (𝓞 L)) :
     ∃ N : ℕ, 0 < N ∧ ∀ (a : 𝓞 L) (ha : a ≠ 0), a ∉ w.asIdeal → χ.locK w (uOf a ha) ^ N = 1 := by
-  obtain ⟨n, hn⟩ := (GlobalTheory.T.heckeCharacter_unramified_ae_and_exists_level L χ).2 w
+  obtain ⟨n, hn⟩ := (_root_.GlobalTheory.Mem.UnrAe.unr_ae_and_level L χ).2 w
   have : Finite (𝓞 L ⧸ w.asIdeal ^ n) := Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero _ w.ne_bot)
   refine ⟨Nat.card (𝓞 L ⧸ w.asIdeal ^ n)ˣ, Nat.card_pos, fun a ha hw => ?_⟩
   have hco : IsCoprime (Ideal.span {a}) (w.asIdeal ^ n) := by
@@ -268,7 +269,7 @@ theorem exists_span_eq {v v' : HeightOneSpectrum (𝓞 L)} (h : clsOf v = clsOf 
 
 theorem values_in_numberField : ∀ (F L : Type) [Field F] [NumberField F] [Field L] [NumberField L] [Algebra F L] (c : L ≃ₐ[F] L) (I : Type) [Fintype I] (φ : I → L →+* ℂ), CMData F c φ → ∀ (χ : HChar L) (n : I → ℤ) (r : ℤ), χ.HasInf φ n → (∀ i, Even (n i - r)) → ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ χ.ValuesIn ((r : ℝ) / 2) M.val.toRingHom := by
   intro F L _ _ _ _ _ c I _ φ hcm χ n r hinf hev
-  set S := (GlobalTheory.T.heckeCharacter_unramified_ae_and_exists_level L χ).1.toFinset with hSdef
+  set S := (_root_.GlobalTheory.Mem.UnrAe.unr_ae_and_level L χ).1.toFinset with hSdef
   have hS : ∀ v, v ∉ S ↔ χ.UnrAt v := fun v => by simp [hSdef]
   choose N hN hN' using locK_pow χ
   obtain ⟨M, hMfin, hM, hM'⟩ := exists_base_field (L := L) (fun w : S => N w) (fun w => hN w)

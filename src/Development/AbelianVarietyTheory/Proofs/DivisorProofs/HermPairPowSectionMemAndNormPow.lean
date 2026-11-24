@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CharZeroFunctionField
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMulStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,7 +61,7 @@ theorem pow_mem_H_and_nu_pow : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsI
     rw [map_one, ev_one mem_ptsIn_top] at e
     simp [Pair.nu, Pair.loc, e]
   | succ n ih =>
-    obtain ⟨h1, h2⟩ := GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P _ _ a b _ f ih.1 hf
+    obtain ⟨h1, h2⟩ := _root_.GlobalTheory.VolBr.NuMul.mul_mem_H_and_nu_mul k X p P _ _ a b _ f ih.1 hf
     have ea : ((n + 1 : ℕ) : ℤ) * a = n * a + a := by push_cast; ring
     have eb : ((n + 1 : ℕ) : ℤ) * b = n * b + b := by push_cast; ring
     rw [ea, eb, pow_succ]

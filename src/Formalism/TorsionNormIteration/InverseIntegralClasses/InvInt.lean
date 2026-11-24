@@ -121,9 +121,7 @@ theorem integral_one : IntegralMv (1 : MvPowerSeries ι K) := by
 theorem integral_pow {A : MvPowerSeries ι K} (hA : IntegralMv A) (n : ℕ) :
     IntegralMv (A ^ n) := by
   induction n with
-  | zero =>
-    rw [pow_zero]
-    exact integral_one
+  | zero => simpa using integral_one
   | succ n ih =>
     rw [pow_succ]
     exact integral_mul ih hA
@@ -212,12 +210,9 @@ theorem key [Finite ι] (f : PowerSeries K) (h0 : constantCoeff f = 0) (h1 : coe
   have hd : Low N (a - b) := low_of_agree hab
   have hs : Low 1 (a + b) := low_one (by simp [ha0, hb0])
   have hb2 : Low 2 (b ^ 2) := by
-    have := (low_one hb0).mul (low_one hb0)
-    rw [pow_two]
-    exact this
+    simpa [pow_two] using (low_one hb0).mul (low_one hb0)
   refine Low.add ?_ ?_
-  · have := (hd.mul hs).mul (low_zero ((tail2 f).subst a))
-    simpa using this
+  · simpa using (hd.mul hs).mul (low_zero ((tail2 f).subst a))
   · exact (hb2.mul (low_of_agree (agree_psubst _ ha0 hb0 hab))).mono (by omega)
 
 end Inv
@@ -291,9 +286,6 @@ theorem Formalism.LT.InvIntP.IntegralSubst_proof : Formalism.LT.IntegralSubst.{u
   intro K _ _ ι f P hf hP0 hP
   exact Formalism.LT.InvIntP.integralSubst f P hf hP0 hP
 
-theorem Formalism.LT.InvIntegralOfClass_proof : Formalism.LT.InvIntegralOfClass.{u, v} := by
-  exact Formalism.LT.InvIntP.InvIntegralOfClass_proof
-theorem Formalism.LT.FunEqLowCoeff_proof : Formalism.LT.FunEqLowCoeff.{u, v} := by
-  exact Formalism.LT.InvIntP.FunEqLowCoeff_proof
-theorem Formalism.LT.IntegralSubst_proof : Formalism.LT.IntegralSubst.{u, v} := by
-  exact Formalism.LT.InvIntP.IntegralSubst_proof
+alias Formalism.LT.InvIntegralOfClass_proof := _root_.Formalism.LT.InvIntP.InvIntegralOfClass_proof
+alias Formalism.LT.FunEqLowCoeff_proof := _root_.Formalism.LT.InvIntP.FunEqLowCoeff_proof
+alias Formalism.LT.IntegralSubst_proof := _root_.Formalism.LT.InvIntP.IntegralSubst_proof

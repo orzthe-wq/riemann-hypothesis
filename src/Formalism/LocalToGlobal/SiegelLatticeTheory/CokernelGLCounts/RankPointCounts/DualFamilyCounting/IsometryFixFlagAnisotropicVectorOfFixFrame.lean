@@ -1,9 +1,12 @@
 module
 
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.IdLiftDef
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LTheta
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LadjFrame
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LisoSmulMem
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Saturated
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.StepsR
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.OFDefs
-public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.IdLiftDef
 public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.FiniteRepSetOfOrtho
 public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.UnimodularOfMemGenusOrtho
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SaturatedPf
@@ -14,50 +17,252 @@ public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AutLzFinite
 public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SplitRow
 public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.WittExtensionTheorem
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.TransMemUnipotentIntegral
-public import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeRowsLift
 public import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GenusMassPosOfMassLowerBound
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellDef
 import Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.CuspSpanNormBounds.BridgeRowsLift, Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.IsometryFixFlagAnisotropicVectorOfFixFrame
+
+-- ===== clump member: Formalism.SharpRestriction.CuspSpanNormBounds.BridgeRowsLift =====
+-- clump-header: {"m": "Formalism.SharpRestriction.CuspSpanNormBounds.BridgeRowsLift", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.IdLiftDef\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LTheta\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LadjFrame\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.LisoSmulMem\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellDef\nimport Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.BridgeRowsLift
+
+open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat NumberField Module Formalism.MainNotions.BridgeLemma
+
+variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E}
+
+def rlift_Spl (Λ : Submodule (𝓞 E) S.V) (X : Submodule E S.V) (P P' : S.V →ₗ[E] S.V) : Prop :=
+  LAdj S P P' ∧ (∀ x ∈ X, P x = x) ∧ (∀ y, P y ∈ X) ∧ LInt Λ P ∧ LInt Λ P' ∧ ∀ w y, S.hT (P' w) (P' y) = 0
+
+theorem rlift_spl_of_retr (hcm : Formalism.HermitianLatticesTheory.IsCMUnram E) (Λ : Submodule (𝓞 E) S.V) (X : Submodule E S.V)
+    (huni : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0)
+    (P0 : S.V →ₗ[E] S.V) (hid : ∀ x ∈ X, P0 x = x) (hX : ∀ y, P0 y ∈ X) (hint : LInt Λ P0) :
+    ∃ P P' : S.V →ₗ[E] S.V, rlift_Spl Λ X P P' ∧ ∀ y, (∀ x ∈ X, S.hT x y = 0) → P0 y = 0 → P y = 0 := by
+  obtain ⟨P0', hadj, hint'⟩ := l_adj E S Λ huni P0 hint
+  obtain ⟨θ, hθ⟩ := l_theta E hcm
+  have hbar : star (θ : E) = ((1 - θ : 𝓞 E) : E) := by
+    have : ((1 - θ : 𝓞 E) : E) = 1 - (θ : E) := by simp
+    rw [this]
+    linear_combination hθ
+  have hrev : ∀ x y, S.hT (P0' x) y = S.hT x (P0 y) := by
+    intro x y
+    rw [← S.herm.eq y (P0' x), ← hadj y x, S.herm.eq]
+  have hHX : ∀ y, P0 (P0' y) ∈ X := fun y => hX _
+  have hHH : ∀ x y, S.hT (P0 (P0' x)) y = S.hT x (P0 (P0' y)) := by
+    intro x y
+    rw [hadj, hrev]
+  have hzero' : ∀ y, (∀ x ∈ X, S.hT x y = 0) → P0' y = 0 := by
+    intro y hy
+    refine S.nondeg.2 _ (fun w => ?_)
+    rw [← hadj]
+    exact hy _ (hX w)
+  have hzero : ∀ x ∈ X, P0' x = 0 := fun x hx => hzero' x (fun w hw => hiso w hw x hx)
+  refine ⟨P0 - (θ : E) • (P0 ∘ₗ P0'), P0' - star (θ : E) • (P0 ∘ₗ P0'), ⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩
+  · intro x y
+    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_sub, map_smulₛₗ,
+      smul_eq_mul, starRingEnd_apply, RingHom.id_apply]
+    rw [hadj, hHH]
+  · intro x hx
+    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]
+    rw [hzero x hx, map_zero, smul_zero, sub_zero, hid x hx]
+  · intro y
+    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]
+    exact X.sub_mem (hX y) (X.smul_mem _ (hHX y))
+  · intro l hl
+    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]
+    exact Λ.sub_mem (hint l hl) (liso_smul_mem Λ θ (hint _ (hint' l hl)))
+  · intro l hl
+    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]
+    rw [hbar]
+    exact Λ.sub_mem (hint' l hl) (liso_smul_mem Λ (1 - θ) (hint _ (hint' l hl)))
+  · intro w y
+    have e1 : S.hT (P0' w) (P0' y) = S.hT w (P0 (P0' y)) := hrev _ _
+    have e2 : S.hT (P0' w) (P0 (P0' y)) = S.hT w (P0 (P0' y)) := by
+      rw [hrev, hid _ (hHX y)]
+    have e3 : S.hT (P0 (P0' w)) (P0' y) = S.hT w (P0 (P0' y)) := by
+      rw [← hadj, hid _ (hHX w), hHH]
+    have e4 : S.hT (P0 (P0' w)) (P0 (P0' y)) = 0 := hiso _ (hHX w) _ (hHX y)
+    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_sub, map_smulₛₗ,
+      smul_eq_mul, starRingEnd_apply, star_star, RingHom.id_apply]
+    rw [e1, e2, e3, e4]
+    linear_combination (-(S.hT w (P0 (P0' y)))) * hθ
+  · intro y hy h0
+    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]
+    rw [h0, hzero' y hy, map_zero, smul_zero, sub_zero]
+
+section Spl
+
+variable {Λ : Submodule (𝓞 E) S.V} {X : Submodule E S.V} {P P' : S.V →ₗ[E] S.V}
+
+theorem rlift_P'_perp (h : rlift_Spl Λ X P P') {y : S.V} (hy : ∀ x ∈ X, S.hT x y = 0) : P' y = 0 := by
+  refine S.nondeg.2 _ (fun w => ?_)
+  rw [← h.1]
+  exact hy _ (h.2.2.1 w)
+
+theorem rlift_PP' (h : rlift_Spl Λ X P P') (y : S.V) : P (P' y) = 0 := by
+  refine S.nondeg.1 _ (fun w => ?_)
+  rw [h.1]
+  exact h.2.2.2.2.2 _ _
+
+def rlift_R (P P' : S.V →ₗ[E] S.V) : S.V →ₗ[E] S.V := LinearMap.id - P - P'
+
+theorem rlift_R_apply (y : S.V) : rlift_R P P' y = y - P y - P' y := rfl
+
+theorem rlift_R_perp (h : rlift_Spl Λ X P P') (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0) (y : S.V) :
+    ∀ x ∈ X, S.hT x (rlift_R P P' y) = 0 := by
+  intro x hx
+  rw [rlift_R_apply, map_sub, map_sub, hiso x hx _ (h.2.2.1 y), ← h.1, h.2.1 x hx]
+  ring
+
+theorem rlift_PR (h : rlift_Spl Λ X P P') (y : S.V) : P (rlift_R P P' y) = 0 := by
+  rw [rlift_R_apply, map_sub, map_sub, h.2.1 _ (h.2.2.1 y), rlift_PP' h, sub_self, sub_zero]
+
+theorem rlift_R_X (h : rlift_Spl Λ X P P') (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0) {x : S.V} (hx : x ∈ X) :
+    rlift_R P P' x = 0 := by
+  rw [rlift_R_apply, h.2.1 x hx, rlift_P'_perp h (fun w hw => hiso w hw x hx), sub_self, sub_zero]
+
+theorem rlift_R_of_perp (h : rlift_Spl Λ X P P') {y : S.V} (hy : ∀ x ∈ X, S.hT x y = 0) :
+    rlift_R P P' y = y - P y := by
+  rw [rlift_R_apply, rlift_P'_perp h hy, sub_zero]
+
+theorem rlift_R_int (h : rlift_Spl Λ X P P') {l : S.V} (hl : l ∈ Λ) : rlift_R P P' l ∈ Λ :=
+  Λ.sub_mem (Λ.sub_mem hl (h.2.2.2.1 l hl)) (h.2.2.2.2.1 l hl)
+
+theorem rlift_decomp (y : S.V) : y = P y + rlift_R P P' y + P' y := by
+  rw [rlift_R_apply]; abel
+
+end Spl
+
+theorem rlift_three {X : Submodule E S.V} (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0)
+    {x w y x' w' y' : S.V} (hx : x ∈ X) (hx' : x' ∈ X) (hw : ∀ v ∈ X, S.hT v w = 0) (hw' : ∀ v ∈ X, S.hT v w' = 0)
+    (hyy : S.hT y y' = 0) (hwy : S.hT w y' = 0) (hyw : S.hT y w' = 0) :
+    S.hT (x + w + y) (x' + w' + y') = S.hT x y' + S.hT w w' + S.hT y x' := by
+  simp only [map_add (f := _), LinearMap.add_apply]
+  rw [hiso x hx x' hx', hw' x hx, _root_.Formalism.MainNotions.LatticeGluingRadicals.c_symm0 (hw x' hx'), hyy, hwy, hyw]
+  ring
+
+theorem rlift_main {X : Submodule E S.V} (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0)
+    {Λ₁ Λ₂ : Submodule (𝓞 E) S.V} (hu₁ : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ₁) (hu₂ : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ₂)
+    {P₁ P₁' P₂ P₂' : S.V →ₗ[E] S.V} (h₁ : rlift_Spl Λ₁ X P₁ P₁') (h₂ : rlift_Spl Λ₂ X P₂ P₂')
+    {z : S.V} (hzX : ∀ x ∈ X, S.hT x z = 0) (hz₁ : P₁ z = 0) (hz₂ : P₂ z = 0)
+    (hA : ∀ x ∈ X, x ∈ Λ₁ ↔ x ∈ Λ₂)
+    (hL : ∀ l ∈ Λ₁, (∀ x ∈ X, S.hT x l = 0) → ∃ l₂ ∈ Λ₂, l - l₂ ∈ X) :
+    ∃ n : S.V ≃ₗ[E] S.V, n ∈ Formalism.HermitianLatticesTheory.isom S.hT ∧ (∀ x ∈ X, n x = x) ∧ n z = z ∧
+      (∀ y, (∀ x ∈ X, S.hT x y = 0) → n y - y ∈ X) ∧ Formalism.HermitianLatticesTheory.gmap n Λ₁ = Λ₂ := by
+  set nL : S.V →ₗ[E] S.V := P₁ + rlift_R P₂ P₂' ∘ₗ rlift_R P₁ P₁' + P₂' ∘ₗ P₁' with hnL
+  have hn : ∀ a, nL a = P₁ a + rlift_R P₂ P₂' (rlift_R P₁ P₁' a) + P₂' (P₁' a) := fun a => rfl
+  have hmem : ∀ (Λ : Submodule (𝓞 E) S.V), Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ → ∀ y,
+      y ∈ Λ ↔ ∀ l ∈ Λ, S.hT l y ∈ (1 : Submodule (𝓞 E) E) := by
+    intro Λ hu y
+    conv_lhs => rw [← hu]
+    unfold Formalism.HermitianLatticesTheory.dual Formalism.E.hdual
+    simp only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]
+  have hisom : ∀ a b, S.hT (nL a) (nL b) = S.hT a b := by
+    intro a b
+    have hwa := rlift_R_perp h₁ hiso a
+    have hwb := rlift_R_perp h₁ hiso b
+    have e1 : S.hT (nL a) (nL b) = S.hT (P₁ a) (P₂' (P₁' b)) +
+        S.hT (rlift_R P₂ P₂' (rlift_R P₁ P₁' a)) (rlift_R P₂ P₂' (rlift_R P₁ P₁' b)) + S.hT (P₂' (P₁' a)) (P₁ b) := by
+      rw [hn, hn]
+      refine rlift_three hiso (h₁.2.2.1 a) (h₁.2.2.1 b) (rlift_R_perp h₂ hiso _) (rlift_R_perp h₂ hiso _)
+        (h₂.2.2.2.2.2 _ _) ?_ ?_
+      · rw [← h₂.1, rlift_PR h₂, map_zero, LinearMap.zero_apply]
+      · refine _root_.Formalism.MainNotions.LatticeGluingRadicals.c_symm0 ?_
+        rw [← h₂.1, rlift_PR h₂, map_zero, LinearMap.zero_apply]
+    have e2 : S.hT a b = S.hT (P₁ a) (P₁' b) + S.hT (rlift_R P₁ P₁' a) (rlift_R P₁ P₁' b) + S.hT (P₁' a) (P₁ b) := by
+      conv_lhs => rw [rlift_decomp (P := P₁) (P' := P₁') a, rlift_decomp (P := P₁) (P' := P₁') b]
+      refine rlift_three hiso (h₁.2.2.1 a) (h₁.2.2.1 b) hwa hwb (h₁.2.2.2.2.2 _ _) ?_ ?_
+      · rw [← h₁.1, rlift_PR h₁, map_zero, LinearMap.zero_apply]
+      · refine _root_.Formalism.MainNotions.LatticeGluingRadicals.c_symm0 ?_
+        rw [← h₁.1, rlift_PR h₁, map_zero, LinearMap.zero_apply]
+    have e3 : ∀ x ∈ X, ∀ y, S.hT x (P₂' y) = S.hT x y := by
+      intro x hx y
+      rw [← h₂.1, h₂.2.1 x hx]
+    have e4 : ∀ x ∈ X, ∀ y, S.hT (P₂' y) x = S.hT y x := by
+      intro x hx y
+      rw [← S.herm.eq x (P₂' y), e3 x hx, S.herm.eq]
+    have e5 : S.hT (rlift_R P₂ P₂' (rlift_R P₁ P₁' a)) (rlift_R P₂ P₂' (rlift_R P₁ P₁' b)) =
+        S.hT (rlift_R P₁ P₁' a) (rlift_R P₁ P₁' b) := by
+      rw [rlift_R_of_perp h₂ hwa, rlift_R_of_perp h₂ hwb]
+      simp only [map_sub, LinearMap.sub_apply]
+      rw [hwb _ (h₂.2.2.1 _), _root_.Formalism.MainNotions.LatticeGluingRadicals.c_symm0 (hwa _ (h₂.2.2.1 (rlift_R P₁ P₁' b))), hiso _ (h₂.2.2.1 _) _ (h₂.2.2.1 _)]
+      ring
+    rw [e1, e2, e3 _ (h₁.2.2.1 a), e4 _ (h₁.2.2.1 b), e5]
+  have hinj : Function.Injective nL := by
+    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+    intro a ha
+    refine S.nondeg.1 _ (fun b => ?_)
+    rw [← hisom, ha, map_zero, LinearMap.zero_apply]
+  set n : S.V ≃ₗ[E] S.V := LinearEquiv.ofInjectiveEndo nL hinj with hndef
+  have hnn : ∀ a, n a = nL a := fun a => congrFun (LinearEquiv.coe_ofInjectiveEndo nL hinj) a
+  have hX : ∀ x ∈ X, nL x = x := by
+    intro x hx
+    rw [hn, h₁.2.1 x hx, rlift_R_X h₁ hiso hx, map_zero, rlift_P'_perp h₁ (fun w hw => hiso w hw x hx), map_zero,
+      add_zero, add_zero]
+  have hperp : ∀ y, (∀ x ∈ X, S.hT x y = 0) → nL y = y - P₂ (rlift_R P₁ P₁' y) := by
+    intro y hy
+    rw [hn, rlift_P'_perp h₁ hy, map_zero, add_zero, rlift_R_of_perp h₂ (rlift_R_perp h₁ hiso y), rlift_R_of_perp h₁ hy]
+    abel
+  have hsub : ∀ l ∈ Λ₁, nL l ∈ Λ₂ := by
+    intro l hl
+    rw [hn]
+    refine Λ₂.add_mem (Λ₂.add_mem ?_ ?_) ?_
+    · exact (hA _ (h₁.2.2.1 l)).1 (h₁.2.2.2.1 l hl)
+    · obtain ⟨l₂, hl₂, hx⟩ := hL _ (rlift_R_int h₁ hl) (rlift_R_perp h₁ hiso l)
+      have : rlift_R P₂ P₂' (rlift_R P₁ P₁' l) = rlift_R P₂ P₂' l₂ := by
+        rw [← sub_eq_zero, ← map_sub]
+        exact rlift_R_X h₂ hiso hx
+      rw [this]
+      exact rlift_R_int h₂ hl₂
+    · rw [hmem Λ₂ hu₂]
+      intro l' hl'
+      rw [← h₂.1]
+      exact (hmem Λ₁ hu₁ _).1 (h₁.2.2.2.2.1 l hl) _ ((hA _ (h₂.2.2.1 l')).2 (h₂.2.2.2.1 l' hl'))
+  refine ⟨n, ?_, ?_, ?_, ?_, ?_⟩
+  · intro a b
+    rw [hnn, hnn]
+    exact hisom a b
+  · intro x hx
+    rw [hnn]
+    exact hX x hx
+  · rw [hnn, hperp z hzX, rlift_R_of_perp h₁ hzX, hz₁, sub_zero, hz₂, sub_zero]
+  · intro y hy
+    rw [hnn, hperp y hy, sub_sub_cancel_left]
+    exact X.neg_mem (h₂.2.2.1 _)
+  · ext y
+    unfold Formalism.HermitianLatticesTheory.gmap
+    rw [Submodule.mem_map]
+    constructor
+    · rintro ⟨l, hl, rfl⟩
+      change n l ∈ Λ₂
+      rw [hnn]
+      exact hsub l hl
+    · intro hy
+      refine ⟨n.symm y, ?_, by change n (n.symm y) = y; simp⟩
+      rw [hmem Λ₁ hu₁]
+      intro l hl
+      have : S.hT l (n.symm y) = S.hT (nL l) y := by
+        rw [← hisom, ← hnn (n.symm y), LinearEquiv.apply_symm_apply]
+      rw [this]
+      exact (hmem Λ₂ hu₂ y).1 hy _ (hsub l hl)
+
+end Formalism.MainNotions.BridgeRowsLift
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.CuspSpanNormBounds.BridgeRowsLift =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.IsometryFixFlagAnisotropicVectorOfFixFrame =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.IsometryFixFlagAnisotropicVectorOfFixFrame", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Saturated\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.StepsR\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.OFDefs\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.IdLiftDef\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.FiniteRepSetOfOrtho\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.UnimodularOfMemGenusOrtho\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SaturatedPf\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.IsAdmissibleIntegralBasisChangeOne\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.LocalUnimodularHolds\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.PerpendicularDefinitionHolds\npublic import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AutLzFinite\npublic import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.SplitRow\npublic import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.WittExtensionTheorem\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.TransMemUnipotentIntegral\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeRowsLift\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GenusMassPosOfMassLowerBound\nimport Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open scoped Pointwise
@@ -659,7 +864,7 @@ theorem card_quot (u : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS (Tn u)) (Λ : S
       rw [rho_mk]
       exact (hφβ x _).symm
   have hfin : (autLz D F0 Λ).Finite :=
-    _root_.automorphism_lattice_finite D (D.sp.Y_sig 0) (D.mem u).A.T (D.mem u).A.T_prime.pos F0 Λ hΛ
+    _root_.PI.AutLzFinite.SlopeTestRemainingChoices.autLzFin_main D (D.sp.Y_sig 0) (D.mem u).A.T (D.mem u).A.T_prime.pos F0 Λ hΛ
   haveI := hfin.to_subtype
   exact ⟨Finite.of_injective f hinj, Nat.card_eq_of_bijective f ⟨hinj, hsurj⟩⟩
 
@@ -1229,3 +1434,14 @@ namespace Formalism.L2.SG.Pf.Cnt
 theorem lattice_groupoid_holds : RowsGroupoid := rowsGroupoid_of (mmChar_of local_unimodular_holds)
 
 end Formalism.L2.SG.Pf.Cnt
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.IsometryFixFlagAnisotropicVectorOfFixFrame =====

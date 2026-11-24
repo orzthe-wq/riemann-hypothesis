@@ -2,54 +2,10 @@ module
 
 public import Mathlib.Algebra.Algebra.Subalgebra.Lattice
 public import Mathlib.LinearAlgebra.LinearIndependent.Defs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.LinearAlgebra.LinearIndependent.Basic
 public import Mathlib.RingTheory.Ideal.Span
 
@@ -124,40 +80,7 @@ def lineLat (x : ι → Ω) (d : ℕ) (i : ι) : AddSubgroup Ω :=
 
 variable {o}
 
-theorem mem_lineLat (x : ι → Ω) (d : ℕ) (i : ι) (e : Ω) :
-    e ∈ lineLat o x d i ↔ ∃ a ∈ chartRing o x i, a * x i ^ d = e := by
-  simp [lineLat]
-
 variable (o)
-
-def lineBundle (x : ι → Ω) (d : ℕ) : ChartBundle o x 1 Ω where
-  lat := lineLat o x d
-  stable i a ha e he := by
-    obtain ⟨c, hc, rfl⟩ := (mem_lineLat x d i e).1 he
-    refine (mem_lineLat x d i _).2 ⟨a * c, mul_mem ha hc, ?_⟩
-    rw [smul_eq_mul, mul_assoc]
-  frame i hi := by
-    refine ⟨1, fun _ => 1, fun _ => 1, fun _ => one_mem _, fun _ => one_mem _, by simp, fun _ => ?_⟩
-    simp only [one_pow, one_smul, one_mul, exists_const]
-    refine ⟨fun _ => x i ^ d, ?_, ?_, ?_⟩
-    · rw [linearIndependent_unique_iff]
-      exact pow_ne_zero _ hi
-    · rw [Set.range_const]
-      exact Ideal.span_singleton_eq_top.2 (isUnit_iff_ne_zero.2 (pow_ne_zero _ hi))
-    · intro e
-      rw [mem_lineLat]
-      constructor
-      · rintro ⟨a, ha, rfl⟩
-        exact ⟨fun _ => a, fun _ => ha, by simp⟩
-      · rintro ⟨a, ha, rfl⟩
-        exact ⟨a 0, ha 0, by simp⟩
-  overlap i j hi hj e he := by
-    obtain ⟨a, ha, rfl⟩ := (mem_lineLat x d i e).1 he
-    obtain ⟨m, hm⟩ := exists_pow_mul_mem_chartRing x i j hi ha
-    refine ⟨m, (mem_lineLat x d j _).2 ⟨(x i / x j) ^ m * a * (x i / x j) ^ d,
-      mul_mem hm (pow_mem (div_mem_chartRing x j i) _), ?_⟩⟩
-    rw [smul_eq_mul, div_pow, div_pow]
-    field_simp
 
 end Chart
 

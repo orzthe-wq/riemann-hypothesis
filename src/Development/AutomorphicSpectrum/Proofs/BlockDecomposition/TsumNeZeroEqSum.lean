@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TruncSum
 public import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMeans.MeanVal
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsIntegralMultipleBoundedPlacesStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsIntegralMultipleBoundedPlaces
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,7 +59,7 @@ theorem support_finite (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF :
     (δ : ℝ) (hδ : 0 < δ) :
     {x : F | x ≠ 0 ∧ x ∈ IntOut T ∧ θ δ * algebraMap F (Ainf F) x ∈ K ∧
       ∀ v ∈ T, algebraMap F (Fv F v) x ∈ Kv v}.Finite := by
-  obtain ⟨N, hN, hNx⟩ := GlobalTheory.T.exists_integral_multiple_bounded_places F T Kv hKv
+  obtain ⟨N, hN, hNx⟩ := _root_.GlobalTheory.CompanionTheory.Mass.MeanV.exists_common_denominator F T Kv hKv
   obtain ⟨C0, h⟩ := hC F hF θ hθ K hK N hN
   refine ((h δ hδ ⊤ top_ne_bot).1).subset ?_
   rintro x ⟨h0, h1, h2, h3⟩
@@ -94,7 +94,7 @@ theorem truncTerm_finite (hC : CountBd) (F : Type) [Field F] [NumberField F] (hF
     by_cases h1 : θ δ * algebraMap F (Ainf F) x ∈ tsupport G
     · have : ∃ v ∈ T, algebraMap F (Fv F v) x ∉ tsupport (ψ v) := by
         by_contra hcon
-        push_neg at hcon
+        push Not at hcon
         exact hxB ((hfin.mem_toFinset).2 ⟨hx0, hxT, h1, hcon⟩)
       obtain ⟨v, hv, hvx⟩ := this
       have h0 : ψ v (algebraMap F (Fv F v) x) = 0 := image_eq_zero_of_notMem_tsupport hvx

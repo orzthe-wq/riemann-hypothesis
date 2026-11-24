@@ -69,7 +69,7 @@ instance subfield_isUltrametricDist : IsUltrametricDist s :=
   IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y =>
     (PadicAlgCl.isNonarchimedean p) (x : PadicAlgCl p) y
 
-instance subfield_valuativeRel : ValuativeRel s :=
+local instance subfield_valuativeRel : ValuativeRel s :=
   ValuativeRel.ofValuation (NormedField.valuation (K := s))
 
 theorem subfield_norm_def (x : s) : ‖x‖ = ‖(x : PadicAlgCl p)‖ := rfl
@@ -78,10 +78,10 @@ theorem subfield_vle_iff_norm_le (x y : s) : x ≤ᵥ y ↔ ‖x‖ ≤ ‖y‖ 
   change NormedField.valuation x ≤ NormedField.valuation y ↔ _
   exact NNReal.coe_le_coe
 
-instance subfield_compatible : (NormedField.valuation (K := s)).Compatible :=
+local instance subfield_compatible : (NormedField.valuation (K := s)).Compatible :=
   Valuation.Compatible.ofValuation _
 
-instance subfield_isValuativeTopology : IsValuativeTopology s := by
+local instance subfield_isValuativeTopology : IsValuativeTopology s := by
   let : Valued s NNReal := NormedField.toValued
   have : (Valued.v : Valuation s NNReal).Compatible := subfield_compatible s
   exact GroundTheory.LocalField.isValuativeTopology_of_valued
@@ -94,7 +94,7 @@ theorem subfield_norm_natCast_prime : ‖((p : ℕ) : s)‖ = (p : ℝ)⁻¹ := 
   rw [← h]
   simp
 
-instance subfield_isNontrivial : IsNontrivial s := by
+local instance subfield_isNontrivial : IsNontrivial s := by
   have hp : (1 : ℝ) < p := by exact_mod_cast (Fact.out : p.Prime).one_lt
   refine ⟨⟨valuation s (p : s), ?_, ?_⟩⟩
   · rw [ne_eq, Valuation.zero_iff]
@@ -112,6 +112,10 @@ theorem integer_eq_normInteger : 𝒪[s] = normInteger s := by
 
 end Subfield
 
+-- `local instance` ends with the section; keep the four instances above available in this file.
+attribute [local instance] subfield_valuativeRel subfield_compatible subfield_isValuativeTopology
+  subfield_isNontrivial
+
 theorem locallyCompactSpace_of_finiteDimensional (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] K] : LocallyCompactSpace K := by
   let M := Subalgebra.toSubmodule K.toSubalgebra
@@ -127,7 +131,7 @@ theorem isNonarchimedeanLocalField_of_coe_eq {S : Type*} [SetLike S (PadicAlgCl 
   have : LocallyCompactSpace s := (Homeomorph.setCongr h).isClosedEmbedding.locallyCompactSpace
   exact {}
 
-instance isNonarchimedeanLocalField_intermediateField (K : IntermediateField ℚ_[p] (PadicAlgCl p))
+local instance isNonarchimedeanLocalField_intermediateField (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] K] : IsNonarchimedeanLocalField K :=
   isNonarchimedeanLocalField_of_coe_eq K K rfl
 
@@ -136,14 +140,14 @@ instance finiteDimensional_tower (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     FiniteDimensional ℚ_[p] L :=
   Module.Finite.trans K L
 
-instance isNonarchimedeanLocalField_tower (K : IntermediateField ℚ_[p] (PadicAlgCl p))
+local instance isNonarchimedeanLocalField_tower (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] K] (L : IntermediateField K (PadicAlgCl p)) [FiniteDimensional K L] :
     IsNonarchimedeanLocalField L :=
   have : FiniteDimensional ℚ_[p] (L.restrictScalars ℚ_[p]) :=
     (inferInstance : FiniteDimensional ℚ_[p] L)
   isNonarchimedeanLocalField_of_coe_eq L (L.restrictScalars ℚ_[p]) rfl
 
-instance valuativeExtension_padic (K : IntermediateField ℚ_[p] (PadicAlgCl p)) :
+local instance valuativeExtension_padic (K : IntermediateField ℚ_[p] (PadicAlgCl p)) :
     ValuativeExtension ℚ_[p] K := by
   refine ⟨fun {a b} => ?_⟩
   rw [subfield_vle_iff_norm_le, subfield_norm_def, subfield_norm_def,
@@ -153,7 +157,7 @@ instance valuativeExtension_padic (K : IntermediateField ℚ_[p] (PadicAlgCl p))
   rw [ha, hb, Valuation.Compatible.vle_iff_le (v := Padic.mulValuation),
     GroundTheory.LocalField.Padic.mulValuation_le_iff_norm_le]
 
-instance valuativeExtension_intermediateField {F : Type*} [Field F] [Algebra F (PadicAlgCl p)]
+local instance valuativeExtension_intermediateField {F : Type*} [Field F] [Algebra F (PadicAlgCl p)]
     (E : IntermediateField F (PadicAlgCl p)) (L : IntermediateField E (PadicAlgCl p)) :
     ValuativeExtension E L :=
   ⟨fun {_ _} => by rw [subfield_vle_iff_norm_le, subfield_vle_iff_norm_le]; rfl⟩
@@ -199,5 +203,18 @@ variable (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[
   (L : IntermediateField K (PadicAlgCl p)) [FiniteDimensional K L]
 
 end Examples
+
+/-! The `ValuativeRel` structure on subfields of `PadicAlgCl p` defined above (from the norm) and the
+instances built on it are not global instances: `GroundTheory.LocalField.intermediateField_valuativeRel`
+gives intermediate fields another, non-defeq `ValuativeRel`. Use `open scoped GroundTheory.PAdicHodge.LocalBridge`
+to work with the ones from this file. Forgetting it does not fail: statements then elaborate silently against
+`intermediateField_valuativeRel` instead. -/
+namespace LocalBridge
+
+attribute [scoped instance] subfield_valuativeRel subfield_compatible subfield_isValuativeTopology
+  subfield_isNontrivial isNonarchimedeanLocalField_intermediateField isNonarchimedeanLocalField_tower
+  valuativeExtension_padic valuativeExtension_intermediateField
+
+end LocalBridge
 
 end GroundTheory.PAdicHodge

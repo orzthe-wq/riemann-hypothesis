@@ -461,7 +461,7 @@ theorem form_eq_of_diag {V : Type} [AddCommGroup V] [Module ℂ V] (B C : V →�
   have h1 := h (v + w)
   have h2 := h (v + Complex.I • w)
   simp only [map_add (f := _), LinearMap.add_apply, map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, h v, h w,
-    Complex.conj_I, smul_eq_mul, RingHom.id_apply] at h1 h2
+    Complex.conj_I, smul_eq_mul] at h1 h2
   linear_combination (1 / 2 : ℂ) * h1 + (Complex.I / 2) * h2 +
     ((1 / 2 : ℂ) * (B v w - C v w - B w v + C w v)) * Complex.I_mul_I
 
@@ -529,7 +529,7 @@ theorem isUnitarisable_parInd (e : (Σ a, m a) ≃ n) {ρ : Representation ℂ (
     have h0 := (modulus_pos k (leviProj k e p)).le
     rw [← ENNReal.ofReal_mul h0, parInd_law, val_deltaHalf]
     simp only [map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, hi, Complex.conj_ofReal, smul_eq_mul,
-      Complex.re_ofReal_mul, RingHom.id_apply]
+      Complex.re_ofReal_mul]
     rw [← mul_assoc, Real.mul_self_sqrt h0]
 
 theorem isUnitarisable_prod₂ {r t : ℕ} {π₁ : Representation ℂ (GL (Fin r) k) V}

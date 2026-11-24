@@ -154,13 +154,13 @@ def H1 : Type _ := Z1 F ⧸ LinearMap.range ((d0 F).codRestrict (Z1 F) (commAlgF
 
 def H2 : Type _ := Z2 F ⧸ LinearMap.range ((d1 F).codRestrict (Z2 F) (differential_one_mem_scaled_lattice F))
 
-instance : AddCommGroup (H1 F) := inferInstanceAs (AddCommGroup (_ ⧸ LinearMap.range _))
+instance : AddCommGroup (H1 F) := Submodule.Quotient.addCommGroup _
 
-instance : Module R (H1 F) := inferInstanceAs (Module R (_ ⧸ LinearMap.range _))
+instance : Module R (H1 F) := Submodule.Quotient.module _
 
-instance : AddCommGroup (H2 F) := inferInstanceAs (AddCommGroup (_ ⧸ LinearMap.range _))
+instance : AddCommGroup (H2 F) := Submodule.Quotient.addCommGroup _
 
-instance : Module R (H2 F) := inferInstanceAs (Module R (_ ⧸ LinearMap.range _))
+instance : Module R (H2 F) := Submodule.Quotient.module _
 
 def H1.mk : Z1 F →ₗ[R] H1 F := Submodule.mkQ _
 

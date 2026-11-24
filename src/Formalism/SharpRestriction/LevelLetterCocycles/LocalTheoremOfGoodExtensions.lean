@@ -1,12 +1,12 @@
 module
 
-public import Formalism.SharpRestriction.LevelLetterCocycles.LiftingTheoremOfExplicit
-public import Formalism.PadicSubsetSums.StableGradedCounts.LiftingTheExponent
+public import Formalism.SharpRestriction.LevelLetterCocycles.ElementDenominator
+public import Formalism.PadicSubsetSums.StableGradedCounts.ARCReuse
+public import Mathlib.RingTheory.OrderOfVanishing.Basic
+public import Formalism.PadicSubsetSums.CentralIdempotents.WindowSums
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -20,8 +20,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,7 +40,255 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.LevelLetterCocycles.LiftingTheoremOfExplicit, Formalism.PadicSubsetSums.StableGradedCounts.LiftingTheExponent, Formalism.SharpRestriction.LevelLetterCocycles.LocalTheoremOfGoodExtensions
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.LiftingTheoremOfExplicit =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.LiftingTheoremOfExplicit", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ElementDenominator\npublic import Formalism.PadicSubsetSums.StableGradedCounts.ARCReuse\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RingTheory.OrderOfVanishing.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.ElementDenominator
+
+open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module
+
+section Orbit
+
+variable {G LL : Type} [Group G] [Field LL] (I : Subgroup G) [hI : I.Normal] (Fr : G)
+
+end Orbit
+
+section Iner
+
+variable {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} [Field Qp] [Field K₀] [Field K]
+    [Field K₀'] [Field K']
+    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
+    [Algebra Qp K₀'] [Algebra Qp K'] [Algebra K₀' K'] [IsScalarTower Qp K₀' K']
+    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
+    [Algebra K₀' B] [IsScalarTower Qp K₀' B]
+    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
+    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
+    [Algebra K₀' BdR] [Algebra K' BdR] [IsScalarTower Qp K' BdR]
+    [IsScalarTower K₀' K' BdR] [IsScalarTower Qp K₀' BdR]
+    (PC : PotCrysData G Qp K₀ K K₀' K' B BdR)
+
+end Iner
+
+section PartII
+
+variable {l : ℕ} [Fact l.Prime]
+    {K₀' K' B BdR : Type} [Field K₀'] [Field K'] [Algebra ℚ_[l] K₀'] [Algebra ℚ_[l] K']
+    [Algebra K₀' K'] [IsScalarTower ℚ_[l] K₀' K'] [CommRing B] [CommRing BdR] [Algebra ℚ_[l] B]
+    [Algebra ↥(K0 (qlExt l)) B] [IsScalarTower ℚ_[l] ↥(K0 (qlExt l)) B] [Algebra K₀' B]
+    [IsScalarTower ℚ_[l] K₀' B] [Algebra ℚ_[l] BdR] [Algebra ↥(K0 (qlExt l)) BdR]
+    [Algebra ↥(qlExt l).1 BdR] [IsScalarTower ℚ_[l] ↥(qlExt l).1 BdR]
+    [IsScalarTower ↥(K0 (qlExt l)) ↥(qlExt l).1 BdR] [IsScalarTower ℚ_[l] ↥(K0 (qlExt l)) BdR]
+    [Algebra K₀' BdR] [Algebra K' BdR] [IsScalarTower ℚ_[l] K' BdR] [IsScalarTower K₀' K' BdR]
+    [IsScalarTower ℚ_[l] K₀' BdR]
+    (PC : PotCrysData ↥(GK (qlExt l)) ℚ_[l] ↥(K0 (qlExt l)) ↥(qlExt l).1 K₀' K' B BdR)
+    (LL : FinExt l)
+
+def HypT (T₁ T₂ : LocLat ↥(GK (qlExt l)) ℚ_[l] ↥LL.1 ↥(OL LL)) (F : LatHom T₁.L T₂.L) (N η H : ℕ)
+    (U : Finset ℤ) (Sig : Finset (PC.Iner →* (↥LL.1)ˣ)) (Fr : ↥(GK (qlExt l))) : Prop :=
+  PC.IsPotCrys T₁.ρ ∧ PC.IsPotCrys T₂.ρ ∧ F.Onto ∧
+    PC.IsFrob Fr ∧ FrobStable PC.Iner Fr Sig ∧ 1 ∈ Sig ∧ Sig.card ≤ N ∧ 2 ≤ N ∧
+    PC.InertiaThrough T₁.ρ Sig ∧ PC.InertiaThrough T₂.ρ Sig ∧
+    (∀ u ∈ U, -(η : ℤ) ≤ u ∧ u ≤ H) ∧ (0 : ℤ) ∈ U ∧ U.card ≤ N + 1 ∧ 1 ≤ η ∧ η < H ∧
+    (∀ τ, JumpsInV PC.PD T₁.ρ τ (U : Set ℤ)) ∧ (∀ τ, JumpsInV PC.PD T₂.ρ τ (U : Set ℤ))
+
+def thmTLift (C : ℕ) : Prop :=
+  ∀ (T₁ T₂ : LocLat ↥(GK (qlExt l)) ℚ_[l] ↥LL.1 ↥(OL LL)) (F : LatHom T₁.L T₂.L) (N η H : ℕ)
+    (U : Finset ℤ) (Sig : Finset (PC.Iner →* (↥LL.1)ˣ)) (Fr : ↥(GK (qlExt l))),
+    HypT PC LL T₁ T₂ F N η H U Sig Fr → C * (H * N ^ 2 + N ^ 3) < l →
+      F.LiftF PC.PD (C * (N * rPrime PC.Iner Fr Sig + η * (N + rPrime PC.Iner Fr Sig)))
+
+variable {PC LL}
+
+variable (PC LL)
+
+end PartII
+
+def LiftingClause (D : D7) (C : ℕ) : Prop :=
+  ∀ (l : ℕ) [Fact l.Prime] (K' : FinExt l) (h : (qlExt l).1 ≤ K'.1) (hN : (GKin h).Normal)
+    (hF : (GKin h).FiniteIndex)
+    (hS : ∀ (g : ↥(GK (qlExt l))) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'),
+      ((D.loc l).PD (qlExt l)).actB g (algebraMap ↥(K0 K') (D.loc l).R.B c) =
+        algebraMap ↥(K0 K') (D.loc l).R.B c')
+    (LL : FinExt l), thmTLift (pc (D.loc l) h hN hF hS) LL C
+
+def TwoStep {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (l g g₀ e e' : ℕ)
+    (Z Bc I : Submodule O M) : Prop :=
+  ∃ s s₀ : Finset M, s.card ≤ g ∧ Submodule.span O (s : Set M) ⊔ Bc = Z ∧
+    s₀.card ≤ g₀ ∧ (s₀ : Set M) ⊆ Z ∧
+    (∀ p ∈ Z, (l ^ e : ℕ) • p ∈ Submodule.span O (s₀ : Set M) ⊔ I) ∧
+    (∀ p ∈ Submodule.span O (s₀ : Set M), (l ^ e' : ℕ) • p ∈ I)
+
+theorem len_ne_top {O : Type} [CommRing O] [IsDedekindDomain O] (x : O) (h : x ≠ 0) :
+    Module.length O (O ⧸ Ideal.span {x}) ≠ ⊤ := by
+  rw [Module.length_ne_top_iff]
+  apply isFiniteLength_quotient_span_singleton
+  rwa [mem_nonZeroDivisors_iff_ne_zero]
+
+theorem len_le_nat {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] (l p g g₀ y e' k : ℕ)
+    (Z Bc I : Submodule O M) (h : TwoStep l g g₀ y e' Z Bc I) (hB : Bc ≤ I) (hp : p = l)
+    (hk : Module.length O (O ⧸ Ideal.span {((p : ℕ) : O)}) = (k : ℕ∞)) :
+    ∃ m : ℕ, Module.length O (↥Z ⧸ I.comap Z.subtype) = (m : ℕ∞) ∧ m ≤ (g * y + g₀ * e') * k := by
+  subst hp
+  obtain ⟨s, s₀, hs, hgen, hs₀, hsub, h1, h2⟩ := h
+  have key := Formalism.IrreducibleCountingLemmas.WindowSums.colength_bound_two_layers O M p g g₀ y e' Z Bc I s s₀ hs hgen hB hs₀ hsub h1 h2
+  rw [hk] at key
+  have hcol : Module.length O (↥Z ⧸ I.comap Z.subtype) ≤ (((g * y + g₀ * e') * k : ℕ) : ℕ∞) := by
+    push_cast
+    exact key
+  obtain ⟨m, hm⟩ := ENat.ne_top_iff_exists.1 (ne_top_of_le_ne_top (ENat.natCast_ne_top _) hcol)
+  refine ⟨m, hm.symm, ?_⟩
+  rw [← hm] at hcol
+  exact_mod_cast hcol
+
+section PartI
+
+variable {l : ℕ} [Fact l.Prime]
+
+theorem lenOl_finite (P : LocPrime l) (K LL : FinExt l) :
+    ∃ k : ℕ, lenOl (P.PD K) (O := ↥(OL LL)) = (k : ℕ∞) := by
+  have : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
+  have : IsDedekindDomain ↥(OL LL) := integralClosure.isDedekindDomain ℤ_[l] ℚ_[l] ↥LL.1
+  have hne : lenOl (P.PD K) (O := ↥(OL LL)) ≠ ⊤ := by
+    apply len_ne_top
+    rw [P.PD_p K]
+    intro h
+    have h2 := congrArg (Subtype.val : ↥(OL LL) → ↥LL.1) h
+    have h3 : ((l : ℕ) : ↥LL.1) = 0 := by simpa using h2
+    exact (Fact.out : l.Prime).ne_zero (by exact_mod_cast h3)
+  obtain ⟨k, hk⟩ := ENat.ne_top_iff_exists.1 hne
+  exact ⟨k, hk.symm⟩
+
+theorem colLe_mono (P : LocPrime l) (K LL : FinExt l) {T₁ T₂ : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)}
+    (F : LatHom T₁.L T₂.L) {b b' : ℝ} (hb : b ≤ b') (h : colLe P K LL F b) : colLe P K LL F b' := by
+  obtain ⟨m, k, h1, h2, h3⟩ := h
+  exact ⟨m, k, h1, h2, h3.trans (mul_le_mul_of_nonneg_right hb (Nat.cast_nonneg k))⟩
+
+theorem colLe_of_twoStep (P : LocPrime l) (K LL : FinExt l)
+    {T₁ T₂ : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)} (F : LatHom T₁.L T₂.L) (g g₀ y e' : ℕ)
+    (h : TwoStep l g g₀ y e' (latticeFiniteCocycles (P.PD K) T₂.L) (latticeCoboundaries T₂.L) (F.ImF (P.PD K))) :
+    colLe P K LL F ((g : ℝ) * y + (g₀ : ℝ) * e') := by
+  obtain ⟨k, hk⟩ := lenOl_finite P K LL
+  obtain ⟨m, hm, hmk⟩ := len_le_nat l (P.PD K).p g g₀ y e' k _ _ _ h le_sup_right (P.PD_p K) hk
+  refine ⟨m, k, hm, hk, ?_⟩
+  exact_mod_cast hmk
+
+def HypA (P : LocPrime l) (K LL : FinExt l) (T₁ T₂ : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL))
+    (F : LatHom T₁.L T₂.L) (r S η m h : ℕ) (up : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → Bool)
+    (b : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → ℕ) : Prop :=
+  IsCrys (P.PD K) T₁.ρ ∧ IsCrys (P.PD K) T₂.ρ ∧ F.Onto ∧
+    finrank ↥LL.1 T₂.V = r ∧
+    (∀ τ, JumpsInV (P.PD K) T₁.ρ τ (deep (up τ) (b τ) S ∪ Set.Icc (-(η : ℤ)) η)) ∧
+    (∀ τ, η < b τ) ∧
+    (∀ τ, ∑ a ∈ Finset.Icc (-(η : ℤ)) η, multV (P.PD K) T₂.ρ τ a ≤ m) ∧
+    (∀ τ, JumpsInV (P.PD K) T₁.ρ τ (Set.Icc (-(h : ℤ)) h)) ∧
+    (finrank ↥(K0 K) ↥K.1 = 2 ∨ ∀ τ τ', intersection_update_fsHerm_neg_one K τ = intersection_update_fsHerm_neg_one K τ' → up τ = up τ')
+
+end PartI
+
+end Formalism.MainNotions.ElementDenominator
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.LiftingTheoremOfExplicit =====
+
+-- ===== clump member: Formalism.PadicSubsetSums.StableGradedCounts.LiftingTheExponent =====
+-- clump-header: {"m": "Formalism.PadicSubsetSums.StableGradedCounts.LiftingTheExponent", "h": "module\n\npublic import Formalism.PadicSubsetSums.CentralIdempotents.WindowSums\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.IrreducibleCountingLemmas.WindowSums
+
+theorem sum_one_add_val (l : ℕ) [Fact l.Prime] (n : ℕ) :
+    ∑ i ∈ Finset.range n, (1 + padicValNat l (i + 1)) = n + padicValNat l n.factorial := by
+  induction n with
+  | zero => simp [Nat.padicValNat_def]
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih, Nat.factorial_succ,
+      (show ∀ {p a b : ℕ} [_root_.Fact (_root_.Nat.Prime p)], a ≠ 0 → b ≠ 0 → _root_.padicValNat p (a * b) = _root_.padicValNat p a + _root_.padicValNat p b from by simpa only [← _root_.Nat.padicValNat_def] using @_root_.Nat.multiplicity_mul) (Nat.succ_ne_zero n) (Nat.factorial_ne_zero n)]
+    simp only [Nat.succ_eq_add_one]
+    omega
+
+theorem two_mul_val_factorial_le (l : ℕ) [hl : Fact l.Prime] (h2 : l ≠ 2) (n : ℕ) :
+    2 * padicValNat l n.factorial ≤ n := by
+  have h3 : 3 ≤ l := by have := hl.out.two_le; omega
+  have key : (l - 1) * padicValNat l n.factorial = n - (l.digits n).sum := by
+    simpa only [Nat.padicValNat_def] using (hl.out.sub_one_mul_multiplicity_factorial (n := n))
+  have hle : (l - 1) * padicValNat l n.factorial ≤ n := by rw [key]; exact Nat.sub_le _ _
+  have h2le : 2 * padicValNat l n.factorial ≤ (l - 1) * padicValNat l n.factorial :=
+    Nat.mul_le_mul_right _ (by omega)
+  omega
+
+private theorem padicValInt_neg_natCast_add_one (l i : ℕ) :
+    padicValInt l (-((i : ℤ) + 1)) = padicValNat l (i + 1) := by
+  simp only [padicValInt]
+  rw [show (-((i : ℤ) + 1)).natAbs = i + 1 by omega, Nat.padicValNat_def]
+
+private theorem padicValInt_natCast_add_one (l i : ℕ) :
+    padicValInt l ((i : ℤ) + 1) = padicValNat l (i + 1) := by
+  simp only [padicValInt]
+  rw [show ((i : ℤ) + 1).natAbs = i + 1 by omega, Nat.padicValNat_def]
+
+theorem valuationSumBound : LiftExp := by
+  intro l h J hl hl2 hJ h0
+  have : Fact l.Prime := ⟨hl⟩
+  set f : ℤ → ℕ := fun j => 1 + padicValInt l j with hf
+  set A : Finset ℤ := (Finset.range h).image (fun i : ℕ => -((i : ℤ) + 1)) with hA
+  set B : Finset ℤ := (Finset.range (2 * h)).image (fun i : ℕ => (i : ℤ) + 1) with hB
+  have hsub : J ⊆ A ∪ B := by
+    intro j hj
+    have hm := Finset.mem_Icc.mp (hJ hj)
+    have hj0 : j ≠ 0 := fun e => h0 (e ▸ hj)
+    rw [Finset.mem_union, hA, hB, Finset.mem_image, Finset.mem_image]
+    rcases lt_or_gt_of_ne hj0 with hneg | hpos
+    · left
+      exact ⟨(-j - 1).toNat, by rw [Finset.mem_range]; omega, by omega⟩
+    · right
+      exact ⟨(j - 1).toNat, by rw [Finset.mem_range]; omega, by omega⟩
+  have hA_sum : ∑ j ∈ A, f j = h + padicValNat l h.factorial := by
+    rw [hA, Finset.sum_image (fun x _ y _ e => by simpa using e)]
+    rw [← sum_one_add_val l h]
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    simp only [hf, padicValInt_neg_natCast_add_one]
+  have hB_sum : ∑ j ∈ B, f j = 2 * h + padicValNat l (2 * h).factorial := by
+    rw [hB, Finset.sum_image (fun x _ y _ e => by simpa using e)]
+    rw [← sum_one_add_val l (2 * h)]
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    simp only [hf, padicValInt_natCast_add_one]
+  have hJle : ∑ j ∈ J, f j ≤ ∑ j ∈ A ∪ B, f j := Finset.sum_le_sum_of_subset hsub
+  have hU := Finset.sum_union_inter (s₁ := A) (s₂ := B) (f := f)
+  have e1 := two_mul_val_factorial_le l hl2 (2 * (2 * h))
+  have e2 := two_mul_val_factorial_le l hl2 h
+  have e3 := two_mul_val_factorial_le l hl2 (2 * h)
+  have hJ' : ∑ j ∈ J, (1 + padicValInt l j) = ∑ j ∈ J, f j := rfl
+  rw [hJ']
+  omega
+
+end Formalism.IrreducibleCountingLemmas.WindowSums
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PadicSubsetSums.StableGradedCounts.LiftingTheExponent =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.LocalTheoremOfGoodExtensions =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.LocalTheoremOfGoodExtensions", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.LiftingTheoremOfExplicit\npublic import Formalism.PadicSubsetSums.StableGradedCounts.LiftingTheExponent\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -251,3 +497,6 @@ theorem local_theorem_of_good_extensions (D : D7) (C : ℝ) (hC : 160 ≤ C) (H 
 end Formalism.MainNotions.ElementDenominator.CongruenceModules
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.LocalTheoremOfGoodExtensions =====

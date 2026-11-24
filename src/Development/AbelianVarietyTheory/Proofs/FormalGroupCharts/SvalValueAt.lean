@@ -169,9 +169,7 @@ theorem exists_ratio (Φ : Q S d 1) (hco : ∀ m n (u : Q S d n), PP m x' u = PP
 
 theorem jeq_of_VV (t : SAB H X0) (x0 : Sp S ⟶ X0) {m n : ℕ} {f g : PS S n d}
     (h : ∀ (y : (jOG x0 d m n).left) J, Good t.PP.L y J → VV m y f = VV m y g) : JEq m f g :=
-  RatioPh1.jeq_of_psJet (cst_ext fun y => by
-    choose J hJ using fun ψ : (jOG x0 d m n).left ⟶ t.G.left => exists_chart t.PP.isLB (ψ y)
-    exact h y J hJ)
+  RatioPh1.jeq_of_psJet (psJet_eq_of_VV t.PP.isLB h)
 
 theorem exists_jRel [StarRing (𝓞 E)] (hstar : ∀ a : 𝓞 E, star a = H.bar a)
     (hs : Function.Surjective (t.G ⊗ t.G).hom.appTop.hom) (B B' : FB S d (𝓞 E)) {κ : Type} [Fintype κ]

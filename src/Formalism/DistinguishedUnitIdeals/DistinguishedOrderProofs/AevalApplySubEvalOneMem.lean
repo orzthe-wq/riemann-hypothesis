@@ -76,9 +76,6 @@ theorem aeval_apply_sub_eval_one_mem {R M : Type} [CommRing R] [AddCommGroup M] 
         a • ((γ ^ n) w - w) := by
       rw [Polynomial.aeval_monomial, Polynomial.eval_monomial, one_pow, mul_one, smul_sub]
       congr 1
-      all_goals first
-        | rfl
-        | simp [Module.algebraMap_end_apply]
     rw [e]
     exact U.smul_mem a (pow_apply_sub_mem γ U hU w hw n)
 

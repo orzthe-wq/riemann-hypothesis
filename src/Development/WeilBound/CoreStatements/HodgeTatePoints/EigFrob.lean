@@ -3,9 +3,9 @@ module
 public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
 public import Mathlib.RingTheory.Coalgebra.IsFrobenius
 public import Mathlib.RingTheory.HopfAlgebra.Basic
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualLatticeDegreeNegStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenProjectorsSplitActionStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundlesStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualLatticeDegreeNeg
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenProjectorsSplitAction
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundles
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -135,7 +135,7 @@ theorem eig_dual : ∀ (K : Type) [Field K] (C : ACurve K) (d : ℕ) (L : C.I �
   let ρL : O →+* Module.End K (Fin d → K) :=
     (Matrix.toLinAlgEquiv'.toRingEquiv : Matrix (Fin d) (Fin d) K ≃+* Module.End K (Fin d → K)).toRingHom.comp ρ
   obtain ⟨e, he_hom, he_mem, he_id, -, he_comb⟩ :=
-    GlobalTheory.T.eigen_projectors_split_action K C (Fin d → K) L O k S χ hχ hv ρL hL hρ
+    _root_.GlobalTheory.CompanionTheory.Ar.Crv.SplitProj.split_proj K C (Fin d → K) L O k S χ hχ hv ρL hL hρ
   obtain ⟨m, c, b, hc, hes⟩ := he_comb s
   set W := eig (fun a => Matrix.toLin' (ρ a)) (fun a => algebraMap k K (χ s a)) with hW
   set W' := eig (fun a => Matrix.toLin' (ρ a).transpose) (fun a => algebraMap k K (χ s a)) with hW'
@@ -218,7 +218,7 @@ theorem eig_dual : ∀ (K : Type) [Field K] (C : ACurve K) (d : ℕ) (L : C.I �
   have hfr : Module.finrank K W = Module.finrank K (W' →ₗ[K] K) := by omega
   have hbij : Function.Bijective B :=
     ⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfr).1 hinj⟩
-  obtain ⟨-, hdeg, -⟩ := GlobalTheory.T.dual_lattice_degree_neg K C W W' (sub C L W) B (GlobalTheory.T.sub_and_quotient_bundles K C _ L W hL).1 hbij
+  obtain ⟨-, hdeg, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.DegDual.deg_dual K C W W' (sub C L W) B (_root_.GlobalTheory.CompanionTheory.Ar.Crv.SubQuot.isBun_sub_quot K C _ L W hL).1 hbij
   have hident : dualLat C (sub C L W) B = sub C (dotDual C L) W' := by
     funext i
     ext y

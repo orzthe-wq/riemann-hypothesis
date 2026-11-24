@@ -270,25 +270,24 @@ theorem herm_es_left (w : Fin (2 * r + k + 1) → ℂ) (c : Fin r) :
 theorem bvec_ee (c c' : Fin r) : bvec (eI k r c') (eI k r c) = if c = c' then 1 else 0 := by
   have := c.isLt
   have := c'.isLt
-  simp only [bvec, Pi.single_apply, eI, esI, Fin.ext_iff, Fin.val_mk]
-  all_goals (split_ifs <;> first | rfl | omega)
+  simp only [bvec, Pi.single_apply, eI, Fin.ext_iff]
 
 theorem bvec_ss (c c' : Fin r) : bvec (esI k r c') (esI k r c) = if c = c' then 1 else 0 := by
   have := c.isLt
   have := c'.isLt
-  simp only [bvec, Pi.single_apply, eI, esI, Fin.ext_iff, Fin.val_mk]
+  simp only [bvec, Pi.single_apply, esI, Fin.ext_iff]
   all_goals (split_ifs <;> first | rfl | omega)
 
 theorem bvec_es (c c' : Fin r) : bvec (eI k r c') (esI k r c) = 0 := by
   have := c.isLt
   have := c'.isLt
-  simp only [bvec, Pi.single_apply, eI, esI, Fin.ext_iff, Fin.val_mk]
+  simp only [bvec, Pi.single_apply, eI, esI, Fin.ext_iff]
   all_goals (split_ifs <;> first | rfl | omega)
 
 theorem bvec_se (c c' : Fin r) : bvec (esI k r c') (eI k r c) = 0 := by
   have := c.isLt
   have := c'.isLt
-  simp only [bvec, Pi.single_apply, eI, esI, Fin.ext_iff, Fin.val_mk]
+  simp only [bvec, Pi.single_apply, eI, esI, Fin.ext_iff]
   all_goals (split_ifs <;> first | rfl | omega)
 
 private theorem hpk_symm_lemma_3 (k r : ℕ) (t u : Fin (2 * r + k + 1)) : Hpk k r u t = Hpk k r t u := by

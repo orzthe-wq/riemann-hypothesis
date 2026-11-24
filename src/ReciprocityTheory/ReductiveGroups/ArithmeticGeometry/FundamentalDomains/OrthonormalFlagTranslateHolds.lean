@@ -1,51 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicCoefficientSplitting
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LminorSubmatrixCastSucc
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ProdCastLESucc
 
@@ -82,13 +39,7 @@ private theorem sum_eq_sum_castLE_of_eq_zero {n m : ℕ} (h : m ≤ n) (f : Fin 
   push_neg at hlt
   exact hj (Finset.mem_map.2 ⟨⟨j.val, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)
 
-private theorem gram_eq_lemma {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
-    (M : Matrix (Fin r) (Fin r) ℂ) :
-    gram τ G M = Mᵀ * G.map τ * M.map (starRingEnd ℂ) := by
-  ext a c
-  simp only [gram, Matrix.of_apply, hermC, col, Matrix.mul_apply, Matrix.transpose_apply,
-    Matrix.map_apply, Finset.sum_mul]
-  rw [Finset.sum_comm]
+private alias gram_eq_lemma := _root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_eq
 
 lemma dmin_rmul (x : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm (rmul x b) τ i =
@@ -185,10 +136,6 @@ lemma pnorm_rmul (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ)
   simp only [Finset.prod_mul_distrib]
   ring
 
-private theorem hermC_sub_left_of_natDim {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
-    (u v w : Fin r → ℂ) : hermC τ G (u - v) w = hermC τ G u w - hermC τ G v w := by
-  simp only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
-
 private theorem hermC_eq_zero_of_mem_span' {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (w : Fin r → ℂ)
     (S : Set (Fin r → ℂ)) (h : ∀ s ∈ S, hermC τ G w s = 0) {v : Fin r → ℂ}
     (hv : v ∈ Submodule.span ℂ S) : hermC τ G w v = 0 := by
@@ -220,7 +167,7 @@ lemma ppos_sameFlag {x x' : Frame X.Ψ r} (hx : x ∈ X.dom) (hx' : x' ∈ X.dom
     intro y hy c hc
     refine hermC_eq_zero_of_mem_span' τ.1 X.Gm _ _ (fun s hs => ?_) hc
     obtain ⟨d, rfl⟩ := hs
-    rw [hermC_sub_left_of_natDim]
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_left]
     exact sub_eq_zero.2 (X.hermC_ppos_colP hy τ u d)
   set v := X.ppos x τ u - X.ppos x' τ u with hv
   have hvmem : v ∈
@@ -235,7 +182,7 @@ lemma ppos_sameFlag {x x' : Frame X.Ψ r} (hx : x ∈ X.dom) (hx' : x' ∈ X.dom
     have e : v = (X.ppos x τ u - u) - (X.ppos x' τ u - u) := by
       rw [hv]
       abel
-    rw [e, hermC_sub_left_of_natDim, horth x hx c hc, horth x' hx' c (hspan ▸ hc), sub_zero]
+    rw [e, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_left, horth x hx c hc, horth x' hx' c (hspan ▸ hc), sub_zero]
   by_contra hne
   have hne' : v ≠ 0 := sub_ne_zero.2 hne
   have hlt := X.neg_of_perp hx τ hne' (fun b => hvperp _ (Submodule.subset_span ⟨b, rfl⟩))

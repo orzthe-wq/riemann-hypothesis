@@ -254,13 +254,13 @@ theorem blockMat_blockMat {k : ℕ} (hk : k ≤ j) (hj : j ≤ n) (γ : Matrix (
     blockMat hj (blockMat hk γ) = blockMat (hk.trans hj) γ := by
   ext a b
   simp only [blockMat_apply]
-  split_ifs with h1 h2 h3 h4 h5 h6 <;> first | rfl | omega | simp_all [Fin.ext_iff] | (exfalso; omega)
+  split_ifs with h1 h2 h3 h4 h5 h6 <;> first | rfl | omega | simp_all [Fin.ext_iff]
 
 theorem uMat_colX_eq_blockMat {i : ℕ} (hi : i < j) (hj : j ≤ n) (ξ : Fin i → R) :
     uMat (colX (n := n) i ξ) = blockMat hj (uMat (colX (n := j) i ξ)) := by
   ext a b
   simp only [blockMat_apply, uMat_apply, colX_apply]
-  split_ifs <;> (first | rfl | (exfalso; simp only [Fin.ext_iff, Fin.lt_def] at *; omega) | (simp only [Fin.ext_iff, Fin.lt_def] at *; omega) | simp_all [Fin.ext_iff])
+  split_ifs <;> (first | rfl | (exfalso; simp only [Fin.ext_iff, Fin.lt_def] at *; omega))
 
 def colBlock {j m : ℕ} (x : Fin j → R) : Matrix (Fin j) (Fin m) R :=
   Matrix.of fun i c => if c.val = 0 then x i else 0
@@ -275,18 +275,18 @@ theorem uMat_colX_eq_fromBlocks (hj : j < n) (x : Fin j → R) :
     by_cases hb : b.val < j
     · rw [splitIdx_of_lt hj.le b hb, Matrix.fromBlocks_apply₁₁, Matrix.one_apply]
       simp only [colX_apply]
-      split_ifs <;> (first | rfl | (exfalso; simp only [Fin.ext_iff, Fin.lt_def] at *; omega) | (simp only [Fin.ext_iff, Fin.lt_def] at *; omega) | simp_all [Fin.ext_iff])
+      split_ifs <;> (first | rfl | (exfalso; simp only [Fin.ext_iff, Fin.lt_def] at *; omega))
     · rw [splitIdx_of_ge hj.le b (not_lt.1 hb), Matrix.fromBlocks_apply₁₂]
       simp only [colBlock, Matrix.of_apply, colX_apply]
-      split_ifs <;> (first | rfl | (exfalso; simp only [Fin.ext_iff, Fin.lt_def] at *; omega) | (simp only [Fin.ext_iff, Fin.lt_def] at *; omega) | simp_all [Fin.ext_iff])
+      split_ifs <;> (first | rfl | (exfalso; simp only [Fin.ext_iff, Fin.lt_def] at *; omega))
   · rw [splitIdx_of_ge hj.le a (not_lt.1 ha)]
     by_cases hb : b.val < j
     · rw [splitIdx_of_lt hj.le b hb, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]
       simp only [colX_apply]
-      split_ifs <;> (first | rfl | (exfalso; simp only [Fin.ext_iff, Fin.lt_def] at *; omega) | (simp only [Fin.ext_iff, Fin.lt_def] at *; omega) | simp_all [Fin.ext_iff])
+      split_ifs <;> (first | rfl | (exfalso; simp only [Fin.ext_iff, Fin.lt_def] at *; omega))
     · rw [splitIdx_of_ge hj.le b (not_lt.1 hb), Matrix.fromBlocks_apply₂₂, Matrix.one_apply]
       simp only [colX_apply]
-      split_ifs <;> (first | rfl | (exfalso; simp only [Fin.ext_iff, Fin.lt_def] at *; omega) | (simp only [Fin.ext_iff, Fin.lt_def] at *; omega) | simp_all [Fin.ext_iff])
+      split_ifs <;> (first | rfl | (exfalso; simp only [Fin.ext_iff, Fin.lt_def] at *; omega))
 
 theorem mul_colBlock {m : ℕ} (h : Matrix (Fin j) (Fin j) R) (x : Fin j → R) :
     h * colBlock (m := m) x = colBlock (h.mulVec x) := by

@@ -2,9 +2,9 @@ module
 
 public import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DerivativeAlongTangentCombinationModuliStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsTangentModuleUniversalGroupStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExponentialDerivativeAtZeroIsTangentStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.DerivativeAlongTangentCombinationModuli
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsTangentModuleUniversalGroup
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExponentialDerivativeAtZeroIsTangent
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -89,8 +89,8 @@ theorem le_of_fst_eq {S : Type} [CommRing S] {X : Scheme.{0}} {v v' : Sp (DualNu
 
 theorem isCombAt_iff_isDerivAt0 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ' ty) (k : Fin F.n) (P : (F.Di k).La →+ (Fin g → ℂ)), IsPeriod (F.Di k) ty P → ∀ (m : ℕ) (v : Fin m → (Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)) (w : Fin m → (Fin g → ℂ)), (∀ i, IsDerivAt0 (fun z => (F.ex k P z).left) (w i) (v i)) → ∀ (a : Fin m → ℂ) (v' : (Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left)), IsCombAt (F.u k P) v a v' ↔ IsDerivAt0 (fun z => (F.ex k P z).left) (∑ i, a i • w i) v' := by
   intro E _ _ _ H Dw l Xo σ' g ty F k P hP m v w hvw a
-  obtain ⟨h1, h2, -⟩ := GlobalTheory.T.exponential_derivative_at_zero_isTangent E H Dw l Xo σ' g ty F k P hP
-  obtain ⟨N, _, _, ν, ρ, -, hr, hc, -⟩ := GlobalTheory.T.exists_tangent_module_universal_group E H Dw l Xo ℂ (F.u k P)
+  obtain ⟨h1, h2, -⟩ := _root_.GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo σ' g ty F k P hP
+  obtain ⟨N, _, _, ν, ρ, -, hr, hc, -⟩ := _root_.GlobalTheory.TanMod.exists_tangent_module E H Dw l Xo ℂ (F.u k P)
   have htan : ∀ i, IsTanAt (F.u k P) (v i) := fun i => h1 _ _ (hvw i)
   choose b hb using fun i => (hr (v i)).1 (htan i)
   have hv : v = fun i => ν (b i) := funext fun i => (hb i).symm
@@ -103,7 +103,7 @@ theorem isCombAt_iff_isDerivAt0 : ∀ (E : Type) [Field E] [NumberField E] [IsCM
     obtain ⟨v0, hv0, -⟩ := h2 0
     refine ⟨ht'.2.trans ((h1 _ _ hv0).2.symm.trans hv0.1), fun U h f => ?_⟩
     have hU : ∀ i, ⊤ ≤ v i ⁻¹ᵁ U := fun i => le_of_fst_eq ((htan i).2.trans ht'.2.symm) h
-    refine (GlobalTheory.T.derivative_along_tangent_combination_moduli E H Dw l Xo ℂ (F.u k P) m v a v' htan hv' U h hU f).trans ?_
+    refine (_root_.GlobalTheory.TanDeriv.deriv_comb E H Dw l Xo ℂ (F.u k P) m v a v' htan hv' U h hU f).trans ?_
 
     rw [map_sum]
     refine Finset.sum_congr rfl fun i _ => ?_

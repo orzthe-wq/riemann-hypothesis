@@ -84,7 +84,7 @@ def quotRep (ρ : Representation O G M) (a : O) (n : ℕ) :
   map_mul' g h := by
     apply Submodule.linearMap_qext
     ext x
-    simp [Module.End.mul_apply]
+    simp
 
 @[simp] theorem quotRep_mk (ρ : Representation O G M) (a : O) (n : ℕ) (g : G) (x : M) :
     quotRep ρ a n g (Submodule.Quotient.mk x) = Submodule.Quotient.mk (ρ g x) := rfl

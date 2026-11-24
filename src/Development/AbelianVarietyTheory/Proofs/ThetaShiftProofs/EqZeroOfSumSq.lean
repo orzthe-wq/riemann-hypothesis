@@ -153,9 +153,6 @@ theorem herm_nsmul {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (m : ℤ) (z : Fi
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
-theorem emb_cc (τ : E →+* ℂ) (a : E) : τ (cc a) = (starRingEnd ℂ) (τ a) :=
-  IsCMField.complexEmbedding_complexConj E τ a
-
 theorem maj_smul (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ) (v : Fin r → ℂ) :
     X.maj x τ (c • v) = ‖c‖ ^ 2 * X.maj x τ v := by
   have h1 : ∀ u, hermC τ.1 X.Gm (c • v) u = c * hermC τ.1 X.Gm v u := by
@@ -274,13 +271,13 @@ theorem tt_eq_im_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     rw [← hL, ← hL, hH'.2.2, hH.2.2, hE]
   set M : (U.X k).Ψ → ℝ := fun τ => (U.X k).c τ * (U.X k).maj x.1 τ (Data.emb τ.1 ξ') with hM
   have hreal : ∀ τ : E →+* ℂ, τ sE = ((τ sE).re : ℂ) := fun τ => by
-    have := emb_cc τ sE
+    have := _root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc τ sE
     rw [hs.1] at this
     exact (Complex.conj_eq_iff_re.1 this.symm).symm
   have hcc : ∀ z : E, Algebra.trace ℚ E (cc z) = Algebra.trace ℚ E z := fun z => by
     have : ((Algebra.trace ℚ E (cc z) : ℚ) : ℝ) = ((Algebra.trace ℚ E z : ℚ) : ℝ) := by
       rw [trace_cm (U.X k), trace_cm (U.X k)]
-      simp only [emb_cc, Complex.conj_re]
+      simp only [_root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc, Complex.conj_re]
     exact_mod_cast this
   have key : ∀ v, ∑ τ : (U.X k).Ψ, ‖τ.1 (pairE ξ (Ha.y v))‖ ^ 2 *
       ((τ.1 sE).re ^ 2 * M τ * w.im - (τ.1 sE).re) = 0 := by
@@ -334,7 +331,7 @@ theorem tt_eq_im_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
       simp only [Rat.cast_intCast] at this
       rw [← this, trace_cm (U.X k)]
       refine Finset.sum_congr rfl fun τ _ => ?_
-      rw [← hp, mul_assoc, map_mul, map_mul, map_mul, emb_cc, Complex.mul_conj, Complex.normSq_eq_norm_sq,
+      rw [← hp, mul_assoc, map_mul, map_mul, map_mul, _root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc, Complex.mul_conj, Complex.normSq_eq_norm_sq,
         hreal τ.1, map_ofNat]
       have e : (2 : ℂ) * ((τ.1 sE).re : ℂ) * ((‖τ.1 p‖ ^ 2 : ℝ) : ℂ) =
           ((2 * (τ.1 sE).re * ‖τ.1 p‖ ^ 2 : ℝ) : ℂ) := by push_cast; ring

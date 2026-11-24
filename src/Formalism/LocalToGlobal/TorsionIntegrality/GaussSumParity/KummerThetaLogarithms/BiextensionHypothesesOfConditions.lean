@@ -5,45 +5,6 @@ public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.Statemen
 public import Formalism.GaussJetBounds.GaussJetProofs.Transfer
 public import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FinalS
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.LogarithmEquivalence
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -277,35 +238,9 @@ theorem second_difference_C_mul_sum (c : K) {α : Type} (s : Finset α) (f : α 
     subst_C_mul_sum (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substTwo'),
     Finset.sum_sub_distrib, Finset.sum_sub_distrib, mul_sub, mul_sub]
 
-theorem constantCoeff_defectOne {be : MvPowerSeries (ZMod d) K} (h : constantCoeff be = 0) :
-    constantCoeff (de1 be) = 0 := by
-  unfold de1
-  rw [map_sub, map_sub,
-    MvPowerSeries.constantCoeff_subst_eq_zero
-      (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne)
-      Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne h,
-    MvPowerSeries.constantCoeff_subst_eq_zero
-      (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substZero)
-      Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substZero h,
-    MvPowerSeries.constantCoeff_subst_eq_zero
-      (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substTwo)
-      Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substTwo h]
-  simp
+alias constantCoeff_defectOne := _root_.Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_defectOne
 
-theorem constantCoeff_defectTwo {be : MvPowerSeries (ZMod d) K} (h : constantCoeff be = 0) :
-    constantCoeff (de2 be) = 0 := by
-  unfold de2
-  rw [map_sub, map_sub,
-    MvPowerSeries.constantCoeff_subst_eq_zero
-      (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne')
-      Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substOne' h,
-    MvPowerSeries.constantCoeff_subst_eq_zero
-      (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substZero)
-      Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substZero h,
-    MvPowerSeries.constantCoeff_subst_eq_zero
-      (MvPowerSeries.hasSubst_of_constantCoeff_zero Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substTwo')
-      Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_substTwo' h]
-  simp
+alias constantCoeff_defectTwo := _root_.Formalism.DworkPowerSeriesWeights.Transfer.constantCoeff_defectTwo
 
 theorem iterate_of_pow {σ : K →+* K} {u : K} {l : ℕ} (h : σ u = u ^ l) (j : ℕ) :
     σ^[j] u = u ^ (l ^ j) := by

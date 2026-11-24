@@ -59,4 +59,4 @@ theorem _root_.GlobalTheory.T.gridLocalTensorPlaces_splitIdempotent_sum : ∀ {D
     (∀ w ∈ locPl G t, IsSplitIdem D (atPl w 1) ∧ atPl w 1 + cA D (atPl w 1) =
       algebraMap (AF D.host.F) (AE D) (GlobalTheory.LatVac.liftV (w.under (𝓞 D.host.F)) 1)) ∧
     ∀ ε, IsIdemSum ε (locPl G t) → ε = ∑ w ∈ locPl G t, atPl w 1 ∧ ∀ w ∈ locPl G t, ε * atPl w 1 = atPl w 1 := by
-  first | exact @GlobalTheory.IdemAtPl.main | exact GlobalTheory.IdemAtPl.main | (intros; apply GlobalTheory.IdemAtPl.main <;> assumption)
+  first | exact @GlobalTheory.IdemAtPl.main

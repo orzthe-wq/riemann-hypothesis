@@ -77,7 +77,7 @@ theorem _root_.GlobalTheory.MajorantOrthFrame.maj_eq_sum_norm_sq_of_isOrth :
     intro a
     have hcolumn : _root_.ReciprocityTheory.ChartRestriction.G.FD.col P a = P *ᵥ Pi.single a 1 := by
       ext i
-      simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mulVec_single_one]
+      simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.col]
     rw [hcolumn, hv, _root_.GlobalTheory.UnitaryFrames.hermC_mulVec, hG]
     simp [dotProduct, Matrix.mulVec_diagonal, Pi.single_apply]
   have hvv : _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC (↑τ) X.Gm v v = ∑ a, c a * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 ↑a : ℝ) : ℂ) * star (c a) := by

@@ -99,7 +99,7 @@ def swapL : letI : Algebra (FiniteAdeleRing (𝓞 F) F) (E ⊗[F] FiniteAdeleRin
       | tmul e b =>
         rw [Algebra.smul_def, show algebraMap (FiniteAdeleRing (𝓞 F) F) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) a = (1 : E) ⊗ₜ a from rfl,
           Algebra.TensorProduct.tmul_mul_tmul, one_mul]
-        simp [mul_comm]
+        simp
         rw [TensorProduct.smul_tmul', smul_eq_mul]
       | add x y hx hy => simp_all [smul_add] }
 

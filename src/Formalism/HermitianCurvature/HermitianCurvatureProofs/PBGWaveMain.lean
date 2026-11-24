@@ -88,7 +88,7 @@ theorem slicePolyAll : SlicePolyAll := by
           (D.uwG P.k P.r p.T.base.z p.T.base.z' F 0 hj w' a)) h) g = _
       rw [letter_level_zero_eq]
       by_cases he : e = 0
-      · simp [he, Finset.sum_apply, Fin.sum_univ_succ, KB.slv]
+      · simp [he, Finset.sum_apply, KB.slv]
       · simp [he, sliceAt_zero, Finset.sum_apply, D.castF]
   · refine slicePoly_of_pt p.T F hF j hj (by omega) h hh w' b δ e (fun a g hg hD => ?_)
     obtain ⟨c, hcl, hc⟩ := uwG_letter_poly p.T.base.z p.T.base.z' j hj hF.1 w' a g hg hD b e

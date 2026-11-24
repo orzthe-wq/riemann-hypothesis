@@ -93,11 +93,6 @@ theorem detAt_one' {D : D7} {e : AE D} (he2 : e * e = e) (V : HSp D) : detAt e V
   rw [Formalism.IndefR.Fin.LevelGroupLemmas.detAt_val he2, Formalism.IndefR.Fin.LevelGroupLemmas.mt_one', Matrix.det_one, Units.val_one]
   ring
 
-theorem resG_inv_eq {D : D7} {V : HSp D} {ε : AF D.host.F} (hε : IsIdempotentElem ε) (g : GA D V) :
-    (resG V ε g)⁻¹ = resG V ε g⁻¹ := by
-  refine inv_eq_of_mul_eq_one_right ?_
-  rw [← resG_mul V hε, mul_inv_cancel, resG_one V hε]
-
 theorem actO_one_resG_compl {D : D7} {S T : HSp D} {e : AE D} (he2 : e * e = e) (hc : e * cA D e = 0) {ε : AF D.host.F}
     (hε : IsIdempotentElem ε) (halg : algebraMap (AF D.host.F) (AE D) ε = e + cA D e) (h : GA D T) (x : WO S T)
     (hx : IsHalf e x) : actO S T 1 (resG T (1 - ε) h) x = x := by
@@ -113,15 +108,6 @@ theorem actO_one_resG_compl {D : D7} {S T : HSp D} {e : AE D} (he2 : e * e = e) 
   simp only [Matrix.mul_apply, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]
   refine Finset.sum_eq_zero fun l _ => ?_
   rw [mul_assoc, mul_left_comm, hann l j, mul_zero]
-
-theorem isSBHalf_halfInd {D : D7} {m n : ℕ} (e : AE D) (Λ : AddSubgroup (Mx D m n)) : IsSBHalf e Λ (halfInd e Λ) := by
-  refine ⟨fun x hx => ?_, 1, one_pos, fun u hu hu' x => ?_, fun x hx => ?_⟩
-  · by_contra h; exact hx (if_neg fun h' => h h'.2)
-  · rw [one_smul]
-    have h1 : IsHalf e (x + u) ↔ IsHalf e x := forall₂_congr fun i j => by
-      rw [Matrix.add_apply, mul_add, hu' i j, add_left_inj]
-    exact halfInd_congr (and_congr (AddSubgroup.add_mem_cancel_right _ hu) h1)
-  · rw [one_smul]; by_contra h; exact hx (if_neg fun h' => h h'.1)
 
 end GlobalTheory.TopLevelInv
 

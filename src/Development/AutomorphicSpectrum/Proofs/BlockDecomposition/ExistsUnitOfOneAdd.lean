@@ -108,7 +108,6 @@ theorem inP_dg (i₀ : Fin n) (h₀ : (i₀ : ℕ) = 0) (s : Fˣ) : inP 1 (dg i�
   have key : ∀ i j : Fin n, 1 ≤ (i : ℕ) ∨ 1 < (j : ℕ) →
       (dg i₀ s : GL (Fin n) F) i j = (1 : Matrix (Fin n) (Fin n) F) i j := by
     intro i j hij
-    change ((dg i₀ s : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = _
     rw [coe_dg, diagonal_apply, Matrix.one_apply]
     by_cases h : i = j
     · subst h

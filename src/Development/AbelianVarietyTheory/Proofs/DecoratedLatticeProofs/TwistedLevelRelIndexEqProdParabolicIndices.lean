@@ -73,7 +73,7 @@ theorem restrictedBlock_self_apply {κ : Type} [CommRing κ] {n : ℕ} (g : GL (
   apply Units.ext
   rw [Formalism.L2.DIV.upper_block_val_submatrix _ hg]
   ext i j
-  simp [Fin.castLE]
+  simp
 
 variable {D : D7}
 

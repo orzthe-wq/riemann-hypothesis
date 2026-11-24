@@ -2,6 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.UpLReStage
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMovedRowLiftDataToFittingStages
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonzeroPlacesOverPrimesOfLifts
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Wp3ApplyEqSqMulSubSqMul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -396,7 +397,9 @@ def ReadSame.rxs (s : ReadSame N h t Y L) (x : RXs t) : RXs s.what₂ where
   canon := (by with_unfolding_all exact (x.canon :))
   rank := (by with_unfolding_all exact (x.rank :))
   pb := (by with_unfolding_all exact (x.pb :))
-  std := by with_unfolding_all exact (x.std :)
+  std := by
+    with_unfolding_all
+      exact StateChecks.std_cpR (a := Z) (Db.setDivZ Z N h) t.r.z x.std
 
 end Rows
 

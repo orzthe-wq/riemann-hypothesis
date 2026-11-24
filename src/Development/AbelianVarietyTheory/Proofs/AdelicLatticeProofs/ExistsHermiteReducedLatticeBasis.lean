@@ -2,15 +2,15 @@ module
 
 public import Mathlib.Basic.Real.Basic
 public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DetLeadingMinorGramIwasawaStatement
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramLeadingMinorLowerBoundIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramMinorSwapAdjacentColumnsStatement
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IwasawaDecompositionRealMatrixStatement
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnipotentUpperSizeReductionStatement
+public import Mathlib.LinearAlgebra.Matrix.Block
+public import Mathlib.Analysis.InnerProductSpace.Defs
+public import Mathlib.Analysis.InnerProductSpace.GramSchmidtOrtho
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.Algebra.Order.Round
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramLeadingMinorLowerBoundIntegral
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -28,8 +28,6 @@ import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -52,9 +50,421 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.Style
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
+import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Algebra.Order.Star.Real
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DetLeadingMinorGramIwasawa, Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramMinorSwapAdjacentColumns, Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IwasawaDecompositionRealMatrix, Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnipotentUpperSizeReduction, Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsHermiteReducedLatticeBasis
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DetLeadingMinorGramIwasawa =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DetLeadingMinorGramIwasawa", "h": "module\n\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair\npublic import Mathlib.LinearAlgebra.Matrix.Block\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix GlobalTheory.ClassFin
+open scoped Kronecker ComplexOrder TensorProduct
+
+namespace GlobalTheory.ClassFin
+
+theorem det_leading_gram_iwasawa : ∀ (N : ℕ) (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ) (n : Matrix (Fin N) (Fin N) ℝ), kᵀ * k = 1 → (∀ i, n i i = 1) → (∀ i j, j < i → n i j = 0) → ∀ (j : ℕ) (h : j ≤ N), (((k * diagonal a * n)ᵀ * (k * diagonal a * n)).submatrix (Fin.castLE h) (Fin.castLE h)).det = ∏ i : Fin j, a (Fin.castLE h i) ^ 2 := by
+  intro N k a n hk hd hn j h
+  have h1 : (k * diagonal a * n)ᵀ * (k * diagonal a * n)
+      = nᵀ * diagonal (fun i => a i ^ 2) * n := by
+    have : diagonal (fun i => a i ^ 2) = diagonal a * diagonal a := by
+      rw [diagonal_mul_diagonal]; simp [sq]
+    rw [this, transpose_mul, transpose_mul, diagonal_transpose]
+    calc nᵀ * (diagonal a * kᵀ) * (k * diagonal a * n)
+        = nᵀ * (diagonal a * (kᵀ * k) * diagonal a) * n := by simp only [Matrix.mul_assoc]
+      _ = _ := by rw [hk, Matrix.mul_one]
+  have h2 : (nᵀ * diagonal (fun i => a i ^ 2) * n).submatrix (Fin.castLE h) (Fin.castLE h)
+      = (n.submatrix (Fin.castLE h) (Fin.castLE h))ᵀ
+        * diagonal (fun i : Fin j => a (Fin.castLE h i) ^ 2)
+        * n.submatrix (Fin.castLE h) (Fin.castLE h) := by
+    ext p q
+    rw [submatrix_apply, Matrix.mul_apply, Matrix.mul_apply]
+    symm
+    refine Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ ?_ ?_
+    · intro r hr
+      have hr' : j ≤ r.val := by
+        by_contra hlt
+        exact hr ⟨⟨r.val, not_le.mp hlt⟩, Fin.ext rfl⟩
+      have : n r (Fin.castLE h q) = 0 := hn _ _ (by
+        rw [Fin.lt_def]; have := q.2; simp; omega)
+      rw [this, mul_zero]
+    · intro r
+      simp [Matrix.mul_diagonal]
+  have h3 : (n.submatrix (Fin.castLE h) (Fin.castLE h)).det = 1 := by
+    rw [det_of_isUpperTriangular]
+    · simp [hd]
+    · intro p q hpq
+      exact hn _ _ (by
+        have h' : q < p := hpq
+        exact h')
+  rw [h1, h2, det_mul, det_mul, det_transpose, h3, det_diagonal]
+  simp
+
+end GlobalTheory.ClassFin
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DetLeadingMinorGramIwasawa =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramMinorSwapAdjacentColumns =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramMinorSwapAdjacentColumns", "h": "module\n\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair\npublic import Mathlib.LinearAlgebra.Matrix.Block\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix GlobalTheory.ClassFin
+open scoped Kronecker ComplexOrder TensorProduct
+
+namespace GlobalTheory.ClassFin
+
+private theorem exch_sum_split {N : ℕ} (p q : Fin N) (hq : (q : ℕ) = p + 1) (f : Fin N → ℝ)
+    (hf : ∀ r, q < r → f r = 0) :
+    ∑ r, f r = ∑ r ∈ Finset.univ.filter (· < p), f r + (f p + f q) := by
+  have hpq : p ≠ q := fun e => by have := congrArg Fin.val e; omega
+  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (· < p)]
+  congr 1
+  have hsub : ({p, q} : Finset (Fin N)) ⊆ Finset.univ.filter (fun r => ¬ r < p) := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt, Fin.le_def]
+    rcases hx with rfl | rfl <;> omega
+  rw [← Finset.sum_subset hsub, Finset.sum_pair hpq]
+  intro x hx hx'
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt, Fin.le_def] at hx
+  simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hx'
+  apply hf
+  rw [Fin.lt_def]
+  have h1 : (x : ℕ) ≠ p := fun e => hx'.1 (Fin.ext e)
+  have h2 : (x : ℕ) ≠ q := fun e => hx'.2 (Fin.ext e)
+  omega
+
+private theorem det_updateRow_last_single_eq_mul_det_submatrix {m : ℕ} (X : Matrix (Fin (m + 1)) (Fin (m + 1)) ℝ) (x : ℝ) :
+    (X.updateRow (Fin.last m) (Pi.single (Fin.last m) x)).det =
+      x * (X.submatrix Fin.castSucc Fin.castSucc).det := by
+  rw [Matrix.det_succ_row _ (Fin.last m), Finset.sum_eq_single (Fin.last m)]
+  · have hsub : (X.updateRow (Fin.last m) (Pi.single (Fin.last m) x)).submatrix
+        (Fin.last m).succAbove (Fin.last m).succAbove = X.submatrix Fin.castSucc Fin.castSucc := by
+      ext i j
+      simp only [Matrix.submatrix_apply, Fin.succAbove_last]
+      rw [Matrix.updateRow_ne (Fin.castSucc_lt_last i).ne]
+    rw [hsub, Matrix.updateRow_self, Pi.single_eq_same, Fin.val_last, Even.neg_one_pow ⟨m, rfl⟩, one_mul]
+  · intro j _ hj
+    rw [Matrix.updateRow_self, Pi.single_eq_of_ne hj, mul_zero, zero_mul]
+  · intro h
+    exact absurd (Finset.mem_univ _) h
+
+theorem gram_minor_swap_columns : ∀ (N : ℕ) (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ) (n g g' : Matrix (Fin N) (Fin N) ℝ) (p q : Fin N), kᵀ * k = 1 → (∀ i, n i i = 1) → (∀ i j, j < i → n i j = 0) → (q : ℕ) = p + 1 → g = k * diagonal a * n → g' = g.submatrix id (Equiv.swap p q) → (∀ (j : ℕ) (h : j ≤ N), j ≠ q → ((g'ᵀ * g').submatrix (Fin.castLE h) (Fin.castLE h)).det = ((gᵀ * g).submatrix (Fin.castLE h) (Fin.castLE h)).det) ∧ ∀ h : (q : ℕ) ≤ N, ((g'ᵀ * g').submatrix (Fin.castLE h) (Fin.castLE h)).det = (∏ l ∈ Finset.univ.filter (· < p), a l ^ 2) * (a q ^ 2 + n p q ^ 2 * a p ^ 2) := by
+  intro N k a n g g' p q hk hn1 hn0 hq hg hg'
+
+  have hG : gᵀ * g = (diagonal a * n)ᵀ * (diagonal a * n) := by
+    rw [hg]
+    simp only [Matrix.transpose_mul, Matrix.mul_assoc]
+    rw [← Matrix.mul_assoc kᵀ k, hk, Matrix.one_mul]
+  have hG' : g'ᵀ * g' = (gᵀ * g).submatrix (Equiv.swap p q) (Equiv.swap p q) := by
+    rw [hg']
+    ext i j
+    simp [Matrix.mul_apply]
+  rw [hG', hG]
+  set M : Matrix (Fin N) (Fin N) ℝ := diagonal a * n with hM
+  have hMe : ∀ i j, M i j = a i * n i j := fun i j => by simp [hM, Matrix.diagonal_mul]
+  have hMl : ∀ i j, j < i → M i j = 0 := fun i j h => by rw [hMe, hn0 i j h, mul_zero]
+  have hMd : ∀ i, M i i = a i := fun i => by rw [hMe, hn1, mul_one]
+  refine ⟨fun j hj hjq => ?_, fun h => ?_⟩
+  · by_cases hjp : j ≤ (p : ℕ)
+    ·
+      congr 1
+      have hfix : ∀ z : Fin j, Equiv.swap p q (Fin.castLE hj z) = Fin.castLE hj z := by
+        intro z
+        have hz := z.isLt
+        apply Equiv.swap_apply_of_ne_of_ne
+        · intro e
+          have := congrArg Fin.val e
+          simp only [Fin.coe_castLE] at this
+          omega
+        · intro e
+          have := congrArg Fin.val e
+          simp only [Fin.coe_castLE] at this
+          omega
+      ext x y
+      simp only [Matrix.submatrix_apply, hfix]
+    ·
+      have hpj : (p : ℕ) < j := by omega
+      have hqj : (q : ℕ) < j := by omega
+      have e1 : Fin.castLE hj ⟨p, hpj⟩ = p := Fin.ext rfl
+      have e2 : Fin.castLE hj ⟨q, hqj⟩ = q := Fin.ext rfl
+      have hs : ∀ z : Fin j, Equiv.swap p q (Fin.castLE hj z) =
+          Fin.castLE hj (Equiv.swap ⟨p, hpj⟩ ⟨q, hqj⟩ z) := by
+        intro z
+        have := (Fin.castLE_injective hj).swap_apply ⟨p, hpj⟩ ⟨q, hqj⟩ z
+        rwa [e1, e2] at this
+      have hsub : ((Mᵀ * M).submatrix (Equiv.swap p q) (Equiv.swap p q)).submatrix (Fin.castLE hj)
+          (Fin.castLE hj) = ((Mᵀ * M).submatrix (Fin.castLE hj) (Fin.castLE hj)).submatrix
+          (Equiv.swap (⟨p, hpj⟩ : Fin j) ⟨q, hqj⟩) (Equiv.swap (⟨p, hpj⟩ : Fin j) ⟨q, hqj⟩) := by
+        ext x y
+        simp only [Matrix.submatrix_apply, hs]
+      rw [hsub, Matrix.det_submatrix_equiv_self]
+  · obtain ⟨p, hp⟩ := p
+    obtain ⟨q, hqN⟩ := q
+    change q = p + 1 at hq
+    subst hq
+    have h' : p + 1 ≤ N := h
+    set P : Fin N := ⟨p, hp⟩ with hP
+    set Q : Fin N := ⟨p + 1, hqN⟩ with hQ
+    set σ := Equiv.swap P Q with hσ
+    set c : Fin (p + 1) → Fin N := Fin.castLE h' with hc
+    show (((Mᵀ * M).submatrix σ σ).submatrix c c).det = _
+    have hcl : c (Fin.last p) = P := Fin.ext rfl
+    have hσc : ∀ s : Fin (p + 1), s ≠ Fin.last p → σ (c s) = c s := by
+      intro s hs
+      have h1 : (s : ℕ) < p := by
+        have := s.isLt
+        have : (s : ℕ) ≠ p := fun e => hs (Fin.ext e)
+        omega
+      apply Equiv.swap_apply_of_ne_of_ne
+      · intro e
+        have := congrArg Fin.val e
+        change (s : ℕ) = p at this
+        omega
+      · intro e
+        have := congrArg Fin.val e
+        change (s : ℕ) = p + 1 at this
+        omega
+    have hσl : σ (c (Fin.last p)) = Q := by
+      rw [hcl]
+      exact Equiv.swap_apply_left P Q
+    have hle : ∀ s, σ (c s) ≤ Q := by
+      intro s
+      by_cases hs : s = Fin.last p
+      · rw [hs, hσl]
+      · rw [hσc s hs, Fin.le_def]
+        change (s : ℕ) ≤ p + 1
+        have := s.isLt
+        omega
+
+    set B : Matrix (Fin (p + 1)) (Fin (p + 1)) ℝ := Matrix.of fun s i => M (c s) (σ (c i)) with hB
+    have hBe : ∀ s i, B s i = M (c s) (σ (c i)) := fun s i => rfl
+    set emb : Fin p ↪ Fin N :=
+      ⟨fun i : Fin p => c i.castSucc, fun x y e => by simpa [Fin.ext_iff, hc] using e⟩ with hemb
+    have hembx : ∀ x, emb x = c x.castSucc := fun x => rfl
+    have hfilt : Finset.univ.filter (· < P) = (Finset.univ : Finset (Fin p)).map emb := by
+      ext l
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map]
+      constructor
+      · intro hl
+        exact ⟨⟨l, hl⟩, Fin.ext rfl⟩
+      · rintro ⟨i, _, rfl⟩
+        exact i.isLt
+
+    have hX : ((Mᵀ * M).submatrix σ σ).submatrix c c =
+        (Bᵀ * B).updateRow (Fin.last p) ((Bᵀ * B) (Fin.last p) + Pi.single (Fin.last p) (a Q ^ 2)) := by
+      ext i j
+      have hsum : (((Mᵀ * M).submatrix σ σ).submatrix c c) i j =
+          (Bᵀ * B) i j + M Q (σ (c i)) * M Q (σ (c j)) := by
+        simp only [Matrix.submatrix_apply, Matrix.mul_apply, Matrix.transpose_apply, hBe]
+        rw [exch_sum_split P Q rfl _ (fun r hr => by rw [hMl r _ (lt_of_le_of_lt (hle i) hr), zero_mul]),
+          Fin.sum_univ_castSucc, hfilt, Finset.sum_map, hcl]
+        simp only [hembx]
+        ring
+      rw [hsum]
+      by_cases hi : i = Fin.last p
+      · subst hi
+        rw [Matrix.updateRow_self, Pi.add_apply]
+        by_cases hj : j = Fin.last p
+        · subst hj
+          rw [hσl, hMd, Pi.single_eq_same]
+          ring
+        · rw [hσl, hσc j hj, hMl Q (c j) (Fin.lt_def.2 j.isLt), mul_zero, Pi.single_eq_of_ne hj]
+      · rw [Matrix.updateRow_ne hi, hσc i hi, hMl Q (c i) (Fin.lt_def.2 i.isLt), zero_mul, add_zero]
+    have hBT : B.BlockTriangular id := by
+      intro s i hi
+      have hil : i ≠ Fin.last p := fun e => by
+        rw [e] at hi
+        exact (not_lt.2 (Fin.le_last s)) hi
+      rw [hBe, hσc i hil]
+      exact hMl _ _ (Fin.lt_def.2 (Fin.lt_def.1 hi))
+    have hdB : B.det = (∏ i : Fin p, a (c i.castSucc)) * (a P * n P Q) := by
+      rw [Matrix.det_of_upperTriangular hBT, Fin.prod_univ_castSucc]
+      congr 1
+      · refine Finset.prod_congr rfl fun i _ => ?_
+        rw [hBe, hσc _ (Fin.castSucc_lt_last i).ne, hMd]
+      · rw [hBe, hσl, hcl, hMe]
+    have hminor : (Bᵀ * B).submatrix Fin.castSucc Fin.castSucc =
+        (B.submatrix Fin.castSucc Fin.castSucc)ᵀ * B.submatrix Fin.castSucc Fin.castSucc := by
+      ext i j
+      simp only [Matrix.submatrix_apply, Matrix.mul_apply, Matrix.transpose_apply]
+      rw [Fin.sum_univ_castSucc]
+      have hz : B (Fin.last p) i.castSucc = 0 := by
+        rw [hBe, hσc _ (Fin.castSucc_lt_last i).ne, hcl]
+        exact hMl _ _ (Fin.lt_def.2 (Fin.lt_def.1 (Fin.castSucc_lt_last i)))
+      rw [hz, zero_mul, add_zero]
+    have hBT' : (B.submatrix Fin.castSucc Fin.castSucc).BlockTriangular id := by
+      intro s i hi
+      exact hBT (Fin.castSucc_lt_castSucc_iff.2 hi)
+    have hdB' : (B.submatrix Fin.castSucc Fin.castSucc).det = ∏ i : Fin p, a (c i.castSucc) := by
+      rw [Matrix.det_of_upperTriangular hBT']
+      refine Finset.prod_congr rfl fun i _ => ?_
+      rw [Matrix.submatrix_apply, hBe, hσc _ (Fin.castSucc_lt_last i).ne, hMd]
+    have hprod : ∏ l ∈ Finset.univ.filter (· < P), a l ^ 2 = (∏ i : Fin p, a (c i.castSucc)) ^ 2 := by
+      rw [hfilt, Finset.prod_map, ← Finset.prod_pow]
+      simp only [hembx]
+    rw [hX, Matrix.det_updateRow_add, Matrix.updateRow_eq_self, det_updateRow_last_single_eq_mul_det_submatrix, hminor,
+      Matrix.det_mul, Matrix.det_transpose, Matrix.det_mul, Matrix.det_transpose, hdB, hdB', hprod]
+    ring
+
+end GlobalTheory.ClassFin
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramMinorSwapAdjacentColumns =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IwasawaDecompositionRealMatrix =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IwasawaDecompositionRealMatrix", "h": "module\n\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\nimport Mathlib.Algebra.Order.Archimedean.Real.Hom\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair\npublic import Mathlib.Analysis.InnerProductSpace.Defs\npublic import Mathlib.Analysis.InnerProductSpace.GramSchmidtOrtho\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix GlobalTheory.ClassFin
+open scoped Kronecker ComplexOrder TensorProduct
+
+namespace GlobalTheory.ClassFin
+
+theorem exists_orthogonal_mul_upper (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ) :
+    ∃ (k r : Matrix (Fin N) (Fin N) ℝ), kᵀ * k = 1 ∧ (∀ i j, j < i → r i j = 0) ∧ g = k * r := by
+  classical
+  let f : Fin N → EuclideanSpace ℝ (Fin N) := fun j => WithLp.toLp 2 (fun i => g i j)
+  have h : Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) = Fintype.card (Fin N) := by simp
+  let b := InnerProductSpace.gramSchmidtOrthonormalBasis h f
+  refine ⟨Matrix.of fun i j => b j i, Matrix.of fun i j => inner ℝ (b i) (f j), ?_, ?_, ?_⟩
+  · ext i j
+    have := orthonormal_iff_ite.mp b.orthonormal i j
+    rw [Matrix.mul_apply, Matrix.one_apply, ← this, PiLp.inner_apply]
+    simp [mul_comm]
+  · intro i j hij
+    exact InnerProductSpace.gramSchmidtOrthonormalBasis_inv_triangular h f hij
+  · ext i j
+    have := congrArg (fun v : EuclideanSpace ℝ (Fin N) => v i) (b.sum_repr' (f j))
+    simp only [WithLp.ofLp_sum, Finset.sum_apply, WithLp.ofLp_smul, Pi.smul_apply, smul_eq_mul] at this
+    rw [Matrix.mul_apply]
+    simp only [Matrix.of_apply]
+    calc g i j = f j i := rfl
+      _ = _ := this.symm
+      _ = _ := Finset.sum_congr rfl fun x _ => mul_comm _ _
+
+theorem iwasawa_real : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det ≠ 0 → ∃ (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ) (n : Matrix (Fin N) (Fin N) ℝ), kᵀ * k = 1 ∧ (∀ i, 0 < a i) ∧ (∀ i, n i i = 1) ∧ (∀ i j, j < i → n i j = 0) ∧ g = k * diagonal a * n := by
+  intro N g hg
+  obtain ⟨k, r, hk, hr, rfl⟩ := exists_orthogonal_mul_upper N g
+  have hbt : r.BlockTriangular id := fun i j hij => hr i j hij
+  have hdet : r.det ≠ 0 := by
+    intro h0
+    apply hg
+    rw [Matrix.det_mul, h0, mul_zero]
+  rw [Matrix.det_of_isUpperTriangular hbt, Finset.prod_ne_zero_iff] at hdet
+  have hne : ∀ i, r i i ≠ 0 := fun i => hdet i (Finset.mem_univ i)
+  have habs : ∀ i, |r i i| ≠ 0 := fun i => abs_ne_zero.mpr (hne i)
+  refine ⟨k * diagonal (fun i => r i i / |r i i|), fun i => |r i i|,
+    Matrix.of fun i j => r i j / r i i, ?_, fun i => abs_pos.mpr (hne i), ?_, ?_, ?_⟩
+  · rw [Matrix.transpose_mul, Matrix.diagonal_transpose, Matrix.mul_assoc, ← Matrix.mul_assoc kᵀ, hk,
+      Matrix.one_mul, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
+    congr 1
+    funext i
+    rw [div_mul_div_comm, abs_mul_abs_self, div_self (mul_ne_zero (hne i) (hne i))]
+  · intro i
+    exact div_self (hne i)
+  · intro i j hij
+    simp [hr i j hij]
+  · rw [Matrix.mul_assoc, Matrix.mul_assoc]
+    congr 1
+    ext i j
+    rw [Matrix.diagonal_mul, Matrix.diagonal_mul, Matrix.of_apply]
+    have h1 := hne i
+    have h2 := habs i
+    field_simp
+
+end GlobalTheory.ClassFin
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IwasawaDecompositionRealMatrix =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnipotentUpperSizeReduction =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnipotentUpperSizeReduction", "h": "module\n\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.Data.Matrix.Mul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair\npublic import Mathlib.Algebra.Order.Round\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix GlobalTheory.ClassFin
+open scoped Kronecker ComplexOrder TensorProduct
+
+namespace GlobalTheory.ClassFin
+
+theorem unipotent_size_reduction_column {N : ℕ} (n : Matrix (Fin N) (Fin N) ℝ)
+    (h1 : ∀ i, n i i = 1) (h0 : ∀ i j, j < i → n i j = 0) (j : Fin N) (k : ℕ) :
+    ∃ z : Fin N → ℤ, z j = 1 ∧ (∀ l, j < l → z l = 0) ∧
+      ∀ i, i < j → (j : ℕ) ≤ i + k → |∑ l, n i l * (z l : ℝ)| ≤ 1 / 2 := by
+  induction k with
+  | zero =>
+    refine ⟨Pi.single j 1, by simp, fun l hl => by simp [hl.ne'], ?_⟩
+    intro i hi hk
+    exact absurd hk (by have : (i : ℕ) < j := hi; omega)
+  | succ k ih =>
+    obtain ⟨z, hz1, hz0, hz⟩ := ih
+    by_cases hk : k + 1 ≤ (j : ℕ)
+    · let i0 : Fin N := ⟨j - (k + 1), by have := j.2; omega⟩
+      have hi0v : (i0 : ℕ) = j - (k + 1) := rfl
+      have hi0 : i0 < j := by
+        show (i0 : ℕ) < j
+        omega
+      set c : ℤ := -round (∑ l, n i0 l * (z l : ℝ)) with hc
+      have key : ∀ i, ∑ l, n i l * (((z + Pi.single i0 c : Fin N → ℤ) l : ℤ) : ℝ)
+          = ∑ l, n i l * (z l : ℝ) + n i i0 * c := by
+        intro i
+        simp only [Pi.add_apply, Int.cast_add, mul_add, Finset.sum_add_distrib]
+        congr 1
+        rw [Finset.sum_eq_single i0]
+        · simp
+        · intro b _ hb
+          simp [hb]
+        · simp
+      refine ⟨z + Pi.single i0 c, ?_, ?_, ?_⟩
+      · simp [hi0.ne', hz1]
+      · intro l hl
+        simp [(hi0.trans hl).ne', hz0 l hl]
+      · intro i hi hik
+        rw [key]
+        by_cases h : i = i0
+        · subst h
+          rw [h1, one_mul, hc, Int.cast_neg, ← sub_eq_add_neg]
+          exact abs_sub_round _
+        · have hne : (i : ℕ) ≠ i0 := fun e => h (Fin.ext e)
+          have hlt : i0 < i := by
+            show (i0 : ℕ) < i
+            omega
+          rw [h0 i i0 hlt, zero_mul, add_zero]
+          exact hz i hi (by omega)
+    · exact ⟨z, hz1, hz0, fun i hi _ => hz i hi (by omega)⟩
+
+theorem unipotent_size_reduction :
+    ∀ (N : ℕ) (n : Matrix (Fin N) (Fin N) ℝ), (∀ i, n i i = 1) → (∀ i j, j < i → n i j = 0) →
+      ∃ ν : Matrix (Fin N) (Fin N) ℤ, (∀ i, ν i i = 1) ∧ (∀ i j, j < i → ν i j = 0) ∧
+        ∀ i j, i < j → |(n * ν.map (Int.cast : ℤ → ℝ)) i j| ≤ 1 / 2 := by
+  intro N n h1 h0
+  choose z hz1 hz0 hz using fun j => unipotent_size_reduction_column n h1 h0 j N
+  refine ⟨Matrix.of fun i j => z j i, fun i => hz1 i, fun i j h => hz0 j i h, ?_⟩
+  intro i j hij
+  rw [Matrix.mul_apply]
+  exact hz j i hij (by have := j.2; omega)
+
+end GlobalTheory.ClassFin
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnipotentUpperSizeReduction =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsHermiteReducedLatticeBasis =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsHermiteReducedLatticeBasis", "h": "module\n\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.DetLeadingMinorGramIwasawa\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramLeadingMinorLowerBoundIntegral\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.GramMinorSwapAdjacentColumns\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IwasawaDecompositionRealMatrix\npublic import Mathlib.Data.Matrix.Mul\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.UnipotentUpperSizeReduction\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix GlobalTheory.ClassFin
@@ -118,10 +528,10 @@ theorem le_of_swap {N : ℕ} (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ
   set g := k * diagonal a * n with hg
   have hpq : p < q := by rw [Fin.lt_def]; omega
   have hqN : (q : ℕ) ≤ N := q.2.le
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.gram_minor_swap_adjacent_columns N k a n g (g.submatrix id (Equiv.swap p q)) p q hk hn1 hn0 hq rfl rfl
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.ClassFin.gram_minor_swap_columns N k a n g (g.submatrix id (Equiv.swap p q)) p q hk hn1 hn0 hq rfl rfl
   have hG : ∀ j : Fin (N + 1),
       gramMinor g j = ∏ i : Fin j, a (Fin.castLE (Nat.lt_succ_iff.mp j.2) i) ^ 2 :=
-    fun j => GlobalTheory.T.det_leading_minor_gram_iwasawa N k a n hk hn1 hn0 j _
+    fun j => _root_.GlobalTheory.ClassFin.det_leading_gram_iwasawa N k a n hk hn1 hn0 j _
   let qq : Fin (N + 1) := ⟨q, Nat.lt_succ_of_le hqN⟩
   have hpos : ∀ j, 0 < gramMinor g j := fun j => by
     rw [hG]
@@ -162,7 +572,7 @@ theorem le_of_swap {N : ℕ} (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ
 
 theorem exists_reduced : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det ≠ 0 → ∃ (γ : Matrix (Fin N) (Fin N) ℤ) (k : Matrix (Fin N) (Fin N) ℝ) (a : Fin N → ℝ) (n : Matrix (Fin N) (Fin N) ℝ), (γ.det = 1 ∨ γ.det = -1) ∧ kᵀ * k = 1 ∧ (∀ i, 0 < a i) ∧ (∀ i, n i i = 1) ∧ (∀ i j, j < i → n i j = 0) ∧ (∀ i j, i < j → |n i j| ≤ 1 / 2) ∧ (∀ p q : Fin N, (q : ℕ) = p + 1 → a p ≤ 2 * a q) ∧ g * γ.map (Int.cast : ℤ → ℝ) = k * diagonal a * n := by
   intro N g hg
-  obtain ⟨c, hc, hcb⟩ := GlobalTheory.T.gram_leading_minor_lower_bound_integral N g hg
+  obtain ⟨c, hc, hcb⟩ := _root_.GlobalTheory.ClassFin.gram_leading_minor_lower_bound N g hg
   let S := {γ : Matrix (Fin N) (Fin N) ℤ // γ.det = 1 ∨ γ.det = -1}
   have : Nonempty S := ⟨⟨1, Or.inl Matrix.det_one⟩⟩
   have hdet0 : ∀ γ : S, γ.1.det ≠ 0 := fun γ => by
@@ -179,8 +589,8 @@ theorem exists_reduced : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det �
     refine mul_ne_zero hg ?_
     rw [← Int.cast_det]
     exact_mod_cast hdet0 γ0
-  obtain ⟨k, a, n, hk, ha, hn1, hn0, hgk⟩ := GlobalTheory.T.iwasawa_decomposition_real_matrix N _ hgd
-  obtain ⟨ν, hν1, hν0, hνb⟩ := GlobalTheory.T.unipotent_upper_size_reduction N n hn1 hn0
+  obtain ⟨k, a, n, hk, ha, hn1, hn0, hgk⟩ := _root_.GlobalTheory.ClassFin.iwasawa_real N _ hgd
+  obtain ⟨ν, hν1, hν0, hνb⟩ := _root_.GlobalTheory.ClassFin.unipotent_size_reduction N n hn1 hn0
   have hνR1 : ∀ i, ν.map (Int.cast : ℤ → ℝ) i i = 1 := fun i => by simp [hν1]
   have hνR0 : ∀ i j, j < i → ν.map (Int.cast : ℤ → ℝ) i j = 0 := fun i j h => by simp [hν0 i j h]
   obtain ⟨hn'1, hn'0⟩ := mul_upper n _ hn1 hn0 hνR1 hνR0
@@ -201,7 +611,7 @@ theorem exists_reduced : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det �
     rw [hgk]
     refine Finset.prod_congr rfl fun j _ => ?_
     unfold gramMinor
-    rw [GlobalTheory.T.det_leading_minor_gram_iwasawa N k a _ hk hn'1 hn'0 j _, GlobalTheory.T.det_leading_minor_gram_iwasawa N k a n hk hn1 hn0 j _]
+    rw [_root_.GlobalTheory.ClassFin.det_leading_gram_iwasawa N k a _ hk hn'1 hn'0 j _, _root_.GlobalTheory.ClassFin.det_leading_gram_iwasawa N k a n hk hn1 hn0 j _]
   refine ⟨γ0.1 * ν, k, a, n * ν.map (Int.cast : ℤ → ℝ), hγdet, hk, ha, hn'1, hn'0, hνb,
     fun p q hq => ?_, heq⟩
   have hpq : p ≠ q := fun h => by rw [h] at hq; omega
@@ -218,3 +628,6 @@ theorem exists_reduced : ∀ (N : ℕ) (g : Matrix (Fin N) (Fin N) ℝ), g.det �
   exact hγ0 γ'
 
 end GlobalTheory.ClassFin.HermiteReduction
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsHermiteReducedLatticeBasis =====

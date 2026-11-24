@@ -3,58 +3,8 @@ module
 public import GroundTheory.Brauer.SkolemNoether
 public import Mathlib.RingTheory.SimpleModule.Basic
 import GroundTheory.Brauer.TensorSimple
-import Mathlib.Algebra.Lie.OfAssociative
-import Mathlib.Algebra.Module.Torsion.Prod
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.LinearAlgebra.Basis.MulOpposite
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleModule.WedderburnArtin
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.TensorProduct.Finite
 
 @[expose] public section
 
@@ -82,14 +32,9 @@ theorem exists_linearEquiv_pi_simple :
     ∃ (S : Submodule R (R × M)) (r m : ℕ), IsSimpleModule R S ∧ 0 < r ∧
       Nonempty (R ≃ₗ[R] (Fin r → S)) ∧ Nonempty (M ≃ₗ[R] (Fin m → S)) := by
   have : IsArtinianRing R := IsArtinianRing.of_finite K R
-  have : Module.Finite R (R × M) := Module.Finite.of_restrictScalars_finite K R _
-  obtain ⟨k, _, S, hS, -⟩ := (IsSimpleRing.isIsotypic R (R × M)).linearEquiv_fun
-  have hT : IsIsotypicOfType R (R × M) S := IsSimpleRing.isIsotypic R (R × M) S
   have : Module.Finite R M := Module.Finite.of_restrictScalars_finite K R _
-  obtain ⟨r, ⟨eR⟩⟩ :=
-    (hT.of_injective (LinearMap.inl R R M) LinearMap.inl_injective).linearEquiv_fun
-  obtain ⟨m, ⟨eM⟩⟩ :=
-    (hT.of_injective (LinearMap.inr R R M) LinearMap.inr_injective).linearEquiv_fun
+  obtain ⟨S, r, m, hS, ⟨eR⟩, ⟨eM⟩⟩ :=
+    exists_linearEquiv_pi_simple_of_nontrivial_prod R R M
   refine ⟨S, r, m, hS, Nat.pos_of_ne_zero ?_, ⟨eR⟩, ⟨eM⟩⟩
   rintro rfl
   exact not_subsingleton R eR.subsingleton
@@ -194,6 +139,8 @@ variable [Algebra.IsCentral K A] [IsSimpleRing A] [FiniteDimensional K A] [IsSim
 
 theorem finrank_mul_finrank_centralizer :
     finrank K B * finrank K (Subalgebra.centralizer K (B : Set A)) = finrank K A := by
+  let _ : FiniteDimensional K B :=
+    FiniteDimensional.of_injective B.val.toLinearMap Subtype.val_injective
   have h := finrank_mul_finrank_end K (A ⊗[K] Bᵐᵒᵖ) (Twist B.val)
   rw [(endAlgEquiv B).toLinearEquiv.finrank_eq, MulOpposite.finrank, Module.finrank_tensorProduct,
     MulOpposite.finrank] at h

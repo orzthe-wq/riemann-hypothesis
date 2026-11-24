@@ -46,6 +46,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.BcField
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeB
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeC
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -62,14 +64,6 @@ open scoped CategoryTheory.Obj Matrix
 open ReciprocityTheory.ChartRestriction.G.Chart (IsUnivChart sp)
 
 attribute [local instance] Over.cartesianMonoidalCategory
-
-theorem isGrpPullback_id {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 S) (𝟙 G.left) := by
-  refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩
-  let ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T := Over.homMk (𝟙 T.left) (by simp)
-  have ex : x₀ = ρ ≫ x := Over.OverMorphism.ext (hx.trans ((Category.comp_id _).trans (Category.id_comp _).symm))
-  have ey : y₀ = ρ ≫ y := Over.OverMorphism.ext (hy.trans ((Category.comp_id _).trans (Category.id_comp _).symm))
-  rw [ex, ey, ← MonObj.comp_mul]
-  exact (Category.id_comp _).trans (Category.comp_id _).symm
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Scheme.{0}} {t : SAB H S}
 
@@ -113,7 +107,7 @@ theorem exists_local_basis {X : Scheme.{0}} (π : X ⟶ S) (s : X ⟶ Sp c.F) {m
     have h := hm k (ψk.comp φ) (spMap ψk ≫ x)
       (by rw [Category.assoc, hφ, ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap])
     rw [Category.assoc] at h
-    exact ReciprocityTheory.ChartRestriction.G.Chart.finrank_of_lieMult (isGrpPullback_id t.G) (Category.comp_id _) hxk t.act t.act.act
+    exact ReciprocityTheory.ChartRestriction.G.Chart.finrank_of_lieMult (_root_.GlobalTheory.ObjComp.isGrpPullback_id t.G) (Category.comp_id _) hxk t.act t.act.act
       (fun a => (Category.comp_id _).trans (Category.id_comp _).symm) _ (fun a => rfl)
       ((ψk.comp φ).comp (embK c τ)) h
   refine ⟨fun i => B i, fun i => (hP _).2 (B i).2, fun v => ?_⟩
@@ -210,7 +204,7 @@ theorem exists_affine_bases {X : Scheme.{0}} (π : X ⟶ S) (s : X ⟶ Sp c.F) (
         LinearMap.toMatrix' (proj (rho hx') (embK c) α τ) := by
       ext i j
       have s : (Pi.single j 1 : Fin n → k) = ψ ∘ Pi.single j 1 := funext fun r => by
-        by_cases hj : r = j <;> simp [hj, Pi.single_apply]
+        by_cases hj : r = j <;> simp [hj]
       rw [Matrix.map_apply, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, s]
       exact (congrFun (pr _ _) i).symm
     intro v

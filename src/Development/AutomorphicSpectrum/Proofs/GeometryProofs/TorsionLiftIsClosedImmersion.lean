@@ -126,7 +126,6 @@ theorem isClosedImmersion_torsion_lift {X : Scheme.{0}} (G : Over X) [GrpObj G] 
     simp [bjq, yi']
   have ba : b ≫ y.left = 𝟙 _ := by
     have e : (Over.homMk (b ≫ y.left) (by
-        change (b ≫ y.left) ≫ Γ.G.hom = Γ.G.hom
         rw [Category.assoc, hys, ← Category.assoc, bjq, i'snd]) : Γ.G ⟶ Γ.G) = 𝟙 Γ.G := by
       apply h.inj Γ.G
       change (b ≫ y.left) ≫ i = 𝟙 _ ≫ i

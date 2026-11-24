@@ -82,7 +82,7 @@ theorem wM_unitary (f : R →+* R) (a b e : R) (h1 : b * e * f a = 1) (h2 : a * 
   rw [Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply,
     Matrix.fromBlocks_inj]
   simp only [Matrix.transpose_sub, Matrix.transpose_one, Matrix.transpose_smul, hET,
-    Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add,
+    Matrix.mul_zero, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add,
     Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_sub, Matrix.sub_mul, hEE, sub_self, smul_zero,
     sub_zero]
   refine ⟨?_, ?_, ?_, ?_⟩

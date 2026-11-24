@@ -66,7 +66,7 @@ theorem oEvS_fg : (oEvS (E := E) v).FG := by
   have himg : (fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ =
       ↑(Submodule.map g.toIntLinearMap ⊤) := by
     ext y
-    simp [g] <;> rfl
+    simp [g]
   refine ⟨t, ?_⟩
   unfold oEvS
   rw [himg, ← ht, Submodule.span_span_of_tower]

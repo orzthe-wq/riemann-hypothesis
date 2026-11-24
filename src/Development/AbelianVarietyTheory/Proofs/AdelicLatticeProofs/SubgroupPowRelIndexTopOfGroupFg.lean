@@ -118,7 +118,7 @@ private theorem card_quot_range_nsmul_eq_pow_finrank_mul_card_ker (M : Type) [Ad
       rintro ⟨x, y, rfl⟩
       refine ⟨(Nat.card D : ℤ), by exact_mod_cast Nat.card_pos.ne', ?_⟩
       apply Subtype.ext
-      simp only [SetLike.val_smul, LinearMap.coe_inr, Submodule.coe_zero, natCast_zsmul]
+      simp only [LinearMap.coe_inr, Submodule.coe_zero, natCast_zsmul]
       ext
       · simp
       · simpa using card_nsmul_eq_zero' (x := y)

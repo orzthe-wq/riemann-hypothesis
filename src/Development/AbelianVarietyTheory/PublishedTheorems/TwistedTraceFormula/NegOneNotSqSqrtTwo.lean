@@ -84,7 +84,7 @@ theorem _root_.GlobalTheory.QuadSymbol.Model.mem_normGroup_sqrt {A : Type} [Comm
     x ∈ _root_.GlobalTheory.QuadSymbol.normGroup K (QuadraticAlgebra K d 0) A ↔
       ∃ a b : A, (x : A) = a ^ 2 - algebraMap K A d * b ^ 2 := by
   refine _root_.GlobalTheory.QuadSymbol.mem_normGroup_iff_form (QuadraticAlgebra.basis d 0) ?_ ?_
-  · ext <;> simp [QuadraticAlgebra.basis] <;> rfl
+  · ext <;> simp [QuadraticAlgebra.basis]
   · ext <;> simp [QuadraticAlgebra.basis]
 
 end Quad

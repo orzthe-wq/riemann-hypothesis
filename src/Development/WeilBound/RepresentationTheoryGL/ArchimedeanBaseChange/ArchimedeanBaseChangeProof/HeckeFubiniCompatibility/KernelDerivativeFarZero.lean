@@ -1,20 +1,20 @@
 module
 
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsMultOfFintype
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveSolutionExistence
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.RightHolRightHolEq
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.IsMultZero
-import Aesop.Main
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DifferentiableAtOfSmooth
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelActionEquivariantStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHoldStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightDerivativeCalculusHoldsStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountableG
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveSolutionExistence
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightDerivativeCalculusHolds
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.HeckeFubiniCompatibility.MultHasCompactSupport
-import GroundTheory.AutomorphicForms.RealGroups
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -26,8 +26,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,10 +45,133 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AverageDerivativeL1Bound
+import Aesop.Main
+import GroundTheory.AutomorphicForms.RealGroups
+import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountableG, Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.HeckeFubiniCompatibility.KernelDerivativeFarZero
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountableG =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountableG", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsMultOfFintype\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveSolutionExistence\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.RightHolRightHolEq\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AverageDerivativeL1Bound\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix Filter Topology
+open scoped ContDiff
+open PositivityTheory.RgTw (Mat G)
+open PositivityTheory.RgBcC GlobalTheory.CompanionTheory.WaveK GlobalTheory.CompanionTheory
+
+attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
+
+namespace GlobalTheory.CompanionTheory.WaveK.Word
+
+variable {n : ℕ}
+
+section Defs
+
+variable {L : Type} [NormedAddCommGroup L] [NormedSpace ℂ L]
+
+structure Cl (K : Mat n → Mat n → L) : Prop where
+  smooth : ContDiffOn ℝ ∞ (Function.uncurry K) (GLs n ×ˢ GLs n)
+  supp : ∃ R, ∀ x ∈ GLs n, ∀ y ∈ GLs n, R + lg x < lg y → K x y = 0
+
+def kK (k : Mat n → L) : Mat n → Mat n → L := fun x y => k (x⁻¹ * y)
+
+def Iop {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [MeasurableSpace (G n)] (μ : Measure (G n))
+    (K : Mat n → Mat n → (V →L[ℂ] V)) (φ : Mat n → V) : Mat n → V :=
+  fun x => ∫ y : G n, K x y.val (φ y.val) ∂μ
+
+end Defs
+
+section ClB
+variable {L : Type} [NormedAddCommGroup L] [NormedSpace ℂ L]
+
+end ClB
+
+section Lem
+variable {L : Type} [NormedAddCommGroup L] [NormedSpace ℂ L]
+
+theorem contDiff_ent (a b : Fin n) : ContDiff ℝ ∞ (fun y : Mat n => y a b) :=
+  (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ a b)).contDiff
+
+theorem contDiffOn_invMul : ContDiffOn ℝ ∞ (fun p : Mat n × Mat n => p.1⁻¹ * p.2) (GLs n ×ˢ GLs n) := by
+  have hinv : ContDiffOn ℝ ∞ (fun p : Mat n × Mat n => p.1⁻¹) (GLs n ×ˢ GLs n) :=
+    (ReciprocityTheory.ChartRestriction.DS.Lap.LemK.contDiffOn_inv_det_ne_zero.restrict_scalars ℝ).comp (f := Prod.fst) contDiff_fst.contDiffOn
+      fun p hp => hp.1
+  refine contDiffOn_pi.2 fun a => contDiffOn_pi.2 fun b => ?_
+  simp only [Matrix.mul_apply]
+  refine ContDiffOn.sum fun c _ => ContDiffOn.mul ?_ ?_
+  · exact (contDiff_ent a c).comp_contDiffOn hinv
+  · exact ((contDiff_ent c b).comp contDiff_snd).contDiffOn
+
+theorem cl_kK (hL : LgFacts) {k : Mat n → L} (hk : ContDiffOn ℝ ∞ k (GLs n)) {R : ℝ}
+    (hR : ∀ y ∈ GLs n, R < lg y → k y = 0) : Cl (kK k) := by
+  refine ⟨hk.comp contDiffOn_invMul fun p hp => GlobalTheory.CompanionTheory.WaveAll.mul_mem_GLs (GlobalTheory.CompanionTheory.WaveMult.inv_mem_GLs hp.1) hp.2,
+    R, fun x hx y hy hl => ?_⟩
+  have hz := GlobalTheory.CompanionTheory.WaveAll.mul_mem_GLs (GlobalTheory.CompanionTheory.WaveMult.inv_mem_GLs hx) hy
+  refine hR _ hz ?_
+  have h := (hL n).1 x hx _ hz
+  rw [Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 hx)] at h
+  linarith
+
+end Lem
+
+section Lem2
+variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
+  [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
+
+end Lem2
+
+section Lem3
+variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
+  [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
+
+end Lem3
+
+section Basic
+variable {L : Type} [NormedAddCommGroup L] [NormedSpace ℂ L]
+
+end Basic
+
+section Pairs
+
+variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
+  [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
+
+variable {μ} {φ : Mat n → V}
+
+theorem act_eq_Iop (E : KMod n) (k : Mat n → (E.V →L[ℂ] E.V)) (f : Mat n → E.V) {x : Mat n} (hx : x ∈ GLs n) :
+    act μ E k f x = Iop μ (kK k) f x := by
+  let xG : G n := Matrix.GeneralLinearGroup.mkOfDetNeZero x hx
+  have hv : xG.val = x := rfl
+  have hdet : IsUnit x.det := isUnit_iff_ne_zero.2 hx
+  have h := integral_mul_left_eq_self (μ := μ) (fun y : G n => k (x⁻¹ * y.val) (f y.val)) xG
+  simp only [Iop, kK, act]
+  rw [← h]
+  refine integral_congr_ae (ae_of_all _ fun y => ?_)
+  simp only [Units.val_mul, hv, Matrix.nonsing_inv_mul_cancel_left _ _ hdet]
+
+end Pairs
+
+end GlobalTheory.CompanionTheory.WaveK.Word
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountableG =====
+
+-- ===== clump member: Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.HeckeFubiniCompatibility.KernelDerivativeFarZero =====
+-- clump-header: {"m": "Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.HeckeFubiniCompatibility.KernelDerivativeFarZero", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.IsMultZero\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DifferentiableAtOfSmooth\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelActionEquivariantStatement\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RightDerivativeCalculusHolds\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountableG\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.HeckeFubiniCompatibility.MultHasCompactSupport\nimport Aesop.Main\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WaveSolutionExistence\nimport GroundTheory.AutomorphicForms.RealGroups\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -205,7 +325,7 @@ theorem act_contDiffOn (M : KMod n)
     {k : Mat n → (M.V →L[ℂ] M.V)} (hk : ContDiffOn ℝ ∞ k (GLs n)) {R : ℝ} (hR : ∀ y ∈ GLs n, R < lg y → k y = 0)
     {F : Mat n → M.V} (hF : ContinuousOn F (GLs n)) : ContDiffOn ℝ ∞ (act μ M k F) (GLs n) := by
   haveI : ProperSpace (Mat n) := inferInstanceAs (ProperSpace (Fin n → Fin n → ℂ))
-  have hL := GlobalTheory.T.length_function_facts_hold
+  have hL := _root_.GlobalTheory.CompanionTheory.LengthGL.lgFacts
   have hCl := GlobalTheory.CompanionTheory.WaveK.Word.cl_kK hL hk hR
   have hG : Good (GLs n) lg (GlobalTheory.CompanionTheory.WaveK.Word.kK k) := ⟨hCl.smooth, hCl.supp⟩
   have hv : Continuous (fun y : G n => (y.val : Mat n)) := Units.continuous_val
@@ -218,7 +338,7 @@ theorem act_mem_CE (M : KMod n)
     {k : Mat n → (M.V →L[ℂ] M.V)} (hk : ContDiffOn ℝ ∞ k (GLs n)) {R : ℝ} (hR : ∀ y ∈ GLs n, R < lg y → k y = 0)
     (hkq : ∀ y ∈ GLs n, ∀ k₁ : Matrix.unitaryGroup (Fin n) ℂ, k (k₁.1 * y) = M.ρ k₁ * k y)
     {F : Mat n → M.V} (hF : ContinuousOn F (GLs n)) : act μ M k F ∈ CE M :=
-  ⟨act_contDiffOn μ M hk hR hF, (GlobalTheory.T.kernel_action_equivariant GlobalTheory.T.length_function_facts_hold n μ M k F ⟨hk.continuousOn, R, hR⟩ hF hkq).2⟩
+  ⟨act_contDiffOn μ M hk hR hF, (GlobalTheory.T.kernel_action_equivariant _root_.GlobalTheory.CompanionTheory.LengthGL.lgFacts n μ M k F ⟨hk.continuousOn, R, hR⟩ hF hkq).2⟩
 
 section Clm
 
@@ -251,7 +371,7 @@ theorem Epow_clm (T : V →L[ℂ] W) (s : Bool) {f : Mat n → V} (hf : ContDiff
     simp only [Epow, Finset.sum_apply, map_sum]
     refine Finset.sum_congr rfl fun c _ => ?_
     rw [GlobalTheory.CompanionTheory.WaveAll.Eu_congr GlobalTheory.CompanionTheory.WaveAll.isOpen_GLs (ih c b) s a c hx]
-    exact Eu_clm T s a c (GlobalTheory.CompanionTheory.WaveAll.Epow_smooth GlobalTheory.T.right_derivative_calculus_holds hf s m c b) hx
+    exact Eu_clm T s a c (GlobalTheory.CompanionTheory.WaveAll.Epow_smooth _root_.GlobalTheory.CompanionTheory.RCalc.rcalc hf s m c b) hx
 
 theorem gel_clm (T : V →L[ℂ] W) (s : Bool) (m : ℕ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {x : Mat n}
     (hx : x ∈ GLs n) : gel s m (fun x => T (f x)) x = T (gel s m f x) := by
@@ -341,3 +461,6 @@ end GelP
 end PositivityTheory.Rg.BcB.CG
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.HeckeFubiniCompatibility.KernelDerivativeFarZero =====

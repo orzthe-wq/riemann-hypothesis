@@ -358,48 +358,17 @@ theorem kept_levels_hold : KeptLevelsBeyond :=
         have a1 := hs.LaN
         have a2 := hs.N2
         have a3 := hs.La1
-        nlinarith
+        exact (le_mul_of_one_le_left (by linarith) (by linarith : (1 : ℝ) ≤ 2 * X.N)).trans a1
       have hB : (0 : ℝ) ≤ ((X.seg C0 CE1 CE2 j).bPlus : ℝ) := Nat.cast_nonneg _
       have hjp : t.2.2 ≤ (X.seg C0 CE1 CE2 j).bPlus := by
         refine le_trans ht.2 (Nat.floor_le_of_le ?_)
-        rw [div_le_iff₀ hk]
-        nlinarith
+        rw [div_le_iff₀ hk, mul_comm ((X.seg C0 CE1 CE2 j).bPlus : ℝ) X.k]
+        exact mul_le_mul_of_nonneg_right hLa hB
       exact pair_level X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) m rz ry _ t.1 t.2.1 t.2.2
         ht.1.1 hjp
 
-private theorem transported_and {P Q : (ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop)} (hP : TransportedAlt P) (hQ : TransportedAlt Q) :
-    TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc =>
-      P C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc ∧ Q C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc := by
-  intro Cc hCc
-  obtain ⟨T0, hT0, hP0⟩ := hP Cc hCc
-  obtain ⟨U0, _, hQ0⟩ := hQ Cc hCc
-  refine ⟨max T0 U0, lt_max_of_lt_left hT0, fun C0 hC0 => ?_⟩
-  obtain ⟨T1, hT1, hP1⟩ := hP0 C0 (le_trans (le_max_left _ _) hC0)
-  obtain ⟨U1, _, hQ1⟩ := hQ0 C0 (le_trans (le_max_right _ _) hC0)
-  refine ⟨max T1 U1, lt_max_of_lt_left hT1, fun CE1 CE2 Cm a1 a2 a3 => ?_⟩
-  obtain ⟨T2, hT2, hP2⟩ := hP1 CE1 CE2 Cm (le_trans (le_max_left _ _) a1) (le_trans (le_max_left _ _) a2)
-    (le_trans (le_max_left _ _) a3)
-  obtain ⟨U2, _, hQ2⟩ := hQ1 CE1 CE2 Cm (le_trans (le_max_right _ _) a1) (le_trans (le_max_right _ _) a2)
-    (le_trans (le_max_right _ _) a3)
-  refine ⟨max T2 U2, lt_max_of_lt_left hT2, fun CYb Cde Ck CD Cb b1 b2 b3 b4 b5 => ⟨?_, ?_⟩⟩
-  · exact hP2 CYb Cde Ck CD Cb (le_trans (le_max_left _ _) b1) (le_trans (le_max_left _ _) b2)
-      (le_trans (le_max_left _ _) b3) (le_trans (le_max_left _ _) b4) (le_trans (le_max_left _ _) b5)
-  · exact hQ2 CYb Cde Ck CD Cb (le_trans (le_max_right _ _) b1) (le_trans (le_max_right _ _) b2)
-      (le_trans (le_max_right _ _) b3) (le_trans (le_max_right _ _) b4) (le_trans (le_max_right _ _) b5)
-
-private theorem transported_mono {P Q : (ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop)}
-    (h : ∀ C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc, P C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc → Q C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc)
-    (hP : TransportedAlt P) : TransportedAlt Q := by
-  intro Cc hCc
-  obtain ⟨T0, hT0, h0⟩ := hP Cc hCc
-  refine ⟨T0, hT0, fun C0 hC0 => ?_⟩
-  obtain ⟨T1, hT1, h1⟩ := h0 C0 hC0
-  refine ⟨T1, hT1, fun CE1 CE2 Cm a1 a2 a3 => ?_⟩
-  obtain ⟨T2, hT2, h2⟩ := h1 CE1 CE2 Cm a1 a2 a3
-  exact ⟨T2, hT2, fun CYb Cde Ck CD Cb b1 b2 b3 b4 b5 => h _ _ _ _ _ _ _ _ _ _ (h2 CYb Cde Ck CD Cb b1 b2 b3 b4 b5)⟩
-
-theorem kept_blocks_of_parts (h1 : KeptPairsBeyond) (h2 : KeptLevelsBeyond) (h4 : KeptThresholdsBeyond) : KeptBlocksBeyondThreshold := transported_mono (fun _ _ _ _ _ _ _ _ _ _ h => kept_block_at_of_pair_level_chain_threshold h.1 h.2.1 h.2.2.1 h.2.2.2)
-  (transported_and h1 (transported_and h2 (transported_and kept_chain_holds h4)))
+theorem kept_blocks_of_parts (h1 : KeptPairsBeyond) (h2 : KeptLevelsBeyond) (h4 : KeptThresholdsBeyond) : KeptBlocksBeyondThreshold := _root_.Formalism.MainNotions.ColumnSystems.Pf.TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => kept_block_at_of_pair_level_chain_threshold h.1 h.2.1 h.2.2.1 h.2.2.2)
+  (_root_.Formalism.MainNotions.ColumnSystems.Pf.TransportedAlt.and h1 (_root_.Formalism.MainNotions.ColumnSystems.Pf.TransportedAlt.and h2 (_root_.Formalism.MainNotions.ColumnSystems.Pf.TransportedAlt.and kept_chain_holds h4)))
 
 theorem pairC_zero {s r : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ}
     (h : IsChain (kLetters A Ai Ci) mu) : pairC mu 0 = A := by
@@ -520,7 +489,7 @@ theorem kept_thresholds_hold : KeptThresholdsBeyond :=
         have e : ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) * X.N1 * X.La C0 / X.k =
             ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) * ((X.N1 : ℝ) * X.La C0 / X.k) := by ring
         rw [e]
-        nlinarith
+        exact mul_le_of_le_one_right hA0 he
       have hleZ : ((⌈m⌉₊ : ℕ) : ℤ) ≤ (X.seg C0 CE1 CE2 j).A0 X.p := by exact_mod_cast hle
       refine pair_thr X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) m rz ry _ t.1 t.2.1 t.2.2
         ht.1.1 ?_
@@ -602,7 +571,7 @@ theorem kept_pair_of_three_lines {C0 CYb Cde Ck CD Cb CE1 CE2 Cc H : ℝ}
   have hle : (⌈m⌉₊ : ℝ) ≤ ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) := by
     refine le_trans hmA ?_
     rw [e2]
-    nlinarith
+    exact mul_le_of_le_one_right hA0 he
   have hleZ : ((⌈m⌉₊ : ℕ) : ℤ) ≤ (X.seg C0 CE1 CE2 j).A0 X.p := by exact_mod_cast hle
   set A : ℕ := ((X.seg C0 CE1 CE2 j).A0 X.p - (⌈m⌉₊ : ℤ)).toNat with hA
   have hAz : (A : ℤ) = (X.seg C0 CE1 CE2 j).A0 X.p - (⌈m⌉₊ : ℤ) := Int.toNat_of_nonneg (by omega)
@@ -703,14 +672,16 @@ theorem kept_pair_of_three_lines {C0 CYb Cde Ck CD Cb CE1 CE2 Cc H : ℝ}
       have hw := (hs.winA _ (pos_mem X.TT j i).1).2
       have hkY : 2 / (X.k * X.Y) ≤ 1 := by
         rw [div_le_one (by have := hs.Y1; positivity)]
-        have := hs.k5
-        have := hs.Y1
-        nlinarith
+        have hk5 := hs.k5
+        have hY1 := hs.Y1
+        exact le_trans (by linarith : (2 : ℝ) ≤ X.k) (le_mul_of_one_le_right (by linarith) hY1)
       have ha := hs.apos
       show (clC C0 CE1 CE2 X j rz ry i : ℝ) ≤ 2 * (X.a : ℝ) / ((X.p ^ (segG X.TT j - (segDists X.TT j).get i) : ℕ) : ℝ)
       rw [le_div_iff₀ hP0]
       refine le_trans hcb (le_trans hw ?_)
-      nlinarith
+      have hmul : (X.a : ℝ) * (2 / (X.k * X.Y)) ≤ (X.a : ℝ) := mul_le_of_le_one_right ha.le hkY
+      linarith [mul_add (X.a : ℝ) 1 (2 / (X.k * X.Y)), add_mul (1 : ℝ) (2 / (X.k * X.Y)) (X.a : ℝ),
+        mul_comm (X.a : ℝ) (2 / (X.k * X.Y))]
     have hsum : ∑ i, (clC C0 CE1 CE2 X j rz ry i : ℝ) ≤
         ∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ) := Finset.sum_le_sum fun i _ => hC i
     have hsum0 : (0 : ℝ) ≤ ∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ) :=
@@ -721,7 +692,7 @@ theorem kept_pair_of_three_lines {C0 CYb Cde Ck CD Cb CE1 CE2 Cc H : ℝ}
           X.La C0 / X.k * ∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ) :=
         mul_le_mul_of_nonneg_left hsum (by positivity)
       have a2 : (0 : ℝ) ≤ 4 / (X.p : ℝ) ^ 2 * ∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ) := by positivity
-      nlinarith
+      linarith [add_mul (X.La C0 / X.k) (4 / (X.p : ℝ) ^ 2) (∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ))]
     have h4 := hcap (segS X.TT j) le_rfl
     show (((pairD t.1 t.2.1).toNat + t.2.2 : ℕ) : ℝ) ≤
       ((cap X.p (X.seg C0 CE1 CE2 j) (pairMap C0 CE1 CE2 X j rz ry t).1 (segS X.TT j) : ℤ) : ℝ) +
@@ -790,8 +761,11 @@ theorem coarse_degree_ratio_consecutive {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (hs :
     have h1 : X.k * (P' : ℝ) ≤ X.k * X.Q := mul_le_mul_of_nonneg_left (le_trans hPQ' hQ) (by linarith)
     have h2 : X.k ^ 3 * X.Q ≤ X.b' := hkQ
     have h3 : 12 * (X.k * X.Q) ≤ X.k ^ 3 * X.Q := by
-      have h12 : (12 : ℝ) ≤ X.k ^ 2 := by nlinarith
-      nlinarith [mul_nonneg (mul_nonneg (by linarith : (0:ℝ) ≤ X.k) (by linarith : (0:ℝ) ≤ X.Q)) (by linarith : (0:ℝ) ≤ X.k ^ 2 - 12)]
+      have h12 : (12 : ℝ) ≤ X.k ^ 2 := by
+        calc (12 : ℝ) ≤ 5 ^ 2 := by norm_num
+          _ ≤ X.k ^ 2 := pow_le_pow_left₀ (by norm_num) hk5 2
+      calc 12 * (X.k * X.Q) ≤ X.k ^ 2 * (X.k * X.Q) := mul_le_mul_of_nonneg_right h12 (by positivity)
+        _ = X.k ^ 3 * X.Q := by ring
     linarith
   have hkk : ((X.m : ℝ) + 1) = X.k := rfl
   rw [hkk] at cb'
@@ -813,8 +787,8 @@ theorem coarse_degree_prefix_sum {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (hs : Std C0
     ∀ i : Fin (segS X.TT j), (∑ l : Fin (segS X.TT j), if l.val < i.val then (clA C0 CE1 CE2 X j rz ry l : ℝ) else 0) ≤
       4 * (clA C0 CE1 CE2 X j rz ry i : ℝ) / (X.p : ℝ) ^ 2 := by
   have hp : (25 : ℝ) ≤ (X.p : ℝ) ^ 2 := by
-    have : (5 : ℝ) ≤ X.p := by exact_mod_cast hs.p5
-    nlinarith
+    calc (25 : ℝ) = 5 ^ 2 := by norm_num
+      _ ≤ (X.p : ℝ) ^ 2 := pow_le_pow_left₀ (by norm_num) (by exact_mod_cast hs.p5) 2
   intro ⟨i, hi⟩
   induction i with
   | zero =>
@@ -841,7 +815,7 @@ theorem coarse_degree_prefix_sum {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (hs : Std C0
     rw [div_eq_mul_inv] at ih' ⊢
     have hinv : (X.p : ℝ) ^ 2 * ((X.p : ℝ) ^ 2)⁻¹ = 1 := mul_inv_cancel₀ hp0.ne'
     have hinv0 : ((X.p : ℝ) ^ 2)⁻¹ ≤ 1 / 25 := by
-      rw [one_div]; exact inv_anti₀ (by norm_num) hp
+      simpa [one_div] using inv_anti₀ (by norm_num) hp
     nlinarith [inv_pos.mpr hp0]
 
 end Formalism.MainNotions.ColumnSystems.Pf

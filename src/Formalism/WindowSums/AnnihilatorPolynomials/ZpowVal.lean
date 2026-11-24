@@ -56,7 +56,7 @@ section ZpowValAux
 
 variable {ℓ : ℕ} [hℓ : Fact ℓ.Prime]
 
-lemma zv_prime : Prime (ℓ : ℤ_[ℓ]) := PadicInt.prime_p
+alias zv_prime := _root_.PadicInt.prime_p
 
 lemma zv_emult_eq_val {x : ℤ_[ℓ]} (hx : x ≠ 0) :
     emultiplicity (ℓ : ℤ_[ℓ]) x = (x.valuation : ℕ∞) := by

@@ -2,44 +2,6 @@ module
 
 public import Formalism.SharpRestriction.CuspSpanNormBounds.IsPrimitiveSub
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.PairingOmegaPrimeZ
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -67,17 +29,11 @@ theorem hT_X_X (F : FlagG S r T) {x x' : S.V} (hx : x ∈ F.X) (hx' : x' ∈ F.X
   | add y z _ _ h1 h2 => simp [map_add (f := _), LinearMap.add_apply, h1, h2]
   | smul c y _ h => simp [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h]
 
-private theorem hT_swap_eq_star (x y : S.V) : S.hT y x = star (S.hT x y) := by
-  first
-  | exact (S.herm x y).symm
-  | exact (S.herm.eq x y).symm
-  | simpa using (S.herm x y).symm
-
 theorem hT_z_X (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) : S.hT F.z x = 0 := by
   induction hx using Submodule.span_induction with
   | mem x hx =>
     obtain ⟨a, rfl⟩ := hx
-    rw [hT_swap_eq_star, F.z_orth a, star_zero]
+    rw [_root_.Formalism.L2.SG.NGCut.NormalVectorPairings.hT_swap, F.z_orth a, star_zero]
   | zero => simp
   | add y z _ _ h1 h2 => simp [map_add (f := _), h1, h2]
   | smul c y _ h => simp [map_smul, h]
@@ -180,7 +136,7 @@ theorem line (F : FlagG S r T) (hT : T ≠ 0) (H : Submodule E S.V) (hXH : ∀ x
     intro x hx
     rw [mem_Qsp]
     refine ⟨fun x' hx' => hT_X_X F hx' hx, hT_z_X F hx, fun h hh => ?_⟩
-    rw [hT_swap_eq_star, hXH x hx h hh, star_zero]
+    rw [_root_.Formalism.L2.SG.NGCut.NormalVectorPairings.hT_swap, hXH x hx h hh, star_zero]
   have hXr : finrank E F.X = r := by
     show finrank E (Submodule.span E (Set.range F.e)) = r
     rw [finrank_span_eq_card F.e_indep, Fintype.card_fin]
@@ -218,7 +174,7 @@ theorem line (F : FlagG S r T) (hT : T ≠ 0) (H : Submodule E S.V) (hXH : ∀ x
   obtain ⟨x, hx, w, hw, rfl⟩ := Submodule.mem_sup.1 hv
   obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hw
   have h1 : S.hT y0 x = 0 := by
-    rw [hT_swap_eq_star, ((mem_Qsp F H).1 hy0).1 x hx, star_zero]
+    rw [_root_.Formalism.L2.SG.NGCut.NormalVectorPairings.hT_swap, ((mem_Qsp F H).1 hy0).1 x hx, star_zero]
   have h2 : c * S.hT y0 y0 = 0 := by
     have := hvy
     simp only [brS, map_add (f := _), map_smul, smul_eq_mul, h1, zero_add] at this
@@ -231,9 +187,7 @@ theorem line (F : FlagG S r T) (hT : T ≠ 0) (H : Submodule E S.V) (hXH : ∀ x
 
 theorem zhat_swap (F : FlagG S r T) (F' : FlagG S r T') : Zhat F' F = (Zhat F F')ᴴ := by
   ext a b
-  rw [Matrix.conjTranspose_apply]
-  simp only [Zhat]
-  exact brS_swap (F'.fvec a) (F.fvec b)
+  simpa only [Zhat, Matrix.conjTranspose_apply] using brS_swap (F'.fvec a) (F.fvec b)
 
 theorem Dl_swap (F : FlagG S r T) (F' : FlagG S r T') (l : ℕ) : Dl F' F l = star (Dl F F' l) := by
   unfold Dl leadMinorE

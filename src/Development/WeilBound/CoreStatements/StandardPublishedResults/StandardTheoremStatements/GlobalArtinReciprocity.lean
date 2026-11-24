@@ -43,8 +43,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 
 namespace PositivityTheory.Stage1.PM
 
-theorem globalArtinReciprocity : GlobalTheory.Published.GlobalArtinReciprocity :=
-  CompanionTheory.FamInh.globalArtin
+alias globalArtinReciprocity := _root_.CompanionTheory.FamInh.globalArtin
 
 theorem rayClassFieldSt : GlobalTheory.Published.RayClassFieldSt :=
   GlobalTheory.Published.GlobalArtinReciprocity.rayClassFieldSt CompanionTheory.FamInh.globalArtin

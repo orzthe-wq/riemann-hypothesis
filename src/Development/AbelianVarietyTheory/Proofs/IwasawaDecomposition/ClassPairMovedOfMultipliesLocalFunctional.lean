@@ -1,9 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlESymmApply
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSmulMemLatticeOfMemCompletionStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryCompletionMapsDualLatticesStatement
+public import Formalism.LocalRingCardinality.DataLevel
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSmulMemLatticeOfMemCompletion
+public import Formalism.LocalToGlobal.HermitianForms.PrkSmul
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnitaryCompletionMapsDualLattices
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocBases
+public import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLocGen
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PRLocV
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
@@ -45,7 +48,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 
 @[expose] public section
 
@@ -172,7 +174,7 @@ theorem ld_loc (K : ClsTied u i hi) (v : HeightOneSpectrum (𝓞 D.host.F)) (c :
   letI : Submodule.IsLattice D.host.E K.lev.Lb :=
     Submodule.IsLattice.of_fg D.host.E (Module.Finite.iff_fg.1 K.lev.Lb_fin)
   have hLb : Submodule.IsFullLattice D.host.E K.lev.Lb := ⟨K.lev.Lb_span⟩
-  refine GlobalTheory.T.unitary_completion_maps_dualLattices D.host.F D.host.E (sigD D) _ (gramN D i hi) v (clsCrd D u i hi c) K.lev.Lb
+  refine _root_.GlobalTheory.DualCompletion.dual_move D.host.F D.host.E (sigD D) _ (gramN D i hi) v (clsCrd D u i hi c) K.lev.Lb
     (bc (prV (E := D.host.E) v) (K.y c).1) (bwB_gramN_det D i hi) hL hLb
     (Formalism.UG.P.afsplit_bc_mem _ _ _ _ (K.y c).2) (fun x => ?_) x
   rw [← map_inv]
@@ -194,7 +196,7 @@ theorem pc_act_of_mulsF : ∀ (D : D7) (u : D.what₂.Word) (A : AtTTied u) (i :
         (fun a => inclE (F := D.host.F) ((A.eV v).1.adicCompletion D.host.F) (z a)) ∈ dualV K (A.eV v).1 →
       ∃ s, A.res v s ≠ 0 ∧ s • z ∈ Ld D u i hi c := by
     intro c z hz
-    obtain ⟨r, hr, h⟩ := GlobalTheory.T.exists_smul_mem_lattice_of_mem_completion D.host.F D.host.E (A.eV v).1 _ _ (ld_lattice c) z ((ld_loc K _ c _).2 hz)
+    obtain ⟨r, hr, h⟩ := _root_.GlobalTheory.LatticeDescent.exists_smul_mem_of_mem_latS D.host.F D.host.E (A.eV v).1 _ _ (ld_lattice c) z ((ld_loc K _ c _).2 hz)
     exact ⟨_, fun h0 => hr ((A.res_v v r).2 h0), h⟩
   have hst := fun z => mulsF_apply K.lev _ _ a _ hM (fMe v) _ _
     (mov_mulVec (A.eV v).1 (K.y c).1 (K.y c').1 γ z)

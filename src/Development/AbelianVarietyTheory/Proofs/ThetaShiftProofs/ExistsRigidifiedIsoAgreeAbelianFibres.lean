@@ -133,7 +133,6 @@ theorem main : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField 
     simp only [Units.coe_map, pullU, MonoidHom.coe_coe]
     first
       | rfl
-      | (rw [Scheme.comp_app]; rfl)
 
   have gm_maps_pt {X : Scheme.{0}} {L' L : LB X} {w : LB.Iso L' L} {Y : Scheme.{0}} {φ : Y ⟶ X} {a : LB.Gen (L'.pull φ)}
       {b : LB.Gen (L.pull φ)} (h : LB.Gen.Maps (LB.linCombIso w (K := PUnit) (fun _ => φ) (fun _ => 1)) a b)

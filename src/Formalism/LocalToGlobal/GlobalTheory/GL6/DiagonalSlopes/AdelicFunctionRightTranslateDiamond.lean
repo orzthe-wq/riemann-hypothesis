@@ -60,19 +60,6 @@ theorem diamond_conj_mem_level (S : StepLevel F E σ J T f bad) (v : HeightOneSp
     (h : IsDia S v hv k δ) (κ : S.U) : δ.1⁻¹ * κ.1 * δ.1 ∈ S.U := by
   apply Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.diamond_conj_mem_level <;> assumption
 
-theorem level_character_conj_diamond (S : StepLevel F E σ J T f bad) (v : HeightOneSpectrum (𝓞 F))
-    (hv : (T : 𝓞 F) ∈ v.asIdeal) (hb : v ∉ bad) {k : ℤ} {δ : UPts σ J (FiniteAdeleRing (𝓞 F) F)}
-    (h : IsDia S v hv k δ) (κ : S.U) :
-    S.chi ⟨δ.1⁻¹ * κ.1 * δ.1, diamond_conj_mem_level S v hv h κ⟩ = S.chi κ := by
-  have h1 := h.1
-  have key : S.chi (κ⁻¹ * ⟨δ.1⁻¹ * κ.1 * δ.1, diamond_conj_mem_level S v hv h κ⟩) = 1 := by
-    apply S.chi_triv
-    intro v'' hv''
-    have hne : v'' ≠ v := fun e => hb (e ▸ hv'')
-    simp [Subgroup.coe_mul, map_mul, map_inv, h1 v'' hne]
-  rw [map_mul, map_inv, inv_mul_eq_one] at key
-  exact key.symm
-
 theorem adelic_function_right_translate_diamond {ι : Type} [Fintype ι] (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ)
     (v : HeightOneSpectrum (𝓞 F)) (hv : (T : 𝓞 F) ∈ v.asIdeal) (hb : v ∉ bad) {k : ℤ}
     {δ : UPts σ J (FiniteAdeleRing (𝓞 F) F)} (h : IsDia S v hv k δ)
@@ -99,7 +86,7 @@ theorem level_prime_ne_type_prime (A : AtTTied u) (j : Fin 2) : (D.mem u).A.T �
   apply Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.level_prime_ne_type_prime <;> assumption
 
 theorem level_places_not_bad (A : AtTTied u) (v : (D.mem u).A.vT) : (A.eV v).1 ∉ badG D := by
-  apply Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.level_places_not_bad <;> assumption
+  apply Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.level_places_not_bad
 
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0
 

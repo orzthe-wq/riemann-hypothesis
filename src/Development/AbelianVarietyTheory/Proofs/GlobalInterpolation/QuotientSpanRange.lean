@@ -172,7 +172,7 @@ private theorem linearIndependent_toCotangent_of_sum_mem_maximalIdeal_sq (A : Ty
     rw [← Ideal.toCotangent_eq_zero (maximalIdeal A) ⟨_, hmem⟩]
     have he : (⟨∑ j, a j * x j, hmem⟩ : maximalIdeal A) =
         ∑ j, a j • (⟨x j, hx j⟩ : maximalIdeal A) := by
-      ext; simp [Submodule.coe_sum, smul_eq_mul]
+      ext; simp [smul_eq_mul]
 
     rw [he, map_sum, ← hg]
     refine Finset.sum_congr rfl fun j _ => ?_

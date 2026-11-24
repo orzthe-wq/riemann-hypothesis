@@ -78,18 +78,9 @@ theorem delF_inv {g : W.Gam} (hg : g ∈ W.DelF) : g⁻¹ ∈ W.DelF := by
   obtain ⟨k, hk, hgk⟩ := hg
   exact ⟨k, hk, by rw [inv_pow, hgk, inv_one]⟩
 
-theorem γA_letE (g : W.Gam) (c : ZMod n) : W.γA g (letE c) = letE c := by
-  unfold Formalism.BasicNotions.LocWach.γA Formalism.BasicNotions.letE Formalism.BasicNotions.letγ
-  funext i
-  change (W.γ₀ g) (Pi.single (M := fun _ : ZMod n => PowerSeries O) c 1 i) =
-    Pi.single (M := fun _ : ZMod n => PowerSeries O) c 1 i
-  by_cases h : i = c
-  · subst h; rw [Pi.single_eq_same, map_one]
-  · rw [Pi.single_eq_of_ne h, map_zero]
+alias γA_letE := _root_.Formalism.MainNotions.N.FrobeniusPowerSeries.GS.γA_letE
 
-theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n) (x : W.DD T) :
-    W.γD T g (a • x) = W.γA g a • W.γD T g x := by
-  rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul] <;> rfl
+alias γD_smulA := _root_.Formalism.MainNotions.N.FrobeniusPowerSeries.GS.γD_smulA
 
 theorem smul_mem_NΔ (T : LocLat G Qp LL O) {a : LetA O n} (ha : a ∈ W.AΔ) {y : W.DD T}
     (hy : y ∈ W.NΔ T) : a • y ∈ W.NΔ T := by
@@ -103,9 +94,7 @@ theorem map_smulA {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (a :
     W.map F (a • x) = a • W.map F x := by
   rw [← algebraMap_smul W.EE a x, map_smul, algebraMap_smul]
 
-theorem letE_idem (c : ZMod n) : (letE (O := O) c : LetA O n) * letE c = letE c := by
-  unfold Formalism.BasicNotions.letE
-  rw [← Pi.single_mul, one_mul]
+alias letE_idem := _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq
 
 theorem letE_mem (c : ZMod n) : (letE (O := O) c : LetA O n) ∈ W.AΔ := by
   show ∀ δ ∈ W.DelF, W.γA δ (letE c) = letE c
@@ -281,7 +270,7 @@ theorem ntype_core (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hl : 5
     funext k
     rcases eq_or_ne k k₀ with rfl | hk
     · simp [lE, pow_add, mul_comm, mul_left_comm]
-    · simp [Pi.single_eq_of_ne hk, hk]
+    · simp [hk]
 
 section Bez
 
@@ -297,7 +286,7 @@ theorem ringData_of_crystalline (hcase : Formalism.MainNotions.LiftingTheory.Cas
   have hE : Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ = W.π₀ + lA W := by
     unfold Formalism.MainNotions.DeltaInvariantLattices.Eat lA
     funext i
-    simp [Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_C]
+    simp
   refine ⟨h3', ?_, ?_, fun a ha => (h2 a ha).exists⟩
   · obtain ⟨w, hw⟩ := h6; refine ⟨w, ?_⟩; unfold qA; rw [hw, hE]
   · obtain ⟨w, hw⟩ := h7; refine ⟨w, ?_⟩; unfold qA; rw [hw, hE]

@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseIdealSheafOfIdealComapSpecMapSupportStatement
+public import Mathlib.AlgebraicGeometry.IdealSheaf.Functorial
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseIdealSheafOfIdealComapSpecMapSupport
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -98,7 +99,7 @@ theorem baseChange_quotient : ∀ (R : Type) [CommRing R] (J : Ideal R) (W Y : S
     infer_instance
   have hk : b.ker = baseIdeal f J := by
     rw [← e, Scheme.Hom.ker_comp_of_isIso, Scheme.IdealSheafData.ker_fst_of_isClosedImmersion,
-      ker_specMap_quotientMk, (GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support).1, Category.comp_id]
+      ker_specMap_quotientMk, (_root_.GlobalTheory.FormalAlg.baseIdeal_calculus).1, Category.comp_id]
   refine ⟨hb, hk, fun V hV => ⟨b.app_surjective V hV, ?_⟩⟩
   rw [← Scheme.Hom.ker_apply b ⟨V, hV⟩, hk, baseIdeal_ideal]
 

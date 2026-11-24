@@ -143,4 +143,29 @@ def ZCost : Prop :=
       ‖iteratedFDeriv ℝ q (fun Z' : G.Mat s => H (gaXi k ρ σ d ξ Z' γ)) Z‖ ≤
         C * β * B.gN (gaXi k ρ σ d ξ Z γ) ^ (5 * ((p + s + ρ : ℕ) : ℝ) * (q : ℝ))
 
+theorem det_zjH_ne {p s : ℕ} {σ : Equiv.Perm (Fin p)} {d : Fin p → ℂ} (hd : ∀ i, d i ≠ 0) (η : XiH p s σ)
+    {Z : G.Mat s} (hZ : G.detM Z ≠ 0) : (ZjH σ d η Z).det ≠ 0 := by
+  simp only [ZjH, Zj, blk2, Matrix.det_mul, Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₁₂,
+    Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, headH, G.detM] at hZ ⊢
+  simp only [lowW, G.upper]
+  have hlow : (1 + Matrix.of fun i j : Fin p =>
+      if h : j < i ∧ σ.symm j < σ.symm i then η.2.1 ⟨(i, j), h⟩ else 0).det = 1 := by
+    rw [Matrix.det_of_isLowerTriangular]
+    · simp
+    · intro i j hij
+      have hij' : i < j := hij
+      simp [Matrix.one_apply_ne hij'.ne, not_lt.2 hij'.le]
+  have hup : (1 + G.strictUpper η.2.2).det = 1 := by
+    rw [Matrix.det_of_isUpperTriangular]
+    · simp [G.strictUpper]
+    · intro i j hij
+      have hij' : j < i := hij
+      simp [G.strictUpper, Matrix.one_apply_ne hij'.ne', not_lt.2 hij'.le]
+  have hP : wP σ = (1 : Matrix (Fin p) (Fin p) ℂ).submatrix σ id := by
+    ext a b; simp [wP, Matrix.one_apply]
+  rw [hlow, hup, hP, Matrix.det_permute, Matrix.det_one, Matrix.det_diagonal]
+  simp only [one_mul, mul_one]
+  refine mul_ne_zero (mul_ne_zero ?_ (Finset.prod_ne_zero_iff.2 fun i _ => hd i)) hZ
+  rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
+
 end PI.UnitaryGroupMassFormula.UsCost

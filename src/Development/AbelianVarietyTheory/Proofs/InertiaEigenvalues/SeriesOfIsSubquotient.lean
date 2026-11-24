@@ -6,19 +6,22 @@ public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemChainVecsDet
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntertwinerUnipotentInvariant
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentralStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DepthZeroSupercuspidalCuspidalModule
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCuspidalListHarishChandraPairingNeZeroStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUpperMulInc
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIrrCharactersAndFinsumCentralIdempotentsEqStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLaws
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesLabelMulOfConstituentStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasLabelOfIsCuspOf
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSupportOfIsSubquotientProdIrr
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemPrincipalCongruenceFixedVectorsIff
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SeriesIdempotentMulOfMapsToParabolicInduction
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValuationUnitsMapEqOne
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LabelEqOfSuppAdds
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharInOfIsCharLab
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentral
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCuspidalListHarishChandraPairingNeZero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIrrCharactersAndFinsumCentralIdempotentsEq
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLaws
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesLabelMulOfConstituent
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemPrincipalCongruenceFixedVectorsIff
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParIndJacPlacing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -62,8 +65,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LabelEqOfSuppAdds
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharInOfIsCharLab
 
 @[expose] public section
 
@@ -82,7 +83,7 @@ def AllLab (L : LabelDatum g) : Prop := ∀ (d : ℕ) (χ : Gn g d → ℂ), IsC
 
 theorem label_exists (L : LabelDatum g) (hA : AllLab L) {n : ℕ} (χ : Gn g n → ℂ)
     (hχ : IsIrr χ) : ∃ f, HasLabel L χ f := by
-  obtain ⟨C, hC, hd, hi⟩ := GlobalTheory.T.exists_cuspidal_list_harishChandra_pairing_ne_zero g n χ hχ
+  obtain ⟨C, hC, hd, hi⟩ := _root_.GlobalTheory.GLq.SuppCusp.exists_cusp_list g n χ hχ
   have hs : (C.map fun c => (Label.lab L c, c)).map Prod.snd = C := by
     rw [List.map_map]; exact List.map_id' C
   refine ⟨_, C.map fun c => (Label.lab L c, c), ?_, ?_, rfl, ?_⟩
@@ -108,8 +109,8 @@ theorem eSerC_laws (L : LabelDatum g) (hg : 5 ≤ g) (hA : AllLab L) (n : ℕ) :
     obtain ⟨f, hf⟩ := label_exists L hA χ hχ
     exact ⟨f, hf, fun f' hf' => Label.label_unique L hg χ hχ f' f hf' hf⟩
   have hmon := label_mon L (n := n)
-  obtain ⟨hfin, hsum⟩ := GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one (Gn g n)
-  have horth := GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central (Gn g n)
+  obtain ⟨hfin, hsum⟩ := _root_.GlobalTheory.GLq.irr_finite_and_finsum_zOf_eq_one (Gn g n)
+  have horth := _root_.GlobalTheory.GLq.ZOrth.zorth (Gn g n)
   have hmem : ∀ f χ, χ ∈ hfin.toFinset.filter (fun χ => HasLabel L χ f) ↔ IsIrr χ ∧ HasLabel L χ f := by
     intro f χ; simp
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
@@ -176,7 +177,7 @@ theorem ser_vanish (L : LabelDatum g) (h5 : 5 ≤ g) {k l n : ℕ} (σ : Fin k �
   refine irr_vanish σ χ α β hχ hα hβ ?_
   by_contra hne
   exact hf (Label.label_unique L h5 χ hχ _ _ hχ'
-    (GlobalTheory.T.harishChandraSeriesLabel_mul_of_constituent g L k l n χ α β f₁ f₂ hn hχ hα hβ hα' hβ' hne))
+    (_root_.GlobalTheory.GLq.LabelMul.hasLabel_mul g L k l n χ α β f₁ f₂ hn hχ hα hβ hα' hβ' hne))
 
 theorem ser_vanish' (L : LabelDatum g) (h5 : 5 ≤ g) (hA : AllLab L) {k l n : ℕ} (σ : Fin k ⊕ Fin l ≃ Fin n)
     (f f₁ f₂ : (ZMod g)[X]) (hf : f ≠ f₁ * f₂) :
@@ -238,12 +239,12 @@ theorem isCuspOf_of_series (L : LabelDatum g) (h5 : 5 ≤ g) (hA : AllLab L) {d 
 
 theorem eSerC_mul_zOf (L : LabelDatum g) {n : ℕ} {χ : Gn g n → ℂ} {f : (ZMod g)[X]} (hχ : IsIrr χ)
     (hf : HasLabel L χ f) : eSerC L n f * zOf χ = zOf χ := by
-  have hfin := (GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one (Gn g n)).1
+  have hfin := (_root_.GlobalTheory.GLq.irr_finite_and_finsum_zOf_eq_one (Gn g n)).1
   rw [eSerC_eq_sum L n hfin, Finset.sum_mul, Finset.sum_eq_single_of_mem χ (by simp [hχ, hf])]
-  · simpa using (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ χ hχ hχ).1
+  · simpa using (_root_.GlobalTheory.GLq.ZOrth.zorth _ χ χ hχ hχ).1
   · intro b hb hne
     have hb' : IsIrr b := by simpa using (Finset.mem_filter.1 hb).1
-    rw [(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ b χ hb' hχ).1, if_neg hne]
+    rw [(_root_.GlobalTheory.GLq.ZOrth.zorth _ b χ hb' hχ).1, if_neg hne]
 
 end Finite
 

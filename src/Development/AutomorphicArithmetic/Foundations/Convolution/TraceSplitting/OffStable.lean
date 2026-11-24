@@ -156,4 +156,4 @@ theorem UpperTheory.ConvolutionTheory.T.offStable :
   · rw [hc]
     exact UpperTheory.ConvolutionTheory.T.iwahori_map _ n (hv u) (hx _)
   · ext g
-    simp [Subgroup.mem_iInf, unitSet, GM.cmp]
+    simp [unitSet, GM.cmp]

@@ -4,52 +4,10 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Suppo
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SupportLoc
 public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SmoothBigCellSectionsExist
 public import Formalism.SharpRestriction.CuspSpanNormBounds.LocalModelPeriodLattices
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Rat
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Separation.CompletelyRegular
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -203,12 +161,10 @@ theorem autG_eq_ofReal (th : ∀ p, Option ((M p).Cls D.R.rS)) : autG M th = ((a
   have e := MonoidHom.map_finprod_of_injective (Complex.ofRealHom : ℝ →+* ℂ).toMonoidHom
     Complex.ofReal_injective (fun p => autPR M p (th p))
   simp only [RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Complex.ofRealHom_eq_coe] at e
-  rw [e]
-  simp only [autP_ofReal]
+  simpa only [autP_ofReal] using e.symm
 
 theorem autR_nonneg (th : ∀ p, Option ((M p).Cls D.R.rS)) : 0 ≤ autR M th := by
-  unfold autR
-  exact finprod_nonneg fun p => by unfold autPR; split <;> positivity
+  simpa only [autR] using (finprod_nonneg fun p => by unfold autPR; split <;> positivity)
 
 theorem bbtop_none (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) : BBtop M δ T T' p w none = 0 := by
   unfold BBtop
@@ -279,10 +235,7 @@ theorem bbG_eq_prod {θ0 : ∀ p, Option ((M p).Cls D.R.rS)} {S : Finset (PlF D)
   rw [if_pos hk]
   refine finprod_eq_prod_of_mulSupport_subset _ fun p hp => ?_
   by_contra hpS
-  apply hp
-  show BBtop M δ T T' p w (θ p) = 1
-  rw [hθ p hpS, (hu p hpS).2]
-  simp
+  exact hp (by simp [hθ p hpS, (hu p hpS).2])
 
 theorem autG_eq_prodS {θ0 : ∀ p, Option ((M p).Cls D.R.rS)} {S : Finset (PlF D)} {w : Point D.host.E (D.R.rS + 1)}
     (hu : UnramOff M δ T T' θ0 S w) {θ : ∀ p, Option ((M p).Cls D.R.rS)} (hθ : ∀ p ∉ S, θ p = θ0 p) :
@@ -375,8 +328,7 @@ theorem re_emb_G (τ : D.what₂.Tau) (T T' : ℕ) (w : Point D.host.E (D.R.rS +
 
 theorem dmin_top_eq_zeta (w : Point D.host.E (D.R.rS + 1)) (h0 : Dmin w D.R.rS ≠ 0) :
     Dmin w (D.R.rS + 1) = zetaOf w * Dmin w D.R.rS := by
-  simp only [zetaOf]
-  exact (div_mul_cancel₀ _ h0).symm
+  simpa only [zetaOf] using (div_mul_cancel₀ _ h0).symm
 
 theorem totPos_of_kind {T T' : ℕ} {w w' : Point D.host.E (D.R.rS + 1)} (hk : kind w = kind w')
     (h' : TotPos (Gpt T T' w')) : TotPos (Gpt (D := D) T T' w) := by
@@ -394,7 +346,7 @@ theorem totPos_of_kind {T T' : ℕ} {w w' : Point D.host.E (D.R.rS + 1)} (hk : k
     rw [dmin_top_eq_zeta w h0]
     rw [dmin_top_eq_zeta w' h0'] at h'τ
     rw [hz]
-    simp only [map_mul, Complex.normSq_mul] at h'τ ⊢
+    simp only [map_mul] at h'τ ⊢
     have hp : 0 < Complex.normSq (D.host.emb (D.eTau τ : D.R.GG) (Dmin w D.R.rS)) :=
       Complex.normSq_pos.mpr ((map_ne_zero _).mpr h0)
     have hp' : 0 < Complex.normSq (D.host.emb (D.eTau τ : D.R.GG) (Dmin w' D.R.rS)) :=

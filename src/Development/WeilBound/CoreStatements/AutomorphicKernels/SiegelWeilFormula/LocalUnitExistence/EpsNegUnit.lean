@@ -1,6 +1,5 @@
 module
 
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LagrangianDecomposition.LdExOfLeaves
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LagrangianDecomposition.FinOneOneMem
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalUnitExistence.DetLast
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalUnitExistence.ExistsEigenvalueGLOneEqCuspidalLabelGen
@@ -84,29 +83,6 @@ theorem eps_neg_unit {ε : ℤˣ} (h : ((ε : ℤ) : E) = -1) : ε = -1 := by
       linear_combination h'
     exact two_ne_zero this
   · exact e
-
-theorem hgtPull : Ald.HgtPull := by
-  intro F E _ _ _ _ _ σ d n h Y b j hn hs hb hJ
-  have hB := d.ok.good
-  have hσ : ∀ z, σ (σ z) = z := UnitA.sig_sig hB.cm
-  refine ⟨fun x => ?_, val_pull h hJ hb⟩
-  obtain ⟨Y₀, b₀, K₀, a₀, hb₀, he₀, hK₀, ha₀⟩ := exists_eigenvalueGLOne_eq_cuspidalLabel_gen hB hn
-  obtain ⟨ε, he⟩ := hb.1
-  have hK : IsStdK (σ := σ) (Y := Y) d.B b (d.K.comap j) := Ald.kStd F E σ d n h Y b j hb hJ
-  rcases hs with ⟨-, hY⟩ | ⟨-, hY⟩
-  ·
-    have hε : ε = -1 := eps_neg_unit (eps_neg hn hσ hY he)
-    subst hε
-    obtain ⟨r, hr, hrf, hri⟩ := exists_skewUnit hB
-    refine iwa_transport (B := d.B) hσ hb hb₀ he he₀ r ?_ hrf hri hK₀ ha₀.iwa hK x
-    rw [hr]; push_cast; ring
-  ·
-    have hε : ε = 1 := eps_unit (eps_one hn hσ hY he)
-    subst hε
-    refine iwa_transport (B := d.B) hσ hb hb₀ he he₀ 1 ?_ (fun v => ?_) (fun w => ?_) hK₀ ha₀.iwa hK x
-    · simp
-    · simp only [Units.val_one, inv_one, map_one]; exact ⟨one_mem _, one_mem _⟩
-    · simp
 
 end PositivityTheory.SiegelWeilFormula.Ldexb
 

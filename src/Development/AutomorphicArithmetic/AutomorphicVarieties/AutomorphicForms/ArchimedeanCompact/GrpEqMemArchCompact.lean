@@ -202,7 +202,7 @@ private theorem norm_le_ht (y : GL (Fin a) (Cinf E)) :
       GlobalTheory.CuspRep.height y ≤ 1 + ‖toL y.val‖ + ‖toL (y⁻¹).val‖ := by
   have n1 := norm_nonneg (toL y.val)
   have n2 := norm_nonneg (toL (y⁻¹).val)
-  refine ⟨?_, ?_, ?_⟩ <;> first | (unfold GlobalTheory.CuspRep.height; linarith) | fail "height"
+  refine ⟨?_, ?_, ?_⟩ <;> first | (unfold GlobalTheory.CuspRep.height; linarith)
 
 private theorem ent (y : GL (Fin a) (Cinf E)) (w : InfinitePlace E) (i j : Fin a) :
     ‖(Reduction.infAt w (infGL E a y) : Matrix (Fin a) (Fin a) w.Completion) i j‖ ≤ ‖toL y.val‖ := by

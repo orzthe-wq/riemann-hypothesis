@@ -57,7 +57,7 @@ theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.regOf :
     have hc : ComplexEmbedding.conjugate (InfinitePlace.mk τ).embedding = τ := by
       rw [h]
       ext x
-      simp [ComplexEmbedding.conjugate_coe_eq]
+      simp
     have h2 := (mw E n l (InfinitePlace.mk τ)).2
     rw [hc] at h2
     rw [hτ, h2, hlam]

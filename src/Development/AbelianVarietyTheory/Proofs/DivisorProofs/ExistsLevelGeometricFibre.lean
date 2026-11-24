@@ -51,17 +51,6 @@ namespace GlobalTheory.UPel.GeometricLevelExistence
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
-theorem epi_spMap_field {K L : Type} [Field K] [Field L] (σ : K →+* L) : Epi (spMap σ) := by
-  have : Flat (Spec.map (CommRingCat.ofHom σ)) := inferInstance
-  have : Surjective (Spec.map (CommRingCat.ofHom σ)) :=
-    ⟨fun u => ⟨IsLocalRing.closedPoint L, Subsingleton.elim _ _⟩⟩
-  exact Flat.epi_of_flat_of_surjective _
-
-theorem unitOn_pull_spMap {K Ω : Type} [CommRing K] [CommRing Ω] (i : K →+* Ω) (c : Kˣ) :
-    Units.map (spMap i).appTop.hom.toMonoidHom (unitOn c) = unitOn (Units.map i.toMonoidHom c) := by
-  apply Units.ext
-  exact (congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom i))).symm
-
 theorem eq_iff_of_add {La G : Type} [AddGroup La] [Group G] (P : La → G)
     (hP : ∀ a b, P (a + b) = P a * P b) (a b : La) : P a = P b ↔ P (-a + b) = 1 := by
   have h := hP a (-a + b)
@@ -106,8 +95,5 @@ theorem exists_eq_of_count {La G : Type} [AddCommGroup La] [Module.Finite ℤ La
 end GlobalTheory.UPel.GeometricLevelExistence
 
 namespace GlobalTheory.UPel.GeometricLevelExistence
-
-open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
-open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 end GlobalTheory.UPel.GeometricLevelExistence

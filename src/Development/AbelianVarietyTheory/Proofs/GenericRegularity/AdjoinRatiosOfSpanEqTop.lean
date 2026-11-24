@@ -63,11 +63,9 @@ theorem adjoin_ratios_of_span_eq_top :
     have h1 : (1 : R) ∈ Ideal.span (Set.range w) := by rw [hspan]; trivial
     obtain ⟨a, ha⟩ := Ideal.mem_span_range_iff_exists_fun.1 h1
     have h2 : ∑ i, (a i : Ω) * (w i : Ω) = 1 := by
-      have := congrArg (fun x : R => (x : Ω)) ha
-      simpa using this
-    have h3 : (w k : Ω)⁻¹ = ∑ i, (a i : Ω) * ((w i : Ω) / (w k : Ω)) := by
-      simp only [← mul_div_assoc, ← Finset.sum_div, h2, one_div]
-    rw [h3]
+      simpa using congrArg (fun x : R => (x : Ω)) ha
+    rw [← one_div, ← h2, Finset.sum_div]
+    simp only [mul_div_assoc]
     exact R'.sum_mem fun i _ => R'.mul_mem (h (a i).2) (hrat i)
   letI : Algebra R R' := (Subalgebra.inclusion h).toRingHom.toAlgebra
   haveI : IsScalarTower K R R' := IsScalarTower.of_algebraMap_eq fun x => rfl
@@ -95,8 +93,7 @@ theorem adjoin_ratios_of_span_eq_top :
       rw [← ha, ← hb]; ring
   haveI hloc : IsLocalization.Away (w k) R' := by
     refine IsLocalization.Away.mk (w k) ?_ ?_ ?_
-    · refine IsUnit.of_mul_eq_one ⟨_, hinv⟩ ?_
-      apply Subtype.ext
+    · refine IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext ?_)
       simp [halg, hk]
     · intro s
       obtain ⟨n, a, ha⟩ := hsurj s s.2
@@ -110,15 +107,12 @@ theorem adjoin_ratios_of_span_eq_top :
   · haveI : Algebra.Smooth R R' := Algebra.Smooth.of_isLocalization_Away (w k)
     exact Algebra.Smooth.comp K R R'
   · have hu : IsUnit ((ψ : R →+* L) (w k)) := isUnit_iff_ne_zero.2 hψ
-    let φ : R' →+* L := IsLocalization.Away.lift (w k) hu
-    have hφ : ∀ x : R, φ (algebraMap R R' x) = ψ x := fun x =>
+    let ψ' : R' →ₐ[K] L := IsLocalization.Away.liftAlgHom (w k) hu
+    have hφ : ∀ x : R, ψ' (algebraMap R R' x) = ψ x := fun x =>
       IsLocalization.Away.lift_eq (w k) hu x
-    refine ⟨{ φ with commutes' := fun r => ?_ }, ?_, fun i hi => ?_⟩
-    · change φ (algebraMap K R' r) = _
-      rw [IsScalarTower.algebraMap_apply K R R', hφ, AlgHom.commutes]
+    refine ⟨ψ', ?_, fun i hi => ?_⟩
     · ext x; exact hφ x
-    · change φ ⟨_, hi⟩ = _
-      rw [eq_div_iff hψ, ← hφ, ← hφ, ← map_mul]
+    · rw [eq_div_iff hψ, ← hφ, ← hφ, ← map_mul]
       congr 1
       apply Subtype.ext
       simp [halg, hk]

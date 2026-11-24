@@ -1,20 +1,23 @@
 module
 
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalDescent.GLDenseRanges.KirCusp
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRationalMirabolicMovingRowToLastStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DifferentiableAtChart
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSplitAdelicMatrixLocalComponent
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnipotentBlockColumnIndex
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStandardAdelicAddChar
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGenericOfIsLocComp
+public import CompanionTheory.RealGroups.GeneralUnitaryRepresentations.WhittakerModels.WhitCuspOfSegCuspGeneric
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsRationalMirabolicMovingRowToLastStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSplitAdelicMatrixLocalComponentStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStandardAdelicAddCharStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGenericOfIsLocComp
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsMirabolicWhittakerStageOfIsCuspFormStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalUpperUnipotentAdelicUpperUnipotentStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalUpperUnipotentAdelicUpperUnipotent
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodicEqZeroOfFourierCoefficientsZeroStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerCoefficientRationalMirabolicMulStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerLawUpperTriangularUnipotentAdelicStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerLawUpperTriangularUnipotentAdelic
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EquivOfISupRange
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
-public import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.WhittakerCuspidal.WhitCuspOfSegCuspGeneric
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,7 +59,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
 
 @[expose] public section
 
@@ -233,7 +235,7 @@ theorem UpperTheory.V.Z.Desc.V0.kirCusp :
     KirCusp := by
   intro E _ _ _ a _ P w σ hσ
   obtain ⟨f, hf0, hf⟩ := hσ
-  obtain ⟨ψ, hψ⟩ := GlobalTheory.T.exists_standardAdelicAddChar E
+  obtain ⟨ψ, hψ⟩ := _root_.GlobalTheory.CuspGeneric.exists_stdPsi E
   have hg : ∀ v, Good ψ (a - 1) (f v).1.1 := fun v => GlobalTheory.T.isMirabolicWhittakerStage_of_isCuspForm E a ψ (f v).1 (P.cusp _ (f v).2)
   have h0 : a - 1 < a ∨ a - 1 = 0 := by omega
   obtain ⟨v₀, hv₀⟩ : ∃ v, f v ≠ 0 := by
@@ -242,7 +244,7 @@ theorem UpperTheory.V.Z.Desc.V0.kirCusp :
     exact hf0 (LinearMap.ext h)
   have hv1 : (f v₀).1.1 ≠ 0 := fun h => hv₀ (Subtype.ext (Subtype.ext h))
   obtain ⟨g₀, hg₀⟩ := Function.ne_iff.1 ((whit_good hψ (a - 1) h0 (hg v₀)).2 hv1)
-  obtain ⟨h₀, gw, e, hc₀⟩ := GlobalTheory.T.exists_split_adelicMatrix_localComponent E a w g₀
+  obtain ⟨h₀, gw, e, hc₀⟩ := _root_.GlobalTheory.CuspGeneric.exists_split_loc E a w g₀
   have hrt : ∀ u v x, whit ψ (a - 1) (f (σ.ρ u v)).1.1 x =
       whit ψ (a - 1) (f v).1.1 (x * finGL E a (locGL E a w u)) := fun u v x => by
     rw [hf u v]
@@ -264,9 +266,9 @@ theorem UpperTheory.V.Z.Desc.V0.kirCusp :
       L h (σ.ρ u v) = (locPsi hψ w (∑ p : Fin a × Fin a with (p.2 : ℕ) = p.1 + 1, (u : GL (Fin a) (w.adicCompletion E)).val p.1 p.2) : ℂ) * L h v := by
     intro h hc u v
     obtain ⟨u1, u2⟩ := (GlobalTheory.SmGL.mem_unipB _).1 u.2
-    obtain ⟨t1, t2, t3⟩ := GlobalTheory.T.localUpperUnipotent_adelic_upperUnipotent E a w u u1 u2
+    obtain ⟨t1, t2, t3⟩ := _root_.GlobalTheory.CuspRep.locTri_adelic E a w u u1 u2
     have hlw := (whit_good hψ (a - 1) h0 (hg v)).1.law
-    have := GlobalTheory.T.whittakerLaw_upperTriangularUnipotent_adelic E a ψ _ (fun k hk => hlw k hk) _ t1 t2 h
+    have := _root_.GlobalTheory.CuspGeneric.tri_law E a ψ _ (fun k hk => hlw k hk) _ t1 t2 h
     rw [hL, hrt, hc, this, t3]
     rfl
   have hK : ∀ h, (∀ u, h * finGL E a (locGL E a w u) = finGL E a (locGL E a w u) * h) →
@@ -286,7 +288,7 @@ theorem UpperTheory.V.Z.Desc.V0.kirCusp :
     apply hy
     have := congrArg (fun c : Circle => (c : ℂ)) (DFunLike.congr_fun h1 y)
     simpa [coe_locPsi] using this
-  have hrank := PositivityTheory.rg.gu.whit.whitLeOne (w.adicCompletion E) a (locPsi hψ w) σ.V σ.ρ σ.5 σ.6 hcont hnt
+  have hrank := CompanionTheory.rg.gu.whit.whitLeOne (w.adicCompletion E) a (locPsi hψ w) σ.V σ.ρ σ.5 σ.6 hcont hnt
   refine ⟨locPsi hψ w, L h₀, hcont, hnt, ?_, ?_⟩
   · intro u hu v
     rw [hlaw h₀ hc₀ ⟨u, hu⟩ v]

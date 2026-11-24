@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndSt
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsNatCastSmulCoeffIsIntegral
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicValueGermsIndependentOfChartStatement
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicValueGermsIndependentOfChart
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -59,7 +60,7 @@ theorem hv_eq_chartVal :
       ∏ b, C₀.B.nabVal S C₀.h H.w0 k (f₀ b) C₀.uvec (MvPolynomial.monomial (colOf m b) 1) := fun m =>
     Finset.prod_congr rfl fun b _ => hpin k (F b) (f₀ b) (hf₀ b) (colOf m b)
   obtain ⟨N, hN, hA, hs⟩ := GlobalTheory.exists_natCast_smul_mem_harmA E H Dw l c w n P hP
-  have h := GlobalTheory.T.harmonicValue_germs_independent_of_chart E H Dw l Xo c hst S y C₀ C k n F f₀ f hf₀ hf w _ hA
+  have h := _root_.GlobalTheory.ChartField.chartVal_indep E H Dw l Xo c hst S y C₀ C k n F f₀ f hf₀ hf w _ hA
   have hu : IsUnit (algebraMap c.F S (N : c.F)) :=
     (IsUnit.mk0 (N : c.F) (Nat.cast_ne_zero.2 hN.ne')).map _
   simp only [chartVal, hs, MvPolynomial.coeff_smul, smul_eq_mul, map_mul, _root_.mul_assoc, ← Finset.mul_sum] at h

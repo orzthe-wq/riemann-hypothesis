@@ -1,18 +1,21 @@
 module
 
+public import Mathlib.RingTheory.Ideal.Maps
 public import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SurjectiveOfKerLeMapSupSq
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.SaturationChartsHolds
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.DualLiftCompJetSub
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -20,8 +23,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -29,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,11 +43,110 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Presheaf
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.Style
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.LieEig
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.DualLiftCompJetSub
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.UnivChartLoc
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.JetHarmonics.SurjectiveOfKerLeMapSupSq, Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalStatement
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.SurjectiveOfKerLeMapSupSq =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.JetHarmonics.SurjectiveOfKerLeMapSupSq", "h": "module\n\npublic import Mathlib.RingTheory.Ideal.Maps\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Presheaf\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.SurjectiveOfKerSq
+
+theorem eq_of_le_sup_sq {B : Type} [CommRing B] (I K : Ideal B) (m : ℕ)
+    (hnil : I ^ (m + 1) = ⊥) (h1 : K ≤ I) (h2 : I ≤ K ⊔ I ^ 2) : I = K := by
+  have key : ∀ n : ℕ, I ≤ K ⊔ I ^ (n + 1) := by
+    intro n
+    induction n with
+    | zero => simp
+    | succ n ih =>
+      refine h2.trans (sup_le le_sup_left ?_)
+      calc I ^ 2 = I * I := pow_two I
+        _ ≤ I * (K ⊔ I ^ (n + 1)) := Ideal.mul_mono_right ih
+        _ = I * K ⊔ I ^ (n + 1 + 1) := by rw [Ideal.mul_sup, ← pow_succ']
+        _ ≤ K ⊔ I ^ (n + 1 + 1) := sup_le_sup_right Ideal.mul_le_right _
+  have := key m
+  rw [hnil, sup_bot_eq] at this
+  exact le_antisymm this h1
+
+theorem surjective_of_ker_le_map_sup_sq {V : Type} [CommRing V] {A B : Type} [CommRing A]
+    [Algebra V A] [CommRing B] [Algebra V B] (f : A →ₐ[V] B) (aug : B →ₐ[V] V) (m : ℕ)
+    (hnil : RingHom.ker aug ^ (m + 1) = ⊥) (J : Ideal A)
+    (h1 : Ideal.map f J ≤ RingHom.ker aug)
+    (h2 : RingHom.ker aug ≤ Ideal.map f J ⊔ RingHom.ker aug ^ 2) :
+    Function.Surjective f := by
+  have hI : RingHom.ker aug = Ideal.map f J := eq_of_le_sup_sq _ _ m hnil h1 h2
+  have base : ∀ b : B, ∃ a : A, b - f a ∈ RingHom.ker aug := by
+    intro b
+    refine ⟨algebraMap V A (aug b), ?_⟩
+    simp [RingHom.mem_ker]
+  have step : ∀ n : ℕ, ∀ x ∈ RingHom.ker aug ^ n, ∀ b : B,
+      ∃ a : A, b * x - f a ∈ RingHom.ker aug ^ (n + 1) := by
+    intro n x hx
+    have hpow : RingHom.ker aug ^ n = Ideal.span (f '' (J ^ n : Ideal A)) := by
+      rw [hI, ← Ideal.map_pow]; rfl
+    have hx' := hx
+    rw [hpow] at hx'
+    clear hx
+    induction hx' using Submodule.span_induction with
+    | mem y hy =>
+      intro b
+      obtain ⟨j, hj, rfl⟩ := hy
+      obtain ⟨a, ha⟩ := base b
+      refine ⟨a * j, ?_⟩
+      have hfj : f j ∈ RingHom.ker aug ^ n := by
+        rw [hpow]; exact Ideal.subset_span ⟨j, hj, rfl⟩
+      have e : b * f j - f (a * j) = f j * (b - f a) := by rw [map_mul]; ring
+      rw [e, pow_succ]
+      exact Ideal.mul_mem_mul hfj ha
+    | zero => intro b; exact ⟨0, by simp⟩
+    | add y z _ _ hy hz =>
+      intro b
+      obtain ⟨a, ha⟩ := hy b
+      obtain ⟨c, hc⟩ := hz b
+      refine ⟨a + c, ?_⟩
+      have e : b * (y + z) - f (a + c) = (b * y - f a) + (b * z - f c) := by
+        rw [map_add (f := _)]; ring
+      rw [e]
+      exact Ideal.add_mem _ ha hc
+    | smul c y _ hy =>
+      intro b
+      obtain ⟨a, ha⟩ := hy (b * c)
+      exact ⟨a, by rwa [smul_eq_mul, ← mul_assoc]⟩
+  have all : ∀ n : ℕ, ∀ b : B, ∃ a : A, b - f a ∈ RingHom.ker aug ^ n := by
+    intro n
+    induction n with
+    | zero => intro b; exact ⟨0, by simp⟩
+    | succ n ih =>
+      intro b
+      obtain ⟨a, ha⟩ := ih b
+      obtain ⟨c, hc⟩ := step n _ ha 1
+      refine ⟨a + c, ?_⟩
+      have e : b - f (a + c) = 1 * (b - f a) - f c := by rw [map_add (f := _)]; ring
+      rw [e]
+      exact hc
+  intro b
+  obtain ⟨a, ha⟩ := all (m + 1) b
+  rw [hnil, Ideal.mem_bot, sub_eq_zero] at ha
+  exact ⟨a, ha.symm⟩
+
+end GlobalTheory.SurjectiveOfKerSq
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.SurjectiveOfKerLeMapSupSq =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalStatement", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SurjectiveOfKerLeMapSupSq\npublic import Formalism.SharpRestriction.Divisibility.GeneratorPowers.SaturationChartsHolds\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.LieEig\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.DualLiftCompJetSub\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.UnivChartLoc\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -58,18 +158,6 @@ namespace GlobalTheory.PowGerm.UnivJets
 
 section Alg
 variable {V : Type} [CommRing V]
-
-theorem surj_of_sq {A B : Type} [CommRing A] [Algebra V A] [CommRing B] [Algebra V B] (f : A →ₐ[V] B)
-    (aug : B →ₐ[V] V) (m : ℕ) (hI : RingHom.ker aug ^ (m + 1) = ⊥) (J : Ideal A)
-    (h1 : J.map f ≤ RingHom.ker aug) (h2 : RingHom.ker aug ≤ J.map f ⊔ RingHom.ker aug ^ 2) :
-    Function.Surjective f := by
-  first
-  | exact @_root_.GlobalTheory.SurjectiveOfKerSq.surjective_of_ker_le_map_sup_sq
-  | exact _root_.GlobalTheory.SurjectiveOfKerSq.surjective_of_ker_le_map_sup_sq
-  | (apply _root_.GlobalTheory.SurjectiveOfKerSq.surjective_of_ker_le_map_sup_sq <;> assumption)
-  | (intros; apply _root_.GlobalTheory.SurjectiveOfKerSq.surjective_of_ker_le_map_sup_sq <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.SurjectiveOfKerSq.surjective_of_ker_le_map_sup_sq <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.SurjectiveOfKerSq.surjective_of_ker_le_map_sup_sq ..)
 
 open Chart (JetR zR jetAug_zR jet_ext jetLift jetLift_zR ker_jetAug_pow zR_mem_ker)
 
@@ -109,7 +197,7 @@ theorem jet_finite (κ : Type) [Finite κ] (m : ℕ) : Module.Finite V (JetR V �
 theorem surj_of_first_order {σ κ : Type} {m : ℕ} (β : σ → κ) (hβ : Function.Surjective β)
     (f : JetR V σ m →ₐ[V] JetR V κ m)
     (hf : ∀ i, f (zR m i) - zR m (β i) ∈ RingHom.ker (Chart.jetAug V κ m) ^ 2) : Function.Surjective f := by
-  refine surj_of_sq f (Chart.jetAug V κ m) m (ker_jetAug_pow κ m) (Ideal.span (Set.range (zR m))) ?_ ?_
+  refine _root_.GlobalTheory.SurjectiveOfKerSq.surjective_of_ker_le_map_sup_sq f (Chart.jetAug V κ m) m (ker_jetAug_pow κ m) (Ideal.span (Set.range (zR m))) ?_ ?_
   · rw [Ideal.map_span, Ideal.span_le]
     rintro _ ⟨_, ⟨i, rfl⟩, rfl⟩
     have := Ideal.add_mem _ (Ideal.pow_le_self two_ne_zero (hf i)) (zR_mem_ker (R := V) m (β i))
@@ -173,9 +261,7 @@ section Geo
 variable {V : Type} [CommRing V] {G : Over (Spec (CommRingCat.of V))} [GrpObj G]
 open Chart (JetR zR jetAug_zR jet_ext ker_jetAug_pow zR_mem_ker jetTruncR dualLift dualLift_zR fstD kerD_sq)
 
-theorem spMap_id' (A : Type) [CommRing A] [Algebra V A] : Chart.spMap (AlgHom.id V A) = 𝟙 _ := by
-  apply Over.OverMorphism.ext
-  exact Spec.map_id _
+alias spMap_id' := _root_.ReciprocityTheory.ChartRestriction.G.Chart.spMap_id
 
 theorem toFirst_zR (κ : Type) (m : ℕ) (j : κ) : toFirst (V := V) κ m (zR (m + 1) j) = zR 1 j := rfl
 
@@ -418,3 +504,7 @@ end GlobalTheory.PowGerm.UnivJets
 theorem GlobalTheory.PowGerm.univSt_holds : GlobalTheory.PowGerm.UnivSt := fun _ _ _ _ H _ _ _ _ _ _ _ C =>
   letI := H.starRing
   GlobalTheory.PowGerm.UnivJets.isUnivJ_of_isChartG C.I.G _ C.FT C.actT C.tgT C.xT C.tgBasis.1 C.tgBasis.2 C.chartT
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.UniversalStatement =====

@@ -73,10 +73,10 @@ theorem tau_over (hbij : Function.Bijective (algebraMap K₀ K)) (c : ZMod n) :
   let E : K₀ ≃ₐ[Qp] K := AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hbij
   refine ⟨(W.emb c).comp E.symm.toAlgHom, ?_, fun x => ?_⟩
   · ext x
-    simp only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, AlgHom.coe_coe]
+    simp only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom]
     congr 1
     exact E.symm_apply_apply x
-  · simp only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, AlgHom.coe_coe]
+  · simp only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom]
     congr 1
     exact E.symm_apply_apply x
 
@@ -86,7 +86,7 @@ theorem dvO_letter (T : LocLat G Qp LL O) (c' : ZMod n) {d : ℕ} (b : Fin d →
   unfold dvO dv
   refine Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ ?_
   have hbN : b m ∈ W.N T := (hb.1 m).1.1
-  have hbl : (letE c' : LetA O n) • b m = b m := Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' (hb.1 m).2
+  have hbl : (letE c' : LetA O n) • b m = b m := _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c' (hb.1 m).2
   have hcl : cmpD W T (b m) ∈ DcrisL PD T.ρ (W.emb c') := by
     rw [Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hbN]; exact Formalism.MainNotions.UnusedSlot80.ArcF.cmp_mem_letter W T c' hbN hbl
   exact Formalism.MainNotions.UnusedSlot80.ArcF.φVB_pow_letter W T c' hcl e
@@ -105,7 +105,6 @@ theorem dvO_filLow (hbij : Function.Bijective (algebraMap K₀ K)) (A : ArcP n) 
     have hle := Formalism.MainNotions.UnusedSlot80.ArcC.hs_ge A hA c' hc' e (e - s) (by omega) (by omega)
     rw [show e - (e - s) = s by omega, ← hidef] at hle
     have := hw.1
-    push_cast at this ⊢
     omega
   have hy := fil_low W T i τ hover hbij.2 _ hJ (dvO_letter W T c' b hb (e - s) c₀)
   refine ⟨dvO W T (e - s) b c₀, ⟨hy, ?_⟩, ?_⟩

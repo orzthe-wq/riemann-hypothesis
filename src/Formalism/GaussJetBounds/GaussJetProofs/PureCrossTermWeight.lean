@@ -99,7 +99,6 @@ theorem pow_pair_eq [DecidableEq ι] (i j : ι) (x y : K) (a b : ℕ) :
   first
     | (rw [MvPowerSeries.monomial_mul_monomial, one_mul, ← MvPowerSeries.monomial_zero_eq_C_apply,
         MvPowerSeries.monomial_mul_monomial, zero_add, mul_one])
-    | (simp [MvPowerSeries.monomial_mul_monomial, ← MvPowerSeries.monomial_zero_eq_C_apply])
 
 variable [IsUltrametricDist K]
 
@@ -109,7 +108,6 @@ theorem norm_natCast_le_of_dvd {l k : ℕ} (h : l ∣ k) : ‖(k : K)‖ ≤ ‖
   refine mul_le_of_le_one_right (norm_nonneg _) ?_
   first
     | exact IsUltrametricDist.norm_natCast_le_one K m
-    | exact IsUltrametricDist.norm_natCast_le_one (R := K) m
 
 theorem wtGe_mul_natCast {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {wt : ℝ} {f : MvPowerSeries ι K}
     (hf : WtGe pi r wt f) {k : ℕ} (hk : ‖(k : K)‖ ≤ pi) :
@@ -120,7 +118,6 @@ theorem wtGe_mul_natCast {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {wt : ℝ} {f
   first
     | rw [show (k : MvPowerSeries ι K) = MvPowerSeries.C (k : K) from (map_natCast _ k).symm,
         MvPowerSeries.coeff_mul_C, norm_mul]
-    | rw [← map_natCast (MvPowerSeries.C (σ := ι) (R := K)) k, MvPowerSeries.coeff_mul_C, norm_mul]
   calc _ ≤ pi ^ (wt - dot n r) * pi := mul_le_mul hfn hk (norm_nonneg _) (Real.rpow_nonneg h0.le _)
     _ = pi ^ (wt + 1 - dot n r) := by
       rw [show wt + 1 - dot n r = (wt - dot n r) + 1 by ring, Real.rpow_add_one h0.ne']

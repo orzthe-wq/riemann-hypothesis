@@ -71,7 +71,7 @@ theorem residue_exists (k A : Type) [Field k] [IsAlgClosed k] [CommRing A] [Alge
     (Ideal.Quotient.mk Q c)
   refine ⟨a, ?_⟩
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, ← ha]
-  simp [Ideal.Quotient.algebraMap_eq]
+  simp
 
 section Dedekind
 variable {A : Type} [CommRing A] [IsDedekindDomain A]
@@ -79,22 +79,12 @@ variable {A : Type} [CommRing A] [IsDedekindDomain A]
 theorem pow_le_span_sup {Q : Ideal A} [Q.IsPrime] (hQ : Q ≠ ⊥) {π : A} (hπ : π ∈ Q)
     (hπ2 : π ∉ Q ^ 2) : ∀ m : ℕ, Q ^ m ≤ Ideal.span {π ^ m} ⊔ Q ^ (m + 1) := by
   first
-  | exact @_root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup
-  | exact _root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup
   | (apply _root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup <;> assumption)
-  | (intros; apply _root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.SpanPowerSupremum.pow_le_span_pow_sup ..)
 
 theorem pow_not_mem {Q : Ideal A} [Q.IsPrime] (hQ : Q ≠ ⊥) {π : A} (hπ : π ∈ Q)
     (hπ2 : π ∉ Q ^ 2) (m : ℕ) : π ^ m ∉ Q ^ (m + 1) := by
   first
-  | exact @_root_.GlobalTheory.AlgebraicIntegerNormBound.main
-  | exact _root_.GlobalTheory.AlgebraicIntegerNormBound.main
   | (apply _root_.GlobalTheory.AlgebraicIntegerNormBound.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.AlgebraicIntegerNormBound.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.AlgebraicIntegerNormBound.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.AlgebraicIntegerNormBound.main ..)
 
 end Dedekind
 
@@ -256,35 +246,19 @@ noncomputable def serHom : A →ₐ[k] PowerSeries k where
 
 end Construction
 
-section Existence
-variable {k A : Type} [Field k] [CommRing A] [Algebra k A] {Q : Ideal A} {π : A}
-
-theorem exists_approx (hπ : π ∈ Q) (hres : ∀ c : A, ∃ a : k, c - algebraMap k A a ∈ Q)
-    (hsup : ∀ m : ℕ, Q ^ m ≤ Ideal.span {π ^ m} ⊔ Q ^ (m + 1)) :
-    ∀ (m : ℕ) (u : A), ∃ p : k[X], u - aeval π p ∈ Q ^ m := by
-  first
-  | exact @_root_.GlobalTheory.IntegralNormBound.target
-  | exact _root_.GlobalTheory.IntegralNormBound.target
-  | (apply _root_.GlobalTheory.IntegralNormBound.target <;> assumption)
-  | (intros; apply _root_.GlobalTheory.IntegralNormBound.target <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.IntegralNormBound.target <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.IntegralNormBound.target ..)
-
-end Existence
-
-theorem exists_completion_embedding : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CharZero k]
+theorem exists_completion_embedding : ∀ (k A : Type) [Field k] [IsAlgClosed k]
     [CommRing A] [IsDedekindDomain A] [Algebra k A] [Algebra.FiniteType k A] (Q : Ideal A),
     Q.IsMaximal → Q ≠ ⊥ → ∃ (σ : A →ₐ[k] PowerSeries k) (π : A), σ π = PowerSeries.X ∧
       Function.Injective σ ∧
       (∀ (m : ℕ) (u : A), u ∈ Q ^ m ↔ (PowerSeries.X : PowerSeries k) ^ m ∣ σ u) ∧
       ∀ (m : ℕ) (φ : PowerSeries k), ∃ u : A,
         (PowerSeries.X : PowerSeries k) ^ m ∣ φ - σ u := by
-  intro k A _ _ _ _ _ _ _ Q hQ hQ0
+  intro k A _ _ _ _ _ _ Q hQ hQ0
   haveI : Q.IsPrime := hQ.isPrime
   obtain ⟨π, hπ1, hπ2⟩ := SetLike.exists_of_lt (Ideal.pow_succ_lt_pow hQ0 1)
   have hπ : π ∈ Q := by simpa using hπ1
   have hnot := pow_not_mem hQ0 hπ hπ2
-  have hex := exists_approx (k := k) hπ (residue_exists k A Q hQ) (pow_le_span_sup hQ0 hπ hπ2)
+  have hex := _root_.GlobalTheory.IntegralNormBound.main (k := k) hπ (residue_exists k A Q hQ) (pow_le_span_sup hQ0 hπ hπ2)
   have hmem : ∀ (m : ℕ) (u : A),
       u ∈ Q ^ m ↔ (PowerSeries.X : PowerSeries k) ^ m ∣ serHom hex hπ hnot u := by
     intro m u

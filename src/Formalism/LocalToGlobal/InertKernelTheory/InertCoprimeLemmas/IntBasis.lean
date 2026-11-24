@@ -5,48 +5,7 @@ public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.
 public import Formalism.LocalToGlobal.InertKernelTheory.DefsInt
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 public import Formalism.LocalToGlobal.GlobalTheory.GL3.IsometryLinkageTrivialLevel
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -100,28 +59,6 @@ theorem integral_subst {σ τ : Type*} [Finite σ] (a : σ → MvPowerSeries τ 
   refine (integral_iff _).2 ⟨MvPowerSeries.subst a' f', ?_⟩
   rw [MvPowerSeries.map_subst hs]
   simp only [ha']
-
-theorem galE_sigmaOf (D : D7) (g : D.R.GG) :
-    D.host.galE (D.host.sigmaOf g) = g := by
-  exact D.host.gal.apply_symm_apply _
-
-theorem embT_K (D : D7) (τ : D.what₂.Tau) (x : D.host.E) (hx : x ∈ D.host.K) :
-    embT D τ x = D.host.φ₀ x := by
-  set σ := D.host.sigmaOf ((D.eTau τ : D.R.Psi) : D.R.GG)
-  have hb : σ (D.host.sqd) = D.host.sqd := by
-    rw [← D.host.galE_mem_Psi_iff, galE_sigmaOf]
-    exact (D.eTau τ).2
-  have hfix : σ x = x := by
-    have hx' : x ∈ IntermediateField.adjoin ℚ {D.host.sqd} := hx
-    clear hx
-    induction hx' using IntermediateField.adjoin_induction with
-    | mem y hy => rw [Set.mem_singleton_iff.mp hy]; exact hb
-    | algebraMap r => rw [eq_ratCast (algebraMap ℚ D.host.E) r]; exact map_ratCast σ r
-    | add y z _ _ h1 h2 => rw [map_add (f := _), h1, h2]
-    | inv y _ h1 => rw [map_inv₀, h1]
-    | mul y z _ _ h1 h2 => rw [map_mul, h1, h2]
-  show D.host.φ₀ (σ x) = _
-  rw [hfix]
 
 theorem emb_mem (D : D7) (τ : D.what₂.Tau) (x : D.host.E) : embT D τ x ∈ Qbar := by
   rw [mem_algebraicClosure_iff']
@@ -189,7 +126,7 @@ theorem atLog_change (D : D7) {N N' r : ℕ} (lam : Qbar →+* ℂ_[p]) (Λ : Ad
     simp only [Matrix.smul_apply, smul_eq_mul, map_sum, map_mul]
   have hy : ∀ i j, lamC lam (D.host.φ₀ (A i j)) = lam (embQ D k.1 (A i j)) := by
     intro i j
-    rw [← embT_K D k.1 _ (hAK i j), lamC_embT]
+    rw [← _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.embT_K D k.1 _ (hAK i j), lamC_embT]
 
   simp only [hx, hy, lamC_embT, Finset.mul_sum, map_sum, Finset.sum_mul]
   rw [Finset.sum_comm]
@@ -301,7 +238,6 @@ theorem orthChange_core : OrthChange := by
     IntermediateField.coe_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h
   first
   | exact h.symm
-  | (rw [← h]; split_ifs <;> simp)
 
 end IntegralOrthonormalChange
 
@@ -320,8 +256,6 @@ theorem basisInv_of (hO : OrthChange) (hU : UnitSubst) : BasisInv := by
   rw [key, hPV, ← mul_assoc, ← MvPowerSeries.subst_mul hSs]
   exact integral_mul (integral_subst S hS0 hSI (hI C wq hC hW)) hV
 
-theorem orthonormal_change_unitary_integral : OrthChange := IntegralOrthonormalChange.orthChange_core
-
-theorem basisInv_of_unitSubst (hU : UnitSubst) : BasisInv := basisInv_of orthonormal_change_unitary_integral hU
+theorem basisInv_of_unitSubst (hU : UnitSubst) : BasisInv := basisInv_of _root_.Formalism.L2.KerInert.IntegralOrthonormalChange.orthChange_core hU
 
 end Formalism.L2.KerInert

@@ -155,8 +155,7 @@ theorem lie_eigenvalue_holds : KLEig := by
     intro Y
     have h : d.x Y = d.L.GGi * X.QQ Y 1 1 := by
       rw [hQ]
-      simp only [Q.NFData.QQ, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_one, Matrix.head_cons,
-        Matrix.cons_val_fin_one, Matrix.empty_val', Matrix.cons_val_zero]
+      simp only [Q.NFData.QQ, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.empty_val']
       rw [← mul_assoc, d.L.GGi_GG, one_mul]
     show Formalism.FourierDecayAlt.P5.Kfp.fstAlg _ (d.x Y) = _
     rw [h, hL.2.2.2.2.2.2.2.2.2.2.2.1]

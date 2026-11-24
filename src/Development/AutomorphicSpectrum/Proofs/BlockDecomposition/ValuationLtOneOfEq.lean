@@ -46,6 +46,8 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 
+open scoped GroundTheory.PAdicHodge.LocalBridge
+
 @[expose] public section
 
 noncomputable section

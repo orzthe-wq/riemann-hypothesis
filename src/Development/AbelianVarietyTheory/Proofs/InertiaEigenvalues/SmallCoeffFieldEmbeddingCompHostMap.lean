@@ -1,20 +1,32 @@
 module
 
+public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsBasisEmbedding
+public import Formalism.SharpRestriction.Divisibility.JetPolynomialLogs.AnnihilatorMulRelativeDifferent
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Mathlib.RingTheory.Etale.StandardEtale
+public import Mathlib.RingTheory.Unramified.Locus
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsDiscreteValuationRingOfMaximalIdealEqSpa
+public import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.HeckeIdealEqOfRay
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassNumberBounds
+public import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GoodSetupCountEqZeroOffBadPlaces
 public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RationalRayLevels
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LFunctionPositiveConductorFourEight
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimitiveRootInRayClassFieldNatModulusStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostImagQuadraticIsGaloisUnitsPmOneStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaloisRatComplexImageRayClassFieldStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnramifiedAtOfIsUnramifiedInGaloisExtensionStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RangeLeRangeOfIsUnramifiedAt
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RayClassFieldInfModulusEqSupStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimitiveRootInRayClassFieldNatModulus
+public import Mathlib.Algebra.Algebra.Hom.Rat
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaloisRatComplexImageRayClassField
+public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.SmulCommClassGalIntegers
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnramifiedAtOfIsUnramifiedInGaloisExtension
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsApplyEqOfNormal
-import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd
 public import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -26,8 +38,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -45,9 +55,518 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.Unramified.LocalStructure
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.TypeStar
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostImagQuadraticIsGaloisUnitsPmOne, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RangeLeRangeOfIsUnramifiedAt, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RayClassFieldInfModulusEqSup, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallCoeffFieldEmbeddingCompHostMap
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostImagQuadraticIsGaloisUnitsPmOne =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostImagQuadraticIsGaloisUnitsPmOne", "h": "module\n\npublic import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow\npublic import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsBasisEmbedding\npublic import Formalism.SharpRestriction.Divisibility.JetPolynomialLogs.AnnihilatorMulRelativeDifferent\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField
+
+namespace GlobalTheory.HostQuadUnits
+
+theorem four_lt_d (D : Formalism.BasicNotions.D7) : 4 < D.host.d := by
+  have h := D.host.hyp.2.2.2.1
+  omega
+
+theorem isGalois_and_units (D : Formalism.BasicNotions.D7) :
+    IsGalois ℚ D.host.K ∧ ∀ u : (𝓞 D.host.K)ˣ, u = 1 ∨ u = -1 := by
+  have h2 : Module.finrank ℚ D.host.K = 2 := Formalism.MainNotions.DIV.Bridge.LogAbsNormDifferent.finrank_K D
+  refine ⟨?_, fun u => ?_⟩
+  · haveI : Algebra.IsQuadraticExtension ℚ D.host.K := ⟨h2⟩
+    infer_instance
+  · let σ : D.host.K →+* ℂ := (IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := D.host.K)).toRingHom
+    exact GlobalTheory.QuadraticZeta.unit_eq h2 (Formalism.MainNotions.DIV.Bridge.LogAbsNormDifferent.discr_K D) σ (four_lt_d D) u
+
+alias main := _root_.GlobalTheory.HostQuadUnits.isGalois_and_units
+
+end GlobalTheory.HostQuadUnits
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostImagQuadraticIsGaloisUnitsPmOne =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RangeLeRangeOfIsUnramifiedAt =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RangeLeRangeOfIsUnramifiedAt", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\npublic import Mathlib.RingTheory.Etale.StandardEtale\npublic import Mathlib.RingTheory.Unramified.Locus\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsDiscreteValuationRingOfMaximalIdealEqSpa\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.Unramified.LocalStructure\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial IsLocalRing NumberField
+
+namespace GlobalTheory.UnramifiedEmbedding
+
+theorem algHom_eq_of_residue_eq {R S T : Type*} [CommRing R] [CommRing S] [CommRing T]
+    [IsLocalRing T] [Algebra R S] [Algebra R T] [Algebra.IsStandardEtale R S] {χ₁ χ₂ : S →ₐ[R] T}
+    (h : ∀ s, residue T (χ₁ s) = residue T (χ₂ s)) : χ₁ = χ₂ := by
+  obtain ⟨P⟩ : Nonempty (StandardEtalePresentation R S) := inferInstance
+  refine P.hom_ext ?_
+  have h₁ : P.P.HasMap (χ₁ P.x) := P.hasMap.map χ₁
+  have h₂ : P.P.HasMap (χ₂ P.x) := P.hasMap.map χ₂
+  set y := χ₁ P.x with hy
+  set d := χ₂ P.x - y with hd
+  have hdm : d ∈ maximalIdeal T := by
+    rw [← residue_eq_zero_iff, hd, map_sub, hy, h, sub_self]
+  obtain ⟨k, hk⟩ := binomExpansion (P.f.map (algebraMap R T)) y d
+  have hu : IsUnit (aeval y (derivative P.f)) := h₁.isUnit_derivative_f
+  rw [show y + d = χ₂ P.x by rw [hd]; ring, eval_map_algebraMap, eval_map_algebraMap,
+    derivative_map, eval_map_algebraMap, h₂.1, h₁.1, zero_add] at hk
+  have hu' : IsUnit (aeval y (derivative P.f) + k * d) := by
+    by_contra hn
+    have : aeval y (derivative P.f) + k * d - k * d ∈ maximalIdeal T :=
+      Ideal.sub_mem _ ((mem_maximalIdeal _).2 hn) (Ideal.mul_mem_left _ _ hdm)
+    rw [add_sub_cancel_right] at this
+    exact (mem_maximalIdeal _).1 this hu
+  have h0 : d * (aeval y (derivative P.f) + k * d) = 0 := by
+    rw [hk]; ring
+  have : d = 0 := (hu'.mul_left_eq_zero).1 h0
+  rw [hd, sub_eq_zero] at this
+  exact this.symm
+
+end GlobalTheory.UnramifiedEmbedding
+
+namespace GlobalTheory.UnramifiedEmbedding
+
+theorem quotientMap_bijective {O S : Type*} [CommRing O] [IsLocalRing O] [CommRing S]
+    [Algebra O S] [Algebra.IsIntegral O S] [IsAlgClosed (ResidueField O)] (M : Ideal S)
+    [M.IsMaximal] (hM : M.comap (algebraMap O S) = maximalIdeal O) :
+    Function.Bijective (Ideal.quotientMap M (algebraMap O S) hM.ge) := by
+  letI : Field (O ⧸ maximalIdeal O) := Ideal.Quotient.field _
+  haveI : IsAlgClosed (O ⧸ maximalIdeal O) := ‹IsAlgClosed (ResidueField O)›
+  letI : Field (S ⧸ M) := Ideal.Quotient.field _
+  letI := (Ideal.quotientMap M (algebraMap O S) hM.ge).toAlgebra
+  refine ⟨RingHom.injective _, fun x => ?_⟩
+  obtain ⟨s, rfl⟩ := Ideal.Quotient.mk_surjective x
+  have hs : IsIntegral (O ⧸ maximalIdeal O) (Ideal.Quotient.mk M s) :=
+    (Algebra.IsIntegral.isIntegral (R := O) s).map_of_comp_eq (Ideal.Quotient.mk _)
+      (Ideal.Quotient.mk M) (Ideal.quotientMap_comp_mk _)
+  exact minpoly.mem_range_of_degree_eq_one _ _
+    (IsAlgClosed.degree_eq_one_of_irreducible _ (minpoly.irreducible hs))
+
+theorem range_le_range_of_isUnramifiedAt
+    (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
+    [IsAdicComplete (maximalIdeal O) O] [IsAlgClosed (ResidueField O)]
+    (l : ℕ) [Fact l.Prime] (hl : (l : O) ∈ maximalIdeal O)
+    (e : FractionRing O →+* ℂ)
+    (K₀ L : Type) [Field K₀] [NumberField K₀] [Field L] [NumberField L] [Algebra K₀ L]
+    (ι : K₀ →+* FractionRing O) (σ : L →+* ℂ) (hσ : σ.comp (algebraMap K₀ L) = e.comp ι)
+    (hur : ∀ (P : Ideal (𝓞 L)) [P.IsPrime], (l : 𝓞 L) ∈ P → Algebra.IsUnramifiedAt (𝓞 K₀) P) :
+    σ.range ≤ e.range := by
+  classical
+  have hint : ∀ x : 𝓞 K₀, ∃ o : O, algebraMap O (FractionRing O) o = ι x := fun x =>
+    IsIntegrallyClosed.isIntegral_iff.1
+      (x.isIntegral_coe.map_of_comp_eq (Int.castRingHom O) ι (RingHom.ext_int _ _))
+  choose g₀ hg₀ using hint
+  have hinj := IsFractionRing.injective O (FractionRing O)
+  let ιO : 𝓞 K₀ →+* O :=
+    { toFun := g₀
+      map_one' := hinj (by simp [hg₀])
+      map_mul' := fun x y => hinj (by simp [hg₀])
+      map_zero' := hinj (by simp [hg₀])
+      map_add' := fun x y => hinj (by simp [hg₀]) }
+  have hιO : ∀ x, algebraMap O (FractionRing O) (ιO x) = ι x := hg₀
+  letI : Algebra (𝓞 K₀) O := ιO.toAlgebra
+  letI : Algebra O ℂ := (e.comp (algebraMap O (FractionRing O))).toAlgebra
+  have hOC : ∀ o : O, algebraMap O ℂ o = e (algebraMap O (FractionRing O) o) := fun _ => rfl
+  let S := integralClosure O ℂ
+  have hOS : Function.Injective (algebraMap O S) := fun a b h => by
+    have := congrArg (fun s : S => (s : ℂ)) h
+    simp only [Subalgebra.coe_algebraMap, hOC] at this
+    exact hinj (e.injective this)
+  obtain ⟨M, hMmax, hMc⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral (S := S) (maximalIdeal O)
+    (by rw [(RingHom.injective_iff_ker_eq_bot _).1 hOS]; exact bot_le)
+  change M.comap (algebraMap O S) = maximalIdeal O at hMc
+  let σA : 𝓞 L →+* S := (σ.comp (algebraMap (𝓞 L) L)).codRestrict S fun a =>
+    (a.isIntegral_coe.map_of_comp_eq (Int.castRingHom O) σ (RingHom.ext_int _ _) :)
+  have hσA : ∀ a, (σA a : ℂ) = σ a := fun _ => rfl
+  have hSR : ∀ r : 𝓞 K₀, σA (algebraMap (𝓞 K₀) (𝓞 L) r) = algebraMap O S (ιO r) := fun r => by
+    apply Subtype.ext
+    rw [hσA, Subalgebra.coe_algebraMap, hOC, hιO]
+    exact congrArg (fun φ => φ (r : K₀)) hσ
+  let P := M.comap σA
+  have hlP : (l : 𝓞 L) ∈ P := by
+    show σA l ∈ M
+    rw [map_natCast, ← map_natCast (algebraMap O S), ← Ideal.mem_comap, hMc]
+    exact hl
+  haveI := hur P hlP
+  haveI : Algebra.FinitePresentation (𝓞 K₀) (𝓞 L) :=
+    Algebra.FinitePresentation.of_finiteType.1 inferInstance
+  haveI : Module.Flat (𝓞 K₀) (𝓞 L) := IsDedekindDomain.flat_iff_torsion_eq_bot.2 (by
+    rw [eq_bot_iff]
+    intro x hx
+    obtain ⟨⟨r, hr⟩, hrx⟩ := hx
+    have hr0 : r ≠ 0 := nonZeroDivisors.ne_zero hr
+    have : algebraMap (𝓞 K₀) (𝓞 L) r * x = 0 := by rw [← Algebra.smul_def]; exact hrx
+    rcases mul_eq_zero.1 this with h | h
+    · exact absurd ((FaithfulSMul.algebraMap_injective _ _) (h.trans (map_zero _).symm)) hr0
+    · exact h)
+  obtain ⟨f, hfP, hfU⟩ := Algebra.exists_formallyUnramified_of_isUnramifiedAt (R := 𝓞 K₀) P
+  haveI : Algebra.FinitePresentation (𝓞 K₀) (Localization.Away f) :=
+    .trans _ (𝓞 L) _
+  haveI : Module.Flat (𝓞 K₀) (Localization.Away f) := .trans _ (𝓞 L) _
+  haveI : Algebra.Etale (𝓞 K₀) (Localization.Away f) := Algebra.Etale.of_formallyUnramified_of_flat
+  haveI : Algebra.IsEtaleAt (𝓞 K₀) P :=
+    Algebra.basicOpen_subset_etaleLocus_iff_etale.2 this
+      (show (⟨P, inferInstance⟩ : PrimeSpectrum (𝓞 L)) ∈ PrimeSpectrum.basicOpen f from hfP)
+  obtain ⟨g, hgP, hgE⟩ := Algebra.IsEtaleAt.exists_isStandardEtale (R := 𝓞 K₀) P
+  letI : Field (O ⧸ maximalIdeal O) := Ideal.Quotient.field _
+  let q := Ideal.quotientMap M (algebraMap O S) hMc.ge
+  have hq := quotientMap_bijective M hMc
+  let qe := RingEquiv.ofBijective q hq
+  let φ₀ : 𝓞 L →+* O ⧸ maximalIdeal O := qe.symm.toRingHom.comp ((Ideal.Quotient.mk M).comp σA)
+  have hφ₀ : ∀ a, q (φ₀ a) = Ideal.Quotient.mk M (σA a) := fun a => qe.apply_symm_apply _
+  have hφg : IsUnit (φ₀ g) := by
+    rw [isUnit_iff_ne_zero]
+    intro h0
+    apply hgP
+    show σA g ∈ M
+    rw [← Ideal.Quotient.eq_zero_iff_mem, ← hφ₀, h0, map_zero]
+  let φr : Localization.Away g →+* O ⧸ maximalIdeal O := IsLocalization.Away.lift g hφg
+  have hφr : ∀ a, φr (algebraMap _ _ a) = φ₀ a := fun a => IsLocalization.lift_eq _ _
+  let φ : Localization.Away g →ₐ[𝓞 K₀] O ⧸ maximalIdeal O :=
+    { φr with
+      commutes' := fun r => by
+        change φr (algebraMap (𝓞 K₀) (Localization.Away g) r) = _
+        rw [IsScalarTower.algebraMap_apply (𝓞 K₀) (𝓞 L) (Localization.Away g), hφr]
+        apply hq.1
+        rw [hφ₀, hSR]
+        rfl }
+  haveI := hgE
+  obtain ⟨ψ, hψ⟩ := GlobalTheory.exists_algHom_lift_of_smooth (maximalIdeal O)
+    (Ideal.Quotient.mkₐ (𝓞 K₀) (maximalIdeal O)) Ideal.Quotient.mk_surjective
+    (fun b => Ideal.Quotient.eq_zero_iff_mem.symm) φ
+  haveI := hMmax
+  let T := Localization.AtPrime M
+  letI : Algebra (𝓞 K₀) T := ((algebraMap S T).comp ((algebraMap O S).comp ιO)).toAlgebra
+  have hgT : IsUnit ((algebraMap S T).comp σA g) :=
+    (IsLocalization.AtPrime.isUnit_to_map_iff T M (σA g)).2 hgP
+  let χ₂r : Localization.Away g →+* T := IsLocalization.Away.lift g hgT
+  have hχ₂r : ∀ a, χ₂r (algebraMap _ _ a) = algebraMap S T (σA a) := fun a =>
+    IsLocalization.lift_eq _ _
+  let χ₁ : Localization.Away g →ₐ[𝓞 K₀] T :=
+    { (algebraMap S T).comp ((algebraMap O S).comp ψ.toRingHom) with
+      commutes' := fun r => by
+        change algebraMap S T (algebraMap O S (ψ (algebraMap _ _ r))) = _
+        rw [ψ.commutes]; rfl }
+  let χ₂ : Localization.Away g →ₐ[𝓞 K₀] T :=
+    { χ₂r with
+      commutes' := fun r => by
+        change χ₂r (algebraMap (𝓞 K₀) (Localization.Away g) r) = _
+        rw [IsScalarTower.algebraMap_apply (𝓞 K₀) (𝓞 L) (Localization.Away g), hχ₂r, hSR]
+        rfl }
+  have hres : ∀ a : 𝓞 L,
+      algebraMap O S (ψ (algebraMap _ (Localization.Away g) a)) - σA a ∈ M := by
+    intro a
+    rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, sub_eq_zero]
+    have h1 := congrArg (fun φ' : Localization.Away g →ₐ[𝓞 K₀] _ => φ' (algebraMap _ _ a)) hψ
+    simp only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk] at h1
+    change q (Ideal.Quotient.mk _ (ψ _)) = _
+    rw [h1]
+    change q (φr _) = _
+    rw [hφr, hφ₀]
+  have hχ : χ₁ = χ₂ := algHom_eq_of_residue_eq (fun s => by
+    have : (residue T).comp χ₁.toRingHom = (residue T).comp χ₂.toRingHom := by
+      refine IsLocalization.ringHom_ext (Submonoid.powers g) (RingHom.ext fun a => ?_)
+      simp only [RingHom.comp_apply]
+      rw [← sub_eq_zero, ← map_sub, residue_eq_zero_iff]
+      change algebraMap S T _ - χ₂r (algebraMap _ _ a) ∈ _
+      rw [hχ₂r, ← map_sub]
+      exact (IsLocalization.AtPrime.to_map_mem_maximal_iff T M _).2 (hres a)
+    exact congrArg (fun j => j s) this)
+  have hA : ∀ a : 𝓞 L,
+      σ a = e (algebraMap O (FractionRing O) (ψ (algebraMap _ (Localization.Away g) a))) := by
+    intro a
+    have h := congrArg (fun χ : Localization.Away g →ₐ[𝓞 K₀] T => χ (algebraMap _ _ a)) hχ
+    change algebraMap S T _ = χ₂r _ at h
+    rw [hχ₂r] at h
+    have h' := IsLocalization.injective T M.primeCompl_le_nonZeroDivisors h
+    have h'' := congrArg (fun s : S => (s : ℂ)) h'
+    simp only [Subalgebra.coe_algebraMap, hOC, hσA] at h''
+    exact h''.symm
+  rintro _ ⟨y, rfl⟩
+  obtain ⟨a, b, hb, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 L) y
+  refine ⟨algebraMap O _ (ψ (algebraMap _ (Localization.Away g) a)) /
+    algebraMap O _ (ψ (algebraMap _ (Localization.Away g) b)), ?_⟩
+  rw [map_div₀, map_div₀, ← hA, ← hA]
+
+end GlobalTheory.UnramifiedEmbedding
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RangeLeRangeOfIsUnramifiedAt =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RayClassFieldInfModulusEqSup =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RayClassFieldInfModulusEqSup", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.HeckeIdealEqOfRay\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RayClassNumberBounds\npublic import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+noncomputable section
+
+open NumberField IsDedekindDomain
+
+namespace GlobalTheory.RayCompositum
+
+open GlobalTheory.NT GlobalTheory.FieldSize GlobalTheory.IndefiniteRowSideFullHecke.RayPrincipalIdeals GlobalTheory.RayFieldCompare GlobalTheory.RayMaximal
+
+variable {K : Type} [Field K] [NumberField K]
+
+set_option autoImplicit false in
+open NumberField IsDedekindDomain in
+variable {K : Type} [Field K] [NumberField K] in
+private theorem heckeIdeal_comp_restrictNormalHom {L M : Type} [Field L]
+    [NumberField L] [Field M] [NumberField M] [Algebra K L] [Algebra K M] [Algebra L M]
+    [IsScalarTower K L M] [IsGalois K L] [IsGalois K M] {𝔪 : Ideal (𝓞 K)}
+    (hM : ∀ 𝔭 : HeightOneSpectrum (𝓞 K), ¬ 𝔭.asIdeal ∣ 𝔪 → _root_.GlobalTheory.NT.UnramIn M 𝔭)
+    (χ : Gal(L/K) →* ℂˣ) {I : Ideal (𝓞 K)} (hI0 : I ≠ ⊥) (hI : IsCoprime I 𝔪) :
+    _root_.GlobalTheory.NT.heckeIdeal M (χ.comp (AlgEquiv.restrictNormalHom L)) I =
+      _root_.GlobalTheory.NT.heckeIdeal L χ I := by
+  unfold _root_.GlobalTheory.NT.heckeIdeal
+  refine finprod_congr fun 𝔭 => ?_
+  by_cases hc : (Associates.mk 𝔭.asIdeal).count (Associates.mk I).factors = 0
+  · simp [hc]
+  · have hdvd : 𝔭.asIdeal ∣ I := (Associates.count_ne_zero_iff_dvd hI0 𝔭.irreducible).1 hc
+    have hnd : ¬ 𝔭.asIdeal ∣ 𝔪 := by
+      intro h
+      rw [Ideal.dvd_iff_le] at hdvd h
+      exact 𝔭.isPrime.ne_top (top_unique ((Ideal.isCoprime_iff_sup_eq.1 hI).ge.trans (sup_le hdvd h)))
+    obtain ⟨σ, hσ⟩ := _root_.GlobalTheory.NT.exists_isFrob M 𝔭
+    have hu := hM 𝔭 hnd
+    rw [_root_.GlobalTheory.NT.heckeVal_of_unramIn M _ hu hσ,
+      _root_.GlobalTheory.NT.heckeVal_of_unramIn L χ (_root_.GlobalTheory.RayMaximal.unramIn_of_tower hu)
+        (_root_.GlobalTheory.RayMaximal.isFrob_restrictNormal hσ)]
+    rfl
+
+set_option autoImplicit false in
+open NumberField IsDedekindDomain in
+variable {K : Type} [Field K] [NumberField K] in
+private theorem not_isUnit_natCast_of_prime' {F : Type} [Field F] [NumberField F] {q : ℕ}
+    (hq : q.Prime) : ¬ IsUnit ((q : 𝓞 F)) := by
+  intro h
+  have h' := h.map (Algebra.norm ℤ)
+  rw [show ((q : ℕ) : 𝓞 F) = algebraMap ℤ (𝓞 F) (q : ℤ) by simp, Algebra.norm_algebraMap] at h'
+  have hn : Module.finrank ℤ (𝓞 F) ≠ 0 := Module.finrank_pos.ne'
+  rw [isUnit_pow_iff hn, Int.isUnit_iff] at h'
+  have := hq.two_le
+  omega
+
+set_option autoImplicit false in
+open NumberField IsDedekindDomain in
+variable {K : Type} [Field K] [NumberField K] in
+private theorem isCoprime_of_le_right {R : Type} [CommRing R] {I J J' : Ideal R}
+    (h : IsCoprime I J) (hJ : J ≤ J') : IsCoprime I J' := by
+  rw [Ideal.isCoprime_iff_sup_eq] at h ⊢
+  exact top_unique (h.ge.trans (sup_le_sup_left hJ _))
+
+set_option autoImplicit false in
+open NumberField IsDedekindDomain in
+variable {K : Type} [Field K] [NumberField K] in
+private theorem mem_of_mul_mem_of_isCoprime_span {R : Type} [CommRing R] {J : Ideal R} {y z : R}
+    (h : IsCoprime (Ideal.span {y}) J) (hyz : y * z ∈ J) : z ∈ J := by
+  obtain ⟨i, hi, j, hj, hij⟩ := Ideal.isCoprime_iff_exists.1 h
+  obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton.1 hi
+  have : z = c * (y * z) + z * j := by linear_combination (-z) * hij
+  rw [this]
+  exact J.add_mem (J.mul_mem_left _ hyz) (J.mul_mem_left _ hj)
+
+set_option autoImplicit false in
+open NumberField IsDedekindDomain in
+variable {K : Type} [Field K] [NumberField K] in
+private theorem exists_rayPair_inf_of_rayPair (hu : ∀ u : (𝓞 K)ˣ, u = 1 ∨ u = -1)
+    {𝔞 𝔟 : Ideal (𝓞 K)} {q : ℕ} (hq : q.Prime) (hq2 : q ≠ 2)
+    (ha : 𝔞 ≤ Ideal.span {(q : 𝓞 K)}) (hb : 𝔟 ≤ Ideal.span {(q : 𝓞 K)}) {I : Ideal (𝓞 K)}
+    {α β α' β' : 𝓞 K} (h₁ : _root_.GlobalTheory.NT.RayPair 𝔞 α β) (e₁ : I * Ideal.span {β} = Ideal.span {α})
+    (h₂ : _root_.GlobalTheory.NT.RayPair 𝔟 α' β') (e₂ : I * Ideal.span {β'} = Ideal.span {α'}) :
+    ∃ γ δ, _root_.GlobalTheory.NT.RayPair (𝔞 ⊓ 𝔟) γ δ ∧ I * Ideal.span {δ} = Ideal.span {γ} := by
+  obtain ⟨hα0, hβ0, hαc, hβc, hd, hpos⟩ := h₁
+  obtain ⟨hα0', hβ0', hαc', hβc', hd', hpos'⟩ := h₂
+  have hqtop : Ideal.span {(q : 𝓞 K)} ≠ ⊤ := fun h =>
+    not_isUnit_natCast_of_prime' hq (Ideal.span_singleton_eq_top.1 h)
+  have hspan : Ideal.span {α * β'} = Ideal.span {α' * β} := by
+    rw [← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_mul_span_singleton,
+      ← e₁, ← e₂]
+    ring
+  obtain ⟨u, hu'⟩ := Ideal.span_singleton_eq_span_singleton.1 hspan
+  have key : α * β' = α' * β := by
+    rcases hu u with rfl | rfl
+    · simpa using hu'
+    · exfalso
+      have hneg : α' * β = -(α * β') := by rw [← hu']; simp
+      have h2mem : 2 * α * β' ∈ Ideal.span {(q : 𝓞 K)} := by
+        have : 2 * α * β' = β' * (α - β) - β * (α' - β') := by linear_combination hneg
+        rw [this]
+        exact Ideal.sub_mem _ (Ideal.mul_mem_left _ _ (ha hd)) (Ideal.mul_mem_left _ _ (hb hd'))
+      have h2 : IsCoprime (Ideal.span {(2 : 𝓞 K)}) (Ideal.span {(q : 𝓞 K)}) := by
+        rw [Ideal.isCoprime_span_singleton_iff]
+        have hz : IsCoprime ((2 : ℕ) : ℤ) (q : ℤ) :=
+          Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes Nat.prime_two hq).2 (Ne.symm hq2))
+        simpa using hz.map (Int.castRingHom (𝓞 K))
+      have hc : IsCoprime (Ideal.span {2 * α * β'}) (Ideal.span {(q : 𝓞 K)}) := by
+        rw [← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_mul_span_singleton]
+        exact (h2.mul_left (isCoprime_of_le_right hαc ha)).mul_left (isCoprime_of_le_right hβc' hb)
+      apply hqtop
+      rw [Ideal.isCoprime_iff_sup_eq] at hc
+      rwa [sup_eq_right.2 ((Ideal.span_singleton_le_iff_mem _).2 h2mem)] at hc
+  have hdb : α - β ∈ 𝔟 := by
+    refine mem_of_mul_mem_of_isCoprime_span hβc' ?_
+    have : β' * (α - β) = β * (α' - β') := by linear_combination key
+    rw [this]
+    exact 𝔟.mul_mem_left _ hd'
+  have hda : α' - β' ∈ 𝔞 := by
+    refine mem_of_mul_mem_of_isCoprime_span hβc ?_
+    have : β * (α' - β') = β' * (α - β) := by linear_combination -key
+    rw [this]
+    exact 𝔞.mul_mem_left _ hd
+  obtain ⟨i, hi, a₀, ha₀, hia⟩ := Ideal.isCoprime_iff_exists.1 hβc
+  obtain ⟨r, rfl⟩ := Ideal.mem_span_singleton.1 hi
+  obtain ⟨i', hi', b₀, hb₀, hib⟩ := Ideal.isCoprime_iff_exists.1 hβc'
+  obtain ⟨r', rfl⟩ := Ideal.mem_span_singleton.1 hi'
+  set δ : 𝓞 K := β * r + a₀ * (β' * r') with hδdef
+  set γ : 𝓞 K := α * r + a₀ * (α' * r') with hγdef
+  have hδ1 : δ - 1 ∈ 𝔞 ⊓ 𝔟 := by
+    have : δ - 1 = -(a₀ * b₀) := by linear_combination hia + a₀ * hib
+    rw [this]
+    exact (Ideal.neg_mem_iff _).2 ⟨𝔞.mul_mem_right _ ha₀, 𝔟.mul_mem_left _ hb₀⟩
+  have hγδ : γ - δ ∈ 𝔞 ⊓ 𝔟 := by
+    have : γ - δ = r * (α - β) + a₀ * r' * (α' - β') := by ring
+    rw [this]
+    exact Ideal.add_mem _ (Ideal.mul_mem_left _ _ ⟨hd, hdb⟩) (Ideal.mul_mem_left _ _ ⟨hda, hd'⟩)
+  have hγ1 : γ - 1 ∈ 𝔞 ⊓ 𝔟 := by
+    have : γ - 1 = (γ - δ) + (δ - 1) := by ring
+    rw [this]
+    exact Ideal.add_mem _ hγδ hδ1
+  have hne : ∀ x : 𝓞 K, x - 1 ∈ 𝔞 ⊓ 𝔟 → x ≠ 0 := by
+    rintro x hx rfl
+    apply hqtop
+    rw [Ideal.eq_top_iff_one]
+    have h1 := hx.1
+    rw [zero_sub] at h1
+    exact ha ((Ideal.neg_mem_iff _).1 h1)
+  have hδ0 := hne δ hδ1
+  have hγ0 := hne γ hγ1
+  have hmul : γ * β = α * δ := by
+    simp only [hγdef, hδdef]
+    linear_combination (-(a₀ * r')) * key
+  refine ⟨γ, δ, ⟨hγ0, hδ0, _root_.GlobalTheory.Mem.RayNo.isCoprime_span hγ1, _root_.GlobalTheory.Mem.RayNo.isCoprime_span hδ1,
+    hγδ, fun φ => ?_⟩, ?_⟩
+  · have hφ : φ (γ : K) * φ (β : K) = φ (α : K) * φ (δ : K) := by
+      have := congrArg (fun z : 𝓞 K => φ (z : K)) hmul
+      simpa using this
+    have hδφ : φ (δ : K) ≠ 0 := (map_ne_zero φ).2 (by exact_mod_cast hδ0)
+    have hβφ : φ (β : K) ≠ 0 := (map_ne_zero φ).2 (by exact_mod_cast hβ0)
+    have hδ2 : 0 < φ (δ : K) ^ 2 := lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hδφ))
+    have hβ2 : 0 < φ (β : K) ^ 2 := lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hβφ))
+    have h1 : 0 < (φ (γ : K) * φ (δ : K)) * φ (β : K) ^ 2 := by
+      rw [show (φ (γ : K) * φ (δ : K)) * φ (β : K) ^ 2 = (φ (α : K) * φ (β : K)) * φ (δ : K) ^ 2 by
+        linear_combination (φ (δ : K) * φ (β : K)) * hφ]
+      exact mul_pos (hpos φ) hδ2
+    nlinarith
+  · have hβI : Ideal.span {β} ≠ 0 := by
+      rw [Ideal.zero_eq_bot, Ne, Ideal.span_singleton_eq_bot]
+      exact hβ0
+    apply mul_right_cancel₀ hβI
+    rw [mul_assoc, mul_comm (Ideal.span {δ}), ← mul_assoc, e₁, Ideal.span_singleton_mul_span_singleton,
+      Ideal.span_singleton_mul_span_singleton, hmul]
+
+
+set_option autoImplicit false in
+open NumberField IsDedekindDomain in
+variable {K : Type} [Field K] [NumberField K] in
+theorem _root_.GlobalTheory.RayCompositum.fieldRange_sup_eq_top : ∀ {K H H₁ H₂ : Type} [Field K] [NumberField K] [Field H] [NumberField H]
+    [Algebra K H] [IsAbelianGalois K H] [Field H₁] [NumberField H₁] [Algebra K H₁] [IsAbelianGalois K H₁]
+    [Field H₂] [NumberField H₂] [Algebra K H₂] [IsAbelianGalois K H₂], (∀ u : (𝓞 K)ˣ, u = 1 ∨ u = -1) →
+    ∀ {𝔞 𝔟 : Ideal (𝓞 K)}, 𝔞 ≠ ⊥ → 𝔟 ≠ ⊥ → ∀ {q : ℕ}, q.Prime → q ≠ 2 → 𝔞 ≤ Ideal.span {(q : 𝓞 K)} →
+    𝔟 ≤ Ideal.span {(q : 𝓞 K)} → _root_.GlobalTheory.FieldSize.IsRay H (𝔞 ⊓ 𝔟) → _root_.GlobalTheory.FieldSize.IsRay H₁ 𝔞 →
+    _root_.GlobalTheory.FieldSize.IsRay H₂ 𝔟 → ∀ (f₁ : H₁ →ₐ[K] H) (f₂ : H₂ →ₐ[K] H), f₁.fieldRange ⊔ f₂.fieldRange = ⊤ := by
+  intro K H H₁ H₂ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hu 𝔞 𝔟 _ _ q hq hq2 haq hbq hH hH₁ hH₂ f₁ f₂
+  letI : Algebra H₁ H := f₁.toRingHom.toAlgebra
+  haveI : IsScalarTower K H₁ H := IsScalarTower.of_algebraMap_eq fun x => (f₁.commutes x).symm
+  letI : Algebra H₂ H := f₂.toRingHom.toAlgebra
+  haveI : IsScalarTower K H₂ H := IsScalarTower.of_algebraMap_eq fun x => (f₂.commutes x).symm
+  have hres : ∀ {E : Type} [Field E] [Algebra K E] [Algebra E H] [IsScalarTower K E H] [Normal K E]
+      (f : E →ₐ[K] H), (∀ y, algebraMap E H y = f y) → ∀ σ : Gal(H/K),
+      (∀ x ∈ f.fieldRange, σ x = x) → AlgEquiv.restrictNormalHom E σ = 1 := by
+    intro E _ _ _ _ _ f hf σ hσ
+    ext y
+    rw [AlgEquiv.one_apply]
+    apply f.injective
+    have h := AlgEquiv.restrictNormal_commutes σ E y
+    rw [hf, hf] at h
+    change f (σ.restrictNormal E y) = f y
+    rw [h]
+    exact hσ _ ⟨y, rfl⟩
+  have hfix : ∀ σ : Gal(H/K), (∀ x ∈ f₁.fieldRange ⊔ f₂.fieldRange, σ x = x) → σ = 1 := by
+    intro σ hσ
+    have r₁ := hres f₁ (fun _ => rfl) σ fun x hx => hσ x (le_sup_left (a := f₁.fieldRange) hx)
+    have r₂ := hres f₂ (fun _ => rfl) σ fun x hx => hσ x (le_sup_right (b := f₂.fieldRange) hx)
+    obtain ⟨I, hI0, hIc, hχ⟩ := _root_.GlobalTheory.FieldSize.RayDegree.exists_ideal hH σ
+    unfold _root_.GlobalTheory.FieldSize.IsRay at hH hH₁ hH₂
+    have hIa : IsCoprime I 𝔞 := by
+      rw [Ideal.isCoprime_iff_sup_eq] at hIc ⊢
+      exact top_unique (hIc.ge.trans (sup_le_sup_left inf_le_left _))
+    have hIb : IsCoprime I 𝔟 := by
+      rw [Ideal.isCoprime_iff_sup_eq] at hIc ⊢
+      exact top_unique (hIc.ge.trans (sup_le_sup_left inf_le_right _))
+    have t₁ : ∀ χ : Gal(H₁/K) →* ℂˣ, _root_.GlobalTheory.NT.heckeIdeal H₁ χ I = 1 := by
+      intro χ
+      rw [← heckeIdeal_comp_restrictNormalHom hH.1 χ hI0 hIc, hχ]
+      simp [r₁]
+    have t₂ : ∀ χ : Gal(H₂/K) →* ℂˣ, _root_.GlobalTheory.NT.heckeIdeal H₂ χ I = 1 := by
+      intro χ
+      rw [← heckeIdeal_comp_restrictNormalHom hH.1 χ hI0 hIc, hχ]
+      simp [r₂]
+    obtain ⟨α, β, hp₁, he₁⟩ := (hH₁.2.2 I hI0 hIa).1 t₁
+    obtain ⟨α', β', hp₂, he₂⟩ := (hH₂.2.2 I hI0 hIb).1 t₂
+    obtain ⟨γ, δ, hp, he⟩ := exists_rayPair_inf_of_rayPair hu hq hq2 haq hbq hp₁ he₁ hp₂ he₂
+    have hall := (hH.2.2 I hI0 hIc).2 ⟨γ, δ, hp, he⟩
+    apply _root_.GlobalTheory.RayMaximal.eq_of_forall_char
+    intro χ
+    have h := hall χ
+    rw [hχ χ] at h
+    rw [map_one]
+    exact Units.val_eq_one.1 h
+  have hbot : (f₁.fieldRange ⊔ f₂.fieldRange).fixingSubgroup = ⊥ := by
+    rw [eq_bot_iff]
+    intro σ hσ
+    exact hfix σ fun x hx => hσ ⟨x, hx⟩
+  rw [← IsGalois.fixedField_fixingSubgroup (f₁.fieldRange ⊔ f₂.fieldRange), hbot,
+    IntermediateField.fixedField_bot]
+
+end GlobalTheory.RayCompositum
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RayClassFieldInfModulusEqSup =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallCoeffFieldEmbeddingCompHostMap =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallCoeffFieldEmbeddingCompHostMap", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GoodSetupCountEqZeroOffBadPlaces\npublic import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.RationalRayLevels\npublic import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LFunctionPositiveConductorFourEight\npublic import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPrimitiveRootInRayClassFieldNatModulus\npublic import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostImagQuadraticIsGaloisUnitsPmOne\npublic import Mathlib.Algebra.Algebra.Hom.Rat\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaloisRatComplexImageRayClassField\npublic import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.SmulCommClassGalIntegers\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnramifiedAtOfIsUnramifiedInGaloisExtension\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RangeLeRangeOfIsUnramifiedAt\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RayClassFieldInfModulusEqSup\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsApplyEqOfNormal\npublic import Formalism.LocalToGlobal.ProjectiveLattices.ExistsParameterConditions\nimport Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 
@@ -58,19 +577,14 @@ open Formalism.L2.Host (embLL0)
 
 namespace GlobalTheory.RayInFrac
 
-theorem isUnramifiedAt_of_unramIn {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
-    [IsGalois K L] {𝔭 : HeightOneSpectrum (𝓞 K)} (h : GlobalTheory.NT.UnramIn L 𝔭) (P : Ideal (𝓞 L)) [P.IsPrime]
-    [P.LiesOver 𝔭.asIdeal] : Algebra.IsUnramifiedAt (𝓞 K) P :=
-  GlobalTheory.T.isUnramifiedAt_of_isUnramifiedInGaloisExtension h P
-
 theorem exists_isPrimitiveRoot_of_isRay {K H : Type} [Field K] [NumberField K] [Field H] [NumberField H] [Algebra K H]
     [IsAbelianGalois K H] {n : ℕ} (hn : n ≠ 0) (h : IsRay H (Ideal.span {(n : 𝓞 K)})) : ∃ ζ : H, IsPrimitiveRoot ζ n :=
-  GlobalTheory.T.exists_primitiveRoot_in_rayClassField_natModulus hn h
+  _root_.GlobalTheory.RayRootOfUnity.exists_isPrimitiveRoot_of_isRay hn h
 
 theorem isGalois_fieldRange_of_isRay {K H : Type} [Field K] [NumberField K] [IsGalois ℚ K] [Field H] [NumberField H]
     [Algebra K H] [IsAbelianGalois K H] {n : ℕ} (hn : n ≠ 0) (h : IsRay H (Ideal.span {(n : 𝓞 K)})) (j : H →+* ℂ) :
     IsGalois ℚ j.toRatAlgHom.fieldRange :=
-  GlobalTheory.T.isGalois_rat_complexImage_rayClassField hn h j
+  _root_.GlobalTheory.RayNatGalois.isGalois_fieldRange hn h j
 
 theorem sup_fieldRange_eq_top {K H H₁ H₂ : Type} [Field K] [NumberField K] [Field H] [NumberField H] [Algebra K H]
     [IsAbelianGalois K H] [Field H₁] [NumberField H₁] [Algebra K H₁] [IsAbelianGalois K H₁] [Field H₂] [NumberField H₂]
@@ -78,10 +592,10 @@ theorem sup_fieldRange_eq_top {K H H₁ H₂ : Type} [Field K] [NumberField K] [
     (hb : 𝔟 ≠ ⊥) {q : ℕ} (hq : q.Prime) (hq2 : q ≠ 2) (hqa : 𝔞 ≤ Ideal.span {(q : 𝓞 K)})
     (hqb : 𝔟 ≤ Ideal.span {(q : 𝓞 K)}) (h : IsRay H (𝔞 ⊓ 𝔟)) (h₁ : IsRay H₁ 𝔞) (h₂ : IsRay H₂ 𝔟)
     (f₁ : H₁ →ₐ[K] H) (f₂ : H₂ →ₐ[K] H) : f₁.fieldRange ⊔ f₂.fieldRange = ⊤ :=
-  GlobalTheory.T.rayClassField_inf_modulus_eq_sup hU ha hb hq hq2 hqa hqb h h₁ h₂ f₁ f₂
+  _root_.GlobalTheory.RayCompositum.fieldRange_sup_eq_top hU ha hb hq hq2 hqa hqb h h₁ h₂ f₁ f₂
 
 theorem hostK_facts (D : D7) : IsGalois ℚ D.host.K ∧ ∀ u : (𝓞 D.host.K)ˣ, u = 1 ∨ u = -1 :=
-  GlobalTheory.T.host_imagQuadratic_isGalois_units_pm_one D
+  _root_.GlobalTheory.HostQuadUnits.main D
 
 abbrev phiK (D : D7) : ↥D.host.K →+* ℂ := D.host.φ₀.comp (algebraMap D.host.K D.host.E)
 
@@ -119,7 +633,7 @@ theorem exists_field (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) 
       (embLL0 D).fieldRange ≤ L.toSubfield ∧ L.toSubfield ≤ (ρ.e i b).fieldRange ∧
       GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.RayIn D (m * N) L.toSubfield ∧ ∀ z : ℂ, z ^ (m * N) = 1 → z ∈ L := by
   classical
-  obtain ⟨hKgal, hU⟩ := hostK_facts D
+  obtain ⟨hKgal, hU⟩ := _root_.GlobalTheory.HostQuadUnits.isGalois_and_units D
   letI : Algebra D.host.K ℂ := (phiK D).toAlgebra
   have hlp : (D.ntw.l i).Prime := (D.ntw.lPrime i).out
   have hm₀0 : D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde' ≠ 0 := by
@@ -171,7 +685,7 @@ theorem exists_field (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) 
       Ideal.span {((m * N : ℕ) : 𝓞 D.host.K)} := by
     have := span_inf_span (R := 𝓞 D.host.K) m'' (D.ntw.l i ^ a) N hcop
     rwa [← hmm] at this
-  have hsup := sup_fieldRange_eq_top hU (hspan _ hm0) (hspan _ hm''0) hq hq2
+  have hsup := _root_.GlobalTheory.RayCompositum.fieldRange_sup_eq_top hU (hspan _ hm0) (hspan _ hm''0) hq hq2
     (Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast (hqm.trans hm''m)))
     (Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast (hqm.trans (dvd_mul_right _ _))))
     (hinf ▸ hH') hH₁' hH₂' f₁ f₂
@@ -205,7 +719,7 @@ theorem exists_field (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) 
         exact hlp.ne_zero (by exact_mod_cast hlK)
       let 𝔭 : HeightOneSpectrum (𝓞 D.host.K) := ⟨P.under (𝓞 D.host.K), inferInstance, hne⟩
       haveI : P.LiesOver 𝔭.asIdeal := ⟨rfl⟩
-      refine isUnramifiedAt_of_unramIn (hH₂'.1 𝔭 fun hd => ?_) P
+      refine _root_.GlobalTheory.NT.isUnramifiedAt_of_unramIn (hH₂'.1 𝔭 fun hd => ?_) P
       have h3 : ((m'' * N : ℕ) : 𝓞 D.host.K) ∈ 𝔭.asIdeal := Ideal.dvd_iff_le.1 hd (Ideal.mem_span_singleton_self _)
       have hc : (D.ntw.l i).Coprime (m'' * N) := Nat.Coprime.mul_right hm'' hNl.symm
       obtain ⟨A, B, hAB⟩ := Nat.isCoprime_iff_coprime.2 hc
@@ -236,7 +750,7 @@ theorem exists_field (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) 
   have hB : ∀ x, j x ∈ A ⊔ B := fun x => (le_sup_right : B ≤ A ⊔ B) ⟨x, rfl⟩
   refine ⟨A ⊔ B, inferInstance, fun hG => ?_, ?_, ?_, ?_, ?_⟩
   · have gA : IsGalois ℚ A := IsGalois.of_algEquiv (AlgEquiv.ofInjectiveField (embLL0 D).toRatAlgHom)
-    have gB : IsGalois ℚ B := isGalois_fieldRange_of_isRay hmN hH' (j : H →+* ℂ)
+    have gB : IsGalois ℚ B := _root_.GlobalTheory.RayNatGalois.isGalois_fieldRange hmN hH' (j : H →+* ℂ)
     haveI : Normal ℚ ↥(A ⊔ B) := @IntermediateField.normal_sup ℚ ℂ _ _ _ A B gA.to_normal gB.to_normal
     exact ⟨⟩
   · rintro _ ⟨x, rfl⟩
@@ -249,7 +763,7 @@ theorem exists_field (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) 
   · refine ⟨H, inferInstance, inferInstance, inferInstance, inferInstance, hH', (j : H →+* ℂ), ?_, fun x => hB x⟩
     ext x
     exact j.commutes x
-  · obtain ⟨ζ, hζ⟩ := exists_isPrimitiveRoot_of_isRay hmN hH'
+  · obtain ⟨ζ, hζ⟩ := _root_.GlobalTheory.RayRootOfUnity.exists_isPrimitiveRoot_of_isRay hmN hH'
     intro z hz
     haveI : NeZero (m * N) := ⟨hmN⟩
     have hζ' := hζ.map_of_injective (j : H →+* ℂ).injective
@@ -330,3 +844,6 @@ theorem exists_rayField_le (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.nt
   ⟨exists_field D ρ hρ i b hRF hray m N hm hm' hN hNl, exists_field_k D ρ hρ i b hRF hray m N hm hm' hN hNl⟩
 
 end GlobalTheory.RayInFrac
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallCoeffFieldEmbeddingCompHostMap =====

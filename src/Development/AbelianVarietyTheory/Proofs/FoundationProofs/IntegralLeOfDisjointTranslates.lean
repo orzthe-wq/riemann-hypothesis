@@ -62,6 +62,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.Point
 import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice
 import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

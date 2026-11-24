@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CubeComplexAcyclicIffQuasiIsoCechAug
 
 @[expose] public section
 
@@ -78,14 +79,6 @@ private theorem wd_anti' {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module
     rw [show (t.erase j).erase i = (t.erase i).erase j from Finset.erase_right_comm]
     exact (LinearMap.congr_fun (h i j).eq _).symm
   rw [hcomm, ← add_smul, GlobalTheory.cubeSign_mul_erase hi hjt (Ne.symm hji), neg_add_cancel, zero_smul]
-
-private theorem cubeSign_map' {σ σ' : Type} [LinearOrder σ] [LinearOrder σ'] (e : σ' ↪o σ)
-    (s : Finset σ') (i : σ') :
-    GlobalTheory.cubeSign (s.map e.toEmbedding) (e i) = GlobalTheory.cubeSign s i := by
-  simp only [GlobalTheory.cubeSign, Finset.filter_map, Finset.card_map]
-  congr 2
-  ext x
-  simp
 
 theorem UpperTheory.Gal.productCup_of_system.wdBasic_of :
     WdBasic := by
@@ -132,6 +125,6 @@ theorem UpperTheory.Gal.productCup_of_system.wdBasic_of :
   · intro σ' _ e c s
     rw [wd_apply', wd_apply', Finset.sum_map]
     refine Finset.sum_congr rfl fun i hi => ?_
-    simp only [RelEmbedding.coe_toEmbedding, cubeSign_map']
+    simp only [RelEmbedding.coe_toEmbedding, _root_.GlobalTheory.Cube.cubeSign_map]
     rw [Finset.map_erase]
     rfl

@@ -49,11 +49,11 @@ def ball {l : ℕ} [Fact l.Prime] (K : FinExt l) : Subring ↥K.1 where
   carrier := {x | ‖((x : ↥K.1) : Om l)‖ ≤ 1}
   one_mem' := by simp
   mul_mem' {a b} ha hb := by
-    simp only [Set.mem_setOf_eq, MulMemClass.coe_mul, norm_mul] at *
+    simp only [Set.mem_ofPred_eq, MulMemClass.coe_mul, norm_mul] at *
     exact mul_le_one₀ ha (norm_nonneg _) hb
   zero_mem' := by simp
   add_mem' {a b} ha hb := by
-    simp only [Set.mem_setOf_eq, AddMemClass.coe_add] at *
+    simp only [Set.mem_ofPred_eq, AddMemClass.coe_add] at *
     exact (PadicAlgCl.isNonarchimedean l _ _).trans (max_le ha hb)
   neg_mem' {a} ha := by simpa using ha
 

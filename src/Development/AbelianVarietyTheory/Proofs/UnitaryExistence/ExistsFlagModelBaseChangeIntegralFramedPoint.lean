@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import Formalism.LocalToGlobal.BesselHermitianTheta.NoncompactGapAtLeastRange
 import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.AbelianAt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -102,7 +103,7 @@ theorem fst_over :
     spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _ := by
   rw [GlobalTheory.EtaVal.spMap_comp_spMap]
   have : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R := by
-    ext s; simp [TrivSqZeroExt.algebraMap_eq_inl]
+    ext s; simp
   rw [this]
   exact Spec.map_id _
 

@@ -57,12 +57,12 @@ variable {D : D7}
 
 theorem gram_map_mul_inv {R : Type*} [CommRing R] (S : HSp D) (φ : D.host.E →+* R) :
     S.gram.map φ * (S.gram⁻¹).map φ = 1 := by
-  rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel.gram_det_ne_zero S)),
+  rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (_root_.Formalism.L2.Theta.gram_det_ne S)),
     Matrix.map_one _ φ.map_zero φ.map_one]
 
 theorem gram_inv_map_mul {R : Type*} [CommRing R] (S : HSp D) (φ : D.host.E →+* R) :
     (S.gram⁻¹).map φ * S.gram.map φ = 1 := by
-  rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel.gram_det_ne_zero S)),
+  rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (_root_.Formalism.L2.Theta.gram_det_ne S)),
     Matrix.map_one _ φ.map_zero φ.map_one]
 
 def coordsLin (S T S' T' : HSp D) (e₁ : Fin T'.rank ≃ Fin S.rank) (e₂ : Fin S'.rank ≃ Fin T.rank) :

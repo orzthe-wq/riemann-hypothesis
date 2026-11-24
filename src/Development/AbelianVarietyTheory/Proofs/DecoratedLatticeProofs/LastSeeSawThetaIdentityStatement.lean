@@ -47,4 +47,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.lastSeeSaw_thetaIdentity : ∀ D : D7, SeeLast D := by
-  first | exact @GlobalTheory.SeeLastPf.seeLast | exact GlobalTheory.SeeLastPf.seeLast | (intros; apply GlobalTheory.SeeLastPf.seeLast <;> assumption)
+  first | exact @GlobalTheory.SeeLastPf.seeLast

@@ -3,13 +3,14 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.AdelicDataRowMeasureScaleTrivialTuple
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsWeakOfDatum
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNormSqEqToL2
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralEqOfNorms
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlacesStatement
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsSigmaList
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.NormInfSubmultiplicativeLeAdelicHeightStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOscillatorActionUnitaryPolynomialBoundStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsQuadOfPlane
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOscillatorActionUnitaryPolynomialBound
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeakWeilRepEqUnitSmulOscillatorRealPointsStatement
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.NormInfSubmultiplicativeLeAdelicHeightStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -111,7 +112,7 @@ theorem om_growth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D �
   intro D ψ hψ S T om hom θ hθ
   obtain ⟨σ, h⟩ := GlobalTheory.RealLineAt.exists_inverse_chart hθ
   obtain ⟨Ω, hosc, ⟨N, hN⟩, -⟩ :=
-    GlobalTheory.T.hasDerivAt_oscillatorAction_unitaryPath_quadratic (GlobalTheory.RealWeil.Ix S T) (GlobalTheory.RealWeil.HM S T) GlobalTheory.RealWeil.HM_herm GlobalTheory.RealWeil.HM_det
+    _root_.GlobalTheory.Mem.Lift.OscBound.exists_osc_bound_deriv (GlobalTheory.RealWeil.Ix S T) (GlobalTheory.RealWeil.HM S T) GlobalTheory.RealWeil.HM_herm GlobalTheory.RealWeil.HM_det
       (GlobalTheory.RealWeil.BB ψ S T) (GlobalTheory.RealWeil.rhoV hψ σ S T) (GlobalTheory.RealWeil.isHeis_rhoB h hψ) (GA D S × GA D T)
       (GlobalTheory.RealWeil.mM θ S T) (GlobalTheory.RealWeil.mM_unitary hθ)
   obtain ⟨K, hK0, hK⟩ := sum_mM_le θ S T

@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -111,7 +111,7 @@ theorem isSB_mul_char {κ ι : Type} [Fintype κ] [Fintype ι] (a b : Matrix κ 
 theorem heisS_laws : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι] (a b : Matrix κ ι ℚ) (φ : Matrix κ ι ℚ → ℂ), IsSB φ → IsSB (heisS a b φ) ∧ (∀ τ ∈ Siegel ι, ∀ ζ, thS (heisS a b φ) τ ζ = cexp (π * I * ∑ k, (qv (b k) ⬝ᵥ τ *ᵥ qv (b k) + 2 * (qv (b k) ⬝ᵥ ζ k) + qv (a k) ⬝ᵥ qv (b k))) * thS φ τ (fun k => ζ k + qv (a k) + τ *ᵥ qv (b k))) ∧ (∀ a' b', heisS a b (heisS a' b' φ) = cexp (π * I * ((∑ k, (a k ⬝ᵥ b' k - a' k ⬝ᵥ b k) : ℚ) : ℂ)) • heisS (a + a') (b + b') φ) ∧ heisS 0 0 φ = φ ∧ ∀ ψ, IsSB ψ → ip (heisS a b φ) (heisS a b ψ) = ip φ ψ := by
   intro κ ι _ _ _ a b φ hφ
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
-  · exact isSB_mul_char a b _ ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι φ φ hφ hφ).2.2.2.2.2.2.2 b).1
+  · exact isSB_mul_char a b _ ((_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι φ φ hφ hφ).2.2.2.2.2.2.2 b).1
   · intro τ hτ ζ
     unfold thS
     rw [← tsum_mul_left, ← (Equiv.addRight b).tsum_eq]
@@ -146,9 +146,9 @@ theorem heisS_laws : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq �
   · funext x
     simp [heisS, dotProduct]
   · intro ψ hψ
-    have h1 : IsSB (fun x : Matrix κ ι ℚ => conj (ψ x)) := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι ψ ψ hψ hψ).2.2.2.1
-    have h2 := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι φ _ hφ h1).2.2.1
-    have h3 := ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι _ _ h2 h2).2.2.2.2.2.2.2 b).2
+    have h1 : IsSB (fun x : Matrix κ ι ℚ => conj (ψ x)) := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι ψ ψ hψ hψ).2.2.2.1
+    have h2 := (_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι φ _ hφ h1).2.2.1
+    have h3 := ((_root_.GlobalTheory.SW.isSB_algebra_haar_linear ℚ κ ι _ _ h2 h2).2.2.2.2.2.2.2 b).2
     unfold ip
     refine Eq.trans ?_ h3
     congr 1

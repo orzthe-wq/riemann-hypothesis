@@ -1,7 +1,6 @@
 module
 
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TopRankPowers
-public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.L2ExtensionLogCanonical
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.KawamataViehweg
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsAlgClosedBaseChange
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsMultiHomogeneousFixFirstBlock
@@ -60,13 +59,8 @@ namespace GlobalTheory.HSCore
 
 structure Quoted : Prop where
   kv : GlobalTheory.Published.KawamataViehweg
-  l2 : GlobalTheory.Published.L2ExtensionLogCanonical
-  gaga : GlobalTheory.Published.SerreHolomorphicSections
   nef : GlobalTheory.Published.NefNumerics
-  chow : GlobalTheory.Published.ChowFormExists
   chowInt : GlobalTheory.Published.ChowFormIntExists
-  chowCut : GlobalTheory.Published.ChowFormHyperplaneSection
-  len : GlobalTheory.Published.ProperIntersectionLength
 
 variable {F : Type} [Field F] [NumberField F]
 

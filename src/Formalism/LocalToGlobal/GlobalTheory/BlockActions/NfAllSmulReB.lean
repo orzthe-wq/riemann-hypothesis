@@ -125,9 +125,9 @@ theorem lastGL_eq (a : ℂˣ) : ((Formalism.MainNotions.PrimeDegreeVariant.lastG
   rcases p with i | i <;> rcases q with j | j
   · have hi' : ¬ ((i : ℕ) + 1 = D.R.N D.R.m) := by have := i.isLt; omega
     by_cases hij : i = j
-    · subst hij; simp [Matrix.diagonal_apply, hi']
+    · subst hij; simp [hi']
     · have hne : (eN D) (Sum.inl i) ≠ (eN D) (Sum.inl j) := fun h => hij (Sum.inl_injective ((eN D).injective h))
-      simp [Matrix.diagonal_apply, hne, Matrix.one_apply, hij]
+      simp [hij]
   · have := i.isLt
     simp [Matrix.diagonal_apply, Fin.ext_iff]; omega
   · have := j.isLt
@@ -135,7 +135,7 @@ theorem lastGL_eq (a : ℂˣ) : ((Formalism.MainNotions.PrimeDegreeVariant.lastG
   · have hi : i = 0 := Subsingleton.elim _ _
     have hj : j = 0 := Subsingleton.elim _ _
     subst hi hj
-    simp [Matrix.diagonal_apply, hN]
+    simp [hN]
 
 def dOT (u : D.what₂.Word) (o' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) :
     Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ :=
@@ -233,7 +233,7 @@ theorem gram_bZ_map (Tf : FormsTiedSym D u Ch chOf) (τ : D.what₂.Tau) :
     Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _)]
   congr 2
   ext i j
-  simp [gramC, map_inv₀, map_natCast]
+  simp [map_inv₀, map_natCast]
 
 theorem frame_on (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (τ : D.what₂.Tau)
     (o' : Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) (ho : o'ᴴ * gramC (gramP D) (embT D) τ * o' = 1) :

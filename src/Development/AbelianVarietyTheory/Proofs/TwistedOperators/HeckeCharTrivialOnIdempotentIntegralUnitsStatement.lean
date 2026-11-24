@@ -48,4 +48,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.heckeChar_trivial_on_idempotentIntegralUnits : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E) (P : Finset (Pl D.host.E)) (e : AE D), ChrEq c χ → IsIdemSum e P → (∀ PP', PP' ∉ P → (∀ PP ∈ P, ¬ Formalism.IndefR.Lev.IsConjPl PP PP') → χ.UnrAt PP') → UnrOff (e + cA D e) c := by
-  first | exact @GlobalTheory.ChrOff.unrOff_of_unrAt | exact GlobalTheory.ChrOff.unrOff_of_unrAt | (intros; apply GlobalTheory.ChrOff.unrOff_of_unrAt <;> assumption)
+  first | exact @GlobalTheory.ChrOff.unrOff_of_unrAt

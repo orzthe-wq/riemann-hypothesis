@@ -75,7 +75,7 @@ theorem nat_card_monoDeg_fin (D a : ℕ) (hD : 1 ≤ D) :
 theorem sum_range_choose_mul_sub (d n : ℕ) :
     ∑ a ∈ Finset.range n, (a + d).choose d * (n - a) = (n + d + 1).choose (d + 2) := by
   induction n with
-  | zero => simp [Nat.choose_eq_zero_of_lt]
+  | zero => simp
   | succ n ih =>
     have h1 : ∑ a ∈ Finset.range n, (a + d).choose d * (n + 1 - a) =
         ∑ a ∈ Finset.range n, (a + d).choose d * (n - a) +

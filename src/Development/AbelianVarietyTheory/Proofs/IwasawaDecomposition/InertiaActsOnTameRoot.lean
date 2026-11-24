@@ -1,9 +1,11 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import Mathlib.RingTheory.DedekindDomain.Dvr
 public import ReciprocityTheory.GaloisValuations.Global
 public import ReciprocityTheory.ClassFieldTheory.GlobalClassField.IsFrobAtMulOfMemInertiaGroup
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteGaloisInertiaLiftsAbsoluteInertiaRat
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemOfInteger
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -22,8 +24,11 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.Valuation.LocalSubring
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -34,7 +39,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,14 +51,101 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.GaloisValuations.GlobalA
 import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import Formalism.SharpRestriction.CuspSpanNormBounds.Point
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemOfInteger, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertiaActsOnTameRoot
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemOfInteger =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemOfInteger", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Mathlib.RingTheory.Valuation.ValuationSubring\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.Valuation.LocalSubring\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.RingTheory.DedekindDomain.Dvr\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.DenominatorExists
+
+open NumberField
+
+theorem exists_mul_eq {R : Type} [CommRing R] [IsDedekindDomain R] (P : Ideal R) [hP : P.IsPrime]
+    (a b : R) (hb : b ≠ 0) :
+    ∃ s t : R, s ∉ P ∧ (a * t = b * s ∨ b * t = a * s) := by
+  by_cases h0 : P = ⊥
+  · refine ⟨b, a, ?_, Or.inr (mul_comm _ _)⟩
+    rw [h0]; simpa using hb
+  · haveI : IsDiscreteValuationRing (Localization.AtPrime P) :=
+      IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R h0 _
+    have hinj : Function.Injective (algebraMap R (Localization.AtPrime P)) :=
+      IsLocalization.injective _ P.primeCompl_le_nonZeroDivisors
+    obtain ⟨c, hc⟩ := ValuationRing.cond (algebraMap R (Localization.AtPrime P) a)
+      (algebraMap R (Localization.AtPrime P) b)
+    obtain ⟨⟨t, s⟩, hts⟩ := IsLocalization.surj P.primeCompl c
+    simp only at hts
+    refine ⟨s, t, s.2, ?_⟩
+    rcases hc with hc | hc
+    · left
+      apply hinj
+      rw [map_mul, map_mul, ← hts, ← mul_assoc, hc]
+    · right
+      apply hinj
+      rw [map_mul, map_mul, ← hts, ← mul_assoc, hc]
+
+theorem mem_of_integer {L Ω : Type} [Field L] [Field Ω] [Algebra L Ω]
+    (A : ValuationSubring Ω) (s : 𝓞 L) : algebraMap L Ω (s : L) ∈ A := by
+  have hz : IsIntegral ℤ (algebraMap L Ω (s : L)) := s.2.map (algebraMap L Ω).toIntAlgHom
+  have hA : IsIntegral A (algebraMap L Ω (s : L)) := hz.tower_top
+  obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.1 hA
+  rw [← hy]
+  exact y.2
+
+theorem exists_denominator {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω]
+    (A : ValuationSubring Ω) (x : L) (hx : A.valuation (algebraMap L Ω x) ≤ 1) :
+    ∃ s t : 𝓞 L, A.valuation (algebraMap L Ω (s : L)) = 1 ∧ (s : L) * x = (t : L) := by
+  let f : 𝓞 L →+* A :=
+    ((algebraMap L Ω).comp (algebraMap (𝓞 L) L)).codRestrict A (fun s => mem_of_integer A s)
+  let P : Ideal (𝓞 L) := (IsLocalRing.maximalIdeal A).comap f
+  haveI : P.IsPrime := Ideal.comap_isPrime f _
+  have hle : ∀ s : 𝓞 L, A.valuation (algebraMap L Ω (s : L)) ≤ 1 :=
+    fun s => (A.valuation_le_one_iff _).mpr (mem_of_integer A s)
+  have hP : ∀ s : 𝓞 L, s ∉ P → A.valuation (algebraMap L Ω (s : L)) = 1 := by
+    intro s hs
+    refine le_antisymm (hle s) (not_lt.mp fun h => hs ?_)
+    exact Ideal.mem_comap.mpr ((A.valuation_lt_one_iff (f s)).mpr h)
+  obtain ⟨a, b, hb, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 L) x
+  have hb0 : b ≠ 0 := nonZeroDivisors.ne_zero hb
+  have hb1 : (b : L) ≠ 0 := by exact_mod_cast hb0
+  change A.valuation (algebraMap L Ω ((a : L) / (b : L))) ≤ 1 at hx
+  change ∃ s t : 𝓞 L, A.valuation (algebraMap L Ω (s : L)) = 1 ∧
+    (s : L) * ((a : L) / (b : L)) = (t : L)
+  obtain ⟨s, t, hs, h | h⟩ := exists_mul_eq P a b hb0
+  · have h' : (a : L) * t = b * s := by exact_mod_cast congrArg (fun z : 𝓞 L => (z : L)) h
+    have e : (t : L) * ((a : L) / (b : L)) = s := by
+      field_simp
+      linear_combination h'
+    refine ⟨t, s, le_antisymm (hle t) ?_, e⟩
+    have h1 := hP s hs
+    rw [← e, map_mul, map_mul] at h1
+    rw [← h1]
+    exact mul_le_of_le_one_right' hx
+  · have h' : (b : L) * t = a * s := by exact_mod_cast congrArg (fun z : 𝓞 L => (z : L)) h
+    refine ⟨s, t, hP s hs, ?_⟩
+    field_simp
+    linear_combination -h'
+
+end GlobalTheory.DenominatorExists
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemOfInteger =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertiaActsOnTameRoot =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertiaActsOnTameRoot", "h": "module\n\npublic import ReciprocityTheory.GaloisValuations.Global\npublic import ReciprocityTheory.ClassFieldTheory.GlobalClassField.IsFrobAtMulOfMemInertiaGroup\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteGaloisInertiaLiftsAbsoluteInertiaRat\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemOfInteger\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport ReciprocityTheory.GaloisValuations.GlobalA\nimport Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf\nimport Formalism.SharpRestriction.CuspSpanNormBounds.Point\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\nimport Formalism.SharpRestriction.LevelLetterCocycles.LocCoh\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2
@@ -117,16 +208,13 @@ def primeOf {L : Type} [Field L] [NumberField L] [Algebra L Ω] (A : ValuationSu
     exact Valuation.map_add_lt _ ha hb
   zero_mem' := by simp
   smul_mem' c b hb := by
-    simp only [Set.mem_setOf_eq, smul_eq_mul, map_mul, Valuation.map_mul] at hb ⊢
+    simp only [Set.mem_setOf_eq, smul_eq_mul, map_mul] at hb ⊢
     calc A.valuation (algebraMap L Ω (c : L)) * A.valuation (algebraMap L Ω (b : L))
         ≤ 1 * A.valuation (algebraMap L Ω (b : L)) := mul_le_mul_left (val_int_le A c) _
       _ < 1 := by rw [one_mul]; exact hb
 
 theorem mem_primeOf {L : Type} [Field L] [NumberField L] [Algebra L Ω] {A : ValuationSubring Ω} {x : 𝓞 L} :
     x ∈ primeOf (L := L) A ↔ A.valuation (algebraMap L Ω (x : L)) < 1 := Iff.rfl
-
-theorem den : ∀ {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] (A : ValuationSubring Ω) (x : L), A.valuation (algebraMap L Ω x) ≤ 1 → ∃ s t : 𝓞 L, A.valuation (algebraMap L Ω (s : L)) = 1 ∧ (s : L) * x = t :=
-  _root_.GlobalTheory.DenominatorExists.exists_denominator
 
 instance isPrime_primeOf {L : Type} [Field L] [NumberField L] [Algebra L Ω] (A : ValuationSubring Ω) :
     (primeOf (L := L) A).IsPrime where
@@ -141,7 +229,7 @@ instance isPrime_primeOf {L : Type} [Field L] [NumberField L] [Algebra L Ω] (A 
     simp only [not_or, not_lt] at hn
     have ha := le_antisymm (val_int_le A a) hn.1
     have hb := le_antisymm (val_int_le A b) hn.2
-    simp only [map_mul, Valuation.map_mul, ha, hb, one_mul] at hab
+    simp only [map_mul, ha, hb, one_mul] at hab
     exact lt_irrefl _ hab
 
 open ReciprocityTheory.DiscreteGroups.GlobalClassField in
@@ -161,7 +249,7 @@ theorem inert_val_of_le {E L : Type} [Field E] [NumberField E] [Field L] [Number
     {A : ValuationSubring Ω} {τ : L ≃ₐ[E] L} (hτ : τ ∈ inertiaGroup E L (primeOf (L := L) A)) (x : L)
     (hx : A.valuation (algebraMap L Ω x) ≤ 1) :
     A.valuation (algebraMap L Ω (τ x) - algebraMap L Ω x) < 1 := by
-  obtain ⟨s, t, hs1, e⟩ := den A x hx
+  obtain ⟨s, t, hs1, e⟩ := _root_.GlobalTheory.DenominatorExists.exists_denominator A x hx
   have hs := inert_val hτ s
   have ht := inert_val hτ t
   have hτs : A.valuation (algebraMap L Ω (τ s)) = 1 := by
@@ -334,3 +422,6 @@ theorem main : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E
   exact this
 
 end GlobalTheory.TameSurj
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertiaActsOnTameRoot =====

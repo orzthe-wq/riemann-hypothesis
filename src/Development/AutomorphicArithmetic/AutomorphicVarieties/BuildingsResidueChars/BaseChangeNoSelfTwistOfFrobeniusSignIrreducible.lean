@@ -91,7 +91,6 @@ theorem UpperTheory.baseChange_noSelfTwist_of_frobenius_sign_irreducible :
     conv_lhs => rw [sat_of_isoTwist hT h1 hB]
     have h5 : ((η.val (w.under (𝓞 F)) : ℂˣ) : ℂ) = if normV w = normV (w.under (𝓞 F)) then 1 else -1 := by
       refine (congrArg Units.val h3).trans ?_
-      change ((if normV w = normV (w.under (𝓞 F)) then 1 else -1 : ℂˣ) : ℂ) = _
       split_ifs <;> simp
     simp only [algSat_eq, Multiset.map_map]
     refine Multiset.map_congr rfl fun b _ => ?_

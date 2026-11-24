@@ -97,7 +97,7 @@ theorem good_inv {g : GA D S} (hg : Good d o T g) : Good d o T g⁻¹ := by
   calc mt S g⁻¹ * d.j0 = mt S g⁻¹ * d.j0 * mt S₀ (o.emb (h, 1)) * mt S₀ (o.emb (h⁻¹, 1)) := by
         rw [Matrix.mul_assoc _ (mt S₀ _), hH, Matrix.mul_one]
     _ = (d.j0 - d.jX * (M⁻¹).1 * B) * mt S₀ (o.emb (h⁻¹, 1)) := by rw [eq_sub_of_add_eq h1]
-    _ = _ := by simp only [Matrix.sub_mul, Matrix.add_mul, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, sub_eq_add_neg]
+    _ = _ := by simp only [Matrix.add_mul, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, sub_eq_add_neg]
 
 def goodSub : Subgroup (GA D S) where
   carrier := {g | Good d o T g}

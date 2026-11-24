@@ -255,7 +255,8 @@ theorem integral_form_exponent_le_ceil (p a r n : ℕ) (hn : n + 1 ≤ r) (l : �
       (Nat.cast_le.mpr hde).trans hlog
     have hB0 : (0 : ℝ) ≤ ((deF p (n + 1) l : ℕ) : ℝ) := Nat.cast_nonneg _
     push_cast
-    nlinarith [sq_nonneg (r : ℝ)]
+    have hmul := mul_le_mul hA hB hB0 (sq_nonneg (r : ℝ))
+    linarith
   exact_mod_cast h1.trans (Nat.le_ceil _)
 
 theorem mq_top_of_irr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {n : ℕ} [NeZero n]
@@ -315,14 +316,7 @@ theorem weight_condition_of_integral_form (D : Formalism.BasicNotions.D7) (X : F
       rw [← algebraMap_smul (KK X.O) c v]
       exact Submodule.smul_mem _ _ hirr.2.2.1.2.1
 
-def PolIsoDecomp : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (ι : Type) [Fintype ι] (LL : Letters ι) (r : ℕ) [NeZero r] (S : Set ι),
-    ∃ e : (Fin r → ℤ) → Module.End K (MvPolynomial (ι × Fin r) K),
-      (∀ mu, IsIsoProj (glOps K r LL S) mu (e mu)) ∧
-      ∀ G : MvPolynomial (ι × Fin r) K, ∃ T : Finset (Fin r → ℤ),
-        G = ∑ mu ∈ T, e mu G ∧ ∀ mu, e mu G ∈ isoSub (glOps K r LL S) mu
-
-theorem isotypic_multiplicity_of_reducibility (D : Formalism.BasicNotions.D7) (hV : Formalism.MainNotions.CovariantDegrees.ValuationLemmaField D) (hdec : PolIsoDecomp) :
+theorem isotypic_multiplicity_of_reducibility (D : Formalism.BasicNotions.D7) (hV : Formalism.MainNotions.CovariantDegrees.ValuationLemmaField D) (hdec : _root_.Formalism.MainNotions.G.Joints.PolIsoDecompB) :
     Formalism.MainNotions.PlaneGramData.adm1 D := by
   intro p O _ _ _ _ _ r _ ι _ LL S
   have : CharZero (KK O) := charZero_of_injective_algebraMap (IsFractionRing.injective O (KK O))
@@ -449,7 +443,8 @@ theorem LPprime_mono_kappa {W Qq O Kf : Type*} [CommRing W] [Field Qq] [Algebra 
   obtain ⟨M, e, F, he, hF, hsc, n, hn, hg⟩ := h2 L hL
   refine ⟨M, e, F, he, hF, hsc, n, ?_, hg⟩
   have h0 : (0 : ℝ) ≤ (dimV Kf lam0 : ℝ) := Nat.cast_nonneg _
-  nlinarith
+  have hmul := mul_le_mul_of_nonneg_right hk h0
+  linarith
 
 theorem LPprime_min_one {W Qq O Kf : Type*} [CommRing W] [Field Qq] [Algebra W Qq] [CommRing O] [Field Kf]
     [Algebra O Kf] {p n' : ℕ} {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {w : O} {m r : ℕ} {lam0 : Fin n' → Fin (m + 1) → ℤ}
@@ -767,7 +762,7 @@ theorem kap_margin (Ck N k Q m0 mm N1 b' Y E0 a La Cs : ℝ) (hCk : 0 ≤ Ck) (h
   have h1 : k * Q * mm / b' ≤ 1 / Y := by
     rw [div_le_div_iff₀ hb hY]
     have := (le_div_iff₀ (by positivity)).mp hmm
-    nlinarith
+    linarith [show k * Q * mm * Y = mm * (k * Q * Y) by ring]
   have h2 : k * Q * (mm + N1 * k) / b' ≤ k * Q * (m0 + N1 * k) / b' + 1 / Y := by
     have e1 : k * Q * (mm + N1 * k) / b' = k * Q * mm / b' + k * Q * (N1 * k) / b' := by ring
     have e2 : k * Q * (m0 + N1 * k) / b' = k * Q * m0 / b' + k * Q * (N1 * k) / b' := by ring
@@ -890,7 +885,7 @@ theorem depthD_nonneg (CA : ℝ) (hCA : 0 ≤ CA) (p a Nt N₁ r : ℕ) (Y : ℝ
   have hr' : (1 : ℝ) ≤ r := by exact_mod_cast hr
   have h1 : 0 ≤ Real.logb p (8 * a + r) := by
     apply Real.logb_nonneg hp'
-    nlinarith [(Nat.cast_nonneg a : (0 : ℝ) ≤ a)]
+    linarith [(Nat.cast_nonneg a : (0 : ℝ) ≤ a)]
   have h2 : 0 ≤ Real.logb p a := div_nonneg (Real.log_natCast_nonneg a) hlp.le
   exact add_nonneg (mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hCA (sq_nonneg Y)) (by positivity))
     (by positivity)) (by linarith)) (mul_nonneg (by norm_num) (mul_nonneg (by positivity) h2))
@@ -907,8 +902,11 @@ theorem bad_share_of_extension_proposition (D : Formalism.BasicNotions.D7) (C₀
     have hk : (2 : ℝ) ≤ X.k := by
       unfold Formalism.MainNotions.ColumnSystems.Loc.k; have : (1 : ℝ) ≤ (X.m : ℝ) := by exact_mod_cast hm
       linarith
-    have hk2 : (4 : ℝ) ≤ X.k ^ 2 := by nlinarith
-    have hY2 : (1 : ℝ) ≤ X.Y ^ 2 := by nlinarith
+    have hk2 : (4 : ℝ) ≤ X.k ^ 2 := by
+      have := pow_le_pow_left₀ (by norm_num) hk 2
+      norm_num at this
+      exact this
+    have hY2 : (1 : ℝ) ≤ X.Y ^ 2 := one_le_pow₀ hY
     have : (4 : ℝ) ≤ (X.p : ℝ) := by
       have := mul_le_mul hk2 hY2 (by norm_num) (by positivity)
       linarith
@@ -921,7 +919,7 @@ theorem bad_share_of_extension_proposition (D : Formalism.BasicNotions.D7) (C₀
 
 theorem posAdd_iff {n' : ℕ} (x y : Fin n') (d : ℕ) (hd1 : 1 ≤ d) (hdn : d ≤ n') :
     posAdd x d = y ↔ posAdd y (n' - d) = x := by
-  simp only [posAdd, Fin.ext_iff, Fin.val_mk]
+  simp only [posAdd, Fin.ext_iff]
   constructor
   · intro h
     rw [← h, Nat.mod_add_mod, show x.val + d + (n' - d) = x.val + n' by omega, Nat.add_mod_right,
@@ -996,17 +994,17 @@ theorem sum_boxLoc {n' : ℕ} (TT : Finset (Fin n')) (W : Finset ℤ) (f : (TT �
   refine Finset.sum_nbij' (fun a => fun t : TT => a t) (fun aa i => if h : i ∈ TT then aa ⟨i, h⟩ else 0)
     ?_ ?_ ?_ ?_ ?_
   · intro a ha
-    simp only [boxLoc, Finset.mem_coe, Fintype.mem_piFinset] at ha ⊢
+    simp only [boxLoc, Fintype.mem_piFinset] at ha ⊢
     intro t
     simpa [t.2] using ha t
   · intro aa haa
-    simp only [boxLoc, Finset.mem_coe, Fintype.mem_piFinset] at haa ⊢
+    simp only [boxLoc, Fintype.mem_piFinset] at haa ⊢
     intro i
     by_cases h : i ∈ TT
     · simpa [h] using haa ⟨i, h⟩
     · simp [h]
   · intro a ha
-    simp only [boxLoc, Finset.mem_coe, Fintype.mem_piFinset] at ha
+    simp only [boxLoc, Fintype.mem_piFinset] at ha
     funext i
     by_cases h : i ∈ TT
     · simp [h]
@@ -1022,8 +1020,7 @@ theorem sum_boxLoc {n' : ℕ} (TT : Finset (Fin n')) (W : Finset ℤ) (f : (TT �
 open Classical in
 theorem card_boxLoc {n' : ℕ} (TT : Finset (Fin n')) (W : Finset ℤ) :
     (boxLoc n' TT W).card = W.card ^ TT.card := by
-  simp [boxLoc, Fintype.card_piFinset, apply_ite Finset.card, Finset.prod_ite,
-    Finset.filter_mem_eq_inter]
+  simp [boxLoc, Fintype.card_piFinset, apply_ite Finset.card]
 
 theorem meanLoc_eq (D : Formalism.BasicNotions.D7) (K : Consts) (s : Formalism.BasicNotions.Scale) {n' : ℕ} (TT : Finset (Fin n')) (m : ℕ)
     (Y a bl bu : ℝ) (κ : (TT → ℤ) → (TT → ℤ) → ℝ) (hA : winA D s = Formalism.MainNotions.flipOneThree.IaZ m Y a)
@@ -1058,7 +1055,8 @@ theorem scale_facts (s : Scale) : 1 < s.a ∧ 0 < s.b' ∧ 0 < s.X' ∧ s.a / s.
     exact Real.exp_lt_exp.mpr hL
   have ha : 1 < s.a := by
     unfold Scale.a
-    nlinarith
+    calc (1 : ℝ) < s.x := hx
+      _ ≤ s.x * s.b := le_mul_of_one_le_right (by linarith) hb.le
   have hX : 0 < s.X' := by
     unfold Scale.X'
     exact Real.exp_pos _
@@ -1115,8 +1113,11 @@ theorem hypI_69_to_13 (D : D7) (L : SizeData₂ D) (K : Consts) (C₀ CH : ℝ) 
   have hp1 : (1 : ℝ) < p := by
     have : (1 : ℝ) < (D.R.k : ℝ) ^ 2 * (L.sc.x ^ (Scale.A / 2)) ^ 2 := by
       have h3k : (3 : ℝ) ≤ D.R.k := by exact_mod_cast hk3
-      have hk2 : (9 : ℝ) ≤ (D.R.k : ℝ) ^ 2 := by nlinarith
-      have hY2 : (1 : ℝ) ≤ (L.sc.x ^ (Scale.A / 2)) ^ 2 := by nlinarith
+      have hk2 : (9 : ℝ) ≤ (D.R.k : ℝ) ^ 2 := by
+        have := pow_le_pow_left₀ (by norm_num) h3k 2
+        norm_num at this
+        exact this
+      have hY2 : (1 : ℝ) ≤ (L.sc.x ^ (Scale.A / 2)) ^ 2 := one_le_pow₀ hY1
       calc (1 : ℝ) < 9 * 1 := by norm_num
         _ ≤ (D.R.k : ℝ) ^ 2 * (L.sc.x ^ (Scale.A / 2)) ^ 2 := mul_le_mul hk2 hY2 (by norm_num) (by positivity)
     linarith
@@ -1231,7 +1232,8 @@ theorem tI_le_tIf (D : D7) (L : SizeData₂ D) (K : Consts) (C : ℝ) (hK : K.No
   have i1a : L.sc.b' / p ≤ L.sc.a / (p : ℝ) ^ 2 := by
     rw [div_le_div_iff₀ hp0 (by positivity)]
     have := (le_div_iff₀ hp0).1 hbp
-    nlinarith
+    have hmul := mul_le_mul_of_nonneg_right this hp0.le
+    linarith [show L.sc.b' * (p : ℝ) ^ 2 = L.sc.b' * p * p by ring]
   have i1b : Formalism.MainNotions.flipOneThree.LaI K.La (N1 L.sc) L.sc.a * L.sc.b' / (D.R.k : ℝ) ≤
       La K L.sc * L.sc.a / ((p : ℝ) * D.R.k) := by
     have hL : Formalism.MainNotions.flipOneThree.LaI K.La (N1 L.sc) L.sc.a = La K L.sc := rfl
@@ -1276,7 +1278,6 @@ theorem tI_le_tIf (D : D7) (L : SizeData₂ D) (K : Consts) (C : ℝ) (hK : K.No
       have := mul_le_mul hNp hcl (Nat.cast_nonneg _) hNp0
       linarith
     have e3 := mul_le_mul_of_nonneg_left hcl (by positivity : (0 : ℝ) ≤ 2 * (n' : ℝ))
-    push_cast at e2 e3
     linarith
   have hin2 : (p : ℝ) ^ Gp L.sc * ((((8 * (DIf K L p n' + 1) : ℕ) : ℝ)) + C * (TT.card : ℝ) * (D.R.k : ℝ) *
         Real.logb p L.sc.a + 4 * (TT.card : ℝ) * ((⌊cG L⌋₊ : ℕ) : ℝ) + 2 * (n' : ℝ) * ((⌊cG L⌋₊ : ℕ) : ℝ)) +
@@ -1411,7 +1412,9 @@ theorem logVal_clause1 (p : ℕ) (hp : p.Prime) (t s : ℕ) :
     rw [padicValRat.of_nat, ← Nat.padicValNat_def]
     exact_mod_cast padicValNat_lt_of_lt_pow hy.1 hy.2
   push_cast
-  nlinarith [(Nat.cast_nonneg s : (0 : ℝ) ≤ s)]
+  have hmul := mul_le_mul_of_nonneg_left hv (Nat.cast_nonneg s : (0 : ℝ) ≤ s)
+  have hcomm : (s : ℝ) * ((padicValRat p (y : ℚ) : ℤ) : ℝ) = ((padicValRat p (y : ℚ) : ℤ) : ℝ) * s := mul_comm _ _
+  linarith
 
 theorem logVal_holds : Formalism.MainNotions.ColumnSystems.logVal := by
   intro p hp hp5 t s hs
@@ -1523,7 +1526,7 @@ theorem fk_logb_ge_one (D : D7) (L : SizeData₂ D) (p : ℕ) (hp : p.Prime) (hp
   have hk : (1 : ℝ) ≤ (D.R.k : ℝ) ^ 2 := by
     have h5 := D.R.five_le_k
     have : (1 : ℝ) ≤ (D.R.k : ℝ) := by exact_mod_cast (by omega : 1 ≤ D.R.k)
-    nlinarith
+    exact one_le_pow₀ this
   calc (1 : ℝ) = 1 * 1 * 1 := by ring
     _ ≤ _ := mul_le_mul (mul_le_mul hf hk zero_le_one (by linarith)) hlog zero_le_one (by positivity)
 
@@ -1628,12 +1631,6 @@ theorem foldr_map_comp {α β : Type*} (f : α → β → β) (l : List α) (x :
   | nil => rfl
   | cons a l ih => simp only [List.map_cons, List.foldr_cons, Function.comp_apply, ih]
 
-theorem foldr_map' {α β γ : Type*} (f : α → β) (g : β → γ → γ) (l : List α) (x : γ) :
-    (l.map f).foldr g x = l.foldr (fun a y => g (f a) y) x := by
-  induction l with
-  | nil => rfl
-  | cons a l ih => simp only [List.map_cons, List.foldr_cons, ih]
-
 theorem eO_eq_vUnit {p : ℕ} (G : GAtP p) (vp : G.O) (unif : Irreducible vp) (eO : ℕ)
     (h : Associated (p : G.O) (vp ^ eO)) : (eO : ℝ) = vUnit G := by
   obtain ⟨u, hu⟩ := h
@@ -1705,7 +1702,11 @@ theorem expBound_of (D : D7) (L : SizeData₂ D) (X : Inst D L) (Ce : ℝ) (hCe 
       have hcast : (((ℓ + kk - 1 : ℕ)) : ℝ) ≤ L.sc.a ^ 2 := by
         have e : (((ℓ + kk - 1 : ℕ)) : ℝ) = (ℓ : ℝ) + (kk : ℝ) - 1 := by
           rw [Nat.cast_sub (by omega)]; push_cast; ring
-        rw [e, hkk]; nlinarith
+        rw [e, hkk]
+        have ha2 : 4 * L.sc.a ≤ L.sc.a ^ 2 := by
+          have := mul_le_mul_of_nonneg_right ha4 (by linarith : 0 ≤ L.sc.a)
+          linarith [show L.sc.a * L.sc.a = L.sc.a ^ 2 by ring]
+        linarith
       calc Real.logb (D.what₂.places.resChar w) (((ℓ + kk - 1 : ℕ)) : ℝ)
           ≤ Real.logb (D.what₂.places.resChar w) (L.sc.a ^ 2) :=
             Real.logb_le_logb_of_le hp1 (by exact_mod_cast Nat.pos_of_ne_zero (by omega)) hcast
@@ -1758,66 +1759,12 @@ theorem LPprime_cast {W Qq O Kf : Type*} [CommRing W] [Field Qq] [Algebra W Qq] 
   subst hm
   exact h
 
-theorem not_split_of_class_zero {D : D7} {p : ℕ} (h : IsResidueClassZero D p) : ¬ IsSg D p := by
-  intro h2
-  unfold IsSg at h2
-  rw [h] at h2
-  cases h2
-
-theorem period_eq_addOrderOf_class_zero {D : D7} {p : ℕ} (h : IsResidueClassZero D p) : nP D p = addOrderOf (hP D p) := by
-  unfold nP
-  rw [if_neg (not_split_of_class_zero h)]
-
-theorem shift_eq_generator_class_zero {D : D7} {p : ℕ} (h : IsResidueClassZero D p) : stepP D p = hP D p := by
-  unfold stepP
-  rw [if_neg (not_split_of_class_zero h)]
-
-theorem bs_add_nsmul {D : D7} {L : SizeData₂ D} (X : Inst D L) (h t : HH D) (i : ℕ) : X.bs h (t + i • h) = X.bs h t := by
-  induction i with
-  | zero => simp only [zero_smul, add_zero]
-  | succ i ih => rw [succ_nsmul, ← add_assoc, X.bs_step, ih]
-
-theorem bs_bs {D : D7} {L : SizeData₂ D} (X : Inst D L) (h t : HH D) : X.bs h (X.bs h t) = X.bs h t := by
-  obtain ⟨i, hi⟩ := X.bs_orb h t
-  calc X.bs h (X.bs h t) = X.bs h (X.bs h t + i • h) := (bs_add_nsmul X h _ i).symm
-    _ = X.bs h t := by rw [hi]
-
-theorem Nv_eq_card {D : D7} {L : SizeData₂ D} (X : Inst D L) {p : ℕ} (hc : IsResidueClassZero D p) {t0 : HH D}
-    (ht0 : t0 ∈ reps X p) : Nv X p t0 = (topsPos D p t0).card := by
-  classical
-  obtain ⟨t1, -, rfl⟩ := Finset.mem_image.1 ht0
-  have hstep := shift_eq_generator_class_zero hc
-  set h := hP D p
-  set t0 := X.bs (stepP D p) t1 with ht0def
-  have hbs : X.bs h t0 = t0 := by rw [ht0def, hstep, bs_bs]
-  unfold Nv topsOn
-  rw [hstep]
-  have hinj : Function.Injective (fun i : Fin (addOrderOf h) => t0 + (i : ℕ) • h) := by
-    intro i j hij
-    simp only [add_right_inj] at hij
-    have hpos : 0 < addOrderOf h := addOrderOf_pos h
-    exact Fin.ext (nsmul_injOn_Iio_addOrderOf i.2 j.2 hij)
-  rw [← Finset.card_map ⟨_, hinj⟩]
-  congr 1
-  ext t
-  simp only [Finset.mem_filter, Finset.mem_map, Function.Embedding.coeFn_mk, topsPos, Finset.mem_univ, true_and]
-  constructor
-  · rintro ⟨htT, hbt⟩
-    obtain ⟨i, hi⟩ := X.bs_orb h t
-    rw [hbt] at hi
-    refine ⟨⟨i % addOrderOf h, Nat.mod_lt _ (addOrderOf_pos h)⟩, ?_, ?_⟩
-    · show t0 + (i % addOrderOf h) • h ∈ D.host.TT
-      rw [mod_addOrderOf_nsmul, hi]; exact htT
-    · show t0 + (i % addOrderOf h) • h = t
-      rw [mod_addOrderOf_nsmul]; exact hi
-  · rintro ⟨i, hiT, rfl⟩
-    exact ⟨hiT, by rw [bs_add_nsmul, hbs]⟩
-
 theorem inBand_of_inBand0 {D : D7} {K : Consts} {s : Scale} {p : ℕ} (h : rho D K s ≤ rhoB D K s)
     (h0 : InBand0 D K s p) : InBand D K s p := by
   obtain ⟨hp0, hX, d, hd, h1, h2⟩ := h0
   have hX0 : 0 < s.X' := by unfold Scale.X'; exact Real.exp_pos _
-  refine ⟨hp0, hX, d, hd, le_trans ?_ h1, h2.trans ?_⟩ <;> nlinarith
+  have hmul := mul_le_mul_of_nonneg_right h hX0.le
+  refine ⟨hp0, hX, d, hd, le_trans ?_ h1, h2.trans ?_⟩ <;> linarith
 
 def StdSubAt (D : D7) : Prop :=
   ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
@@ -1918,8 +1865,8 @@ theorem linear_programming_input_of_hypotheses (D : D7) (L : SizeData₂ D) (X :
     rw [hι, hj, hw, ← hn']; exact (D.gat u w hg).P.setting v
   rw [← hι, ← hw]
   refine hBC _ _ _ _ Os Ks _ _ ιs _ js ws φ φK hcomp hfin hSet.1 hSetR _ _ _ _ _ _ _ ?_
-  have hNv : Nv X (D.what₂.places.resChar w) t0 = (topsPos D (D.what₂.places.resChar w) t0).card := Nv_eq_card X hc0 hrep
-  have hnP : nP D (D.what₂.places.resChar w) = addOrderOf (hP D (D.what₂.places.resChar w)) := period_eq_addOrderOf_class_zero hc0
+  have hNv : Nv X (D.what₂.places.resChar w) t0 = (topsPos D (D.what₂.places.resChar w) t0).card := _root_.Formalism.MainNotions.G.TopChoiceBounds.vertex_count_eq_card_tops X hc0 hrep
+  have hnP : nP D (D.what₂.places.resChar w) = addOrderOf (hP D (D.what₂.places.resChar w)) := _root_.Formalism.MainNotions.G.TopChoiceBounds.period_eq_addOrderOf hc0
   by_cases hp0 : ((D.what₂.places.resChar w : ℕ) : ℝ) < L.sc.p0 D.R.k
   · obtain ⟨h1, h2, h3, h4, hwin, hbnd, h13, hr2, hN1, hrY, hpL, h256, hk3, hkLa, hsz⟩ := hII _ hcand hp0 t0 hgood
     have hrr : (D.gat u w hg).P.r = rG L.sc := by rw [hr, if_pos hp0]

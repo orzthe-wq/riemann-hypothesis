@@ -59,7 +59,7 @@ theorem herm_bvec_bvec {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n) 
     herm H (bvec p) (bvec q) = H q p := by
   have hs : star (bvec q) = bvec q := by
     ext i
-    by_cases h : i = q <;> simp [bvec, Pi.single_apply, h]
+    by_cases h : i = q <;> simp [bvec, h]
   unfold herm
   rw [hs]
   simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
@@ -104,7 +104,7 @@ theorem herm_bvec_eI {k r : ℕ} (v : Fin (2 * r + k + 1) → ℂ) (b : Fin r) :
   have h1 : herm (Hpk k r) v (bvec (eI k r b)) = ∑ p, Hpk k r (eI k r b) p * v p := by
     have hs : star (bvec (eI k r b)) = bvec (eI k r b) := by
       ext i
-      by_cases h : i = eI k r b <;> simp [bvec, Pi.single_apply, h]
+      by_cases h : i = eI k r b <;> simp [bvec, h]
     unfold herm
     rw [hs]
     simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
@@ -119,6 +119,6 @@ theorem herm_bvec_eI {k r : ℕ} (v : Fin (2 * r + k + 1) → ℂ) (b : Fin r) :
   · simp
 
 theorem xi_Y_zhat_identity : XiYZhat := by
-  apply CovecW.covec_entries <;> assumption
+  apply CovecW.covec_entries
 
 end Formalism.FourierDecayAlt.P.SignAntidiagonal

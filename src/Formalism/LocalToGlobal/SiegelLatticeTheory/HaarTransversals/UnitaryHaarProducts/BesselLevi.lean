@@ -1,44 +1,6 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.BesselFrame
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -145,15 +107,13 @@ theorem inS_mul {z : Fin (2 * r + k + 1) → ℂ} {h n : Matrix (Fin (2 * r + k 
     | add x y _ _ hx hy => rw [Matrix.mulVec_add, hx, hy]
     | smul c x _ hx => rw [Matrix.mulVec_smul, hx]
   obtain ⟨⟨h1, h2⟩, -⟩ := hn
+  have key : ∀ y, h *ᵥ y = y → (h * n - 1) *ᵥ y = h *ᵥ ((n - 1) *ᵥ y) := by
+    intro y hy
+    rw [Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.mulVec_sub, ← Matrix.mulVec_mulVec, Matrix.one_mulVec]
+    simp only [hy]
   refine ⟨fun a => ?_, ?_⟩
-  · have : (h * n - 1) *ᵥ e a = h *ᵥ ((n - 1) *ᵥ e a) := by
-      rw [Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.mulVec_sub, ← Matrix.mulVec_mulVec, Matrix.one_mulVec]
-      simp only [he]
-    rw [this, hspan _ _ (h1 a)]; exact h1 a
-  · have : (h * n - 1) *ᵥ z = h *ᵥ ((n - 1) *ᵥ z) := by
-      rw [Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.mulVec_sub, ← Matrix.mulVec_mulVec, Matrix.one_mulVec]
-      simp only [hz]
-    rw [this, hspan _ _ h2]; exact h2
+  · rw [key (e a) (he a), hspan _ _ (h1 a)]; exact h1 a
+  · rw [key z hz, hspan _ _ h2]; exact h2
 
 theorem HNset_iff (hF : IsFrameJ ε e f wf z0) {zB z : Fin (2 * r + k + 1) → ℂ} (hz : Qm e f wf z0 *ᵥ zB = z)
     (hzB : ∀ i : Fin (2 * r + k + 1), i.val < r ∨ r + k < i.val → zB i = 0) (hz0 : ∃ t : ℂ, z0 = t • z)

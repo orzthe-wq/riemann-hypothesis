@@ -6,8 +6,8 @@ public import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms
 public import GroundTheory.GlobalFields.LocalFieldAtPlace
 public import GroundTheory.LocalFields.PadicLogSeries
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GlobalUnitScalingHaarProductFormula
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchrodingerTensorEqLocalOfSupportedAt
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAdelicAddCharLocalComponentNeOne
+import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.AdelicSchrodingerTensorEqLocalOfSupportedAt
+import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.StandardTraceAdelicAddCharLocalComponentNeOne
 import GroundTheory.AutomorphicForms.ReductionMeasure
 import GroundTheory.GlobalFields.TateThesis.AdeleScaling
 import Mathlib.Algebra.Order.Floor.Extended
@@ -119,11 +119,11 @@ section Fun
 
 variable {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ}
 
-theorem std_ne (h : IsStd ψ) (v : Pl F) : ψ ≠ 1 := fun e => GlobalTheory.PsiNontriv.psiV_ne_one ψ h v (by rw [e]; rfl)
+theorem std_ne (h : IsStd ψ) (v : Pl F) : ψ ≠ 1 := fun e => Tw.PsiNontriv.psiV_ne_one ψ h v (by rw [e]; rfl)
 
 theorem acts_schr (ψ : AddChar (AF F) ℂ) {w : (κ → AF F) × (κ → AF F)} (hw : At (evFin F v) w) (φ : (κ → Fv F v) → ℂ) :
     Acts (evFin F v) (schr ψ w) φ (schr (GlobalTheory.VacAny.psiV ψ v) (locW v w) φ) := fun r hr =>
-  GlobalTheory.SchrLoc.schr_tens_of_at ψ v w (fun i a ha => congrFun (congrArg Prod.fst (hw a ha)) i)
+  Tw.SchrLoc.schr_tens_of_at ψ v w (fun i a ha => congrFun (congrArg Prod.fst (hw a ha)) i)
     (fun i a ha => congrFun (congrArg Prod.snd (hw a ha)) i) φ r hr.1
 
 omit [Fintype κ] in

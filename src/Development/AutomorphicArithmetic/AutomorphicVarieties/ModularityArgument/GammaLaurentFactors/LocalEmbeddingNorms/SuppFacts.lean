@@ -111,8 +111,7 @@ section Glob
 variable {K : Type} [Field K] [NumberField K] [_root_.NumberField.IsTotallyComplex K] {n : ℕ}
 
 omit [_root_.NumberField.IsTotallyComplex K] in
-private theorem smooth_loc (χ : HChar K) (v : HeightOneSpectrum (𝓞 K)) : IsSmoothChar (χ.loc v) :=
-  GlobalTheory.HeckeComp.smooth_loc χ v
+private alias smooth_loc := _root_.GlobalTheory.HeckeComp.smooth_loc
 
 private theorem exists_fixed {π : CuspSub K n} {v : HeightOneSpectrum (𝓞 K)} {σ : SmIrr (GL (Fin n) (v.adicCompletion K))}
     (hσ : π.IsLocComp v σ) {B : Multiset ℂˣ} (hB : (CG.mk π).HasSat v B) :

@@ -64,9 +64,7 @@ theorem dense_ker_of_bounded {A R C Q : Type} [CommRing A] [CommRing R] [CommRin
   · rw [map_add (f := _), map_mul, map_natCast]
     ring
 
-theorem ev_algebraMap (l : ℕ) [Fact l.Prime] (n : ℕ) (a : Per.AinfP l) :
-    Per.ev l n (algebraMap (Per.AinfP l) (Per.BdRp l) a) = Ideal.Quotient.mk _ a :=
-  GlobalTheory.RingIface.ev_alg l n a
+alias ev_algebraMap := _root_.GlobalTheory.RingIface.ev_alg
 
 theorem fil_dense : ∀ (l : ℕ) [Fact l.Prime], ∀ j : Per.Acris l →+* Per.BdRp l, IsCrisP j → ∀ (n : ℕ) (x : Per.Acris l), j x ∈ Per.FilP l n → ∃ (u : Per.Acris0 l) (z : Per.Acris l), (u : Per.AinfP l) ∈ Per.kerP l ^ n ∧ x = algebraMap (Per.Acris0 l) (Per.Acris l) u + (l : Per.Acris l) * z := by
   intro l _ j hj n x hx

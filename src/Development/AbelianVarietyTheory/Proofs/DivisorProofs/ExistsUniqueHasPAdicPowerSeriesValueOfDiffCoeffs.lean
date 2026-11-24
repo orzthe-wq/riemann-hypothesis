@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.EpsilonPairingZeta
 import Development.AbelianVarietyTheory.Definitions.Divisors.GhostFrobenius
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PAdicEvaluationSubstCompatibleThickening
 
 @[expose] public section
 
@@ -56,30 +57,10 @@ namespace GlobalTheory.QLog.ValEx
 
 theorem nat_bound (p N m : ℕ) (hp : 2 ≤ p) :
     ∃ M : ℕ, 1 ≤ M ∧ ∀ a v : ℕ, M ≤ a → p ^ v ≤ a → N * (m + v) ≤ a := by
-  set T := 2 * N + m + 1 with hT
-  have hT2 : T < 2 ^ T := Nat.lt_two_pow_self
-  have hA : ∀ v, 2 * T ≤ v → N * (m + v) ≤ 2 ^ v := by
-    intro v hv
-    induction v, hv using Nat.le_induction with
-    | base =>
-      have hNT : N ≤ T := by omega
-      have h1 : N * (m + 2 * T) ≤ T * T := by nlinarith [Nat.mul_le_mul_right m hNT]
-      have h2 : T * T ≤ 2 ^ T * 2 ^ T := Nat.mul_le_mul hT2.le hT2.le
-      calc N * (m + 2 * T) ≤ T * T := h1
-        _ ≤ 2 ^ T * 2 ^ T := h2
-        _ = 2 ^ (2 * T) := by rw [← pow_add, two_mul]
-    | succ v hv ih =>
-      have h3 : N ≤ 2 ^ v := by
-        have : 2 ^ T ≤ 2 ^ v := Nat.pow_le_pow_right (by norm_num) (by omega)
-        omega
-      rw [pow_succ]; nlinarith
-  refine ⟨N * (m + 2 * T) + 1, by omega, fun a v ha hv => ?_⟩
-  by_cases hvK : 2 * T ≤ v
-  · calc N * (m + v) ≤ 2 ^ v := hA v hvK
-      _ ≤ p ^ v := Nat.pow_le_pow_left hp v
-      _ ≤ a := hv
-  · have : N * (m + v) ≤ N * (m + 2 * T) := Nat.mul_le_mul_left _ (by omega)
-    omega
+  obtain ⟨M, hM⟩ := VSubArith.add_mul_le_of_pow_le p N m hp
+  refine ⟨max 1 M, Nat.le_max_left .., fun a v ha hv => ?_⟩
+  simpa only [Nat.mul_comm N, Nat.add_comm m] using
+    hM a v (Nat.le_trans (Nat.le_max_right 1 M) ha) hv
 
 def img (B : Type) {Q : Type} [CommRing B] [CommRing Q] [Algebra B Q] (p m : ℕ) : AddSubgroup Q where
   carrier := {x | ∃ b : B, x = algebraMap B Q ((p : B) ^ m * b)}

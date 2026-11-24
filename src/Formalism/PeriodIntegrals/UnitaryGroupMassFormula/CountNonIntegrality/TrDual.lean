@@ -60,7 +60,6 @@ theorem exists_trOne (D : Formalism.BasicNotions.D7) : ∃ x : D.host.E, IsInteg
   refine ⟨(1 + D.host.sqd) / 2, Formalism.BasicNotions.Examples₂.isIntegral_halfB (H := D.host), ?_⟩
   first
     | (rw [Formalism.BasicNotions.Examples₂.conj_half (H := D.host), hc]; ring)
-    | (rw [map_div₀, map_add (f := _), map_one, hc, map_ofNat]; ring)
 
 theorem trace_iE_eq_one (D : Formalism.BasicNotions.D7) (p : PlF D) (x : D.host.E) (hx1 : x + D.host.conj x = 1) :
     Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιE x) = 1 := by

@@ -67,7 +67,7 @@ theorem _root_.GlobalTheory.Up.Definite.herm_one (x y : Fin r → E) :
   rw [Finset.sum_eq_single a]
   · simp
   · intro b _ hb
-    simp [Matrix.one_apply, Ne.symm hb]
+    simp [Ne.symm hb]
   · simp
 
 
@@ -159,7 +159,7 @@ noncomputable def data : Data E r where
     refine ⟨1, by simp, ?_⟩
     ext a b
     by_cases h : a = b <;>
-      simp [gram, hermC, col, sgn, Matrix.one_apply, Matrix.diagonal_apply, h, eq_comm, apply_ite]
+      simp [gram, hermC, col, sgn, Matrix.one_apply, h, eq_comm, apply_ite]
   Λ := intVec E r
   Λ_fg := Submodule.fg_pi fun _ => by rw [Submodule.one_eq_span]; exact Submodule.fg_span_singleton _
   Λ_span := by

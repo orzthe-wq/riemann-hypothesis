@@ -229,7 +229,7 @@ theorem _root_.GlobalTheory.SW.Dict.sum_type {Ψ : Finset (E →+* ℂ)}
     ∑ σ, f σ = ∑ τ : Ψ, (f τ + f (ComplexEmbedding.conjugate τ.1)) := by
   classical
   have hc : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ :=
-    fun φ => by ext x; simp [ComplexEmbedding.conjugate_coe_eq]
+    fun φ => by ext x; simp
   rw [Finset.sum_add_distrib, Finset.sum_coe_sort Ψ f]
   have hconj : ∑ τ : Ψ, f (ComplexEmbedding.conjugate τ.1) = ∑ σ ∈ Ψᶜ, f σ := by
     rw [Finset.sum_coe_sort Ψ (fun σ => f (ComplexEmbedding.conjugate σ))]
@@ -381,7 +381,7 @@ theorem _root_.GlobalTheory.SW.Dict.tauOf_mem (hΨ : _root_.GlobalTheory.SW.IsTy
     (Z : _root_.GlobalTheory.SW.CM Ψ N N) (hZ : Z ∈ _root_.GlobalTheory.SW.Hn Ψ N) :
     _root_.GlobalTheory.SW.tauOf Ψ Z ∈ _root_.GlobalTheory.SW.Siegel (_root_.GlobalTheory.SW.QI E N) := by
   have hinv : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ :=
-    fun φ => by ext y; simp [ComplexEmbedding.conjugate_coe_eq]
+    fun φ => by ext y; simp
   refine ⟨Matrix.IsSymm.ext fun p q => ?_, ?_⟩
   · simp only [_root_.GlobalTheory.SW.tauOf, Matrix.of_apply]
     exact Finset.sum_congr rfl fun _ _ => add_comm _ _
@@ -416,7 +416,6 @@ theorem _root_.GlobalTheory.SW.Dict.tauOf_mem (hΨ : _root_.GlobalTheory.SW.IsTy
     rw [Matrix.smul_mulVec, dotProduct_smul, Matrix.sub_mulVec, dotProduct_sub, hconjT,
       Complex.sub_conj, smul_eq_mul]
     all_goals simp [Complex.mul_re, Complex.inv_re, Complex.inv_im, Complex.normSq]
-    all_goals field_simp
   have hpos : ∀ τ : Ψ, v τ ≠ 0 → 0 < (v τ ⬝ᵥ Z τ *ᵥ fun a => conj (v τ a)).im := by
     intro τ hv
     have hw : (fun a => conj (v τ a)) ≠ 0 := by

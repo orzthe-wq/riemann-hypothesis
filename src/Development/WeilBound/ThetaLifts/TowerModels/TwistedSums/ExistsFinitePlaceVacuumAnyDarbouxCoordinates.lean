@@ -6,7 +6,7 @@ public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.AdelicSch
 public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.ContinuousAddCharSymplecticSelfPairingPlaceCoord
 public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.EqAdeleSupportedAtFinitePlaceOfSupportedAt
 public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.ExistsIntAddConjEqOneOfBaseGood
-public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.ExistsSchroedingerEigenvectorCompactCocycle
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSchroedingerEigenvectorCompactCocycle
 public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.StandardTraceAdelicAddCharLocalComponentNeOne
 public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.TensorLatticeAtFinitePlaceEqIntegralSpanGenerato
 import Mathlib.Algebra.Order.Floor.Extended
@@ -194,7 +194,7 @@ theorem exists_isVac_any_darboux : ∀ {F E : Type} [Field F] [NumberField F] [F
     have hz := at_neg (at_mul_left (⅟(2 : AF F))
       (at_sub (hdot a b).1 (hdot b a).1))
     rw [hψ _ hz, map_neg, map_mul, map_sub, (hdot a b).2, (hdot b a).2, evFin_invOf_two]
-  obtain ⟨φ, hφSB, hφ0, hφ⟩ := Tw.VacLoc.exists_schr_eigen v (GlobalTheory.VacAny.psiV B.ψ v) (GlobalTheory.VacAny.continuous_psiV hB.std.1 v)
+  obtain ⟨φ, hφSB, hφ0, hφ⟩ := GlobalTheory.VacLoc.exists_schr_eigen v (GlobalTheory.VacAny.psiV B.ψ v) (GlobalTheory.VacAny.continuous_psiV hB.std.1 v)
     (Tw.PsiNontriv.psiV_ne_one B.ψ hB.std v) u χ (Tw.ContSymp.continuous_psi_symp_atPlace σ B.ψ hB.std.1 X.J Y.J (θ : E) v g) hker hcoc
   refine ⟨φ, hφSB, hφ0, θ, hθ, ?_⟩
   intro γ hγ

@@ -2,50 +2,10 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.TensorActionApplyDual
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.PartialSumRootEq
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.Finsupp.Pointwise
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.VkGenSubStable
 
 @[expose] public section
 
@@ -150,12 +110,6 @@ theorem sθ_Bc (EM : Fin n → Fin n → Module.End ℂ MM) (φ : MM) (ℓ : V �
     rw [Bc_single, sθ_single]
     simp [wOp, Finsupp.linearCombination_single, Pi.single_smul, smul_smul, mul_comm]
 
-theorem tensV_apply' (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f : Fin n → M) (d : Fin n) :
-    tensV E a b f d = E a b (f d) + if d = a then f b else 0 := by
-  simp only [tensV, prj, LinearMap.pi_apply, LinearMap.add_apply, LinearMap.coe_comp, Function.comp_apply,
-    LinearMap.coe_proj, Function.eval]
-  split_ifs <;> simp
-
 theorem sT_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (hE : IsGlRep E) (a b : Fin n) (hab : ε a = ε b) (x : KS (n := n) V) :
     sT E V (sA ε E V hV a b x) = tensV E a b (sT E V x) := by
@@ -171,7 +125,7 @@ theorem sT_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (
     on_goal 2 => rw [if_neg hcb, map_zero, add_zero]
     all_goals
       funext d
-      simp only [Pi.add_apply, tensV_apply', LinearMap.sub_apply, Module.End.mul_apply,
+      simp only [Pi.add_apply, _root_.ReciprocityTheory.ChartRestriction.DS.Lap.LemK.vk_tensV_apply, LinearMap.sub_apply, Module.End.mul_apply,
         LinearMap.coe_restrict_apply, Pi.single_apply]
       split_ifs <;> subst_vars <;> simp_all
 
@@ -197,7 +151,7 @@ theorem sθ_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) 
     on_goal 2 => rw [if_neg hca, map_zero, add_zero]
     all_goals
       funext d
-      simp only [Pi.add_apply, Pi.smul_apply, tensV_apply', LinearMap.sub_apply, Module.End.mul_apply, hφ,
+      simp only [Pi.add_apply, Pi.smul_apply, _root_.ReciprocityTheory.ChartRestriction.DS.Lap.LemK.vk_tensV_apply, LinearMap.sub_apply, Module.End.mul_apply, hφ,
         map_smul, Pi.single_apply]
       split_ifs <;> subst_vars <;> simp_all <;> module
 

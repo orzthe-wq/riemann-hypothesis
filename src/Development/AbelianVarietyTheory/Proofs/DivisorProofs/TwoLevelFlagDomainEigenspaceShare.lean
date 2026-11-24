@@ -2,9 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 public import Development.AbelianVarietyTheory.Definitions.Divisors.BadElt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormPullbackIsBoundedSectionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCuspFormIndependentTranslatesStatement
+public import Development.AbelianVarietyTheory.BlockTheory.PoincareCuspForms.TwoLevelLogarithm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CuspFormPullbackIsBoundedSection
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCuspFormIndependentTranslates
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RiemannExtensionOfLogGrowth
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.GGConn
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLevelBlockOfEq
 import Formalism.PadicSubsetSums.StableGradedCounts.ZBrauerNesbittAlg
 import Mathlib.Algebra.Order.Floor.Extended
@@ -44,7 +46,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientDomain
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SiegelSpaceAlgebraHolds
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.GGConn
 
 @[expose] public section
 
@@ -55,7 +56,7 @@ noncomputable section
 
 namespace GlobalTheory.ShareEig
 
-theorem bddSec_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C] (M : TwoLevels E r U C) (la : Wt M.Ψ r) (F : C → Frame M.Ψ r → ℂ), F ∈ M.SS la → ∀ (h : U) (c : C), (M.comp c).IsBddSec (castWt (M.comp_Ψ c) la) (fun x => M.pull h F c (castFrame (M.comp_Ψ c) x)) := GlobalTheory.T.cuspForm_pullback_isBoundedSection
+theorem bddSec_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C] (M : TwoLevels E r U C) (la : Wt M.Ψ r) (F : C → Frame M.Ψ r → ℂ), F ∈ M.SS la → ∀ (h : U) (c : C), (M.comp c).IsBddSec (castWt (M.comp_Ψ c) la) (fun x => M.pull h F c (castFrame (M.comp_Ψ c) x)) := _root_.GlobalTheory.PullBdd.pull_isBddSec
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
@@ -217,7 +218,7 @@ theorem share_eig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : 
   classical
   letI : Fintype H := Fintype.ofFinite H
   obtain ⟨a, ha⟩ := hρ
-  obtain ⟨u0, hu0, hdet⟩ := GlobalTheory.T.exists_cuspForm_independent_translates E r H C (sub M H) hL (sOf M) (even_sOf M) (le_sOf M)
+  obtain ⟨u0, hu0, hdet⟩ := _root_.GlobalTheory.TranslatesDet.independentTranslates E r H C (sub M H) hL (sOf M) (even_sOf M) (le_sOf M)
   have hu0' : u0 ∈ M.SS (deMul M.Ψ r M.p0 (sOf M)) := hu0
   haveI : Module.Finite ℂ (M.cusp ka) := hR.1
   have hQ : ∀ (h : U) (c : C), (M.comp c).IsBddSec (castWt (M.comp_Ψ c) (deMul M.Ψ r M.p0 (sOf M)))

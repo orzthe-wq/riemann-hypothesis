@@ -49,4 +49,4 @@ open scoped TensorProduct ContDiff Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.thetaFunction_eq_unitSmul_of_diagonalCoefficient_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∀ f f' : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → (∀ w, ∫ x in 𝓕, heisO ψ S T w f' x * star (f' x) ∂μ = ∫ x in 𝓕, heisO ψ S T w f x * star (f x) ∂μ) → ∃ c : ℂ, ‖c‖ = 1 ∧ f' = c • f := by
-  first | exact @GlobalTheory.ThetaCoefficient.exists_unit_smul_of_coefficient_eq | exact GlobalTheory.ThetaCoefficient.exists_unit_smul_of_coefficient_eq | (intros; apply GlobalTheory.ThetaCoefficient.exists_unit_smul_of_coefficient_eq <;> assumption)
+  first | exact @GlobalTheory.ThetaCoefficient.exists_unit_smul_of_coefficient_eq

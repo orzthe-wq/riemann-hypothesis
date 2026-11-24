@@ -195,8 +195,6 @@ theorem hp_nonneg {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   apply Real.rpow_nonneg
   refine mul_nonneg (mul_nonneg ?_ ?_) (Finset.prod_nonneg fun l _ => ?_)
   all_goals first
-    | positivity
-    | exact M.modK_nonneg _
     | (unfold Loc.Model.modK; positivity)
 
 def HTie : Prop :=

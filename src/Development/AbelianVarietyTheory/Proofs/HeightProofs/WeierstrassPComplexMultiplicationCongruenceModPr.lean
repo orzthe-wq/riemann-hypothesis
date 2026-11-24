@@ -1,17 +1,20 @@
 module
 
-public import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass
+public import Mathlib.Algebra.Polynomial.Derivative
+public import Mathlib.Algebra.GCDMonoid.Basic
+public import Mathlib.Algebra.Polynomial.Degree.Domain
+public import Mathlib.Algebra.Polynomial.Degree.Lemmas
+public import Mathlib.Algebra.Polynomial.Expand
+public import Mathlib.RingTheory.PrincipalIdealDomain
 public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass
 public import Mathlib.RingTheory.Valuation.ValuationSubring
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsWeierstrassPMulOde
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.QuotientEqLinearPowCharOfDerivativeEqZero
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.ThreeDistinctRoots
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeierstrassPTorsionIntegralAndDistinctMod
 import Mathlib.Algebra.AffineMonoid.UniqueSums
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -27,13 +30,9 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -41,8 +40,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -55,24 +52,177 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.HaveILetI
+import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.HeightProofs.QuotientEqLinearPowCharOfDerivativeEqZero, Development.AbelianVarietyTheory.Proofs.HeightProofs.ThreeDistinctRoots, Development.AbelianVarietyTheory.Proofs.HeightProofs.WeierstrassPComplexMultiplicationCongruenceModPr
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.HeightProofs.QuotientEqLinearPowCharOfDerivativeEqZero =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.HeightProofs.QuotientEqLinearPowCharOfDerivativeEqZero", "h": "module\n\npublic import Mathlib.Algebra.Polynomial.Derivative\nimport Mathlib.Algebra.AffineMonoid.UniqueSums\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz\npublic import Mathlib.Algebra.GCDMonoid.Basic\npublic import Mathlib.Algebra.Polynomial.Degree.Domain\npublic import Mathlib.Algebra.Polynomial.Degree.Lemmas\npublic import Mathlib.Algebra.Polynomial.Expand\npublic import Mathlib.RingTheory.PrincipalIdealDomain\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Polynomial GlobalTheory.FieldSize
+open scoped IntermediateField
+
+namespace GlobalTheory
+
+theorem quotient_eq_linear_pow_char_of_derivative_eq_zero
+    (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (A D : k[X]) (hD : D ≠ 0)
+    (hA : A.natDegree ≤ p) (hDp : D.natDegree < p)
+    (hder : derivative A * D = A * derivative D) (hnc : ¬ ∃ c : k, A = C c * D) :
+    ∃ a b c : k, a ≠ 0 ∧ c ≠ 0 ∧ D = C c ∧ A = C c * (C a * X ^ p + C b) := by
+  classical
+  have hp : p.Prime := Fact.out
+  have hA0 : A ≠ 0 := fun h => hnc ⟨0, by simp [h]⟩
+  obtain ⟨A₁, D₁, hA₁, hD₁, hu⟩ := extract_gcd A D
+  have hcop : IsCoprime A₁ D₁ := (gcd_isUnit_iff A₁ D₁).1 hu
+  generalize gcd A D = g at hA₁ hD₁
+  subst hA₁ hD₁
+  have hg : g ≠ 0 := left_ne_zero_of_mul hD
+  have hD1 : D₁ ≠ 0 := right_ne_zero_of_mul hD
+  have hA1 : A₁ ≠ 0 := right_ne_zero_of_mul hA0
+  have h1 : derivative A₁ * D₁ = A₁ * derivative D₁ := by
+    have h2 : g ^ 2 * (derivative A₁ * D₁) = g ^ 2 * (A₁ * derivative D₁) := by
+      simp only [derivative_mul] at hder
+      linear_combination hder
+    exact mul_left_cancel₀ (pow_ne_zero 2 hg) h2
+  have hdvd : D₁ ∣ derivative D₁ :=
+    hcop.symm.dvd_of_dvd_mul_left ⟨derivative A₁, by rw [← h1, mul_comm]⟩
+  have hD' : derivative D₁ = 0 := by
+    by_contra hne
+    exact absurd (degree_le_of_dvd hdvd hne) (not_le.2 (degree_derivative_lt hD1))
+  have hA' : derivative A₁ = 0 := by
+    rw [hD', mul_zero] at h1
+    exact (mul_eq_zero.1 h1).resolve_right hD1
+  rw [natDegree_mul hg hA1] at hA
+  rw [natDegree_mul hg hD1] at hDp
+  have eD := expand_contract p hD' hp.ne_zero
+  have eA := expand_contract p hA' hp.ne_zero
+  have nD := natDegree_expand p (contract p D₁)
+  have nA := natDegree_expand p (contract p A₁)
+  rw [eD] at nD
+  rw [eA] at nA
+  have hD0 : D₁.natDegree = 0 := by
+    rcases Nat.eq_zero_or_pos (contract p D₁).natDegree with h | h
+    · rw [nD, h, zero_mul]
+    · have := Nat.le_mul_of_pos_left p h
+      omega
+  obtain ⟨d, rfl⟩ := natDegree_eq_zero.1 hD0
+  have hd : d ≠ 0 := by
+    rintro rfl
+    exact hD1 (map_zero _)
+  have hm : (contract p A₁).natDegree = 1 := by
+    rcases Nat.lt_trichotomy (contract p A₁).natDegree 1 with h | h | h
+    · exfalso
+      have h0 : (contract p A₁).natDegree = 0 := by omega
+      rw [h0, zero_mul] at nA
+      obtain ⟨a, rfl⟩ := natDegree_eq_zero.1 nA
+      refine hnc ⟨a * d⁻¹, ?_⟩
+      have : (C a : k[X]) = C (a * d⁻¹) * C d := by
+        rw [← map_mul, inv_mul_cancel_right₀ hd]
+      rw [this]
+      simp only [map_mul]
+      ring
+    · exact h
+    · exfalso
+      have h2 : 2 * p ≤ (contract p A₁).natDegree * p := Nat.mul_le_mul_right p h
+      have := hp.pos
+      omega
+  rw [hm, one_mul] at nA
+  have hg0 : g.natDegree = 0 := by omega
+  obtain ⟨γ, rfl⟩ := natDegree_eq_zero.1 hg0
+  have hγ : γ ≠ 0 := by
+    rintro rfl
+    exact hg (map_zero _)
+  obtain ⟨a, ha, b, hab⟩ := natDegree_eq_one.1 hm
+  refine ⟨a * d⁻¹, b * d⁻¹, γ * d, mul_ne_zero ha (inv_ne_zero hd), mul_ne_zero hγ hd,
+    (map_mul _ _ _).symm, ?_⟩
+  have hdd : (C d : k[X]) * C d⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel₀ hd, map_one]
+  rw [← eA, ← hab]
+  simp only [map_add (f := _), map_mul, expand_C, expand_X]
+  linear_combination (-(C γ * (C a * X ^ p + C b))) * hdd
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.HeightProofs.QuotientEqLinearPowCharOfDerivativeEqZero =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.HeightProofs.ThreeDistinctRoots =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.HeightProofs.ThreeDistinctRoots", "h": "module\n\npublic import Mathlib.FieldTheory.IsAlgClosed.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.ThreeDistinctRoots
+
+open Polynomial
+
+theorem three_distinct_roots :
+    ∀ {K : Type} [inst : Field K] [IsAlgClosed K] (g₂ g₃ : K), (2 : K) ≠ (0 : K) →
+      g₂ ^ (3 : ℕ) - (27 : K) * g₃ ^ (2 : ℕ) ≠ (0 : K) →
+      ∃ (x : K) (y : K) (z : K), x ≠ y ∧ x ≠ z ∧ y ≠ z ∧
+        (4 : K) * x ^ (3 : ℕ) - g₂ * x - g₃ = (0 : K) ∧
+        (4 : K) * y ^ (3 : ℕ) - g₂ * y - g₃ = (0 : K) ∧
+        (4 : K) * z ^ (3 : ℕ) - g₂ * z - g₃ = (0 : K) := by
+  intro K _ _ g₂ g₃ h2 hΔ
+  have h4 : (4 : K) ≠ 0 := by
+    have : (4 : K) = 2 * 2 := by norm_num
+    rw [this]; exact mul_ne_zero h2 h2
+
+  obtain ⟨x, hx⟩ : ∃ x : K, (4 : K) * x ^ 3 - g₂ * x - g₃ = 0 := by
+    have hdeg : (C (4 : K) * X ^ 3 - C g₂ * X - C g₃).degree ≠ 0 := by
+      have : (C (4 : K) * X ^ 3 - C g₂ * X - C g₃).degree = 3 := by
+        compute_degree!
+      rw [this]; decide
+    obtain ⟨x, hx⟩ := IsAlgClosed.exists_root _ hdeg
+    refine ⟨x, ?_⟩
+    simpa using hx
+
+  obtain ⟨s, hs⟩ := IsAlgClosed.exists_eq_mul_self (g₂ - 3 * x ^ 2)
+  obtain ⟨y, hy⟩ : ∃ y : K, 2 * y = s - x := ⟨(s - x) / 2, by field_simp⟩
+  have hq : 4 * y ^ 2 + 4 * x * y + 4 * x ^ 2 - g₂ = 0 := by
+    linear_combination (2 * y + x + s) * hy - hs
+  have hg₂ : g₂ = 4 * (x ^ 2 + x * y + y ^ 2) := by linear_combination -hq
+  have hg₃ : g₃ = -4 * x * y * (x + y) := by
+    linear_combination -hx + x * hq
+  refine ⟨x, y, -x - y, ?_⟩
+  have key : g₂ ^ 3 - 27 * g₃ ^ 2 = 16 * ((x - y) * (y - (-x - y)) * ((-x - y) - x)) ^ 2 := by
+    rw [hg₂, hg₃]; ring
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
+  · intro h; apply hΔ; rw [key, sub_eq_zero.mpr h]; ring
+  · intro h; apply hΔ
+    rw [key, show (-x - y) - x = -(x - (-x - y)) by ring, sub_eq_zero.mpr h]; ring
+  · intro h; apply hΔ
+    rw [key, sub_eq_zero.mpr h]; ring
+  · exact hx
+  · rw [hg₂, hg₃]; ring
+  · rw [hg₂, hg₃]; ring
+
+end GlobalTheory.ThreeDistinctRoots
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.HeightProofs.ThreeDistinctRoots =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.HeightProofs.WeierstrassPComplexMultiplicationCongruenceModPr =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.HeightProofs.WeierstrassPComplexMultiplicationCongruenceModPr", "h": "module\n\npublic import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass\npublic import Mathlib.FieldTheory.IsAlgClosed.Basic\npublic import Mathlib.RingTheory.Valuation.ValuationSubring\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsWeierstrassPMulOde\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.QuotientEqLinearPowCharOfDerivativeEqZero\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.ThreeDistinctRoots\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.WeierstrassPTorsionIntegralAndDistinctMod\nimport Mathlib.Algebra.AffineMonoid.UniqueSums\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimensionalOfSz\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Polynomial GlobalTheory.FieldSize
 open scoped IntermediateField
 
 namespace GlobalTheory.EisensteinCongruence
-
-lemma exists_three_roots {K : Type} [Field K] [IsAlgClosed K] (g₂ g₃ : K) (h2 : (2 : K) ≠ 0)
-    (hd : g₂ ^ 3 - 27 * g₃ ^ 2 ≠ 0) :
-    ∃ x y z : K, x ≠ y ∧ x ≠ z ∧ y ≠ z ∧ 4 * x ^ 3 - g₂ * x - g₃ = 0 ∧
-      4 * y ^ 3 - g₂ * y - g₃ = 0 ∧ 4 * z ^ 3 - g₂ * z - g₃ = 0 := by
-  exact _root_.GlobalTheory.ThreeDistinctRoots.three_distinct_roots g₂ g₃ h2 hd
 
 lemma coeff_of_dvd {k : Type} [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (g₂ g₃ a b : k)
     (h2 : (2 : k) ≠ 0) (h3 : (3 : k) ≠ 0) (hd : g₂ ^ 3 - 27 * g₃ ^ 2 ≠ 0) (ha : a ≠ 0)
@@ -93,7 +243,7 @@ lemma coeff_of_dvd {k : Type} [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (g�
   have hd' : ι g₂ ^ 3 - 27 * ι g₃ ^ 2 ≠ 0 := by
     have := (map_ne_zero_iff ι hι).mpr hd
     simpa [map_ofNat] using this
-  obtain ⟨x, y, z, hxy, hxz, hyz, hx, hy, hz⟩ := exists_three_roots (ι g₂) (ι g₃) h2' hd'
+  obtain ⟨x, y, z, hxy, hxz, hyz, hx, hy, hz⟩ := _root_.GlobalTheory.ThreeDistinctRoots.three_distinct_roots (ι g₂) (ι g₃) h2' hd'
   have key : ∀ e : K, 4 * e ^ 3 - ι g₂ * e - ι g₃ = 0 →
       12 * ι a ^ 2 * ι b * (e ^ p) ^ 2 + (12 * ι a * ι b ^ 2 - ι g₂ * ι a + ι a ^ 3 * ι g₂ ^ p) * e ^ p
         + (4 * ι b ^ 3 - ι g₂ * ι b - ι g₃ + ι a ^ 3 * ι g₃ ^ p) = 0 := by
@@ -468,3 +618,6 @@ theorem weierstrassP_mul_congr_pow : ∀ (L : PeriodPair) (W : ValuationSubring 
     linear_combination -huv
 
 end GlobalTheory.EisensteinCongruence
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.HeightProofs.WeierstrassPComplexMultiplicationCongruenceModPr =====

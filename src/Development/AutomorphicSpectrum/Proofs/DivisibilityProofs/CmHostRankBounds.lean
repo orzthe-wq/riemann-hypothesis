@@ -172,7 +172,7 @@ theorem two_le_hostRd (H : Host E) : 2 ≤ hostRd E := by
     _ ≤ _ := Real.rpow_le_rpow (by positivity) h' (by positivity)
 
 theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
-  apply Formalism.MainNotions.ModuliIntegralCharts.H1.rt0_conj_neg_ne_zero <;> assumption
+  apply Formalism.MainNotions.ModuliIntegralCharts.H1.rt0_conj_neg_ne_zero
 
 theorem rt0_ne_zero (H : Host E) : H.rt0 ≠ 0 := by
   intro h

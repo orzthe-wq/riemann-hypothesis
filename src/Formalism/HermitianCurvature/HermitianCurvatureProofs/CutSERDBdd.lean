@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentComposition.Development
 
 @[expose] public section
 
@@ -53,19 +54,6 @@ noncomputable section
 namespace Formalism.FourierDecayAlt.P.CutSE
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5
-
-theorem norm_fsv_rd (s t : ℂ) : ‖fsv s t‖ = 1 := by
-  unfold fsv
-  rw [Complex.norm_exp]
-  have h : (s * t - (starRingEnd ℂ) s * (starRingEnd ℂ) t).re = 0 := by
-    rw [← map_mul, Complex.sub_re, Complex.conj_re, sub_self]
-  rw [h, Real.exp_zero]
-
-theorem hsVec_smul_rd {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
-    [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (c : ℂ) (A : Wq →L[ℂ] Wp) :
-    B.hsVec (c • A) = c • B.hsVec A := by
-  unfold B.hsVec
-  rfl
 
 theorem radial_boundedness : RDBdd := by
   intro k r Wp Wq _ _ _ _ _ _ D F H _ _
@@ -82,7 +70,7 @@ theorem radial_boundedness : RDBdd := by
     (le_of_eq (integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)))
   show ‖(bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) *
       inner ℂ (B.hsVec (B.JF D H (B.gq D q))) (B.hsVec (B.JF D (wvG D.z D.z' s F) (B.gq D q)))‖ = _
-  rw [hJ, hsVec_smul_rd, inner_smul_right]
-  simp only [norm_mul, norm_fsv_rd, one_mul]
+  rw [hJ, _root_.PI.UnitaryGroupMassFormula.UsCompose.hsVec_smul, inner_smul_right]
+  simp only [norm_mul, _root_.Formalism.FourierDecayAlt.P5.HerC.norm_fsv, one_mul]
 
 end Formalism.FourierDecayAlt.P.CutSE

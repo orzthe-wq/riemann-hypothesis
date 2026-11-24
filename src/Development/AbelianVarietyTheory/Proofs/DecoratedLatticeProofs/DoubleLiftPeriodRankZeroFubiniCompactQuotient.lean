@@ -66,7 +66,7 @@ theorem flagN_rank_zero {S S₀ : HSp D} (d : HypDec S S₀ 0) {n : GA D S} (hn 
       obtain ⟨a, ha⟩ := hg (Pi.single i 1) (Subsingleton.elim _ _)
       have h1 := congrFun ha k
       have hr : ratV (D := D) (Pi.single i (1 : D.host.E)) = Pi.single i 1 := by
-        funext j; by_cases h : j = i <;> simp [ratV, Pi.single_apply, h]
+        funext j; by_cases h : j = i <;> simp [ratV, h]
       rw [hr] at h1
       simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using h1
     have hm : (matHom S g).1 = 1 := by

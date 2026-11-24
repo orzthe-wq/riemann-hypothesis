@@ -97,7 +97,6 @@ theorem trace_mixedEmbedding (y : F) :
     simp only [mixedEmbedding.mixedEmbedding_apply_isReal]
     rw [← InfinitePlace.embedding_of_isReal_apply w.2, Complex.ofReal_re]
     first
-      | exact Algebra.trace_self_apply _ _
       | (have := Algebra.trace_algebraMap (R := ℝ) (S := ℝ) ((InfinitePlace.embedding_of_isReal w.2) y); simpa using this)
   · let e : {w : InfinitePlace F // w.IsComplex} ≃ {w : InfinitePlace F // ¬ w.IsReal} :=
       Equiv.subtypeEquivRight fun w => InfinitePlace.not_isReal_iff_isComplex.symm

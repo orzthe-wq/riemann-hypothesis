@@ -57,19 +57,7 @@ section General
 
 variable {D : D7}
 
-theorem mul_mem_intAE {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
-    x * y ∈ intAE D := by
-  refine AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy
-  · rintro _ _ ⟨a, ha, u, rfl⟩ ⟨b, hb, v, rfl⟩
-    refine AddSubgroup.subset_closure ⟨a * b, fun w => ?_, u * v, ?_⟩
-    · rw [map_mul]; exact mul_mem (ha w) (hb w)
-    · rw [Algebra.TensorProduct.tmul_mul_tmul]; rfl
-  · intro x _; rw [zero_mul]; exact zero_mem _
-  · intro x _; rw [mul_zero]; exact zero_mem _
-  · intro x y z _ _ _ h1 h2; rw [add_mul]; exact add_mem h1 h2
-  · intro x y z _ _ _ h1 h2; rw [mul_add]; exact add_mem h1 h2
-  · intro x y _ _ h; rw [neg_mul]; exact neg_mem h
-  · intro x y _ _ h; rw [mul_neg]; exact neg_mem h
+alias mul_mem_intAE := _root_.GlobalTheory.IdemPrime.mul_mem_int
 
 theorem finPart_cA (x : AE D) : finPart D (cA D x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
   induction x using TensorProduct.induction_on with
@@ -92,7 +80,7 @@ theorem cA_int_iff (a : AE D) : finPart D (cA D a) ∈ intAE D ↔ finPart D a �
   refine ⟨fun h => ?_, fun h => by rw [finPart_cA]; exact sigR_mem_intAE h⟩
   rw [← cA_cA a, finPart_cA]; exact sigR_mem_intAE h
 
-theorem cA_incA (x : D.host.E) : cA D (incA D x) = incA D (star x) := rfl
+alias cA_incA := _root_.GlobalTheory.DualPairCheck.cA_incA
 
 def row (S : HSp D) (s : Fin S.rank → D.host.E) (b : Fin S.rank) : D.host.E := ∑ k, star (s k) * S.gram k b
 

@@ -537,7 +537,7 @@ theorem isMonHom_of_comp {B : Scheme.{u}} (h : S ⟶ B) (g : S' ⟶ B) (e : g = 
     · rw [hφ]
       simp [m, Over.pullbackComp]
       erw [Category.id_comp]
-      simp [Over.mapComp, pullback.lift_fst_assoc, pullback.lift_fst]
+      simp [Over.mapComp]
     · exact (Over.w φ).trans (Over.w m.inv.hom).symm
   rw [hφ']
   exact m.inv.isMonHom_hom
@@ -559,7 +559,7 @@ theorem baseChangeIso_naturality (u : Y →+ X) :
 end BaseChange
 
 theorem chi_injective [Nonempty S] : Function.Injective (chi (S := S) X) := by
-  apply GlobalTheory.SplitTorus.chi_injective <;> assumption
+  apply GlobalTheory.SplitTorus.chi_injective
 
 theorem diagMap_injective [Nonempty S] :
     Function.Injective (diagMap S : (Y →+ X) → (splitTorus S X ⟶ splitTorus S Y)) := by

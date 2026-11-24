@@ -116,10 +116,6 @@ theorem nsq_le {u : Fin n → ℝ} {c : ℝ} (h : ∀ a, |u a| ≤ c) : nsq u �
         nlinarith [abs_mul_abs_self (u a)]
     _ = n * c ^ 2 := by simp
 
-theorem nsq_nonneg' (u : Fin n → ℝ) : 0 ≤ nsq u := by
-  unfold nsq dot
-  exact Finset.sum_nonneg fun a _ => mul_self_nonneg _
-
 theorem abs_rhoN_le' (a : Fin n) : |rhoN ε a| ≤ n / 2 := by
   have key : ∀ s t : Finset (Fin n), |(((s.card : ℕ) : ℝ) - ((t.card : ℕ) : ℝ)) / 2| ≤ n / 2 := by
     intro s t
@@ -178,8 +174,8 @@ theorem layer_bound {lam : Fin n → ℝ} {B : ℝ} (hE : IsGlRep E) (hU : IsInf
           Real.sqrt_le_sqrt (by rw [mul_pow, hs2]; exact hN)
       _ = s * (B + n / 2) := Real.sqrt_sq (mul_nonneg (Real.sqrt_nonneg _) (by linarith))
   have hrho := nsq_le (fun a => abs_rho_le (n := n) a)
-  have hl0 := nsq_nonneg' lam
-  have hrc0 := nsq_nonneg' (rhoC ε)
+  have hl0 := _root_.ReciprocityTheory.ChartRestriction.DS.nsq_nonneg' lam
+  have hrc0 := _root_.ReciprocityTheory.ChartRestriction.DS.nsq_nonneg' (rhoC ε)
   have hsq2 : Real.sqrt 2 ≤ 2 := by
     calc Real.sqrt 2 ≤ Real.sqrt (2 ^ 2) := Real.sqrt_le_sqrt (by norm_num)
       _ = 2 := Real.sqrt_sq (by norm_num)

@@ -109,22 +109,12 @@ theorem lf_inUH_mul {n : ℕ} {H a b : Matrix (Fin n) (Fin n) ℂ} (ha : inUH H 
   calc bᴴ * aᴴ * H * (a * b) = bᴴ * (aᴴ * H * a) * b := by simp only [Matrix.mul_assoc]
     _ = H := by rw [ha', hb']
 
-private theorem hpk_sq_lemma (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext t p
-  rw [lf_Hmul, hk_apply, hk_sig_sig, hk_eps_sig, Matrix.one_apply]
-  by_cases htp : p = t
-  · subst htp
-    rw [if_pos rfl, if_pos rfl]
-    unfold hkEps
-    split_ifs <;> norm_num
-  · rw [if_neg htp, if_neg (Ne.symm htp), mul_zero]
-
 theorem lf_det_ne_zero (k r : ℕ) {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : inUH (Hpk k r) g) : g.det ≠ 0 := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
   have hdH : (Hpk k r).det ≠ 0 := by
     intro h0
-    have h1 := congrArg Matrix.det (hpk_sq_lemma k r)
+    have h1 := congrArg Matrix.det (_root_.AAInvW.hk_mul_self k r)
     rw [Matrix.det_mul, h0, zero_mul, Matrix.det_one] at h1
     exact zero_ne_one h1
   intro h0

@@ -174,7 +174,7 @@ private theorem vv_pow_smul_mem_of_sen_eq_zero (L : IsLoc O Δ) {ϖ : O} (hϖ : 
     obtain ⟨b, hb⟩ := ((hdes _).1.1 (h k)).2
     refine ⟨b, ?_⟩
     simp only [QuadraticAlgebra.im_mul, QuadraticAlgebra.algebraMap_re, QuadraticAlgebra.algebraMap_im,
-      zero_mul, mul_zero, add_zero, zero_add] at hb
+      zero_mul, mul_zero, add_zero] at hb
     rw [← mul_assoc, hb]
     field_simp
   ext

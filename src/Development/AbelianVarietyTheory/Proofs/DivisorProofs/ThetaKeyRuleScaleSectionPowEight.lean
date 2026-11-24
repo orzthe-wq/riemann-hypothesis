@@ -43,6 +43,7 @@ import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsRegularFnIffO
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffTopMonEqZero
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.MemSpanOfCardLe
 import ReciprocityTheory.GeometryOfNumbers.LatticeCovolumes.EllipsoidStA
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CoeffSymmSum
 
 @[expose] public section
 
@@ -69,10 +70,6 @@ theorem appLE_cst {X Y : Scheme.{0}} (q : X ⟶ Sp R) (q' : Y ⟶ Sp R) (f : Y �
   subst hf
   exact congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a))
     (Scheme.Hom.appLE_comp_appLE f q ⊤ U V (fun _ _ => trivial) h)
-
-theorem app_cst {X Y : Scheme.{0}} (q : X ⟶ Sp R) (q' : Y ⟶ Sp R) (f : Y ⟶ X) (hf : f ≫ q = q')
-    (U : X.Opens) (a : R) : (f.app U).hom (constFn q U a) = constFn q' (f ⁻¹ᵁ U) a := by
-  rw [Scheme.Hom.app_eq_appLE, appLE_cst q q' f hf]
 
 def cMul {X : Scheme.{0}} (q : X ⟶ Sp R) {L : LB X} (a : R) (s : LB.Sec L) : LB.Sec L where
   f i := constFn q _ a * s.f i
@@ -118,7 +115,7 @@ theorem twist_cMul {T : Over (Sp R)} (ψ : T ⊗ A ⟶ T ⊗ A) (m : T ⊗ A ⟶
   intro j
   have e := h j
   simp only [cMul]
-  erw [RingHom.map_mul, res_cst, e, RingHom.map_mul, app_cst _ _ ψ.left (Over.w ψ), RingHom.map_mul, res_cst]
+  erw [RingHom.map_mul, _root_.GlobalTheory.ThetaOnto.res_constFn, e, RingHom.map_mul, _root_.GlobalTheory.ZH.WtLin.app_constFn _ _ ψ.left (Over.w ψ), RingHom.map_mul, _root_.GlobalTheory.ThetaOnto.res_constFn]
   exact mul_left_comm _ _ _
 
 end Twist

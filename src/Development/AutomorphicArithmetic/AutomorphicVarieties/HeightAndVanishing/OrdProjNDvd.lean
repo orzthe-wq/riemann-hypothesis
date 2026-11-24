@@ -63,7 +63,7 @@ private theorem ordProj_N_dvd (h : Host) (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2)
   have hM0 : h.q1 * h.d ≠ 0 := mul_ne_zero hq1.ne_zero hd.ne_zero
   have hlcm : ((2 ^ (h.ex + 2)).lcm h.q).factorization p = h.q.factorization p := by
     simp [Nat.factorization_lcm (pow_ne_zero _ two_ne_zero) hq0, Nat.factorization_pow,
-      Nat.prime_two.factorization, Finsupp.single_apply, Ne.symm h2]
+      Nat.prime_two.factorization, Ne.symm h2]
   show p ^ (Nat.factorization ((2 ^ (h.ex + 2)).lcm h.q * (h.q1 * h.d))) p ∣ h.q
   rw [Nat.factorization_mul hL0 hM0, Finsupp.add_apply, hlcm,
     Nat.factorization_eq_zero_of_not_dvd hqd, add_zero]

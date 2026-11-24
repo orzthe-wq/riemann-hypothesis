@@ -506,8 +506,8 @@ theorem mem_gluedLat {q : Unif k} {p : ℕ} {L : Submodule 𝒪[k] (n → k)} {f
       · simp [inX, avec]
       · have hs' : ∀ z : k, s • z = (s : k) * z := fun _ => rfl
         by_cases hj : j.val + 1 = p
-        · simp [inX, avec, Fin.val_inj, hj, (h j).2.1 hj, hs', mul_comm]
-        · simp [inX, avec, Fin.val_inj, hj]
+        · simp [inX, avec, hj, (h j).2.1 hj, hs', mul_comm]
+        · simp [inX, avec, hj]
     rw [hy]
     refine add_mem (add_mem ?_ ?_) (sum_mem fun i _ => ?_)
     · exact Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left ⟨_, hs, rfl⟩))

@@ -47,6 +47,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.BitVec
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving
 
 @[expose] public section
 
@@ -59,9 +60,6 @@ noncomputable section
 namespace RvB
 
 variable {k r : ℕ}
-
-theorem eI_ne_esI (a b : Fin r) : eI k r a ≠ esI k r b := by
-  simp only [eI, esI, ne_eq, Fin.ext_iff]; have := a.isLt; have := b.isLt; omega
 
 theorem eI_inj {a b : Fin r} (h : eI k r a = eI k r b) : a = b := by
   simp only [eI, Fin.ext_iff] at h; exact Fin.ext h
@@ -110,9 +108,9 @@ theorem wl_es (c : Fin r → ℂ) (L : List (Fin r)) (hL : L.Nodup) (a : Fin r) 
     · have hmem : (a ∈ b :: L) ↔ a ∈ L := by simp [hab]
       by_cases h1 : a ∈ L
       · rw [if_pos h1, if_pos (hmem.2 h1), Matrix.mulVec_smul, Formalism.FourierDecayAlt.P.Qx3.reflection_fixes_basis_vector b _
-          (fun h => hab (eI_inj h)) (fun h => eI_ne_esI a b h)]
+          (fun h => hab (eI_inj h)) (fun h => _root_.Formalism.FourierDecayAlt.P.Dx2.DF.eI_ne_esI a b h)]
       · rw [if_neg h1, if_neg (fun h => h1 (hmem.1 h)), Formalism.FourierDecayAlt.P.Qx3.reflection_fixes_basis_vector b _
-          (fun h => eI_ne_esI b a h.symm) (fun h => hab (esI_inj h))]
+          (fun h => _root_.Formalism.FourierDecayAlt.P.Dx2.DF.eI_ne_esI b a h.symm) (fun h => hab (esI_inj h))]
 
 theorem wc_list (c : Fin r → ℂ) : Q.wCell k r (Fin.last r) c =
     (((List.finRange r).filter fun a => a.val < (Fin.last r).val).map fun a => Q.w1 k r a (c a)).prod := rfl

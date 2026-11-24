@@ -98,7 +98,7 @@ theorem mat_iota_nU {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {n 
   · rw [h3, OG.finite_part_block_matrix, e3, Matrix.map_zero _ (map_zero (finPart D)), Matrix.map_one _ (map_zero (finPart D)) (map_one (finPart D)),
       one_eq_block_matrix]
   · intro τ'
-    rw [OG.component_block_matrix, OG.compAt_zero', OG.compAt_one']
+    rw [OG.component_block_matrix, OG.compAt_zero', _root_.GlobalTheory.WeilVacMove.compAt_one]
     by_cases h : τ' = τ
     · subst h
       rw [h1, hyb, e1]
@@ -148,7 +148,7 @@ theorem psi_unip {θ : InfFam D} (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F)
     have e : θ τ' (infPart D z) = ((θ τ').comp (infPart D)) z := rfl
     rw [e, hz, AddMonoidHom.map_trace]
     show Matrix.trace (compAt θ τ' (HMul.hMul B (GlobalTheory.StdUnn.inner V x x) : Mx D n n)) = _
-    rw [GlobalTheory.CompanionTheory.WSum.compAt_mul', GlobalTheory.StdUnn.inner, GlobalTheory.CompanionTheory.WSum.compAt_mul', GlobalTheory.CompanionTheory.WSum.compAt_adj hθ, GlobalTheory.CompanionTheory.WSum.compAt_mul', gA,
+    rw [_root_.GlobalTheory.WeilVacMove.compAt_mul, GlobalTheory.StdUnn.inner, _root_.GlobalTheory.WeilVacMove.compAt_mul, GlobalTheory.CompanionTheory.WSum.compAt_adj hθ, _root_.GlobalTheory.WeilVacMove.compAt_mul, gA,
       GlobalTheory.CompanionTheory.WSum.compAt_rat hθ]
     rfl
   have hzf : finPart D z = 0 := by

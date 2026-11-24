@@ -75,7 +75,7 @@ private theorem sum_over_quotient_fixed_of_fixed {R X M : Type} [CommRing R] [Ad
   have hmem : -(b' + Quotient.out q) + Quotient.out ((QuotientAddGroup.mk b' :
       ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup) + q) ∈ S.addSubgroupOf A.toAddSubgroup := by
     rw [← QuotientAddGroup.eq]
-    simp [QuotientAddGroup.out_eq']
+    simp
   simp only [Equiv.coe_addLeft]
   have hdec : ((Quotient.out ((QuotientAddGroup.mk b' :
       ↥A.toAddSubgroup ⧸ S.addSubgroupOf A.toAddSubgroup) + q) : ↥A.toAddSubgroup) : X) =

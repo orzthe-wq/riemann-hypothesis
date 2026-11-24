@@ -312,8 +312,6 @@ theorem exists_finite_map : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Ty
     (spMap b) (Category.comp_id _) w₁ w₂ hf h₁ h₂
   have hcp : Out.CubePullSt := by
     first
-    | exact L₁.cubePull
-    | exact L₂.cubePull
     | exact L₃.cubePull
   have key : ∃ tU : SAB H (g ⁻¹ᵁ T.U).toScheme, Nonempty (SABMap tU Y.t (g ⁻¹ᵁ T.U).ι) := by
     let f := (g ⁻¹ᵁ T.U).ι

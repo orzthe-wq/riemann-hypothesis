@@ -529,7 +529,7 @@ private theorem vanish_sigL_mul {K : Type} [Field K] {Δ τ : K} (x y : EL Δ τ
   have hτ : star ((algebraMap K (Lsq K Δ)) τ) = (algebraMap K (Lsq K Δ)) τ := by
     ext <;> simp [- algebraMap_eq]
   apply QuadraticAlgebra.ext
-  · simp [sigL, star_mul', star_add, star_neg, star_one]
+  · simp [sigL, star_mul', star_add, star_neg]
   · simp [sigL, star_mul', star_add, hτ]
 
 private theorem vanish_sigL_sigL {K : Type} [Field K] {Δ τ : K} (x : EL Δ τ) : sigL (sigL x) = x := by

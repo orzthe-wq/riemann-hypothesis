@@ -113,49 +113,11 @@ open GlobalTheory.LocFlat.CFac
 section SlopeTestRemainingChoices
 variable {D : D7}
 
-theorem hO_add_left' (S T : HSp D) (x x' y : WO S T) : hO S T (x + x') y = hO S T x y + hO S T x' y := by
-  unfold hO
-  simp only [Matrix.add_apply, mul_add, ← Finset.sum_add_distrib]
-
-theorem symplO_add_left' (S T : HSp D) (x x' y : WO S T) :
-    symplO S T (x + x') y = symplO S T x y + symplO S T x' y := by
-  unfold symplO; rw [hO_add_left', mul_add, map_add (f := _)]
-
-theorem symplO_zero_left' (S T : HSp D) (y : WO S T) : symplO S T 0 y = 0 := by
-  have h := symplO_add_left' S T 0 0 y
-  simp only [add_zero] at h
-  exact left_eq_add.mp h
-
 theorem isThetaFunO_zero' (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) : IsThetaFunO ψ S T 0 := {
   quasi γ w := by simp
   level := ⟨⊤, isOpen_univ, fun u _ _ => by funext w; simp [heisO]⟩
   cont := continuous_const
   smooth _ _ _ _ _ := contDiff_const }
-
-theorem isThetaFunO_add' {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
-    (hg : IsThetaFunO ψ S T g) : IsThetaFunO ψ S T (f + g) := {
-  quasi γ w := by simp only [Pi.add_apply]; rw [hf.quasi, hg.quasi]; ring
-  level := by
-    obtain ⟨U, hUo, hU⟩ := hf.level
-    obtain ⟨U', hUo', hU'⟩ := hg.level
-    refine ⟨U ⊓ U', hUo.inter hUo', fun u hu hi => ?_⟩
-    have e : heisO ψ S T u (f + g) = heisO ψ S T u f + heisO ψ S T u g := by
-      funext w; simp only [heisO, Pi.add_apply]; ring
-    rw [e, hU u hu.1 hi, hU' u hu.2 hi]
-  cont := hf.cont.add hg.cont
-  smooth k L hL hfin w := (hf.smooth k L hL hfin w).add (hg.smooth k L hL hfin w) }
-
-theorem isThetaFunO_smul' {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : ℂ) {f : WO S T → ℂ}
-    (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (c • f) := {
-  quasi γ w := by simp only [Pi.smul_apply, smul_eq_mul]; rw [hf.quasi]; ring
-  level := by
-    obtain ⟨U, hUo, hU⟩ := hf.level
-    refine ⟨U, hUo, fun u hu hi => ?_⟩
-    have e : heisO ψ S T u (c • f) = c • heisO ψ S T u f := by
-      funext w; simp only [heisO, Pi.smul_apply, smul_eq_mul]; ring
-    rw [e, hU u hu hi]
-  cont := continuous_const.mul hf.cont
-  smooth k L hL hfin w := (contDiff_const.mul (hf.smooth k L hL hfin w)) }
 
 def heisL (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ) where
   toFun := heisO ψ S T u
@@ -215,8 +177,8 @@ theorem isModel_boxT : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topol
       rw [hTP]
       exact o''.isThetaFunO_boxT (h₂.theta a) (hL.theta b)
     | zero => rw [map_zero]; exact isThetaFunO_zero' ψ S X
-    | add x y _ _ hx hy => rw [map_add (f := _)]; exact isThetaFunO_add' hx hy
-    | smul c x _ hx => rw [map_smul]; exact isThetaFunO_smul' c hx
+    | add x y _ _ hx hy => rw [map_add (f := _)]; exact _root_.GlobalTheory.OrientedHeis.theta_add hx hy
+    | smul c x _ hx => rw [map_smul]; exact _root_.GlobalTheory.OrientedHeis.theta_smul c hx
   · have hΦ' : Φ' = comapH (Homeomorph.addRight x) Φ := Subtype.ext (funext h)
     subst hΦ'
     have key : TX ∘ₗ comapH (Homeomorph.addRight x) = heisL ψ S X (p.up FS FX x) ∘ₗ TX := by
@@ -238,7 +200,7 @@ theorem isModel_boxT : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topol
       exact one_ne_zero this
     have hχadd : ∀ a b, χ (a + b) = χ a * χ b := fun a b => by
       simp only [χ]
-      rw [Witness.up_add p FS FX a b, symplO_add_left', AddChar.map_add_eq_mul]
+      rw [Witness.up_add p FS FX a b, _root_.GlobalTheory.LatVac.symplO_add_left, AddChar.map_add_eq_mul]
     by_cases hΦ : Φ = 0
     · have hΦ' : Φ' = 0 := Subtype.ext (funext fun t => by
         rw [h t, hΦ]
@@ -275,14 +237,14 @@ theorem isModel_boxT : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topol
       have e1 : χ₁ = fun t₁ => χ (e.symm (t₁, 0)) := funext fun t₁ => by
         rw [hsplit]
         change χ₁ t₁ = χ₁ t₁ * ψ (symplO S L'' (p.up FS FL 0) y₂)
-        rw [hup0, symplO_zero_left', AddChar.map_zero_eq_one, mul_one]
+        rw [hup0, _root_.GlobalTheory.SplitScalar.symplO_zero_left, AddChar.map_zero_eq_one, mul_one]
       rw [e1]
       exact hχlc.comp_continuous (e.symm.continuous.comp (continuous_id.prodMk continuous_const))
     have hχ₂ : IsLocallyConstant χ₂ := by
       have e1 : χ₂ = fun t₂ => χ (e.symm (0, t₂)) := funext fun t₂ => by
         rw [hsplit]
         change χ₂ t₂ = ψ (symplO S T (p.up FS FT 0) y₁) * χ₂ t₂
-        rw [hup0, symplO_zero_left', AddChar.map_zero_eq_one, one_mul]
+        rw [hup0, _root_.GlobalTheory.SplitScalar.symplO_zero_left, AddChar.map_zero_eq_one, one_mul]
       rw [e1]
       exact hχlc.comp_continuous (e.symm.continuous.comp (continuous_const.prodMk continuous_id))
     have hh₁ : IsHalf (cA D p.e) y₁ := fun i j => by

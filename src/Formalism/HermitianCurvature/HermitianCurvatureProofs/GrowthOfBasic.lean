@@ -86,7 +86,7 @@ lemma euler_product_bounds (x : ℝ) (hx0 : 0 < x) (hx : x ≤ 1 / 3) (k : ℕ) 
     · have e1 := mul_le_mul_of_nonneg_right h1 (show (0:ℝ) ≤ 1 - x ^ (n + 1) by linarith)
       have e2 := mul_nonneg hy0 (show (0:ℝ) ≤ 1 / 3 - x ^ (n + 1) by linarith)
       rw [hyx]
-      nlinarith [e1, e2]
+      linarith [e1, e2]
     · have e3 := mul_le_mul h2 (show 1 - x ^ (n + 1) ≤ 1 by linarith) (by linarith) zero_le_one
       linarith
 
@@ -95,7 +95,7 @@ theorem t_GGNumeric : GGNumeric := by
   have hg0 : 0 < g := by linarith
   have hx0 : 0 < g⁻¹ := inv_pos.mpr hg0
   have hgx : g⁻¹ * g = 1 := inv_mul_cancel₀ hg0.ne'
-  have hx3 : g⁻¹ ≤ 1 / 3 := by nlinarith [mul_le_mul_of_nonneg_left hg hx0.le]
+  have hx3 : g⁻¹ ≤ 1 / 3 := by linarith [mul_le_mul_of_nonneg_left hg hx0.le]
   have hprod : ∏ i ∈ Icc 1 k, (1 - (g ^ i)⁻¹)⁻¹ = (∏ i ∈ Icc 1 k, (1 - g⁻¹ ^ i))⁻¹ := by
     rw [Finset.prod_inv_distrib]
     congr 1
@@ -109,11 +109,10 @@ theorem t_GGNumeric : GGNumeric := by
     have := pow_nonneg hx0.le (k + 1)
     linarith
   have hab : 1 ≤ (1 - 3 / 2 * g⁻¹) * (1 + 3 * g⁻¹) := by
-    nlinarith [mul_nonneg hx0.le (show (0:ℝ) ≤ 1 / 3 - g⁻¹ by linarith)]
+    linarith [mul_nonneg hx0.le (show (0:ℝ) ≤ 1 / 3 - g⁻¹ by linarith)]
   calc (∏ i ∈ Icc 1 k, (1 - g⁻¹ ^ i))⁻¹ ≤ (1 - 3 / 2 * g⁻¹)⁻¹ := by
         first
           | exact inv_anti₀ hpos hP
-          | exact inv_le_inv_of_le hpos hP
     _ = (1 - 3 / 2 * g⁻¹)⁻¹ * 1 := (mul_one _).symm
     _ ≤ (1 - 3 / 2 * g⁻¹)⁻¹ * ((1 - 3 / 2 * g⁻¹) * (1 + 3 * g⁻¹)) :=
         mul_le_mul_of_nonneg_left hab (inv_nonneg.mpr hpos.le)
@@ -133,7 +132,7 @@ theorem t_NumLoops : NumLoops := by
   intro k f c h
   apply Real.exp_le_exp.mpr
   have hk : (0:ℝ) ≤ k := Nat.cast_nonneg k
-  nlinarith [mul_le_mul_of_nonneg_left h hk]
+  linarith [mul_le_mul_of_nonneg_left h hk]
 
 end Num1
 
@@ -162,7 +161,7 @@ theorem t_NumNG : NumNG := by
     linarith
   rw [Real.rpow_def_of_pos (by norm_num : (0:ℝ) < 2), ← Real.exp_add]
   apply Real.exp_le_exp.mpr
-  nlinarith [mul_le_mul_of_nonneg_left hl.le hk]
+  linarith [mul_le_mul_of_nonneg_left hl.le hk]
 
 theorem t_NumDens : NumDens := by
   intro k r f hf hk32 hr
@@ -186,10 +185,10 @@ theorem t_NumDens : NumDens := by
       calc (16:ℝ) = (2:ℝ) ^ ((4:ℕ):ℝ) := by rw [Real.rpow_natCast]; norm_num
         _ ≤ _ := Real.rpow_le_rpow_of_exponent_le (by norm_num) (by push_cast; linarith)
     have hp : 0 < (2:ℝ) ^ (-(j:ℝ)) := Real.rpow_pos_of_pos (by norm_num) _
-    nlinarith [mul_le_mul_of_nonneg_left h16 hp.le]
+    linarith [mul_le_mul_of_nonneg_left h16 hp.le]
   constructor
   · have := mul_le_mul_of_nonneg_left key hf0
-    nlinarith [this]
+    linarith [this]
   · have hL1 := Real.log_two_gt_d9
     have hL2 := Real.log_two_lt_d9
     have hlog : Real.log k ≤ 5 * Real.log 2 + k / 32 - 1 := by
@@ -207,7 +206,7 @@ theorem t_NumDens : NumDens := by
           rw [Real.exp_add, Real.exp_log hk0]
       _ ≤ Real.exp (-(k:ℝ) / 5) := by
           apply Real.exp_le_exp.mpr
-          nlinarith [mul_le_mul_of_nonneg_left hL1.le hk0.le]
+          linarith [mul_le_mul_of_nonneg_left hL1.le hk0.le]
 
 lemma price_exponential_bound (f k : ℕ) (b g : ℝ) (hb : 1 ≤ b) (hk : 1 ≤ k) (hf : f ≤ k)
     (hg : ((k : ℝ) * b) ^ 8 ≤ g) :
@@ -216,8 +215,8 @@ lemma price_exponential_bound (f k : ℕ) (b g : ℝ) (hb : 1 ≤ b) (hk : 1 ≤
   have hkR : (1:ℝ) ≤ k := by exact_mod_cast hk
   have hfk : (f:ℝ) ≤ k := by exact_mod_cast hf
   have hb0 : 0 < b := by linarith
-  have hkb : b ≤ k * b := by nlinarith
-  have hkb' : (k:ℝ) ≤ k * b := by nlinarith
+  have hkb : b ≤ k * b := le_mul_of_one_le_left hb0.le hkR
+  have hkb' : (k:ℝ) ≤ k * b := le_mul_of_one_le_right (by linarith) hb
   have hkb0 : 0 ≤ (k:ℝ) * b := by linarith
   have h7 : b ^ 7 ≤ (k * b) ^ 7 := pow_le_pow_left₀ hb0.le hkb 7
   have hb7 : 0 < b ^ 7 := pow_pos hb0 7
@@ -226,8 +225,8 @@ lemma price_exponential_bound (f k : ℕ) (b g : ℝ) (hb : 1 ≤ b) (hk : 1 ≤
     simpa using this
   have e8 : ((k:ℝ) * b) ^ 8 = (k * b) ^ 7 * (k * b) := by ring
   have hk8 : (k:ℝ) * b ^ 7 ≤ (k * b) ^ 8 := by
-    nlinarith [mul_le_mul h7 hkb' (by linarith) (pow_nonneg hkb0 7)]
-  have hkb7 : b ^ 7 ≤ (k:ℝ) * b ^ 7 := by nlinarith [mul_le_mul_of_nonneg_right hkR hb7.le]
+    linarith [mul_le_mul h7 hkb' (by linarith) (pow_nonneg hkb0 7)]
+  have hkb7 : b ^ 7 ≤ (k:ℝ) * b ^ 7 := by linarith [mul_le_mul_of_nonneg_right hkR hb7.le]
   have hg0 : 0 < g := by linarith
   have hfg : (f:ℝ) * b ^ 7 ≤ g := by
     have := mul_le_mul_of_nonneg_right hfk hb7.le
@@ -239,7 +238,6 @@ lemma price_exponential_bound (f k : ℕ) (b g : ℝ) (hb : 1 ≤ b) (hk : 1 ≤
   have hdiv : (f:ℝ) / g ≤ (b ^ 7)⁻¹ := by
     first
       | exact (div_le_iff₀ hg0).mpr hfb
-      | exact (div_le_iff hg0).mpr hfb
   have hpos0 : 0 ≤ 1 + 3 / g := by
     have := div_pos (show (0:ℝ) < 3 by norm_num) hg0
     linarith
@@ -275,14 +273,16 @@ lemma exp_mul_one_sub_le (y : ℝ) : Real.exp y * (1 - y) ≤ 1 := by
   have h := Real.add_one_le_exp (-y)
   have hp := Real.exp_pos y
   have e : Real.exp y * Real.exp (-y) = 1 := by rw [← Real.exp_add]; simp
-  nlinarith [mul_le_mul_of_nonneg_left h hp.le]
+  linarith [mul_le_mul_of_nonneg_left h hp.le]
 
 private theorem exp_le_quad_lemma (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 1 / 2) :
     Real.exp x ≤ 1 + x + 2 * x ^ 2 := by
   have h := exp_mul_one_sub_le x
   have hp := Real.exp_pos x
-  nlinarith [mul_nonneg (sq_nonneg x) (show (0:ℝ) ≤ 1 / 2 - x by linarith),
-    mul_nonneg h0 (show (0:ℝ) ≤ 1 / 2 - x by linarith), mul_nonneg hp.le h0]
+  have eq1 : (1 + x + 2 * x ^ 2) * (1 - x) = 1 + x ^ 2 * (1 - 2 * x) := by ring
+  have hkey : 0 ≤ x ^ 2 * (1 - 2 * x) := mul_nonneg (sq_nonneg x) (by linarith)
+  have hle : Real.exp x * (1 - x) ≤ (1 + x + 2 * x ^ 2) * (1 - x) := by linarith [h, eq1, hkey]
+  exact le_of_mul_le_mul_right hle (by linarith)
 
 theorem t_EtaZero : SqrtSumSqLeOneAddInvPowSix := by
   intro b Pg A ε ε' hb hPg0 hPg hA hε hε'
@@ -298,38 +298,44 @@ theorem t_EtaZero : SqrtSumSqLeOneAddInvPowSix := by
     exact one_div_le_one_div_of_le (by norm_num) hb7
   have hw : (0:ℝ) ≤ 1 / 1000 - u := by linarith
   have h14 : (b ^ 14)⁻¹ = u ^ 2 := by
-    rw [hu, inv_pow, ← pow_mul] <;> norm_num
+    rw [hu, inv_pow, ← pow_mul]
   have h6 : 16 * u ≤ (b ^ 6)⁻¹ := by
     have e : (b ^ 6)⁻¹ = b * u := by
       have hbne : b ≠ 0 := hb0.ne'
       rw [hu]
       field_simp
-      try ring
     rw [e]
-    nlinarith
+    exact mul_le_mul_of_nonneg_right (by linarith) hu0.le
   rw [← hu] at hPg hA
   rw [h14] at hA hε hε'
   have hE : Real.exp (6 * u) ≤ 1 + 7 * u := by
     have := exp_le_quad_lemma (6 * u) (by linarith) (by linarith)
-    nlinarith [mul_nonneg hu0.le hw]
+    linarith [mul_nonneg hu0.le hw]
   have hF : Real.exp (u ^ 2) ≤ 1 + u := by
-    have := exp_le_quad_lemma (u ^ 2) (by positivity) (by nlinarith)
-    nlinarith [mul_nonneg hu0.le hw, mul_nonneg (sq_nonneg u) hw,
-      mul_nonneg (pow_nonneg hu0.le 3) hw]
+    have hu2_le : u ^ 2 ≤ (1 / 1000) * u := by
+      calc u ^ 2 = u * u := sq u
+        _ ≤ (1 / 1000) * u := mul_le_mul_of_nonneg_right hu1 hu0.le
+    have hu4_le : (u ^ 2) ^ 2 ≤ (1 / 1000) ^ 2 * u ^ 2 :=
+      calc (u ^ 2) ^ 2 = u ^ 2 * u ^ 2 := sq (u ^ 2)
+        _ ≤ (1 / 1000) ^ 2 * u ^ 2 := mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hu0.le hu1 2) (sq_nonneg u)
+    have := exp_le_quad_lemma (u ^ 2) (by positivity) (by linarith)
+    linarith
   have hM : A + 2 * ε ≤ 1 + 3 * u := by
     have h1 : (1 + u) * Real.exp (u ^ 2) ≤ (1 + u) * (1 + u) :=
       mul_le_mul_of_nonneg_left hF (by linarith)
-    nlinarith [mul_nonneg hu0.le hw]
+    linarith [mul_nonneg hu0.le hw]
   have hX : Pg * (A + 2 * ε) ≤ 1 + 11 * u := by
     have h1 : Pg * (A + 2 * ε) ≤ Pg * (1 + 3 * u) := mul_le_mul_of_nonneg_left hM hPg0
     have h2 : Pg * (1 + 3 * u) ≤ (1 + 7 * u) * (1 + 3 * u) :=
       mul_le_mul_of_nonneg_right (hPg.trans hE) (by linarith)
-    nlinarith [mul_nonneg hu0.le hw]
+    linarith [mul_nonneg hu0.le hw]
   have hY : Pg * (ε + ε') ≤ 3 * u ^ 2 := by
     have h1 : Pg * (ε + ε') ≤ Pg * (2 * u ^ 2) := mul_le_mul_of_nonneg_left (by linarith) hPg0
     have h2 : Pg * (2 * u ^ 2) ≤ (1 + 7 * u) * (2 * u ^ 2) :=
       mul_le_mul_of_nonneg_right (hPg.trans hE) (by positivity)
-    nlinarith [mul_nonneg (sq_nonneg u) hw]
+    have h3 : (1 + 7 * u) * (2 * u ^ 2) ≤ (1 + 7 * (1 / 1000)) * (2 * u ^ 2) :=
+      mul_le_mul_of_nonneg_right (by linarith) (by positivity)
+    linarith [h1, h2, h3, sq_nonneg u]
   have hs0 : 0 ≤ √(Pg * (A + 2 * ε)) := Real.sqrt_nonneg _
   have ht0 : 0 ≤ √(Pg * (ε + ε')) := Real.sqrt_nonneg _
   have hs2 : √(Pg * (A + 2 * ε)) ^ 2 ≤ 1 + 11 * u := by
@@ -343,21 +349,15 @@ theorem t_EtaZero : SqrtSumSqLeOneAddInvPowSix := by
   have hc1 : (0:ℝ) ≤ 1 + 11 / 2 * u := by linarith
   have hc2 : (0:ℝ) ≤ 7 / 4 * u := by linarith
   have hsb : √(Pg * (A + 2 * ε)) ≤ 1 + 11 / 2 * u := by
-    nlinarith [hs2, hs0, hc1, sq_nonneg u]
+    exact (abs_le_of_sq_le_sq' (by linarith [hs2, sq_nonneg u]) hc1).2
   have htb : √(Pg * (ε + ε')) ≤ 7 / 4 * u := by
-    nlinarith [ht2, ht0, hc2, sq_nonneg u]
+    exact (abs_le_of_sq_le_sq' (by linarith [ht2, sq_nonneg u]) hc2).2
   calc (√(Pg * (A + 2 * ε)) + √(Pg * (ε + ε'))) ^ 2 ≤ (1 + 11 / 2 * u + 7 / 4 * u) ^ 2 :=
         pow_le_pow_left₀ (by positivity) (add_le_add hsb htb) 2
-    _ ≤ 1 + 16 * u := by nlinarith [mul_nonneg hu0.le hw]
+    _ ≤ 1 + 16 * u := by linarith [mul_nonneg hu0.le hw]
     _ ≤ 1 + (b ^ 6)⁻¹ := by linarith
 
 end Num3
-
-section Num4
-
-open Formalism.FourierDecayAlt.PB
-
-end Num4
 
 section Hil1
 
@@ -429,11 +429,8 @@ theorem t_SubFamily : SubFamily := by
     · rw [Set.indicator_of_mem hp, Set.indicator_of_mem hp, Real.norm_eq_abs]
       first
           | exact Complex.abs_re_le_norm _
-          | exact Complex.abs_re_le_abs _
-          | exact RCLike.abs_re_le_norm _
     · first
         | rw [Set.indicator_of_notMem hp, Set.indicator_of_notMem hp]
-        | rw [Set.indicator_of_not_mem hp, Set.indicator_of_not_mem hp]
       simp
   have hsr : Summable (fun p : τ × τ =>
       ‖Q.indicator (fun p : τ × τ => (inner ℂ (X.vec p.1) (X.vec p.2)).re) p‖) :=
@@ -446,7 +443,6 @@ theorem t_SubFamily : SubFamily := by
       fun p => Set.indicator_le_indicator_of_subset hQ (fun _ => norm_nonneg _) p
     first
       | exact Summable.tsum_le_tsum hle (hs.indicator Q) (hs.indicator Q')
-      | exact tsum_le_tsum hle (hs.indicator Q) (hs.indicator Q')
   · show |X.Gam1 * _| ≤ X.Gam1 * _
     rw [abs_mul, abs_of_pos hA'.2.2]
     refine mul_le_mul_of_nonneg_left ?_ hG
@@ -458,7 +454,6 @@ theorem t_SubFamily : SubFamily := by
       _ ≤ ∑' p, Q.indicator (fun p : τ × τ => ‖inner ℂ (X.vec p.1) (X.vec p.2)‖) p := by
           first
             | exact Summable.tsum_le_tsum hb hsr (hs.indicator Q)
-            | exact tsum_le_tsum hb hsr (hs.indicator Q)
 
 theorem t_PairBoundAbstract : PairBoundAbstract := by
   intro hPI hEI hPS hSF τ Rw I H H₁ _ _ _ _ _ _ X Pg A ε ε' dd hPg hdd hA hNX hGG hRO hCP hIZ
@@ -624,8 +619,6 @@ theorem summable_re (f : τ → H₁) (hf : Summable (fun t => ‖f t‖)) :
         rw [Real.norm_eq_abs]
         first
           | exact Complex.abs_re_le_norm _
-          | exact Complex.abs_re_le_abs _
-          | exact RCLike.abs_re_le_norm _
     _ ≤ ‖f p.1‖ * ‖f p.2‖ := norm_inner_le_norm _ _
 
 theorem norm_sq_tsum [CompleteSpace H₁] (f : τ → H₁) (hf : Summable (fun t => ‖f t‖)) :
@@ -634,7 +627,6 @@ theorem norm_sq_tsum [CompleteSpace H₁] (f : τ → H₁) (hf : Summable (fun 
   have h1 : ‖∑' t, f t‖ ^ 2 = (inner ℂ (∑' t, f t) (∑' t, f t)).re := by
     first
       | exact norm_sq_eq_re_inner (𝕜 := ℂ) _
-      | exact (inner_self_eq_norm_sq (𝕜 := ℂ) _).symm
   have h2 : ∀ b, (inner ℂ (∑' t, f t) (f b)).re = ∑' a, (inner ℂ (f b) (f a)).re := by
     intro b
     rw [← inner_conj_symm, Complex.conj_re]
@@ -644,8 +636,6 @@ theorem norm_sq_tsum [CompleteSpace H₁] (f : τ → H₁) (hf : Summable (fun 
   have hg := summable_re f hf
   first
     | exact (Summable.tsum_prod hg).symm
-    | exact (tsum_prod' hg (fun b => hg.prod_factor b)).symm
-    | exact (Summable.tsum_prod' hg (fun b => hg.prod_factor b)).symm
 
 end
 
@@ -715,37 +705,13 @@ theorem t_PairSplit : PairSplit := by
 
 end Hil5
 
-section Hil6
-
-open Formalism.FourierDecayAlt.PB
-
-end Hil6
-
 section LocA
 
 open Finset NumberField Formalism.FourierDecayAlt Formalism.FourierDecayAlt.PB
 open scoped ComplexOrder ComplexConjugate
 open Classical
 
-theorem psd_congr {α : Type} {Y : Finset α} {k k' : α → α → ℂ}
-    (h : ∀ x ∈ Y, ∀ y ∈ Y, k x y = k' x y) (hk : TB.PSDOn Y k) : TB.PSDOn Y k' := by
-  have e : (Matrix.of fun x y : Y => k' x y) = Matrix.of fun x y : Y => k x y := by
-    ext x y
-    simp only [Matrix.of_apply]
-    exact (h x x.2 y y.2).symm
-  show Matrix.PosSemidef (Matrix.of fun x y : Y => k' x y)
-  rw [e]
-  exact hk
-
-theorem psd_add {α : Type} {Y : Finset α} {k k' : α → α → ℂ}
-    (hk : TB.PSDOn Y k) (hk' : TB.PSDOn Y k') : TB.PSDOn Y (fun x y => k x y + k' x y) := by
-  have e : (Matrix.of fun x y : Y => k x y + k' x y) =
-      (Matrix.of fun x y : Y => k x y) + Matrix.of fun x y : Y => k' x y := by
-    ext x y
-    simp [Matrix.of_apply]
-  show Matrix.PosSemidef (Matrix.of fun x y : Y => k x y + k' x y)
-  rw [e]
-  exact Matrix.PosSemidef.add hk hk'
+alias psd_congr := _root_.Formalism.FourierDecayAlt.P.Jx7.psd_congr
 
 theorem psd_one (hS : J.SchurProduct) {α : Type} (Y : Finset α) : TB.PSDOn Y (fun _ _ => (1 : ℂ)) := by
   have h := hS α Empty Y (fun p => p.elim) (fun p => p.elim)
@@ -859,7 +825,7 @@ theorem outOk (hA : J.PSDAgree) (hA2 : A5.A2) (hLP : J.LocalPullback) (hPh : J.P
       intro x hx y hy
       simp only [hin, hS, if_true, hN x hx y hy]
     · by_cases hS : t ∈ S.L
-      · have := psd_add (psd_one hSch Y) key
+      · have := _root_.Formalism.FourierDecayAlt.P.Jx7.psd_add (psd_one hSch Y) key
         refine psd_congr ?_ this
         intro x hx y hy
         simp only [hin, hS, if_true, if_false, hN x hx y hy]
@@ -971,12 +937,12 @@ theorem t_PullLatticeOrdinary : PullLatticeOrdinary := by
     unfold S6.perLat
     rw [Formalism.FourierDecayAlt.P.localTwistedLattice E _ _ s P hP t, Formalism.FourierDecayAlt.P.localAwayFromLevel E g 1 ν P hP hgP,
       Formalism.FourierDecayAlt.P.localAwayFromLevel E g 2 ν P hP hgP]
-    exact ⟨fun h => h.1, fun h => ⟨h, key _ (Formalism.FourierDecayAlt.P.different_power_conj_stable E g 0 ν) t h⟩⟩
+    exact ⟨fun h => h.1, fun h => ⟨h, key _ (_root_.Formalism.FourierDecayAlt.P.S6x2.powConjStable E g 0 ν) t h⟩⟩
   have hLift : t ∈ S6.locAt E P (S6.liftLat E g ν s) ↔
       t ∈ S6.locAt E P (S6.zsub E (S6.idl E g 0 (-ν))) := by
     unfold S6.liftLat
     rw [Formalism.FourierDecayAlt.P.localTwistedLattice E _ _ s P hP t, Formalism.FourierDecayAlt.P.localAwayFromLevel E g (-1) (-ν) P hP hgP]
-    exact ⟨fun h => h.1, fun h => ⟨h, key _ (Formalism.FourierDecayAlt.P.different_power_conj_stable E g 0 (-ν)) t h⟩⟩
+    exact ⟨fun h => h.1, fun h => ⟨h, key _ (_root_.Formalism.FourierDecayAlt.P.S6x2.powConjStable E g 0 (-ν)) t h⟩⟩
   have hinv : ((u⁻¹ : Kˣ) : K) = σ ω⁻¹ := by
     by_cases hω0 : ω = 0
     · have h0 : (u : K) = 0 := by rw [hu, hω0, map_zero]
@@ -1139,7 +1105,7 @@ theorem t_LoopsJoint : LoopsJoint := by
     refine ⟨p1, p2, p3, p4, p5, le_trans ?_ p6, p7⟩
     have hl : 0 ≤ Real.log b := Real.log_nonneg (by linarith)
     have : 0 ≤ (((2 * r + 2 : ℕ) : ℝ)) ^ 5 * f * Real.log b := by positivity
-    nlinarith [mul_le_mul_of_nonneg_right hK this]
+    linarith [mul_le_mul_of_nonneg_right hK this]
   have q1 := h1 k (2 * r + 2) f b g v NT Gam Xi (mono K1 (le_max_left _ _)) hXi
   have q2 := h2 k (2 * r + 2) f b g v NT Gam Xi
     (mono K2 (le_trans (le_max_left _ _) (le_max_right _ _))) hXi
@@ -1208,19 +1174,5 @@ end From
 end Formalism.FourierDecayAlt.P.GrowthPolynomialOperator
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem equal_index : Formalism.FourierDecayAlt.PB.GramSumLeOfPosSemidef := GrowthPolynomialOperator.t_EqualIota
-
-theorem price_of_index : Formalism.FourierDecayAlt.PB.NormSqBoundOfEqualIota := GrowthPolynomialOperator.t_PriceOfIota
-
-theorem pair_split_alt : Formalism.FourierDecayAlt.PB.PairSplit := GrowthPolynomialOperator.t_PairSplit
-
-theorem subfamilyAlt : Formalism.FourierDecayAlt.PB.SubFamily := GrowthPolynomialOperator.t_SubFamily
-
-theorem loops_give_series : Formalism.FourierDecayAlt.PB.LoopsGiveRows := GrowthPolynomialOperator.t_LoopsGiveRows
-
-theorem pair_bound_abstract : Formalism.FourierDecayAlt.PB.PairBoundAbstract := GrowthPolynomialOperator.t_PairBoundAbstract
-
-theorem loops_joint : Formalism.FourierDecayAlt.PB.LoopsJoint := GrowthPolynomialOperator.t_LoopsJoint
 
 end Formalism.FourierDecayAlt.P

@@ -71,12 +71,6 @@ theorem mem_compactSpan (x : V) : x ∈ kSpan ε F x := by
 theorem compactSpan_le {x : V} {S : Submodule ℂ V} (hx : x ∈ S) (hS : KStable ε F S) :
     kSpan ε F x ≤ S := sInf_le ⟨hx, hS⟩
 
-theorem isCompactInvariant_compactSpan (x : V) : KStable ε F (kSpan ε F x) := by
-  intro a b hab y hy
-  rw [kSpan, Submodule.mem_sInf] at hy ⊢
-  intro S hS
-  exact hS.2 a b hab y (hy S hS)
-
 theorem isWeightVector_apply (hrel : KRel ε F) {ν : Fin n → ℝ} {v : V}
     (hv : IsWeight F ν v) (a b : Fin n) (hab : ε a = ε b) :
     IsWeight F (ν + root a b) (F a b v) := by

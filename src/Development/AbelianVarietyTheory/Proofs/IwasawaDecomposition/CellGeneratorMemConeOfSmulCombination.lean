@@ -55,7 +55,7 @@ theorem cell_gen_mem_cone_of_smul : ∀ {O : Type} [CommRing O] (bar : O → O) 
     have := hδ.linear (Pi.single i (k : ℝ)) fun l => by
       by_cases h : l = i
       · subst h; simp
-      · simp [Pi.single_apply, h]
+      · simp [h]
     simp only [Pi.single_apply, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this
     rw [InvFun.evalZ]
     convert this using 2

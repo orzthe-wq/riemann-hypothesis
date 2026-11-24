@@ -57,19 +57,6 @@ namespace GlobalTheory.CompanionTheory.Ar.Flag
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
-private theorem div_mem_of_mem_span_singleton {R : Subring Ω} {x y : Ω} (hy : y ≠ 0)
-    (h : x ∈ Submodule.span R {y}) : x / y ∈ R := by
-  obtain ⟨r, hr⟩ := Submodule.mem_span_singleton.mp h
-  have e : r • y = (r : Ω) * y := rfl
-  rw [← hr, e, mul_div_assoc, div_self hy, mul_one]
-  exact r.2
-
-private theorem zpow_mem_lemma_2 {R : Subring Ω} {x : Ω} (hx : x ∈ R) (hxi : x⁻¹ ∈ R) (n : ℤ) :
-    x ^ n ∈ R := by
-  cases n with
-  | ofNat n => rw [Int.ofNat_eq_natCast, zpow_natCast]; exact pow_mem hx n
-  | negSucc n => rw [zpow_negSucc, ← inv_pow]; exact pow_mem hxi _
-
 theorem tens_gen {I : Type} [Fintype I] (Λ : I → Lat ξ Ω) (a : I → ℤ) (p : Cpt ξ) (s : I → Ω)
     (hs : ∀ i, (Λ i).IsGenAt p (s i)) : (Lat.tens Λ a).IsGenAt p (∏ i, s i ^ a i) := by
   apply LevelTowerAlt.N1.tens_gen <;> assumption

@@ -132,8 +132,6 @@ theorem sum_lw_vw_natCast_le (T : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ)
     have hc : (((n : ℕ) : 𝓞 K) : K) = (n : K) := by
       first
         | (push_cast; rfl)
-        | push_cast
-        | simp
     rw [hc] at h
     exact h
 

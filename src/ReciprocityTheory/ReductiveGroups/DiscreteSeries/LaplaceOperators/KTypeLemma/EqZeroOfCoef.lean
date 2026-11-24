@@ -2,46 +2,7 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.IndicatorRholMem
 public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.ConjTransposeEqOfInG
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.PhiFacts
@@ -168,10 +129,6 @@ end Coef
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
-theorem omegaP_mem_nhds {x : Matrix (Fin n) (Fin n) ℂ} (hx : x ∈ OmegaP n) : OmegaP n ∈ 𝓝 x :=
-  (tb_inv_hasFDerivAt (tb_isUnit_of_omegaP hx)).choose_spec.1.continuousAt.preimage_mem_nhds
-    (isOpen_omega.mem_nhds hx)
-
 def evZ (μ : Fin n → ℤ) (z : Matrix (Fin n) (Fin n) ℂ) : MMT μ →ₗ[ℂ] ℂ :=
   (LinearMap.proj z : (Matrix (Fin n) (Fin n) ℂ → ℂ) →ₗ[ℂ] ℂ) ∘ₗ (cOm n).subtype ∘ₗ (mmSub μ).subtype
 
@@ -185,7 +142,7 @@ theorem evZ_word (μ : Fin n → ℤ) (L : List (Matrix (Fin n) (Fin n) ℂ)) : 
     have h1 : ∀ a b, evZ μ z (eMM μ a b F) =
         fderiv ℂ (hWord L (PhiP μ)) z (z * Matrix.single a b 1) := fun a b => by
       have e : ((F : cOm n) : Matrix (Fin n) (Fin n) ℂ → ℂ) =ᶠ[𝓝 z] hWord L (PhiP μ) :=
-        eventually_of_mem (omegaP_mem_nhds hz) ih
+        eventually_of_mem (_root_.ReciprocityTheory.ChartRestriction.DS.Lap.LemK.positiveOmega_mem_nhds hz) ih
       rw [← e.fderiv_eq]
       exact Set.indicator_of_mem hz _
     rw [List.map_cons, List.prod_cons, Module.End.mul_apply, ← hF]

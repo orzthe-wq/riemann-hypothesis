@@ -1,47 +1,6 @@
 module
 
 public import Mathlib.RingTheory.Length
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -49,58 +8,28 @@ universe u_1 u_2
 
 namespace Bl.general_b_fact_second'''
 
-private lemma key {O : Type*} {Y : Type*} [CommRing O] [AddCommGroup Y] [Module O Y]
+theorem goal1 {O : Type u_1} {Y : Type u_2} [CommRing O] [AddCommGroup Y] [Module O Y]
     (R S D E : Submodule O Y) (hD : ∀ y, y ∈ D ↔ y ∈ R ∧ y ∈ S) (hE : E ≤ D) :
     Module.length O (R ⧸ E.comap R.subtype) =
       Module.length O (R ⧸ S.comap R.subtype) + Module.length O (D ⧸ E.comap D.subtype) := by
   have hDR : D ≤ R := fun y hy => ((hD y).1 hy).1
-  have hES : E.comap R.subtype ≤ (S.comap R.subtype).comap LinearMap.id :=
-    fun x hx => ((hD x).1 (hE hx)).2
-  have hEE : E.comap D.subtype ≤ (E.comap R.subtype).comap (Submodule.inclusion hDR) :=
-    fun x hx => hx
-  let f := Submodule.mapQ (E.comap D.subtype) (E.comap R.subtype) (Submodule.inclusion hDR) hEE
-  let g := Submodule.mapQ (E.comap R.subtype) (S.comap R.subtype) LinearMap.id hES
+  let f := Submodule.mapQ (E.comap D.subtype) (E.comap R.subtype) (Submodule.inclusion hDR) fun _ hx => hx
+  let g := Submodule.mapQ (E.comap R.subtype) (S.comap R.subtype) LinearMap.id fun x hx =>
+    ((hD x).1 (hE hx)).2
   rw [add_comm]
   refine Module.length_eq_add_of_exact f g ?_ ?_ ?_
-  · refine (injective_iff_map_eq_zero f).2 ?_
-    intro x hx
+  · refine (injective_iff_map_eq_zero f).2 fun x hx => ?_
     obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
-    simp only [f, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hx ⊢
-    exact hx
+    exact (Submodule.Quotient.mk_eq_zero _).mpr ((Submodule.Quotient.mk_eq_zero (E.comap R.subtype)).mp hx)
   · intro y
     obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
     exact ⟨Submodule.Quotient.mk y, rfl⟩
   · intro y
     obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
-    constructor
-    · intro hy
-      simp only [g, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hy
-      have hyD : (y : Y) ∈ D := (hD y).2 ⟨y.2, hy⟩
-      exact ⟨Submodule.Quotient.mk ⟨y, hyD⟩, rfl⟩
-    · rintro ⟨x, hx⟩
-      obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
-      rw [← hx]
-      simp only [f, g, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]
-      exact ((hD x).1 x.2).2
-
-theorem goal1 :
-  ∀ {O : Type u_1} {Y : Type u_2} [inst : CommRing.{u_1} O] [inst_1 : AddCommGroup.{u_2} Y]
-  [inst_2 : Module.{u_1, u_2} O Y] (R S D E : Submodule.{u_1, u_2} O Y),
-  (∀ (y : Y),
-      Iff (Membership.mem.{u_2, u_2} D y) (And (Membership.mem.{u_2, u_2} R y) (Membership.mem.{u_2, u_2} S y))) →
-    LE.le.{u_2} E D →
-      Eq.{1}
-        (Module.length.{u_1, u_2} O
-          (HasQuotient.Quotient.{u_2, u_2} (Subtype.{u_2 + 1} fun (x : Y) ↦ Membership.mem.{u_2, u_2} R x)
-            (Submodule.comap.{u_1, u_1, u_2, u_2} (Submodule.subtype.{u_1, u_2} R) E)))
-        (HAdd.hAdd.{0, 0, 0}
-          (Module.length.{u_1, u_2} O
-            (HasQuotient.Quotient.{u_2, u_2} (Subtype.{u_2 + 1} fun (x : Y) ↦ Membership.mem.{u_2, u_2} R x)
-              (Submodule.comap.{u_1, u_1, u_2, u_2} (Submodule.subtype.{u_1, u_2} R) S)))
-          (Module.length.{u_1, u_2} O
-            (HasQuotient.Quotient.{u_2, u_2} (Subtype.{u_2 + 1} fun (x : Y) ↦ Membership.mem.{u_2, u_2} D x)
-              (Submodule.comap.{u_1, u_1, u_2, u_2} (Submodule.subtype.{u_1, u_2} D) E)))) := by
-  intro O Y _ _ _ R S D E hD hE
-  exact key R S D E hD hE
+    refine ⟨fun hy => ⟨Submodule.Quotient.mk ⟨y, (hD y).2 ⟨y.2, (Submodule.Quotient.mk_eq_zero (S.comap R.subtype)).mp hy⟩⟩, rfl⟩,
+      fun ⟨x, hx⟩ => ?_⟩
+    obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
+    rw [← hx]
+    exact (Submodule.Quotient.mk_eq_zero _).mpr ((hD x).1 x.2).2
 
 end Bl.general_b_fact_second'''

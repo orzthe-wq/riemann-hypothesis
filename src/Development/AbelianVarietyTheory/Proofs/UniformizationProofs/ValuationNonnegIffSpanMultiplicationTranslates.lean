@@ -298,7 +298,7 @@ theorem nuGe_zero_iff_span_translates : LL → TwistBCSpanStatement → TWM.VRat
     fun c t t' t'' h => (hEu _ _ (hlin F (m ^ 2) w₀ t t' t'' _ _ c (hE _) (hE _) h)).symm
   replace hrk : Module.finrank F (Fam D.toPre F (m ^ 2)) = (m ^ 2) ^ A.g :=
     hrk.trans (ThetaRep.finrank_secM hL.secBaseChange A hN1 (jFK (R := V) F))
-  haveI : Module.Finite F (Fam D.toPre F (m ^ 2)) := Module.finite_of_finrank_pos (by rw [hrk]; positivity)
+  have : Module.Finite F (Fam D.toPre F (m ^ 2)) := Module.finite_of_finrank_pos (by rw [hrk]; positivity)
   let B := basisOfLinearIndependentOfCardEqFinrank' b hbi (by rw [Fintype.card_fin, hrk, hdim])
   have hBb : ∀ i, B i = b i := fun i => congrFun (coe_basisOfLinearIndependentOfCardEqFinrank' _ _ _) i
   have hint : ∀ r, NuGe D Q F v (m ^ 2) r 0 → ∀ i, 0 ≤ v (B.repr r i) := fun r hr i => by
@@ -309,9 +309,9 @@ theorem nuGe_zero_iff_span_translates : LL → TwistBCSpanStatement → TWM.VRat
 
   have hcard : Nat.card {x : TFK (R := V) F ⟶ A.A // x ^ (m ^ 2) = 1} = (m ^ 2) ^ (2 * A.g) :=
     (hL.mulN _ A (m ^ 2) hN1).2.2.2.2 F (jFK (R := V) F) hN0
-  haveI : Finite {x : TFK (R := V) F ⟶ A.A // x ^ (m ^ 2) = 1} :=
+  have : Finite {x : TFK (R := V) F ⟶ A.A // x ^ (m ^ 2) = 1} :=
     Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)
-  letI := Fintype.ofFinite {x : TFK (R := V) F ⟶ A.A // x ^ (m ^ 2) = 1}
+  let := Fintype.ofFinite {x : TFK (R := V) F ⟶ A.A // x ^ (m ^ 2) = 1}
   have hθ : ∀ x : {x : TFK (R := V) F ⟶ A.A // x ^ (m ^ 2) = 1},
       ∃ θ, SymLift A.A A.L ((m ^ 2 : ℕ) : ℤ) (m ^ 2) x.1 θ := fun x => by
     obtain ⟨_, ⟨_, _, θ, -, -, -, h, -⟩, -⟩ := hT x.1 x.2

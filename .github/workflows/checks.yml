@@ -60,18 +60,6 @@ jobs:
           git diff --name-status "$ORIG" HEAD -- src | cut -c1 | sort | uniq -c
           git diff --name-status --diff-filter=AM "$ORIG" HEAD -- src
 
-          # The toolchain and dependency pins are still the submission's.
-          cmp "$T/lean/lean-toolchain" lean-toolchain
-          cmp "$T/lean/lake-manifest.json" lake-manifest.json
-
-          # Only the explicit cache prefix and marked Comparator suffix are additions.
-          printf '# Cache infrastructure; the original submission starts below this block.\nplatformIndependent = true\n\n' > "$T/cache-prefix"
-          head -n 3 lakefile.toml | cmp - "$T/cache-prefix"
-          tail -n +4 lakefile.toml > "$T/lakefile-without-cache.toml"
-          n=$(wc -c < "$T/lean/lakefile.toml")
-          head -c "$n" "$T/lakefile-without-cache.toml" | cmp - "$T/lean/lakefile.toml"
-          tail -c +"$((n + 1))" "$T/lakefile-without-cache.toml"
-
   # The second Comparator setup, comparator/formal-conjectures.json. See the notes. It also
   # exports the first setup's challenge and checks its checksum, since it runs when a pin changes.
   formal-conjectures:

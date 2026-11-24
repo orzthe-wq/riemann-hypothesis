@@ -83,7 +83,6 @@ theorem exists_embedding_over {K Ω : Type} [Field K] [NumberField K] [Field Ω]
     ∃ P : Ω →+* ℂ, P.comp (algebraMap K Ω) = sg := by
   haveI hKc : Countable K := by
     first
-    | infer_instance
     | exact (Module.finBasis ℚ K).equivFun.injective.countable
   haveI hΩc : Countable Ω := countable_of_intermediateField_fg hfg
   letI : Algebra K ℂ := sg.toAlgebra

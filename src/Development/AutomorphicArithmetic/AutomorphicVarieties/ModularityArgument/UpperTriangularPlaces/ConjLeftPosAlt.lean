@@ -1,18 +1,30 @@
 module
 
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.CqStmt
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LevelIso
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LocalPublishedTheorems
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRepDefinedOverFiniteExtension
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsContinuousLadicGalRepModelFiniteExtHost
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.AdmBilin
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.AdmRes
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.AdmSub
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrysOfInertia
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MatrixExtendByZeroApply
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PrF
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.EveryPointSatisfiesFrameCondition
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionGroupEquivLocalGaloisGroup
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.DecEmb
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PotCrysOf
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.WeakOfAtt
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LinkedUnramifiedChains.LogarithmicNormBounds.LinkedUnlEOf
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LevelIso
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.ClsFacts
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.ExistsNrep3
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.DotProductSymmetry.PotentiallyCrystallineCompConjugation
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.DotProductSymmetry.PotentiallyCrystallineContragredient
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.PotMove
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.PotRes
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.GalEmbTop
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.PotOfUnl
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.GaloisRepresentationTypes.IsIrrOfMatIrr
-import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.MatrixIrreducibility.IrrOfMatIrr
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -27,7 +39,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,7 +46,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,10 +59,541 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.NormNum.Parity
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
+import Mathlib.Topology.Sheaves.Presheaf
+import Mathlib.FieldTheory.Galois.Profinite
+import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.OrdZero
+import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.GalEmbTop
+import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.MatrixIrreducibility.IrrOfMatIrr
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.PotMove, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.CrOnTri, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.PotOfUnl, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.ConjLeftPosAlt
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.PotMove =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.PotMove", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.CqStmt\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LevelIso\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
-attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
+open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N GlobalTheory.Pst UpperTheory.V UpperTheory.V.Af
+open scoped Pointwise
+
+theorem UpperTheory.V.Br.potMove :
+    UpperTheory.V.Br.PotMove := by
+  intro F Ω _ _ _ _ _ l _ n r A A' g hg hA
+  obtain ⟨O, i1, i2, i3, Bw, hj, LL', r', ⟨hle, hmap⟩, K', hK', hcr⟩ := hA
+  have hmem : ∀ s : G F Ω, s ∈ Dec (F := F) A' ↔ g * s * g⁻¹ ∈ Dec (F := F) A := fun s => by
+    have hgA : g • A' = A := by
+      ext x
+      rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, hg]
+      simp [AlgEquiv.smul_def]
+    rw [mem_Dec, mem_Dec, ← hgA, mul_smul, inv_smul_smul, mul_smul, smul_left_cancel_iff]
+  let φ : ↥(Dec (F := F) A') ≃* ↥(Dec (F := F) A) :=
+    { toFun := fun s => ⟨g * s * g⁻¹, (hmem s).1 s.2⟩
+      invFun := fun t => ⟨g⁻¹ * t * g, (hmem _).2 (by
+        have e : g * (g⁻¹ * (t : G F Ω) * g) * g⁻¹ = t := by group
+        rw [e]; exact t.2)⟩
+      left_inv := fun s => Subtype.ext (by dsimp only; group)
+      right_inv := fun t => Subtype.ext (by dsimp only; group)
+      map_mul' := fun s t => Subtype.ext (by simp only [Subgroup.coe_mul]; group) }
+  have hφ : Continuous φ :=
+    ((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _
+  have hφs : Continuous φ.symm :=
+    ((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _
+  have hjE : ∀ x : F, Bw.j (g (algebraMap F Ω x)) = Bw.j (algebraMap F Ω x) := fun x => by
+    rw [AlgEquiv.commutes]
+  let Bw' : LocBridge l F Ω (Dec (F := F) A') O :=
+    { Kw := Bw.Kw, j := Bw.j.comp (g : Ω →+* Ω)
+      j_E := fun x => by
+        change Bw.j (g (algebraMap F Ω x)) ∈ _
+        rw [hjE]; exact Bw.j_E x
+      j_dense := Bw.j_dense.trans (closure_mono (by
+        rintro _ ⟨x, rfl⟩
+        exact ⟨x, hjE x⟩))
+      e := φ.trans Bw.e
+      e_cont := Bw.e_cont.comp hφ, e_symm_cont := hφs.comp Bw.e_symm_cont
+      e_comm := fun s x => by
+        refine (Bw.e_comm (φ s) (g x)).trans ?_
+        change Bw.j ((g * (s : G F Ω) * g⁻¹) (g x)) = Bw.j (g ((s : G F Ω) x))
+        simp
+      LL := Bw.LL, LL_split := Bw.LL_split, eO := Bw.eO, eO_alg := Bw.eO_alg
+      eO_cont := Bw.eO_cont, eO_symm_cont := Bw.eO_symm_cont }
+  have h1 : PotCrysAt (r.comp (MulAut.conj g).toMonoidHom) A' := by
+    refine ⟨O, i1, i2, i3, Bw', fun x => (hg x).trans (hj (g x)), LL', r'.comp φ.toMonoidHom,
+      ⟨hle, MonoidHom.ext fun s => DFunLike.congr_fun hmap (φ s)⟩, K', hK', ?_⟩
+    have e : Bw'.repE LL' (r'.comp φ.toMonoidHom) = Bw.repE LL' r' := by
+      refine MonoidHom.ext fun t => ?_
+      simp [LocBridge.repE, Bw']
+    rw [e]
+    exact hcr
+  refine h1.of_iso ⟨(r g)⁻¹, fun s => ?_⟩
+  simp [mul_assoc]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.PotMove =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.CrOnTri =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.CrOnTri", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LocalPublishedTheorems\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRepDefinedOverFiniteExtension\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsContinuousLadicGalRepModelFiniteExtHost\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.AdmBilin\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.AdmRes\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.AdmSub\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrysOfInertia\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MatrixExtendByZeroApply\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PrF\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Connected.Separation\nimport Mathlib.Topology.MetricSpace.Ultra.TotallySeparated\nimport Mathlib.Topology.Sheaves.Presheaf\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
+
+namespace UpperTheory.V.Z.Keep.PotentialOfUnlocked
+
+section Alg
+
+variable {Γ E : Type} [Group Γ] [Field E]
+
+private noncomputable def mrep {n : ℕ} (M : Γ →* Matrix (Fin n) (Fin n) E) : Representation E Γ (Fin n → E) where
+  toFun g := Matrix.toLin' (M g)
+  map_one' := by simp [Module.End.one_eq_id]
+  map_mul' g h := by simp [Module.End.mul_eq_comp]
+
+private theorem mrep_apply {n : ℕ} (M : Γ →* Matrix (Fin n) (Fin n) E) (g : Γ) (x : Fin n → E) (i : Fin n) :
+    mrep M g x i = ∑ j, M g i j * x j := rfl
+
+private def topBlock {n : ℕ} (M : Γ →* Matrix (Fin (n + 1)) (Fin (n + 1)) E)
+    (h : ∀ g i j, j < i → M g i j = 0) : Γ →* Matrix (Fin n) (Fin n) E where
+  toFun g := (M g).submatrix Fin.castSucc Fin.castSucc
+  map_one' := by rw [map_one, Matrix.submatrix_one _ (Fin.castSucc_injective n)]
+  map_mul' g k := by
+    ext i j
+    simp only [Matrix.submatrix_apply, Matrix.mul_apply, Fin.sum_univ_castSucc,
+      h k (Fin.last n) j.castSucc (Fin.castSucc_lt_last j), mul_zero, add_zero, map_mul]
+
+private def pad (n : ℕ) : (Fin n → E) →ₗ[E] (Fin (n + 1) → E) :=
+  LinearMap.pi fun i => Fin.lastCases 0 (fun j => LinearMap.proj j) i
+
+@[simp] private theorem pad_last (n : ℕ) (x : Fin n → E) : pad n x (Fin.last n) = 0 := by simp [pad]
+
+@[simp] private theorem pad_cast (n : ℕ) (x : Fin n → E) (j : Fin n) : pad n x j.castSucc = x j := by
+  simp [pad]
+
+private theorem cont_mrep [TopologicalSpace Γ] [TopologicalSpace E] [IsTopologicalRing E] {n : ℕ}
+    (M : Γ →* Matrix (Fin n) (Fin n) E) (h : ∀ i j, Continuous fun g => M g i j) : ContAction (mrep M) := by
+  refine continuous_pi fun i => ?_
+  simp only [mrep_apply]
+  exact continuous_finsetSum _ fun j _ =>
+    ((h i j).comp continuous_fst).mul ((continuous_apply j).comp continuous_snd)
+
+private theorem tri_apply {n : ℕ} (M : Γ →* Matrix (Fin n) (Fin n) E) (h : ∀ g i j, j < i → M g i j = 0)
+    (g : Γ) (i : Fin n) (x : Fin n → E) (hx : ∀ j, i < j → x j = 0) :
+    (∀ j, i < j → mrep M g x j = 0) ∧ mrep M g x i = M g i i * x i := by
+  constructor
+  · intro j hj
+    rw [mrep_apply]
+    refine Finset.sum_eq_zero fun k _ => ?_
+    rcases lt_or_ge i k with hk | hk
+    · rw [hx k hk, mul_zero]
+    · rw [h g j k (hk.trans_lt hj), zero_mul]
+  · rw [mrep_apply]
+    refine Finset.sum_eq_single i (fun k _ hk => ?_) (fun h => absurd (Finset.mem_univ i) h)
+    rcases lt_or_gt_of_ne hk with hk | hk
+    · rw [h g i k hk, zero_mul]
+    · rw [hx k hk, mul_zero]
+
+private theorem filt_std {n : ℕ} (ρ : Representation E Γ (Fin n → E)) (S : Set (Γ →* Eˣ))
+    (ψ : Fin n → Γ →* Eˣ) (hψ : ∀ i, ψ i ∈ S)
+    (hρ : ∀ g (i : Fin n) (x : Fin n → E), (∀ j, i < j → x j = 0) →
+      (∀ j, i < j → ρ g x j = 0) ∧ ρ g x i = ψ i g * x i) : FiltBy ρ S := by
+  classical
+  let U : ℕ → Submodule E (Fin n → E) := fun i =>
+    { carrier := {x | ∀ j : Fin n, i ≤ j.val → x j = 0}
+      zero_mem' := fun _ _ => rfl
+      add_mem' := fun ha hb j hj => by simp [ha j hj, hb j hj]
+      smul_mem' := fun c x hx j hj => by simp [hx j hj] }
+  have hU : ∀ i x, x ∈ U i ↔ ∀ j : Fin n, i ≤ j.val → x j = 0 := fun _ _ => Iff.rfl
+  refine ⟨n, U, ?_, ?_, fun i hi => ⟨fun x hx j hj => hx j (Nat.le_of_succ_le hj), ψ ⟨i, hi⟩, hψ _,
+    Pi.single ⟨i, hi⟩ 1, ?_, fun g => ?_⟩⟩
+  · rw [eq_bot_iff]
+    intro x hx
+    exact funext fun j => hx j (Nat.zero_le _)
+  · rw [eq_top_iff]
+    intro x _ j hj
+    exact absurd j.2 (not_lt.2 hj)
+  · refine le_antisymm (fun x hx => ?_) (sup_le (fun x hx j hj => hx j (Nat.le_of_succ_le hj)) ?_)
+    · have e : x = (x - x ⟨i, hi⟩ • Pi.single ⟨i, hi⟩ (1 : E)) + x ⟨i, hi⟩ • Pi.single ⟨i, hi⟩ (1 : E) := by simp
+      rw [e]
+      refine Submodule.add_mem_sup (fun j hj => ?_) (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))
+      rcases hj.lt_or_eq with h | h
+      · have hne : j ≠ ⟨i, hi⟩ := fun e => by rw [e] at h; exact lt_irrefl _ h
+        simp [hx j h, hne]
+      · have e2 : j = ⟨i, hi⟩ := Fin.ext h.symm
+        subst e2
+        simp
+    · rw [Submodule.span_singleton_le_iff_mem]
+      intro j hj
+      have hne : j ≠ ⟨i, hi⟩ := fun e => by rw [e] at hj; exact absurd hj (by simp)
+      simp [hne]
+  · have h0 : ∀ j : Fin n, (⟨i, hi⟩ : Fin n) < j → (Pi.single ⟨i, hi⟩ (1 : E) : Fin n → E) j = 0 := fun j hj =>
+      Pi.single_eq_of_ne hj.ne' _
+    obtain ⟨a, b⟩ := hρ g ⟨i, hi⟩ _ h0
+    intro j hj
+    rcases hj.lt_or_eq with h | h
+    · have hij : (⟨i, hi⟩ : Fin n) < j := h
+      simp [a j hij, h0 j hij]
+    · have e2 : j = ⟨i, hi⟩ := Fin.ext h.symm
+      subst e2
+      simp [b]
+
+private theorem h0dual_none {V : Type} [AddCommGroup V] [Module E V] {ρ : Representation E Γ V}
+    {S : Set (Γ →* Eˣ)} (h : FiltBy ρ S) (χ : Γ →* Eˣ)
+    (hS : ∀ κ ∈ S, ∃ g, (κ g : E) ≠ χ g) : H0dual χ ρ = ⊥ := by
+  obtain ⟨n, F, h0, hn, hF⟩ := h
+  rw [eq_bot_iff]
+  intro f hf
+  have key : ∀ i ≤ n, F i ≤ LinearMap.ker f := by
+    intro i
+    induction i with
+    | zero => intro _; simp [h0]
+    | succ i ih =>
+      intro hi
+      obtain ⟨-, κ, hκ, x, hx, hg⟩ := hF i hi
+      have h1 := ih (Nat.le_of_succ_le hi)
+      rw [hx, sup_le_iff, Submodule.span_singleton_le_iff_mem]
+      refine ⟨h1, ?_⟩
+      obtain ⟨g, hne⟩ := hS κ hκ
+      have h2 := h1 (hg g)
+      rw [LinearMap.mem_ker, map_sub, map_smul, hf g x, smul_eq_mul, ← sub_mul] at h2
+      rcases mul_eq_zero.1 h2 with h3 | h3
+      · exact absurd (sub_eq_zero.1 h3).symm hne
+      · exact h3
+  have := key n le_rfl
+  rw [hn, top_le_iff, LinearMap.ker_eq_top] at this
+  simp [this]
+
+end Alg
+
+private theorem res_cont {l : ℕ} {Γ E V : Type} [Group Γ] [TopologicalSpace Γ] [CommRing E] [AddCommGroup V]
+    [Module E V] [TopologicalSpace V] (H : Subgroup Γ) (π : Representation E Γ V) (hπ : ContAction π) :
+    ContAction (π.comp H.subtype : Representation E H V) :=
+  hπ.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)
+
+private theorem key (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
+    [IsTopologicalGroup Γ] (φ : Γ →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E]
+    [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] [TopologicalSpace E]
+    [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E] (H : Subgroup Γ) [H.Normal] (hH : IsOpen (H : Set Γ)) (n : ℕ) :
+    ∀ (M : Γ →* Matrix (Fin n) (Fin n) E), (∀ i j, Continuous fun g => M g i j) →
+      ∀ (κ : Fin n → Γ →* Eˣ) (w : Fin n → ℤ), (∀ g i j, j < i → M g i j = 0) → (∀ g i, M g i i = κ i g) →
+      StrictAnti w → (∀ i, ∀ g ∈ H, φ g ∈ Iq l → κ i g = cycA l l E (φ g) ^ w i) →
+      (∀ i j, i < j → ∃ g, (κ i g : E) ≠ (κ j g : E) * (cycA l l E (φ g) : E)) → CrOn φ (mrep M) H := by
+  have hφH : IsOpenEmbedding (φ.comp H.subtype) := hφ.comp hH.isOpenEmbedding_subtypeVal
+  induction n with
+  | zero =>
+    intro M hM κ w _ _ _ _ _
+    exact crUnr _ hφH _ (res_cont (l := l) H _ (cont_mrep M hM)) 0 fun _ _ _ => Subsingleton.elim _ _
+  | succ n ih =>
+    intro M hM κ w htri hdiag hw hI hne
+    set M0 := topBlock M htri with hM0
+    have hM0c : ∀ i j, Continuous fun g => M0 g i j := fun i j => hM _ _
+    have htri0 : ∀ g i j, j < i → M0 g i j = 0 := fun g i j h => htri g _ _ (Fin.castSucc_lt_castSucc_iff.2 h)
+    have h0 : CrOn φ (mrep M0) H := ih M0 hM0c (fun i => κ i.castSucc) (fun i => w i.castSucc) htri0
+      (fun g i => hdiag g _) (fun i j h => hw (Fin.castSucc_lt_castSucc_iff.2 h)) (fun i => hI _)
+      (fun i j h => hne _ _ (Fin.castSucc_lt_castSucc_iff.2 h))
+    set k := κ (Fin.last n) with hk
+    have hkc : Continuous fun g => (k g : E) := by
+      simp only [hk, ← hdiag]; exact hM _ _
+    have hkc' : Continuous fun g => ((k⁻¹ g : Eˣ) : E) := by
+      have : (fun g => ((k⁻¹ g : Eˣ) : E)) = (fun g => (k g : E)) ∘ fun g => g⁻¹ := by
+        ext g; simp
+      rw [this]; exact hkc.comp continuous_inv
+    have hch : ∀ χ : Γ →* Eˣ, Continuous (fun g => (χ g : E)) → ContAction (chRep χ) := fun χ h =>
+      (h.comp continuous_fst).mul continuous_snd
+    have hkcr : CrOn φ (chRep k) H :=
+      crUnr _ hφH _ (res_cont (l := l) H _ (hch _ hkc)) (w (Fin.last n)) fun g hg x => by
+        change (k g : E) • x = _
+        rw [hk, hI _ g g.2 hg]
+        rfl
+    have hkcr' : CrOn φ (chRep k⁻¹) H :=
+      crUnr _ hφH _ (res_cont (l := l) H _ (hch _ hkc')) (-w (Fin.last n)) fun g hg x => by
+        change ((k⁻¹ g : Eˣ) : E) • x = _
+        rw [MonoidHom.inv_apply, hk, hI _ g g.2 hg, zpow_neg]
+        rfl
+    have htw : ContAction (twist k⁻¹ (mrep M0)) :=
+      (hkc'.comp continuous_fst).smul (cont_mrep M0 hM0c)
+    have htwH := res_cont (l := l) H _ htw
+    have htwcr : IsCr (φ.comp H.subtype) ((twist k⁻¹ (mrep M0)).comp H.subtype : Representation E H (Fin n → E)) := by
+      refine (admissible_of_bilinear_openSubgroup_galois _ hφH ((chRep k⁻¹).comp H.subtype : Representation E H E)
+        ((mrep M0).comp H.subtype : Representation E H (Fin n → E)) _ (res_cont (l := l) H _ (hch _ hkc'))
+        (res_cont (l := l) H _ (cont_mrep M0 hM0c)) htwH
+        ((LinearMap.lsmul E (Fin n → E)).restrictScalars₁₂ ℚ_[l] ℚ_[l]) ?_ ?_).1 hkcr' h0
+      · intro g x y
+        simp [chRep, twist, smul_smul, mul_comm]
+      · rw [eq_top_iff]
+        intro x _
+        exact Submodule.subset_span ⟨(1, x), by simp⟩
+    have hdr : IsDr φ (twist k⁻¹ (mrep M0)) :=
+      ((isCrys_isDR_restrict_openSubgroup φ hφ _ htw).2 H hH).2.2 ((isCrys_isDR_restrict_openSubgroup _ hφH _ htwH).1 htwcr)
+    let ψ : Fin n → Γ →* Eˣ := fun i => k⁻¹ * κ i.castSucc
+    have hfil : ∀ S : Set (Γ →* Eˣ), (∀ i, ψ i ∈ S) → FiltBy (twist k⁻¹ (mrep M0)) S := by
+      intro S hS
+      refine filt_std _ S ψ hS ?_
+      intro g i x hx
+      obtain ⟨a, b⟩ := tri_apply M0 htri0 g i x hx
+      have e : ∀ j, twist k⁻¹ (mrep M0) g x j = ((k⁻¹ g : Eˣ) : E) * mrep M0 g x j := fun j => rfl
+      refine ⟨fun j hj => by rw [e, a j hj, mul_zero], ?_⟩
+      have : M0 g i i = κ i.castSucc g := hdiag g _
+      rw [e, b, this]
+      simp [ψ, mul_assoc]
+    have hpos : Positive φ (twist k⁻¹ (mrep M0)) := by
+      refine ⟨hdr, hfil _ fun i => ⟨w i.castSucc - w (Fin.last n), ?_, H, hH, ?_⟩⟩
+      · have := hw (Fin.castSucc_lt_last i)
+        omega
+      · intro g hgH hg
+        simp only [ψ, MonoidHom.mul_apply, MonoidHom.inv_apply, hk, hI _ g hgH hg]
+        rw [zpow_sub]
+        exact mul_comm _ _
+    have hdual : H0dual ((cycA l l E).comp φ) (twist k⁻¹ (mrep M0)) = ⊥ := by
+      refine h0dual_none (hfil (Set.range ψ) fun i => ⟨i, rfl⟩) _ ?_
+      rintro _ ⟨i, rfl⟩
+      obtain ⟨g, hg⟩ := hne _ _ (Fin.castSucc_lt_last i)
+      refine ⟨g, fun h => hg ?_⟩
+      have h' : (ψ i g : E) = (cycA l l E (φ g) : E) := h
+      rw [← h']
+      simp [ψ, hk]
+    have hF := prF hP φ hφ (twist k⁻¹ (mrep M0)) htw hpos hdual
+    let c : Γ → Fin n → E := fun g i => ((k⁻¹ g : Eˣ) : E) * M g i.castSucc (Fin.last n)
+    have hc : c ∈ Z1 (twist k⁻¹ (mrep M0)) := by
+      refine ⟨continuous_pi fun i => hkc'.mul (hM _ _), fun g h => funext fun i => ?_⟩
+      change ((k⁻¹ (g * h) : Eˣ) : E) * M (g * h) i.castSucc (Fin.last n) =
+        ((k⁻¹ g : Eˣ) : E) * M g i.castSucc (Fin.last n) + ((k⁻¹ g : Eˣ) : E) *
+          ∑ j : Fin n, M g i.castSucc j.castSucc * (((k⁻¹ h : Eˣ) : E) * M h j.castSucc (Fin.last n))
+      have e : ((k⁻¹ h : Eˣ) : E) * (k h : E) = 1 := by simp
+      have e2 : ∑ j : Fin n, M g i.castSucc j.castSucc * (((k⁻¹ h : Eˣ) : E) * M h j.castSucc (Fin.last n)) =
+          ((k⁻¹ h : Eˣ) : E) * ∑ j : Fin n, M g i.castSucc j.castSucc * M h j.castSucc (Fin.last n) := by
+        rw [Finset.mul_sum]
+        exact Finset.sum_congr rfl fun j _ => by ring
+      rw [map_mul, map_mul, Matrix.mul_apply, Fin.sum_univ_castSucc, hdiag, ← hk, Units.val_mul, e2]
+      linear_combination ((k⁻¹ g : Eˣ) : E) * M g i.castSucc (Fin.last n) * e
+    rw [← hF] at hc
+    refine (crExt φ hφ (mrep M0) (mrep M) (cont_mrep M0 hM0c) (cont_mrep M hM) k (pad n)
+      (LinearMap.proj (Fin.last n)) (Pi.single (Fin.last n) 1) c ?_ ?_ (by simp) ?_ ?_ H hH h0 hkcr).2 hc
+    · intro x y h
+      funext j
+      simpa using congrFun h j.castSucc
+    · intro y
+      constructor
+      · intro h
+        refine ⟨fun j => y j.castSucc, funext fun j => ?_⟩
+        induction j using Fin.lastCases with
+        | last => rw [pad_last]; exact h.symm
+        | cast j => simp
+      · rintro ⟨x, rfl⟩
+        simp
+    · intro g x
+      funext j
+      induction j using Fin.lastCases with
+      | last =>
+        rw [pad_last, mrep_apply, Fin.sum_univ_castSucc, pad_last, mul_zero, add_zero]
+        exact (Finset.sum_eq_zero fun j _ => by
+          rw [htri g _ _ (Fin.castSucc_lt_last j), zero_mul]).symm
+      | cast j =>
+        rw [pad_cast, mrep_apply, mrep_apply, Fin.sum_univ_castSucc, pad_last, mul_zero, add_zero]
+        simp only [pad_cast, hM0, topBlock, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.submatrix_apply]
+    · intro g
+      funext j
+      induction j using Fin.lastCases with
+      | last => simp [mrep_apply, Pi.single_apply, hdiag, hk]
+      | cast j => simp [mrep_apply, Pi.single_apply, c, (Fin.castSucc_lt_last j).ne]
+
+end UpperTheory.V.Z.Keep.PotentialOfUnlocked
+
+
+open UpperTheory.V.Z.Keep.PotentialOfUnlocked in
+theorem UpperTheory.V.Z.Keep.crOnTri (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
+    [IsTopologicalGroup Γ] (φ : Γ →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E]
+    [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] [TopologicalSpace E]
+    [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E] (H : Subgroup Γ) [H.Normal] (hH : IsOpen (H : Set Γ)) {n : ℕ}
+    (t : Γ →* GL (Fin n) E) (ht : ∀ i j, Continuous fun g => (t g : Matrix (Fin n) (Fin n) E) i j)
+    (κ : Fin n → Γ →* Eˣ) (w : Fin n → ℤ) (htri : UpperTri t κ) (hw : StrictAnti w)
+    (hI : ∀ i, ∀ g ∈ H, φ g ∈ Iq l → κ i g = cycA l l E (φ g) ^ w i)
+    (hne : ∀ i j, i < j → ∃ g, (κ i g : E) ≠ (κ j g : E) * (cycA l l E (φ g) : E)) : CrOn φ (colRep t) H :=
+  key hP φ hφ H hH n ((Units.coeHom _).comp t) ht κ w (fun g => (htri g).1) (fun g => (htri g).2) hw hI hne
+
+namespace UpperTheory.V.Z.Keep.PotentialOfUnlocked
+
+private theorem cr_descend (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
+    [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] (φ : Γ →* GQ l) (hφ : IsOpenEmbedding φ)
+    (H : Subgroup Γ) [H.Normal] (hH : IsOpen (H : Set Γ)) {n : ℕ} (r₀ : Γ →* GL (Fin n) (Om l))
+    (hr : Continuous fun g => (r₀ g : Matrix (Fin n) (Fin n) (Om l))) (P : GL (Fin n) (Om l))
+    (κ : Fin n → Γ →* (Om l)ˣ) (w : Fin n → ℤ)
+    (hfl : ∀ s, (∀ i j, j < i → (P * r₀ s * P⁻¹ : GL (Fin n) (Om l)) i j = 0) ∧
+      ∀ i, (P * r₀ s * P⁻¹ : GL (Fin n) (Om l)) i i = (κ i s : Om l))
+    (hw : StrictAnti w) (hI : ∀ i, ∀ g ∈ H, φ g ∈ Iq l → κ i g = cycA l l (Om l) (φ g) ^ w i)
+    (hne : ∀ i j, κ i ≠ κ j * (cycA l l (Om l)).comp φ) :
+    ∃ (E' : FinExt l) (r' : H →* GL (Fin n) ↥E'.1),
+      (∀ h a b, (((r' h : Matrix (Fin n) (Fin n) ↥E'.1) a b : ↥E'.1) : Om l) =
+        (r₀ h : Matrix (Fin n) (Fin n) (Om l)) a b) ∧ IsCr (φ.comp H.subtype) (colRep r') := by
+  classical
+  let t : Set (Om l) := Set.range (fun p : Fin n × Fin n => (P : Matrix (Fin n) (Fin n) (Om l)) p.1 p.2) ∪
+    Set.range (fun p : Fin n × Fin n => ((P⁻¹ : GL (Fin n) (Om l)) : Matrix (Fin n) (Fin n) (Om l)) p.1 p.2)
+  haveI : Finite t := ((Set.finite_range _).union (Set.finite_range _)).to_subtype
+  let L₀ : FinExt l := ⟨IntermediateField.adjoin ℚ_[l] t,
+    IntermediateField.finiteDimensional_adjoin fun z _ => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral⟩
+  obtain ⟨L, hL, hent⟩ := GlobalTheory.CompactRepField.exists_finExt_entries_mem l Γ n r₀ hr L₀
+  obtain ⟨s, hs⟩ := GlobalTheory.CompactRepField.exists_hom_of_entries_mem r₀ L.1 hent
+  have := L.2
+  haveI : IsModuleTopology ℚ_[l] ↥L.1 := isModuleTopologyOfFiniteDimensional
+  have hPm : ∀ a b, (P : Matrix (Fin n) (Fin n) (Om l)) a b ∈ L.1 := fun a b =>
+    hL (IntermediateField.subset_adjoin _ _ (Or.inl ⟨(a, b), rfl⟩))
+  have hPi : ∀ a b, ((P⁻¹ : GL (Fin n) (Om l)) : Matrix (Fin n) (Fin n) (Om l)) a b ∈ L.1 := fun a b =>
+    hL (IntermediateField.subset_adjoin _ _ (Or.inr ⟨(a, b), rfl⟩))
+  let Pm : Matrix (Fin n) (Fin n) ↥L.1 := Matrix.of fun a b => ⟨_, hPm a b⟩
+  let Pv : Matrix (Fin n) (Fin n) ↥L.1 := Matrix.of fun a b => ⟨_, hPi a b⟩
+  have hPmm : Pm.map L.1.val = (P : Matrix (Fin n) (Fin n) (Om l)) := rfl
+  have hPvm : Pv.map L.1.val = ((P⁻¹ : GL (Fin n) (Om l)) : Matrix (Fin n) (Fin n) (Om l)) := rfl
+  have hinj : Function.Injective fun X : Matrix (Fin n) (Fin n) ↥L.1 => X.map L.1.val :=
+    Matrix.map_injective Subtype.val_injective
+  have hone : (1 : Matrix (Fin n) (Fin n) ↥L.1).map L.1.val = 1 := Matrix.map_one _ (map_zero _) (map_one _)
+  have h1 : Pm * Pv = 1 := hinj (by
+    simp only []
+    rw [Matrix.map_mul, hPmm, hPvm, hone, Units.mul_inv])
+  have h2 : Pv * Pm = 1 := hinj (by
+    simp only []
+    rw [Matrix.map_mul, hPmm, hPvm, hone, Units.inv_mul])
+  let Pe : GL (Fin n) ↥L.1 := ⟨Pm, Pv, h1, h2⟩
+  let u : Γ →* GL (Fin n) ↥L.1 := conjGL Pe s
+  have hsm : ∀ g, (s g : Matrix (Fin n) (Fin n) ↥L.1).map L.1.val = (r₀ g : Matrix (Fin n) (Fin n) (Om l)) :=
+    fun g => Matrix.ext fun a b => hs g a b
+  have hum : ∀ g, (u g : Matrix (Fin n) (Fin n) ↥L.1).map L.1.val =
+      (P * r₀ g * P⁻¹ : GL (Fin n) (Om l)) := fun g => by
+    change (Pm * (s g : Matrix (Fin n) (Fin n) ↥L.1) * Pv).map L.1.val = _
+    rw [Matrix.map_mul, Matrix.map_mul, hsm, hPmm, hPvm]
+    rfl
+  have hu : ∀ g a b, (((u g : Matrix (Fin n) (Fin n) ↥L.1) a b : ↥L.1) : Om l) =
+      (P * r₀ g * P⁻¹ : GL (Fin n) (Om l)) a b := fun g a b => congrFun (congrFun (hum g) a) b
+  have hκE : ∀ i g, (κ i g : Om l) ∈ L.1 := fun i g => by
+    rw [← (hfl g).2 i, ← hu]
+    exact SetLike.coe_mem _
+  let κ' : Fin n → Γ →* (↥L.1)ˣ := fun i => MonoidHom.toHomUnits
+    { toFun := fun g => ⟨κ i g, hκE i g⟩
+      map_one' := Subtype.ext (by simp)
+      map_mul' := fun g h => Subtype.ext (by simp) }
+  have hPc : Continuous fun g => (P * r₀ g * P⁻¹ : GL (Fin n) (Om l)).val :=
+    (continuous_const.matrix_mul hr).matrix_mul continuous_const
+  have huc : ∀ i j, Continuous fun g => (u g : Matrix (Fin n) (Fin n) ↥L.1) i j := fun i j =>
+    continuous_induced_rng.2 ((hPc.matrix_elem i j).congr fun g => (hu g i j).symm)
+  have hcr : CrOn φ (colRep u) H := UpperTheory.V.Z.Keep.crOnTri hP φ hφ H hH u huc κ' w
+    (fun g => ⟨fun a b hab => Subtype.ext ((hu g a b).trans ((hfl g).1 a b hab)),
+      fun a => Subtype.ext ((hu g a a).trans ((hfl g).2 a))⟩) hw
+    (fun i g hg hg' => Units.ext (Subtype.ext (by
+      change (κ i g : Om l) = L.1.val _
+      rw [hI i g hg hg', Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, map_zpow₀]
+      rfl)))
+    (fun i j _ => by
+      by_contra hcon
+      push_neg at hcon
+      exact hne i j (MonoidHom.ext fun g => Units.ext (congrArg Subtype.val (hcon g))))
+  have hφH : IsOpenEmbedding (φ.comp H.subtype) := hφ.comp hH.isOpenEmbedding_subtypeVal
+  have hsc : Continuous fun g => (s g : Matrix (Fin n) (Fin n) ↥L.1) := continuous_matrix fun a b =>
+    continuous_induced_rng.2 ((hr.matrix_elem a b).congr fun g => (hs g a b).symm)
+  have cu : ContAction ((colRep u).comp H.subtype : Representation ↥L.1 H (Fin n → ↥L.1)) :=
+    res_cont (l := l) H _ (((continuous_matrix huc).comp continuous_fst).matrix_mulVec continuous_snd)
+  have cs : ContAction (colRep (s.comp H.subtype)) :=
+    ((hsc.comp continuous_subtype_val).comp continuous_fst).matrix_mulVec continuous_snd
+  let f : (Fin n → ↥L.1) →ₗ[ℚ_[l]] (Fin n → ↥L.1) := (Matrix.toLin' Pv).restrictScalars ℚ_[l]
+  refine ⟨L, s.comp H.subtype, fun h a b => hs h a b, ?_⟩
+  refine ((isCrys_isDR_sub_quot _ hφH _ _ cu cs f (fun g x => ?_)).2 fun y => ⟨Matrix.toLin' Pm y, ?_⟩).1 hcr
+  · change Matrix.mulVec Pv (Matrix.mulVec (Pm * (s g : Matrix (Fin n) (Fin n) ↥L.1) * Pv) x) =
+      Matrix.mulVec (s g : Matrix (Fin n) (Fin n) ↥L.1) (Matrix.mulVec Pv x)
+    rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]
+  · change Matrix.mulVec Pv (Matrix.mulVec Pm y) = y
+    rw [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]
+
+end UpperTheory.V.Z.Keep.PotentialOfUnlocked
+
+
+open UpperTheory.V.Z.Keep.PotentialOfUnlocked in
+alias UpperTheory.V.Z.Keep.crDescend := _root_.UpperTheory.V.Z.Keep.PotentialOfUnlocked.cr_descend
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.CrOnTri =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.PotOfUnl =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.PotOfUnl", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.EveryPointSatisfiesFrameCondition\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionGroupEquivLocalGaloisGroup\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.CrOnTri\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.DecEmb\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PotCrysOf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.FieldTheory.Galois.Profinite\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Connected.Separation\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.OrdZero\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial
+open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Th
+
+attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+
+private def muFix (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (M : ℕ) : Subgroup (G F Ω) where
+  carrier := {s | ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ}
+  mul_mem' := fun {a b} ha hb ζ h => by
+    change a (b ζ) = ζ
+    rw [hb ζ h, ha ζ h]
+  one_mem' := fun _ _ => rfl
+  inv_mem' := fun {a} ha ζ h => (AlgEquiv.symm_apply_eq a).2 (ha ζ h).symm
+
+private theorem muFix_normal (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (M : ℕ) : (muFix F Ω M).Normal :=
+  ⟨fun s hs t ζ h => by
+    have h2 : (t⁻¹ ζ) ^ M = 1 := by rw [← map_pow, h, map_one]
+    change t (s (t⁻¹ ζ)) = ζ
+    rw [hs _ h2]
+    exact t.apply_symm_apply ζ⟩
+
+private theorem muFix_open (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {M : ℕ} (hM : 1 ≤ M) :
+    IsOpen (muFix F Ω M : Set (G F Ω)) := by
+  have hfin : {ζ : Ω | ζ ^ M = 1}.Finite :=
+    (Multiset.finite_toSet (Polynomial.nthRoots M (1 : Ω))).subset fun z hz => (Polynomial.mem_nthRoots hM).2 hz
+  haveI : Finite ↥{ζ : Ω | ζ ^ M = 1} := hfin.to_subtype
+  haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic
+  haveI : FiniteDimensional F (IntermediateField.adjoin F {ζ : Ω | ζ ^ M = 1}) :=
+    IntermediateField.finiteDimensional_adjoin fun z _ => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral
+  refine Subgroup.isOpen_mono (H₁ := (IntermediateField.adjoin F {ζ : Ω | ζ ^ M = 1}).fixingSubgroup) ?_
+    (IntermediateField.fixingSubgroup_isOpen _)
+  intro s hs ζ h
+  exact (IntermediateField.mem_fixingSubgroup_iff _ _).1 hs ζ (IntermediateField.subset_adjoin _ _ h)
+
+theorem UpperTheory.V.Z.Keep.potOfUnl :
+    Loc.LocalPublishedTheorems → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [CharZero Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n M : ℕ) (m : Fin n → ℤ) (r : G F Ω →* GL (Fin n) (Qbar l)), 1 ≤ M → StrictAnti m → Continuous r → ∀ (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 → ∀ κ, Af.FlagAt M m r A κ → (∀ i j, κ i ≠ κ j * (cycBar F Ω l).comp (Dec (F := F) A).subtype) → Af.PotCrysAt r A := by
+  intro hP F Ω _ _ _ _ _ _ l _ n M m r hM hm hr A hA κ hfl hne
+  obtain ⟨χ, hχ, ⟨P, hPt⟩, hIn⟩ := hfl
+  obtain ⟨w, hw, hAw⟩ := GlobalTheory.DecLocal.exists_place_below (p := l) (F := F) A hA
+  obtain ⟨j, rfl⟩ := (Loc.decEmb (F := F) (Ω := Ω) (v := l)).1 A w hAw hw
+  obtain ⟨-, φ, hφ, hφj, -, hIq, hcyc, -⟩ := (Loc.decEmb (F := F) (Ω := Ω) (v := l)).2 j
+  have hcl : IsClosed (φ.range : Set (Loc.GQ l)) := φ.range.isClosed_of_isOpen hφ.isOpen_range
+  haveI : CompactSpace ↥(Dec (F := F) (Loc.placeJ j)) :=
+    (Topology.IsClosedEmbedding.mk hφ.isEmbedding hcl).compactSpace
+  haveI : T2Space ↥(Dec (F := F) (Loc.placeJ j)) := hφ.isEmbedding.t2Space
+  let H : Subgroup ↥(Dec (F := F) (Loc.placeJ j)) := (muFix F Ω M).subgroupOf _
+  haveI : (muFix F Ω M).Normal := muFix_normal F Ω M
+  haveI : H.Normal := Subgroup.Normal.subgroupOf inferInstance _
+  have hH : IsOpen (H : Set ↥(Dec (F := F) (Loc.placeJ j))) := (muFix_open F Ω hM).preimage continuous_subtype_val
+  have hcb : ∀ g : ↥(Dec (F := F) (Loc.placeJ j)), Loc.cycA l l (Loc.Om l) (φ g) = cycBar F Ω l (g : G F Ω) := fun g => by
+    change Units.map _ (Loc.cyc l l (φ g)) = _
+    rw [hcyc]
+    rfl
+  obtain ⟨E', r', hr', hcr⟩ := UpperTheory.V.Z.Keep.crDescend hP φ hφ H hH (r.comp (Dec (F := F) (Loc.placeJ j)).subtype)
+    (Units.continuous_val.comp (hr.comp continuous_subtype_val)) P κ m hPt hm
+    (fun i g hg hg' => by
+      have h1 := hIn i g ((hIq g).1 hg')
+      rw [hχ i g.1 hg, mul_one] at h1
+      rw [hcb, h1])
+    (fun i j' e => hne i j' (MonoidHom.ext fun g => by
+      have h1 := DFunLike.congr_fun e g
+      rw [MonoidHom.mul_apply, MonoidHom.comp_apply, hcb] at h1
+      exact h1))
+  exact Loc.potCrysOf j (φ.comp H.subtype) ((Dec (F := F) (Loc.placeJ j)).subtype.comp H.subtype)
+    (hφ.comp hH.isOpenEmbedding_subtypeVal) (fun h y => hφj h y) r hr E' r' hr' hcr
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.PotOfUnl =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.ConjLeftPosAlt =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.ConjLeftPosAlt", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.WeakOfAtt\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LinkedUnramifiedChains.LogarithmicNormBounds.LinkedUnlEOf\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LevelIso\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.ClsFacts\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.ExistsNrep3\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.DotProductSymmetry.PotentiallyCrystallineCompConjugation\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.DotProductSymmetry.PotentiallyCrystallineContragredient\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.PotMove\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.PotRes\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.GalEmbTop\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.PotOfUnl\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.GaloisRepresentationTypes.IsIrrOfMatIrr\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.MatrixIrreducibility.IrrOfMatIrr\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
+@[expose] public section
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.HV GlobalTheory.GalOfCusp UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.Th UpperTheory.V.Z.J
 open scoped Pointwise
@@ -172,12 +713,6 @@ private theorem anti3 (e : ℕ) (he : 1 ≤ e) : StrictAnti ![(e : ℤ), 0, -(e 
   have h : (0 : ℤ) < e := by exact_mod_cast he
   intro a b hab
   fin_cases a <;> fin_cases b <;> first | (exfalso; revert hab; decide) | (simp; omega)
-
-private theorem cont_units {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [ContinuousInv Γ] [Monoid M] [TopologicalSpace M]
-    (f : Γ →* Mˣ) (h : Continuous fun g => (f g : M)) : Continuous f := by
-  refine Units.continuous_iff.2 ⟨h, ?_⟩
-  simp only [← map_inv]
-  exact h.comp continuous_inv
 
 end UpperTheory.V.Z.Keep.KatoThreePlus
 
@@ -364,7 +899,7 @@ private theorem UpperTheory.V.Z.Keep.KatoThreePlus.main :
   have hK : ∀ s, (UnitaryThreeInertia.push A.val r (galEmb ℚ K Ω s)).right = 1 := fun s => (hright _).trans (hmem s)
   have hLη : galOf ℚ L Ω ≤ η.ker := Db.galL_le k
   have hρc : Continuous ρ := by
-    refine KatoThreePlus.cont_units ρ (continuous_matrix fun a b => ?_)
+    refine _root_.UpperTheory.Reformulated.B.ContinuousHomomorphism.cont_hom ρ (continuous_matrix fun a b => ?_)
     have h1 : Alg.AdicCont (maximalIdeal A) fun g : G ℚ Ω => (r g).mat a b := fun n =>
       (hr.cont n).comp fun m => m a b
     refine ((hcont (G ℚ Ω) _ h1).comp (galEmbTop ℚ K Ω).1.continuous).congr fun s => ?_
@@ -662,3 +1197,6 @@ theorem UpperTheory.V.Z.Keep.keeps3E :
     Loc.LocalPublishedTheorems → LinkedUnlE → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (c : Coef l) [CharP (ResidueField c.O) l] (N : ℕ) [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (η : G ℚ Ω →* ℤˣ) (σ g₁ : G ℚ Ω) (B : ValuationSubring Ω) (M : ℕ), Pr.LinkHyp c N e η σ B M → Even N → ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] [Algebra L Ω] [IsAlgClosure L Ω] (Φ : Fr.Frame l (ResidueField c.O)) (C₀ : ℕ) (k : Pr.GalLink η (Chr.Psi l e (Chr.dirG ℚ Ω ψ)) σ g₁ B M L Φ), Φ.Ok C₀ → Φ.Big C₀ → Pr.SeedClause c η (Chr.Psi l e (Chr.dirG ℚ Ω ψ)) σ L → ∀ (A : Subalgebra c.O (PadicAlgCl l)) [IsDiscreteValuationRing A] [Module.Finite c.O A] (r : G ℚ Ω →* GG (m := 3) (R := A)), Pr.OrdPt l η (Chr.Psi l e (Chr.dirG ℚ Ω ψ)) σ g₁ B r → (∀ U : Subgroup (G ℚ Ω), IsOpen (U : Set (G ℚ Ω)) → U ≤ η.ker → MatIrr U (mats (UnitaryThreeInertia.push A.val r))) → ∀ (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra K Ω] [IsAlgClosure K Ω], η.ker = galOf ℚ K Ω → ∀ [Algebra K L] [IsScalarTower K L Ω] (ρ : G K Ω →* GL (Fin 3) (Qbar l)), (∀ s, (ρ s).val = (UnitaryThreeInertia.push A.val r (galEmb ℚ K Ω s)).mat) → Z.Win.Keeps ρ L :=
   fun hLP hU Ω _ _ _ l _ c _ N _ e ψ η σ g₁ B M H hev L _ _ _ _ _ Φ C₀ k hok hbig hseed =>
     UpperTheory.V.Z.Keep.keeps3P hLP Ω l c N e ψ η σ g₁ B M H L Φ C₀ k hok (hU Ω l c N e ψ η σ g₁ B M H hev L Φ C₀ k hok hbig hseed)
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.ConjLeftPosAlt =====

@@ -45,6 +45,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Formalism.LocalRingCardinality.DataAmbForm
+import Formalism.LocalRingCardinality.SpanPowerMembership.Places
 
 @[expose] public section
 
@@ -55,12 +56,6 @@ noncomputable section
 namespace GlobalTheory.TypeLoss
 
 open IsDedekindDomain
-
-theorem additiveValuation_mul_of_ne_zero {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {x y : K}
-    (hx : x ≠ 0) (hy : y ≠ 0) : vAdd w (x * y) = vAdd w x + vAdd w y := by
-  unfold vAdd
-  rw [map_mul, WithZero.log_mul ((map_ne_zero _).2 hx) ((map_ne_zero _).2 hy)]
-  ring
 
 theorem additiveValuation_conj_place_eq_star (D : D7) (w : D.what₂.places.Pl) (x : D.what₂.LL) :
     vAdd (D.plEq (D.what₂.places.conj w)) x = vAdd (D.plEq w) (star x) := by
@@ -144,7 +139,7 @@ theorem sum_half (D : D7) (p : ℕ) (hp : p.Prime) (S : Finset D.what₂.places.
       SizeData₂.lwP w * (vAdd (D.plEq w) y : ℝ) + SizeData₂.lwP w * (vAdd (D.plEq w) (star y) : ℝ) := by
     intro w hw
     have h1 := additiveValuation_residueChar_eq_ramIndex D w
-    rw [(hS w).1 hw, ← hy, additiveValuation_mul_of_ne_zero _ hy0 (star_ne_zero.2 hy0)] at h1
+    rw [(hS w).1 hw, ← hy, _root_.Formalism.BasicNotions.Examples₂.PlacesToy.vAdd_mul _ hy0 (star_ne_zero.2 hy0)] at h1
     have h2 : (D.what₂.places.ramIdx w : ℝ) = (vAdd (D.plEq w) y : ℝ) + (vAdd (D.plEq w) (star y) : ℝ) := by
       exact_mod_cast h1.symm
     rw [h2, ← mul_add]

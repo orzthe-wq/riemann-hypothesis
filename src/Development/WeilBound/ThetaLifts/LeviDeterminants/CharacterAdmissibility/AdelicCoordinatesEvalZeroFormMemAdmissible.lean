@@ -6,8 +6,10 @@ public import Development.WeilBound.ThetaLifts.LeviDeterminants.MixedModels.Real
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicSchwartzNeZeroAtOrigin
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendByZeroMemSchA
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductFunctionOnSumCoordsMemAdelicSchwartzSpace
-public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissibleStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissible
 public import Development.WeilBound.ThetaLifts.LeviDeterminants.ExistsNeOfSurjOn
+public import Development.WeilBound.ThetaLifts.LeviDeterminants.EqZeroOfTheta
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -48,7 +50,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.WeilBound.ThetaLifts.LeviDeterminants.EqZeroOfTheta
 
 @[expose] public section
 
@@ -160,7 +161,7 @@ theorem box_adm (κ κ' : Type) [Fintype κ] [Fintype κ'] : ∀ φ₂ ∈ schA 
 theorem axB (hψ : IsStd ψ) : AxB (adeleClass F) ψ := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro κ _
-    exact (GlobalTheory.T.theta_distribution_heisenberg_invariant F κ ψ hψ.1 (isStd_ne_one hψ) hψ.2.1).1
+    exact (_root_.GlobalTheory.CompanionTheory.AdelicHeis.schr_mem_and_thetaSum F κ ψ hψ.1 (isStd_ne_one hψ) hψ.2.1).1
   · intro κ _
     obtain ⟨φ, h, h0⟩ := GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F κ
     exact ⟨φ, h, fun e => h0 (congrFun e 0)⟩

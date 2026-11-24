@@ -180,7 +180,7 @@ theorem UpperTheory.V.GradeZeroInterpolatingElement.signs :
         rw [spanMono D hD M h0]
         apply Submodule.subset_span
         refine ⟨[(g, i, j), (h, j, i)], ?_, ?_⟩
-        · refine Prod.ext ?_ ?_ <;> simp [wt] <;> ring
+        · refine Prod.ext ?_ ?_ <;> simp [wt]
         · simp [Model.ent]
       have he := key _ hp
       rw [map_mul, map_mul] at he

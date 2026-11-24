@@ -130,7 +130,7 @@ theorem exists_finite_lengths (n : ℕ) (hn : n ≠ 0) {N : ℤ} (hN : N ≠ 0) 
   have h4 : ∀ s : E, star s = s → h (w - s • v') (w - s • v') = h w w - 2 * (N * M) * s := by
     intro s hs'
     simp only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, map_smulₛₗ,
-      starRingEnd_apply, hs', smul_eq_mul, h1, h2, h3, RingHom.id_apply]
+      starRingEnd_apply, hs', smul_eq_mul, h1, h2, h3]
     ring
   obtain ⟨ρ, hρ, y, hy, hwρ⟩ := hRL (h w w) ((hL _).2 ⟨hint w hw w hw, (hs w w).symm⟩)
   obtain ⟨hyi, hys⟩ := (hL y).1 hy

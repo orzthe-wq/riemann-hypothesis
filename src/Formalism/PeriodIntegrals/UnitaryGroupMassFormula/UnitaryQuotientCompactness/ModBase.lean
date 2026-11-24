@@ -127,7 +127,7 @@ instance : Group (MG G hG) where
     change (npowRec n.succ a)⁻¹ = (npowRec n.succ a)⁻¹
     rfl
 
-@[simp] theorem toM_mul' (x y : MG G hG) : (x * y).toM = x.toM * y.toM := toM_mul x y
+@[simp] alias toM_mul' := _root_.PI.QuotSetU.UnitaryGroupMassFormula.ModW.MG.toM_mul
 
 end MG
 

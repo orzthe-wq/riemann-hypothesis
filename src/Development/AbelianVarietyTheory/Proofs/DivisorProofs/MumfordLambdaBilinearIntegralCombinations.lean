@@ -42,6 +42,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ExistsZeroGt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.XValuePf
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -102,7 +103,7 @@ theorem exists_cube (hB : D.TauBimult) {T : Over (Spec (CommRingCat.of R))} (a b
       simp only [Sum.elim_inl, Sum.elim_inr]
       rw [prod_lam₁, prod_lam_neg, prod_lam_neg]
       apply Additive.ofMul.injective
-      simp only [lamH, ofMul_mul, ofMul_inv, ofMul_zpow, zpow_one]
+      simp only [lamH, ofMul_mul, ofMul_inv, zpow_one]
       abel)
     (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (lift a (lift b u)).left)
     (DVR.pullGen_isGen _ _ _ _ D.cub.isGen _)
@@ -158,9 +159,6 @@ theorem cPoint_sum (T : Over (Spec (CommRingCat.of R))) {κ : Type} (s : Finset 
 theorem comp_zpow {S : Scheme.{0}} {G : Over S} [GrpObj G] {T T' : Over S} (ρ : T' ⟶ T) (x : T ⟶ G) (n : ℤ) :
     ρ ≫ x ^ n = (ρ ≫ x) ^ n := map_zpow (preHom ρ) x n
 
-theorem comp_prod {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {T T' : Over S} (ρ : T' ⟶ T) {κ : Type}
-    (s : Finset κ) (x : κ → (T ⟶ G)) : ρ ≫ ∏ k ∈ s, x k = ∏ k ∈ s, ρ ≫ x k := map_prod (preHom ρ) x s
-
 theorem exists_powZ (hB : D.TauBimult) {T : Over (Spec (CommRingCat.of R))} (x u : T ⟶ D.P.A) (m : ℤ) :
     ∃ t : LB.Gen (LB.LinComb D.P.L (Sum.elim (GlobalTheory.PolDeg.lamPts (x ^ m) u) (GlobalTheory.PolDeg.lamPts x u))
       (Sum.elim Oε (fun i => -(m * Oε i)))), t.IsGen ∧
@@ -197,7 +195,7 @@ theorem exists_powZ (hB : D.TauBimult) {T : Over (Spec (CommRingCat.of R))} (x u
 theorem comp_combo {T T' : Over (Spec (CommRingCat.of R))} (ρ : T' ⟶ T) {r : ℕ} (p : Fin r → (T ⟶ D.P.A))
     (m : Fin r → ℤ) (y : Fin r → D.X) (hp : ∀ k, ρ ≫ p k = DVR.cP D T' (y k)) :
     ρ ≫ ∏ k, p k ^ m k = DVR.cP D T' (∑ k, m k • y k) := by
-  rw [comp_prod, cPoint_sum]
+  rw [_root_.GlobalTheory.MatrixAction.comp_finsetProd, cPoint_sum]
   exact Finset.prod_congr rfl fun k _ => by rw [comp_zpow, hp, cPoint_zsmul]
 
 theorem exists_generator_lambda_linear_first_position (hB : D.TauBimult) {T : Over (Spec (CommRingCat.of R))} : ∀ {r : ℕ} (p : Fin r → (T ⟶ D.P.A))
@@ -233,7 +231,7 @@ theorem exists_generator_lambda_linear_first_position (hB : D.TauBimult) {T : Ov
         (fun q : Fin (r + 1) × Fin 4 => GlobalTheory.PolDeg.lamPts (p q.1) u q.2))
       (ε' := Sum.elim Oε (fun q : Fin (r + 1) × Fin 4 => -(m q.1 * Oε q.2))) (fun U _ h => by
         simp only [Fintype.prod_sum_type, Fintype.prod_prod_type, Sum.elim_inl, Sum.elim_inr, prodNeg, prod_lam₁,
-          prod_lam, prod_lam_neg]
+          prod_lam]
         simp only [Fin.prod_univ_succ]
         apply Additive.ofMul.injective
         simp only [ofMul_mul, ofMul_inv, ofMul_zpow, zpow_one, ofMul_prod]

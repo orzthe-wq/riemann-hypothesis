@@ -5,44 +5,6 @@ public import Formalism.LocalToGlobal.Divisibility.InertPartitionLePartF
 import Formalism.LocalToGlobal.Divisibility.RowLatLemmas
 public import Formalism.LocalToGlobal.IndefiniteReal.EquivFunOM
 import Formalism.LocalToGlobal.IndefiniteReal.MemRangeAdjointOfKerStable
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import Formalism.LocalToGlobal.IndefiniteReal.CxPass
 
 @[expose] public section
@@ -154,9 +116,8 @@ theorem eigCOf : @EigCOfStatement K _ _ _ G _ _ Pl0 I0 Ty T m := by
       (adjoint_closed_lift_operators hH hK hJ j) (goodL_stable hok hH hK P0 ψ0 P1 ψ1 j)
   have hDn : X.DnLevL (cvOf3 A3 P0 ψ0 P1 ψ1) false :=
     lift_descent_at_lower_type (Dc := Dc) (Sp := Sp) (Zsc := Zsc) hok hK hJ hRZ hU hG hL0
-  have hGI : GoodIn (X.θ' j A3.A.fam.μ0) (goodL A3 X P0 ψ0 P1 ψ1 j) (goodW A3 X j) :=
-    fun x hx => hDn j A3.A.fam.μ0 ⟨x, hx, rfl⟩
-  exact liftsFull_adj hD (fun i x => hTh.intw j A3.A.fam.μ0 i x) hGI (hO j)
+  exact liftsFull_adj hD (fun i x => hTh.intw j A3.A.fam.μ0 i x)
+    (fun x hx => hDn j A3.A.fam.μ0 ⟨x, hx, rfl⟩) (hO j)
 
 theorem sys_of_occ {I V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] {op : I → Module.End ℂ V}
     (hc : Formalism.L2.Col.PairComm op) {S : (I → ℂ) → Prop} {W : Submodule ℂ V} (hW : W ≤ Formalism.L2.Col.eigSum op S)

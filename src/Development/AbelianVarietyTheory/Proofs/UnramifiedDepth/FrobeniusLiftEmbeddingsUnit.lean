@@ -1,7 +1,10 @@
 module
 
+public import Mathlib.Algebra.Ring.Hom.Defs
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.Ring.GeomSum
 public import Formalism.LocalToGlobal.CharacterGerms.Interface
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EqOfMapEqOfPowEqOne
+public import Mathlib.NumberTheory.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -15,17 +18,12 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.NumberTheory.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -33,8 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,12 +43,67 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich
 import Formalism.LocalToGlobal.ProjectiveLattices.SubConstMemOrig
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EqOfMapEqOfPowEqOne, Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FrobeniusLiftEmbeddingsUnit
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EqOfMapEqOfPowEqOne =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EqOfMapEqOfPowEqOne", "h": "module\n\npublic import Mathlib.Algebra.Ring.Hom.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.BigOperators.Group.Finset.Basic\npublic import Mathlib.Algebra.Ring.GeomSum\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.RootsOfUnityInjective
+
+theorem eq_of_map_eq_of_pow_eq_one {R k : Type} [CommRing R] [IsDomain R] [CommRing k] [IsDomain k]
+    (π : R →+* k) {N : ℕ} (hN : (N : k) ≠ 0) {u w : R} (hu : u ^ N = 1) (hw : w ^ N = 1)
+    (h : π u = π w) : u = w := by
+  have hN0 : N ≠ 0 := by
+    rintro rfl
+    exact hN Nat.cast_zero
+  have hgeom := geom_sum₂_mul u w N
+  rw [hu, hw, sub_self] at hgeom
+  rcases mul_eq_zero.mp hgeom with h0 | h0
+  · exfalso
+    have h1 := congrArg π h0
+
+    rw [map_sum, map_zero] at h1
+    simp only [map_mul, map_pow, h] at h1
+    have hpow : (π w) ^ N = 1 := by rw [← map_pow, hw, map_one]
+    have hterm : ∀ i ∈ Finset.range N, π w ^ i * π w ^ (N - 1 - i) = π w ^ (N - 1) := by
+      intro i hi
+      rw [← pow_add]
+      congr 1
+      have := Finset.mem_range.mp hi
+      omega
+    rw [Finset.sum_congr rfl hterm, Finset.sum_const, Finset.card_range, nsmul_eq_mul] at h1
+    rcases mul_eq_zero.mp h1 with h2 | h2
+    · exact hN h2
+    · have hw0 : π w ≠ 0 := by
+        intro hz
+        rw [hz, zero_pow hN0] at hpow
+        exact zero_ne_one hpow
+      exact pow_ne_zero _ hw0 h2
+  · exact sub_eq_zero.mp h0
+
+end GlobalTheory.RootsOfUnityInjective
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EqOfMapEqOfPowEqOne =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FrobeniusLiftEmbeddingsUnit =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FrobeniusLiftEmbeddingsUnit", "h": "module\n\npublic import Formalism.LocalToGlobal.CharacterGerms.Interface\npublic import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.EqOfMapEqOfPowEqOne\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.NumberTheory.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.TeichmullerDepth.HasTeich\nimport Formalism.LocalToGlobal.ProjectiveLattices.SubConstMemOrig\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open scoped BigOperators
@@ -110,17 +161,7 @@ theorem exists_separating {O k : Type} [CommRing O] [CommRing k] [IsDomain k] {d
       simpa using this.symm
     rw [this, ← pow_mul, ← pow_mul, mul_comm m, mul_comm m, pow_mul, pow_mul, haa]
 
-theorem root_eq {R k : Type} [CommRing R] [IsDomain R] [CommRing k] [IsDomain k] (π : R →+* k)
-    {N : ℕ} (hN : (N : k) ≠ 0) {u w : R} (hu : u ^ N = 1) (hw : w ^ N = 1) (h : π u = π w) :
-    u = w := by
-  first
-  | (rename_i h_2 h_3 h_4 h_5; revert R k h_2 h_3 h_4 h_5 π N hN u w hu hw h; exact @_root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one)
-  | exact @_root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one
-  | exact _root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one
-  | (apply _root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one <;> assumption)
-  | (intros; apply _root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one ..)
+alias root_eq := _root_.GlobalTheory.RootsOfUnityInjective.eq_of_map_eq_of_pow_eq_one
 
 variable {C : Type} [Field C] (V : VF C)
 
@@ -296,3 +337,6 @@ theorem exists_teichmueller_sequence : ∀ (C : Type) [Field C] [CharZero C] (V 
     exact ⟨K, fun n hn => (hζ a n).mono (by exact_mod_cast hn)⟩
 
 end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.FrobeniusLiftEmbeddingsUnit =====

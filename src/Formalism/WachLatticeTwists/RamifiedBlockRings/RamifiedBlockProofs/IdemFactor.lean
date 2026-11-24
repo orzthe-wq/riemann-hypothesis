@@ -160,7 +160,7 @@ theorem idem_factor {K : Type} [Field K] {d : Type} [Fintype d] [DecidableEq d] 
     by_cases hij : i = j
     · subst hij; simp
     · have h' : i.1 ≠ j.1 := fun e => hij (Subtype.ext e)
-      simp [hij, h', Ne.symm h']
+      simp [hij, Ne.symm h']
   have hJD : J * J.transpose = Matrix.diagonal dd := by
     ext a b
     simp only [Matrix.mul_apply, Matrix.transpose_apply, J, Matrix.of_apply]
@@ -226,7 +226,7 @@ theorem eMat : StatEMat := by
         1 + U.map C' * (((Polynomial.X : Polynomial K) • 1 - A.map C' - 1) * W.map C') := by
       have h2 : (1 - e).map C' = 1 - e.map C' := by
         ext i j
-        by_cases hij : i = j <;> simp [hij, Matrix.one_apply]
+        by_cases hij : i = j <;> simp [hij]
       rw [h2, hx', ← hUW']
       simp only [Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul,
         Matrix.mul_assoc]
@@ -234,7 +234,7 @@ theorem eMat : StatEMat := by
     rw [h1, Matrix.det_one_add_mul_comm, Matrix.mul_assoc, hWU', Matrix.mul_one]
     congr 1
     ext i j
-    by_cases hij : i = j <;> simp [hij, Matrix.one_apply, C']
+    by_cases hij : i = j <;> simp [hij, C']
   obtain ⟨h1, h2, h3, h4⟩ := eCore A t α ht hchar hα
   set EA := ((List.range t).tail.map fun i => A - α i • (1 : Matrix S S K)).prod with hEAdef
   have hE : E = U * EA * W := hlist _

@@ -71,8 +71,7 @@ theorem exists_gen_mulPull_pow_unif : ∀ (R : Type) [CommRing R] [IsDomain R] (
       ![(n : ℤ) ^ 2, -1] := by
     refine GlobalTheory.MulPull.hasGen_pow hL hcube (𝟙 G) ?_ ?_ n
     · refine (hrig.pull (toUnit G).left).of_formEq hL (fun W _ h => ?_)
-      simp only [Finset.univ_unique, Finset.prod_singleton, Fin.prod_univ_succ, Fin.prod_univ_zero,
-        Matrix.cons_val_zero, _root_.mul_one]
+      simp only [Finset.univ_unique, Finset.prod_singleton]
       rfl
     · refine hneg.inv.of_formEq hL (fun W _ h => ?_)
       have e : ((𝟙 G : G ⟶ G)⁻¹) = ι[G] := Category.id_comp _

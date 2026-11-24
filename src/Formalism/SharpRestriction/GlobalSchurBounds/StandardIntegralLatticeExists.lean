@@ -43,6 +43,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Formalism.SharpRestriction.GlobalSchurBounds.QuadraticLogDerivCongr
+public import Mathlib.RingTheory.MvPolynomial
 
 @[expose] public section
 

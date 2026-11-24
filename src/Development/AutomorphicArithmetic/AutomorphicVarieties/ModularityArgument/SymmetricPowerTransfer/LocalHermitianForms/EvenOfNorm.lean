@@ -82,7 +82,7 @@ theorem IsLoc.nm_unit (L : IsLoc O Δ) (ε u : Oˣ) : ∃ a b : O, a ^ 2 - ε * 
   obtain ⟨a0, rfl⟩ := residue_surjective a'
   obtain ⟨b0, rfl⟩ := residue_surjective b'
   have hab : residue O (a0 ^ 2 - u - ε * b0 ^ 2) = 0 := by
-    simp only [eval_sub, eval_add, eval_mul, eval_pow, eval_X, eval_C, map_sub, map_mul, map_pow] at hroot ⊢
+    simp only [eval_sub, eval_mul, eval_pow, eval_X, eval_C, map_sub, map_mul, map_pow] at hroot ⊢
     linear_combination hroot
   by_cases ha : residue O a0 = 0
   · have hb : IsUnit b0 := by

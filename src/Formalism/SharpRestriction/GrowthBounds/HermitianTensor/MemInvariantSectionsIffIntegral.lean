@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Wlocal
 
 @[expose] public section
 
@@ -91,25 +92,13 @@ private theorem mem_nablaLTw_lemma (m : ℕ) (lam : Fin (m + 1) → ℤ) (g : Ma
     · show g.det ^ (-lam (Fin.last m)) • (g.det ^ (lam (Fin.last m)) • F) = F
       rw [smul_smul, ← zpow_add₀ hd, neg_add_cancel, zpow_zero, one_smul]
 
-private theorem colSpan_le_lemma_2 {k : ℕ} (g g' : Matrix (Fin k) (Fin k) K) (h : colSpan O g' ≤ colSpan O g) :
-    ∃ A : Matrix (Fin k) (Fin k) O, g' = g * A.map (algebraMap O K) := by
-  have hc : ∀ c : Fin k, ∃ a : Fin k → O, ∑ b, a b • (fun i => g i b) = fun i => g' i c := by
-    intro c
-    exact (Submodule.mem_span_range_iff_exists_fun O).mp (h (Submodule.subset_span ⟨c, rfl⟩))
-  choose a ha using hc
-  refine ⟨Matrix.of fun b c => a c b, ?_⟩
-  ext i c
-  rw [Matrix.mul_apply, ← congrFun (ha c) i, Finset.sum_apply]
-  refine Finset.sum_congr rfl (fun b _ => ?_)
-  simp [Algebra.smul_def, mul_comm]
-
 private theorem step_lemma_3 (hinj : Function.Injective (algebraMap O K)) (m : ℕ) (lam : Fin (m + 1) → ℤ)
     (g g' : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (hg : IsUnit g.det) (hsp : colSpan O g = colSpan O g')
     (F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) K)
     (hF : g.det ^ (lam (Fin.last m)) • rowAct K g F ∈ intO O (m + 1) (nuOf lam)) :
     g'.det ^ (lam (Fin.last m)) • rowAct K g' F ∈ intO O (m + 1) (nuOf lam) := by
-  obtain ⟨A, hA⟩ := colSpan_le_lemma_2 (O := O) g g' (le_of_eq hsp.symm)
-  obtain ⟨B, hB⟩ := colSpan_le_lemma_2 (O := O) g' g (le_of_eq hsp)
+  obtain ⟨A, hA⟩ := _root_.Formalism.MainNotions.G.LatticeSystems.la_factor (O := O) g g' (le_of_eq hsp.symm)
+  obtain ⟨B, hB⟩ := _root_.Formalism.MainNotions.G.LatticeSystems.la_factor (O := O) g' g (le_of_eq hsp)
   have h1 : g * (A * B).map (algebraMap O K) = g * 1 := by
     rw [Matrix.map_mul, ← Matrix.mul_assoc, ← hA, ← hB, Matrix.mul_one]
   have h2 : (A * B).map (algebraMap O K) = 1 := by
@@ -118,10 +107,7 @@ private theorem step_lemma_3 (hinj : Function.Injective (algebraMap O K)) (m : �
   have hAB : A * B = 1 := by
     ext i j
     apply hinj
-    have h4 := congrFun (congrFun h2 i) j
-    rw [Matrix.map_apply] at h4
-    rw [h4, Matrix.one_apply, Matrix.one_apply]
-    split_ifs <;> simp
+    simpa [Matrix.map_apply, Matrix.one_apply] using congrFun (congrFun h2 i) j
   have hAB' : A.det * B.det = 1 := by rw [← Matrix.det_mul, hAB, Matrix.det_one]
   have hdet : IsUnit A.det := ⟨⟨A.det, B.det, hAB', by rw [mul_comm]; exact hAB'⟩, rfl⟩
   obtain ⟨u, hu⟩ := hdet
@@ -157,16 +143,13 @@ theorem intO_le (k : ℕ) (ν : Fin k → ℕ) (x : MvPolynomial (Fin k × Fin k
   obtain ⟨y, hy, rfl⟩ := Submodule.mem_map.mp hx
   exact dualWeylMap O K (algebraMap O K) k k ν y hy
 
-theorem rowAct_rowAct {k n : ℕ} (g h : Matrix (Fin k) (Fin k) K) (F : MvPolynomial (Fin k × Fin n) K) :
-    rowAct K g (rowAct K h F) = rowAct K (h * g) F := rowAct_mul_lemma_0 g h F
-
 theorem rowAct_inv_cancel {k n : ℕ} (g : Matrix (Fin k) (Fin k) K) (hg : IsUnit g.det)
     (F : MvPolynomial (Fin k × Fin n) K) : rowAct K g (rowAct K g⁻¹ F) = F := by
-  rw [rowAct_rowAct, Matrix.nonsing_inv_mul g hg, tn_rowAct_one]
+  rw [_root_.Formalism.MainNotions.flipOneThree.Pf.rowAct_mul_lemma_0, Matrix.nonsing_inv_mul g hg, tn_rowAct_one]
 
 theorem rowAct_cancel_inv {k n : ℕ} (g : Matrix (Fin k) (Fin k) K) (hg : IsUnit g.det)
     (F : MvPolynomial (Fin k × Fin n) K) : rowAct K g⁻¹ (rowAct K g F) = F := by
-  rw [rowAct_rowAct, Matrix.mul_nonsing_inv g hg, tn_rowAct_one]
+  rw [_root_.Formalism.MainNotions.flipOneThree.Pf.rowAct_mul_lemma_0, Matrix.mul_nonsing_inv g hg, tn_rowAct_one]
 
 theorem rowAct_D {k : ℕ} (c : K) (f : MvPolynomial (Fin (k + 1) × Fin (k + 1)) K) (d : ℕ) (h : Row0 f d) :
     rowAct K (lb_D (k + 1) 1 c) f = (c⁻¹) ^ d • f := by
@@ -210,7 +193,7 @@ theorem rowAct_D {k : ℕ} (c : K) (f : MvPolynomial (Fin (k + 1) × Fin (k + 1)
   rw [hmono, h u (mem_support_iff.mp hu)]
 
 theorem det_lb_D (k : ℕ) (c : K) : (lb_D (k + 1) 1 c).det = c⁻¹ := by
-  simp [lb_D, Matrix.det_diagonal, Fin.prod_univ_succ]
+  simp [lb_D, Matrix.det_diagonal]
 
 theorem scal_id (D c : K) (hD : D ≠ 0) (hc : c ≠ 0) (r n : ℕ) :
     (D * c⁻¹) ^ (-(r : ℤ)) * c ^ n * D ^ r * (c⁻¹) ^ (n + r) = 1 := by
@@ -224,17 +207,10 @@ theorem core_id {k : ℕ} (g : Matrix (Fin (k + 1)) (Fin (k + 1)) K) (hg : IsUni
     (g * lb_D (k + 1) 1 c).det ^ (-(r : ℤ)) •
       rowAct K (g * lb_D (k + 1) 1 c) (c ^ n • (g.det ^ r • rowAct K g⁻¹ x0)) = x0 := by
   have hd : g.det ≠ 0 := hg.ne_zero
-  rw [map_smul, map_smul, ← rowAct_rowAct (lb_D (k + 1) 1 c) g, rowAct_inv_cancel g hg, rowAct_D c x0 (n + r) hR,
+  rw [map_smul, map_smul, ← _root_.Formalism.MainNotions.flipOneThree.Pf.rowAct_mul_lemma_0 (lb_D (k + 1) 1 c) g, rowAct_inv_cancel g hg, rowAct_D c x0 (n + r) hR,
     smul_smul, smul_smul, smul_smul]
   convert one_smul K x0 using 2
   rw [Matrix.det_mul, det_lb_D, ← scal_id g.det c hd hc r n]
-
-theorem nuOf_anti {m : ℕ} (mu : Fin (m + 1) → ℤ) (h : Antitone mu) : Antitone (nuOf mu) := by
-  intro a b hab
-  show (mu b - mu (Fin.last m)).toNat ≤ (mu a - mu (Fin.last m)).toNat
-  apply Int.toNat_le_toNat
-  have := h hab
-  linarith
 
 theorem highest_weight_first_entry (k : ℕ) (ν : Fin (k + 1) → ℕ) (hν : Antitone ν) : Row0 (hw K (le_refl (k + 1)) ν) (ν 0) := by
   intro u hu
@@ -245,26 +221,16 @@ theorem highest_weight_first_entry (k : ℕ) (ν : Fin (k + 1) → ℕ) (hν : A
     rw [Fintype.sum_prod_type, Finset.sum_eq_single (0 : Fin (k + 1))]
     · simp [rowW]
     · intro a _ ha
-      simp [rowW, Pi.single_apply, Ne.symm ha]
+      simp [rowW, Ne.symm ha]
     · intro hn
       exact absurd (Finset.mem_univ _) hn
   rw [← key, h]
   simp [rowNu]
 
-private theorem map_hw_lemma_4 {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ} (hn : n ≤ r)
-    (ν : Fin n → ℕ) : map φ (hw R hn ν) = hw S hn ν := by
-  unfold hw lpMinor
-  rw [map_prod]
-  refine Finset.prod_congr rfl (fun s _ => ?_)
-  rw [map_pow, RingHom.map_det]
-  congr 2
-  ext p q
-  simp [RingHom.mapMatrix_apply]
-
 theorem hw_int (k : ℕ) (ν : Fin k → ℕ) (hν : Antitone ν) : hw K (le_refl k) ν ∈ intO O k ν := by
   refine Submodule.mem_map.mpr ⟨hw O (le_refl k) ν, hwMem O k k (le_refl k) ν hν, ?_⟩
   show map (algebraMap O K) (hw O (le_refl k) ν) = hw K (le_refl k) ν
-  exact map_hw_lemma_4 (algebraMap O K) (le_refl k) ν
+  exact _root_.Formalism.UG.P.wlocal_map_hw (algebraMap O K) (le_refl k) ν
 
 private theorem eval_hw_lemma_5 {R : Type} [CommRing R] (k : ℕ) (ν : Fin k → ℕ) :
     eval (fun v : Fin k × Fin k => if v.1 = v.2 then (1 : R) else 0) (hw R (le_refl k) ν) = 1 := by
@@ -302,11 +268,6 @@ theorem hw_prim [IsLocalRing O] (hinj : Function.Injective (algebraMap O K)) (w 
   exact (mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal w).mp hw')) hu
 
 end Gen
-
-theorem caLast_ne_zero (m : ℕ) : Fin.last (m + 1) ≠ 0 := by
-  intro h
-  have := congrArg Fin.val h
-  simp at this
 
 theorem wtPQ_zero (m a b : ℕ) : wtPQ m a b 0 = a := by simp [wtPQ]
 

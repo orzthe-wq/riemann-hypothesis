@@ -143,7 +143,7 @@ theorem relIndex_mulVec : ∀ (E : Type) [Field E] [NumberField E] (ι : Type) [
     rw [← LinearMap.ker_eq_bot, Matrix.ker_toLin'_eq_bot_iff]
     intro v hv
     exact Matrix.eq_zero_of_mulVec_eq_zero hne hv
-  obtain ⟨m, ⟨v, hv⟩, hc⟩ := GlobalTheory.HL.LatDet.card_coker (Pi.basisFun (locRing P) ι) hp _ hinj
+  obtain ⟨m, ⟨v, hv⟩, hc⟩ := _root_.GlobalTheory.CardQuotientPow.main (Pi.basisFun (locRing P) ι) hp _ hinj
   rw [LinearMap.det_toLin'] at hv
   have hord : ordE P M.det = m := by
     have e1 : M.det * ((v : locRing P) : E) = (p : E) ^ m := by

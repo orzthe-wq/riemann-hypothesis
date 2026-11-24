@@ -152,7 +152,6 @@ lemma nEich_apply (z : Fin (2 * r + k + 1) → ℂ) (ξ : Fin r → ℂ) (y : Fi
   have hH : (Hpk k r)ᴴ = Hpk k r := hpk_conjTranspose_self k r
   first
   | simp only [C2.nEich, add_mulVec, one_mulVec, smul_mulVec, neg_mulVec, vmv_apply _ hH, neg_smul, smul_smul]
-  | simp only [C2.nEich, add_mulVec, one_mulVec, Matrix.smul_mulVec_assoc, neg_mulVec, vmv_apply _ hH, neg_smul, smul_smul]
 
 end HermitianXiVector
 
@@ -199,7 +198,7 @@ lemma nEich_herm {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (ξ : Fi
   have hcc : conj ((1 : ℂ) / ((Tz k r z : ℝ) : ℂ)) = (1 : ℂ) / ((Tz k r z : ℝ) : ℂ) := by
     rw [map_div₀, map_one, Complex.conj_ofReal]
   rw [nEich_apply, nEich_apply]
-  simp only [herm_add_l, herm_add_r, herm_smul_l, herm_smul_r, herm_neg_l, herm_neg_r, hxx, hxz, hzx, hzz,
+  simp only [herm_add_l, herm_add_r, herm_smul_l, herm_smul_r, hxx, hxz, hzx, hzz,
     hxy, hzy, hcc, map_neg, map_mul, map_div₀, map_one, map_ofNat]
   set c : ℂ := (1 : ℂ) / ((Tz k r z : ℝ) : ℂ) with hc
   have hcT : c * ((Tz k r z : ℝ) : ℂ) = 1 := by rw [hc]; field_simp
@@ -214,7 +213,7 @@ lemma nEich_col {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) (ξ : Fin
     herm_X_right (C2.xiV k r ξ) (bvec j) (xiV_X ξ) (fun p hp => by
       simp only [bvec, Pi.single_apply]; rw [if_neg (fun e => by rw [e] at hp; omega)])
   rw [hjx]
-  simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, bvec, Pi.single_apply, Pi.neg_apply, zero_mul, mul_zero,
+  simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, bvec, Pi.single_apply, zero_mul, mul_zero,
     add_zero]
   by_cases hir : r ≤ i.val
   · rw [xiV_X ξ i hir]; simp

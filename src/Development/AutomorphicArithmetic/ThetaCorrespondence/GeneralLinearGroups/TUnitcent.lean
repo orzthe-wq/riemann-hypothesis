@@ -83,7 +83,7 @@ theorem UpperTheory.Lit.Cas.unitcent :
     rw [Subgroup.mem_center_iff]
     intro g
     ext i j
-    simp [Matrix.GeneralLinearGroup.scalar, Matrix.mul_smul, Matrix.smul_mul, mul_comm]
+    simp [Matrix.GeneralLinearGroup.scalar, mul_comm]
   have hq : ((Matrix.GeneralLinearGroup.scalar (Fin N) t : GL (Fin N) k) : AdGL k N) = ((1 : GL (Fin N) k) : AdGL k N) := by
     rw [QuotientGroup.eq]
     simpa using hz

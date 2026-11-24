@@ -95,8 +95,7 @@ theorem nat_A {P e t : ℕ} (h : t + 1 < P) : e % P = t ↔ (e + 1) % P = t + 1 
   · intro he
     have h1 := Nat.div_add_mod (e + 1) P
     have h2 : e = P * ((e + 1) / P) + t := by omega
-    calc e % P = (P * ((e + 1) / P) + t) % P := by rw [← h2]
-      _ = t := by rw [Nat.mul_add_mod, Nat.mod_eq_of_lt (by omega)]
+    rw [h2, Nat.mul_add_mod, Nat.mod_eq_of_lt (by omega)]
 
 theorem nat_A_div {P e t : ℕ} (h : t + 1 < P) (he : e % P = t) : (e + 1) / P = e / P := by
   have h1 := Nat.div_add_mod e P
@@ -139,10 +138,9 @@ theorem noVar_eq (x : TL J nL r) (b : Fin K) : noVar Fr hk nL x b = aVar Fr hk n
 theorem inLow_iff (rho : TL J nL r × Fin (r + K) → ℕ) (mo : TV n' (m + 1) →₀ ℕ) :
     InLow Fr p hk nL rho mo ↔ ∀ x c, mo (aVar Fr hk nL x c) % lowP Fr p x = rho (x, c) := by
   constructor
-  · intro h x c
-    exact Fin.addCases (motive := fun c => mo (aVar Fr hk nL x c) % lowP Fr p x = rho (x, c))
-      (fun a => h.1 x a) (fun b => h.2 x b) c
-  · intro h
+  · rintro ⟨hpl, hno⟩ x c
+    exact Fin.addCases (fun a => hpl x a) (fun b => hno x b) c
+  · rintro h
     exact ⟨fun x a => h x _, fun x b => h x _⟩
 
 theorem plMon_apply (mo : TV n' (m + 1) →₀ ℕ) (x : TL J nL r) (a : Fin r) :
@@ -320,8 +318,7 @@ theorem sum_add_single {ι : Type} [DecidableEq ι] {n : ℕ} (f : ι × Fin n �
       rw [Finsupp.single_apply, if_neg]
       intro h'
       exact hb (Prod.mk.inj h').2.symm
-    · intro h'
-      exact absurd (Finset.mem_univ a) h'
+    · simp
   · rw [if_neg h]
     apply Finset.sum_eq_zero
     intro b _
@@ -407,9 +404,8 @@ theorem no_der {σ τ Kf : Type} [Field Kf] (a : σ →₀ ℕ) (b : τ →₀ �
 
 theorem no_der_zero {σ τ Kf : Type} [Field Kf] (a : σ →₀ ℕ) (b : τ →₀ ℕ) (c : Kf) (i : τ) (h : b i = 0) :
     oneT (derN i) (mono2 a b c) = 0 := by
-  rw [double_monomial_apply, oneT_monomial]
-  have : derN i (monomial b c) = 0 := pderiv_mon_zero i b c h
-  rw [this, map_zero]
+  have h' : derN i (monomial b c) = 0 := pderiv_mon_zero i b c h
+  rw [double_monomial_apply, oneT_monomial, h', map_zero]
 
 theorem no_mul {σ τ Kf : Type} [Field Kf] (a : σ →₀ ℕ) (b : τ →₀ ℕ) (c : Kf) (i : τ) :
     oneT (mulN i) (mono2 a b c) = mono2 a (b + Finsupp.single i 1) c := by

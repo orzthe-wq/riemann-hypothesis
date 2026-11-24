@@ -66,7 +66,7 @@ variable {X S : Scheme.{0}}
 
 theorem resO_comp (p : X ⟶ S) {V W U : S.Opens} (h1 : V ≤ W) (h2 : W ≤ U) :
     resO p h1 ≫ resO p h2 = resO p (h1.trans h2) := by
-  apply pullback.hom_ext <;> simp only [resO, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Scheme.homOfLE_homOfLE, Category.comp_id]
+  apply pullback.hom_ext <;> simp only [resO, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_snd_assoc, Scheme.homOfLE_homOfLE, Category.comp_id]
 
 theorem resO_refl (p : X ⟶ S) (U : S.Opens) : resO p (le_refl U) = 𝟙 _ := by
   apply pullback.hom_ext <;> simp [resO]
@@ -90,7 +90,7 @@ def OverMV : Prop := MV → Hyp → ∀ (q : ℕ) {Y X S : Scheme.{0}} (f : Y �
 theorem fO_res {Y : Scheme.{0}} (f : Y ⟶ X) (p : X ⟶ S) {V U : S.Opens} (h : V ≤ U) :
     resO (f ≫ p) h ≫ fO f p U = fO f p V ≫ resO p h := by
   apply pullback.hom_ext <;> simp only [resO, fO, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd,
-    pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]
+    pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id]
 
 theorem pull_fO_res {q : ℕ} {i n : ℤ} {Y : Scheme.{0}} (f : Y ⟶ X) (p : X ⟶ S) {V U : S.Opens} (h : V ≤ U)
     (x : Ht q (sch.obj (overO p U)) n i) :

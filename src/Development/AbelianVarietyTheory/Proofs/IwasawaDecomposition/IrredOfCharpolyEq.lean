@@ -174,7 +174,6 @@ theorem irred_of_charpoly_eq [IsAlgClosed k] (ρ ρ' : Γ →* GL (Fin a) k)
       first
         | simp [Module.finrank_pi_fintype, Module.finrank_fintype_fun_eq_card]
         | rw [Module.finrank_pi_fintype]; simp
-        | simp [Module.finrank_pi]
     have h3 : Module.finrank k W < a := by
       have := Submodule.finrank_lt ht
       simpa using this

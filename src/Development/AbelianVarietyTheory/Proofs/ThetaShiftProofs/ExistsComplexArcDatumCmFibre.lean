@@ -85,7 +85,7 @@ theorem exists_primGen {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
     ![(padd G (𝟙 _) f).left, 𝟙 G.left, f.left, (toUnit G ≫ η[G]).left] ![1, -2, -1, 2] (by
       have h1' : (toUnit G ≫ η[G] : G ⟶ G) = 1 := rfl
       simp [fsum, Fin.sum_univ_four, Fin.sum_univ_five, GlobalTheory.JetSer.primφ, GlobalTheory.JetSer.primε, lf_single, padd_eq_mul, h1',
-        Finsupp.single_neg, single_two, single_neg_two, Matrix.vecHead, Matrix.vecTail]
+        Finsupp.single_neg, single_two]
       abel)
   have hone : (LB.oneGen L.L (Y := (𝟙_ (Over S)).left)).IsGen := by
     intro i j

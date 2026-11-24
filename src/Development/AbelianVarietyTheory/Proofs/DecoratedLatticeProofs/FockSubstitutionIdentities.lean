@@ -72,7 +72,7 @@ theorem mvZ_subY_comp (hab : a ≤ b) (g : ι → Matrix (Fin a) (Fin a) ℂ) (h
 
   rw [AlgHom.comp_apply, AlgHom.comp_apply, subY, lft, aeval_X, aeval_X, map_sum, map_sum]
 
-  simp only [map_mul, mvZ, subY, aeval_X, algHom_C, algebraMap_eq, map_sum]
+  simp only [map_mul, mvZ, subY, aeval_X, algHom_C, algebraMap_eq]
 
   simp only [Matrix.mul_apply, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]
   rw [sum_three_fintype_reverse]
@@ -124,7 +124,7 @@ theorem subY_smul (hab : a ≤ b) (t : ι → ℂ) (y' : ι → Matrix (Fin b) (
   intro v
 
   simp only [subY, scaleFP, AlgHom.comp_apply, aeval_X, map_sum, map_mul, algHom_C,
-  Matrix.smul_apply, smul_eq_mul, C_mul, algebraMap_eq]
+  Matrix.smul_apply, smul_eq_mul, algebraMap_eq]
   refine Finset.sum_congr rfl fun β _ => ?_
   ring
 
@@ -133,17 +133,11 @@ theorem scaleVariables_monomial (t : ι → ℂ) (m : (ι × Fin b × Fin a) →
   rw [scaleFP, aeval_monomial, map_one, one_mul, ← C_mul', ← prod_X_pow_eq_monomial]
   simp only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, map_prod, map_pow]
 
-theorem jetL_monomial_one (c : ι → ℂ) (G : VCx ι a b → ℂ) (m : (ι × Fin b × Fin a) →₀ ℕ) :
-    jetL c G (monomial m (1 : ℂ)) = jetC c G m := by
-  have e : (monomial m (1 : ℂ) : FP ι a b) = basisMonomials (ι × Fin b × Fin a) ℂ m := by
-    rw [coe_basisMonomials]
-  rw [e, jetL, Module.Basis.constr_basis]
-
 theorem jetL_comp_scale (c t : ι → ℂ) (G : VCx ι a b → ℂ) :
     (jetL c G).comp (scaleFP (a := a) (b := b) t).toLinearMap = jetL (fun τ => c τ * t τ) G := by
   refine (basisMonomials (ι × Fin b × Fin a) ℂ).ext fun m => ?_
   simp only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, coe_basisMonomials]
-  rw [scaleVariables_monomial, map_smul, jetL_monomial_one, jetL_monomial_one, smul_eq_mul, jetC, jetC, ← mul_assoc]
+  rw [scaleVariables_monomial, map_smul, _root_.GlobalTheory.KJInf.jetL_monomial, _root_.GlobalTheory.KJInf.jetL_monomial, smul_eq_mul, jetC, jetC, ← mul_assoc]
   congr 1
   simp only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib]
   ring

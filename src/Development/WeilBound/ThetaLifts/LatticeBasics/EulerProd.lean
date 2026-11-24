@@ -67,7 +67,7 @@ theorem mix (he : e * e = e) (A B C D : Matrix k k R) :
   have h1 : (1 - e) * (1 - e) = 1 - e := by linear_combination he
   have h2 : (1 - e) * e = 0 := by linear_combination -he
   have h3 : e * (1 - e) = 0 := by linear_combination -he
-  simp only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, h1, h2, h3, he, zero_smul, add_zero,
+  simp only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, h1, h2, h3, he, zero_smul, add_zero,
     zero_add]
 
 theorem cut_mul (he : e * e = e) (A B : Matrix k k R) : cut e A * cut e B = cut e (A * B) := by

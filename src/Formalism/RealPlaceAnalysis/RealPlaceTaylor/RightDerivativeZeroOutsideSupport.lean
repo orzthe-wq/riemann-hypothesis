@@ -184,7 +184,6 @@ lemma hasDerivAt_frobenius_curve {n : ℕ} (g X : Matrix (Fin n) (Fin n) ℂ) :
       (2 * inner ℝ (g i j) ((g * X) i j)) 0 := by
     intro i j
     convert (hentry i j).norm_sq using 1
-    beta_reduce
     rw [mul_exp_zero_smul]
   have hS := HasDerivAt.sum (u := Finset.univ)
     (fun i _ => HasDerivAt.sum (u := Finset.univ) (fun j _ => hE i j))
@@ -252,16 +251,9 @@ lemma continuous_frobenius_exp_neg_smul {n : ℕ} (X : Matrix (Fin n) (Fin n) �
   have h1 : Continuous (hs : Matrix (Fin n) (Fin n) ℂ → ℝ) := contDiff_frobenius.continuous
   exact h1.comp (continuous_exp_neg_smul X)
 
-private lemma Jm_mul_Jm_self {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
-
 private lemma inUJ_exp_real_smul_of_inG {n : ℕ} {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : inG ε X) (u : ℝ) : inUJ ε (NormedSpace.exp ((u : ℂ) • X)) := by
-  have hJ := Jm_mul_Jm_self ε
+  have hJ := _root_.Formalism.REAL.Jm_mul_self ε
   have h1 : Xᴴ * Jm ε = -(Jm ε * X) := by
     unfold inG at hX
     exact eq_neg_of_add_eq_zero_left hX
@@ -270,7 +262,7 @@ private lemma inUJ_exp_real_smul_of_inG {n : ℕ} {ε : Fin n → Bool} {X : Mat
       _ = -(Jm ε * X * Jm ε) := by rw [h1, Matrix.neg_mul]
   have hYc : ((u : ℂ) • X)ᴴ = Jm ε * (-((u : ℂ) • X)) * Jm ε := by
     rw [Matrix.conjTranspose_smul, h2]
-    simp [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]
+    simp [Matrix.mul_assoc]
   let U : (Matrix (Fin n) (Fin n) ℂ)ˣ := ⟨Jm ε, Jm ε, hJ, hJ⟩
   have hU : ((u : ℂ) • X)ᴴ = (U : Matrix (Fin n) (Fin n) ℂ) * (-((u : ℂ) • X)) *
       ((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) := hYc
@@ -363,13 +355,8 @@ lemma continuous_smooth_on_group {n : ℕ} {ε : Fin n → Bool} {f : Matrix (Fi
     exact (hfF _ hg' g'.2).symm
   exact ContinuousAt.congr ((hF.continuousOn.continuousAt (hU.mem_nhds hgU)).comp hc.continuousAt) hev
 
-private lemma Jm_mul_conjTranspose_mul_Jm_mul_eq_one_of_inUJ {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ}
-    (hg : inUJ ε g) : Jm ε * gᴴ * Jm ε * g = 1 := by
-  have hg' : gᴴ * Jm ε * g = Jm ε := hg
-  rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', Jm_mul_Jm_self]
-
 lemma isCompact_frobenius_sublevel {n : ℕ} (ε : Fin n → Bool) (r : ℝ) : IsCompact {g : UJ ε | hsG g ≤ r} := by
-  apply Formalism.REAL.isCompact_frobenius_ball_group <;> assumption
+  apply Formalism.REAL.isCompact_frobenius_ball_group
 
 theorem integral_right_derivative_zero : IntRdZero := by
   intro n ε φ X R hφ hX hsupp

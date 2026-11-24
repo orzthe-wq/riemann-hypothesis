@@ -2,45 +2,6 @@ module
 
 public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.StatementsFlagGrassSteps
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ImageCoord
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -96,7 +57,7 @@ theorem cone_smul_eq_zero_iff {Ω : Type} [Field Ω] (c : K → Ω) (hc : ∀ k,
     | add p q hp hq => simp only [eval₂_add, map_add (f := _), hp, hq]
     | mul_X p q hp =>
       rw [eval₂_mul, eval₂_mul, map_mul, hp]
-      simp only [eval₂_X, aeval_X, D, map_mul, aeval_C, algebraMap_eq, C_mul]
+      simp only [eval₂_X, aeval_X, D, map_mul, aeval_C, algebraMap_eq]
       ring
   have hinv : ∀ G, D (fun k => (c k)⁻¹) (D c G) = G := by
     intro G
@@ -225,8 +186,7 @@ theorem proof : FlagImageGrass.Statement := by
   have hN : j + (N - j) = N := by omega
   rw [image_eq]
   ext F
-  simp only [GroundTheory.Heights₂.Heights.grassIdeal, mCoordIdeal, RingHom.mem_ker, AlgHom.toRingHom_eq_coe,
-    RingHom.coe_coe, mConeMap_apply, Function.comp_apply]
+  simp only [GroundTheory.Heights₂.Heights.grassIdeal, mCoordIdeal, RingHom.mem_ker, mConeMap_apply, Function.comp_apply]
 
   have ha : ∀ F : MvPolynomial (Σ _ : Fin (Fintype.card Ψ), PlIdx j (N - j)) ℤ,
       eval₂ (Int.castRingHom _) (fun p => C (yFl Ψ N (grFlV Ψ N j hj hjN p)) * X p.1 :

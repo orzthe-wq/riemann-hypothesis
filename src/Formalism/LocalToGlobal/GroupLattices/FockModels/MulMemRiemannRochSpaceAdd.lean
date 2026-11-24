@@ -1,44 +1,9 @@
 module
 
 public import Formalism.SharpRestriction.GrowthBounds.TableLineDegreeFive
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.GrowthBounds.LatticeSystems
 
 @[expose] public section
 
@@ -123,18 +88,6 @@ theorem lamAt_add {n' m : ℕ} (lam0 mu0 : Fin n' → Fin (m + 1) → ℤ) (s : 
     simp only [Pi.add_apply]
     ring
 
-private lemma lamAt_antitone_lemma {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (h : IsDominant lam0)
-    (s : Fin n') : Antitone (lamAt lam0 s) := by
-  unfold lamAt
-  split_ifs
-  · exact h s
-  · intro i j hij
-    have hr : j.rev ≤ i.rev := by
-      rw [Fin.le_def] at hij ⊢
-      simp only [Fin.val_rev]
-      omega
-    exact neg_le_neg (h s hr)
-
 theorem products_sections_integral (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.tableLineDegreeFive.LevelPrimesProviso D := by
   unfold Formalism.MainNotions.tableLineDegreeFive.LevelPrimesProviso
   intro O Kf _ _ _ n' m lam0 mu0 Λ hl hm F hF G hG
@@ -143,6 +96,6 @@ theorem products_sections_integral (D : Formalism.BasicNotions.D7) : Formalism.M
   intro s F' hF' G' hG'
   show F' * G' ∈ H0 O m (lamAt (lam0 + mu0) s) (Λ s)
   rw [lamAt_add]
-  exact mul_mem_riemannRochSpace_add O Kf m _ _ (lamAt_antitone_lemma lam0 hl s) (lamAt_antitone_lemma mu0 hm s) (Λ s) hF' hG'
+  exact mul_mem_riemannRochSpace_add O Kf m _ _ (_root_.Formalism.MainNotions.G.LatticeSystems.kp_lamAt_antitone lam0 hl s) (_root_.Formalism.MainNotions.G.LatticeSystems.kp_lamAt_antitone mu0 hm s) (Λ s) hF' hG'
 
 end Formalism.L2.G.Model

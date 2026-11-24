@@ -187,7 +187,11 @@ theorem isIrreducible_prod₂ (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFi
   have hirr := isIrreducible_of_occurs hG hBZ p hA hAB (stdBlocks dd hd)
     (fun Q hQ => occurs hG hBZ hZ p hA hAB hU (stdBlocks dd hd) Q hQ)
   obtain ⟨E⟩ := GlobalTheory.LocGL.nonempty_prod₂_equiv_multiProd hd fun i => (p i).π
-  exact GlobalTheory.Parabolic.isIrreducible_of_equiv E.symm hirr
+  have key : ∀ {r' t' : ℕ} (q₁ : Irr k r') (q₂ : Irr k t'),
+      r' = r → t' = t → HEq q₁ π₁ → HEq q₂ π₂ →
+      (prod₂ q₁.π q₂.π).IsIrreducible → (prod₂ π₁.π π₂.π).IsIrreducible := by
+    rintro _ _ _ _ rfl rfl h1 h2 h; cases h1; cases h2; exact h
+  exact key (p 0) (p 1) rfl rfl HEq.rfl HEq.rfl (GlobalTheory.Parabolic.isIrreducible_of_equiv E.symm hirr)
 
 end GlobalTheory.CompanionTheory.Hypotheses₂.TDZ
 

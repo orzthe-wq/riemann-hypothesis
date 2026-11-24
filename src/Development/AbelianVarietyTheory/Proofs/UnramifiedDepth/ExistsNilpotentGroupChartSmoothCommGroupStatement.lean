@@ -49,4 +49,4 @@ open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.exists_nilpotentGroupChart_smooth_commGroup : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (g : ℕ), SmoothOfRelativeDimension g G.hom → ∃ (F : FGLaw R g) (X : Fam G g), NilChart G F.F X := by
-  first | exact @GlobalTheory.ChF.exists_nilChart | exact GlobalTheory.ChF.exists_nilChart | (intros; apply GlobalTheory.ChF.exists_nilChart <;> assumption)
+  first | exact @GlobalTheory.ChF.exists_nilChart

@@ -79,8 +79,6 @@ namespace GlobalTheory.SkewLevel
 
 variable {D : D7}
 
-theorem star_eq (x : D.host.E) : star x = D.host.conj x := Formalism.BasicNotions.Examples₂.star_eq_conj D.host x
-
 theorem smul_finRat (S T : HSp D) (s : D.host.E) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     incA D s • GlobalTheory.VacUnique.finRat S T γ = GlobalTheory.VacUnique.finRat S T (s • γ) := by
   ext i j
@@ -110,7 +108,7 @@ theorem mem_latRat_iff (hcc : D.host.ccK = ⊤) (gS : S.gram = 1) (hLS : IsStdLa
       obtain ⟨b, hb⟩ := (hLS s).1 hs j
       obtain ⟨b', hb'⟩ := (hLT t).1 ht i
       have e : a * t i * star (s j) = (b' * D.host.conj • b : 𝓞 D.host.E) • a := by
-        rw [← hb, ← hb', star_eq]
+        rw [← hb, ← hb', _root_.Formalism.L2.Herm.star_conj]
         change a * (b' : D.host.E) * D.host.conj (b : D.host.E) = ((b' : D.host.E) * D.host.conj (b : D.host.E)) * a
         ring
       rw [hg, e]
@@ -280,7 +278,7 @@ theorem smul_skew_mem {I : Ideal (𝓞 D.host.E)} (hI : D.host.conj • I ≠ �
 theorem conj_mul_conj : D.host.conj * D.host.conj = 1 :=
   AlgEquiv.ext fun x => by
     change D.host.conj (D.host.conj x) = x
-    rw [← star_eq, ← star_eq, star_star]
+    rw [← _root_.Formalism.L2.Herm.star_conj, ← _root_.Formalism.L2.Herm.star_conj, star_star]
 
 theorem conj_conj_smul (I : Ideal (𝓞 D.host.E)) : D.host.conj • D.host.conj • I = I := by
   rw [smul_smul, conj_mul_conj, one_smul]
@@ -290,7 +288,7 @@ theorem mem_conj_smul {I : Ideal (𝓞 D.host.E)} {b : 𝓞 D.host.E} : b ∈ D.
 
 theorem cA_incA_int (b : 𝓞 D.host.E) :
     cA D (incA D (b : D.host.E)) = incA D ((D.host.conj • b : 𝓞 D.host.E) : D.host.E) := by
-  rw [GlobalTheory.DualPairCheck.cA_incA, star_eq]
+  rw [GlobalTheory.DualPairCheck.cA_incA, _root_.Formalism.L2.Herm.star_conj]
   rfl
 
 theorem modul_ne_bot (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (c : Formalism.L2.DIV.Pl D.host.E → ℕ) : modul P c ≠ ⊥ :=

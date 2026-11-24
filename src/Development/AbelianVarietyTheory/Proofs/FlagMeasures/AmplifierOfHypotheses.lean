@@ -1,38 +1,27 @@
 module
 
+public import Formalism.HermitianCurvature.StatementB
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CellDataSupport
 public import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
 public import Formalism.SharpRestriction.CuspSpanNormBounds.NormalizedLocalScale
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarLieNilpotentEqLebesgue
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumNormSqEqTrace
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalInterConjugateClosedUnimodular
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselCharacterUnipotentRadicalProperties
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DiscreteSeriesUnitarySmoothBasic
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.GrowthUnitaryGroupRpowNegIntegrable
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HaarEqSmul
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsHaarOnIffGroupsUnitaryUnipotent
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationContinuousOnInvertible
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormDiagonalEntryDilationGeneratorLeOne
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralAeConvergenceContinuity
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.SigmaContOn
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.UhMeasurableSet
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LowerSmoothStability.ExistsFinStableOfMemSSup
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.ZhatNormLinearBound
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Matrix.MeasurableSpace
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -40,8 +29,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -49,8 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -63,10 +48,91 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Admissible
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarLieNilpotentEqLebesgue
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsHaarOnIffGroupsUnitaryUnipotent
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationContinuousOnInvertible
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormDiagonalEntryDilationGeneratorLeOne
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralAeConvergenceContinuity
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.SigmaContOn
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.UhMeasurableSet
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LowerSmoothStability.ExistsFinStableOfMemSSup
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.ZhatNormLinearBound
+import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+import Mathlib.Analysis.Matrix.MeasurableSpace
+import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumNormSqEqTrace, Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplifierOfHypotheses
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumNormSqEqTrace =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumNormSqEqTrace", "h": "module\n\npublic import Formalism.HermitianCurvature.StatementB\npublic import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Admissible\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.FourierDecayAlt GlobalTheory.ThA MeasureTheory Formalism.QuantumDeterminants Matrix
+open scoped InnerProductSpace
+
+namespace GlobalTheory.ThA.FrobNorm
+
+variable {k r : ℕ}
+
+theorem sum_normSq_eq_trace (g : B.Mat k r) :
+    (∑ i, ∑ j, Complex.normSq (g i j)) = (trace (gᴴ * g)).re := by
+  simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+  rw [Complex.normSq_apply, Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im]
+  ring
+
+theorem gN_unitary_mul {κ : B.Mat k r} (g : B.Mat k r) (hκ : κᴴ * κ = 1) : B.gN (κ * g) = B.gN g := by
+  have hsq : (κ * g)ᴴ * (κ * g) = gᴴ * g := by
+    rw [Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc κᴴ κ g, hκ, Matrix.one_mul]
+  simp only [B.gN]
+  rw [sum_normSq_eq_trace, sum_normSq_eq_trace, hsq]
+
+theorem gN_conjTranspose (g : B.Mat k r) : B.gN gᴴ = B.gN g := by
+  simp only [B.gN, Matrix.conjTranspose_apply, Complex.star_def, Complex.normSq_conj]
+  rw [Finset.sum_comm]
+
+theorem gN_mul_unitary {κ : B.Mat k r} (g : B.Mat k r) (hκ : κ * κᴴ = 1) : B.gN (g * κ) = B.gN g := by
+  have hκ' : κᴴᴴ * κᴴ = 1 := by rw [Matrix.conjTranspose_conjTranspose]; exact hκ
+  rw [← gN_conjTranspose (g * κ), Matrix.conjTranspose_mul, gN_unitary_mul gᴴ hκ', gN_conjTranspose]
+
+open scoped Matrix.Norms.Frobenius in
+theorem gN_eq_norm (g : B.Mat k r) : B.gN g = ‖g‖ := by
+  rw [Matrix.frobenius_norm_def, B.gN, Real.sqrt_eq_rpow]
+  congr 1
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+  rw [Real.rpow_two, Complex.normSq_eq_norm_sq]
+
+theorem left_inv {g : B.Mat k r} (hg : g ∈ B.GV k r) : Hpk k r * gᴴ * Hpk k r * g = 1 := by
+  have h : gᴴ * Hpk k r * g = Hpk k r := hg
+  calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by
+        simp only [Matrix.mul_assoc]
+    _ = 1 := by rw [h, GBasic.Hpk_sq]
+
+theorem inv_eq {g : B.Mat k r} (hg : g ∈ B.GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
+  have h := left_inv hg
+  exact Matrix.inv_eq_left_inv h
+
+end GlobalTheory.ThA.FrobNorm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumNormSqEqTrace =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplifierOfHypotheses =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplifierOfHypotheses", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CellDataSupport\npublic import Formalism.HermitianCurvature.WeylElementCommutesLevelOne\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.NormalizedLocalScale\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.HaarLieNilpotentEqLebesgue\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SumNormSqEqTrace\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnipotentRadicalInterConjugateClosedUnimodular\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselCharacterUnipotentRadicalProperties\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DiscreteSeriesUnitarySmoothBasic\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.GrowthUnitaryGroupRpowNegIntegrable\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HaarEqSmul\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsHaarOnIffGroupsUnitaryUnipotent\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationContinuousOnInvertible\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.NormDiagonalEntryDilationGeneratorLeOne\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralAeConvergenceContinuity\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.SigmaContOn\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.UhMeasurableSet\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LowerSmoothStability.ExistsFinStableOfMemSSup\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.ZhatNormLinearBound\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Matrix.MeasurableSpace\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.Normed.Algebra.MatrixExponential\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open BranchingSupport GlobalTheory.CellAmp Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset
@@ -491,7 +557,7 @@ theorem integrable_ker (L : LocBessel k r) {γ : MatKR k r} (hγ : γ ∈ UH (Hp
   have key := rpow_bound (PI.PolynomialProperness.GN.gN_ge_one hA) (PI.PolynomialProperness.GN.gN_ge_one hB) (PI.PolynomialProperness.GN.gN_ge_one hu)
     (b := b) (e := e) (by
       rw [e1]
-      exact (GlobalTheory.ThA.FrobNorm.gN_mul_le _ _).trans (le_of_eq (by rw [GlobalTheory.ThA.FrobNorm.gN_inv hB]))) hb (by linarith)
+      exact (_root_.PI.PolynomialProperness.GN.gN_mul_le _ _).trans (le_of_eq (by rw [_root_.PI.PolynomialProperness.GN.gN_inv hB]))) hb (by linarith)
   have p1 : 0 ≤ Formalism.FourierDecayAlt.B.gN (lA γ q.1 * Matrix.of q.2) ^ (-e) := Real.rpow_nonneg (Real.sqrt_nonneg _) _
   have p2 : 0 ≤ Formalism.FourierDecayAlt.B.gN (lB q.1 * Matrix.of q.2) ^ (-e) := Real.rpow_nonneg (Real.sqrt_nonneg _) _
   have b1 := (hC _ hA).trans (mul_le_mul_of_nonneg_right (le_abs_self C) p1)
@@ -505,101 +571,8 @@ theorem integrable_ker (L : LocBessel k r) {γ : MatKR k r} (hγ : γ ∈ UH (Hp
   rw [mul_mul_mul_comm, mul_right_comm]
   exact mul_le_mul_of_nonneg_left key (mul_nonneg (mul_nonneg (abs_nonneg _) (abs_nonneg _)) (norm_nonneg _))
 
-theorem ampKF : BranchingSupport.Hyps → GlobalTheory.CellAmp.AmpKF := by
-  intro H _ k r L h μG w l l' hOne γ μR νR ν hD b hb0 hb hint v v' hv hv' ξ ξ'
-  obtain ⟨⟨hgap, hok, -, hw, hμ, -, -⟩, hl, hl'⟩ := hOne
-  obtain ⟨hγ, -, -, hrel, hR, hQ, hQG⟩ := hD
-  have hG := Formalism.FourierDecayAlt.P.unitary_group_closed k r
-  have hσ : PI.UpqRep.IsDSHpk k r L.ε L.lam L.σ := L.hσ
-  let R : Rep k r := ⟨L.Hs, L.σ⟩
-  have hDS : R.IsDS L.ε L.lam := ⟨L.hlam, hσ⟩
-  obtain ⟨hmul, hone, huni, -⟩ := GlobalTheory.rep_basic_of_isDS H.1.2.2.1 k r L.ε L.lam R hDS
-  have hsm := H.1.2.2.1 k r L.ε L.lam L.Hs L.σ L.hlam hσ w (PI.UnitaryGroupMassFormula.LowSmooth.isKFinHpk_of_lowUnit hw)
-  obtain ⟨C, Ws, -, hC⟩ := H.1.2.1 k r L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hok v hv
-  obtain ⟨C', Ws', -, hC'⟩ := H.1.2.1 k r L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hok v' hv'
-  have hw1 : ‖w‖ = 1 := hw.choose_spec.2.1
-  have hw0 : w ≠ 0 := fun h0 => by simp [h0] at hw1
-  obtain ⟨c, -, hc⟩ := GlobalTheory.BesselDegree.schur_fdeg H k r L.ε μG hμ
-  obtain ⟨hd, hS⟩ := hc L.lam R hDS
-  have hd' : PI.BesselPeriodGGP.fdegH μG L.σ w = c * fdegHC L.lam := hd w hw0
-  have hS' : ∀ y y' : L.Hs, ∫ x, ⟪y, L.σ (Matrix.of x) w⟫_ℂ * star ⟪y', L.σ (Matrix.of x) w⟫_ℂ ∂μG =
-      (PI.BesselPeriodGGP.fdegH μG L.σ w : ℂ)⁻¹ * ⟪y, y'⟫_ℂ := fun y y' => by
-    refine (hS w y w y').2.trans ?_
-    have : ⟪w, w⟫_ℂ = 1 := by rw [inner_self_eq_norm_sq_to_K, hw1]; simp
-    rw [hd']
-    show ⟪w, w⟫_ℂ * ⟪y, y'⟫_ℂ / _ = _
-    rw [this, one_mul, div_eq_inv_mul]
-  haveI : SigmaFinite μG := hμ.1
-  haveI : SigmaFinite μR := hR.1
-  haveI : SFinite (pairMeas L) := by
-    have : SFinite L.μN := by unfold LocBessel.μN haarLie; infer_instance
-    have : SigmaFinite L.μW := L.hμW.1.1
-    have : SigmaFinite L.μW' := L.hμW'.1.1
-    unfold pairMeas; infer_instance
-  have aG : ∀ᵐ y ∂μG, Matrix.of y ∈ UH (Hpk k r) := by rw [ae_iff]; exact hμ.2.2.1
-  have aR : ∀ᵐ y ∂μR, Matrix.of y ∈ RStab k r γ := by rw [ae_iff]; exact hR.2.2.1
-  have aν := ae_quot L hR hQ
-  haveI : SFinite ν := sfinite_of_lintegral ν (fun p => ‖pairMaj γ b p‖ₑ) hint.1.enorm
-    (aν.mono fun p hp => by
-      have : 0 < pairMaj γ b p :=
-        Real.rpow_pos_of_pos (one_pos.trans_le (PI.PolynomialProperness.GN.gN_ge_one (point_mem L hγ hp))) _
-      simpa using this.ne') hint.2.ne
-  have hRc := Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (hG.unit _ hγ)
-  have hinv : μR.map GlobalTheory.SgInf.invM = μR :=
-    (GlobalTheory.UnipUnimod.isUnimod_of_subset_Nset (S := RStab k r γ)
-      ⟨fun a ha => ha.1.1, hRc.closed, hRc.one_mem, hRc.mul_mem, hRc.inv_mem⟩ (fun a ha => ha.1) hR).2
-  have mi : Measurable (GlobalTheory.SgInf.invM (k := k) (r := r)) := Formalism.FourierDecayAlt.P.B7.measurable_invM
-  let cj : Mt k r → Mt k r := fun x => fun i j => (γ⁻¹ * Matrix.of x * γ) i j
-  have mc : Measurable cj :=
-    meas_mul (g := fun _ => γ) (meas_mul (f := fun _ => (γ⁻¹ : MatKR k r)) measurable_const measurable_id)
-      measurable_const
-  let a₂ : Mt k r → Mt k r → Mt k r := fun a x => Matrix.of.symm (γ⁻¹ * (Matrix.of a)⁻¹ * γ * Matrix.of x)
-  have m2 : Measurable fun q : Mt k r × Mt k r => a₂ q.2 q.1 :=
-    meas_mul (mc.comp (mi.comp measurable_snd)) measurable_fst
-  have hW2 : ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, (∫⁻ a, f (a₂ a x) ∂μR) ∂νR := by
-    intro f hf
-    rw [hQG f hf]
-    refine lintegral_congr fun x => ?_
-    have mf : Measurable fun s : Mt k r => f fun i j => (Matrix.of s * Matrix.of x) i j :=
-      hf.comp (meas_mul measurable_id measurable_const)
-    rw [lintegral_map mf mc]
-    conv_lhs => rw [← hinv]
-    rw [lintegral_map (f := fun s => f fun i j => (Matrix.of (cj s) * Matrix.of x) i j) (mf.comp mc) mi]
-    rfl
-  haveI : SFinite νR := sfinite_of_weil μG νR μR hR.2.1 a₂ m2 hW2
-  have m1 : Measurable fun q : PairSp k r × Mt k r => stabAct γ (Matrix.of q.2) q.1 :=
-    (measurable_fst.fst.fst.prodMk (meas_mul measurable_snd measurable_fst.fst.snd)).prodMk
-      (measurable_fst.snd.fst.prodMk (meas_mul (mc.comp measurable_snd) measurable_fst.snd.snd))
-  have hcl : IsClosed {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)} := hG.closed
-  have aνR : ∀ᵐ x ∂νR, Matrix.of x ∈ UH (Hpk k r) := by
-    refine ae_of_weil μG νR μR a₂ _ hcl.measurableSet aG hR.2.1 hW2 ?_
-    filter_upwards [aR] with a ha x hx
-    have h1 := hG.mul_mem _ (hG.mul_mem _ (hG.inv_mem _ hγ) _ (hG.inv_mem _ ha.1.1)) _ hγ
-    have h3 : γ⁻¹ * (Matrix.of a)⁻¹ * γ * Matrix.of x ∈ UH (Hpk k r) := hx
-    have h2 := hG.mul_mem _ (hG.inv_mem _ h1) _ h3
-    rw [Matrix.nonsing_inv_mul_cancel_left _ _ (hG.unit _ h1)] at h2
-    exact h2
-  have hI := integrable_ker L hγ w v v' ξ ξ' hμ aν (e := Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1) hb0 (by linarith) hint
-    (fun x hx => by rw [neg_sub]; exact hC w hsm x hx) (fun x hx => by rw [neg_sub]; exact hC' w hsm x hx)
-  have key := double_weil (pairMeas L) ν μG νR μR (fun a p => stabAct γ (Matrix.of a) p) a₂
-    (mp_of_weil _ _ _ (fun a p => stabAct γ (Matrix.of a) p) m1 hQ) (mp_of_weil _ _ _ a₂ m2 hW2)
-    (ker L γ w v v' ξ ξ') (aesm_ker L hγ w v v' ξ ξ' _ _ (ae_pairMeas L) aνR) hI (by
-      filter_upwards [Measure.quasiMeasurePreserving_fst.ae ((Measure.quasiMeasurePreserving_fst.ae aν).and
-        (Measure.quasiMeasurePreserving_snd.ae aR))] with t ht
-      exact ker_act L hγ hrel w v v' ξ ξ' ht.2 ht.1 t.2)
-  unfold ampJ OrbInt
-  rw [Complex.ofReal_one, inv_one, one_smul, ← integral_smul, ← integral_smul]
-  refine Eq.trans (integral_congr_ae ?_) (key.trans (integral_congr_ae ?_))
-  · filter_upwards [aνR] with x hx
-    rw [integral_ker_pair L hok.1 hγ hmul w v v' ξ ξ' hx,
-      hl _ (Submodule.subset_span ⟨_, hG.mul_mem _ hγ _ hx, rfl⟩) v hv,
-      hl' _ (Submodule.subset_span ⟨_, hx, rfl⟩) v' hv']
-    ext η
-    simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, smul_smul,
-      inner_smul_left, inner_conj_symm]
-    congr 1
-    ring
-  · filter_upwards [aν] with p hp
-    exact integral_ker_group L hγ hmul hone huni aG hS' v v' ξ ξ' hp
-
 end GlobalTheory.AmpOrb
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplifierOfHypotheses =====

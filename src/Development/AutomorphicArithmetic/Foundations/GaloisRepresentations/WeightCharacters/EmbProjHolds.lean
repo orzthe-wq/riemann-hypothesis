@@ -2,9 +2,13 @@ module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.DeltaNear
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsIrreducibleSmallRepUnitary
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ArchimedeanUnitaryPointsEquivUnitaryGroupStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryArchimedeanStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleRepIsotypicOfCentraliserFactorStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ArchimedeanUnitaryPointsEquivUnitaryGroup
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryArchimedean
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.Order.CompletePartialOrder
+public import Mathlib.RepresentationTheory.Irreducible
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleRepIsotypicOfCentraliserFactor
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -144,8 +148,8 @@ private theorem proj_of_sum {G V : Type} [Group G] [AddCommGroup V] [Module ℂ 
 
 theorem embProj_holds : EmbProj := by
   intro E _ _ _ a τ U hU κ hκ u hu hu0
-  obtain ⟨e, he⟩ := GlobalTheory.T.archimedeanUnitaryPoints_equiv_unitaryGroup E a τ
-  obtain ⟨r, -, hr1, hr⟩ := GlobalTheory.T.exists_continuous_retraction_onto_unitaryArchimedeanPoints E a τ
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.EmbUnitary.exists_equiv_unitaryGroup E a τ
+  obtain ⟨r, -, hr1, hr⟩ := _root_.GlobalTheory.DefU.exists_embRet E a τ
   let π : AutSub E a := ⟨U, hU⟩
   let s : Matrix.unitaryGroup (Fin a) ℂ →* UA E a := (embU a τ).subtype.comp e.symm.toMulEquiv.toMonoidHom
   have hs : ∀ y, cEmb τ (s y) = unitaryIncl a y := fun y => by
@@ -171,7 +175,7 @@ theorem embProj_holds : EmbProj := by
       exact hFi (e.symm y) v
     · ext v : 1
       exact congrArg Subtype.val (DFunLike.congr_fun h0 v :)
-  have htop := (GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor _ _ _ _ _ π.rep s _ _ π.isIrreducible_rep hirr hirr hc f hf).1
+  have htop := (_root_.GlobalTheory.CuspRep.CompUniq.isotypic _ _ _ _ _ π.rep s _ _ π.isIrreducible_rep hirr hirr hc f hf).1
   have hUS : U ≤ sSup S := by
     intro φ hφ
     have h1 : (⟨φ, hφ⟩ : U) ∈ (⨆ f : (smallRep (unitaryIncl a) κ).IntertwiningMap (π.rep.comp s), LinearMap.range f.toLinearMap) :=

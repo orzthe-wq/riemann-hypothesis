@@ -159,14 +159,14 @@ theorem mem_span_irr_iff (e : E ≃ₐ[F] F × F)
   · rintro ⟨a, rfl⟩
     have ha := (hO a).1 a.2
     refine ⟨⟨⟨(e a).1, ha.1⟩, ?_⟩, ⟨⟨(e a).2, ha.2⟩, ?_⟩⟩ <;>
-      simp [Subring.smul_def, Submonoid.smul_def, Subalgebra.smul_def, map_mul, e_alg, mul_comm]
+      simp [Subring.smul_def, map_mul, mul_comm]
   · rintro ⟨⟨o1, h1⟩, ⟨o2, h2⟩⟩
     have hmem : e.symm ((o1 : F), (o2 : F)) ∈ M.L.O := by
       rw [hO, AlgEquiv.apply_symm_apply]
       exact ⟨o1.2, o2.2⟩
     refine ⟨⟨_, hmem⟩, ?_⟩
     apply e.injective
-    ext <;> simp [Subring.smul_def, Submonoid.smul_def, Subalgebra.smul_def, map_mul, e_alg, h1, h2, mul_comm]
+    ext <;> simp [Subring.smul_def, map_mul, h1, h2, mul_comm]
 
 theorem resF_bil {n : ℕ} (x y : Fin n → F) (hx : ∀ k, x k ∈ 𝒪[F]) (hy : ∀ k, y k ∈ 𝒪[F])
     (Ph : Matrix (Fin n) (Fin n) 𝒪[F]) :

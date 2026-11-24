@@ -66,9 +66,7 @@ theorem nonempty_places : Nonempty (HeightOneSpectrum (𝓞 F)) := by
 
 theorem nontrivial : Nontrivial (Af F) := by
   obtain ⟨v⟩ := nonempty_places (F := F)
-  refine ⟨⟨0, 1, fun h => ?_⟩⟩
-  have h2 : (0 : v.adicCompletion F) = 1 := congrArg (fun a : Af F => a v) h
-  exact zero_ne_one h2
+  exact ⟨⟨0, 1, fun h => zero_ne_one (congrArg (fun a : Af F => a v) h)⟩⟩
 
 theorem comp_algebraMap (r : 𝓞 F) (v : HeightOneSpectrum (𝓞 F)) :
     (algebraMap (𝓞 F) (Af F) r) v = algebraMap (𝓞 F) (v.adicCompletion F) r := by
@@ -92,8 +90,7 @@ theorem val_int (v : HeightOneSpectrum (𝓞 F)) (r : 𝓞 F) :
   rw [IsScalarTower.algebraMap_apply (𝓞 F) F (v.adicCompletion F), val_alg]
 
 theorem cancel {Γ : Type*} [LinearOrderedCommGroupWithZero Γ] {ν x : Γ} (hν : ν ≠ 0) (h : ν * x ≤ ν) : x ≤ 1 := by
-  have h1 : ν * x ≤ ν * 1 := by rwa [mul_one]
-  exact le_of_mul_le_mul_left h1 (zero_lt_iff.mpr hν)
+  exact le_of_mul_le_mul_left (by simpa using h) (zero_lt_iff.mpr hν)
 
 theorem af_denom (a : Af F) : ∃ m : ℕ, 0 < m ∧ (m : Af F) * a ∈ Formalism.UG.intAd F := by
   classical

@@ -107,7 +107,7 @@ private theorem tb_psdOn_of_ta_psdOn {α : Type} (F : Finset α) (k : α → α 
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [← Finset.sum_coe_sort F]
       refine Finset.sum_congr rfl fun j _ => ?_
-      simp [ha, Complex.star_def, mul_assoc]
+      simp [ha, mul_assoc]
     rw [hQ, Complex.le_def]
     simp only [Complex.zero_re, Complex.zero_im]
     exact ⟨h.2 a, (im_quadratic_form_eq_zero_of_hermitian F k h.1 a).symm⟩
@@ -117,28 +117,8 @@ theorem t_PSDTranspose : PSDTranspose := by
   intro α F k h
   exact tb_psdOn_of_ta_psdOn F _ (conv F k h)
 
-section Tower
-variable {E : Type} [Field E]
-
-end Tower
-
 section Agree
 variable {α : Type}
-
-theorem q_im (F : Finset α) (k : α → α → ℂ) (hh : ∀ x ∈ F, ∀ y ∈ F, k y x = conj (k x y)) (a : α → ℂ) :
-    (∑ x ∈ F, ∑ y ∈ F, conj (a x) * k x y * a y).im = 0 := by
-  have h : conj (∑ x ∈ F, ∑ y ∈ F, conj (a x) * k x y * a y) =
-      ∑ x ∈ F, ∑ y ∈ F, conj (a x) * k x y * a y := by
-
-    simp only [map_sum, map_mul, Complex.conj_conj]
-    rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl fun u hu => Finset.sum_congr rfl fun v hv => ?_
-    rw [← hh v hv u hu]
-    ring
-  exact Complex.conj_eq_iff_im.mp h
-
-theorem ta_to_tb (F : Finset α) (k : α → α → ℂ) (h : TA.PSDOn F k) : TB.PSDOn F k := by
-  exact tb_psdOn_of_ta_psdOn F k h
 
 theorem psd_form_conj_rewrite (F : Finset α) (k : α → α → ℂ) (a : α → ℂ) :
     (∑ x ∈ F, ∑ y ∈ F, a x * conj (a y) * k x y) =
@@ -186,7 +166,7 @@ theorem psd_kernel_hermitian (F : Finset α) (k : α → α → ℂ) (h : A5.IsP
 theorem t_PSDAgree : PSDAgree := by
   unfold PSDAgree
   intro α F k
-  refine ⟨⟨fun h => conv F _ (t_PSDTranspose α F k h), ta_to_tb F k⟩, ⟨fun h => ⟨psd_kernel_hermitian F k h, fun a => ?_⟩, fun h => ?_⟩⟩
+  refine ⟨⟨fun h => conv F _ (t_PSDTranspose α F k h), _root_.Formalism.FourierDecayAlt.P.Jx1.tb_psdOn_of_ta_psdOn F k⟩, ⟨fun h => ⟨psd_kernel_hermitian F k h, fun a => ?_⟩, fun h => ?_⟩⟩
   · have h2 := (h (fun z => conj (a z))).2
     refine le_of_le_of_eq h2 ?_
     congr 1
@@ -195,19 +175,15 @@ theorem t_PSDAgree : PSDAgree := by
     ring
   · intro a
     rw [psd_form_conj_rewrite F k a]
-    exact ⟨q_im F k h.1 _, h.2 _⟩
+    exact ⟨_root_.Formalism.FourierDecayAlt.P.Jx1.im_quadratic_form_eq_zero_of_hermitian F k h.1 _, h.2 _⟩
 
 end Agree
 
 theorem t_BoxSumLattice : BoxSumLattice := by
-  apply Formalism.FourierDecayAlt.P.Jx2.t_BoxSumLattice <;> assumption
+  apply Formalism.FourierDecayAlt.P.Jx2.t_BoxSumLattice
 
 end Formalism.FourierDecayAlt.P.Jx1
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem psd_agree : Formalism.FourierDecayAlt.J.PSDAgree := Jx1.t_PSDAgree
-
-theorem box_sum_lattice : Formalism.FourierDecayAlt.J.BoxSumLattice := Jx1.t_BoxSumLattice
 
 end Formalism.FourierDecayAlt.P

@@ -122,7 +122,7 @@ theorem emb_single (v : InfinitePlace K) (k : Fin d) :
   funext l
   by_cases h : l = k
   · subst h; simp
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 theorem gram_tie (b : Basis ι K V) (XA : InfinitePlace K → Matrix ι ι ℂ) (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ)
     (e : (Fin d → K) ≃ₗ[K] V)

@@ -58,8 +58,6 @@ variable {p q r s : ℕ}
 theorem omAct_eq_sum (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ) :
     FockH1Action.omAct p q r s M = ∑ l, ∑ l', M l l' • FockH1Action.omE l l' := by
   first
-  | (simp only [FockH1Action.omAct, LinearMap.coeFn_sum, Finset.sum_apply,
-      LinearMap.smulRight_apply, Matrix.entryLinearMap_apply]; done)
   | (simp only [FockH1Action.omAct, LinearMap.sum_apply,
       LinearMap.smulRight_apply, Matrix.entryLinearMap_apply]; done)
 
@@ -275,9 +273,7 @@ theorem Rop_raise (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s
     rwa [show 1 + (1 + d) = d + 2 by omega] at h
   · exact Submodule.zero_mem _
 
-theorem hc_pderiv {σ : Type} (l : σ) (e : ℕ) (P : MvPolynomial σ ℂ) :
-    homogeneousComponent e (pderiv l P) = pderiv l (homogeneousComponent (e + 1) P) :=
-  homogeneousComponent_pderiv l e P
+alias hc_pderiv := _root_.FockRL.homogeneousComponent_pderiv
 
 theorem Lop_shift (M : Matrix (FockH1Action.Ln p q r s) (FockH1Action.Ln p q r s) ℂ) (e : ℕ)
     (P : FockH1Action.Pol p q r s) :

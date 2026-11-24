@@ -72,7 +72,7 @@ theorem resChar_mem_f0Primes : ∀ (K : Ctx) (B : Base) (f : Top.Fr B.toPre) (T 
     fin_cases i <;> simp
   · refine Finset.mem_union_left _ ?_
     unfold Host.cls primeClass at h2
-    split_ifs at h2 with e1 e2 e3 <;> first | simp [e3] | exact absurd h2 (by decide)
+    split_ifs at h2 with e1 e2 e3 <;> first | simp [e3]
   · exact Finset.mem_union_right _ (Finset.mem_range.2 (Nat.lt_succ_of_le (Nat.le_floor h3.2)))
   · exact absurd rfl hne
 

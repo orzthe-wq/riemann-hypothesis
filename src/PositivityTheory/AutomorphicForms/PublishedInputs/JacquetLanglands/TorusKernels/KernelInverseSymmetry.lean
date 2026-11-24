@@ -179,7 +179,6 @@ theorem tsum_le (hB : B1b) (hBc : B1c) (hAx : D.Ax) (k : I → ℕ) (hk : ∀ v,
     ∑' γ, ‖T D k p γ y‖ₑ ≤ ENNReal.ofReal (cK k / nrm k p.1 * nrm k y.2) * ENNReal.ofReal Bnd := by
   have h1 := ENNReal.tsum_le_tsum fun γ => T_le D hB hBc hAx k hk p γ y
   rw [← tsum_subtype] at h1
-  beta_reduce at h1
   rw [ENNReal.tsum_mul_left] at h1
   refine h1.trans (mul_le_mul' le_rfl (Eq.trans_le ?_ (hS y.1 y.2)))
   exact Equiv.tsum_eq (invEquiv D y.1 (xH D p))
@@ -217,8 +216,8 @@ theorem main (hB1a : B1a) (hB : B1b) (hBc : B1c) (hE0a : E0a) (hKS : KapSum) (hA
         congr 1
         ring
   refine ⟨hsumm, ?_, ⟨cK k / nrm k p.1 * Bnd, fun y => (norm_tsum_le_tsum_norm (hsumm y)).trans (hbound y)⟩⟩
-  haveI := hcount
-  haveI := hborel
+  have := hcount
+  have := hborel
   obtain ⟨-, -, -, -, -, -, hjc, hqc, -⟩ := hB
   have hgc : ∀ g : GL (Fin 2) ℝ, Continuous fun z : P => g • z := fun g => (hB1a.2.2 g).1
   have hTm : ∀ γ : PG F, Measurable (T D k p γ) := fun γ => by

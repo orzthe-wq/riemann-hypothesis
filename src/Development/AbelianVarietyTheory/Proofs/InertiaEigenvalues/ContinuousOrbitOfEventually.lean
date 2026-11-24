@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ExpStar
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousAdicModuleIff
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOrbitPadicComplex
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFontaineThetaOnAinfStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFontaineThetaOnAinf
+public import Mathlib.LinearAlgebra.SModEq.Pow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -14,7 +15,6 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.SModEq.Pow
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
@@ -77,7 +77,7 @@ theorem exists_eq_mul_of_norm_le (z : OC l)
 
 theorem eventually_sub_mem_one (y : Ainf l) :
     ∀ᶠ g in 𝓝 (1 : GQ l), AI.actW g y - y ∈ Ideal.span {((l : ℕ) : Ainf l), AI.ξ} := by
-  obtain ⟨θ, -, hs, hact, hker, -⟩ := GlobalTheory.T.exists_fontaineTheta_on_Ainf l P AI
+  obtain ⟨θ, -, hs, hact, hker, -⟩ := _root_.GlobalTheory.Cyc.exists_isTheta l P AI
   have hc := GlobalTheory.Cyc.IsActC.continuous_orbit l AI.actC ⟨AI.actC_ext, AI.actC_norm⟩
     ((θ y : OC l) : PadicComplex l)
   have hl : (0 : ℝ) < ‖((l : ℕ) : PadicComplex l)‖ :=
@@ -137,7 +137,7 @@ theorem xi_mul_cancel {a b : Ainf l} (h : AI.ξ * a = AI.ξ * b) : a = b := by
 theorem eventually_xi (r n : ℕ) :
     ∀ᶠ g in 𝓝 (1 : GQ l), ∃ u : (Ainf l)ˣ, AI.actW g AI.ξ = AI.ξ * u ∧
       (u : Ainf l) - 1 ∈ Ideal.span {((l : ℕ) : Ainf l) ^ r, AI.ξ ^ n} := by
-  obtain ⟨θ, -, -, -, hker, -⟩ := GlobalTheory.T.exists_fontaineTheta_on_Ainf l P AI
+  obtain ⟨θ, -, -, -, hker, -⟩ := _root_.GlobalTheory.Cyc.exists_isTheta l P AI
   filter_upwards [eventually_sub_mem AI r (n + 1) AI.ξ] with g hg
   obtain ⟨b, hb⟩ := xi_dvd_act AI g AI.ξ ⟨1, (mul_one _).symm⟩
   obtain ⟨b', hb'⟩ := xi_dvd_act AI g⁻¹ AI.ξ ⟨1, (mul_one _).symm⟩

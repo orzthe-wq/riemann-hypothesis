@@ -58,4 +58,4 @@ theorem _root_.GlobalTheory.T.contDiff_thetaTransform_adelicSchwartz_realDirecti
           co.e (incM D.host.F x) = (fun i => algebraMap D.host.F (AF D.host.F) (y i), fun i => algebraMap D.host.F (AF D.host.F) (z i))) →
         ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ, ∀ (k : ℕ) (L : (Fin k → ℝ) →+ Formalism.IndefR.Datum.WO S T), Continuous L →
           (∀ t, (L t).map (finPart D) = 0) → ∀ w, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ (w + L t) := by
-  first | exact @GlobalTheory.ThetaSmooth.contDiff_thetaTr_real | exact GlobalTheory.ThetaSmooth.contDiff_thetaTr_real | (intros; apply GlobalTheory.ThetaSmooth.contDiff_thetaTr_real <;> assumption)
+  first | exact @GlobalTheory.ThetaSmooth.contDiff_thetaTr_real

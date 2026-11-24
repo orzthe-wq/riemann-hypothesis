@@ -75,7 +75,6 @@ theorem tie_trace {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   have hle : Fintype.card (E ≃ₐ[F] E) ≤ Module.finrank F E := by
     first
       | exact AlgEquiv.card_le
-      | exact (Fintype.card_congr (algEquivEquivAlgHom F E)).le.trans AlgHom.card_le
   have hpair : ({1, s} : Finset (E ≃ₐ[F] E)).card = 2 := Finset.card_pair (Ne.symm hs1)
   have hcard : Fintype.card (E ≃ₐ[F] E) = 2 := by
     have hge : ({1, s} : Finset (E ≃ₐ[F] E)).card ≤ Fintype.card (E ≃ₐ[F] E) :=
@@ -85,14 +84,12 @@ theorem tie_trace {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   haveI : IsGalois F E := by
     first
       | exact IsGalois.of_card_aut_eq_finrank F E (by rw [Nat.card_eq_fintype_card, hcard, hc.deg2])
-      | exact IsGalois.of_card_aut_eq_finrank F E (by rw [hcard, hc.deg2])
   have huniv : (Finset.univ : Finset (E ≃ₐ[F] E)) = {1, s} := by
     symm
     apply Finset.eq_of_subset_of_card_le (Finset.subset_univ _)
     rw [Finset.card_univ, hcard, hpair]
   first
     | rw [trace_eq_sum_automorphisms]
-    | rw [Algebra.trace_eq_sum_automorphisms]
   rw [huniv, Finset.sum_pair (Ne.symm hs1)]
   try rfl
 

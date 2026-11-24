@@ -168,7 +168,7 @@ lemma one_param (φ : ℝ → (H →L[ℂ] H)) (hadd : ∀ s t, φ (s + t) = φ 
     convert h3 using 1
     funext t
     show φ t v = φ s (φ (t - s) v)
-    rw [← ContinuousLinearMap.mul_apply, ← hadd, show s + (t - s) = t by ring]
+    rw [← mul_apply_eq_comp, ← hadd, show s + (t - s) = t by ring]
   have hg : ∀ s : ℝ, HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * -c) • φ t v) 0 s := by
     intro s
     have := (hasDerivAt_exp_mul (-c) s).smul (hder s)
@@ -182,7 +182,7 @@ lemma one_param (φ : ℝ → (H →L[ℂ] H)) (hadd : ∀ s t, φ (s + t) = φ 
   have hconst := is_const_of_deriv_eq_zero hdiff (fun s => (hg s).deriv) 1 0
   have hfinal : Complex.exp (-c) • φ 1 v = v := by
     simp only [Complex.ofReal_one, Complex.ofReal_zero, one_mul, zero_mul, Complex.exp_zero, one_smul, h0,
-      ContinuousLinearMap.one_apply] at hconst
+      one_apply_eq_self] at hconst
     exact hconst
   calc φ 1 v = Complex.exp c • (Complex.exp (-c) • φ 1 v) := by
         rw [smul_smul, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_smul]
@@ -247,7 +247,7 @@ theorem wtLink : CompanionTheory.D.DSIC.WtLink := by
       rw [Finset.sum_eq_single a]
       · simp [θ]
       · intro b _ hb
-        simp [θ, Pi.single_apply, hb]
+        simp [θ, hb]
       · intro ha
         exact absurd (Finset.mem_univ a) ha
     rw [hsum] at hu

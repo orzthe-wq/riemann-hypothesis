@@ -60,6 +60,7 @@ import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.OwnEvI
 import Formalism.SharpRestriction.CuspSpanNormBounds.PlaceDegreeData
 public import Mathlib.Analysis.Calculus.BumpFunction.Basic
 public import Mathlib.Analysis.Calculus.ContDiff.Convolution
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactHaarRightInvariantInst
 
 @[expose] public section
 
@@ -173,12 +174,6 @@ theorem rep_vec {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsU
 
 end Vec
 
-section Bound
-
-variable {n : ℕ} {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-
-end Bound
-
 section Der
 
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -247,13 +242,6 @@ section DerVec
 
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
-theorem continuous_exp_smul (Y : Matrix (Fin n) (Fin n) ℂ) :
-    Continuous (fun s : ℝ => NormedSpace.exp ((s : ℂ) • Y)) := by
-  have : ∀ t : ℝ, HasDerivAt (fun s : ℝ => NormedSpace.exp ((s : ℂ) • Y)) (Y * (NormedSpace.exp ((t : ℂ) • Y) * 1)) t := by
-    intro t
-    simpa using hasDerivAt_exp_mul Y 1 t
-  exact continuous_iff_continuousAt.2 fun t => (this t).continuousAt
-
 theorem test_bounded {Φ : Matrix (Fin n) (Fin n) ℂ → ℂ} (hΦ : IsTest Φ) : ∃ B : ℝ, ∀ m, ‖Φ m‖ ≤ B :=
   hΦ.2.exists_bound_of_continuous hΦ.1.continuous
 
@@ -284,7 +272,7 @@ theorem hasDerivAt_vec {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h�
   have h𝒦 : IsCompact 𝒦 := by
     apply (isCompact_Icc.prod hΘ.2.isCompact).image
     have c1 : Continuous (fun p : ℝ × Matrix (Fin n) (Fin n) ℂ => NormedSpace.exp (((-p.1 : ℝ) : ℂ) • Y)) :=
-      (continuous_exp_smul Y).comp continuous_fst.neg
+      (_root_.Formalism.REAL.continuous_exp_real_smul Y).comp continuous_fst.neg
     exact c1.matrix_mul continuous_snd
   let S : Set (UJ ε) := (fun y : UJ ε => umat y) ⁻¹' 𝒦
   have hS : IsCompact S := (isClosedEmbeddingMatrix n ε).1.isCompact_preimage h𝒦
@@ -753,12 +741,6 @@ def cjL (Pc : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →L[ℝ]
 
 end Model2
 
-section Sig
-
-open Formalism.MainNotions.BridgeLemma Formalism.MainNotions.PlaceDegreeData
-
-end Sig
-
 section Final
 
 open Formalism.MainNotions.BridgeLemma Formalism.MainNotions.PlaceDegreeData Formalism.BasicNotions
@@ -774,22 +756,6 @@ def HCAdmDS : Prop :=
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 end Final
-
-section Left
-
-open Formalism.MainNotions.BridgeLemma Formalism.MainNotions.PlaceDegreeData Formalism.BasicNotions
-
-variable {n : ℕ} {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-variable {Hm Pc : Matrix (Fin n) (Fin n) ℂ}
-variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
-
-end Left
-
-section PK
-
-open Formalism.MainNotions.BridgeLemma Formalism.MainNotions.PlaceDegreeData Formalism.BasicNotions
-
-end PK
 
 def eqImg {K H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ρ : K → H →L[ℂ] H) (S : Submodule ℂ H) :
     Submodule ℂ H :=

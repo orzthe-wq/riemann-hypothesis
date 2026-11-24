@@ -122,7 +122,7 @@ theorem charP_quot : CharP (𝓞 (Cond.Cyc N) ⧸ Q) l := by
   rw [hu, Ideal.mem_span_singleton, Int.natCast_dvd_natCast]
 
 theorem zO_sub_mem_iff (a b : ℕ) : zO N ^ a - zO N ^ b ∈ Q ↔ a ≡ b [MOD ordCompl[l] N] := by
-  haveI := charP_quot N l Q
+  have := charP_quot N l Q
   have hl : l.Prime := Fact.out
   have hN0 : N ≠ 0 := NeZero.ne N
   have hnN : ordProj[l] N * ordCompl[l] N = N := Nat.ordProj_mul_ordCompl_eq_self N l
@@ -194,7 +194,7 @@ theorem tauN_inertia_iff (u : (ZMod N)ˣ) :
       exact Ideal.Quotient.eq.2 h1
 
 theorem tauN_frob (u : (ZMod N)ˣ) (hu : (u : ZMod N).val ≡ l [MOD ordCompl[l] N]) : IsArithFrobAt ℤ (tauN N u) Q := by
-  haveI := charP_quot N l Q
+  have := charP_quot N l Q
   have hcard : Nat.card (ℤ ⧸ Q.under ℤ) = l := by
     rw [← Ideal.LiesOver.over (P := Q) (p := span {(l : ℤ)}),
       Nat.card_congr (Int.quotientSpanNatEquivZMod l).toEquiv, Nat.card_zmod]
@@ -232,8 +232,8 @@ private lemma lift_lemma' (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsP
     ∃ Q : Ideal (𝓞 (Cond.Cyc H.condN)), Q.IsPrime ∧ Q.LiesOver (span {(l : ℤ)}) ∧
       Q.comap (RingOfIntegers.mapRingHom (emb H).toRingHom) = P := by
   classical
-  letI : Algebra (𝓞 H.E) (𝓞 (Cond.Cyc H.condN)) := (RingOfIntegers.mapRingHom (emb H).toRingHom).toAlgebra
-  haveI : Algebra.IsIntegral (𝓞 H.E) (𝓞 (Cond.Cyc H.condN)) :=
+  let : Algebra (𝓞 H.E) (𝓞 (Cond.Cyc H.condN)) := (RingOfIntegers.mapRingHom (emb H).toRingHom).toAlgebra
+  have : Algebra.IsIntegral (𝓞 H.E) (𝓞 (Cond.Cyc H.condN)) :=
     ⟨fun y => (RingOfIntegers.isIntegral y).tower_top⟩
   have hinj : Function.Injective (RingOfIntegers.mapRingHom (emb H).toRingHom) := by
     intro x y hxy
@@ -259,8 +259,8 @@ theorem frob_of_modEq (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime
     (σ : H.E ≃ₐ[ℚ] H.E) (u : (ZMod H.condN)ˣ) (hu : (u : ZMod H.condN).val ≡ l [MOD ordCompl[l] H.condN])
     (h : H.gal σ = H.art u) : IsArithFrobAt ℤ σ P := by
   obtain ⟨Q, hQp, hQl, hQ⟩ := lift_lemma' H l P
-  haveI := hQp
-  haveI := hQl
+  have := hQp
+  have := hQl
   have hτ := tauN_frob H.condN l Q u hu
   have hact : ∀ x : 𝓞 H.E, RingOfIntegers.mapRingHom (emb H).toRingHom (σ • x) =
       tauN H.condN u • RingOfIntegers.mapRingHom (emb H).toRingHom x := by

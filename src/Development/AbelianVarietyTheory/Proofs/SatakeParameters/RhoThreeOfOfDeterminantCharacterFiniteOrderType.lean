@@ -140,8 +140,8 @@ theorem rhoThreeOf_of_mtType : ∀ (D : D7) (u : D.what₂.Word) (C : ColumnChai
     simp only [sExp, Nat.add_sub_cancel]
   have hk : ∀ k ∈ D.UO, rhoOf D mt i k = (mt (i + 1) k)⁻¹ ∧ rhoOf' D mt i k = mt (i + 1) k := fun k hk => by
     constructor
-    · simp [rhoOf, zpow_hom_apply, D.chiD_UO k hk]
-    · simp [rhoOf', zpow_hom_apply, D.chiD_UO k hk]
+    · simp [rhoOf, D.chiD_UO k hk]
+    · simp [rhoOf', D.chiD_UO k hk]
   have hV : ∀ z : (letI := D.host.cmStar; unitary D.host.E),
       ((rhoOf D mt i (D.e1Dt z) : ℂˣ) : ℂ) = ∏ τ, (embT D τ (z : D.host.E)) ^ (-C.sSharp i τ) ∧
       ((rhoOf' D mt i (D.e1Dt z) : ℂˣ) : ℂ) = ∏ τ, (embT D τ (z : D.host.E)) ^ (C.sDiv i τ) := fun z => by

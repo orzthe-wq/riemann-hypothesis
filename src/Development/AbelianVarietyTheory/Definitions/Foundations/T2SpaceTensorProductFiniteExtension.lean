@@ -64,7 +64,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
 
 theorem norm_map (φ : R →ₐ[F] R') (x : R ⊗[F] E) :
     Algebra.norm R' (Algebra.TensorProduct.map φ (AlgHom.id F E) x) = φ (Algebra.norm R x) := by
-  apply GlobalTheory.CNorm.tensor_norm_map <;> assumption
+  apply GlobalTheory.CNorm.tensor_norm_map
 
 theorem norm_inclR (x : E) : Algebra.norm R (inclR (F := F) R x) = algebraMap F R (Algebra.norm F x) := by
   rw [Algebra.norm_apply, Algebra.norm_apply, ← LinearMap.det_baseChange]
@@ -80,7 +80,7 @@ theorem norm_sigR (σ : E →ₐ[F] E) (x : R ⊗[F] E) :
 theorem continuous_norm_tens [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous (Algebra.norm R : R ⊗[F] E → R) := by
   classical
-  haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
+  have : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
   let b := Algebra.TensorProduct.basis R (Module.finBasis F E)
   rw [show (Algebra.norm R : R ⊗[F] E → R) = fun x => (Algebra.leftMulMatrix b x).det from
     funext fun x => Algebra.norm_eq_matrix_det b x]
@@ -161,7 +161,7 @@ theorem absEv_algebraMap (v : HeightOneSpectrum (𝓞 F)) (a : (Fv F v)ˣ) :
 theorem algebraMap_norm_eq {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {R : Type} [CommRing R] [Algebra F R] (x : R ⊗[F] E) :
     algebraMap R (R ⊗[F] E) (Algebra.norm R x) = x * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ x := by
   classical
-  haveI : Algebra.IsQuadraticExtension F E := ⟨h.2.2.1⟩
+  have : Algebra.IsQuadraticExtension F E := ⟨h.2.2.1⟩
   let s := AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ)
   have hs : (1 : E ≃ₐ[F] E) ≠ s := fun e => by
     have := h.2.1
@@ -262,7 +262,7 @@ theorem continuous_unitInf (w : InfinitePlace F) : Continuous (unitInf F E w) :=
     ((continuous_apply w).comp continuous_fst))
 
 theorem continuous_absE : Continuous (absE F E) := by
-  haveI := isTopologicalRing_tens (F := F) (E := E) (R := AF F)
+  have := isTopologicalRing_tens (F := F) (E := E) (R := AF F)
   refine continuous_of_continuousAt_one _ ?_
   have ho : IsOpen {a : AF F | ∀ v, evFin F v a ∈ v.adicCompletionIntegers F} :=
     (RestrictedProduct.isOpen_forall_mem fun v : HeightOneSpectrum (𝓞 F) =>

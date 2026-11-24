@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.LocalToGlobal.GlobalTheory.GL3.PLinkThIndep
 
 @[expose] public section
 
@@ -54,9 +55,6 @@ abbrev conjR (D : D7) : D.host.E ≃+* D.host.E := (D.host.conj : D.host.E ≃�
 def conjFI (D : D7) : FI D ≃+* FI D :=
   FractionalIdeal.ringEquivOfRingEquiv D.host.E D.host.E (NumberField.RingOfIntegers.mapRingEquiv (conjR D))
 
-theorem conj_conj_host (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
-  rw [← bridge_star_holds D.R D.host, ← bridge_star_holds D.R D.host, star_star]
-
 theorem fracEquiv_conj (D : D7) (x : D.host.E) :
     IsFractionRing.ringEquivOfRingEquiv (K := D.host.E) (L := D.host.E)
       (NumberField.RingOfIntegers.mapRingEquiv (conjR D)) x = D.host.conj x := by
@@ -68,19 +66,19 @@ theorem fracEquiv_conj (D : D7) (x : D.host.E) :
 theorem mem_conjFI {D : D7} {𝔞 : FI D} {x : D.host.E} : x ∈ conjFI D 𝔞 ↔ D.host.conj x ∈ 𝔞 := by
   constructor
   · rintro ⟨y, hy, rfl⟩
-    have h := (congrArg D.host.conj (fracEquiv_conj D y)).trans (conj_conj_host D y)
+    have h := (congrArg D.host.conj (fracEquiv_conj D y)).trans (_root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conj_conj D y)
     exact h.symm ▸ hy
   · intro h
-    exact ⟨D.host.conj x, h, (fracEquiv_conj D _).trans (conj_conj_host D x)⟩
+    exact ⟨D.host.conj x, h, (fracEquiv_conj D _).trans (_root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conj_conj D x)⟩
 
 theorem conj_mem_conjFI {D : D7} {𝔞 : FI D} {x : D.host.E} : D.host.conj x ∈ conjFI D 𝔞 ↔ x ∈ 𝔞 := by
-  rw [mem_conjFI, conj_conj_host]
+  rw [mem_conjFI, _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conj_conj]
 
 theorem conjFI_AA (D : D7) : conjFI D D.host.AA = D.host.AAbar := by
   ext x
   rw [mem_conjFI]
   refine ⟨fun h => ?_, fun h => Formalism.L2.Pj.conj_mem_AA D h⟩
-  simpa only [conj_conj_host] using Formalism.L2.Pj.conj_mem_AAbar D h
+  simpa only [_root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conj_conj] using Formalism.L2.Pj.conj_mem_AAbar D h
 
 theorem conjFI_AA_zpow (D : D7) (n : ℤ) : conjFI D (D.host.AA ^ n) = D.host.AAbar ^ n := by
   rw [map_zpow₀, conjFI_AA]
@@ -90,11 +88,7 @@ theorem cA_tmul (D : D7) (α : AF D.host.F) (a : D.host.E) :
   change α ⊗ₜ[D.host.F] star a = _
   rw [bridge_star_holds D.R D.host]
 
-theorem cA_cA (D : D7) (z : AE D) : cA D (cA D z) = z := by
-  induction z using TensorProduct.induction_on with
-  | zero => rw [map_zero, map_zero]
-  | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
-  | tmul a x => rw [cA_tmul, cA_tmul, conj_conj_host]
+alias cA_cA := _root_.GlobalTheory.IdemModTwo.cA_invol
 
 theorem cA_mem_idV {D : D7} {𝔞 : FI D} {v : Pl D} {s : AE D} (hs : s ∈ idV 𝔞 v) :
     cA D s ∈ idV (conjFI D 𝔞) v := by

@@ -170,8 +170,7 @@ theorem linIndep_real (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
     intro v
     have h1 := congrFun (hV v) p.2
     simp only [smul_smul, vecAt_smul_basis, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply,
-      Fintype.sum_prod_type, Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ,
-      if_true, map_mul] at h1
+      Fintype.sum_prod_type, Pi.single_apply, mul_ite, mul_zero, map_mul] at h1
     have hc' : v.embedding c ≠ 0 := by simpa using hc
     have h2 : (∑ k, (t (k, p.2) : ℂ) * v.embedding (integralBasis K k)) * v.embedding c = 0 := by
       rw [Finset.sum_mul]
@@ -195,7 +194,7 @@ theorem discrete_span_of_linIndep {E : Type*} [NormedAddCommGroup E] [InnerProdu
       exact hψW ⟨f i, Submodule.subset_span ⟨i, rfl⟩⟩
     rw [h]
     ext j
-    simp [Basis.equivFun_self, Finsupp.single_apply, Pi.single_apply, eq_comm]
+    simp [Finsupp.single_apply, Pi.single_apply, eq_comm]
   have hmem : ∀ x ∈ Submodule.span ℤ (Set.range f),
       ψ x ∈ Submodule.span ℤ (Set.range (Pi.basisFun ℝ ι')) := by
     intro x hx

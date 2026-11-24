@@ -116,7 +116,7 @@ theorem mem_P_iff (h : IsCompl P q ι ϖ) (hu : GlobalTheory.IndefiniteRowSideFu
     refine ⟨?_, ?_⟩
     · rw [Ideal.ne_top_iff_one, mem_vI]
       intro h1
-      simp only [OneMemClass.coe_one, map_one] at h1
+      simp only [map_one] at h1
       exact absurd (lt_of_le_of_lt h1 (v_unif_lt_one hu)) (lt_irrefl _)
     · intro a b hab
       rw [mem_vI, mem_vI, ← hu, ← hu] at *

@@ -54,10 +54,10 @@ variable (q : ℕ) [NeZero q] (A : Type) [CommRing A]
 
 theorem pow_val_mul (ζ : Prim q A) (a b : (ZMod q)ˣ) :
     (ζ.1 ^ (a : ZMod q).val) ^ (b : ZMod q).val = ζ.1 ^ ((a * b : (ZMod q)ˣ) : ZMod q).val := by
-  rw [← pow_mul, Units.val_mul, ZMod.val_mul, ← pow_eq_pow_mod _ ((GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties q A).1 ζ)]
+  rw [← pow_mul, Units.val_mul, ZMod.val_mul, ← pow_eq_pow_mod _ ((_root_.GlobalTheory.EtC.PrimBasic.prim_basic q A).1 ζ)]
 
 theorem pow_val_one (ζ : Prim q A) : ζ.1 ^ ((1 : (ZMod q)ˣ) : ZMod q).val = ζ.1 := by
-  rw [Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod _ ((GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties q A).1 ζ), pow_one]
+  rw [Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod _ ((_root_.GlobalTheory.EtC.PrimBasic.prim_basic q A).1 ζ), pow_one]
 
 def orbRel : Setoid (Prim q A) where
   r ζ ξ := ∃ a : (ZMod q)ˣ, ξ.1 = ζ.1 ^ (a : ZMod q).val
@@ -92,7 +92,7 @@ theorem units_eq_of_pow (r : Prim q A) (a b : (ZMod q)ˣ)
     apply ZMod.val_injective
     rw [Nat.ModEq, Nat.mod_eq_of_lt (ZMod.val_lt _), Nat.mod_eq_of_lt (ZMod.val_lt _)] at hm
     exact hm
-  have hu := (GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties q A).2.2.1 r _ _ hm
+  have hu := (_root_.GlobalTheory.EtC.PrimBasic.prim_basic q A).2.2.1 r _ _ hm
   rw [h, sub_self] at hu
   exact not_isUnit_zero hu
 

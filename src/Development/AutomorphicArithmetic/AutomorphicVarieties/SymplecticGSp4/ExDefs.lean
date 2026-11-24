@@ -89,7 +89,7 @@ theorem aeval_map' (f : R →+* R') (X : M4 R) (p : Polynomial R) :
   by_cases h : i = j
   · subst h
     simp [Matrix.algebraMap_eq_diagonal]
-  · simp [Matrix.algebraMap_eq_diagonal, Matrix.diagonal_apply, h]
+  · simp [Matrix.algebraMap_eq_diagonal, h]
 
 theorem prj_map (f : R →+* R') (c : Fin 4 → R) (X : M4 R) (i : Fin 4) :
     prj (fun a => f (c a)) (f.mapMatrix X) i = f.mapMatrix (prj c X i) := by

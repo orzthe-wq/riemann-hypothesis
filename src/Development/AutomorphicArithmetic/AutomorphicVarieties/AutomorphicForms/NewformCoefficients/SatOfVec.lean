@@ -119,14 +119,6 @@ end Gen
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {n : ℕ}
 
-private theorem smooth_fin (π : TR.CuspSub F n) : IsSmooth π.finPart := fun v => by
-  convert (π.cusp v.1 v.2).1.level using 1
-  ext k
-  exact Subtype.ext_iff
-
-private theorem smooth_loc (π : TR.CuspSub F n) (w : HeightOneSpectrum (𝓞 F)) : IsSmooth (π.locRep w) := fun v =>
-  (smooth_fin π v).preimage (GlobalTheory.CuspRep.CuspSub.continuous_locGL w)
-
 private theorem cpt_fin (π : TR.CuspSub F n) (k : TR.Kinf F n) (g : GL (Fin n) (Af F)) (y : π.V) :
     π.op (.cpt k) (π.finPart g y) = π.finPart g (π.op (.cpt k) y) := by
   refine Subtype.ext ?_
@@ -183,7 +175,7 @@ private theorem exists_comp (h : UpperTheory.V.Published.AdmissibleReal) (π : T
   set φ : π.V := ⟨φ₀, hφ⟩
   have h0' : φ ≠ 0 := fun e => h0 (congrArg Subtype.val e)
   set L := stab π.finPart φ
-  have hL : IsOpen (L : Set (GL (Fin n) (Af F))) := smooth_fin π _
+  have hL : IsOpen (L : Set (GL (Fin n) (Af F))) := _root_.UpperTheory.V.TR.CuspSub.isSmooth_finPart π _
   obtain ⟨K, ho, hc, hK⟩ := exists_compact_open w _ hL
   have hfd : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptPart π k φ)) := by
     have := (π.cusp φ₀ hφ).1.kfin
@@ -197,11 +189,11 @@ private theorem exists_comp (h : UpperTheory.V.Published.AdmissibleReal) (π : T
   have hcomm : ∀ g k x, π.finPart g (cptPart π k x) = cptPart π k (π.finPart g x) := fun g k x => (cpt_fin π k g x).symm
   let U : Submodule ℂ π.V := annPart (cptPart π) φ ⊓
     fixed π.finPart (L ⊓ (GeneralLinearGroup.map (n := Fin n) (pLoc F w)).ker)
-  obtain ⟨σ, hσ, -⟩ := exists_irred (smooth_loc π w) ho (fun W hW e => by
+  obtain ⟨σ, hσ, -⟩ := exists_irred (_root_.UpperTheory.V.TR.CuspSub.isSmooth_locRep π w) ho (fun W hW e => by
       rcases bot_or_top π w (nullPart (π.locRep w) K) (fun g x hx => nullPart_act _ K g hx)
         (fun T hT x hx => nullPart_comm _ K T hT hx) with h2 | h2
-      · exact le_bot_iff.1 (h2 ▸ le_nullPart (smooth_loc π w) hc W hW e)
-      · exact absurd (eq_zero_of_mem_nullPart (smooth_loc π w) hc (mem_fix.2 hK) (h2 ▸ Submodule.mem_top)) h0')
+      · exact le_bot_iff.1 (h2 ▸ le_nullPart (_root_.UpperTheory.V.TR.CuspSub.isSmooth_locRep π w) hc W hW e)
+      · exact absurd (eq_zero_of_mem_nullPart (_root_.UpperTheory.V.TR.CuspSub.isSmooth_locRep π w) hc (mem_fix.2 hK) (h2 ▸ Submodule.mem_top)) h0')
     U (fun g x hx => ⟨fun c hc => by
         rw [TR.CuspSub.locRep, MonoidHom.comp_apply, orb_comm _ _ (hcomm _), hx.1 c hc, map_zero],
       mem_fix.2 fun k hk => by rw [fin_loc π w hk.2, mem_fix.1 hx.2 k hk]⟩)

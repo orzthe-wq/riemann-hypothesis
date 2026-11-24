@@ -70,9 +70,6 @@ theorem smul_mem_hatL {L : Submodule (𝓞 E) (Fin N → E)} {a : E ⊗[F] 𝔸}
     {z : Fin N → E ⊗[F] 𝔸} (hz : z ∈ Formalism.L2.Herm.hatL (F := F) L) : a • z ∈ Formalism.L2.Herm.hatL (F := F) L :=
   Submodule.smul_mem _ (⟨a, ha⟩ : Formalism.L2.Herm.intAf F E) hz
 
-theorem one_notMem (P : HeightOneSpectrum (𝓞 E)) : (1 : 𝓞 E) ∉ P.asIdeal :=
-  fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)
-
 theorem mul_notMem {P : HeightOneSpectrum (𝓞 E)} {s t : 𝓞 E} (hs : s ∉ P.asIdeal) (ht : t ∉ P.asIdeal) :
     s * t ∉ P.asIdeal :=
   fun h => (P.isPrime.mem_or_mem h).elim hs ht
@@ -80,7 +77,7 @@ theorem mul_notMem {P : HeightOneSpectrum (𝓞 E)} {s t : 𝓞 E} (hs : s ∉ P
 variable {P : HeightOneSpectrum (𝓞 E)} {L : Submodule (𝓞 E) (Fin N → E)}
 
 theorem HP.of_mem {z : Fin N → E ⊗[F] 𝔸} (hz : z ∈ Formalism.L2.Herm.hatL (F := F) L) : HP P L z :=
-  ⟨1, one_notMem P, by simpa using hz⟩
+  ⟨1, _root_.PI.TwChrOne.Pf.one_nm P, by simpa using hz⟩
 
 theorem HP.zero : HP (F := F) P L 0 := HP.of_mem (zero_mem _)
 

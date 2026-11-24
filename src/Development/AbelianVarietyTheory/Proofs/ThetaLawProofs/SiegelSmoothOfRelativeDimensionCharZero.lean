@@ -85,7 +85,7 @@ theorem card_torsion_of_level {G J : Type} [Group G] [Fintype J] (k : ℕ) (hk :
       obtain ⟨a, rfl⟩ := hsurj g hg
       exact ⟨fun i => (a i : ZMod k), Subtype.ext ((key _ _).2 fun i => by simp)⟩
   rw [← Nat.card_eq_of_bijective F hF]
-  simp [Nat.card_pi]
+  simp
 
 noncomputable def pointsEquiv {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (hp : IsGrpPullback G' G f φ) (T : Over S') :

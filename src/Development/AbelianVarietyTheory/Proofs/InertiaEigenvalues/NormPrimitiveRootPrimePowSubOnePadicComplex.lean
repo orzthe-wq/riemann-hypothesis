@@ -100,7 +100,7 @@ theorem _root_.GlobalTheory.Cyc.norm_primitiveRoot_sub_one (l : ℕ) [hl : Fact 
   have hprod := congrArg norm heval
   rw [_root_.GlobalTheory.Cyc.norm_natCast_prime_padicComplex, norm_prod, Finset.prod_congr rfl hall, Finset.prod_const,
     hζ.card_primitiveRoots, Nat.totient_prime_pow hl.out (Nat.succ_pos k)] at hprod
-  simp only [Nat.succ_sub_one, Nat.add_sub_cancel] at hprod ⊢
+  simp only [Nat.succ_sub_one] at hprod ⊢
   have hN : l ^ k * (l - 1) ≠ 0 :=
     Nat.mul_ne_zero (pow_ne_zero _ hl.out.ne_zero) (Nat.sub_ne_zero_of_lt hl.out.one_lt)
   have hcast : ((l ^ k * (l - 1) : ℕ) : ℝ) = (l : ℝ) ^ k * ((l : ℝ) - 1) := by

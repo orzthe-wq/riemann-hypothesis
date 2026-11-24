@@ -47,4 +47,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.besselToFourierJacobi_handedFamily_continuous_automorphic : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) (L' : HSp D) (ζ' : Fin L'.rank → D.host.E), IsLineVec L' ζ' → ∀ (l : Link B L' ζ') (φ : GA D B.A → ℂ) (Ξ : WO B.V₀ J.W₀ → ℂ), IsContAut B.A φ → IsThetaFunO ψ B.V₀ J.W₀ Ξ → IsQuasiFam ψ J.W₀ L' (handBF s l φ Ξ) := by
-  first | exact @GlobalTheory.HandFam.handBF_isQuasiFam | exact GlobalTheory.HandFam.handBF_isQuasiFam | (intros; apply GlobalTheory.HandFam.handBF_isQuasiFam <;> assumption)
+  first | exact @GlobalTheory.HandFam.handBF_isQuasiFam

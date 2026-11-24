@@ -183,7 +183,6 @@ theorem homogeneousComponent_mul_mem (D : SubSystem S x Ω) (σ : Ω) (I : Chart
       have hxd : x i ^ d ≠ 0 := pow_ne_zero _ hxi
       rw [chartRing_smul_def, chartRing_smul_def, Subalgebra.coe_mul, hpow]
       field_simp
-      try ring
     · rw [map_zero, zero_mul]; exact Submodule.zero_mem _
 
 theorem idealMod_zeroIdeal_mul_le (D : SubSystem S x Ω) (σ : Ω) (I : Chart x) :
@@ -205,7 +204,6 @@ theorem idealMod_zeroIdeal_mul_le (D : SubSystem S x Ω) (σ : Ω) (I : Chart x)
     rw [chartRing_smul_def, Subalgebra.coe_mul,
       show aeval x f / aeval x s * δ = aeval x f * δ / aeval x s by ring, ← ht, chartRing_smul_def]
     field_simp
-    try ring
   | zero => rw [zero_mul]; exact Submodule.zero_mem _
   | add a b _ _ ha hb => rw [add_mul]; exact Submodule.add_mem _ ha hb
   | smul r a _ ha => rw [smul_mul_assoc]; exact Submodule.smul_mem _ r ha

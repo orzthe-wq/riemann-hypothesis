@@ -2,9 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGaloisCover
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaConstantsLocallyOnBaseStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullbackStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChangeStatement
+public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaConstantsLocallyOnBase
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsIffOfThetaLevelPullback
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChange
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -43,7 +45,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 
 @[expose] public section
 
@@ -72,10 +73,10 @@ theorem isIso_of_closedPoint_mem_range {R : Type} [CommRing R] [IsLocalRing R] {
 theorem TObj.exists_hasTh_of_isLocalRing (h1 : Out.Laws) (h2 : Out.Laws2) {o : Type} [CommRing o] {g N' : ℕ} {J : Type}
     {b : TBase o (N' ^ 2)} (hN : Odd N') {R : Type} [CommRing R] [IsLocalRing R] {s' : Sp R ⟶ Sp o}
     (t : TObj g (N' ^ 2) J b s') : ∃ v, t.HasTh (𝟙 (Sp R)) v := by
-  obtain ⟨R', _, z, v, hz, hp, hv⟩ := GlobalTheory.T.exists_thetaConstants_locally_on_base h1 h2 o g N' J b _ s' t hN (IsLocalRing.closedPoint R)
+  obtain ⟨R', _, z, v, hz, hp, hv⟩ := _root_.GlobalTheory.ThetaLocal.exists_hasTh h1 h2 o g N' J b _ s' t hN (IsLocalRing.closedPoint R)
   have := isIso_of_closedPoint_mem_range z hp
   obtain ⟨φ, hφ⟩ := Spec.map_surjective (inv z)
-  have := GlobalTheory.T.hasThetaConstants_ring_baseChange h2 o g N' J b _ s' t R' R φ.hom z v hv
+  have := _root_.GlobalTheory.hasTh_baseChange h2 o g N' J b _ s' t R' R φ.hom z v hv
   have e : spMap φ.hom ≫ z = 𝟙 (Sp R) := by
     change Spec.map φ ≫ z = _
     rw [hφ, IsIso.inv_hom_id]
@@ -92,8 +93,8 @@ theorem WFam.qproj_flat_reduced_ext : Out.Laws → Out.Laws2 → ∀ (o : Type) 
     · exact Or.inr hn
   · intro R _ _ x y s' t hxy hx hy
     obtain ⟨v, hv⟩ := TObj.exists_hasTh_of_isLocalRing h1 h2 hN t
-    have vx := (GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ _ F.univ _ s' t x R (𝟙 _) v hx).1 hv
-    have vy := (GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ _ F.univ _ s' t y R (𝟙 _) v hy).1 hv
+    have vx := (_root_.GlobalTheory.hasTh_iff_of_tmap o g N' J b _ _ F.univ _ s' t x R (𝟙 _) v hx).1 hv
+    have vy := (_root_.GlobalTheory.hasTh_iff_of_tmap o g N' J b _ _ F.univ _ s' t y R (𝟙 _) v hy).1 hv
     rw [Category.id_comp] at vx vy
     have cx := (F.th R x v).1 vx
     have cy := (F.th R y v).1 vy

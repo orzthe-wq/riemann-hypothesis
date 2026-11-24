@@ -69,10 +69,7 @@ theorem mono_thick' (R : Type) [CommRing R] (I : Ideal R) (e : ℕ) : Mono (thic
     IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective
   infer_instance
 
-theorem thickTrans_thick' (R : Type) [CommRing R] (I : Ideal R) (e : ℕ) :
-    thickTrans R I e ≫ thick R I (e + 1) = thick R I e := by
-  rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
-  rfl
+alias thickTrans_thick' := _root_.ReciprocityTheory.ChartRestriction.G.Out.thickTrans_comp
 
 end GlobalTheory.FormalAlg.TowerSq
 

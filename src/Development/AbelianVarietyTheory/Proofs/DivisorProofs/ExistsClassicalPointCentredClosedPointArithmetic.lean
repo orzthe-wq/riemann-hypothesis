@@ -80,9 +80,6 @@ theorem exists_cen (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBa
   obtain ⟨h1, h2⟩ := flat_and_lft_toInt M
   exact GlobalTheory.padicAlgCl_integral_points.1 M.Z (M.s ≫ spMap (algebraMap ℤ o)) x hx U hU
 
-theorem exists_cen_main : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (M : RatModel o Ω) (x : M.Z),
-    IsClosed ({x} : Set M.Z) → ∀ U : M.Z.Opens, (U : Set M.Z).Nonempty →
-      ∃ (p : ℕ) (_ : Fact p.Prime) (y : Sp (OO p) ⟶ M.Z), M.Cen U x y :=
-  fun o Ω _ _ _ _ M x hx U hU => exists_cen o Ω M x hx U hU
+alias exists_cen_main := _root_.GlobalTheory.Poinc.exists_cen
 
 end GlobalTheory.Poinc

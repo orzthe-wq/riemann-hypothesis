@@ -258,7 +258,7 @@ theorem isFundamentalDomain_semi (N : Subgroup G) (s : K →* G) (hN : IsClosed 
         have heq : ((⟨u, huG⟩ : ΓG.subgroupOf N)⁻¹ • c ((⟨m, hm⟩ : N)⁻¹ * n)) =
             c ((⟨m', hm'⟩ : N)⁻¹ * n) := by
           apply Subtype.ext
-          simp only [Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul, Subgroup.coe_inv, hudef, hcdef, conjN_apply,
+          simp only [Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul, hudef, hcdef, conjN_apply,
             InvMemClass.coe_inv, map_inv]
           group
         rw [heq]; exact h2

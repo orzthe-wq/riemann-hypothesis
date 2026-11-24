@@ -1,10 +1,13 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.OmHeightslockG
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixChangeFrameStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarisedStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUniqueStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairSumFrameAtPointStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GramMatrixChangeFrame
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.InteriorPointPolarised
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUnique
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairSumFrameAtPoint
 public import Development.WeilBound.CoreStatements.PluriharmonicCharts.XCBmExistsSumframe
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -54,10 +57,10 @@ theorem PositivityTheory.Xgp.t_c_bm_exists_gram : ∀ (E : Type) [Field E] [Numb
   have hq : M.GoodAt F (ptIdeal 𝔐.ξ M.x ⟨centre z, 𝔐.all _⟩) := by
     rw [ptIdeal_centre hw (𝔐.all _)]; exact hg
   have hfr := PositivityTheory.Xgp.isFrameAt_comap_gbS E H D Xo l c Y S K ι Φ y M 𝔐 tie F hF τ _ hq
-  have hpol := GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z hi
-  obtain ⟨Γ, h1, h2⟩ := GlobalTheory.T.pair_sum_frame_at_point E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 (.inl τ) (.inr τ) (D.p + D.q)
+  have hpol := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.polarisedAt_of_interior E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z hi
+  obtain ⟨Γ, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.GramEx.exists_gramAt_posDef E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 (.inl τ) (.inr τ) (D.p + D.q)
     (gbS tie F τ) z (𝔐.all _) hpol hfr
-  have tp := GlobalTheory.T.local_ring_points_existsUnique 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ
+  have tp := _root_.GlobalTheory.CompanionTheory.Ar.tie_points 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ
   have hgb : (fun k => ((gbS tie F τ k : ↥(𝔐.Vgen (.inl τ) ⊔ 𝔐.Vgen (.inr τ))) : 𝔐.Li)) = gb tie F τ := rfl
   rw [hgb] at h1
   have hfn : HodgeMetric.gramFn 𝔐 (gb tie F τ) w = Γ := by
@@ -68,7 +71,7 @@ theorem PositivityTheory.Xgp.t_c_bm_exists_gram : ∀ (E : Type) [Field E] [Numb
     obtain ⟨z₀, hw₀, -, hΓ₀⟩ := hex.choose_spec
     have hz : z₀ = z := (tp.1 w hw.1 (tp.2.2 z w (𝔐.all _) hw).1).unique ⟨𝔐.all _, hw₀⟩ ⟨𝔐.all _, hw⟩
     rw [hz] at hΓ₀
-    exact GlobalTheory.T.gram_matrix_change_frame E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z _ _ _ _ hpol hΓ₀ h1
+    exact _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.gramAt_unique_of_polarisedAt E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z _ _ _ _ hpol hΓ₀ h1
   rw [hfn]
   refine ⟨h1, h2, ?_⟩
   obtain ⟨hex, -⟩ := omBundle_dualFrame 𝔐 τ _ (tie.frameO _ F hF hq τ)

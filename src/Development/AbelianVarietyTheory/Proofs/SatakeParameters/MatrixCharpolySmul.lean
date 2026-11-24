@@ -1,9 +1,10 @@
 module
 
+import Lemmata.CharpolySmul
 public import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
 public import Mathlib.Algebra.Module.StablyFree.Basic
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalParameterLawsOfWeilDeligneIdentificationStatement
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalParameterLawsOfWeilDeligneIdentification
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -60,36 +61,12 @@ namespace GlobalTheory.RowTieLP
 open GlobalTheory.WeilDeligne
 
 theorem matrix_charpoly_smul {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n ℂ) (c : ℂ) :
-    (c • M).charpoly = M.charpoly.scaleRoots c := by
-  by_cases hc : c = 0
-  · subst hc
-    ext i
-    rw [zero_smul, Matrix.charpoly_zero, coeff_scaleRoots, M.charpoly_natDegree_eq_dim, coeff_X_pow]
-    by_cases hi : i = Fintype.card n
-    · subst hi
-      have := M.charpoly_monic.coeff_natDegree
-      rw [M.charpoly_natDegree_eq_dim] at this
-      simp [this]
-    · rcases lt_or_gt_of_ne hi with h | h
-      · have : Fintype.card n - i ≠ 0 := by omega
-        simp [hi, this]
-      · simp [hi, coeff_eq_zero_of_natDegree_lt (p := M.charpoly) (by rwa [M.charpoly_natDegree_eq_dim])]
-  · apply Polynomial.funext
-    intro t
-    have h1 : (M.charpoly.scaleRoots c).eval (c * (t / c)) = c ^ M.charpoly.natDegree * M.charpoly.eval (t / c) := by
-      simpa using scaleRoots_eval₂_mul (RingHom.id ℂ) (t / c) c (p := M.charpoly)
-    rw [mul_div_cancel₀ _ hc, M.charpoly_natDegree_eq_dim] at h1
-    rw [h1, Matrix.eval_charpoly, Matrix.eval_charpoly, ← Matrix.det_smul]
-    congr 1
-    ext i j
-    simp [Matrix.scalar_apply, Matrix.sub_apply, Matrix.diagonal_apply, mul_sub]
-    split_ifs <;> field_simp
+    (c • M).charpoly = M.charpoly.scaleRoots c :=
+  Matrix.charpoly_smul M c
 
 theorem charpoly_smul_end {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-    (f : Module.End ℂ V) (c : ℂ) : (c • f).charpoly = f.charpoly.scaleRoots c := by
-  classical
-  rw [← LinearMap.charpoly_toMatrix _ (Module.finBasis ℂ V), map_smul, matrix_charpoly_smul,
-    LinearMap.charpoly_toMatrix]
+    (f : Module.End ℂ V) (c : ℂ) : (c • f).charpoly = f.charpoly.scaleRoots c :=
+  LinearMap.charpoly_smul f c
 
 theorem charpoly_map_line {V L : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [AddCommGroup L] [Module ℂ L] [FiniteDimensional ℂ L] (hL : Module.finrank ℂ L = 1)
@@ -131,7 +108,7 @@ end GlobalTheory.RowTieLP
 
 theorem GlobalTheory.RowTieLP.main : ∀ (D : D7), WDTie D.nd D.naut → Formalism.MainNotions.SumRepresentations.At.TieLP D.nd D.naut := by
   intro D T w a b χ χ' s h1 h2
-  obtain ⟨l1, l2, l3, l4, l5⟩ := (GlobalTheory.T.localParameterLaws_of_weilDeligneIdentification _ _ _ _ _ T).2.1 w a b χ χ' s h1 h2
+  obtain ⟨l1, l2, l3, l4, l5⟩ := (_root_.GlobalTheory.RowLaws.main _ _ _ _ _ T).2.1 w a b χ χ' s h1 h2
   refine ⟨l1, l2, l3, l4, l5, fun σ hσ => ⟨⟨?_, ?_⟩, fun c hc => ?_⟩⟩
   · rw [T.inePol w a σ hσ, GlobalTheory.WeilDeligne.WD.inePol_of_mem_Ine _ hσ]
     exact GlobalTheory.WeilDeligne.WD.charPol_monic _ _

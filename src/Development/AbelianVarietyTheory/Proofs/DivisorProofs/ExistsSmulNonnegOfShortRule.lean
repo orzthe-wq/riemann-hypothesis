@@ -51,6 +51,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -123,7 +124,7 @@ theorem sum_bound_of_trivAt (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)]
     exact sqN_eq_of_isUUOver Xo hN _ _ _ (ha' i' b).2 (ht b) _ _ (hUU i i' b) (hUU i₀ i' b)
   have hterm : ∀ i', ((-ρ : ℝ) : EReal) ≤ nval T.V e (io (nrm Dw c w α * ((N : c.F) ^ P.totalDegree)⁻¹) *
       hv Xo c nab y.1 (N ^ 2) (fun b => sqN Xo N (F (σ (i₀, i')) b)) P) := fun i' => by
-    refine GlobalTheory.T.harmonicValue_translated_product_valuation_bound E H Dw l Xo c hst T io y C hC nab hnab e ρ w n he hb N n' A Bn α β₀ hN hfac hA hB
+    refine _root_.GlobalTheory.PlaceInt.TermBound.term_bound E H Dw l Xo c hst T io y C hC nab hnab e ρ w n he hb N n' A Bn α β₀ hN hfac hA hB
       (isUnit_of_coprime T hn' hlu) (a' i') tp _ (fun b => ⟨(ha' i' b).2, ht b, ?_, htp b, hUU i₀ i' b⟩) P hP.1
       (hFF w P hP)
     have h1 : (a' i' b ^ (n' ^ 2)) ^ m = 1 := by rw [← pow_mul, _root_.mul_comm, pow_mul, (ha' i' b).1, one_pow]

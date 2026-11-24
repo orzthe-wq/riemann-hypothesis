@@ -2,52 +2,9 @@ module
 
 public import Formalism.LocalToGlobal.Columns.RecLevelLoc
 public import Formalism.LocalToGlobal.Columns.DecoFin
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -244,7 +201,6 @@ theorem rll_mem_loc_dLat (v : HeightOneSpectrum (𝓞 F)) (c : E) (hc0 : c ≠ 0
     have hz : z = ∑ i, Pi.single i (z i) := by
       first
         | exact (Finset.univ_sum_single z).symm
-        | (funext j; simp [Finset.sum_apply, Pi.single_apply])
     rw [hz]
     refine Submodule.sum_mem _ fun i _ => ?_
     have hgen : ∀ e : E, (Pi.single i e : Fin n → E) ∈ rll_dLat n c →
@@ -310,7 +266,6 @@ theorem BasePi.coe_ne_zero (h : BasePi ST π) : algebraMap (𝓞 E) E π ≠ 0 :
   apply h.ne_zero
   first
     | exact (injective_iff_map_eq_zero _).mp (FaithfulSMul.algebraMap_injective (𝓞 E) E) _ h0
-    | exact RingOfIntegers.coe_eq_zero_iff.mp h0
 
 theorem BasePi.star_ne_zero (h : BasePi ST π) : star (algebraMap (𝓞 E) E π) ≠ 0 := _root_.star_ne_zero.mpr h.coe_ne_zero
 
@@ -447,7 +402,6 @@ theorem rll_baseKer_eq (h : BasePi ST π) :
   have hinj : Function.Injective (algebraMap (𝓞 E) E) := by
     first
       | exact FaithfulSMul.algebraMap_injective (𝓞 E) E
-      | exact RingOfIntegers.coe_injective
   have ha := h.coe_ne_zero
   have hb : star (algebraMap (𝓞 E) E π) = algebraMap (𝓞 E) E (cO E π) := rfl
   have hloc : ∀ (y : Fin n → E) (P : Pl E), y ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (baseLb E n ST) ↔
@@ -470,7 +424,6 @@ theorem rll_baseKer_eq (h : BasePi ST π) :
         simp only [map_mul]
         rw [hr, ← hb, ht, Pi.smul_apply, Algebra.smul_def]
         field_simp
-        try ring
       have hmem : s * r ∈ P.asIdeal := by
         rw [e]
         exact Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (h.mem hP))
@@ -480,7 +433,6 @@ theorem rll_baseKer_eq (h : BasePi ST π) :
     rw [hq, map_mul] at hr
     rw [div_mul_eq_mul_div, ← hr]
     field_simp
-    try ring
   · rintro ⟨h1, h2⟩
     obtain ⟨q, hq⟩ := (hI _).mp h2
     refine ⟨⟨h1, ?_⟩, fun P hP => (hloc y P).mpr
@@ -488,7 +440,6 @@ theorem rll_baseKer_eq (h : BasePi ST π) :
     · refine (hI _).mpr ⟨π * q, ?_⟩
       rw [map_mul, hq]
       field_simp
-      try ring
     · rw [rll_baseLb_eq n h, rll_mem_dLat]
       refine ⟨fun i hi => ?_, ?_⟩
       · rw [Pi.smul_apply, Algebra.smul_def]
@@ -497,7 +448,6 @@ theorem rll_baseKer_eq (h : BasePi ST π) :
         refine (hI _).mpr ⟨q, ?_⟩
         rw [hq]
         field_simp
-        try ring
 
 end Pi2
 

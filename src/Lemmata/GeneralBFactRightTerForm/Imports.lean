@@ -1,33 +1,7 @@
 module
 
 public import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Lemmata.FirstBlockLemmaE.Imports
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -40,7 +14,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -59,25 +32,18 @@ theorem goal1 {L : Type} [Field L] [NumberField L] (x : L) (c : ℤ)
   · exact h
   exfalso
   have hx' : x ^ 2 = 8 * (c : L) + 1 := by rw [hx]; push_cast; ring
-  have hint : IsIntegral ℤ ((1 + x) / 2) := by
-    refine ⟨Polynomial.X ^ 2 - Polynomial.X - Polynomial.C (2 * c), ?_, ?_⟩
-    · monicity!
-    · rw [Polynomial.eval₂_sub, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X,
-        Polynomial.eval₂_C]
-      simp only [eq_intCast, Int.cast_mul, Int.cast_ofNat]
-      linear_combination hx' / 4
-  let y : NumberField.RingOfIntegers L := ⟨(1 + x) / 2, hint⟩
-  have hy : algebraMap (NumberField.RingOfIntegers L) L y = (1 + x) / 2 := rfl
+  have hyquad : ((1 + x) / 2) ^ 2 = (1 + x) / 2 + ((2 * c : ℤ) : L) := by
+    push_cast
+    linear_combination hx' / 4
+  obtain ⟨y, hyVal, hyy⟩ := Bl.FirstBlockLemmaE.goal1 ((1 + x) / 2) (2 * c) hyquad
+  have hy : algebraMap (NumberField.RingOfIntegers L) L y = (1 + x) / 2 := hyVal
   have h2 : (2 : NumberField.RingOfIntegers L) ∈ P := by
     have h0 := (Ideal.mem_of_liesOver P (Ideal.span {(2 : ℤ)}) (2 : ℤ)).mp
       (Ideal.subset_span rfl)
     simpa using h0
   have hprod : y * (y - 1) = 2 * (c : NumberField.RingOfIntegers L) := by
-    apply NumberField.RingOfIntegers.ext
-    change algebraMap (NumberField.RingOfIntegers L) L (y * (y - 1)) =
-      algebraMap (NumberField.RingOfIntegers L) L (2 * (c : NumberField.RingOfIntegers L))
-    rw [map_mul, map_sub, map_one, map_mul, map_ofNat, map_intCast, hy]
-    linear_combination hx' / 4
+    push_cast at hyy
+    linear_combination hyy
   have hmem : y * (y - 1) ∈ P := by
     rw [hprod]
     exact P.mul_mem_right _ h2

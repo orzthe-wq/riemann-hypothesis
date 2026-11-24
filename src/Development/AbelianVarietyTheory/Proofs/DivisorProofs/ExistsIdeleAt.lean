@@ -92,7 +92,7 @@ theorem exists_idele_at {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau)
 
 theorem det_compAt (θ : InfFam D) (τ : D.what₂.Tau) {k : ℕ} (M : Matrix (Fin k) (Fin k) (AE D)) :
     (compAt θ τ M).det = θ τ (infPart D M.det) := by
-  apply GlobalTheory.OneMapRef.RealMove.det_compAt <;> assumption
+  apply GlobalTheory.OneMapRef.RealMove.det_compAt
 
 theorem finPart_cA (z : AE D) (hz : finPart D z = 1) : finPart D (cA D z) = 1 := by
   apply GlobalTheory.OneMapRef.RealMove.finPart_cA <;> assumption

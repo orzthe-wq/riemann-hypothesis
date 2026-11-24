@@ -1,24 +1,30 @@
 module
 
-public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinA
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
+public import Mathlib.RingTheory.DedekindDomain.Different
 public import Formalism.SharpRestriction.Divisibility.ModuliIntegralCharts
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -39,10 +45,192 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinA, Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinB
+
+-- ===== clump member: Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinA =====
+-- clump-header: {"m": "Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinA", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings\npublic import Mathlib.RingTheory.DedekindDomain.Different\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+noncomputable section
+
+namespace Formalism.MainNotions.ModuliIntegralCharts.H1.PhiCMin
+
+open NumberField Module FractionalIdeal
+open scoped nonZeroDivisors
+
+variable {E : Type} [Field E] [NumberField E]
+
+theorem trace_sum (z : E) : ((Algebra.trace ℚ E z : ℚ) : ℂ) = ∑ σ : E →+* ℂ, σ z := by
+  rw [show ((Algebra.trace ℚ E z : ℚ) : ℂ) = algebraMap ℚ ℂ (Algebra.trace ℚ E z) from (eq_ratCast _ _).symm,
+    trace_eq_sum_embeddings ℂ]
+  exact Fintype.sum_equiv (RingHom.equivRatAlgHom (R := E) (S := ℂ)).symm _ _ (fun σ => rfl)
+
+theorem emb_nonempty : Nonempty (E →+* ℂ) := by
+  exact ⟨(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom⟩
+
+theorem eq_of_emb {a b : E} (h : ∀ σ : E →+* ℂ, σ a = σ b) : a = b := by
+  obtain ⟨σ⟩ := emb_nonempty (E := E)
+  exact σ.injective (h σ)
+
+section Conj
+
+variable {cj : E → E} (hcj : ∀ (φ : E →+* ℂ) (z : E), φ (cj z) = star (φ z))
+include hcj
+
+theorem cj_add (a b : E) : cj (a + b) = cj a + cj b := eq_of_emb fun φ => by rw [hcj, map_add (f := _), star_add, map_add (f := _), hcj, hcj]
+
+theorem cj_mul (a b : E) : cj (a * b) = cj a * cj b := eq_of_emb fun φ => by rw [hcj, map_mul, star_mul', map_mul, hcj, hcj]
+
+theorem cj_one : cj 1 = 1 := eq_of_emb fun φ => by rw [hcj, map_one, star_one]
+
+theorem cj_zero : cj 0 = 0 := eq_of_emb fun φ => by rw [hcj, map_zero, star_zero]
+
+theorem cj_cj (a : E) : cj (cj a) = a := eq_of_emb fun φ => by rw [hcj, hcj, star_star]
+
+def cjR : E →+* E where
+  toFun := cj
+  map_one' := cj_one hcj
+  map_mul' := cj_mul hcj
+  map_zero' := cj_zero hcj
+  map_add' := cj_add hcj
+
+theorem trace_cj (z : E) : Algebra.trace ℚ E (cj z) = Algebra.trace ℚ E z := by
+  apply Rat.cast_injective (α := ℂ)
+  rw [trace_sum, trace_sum]
+  simp_rw [hcj]
+  rw [← star_sum, ← trace_sum]
+  exact map_ratCast (starRingEnd ℂ) _
+
+theorem cj_integral (c : 𝓞 E) : ∃ c' : 𝓞 E, (c' : E) = cj c := by
+  exact ⟨⟨cj c, c.isIntegral_coe.map (cjR hcj).toIntAlgHom⟩, rfl⟩
+
+theorem cj_ratCast (q : ℚ) : cj (q : E) = q := eq_of_emb fun φ => by rw [hcj, map_ratCast]; exact map_ratCast (starRingEnd ℂ) q
+
+theorem cj_smul (q : ℚ) (a : E) : cj (q • a) = q • cj a := by
+  rw [Rat.smul_def, Rat.smul_def, cj_mul hcj, cj_ratCast hcj]
+
+theorem cj_neg (a : E) : cj (-a) = -cj a := eq_of_emb fun φ => by rw [hcj, map_neg, star_neg, map_neg, hcj]
+
+theorem exists_theta (hne : ∃ z : E, cj z ≠ z) :
+    ∃ θ : 𝓞 E, (θ : E) ≠ 0 ∧ cj (θ : E) = -(θ : E) := by
+  obtain ⟨z, hz⟩ := hne
+  have hex : ∃ c : 𝓞 E, cj (c : E) ≠ c := by
+    by_contra hall
+    push_neg at hall
+    apply hz
+    let f : E →ₗ[ℚ] E :=
+      { toFun := cj, map_add' := cj_add hcj, map_smul' := fun q a => cj_smul hcj q a }
+    have hf : f = LinearMap.id := (integralBasis E).ext fun i => by
+      show cj (integralBasis E i) = integralBasis E i
+      rw [integralBasis_apply]
+      exact hall _
+    exact LinearMap.congr_fun hf z
+  obtain ⟨c, hc⟩ := hex
+  obtain ⟨c', hc'⟩ := cj_integral hcj c
+  have hθ : ((c - c' : 𝓞 E) : E) = (c : E) - cj (c : E) := by
+    rw [← hc']
+    first | rfl
+  refine ⟨c - c', ?_, ?_⟩
+  · rw [hθ]
+    exact sub_ne_zero.mpr (Ne.symm hc)
+  · rw [hθ, sub_eq_add_neg, cj_add hcj, cj_neg hcj, cj_cj hcj]
+    ring
+
+end Conj
+
+def ed (E : Type) [Field E] [NumberField E] : Basis (Free.ChooseBasisIndex ℤ (𝓞 E)) ℚ E :=
+  (Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) (integralBasis E)
+
+theorem tr_ed_eb (i j : Free.ChooseBasisIndex ℤ (𝓞 E)) :
+    Algebra.trace ℚ E (ed E i * integralBasis E j) = if j = i then 1 else 0 := by
+  have h := LinearMap.BilinForm.apply_dualBasis_left (traceForm_nondegenerate ℚ E) (integralBasis E) i j
+  rw [Algebra.traceForm_apply] at h
+  exact h
+
+theorem eb_repr (z : E) (i : Free.ChooseBasisIndex ℤ (𝓞 E)) :
+    (integralBasis E).repr z i = Algebra.trace ℚ E (ed E i * z) := by
+  have h : (integralBasis E).coord i =
+      (Algebra.trace ℚ E).comp (LinearMap.mulLeft ℚ (ed E i)) := (integralBasis E).ext fun j => by
+    show (integralBasis E).repr (integralBasis E j) i = Algebra.trace ℚ E (ed E i * integralBasis E j)
+    rw [Module.Basis.repr_self, tr_ed_eb, Finsupp.single_apply]
+  exact LinearMap.congr_fun h z
+
+theorem tr_ed_int (c : 𝓞 E) (i : Free.ChooseBasisIndex ℤ (𝓞 E)) :
+    Algebra.trace ℚ E (ed E i * (c : E)) = ((RingOfIntegers.basis E).repr c i : ℚ) := by
+  rw [← eb_repr]
+  have h := integralBasis_repr_apply E c i
+  simpa using h
+
+
+attribute [local instance] Classical.propDecidable
+
+open scoped Classical in
+theorem ortho (σ τ : E →+* ℂ) :
+    ∑ i, σ (ed E i) * τ (integralBasis E i) = if σ = τ then 1 else 0 := by
+  classical
+  let P : Matrix (E →+* ℂ) (Free.ChooseBasisIndex ℤ (𝓞 E)) ℂ := Matrix.of fun ρ i => ρ (integralBasis E i)
+  let Q : Matrix (Free.ChooseBasisIndex ℤ (𝓞 E)) (E →+* ℂ) ℂ := Matrix.of fun i ρ => ρ (ed E i)
+  have hQP : Q * P = 1 := by
+    ext i j
+    simp only [Matrix.mul_apply, Q, P, Matrix.of_apply, Matrix.one_apply]
+    simp_rw [← map_mul]
+    rw [← trace_sum, tr_ed_eb]
+    by_cases h : i = j
+    · subst h; simp
+    · simp [h, Ne.symm h]
+  have hcard : Fintype.card (Free.ChooseBasisIndex ℤ (𝓞 E)) = Fintype.card (E →+* ℂ) := by
+    rw [← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank, NumberField.Embeddings.card]
+  have hPQ : P * Q = 1 := (Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq hcard)).mp hQP
+  have h := congrFun (congrFun hPQ τ) σ
+  simp only [Matrix.mul_apply, P, Q, Matrix.of_apply, Matrix.one_apply] at h
+  convert h using 1
+  · exact Finset.sum_congr rfl fun i _ => mul_comm _ _
+  · exact if_congr eq_comm rfl rfl
+
+
+abbrev Dinv (E : Type) [Field E] [NumberField E] : FractionalIdeal (𝓞 E)⁰ E :=
+  FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)
+
+theorem mem_Dinv {z : E} : z ∈ Dinv E ↔ ∀ c : 𝓞 E, ∃ m : ℤ, Algebra.trace ℚ E (z * c) = m := by
+  rw [FractionalIdeal.mem_dual (one_ne_zero : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0)]
+  constructor
+  · intro h c
+    obtain ⟨m, hm⟩ := h (c : E) ((FractionalIdeal.mem_one_iff _).mpr ⟨c, rfl⟩)
+    exact ⟨m, by rw [← Algebra.traceForm_apply, ← hm, eq_intCast]⟩
+  · intro h a ha
+    obtain ⟨c, rfl⟩ := (FractionalIdeal.mem_one_iff _).mp ha
+    obtain ⟨m, hm⟩ := h c
+    exact ⟨m, by rw [eq_intCast, Algebra.traceForm_apply]; exact hm.symm⟩
+
+theorem ed_mem (i : Free.ChooseBasisIndex ℤ (𝓞 E)) : ed E i ∈ Dinv E := mem_Dinv.mpr fun c => ⟨_, tr_ed_int c i⟩
+
+theorem cj_mem_Dinv {cj : E → E} (hcj : ∀ (φ : E →+* ℂ) (z : E), φ (cj z) = star (φ z))
+    {z : E} (hz : z ∈ Dinv E) : cj z ∈ Dinv E := by
+  rw [mem_Dinv] at hz ⊢
+  intro c
+  obtain ⟨c', hc'⟩ := cj_integral hcj c
+  obtain ⟨m, hm⟩ := hz c'
+  refine ⟨m, ?_⟩
+  rw [← hm, hc', ← trace_cj hcj (z * cj c), cj_mul hcj, cj_cj hcj]
+
+end Formalism.MainNotions.ModuliIntegralCharts.H1.PhiCMin
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinA =====
+
+-- ===== clump member: Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinB =====
+-- clump-header: {"m": "Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinB", "h": "module\n\npublic import Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinA\npublic import Formalism.SharpRestriction.Divisibility.ModuliIntegralCharts\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -154,36 +342,36 @@ def Pf (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) : ℝ :=
 
 theorem Pf_add_left (η ζ : Y →ₗ[ℤ] ℝ) (a b c : Y) :
     Pf E η ζ (a + b) c = Pf E η ζ a c + Pf E η ζ b c := by
-  simp only [Pf, comp_add, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, ← Finset.sum_add_distrib]
+  simp only [Pf, comp_add, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 theorem Pf_add_right (η ζ : Y →ₗ[ℤ] ℝ) (a b c : Y) :
     Pf E η ζ a (b + c) = Pf E η ζ a b + Pf E η ζ a c := by
-  simp only [Pf, comp_add, map_add (f := _), Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, ← Finset.sum_add_distrib]
+  simp only [Pf, comp_add, map_add (f := _), Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 theorem Pf_symm (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) : Pf E η ζ a c = Pf E η ζ c a := by
-  simp only [Pf, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im]
+  simp only [Pf, Complex.re_sum, Complex.add_re, Complex.mul_re, Complex.conj_re, Complex.conj_im]
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 theorem Pf_comm (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) : Pf E η ζ a c = Pf E ζ η a c := by
-  simp only [Pf, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im]
+  simp only [Pf, Complex.re_sum, Complex.add_re, Complex.mul_re, Complex.conj_re, Complex.conj_im]
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 theorem Pf_fadd (η η' ζ : Y →ₗ[ℤ] ℝ) (a c : Y) :
     Pf E (η + η') ζ a c = Pf E η ζ a c + Pf E η' ζ a c := by
-  simp only [Pf, comp_fadd, map_add (f := _), Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, ← Finset.sum_add_distrib]
+  simp only [Pf, comp_fadd, map_add (f := _), Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 theorem Pf_fsmul (r : ℝ) (η ζ : Y →ₗ[ℤ] ℝ) (a c : Y) :
     Pf E (r • η) ζ a c = r * Pf E η ζ a c := by
-  simp only [Pf, comp_fsmul, map_mul, Complex.conj_ofReal, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re,
+  simp only [Pf, comp_fsmul, map_mul, Complex.conj_ofReal, Complex.re_sum, Complex.add_re, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re,
     Complex.ofReal_im, Finset.mul_sum]
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 theorem Pf_self (η : Y →ₗ[ℤ] ℝ) (a : Y) :
     Pf E η η a a = 2 * ∑ σ : E →+* ℂ, Complex.normSq (comp η σ a) := by
-  simp only [Pf, Complex.re_sum, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.normSq_apply, Finset.mul_sum]
+  simp only [Pf, Complex.re_sum, Complex.add_re, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.normSq_apply, Finset.mul_sum]
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 theorem Pf_self_nonneg (η : Y →ₗ[ℤ] ℝ) (a : Y) : 0 ≤ Pf E η η a a := by
@@ -263,3 +451,7 @@ theorem Pf_skew (θ : 𝓞 E) (hθ : ∀ σ : E →+* ℂ, star (σ (θ : E)) = 
 end Forms
 
 end Formalism.MainNotions.ModuliIntegralCharts.H1.PhiCMin
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinB =====

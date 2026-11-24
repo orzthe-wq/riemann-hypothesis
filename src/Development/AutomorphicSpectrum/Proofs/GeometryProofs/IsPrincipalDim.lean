@@ -64,7 +64,7 @@ theorem isPrincipal_dim {K : Type} [Field K] {t : SAB H (Sp K)} (_h : IsPrincipa
   have hc := t.G.hom.isConnected_preimage_singleton (IsLocalRing.closedPoint K)
   have hu : t.G.hom ⁻¹' {IsLocalRing.closedPoint K} = Set.univ := by
     ext y
-    simp only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_univ, iff_true]
+    simp only [Set.mem_preimage, Set.mem_univ, iff_true]
     exact Subsingleton.elim _ _
   haveI : PreconnectedSpace t.G.left := ⟨by rw [← hu]; exact hc.isPreconnected⟩
   exact exists_dim_of_preconnected t.G.hom hc.nonempty.some

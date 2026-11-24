@@ -125,7 +125,6 @@ private theorem val_add_eq_left_of_val_lt (x y : L) (h : v x < v y) : v (x + y) 
 theorem gradNPf_zero_lt_one : (0 : WithTop ℚ) < 1 := by
   first
     | exact WithTop.coe_lt_coe.2 zero_lt_one
-    | exact_mod_cast (zero_lt_one : (0 : ℚ) < 1)
 
 include hι hR in
 theorem gradNPf_unit_one_add (lO d : O) (hl : v (ι lO) = 1) : IsUnit (1 + lO * d) := by

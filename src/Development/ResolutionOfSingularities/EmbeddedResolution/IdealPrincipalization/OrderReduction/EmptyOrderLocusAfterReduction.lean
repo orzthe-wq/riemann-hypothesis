@@ -71,9 +71,6 @@ private theorem orderAtLeastLocus_eq_support_maxContactIdeal (k : Type u) [Field
   rw [← hd]
   exact mem_orderAtLeastLocus_one_iff _ x
 
-private theorem restrictIdeal_eq_comap {X : Scheme.{u}} (D : X.IdealSheafData) (V : X.Opens) :
-    restrictIdeal D V = D.comap V.ι := rfl
-
 private theorem mem_support_toBlowupSequenceData_iteratedStrictTransform {k : Type u} [Field k]
     {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
     {E : List X.IdealSheafData} (s : MarkedBlowupSequenceData p I m E) (H : X.IdealSheafData) (i : ℕ)
@@ -102,7 +99,7 @@ private theorem orderAtLeastLocus_subset_support_of_isMaxContactHypersurface (k 
       rw [hbase]
       exact hmc
     have hle : (H.comap U.ι) ≤ ((maxContactIdeal k p A μ).comap U.ι) := by
-      rw [← restrictIdeal_eq_comap, ← restrictIdeal_eq_comap, hcoord]
+      rw [← _root_.FunctorialResolution.EmbeddedResolution.restrictIdeal_eq_comap_ι, ← _root_.FunctorialResolution.EmbeddedResolution.restrictIdeal_eq_comap_ι, hcoord]
       exact hmcc
     have h2 : (⟨x, hxU⟩ : ↥U) ∈ (H.comap U.ι).support :=
       Scheme.IdealSheafData.support_antitone hle h1
@@ -113,12 +110,12 @@ private theorem orderAtLeastLocus_subset_support_of_isMaxContactHypersurface (k 
 private theorem orderAtLeastLocus_comap_iso_eq_empty {X Y : Scheme.{u}} (e : X ≅ Y)
     (J : Y.IdealSheafData) (n : ℕ) (hJ : orderAtLeastLocus J n = ∅) :
     orderAtLeastLocus (J.comap e.hom) n = ∅ := by
-  rw [orderAtLeastLocus_comap_iso e J n, hJ, Set.preimage_empty]
+  rw [_root_.FunctorialResolution.EmbeddedResolution.orderAtLeastLocus_comap_iso_hom_eq_preimage e J n, hJ, Set.preimage_empty]
 
 private theorem orderAtLeastLocus_eq_empty_of_comap_iso {X Y : Scheme.{u}} (e : X ≅ Y)
     (J : Y.IdealSheafData) (n : ℕ) (hJ : orderAtLeastLocus (J.comap e.hom) n = ∅) :
     orderAtLeastLocus J n = ∅ := by
-  rw [orderAtLeastLocus_comap_iso e J n] at hJ
+  rw [_root_.FunctorialResolution.EmbeddedResolution.orderAtLeastLocus_comap_iso_hom_eq_preimage e J n] at hJ
   have hsurj : ∀ y : ↥Y, ∃ x : ↥X, e.hom x = y := by
     intro y
     refine ⟨e.inv y, ?_⟩

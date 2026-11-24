@@ -70,7 +70,7 @@ theorem residue_algebraMap (c : ℤ_[l]) :
 
 theorem OL_resFinite : Finite (ResidueField ↥(OL LL)) := by
   obtain ⟨n, s, hs⟩ := Module.Finite.exists_fin (R := ℤ_[l]) (M := ↥(OL LL))
-  haveI : NeZero l := ⟨hl.out.ne_zero⟩
+  have : NeZero l := ⟨hl.out.ne_zero⟩
   let f : (Fin n → ZMod l) → ResidueField ↥(OL LL) :=
     fun a => ∑ i, (((a i).val : ℕ) : ResidueField ↥(OL LL)) * residue ↥(OL LL) (s i)
   refine Finite.of_surjective f fun y => ?_

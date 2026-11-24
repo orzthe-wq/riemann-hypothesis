@@ -104,7 +104,7 @@ theorem hsInner_eq_sum (A C : Wq →L[ℂ] Wp) :
   unfold B.hsInner B.hsVec
   rw [PiLp.inner_apply]
   refine Finset.sum_congr rfl fun i _ => ?_
-  simp only [PiLp.toLp_apply]
+  simp only
   rw [← (stdOrthonormalBasis ℂ Wp).sum_inner_mul_inner]
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [lam_apply, lam_apply, mul_comm]

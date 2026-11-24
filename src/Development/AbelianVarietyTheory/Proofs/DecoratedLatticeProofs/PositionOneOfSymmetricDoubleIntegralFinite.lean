@@ -2,12 +2,13 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ToOneSucc
 public import Mathlib.CategoryTheory.Category.Basic
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselStepPositionOneFiniteStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExchangeToPositionOneIsPositionOneStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBilinearPositionMiddleVertexStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilSourceActionAndSmoothStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiTargetBilinearFormIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatSelfAverageHeisenbergStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselStepPositionOneFinite
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExchangeToPositionOneIsPositionOne
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBilinearPositionMiddleVertex
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierJacobiTargetBilinearFormIntegral
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatSelfAverageHeisenberg
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilSourceActionAndSmooth
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExDownExUpAndExUpExDown
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegrableOfMemSB
@@ -59,7 +60,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
-public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
 
 @[expose] public section
 
@@ -149,7 +149,7 @@ theorem GlobalTheory.PosOne.exUp_represents : ∀ (k : Type) [Field k] [Valuativ
         (((continuous_induced_dom.comp hψ).comp
           ((continuous_snd.dotProduct continuous_fst))).mul (hg.1.1.continuous.comp continuous_snd))
     · obtain ⟨β, u⟩ := z
-      simp only [Function.uncurry_apply_pair, norm_mul, Circle.norm_coe, one_mul, norm_norm, le_refl]
+      simp only [Function.uncurry_apply_pair, norm_mul, Circle.norm_coe, one_mul, le_refl]
 
 noncomputable section
 namespace GlobalTheory.PosOne
@@ -160,7 +160,7 @@ theorem om_one_comp {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [
   funext x
   simp only [om, map_one, inv_one, Units.val_one, mul_one, one_mul, Matrix.mul_one, Matrix.one_mul]
   have : nabs k (1 : kˣ) = 1 := by simp [nabs]
-  simp only [this, Real.one_rpow, Complex.ofReal_one, mul_one, one_mul, Matrix.mul_assoc]
+  simp only [this, Real.one_rpow, Complex.ofReal_one, mul_one, Matrix.mul_assoc]
   ring
 
 
@@ -174,13 +174,13 @@ theorem oneDbl_of_symDbl : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologica
     F ρ₀ hρ₀ Φ₁ Φ₂ e he z hz
   haveI : ν.IsAddHaarMeasure := hν.1
   have hρ1 : 1 ≤ ρ := by omega
-  obtain ⟨⟨ρ₁, hρ₁⟩, hsm⟩ := GlobalTheory.T.exists_weilSourceAction_and_smooth k (n₁ ⊕ Fin (c + 1)) (n₂ ⊕ Fin c) μ₂ hμ₂
+  obtain ⟨⟨ρ₁, hρ₁⟩, hsm⟩ := _root_.GlobalTheory.PosOne.isSrc_exists_isSmoothRep k (n₁ ⊕ Fin (c + 1)) (n₂ ⊕ Fin c) μ₂ hμ₂
   have hρ₁s : IsSmoothRep ρ₁ := hsm ρ₁ hρ₁
-  obtain ⟨b, hb, hb2, hb3⟩ := GlobalTheory.T.exists_bilinear_position_middle_vertex k n₀ n₁ n₂ c ρ hcρ ψ hψ hψ1 ν hν μ₁ μ₂ hμ₁ hμ₂ m₁ G₁ m₂ G₂ A σ hσ T hT
+  obtain ⟨b, hb, hb2, hb3⟩ := _root_.GlobalTheory.PosOne.MidVertex.exists_bilPos_mid k n₀ n₁ n₂ c ρ hcρ ψ hψ hψ1 ν hν μ₁ μ₂ hμ₁ hμ₂ m₁ G₁ m₂ G₂ A σ hσ T hT
     F ρ₁ hρ₁
   obtain ⟨B, hB, hBpos⟩ := GlobalTheory.PosOne.exUp_bilPos k n₁ n₀ (c + 1) ρ hρ1 (by omega) ψ hψ hψ1 ν _ ρ₁ hρ₁s μ₁ b hb
   obtain ⟨fj, hrep, hfj⟩ := GlobalTheory.PosOne.exUp_represents k n₁ (c + 1) ρ hρ1 (by omega) ψ hψ hψ1 ν _ ρ₁ hρ₁s _ b B hb.1 hB
-  obtain ⟨-, hpos⟩ := GlobalTheory.T.exchangeToPositionOne_isPositionOne k n₁ n₀ (c + 1) ρ hρ1 (by omega) ψ hψ hψ1 ν _ ρ₁ hρ₁s
+  obtain ⟨-, hpos⟩ := _root_.GlobalTheory.PosOne.toOne_isPosOne k n₁ n₀ (c + 1) ρ hρ1 (by omega) ψ hψ hψ1 ν _ ρ₁ hρ₁s
   obtain ⟨B₁, hB₁, -⟩ := hpos μ₁ hμ₁ b hb
   have hstep : ∀ g ∈ e.support, IsQuotInt ν m₁ G₁ (ρ + 1)
       (tInt ψ ν μ₁ (ρ + 1) ρ₁ B Φ₂ (om μ₁ g 1 Φ₁.1)) (z g) := by
@@ -190,7 +190,7 @@ theorem oneDbl_of_symDbl : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologica
     have key : w' = fun h Ψ Φ₀ => fj Ψ (ρ₁ h Φ₂) Φ₀ := by
       funext h Ψ Φ₀
       have hV : ((ρ₁ h Φ₂ : SB _) : Matrix _ _ k → ℂ) = om μ₂ h 1 Φ₂.1 := hρ₁ h Φ₂
-      obtain ⟨-, hav⟩ := GlobalTheory.T.schwartzBruhat_self_average_heisenberg k n₂ n₁ c ρ hρ1 (by omega) ψ hψ hψ1 ν hν μ₂ hμ₂ (ρ₁ h Φ₂)
+      obtain ⟨-, hav⟩ := _root_.GlobalTheory.PosOne.avg_self_and_props k n₂ n₁ c ρ hρ1 (by omega) ψ hψ hψ1 ν hν μ₂ hμ₂ (ρ₁ h Φ₂)
       obtain ⟨hmem, hE, hL⟩ := hav Φ₀
       have h1 := hb2 Ψ ⟨_, hmem⟩
       have h2 := hw' h Ψ Φ₀
@@ -204,10 +204,10 @@ theorem oneDbl_of_symDbl : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologica
       rw [heq, hfj, ← GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe (b Ψ) ⟨_, hmem⟩]
       exact hL ρ₁ hρ₁ (b Ψ)
     rw [key, ← hΦ'] at hFJ
-    have := (GlobalTheory.T.fourierJacobi_target_bilinear_form_integral k n₁ n₀ (c + 1) ρ hρ1 hcρ ψ hψ hψ1 ν hν μ₁ hμ₁ m₁ G₁ _ ρ₁ hρ₁s fj B hrep hBpos Φ₂
+    have := (_root_.GlobalTheory.PosOne.FJTarget.target_bilinear k n₁ n₀ (c + 1) ρ hρ1 hcρ ψ hψ hψ1 ν hν μ₁ hμ₁ m₁ G₁ _ ρ₁ hρ₁s fj B hrep hBpos Φ₂
       (ρ₀ g Φ₁) (z g)).2 hFJ
     rwa [hΦ'] at this
-  have hone := GlobalTheory.T.bessel_step_position_one_finite k n₁ n₀ (c + 1) (ρ + 1) (by omega) (by omega) ψ hψ hψ1 ν hν μ₁ hμ₁ m₁ G₁ ρ₀ hρ₀ Φ₁ e he
+  have hone := _root_.GlobalTheory.PosOne.quotInt_one_comb k n₁ n₀ (c + 1) (ρ + 1) (by omega) (by omega) ψ hψ hψ1 ν hν μ₁ hμ₁ m₁ G₁ ρ₀ hρ₀ Φ₁ e he
     _ ρ₁ hρ₁s B hBpos Φ₂ z hstep
   refine ⟨fun h => B₁.flip (ρ₁ h Φ₂), fun h Ψ => ?_, ?_⟩
   · have := hb3 Ψ (ρ₁ h Φ₂)

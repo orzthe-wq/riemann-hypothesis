@@ -50,6 +50,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NStage
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FinIso
 import Formalism.AlgebraicWeights.IsAlgWeight
 import ReciprocityTheory.Automorphisms.PlaceA
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

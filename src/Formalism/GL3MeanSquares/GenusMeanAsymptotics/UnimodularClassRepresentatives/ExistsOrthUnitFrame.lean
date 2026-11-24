@@ -77,7 +77,7 @@ theorem exists_next_unit (hS : IsHermSemilocal S)
       h p p + m * h p q + star m * h q p + star m * m * h q q := by
     intro p q m
     simp only [map_add (f := _), map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul,
-      starRingEnd_apply, map_smul, RingHom.id_apply]
+      starRingEnd_apply, RingHom.id_apply]
     ring
   obtain ⟨hstar, -, hunram, hprinc, -⟩ := hS
   obtain ⟨hsm, hint, hdual, hspan⟩ := hM
@@ -152,7 +152,6 @@ theorem exists_next_unit (hS : IsHermSemilocal S)
     rw [hy, map_sub, map_sum, LinearMap.sub_apply]
     first
       | rw [LinearMap.sum_apply]
-      | rw [LinearMap.coe_fn_sum, Finset.sum_apply]
     simp only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]
     rw [Finset.sum_eq_zero (fun i hi => by rw [hwo i hi, mul_zero]), hm0w, sub_zero]
   have hwy : h w y = 1 := by

@@ -121,7 +121,6 @@ theorem stRed_of_parts {D : D7} (X : HidaSetting D) (p : TypX X) (hR : StResZ X 
       by
         first
           | exact Matrix.isUnits_det_units M
-          | exact (Matrix.isUnit_iff_isUnit_det (M : Matrix (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p)))).mp M.isUnit
     have hmap : π A.det = (M : Matrix (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p))).det := by
       rw [RingHom.map_det]
       congr 1
@@ -140,7 +139,6 @@ theorem stRed_of_parts {D : D7} (X : HidaSetting D) (p : TypX X) (hR : StResZ X 
       have h2 : A.det * b ∈ IsLocalRing.maximalIdeal (Op X p) := by
         first
           | exact Ideal.mul_mem_right _ _ hm
-          | exact Ideal.mul_mem_right _ hm
       have h3 : (1 : Op X p) ∈ IsLocalRing.maximalIdeal (Op X p) := by
         have h4 := Ideal.sub_mem _ h2 (hle h1)
         rwa [sub_sub_cancel] at h4

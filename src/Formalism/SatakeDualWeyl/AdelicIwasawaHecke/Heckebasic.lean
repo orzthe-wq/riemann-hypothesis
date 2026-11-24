@@ -86,13 +86,13 @@ theorem ind_biInv (k : Type) [CommRing k] (K : Subgroup G) (T : Set G)
   unfold IsBiInv
   intro a b x
   by_cases hx : x ∈ T
-  · simp [Set.indicator_apply, hx, hT a b x hx]
+  · simp [hx, hT a b x hx]
   · have h' : (a : G) * x * b ∉ T := by
       intro h
       apply hx
       have := hT a⁻¹ b⁻¹ _ h
       simpa [mul_assoc] using this
-    simp [Set.indicator_apply, hx, h']
+    simp [hx, h']
 
 theorem dc_stable (K : Subgroup G) (g : G) (a b : K) (x : G)
     (hx : x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)) :

@@ -144,7 +144,6 @@ theorem UpperTheory.V.UnitaryThreeInertia.rig_sub :
     rw [hΨ, UpperTheory.V.Chr.Psi, MonoidHom.mul_apply, hc, hs2, mul_one]
     first
       | exact MonoidHom.zpow_apply _ _ _
-      | simp [MonoidHom.zpow_apply, MonoidHom.pow_apply]
   · have hdx : (l : ℤ_[l]) ∣ ((cycZ ℚ Ω l (x : Formalism.ConjugateSelfDual.G ℚ Ω) : ℤ_[l]ˣ) : ℤ_[l]) - 1 := by
       have h1 : PadicInt.toZModPow 1 ((cycZ ℚ Ω l (x : Formalism.ConjugateSelfDual.G ℚ Ω) : ℤ_[l]ˣ) : ℤ_[l]) = 1 :=
         congrArg Units.val hx3

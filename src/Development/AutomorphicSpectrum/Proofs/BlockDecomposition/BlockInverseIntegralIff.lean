@@ -69,18 +69,18 @@ theorem blk_inv_val {E : Type} [Field E] [NumberField E] {n a b : ℕ} (h : a + 
       fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val = 1 := by
     rw [fromBlocks_multiply, ← fromBlocks_one]
     congr 1
-    · simp [a1]
+    · simp
     · simp [Matrix.mul_assoc]
     · simp
-    · simp [b1]
+    · simp
   have h2 : fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val *
       fromBlocks m.1.val (m.1.val * X) 0 m.2.val = 1 := by
     rw [fromBlocks_multiply, ← fromBlocks_one]
     congr 1
-    · simp [a2]
-    · simp [← Matrix.mul_assoc, a2, Matrix.mul_assoc, b2]
     · simp
-    · simp [b2]
+    · simp [← Matrix.mul_assoc, a2, Matrix.mul_assoc]
+    · simp
+    · simp
   have r1 : reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h))
         (fromBlocks m.1.val (m.1.val * X) 0 m.2.val) *
       reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h))

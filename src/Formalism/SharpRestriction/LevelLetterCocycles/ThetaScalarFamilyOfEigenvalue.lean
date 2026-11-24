@@ -76,7 +76,6 @@ theorem thetaT_injective (D : D7) (μ : D.what₂.Tup) (j : ℕ) (hI : DirectSum
   have hind : iSupIndep (Module.End.eigenspace T) := by
     first
       | exact Module.End.eigenspaces_iSupIndep T
-      | exact Module.End.eigenspaces_independent T
   have hdis : Disjoint (Module.End.eigenspace T 0) ⊤ := (hind 0).mono_right htop
   have hker : LinearMap.ker T = ⊥ := by
     rw [← Module.End.eigenspace_zero]

@@ -74,7 +74,7 @@ theorem rank_blockPol_of_factor {K : Type} [Field K] {n t : ℕ} (a : Matrix (Fi
       ext1 i j
       by_cases h : i = j
       · subst h; simp [hD]
-      · simp [hD, h, Matrix.diagonal_apply_ne _ h, Matrix.one_apply_ne h]
+      · simp [hD, h, Matrix.one_apply_ne h]
     have key : (X : K[X]) • (a * b).map (C (R := K)) - (a * Matrix.diagonal d * b).map (C (R := K)) + 1
         - (a * b).map (C (R := K)) = 1 + a.map (C (R := K)) * ((D - 1) * b.map (C (R := K))) := by
       rw [hD', Matrix.map_mul, Matrix.map_mul, Matrix.map_mul]

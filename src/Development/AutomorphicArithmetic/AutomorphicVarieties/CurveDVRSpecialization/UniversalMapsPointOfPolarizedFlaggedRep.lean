@@ -82,11 +82,11 @@ private theorem tr_single {n : ℕ} {A G K : Type} [CommRing A] [Group G] [CommR
     | smul r x hx =>
       have hr : r • x = MonoidAlgebra.single 1 r * x := by rw [Algebra.smul_def]; rfl
       have hmap : MonoidAlgebra.mapRingHom G (algebraMap K B) (MonoidAlgebra.single 1 r) = MonoidAlgebra.single 1 (algebraMap K B r) := by
-        ext g; simp [MonoidAlgebra.coeff_single, Finsupp.single_apply]
+        ext g; simp [MonoidAlgebra.coeff_single]
       rw [hr, map_mul, map_mul, map_mul, hx, Matrix.map_mul, hmap, hs, hs, map_one]
       congr 1
       ext i j
-      by_cases h : i = j <;> simp [Matrix.one_apply, h]
+      by_cases h : i = j <;> simp [h]
   haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
   have hc : (GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
     have hc' (y : MonoidAlgebra K G) : (GDet.ofRep ρ).chi y = (GDet.repAlg ρ K y).charpoly := by
@@ -96,7 +96,7 @@ private theorem tr_single {n : ℕ} {A G K : Type} [CommRing A] [Group G] [CommR
       rw [Matrix.charpoly]
       congr 1
       ext i j
-      by_cases h : i = j <;> simp [Matrix.charmatrix_apply, Matrix.one_apply, h]
+      by_cases h : i = j <;> simp [h]
     rw [hc', hs]; simp
   unfold GDet.tr GDet.lam at *
   rw [← h1, hc, Matrix.trace_eq_neg_charpoly_coeff, Fintype.card_fin]

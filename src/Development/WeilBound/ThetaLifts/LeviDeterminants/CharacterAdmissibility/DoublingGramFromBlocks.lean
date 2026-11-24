@@ -157,7 +157,7 @@ theorem exists_gamma0 (η : ℤˣ) : ∃ γ : UG c (dbl (hyp ν η : Matrix _ _ 
   set a : E := ((η : ℤ) : E) with ha
   have h2 : a * a = 1 := eta_sq η
   have hca : (a • (1 : Matrix ν ν E)).map c = a • 1 := by
-    ext i j; by_cases h : i = j <;> simp [h, ha, Matrix.one_apply]
+    ext i j; by_cases h : i = j <;> simp [h, ha]
   have hm1 : (-1 : Matrix ν ν E).map c = -1 := by rw [Matrix.map_neg _ (map_neg c), map_one']
   have hz : (0 : Matrix ν ν E).map c = 0 := Matrix.map_zero _ (map_zero c)
   let g : Matrix ((ν ⊕ ν) ⊕ (ν ⊕ ν)) ((ν ⊕ ν) ⊕ (ν ⊕ ν)) E :=

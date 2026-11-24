@@ -54,9 +54,7 @@ namespace PositivityTheory.SiegelWeilFormula.Ald.YFA
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
-theorem sig_sig' (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
+alias sig_sig' := _root_.GlobalTheory.AdelicU.cm_conj_conj
 
 
 variable (F) in

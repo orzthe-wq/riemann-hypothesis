@@ -68,13 +68,7 @@ namespace GlobalTheory.MulAmple
 
 open GlobalTheory.MulPull GlobalTheory.MulFinite TopologicalSpace
 
-theorem gs_sec_trans {X Z : Scheme.{0}} {H : LB X} (s : LB.Sec H) (p : Z ⟶ X) (z : Z) {k k' : H.ι}
-    (hk : p z ∈ H.U k) (hk' : p z ∈ H.U k') :
-    gs p z (H.U k) (s.f k) =
-      (gm p z (H.U k ⊓ H.U k') (H.g k k')).val * gs p z (H.U k') (s.f k') := by
-  have hm : p z ∈ H.U k ⊓ H.U k' := ⟨hk, hk'⟩
-  exact (gs_res p z _ hm _).symm.trans ((congrArg (gs p z _) (s.compat k k')).trans
-    ((gs_mul p z _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit p z _ hm _) (gs_res p z _ hm _))))
+alias gs_sec_trans := _root_.GlobalTheory.SecPullIso.gs_sec_trans
 
 theorem isUnit_gs_sec {X Z : Scheme.{0}} {H : LB X} (s : LB.Sec H) (p : Z ⟶ X) (z : Z) {k : H.ι}
     (hk : p z ∈ H.U k) : IsUnit (gs p z (H.U k) (s.f k)) ↔ p z ∈ Out.nonzeroLocus s := by

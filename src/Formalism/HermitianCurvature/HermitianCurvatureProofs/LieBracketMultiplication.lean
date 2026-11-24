@@ -129,13 +129,10 @@ theorem lie_smul {X : Mx k r} (hX : InLieW k r z X) (s : ℝ) : InLieW k r z ((s
   · rw [Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1, smul_zero]
   · first
     | rw [Matrix.smul_mulVec, (h1' a ha).1, smul_zero]
-    | simp [(h1' a ha).1]
   · first
     | rw [Matrix.smul_mulVec, (h1' a ha).2, smul_zero]
-    | simp [(h1' a ha).2]
   · first
     | rw [Matrix.smul_mulVec, h2, smul_zero]
-    | simp [h2]
 
 theorem lie_bracket {X Y : Mx k r} (hX : InLieW k r z X) (hY : InLieW k r z Y) :
     InLieW k r z (X * Y - Y * X) := by
@@ -277,7 +274,6 @@ variable {k r : ℕ}
 theorem real_smul (s : ℝ) (X : Mx k r) : s • X = (s : ℂ) • X := by
   first
   | exact (Complex.coe_smul s X).symm
-  | simp [Complex.coe_smul]
 
 def lieSub (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Submodule ℝ (Mx k r) where
   carrier := {X | InLieW k r z X}

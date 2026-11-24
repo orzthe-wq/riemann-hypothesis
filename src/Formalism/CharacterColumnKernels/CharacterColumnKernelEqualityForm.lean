@@ -80,30 +80,30 @@ def StatColKerChiOne : Prop :=
           2 * IsDiscreteValuationRing.addVal O δO) +
       (Fintype.card ι : ℕ∞) * (Fintype.card d : ℕ∞) * IsDiscreteValuationRing.addVal O δO
 
-def StatBlockChiCFull : Prop :=
-  ∀ (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    (A T' G : Type*) [Ring A] [CommRing T'] [Algebra T' A] [Group G] (d : Type) [Fintype d]
-    [Module A (d → KO O)] [SMulCommClass A O (d → KO O)]
-    [Module T' (d → KO O)] [IsScalarTower T' A (d → KO O)]
-    (r : G →* A) (χ : G →* T'ˣ) (E e₁ : A) (δ : T') (δO : O) (ι : Type*) [Fintype ι] [DecidableEq ι]
-    (ι' : Type*) [DecidableEq ι'] (colIdx : ι → ι'), Function.Injective colIdx →
+/-- The block length bound for a higher character summand with coefficient module `M`. -/
+def BlockChiCBound.{uι, uι'} (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
+    (A T' G : Type*) [Ring A] [CommRing T'] [Algebra T' A] [Group G] (d : Type) [Fintype d] (M : Type*)
+    [AddCommGroup M] [Module O M] [Module A M] [SMulCommClass A O M]
+    [Module T' M] [IsScalarTower T' A M] : Prop :=
+  ∀ (r : G →* A) (χ : G →* T'ˣ) (E e₁ : A) (δ : T') (δO : O) (ι : Type uι) [Fintype ι] [DecidableEq ι]
+    (ι' : Type uι') [DecidableEq ι'] (colIdx : ι → ι'), Function.Injective colIdx →
     ∀ (D : ι' → Subgroup G) (j : ι' → ℕ) (Kc : ∀ l, Fin (j (colIdx l)) → G → A)
       (k0 : ι → G → A) (ℓ cB : ℕ) (sE : Finset G) (tE : G → T'),
     Fintype.card d = 1 →
     E = ∑ g ∈ sE, tE g • r g → E * E = δ • E →
-    (∀ m : d → KO O, e₁ • m = 0) → (∀ m : d → KO O, E • m = 0) →
+    (∀ m : M, e₁ • m = 0) → (∀ m : M, E • m = 0) →
     (∀ l g, ∃ a : A, k0 l g = a * E) →
-    (∀ m : d → KO O, δ • m = δO • m) →
-    (∀ m : d → KO O, (∑ g ∈ sE, tE g * ((χ g : T'ˣ) : T')) • m = δO • m) →
-    let ρM := uRep O (M := d → KO O) r χ
-    let Ψ := colPsi (O := O) (M := d → KO O) r χ E e₁ δ (fun l => D (colIdx l))
+    (∀ m : M, δ • m = δO • m) →
+    (∀ m : M, (∑ g ∈ sE, tE g * ((χ g : T'ˣ) : T')) • m = δO • m) →
+    let ρM := uRep O (M := M) r χ
+    let Ψ := colPsi (O := O) (M := M) r χ E e₁ δ (fun l => D (colIdx l))
       (fun l => j (colIdx l)) Kc k0
     ∀ (lrows qs : Finset ι') (F : ∀ w, Submodule O (H1z (resRep ρM (D w)))) (deg : ι' → ℕ)
       (vζ : ι' → ℕ∞) (Q : Submodule O (H1z ρM)) (Sha H0 : ℕ∞),
     let cols : Finset ι' := univ.image colIdx
     let eO : ℕ∞ := Module.length O (O ⧸ Ideal.span {(ℓ : O)})
     let vδ : ℕ∞ := IsDiscreteValuationRing.addVal O δO
-    (∀ w ∈ cols, Module.length O (LinearMap.ker (colDO (O := O) (M := d → KO O) r χ (D w))) ≤ H0) →
+    (∀ w ∈ cols, Module.length O (LinearMap.ker (colDO (O := O) (M := M) r χ (D w))) ≤ H0) →
     (∀ w ∈ lrows, ∃ B : Submodule O (H1z (resRep ρM (D w))), F w ≤ B ∧
       Module.length O (B ⧸ (F w).comap B.subtype) ≤ eO * (cB : ℕ∞) * ((deg w : ℕ∞) + 2) ∧
       ∀ h, resH1 ρM (D w) (Submodule.mkQ _ (Ψ h)) ∈ B) →
@@ -113,28 +113,35 @@ def StatBlockChiCFull : Prop :=
     (∀ w ∈ cols, ∀ h, resH1 ρM (D w) (Submodule.mkQ _ (Ψ h)) ∈ F w) →
     (∀ h, Submodule.mkQ _ (Ψ h) ∈ Q) →
     Module.length O ↥(Q ⊓ ⨅ w ∈ lrows ∪ qs ∪ cols, (F w).comap (resH1 ρM (D w))) ≤ Sha →
-    Module.length O (ColNNJ r χ E e₁ δ (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 →ₗ[A]
-        (d → KO O)) ≤
+    Module.length O (ColNNJ r χ E e₁ δ (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 →ₗ[A] M) ≤
       Sha + eO * (cB : ℕ∞) * ∑ w ∈ lrows, ((deg w : ℕ∞) + 2) + 4 * ((cols.card : ℕ∞) + 1) * vδ +
         (cols.card : ℕ∞) * H0 + ∑ w ∈ qs, vζ w
 
-def StatBlockChiOneFull : Prop :=
-  ∀ (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
-    (A T' G : Type*) [Ring A] [CommRing T'] [Algebra T' A] [Group G] (d : Type) [Fintype d]
+def StatBlockChiCFull.{uO, uA, uT, uG, uι, uι'} : Prop :=
+  ∀ (O : Type uO) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
+    (A : Type uA) (T' : Type uT) (G : Type uG) [Ring A] [CommRing T'] [Algebra T' A] [Group G]
+    (d : Type) [Fintype d]
     [Module A (d → KO O)] [SMulCommClass A O (d → KO O)]
-    [Module T' (d → KO O)] [IsScalarTower T' A (d → KO O)]
-    (r : G →* A) (χ : G →* T'ˣ) (E e₁ : A) (δ : T') (δO : O) (ι : Type*) [Fintype ι] [DecidableEq ι]
-    (ι' : Type*) [DecidableEq ι'] (colIdx : ι → ι'), Function.Injective colIdx →
+    [Module T' (d → KO O)] [IsScalarTower T' A (d → KO O)],
+    BlockChiCBound.{uι, uι'} O A T' G d (d → KO O)
+
+/-- The block length bound for the first character summand with coefficient module `M`. -/
+def BlockChiOneBound.{uι, uι'} (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
+    (A T' G : Type*) [Ring A] [CommRing T'] [Algebra T' A] [Group G] (d : Type) [Fintype d] (M : Type*)
+    [AddCommGroup M] [Module O M] [Module A M] [SMulCommClass A O M]
+    [Module T' M] [IsScalarTower T' A M] : Prop :=
+  ∀ (r : G →* A) (χ : G →* T'ˣ) (E e₁ : A) (δ : T') (δO : O) (ι : Type uι) [Fintype ι] [DecidableEq ι]
+    (ι' : Type uι') [DecidableEq ι'] (colIdx : ι → ι'), Function.Injective colIdx →
     ∀ (D : ι' → Subgroup G) (j e' : ι' → ℕ) (Kc : ∀ l, Fin (j (colIdx l)) → G → A)
       (k0 : ι → G → A) (ℓ cB : ℕ),
     Fintype.card d = 1 →
-    (∀ g (m : d → KO O), uElt r χ g • m = m) →
-    (∀ m : d → KO O, e₁ • m = 0) → (∀ m : d → KO O, E • m = δO • m) →
-    (∀ m : d → KO O, δ • m = δO • m) →
+    (∀ g (m : M), uElt r χ g • m = m) →
+    (∀ m : M, e₁ • m = 0) → (∀ m : M, E • m = δO • m) →
+    (∀ m : M, δ • m = δO • m) →
     (∀ l, ∃ g ∈ D (colIdx l), ∃ c : O, IsUnit c ∧
-      ∀ m : d → KO O, k0 l g • m = ((ℓ : O) ^ e' (colIdx l) * δO * c) • m) →
-    let ρM := uRep O (M := d → KO O) r χ
-    let Ψ := colPsi (O := O) (M := d → KO O) r χ E e₁ δ (fun l => D (colIdx l))
+      ∀ m : M, k0 l g • m = ((ℓ : O) ^ e' (colIdx l) * δO * c) • m) →
+    let ρM := uRep O (M := M) r χ
+    let Ψ := colPsi (O := O) (M := M) r χ E e₁ δ (fun l => D (colIdx l))
       (fun l => j (colIdx l)) Kc k0
     ∀ (lrows qs : Finset ι') (F : ∀ w, Submodule O (H1z (resRep ρM (D w)))) (deg : ι' → ℕ)
       (vζ : ι' → ℕ∞) (Q : Submodule O (H1z ρM)) (vhE : ℕ∞),
@@ -150,11 +157,18 @@ def StatBlockChiOneFull : Prop :=
     (∀ w ∈ cols, ∀ h, resH1 ρM (D w) (Submodule.mkQ _ (Ψ h)) ∈ F w) →
     (∀ h, Submodule.mkQ _ (Ψ h) ∈ Q) →
     Module.length O ↥(Q ⊓ ⨅ w ∈ lrows ∪ qs ∪ cols, (F w).comap (resH1 ρM (D w))) ≤ vhE →
-    Module.length O (ColNNJ r χ E e₁ δ (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 →ₗ[A]
-        (d → KO O)) ≤
+    Module.length O (ColNNJ r χ E e₁ δ (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 →ₗ[A] M) ≤
       vhE + ∑ w ∈ cols, (eO * (e' w : ℕ∞) + 2 * vδ) +
         eO * (cB : ℕ∞) * ∑ w ∈ lrows, ((deg w : ℕ∞) + 2) + 4 * ((cols.card : ℕ∞) + 1) * vδ +
         ∑ w ∈ qs, vζ w
+
+def StatBlockChiOneFull.{uO, uA, uT, uG, uι, uι'} : Prop :=
+  ∀ (O : Type uO) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
+    (A : Type uA) (T' : Type uT) (G : Type uG) [Ring A] [CommRing T'] [Algebra T' A] [Group G]
+    (d : Type) [Fintype d]
+    [Module A (d → KO O)] [SMulCommClass A O (d → KO O)]
+    [Module T' (d → KO O)] [IsScalarTower T' A (d → KO O)],
+    BlockChiOneBound.{uι, uι'} O A T' G d (d → KO O)
 
 abbrev blockRestrictedRepresentationType {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X' : Type*} {d : Type}
     [Fintype d] [DecidableEq d] {R' : Subalgebra O (X' → Matrix d d (FractionRing O))} {α : Type}

@@ -12,44 +12,6 @@ public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InfiniteMeasureT
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HinfCpt
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.OpenCompact
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.Transfer
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InfiniteMeasureTransfer.MeasureIsomorphismAtInfinity
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.ClassCount
 
@@ -64,7 +26,7 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 namespace Formalism.L2.SG.Pf.MassDataX
 
 theorem hinfCompact_holds : MassDataMassesW.HinfCompact :=
-  PIW.MassDataColumns.hinfCompact_of Formalism.L2.SG.Closed.AdBridgeIso_holds Formalism.L2.SG.Pf.MeasInfW.measure_isomorphism_at_infinity
+  PIW.MassDataColumns.hinfCompact_of _root_.Formalism.L2.SG.Pf.adelic_isomorphism_exists Formalism.L2.SG.Pf.MeasInfW.measure_isomorphism_at_infinity
     Formalism.L2.SG.Pf.MeasInfW.hermitian_measure_recursion (fun X u => Formalism.L2.SG.Pf.hinf_compact X u)
 
 theorem finHA_eq_eFin {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x : X.B.I.Gf) :
@@ -72,7 +34,7 @@ theorem finHA_eq_eFin {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x :
 
 theorem kCompactOpen_holds : MassDataMassesW.KCompactOpen := by
   intro D X
-  have hb := Formalism.L2.SG.Closed.AdBridgeIso_holds X.B.I
+  have hb := _root_.Formalism.L2.SG.Pf.adelic_isomorphism_exists X.B.I
   have hs : Function.Surjective (finHA X hb) := by
     intro y
     obtain ⟨x, hx⟩ := (Formalism.L2.SG.Pf.Meas.eFin X.B.I hb).surjective y
@@ -116,10 +78,10 @@ theorem hermitian_level_le {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I)
 
 theorem classFinite_holds : MassDataMassesW.ClassFinite := by
   intro D X u
-  have hb := Formalism.L2.SG.Closed.AdBridgeIso_holds X.B.I
-  have hK := Formalism.L2.SG.Closed.level_subgroup_is_group X
+  have hb := _root_.Formalism.L2.SG.Pf.adelic_isomorphism_exists X.B.I
+  have hK := _root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X
   have hF := Formalism.L2.SG.Closed.ClassFin_holds X u hK
-  have hc := PIW.MassDataColumns.class_sets_equal_card X hb hK u (Formalism.L2.SG.Closed.AdBridgeGF_holds X.B.I)
+  have hc := PIW.MassDataColumns.class_sets_equal_card X hb hK u (_root_.Formalism.L2.SG.AdBridge.adBridgeGF_main X.B.I)
     (Formalism.L2.SG.Closed.level_subgroup_properties X)
   have hne : Nonempty (Formalism.L2.SG.ColsDim.Classes (Formalism.L2.SG.PoincareInHH.PoincareSetting.iotaF X u) (Formalism.L2.SG.PoincareInHH.PoincareSetting.Ku X u hK)) := inferInstance
   haveI : Finite (Formalism.L2.SG.ColsDim.Classes (Formalism.L2.SG.PoincareInHH.PoincareSetting.iotaF X u) (Formalism.L2.SG.PoincareInHH.PoincareSetting.Ku X u hK)) := hF

@@ -169,29 +169,16 @@ theorem len_of_mem {n : ℕ} {k : GU σ n} (hk : k ∈ KU σ n) : len (mat k) = 
   rw [← hA]
   exact ((A : Matrix (Fin n) (Fin n) (intL L)) i j).2
 
-private lemma ordL_one_twisted_operators : ordL (1 : L) = 0 := by
-  have h : Valued.v (1 : L) ≠ 0 := by simp
-  have hu : WithZero.unzero h = 1 := by
-    apply WithZero.coe_injective
-    rw [WithZero.coe_unzero, map_one, WithZero.coe_one]
-  unfold ordL
-  rw [dite_eq_right h, hu]
-  simp
-
 private lemma chiDeltaU_one' {n m : ℕ} (α : Fin m → ℂ) : chiDeltaU (σ := σ) (n := n) q α 1 = 1 := by
   unfold chiDeltaU
   refine Finset.prod_eq_one fun i _ => ?_
   split_ifs
-  · simp [ordL_one_twisted_operators]
+  · simp [_root_.Formalism.UG.P.fSatake_ord_one]
   · rfl
-
-private lemma isBorelU_one' {n : ℕ} : IsBorelU (1 : GU σ n) := by
-  intro i j h
-  simp [Matrix.one_apply_ne h.ne']
 
 private lemma isSphericalU_apply_mul_of_mem_KU {n m : ℕ} {α : Fin m → ℂ} {φ : GU σ n → ℂ} (hφ : IsSphericalU q α φ) (g k : GU σ n)
     (hk : k ∈ KU σ n) : φ (g * k) = φ g := by
-  have h := hφ 1 g k isBorelU_one' hk
+  have h := hφ 1 g k _root_.Formalism.UG.P.fSatake_borel_one hk
   rwa [one_mul, chiDeltaU_one', one_mul] at h
 
 private lemma exists_mem_KU_out_mk_eq_mul {n : ℕ} (g : GU σ n) :

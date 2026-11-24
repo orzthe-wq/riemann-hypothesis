@@ -78,8 +78,6 @@ private lemma sq_in_Zq (q : ℕ) [Fact q.Prime] (d g d0 : ℕ) (hg : 0 < g) (hd 
     exact hx
   first
     | exact PadicInt.ext hc
-    | exact Subtype.ext hc
-    | exact PadicInt.coe_injective hc
 
 private lemma not_dvd (q : ℕ) [hq : Fact q.Prime] (d0 : ℕ) (hsq : Squarefree d0) (z : ℤ_[q])
     (hz : z ^ 2 = -(d0 : ℤ_[q])) : ¬ q ∣ d0 := by

@@ -57,14 +57,14 @@ private theorem abs_one_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
     absPow k 1 = (absPow k (-1))⁻¹ := by
   have h0 : absPow k 0 = 1 := by
     ext x
-    simp [val_absPow]
+    simp
   apply eq_inv_of_mul_eq_one_left
   rw [← absPow_add, show (1 : ℂ) + -1 = 0 by ring, h0]
 
 private theorem abs_zero_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     absPow k 0 = 1 := by
   ext x
-  simp [val_absPow]
+  simp
 
 theorem UpperTheory.V.Z.Sym.So.expoEq :
     UpperTheory.V.Z.Sym.So.ExpoEq := by
@@ -111,8 +111,7 @@ theorem UpperTheory.V.Z.Sym.So.expoEq :
       push_cast
       ring
     rw [hh]
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-      MonoidHom.one_apply, MonoidHom.mul_apply, hA, map_inv]
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, MonoidHom.one_apply, MonoidHom.mul_apply, hA, map_inv]
     ext
     simp only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_one]
     field_simp

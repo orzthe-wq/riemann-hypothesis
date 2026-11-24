@@ -71,10 +71,6 @@ def locDegree (v : HeightOneSpectrum (𝓞 F)) : ℕ :=
 theorem isMaximal_span_prime (l : ℕ) [hl : Fact l.Prime] : (Ideal.span {(l : ℤ)}).IsMaximal := by
   first
     | exact PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl.out).irreducible
-    | exact Ideal.IsPrime.isMaximal
-        ((Ideal.span_singleton_prime (by exact_mod_cast hl.out.ne_zero)).2
-          (Nat.prime_iff_prime_int.mp hl.out))
-        (by simp [hl.out.ne_zero])
 
 theorem liesOver_span_iff (l : ℕ) [Fact l.Prime] (P : Ideal (𝓞 F)) [P.IsPrime] :
     P.LiesOver (Ideal.span {(l : ℤ)}) ↔ ((l : ℕ) : 𝓞 F) ∈ P := by
@@ -169,7 +165,7 @@ theorem conj_mem_Ine_smul {A : ValuationSubring Ω} {γ σ : G F Ω} (hσ : σ �
       rw [map_sub]
       congr 1
       show (γ⁻¹ : G F Ω) (γ (σ ((γ⁻¹ : G F Ω) x))) = σ ((γ⁻¹ : G F Ω) x)
-      first | exact γ.symm_apply_apply _ | simp
+      first | exact γ.symm_apply_apply _
     rw [e]
     exact hσ2 _ hx
 

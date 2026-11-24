@@ -1,11 +1,11 @@
 module
 
 public import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
-public import Formalism.SharpRestriction.LevelLetterCocycles.AlgebraMapUnitZpow
+public import Formalism.SharpRestriction.LevelLetterCocycles.NatCastEqZeroOfNotDvd
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -28,7 +28,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,9 +42,95 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.Linter.Style
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.LevelLetterCocycles.AlgebraMapUnitZpow, Formalism.SharpRestriction.LevelLetterCocycles.KillerLevCoreOf
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.AlgebraMapUnitZpow =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.AlgebraMapUnitZpow", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup\npublic import Formalism.SharpRestriction.LevelLetterCocycles.NatCastEqZeroOfNotDvd\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Classical
+
+namespace Formalism.MainNotions.UnusedSlot80.KV
+
+open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup
+
+variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
+    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
+    {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
+    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR]
+    [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
+    {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
+    {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
+    {PD : PeriodData G Qp K₀ K B BdR}
+
+theorem algebraMap_unit_zpow (u : Oˣ) (z : ℤ) :
+    algebraMap O LL ((u ^ z : Oˣ) : O) = (algebraMap O LL (u : O)) ^ z := by
+  change ((Units.map (algebraMap O LL).toMonoidHom (u ^ z) : LLˣ) : LL) = _
+  rw [map_zpow, Units.val_zpow_eq_zpow_val]
+  rfl
+
+theorem v_prod {ι : Type*} (s : Finset ι) (f : ι → LL) :
+    v (∏ i ∈ s, f i) = ∑ i ∈ s, v (f i) := by
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, AddValuation.map_mul, ih]
+
+theorem padicValInt_mul_pow {p : ℕ} (hp : p.Prime) {i : ℤ} (hi : i ≠ 0) (ell : ℕ) :
+    padicValInt p (i * (p : ℤ) ^ ell) = padicValInt p i + ell := by
+  have := Fact.mk hp
+  simp only [padicValInt, Int.natAbs_mul, Int.natAbs_pow, Int.natAbs_natCast]
+  rw [Nat.multiplicity_mul (Int.natAbs_ne_zero.2 hi) (pow_ne_zero _ hp.ne_zero),
+    Nat.multiplicity_prime_pow]
+
+theorem eval_PPO (W : LocWach PD LL O v n) (ell : ℕ) (JS : Finset ℤ) :
+    algebraMap O LL ((PPO W ell JS).eval 1) =
+      (∏ i ∈ JS.erase 0, (1 - (algebraMap O LL (W.χΓ W.gam : O)) ^ (i * (PD.p : ℤ) ^ ell))) *
+        (PD.p : LL) ^ ell := by
+  simp only [PPO, Polynomial.eval_mul, Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_pow,
+    Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_finsetSum, one_pow, Finset.sum_const,
+    Finset.card_range, nsmul_eq_mul, mul_one, map_mul, map_prod, map_sub, map_one, map_natCast,
+    algebraMap_unit_zpow]
+  push_cast
+  ring
+
+theorem val_PP_one (W : LocWach PD LL O v n) (hs : W.s = 1) (hp : PD.p ≠ 2) (ell : ℕ)
+    (JS : Finset ℤ) :
+    v (algebraMap O LL ((PPO W ell JS).eval 1)) =
+      ((ell + ∑ i ∈ JS.erase 0, (ell + 1 + padicValInt PD.p i) : ℕ) : WithTop ℚ) := by
+  have hy : 1 ≤ v (algebraMap O LL (W.χΓ W.gam : O) - 1) := by
+    rw [W.gam_gen, hs, Nat.cast_one]
+  have hfac : ∀ i ∈ JS.erase 0,
+      v (1 - (algebraMap O LL (W.χΓ W.gam : O)) ^ (i * (PD.p : ℤ) ^ ell)) =
+        ((ell + 1 + padicValInt PD.p i : ℕ) : WithTop ℚ) := by
+    intro i hi
+    have hi0 : i ≠ 0 := (Finset.mem_erase.1 hi).1
+    have hm : i * (PD.p : ℤ) ^ ell ≠ 0 := mul_ne_zero hi0 (pow_ne_zero _ (by exact_mod_cast PD.hp.ne_zero))
+    rw [AddValuation.map_sub_swap, LTE.val_zpow_sub_one v PD.hp hp W.v_l hy hm, W.gam_gen, hs,
+      padicValInt_mul_pow PD.hp hi0]
+    push_cast
+    abel
+  rw [eval_PPO, AddValuation.map_mul, v_prod, Finset.sum_congr rfl hfac, AddValuation.map_pow, W.v_l,
+    nsmul_one, Nat.cast_add, Nat.cast_sum, add_comm]
+
+end Formalism.MainNotions.UnusedSlot80.KV
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.AlgebraMapUnitZpow =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.KillerLevCoreOf =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.KillerLevCoreOf", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup\npublic import Formalism.SharpRestriction.LevelLetterCocycles.AlgebraMapUnitZpow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -519,3 +604,7 @@ theorem killerLevCore_of (hU : PsUnitE W) (hC : PsCoprime W) (hG : LevGrad W) (h
 end Core
 
 end Formalism.MainNotions.UnusedSlot80.KL
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.KillerLevCoreOf =====

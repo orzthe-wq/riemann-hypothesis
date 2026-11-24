@@ -1,5 +1,6 @@
 module
 
+import Lemmata.CharpolySmul
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MonodromyZeroOfWeilDeligneRepClassIff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -62,28 +63,11 @@ namespace GlobalTheory.RowTie.EigTwist
 
 theorem roots_charpoly_smul_matrix {ι : Type*} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ) (u : ℂ) :
     (u • M).charpoly.roots = M.charpoly.roots.map (· * u) := by
-  have hM := (IsAlgClosed.splits M.charpoly).eq_prod_roots_of_monic (Matrix.charpoly_monic M)
-  have hc : Multiset.card M.charpoly.roots = Fintype.card ι := by
-    rw [← (IsAlgClosed.splits M.charpoly).natDegree_eq_card_roots, Matrix.charpoly_natDegree_eq_dim]
-  suffices (u • M).charpoly = ((M.charpoly.roots.map (· * u)).map fun α => X - C α).prod by
-    rw [this, roots_multiset_prod_X_sub_C]
   rcases eq_or_ne u 0 with rfl | hu
-  · simp [hc]
-  · refine Polynomial.funext fun x => ?_
-    have h1 := congrArg (eval (x / u)) hM
-    rw [Matrix.eval_charpoly, eval_multiset_prod, Multiset.map_map] at h1
-    have e : Matrix.scalar ι x - u • M = u • (Matrix.scalar ι (x / u) - M) := by
-      ext a b
-      by_cases hab : a = b
-      · subst hab
-        simp
-        field_simp
-      · simp [Matrix.diagonal_apply_ne _ hab]
-    rw [Matrix.eval_charpoly, e, Matrix.det_smul, h1, eval_multiset_prod, Multiset.map_map,
-      Multiset.map_map, ← hc, ← Multiset.prod_replicate, ← Multiset.map_const, ← Multiset.prod_map_mul]
-    refine congrArg _ (Multiset.map_congr rfl fun α _ => ?_)
-    simp
-    field_simp
+  · simp [← (IsAlgClosed.splits M.charpoly).natDegree_eq_card_roots, Matrix.charpoly_natDegree_eq_dim,
+      Multiset.nsmul_singleton]
+  · rw [Matrix.charpoly_smul, roots_scaleRoots _ hu.isUnit]
+    simp_rw [mul_comm u]
 
 theorem roots_charpoly_smul {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) (u : ℂ) : (u • f).charpoly.roots = f.charpoly.roots.map (· * u) := by

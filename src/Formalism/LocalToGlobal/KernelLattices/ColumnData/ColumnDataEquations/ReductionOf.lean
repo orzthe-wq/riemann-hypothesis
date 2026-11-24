@@ -4,46 +4,11 @@ public import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquati
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 public import Formalism.LocalToGlobal.KernelLattices.ColumnData.ColumnDataEquations.CharacterFactorUnitaryAction
 import Formalism.LocalToGlobal.KernelLattices.ColumnData.StdLat
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import Formalism.LocalToGlobal.PairingIndexBounds.SplitPairEquations.IntegralSquareRoots.HenselQuad
+import Formalism.LocalToGlobal.KernelLattices.ColumnData.IsAdmissibleFlagPairOfUnitriangularLeftAutomorph
 
 @[expose] public section
 
@@ -85,9 +50,9 @@ theorem e3a (hP : PullIop D B.tor) (hTL : Tr0L D B.tor) (hSm : SmulSD D) (hL : B
     simp [SDLat.smulLat]
   have hγS := hSm N (StandardLatticesGL3.stdL D N) γ (sS N)
   have hγL := hSm N L γ hLs
-  have m0 : B.thZero N N' ∈ TaylorLogMetric.Th D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') := mem_ThSp_of' _ _ _ _ h0
+  have m0 : B.thZero N N' ∈ TaylorLogMetric.Th D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') := _root_.Formalism.L2.Ker.Cd.mem_ThSp_of _ _ _ _ h0
   have mH : B.thHalf N N' L ∈ TaylorLogMetric.Th D B.tor L (StandardLatticesGL3.stdL D N') :=
-    mem_ThSp_of' _ _ _ _ (mvTh B hL (admissible_of_integral_conj_le hN hN' (sS N) (sS N')) (admissible_of_integral_conj_le hN hN' hLs (sS N')) h0)
+    _root_.Formalism.L2.Ker.Cd.mem_ThSp_of _ _ _ _ (mvTh B hL (admissible_of_integral_conj_le hN hN' (sS N) (sS N')) (admissible_of_integral_conj_le hN hN' hLs (sS N')) h0)
   have eB := (hP N N' (StandardLatticesGL3.stdL D N) L (StandardLatticesGL3.stdL D N') (StandardLatticesGL3.stdL D N') γ 1 hN hN' (sS N) hLs (sS N')
     (sS N') _ m0).2
   have eA := (hP N N' L L (StandardLatticesGL3.stdL D N') X γ 1 hN hN' hLs hLs (sS N') hXs _ mH).2
@@ -123,10 +88,10 @@ theorem e3b (hP : PullIop D B.tor) (hSq : SqP D B.tor) (hTR : Tr0R D B.tor) (hSm
     simp [SDLat.smulLat]
   have hγS := hSm N' (StandardLatticesGL3.stdL D N') γ' (sS N')
   have hγL := hSm N' L' γ' hL's
-  have m0 : B.thZero N N' ∈ TaylorLogMetric.Th D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') := mem_ThSp_of' _ _ _ _ h0
+  have m0 : B.thZero N N' ∈ TaylorLogMetric.Th D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') := _root_.Formalism.L2.Ker.Cd.mem_ThSp_of _ _ _ _ h0
   have mH : TaylorLogMetric.Iop D B.tor (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N'))
       (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) L') (B.thZero N N') ∈ TaylorLogMetric.Th D B.tor (StandardLatticesGL3.stdL D N) L' :=
-    mem_ThSp_of' _ _ _ _ (mvTh B hL (admissible_of_integral_conj_le hN hN' (sS N) (sS N')) (admissible_of_integral_conj_le hN hN' (sS N) hL's) h0)
+    _root_.Formalism.L2.Ker.Cd.mem_ThSp_of _ _ _ _ (mvTh B hL (admissible_of_integral_conj_le hN hN' (sS N) (sS N')) (admissible_of_integral_conj_le hN hN' (sS N) hL's) h0)
   have sq1 := hSq N N' (StandardLatticesGL3.stdL D N) L (StandardLatticesGL3.stdL D N') L' hN hN' (sS N) hLs (sS N') hL's _ m0
   have sq2 := hSq N N' (StandardLatticesGL3.stdL D N) L (StandardLatticesGL3.stdL D N')
     (SDLat.smulLat (γ' : Matrix (Fin N') (Fin N') D.host.E) L') hN hN' (sS N) hLs (sS N') hγL _ m0

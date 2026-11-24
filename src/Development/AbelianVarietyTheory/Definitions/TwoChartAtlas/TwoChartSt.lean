@@ -279,8 +279,7 @@ section Basic₂
 open ReciprocityTheory.ChartRestriction.G.TB.WickVanishing
 
 theorem toJet_one {κ : Type} [Finite κ] (m : ℕ) : toJet m (1 : MvPowerSeries κ R) = 1 := by
-  unfold toJet
-  rw [truncTotal_one (Nat.succ_ne_zero m), map_one]
+  simp [toJet, truncTotal_one (Nat.succ_ne_zero m)]
 
 theorem toJet_X {κ : Type} [Finite κ] (m : ℕ) (j : κ) : toJet m (X j : MvPowerSeries κ R) = zR m j := by
   classical
@@ -290,9 +289,7 @@ theorem toJet_X {κ : Type} [Finite κ] (m : ℕ) (j : κ) : toJet m (X j : MvPo
       ext e
       rw [coeff_truncTotal_eq_ite]
       split_ifs with he
-      · have : e = 0 := (Finsupp.degree_eq_zero_iff e).1 (by omega)
-        subst this
-        simp
+      · simp [(Finsupp.degree_eq_zero_iff e).1 (by omega)]
       · simp
     rw [h, map_zero]
     exact (Ideal.Quotient.eq_zero_iff_mem.2 (by
@@ -301,8 +298,7 @@ theorem toJet_X {κ : Type} [Finite κ] (m : ℕ) (j : κ) : toJet m (X j : MvPo
     ext e
     rw [coeff_truncTotal_eq_ite, MvPowerSeries.coeff_X, MvPolynomial.coeff_X']
     by_cases h : e = Finsupp.single j 1
-    · subst h
-      simp
+    · simp [h]
     · simp [h, Ne.symm h]
 
 theorem Related.refl {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB R d O) :
@@ -326,10 +322,7 @@ theorem Related.refl {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB R d 
     rw [c, c, hF]
     exact (congrFun (gt_comp1_pt (n := 2) B.G.F B.G.const) i).symm
   · rw [gt_comp1_pt_right, gt_comp1_pt _ (B.A.const a)]
-  · simp only [ev_one, c, e3, _root_.mul_one]
-  · simp only [ev_one, c, e3, _root_.mul_one]
-  · simp only [ev_one, c, e2, _root_.mul_one]
-  · simp only [ev_one, c, e2, _root_.mul_one]
+  all_goals simp only [ev_one, c, e2, e3, _root_.mul_one]
 
 end Basic₂
 

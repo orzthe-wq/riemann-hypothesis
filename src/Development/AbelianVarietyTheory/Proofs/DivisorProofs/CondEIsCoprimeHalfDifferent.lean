@@ -55,7 +55,7 @@ theorem isCoprime_of_natCast_mem {D : D7} {I : Ideal (𝓞 D.host.E)} {N : ℕ} 
   by_contra h
   obtain ⟨M, hM, hle⟩ := Ideal.exists_le_maximal _ h
   have hb : D.host.𝔟 ≤ M := le_sup_right.trans hle
-  have h0 : M ≠ ⊥ := fun e => ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.bb_ne_bot D (eq_bot_iff.2 (e ▸ hb))
+  have h0 : M ≠ ⊥ := fun e => _root_.Formalism.L2.Pj.b_ne_bot D (eq_bot_iff.2 (e ▸ hb))
   let P : HeightOneSpectrum (𝓞 D.host.E) := ⟨M, hM.isPrime, h0⟩
   exact GlobalTheory.HalfCompare.not_mem_of_coprime P hN (GlobalTheory.HalfCompare.two_q_mem (P := P) (Ideal.dvd_iff_le.2 hb))
     (hle (Ideal.mem_sup_left hI))

@@ -1,7 +1,8 @@
 module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.RelativeLiftCosieves.LiftsNonempty
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OntoFormLawsStatement
+import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.FormLaws
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OntoFormLaws
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -134,7 +135,7 @@ end FormNaturality
 theorem omNatB_pf : OmNat := by
   intro K _ Z Y p q u hu V V' hV h
   refine ⟨FormNaturality.phi u hu hV, fun g => rfl, fun a e e' he he' ω => ?_⟩
-  have hFL := GlobalTheory.T.onto_form_laws
+  have hFL := _root_.GlobalTheory.CompanionTheory.OntoForms.formLaws
   have key : ((morV u hu a h).pull a).comp e = e'.comp (omMap (FormNaturality.phi u hu hV) a) := by
     refine LinearMap.ext_on (hFL K (Sec p V) (Sec q V') a).1 ?_
     rintro _ ⟨g₀, g, rfl⟩

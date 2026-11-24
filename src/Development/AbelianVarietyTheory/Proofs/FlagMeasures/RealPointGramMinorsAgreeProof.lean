@@ -125,7 +125,7 @@ theorem phiV_span (C : Choice X 1) (τ : D.what₂.Tau) :
     ext j
     by_cases h : j = i
     · subst h; simp
-    · simp [Pi.single_apply, h]
+    · simp [h]
   rw [eq_top_iff]
   intro w _
   have e : C.Qi τ * (X.B.I.P (vOf X τ))⁻¹ * X.B.I.P (vOf X τ) * C.Q τ = 1 := by
@@ -242,10 +242,6 @@ namespace GlobalTheory.TypeAsm.GramPf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : HidaSetting D}
 
-theorem rdE_pos' (D : D7) : 0 < D.host.rdE := by
-  unfold Formalism.BasicNotions.Host.rdE
-  exact Real.rpow_pos_of_pos (abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero D.host.E))) _
-
 theorem frameExp_cast (r l : ℕ) (hl : l ≤ r + 1) :
     (frameExp r l : ℝ) = ∑ i : Fin l, ((r : ℝ) - (i : ℕ)) := by
   induction l with
@@ -262,15 +258,15 @@ theorem frameExp_cast (r l : ℕ) (hl : l ≤ r + 1) :
 
 theorem prod_rho (l : ℕ) (hl : l ≤ D.R.rS + 1) :
     ∏ i : Fin l, rhoF D (Fin.castLE hl i) = D.host.rdE ^ (-(frameExp D.R.rS l : ℝ)) := by
-  rw [frameExp_cast _ _ hl, ← Finset.sum_neg_distrib, Real.rpow_sum_of_pos (rdE_pos' D)]
+  rw [frameExp_cast _ _ hl, ← Finset.sum_neg_distrib, Real.rpow_sum_of_pos (_root_.Formalism.MainNotions.S.rdE_pos D)]
   rfl
 
 theorem norm_dmin (l : ℕ) (hl : l ≤ D.R.rS + 1) (x : ℂ) :
     ‖(∏ i : Fin l, ((rhoF D (Fin.castLE hl i) : ℝ) : ℂ)) ^ 2 * x‖ =
       ‖x‖ * D.host.rdE ^ (-(2 * (frameExp D.R.rS l : ℝ))) := by
   rw [← Complex.ofReal_prod, prod_rho l hl, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs,
-    abs_of_pos (Real.rpow_pos_of_pos (rdE_pos' D) _), ← Real.rpow_natCast,
-    ← Real.rpow_mul (rdE_pos' D).le, mul_comm ‖x‖]
+    abs_of_pos (Real.rpow_pos_of_pos (_root_.Formalism.MainNotions.S.rdE_pos D) _), ← Real.rpow_natCast,
+    ← Real.rpow_mul (_root_.Formalism.MainNotions.S.rdE_pos D).le, mul_comm ‖x‖]
   congr 2
   push_cast
   ring

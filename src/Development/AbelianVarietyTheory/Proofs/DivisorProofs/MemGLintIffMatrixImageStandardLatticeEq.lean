@@ -77,7 +77,7 @@ theorem entries_of_matLat_le {n : ℕ} (g : Matrix (Fin n) (Fin n) K)
     rw [mem_range_iff]
     by_cases h : l = j
     · subst h; simp [V.one_mem]
-    · simp [Pi.single_apply, h, V.zero_mem]
+    · simp [h, V.zero_mem]
   have hm : g *ᵥ (Pi.single j (1 : K)) ∈ stdLat V n := hg ((mem_matLat _ _ _).2 ⟨_, hs, rfl⟩)
   rw [mem_stdLat] at hm
   have := (mem_range_iff V _).1 (hm i)

@@ -67,4 +67,4 @@ theorem _root_.GlobalTheory.T.complex_coordinates_exist_at_infinity : ∀ (F E :
   (∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) → IsHomeomorph e → (∀ x w, e (algebraMap F (Ainf F) x) w = ρ w x) →
   ∃ (τ : InfinitePlace F → (E →+* ℂ)) (Θ : Ainf F ⊗[F] E ≃+* (InfinitePlace F → ℂ)),
     IsCoord σ e τ Θ := by
-  first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.exists_isCoord | exact GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.exists_isCoord | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.exists_isCoord <;> assumption)
+  first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.exists_isCoord

@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.DiscreteSpectrumKFiniteDecomposition
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiComplexifiedKEquivarianceStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiHolomorphicNearPositiveMatricesAtOneStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiComplexifiedKEquivariance
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiHolomorphicNearPositiveMatricesAtOne
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IndefiniteUnitaryPreservesForm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -65,10 +65,6 @@ lemma exp_posDef_of_herm {X : Matrix (Fin n) (Fin n) ℂ} (h : Xᴴ = X) : (Norm
   exact Matrix.PosDef.conjTranspose_mul_self _
     (Matrix.mulVec_injective_of_isUnit (Matrix.isUnit_exp _))
 
-lemma mem_KC_of_mem_K {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
-    k ∈ KC ε :=
-  ⟨⟨⟨k, star k, Unitary.mul_star_self_of_mem hk.1, Unitary.star_mul_self_of_mem hk.1⟩, rfl⟩, hk.2⟩
-
 lemma mul_mem_K {ε : Fin n → Bool} {k k' : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
     (hk' : k' ∈ Kset ε) : k * k' ∈ Kset ε :=
   ⟨mul_mem hk.1 hk'.1, by rw [Matrix.mul_assoc, hk'.2, ← Matrix.mul_assoc, hk.2, Matrix.mul_assoc]⟩
@@ -92,9 +88,9 @@ theorem psiPolar_of (hB : PsBasic) (hE : PsEquiv) : PsiPolar := by
     have hp := exp_posDef_of_herm (hermitian_of_mem_hermitian_part hX)
     set p := NormedSpace.exp X
     have hs : k₂ * k₂ᴴ = 1 := Unitary.mul_star_self_of_mem h₂.1
-    have hc := mem_KC_of_mem_K (star_mem_K h₂)
+    have hc := _root_.GlobalTheory.Dec.FormF.K_KC (star_mem_K h₂)
     have hq : (k₂ᴴ * p * k₂).PosDef :=
-      hp.conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit (mem_KC_of_mem_K h₂).1)
+      hp.conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit (_root_.GlobalTheory.Dec.FormF.K_KC h₂).1)
     have e : k₁ * (k * p) * k₂ = (k₁ * k * k₂) * (k₂ᴴ * p * k₂) := by
       simp only [Matrix.mul_assoc]
       rw [← Matrix.mul_assoc k₂ k₂ᴴ, hs, Matrix.one_mul]
@@ -104,8 +100,8 @@ theorem psiPolar_of (hB : PsBasic) (hE : PsEquiv) : PsiPolar := by
     rw [e, Psi_unitary_mul ε lam τ w hk3.1 hq, Psi_unitary_mul ε lam τ w hk.1 hp, he,
       ← ContinuousLinearMap.comp_assoc]
     have hm : (τ (k₁ * k * k₂)).comp (τ k₂ᴴ) = (τ k₁).comp (τ k) := by
-      have a := hτ.2.1.2 _ (mem_KC_of_mem_K hk3) _ hc
-      have b := hτ.2.1.2 _ (mem_KC_of_mem_K h₁) _ (mem_KC_of_mem_K hk)
+      have a := hτ.2.1.2 _ (_root_.GlobalTheory.Dec.FormF.K_KC hk3) _ hc
+      have b := hτ.2.1.2 _ (_root_.GlobalTheory.Dec.FormF.K_KC h₁) _ (_root_.GlobalTheory.Dec.FormF.K_KC hk)
       rw [Matrix.mul_assoc, hs, Matrix.mul_one] at a
       exact a.symm.trans b
     rw [hm]
@@ -114,4 +110,4 @@ theorem psiPolar_of (hB : PsBasic) (hE : PsEquiv) : PsiPolar := by
 end GlobalTheory.Dec.PsiPolarProof
 
 theorem GlobalTheory.Dec.psiPolar : GlobalTheory.Dec.PsiPolar :=
-  GlobalTheory.Dec.PsiPolarProof.psiPolar_of GlobalTheory.T.psi_holomorphic_near_positive_matrices_at_one GlobalTheory.T.psi_complexifiedK_equivariance
+  GlobalTheory.Dec.PsiPolarProof.psiPolar_of _root_.GlobalTheory.Dec.psBasic _root_.GlobalTheory.Dec.Equivar.psEquiv

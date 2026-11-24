@@ -142,10 +142,6 @@ theorem poly_coeff_eq {V : Type*} [AddCommGroup V] [Module ℂ V] (N : ℕ) (a b
     simp only [Pi.sub_apply, smul_sub, Finset.sum_sub_distrib, h Y, sub_self]
   exact sub_eq_zero.mp (poly_coeff_zero N (a - b) hz j hj)
 
-theorem pr_fst_smul {V : Type*} [AddCommGroup V] [Module ℂ V] (Y : ℂ) (x : Q.Pr V) : (Y • x).1 = Y • x.1 := by
-  rw [Algebra.smul_def, Algebra.smul_def]
-  rfl
-
 theorem pr_fst_add {V : Type*} [AddCommGroup V] [Module ℂ V] (x y : Q.Pr V) : (x + y).1 = x.1 + y.1 := rfl
 
 theorem pr_fst_one {V : Type*} [AddCommGroup V] [Module ℂ V] : (1 : Q.Pr V).1 = 1 := rfl

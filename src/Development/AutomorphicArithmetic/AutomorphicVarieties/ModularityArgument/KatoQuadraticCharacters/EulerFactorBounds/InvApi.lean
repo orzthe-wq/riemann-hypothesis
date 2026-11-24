@@ -230,8 +230,6 @@ private theorem main : SInvApi := by
 
 end UpperTheory.V.Z.Kato.Nb.InverseLimitApi
 
-theorem UpperTheory.V.Z.Kato.Nb.sInvApi :
-    UpperTheory.V.Z.Kato.Nb.SInvApi :=
-  UpperTheory.V.Z.Kato.Nb.InverseLimitApi.main
+alias UpperTheory.V.Z.Kato.Nb.sInvApi := _root_.UpperTheory.V.Z.Kato.Nb.InverseLimitApi.main
 
 end

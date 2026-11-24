@@ -73,7 +73,7 @@ lemma herm_X_gen {x w : Fin (2 * r + k + 1) → ℂ} (hx : x ∈ Xsp k r) (hw : 
         have := congrArg Fin.val h
         simp [eI] at this
         omega
-      simp [bvec, Pi.single_apply, hne]
+      simp [bvec, hne]
     | zero => rfl
     | add y z _ _ hy hz => simp [hy, hz]
     | smul c y _ hy => simp [hy]
@@ -104,7 +104,7 @@ lemma herm_wb_X {x w : Fin (2 * r + k + 1) → ℂ} (hx : x ∈ Xsp k r) (hw : �
         have := congrArg Fin.val h
         simp [eI] at this
         omega
-      simp [bvec, Pi.single_apply, hne]
+      simp [bvec, hne]
     | zero => rfl
     | add y z _ _ hy hz => simp [hy, hz]
     | smul c y _ hy => simp [hy]
@@ -133,7 +133,7 @@ lemma X_hi {x : Fin (2 * r + k + 1) → ℂ} (hx : x ∈ Xsp k r) : ∀ i : Fin 
       have := congrArg Fin.val h
       simp [eI] at this
       omega
-    simp [bvec, Pi.single_apply, hne]
+    simp [bvec, hne]
   | zero => rfl
   | add y z _ _ hy hz => simp [hy, hz]
   | smul c y _ hy => simp [hy]

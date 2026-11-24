@@ -50,4 +50,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.isThetaFun_superposition_target_orthSummand : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (T A B S : HSp D) (o : OrthDec T A B) (F : WO S T → ℂ), IsThetaFunO ψ S T F → ∀ (Ω : Type) [MeasurableSpace Ω] (μ : Measure Ω) (k : Ω → WO S B) (a : Ω → ℂ), Measurable k → Integrable a μ → IsThetaFunO ψ S A fun u => ∫ w, a w * F ((o.resT S).symm (u, k w)) ∂μ := by
-  first | exact @GlobalTheory.SuperposT.superpos_target | exact GlobalTheory.SuperposT.superpos_target | (intros; apply GlobalTheory.SuperposT.superpos_target <;> assumption)
+  first | exact @GlobalTheory.SuperposT.superpos_target

@@ -78,10 +78,6 @@ theorem mx_ext (hθ : IsInfFam θ) {m n : ℕ} {A B : Mx D m n} (hf : A.map (fin
   · rw [RingHom.map_sub, RingHom.map_sub]
     exact sub_eq_zero.2 (congrFun (congrFun (hi τ) i) j)
 
-theorem comp_mul (τ : D.what₂.Tau) {m n k : ℕ} (A : Mx D m n) (B : Mx D n k) :
-    compAt θ τ (A ⬝ B) = compAt θ τ A * compAt θ τ B :=
-  Matrix.map_mul (f := (θ τ).comp (infPart D))
-
 theorem absE_single (hθ : IsInfFam θ) (x : (AE D)ˣ) (τ : D.what₂.Tau) (hf : finPart D (x : AE D) = 1)
     (hi : ∀ τ', τ' ≠ τ → θ τ' (infPart D (x : AE D)) = 1) :
     absE D.host.F D.host.E x = ‖θ τ (infPart D (x : AE D))‖₊ ^ 2 := by

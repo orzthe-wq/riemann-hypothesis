@@ -2,7 +2,7 @@ module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopology
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SchurFunctionSmoothRightInvariant
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EventuallyFinEqOne
 public import GroundTheory.GlobalFields.TateThesis.ArchCharsUnitary
@@ -214,11 +214,11 @@ theorem exists_char_data : ∀ (F : Type) [Field F] [NumberField F], IsTotallyRe
     rw [← AddChar.map_add_eq_mul, ← hψ.2.2.1 c]
     exact congrArg ψ (Prod.ext (add_zero _) (zero_add _))
 
-  obtain ⟨N, hN, hNU⟩ := (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.2.1 _ (GlobalTheory.FinTranslate.eventually_fin_eq_one hψ)
+  obtain ⟨N, hN, hNU⟩ := (_root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F).2.2.2.2.2.2.2.1 _ (GlobalTheory.FinTranslate.eventually_fin_eq_one hψ)
   have hint : ∀ r : 𝓞 F, ∃ n : ℤ, ∑ w, α w * ρ w ((N : F) * (r : F)) = n := by
     intro r
     have hr : algebraMap F (Af F) (r : F) ∈ GlobalTheory.CompanionTheory.SW.Core.Oh F :=
-      ((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.1 _).2 ⟨r, rfl⟩
+      ((_root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F).2.2.2.2.2.2.1 _).2 ⟨r, rfl⟩
     have h1 : ψ (pairA F 0 (algebraMap F (Af F) ((N : F) * (r : F)))) = 1 := by
       have := hNU _ hr
       rw [map_mul, map_natCast]
@@ -261,7 +261,7 @@ theorem exists_char_data : ∀ (F : Type) [Field F] [NumberField F], IsTotallyRe
     have h2 : ∀ y : Af F, ψ (pairA F 0 y) = 1 := by
       intro y
       have hc : Continuous fun y : Af F => ψ (pairA F 0 y) := hψ.1.comp hp
-      refine (GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.1.induction_on y (isClosed_eq hc continuous_const) fun c => ?_
+      refine (_root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F).2.2.2.2.2.1.induction_on y (isClosed_eq hc continuous_const) fun c => ?_
       rw [hfin]
       simp
     obtain ⟨z, hz⟩ := hψ.2.2.2

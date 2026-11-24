@@ -214,7 +214,7 @@ theorem zeta_inversion_fixes_b (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a 
 
 theorem zeta_inversion_ne_one (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) : tau0 hqd h ≠ 1 := by
   intro h1
-  haveI : Fact (2 < 2 ^ (e + 2)) := ⟨two_lt e⟩
+  have : Fact (2 < 2 ^ (e + 2)) := ⟨two_lt e⟩
   have hz := h.1.autToPow_spec ℚ (tau0 hqd h)
   rw [autToPow_tau0_eq_neg_one hqd h, h1, AlgEquiv.one_apply, Units.val_neg, Units.val_one] at hz
   have h2 : ζ ^ (-1 : ZMod (2 ^ (e + 2))).val = ζ ^ (1 : ZMod (2 ^ (e + 2))).val := by
@@ -300,7 +300,7 @@ theorem fixingSubgroup_hostE_le (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a
 
 theorem hostE_eq_fixedField (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     hostE ζ a b = fixedField (Subgroup.zpowers (tau0 hqd h)) := by
-  haveI := (layer_galois hqd h).1
+  have := (layer_galois hqd h).1
   have hfix : (hostE ζ a b).fixingSubgroup = Subgroup.zpowers (tau0 hqd h) :=
     le_antisymm (fixingSubgroup_hostE_le hqd h)
       ((IntermediateField.le_iff_le _ _).1 (hostE_le_fixedField hqd h))
@@ -312,19 +312,19 @@ theorem mem_hostE_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (x : L
 
 theorem finrank_cmField (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     Module.finrank ℚ (hostE ζ a b) = 2 ^ (e + 2) := by
-  haveI := (layer_galois hqd h).1
+  have := (layer_galois hqd h).1
   have hL := (layer_galois hqd h).2.1
   rw [hostE_eq_fixedField hqd h]
   have h1 := (letI : Module.Free (fixedField (Subgroup.zpowers (tau0 hqd h))) L := Module.Free.of_divisionRing _ _; Module.finrank_mul_finrank ℚ (fixedField (Subgroup.zpowers (tau0 hqd h))) L)
   rw [IntermediateField.finrank_fixedField_eq_card, hL] at h1
-  simp only [Nat.card_zpowers, Fintype.card_zpowers, orderOf_zeta_inversion hqd h] at h1
+  simp only [Nat.card_zpowers, orderOf_zeta_inversion hqd h] at h1
   rw [pow_succ] at h1
   exact Nat.eq_of_mul_eq_mul_right (by norm_num) h1
 
 theorem isGalois_hostE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     IsGalois ℚ (hostE ζ a b) := by
-  haveI := (layer_galois hqd h).1
-  haveI : (Subgroup.zpowers (tau0 hqd h)).Normal :=
+  have := (layer_galois hqd h).1
+  have : (Subgroup.zpowers (tau0 hqd h)).Normal :=
     ⟨fun n hn g => by rwa [gal_mul_comm_of_isLayer hqd h g n, mul_inv_cancel_right]⟩
   rw [hostE_eq_fixedField hqd h]
   exact IsGalois.of_fixedField_normal_subgroup _
@@ -332,13 +332,13 @@ theorem isGalois_hostE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
 theorem exists_lift (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
     ∃ τ : Gal(L/ℚ), ∀ x : hostE ζ a b, ((σ x : hostE ζ a b) : L) = τ x := by
-  haveI := (layer_galois hqd h).1
+  have := (layer_galois hqd h).1
   exact ⟨σ.liftNormal L, fun x => (σ.liftNormal_commutes L x).symm⟩
 
 theorem exists_restrict (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (τ : Gal(L/ℚ)) :
     ∃ σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b, ∀ x : hostE ζ a b, ((σ x : hostE ζ a b) : L) = τ x := by
-  haveI := (layer_galois hqd h).1
-  haveI := isGalois_hostE hqd h
+  have := (layer_galois hqd h).1
+  have := isGalois_hostE hqd h
   exact ⟨τ.restrictNormal (hostE ζ a b), fun x => τ.restrictNormal_commutes (hostE ζ a b) x⟩
 
 theorem sgn_lift {σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b} {τ : Gal(L/ℚ)}
@@ -394,7 +394,7 @@ theorem hostFixed : HostFixed := by
 theorem hostGalois : HostGalois := by
   unfold HostGalois
   intro e q d hqd L _ _ ζ a b h
-  haveI := (layer_galois hqd h).1
+  have := (layer_galois hqd h).1
   obtain ⟨-, -, hmul, hbij⟩ := layer_galois hqd h
   refine ⟨isGalois_hostE hqd h, finrank_cmField hqd h, fun σ τ => ?_, ⟨fun σ σ' hss => ?_, fun y => ?_⟩⟩
   · obtain ⟨τ1, h1⟩ := exists_lift hqd h σ

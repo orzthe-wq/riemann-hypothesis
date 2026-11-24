@@ -1,8 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BialgHomSurjectiveIffFinrankKernelQuotientEqOneStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivHomDivisibleByPowOfKillsPowTorsionStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.KerIdealCompOfSurjective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BialgHomSurjectiveIffFinrankKernelQuotientEqOne
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ToSpanSingletonConstGenInjective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivHomDivisibleByPowOfKillsPowTorsion
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigExtMapRelFrobCompRigOfOmega
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -123,7 +125,7 @@ theorem hasLogDeg_zero_iff_isIso {G H : PDivGroup p k} (f : G ⟶ H) (hf : IsIso
   · rintro ⟨N, hN⟩
     obtain ⟨a, f', h1, h2⟩ := hf
     have hs : Function.Surjective (f.app (N + a)) :=
-      (GlobalTheory.T.bialgHom_surjective_iff_finrank_kernelQuotient_eq_one k (G.A (N + a)) (H.A (N + a)) (f.app (N + a))).2
+      (_root_.GlobalTheory.Dieu.surjective_iff_finrank_quot_kerIdeal_eq_one k (G.A (N + a)) (H.A (N + a)) (f.app (N + a))).2
         ((hN (N + a) (Nat.le_add_right N a)).trans (pow_zero p))
     set f'' : H ⟶ G := (p : ℤ_[p]) ^ N • f' with hf''
     have e1 : f ≫ f'' = (p : ℤ_[p]) ^ (N + a) • 𝟙 G := by
@@ -137,7 +139,7 @@ theorem hasLogDeg_zero_iff_isIso {G H : PDivGroup p k} (f : G ⟶ H) (hf : IsIso
       refine WithConv.ofConv_injective (BialgHom.ext fun x => ?_)
       obtain ⟨y, rfl⟩ := hs x
       exact DFunLike.congr_fun (congrArg WithConv.ofConv h3) y
-    obtain ⟨g, hg⟩ := GlobalTheory.T.pDivHom_divisible_by_pow_of_kills_pow_torsion p k H G (N + a) f'' hc
+    obtain ⟨g, hg⟩ := _root_.GlobalTheory.PDivGroup.DivP.divisible_of_conv_eq_one p k H G (N + a) f'' hc
     refine ⟨⟨g, ?_, ?_⟩⟩
     · refine pow_smul_cancel (N + a) ?_
       rw [← Linear.comp_smul, ← hg, e1]
@@ -146,7 +148,7 @@ theorem hasLogDeg_zero_iff_isIso {G H : PDivGroup p k} (f : G ⟶ H) (hf : IsIso
   · intro hi
     refine ⟨0, fun n _ => ?_⟩
     rw [pow_zero]
-    refine (GlobalTheory.T.bialgHom_surjective_iff_finrank_kernelQuotient_eq_one k (G.A n) (H.A n) (f.app n)).1 fun x => ⟨(inv f).app n x, ?_⟩
+    refine (_root_.GlobalTheory.Dieu.surjective_iff_finrank_quot_kerIdeal_eq_one k (G.A n) (H.A n) (f.app n)).1 fun x => ⟨(inv f).app n x, ?_⟩
     have h := congrArg (fun φ : G ⟶ G => φ.app n x) (IsIso.hom_inv_id f)
     exact h
 

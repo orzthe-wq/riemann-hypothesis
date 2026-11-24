@@ -1,7 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.MemRingOfInR
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FnHahnSeriesOfHasQStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FnHahnSeriesOfHasQ
+public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModBasic
+public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDeltaInt
+public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModEvalMF
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -41,9 +44,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModBasic
-public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDeltaInt
-public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModEvalMF
 import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
 
 @[expose] public section
@@ -67,7 +67,7 @@ theorem expD : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ), ∃ h : HahnSerie
   intro Ω _ ε
   have hD : HasQ 1 DD fun n => ε ((PowerSeries.coeff n ReciprocityTheory.ChartRestriction.L1.dZ : ℤ) : Ω) := by
     simpa only [map_intCast] using hasQ_DD_int
-  obtain ⟨h, hexp, hk, hz⟩ := GlobalTheory.T.exists_hahnSeries_isExp_of_hasQ Ω ε 1 DD
+  obtain ⟨h, hexp, hk, hz⟩ := _root_.GlobalTheory.fn_hahnSeries_of_hasQ Ω ε 1 DD
     (fun n => ((PowerSeries.coeff n ReciprocityTheory.ChartRestriction.L1.dZ : ℤ) : Ω)) one_pos hD
   have h1 : h.coeff 1 = 1 := by
     have := hk 1

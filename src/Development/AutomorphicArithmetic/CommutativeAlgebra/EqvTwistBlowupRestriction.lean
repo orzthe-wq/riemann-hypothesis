@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
+import Development.AutomorphicArithmetic.CupPullbacks.TwoChart
 
 @[expose] public section
 
@@ -69,11 +70,6 @@ private def vec1 {A : Type} [CommRing A] (s : A) (h : IsUnit s) : Um 1 A :=
   ⟨fun _ => s, by
     rw [Set.range_const]
     exact Ideal.span_singleton_eq_top.2 h⟩
-
-private theorem unimodularRow_one_isUnit {A : Type} [CommRing A] (c : Um 1 A) : IsUnit (c.1 0) := by
-  have h := c.2
-  rw [Set.range_unique] at h
-  exact Ideal.span_singleton_eq_top.1 h
 
 private theorem join_inj {N : ℕ} {A : Type} [CommRing A] {x y : Um N A × Um 2 A} (hs : x.2.1 0 = y.2.1 0)
     (hu : IsUnit (x.2.1 0)) (h : Um.join x = Um.join y) : x = y := by
@@ -150,14 +146,14 @@ private theorem pts_bij (N : ℕ) (Q : Pred (XC (N + 1))) (hQ : Q.Le (Q2 N)) (A 
     have e2 : x.2.1 0 = y.2.1 0 := congrArg (fun c : Um 1 A => c.1 0) h2
     exact Subtype.ext (join_inj e2 (s_unit x (hQ A _ hx)) e1)
   · rintro ⟨⟨w, hw⟩, c⟩
-    obtain ⟨x, hx0, hxw⟩ := join_surj w (hQ A w hw) (unimodularRow_one_isUnit c).unit
+    obtain ⟨x, hx0, hxw⟩ := join_surj w (hQ A w hw) (_root_.UpperTheory.P2.unimodularRow_one_isUnit c).unit
     refine ⟨⟨x, ?_⟩, ?_⟩
     · show Q.P A (Um.join x)
       rw [hxw]
       exact hw
     · refine Prod.ext (Subtype.ext hxw) (Subtype.ext (funext fun i => ?_))
       obtain rfl : i = 0 := Subsingleton.elim _ _
-      exact hx0.trans (unimodularRow_one_isUnit c).unit_spec
+      exact hx0.trans (_root_.UpperTheory.P2.unimodularRow_one_isUnit c).unit_spec
 
 private theorem mul_ringHom_units_ratio {G : Type} [CommGroup G] (m c : G) : m * (m * c⁻¹)⁻¹ = c := by
   rw [mul_inv_rev, inv_inv, mul_comm c, mul_inv_cancel_left]
@@ -214,5 +210,5 @@ theorem UpperTheory.eqv_twist_blowupRestriction :
   have hcomp : Sp.pair E ((βC N).sub Q) (sig N Q hQ) ≫ Sp.fst _ (XC 1) = Sp.map E ((βC N).sub Q) := by
     rfl
   rw [← hcomp]
-  obtain ⟨hiso', hcmp, -, -⟩ := GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)
+  obtain ⟨hiso', hcmp, -, -⟩ := _root_.GlobalTheory.EtC.eqv_basic (ZMod q) (tw q i)
   exact (hcmp _ _ _ _ _).1 (hiso' _ _ _ hiso) (hfst i)

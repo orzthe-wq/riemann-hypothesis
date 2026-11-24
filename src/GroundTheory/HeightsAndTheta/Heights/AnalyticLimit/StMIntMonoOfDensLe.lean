@@ -62,8 +62,7 @@ def MIntMonoOfDensLe.Statement : Prop :=
 
 section Inhabitants
 
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (projLineChartData)
-open ReciprocityTheory.AnForm.M (p1 fsPot projLine_isSmoothPotential projLine_isPlurisubharmonic locDensCont locDens_nonneg_of_psh)
+open ReciprocityTheory.AnForm.M (locDensCont locDens_nonneg_of_psh)
 
 end Inhabitants
 

@@ -67,4 +67,4 @@ theorem _root_.GlobalTheory.T.zetaIntegral_twoSidedMovedDatum_eq_smallZeta : ∀
     (ν (gdet g₀) : ℂ) * apow (gdet g₀) ((Fintype.card C : ℂ) / 2) * (ν (gdet N) : ℂ) * apow (gdet N) ((Fintype.card C : ℂ) / 2) *
       bigP (haarVol (KO k (Fin a))) ϖ σ ν β (fun Z => phiA μ σ ν ϖ n (diagLat c) Ψ (g₀.val * Z * N.val)) h =
       smallP μ σ ν (ν * β) (fun Y => Ψ (Y * (invT N).val)) h := by
-  first | exact @GlobalTheory.OneSquareZeta.bigZeta_phiA_twist_eq_smallZeta | exact GlobalTheory.OneSquareZeta.bigZeta_phiA_twist_eq_smallZeta | (intros; apply GlobalTheory.OneSquareZeta.bigZeta_phiA_twist_eq_smallZeta <;> assumption)
+  first | exact @GlobalTheory.OneSquareZeta.bigZeta_phiA_twist_eq_smallZeta

@@ -151,24 +151,82 @@ private lemma lift_of_top {K L I : CochainComplex C ℤ} (φ : K ⟶ L) (k n : �
       simp
     · exact (hL p hkp).eq_of_src _ _
 
+private lemma cone_map_congr_abs {K₁ L₁ K₂ L₂ : CochainComplex C ℤ} (φ₁ : K₁ ⟶ L₁) (φ₂ : K₂ ⟶ L₂)
+    {u u' : K₁ ⟶ K₂} {v v' : L₁ ⟶ L₂} (c : φ₁ ≫ v = u ≫ φ₂) (c' : φ₁ ≫ v' = u' ≫ φ₂)
+    (hu : u = u') (hv : v = v') : mappingCone.map φ₁ φ₂ u v c = mappingCone.map φ₁ φ₂ u' v' c' := by
+  subst hu; subst hv; rfl
+
+private lemma sec_chains_abs {A : C} {K L : CochainComplex C ℤ} (s : (singleFunctor C 0).obj A ⟶ K)
+    (a : K ⟶ L) (e : K.X 0 ≅ A)
+    (hs : s.f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 A).hom ≫ e.inv)
+    (hL : IsZero (L.X (0 + 1))) :
+    s ≫ a = (singleFunctor C 0).map (e.inv ≫ a.f 0) ≫ top L 0 hL := by
+  apply HomologicalComplex.from_single_hom_ext
+  rw [HomologicalComplex.comp_f, HomologicalComplex.comp_f, top_f, hs]
+  change _ = ((HomologicalComplex.single C (ComplexShape.up ℤ) 0).map (e.inv ≫ a.f 0)).f 0 ≫ _
+  simp only [HomologicalComplex.single_map_f_self, Category.assoc, Iso.inv_hom_id, Category.comp_id]
+
+open LateralTheory.E.FiltGenPf in
+private lemma step0_abs {A' A : C} {K' K L' L I : CochainComplex C ℤ} (n : ℤ)
+    (pull : ∀ {X Y : CochainComplex C ℤ}, (X ⟶ Y) → CohomologyClass Y I n → CohomologyClass X I n)
+    (hpull_comp : ∀ {X Y Z : CochainComplex C ℤ} (f : X ⟶ Y) (g : Y ⟶ Z) (x : CohomologyClass Z I n),
+      pull (f ≫ g) x = pull f (pull g x))
+    (hpull_id : ∀ {X : CochainComplex C ℤ} (x : CohomologyClass X I n), pull (𝟙 X) x = x)
+    (hpull_zero : ∀ {X Y : CochainComplex C ℤ} (f : X ⟶ Y), pull f 0 = 0)
+    (hpull_eq_zero : ∀ {X Y : CochainComplex C ℤ} (f : X ⟶ Y) (w : Cocycle Y I n),
+      pull f (CohomologyClass.mk w) = 0 →
+        ∃ c₀ : Cochain X I (n - 1), (Cochain.ofHom f).comp (w : Cochain Y I n) (zero_add n) = δ (n - 1) n c₀)
+    (g : L' ⟶ L) (h : A' ⟶ A) (dh : K' ⟶ K) (a : K ⟶ L) (b : K' ⟶ L')
+    (comm : dh ≫ a = b ≫ g) (eK' : K'.X 0 ≅ A') (eK : K.X 0 ≅ A)
+    (s' : (singleFunctor C 0).obj A' ⟶ K') (s : (singleFunctor C 0).obj A ⟶ K)
+    (hs' : s'.f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 A').hom ≫ eK'.inv)
+    (hs : s.f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 A).hom ≫ eK.inv)
+    (scomm : (singleFunctor C 0).map h ≫ s = s' ≫ dh)
+    (hL' : ∀ p : ℤ, 0 < p → IsZero (L'.X p)) (hL : ∀ p : ℤ, 0 < p → IsZero (L.X p))
+    (ha : IsIso (eK.inv ≫ a.f 0)) (hb : IsIso (eK'.inv ≫ b.f 0))
+    (hcomm0 : h ≫ eK.inv ≫ a.f 0 = (eK'.inv ≫ b.f 0) ≫ g.f 0)
+    (z : Cocycle (mappingCone g) I n)
+    (hz : pull (mappingCone.map dh g b a comm) (CohomologyClass.mk z) = 0) :
+    ∃ c : Cochain (mappingCone g) I (n - 1), V g (-1) n ((z : Cochain (mappingCone g) I n) - δ (n - 1) n c) := by
+  have hL'1 := hL' (0 + 1) (by omega)
+  have hL1 := hL (0 + 1) (by omega)
+  have cT : (singleFunctor C 0).map h ≫ (singleFunctor C 0).map (eK.inv ≫ a.f 0) =
+      (singleFunctor C 0).map (eK'.inv ≫ b.f 0) ≫ (singleFunctor C 0).map (g.f 0) := by
+    rw [← Functor.map_comp, ← Functor.map_comp, hcomm0]
+  have hsq : mappingCone.map _ _ s' s scomm ≫ mappingCone.map dh g b a comm =
+      mappingCone.map _ _ _ _ cT ≫ coneTop g 0 hL'1 hL1 := by
+    rw [coneTop, ← mappingCone.map_comp, ← mappingCone.map_comp]
+    exact cone_map_congr_abs _ _ _ _ (sec_chains_abs s' b eK' hs' hL'1) (sec_chains_abs s a eK hs hL1)
+  have hinj : Function.Injective (pull (mappingCone.map _ _ _ _ cT)) := by
+    have c' : (singleFunctor C 0).map (g.f 0) ≫ inv ((singleFunctor C 0).map (eK.inv ≫ a.f 0)) =
+        inv ((singleFunctor C 0).map (eK'.inv ≫ b.f 0)) ≫ (singleFunctor C 0).map h := by
+      rw [IsIso.eq_inv_comp, ← Category.assoc, ← cT, Category.assoc, IsIso.hom_inv_id, Category.comp_id]
+    have hT : mappingCone.map _ _ (inv ((singleFunctor C 0).map (eK'.inv ≫ b.f 0)))
+        (inv ((singleFunctor C 0).map (eK.inv ≫ a.f 0))) c' ≫ mappingCone.map _ _ _ _ cT = 𝟙 _ := by
+      rw [← mappingCone.map_comp, cone_map_congr_abs _ _ _ (by rw [Category.id_comp, Category.comp_id])
+        (IsIso.inv_hom_id _) (IsIso.inv_hom_id _)]
+      exact mappingCone.map_id _
+    intro x y hxy
+    have := congrArg (pull (mappingCone.map _ _ _ _ c')) hxy
+    rwa [← hpull_comp, ← hpull_comp, hT, hpull_id, hpull_id] at this
+  have h1 : pull (coneTop g 0 hL'1 hL1) (CohomologyClass.mk z) = 0 := by
+    have h2 := (hpull_comp (mappingCone.map _ _ s' s scomm) (mappingCone.map dh g b a comm)
+      (CohomologyClass.mk z)).trans ((congrArg _ hz).trans (hpull_zero _))
+    apply hinj
+    rw [hpull_zero]
+    exact (hpull_comp _ _ _).symm.trans
+      ((congrArg (fun t => pull t (CohomologyClass.mk z)) hsq.symm).trans h2)
+  obtain ⟨c₀, hc₀⟩ := hpull_eq_zero (coneTop g 0 hL'1 hL1) z h1
+  obtain ⟨c, hc⟩ := lift_of_top g 0 n hL' hL (z : Cochain (mappingCone g) I n) c₀ hc₀
+  have e : (0 : ℤ) - 1 = -1 := by norm_num
+  rw [e] at hc
+  exact ⟨c, hc⟩
+
 section Host
 
 open AlgebraicGeometry Opposite Simplicial GlobalTheory.EtC LateralTheory.E.DiscLvlPf
 
 variable (R : Type) [CommRing R]
-
-private lemma pull_cone_injective {K₁ L₁ K₂ L₂ : Cx R} (φ₁ : K₁ ⟶ L₁) (φ₂ : K₂ ⟶ L₂) (u : K₁ ⟶ K₂) (v : L₁ ⟶ L₂)
-    [IsIso u] [IsIso v] (c : φ₁ ≫ v = u ≫ φ₂) (F : Shv R) (n : ℤ) :
-    Function.Injective (HK.pull R (mappingCone.map φ₁ φ₂ u v c) F n) := by
-  have c' : φ₂ ≫ inv v = inv u ≫ φ₁ := by
-    rw [IsIso.eq_inv_comp, ← Category.assoc, ← c, Category.assoc, IsIso.hom_inv_id, Category.comp_id]
-  have hT : mappingCone.map φ₂ φ₁ (inv u) (inv v) c' ≫ mappingCone.map φ₁ φ₂ u v c = 𝟙 _ := by
-    rw [← mappingCone.map_comp, cone_map_congr R φ₂ φ₂ _ (by rw [Category.id_comp, Category.comp_id])
-      (IsIso.inv_hom_id u) (IsIso.inv_hom_id v)]
-    exact mappingCone.map_id φ₂
-  intro x y hxy
-  have := congrArg (HK.pull R (mappingCone.map φ₂ φ₁ (inv u) (inv v) c') F n) hxy
-  rwa [← pull_comp', ← pull_comp', hT, pull_id', pull_id'] at this
 
 private def lvl {Z : PSh} {X : Spc} (a : disc.obj Z ⟶ X) : (free R).obj Z ⟶ ((chains R).obj X).X 0 :=
   (e0d R Z).inv ≫ ((chains R).map a).f 0
@@ -191,16 +249,6 @@ private lemma lvl_comm {Z' Z : PSh} {X' X : Spc} (g : X' ⟶ X) (h : Z' ⟶ Z) (
   rw [← Category.assoc, e, Category.assoc, ← HomologicalComplex.comp_f, ← Functor.map_comp, comm,
     Functor.map_comp, HomologicalComplex.comp_f]
 
-private lemma sec_chains {Z : PSh} {X : Spc} (a : disc.obj Z ⟶ X) (hX : IsZero (((chains R).obj X).X (0 + 1))) :
-    sec R Z ≫ (chains R).map a =
-      (singleFunctor (Shv R) 0).map (lvl R a) ≫ top ((chains R).obj X) 0 hX := by
-  apply HomologicalComplex.from_single_hom_ext
-  rw [HomologicalComplex.comp_f, HomologicalComplex.comp_f, top_f]
-  change _ = ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) 0).map (lvl R a)).f 0 ≫ _
-  simp only [sec, HomologicalComplex.mkHomFromSingle_f, HomologicalComplex.single_map_f_self,
-    Category.assoc, Iso.inv_hom_id, Category.comp_id]
-  rfl
-
 end Host
 
 end UpperTheory.Cb.ConeApexLifts
@@ -210,33 +258,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite Simplicial CochainComplex 
 theorem UpperTheory.Cb.simplicial_chains_degree_zero_injective :
     LateralTheory.E.t_E3Cut.Coprod → LateralTheory.E.FiltrationLevelBase.Step0 := by
   intro _ R _ F n Z' Z X' X g h a b comm ha hb z hz
-  have hK : ∀ p : ℤ, 0 < p → IsZero (((chains R).obj X').X p) := LateralTheory.E.CechFiltPf.chains_isZero R X'
-  have hL : ∀ p : ℤ, 0 < p → IsZero (((chains R).obj X).X p) := LateralTheory.E.CechFiltPf.chains_isZero R X
-  have hK1 := hK (0 + 1) (by omega)
-  have hL1 := hL (0 + 1) (by omega)
-  have := lvl_isIso R a ha
-  have := lvl_isIso R b hb
-  have cT : (singleFunctor (Shv R) 0).map ((free R).map h) ≫ (singleFunctor (Shv R) 0).map (lvl R a) =
-      (singleFunctor (Shv R) 0).map (lvl R b) ≫ (singleFunctor (Shv R) 0).map (((chains R).map g).f 0) := by
-    rw [← Functor.map_comp, ← Functor.map_comp, lvl_comm R g h a b comm]
-  have hsq : mappingCone.map _ _ (sec R Z') (sec R Z) (sec_comm R h) ≫ rmap R g (disc.map h) b a comm =
-      mappingCone.map _ _ _ _ cT ≫ coneTop ((chains R).map g) 0 hK1 hL1 := by
-    rw [rmap, coneTop, ← mappingCone.map_comp, ← mappingCone.map_comp]
-    exact cone_map_congr R _ _ _ _ (sec_chains R b hK1) (sec_chains R a hL1)
-  have hz' : HK.pull R (rmap R g (disc.map h) b a comm) F n (CohomologyClass.mk z) = 0 := hz
-  have h1 : HK.pull R (coneTop ((chains R).map g) 0 hK1 hL1) F n (CohomologyClass.mk z) = 0 := by
-    have h2 := (pull_comp' R (mappingCone.map _ _ (sec R Z') (sec R Z) (sec_comm R h))
-      (rmap R g (disc.map h) b a comm) F n (CohomologyClass.mk z)).trans
-        ((congrArg _ hz').trans (map_zero _))
-    apply pull_cone_injective R _ _ _ _ cT F n
-    rw [map_zero]
-    exact (pull_comp' R _ _ F n _).symm.trans
-      ((congrArg (fun t => HK.pull R t F n (CohomologyClass.mk z)) hsq.symm).trans h2)
-  change CohomologyClass.mk (zcomp (Cocycle.ofHom (coneTop ((chains R).map g) 0 hK1 hL1)) z (zero_add n)) = 0 at h1
-  rw [CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)] at h1
-  obtain ⟨c₀, hc₀⟩ := h1
-  obtain ⟨c, hc⟩ := lift_of_top ((chains R).map g) 0 n hK hL
-    (z : Cochain (mappingCone ((chains R).map g)) (res R F) n) c₀ hc₀.symm
-  have e : (0 : ℤ) - 1 = -1 := by norm_num
-  rw [e] at hc
-  exact ⟨c, hc⟩
+  exact step0_abs (C := Shv R) (I := res R F) n
+    (fun f x => HK.pull R f F n x) (fun f g x => pull_comp' R f g F n x)
+    (fun x => pull_id' R _ F n x) (fun f => map_zero _)
+    (fun f w hw => by
+      change CohomologyClass.mk (zcomp (Cocycle.ofHom f) w (zero_add n)) = 0 at hw
+      rw [CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)] at hw
+      exact hw.imp fun _ h => h.symm)
+    ((chains R).map g) ((free R).map h) ((chains R).map (disc.map h)) ((chains R).map a) ((chains R).map b)
+    (by rw [← Functor.map_comp, ← Functor.map_comp, comm]) (e0d R Z') (e0d R Z) (sec R Z') (sec R Z)
+    (HomologicalComplex.mkHomFromSingle_f _ _) (HomologicalComplex.mkHomFromSingle_f _ _) (sec_comm R h)
+    (LateralTheory.E.CechFiltPf.chains_isZero R X') (LateralTheory.E.CechFiltPf.chains_isZero R X)
+    (lvl_isIso R a ha) (lvl_isIso R b hb) (lvl_comm R g h a b comm) z hz

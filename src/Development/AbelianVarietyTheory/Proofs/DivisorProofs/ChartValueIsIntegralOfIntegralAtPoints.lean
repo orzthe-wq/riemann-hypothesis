@@ -36,6 +36,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -73,11 +74,6 @@ theorem isIntegralElem_of_comp {A B C : Type} [CommRing A] [CommRing B] [CommRin
   obtain ⟨p, hp, h⟩ := h
   exact ⟨p.map f, hp.map f, by rw [Polynomial.eval₂_map]; exact h⟩
 
-theorem res_res_sections {Y : Scheme.{0}} {U V V' : Y.Opens} (h1 : V ≤ U) (h2 : V' ≤ V) (z : Γ(Y, U)) :
-    (Y.presheaf.map (homOfLE h2).op).hom ((Y.presheaf.map (homOfLE h1).op).hom z) =
-      (Y.presheaf.map (homOfLE (h2.trans h1)).op).hom z := by
-  rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
-
 theorem chartVal_isIntegral_of_intAt : ∀ {X Y : Scheme.{0}} (L : LB X) (α : Y ⟶ X) (k : ℕ) (s : SecK L α k)
     (j : L.ι) (W : X.Opens) (hW : W ≤ L.U j), IsAffineOpen W → IsAffineOpen (α ⁻¹ᵁ W) →
     (∀ x ∈ W, IntAt L α s x) → (α.app W).hom.IsIntegralElem (chartVal L α s j W hW) := by
@@ -113,7 +109,7 @@ theorem chartVal_isIntegral_of_intAt : ∀ {X Y : Scheme.{0}} (L : LB X) (α : Y
       have eF : (Y.presheaf.map (homOfLE hEW).op).hom F = (Y.presheaf.map (homOfLE hEJ).op).hom
           ((Y.presheaf.map (homOfLE (inf_le_left : LC.U (fun _ => j) ⊓ LC.U (fun _ => j') ≤ LC.U (fun _ => j))).op).hom
             (s.f (fun _ => j))) :=
-        (res_res_sections _ _ _).trans (res_res_sections _ _ _).symm
+        (_root_.ReciprocityTheory.ChartRestriction.G.Semi.LBVal.rres _ _ _).trans (_root_.ReciprocityTheory.ChartRestriction.G.Semi.LBVal.rres _ _ _).symm
       rw [eF, hc0]
       refine RingHom.IsIntegralElem.mul _ ?_ ?_
       · have h'' : LC.U (fun _ => j) ⊓ LC.U (fun _ => j') ≤ α ⁻¹ᵁ (L.U j ⊓ L.U j') :=
@@ -129,7 +125,7 @@ theorem chartVal_isIntegral_of_intAt : ∀ {X Y : Scheme.{0}} (L : LB X) (α : Y
         have hz : (Y.presheaf.map (homOfLE hEJ).op).hom ((Y.presheaf.map (homOfLE h'').op).hom
               ((α.app (L.U j ⊓ L.U j')).hom (L.g j j' : Γ(X, L.U j ⊓ L.U j')))) =
             (α.appLE _ _ hED).hom ((X.presheaf.map (homOfLE hDjj).op).hom (L.g j j' : Γ(X, L.U j ⊓ L.U j'))) := by
-          refine (res_res_sections _ _ _).trans ?_
+          refine (_root_.ReciprocityTheory.ChartRestriction.G.Semi.LBVal.rres _ _ _).trans ?_
           have := congrArg (fun φ => (CommRingCat.Hom.hom φ) (L.g j j' : Γ(X, L.U j ⊓ L.U j')))
             (Scheme.Hom.map_appLE (f := α) hED (homOfLE hDjj).op)
           exact this.symm
@@ -142,7 +138,7 @@ theorem chartVal_isIntegral_of_intAt : ∀ {X Y : Scheme.{0}} (L : LB X) (α : Y
         rw [e1] at h1
         have h2 := isIntegralElem_of_comp _ _ h1
         convert h2 using 1
-        exact (res_res_sections _ _ _).trans (res_res_sections _ _ _).symm
+        exact (_root_.ReciprocityTheory.ChartRestriction.G.Semi.LBVal.rres _ _ _).trans (_root_.ReciprocityTheory.ChartRestriction.G.Semi.LBVal.rres _ _ _).symm
   change F ∈ (integralClosure Γ(X, W) Γ(Y, α ⁻¹ᵁ W)).toSubmodule
   let S0 : Set Γ(X, W) := {d | ∃ n : ℕ, (α.app W).hom.IsIntegralElem ((α.app W).hom d ^ n * F)}
   refine Submodule.mem_of_span_eq_top_of_smul_pow_mem _ S0 ?_ F ?_

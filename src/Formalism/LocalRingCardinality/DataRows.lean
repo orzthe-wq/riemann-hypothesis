@@ -71,9 +71,6 @@ structure Places (LL : Type) [Field LL] where
 
   val_resChar : ∀ w, val w ((resChar w : ℕ) : LL) = (((ramIdx w : ℕ) : ℤ) : WithTop ℤ)
 
-def unitRule {LL : Type} [Field LL] (P : Places LL) (w : P.Pl) (x : ℚ) : ℚ :=
-  (P.ramIdx w : ℚ) * x
-
 structure Data (R : Ranks) where
 
   LL : Type

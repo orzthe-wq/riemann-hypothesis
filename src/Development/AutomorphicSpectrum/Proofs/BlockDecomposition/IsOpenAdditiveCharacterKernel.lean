@@ -102,6 +102,6 @@ theorem circle_eq_one_of_forall_re_pow_pos (z : Circle)
 theorem isOpen_addChar_ker : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ →
     IsOpen {x : k | ψ x = 1} := by
-  apply GlobalTheory.CompanionTheory.BZFun.isOpen_addChar_eq_one <;> assumption
+  apply GlobalTheory.CompanionTheory.BZFun.isOpen_addChar_eq_one
 
 end GlobalTheory.CompanionTheory.LocalFieldChar

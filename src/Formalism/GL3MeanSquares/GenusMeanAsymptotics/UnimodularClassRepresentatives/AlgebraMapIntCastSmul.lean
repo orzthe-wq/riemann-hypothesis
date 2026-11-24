@@ -148,7 +148,7 @@ variable [StarRing K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) 
 theorem exists_zsmul_le {A B : Submodule (𝓞 K) V} (hA : Submodule.IsLattice K A)
     (hB : Submodule.IsFullLattice K B) : ∃ n : ℤ, n ≠ 0 ∧ ∀ x ∈ A, n • x ∈ B := by
   obtain ⟨S, hS⟩ := hA.fg
-  choose n hn hnx using fun x : V => Formalism.HermitianLatticesTheory.traceReal_mult B hB x
+  choose n hn hnx using fun x : V => _root_.Bl.general_b_fact_second'''''.goal1 B hB x
   refine ⟨∏ x ∈ S, n x, Finset.prod_ne_zero_iff.mpr fun x _ => hn x, fun x hx => ?_⟩
   rw [← hS] at hx
   induction hx using Submodule.span_induction with

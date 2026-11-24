@@ -8,7 +8,9 @@ public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelFunctionHolomorphic
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelFunctionNeZero
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplex
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerNeZeroStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SgC
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerNeZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -82,7 +84,7 @@ theorem siegel_hol [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {c : ℕ} {y : Fin 2 
   have ha := SiegelMem.an_siegel_eq Ω ε X c y hy
   refine ⟨⟨_, hd, ha⟩, (sgC c y)⁻¹, hd.inv fun z _ => hne z, ?_⟩
   have h1 : X.an (siegel X c y)⁻¹ * X.an (siegel X c y) = 1 := by
-    rw [← map_mul, inv_mul_cancel₀ (GlobalTheory.T.siegelUnitInTower_ne_zero Ω ε X c y hy), map_one]
+    rw [← map_mul, inv_mul_cancel₀ (_root_.GlobalTheory.KZ.siegel_ne_zero Ω ε X c y hy), map_one]
   have h2 : X.an (siegel X c y) * (((sgC c y)⁻¹ : ℂ → ℂ) : Mero) = 1 := by
     rw [ha, ← Filter.Germ.coe_mul, ← Filter.Germ.coe_one]
     congr 1

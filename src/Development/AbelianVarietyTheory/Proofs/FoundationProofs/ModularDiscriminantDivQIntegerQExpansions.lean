@@ -111,7 +111,7 @@ theorem dd_div_q_and_q_div_dd :
     rw [this]
     exact ht.isBigO_one ℝ
   have h1 := GlobalTheory.HasQExpansion.of_periodic one_pos
-    (GlobalTheory.periodic_comp_ofComplex_of_vadd hper) hhol hbdd
+    (UpperHalfPlane.periodic_comp_ofComplex hper) hhol hbdd
   have h2 := (h1.mul hu).unique one_pos ((GlobalTheory.HasQExpansion.const 1 (1 : ℂ)).congr fun τ ↦ by
     simp only [hf]; field_simp [qParam_ne τ, ModularForm.discriminant_ne_zero τ])
   have hUV : U * U.invOfUnit 1 = 1 := PowerSeries.mul_invOfUnit U 1 (by simpa using hU0)

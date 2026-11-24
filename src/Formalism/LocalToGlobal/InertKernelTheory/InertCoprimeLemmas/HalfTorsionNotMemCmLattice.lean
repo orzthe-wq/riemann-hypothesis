@@ -1,17 +1,23 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.Algebra.Polynomial.SpecificDegree
+public import Formalism.PeriodIntegrals.ClassNumImQ
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticInvariants.QuadPolyIrreducible
 public import Formalism.LocalToGlobal.InertKernelTheory.StatementCurve
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDedekindZeta.LocOdd
 public import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.BaseEx
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -19,8 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -28,7 +32,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -41,12 +44,293 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.TypeStar
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadDiffOf, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadraticDifferenceForm, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ClassNumberIntegrality.HalfIntegral, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDedekindZeta.LocOdd, Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.HalfTorsionNotMemCmLattice
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadDiffOf =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadDiffOf", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.QD
+
+open NumberField
+
+def Arith : Prop :=
+  ∀ (d : ℕ) (x y : ℚ), Squarefree d → d % 4 = 3 → (∃ u : ℤ, 2 * x = u) →
+    (∃ N : ℤ, x ^ 2 + d * y ^ 2 = N) → ∃ a v : ℤ, x = a + v / 2 ∧ y = v / 2
+
+def IntCoeffs : Prop :=
+  ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (θ : K) (x y : ℚ), Squarefree d → d % 4 = 3 →
+    θ ^ 2 = -(d : K) → IsIntegral ℤ ((x : K) + (y : K) * θ) →
+    (∃ u : ℤ, 2 * x = u) ∧ (∃ N : ℤ, x ^ 2 + d * y ^ 2 = N)
+
+def Form : Prop :=
+  ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (θ : K), θ ^ 2 = -(d : K) →
+    Algebra.adjoin ℚ {θ} = ⊤ → ∀ z : K, ∃ x y : ℚ, z = x + y * θ
+
+end PI.QD
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadDiffOf =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadraticDifferenceForm =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadraticDifferenceForm", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadDiffOf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\npublic import Mathlib.Algebra.Polynomial.SpecificDegree\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.QD
+
+open NumberField Polynomial
+
+theorem quadraticDifferenceArith : Arith := by
+  unfold Arith
+  intro d x y hsq hd4 ⟨u, hu⟩ ⟨N, hN⟩
+  obtain ⟨M, hM⟩ : ∃ M : ℤ, (d : ℚ) * (2 * y) ^ 2 = M := ⟨4 * N - u ^ 2, by
+    push_cast
+    linear_combination 4 * hN - (2 * x + (u : ℚ)) * hu⟩
+  obtain ⟨w, hw⟩ : ∃ w : ℚ, w = 2 * y := ⟨_, rfl⟩
+  rw [← hw] at hM
+  have h2 : w * w.den = w.num := Rat.mul_den_eq_num w
+  have h3 : ((d * w.num ^ 2 : ℤ) : ℚ) = ((M * (w.den : ℤ) ^ 2 : ℤ) : ℚ) := by
+    push_cast
+    rw [← h2]
+    linear_combination (w.den : ℚ) ^ 2 * hM
+  have key : (d : ℤ) * w.num ^ 2 = M * (w.den : ℤ) ^ 2 := by exact_mod_cast h3
+  have hcop : IsCoprime ((w.den : ℤ) ^ 2) (w.num ^ 2) :=
+    (Int.isCoprime_iff_gcd_eq_one.mpr (show Int.gcd w.num (w.den : ℤ) = 1 from w.reduced)).symm.pow
+  have hdvd : (w.den : ℤ) ^ 2 ∣ (d : ℤ) := by
+    apply hcop.dvd_of_dvd_mul_right
+    exact ⟨M, by rw [key]; ring⟩
+  have hdvd' : w.den * w.den ∣ d := by
+    rw [← pow_two]
+    exact_mod_cast hdvd
+  have hden : w.den = 1 := Nat.isUnit_iff.mp (hsq _ hdvd')
+  rw [hden, Nat.cast_one, mul_one] at h2
+  obtain ⟨v, hv⟩ : ∃ v : ℤ, v = w.num := ⟨_, rfl⟩
+  rw [← hv] at h2 key
+  rw [hden] at key
+  have hE : u ^ 2 + (d : ℤ) * v ^ 2 = 4 * N := by
+    have h4 : ((u ^ 2 + (d : ℤ) * v ^ 2 : ℤ) : ℚ) = ((4 * N : ℤ) : ℚ) := by
+      push_cast
+      rw [← h2, hw]
+      linear_combination 4 * hN - (2 * x + (u : ℚ)) * hu
+    exact_mod_cast h4
+  obtain ⟨t, ht⟩ : ∃ t : ℤ, (d : ℤ) = 4 * t + 3 := ⟨((d / 4 : ℕ) : ℤ), by omega⟩
+  rw [ht] at hE
+  have hpar : ∃ a : ℤ, u - v = 2 * a := by
+    rcases Int.even_or_odd' u with ⟨k, hk | hk⟩ <;> rcases Int.even_or_odd' v with ⟨m, hm | hm⟩ <;>
+      subst hk <;> subst hm
+    · exact ⟨k - m, by ring⟩
+    · exfalso
+      ring_nf at hE
+      omega
+    · exfalso
+      ring_nf at hE
+      omega
+    · exact ⟨k - m, by ring⟩
+  obtain ⟨a, ha⟩ := hpar
+  refine ⟨a, v, ?_, ?_⟩
+  · have ha' : ((u - v : ℤ) : ℚ) = ((2 * a : ℤ) : ℚ) := by rw [ha]
+    push_cast at ha'
+    linear_combination hu / 2 + ha' / 2
+  · rw [← h2, hw]
+    ring
+
+theorem quadratic_difference_form : Form := by
+  intro K _ _ d θ hθ htop z
+  have hz : z ∈ Algebra.adjoin ℚ {θ} := by rw [htop]; trivial
+  induction hz using Algebra.adjoin_induction with
+  | mem w hw =>
+    rw [Set.mem_singleton_iff] at hw
+    exact ⟨0, 1, by rw [hw]; simp⟩
+  | algebraMap r => exact ⟨r, 0, by simp⟩
+  | add w1 w2 _ _ h1 h2 =>
+    obtain ⟨x1, y1, e1⟩ := h1
+    obtain ⟨x2, y2, e2⟩ := h2
+    exact ⟨x1 + x2, y1 + y2, by rw [e1, e2]; push_cast; ring⟩
+  | mul w1 w2 _ _ h1 h2 =>
+    obtain ⟨x1, y1, e1⟩ := h1
+    obtain ⟨x2, y2, e2⟩ := h2
+    refine ⟨x1 * x2 - d * y1 * y2, x1 * y2 + x2 * y1, ?_⟩
+    rw [e1, e2]; push_cast
+    linear_combination (y1 * y2 : K) * hθ
+
+theorem quadratic_intCoeffs : IntCoeffs := by
+  unfold IntCoeffs
+  intro K _ _ d θ x y hsq hd4 hθ hint
+  have hd : (0 : ℚ) < d := by
+    have : 0 < d := by omega
+    exact_mod_cast this
+  by_cases hy : y = 0
+  · subst hy
+    have h1 : IsIntegral ℤ (algebraMap ℚ K x) := by
+      rw [eq_ratCast]
+      simpa using hint
+    obtain ⟨n, hn⟩ := IsIntegrallyClosed.isIntegral_iff.mp ((isIntegral_algebraMap_iff ).mp h1)
+    rw [eq_intCast] at hn
+    subst hn
+    exact ⟨⟨2 * n, by push_cast; ring⟩, ⟨n ^ 2, by push_cast; ring⟩⟩
+  obtain ⟨p, hp⟩ : ∃ p : Polynomial ℚ, p = X ^ 2 - C (2 * x) * X + C (x ^ 2 + d * y ^ 2) := ⟨_, rfl⟩
+  have hmonic : p.Monic := by
+    rw [hp]
+    monicity!
+  have hdeg : p.natDegree = 2 := by
+    rw [hp]
+    compute_degree!
+  have haeval : aeval ((x : K) + (y : K) * θ) p = 0 := by
+    rw [hp]
+    simp only [map_add (f := _), map_sub, map_mul, aeval_X, aeval_C, map_pow, eq_ratCast]
+    push_cast
+    linear_combination ((y : K)) ^ 2 * hθ
+  have hirr : Irreducible p := by
+    rw [hmonic.irreducible_iff_roots_eq_zero_of_degree_le_three (by omega) (by omega)]
+    refine Multiset.eq_zero_of_forall_notMem fun r hr => ?_
+    rw [mem_roots hmonic.ne_zero, IsRoot, hp] at hr
+    simp only [eval_add, eval_sub, eval_mul, eval_pow, eval_X, eval_C] at hr
+    have hy2 : 0 < y ^ 2 := by positivity
+    nlinarith [sq_nonneg (r - x), mul_pos hd hy2]
+  have hmin : p = minpoly ℚ ((x : K) + (y : K) * θ) := minpoly.eq_of_irreducible_of_monic hirr haeval hmonic
+  have hg := minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hint
+  have hc : ∀ i, p.coeff i = ((minpoly ℤ ((x : K) + (y : K) * θ)).coeff i : ℚ) := by
+    intro i
+    rw [hmin, hg, Polynomial.coeff_map, eq_intCast]
+  have h1 : p.coeff 1 = -(2 * x) := by
+    rw [hp]
+    simp
+    rw [← C_pow, ← C_pow, coeff_C, coeff_C]
+    simp
+  have h0 : p.coeff 0 = x ^ 2 + d * y ^ 2 := by
+    rw [hp]
+    simp
+    rw [← C_pow, ← C_pow, coeff_C, coeff_C]
+    simp
+  refine ⟨⟨-(minpoly ℤ ((x : K) + (y : K) * θ)).coeff 1, ?_⟩, ⟨(minpoly ℤ ((x : K) + (y : K) * θ)).coeff 0, ?_⟩⟩
+  · push_cast
+    rw [← hc, h1]
+    ring
+  · rw [← hc, h0]
+
+end PI.QD
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadraticDifferenceForm =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ClassNumberIntegrality.HalfIntegral =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ClassNumberIntegrality.HalfIntegral", "h": "module\n\npublic import Formalism.PeriodIntegrals.ClassNumImQ\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDifference.QuadraticDifferenceForm\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.UnitaryGroupMassFormula.ClassNumImQInt
+
+open NumberField Polynomial
+
+theorem adjoin_top {K : Type} [Field K] [NumberField K] (b : K)
+    (h : IntermediateField.adjoin ℚ {b} = ⊤) : Algebra.adjoin ℚ {b} = ⊤ := by
+  rw [← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic
+    (Algebra.IsAlgebraic.isAlgebraic b), h]
+  exact IntermediateField.top_toSubalgebra
+
+theorem half_integral {K : Type} [Field K] [NumberField K] (d : ℕ) (b : K) (hd : d % 4 = 3)
+    (hb : b ^ 2 = -(d : K)) : IsIntegral ℤ ((1 + b) / 2) := by
+  obtain ⟨k, hk⟩ : ∃ k : ℕ, d + 1 = 4 * k := ⟨(d + 1) / 4, by omega⟩
+  have hk' : (d : K) + 1 = 4 * (k : K) := by exact_mod_cast hk
+  refine ⟨X ^ 2 - X + C (k : ℤ), by monicity!, ?_⟩
+  simp only [eval₂_add, eval₂_sub, eval₂_pow, eval₂_X, eval₂_natCast, map_natCast]
+  linear_combination (1 / 4 : K) * hb - (1 / 4 : K) * hk'
+
+theorem intBasis : PI.ClassNumImQ.IntBasis := by
+  intro d K _ _ b ⟨hp, hd, _, hb, htop⟩
+  have hsq : Squarefree d := hp.prime.squarefree
+  have htop' := adjoin_top b htop
+  refine ⟨half_integral d b hd hb, ?_⟩
+  intro z
+  obtain ⟨x, y, hxy⟩ := PI.QD.quadratic_difference_form K d b hb htop' (z : K)
+  have hint : IsIntegral ℤ ((x : K) + (y : K) * b) := by rw [← hxy]; exact z.isIntegral_coe
+  obtain ⟨h2x, hN⟩ := PI.QD.quadratic_intCoeffs K d b x y hsq hd hb hint
+  obtain ⟨a, v, hx, hy⟩ := PI.QD.quadraticDifferenceArith d x y hsq hd h2x hN
+  refine ⟨a, v, ?_⟩
+  rw [hxy, hx, hy]
+  push_cast
+  ring
+
+end PI.UnitaryGroupMassFormula.ClassNumImQInt
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ClassNumberIntegrality.HalfIntegral =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDedekindZeta.LocOdd =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDedekindZeta.LocOdd", "h": "module\n\npublic import Formalism.PeriodIntegrals.ClassNumImQ\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ClassNumberIntegrality.HalfIntegral\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticInvariants.QuadPolyIrreducible\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField
+
+namespace PI.ClassNumImQ.ZetaNonvanishing₂.Loc
+
+variable {d : ℕ} {K : Type} [Field K] [NumberField K] {b : K}
+
+noncomputable def om (hq : QuadData d K b) : 𝓞 K :=
+  ⟨(1 + b) / 2, (_root_.PI.UnitaryGroupMassFormula.ClassNumImQInt.intBasis d K b hq).1⟩
+
+theorem om_coe (hq : QuadData d K b) : ((om hq : 𝓞 K) : K) = (1 + b) / 2 := rfl
+
+theorem basis (hq : QuadData d K b) (x : 𝓞 K) : ∃ m n : ℤ, x = m + n * om hq := by
+  obtain ⟨m, n, h⟩ := (_root_.PI.UnitaryGroupMassFormula.ClassNumImQInt.intBasis d K b hq).2 x
+  refine ⟨m, n, RingOfIntegers.ext ?_⟩
+  rw [h]
+  push_cast [om_coe]
+  rfl
+
+theorem coeff_unique (hq : QuadData d K b) {m n m' n' : ℤ}
+    (h : (m : 𝓞 K) + n * om hq = m' + n' * om hq) : m = m' ∧ n = n' := by
+  have hK : (m : K) + n * ((1 + b) / 2) = m' + n' * ((1 + b) / 2) := by
+    have h' := congrArg (fun x : 𝓞 K => (x : K)) h
+    push_cast [om_coe] at h'
+    exact h'
+  by_cases hn : n = n'
+  · subst hn
+    refine ⟨?_, rfl⟩
+    exact_mod_cast add_right_cancel hK
+  · exfalso
+    have hne : ((n : K) - n') ≠ 0 := sub_ne_zero.mpr (by exact_mod_cast hn)
+    apply PI.UnitaryGroupMassFormula.ClassNumImQInv.b_ne_rat hq ((2 * (m' - m) + n' - n) / (n - n'))
+    push_cast
+    rw [div_eq_iff hne]
+    linear_combination (-2 : K) * hK
+
+end PI.ClassNumImQ.ZetaNonvanishing₂.Loc
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDedekindZeta.LocOdd =====
+
+-- ===== clump member: Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.HalfTorsionNotMemCmLattice =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.HalfTorsionNotMemCmLattice", "h": "module\n\npublic import Formalism.LocalToGlobal.InertKernelTheory.StatementCurve\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticDedekindZeta.LocOdd\npublic import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.BaseEx\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -95,7 +379,7 @@ theorem bw_repr (hq : PI.ClassNumImQ.QuadData d K b) (u v : ℤ) :
   have hx : ((u : 𝓞 K) + (v : 𝓞 K) * om hq) = u • (bw hq) 0 + v • (bw hq) 1 := by
     simp [bw, Module.Basis.mk_apply, zsmul_eq_mul]
   rw [hx, map_add (f := _), map_zsmul, map_zsmul, Module.Basis.repr_self, Module.Basis.repr_self]
-  simp [Finsupp.single_apply]
+  simp
 
 theorem hnf (hq : PI.ClassNumImQ.QuadData d K b) (m : ℤ) (hm : (d : ℤ) + 1 = 4 * m) (cc : Ideal (𝓞 K)) (hcc : cc ≠ ⊥) :
     ∃ (g a : ℕ) (k : ℤ), 0 < g ∧ 0 < a ∧ (a : ℤ) ∣ k * k + k + m ∧
@@ -257,7 +541,7 @@ theorem hnf (hq : PI.ClassNumImQ.QuadData d K b) (m : ℤ) (hm : (d : ℤ) + 1 =
   have hnorm : Ideal.absNorm cc = g ^ 2 * a := by
     rw [← hdet, hdet2]
     rw [show ((g * a : ℤ)) * g = ((g ^ 2 * a : ℕ) : ℤ) by push_cast; ring]
-    exact Int.natAbs_cast _
+    exact Int.natAbs_natCast _
   exact ⟨g, a, k, hg, ha, hdiv, hmemiff, hnorm⟩
 
 private theorem cmL_omega1_eq (a₁ : ℕ) (b₁ : ℤ) (d₁ : ℕ) (ha₁ : 0 < a₁) (hd₁ : 0 < d₁) (l₁ : ℂ) (hl₁ : l₁ ≠ 0) :
@@ -387,3 +671,7 @@ theorem delta_ne_of_base {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : F
   exact AddSubgroup.zero_mem _
 
 end Formalism.L2.KerInert
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.HalfTorsionNotMemCmLattice =====

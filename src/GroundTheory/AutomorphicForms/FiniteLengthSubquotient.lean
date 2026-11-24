@@ -1,53 +1,212 @@
 module
 
-public import GroundTheory.AutomorphicForms.FiniteLengthLattice
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.RepresentationTheory.Irreducible
+public import Mathlib.RingTheory.FiniteLength
+public import Mathlib.Data.DFinsupp.WellFounded
 public import GroundTheory.AutomorphicForms.SmoothRep
 public import GroundTheory.AutomorphicForms.JacquetAdmissible
-import GroundTheory.AutomorphicForms.SmoothRepSchur
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import GroundTheory.AutomorphicForms.InductionJacquet
 public import GroundTheory.AutomorphicForms.InductionParabolic
+import Mathlib.Tactic.TypeStar
+import GroundTheory.AutomorphicForms.SmoothRepSchur
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.AutomorphicForms.FiniteLengthLattice, GroundTheory.AutomorphicForms.FiniteLengthSubquotient
+
+-- ===== clump member: GroundTheory.AutomorphicForms.FiniteLengthLattice =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.FiniteLengthLattice", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.RepresentationTheory.Irreducible\npublic import Mathlib.RingTheory.FiniteLength\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\npublic import Mathlib.Data.DFinsupp.WellFounded\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+noncomputable section
+
+namespace GroundTheory.Automorphic
+
+open Function
+
+variable {G : Type*} [Group G] {V : Type*} [AddCommGroup V] [Module ℂ V]
+
+def HasFiniteLength (ρ : Representation ℂ G V) : Prop :=
+  IsFiniteLength (MonoidAlgebra ℂ G) ρ.asModule
+
+variable {ρ : Representation ℂ G V}
+
+theorem hasFiniteLength_iff :
+    HasFiniteLength ρ ↔
+      WellFoundedLT (Subrepresentation ρ) ∧ WellFoundedGT (Subrepresentation ρ) := by
+  rw [HasFiniteLength, isFiniteLength_iff_isNoetherian_isArtinian, isNoetherian_iff, IsArtinian]
+  let e := Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)
+  constructor
+  · rintro ⟨h1, h2⟩
+    exact ⟨e.strictMono.wellFoundedLT, e.strictMono.wellFoundedGT⟩
+  · rintro ⟨h1, h2⟩
+    exact ⟨e.symm.strictMono.wellFoundedGT, e.symm.strictMono.wellFoundedLT⟩
+
+theorem HasFiniteLength.wellFoundedLT (h : HasFiniteLength ρ) :
+    WellFoundedLT (Subrepresentation ρ) :=
+  (hasFiniteLength_iff.1 h).1
+
+theorem HasFiniteLength.wellFoundedGT (h : HasFiniteLength ρ) :
+    WellFoundedGT (Subrepresentation ρ) :=
+  (hasFiniteLength_iff.1 h).2
+
+theorem hasFiniteLength_of_strictMono {ι : Type*} [Finite ι] {α : ι → Type*}
+    [∀ i, PartialOrder (α i)] [∀ i, WellFoundedLT (α i)] [∀ i, WellFoundedGT (α i)]
+    (Λ : Subrepresentation ρ → ∀ i, α i) (hΛ : StrictMono Λ) : HasFiniteLength ρ := by
+  rw [hasFiniteLength_iff]
+  refine ⟨hΛ.wellFoundedLT, ?_⟩
+  have h1 : WellFoundedLT (∀ i, (α i)ᵒᵈ) := Pi.wellFoundedLT
+  have h2 : WellFoundedGT (∀ i, α i) := h1
+  exact hΛ.wellFoundedGT
+
+theorem hasFiniteLength_of_subsingleton [Subsingleton V] : HasFiniteLength ρ := by
+  have : Subsingleton ρ.asModule := inferInstanceAs (Subsingleton V)
+  exact IsFiniteLength.of_subsingleton
+
+theorem hasFiniteLength_of_isIrreducible [ρ.IsIrreducible] : HasFiniteLength ρ := by
+  classical
+  have : Finite (Subrepresentation ρ) := Finite.of_equiv _ IsSimpleOrder.equivBool.symm
+  rw [hasFiniteLength_iff]
+  exact ⟨Finite.to_wellFoundedLT, Finite.to_wellFoundedGT⟩
+
+section MapComap
+
+variable {W : Type*} [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ G W}
+
+def subrepMap (f : Representation.IntertwiningMap ρ σ) (A : Subrepresentation ρ) :
+    Subrepresentation σ where
+  toSubmodule := A.toSubmodule.map f.toLinearMap
+  apply_mem_toSubmodule g := by
+    rintro _ ⟨x, hx, rfl⟩
+    exact ⟨ρ g x, A.apply_mem_toSubmodule g hx, Representation.IntertwiningMap.isIntertwining _ _ f g x⟩
+
+def subrepComap (f : Representation.IntertwiningMap ρ σ) (B : Subrepresentation σ) :
+    Subrepresentation ρ where
+  toSubmodule := B.toSubmodule.comap f.toLinearMap
+  apply_mem_toSubmodule g x hx := by
+    show f (ρ g x) ∈ B.toSubmodule
+    rw [Representation.IntertwiningMap.isIntertwining]
+    exact B.apply_mem_toSubmodule g hx
+
+theorem subrepMap_mono (f : Representation.IntertwiningMap ρ σ) : Monotone (subrepMap f) :=
+  fun _ _ h _ ⟨x, hx, hxy⟩ => ⟨x, h hx, hxy⟩
+
+theorem subrepComap_mono (f : Representation.IntertwiningMap ρ σ) : Monotone (subrepComap f) :=
+  fun _ _ h _ hx => h hx
+
+theorem hasFiniteLength_of_injective (f : Representation.IntertwiningMap ρ σ)
+    (hf : Injective f) (hσ : HasFiniteLength σ) : HasFiniteLength ρ := by
+  have := hσ.wellFoundedLT
+  have := hσ.wellFoundedGT
+  refine hasFiniteLength_of_strictMono (ι := Unit) (α := fun _ => Subrepresentation σ)
+    (fun A _ => subrepMap f A) fun A B hAB => ?_
+  refine lt_of_le_of_ne (fun _ => subrepMap_mono f hAB.le) fun h => hAB.ne ?_
+  have h1 := congrFun h ()
+  refine le_antisymm hAB.le fun x hx => ?_
+  obtain ⟨y, hy, hyx⟩ : f x ∈ subrepMap f A := by
+    show f x ∈ subrepMap f A
+    rw [show subrepMap f A = subrepMap f B from h1]
+    exact ⟨x, hx, rfl⟩
+  rw [← hf hyx]
+  exact hy
+
+theorem hasFiniteLength_of_surjective (f : Representation.IntertwiningMap ρ σ)
+    (hf : Surjective f) (hρ : HasFiniteLength ρ) : HasFiniteLength σ := by
+  have := hρ.wellFoundedLT
+  have := hρ.wellFoundedGT
+  refine hasFiniteLength_of_strictMono (ι := Unit) (α := fun _ => Subrepresentation ρ)
+    (fun B _ => subrepComap f B) fun A B hAB => ?_
+  refine lt_of_le_of_ne (fun _ => subrepComap_mono f hAB.le) fun h => hAB.ne ?_
+  have h1 := congrFun h ()
+  refine le_antisymm hAB.le fun y hy => ?_
+  obtain ⟨x, rfl⟩ := hf y
+  have hx : x ∈ subrepComap f B := hy
+  rw [← show subrepComap f A = subrepComap f B from h1] at hx
+  exact hx
+
+end MapComap
+
+section Filtration
+
+theorem hasFiniteLength_of_filtration {k : ℕ} (Vf : ℕ → Submodule ℂ V)
+    (hV : ∀ i (g : G), Vf i ≤ (Vf i).comap (ρ g)) (h0 : Vf 0 = ⊥) (hk : Vf k = ⊤)
+    {W : Fin k → Type*} [∀ j, AddCommGroup (W j)] [∀ j, Module ℂ (W j)]
+    (σ : ∀ j, Representation ℂ G (W j))
+    (Ψ : ∀ j : Fin k, Representation.IntertwiningMap (ρ.subrepresentation (Vf (j + 1)) (hV (j + 1)))
+      (σ j))
+    (hΨ : ∀ (j : Fin k) x, Ψ j x = 0 ↔ (x : V) ∈ Vf j) (hσ : ∀ j, HasFiniteLength (σ j)) :
+    HasFiniteLength ρ := by
+  classical
+  have := fun j => (hσ j).wellFoundedLT
+  have := fun j => (hσ j).wellFoundedGT
+
+  let cut : ∀ j : Fin k, Subrepresentation ρ →
+      Subrepresentation (ρ.subrepresentation (Vf (j + 1)) (hV (j + 1))) := fun j A =>
+    ⟨A.toSubmodule.comap (Vf (j + 1)).subtype, fun g x hx => A.apply_mem_toSubmodule g hx⟩
+  refine hasFiniteLength_of_strictMono (α := fun j => Subrepresentation (σ j))
+    (fun A j => subrepMap (Ψ j) (cut j A)) fun A B hAB => ?_
+  have hmono' : ∀ j, subrepMap (Ψ j) (cut j A) ≤ subrepMap (Ψ j) (cut j B) := fun j =>
+    subrepMap_mono _ (fun x hx => hAB.le hx)
+  rw [Pi.lt_def]
+  refine ⟨hmono', ?_⟩
+
+  have hex : ∃ j, j < k ∧ ∃ x ∈ B, x ∈ Vf (j + 1) ∧ x ∉ A := by
+    obtain ⟨x, hxB, hxA⟩ := IsConcreteLE.exists_of_lt hAB
+    have hk0 : k ≠ 0 := by
+      rintro rfl
+      rw [h0] at hk
+      exact hxA (by
+        have : x ∈ (⊤ : Submodule ℂ V) := trivial
+        rw [← hk] at this
+        rw [(Submodule.mem_bot ℂ).1 this]
+        exact A.toSubmodule.zero_mem)
+    refine ⟨k - 1, by omega, x, hxB, ?_, hxA⟩
+    rw [Nat.sub_add_cancel (Nat.pos_of_ne_zero hk0), hk]
+    trivial
+  let j₀ := Nat.find hex
+  obtain ⟨hj₀k, x, hxB, hxV, hxA⟩ := Nat.find_spec hex
+  have hbelow : ∀ y ∈ B, y ∈ Vf j₀ → y ∈ A := by
+    intro y hyB hyV
+    rcases Nat.eq_zero_or_pos j₀ with h | h
+    · rw [h, h0] at hyV
+      rw [(Submodule.mem_bot ℂ).1 hyV]
+      exact A.toSubmodule.zero_mem
+    · by_contra hyA
+      obtain ⟨m, hm⟩ : ∃ m, j₀ = m + 1 := ⟨j₀ - 1, by omega⟩
+      have := Nat.find_min hex (m := m) (by omega)
+      exact this ⟨by omega, y, hyB, by rw [← hm]; exact hyV, hyA⟩
+  refine ⟨⟨j₀, hj₀k⟩, lt_of_le_of_ne (hmono' _) fun heq => hxA ?_⟩
+  have hmem : Ψ ⟨j₀, hj₀k⟩ ⟨x, hxV⟩ ∈ subrepMap (Ψ ⟨j₀, hj₀k⟩) (cut ⟨j₀, hj₀k⟩ B) :=
+    ⟨⟨x, hxV⟩, hxB, rfl⟩
+  have heq' : subrepMap (Ψ ⟨j₀, hj₀k⟩) (cut ⟨j₀, hj₀k⟩ A) =
+      subrepMap (Ψ ⟨j₀, hj₀k⟩) (cut ⟨j₀, hj₀k⟩ B) := heq
+  rw [← heq'] at hmem
+  obtain ⟨y, hyA, hyx⟩ := hmem
+  have hyx' : Ψ ⟨j₀, hj₀k⟩ y = Ψ ⟨j₀, hj₀k⟩ ⟨x, hxV⟩ := hyx
+  have hd : Ψ ⟨j₀, hj₀k⟩ (⟨x, hxV⟩ - y) = 0 := by rw [map_sub, hyx', sub_self]
+  rw [hΨ] at hd
+  have hyA' : (y : V) ∈ A := hyA
+  have hdB : ((⟨x, hxV⟩ - y : Vf (j₀ + 1)) : V) ∈ B :=
+    B.toSubmodule.sub_mem hxB (hAB.le hyA')
+  have := hbelow _ hdB hd
+  have hx' : x = ((⟨x, hxV⟩ - y : Vf (j₀ + 1)) : V) + y := by simp
+  rw [hx']
+  exact A.toSubmodule.add_mem this hyA'
+
+end Filtration
+
+end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.FiniteLengthLattice =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.FiniteLengthSubquotient =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.FiniteLengthSubquotient", "h": "module\n\npublic import GroundTheory.AutomorphicForms.FiniteLengthLattice\npublic import GroundTheory.AutomorphicForms.SmoothRep\npublic import GroundTheory.AutomorphicForms.JacquetAdmissible\nimport GroundTheory.AutomorphicForms.SmoothRepSchur\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import GroundTheory.AutomorphicForms.InductionJacquet\npublic import GroundTheory.AutomorphicForms.InductionParabolic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -337,7 +496,7 @@ theorem hasFiniteLength_of_coinvariants {V : Type u} [AddCommGroup V] [Module �
     intro g
     refine Submodule.span_le.2 ?_
     rintro _ ⟨h, rfl⟩
-    exact Submodule.subset_span ⟨g * h, by simp [map_mul, Module.End.mul_apply]⟩
+    exact Submodule.subset_span ⟨g * h, by simp [map_mul]⟩
   let Cs : Submodule ℂ V := A.toSubmodule ⊔ S
   have hCs : ∀ g, Cs ≤ Cs.comap (X g) := fun g => sup_le
     (fun v hv => Submodule.mem_sup_left (A.apply_mem_toSubmodule g hv))
@@ -407,3 +566,7 @@ theorem hasFiniteLength_of_coinvariants {V : Type u} [AddCommGroup V] [Module �
 end Criterion
 
 end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.FiniteLengthSubquotient =====

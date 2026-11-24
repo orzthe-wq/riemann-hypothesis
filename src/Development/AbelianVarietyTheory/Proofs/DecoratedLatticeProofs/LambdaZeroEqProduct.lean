@@ -79,7 +79,7 @@ variable {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D}
 
 theorem comb_single_zero (f : WO S T → ℂ) : comb ψ S T (Finsupp.single 0 1) f = f := by
   funext w
-  simp [comb, Finsupp.support_single_ne_zero, heisO, symplOH, symplO, hO]
+  simp [comb, heisO, symplOH, symplO, hO]
 
 end Comb
 

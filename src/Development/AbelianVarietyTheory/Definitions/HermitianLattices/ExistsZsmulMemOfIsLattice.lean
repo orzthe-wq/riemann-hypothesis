@@ -2,7 +2,6 @@ module
 
 public import ReciprocityTheory.SemistableReduction.TorsionNonvanishStatement
 public import Mathlib.LinearAlgebra.BilinearForm.TensorProduct
-public import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.Imports
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -21,11 +20,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -45,11 +40,66 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.Imports, Development.AbelianVarietyTheory.Definitions.HermitianLattices.ExistsZsmulMemOfIsLattice
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.Imports =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.Imports", "h": "module\n\npublic import ReciprocityTheory.SemistableReduction.TorsionNonvanishStatement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.IntSmulIntegral
+
+open NumberField
+
+theorem exists_int_mul_integral {K : Type} [Field K] [NumberField K] (a : K) :
+    ∃ (m : ℤ) (z : 𝓞 K), m ≠ 0 ∧ (z : K) = m • a := by
+  have : Algebra.IsAlgebraic ℤ ℚ := IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)
+  have : Algebra.IsAlgebraic ℚ K := Algebra.IsAlgebraic.of_finite ℚ K
+  obtain ⟨m, hm, hint⟩ := ((Algebra.IsAlgebraic.isAlgebraic a : IsAlgebraic ℚ a).restrictScalars ℤ).exists_integral_multiple
+  exact ⟨m, ⟨m • a, hint⟩, hm, rfl⟩
+
+theorem exists_int_smul_mem {r : ℕ} {K : Type} [Field K] [NumberField K]
+    {Λ : Submodule (𝓞 K) (Fin r → K)} (hΛ : ReciprocityTheory.MultiplicativeHeights.IsLattice Λ) (v : Fin r → K) :
+    ∃ n : ℤ, n ≠ 0 ∧ n • v ∈ Λ := by
+  have hv : v ∈ Submodule.span K (Λ : Set (Fin r → K)) := hΛ.2 ▸ Submodule.mem_top
+  induction hv using Submodule.span_induction with
+  | mem x hx => exact ⟨1, one_ne_zero, by rwa [one_smul]⟩
+  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Λ.zero_mem⟩
+  | add x y _ _ hx hy =>
+    obtain ⟨n₁, hn₁, h₁⟩ := hx
+    obtain ⟨n₂, hn₂, h₂⟩ := hy
+    refine ⟨n₁ * n₂, mul_ne_zero hn₁ hn₂, ?_⟩
+    rw [smul_add, mul_comm, mul_smul, mul_comm, mul_smul]
+    exact Λ.add_mem (Λ.toAddSubgroup.zsmul_mem h₁ n₂) (Λ.toAddSubgroup.zsmul_mem h₂ n₁)
+  | smul c x _ hx =>
+    obtain ⟨n, hn, h⟩ := hx
+    obtain ⟨m, z, hm, hz⟩ := exists_int_mul_integral c
+    refine ⟨n * m, mul_ne_zero hn hm, ?_⟩
+
+    have e : (n * m) • (c • x) = z • (n • x) := by
+      rw [mul_smul, ← smul_assoc m c x, ← hz, smul_comm]
+      rfl
+    rw [e]
+    exact Λ.smul_mem z h
+
+end GlobalTheory.IntSmulIntegral
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.Imports =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.HermitianLattices.ExistsZsmulMemOfIsLattice =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.HermitianLattices.ExistsZsmulMemOfIsLattice", "h": "module\n\npublic import ReciprocityTheory.SemistableReduction.TorsionNonvanishStatement\npublic import Mathlib.LinearAlgebra.BilinearForm.TensorProduct\npublic import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.Imports\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -67,16 +117,6 @@ section Lattice
 variable {K : Type} [Field K] [NumberField K]
 variable {M M' : Type} [AddCommGroup M] [Module (𝓞 K) M] [AddCommGroup M'] [Module (𝓞 K) M']
 
-theorem exists_zsmul_mem_of_isLattice {Λ : Submodule (𝓞 K) (Fin r → K)} (hΛ : IsLattice Λ)
-    (v : Fin r → K) : ∃ n : ℤ, n ≠ 0 ∧ n • v ∈ Λ := by
-  first
-  | exact @_root_.GlobalTheory.IntSmulIntegral.exists_int_smul_mem
-  | exact _root_.GlobalTheory.IntSmulIntegral.exists_int_smul_mem
-  | (apply _root_.GlobalTheory.IntSmulIntegral.exists_int_smul_mem <;> assumption)
-  | (intros; apply _root_.GlobalTheory.IntSmulIntegral.exists_int_smul_mem <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.IntSmulIntegral.exists_int_smul_mem <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.IntSmulIntegral.exists_int_smul_mem ..)
-
 def IsLatticeEmb (φ : M →ₗ[𝓞 K] (Fin r → K)) : Prop :=
   Function.Injective φ ∧ IsLattice (LinearMap.range φ)
 
@@ -84,17 +124,13 @@ theorem isLatticeEmb_subtype {Λ : Submodule (𝓞 K) (Fin r → K)} (hΛ : IsLa
     IsLatticeEmb Λ.subtype :=
   ⟨Λ.injective_subtype, by rwa [Submodule.range_subtype]⟩
 
-theorem isLatticeEmb_of_span [Module.Finite (𝓞 K) M] {φ : M →ₗ[𝓞 K] (Fin r → K)}
-    (hi : Function.Injective φ) (hs : Submodule.span K (Set.range φ) = ⊤) : IsLatticeEmb φ :=
-  ⟨hi, by rw [LinearMap.range_eq_map]; exact Module.Finite.fg_top.map _, hs⟩
-
 namespace IsLatticeEmb
 
 variable {φ : M →ₗ[𝓞 K] (Fin r → K)}
 
 theorem exists_zsmul (h : IsLatticeEmb φ) (v : Fin r → K) :
     ∃ n : ℤ, n ≠ 0 ∧ ∃ x, φ x = n • v :=
-  exists_zsmul_mem_of_isLattice h.2 v
+  _root_.GlobalTheory.IntSmulIntegral.exists_int_smul_mem h.2 v
 
 theorem isLocalizedModule_int (h : IsLatticeEmb φ) :
     IsLocalizedModule ℤ⁰ (φ.restrictScalars ℤ) := by
@@ -195,3 +231,7 @@ theorem exists_isLatticeEmb [Module.Finite (𝓞 K) M] [Module.IsTorsionFree (�
 end Lattice
 
 end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.HermitianLattices.ExistsZsmulMemOfIsLattice =====

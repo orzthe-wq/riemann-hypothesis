@@ -2,8 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OneLeHtE
 public import Mathlib.NumberTheory.Height.NumberField
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfinitePlaceMinpolyCoeffLePowMaxEmbeddingsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NnnormMinpolyCoeffFinitePlaceLePowStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyNormFinLeOne
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InfinitePlaceMinpolyCoeffLePowMaxEmbeddings
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NnnormMinpolyCoeffFinitePlaceLePow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -84,7 +85,7 @@ theorem exists_mulHeight_coeff_minpoly_le : ∀ (F E : Type) [Field F] [NumberFi
       4 ^ (m * Fintype.card (InfinitePlace F)) * (∏ w, A w) ^ (2 * m) := by
     have h1 : ∀ w : InfinitePlace F, max (w c) 1 ^ w.mult ≤ 4 ^ m * A w ^ (2 * m) := fun w => by
       have hb : 1 ≤ 2 ^ m * A w ^ m := one_le_mul_of_one_le_of_one_le (one_le_pow₀ (by norm_num)) (one_le_pow₀ (hA w))
-      have h2 : max (w c) 1 ≤ 2 ^ m * A w ^ m := max_le (GlobalTheory.T.infinitePlace_minpoly_coeff_le_pow_max_embeddings F E x w j) hb
+      have h2 : max (w c) 1 ≤ 2 ^ m * A w ^ m := max_le (_root_.GlobalTheory.minpoly_coeff_le_inf F E x w j) hb
       calc max (w c) 1 ^ w.mult ≤ (2 ^ m * A w ^ m) ^ w.mult :=
             pow_le_pow_left₀ (le_trans zero_le_one (le_max_right _ _)) h2 _
         _ ≤ (2 ^ m * A w ^ m) ^ 2 := pow_le_pow_right₀ hb (mult_le_two F w)
@@ -103,7 +104,7 @@ theorem exists_mulHeight_coeff_minpoly_le : ∀ (F E : Type) [Field F] [NumberFi
     have hle : ∀ v : HeightOneSpectrum (𝓞 F), max (FinitePlace.mk v c) 1 ≤ B v ^ m := fun v => by
       refine max_le ?_ (hB1 v)
       rw [FinitePlace.mk_apply]
-      have := GlobalTheory.T.nnnorm_minpoly_coeff_finitePlace_le_pow F E x v j
+      have := _root_.GlobalTheory.CoefHeight.nnnorm_coeff_minpoly_le F E x v j
       simp only [B, B0]
       exact_mod_cast this
     have hBm : Function.HasFiniteMulSupport fun v => B v ^ m := by

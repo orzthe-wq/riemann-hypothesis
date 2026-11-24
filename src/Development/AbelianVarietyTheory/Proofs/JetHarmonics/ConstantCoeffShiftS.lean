@@ -179,14 +179,7 @@ lemma constantCoeff_shiftS (ζ : ℂ_[q]) (f : ℂ_[q]⟦X⟧) :
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_shiftS]
   simp [coeff_sS_pow, ev]
 
-lemma shiftS_one (f : ℂ_[q]⟦X⟧) : shiftS 1 f = f := by
-  ext n
-  rw [coeff_shiftS, tsum_eq_single n (fun m hm => ?_)]
-  · simp [coeff_sS_pow]
-  · rw [coeff_sS_pow]
-    rcases lt_or_gt_of_ne hm with hlt | hlt
-    · simp [Nat.choose_eq_zero_of_lt hlt]
-    · simp [Nat.sub_ne_zero_of_lt hlt]
+alias shiftS_one := _root_.GlobalTheory.MomOne.Basic.shiftS_one
 
 lemma coeff_DT (f : ℂ_[q]⟦X⟧) (n : ℕ) :
     coeff n (DT f) = coeff (n + 1) f * ((n : ℂ_[q]) + 1) + coeff n f * n := by

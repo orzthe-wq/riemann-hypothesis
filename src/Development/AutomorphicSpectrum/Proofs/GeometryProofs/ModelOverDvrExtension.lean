@@ -170,9 +170,9 @@ theorem exists_decomp {O O' σ : Type} [CommRing O] [IsDomain O] [IsPrincipalIde
   have hg : ∀ m i, AddMonoidAlgebra.coeff (g i) m = b.repr (cm m) i := by
     intro m i
     by_cases h : m ∈ f.support
-    · simp [g, coeff_sum, coeff_monomial, h]
+    · simp [g, coeff_monomial, h]
     · have h0 : cm m = 0 := Subtype.ext (notMem_support_iff.1 h)
-      simp [g, coeff_sum, coeff_monomial, h, h0]
+      simp [g, coeff_monomial, h, h0]
   refine ⟨_, fun i => (b i : O'), g, ?_, ?_⟩
   · exact b.linearIndependent.map' M.subtype (Submodule.ker_subtype _)
   · ext m
@@ -296,7 +296,7 @@ theorem comap_C_pointIdeal_eq_bot (hinj : Function.Injective (algebraMap O' Ω')
   intro a ha
   have h0 : pointConeMap O' (fun v => algebraMap Ω Ω' (y v))
       (C a : MvPolynomial (Σ k, J k) O') = 0 := ha
-  simp only [pointConeMap, aeval_C, MvPolynomial.algebraMap_eq] at h0
+  simp only [pointConeMap, aeval_C] at h0
   have h1 : algebraMap O' Ω' a = 0 := by
     simpa using h0
   exact (Submodule.mem_bot _).2 (hinj (by rw [h1, map_zero]))

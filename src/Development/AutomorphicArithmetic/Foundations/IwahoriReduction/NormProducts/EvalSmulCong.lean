@@ -7,8 +7,13 @@ public import Mathlib.RingTheory.AdicCompletion.Noetherian
 public import Mathlib.RingTheory.Coalgebra.IsFrobenius
 public import Mathlib.RingTheory.HopfAlgebra.Basic
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ActWBOfInvariant
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalPowerUnitsTowerClosurePropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerUnitGroupStableSlashGaloisStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.Letter
+public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.RegularLocalRing.Defs
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalPowerUnitsTowerClosureProperties
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerUnitGroupStableSlashGalois
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -43,6 +48,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Definitions.Foundations.LiftSLMapMulInvMem
 
 @[expose] public section
 
@@ -98,12 +104,6 @@ private theorem rep_kmap {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n : ℕ} {a
   rw [e, h]
   rfl
 
-private theorem cls_mul (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (a b : X.Kˣ) :
-    X.cls l n (a * b) = X.cls l n a + X.cls l n b := by
-  unfold Tower.cls
-  rw [← Submodule.Quotient.mk_add, ← TensorProduct.tmul_add]
-  rfl
-
 private theorem cls_one (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) : X.cls l n 1 = 0 := by
   unfold Tower.cls
   rw [ofMul_one, TensorProduct.tmul_zero]
@@ -114,7 +114,7 @@ private theorem cls_prod (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) {�
   classical
   induction s using Finset.induction_on with
   | empty => simpa using cls_one X l n
-  | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, cls_mul, ih]
+  | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, _root_.GlobalTheory.K4.cls_mul, ih]
 
 private theorem cls_zpow (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (a : X.Kˣ) (z : ℤ) :
     X.cls l n (a ^ z) = (z : ℤ_[l]) • X.cls l n a := by
@@ -205,7 +205,7 @@ private theorem act_coset {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ}
   have e : Units.map (X.sl (ofSL h)).toRingEquiv.toMonoidHom a = a * t ^ l ^ n := Units.ext (by simpa using ht)
   have h1 := rep_kmap hx' (X.sl (ofSL h)).toRingEquiv
   unfold Rep at h1 hx
-  rw [h1, e, cls_mul, cls_pow, add_zero, hx]
+  rw [h1, e, _root_.GlobalTheory.K4.cls_mul, cls_pow, add_zero, hx]
 
 private theorem tr_cg {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ} {H G : Subgroup SL(2, ℤ)}
     (hH : H ≤ CongruenceSubgroup.Gamma (l ^ n)) {a : X.Kˣ} (ha : InvH X H (l ^ n) a) {x x' : X.Khat l}
@@ -305,7 +305,7 @@ private theorem tr_comp {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ} {
   rw [Finset.sum_congr rfl fun k _ => hk k, ← Finset.smul_sum, ← cls_prod]
   have e : ∏ k, Units.map (X.sl (ofSL (δ k))).toRingEquiv.toMonoidHom a' = a * h ^ l ^ n :=
     Units.ext (by simpa [Units.coe_prod] using hp)
-  rw [e, cls_mul, cls_pow, add_zero]
+  rw [e, _root_.GlobalTheory.K4.cls_mul, cls_pow, add_zero]
   show _ = AdicCompletion.eval (idl l) (X.Kl l) n (r • x)
   rw [map_smul, hx]
 
@@ -315,9 +315,9 @@ private theorem jHol (X : Tower Ω ε) : ∃ φ : ℂ → ℂ, DifferentiableOn 
 
 private def unS [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (m : ℕ) : Subgroup X.Kˣ where
   carrier := X.Un m
-  mul_mem' := fun {f g} hf hg => (GlobalTheory.T.localPowerUnitsTower_closure_properties ε X ε.injective (jHol X) m).2.1 f g hf hg
-  one_mem' := (GlobalTheory.T.localPowerUnitsTower_closure_properties ε X ε.injective (jHol X) m).1
-  inv_mem' := fun {f} hf => (GlobalTheory.T.localPowerUnitsTower_closure_properties ε X ε.injective (jHol X) m).2.2.1 f hf
+  mul_mem' := fun {f g} hf hg => (_root_.GlobalTheory.KZ.UnClosure.un_closure ε X ε.injective (jHol X) m).2.1 f g hf hg
+  one_mem' := (_root_.GlobalTheory.KZ.UnClosure.un_closure ε X ε.injective (jHol X) m).1
+  inv_mem' := fun {f} hf => (_root_.GlobalTheory.KZ.UnClosure.un_closure ε X ε.injective (jHol X) m).2.2.1 f hf
 
 private theorem polMod_tr [IsAlgClosure ℚ Ω] {X : Tower Ω ε} {l : ℕ} [Fact l.Prime] {n w : ℕ} {a : X.Kˣ}
     {x : X.Khat l} (hx : Rep X l n a x) (ha : a ∈ X.Un (l ^ n)) (lam : Fin 2 → ℤ) {ι : Type} [Fintype ι]
@@ -328,7 +328,7 @@ private theorem polMod_tr [IsAlgClosure ℚ Ω] {X : Tower Ω ε} {l : ℕ} [Fac
   let q : ι → ℤ := fun i => lam 0 * γ i 0 1 + lam 1 * γ i 1 1
   let z : ι → ℕ → ℤ := fun i k => p i ^ k * q i ^ (w - k) * (w.choose k : ℤ)
   have hb : ∀ i, b i ∈ X.Un (l ^ n) := fun i =>
-    (GlobalTheory.T.modularFunctionTower_unitGroup_stable_slash_galois ε X ε.injective (jHol X) (l ^ n) a ha).1 (ofSL (γ i)) (b i) rfl
+    (_root_.GlobalTheory.KZ.Tower.Un_sl_gal ε X ε.injective (jHol X) (l ^ n) a ha).1 (ofSL (γ i)) (b i) rfl
   have hr : ∀ i, Rep X l n (b i) (X.kmap l (X.sl (ofSL (γ i))).toRingEquiv x) := fun i => rep_kmap hx _
   refine ⟨fun k => ∑ i, ((z i k : ℤ) : ℤ_[l]) • X.kmap l (X.sl (ofSL (γ i))).toRingEquiv x,
     fun k => ⟨∏ i, b i ^ z i k, ?_, ?_⟩, fun u => ?_⟩

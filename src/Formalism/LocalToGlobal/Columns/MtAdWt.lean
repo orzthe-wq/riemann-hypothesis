@@ -1,58 +1,64 @@
 module
 
+public import Formalism.LocalToGlobal.AdelicCompactOpens.UniROfUniRT
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightDualUniqueness.SelfInjective
 public import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAut
 public import Formalism.LocalToGlobal.Divisibility.CoefMod
-import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 public import Formalism.LocalToGlobal.Columns.CoefModB
-public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AlgWtDualUniq
 public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AlgWtHwUnq
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GelfandTsetlinBranching.ExtremalFactsProofA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
+import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.PicardGroup
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightDualUniqueness.Imports, Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AlgWtDualUniq, Formalism.LocalToGlobal.Columns.MtAdWt
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightDualUniqueness.Imports =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightDualUniqueness.Imports", "h": "module\n\npublic import Formalism.LocalToGlobal.AdelicCompactOpens.UniROfUniRT\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightDualUniqueness.SelfInjective\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField ReciprocityTheory.Aut Formalism.L2.NG
+
+namespace PI.UnitaryGroupMassFormula.AlgWtDualUniq
+
+theorem main (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) : Formalism.L2.Props.DualUnique L n := by
+
+  have fd : ∀ c : AlgWt L n, FiniteDimensional ℂ c.W := by
+    intro c
+    have h := c.alg
+    unfold Formalism.AUTREP.IsAlgWeight at h
+    exact h.1
+  intro a b b' h1 h2
+  obtain ⟨B, hB0, hB⟩ := h1
+  obtain ⟨C, hC0, hC⟩ := h2
+  haveI := fd a
+  haveI := fd b
+  haveI := fd b'
+  haveI : a.ρ.IsIrreducible := a.irr
+  haveI : b.ρ.IsIrreducible := b.irr
+  haveI : b'.ρ.IsIrreducible := b'.irr
+  exact dual_unique B hB hB0 C hC hC0
+
+end PI.UnitaryGroupMassFormula.AlgWtDualUniq
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightDualUniqueness.Imports =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AlgWtDualUniq =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AlgWtDualUniq", "h": "module\n\npublic import Formalism.LocalToGlobal.AdelicCompactOpens.UniROfUniRT\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightDualUniqueness.Imports\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AlgWtDualUniq =====
+
+-- ===== clump member: Formalism.LocalToGlobal.Columns.MtAdWt =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.Columns.MtAdWt", "h": "module\n\npublic import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAut\npublic import Formalism.LocalToGlobal.Divisibility.CoefMod\nimport Formalism.GradedWeylDivisibility.DualWeylDominanceOf\npublic import Formalism.LocalToGlobal.Columns.CoefModB\npublic import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AlgWtDualUniq\npublic import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.AlgWtHwUnq\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.GelfandTsetlinBranching.ExtremalFactsProofA\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PicardGroup\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain ReciprocityTheory.Aut Formalism.AUTREP MvPolynomial
@@ -85,12 +91,10 @@ theorem mtwInc_injective : Function.Injective (mtwInc (L := L) (n := n)) := by
   have hij := congrArg (fun g : GL (Fin n) (AL L) => (g : Matrix (Fin n) (Fin n) (AL L)) i j) h
   first
     | exact hf hij
-    | exact hf (by simpa using hij)
 
 theorem mtw_mem (γ : GQ L n) : ((γ : GAf L n) : GL (Fin n) (AL L)) ∈ (GQ0 L n).map mtwInc := by
   first
     | exact Subgroup.mem_subgroupOf.1 γ.2
-    | exact γ.2
 
 def mtwRatFun (γ : GQ L n) : GL (Fin n) L := (Subgroup.mem_map.1 (mtw_mem γ)).choose
 
@@ -117,8 +121,6 @@ theorem mtwRat_eq_of_match (γ : GQ L n) (γ₀ : GL (Fin n) L)
   rw [show mtwRat (L := L) (n := n) γ = mtwRatFun γ from rfl, mtwInc_mtwRatFun]
   first
     | exact Units.ext h.symm
-    | (apply Units.ext; rw [h]; rfl)
-    | (apply Units.ext; ext i j; simp [h])
 
 end MtwRat
 
@@ -151,7 +153,6 @@ def mtRep (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) : Representation
 private theorem embedding_complexConj_eq_conjugate (φ : L →+* ℂ) (x : L) :
     φ ((IsCMField.complexConj L : L →+* L) x) = ComplexEmbedding.conjugate φ x := by
   first
-    | exact (IsCMField.complexEmbedding_complexConj φ x).trans (ComplexEmbedding.conjugate_coe_eq φ x).symm
     | (rw [ComplexEmbedding.conjugate_coe_eq]; exact IsCMField.complexEmbedding_complexConj φ x)
     | simp [ComplexEmbedding.conjugate_coe_eq]
 
@@ -234,15 +235,6 @@ theorem mtwCoef_eval (lam : ι → DomWeight n) (M : ι → Matrix (Fin n) (Fin 
   unfold mtwCoef
   rw [mtwCf_eval, mtwUniv_map]
 
-theorem mtw_eval_aeval {σ ρ : Type} (f : σ → MvPolynomial ρ ℂ) (d : ρ → ℂ) (P : MvPolynomial σ ℂ) :
-    eval d (aeval f P) = eval (fun x => eval d (f x)) P := by
-  induction P using MvPolynomial.induction_on
-  · simp [MvPolynomial.algebraMap_eq]
-  · rename_i p q hp hq
-    simp only [map_add (f := _), hp, hq]
-  · rename_i p v hp
-    simp only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.eval_X]
-
 end Poly
 
 section Alg
@@ -276,11 +268,9 @@ def mtwTwP (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) : MvPolynomial 
   ∏ τ, if 0 ≤ (lam τ).detShift then mtwDetP (emb τ) ^ (lam τ).detShift.toNat
     else mtwDetP (ComplexEmbedding.conjugate (emb τ)) ^ (-(lam τ).detShift).toNat
 
-def mtwPt (γ₀ : Matrix (Fin n) (Fin n) L) : (L →+* ℂ) × Fin n × Fin n → ℂ := fun p => p.1 (γ₀ p.2.1 p.2.2)
-
 theorem twistPolynomial_eval (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ0 L n) :
-    eval (mtwPt (γ₀ : Matrix (Fin n) (Fin n) L)) (mtwTwP emb lam) = detTwK lam (mtwEmb emb γ₀) := by
-  have hdet : ∀ σ : L →+* ℂ, eval (mtwPt (γ₀ : Matrix (Fin n) (Fin n) L)) (mtwDetP σ) =
+    eval (_root_.PI.UnitaryGroupMassFormula.HwConjInf.ratPt (γ₀ : Matrix (Fin n) (Fin n) L)) (mtwTwP emb lam) = detTwK lam (mtwEmb emb γ₀) := by
+  have hdet : ∀ σ : L →+* ℂ, eval (_root_.PI.UnitaryGroupMassFormula.HwConjInf.ratPt (γ₀ : Matrix (Fin n) (Fin n) L)) (mtwDetP σ) =
       σ (γ₀ : Matrix (Fin n) (Fin n) L).det := by
     intro σ
     rw [detPolynomial_eval, RingHom.map_det]
@@ -307,7 +297,7 @@ theorem eval_tensorCoeff (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) (
       mtwCoord lam i (Formalism.GradedWeylDivisibility.blockAct ℂ (fun τ => (Matrix.of fun a b => y (emb τ, a, b))ᵀ) (bVVfun ℂ lam j)) := by
   have key := mtwCoef_eval lam (fun τ => Matrix.of fun a b => y (emb τ, a, b)) i j
   simp only [Matrix.of_apply] at key
-  simp only [tenP, map_mul, mtw_eval_aeval, MvPolynomial.eval_X, key]
+  simp only [tenP, map_mul, _root_.Formalism.L2.Col.eval_aeval_poly, MvPolynomial.eval_X, key]
 
 theorem tenRep_toMatrix (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) (γ : GQ L n) (γ₀ : GL (Fin n) L)
     (hm : (((γ : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) =
@@ -320,8 +310,6 @@ theorem tenRep_toMatrix (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) (�
     intro j
     first
       | simp only [bVV, Module.Basis.map_apply, LinearEquiv.coe_ofEq_apply, Module.Basis.span_apply]
-      | simp [bVV]
-      | rfl
   let γL := mtwRat (L := L) (n := n) γ
   have htw : eval (fun p : (L →+* ℂ) × Fin n × Fin n =>
       p.1 ((γL : Matrix (Fin n) (Fin n) L) p.2.1 p.2.2)) (mtwTwP emb lam) =
@@ -337,9 +325,7 @@ theorem tenRep_alg (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) : IsAlg
   refine ⟨?_, VVIdx lam, inferInstance, inferInstance, bVV ℂ lam, tenP emb lam,
     fun γ γ₀ hm => tenRep_toMatrix emb lam γ γ₀ hm⟩
   first
-    | exact FiniteDimensional.of_fintype_basis (bVV ℂ lam)
     | exact Module.Finite.of_basis (bVV ℂ lam)
-    | infer_instance
 
 theorem mtRep_alg (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) : IsAlgWeight L n (mtRep emb lam) := by
   rw [mtRep_eq_tenRep]
@@ -362,7 +348,6 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {ι : Type
 theorem mtwConj_conj (emb : ι → L →+* ℂ) : mtwConj (mtwConj emb) = emb := by
   funext τ
   first
-    | exact ComplexEmbedding.conjugate_conjugate (emb τ)
     | simp [mtwConj]
 
 theorem tenRep_eq_mtRep (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) : tenRep emb lam = mtRep (mtwConj emb) lam := by
@@ -389,16 +374,6 @@ private theorem lpMinor_complex_eq (s r m : ℕ) (hr : s ≤ r) (hm : s ≤ m) :
   have hX : Matrix.det (Matrix.mvPolynomialX (Fin s) (Fin s) ℂ) ≠ 0 := by
     first
       | exact Matrix.det_mvPolynomialX_ne_zero (Fin s) ℂ
-      | exact Matrix.det_mvPolynomialX_ne_zero ℂ
-      | (intro h
-         have h5 := congrArg (MvPolynomial.eval fun v : Fin s × Fin s => (1 : Matrix (Fin s) (Fin s) ℂ) v.1 v.2) h
-         rw [RingHom.map_det, map_zero] at h5
-         have hm : (MvPolynomial.eval fun v : Fin s × Fin s => (1 : Matrix (Fin s) (Fin s) ℂ) v.1 v.2).mapMatrix
-             (Matrix.mvPolynomialX (Fin s) (Fin s) ℂ) = 1 := by
-           ext i j
-           simp [Matrix.mvPolynomialX]
-         rw [hm, Matrix.det_one] at h5
-         exact one_ne_zero h5)
   have he : Formalism.GradedWeylDivisibility.lpMinor ℂ (r := r) (n := m) s hr hm =
       rename (fun v : Fin s × Fin s => (Fin.castLE hr v.1, Fin.castLE hm v.2))
         (Matrix.det (Matrix.mvPolynomialX (Fin s) (Fin s) ℂ)) := by
@@ -512,14 +487,11 @@ theorem mtw_evPt_conj (τ : L →+* ℂ) (B : GL (Fin n) ℂ) (h : ComplexEmbedd
     (Matrix.of fun a b => NG.evPt τ B (ComplexEmbedding.conjugate τ, a, b)) = ((B⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ := by
   first
     | (ext a b; simp [NG.evPt, h])
-    | (ext a b; simp [NG.evPt, h, Matrix.transpose_apply])
 
 theorem mtw_evPt_other (τ σ : L →+* ℂ) (B : GL (Fin n) ℂ) (h1 : σ ≠ τ) (h2 : σ ≠ ComplexEmbedding.conjugate τ) :
     (Matrix.of fun a b => NG.evPt τ B (σ, a, b)) = (1 : Matrix (Fin n) (Fin n) ℂ) := by
   first
     | (ext a b; simp [NG.evPt, h1, h2]; rfl)
-    | (ext a b; simp [NG.evPt, h1, h2]; rw [Matrix.one_apply])
-    | (ext a b; simp [NG.evPt, h1, h2, Matrix.one_apply])
 
 end HW
 
@@ -652,9 +624,13 @@ theorem mtWt_hw_dual (emb : ι → L →+* ℂ) (hinj : Function.Injective emb)
     (hcm : ∀ τ τ', emb τ ≠ ComplexEmbedding.conjugate (emb τ')) (lam : ι → DomWeight n) (h : TenIrr emb lam)
     (h' : TenIrr (mtwConj emb) lam) (τ : ι) (a : NG.AlgWt L n) (lam0 : Fin n → ℤ)
     (hd : (mtWt emb lam h).IsDual a) (hw : a.HWAt (emb τ) lam0) : lam0 = (lam τ).w := by
-  have hiso : a.Iso (tenWt emb lam h') := algebraic_weight_dual_unique L n _ a _ hd (mtWt_isDual emb lam h h')
+  have hiso : a.Iso (tenWt emb lam h') := _root_.PI.UnitaryGroupMassFormula.AlgWtDualUniq.main L n _ a _ hd (mtWt_isDual emb lam h h')
   exact algebraic_weight_highest_unique L n _ (emb τ) lam0 (lam τ).w (mtw_hwAt_of_iso hiso hw) (tenWt_hwAt emb hinj hcm lam h' τ)
 
 end Dual
 
 end Formalism.L2.Col
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.Columns.MtAdWt =====

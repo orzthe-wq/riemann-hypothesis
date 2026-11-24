@@ -57,8 +57,6 @@ noncomputable abbrev I (n : ℕ) : Ideal (WittVector p k) := RingHom.ker (WittVe
 
 theorem mem_I {n : ℕ} {x : WittVector p k} : x ∈ I n ↔ ∀ i < n, x.coeff i = 0 := by
   first
-    | exact WittVector.mem_ker_truncate x
-    | exact WittVector.mem_ker_truncate
     | rw [RingHom.mem_ker]
       constructor
       · intro h i hi

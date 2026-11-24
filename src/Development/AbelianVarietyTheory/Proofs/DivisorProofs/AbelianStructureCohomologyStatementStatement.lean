@@ -47,4 +47,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.abelian_structure_cohomology_statement : GlobalTheory.AbCoh.OStr := by
-  first | exact @GlobalTheory.AbCoh.oStr | exact GlobalTheory.AbCoh.oStr | (intros; apply GlobalTheory.AbCoh.oStr <;> assumption)
+  first | exact @GlobalTheory.AbCoh.oStr

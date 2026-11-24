@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -70,7 +71,7 @@ private theorem diagL_single (M : InfinitePlace G.F → Matrix (Fin G.n) (Fin G.
   by_cases h : w = v
   · subst h
     simp [diagL]
-  · simp [diagL, Pi.single_apply, h]
+  · simp [diagL, h]
 
 private theorem arch_ext (A : ArchFrame L) {W : Type} [AddCommGroup W] [Module ℝ W] (f g : Arch G →ₗ[ℝ] W)
     (h : ∀ w, f (A.th w) = g (A.th w)) : f = g := LinearMap.ext_on_range A.span h

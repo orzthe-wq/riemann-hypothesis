@@ -72,8 +72,8 @@ variable {R : Type*} [CommRing R]
 
 def uni (x y z : R) : GL (Fin 3) R :=
   ⟨!![1, x, y; 0, 1, z; 0, 0, 1], !![1, -x, x * z - y; 0, 1, -z; 0, 0, 1],
-    by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring,
-    by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring⟩
+    by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three]; ring,
+    by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three]; ring⟩
 
 def dg (a b c : Rˣ) : GL (Fin 3) R :=
   ⟨!![(a : R), 0, 0; 0, b, 0; 0, 0, c], !![((a⁻¹ : Rˣ) : R), 0, 0; 0, (b⁻¹ : Rˣ), 0; 0, 0, (c⁻¹ : Rˣ)],

@@ -78,7 +78,7 @@ theorem den_eq (h₁ h₂ q : Matrix (Fin r) (Fin r) ℂ) (hc : c ≠ 0) :
 theorem num_eq (h₁ h₂ q : Matrix (Fin r) (Fin r) ℂ) :
     ((2 : ℂ)⁻¹ • (h₁ + h₂)) * (c • ((1 - (2 : ℂ) • q) * G)) + (c / 2) • ((h₁ - h₂) * G) =
       c • ((h₁ * (1 - q) - h₂ * q) * G) := by
-  simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc,
+  simp only [Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc,
     Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul]
   module
 
@@ -99,7 +99,7 @@ theorem proj_parts (hP : P * P = P) (a b : Matrix (Fin r) (Fin r) ℂ) :
     P * (P * a + (1 - P) * b) = P * a ∧ (1 - P) * (P * a + (1 - P) * b) = (1 - P) * b := by
   constructor <;>
   simp only [Matrix.mul_add, Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, hP,
-    Matrix.mul_one, Matrix.one_mul] <;> abel
+    Matrix.one_mul] <;> abel
 
 theorem lin_act (hP : P * P = P) (h₁ : g₁ * u₁ = 1) (h₂ : g₂ * u₂ = 1)
     (hg : g₂ᵀ * G * g₂.map conj = G) :
@@ -192,9 +192,9 @@ theorem cplx (hP : P * P = P) (hPt : Pᵀ = P) (hGh : Gᴴ = G) (hG : G * Gi = 1
   have hSt : Sᵀ = 1 - (2 : ℂ) • pᵀ := by rw [hS', transpose_sub, transpose_one, transpose_smul]
   refine ⟨p * u₂ + (1 - p) * u₁, p' * u₁.map conj + (1 - p') * u₂.map conj, ?_, ?_, ?_, ?_, ?_⟩
   · simp only [Matrix.mul_add, Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, hLp,
-      Matrix.mul_one, Matrix.one_mul]
+      Matrix.one_mul]
   · simp only [Matrix.mul_add, Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, hAp,
-      Matrix.mul_one, Matrix.one_mul]
+      Matrix.one_mul]
   · rw [hZ, hSt, den_eq _ _ _ hc]
     simp only [transpose_add, transpose_mul, transpose_sub, transpose_one]
   · have k : ∀ u : Matrix (Fin r) (Fin r) ℂ, uᵀᴴ = u.map conj := fun u => by ext; simp
@@ -207,7 +207,7 @@ theorem cplx (hP : P * P = P) (hPt : Pᵀ = P) (hGh : Gᴴ = G) (hG : G * Gi = 1
   · have e : S * (p * u₂ + (1 - p) * u₁) = (1 - p) * u₁ - p * u₂ := by
       rw [hS']
       simp only [Matrix.mul_add, Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, hpp,
-        Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul]
+        Matrix.one_mul, Matrix.smul_mul]
       module
     rw [hZ, hSt, num_eq, e]
     simp only [transpose_mul, transpose_sub, transpose_one]
@@ -262,8 +262,8 @@ theorem un_mat {γ : GL (Fin r) E} (h : IsUn X γ) :
   ext a b
   have := h (Pi.single a 1) (Pi.single b 1)
   simp only [herm, mulVec_single_one, Pi.single_apply, cc, apply_ite, map_one, map_zero] at this
-  simp only [ite_mul, mul_ite, one_mul, mul_one, zero_mul, mul_zero, Finset.sum_ite_eq',
-    Finset.mem_univ, if_true, Finset.sum_ite_irrel, Finset.sum_const_zero] at this
+  simp only [ite_mul, one_mul, mul_one, zero_mul, mul_zero, Finset.sum_ite_eq',
+    Finset.mem_univ, if_true] at this
   rw [← this, Finset.sum_comm]
   simp [Matrix.mul_apply, ccT, cc, Finset.sum_mul]
 
@@ -307,7 +307,7 @@ theorem dblT_form : dblT X * Matrix.J (Fin r) E * ccT (dblT X) =
     simp [ccT, cc, h1, h2, map_ofNat, neg_div]
   have e2 : ccT (-1 : Matrix (Fin r) (Fin r) E) = -1 := by
     ext a b
-    by_cases h : a = b <;> simp [ccT, cc, Matrix.one_apply, h, eq_comm]
+    by_cases h : a = b <;> simp [ccT, cc, h, eq_comm]
   rw [dblT, ccT_blocks, e1, e2, HAct.ccT_one, Matrix.J, fromBlocks_multiply, fromBlocks_multiply]
   congr 1 <;>
   simp only [Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, add_zero,
@@ -367,7 +367,7 @@ theorem aAnti_eq (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) :
     aAnti X x₁ x₂ τ = anti (X.Gm.map τ.1) (prj X) (mat x₁ τ) (mat x₂ τ) := by
   ext a c
   simp only [aAnti, anti, prj, Matrix.sub_mul, Matrix.one_mul, Matrix.add_apply, Matrix.sub_apply,
-    diagonal_mul, of_apply, transpose_apply]
+    diagonal_mul, of_apply]
   split_ifs <;> simp [Matrix.mul_apply, mat]
 
 theorem sgn_eq : Matrix.diagonal (fun a : Fin r => (-(sgn X.p0 a : ℝ) : ℂ)) =

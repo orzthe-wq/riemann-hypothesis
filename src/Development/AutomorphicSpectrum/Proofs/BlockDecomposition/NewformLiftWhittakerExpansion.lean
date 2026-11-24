@@ -132,10 +132,10 @@ theorem wh_law {φ : G2 → ℂ} (hφ : LInv φ) (y : 𝔸[ℚ]) (g : G2) :
 theorem continuous_unipotentGL2 : Continuous (fun x : 𝔸[ℚ] => (uni2 x : G2)) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · refine continuous_matrix fun a b => ?_
-    fin_cases a <;> fin_cases b <;> simp [uni2, Function.comp_def] <;> fun_prop
+    fin_cases a <;> fin_cases b <;> simp [uni2] <;> fun_prop
   · change Continuous fun x : 𝔸[ℚ] => ((uni2 x : G2)⁻¹).val
     refine continuous_matrix fun a b => ?_
-    fin_cases a <;> fin_cases b <;> simp [uni2, Function.comp_def] <;> fun_prop
+    fin_cases a <;> fin_cases b <;> simp [uni2] <;> fun_prop
 
 theorem isCompact_box : IsCompact (closure (fundamentalSetInfinite ℚ) ×ˢ
     (integralFiniteAdeles (𝓞 ℚ) ℚ : Set 𝔸ᶠ[ℚ]) : Set 𝔸[ℚ]) :=
@@ -235,7 +235,7 @@ theorem levelConstant_one : levelConstant 1 = 1 := by
   have hm : adeleMeasure ℚ (levelDomain 1) = 1 := by
     rw [← (isAddFundamentalDomain_fundamentalSet ℚ).measure_eq (isAddFundamentalDomain_levelDomain 1)]
     exact adeleMeasure_fundamentalSet ℚ
-  simp only [intervalIntegral.integral_const, sub_zero, one_smul, integral_const, measureReal_restrict_apply_univ, measureReal_def, hm] at h1
+  simp only [intervalIntegral.integral_const, sub_zero, one_smul, integral_const, measureReal_def] at h1
   simpa [hm] using h1.symm
 
 theorem wh_realEmb {φ : G2 → ℂ} (hL : LInv φ)
@@ -303,7 +303,6 @@ theorem form_fourier {f : UpperHalfPlane → ℂ} {a : ℕ → ℂ}
     refine h0.summable.congr fun n => ?_
     simp only [hbdef]
     congr 2
-    change 2 * Real.pi * Complex.I * n * (y * Complex.I) = _
     linear_combination (2 * Real.pi * n * y) * hI
   have e : ∀ x : ℝ, f (z x) * Complex.exp (2 * Real.pi * Complex.I * (x : ℝ)) =
       ∑' n, b n * Complex.exp (2 * Real.pi * Complex.I * ((σ * n + 1 : ℤ) : ℂ) * (x : ℝ)) := fun x => by
@@ -404,7 +403,7 @@ theorem whittaker_value {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {a :
         rw [toReal_apply]
         fin_cases a <;> fin_cases b <;> simp [epsilon]
       rw [he]
-      simp [dg2, Matrix.mul_fin_two]
+      simp [dg2]
     have e : ∫ x in (0 : ℝ)..1, φ (realEmb (unipReal x * dg2 t 1)) * Complex.exp (2 * Real.pi * Complex.I * (x : ℝ)) =
         (Real.sqrt (-(t : ℝ)) : ℂ) ^ (k : ℤ) * ∫ x in (0 : ℝ)..1, f (z x) * Complex.exp (2 * Real.pi * Complex.I * (x : ℝ)) := by
       rw [← intervalIntegral.integral_const_mul]
@@ -425,7 +424,7 @@ theorem whittaker_value {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {a :
     have hv : ∀ x : ℝ, φ (realEmb (unipReal x * dg2 t 1)) = (Real.sqrt (t : ℝ) : ℂ) ^ (k : ℤ) * f (z x) := fun x => by
       refine real_pos hl x (t : ℝ) hy (z x) rfl rfl _ ?_
       rw [Units.val_mul, coe_unipReal]
-      simp [dg2, Matrix.mul_fin_two]
+      simp [dg2]
     have e : ∫ x in (0 : ℝ)..1, φ (realEmb (unipReal x * dg2 t 1)) * Complex.exp (2 * Real.pi * Complex.I * (x : ℝ)) =
         (Real.sqrt (t : ℝ) : ℂ) ^ (k : ℤ) * ∫ x in (0 : ℝ)..1, f (z x) * Complex.exp (2 * Real.pi * Complex.I * (x : ℝ)) := by
       rw [← intervalIntegral.integral_const_mul]

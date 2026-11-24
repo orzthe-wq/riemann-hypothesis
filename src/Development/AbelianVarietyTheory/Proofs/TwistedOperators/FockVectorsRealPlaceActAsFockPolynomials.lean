@@ -77,7 +77,7 @@ theorem dI_mem {p q : ℕ} (x : Ix p q → ℝ) : dI x ∈ upq p q := by
   ext a b
   simp only [dI, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.add_apply,
     Matrix.diagonal_apply, Matrix.zero_apply]
-  split_ifs <;> simp [Complex.ext_iff]
+  split_ifs <;> simp
 
 theorem dI_eq_sum {p q : ℕ} (x : Ix p q → ℝ) : dI x = ∑ j, ((x j : ℂ) * Complex.I) • Eab j j := by
   ext a b
@@ -135,7 +135,7 @@ private theorem a_Eab_diag_of_dI_add_trace_smul {p q : ℕ} {V : Type} [AddCommG
     rw [dI_eq_sum, Finset.sum_eq_single j]
     · simp
     · intro b _ hb
-      simp [Pi.single_apply, hb]
+      simp [hb]
     · intro hj
       exact absurd (Finset.mem_univ j) hj
   have h1 := h (Pi.single j (1 : ℝ) : Ix p q → ℝ)
@@ -354,7 +354,7 @@ theorem phi_diagonal {p q n : ℕ} (e : Ix p q ≃ Fin n) (br : Bool) (d : Ix p 
     simp only [phi, cjc, GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.plainMat, GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.barMat, Bool.false_eq_true, ite_false,
       ite_true, Matrix.reindex_apply] <;>
     ext a b <;>
-    simp [Matrix.diagonal_apply, Matrix.submatrix_apply, Matrix.map_apply, apply_ite] <;>
+    simp [Matrix.diagonal_apply, Matrix.submatrix_apply, apply_ite] <;>
     split_ifs <;> simp_all
 
 theorem phiFr_exp {p q n : ℕ} {fr : Mn n} (hf : IsUnit fr) (e : Ix p q ≃ Fin n) (br : Bool) (x : Ix p q → ℝ) (t : ℝ) :

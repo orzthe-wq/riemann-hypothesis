@@ -58,6 +58,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FinalS
 
 @[expose] public section
 
@@ -79,14 +80,9 @@ private theorem lgF_zero_lemma (l : ℕ) : PowerSeries.constantCoeff (lgF K l) =
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, lgF, PowerSeries.coeff_mk]
   simp
 
-private theorem lgF_one_lemma_2 {l : ℕ} (hl : 2 ≤ l) : PowerSeries.coeff 1 (lgF K l) = 1 := by
-  have h1 : l ^ 2 ≠ 1 := by nlinarith
-  rw [lgF, PowerSeries.coeff_mk]
-  simp [Finset.sum_range_succ, h1, h1.symm]
-
 theorem logPair {l : ℕ} (hl : 2 ≤ l) : C.IsLogPair (lgF K l) (expF K l) := by
   have h0 := lgF_zero_lemma (K := K) l
-  have h1 := lgF_one_lemma_2 (K := K) hl
+  have h1 := _root_.Formalism.InvariantFactorPaths.G7.LemTwo.coeff_one_lgF (K := K) hl
   have hu : IsUnit (PowerSeries.coeff 1 (lgF K l)) := by rw [h1]; exact isUnit_one
   have he : expF K l = (lgF K l).substInvOfIsUnit hu := by rw [expF, dite_eq_left hu]
   refine ⟨h0, h1, ?_, ?_, ?_⟩
@@ -95,12 +91,6 @@ theorem logPair {l : ℕ} (hl : 2 ≤ l) : C.IsLogPair (lgF K l) (expF K l) := b
   · rw [he]; exact PowerSeries.subst_substInvOfIsUnit_right _ h0 hu
 
 end Alg
-
-section Cont
-
-variable {K : Type} [Field K]
-
-end Cont
 
 section Normed
 
@@ -189,7 +179,7 @@ theorem of_closed_int {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {P : K → 
 
 theorem lawLog {l : ℕ} (hl : 2 ≤ l) {F : MvPowerSeries (Fin 2) K} (hF : IsLawOfLog l F) :
     Formalism.L2.Th1.B.LawLog F (lgF K l) := by
-  exact ⟨hF.1, hF.2.1, lgF_zero_lemma l, lgF_one_lemma_2 hl, hF.2.2⟩
+  exact ⟨hF.1, hF.2.1, lgF_zero_lemma l, _root_.Formalism.InvariantFactorPaths.G7.LemTwo.coeff_one_lgF hl, hF.2.2⟩
 
 theorem endInt {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {α : K} (hα : ‖α‖ ≤ 1)
     (hs : σ (σ α) = α) : C.EndInt (Formalism.G.unitBall K) (lgF K l) (expF K l) α := by
@@ -270,7 +260,7 @@ theorem all {l : ℕ} {σ : K →+* K} (hU : UnrOK K l σ) {F : MvPowerSeries (F
     show ‖(2 : K)⁻¹‖ ≤ 1
     rw [norm_inv, norm_two hU, inv_one]
   have hu2 : IsUnit (2 : Osub σ) :=
-    ⟨unitO (a := 2) (norm_two hU) (by simp [map_ofNat]), Subtype.ext (by show (2 : K) = _; first | rfl | norm_num | push_cast; rfl)⟩
+    ⟨unitO (a := 2) (norm_two hU) (by simp [map_ofNat]), Subtype.ext (by show (2 : K) = _; first | rfl)⟩
   have hDn : ∀ a ∈ Set.range (fun u : (Osub σ)ˣ => (u : Osub σ)),
       C.EndInt (Formalism.G.unitBall K) (lgF K l) (expF K l) ((Osub σ).subtype a) ∧
       C.PhNormAt (Formalism.G.unitBall K) (lgF K l) (expF K l) ph ((Osub σ).subtype a) ((Osub σ).subtype (star a)) := by

@@ -82,7 +82,7 @@ theorem exists_degenerationEndomorphism_of_admissibleBase : ∀ (R : Type) [Comm
   obtain ⟨aB, haB, hq⟩ := exists_abelian hL hR U.toUnifPre aG
   obtain ⟨h, hh⟩ := T.uniformisation_endomorphism_character_map_constant hL R I hR D A G U.toUnifPre aG hG
   choose t ht hi using hh
-  choose v hv vv using fun χ e => T.exists_gen_of_torusEnd_compat R I D.toPre e G (U.gt e) ((Over.pullback (thick R I e)).map aG) aB h (t e)
+  choose v hv vv using fun χ e => _root_.GlobalTheory.gtCoord_end_ratio_descends R I D.toPre e G (U.gt e) ((Over.pullback (thick R I e)).map aG) aB h (t e)
     inferInstance (ht e) (hi e) (hq e) χ
   have down : ∀ χ e (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).left) (z : Z) (J), Good D.toPre.P.L z J →
       val ((U.gt (e + 1)).t χ) (r ≫ thickMap R I e G) z J = val ((U.gt e).t χ) r z J :=

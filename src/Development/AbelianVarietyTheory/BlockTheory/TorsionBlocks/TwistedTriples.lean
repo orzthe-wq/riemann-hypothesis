@@ -101,7 +101,7 @@ theorem badS_eq (a : D.nd.Loc) : badS D a = ↑(D.nd.S a) := by
   have h' : v ∈ D.ntw.pD (D.ntw.twOf a) ↔
       v ∈ placesOver D.host.E (if D.nd.l a = D.host.pde then D.host.pde' else D.host.pde) := by
     rw [← h]; rfl
-  simp only [badS, Set.mem_setOf_eq, Finset.mem_coe, D.nd.S_def, h', Fin.exists_fin_two, or_assoc]
+  simp only [badS, Set.mem_ofPred_eq, Finset.mem_coe, D.nd.S_def, h', Fin.exists_fin_two, or_assoc]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.TwistedTriples
 

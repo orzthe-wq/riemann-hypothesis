@@ -50,6 +50,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.AutomorphicInSphericalLevel
 
 @[expose] public section
 
@@ -67,24 +68,15 @@ section norms
 variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
-theorem norm_gpsi (β w : ℂ) : ‖G.psi β w‖ = 1 := by
-  unfold G.psi; rw [mul_comm]; exact Complex.norm_exp_ofReal_mul_I _
-
 theorem norm_psiStar (σ : Equiv.Perm (Fin p)) (z z' : Fin (2 * (p + 0 + ρ) + k + 1) → ℂ) (ξ : U.Xi k p 0 ρ σ) :
     ‖U.psiStar k ρ σ z z' ξ‖ = 1 := by
   unfold U.psiStar U.psiH
-  rw [norm_mul, norm_mul, norm_star, norm_psi, norm_psi, norm_gpsi, one_mul, one_mul]
-
-theorem opNorm_pi_le (Bs : B.RealPlaceData k ρ Wp Wq) {h : B.Mat k ρ} (hh : h ∈ UWset k ρ Bs.z) : ‖Bs.π h‖ ≤ 1 :=
-  ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun v => by rw [Bs.π_unitary h hh v, one_mul])
-
-theorem opNorm_pi'_le (Bs : B.RealPlaceData k ρ Wp Wq) {h : B.Mat k ρ} (hh : h ∈ UWset k ρ Bs.z') : ‖Bs.π' h‖ ≤ 1 :=
-  ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun v => by rw [Bs.π'_unitary h hh v, one_mul])
+  rw [norm_mul, norm_mul, norm_star, norm_psi, norm_psi, _root_.Formalism.FourierDecayAlt.P.StationaryPhaseModel.F_norm_psi, one_mul, one_mul]
 
 theorem norm_pi_comp (Bs : B.RealPlaceData k ρ Wp Wq) {h : B.Mat k ρ} (hh : h ∈ UWset k ρ Bs.z) (A : Wq →L[ℂ] Wp) :
     ‖(Bs.π h).comp A‖ = ‖A‖ := by
   refine le_antisymm ((ContinuousLinearMap.opNorm_comp_le _ _).trans
-    (by simpa using mul_le_mul_of_nonneg_right (opNorm_pi_le Bs hh) (norm_nonneg A))) ?_
+    (by simpa using mul_le_mul_of_nonneg_right (_root_.Formalism.FourierDecayAlt.P.SmoothExtensionClosedSet.norm_pi_le_one Bs hh) (norm_nonneg A))) ?_
   have hi : h⁻¹ ∈ UWset k ρ Bs.z := (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bs.z).inv_mem h hh
   have hu : IsUnit h.det := (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bs.z).unit h hh
   have e : A = (Bs.π h⁻¹).comp ((Bs.π h).comp A) := by
@@ -92,7 +84,7 @@ theorem norm_pi_comp (Bs : B.RealPlaceData k ρ Wp Wq) {h : B.Mat k ρ} (hh : h 
     rfl
   calc ‖A‖ = ‖(Bs.π h⁻¹).comp ((Bs.π h).comp A)‖ := by rw [← e]
     _ ≤ ‖Bs.π h⁻¹‖ * ‖(Bs.π h).comp A‖ := ContinuousLinearMap.opNorm_comp_le _ _
-    _ ≤ 1 * ‖(Bs.π h).comp A‖ := mul_le_mul_of_nonneg_right (opNorm_pi_le Bs hi) (norm_nonneg _)
+    _ ≤ 1 * ‖(Bs.π h).comp A‖ := mul_le_mul_of_nonneg_right (_root_.Formalism.FourierDecayAlt.P.SmoothExtensionClosedSet.norm_pi_le_one Bs hi) (norm_nonneg _)
     _ = ‖(Bs.π h).comp A‖ := one_mul _
 
 theorem sgs_mem {P : B.SS k ρ} (Bs : B.RealPlaceData k ρ Wp Wq) (hP : Bs.inSS P) {g : B.Mat k ρ} (hg : g ∈ B.GV k ρ) :
@@ -116,7 +108,7 @@ theorem norm_fl_le (Bj : B.RealPlaceData k ρ Wp Wq) (z0 z0' : Fin (2 * (p + ρ)
     (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bj.z').inv_mem _ hq.2.2.1
   refine (ContinuousLinearMap.opNorm_comp_le _ _).trans ?_
   rw [norm_smul, norm_psiStar, one_mul]
-  simpa using mul_le_mul_of_nonneg_left (opNorm_pi'_le Bj hi) (norm_nonneg (H _))
+  simpa using mul_le_mul_of_nonneg_left (_root_.Formalism.FourierDecayAlt.P.SmoothExtensionClosedSet.norm_pi'_le_one Bj hi) (norm_nonneg (H _))
 
 end norms
 
@@ -125,19 +117,7 @@ section main
 variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
-theorem ae_inSS (Bs : B.RealPlaceData k ρ Wp Wq) : ∀ᵐ P ∂Bs.μSS, Bs.inSS P := by
-  have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarW
-  have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarN
-  have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarW'
-  have w1 := Formalism.FourierDecayAlt.P.B5.haar_ae Bs.haarW
-  have w2 := Formalism.FourierDecayAlt.P.B5.haar_ae Bs.haarN
-  have w3 := Formalism.FourierDecayAlt.P.B5.haar_ae Bs.haarW'
-  unfold B.RealPlaceData.μSS
-  filter_upwards [Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_fst.ae w1),
-    Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae w2),
-    Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_fst.ae w3),
-    Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_snd.ae w2)] with P a b c e
-  exact ⟨a, b, c, e⟩
+alias ae_inSS := _root_.Formalism.FourierDecayAlt.P.Dx2.OrbJ.ae_inSS
 
 theorem ae_goodL (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) : ∀ᵐ x ∂(muL Bj σ), GoodL Bj σ x := by
   have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW
@@ -163,7 +143,7 @@ theorem ae_goodR (Bj : B.RealPlaceData k ρ Wp Wq) : ∀ᵐ y ∂(muR (p := p) B
 
 theorem norm_cL (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (x : XL k p ρ σ) : ‖cL Bj σ x‖ = 1 := by
   unfold cL
-  rw [norm_mul, norm_mul, norm_psi, norm_psi, norm_gpsi, one_mul, one_mul]
+  rw [norm_mul, norm_mul, norm_psi, norm_psi, _root_.Formalism.FourierDecayAlt.P.StationaryPhaseModel.F_norm_psi, one_mul, one_mul]
 
 theorem norm_ellL (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (x : XL k p ρ σ) (hx : GoodL Bj σ x)
     (A : Wq →L[ℂ] Wp) : ‖ellL Bj σ x A‖ = ‖A‖ := by

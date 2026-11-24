@@ -146,8 +146,8 @@ theorem g_coeff_valuation_statement : LemmaGVal := by
     have h1 := (Finset.mem_filter.mp hj).2
     have h2 := hmem j (Finset.mem_filter.mp hj).1
     constructor <;> omega
-  have w1 := Formalism.WindowSums.arc_WindowSum ℓ (j₀ - b - S - a) (2 * a + S) (2 * (h + η)) _ c1 c2 c3
-  have w2 := Formalism.WindowSums.arc_WindowSum ℓ (j₀ - η - a) (2 * η + a) (2 * (h + η)) _ d1 d2 d3
+  have w1 := _root_.Formalism.WindowSums.sum_padicValInt_le ℓ (j₀ - b - S - a) (2 * a + S) (2 * (h + η)) _ c1 c2 c3
+  have w2 := _root_.Formalism.WindowSums.sum_padicValInt_le ℓ (j₀ - η - a) (2 * η + a) (2 * (h + η)) _ d1 d2 d3
   have hDpos : (1 : ℝ) ≤ ((2 * (h + η) : ℕ) : ℝ) := by
     have : 1 ≤ 2 * (h + η) := by omega
     exact_mod_cast this

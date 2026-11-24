@@ -1,44 +1,8 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LocJEq
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.Topology.Sheaves.Init
 
 set_option backward.isDefEq.respectTransparency false
 
@@ -52,40 +16,19 @@ namespace Formalism.L2.SG.Pf.LocJEq
 
 variable {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ)
 
-private theorem isUnit_y_det (τ : D.what₂.Tau) : IsUnit (C.y τ).det := by
-  obtain ⟨hQiQ, hQQi, hH, -⟩ := C.isT τ
-  have hJJ : Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) = 1 := by
-    rw [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-    congr 1
-    funext a
-    split_ifs <;> norm_num
-  generalize Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) = J at hH hJJ
-  have hHinv : (C.Qi τ * J * (C.Qi τ)ᴴ) * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS = 1 := by
-    rw [← hH]
-    calc C.Qi τ * J * (C.Qi τ)ᴴ * ((C.Q τ)ᴴ * J * C.Q τ)
-        = C.Qi τ * J * (C.Q τ * C.Qi τ)ᴴ * J * C.Q τ := by
-          rw [Matrix.conjTranspose_mul]
-          simp only [Matrix.mul_assoc]
-      _ = 1 := by
-          rw [hQQi, Matrix.conjTranspose_one, Matrix.mul_one, Matrix.mul_assoc (C.Qi τ), hJJ, Matrix.mul_one, hQiQ]
-  have hy' : (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.y τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS := C.y_mem τ
-  have h1 : (C.Qi τ * J * (C.Qi τ)ᴴ * ((C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) * C.y τ = 1 := by
-    rw [Matrix.mul_assoc, hy', hHinv]
-  exact Matrix.isUnit_det_of_left_inverse h1
-
 private theorem conj_lemma_2 (τ : D.what₂.Tau) (w : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) :
     C.Q τ * (C.Qi τ * w * C.Q τ * (C.y τ)⁻¹) * C.y τ * C.Qi τ = w := by
   obtain ⟨hQiQ, hQQi, -, -⟩ := C.isT τ
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQQi, Matrix.one_mul, ← Matrix.mul_assoc (C.y τ)⁻¹ (C.y τ),
-    Matrix.nonsing_inv_mul _ (isUnit_y_det C τ), Matrix.one_mul, hQQi, Matrix.mul_one]
+    Matrix.nonsing_inv_mul _ (_root_.Formalism.L2.SG.Pf.LocJEq.unit_det_y C τ), Matrix.one_mul, hQQi, Matrix.mul_one]
 
 private theorem Qi_mul_Q_conj_mul_y_inv_eq (τ : D.what₂.Tau) (x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS) :
     C.Qi τ * (C.Q τ * Matrix.of x * C.y τ * C.Qi τ) * C.Q τ * (C.y τ)⁻¹ = Matrix.of x := by
   obtain ⟨hQiQ, hQQi, -, -⟩ := C.isT τ
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (C.Qi τ) (C.Q τ), hQiQ, Matrix.one_mul, ← Matrix.mul_assoc (C.Qi τ) (C.Q τ), hQiQ,
-    Matrix.one_mul, Matrix.mul_nonsing_inv _ (isUnit_y_det C τ), Matrix.mul_one]
+    Matrix.one_mul, Matrix.mul_nonsing_inv _ (_root_.Formalism.L2.SG.Pf.LocJEq.unit_det_y C τ), Matrix.mul_one]
 
 theorem mem_of_range (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) (x : Set.range (Smap C τ γ)) :
     umat γ * (C.Q τ * Matrix.of x.1 * C.y τ * C.Qi τ) ∈ UJset (X.B.I.ε (vOf X τ)) := by
@@ -132,7 +75,7 @@ theorem smap_measEmb (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf
         have hx' : umat γ * (C.Q τ * Matrix.of x * C.y τ * C.Qi τ) ∈ UJset (X.B.I.ε (vOf X τ)) := hx
         refine ⟨ujOf' _ hx', ?_⟩
         unfold Smap umat ujOf'
-        simp only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul, Units.val_mk, Units.inv_mul_cancel_left]
+        simp only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul, Units.inv_mul_cancel_left]
         rw [Qi_mul_Q_conj_mul_y_inv_eq C τ]
         simp
     rw [hS]
@@ -147,7 +90,7 @@ theorem smap_measEmb (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf
     apply Subtype.ext
     apply Units.ext
     unfold smapInv ujOf' Set.rangeFactorization Smap
-    simp only [Equiv.apply_symm_apply, Units.val_mk]
+    simp only [Equiv.apply_symm_apply]
     rw [conj_lemma_2 C τ]
     unfold umat
     simp only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul, Units.mul_inv_cancel_left]
@@ -184,9 +127,7 @@ theorem integrand_aesm (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ : Formal
         ((locS hB u u' τ).Φ (trG (C.Q τ) (C.Qi τ) γ * Matrix.of x))) (ν.map (Smap C τ γ)) := by
   have hw : ∀ w : D.what₂.Word, Continuous (X.Wloc w (vOf X τ)) := fun w => by
     first
-      | exact X.W.Wloc_cont w _
       | exact X.Wloc_cont w _
-      | exact X.toWBlk.Wloc_cont w _
   rw [(smap_measEmb C τ γ).aestronglyMeasurable_map_iff]
   have he : (fun x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS =>
       (innerSL ℂ ((locS hB u u' τ).Φ' (Matrix.of x))).smulRight

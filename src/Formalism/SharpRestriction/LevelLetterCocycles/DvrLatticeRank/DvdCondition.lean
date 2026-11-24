@@ -70,12 +70,9 @@ private theorem finrank_cyclotomicExt_dvd_sub_one {F Ω : Type*} [Field F] [Char
   haveI hcyc : IsCyclotomicExtension {l} E M := by
     first
     | exact hζ.intermediateField_adjoin_isCyclotomicExtension E
-    | exact hζ.intermediateField_adjoin_isCyclotomicExtension
-    | exact IsPrimitiveRoot.intermediateField_adjoin_isCyclotomicExtension E hζ
   haveI : FiniteDimensional E M := by
     first
     | exact IntermediateField.adjoin.finiteDimensional (hζ.isIntegral hl0).tower_top
-    | exact IsCyclotomicExtension.finiteDimensional {l} E M
   haveI : IsGalois E M := IsCyclotomicExtension.isGalois {l} E M
 
   have hcard : Module.finrank E M ∣ l - 1 := by
@@ -87,12 +84,10 @@ private theorem finrank_cyclotomicExt_dvd_sub_one {F Ω : Type*} [Field F] [Char
     have h2 : Nat.card (M ≃ₐ[E] M) = Module.finrank E M := by
       first
       | exact IsGalois.card_aut_eq_finrank E M
-      | (rw [Nat.card_eq_fintype_card]; exact IsGalois.card_aut_eq_finrank E M)
     have h3 : Nat.card (ZMod l)ˣ = l - 1 := by
       haveI : Fact l.Prime := ⟨hp⟩
       first
       | (rw [Nat.card_eq_fintype_card, ZMod.card_units])
-      | (rw [Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime hp])
     rw [← h2, ← h3]
     exact h1
 
@@ -110,8 +105,6 @@ private theorem finrank_cyclotomicExt_dvd_sub_one {F Ω : Type*} [Field F] [Char
       first
       | (obtain ⟨i, -, rfl⟩ := hζ.eq_pow_of_pow_eq_one hy'
          exact pow_mem hζM i)
-      | (obtain ⟨i, -, rfl⟩ := hζ.eq_pow_of_pow_eq_one hy' hl0
-         exact pow_mem hζM i)
   have hKM : IntermediateField.extendScalars hEK ≤ M := by
     intro x hx
     rw [IntermediateField.mem_extendScalars] at hx
@@ -123,7 +116,6 @@ private theorem finrank_cyclotomicExt_dvd_sub_one {F Ω : Type*} [Field F] [Char
           (bot_le : (⊥ : IntermediateField E Ω) ≤ IntermediateField.extendScalars hEK) hKM
        rw [IntermediateField.relfinrank_bot_left, IntermediateField.relfinrank_bot_left] at h
        exact Dvd.intro _ h)
-    | exact IntermediateField.finrank_dvd_of_le_right hKM
   exact hdvd.trans hcard
 
 theorem dvdCondition : Formalism.MainNotions.N.Ln34.DvdStep := by
@@ -134,14 +126,5 @@ theorem dvdCondition : Formalism.MainNotions.N.Ln34.DvdStep := by
   have h := finrank_cyclotomicExt_dvd_sub_one (F := ℚ_[l]) (K0 K) K.1 hEK l (Fact.out) hle
   first
   | exact h
-  | (show Module.finrank (K0 K) K.1 ∣ l - 1
-     convert h using 1
-     exact LinearEquiv.finrank_eq
-       { toFun := fun y => ⟨y.1, y.2⟩
-         invFun := fun y => ⟨y.1, y.2⟩
-         map_add' := fun _ _ => rfl
-         map_smul' := fun _ _ => rfl
-         left_inv := fun _ => rfl
-         right_inv := fun _ => rfl })
 
 end Formalism.MainNotions.N.Ln34.DvdPf

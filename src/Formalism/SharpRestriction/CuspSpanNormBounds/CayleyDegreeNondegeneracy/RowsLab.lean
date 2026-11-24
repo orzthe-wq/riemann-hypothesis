@@ -63,11 +63,8 @@ def pairCountExponent (D : D7) (c : ℝ) (s : ℕ) : ℝ := c * ((s : ℝ) + D.R
 
 theorem rows_gg_eq (D : D7) : gg D = (gS D : ℝ) := by unfold gg gS; push_cast; ring
 
-theorem rows_Tr_pos (D : D7) (w : D.what₂.Word) : 0 < Tr D w := by
-  unfold Tr; exact_mod_cast (D.mem w).A.T_prime.pos
-
 theorem rows_NT_pos (D : D7) (w : D.what₂.Word) : 0 < NT D w := by
-  unfold NT; exact pow_pos (rows_Tr_pos D w) _
+  unfold NT; exact pow_pos (_root_.Formalism.MainNotions.BridgeLemma₂.rowsT_Tr_pos D w) _
 
 def wordPairGramGood (X : TermTie D) (u u' : D.what₂.Word) (large₂ : SizeData₂ D) (c : ℝ) (Z : GramM D) : Prop :=
   ∃ t : D.s.Term u u', D.s.Gterm t ≠ 0 ∧ D.s.relevant t ∧ ZEquiv (termGramMatrix X t) Z ∧
@@ -95,7 +92,7 @@ theorem rows_Gz_pos (hT : TermPtsTie X Y) (hrd : 0 < D.host.rdE) (t : D.s.Term u
   obtain ⟨h1, _, _, _⟩ := hT t hG hrel
   obtain ⟨hz, hz', hTz, hTz', hR⟩ := h1 τ
   rw [← d_Gf_eq Y hrd t τ]
-  exact lt_of_le_of_ne (Formalism.QuantumDeterminants.gNonneg D.R.k D.R.rS _ _ hz hz' (hTz ▸ rows_Tr_pos D u) (hTz' ▸ rows_Tr_pos D u') _ hR.1)
+  exact lt_of_le_of_ne (Formalism.QuantumDeterminants.gNonneg D.R.k D.R.rS _ _ hz hz' (hTz ▸ _root_.Formalism.MainNotions.BridgeLemma₂.rowsT_Tr_pos D u) (hTz' ▸ _root_.Formalism.MainNotions.BridgeLemma₂.rowsT_Tr_pos D u') _ hR.1)
     (Ne.symm hR.2.2)
 
 theorem two_le_gg_of_count_hypotheses {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) : 2 ≤ gg D := by

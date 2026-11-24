@@ -231,7 +231,7 @@ theorem reFrame : Formalism.L2.PjFree.ReFrame Xo c := by
   obtain ⟨zx, zo, zu, zt, ze, zb, zs, zg⟩ := z
   simp only at hx
   subst hx
-  obtain ⟨u0, hu0⟩ := IntRebase.gen_unit' (x := y0.1.x) zs y0.1.s zg y0.1.gen
+  obtain ⟨u0, hu0⟩ := _root_.GlobalTheory.Frames.ChgOf.gen_unit' (x := y0.1.x) zs y0.1.s zg y0.1.gen
   refine ⟨⟨IntRebase.rebase₂ y0.1 _ hK, fromTest_of_same_point (y := y0.1) rfl y0.2.1,
     IntRebase.integral_reb T io y0.1 y0.2.2 k hk hK⟩, u0, rfl, fun τ i => ?_,
     𝟙 _, Category.id_comp _, Category.id_comp _, ?_⟩

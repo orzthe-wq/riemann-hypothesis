@@ -5,48 +5,7 @@ public import Formalism.LocalToGlobal.InertKernelTheory.DefsRep
 public import Formalism.LocalToGlobal.InertKernelTheory.DefsRepFrame
 public import Formalism.LocalToGlobal.InertKernelTheory.FrameInt
 public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.LocalLevelIsKOneAtT
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PicardGroup
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -479,8 +438,7 @@ theorem frVec_inl_same {j : ℕ} {L0 : X.Lt j} {La' : X.Lt (j + 1)} (φ : Frm X 
     simp
   · simp only [if_neg hs, zOfX, Finset.mul_sum, ← mul_assoc, map_sum, coeff_CC_mul_X]
     obtain ⟨v, r, a, b⟩ := e
-    simp only [Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_neg hs, if_false, Finset.sum_const_zero,
-        Sigma.mk.inj_iff, heq_eq_eq, Prod.mk.injEq, true_and]
+    simp only [Sum.inl.injEq, Sigma.mk.inj_iff, heq_eq_eq, Prod.mk.injEq, true_and]
     rw [Finset.sum_eq_single a (fun x _ hx => by simp [hx]) (by simp),
       Finset.sum_eq_single b (fun x _ hx => by simp [hx]) (by simp),
       Finset.sum_eq_single r (fun x _ hx => by simp [hx]) (by simp)]
@@ -503,8 +461,7 @@ theorem frVec_inr_same {j : ℕ} {L0 : X.Lt j} {La' : X.Lt (j + 1)} (φ : Frm X 
   by_cases hs : IsOddPos s
   · simp only [if_pos hs, zOfX, Finset.mul_sum, ← mul_assoc, map_sum, coeff_CC_mul_X]
     obtain ⟨v, r, a, b⟩ := e
-    simp only [Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_pos hs, if_false, Finset.sum_const_zero,
-        Sigma.mk.inj_iff, heq_eq_eq, Prod.mk.injEq, true_and]
+    simp only [Sum.inr.injEq, Sigma.mk.inj_iff, heq_eq_eq, Prod.mk.injEq, true_and]
     rw [Finset.sum_eq_single a (fun x _ hx => by simp [hx]) (by simp),
       Finset.sum_eq_single b (fun x _ hx => by simp [hx]) (by simp),
       Finset.sum_eq_single r (fun x _ hx => by simp [hx]) (by simp)]
@@ -1107,11 +1064,7 @@ namespace Formalism.L2.KerInert.RepFrame
 open Formalism.MainNotions.FormalGroupSystem
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker
 
-theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
-  apply D.host.φ₀.injective
-  show D.host.φ₀ (D.host.conj (D.host.conj x)) = D.host.φ₀ x
-  rw [Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply]
-  simp
+alias conj_conj := _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conj_conj
 
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : Formalism.L2.G.Pend.CEmbC X.G)
   (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
@@ -1140,7 +1093,7 @@ theorem entry_int {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] {k l : �
   have h2 : A.mulVec (fun y => Gs y c) = Gt.mulVec (fun d => algebraMap W Qq (w d)) := by
     rw [← hw]
     funext i
-    simp only [Finset.sum_apply, Pi.smul_apply, Algebra.smul_def, Matrix.mulVec, dotProduct]
+    simp only [Finset.sum_apply, Algebra.smul_def, Matrix.mulVec, dotProduct]
     exact Finset.sum_congr rfl fun d _ => mul_comm _ _
   rw [h1, h2, Matrix.mulVec_mulVec, hG, Matrix.one_mulVec]
 

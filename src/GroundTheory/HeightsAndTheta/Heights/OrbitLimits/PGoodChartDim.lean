@@ -8,48 +8,6 @@ public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartDehomog
 public import GroundTheory.HeightsAndTheta.Heights.ChowForms.PChartHomogenise
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PGoodChartZeroSet
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSegreChartDim
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.KleimanNefness.AlgDim
 
 @[expose] public section
@@ -97,9 +55,7 @@ theorem projChartSet_eq (P : Ideal (MRing ι)) {m e : ℕ} (σ : Fin m ≃ ((k :
   · rintro ⟨⟨z, hz, rfl⟩, h1⟩
     exact ⟨z, hz, (hl z).symm.trans h1, rfl⟩
 
-theorem linForm_single' {m : ℕ} (a : Fin m) : linForm (Pi.single a (1 : ℂ)) = X a := by
-  classical
-  simp [linForm, Pi.single_apply]
+alias linForm_single' := _root_.GroundTheory.Heights₂.Heights.linForm_single
 
 
 omit [∀ k, Fintype (ι k)] in
@@ -119,7 +75,7 @@ theorem linForm_sub_one_not_mem {m : ℕ} {V : Ideal (MvPolynomial (Fin m) ℂ)}
   have h0 := hV _ h 0
   rw [homogeneousComponent_zero] at h0
   have hc : AddMonoidAlgebra.coeff (linForm t - 1) 0 = -1 := by
-    simp [linForm, coeff_sum, coeff_C_mul, coeff_X]
+    simp [linForm, coeff_C_mul, coeff_X]
   rw [hc] at h0
   exact hne (Ideal.eq_top_of_isUnit_mem _ h0 (by simp))
 
@@ -210,9 +166,9 @@ theorem GoodChartDim.proof (h₁ : ConeVanishingHomog.Statement) (h₂ : ConeSli
     rw [hVQ₀, Ideal.minimalPrimes_eq_subsingleton_self]
     rfl
 
-  have d₁ := ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.dimPIT ℂ (Fin m) V J (linForm t - 1) hV.isPrime
+  have d₁ := _root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.KrullDimensionPrincipalIdeal.dimPIT' ℂ (Fin m) V J (linForm t - 1) hV.isPrime
     (linForm_sub_one_not_mem hV.isHomog hV.isPrime.ne_top t) hJmin
-  have d₂ := ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.dimPIT ℂ (Fin m) V Q₀ (linForm u - 1) hV.isPrime
+  have d₂ := _root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.KrullDimensionPrincipalIdeal.dimPIT' ℂ (Fin m) V Q₀ (linForm u - 1) hV.isPrime
     (linForm_sub_one_not_mem hV.isHomog hV.isPrime.ne_top u) hQ₀min
   rw [← d₂, hdimQ₀] at d₁
   exact eq_of_add_one_eq d₁

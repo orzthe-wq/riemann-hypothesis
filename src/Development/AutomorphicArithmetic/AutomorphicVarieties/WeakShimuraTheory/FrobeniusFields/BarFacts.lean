@@ -144,7 +144,7 @@ theorem UpperTheory.V.Ws.barFacts :
     have hp := res_ne (D.Psi τ)
     unfold Raw.bar
     rw [← hal']
-    cases T.pr <;> simp [lab, Raw.ps, e1, hinv, res_zpow, ha, hp, inv_zpow]
+    cases T.pr <;> simp [lab, Raw.ps, e1, hinv, res_zpow]
   have hm : ∃ m : ℕ, l.Coprime m ∧ ∀ g, Raw.bar D.Psi g ^ m = 1 := by
     refine ⟨Fintype.card (ResidueField c.O) - 1, ?_, fun g => ?_⟩
     · obtain ⟨n, -, hn⟩ := FiniteField.card (ResidueField c.O) l

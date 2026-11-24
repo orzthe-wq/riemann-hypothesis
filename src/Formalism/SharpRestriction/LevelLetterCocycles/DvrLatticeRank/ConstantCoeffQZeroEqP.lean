@@ -68,9 +68,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
-theorem Q_eq_q (hs : W.s = 1) : W.Q = W.q := by
-  simp [LocWach.Q, hs]
-
 theorem cc_lev_pi (c : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) :
     PowerSeries.constantCoeff (W.lev c ζ letπ) = ζ - 1 := by
   obtain ⟨E, hE0, -, hE⟩ := W.lev_π c ζ hζ
@@ -101,7 +98,7 @@ theorem cc_lev_q_one (c : ZMod n) : PowerSeries.constantCoeff (W.lev c 1 W.q) = 
 theorem qroot_prim (hs : W.s = 1) (hp : (PD.p : LL) ≠ 0) {c : ZMod n} {ζ : LL}
     (h : Formalism.MainNotions.DeltaInvariantLattices.QRoot W c ζ) : IsPrimitiveRoot ζ PD.p := by
   obtain ⟨-, ⟨m, hm⟩, hcc⟩ := h
-  rw [Q_eq_q W hs] at hcc
+  rw [_root_.Formalism.MainNotions.LiftingTheory.wmap_Q_one W hs] at hcc
   have hpr : PD.p.Prime := PD.hp
   obtain ⟨j, -, hord⟩ := (Nat.dvd_prime_pow hpr).1 (orderOf_dvd_of_pow_eq_one hm)
   have hprim : IsPrimitiveRoot ζ (PD.p ^ j) := hord ▸ IsPrimitiveRoot.orderOf ζ
@@ -116,22 +113,11 @@ theorem qroot_prim (hs : W.s = 1) (hp : (PD.p : LL) ≠ 0) {c : ZMod n} {ζ : LL
     exact absurd (cc_lev_q_one W c ▸ hcc) hp
   · rwa [pow_one] at hprim
 
-theorem letE_mul_self (c : ZMod n) : (letE c : LetA O n) * letE c = letE c := by
-  funext i
-  by_cases h : i = c
-  · subst h; simp [letE]
-  · simp [letE, h]
-
 theorem letE_smul_of_mem_Nl {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T}
     (hy : y ∈ W.Nl T c) : (letE c : LetA O n) • y = y := by
   obtain ⟨z, -, rfl⟩ := hy
   simp only [LinearMap.smul_apply, LinearMap.id_apply]
-  rw [smul_smul, letE_mul_self]
-
-theorem Nl_le_N (T : LocLat G Qp LL O) (c : ZMod n) : W.Nl T c ≤ W.N T := by
-  rintro _ ⟨z, hz, rfl⟩
-  simp only [LinearMap.smul_apply, LinearMap.id_apply]
-  exact (W.N T).smul_mem _ hz
+  rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
 
 theorem mem_Nl_of {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T} (hy : y ∈ W.N T)
     (hc : (letE c : LetA O n) • y = y) : y ∈ W.Nl T c :=
@@ -173,7 +159,7 @@ theorem rank_le (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod n) 
       x = ∑ j, (Pi.single c (a j) : LetA O n) • b j)
     (h3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T) [FiniteDimensional LL ↥(Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c)] :
     r ≤ finrank LL ↥(Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c) := by
-  have hbN : ∀ m, b m ∈ W.N T := fun m => Nl_le_N W T c (hbS m)
+  have hbN : ∀ m, b m ∈ W.N T := fun m => _root_.Formalism.MainNotions.LiftingTheory.wmap_Nl_le W T c (hbS m)
   let bN : Fin r → ↥(W.N T) := fun m => ⟨b m, hbN m⟩
   have hcmp : ∀ m, W.cmp T (bN m) ∈ DcrisL PD T.ρ (W.emb c) := by
     intro m
@@ -207,12 +193,12 @@ theorem rank_le (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod n) 
         _ = 0 := by rw [← Finset.smul_sum, hsum, smul_zero]
     obtain ⟨y, hy, hyz⟩ := h3.1 _ hcz
     set z : W.DD T := ∑ i, o i • b i with hz
-    have hzc : ((∑ i, o i • bN i : ↥(W.N T)) : W.DD T) = z := by simp [hz, bN, Submodule.coe_sum]
+    have hzc : ((∑ i, o i • bN i : ↥(W.N T)) : W.DD T) = z := by simp [hz, bN]
     have hy' : (letπ : LetA O n) • y = z := by
       rw [← hzc, ← hyz]
       simp [Formalism.MainNotions.DeltaInvariantLattices.smulA]
     have hzl : z ∈ W.Nl T c := Submodule.sum_mem _ fun i _ => Submodule.smul_of_tower_mem _ _ (hbS i)
-    obtain ⟨a, ha, -⟩ := hu _ (mem_Nl_of W ((W.N T).smul_mem (letE c) hy) (by rw [smul_smul, letE_mul_self]))
+    obtain ⟨a, ha, -⟩ := hu _ (mem_Nl_of W ((W.N T).smul_mem (letE c) hy) (by rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]))
     have rep1 : z = ∑ j, (Pi.single c (PowerSeries.C (o j)) : LetA O n) • b j := by
       rw [hz]
       exact Finset.sum_congr rfl fun j _ => smul_eq_single W (letE_smul_of_mem_Nl W (hbS j)) (o j)
@@ -255,7 +241,7 @@ theorem mem_vanI_at (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod
     (hexp : ∀ j : ℤ, W.levN T c ζ ⟨y, hy⟩ j ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ ((k : ℤ) - j)) :
     y ∈ Formalism.MainNotions.DeltaInvariantLattices.vanI W c ζ k • W.N T := by
   obtain ⟨r, b, hbS, hu⟩ := hfree
-  have hbN : ∀ m, b m ∈ W.N T := fun m => Nl_le_N W T c (hbS m)
+  have hbN : ∀ m, b m ∈ W.N T := fun m => _root_.Formalism.MainNotions.LiftingTheory.wmap_Nl_le W T c (hbS m)
   have hCa := filC_anti (PD := PD) T τ
   have hFa : Antitone (FildR PD T.ρ τ) := fun a b hab => inf_le_inf_left _ (filVB_anti PD hab)
   obtain ⟨a₀, h₀⟩ := exists_le_filV PD (DdRE PD T.ρ τ)
@@ -285,7 +271,7 @@ theorem mem_vanI_at (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod
     simp only [Formalism.MainNotions.UnusedSlot80.LevR.levN_letE] at hlow hk
     have hx'N : (letE c : LetA O n) • (x : W.DD T) ∈ W.N T := (W.N T).smul_mem _ x.2
     have hx'c : (letE c : LetA O n) • ((letE c : LetA O n) • (x : W.DD T)) =
-        (letE c : LetA O n) • (x : W.DD T) := by rw [smul_smul, letE_mul_self]
+        (letE c : LetA O n) • (x : W.DD T) := by rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
     obtain ⟨β, -, hβ⟩ := hexpand _ hx'N hx'c
     have hxe : ∀ j, W.levN T c ζ x j =
         ∑ m, smulS (W.lev c ζ (Pi.single c (β m))) (e m) j := by

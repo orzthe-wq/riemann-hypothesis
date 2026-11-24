@@ -66,7 +66,7 @@ theorem cutRows_one (b : Fin N) : cutRows (1 : Matrix (Fin N) (Fin N) ℂ) b = 1
 
 theorem upT_one : upT (1 : Matrix (Fin N) (Fin N) ℂ) = 1 := by
   ext c b
-  simp [upT, cutRows_one, Matrix.one_apply, Pi.single_apply]
+  simp [upT, cutRows_one, Matrix.one_apply]
 
 theorem upT_spec {A : Matrix (Fin N) (Fin N) ℂ} (h : ∀ b, (cutRows A b).det ≠ 0) (a b : Fin N) :
     (b < a → upT A a b = 0) ∧ (a ≤ b → (A * upT A) a b = (1 : Matrix (Fin N) (Fin N) ℂ) a b) := by

@@ -4,53 +4,14 @@ public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerPr
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsTraceFormGramMatrixInBasis
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnipotentInvariantCompactlySupportedWeightStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsUnipotentInvariantCompactlySupportedWeight
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SelfdualMeasureTransportEquiv
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SelfdualMeasureTransportEquivStatement
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -199,7 +160,7 @@ theorem sdW_iff (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     rw [Measure.map_map hm' hm]
     have : (e.symm ∘ e) = id := by funext X; exact e.symm_apply_apply X
     rw [this, Measure.map_id]
-  have key := GlobalTheory.T.selfdual_measure_transport_equiv _ _ e μ (fun x y => ψR (x ⬝ᵥ
+  have key := _root_.GlobalTheory.CompanionTheory.SW.selfDual_transport _ _ e μ (fun x y => ψR (x ⬝ᵥ
         ((Matrix.blockDiagonal fun _ : Fin n => B).map (algebraMap F R) *ᵥ y)))
   have hform : SdW F E σ M J R ψR n μ ↔ SelfDual μ (fun X Y => ψR (e X ⬝ᵥ
         ((Matrix.blockDiagonal fun _ : Fin n => B).map (algebraMap F R) *ᵥ e Y))) := by
@@ -230,7 +191,7 @@ theorem sdW_coord : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Number
   have hdet' : (Matrix.blockDiagonal fun _ : Fin n => B).det ≠ 0 := by
     rw [Matrix.det_blockDiagonal]
     exact Finset.prod_ne_zero_iff.mpr fun _ _ => hdet
-  obtain ⟨cinf, c, hU, h1, h2⟩ := GlobalTheory.T.exists_unipotentInvariant_compactlySupported_weight F hCM.1 laminf lam hinf hv ψ hψ
+  obtain ⟨cinf, c, hU, h1, h2⟩ := _root_.GlobalTheory.CompanionTheory.SW.SdCoord.selfDual_coord F hCM.1 laminf lam hinf hv ψ hψ
     ((Fin M × Fin d) × Fin n) (Matrix.blockDiagonal fun _ : Fin n => B) hsym' hdet'
   refine ⟨cinf, c, hU, ?_, fun v => ?_⟩
   · obtain ⟨t1, t2, t3, t4, -⟩ := GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1

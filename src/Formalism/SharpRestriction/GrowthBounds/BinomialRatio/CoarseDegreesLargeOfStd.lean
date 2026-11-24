@@ -86,12 +86,12 @@ theorem coarse_degrees_large_of_std {C0 Cde CE1 CE2 : ℝ} {X : Loc} [NeZero X.m
     rw [div_lt_iff₀ hk0] at h1
     linarith
   have hNLa : 1 ≤ (X.N1 : ℝ) * X.La C0 := one_le_mul_of_one_le_of_one_le hN1 hLa
-  have hk10 : 10 ≤ X.k := by nlinarith
-  have hLa4 : 4 * X.La C0 ≤ X.k := by nlinarith
+  have hk10 : 10 ≤ X.k := by linarith
+  have hLa4 : 4 * X.La C0 ≤ X.k := by linarith [le_mul_of_one_le_left (show 0 ≤ X.La C0 by linarith) hN1]
   have hkp : X.k ^ 2 ≤ (X.p : ℝ) := by
     have := h.pk
     have hY2 : 1 ≤ X.Y ^ 2 := one_le_pow₀ hY
-    nlinarith [sq_nonneg X.k]
+    linarith [le_mul_of_one_le_right (sq_nonneg X.k) hY2]
 
   have hb4 : 4 * X.k ^ 3 * X.Q ≤ X.b' := by
     have hHb := h.Hb
@@ -100,19 +100,19 @@ theorem coarse_degrees_large_of_std {C0 Cde CE1 CE2 : ℝ} {X : Loc} [NeZero X.m
       have hN1' : (1 : ℝ) ≤ X.N := by linarith
       have : X.Q ^ 4 ≤ X.N * X.Q ^ 4 * X.Y := by
         have hq : 0 ≤ X.Q ^ 4 := by positivity
-        nlinarith [mul_le_mul_of_nonneg_left hN1' hq]
+        linarith [mul_le_mul_of_nonneg_right hN1' hq, le_mul_of_one_le_right (mul_nonneg (show 0 ≤ X.N by linarith) hq) hY]
       linarith
     have hk3 : 0 ≤ 4 * X.k ^ 3 := by positivity
     calc 4 * X.k ^ 3 * X.Q ≤ 4 * X.k ^ 3 * (X.N * X.Q ^ 4 * X.Y) := mul_le_mul_of_nonneg_left hNQY hk3
       _ = 4 * X.k ^ 3 * X.N * X.Q ^ 4 * X.Y := by ring
       _ ≤ X.b' := hHb
   have hQ0 : 0 < X.Q := by linarith
-  have hk3 : X.k ≤ X.k ^ 3 := by nlinarith
+  have hk3 : X.k ≤ X.k ^ 3 := le_self_pow₀ (by linarith) (by norm_num)
   refine ⟨?_, ?_, ?_, hkp, hk10, hLa, hLa4⟩
   ·
     have hA0 := h.half_ratio_le_segment_base_of_std j
     have hfrac : X.N1 * X.La C0 / X.k ≤ 1 / 2 := by
-      rw [div_le_iff₀ hk0]; nlinarith
+      rw [div_le_iff₀ hk0]; linarith
     have hA0pos : 0 ≤ ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) := le_trans (by positivity) hA0
     have h1 : ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) / 2 ≤ (A : ℝ) := by
       have : ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) * (1 / 2) ≤
@@ -121,7 +121,7 @@ theorem coarse_degrees_large_of_std {C0 Cde CE1 CE2 : ℝ} {X : Loc} [NeZero X.m
       linarith
     have h2 : X.k ^ 3 ≤ (X.a : ℝ) / (2 * X.Q) / 2 := by
       rw [div_div, le_div_iff₀ (by positivity)]
-      nlinarith
+      linarith
     linarith
   · intro i
     have hPpos : 0 < (X.seg C0 CE1 CE2 j).P X.p i := by
@@ -137,14 +137,14 @@ theorem coarse_degrees_large_of_std {C0 Cde CE1 CE2 : ℝ} {X : Loc} [NeZero X.m
                                      linarith
     have hb2 : X.b' / 2 ≤ ((X.seg C0 CE1 CE2 j).bTop i : ℝ) := by
       show X.b' / 2 ≤ (X.bT (segPos X.TT j i) : ℝ)
-      nlinarith
+      linarith [hk5, hN2, hk3, mul_le_mul_of_nonneg_left hbe hb.le]
     have hP0 : (0 : ℝ) < ((X.seg C0 CE1 CE2 j).P X.p i : ℝ) := by exact_mod_cast hPpos
     have h3 : X.b' / 2 / X.Q ≤ ((X.seg C0 CE1 CE2 j).bTop i : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ) := by
       calc X.b' / 2 / X.Q ≤ X.b' / 2 / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ) :=
             div_le_div_of_nonneg_left (by positivity) hP0 hPQ
         _ ≤ _ := div_le_div_of_nonneg_right hb2 hP0.le
     have h4 : 2 * X.k ^ 3 ≤ X.b' / 2 / X.Q := by
-      rw [div_div, le_div_iff₀ (by positivity)]; nlinarith
+      rw [div_div, le_div_iff₀ (by positivity)]; linarith
     have hkr : ((X.m : ℝ) + 1) = X.k := rfl
     show X.k ^ 3 ≤ (coarseA X.p (X.seg C0 CE1 CE2 j) (digitBlock rz ry) i : ℝ)
     unfold coarseA
@@ -168,7 +168,7 @@ theorem coarse_degrees_large_of_std {C0 Cde CE1 CE2 : ℝ} {X : Loc} [NeZero X.m
             div_le_div_of_nonneg_left ha0 hP0 hPQ
         _ ≤ _ := div_le_div_of_nonneg_right haT hP0.le
     have h4 : 2 * X.k ^ 3 ≤ (X.a : ℝ) / X.Q := by
-      rw [le_div_iff₀ hQ0]; nlinarith
+      rw [le_div_iff₀ hQ0]; linarith [mul_pos (pow_pos hk0 3) hQ0]
     have hkr : ((X.m : ℝ) + 1) = X.k := rfl
     show X.k ^ 3 ≤ (coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (digitBlock rz ry) i : ℝ)
     unfold coarseC
@@ -255,7 +255,7 @@ theorem pfa_rho_up [NeZero r] (hP : IsPair A Ai Ci mu lam) (q : ℝ)
   have h4 := (Int.cast_le (R := ℝ)).2 h1
   push_cast at h4
   have h5 := hN i
-  nlinarith
+  linarith
 
 theorem pfa_u_low [NeZero r] (hP : IsPair A Ai Ci mu lam) (q : ℝ)
     (hN : ∀ i : Fin s, (∑ l : Fin s, if l.val < i.val then (Ai l : ℝ) else 0) ≤ q * Ai i) (i : Fin s) :

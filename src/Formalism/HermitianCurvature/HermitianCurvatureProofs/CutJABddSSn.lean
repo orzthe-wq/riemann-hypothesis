@@ -56,12 +56,8 @@ section model
 
 variable (P : M.Par)
 
-def phR : (DQ P).R := (∏ i, (DQ P).x (M.vcb i)) * ∏ i, (DQ P).inv ((DQ P).x (M.vc i))
-
-def phRb : (DQ P).R := (∏ i, (DQ P).x (M.vc i)) * ∏ i, (DQ P).inv ((DQ P).x (M.vcb i))
-
 def ssnB (l : ℕ) (ρ π : M.Ty P) : (DQ P).R :=
-  if M.Up P l π ρ then algebraMap ℂ (DQ P).R ((Real.sqrt (M.Nrm P l π) : ℝ) : ℂ) * phR P else 0
+  if M.Up P l π ρ then algebraMap ℂ (DQ P).R ((Real.sqrt (M.Nrm P l π) : ℝ) : ℂ) * _root_.Formalism.FourierDecayAlt.P.CutMP.JA.BStar.βR P else 0
 
 def ssnV (l : ℕ) (ρ π : M.Ty P) (q : Qp P.r P.TT) : ℂ :=
   if M.Up P l π ρ then ((Real.sqrt (M.Nrm P l π) : ℝ) : ℂ) * ((∏ i, conj (q.1.1 i)) * ∏ i, (q.1.1 i)⁻¹) else 0
@@ -80,8 +76,8 @@ theorem evD_inv_cb (l : Fin P.r) (q : Qp P.r P.TT) :
   exact (map_ne_zero _).2 (q.2.1 l)
 
 theorem evD_phR (q : Qp P.r P.TT) :
-    evD P q (phR P) = (∏ i, conj (q.1.1 i)) * ∏ i, (q.1.1 i)⁻¹ := by
-  unfold phR
+    evD P q (_root_.Formalism.FourierDecayAlt.P.CutMP.JA.BStar.βR P) = (∏ i, conj (q.1.1 i)) * ∏ i, (q.1.1 i)⁻¹ := by
+  unfold _root_.Formalism.FourierDecayAlt.P.CutMP.JA.BStar.βR
   rw [map_mul, map_prod, map_prod]
   congr 1
   · refine Finset.prod_congr rfl fun i _ => ?_
@@ -89,15 +85,15 @@ theorem evD_phR (q : Qp P.r P.TT) :
   · exact Finset.prod_congr rfl fun i _ => evD_inv_c P i q
 
 theorem evD_phRb (q : Qp P.r P.TT) :
-    evD P q (phRb P) = (∏ i, q.1.1 i) * ∏ i, (conj (q.1.1 i))⁻¹ := by
-  unfold phRb
+    evD P q (_root_.Formalism.FourierDecayAlt.P.CutMP.JA.BStar.βRb P) = (∏ i, q.1.1 i) * ∏ i, (conj (q.1.1 i))⁻¹ := by
+  unfold _root_.Formalism.FourierDecayAlt.P.CutMP.JA.BStar.βRb
   rw [map_mul, map_prod, map_prod]
   congr 1
   · refine Finset.prod_congr rfl fun i _ => ?_
     rw [evaluation_of_coordinate_variable, Formalism.FourierDecayAlt.P.MAx2.Adj.coordE_vc]
   · exact Finset.prod_congr rfl fun i _ => evD_inv_cb P i q
 
-theorem cjD_phR : cjD P (phR P) = phRb P :=
+theorem cjD_phR : cjD P (_root_.Formalism.FourierDecayAlt.P.CutMP.JA.BStar.βR P) = _root_.Formalism.FourierDecayAlt.P.CutMP.JA.BStar.βRb P :=
   extD P fun q => by
     rw [evD_cjD, evD_phR P, evD_phRb P, map_mul, map_prod, map_prod]
     congr 1
@@ -123,7 +119,7 @@ theorem ssn_entry {L : LevelData (A P (DQ P)) P.r} (hL : IsModelLevel P (DQ P) L
     · exact mul_comm _ _
     · apply extD P; intro q
       have e1 : evD P q ((∏ i, (DQ P).x (M.vc i)) * ∏ i, (DQ P).inv ((DQ P).x (M.vcb i))) =
-          conj (evD P q (phR P)) := by
+          conj (evD P q (_root_.Formalism.FourierDecayAlt.P.CutMP.JA.BStar.βR P)) := by
         rw [← evD_cjD, cjD_phR P]; rfl
       rw [map_mul] at e1
       rw [evD_cjD, map_mul, map_mul, map_mul, evD_alg, evD_alg, e1, map_mul, mul_comm]

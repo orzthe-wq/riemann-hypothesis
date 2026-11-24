@@ -2,10 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 public import Development.AbelianVarietyTheory.CrystallinePeriods.CrisLoc
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPowStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadicStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElementStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariantStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPow
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadic
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -129,7 +129,7 @@ theorem general {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [Nontrivial
     rw [← map_pow, hc, map_mul, map_mul, ← mul_assoc, hy]
 
 theorem exists_isEps (l : ℕ) [Fact l.Prime] : ∃ e : Per.Fl l, IsEps e := by
-  obtain ⟨ζ, ε, h0, -, h1, h⟩ := GlobalTheory.T.exists_compatible_rootsOfUnity_and_tilt_padic l
+  obtain ⟨ζ, ε, h0, -, h1, h⟩ := _root_.GlobalTheory.MemLoc.exists_zeta_eps l
   refine ⟨ε, ?_, ?_⟩
   · have := h 0
     rw [h0, map_one] at this
@@ -145,9 +145,9 @@ theorem of_isEps (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (he : IsEps e) :
     IsDomain (Per.BdRp l) ∧ Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l)) ∧ IsField (Per.BdR l) ∧
       ∀ x : Per.BdR l, ∃ (n : ℕ) (y : Per.BdRp l), x * algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (xi e)) ^ n =
         algebraMap (Per.BdRp l) (Per.BdR l) y := by
-  obtain ⟨hF, hreg, hc, -⟩ := GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he
-  have hk := GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he
-  obtain ⟨-, hθ, hu, -, -⟩ := GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l
+  obtain ⟨hF, hreg, hc, -⟩ := _root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l e he
+  have hk := _root_.GlobalTheory.MemLoc.ker_localizedTheta_eq_span_xi l e he
+  obtain ⟨-, hθ, hu, -, -⟩ := _root_.GlobalTheory.MemLoc.thetaD_props l
   have : Nontrivial (Per.BdRp l) := (Per.θD l).domain_nontrivial
   haveI : IsLocalization.Away (aDp l (xi e)) (Per.BdR l) := GlobalTheory.CrisLoc.bdR_away l _ hk
   refine general (Submonoid.powers (aDp l (xi e))) (aDp l (xi e)) hreg ?_ ?_ ?_ ?_

@@ -117,9 +117,7 @@ theorem pClosed (hS : PSmooth U A φ) : PClosed U A φ := by
       (by
         rw [minSmoothness_of_isRCLikeNormedField]
         first
-        | exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)
-        | (show ((2 : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞); exact WithTop.coe_le_coe.2 le_top)
-        | simp)
+        | exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))
 
 theorem pDep : PDep A φ := by
   intro k c j

@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -236,7 +237,7 @@ theorem detOn_eT (h3 : A * A * A = A) (t : ℝ) : detOn (eT A t) (Vm A) = Real.e
   have hk : ∀ y ∈ Vm A, Matrix.toLin' (eT A t) y ∈ Vm A := eT_keeps h3 t
   have hr : (Matrix.toLin' (eT A t)).restrict hk = ((Real.exp (-t) : ℝ) : ℂ) • LinearMap.id := by
     ext y : 2
-    simp only [LinearMap.restrict_coe_apply, Matrix.toLin'_apply, eT_mulVec h3 y.2]
+    simp only [LinearMap.coe_restrict_apply, Matrix.toLin'_apply, eT_mulVec h3 y.2]
     rfl
   unfold detOn
   rw [dite_eq_left hk, hr, LinearMap.det_smul, LinearMap.det_id, mul_one, norm_pow, Complex.norm_real,

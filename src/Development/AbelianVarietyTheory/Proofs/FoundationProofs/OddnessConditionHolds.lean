@@ -1,18 +1,21 @@
 module
 
-public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.OneSubSmulPeirceCut
 public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleStrongApproxModAdelicIdeal
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaLatticePointMemThetaLatticeOfAdelic
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRationalPointOfMemMovedThetaLattice
+public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.OneSubSmulPeirceCut
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleIntegralSeparatedComplete
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHalfIdem
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RationalPointsIntegralPointsMembership
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaLatticeAgreeOfTrivialAtPrimeStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitaryStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryHeckeCharacterValues
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilOperatorConjHeisenbergMovedLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilRepresentationVacuumSignInertPlacesStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilOperatorConjHeisenbergMovedLattice
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilRepresentationVacuumSignInertPlaces
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RelIndexNeZeroOfMoves
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsDual
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -28,13 +31,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,6 +39,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -54,10 +52,109 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RationalPointsIntegralPointsMembership
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaLatticeAgreeOfTrivialAtPrime, Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddnessConditionHolds
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaLatticeAgreeOfTrivialAtPrime =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaLatticeAgreeOfTrivialAtPrime", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleStrongApproxModAdelicIdeal\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaLatticePointMemThetaLatticeOfAdelic\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRationalPointOfMemMovedThetaLattice\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.RelIndexNeZeroOfMoves\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsDual\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
+open scoped BigOperators Pointwise
+
+noncomputable section
+
+namespace GlobalTheory.NormSum.LocAgree
+
+theorem exists_int_mul (D : D7) {N : ℕ} (q : ℕ) (k : GA D N) (h : TrivAt D q (k : GL (Fin N) (AE D))) :
+    ∃ s : ℕ, Nat.Coprime s q ∧
+      (∀ i j, (s : AE D) * ((k : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D) ∧
+      ∀ i j, (s : AE D) * (((k : GL (Fin N) (AE D))⁻¹ : GL (Fin N) (AE D)) :
+        Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D := by
+  apply GlobalTheory.InertParity.LengthSign.exists_int_mul <;> assumption
+
+theorem pt_nsmul (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (m : ℕ)
+    (z : Matrix (Fin N') (Fin N) D.host.E) :
+    pt D (tor0 D cc δ) δ ((m : D.host.E) • z) = m • pt D (tor0 D cc δ) δ z := by
+  funext τ i j
+  show δ * embT D τ ((m : D.host.E) * z i j) = m • (δ * embT D τ (z i j))
+  rw [map_mul, map_natCast, nsmul_eq_mul]
+  ring
+
+theorem matrix_move {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) {N N' : ℕ} (g₁ g₂ : GL (Fin N) A)
+    (g₁' g₂' : GL (Fin N') A) (s s' : ℕ) (z : Matrix (Fin N') (Fin N) R) :
+    ((g₂'⁻¹ : GL (Fin N') A) : Matrix (Fin N') (Fin N') A) * (((s * s' : ℕ) : R) • z).map f *
+      (g₂ : Matrix (Fin N) (Fin N) A) =
+      ((s' : A) • ((g₂'⁻¹ * g₁' : GL (Fin N') A) : Matrix (Fin N') (Fin N') A)) *
+      (((g₁'⁻¹ : GL (Fin N') A) : Matrix (Fin N') (Fin N') A) * z.map f * (g₁ : Matrix (Fin N) (Fin N) A)) *
+      ((s : A) • ((g₁⁻¹ * g₂ : GL (Fin N) A) : Matrix (Fin N) (Fin N) A)) := by
+  have e1 : (((s * s' : ℕ) : R) • z).map f = ((s : A) * (s' : A)) • z.map f := by
+    ext i j
+    simp
+  rw [e1]
+  simp only [Units.val_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]
+  rw [← Matrix.mul_assoc (g₁ : Matrix (Fin N) (Fin N) A), Units.mul_inv, Matrix.one_mul,
+    ← Matrix.mul_assoc (g₁' : Matrix (Fin N') (Fin N') A), Units.mul_inv, Matrix.one_mul]
+
+theorem smul_mem_La (D : D7) (hG : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : cc ≠ ⊥) {N N' : ℕ}
+    (g₁ g₂ : GA D N) (g₁' g₂' : GA D N')
+    {L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L₁' L₂' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
+    (h₁ : Moves D (g₁ : GL (Fin N) (AE D)) L₁) (h₁' : Moves D (g₁' : GL (Fin N') (AE D)) L₁')
+    (h₂ : Moves D (g₂ : GL (Fin N) (AE D)) L₂) (h₂' : Moves D (g₂' : GL (Fin N') (AE D)) L₂')
+    (s s' : ℕ)
+    (hs : ∀ i j, (s : AE D) * (((g₁ : GL (Fin N) (AE D))⁻¹ * (g₂ : GL (Fin N) (AE D)) : GL (Fin N) (AE D)) :
+      Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D)
+    (hs' : ∀ i j, (s' : AE D) * (((g₂' : GL (Fin N') (AE D))⁻¹ * (g₁' : GL (Fin N') (AE D)) : GL (Fin N') (AE D)) :
+      Matrix (Fin N') (Fin N') (AE D)) i j ∈ OhE D)
+    (x : VC D N N') (hx : x ∈ La D (tor0 D cc δ) L₁ L₁') : (s * s') • x ∈ La D (tor0 D cc δ) L₂ L₂' := by
+  obtain ⟨z, rfl, hz⟩ := _root_.GlobalTheory.NormSum.exists_pt_of_mem_La_moved D hG cc δ hc N N' g₁ g₁' L₁ L₁' h₁ h₁' x hx
+  rw [← pt_nsmul]
+  refine _root_.GlobalTheory.NormSum.pt_mem_La_of_adelic D hG cc δ hc N N' g₂ g₂' L₂ L₂' h₂ h₂' _ ?_
+  have hI := (GlobalTheory.AdelicApprox.approx_mod_ideal D cc hc).2.2
+  intro i j
+  rw [matrix_move (inc D) (g₁ : GL (Fin N) (AE D)) _ (g₁' : GL (Fin N') (AE D)), Matrix.mul_apply]
+  refine sum_mem fun l _ => ?_
+  rw [mul_comm]
+  refine hI _ (hs l j) _ ?_
+  rw [Matrix.mul_apply]
+  exact sum_mem fun r _ => hI _ (hs' i r) _ (hz r l)
+
+end GlobalTheory.NormSum.LocAgree
+
+
+open GlobalTheory.NormSum.LocAgree in
+theorem GlobalTheory.NormSum.La_agree_of_trivAt : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), cc ≠ ⊥ → ∀ (N N' q : ℕ) (h k : GA D N) (h' k' : GA D N') (L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L₁' L₂' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), TrivAt D q (k : GL (Fin N) (AE D)) → TrivAt D q (k' : GL (Fin N') (AE D)) → Moves D (h : GL (Fin N) (AE D)) L₁ → Moves D (h' : GL (Fin N') (AE D)) L₁' → Moves D ((h * k : GA D N) : GL (Fin N) (AE D)) L₂ → Moves D ((h' * k' : GA D N') : GL (Fin N') (AE D)) L₂' → (∀ x ∈ La D (tor0 D cc δ) L₁ L₁', ∃ m : ℕ, Nat.Coprime m q ∧ m • x ∈ La D (tor0 D cc δ) L₂ L₂') ∧ (∀ x ∈ La D (tor0 D cc δ) L₂ L₂', ∃ m : ℕ, Nat.Coprime m q ∧ m • x ∈ La D (tor0 D cc δ) L₁ L₁') := by
+  intro D hG cc δ hc N N' q h k h' k' L₁ L₂ L₁' L₂' hk hk' h₁ h₁' h₂ h₂'
+  obtain ⟨s, hsq, hs, hsi⟩ := exists_int_mul D q k hk
+  obtain ⟨s', hsq', hs', hsi'⟩ := exists_int_mul D q k' hk'
+  refine ⟨fun x hx => ⟨s * s', Nat.Coprime.mul_left hsq hsq', ?_⟩,
+    fun x hx => ⟨s * s', Nat.Coprime.mul_left hsq hsq', ?_⟩⟩
+  · refine smul_mem_La D hG cc δ hc h (h * k) h' (h' * k') h₁ h₁' h₂ h₂' s s' ?_ ?_ x hx
+    · rw [Subgroup.coe_mul, inv_mul_cancel_left]; exact hs
+    · rw [Subgroup.coe_mul, mul_inv_rev, inv_mul_cancel_right]; exact hsi'
+  · refine smul_mem_La D hG cc δ hc (h * k) h (h' * k') h' h₂ h₂' h₁ h₁' s s' ?_ ?_ x hx
+    · rw [Subgroup.coe_mul, mul_inv_rev, inv_mul_cancel_right]; exact hsi
+    · rw [Subgroup.coe_mul, inv_mul_cancel_left]; exact hs'
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaLatticeAgreeOfTrivialAtPrime =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddnessConditionHolds =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddnessConditionHolds", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.OneSubSmulPeirceCut\npublic import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmFiniteAdeleIntegralSeparatedComplete\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHalfIdem\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaLatticeAgreeOfTrivialAtPrime\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryHeckeCharacterValues\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilOperatorConjHeisenbergMovedLattice\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilRepresentationVacuumSignInertPlaces\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.RationalPointsIntegralPointsMembership\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -409,9 +506,7 @@ theorem Om_sum {e0 : VC D N N' → ℂ} (W : WeilO D cc δ N N' e0) (g : GA D N)
   congr 1
   simp
 
-theorem moves_one (D : D7) (N : ℕ) : Moves D ((1 : GA D N) : GL (Fin N) (AE D)) (stdL D N) := by
-  obtain ⟨Lt, h, h1, -⟩ := exists_lattice_of_adelic_point D N
-  rw [← h1]; exact (h 1).1
+alias moves_one := _root_.GlobalTheory.InertSign.moves_one
 
 theorem sd_of_moves {g : GA D N} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     (hL : Moves D (g : GL (Fin N) (AE D)) L) : SD D L := by
@@ -444,9 +539,9 @@ theorem lattice_facts (hc : Crv D cc δ) {e0 : VC D N N' → ℂ}
   have k0 : KLat D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') :=
     Or.inr ⟨_, _, sd_of_moves (moves_one D N), sd_of_moves (moves_one D N'), rfl⟩
   have k1 : KLat D (tor0 D cc δ) (La D (tor0 D cc δ) L L') := Or.inr ⟨_, _, sd_of_moves hL, sd_of_moves hL', rfl⟩
-  obtain ⟨-, hTh, -, hII⟩ := GlobalTheory.T.intertwinerUnitary_all D cc δ hc N N' _ _ k0 k1 e0 he
-  have w0 := (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hg1 cc δ hc N N' _ k0).2.1
-  have w1 := (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hg1 cc δ hc N N' _ k1).2.1
+  obtain ⟨-, hTh, -, hII⟩ := _root_.GlobalTheory.theta_translation_intertwiner_unitary D cc δ hc N N' _ _ k0 k1 e0 he
+  have w0 := (_root_.GlobalTheory.ThetaLine.theta_line D hg1 cc δ hc N N' _ k0).2.1
+  have w1 := (_root_.GlobalTheory.ThetaLine.theta_line D hg1 cc δ hc N N' _ k1).2.1
   have hne : Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') (La D (tor0 D cc δ) L L') e0 ≠ 0 := by
     intro h; rw [h, Iop_zero] at hII; exact h0 hII.symm
   have hfix : ∀ x ∈ La D (tor0 D cc δ) L L', Wl (tor0 D cc δ) x
@@ -492,14 +587,14 @@ theorem scalar_mul (hc : Crv D cc δ) {e0 : VC D N N' → ℂ}
         Nr q (La0 D (tor0 D cc δ) N N') (La D (tor0 D cc δ) Li Li')) := by
     intro q hq
     by_cases hin : InertQ D q
-    · have u := GlobalTheory.T.thetaLattice_agree_of_trivialAt_prime D hg1 cc δ hc.1.1 N N' q 1 gs 1 gs' _ Ls _ Ls' (hs q hq hin) (hs' q hq hin)
+    · have u := _root_.GlobalTheory.NormSum.La_agree_of_trivAt D hg1 cc δ hc.1.1 N N' q 1 gs 1 gs' _ Ls _ Ls' (hs q hq hin) (hs' q hq hin)
         (moves_one D N) (moves_one D N') (by rwa [one_mul]) (by rwa [one_mul])
-      have v := GlobalTheory.T.thetaLattice_agree_of_trivialAt_prime D hg1 cc δ hc.1.1 N N' q gi gs gi' gs' Li L Li' L' (hs q hq hin) (hs' q hq hin)
+      have v := _root_.GlobalTheory.NormSum.La_agree_of_trivAt D hg1 cc δ hc.1.1 N N' q gi gs gi' gs' Li L Li' L' (hs q hq hin) (hs' q hq hin)
         hLi hLi' (by rwa [h2]) (by rwa [h2'])
       exact Or.inl ⟨u.2, u.1, v.2, v.1⟩
-    · have u := GlobalTheory.T.thetaLattice_agree_of_trivialAt_prime D hg1 cc δ hc.1.1 N N' q 1 gi 1 gi' _ Li _ Li' (hi q hq hin) (hi' q hq hin)
+    · have u := _root_.GlobalTheory.NormSum.La_agree_of_trivAt D hg1 cc δ hc.1.1 N N' q 1 gi 1 gi' _ Li _ Li' (hi q hq hin) (hi' q hq hin)
         (moves_one D N) (moves_one D N') (by rwa [one_mul]) (by rwa [one_mul])
-      have v := GlobalTheory.T.thetaLattice_agree_of_trivialAt_prime D hg1 cc δ hc.1.1 N N' q gs gi gs' gi' Ls L Ls' L' (hi q hq hin) (hi' q hq hin)
+      have v := _root_.GlobalTheory.NormSum.La_agree_of_trivAt D hg1 cc δ hc.1.1 N N' q gs gi gs' gi' Ls L Ls' L' (hi q hq hin) (hi' q hq hin)
         hLs hLs' (by rwa [h1]) (by rwa [h1'])
       exact Or.inr ⟨v.1, v.2, u.2, u.1⟩
   have hidx := index_mul hloc
@@ -510,7 +605,7 @@ theorem scalar_mul (hc : Crv D cc δ) {e0 : VC D N N' → ℂ}
     have hm := AddSubgroup.nsmul_relIndex_mem (La D (tor0 D cc δ) Li Li') hy
     rw [← Wl_apply, ← Wl_apply, ← Module.End.mul_apply, ← i3 _ hm _ (hxi j), add_comm, i3 _ (hxi j) _ hm,
       Module.End.mul_apply, a6 _ (AddSubgroup.nsmul_mem _ hy _)]
-  have hmove := fun j => GlobalTheory.T.weilOperator_conj_heisenberg_moved_lattice D hg1 cc δ hc.1.1 N N' e0 W gs gi gs' gi' Li L Li' L' hLi hLi'
+  have hmove := fun j => _root_.GlobalTheory.WeilEquiv.om_wd_moved D hg1 cc δ hc.1.1 N N' e0 W gs gi gs' gi' Li L Li' L' hLi hLi'
     (by rwa [h1]) (by rwa [h1']) (xi j) (hxi j) e0 heT
   choose y hy hyW using hmove
   have hrep : ∀ j, ∃ u ∈ La D (tor0 D cc δ) L L', Wl (tor0 D cc δ) (xs j) e0 = Wl (tor0 D cc δ) u e0 := by
@@ -572,7 +667,7 @@ theorem scalar_formula (hc : Crv D cc δ) (hev : Even (N * N')) {e0 : VC D N N' 
   exact ⟨_, scalar_mul hc he W (cutG_mul e h1 h2 g).1 (cutG_mul e h1 h2 g).2 (cutG_mul e h1 h2 g').1
     (cutG_mul e h1 h2 g').2 (hs g) (hs g') (hi g) (hi g') hL hL' hLs hLs' hLi hLi' hO
     (W.split _ _ x x' Ls Ls' (hs g) (hs g') (fun q hq h => ⟨hx q hq h, hx' q hq h⟩) hd hd' hLs hLs')
-    (GlobalTheory.T.weilRepresentation_vacuum_sign_inert_places D cc δ hc N N' hev e0 he W _ _ Li Li' (hi g) (hi g') hLi hLi')⟩
+    (_root_.GlobalTheory.InertSign.vacuum_inert D cc δ hc N N' hev e0 he W _ _ Li Li' (hi g) (hi g') hLi hLi')⟩
 
 theorem exists_trivial_inert {e : AE D} (h1 : e * e = e) (h2 : sgA D e = e)
     (h3 : ∀ q : ℕ, q.Prime → (InertQ D q → ZeroAt D q e) ∧ (¬ InertQ D q → ZeroAt D q (1 - e)))
@@ -692,3 +787,7 @@ theorem vacuum_scalar : ∀ D : D7, odd4 D := by
     exact ((unitAt_neg_one lam).zpow _).mul (((hu _ _ (c3 p hp.out hg')).zpow _).mul ((hu _ _ (b3 p hp.out hg)).zpow _))
 
 end GlobalTheory.VacuumScalar
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddnessConditionHolds =====

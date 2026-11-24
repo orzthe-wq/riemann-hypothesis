@@ -61,6 +61,6 @@ theorem zetaQ_pow (P : LocPrime l) (j k : ℕ) : P.ζQ (j + k) ^ (l ^ k) = P.ζQ
   | succ k ih => rw [← add_assoc, pow_succ', pow_mul, P.ζQ_succ, ih]
 
 theorem chiQ_norm (P : LocPrime l) (h : GQ l) : ‖(P.χQ h : ℚ_[l])‖ = 1 := by
-  apply Formalism.MainNotions.N.Ln03.Pf.norm_chiQ <;> assumption
+  apply Formalism.MainNotions.N.Ln03.Pf.norm_chiQ
 
 end Formalism.MainNotions.InvariantsGenerators.InvariantsFromGenerators

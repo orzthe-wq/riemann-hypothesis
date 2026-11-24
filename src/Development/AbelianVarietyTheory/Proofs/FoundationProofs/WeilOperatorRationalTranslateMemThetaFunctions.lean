@@ -1,9 +1,11 @@
 module
 
 public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompletedStandardAdelicLatticePropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPointStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ActAApply
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompletedStandardAdelicLatticeProperties
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -100,7 +102,7 @@ theorem wd_wd_of_int {x z : VC D N N'} {G : VC D N N' → ℂ} (hx : Wd D T x G 
   linear_combination (wdPh D T x * wdPh D T z * G (w + z + x)) * h3
 
 theorem sd_std (D : D7) (N : ℕ) : SD D (stdL D N) := by
-  obtain ⟨Lt, h1, h2, -⟩ := GlobalTheory.T.Lt_eq_iff_inv_mul_mem_intG_and_transport D N
+  obtain ⟨Lt, h1, h2, -⟩ := _root_.GlobalTheory.NormSum.exists_lattice_of_adelic_point D N
   exact h2 ▸ (h1 1).2
 
 theorem pt_nsmul (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (n : ℕ) (z : Matrix (Fin N') (Fin N) D.host.E) :
@@ -116,8 +118,8 @@ theorem map_inc_nsmul (n : ℕ) (z : Matrix (Fin N') (Fin N) D.host.E) :
 
 theorem wd_mem_TT : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ) (z : Matrix (Fin N') (Fin N) D.host.E), ∀ F ∈ TT D (tor0 D cc δ) N N', Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z) F ∈ TT D (tor0 D cc δ) N N' := by
   rintro D hg cc δ hc N N' z F ⟨hd, m, hm, hF⟩
-  obtain ⟨h1, -, -, h4, -⟩ := GlobalTheory.T.completedStandardAdelicLattice_properties D hg cc δ hc N N'
-  obtain ⟨-, -, hI, -⟩ := GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hg cc δ hc N N' (La0 D (tor0 D cc δ) N N')
+  obtain ⟨h1, -, -, h4, -⟩ := _root_.GlobalTheory.CompletedLattice.completed_lattice D hg cc δ hc N N'
+  obtain ⟨-, -, hI, -⟩ := _root_.GlobalTheory.ThetaLine.theta_line D hg cc δ hc N N' (La0 D (tor0 D cc δ) N N')
     (Or.inr ⟨_, _, sd_std D _, sd_std D _, rfl⟩)
   obtain ⟨n, hn, hz⟩ := h4 (z.map (inc D))
   rw [← map_inc_nsmul, h1, pt_nsmul] at hz

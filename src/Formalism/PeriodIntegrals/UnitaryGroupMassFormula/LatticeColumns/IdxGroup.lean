@@ -134,7 +134,7 @@ theorem kfBridgeStep_of_adBridgeK (h : ∀ I : Formalism.MainNotions.S.AutInst, 
   have hmem : ((1 : I.Ginf), y) ∈ KGA I := by
     refine ⟨fun v a b hab => ?_, hy⟩
     have hne : a ≠ b := fun hab' => hab (hab' ▸ rfl)
-    simp [Formalism.MainNotions.S.uMat, Pi.one_apply, Matrix.one_apply_ne hne]
+    simp [Formalism.MainNotions.S.uMat, Matrix.one_apply_ne hne]
   have hK : toHA I hb ((1 : I.Ginf), y) ∈ KHA I := by
     rw [← h I (toHA I hb) hbr]
     exact ⟨_, hmem, rfl⟩

@@ -1,22 +1,17 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.T2SpaceMatrixOfIsNonarchimedeanLocalField
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorCosetIndicator
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorDualLatticeIndica
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.DualLiftInvariance
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.IndicatorFunctionIdentity
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleThetaUnfoldingEquivariantUnitaryGroups
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DualLatticeCosetIndicatorIsSchwartzBruhatStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingCharIndicatorDualLatticeCosetsStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingDualIndicatorAddNonzeroCosetsStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorCosetIndicatorStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorDualLatticeIndicaStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeDatumMainPartMemSchwartzBruhatStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DualLatticeCosetIndicatorIsSchwartzBruhat
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingDualIndicatorAddNonzeroCosets
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeFiniteExpansionsLocalFieldStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SourceLiftAtGluedPlaceProofStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLineComponentsContractionStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLinearModelLatticeVacuumBaseStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.EmbeddingXiZeroNeZero
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClopenIsCompactMapsPair
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SourceLiftAtGluedPlaceProof
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLineComponentsContraction
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -31,11 +26,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
 import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -44,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -60,7 +51,261 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLinearModelLatticeVacuumBase
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.EmbeddingXiZeroNeZero
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClopenIsCompactMapsPair
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingCharIndicatorDualLatticeCosets, Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeDatumMainPartMemSchwartzBruhat, Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleUnfoldingStepAtGluedFinitePlace
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingCharIndicatorDualLatticeCosets =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingCharIndicatorDualLatticeCosets", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.T2SpaceMatrixOfIsNonarchimedeanLocalField\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorCosetIndicator\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorDualLatticeIndica\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory ValuativeRel Matrix IsLocalRing GlobalTheory.LatPair GlobalTheory.SplitWeil GlobalTheory.FinPl
+open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (cosetInd mainDatum InDual Lifts)
+open GlobalTheory.FinPl.Comm (fpair)
+
+namespace GlobalTheory.FinPl.Comm.DualCosets
+
+variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
+  {n : Type} [Fintype n] [DecidableEq n]
+
+theorem inDual_add {L : Submodule 𝒪[k] (n → k)} {η ξ : n → k} (h : InDual L η) (h' : InDual L ξ) :
+    InDual L (η + ξ) := by
+  intro y hy
+  rw [add_dotProduct]
+  exact add_mem (h y hy) (h' y hy)
+
+theorem inDual_sub {L : Submodule 𝒪[k] (n → k)} {η ξ : n → k} (h : InDual L η) (h' : InDual L ξ) :
+    InDual L (η - ξ) := by
+  intro y hy
+  rw [sub_dotProduct]
+  exact sub_mem (h y hy) (h' y hy)
+
+theorem inDual_smul {L : Submodule 𝒪[k] (n → k)} {η : n → k} (h : InDual L η) (s : 𝒪[k]) :
+    InDual L (s • η) := by
+  intro y hy
+  rw [smul_dotProduct, Algebra.smul_def]
+  exact mul_mem s.2 (h y hy)
+
+theorem isLocallyConstant_of_periodic (L : Submodule 𝒪[k] (n → k)) [L.IsFullLattice k] {g : (n → k) → ℂ}
+    (hg : ∀ η ξ, InDual L ξ → g (η + ξ) = g η) : IsLocallyConstant g := by
+  have hD := (dual_compact_open L).2
+  refine (IsLocallyConstant.iff_exists_open g).2 fun x => ?_
+  refine ⟨{η | InDual L (η - x)}, hD.preimage (continuous_sub_right x), ?_, fun η hη => ?_⟩
+  · intro y _
+    simp
+  · have h := hg x (η - x) hη
+    rwa [add_sub_cancel] at h
+
+private theorem secondCountableTopology_localField' (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    [IsNonarchimedeanLocalField K] : SecondCountableTopology K := by
+  letI : UniformSpace K := IsTopologicalAddGroup.rightUniformSpace K
+  haveI : IsUniformAddGroup K := isUniformAddGroup_of_addCommGroup
+  obtain ⟨r⟩ := (IsRankLeOne.nonempty : Nonempty (ValuativeRel.RankLeOneStruct K))
+  letI : (Valued.v (R := K) (Γ₀ := ValueGroupWithZero K)).RankOne :=
+    { hom' := r.emb.comp MonoidWithZeroHom.ValueGroup₀.embedding
+      strictMono' := r.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }
+  letI : NontriviallyNormedField K := Valued.toNontriviallyNormedField K (ValueGroupWithZero K)
+  haveI : ProperSpace K := ProperSpace.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace K
+  exact secondCountable_of_proper
+
+variable [MeasurableSpace k] [BorelSpace k]
+
+theorem integrable_of_periodic (μ : Measure (n → k)) [μ.IsAddHaarMeasure] (q : Unif k)
+    (L : Submodule 𝒪[k] (n → k)) [L.IsFullLattice k] {g : (n → k) → ℂ}
+    (hg : ∀ η ξ, InDual L ξ → g (η + ξ) = g η) (hs : ∀ η, g η ≠ 0 → InDual L (q.1 • η)) : Integrable g μ := by
+  haveI := secondCountableTopology_localField' k
+  have hlc := isLocallyConstant_of_periodic L hg
+  have hK : IsCompact {η : n → k | InDual L (q.1 • η)} := by
+    have h2 : {η : n → k | InDual L (q.1 • η)} =
+        (Homeomorph.smulOfNeZero ((q.1 : 𝒪[k]) : k) q.ne_zero) ⁻¹' {η | InDual L η} := by
+      ext η
+      simp only [Set.mem_setOf_eq, Set.mem_preimage, Homeomorph.smulOfNeZero_apply, Algebra.smul_def]
+      rfl
+    rw [h2, Homeomorph.isCompact_preimage]
+    exact (dual_compact_open L).1
+  have hcs : HasCompactSupport g := HasCompactSupport.intro hK fun η hη => by
+    by_contra h
+    exact hη (hs η h)
+  exact hlc.continuous.integrable_of_hasCompactSupport hcs
+
+end GlobalTheory.FinPl.Comm.DualCosets
+
+namespace GlobalTheory.FinPl.Comm.DualCosets
+
+variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
+  {n : Type} [Fintype n] [DecidableEq n]
+
+theorem dualInd_add (L : Submodule 𝒪[k] (n → k)) (η ξ : n → k) (hξ : InDual L ξ) :
+    dualInd L (η + ξ) = dualInd L η := by
+  unfold dualInd
+  by_cases h : InDual L η
+  · rw [if_pos (inDual_add h hξ), if_pos h]
+  · rw [if_neg h, if_neg]
+    intro h'
+    apply h
+    simpa using inDual_sub h' hξ
+
+theorem dualInd_supp (q : Unif k) (L : Submodule 𝒪[k] (n → k)) (η : n → k) (h : dualInd L η ≠ 0) :
+    InDual L (q.1 • η) := by
+  unfold dualInd at h
+  by_cases hd : InDual L η
+  · exact inDual_smul hd q.1
+  · exact absurd (if_neg hd) h
+
+theorem cosetInd_add (q : Unif k) (L : Submodule 𝒪[k] (n → k)) (f : Module.Dual 𝓀[k] (Red L)) (η ξ : n → k)
+    (hξ : InDual L ξ) : cosetInd q L f (η + ξ) = cosetInd q L f η := by
+  unfold cosetInd
+  have e : (∃ F : n → k, Lifts L F f ∧ InDual L (η + ξ - q.inv • F)) ↔
+      ∃ F : n → k, Lifts L F f ∧ InDual L (η - q.inv • F) := by
+    constructor
+    · rintro ⟨F, hF, hd⟩
+      refine ⟨F, hF, ?_⟩
+      have h := inDual_sub hd hξ
+      rwa [show η + ξ - q.inv • F - ξ = η - q.inv • F by abel] at h
+    · rintro ⟨F, hF, hd⟩
+      refine ⟨F, hF, ?_⟩
+      have h := inDual_add hd hξ
+      rwa [show η - q.inv • F + ξ = η + ξ - q.inv • F by abel] at h
+  by_cases h : ∃ F : n → k, Lifts L F f ∧ InDual L (η - q.inv • F)
+  · rw [if_pos (e.2 h), if_pos h]
+  · rw [if_neg (fun h' => h (e.1 h')), if_neg h]
+
+theorem inDual_of_lifts {L : Submodule 𝒪[k] (n → k)} {F : n → k} {f : Module.Dual 𝓀[k] (Red L)} (h : Lifts L F f) :
+    InDual L F := by
+  intro y hy
+  obtain ⟨s, hs, -⟩ := h ⟨y, hy⟩
+  rw [← hs]
+  exact s.2
+
+theorem cosetInd_supp (q : Unif k) (L : Submodule 𝒪[k] (n → k)) (f : Module.Dual 𝓀[k] (Red L)) (η : n → k)
+    (h : cosetInd q L f η ≠ 0) : InDual L (q.1 • η) := by
+  unfold cosetInd at h
+  by_cases hc : ∃ F : n → k, Lifts L F f ∧ InDual L (η - q.inv • F)
+  · obtain ⟨F, hF, hd⟩ := hc
+    have hq1 : q.1 • q.inv = 1 := by
+      rw [Algebra.smul_def, Unif.inv]
+      exact mul_inv_cancel₀ q.ne_zero
+    have hq : q.1 • (q.inv • F) = F := by
+      rw [← smul_assoc, hq1, one_smul]
+    have h3 : q.1 • η = q.1 • (η - q.inv • F) + F := by
+      rw [smul_sub, hq, sub_add_cancel]
+    rw [h3]
+    exact inDual_add (inDual_smul hd q.1) (inDual_of_lifts hF)
+  · exact absurd (if_neg hc) h
+
+theorem inner_add (χ : AddChar k Circle) (hχ : HasConductor χ 1) {e : k} (he : e = 1 ∨ e = -1)
+    [MeasurableSpace k] (μ : Measure (n → k)) (L : Submodule 𝒪[k] (n → k)) {a : (n → k) → ℂ}
+    (ha : ∀ y, y ∉ L → a y = 0) (η ξ : n → k) (hξ : InDual L ξ) :
+    ∫ y, a y * (χ (e * ((η + ξ) ⬝ᵥ y)) : ℂ) ∂μ = ∫ y, a y * (χ (e * (η ⬝ᵥ y)) : ℂ) ∂μ := by
+  congr 1
+  funext y
+  by_cases hy : y ∈ L
+  · have hm : e * (ξ ⬝ᵥ y) ∈ 𝒪[k] := by
+      rcases he with rfl | rfl
+      · simpa using hξ y hy
+      · simpa using neg_mem (hξ y hy)
+    have h1 : χ (e * (ξ ⬝ᵥ y)) = 1 := apply_int_eq_one hχ ⟨_, hm⟩
+    rw [add_dotProduct, mul_add, AddChar.map_add_eq_mul, h1, mul_one]
+  · rw [ha y hy, zero_mul, zero_mul]
+
+end GlobalTheory.FinPl.Comm.DualCosets
+
+namespace GlobalTheory.FinPl.Comm.DualCosets
+
+theorem fpair_charInd_dualInd_add_cosets : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (q : Unif k) (χ : AddChar k Circle) (hχ : HasConductor χ 1) (e : k), (e = 1 ∨ e = -1) → ∀ (μ : Measure (n → k)) [μ.IsAddHaarMeasure] (Q : Pair k n), fpair χ e μ (charInd (resChar χ hχ q) Q) (dualInd Q.lat + ∑ Q'' ∈ withLat Q.lat, cosetInd q Q''.lat Q''.red) = fpair χ e μ (vecInd Q.lat) (dualInd Q.lat) := by
+  intro k _ _ _ _ _ _ n _ _ q χ hχ e he μ _ Q
+  have ha : ∀ y, y ∉ Q.lat → charInd (resChar χ hχ q) Q y = 0 := fun y hy => by
+    simp [charInd, vecInd, hy]
+  have hF : ∀ (L : Submodule 𝒪[k] (n → k)), L = Q.lat → ∀ η ξ, InDual L ξ →
+      (∫ y, charInd (resChar χ hχ q) Q y * (χ (e * ((η + ξ) ⬝ᵥ y)) : ℂ) ∂μ) =
+        ∫ y, charInd (resChar χ hχ q) Q y * (χ (e * (η ⬝ᵥ y)) : ℂ) ∂μ := by
+    rintro L rfl η ξ hξ
+    exact inner_add χ hχ he μ Q.lat ha η ξ hξ
+  have hint1 : Integrable (fun η => (∫ y, charInd (resChar χ hχ q) Q y * (χ (e * (η ⬝ᵥ y)) : ℂ) ∂μ) *
+      dualInd Q.lat η) μ := by
+    refine integrable_of_periodic μ q Q.lat (fun η ξ hξ => ?_) (fun η h => ?_)
+    · simp only [hF Q.lat rfl η ξ hξ, dualInd_add Q.lat η ξ hξ]
+    · exact dualInd_supp q Q.lat η (right_ne_zero_of_mul h)
+  have hint2 : ∀ Q'' ∈ withLat Q.lat, Integrable (fun η => (∫ y, charInd (resChar χ hχ q) Q y *
+      (χ (e * (η ⬝ᵥ y)) : ℂ) ∂μ) * cosetInd q Q''.lat Q''.red η) μ := by
+    intro Q'' hQ''
+    have hl : Q''.lat = Q.lat := mem_withLat.1 hQ''
+    refine integrable_of_periodic μ q Q''.lat (fun η ξ hξ => ?_) (fun η h => ?_)
+    · simp only [hF Q''.lat hl η ξ hξ, cosetInd_add q Q''.lat Q''.red η ξ hξ]
+    · exact cosetInd_supp q Q''.lat Q''.red η (right_ne_zero_of_mul h)
+  have key : fpair χ e μ (charInd (resChar χ hχ q) Q)
+      (dualInd Q.lat + ∑ Q'' ∈ withLat Q.lat, cosetInd q Q''.lat Q''.red) =
+      fpair χ e μ (charInd (resChar χ hχ q) Q) (dualInd Q.lat) +
+        ∑ Q'' ∈ withLat Q.lat, fpair χ e μ (charInd (resChar χ hχ q) Q) (cosetInd q Q''.lat Q''.red) := by
+    simp only [fpair]
+    rw [← integral_finsetSum _ hint2, ← integral_add hint1 (integrable_finsetSum _ hint2)]
+    congr 1
+    funext η
+    simp [mul_add, Finset.mul_sum]
+  obtain ⟨ε, hε⟩ : ∃ ε : 𝓀[k]ˣ, (e = 1 ∧ ε = 1) ∨ (e = -1 ∧ ε = -1) := by
+    rcases he with h | h
+    · exact ⟨1, Or.inl ⟨h, rfl⟩⟩
+    · exact ⟨-1, Or.inr ⟨h, rfl⟩⟩
+  rw [key, _root_.GlobalTheory.FinPl.Comm.fpair_charInd_dualInd k n q χ hχ e he μ Q, zero_add, Finset.sum_eq_single (ε • Q)]
+  · exact (_root_.GlobalTheory.FinPl.CosetPairing.fpair_charInd_cosetInd k n q χ hχ e ε hε μ Q (ε • Q) (Pair.dia_lat ε Q)).1 rfl
+  · intro Q'' hQ'' hne
+    exact (_root_.GlobalTheory.FinPl.CosetPairing.fpair_charInd_cosetInd k n q χ hχ e ε hε μ Q Q'' (mem_withLat.1 hQ'')).2 hne
+  · intro h
+    exact absurd (mem_withLat.2 (Pair.dia_lat ε Q)) h
+
+end GlobalTheory.FinPl.Comm.DualCosets
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingCharIndicatorDualLatticeCosets =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeDatumMainPartMemSchwartzBruhat =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeDatumMainPartMemSchwartzBruhat", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.DualLiftInvariance\npublic import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.IndicatorFunctionIdentity\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory ValuativeRel Matrix IsLocalRing GlobalTheory.LatPair GlobalTheory.SplitWeil GlobalTheory.FinPl
+open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (cosetInd mainDatum qvec)
+
+namespace GlobalTheory.FinPl.Comm
+
+theorem mainDatum_mem_SB (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
+    (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (q : Unif k) (χ : AddChar 𝓀[k] ℂ)
+    (ε : 𝓀[k]ˣ) (P : Pair k n') (Q : Pair k n) : mainDatum q χ ε P Q ∈ SB (Matrix n n' k) := by
+  letI := Fintype.ofFinite {f : Module.Dual 𝓀[k] (Red P.ker) // f ≠ 0}
+  have h : mainDatum q χ ε P Q = ∑ f' : {f : Module.Dual 𝓀[k] (Red P.ker) // f ≠ 0},
+      χ (-((ε : 𝓀[k]) * f'.1 (qvec q P))) • phiOne (ofDual P.ker f') Q := by
+    funext x
+    rw [mainDatum, finsum_eq_sum_of_fintype, Finset.sum_apply]
+    rfl
+  rw [h]
+  exact Submodule.sum_mem _ fun f' _ => Submodule.smul_mem _ _ (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ _)
+
+end GlobalTheory.FinPl.Comm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeDatumMainPartMemSchwartzBruhat =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleUnfoldingStepAtGluedFinitePlace =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleUnfoldingStepAtGluedFinitePlace", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles\npublic import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.IndicatorFunctionIdentity\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleThetaUnfoldingEquivariantUnitaryGroups\npublic import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.DualLiftInvariance\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DualLatticeCosetIndicatorIsSchwartzBruhat\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.T2SpaceMatrixOfIsNonarchimedeanLocalField\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingCharIndicatorDualLatticeCosets\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingDualIndicatorAddNonzeroCosets\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeDatumMainPartMemSchwartzBruhat\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeFiniteExpansionsLocalFieldStatement\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SourceLiftAtGluedPlaceProof\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLineComponentsContraction\nimport Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorCosetIndicator\nimport Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FourierPairingPairCharIndicatorDualLatticeIndica\nimport Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUniqueStatement\nimport Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame\nimport Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLinearModelLatticeVacuumBase\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField\nimport Development.AbelianVarietyTheory.Proofs.HeightProofs.EmbeddingXiZeroNeZero\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClopenIsCompactMapsPair\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -165,22 +410,7 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : Type} [Fintype n] [DecidableEq n]
 
-theorem charInd_mem' (χ : AddChar 𝓀[k] ℂ) (Q : Pair k n) : charInd χ Q ∈ SB (n → k) := by
-  haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k
-  refine ⟨(IsLocallyConstant.iff_exists_open _).2 fun y => ?_,
-    HasCompactSupport.intro (Comm.isCompact_lat Q.lat) fun y hy => ?_⟩
-  · by_cases hy : y ∈ Q.lat
-    · refine ⟨{z | z - y ∈ Q.ker}, (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.isOpen_lat Q.ker).preimage (continuous_id.sub continuous_const),
-        by simp [zero_mem], fun z hz => ?_⟩
-      have hz' : Q.HasVal z (Q.ev y) := by
-        have := (GlobalTheory.LatPair.Pair.mem_ker.1 hz).add (GlobalTheory.LatPair.Pair.hasVal_ev hy)
-        simpa using this
-      simp only [charInd, vecInd, if_pos hz'.mem, if_pos hy, hz'.ev_eq]
-    · refine ⟨(Q.lat : Set (n → k))ᶜ, (Comm.isCompact_lat Q.lat).isClosed.isOpen_compl, hy, fun z hz => ?_⟩
-      have hz' : z ∉ Q.lat := hz
-      simp only [charInd, vecInd, if_neg hz', if_neg hy, mul_zero]
-  · have hy' : y ∉ Q.lat := hy
-    simp only [charInd, vecInd, if_neg hy', mul_zero]
+alias charInd_mem' := _root_.GlobalTheory.FinPl.SBFacts.charInd_mem
 
 theorem inDual_vecMul {L : Submodule 𝒪[k] (n → k)} {g : GL n k} (hg : g • L = L) (η : n → k) :
     InDual L (η ᵥ* g.val) ↔ InDual L η := by
@@ -296,7 +526,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
   letI : MeasurableSpace k := borel k
   haveI : BorelSpace k := ⟨rfl⟩
   haveI := secondCountable k
-  obtain ⟨e, he, HC⟩ := GlobalTheory.T.splitPlace_lineComponents_contraction D k p ψ χ hIs
+  obtain ⟨e, he, HC⟩ := _root_.GlobalTheory.FinPl.contraction_all D k p ψ χ hIs
   obtain ⟨ν, hν, -⟩ := exists_isUnitVol k
   let ε : 𝓀[k]ˣ := if e = 1 then 1 else -1
   have hεe : (e = 1 ∧ ε = 1) ∨ (e = -1 ∧ ε = -1) := by
@@ -318,13 +548,13 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
     change Continuous (fun a => ((χ a : Circle) : ℂ))
     rw [h2]
     exact h1
-  obtain ⟨lS₁, lT₁, uS₁, uT₁, lin₁⟩ := GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ _ _ _ _ _ s₁.weil₀
-  obtain ⟨lS₂, lT₂, uS₂, uT₂, lin₂⟩ := GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ _ _ _ _ _ s₂.weil₀
+  obtain ⟨lS₁, lT₁, uS₁, uT₁, lin₁⟩ := _root_.GlobalTheory.SplitLinAt.linModelAt D k p ψ _ _ _ _ _ s₁.weil₀
+  obtain ⟨lS₂, lT₂, uS₂, uT₂, lin₂⟩ := _root_.GlobalTheory.SplitLinAt.linModelAt D k p ψ _ _ _ _ _ s₂.weil₀
   have vS₁ := uS₁ hu₁.2
   have vT₁ := uT₁ hu₁.1
   have vS₂ := uS₂ hu₂.2
   have vT₂ := uT₂ hu₂.1
-  obtain ⟨⟨c₀, HS⟩, SG2⟩ := GlobalTheory.T.sourceLiftAtGluedPlace_proof D k p n n' q χ hχ (resChar χ hχ q) rfl ψ B.V₀ B.A B.L J.W₀ B.o B.ζ B.line
+  obtain ⟨⟨c₀, HS⟩, SG2⟩ := _root_.GlobalTheory.FinPl.sourceGlued D k p n n' q χ hχ (resChar χ hχ q) rfl ψ B.V₀ B.A B.L J.W₀ B.o B.ζ B.line
     B.cpt B.vA s₁.χV s₁.χW s₁.om₀ s₁.weil₀ hu₁.1 hu₁.2 α α₀ β hα P P₁ Q.lat
   obtain ⟨D1, -, -⟩ := GlobalTheory.T.gluedLattice_finite_expansions_localField k n n' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat
   obtain ⟨-, D2, D3⟩ := GlobalTheory.T.gluedLattice_finite_expansions_localField k n n'' q (resChar χ hχ q) (resChar_ne_one hχ q) Q.lat
@@ -364,7 +594,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
       row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (dualInd Q.lat) hdual
     let y₀ : SB (Matrix (n'' ⊕ Fin 1) n k) := row (latInd Q.lat R.ker) (latInd_mem_SB _ _) (dualInd Q.lat) hdual
     let y : Pair k n → SB (Matrix (n'' ⊕ Fin 1) n k) := fun Q'' =>
-      row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (cosetInd q Q''.lat Q''.red) (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _)
+      row (phiOne Q'' R) (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem Q'' R) (cosetInd q Q''.lat Q''.red) (_root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _)
 
     have h2 : hand0 s₁ s₂ l vL (φ P) Ξ₁ Ξ₂ = c₀ • hand0 s₁ s₂ l vL (FFStar q (resChar χ hχ q) φ P₁)
         (U₁ (∑ Q' ∈ withLat Q.lat, x Q')) Ξ₂ :=
@@ -381,7 +611,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
     have t0 : ∀ Q' ∈ withLat Q.lat, (Θ v' (x Q') y₀).1 = 0 := fun Q' hQ' => by
       have := key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (latInd Q.lat R.ker) (latInd_mem_SB _ _)
         (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (dualInd Q.lat) (dualInd Q.lat) (charInd_mem' _ Q') hvec hdual hdual
-      have hf := GlobalTheory.T.fourierPairing_pairCharIndicator_dualLatticeIndicator_zero k n q χ hχ e he μ Q'
+      have hf := _root_.GlobalTheory.FinPl.Comm.fpair_charInd_dualInd k n q χ hχ e he μ Q'
       rw [mem_withLat.1 hQ'] at hf
       rw [hf, zero_smul] at this
       exact (smul_eq_zero.1 this).resolve_left I0
@@ -394,15 +624,15 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
       rw [Finset.sum_eq_single_of_mem (ε • Q') hmem]
       · have := key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (phiOne (ε • Q') R)
           (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ R) (charInd (resChar χ hχ q) Q') (vecInd Q.lat)
-          (cosetInd q (ε • Q').lat (ε • Q').red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _) hdual
-        rw [(GlobalTheory.T.fourierPairing_pairCharIndicator_cosetIndicator k n q χ hχ e ε hεe μ Q' (ε • Q') (by rw [Pair.dia_lat])).1 rfl, hQ'l] at this
+          (cosetInd q (ε • Q').lat (ε • Q').red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (_root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _) hdual
+        rw [(_root_.GlobalTheory.FinPl.CosetPairing.fpair_charInd_cosetInd k n q χ hχ e ε hεe μ Q' (ε • Q') (by rw [Pair.dia_lat])).1 rfl, hQ'l] at this
         exact smul_right_injective _ I0 this
       · intro Q'' hQ'' hne
         have hQ''l : Q''.lat = Q.lat := mem_withLat.1 hQ''
         have := key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (phiOne Q'' R)
           (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem _ R) (charInd (resChar χ hχ q) Q') (vecInd Q.lat)
-          (cosetInd q Q''.lat Q''.red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _) hdual
-        rw [(GlobalTheory.T.fourierPairing_pairCharIndicator_cosetIndicator k n q χ hχ e ε hεe μ Q' Q'' (hQ''l.trans hQ'l.symm)).2 hne, zero_smul] at this
+          (cosetInd q Q''.lat Q''.red) (dualInd Q.lat) (charInd_mem' _ Q') hvec (_root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _) hdual
+        rw [(_root_.GlobalTheory.FinPl.CosetPairing.fpair_charInd_cosetInd k n q χ hχ e ε hεe μ Q' Q'' (hQ''l.trans hQ'l.symm)).2 hne, zero_smul] at this
         exact (smul_eq_zero.1 this).resolve_left I0
 
     have hmove : ∀ (Q₀ : Pair k n) (g : GL n k), g • Q.lat = Q.lat →
@@ -569,7 +799,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
       have t0 : ∀ Q' ∈ withLat Q.lat, (Θ v' (x Q') yK).1 = 0 := fun Q' hQ' => by
         have := key v' (phiOne P₁ Q') (GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity.phiOne_mem P₁ Q') (latInd Q.lat Λ) hL
           (charInd (resChar χ hχ q) Q') (vecInd Q.lat) (dualInd Q.lat) (dualInd Q.lat) (charInd_mem' _ Q') hvec hdual hdual
-        have hf := GlobalTheory.T.fourierPairing_pairCharIndicator_dualLatticeIndicator_zero k n q χ hχ e he μ Q'
+        have hf := _root_.GlobalTheory.FinPl.Comm.fpair_charInd_dualInd k n q χ hχ e he μ Q'
         rw [mem_withLat.1 hQ'] at hf
         rw [hf, zero_smul] at this
         exact (smul_eq_zero.1 this).resolve_left I0
@@ -580,7 +810,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
       rw [← hbdef] at o₂
       have hbtot : btot ∈ SB (n → k) := by
         rw [hbdef]
-        exact add_mem hdual (Submodule.sum_mem _ fun Q'' _ => GlobalTheory.T.dualLatticeCoset_indicator_isSchwartzBruhat k n q _ _)
+        exact add_mem hdual (Submodule.sum_mem _ fun Q'' _ => _root_.GlobalTheory.FinPl.CosetSB.cosetInd_mem_SB k n q _ _)
       obtain ⟨U₁, a₁, b₁, t₁⟩ := overMap hψ o₁ fun Ψ f h => (lin₁ _ _ α₀ β L₁ L₂ f₁ Ψ f h).2.2
       obtain ⟨U₂, a₂, b₂, t₂⟩ := overMap hψ o₂ fun Ψ f h => (lin₂ _ _ β γ₀ L₂' L₃ f₂ Ψ f h).2.2
       obtain ⟨Θ, hΘ⟩ := exists_trilinear s₁ s₂ l vL U₁ U₂ t₁ t₂
@@ -600,7 +830,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
       let vP : caSub B.A := ⟨φ P, hφ.2.2 P⟩
       let yP : SB (Matrix (n'' ⊕ Fin 1) n k) := row (latInd Q.lat Λ) hL btot hbtot
       have hM : ∀ Q' : Pair k n, (latInd P.ker Q'.ker + mainDatum q (resChar χ hχ q) 1 P Q') ∈ SB (Matrix n n' k) :=
-        fun Q' => add_mem (latInd_mem_SB _ _) (GlobalTheory.T.gluedLatticeDatum_mainPart_mem_schwartzBruhat k n n' q _ 1 P Q')
+        fun Q' => add_mem (latInd_mem_SB _ _) (_root_.GlobalTheory.FinPl.Comm.mainDatum_mem_SB k n n' q _ 1 P Q')
       let x₀ : SB (Matrix n (n' ⊕ Fin 1) k) := col (latInd P.ker Q.lat) (latInd_mem_SB _ _) (vecInd Q.lat) hvec
       let xm : Pair k n → SB (Matrix n (n' ⊕ Fin 1) k) := fun Q' =>
         col (latInd P.ker Q'.ker + mainDatum q (resChar χ hχ q) 1 P Q') (hM Q') (charInd (resChar χ hχ q) Q')
@@ -625,13 +855,13 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
           simp only [tensCol, Pi.smul_apply, smul_eq_mul, mul_assoc]
         rw [e, ← DualityIsometry]
         funext z
-        simp only [tensCol, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, add_mul, Finset.sum_mul]
+        simp only [tensCol, Pi.add_apply, Finset.sum_apply, add_mul, Finset.sum_mul]
       have hm : ∀ Q' ∈ withLat Q.lat, (Θ vP (xm Q') yP).1 = (Θ vP (xmv Q') yP).1 := by
         intro Q' hQ'
         have := key vP _ (hM Q') (latInd Q.lat Λ) hL (charInd (resChar χ hχ q) Q') (vecInd Q.lat) btot btot
           (charInd_mem' _ Q') hvec hbtot hbtot
-        have f4 := GlobalTheory.T.fourierPairing_charIndicator_dualLattice_cosets k n q χ hχ e he μ Q'
-        have f3 := GlobalTheory.T.fourierPairing_dualIndicator_add_nonzeroCosets k n q χ hχ e he μ Q.lat
+        have f4 := _root_.GlobalTheory.FinPl.Comm.DualCosets.fpair_charInd_dualInd_add_cosets k n q χ hχ e he μ Q'
+        have f3 := _root_.GlobalTheory.FinPl.Comm.fpair_vecInd_dualInd_add_cosets k n q χ hχ e he μ Q.lat
         rw [mem_withLat.1 hQ', ← hbdef] at f4
         rw [← hbdef] at f3
         rw [f3, f4] at this
@@ -661,3 +891,7 @@ theorem vertexGlued (D : D7) : VertexGlued D := by
           rw [hs, map_smul, LinearMap.smul_apply, Submodule.coe_smul, hzero, smul_zero, smul_zero]
 
 end GlobalTheory.FinPl.Vertex
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleUnfoldingStepAtGluedFinitePlace =====

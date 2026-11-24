@@ -47,4 +47,4 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 theorem _root_.GlobalTheory.T.cuspidalLetterRealExponent_eq_zero_iff_isUnitary : ∀ (E : Type) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] (x : Letter E), 1 ≤ x.1 → (rexp x = 0 ↔ x.2.IsUnitary) ∧ (x.2.IsUnitary ↔ (CG.mk x.2).IsUnitary) := by
-  first | exact @GlobalTheory.ResW.rexp_eq_zero_iff_isUnitary | exact GlobalTheory.ResW.rexp_eq_zero_iff_isUnitary | (intros; apply GlobalTheory.ResW.rexp_eq_zero_iff_isUnitary <;> assumption)
+  first | exact @GlobalTheory.ResW.rexp_eq_zero_iff_isUnitary

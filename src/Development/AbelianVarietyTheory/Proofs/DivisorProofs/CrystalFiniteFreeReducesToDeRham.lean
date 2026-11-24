@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsKSValueOneOfRetraction
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeFirstDeRhamStructureStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeFirstDeRhamStructure
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeUnobstructedSquareZeroAffineStatement
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
 import Mathlib.Algebra.Order.Floor.Extended
@@ -98,7 +99,7 @@ theorem crys_free_and_red : ∀ (F : Type) [Field F] [NumberField F] (Λ : Type)
   letI : Algebra Λ k := π.toAlgebra
   obtain ⟨A, _, i, h, hA⟩ := GlobalTheory.T.abelianScheme_unobstructed_squareZero_affine Λ (RingHom.ker π) hI k π hπ rfl A₀ hA₀
   obtain ⟨g, hg⟩ := GlobalTheory.AbelianDim.exists_relDim Λ A hA
-  obtain ⟨HFree, -, HBC, HRigid, -⟩ := GlobalTheory.T.abelianScheme_firstDeRham_structure
+  obtain ⟨HFree, -, HBC, HRigid, -⟩ := _root_.GlobalTheory.abelianDeRham
   have hrig := HRigid Λ A g hA hg (RingHom.ker π) (divided₂ hI) (isDPNilpotent_squareZero hI) k π hπ rfl A₀ i h
   let e : primDR A ≃ₗ[Λ] prim (divided₂ hI) (spMap π) A₀ :=
     LinearEquiv.ofBijective (liftMor (divided₂ hI) h).pull hrig

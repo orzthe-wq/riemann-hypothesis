@@ -48,6 +48,21 @@ open NumberField
 
 namespace UpperTheory.V.Published
 
+/-- **Ferrero–Washington**, in the form used here: for a prime `l` and an abelian number field `K`
+containing a primitive `l`-th root of unity (a primitive fourth root when `l = 2`), the `l`-ranks of
+the class groups of the fields `K(μ_{l^n})` are bounded independently of `n`: there is `r` with
+`#(Cl / Cl^l) ≤ l ^ r` for all of them.
+
+Proposed reference:
+[B. Ferrero and L. C. Washington, *The Iwasawa invariant μ_p vanishes for abelian number fields*
+(Theorem, p. 377)][ferrero_washington1979], which proves that Iwasawa's invariant `μ_l(K)` of the
+cyclotomic `ℤ_l`-extension vanishes for every abelian `K`. Under the hypothesis on roots of unity
+the fields `K(μ_{l^n})` are, after re-indexing, the layers of that extension (if `K` already
+contains `μ_{l^m}`, the fields with `n ≤ m` all equal `K`), and `μ_l(K) = 0` is equivalent, by
+Iwasawa's structure theory, to the boundedness of the `l`-ranks of their class groups
+([L. C. Washington, *Introduction to Cyclotomic Fields* (Proposition 13.23)][washington1997]). So
+this statement is a consequence of the theorem after that standard step, not a literal case of it.
+This reference is a reader's proposal and has not been checked by a mathematician. -/
 def FerreroWashington : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [NumberField K] [IsAbelianGalois ℚ K],
     (∃ ζ : K, IsPrimitiveRoot ζ (if l = 2 then 4 else l)) →

@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SplittingProjection
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsGeneratorsMemCompletedLatticeIffStatement
+public import Formalism.SatakeDualWeyl.StatementC
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsGeneratorsMemCompletedLatticeIff
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlobApprox
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -62,7 +63,7 @@ theorem exists_int_approx_all (F : Type) [Field F] [NumberField F] (T : ℕ) (hT
 
 theorem exists_lattice_approx_all : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (k : ℕ) (Λ : Submodule (𝓞 E) (Fin k → E)), Module.Finite (𝓞 E) Λ → ∀ (T : ℕ), T ≠ 0 → ∀ (y : ∀ v : HeightOneSpectrum (𝓞 F), Fin k → E ⊗[F] v.adicCompletion F), (∀ v, y v ∈ locLat v Λ) → ∃ x ∈ Λ, ∀ v : HeightOneSpectrum (𝓞 F), ∃ z ∈ locLat v Λ, y v = (fun i => inclE (F := F) (v.adicCompletion F) (x i)) + T • z := by
   intro F E _ _ _ _ _ k Λ hΛ T hT y hy
-  obtain ⟨m, l, hl, H⟩ := GlobalTheory.T.exists_generators_mem_completedLattice_iff F E k Λ hΛ
+  obtain ⟨m, l, hl, H⟩ := _root_.GlobalTheory.OverCompare.exists_generators_mem_latS_iff F E k Λ hΛ
   choose t ht hyt using fun v : HeightOneSpectrum (𝓞 F) =>
     (H (v.adicCompletion F) (v.adicCompletionIntegers F).toSubring (y v)).1 (hy v)
   choose ρ hρ using fun j : Fin m =>

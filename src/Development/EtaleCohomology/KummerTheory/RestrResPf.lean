@@ -88,7 +88,6 @@ theorem RestrRes_of (hex : LateralTheory.EtaleFoundations.EtaleSheafShortComplex
   refine ⟨T, σ, ε, ?_, fun U s => Function.bijective_id, ?_⟩
   · first
       | exact quasiIso_comp (hφ := hq1) (hφ' := hq2)
-      | exact @quasiIso_comp _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hq1 hq2
   · intro U a
     have h2 : Sec.map (e.f 0) (Sec.map (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 ((restr φ).obj F)).inv
         (show Sec ((restr φ).obj F) U from a)) =

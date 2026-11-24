@@ -75,7 +75,7 @@ theorem character_eq_of_zOf_eq {G : Type} [Group G] [Fintype G] (σ τ : FDRep �
     have h2 := zOf_coeff τ.character y⁻¹
     rw [h, h2, inv_inv] at h1
     field_simp at h1
-    first | exact h1.symm | linear_combination (-1 : ℂ) * h1
+    first | exact h1.symm
   have h1 := hy 1
   rw [FDRep.char_one, FDRep.char_one] at h1
   have h2 : Module.finrank ℂ σ.V * Module.finrank ℂ σ.V = Module.finrank ℂ τ.V * Module.finrank ℂ τ.V := by

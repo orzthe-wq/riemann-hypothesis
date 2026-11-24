@@ -4,8 +4,8 @@ public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.Firs
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.EisAutomorphyLinear
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteClsAndStab
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaSummableAndDeterminesTestFn
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicitStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctionsStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionSiegelParabolicExplicit
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctions
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,18 +72,7 @@ theorem classSum_add {M : ℕ} (hM : 0 < M) (f g : Lt E n → ℂ) :
   haveI := Fintype.ofFinite (Cls E n M)
   simp only [classSum, finsum_eq_sum_of_fintype, mul_add, Finset.sum_add_distrib]
 
-theorem transl_mem {β : Matrix (Fin N) (Fin N) E} (hβ : ccT β = β) :
-    (fromBlocks 1 β 0 1 : M2 E N) ∈ UU E N := by
-  have h : ccT (fromBlocks 1 β 0 1 : M2 E N) = fromBlocks 1 0 β 1 := by
-    have h1 := Base.ccT_one (E := E) (α := Fin N)
-    ext (i | i) (j | j)
-    · exact congrFun (congrFun h1 i) j
-    · simp [ccT, cc]
-    · exact congrFun (congrFun hβ i) j
-    · exact congrFun (congrFun h1 i) j
-  change ccT _ * _ * _ = _
-  rw [h, Matrix.J, fromBlocks_multiply, fromBlocks_multiply]
-  simp
+alias transl_mem := _root_.GlobalTheory.SW.EisBdd.transl_mem
 
 theorem add_mem_Hn (Ψ : Finset (E →+* ℂ)) {β : Matrix (Fin N) (Fin N) E} (hβ : ccT β = β)
     {Z : CM Ψ N N} (hZ : Z ∈ Hn Ψ N) : (fun τ => Z τ + β.map τ.1 : CM Ψ N N) ∈ Hn Ψ N := by
@@ -109,7 +98,7 @@ theorem GlobalTheory.SW.swd_automorphy_linear : ∀ (E : Type) [Field E] [Number
     unfold swd
     rw [← classSum_mul hM]
     refine Base.classSum_congr fun Λ hΛ => ?_
-    have ht := (GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ _ (hφ Λ hΛ)).2.1 Z hZ 0 0
+    have ht := (_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ _ (hφ Λ hΛ)).2.1 Z hZ 0 0
     rw [(eis_automorphy_linear E Ψ hΨ n N hn hN _ (hφ Λ hΛ) Z hZ).2.1 γ hγ, mul_sub, ← ht]
     congr 2
     · funext τ; ext k a
@@ -133,7 +122,7 @@ theorem GlobalTheory.SW.swd_automorphy_linear : ∀ (E : Type) [Field E] [Number
     simp only [hd, det_one, one_pow, Finset.prod_const_one, one_mul] at h
     rw [← h]
     refine h5 _ _ _ fun Λ hΛ => funext fun x => ?_
-    rw [(GlobalTheory.T.hermitianWeilAction_siegelParabolic_explicit E Ψ hΨ n N hn _ (hφ Λ hΛ)).1 _ hγ (toBlocks_fromBlocks₂₁ _ _ _ _) x]
+    rw [(_root_.GlobalTheory.SW.weil_parabolic E Ψ hΨ n N hn _ (hφ Λ hΛ)).1 _ hγ (toBlocks_fromBlocks₂₁ _ _ _ _) x]
     simp [Base.ccT_one]
   · unfold swd
     rw [← classSum_add hM]

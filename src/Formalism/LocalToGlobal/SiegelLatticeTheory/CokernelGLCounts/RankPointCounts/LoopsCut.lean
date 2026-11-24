@@ -5,42 +5,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RowsO
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.PoincareConstantEq
 public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.MinkowskiDividesFactorialOfBound
 public import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.FamilyGenusBoundOfSiegelRatio
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RowsConc
 
 @[expose] public section
@@ -117,13 +81,10 @@ theorem pp_cover (k : ℕ) (hk : ∀ t t', X.s0 t t' ≤ k) :
   intro p hp
   unfold RowsOther.PP at hp
   rcases (Set.mem_union _ _ _).1 hp with h | h
-  · have h' : p ∈ X.allPairs X.nzSet ∧ 2 ≤ X.s0 p.1 p.2 := h
-    left
-    refine Set.mem_iUnion₂.2 ⟨X.s0 p.1 p.2, Finset.mem_Icc.2 ⟨h'.2, hk p.1 p.2⟩, ?_⟩
-    show p ∈ X.allPairs X.nzSet ∧ X.s0 p.1 p.2 = X.s0 p.1 p.2
-    exact ⟨h'.1, rfl⟩
-  · right
-    exact h
+  · left
+    refine Set.mem_iUnion₂.2 ⟨X.s0 p.1 p.2, Finset.mem_Icc.2 ⟨h.2, hk p.1 p.2⟩, ?_⟩
+    exact ⟨h.1, rfl⟩
+  · exact Or.inr h
 
 theorem loopsAmp_of_classes (A C : ℝ) (k r f : ℕ) (b g v Gam : ℝ) (Xi : ℕ → ℝ) (dd : ℝ)
     (hG : 0 ≤ X.Gam1) (hv : Summable (fun t => ‖X.vec t‖)) (hk : ∀ t t', X.s0 t t' ≤ k)
@@ -337,8 +298,7 @@ theorem oneT_scale (C : ℝ) (k r f : ℕ) (b g Gc ρ : ℝ) (hρ : 1 ≤ ρ) (h
 
 theorem corank_le_k {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word) :
     ∀ t t', (Y.tO u u').s0 t t' ≤ D.R.k := by
-  intro t t'
-  exact ite_le (Nat.sub_le _ _)
+  exact fun t t' => ite_le (Nat.sub_le _ _)
 
 section Closed
 
@@ -364,13 +324,12 @@ theorem xiSizesC_of (hS : Formalism.HermitianLatticesTheory.SiegelMassRatio) : X
   refine ⟨408 * (Real.exp 1 * Real.pi), by linarith, fun C hC => ⟨0, 1, fun C' Cl _ hCl D large₂ u u' hH => ?_⟩⟩
   have hmax : max 1 (1 / Cl) ≤ 1 := max_le le_rfl (by rw [div_le_one (by linarith)]; exact hCl)
   have hM2 := Formalism.MainNotions.BridgeLemma₂.plane_mass_bound_parameters D large₂ u u' C' Cl Cg cb Cw cT CT C0 A 8
-    (le_trans (mul_le_mul_of_nonneg_left hmax (by norm_num)) (by norm_num))
+    (by nlinarith [hmax])
   have hX := Formalism.MainNotions.BridgeLemma.first_bound_of_mass_ratio D large₂ u u' C' Cl Cg cb Cw cT CT C0 A 8 408
     (Formalism.MainNotions.BridgeLemma.lattice_count_first_of_siegel hS D) hM2 (by norm_num) le_rfl hCl
   have hCX : |(408 : ℝ)| * max 1 |Real.exp 1 * Real.pi| ≤ C := by
     rw [abs_of_pos (by norm_num : (0 : ℝ) < 408), abs_of_pos (by positivity), max_eq_right he]; exact hC
   have hXi := Formalism.MainNotions.BridgeLemma.xiHyp_of_stX D large₂ hH hX hCX (by linarith)
-  rw [← Formalism.MainNotions.BridgeLemma.d_m_eq D]
-  exact hXi
+  rwa [← Formalism.MainNotions.BridgeLemma.d_m_eq D]
 
 end Formalism.L2.SG.LoopsCut

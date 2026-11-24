@@ -60,7 +60,7 @@ theorem UpperTheory.V.Pr.commonFree :
     apply Set.eq_univ_of_forall
     intro h
     obtain ⟨i, m, hm, h1⟩ := hno h
-    simp only [one_smul, Set.mem_iUnion, Finset.mem_univ, exists_true_left, SetLike.mem_coe, exists_const]
+    simp only [one_smul, Set.mem_iUnion, Finset.mem_univ, SetLike.mem_coe, exists_const]
     exact ⟨i, (hK i h).2 (htor i h m hm h1)⟩
   obtain ⟨i, -, hfin⟩ := Subgroup.exists_finiteIndex_of_leftCoset_cover hcov
   obtain ⟨h, hh⟩ := hex i

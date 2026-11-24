@@ -2,15 +2,23 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HodgeIPIffHodgeFormConj
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsValLineLogNormAtIffEmbedding
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsExpChartCoordinates
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsThetaBasisOfFactor
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolUnifCompareIsogeny
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentSpaceEquivHolUnif
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+public import Mathlib.LinearAlgebra.Matrix.Hermitian
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionsFiniteDim
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaMultiplierNormalForm
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TangentBijectionOfValues
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
-public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsExpChartCoordinatesStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsThetaBasisOfFactorStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolUnifCompareIsogenyStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentSpaceEquivHolUnifStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaFunctionsFiniteDimStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ThetaMultiplierNormalFormStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -65,10 +73,10 @@ theorem exists_hodgeInnerProduct_form : ∀ (E : Type) [Field E] [NumberField E]
   intro E _ _ _ H X t z V _ _ M ⟨t', m, hP, hA⟩
   have hab : IsAbelianScheme t'.G := AbelianSchemeGerms.isAbelianScheme_of_proper t'.G t'.semi
   obtain ⟨g, hg⟩ := GlobalTheory.AbelianDim.exists_relDim ℂ t'.G hab
-  obtain ⟨u₀, hc⟩ := GlobalTheory.T.exists_exp_chart_coordinates t'.G t'.PP.L g hab hA hg
-  obtain ⟨u, Hm, χ, hex, hH, hχ, hlaw⟩ := GlobalTheory.T.theta_multiplier_normal_form t'.G t'.PP t'.cub g u₀
-  obtain ⟨N, J, Θ, hN, hd, hq, hne, hsep⟩ := GlobalTheory.T.exists_theta_basis_of_factor t'.G t'.PP.L g u Hm χ t'.PP.isLB hab hA hlaw
-  have hpos := GlobalTheory.T.theta_functions_finite_dim g u.Λ u.discrete u.full Hm χ N J Θ hH hχ hN hd hq hne hsep
+  obtain ⟨u₀, hc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.AVExp.exists_holUnif t'.G t'.PP.L g hab hA hg
+  obtain ⟨u, Hm, χ, hex, hH, hχ, hlaw⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_appellHumbert_frame_of_cubical t'.G t'.PP t'.cub g u₀
+  obtain ⟨N, J, Θ, hN, hd, hq, hne, hsep⟩ := _root_.GlobalTheory.CompanionTheory.Ar.SecTheta.exists_theta_family t'.G t'.PP.L g u Hm χ t'.PP.isLB hab hA hlaw
+  have hpos := _root_.GlobalTheory.CompanionTheory.Ar.HodgeFormAna.pos_of_theta_power g u.Λ u.discrete u.full Hm χ N J Θ hH hχ hN hd hq hne hsep
   have hAH : u.IsAH Hm χ := ⟨hH, hpos, hχ, hlaw⟩
   obtain ⟨ht₁, ht₂⟩ := @GlobalTheory.TangentOrigin.tangent_bijection_of_values @GlobalTheory.valAt'_rules t'.G _ t'.PP.L g u
     (by simpa only [hex] using hc)
@@ -80,7 +88,7 @@ theorem exists_hodgeInnerProduct_form : ∀ (E : Type) [Field E] [NumberField E]
   have ht₁' : ∀ v, IsTangent v → ∃! w, u₁.IsDiff w v := ht₁
   have ht₂' : ∀ w, ∃! v, IsTangent v ∧ u₁.IsDiff w v := ht₂
   have hcart : IsGrpPullback t'.G t.G z m.φ := m.cart
-  obtain ⟨D, hD⟩ := GlobalTheory.T.tangent_space_equiv_hol_unif X t.G z V M t'.G m.φ _ g u₁ hcart ht₁' ht₂'
+  obtain ⟨D, hD⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeLin.exists_linearEquiv X t.G z V M t'.G m.φ _ g u₁ hcart ht₁' ht₂'
   choose x hxt hxφ hxd using hD
   let h : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ := LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ)
     (fun v w => (Real.pi : ℂ) * hermForm Hm (D w) (D v))
@@ -92,7 +100,7 @@ theorem exists_hodgeInnerProduct_form : ∀ (E : Type) [Field E] [NumberField E]
   have hh : ∀ v w, h v w = (Real.pi : ℂ) * hermForm Hm (D w) (D v) := fun _ _ => rfl
   refine ⟨h, fun v w c => ⟨?_, ?_⟩, fun v w => ?_, fun v hv => ?_⟩
   · rintro ⟨-, -, -, A, _, φ, g', u', Hm', χ', v', w', a, b, h1, h2, h3, h4, h5, h6, rfl⟩
-    have := GlobalTheory.T.hol_unif_compare_isogeny X t.G t.PP.L z t'.G A m.φ φ g g' u₁ u' Hm Hm' χ χ' t.PP.isLB hab hcart h1 ht₁' ht₂' hAH₁ h2
+    have := _root_.GlobalTheory.CompanionTheory.Ar.HodgeUniq.hermForm_eq_of_pullbacks X t.G t.PP.L z t'.G A m.φ φ g g' u₁ u' Hm Hm' χ χ' t.PP.isLB hab hcart h1 ht₁' ht₂' hAH₁ h2
       (x w) (x v) w' v' (D w) (D v) b a (hxt w) (hxt v) (h4.trans (hxφ w).symm) (h3.trans (hxφ v).symm)
       (hxd w) (hxd v) h6 h5
     rw [hh, ← this]

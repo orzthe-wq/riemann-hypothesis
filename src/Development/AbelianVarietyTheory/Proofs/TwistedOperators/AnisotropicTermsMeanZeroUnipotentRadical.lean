@@ -92,11 +92,7 @@ theorem setIntegral_eq_zero_of_central {G : Type*} [Group G] [MeasurableSpace G]
   · exact absurd (sub_eq_zero.1 h).symm hc
   · exact h
 
-theorem adj_eq {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) : adj D A = Aᴴ := rfl
-
-theorem gram_herm (V : HSp D) : V.gramᴴ = V.gram := by
-  rw [← adj_eq]
-  exact GlobalTheory.AutFunCounterexample.gram_herm V
+alias adj_eq := _root_.GlobalTheory.TwistDual.adj_eq
 
 private theorem mul_add_mul_add_mul_eq_one_of_dual_blocks {K : Type*} [Field K] {n a b : ℕ} (C C' : Matrix (Fin n) (Fin a) K)
     (B : Matrix (Fin n) (Fin b) K) (P1 P3 : Matrix (Fin a) (Fin n) K) (P2 : Matrix (Fin b) (Fin n) K)
@@ -120,7 +116,7 @@ theorem frame_identity {V V' : HSp D} {r : ℕ} {C C' : Matrix (Fin V.rank) (Fin
     C * (adj D C' * V.gram) + (B * (V'.gram⁻¹ * adj D B * V.gram) + C' * (adj D C * V.gram)) = 1 := by
   obtain ⟨hfr, hisom, horth, hrank⟩ := hs
   have hCC : adj D C * V.gram * C = 0 := hfr.2.2
-  have hG := gram_herm V
+  have hG := _root_.GlobalTheory.MixModel.gram_conjTranspose V
   have hV' : V'.gram⁻¹ * V'.gram = 1 :=
     Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (GlobalTheory.AutFunCounterexample.gram_det_ne V'))
   simp only [adj_eq] at h1 h2 h3 hCC hisom horth ⊢
@@ -162,16 +158,7 @@ theorem isTheta_heisO {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsSt
   have h2 := GlobalTheory.FinTranslate.isThetaFunO_heisO hc.1 hc.2.1 h1 hu
   rwa [GlobalTheory.FinTranslate.heisO_heisO, (GlobalTheory.FinTranslate.symplOH_fin_real hu hv), AddChar.map_zero_eq_one, one_smul] at h2
 
-theorem trace_one_tmul {F E : Type} [Field F] [Field E] [Algebra F E] [Module.Finite F E]
-    (R : Type) [CommRing R] [Algebra F R] (e : E) :
-    Algebra.trace R (TensorProduct F R E) ((1 : R) ⊗ₜ[F] e) = algebraMap F R (Algebra.trace F E e) := by
-  have h : Algebra.lmul R (TensorProduct F R E) ((1 : R) ⊗ₜ[F] e) = (Algebra.lmul F E e).baseChange R := by
-    refine LinearMap.ext fun x => ?_
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a b => simp [LinearMap.baseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul]
-    | add x y hx hy => simp only [map_add (f := _), hx, hy]
-  rw [Algebra.trace_apply, h, LinearMap.trace_baseChange, Algebra.trace_apply]
+alias trace_one_tmul := _root_.GlobalTheory.SymplecticOrthogonalSesquilinear.trace_one_tmul
 
 theorem sum_eq_trace {m n : ℕ} (A : Matrix (Fin m) (Fin m) D.host.E) (G : Matrix (Fin n) (Fin n) D.host.E)
     (x y : Matrix (Fin n) (Fin m) D.host.E) :
@@ -180,19 +167,13 @@ theorem sum_eq_trace {m n : ℕ} (A : Matrix (Fin m) (Fin m) D.host.E) (G : Matr
   refine Finset.sum_congr rfl fun a _ => ?_
   exact Finset.sum_comm.trans ((Finset.sum_congr rfl fun c _ => Finset.sum_comm).trans Finset.sum_comm)
 
-private theorem cA_incA_eq_incA_star (e : D.host.E) : cA D (incA D e) = incA D (star e) := by
-  show Algebra.TensorProduct.map (AlgHom.id _ _) D.sp.cm.sig ((1 : AF D.host.F) ⊗ₜ[D.host.F] e) =
-    (1 : AF D.host.F) ⊗ₜ[D.host.F] star e
-  rw [Algebra.TensorProduct.map_tmul]
-  rfl
-
 theorem symplOH_rat (S T : HSp D) (x y : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     symplOH S T (x.map (incA D)) (y.map (incA D)) = algebraMap D.host.F (AF D.host.F)
       (1 / 2 * Algebra.trace D.host.F D.host.E (D.host.xi0 * (S.gram⁻¹ * yᴴ * T.gram * x).trace)) := by
   have key : hO S T (x.map (incA D)) (y.map (incA D)) = incA D ((S.gram⁻¹ * yᴴ * T.gram * x).trace) := by
     rw [← sum_eq_trace]
 
-    simp only [hO, Matrix.map_apply, cA_incA_eq_incA_star, ← map_mul, ← map_sum]
+    simp only [hO, Matrix.map_apply, _root_.GlobalTheory.DualPairCheck.cA_incA, ← map_mul, ← map_sum]
   rw [symplOH, symplO, key, ← map_mul]
   rw [show incA D (D.host.xi0 * (S.gram⁻¹ * yᴴ * T.gram * x).trace) =
     (1 : AF D.host.F) ⊗ₜ[D.host.F] (D.host.xi0 * (S.gram⁻¹ * yᴴ * T.gram * x).trace) from rfl, trace_one_tmul, ← map_mul]
@@ -208,12 +189,9 @@ theorem heisO_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) 
     heisO ψ S T (x.map (incA D)) (heisO ψ S T (y.map (incA D)) g) = heisO ψ S T ((x + y).map (incA D)) g := by
   rw [GlobalTheory.FinTranslate.heisO_heisO, psi_rat hψ, one_smul, Matrix.map_add _ (map_add _)]
 
-theorem mt_mul (V : HSp D) (a b : GA D V) :
-    Formalism.L2.Theta.mt V (a * b) = Formalism.L2.Theta.mt V a * Formalism.L2.Theta.mt V b := by
-  simp only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]
+alias mt_mul := _root_.GlobalTheory.BesselCompare.mt_mul
 
-theorem mt_one (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by
-  simp only [Formalism.L2.Theta.mt, map_one, Units.val_one]
+alias mt_one := _root_.GlobalTheory.BesselCompare.mt_one
 
 theorem actO_mul_mt (S T : HSp D) (g : GA D S) (w : WO S T) :
     actO S T g 1 (HMul.hMul (w : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (Formalism.L2.Theta.mt S g)) = w := by
@@ -447,7 +425,7 @@ theorem pairing_trace {V W : HSp D} {r : ℕ} {C C' : Matrix (Fin V.rank) (Fin r
     Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (GlobalTheory.AutFunCounterexample.gram_det_ne V))
   simp only [adj_eq] at h1 ⊢
   have h1' : Cᴴ * (V.gram * C') = 1 := by rw [← Matrix.mul_assoc]; exact h1
-  simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, gram_herm, Matrix.mul_assoc]
+  simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, _root_.GlobalTheory.MixModel.gram_conjTranspose, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc V.gram⁻¹ V.gram, hG, Matrix.one_mul, Matrix.trace_mul_comm C']
   simp only [Matrix.mul_assoc, h1', Matrix.mul_one]
 
@@ -483,7 +461,7 @@ theorem dual_one {V : HSp D} {r : ℕ} {C C' : Matrix (Fin V.rank) (Fin r) D.hos
     (h1 : adj D C * V.gram * C' = 1) : adj D C' * V.gram * C = 1 := by
   rw [adj_eq] at h1 ⊢
   have h := congrArg Matrix.conjTranspose h1
-  simpa [Matrix.conjTranspose_mul, gram_herm, Matrix.mul_assoc] using h
+  simpa [Matrix.conjTranspose_mul, _root_.GlobalTheory.MixModel.gram_conjTranspose, Matrix.mul_assoc] using h
 
 theorem central_mem_NI {V : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E} (hC : IsIsoFrame V C)
     (S₀ : Matrix (Fin r) (Fin r) D.host.E) (a : AF D.host.F) {z : GA D V}
@@ -559,7 +537,7 @@ theorem GlobalTheory.AnisoMean.aniso_mean_zero : ∀ (D : D7) (V V' W : HSp D) (
     rfl
   have hM : (adj D y * W.gram * y)ᴴ = adj D y * W.gram * y := by
     rw [adj_eq]
-    simp [Matrix.conjTranspose_mul, gram_herm, Matrix.mul_assoc]
+    simp [Matrix.conjTranspose_mul, _root_.GlobalTheory.MixModel.gram_conjTranspose, Matrix.mul_assoc]
   obtain ⟨S₀, hS₀, htr⟩ := exists_skew _ hM hy
   have ht : (1 / 2 : D.host.F) * Algebra.trace D.host.F D.host.E
       (D.host.xi0 * ((adj D y * W.gram * y) * S₀).trace) ≠ 0 := mul_ne_zero (by norm_num) htr
@@ -574,7 +552,7 @@ theorem GlobalTheory.AnisoMean.aniso_mean_zero : ∀ (D : D7) (V V' W : HSp D) (
     sq_zero_generic C S₀ (adj D C * V.gram) hCC
   have hsk : (C * S₀ * (adj D C * V.gram))ᴴ * V.gram + V.gram * (C * S₀ * (adj D C * V.gram)) = 0 := by
     rw [adj_eq]
-    exact skew_generic V.gram (gram_herm V) C S₀ hS₀
+    exact skew_generic V.gram (_root_.GlobalTheory.MixModel.gram_conjTranspose V) C S₀ hS₀
   obtain ⟨z, hz⟩ := exists_central V _ hXX hsk a
   have hzN : z ∈ NI V C := central_mem_NI hs.frame S₀ a hz
   have hω_mul : ∀ g h : GA D V, ω (g * h, 1) = ω (g, 1) * ω (h, 1) := fun g h => by

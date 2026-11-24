@@ -132,7 +132,7 @@ theorem lowerUnipotent_mul (hn : ρ + p = n) (c c' : Matrix (Fin p) (Fin ρ) R) 
   congr 1
   · simp
   · simp
-  · simp [add_comm]
+  · simp
   · simp
 
 theorem blockMatrix_twist (hn : ρ + p = n) (z z' : Matrix (Fin ρ) (Fin ρ) R) (x η : Matrix (Fin ρ) (Fin p) R)
@@ -219,15 +219,11 @@ theorem rat_bl' (hn : ρ + p = n) (a : Matrix (Fin ρ) (Fin ρ) D.host.E) (b : M
     (c : Matrix (Fin p) (Fin ρ) D.host.E) (d : Matrix (Fin p) (Fin p) D.host.E) :
     rat (D := D) (bl hn a b c d) = bl hn (rat a) (rat b) (rat c) (rat d) := blockMatrix_map₂ _ _ _ _ _ _
 
-theorem rat_one' {k : ℕ} : rat (D := D) (1 : Matrix (Fin k) (Fin k) D.host.E) = 1 :=
-  Matrix.map_one _ (map_zero _) (map_one _)
+alias rat_one' := _root_.GlobalTheory.MixModel.rat_one
 
-theorem rat_zero' {k l : ℕ} : rat (D := D) (0 : Matrix (Fin k) (Fin l) D.host.E) = 0 :=
-  Matrix.map_zero _ (map_zero _)
+alias rat_zero' := _root_.GlobalTheory.MixModel.rat_zero
 
-theorem rat_neg' {k l : ℕ} (a : Matrix (Fin k) (Fin l) D.host.E) : rat (D := D) (-a) = -rat a := by
-  ext i j
-  exact map_neg (incA D) _
+alias rat_neg' := _root_.GlobalTheory.MixModel.rat_neg
 
 theorem nzx_mat_rat (M : Maps D hn) (z : hermA D ρ) (Z : Matrix (Fin ρ) (Fin ρ) D.host.E)
     (X : Matrix (Fin ρ) (Fin p) D.host.E) (hZ : rat Z = z.1) :

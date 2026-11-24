@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.LiftMemMatrixAlgebra
 
 @[expose] public section
 
@@ -132,8 +133,8 @@ theorem typeProj_of (hPE : PRho.PRhoExists) (hGL : PRho.GaugeLines) (hDU : SSn.R
       intro σ a A B'
       dsimp only
       by_cases h : 0 < PRho.nrmW S.G.k S.G.r (T v).base.z a
-      · rw [ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, kap_hsInner_smul_left,
-          kap_hsInner_smul_right, Complex.conj_ofReal, hsInner_lmul _ ((hrest a h).2.1 σ)]
+      · rw [ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, _root_.Formalism.FourierDecayAlt.P5.hsInner_smul_left,
+          _root_.Formalism.FourierDecayAlt.P5.HerB.hs_smul_right, Complex.conj_ofReal, hsInner_lmul _ ((hrest a h).2.1 σ)]
       · have h0 : kcut (PRho.nrmW S.G.k S.G.r (T v).base.z a) = 0 := kcut_zero (by linarith [not_lt.1 h])
         simp [h0, B.hsInner, kap_hsVec_zero]
     ·
@@ -143,7 +144,6 @@ theorem typeProj_of (hPE : PRho.PRhoExists) (hGL : PRho.GaugeLines) (hDU : SSn.R
       have hh1 : h⁻¹ * h = 1 := by
         first
           | exact Matrix.nonsing_inv_mul _ hu
-          | exact Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hu)
       have key : ∀ y, (T v).base.π h⁻¹ ((T v).base.π h y) = y := by
         intro y
         rw [← ContinuousLinearMap.comp_apply, ← (T v).base.π_rep.2 _ hinv _ hh, hh1, (T v).base.π_rep.1]

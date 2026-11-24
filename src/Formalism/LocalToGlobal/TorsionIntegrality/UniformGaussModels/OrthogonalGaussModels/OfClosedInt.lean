@@ -12,45 +12,6 @@ import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.PhNormF
 import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.SecondCoeffConsistency
 public import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.Joints
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FinalS
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -161,7 +122,7 @@ theorem CalcC_proof : CalcC := by
     have h : ‖(((l : ℕ) : MaximalUnramifiedExtension l) : ℂ_[l])‖ = (l : ℝ)⁻¹ := hU.2.2.1
     simpa using h
   have hP := BrC.logPair (K := ℂ_[l]) hl
-  obtain ⟨F', hF'⟩ := (Formalism.InvariantFactorPaths.G7.Top.lawExists ℂ_[l] l hU.1 hnl).1
+  obtain ⟨F', hF'⟩ := (_root_.Formalism.InvariantFactorPaths.G7.formal_law_exists ℂ_[l] l hU.1 hnl).1
   have hph : PowerSeries.constantCoeff (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε)) = 0 :=
     cc_map _ (FAux.cc_phFF hl g2 g3 s2 ε)
   have hth' : ∀ n, ‖PowerSeries.coeff n (thetaS l (g2 : ℂ_[l]) (g3 : ℂ_[l]) (ε : ℂ_[l]))‖ ≤ 1 := by
@@ -185,7 +146,7 @@ theorem CalcC_proof : CalcC := by
     of_closed_int hU (Formalism.L2.Th1.C.binomClosed ℂ_[l] _ hcl) (Formalism.L2.Th1.C.intBinomScalar ℂ_[l] _)
       hz hs
   let _ : StarRing (BrC.Osub σ) := BrC.starO hσ
-  have key := Formalism.L2.Th1.C.normAdjAll ℂ_[l] (unitBall ℂ_[l]) _ _ _ hFr (BrC.Osub σ)
+  have key := _root_.Formalism.L2.Th1.C.norm_adjoint_all_places ℂ_[l] (unitBall ℂ_[l]) _ _ _ hFr (BrC.Osub σ)
     ((MaximalUnramifiedExtension l).subtype.comp (BrC.Osub σ).subtype)
     (fun α => endInt hU α.2.1 α.2.2)
     (fun z hz => hbin z.1 z.2.1 (congrArg Subtype.val hz))

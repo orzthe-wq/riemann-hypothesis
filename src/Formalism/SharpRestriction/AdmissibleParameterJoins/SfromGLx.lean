@@ -52,8 +52,7 @@ theorem splitsF_of_splitsE (D : D7) (p : ℕ) (hp : p.Prime) (h : S.SplitsE D p)
   have hF := BridgeLemma.splitsCompl_down D.host.F D.host.E p hp h
   refine ⟨?_, fun v hv => ?_⟩
   · exact (Nat.card_coe_set_eq _).trans ((BridgeLemma.ncard_plOver D.host.F hp hF).trans (finrank_F_eq D))
-  · have h1 := (hF v.asIdeal v.isMaximal hv).1
-    rwa [Ideal.absNorm_apply, Submodule.cardQuot_apply] at h1
+  · simpa only [Ideal.absNorm_apply, Submodule.cardQuot_apply] using (hF v.asIdeal v.isMaximal hv).1
 
 end Formalism.MainNotions.J
 

@@ -315,7 +315,7 @@ theorem injective_gsCompactInv (ℓ k : ℕ) (hℓ : ℓ.Prime) (hnk : n = ℓ ^
     subst hnk
     rw [Nat.cast_pow] at hn
     exact hv (hS v (v.isPrime.mem_of_pow_mem k hn))
-  refine Exists.elim (exists_cohomologyMap_f_eq_of_cohomologyMap_g_eq_zero
+  refine Exists.elim (_root_.GroundTheory.ProfCoh.exists_cohomologyMap_f_eq
     (sUnitsKummerSequence_shortExact (Ω := ℚ̄) S n hnS) 2 y
     ((cohomologyMap_nsmul_id_apply _ n 2 y).trans hny)) (fun x hx => ?_)
 

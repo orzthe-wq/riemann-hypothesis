@@ -1,46 +1,6 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDefs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Formalism.LocalToGlobal.TorsionIntegrality.CMGoodModels.Statement
 
 @[expose] public section
@@ -110,7 +70,6 @@ theorem Conv.mul {f g : PowerSeries ℂ} (hf : Conv f) (hg : Conv g) : Conv (f *
   intro x hx
   refine (summable_norm_sum_mul_antidiagonal_of_summable_norm (hf.summable_norm hx)
     (hg.summable_norm hx)).congr fun n => ?_
-  beta_reduce
   rw [← coeff_mul_term, norm_mul, norm_pow]
 
 theorem conv_one : Conv (1 : PowerSeries ℂ) := by
@@ -233,7 +192,6 @@ private theorem eq_zero_at_zero_of_tsum_mul_pow_eq_zero (b : ℕ → ℂ) (hb : 
     (h0 : ∀ t : ℝ, 0 < t → t ≤ 1 / 2 → ∑' i, b i * (t : ℂ) ^ i = 0) : b 0 = 0 := by
   have hK : Summable fun i => ‖b (i + 1)‖ * (1 / 2 : ℝ) ^ i := by
     refine (((summable_nat_add_iff 1).mpr hb).mul_left 2).congr fun i => ?_
-    beta_reduce
     ring
   have hmain : ∀ t : ℝ, 0 < t → t ≤ 1 / 2 →
       ‖b 0‖ ≤ t * ∑' i, ‖b (i + 1)‖ * (1 / 2 : ℝ) ^ i := by
@@ -283,7 +241,6 @@ private theorem coeff_eq_zero_of_ev_eq_zero_of_lower_eq_zero {f : PowerSeries �
     have hs := (summable_nat_add_iff n).mpr (hf _ h2)
     rw [Complex.norm_real, Real.norm_of_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 2)] at hs
     refine (hs.mul_left (2 ^ n)).congr fun i => ?_
-    beta_reduce
     generalize ‖PowerSeries.coeff (i + n) f‖ = c
     rw [pow_add]
     calc (2 : ℝ) ^ n * (c * ((1 / 2) ^ i * (1 / 2) ^ n)) = c * (1 / 2) ^ i * ((1 / 2) ^ n * 2 ^ n) := by

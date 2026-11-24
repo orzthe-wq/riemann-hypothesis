@@ -2,51 +2,7 @@ module
 
 public import Formalism.RealPlaceAnalysis.StatementKT
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.CFPrimeA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.LowFockA
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -78,13 +34,11 @@ theorem lf_toMatrix_cp (i a : Fin n) :
 theorem lf_toMatrix_cm (i a : Fin n) :
     LinearMap.toMatrix (fockBasis n) (fockBasis n) (cmFock i a) = (lfP i a)ᵀ := by
   ext T S
-  simp only [LinearMap.toMatrix_apply, lfP, transpose_apply]
-  exact lf_repr_cm_eq (i, a) S T
+  simpa only [LinearMap.toMatrix_apply, lfP, transpose_apply] using lf_repr_cm_eq (i, a) S T
 
 theorem fockMatrix_conjTranspose_eq_transpose (i a : Fin n) : (lfP i a)ᴴ = (lfP i a)ᵀ := by
   ext T S
-  simp only [conjTranspose_apply, transpose_apply, lfP, LinearMap.toMatrix_apply]
-  exact lf_repr_cp_star (i, a) T S
+  simpa only [conjTranspose_apply, transpose_apply, lfP, LinearMap.toMatrix_apply] using lf_repr_cp_star (i, a) T S
 
 theorem fockMatrix_transpose_conjTranspose (i a : Fin n) : (lfP i a)ᵀᴴ = lfP i a := by
   rw [← fockMatrix_conjTranspose_eq_transpose, Matrix.conjTranspose_conjTranspose]
@@ -104,8 +58,7 @@ theorem lfMatFull_kRel (ε : Fin n → Bool) : Formalism.REAL.KRel ε (lfMatFull
 
 theorem lfMatFull_conjTranspose (ε : Fin n → Bool) {a b : Fin n} (h : ε a = ε b) :
     lfMatFull ε b a = (lfMatFull ε a b)ᴴ := by
-  rw [lfMatFull_eq, lfMatFull_eq]
-  simp only [h]
+  rw [lfMatFull_eq, lfMatFull_eq, h]
   split_ifs <;> simp [Matrix.conjTranspose_sum, Matrix.conjTranspose_mul, fockMatrix_conjTranspose_eq_transpose,
     fockMatrix_transpose_conjTranspose, Matrix.conjTranspose_neg]
 
@@ -165,8 +118,7 @@ theorem lfMat_mul_apply (ε : Fin n → Bool) (a b c d : Fin n) (T S : LfIdx ε)
     symm
     apply Finset.sum_subset (Finset.filter_subset _ _)
     intro U _ hU
-    have hU' : ¬ U ⊆ lfPhysModes ε := by simpa using hU
-    rw [lfMatFull_eq_zero ε c d S.2 hU', mul_zero]
+    rw [lfMatFull_eq_zero ε c d S.2 (by simpa using hU), mul_zero]
   rw [key, Finset.sum_subtype (p := fun U : Finset (Fin (n * n)) => U ⊆ lfPhysModes ε) _ (fun U => by simp)]
 
 theorem lfMat_kRel (ε : Fin n → Bool) : Formalism.REAL.KRel ε (lfMat ε) := by
@@ -179,8 +131,7 @@ theorem lfMat_kRel (ε : Fin n → Bool) : Formalism.REAL.KRel ε (lfMat ε) := 
 theorem lfMat_conjTranspose (ε : Fin n → Bool) {a b : Fin n} (h : ε a = ε b) :
     lfMat ε b a = (lfMat ε a b)ᴴ := by
   ext T S
-  simp only [lfMat, Matrix.submatrix_apply, Matrix.conjTranspose_apply]
-  rw [lfMatFull_conjTranspose ε h, Matrix.conjTranspose_apply]
+  simp only [lfMat, Matrix.submatrix_apply, Matrix.conjTranspose_apply, lfMatFull_conjTranspose ε h]
 
 theorem lfMat_basis (ε : Fin n → Bool) (a b : Fin n) (S : LfIdx ε) :
     sgE ε cpFock cmFock a b (fockBasis n S.1) = ∑ T : LfIdx ε, lfMat ε a b T S • fockBasis n T.1 := by
@@ -191,8 +142,7 @@ theorem lfMat_basis (ε : Fin n → Bool) (a b : Fin n) (S : LfIdx ε) :
     symm
     apply Finset.sum_subset (Finset.filter_subset _ _)
     intro T _ hT
-    have hT' : ¬ T ⊆ lfPhysModes ε := by simpa using hT
-    have h0 := lfMatFull_eq_zero ε a b S.2 hT'
+    have h0 := lfMatFull_eq_zero ε a b S.2 (by simpa using hT)
     rw [lfMatFull, LinearMap.toMatrix_apply] at h0
     rw [h0, zero_smul]
   rw [key, Finset.sum_subtype (p := fun T : Finset (Fin (n * n)) => T ⊆ lfPhysModes ε) _ (fun T => by simp)]
@@ -203,13 +153,12 @@ theorem lfMat_mulVec_single (ε : Fin n → Bool) (a b : Fin n) (S : LfIdx ε) (
     (h : sgE ε cpFock cmFock a b (fockBasis n S.1) = c • fockBasis n S.1) :
     lfMat ε a b *ᵥ Pi.single S 1 = c • Pi.single S 1 := by
   ext T
-  rw [Matrix.mulVec_single_one, Matrix.col_apply]
-  simp only [lfMat, Matrix.submatrix_apply, lfMatFull, LinearMap.toMatrix_apply]
+  simp only [Matrix.mulVec_single_one, Matrix.col_apply, lfMat, Matrix.submatrix_apply, lfMatFull,
+    LinearMap.toMatrix_apply]
   rw [h, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Pi.smul_apply, Finsupp.single_apply,
     Pi.single_apply]
-  by_cases hTS : T = S
-  · subst hTS
-    simp
+  rcases eq_or_ne T S with rfl | hTS
+  · simp
   · rw [if_neg (fun h' => hTS (Subtype.ext h'.symm)), if_neg hTS]
 
 end ReciprocityTheory.ChartRestriction.DS

@@ -101,7 +101,7 @@ theorem isotropic_diag {σ : A →+* A} {J : Matrix (Fin n) (Fin n) A} {M : Matr
   set d := (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂
   rw [← sub_eq_zero]
   have := congrArg₂ (fun a b => a + b) (congrArg₂ (fun a b => a + b) h11 h12) (congrArg₂ (fun a b => a + b) h21 h22)
-  simp only [add_zero, add_neg_cancel] at this
+  simp only [add_zero] at this
   rw [← sub_eq_zero] at this
   rw [← this]
   abel

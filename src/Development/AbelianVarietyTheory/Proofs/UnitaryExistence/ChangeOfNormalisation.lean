@@ -158,7 +158,7 @@ theorem _root_.GlobalTheory.PeriodChange.period_change : ∀ (E : Type) [Field E
       rw [hs, map_zsmul, map_zsmul]
       congr 1
       funext u
-      simp [f₁, f₂, hNdef, mulVec_single_one]
+      simp [f₁, f₂, hNdef]
     have := DFunLike.congr_fun hf a
     change N *ᵥ a = bas.symm (gam (bas a)) at this
     rw [this, LinearEquiv.apply_symm_apply]
@@ -179,7 +179,7 @@ theorem _root_.GlobalTheory.PeriodChange.period_change : ∀ (E : Type) [Field E
       intro u; simp [Matrix.mul_apply, mulVec, dotProduct]
     rw [mulVec, dotProduct, Fintype.sum_sum_type]
     simp only [hc, (hnorm _).1, (hnorm _).2]
-    simp [mulVec_single_one, Pi.single_apply]
+    simp [Pi.single_apply]
   let A₀ : Matrix (Fin g) (Fin g) ℂ :=
     N.toBlocks₁₁.map (fun x : ℤ => (x : ℂ)) + τ * N.toBlocks₂₁.map (fun x : ℤ => (x : ℂ))
   let B₀ : Matrix (Fin g) (Fin g) ℂ :=

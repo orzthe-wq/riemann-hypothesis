@@ -53,10 +53,8 @@ namespace Formalism.GradedWeylDivisibility
 
 private theorem exists_pos_of_sum_pos {ι : Type*} (s : Finset ι) (f : ι → ℕ)
     (h : 0 < ∑ i ∈ s, f i) : ∃ i ∈ s, 0 < f i := by
-  by_contra hne
-  push_neg at hne
-  have hz : ∑ i ∈ s, f i = 0 := Finset.sum_eq_zero (fun i hi => by have := hne i hi; omega)
-  omega
+  obtain ⟨i, hi, hne⟩ := Finset.exists_ne_zero_of_sum_ne_zero (Nat.pos_iff_ne_zero.mp h)
+  exact ⟨i, hi, Nat.pos_of_ne_zero hne⟩
 
 private theorem colExp_apply {r n h : ℕ} (c : Fin h → Fin r) (hh : h ≤ n) (a : Fin r)
     (t : Fin n) :
@@ -229,8 +227,6 @@ theorem semistandardPeel : SSYTPeel := by
     intro x
     first
       | exact Finsupp.tsub_apply _ _ _
-      | simp
-      | rfl
   have hpart : ∀ (S : Finset (Fin r)) (t : Fin n),
       ∑ b ∈ S, (m - colExp c hh) (b, t) =
         ∑ b ∈ S, m (b, t) - (if ht : t.val < h then (if c ⟨t.val, ht⟩ ∈ S then 1 else 0) else 0) := by
@@ -255,8 +251,6 @@ theorem semistandardPeel : SSYTPeel := by
   refine ⟨h, hh, c, hcmono, hiff, ?_, ?_, ?_⟩
   · first
       | exact Finsupp.le_def.mpr (fun x => hle x.1 x.2)
-      | exact fun x => hle x.1 x.2
-      | (intro x; exact hle x.1 x.2)
   · intro l j hlj a
     show (∑ b : Fin r with b ≤ a, (m - colExp c hh) (b, j)) ≤
       0 + ∑ b : Fin r with b < a, (m - colExp c hh) (b, l)

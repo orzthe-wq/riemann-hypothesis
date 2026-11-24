@@ -209,9 +209,6 @@ section Twist
 def trHt (q : ℕ) {Z X : Scheme.{0}} (f : Z ⟶ X) (n i : ℤ) : Ht q (sch.obj Z) n i →+ Ht q (sch.obj X) n i :=
   trH (ZMod q) f (tw q i) n
 
-theorem trHt_id (q : ℕ) (X : Scheme.{0}) (n i : ℤ) (x : Ht q (sch.obj X) n i) : trHt q (𝟙 X) n i x = x :=
-  trH_id (ZMod q) X (tw q i) n x
-
 end Twist
 
 section Adic

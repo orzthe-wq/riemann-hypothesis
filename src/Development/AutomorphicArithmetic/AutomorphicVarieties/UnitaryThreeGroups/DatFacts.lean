@@ -48,10 +48,6 @@ import ReciprocityTheory.GaloisValuations.GlobalA
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.GalOfCusp Matrix IsLocalRing
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
-private theorem locConst {Γ A : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group A] (ψ : Γ →* A)
-    (h : IsOpen (ψ.ker : Set Γ)) : IsLocallyConstant ψ :=
-  _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker ψ h
-
 private theorem open_galOf (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K]
     [Algebra K Ω] : IsOpen (galOf ℚ K Ω : Set (G ℚ Ω)) := by
   let b := Module.finBasis ℚ K
@@ -147,7 +143,7 @@ theorem UpperTheory.V.U3.dat_facts :
     rw [ComplexEmbedding.isReal_iff]
     ext x
     rw [ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hφ, h1 x]
-  · exact locConst _ (D.η_ker ▸ open_galOf Ω K)
+  · exact _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker _ (D.η_ker ▸ open_galOf Ω K)
   · exact bar_lc _ D.Ψ_cont
   · obtain ⟨A, hA, hg, h1, h2⟩ := (hkill g).1 hg
     exact (diagonal_rep_eq_one_iff _ _ _).2 ⟨h1, (hΨ A hA g hg).trans h2⟩
@@ -159,7 +155,7 @@ theorem UpperTheory.V.U3.dat_facts :
       refine ((continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp continuous_subtype_val).congr fun x => ?_
       exact (IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l) x).symm
     have h1 := ((hf.units_map _).comp (continuous_cycZ ℚ Ω l)).zpow (e : ℤ)
-    have h2 := (((locConst _ (Chr.clsFacts ℚ Ω N).1).comp ψ.toUnitHom).comp
+    have h2 := (((_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker _ (Chr.clsFacts ℚ Ω N).1).comp ψ.toUnitHom).comp
       (Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom)).continuous
     refine (h1.mul h2).congr fun g => ?_
     show _ = Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (chiO ℚ Ω l c.O g ^ (e : ℤ) * Chr.dirG ℚ Ω ψ g)

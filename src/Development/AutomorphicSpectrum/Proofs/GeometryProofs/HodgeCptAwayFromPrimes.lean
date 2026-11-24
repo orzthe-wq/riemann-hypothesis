@@ -1,18 +1,20 @@
 module
 
+public import Mathlib.AlgebraicGeometry.Stalk
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Mathlib.Data.Nat.Factorization.Induction
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsUniqueWeilIs
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.RegularUnitPoints
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGenericStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGeneric
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-import Mathlib.Algebra.AffineMonoid.Basic
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -20,10 +22,14 @@ import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
+import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
@@ -34,7 +40,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -49,10 +54,116 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.Tactic.Linter.HaveILetI
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.RegularUnitPoints, Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptAwayFromPrimes
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.RegularUnitPoints =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.RegularUnitPoints", "h": "module\n\npublic import Mathlib.AlgebraicGeometry.Stalk\npublic import Mathlib.Combinatorics.Quiver.ReflQuiver\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\npublic import Mathlib.Data.Nat.Factorization.Induction\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace UpperTheory.Reformulated.B.RegularUnitPoints
+
+theorem aux1 : ∀ {Ω : Type} [inst : Field Ω], IsLocalRing Ω := by
+  intro Ω inst
+  infer_instance
+
+noncomputable def genPt : {X : AlgebraicGeometry.Scheme} →
+  {Ω : Type} → [inst : Field Ω] → (AlgebraicGeometry.Spec ↧Ω ⟶ X) → ↥X :=
+  fun {X} {Ω} [Field Ω] ξ => ξ (IsLocalRing.closedPoint Ω)
+
+noncomputable def Cpt : {X : AlgebraicGeometry.Scheme} →
+  {Ω : Type} → [inst : Field Ω] → (AlgebraicGeometry.Spec ↧Ω ⟶ X) → Type :=
+  fun {X} {Ω} [Field Ω] ξ => { p // genPt ξ ⤳ p }
+
+theorem aux4 : ∀ {X : AlgebraicGeometry.Scheme} {Ω : Type} [inst : Field Ω]
+  (ξ : AlgebraicGeometry.Spec ↧Ω ⟶ X) (p : Cpt ξ),
+  genPt ξ ⤳ p.val := by
+  intro X Ω inst ξ p
+  exact p.2
+
+theorem aux5 : ∀ {Ω : Type} [inst : Field Ω], IsLocalRing (CommRingCat.of Ω) := by
+  intro Ω inst
+  show IsLocalRing Ω
+  infer_instance
+
+noncomputable def genMap : {X : AlgebraicGeometry.Scheme} →
+  {Ω : Type} →
+    [inst : Field Ω] →
+      (ξ : AlgebraicGeometry.Spec ↧Ω ⟶ X) →
+        (p : Cpt ξ) → ↑(X.presheaf.stalk p.val) →+* Ω :=
+  fun {X} {Ω} [Field Ω] ξ p =>
+    CommRingCat.Hom.hom
+      (CategoryTheory.CategoryStruct.comp
+        (X.presheaf.stalkSpecializes (aux4 ξ p))
+        (AlgebraicGeometry.Scheme.stalkClosedPointTo ξ))
+
+noncomputable def regAt : {X : AlgebraicGeometry.Scheme} →
+  {Ω : Type} →
+    [inst : Field Ω] →
+      (ξ : AlgebraicGeometry.Spec ↧Ω ⟶ X) → Cpt ξ → Subring Ω :=
+  fun {X} {Ω} [Field Ω] ξ p => (genMap ξ p).range
+
+noncomputable def unitAt : {X : AlgebraicGeometry.Scheme} →
+  {Ω : Type} →
+    [inst : Field Ω] →
+      (ξ : AlgebraicGeometry.Spec ↧Ω ⟶ X) → Cpt ξ → Ω → Prop :=
+  fun {X} {Ω} [Field Ω] ξ p a =>
+    a ≠ 0 ∧
+      a ∈ regAt ξ p ∧
+        a⁻¹ ∈ regAt ξ p
+
+noncomputable def InFibre : {X : AlgebraicGeometry.Scheme} →
+  {Ω : Type} →
+    [inst : Field Ω] →
+      (ξ : AlgebraicGeometry.Spec ↧Ω ⟶ X) → ℕ → Cpt ξ → Prop :=
+  fun {X} {Ω} [Field Ω] ξ p q => ¬unitAt ξ q ↑p
+
+theorem main : ∀ {X : AlgebraicGeometry.Scheme} {Ω : Type} [inst : Field Ω]
+  {ξ : AlgebraicGeometry.Spec ↧Ω ⟶ X} {q : Cpt ξ},
+  (∀ (r : ℕ), Nat.Prime r → ¬InFibre ξ r q) →
+    ∀ (n : ℕ), n ≠ 0 → unitAt ξ q ↑n := by
+  intro X Ω inst ξ q hq n hn
+  have key : ∀ m : ℕ, m ≠ 0 → unitAt ξ q (m : Ω) := by
+    intro m
+    induction m using Nat.recOnMul with
+    | zero => intro h; exact absurd rfl h
+    | one =>
+      intro _
+      refine ⟨by simp, ?_, ?_⟩
+      · simp [(regAt ξ q).one_mem]
+      · simp [(regAt ξ q).one_mem]
+    | prime p hp =>
+      intro _
+      have := hq p hp
+      unfold InFibre at this
+      exact not_not.mp this
+    | mul a b ha hb =>
+      intro hab
+      have ha0 : a ≠ 0 := by rintro rfl; simp at hab
+      have hb0 : b ≠ 0 := by rintro rfl; simp at hab
+      obtain ⟨a1, a2, a3⟩ := ha ha0
+      obtain ⟨b1, b2, b3⟩ := hb hb0
+      refine ⟨?_, ?_, ?_⟩
+      · push_cast; exact mul_ne_zero a1 b1
+      · push_cast; exact Subring.mul_mem _ a2 b2
+      · push_cast; rw [mul_inv]; exact Subring.mul_mem _ a3 b3
+  exact key n hn
+
+end UpperTheory.Reformulated.B.RegularUnitPoints
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.RegularUnitPoints =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptAwayFromPrimes =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptAwayFromPrimes", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine\npublic import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsUniqueWeilIs\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.RegularUnitPoints\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGeneric\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -290,7 +401,7 @@ end HT
 theorem lattices_of_char_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y), Function.Injective β → ∀ q : Cpt 𝔐.ξ, (∀ r : ℕ, r.Prime → ¬ InFibre 𝔐.ξ r q) → (∀ s, 𝔐.V s q = 𝔐.dR s q) ∧ (∀ p : ℕ, p.Prime → ∀ s, 𝔐.HT p s q = 𝔐.dR s q) ∧ 𝔐.M.lat q = ⨆ s, 𝔐.dR s q := by
   intro E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 hβ q hq
   classical
-  obtain ⟨-, -, hchar, hinj, -, htop, hind, hreg⟩ := GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c O β Y S Ω K J y 𝔐 hβ
+  obtain ⟨-, -, hchar, hinj, -, htop, hind, hreg⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeCpt.basic E H D l Xo c O β Y S Ω K J y 𝔐 hβ
   haveI := hchar
   haveI : Fintype (CMType H ⊕ CMType H) := Fintype.ofFinite _
   have hnat := unitAt_natCast (q := q) hq
@@ -334,3 +445,7 @@ theorem lattices_of_char_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   | inr τ => exact hd _
 
 end GlobalTheory.CompanionTheory.Ar.HodgeChar0
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptAwayFromPrimes =====

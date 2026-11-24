@@ -82,8 +82,6 @@ theorem length_coker_le {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuatio
   have hle : Ideal.span {l ^ V} ≤ Ideal.span {QQ.det} := Ideal.span_singleton_le_span_singleton.2 hd
   first
     | exact Module.length_le_of_surjective (Submodule.factor hle) (Submodule.factor_surjective hle)
-    | exact Module.length_le_of_surjective (Ideal.Quotient.factorₐ O hle).toLinearMap
-        (Ideal.Quotient.factor_surjective hle)
 
 theorem lemmaDN_core {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂.L} {b : ZMod n → ℕ} {S η m : ℕ}
     (hS : SetCS W d T₁ T₂ F b S η m) (i : ZMod n) {r : ℕ} (red : ↥(NDl W T₂ i) →ₗ[O] (Fin r → O))
@@ -119,14 +117,11 @@ theorem lemmaDN_core {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L
   have hm : IsLocalRing.maximalIdeal O = Ideal.span {ϖ} := by
     first
       | exact hϖ.maximalIdeal_eq
-      | exact (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ
   have hlen1 : Module.length O (O ⧸ Ideal.span {ϖ}) = 1 := by
     rw [← hm]
     first
       | exact Module.length_eq_one_iff.2
           (isSimpleModule_iff_isCoatom.2 (IsLocalRing.maximalIdeal.isMaximal O).out)
-      | exact Module.length_eq_one_iff.2
-          (isSimpleModule_iff_isCoatom.2 (Ideal.isMaximal_def.1 (IsLocalRing.maximalIdeal.isMaximal O)))
   have hlenp : Module.length O (O ⧸ Ideal.span {((PD.p : ℕ) : O)}) = (k : ℕ∞) := by
     rw [hu, Ideal.span_singleton_mul_left_unit u.isUnit,
       Formalism.KernelCokernelLengths.TorsionKernelSumLemmas.len_pow ϖ hϖ.ne_zero k, hlen1, mul_one]
@@ -167,11 +162,8 @@ theorem lemmaDN_core {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L
         rw [LinearEquiv.symm_apply_eq]
         first
           | rfl
-          | exact (LinearMap.quotKerEquivOfSurjective_apply_mk red hsurj _).symm
-      simp only [f, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, hv, he,
-        Submodule.factor_mk, Submodule.Quotient.mk_eq_zero]
+      simp only [f, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, hv, he]
       first
-        | rw [Submodule.factor_mk, Submodule.Quotient.mk_eq_zero]
         | (change Submodule.Quotient.mk (p := X) (∑ k', v k' • cols k') = 0
            rw [Submodule.Quotient.mk_eq_zero])
       exact Submodule.sum_mem _ fun k' _ => Submodule.smul_mem _ _ (hcolX k')

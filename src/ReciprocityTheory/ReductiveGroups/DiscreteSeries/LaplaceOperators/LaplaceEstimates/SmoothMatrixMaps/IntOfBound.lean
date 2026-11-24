@@ -3,46 +3,8 @@ module
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.PsiDatumStatement
 public import Formalism.RealPlaceAnalysis.FinalF
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.SmoothMatrixMaps.ContinuousSecondMatrix
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactHaarRightInvariantInst
 
 @[expose] public section
 
@@ -76,7 +38,7 @@ theorem int_of_bound {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : For
   refine Integrable.mono' ((int_bound hP hB hx a hb).const_mul (|CG| * ‖ξ‖)) hm ?_
   filter_upwards [ae_supp hB.2.2.2.2.1 hB.2.2.2.2.2] with p hp
   rw [norm_smul, chi_norm hB hp.1]
-  have hJ := inUJ_conj hP (uh_mul' (uh_mul' hp.1.1 hp.2.1) hx)
+  have hJ := inUJ_conj hP (_root_.ReciprocityTheory.ChartRestriction.DS.Lap.mul_mem_UH' (_root_.ReciprocityTheory.ChartRestriction.DS.Lap.mul_mem_UH' hp.1.1 hp.2.1) hx)
   have h1 := hCG _ hJ
   set y := frob (P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹) ^ (1 - a) with hy
   have h2 : 0 ≤ y := Real.rpow_nonneg (frob_nonneg _) _
@@ -103,7 +65,7 @@ theorem deriv_int {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formal
   have h0 : ∀ g : Mat k r, g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g := fun g => by
     simp [NormedSpace.exp_zero]
   obtain ⟨M, hM⟩ := (isCompact_closedBall (0 : ℝ) 1).exists_bound_of_continuousOn
-    ((frob_cont.comp ((curve_cont X).comp (continuous_const.sub continuous_id))).continuousOn
+    ((frob_cont.comp ((_root_.Formalism.REAL.continuous_exp_real_smul X).comp (continuous_const.sub continuous_id))).continuousOn
       (s := Metric.closedBall (0 : ℝ) 1))
   set M' := max M 1 with hM'def
   have hM' : ∀ t ∈ Metric.ball (0 : ℝ) 1, frob (NormedSpace.exp ((((0 : ℝ) - t : ℝ) : ℂ) • X)) ≤ M' := by
@@ -133,7 +95,7 @@ theorem deriv_int {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formal
     exact key
   · filter_upwards [hsupp] with p hp t ht
     set g := P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹ with hg
-    have hJ : Formalism.REAL.inUJ ε g := inUJ_conj hP (uh_mul' (uh_mul' hp.1.1 hp.2.1) hx)
+    have hJ : Formalism.REAL.inUJ ε g := inUJ_conj hP (_root_.ReciprocityTheory.ChartRestriction.DS.Lap.mul_mem_UH' (_root_.ReciprocityTheory.ChartRestriction.DS.Lap.mul_mem_UH' hp.1.1 hp.2.1) hx)
     have hJt : Formalism.REAL.inUJ ε (g * NormedSpace.exp ((t : ℂ) • X)) :=
       Formalism.REAL.indefinite_unitary_mul_mem ε hJ (Formalism.REAL.exp_indefinite_unitary_holds _ ε X hX t)
     rw [norm_smul, chi_norm hB hp.1]
@@ -167,7 +129,7 @@ theorem deriv_int {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formal
       _ = |CX| * ‖ξ‖ * M' ^ (a - 1) * frob g ^ (1 - a) := by ring_nf
   · filter_upwards [hsupp] with p hp t _
     have hJ : Formalism.REAL.inUJ ε (P * (Matrix.of p.1 * Matrix.of p.2 * x) * P⁻¹) :=
-      inUJ_conj hP (uh_mul' (uh_mul' hp.1.1 hp.2.1) hx)
+      inUJ_conj hP (_root_.ReciprocityTheory.ChartRestriction.DS.Lap.mul_mem_UH' (_root_.ReciprocityTheory.ChartRestriction.DS.Lap.mul_mem_UH' hp.1.1 hp.2.1) hx)
     exact (hasDeriv_curve_at hF hJ hX t).smul_const _
 
 end Der

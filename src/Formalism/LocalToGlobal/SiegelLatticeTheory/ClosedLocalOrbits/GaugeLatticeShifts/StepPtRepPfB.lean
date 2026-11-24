@@ -1,51 +1,10 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.RealObj
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -122,7 +81,7 @@ theorem T_ne : (F.T : ℂ) ≠ 0 := by
   exact_mod_cast F.T_pos.ne'
 
 theorem star_cz : star (-(F.T : ℂ)⁻¹) = -(F.T : ℂ)⁻¹ := by
-  simp [Complex.star_def]
+  simp
 
 def zd : Fin n → ℂ := (-(F.T : ℂ)⁻¹) • F.z
 
@@ -256,15 +215,11 @@ variable (i0 : Fin k) (Z Aα : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (t : Fin 
 private lemma hJ_add_right_gauge_lattice_shifts (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   simp only [hJ, Matrix.mulVec_add, dotProduct_add]
 
-private lemma hJ_finset_sum_right' {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (f : ι → Fin n → ℂ) :
-    hJ ε x (∑ a ∈ s, f a) = ∑ a ∈ s, hJ ε x (f a) := by
-  simp only [hJ, Matrix.mulVec_sum, dotProduct_sum]
-
 theorem pair_yv (x : Fin n → ℂ) (b : Fin (r + 1)) :
     hJ ε x (F.yv i0 Z Aα t b) =
       ∑ a, Z a b * hJ ε x (F.Fv a) + ∑ a, Aα a b * hJ ε x (F.E0 a) + t b * hJ ε x (F.wb i0) := by
   unfold yv
-  rw [hJ_add_right_gauge_lattice_shifts, hJ_add_right_gauge_lattice_shifts, hJ_finset_sum_right', hJ_finset_sum_right', hJ_smul_right_gauge_lattice_shifts]
+  rw [hJ_add_right_gauge_lattice_shifts, hJ_add_right_gauge_lattice_shifts, _root_.Formalism.L2.SG.RealObj.InfCut.PtRepPf.Fr.hJ_finset_sum_right_eq_sum, _root_.Formalism.L2.SG.RealObj.InfCut.PtRepPf.Fr.hJ_finset_sum_right_eq_sum, hJ_smul_right_gauge_lattice_shifts]
   simp only [hJ_smul_right_gauge_lattice_shifts]
 
 theorem p1 (a b : Fin (r + 1)) : hJ ε (fam F.e F.z a) (F.yv i0 Z Aα t b) = Z a b := by
@@ -334,7 +289,7 @@ theorem p4 (i : Fin k) (c : Fin (r + 1)) :
   split_ifs with h
   · subst h
     simp
-  · simp [Ne.symm h]
+  · simp
 
 private lemma hJ_yv_left_eq_sum (y : Fin n → ℂ) (b : Fin (r + 1)) :
     hJ ε (F.yv i0 Z Aα t b) y = ∑ a, star (Z a b) * hJ ε (F.Fv a) y +

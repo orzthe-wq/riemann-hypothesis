@@ -75,12 +75,12 @@ private theorem block_embedding_first_val {R : Type} [CommRing R] {r s : ℕ} (m
     | right d =>
       have := matrixExtendByZero_apply_of_outside_col (e1 r s) ((m : Matrix (Fin r) (Fin r) R) - 1) (Fin.castAdd s a)
         (j := Fin.natAdd r d) (fun k h => cn_ne k d (by simpa [e1] using h.symm))
-      simp [Matrix.reindex_apply, this, Matrix.one_apply, cn_ne]
+      simp [Matrix.reindex_apply, this, cn_ne]
   | right b =>
     have := extendByZero_apply_eq_zero_of_row_not_mem (e1 r s) ((m : Matrix (Fin r) (Fin r) R) - 1) (i := Fin.natAdd r b)
       (fun k h => cn_ne k b (by simpa [e1] using h.symm)) j
     induction j using Fin.addCases with
-    | left c => simp [Matrix.reindex_apply, this, Matrix.one_apply, (cn_ne c b).symm]
+    | left c => simp [Matrix.reindex_apply, this, (cn_ne c b).symm]
     | right d => simp [Matrix.reindex_apply, this, Matrix.one_apply]
 
 private theorem block_embedding_second_val {R : Type} [CommRing R] {r s : ℕ} (m : GL (Fin s) R) :
@@ -101,12 +101,12 @@ private theorem block_embedding_second_val {R : Type} [CommRing R] {r s : ℕ} (
     | left d =>
       have := matrixExtendByZero_apply_of_outside_col (e2 r s) ((m : Matrix (Fin s) (Fin s) R) - 1) (Fin.natAdd r a)
         (j := Fin.castAdd s d) (fun k h => cn_ne d k (by simpa [e2] using h))
-      simp [Matrix.reindex_apply, this, Matrix.one_apply, (cn_ne d a).symm]
+      simp [Matrix.reindex_apply, this, (cn_ne d a).symm]
   | left b =>
     have := extendByZero_apply_eq_zero_of_row_not_mem (e2 r s) ((m : Matrix (Fin s) (Fin s) R) - 1) (i := Fin.castAdd s b)
       (fun k h => cn_ne b k (by simpa [e2] using h)) j
     induction j using Fin.addCases with
-    | right c => simp [Matrix.reindex_apply, this, Matrix.one_apply, cn_ne b c]
+    | right c => simp [Matrix.reindex_apply, this, cn_ne b c]
     | left d => simp [Matrix.reindex_apply, this, Matrix.one_apply]
 
 private theorem unip_val {R : Type} [CommRing R] {r s : ℕ} (Y : Matrix (Fin r) (Fin s) R) :
@@ -120,17 +120,17 @@ private theorem unip_val {R : Type} [CommRing R] {r s : ℕ} (Y : Matrix (Fin r)
     induction j using Fin.addCases with
     | left c =>
       have : ¬ (r ≤ ((Fin.castAdd s c : Fin (r + s)) : ℕ)) := by simp
-      simp [this, Matrix.reindex_apply, Matrix.one_apply]
+      simp [Matrix.reindex_apply, Matrix.one_apply]
     | right d =>
       have h : ((Fin.castAdd s a : Fin (r + s)) : ℕ) < r ∧ r ≤ ((Fin.natAdd r d : Fin (r + s)) : ℕ) := by
         simp
       rw [dite_eq_left h]
-      simp [Matrix.reindex_apply, Matrix.one_apply, cn_ne]
+      simp [Matrix.reindex_apply, cn_ne]
   | right b =>
     have : ¬ (((Fin.natAdd r b : Fin (r + s)) : ℕ) < r) := by simp
     induction j using Fin.addCases with
-    | left c => simp [this, Matrix.reindex_apply, Matrix.one_apply, (cn_ne c b).symm]
-    | right d => simp [this, Matrix.reindex_apply, Matrix.one_apply]
+    | left c => simp [Matrix.reindex_apply, (cn_ne c b).symm]
+    | right d => simp [Matrix.reindex_apply, Matrix.one_apply]
 
 theorem UpperTheory.upperTriangular_eq_unipotent_mul_levi :
     ∀ (R : Type) [CommRing R] (r s : ℕ) (b : GL (Fin (r + s)) R), b.val.IsUpperTriangular → ∃ (X : UPos (r + s) r → R) (m₁ : GL (Fin r) R) (m₂ : GL (Fin s) R), b = unipGL X * blk m₁ m₂ := by

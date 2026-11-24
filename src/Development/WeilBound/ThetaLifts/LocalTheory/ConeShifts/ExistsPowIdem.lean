@@ -82,7 +82,7 @@ theorem mapc_zero {ι κ : Type} : (0 : Matrix ι κ A).map c = 0 := Matrix.map_
 theorem mapc_smul {ι κ : Type} (a : A) (M : Matrix ι κ A) : (a • M).map c = c a • M.map c := by
   ext i j; simp
 
-theorem Adj.one : Adj c J 1 1 := by simp [Adj, mapc_one]
+theorem Adj.one : Adj c J 1 1 := by simp [Adj]
 
 theorem Adj.add {M M' N N' : Matrix β β A} (h : Adj c J M M') (h' : Adj c J N N') : Adj c J (M + N) (M' + N') := by
   unfold Adj at *; rw [transpose_add, Matrix.add_mul, h, h', mapc_add, Matrix.mul_add]
@@ -223,7 +223,7 @@ theorem exists_decomp {Ji b b' f' : Matrix β β A} (hJ : J * Ji = 1) (k : UG c 
       fromBlocks 0 J J 0 := by
     rw [SS, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]
     simp only [mapc_smul, mapc_one, map_sub, map_one, hc, transpose_smul, transpose_one, Matrix.smul_mul, Matrix.mul_smul,
-      Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, smul_zero, zero_add, add_zero, smul_smul, e0, e0', e1, he, ← add_smul]
+      Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, zero_add, add_zero, smul_smul, e0, e0', e1, he, ← add_smul]
     simp
   have hU : (fromBlocks 1 T 0 1 : Matrix (β ⊕ β) (β ⊕ β) A) * fromBlocks 1 (f' * m) 0 1 = 1 := by
     rw [fromBlocks_multiply, ← fromBlocks_one, hT]; simp
@@ -247,8 +247,8 @@ theorem exists_decomp {Ji b b' f' : Matrix β β A} (hJ : J * Ji = 1) (k : UG c 
   have hεT' : (1 - ε) • T = 0 := by rw [sub_smul, one_smul, hεT, sub_self]
   have hL : (SS ε : Matrix (β ⊕ β) (β ⊕ β) A) * fromBlocks 1 T 0 1 * SS ε = fromBlocks 1 0 T 1 := by
     rw [SS, fromBlocks_multiply, fromBlocks_multiply]
-    simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, smul_zero, add_zero, hεT, hεT',
-      zero_add, Matrix.add_mul, smul_add, smul_smul, e0, e0', e1, he, zero_smul, ← add_smul]
+    simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, add_zero, hεT, hεT',
+      zero_add, smul_add, smul_smul, e0, e0', e1, he, zero_smul, ← add_smul]
     simp
   have hD : Ci b * (diagCols β : Matrix (β ⊕ β) β A) = (fromRows 1 0 : Matrix (β ⊕ β) β A) := by
     rw [Ci, diagCols, fromBlocks_mul_fromRows]; simp

@@ -159,7 +159,7 @@ private theorem sum_deg_sub_mul_add_eq_sum_deg_mul {s t : ℕ} (u : Fin t → Fi
     have e2 : finPos (2 * s + 1) (2 * u i + 1) =
         (⟨2 * u i + 1, by omega⟩ : Fin (2 * s + 1)).castSucc := by
       apply Fin.ext
-      simp [finPos] <;> omega
+      simp [finPos]
     rw [e1, e2, mul_add]
     congr 1 <;> simp
   have hjp' : ∑ a : Fin (2 * s + 1), (if a = ⟨2 * s, by omega⟩ then jp else 0) * f a.castSucc =

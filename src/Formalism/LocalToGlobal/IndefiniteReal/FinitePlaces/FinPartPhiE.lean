@@ -67,8 +67,7 @@ theorem finPart_phiE (v : HeightOneSpectrum (𝓞 D.host.F)) (a : v.adicCompleti
   rfl
 
 theorem finPart_incA (w : D.host.E) : finPart D (incA D w) = (1 : Af D.host.F) ⊗ₜ[D.host.F] w := by
-  simp only [incA, finPart, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, Algebra.TensorProduct.algebraMap_apply,
-    Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one]
+  simp only [incA, finPart, RingHom.coe_coe, AlgHom.toRingHom_eq_coe]
   rfl
 
 theorem tmul_eq (a : AF D.host.F) (w : D.host.E) :

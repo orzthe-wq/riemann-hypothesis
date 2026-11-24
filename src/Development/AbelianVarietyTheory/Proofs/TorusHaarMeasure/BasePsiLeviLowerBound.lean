@@ -80,12 +80,9 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
-theorem cpt_contDiff (X : Data E r) (x0 : Frame X.Ψ r) : ContDiff ℂ ∞ (cpt X x0) :=
-  contDiff_pi.2 fun τ => contDiff_pi.2 fun a => contDiff_pi.2 fun c => IW.cpt_entry_cd X x0 τ a c
-
 theorem chart_smooth (X : Data E r) {u : Frame X.Ψ r → ℝ} (hu : ContDiffOn ℝ ∞ u X.dom)
     (x0 : Frame X.Ψ r) : ContDiffOn ℝ ∞ (fun z => u (cpt X x0 z)) {z | cpt X x0 z ∈ X.dom} :=
-  hu.comp ((cpt_contDiff X x0).restrict_scalars ℝ).contDiffOn fun _ hz => hz
+  hu.comp ((_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoB.cd_cpt X x0).restrict_scalars ℝ).contDiffOn fun _ hz => hz
 
 theorem contDiffOn_frame {Ψ : Finset (E →+* ℂ)} {g : Frame Ψ r → ℂ} {U : Set (Frame Ψ r)}
     (hU : IsOpen U) (hg : DifferentiableOn ℂ g U) : ContDiffOn ℂ ∞ g U := by
@@ -129,7 +126,7 @@ theorem levi_transfer (X : Data E r) (x0 : Frame X.Ψ r) (z : V (nd X)) (hz : cp
   obtain ⟨Δ, zOf, bOf, hΔ, -, hzd, hbd, hsplit, hinv⟩ := lu_holds r X x1 ho
   have h0 := hinv 0 (IW.zero_mem_OmF X x1 ho) b hb
   rw [IW.cpt_zero, ← hxb] at h0
-  have hcd : Differentiable ℂ (cpt X x0) := (cpt_contDiff X x0).differentiable (by simp)
+  have hcd : Differentiable ℂ (cpt X x0) := (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoB.cd_cpt X x0).differentiable (by simp)
   set U : Set (V (nd X)) := {w | cpt X x0 w ∈ X.dom ∧ Δ (cpt X x0 w) ≠ 0} with hUdef
   have hU : IsOpen U :=
     (ExF.isOpen_OmF X x0).inter
@@ -278,12 +275,6 @@ theorem curvDe_nonneg (X : Data E r) {x0 : Frame X.Ψ r} {z : V (nd X)} (hz : cp
   simp only [de2, sgn]
   split_ifs <;> first | omega | norm_num
 
-section Weights
-
-variable {X : Data E r} (w : Weights X)
-
-end Weights
-
 theorem isInv_iff (X : Data E r) (u : Frame X.Ψ r → ℝ) : IsInv X u ↔ IsInvFn X u := by
   constructor
   · rintro ⟨h1, h2⟩ γ hγ x hx b hb
@@ -295,11 +286,6 @@ theorem isInv_iff (X : Data E r) (u : Frame X.Ψ r → ℝ) : IsInv X u ↔ IsIn
 
 theorem mem_SS_iff (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) :
     P ∈ X.SS la ↔ P ∈ X.SSgt la 0 := ⟨ss_sub_ssgt0 X la, fun h => h.1⟩
-
-theorem pnorm_nonneg (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
-    0 ≤ X.pnorm la P x := by
-  unfold Data.pnorm
-  positivity
 
 theorem lower_iff (X : Data E r) (la : Wt X.Ψ r) {N : ℕ} (w : Fin N → Frame X.Ψ r → ℂ) (c : ℝ)
     (ph : Frame X.Ψ r → ℝ) :
@@ -333,10 +319,10 @@ theorem upper_iff (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) {i 
   · rintro ⟨C, h⟩
     refine ⟨Real.exp (2 * i * C), fun x hx => ?_⟩
     rw [← he C]
-    exact pow_le_pow_left₀ (pnorm_nonneg X la P x) (h x hx) 2
+    exact pow_le_pow_left₀ (_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.pnorm_nonneg X la P x) (h x hx) 2
   · rintro ⟨K, h⟩
     refine ⟨K / (2 * i), fun x hx => ?_⟩
-    refine (pow_le_pow_iff_left₀ (pnorm_nonneg X la P x) (Real.exp_pos _).le two_ne_zero).1 ?_
+    refine (pow_le_pow_iff_left₀ (_root_.ReciprocityTheory.ChartRestriction.G.FD.BoundedSectionAlgebra.pnorm_nonneg X la P x) (Real.exp_pos _).le two_ne_zero).1 ?_
     rw [he, mul_div_cancel₀ _ (by positivity)]
     have h2 : K ≤ Real.exp K := by have := Real.add_one_le_exp K; linarith
     exact (h x hx).trans (mul_le_mul_of_nonneg_right h2 (Real.exp_pos _).le)
@@ -354,12 +340,6 @@ theorem card_pos {X : Data E r} (h : 2 ≤ nd X) : 0 < X.Ψ.card := by
   have : 0 < nd X := by omega
   obtain ⟨e⟩ := Fintype.card_pos_iff.1 this
   exact Finset.card_pos.2 ⟨e.1.1, e.1.2⟩
-
-section Clauses
-
-variable {X : Data E r} (I : ThetaInputs X)
-
-end Clauses
 
 end
 

@@ -50,4 +50,4 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.abelianVariety_exists_dual_pair : ∀ (K : Type) [Field K] (A : AbVar K), ∃ (B : AbVar K) (P : LB (A.X ⊗ B.X).left), IsDualPair A B P ∧ B.dim = A.dim := by
-  first | exact @GlobalTheory.AV.exists_dualPair | exact GlobalTheory.AV.exists_dualPair | (intros; apply GlobalTheory.AV.exists_dualPair <;> assumption)
+  first | exact @GlobalTheory.AV.exists_dualPair

@@ -49,6 +49,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsRootOfIsAlgClosed
+import Development.AbelianVarietyTheory.Definitions.Foundations.OpLDOneSubMemTriv
 
 @[expose] public section
 
@@ -276,11 +277,6 @@ theorem exists_uniform_level : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε :
     fun γ hγ => ⟨hh (X.sl (ofSL γ) f), fun ρ hρ => hL _ ρ (gamma_le_of_dvd ?_ hρ), ht _ (hH γ hγ)⟩⟩
   exact (Finset.dvd_prod_of_mem L (hfin.mem_toFinset.2 ⟨γ, rfl⟩)).mul_left _
 
-theorem toGQ_coe_eq (γ : SL(2, ℤ)) : toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ) = ofSL γ := by
-  have h : (0 : ℤ) < (γ : Matrix (Fin 2) (Fin 2) ℤ).det := by simp
-  ext i j
-  simp [toGQ, h, ofSL]
-
 theorem cls_eq_of_mem_Gam : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (N l w n : ℕ) [Fact l.Prime]
     (b : X.Fn l), b ∈ X.B N l w → ∀ (f : X.Kˣ), AdicCompletion.eval (idl l) (X.Kl l) n (b ![1, 0]) = X.cls l n f →
     ∀ γ ∈ Gam N l, ∀ s : ℤ, ((en γ 0 0 : ℤ) : ZMod (l ^ n)) = s → ((en γ 1 0 : ℤ) : ZMod (l ^ n)) = 0 →
@@ -311,7 +307,7 @@ theorem cls_eq_of_mem_Gam : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [map_smul, map_smul, smul_smul]
       apply hsm
-      simp only [map_mul, map_pow, u0, u1, map_intCast, Matrix.cons_val_zero, Matrix.cons_val_one, map_one, map_zero,
+      simp only [map_mul, map_pow, u0, u1, map_intCast, Matrix.cons_val_zero, Matrix.cons_val_one, map_zero,
         one_pow, one_mul]
       rcases Nat.eq_zero_or_pos (w - (i : ℕ)) with h | h
       · have : (i : ℕ) = w := by have := i.2; omega
@@ -322,7 +318,7 @@ theorem cls_eq_of_mem_Gam : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω
     | smul a x _ hx => exact ⟨by rw [map_smul, hx.1], by simp only [Pi.smul_apply, map_smul, hx.2, smul_comm a]⟩
   have e1 : X.kmap l (X.sl (ofSL γ)).toRingEquiv (b u) = b ![1, 0] := by
     have := congrFun key.1 ![1, 0]
-    rw [← toGQ_coe_eq]
+    rw [← _root_.GlobalTheory.KZ.Betti.toGQ_sl]
     exact this
   rw [← hf, ← e1]
   refine (GlobalTheory.KZ.H3.cls_props Ω ε X l n).2.2.2.2.2.1 _ _ _ ?_

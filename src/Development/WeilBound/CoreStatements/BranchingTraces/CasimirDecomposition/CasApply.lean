@@ -2,7 +2,8 @@ module
 
 public import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.ShiftApply
 public import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.ZuckermanIngredients
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.StandardDifferentialStatement
+import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.IsSimpleFam
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.StandardDifferential
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -122,14 +123,14 @@ theorem kOp_apply (U : URep k r) (x : M (vr k r true, U)) (c : Fin (2 * r + k + 
 
 theorem L_apply (U : URep k r) (a b : Fin (2 * r + k + 1)) (x : M (vr k r true, U)) (c : Fin (2 * r + k + 1)) :
     L (vr k r true, U) (Matrix.single a b 1) x c = U.dC (Matrix.single a b 1) (x c) - if c = b then x a else 0 := by
-  have h : (vr k r true, U).1.dC (Matrix.single a b 1) = -(Matrix.single a b (1 : ℂ))ᵀ := (GlobalTheory.T.StandardDifferential k r _).2
+  have h : (vr k r true, U).1.dC (Matrix.single a b 1) = -(Matrix.single a b (1 : ℂ))ᵀ := (_root_.GlobalTheory.CompanionTheory.ZuckStdD.stdD k r _).2
   simp only [L, h, LinearMap.add_apply, Pi.add_apply, dOp, mAct, LinearMap.compLeft_apply, Function.comp_apply,
     LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.proj_apply, sub_eq_add_neg]
   congr 1
   rw [Finset.sum_eq_single a (fun d _ hd => by simp [Matrix.single_apply, hd.symm]) (by simp)]
   by_cases hc : c = b
   · simp [hc]
-  · simp [Matrix.single_apply, hc, Ne.symm hc]
+  · simp [hc, Ne.symm hc]
 
 theorem cas_apply (U : URep k r) (x : M (vr k r true, U)) (c : Fin (2 * r + k + 1)) :
     cas (vr k r true, U) x c = casR (vr k r true, U) x c - (2 : ℂ) • kOp U x c + ((2 * r + k + 1 : ℕ) : ℂ) • x c := by

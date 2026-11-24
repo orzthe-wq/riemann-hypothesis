@@ -124,8 +124,7 @@ theorem ea_Rp_le_ball (Y : Pend X) (E : ea_NormExt Y) : Rp p E.K' E.vp ≤ ea_ba
     subst hx
     show ‖E.vp‖ ≤ 1
     have hn : p ^ 2 - 1 ≠ 0 := by
-      have := hp.out.two_le
-      have : 4 ≤ p ^ 2 := by nlinarith
+      have h4 : 4 ≤ p ^ 2 := by nlinarith [hp.out.two_le]
       omega
     have h1 : ‖E.vp‖ ^ (p ^ 2 - 1) ≤ 1 := by
       rw [← norm_pow, E.vp_pow, E.norm_p]
@@ -237,8 +236,7 @@ def ea_BrNum (X : Sys p) : Prop :=
       (Formalism.InvariantFactorPaths.G7.alG (ea_TT X v) (ea_colN X v j) (ea_hts X v j) s : ℝ) = X.alEven v
 
 theorem ea_two_lt (X : Sys p) (v : X.Pl) : 2 < p := by
-  have := (X.std v).five_le
-  omega
+  exact lt_of_lt_of_le (by norm_num) (X.std v).five_le
 
 theorem ea_A1U (D : Formalism.BasicNotions.D7) (Y : Pend X) (hNm : ea_RestNorm Y) (hS : ea_RestSU X Y) (hJ : ea_BrJet X)
     (hC : ea_BrClass X) (hN : ea_BrNum X) : EntryBoundOfHypotheses X Y D := by

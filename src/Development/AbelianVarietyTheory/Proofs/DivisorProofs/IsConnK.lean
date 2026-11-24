@@ -48,6 +48,7 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Den
 import Formalism.LocalToGlobal.ProjectiveLattices.ErealAddIInf
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeA
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeB
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

@@ -98,7 +98,6 @@ theorem loc_eq_one_of_prod (ψ : HChar E) (S : Finset (HeightOneSpectrum (𝓞 E
     rw [← map_one (algebraMap E (P.adicCompletion E)), ← map_sub]
     first
       | exact (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P (y - 1)).trans_le h3
-      | (rw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation]; exact h3)
 
 end GlobalTheory.CMVal.InvConj
 

@@ -80,17 +80,6 @@ theorem exists_nsmul_le {W : Type} [AddCommGroup W] [Module (𝓞 E) W] (s : Fin
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | smul a x _ hx => rw [smul_comm]; exact M.smul_mem a hx
 
-theorem exists_nat_mul_isIntegral (z : E) : ∃ k : ℕ, 0 < k ∧ IsIntegral ℤ ((k : E) * z) := by
-  have hal : IsAlgebraic ℤ z :=
-    (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic z)
-  obtain ⟨y, hy, hi⟩ := hal.exists_integral_multiple
-  refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩
-  have hc : ((y.natAbs : ℕ) : E) = ((y.natAbs : ℤ) : E) := (Int.cast_natCast _).symm
-  rw [zsmul_eq_mul] at hi
-  rcases Int.natAbs_eq y with e | e
-  · rw [hc, ← e]; exact hi
-  · rw [hc, show ((y.natAbs : ℤ)) = -y by omega, Int.cast_neg, neg_mul]; exact hi.neg
-
 theorem mem_stdLat_iff {n : ℕ} (x : Fin n → E) : x ∈ Formalism.L2.Pj.stdLat E n ↔ ∀ i, IsIntegral ℤ (x i) := by
   simp only [Formalism.L2.Pj.stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]
   refine forall_congr' fun i => ⟨?_, fun h => ⟨⟨x i, h⟩, rfl⟩⟩
@@ -103,7 +92,7 @@ theorem exists_nsmul_mem_stdLat {n : ℕ} (v : Fin n → E) : ∃ k : ℕ, 0 < k
   obtain ⟨k, hk, h⟩ := exists_nsmul_le (Finset.univ.image fun i => Pi.single i (v i)) (Formalism.L2.Pj.stdLat E n) (by
     simp only [Finset.mem_image, Finset.mem_univ, true_and, forall_exists_index, forall_apply_eq_imp_iff]
     intro i
-    obtain ⟨k, hk, hi⟩ := exists_nat_mul_isIntegral (v i)
+    obtain ⟨k, hk, hi⟩ := _root_.GlobalTheory.NatMulIntegralNsmul.exists_nat_mul_integral (v i)
     refine ⟨k, hk, (mem_stdLat_iff _).2 fun j => ?_⟩
     by_cases e : j = i
     · subst e
@@ -113,31 +102,6 @@ theorem exists_nsmul_mem_stdLat {n : ℕ} (v : Fin n → E) : ∃ k : ℕ, 0 < k
   have hs : ∑ i, Pi.single i (v i) ∈ Submodule.span (𝓞 E) ((Finset.univ.image fun i => Pi.single i (v i) : Finset (Fin n → E)) : Set (Fin n → E)) :=
     Submodule.sum_mem _ fun i _ => Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image_of_mem (fun i => Pi.single i (v i)) (Finset.mem_univ i)))
   rwa [Finset.univ_sum_single v] at hs
-
-theorem exists_nsmul_mem_of_span {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
-    (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) (v : Fin n → E) : ∃ k : ℕ, 0 < k ∧ k • v ∈ Λ := by
-  have hv : v ∈ Submodule.span E (Λ : Set (Fin n → E)) := by rw [hsp]; exact Submodule.mem_top
-  induction hv using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_pos, by rwa [one_smul]⟩
-  | zero => exact ⟨1, one_pos, by rw [smul_zero]; exact zero_mem _⟩
-  | add y z _ _ hy hz =>
-    obtain ⟨a, ha, hy⟩ := hy
-    obtain ⟨b, hb, hz⟩ := hz
-    refine ⟨a * b, Nat.mul_pos ha hb, ?_⟩
-    rw [smul_add]
-    refine add_mem ?_ ?_
-    · rw [mul_comm, mul_smul]; exact Λ.nsmul_mem hy _
-    · rw [mul_smul]; exact Λ.nsmul_mem hz _
-  | smul a y _ hy =>
-    obtain ⟨m, hm, hy⟩ := hy
-    obtain ⟨c, hc, hi⟩ := exists_nat_mul_isIntegral a
-    refine ⟨c * m, Nat.mul_pos hc hm, ?_⟩
-    have h := Λ.smul_mem (⟨(c : E) * a, hi⟩ : 𝓞 E) hy
-    convert h using 1
-    funext j
-    change (c * m) • (a * y j) = ((c : E) * a) * (m • y j)
-    simp only [nsmul_eq_mul, Nat.cast_mul]
-    ring
 
 end GlobalTheory.LatSandwich
 
@@ -153,7 +117,7 @@ theorem sandwich_of_fg {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (hfg : 
   obtain ⟨T, hT⟩ := hfg
   obtain ⟨d, hd, hup⟩ := exists_nsmul_le T (Formalism.L2.Pj.stdLat E n) fun x _ => exists_nsmul_mem_stdLat x
   obtain ⟨d', hd', hlo⟩ := exists_nsmul_le (Finset.univ.image fun i : Fin n => (Pi.single i 1 : Fin n → E)) Λ
-    fun x _ => exists_nsmul_mem_of_span Λ hsp x
+    fun x _ => _root_.GlobalTheory.NatMulMemUnitaryExistence.main Λ hsp x
   refine ⟨d * d', Nat.mul_pos hd hd', fun x hx => ?_, fun x hx => ?_⟩
   · rw [Nat.cast_smul_eq_nsmul, mul_smul]
     refine Λ.nsmul_mem (hlo x ?_) d

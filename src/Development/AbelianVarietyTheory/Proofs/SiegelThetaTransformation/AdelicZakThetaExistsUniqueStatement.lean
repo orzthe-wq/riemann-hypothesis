@@ -48,4 +48,4 @@ open scoped TensorProduct ComplexConjugate Real Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.adelicZakTheta_exists_unique : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ x ∈ C.X.dom, ∀ φ : TF S.rank C.g, SW.IsSB φ → C.IsZak x φ (C.Th x φ) ∧ ∀ f, C.IsZak x φ f → f = C.Th x φ := by
-  first | exact @GlobalTheory.Ker.ZakEx.isZak_Th | exact GlobalTheory.Ker.ZakEx.isZak_Th | (intros; apply GlobalTheory.Ker.ZakEx.isZak_Th <;> assumption)
+  first | exact @GlobalTheory.Ker.ZakEx.isZak_Th

@@ -45,6 +45,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.BcField
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeB
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeC
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -243,7 +244,7 @@ theorem exists_projectors {L : Type} [CommRing L] (φ : c.F →+* L) {x : Sp L �
       LinearMap.toMatrix' (proj (rho hx') (embK c) α τ) := by
     ext i j
     have s : (Pi.single j 1 : Fin n → k) = ψ ∘ Pi.single j 1 := funext fun r => by
-      by_cases hj : r = j <;> simp [hj, Pi.single_apply]
+      by_cases hj : r = j <;> simp [hj]
     rw [Matrix.map_apply, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, s]
     exact (congrFun (pr _ _) i).symm
   intro v

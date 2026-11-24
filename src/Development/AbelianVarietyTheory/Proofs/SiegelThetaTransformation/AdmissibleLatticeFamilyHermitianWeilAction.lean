@@ -2,12 +2,13 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 public import Mathlib.Data.Matrix.ColumnRowPartitioned
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianHeisenbergOperatorLawsStatement
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionCommPositiveUnitaryGroupStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctionsStatement
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UnitaryActHalfSpaceStatement
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianHeisenbergOperatorLaws
+public import Mathlib.Analysis.CStarAlgebra.CStarMatrix
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionCommPositiveUnitaryGroup
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UnitaryActHalfSpace
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionLevelSupNormUniformInLattice
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionLevelSupNormUniformInLatticeStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctions
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -327,7 +328,7 @@ theorem weil_admissible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   intro E _ _ _ Ψ hΨ n N hn c R hc
   rcases Nat.eq_zero_or_pos R with rfl | hR
   · exact ⟨1, fun M φ h => (lt_irrefl _ h.pos.2).elim⟩
-  obtain ⟨R₀, C, hR₀, hlev⟩ := GlobalTheory.T.weil_action_level_supNorm_uniform_in_lattice E Ψ hΨ n N hn c R hc hR
+  obtain ⟨R₀, C, hR₀, hlev⟩ := _root_.GlobalTheory.SW.weil_level_and_sup E Ψ hΨ n N hn c R hc hR
   have hD : 0 < (NumberField.discr E).natAbs := Int.natAbs_pos.2 (NumberField.discr_ne_zero E)
   set D := (NumberField.discr E).natAbs with hDdef
   refine ⟨c * D * (2 * (R₀ * R)), fun M φ hφ γ hγ hden => ?_⟩
@@ -344,7 +345,7 @@ theorem weil_admissible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   · have e : φ Λ = fun x => φ Λ' (h * x) := funext fun x => (hφ.equiv h hh Λ hΛ Λ' hΛ' hm x).symm
     change weil Ψ γ (φ Λ') (h * x) = weil Ψ γ (φ Λ) x
     rw [e]
-    exact (congrFun ((GlobalTheory.T.hermitianWeilAction_comm_positiveUnitaryGroup E Ψ hΨ n N hn h hh.1 _ (sb Λ' hΛ')).2.1 γ hγ) x).symm
+    exact (congrFun ((_root_.GlobalTheory.SW.weil_comp_unitary E Ψ hΨ n N hn h hh.1 _ (sb Λ' hΛ')).2.1 γ hγ) x).symm
   rintro Λ hΛ Λ' hΛ' ⟨s, hs0, hsM, h1, h2⟩ x hx hx'
   have hs : s.Coprime (c * D * (2 * (R₀ * R))) := Nat.Coprime.coprime_mul_right_right hsM
   have hsc : s.Coprime c := hs.of_dvd_right ⟨D * (2 * (R₀ * R)), by ring⟩
@@ -384,7 +385,7 @@ theorem weil_admissible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
       · exact hφ.loc Λ hΛ Λ' hΛ' hag y hR1 (colsIn_transfer hs h1 hR1 hy')
       · rw [not_not.1 fun h => hR1 (hφ.supp Λ hΛ y h),
           not_not.1 fun h => hR1 (colsIn_transfer hs h2 (hφ.supp Λ' hΛ' y h) hy)]
-  obtain ⟨hdet, -, -, hinv, -⟩ := (GlobalTheory.T.unitary_act_halfSpace_alt E Ψ N γ hγ).1
+  obtain ⟨hdet, -, -, hinv, -⟩ := (_root_.GlobalTheory.SW.unitary_act_halfSpace E Ψ N γ hγ).1
   have hden' : IntM ((c : E) • γ⁻¹) := by
     have e : (c : E) • γ⁻¹ = -(Matrix.J (Fin N) E * ccT ((c : E) • γ) * Matrix.J (Fin N) E) := by
       have : ccT ((c : E) • γ) = (c : E) • ccT γ := by
@@ -400,7 +401,7 @@ theorem weil_admissible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
   have term : ∀ X : Matrix (Fin n) (Fin N ⊕ Fin N) E, IsSB (rho (R₀ * R) (X * ((c : E) • γ)) (φ Λ)) ∧
       weil Ψ γ (rho (R₀ * R) (X * ((c : E) • γ)) (φ Λ)) =
         rho (R₀ * R) (X * ((c : E) • (1 : M2 E N))) (weil Ψ γ (φ Λ)) := fun X => by
-    obtain ⟨a1, -, a2⟩ := GlobalTheory.T.hermitianHeisenbergOperator_laws E Ψ hΨ n N hn
+    obtain ⟨a1, -, a2⟩ := _root_.GlobalTheory.SW.heisH_laws E Ψ hΨ n N hn
       (((2 * (R₀ * R) : ℕ) : E) • (X * ((c : E) • γ)).toCols₁)
       (((2 * (R₀ * R) : ℕ) : E) • (X * ((c : E) • γ)).toCols₂) _ (sb Λ hΛ)
     refine ⟨a1, (a2 γ hγ).trans ?_⟩
@@ -415,15 +416,15 @@ theorem weil_admissible : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
         weil Ψ γ (∑ q ∈ u, f q) = ∑ q ∈ u, weil Ψ γ (f q) := fun u f hf => by
     induction u using Finset.induction_on with
     | empty =>
-      have := (GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ 0 isSB_zero).2.2.2.2.1 0
+      have := (_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ 0 isSB_zero).2.2.2.2.1 0
       rw [zero_smul, zero_smul] at this
       exact ⟨isSB_zero, this⟩
     | insert q u hq ih =>
       rw [Finset.sum_insert hq, Finset.sum_insert hq, ← ih.2]
-      exact ⟨isSB_add (hf q) ih.1, ((GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ _ (hf q)).2.2.2.1 _ ih.1).2⟩
+      exact ⟨isSB_add (hf q) ih.1, ((_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ _ (hf q)).2.2.2.1 _ ih.1).2⟩
   have fin := (wsum Finset.univ _ fun q => (term q.out.1).1).2
   simp only [fun X => (term X).2] at fin
-  rw [s1, s2, main, (GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ _ (sb Λ' hΛ')).2.2.2.2.1 κ] at fin
+  rw [s1, s2, main, (_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ _ (sb Λ' hΛ')).2.2.2.2.1 κ] at fin
   have fin2 := congrFun fin x
   rw [val _ (l2 Λ hΛ) x hx hx', Pi.smul_apply, smul_eq_mul] at fin2
   exact (mul_left_cancel₀ hκ0 fin2).symm

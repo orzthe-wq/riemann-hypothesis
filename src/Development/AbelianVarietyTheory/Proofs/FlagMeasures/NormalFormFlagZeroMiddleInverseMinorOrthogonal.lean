@@ -200,7 +200,7 @@ theorem herm_mid (v w : Fin (2 * r + k + 1) → ℂ) (hw : inWb k r w) :
     GBasic.sig_mid k r _ (by simp only [wI]; omega) (by simp only [wI]; omega)
   have h2 : GBasic.sgn k r (wI k r j) = if j = Fin.last k then -1 else 1 := by
     simp [GBasic.sgn, wI, Fin.ext_iff]
-  simp [Hb, mulVec_diagonal, mulVec, dotProduct, GBasic.Hpk_eq, h1, h2, diagonal_apply]
+  simp [Hb, mulVec, dotProduct, GBasic.Hpk_eq, h1, h2, diagonal_apply]
 
 theorem herm_span_zero {s : Set (Fin (2 * r + k + 1) → ℂ)} {v : Fin (2 * r + k + 1) → ℂ}
     (h : ∀ u ∈ s, herm (Hpk k r) v u = 0) {u : Fin (2 * r + k + 1) → ℂ} (hu : u ∈ Submodule.span ℂ s) :

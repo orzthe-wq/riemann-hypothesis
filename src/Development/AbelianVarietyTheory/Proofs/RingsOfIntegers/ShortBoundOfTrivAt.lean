@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -263,7 +264,7 @@ theorem short_bound_of_trivAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   have hterm : ∀ i', ((-ρ : ℝ) : EReal) ≤ nval T.V e (io (nrm Dw c w α * ((N : c.F) ^ P.totalDegree)⁻¹) *
       hv Xo c nab y.1 (N ^ 2) (fun b => sqN Xo N (F (σ (j₀, i')) b)) P) := by
     intro i'
-    refine GlobalTheory.T.harmonicValue_translated_product_valuation_bound E H Dw l Xo c hst T io y C hC nab hnab e ρ w n he hCB N n' A Bn α β₀ hNodd hN hA hBn
+    refine _root_.GlobalTheory.PlaceInt.TermBound.term_bound E H Dw l Xo c hst T io y C hC nab hnab e ρ w n he hCB N n' A Bn α β₀ hNodd hN hA hBn
       (isUnit_of_coprime T hn' hl) (a' i') tp (fun b => F (σ (j₀, i')) b) ?_ P hP.1 (hFFV w P hP)
     intro b
     refine ⟨(ha' i' b).2, htp b, ?_, htpβ b, hUU j₀ i' b⟩

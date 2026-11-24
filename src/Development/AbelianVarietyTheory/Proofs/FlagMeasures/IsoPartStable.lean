@@ -85,10 +85,10 @@ theorem weight_shift {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} {ε : 
   by_cases h1 : c = a <;> by_cases h2 : b = c
   · subst h1; subst h2; simp [Formalism.REAL.root]
   · subst h1
-    simp [Formalism.REAL.root, h2, Pi.single_apply, Ne.symm h2, add_smul, add_comm]
+    simp [Formalism.REAL.root, h2, Ne.symm h2, add_smul, add_comm]
   · subst h2
-    simp [Formalism.REAL.root, h1, Pi.single_apply, add_smul, sub_smul, add_comm]
-  · simp [Formalism.REAL.root, h1, h2, Pi.single_apply, Ne.symm h2]
+    simp [Formalism.REAL.root, h1, add_smul, add_comm]
+  · simp [Formalism.REAL.root, h1, h2, Ne.symm h2]
 
 theorem word_weight {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} (hF : Formalism.REAL.KRel ε F) {μ : Fin n → ℝ} {x : W}
@@ -118,10 +118,10 @@ theorem comp_weight {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] 
   by_cases h1 : a = c <;> by_cases h2 : b = c
   · subst h1; subst h2; simp [Formalism.REAL.root]
   · subst h1
-    simp [Formalism.REAL.root, h2, Pi.single_apply, Ne.symm h2, sub_smul]
+    simp [Formalism.REAL.root, h2, Ne.symm h2, sub_smul]
   · subst h2
-    simp [Formalism.REAL.root, h1, Pi.single_apply, Ne.symm h1, add_smul, sub_smul]
-  · simp [Formalism.REAL.root, h1, h2, Pi.single_apply, Ne.symm h2, Ne.symm h1]
+    simp [Formalism.REAL.root, h1, Ne.symm h1, add_smul]
+  · simp [Formalism.REAL.root, h1, h2, Ne.symm h2, Ne.symm h1]
 
 theorem isoPart_stable {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} {ε : Fin n → Bool}
     {F : Fin n → Fin n → Module.End ℂ W} (T : Set (Fin n → ℝ)) (S : Submodule ℂ W) :

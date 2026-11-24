@@ -1,50 +1,131 @@
 module
 
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.Matrix.ConjTranspose
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SchurCoreA
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SmatUnitary
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ClmEqZeroOfSpan
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.HermitianETransportInvariant
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHDef
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SmatUnitary, Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SubOneMulVecFix
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SmatUnitary =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SmatUnitary", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.LinearAlgebra.Matrix.ConjTranspose\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Matrix
+
+namespace Formalism.L2.SG.Pf.UkEmb
+
+variable {n k : ℕ}
+
+def Wm (wf : Fin k → Fin n → ℂ) : Matrix (Fin n) (Fin k) ℂ := Matrix.of fun i a => wf a i
+
+def smat (J : Matrix (Fin n) (Fin n) ℂ) (wf : Fin k → Fin n → ℂ) (G : Matrix (Fin k) (Fin k) ℂ) :
+    Matrix (Fin n) (Fin n) ℂ :=
+  1 + Wm wf * (G - 1) * (Wm wf)ᴴ * J
+
+theorem entry (wf : Fin k → Fin n → ℂ) (M : Matrix (Fin n) (Fin n) ℂ) (a b : Fin k) :
+    ((Wm wf)ᴴ * M * Wm wf) a b = star (wf a) ⬝ᵥ (M *ᵥ wf b) := by
+  first
+  | (rw [Matrix.mul_assoc]; rfl)
+
+private theorem conjTranspose_Wm_mulVec_apply (wf : Fin k → Fin n → ℂ) (y : Fin n → ℂ) (a : Fin k) :
+    ((Wm wf)ᴴ *ᵥ y) a = star (wf a) ⬝ᵥ y := by
+  first
+  | rfl
+
+private theorem conjTranspose_mul_J_one_add_mul_eq_one_add (J : Matrix (Fin n) (Fin n) ℂ) (F : Matrix (Fin n) (Fin k) ℂ)
+    (D : Matrix (Fin k) (Fin k) ℂ) (hF : Fᴴ * J * F = 1) :
+    Fᴴ * (J * (1 + F * D * Fᴴ * J)) * F = 1 + D := by
+  have key : ∀ {m : Type} [Fintype m] (X : Matrix (Fin k) m ℂ), Fᴴ * (J * (F * X)) = X := by
+    intro m _ X
+    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hF, Matrix.one_mul]
+  have key2 : Fᴴ * (J * F) = 1 := by rw [← Matrix.mul_assoc, hF]
+  simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_assoc, key, key2]
+
+private theorem conjTranspose_one_add_mul_J_mul_eq_J (J : Matrix (Fin n) (Fin n) ℂ) (F : Matrix (Fin n) (Fin k) ℂ)
+    (D : Matrix (Fin k) (Fin k) ℂ) (hJh : Jᴴ = J) (hF : Fᴴ * J * F = 1) (hD : D + Dᴴ + Dᴴ * D = 0) :
+    (1 + F * D * Fᴴ * J)ᴴ * J * (1 + F * D * Fᴴ * J) = J := by
+  have key : ∀ {m : Type} [Fintype m] (X : Matrix (Fin k) m ℂ), Fᴴ * (J * (F * X)) = X := by
+    intro m _ X
+    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hF, Matrix.one_mul]
+  have h0 : J * (F * ((D + Dᴴ + Dᴴ * D) * (Fᴴ * J))) = 0 := by
+    rw [hD]; simp
+  simp only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc] at h0
+  simp only [Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.conjTranspose_mul,
+    Matrix.conjTranspose_conjTranspose, hJh]
+  simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, key]
+  rw [← sub_eq_zero, ← h0]
+  abel
+
+private theorem sub_one_add_conjTranspose_defect_eq_zero_of_unitary (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ * G = 1) :
+    (G - 1) + (G - 1)ᴴ + (G - 1)ᴴ * (G - 1) = 0 := by
+  rw [Matrix.conjTranspose_sub, Matrix.conjTranspose_one]
+  have e : (Gᴴ - 1) * (G - 1) = Gᴴ * G - Gᴴ - G + 1 := by
+    first
+    | noncomm_ring
+  rw [e, hG]
+  abel
+
+variable (J : Matrix (Fin n) (Fin n) ℂ) (wf : Fin k → Fin n → ℂ)
+  (hon : ∀ a b, star (wf a) ⬝ᵥ (J *ᵥ wf b) = if a = b then 1 else 0)
+
+include hon in
+theorem ortho : (Wm wf)ᴴ * J * Wm wf = 1 := by
+  ext a b
+  rw [entry, hon, Matrix.one_apply]
+
+include hon in
+theorem smat_unitary (hJh : Jᴴ = J) (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ * G = 1) :
+    (smat J wf G)ᴴ * J * smat J wf G = J := by
+  unfold smat
+  exact conjTranspose_one_add_mul_J_mul_eq_J J (Wm wf) (G - 1) hJh
+    (ortho J wf hon) (sub_one_add_conjTranspose_defect_eq_zero_of_unitary G hG)
+
+include hon in
+theorem smat_fix (G : Matrix (Fin k) (Fin k) ℂ) (x : Fin n → ℂ) (hx : ∀ a, star (wf a) ⬝ᵥ (J *ᵥ x) = 0) :
+    smat J wf G *ᵥ x = x := by
+  have hz : (Wm wf)ᴴ *ᵥ (J *ᵥ x) = 0 := by
+    funext a
+    rw [conjTranspose_Wm_mulVec_apply, hx a, Pi.zero_apply]
+  unfold smat
+  rw [Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hz,
+    Matrix.mulVec_zero, add_zero]
+
+include hon in
+theorem smat_mat (G : Matrix (Fin k) (Fin k) ℂ) (a b : Fin k) :
+    star (wf a) ⬝ᵥ (J *ᵥ (smat J wf G *ᵥ wf b)) = G a b := by
+  have hM : (Wm wf)ᴴ * (J * smat J wf G) * Wm wf = G := by
+    unfold smat
+    rw [conjTranspose_mul_J_one_add_mul_eq_one_add J (Wm wf) (G - 1) (ortho J wf hon)]
+    abel
+  rw [Matrix.mulVec_mulVec, ← entry, hM]
+
+
+theorem smat_inv (hJ2 : J * J = 1) (hJh : Jᴴ = J) (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ * G = 1)
+    (hon : ∀ a b, star (wf a) ⬝ᵥ (J *ᵥ wf b) = if a = b then 1 else 0) :
+    (J * (smat J wf G)ᴴ * J) * smat J wf G = 1 := by
+  have h := smat_unitary J wf hon hJh G hG
+  calc (J * (smat J wf G)ᴴ * J) * smat J wf G
+      = J * ((smat J wf G)ᴴ * J * smat J wf G) := by
+        simp only [Matrix.mul_assoc]
+    _ = 1 := by rw [h, hJ2]
+
+end Formalism.L2.SG.Pf.UkEmb
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SmatUnitary =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SubOneMulVecFix =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SubOneMulVecFix", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SchurCoreA\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SmatUnitary\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ClmEqZeroOfSpan\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.HermitianETransportInvariant\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHDef\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -71,8 +152,7 @@ theorem hJ_symm (x y : Fin n → ℂ) : hJ ε x y = star (hJ ε y x) := by
 theorem hJ_add_right (x y z : Fin n → ℂ) : hJ ε x (y + z) = hJ ε x y + hJ ε x z := by
   simp only [hJ, mulVec_add, dotProduct_add]
 
-theorem hJ_sub_right (x y z : Fin n → ℂ) : hJ ε x (y - z) = hJ ε x y - hJ ε x z := by
-  simp only [hJ, mulVec_sub, dotProduct_sub]
+alias hJ_sub_right := _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_sub_right
 
 theorem hJ_smul_right (x y : Fin n → ℂ) (c : ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   simp only [hJ, mulVec_smul, dotProduct_smul, smul_eq_mul]
@@ -89,8 +169,7 @@ theorem hJ_sum_right {ι : Type} (s : Finset ι) (x : Fin n → ℂ) (y : ι →
 theorem hJ_add_left (x y z : Fin n → ℂ) : hJ ε (x + y) z = hJ ε x z + hJ ε y z := by
   simp only [hJ, star_add, add_dotProduct]
 
-theorem hJ_sub_left (x y z : Fin n → ℂ) : hJ ε (x - y) z = hJ ε x z - hJ ε y z := by
-  simp only [hJ, star_sub, sub_dotProduct]
+alias hJ_sub_left := _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_sub_left
 
 theorem hJ_smul_left (x y : Fin n → ℂ) (c : ℂ) : hJ ε (c • x) y = star c * hJ ε x y := by
   simp only [hJ, star_smul, smul_dotProduct, smul_eq_mul]
@@ -196,8 +275,6 @@ theorem hJ_rvc (v : InfinitePlace X.B.I.F) (p p' : (VS D).V) :
   rw [X.φ_eq, RingEquiv.apply_symm_apply]
   first
   | exact Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p p'
-  | exact Formalism.L2.SG.PoincareInHH.Cut.hJ_crd v p p'
-  | exact Formalism.L2.SG.PoincareInHH.Cut.hJ_crd (X := X) v p p'
 
 theorem hJ_rvc_zero (v : InfinitePlace X.B.I.F) {p p' : (VS D).V} (h : (VS D).hT p p' = 0) :
     hJ (X.B.I.ε v) (rvc X v p) (rvc X v p') = 0 := by
@@ -224,11 +301,7 @@ def sUg {n k : ℕ} (ε : Fin n → Bool) (wf : Fin k → Fin n → ℂ)
     smat_inv _ _ (Formalism.REAL.Jm_mul_self _) (Formalism.REAL.Jm_conjTranspose _) G hG hon⟩,
     smat_unitary _ _ hon (Formalism.REAL.Jm_conjTranspose _) G hG⟩
 
-theorem uMat_mul' {n : ℕ} {ε : Fin n → Bool} (a b : Formalism.REAL.UJ ε) : uMat (a * b) = uMat a * uMat b := by
-  rfl
-
-theorem uMat_inv_mul'' {n : ℕ} {ε : Fin n → Bool} (a : Formalism.REAL.UJ ε) : uMat a⁻¹ * uMat a = 1 := by
-  exact Units.inv_mul (a : (Matrix (Fin n) (Fin n) ℂ)ˣ)
+alias uMat_inv_mul'' := _root_.Formalism.L2.SG.PoincareInHH.Cut.uMat_inv_mul
 
 theorem uMat_mul_inv'' {n : ℕ} {ε : Fin n → Bool} (a : Formalism.REAL.UJ ε) : uMat a * uMat a⁻¹ = 1 := by
   exact Units.mul_inv (a : (Matrix (Fin n) (Fin n) ℂ)ˣ)
@@ -485,7 +558,7 @@ theorem geomB_of (hL : LeviTens) (hW : WfrSpan) (hN : CplxNF) : GeomB := by
     have hh' : ∀ v, uMat (h' v) = uMat (q.1.1.1 v)⁻¹ * uMat (h v) * uMat (q.1.1.1 v) := by
       intro v
       show uMat ((q.1.1.1 v)⁻¹ * h v * q.1.1.1 v) = _
-      rw [uMat_mul', uMat_mul']
+      rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.uMat_mul, _root_.Formalism.L2.SG.PoincareInHH.Cut.uMat_mul]
     have hfix' : ∀ v p, q.1.2 p ∈ fixedSubspaceOfRepresentative X q → uMat (h' v) *ᵥ rvc X v p = rvc X v p := by
       intro v p hp
       rw [hh', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hγ, hfixV v _ hp, ← hγ, Matrix.mulVec_mulVec,
@@ -543,3 +616,7 @@ theorem geomB_of (hL : LeviTens) (hW : WfrSpan) (hN : CplxNF) : GeomB := by
 end Main
 
 end PI.SchurPlaces.Geo
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SubOneMulVecFix =====

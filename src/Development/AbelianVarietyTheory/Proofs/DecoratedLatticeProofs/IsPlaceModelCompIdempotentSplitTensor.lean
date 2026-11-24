@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.JointSmooth
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OmEqSumLattice
 
 @[expose] public section
 
@@ -61,9 +62,6 @@ theorem smul_half_zero {a b : AE D} (hab : a * b = 0) {x : WO S T} (hx : IsHalf 
   ext i j
   rw [smul_apply', Matrix.zero_apply, ← hx i j, ← mul_assoc, mul_comm b a, hab, zero_mul]
 
-theorem half_smul {b : AE D} (hb : b * b = b) (t : WO S T) : IsHalf b (b • t) := fun i j => by
-  rw [smul_apply', ← mul_assoc, hb]
-
 theorem tens_trans {a b : AE D} (hab : a * b = 0) (Φ Ψ : WO S T → ℂ) {x : WO S T} (hx : IsHalf a x) :
     tens b (fun t => Φ (t + x)) Ψ = fun t => tens b Φ Ψ (t + x) := by
   funext t
@@ -78,7 +76,7 @@ theorem tens_modul (ψ : AddChar (AF D.host.F) ℂ) {a b : AE D} (hab : a * b = 
   have hba : b * a = 0 := by rw [mul_comm, hab]
   have e1 : symplO S T t y = symplO S T (t - b • t) y + symplO S T (b • t) y := by
     rw [← GlobalTheory.LocMod.TensorModel.symplO_add_left', sub_add_cancel]
-  rw [tens_apply, tens_apply, e1, GlobalTheory.LocMod.TensorModel.symplO_half_zero hba (half_smul hb t) hy, add_zero, mul_assoc]
+  rw [tens_apply, tens_apply, e1, GlobalTheory.LocMod.TensorModel.symplO_half_zero hba (_root_.GlobalTheory.SplitLinear.isHalf_smul' hb t) hy, add_zero, mul_assoc]
 
 theorem tens_vac {a b : AE D} (hab : a * b = 0) (hb : b * b = b) (Λ : AddSubgroup (WO S T))
     (hΛ : ∀ u ∈ Λ, b • u ∈ Λ) :
@@ -87,7 +85,7 @@ theorem tens_vac {a b : AE D} (hab : a * b = 0) (hb : b * b = b) (Λ : AddSubgro
   funext t
   simp only [one_smul, tens_apply]
   set M : WO S T := b • t with hMdef
-  have hM : IsHalf b M := half_smul hb t
+  have hM : IsHalf b M := _root_.GlobalTheory.SplitLinear.isHalf_smul' hb t
   have key : ((t - M ∈ Λ ∧ IsHalf a (t - M)) ∧ M ∈ Λ) ↔ (t ∈ Λ ∧ IsHalf (a + b) t) := by
     constructor
     · rintro ⟨⟨h1, h2⟩, h3⟩

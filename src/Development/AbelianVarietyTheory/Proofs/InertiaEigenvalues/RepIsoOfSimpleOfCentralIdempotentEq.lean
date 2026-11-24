@@ -69,7 +69,7 @@ theorem repIso_of_zIdem_eq_of_simple {Γ : Type} [Group Γ] [Fintype Γ] (τ τ'
     have h1 := congrArg (fun z => z.coeff γ⁻¹) he
     simp only [zIdem_coeff, inv_inv] at h1
     have h2 := congrArg (fun x => (Fintype.card Γ : ℂ) * x) h1
-    simp only [div_mul_eq_mul_div, mul_div_cancel₀ _ hc0, mul_div_assoc'] at h2
+    simp only [div_mul_eq_mul_div, mul_div_cancel₀ _ hc0] at h2
     simpa [FDRep.character, mul_div_cancel_left₀ _ hc0] using h2
   have hd : Module.finrank ℂ τ = Module.finrank ℂ τ' := by
     have h1 := hco 1

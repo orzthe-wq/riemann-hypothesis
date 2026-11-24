@@ -1,46 +1,8 @@
 module
 
+import Mathlib.Analysis.Complex.Polynomial.Basic
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.IsInfUnitary
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.LinearAlgebra.Eigenspace.Basic
 
 @[expose] public section
@@ -49,16 +11,13 @@ universe u_1
 
 namespace Bl.SimultaneousEigenvectors
 
-private lemma diagonal_apply_comm {n : ℕ} {X : Type u_1} [NormedAddCommGroup X] [InnerProductSpace ℂ X]
-    {A : Fin n → Fin n → Module.End ℂ X} (hA : ReciprocityTheory.ChartRestriction.DS.IsGlRep A) (c d : Fin n) (v : X) :
-    A c c (A d d v) = A d d (A c c v) := by
+private lemma diagonal_commute {n : ℕ} {X : Type u_1} [NormedAddCommGroup X] [InnerProductSpace ℂ X]
+    {A : Fin n → Fin n → Module.End ℂ X} (hA : ReciprocityTheory.ChartRestriction.DS.IsGlRep A)
+    (c d : Fin n) : Commute (A c c) (A d d) := by
   by_cases hcd : c = d
-  · subst hcd; rfl
-  · have h := hA c c d d
-    rw [if_neg hcd, if_neg (Ne.symm hcd), sub_zero] at h
-    have h2 := LinearMap.congr_fun h v
-    simp only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply] at h2
-    exact sub_eq_zero.mp h2
+  · subst d
+    exact Commute.refl _
+  · exact sub_eq_zero.mp (by simpa only [ite_eq_right hcd, ite_eq_right (Ne.symm hcd), sub_zero] using hA c c d d)
 
 private lemma exists_simultaneous_eigenvector {n : ℕ} {X : Type u_1} [NormedAddCommGroup X] [InnerProductSpace ℂ X]
     {A : Fin n → Fin n → Module.End ℂ X} (hA : ReciprocityTheory.ChartRestriction.DS.IsGlRep A) (s : Finset (Fin n)) :
@@ -91,9 +50,8 @@ private lemma exists_simultaneous_eigenvector {n : ℕ} {X : Type u_1} [NormedAd
     have hinv' : ∀ (c : Fin n) (u : X), u ∈ T' → A c c u ∈ T' := by
       intro c u hu
       obtain ⟨huT, huE⟩ := Submodule.mem_inf.mp hu
-      have hu1 : A a a u = l • u := Module.End.mem_eigenspace_iff.mp huE
-      refine Submodule.mem_inf.mpr ⟨hinv c u huT, Module.End.mem_eigenspace_iff.mpr ?_⟩
-      rw [diagonal_apply_comm hA a c u, hu1, map_smul]
+      exact Submodule.mem_inf.mpr
+        ⟨hinv c u huT, Module.End.mapsTo_genEigenspace_of_comm (diagonal_commute hA a c) l 1 huE⟩
     obtain ⟨w, hw, hw0, μ, hμ⟩ := ih T' inferInstance hinv' hT'
     obtain ⟨hwT, hwE⟩ := Submodule.mem_inf.mp hw
     have hw1 : A a a w = l • w := Module.End.mem_eigenspace_iff.mp hwE
@@ -125,7 +83,6 @@ theorem goal1 :
                         Eq.{u_1 + 1} (DFunLike.coe.{u_1 + 1, u_1 + 1, u_1 + 1} (A c c) w)
                           (HSMul.hSMul.{0, u_1, u_1} (μ c) w))) := by
   intro n X _ _ A hA s T hfd hinv hT
-  obtain ⟨w, hw, hw0, μ, hμ⟩ := exists_simultaneous_eigenvector hA s T hfd hinv hT
-  exact ⟨w, hw, hw0, μ, hμ⟩
+  exact exists_simultaneous_eigenvector hA s T hfd hinv hT
 
 end Bl.SimultaneousEigenvectors

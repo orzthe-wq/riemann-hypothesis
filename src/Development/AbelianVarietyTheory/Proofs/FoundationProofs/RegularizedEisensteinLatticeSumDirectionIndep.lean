@@ -2,8 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 public import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KillsTranslatesSumMulMeanDifferenceEqStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummableRegularizedEisensteinLatticeTermStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KillsTranslatesSumMulMeanDifferenceEq
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummableRegularizedEisensteinLatticeTerm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,16 +66,16 @@ theorem dif_comm (L : ℕ) (v w : ℤ × ℤ) (F : ℤ × ℤ → ℂ) :
 theorem sum_dif_dif (L : ℕ) (w : ℤ × ℤ) (Φ G : ℤ × ℤ → ℂ) (hL : 0 < L) (hΦ : ∃ C : ℝ, ∀ x, ‖Φ x‖ ≤ C)
     (hw : Kills L w Φ) (hG : Summable fun x => ‖G x‖) :
     ∑' x, Φ x * dif L w (dif L w G) x = ∑' x, Φ x * G x := by
-  obtain ⟨hs1, he1⟩ := GlobalTheory.T.killsTranslates_sum_mul_meanDifference_eq L w Φ G hL hΦ hw hG
-  obtain ⟨_, he2⟩ := GlobalTheory.T.killsTranslates_sum_mul_meanDifference_eq L w Φ (dif L w G) hL hΦ hw hs1
+  obtain ⟨hs1, he1⟩ := _root_.GlobalTheory.EisM.kills_sum_dif_eq L w Φ G hL hΦ hw hG
+  obtain ⟨_, he2⟩ := _root_.GlobalTheory.EisM.kills_sum_dif_eq L w Φ (dif L w G) hL hΦ hw hs1
   exact he2.trans he1
 
 theorem lat_indep : ∀ (j L : ℕ) (v w : ℤ × ℤ) (Φ : ℤ × ℤ → ℂ) (τ : ℍ), 1 ≤ j → 0 < L →
     (∃ C : ℝ, ∀ x, ‖Φ x‖ ≤ C) → Kills L v Φ → Kills L w Φ → lat j 0 L v Φ τ = lat j 0 L w Φ τ := by
   intro j L v w Φ τ hj hL hΦ hv hw
   set T : ℤ × ℤ → ℂ := fun y => trm j 0 ((y.1 : ℂ) * τ + y.2) with hT
-  have hsv := GlobalTheory.T.summable_regularizedEisensteinLatticeTerm j L v τ hj hL
-  have hsw := GlobalTheory.T.summable_regularizedEisensteinLatticeTerm j L w τ hj hL
+  have hsv := _root_.GlobalTheory.LatSumZ.latsum_summable j L v τ hj hL
+  have hsw := _root_.GlobalTheory.LatSumZ.latsum_summable j L w τ hj hL
   simp only [lat]
   calc ∑' x, Φ x * dif L v (dif L v T) x
       = ∑' x, Φ x * dif L w (dif L w (dif L v (dif L v T))) x :=

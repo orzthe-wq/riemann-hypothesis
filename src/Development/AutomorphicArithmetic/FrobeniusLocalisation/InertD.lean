@@ -63,7 +63,7 @@ open scoped Pointwise
 theorem UpperTheory.HF.inert_d :
     ∀ {φ : Frame} (H : HostAx φ), H.inertG H.d = Subgroup.zpowers φ.iod ∧ H.el H.d = 2 ∧ H.vdH H.d = 1 / 2 ∧ H.sl H.d = 1 ∧ H.d ∈ H.ram ∧ 2 ∈ H.ram ∧ H.condE.factorization H.d = 1 := by
   intro φ H
-  haveI : Fact (Nat.Prime H.d) := ⟨H.d_prime⟩
+  have : Fact (Nat.Prime H.d) := ⟨H.d_prime⟩
   have hd := H.d_prime
   have hQq : H.QS * H.q ≠ 0 := Nat.mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero
   have hfac : H.condN.factorization H.d = 1 := by
@@ -87,7 +87,7 @@ theorem UpperTheory.HF.inert_d :
     · rw [h]; exact one_mem _
     · rw [h]; exact Subgroup.mem_zpowers _
   have hord : orderOf φ.iod = 2 := by
-    haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+    have : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
     exact orderOf_eq_prime (by simp [Frame.iod, sq, Prod.ext_iff]) (by simp [Frame.iod, Prod.ext_iff])
   have hel : H.el H.d = 2 := by
     show Nat.card (H.inertG H.d) = 2

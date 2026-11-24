@@ -2,8 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 public import Mathlib.Tactic.Linter.HaveILetI
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AcycFOfPiShStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyFilteredColimitRingsFinitaryStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AcycFOfPiSh
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyFilteredColimitRingsFinitary
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSepClosedResidueFieldOfModuleFinite
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -98,13 +98,13 @@ theorem acycF_of_isIntegral : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary 
   intro n hn
   suffices h : ∀ x : H R (sp B) F n, x = 0 from ⟨fun x y => by rw [h x, h y]⟩
   intro x
-  obtain ⟨j, y, hy⟩ := (GlobalTheory.T.etaleCohomology_filteredColimit_rings_finitary R F hF (Finset B) (finDiag A B) (finCocone A B)
+  obtain ⟨j, y, hy⟩ := (_root_.GlobalTheory.EtC.RingContH.main R F hF (Finset B) (finDiag A B) (finCocone A B)
     (finCoconeIsColimit A B) n).1 x
   haveI := finite_finDiag A B j
   obtain ⟨ι, hι, T, hT, hAl, e, hH, hS⟩ :=
     GlobalTheory.finite_algebra_strictly_henselian_pi A (Algebra.adjoin A (j : Set B))
   have hac : AcycF R (sp ((finDiag A B).obj j)) F :=
-    GlobalTheory.T.acycF_of_pi_sh' R F ι T ((finDiag A B).obj j) ⟨e.toRingEquiv⟩ (fun i => ⟨hH i, (hS i).1⟩)
+    _root_.GlobalTheory.EtC.acycF_of_pi_sh R F ι T ((finDiag A B).obj j) ⟨e.toRingEquiv⟩ (fun i => ⟨hH i, (hS i).1⟩)
   haveI := hac n hn
   have hy0 : y = 0 := Subsingleton.elim _ _
   rw [← hy, hy0]

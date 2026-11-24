@@ -40,22 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-
-namespace I195MixedCoordinates_784daf8855fd46d1374640e6
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-end I195MixedCoordinates_784daf8855fd46d1374640e6
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -74,7 +59,7 @@ theorem flatAt_heisO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar 
   intro D ψ hψ V V₀ W W₀ ρ σ dV dW vS vT vU x y Ψ hΨ
   have hMV := GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ hψ
   have hHT := GlobalTheory.T.heisenbergThetaMixedModelTarget_of_mixedModel D ψ hψ
-  have hS : ∀ x', IsThetaFunO ψ V₀ W ((_root_.I195MixedCoordinates_784daf8855fd46d1374640e6.source dV) W ψ vS.μ vS.𝓕 Ψ x') := fun x' =>
+  have hS : ∀ x', IsThetaFunO ψ V₀ W ((_root_.I195MixedCoordinates.source dV) W ψ vS.μ vS.𝓕 Ψ x') := fun x' =>
     hMV.1 V V₀ W ρ dV vS.μ vS.𝓕 vS.covol Ψ hΨ x'
   have hE : ∀ x', IsThetaFunO ψ V₀ W₀ (evalAt ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 Ψ x' y) := fun x' =>
     hMV.2 V₀ W W₀ σ dW vT.μ vT.𝓕 vT.covol _ (hS x') y
@@ -83,15 +68,15 @@ theorem flatAt_heisO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar 
     intro x' w
     have a := (GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ V V₀ W ρ dV vS Ψ hΨ).2.2.1 x' (dW.inc0 V₀ w)
     have b := (hHT V₀ W W₀ σ dW vT.μ vT.𝓕 vT.covol _ (hS x')).2.1 w y
-    change I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.source dV W ψ vS.μ vS.𝓕
+    change I195MixedCoordinates.source dV W ψ vS.μ vS.𝓕
       (heisO ψ V W (dV.ext0 W (dW.inc0 V₀ w)) Ψ) x' =
       heisO ψ V₀ W (dW.inc0 V₀ w)
-        (I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.source dV W ψ vS.μ vS.𝓕 Ψ x') at a
-    change I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.target dW V₀ ψ vT.μ vT.𝓕
+        (I195MixedCoordinates.source dV W ψ vS.μ vS.𝓕 Ψ x') at a
+    change I195MixedCoordinates.target dW V₀ ψ vT.μ vT.𝓕
       (heisO ψ V₀ W (dW.inc0 V₀ w)
-        (I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.source dV W ψ vS.μ vS.𝓕 Ψ x')) y =
-      heisO ψ V₀ W₀ w (I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.target dW V₀ ψ vT.μ vT.𝓕
-        (I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.source dV W ψ vS.μ vS.𝓕 Ψ x') y) at b
+        (I195MixedCoordinates.source dV W ψ vS.μ vS.𝓕 Ψ x')) y =
+      heisO ψ V₀ W₀ w (I195MixedCoordinates.target dW V₀ ψ vT.μ vT.𝓕
+        (I195MixedCoordinates.source dV W ψ vS.μ vS.𝓕 Ψ x') y) at b
     unfold evalAt
     rw [a, b]
   refine ⟨fun w => h1 x w, fun w => ?_, fun γ => ?_⟩

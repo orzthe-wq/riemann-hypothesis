@@ -58,8 +58,7 @@ theorem UpperTheory.V.LDataCardLeFinrank.galTransport :
   have hc : ∀ g : G F' Ω', ∀ x : F,
       ((σ.trans g.toRingEquiv).trans σ.symm) (algebraMap F Ω x) = algebraMap F Ω x := by
     intro g x
-    simp only [RingEquiv.trans_apply, hσ, AlgEquiv.coe_toRingEquiv, AlgEquiv.coe_ringEquiv,
-      AlgEquiv.commutes]
+    simp only [RingEquiv.trans_apply, hσ, AlgEquiv.coe_toRingEquiv, AlgEquiv.commutes]
     rw [← hσ, RingEquiv.symm_apply_apply]
   let φ : G F' Ω' →* G F Ω :=
     { toFun := fun g => AlgEquiv.ofRingEquiv (hc g)

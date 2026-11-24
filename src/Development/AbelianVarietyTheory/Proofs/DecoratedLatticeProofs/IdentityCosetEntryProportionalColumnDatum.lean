@@ -2,9 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PhiTopAgree
 public import Formalism.LocalToGlobal.Columns.ColumnsProofs.ChainCounts
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ResiduesOfCompletionAtPrimeWithUniformizerStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymLevelTestFunctionsAgreeRationalPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnfoldingIntegralEqFiniteSumOverNumberFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ResiduesOfCompletionAtPrimeWithUniformizer
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SymLevelTestFunctionsAgreeRationalPoints
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnfoldingIntegralEqFiniteSumOverNumberField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -105,9 +105,6 @@ namespace GlobalTheory.EntryBridge
 section Arith
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
-theorem reduction_one' (P : HeightOneSpectrum (𝓞 E)) : redP P (1 : E) = 1 := by
-  simpa using reduction_coe P (1 : 𝓞 E)
-
 theorem reduction_natCast_eq_zero (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) : redP P (q : E) = 0 := by
   have := reduction_coe P ((q : ℕ) : 𝓞 E)
   simp only [map_natCast] at this
@@ -136,7 +133,7 @@ theorem valuation_one₂ (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : �
     LocE.vP P q (1 : E) = 0 := by
   have hq0 : (q : E) ≠ 0 := q_ne_zero hu
   have hI : IntAt P (1 : E) := ChainCounts.intAt_one P
-  have hU : IsUnit (redP P (1 : E)) := by rw [reduction_one']; exact isUnit_one
+  have hU : IsUnit (redP P (1 : E)) := by rw [_root_.GlobalTheory.SymBridge.PhiAgreeProof.reduction_one']; exact isUnit_one
   have hex : ∃ z : ℤ, IsUnit (redP P ((1 : E) / (q : E) ^ z)) := ⟨0, by rwa [zpow_zero, div_one]⟩
   have hspec : IsUnit (redP P ((1 : E) / (q : E) ^ LocE.vP P q (1 : E))) := by
     unfold LocE.vP
@@ -162,10 +159,10 @@ theorem locChar_one {K : Type} [Field K] (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdea
     (cq : K) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) : LocE.locChar q cq χ (1 : E) = 1 := by
   unfold LocE.locChar
   rw [valuation_one₂ hq hu, zpow_zero, zpow_zero, one_mul, div_one]
-  have hU : IsUnit (redP P (1 : E)) := by rw [reduction_one']; exact isUnit_one
+  have hU : IsUnit (redP P (1 : E)) := by rw [_root_.GlobalTheory.SymBridge.PhiAgreeProof.reduction_one']; exact isUnit_one
   unfold LocE.unitV
   rw [dite_eq_left hU]
-  have : hU.unit = 1 := Units.ext (by simp [reduction_one'])
+  have : hU.unit = 1 := Units.ext (by simp [_root_.GlobalTheory.SymBridge.PhiAgreeProof.reduction_one'])
   rw [this, map_one, Units.val_one]
 
 end Arith
@@ -245,7 +242,7 @@ theorem omPhi_one {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
 theorem entry_agree : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (σ₀ : X.K →+* ℂ) (P : rowSG Pr sel mu) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (s : ℕ) (S : SymData k s R.k) [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → AtType Ch sel mu cst σ₀ P ι S → EntryAgree Ch sel mu cst σ₀ P ι S ν := by
   intro X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s S _ _ ν hν hA
   intro j c h e' e he' he
-  obtain ⟨-, -, -, -, hq, hu, -, -⟩ := GlobalTheory.T.residues_of_completionAtPrimeWithUniformizer X.E k P.1 (qOf P.1) ι S.ϖ hA.tie.compl S.unif
+  obtain ⟨-, -, -, -, hq, hu, -, -⟩ := _root_.GlobalTheory.SymBridge.ComplRes.residues X.E k P.1 (qOf P.1) ι S.ϖ hA.tie.compl S.unif
   haveI := hν.1
   have hm := hA.steps
   have hdeep := hA.deep
@@ -271,12 +268,12 @@ theorem entry_agree : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X
   have hf : (fun a => (e a).val) = xPos := funext he
   have hE' : IsOrd (yPos xPos (R.N j)) E' := hf' ▸ hE'0
   have hE : IsOrd (yPos xPos (R.N (j + 1))) E := hf ▸ hE0
-  have hΦE := GlobalTheory.T.symLevelTestFunctions_agree_rationalPoints X.E X.K k P.1 (qOf P.1) ι σ₀ (psi0P Ch P.1) (chiP Ch P.1) s R.k S hA.tie
+  have hΦE := _root_.GlobalTheory.SymBridge.PhiAgreeProof.phiAgree X.E X.K k P.1 (qOf P.1) ι σ₀ (psi0P Ch P.1) (chiP Ch P.1) s R.k S hA.tie
     R.t j (c + 1) (by omega) (R.N j) (cOf R j) (R.N (j + 1)) (cOf R (j + 1)) rfl rfl hcj hcj1 E' E hE' hE
   have hpsi : ∀ a, IntAt P.1 a → (S.ψ (ι (a / (qOf P.1 : X.E))) : ℂ) = σ₀ (cst.psi P (a / (qOf P.1 : X.E))) := by
     intro a ha
     rw [hA.tie.psi a ha, hA.psi0 a ha]
-  have hsum := GlobalTheory.T.unfoldingIntegral_eq_finiteSum_overNumberField X.E X.K k P.1 (qOf P.1) ι S.ϖ σ₀ S.ψ ν (cst.psi P) hA.tie.compl S.unif S.cond hν hpsi
+  have hsum := _root_.GlobalTheory.UnfoldSum.sumAgree X.E X.K k P.1 (qOf P.1) ι S.ϖ σ₀ S.ψ ν (cst.psi P) hA.tie.compl S.unif S.cond hν hpsi
     (XIx (Fin R.k) (Fin R.t) j) (XIx (Fin R.k) (Fin R.t) (j + 1)) (c + 1) (R.N j) (cOf R j) (R.N (j + 1)) (cOf R (j + 1))
     cst.A cst.B (by omega) hcj hcj1 (by omega) hA.ok.B_pos e' e E' E hE'0 hE0 _ _ hΦE
     (fun x hx => phi_supp S (Fin R.t) j (c + 1) (by omega) x hx)

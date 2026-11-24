@@ -83,7 +83,7 @@ theorem UpperTheory.V.Odd.fixLev :
   · ext g
     simp only [Un, levU, Subgroup.mem_inf, Subgroup.mem_top, true_and, Subgroup.mem_comap, KStar.TotallyRealRoots.princ,
       cycZ, MonoidHom.mem_ker, KStar.TotallyRealRoots.redPow, MonoidHom.comp_apply, Units.ext_iff, Units.coe_map,
-      MonoidHom.coe_coe, Units.val_one]
+      Units.val_one]
     change _ ↔ PadicInt.toZModPow m _ = 1
     rw [key]
     rfl

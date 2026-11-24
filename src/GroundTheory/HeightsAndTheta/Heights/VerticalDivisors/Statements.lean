@@ -153,7 +153,7 @@ def IncidenceNull.Statement : Prop :=
 
 def ChowFormHomog.Statement : Prop :=
   ∀ (F : Type) [Field F] (n k : ℕ) (I : Ideal (MvPolynomial (Fin n) F))
-    (f : MvPolynomial (Fin k × Fin n) F), IsChowForm I k f → IsMultiHomog (chowDegree I k) f
+    (f : MvPolynomial (Fin k × Fin n) F), IsChowForm I k f → Heights.IsMultiHomog (chowDegree I k) f
 
 def ChowNormForm.Statement : Prop :=
   ∀ (k E : Type) [Field k] [PerfectField k] [Field E] [Algebra k E] (n e : ℕ)

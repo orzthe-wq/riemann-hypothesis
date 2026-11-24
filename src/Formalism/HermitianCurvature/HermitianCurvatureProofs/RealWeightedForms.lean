@@ -63,19 +63,5 @@ theorem qwOfReal : QwOfReal := by
     obtain ⟨p, rfl⟩ : ∃ p : ℝ, pt = p := ⟨pt.re, Complex.ext (by simp) (by simpa using him)⟩
     cases plus <;> simp [qw, ih']
 
-section admitted
-
-variable {S : Type}
-
-end admitted
-
-section Rep
-
-variable {A S V : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype S] [DecidableEq S]
-  [AddCommGroup V] [Module ℂ V] [Module A V] [IsScalarTower ℂ A V]
-
-end Rep
-
 end Formalism.FourierDecayAlt.P.RealWeightedForms
 
-theorem Formalism.FourierDecayAlt.P.weighted_quadratic_of_real : Formalism.FourierDecayAlt.FormPairingAction.QwOfReal := Formalism.FourierDecayAlt.P.RealWeightedForms.qwOfReal

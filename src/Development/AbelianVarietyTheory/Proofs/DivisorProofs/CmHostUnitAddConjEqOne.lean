@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.CmHostUnitAddConjEqOne
 
 @[expose] public section
 
@@ -72,12 +73,7 @@ def Improves (D : Datum H) (y : D.La →ₗ[𝓞 E] X) (n : ℕ) (𝔭 : Ideal (
   IsOpp D Z Z'' ∧ (∀ 𝔮 : Ideal (𝓞 E), 𝔮.IsMaximal → (n : 𝓞 E) ∈ 𝔮 → img D y Z' 𝔮 ≤ img D y Z'' 𝔮) ∧
     ¬ img D y Z'' 𝔭 ≤ img D y Z' 𝔭
 
-theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := H.starRing.star_involutive a
-
-theorem ef_swap (D : Datum H) (a b : D.La) : D.EF a b = -D.EF b a := by
-  have h := D.alt (a + b)
-  simp only [map_add (f := _), LinearMap.add_apply, D.alt] at h
-  linear_combination h
+alias bar_bar := _root_.GlobalTheory.HostModel.bar_bar
 
 theorem mem_perp {D : Datum H} {Z : Submodule (𝓞 E) D.La} {a : D.La} : a ∈ perp D Z ↔ ∀ z ∈ Z, D.EF a z = 0 := Iff.rfl
 
@@ -86,15 +82,15 @@ variable {D : Datum H} {Z Z' : Submodule (𝓞 E) D.La}
 theorem IsOpp.symm (h : IsOpp D Z Z') : IsOpp D Z' Z := by
   refine ⟨h.2.1, h.1, fun φ => ?_, fun φ => ?_⟩
   · obtain ⟨a, ha, hu⟩ := h.2.2.2 (-φ)
-    refine ⟨a, fun b => by rw [ef_swap, ha]; simp, fun a' ha' => hu a' fun b => ?_⟩
-    rw [ef_swap, ha']; simp
+    refine ⟨a, fun b => by rw [_root_.GlobalTheory.SimLift.form_skew, ha]; simp, fun a' ha' => hu a' fun b => ?_⟩
+    rw [_root_.GlobalTheory.SimLift.form_skew, ha']; simp
   · obtain ⟨a, ha, hu⟩ := h.2.2.1 (-φ)
-    refine ⟨a, fun b => by rw [ef_swap, ha]; simp, fun a' ha' => hu a' fun b => ?_⟩
-    rw [ef_swap, ha']; simp
+    refine ⟨a, fun b => by rw [_root_.GlobalTheory.SimLift.form_skew, ha]; simp, fun a' ha' => hu a' fun b => ?_⟩
+    rw [_root_.GlobalTheory.SimLift.form_skew, ha']; simp
 
 theorem IsOpp.eq_zero (h : IsOpp D Z Z') {b : D.La} (hb : b ∈ Z') (h0 : b ∈ perp D Z) : b = 0 := by
   obtain ⟨c, -, hu⟩ := h.2.2.1 0
-  have h1 := hu ⟨b, hb⟩ fun a => by rw [ef_swap, h0 _ a.2]; simp
+  have h1 := hu ⟨b, hb⟩ fun a => by rw [_root_.GlobalTheory.SimLift.form_skew, h0 _ a.2]; simp
   have h2 := hu 0 fun a => by simp
   exact congrArg Subtype.val (h1.trans h2.symm)
 
@@ -102,8 +98,8 @@ theorem IsOpp.exists_sub_mem_perp (h : IsOpp D Z Z') (a : D.La) : ∃ b ∈ Z', 
   obtain ⟨b, hb, -⟩ := h.2.2.1 ((D.EF.flip a).toAddMonoidHom.comp Z.subtype.toAddMonoidHom)
   refine ⟨b, b.2, fun z hz => ?_⟩
   have := hb ⟨z, hz⟩
-  simp only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, Submodule.subtype_apply, LinearMap.flip_apply] at this
-  rw [ef_swap, map_sub, this]
+  simp only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, Submodule.subtype_apply] at this
+  rw [_root_.GlobalTheory.SimLift.form_skew, map_sub, this]
   exact neg_eq_zero.2 (sub_self _)
 
 theorem IsOpp.exists_decomp (h : IsOpp D Z Z') (a : D.La) :
@@ -138,7 +134,7 @@ theorem IsOpp.shear (h : IsOpp D Z Z') (t : Z' →ₗ[𝓞 E] D.La) (ht : ∀ b,
   have key : ∀ (a : Z) (b : Z'), D.EF a (t b) = D.EF a b := fun a b => by
     have := ht b a a.2
     rw [map_sub, LinearMap.sub_apply, sub_eq_zero] at this
-    rw [ef_swap, this, ← ef_swap]
+    rw [_root_.GlobalTheory.SimLift.form_skew, this, ← _root_.GlobalTheory.SimLift.form_skew]
   refine ⟨h.1, ?_, fun φ => ?_, fun φ => ?_⟩
   · rintro _ ⟨b, rfl⟩ _ ⟨b', rfl⟩
     exact hiso b b'
@@ -155,12 +151,6 @@ theorem isOpp_bot (D : Datum H) : IsOpp D ⊥ ⊥ :=
   ⟨bot_le, bot_le, fun φ => ⟨0, fun a => by rw [Subsingleton.elim a 0]; simp, fun _ _ => Subsingleton.elim _ _⟩,
     fun φ => ⟨0, fun a => by rw [Subsingleton.elim a 0]; simp, fun _ _ => Subsingleton.elim _ _⟩⟩
 
-theorem cmHostUnit_add_conj_eq_one (H : Host E) : H.w0 + H.bar H.w0 = 1 := by
-  have h1 := congrArg H.bar H.two_weight_eq_one_add_root
-  rw [map_mul, map_add (f := _), map_one, GlobalTheory.CharRank.bar_rt_neg, map_ofNat] at h1
-  have h2 := H.two_weight_eq_one_add_root
-  exact mul_left_cancel₀ (two_ne_zero (α := 𝓞 E)) (by linear_combination h1 + h2)
-
 theorem exists_skew_solve (hd : ∀ φ : Z →+ ℤ, ∃! b : Z', ∀ a : Z, D.EF a b = φ a) (β : LinearMap.BilinForm ℤ Z)
     (hβ : ∀ a b, β a b = -β b a) (hadj : ∀ (c : 𝓞 E) a b, β (c • a) b = β a (H.bar c • b)) :
     ∃ c : Z →ₗ[𝓞 E] Z', ∀ a b : Z, D.EF a (c b) + D.EF (c a) b = β a b := by
@@ -173,10 +163,10 @@ theorem exists_skew_solve (hd : ∀ φ : Z →+ ℤ, ∃! b : Z', ∀ a : Z, D.E
     rw [Submodule.coe_smul, D.adj, bar_bar, smul_comm, hadj, bar_bar] at h1
     exact h1
   · show D.EF a (c b) + D.EF (c a) b = _
-    rw [ef_swap D (c a), hc, hc, ← hβ]
+    rw [_root_.GlobalTheory.SimLift.form_skew D (c a), hc, hc, ← hβ]
     have h2 := hadj (H.bar H.w0) a b
     rw [bar_bar] at h2
-    rw [← h2, ← LinearMap.add_apply, ← map_add (f := _), ← add_smul, cmHostUnit_add_conj_eq_one, one_smul]
+    rw [← h2, ← LinearMap.add_apply, ← map_add (f := _), ← add_smul, _root_.ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.cmHostUnit_add_conj_eq_one, one_smul]
 
 theorem IsOpp.exists_rank_one (h : IsOpp D Z Z') {m : D.La} (hm : m ∈ perp D Z ⊓ perp D Z') (θ : 𝓞 E →+ ℤ)
     (hθ : ∀ t, θ t - θ (H.bar t) + D.EF (t • m) m = 0) :
@@ -209,7 +199,7 @@ theorem IsOpp.exists_rank_one (h : IsOpp D Z Z') {m : D.La} (hm : m ∈ perp D Z
       rw [map_mul H.bar, bar_bar, mul_comm (ℓ b')] at e7
       simp only [LinearMap.add_apply, Submodule.subtype_apply, LinearMap.smulRight_apply, AddMonoidHom.mk'_apply,
         smul_add, map_add]
-      rw [ef_swap D b (ℓ b' • m), ef_swap D (ℓ b • (z ℓ : D.La)) b', ef_swap D (ℓ b • (z ℓ : D.La)) (ℓ b' • m),
+      rw [_root_.GlobalTheory.SimLift.form_skew D b (ℓ b' • m), _root_.GlobalTheory.SimLift.form_skew D (ℓ b • (z ℓ : D.La)) b', _root_.GlobalTheory.SimLift.form_skew D (ℓ b • (z ℓ : D.La)) (ℓ b' • m),
         e1, e2, e2, e3, e3, e4, e5, e5, e6]
       linear_combination e7
 
@@ -218,9 +208,9 @@ theorem exists_theta_vec (D : Datum H) (m : D.La) :
   refine ⟨AddMonoidHom.mk' (fun t => -D.EF ((H.w0 * t) • m) m) fun a b => by simp [mul_add, add_smul, add_comm],
     fun t => ?_⟩
   have h1 : D.EF ((H.w0 * H.bar t) • m) m = -D.EF ((H.bar H.w0 * t) • m) m := by
-    rw [D.adj, map_mul, bar_bar, ef_swap]
+    rw [D.adj, map_mul, bar_bar, _root_.GlobalTheory.SimLift.form_skew]
   have h2 : D.EF (t • m) m = D.EF ((H.w0 * t) • m) m + D.EF ((H.bar H.w0 * t) • m) m := by
-    rw [← LinearMap.add_apply, ← map_add (f := _), ← add_smul, ← add_mul, cmHostUnit_add_conj_eq_one, one_mul]
+    rw [← LinearMap.add_apply, ← map_add (f := _), ← add_smul, ← add_mul, _root_.ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.cmHostUnit_add_conj_eq_one, one_mul]
   simp only [AddMonoidHom.mk'_apply]
   linear_combination h1 + h2
 

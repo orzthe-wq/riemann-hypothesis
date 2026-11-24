@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExtId
 import Development.AbelianVarietyTheory.Definitions.Divisors.GalRigidOfSurjective
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenOfIso
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -53,18 +54,6 @@ open GlobalTheory.TInj
 noncomputable section
 
 namespace GlobalTheory.GenOrigin
-
-theorem jK_appTop_inj (R : Type) [CommRing R] [IsDomain R] : Function.Injective (jK R).appTop.hom := by
-  have hs := (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).2
-  have hi := (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv).1
-  intro x y h
-  obtain ⟨a, rfl⟩ := hs x
-  obtain ⟨b, rfl⟩ := hs y
-  have e := fun c => congrArg (fun q => q.hom c)
-    (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))
-  simp only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e
-  have := hi ((e a).trans (h.trans (e b).symm))
-  rw [IsFractionRing.injective R (FractionRing R) this]
 
 theorem exists_unit_along {S X X' B B' : Scheme.{0}} (M : LB B) (M' : LB B') (hM : M.IsLB) (hM' : M'.IsLB)
     {K : Type} [Fintype K] (φ : K → (X ⟶ B)) (φ' : K → (X' ⟶ B')) (ε : K → ℤ) (hε : ∑ k, ε k = 0) (F : X' ⟶ X)
@@ -135,7 +124,7 @@ theorem lamVal_origin_of_generic : ∀ {S : Scheme.{0}} {V : Type} [CommRing V] 
     rw [hK] at h
     rw [map_one]
     exact (gm_pull (𝟙 _) (jK V) x ⊤ trivial u).trans ((congrArg (fun g => gm g x ⊤ u) (Category.id_comp _)).trans h)
-  have hu1 : u = 1 := Units.ext (jK_appTop_inj V (by
+  have hu1 : u = 1 := Units.ext (_root_.GlobalTheory.PsiInt.jK_appTop_injective V (by
     have := congrArg Units.val h1
     simpa using this))
   intro T z J J' hJ hJ'

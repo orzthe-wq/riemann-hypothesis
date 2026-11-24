@@ -179,24 +179,11 @@ theorem twist_substitution_map {R R' : Type*} [CommRing R] [CommRing R'] (φ : R
     twistSub LL S j (MvPolynomial.map φ G) = MvPolynomial.map (laurentBaseChange φ n) (twistSub LL S j G) := by
   rw [twist_substitution_eq_action, twist_substitution_eq_action, twisted_action_of_map, map_twisted_action, map_twist_matrix, map_twist_matrix, laurent_map_comp_coefficient]
 
-theorem mem_support_degrees_iff {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
-    (G : MvPolynomial (ι × Fin n) R) (k : ℤ) :
-    k ∈ sDegs LL S j G ↔ ∃ m, ((twistSub LL S j G).coeff m).coeff k ≠ 0 := by
-  unfold sDegs
-  simp only [Finset.mem_biUnion, Finsupp.mem_support_iff, MvPolynomial.mem_support_iff]
-  constructor
-  · rintro ⟨m, _, h⟩; exact ⟨m, h⟩
-  · rintro ⟨m, h⟩
-    refine ⟨m, ?_, h⟩
-    intro h0
-    apply h
-    rw [h0]; simp
-
 theorem support_degrees_map_subset {R R' : Type*} [CommRing R] [CommRing R'] (φ : R →+* R') {ι : Type*} {n : ℕ}
     (LL : Letters ι) (S : Set ι) (j : Fin n) (G : MvPolynomial (ι × Fin n) R) :
     sDegs LL S j (MvPolynomial.map φ G) ⊆ sDegs LL S j G := by
   intro k hk
-  rw [mem_support_degrees_iff] at hk ⊢
+  rw [_root_.Formalism.MainNotions.G.GLWeightTheory.flt_mem_sDegs] at hk ⊢
   obtain ⟨m, hm⟩ := hk
   refine ⟨m, fun h0 => hm ?_⟩
   rw [twist_substitution_map, MvPolynomial.coeff_map]
@@ -206,10 +193,10 @@ theorem support_degrees_map_subset {R R' : Type*} [CommRing R] [CommRing R'] (φ
 theorem support_degrees_add_subset {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (F G : MvPolynomial (ι × Fin n) R) {k : ℤ} (hk : k ∈ sDegs LL S j (F + G)) :
     k ∈ sDegs LL S j F ∨ k ∈ sDegs LL S j G := by
-  rw [mem_support_degrees_iff] at hk
+  rw [_root_.Formalism.MainNotions.G.GLWeightTheory.flt_mem_sDegs] at hk
   obtain ⟨m, hm⟩ := hk
   by_contra hcon
-  rw [not_or, mem_support_degrees_iff, mem_support_degrees_iff] at hcon
+  rw [not_or, _root_.Formalism.MainNotions.G.GLWeightTheory.flt_mem_sDegs, _root_.Formalism.MainNotions.G.GLWeightTheory.flt_mem_sDegs] at hcon
   push Not at hcon
   apply hm
   rw [map_add (f := _), MvPolynomial.coeff_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, hcon.1 m, hcon.2 m, add_zero]
@@ -217,7 +204,7 @@ theorem support_degrees_add_subset {R : Type*} [CommRing R] {ι : Type*} {n : �
 theorem support_degrees_smul_subset {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     (a : R) (G : MvPolynomial (ι × Fin n) R) {k : ℤ} (hk : k ∈ sDegs LL S j (a • G)) :
     k ∈ sDegs LL S j G := by
-  rw [mem_support_degrees_iff] at hk ⊢
+  rw [_root_.Formalism.MainNotions.G.GLWeightTheory.flt_mem_sDegs] at hk ⊢
   obtain ⟨m, hm⟩ := hk
   refine ⟨m, fun h0 => hm ?_⟩
   rw [MvPolynomial.smul_eq_C_mul, map_mul, twist_substitution_eq_action, twisted_action_C, MvPolynomial.coeff_C_mul]
@@ -228,7 +215,7 @@ theorem support_degrees_smul_subset {R : Type*} [CommRing R] {ι : Type*} {n : �
 theorem support_degrees_zero {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n) :
     sDegs LL S j (0 : MvPolynomial (ι × Fin n) R) = ∅ := by
   ext k
-  rw [mem_support_degrees_iff]
+  rw [_root_.Formalism.MainNotions.G.GLWeightTheory.flt_mem_sDegs]
   simp
 
 theorem le_valuation_iff_support_degrees {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
@@ -472,11 +459,11 @@ theorem antisymmetric_double_sum_eq_zero {A : Type*} [AddCommGroup A] (f : Fin n
 
 theorem exterior_wedge_sq_zero (a : Fin n) : exteriorWedge P a * exteriorWedge P a = 0 := by
   refine LinearMap.ext fun K => funext fun J => ?_
-  simp [Module.End.mul_apply, exterior_wedge_apply]
+  simp [exterior_wedge_apply]
 
 theorem exterior_contraction_sq_zero (a : Fin n) : exteriorContraction P a * exteriorContraction P a = 0 := by
   refine LinearMap.ext fun K => funext fun J => ?_
-  simp [Module.End.mul_apply, exterior_contraction_apply]
+  simp [exterior_contraction_apply]
 
 theorem totalWedge_mul_self (v : Fin n → P) : totalWedge v * totalWedge v = 0 := by
   unfold totalWedge
@@ -667,7 +654,7 @@ theorem twist_column_kernel_eq_lambda {B : Fin N → ℕ} (Pa : PPath n N LL B) 
     have h0 : columnLambdaOperator N jj c (extOne : Finset (Fin n) → TwistedRing N n) = extOne := by
       have hlambda {P : Type} [CommRing P] (u v : Fin n → P) (θ : P) :
           lambdaOperator u v θ (extOne : Finset (Fin n) → P) = extOne := by
-        simp [lambdaOperator, Module.End.mul_apply, total_contraction_exterior_one]
+        simp [lambdaOperator, total_contraction_exterior_one]
       unfold columnLambdaOperator
       split_ifs <;> exact hlambda (P := TwistedRing N n) _ _ _
     simp only [Kcol]
@@ -843,7 +830,7 @@ theorem total_wedge_zero_of_top_support {P : Type*} [CommRing P] (v : Fin n → 
 
 theorem lambda_eq_self_of_contraction_zero {P : Type*} [CommRing P] (u v : Fin n → P) (θ : P) {K : Finset (Fin n) → P}
     (h : totalContraction u K = 0) : lambdaOperator u v θ K = K := by
-  simp [lambdaOperator, Module.End.mul_apply, h]
+  simp [lambdaOperator, h]
 
 theorem lambda_eq_smul_of_total_wedge_zero {P : Type*} [CommRing P] (u v : Fin n → P) (θ : P) (hd : ∑ m, u m * v m = 1)
     {K : Finset (Fin n) → P} (h : totalWedge v K = 0) : lambdaOperator u v θ K = θ • K := by
@@ -925,7 +912,7 @@ theorem components_in_filtration_lambda {K : Finset (Fin n) → Q} (u v : Fin n 
     ComponentsInFiltration Fl a' (lambdaOperator u v θ K) := by
   intro J
   have e : lambdaOperator u v θ K J = K J + (θ - 1) * totalWedge v (totalContraction u K) J := by
-    simp [lambdaOperator, Module.End.mul_apply]
+    simp [lambdaOperator]
   rw [e]
   refine (Fl.F a').add_mem (Fl.anti h0 (h J)) ?_
   have h1 : θ - 1 ∈ Fl.F a' := (Fl.F a').sub_mem (Fl.anti ha hθ) (Fl.anti h0 Fl.one_mem)

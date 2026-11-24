@@ -5,10 +5,11 @@ public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
 public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPrimitiveExpansionQuotientLevelOneStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTranslationInvariantSubfieldIffExponentsStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MulOfIsPrimitiveIntegralHahnGaussStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveHahnSeriesInvertibleModPrimePowStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPrimitiveExpansionQuotientLevelOne
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemTranslationInvariantSubfieldIffExponents
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MulOfIsPrimitiveIntegralHahnGauss
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimitiveHahnSeriesInvertibleModPrimePow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -118,17 +119,17 @@ open GlobalTheory.DlEx in
 theorem GlobalTheory.dl_exists : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : GlobalTheory.KZ.Tower Ω ε), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →
   ∀ (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), ((l : ℕ) : Ω) ∈ A.nonunits → ∀ (n L : ℕ) (f : X.K), 0 < L → f ≠ 0 → f ∈ KT X L → ∃ φ : HahnSeries ℚ Ω, IsDl X A l n L f φ ∧ ∀ r : ℚ, φ.coeff r ≠ 0 → (r * L).den = 1 := by
   intro Ω _ _ _ ε X hj l _ A hl n L f hL hf hfK
-  obtain ⟨a, b, κ, S, hκ, hfb, ha, hb, hbinv, -⟩ := GlobalTheory.T.exists_primitive_expansion_quotient_level_one ε X hj l A hl f hf
+  obtain ⟨a, b, κ, S, hκ, hfb, ha, hb, hbinv, -⟩ := _root_.GlobalTheory.exists_prim_frac_level_one ε X hj l A hl f hf
   have hbK : b ∈ KT X L := (RingHom.mem_eqLocusField).2 (hbinv _)
   have hcK : algebraMap Ω X.K κ ∈ KT X L := (RingHom.mem_eqLocusField).2 ((X.sl _).commutes κ)
   have haK : a ∈ KT X L := by
     have e : a = (algebraMap Ω X.K κ)⁻¹ * (f * b) := by
       rw [hfb, ← mul_assoc, inv_mul_cancel₀ ((map_ne_zero _).2 hκ), one_mul]
     rw [e]; exact (KT X L).mul_mem ((KT X L).inv_mem hcK) ((KT X L).mul_mem hfK hbK)
-  have hsa : Sp L (X.exp a) := (GlobalTheory.T.mem_translationInvariantSubfield_iff_exponents ε X L hL a).1 haK
-  have hsb : Sp L (X.exp b) := (GlobalTheory.T.mem_translationInvariantSubfield_iff_exponents ε X L hL b).1 hbK
-  have hP : Prim A (X.exp a * X.exp b) := GlobalTheory.T.mul_of_isPrimitiveIntegral_hahn_gauss A _ _ ha hb
-  obtain ⟨Q, hQA, hQs, hQP⟩ := GlobalTheory.T.primitive_hahnSeries_invertible_mod_prime_pow l A hl n L (X.exp a * X.exp b) hL hP (sp_mul hsa hsb)
+  have hsa : Sp L (X.exp a) := (_root_.GlobalTheory.Glue.KTExp.mem_KT_iff ε X L hL a).1 haK
+  have hsb : Sp L (X.exp b) := (_root_.GlobalTheory.Glue.KTExp.mem_KT_iff ε X L hL b).1 hbK
+  have hP : Prim A (X.exp a * X.exp b) := _root_.GlobalTheory.Glue.Prim.mul A _ _ ha hb
+  obtain ⟨Q, hQA, hQs, hQP⟩ := _root_.GlobalTheory.prim_inv_mod_pow l A hl n L (X.exp a * X.exp b) hL hP (sp_mul hsa hsb)
   have hDA : ∀ r, (theta (L:ℚ) (X.exp a) * X.exp b - X.exp a * theta (L:ℚ) (X.exp b)).coeff r ∈ A :=
     intA_sub A (intA_mul A (intA_theta A ha.1 hsa) hb.1) (intA_mul A ha.1 (intA_theta A hb.1 hsb))
   have hDs : Sp L (theta (L:ℚ) (X.exp a) * X.exp b - X.exp a * theta (L:ℚ) (X.exp b)) :=

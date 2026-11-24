@@ -120,7 +120,7 @@ theorem finGL_mem (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →+*
       rw [pInf_conjAd, h1]
       by_cases e : i = j
       · subst e; simp
-      · simp [Matrix.one_apply, e, Ne.symm e]
+      · simp [e, Ne.symm e]
     rw [Matrix.map_mul, hc, hI, Matrix.mul_one, Matrix.map_one _ (map_zero _) (map_one _)]
   · rcases eq_or_ne v w with rfl | hvw
     · have h0 := hL v
@@ -145,7 +145,7 @@ theorem finGL_mem (w : HeightOneSpectrum (𝓞 E)) (s : w.adicCompletion E →+*
         rw [pLoc_conjFin, h1]
         by_cases e : i = j
         · subst e; simp
-        · simp [Matrix.one_apply, e, Ne.symm e]
+        · simp [e, Ne.symm e]
       have h0' : h.val.map ((pLoc E v).comp (pFin E)) = 1 := h0
       rw [Matrix.map_mul, hc, h0', Matrix.mul_one, Matrix.map_one _ (map_zero _) (map_one _)]
 

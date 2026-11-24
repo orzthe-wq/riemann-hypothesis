@@ -488,7 +488,7 @@ def T : Thick nodeL where
   x := ![DualNumber.eps, DualNumber.eps]
   v _ := 1
   s := 1
-  hx j := by fin_cases j <;> simp [nodeL, node, nodePt]
+  hx j := by fin_cases j <;> simp
   hs := by simp [Fin.prod_univ_two, DualNumber.eps_mul_eps, base]
   hv := by simp
 
@@ -510,7 +510,7 @@ def sq : Mor nodeL nodeL (RingHom.id ℚ) where
   inc _ := trivial
   w _ _ _ _ := 1
   w_map _ _ _ _ _ _ := by simp
-  hf i _ _ _ := by fin_cases i <;> simp [Fin.prod_univ_two, nodeL, node, nodePt]
+  hf i _ _ _ := by fin_cases i <;> simp [nodeL, node, nodePt]
   hg _ _ _ := by simp
   hw _ := by simp
 

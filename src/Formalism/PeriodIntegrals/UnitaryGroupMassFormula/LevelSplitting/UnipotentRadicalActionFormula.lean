@@ -112,29 +112,15 @@ private theorem hRsum_lemma_5 (x : n → A) (g : Fin r → n → A) :
   show (D.hL x) (∑ i, g i) = ∑ i, (D.hL x) (g i)
   exact map_sum _ _ _
 
-private theorem hswap_lemma_6 (H : D.Hyp) (x y : n → A) : D.h y x = D.σA (D.h x y) := by
-
-  simp only [Dat.h, Formalism.UG.hform, map_sum, map_mul, H.σσ, H.herm]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  ring
-
-private theorem hfe_lemma_7 (H : D.Hyp) (a b : Fin r) :
-    D.h (D.f a) (D.e b) = if a = b then 1 else 0 := by
-  rw [hswap_lemma_6 H (D.e b) (D.f a), H.ef b a]
-  by_cases hab : a = b
-  · subst hab; simp
-  · simp [hab, Ne.symm hab]
-
 private theorem hLsum_lemma_8 (H : D.Hyp) (g : Fin r → n → A) (y : n → A) :
     D.h (∑ i, g i) y = ∑ i, D.h (g i) y := by
 
-  rw [hswap_lemma_6 H, hRsum_lemma_5, map_sum]
-  exact Finset.sum_congr rfl fun i _ => (hswap_lemma_6 H _ _).symm
+  rw [_root_.PI.VolSemiDirect.W.PG.Dat.h_symm H, hRsum_lemma_5, map_sum]
+  exact Finset.sum_congr rfl fun i _ => (_root_.PI.VolSemiDirect.W.PG.Dat.h_symm H _ _).symm
 
 private theorem hLsub_lemma_9 (H : D.Hyp) (x x' y : n → A) :
     D.h (x - x') y = D.h x y - D.h x' y := by
-  rw [hswap_lemma_6 H y (x - x'), hRsub_lemma_3, map_sub, ← hswap_lemma_6 H, ← hswap_lemma_6 H]
+  rw [_root_.PI.VolSemiDirect.W.PG.Dat.h_symm H y (x - x'), hRsub_lemma_3, map_sub, ← _root_.PI.VolSemiDirect.W.PG.Dat.h_symm H, ← _root_.PI.VolSemiDirect.W.PG.Dat.h_symm H]
 
 private theorem pXap_lemma_10 (v : n → A) : D.pX v = ∑ a, D.h (D.f a) v • D.e a := by
   simp only [Dat.pX, LinearMap.sum_apply, LinearMap.smulRight_apply, hLap_lemma]
@@ -144,11 +130,11 @@ private theorem pXvap_lemma_11 (v : n → A) : D.pXv v = ∑ a, D.h (D.e a) v �
 
 theorem h_W_e' (H : D.Hyp) {w : n → A} (hw : IsWp D w) (b : Fin r) : D.h w (D.e b) = 0 := by
   unfold IsWp at hw
-  rw [hswap_lemma_6 H, hw.1 b, map_zero]
+  rw [_root_.PI.VolSemiDirect.W.PG.Dat.h_symm H, hw.1 b, map_zero]
 
 theorem h_W_f' (H : D.Hyp) {w : n → A} (hw : IsWp D w) (b : Fin r) : D.h w (D.f b) = 0 := by
   unfold IsWp at hw
-  rw [hswap_lemma_6 H, hw.2 b, map_zero]
+  rw [_root_.PI.VolSemiDirect.W.PG.Dat.h_symm H, hw.2 b, map_zero]
 
 theorem xp_of_span (H : D.Hyp) {x : n → A} (hx : x ∈ Submodule.span A (Set.range D.e)) : Xp D x := by
   rw [Submodule.mem_span_range_iff_exists_fun] at hx
@@ -179,7 +165,7 @@ theorem pWp_isWp (H : D.Hyp) (v : n → A) : IsWp D (pWp D v) := by
   unfold IsWp
   refine ⟨fun a => ?_, fun a => ?_⟩ <;>
     simp [pWp_apply, pXap_lemma_10, pXvap_lemma_11, hRsub_lemma_3, hRsum_lemma_5, hRsmul_lemma_4, H.ee, H.ff, H.ef,
-      hfe_lemma_7 H]
+      _root_.PI.VolSemiDirect.W.PG.Dat.fe H]
 
 theorem pWp_of_isWp {w : n → A} (hw : IsWp D w) : pWp D w = w := by
   unfold IsWp at hw
@@ -190,7 +176,7 @@ theorem pWp_span (H : D.Hyp) {x : n → A} (hx : x ∈ Submodule.span A (Set.ran
     pWp D x = 0 := by
   rw [Submodule.mem_span_range_iff_exists_fun] at hx
   obtain ⟨c, rfl⟩ := hx
-  simp [pWp_apply, pXap_lemma_10, pXvap_lemma_11, hRsum_lemma_5, hRsmul_lemma_4, H.ee, hfe_lemma_7 H]
+  simp [pWp_apply, pXap_lemma_10, pXvap_lemma_11, H.ee, _root_.PI.VolSemiDirect.W.PG.Dat.fe H]
 
 theorem pWp_e (H : D.Hyp) (c : Fin r) : pWp D (D.e c) = 0 := pWp_span H (Submodule.subset_span ⟨c, rfl⟩)
 
@@ -228,7 +214,7 @@ theorem h_e_uv (a c : Fin r) : D.h (D.e c) (uv D half y a) = 0 := by
   simp [uv, hRadd_lemma_2, hRsum_lemma_5, hRsmul_lemma_4, H.ee, hy1_lemma_12 hy]
 
 theorem h_uv_e (a c : Fin r) : D.h (uv D half y a) (D.e c) = 0 := by
-  rw [hswap_lemma_6 H, h_e_uv H hy, map_zero]
+  rw [_root_.PI.VolSemiDirect.W.PG.Dat.h_symm H, h_e_uv H hy, map_zero]
 
 theorem h_uv_uv (a a' : Fin r) : D.h (uv D half y a) (uv D half y a') = D.h (y a) (y a') := by
   simp [uv, hRadd_lemma_2, hRsum_lemma_5, hRsmul_lemma_4, h_add_left, hLsum_lemma_8 H, h_smul_left, H.ee,
@@ -258,7 +244,7 @@ theorem h_tV_right (x x' : n → A) :
     D.h x (tV D half y x') = ∑ a, D.h (D.e a) x' * D.σA (D.h (y a) x) +
       ∑ a, ∑ b, D.h (D.e a) x' * (cf D half y a b * D.σA (D.h (D.e b) x)) -
       ∑ b, D.h (y b) x' * D.σA (D.h (D.e b) x) := by
-  have sw : ∀ z, D.h x z = D.σA (D.h z x) := fun z => hswap_lemma_6 H z x
+  have sw : ∀ z, D.h x z = D.σA (D.h z x) := fun z => _root_.PI.VolSemiDirect.W.PG.Dat.h_symm H z x
   simp only [tV, uv, hRsub_lemma_3, hRsum_lemma_5, hRsmul_lemma_4, hRadd_lemma_2]
   simp only [sw, mul_add, Finset.mul_sum, Finset.sum_add_distrib]
 
@@ -301,7 +287,7 @@ theorem sL_uni (hh : Half D half) (x x' : n → A) : D.h (sL D half y x) (sL D h
     simp only [← Finset.sum_add_distrib]
     refine Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ?_
     simp only [cf, map_neg, map_mul, hh.sig]
-    rw [← hswap_lemma_6 H (y b) (y a)]
+    rw [← _root_.PI.VolSemiDirect.W.PG.Dat.h_symm H (y b) (y a)]
     linear_combination (-(D.σA (D.h (D.e a) x) * D.h (D.e b) x' * D.h (y a) (y b))) * hh.two
   linear_combination c1 - c2 + c3
 
@@ -319,7 +305,7 @@ theorem unipotent_radical_action_formula (H : D.Hyp) {Φ : (n → A) →ₗ[A] (
     intro b
     have hwe : ∀ a, D.h (Φ (D.f b)) (D.e a) = if b = a then 1 else 0 := by
       intro a
-      rw [← he a, hU (D.f b) (D.e a), hfe_lemma_7 H]
+      rw [← he a, hU (D.f b) (D.e a), _root_.PI.VolSemiDirect.W.PG.Dat.fe H]
     have hew : ∀ a, D.h (D.e a) (Φ (D.f b)) = if a = b then 1 else 0 := by
       intro a
       rw [← he a, hU (D.e a) (D.f b), H.ef]
@@ -383,7 +369,7 @@ theorem fix_f_mem (H : D.Hyp) (hND : ND D) {Φ : (n → A) →ₗ[A] (n → A)} 
       rw [hdec, h_add_left, hpX0 _ hvX, zero_add] at this
       exact this
     have hB : D.h (u - D.pXv u) (pWp D w) = 0 := by
-      rw [hswap_lemma_6 H, hA, map_zero]
+      rw [_root_.PI.VolSemiDirect.W.PG.Dat.h_symm H, hA, map_zero]
     have hC : D.h (D.pXv u) (pWp D w) = 0 := by
       rw [pXvap_lemma_11, hLsum_lemma_8 H]
       simp [h_smul_left, hWf]

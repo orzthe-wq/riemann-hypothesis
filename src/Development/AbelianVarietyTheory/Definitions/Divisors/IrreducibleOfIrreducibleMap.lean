@@ -221,11 +221,6 @@ theorem single (h : IsChowFormInt I e dl f) (hp : I.IsPrime)
 
 end IsChowFormInt
 
-theorem not_isChowFormInt_top {e dl : ℕ} (f : MvPolynomial (Fin (e + 1) × Fin N) k) :
-    ¬ IsChowFormInt (⊤ : Ideal (MvPolynomial (Fin N) k)) e dl f := fun h => by
-  obtain ⟨y, -, hy⟩ := h.exists_point
-  simpa using hy 1 trivial
-
 namespace IsChowFormCycle
 
 variable {Z Z' : Ideal (MvPolynomial (Fin N) k) →₀ ℕ} {e dl dl' : ℕ}

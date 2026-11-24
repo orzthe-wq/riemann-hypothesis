@@ -3,7 +3,9 @@ module
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LabelSigBijective
 public import Formalism.LocalToGlobal.ProjectiveLattices.ChartWD
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedModuliAlgebraicLawsChartWeightIntegralityStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.UnitIndepOfCharts
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedModuliAlgebraicLawsChartWeightIntegrality
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -158,7 +160,7 @@ theorem readsZ_of_isIntPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
   letI := Small.cstAlg Or
   obtain ⟨hp, hO, -, -, -, hn, ⟨q, φ, ψ, yq, hφ, hψ, hA⟩, hb⟩ := hI
   have hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt := GlobalTheory.firstFiveLaws.1.secBaseChange
-  have hWD := (GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hS E H Dw l Xo c).2.2.1
+  have hWD := (_root_.GlobalTheory.Frames.algebraic_laws hS E H Dw l Xo c).2.2.1
   have hrd : Fr.rd f = φ (f q yq) := Fr.rd_eq_of_frMap hWD hf.1 q φ yq hφ
   obtain ⟨hmem, hψe⟩ := hA (f q yq)
   have hm : Fr.rd f ∈ A := hrd ▸ hmem
@@ -168,7 +170,7 @@ theorem readsZ_of_isIntPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
     rw [dite_eq_left hft]
     exact hWD f hf.1 T.Fr _ q _ ψ _ yq zT hft.choose_spec.choose_spec.choose_spec hψ
   have hbor : evI y f = ((∏ i, t i ^ exZ Dw a i : T.Frˣ) : T.Fr) * evR Xo c f zT :=
-    evalAt_bor_zpow (GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hS E H Dw l Xo c).2.1 (exZ Dw a) hf.1
+    evalAt_bor_zpow (_root_.GlobalTheory.Frames.algebraic_laws hS E H Dw l Xo c).2.1 (exZ Dw a) hf.1
       (fun p t y y' hb => by rw [hf.2 p t y y' hb, Units.coe_prod]) T.Fr t zT y.1 hft y.2.1 hb
   have hnorm : ‖ev ⟨Fr.rd f, hm⟩‖ = absT p la T e (evR Xo c f zT) := by
     rw [hn, hzT, hψe]

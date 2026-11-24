@@ -106,8 +106,7 @@ private lemma ctrF_eq (ψ : F →ₗ[F] F) (m : F ⊗[ℂ] DR ℂ K) :
     have h1 : ψ f = f * ψ 1 := by
       have := ψ.map_smul f (1 : F)
       simpa using this
-    simp only [ctrF, mulP, TensorProduct.lift.tmul, LinearMap.comp_apply, LinearMap.coe_restrictScalars,
-      AlgHom.toLinearMap_apply, Algebra.lsmul_coe, Algebra.linearMap_apply, LinearMap.restrictScalars_apply]
+    simp only [ctrF, mulP, TensorProduct.lift.tmul, LinearMap.comp_apply, AlgHom.toLinearMap_apply, Algebra.lsmul_coe, Algebra.linearMap_apply, LinearMap.restrictScalars_apply]
     rw [h1, algebraMap_smul, smul_smul, mul_comm]
 
 end Inst

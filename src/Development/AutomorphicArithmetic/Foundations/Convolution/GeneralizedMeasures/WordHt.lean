@@ -81,7 +81,7 @@ theorem UpperTheory.ConvolutionTheory.GM.wordHt :
         exact hg
       obtain ⟨y, hy⟩ : ∃ y, letter a₀ x y * word ν a₀ w (y⁻¹ * g) ≠ 0 := by
         by_contra hne
-        push_neg at hne
+        push Not at hne
         exact hc (by simp [hne])
       have hy1 := left_ne_zero_of_mul hy
       have hy2 := right_ne_zero_of_mul hy

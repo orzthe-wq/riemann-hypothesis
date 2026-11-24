@@ -140,7 +140,7 @@ lemma step (E : Fin n → Fin n → Module.End ℂ V) (ε : Fin n → Bool) (κ 
         simp only [LinearMap.sub_apply, Module.End.mul_apply, hv, map_smul]
         abel
       have hsplit : wd E (p :: l') v = E p.1 p.2 (wd E l' v) := by
-        simp [wd, Module.End.mul_apply]
+        simp [wd]
       rw [hsplit]
       have hle : ‖E p.1 p.2 (wd E l' v)‖ ^ 2 ≤ ∑ a, ∑ b, ‖E a b (wd E l' v)‖ ^ 2 := by
         calc ‖E p.1 p.2 (wd E l' v)‖ ^ 2 ≤ ∑ b, ‖E p.1 b (wd E l' v)‖ ^ 2 :=

@@ -93,7 +93,7 @@ private theorem abs_re_le {k : G1 ℚ} (hk : InfOrth k) (z : A ℚ) :
   have hb := abs_nonneg (re (k 1 1))
   have hs' : |re (k 1 0)| ^ 2 + |re (k 1 1)| ^ 2 = 1 := by simpa [sq_abs] using hs
   by_contra hc
-  push_neg at hc
+  push Not at hc
   have hlt : |re (k 1 0)| + |re (k 1 1)| ≥ 1 := by nlinarith
   nlinarith
 
@@ -136,7 +136,7 @@ theorem UpperTheory.schwartzBruhat_row_lintegral_abs_pow_bounded :
       · exact Subring.neg_mem _ (mem_integralFiniteAdeles.2 fun v => hk.2 v 0 1)
       · exact mem_integralFiniteAdeles.2 fun v => hk.2 v 0 0
     rw [if_pos hmem, ← ENNReal.ofReal_mul (by positivity)]
-    rw [← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul (norm_nonneg _)]
+    rw [← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _)]
     refine ENNReal.ofReal_le_ofReal ?_
     have hle := abs_re_le hk.1 ((z : (A ℚ)ˣ) : A ℚ)
     set N := ‖infPartPi x‖ with hN

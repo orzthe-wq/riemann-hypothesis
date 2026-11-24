@@ -1,5 +1,6 @@
 module
 
+import Mathlib
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.SecondThirdPrimeConditionTransferAlt
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.CoQuot
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.DGext
@@ -314,7 +315,7 @@ private theorem pe_tw_cont [IsLocalRing A] [IsLocalHom (algebraMap O A)] (ρ : N
   have h2 := IsLocallyConstant.comp₂ hκ hr (· * ·)
   convert h2 using 1
   funext g
-  simp [Pr.TwLink.tw, Pr.TwLink.κA, W.pushCh, map_mul]
+  simp [Pr.TwLink.tw, Pr.TwLink.κA, W.pushCh]
   rw [Algebra.smul_def, map_mul]
   rfl
 

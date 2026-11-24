@@ -137,7 +137,7 @@ theorem dl_on {E : Ent D} {p : ℕ} [Fact p.Prime] (h : OrbOK D p) (u : D.what�
       _ ≤ (E.nu u i (orbMap D p z s)).cells.card := by
           apply Finset.card_le_card
           intro x hx
-          simp only [Finset.mem_map, Finset.mem_range, Function.Embedding.coeFn_mk] at hx
+          simp only [Finset.mem_map, Finset.mem_range] at hx
           obtain ⟨j, hj, rfl⟩ := hx
           exact YoungDiagram.mem_iff_lt_rowLen.2 hj
   have hsz : ((orbLoc E p h u i z Th).Dl s : ℝ) =

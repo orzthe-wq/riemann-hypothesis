@@ -131,7 +131,7 @@ theorem reading_eq_zero {L L' : Type} [Field L] [Field L'] (ι : L →+* L') (σ
       by_cases hak : a = k
       · subst hak
         simp
-      · simp [Pi.single_apply, hak]⟩
+      · simp [hak]⟩
     exact (eq_of_heq (h1.trans hz.symm)).trans (map_zero j')
   refine LinearMap.ext fun x => ?_
 

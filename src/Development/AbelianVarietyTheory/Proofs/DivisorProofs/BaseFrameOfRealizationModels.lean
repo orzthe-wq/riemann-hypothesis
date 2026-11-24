@@ -1,14 +1,13 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormal
 public import Formalism.LocalToGlobal.IndefiniteReal.FWExist
 public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArchimedeanLiftUnitaryGroupProduct
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagDomainFramesEqGramFramesUnitary
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddSmulMemUnitary
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ArchimedeanMatrixUnitaryContinuousMultiplicative
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RationalPointsAdelicUnitaryEqUnitary
+public import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -24,9 +23,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -49,9 +45,63 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import Mathlib.Topology.Separation.CompletelyRegular
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ArchimedeanMatrixUnitaryContinuousMultiplicative
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddSmulMemUnitary, Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseFrameOfRealizationModels
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddSmulMemUnitary =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddSmulMemUnitary", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+
+namespace GlobalTheory.UnitaryPerturbation
+
+theorem one_add_smul_mem_unitary {n : ℕ} {Hm : GlobalTheory.HolDict.Mt n} (hH : Matrix.IsHermitian Hm) (v : Fin n → ℂ) (z : ℂ)
+    (hz : star z + z + star z * z * star v ⬝ᵥ Matrix.mulVec Hm v = (0 : ℂ)) :
+    (1 : Matrix (Fin n) (Fin n) ℂ) + z • (Matrix.vecMulVec v (star v) * Hm) ∈ Formalism.QuantumDeterminants.UH Hm := by
+  show (1 + z • (Matrix.vecMulVec v (star v) * Hm))ᴴ * Hm * (1 + z • (Matrix.vecMulVec v (star v) * Hm)) = Hm
+  have hHc : Hmᴴ = Hm := hH
+  obtain ⟨M, hMdef⟩ : ∃ M : Matrix (Fin n) (Fin n) ℂ, M = Matrix.vecMulVec v (star v) := ⟨_, rfl⟩
+  obtain ⟨c, hcdef⟩ : ∃ c : ℂ, c = star v ⬝ᵥ Matrix.mulVec Hm v := ⟨_, rfl⟩
+  rw [← hcdef] at hz
+  have hMc : Mᴴ = M := by rw [hMdef, Matrix.conjTranspose_vecMulVec, star_star]
+  have hMHM : M * Hm * M = c • M := by
+    ext i j
+    simp only [hMdef, hcdef, Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.smul_apply, smul_eq_mul,
+      dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, Pi.star_apply]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_
+    ring
+  have key : Hm * (M * (Hm * (M * Hm))) = c • (Hm * (M * Hm)) := by
+    have h1 : M * (Hm * (M * Hm)) = c • (M * Hm) := by
+      rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hMHM, Matrix.smul_mul]
+    rw [h1, Matrix.mul_smul]
+  rw [← hMdef, Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.conjTranspose_smul,
+    Matrix.conjTranspose_mul, hMc, hHc]
+  have expand : (1 + star z • (Hm * M)) * Hm * (1 + z • (M * Hm)) =
+      Hm + (star z + z + star z * z * c) • (Hm * (M * Hm)) := by
+    simp only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul,
+      Matrix.mul_smul, Matrix.mul_assoc]
+    rw [key]
+    module
+  rw [expand, hz, zero_smul, add_zero]
+
+end GlobalTheory.UnitaryPerturbation
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddSmulMemUnitary =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseFrameOfRealizationModels =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseFrameOfRealizationModels", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormal\npublic import Formalism.LocalToGlobal.IndefiniteReal.FWExist\npublic import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArchimedeanLiftUnitaryGroupProduct\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlagDomainFramesEqGramFramesUnitary\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneAddSmulMemUnitary\nimport Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces\nimport Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ArchimedeanMatrixUnitaryContinuousMultiplicative\npublic import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RationalPointsAdelicUnitaryEqUnitary\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\npublic import Mathlib.Topology.Separation.CompletelyRegular\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.L2.Pj Formalism.IndefR.FWT Formalism.IndefR GlobalTheory.HolDict
@@ -109,17 +159,6 @@ theorem conj_eq_of_path (hH : Hm.det ≠ 0) (hP : P.det ≠ 0) (ha : a.det ≠ 0
   have h3 := congrArg (P⁻¹ * ·) this
   simpa only [Matrix.nonsing_inv_mul_cancel_left _ _ hP.isUnit] using h3
 
-theorem refl_mem (hH : Hm.IsHermitian) (v : Fin n → ℂ) (z : ℂ)
-    (hz : star z + z + star z * z * (star v ⬝ᵥ Hm *ᵥ v) = 0) :
-    1 + z • (vecMulVec v (star v) * Hm) ∈ Formalism.QuantumDeterminants.UH Hm := by
-  first
-  | exact @_root_.GlobalTheory.UnitaryPerturbation.one_add_smul_mem_unitary
-  | exact _root_.GlobalTheory.UnitaryPerturbation.one_add_smul_mem_unitary
-  | (apply _root_.GlobalTheory.UnitaryPerturbation.one_add_smul_mem_unitary <;> assumption)
-  | (intros; apply _root_.GlobalTheory.UnitaryPerturbation.one_add_smul_mem_unitary <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.UnitaryPerturbation.one_add_smul_mem_unitary <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.UnitaryPerturbation.one_add_smul_mem_unitary ..)
-
 theorem polar (x y : Fin n → ℂ) : vecMulVec x (star y) = (1 / 2 : ℂ) •
     ((vecMulVec (x + y) (star (x + y)) - vecMulVec x (star x) - vecMulVec y (star y)) +
       Complex.I • (vecMulVec (x + Complex.I • y) (star (x + Complex.I • y)) - vecMulVec x (star x) -
@@ -149,7 +188,7 @@ theorem conj_eq (hH : Hm.IsHermitian) (hd : Hm.det ≠ 0) (hP : P.det ≠ 0) (ha
     let z : ℝ → ℂ := fun s => 2 * Complex.I * s / (1 - Complex.I * s * q)
     have hz : Continuous z := Continuous.div₀ (by fun_prop) (by fun_prop) hden
     have := conj_eq_of_path hd hP ha hS h (fun s => 1 + z s • (vecMulVec v (star v) * Hm))
-      (continuous_const.add (hz.smul continuous_const)) (by simp [z]) fun s => refl_mem hH v _ (by
+      (continuous_const.add (hz.smul continuous_const)) (by simp [z]) fun s => _root_.GlobalTheory.UnitaryPerturbation.one_add_smul_mem_unitary hH v _ (by
         have e : star (z s) = -(2 * Complex.I * s) / (1 + Complex.I * s * q) := by simp [z]
         rw [hq, e]
         have := hden s
@@ -204,10 +243,7 @@ theorem nNeg_eq {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (ρ :
     exact (h2 a).symm
   rw [← h3, Fin.card_filter_val_lt, min_eq_right hp]
 
-theorem archM_mul (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (g g' : GA D V) :
-    archM V θ (g * g') = archM V θ g * archM V θ g' := by
-  unfold archM
-  rw [map_mul, Units.val_mul, Matrix.map_mul]
+alias archM_mul := _root_.GlobalTheory.PointAtPlace.archM_mul
 
 theorem archM_det (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (g : GA D V) :
     (archM V θ g).det ≠ 0 := by
@@ -320,3 +356,6 @@ theorem baseFrT_of_tieIn : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0
     fun h => (hL h).imp fun γ hγ => ⟨hγ.1, hγ.2.2.2⟩
 
 end GlobalTheory.HolDict.BaseFrame
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseFrameOfRealizationModels =====

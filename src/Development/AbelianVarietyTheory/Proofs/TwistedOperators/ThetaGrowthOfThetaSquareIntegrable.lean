@@ -127,7 +127,7 @@ theorem exists_compact_denom : ∃ C : Set (AF F ⊗[F] E), IsCompact C ∧ ∀ 
   let e := (Algebra.TensorProduct.basis (AF F) b.traceDual).equivFun
   have he : Continuous e.symm := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap
   refine ⟨e.symm '' Set.pi Set.univ fun _ => C, (isCompact_univ_pi fun _ => hC).image he, fun H h1 hf => ?_⟩
-  obtain ⟨d, hd, hdc, hv⟩ := GlobalTheory.SmoothForms.denom_global H h1 hf
+  obtain ⟨d, hd, hdc, hv⟩ := _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator H h1 hf
   refine ⟨d, hd, hdc, fun z h0 hz k => ⟨e (k • d • z), fun i _ => ?_, e.symm_apply_apply _⟩⟩
   rw [map_nsmul, map_nsmul, Pi.smul_apply, Pi.smul_apply]
   refine hC' _ (fun w => ?_) 1 one_pos (by simp) fun v => ?_
@@ -139,7 +139,7 @@ theorem exists_compact_denom : ∃ C : Set (AF F ⊗[F] E), IsCompact C ∧ ∀ 
     rw [map_nsmul, map_nsmul, h3]
     simp
   · rw [Nat.cast_one, one_mul, map_nsmul, map_nsmul, nsmul_eq_mul, nsmul_eq_mul, norm_mul]
-    refine mul_le_one₀ (GlobalTheory.SmoothForms.denom_norm_natCast_le_one v k) (norm_nonneg _) (hv v _ ?_)
+    refine mul_le_one₀ (_root_.GlobalTheory.AdicNatCastNorm.norm_natCast_adicCompletion_le_one v k) (norm_nonneg _) (hv v _ ?_)
     exact (congrArg nnnorm (repr_map b.traceDual (evFin F v) z i)).symm.trans_le
       ((nnnorm_repr_le_absFin b hb' v _ i).trans (hz v))
 

@@ -196,22 +196,6 @@ theorem l1Norm_linearForm_le_sum {ι : Type*} (s : Finset ι) (v : ι → σ) (e
   refine (l1Norm_sum_le _ _).trans_eq (sum_congr rfl fun k _ ↦ ?_)
   rw [C_mul_X_eq_monomial, l1Norm_monomial]
 
-theorem l1Norm_linearForm_eq_sum {ι : Type*} (s : Finset ι) {v : ι → σ}
-    (hv : Function.Injective v) (e : ι → K) :
-    l1Norm (∑ k ∈ s, C (e k) * X (v k) : MvPolynomial σ K) = ∑ k ∈ s, ‖e k‖ := by
-  classical
-  refine (l1Norm_linearForm_le_sum s v e).antisymm ?_
-  have hinj : Function.Injective fun k ↦ (Finsupp.single (v k) 1 : σ →₀ ℕ) :=
-    fun a b h ↦ hv (Finsupp.single_left_injective one_ne_zero h)
-  refine le_trans (le_of_eq ?_) (sum_norm_coeff_le_l1Norm _ (s.image fun k ↦ .single (v k) 1))
-  rw [sum_image fun a _ b _ h ↦ hinj h]
-  refine sum_congr rfl fun k hk ↦ ?_
-  rw [coeff_sum, sum_eq_single k]
-  · simp [C_mul_X_eq_monomial]
-  · intro b _ hb
-    rw [C_mul_X_eq_monomial, coeff_monomial, if_neg fun h ↦ hb (hinj h)]
-  · exact fun h ↦ (h hk).elim
-
 theorem l1Norm_linearForm_le {ι : Type*} [Fintype ι] (v : ι → σ) (e : ι → K) :
     l1Norm (∑ k, C (e k) * X (v k) : MvPolynomial σ K) ≤
       √(Fintype.card ι) * √(∑ k, ‖e k‖ ^ 2) :=
@@ -499,12 +483,6 @@ theorem fockInner_monomial_left (α : σ →₀ ℕ) (c : 𝕜) (Q : MvPolynomia
     fockInner (monomial α c) Q = multiFactorial α * (c * starRingEnd 𝕜 (Q.coeff α)) := by
   classical
   rw [fockInner_eq_sum_of_subset_left Q (s := {α}) support_monomial_subset]
-  simp
-
-theorem fockInner_monomial_right (P : MvPolynomial σ 𝕜) (α : σ →₀ ℕ) (c : 𝕜) :
-    fockInner P (monomial α c) = multiFactorial α * (P.coeff α * starRingEnd 𝕜 c) := by
-  classical
-  rw [fockInner_eq_sum_of_subset_right P (s := {α}) support_monomial_subset]
   simp
 
 theorem fockInner_X_mul_left (i : σ) (P Q : MvPolynomial σ 𝕜) :

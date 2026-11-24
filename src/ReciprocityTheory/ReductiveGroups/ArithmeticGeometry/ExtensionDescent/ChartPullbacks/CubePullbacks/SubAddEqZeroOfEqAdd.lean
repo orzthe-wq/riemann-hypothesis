@@ -3,50 +3,12 @@ module
 public import Aesop.BuiltinRules
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.SiegelPullbackTransfer.ExistsGenTransfer
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubicalPullBaseChangeSt
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.CategoryTheory.Monoidal.Cartesian.Grp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubeMapOfThirdFaceEqPushPtLift
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.SiegelPullbackTransfer.AdelicGL2ExtOfLocalComponents
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.GeneratorPullback.PullAlong
 
 @[expose] public section
 
@@ -76,7 +38,6 @@ lemma eSec_inv {S₀ : Scheme.{0}} (H : Over S₀) [GrpObj H] :
   have h : η[H] ≫ GrpObj.inv (X := H) = η[H] := by
     first
     | simp
-    | exact GrpObj.one_inv
   rw [Category.id_comp]
   show (η[H] ≫ GrpObj.inv (X := H)).left = η[H].left
   rw [h]
@@ -118,12 +79,6 @@ lemma mul_inv_mul_cancel_comm {M N : Type} [CommGroup M] [CommGroup N] (φ : M �
   subst h0 hwp hwq hB hA
   simp only [map_mul, map_inv]
 
-private theorem pullU_comp_lemma {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Opens)
-    (x : Γ(X, U)ˣ) : pullU (f ≫ g) U x = pullU f (g ⁻¹ᵁ U) (pullU g U x) := by
-  first
-  | rfl
-  | (ext; simp [pullU])
-
 lemma symIso_isGen (L : LB G.left) (w₀ : LB.Iso L (L.pull (GrpObj.inv (X := G)).left))
     (hw₀ : w₀.IsGen) : (symIso m L w₀).IsGen := by
   intro p p'
@@ -140,11 +95,9 @@ lemma symIso_isGen (L : LB G.left) (w₀ : LB.Iso L (L.pull (GrpObj.inv (X := G)
   rw [map_mul, gU_res, gU_res] at h0
   first
   | rw [germ_div _ _ _ _ (m.F.base y) hz] at h0
-  | simp only [germ_div] at h0
   rw [map_mul, gU_res, gU_res]
   first
   | rw [germ_div _ _ p p' y hy]
-  | simp only [germ_div]
   apply mul_inv_mul_cancel_comm (Units.map (m.F.stalkMap y).hom) _ _ _ _ _ _ _ _ h0
   · dsimp only [symIso]
     rw [gU_res, gU_pullU]
@@ -163,7 +116,7 @@ lemma symIso_isGen (L : LB G.left) (w₀ : LB.Iso L (L.pull (GrpObj.inv (X := G)
     refine (germ_pull_pull L m.F (GrpObj.inv (X := G')).left p.1 p'.1 y _ hmem1).trans
       ((gU_pullU_congr (inv_comm m) (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit)) (L.g (p.1 PUnit.unit PUnit.unit) (p'.1 PUnit.unit PUnit.unit)) y hmem1 hmem3).trans
       ((congrArg (gU (O := (m.F ≫ (GrpObj.inv (X := G)).left) ⁻¹ᵁ (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit))) y hmem3)
-          (pullU_comp_lemma m.F (GrpObj.inv (X := G)).left (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit)) (L.g (p.1 PUnit.unit PUnit.unit) (p'.1 PUnit.unit PUnit.unit)))).trans
+          (_root_.ReciprocityTheory.ChartRestriction.G.Out.LBxP.pullU_comp m.F (GrpObj.inv (X := G)).left (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit)) (L.g (p.1 PUnit.unit PUnit.unit) (p'.1 PUnit.unit PUnit.unit)))).trans
       ((gU_pullU m.F ((GrpObj.inv (X := G)).left ⁻¹ᵁ (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit))) y hmem3 (pullU (GrpObj.inv (X := G)).left (L.U (p.1 PUnit.unit PUnit.unit) ⊓ L.U (p'.1 PUnit.unit PUnit.unit)) (L.g (p.1 PUnit.unit PUnit.unit) (p'.1 PUnit.unit PUnit.unit)))).trans
       ?_)))
     congr 1
@@ -181,7 +134,6 @@ lemma gU_pullU_id {X : Scheme.{0}} (U : X.Opens) (y : X) (hy : y ∈ (𝟙 X) �
     gU y hy (pullU (𝟙 X) U u) = gU y hy u := by
   first
   | rfl
-  | (rw [gU_pullU]; simp)
 
 lemma sub_add_eq_zero_of_eq_add {M N : Type} [CommGroup M] [CommGroup N] (φ : M →* N) (x0 y0 z0 : M) (X Y Z : N)
     (h0 : x0 = y0 * z0) (hX : X = φ x0) (hY : Y = φ y0) (hZ : Z = φ z0) : X = Y * Z := by
@@ -199,7 +151,6 @@ lemma gU_linCombIso_unit {X Y : Scheme.{0}} {L M : LB X} (w : LB.Iso L M) (φ₀
   dsimp only [LB.linCombIso]
   first
   | erw [Fintype.prod_unique, zpow_one, gU_res]
-  | simp only [Fintype.prod_unique, zpow_one, gU_res]
   all_goals rfl
 
 private theorem gU_pullU_id_lemma_3 {X : Scheme.{0}} (U : X.Opens) (y : X) (hy : y ∈ U)
@@ -213,7 +164,6 @@ lemma pt1 (y : (𝟙_ (Over S')).left) :
   rw [base_eq (eSec_inv G') y, base_eq (eSec_inv G) (m.e.base y)]
   first
   | exact base_eq m.e_comm y
-  | simpa using base_eq m.e_comm y
 
 lemma pt2 (y : (𝟙_ (Over S')).left) :
     m.F.base ((eSec G').base y) = (eSec G).base (m.e.base y) := base_eq m.e_comm y
@@ -274,13 +224,7 @@ lemma sym_maps (L : RigLB G) (he : eSec G ≫ (GrpObj.inv (X := G)).left = 𝟙 
       memW_lemma_2 L.L (fun _ : PUnit => eSec G) (fun _ => p.2 PUnit.unit PUnit.unit) (m.e.base y) c3⟩
   have h0 := congrArg (gU (m.e.base y) hz)
     (hm ((fun _ _ => p.1 PUnit.unit PUnit.unit PUnit.unit), (fun _ => p.2 PUnit.unit PUnit.unit)))
-  first
-  | rw [id_eq] at h0
-  | skip
   rw [map_mul, gU_res, gU_res] at h0
-  first
-  | rw [id_eq]
-  | skip
   rw [map_mul, gU_res, gU_res]
   apply sub_add_eq_zero_of_eq_add (Units.map (m.e.stalkMap y).hom) _ _ _ _ _ _ h0
   · dsimp only [rigPullOf, CubeMap.rigPull]
@@ -293,10 +237,10 @@ lemma sym_maps (L : RigLB G) (he : eSec G ≫ (GrpObj.inv (X := G)).left = 𝟙 
     refine (gU_linCombIso_unit (symIso m L.L w₀) (eSec G') p y _ hyl).trans
       ((gU_pullU_res (eSec G') (symLe m L.L (p.1 PUnit.unit, p.2 PUnit.unit))
           (pullU m.F _ (w₀.s ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit))) y hyl d1).trans
-      ((congrArg (gU y d1) (pullU_comp_lemma (eSec G') m.F ((LB.div (L.L.pull (GrpObj.inv (X := G)).left) L.L).U ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)) (w₀.s ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)))).symm.trans
+      ((congrArg (gU y d1) (_root_.ReciprocityTheory.ChartRestriction.G.Out.LBxP.pullU_comp (eSec G') m.F ((LB.div (L.L.pull (GrpObj.inv (X := G)).left) L.L).U ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)) (w₀.s ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)))).symm.trans
       ((gU_pullU_congr m.e_comm ((LB.div (L.L.pull (GrpObj.inv (X := G)).left) L.L).U ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)) (w₀.s ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)) y d1 d0').trans
       ((congrArg (gU (O := (m.e ≫ eSec G) ⁻¹ᵁ (LB.div (L.L.pull (GrpObj.inv (X := G)).left) L.L).U ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)) y d0')
-          (pullU_comp_lemma m.e (eSec G) ((LB.div (L.L.pull (GrpObj.inv (X := G)).left) L.L).U ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)) (w₀.s ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)))).trans
+          (_root_.ReciprocityTheory.ChartRestriction.G.Out.LBxP.pullU_comp m.e (eSec G) ((LB.div (L.L.pull (GrpObj.inv (X := G)).left) L.L).U ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)) (w₀.s ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)))).trans
       ((gU_pullU m.e ((eSec G) ⁻¹ᵁ (LB.div (L.L.pull (GrpObj.inv (X := G)).left) L.L).U ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)) y d0' (pullU (eSec G) ((LB.div (L.L.pull (GrpObj.inv (X := G)).left) L.L).U ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)) (w₀.s ((fun _ => p.1 PUnit.unit PUnit.unit PUnit.unit), p.2 PUnit.unit PUnit.unit)))).trans
       ?_)))))
     exact congrArg (Units.map (m.e.stalkMap y).hom.toMonoidHom) (gU_linCombIso_unit w₀ (eSec G)

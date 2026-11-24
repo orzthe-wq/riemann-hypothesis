@@ -82,7 +82,7 @@ theorem pt_diag_psum (y : 𝟙_ (Over (Sp ℂ)) ⟶ A) (I : Finset (Fin 2)) :
   have h1 : y ≫ lift (𝟙 A) (𝟙 A) ≫ snd A A = y := by simp
   have hI : I = ∅ ∨ I = {0} ∨ I = {1} ∨ I = {0, 1} := by revert I; decide
   rcases hI with rfl | rfl | rfl | rfl <;>
-    simp [psum, padd_eq, pzero_eq, x2, List.finRange_succ, comp_mul, comp_one, h0, h1, pow_two]
+    simp [psum, padd_eq, pzero_eq, x2, List.finRange_succ, comp_mul, comp_one, pow_two]
 
 theorem sum_exp_sq :
     (∑ I : ULift.{0} (Finset (Fin 2)), (((-1 : ℤ) ^ (2 - I.down.card) : ℤ) : ℂ) * ((I.down.card : ℕ) : ℂ) ^ 2) = 2 := by

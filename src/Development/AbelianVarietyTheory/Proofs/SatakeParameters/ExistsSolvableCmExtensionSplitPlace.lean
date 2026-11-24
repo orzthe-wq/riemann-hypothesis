@@ -84,7 +84,7 @@ theorem exists_cm_solvable_split : ∀ (Ω : Type) [Field Ω] (E : Type) [Field 
     show _ ↔ algebraMap (𝓞 F) (𝓞 E) x ∈ w.asIdeal
     rw [← h]
     rfl
-  obtain ⟨T, hvT, hlift⟩ := GlobalTheory.T.exists_cmField_lift_disjoint_of_real_solvable Ω E v N hN
+  obtain ⟨T, hvT, hlift⟩ := _root_.GlobalTheory.KLift.exists_cm_lift Ω E v N hN
 
   let φ := IsScalarTower.toAlgHom F E Ω
   let K : IntermediateField F Ω := φ.fieldRange
@@ -116,7 +116,7 @@ theorem exists_cm_solvable_split : ∀ (Ω : Type) [Field Ω] (E : Type) [Field 
     have h3 : AlgEquiv.restrictNormal ((a * b * a⁻¹ * b⁻¹ : Dec (F := F) A) : G F Ω) E = 1 := h1
     rw [← h2, h3]
     rfl
-  obtain ⟨F₁, hF₁fin, hF₁ab, hF₁real, hF₁dec, hF₁T⟩ := GlobalTheory.T.exists_abelian_totallyReal_ext_prescribedCompletion Ω F A v hv V hVo hcomm T hvT
+  obtain ⟨F₁, hF₁fin, hF₁ab, hF₁real, hF₁dec, hF₁T⟩ := _root_.GlobalTheory.AbStep.exists_abelian_real_field Ω F A v hv V hVo hcomm T hvT
   obtain ⟨M, iM, nM, cM, aM, acM, aEM, tM, hSD, hfix, hsub⟩ :=
     hlift F₁ hF₁fin inferInstance (isSolvable_of_comm fun a b => hF₁ab.toIsMulCommutative.is_comm.comm a b) hF₁real hF₁T
   have hkey : ∀ g : G F Ω, g ∈ Dec (F := F) A → (∀ z ∈ F₁, g z = z) →

@@ -77,8 +77,8 @@ theorem w_eq {i j : Fin n} (hij : i ≠ j) (u : Rˣ) :
   have z2 : ∀ (a b : R) (x l : Fin n), single x i a * single i l b = single x l (a * b) := fun a b x l => single_mul_single_same _ _ _ _ _
   have z3 : ∀ (a b : R) (x l : Fin n), single x j a * single i l b = 0 := fun a b x l => single_mul_single_of_ne a x j i hij.symm b
   have z4 : ∀ (a b : R) (x l : Fin n), single x i a * single j l b = 0 := fun a b x l => single_mul_single_of_ne a x i j hij b
-  simp only [transvection, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, z1, z2, z3, z4]
-  simp only [mul_neg, neg_mul, Units.mul_inv, Units.inv_mul, Units.mul_inv_cancel_left, Units.inv_mul_cancel_left, single_neg', Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, one_mul, mul_one]
+  simp only [transvection, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, z1, z2, z3]
+  simp only [mul_neg, neg_mul, Units.mul_inv, Units.inv_mul, single_neg', add_zero, one_mul]
   abel
 
 theorem ww_eq {i j : Fin n} (hij : i ≠ j) (u : Rˣ) :
@@ -97,7 +97,7 @@ theorem ww_eq {i j : Fin n} (hij : i ≠ j) (u : Rˣ) :
   by_cases hpq : p = q
   · subst hpq
     by_cases hpi : p = i
-    · subst hpi; simp [hij, hji]
+    · subst hpi; simp [hji]
     · by_cases hpj : p = j
       · subst hpj; simp [hij, hji]
       · simp [hpi, hpj, Ne.symm hpi, Ne.symm hpj]

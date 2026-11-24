@@ -125,7 +125,7 @@ theorem negDef_block_of_posDef : ∀ (p q : ℕ) (A : Matrix (Fin p) (Fin p) ℂ
     have hCe : C = Matrix.fromCols C1 C2 := by ext a (i | i) <;> rfl
     rw [hCe, Matrix.conjTranspose_fromCols_eq_fromRows_conjTranspose, Matrix.fromCols_mul_fromBlocks,
       Matrix.fromCols_mul_fromRows]
-    simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
+    simp only [Matrix.mul_zero, add_zero, zero_add]
   have hP : (C2 * (-B) * C2ᴴ).PosDef := by
     have e : C2 * (-B) * C2ᴴ = -(C * Matrix.fromBlocks A 0 0 B * Cᴴ) + C1 * A * C1ᴴ := by
       rw [hsplit]; noncomm_ring

@@ -15,58 +15,16 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnimodularity.Con
 public import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.UnitaryPointsRankZeroSubsingleton
 public import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RightRegularIsometricMultiplicative
 public import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RrdStronglyMeasurable
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Algebra.Order.Star.Rat
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.MeasureTheory.Integral.Pi
 import Mathlib.MeasureTheory.Measure.SeparableMeasure
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.BitVec
-import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SharpRestriction.CuspSpanNormBounds.ThresholdCubicInequalitySignPattern
 
 @[expose] public section
 
@@ -461,7 +419,7 @@ def b48 (D : D7) (τ : D.what₂.Tau) : Fin (2 * D.R.rS + 2) → ℝ :=
 
 theorem lambda_highest_weight_eq (D : D7) (τ : D.what₂.Tau) (i : Fin (2 * D.R.rS + D.R.k + 1)) :
     Formalism.MainNotions.CayleySignature.lam48 D.R.k D.R.rS (v48 D τ) (b48 D τ) i = lamS D.R (D.hc τ) (Fin.cast (dimS_eq D.R) i) := by
-  have hm := two_rS_add_two D
+  have hm := _root_.Formalism.MainNotions.two_rS_add_two D
   have hk := D.R.m_add_three_le_k
   have hi := i.isLt
   by_cases h : i.val < D.R.k - 1
@@ -475,7 +433,7 @@ theorem epsilon_signature_eq (D : D7) (i : Fin (2 * D.R.rS + D.R.k + 1)) :
 
 theorem gapBig_of (D : D7) (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) (τ : D.what₂.Tau) :
     Formalism.MainNotions.CayleySignature.GapBig D.R.k D.R.rS (b48 D τ) := by
-  have hm : D.R.m = 2 * D.R.rS + 2 := (two_rS_add_two D).symm
+  have hm : D.R.m = 2 * D.R.rS + 2 := (_root_.Formalism.MainNotions.two_rS_add_two D).symm
   obtain ⟨hr, hgap⟩ := hG
   have hdim : 2 * D.R.rS + D.R.k + 1 = D.R.r := Formalism.MainNotions.S.dimS_eq D.R
   have hrk : Formalism.MainNotions.CayleySignature.rk48 D.R.k D.R.rS = D.R.r := by
@@ -922,13 +880,9 @@ noncomputable def Rc (w : VA I) : VA I :=
   (∑ a, hA I (f0 a) w • e0 a) + (∑ a, hA I (e0 a) w • f0 a) - hA I z0 w • z0 +
     (∑ i, hA I (bwd i) w • bw i) + ∑ i, hA I (bw i) w • bwd i
 
-private theorem hA_add_right_unitary_haar_products (I : AutInst) (u w w' : VA I) : hA I u (w + w') = hA I u w + hA I u w' := by
-  unfold hA Formalism.UG.hform
-  simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
-
 theorem Rc_add (w w' : VA I) : Rc I e0 f0 z0 bw bwd (w + w') = Rc I e0 f0 z0 bw bwd w + Rc I e0 f0 z0 bw bwd w' := by
   unfold Rc
-  simp only [hA_add_right_unitary_haar_products, add_smul, Finset.sum_add_distrib]
+  simp only [_root_.Formalism.L2.SG.Pf.unitaryCongruence.hA_add_right, add_smul, Finset.sum_add_distrib]
   abel
 
 private theorem hA_smul_right_unitary_haar_products (I : AutInst) (u : VA I) (c : I.E ⊗[I.F] Af I.F) (w : VA I) :
@@ -1009,7 +963,6 @@ theorem Zsym0 {u v : VA I} (h : ZMod' I g (hA I u v)) : ZMod' I g (hA I v u - 0)
   have := Zsym (I := I) (g := g) (c := 0) (by rwa [sub_zero])
   first
     | rwa [map_zero] at this
-    | simpa using this
 
 theorem sig_ite {p : Prop} [Decidable p] : sigA I (if p then (1 : I.E ⊗[I.F] Af I.F) else 0) = if p then 1 else 0 := by
   split_ifs <;> simp

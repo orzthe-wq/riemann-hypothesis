@@ -86,19 +86,6 @@ theorem lA_smul_smul (T : LocLat G Qp LL O) (t s : ℕ) (z : W.DD T) :
     lA W ^ t • lA W ^ s • z = lA W ^ (s + t) • z := by
   rw [smul_smul, ← pow_add, add_comm]
 
-theorem φpow_lA (T : LocLat G Qp LL O) (e t : ℕ) (z : W.DD T) :
-    ((W.φD T) ^ e) (lA W ^ t • z) = lA W ^ t • ((W.φD T) ^ e) z := by
-  rw [Formalism.MainNotions.UnusedSlot80.Relay2.φpow_smul, map_pow]
-  congr 2
-  unfold lA
-  rw [map_natCast]
-
-theorem vecB_smul (T : LocLat G Qp LL O) {d : ℕ} (b : Fin d → W.DD T) (c : O) (y : Fin d → O) :
-    Formalism.MainNotions.LiftingTheory.vecB W T b (fun m => c * y m) = c • Formalism.MainNotions.LiftingTheory.vecB W T b y := by
-  unfold Formalism.MainNotions.LiftingTheory.vecB
-  rw [Finset.smul_sum]
-  exact Finset.sum_congr rfl fun m _ => mul_smul _ _ _
-
 theorem horTr_scale (T : LocLat G Qp LL O) {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL)
     (R κ t : ℕ) (k : Fin d) {H : W.DD T} (h : IsHorTr W T b sol R κ k H) :
     IsHorTr W T b sol R (κ + t) k (lA W ^ t • H) := by
@@ -107,7 +94,7 @@ theorem horTr_scale (T : LocLat G Qp LL O) {d : ℕ} (b : Fin d → W.DD T) (sol
   · rw [map_mul, map_pow, map_natCast, hy r hr m, pow_add]; ring
   · rw [lA_smul_eq, Finset.smul_sum]
     refine Finset.sum_congr rfl fun r _ => ?_
-    rw [vecB_smul, smul_comm]
+    rw [_root_.Formalism.MainNotions.LiftingTheory.frame_vecB_smul, smul_comm]
 
 variable [IsDomain O]
 
@@ -144,7 +131,7 @@ theorem rv_up (T : LocLat G Qp LL O) (c' : ZMod n) (e : ℕ) (Λ : LetA O n) {d 
   refine ⟨κ', a, ha, ?_⟩
   have e1 : lA W ^ κ' • (lA W ^ (κ + t) • Λ • x - ∑ k, a k • ((W.φD T) ^ e) (lA W ^ t • Hh k)) =
       lA W ^ t • (lA W ^ κ' • (lA W ^ κ • Λ • x - ∑ k, a k • ((W.φD T) ^ e) (Hh k))) := by
-    simp only [φpow_lA, smul_sub, Finset.smul_sum, smul_smul, pow_add]
+    simp only [_root_.Formalism.MainNotions.UnusedSlot80.Relay2.φpow_lsmul, smul_sub, Finset.smul_sum, smul_smul, pow_add]
     congr 1
     · ring_nf
     · refine Finset.sum_congr rfl fun k _ => ?_

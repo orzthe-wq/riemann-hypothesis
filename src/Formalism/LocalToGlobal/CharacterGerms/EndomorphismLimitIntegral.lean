@@ -108,7 +108,7 @@ theorem const_of_lim (Y : FBChart C V O dd) {a : ℕ → O} {e : Pt C 1 dd}
   exact h.unique (tends_const 0)
 
 theorem endomorphism_limit_integral (Y : FBChart C V O dd) : EndomorphismLimitIntegral Y := by
-  apply GlobalTheory.ActLimit.limit_endomorphisms <;> assumption
+  apply GlobalTheory.ActLimit.limit_endomorphisms
 
 end RowTiePE0
 

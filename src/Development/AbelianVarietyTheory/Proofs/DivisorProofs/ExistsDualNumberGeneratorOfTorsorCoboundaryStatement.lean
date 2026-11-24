@@ -48,4 +48,4 @@ open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham Glob
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.exists_dualNumberGenerator_of_torsorCoboundary : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left), P.IsLB → ∀ v : epsR R ⟶ B, IsTangent v → ∀ (j : ∀ (D : Type) [CommRing D] [Algebra R D], Pt A D → P.ι), IsChoice P j → ∀ s, IsPtGen P (AbDual.inl A B) s → ∀ k : Fn0 A, IsCob (chartsA P) (tanCoc P j v) k → ∃ T, IsEpsGen P v T := by
-  first | exact @GlobalTheory.PtExt.exists_isEpsGen_of_isCob | exact GlobalTheory.PtExt.exists_isEpsGen_of_isCob | (intros; apply GlobalTheory.PtExt.exists_isEpsGen_of_isCob <;> assumption)
+  first | exact @GlobalTheory.PtExt.exists_isEpsGen_of_isCob

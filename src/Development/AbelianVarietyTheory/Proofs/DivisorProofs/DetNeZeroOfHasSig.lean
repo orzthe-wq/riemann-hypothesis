@@ -53,6 +53,6 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.SigDet
 
 theorem det_ne_zero_of_hasSig : ∀ (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (r s : ℕ), HasSig M r s → M.det ≠ 0 := by
-  apply PositivityTheory.ThKG.Tow.det_ne_zero_of_hasSig <;> assumption
+  apply PositivityTheory.ThKG.Tow.det_ne_zero_of_hasSig
 
 end GlobalTheory.SigDet

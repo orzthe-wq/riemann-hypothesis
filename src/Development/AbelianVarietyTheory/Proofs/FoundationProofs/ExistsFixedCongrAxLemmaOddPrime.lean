@@ -1,19 +1,30 @@
 module
 
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import Mathlib.Data.Nat.Choose.Basic
+public import Mathlib.Data.Nat.Log
+public import Mathlib.Data.Nat.Prime.Defs
+public import Mathlib.Data.Rat.Defs
+public import Mathlib.Data.Nat.Choose.Lucas
+public import Mathlib.Algebra.Order.GroupWithZero.Basic
+public import Mathlib.Data.Int.Cast.Basic
 public import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeNatCastIff
 public import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
 public import Mathlib.RingTheory.AdicCompletion.Noetherian
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsChooseSmallPadicValAxInductionStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -21,6 +32,8 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -30,7 +43,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,8 +57,272 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.HaveILetI
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeNatCastIff, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsChooseSmallPadicValAxInduction, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFixedCongrAxLemmaOddPrime
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeNatCastIff =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeNatCastIff", "h": "module\n\npublic import Mathlib.RingTheory.Valuation.ValuationSubring\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.AxSen
+
+variable {K : Type} [Field K]
+
+def Ge (A : ValuationSubring K) (ϖ w : K) (q : ℚ) : Prop :=
+  ∀ (a : ℤ) (b : ℕ), 0 < b → (a : ℚ) ≤ q * b → A.valuation w ^ b ≤ A.valuation ϖ ^ a
+
+variable {A : ValuationSubring K} {ϖ : K}
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.ge_zero (q : ℚ) : _root_.GlobalTheory.AxSen.Ge A ϖ 0 q := by
+  intro a b hb _
+  rw [map_zero, zero_pow hb.ne']
+  exact zero_le'
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.Ge.mono {w : K} {q q' : ℚ}
+    (h : _root_.GlobalTheory.AxSen.Ge A ϖ w q) (hq : q' ≤ q) :
+    _root_.GlobalTheory.AxSen.Ge A ϖ w q' :=
+  fun a b hb hab => h a b hb (hab.trans (mul_le_mul_of_nonneg_right hq (Nat.cast_nonneg b)))
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.Ge.of_le {w w' : K} {q : ℚ}
+    (h : _root_.GlobalTheory.AxSen.Ge A ϖ w q) (hw : A.valuation w' ≤ A.valuation w) :
+    _root_.GlobalTheory.AxSen.Ge A ϖ w' q :=
+  fun a b hb hab => (pow_le_pow_left' hw b).trans (h a b hb hab)
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.Ge.add {w w' : K} {q : ℚ}
+    (h : _root_.GlobalTheory.AxSen.Ge A ϖ w q) (h' : _root_.GlobalTheory.AxSen.Ge A ϖ w' q) :
+    _root_.GlobalTheory.AxSen.Ge A ϖ (w + w') q := by
+  rcases le_total (A.valuation w) (A.valuation w') with hle | hle
+  · exact h'.of_le ((Valuation.map_add _ _ _).trans (max_le hle le_rfl))
+  · exact h.of_le ((Valuation.map_add _ _ _).trans (max_le le_rfl hle))
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.Ge.symm {x y : K} {q : ℚ}
+    (h : _root_.GlobalTheory.AxSen.Ge A ϖ (x - y) q) : _root_.GlobalTheory.AxSen.Ge A ϖ (y - x) q :=
+  h.of_le (by rw [Valuation.map_sub_swap])
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.Ge.trans {x y z : K} {q : ℚ}
+    (h : _root_.GlobalTheory.AxSen.Ge A ϖ (x - y) q) (h' : _root_.GlobalTheory.AxSen.Ge A ϖ (y - z) q) :
+    _root_.GlobalTheory.AxSen.Ge A ϖ (x - z) q := by
+  have := h.add h'
+  rwa [sub_add_sub_cancel] at this
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.Ge.mul (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ ≤ 1)
+    {w w' : K} {q q' : ℚ} (h : _root_.GlobalTheory.AxSen.Ge A ϖ w q)
+    (h' : _root_.GlobalTheory.AxSen.Ge A ϖ w' q') :
+    _root_.GlobalTheory.AxSen.Ge A ϖ (w * w') (q + q') := by
+  intro a b hb hab
+  have hv : A.valuation ϖ ≠ 0 := (Valuation.ne_zero_iff _).2 h0
+  have hd : 0 < q.den := q.den_pos
+  have hd' : 0 < q'.den := q'.den_pos
+  have h₁ := h (q.num * q'.den * b) (q.den * q'.den * b) (by positivity)
+    (le_of_eq (by push_cast; rw [← Rat.mul_den_eq_num q]; ring))
+  have h₂ := h' (q'.num * q.den * b) (q.den * q'.den * b) (by positivity)
+    (le_of_eq (by push_cast; rw [← Rat.mul_den_eq_num q']; ring))
+  have hexp : a * ((q.den * q'.den : ℕ) : ℤ) ≤ (q.num * q'.den * b + q'.num * q.den * b) := by
+    have hq : ((a * ((q.den * q'.den : ℕ) : ℤ) : ℤ) : ℚ)
+        ≤ ((q.num * q'.den * b + q'.num * q.den * b : ℤ) : ℚ) := by
+      push_cast
+      rw [← Rat.mul_den_eq_num q, ← Rat.mul_den_eq_num q']
+      have hdd : (0 : ℚ) ≤ q.den * q'.den := by positivity
+      calc (a : ℚ) * (q.den * q'.den) ≤ ((q + q') * b) * (q.den * q'.den) :=
+            mul_le_mul_of_nonneg_right hab hdd
+        _ = _ := by ring
+    exact_mod_cast hq
+  have key : (A.valuation (w * w') ^ b) ^ (q.den * q'.den)
+      ≤ (A.valuation ϖ ^ a) ^ (q.den * q'.den) := by
+    calc (A.valuation (w * w') ^ b) ^ (q.den * q'.den)
+        = A.valuation w ^ (q.den * q'.den * b) * A.valuation w' ^ (q.den * q'.den * b) := by
+          rw [map_mul, mul_pow, mul_pow, ← pow_mul, ← pow_mul, mul_comm b]
+      _ ≤ A.valuation ϖ ^ (q.num * q'.den * b) * A.valuation ϖ ^ (q'.num * q.den * b) :=
+          mul_le_mul' h₁ h₂
+      _ = A.valuation ϖ ^ (q.num * q'.den * b + q'.num * q.den * b) := by
+          rw [← zpow_add₀ hv]
+      _ ≤ A.valuation ϖ ^ (a * ((q.den * q'.den : ℕ) : ℤ)) :=
+          zpow_le_zpow_right_of_le_one₀ (zero_lt_iff.2 hv) h1 hexp
+      _ = (A.valuation ϖ ^ a) ^ (q.den * q'.den) := by rw [zpow_mul, zpow_natCast]
+  exact (pow_le_pow_iff_left₀ zero_le' zero_le' (by positivity)).1 key
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.Ge.root {w : K} {q : ℚ} {N : ℕ} (hN : 0 < N)
+    (h : _root_.GlobalTheory.AxSen.Ge A ϖ (w ^ N) (q * N)) : _root_.GlobalTheory.AxSen.Ge A ϖ w q := by
+  intro a b hb hab
+  have h₁ := h (a * N) b hb (by
+    push_cast
+    calc (a : ℚ) * N ≤ q * b * N := mul_le_mul_of_nonneg_right hab (Nat.cast_nonneg N)
+      _ = q * N * b := by ring)
+  refine (pow_le_pow_iff_left₀ zero_le' zero_le' hN.ne').1 ?_
+  calc (A.valuation w ^ b) ^ N = A.valuation (w ^ N) ^ b := by
+        rw [map_pow, ← pow_mul, ← pow_mul, mul_comm]
+    _ ≤ A.valuation ϖ ^ (a * (N : ℤ)) := h₁
+    _ = (A.valuation ϖ ^ a) ^ N := by rw [zpow_mul, zpow_natCast]
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.Ge.div (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ ≤ 1)
+    {c w : K} {q : ℚ} {e : ℕ} (hc : A.valuation ϖ ^ e ≤ A.valuation c)
+    (h : _root_.GlobalTheory.AxSen.Ge A ϖ (c * w) q) :
+    _root_.GlobalTheory.AxSen.Ge A ϖ w (q - e) := by
+  intro a b hb hab
+  have hv : A.valuation ϖ ≠ 0 := (Valuation.ne_zero_iff _).2 h0
+  have hc0 : A.valuation c ≠ 0 := by
+    intro hc0
+    rw [hc0] at hc
+    exact pow_ne_zero e hv (le_zero_iff.1 hc)
+  have h₁ := h (a + e * b) b hb (by push_cast; linarith [hab, sub_mul q (e : ℚ) b])
+  rw [map_mul, mul_pow, zpow_add₀ hv] at h₁
+  have h₂ : A.valuation ϖ ^ ((e : ℤ) * (b : ℤ)) ≤ A.valuation c ^ b := by
+    rw [zpow_mul, zpow_natCast, zpow_natCast]
+    exact pow_le_pow_left' hc b
+  refine (mul_le_mul_iff_of_pos_right (zero_lt_iff.2 (pow_ne_zero b hc0))).1 ?_
+  calc A.valuation w ^ b * A.valuation c ^ b = A.valuation c ^ b * A.valuation w ^ b := mul_comm _ _
+    _ ≤ A.valuation ϖ ^ a * A.valuation ϖ ^ ((e : ℤ) * (b : ℤ)) := h₁
+    _ ≤ A.valuation ϖ ^ a * A.valuation c ^ b := mul_le_mul' le_rfl h₂
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.ge_natCast_iff (h0 : ϖ ≠ 0) (h1 : A.valuation ϖ ≤ 1) {w : K}
+    {m : ℕ} : _root_.GlobalTheory.AxSen.Ge A ϖ w m ↔ ∃ z ∈ A, w = ϖ ^ m * z := by
+  have hv : A.valuation ϖ ≠ 0 := (Valuation.ne_zero_iff _).2 h0
+  constructor
+  · intro h
+    have h₁ := h m 1 one_pos (by simp)
+    rw [pow_one, zpow_natCast, ← map_pow] at h₁
+    refine ⟨w / ϖ ^ m, ?_, by field_simp⟩
+    rw [← ValuationSubring.valuation_le_one_iff, map_div₀]
+    exact (div_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (pow_ne_zero m h0)))).2 h₁
+  · rintro ⟨z, hz, rfl⟩ a b hb hab
+    have hz' : A.valuation z ≤ 1 := (ValuationSubring.valuation_le_one_iff A z).2 hz
+    have hab' : a ≤ ((m * b : ℕ) : ℤ) := by
+      have : (a : ℚ) ≤ ((m * b : ℕ) : ℚ) := by push_cast; exact hab
+      exact_mod_cast this
+    rw [map_mul, mul_pow, map_pow]
+    calc (A.valuation ϖ ^ m) ^ b * A.valuation z ^ b ≤ (A.valuation ϖ ^ m) ^ b * 1 :=
+          mul_le_mul' le_rfl (pow_le_one' hz' b)
+      _ = A.valuation ϖ ^ ((m * b : ℕ) : ℤ) := by rw [mul_one, ← pow_mul, zpow_natCast]
+      _ ≤ A.valuation ϖ ^ a := zpow_le_zpow_right_of_le_one₀ (zero_lt_iff.2 hv) h1 hab'
+
+
+variable {K : Type} [Field K] in
+variable {A : ValuationSubring K} {ϖ : K} in
+theorem _root_.GlobalTheory.AxSen.Ge.map (h0 : ϖ ≠ 0) (f : K →+* K)
+    (hf : ∀ x ∈ A, f x ∈ A) (hϖ : f ϖ = ϖ) {w : K} {q : ℚ}
+    (h : _root_.GlobalTheory.AxSen.Ge A ϖ w q) : _root_.GlobalTheory.AxSen.Ge A ϖ (f w) q := by
+  intro a b hb hab
+  have hv : A.valuation ϖ ≠ 0 := (Valuation.ne_zero_iff _).2 h0
+  have h₁ := h a b hb hab
+  have hpos : 0 < A.valuation ϖ ^ a := zero_lt_iff.2 (zpow_ne_zero a hv)
+  rw [← div_le_one₀ hpos, ← map_pow, ← map_zpow₀, ← map_div₀,
+    ValuationSubring.valuation_le_one_iff] at h₁ ⊢
+  have := hf _ h₁
+  rwa [map_div₀, map_pow, map_zpow₀, hϖ] at this
+
+end GlobalTheory.AxSen
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeNatCastIff =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsChooseSmallPadicValAxInduction =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsChooseSmallPadicValAxInduction", "h": "module\n\npublic import Mathlib.Data.Nat.Choose.Basic\npublic import Mathlib.Data.Nat.Log\npublic import Mathlib.Data.Nat.Prime.Defs\npublic import Mathlib.Data.Rat.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\npublic import Mathlib.Data.Nat.Choose.Lucas\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Order.GroupWithZero.Basic\npublic import Mathlib.Data.Int.Cast.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+
+private lemma not_dvd_choose_prime_pow_of_between {p : ℕ} (hp : p.Prime) :
+    ∀ (k N : ℕ), p ^ k ≤ N → N < p ^ (k + 1) → ¬ p ∣ N.choose (p ^ k) := by
+  haveI := Fact.mk hp
+  intro k
+  induction k with
+  | zero =>
+    intro N h1 h2 hdvd
+    simp only [pow_zero, zero_add, pow_one, Nat.choose_one_right] at h1 h2 hdvd
+    have := Nat.le_of_dvd (by omega) hdvd
+    omega
+  | succ k ih =>
+    intro N h1 h2 hdvd
+    have hmod := Choose.choose_modEq_choose_mod_mul_choose_div_nat (n := N) (k := p ^ (k + 1))
+      (p := p)
+    rw [pow_succ, Nat.mul_mod_left, Nat.choose_zero_right, one_mul,
+      Nat.mul_div_cancel _ hp.pos, ← pow_succ] at hmod
+    refine ih (N / p) ?_ ?_ ((hmod.dvd_iff (dvd_refl p)).1 hdvd)
+    · exact (Nat.le_div_iff_mul_le hp.pos).2 (by rw [← pow_succ]; exact h1)
+    · exact (Nat.div_lt_iff_lt_mul hp.pos).2 (by rw [← pow_succ]; exact h2)
+
+theorem _root_.GlobalTheory.exists_choose_small_valuation_ax : ∀ (p : ℕ), p.Prime → ∀ N : ℕ, 2 ≤ N →
+    ∃ j e : ℕ, 0 < j ∧ j < N ∧ ¬ p ^ (e + 1) ∣ N.choose j ∧
+  (e : ℚ) / ((N - j : ℕ) : ℚ) + (p : ℚ) / ((p : ℚ) - 1) ^ 2 * (1 - 1 / (p : ℚ) ^ Nat.log p (N - j)) ≤ (p : ℚ) / ((p : ℚ) - 1) ^ 2 * (1 - 1 / (p : ℚ) ^ Nat.log p N) := by
+  intro p hp N hN
+  have hp1 : 1 < p := hp.one_lt
+  obtain ⟨k, hk⟩ : ∃ k, Nat.log p N = k := ⟨_, rfl⟩
+  have hkle : p ^ k ≤ N := hk ▸ Nat.pow_log_le_self p (by omega)
+  have hlt : N < p ^ (k + 1) := hk ▸ Nat.lt_pow_succ_log_self hp1 N
+  have hpk : 0 < p ^ k := pow_pos hp.pos k
+  rcases hkle.lt_or_eq with hlt' | heq
+  · refine ⟨N - p ^ k, 0, by omega, by omega, ?_, ?_⟩
+    · rw [Nat.choose_symm_of_eq_add (b := p ^ k) (by omega), zero_add, pow_one]
+      exact not_dvd_choose_prime_pow_of_between hp k N hkle hlt
+    · have hm : N - (N - p ^ k) = p ^ k := by omega
+      rw [hm, Nat.log_pow hp1, hk]
+      simp
+  · subst heq
+    have hk0 : k ≠ 0 := by
+      rintro rfl
+      simp at hN
+    obtain ⟨k', rfl⟩ : ∃ k', k = k' + 1 := ⟨k - 1, by omega⟩
+    have hpk' : 0 < p ^ k' := pow_pos hp.pos k'
+    have hsucc : p ^ (k' + 1) = p ^ k' * p := pow_succ p k'
+    have h2 : 2 * p ^ k' ≤ p ^ (k' + 1) := by
+      rw [hsucc, mul_comm]; exact Nat.mul_le_mul le_rfl hp.two_le
+    refine ⟨p ^ k', 1, hpk', by omega, ?_, ?_⟩
+    · have hmult := hp.emultiplicity_choose_prime_pow (n := k' + 1) (k := p ^ k')
+        (by omega) (pow_ne_zero _ hp.ne_zero)
+      rw [multiplicity_pow_self_of_prime hp.prime k'] at hmult
+      rw [pow_dvd_iff_le_emultiplicity, hmult]
+      norm_num
+    · have hlogm : Nat.log p (p ^ (k' + 1) - p ^ k') = k' :=
+        Nat.log_eq_of_pow_le_of_lt_pow (by omega) (by omega)
+      have hcast : ((p ^ (k' + 1) - p ^ k' : ℕ) : ℚ) = (p : ℚ) ^ k' * ((p : ℚ) - 1) := by
+        rw [Nat.cast_sub (by omega)]
+        push_cast
+        ring
+      have hp0 : (p : ℚ) ≠ 0 := by exact_mod_cast hp.ne_zero
+      have hp1' : (p : ℚ) - 1 ≠ 0 := by
+        have : (1 : ℚ) < p := by exact_mod_cast hp1
+        linarith
+      rw [hlogm, Nat.log_pow hp1, hcast]
+      apply le_of_eq
+      field_simp
+      ring
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsChooseSmallPadicValAxInduction =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFixedCongrAxLemmaOddPrime =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFixedCongrAxLemmaOddPrime", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GeNatCastIff\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective\npublic import Mathlib.RingTheory.AdicCompletion.Noetherian\npublic import Mathlib.Data.Nat.Choose.Basic\npublic import Mathlib.Data.Nat.Log\npublic import Mathlib.Data.Nat.Prime.Defs\npublic import Mathlib.Data.Rat.Defs\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsChooseSmallPadicValAxInduction\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Polynomial
@@ -188,7 +464,7 @@ theorem exists_fixed [IsAlgClosed K] {p : ℕ} (hp : p.Prime) (h1 : A.valuation 
   swap
   · refine ⟨α, fun h hh => ?_, by simpa using ge_zero _⟩
     exact Finset.card_le_one.mp (by omega : T.card ≤ 1) _ ((hmem _).mpr ⟨h, hh, rfl⟩) _ ((hmem _).mpr ⟨1, H.one_mem, rfl⟩)
-  obtain ⟨j, e, hj0, hj, hdvd, hloss⟩ := GlobalTheory.T.exists_choose_small_padicVal_ax_induction p hp T.card h2
+  obtain ⟨j, e, hj0, hj, hdvd, hloss⟩ := _root_.GlobalTheory.exists_choose_small_valuation_ax p hp T.card h2
   change _ + loss p _ ≤ loss p _ at hloss
   obtain ⟨β, hβ, hαβ⟩ := exists_root_hasseDeriv h0 h1.le T α (a := a) (fun t ht => by
     obtain ⟨h, hh, rfl⟩ := (hmem t).mp ht
@@ -256,3 +532,6 @@ theorem exists_fixed_congr (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (Ω : Type) [
   exact A.sub_mem hx (A.mul_mem _ _ (A.pow_mem (natCast_mem A l) m) hz)
 
 end GlobalTheory.AxSen
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFixedCongrAxLemmaOddPrime =====

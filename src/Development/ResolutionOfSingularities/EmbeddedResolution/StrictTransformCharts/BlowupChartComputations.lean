@@ -644,10 +644,7 @@ theorem surjective_coordEvalHom (B : BlowupChart π c S s) (hU : IsAffineOpen U)
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective q
   exact ⟨a, hq⟩
 
-theorem bijective_coordEvalQuotientHom (B : BlowupChart π c S s) (hU : IsAffineOpen U)
-    (hB : IsPullback B.chart.map (π.resLE U B.domain B.domain_le) (coordBlowupSubstMap k m S s) c.map) :
-    Function.Bijective B.coordEvalQuotientHom :=
-  bijective_coordEvalQuotientHom_of_isPullback B hU hB
+alias bijective_coordEvalQuotientHom := _root_.FunctorialResolution.EmbeddedResolution.BlowupChart.bijective_coordEvalQuotientHom_of_isPullback
 
 end BlowupChart
 

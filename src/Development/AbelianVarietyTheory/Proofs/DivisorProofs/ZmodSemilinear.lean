@@ -116,7 +116,6 @@ theorem zmod_semilinear {Q q : ℕ} [NeZero Q] (h : q ∣ Q) {I : Cx (ZMod Q)} {
     σ.app U s (r • a) = liftHom (ZMod.castHom h (ZMod q)) r • σ.app U s a := by
   have hr : r = ((r.down.val : ℕ) : ULift.{1} (ZMod Q)) := ULift.ext (by
     first
-    | rw [ULift.natCast_down, ZMod.natCast_zmod_val]
     | rw [ULift.down_natCast, ZMod.natCast_zmod_val])
   rw [hr, map_natCast, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]
 

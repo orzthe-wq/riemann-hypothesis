@@ -42,6 +42,8 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ConcreteLevelAdelicSubset
 import Formalism.LocalToGlobal.IndefiniteReal.AutomorphicEvaluation
+import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LevelSubgroupCharacterUnitary
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicClassFiniteness.DictTop
 
 @[expose] public section
 
@@ -57,37 +59,19 @@ namespace GlobalTheory.SplitPairK
 open Matrix Formalism.MainNotions.S GlobalTheory.RowLev
 open scoped TensorProduct
 
-theorem hform_mulVec_mulVec {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A)
-    (J M : Matrix n n A) (x y : n → A) :
-    Formalism.UG.hform σ J (M *ᵥ x) (M *ᵥ y) = Formalism.UG.hform σ (Formalism.UG.cT σ M * J * M) x y := by
-  have e : ∀ (N : Matrix n n A) (u v : n → A), Formalism.UG.hform σ N u v = (σ ∘ u) ⬝ᵥ (N *ᵥ v) := by
-    intro N u v
-    simp only [Formalism.UG.hform, dotProduct, mulVec, Function.comp_apply, Finset.mul_sum, mul_assoc]
-  have hσ : σ ∘ (M *ᵥ x) = M.map σ *ᵥ (σ ∘ x) := by
-    funext i
-    exact RingHom.map_mulVec σ M x i
-  rw [e, e, hσ, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec,
-    mulVec_mulVec, Formalism.UG.cT, Matrix.mul_assoc]
-
 variable (I : AutInst)
-
-theorem fmat_mul_inv (x : I.Gf) : I.fmat x * I.fmat x⁻¹ = 1 := by
-  simp [AutInst.fmat]
-
-theorem fmat_inv_mul (x : I.Gf) : I.fmat x⁻¹ * I.fmat x = 1 := by
-  simp [AutInst.fmat]
 
 theorem hAf_unitary (x : I.Gf) (v w : Fin I.n → I.E ⊗[I.F] Af I.F) :
     hAf I (I.fmat x *ᵥ v) (I.fmat x *ᵥ w) = hAf I v w := by
   unfold hAf
-  rw [hform_mulVec_mulVec]
+  rw [_root_.Formalism.UG.P.hform_mulVec]
   have h : Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) (I.fmat x) * I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) *
       I.fmat x = I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) := x.2
   rw [h]
 
 theorem hAf_move (x : I.Gf) (v w : Fin I.n → I.E ⊗[I.F] Af I.F) :
     hAf I v (I.fmat x *ᵥ w) = hAf I (I.fmat x⁻¹ *ᵥ v) w := by
-  rw [← hAf_unitary I x (I.fmat x⁻¹ *ᵥ v) w, mulVec_mulVec, fmat_mul_inv, one_mulVec]
+  rw [← hAf_unitary I x (I.fmat x⁻¹ *ᵥ v) w, mulVec_mulVec, _root_.PIW.AdelClassFin.dictTop_mul_inv, one_mulVec]
 
 theorem hAf_smul_right (v w : Fin I.n → I.E ⊗[I.F] Af I.F) (c : I.E ⊗[I.F] Af I.F) :
     hAf I v (c • w) = c * hAf I v w := by
@@ -201,7 +185,7 @@ theorem GlobalTheory.SplitPairK.mem_kset_of_split : ∀ (I : Formalism.MainNotio
   have h1' : ∀ i j, (1 - ε - sigA I ε) * (I.fmat k⁻¹ - 1) i j = 0 := by
     intro i j
     have e : I.fmat k⁻¹ - 1 = -(I.fmat k⁻¹ * (I.fmat k - 1)) := by
-      rw [Matrix.mul_sub, fmat_inv_mul, Matrix.mul_one]
+      rw [Matrix.mul_sub, _root_.Formalism.L2.SG.Pf.unitaryCongruence.fmat_inv_mul, Matrix.mul_one]
       abel
     rw [e, Matrix.neg_apply, Matrix.mul_apply, mul_neg, Finset.mul_sum, neg_eq_zero]
     refine Finset.sum_eq_zero fun l _ => ?_
@@ -214,6 +198,6 @@ theorem GlobalTheory.SplitPairK.mem_kset_of_split : ∀ (I : Formalism.MainNotio
   intro y
   refine ⟨fun hy => mv_mem I hβ hεi k h1 h2 h3 hy, fun hy => ?_⟩
   have := mv_mem I hβ hεi k⁻¹ h1' h3 h3' hy
-  rwa [Matrix.mulVec_mulVec, fmat_inv_mul, Matrix.one_mulVec] at this
+  rwa [Matrix.mulVec_mulVec, _root_.Formalism.L2.SG.Pf.unitaryCongruence.fmat_inv_mul, Matrix.one_mulVec] at this
 
 end

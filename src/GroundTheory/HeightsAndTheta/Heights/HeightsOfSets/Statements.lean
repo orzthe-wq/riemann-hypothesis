@@ -56,7 +56,7 @@ open MvPolynomial NumberField
 noncomputable section
 
 def HeightComparison.Statement : Prop :=
-  ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (n : ι → ℕ) (P : ArithVariety n) (A : HermLine n),
+  ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (n : ι → ℕ) (P : ArithVariety n) (A : Heights.HermLine n),
     ∃ (k : ℕ) (C : ℝ), ∀ x ∈ P.points (AlgebraicClosure ℚ),
       |height A x| ≤ k * height (HermLine.standard n) x + C
 

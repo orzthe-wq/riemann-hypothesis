@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Algebra.MvPolynomial
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousCharpolyCoeffOfMatrix
 
 @[expose] public section
 
@@ -47,16 +48,6 @@ import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial
-private theorem contCoeff {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] (n i : ℕ) :
-    Continuous fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i := by
-  have h : (fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i) =
-      fun M => MvPolynomial.eval (fun ij : Fin n × Fin n => M ij.1 ij.2)
-        ((Matrix.charpoly.univ K (Fin n)).coeff i) := by
-    funext M
-    exact (Matrix.charpoly.univ_coeff_eval₂Hom (Fin n) (RingHom.id K) (fun ij : Fin n × Fin n => M ij.1 ij.2) i).symm
-  rw [h]
-  exact (MvPolynomial.continuous_eval _).comp
-    (continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1))
 theorem UpperTheory.V.Af.iso_of_frobenius_of_printed_results :
     _root_.UpperTheory.V.Af.Hypotheses' → UpperTheory.V.Af.IsoOfFrob := by
   intro _ F Ω _ _ _ _ _ l _ ι n r r' hr hr' hs hs' hw
@@ -67,9 +58,9 @@ theorem UpperTheory.V.Af.iso_of_frobenius_of_printed_results :
     intro g
     ext i
     have h1 : Continuous fun g : G F Ω => (r g⁻¹ : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.coeff i :=
-      (contCoeff n i).comp (Units.continuous_val.comp (hr.comp continuous_inv))
+      (_root_.GlobalTheory.TypeLeaf.continuous_charpoly_coeff_of_matrix n i).comp (Units.continuous_val.comp (hr.comp continuous_inv))
     have h2 : Continuous fun g : G F Ω => (r' g⁻¹ : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.coeff i :=
-      (contCoeff n i).comp (Units.continuous_val.comp (hr'.comp continuous_inv))
+      (_root_.GlobalTheory.TypeLeaf.continuous_charpoly_coeff_of_matrix n i).comp (Units.continuous_val.comp (hr'.comp continuous_inv))
     refine congrFun (Continuous.ext_on hD h1 h2 ?_) g
     rintro σ ⟨v, hv, -, A, hA, hσ⟩
     obtain ⟨B, hB, hB'⟩ := not_not.1 hv

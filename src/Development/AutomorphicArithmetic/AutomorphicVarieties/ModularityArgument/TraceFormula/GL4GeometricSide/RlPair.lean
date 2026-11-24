@@ -58,8 +58,8 @@ private theorem adj_of_skew {M : Type} [AddCommGroup M] [Module ℂ M] (H : M �
   have h1 := h 1 φ ψ
   have hI := h Complex.I φ ψ
   simp only [LinearMap.add_apply, LinearMap.smul_apply, map_add (f := _), map_smulₛₗ, one_smul, star_one,
-    Complex.star_def, Complex.conj_I, map_neg, neg_smul, map_one, RingHom.id_apply, smul_eq_mul,
-    Complex.conj_conj, LinearMap.neg_apply] at h1 hI
+    Complex.star_def, Complex.conj_I, map_neg, neg_smul, RingHom.id_apply, smul_eq_mul,
+    LinearMap.neg_apply] at h1 hI
   linear_combination (1 / 2 : ℂ) * h1 + (Complex.I / 2) * hI +
     ((H (A φ) ψ + H φ (B ψ) - H (B φ) ψ - H φ (A ψ)) / 2) * Complex.I_sq
 
@@ -70,12 +70,12 @@ private theorem lie_single {E : Type} [Field E] [NumberField E] [_root_.NumberFi
   rw [PositivityTheory.Rg.Cz.GK.lieOp_atEmb, Finset.sum_eq_single a, Finset.sum_eq_single b]
   · simp
   · intro j _ hj
-    simp [Matrix.single_apply, hj.symm]
+    simp [hj.symm]
   · simp
   · intro i _ hi
     apply Finset.sum_eq_zero
     intro j _
-    simp [Matrix.single_apply, hi.symm]
+    simp [hi.symm]
   · simp
 
 private theorem cx_val {E : Type} [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] {n : ℕ} (π : CuspSub E n)

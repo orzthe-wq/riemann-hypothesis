@@ -5,6 +5,10 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsU
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.MemEigSpOfMemHtDual
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UnitOnInjectiveOfCommRing
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NatCastSmulMemHtLat
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionEmbeddingGeometricPoints
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPointsDefinedGeneric
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -43,8 +47,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionEmbeddingGeometricPointsStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionPointsDefinedGenericStatement
 
 @[expose] public section
 
@@ -85,7 +87,7 @@ theorem bcPt_cancel {K : Type} [Field K] (f : Ω →+* K) (ξ' : Sp K ⟶ S) (h 
   have e' : spMap f ≫ g.left = spMap f ≫ g'.left := congrArg CommaMorphism.left e
   exact Over.OverMorphism.ext ((cancel_epi _).1 e')
 
-theorem exists_isParam (h578 : type_of% @GlobalTheory.T.torsion_points_defined_generic) [CharZero Ω] (n : ℕ) (hn : 1 ≤ n) (hpq : 0 < D.p + D.q)
+theorem exists_isParam (h578 : type_of% @_root_.GlobalTheory.CompanionTheory.Ar.HT.level_parametrisation) [CharZero Ω] (n : ℕ) (hn : 1 ≤ n) (hpq : 0 < D.p + D.q)
     (hprop : IsProper (pullback.snd t.G.hom ξ)) (hfull : FullTorsion t.G ξ n)
     (hT : ∀ (k : Type) [Field k] [IsAlgClosed k] (f : Ω →+* k),
       Nonempty (TateIso D k (Over.mk (spMap f ≫ ξ) ⟶ t.G) (fun a g => g ≫ t.act.act a)
@@ -141,7 +143,7 @@ theorem isProper_of_iso {G S Y Z : Scheme.{0}} (f : G ⟶ S) (h : Y ⟶ S) (g : 
     exact IsPullback.of_hasPullback f (g ≫ h)
   exact MorphismProperty.of_isPullback (P := @IsProper) hp inferInstance
 
-theorem exists_chartGroup (h450 : type_of% @GlobalTheory.T.torsion_embedding_geometric_points) (p m : ℕ) [Fact p.Prime]
+theorem exists_chartGroup (h450 : type_of% @_root_.GlobalTheory.CompanionTheory.Ar.BT.Tors.exists_qfGroup_torsion) (p m : ℕ) [Fact p.Prime]
     {ev : D.La → (Over.mk ξ ⟶ t.G)} {ζ₀ : Ωˣ} (hev : IsParam D t ξ (p ^ m) ev ζ₀)
     (hprop : IsProper (pullback.snd t.G.hom ξ)) (hfull : FullTorsion t.G ξ (p ^ m))
     (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [CharZero A] (x : Sp A ⟶ S)

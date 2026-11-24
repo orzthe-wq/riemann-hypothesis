@@ -541,7 +541,7 @@ theorem finite_pow_eq (n : ℕ) (hn : 0 < n) (a : Qb) : {z : Qb | z ^ n = a}.Fin
   exact hz
 
 theorem fin_adjoin {S : Set Qb} (hS : S.Finite) : FiniteDimensional ℚ (adjoin ℚ S) := by
-  haveI : Finite S := hS.to_subtype
+  have : Finite S := hS.to_subtype
   exact IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x
 
 theorem normal_of_map_le (L : Fld) (h : ∀ s : Qb ≃ₐ[ℚ] Qb, L.map (s : Qb →ₐ[ℚ] Qb) ≤ L) : Normal ℚ L := IntermediateField.normal_iff_forall_map_le'.2 h

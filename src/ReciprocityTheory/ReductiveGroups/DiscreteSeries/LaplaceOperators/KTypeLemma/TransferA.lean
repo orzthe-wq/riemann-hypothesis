@@ -1,53 +1,10 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.IsClosedKset
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 public import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.DerivGA
 public import Mathlib.Analysis.Calculus.Deriv.Comp
 public import Mathlib.Analysis.Calculus.Deriv.Mul
@@ -84,35 +41,23 @@ end CurveL
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
-private lemma jm_sq_lemma (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  rw [Jm, diagonal_mul_diagonal, ← diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
-
-private lemma Jm_conjTranspose_eq_selfKType (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
-  rw [Jm, diagonal_conjTranspose]
-  congr 1
-  funext a
-  split_ifs <;> simp [*]
-
 lemma ta_Jm_Jm (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : Jm ε * (Jm ε * X) = X := by
-  rw [← mul_assoc, jm_sq_lemma, one_mul]
+  rw [← mul_assoc, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self, one_mul]
 
 lemma ta_inG_cpart1 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) : inG ε (cpart1 ε Z) := by
   unfold inG cpart1
-  rw [conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, Jm_conjTranspose_eq_selfKType,
+  rw [conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_conjTranspose,
     conjTranspose_conjTranspose]
-  simp only [smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, mul_assoc, jm_sq_lemma, ta_Jm_Jm, mul_one]
+  simp only [smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, mul_assoc, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self, ta_Jm_Jm, mul_one]
   have h2 : star (1 / 2 : ℂ) = 1 / 2 := by simp
   rw [h2]
   module
 
 lemma ta_inG_cpart2 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) : inG ε (cpart2 ε Z) := by
   unfold inG cpart2
-  rw [conjTranspose_smul, conjTranspose_add, conjTranspose_mul, conjTranspose_mul, Jm_conjTranspose_eq_selfKType,
+  rw [conjTranspose_smul, conjTranspose_add, conjTranspose_mul, conjTranspose_mul, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_conjTranspose,
     conjTranspose_conjTranspose]
-  simp only [smul_mul_assoc, mul_smul_comm, add_mul, mul_add, mul_assoc, jm_sq_lemma, ta_Jm_Jm, mul_one]
+  simp only [smul_mul_assoc, mul_smul_comm, add_mul, mul_add, mul_assoc, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self, ta_Jm_Jm, mul_one]
   have h2 : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) := by
     rw [star_div₀, star_one, star_mul', Complex.star_def, Complex.conj_I]
     rw [map_ofNat]
@@ -131,12 +76,12 @@ lemma ta_cpart_sum (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
 
 lemma ta_exp_conjT (ε : Fin n → Bool) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (t : ℝ) :
     (NormedSpace.exp ((t : ℂ) • X))ᴴ = Jm ε * NormedSpace.exp (-((t : ℂ) • X)) * Jm ε := by
-  have hJ : IsUnit (Jm ε) := ⟨⟨Jm ε, Jm ε, jm_sq_lemma ε, jm_sq_lemma ε⟩, rfl⟩
-  have hJi : (Jm ε)⁻¹ = Jm ε := Matrix.inv_eq_left_inv (jm_sq_lemma ε)
+  have hJ : IsUnit (Jm ε) := ⟨⟨Jm ε, Jm ε, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε⟩, rfl⟩
+  have hJi : (Jm ε)⁻¹ = Jm ε := Matrix.inv_eq_left_inv (_root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε)
   have hXc : Xᴴ = Jm ε * (-X) * Jm ε := by
     have h1 : Xᴴ * Jm ε * Jm ε + Jm ε * X * Jm ε = 0 := by
       rw [← add_mul, hX, zero_mul]
-    rw [mul_assoc Xᴴ, jm_sq_lemma, mul_one] at h1
+    rw [mul_assoc Xᴴ, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self, mul_one] at h1
     rw [mul_neg, neg_mul, ← sub_eq_zero, sub_neg_eq_add, h1]
   have hs : (t : ℂ) • (Jm ε * (-X) * Jm ε) = Jm ε * ((t : ℂ) • -X) * (Jm ε)⁻¹ := by
     rw [hJi, mul_smul_comm, smul_mul_assoc]

@@ -1,9 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.PowerSeriesOneAddConstMulXMulInv
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GenEigenMultiplicityQuotientAdditiveChainStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GenEigenMultiplicityQuotientAdditiveChain
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NabBijectiveWindow
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SenMultiplicityShiftLatticeVariablePowStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SenMultiplicityShiftLatticeVariablePow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -105,10 +105,10 @@ theorem qmult_sh_range : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [Char
     exact gmult_self _ _ _
   | succ m ih =>
     have hf := finite_quot_of_map (finite_sh hN a (m + 1))
-    rw [Finset.sum_range_succ, ← ih, ← GlobalTheory.T.senMultiplicity_shift_lattice_variablePow R g hg N hN hC (a + m) x, sen, sh_sh_eq,
+    rw [Finset.sum_range_succ, ← ih, ← _root_.GlobalTheory.PhiGam.SenShift.sen_sh R g hg N hN hC (a + m) x, sen, sh_sh_eq,
       add_comm (1 : ℤ)]
     rw [Nat.cast_succ, ← add_assoc] at hf ⊢
-    exact GlobalTheory.T.genEigenMultiplicityQuotient_additive_chain (nab g) _ _ _ (fun y hy => Window.sh_succ_le _ _ hy)
+    exact _root_.GlobalTheory.PhiGam.GmultAdd.main (nab g) _ _ _ (fun y hy => Window.sh_succ_le _ _ hy)
       (fun y hy => Window.sh_add_le a m N hy) (fun y hy => Window.nab_mem_sh R hg hC _ hy)
       (fun y hy => Window.nab_mem_sh R hg hC _ hy) (fun y hy => Window.nab_mem_sh R hg hC _ hy) hf x
 

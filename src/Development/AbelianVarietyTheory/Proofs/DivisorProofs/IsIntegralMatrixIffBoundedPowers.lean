@@ -78,7 +78,7 @@ def boundSub (he : ∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) �
     simp
   smul_mem' := by
     intro c X hX i j
-    simp only [Matrix.smul_apply, Algebra.smul_def, map_mul, Valuation.map_mul]
+    simp only [Matrix.smul_apply, Algebra.smul_def, map_mul]
     have h1 : Valued.v (e (algebraMap K.O K.E c)) ≤ 1 := (he _).1 ⟨c, rfl⟩
     calc Valued.v (e (algebraMap K.O K.E c)) * Valued.v (e (X i j)) ≤ 1 * WithZero.exp m :=
           mul_le_mul' h1 (hX i j)

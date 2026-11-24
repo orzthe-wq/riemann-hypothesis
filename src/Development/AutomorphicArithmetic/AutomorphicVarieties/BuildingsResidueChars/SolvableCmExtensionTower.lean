@@ -41,11 +41,11 @@ import Mathlib.Tactic.NormNum.RealSqrt
 
 open NumberField UpperTheory.V.Af.Sol
 
-private theorem exists_proper_nontrivial_normal_of_solvable_not_prime_card (G : Type) [Group G] [Finite G] (hs : IsSolvable G)
+private theorem exists_proper_nontrivial_normal_of_solvable_not_prime_card (G : Type) [Group G] [Finite G] (hs : Group.IsSolvable G)
     (h1 : Nat.card G ≠ 1) (hp : ¬ (Nat.card G).Prime) :
     ∃ N : Subgroup G, N.Normal ∧ N ≠ ⊥ ∧ N ≠ ⊤ := by
   by_contra hne
-  push_neg at hne
+  push Not at hne
   have hlt : 1 < Nat.card G := by
     have := Nat.card_pos (α := G)
     omega

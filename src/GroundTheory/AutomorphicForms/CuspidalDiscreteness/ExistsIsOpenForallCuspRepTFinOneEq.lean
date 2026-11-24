@@ -1,55 +1,164 @@
 module
 
+public import GroundTheory.AutomorphicForms.GKModules.SmoothVectors
+public import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SmoothingFinite
+public import Mathlib.Analysis.Convex.Integral
 public import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspCompact
 public import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SummandsContRep
-public import GroundTheory.AutomorphicForms.CuspidalDiscreteness.FixedOpen
 public import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SummandsBase
 public import GroundTheory.AutomorphicForms.GKModules.Garding
-import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.GKStable
-import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SmoothingFinite
-import GroundTheory.GlobalFields.Adele.Topology
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.MeasureTheory.Function.AEEqOfIntegral
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Algebra.ClopenNhdofOne
+import GroundTheory.AutomorphicForms.AutomorphicFormSpaces.GKStable
+import GroundTheory.GlobalFields.Adele.Topology
+import Mathlib.MeasureTheory.Function.AEEqOfIntegral
 import Mathlib.Topology.Compactness.Paracompact
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.AutomorphicForms.CuspidalDiscreteness.FixedOpen, GroundTheory.AutomorphicForms.CuspidalDiscreteness.ExistsIsOpenForallCuspRepTFinOneEq
+
+-- ===== clump member: GroundTheory.AutomorphicForms.CuspidalDiscreteness.FixedOpen =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.CuspidalDiscreteness.FixedOpen", "h": "module\n\npublic import GroundTheory.AutomorphicForms.GKModules.SmoothVectors\npublic import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SmoothingFinite\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Convex.Integral\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Algebra.ClopenNhdofOne\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory Set Filter Topology Function Module
+
+namespace GroundTheory.Automorphic
+
+noncomputable section
+
+set_option linter.unusedSectionVars false
+
+namespace BanachRep
+
+variable {L : Type*} [Group L] [TopologicalSpace L] [IsTopologicalGroup L] [CompactSpace L]
+  [TotallyDisconnectedSpace L] [T2Space L]
+  {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
+
+def fixedIn (σ : BanachRep L E) (W : Submodule ℂ E) (U : Subgroup L) : Submodule ℂ E where
+  carrier := {w | w ∈ W ∧ ∀ u ∈ U, σ u w = w}
+  add_mem' := fun {a b} ha hb =>
+    ⟨W.add_mem ha.1 hb.1, fun u hu => by rw [map_add (f := _), ha.2 u hu, hb.2 u hu]⟩
+  zero_mem' := ⟨W.zero_mem, fun u _ => map_zero _⟩
+  smul_mem' := fun c w hw => ⟨W.smul_mem c hw.1, fun u hu => by rw [map_smul, hw.2 u hu]⟩
+
+theorem exists_isOpen_forall_eq_of_finiteDimensional (σ : BanachRep L E) (v : E)
+    (hv : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun g : L => σ g v))) :
+    ∃ U : Subgroup L, IsOpen (U : Set L) ∧ ∀ u ∈ U, σ u v = v := by
+  classical
+  let _ : MeasurableSpace L := borel L
+  have _ : BorelSpace L := ⟨rfl⟩
+  set W := Submodule.span ℂ (Set.range fun g : L => σ g v) with hWdef
+  have hWc : IsClosed (W : Set E) := Submodule.closed_of_finiteDimensional W
+  have hσW : ∀ g, σ g v ∈ W := fun g => Submodule.subset_span ⟨g, rfl⟩
+  set F : Subgroup L → Submodule ℂ E := fun U => fixedIn σ W U with hFdef
+  have hFle : ∀ U, F U ≤ W := fun U w hw => hw.1
+  have hFfin : ∀ U, FiniteDimensional ℂ (F U) := fun U => Submodule.finiteDimensional_of_le (hFle U)
+  have hFanti : ∀ {U V : Subgroup L}, U ≤ V → F V ≤ F U :=
+    fun hUV w hw => ⟨hw.1, fun u hu => hw.2 u (hUV hu)⟩
+
+  set S : Set ℕ := {d | ∃ U : Subgroup L, IsOpen (U : Set L) ∧ finrank ℂ (F U) = d} with hSdef
+  have hSne : S.Nonempty := ⟨_, ⊤, by rw [Subgroup.coe_top]; exact isOpen_univ, rfl⟩
+  have hSbdd : BddAbove S := by
+    refine ⟨finrank ℂ W, ?_⟩
+    rintro _ ⟨U, -, rfl⟩
+    exact Submodule.finrank_mono (hFle U)
+  obtain ⟨U₀, hU₀, hU₀d⟩ := Nat.sSup_mem hSne hSbdd
+  have hmax : ∀ U : Subgroup L, IsOpen (U : Set L) → finrank ℂ (F U) ≤ finrank ℂ (F U₀) :=
+    fun U hU => hU₀d ▸ le_csSup hSbdd ⟨U, hU, rfl⟩
+  have hstab : ∀ U : Subgroup L, IsOpen (U : Set L) → U ≤ U₀ → F U = F U₀ := by
+    intro U hU hle
+    have _ := hFfin U
+    exact (Submodule.eq_of_le_of_finrank_le (hFanti hle) (hmax U hU)).symm
+  have _ := hFfin U₀
+  have hclosed : IsClosed (F U₀ : Set E) := Submodule.closed_of_finiteDimensional (F U₀)
+
+  have hvF : v ∈ F U₀ := by
+    change v ∈ (F U₀ : Set E)
+    rw [← hclosed.closure_eq, Metric.mem_closure_iff]
+    intro ε hε
+    have hN : IsOpen ({g : L | ‖σ g v - v‖ < ε / 2} ∩ (U₀ : Set L)) :=
+      (isOpen_lt ((σ.continuous_orbit v).sub continuous_const).norm continuous_const).inter hU₀
+    have h1N : (1 : L) ∈ {g : L | ‖σ g v - v‖ < ε / 2} ∩ (U₀ : Set L) :=
+      ⟨by simp [half_pos hε], U₀.one_mem⟩
+    obtain ⟨H, hH⟩ := ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hN h1N
+    set U : Subgroup L := H.toOpenSubgroup.toSubgroup with hUdef
+    have hU : IsOpen (U : Set L) := H.toOpenSubgroup.isOpen
+    have hUU₀ : U ≤ U₀ := fun u hu => (hH hu).2
+    have hUN : ∀ u ∈ U, ‖σ u v - v‖ < ε / 2 := fun u hu => (hH hu).1
+    have _ : CompactSpace U := isCompact_iff_compactSpace.1 (U.isClosed_of_isOpen hU).isCompact
+    set ρ : Measure U := CuspidalSpectrum.haarProb U with hρ
+    have hcont : Continuous fun u : U => σ (u : L) v :=
+      (σ.continuous_orbit v).comp continuous_subtype_val
+    have hint : Integrable (fun u : U => σ (u : L) v) ρ :=
+      integrableOn_univ.1 (hcont.continuousOn.integrableOn_compact isCompact_univ)
+    set e : E := ∫ u : U, σ (u : L) v ∂ρ with hedef
+    have heW : e ∈ W :=
+      Convex.integral_mem (W.restrictScalars ℝ).convex hWc (ae_of_all _ fun u => hσW u) hint
+    have hefix : ∀ u ∈ U, σ u e = e := by
+      intro u hu
+      rw [hedef, ← (σ u).integral_comp_comm hint]
+      have := integral_mul_left_eq_self (μ := ρ) (fun x : U => σ (x : L) v) ⟨u, hu⟩
+      rw [← this]
+      refine integral_congr_ae (ae_of_all _ fun x => ?_)
+      simp only [Subgroup.coe_mul]
+      rw [map_mul_apply]
+    have heF : e ∈ F U₀ := by
+      rw [← hstab U hU hUU₀]
+      exact ⟨heW, hefix⟩
+    refine ⟨e, heF, ?_⟩
+    have hdiff : e - v = ∫ u : U, (σ (u : L) v - v) ∂ρ := by
+      rw [integral_sub hint (integrable_const v), integral_const, probReal_univ, one_smul]
+    rw [dist_comm, dist_eq_norm, hdiff]
+    calc ‖∫ u : U, (σ (u : L) v - v) ∂ρ‖ ≤ ε / 2 * ρ.real univ :=
+          norm_integral_le_of_norm_le_const (ae_of_all _ fun u => (hUN u u.2).le)
+      _ = ε / 2 := by rw [probReal_univ, mul_one]
+      _ < ε := half_lt_self hε
+  exact ⟨U₀, hU₀, fun u hu => hvF.2 u hu⟩
+
+end BanachRep
+
+namespace UnitaryRep
+
+variable {L : Type*} [Group L] [TopologicalSpace L] [IsTopologicalGroup L] [CompactSpace L]
+  [TotallyDisconnectedSpace L] [T2Space L]
+  {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+theorem exists_isOpen_forall_eq_of_finiteDimensional (σ : UnitaryRep L H) (v : H)
+    (hv : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun g : L => σ g v))) :
+    ∃ U : Subgroup L, IsOpen (U : Set L) ∧ ∀ u ∈ U, σ u v = v := by
+  have e : (Set.range fun g : L => BanachRep.ofUnitary σ g v) = Set.range fun g : L => σ g v := rfl
+  rw [← e] at hv
+  exact BanachRep.exists_isOpen_forall_eq_of_finiteDimensional (BanachRep.ofUnitary σ) v hv
+
+variable {G : Type*} [Group G] [TopologicalSpace G]
+
+def comapHom (σ : UnitaryRep G H) (f : L →* G) (hf : Continuous f) : UnitaryRep L H where
+  toHom := σ.toHom.comp f
+  continuous_orbit' v := (σ.continuous_orbit' v).comp hf
+
+end UnitaryRep
+
+namespace CuspidalSpectrum
+
+open AutomorphicForm
+
+variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
+variable (μ : Measure (Reduction.normOneGL (K := K) (n := n))) [μ.IsHaarMeasure]
+
+end CuspidalSpectrum
+
+end
+
+end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.CuspidalDiscreteness.FixedOpen =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.CuspidalDiscreteness.ExistsIsOpenForallCuspRepTFinOneEq =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.CuspidalDiscreteness.ExistsIsOpenForallCuspRepTFinOneEq", "h": "module\n\npublic import GroundTheory.AutomorphicForms.CuspidalDiscreteness.CuspCompact\npublic import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SummandsContRep\npublic import GroundTheory.AutomorphicForms.CuspidalDiscreteness.FixedOpen\npublic import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SummandsBase\npublic import GroundTheory.AutomorphicForms.GKModules.Garding\nimport GroundTheory.AutomorphicForms.AutomorphicFormSpaces.GKStable\nimport GroundTheory.AutomorphicForms.CuspidalDiscreteness.SmoothingFinite\nimport GroundTheory.GlobalFields.Adele.Topology\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.MeasureTheory.Function.AEEqOfIntegral\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Compactness.Paracompact\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory Set Filter Topology Function
@@ -263,3 +372,6 @@ end CuspidalSpectrum
 end
 
 end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.CuspidalDiscreteness.ExistsIsOpenForallCuspRepTFinOneEq =====

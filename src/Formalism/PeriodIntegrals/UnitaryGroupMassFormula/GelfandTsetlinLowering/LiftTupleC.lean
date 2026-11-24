@@ -76,10 +76,10 @@ theorem exp_M {n N : ℕ} (h : n + 1 = N) {K : ℕ} (sz : Fin K → ℕ) (hsz : 
       if k ∈ L then lif h ρ (by have := hsz k; omega) else unl h ρ (by have := hsz k; omega)) := by
   intro a b ρ
   by_cases hk : k ∈ L
-  · simp only [hk, if_true, ite_true]
+  · simp only [hk, if_true]
     exact exp_lift (eRow h) (eRow_inj h) ⟨N - 1, by omega⟩ (eRow_ne_last h)
       (Fin.castLE (by have := hsz k; omega)) a b ρ
-  · simp only [hk, if_false, ite_false]
+  · simp only [hk, if_false]
     exact exp_gmin (eRow h) (eRow_inj h) (Fin.castLE (by have := hsz k; omega)) a b ρ
 
 theorem rowGen_gmin_inv {r c m : ℕ} (a b : Fin r) (hab : a ≠ b) (ρ : Fin m → Fin r) (κ : Fin m → Fin c)

@@ -73,8 +73,8 @@ theorem nm_of_isPushout {φ : A →+* B} {α : A →+* A'} {β : B →+* B'} {φ
   algebraize [φ, α, β, φ', φ'.comp α]
   have : IsScalarTower A B B' := IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom H.w).symm
   have P : Algebra.IsPushout A B A' B' := CommRingCat.isPushout_iff_isPushout.1 H
-  haveI : Module.Finite A B := h.1
-  haveI : Module.Free A B := h.2
+  have : Module.Finite A B := h.1
+  have : Module.Free A B := h.2
   have hb : IsBaseChange A' (IsScalarTower.toAlgHom A B B').toLinearMap := P.symm.out
   change LinearMap.det (Algebra.lmul A' B' (β b)) = algebraMap A A' (LinearMap.det (Algebra.lmul A B b))
   rw [← LinearMap.det_baseChange, ← LinearMap.det_conj _ hb.equiv]
@@ -88,9 +88,9 @@ theorem nm_of_isPushout {φ : A →+* B} {α : A →+* A'} {β : B →+* B'} {φ
   | add s t hs ht => simp only [map_add (f := _), hs, ht]
 
 theorem isUnit_of_nm {φ : A →+* B} (h : FinFree φ) {b : B} (hb : IsUnit (nm φ b)) : IsUnit b := by
-  letI := φ.toAlgebra
-  haveI : Module.Finite A B := h.1
-  haveI : Module.Free A B := h.2
+  let := φ.toAlgebra
+  have : Module.Finite A B := h.1
+  have : Module.Free A B := h.2
   exact Algebra.lmul_isUnit_iff.1 ((LinearMap.isUnit_iff_isUnit_det (Algebra.lmul A B b)).2 hb)
 
 end Algebra
@@ -201,7 +201,7 @@ theorem exists_sec_of_finite (hL : L.IsLB) {W : Z.Opens} (hW : IsAffineOpen W) {
   have key : ∀ y : F, ∃ (a : Γ(Z, W)) (t : SecOn L W), y.1 ∈ Z.basicOpen a ∧
       (∀ y' : F, y'.1 ∈ Z.basicOpen a → y' = y) ∧ IsUnit (germAt (i y) y.1 ⟨hFW y.2, hi y⟩ t) := by
     intro y
-    obtain ⟨O, hO, e⟩ := isDiscrete_iff_forall_exists_isOpen.mp hd y.1 y.2
+    obtain ⟨O, hO, e⟩ := isDiscrete_iff_forall_mem_exists_isOpen.mp hd y.1 y.2
     have hyO : y.1 ∈ O := (e.ge rfl).1
     obtain ⟨a, ha, hya⟩ := hW.exists_basicOpen_le (V := ⟨O, hO⟩ ⊓ L.U (i y)) ⟨y.1, hyO, hi y⟩ (hFW y.2)
     have hU : Z.basicOpen a ≤ L.U (i y) := ha.trans inf_le_right

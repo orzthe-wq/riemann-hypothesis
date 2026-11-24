@@ -224,7 +224,7 @@ theorem top_line {L L'' S : HSp D} (hS : 0 < S.rank) (τ : Matrix (Fin L.rank) (
     (hk : ∀ w ∈ latO S L'' (LS : Set _) (LZ : Set _) (· = x), kap τ S w ∈ latO L S (LL : Set _) (LS : Set _) (· = x)) :
     ∀ a ∈ idAt D (· = x), a • ratV ζ ∈ latV L LL (· = x) ↔
       (((α * (xiU D * cU α)⁻¹ * inU lam hlam)⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = x) := by
-  obtain ⟨e, he0, hg⟩ := GlobalTheory.GoodPos.line_gen hζ (by first | exact hLL | exact hLL.1) x
+  obtain ⟨e, he0, hg⟩ := GlobalTheory.GoodPos.line_gen hζ (by first | exact hLL) x
   have hne := line_norm (μ := inU e he0) hζ hLL hg
   have hn0 := (line_norm (μ := 1) hζ₀ hLZ (x := x) fun a ha => by rw [inv_one, Units.val_one, one_mul]; exact hμ a ha).neg
   rw [Units.val_one, RingHom.map_one, one_mul, one_mul] at hn0

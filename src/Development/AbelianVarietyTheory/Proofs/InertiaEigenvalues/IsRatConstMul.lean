@@ -57,7 +57,7 @@ theorem isRat_const_mul {D : D7} (T : CoreJ D) (i : Fin D.R.m) {σ : T.Q.c.F →
   · rw [map_smulₛₗ]
     exact Submodule.smul_mem _ _ hf₂.2
   · funext g
-    simp only [castDict, Cover.rd, map_smulₛₗ, map_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
+    simp only [castDict, Cover.rd, map_smulₛₗ, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     ring
 
 end GlobalTheory.SerRatRay

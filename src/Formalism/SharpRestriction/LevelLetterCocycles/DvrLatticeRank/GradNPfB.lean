@@ -60,14 +60,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n)
 
-theorem gradNPf_cc_γ₀ (g : W.Gam) (a : PowerSeries O) :
-    PowerSeries.constantCoeff (W.γ₀ g a) = PowerSeries.constantCoeff a := by
-  exact Formalism.MainNotions.LiftingTheory.constantCoeff_gamma W g a
-
-theorem gradNPf_γA_comm (g h : W.Gam) (a : LetA O n) :
-    W.γA g (W.γA h a) = W.γA h (W.γA g a) := by
-  exact Formalism.MainNotions.LiftingTheory.frame_γA_comm W g h a
-
 theorem gradNPf_cc_f (s' : ℕ) (w : (LetA O n)ˣ) (π' f : LetA O n)
     (hw : π' = (w : LetA O n) * letπ ^ s') (hf : W.γA W.gam π' = π' * f) (i : ZMod n) :
     PowerSeries.constantCoeff (f i) = ((W.χΓ W.gam : Oˣ) : O) ^ s' := by
@@ -88,7 +80,7 @@ theorem gradNPf_cc_f (s' : ℕ) (w : (LetA O n)ˣ) (π' f : LetA O n)
       PowerSeries.X ^ s' * ((w : LetA O n) i * f i) := by
     linear_combination hi
   have h3 := congrArg PowerSeries.constantCoeff (PowerSeries.X_pow_mul_cancel h2)
-  rw [map_mul, map_mul, map_pow, hh, gradNPf_cc_γ₀] at h3
+  rw [map_mul, map_mul, map_pow, hh, _root_.Formalism.MainNotions.LiftingTheory.constantCoeff_gamma] at h3
   have hwu : IsUnit (PowerSeries.constantCoeff ((w : LetA O n) i)) :=
     (w.isUnit.map (Pi.evalRingHom (fun _ : ZMod n => PowerSeries O) i)).map PowerSeries.constantCoeff
   exact (hwu.mul_left_cancel h3).symm
@@ -103,7 +95,7 @@ theorem gradNPf_fΔ (s' : ℕ) (w : (LetA O n)ˣ) (π' f : LetA O n)
     exact (w.isUnit.map _).mul (hl.pow _)
   apply Formalism.MainNotions.LiftingTheory.lifta_reg W π' _ _ hu
   have h1 : W.γA δ (W.γA W.gam π') = W.γA W.gam π' := by
-    rw [Formalism.MainNotions.LiftingTheory.frame_γA_comm, hπΔ δ hδ]
+    rw [_root_.Formalism.MainNotions.LiftingTheory.gammaA_comm, hπΔ δ hδ]
   rw [hf, map_mul, hπΔ δ hδ] at h1
   exact h1
 

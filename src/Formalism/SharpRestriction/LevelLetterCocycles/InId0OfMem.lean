@@ -110,7 +110,7 @@ theorem value0 (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (a : ZMo
     show W.π₀₁ ≠ 0
     exact Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_ne hR) ?_
   have hidem : w' * letE a = w' := by
-    rw [hw', mul_comm, ← mul_assoc, Formalism.MainNotions.UnusedSlot80.DivLevR.letE_idem]
+    rw [hw', mul_comm, ← mul_assoc, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
   have e : W.π₀ * w' = letE a * z - letE a * algebraMap O (LetA O n) c := by
     rw [key]; linear_combination (-W.π₀) * hidem
   rw [e]

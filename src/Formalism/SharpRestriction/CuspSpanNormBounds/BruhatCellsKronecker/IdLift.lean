@@ -58,23 +58,18 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E}
 
 theorem lift_sep {a b : S.V} (h : ∀ w, S.hT w a = S.hT w b) : a = b := by
-  have hn := S.nondeg
-  unfold LinearMap.Nondegenerate LinearMap.SeparatingRight at hn
-  exact sub_eq_zero.mp (hn.2 (a - b) (fun w => by rw [map_sub, h w, sub_self]))
+  exact sub_eq_zero.mp (S.nondeg.2 (a - b) (fun w => by rw [map_sub, h w, sub_self]))
 
 theorem lift_adj_symm {B B' : S.V →ₗ[E] S.V} (h : LAdj S B B') : LAdj S B' B := by
   intro x y
-  rw [← S.herm.eq y (B' x), ← h y x]
-  exact S.herm.eq (B y) x
+  rw [← S.herm.eq y (B' x), ← h y x, S.herm.eq (B y) x]
 
 theorem lift_exists_map {ι : Type} (e w : ι → S.V) (hli : LinearIndependent E e) :
     ∃ U : S.V →ₗ[E] S.V, ∀ a, U (e a) = w a := by
   obtain ⟨g, hg⟩ := LinearMap.exists_extend ((Finsupp.linearCombination E w).comp hli.repr)
   refine ⟨g, fun a => ?_⟩
   have hmem : e a ∈ Submodule.span E (Set.range e) := Submodule.subset_span ⟨a, rfl⟩
-  have h1 := LinearMap.congr_fun hg ⟨e a, hmem⟩
-  simp only [LinearMap.comp_apply, Submodule.subtype_apply] at h1
-  rw [h1, hli.repr_eq_single a ⟨e a, hmem⟩ rfl, Finsupp.linearCombination_single, one_smul]
+  simpa only [LinearMap.comp_apply, Submodule.subtype_apply, hli.repr_eq_single a ⟨e a, hmem⟩ rfl, Finsupp.linearCombination_single, one_smul] using LinearMap.congr_fun hg ⟨e a, hmem⟩
 
 variable {r : ℕ} {T : E}
 
@@ -284,8 +279,7 @@ end Gen
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem lift_of_steps (hA : IntegralAdjointUnimodular) (hI : IsotropicIntegralRetraction) (hF : UnitriangularFrameIntegral) (D : D7) : UnitriangularFrameLift D := by
-  intro T Λ F F' hfix _ hconv' he _
-  obtain ⟨hlat, huni, -, hconv⟩ := hfix
+  rintro T Λ F F' ⟨hlat, huni, -, hconv⟩ _ hconv' he _
   exact lift_gen hA hI hF D.sp.cm.cmUnram Λ (gS D) F F' hlat huni hconv hconv' he
 
 theorem id_lift (D : D7) : UnitriangularFrameLift D := by

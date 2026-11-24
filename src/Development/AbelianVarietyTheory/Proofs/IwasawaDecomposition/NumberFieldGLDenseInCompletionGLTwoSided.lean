@@ -97,7 +97,7 @@ def smallIdeal : Ideal (P.adicCompletionIntegers E) where
   zero_mem' := by simp
   add_mem' := by
     intro a b ha hb
-    simp only [Set.mem_setOf_eq, Subring.coe_add] at *
+    simp only [Set.mem_setOf_eq] at *
     exact lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ha hb)
   smul_mem' := by
     intro c x hx

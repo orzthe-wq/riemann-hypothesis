@@ -2,45 +2,6 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.LocVol
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.InclusionInjective
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -79,8 +40,7 @@ theorem smul_eq_sc {n : ℕ} (c : v.adicCompletionIntegers F) (y : Fin n → Fv 
 theorem sc_smul_mem {n : ℕ} (Λ : Set (Fin n → E)) (d : Fv F v) (hd : d ∈ v.adicCompletionIntegers F)
     (y : Fin n → Fv F v ⊗[F] E) (hy : y ∈ latLoc (E := E) v Λ) :
     sc (E := E) v d • y ∈ latLoc (E := E) v Λ := by
-  have h := Submodule.smul_mem (latLoc (E := E) v Λ) (⟨d, hd⟩ : v.adicCompletionIntegers F) hy
-  rwa [smul_eq_sc] at h
+  simpa [smul_eq_sc] using Submodule.smul_mem (latLoc (E := E) v Λ) (⟨d, hd⟩ : v.adicCompletionIntegers F) hy
 
 theorem natCast_not_mem (c g : ℕ) (hcg : Nat.Coprime c g) (hg : (g : 𝓞 F) ∈ v.asIdeal) :
     (c : 𝓞 F) ∉ v.asIdeal := by
@@ -346,18 +306,15 @@ theorem rhoV_mL (m : ℕ) (w : Fin I.n → I.E ⊗[I.F] Af I.F) (hw : w ∈ mL I
 
 theorem natCast_smul_mL (m c : ℕ) (w : Fin I.n → I.E ⊗[I.F] Af I.F) (hw : w ∈ mL I m) :
     (c : I.E ⊗[I.F] Af I.F) • w ∈ mL I m := by
-  rw [Nat.cast_smul_eq_nsmul]
-  exact nsmul_mem hw c
+  simpa only [Nat.cast_smul_eq_nsmul] using nsmul_mem hw c
 
 theorem kset_inv (x : I.Gf) (hx : x ∈ I.Kset) : x⁻¹ ∈ I.Kset := by
   show ((x⁻¹ : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf
-  rw [Subgroup.coe_inv]
-  exact (Formalism.UG.stabGL I.Lf).inv_mem hx
+  simpa [Subgroup.coe_inv] using (Formalism.UG.stabGL I.Lf).inv_mem hx
 
 theorem kset_mul (x y : I.Gf) (hx : x ∈ I.Kset) (hy : y ∈ I.Kset) : x * y ∈ I.Kset := by
   show ((x * y : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf
-  rw [Subgroup.coe_mul]
-  exact (Formalism.UG.stabGL I.Lf).mul_mem hx hy
+  simpa [Subgroup.coe_mul] using (Formalism.UG.stabGL I.Lf).mul_mem hx hy
 
 theorem kap_fwd (x : I.Gf) (hx : x ∈ I.Kset) (y : Fin I.n → Fv I.F v ⊗[I.F] I.E)
     (hy : y ∈ latLoc (E := I.E) v (I.L : Set (Fin I.n → I.E))) :

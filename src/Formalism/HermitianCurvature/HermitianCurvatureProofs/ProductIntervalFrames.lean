@@ -84,7 +84,7 @@ theorem wid_eq (n r : ℕ) (T T' : ℝ) (u : ℕ → ℝ) (L : Fin (n + 1) → �
   simp only [Fin.coe_castSucc, Fin.val_succ] at h1 h2
   have hd : (par n r T T' u).hi ((j : ℕ) + 1) - (par n r T T' u).lo ((j : ℕ) + 1) =
       ((L j.castSucc - L j.succ - 1 : ℤ) : ℝ) := by
-    simp only [M.Par.hi, M.Par.lo, par, min_self, max_self]
+    simp only [M.Par.hi, M.Par.lo, min_self, max_self]
     push_cast
     linarith
   have hnn : 0 ≤ L j.castSucc - L j.succ - 1 := by linarith [hg j]

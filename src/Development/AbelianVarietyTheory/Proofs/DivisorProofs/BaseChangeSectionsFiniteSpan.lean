@@ -207,7 +207,7 @@ theorem linearIndependent_secPull (S : LinSys F) (hS : S.IsVariety) {n : ℕ} (b
     refine Finset.sum_congr rfl fun j _ => ?_
     simp only [Φ, LinearMap.comp_apply, LinearEquiv.coe_coe, TensorProduct.piScalarRight_symm_single,
       LinearMap.baseChange_tmul, TensorProduct.piRight_apply, TensorProduct.piRightHom_tmul,
-      LinearMap.pi_apply, LinearMap.proj_apply, Bc, SecOnR.baseChangeHom_tmul]
+      LinearMap.pi_apply, Bc]
     change SecOnR.baseChangeHom S.L H.w (D i) (S.bcFst E ⁻¹ᵁ D i) le_rfl
       (c j ⊗ₜ[F] R (Pi.single j 1) i) = _
     rw [SecOnR.baseChangeHom_tmul, hRi]

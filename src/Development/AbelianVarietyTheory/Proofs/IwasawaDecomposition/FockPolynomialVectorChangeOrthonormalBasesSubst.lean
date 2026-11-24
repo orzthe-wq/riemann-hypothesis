@@ -189,7 +189,7 @@ theorem pure_subst {g : X → ℂ} (c : ι → κ → μ → ℂ) (e : ι → κ
     rw [mul_comm, hX', hp, map_mul, MvPolynomial.aeval_X, hA _ _ (hm _)]
 
     simp only [Finset.sum_mul, map_sum, mul_assoc]
-    simp only [MvPolynomial.C_mul', map_smul, smul_mul_assoc, hX]
+    simp only [MvPolynomial.C_mul', map_smul, hX]
 
 end Generic
 

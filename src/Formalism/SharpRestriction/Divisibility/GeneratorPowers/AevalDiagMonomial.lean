@@ -595,21 +595,21 @@ theorem bilin_of_biadd {h : MvPolynomial (Fin 2 × Fin d) S}
         rw [hu]
         by_cases hii : i = i0
         · subst hii
-          simp [Finsupp.single_apply]
-        · simp [Finsupp.single_apply, hii, Ne.symm hii]
+          simp
+        · simp [hii]
       · have hu := one_lemma_16 (fun i => e (1, i)) hs1 l0 hl0 i
         rw [hu]
         by_cases hii : i = l0
         · subst hii
-          simp [Finsupp.single_apply]
-        · simp [Finsupp.single_apply, hii, Ne.symm hii]
+          simp
+        · simp [hii]
     subst hE
     rw [Finset.sum_eq_single i0, Finset.sum_eq_single l0, if_pos rfl]
     · intro l _ hl
       rw [if_neg]
       intro heq
       have := congrArg (fun f => f ((1 : Fin 2), l)) heq
-      simp [Finsupp.single_apply, Ne.symm hl] at this
+      simp [Ne.symm hl] at this
     · intro h'
       exact absurd (Finset.mem_univ _) h'
     · intro i _ hi
@@ -617,7 +617,7 @@ theorem bilin_of_biadd {h : MvPolynomial (Fin 2 × Fin d) S}
       rw [if_neg]
       intro heq
       have := congrArg (fun f => f ((0 : Fin 2), i)) heq
-      simp [Finsupp.single_apply, Ne.symm hi] at this
+      simp [Ne.symm hi] at this
     · intro h'
       exact absurd (Finset.mem_univ _) h'
 

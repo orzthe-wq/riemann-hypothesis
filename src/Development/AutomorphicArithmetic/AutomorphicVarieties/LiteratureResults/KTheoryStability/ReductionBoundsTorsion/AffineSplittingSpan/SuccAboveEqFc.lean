@@ -74,12 +74,6 @@ theorem dc_eq {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) (y : Fin (m + 2) → Y
     dc F y = ∑ i : Fin (m + 2), (-1 : ℝ) ^ (i : ℕ) * F (fun l => y (fc i l)) := by
   simp only [dc, succAbove_eq_fc]
 
-theorem dc_smul {m : ℕ} (r : ℝ) (F : (Fin (m + 1) → Y) → ℝ) : dc (r • F) = r • dc F := by
-  funext y; simp [dc, Finset.mul_sum]; refine Finset.sum_congr rfl fun i _ => by ring
-
-theorem dc_sub {m : ℕ} (F G : (Fin (m + 1) → Y) → ℝ) : dc (F - G) = dc F - dc G := by
-  funext y; simp [dc, mul_sub, Finset.sum_sub_distrib]
-
 private theorem fc_fc_eq_fc_fc_pred_of_lt {n : ℕ} (i j : ℕ) (hji : j < i) (l : Fin n) :
     (fc i (fc j l) : Fin (n + 2)) = fc j (fc (i - 1) l) := by
   apply Fin.ext
@@ -87,7 +81,7 @@ private theorem fc_fc_eq_fc_fc_pred_of_lt {n : ℕ} (i j : ℕ) (hji : j < i) (l
   split_ifs <;> omega
 
 theorem dc_dc {m : ℕ} (F : (Fin (m + 1) → Y) → ℝ) : dc (dc F) = 0 := by
-  apply PositivityTheory.KB.SplitAffineSpectral.PrismSpan.dc_dc <;> assumption
+  apply PositivityTheory.KB.SplitAffineSpectral.PrismSpan.dc_dc
 
 end PositivityTheory.KB.SplitAffineSpectral.NormTraceLemmas
 

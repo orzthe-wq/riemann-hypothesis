@@ -99,8 +99,7 @@ theorem qU_mem (k : Bool) (n : ℕ) : (ε.qU n : (bs l k n).R) - 1 ∈ (bs l k n
 
 end Eps
 
-theorem mapU_sharp {A A' : PAlg l} (f : A ⟶ A') (a : A.A) : mapU f (A.sharp a) = A'.sharp (Hom.f f a) :=
-  congrArg A'.th (WittVector.map_teichmuller _ _ _)
+alias mapU_sharp := _root_.GlobalTheory.CompanionTheory.PAlgNat.mapU_sharp
 
 def epsU (ε : Eps l) (P : PAlg l ⥤ Type) : UF P.Elements where
   U T := (Units.map T.1.sharp).ker

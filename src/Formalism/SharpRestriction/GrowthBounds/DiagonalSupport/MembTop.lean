@@ -120,7 +120,7 @@ theorem mfh_of : ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → ∀ CL
     DataII C CLa p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K F nb B →
     MFH p F TT L₁ L₂ (orbitWindowCount r de h x) (goodG' r de h x) (flatDeg lam0) (dT TT lam0) Y (r + K)
       (cPrime n' r TT.card c0 cpp cStar) := by
-  obtain ⟨C0, hC0, H0⟩ := Formalism.CountingSumsFrames.Top.paramsII0 1 1 le_rfl le_rfl
+  obtain ⟨C0, hC0, H0⟩ := _root_.Formalism.CountingSumsFrames.secondParameterSizeBounds_holds 1 1 le_rfl le_rfl
   refine ⟨max C0 1, lt_of_lt_of_le (by norm_num) (le_max_right _ _), ?_⟩
   intro C hC CLa p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r hpF _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _
     hk F nb B hD

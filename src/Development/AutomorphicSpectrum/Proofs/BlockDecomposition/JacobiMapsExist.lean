@@ -107,8 +107,7 @@ theorem blockMatrix_neg_one : bl hn (-1 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (-1) =
 theorem sh_mul (y y' : Matrix (Fin ρ) (Fin p) R) (h : y' = -y) :
     bl hn 1 y 0 1 * bl hn 1 y' 0 1 = (1 : Matrix (Fin n) (Fin n) R) := by
   subst h
-  simp only [block_mul₂, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add, add_neg_cancel,
-    neg_add_cancel]
+  simp only [block_mul₂, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add, neg_add_cancel]
   exact blockRowSubstitution_one (R := R) hn
 
 theorem wM_mul : blk4 (bl hn 0 0 0 1) (bl hn 1 0 0 0) (bl hn (-1) 0 0 0) (bl hn 0 0 0 1) *
@@ -116,16 +115,16 @@ theorem wM_mul : blk4 (bl hn 0 0 0 1) (bl hn 1 0 0 0) (bl hn (-1) 0 0 0) (bl hn 
       (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) := by
   have z : bl hn (0 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (0 : Matrix (Fin p) (Fin p) R) = 0 := blockMatrix_zero hn
   have o : bl hn (1 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (1 : Matrix (Fin p) (Fin p) R) = 1 := blockRowSubstitution_one hn
-  simp only [submatrix_fromBlocks_mul, block_mul₂, bl_add, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero,
-    zero_add, Matrix.mul_neg, Matrix.neg_mul, neg_zero, neg_neg, z, o, block_matrix_one]
+  simp only [submatrix_fromBlocks_mul, block_mul₂, bl_add, Matrix.mul_zero, Matrix.mul_one, add_zero,
+    zero_add, Matrix.mul_neg, neg_zero, neg_neg, z, o, block_matrix_one]
 
 theorem wM_mul' : blk4 (bl hn 0 0 0 1) (bl hn (-1) 0 0 0) (bl hn 1 0 0 0) (bl hn 0 0 0 1) *
     blk4 (bl hn 0 0 0 1) (bl hn 1 0 0 0) (bl hn (-1) 0 0 0) (bl hn 0 0 0 1) =
       (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) := by
   have z : bl hn (0 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (0 : Matrix (Fin p) (Fin p) R) = 0 := blockMatrix_zero hn
   have o : bl hn (1 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (1 : Matrix (Fin p) (Fin p) R) = 1 := blockRowSubstitution_one hn
-  simp only [submatrix_fromBlocks_mul, block_mul₂, bl_add, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero,
-    zero_add, Matrix.mul_neg, Matrix.neg_mul, neg_zero, neg_neg, z, o, block_matrix_one]
+  simp only [submatrix_fromBlocks_mul, block_mul₂, bl_add, Matrix.mul_zero, Matrix.mul_one, add_zero,
+    zero_add, Matrix.mul_neg, neg_zero, neg_neg, z, o, block_matrix_one]
 
 theorem wM_form : blk4 (bl hn 0 0 0 1) (bl hn (-1) 0 0 0) (bl hn 1 0 0 0) (bl hn 0 0 0 1) * blk4 0 1 (-1) 0 *
     blk4 (bl hn 0 0 0 1) (bl hn 1 0 0 0) (bl hn (-1) 0 0 0) (bl hn 0 0 0 1) =
@@ -133,8 +132,8 @@ theorem wM_form : blk4 (bl hn 0 0 0 1) (bl hn (-1) 0 0 0) (bl hn 1 0 0 0) (bl hn
   have z : bl hn (0 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (0 : Matrix (Fin p) (Fin p) R) = 0 := blockMatrix_zero hn
   have o : bl hn (1 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (1 : Matrix (Fin p) (Fin p) R) = 1 := blockRowSubstitution_one hn
   have m : bl hn (-1 : Matrix (Fin ρ) (Fin ρ) R) 0 0 (-1 : Matrix (Fin p) (Fin p) R) = -1 := blockMatrix_neg_one hn
-  simp only [submatrix_fromBlocks_mul, block_mul₂, bl_add, block_neg, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero,
-    zero_add, Matrix.mul_neg, Matrix.neg_mul, neg_zero, neg_neg, z, o, m]
+  simp only [submatrix_fromBlocks_mul, block_mul₂, bl_add, block_neg, Matrix.mul_zero, Matrix.mul_one, add_zero,
+    zero_add, Matrix.mul_neg, neg_zero, neg_neg, z, o, m]
 
 end Bl
 
@@ -171,23 +170,19 @@ theorem block_matrix_of_blocks (M : Matrix (Fin (p + p)) (Fin (p + p)) R) : blk4
 
 theorem upperLeft_block (a b c d : Matrix (Fin p) (Fin p) R) : b11 (blk4 a b c d) = a := by
   ext i j
-  simp only [blk4, b11, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
-    Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
+  simp only [blk4, b11, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]
 
 theorem upperRight_block (a b c d : Matrix (Fin p) (Fin p) R) : b12 (blk4 a b c d) = b := by
   ext i j
-  simp only [blk4, b12, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
-    Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
+  simp only [blk4, b12, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂]
 
 theorem lowerLeft_block_entry (a b c d : Matrix (Fin p) (Fin p) R) : b21 (blk4 a b c d) = c := by
   ext i j
-  simp only [blk4, b21, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
-    Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
+  simp only [blk4, b21, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁]
 
 theorem lowerRight_block (a b c d : Matrix (Fin p) (Fin p) R) : b22 (blk4 a b c d) = d := by
   ext i j
-  simp only [blk4, b22, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
-    Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
+  simp only [blk4, b22, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]
 
 variable [TopologicalSpace R] {X : Type} [TopologicalSpace X]
 
@@ -202,8 +197,7 @@ theorem continuous_bl (hn : ρ + p = n) {a : X → Matrix (Fin ρ) (Fin ρ) R} {
 
 end Blocks
 
-theorem continuous_adjR {a b : ℕ} : Continuous (adj : Mx D a b → Mx D b a) :=
-  (continuous_id.matrix_map GlobalTheory.AnnihBox.continuous_cA').matrix_transpose
+alias continuous_adjR := _root_.GlobalTheory.MixModel.continuous_adj
 
 theorem adjoint_symplectic_block_product (a b c d : Mx D n n) :
     (adj (blk4 a b c d : Mx D (n + n) (n + n)) * blk4 0 1 (-1) 0 * blk4 a b c d : Mx D (n + n) (n + n)) =
@@ -284,7 +278,7 @@ def embMon (hn : ρ + p = n) : Mx D (p + p) (p + p) →* Mx D (n + n) (n + n) wh
     generalize b21 N = c'
     generalize b22 N = d'
     rw [submatrix_fromBlocks_mul, block_embedding_block_matrix, block_embedding_block_matrix, block_embedding_block_matrix, submatrix_fromBlocks_mul]
-    simp only [block_mul₂, bl_add, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add]
+    simp only [block_mul₂, bl_add, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, add_zero, zero_add]
 
 theorem embM_isU (hn : ρ + p = n) (M : Mx D (p + p) (p + p))
     (h : (adj M * blk4 0 1 (-1) 0 * M : Mx D (p + p) (p + p)) = blk4 0 1 (-1) 0) :
@@ -300,8 +294,8 @@ theorem embM_isU (hn : ρ + p = n) (M : Mx D (p + p) (p + p))
   have o : bl hn (1 : Mx D ρ ρ) 0 0 (1 : Mx D p p) = 1 := blockRowSubstitution_one hn
   have m : bl hn (-1 : Mx D ρ ρ) 0 0 (-1 : Mx D p p) = -1 := blockMatrix_neg_one hn
   rw [block_embedding_block_matrix, adjoint_symplectic_block_product]
-  simp only [adj_bl, adj_one, adj_zero, block_mul₂, block_sub, bl_add, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one,
-    Matrix.one_mul, add_zero, zero_add, sub_zero, zero_sub, sub_self, e1, e2, e3, e4, z, o, m]
+  simp only [adj_bl, adj_one, adj_zero, block_mul₂, block_sub, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one,
+    add_zero, zero_add, sub_zero, zero_sub, sub_self, e1, e2, e3, e4, z, o, m]
 
 def embF (hn : ρ + p = n) (g : G D p) : G D n :=
   mkG (Units.map (embMon hn) (matHom _ D.sp.cm.sig (Jst D p) g)) (embM_isU hn _ (isU_mat g))

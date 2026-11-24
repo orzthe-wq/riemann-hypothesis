@@ -71,8 +71,8 @@ theorem norm_deg_eq_norm_det : ∀ (K : Type) [Field K] (l : ℕ) [Fact l.Prime]
   obtain ⟨hfree, hfin, -, hVfin, -⟩ := tl_free_finrank K l hl A
   by_cases hf : IsIsogeny (A := A) (B := A) f.asHom
   · obtain ⟨-, -, hpos, -⟩ := isogeny_flat_finrank K A A f.asHom hf
-    obtain ⟨-, hcard⟩ := GlobalTheory.T.tateModuleMap_injective_card_coker_of_isogeny K l hl A A f.asHom hf
-    have hdet := GlobalTheory.T.norm_det_eq_inv_card_coker l (Tl l A)
+    obtain ⟨-, hcard⟩ := _root_.GlobalTheory.AV.AbVar.tmap_injective_card_coker_of_isIsogeny K l hl A A f.asHom hf
+    have hdet := _root_.GlobalTheory.DetIndexPadic.norm_det_eq_of_card_coker l (Tl l A)
       (tmap l A A f.asHom) (padicValNat l (deg f.asHom)) hcard
     change _ = ‖LinearMap.det (tmap l A A f.asHom)‖
     rw [hdet, norm_natCast_padicInt l hpos.ne']

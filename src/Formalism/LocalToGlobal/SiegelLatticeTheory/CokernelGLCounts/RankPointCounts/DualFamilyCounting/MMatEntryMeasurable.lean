@@ -1,47 +1,11 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.CovolNOfSteps
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.CategoryTheory.Countable
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -61,15 +25,11 @@ theorem uMat_continuous (v : InfinitePlace X.B.I.F) :
     Continuous fun s : X.B.I.Ginf => uMat (s v) := by
   first
     | exact (Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v)
-    | fun_prop
-    | continuity
 
 theorem hJ_continuous (v : InfinitePlace X.B.I.F) (x y : Fin X.B.I.n → ℂ) :
     Continuous fun s : X.B.I.Ginf => hJ (X.B.I.ε v) x (uMat (s v) *ᵥ y) := by
   simp only [hJ]
   first
-    | exact continuous_const.matrix_dotProduct
-        (continuous_const.matrix_mulVec ((uMat_continuous X v).matrix_mulVec continuous_const))
     | (have hu := uMat_continuous X v; fun_prop)
 
 theorem xMat_entry_continuous (v : InfinitePlace X.B.I.F) (b a : Fin D.R.rS) :
@@ -83,7 +43,6 @@ theorem aMat_entry_continuous (v : InfinitePlace X.B.I.F) (b a : Fin D.R.rS) :
 theorem xMat_continuous (v : InfinitePlace X.B.I.F) : Continuous fun s => xMat X v s := by
   first
     | exact continuous_pi fun b => continuous_pi fun a => xMat_entry_continuous X v b a
-    | exact continuous_matrix fun b a => xMat_entry_continuous X v b a
 
 theorem mMat_entry_measurable (v : InfinitePlace X.B.I.F) (b a : Fin D.R.rS) :
     Measurable fun s => mMat X v s b a := by
@@ -91,7 +50,6 @@ theorem mMat_entry_measurable (v : InfinitePlace X.B.I.F) (b a : Fin D.R.rS) :
   have ha : Continuous fun s => aMat X v s := by
     first
       | exact continuous_pi fun b => continuous_pi fun a => aMat_entry_continuous X v b a
-      | exact continuous_matrix fun b a => aMat_entry_continuous X v b a
   have hd : Measurable fun s => ((xMat X v s).det)⁻¹ := hx.matrix_det.measurable.inv
   simp only [mMat, Matrix.mul_apply, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv]
   refine Finset.measurable_sum _ fun c _ => ?_
@@ -102,10 +60,8 @@ theorem reim_measurable {α : Type} [MeasurableSpace α] {f : α → ℂ} (hf : 
   cases t
   · first
       | exact Complex.measurable_re.comp hf
-      | (simp only [reim, Bool.false_eq_true, if_false]; exact Complex.measurable_re.comp hf)
   · first
       | exact Complex.measurable_im.comp hf
-      | (simp only [reim, if_true]; exact Complex.measurable_im.comp hf)
 
 theorem kap_measurable : Measurable (kap X u) := by
   refine Measurable.of_eval fun i => ?_
@@ -123,7 +79,6 @@ private lemma isClosed_setOf_sub_one_mulVec_mem {n : ℕ} (w : Fin n → ℂ) (S
   have hc : Continuous fun g : Matrix (Fin n) (Fin n) ℂ => (g - 1) *ᵥ w := by
     first
       | exact (continuous_id.sub continuous_const).matrix_mulVec continuous_const
-      | fun_prop
   exact S.closed_of_finiteDimensional.preimage hc
 
 private lemma isClosed_setOf_InN {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
@@ -216,7 +171,6 @@ theorem coordHaar_of (hU : HaarUnique) (hL : LebHaar) : CoordHaar := by
       (fun _ : InfinitePlace X.B.I.F × CIdx D.R.rS D.R.k => Set.Ico (0 : ℝ) 1)) = 1 := by
     first
       | (rw [volume_pi, Measure.pi_pi]; simp [Real.volume_Ico])
-      | simp [Real.volume_pi_Ico]
   have hbox : lam (boxN X u) = 1 := by
     rw [boxN_eq, Set.inter_comm, measure_inter_eq_of_compl_null lam hlam.2.2.1,
       ← Measure.map_apply hkm hbm, hmap, hvol]

@@ -3,7 +3,8 @@ module
 public import Development.AutomorphicArithmetic.LocalEmbeddings.StageGeoDefs
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsReading
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicWeilRepSchrodingerModelUniqueStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicWeilRepSchrodingerModelUnique
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitDetGramOfHermitianSelfDualLatticeSpace
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AlgebraicVectorsCorrespondSchrodingerThetaMapStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeilRepOrientedPairRationalSchrodingerStatement
@@ -97,7 +98,7 @@ private theorem pair_over {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam
     apply GlobalTheory.det_ne_zero_of_hasSig (hW.sig w)
     rw [Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]
   refine ⟨cS, fun Φ f hD g h => ?_, h1, h2, fun Φ hΦ => ⟨hΦ, fun u => ?_⟩⟩
-  · rw [GlobalTheory.T.adelicWeilRep_schrodingerModel_unique _ _ _ hP.base.cm _ _ Vs Ws M Bs.ψ χ χ' hP.base.std hV.herm dV hW.skew dW om om₁ hom hom₁ _ Φ hD.1]
+  · rw [_root_.GlobalTheory.WeilSchUnique.weil_unique _ _ _ hP.base.cm _ _ Vs Ws M Bs.ψ χ χ' hP.base.std hV.herm dV hW.skew dW om om₁ hom hom₁ _ Φ hD.1]
     exact hw Φ f hD g h
   · have k : ptO (sgn ε S).gram e (cS u) = u := (hcS' _).symm.trans (cS.symm_apply_apply u)
     exact congrArg (fun y => GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho ψ y Φ)) k.symm

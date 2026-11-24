@@ -147,8 +147,7 @@ def chC : φ.GG →* ℂˣ := (Units.map (Int.castRingHom ℂ).toMonoidHom).comp
 def Psi : Subgroup φ.GG := φ.chD.ker
 
 theorem mem_Psi_iff {φ : Frame} (g : φ.GG) : g ∈ φ.Psi ↔ g.1.2 = 1 := by
-  rw [Frame.Psi, MonoidHom.mem_ker]
-  rfl
+  exact MonoidHom.mem_ker (f := φ.chD)
 
 def placeOf {φ : Frame} (g : φ.GG) : φ.GG := if g.1.2 = 1 then g else φ.cc * g
 
@@ -171,12 +170,10 @@ theorem iota_bijective : Function.Bijective φ.iota := by
 
 theorem natCard_GG : Nat.card φ.GG = 4 * φ.ord := by
   show Nat.card (G0 × φ.MA) = _
-  rw [Nat.card_prod]
   have h0 : Nat.card G0 = 4 := by
     show Nat.card (ℤˣ × ℤˣ) = 4
     rw [Nat.card_prod, Nat.card_eq_fintype_card, Fintype.card_units_int]
-  have h2 : Nat.card φ.MA = φ.ord := φ.natCard_A
-  rw [h0, h2]
+  rw [Nat.card_prod, h0, show Nat.card φ.MA = φ.ord from φ.natCard_A]
 
 end Frame
 

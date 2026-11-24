@@ -187,8 +187,6 @@ theorem gaussian_tail_bound : GaussianTailBound := by
       have hc : (insert a S).card = S.card + 1 := by
         first
           | exact Finset.card_insert_of_notMem haS
-          | exact Finset.card_insert_of_not_mem haS
-          | simp [haS]
       rw [hc] at hcard
       rw [Finset.sum_insert haS, hc]
       push_cast at hcard ⊢

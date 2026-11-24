@@ -114,7 +114,7 @@ lemma tens (ε : Fin n → Bool) (i j k l : Fin n) :
         simp_all <;> cases ε k <;> cases ε l <;> simp_all <;> ring_nf <;> simp [Complex.I_sq] <;> ring
 
 lemma gen_inG (ε : Fin n → Bool) (p : Fin n × Fin n) : inG ε (gen ε p) := by
-  apply Formalism.L2.SG.Pf.admitted.AdmissibleVectors.inG_gen <;> assumption
+  apply Formalism.L2.SG.Pf.admitted.AdmissibleVectors.inG_gen
 
 lemma lgen (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     ∑ p, (((cf ε p : ℝ) : ℂ) * trace (X * gen ε p)) • gen ε p = -X := by

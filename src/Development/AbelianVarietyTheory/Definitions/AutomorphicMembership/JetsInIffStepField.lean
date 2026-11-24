@@ -72,22 +72,6 @@ theorem monoDeg_eq_sum [Fintype T] (e : DVar T a b →₀ ℕ) (τ : T) : monoDe
   · intro h
     exact absurd (Finset.mem_univ τ) h
 
-theorem exists_monoDeg [Fintype T] (ha : 0 < a) (hb : 0 < b) (n : T → ℕ) : ∃ e : DVar T a b →₀ ℕ, ∀ τ, monoDeg e τ = n τ := by
-  classical
-  refine ⟨∑ t, Finsupp.single (t, (⟨0, hb⟩ : Fin b), (⟨0, ha⟩ : Fin a)) (n t), fun τ => ?_⟩
-  rw [monoDeg_eq_sum, Finset.sum_eq_single (⟨0, hb⟩ : Fin b)]
-  · rw [Finset.sum_eq_single (⟨0, ha⟩ : Fin a)]
-    · simp [Finsupp.finsetSum_apply, Finsupp.single_apply]
-    · intro α _ hα
-      simp [Finsupp.finsetSum_apply, Ne.symm hα]
-    · intro h
-      exact absurd (Finset.mem_univ _) h
-  · intro β _ hβ
-    refine Finset.sum_eq_zero fun α _ => ?_
-    simp [Finsupp.finsetSum_apply, Ne.symm hβ]
-  · intro h
-    exact absurd (Finset.mem_univ _) h
-
 end Deg
 
 namespace ColIn
@@ -103,31 +87,6 @@ abbrev modulus (a : I.ι) (u : B.Word) : ℕ :=
 end ColIn
 
 abbrev nuDeg (B : Base) (u : B.Word) (i : ℕ) (τ : B.fields.Tau) : ℤ := ∑ r, (B.wts.nuW u (i + 1) τ).w r
-
-theorem nuDeg_nonneg (B : Base) (u : B.Word) {i : ℕ} (hi : i < B.R.m) (τ : B.fields.Tau) : 0 ≤ nuDeg B u i τ := by
-  have h0 := GlobalTheory.MoveCompare.nuW_detShift_nonneg B.wts u hi τ
-  unfold nuDeg
-  refine Finset.sum_nonneg fun r _ => le_trans h0 ?_
-  unfold DomWeight.detShift
-  split_ifs with h
-  · apply DomWeight.anti
-    rw [Fin.le_iff_val_le_val]
-    have := r.isLt
-    simp only
-    omega
-  · exact absurd (lt_of_le_of_lt (Nat.zero_le _) r.isLt) h
-
-theorem exists_monoDeg_nuDeg (B : Base) (u : B.Word) {i : ℕ} (hi : i < B.R.m) :
-    ∃ e : DVar B.fields.Tau (B.R.N i) (B.R.N (i + 1)) →₀ ℕ, ∀ τ, (monoDeg e τ : ℤ) = nuDeg B u i τ := by
-  have hk := B.R.m_add_three_le_k
-  have h1 : 0 < B.R.N i := by
-    show 0 < B.R.k + i * (B.R.t + 1)
-    omega
-  have h2 : 0 < B.R.N (i + 1) := by
-    show 0 < B.R.k + (i + 1) * (B.R.t + 1)
-    omega
-  obtain ⟨e, he⟩ := exists_monoDeg (T := B.fields.Tau) h1 h2 (fun τ => (nuDeg B u i τ).toNat)
-  exact ⟨e, fun τ => by rw [he τ]; exact Int.toNat_of_nonneg (nuDeg_nonneg B u hi τ)⟩
 
 private theorem monoDeg_eq_sum_filter {T : Type} {a b : ℕ} {d : DecidableEq T} (e : DVar T a b →₀ ℕ) (τ : T) :
     monoDeg e τ = ∑ k ∈ e.support.filter (fun k => k.1 = τ), e k := by

@@ -1,52 +1,12 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PmatIsHermitian
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.CategoryTheory.Countable
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Separation.CompletelyRegular
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.TraceMulSelfEqSumEigenvaluesSq
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -72,7 +32,6 @@ theorem adKAux_K_facts {ε : Fin n → Bool} (k : KG ε) :
   have hc' : toMK k * Jm ε = Jm ε * toMK k := by
     first
       | exact hc
-      | exact hc.symm
   refine ⟨h1, hc', ?_⟩
   calc (toMK k)ᴴ * Jm ε = (toMK k)ᴴ * Jm ε * (toMK k * (toMK k)ᴴ) := by rw [h2, Matrix.mul_one]
     _ = (toMK k)ᴴ * (Jm ε * toMK k) * (toMK k)ᴴ := by simp only [Matrix.mul_assoc]
@@ -139,9 +98,7 @@ theorem jac_adK {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) : Jac 
 
 theorem adKAux_shc_neg (u : ℝ) : shc (-u) = shc u := by
   unfold shc
-  by_cases hu : u = 0
-  · simp [hu]
-  · rw [if_neg (neg_ne_zero.mpr hu), if_neg hu, Real.sinh_neg, neg_div_neg_eq]
+  by_cases hu : u = 0 <;> simp [hu, Real.sinh_neg, neg_div_neg_eq]
 
 theorem adKAux_shc_pos (u : ℝ) : 0 < shc u := by
   unfold shc
@@ -166,23 +123,21 @@ theorem adKAuxJ_sq (x : Fin n → ℝ) : adjointCompactJacobianFactor x ^ 2 = �
     intro a
     rw [← Finset.prod_filter_mul_prod_filter_not univ (fun b => a < b)]
     congr 1
-    rw [← Finset.prod_filter_mul_prod_filter_not (univ.filter fun b => ¬ a < b) (fun b => b < a)]
-    have e1 : (univ.filter fun b : Fin n => ¬ a < b).filter (fun b => b < a) =
-        univ.filter (fun b => b < a) := by
-      ext b
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-      constructor
-      · exact fun h => h.2
-      · exact fun h => ⟨not_lt.mpr h.le, h⟩
-    have e2 : ∏ b ∈ (univ.filter fun b : Fin n => ¬ a < b).filter (fun b => ¬ b < a),
-        shc (x a - x b) = 1 := by
-      apply Finset.prod_eq_one
-      intro b hb
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hb
-      have hba : b = a := le_antisymm (not_lt.mp hb.1) (not_lt.mp hb.2)
-      rw [hba, sub_self]
-      simp [shc]
-    rw [e1, e2, mul_one]
+    have hprod : (∏ b ∈ univ.filter (fun b => b < a), shc (x a - x b)) =
+        ∏ b ∈ univ.filter (fun b => ¬ a < b), shc (x a - x b) := by
+      refine Finset.prod_subset ?_ ?_
+      · intro b hb
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢
+        exact not_lt.mpr hb.le
+      · intro b hb hbs
+        have hb' : ¬ a < b := by
+          simpa only [Finset.mem_filter, Finset.mem_univ, true_and] using hb
+        have hbs' : ¬ b < a := by
+          intro h
+          exact hbs (by simp [h])
+        have hba : b = a := le_antisymm (not_lt.mp hb') (not_lt.mp hbs')
+        simp [hba, shc]
+    exact hprod.symm
   have h2 : ∏ a, ∏ b ∈ univ.filter (fun b => b < a), shc (x a - x b) = adjointCompactJacobianFactor x := by
     rw [Finset.prod_comm' (t' := univ) (s' := fun b => univ.filter (fun a => b < a)) (by intro a b; simp)]
     unfold adjointCompactJacobianFactor

@@ -3,55 +3,11 @@ module
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.IsClosedEmbeddingToM
 public import Mathlib.Analysis.Matrix.Normed
 import Mathlib.Algebra.Module.StablyFree.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 public import Mathlib.RingTheory.Complex
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.RingTheory.Norm.Transitivity
 
 @[expose] public section
@@ -95,15 +51,8 @@ lemma toM_mul_invVG {ε : Fin n → Bool} (g : UJ ε) : toM g * toM g⁻¹ = 1 :
   unfold toM
   rw [Subgroup.coe_inv, Units.mul_inv]
 
-private lemma Jm_mul_self_eq_one' (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
-
 lemma gJgH_VG {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : g * Jm ε * gᴴ = Jm ε := by
-  have hJ := Jm_mul_self_eq_one' ε
+  have hJ := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε
   have hg' : gᴴ * Jm ε * g = Jm ε := hg
   have h1 : (Jm ε * gᴴ * Jm ε) * g = 1 := by
     rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', hJ]
@@ -114,7 +63,7 @@ lemma gJgH_VG {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ 
 
 lemma normSq_detVG {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     Complex.normSq g.det = 1 := by
-  have hJ := Jm_mul_self_eq_one' ε
+  have hJ := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε
   have hJ0 : (Jm ε).det ≠ 0 := by
     intro h0
     have h1 := congrArg Matrix.det hJ
@@ -139,7 +88,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 lemma ballFiniteVG (ε : Fin n → Bool) (ν : Measure (UJ ε)) [ν.IsHaarMeasure] (R : ℝ) :
     ν {g | hs (toM g) ≤ R} < ⊤ := by
   classical
-  have hJ := Jm_mul_self_eq_one' ε
+  have hJ := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε
   let K : Set (Matrix (Fin n) (Fin n) ℂ) := {M | inUJ ε M ∧ hs M ≤ R}
   have hKc : IsCompact K := by
     apply Metric.isCompact_of_isClosed_isBounded
@@ -288,8 +237,6 @@ lemma stdBasis_reprV {Q : Type} [Fintype Q] [DecidableEq Q] (x : Matrix (Fin n) 
     (Matrix.stdBasis ℂ (Fin n) Q).repr x (i, j) = x i j := by
   first
     | rfl
-    | (simp [Matrix.stdBasis]; done)
-    | (simp [Matrix.stdBasis, Basis.reindex_repr, Pi.basis_repr]; done)
 
 lemma LcV_det {Q : Type} [Fintype Q] [DecidableEq Q] (g : Matrix (Fin n) (Fin n) ℂ) :
     LinearMap.det (LcV (Q := Q) g) = g.det ^ Fintype.card Q := by

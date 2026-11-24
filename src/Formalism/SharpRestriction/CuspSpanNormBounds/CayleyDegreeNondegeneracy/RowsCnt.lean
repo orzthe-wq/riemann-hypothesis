@@ -72,7 +72,7 @@ theorem rows_isTermF (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0) : IsTermF D (X
   · rw [← hfl]
     intro h0
     apply hG
-    have h := X.10 t
+    have h := X.G_eq t
     rw [h0] at h
     exact (algebraMap _ _).injective (h.trans (map_zero _).symm)
 
@@ -89,7 +89,7 @@ theorem rows_fibre_le (Z' Z'' : GramM D) (s : ℕ) (De : ℝ) (Λ : LatV D) (S :
       pairToTriple X p ∈ PairSet D Λ ((Tu D u' : ℕ) : D.host.E) (lf D Y.F0) Z' Z'' s De := by
     intro p hp
     obtain ⟨hΛ, hG1, hG2, hZ1, hZ2, hs, hDe⟩ := hS p hp
-    have hΛ2 : X.abelian₂ (D.s.psnd p) = Λ := (X.16 p).symm.trans hΛ
+    have hΛ2 : X.abelian₂ (D.s.psnd p) = Λ := (X.pLam p).symm.trans hΛ
     have hfl : X.fl (D.s.pfst p) = lf D Y.F0 := Y.fl_eq _
     have hfl2 : X.fl (D.s.psnd p) = lf D Y.F0 := Y.fl_eq _
     simp only [PairSet, pairToTriple, Set.mem_setOf_eq]
@@ -99,12 +99,12 @@ theorem rows_fibre_le (Z' Z'' : GramM D) (s : ℕ) (De : ℝ) (Λ : LatV D) (S :
     · rw [← hΛ2]
       exact rows_isTermF Y _ hG2
     · rw [← hΛ, ← hfl]
-      exact X.19 p
+      exact X.isPair p
     · rw [← hfl]
       exact hZ1
     · rw [← hfl2]
       exact hZ2
-    · rw [← hΛ, ← hfl, ← X.20 p]
+    · rw [← hΛ, ← hfl, ← X.s0_eq p]
       exact hs
     · rw [← hΛ, ← hfl]
       exact hDe
@@ -285,7 +285,7 @@ theorem rows_countOne {C' Cl Cg cb Cu cT CT C0 A CSW C4 : ℝ} (hH : Cnt.Hyp D l
     simp only [Set.mem_setOf_eq]
     refine ⟨hT.1, hT.2, ?_, ?_⟩
     · rw [← hpΛ, ← Y.fl_eq (D.s.pfst p)]
-      exact (X.14 _).mp hg1
+      exact (X.gen_iff _).mp hg1
     · rw [← Y.fl_eq (D.s.pfst p)]
       exact hZ1
   · intro i₀ hi₀ S' hS' hR
@@ -301,7 +301,7 @@ theorem rows_countOne {C' Cl Cg cb Cu cT CT C0 A CSW C4 : ℝ} (hH : Cnt.Hyp D l
     have hT₀ := rows_isTermF Y _ hG1₀
     have hgen₀ : IsGeneric (X.abelian₂ (D.s.pfst i₀)) (gS D) (lf D Y.F0) (X.fl' (D.s.pfst i₀)) := by
       rw [← Y.fl_eq (D.s.pfst i₀)]
-      exact (X.14 _).mp hg1₀
+      exact (X.gen_iff _).mp hg1₀
     have hRel : RelZ D (ZhatL (lf D Y.F0) (X.fl' (D.s.pfst i₀))) := by
       rw [← Y.fl_eq (D.s.pfst i₀)]
       exact hRel₀
@@ -344,11 +344,11 @@ theorem rows_countOne' {C' Cl Cg cb Cu cT CT C0 A CSW C4 : ℝ} (hH : Cnt.Hyp D 
     obtain ⟨hpS, hpΛ⟩ := Finset.mem_filter.mp hp
     obtain ⟨-, hG2, -, hg2, -, -, hZ2, -, -⟩ := hS p hpS
     have hT := rows_isTermF Y _ hG2
-    rw [← X.16 p, hpΛ] at hT
+    rw [← X.pLam p, hpΛ] at hT
     simp only [Set.mem_setOf_eq]
     refine ⟨hT.1, hT.2, ?_, ?_⟩
-    · rw [← hpΛ, X.16 p, ← Y.fl_eq (D.s.psnd p)]
-      exact (X.14 _).mp hg2
+    · rw [← hpΛ, X.pLam p, ← Y.fl_eq (D.s.psnd p)]
+      exact (X.gen_iff _).mp hg2
     · rw [← Y.fl_eq (D.s.psnd p)]
       exact hZ2
   · intro i₀ hi₀ S' hS' hR
@@ -362,10 +362,10 @@ theorem rows_countOne' {C' Cl Cg cb Cu cT CT C0 A CSW C4 : ℝ} (hH : Cnt.Hyp D 
       rw [← hi₀Λ] at h
       exact h)
     have hT₀ := rows_isTermF Y _ hG2₀
-    rw [← X.16 i₀] at hT₀
+    rw [← X.pLam i₀] at hT₀
     have hgen₀ : IsGeneric (X.abelian₂ (D.s.pfst i₀)) (gS D) (lf D Y.F0) (X.fl' (D.s.psnd i₀)) := by
-      rw [X.16 i₀, ← Y.fl_eq (D.s.psnd i₀)]
-      exact (X.14 _).mp hg2₀
+      rw [X.pLam i₀, ← Y.fl_eq (D.s.psnd i₀)]
+      exact (X.gen_iff _).mp hg2₀
     have hRel : RelZ D (ZhatL (lf D Y.F0) (X.fl' (D.s.psnd i₀))) := by
       rw [← Y.fl_eq (D.s.psnd i₀)]
       exact hRel₀
@@ -405,23 +405,23 @@ theorem rows_OneFibre_of (hT : wordPairTermInjective X Y) (hU : wordPairBetaUniq
     rw [← hfi]
     simp only [Partners, Set.mem_setOf_eq]
     refine ⟨?_, ?_, ?_, X.beta i.1, ?_, ?_⟩
-    · rw [X.16 i.1]
+    · rw [X.pLam i.1]
       exact rows_isTermF Y _ hG2
-    · rw [X.16 i.1, ← Y.fl_eq (D.s.psnd i.1)]
-      exact (X.14 _).mp hg2
+    · rw [X.pLam i.1, ← Y.fl_eq (D.s.psnd i.1)]
+      exact (X.gen_iff _).mp hg2
     · rw [← Y.fl_eq (D.s.psnd i.1)]
       exact hZ
     · rw [← Y.fl_eq (D.s.pfst i.1)]
-      exact X.19 i.1
-    · rw [← Y.fl_eq (D.s.pfst i.1), ← X.20 i.1]
+      exact X.isPair i.1
+    · rw [← Y.fl_eq (D.s.pfst i.1), ← X.s0_eq i.1]
       exact hs0
   have hinj : ∀ i j : S, TEqv D (X.abelian₂ (D.s.pfst p₀)) (lf D Y.F0) (X.fl' (D.s.psnd i.1)) (X.fl' (D.s.psnd j.1)) →
       i = j := by
     intro i j h
     obtain ⟨hΛi, hG1i, hG2i, hg1i, hg2i, hs0i, -, -⟩ := hS i.1 i.2
     obtain ⟨hΛj, -, -, -, -, hs0j, -, -⟩ := hS j.1 j.2
-    have hLi : X.abelian₂ (D.s.psnd i.1) = X.abelian₂ (D.s.pfst p₀) := (X.16 i.1).symm.trans hΛi
-    have hLj : X.abelian₂ (D.s.psnd j.1) = X.abelian₂ (D.s.pfst p₀) := (X.16 j.1).symm.trans hΛj
+    have hLi : X.abelian₂ (D.s.psnd i.1) = X.abelian₂ (D.s.pfst p₀) := (X.pLam i.1).symm.trans hΛi
+    have hLj : X.abelian₂ (D.s.psnd j.1) = X.abelian₂ (D.s.pfst p₀) := (X.pLam j.1).symm.trans hΛj
     have hsnd : D.s.psnd i.1 = D.s.psnd j.1 := hT _ _ (hLi.trans hLj.symm) (by rw [hLi]; exact h)
     exact Subtype.ext (hU _ _ ((hf i.1 i.2).trans (hf j.1 j.2).symm) hsnd hs0i hs0j hg1i hg2i hG1i hG2i)
   have key := Formalism.MainNotions.S.Lem.Cnt.card_le_cntCl _ (TEqv D (X.abelian₂ (D.s.pfst p₀)) (lf D Y.F0))
@@ -432,11 +432,11 @@ theorem rows_OneFibre_of (hT : wordPairTermInjective X Y) (hU : wordPairBetaUniq
 theorem rows_OneFibre'_of (hT : wordPairTermInjective X Y) (hU : wordPairBetaUnique D u u') (hP : wordPairSymmetric X u u') :
     wordPairTermSingleFibre X Y := by
   intro Z' p₀ S hS
-  have hL0 : X.abelian₂ (D.s.psnd p₀) = X.abelian₂ (D.s.pfst p₀) := (X.16 p₀).symm
+  have hL0 : X.abelian₂ (D.s.psnd p₀) = X.abelian₂ (D.s.pfst p₀) := (X.pLam p₀).symm
   have hf : ∀ p ∈ S, D.s.psnd p = D.s.psnd p₀ := by
     intro p hp
     obtain ⟨hΛ, -, -, -, -, -, -, hE⟩ := hS p hp
-    refine (hT _ _ (hL0.trans (hΛ.symm.trans (X.16 p))) ?_).symm
+    refine (hT _ _ (hL0.trans (hΛ.symm.trans (X.pLam p))) ?_).symm
     rw [hL0]
     exact hE
   have hmem : ∀ i : S, X.fl' (D.s.pfst i.1) ∈
@@ -448,7 +448,7 @@ theorem rows_OneFibre'_of (hT : wordPairTermInjective X Y) (hU : wordPairBetaUni
     simp only [Partners, Set.mem_setOf_eq]
     refine ⟨rows_isTermF Y _ hG1, ?_, ?_, β, ?_, ?_⟩
     · rw [← Y.fl_eq (D.s.pfst i.1)]
-      exact (X.14 _).mp hg1
+      exact (X.gen_iff _).mp hg1
     · rw [← Y.fl_eq (D.s.pfst i.1)]
       exact hZ
     · rw [← Y.fl_eq (D.s.pfst i.1)]
@@ -615,14 +615,14 @@ theorem rows_BetaUnique_of {large₂ : SizeData₂ D} {C1 : ℝ} (Y : LoopTie D 
   have hT1 := (rows_isTermF Y _ hG1).1
   rw [← Y.fl_eq (D.s.pfst p)] at hT1
   have hT2 := (rows_isTermF Y _ hG2).1
-  rw [← X.16 p, ← Y.fl_eq (D.s.pfst p)] at hT2
-  have hGen1 := (X.14 _).mp hg1
-  have hGen2 := (X.14 _).mp hg2
-  rw [← X.16 p, ← X.17 p] at hGen2
-  have hPq := X.19 q
+  rw [← X.pLam p, ← Y.fl_eq (D.s.pfst p)] at hT2
+  have hGen1 := (X.gen_iff _).mp hg1
+  have hGen2 := (X.gen_iff _).mp hg2
+  rw [← X.pLam p, ← X.pfl p] at hGen2
+  have hPq := X.isPair q
   rw [← h1, ← h2] at hPq
-  have hs0p := (X.20 p).symm.trans hs1
-  have hs0q := (X.20 q).symm.trans hs2
+  have hs0p := (X.s0_eq p).symm.trans hs1
+  have hs0q := (X.s0_eq q).symm.trans hs2
   rw [← h1, ← h2] at hs0q
   refine ⟨n', hn', n'', hn'', ?_, ?_, ?_⟩
   · rw [← h1]
@@ -632,7 +632,7 @@ theorem rows_BetaUnique_of {large₂ : SizeData₂ D} {C1 : ℝ} (Y : LoopTie D 
   · intro x hx'
     rw [← h1] at hx'
     have hb := hB (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) (X.fl' (D.s.psnd p))
-      (X.beta p) (X.beta q) (X.fixed _) hT1 hT2 hGen1 hGen2 (X.19 p) hPq hs0p hs0q x hx'
+      (X.beta p) (X.beta q) (X.fixed _) hT1 hT2 hGen1 hGen2 (X.isPair p) hPq hs0p hs0q x hx'
     have hsub := Submodule.add_mem _ hb (hx x hx')
     rw [← h2]
     convert hsub using 1

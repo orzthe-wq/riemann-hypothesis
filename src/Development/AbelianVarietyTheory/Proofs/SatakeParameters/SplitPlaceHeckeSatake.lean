@@ -188,7 +188,7 @@ theorem suppF_iff_trivOutside (D : D7) (s : SplitPlace D.host.E) (hF : D.host.F 
     refine forall_congr' fun i => forall_congr' fun j => ⟨fun h => ?_, fun h => ?_⟩
     · exact ((Formalism.L2.Theta.finPart D).map_mul _ _).symm.trans (congrArg (Formalism.L2.Theta.finPart D) h)
     · rw [← sub_eq_zero]
-      apply GlobalTheory.PlaceSupp.AE_eq_zero D
+      apply _root_.GlobalTheory.DualPairCompare.parts_zero D
       · have h0 : Formalism.L2.Theta.infPart D ((Formalism.L2.Theta.mt V (PV.ψ κ) - 1) i j) = 0 := congrFun (congrFun e2 i) j
         rw [RingHom.map_sub, RingHom.map_mul, h0, mul_zero, sub_zero]
       · rw [RingHom.map_sub, RingHom.map_mul, sub_eq_zero]

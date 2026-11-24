@@ -66,7 +66,7 @@ theorem equivFinsuppOfBasisRight_rTensor {K M N N' ι : Type*} [Field K] [AddCom
       f (TensorProduct.equivFinsuppOfBasisRight b x i) := by
   induction x using TensorProduct.induction_on with
   | zero => simp
-  | tmul m n => simp [TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]
+  | tmul m n => simp
   | add x y hx hy => simp only [map_add (f := _), Finsupp.add_apply, hx, hy]
 
 theorem rTensor_eq_zero {K M N P Q ι : Type*} [Field K] [AddCommGroup M] [Module K M]
@@ -86,25 +86,6 @@ theorem rTensor_eq_zero {K M N P Q ι : Type*} [Field K] [AddCommGroup M] [Modul
       exact this.symm
   have : e x = 0 := Finsupp.ext hc
   simpa using congrArg e.symm this
-
-theorem AE_eq_zero (D : D7) (x : Formalism.L2.Theta.AE D) (h1 : Formalism.L2.Theta.infPart D x = 0)
-    (h2 : Formalism.L2.Theta.finPart D x = 0) : x = 0 := by
-  classical
-  let b := Module.finBasis D.host.F D.host.E
-  refine rTensor_eq_zero b (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA D.host.F).toLinearMap (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA D.host.F).toLinearMap
-    (fun n hf hs => Prod.ext hf hs) x ?_ ?_
-  · rw [← h1]; clear h1 h2
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | tmul m n => rfl
-    | add x y hx hy => rw [LinearMap.map_add (f := _), RingHom.map_add (f := _), hx, hy]
-  · rw [← h2]; clear h1 h2
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | tmul m n => rfl
-    | add x y hx hy => rw [LinearMap.map_add (f := _), RingHom.map_add (f := _), hx, hy]
-
-
 
 theorem idem_mul_eq_self : ∀ (D : D7) (s : SplitPlace D.host.E) (hF : D.host.F = maximalRealSubfield D.host.E) (p : GlobalTheory.LocMod.Place D (s.w.adicCompletion D.host.E)) (c : s.v.adicCompletion (maximalRealSubfield D.host.E) ≃+* s.w.adicCompletion D.host.E), (∀ a : Formalism.L2.Theta.AE D, p.π a = c (s.proj (GlobalTheory.NJoin.tensCast hF (Formalism.L2.Theta.finPart D a)))) → ∀ a : Formalism.L2.Theta.AE D, Formalism.L2.Theta.infPart D a = 0 → (∀ v' : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)), v' ≠ s.v → ReciprocityTheory.Aut.compAt D.host.E v' (GlobalTheory.NJoin.tensCast hF (Formalism.L2.Theta.finPart D a)) = 0) → (p.e + Formalism.L2.Theta.cA D p.e) * a = a := by
   intro D s hF p c hπ a ha0 haf
@@ -134,7 +115,7 @@ theorem idem_mul_eq_self : ∀ (D : D7) (s : SplitPlace D.host.E) (hF : D.host.F
   subst hws
   set x := algebraMap (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) (Formalism.L2.Theta.AE D) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.pairA D.host.F 0 α) with hx
   suffices hb : x * a - a = 0 from sub_eq_zero.mp hb
-  apply AE_eq_zero D
+  apply _root_.GlobalTheory.DualPairCompare.parts_zero D
   · rw [RingHom.map_sub, RingHom.map_mul, ha0, mul_zero, sub_zero]
   · have key : GlobalTheory.NJoin.tensCast hF (Formalism.L2.Theta.finPart D (x * a - a)) = 0 := by
       apply GlobalTheory.AL_eq_zero_of_compAt

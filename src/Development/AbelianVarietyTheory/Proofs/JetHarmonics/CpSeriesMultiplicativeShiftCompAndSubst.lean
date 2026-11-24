@@ -167,17 +167,12 @@ theorem Hom.lin {Φ : ℂ_[q]⟦X⟧ → ℂ_[q]⟦X⟧} (h : Hom Φ) (c : ℂ_[
   rw [e, h.add _ _ (bdd_mul (bdd_C _) b1) (bdd_C _), h.mul _ _ (bdd_C _) b1, h.const, h.const, map_sub, map_one]
   ring
 
-theorem norm_le_one_of {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) : ‖ζ‖ ≤ 1 := by
-  have := IsUltrametricDist.norm_add_le_max (ζ - 1) 1
-  rw [sub_add_cancel, norm_one] at this
-  exact this.trans (max_le hζ.le le_rfl)
-
 theorem norm_mul_sub_one {ζ ξ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) (hξ : ‖ξ - 1‖ < 1) : ‖ζ * ξ - 1‖ < 1 := by
   have e : ζ * ξ - 1 = ζ * (ξ - 1) + (ζ - 1) := by ring
   rw [e]
   refine (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ hζ)
   rw [norm_mul]
-  exact (mul_le_of_le_one_left (norm_nonneg _) (norm_le_one_of hζ)).trans_lt hξ
+  exact (mul_le_of_le_one_left (norm_nonneg _) (_root_.GlobalTheory.MomOne.Shift.norm_le_one_of hζ)).trans_lt hξ
 
 theorem norm_pow_sub_one {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) (k : ℕ) : ‖ζ ^ k - 1‖ < 1 := by
   induction k with
@@ -264,7 +259,7 @@ theorem continuous_coeff_shift_mulS {ζ : ℂ_[q]} (hζ : ‖ζ - 1‖ < 1) (n :
   · rw [norm_mul, norm_mul, norm_mul, norm_pow, norm_pow]
     have h1 := bd_mulS a m
     have h2 : ‖(m.choose n : ℂ_[q])‖ ≤ 1 := IsUltrametricDist.norm_natCast_le_one _ _
-    have h3 : ‖ζ‖ ^ n ≤ 1 := pow_le_one₀ (norm_nonneg _) (norm_le_one_of hζ)
+    have h3 : ‖ζ‖ ^ n ≤ 1 := pow_le_one₀ (norm_nonneg _) (_root_.GlobalTheory.MomOne.Shift.norm_le_one_of hζ)
     calc _ ≤ 1 * (1 * 1 * ‖ζ - 1‖ ^ (m - n)) := by gcongr
       _ = _ := by ring
 

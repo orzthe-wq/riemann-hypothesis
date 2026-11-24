@@ -77,9 +77,9 @@ theorem Kset_eq (ε : Fin n → Bool) : PI.UpqRep.Kset ε = HarishChandraRootDat
     cases ha : ε a <;> cases hb : ε b
     · exact absurd (ha.trans hb.symm) hab
     · simp [ha, hb] at h'
-      first | exact h' | linear_combination (1 / 2 : ℂ) * h' | linear_combination (-1 / 2 : ℂ) * h'
+      first | linear_combination (1 / 2 : ℂ) * h'
     · simp [ha, hb] at h'
-      first | exact h' | linear_combination (1 / 2 : ℂ) * h' | linear_combination (-1 / 2 : ℂ) * h'
+      first | linear_combination (1 / 2 : ℂ) * h' | linear_combination (-1 / 2 : ℂ) * h'
     · exact absurd (ha.trans hb.symm) hab
   · intro h a b
     by_cases hab : ε a = ε b

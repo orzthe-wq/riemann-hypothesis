@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.TypeStar
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -135,7 +136,7 @@ theorem exists_const (A : Over (Sp R)) [GrpObj A] :
   obtain ⟨C, _, φ, hφ⟩ := GlobalTheory.FlagTan.exists_isGrpPullback A (spMap (algebraMap R (DualNumber R)))
   have eid : epsRed R ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _ := by
     have e0 : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R := by
-      ext r; simp [TrivSqZeroExt.algebraMap_eq_inl]
+      ext r; simp
     rw [epsRed, spMap_comp_spMap, e0]
     exact Spec.map_id _
   have w : 𝟙 A.left ≫ A.hom = (A.hom ≫ epsRed R) ≫ spMap (algebraMap R (DualNumber R)) := by

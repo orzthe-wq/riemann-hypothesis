@@ -199,8 +199,7 @@ theorem UpperTheory.exists_isDiagOn_of_isDiagOn_inf_ker_sign :
     rw [hS] at hc
     have c01 := congrFun (congrFun hc 0) 1
     have c10 := congrFun (congrFun hc 1) 0
-    simp only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.head_cons] at c01 c10
+    simp only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.cons_val_zero, Matrix.cons_val_one] at c01 c10
     have h01 : S 0 1 = 0 := by
       have : S 0 1 * (((Ψ t0 : kˣ) : k) - (((Ψ⁻¹) t0 : kˣ) : k)) = 0 := by linear_combination -c01
       exact (mul_eq_zero.mp this).resolve_right (sub_ne_zero.mpr hne)
@@ -210,7 +209,7 @@ theorem UpperTheory.exists_isDiagOn_of_isDiagOn_inf_ker_sign :
     have d0 := congrFun (congrFun hSS 0) 0
     have d1 := congrFun (congrFun hSS 1) 1
     simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal_apply_eq, h01, h10, mul_zero,
-      add_zero, zero_mul, zero_add, map_mul, Units.val_mul] at d0 d1
+      add_zero, zero_add, map_mul, Units.val_mul] at d0 d1
     have hxi : ∀ i, S i i * S i i = ((![Ψ, Ψ⁻¹] i s : kˣ) : k) * ((![Ψ, Ψ⁻¹] i s : kˣ) : k) := by
       intro i
       fin_cases i

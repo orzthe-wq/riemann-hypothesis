@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.Topology.UniformSpace.Uniformizable
 public import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.ComplexWhittaker.ExpEqOfHasDerivAt
 public import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.Density
 public import GroundTheory.AutomorphicForms.ArchimedeanWhittaker.MultOne

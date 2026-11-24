@@ -185,7 +185,7 @@ theorem famφ_eq (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F
 theorem famφB_pull (hD : IsPullDeg φ D D') (x : D'.X) (κ : Fin 4) :
     D'.famφB x κ ≫ (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) =
       (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) ≫ D.famφB (hD.xe x) κ := by
-  apply GlobalTheory.TwistLoc.fam_comm <;> assumption
+  apply GlobalTheory.TwistLoc.fam_comm
 
 end Fam
 

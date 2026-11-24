@@ -72,9 +72,7 @@ private theorem UpperTheory.Comparison₂.sign_character_neg_one : Multiplicativ
 
 private theorem UpperTheory.Comparison₂.sign_character_zero_iff : ∀ u : ℤˣ, u = 1 ↔ Multiplicative.toAdd (Formalism.LFunctionChainParameters.LHost.sgn2 u) = 0 := by
   intro u
-  rcases Int.units_eq_one_or u with rfl | rfl
-  · exact iff_of_true rfl UpperTheory.Comparison₂.sign_character_one
-  · exact iff_of_false (by decide) (by rw [UpperTheory.Comparison₂.sign_character_neg_one]; decide)
+  rcases Int.units_eq_one_or u with rfl | rfl <;> decide
 
 theorem UpperTheory.Comparison₂.toE_bij :
     ∀ φ : Frame, Function.Bijective (toE φ) ∧ toE φ φ.iod = Multiplicative.ofAdd sgc0 ∧ toE φ φ.cc = Multiplicative.ofAdd cconj ∧
@@ -93,10 +91,7 @@ theorem UpperTheory.Comparison₂.toE_bij :
     have e3 : m = n := by
       have h4 := congrArg φ.iota h3
       rwa [Frame.iota_iotaInv, Frame.iota_iotaInv] at h4
-    subst e1
-    subst e2
-    subst e3
-    rfl
+    simp [e1, e2, e3]
   · intro y
     obtain ⟨u1, hu1⟩ := hs.2 (Multiplicative.ofAdd (Multiplicative.toAdd y).1.2)
     obtain ⟨u2, hu2⟩ := hs.2 (Multiplicative.ofAdd (Multiplicative.toAdd y).1.1)

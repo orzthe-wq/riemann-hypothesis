@@ -1,9 +1,14 @@
 module
 
+public import Mathlib.RingTheory.PowerSeries.Substitution
+public import Mathlib.RingTheory.AdicCompletion.Basic
+public import Mathlib.RingTheory.LocalRing.MaximalIdeal.Defs
 public import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
 public import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ConstantLeRpowOfThreeLe
-public import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ConstantCoeffSubstAlgHom
 public import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.GammaPi0EqPi0MulUnit
+import Mathlib.RingTheory.PowerSeries.NoZeroDivisors
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.TypeStar
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -28,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,6 +48,315 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ConstantCoeffSubstAlgHom, Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ExistsPhiBridge
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ConstantCoeffSubstAlgHom =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ConstantCoeffSubstAlgHom", "h": "module\n\npublic import Mathlib.RingTheory.PowerSeries.Substitution\npublic import Mathlib.RingTheory.AdicCompletion.Basic\npublic import Mathlib.RingTheory.LocalRing.MaximalIdeal.Defs\nimport Mathlib.RingTheory.PowerSeries.NoZeroDivisors\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.TypeStar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.N.FrobeniusPowerSeries.PB
+
+open PowerSeries
+
+section Ext
+
+variable {R S : Type*} [CommRing R] [CommRing S]
+
+theorem X_pow_dvd_pow_of_nil (a : S⟦X⟧) (ha : IsNilpotent (constantCoeff a)) (m : ℕ) :
+    ∃ N, (X : S⟦X⟧) ^ m ∣ a ^ N := by
+  obtain ⟨n, hn⟩ := ha
+  refine ⟨n * m, ?_⟩
+  rw [pow_mul]
+  exact pow_dvd_pow_of_dvd (PowerSeries.X_dvd_iff.mpr (by rw [_root_.map_pow, hn])) m
+
+theorem ringHom_ext_nil {h₁ h₂ : R⟦X⟧ →+* S⟦X⟧} (hC : ∀ r, h₁ (C r) = h₂ (C r)) (hX : h₁ X = h₂ X)
+    (hnil : IsNilpotent (constantCoeff (h₁ X))) : h₁ = h₂ := by
+  have hpoly : ∀ p : Polynomial R, h₁ (p : R⟦X⟧) = h₂ (p : R⟦X⟧) := by
+    intro p
+    refine Polynomial.induction_on p (fun a => ?_) (fun p q hp hq => ?_) (fun n a _ => ?_)
+    · rw [Polynomial.coe_C]
+      exact hC a
+    · rw [Polynomial.coe_add, _root_.map_add (f := _), _root_.map_add (f := _), hp, hq]
+    · rw [Polynomial.coe_mul, Polynomial.coe_pow, Polynomial.coe_C, Polynomial.coe_X,
+        _root_.map_mul, _root_.map_mul, _root_.map_pow, _root_.map_pow, hC, hX]
+  refine RingHom.ext fun F => sub_eq_zero.mp (PowerSeries.ext fun m => ?_)
+  obtain ⟨N, hN⟩ := X_pow_dvd_pow_of_nil (h₁ X) hnil (m + 1)
+  obtain ⟨G, hG⟩ : (X : R⟦X⟧) ^ N ∣ F - (PowerSeries.trunc N F : R⟦X⟧) := by
+    rw [PowerSeries.X_pow_dvd_iff]
+    intro i hi
+    rw [_root_.map_sub, Polynomial.coeff_coe, PowerSeries.coeff_trunc, if_pos hi, sub_self]
+  have hd : h₁ F - h₂ F = h₁ X ^ N * (h₁ G - h₂ G) := by
+    have hF : F = (PowerSeries.trunc N F : R⟦X⟧) + X ^ N * G := by rw [← hG]; ring
+    rw [hF]
+    simp only [_root_.map_add (f := _), _root_.map_mul, _root_.map_pow, hpoly, ← hX]
+    ring
+  have hdvd : (X : S⟦X⟧) ^ (m + 1) ∣ h₁ F - h₂ F := by
+    rw [hd]
+    exact dvd_mul_of_dvd_left hN _
+  rw [_root_.map_zero]
+  exact PowerSeries.X_pow_dvd_iff.mp hdvd m (Nat.lt_succ_self m)
+
+end Ext
+
+section Inj
+
+variable {R : Type*} [CommRing R] [IsDomain R]
+
+private theorem powerSeries_algHom_C {R : Type*} [CommRing R] (ψ : R⟦X⟧ →ₐ[R] R⟦X⟧) (c : R) :
+    ψ (C c) = C c := by
+  have h := ψ.commutes c
+  rwa [PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply] at h
+
+private theorem constantCoeff_algHom_apply_of_constantCoeff_X {R : Type*} [CommRing R] (ψ : R⟦X⟧ →ₐ[R] R⟦X⟧)
+    (h0 : constantCoeff (ψ X) = 0) (F : R⟦X⟧) : constantCoeff (ψ F) = constantCoeff F := by
+  obtain ⟨G, hG⟩ : (X : R⟦X⟧) ∣ F - C (constantCoeff F) := by
+    rw [PowerSeries.X_dvd_iff, _root_.map_sub, PowerSeries.constantCoeff_C, sub_self]
+  have hF : F = C (constantCoeff F) + X * G := by rw [← hG]; ring
+  rw [hF]
+  first
+  | simp only [_root_.map_add (f := _), _root_.map_mul, powerSeries_algHom_C, h0, PowerSeries.constantCoeff_C,
+      PowerSeries.constantCoeff_X, zero_mul, add_zero]
+
+private theorem powerSeries_algHom_injective_of_X_ne_zero {R : Type*} [CommRing R] [IsDomain R]
+    (ψ : R⟦X⟧ →ₐ[R] R⟦X⟧) (h0 : constantCoeff (ψ X) = 0) (hne : ψ X ≠ 0) :
+    Function.Injective ψ := by
+  set_option backward.isDefEq.respectTransparency.instanceSearchTypes false in rw [injective_iff_map_eq_zero]
+  intro F hF
+  by_contra hF0
+  have hex : ∃ n, coeff n F ≠ 0 := by
+    by_contra h
+    push_neg at h
+    exact hF0 (PowerSeries.ext fun n => by rw [h n, _root_.map_zero])
+  classical
+  obtain ⟨n, hn, hmin⟩ : ∃ n, coeff n F ≠ 0 ∧ ∀ i < n, coeff i F = 0 :=
+    ⟨Nat.find hex, Nat.find_spec hex, fun i hi => by
+      by_contra h
+      exact Nat.find_min hex hi h⟩
+  obtain ⟨U, hU⟩ : (X : R⟦X⟧) ^ n ∣ F := PowerSeries.X_pow_dvd_iff.mpr hmin
+  have hU0 : constantCoeff U ≠ 0 := by
+    intro h
+    apply hn
+    rw [hU]
+    first
+    | rw [PowerSeries.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self,
+        PowerSeries.coeff_zero_eq_constantCoeff_apply, h]
+  have hψU : ψ U ≠ 0 := by
+    intro h
+    apply hU0
+    rw [← constantCoeff_algHom_apply_of_constantCoeff_X ψ h0 U, h, _root_.map_zero]
+  rw [hU, _root_.map_mul, _root_.map_pow] at hF
+  exact mul_ne_zero (pow_ne_zero _ hne) hψU hF
+
+private theorem substAlgHom_X_eq {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
+    {a : S⟦X⟧} (ha : HasSubst a) : (substAlgHom ha : R⟦X⟧ →ₐ[R] S⟦X⟧) X = a := by
+  first
+  | exact substAlgHom_X ha
+
+theorem subst_injective {a : R⟦X⟧} (ha0 : constantCoeff a = 0) (hane : a ≠ 0) :
+    Function.Injective (substAlgHom (HasSubst.of_constantCoeff_zero' ha0) : R⟦X⟧ →ₐ[R] R⟦X⟧) := by
+  refine powerSeries_algHom_injective_of_X_ne_zero _ ?_ ?_
+  · rw [substAlgHom_X_eq]
+    exact ha0
+  · rw [substAlgHom_X_eq]
+    exact hane
+
+end Inj
+
+theorem constantCoeff_substAlgHom {R : Type*} [CommRing R] {a : R⟦X⟧} (ha0 : constantCoeff a = 0)
+    (F : R⟦X⟧) :
+    constantCoeff ((substAlgHom (HasSubst.of_constantCoeff_zero' ha0) : R⟦X⟧ →ₐ[R] R⟦X⟧) F) =
+      constantCoeff F := by
+  refine constantCoeff_algHom_apply_of_constantCoeff_X _ ?_ F
+  rw [substAlgHom_X_eq]
+  exact ha0
+
+theorem algC {R : Type*} [CommRing R] (ψ : R⟦X⟧ →ₐ[R] R⟦X⟧) (c : R) : ψ (C c) = C c :=
+  powerSeries_algHom_C ψ c
+
+section Shift
+
+variable {O : Type*} [CommRing O] [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
+
+abbrev Qk (O : Type*) [CommRing O] [IsLocalRing O] (k : ℕ) : Type _ :=
+  O ⧸ (IsLocalRing.maximalIdeal O) ^ k
+
+abbrev mkk (k : ℕ) : O →+* Qk O k := Ideal.Quotient.mk _
+
+omit [IsAdicComplete (IsLocalRing.maximalIdeal O) O] in
+theorem smod_iff {a : ℕ} {x y : O} :
+    x ≡ y [SMOD ((IsLocalRing.maximalIdeal O) ^ a • ⊤ : Submodule O O)] ↔ mkk a x = mkk a y := by
+  first
+  | (rw [SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top]; exact Ideal.Quotient.eq.symm)
+
+theorem ext_k {G G' : O⟦X⟧} (h : ∀ k, map (mkk k) G = map (mkk k) G') : G = G' := by
+  refine PowerSeries.ext fun m => ?_
+  have hk : ∀ k, coeff m G ≡ coeff m G' [SMOD ((IsLocalRing.maximalIdeal O) ^ k • ⊤ : Submodule O O)] := by
+    intro k
+    rw [smod_iff, ← PowerSeries.coeff_map, ← PowerSeries.coeff_map, h k]
+  first
+  | exact (IsHausdorff.eq_iff_smodEq (I := IsLocalRing.maximalIdeal O)).mpr hk
+
+variable (t : O) (ht : t ∈ IsLocalRing.maximalIdeal O)
+include ht
+
+omit [IsAdicComplete (IsLocalRing.maximalIdeal O) O] in
+theorem nil_k (k : ℕ) : IsNilpotent (constantCoeff ((X : (Qk O k)⟦X⟧) + C (mkk k t))) := by
+  rw [_root_.map_add (f := _), PowerSeries.constantCoeff_X, PowerSeries.constantCoeff_C, zero_add]
+  refine ⟨k, ?_⟩
+  rw [← _root_.map_pow]
+  exact Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.pow_mem_pow ht k)
+
+omit [IsAdicComplete (IsLocalRing.maximalIdeal O) O] in
+theorem hasSubst_k (k : ℕ) : HasSubst ((X : (Qk O k)⟦X⟧) + C (mkk k t)) := by
+  first
+  | exact nil_k t ht k
+
+def τk (k : ℕ) : O⟦X⟧ →ₐ[O] (Qk O k)⟦X⟧ := substAlgHom (hasSubst_k t ht k)
+
+omit [IsAdicComplete (IsLocalRing.maximalIdeal O) O] in
+theorem τk_X (k : ℕ) : τk t ht k X = X + C (mkk k t) := by
+  show (substAlgHom (hasSubst_k t ht k) : O⟦X⟧ →ₐ[O] (Qk O k)⟦X⟧) X = _
+  exact substAlgHom_X_eq _
+
+omit [IsAdicComplete (IsLocalRing.maximalIdeal O) O] in
+theorem τk_C (k : ℕ) (r : O) : τk t ht k (C r) = C (mkk k r) := by
+  have h := (τk t ht k).commutes r
+  rwa [PowerSeries.algebraMap_apply, PowerSeries.algebraMap_apply, Algebra.algebraMap_self,
+    RingHom.id_apply, Ideal.Quotient.algebraMap_eq] at h
+
+omit [IsAdicComplete (IsLocalRing.maximalIdeal O) O] in
+theorem τk_compat {k k' : ℕ} (hkk : k ≤ k') :
+    (map (Ideal.Quotient.factor (Ideal.pow_le_pow_right (I := IsLocalRing.maximalIdeal O) hkk))).comp
+      (τk t ht k').toRingHom = (τk t ht k).toRingHom := by
+  symm
+  refine ringHom_ext_nil (fun r => ?_) ?_ ?_
+  · show τk t ht k (C r) = map (Ideal.Quotient.factor (Ideal.pow_le_pow_right (I := IsLocalRing.maximalIdeal O) hkk)) (τk t ht k' (C r))
+    rw [τk_C, τk_C, PowerSeries.map_C]
+    first
+    | exact congrArg C (Ideal.Quotient.factor_mk _ r).symm
+  · show τk t ht k X = map (Ideal.Quotient.factor (Ideal.pow_le_pow_right (I := IsLocalRing.maximalIdeal O) hkk)) (τk t ht k' X)
+    rw [τk_X, τk_X, _root_.map_add (f := _), PowerSeries.map_X, PowerSeries.map_C]
+    first
+    | rw [Ideal.Quotient.factor_mk]
+  · show IsNilpotent (constantCoeff (τk t ht k X))
+    rw [τk_X]
+    exact nil_k t ht k
+
+theorem exists_lim (F : O⟦X⟧) (m : ℕ) : ∃ L : O, ∀ k, mkk k L = coeff m (τk t ht k F) := by
+  choose x hx using fun k => Ideal.Quotient.mk_surjective (coeff m (τk t ht k F))
+  have hcompat : ∀ {a b : ℕ}, a ≤ b →
+      x a ≡ x b [SMOD ((IsLocalRing.maximalIdeal O) ^ a • ⊤ : Submodule O O)] := by
+    intro a b hab
+    have h : coeff m (map (Ideal.Quotient.factor
+        (Ideal.pow_le_pow_right (I := IsLocalRing.maximalIdeal O) hab))
+        (τk t ht b F)) = coeff m (τk t ht a F) :=
+      congrArg (coeff m) (RingHom.congr_fun (τk_compat t ht hab) F)
+    rw [PowerSeries.coeff_map, ← hx b] at h
+    rw [smod_iff]
+    refine (hx a).trans (h.symm.trans ?_)
+    first
+    | exact Ideal.Quotient.factor_mk _ _
+  obtain ⟨L, hL⟩ : ∃ L : O, ∀ n,
+      x n ≡ L [SMOD ((IsLocalRing.maximalIdeal O) ^ n • ⊤ : Submodule O O)] := by
+    first
+    | exact IsPrecomplete.prec inferInstance hcompat
+  exact ⟨L, fun k => ((smod_iff.mp (hL k)).symm).trans (hx k)⟩
+
+def shiftFun (F : O⟦X⟧) : O⟦X⟧ := mk fun m => (exists_lim t ht F m).choose
+
+theorem map_shiftFun (k : ℕ) (F : O⟦X⟧) : map (mkk k) (shiftFun t ht F) = τk t ht k F := by
+  ext m
+  rw [PowerSeries.coeff_map, shiftFun, PowerSeries.coeff_mk]
+  exact (exists_lim t ht F m).choose_spec k
+
+def shift : O⟦X⟧ →ₐ[O] O⟦X⟧ where
+  toFun := shiftFun t ht
+  map_one' := ext_k fun k => by rw [map_shiftFun, _root_.map_one, _root_.map_one]
+  map_mul' F G := ext_k fun k => by
+    rw [map_shiftFun, _root_.map_mul, _root_.map_mul, map_shiftFun, map_shiftFun]
+  map_zero' := ext_k fun k => by rw [map_shiftFun, _root_.map_zero, _root_.map_zero]
+  map_add' F G := ext_k fun k => by
+    rw [map_shiftFun, _root_.map_add (f := _), _root_.map_add (f := _), map_shiftFun, map_shiftFun]
+  commutes' r := ext_k fun k => by
+    rw [map_shiftFun, AlgHom.commutes, PowerSeries.algebraMap_apply, PowerSeries.algebraMap_apply,
+      Algebra.algebraMap_self, RingHom.id_apply, map_C, Ideal.Quotient.algebraMap_eq]
+
+theorem map_shift (k : ℕ) (F : O⟦X⟧) : map (mkk k) (shift t ht F) = τk t ht k F := map_shiftFun t ht k F
+
+theorem shift_X : shift t ht X = X + C t := ext_k fun k => by
+  rw [map_shift, τk_X, _root_.map_add (f := _), PowerSeries.map_X, PowerSeries.map_C]
+
+omit ht in
+/-- Translation by zero fixes every formal power series. -/
+theorem shift_zero (F : O⟦X⟧) : shift (0 : O) (zero_mem _) F = F := by
+  have h : (shift (0 : O) (zero_mem _)).toRingHom = RingHom.id _ :=
+    ringHom_ext_nil (fun r => algC _ r)
+      (by simpa using shift_X (0 : O) (zero_mem _)) (by simp [shift_X])
+  exact RingHom.congr_fun h F
+
+omit ht in
+/-- Successive translations add their parameters. -/
+theorem shift_add (s t : O) (hs : s ∈ IsLocalRing.maximalIdeal O)
+    (ht : t ∈ IsLocalRing.maximalIdeal O) (F : O⟦X⟧) :
+    shift s hs (shift t ht F) = shift (s + t) (add_mem hs ht) F := by
+  refine ext_k fun k => ?_
+  rw [map_shift, map_shift]
+  have key : (τk s hs k).toRingHom.comp (shift t ht).toRingHom =
+      (τk (s + t) (add_mem hs ht) k).toRingHom := by
+    symm
+    refine ringHom_ext_nil (fun r => ?_) ?_ ?_
+    · show τk (s + t) (add_mem hs ht) k (C r) = τk s hs k (shift t ht (C r))
+      rw [algC, τk_C, τk_C]
+    · show τk (s + t) (add_mem hs ht) k X = τk s hs k (shift t ht X)
+      rw [shift_X, _root_.map_add (f := _), τk_X, τk_C, τk_X,
+        _root_.map_add (f := _), _root_.map_add (f := _)]
+      ring
+    · show IsNilpotent (constantCoeff (τk (s + t) (add_mem hs ht) k X))
+      rw [τk_X]
+      exact nil_k (s + t) (add_mem hs ht) k
+  exact RingHom.congr_fun key F
+
+theorem shift_shift (F : O⟦X⟧) : shift (-t) (neg_mem ht) (shift t ht F) = F := by
+  simpa only [neg_add_cancel, shift_zero] using shift_add (-t) t (neg_mem ht) ht F
+
+omit ht in
+theorem shift_congr {t t' : O} (h : t = t') (ht : t ∈ IsLocalRing.maximalIdeal O)
+    (ht' : t' ∈ IsLocalRing.maximalIdeal O) : shift t ht = shift t' ht' := by
+  subst h
+  rfl
+
+def shiftEquiv : O⟦X⟧ ≃ₐ[O] O⟦X⟧ :=
+  AlgEquiv.ofAlgHom (shift t ht) (shift (-t) (neg_mem ht))
+    (AlgHom.ext fun F => by
+      have := shift_shift (-t) (neg_mem ht) F
+      rw [shift_congr (neg_neg t) (neg_mem (neg_mem ht)) ht] at this
+      exact this)
+    (AlgHom.ext fun F => shift_shift t ht F)
+
+theorem shiftEquiv_X : shiftEquiv t ht X = X + C t := by
+  first
+  | exact shift_X t ht
+
+theorem shiftEquiv_symm_X : (shiftEquiv t ht).symm X = X - C t := by
+  first
+  | (show shift (-t) (neg_mem ht) X = X - C t
+     rw [shift_X, _root_.map_neg, sub_eq_add_neg])
+
+end Shift
+
+end Formalism.MainNotions.N.FrobeniusPowerSeries.PB
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ConstantCoeffSubstAlgHom =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ExistsPhiBridge =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ExistsPhiBridge", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup\npublic import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ConstantLeRpowOfThreeLe\npublic import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ConstantCoeffSubstAlgHom\npublic import Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.GammaPi0EqPi0MulUnit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PowerSeries.Inverse\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -105,7 +418,6 @@ theorem qA_eq : qA W = Br.cst X := by
   rw [Br.ι_X]
   show W.π₀ i + lA W i = W.π₀₁ + C ((PD.p : ℕ) : O)
   congr 1
-  all_goals first | rfl | simp [lA]
 theorem π₀_eq : W.π₀ = Br.cst (X - C ((PD.p : ℕ) : O)) := by
   funext i
   show W.π₀ i = Br.ι (X - C ((PD.p : ℕ) : O))
@@ -338,3 +650,7 @@ theorem exists_phiBridge [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : Lo
       exact RingHom.congr_fun (hγ δ hδ) (τ F) }⟩
 
 end Formalism.MainNotions.N.FrobeniusPowerSeries
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.RepresentationCongruences.ExistsPhiBridge =====

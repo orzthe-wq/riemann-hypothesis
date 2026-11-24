@@ -3,48 +3,6 @@ module
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GGMirabolicBase
 public import Formalism.HermitianCurvature.StatementPB
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.GrowthOfBasic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -97,12 +55,10 @@ theorem gam_one (ψ₀ : AddChar F ℂ) :
     gam ψ₀ (1 : GL (Fin k) F) = (Fintype.card (GL (Fin k) F) : ℂ) / (cardU F k : ℂ) := by
   have hp : ∀ y : GL (Fin k) F, psiNat ψ₀ (y * 1 * y⁻¹) = 1 := by
     intro y
-    rw [mul_one, mul_inv_cancel]
-    simp only [psiNat, isUni_one, if_true, psiU, Units.val_one, superdiag_one, AddChar.map_zero_eq_one]
+    simp [psiNat, isUni_one, psiU, superdiag_one, AddChar.map_zero_eq_one]
   unfold gam
   rw [Finset.sum_congr rfl (fun y _ => hp y)]
-  simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]
-  rw [div_eq_inv_mul]
+  simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, div_eq_inv_mul]
 
 end One
 
@@ -181,12 +137,10 @@ def TermsGGBound : Prop :=
 theorem termsGGBound_of_matrix (h : GGMatrixBound) : TermsGGBound := by
   intro ι _ Fq _ _ k ψ hψ hq X _ _ hfree d hd τ Rw H H₁ _ _ _ _ T hGG hG1
   have h2 := (h ι Fq k ψ hψ hq X hfree d hd).2
-  unfold Formalism.FourierDecayAlt.PB.Terms.GGBound
   have hM : Matrix.of T.GG = Matrix.of fun i j =>
       if ∃ x : (∀ v, GL (Fin k) (Fq v))ᵐᵒᵖ, x • j = i then conj (gamProd ψ (d i j)) else 0 := by
     ext i j; simp [hGG]
-  rw [hM, hG1]
-  convert h2 using 3
+  simpa [Formalism.FourierDecayAlt.PB.Terms.GGBound, hM, hG1] using h2
 
 end
 

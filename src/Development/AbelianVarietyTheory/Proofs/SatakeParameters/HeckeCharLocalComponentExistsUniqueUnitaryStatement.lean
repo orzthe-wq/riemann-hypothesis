@@ -42,4 +42,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 theorem _root_.GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary : ∀ (E : Type) [Field E] [NumberField E] (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)), ∃ ξ, IsComp χ w ξ ∧ (∀ ξ', IsComp χ w ξ' → ξ' = ξ) ∧ (χ.IsUnitary → ∀ x, ‖((ξ x : ℂˣ) : ℂ)‖ = 1) := by
-  first | exact @GlobalTheory.HeckeComp.main | exact GlobalTheory.HeckeComp.main | (intros; apply GlobalTheory.HeckeComp.main <;> assumption)
+  first | exact @GlobalTheory.HeckeComp.main

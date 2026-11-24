@@ -15,53 +15,9 @@ public import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ConjugateW
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.IdxChange
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
 import Mathlib.Algebra.AffineMonoid.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -436,9 +392,7 @@ theorem hv_spec (h : BlockHyp B ℓ v0 s) :
       ∀ v : InfinitePlace K, ((B.HV ℓ).map v.embedding).PosDef :=
   good_part_hermitian_spec K v0 h.conj B.S h.ok.hrat h.ok.hpos G B.r h.ok.actRat ℓ.X h.irr ℓ.P ℓ.ψ
 
-theorem zE_inj : Function.Injective (B.zE ℓ Z).mulVec := BlockDat.lf_zE_inj
-
-theorem pq_orth (h : BlockHyp B ℓ v0 s) : IsOrthProj (B.HV ℓ) (B.zE ℓ Z) (B.Pq ℓ Z) := BlockDat.lf_z_proj h
+alias pq_orth := _root_.Formalism.L2.DIV.BlockDat.lf_z_proj
 
 theorem xq_rat (h : BlockHyp B ℓ v0 s) (hr : SubHasRatBasis (B.Z0 ℓ Z)) :
     IsRatHerm (cmMax K) (B.HZ ℓ Z) (B.XQ ℓ Z) := by
@@ -448,13 +402,12 @@ theorem xq_rat (h : BlockHyp B ℓ v0 s) (hr : SubHasRatBasis (B.Z0 ℓ Z)) :
       (pq_orth (Z := Z) h)
   rw [e]
   exact (restrFrameRatHerm K (cmMax K) ConjugateWeightGram.isCMSub_cmMax (fun a ha => ConjugateWeightGram.star_mem_cmMax ha) _ _ (B.HV ℓ)
-    (hv_spec h).2.1 (hv_spec h).2.2 (B.zE ℓ Z) zE_inj hE).1
+    (hv_spec h).2.1 (hv_spec h).2.2 (B.zE ℓ Z) _root_.Formalism.L2.DIV.BlockDat.lf_zE_inj hE).1
 
 theorem equivFun_op (i : B.Pl × ℕ) (f : B.S.Forms) :
     B.S.basis.equivFun (B.op i f) = (B.opMat i).mulVec (B.S.basis.equivFun f) := by
   first
   | rw [Basis.equivFun_apply, Basis.equivFun_apply, BlockDat.opMat, LinearMap.toMatrix_mulVec_repr]
-  | (simp only [Basis.equivFun_apply, BlockDat.opMat]; exact (LinearMap.toMatrix_mulVec_repr _ _ _ _).symm)
 
 theorem I_opMat (i : B.Pl × ℕ) (x : Fin B.S.dim → K) :
     B.S.I ((B.opMat i).mulVec x) = (B.op i (B.S.basis.equivFun.symm x) : B.S.Cl → B.S.V) := by
@@ -483,15 +436,9 @@ theorem opMat_gaMat (hG : ∀ i g, Commute (B.op i) (B.r g)) (i : B.Pl × ℕ) (
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [opMat_actMat hG i t]
 
-private theorem hform_eq_star_dotProduct_mulVec {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (u v : Fin n → K) :
-    hform H u v = star u ⬝ᵥ (H *ᵥ v) := by
-  simp [hform, Matrix.toLinearMapₛₗ₂'_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
-  simp only [starRingEnd_apply]
-  exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
-
 theorem hform_adj {n : ℕ} {H T T' : Matrix (Fin n) (Fin n) K} (h : Tᴴ * H = H * T') (x y : Fin n → K) :
     hform H (T.mulVec x) y = hform H x (T'.mulVec y) := by
-  rw [hform_eq_star_dotProduct_mulVec, hform_eq_star_dotProduct_mulVec, Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, h,
+  rw [_root_.Formalism.DivisionValues.RationalHermitianForm.hform_eq_dot, _root_.Formalism.DivisionValues.RationalHermitianForm.hform_eq_dot, Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, h,
     Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]
 
 theorem rat_of_mulVec {n d : ℕ} (E : Matrix (Fin n) (Fin d) K) (hE : Function.Injective E.mulVec)
@@ -526,7 +473,6 @@ theorem equivFun_end (g : Module.End K B.S.Forms) (f : B.S.Forms) :
     B.S.basis.equivFun (g f) = (LinearMap.toMatrix B.S.basis B.S.basis g).mulVec (B.S.basis.equivFun f) := by
   first
   | rw [Basis.equivFun_apply, Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr]
-  | (simp only [Basis.equivFun_apply]; exact (LinearMap.toMatrix_mulVec_repr _ _ g f).symm)
 
 variable (hc : Col.PairComm B.op) (hs : Col.SplitOver B.op)
 
@@ -619,9 +565,6 @@ theorem etaJ_ramw (j : J) (t : T) (w : HeightOneSpectrum (𝓞 K)) :
   have h := etaJ_units F P ψ Zs j t w
   first
   | exact_mod_cast h
-  | (have h' := congrArg (fun x : ℚ => (x : ℝ)) h
-     push_cast at h' ⊢
-     exact h')
 
 theorem JJ_ramw (j : J) (t : T) (w : HeightOneSpectrum (𝓞 K)) :
     ((F.JJ P ψ Zs j t w : ℚ) : ℝ) * (ramw w : ℝ) = (F.JJW P ψ Zs j t w : ℝ) := by
@@ -638,9 +581,7 @@ section Poly
 
 variable {K : Type} [Field K]
 
-theorem coeff_dualPoly (s : K) (R : K[X]) (i : ℕ) :
-    (dualPoly s R).coeff i = R.leadingCoeff⁻¹ * (R.coeff (revAt R.natDegree i) * s ^ i) := by
-  exact coeff_dualPoly' s R i
+alias coeff_dualPoly := _root_.Formalism.L2.DIV.coeff_dualPoly'
 
 theorem coeff_dualPoly_of_le (s : K) (R : K[X]) {i : ℕ} (hi : i ≤ R.natDegree) :
     (dualPoly s R).coeff i = R.leadingCoeff⁻¹ * (R.coeff (R.natDegree - i) * s ^ i) := by
@@ -652,8 +593,6 @@ theorem coeff_dualPoly_of_lt (s : K) (R : K[X]) {i : ℕ} (hi : R.natDegree < i)
   have h1 : revAt R.natDegree i = i := by
     first
     | exact revAt_eq_self_of_lt hi
-    | (simp [revAt, revAtFun, not_le.mpr hi]; done)
-    | (simp only [revAt, revAtFun, Function.Embedding.coeFn_mk]; rw [if_neg (not_le.mpr hi)])
   rw [h1, coeff_eq_zero_of_natDegree_lt hi, zero_mul, mul_zero]
 
 theorem ne_zero_of_coeff_zero {R : K[X]} (h0 : R.coeff 0 = 1) : R ≠ 0 := by
@@ -717,9 +656,6 @@ theorem heckePoly_eval_zero {Pl : Type} (n : ℕ) (q : Pl → ℕ) (x : Pl × �
   first
   | (simp only [Col.heckePoly, Col.heckePolyOf]
      rw [eval_finsetSum, Finset.sum_eq_single 0 (fun b _ hb => by simp [hb]) (fun h => by simp at h)]
-     simp [h1])
-  | (simp only [Col.heckePoly, Col.heckePolyOf, eval_finsetSum, eval_mul, eval_C, eval_pow, eval_X]
-     rw [Finset.sum_range_succ']
      simp [h1])
 
 end Poly
@@ -794,29 +730,16 @@ end Formalism.L2.DIV
 
 namespace Formalism.L2.DIV.LiftTest
 
-open Formalism.DivisionValues Formalism.L2.Indef Formalism.L2.Col Formalism.L2.DIV.Test
-
-variable (G : Type) [Group G] [Fintype G]
-
 end Formalism.L2.DIV.LiftTest
 
 namespace Formalism.L2.DIV
 
-open Formalism.DivisionValues Formalism.L2.Indef
-
 namespace BlockDat
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
-  {B : BlockDat K G Pl0} {ℓ : Lvl K G} {Z : Submodule K B.S.Forms} {v0 : InfinitePlace K} {s : ℕ}
 
 end BlockDat
 
 end Formalism.L2.DIV
 
 namespace Formalism.L2.DIV.LiftTest
-
-open Formalism.DivisionValues Formalism.L2.Indef Formalism.L2.Col Formalism.L2.DIV.Test
-
-variable (G : Type) [Group G] [Fintype G]
 
 end Formalism.L2.DIV.LiftTest

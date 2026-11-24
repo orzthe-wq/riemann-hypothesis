@@ -65,8 +65,7 @@ def funExp (l : DomWeight n) : ℕ := (∑ a, l.natW a) - (-l.dual.detShift - l.
 theorem funDetShift_succ {m : ℕ} (l : DomWeight (m + 1)) : l.detShift = l.w (Fin.last m) := by
   simp [DomWeight.detShift, Fin.last]
 
-theorem funNat_antitone (l : DomWeight n) : Antitone l.natW := fun _ _ h =>
-  Int.toNat_le_toNat (sub_le_sub_right (l.anti h) _)
+alias funNat_antitone := _root_.Formalism.L2.Col.natW_anti
 
 theorem funNat_last {m : ℕ} (l : DomWeight (m + 1)) : l.natW (Fin.last m) = 0 := by
   simp [DomWeight.natW, funDetShift_succ]

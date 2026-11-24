@@ -90,8 +90,8 @@ theorem exOf_headWt (τ : Psi H) (k : ℕ) (hk : k < Dw.p) :
   · by_cases e : τ' = τ
     · subst e
       by_cases h : (i : ℕ) ≤ k
-      · simp [GlobalTheory.NefWt.headWt, stepEx, h, Nat.lt_succ_of_le h]
-      · simp [GlobalTheory.NefWt.headWt, stepEx, h, show ¬ (i : ℕ) < k + 1 by omega]
+      · simp [GlobalTheory.NefWt.headWt, stepEx, h]
+      · simp [GlobalTheory.NefWt.headWt, stepEx, h]
     · have hc : τ'.1 ≠ τ.1 := fun h => e (Subtype.ext h)
       simp [GlobalTheory.NefWt.headWt, stepEx, e, hc]
   · have hq := FlagMod.mult_conj (Dw := Dw) τ'

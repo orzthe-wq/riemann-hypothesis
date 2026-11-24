@@ -2,7 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.DivPowerCompatTwoFormDerivativeCompOneForm
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedPowerFiltrationIdealLeMapOfIsDPMorphism
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsDPMorphismOfFlatAlgebraStatement
+public import Mathlib.RingTheory.DividedPowers.DPMorphism
+public import Mathlib.RingTheory.Flat.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIsDPMorphismOfFlatAlgebra
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothSectionsMonoReductionAffineInf
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -88,7 +90,7 @@ theorem exists_pt (D : Data) (U : D.X.affineOpens) : ∃ x : Sp (Sec D.s U.1 ⧸
 theorem exists_dp (D : Data) (U : D.X.affineOpens) :
     ∃ δ : DividedPowers (ext D U), IsDPMorphism D.κ δ (algebraMap D.R (Sec D.s U.1)) := by
   haveI := D.sec_smooth U
-  exact GlobalTheory.T.exists_isDPMorphism_of_flat_algebra D.R (Sec D.s U.1) D.I D.κ
+  exact _root_.GlobalTheory.DPFlat.exists_isDPMorphism_of_flat D.R (Sec D.s U.1) D.I D.κ
 
 theorem thick_hom_ext {R : Type} [CommRing R] {I : Ideal R}
     {X : Scheme} {γ : DividedPowers I} {s : X ⟶ Sp R}

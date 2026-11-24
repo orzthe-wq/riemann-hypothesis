@@ -277,7 +277,7 @@ theorem point [CharZero R] [IsAlgClosed F] (hL : LL) (hR : AdmBase R I) {k l m :
   subst hm
   choose p hp using fun α β => exists_isProd r k l (add_sub_cancel β α) (f β) (f' (α - β))
   obtain ⟨τ, hτ, vτ⟩ := exists_frame g hw α
-  refine GlobalTheory.T.adicSum_sections_of_finite_sums_on_thickenings hL R I hR D F (Fin 4) (D.toPre.famφB α) (DegPre.famε (k + l)) D.toPre.X (p α) (f'' α)
+  refine _root_.GlobalTheory.SecAdicSum.sumF_of_sum_on_thickenings hL R I hR D F (Fin 4) (D.toPre.famφB α) (DegPre.famε (k + l)) D.toPre.X (p α) (f'' α)
     (fun e => level U e r rfl (h e) (h' e) (h'' e) hσ p hp α) g.b τ hτ _ _ fun z J hJ => ⟨fun χ => ?_, ?_⟩
   · have b := gt_mul (𝟙 (TF (R := R) F)) hJ g χ (α - χ)
     rw [add_sub_cancel, Category.id_comp, Over.id_left] at b

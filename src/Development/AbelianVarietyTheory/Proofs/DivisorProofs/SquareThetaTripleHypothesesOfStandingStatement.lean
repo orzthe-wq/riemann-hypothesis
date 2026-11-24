@@ -50,4 +50,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 theorem _root_.GlobalTheory.T.squareThetaTripleHypotheses_of_standing : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (t : T)
     (i j : Fin D.R.m), SquareStanding G t → SquareTriple W t i j := by
-  first | exact @GlobalTheory.FunObj.squareTriple_of_standing | exact GlobalTheory.FunObj.squareTriple_of_standing | (intros; apply GlobalTheory.FunObj.squareTriple_of_standing <;> assumption)
+  first | exact @GlobalTheory.FunObj.squareTriple_of_standing

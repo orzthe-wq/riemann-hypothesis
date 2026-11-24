@@ -118,7 +118,7 @@ private theorem rho_strict {n : ℕ} {κ : Wt n} (hκ : Antitone κ) (w : Equiv.
   obtain ⟨hre, hdom, hanti, -, -, -⟩ := rearr n
   have hex : ∃ a b, a < b ∧ (κ ∘ w) a < (κ ∘ w) b := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     have hu : Antitone (κ ∘ w) := by
       intro a b hab
       rcases hab.lt_or_eq with h | rfl

@@ -2,8 +2,9 @@ module
 
 public import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.ColumnConjugationMeasure
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodicEqZeroOfFourierCoefficientsZero
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientAverageTranslateInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetIntegralFundamentalDomainEqMassMulAverageStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnipotentBlockColumnIndex
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientAverageTranslateInvariant
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetIntegralFundamentalDomainEqMassMulAverage
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,14 +67,14 @@ instance haar : (vecMeasure E ι).IsAddHaarMeasure := inferInstance
 
 theorem avg_eq_integral (f : (ι → Ad E) → ℂ) (hf : Per (ratV E ι) f) :
     avg (ratV E ι) f = ∫ x in vecDomain E ι, f x ∂vecMeasure E ι := by
-  have h := GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average (ι → Ad E) (ratV E ι) (isCoLat_ratV E ι) (vecMeasure E ι) (vecDomain E ι) inferInstance
+  have h := _root_.GlobalTheory.CuspGeneric.setIntegral_eq_mass_mul_avg (ι → Ad E) (ratV E ι) (isCoLat_ratV E ι) (vecMeasure E ι) (vecDomain E ι) inferInstance
     isAddFundamentalDomain_vecDomain f hf
   rw [h.2.2.2, vecMeasure_vecDomain]
   simp
 
 theorem integrableOn (f : (ι → Ad E) → ℂ) (hf : Per (ratV E ι) f) :
     IntegrableOn f (vecDomain E ι) (vecMeasure E ι) :=
-  (GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average (ι → Ad E) (ratV E ι) (isCoLat_ratV E ι) (vecMeasure E ι) (vecDomain E ι) inferInstance
+  (_root_.GlobalTheory.CuspGeneric.setIntegral_eq_mass_mul_avg (ι → Ad E) (ratV E ι) (isCoLat_ratV E ι) (vecMeasure E ι) (vecDomain E ι) inferInstance
     isAddFundamentalDomain_vecDomain f hf).2.2.1
 
 theorem exists_ne_one {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) : ∃ a, ψ a ≠ 1 := by
@@ -114,7 +115,7 @@ theorem avg_char {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (ζ : ι → E) :
     set y : ι → Ad E := Pi.single t (algebraMap E (Ad E) (ζ t)⁻¹ * a)
     have hy : dot ζ y = a := by
       rw [dot_single', ← mul_assoc, ← map_mul, mul_inv_cancel₀ ht, map_one, one_mul]
-    have h1 := GlobalTheory.T.quotientAverage_translate_invariant (ι → Ad E) (ratV E ι) (isCoLat_ratV E ι) _ (per_char hψ ζ) y
+    have h1 := _root_.GlobalTheory.CuspGeneric.avg_add_right (ι → Ad E) (ratV E ι) (isCoLat_ratV E ι) _ (per_char hψ ζ) y
     have h2 : (fun x => ψ (dot ζ (x + y))) = fun x => ψ a * ψ (dot ζ x) := by
       funext x
       rw [dot_add_right, hy, AddChar.map_add_eq_mul, mul_comm]

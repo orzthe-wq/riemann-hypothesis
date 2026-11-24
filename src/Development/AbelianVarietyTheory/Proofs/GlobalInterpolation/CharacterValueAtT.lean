@@ -2,10 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MaxVSpanSingleton
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.CharacterValuation
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+public import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 public import Development.AbelianVarietyTheory.Definitions.Foundations.AbsCharNotUnitary
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AbsNormSpanInvol
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjPConjP
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsComapPrime
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsPowLocKMulInf
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsPowPrincipal
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsSupportedIdele
@@ -15,12 +16,9 @@ public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RingHo
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SpanImageLeOf
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StarDetMulDetMem
 public import Formalism.LocalRingCardinality.SpanPowerMembership.Places
-import Formalism.LocalToGlobal.Columns.BaseLemmas
-import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Rat
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -28,15 +26,12 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -44,7 +39,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -58,9 +53,175 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Formalism.LocalToGlobal.Columns.BaseLemmas
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjPConjP, Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsComapPrime, Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CharacterValueAtT
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjPConjP =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjPConjP", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MaxVSpanSingleton\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.CharacterValuation\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker Formalism.MainNotions GlobalTheory.CharVal GlobalTheory.IndefiniteRowSideFullHecke.CharacterValuation
+open nonZeroDivisors
+noncomputable section
+namespace GlobalTheory.CharVal.Vp
+variable {E : Type} [Field E] [NumberField E] [StarRing E]
+
+theorem conjP_conjP' (P : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPrime₂ P) = P := by
+  ext x
+  rw [mem_conjP, mem_conjP, cO_cO]
+
+omit [StarRing E] in
+theorem ne0 (P : HeightOneSpectrum (𝓞 E)) : (P.asIdeal : FractionalIdeal (𝓞 E)⁰ E) ≠ 0 :=
+  FractionalIdeal.coeIdeal_ne_zero.2 P.ne_bot
+
+omit [StarRing E] in
+theorem maxV_self (P : HeightOneSpectrum (𝓞 E)) :
+    MaxV P ((P.asIdeal : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) (WithZero.exp (-1 : ℤ)) := by
+  constructor
+  · intro a ha
+    obtain ⟨r, hr, rfl⟩ := (FractionalIdeal.mem_coeIdeal _).1 ha
+    rw [HeightOneSpectrum.valuation_of_algebraMap]
+    have := (P.intValuation_le_pow_iff_mem r 1).2 (by simpa using hr)
+    simpa using this
+  · obtain ⟨r, hr⟩ := P.intValuation_exists_uniformizer
+    refine ⟨algebraMap _ _ r, (FractionalIdeal.mem_coeIdeal _).2 ⟨r, ?_, rfl⟩, ?_⟩
+    · have := (P.intValuation_le_pow_iff_mem r 1).1 (by simpa using hr.le)
+      simpa using this
+    · rw [HeightOneSpectrum.valuation_of_algebraMap, hr]
+
+omit [StarRing E] in
+theorem maxV_ne (Q P : HeightOneSpectrum (𝓞 E)) (h : Q ≠ P) :
+    MaxV Q ((P.asIdeal : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) 1 := by
+  constructor
+  · intro a ha
+    obtain ⟨r, hr, rfl⟩ := (FractionalIdeal.mem_coeIdeal _).1 ha
+    exact Q.valuation_le_one r
+  · have : ¬ P.asIdeal ≤ Q.asIdeal := fun hle =>
+      h (HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top hle).symm)
+    obtain ⟨r, hr, hr'⟩ := SetLike.not_le_iff_exists.1 this
+    exact ⟨algebraMap _ _ r, (FractionalIdeal.mem_coeIdeal _).2 ⟨r, hr, rfl⟩,
+      (HeightOneSpectrum.valuation_eq_one_iff_notMem Q).2 hr'⟩
+
+omit [StarRing E] in
+theorem maxV_inv {Q P : HeightOneSpectrum (𝓞 E)} {γ : WithZero (Multiplicative ℤ)} (h0 : γ ≠ 0)
+    (h : MaxV Q ((P.asIdeal : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) γ) :
+    MaxV Q (((P.asIdeal : FractionalIdeal (𝓞 E)⁰ E)⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) γ⁻¹ :=
+  h.inv h0 (by rw [← FractionalIdeal.coe_mul, mul_inv_cancel₀ (ne0 P), FractionalIdeal.coe_one])
+
+theorem mem_vp (P : HeightOneSpectrum (𝓞 E)) (x : E) :
+    x ∈ vpIdeal P ↔ ∀ r ∈ (conjPrime₂ P).asIdeal, ∃ s ∈ P.asIdeal, algebraMap _ E s = x * algebraMap _ E r := by
+  unfold vpIdeal
+  rw [← div_eq_mul_inv, FractionalIdeal.mem_coe, FractionalIdeal.mem_div_iff_of_ne_zero (ne0 _)]
+  constructor
+  · intro h r hr
+    exact (FractionalIdeal.mem_coeIdeal _).1 (h _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨r, hr, rfl⟩))
+  · intro h y hy
+    obtain ⟨r, hr, rfl⟩ := (FractionalIdeal.mem_coeIdeal _).1 hy
+    exact (FractionalIdeal.mem_coeIdeal _).2 (h r hr)
+
+theorem star_mem_vp (P : HeightOneSpectrum (𝓞 E)) (x : E) (h : x ∈ vpIdeal P) : star x ∈ vpIdeal (conjPrime₂ P) := by
+  rw [mem_vp] at h ⊢
+  intro r hr
+  rw [conjP_conjP'] at hr
+  obtain ⟨s, hs, e⟩ := h (cO E r) (by rwa [mem_conjP, cO_cO])
+  refine ⟨cO E s, by rwa [mem_conjP, cO_cO], ?_⟩
+  have e1 : algebraMap _ E (cO E s) = star (algebraMap _ E s) := rfl
+  have e2 : algebraMap _ E (cO E r) = star (algebraMap _ E r) := rfl
+  rw [e1, e, e2, star_mul, star_star, mul_comm]
+
+theorem detLat_vp (P : HeightOneSpectrum (𝓞 E)) : detLat (vpLat P) = vpIdeal P := by
+  unfold detLat
+  rw [← Submodule.span_eq (vpIdeal P)]
+  congr 1
+  ext x
+  constructor
+  · rintro ⟨A, hA, rfl⟩
+    have := hA _ (single_mem_stdLat (E := E) (0 : Fin 1) 1)
+    rw [Matrix.det_fin_one]
+    simpa [vpLat, Matrix.mulVec_single] using this
+  · intro hx
+    refine ⟨Matrix.of fun _ _ => x, fun v hv => ?_, by simp⟩
+    obtain ⟨r, hr⟩ := (mem_stdLat v).1 hv 0
+    have : (Matrix.of fun _ _ => x : Matrix (Fin 1) (Fin 1) E).mulVec v 0 = r • x := by
+      simp [Matrix.mulVec, dotProduct, ← hr, Algebra.smul_def, mul_comm]
+    show (Matrix.of fun _ _ => x : Matrix (Fin 1) (Fin 1) E).mulVec v 0 ∈ vpIdeal P
+    rw [this]
+    exact (vpIdeal P).smul_mem r hx
+
+theorem vp_main : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)), P ≠ conjPrime₂ P → (∃ J : Submodule (𝓞 E) E, (∀ x, x ∈ J ↔ star x ∈ vpIdeal P) ∧ vpIdeal P * J = 1) ∧ MaxV P (vpIdeal P) (WithZero.exp (-1 : ℤ)) ∧ MaxV (conjPrime₂ P) (vpIdeal P) (WithZero.exp (1 : ℤ)) ∧ (∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → Q ≠ conjPrime₂ P → MaxV Q (vpIdeal P) 1) ∧ detLat (vpLat P) = vpIdeal P := by
+  intro E _ _ _ P hP
+  refine ⟨⟨vpIdeal (conjPrime₂ P), fun x => ⟨fun h => ?_, fun h => ?_⟩, ?_⟩, ?_, ?_, fun Q h1 h2 => ?_, detLat_vp P⟩
+  · have := star_mem_vp _ _ h
+    rwa [conjP_conjP'] at this
+  · simpa using star_mem_vp _ _ h
+  · unfold vpIdeal
+    rw [conjP_conjP', ← FractionalIdeal.coe_mul, mul_assoc, inv_mul_cancel_left₀ (ne0 _), mul_inv_cancel₀ (ne0 _),
+      FractionalIdeal.coe_one]
+  · have := (maxV_self P).mul (maxV_inv one_ne_zero (maxV_ne P _ hP))
+    rw [inv_one, mul_one, ← FractionalIdeal.coe_mul] at this
+    exact this
+  · have := (maxV_ne _ P hP.symm).mul (maxV_inv WithZero.exp_ne_zero (maxV_self (conjPrime₂ P)))
+    rw [one_mul, ← WithZero.exp_neg, neg_neg, ← FractionalIdeal.coe_mul] at this
+    exact this
+  · have := (maxV_ne Q P h1).mul (maxV_inv one_ne_zero (maxV_ne Q _ h2))
+    rw [inv_one, mul_one, ← FractionalIdeal.coe_mul] at this
+    exact this
+
+end GlobalTheory.CharVal.Vp
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjPConjP =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsComapPrime =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsComapPrime", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.RingTheory.Ideal.Norm.AbsNorm\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.ComapPrimeExistence
+
+open NumberField IsDedekindDomain
+
+theorem exists_comap_prime {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
+    (φ : E →+* K) (w : HeightOneSpectrum (RingOfIntegers K)) :
+    ∃ Q : HeightOneSpectrum (RingOfIntegers E), ∀ r : RingOfIntegers E,
+      r ∈ Q.asIdeal ↔ (RingOfIntegers.mapRingHom φ : RingOfIntegers E → RingOfIntegers K) r ∈ w.asIdeal := by
+  have hp := w.isPrime
+  refine ⟨⟨w.asIdeal.comap (RingOfIntegers.mapRingHom φ), Ideal.comap_isPrime _ _, ?_⟩,
+    fun r => Ideal.mem_comap⟩
+  intro h
+  have hn : Ideal.absNorm w.asIdeal ≠ 0 := by
+    rw [Ne, Ideal.absNorm_eq_zero_iff]
+    exact w.ne_bot
+  have hmem : ((Ideal.absNorm w.asIdeal : ℕ) : RingOfIntegers E) ∈
+      w.asIdeal.comap (RingOfIntegers.mapRingHom φ) := by
+    rw [Ideal.mem_comap, map_natCast]
+    exact Ideal.absNorm_mem _
+  rw [h, Ideal.mem_bot] at hmem
+  exact hn (Nat.cast_eq_zero.mp hmem)
+
+end GlobalTheory.ComapPrimeExistence
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsComapPrime =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CharacterValueAtT =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CharacterValueAtT", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MaxVSpanSingleton\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.CharacterValuation\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.AbsCharNotUnitary\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AbsNormSpanInvol\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjPConjP\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsComapPrime\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsPowLocKMulInf\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsPowPrincipal\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsSupportedIdele\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MaxVDetLat\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtPrime\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RingHomEqOfComapEqUnramifiedDegreeOne\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SpanImageLeOf\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StarDetMulDetMem\npublic import Formalism.LocalRingCardinality.SpanPowerMembership.Places\nimport Formalism.LocalToGlobal.Columns.BaseLemmas\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.FreeModule.IdealQuotient\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain WithZero
@@ -75,9 +236,7 @@ section Val
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
 
-theorem conjP_conjP' [StarRing E] (P : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPrime₂ P) = P := by
-  ext x
-  rw [mem_conjP, mem_conjP, cO_cO]
+alias conjP_conjP' := _root_.GlobalTheory.CharVal.Vp.conjP_conjP'
 
 theorem valuation_conjP [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     (conjPrime₂ P).valuation E x = P.valuation E (star x) := by
@@ -106,9 +265,7 @@ theorem val_natCast_of_notMem_sq {Q : HeightOneSpectrum (𝓞 E)} {p : ℕ} (h1 
   push_cast at e1 e2
   omega
 
-theorem exists_pull (φ : E →+* K) (w : HeightOneSpectrum (𝓞 K)) :
-    ∃ Q : HeightOneSpectrum (𝓞 E), ∀ r : 𝓞 E, r ∈ Q.asIdeal ↔ RingOfIntegers.mapRingHom φ r ∈ w.asIdeal :=
-  _root_.GlobalTheory.ComapPrimeExistence.exists_comap_prime φ w
+alias exists_pull := _root_.GlobalTheory.ComapPrimeExistence.exists_comap_prime
 
 theorem val_emb_le_one {φ : E →+* K} {w : HeightOneSpectrum (𝓞 K)} {Q : HeightOneSpectrum (𝓞 E)}
     (h : ∀ r : 𝓞 E, r ∈ Q.asIdeal ↔ RingOfIntegers.mapRingHom φ r ∈ w.asIdeal) {x : E} (hx : Q.valuation E x ≤ 1) :
@@ -973,3 +1130,7 @@ theorem charValAtT : CharValAtT := by
     ring
 
 end GlobalTheory.CharVal
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CharacterValueAtT =====

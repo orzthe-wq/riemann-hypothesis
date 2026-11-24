@@ -5,10 +5,11 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.GlobalTheta.IsS
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanGramFibreMeasureFormulaStatement
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
+public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanGramFibreMeasureFormula
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TensTop
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -428,7 +429,7 @@ theorem GlobalTheory.CompanionTheory.SiegelND.Coef.avgInfN_tendsto : ∀ (F E : 
       (Filter.Eventually.of_forall fun X => ?_)
     rw [norm_mul, Complex.norm_real]
     exact mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)
-  obtain ⟨-, hev, hcont⟩ := GlobalTheory.T.archimedean_gram_fibre_measure_formula F E σ hCM M J hJ n hM d b laminf hstd minf hm c hc φ hφ
+  obtain ⟨-, hev, hcont⟩ := _root_.GlobalTheory.CompanionTheory.SiegelND.Coef.FibN.fibre_schwartzN F E σ hCM M J hJ n hM d b laminf hstd minf hm c hc φ hφ
   refine ⟨fun k => ⟨(hcut k).measurable, hint k⟩, ?_⟩
   exact GlobalTheory.CompanionTheory.SiegelND.Coef.AvgInf.fibre_avg_tendsto (R := HermR (Ainf F) σ n) (ν := ν) hUo hBo hfam hqc.measurable
     (fun X hX => hX) hφc hc hev hcont ρ (fun k => ⟨(hρ k).1, (hρ k).2.2.1, (hρ k).2.2.2⟩) hsm hint

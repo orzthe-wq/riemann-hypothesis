@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -69,12 +70,12 @@ theorem UpperTheory.Gal.G3.pSysOf :
   have hAB : ∀ v, A (B v) = v := fun v => by
     rw [hA, hB, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
   have hAint : ∀ v ∈ LaHat D, A v ∈ LaHat D := hI
-  obtain ⟨j₁, hj₁, hj₁p, hj₁B⟩ := GlobalTheory.T.exists_coprime_nsmul_endomorphism_preserves_completion p D B
+  obtain ⟨j₁, hj₁, hj₁p, hj₁B⟩ := _root_.GlobalTheory.LKGeo.DenEnd.exists_coprime_nsmul_map_mem p D B
   set ν : AfP p := UpperTheory.Gal.G3.mul g with hν
   set ν' : AfP p := ((((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2)⁻¹ : (AfP p)ˣ) : AfP p) with hν'
   have hνν' : ν * ν' = 1 := Units.mul_inv _
   have hνint : IsIntAf ν := hNu p D G L g hI
-  obtain ⟨j₃, hj₃, hj₃p, hj₃ν⟩ := GlobalTheory.T.exists_coprime_nat_mul_finiteAdeleAwayP_integral p ν'
+  obtain ⟨j₃, hj₃, hj₃p, hj₃ν⟩ := _root_.GlobalTheory.DenAway.exists_coprime_nat_adele p ν'
   set k := j₁ * j₃ with hk
   have hkp : k.Coprime p := Nat.Coprime.mul_left hj₁p hj₃p
   have hk0 : 0 < k := Nat.mul_pos hj₁ hj₃

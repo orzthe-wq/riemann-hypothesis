@@ -53,7 +53,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.HeightCounting.Up
 theorem conjDualParam_stable_of_prime_not_dividing_level_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SMt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.ParameterStatement hL := by
   intro hN hM hL
-  have hlift := _root_.GlobalTheory.T.liftAll_of_parIn_of_mtInput hN hL
+  have hlift := _root_.GlobalTheory.LiftRef.baseChange_local_compatible_all_places_alt hN hL
   have hloc := _root_.GlobalTheory.T.local_component_of_par_in_third_layer hN hL
   have hsz := GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices
   refine Step.trans (Step.and (Step.and (Step.and (Step.of_evLgG (KP := KPx) (p := fun _ _ _ _ => True) hlift)
@@ -68,14 +68,7 @@ theorem conjDualParam_stable_of_prime_not_dividing_level_alt : _root_.GlobalTheo
   obtain ⟨-, -, -, hEFK, hCM, hDef, -⟩ := h3 hKP T w x.o.Z
   have hLaws := _root_.UpperTheory.GalN.par_laws_bare hN hL (Dof x) (cfOf x) (repOf x.r.Y) l.a.A.row l.a.A.bare hpar
   have hconds := _root_.UpperTheory.BaseChangeIdentities.Conclusion1_alt_alt_alt hN.bc hN.what₂.bern hN.gen hN.std hL (Dof x) l.a.A.wdT l.a.A.au l.a.cg l.a.au
-  exact _root_.GlobalTheory.T.cuspParam_of_definite_liftAll (Dof x) l.a.A.row hLaws hconds hEFK hCM hDef hLift hLoc
+  exact _root_.GlobalTheory.ParAsm.goodRowCuspParam_of_lift_alt (Dof x) l.a.A.row hLaws hconds hEFK hCM hDef hLift hLoc
 end GlobalTheory.HeightCounting.Up
-end
-section
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
-attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
-
-theorem _root_.GlobalTheory.T.parSt_of_third_layer_sMt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SMt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.ParameterStatement hL := by
-  first | exact @_root_.GlobalTheory.HeightCounting.Up.conjDualParam_stable_of_prime_not_dividing_level_alt | exact _root_.GlobalTheory.HeightCounting.Up.conjDualParam_stable_of_prime_not_dividing_level_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.conjDualParam_stable_of_prime_not_dividing_level_alt <;> assumption)
 end
 end

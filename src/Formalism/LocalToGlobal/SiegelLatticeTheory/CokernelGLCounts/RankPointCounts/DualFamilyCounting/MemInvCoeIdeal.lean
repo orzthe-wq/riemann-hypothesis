@@ -4,45 +4,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.CntLo
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SaturatedPf
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.SplitPrimeCounts.LsSetresInt
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountingFormula.GoodRDet
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -130,9 +91,8 @@ theorem Nd_mem : ((Nd D : ℕ) : 𝓞 D.host.E) ∈ ddI D := by
   simpa using h
 
 theorem Nd_ne : (Nd D : ℕ) ≠ 0 := by
-  intro h
-  rw [Nd, Ideal.absNorm_eq_zero_iff] at h
-  exact differentIdeal_ne_bot h
+  rw [Nd]
+  exact fun h => differentIdeal_ne_bot (Ideal.absNorm_eq_zero_iff.mp h)
 
 theorem ddI_ne : ddI D ^ 0 ≠ ⊥ ∧ ∀ k : ℕ, ddI D ^ k ≠ ⊥ := by
   have h1 : ddI D ≠ ⊥ := by
@@ -177,8 +137,7 @@ theorem ddS_zpow (a : Fin D.R.rS) :
 
 theorem one_mem_ddS (a : Fin D.R.rS) : (1 : D.host.E) ∈ ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) := by
   rw [ddS_zpow, mem_inv_coeIdeal ((ddI_ne D).2 _)]
-  intro y _
-  exact ⟨y, by simp⟩
+  exact fun y _ => ⟨y, by simp⟩
 
 theorem Nd_mul_mem (a : Fin D.R.rS) {x : D.host.E} (hx : x ∈ ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ)))) :
     ∃ o : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E o =
@@ -207,8 +166,7 @@ theorem e_mem_XS (a : Fin D.R.rS) : F.e a ∈ XS D F :=
 
 theorem XS_le_X : XS D F ≤ F.X.restrictScalars (𝓞 D.host.E) := by
   intro y hy
-  refine xs_gen D F hy _ fun a x _ => ?_
-  exact F.X.smul_mem x (Submodule.subset_span ⟨a, rfl⟩)
+  exact xs_gen D F hy _ fun a x _ => F.X.smul_mem x (Submodule.subset_span ⟨a, rfl⟩)
 
 theorem XS_le_locP_e (P : Ideal (𝓞 D.host.E)) [P.IsPrime] (hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P) :
     XS D F ≤ Formalism.HermitianLatticesTheory.localization₂ P (Submodule.span (𝓞 D.host.E) (Set.range F.e)) := by
@@ -271,8 +229,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicN
 
 theorem sum_fvec {T : E} (F : FlagG S r T) (c : Fin r → E) (a : E) :
     ∑ i, (Fin.snoc (α := fun _ => E) c a : Fin (r + 1) → E) i • F.fvec i = ∑ i, c i • F.e i + a • F.z := by
-  rw [Fin.sum_univ_castSucc]
-  simp [FlagG.fvec]
+  simp [Fin.sum_univ_castSucc, FlagG.fvec]
 
 theorem fvec_last {T : E} (F : FlagG S r T) : F.fvec (Fin.last r) = F.z := by
   simp [FlagG.fvec]
@@ -319,7 +276,6 @@ theorem indep (hG : GZ T T' (Zhat F0 F1) ≠ 0) : LinearIndependent D.host.E (Su
         ((Equiv.Perm.sign (Equiv.sumComm (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1))) : ℤ) : D.host.E) * GZ T T' (Zhat F0 F1) := by
       rw [heq, Matrix.det_permute', PI.UnitaryGroupMassFormula.CntFormula.DetGa.det_N, GZ, hfull, hprev,
         Matrix.det_conjTranspose, ← Matrix.conjTranspose_submatrix, Matrix.det_conjTranspose]
-      push_cast
       ring
     rw [hformula]
     refine mul_ne_zero ?_ hG

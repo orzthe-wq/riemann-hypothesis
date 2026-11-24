@@ -2,10 +2,12 @@ module
 
 public import Formalism.LocalToGlobal.IndefiniteReal.DatumF
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsIdeleNotMulNormStatement
+public import Mathlib.NumberTheory.NumberField.AdeleRing
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.ExistsIdeleNotMulNorm
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsFundamentalDomainOfHaar
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.QuadraticExtNormFormOverAlgebraStatement
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.QuadraticFormIdeleValuesMemNhdsOneStatement
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.QuadraticExtNormFormOverAlgebra
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.QuadraticFormIdeleValuesMemNhdsOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -88,7 +90,7 @@ theorem algebraMap_inj : Function.Injective (algebraMap (AF F) (AF F ⊗[F] E)) 
 theorem exists_form {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ δ : F, ¬ IsSquare δ ∧
     ∀ a : (AF F)ˣ, a ∈ (normI F E).range ↔
       ∃ x y : AF F, (a : AF F) = x ^ 2 - algebraMap F (AF F) δ * y ^ 2 := by
-  obtain ⟨δ, hδ, hh⟩ := GlobalTheory.T.quadraticExt_norm_form_over_algebra F E σ h.2.2.1 (sig_invol h) (sig_ne h)
+  obtain ⟨δ, hδ, hh⟩ := _root_.GlobalTheory.QuadNormBase.norm_form F E σ h.2.2.1 (sig_invol h) (sig_ne h)
   obtain ⟨h1, h2⟩ := hh (AF F)
   have hN : ∀ z : AF F ⊗[F] E, algebraMap (AF F) (AF F ⊗[F] E) (Algebra.norm (AF F) z) =
       z * sigR (AF F) σ z := fun z => by
@@ -108,12 +110,12 @@ theorem exists_form {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ δ : F, ¬ I
 theorem isOpen_normGrp {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : IsOpen (normGrp F E : Set (AF F)ˣ) := by
   obtain ⟨δ, hδ, hf⟩ := exists_form h
   have h0 : δ ≠ 0 := fun e => hδ (e ▸ IsSquare.zero)
-  refine Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (GlobalTheory.T.quadraticForm_ideleValues_mem_nhds_one F δ h0) fun a ha => ?_)
+  refine Subgroup.isOpen_of_mem_nhds _ (Filter.mem_of_superset (_root_.GlobalTheory.QNorm.norm_form_mem_nhds_one F δ h0) fun a ha => ?_)
   exact Subgroup.mem_sup_right ((hf a).2 ha)
 
 theorem normGrp_ne_top {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : normGrp F E ≠ ⊤ := by
   obtain ⟨δ, hδ, hf⟩ := exists_form h
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_idele_ne_algebraMap_mul_norm_of_not_isSquare F δ hδ
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.QNorm.exists_idele_not_mul_norm F δ hδ
   intro e
   have hm : a ∈ normGrp F E := e ▸ Subgroup.mem_top a
   obtain ⟨_, ⟨t, rfl⟩, n, hn, rfl⟩ := Subgroup.mem_sup.1 hm
@@ -137,45 +139,5 @@ theorem exists_isEtaF {σ : E →ₐ[F] E} (h : IsCMExt F E σ) :
   refine (continuousAt_const (y := (1 : Circle))).congr ?_
   filter_upwards [(isOpen_normGrp h).mem_nhds (one_mem _)] with b hb
   exact (h1 hb).symm
-
-
-open Classical in
-theorem resEtaF_of_resEtaPow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ (χ : (AF F ⊗[F] E)ˣ →* Circle) (n : ℕ),
-      ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ n → Formalism.IndefR.DatumF.ResEtaF χ n := by
-  intro F E _ _ _ _ _ σ B hB χ n hχ
-  have hcm : IsCMExt F E σ := hB.cm
-  refine ⟨exists_isEtaF hcm, fun η hη a => ?_⟩
-  obtain ⟨-, h1, h2, h3⟩ := hη
-  have hS : ∀ x ∈ normGrp F E, η x = 1 := by
-    have : normGrp F E ≤ η.ker := sup_le (by rintro _ ⟨y, rfl⟩; exact h1 y) (by rintro _ ⟨y, rfl⟩; exact h2 y)
-    exact fun x hx => this hx
-  have hsq : ∀ x, η x * η x = 1 := fun x => by rw [← map_mul]; exact hS _ (sq_mem_normGrp hcm x)
-  have key : ∀ x, ((χ (Formalism.IndefR.DatumF.idFF F E x) : Circle) : ℂ) = if x ∈ normGrp F E then 1 else (-1) ^ n :=
-    fun x => hχ x
-  apply Circle.ext
-  rw [key a, Circle.coe_pow]
-  by_cases ha : a ∈ normGrp F E
-  · rw [if_pos ha, hS a ha]; simp
-  rw [if_neg ha]
-  rcases Nat.even_or_odd n with ⟨k, rfl⟩ | hn
-  · rw [← two_mul, pow_mul, pow_mul, neg_one_sq, one_pow, ← Circle.coe_pow, sq, hsq a]; simp
-  have hn1 : ((-1 : ℂ)) ^ n = -1 := hn.neg_one_pow
-  obtain ⟨b, hb⟩ : ∃ b, η b ≠ 1 := by
-    by_contra hh
-    push_neg at hh
-    exact h3 (MonoidHom.ext hh)
-  have hbS : b ∉ normGrp F E := fun hm => hb (hS b hm)
-  have hab : a * b ∈ normGrp F E := by
-    by_contra hn2
-    have e := key (a * b)
-    rw [map_mul, map_mul, Circle.coe_mul, key a, key b, if_neg ha, if_neg hbS, if_neg hn2, hn1] at e
-    norm_num at e
-  have hηb : (η b : ℂ) = -1 := GlobalTheory.VolHeckeCompare.circle_eq_neg_one (hsq b) hb
-  have e2 : (η a : ℂ) * η b = 1 := by rw [← Circle.coe_mul, ← map_mul, hS _ hab]; simp
-  rw [hηb] at e2
-  have hηa : (η a : ℂ) = -1 := by linear_combination -e2
-  rw [hηa]
 
 end GlobalTheory.ResEtaFOfPow

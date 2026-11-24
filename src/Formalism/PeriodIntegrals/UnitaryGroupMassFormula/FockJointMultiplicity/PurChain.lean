@@ -72,7 +72,7 @@ private theorem sum_aeval_pderiv_X_mul_derivation {B : Type*} [CommRing B] [Alge
     by_cases h : w = v
     · subst h
       simp
-    · simp [Pi.single_apply, h]
+    · simp [h]
   rw [Finset.sum_congr rfl (fun v _ => key v), Finset.sum_ite_eq]
   split_ifs with h
   · rfl
@@ -84,7 +84,7 @@ theorem deriv_aeval {B : Type*} [CommRing B] [Algebra R B] (D : Derivation R B B
   classical
   induction f using MvPolynomial.induction_on
   · rename_i a
-    simp [aeval_C]
+    simp
   · rename_i p q hp hq
     simp only [map_add (f := _), hp, hq, add_mul, Finset.sum_add_distrib]
   · rename_i p w hp
@@ -137,7 +137,7 @@ theorem aeval_translate_eq {K : Type*} [Field K] [CharZero K] [Algebra R K] (f :
     intro s g
     induction g using MvPolynomial.induction_on
     · rename_i a
-      simp [aeval_C, Polynomial.algebraMap_apply]
+      simp [Polynomial.algebraMap_apply]
     · rename_i p q hp hq
       simp only [map_add (f := _), Polynomial.eval_add, hp, hq]
     · rename_i p n hp

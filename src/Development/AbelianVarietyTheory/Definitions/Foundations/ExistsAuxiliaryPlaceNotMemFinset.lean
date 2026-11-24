@@ -87,7 +87,7 @@ theorem archMat_eq_archEquiv {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : Infi
 
 theorem continuous_infEmb {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (infEmb τ) := by
   have : IsModuleTopology w.Completion (w.Completion ⊗[F] E) := ⟨rfl⟩
-  letI : Algebra w.Completion ℂ := (InfinitePlace.Completion.extensionEmbedding w).toAlgebra
+  let : Algebra w.Completion ℂ := (InfinitePlace.Completion.extensionEmbedding w).toAlgebra
   have : ContinuousSMul w.Completion ℂ :=
     ⟨((InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp continuous_fst).mul continuous_snd⟩
   let L : w.Completion ⊗[F] E →ₗ[w.Completion] ℂ :=
@@ -287,9 +287,9 @@ theorem IsUnif.valuation_eq {v : HeightOneSpectrum (𝓞 F)} {ϖ : (Fv F v)ˣ} (
     letI := GlobalTheory.LocalData.complRel v
     haveI := GlobalTheory.LocalData.isLocalField v
     valuation (Fv F v) (ϖ : Fv F v) = uniformizer (Fv F v) := by
-  letI := GlobalTheory.LocalData.complRel v
-  haveI := GlobalTheory.LocalData.isLocalField v
-  haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
+  let := GlobalTheory.LocalData.complRel v
+  have := GlobalTheory.LocalData.isLocalField v
+  have : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
   have he := isEquiv (valuation (Fv F v)) (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ)))
   apply le_antisymm
   · rw [le_uniformizer_iff, he.lt_one_iff_lt_one, h, ← WithZero.exp_zero, WithZero.exp_lt_exp]
@@ -341,9 +341,9 @@ theorem mem_stabLoc_iff {g : GLoc σ J v} :
 
 theorem mem_iwahori {g : GLoc σ J v} :
     g ∈ s.iwahori ↔ g ∈ stabLoc σ J L v ∧ ∀ i j, j < i → Valued.v ((s.equiv g).1 i j) < 1 := by
-  letI := GlobalTheory.LocalData.complRel v
-  haveI := GlobalTheory.LocalData.isLocalField v
-  haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
+  let := GlobalTheory.LocalData.complRel v
+  have := GlobalTheory.LocalData.isLocalField v
+  have : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
   have he := ValuativeRel.isEquiv (ValuativeRel.valuation (Fv F v))
     (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ)))
   refine GlobalTheory.SmGL.mem_iwahori.trans (and_congr s.mem_stabLoc_iff.symm ?_)

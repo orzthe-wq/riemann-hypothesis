@@ -170,7 +170,7 @@ theorem det_u_mul_det_v (s : ℂ) (hs : s = 1 ∨ s = -1) (y : E n) :
   have hg := herm_mem_Ugood s hs y
   have hprod : ((1 : Mc n) - (Complex.I * s) • herm y) * (1 + (Complex.I * s) • herm y) = 1 + herm y * herm y := by
     have hs2 : (Complex.I * s) * (Complex.I * s) = -1 := by
-      rcases hs with rfl | rfl <;> simp [← sq, Complex.I_sq] <;> ring_nf <;> simp [Complex.I_sq]
+      rcases hs with rfl | rfl <;> simp [← sq, Complex.I_sq]
     rw [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_add, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hs2]
     simp [neg_smul]; abel
   have h1 := Matrix.det_nonsing_inv_mul_det (A := (1 : Mc n) - (Complex.I * s) • herm y) hg.1

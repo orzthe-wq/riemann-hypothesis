@@ -60,39 +60,12 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data E r}
 
-private theorem hermC_smul_left_embedding (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (k : ℂ) (u v : Fin r → ℂ) :
-    hermC τ G (k • u) v = k * hermC τ G u v := by
-  simp only [hermC, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
-
-private theorem hermC_add_left_embedding (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u u' v : Fin r → ℂ) :
-    hermC τ G (u + u') v = hermC τ G u v + hermC τ G u' v := by
-  simp only [hermC, Pi.add_apply, add_mul, Finset.sum_add_distrib]
-
-private theorem hermC_sub_left_of_natDim (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u u' v : Fin r → ℂ) :
-    hermC τ G (u - u') v = hermC τ G u v - hermC τ G u' v := by
-  simp only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
-
-private theorem hermC_sub_right_of_conj_symm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u v v' : Fin r → ℂ) :
-    hermC τ G u (v - v') = hermC τ G u v - hermC τ G u v' := by
-  simp only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
-
-private theorem hermC_smul_right_embedding (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (k : ℂ) (u v : Fin r → ℂ) :
-    hermC τ G u (k • v) = conj k * hermC τ G u v := by
-  simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-  ring
-
-private theorem hermC_emb_emb_eq_tau_herm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
-    hermC τ G (Data.emb τ x) (Data.emb τ y) = τ (herm G x y) := by
-  set_option synthInstance.maxHeartbeats 100000 in
-    simp only [hermC, herm, Data.emb, map_sum, map_mul, emb_cc]
-
 theorem Hf_zero_right (z : Frame X.Ψ r) (τ : X.Ψ) (u : Fin r → ℂ) : X.Hf z τ u 0 = 0 := by
   simp [Data.Hf, hermC]
 
 theorem Hf_sub_right (z : Frame X.Ψ r) (τ : X.Ψ) (u v w : Fin r → ℂ) :
     X.Hf z τ u (v - w) = X.Hf z τ u v - X.Hf z τ u w := by
-  simp only [Data.Hf, hermC_sub_right_of_conj_symm]
+  simp only [Data.Hf, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_right]
 
 theorem maj_zero {z : Frame X.Ψ r} (hz : z ∈ X.dom) (τ : X.Ψ) : X.maj z τ 0 = 0 := by
   have h := X.Hf_self hz τ 0
@@ -129,7 +102,7 @@ theorem Hf_cs {z : Frame X.Ψ r} (hz : z ∈ X.dom) (τ : X.Ψ) (u w : Fin r →
 theorem mem_Uz_iff (z : Frame X.Ψ r) (ξ : Fin r → E) (u : X.Ψ → Fin r → ℂ) :
     u ∈ X.Uz z ξ ↔ ∀ τ : X.Ψ, hermC τ.1 X.Gm (u τ) (Data.emb τ.1 ξ) = 0 ∧
       hermC τ.1 X.Gm (X.jp z τ (u τ)) (Data.emb τ.1 ξ) = 0 := by
-  simp only [Data.Uz, Data.Iperp, Set.mem_setOf_eq, Data.Jz_apply, hermC_smul_left_embedding, mul_eq_zero,
+  simp only [Data.Uz, Data.Iperp, Set.mem_setOf_eq, Data.Jz_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left, mul_eq_zero,
     Complex.I_ne_zero, false_or]
   exact ⟨fun h τ => ⟨h.1 τ, h.2 τ⟩, fun h => ⟨fun τ => (h τ).1, fun τ => (h τ).2⟩⟩
 
@@ -137,7 +110,7 @@ theorem smul_fam_mem {z : Frame X.Ψ r} {ξ : Fin r → E} (s : X.Ψ → ℂ) {u
     (hu : u ∈ X.Uz z ξ) : (fun τ => s τ • u τ) ∈ X.Uz z ξ := by
   rw [mem_Uz_iff] at hu ⊢
   intro τ
-  simp only [Data.jp_smul, hermC_smul_left_embedding, (hu τ).1, (hu τ).2, mul_zero, and_self]
+  simp only [Data.jp_smul, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left, (hu τ).1, (hu τ).2, mul_zero, and_self]
 
 theorem jp_fam_mem {z : Frame X.Ψ r} (hz : z ∈ X.dom) {ξ : Fin r → E} {u : X.Ψ → Fin r → ℂ}
     (hu : u ∈ X.Uz z ξ) : (fun τ => X.jp z τ (u τ)) ∈ X.Uz z ξ := by
@@ -149,7 +122,7 @@ theorem add_mem {z : Frame X.Ψ r} {ξ : Fin r → E} {u v : X.Ψ → Fin r → 
     (hu : u ∈ X.Uz z ξ) (hv : v ∈ X.Uz z ξ) : u + v ∈ X.Uz z ξ := by
   rw [mem_Uz_iff] at hu hv ⊢
   intro τ
-  simp only [Pi.add_apply, Data.jp_add, hermC_add_left_embedding, (hu τ).1, (hu τ).2, (hv τ).1, (hv τ).2,
+  simp only [Pi.add_apply, Data.jp_add, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_add_left, (hu τ).1, (hu τ).2, (hv τ).1, (hv τ).2,
     add_zero, and_self]
 
 theorem zero_mem (z : Frame X.Ψ r) (ξ : Fin r → E) : (0 : X.Ψ → Fin r → ℂ) ∈ X.Uz z ξ := by
@@ -198,14 +171,14 @@ theorem gI_Bop_left {z : Frame X.Ψ r} (hz : z ∈ X.dom) (u v : X.Ψ → Fin r 
     gI z (Bop z u) v = ∑ τ, (2 * τ.1 (-X.ξ0) * hermC τ.1 X.Gm (u τ) (v τ)).re := by
   unfold gI
   refine Finset.sum_congr rfl fun τ _ => ?_
-  simp only [Bop, UnipotentCoefficientShift.Hf_smul_left, Data.Hf_eq_jp, Data.jp_smul, hermC_smul_left_embedding, X.jp_jp hz]
+  simp only [Bop, Data.Hf_eq_jp, Data.jp_smul, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left, X.jp_jp hz]
 
 theorem gI_Bop_right {z : Frame X.Ψ r} (hz : z ∈ X.dom) (u v : X.Ψ → Fin r → ℂ) :
     gI z u (Bop z v) = -gI z (Bop z u) v := by
   rw [gI_Bop_left hz, ← Finset.sum_neg_distrib]
   unfold gI
   refine Finset.sum_congr rfl fun τ _ => ?_
-  simp only [Bop, UnipotentCoefficientShift.Hf_smul_right, Data.Hf_eq_jp, hermC_smul_right_embedding, X.hermC_jp_jp hz, map_mul, map_neg,
+  simp only [Bop, Data.Hf_eq_jp, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_right, X.hermC_jp_jp hz, map_mul, map_neg,
     conj_purely_imaginary_generator, neg_neg, map_ofNat]
   simp [neg_mul, mul_neg, Complex.neg_re]
 
@@ -233,21 +206,21 @@ theorem gI_self {z : Frame X.Ψ r} (hz : z ∈ X.dom) (u : X.Ψ → Fin r → �
 
 theorem trace_eq_sum (a : E) :
     ((Algebra.trace ℚ E a : ℚ) : ℝ) = ∑ τ : X.Ψ, 2 * (τ.1 a).re := by
-  apply GlobalTheory.ArcQ.IsoTime.trace_cm <;> assumption
+  apply GlobalTheory.ArcQ.IsoTime.trace_cm
 
 private theorem hermC_ucomp_ucomp_of_herm_eq_zero {z : Frame X.Ψ r} {ξ : Fin r → E} (hξξ : herm X.Gm ξ ξ = 0)
     {μ ν : Fin r → E} (hμ : herm X.Gm μ ξ = 0) (hν : herm X.Gm ν ξ = 0) (τ : X.Ψ) :
     hermC τ.1 X.Gm (X.ucomp z ξ (X.embV μ) τ) (X.ucomp z ξ (X.embV ν) τ) = τ.1 (herm X.Gm μ ν) := by
   simp only [Data.ucomp, Data.aproj, Data.lineV, Data.embV, Pi.sub_apply]
   have e1 : hermC τ.1 X.Gm (Data.emb τ.1 μ) (Data.emb τ.1 ξ) = 0 := by
-    rw [hermC_emb_emb_eq_tau_herm, hμ, map_zero]
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, hμ, map_zero]
   have e2 : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ν) = 0 := by
-    rw [← hermC_conj τ.1 X.Gm_herm, hermC_emb_emb_eq_tau_herm, hν, map_zero, map_zero]
+    rw [← hermC_conj τ.1 X.Gm_herm, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, hν, map_zero, map_zero]
   have e3 : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0 := by
-    rw [hermC_emb_emb_eq_tau_herm, hξξ, map_zero]
-  simp only [hermC_sub_left_of_natDim, hermC_sub_right_of_conj_symm, hermC_smul_left_embedding, hermC_smul_right_embedding, e1, e2, e3,
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, hξξ, map_zero]
+  simp only [_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_right, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_right, e1, e2, e3,
     mul_zero, sub_zero]
-  exact hermC_emb_emb_eq_tau_herm _ _ _ _
+  exact _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_emb _ _ _ _
 
 theorem EF_eq {z : Frame X.Ψ r} (hz : z ∈ X.dom) {ξ : Fin r → E} (hξξ : herm X.Gm ξ ξ = 0)
     {μ ν : Fin r → E} (hμ : herm X.Gm μ ξ = 0) (hν : herm X.Gm ν ξ = 0) :
@@ -288,7 +261,7 @@ theorem gI_Bop_self {z : Frame Y.Ψ r} (hz : z ∈ Y.dom) (u : Y.Ψ → Fin r �
   unfold gI
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl fun τ _ => ?_
-  simp only [Bop, hermC_smul_right_embedding, Data.Hf_eq_jp]
+  simp only [Bop, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_right, Data.Hf_eq_jp]
   rw [← Data.hermC_jp_left Y.toData hz, ← mul_assoc, two_tau_neg_xi0_mul_conj_eq_k0_sq τ, Complex.re_ofReal_mul]
 
 theorem Bop_Bop {z : Frame Y.Ψ r} (hz : z ∈ Y.dom) (u : Y.Ψ → Fin r → ℂ) :

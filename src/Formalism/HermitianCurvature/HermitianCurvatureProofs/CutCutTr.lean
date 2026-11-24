@@ -120,12 +120,6 @@ theorem cutTr_jgq_smooth (D : B.RealPlaceData k r Wp Wq) (J : B.Mat k r → (Wq 
 
 end helpers
 
-theorem cutTr_normSq_contDiff : ContDiff ℝ ∞ (fun z : ℂ => Complex.normSq z) := by
-  have : (fun z : ℂ => Complex.normSq z) = fun z => ‖z‖ ^ 2 := by
-    funext z; exact Complex.normSq_eq_norm_sq z
-  rw [this]
-  exact contDiff_norm_sq ℝ
-
 theorem cutoff_transport_to_model : CutTr := by
   refine ⟨0, ?_⟩
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e he hJ c hc ε hε
@@ -151,7 +145,7 @@ theorem cutoff_transport_to_model : CutTr := by
     have he' : ContDiffOn ℝ ∞ (fun x : MA.E (D.parOf S v).r => e ρ x.2) (MA.Qset (D.parOf S v).r (D.parOf S v).TT) :=
       (he.1 ρ).comp contDiff_snd.contDiffOn fun x hx => hx.2
     have hwc : ContDiff ℝ ∞ (fun x : MA.E (D.parOf S v).r => MA.wq S.G.k x (D.parOf S v).TT) := by
-      have hn := cutTr_normSq_contDiff
+      have hn := _root_.Formalism.FourierDecayAlt.P.JCx1.contDiff_normSq
       unfold MA.wq
       fun_prop
     have hwp : ∀ x ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, MA.wq S.G.k x (D.parOf S v).TT ≠ 0 := by

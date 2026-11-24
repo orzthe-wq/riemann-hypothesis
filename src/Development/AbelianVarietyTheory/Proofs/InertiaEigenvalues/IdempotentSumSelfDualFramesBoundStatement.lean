@@ -53,4 +53,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 
 theorem _root_.GlobalTheory.T.idempotent_sum_self_dual_frames_bound : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e P → (∀ PP ∈ P, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ t : WO S T, IsHalf (cA D e) t → IsIntM (frMapAdj S T βS βT t) → t ∈ latO S T ΛS ΛT (fun _ => True) := by
-  first | exact @GlobalTheory.HalfAdjLattice.mem_latO_of_adj_int | exact GlobalTheory.HalfAdjLattice.mem_latO_of_adj_int | (intros; apply GlobalTheory.HalfAdjLattice.mem_latO_of_adj_int <;> assumption)
+  first | exact @GlobalTheory.HalfAdjLattice.mem_latO_of_adj_int

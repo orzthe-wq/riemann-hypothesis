@@ -66,7 +66,7 @@ theorem diag_mul_of_bt {α : Type*} [LinearOrder α] {b : Fin N → α} (hb : Fu
 theorem uni_inv {α : Type*} [LinearOrder α] {b : Fin N → α} (hb : Function.Injective b)
     {M : Matrix (Fin N) (Fin N) K} (hM : M.BlockTriangular b) (hd : ∀ i, M i i = 1)
     (hdet : IsUnit M.det) : M⁻¹.BlockTriangular b ∧ ∀ i, M⁻¹ i i = 1 := by
-  haveI := M.invertibleOfIsUnitDet hdet
+  have := M.invertibleOfIsUnitDet hdet
   have hI : M⁻¹.BlockTriangular b := Matrix.blockTriangular_inv_of_blockTriangular hM
   refine ⟨hI, fun i => ?_⟩
   have h1 := congrFun (congrFun (Matrix.mul_nonsing_inv M hdet) i) i
@@ -97,11 +97,11 @@ theorem up_of {U : Matrix (Fin N) (Fin N) K} (h : U.BlockTriangular id)
   exact hd i
 
 theorem lo_det {L : Matrix (Fin N) (Fin N) K} (h : Formalism.MainNotions.S.IsLoUni L) : L.det = 1 := by
-  rw [Matrix.det_of_lowerTriangular (M := L) (lo_bt h)]
+  rw [Matrix.det_of_isLowerTriangular (M := L) (lo_bt h)]
   exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
 
 theorem up_det {U : Matrix (Fin N) (Fin N) K} (h : Formalism.MainNotions.S.IsUpUni U) : U.det = 1 := by
-  rw [Matrix.det_of_upperTriangular (M := U) (up_bt h)]
+  rw [Matrix.det_of_isUpperTriangular (M := U) (up_bt h)]
   exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
 
 theorem lo_mul {A B : Matrix (Fin N) (Fin N) K} (hA : Formalism.MainNotions.S.IsLoUni A) (hB : Formalism.MainNotions.S.IsLoUni B) :
@@ -141,7 +141,7 @@ end Tri
 theorem stClosed : StClosed := by
   unfold StClosed
   intro E _ _ n W
-  simp only [StSet, Set.mem_setOf_eq]
+  simp only [StSet, Set.mem_ofPred_eq]
   refine ⟨?_, ?_, ?_⟩
   · refine ⟨by rw [Units.val_one]; exact lo_one, 1, up_one, ?_⟩
     rw [Units.val_one, Matrix.one_mul, Matrix.mul_one]

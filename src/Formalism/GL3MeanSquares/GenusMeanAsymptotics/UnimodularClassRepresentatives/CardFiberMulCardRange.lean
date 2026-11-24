@@ -113,15 +113,13 @@ theorem mem_fixSub {w : A} : w ∈ fixSub σ I ↔ w ∈ I ∧ σ w = w := Iff.r
 variable {σ I}
 
 theorem map_inv_eq_neg (hσ : ∀ a, σ (σ a) = a) {θ e : A} (he : (θ - σ θ) * e = 1) : σ e = -e := by
-
   have h1 : (θ - σ θ) * (-σ e) = 1 := by
     have h0 := congrArg σ he
     rw [map_mul, map_sub, hσ, map_one] at h0
     linear_combination h0
   have h2 : e = -σ e := by
     calc e = e * ((θ - σ θ) * (-σ e)) := by rw [h1, mul_one]
-      _ = ((θ - σ θ) * e) * (-σ e) := by ring
-      _ = -σ e := by rw [he, one_mul]
+      _ = -σ e := by rw [← mul_assoc, mul_comm e, he, one_mul]
   linear_combination h2
 
 theorem exists_trace (hσ : ∀ a, σ (σ a) = a) {θ e : A} (he : (θ - σ θ) * e = 1) {w : A}
@@ -152,7 +150,6 @@ theorem range_trI (hσ : ∀ a, σ (σ a) = a) (hI : ∀ a ∈ I, σ a ∈ I) {�
 
 theorem card_fixSub_sq (hσ : ∀ a, σ (σ a) = a) (hI : ∀ a ∈ I, σ a ∈ I) {θ e : A}
     (he : (θ - σ θ) * e = 1) : Nat.card (fixSub σ I) ^ 2 = Nat.card I := by
-
   have hδ : σ (θ - σ θ) = -(θ - σ θ) := by
     rw [map_sub, hσ]
     ring
@@ -178,8 +175,7 @@ theorem card_fixSub_sq (hσ : ∀ a, σ (σ a) = a) (hI : ∀ a ∈ I, σ a ∈ 
         show e * ((θ - σ θ) * (x : A)) = x
         rw [← mul_assoc, mul_comm e, he, one_mul] }
   rw [Nat.card_congr e1] at h1
-  rw [sq]
-  exact h1
+  simpa [sq] using h1
 
 end Inv
 

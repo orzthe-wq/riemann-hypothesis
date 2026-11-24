@@ -103,8 +103,7 @@ theorem first_block_compact_unitary {k : GR n} (hk : k ∈ KR n) : (u1 (mR k))�
   rw [h21, h22]
   simp only [conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, neg_neg] at e11 e12
   simp only [conjTranspose_add, conjTranspose_smul, conjTranspose_neg, Complex.star_def, Complex.conj_I,
-    Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg, Matrix.neg_mul,
-    smul_neg, neg_neg, smul_smul, neg_mul, Complex.I_mul_I, neg_smul, one_smul, neg_neg]
+    Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg, smul_neg, neg_neg, neg_smul, neg_neg]
   rw [(add_neg_eq_zero.1 e12).symm, smul_add, smul_smul, Complex.I_mul_I, neg_one_smul, ← e11]
   abel
 
@@ -124,13 +123,13 @@ theorem first_block_upper_mul (y : GR n) (g : M2 n) (hy : IsUp y) : u1 (mR y * g
   have hy' : (mR y).toBlocks₂₁ = 0 := hy
   unfold u1
   rw [projected_block_lower_sum, lowerDiagonalBlockAsGL, hy']
-  simp [Matrix.mul_add, Matrix.mul_smul]
+  simp [Matrix.mul_add]
 
 theorem second_block_upper_mul (y : GR n) (g : M2 n) (hy : IsUp y) : u2 (mR y * g) = (mR y).toBlocks₂₂ * u2 g := by
   have hy' : (mR y).toBlocks₂₁ = 0 := hy
   unfold u2
   rw [projected_block_lower_sum, lowerDiagonalBlockAsGL, hy']
-  simp [Matrix.mul_add, Matrix.mul_smul, Matrix.mul_neg]
+  simp [Matrix.mul_add]
 
 theorem first_block_of_upper (y : GR n) (hy : IsUp y) : u1 (mR y) = (mR y).toBlocks₂₂ := by
   have hy' : (mR y).toBlocks₂₁ = 0 := hy

@@ -395,7 +395,7 @@ theorem Eop_pull (hS : Good S p) (v : InfinitePlace M) (i j : Fin a) (φ : Sm M 
       (Matrix.single i j (Pi.single (p.symm v) (1 : ℝ) : Rinf M) k l) w
     rw [Matrix.single_apply, Matrix.single_apply]
     split_ifs
-    · simp only [Pi.single_apply, Equiv.apply_eq_iff_eq_symm_apply]
+    · simp only [Pi.single_apply, Equiv.eq_symm_apply]
     · rfl
   simp only [Eop]
   rw [lie_pull hS, e]

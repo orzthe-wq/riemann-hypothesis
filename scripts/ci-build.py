@@ -6,6 +6,7 @@ Candidate code/configuration runs only inside Bubblewrap. Dependencies and the
 stock toolchain must already be prepared by the trusted runner.
 """
 import argparse
+import errno
 import gzip
 import hashlib
 import importlib.util
@@ -34,6 +35,7 @@ HASH = re.compile(r"[0-9a-f]{16}\Z")
 SHA = re.compile(r"[0-9a-f]{64}\Z")
 MODULE = re.compile(r"[\w']+(?:\.[\w']+)*\Z")
 SCHEMA = "2026-03-17"
+SNAPSHOT_CONFIGS = ("lakefile.toml", "lake-manifest.json", "lean-toolchain")
 HASH_SOURCE = '''import Lake.Build.Trace
 import Lean.Data.Json.FromToJson
 open Lake Lean
@@ -272,12 +274,16 @@ def git(root, *args):
     return subprocess.check_output(["git", "-C", str(root), *args], env=trusted_env(), text=True).strip()
 
 
-def safe_file(root, relative):
+def reject_symlink_root(root):
     # The caller's root may itself sit below a PR-writable symlink (for example
     # .lake/build/lib/lean). Never resolve that link in the host controller.
     for ancestor in (root, *root.parents):
         if ancestor.is_symlink():
             raise ValueError(f"symlink is not a CI input/output root: {ancestor}")
+
+
+def safe_file(root, relative):
+    reject_symlink_root(root)
     path = root
     for component in PurePosixPath(relative).parts:
         if component in ("", ".", "..") or "/" in component or "\\" in component:
@@ -292,8 +298,7 @@ def safe_file(root, relative):
 
 def snapshot(candidate, head, destination):
     # Expose only attested build inputs, not PR scripts, docs, Git config, or caches.
-    command = ["git", "-C", str(candidate), "archive", head, "--", "src", "lakefile.toml",
-               "lake-manifest.json", "lean-toolchain"]
+    command = ["git", "-C", str(candidate), "archive", head, "--", "src", *SNAPSHOT_CONFIGS]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, env=trusted_env())
     try:
         with tarfile.open(fileobj=process.stdout, mode="r|") as archive:
@@ -319,11 +324,36 @@ def snapshot(candidate, head, destination):
     verify_snapshot(candidate, head, destination)
 
 
+def snapshot_files(destination):
+    # Check the root once, then classify each entry without following symlinks.
+    reject_symlink_root(destination)
+    source = destination / "src"
+    if source.is_symlink():
+        raise ValueError("source symlinks are not supported")
+    directories = ["src"] if source.is_dir() else []
+    while directories:
+        directory = directories.pop()
+        with os.scandir(destination / directory) as entries:
+            for entry in entries:
+                relative = f"{directory}/{entry.name}"
+                if entry.is_dir(follow_symlinks=False):
+                    directories.append(relative)
+                else:
+                    yield relative, entry.path, entry.stat(follow_symlinks=False)
+    for name in SNAPSHOT_CONFIGS:
+        path = destination / name
+        try:
+            metadata = path.lstat()
+        except FileNotFoundError:
+            continue
+        yield name, path, metadata
+
+
 def verify_snapshot(candidate, head, destination):
     # Git archive applies .gitattributes. Verify actual Git blobs so export-ignore
     # cannot omit inputs and export-subst cannot change the attested source tree.
     inventory = subprocess.check_output(["git", "-C", str(candidate), "ls-tree", "-r", "-z", head,
-                                        "--", "src", "lakefile.toml", "lake-manifest.json", "lean-toolchain"],
+                                        "--", "src", *SNAPSHOT_CONFIGS],
                                        env=trusted_env())
     expected = {}
     for entry in inventory.split(b"\0"):
@@ -334,21 +364,32 @@ def verify_snapshot(candidate, head, destination):
         if kind != "blob" or mode not in ("100644", "100755"):
             raise ValueError("source symlinks, submodules and special files are not supported")
         expected[raw_path.decode()] = (mode, blob)
-    source_paths = (destination / "src").rglob("*")
-    actual = {path.relative_to(destination).as_posix() for path in source_paths if not path.is_dir() or path.is_symlink()}
-    actual.update(name for name in ("lakefile.toml", "lake-manifest.json", "lean-toolchain")
-                  if (destination / name).exists() or (destination / name).is_symlink())
-    if actual != set(expected):
-        raise ValueError("archived input inventory differs from Git blobs (check export-ignore attributes)")
-    for relative, (mode, blob) in expected.items():
-        path = safe_file(destination, relative)
-        digest = hashlib.sha1(f"blob {path.stat().st_size}\0".encode())
-        with path.open("rb") as stream:
+    inventory_error = "archived input inventory differs from Git blobs (check export-ignore attributes)"
+    for relative, path, metadata in snapshot_files(destination):
+        identity = expected.pop(relative, None)
+        if identity is None:
+            raise ValueError(inventory_error)
+        if "\\" in relative or not stat.S_ISREG(metadata.st_mode):
+            raise ValueError(f"unsafe or non-regular archived input: {path}")
+        mode, blob = identity
+        try:
+            fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        except OSError as error:
+            if error.errno != errno.ELOOP:
+                raise
+            raise ValueError(f"unsafe or non-regular archived input: {path}") from error
+        with os.fdopen(fd, "rb") as stream:
+            metadata = os.fstat(stream.fileno())
+            if not stat.S_ISREG(metadata.st_mode):
+                raise ValueError(f"unsafe or non-regular archived input: {path}")
+            digest = hashlib.sha1(f"blob {metadata.st_size}\0".encode())
             while block := stream.read(1024 * 1024):
                 digest.update(block)
-        executable = bool(path.stat().st_mode & 0o111)
+        executable = bool(metadata.st_mode & 0o111)
         if digest.hexdigest() != blob or executable != (mode == "100755"):
             raise ValueError("archived input differs from its Git blob (check export-subst attributes)")
+    if expected:
+        raise ValueError(inventory_error)
 
 
 def validate_inputs(project, expected_dependencies):
@@ -495,6 +536,8 @@ def baseline(args, project, cache, restore=True, modules=None):
     mapping = load_map(args.baseline_map)
     hashes, names = {}, set()
     jobs = []
+    baseline_cache = None
+    output_dirs = {}
     for row in rows:
         if not isinstance(row, list) or len(row) != 4 or not all(isinstance(x, str) for x in row):
             raise ValueError("invalid baseline module")
@@ -514,19 +557,25 @@ def baseline(args, project, cache, restore=True, modules=None):
             continue  # Deleted modules need no warm output.
         archive = cache / "artifacts" / filename
         if not archive.exists():
-            original = safe_file(args.baseline_cache.resolve(), "artifacts/" + filename)
+            if baseline_cache is None:
+                baseline_cache = args.baseline_cache.resolve()
+            original = safe_file(baseline_cache, "artifacts/" + filename)
             if sha256(original) != digest:
                 raise ValueError(f"incomplete baseline archive: {filename}")
             # Never hard-link a trusted baseline into a PR-writable filesystem.
             shutil.copyfile(original, archive)
-        bases = [project / ".lake/build/lib/lean" / module.parent,
-                 project / ".lake/build/ir" / module.parent]
-        for directory in bases:
-            directory.mkdir(parents=True, exist_ok=True)
-        alias = project / ".lake/build/ir" / module.with_suffix(".ltar")
+        parent = module.parent
+        if parent not in output_dirs:
+            lib_dir = Path(".lake/build/lib/lean") / parent
+            ir_dir = Path(".lake/build/ir") / parent
+            (project / lib_dir).mkdir(parents=True, exist_ok=True)
+            (project / ir_dir).mkdir(parents=True, exist_ok=True)
+            output_dirs[parent] = (project / ir_dir, (f"/work/project/{lib_dir}", f"/work/project/{ir_dir}"))
+        ir_path, bases = output_dirs[parent]
+        alias = ir_path / module.with_suffix(".ltar").name
         os.link(archive, alias)  # Both links are private to this isolated job.
         jobs.append({"file": "/work/cache/artifacts/" + filename, "hash": dep_hash,
-                     "base": ["/work/project/" + str(path.relative_to(project)) for path in bases]})
+                     "base": list(bases)})
     if len(names) != len(mapping):
         raise ValueError("baseline module map is incomplete")
     return hashes, jobs, map_sha
@@ -754,22 +803,30 @@ def recover_raw_outputs(project, cache, work, control, command, prefix, environm
     return verified
 
 
-def collect_mapped_ltars(project, cache, mapping):
-    """Stock -o confirms completed packs; readonly cache leaves new LTARs local."""
+def collect_mapped_modules(project, cache, mapping, incomplete=False):
+    """Collect manifest entries and copy completed LTARs from the read-only build."""
     missing = {filename for filename in mapping.values()
                if not (cache / "artifacts" / filename).exists()}
-    if not missing:
-        return
-    found = set()
-    for _, module, dep_hash in module_traces(project):
+    modules, covered, found = [], set(), set()
+    # Require well-formed traces when using one to locate a missing archive.
+    for name, module, dep_hash in module_traces(project, incomplete=incomplete and not missing):
         filename = mapping.get(dep_hash)
-        if filename not in missing:
+        if filename is None:
             continue
-        archive = safe_file(project / ".lake/build/ir", str(module.parent / (module.name + ".ltar")))
-        shutil.copyfile(archive, cache / "artifacts" / filename)
-        found.add(filename)
+        safe_file(project / "src", str(Path(*name.split(".")).with_suffix(".lean")))
+        if dep_hash in covered:
+            raise ValueError("multiple modules claim one input hash")
+        covered.add(dep_hash)
+        if filename in missing:
+            archive = safe_file(project / ".lake/build/ir", str(module.parent / (module.name + ".ltar")))
+            shutil.copyfile(archive, cache / "artifacts" / filename)
+            found.add(filename)
+        modules.append((name, dep_hash, filename))
     if found != missing:
         raise ValueError("completed output map references a missing module LTAR")
+    if covered != set(mapping):
+        raise ValueError("compiled module manifest does not cover the full output map")
+    return modules
 
 
 def main():
@@ -933,7 +990,7 @@ def main():
                 tomllib.loads((project / "lakefile.toml").read_text()).get("platformIndependent") is True):
             recover_completed_map(project, cache, toolchain, work, mapping_file, base_hashes, mapping, known_mappings)
             mapping = load_map(mapping_file)
-        collect_mapped_ltars(project, cache, mapping)
+        modules = collect_mapped_modules(project, cache, mapping, incomplete=bool(build_exit_code))
         artifacts = []
         paths = [safe_file(cache, "artifacts/" + name) for name in sorted(set(mapping.values()))]
         new_paths = [path for path in paths if path.name not in base_hashes]
@@ -958,24 +1015,13 @@ def main():
                    "cache_map_sha256": [sha256(path) for path in args.cache_map],
                    "input_fingerprint": hashlib.sha256(json.dumps(inputs, sort_keys=True, separators=(",", ":")).encode()).hexdigest(),
                    "build_exit_code": build_exit_code, "map_sha256": sha256(output / "outputs.jsonl"), "artifacts": artifacts}
-        module_rows, covered = [], set()
-        for name, module, dep_hash in module_traces(project, incomplete=bool(build_exit_code)):
-            if dep_hash not in mapping:
-                continue
-            safe_file(project / "src", str(Path(*name.split(".")).with_suffix(".lean")))
-            if dep_hash in covered:
-                raise ValueError("multiple modules claim one input hash")
-            covered.add(dep_hash)
-            filename = mapping[dep_hash]
-            module_rows.append([name, dep_hash, filename, digests[filename]])
-        if covered != set(mapping):
-            raise ValueError("compiled module manifest does not cover the full output map")
         header = {"schema": 1, **inputs, "map_sha256": receipt["map_sha256"],
-                  "input_fingerprint": receipt["input_fingerprint"], "modules": len(module_rows)}
+                  "input_fingerprint": receipt["input_fingerprint"], "modules": len(modules)}
         manifest = output / "module-manifest.jsonl.gz"
         with manifest.open("wb") as raw, gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as zipped:
             zipped.write((json.dumps(header, sort_keys=True, separators=(",", ":")) + "\n").encode())
-            for row in sorted(module_rows):
+            for name, dep_hash, filename in sorted(modules):
+                row = [name, dep_hash, filename, digests[filename]]
                 zipped.write((json.dumps(row, separators=(",", ":")) + "\n").encode())
         receipt.update(module_manifest_sha256=sha256(manifest), module_manifest_bytes=manifest.stat().st_size)
         if args.recover_work:

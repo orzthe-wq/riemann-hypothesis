@@ -8,11 +8,16 @@ public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.Fla
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ForallGeometricallyIntegralOfSmoothOfGeometrical
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.QuotientIsAbelianSchemeOfQuotientScheme
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsGloballyGeneratedIffGeneratingSections
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FormallyUnramifiedOfCompOfEtaleOfSurjective
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsGaloisCoverOfIsQProjOver
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GaloisCoverDescentAndCartesianSquares
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsProperAndGeometricallyConnectedOfIsNilpotent
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyOfFinitePresentationOfCancelStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Finite
+public import Mathlib.AlgebraicGeometry.Morphisms.FinitePresentation
+public import Mathlib.AlgebraicGeometry.Morphisms.Flat
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocallyOfFinitePresentationOfCancel
+public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FormallyUnramifiedOfCompOfEtaleOfSurjective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,7 +61,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 
 @[expose] public section
 
@@ -76,7 +80,7 @@ theorem finiteSubsets_preimage {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB 
 
 theorem transl_mul {S : Scheme.{0}} {A : Over S} [GrpObj A] (a c : 𝟙_ (Over S) ⟶ A) :
     Hecke.transl (a * c) = Hecke.transl a ≫ Hecke.transl c := by
-  simp only [Hecke.transl, comp_mul, Category.id_comp, Category.comp_id]
+  simp only [Hecke.transl, comp_mul, Category.comp_id]
   rw [← Category.assoc, toUnit_unique (_ ≫ toUnit A) (toUnit A)]
   exact (mul_assoc _ _ _).symm
 
@@ -104,7 +108,7 @@ theorem isAbelianScheme_of_finite_etale {S : Scheme.{0}} (A Q : Over S) [GrpObj 
   have := GlobalTheory.NilProper.isSeparated_of_comp_surjective q.left Q.hom
   have := GlobalTheory.AbelianQuotient.geometricallyReduced_of_comp q.left Q.hom
   have : LocallyOfFinitePresentation Q.hom :=
-    GlobalTheory.T.locallyOfFinitePresentation_of_cancel q.left Q.hom hfin inferInstance inferInstance hsurj inferInstance
+    _root_.GlobalTheory.CompanionTheory.LfpDescent.descends q.left Q.hom hfin inferInstance inferInstance hsurj inferInstance
   exact ⟨hQ, GlobalTheory.AbelianQuotient.smooth_of_grpObj_of_flat Q, ⟨⟩,
     GlobalTheory.AbelianQuotient.geometricallyConnected_of_comp q.left Q.hom⟩
 

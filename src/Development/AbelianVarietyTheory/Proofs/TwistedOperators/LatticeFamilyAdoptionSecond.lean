@@ -1,20 +1,24 @@
 module
 
+public import Mathlib.RingTheory.Localization.FractionRing
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SemilinearExtensionBases
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FractionalBaseInclusion
 public import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.RatDatOfReal
 public import Formalism.SharpRestriction.Divisibility.LiftErrorLocal
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsBasisTensor
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FractionFieldEmbeddingCompat
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ImportsFurther
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -22,6 +26,8 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -29,7 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,12 +47,61 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Formalism.LocalToGlobal.HilbertRowConditions.IsHilbertCF
 import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ImportsFurther, Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeFamilyAdoptionSecond
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ImportsFurther =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.ImportsFurther", "h": "module\n\npublic import Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.SmulMemOfMemSpanExists
+
+theorem exists_smul_mem_of_mem_span {Oe K'' T : Type} [CommRing Oe] [IsDomain Oe] [Field K'']
+    [Algebra Oe K''] [IsFractionRing Oe K''] [AddCommGroup T] [Module K'' T] [Module Oe T]
+    [IsScalarTower Oe K'' T] (M : Submodule Oe T) {x : T}
+    (hx : x ∈ Submodule.span K'' (↑M : Set T)) : ∃ c : Oe, c ≠ (0 : Oe) ∧ c • x ∈ M := by
+  induction hx using Submodule.span_induction with
+  | mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
+  | add y z _ _ hy hz =>
+    obtain ⟨a, ha, hay⟩ := hy
+    obtain ⟨b, hb, hbz⟩ := hz
+    refine ⟨a * b, mul_ne_zero ha hb, ?_⟩
+    rw [smul_add]
+    refine M.add_mem ?_ ?_
+    · rw [mul_comm, mul_smul]; exact M.smul_mem _ hay
+    · rw [mul_smul]; exact M.smul_mem _ hbz
+  | smul k y _ hy =>
+    obtain ⟨a, ha, hay⟩ := hy
+    obtain ⟨n, d, hd, rfl⟩ := IsFractionRing.div_surjective (A := Oe) k
+    have hd0 : d ≠ 0 := nonZeroDivisors.ne_zero hd
+    have hd1 : algebraMap Oe K'' d ≠ 0 := fun h =>
+      hd0 (IsFractionRing.injective Oe K'' (by rw [h, map_zero]))
+    refine ⟨a * d, mul_ne_zero ha hd0, ?_⟩
+    have key : (a * d) • ((algebraMap Oe K'' n / algebraMap Oe K'' d) • y) = n • (a • y) := by
+      rw [← algebraMap_smul K'' (a * d), ← algebraMap_smul K'' n, ← algebraMap_smul K'' a,
+        smul_smul, smul_smul, map_mul]
+      congr 1
+      field_simp
+    rw [key]
+    exact M.smul_mem _ hay
+
+end GlobalTheory.SmulMemOfMemSpanExists
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ImportsFurther =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeFamilyAdoptionSecond =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeFamilyAdoptionSecond", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SemilinearExtensionBases\npublic import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FractionalBaseInclusion\npublic import Formalism.LocalToGlobal.IndefiniteReal.DoubleCosetOperators.RatDatOfReal\npublic import Formalism.SharpRestriction.Divisibility.LiftErrorLocal\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsBasisTensor\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FractionFieldEmbeddingCompat\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ImportsFurther\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.HilbertRowConditions.IsHilbertCF\nimport Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace GroupAverageFixedPoints
@@ -160,7 +214,7 @@ theorem ext_smul (c : K) (A : Module.End K Fm) :
     ext O K'' (c • A) = algebraMap K K'' c • ext O K'' A := by
   apply TensorProduct.AlgebraTensorModule.ext
   intro x m
-  simp [tmul_smul_frac, TensorProduct.smul_tmul', smul_eq_mul]
+  simp [tmul_smul_frac, TensorProduct.smul_tmul']
   rw [Algebra.smul_def]
 
 theorem ext_sum {ι : Type} (s : Finset ι) (A : ι → Module.End K Fm) :
@@ -299,17 +353,6 @@ variable {LL Oe K'' V T : Type} [Field LL] [NumberField LL] [AddCommGroup V] [Mo
   [IsScalarTower (𝓞 LL) LL V] [CommRing Oe] [IsDomain Oe] [Field K''] [Algebra Oe K''] [IsFractionRing Oe K'']
   [AddCommGroup T] [Module K'' T] [Module Oe T] [IsScalarTower Oe K'' T]
 
-theorem exists_smul_mem (M : Submodule Oe T) {x : T} (hx : x ∈ Submodule.span K'' (M : Set T)) :
-    ∃ c : Oe, c ≠ 0 ∧ c • x ∈ M := by
-  first
-  | (rename_i h_3 h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11; revert Oe K'' T h_3 h_4 h_5 h_6 h_7 h_8 h_9 h_10 h_11 M x hx; exact @_root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span)
-  | exact @_root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span
-  | exact _root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span
-  | (apply _root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span <;> assumption)
-  | (intros; apply _root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span ..)
-
 theorem isLatIn_span (σ : LL →+* K'') (hint : ∀ a : 𝓞 LL, ∃ r : Oe, σ (a : LL) = algebraMap Oe K'' r)
     (eM : V →ₛₗ[σ] T) (L : Submodule (𝓞 LL) V) (hFG : L.FG) (hsp : Submodule.span LL (L : Set V) = ⊤)
     (VV : Submodule K'' T) (hVV : Submodule.span K'' (Set.range eM) = VV) :
@@ -352,7 +395,7 @@ theorem isLatIn_span (σ : LL →+* K'') (hint : ∀ a : 𝓞 LL, ∃ r : Oe, σ
       | smul a x _ hx => rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ hx
     have hx' : x ∈ VV := hx
     rw [← hVV] at hx'
-    exact exists_smul_mem _ (Submodule.span_le.2 hle hx')
+    exact _root_.GlobalTheory.SmulMemOfMemSpanExists.exists_smul_mem_of_mem_span _ (Submodule.span_le.2 hle hx')
 
 end Lat
 
@@ -743,10 +786,6 @@ end
 end
 
 end GroupAverageFixedPoints
-section
-open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH NumberField IsDedekindDomain Formalism.L2 Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Cx Formalism.IndefR.FWT Formalism.IndefR.NX Formalism.L2.Pj
-open Formalism.L2.Rows
-open scoped TensorProduct
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeFamilyAdoptionSecond =====

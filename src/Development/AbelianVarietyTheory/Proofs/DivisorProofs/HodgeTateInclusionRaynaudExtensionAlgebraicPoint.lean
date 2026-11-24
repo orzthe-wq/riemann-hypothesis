@@ -4,22 +4,24 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.IsLatBasisHt
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsUniqueJet
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.LieEig
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.StChartF
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionCharacterExtAndExistsOfIntegralPoints
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.AddOfPtPt
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsToJetEq
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.RepJetAugCompTrunc
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CharAtOfMultiplicativeSeries
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsCharactersBoundedMinorsOfHodgeTateChartBou
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenOfRangeGenericSubset
+public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HodgeTateInclusionChartCharacters
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionCharacterExtAndExistsOfIntegralPoints
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsToJetEq
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CotangentBidualToTangentFunctionInjective
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DualNumberValueToJet
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsAlgHomValuationSubring
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsCharactersBoundedMinorsOfHodgeTateChartBou
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FiniteAugmentedConnectedPartLocalisation
+import Mathlib.FieldTheory.IsAlgClosed.Basic
+import Mathlib.RingTheory.Valuation.ValuationSubring
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MonicEqProd
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsAdicCompleteOfFiniteBasis
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsReducedTorsionGeometricFibre
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SectionEqZeroOfForallGeometricPoint
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UnitOfBijectiveMulNatural
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenOfRangeGenericSubset
-public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.HodgeTateInclusionChartCharacters
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -60,6 +62,8 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.UnivChartLoc
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -149,7 +153,7 @@ theorem exists_localisation [IsAlgClosed C] [CharZero C] (hv : v.Integers O) (hp
     rw [aug.commutes]
     exact e.apply_symm_apply w⟩
   have hk : RingHom.ker aug' = RingHom.ker aug := Ideal.ext fun a => map_eq_zero_iff e e.injective
-  obtain ⟨s, h1, h2, h3⟩ := GlobalTheory.finite_augmented_connected_part_localisation C W (p : W)
+  obtain ⟨s, h1, h2, h3⟩ := _root_.GlobalTheory.MonicSeparableProduct.main C W (p : W)
     (fun a ha => exists_pow_mem hW ha (Nat.cast_ne_zero.2 hp)) A aug'
   rw [hk, map_natCast] at h2
   refine ⟨s, h1, h2, fun R _ _ w hw => ?_⟩

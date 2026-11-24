@@ -1,31 +1,35 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FiniteDimensionalWdSpace
-public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinExt
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
-public import Development.AbelianVarietyTheory.CrystallinePeriods.AdicMaps
-public import Development.AbelianVarietyTheory.CrystallinePeriods.CrisIncl
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisGaloisActionFontaineTEqCyclotomic
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRGaloisInvariantsEqFinExt
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalPrimeGaloisActionPeriodT
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinExt
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisGaloisActionFontaineTEqCyclotomic
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdR
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdR
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnit
+public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+public import Development.AbelianVarietyTheory.CrystallinePeriods.AdicMaps
+public import Development.AbelianVarietyTheory.CrystallinePeriods.CrisIncl
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoeffEqMkRootT
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EigenAdd
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyIntegral
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadic
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnit
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSumFactorial
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddMulDerivativeTrunc
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsField
+import Formalism.LocalRingCardinality.AdicCompletionLocal.InstIsAdicCompleteOCSpanSingletonSetCast
+import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CLTateInvariantsFiniteExtensionMem
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfTateTwistInvariantFiniteExtension
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineTIsUnitBcrisAndUniformizerBdRPlus
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPrimitiveTiltedRootOfUnityLocalPeriodRingsData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodRingsGaloisActionLawsFrobeniusComm
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -33,7 +37,6 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
-import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -50,8 +53,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -64,10 +65,428 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.NumberTheory.Padics.LocalField
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Polynomial.Basic
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadic
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddMulDerivativeTrunc
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EigenAdd, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyIntegral, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSumFactorial, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KummerNotCoboundary
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EigenAdd =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EigenAdd", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FiniteDimensionalWdSpace\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinExt\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisGaloisActionFontaineTEqCyclotomic\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRGaloisInvariantsEqFinExt\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPow\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsField\nimport Formalism.LocalRingCardinality.AdicCompletionLocal.InstIsAdicCompleteOCSpanSingletonSetCast\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CLTateInvariantsFiniteExtensionMem\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfTateTwistInvariantFiniteExtension\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineTIsUnitBcrisAndUniformizerBdRPlus\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPrimitiveTiltedRootOfUnityLocalPeriodRingsData\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodRingsGaloisActionLawsFrobeniusComm\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.MemLoc
+open scoped Formalism.Per
+
+namespace GlobalTheory.Pst.NoLogTheta
+
+section Abstract
+variable {R F G : Type} [CommRing R] [IsDomain R] [Field F]
+
+theorem eigen_add (θ : R →+* F) (σ : G → R →+* R) (τ : G → F →+* F) (c d : G → R) (t : R) (ht : t ≠ 0)
+    (hθt : θ t = 0) (hker : ∀ y, θ y = 0 → t ∣ y) (hc : ∀ g, θ (c g) ≠ 0)
+    (hθ : ∀ g y, θ (σ g y) = τ g (θ y)) (hσt : ∀ g, σ g t = c g * t)
+    (tate : ∀ (i : ℤ) (x : F), i ≠ 0 → (∀ g, τ g x * θ (c g) ^ i = x) → x = 0)
+    (n : ℕ) : ∀ y : R, (∀ g, σ g y = c g ^ n * (y + d g * t ^ (n + 1))) →
+      ∃ w, y = t ^ n * w ∧ ∀ g, σ g w = w + d g * t := by
+  induction n with
+  | zero => intro y hy; exact ⟨y, by simp, fun g => by simpa using hy g⟩
+  | succ n ih =>
+    intro y hy
+    have h2 : θ y = 0 := by
+      refine tate (-((n + 1 : ℕ) : ℤ)) _ (by omega) fun g => ?_
+      rw [zpow_neg, zpow_natCast, ← hθ, hy, map_mul, map_pow, map_add (f := _), map_mul, map_pow, hθt,
+        zero_pow (Nat.succ_ne_zero _), mul_zero, add_zero]
+      have := pow_ne_zero (n + 1) (hc g)
+      field_simp
+    obtain ⟨v, hv⟩ := hker y h2
+    obtain ⟨w, hw, hw'⟩ := ih v fun g => by
+      have h := hy g
+      rw [hv, map_mul, hσt] at h
+      have hc0 : c g ≠ 0 := fun h0 => hc g (by rw [h0, map_zero])
+      apply mul_left_cancel₀ (mul_ne_zero hc0 ht)
+      rw [h]
+      ring
+    exact ⟨w, by rw [hv, hw]; ring, hw'⟩
+
+end Abstract
+
+set_option allowUnsafeReducibility true in
+attribute [local irreducible] Per.Acris Per.Bcris
+
+theorem core_form (l : ℕ) [Fact l.Prime] (C : Core l) (b : Per.BdR l) (d : GQ l → Per.BdRp l)
+    (hb : ∀ g : GQ l, Per.σD g b = b + algebraMap (Per.BdRp l) (Per.BdR l) (d g * C.j C.t)) :
+    ∃ (a : ℚ_[l]) (v : Per.BdRp l), b = algebraMap (Per.BdRp l) (Per.BdR l)
+      (C.o (algebraMap ℚ_[l] (Om l) a) + C.j C.t * v) := by
+  have he := GlobalTheory.MemLoc.core_isEps l C
+  obtain ⟨hdom, hinj, -, hfrac⟩ := _root_.GlobalTheory.MemLoc.BdRField.bdR_isField l
+  obtain ⟨hfil, hreg, hcompl, -⟩ := _root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l C.ε he
+  obtain ⟨-, hker, hunit, -, hθ⟩ := _root_.GlobalTheory.MemLoc.thetaD_props l
+  obtain ⟨-, ht1, ht2, -⟩ := _root_.GlobalTheory.MemLoc.core_t_unit_fil l C
+  obtain ⟨-, hjσ, -⟩ := _root_.GlobalTheory.MemLoc.crisP_unique_equivariant l C.j C.j_cris
+  have hσD := (GlobalTheory.MemLoc.ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.1
+  have hact := _root_.GlobalTheory.MemLoc.TAct.t_act l C
+  have htate := _root_.GlobalTheory.MemLoc.tate_twist_invariants l C (botExt l)
+  have hast := _root_.GlobalTheory.MemLoc.invariants_finExt l (botExt l)
+  generalize hx : aDp l (xi C.ε) = x at *
+  obtain ⟨n, y0, hy0⟩ := hfrac C.ε he b
+  rw [hx] at hy0
+  generalize htt : C.j C.t = t at *
+  obtain ⟨u, hu⟩ := (hfil 1 t).1 ht1
+  rw [pow_one] at hu
+  have huu : IsUnit u := by
+    refine hunit u fun h0 => ht2 ?_
+    obtain ⟨v, hv⟩ := (hfil 1 u).1 ((hker u).1 h0)
+    exact (hfil 2 t).2 ⟨v, by rw [hu, hv]; ring⟩
+  have ht0 : t ≠ 0 := fun h0 => ht2 (h0 ▸ zero_mem _)
+  have htx : t ∣ x := by rw [hu]; exact huu.mul_right_dvd.2 dvd_rfl
+  let c : GQ l → Per.BdRp l := fun g => C.o (algebraMap ℚ_[l] (Om l) ((C.χ g : ℤ_[l]) : ℚ_[l]))
+  have hθc : ∀ g, Per.θD l (c g) = algebraMap ℚ_[l] ℂ_[l] ((C.χ g : ℤ_[l]) : ℚ_[l]) := fun g =>
+    (C.o_sec.th _).trans rfl
+  have hc : ∀ g, Per.θD l (c g) ≠ 0 := fun g => by
+    rw [hθc, map_ne_zero]
+    exact fun h => (C.χ g).ne_zero (PadicInt.coe_eq_zero.1 h)
+  have hσt : ∀ g : GQ l, Per.σDp g t = c g * t := fun g => by
+    rw [← htt, ← hjσ, hact, map_mul, InvDR.j_alg, ← C.o_sec.z]
+  have hker' : ∀ y, Per.θD l y = 0 → t ∣ y := fun y hy =>
+    htx.trans (by simpa using (hfil 1 y).1 ((hker y).1 hy))
+  have hθt : Per.θD l t = 0 := (hker t).2 ht1
+  have tate : ∀ (i : ℤ) (x : ℂ_[l]), i ≠ 0 →
+      (∀ g : GQ l, Per.σC g x * Per.θD l (c g) ^ i = x) → x = 0 := fun i x hi h =>
+    htate i x hi fun g _ => by simpa only [hθc] using h g
+  have hy : b * algebraMap (Per.BdRp l) (Per.BdR l) t ^ n =
+      algebraMap (Per.BdRp l) (Per.BdR l) (y0 * u ^ n) := by
+    rw [hu, map_mul, map_mul, map_pow, ← hy0]
+    ring
+  generalize y0 * u ^ n = y at hy
+  have hyσ : ∀ g : GQ l, Per.σDp g y = c g ^ n * (y + d g * t ^ (n + 1)) := fun g => by
+    apply hinj
+    rw [← hσD, ← hy, map_mul, map_pow, hσD, hσt, hb g]
+    simp only [map_mul, map_pow, map_add (f := _)]
+    rw [← hy]
+    ring
+  obtain ⟨w, hw, hw'⟩ := eigen_add (Per.θD l) (fun g : GQ l => Per.σDp g) (fun g => Per.σC g) c d t ht0
+    hθt hker' hc (fun g y => hθ g y) hσt tate n y hyσ
+  obtain ⟨k, hk, hkθ⟩ := hast (Per.θD l w) fun g _ => by
+    rw [← hθ, hw' g, map_add (f := _), map_mul, hθt, mul_zero, add_zero]
+  obtain ⟨a, rfl⟩ := IntermediateField.mem_bot.1 hk
+  obtain ⟨v, hv⟩ := hker' (w - C.o (algebraMap ℚ_[l] (Om l) a))
+    (by rw [map_sub, C.o_sec.th, hkθ, sub_self])
+  refine ⟨a, v, ?_⟩
+  rw [← hv, add_sub_cancel]
+  have : IsDomain (Per.BdR l) := (_root_.GlobalTheory.MemLoc.BdRField.bdR_isField l).2.2.1.isDomain
+  have ht' : algebraMap (Per.BdRp l) (Per.BdR l) t ^ n ≠ 0 :=
+    pow_ne_zero n ((map_ne_zero_iff _ hinj).2 ht0)
+  apply mul_right_cancel₀ ht'
+  rw [hy, hw, map_mul, map_pow, mul_comm]
+
+theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
+    ∀ (b : P.R.B) (c : GQ l → ℚ_[l]), (∀ g : GQ l, P.actQ g b - b = c g • P.tB) →
+    ∃ a : ℚ_[l], P.ιB ((b - algebraMap ℚ_[l] P.R.B a) * tInv P) ∈ (P.PD (botExt l)).Fil 0 := by
+  intro l _ P AI T b c hb
+  obtain ⟨C, hC⟩ := FitsEx.exists_fits l P AI T
+  have hι : ∀ g : GQ l, P.actQdR g (P.ιB b) = P.ιB (P.actQ g b) := fun g => by
+    have := (P.PD (botExt l)).ι_comm ⟨g, mem_GK_botExt g⟩ b
+    rw [P.PD_ι, P.PD_ι, P.PD_actB, P.PD_actdR] at this
+    exact this.symm
+  have ht : T.eD (P.ιB P.tB) = algebraMap (Per.BdRp l) (Per.BdR l) (C.j C.t) := by
+    rw [hC.ι, hC.t, Core.tB, C.ι_j]
+  have hq : ∀ a : ℚ_[l], T.eD (P.ιB (algebraMap ℚ_[l] P.R.B a)) =
+      algebraMap (Per.BdRp l) (Per.BdR l) (C.o (algebraMap ℚ_[l] (Om l) a)) := fun a => by
+    rw [AlgHom.commutes, IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR, hC.o]
+    rfl
+  obtain ⟨a, v, h⟩ := core_form l C (T.eD (P.ιB b)) (fun g => C.o (algebraMap ℚ_[l] (Om l) (c g))) fun g => by
+    rw [← T.actD, hι, map_mul, ← hq, ← ht, ← map_mul, ← map_mul, ← map_add (f := _), ← map_add (f := _), ← Algebra.smul_def,
+      ← hb, add_sub_cancel]
+  refine ⟨a, ?_⟩
+  have h1 : T.eD (P.ιB (tInv P)) * algebraMap (Per.BdRp l) (Per.BdR l) (C.j C.t) = 1 := by
+    rw [← ht, ← map_mul, ← map_mul, tInv_mul, map_one, map_one]
+  have h2 : T.eD (P.ιB ((b - algebraMap ℚ_[l] P.R.B a) * tInv P)) =
+      algebraMap (Per.BdRp l) (Per.BdR l) v := by
+    rw [map_mul, map_mul, map_sub, map_sub, hq, h, map_add (f := _), map_mul]
+    linear_combination algebraMap (Per.BdRp l) (Per.BdR l) v * h1
+  rw [T.fil, h2]
+  have h3 : (1 : Per.BdR l) ∈ Per.FilD l 0 := by
+    have := (T.fil (botExt l) 0 1).1 (P.PD (botExt l)).one_mem
+    rwa [map_one] at this
+  have h4 := (Per.FilD l 0).smul_mem v h3
+  rwa [Algebra.smul_def, mul_one] at h4
+
+end GlobalTheory.Pst.NoLogTheta
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EigenAdd =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyIntegral =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyIntegral", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalPrimeGaloisActionPeriodT\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.Padics.LocalField\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.MemLoc
+open scoped Formalism.Per
+
+namespace GlobalTheory.Pst.KummerIndep
+
+variable {l : ℕ} [Fact l.Prime]
+
+theorem eventually_integral (x : ℚ_[l]) :
+    ∀ᶠ N : ℕ in Filter.atTop, ∃ y : ℤ_[l], (y : ℚ_[l]) = (l : ℚ_[l]) ^ N * x := by
+  have h : Filter.Tendsto (fun N : ℕ => ‖(l : ℚ_[l]) ^ N * x‖) Filter.atTop (nhds 0) := by
+    have := ((tendsto_pow_atTop_nhds_zero_of_norm_lt_one
+      (Padic.norm_p_lt_one (p := l))).mul_const x).norm
+    simpa using this
+  filter_upwards [h.eventually (ge_mem_nhds zero_lt_one)] with N hN
+  exact ⟨⟨_, hN⟩, rfl⟩
+
+theorem exists_root (P : LocPrime l) (μ : ℕ → Om l) (d : GQ l → ℤ_[l])
+    (hμ : ∀ m : ℕ, μ m ^ (l ^ m) = ((l + 1 : ℕ) : Om l))
+    (hd : ∀ (g : GQ l) (m : ℕ), g (μ m) = P.ζQ m ^ (PadicInt.toZModPow m (d g)).val * μ m)
+    (α β r : ℤ_[l])
+    (h : ∀ g : GQ l, (α : ℚ_[l]) * (kummer P g : ℚ_[l]) + β * (d g : ℚ_[l]) =
+      r * ((P.χQ g : ℚ_[l]) - 1))
+    (k A B : ℕ) (hA : PadicInt.toZModPow k α = A) (hB : PadicInt.toZModPow k β = B) :
+    ∃ q : ℚ_[l], q ^ (l ^ k) = (l : ℚ_[l]) ^ A * ((l + 1 : ℕ) : ℚ_[l]) ^ B := by
+  have : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
+  have : IsGalois ℚ_[l] (Om l) := {}
+  obtain ⟨S, hS⟩ : ∃ S : ℕ, PadicInt.toZModPow k (-r) = S := ⟨_, (ZMod.natCast_zmod_val _).symm⟩
+  obtain ⟨x, hx⟩ := (InfiniteGalois.mem_range_algebraMap_iff_fixed (k := ℚ_[l])
+    (lRoot l k ^ A * μ k ^ B * P.ζQ k ^ S)).2 fun g => by
+      have hx : ‖(P.χQ g : ℚ_[l])‖ ≤ 1 := by
+        obtain ⟨a, ha, -⟩ := P.χQ_cyc g 0 1 (by simp)
+        have e : (P.χQ g : ℚ_[l]) = ((P.χQ g : ℚ_[l]) - a) + a := by ring
+        rw [e]
+        refine (Padic.nonarchimedean _ _).trans (max_le (by simpa using ha) ?_)
+        exact_mod_cast Padic.norm_int_le_one (p := l) (a : ℤ)
+      let x : ℤ_[l] := ⟨P.χQ g, hx⟩
+      obtain ⟨a, ha, hg⟩ := P.χQ_cyc g k (P.ζQ k) (isPrimitiveRoot_zeta P k).pow_eq_one
+      have hxa : PadicInt.toZModPow k x = a := by
+        rw [← sub_eq_zero, ← map_natCast (PadicInt.toZModPow k), ← map_sub, ← RingHom.mem_ker,
+          PadicInt.ker_toZModPow, ← PadicInt.norm_le_pow_iff_mem_span_pow]
+        exact ha
+      have h1 : α * kummer P g + β * d g + (-r) * x = -r := by
+        apply Subtype.ext
+        have e : (x : ℚ_[l]) = P.χQ g := rfl
+        have := h g
+        push_cast
+        rw [e]
+        linear_combination this
+      have h2 := congrArg (PadicInt.toZModPow k) h1
+      rw [map_add (f := _), map_add (f := _), map_mul, map_mul, map_mul, hA, hB, hS, hxa] at h2
+      have h3 : P.ζQ k ^ ((PadicInt.toZModPow k (kummer P g)).val * A +
+          (PadicInt.toZModPow k (d g)).val * B + a * S) = P.ζQ k ^ S := by
+        rw [zeta_pow_eq_iff]
+        push_cast
+        rw [ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]
+        linear_combination h2
+      rw [map_mul, map_mul, map_pow, map_pow, map_pow, hg, isKummer_kummer P g k, hd g k, ← h3]
+      simp only [mul_pow, ← pow_mul, pow_add]
+      ring
+  refine ⟨x, (algebraMap ℚ_[l] (Om l)).injective ?_⟩
+  rw [map_pow, hx, mul_pow, mul_pow, pow_right_comm (lRoot l k), pow_right_comm (μ k),
+    pow_right_comm (P.ζQ k), lRoot_pow, hμ, (isPrimitiveRoot_zeta P k).pow_eq_one]
+  simp
+
+theorem norm_succ : ‖((l + 1 : ℕ) : ℚ_[l])‖ = 1 := by
+  rw [Padic.norm_natCast_eq_one_iff]
+  simp
+
+theorem dvd_of_root {k A B : ℕ} {q : ℚ_[l]}
+    (h : q ^ (l ^ k) = (l : ℚ_[l]) ^ A * ((l + 1 : ℕ) : ℚ_[l]) ^ B) : l ^ k ∣ A := by
+  have hl : (l : ℚ_[l]) ≠ 0 := Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero
+  have hl1 : ((l + 1 : ℕ) : ℚ_[l]) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.succ_ne_zero _)
+  have hv : ((l + 1 : ℕ) : ℚ_[l]).valuation = 0 := by
+    rw [Padic.valuation_natCast, padicValNat.eq_zero_of_not_dvd]
+    · simp
+    · rw [Nat.dvd_add_right dvd_rfl]
+      exact (Fact.out : l.Prime).not_dvd_one
+  have h2 := congrArg Padic.valuation h
+  rw [Padic.valuation_mul (pow_ne_zero _ hl) (pow_ne_zero _ hl1), Padic.valuation_pow,
+    Padic.valuation_pow, Padic.valuation_pow, Padic.valuation_p, hv, mul_one, mul_zero,
+    add_zero] at h2
+  exact Int.natCast_dvd_natCast.mp ⟨_, h2.symm⟩
+
+theorem not_forall_root {B : ℕ} (hB : B ≠ 0)
+    (h : ∀ k, ∃ q : ℚ_[l], q ^ (l ^ k) = ((l + 1 : ℕ) : ℚ_[l]) ^ B) : False := by
+  have hp : l.Prime := Fact.out
+  have key : ((((l + 1) ^ B) ^ (l - 1) : ℕ) : ℤ_[l]) = ((1 : ℕ) : ℤ_[l]) := by
+    refine PadicInt.ext_of_toZModPow.mp fun n => ?_
+    cases n with
+    | zero =>
+      have : Subsingleton (ZMod (l ^ 0)) := by rw [pow_zero]; infer_instance
+      exact Subsingleton.elim _ _
+    | succ k =>
+      obtain ⟨q, hq⟩ := h k
+      have hn : ‖q‖ ≤ 1 := by
+        have := congrArg norm hq
+        rw [norm_pow, norm_pow, norm_succ, one_pow] at this
+        exact (pow_le_one_iff_of_nonneg (norm_nonneg _) (pow_ne_zero _ hp.ne_zero)).mp this.le
+      let y : ℤ_[l] := ⟨q, hn⟩
+      have hy : y ^ (l ^ k) = (((l + 1) ^ B : ℕ) : ℤ_[l]) := by
+        apply Subtype.ext
+        have e : (y : ℚ_[l]) = q := rfl
+        push_cast at hq ⊢
+        rw [e, hq]
+      have hu : IsUnit y := by
+        rw [← isUnit_pow_iff (pow_ne_zero k hp.ne_zero), hy, PadicInt.isUnit_iff]
+        have := norm_succ (l := l)
+        rw [Nat.cast_pow, norm_pow]
+        have e : ‖((l + 1 : ℕ) : ℤ_[l])‖ = 1 := by
+          rw [PadicInt.norm_def, PadicInt.coe_natCast, this]
+        rw [e, one_pow]
+      obtain ⟨u, hu⟩ := hu.map (PadicInt.toZModPow (k + 1))
+      have h1 := congrArg Units.val (ZMod.pow_totient u)
+      rw [Nat.totient_prime_pow_succ hp, Units.val_pow_eq_pow_val, hu, pow_mul, ← map_pow, hy,
+        ← map_pow] at h1
+      rw [Nat.cast_pow, h1]
+      simp
+  have h2 : ((l + 1) ^ B) ^ (l - 1) = 1 := Nat.cast_injective key
+  have := hp.two_le
+  rw [← pow_mul, Nat.pow_eq_one] at h2
+  rcases h2 with h2 | h2
+  · omega
+  · rcases Nat.mul_eq_zero.mp h2 with h3 | h3 <;> omega
+
+theorem kummer_indep (l : ℕ) [Fact l.Prime] (P : LocPrime l) (μ : ℕ → Om l) (d : GQ l → ℤ_[l])
+    (hμ : ∀ m : ℕ, μ m ^ (l ^ m) = ((l + 1 : ℕ) : Om l))
+    (hd : ∀ (g : GQ l) (m : ℕ), g (μ m) = P.ζQ m ^ (PadicInt.toZModPow m (d g)).val * μ m)
+    (α β r : ℚ_[l])
+    (h : ∀ g : GQ l, α * (kummer P g : ℚ_[l]) + β * (d g : ℚ_[l]) =
+      r * ((P.χQ g : ℚ_[l]) - 1)) : α = 0 ∧ β = 0 := by
+  have hp : l.Prime := Fact.out
+  have hl : (l : ℚ_[l]) ≠ 0 := Nat.cast_ne_zero.mpr hp.ne_zero
+  have hα : α = 0 := by
+    obtain ⟨N, ⟨a, ha⟩, ⟨b, hb⟩, ⟨c, hc⟩⟩ := ((eventually_integral α).and
+      ((eventually_integral β).and (eventually_integral r))).exists
+    have h0 : a = 0 := by
+      refine PadicInt.ext_of_toZModPow.mp fun k => ?_
+      have : NeZero (l ^ k) := ⟨pow_ne_zero _ hp.ne_zero⟩
+      obtain ⟨q, hq⟩ := exists_root P μ d hμ hd a b c
+        (fun g => by rw [ha, hb, hc]; linear_combination (l : ℚ_[l]) ^ N * h g) k _ _
+        (ZMod.natCast_zmod_val _).symm (ZMod.natCast_zmod_val _).symm
+      rw [← ZMod.natCast_zmod_val (PadicInt.toZModPow k a), map_zero, ZMod.natCast_eq_zero_iff]
+      exact dvd_of_root hq
+    rw [h0] at ha
+    exact (mul_eq_zero.mp ha.symm).resolve_left (pow_ne_zero _ hl)
+  refine ⟨hα, by_contra fun hβ => ?_⟩
+  obtain ⟨N, c, hc⟩ := (eventually_integral (r / β)).exists
+  refine not_forall_root (l := l) (B := l ^ N) (pow_ne_zero _ hp.ne_zero) fun k => ?_
+  have := exists_root P μ d hμ hd 0 ((l ^ N : ℕ) : ℤ_[l]) c (fun g => by
+    have h1 := h g
+    rw [hα] at h1
+    rw [hc]
+    push_cast
+    field_simp
+    linear_combination (l : ℚ_[l]) ^ N * h1) k 0 (l ^ N) (by simp) (map_natCast _ _)
+  simpa only [pow_zero, one_mul] using this
+
+end GlobalTheory.Pst.KummerIndep
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyIntegral =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSumFactorial =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSumFactorial", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP\npublic import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics\npublic import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdR\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnit\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalPrimeGaloisActionPeriodT\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.MemLoc
+open scoped Formalism.Per
+
+namespace GlobalTheory.MemLoc.LogKer
+
+theorem exists_sum_factorial {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) (l : ℕ) (hl : 0 < l)
+    (hA : IsAdicComplete (Ideal.span {(l : A)}) A) (γ : ℕ → R) :
+    ∃ Y : A, ∀ r n : ℕ, l ^ r ≤ n → ∃ w : A,
+      Y = f (∑ k ∈ Finset.range n, (-1) ^ k * ((k.factorial : ℕ) : R) * γ k) + (l : A) ^ r * w := by
+  obtain ⟨Y, hY⟩ := LogEx.exists_sum (l : A) (fun k => f ((-1) ^ k * ((k.factorial : ℕ) : R) * γ k))
+    (fun r => l ^ r) (fun a b hab => Nat.pow_le_pow_right hl hab) (fun r k hk => by
+      obtain ⟨m, hm⟩ := Nat.dvd_factorial (pow_pos hl r) hk
+      refine ⟨f ((-1) ^ k * (m : R) * γ k), ?_⟩
+      simp only [hm, map_mul, map_natCast, Nat.cast_mul, Nat.cast_pow, map_pow]
+      ring)
+  refine ⟨Y, fun r n hn => ?_⟩
+  obtain ⟨w, hw⟩ := hY r n hn
+  exact ⟨w, by rw [map_sum, ← hw]; ring⟩
+
+theorem sum_eq {P : Type} [CommRing P] (u γ : ℕ → P) (x : P) (hu : ∀ k : ℕ, ((k + 1 : ℕ) : P) * u k = 1)
+    (hγ : ∀ k : ℕ, (((k + 1).factorial : ℕ) : P) * γ k = x ^ (k + 1)) (n : ℕ) :
+    ∑ k ∈ Finset.range n, (-1) ^ k * ((k.factorial : ℕ) : P) * γ k =
+      ∑ k ∈ Finset.range n, (-1) ^ k * u k * x ^ (k + 1) := by
+  refine Finset.sum_congr rfl fun k _ => ?_
+  rw [← hγ k, Nat.factorial_succ, Nat.cast_mul]
+  linear_combination (-((-1) ^ k * ((k.factorial : ℕ) : P) * γ k)) * hu k
+
+set_option allowUnsafeReducibility true in
+attribute [local irreducible] Per.Acris
+
+theorem exists_log : ∀ (l : ℕ) [Fact l.Prime] (j : Per.Acris l →+* Per.BdRp l), IsCrisP j → ∀ z : Per.Ainf l, Per.θ l z = 0 → ∃ Y : Per.Acris l, ∀ n : ℕ, ((n.factorial : ℕ) : Per.AinfP l ⧸ Per.kerP l ^ n) * Per.ev l n (j Y) = Ideal.Quotient.mk _ (∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Per.AinfP l) * (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1)) := by
+  intro l _ j hj z hz
+  have hu : ∀ k : ℕ, ∃ u : Per.AinfP l, ((k + 1 : ℕ) : Per.AinfP l) * u = 1 := fun k =>
+    (GlobalTheory.RingBasics.isUnit_nat l _ k.succ_ne_zero).exists_right_inv
+  choose u hu using hu
+  have hf : ∀ k : ℕ, IsUnit ((k.factorial : ℕ) : Per.AinfP l) := fun k =>
+    GlobalTheory.RingBasics.isUnit_nat l _ k.factorial_ne_zero
+  have hγ : ∀ k : ℕ, ∃ γ : Per.Acris0 l, (((k + 1).factorial : ℕ) : Per.AinfP l) * (γ : Per.AinfP l) =
+      (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1) := fun k => by
+    obtain ⟨d, hd⟩ := (hf (k + 1)).exists_right_inv
+    have h : (((k + 1).factorial : ℕ) : Per.AinfP l) *
+        (d * (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1)) =
+        (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1) := by rw [← mul_assoc, hd, one_mul]
+    exact ⟨⟨_, GlobalTheory.RingIface.dividedPower_mem_Acris0 l z (k + 1) _ hz h⟩, h⟩
+  choose γ hγ using hγ
+  have hmem : algebraMap (Per.Ainf l) (Per.AinfP l) z ∈ Per.kerP l :=
+    GlobalTheory.RingIface.alg_mem_kerP l hz
+  obtain ⟨Y, hY⟩ := exists_sum_factorial (algebraMap (Per.Acris0 l) (Per.Acris l)) l
+    (Fact.out : l.Prime).pos (acris_basic l).1 γ
+  refine ⟨Y, fun n => ?_⟩
+  have hs : ∀ m : ℕ, ((∑ k ∈ Finset.range m, (-1) ^ k * ((k.factorial : ℕ) : Per.Acris0 l) * γ k :
+      Per.Acris0 l) : Per.AinfP l) =
+      ∑ k ∈ Finset.range m, (-1) ^ k * u k * (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1) := by
+    intro m
+    rw [← sum_eq u (fun k => (γ k : Per.AinfP l)) _ hu hγ m]
+    change (Per.Acris0 l).val _ = _
+
+    rw [map_sum]
+    refine Finset.sum_congr rfl fun k _ => ?_
+    rw [map_mul, map_mul, map_pow, map_natCast, map_neg, map_one]
+    rfl
+  obtain ⟨d, hd⟩ := (hf n).exists_right_inv
+  obtain ⟨c, hc⟩ : ∃ c : Per.AinfP l, ((n.factorial : ℕ) : Per.AinfP l) * c =
+      ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Per.AinfP l) *
+        (algebraMap (Per.Ainf l) (Per.AinfP l) z) ^ (k + 1) :=
+    ⟨d * _, by rw [← mul_assoc, hd, one_mul]⟩
+  have key := (_root_.GlobalTheory.MemLoc.crisP_unique_equivariant l j hj).2.2 n Y (algebraMap (Per.AinfP l) (Per.BdRp l) c) (by
+    intro r
+    obtain ⟨w, hw⟩ := hY r (max (l ^ r) n) (le_max_left _ _)
+    refine ⟨_, w, 0, hw, ?_⟩
+    rw [map_zero, mul_zero, map_zero, ← map_sub, LogFun.ev_alg, Ideal.Quotient.eq_zero_iff_mem,
+      hs, LogFun.partial_eq u hu _ _ _ (hf _) hc, ← neg_sub]
+    exact neg_mem (LogFun.partial_sub_mem _ u _ hmem (le_max_right _ _)))
+  rw [key, LogFun.ev_alg]
+  simpa only [map_mul, map_natCast] using congrArg (Ideal.Quotient.mk (Per.kerP l ^ n)) hc
+
+end GlobalTheory.MemLoc.LogKer
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSumFactorial =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KummerNotCoboundary =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KummerNotCoboundary", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FiniteDimensionalWdSpace\npublic import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP\npublic import Development.AbelianVarietyTheory.CrystallinePeriods.AdicMaps\npublic import Development.AbelianVarietyTheory.CrystallinePeriods.CrisIncl\npublic import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics\npublic import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinExt\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisGaloisActionFontaineTEqCyclotomic\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdR\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoeffEqMkRootT\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EigenAdd\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EventuallyIntegral\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadic\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnit\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSumFactorial\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddMulDerivativeTrunc\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodRingsGaloisActionLawsFrobeniusComm\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.FieldTheory.Galois.Profinite\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Topology.Sheaves.Init\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.MemLoc
@@ -410,3 +829,6 @@ theorem kummer_not_coboundary : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (A
   exact one_ne_zero (key 0 1 (by rw [h1]; ring)).2
 
 end GlobalTheory.Pst.NoLog
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KummerNotCoboundary =====

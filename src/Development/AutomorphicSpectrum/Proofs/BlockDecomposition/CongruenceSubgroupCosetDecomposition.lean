@@ -286,19 +286,15 @@ theorem step (ω : Fˣ →* ℂˣ) {n : ℕ} (f : GL (Fin 2) F → ℂ) (hn : 1 
   have hy := entries ϖ ϖ' β β' x
   set y : GL (Fin 2) F := (upm ϖ' β')⁻¹ * x * upm ϖ β with hyd
   have y00 : y 0 0 = ((ϖ'⁻¹ : Fˣ) : F) * ((x 0 0 - β' * x 1 0) * ϖ) := by
-    change (y : Matrix (Fin 2) (Fin 2) F) 0 0 = _
     rw [hy]
     rfl
   have y01 : y 0 1 = ((ϖ'⁻¹ : Fˣ) : F) * (x 0 0 * β + x 0 1 - β' * (x 1 0 * β + x 1 1)) := by
-    change (y : Matrix (Fin 2) (Fin 2) F) 0 1 = _
     rw [hy]
     rfl
   have y10 : y 1 0 = x 1 0 * ϖ := by
-    change (y : Matrix (Fin 2) (Fin 2) F) 1 0 = _
     rw [hy]
     rfl
   have y11 : y 1 1 = x 1 0 * β + x 1 1 := by
-    change (y : Matrix (Fin 2) (Fin 2) F) 1 1 = _
     rw [hy]
     rfl
   have hyent : ∀ i j, y i j ∈ 𝒪[F] := by
@@ -419,7 +415,7 @@ theorem sum_step (ω : Fˣ →* ℂˣ) {n : ℕ} (f : GL (Fin 2) F → ℂ) (hn 
       simp only [t]
       generalize x 1 0 * b1 + x 1 1 = D1 at hD1 ⊢
       generalize x 1 0 * b2 + x 1 1 = D2 at hD2 ⊢
-      field_simp <;> ring
+      field_simp
     rw [ht12, map_mul, map_mul, hdetx, one_mul, map_inv₀, map_mul, hD b1 hb1, hD b2 hb2,
       mul_one, inv_one, mul_one] at k
     exact reps_eq hB hb1 hb2 k
@@ -436,7 +432,6 @@ end Main
 theorem c1 : Ad3.R.C1 := by
   unfold Ad3.R.C1 Ad3.R.ForF
   intro F _ _ _ _ _ _ ψ _
-  beta_reduce
   refine ⟨reps_exists, fun ϖ B hB => reps_card hB, ?_⟩
   intro ω n f hn hker hf ϖ B ϖ' B' hB hB' x d hx g
   exact sum_step ω f hn hker hf hB hB' hx g

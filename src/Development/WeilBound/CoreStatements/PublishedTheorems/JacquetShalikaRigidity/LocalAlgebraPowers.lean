@@ -172,7 +172,7 @@ theorem localHeckeAlgebra_statement : LocalHeckeAlgebra := by
       simp [pad]
     have hA : Antitone (0 : Fin k → ℤ) ∧ ∀ i, 0 ≤ (0 : Fin k → ℤ) i :=
       ⟨fun _ _ _ => le_rfl, fun _ => le_rfl⟩
-    simp only [aLoc, loc, if_pos hA, hp, halfModulus_zero, schur_zero, map_one, Pi.zero_apply,
+    simp only [aLoc, loc, hp, halfModulus_zero, schur_zero, map_one, Pi.zero_apply,
       Finset.sum_const_zero, Int.cast_zero, mul_zero, neg_zero, Complex.cpow_zero, one_pow, mul_one]
     simp [hA.1]
   · have key : ∀ a b c d g : ℂ, a + 2 * b + c + d = g → ∀ L : ℂ,

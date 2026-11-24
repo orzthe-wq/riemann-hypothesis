@@ -172,7 +172,6 @@ theorem ip_self (h : 𝓢(V, ℂ)) : ip μ h h = ((∫ x, ‖h x‖ ^ 2 ∂μ : 
   rw [ip]
   first
   | rw [← integral_complex_ofReal]
-  | rw [← integral_ofReal (𝕜 := ℂ)]
   congr 1; funext x
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
@@ -215,7 +214,7 @@ theorem vanish : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [Fini
   have hF0 : ∫ x, ‖f x‖ ^ 2 ∂μ = 0 := by nlinarith
   have hint : Integrable (fun x => ‖f x‖ ^ 2) μ := by
     refine (integrable_ip μ f f).norm.congr (Filter.Eventually.of_forall fun x => ?_)
-    simp [norm_mul, sq]
+    simp [sq]
   rw [integral_eq_zero_iff_of_nonneg (fun x => by positivity) hint] at hF0
   have hcont : Continuous (fun x => ‖f x‖ ^ 2) := f.continuous.norm.pow 2
   have h0 := (Continuous.ae_eq_iff_eq μ hcont continuous_zero).1 hF0

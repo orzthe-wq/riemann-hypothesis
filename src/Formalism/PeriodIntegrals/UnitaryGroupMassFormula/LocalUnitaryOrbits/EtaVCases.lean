@@ -46,7 +46,7 @@ noncomputable section
 namespace PI.OmLocU.Red
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.LocVol NumberField IsDedekindDomain Formalism.UG
-open PI.VolStabSW PI.OmLocU
+open PI.OmLocU
 open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]

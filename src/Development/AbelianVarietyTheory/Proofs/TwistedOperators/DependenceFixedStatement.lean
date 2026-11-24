@@ -46,4 +46,4 @@ open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.dependence_fixed : DepFixed := by
-  first | exact @GlobalTheory.DepthFix.depFixed | exact GlobalTheory.DepthFix.depFixed | (intros; apply GlobalTheory.DepthFix.depFixed <;> assumption)
+  first | exact @GlobalTheory.DepthFix.depFixed

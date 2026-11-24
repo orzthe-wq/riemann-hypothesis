@@ -7,8 +7,8 @@ public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLanglandsClassificationAddOfIrreducibleProduct
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityPos
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityTransitiveLeStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SegmentRepJacquetWordMultiplicityStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityTransitiveLe
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SegmentRepJacquetWordMultiplicity
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -110,9 +110,9 @@ theorem wd_wtW_of_isL : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
       ⟨v, fun h0 => hv (hfinj (h0.trans (map_zero f).symm))⟩
   have hW : ∀ b, ∑ a, ((Cos.decWord (Δ (Fin.rev b))).get a).1 = ((x ∘ Fin.rev) b).1 := fun b =>
     (sum_get_decWord _).trans (hx (Fin.rev b)).deg_eq
-  have h2 := GlobalTheory.T.jacquet_multiplicity_transitive_le hA (x ∘ Fin.rev) hd (fun b => Cos.decWord (Δ (Fin.rev b))) π hsm hfl hW
+  have h2 := _root_.GlobalTheory.CompanionTheory.CsStages.jm_mul_prod_jmL_le hA (x ∘ Fin.rev) hd (fun b => Cos.decWord (Δ (Fin.rev b))) π hsm hfl hW
   have h3 : ∀ b, Cos.jmL (Cos.decWord (Δ (Fin.rev b))) ((x ∘ Fin.rev) b).rep = 1 := fun b =>
-    (GlobalTheory.T.segment_rep_jacquet_word_multiplicity hA hJ (Δ (Fin.rev b)) _ (hx (Fin.rev b)) _ (isCusp_of_mem_decWord _)).1 rfl
+    (_root_.GlobalTheory.CompanionTheory.FineL.jmL_cusp_word hA hJ (Δ (Fin.rev b)) _ (hx (Fin.rev b)) _ (isCusp_of_mem_decWord _)).1 rfl
   rw [Finset.prod_congr rfl (fun b _ => h3 b), Finset.prod_const_one, mul_one] at h2
   have h4 := h1.trans h2
   have hw : (List.ofFn fun b => Cos.decWord (Δ (Fin.rev b))).flatten = wtW Δ := by

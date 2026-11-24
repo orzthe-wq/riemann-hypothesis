@@ -5,50 +5,7 @@ public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.WuDecayPf
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
 public import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.NumericSettingWithGapSatisfiable
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -256,8 +213,7 @@ theorem cay_AHA {m : ℕ} {A B J H : Matrix (Fin m) (Fin m) ℂ} (hA : Aᴴ * J 
     (hJ : J * J = 1) (hB : B = H * Aᴴ * J) : A * H * Aᴴ = J := by
   have h := cay_AB hA hH hB
   rw [hB] at h
-  calc A * H * Aᴴ = A * H * Aᴴ * (J * J) := by rw [hJ, Matrix.mul_one]
-    _ = (A * (H * Aᴴ * J)) * J := by simp only [Matrix.mul_assoc]
+  calc A * H * Aᴴ = (A * (H * Aᴴ * J)) * J := by simp only [Matrix.mul_assoc, hJ, Matrix.mul_one]
     _ = J := by rw [h, Matrix.one_mul]
 
 theorem cay_BHB {m : ℕ} {A B J H : Matrix (Fin m) (Fin m) ℂ} (hA : Aᴴ * J * A = H) (hH : H * H = 1)
@@ -272,8 +228,7 @@ theorem cay_conj {m : ℕ} {A B J H g : Matrix (Fin m) (Fin m) ℂ} (hA : Aᴴ *
     (hg : gᴴ * J * g = J) : (B * g * A)ᴴ * H * (B * g * A) = H := by
   simp only [conjTranspose_mul]
   calc _ = Aᴴ * (gᴴ * (Bᴴ * H * B) * g) * A := by simp only [Matrix.mul_assoc]
-    _ = Aᴴ * J * A := by rw [hBHB, hg, Matrix.mul_assoc]
-    _ = H := hA
+    _ = H := by rw [hBHB, hg]; exact hA
 
 theorem Qi_mul_Qm (hF : IsFrameJ ε e f wf z0) : Qi ε e f wf z0 * Qm e f wf z0 = 1 :=
   cay_BA (gramQ hF) (GBasic.Hpk_sq k r) rfl
@@ -299,7 +254,6 @@ theorem Qi_mulVec (y : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
   unfold Qi
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Hpk_mulVec]
   congr 1
-  all_goals simp only [hJ, mulVec, dotProduct, conjTranspose_apply, Qm, Matrix.of_apply, Pi.star_apply]
 
 theorem sig_eI_eq (a : Fin r) : GBasic.sig k r (eI k r a) = esI k r a := Fin.ext (by rw [sig_eI, esI_val])
 
@@ -453,8 +407,7 @@ theorem psi_conj (hF : IsFrameJ ε e f wf z0) {zB z : Fin (2 * r + k + 1) → �
   congr 1
   set x : Fin r → ℂ := fun a => rootCoord ε e f z g a with hx
   have hre : (∑ a, ((4 * Real.pi / gg : ℝ) : ℂ) * x a).re = (4 * Real.pi / gg) * ∑ a, (x a).re := by
-    rw [Complex.re_sum, Finset.mul_sum]
-    exact Finset.sum_congr rfl fun a _ => Complex.re_ofReal_mul _ _
+    simp only [Complex.re_sum, Finset.mul_sum, Complex.re_ofReal_mul]
   have hsum : ∑ a, (x a + star (x a)) = ((2 * ∑ a, (x a).re : ℝ) : ℂ) := by
     push_cast; rw [Finset.mul_sum]
     exact Finset.sum_congr rfl fun a _ => by rw [Complex.star_def, Complex.add_conj]; push_cast; ring
@@ -506,8 +459,7 @@ theorem Qm_zB {e f : Fin r → Fin (2 * r + k + 1) → ℂ} {wf : Fin k → Fin 
     {T : ℝ} (hT : 0 < T) (z : Fin (2 * r + k + 1) → ℂ) : Qm e f wf (z0v T z) *ᵥ zBv k r T = z := by
   unfold zBv
   rw [Matrix.mulVec_smul, Qm_mulVec_bvec, colQ_wI_last _ _ _ _ _ (by simp), z0v, smul_smul]
-  have h1 : Real.sqrt T ≠ 0 := (Real.sqrt_pos.mpr hT).ne'
-  rw [← Complex.ofReal_mul, mul_inv_cancel₀ h1, Complex.ofReal_one, one_smul]
+  rw [← Complex.ofReal_mul, mul_inv_cancel₀ (Real.sqrt_pos.mpr hT).ne', Complex.ofReal_one, one_smul]
 
 theorem Tz_zB {T : ℝ} (hT : 0 ≤ T) : Tz k r (zBv k r T) = T := by
   unfold Tz herm zBv
@@ -525,7 +477,7 @@ theorem Tz_zB {T : ℝ} (hT : 0 ≤ T) : Tz k r (zBv k r T) = T := by
 theorem inWb_zB (T : ℝ) : inWb k r (zBv k r T) := by
   intro i hi
   simp only [zBv, Pi.smul_apply, bvec, Pi.single_apply, smul_eq_mul]
-  rw [if_neg (fun h => by subst h; rw [wI_val] at hi; (simp at hi) <;> omega), mul_zero]
+  rw [if_neg (fun h => by subst h; rw [wI_val] at hi; (simp at hi)), mul_zero]
 
 theorem frameW_one (T : ℝ) (hT : 0 ≤ T) : IsFrameW k r (zBv k r T) 1 := by
   refine ⟨by show (1 : Matrix _ _ ℂ)ᴴ * Hpk k r * 1 = Hpk k r; simp, fun a => ⟨by simp, by simp⟩, ?_⟩
@@ -537,10 +489,7 @@ theorem hcTypeW_piB {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 
     {πl : Matrix (Fin k) (Fin k) ℂ → (V →L[ℂ] V)} (hπ : IsHCTypeU k u πl) :
     IsHCTypeW k r (zBv k r T) u (piB ε e f wf z0 πl) := by
   refine ⟨1, frameW_one T hT, ?_⟩
-  have : (fun h => piB ε e f wf z0 πl (1 * blockW k r h * (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)⁻¹))
-      = πl := by
-    funext h; rw [inv_one, Matrix.mul_one, Matrix.one_mul, piB_blockW hF]
-  rw [this]; exact hπ
+  simpa only [inv_one, Matrix.mul_one, Matrix.one_mul, piB_blockW hF] using hπ
 
 section Meas
 variable {ε : Fin (2 * r + k + 1) → Bool}
@@ -729,10 +678,9 @@ theorem cM_comp_mul (hF : IsFrameJ ε e f wf z0) (P0 : Matrix (Fin (2 * r + k + 
 theorem cM_left (hF : IsFrameJ ε e f wf z0) {P0 B0 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ht : (Qm e f wf z0 * B0)ᴴ * Formalism.REAL.Jm ε * (Qm e f wf z0 * B0) = Formalism.REAL.Jm ε) (g : Formalism.REAL.UJ ε) :
     cM (Qi ε e f wf z0) P0 (toUJ (Qm e f wf z0 * B0) ht * g) = cM B0 P0 g := by
-  have h : Qi ε e f wf z0 * uMat (toUJ (Qm e f wf z0 * B0) ht * g) * P0 = B0 * uMat g * P0 := by
-    rw [uMat_mul, uMat_toUJ]
-    simp only [← Matrix.mul_assoc, Qi_mul_Qm hF, Matrix.one_mul]
-  exact h
+  change Qi ε e f wf z0 * uMat (toUJ (Qm e f wf z0 * B0) ht * g) * P0 = B0 * uMat g * P0
+  rw [uMat_mul, uMat_toUJ]
+  simp only [← Matrix.mul_assoc, Qi_mul_Qm hF, Matrix.one_mul]
 
 theorem isQuotMeas_B (hF : IsFrameJ ε e f wf z0) {P0 B0 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : CayPair ε P0 B0) {μS ν : Measure (Formalism.REAL.UJ ε)} (hQ : IsLocQuot μS ν) :
@@ -752,11 +700,9 @@ theorem isQuotMeas_B (hF : IsFrameJ ε e f wf z0) {P0 B0 : Matrix (Fin (2 * r + 
       _ = Formalism.REAL.Jm ε := by rw [gramQ hF, hP.BHB]
   have h1 := hQ (fun y => F (cM (Qi ε e f wf z0) P0 y)) (hFm.comp embX.measurable)
   rw [← h1]
-  calc ∫⁻ g, F (cM B0 P0 g) ∂(Formalism.REAL.muG ε)
-      = ∫⁻ g, F (cM (Qi ε e f wf z0) P0 (toUJ (Qm e f wf z0 * B0) ht * g)) ∂(Formalism.REAL.muG ε) := by
-        simp only [cM_left hF ht]
-    _ = ∫⁻ y, F (cM (Qi ε e f wf z0) P0 y) ∂(Formalism.REAL.muG ε) :=
-        lintegral_mul_left_eq_self (fun y => F (cM (Qi ε e f wf z0) P0 y)) _
+  simpa only [cM_left hF ht] using
+    (lintegral_mul_left_eq_self (fun y => F (cM (Qi ε e f wf z0) P0 y))
+      (toUJ (Qm e f wf z0 * B0) ht))
 
 end Meas3
 

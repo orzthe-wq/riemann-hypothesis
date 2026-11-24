@@ -52,6 +52,7 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolum
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.InterpStatementPfH
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.OntoStatementPfB
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowCoefficientBounds
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientDomain
 
 @[expose] public section
 
@@ -189,32 +190,6 @@ theorem measurable_indicator_of_contOn {α : Type} [TopologicalSpace α] [Measur
     rw [h]
     exact measurable_const
 
-private theorem isOpen_dom_torus_haar_measure {r : ℕ} (X : Data E r) : IsOpen X.dom := by
-  have h : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩
-      ⋂ i : Fin (r + 1), {x : Frame X.Ψ r | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re}) := by
-    ext x
-    simp only [Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq]
-    rfl
-  rw [h]
-  refine isOpen_iInter_of_finite fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)
-  · exact isOpen_ne_fun (continuous_mat_frame X τ).matrix_det continuous_const
-  · exact isOpen_lt continuous_const
-      (continuous_const.mul (Complex.continuous_re.comp (ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.cont_dmin X τ i)))
-
-private theorem gram_eq_transpose_mul_map_mul_conj {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
-    (M : Matrix (Fin r) (Fin r) ℂ) :
-    gram τ G M = Mᵀ * G.map τ * M.map (starRingEnd ℂ) := by
-  ext a b
-  simp only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply,
-    Matrix.map_apply, Finset.sum_mul]
-  exact Finset.sum_comm
-
-private theorem gram_mul_eq_transpose_mul_gram {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
-    (M N : Matrix (Fin r) (Fin r) ℂ) :
-    gram τ G (M * N) = Nᵀ * gram τ G M * N.map (starRingEnd ℂ) := by
-  rw [gram_eq_transpose_mul_map_mul_conj, gram_eq_transpose_mul_map_mul_conj, Matrix.transpose_mul, Matrix.map_mul]
-  simp only [Matrix.mul_assoc]
-
 private theorem submatrix_congr_mul_of_blockTriangular {r k : ℕ} (h : k ≤ r) (N A : Matrix (Fin r) (Fin r) ℂ)
     (hN : N.BlockTriangular id) :
     (Nᵀ * A * N.map (starRingEnd ℂ)).submatrix (Fin.castLE h) (Fin.castLE h) =
@@ -252,23 +227,12 @@ private theorem exists_dmin_rmul_eq_normSq_mul' {r : ℕ} (X : Data E r) {x b : 
   · rw [Matrix.det_of_upperTriangular hNt]
     exact Finset.prod_ne_zero_iff.mpr fun p _ => diag_ne_zero_of_mem_bor hb τ (Fin.castLE hk p)
   · simp only [dmin, lminor]
-    rw [mat_rmul_torus_haar_measure, gram_mul_eq_transpose_mul_gram, submatrix_congr_mul_of_blockTriangular hk _ _ (mat_blockTriangular_of_mem_bor hb τ), Matrix.det_mul, Matrix.det_mul,
+    rw [mat_rmul_torus_haar_measure, _root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.gram_mul, submatrix_congr_mul_of_blockTriangular hk _ _ (mat_blockTriangular_of_mem_bor hb τ), Matrix.det_mul, Matrix.det_mul,
       Matrix.det_transpose]
     have hc : (((mat b τ).submatrix (Fin.castLE hk) (Fin.castLE hk)).map (starRingEnd ℂ)).det =
         starRingEnd ℂ ((mat b τ).submatrix (Fin.castLE hk) (Fin.castLE hk)).det :=
       (RingHom.map_det (starRingEnd ℂ) _).symm
     rw [hc, mul_right_comm, Complex.mul_conj]
-
-private theorem rmul_mem_dom_of_mem_bor {r : ℕ} (X : Data E r) {x b : Frame X.Ψ r} (hx : x ∈ X.dom)
-    (hb : b ∈ Bor X.Ψ r) : rmul x b ∈ X.dom := by
-  show ∀ τ : X.Ψ, (mat (rmul x b) τ).det ≠ 0 ∧
-    ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm (rmul x b) τ i).re
-  refine fun τ => ⟨?_, fun i => ?_⟩
-  · rw [mat_rmul_torus_haar_measure, Matrix.det_mul]
-    exact mul_ne_zero (hx τ).1 (hb τ).1
-  · obtain ⟨d, hd, he⟩ := exists_dmin_rmul_eq_normSq_mul' X (x := x) hb τ i
-    rw [he, Complex.re_ofReal_mul, mul_left_comm]
-    exact mul_pos (Complex.normSq_pos.mpr hd) ((hx τ).2 i)
 
 private theorem lact_one_frame' {r : ℕ} (X : Data E r) (y : Frame X.Ψ r) :
     lact (1 : GL (Fin r) E) y = y := by
@@ -288,14 +252,14 @@ theorem vanish_off : (MeasInvStatement (E := E)) → (VanishAtSStatement (E := E
   obtain ⟨hNR, -, hPI⟩ := hNP
   have hx1d : x1 ∈ X.dom := ReciprocityTheory.ChartRestriction.G.AR.Up.IW.orth_mem_dom X x1 ho1
   set U : Set (Frame X.Ψ r) := X.dom ∩ (satBall X x0 δ)ᶜ with hU
-  have hUo : IsOpen U := (isOpen_dom_torus_haar_measure X).inter (isClosed_satBall X x0 δ).isOpen_compl
+  have hUo : IsOpen U := (_root_.ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom X).inter (isClosed_satBall X x0 δ).isOpen_compl
   have hx1U : x1 ∈ U := ⟨hx1d, fun h => by
     obtain ⟨z, hz, b, hb, he⟩ := eq_of_mem_satBall X x0 δ hδ hx1d h
     exact hout z hz b hb he⟩
   have hUinv : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, (rmul x b ∈ U ↔ x ∈ U) := by
     intro x hx b hb
     exact ⟨fun h => ⟨hx, fun h' => h.2 (rmul_mem_satBall X x0 δ h' hb)⟩,
-      fun h => ⟨rmul_mem_dom_of_mem_bor X hx hb, fun h' => h.2 ((rmul_mem_satBall_iff X x0 δ hb).1 h')⟩⟩
+      fun h => ⟨_root_.ReciprocityTheory.ChartRestriction.G.FD.OrthogonalFrameDomain.rmul_mem_dom X hx hb, fun h' => h.2 ((rmul_mem_satBall_iff X x0 δ hb).1 h')⟩⟩
   have hPc : ContinuousOn P X.dom := hP.1.continuousOn
   have hg1 : Measurable (U.indicator (X.pnorm la P)) :=
     measurable_indicator_of_contOn hUo ((pnorm_contOn X la hPc).mono fun _ h => h.1)
@@ -313,8 +277,6 @@ theorem vanish_off : (MeasInvStatement (E := E)) → (VanishAtSStatement (E := E
     | exact (((hg1.pow_const 2).mul hg2).mul
         ((Finset.measurable_sum (f := fun k x => U.indicator (X.pnorm L (s k)) x ^ 2) Finset.univ
           fun k _ => (hg3 k).pow_const 2).pow_const _)).ennreal_ofReal
-    | fun_prop
-    | measurability
   have hφinv : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, φ (rmul x b) = φ x := by
     intro x hx b hb
     rw [hφ]
@@ -358,8 +320,6 @@ theorem vanish_off : (MeasInvStatement (E := E)) → (VanishAtSStatement (E := E
       rw [mul_assoc]
       first
       | exact le_div_self (by positivity) hka0 hka1
-      | (rw [le_div_iff₀ hka0]; nlinarith [mul_nonneg (sq_nonneg ‖P (cpt X x0 z)‖)
-          (mul_nonneg (Real.exp_pos (-phla X la (cpt X x0 z))).le (Real.exp_pos (-ψ (cpt X x0 z))).le)])
     · simp only [Set.indicator_apply, if_neg hz]
       simp
   have hR : ∫⁻ z, φ (cpt X x1 z) ∂muF X x1 < ⊤ := by
@@ -446,8 +406,6 @@ theorem vanish_off : (MeasInvStatement (E := E)) → (VanishAtSStatement (E := E
     first
     | exact Finset.measurable_prod _ fun τ _ => Finset.measurable_prod _ fun i _ =>
         ((ReciprocityTheory.ChartRestriction.G.AR.Up.OntoB.cd_dmin X x1 τ _).continuous.norm.measurable).pow_const _
-    | fun_prop
-    | measurability
   have hφcm : Measurable fun z => φ (cpt X x1 z) := hφm.comp hcc.measurable
   have hfin : ∫⁻ z in Metric.ball (0 : V (nd X)) ρ,
       ENNReal.ofReal (‖P (cpt X x1 z)‖ ^ 2 * (∑ k, ‖s k (cpt X x1 z)‖ ^ 2) ^ (-(nd X : ℝ))) < ⊤ := by
@@ -467,7 +425,6 @@ theorem vanish_off : (MeasInvStatement (E := E)) → (VanishAtSStatement (E := E
       _ < ⊤ := by
           first
           | exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hR
-          | exact ENNReal.mul_lt_top ENNReal.ofReal_ne_top hR.ne
   exact hVS r X x1 hn ho1 hx1d P w0 s ρ hρ
     ((ReciprocityTheory.ChartRestriction.G.AR.Up.OntoB.hol_comp X x1 hP.1).mono hBO)
     (fun k => (ReciprocityTheory.ChartRestriction.G.AR.Up.OntoB.hol_comp X x1 (hs k).1).mono hBO)

@@ -125,7 +125,7 @@ theorem _root_.GlobalTheory.DegreeOneUniformiser.exists_irreducible_eq : ∀ (F 
     exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (u : F)
   have hf0 : f ≠ 0 := fun h => by
     rw [h] at hf
-    simp only [ZeroMemClass.coe_zero, map_zero] at hf
+    simp only [map_zero] at hf
     exact WithZero.exp_ne_zero hf.symm
   have hfP : f ∈ P.asIdeal := by
     rw [hP f hf0, HeightOneSpectrum.mem_adicCompletionIntegers, not_le, map_inv₀, map_inv₀, hf,
@@ -144,7 +144,7 @@ theorem _root_.GlobalTheory.DegreeOneUniformiser.exists_irreducible_eq : ∀ (F 
     exact Ideal.mul_mem_mul hfP htJ
   obtain ⟨s, hs⟩ := Ideal.mem_span_singleton'.mp hft
   have hval := congrArg (fun x : 𝓞 E => Valued.v (ψ (x : E))) hs
-  simp only [MulMemClass.coe_mul, map_mul] at hval
+  simp only [map_mul] at hval
   rw [hone t htP, mul_one, hf] at hval
   have hge : WithZero.exp (-1 : ℤ) ≤ Valued.v (ψ (ϖ : E)) := by
     rw [← hval]

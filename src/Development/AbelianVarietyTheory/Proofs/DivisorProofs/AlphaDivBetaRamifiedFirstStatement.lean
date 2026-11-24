@@ -52,7 +52,3 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ha
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 
-theorem _root_.GlobalTheory.T.alpha_div_beta_ramified_first : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
-    (i j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) ∈ S1 D →
-      ¬ GlobalTheory.LFun.UnrAt (F := D.host.F) (E := D.host.E) (alpha G t i j / beta G i j) w := by
-  first | exact @GlobalTheory.FunObj.SqNum.not_unrAt_alpha_div_beta_over_S₁ | exact GlobalTheory.FunObj.SqNum.not_unrAt_alpha_div_beta_over_S₁ | (intros; apply GlobalTheory.FunObj.SqNum.not_unrAt_alpha_div_beta_over_S₁ <;> assumption)

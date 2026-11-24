@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPotential
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinBcrisComparisonFrobeniusNaturalityStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinBcrisComparisonFrobeniusNaturality
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -133,9 +133,9 @@ theorem jB_hom {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {T T' : LocLa
     (hr.smul_left_cancel).1 ((hsm r v).1 h)
   have hofT : ∀ x : ↥T.L.T, Pr (jB.symm ((1 : OB l O) ⊗ₜ[O] x)) := by
     intro x
-    obtain ⟨m, c, hu, hc, hb⟩ := ((GlobalTheory.T.breuilKisin_bcris_comparison_frobenius_naturality l a e O K t ϖ ι P T I).2 jB hB).2.2.2.1 x
+    obtain ⟨m, c, hu, hc, hb⟩ := ((_root_.GlobalTheory.CrisComparison.main l a e O K t ϖ ι P T I).2 jB hB).2.2.2.1 x
     obtain ⟨m', c', hu', hc', hb'⟩ :=
-      ((GlobalTheory.T.breuilKisin_bcris_comparison_frobenius_naturality l a e O K t ϖ κ Q T' I').2 jB' hB').2.2.2.1 ⟨f.f x, f.T_le _ x.2⟩
+      ((_root_.GlobalTheory.CrisComparison.main l a e O K t ϖ κ Q T' I').2 jB' hB').2.2.2.1 ⟨f.f x, f.T_le _ x.2⟩
     refine hcancel (toB l O m) _ hu ?_
     have e1 : toB l O m • jB.symm ((1 : OB l O) ⊗ₜ[O] x) = fun i => toB l O (c i) := by
       rw [← map_smul, hb, LinearEquiv.symm_apply_apply]

@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.PerCApply
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -98,7 +99,7 @@ private theorem exists_inverse_different (p : ℕ) [Fact p.Prime] (K : Intermedi
         ‖(a : PadicAlgCl p)‖ < ‖c‖ := by
     intro a ha
     by_contra hlt
-    push_neg at hlt
+    push Not at hlt
     have ha0 : (a : PadicAlgCl p) ≠ 0 := by
       intro h0
       rw [h0, norm_zero] at hlt

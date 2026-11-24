@@ -528,15 +528,6 @@ structure DivX (D : D7) : Type 1 where
   qv_char : ∀ μ, (μ = D.what₂.mu0 ∨ ∃ w, μ = D.what₂.muAt w) → ∀ v, ∃ p ∈ Qp μ, p.Prime ∧ qv μ v = p
 
   nu : ∀ μ, QPl μ → ℕ → ℂ
-  nu_ne : ∀ μ v i, nu μ v i ≠ 0
-
-  nu_abs : ∀ μ v i, ‖nu μ v i‖ = 1
-
-  ZQ : ∀ μ, QPl μ → ℕ → ℂ
-
-  quotientLocalValueFirst : ∀ μ, QPl μ → ℂ
-
-  typeDim : ∀ μ, QPl μ → ℕ → ℕ
 
   Comp : ℕ → Type
   [compFin : ∀ j, Fintype (Comp j)]

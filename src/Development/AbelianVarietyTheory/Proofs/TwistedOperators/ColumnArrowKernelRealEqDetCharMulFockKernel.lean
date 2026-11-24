@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ClassFunctionSumIntegral
+import Mathlib.Tactic.Basify
 
 @[expose] public section
 
@@ -330,7 +331,7 @@ theorem kerA_col_mul_real : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts
   intro D T L sc G W U S μ₀ hL j hj t d hd Q x k hk h
   have hp : DefPair D.R.m (Pair.top t j) := show j + 1 ≤ D.R.m by omega
   have hh : ((finOf _ h : GA D (G.V (.top (j + 1)))) * (infOf _ h : GA D (G.V (.top (j + 1))))) = h := by
-    rw [← GlobalTheory.AdelicSplit.commute_GinfC_GfC _ (infOf _ h).2 (finOf _ h).2]
+    rw [← _root_.GlobalTheory.PointAtPlaceHom.comm_of_mem _ (infOf _ h).2 (finOf _ h).2]
     exact infOf_mul_finOf _ h
   have hr0 : Even (G.V (.top j)).rank := by rw [rank_top G (j := j) (by omega)]; exact rankX_even D j
   have hr1 : Even (G.V (.top (j + 1))).rank := by rw [rank_top G (j := j + 1) (by omega)]; exact rankX_even D (j + 1)

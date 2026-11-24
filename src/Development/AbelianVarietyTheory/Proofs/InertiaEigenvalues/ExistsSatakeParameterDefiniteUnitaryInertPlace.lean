@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueIsConjAt
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPointsStatement
+public import Formalism.SatakeDualWeyl.StatementF
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPoints
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSatAtConstOne
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIsLocCompAndIsLocLoc
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSatakeParameterSphericalUnramifiedUnitary
@@ -46,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -290,7 +292,7 @@ theorem exists_hasSatAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
       Set.ext fun g => Subtype.ext_iff
     rw [h2]
     exact h1
-  obtain ⟨hKo, hKc⟩ := GlobalTheory.T.isOpen_isCompact_unitaryIntegralPoints _ ϖ s q n hU
+  obtain ⟨hKo, hKc⟩ := _root_.GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU _ ϖ s q n hU
   have hKb : ∀ k ∈ KU s n, k.1 ∈ GlobalTheory.LFun.KGL w (n := n) := fun k hk => (Subgroup.mem_subgroupOf.1 hk).2
   have hφ' : (⟨φ, hφ⟩ : π) ∈ fixed (pull π hπ.stable j) (KU s n) := mem_fix.2 fun k hk => Subtype.ext
     (hφK _ (hjl k) (by

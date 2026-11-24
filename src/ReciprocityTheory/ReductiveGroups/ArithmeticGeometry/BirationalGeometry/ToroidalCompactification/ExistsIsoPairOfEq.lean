@@ -1,44 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleIdentityIso
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
 
 @[expose] public section
@@ -68,19 +31,6 @@ private theorem res_g_mul_res_g_eq_res_g_of_isLB {X : Scheme.{0}} {L : LB X} (hL
   simp only [map_mul, res_res_lemma] at key
   exact key
 
-private theorem gm_res_toroidal_compactification {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) {U V : X.Opens} (h : V ≤ U)
-    (hy : f y ∈ V) (x : Γ(X, U)ˣ) : gm f y V (res h x) = gm f y U x := by
-  have hU : f y ∈ U := h hy
-  have e : X.presheaf.map (homOfLE h).op ≫ f.app V ≫ Y.presheaf.germ (f ⁻¹ᵁ V) y hy =
-      f.app U ≫ Y.presheaf.germ (f ⁻¹ᵁ U) y hU := by
-    rw [← Category.assoc, Scheme.Hom.naturality, Category.assoc]
-    congr 1
-    exact TopCat.Presheaf.germ_res _ _ _ _
-  unfold gm
-  rw [dite_eq_left hy, dite_eq_left hU]
-  apply Units.ext
-  exact congrArg (fun φ => φ.hom (x : Γ(X, U))) e
-
 private theorem isGen_g_iso_self_of_isLB {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) :
     (⟨fun p : L.ι × L.ι => L.g p.1 p.2⟩ : LB.Iso L L).IsGen := by
   rintro ⟨p₁, p₂⟩ ⟨q₁, q₂⟩
@@ -105,7 +55,7 @@ private theorem gm_g_mul_gm_g_swap_eq_one_of_isLB {X Y : Scheme.{0}} {L : LB X} 
   have hW : f y ∈ L.U j ⊓ L.U i := ⟨hj, hi⟩
   have h₂ : L.U j ⊓ L.U i ≤ L.U i ⊓ L.U j := le_of_eq (inf_comm _ _)
   have h₃ : L.U j ⊓ L.U i ≤ L.U j ⊓ L.U j := le_inf inf_le_left inf_le_left
-  rw [← gm_res_toroidal_compactification f y h₂ hW (L.g i j), ← gm_res_toroidal_compactification f y (le_refl (L.U j ⊓ L.U i)) hW (L.g j i),
+  rw [← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res f y h₂ hW (L.g i j), ← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res f y (le_refl (L.U j ⊓ L.U i)) hW (L.g j i),
     ← map_mul (gm f y (L.U j ⊓ L.U i)), res_g_mul_res_g_eq_res_g_of_isLB hL j i j (le_refl _) h₂ h₃,
     ← res_res_lemma (inf_le_left : L.U j ⊓ L.U i ≤ L.U j) (le_inf le_rfl le_rfl : L.U j ≤ L.U j ⊓ L.U j),
     hL.g_self]
@@ -127,12 +77,6 @@ theorem exists_iso_pair_of_eq {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMo
     exact L₁.rigGen p.1 p.2
   · intro Y f y i j hi hj
     exact gm_g_mul_gm_g_swap_eq_one_of_isLB L₁.isLB f y hi hj
-
-section Lev
-
-open ReciprocityTheory.ChartRestriction.G.Out
-
-end Lev
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}

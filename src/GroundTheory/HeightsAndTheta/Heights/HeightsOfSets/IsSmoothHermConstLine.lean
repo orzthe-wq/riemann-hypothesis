@@ -126,7 +126,7 @@ theorem isMultiHomog_one : IsMultiHomog (1 : MRing ι) 0 := by
   simp
 
 theorem isMultiHomog_X [DecidableEq K] (p : Σ k, ι k) : IsMultiHomog (X p : MRing ι) (Pi.single p.1 1) := by
-  apply GlobalTheory.CompanionTheory.Ar.Flat.UnitChart.homog_X <;> assumption
+  apply GlobalTheory.CompanionTheory.Ar.Flat.UnitChart.homog_X
 
 theorem isMultiHomog_pow {p : MRing ι} {a : K → ℕ} (hp : IsMultiHomog p a) (e : ℕ) :
     IsMultiHomog (p ^ e) (e • a) := by

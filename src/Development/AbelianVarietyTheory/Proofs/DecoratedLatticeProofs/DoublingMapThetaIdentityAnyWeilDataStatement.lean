@@ -51,4 +51,4 @@ open GlobalTheory.Core.Rk.IP
 
 
 theorem _root_.GlobalTheory.T.doublingMap_thetaIdentity_any_weilData : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (om : WRep A B) (omh : WRep (dblSp A) B), IsWeilDatumO ψ A B χA χB om → IsWeilDatumO ψ (dblSp A) B 1 χB omh → ThetaClause ψ A B χB om omh := by
-  first | exact @GlobalTheory.DoublingTheta.thetaClause | exact GlobalTheory.DoublingTheta.thetaClause | (intros; apply GlobalTheory.DoublingTheta.thetaClause <;> assumption)
+  first | exact @GlobalTheory.DoublingTheta.thetaClause

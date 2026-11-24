@@ -101,7 +101,7 @@ theorem _root_.GlobalTheory.Avoid.exists_basis_map_one_tmul_of_surjective {K L V
   have hcard : Fintype.card κ = d := by rw [← hd, Module.finrank_eq_card_basis b]
   let e : Fin d ≃ κ := (Fintype.equivFinOfCardEq hcard).symm
   refine ⟨a ∘ e, b.reindex e.symm, ha.comp e.injective, fun k => ?_⟩
-  simp [b, Basis.mk_apply]
+  simp [b]
 
 end Pick
 

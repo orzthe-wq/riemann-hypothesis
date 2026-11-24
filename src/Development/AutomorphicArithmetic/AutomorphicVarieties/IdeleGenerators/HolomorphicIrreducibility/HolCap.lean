@@ -61,10 +61,10 @@ private theorem infGL_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal
   refine ga_ext ?_ ?_
   · rw [TR.pInf_infGL]
     ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h1]
+    by_cases e : i = j <;> simp [e, h1]
   · rw [TR.pFin_infGL]
     ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]
+    by_cases e : i = j <;> simp [e, h2]
 
 private theorem fin_expU {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {ω : HChar F} (h : IsOfFinOrder ω)
     (z : Rinf F) : ω.1 (infId F (expU z)) = 1 := by

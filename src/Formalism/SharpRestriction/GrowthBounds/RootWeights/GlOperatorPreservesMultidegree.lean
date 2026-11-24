@@ -141,7 +141,7 @@ theorem multidegree_polarization_move (m : ι × Fin n →₀ ℕ) (l : ι) (a b
     by_cases hi : i = l
     · subst hi
       simp [Finsupp.single_apply]
-    · simp [Finsupp.single_apply, Ne.symm hi]
+    · simp [Ne.symm hi]
   have key : ∀ c : Fin n, (m - Finsupp.single (l, b) 1 + Finsupp.single (l, a) 1 : ι × Fin n →₀ ℕ) (i, c)
       + (Finsupp.single (l, b) 1 : ι × Fin n →₀ ℕ) (i, c)
       = m (i, c) + (Finsupp.single (l, a) 1 : ι × Fin n →₀ ℕ) (i, c) := by

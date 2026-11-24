@@ -96,7 +96,7 @@ theorem pair_dich : ∀ (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] 
     exact this
   have hF : ψ (algebraMap A _ f) * ψ u = 1 - ψ e := by rw [← map_mul, hu, map_sub, map_one]
   have hψf : ψ (algebraMap A _ f) = φ (algebraMap A A' f) := by rw [AlgHom.commutes]; rfl
-  rw [GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover]
+  rw [_root_.GlobalTheory.EtC.loc_iff_etale_affine_points]
   · intro t
     have key : ∀ G : Γ(T, ⊤), t ∈ T.basicOpen G → ∃ W : T.Opens, IsAffine W ∧ t ∈ W ∧ IsUnit (W.ι.appTop G) := by
       intro G hG

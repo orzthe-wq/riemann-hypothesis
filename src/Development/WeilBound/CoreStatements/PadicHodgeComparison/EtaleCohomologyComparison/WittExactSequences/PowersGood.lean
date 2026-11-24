@@ -66,7 +66,7 @@ theorem powers_good (h : ObFacts l) (N : Type) [AddCommGroup N] [Module (Ob l) N
   obtain ⟨hr, hr0⟩ := isRt_rt l
   have hrA : IsRt l (fun k => algebraMap (Ob l) A.obj (rt l k)) := fun k => by
     simp only [← map_pow, hr k]
-  obtain ⟨B, _, _, hB, hC, hAIC, hVAL, hS⟩ := Leaf.cov_tower l A.obj _ A.property hrA
+  obtain ⟨B, _, _, hB, hC, hAIC, hVAL, hS⟩ := _root_.CrystallineSemistableComparison.D.cov_tower l A.obj _ A.property hrA
   let _ : Algebra (Ob l) B := ((algebraMap A.obj B).comp (algebraMap (Ob l) A.obj)).toAlgebra
   have _ : IsScalarTower (Ob l) A.obj B := IsScalarTower.of_algebraMap_eq fun _ => rfl
   exact powers_abs l (testι l ⋙ toPf l) (rt l) hr

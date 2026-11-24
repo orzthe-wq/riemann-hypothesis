@@ -215,9 +215,7 @@ lemma block {h : Mx k r} (hh : h ∈ UWset k r z) (i j : Fin (2 * r + k + 1))
       _ = bvec j i := herm_hpk_bvec_eq_of_outer _ ⟨2 * r + k - i.val, hlt⟩ i hp hpi
       _ = if i = j then 1 else 0 := hbv i j
 
-lemma mul_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 := mul_inv_cancel_of_mem_UH hg
-
-lemma inv_eq {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := inv_eq_hpk_mul_conjTranspose_mul_hpk hg
+alias mul_inv := _root_.GlobalTheory.WigSh.OmgEquiv.mul_inv_cancel_of_mem_UH
 
 lemma mul_mem {a b : Mx k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
   have ea : aᴴ * Hpk k r * a = Hpk k r := ha
@@ -287,7 +285,7 @@ theorem omg_equivariant : ∀ (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ))
     GlobalTheory.WigSh.OmgEquiv.mul_mem
       (GlobalTheory.WigSh.OmgEquiv.mul_mem (hUW (GlobalTheory.WigSh.OmgEquiv.inv_mem hh)) hg) (hUW hh')
   unfold GlobalTheory.WigSh.omg
-  rw [GlobalTheory.WigSh.OmgEquiv.Zhat_eq hh hh', ← GlobalTheory.WigSh.OmgEquiv.inv_eq hG, ← GlobalTheory.WigSh.OmgEquiv.inv_eq hg,
+  rw [GlobalTheory.WigSh.OmgEquiv.Zhat_eq hh hh', ← _root_.GlobalTheory.WigSh.OmgEquiv.inv_eq_hpk_mul_conjTranspose_mul_hpk hG, ← _root_.GlobalTheory.WigSh.OmgEquiv.inv_eq_hpk_mul_conjTranspose_mul_hpk hg,
     Matrix.mul_inv_rev, Matrix.mul_inv_rev]
   set S := ∑ a, star ((Zhat k r z z' g).adjugate (Fin.last r) a) • fvec k r z a with hSdef
   have hfixS : ∀ m : Mx k r, m ∈ UWset k r z → m *ᵥ S = S := by

@@ -1,13 +1,17 @@
 module
 
+public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.ActEqZeroOfQK
+public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ResidualConstruction
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.OptInEqSome
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GoodIdempotentFixesOfOnlySeriesOfLabelActs
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInertiaCyclotomicElement
 public import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CommutingEndomorphismCondition
-public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.InCongruenceModuleJeReCutTOfRestrict
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -27,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -40,8 +43,83 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.InCongruenceModuleJeReCutTOfRestrict, Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.Tie0CutOfTie0
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.InCongruenceModuleJeReCutTOfRestrict =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.InCongruenceModuleJeReCutTOfRestrict", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.ActEqZeroOfQK\npublic import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ResidualConstruction\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace UpperTheory.GalC
+
+open GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices Formalism Formalism.BasicNotions Formalism.MainNotions.N UpperTheory.GalC.Alg
+
+variable {A X Γ : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [Group Γ] {n r : ℕ}
+  {T : Subalgebra A (X → A)} (S : Set X) {rep : X → (Γ →* GL (Fin n) A)}
+
+theorem mem_cutT {f : X → A} (hf : f ∈ T) : (fun y : S => f y.1) ∈ cutT T S := ⟨f, hf, rfl⟩
+
+theorem inRing_cut {a : X → Matrix (Fin n) (Fin n) A} (h : InRing T rep a) :
+    InRing (cutT T S) (fun y : S => rep y.1) (fun y => a y.1) := by
+  obtain ⟨m, f, g, hf, rfl⟩ := h
+  refine ⟨m, fun k y => f k y.1, g, fun k => mem_cutT S (hf k), ?_⟩
+  funext y
+  simp [Finset.sum_apply]
+
+theorem inCongruenceModuleJeRe_cutT_of_restrict {π : S} {e s : X → Matrix (Fin n) (Fin n) A} (h : InMatrixCongruenceModule T rep π.1 e s) :
+    InMatrixCongruenceModule (cutT T S) (fun y : S => rep y.1) π (fun y => e y.1) (fun y => s y.1) := by
+  obtain ⟨m, j, a, hj, rfl⟩ := h
+  refine ⟨m, fun k y => j k y.1, fun k y => a k y.1, fun k => ⟨mem_cutT S (hj k).1, (hj k).2.1, inRing_cut S (hj k).2.2⟩, ?_⟩
+  funext y
+  simp [Finset.sum_apply]
+
+theorem setting_cut [Nonempty S] {t : ℕ} {Z : Finset X} {Z' : Finset S} (hZ : ∀ y ∈ Z', y.1 ∈ Z)
+    {ρ : X → (Γ →* GL (Fin r) A)} {χ : ℕ → (Γ →* Aˣ)} (h : HidaSetting t T Z rep ρ χ) :
+    HidaSetting t (cutT T S) Z' (fun y : S => rep y.1) (fun y => ρ y.1) χ := by
+  obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8⟩ := h
+  haveI := h1
+  refine ⟨cutT_local T S, fun x y hxy => ?_, fun x => h3 x.1, fun g d => mem_cutT S (h4 g d), fun x => h5 x.1,
+    fun x y g => h6 x.1 y.1 g, fun x hx => h7 x.1 (hZ x hx), fun x hx => h8 x.1 (hZ x hx)⟩
+  obtain ⟨f, hf, hne⟩ := h2 x.1 y.1 fun e => hxy (Subtype.ext e)
+  exact ⟨_, mem_cutT S hf, hne⟩
+
+theorem isChoice_cut {t : ℕ} {ρ : X → (Γ →* GL (Fin r) A)} {χ : ℕ → (Γ →* Aˣ)} {π : S} {g0 : Γ} {L : ℕ}
+    {eB e1 X0 : X → Matrix (Fin n) (Fin n) A} (h : IsChoice t T rep ρ χ π.1 g0 L eB e1 X0) :
+    IsChoice t (cutT T S) (fun y : S => rep y.1) (fun y => ρ y.1) χ π g0 L (fun y => eB y.1) (fun y => e1 y.1)
+      (fun y => X0 y.1) := by
+  obtain ⟨⟨hB, h1, hBB, h11, hB1, h1B⟩, hdec, ⟨ϖ, s, hϖ, hs, rfl⟩, hroot⟩ := h
+  refine ⟨⟨inRing_cut S hB, inRing_cut S h1, ?_, ?_, ?_, ?_⟩, hdec, ⟨ϖ, fun y => s y.1, hϖ, inCongruenceModuleJeRe_cutT_of_restrict S hs, rfl⟩,
+    fun y => hroot y.1⟩
+  · funext y; exact congrFun hBB y.1
+  · funext y; exact congrFun h11 y.1
+  · funext y; exact congrFun hB1 y.1
+  · funext y; exact congrFun h1B y.1
+
+theorem span_cut {O : Type} [CommRing O] [IsDomain O] [Algebra A O] {TO : Subalgebra O (X → O)}
+    (h : Subalgebra.toSubmodule TO = Submodule.span O ((fun f : X → A => fun x => algebraMap A O (f x)) '' (T : Set _))) :
+    Subalgebra.toSubmodule (cutT TO S) =
+      Submodule.span O ((fun f : S → A => fun x => algebraMap A O (f x)) '' (cutT T S : Set _)) := by
+  have e1 : Subalgebra.toSubmodule (cutT TO S) = (Subalgebra.toSubmodule TO).map (resA O S).toLinearMap :=
+    Subalgebra.map_toSubmodule
+  rw [e1, h, Submodule.map_span, cutT, Subalgebra.coe_map, ← Set.image_comp, ← Set.image_comp]
+  rfl
+
+end UpperTheory.GalC
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.InCongruenceModuleJeReCutTOfRestrict =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.Tie0CutOfTie0 =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.Tie0CutOfTie0", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.OptInEqSome\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GoodIdempotentFixesOfOnlySeriesOfLabelActs\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInertiaCyclotomicElement\npublic import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CommutingEndomorphismCondition\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.InCongruenceModuleJeReCutTOfRestrict\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -106,25 +184,18 @@ theorem res_eq {O X : Type} [CommRing O] [IsLocalRing O] (T : Subalgebra O (X �
   rw [eq_comm, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]
   exact hy
 
-theorem hecke_res (D : D7) (i : D.nd.Loc) (x y : D.nd.X i) (w : PlE D.host) :
-    (heckePol D.nd i x w).map (IsLocalRing.residue (D.nd.O i)) = (heckePol D.nd i y w).map (IsLocalRing.residue (D.nd.O i)) := by
-  haveI := D.nd.T_local i
-  unfold heckePol
-
-  simp only [Polynomial.map_add (f := _), Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_C, map_mul, res_eq (D.nd.T i) _ x y]
-
 theorem atM_iff (i : (cut D c).nd.Loc) (σ : D.what₂.FT) : AtM (cut D c).nd (cut D c).naut i σ ↔ AtM D.nd D.naut i.1 σ := by
   refine exists_congr fun Sig => and_congr Iff.rfl ⟨fun ⟨x, h⟩ => ⟨x.1, h⟩, fun ⟨x, h⟩ => ?_⟩
   obtain ⟨y⟩ := (cut D c).nd.neX i
   refine ⟨y, fun w hw => ?_⟩
   obtain ⟨p, h1, h2⟩ := h w hw
-  exact ⟨p, h1, h2.trans (hecke_res D i.1 x y.1 w)⟩
+  exact ⟨p, h1, h2.trans (_root_.Formalism.MainNotions.N.heckePol_res D i.1 x y.1 w)⟩
 
 theorem rhoBar_iff (i : (cut D c).nd.Loc) (rb : G D.host.E D.nd.Om →* GL (Fin D.R.r) (IsLocalRing.ResidueField (D.nd.O i.1))) :
     IsRhoBar (cut D c).nd i rb ↔ IsRhoBar D.nd i.1 rb := by
   refine and_congr Iff.rfl ⟨fun h x w hw B σ hB hσ => ?_, fun h x => h x.1⟩
   obtain ⟨y⟩ := (cut D c).nd.neX i
-  exact (h y w hw B σ hB hσ).trans (hecke_res D i.1 y.1 x w)
+  exact (h y w hw B σ hB hσ).trans (_root_.Formalism.MainNotions.N.heckePol_res D i.1 y.1 x w)
 
 theorem goodPart_eq (i : (cut D c).nd.Loc) : goodPartM (cut D c).nd (cut D c).naut i = goodPartM D.nd D.naut i.1 := by
   have e : {σ | (cut D c).nd.goodRow σ ∧ AtM (cut D c).nd (cut D c).naut i σ} = {σ | D.nd.goodRow σ ∧ AtM D.nd D.naut i.1 σ} :=
@@ -210,3 +281,7 @@ theorem cutRec_cut (hc : c.Good) : CutRec (cut D c) := by
   exact hc.nice i.1 i.2 P x.1 x.2 ((ptV_iff i P x).1 hx) k w hw
 
 end UpperTheory.GalC.Tr
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.HeckeGaloisCriteria.Tie0CutOfTie0 =====

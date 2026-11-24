@@ -95,7 +95,7 @@ theorem unimodular_symplectic_coordinates_and_lattice_rank :
     map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]
     simp only [hf.left_left, hf.right_right, hf.left_right, hf.right_left halt, mul_zero,
       Finset.sum_const_zero, add_zero, zero_add, mul_ite, _root_.mul_one, mul_neg,
-      Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_neg_distrib, omegaStd]
+      Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_neg_distrib, omegaStd]
     rw [neg_add_eq_sub, ← Finset.sum_sub_distrib]
     refine Finset.sum_congr rfl fun i _ => ?_
     ring

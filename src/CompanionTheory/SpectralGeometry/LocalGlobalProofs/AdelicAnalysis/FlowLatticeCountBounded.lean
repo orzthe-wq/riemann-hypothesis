@@ -1,10 +1,13 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.HypJ
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicBoxLatticeCountRatioStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicBoxesCompactExhaustStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RationalTuplesDiscreteCocompactAdelicStatement
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CapelliComplements.FirstLemmaK
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicBoxLatticeCountRatio
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicBoxesCompactExhaust
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RationalTuplesDiscreteCocompactAdelic
+public import Mathlib.Basic.Finite.Defs
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.Data.Set.Finite.Lemmas
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -119,16 +122,33 @@ lemma sizeTup_ratTup_pos {d M n : ℕ} (b : Module.Basis (Fin d) F E) (X : Fin n
 
 end SlopeTestRemainingChoices
 
-lemma exists_pos_lt {α : Type} {S : Set α} (hS : S.Finite) (f : α → ℝ) (hf : ∀ x ∈ S, 0 < f x) :
-    ∃ r : ℝ, 0 < r ∧ r ≤ 1 ∧ ∀ x ∈ S, r < f x :=
-  _root_.Bl.FirstLemmaK.goal1 hS f hf
+private theorem exists_pos_lt {α : Type} {S : Set α} (hS : S.Finite)
+    (f : α → ℝ) (hf : ∀ x ∈ S, 0 < f x) :
+    ∃ r : ℝ, 0 < r ∧ r ≤ 1 ∧ ∀ x ∈ S, r < f x := by
+  rcases S.eq_empty_or_nonempty with h | hne
+  · refine ⟨1, one_pos, le_rfl, ?_⟩
+    intro x hx
+    rw [h] at hx
+    exact absurd hx (Set.notMem_empty x)
+  · obtain ⟨a, ha, hmin⟩ := Set.exists_min_image S f hS hne
+    have hfa : 0 < f a := hf a ha
+    refine ⟨min (f a) 1 / 2, ?_, ?_, ?_⟩
+    · have : 0 < min (f a) 1 := lt_min hfa one_pos
+      linarith
+    · have : min (f a) 1 ≤ 1 := min_le_right _ _
+      linarith
+    · intro x hx
+      have h1 : min (f a) 1 ≤ f a := min_le_left _ _
+      have h2 : f a ≤ f x := hmin x hx
+      have : 0 < min (f a) 1 := lt_min hfa one_pos
+      linarith
 
 theorem count_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ τ : Multiplicative ℝ →* (AF F ⊗[F] E)ˣ, IsFlow τ → ∀ (M : ℕ) (Ω : Set (Fin 1 → Fin M → AF F ⊗[F] E)), IsCompact Ω → ∃ x₀ C : ℝ, ∀ x : ℝ, ∑' X : {X : Fin 1 → Fin M → E // X ≠ 0}, (Set.indicator Ω (fun _ => (1 : ℝ≥0∞))) (((τ (Multiplicative.ofAdd (-x)) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • ratTup (AF F) X.1) ≤ if x < x₀ then 0 else ENNReal.ofReal (C * Real.exp (2 * Module.finrank ℚ F * M * x)) := by
   intro F E _ _ _ _ _ σ hCM τ hτ M Ω hΩ
   have : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)
   let b := Module.finBasis F E
-  obtain ⟨hcpt, hexh, hflow⟩ := GlobalTheory.T.adelic_boxes_compact_exhaust F E σ hCM _ b 1 M
-  obtain ⟨-, hfin, -⟩ := GlobalTheory.T.rational_tuples_discrete_cocompact_adelic F E σ hCM 1 M
+  obtain ⟨hcpt, hexh, hflow⟩ := _root_.GlobalTheory.CompanionTheory.SW.BoxF.box_facts F E σ hCM _ b 1 M
+  obtain ⟨-, hfin, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.CocW.main F E σ hCM 1 M
   obtain ⟨N, r, hN, hr, hsub⟩ := hexh Ω hΩ
 
   obtain ⟨r₀, h0, h1, hsmall⟩ := exists_pos_lt
@@ -168,7 +188,7 @@ theorem count_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
       · exact Set.indicator_apply_le' (fun _ => le_rfl) (fun _ => by simp)
       · intro X hX
         exact Set.indicator_of_notMem (hnone X hX) _
-    have hpack := GlobalTheory.T.adelic_box_lattice_count_ratio F E σ hCM _ b M (Fin 1 → Fin M → E) e N r₀ (Real.exp x * r) h0 hge
+    have hpack := _root_.GlobalTheory.CompanionTheory.SW.Pack.box_packing F E σ hCM _ b M (Fin 1 → Fin M → E) e N r₀ (Real.exp x * r) h0 hge
     calc ∑' X : {X : Fin 1 → Fin M → E // X ≠ 0}, (Set.indicator Ω (fun _ => (1 : ℝ≥0∞)))
             (((τ (Multiplicative.ofAdd (-x)) : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) • ratTup (AF F) X.1)
         ≤ ∑' X : {X : Fin 1 → Fin M → E // X ≠ 0},

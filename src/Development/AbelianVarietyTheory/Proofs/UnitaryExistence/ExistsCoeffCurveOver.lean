@@ -88,16 +88,10 @@ theorem exists_wC_eq (H : Host E) (a : ℤ × ℤ) :
   · exact ⟨a.1, a.2, by rw [wC, h]⟩
   · exact ⟨a.1 + a.2, -a.2, by rw [wC, h]; push_cast; ring⟩
 
-theorem ex_nsmul {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (z : Fin g → ℂ) (n : ℕ) :
-    u.ex (n • z) = u.ex z ^ n := by
-  induction n with
-  | zero => rw [zero_smul, pow_zero]; exact (u.ker 0).2 (zero_mem _)
-  | succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]
-
 theorem ex_pow_eq_one (C : Curve H) {n : ℕ} (hn : 0 < n) (a : ℤ × ℤ) :
     (C.u.ex fun _ => C.c * (wC H a / n)) ^ n = 1 := by
   obtain ⟨m, k, h⟩ := exists_wC_eq H a
-  rw [← ex_nsmul, C.u.ker]
+  rw [← _root_.GlobalTheory.holUnif_ex_nsmul_eq_pow, C.u.ker]
   refine (C.lat _).2 ⟨m, k, funext fun _ => ?_⟩
   have : (n : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hn.ne'
   rw [← h, Pi.smul_apply, nsmul_eq_mul]

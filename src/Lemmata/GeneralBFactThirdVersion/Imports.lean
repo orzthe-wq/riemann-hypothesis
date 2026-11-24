@@ -2,196 +2,39 @@ module
 
 public import Mathlib.Algebra.Module.Lattice.Full
 public import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
 namespace Bl.general_b_fact_third_version
 
-theorem goal1 :
-  ∀ {E : Type} [inst : Field.{0} E] [@NumberField.{0} E inst] {V : Type} [inst_2 : AddCommGroup.{0} V]
-  [inst_3 :
-    @Module.{0, 0} E V
-      (@DivisionSemiring.toSemiring.{0} E (@Semifield.toDivisionSemiring.{0} E (@Field.toSemifield.{0} E inst)))
-      (@AddCommGroup.toAddCommMonoid.{0} V inst_2)]
-  [inst_4 :
-    @Module.{0, 0} (@NumberField.RingOfIntegers.{0} E inst) V
-      (@CommSemiring.toSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-        (@CommRing.toCommSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-          (@NumberField.instCommRingRingOfIntegers.{0} E inst)))
-      (@AddCommGroup.toAddCommMonoid.{0} V inst_2)]
-  [inst_5 :
-    @IsScalarTower.{0, 0, 0} (@NumberField.RingOfIntegers.{0} E inst) E V
-      (@Algebra.toSMul.{0, 0} (@NumberField.RingOfIntegers.{0} E inst) E
-        (@CommRing.toCommSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-          (@NumberField.instCommRingRingOfIntegers.{0} E inst))
-        (@DivisionSemiring.toSemiring.{0} E (@Semifield.toDivisionSemiring.{0} E (@Field.toSemifield.{0} E inst)))
-        (@NumberField.RingOfIntegers.instAlgebra_1.{0} E inst))
-      (@SMulZeroClass.toSMul.{0, 0} E V
-        (@AddZero.toZero.{0} V
-          (@AddZeroClass.toAddZero.{0} V
-            (@AddMonoid.toAddZeroClass.{0} V
-              (@SubNegMonoid.toAddMonoid.{0} V
-                (@AddGroup.toSubNegMonoid.{0} V (@AddCommGroup.toAddGroup.{0} V inst_2))))))
-        (@DistribSMul.toSMulZeroClass.{0, 0} E V
-          (@AddMonoid.toAddZeroClass.{0} V
-            (@SubNegMonoid.toAddMonoid.{0} V (@AddGroup.toSubNegMonoid.{0} V (@AddCommGroup.toAddGroup.{0} V inst_2))))
-          (@DistribMulAction.toDistribSMul.{0, 0} E V
-            (@Semiring.toMonoid.{0} E
-              (@DivisionSemiring.toSemiring.{0} E
-                (@Semifield.toDivisionSemiring.{0} E (@Field.toSemifield.{0} E inst))))
-            (@SubNegMonoid.toAddMonoid.{0} V (@AddGroup.toSubNegMonoid.{0} V (@AddCommGroup.toAddGroup.{0} V inst_2)))
-            (@Module.toDistribMulAction.{0, 0} E V
-              (@DivisionSemiring.toSemiring.{0} E (@Semifield.toDivisionSemiring.{0} E (@Field.toSemifield.{0} E inst)))
-              (@AddCommGroup.toAddCommMonoid.{0} V inst_2) inst_3))))
-      (@SMulZeroClass.toSMul.{0, 0} (@NumberField.RingOfIntegers.{0} E inst) V
-        (@AddZero.toZero.{0} V
-          (@AddZeroClass.toAddZero.{0} V
-            (@AddMonoid.toAddZeroClass.{0} V
-              (@SubNegMonoid.toAddMonoid.{0} V
-                (@AddGroup.toSubNegMonoid.{0} V (@AddCommGroup.toAddGroup.{0} V inst_2))))))
-        (@DistribSMul.toSMulZeroClass.{0, 0} (@NumberField.RingOfIntegers.{0} E inst) V
-          (@AddMonoid.toAddZeroClass.{0} V
-            (@SubNegMonoid.toAddMonoid.{0} V (@AddGroup.toSubNegMonoid.{0} V (@AddCommGroup.toAddGroup.{0} V inst_2))))
-          (@DistribMulAction.toDistribSMul.{0, 0} (@NumberField.RingOfIntegers.{0} E inst) V
-            (@Semiring.toMonoid.{0} (@NumberField.RingOfIntegers.{0} E inst)
-              (@CommSemiring.toSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-                (@CommRing.toCommSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-                  (@NumberField.instCommRingRingOfIntegers.{0} E inst))))
-            (@SubNegMonoid.toAddMonoid.{0} V (@AddGroup.toSubNegMonoid.{0} V (@AddCommGroup.toAddGroup.{0} V inst_2)))
-            (@Module.toDistribMulAction.{0, 0} (@NumberField.RingOfIntegers.{0} E inst) V
-              (@CommSemiring.toSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-                (@CommRing.toCommSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-                  (@NumberField.instCommRingRingOfIntegers.{0} E inst)))
-              (@AddCommGroup.toAddCommMonoid.{0} V inst_2) inst_4))))]
-  (Λ :
-    @Submodule.{0, 0} (@NumberField.RingOfIntegers.{0} E inst) V
-      (@CommSemiring.toSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-        (@CommRing.toCommSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-          (@NumberField.instCommRingRingOfIntegers.{0} E inst)))
-      (@AddCommGroup.toAddCommMonoid.{0} V inst_2) inst_4),
-  @Submodule.IsFullLattice.{0, 0, 0} (@NumberField.RingOfIntegers.{0} E inst)
-      (@NumberField.instCommRingRingOfIntegers.{0} E inst) E (@Field.toCommRing.{0} E inst)
-      (@NumberField.RingOfIntegers.instAlgebra_1.{0} E inst) V inst_2 inst_4 inst_3 inst_5 Λ →
-    ∀ (v : V),
-      @Exists.{1} Nat fun (m : Nat) ↦
-        And (@Ne.{1} Nat m (@OfNat.ofNat.{0} Nat (nat_lit 0) (instOfNatNat (nat_lit 0))))
-          (@Membership.mem.{0, 0} V
-            (@Submodule.{0, 0} (@NumberField.RingOfIntegers.{0} E inst) V
-              (@CommSemiring.toSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-                (@CommRing.toCommSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-                  (@NumberField.instCommRingRingOfIntegers.{0} E inst)))
-              (@AddCommGroup.toAddCommMonoid.{0} V inst_2) inst_4)
-            (@SetLike.instMembership.{0, 0}
-              (@Submodule.{0, 0} (@NumberField.RingOfIntegers.{0} E inst) V
-                (@CommSemiring.toSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-                  (@CommRing.toCommSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-                    (@NumberField.instCommRingRingOfIntegers.{0} E inst)))
-                (@AddCommGroup.toAddCommMonoid.{0} V inst_2) inst_4)
-              V
-              (@Submodule.setLike.{0, 0} (@NumberField.RingOfIntegers.{0} E inst) V
-                (@CommSemiring.toSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-                  (@CommRing.toCommSemiring.{0} (@NumberField.RingOfIntegers.{0} E inst)
-                    (@NumberField.instCommRingRingOfIntegers.{0} E inst)))
-                (@AddCommGroup.toAddCommMonoid.{0} V inst_2) inst_4))
-            Λ
-            (@HSMul.hSMul.{0, 0, 0} E V V
-              (@instHSMul.{0, 0} E V
-                (@SMulZeroClass.toSMul.{0, 0} E V
-                  (@AddZero.toZero.{0} V
-                    (@AddZeroClass.toAddZero.{0} V
-                      (@AddMonoid.toAddZeroClass.{0} V
-                        (@SubNegMonoid.toAddMonoid.{0} V
-                          (@AddGroup.toSubNegMonoid.{0} V (@AddCommGroup.toAddGroup.{0} V inst_2))))))
-                  (@DistribSMul.toSMulZeroClass.{0, 0} E V
-                    (@AddMonoid.toAddZeroClass.{0} V
-                      (@SubNegMonoid.toAddMonoid.{0} V
-                        (@AddGroup.toSubNegMonoid.{0} V (@AddCommGroup.toAddGroup.{0} V inst_2))))
-                    (@DistribMulAction.toDistribSMul.{0, 0} E V
-                      (@Semiring.toMonoid.{0} E
-                        (@DivisionSemiring.toSemiring.{0} E
-                          (@Semifield.toDivisionSemiring.{0} E (@Field.toSemifield.{0} E inst))))
-                      (@SubNegMonoid.toAddMonoid.{0} V
-                        (@AddGroup.toSubNegMonoid.{0} V (@AddCommGroup.toAddGroup.{0} V inst_2)))
-                      (@Module.toDistribMulAction.{0, 0} E V
-                        (@DivisionSemiring.toSemiring.{0} E
-                          (@Semifield.toDivisionSemiring.{0} E (@Field.toSemifield.{0} E inst)))
-                        (@AddCommGroup.toAddCommMonoid.{0} V inst_2) inst_3)))))
-              (@Nat.cast.{0} E
-                (@AddMonoidWithOne.toNatCast.{0} E
-                  (@AddGroupWithOne.toAddMonoidWithOne.{0} E
-                    (@Ring.toAddGroupWithOne.{0} E (@DivisionRing.toRing.{0} E (@Field.toDivisionRing.{0} E inst)))))
-                m)
-              v)) := by
-  intro E _ _ V _ _ _ _ Λ hΛ v
-  have key : ∀ c : E, ∃ m : ℕ, m ≠ 0 ∧ ∃ a : NumberField.RingOfIntegers E,
-      (m : E) * c = algebraMap (NumberField.RingOfIntegers E) E a := by
-    intro c
-    have hc : IsAlgebraic ℤ c := (IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (IsAlgebraic.of_finite ℚ c)
-    obtain ⟨m, s, hm, h⟩ := hc.exists_nsmul_eq (NumberField.RingOfIntegers E)
-    exact ⟨m, hm, s, by rw [← h, nsmul_eq_mul]⟩
-  have h1 : ∀ (k : ℕ) (w : V), w ∈ Λ → (k : E) • w ∈ Λ := fun k w hw => by
-    rw [Nat.cast_smul_eq_nsmul]; exact Λ.nsmul_mem hw k
-  let S : Submodule E V :=
-    { carrier := {w | ∃ m : ℕ, m ≠ 0 ∧ (m : E) • w ∈ Λ}
-      add_mem' := by
-        rintro a b ⟨m, hm, ha⟩ ⟨n, hn, hb⟩
-        refine ⟨m * n, mul_ne_zero hm hn, ?_⟩
-        rw [Nat.cast_mul, smul_add]
-        refine Λ.add_mem ?_ ?_
-        · rw [mul_comm, mul_smul]; exact h1 _ _ ha
-        · rw [mul_smul]; exact h1 _ _ hb
-      zero_mem' := ⟨1, one_ne_zero, by simp⟩
-      smul_mem' := by
-        rintro c w ⟨m, hm, hw⟩
-        obtain ⟨n, hn, a, ha⟩ := key c
-        refine ⟨n * m, mul_ne_zero hn hm, ?_⟩
-        have e : ((n * m : ℕ) : E) • (c • w) = a • ((m : E) • w) := by
-          rw [← algebraMap_smul E a ((m : E) • w), ← ha, Nat.cast_mul, smul_smul, smul_smul]
-          congr 1; ring
-        rw [e]; exact Λ.smul_mem a hw }
-  have hle : Submodule.span E (Λ : Set V) ≤ S :=
-    Submodule.span_le.mpr (fun w hw => ⟨1, one_ne_zero, by simpa using hw⟩)
-  rw [hΛ.span_eq_top] at hle
-  obtain ⟨m, hm, h⟩ := hle (Submodule.mem_top : v ∈ (⊤ : Submodule E V))
-  exact ⟨m, hm, h⟩
+open NumberField in
+theorem goal1 {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V]
+    [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
+    (Λ : Submodule (𝓞 E) V) (hΛ : Submodule.IsFullLattice E Λ) (v : V) :
+    ∃ m : ℕ, m ≠ 0 ∧ (m : E) • v ∈ Λ := by
+  have hv : v ∈ Submodule.span E (Λ : Set V) := by
+    rw [hΛ.span_eq_top]
+    exact Submodule.mem_top
+  induction hv using Submodule.span_induction with
+  | mem w hw => exact ⟨1, one_ne_zero, by simpa using hw⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
+  | add a b _ _ ha hb =>
+    obtain ⟨m, hm, ha⟩ := ha
+    obtain ⟨n, hn, hb⟩ := hb
+    refine ⟨m * n, mul_ne_zero hm hn, ?_⟩
+    rw [Nat.cast_mul, smul_add]
+    refine Λ.add_mem ?_ ?_
+    · rw [mul_comm, mul_smul, Nat.cast_smul_eq_nsmul]
+      exact Λ.nsmul_mem ha n
+    · rw [mul_smul, Nat.cast_smul_eq_nsmul]
+      exact Λ.nsmul_mem hb m
+  | smul c w _ hw =>
+    obtain ⟨m, hm, hw⟩ := hw
+    have hc : IsAlgebraic ℤ c :=
+      (IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (.of_finite ℚ c)
+    obtain ⟨n, a, hn, ha⟩ := hc.exists_nsmul_eq (𝓞 E)
+    refine ⟨n * m, mul_ne_zero hn hm, ?_⟩
+    rw [Nat.cast_mul, smul_smul, mul_right_comm, ← nsmul_eq_mul, ha, mul_smul, algebraMap_smul]
+    exact Λ.smul_mem a hw
 
 end Bl.general_b_fact_third_version

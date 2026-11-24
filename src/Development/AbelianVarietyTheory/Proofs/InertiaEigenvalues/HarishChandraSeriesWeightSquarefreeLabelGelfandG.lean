@@ -62,12 +62,7 @@ namespace CompanionTheory.Member.UnipotentCardinalityCoefficients
 
 variable {g : ℕ} [Fact g.Prime]
 
-theorem uni_one {N : ℕ} : IsUniUp (1 : Mt g N) := by
-  intro a b
-  refine ⟨fun h => ?_, fun h => ?_⟩
-  · exact Matrix.one_apply_ne (ne_of_gt h)
-  · subst h
-    exact Matrix.one_apply_eq a
+alias uni_one := _root_.GlobalTheory.GLm.DerClass.isUniUp_one
 
 theorem entN_one {N : ℕ} (i j : ℕ) (h : i < j) : entN (1 : Mt g N) i j = 0 := by
   unfold entN
@@ -140,30 +135,6 @@ private theorem card_filter_unipotent_eq_pow_card_free {N : ℕ} (Q : Fin N × F
         simp [Matrix.of_apply, h1, p.2] }
   rw [← Fintype.card_subtype, Fintype.card_congr e, Fintype.card_fun, ZMod.card, Fintype.card_coe]
 
-theorem card_uni {N : ℕ} (Q : Fin N × Fin N → Prop) (P : Mt g N → Prop)
-    (hP : ∀ M, P M ↔ IsUniUp M ∧ ∀ p : Fin N × Fin N, p.1 < p.2 → Q p → M p.1 p.2 = 0) :
-    (Finset.univ.filter fun u : Gn g N => P (u : Mt g N)).card =
-      g ^ (Finset.univ.filter fun p : Fin N × Fin N => p.1 < p.2 ∧ ¬ Q p).card := by
-  rw [card_filter_Gn_eq_card_filter_Mt_of_unipotent P (fun M hM => ((hP M).1 hM).1), card_filter_unipotent_eq_pow_card_free Q P hP]
-
-theorem card_lt (N : ℕ) :
-    (Finset.univ.filter fun p : Fin N × Fin N => p.1 < p.2).card = N * (N - 1) / 2 := by
-  rw [Finset.card_filter, Fintype.sum_prod_type_right]
-  have h : ∀ j : Fin N, (∑ i : Fin N, if i < j then 1 else 0) = (j : ℕ) := by
-    intro j
-    rw [← Finset.card_filter]
-    simp_rw [Fin.lt_def]
-    rw [Fin.card_filter_val_lt]
-    exact min_eq_right j.2.le
-  simp only [h]
-  rw [Fin.sum_univ_eq_sum_range (fun i => i) N, Finset.sum_range_id]
-
-private theorem card_unipotent_upper_eq_pow' (N : ℕ) :
-    (Finset.univ.filter fun u : Gn g N => IsUniUp (u : Mt g N)).card = g ^ (N * (N - 1) / 2) := by
-  have h := card_uni (g := g) (N := N) (fun _ => False) IsUniUp (fun M => by simp)
-  simp only [not_false_eq_true, and_true, card_lt] at h
-  exact h
-
 theorem eU_coeff_one (N : ℕ) (ψ : AddChar (ZMod g) ℂ) :
     (eU g N ψ).coeff 1 = ((g : ℂ) ^ (N * (N - 1) / 2))⁻¹ := by
   have hφ : (∑ i ∈ Finset.range (N - 1), entN (1 : Mt g N) i (i + 1)) = 0 :=
@@ -174,7 +145,7 @@ theorem eU_coeff_one (N : ℕ) (ψ : AddChar (ZMod g) ℂ) :
   simp only [MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single,
     Finsupp.smul_apply, Finsupp.finsetSum_apply, Finsupp.single_apply]
   rw [Finset.sum_ite_eq_of_mem' _ _ _ h1]
-  simp [hφ, card_unipotent_upper_eq_pow']
+  simp [hφ, _root_.GlobalTheory.GLm.DerFormula.card_uniUp]
 
 theorem wh_zero (ψ : AddChar (ZMod g) ℂ) : wh ψ (fun _ : Gn g 0 => (1 : ℂ)) = 1 := by
   unfold wh tr
@@ -198,9 +169,7 @@ theorem isClass_mul_left {G : Type} [Group G] {α : G → ℂ} (h : IsClass α) 
   show c * α (y * x * y⁻¹) = c * α x
   rw [h x y]
 
-theorem isChar_of_irr {G : Type} [Group G] {α : G → ℂ} (h : IsIrr α) : IsChar α := by
-  obtain ⟨V, -, hV⟩ := h
-  exact ⟨V, hV⟩
+alias isChar_of_irr := _root_.GlobalTheory.CharDec.isChar_of_isIrr
 
 theorem wh_mul_left (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (α : Gn g n → ℂ) (c : ℂ) :
     wh ψ (fun x => c * α x) = c * wh ψ α := by
@@ -230,18 +199,7 @@ theorem wh_hcL (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (L : List (Pc g))
     simp only [wh_mul_left, ihL, mul_one]
     exact hp.2
 
-theorem prod_Icc_ne (n : ℕ) : ∏ i ∈ Finset.Icc 1 n, ((g : ℂ) ^ i - 1) ≠ 0 := by
-  rw [Finset.prod_ne_zero_iff]
-  intro i hi
-  have hi1 : 1 ≤ i := (Finset.mem_Icc.1 hi).1
-  have hg : 2 ≤ g := (Fact.out : g.Prime).two_le
-  have hlt : 1 < g ^ i := Nat.one_lt_pow (by omega) (by omega)
-  intro h
-  have h' : ((g ^ i : ℕ) : ℂ) = 1 := by
-    push_cast
-    linear_combination h
-  norm_cast at h'
-  omega
+alias prod_Icc_ne := _root_.GlobalTheory.GLq.HcDeg.prodIcc_ne
 
 theorem card_Gn (n : ℕ) : (Fintype.card (Gn g n) : ℂ) =
     (g : ℂ) ^ (n * (n - 1) / 2) * ∏ i ∈ Finset.Icc 1 n, ((g : ℂ) ^ i - 1) := by
@@ -342,7 +300,6 @@ end ProductIntervalSplit
 section
 open GlobalTheory.GLq Formalism.MainNotions.ArithmeticCylinders Polynomial
 open scoped Classical
-theorem _root_.GlobalTheory.Adopt.harishChandraSeriesWeight_squarefree_label_gelfandGraev : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g), 5 ≤ g → Green → ∀ (ψ : AddChar (ZMod g) ℂ), ψ ≠ 1 → ∀ (n : ℕ) (f : (ZMod g)[X]), f.Monic → f.natDegree = n → f.coeff 0 ≠ 0 → Squarefree f → wtC L (eU g n ψ) f = 1 / ((UniqueFactorizationMonoid.normalizedFactors f).map (fun P => (g : ℝ) ^ P.natDegree - 1)).prod := by
-  exact ProductIntervalSplit.CompanionTheory.Member.harishChandraSeriesWeight_squarefree_label_unipotent
+alias _root_.GlobalTheory.Adopt.harishChandraSeriesWeight_squarefree_label_gelfandGraev := _root_.ProductIntervalSplit.CompanionTheory.Member.harishChandraSeriesWeight_squarefree_label_unipotent
 
 end

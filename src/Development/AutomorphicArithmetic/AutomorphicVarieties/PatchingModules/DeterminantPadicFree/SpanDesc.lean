@@ -98,7 +98,7 @@ private theorem sd_down {F F' ι : Type} [Field F] [Field F'] (f : F →+* F') {
     rw [this]; exact Submodule.zero_mem _
   | add y z _ _ hy hz =>
     intro c
-    have : (c • (y + z)).map p = (c • y).map p + (c • z).map p := by ext i j; simp [mul_add]
+    have : (c • (y + z)).map p = (c • y).map p + (c • z).map p := by ext i j; simp
     rw [this]; exact Submodule.add_mem _ (hy c) (hz c)
   | smul d y _ hy =>
     intro c

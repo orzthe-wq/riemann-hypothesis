@@ -146,7 +146,7 @@ theorem gam_zpow {l : ℕ} (R : RingPG k l) (b : ℤ) :
       obtain ⟨c, hc⟩ := ih
       refine ⟨w' * (c + ((n : k⟦X⟧) + 1) + c0 + ((n : k⟦X⟧) + 1) * c0 * PowerSeries.X), ?_⟩
       rw [zpow_sub_one₀ hw0, hc, hinv]
-      simp only [map_add (f := _), map_sub, map_mul, map_one, map_pow, map_natCast, ← hv]
+      simp only [map_add (f := _), map_mul, map_one, map_natCast, ← hv]
       push_cast
       rw [hw1] at hww
       linear_combination (1 + ((n : k⸨X⸩) + 1) * vv k) * hww

@@ -199,7 +199,7 @@ theorem wordX_comm [Fintype I] (e : K → Module.End ℂ M) (X : I → Module.En
     have u0 : ∀ j, List.ofFn (Function.update w 0 j) = j :: List.ofFn (fun i : Fin n => w i.succ) := by
       intro j
       rw [List.ofFn_succ]
-      simp [Function.update_of_ne (Fin.succ_ne_zero _)]
+      simp
     have us : ∀ (i : Fin n) j, List.ofFn (Function.update w i.succ j) =
         w 0 :: List.ofFn (Function.update (fun i : Fin n => w i.succ) i j) := by
       intro i j

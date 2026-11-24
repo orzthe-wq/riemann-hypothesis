@@ -314,7 +314,7 @@ theorem level_zero_estimate {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] 
   rw [hF] at hS
   obtain ⟨hck, -, hbd⟩ := hS
   refine ⟨δ * ε, by positivity, hck, ⟨C * c, ?_⟩, ?_⟩
-  · refine Formalism.FourierDecayAlt.P.compactly_supported_monotone k (0 + ρ) _
+  · refine _root_.Formalism.FourierDecayAlt.P.Ux8.ccMono k (0 + ρ) _
       (A₀ - ((0 : ℕ) : ℝ) - ((0 : ℕ) : ℝ) * ((0 : ℕ) : ℝ) - 2 * (((0 + ρ : ℕ) : ℝ) + 1) * ((mm + 0 : ℕ) : ℝ))
       A (C * c) mm _ ?_ ⟨hck, ?_⟩
     · push_cast at hA ⊢; linarith
@@ -347,15 +347,18 @@ theorem budget0_abs (R n N r Cc A₀ : ℝ) (hR1 : 1 ≤ R) (hnR : R ≤ n) (hr 
   have hn1 : 1 ≤ n := le_trans hR1 hnR
   have hR0 : 0 ≤ R := by linarith
   have hn0 : 0 ≤ n := by linarith
-  have hR2 : 1 ≤ R ^ 2 := by nlinarith
-  have hRR : R ≤ R ^ 2 := by nlinarith
-  have hR24 : R ^ 2 ≤ R ^ 4 := by nlinarith
-  have hR34 : R ^ 3 ≤ R ^ 4 := by nlinarith [pow_nonneg hR0 3]
-  have hn13 : n ≤ n ^ 3 := by nlinarith
-  have hn12 : n ≤ n ^ 2 := by nlinarith
+  have hR2 : 1 ≤ R ^ 2 := one_le_pow₀ hR1
+  have hRR : R ≤ R ^ 2 := le_self_pow₀ hR1 (by norm_num)
+  have hR24 : R ^ 2 ≤ R ^ 4 := pow_le_pow_right₀ hR1 (by norm_num)
+  have hR34 : R ^ 3 ≤ R ^ 4 := pow_le_pow_right₀ hR1 (by norm_num)
+  have hn13 : n ≤ n ^ 3 := le_self_pow₀ hn1 (by norm_num)
+  have hn12 : n ≤ n ^ 2 := le_self_pow₀ hn1 (by norm_num)
   have hS0 : 0 ≤ N * n ^ 2 + n ^ 3 := by positivity
   have hR4 : 0 ≤ R ^ 4 := by positivity
-  have e1 : 1 + 10 * R + 12 * (R ^ 2 * n) ≤ 23 * (R ^ 2 * n) := by nlinarith
+  have e1 : 1 + 10 * R + 12 * (R ^ 2 * n) ≤ 23 * (R ^ 2 * n) := by
+    have hR2n1 : 1 ≤ R ^ 2 * n := one_le_mul_of_one_le_of_one_le hR2 hn1
+    have hR2nR : R ≤ R ^ 2 * n := le_trans hRR (le_mul_of_one_le_right (by positivity) hn1)
+    linarith
   have e2 : R ^ 2 * n ≤ R ^ 4 * n ^ 3 := mul_le_mul hR24 hn13 hn0 hR4
   have e3 : R * (N * r) ≤ R ^ 2 * (N * n) :=
     mul_le_mul hRR (mul_le_mul_of_nonneg_left hr hN) (by positivity) (by positivity)
@@ -365,7 +368,12 @@ theorem budget0_abs (R n N r Cc A₀ : ℝ) (hR1 : 1 ≤ R) (hnR : R ≤ n) (hr 
   have e6 : 150 * (R ^ 4 * (N * n ^ 2 + n ^ 3)) ≤ Cc * (R ^ 4 * (N * n ^ 2 + n ^ 3)) :=
     mul_le_mul_of_nonneg_right hCc (mul_nonneg hR4 hS0)
   have e7 : 0 ≤ R ^ 4 * (N * n ^ 2) := by positivity
-  nlinarith [e1, e2, e3, e4, e5, e6, e7, h]
+  have he1 : (127 * R ^ 3 * (N * n ^ 2 + n ^ 3) + 1) + 2 * R * (5 + 3 * R * (N + 2) * n + N * r) =
+      127 * (R ^ 3 * (N * n ^ 2 + n ^ 3)) + (1 + 10 * R + 12 * (R ^ 2 * n)) + 6 * (R ^ 2 * (N * n)) + 2 * (R * (N * r)) := by ring
+  have he2 : 150 * (R ^ 4 * (N * n ^ 2 + n ^ 3)) =
+      127 * (R ^ 4 * (N * n ^ 2 + n ^ 3)) + 23 * (R ^ 4 * n ^ 3) + 8 * (R ^ 4 * (N * n ^ 2)) + 15 * (R ^ 4 * (N * n ^ 2)) := by ring
+  have he3 : Cc * R ^ 4 * (N * n ^ 2 + n ^ 3) = Cc * (R ^ 4 * (N * n ^ 2 + n ^ 3)) := by ring
+  linarith
 
 theorem budget0 (r k N : ℕ) (hk : 2 ≤ k) (A₀ Cc : ℝ) (hCc : 150 ≤ Cc)
     (h : Cc * ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3) ≤ A₀) :
@@ -443,7 +451,6 @@ theorem castV_self {a : ℕ} (h : a = a) (v : Fin (2 * a + k + 1) → ℂ) : D.c
 theorem castF_self {a : ℕ} (h : a = a) (F : B.Mat k a → E) : D.castF h F = F := by
   first
     | rfl
-    | (funext g; simp [D.castF, D.castM])
 
 theorem castF_uwG {a b : ℕ} (e : a = b) (z z' : Fin (2 * b + k + 1) → ℂ) (F : B.Mat k b → E) (j : ℕ)
     (hj : j ≤ b) (hj' : j ≤ a) (w : List C.Letter) (x : Wd.Ix (Fin w.length)) :
@@ -491,23 +498,14 @@ theorem ckOn_cutF {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
   convert this using 2 with g
   simp [D.cutF, Complex.coe_smul]
 
-theorem ptScal_ne : ∀ (h : C.LPt), (∀ b ∈ h, 1 ≤ b.1 ∧ b.2 ≠ 0) → ∀ a, a < D.ptSize h → D.ptScal h a ≠ 0
-  | [], _, a, ha => by simp [D.ptSize] at ha
-  | (s, t) :: h, hb, a, ha => by
-    simp only [D.ptScal]
-    split_ifs with h1
-    · exact (hb (s, t) (by simp)).2
-    · refine ptScal_ne h (fun b' hb' => hb b' (List.mem_cons_of_mem _ hb')) _ ?_
-      rw [Formalism.FourierDecayAlt.P.Dx2.SL.ptSize_cons] at ha
-      simp only at ha
-      omega
+alias ptScal_ne := _root_.Formalism.FourierDecayAlt.P.Dx1.Rel.scal_ne
 
 theorem lowV_liftVec {k i ρ j : ℕ} (hj : j = i) (e : i + ρ = j + ρ) (v : Fin (2 * ρ + k + 1) → ℂ) :
     U.lowV k j ρ (D.castV e (liftVec k i ρ v)) = v := by
   subst hj
   funext x
   have hx := x.isLt
-  simp only [U.lowV, D.castV, liftVec, Fin.cast_mk, Fin.coe_cast, Fin.val_mk]
+  simp only [U.lowV, D.castV, liftVec, Fin.cast_mk, Fin.val_mk]
   split_ifs with hcond
   · congr 1
     apply Fin.ext
@@ -526,15 +524,18 @@ theorem budgetAs (r k N L j : ℕ) (hk : 2 ≤ k) (hL : L ≤ N) (hj : j ≤ r) 
   have hrn' : r ≤ 2 * r + k + 1 := by omega
   set n := 2 * r + k + 1 with hn_def
   have hn : 1 ≤ n := by omega
-  have hnn : n ≤ n ^ 2 := by nlinarith
-  have hn23 : n ^ 2 ≤ n ^ 3 := by nlinarith
+  have hnn : n ≤ n ^ 2 := Nat.le_self_pow (by norm_num) n
+  have hn23 : n ^ 2 ≤ n ^ 3 := Nat.pow_le_pow_right hn (by norm_num)
   have hLj : L * j ≤ N * n := Nat.mul_le_mul hL hjn
   have hLj2 : L * j ^ 2 ≤ N * n ^ 2 := Nat.mul_le_mul hL (Nat.pow_le_pow_left hjn 2)
   have hNn : N * n ≤ N * n ^ 2 := Nat.mul_le_mul_left N hnn
   have hNr : N * r ≤ N * n := Nat.mul_le_mul_left N hrn'
   have h3a : (r + 1) * ((N + 2) * n) ≤ n * ((N + 2) * n) := Nat.mul_le_mul_right ((N + 2) * n) hrn
-  have hn3 : 1 ≤ n ^ 3 := by nlinarith
-  refine ⟨by nlinarith, by nlinarith, by nlinarith, by nlinarith, by nlinarith⟩
+  have hn3 : 1 ≤ n ^ 3 := Nat.one_le_pow 3 n hn
+  have hjLj : j * (L * j) = L * j ^ 2 := by ring
+  have h3b : 3 * (r + 1) * (N + 2) * n = 3 * ((r + 1) * ((N + 2) * n)) := by ring
+  have h3c : n * ((N + 2) * n) = N * n ^ 2 + 2 * n ^ 2 := by ring
+  refine ⟨by omega, by omega, by omega, by omega, by omega⟩
 
 theorem pos_levels (hL : LettersDD) (hP : PosCore) (hI : IntG) (hT : OrbitSliceIntegrable) : ∃ Cp : ℝ, 0 ≤ Cp ∧
     ∀ Cc : ℝ, 16 * Cp ≤ Cc →
@@ -593,7 +594,6 @@ theorem pos_levels (hL : LettersDD) (hP : PosCore) (hI : IntG) (hT : OrbitSliceI
     simp only [P5.mmUser, P5.nV, hPk, hPr, hnd]
   have hAU : P5.Auser P0 N = 127 * ((r : ℝ) + 1) ^ 3 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3) := by
     simp only [P5.Auser, P5.nV, hPk, hPr, hnd]
-    try (push_cast; try ring)
   have hX1 : (1 : ℝ) ≤ (N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3 := by exact_mod_cast b5
   have hAsR : (As : ℝ) = 11 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3) + 5 := by
     rw [hAs]; push_cast; ring
@@ -607,8 +607,8 @@ theorem pos_levels (hL : LettersDD) (hP : PosCore) (hI : IntG) (hT : OrbitSliceI
     (by
       rw [hsumR, hAU, hAsR]
       have hR3 : (1 : ℝ) ≤ ((r : ℝ) + 1) ^ 3 := one_le_pow₀ hR1
-      have : 0 ≤ ((r : ℝ) + 1) ^ 3 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3) := by positivity
-      nlinarith)
+      have hmul := le_mul_of_one_le_left (by linarith : 0 ≤ (N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3) hR3
+      linarith)
     (by
       rw [hsumR, hAsR]
       have hR4 : 0 ≤ ((r : ℝ) + 1) ^ 4 := by positivity
@@ -622,7 +622,11 @@ theorem pos_levels (hL : LettersDD) (hP : PosCore) (hI : IntG) (hT : OrbitSliceI
       have s3 : Cc * ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3) ≤ A₀ := by
         have hndR : (nd : ℝ) = 2 * (r : ℝ) + k + 1 := by rw [hnd]; push_cast; ring
         rw [hndR]; exact hA₀
-      nlinarith)
+      have he1 : Cp * ((r : ℝ) + 1) ^ 4 * (16 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3)) =
+          16 * Cp * (((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3)) := by ring
+      have he2 : Cc * (((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3)) =
+          Cc * ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3) := by ring
+      linarith)
   have hfun : D.castF hc (D.sliceAt k r T.base.z T.base.z' G (h ++ [(n + 1, t)])) =
       fun γ => U.PhiFun (p := ph + (n + 1)) (s := 0) k ρ (Formalism.FourierDecayAlt.P.Dx2.SL.sigP (D.ptPerm h))
         (Formalism.FourierDecayAlt.P.Dx2.SL.dP (D.ptDiag h) t) (D.castV e1 T.base.z) (D.castV e1 T.base.z')
@@ -674,7 +678,6 @@ theorem contDjU : Continuous (DjU k j ρ) := by
   unfold U.DjU U.Zh
   first
     | fun_prop
-    | exact Continuous.matrix_det (by fun_prop)
 
 section loc
 
@@ -736,19 +739,13 @@ theorem bd_nil {κ ℓ : ℕ} : Bd k j ρ κ ℓ [] := by
   intro e he
   simp at he
 
-private theorem bd_mono' {κ ℓ κ' ℓ' : ℕ} {L : FS k (j + ρ)} (h : Bd k j ρ κ ℓ L) (hκ : κ ≤ κ')
-    (hℓ : ℓ ≤ ℓ') : Bd k j ρ κ' ℓ' L := by
-  intro e he
-  obtain ⟨h1, h2, h3⟩ := h e he
-  exact ⟨h1.trans hκ, h2.trans hℓ, h3⟩
-
 theorem bd_topFS {κ ℓ : ℕ} (u : ℂ) (a b : Fin (2 * (j + ρ) + k + 1)) {L : FS k (j + ρ)}
     (h : Bd k j ρ κ ℓ L) : Bd k j ρ (κ + j) (ℓ + 1) (topFS k j ρ u a b L) := by
   have hP : DegDP := fun N X q => degDP X q
   unfold topFS
   refine bd_append ?_ (bd_append ?_ ?_)
   · split_ifs
-    · exact bd_mono' (bd_mulC u h) (Nat.le_add_right _ _) (Nat.le_succ _)
+    · exact _root_.PI.UnitaryGroupMassFormula.UsCompose.Bd.mono (bd_mulC u h) (Nat.le_add_right _ _) (Nat.le_succ _)
     · exact bd_nil
   · exact bd_step hP degD (JFxB.Xa_lie a b) h
   · exact bd_mulC Complex.I (bd_step hP degD (JFxB.Xb_lie a b) h)
@@ -1068,10 +1065,10 @@ theorem bd_letFS (l : C.Letter) (e : Fin 2) {κ ℓ : ℕ} {L : FS k (j + ρ)} (
   have hd : j - (e : ℕ) ≤ j := Nat.sub_le _ _
   have hdj : (j - (e : ℕ)) * j ≤ j * j := Nat.mul_le_mul_right j hd
   split_ifs
-  · refine bd_mono' (bd_mulP (d := 0) (MvPolynomial.C 1) (by simp) 1 0 (bd_aaFS _ _ _ h)) ?_ ?_
+  · refine _root_.PI.UnitaryGroupMassFormula.UsCompose.Bd.mono (bd_mulP (d := 0) (MvPolynomial.C 1) (by simp) 1 0 (bd_aaFS _ _ _ h)) ?_ ?_
     · linarith
     · omega
-  · refine bd_mono' (bd_mulP (d := 0) (MvPolynomial.C 1) (by simp) 0 1 (bd_avFS _ _ _ h)) ?_ ?_
+  · refine _root_.PI.UnitaryGroupMassFormula.UsCompose.Bd.mono (bd_mulP (d := 0) (MvPolynomial.C 1) (by simp) 0 1 (bd_avFS _ _ _ h)) ?_ ?_
     · linarith
     · omega
 
@@ -1091,11 +1088,11 @@ theorem vlet_shape (hj1 : 1 ≤ j) (z z' : Fin (2 * (j + ρ) + k + 1) → ℂ) (
   rcases l with ⟨b, y⟩
   cases b
   · simp only [letFS, Bool.false_eq_true, if_false]
-    rw [shape_mul, av_shape hF hL hh _ _ _ g hg, Formalism.FourierDecayAlt.P.hat_z_minimum_degree]
+    rw [shape_mul, av_shape hF hL hh _ _ _ g hg, _root_.Formalism.FourierDecayAlt.P.Ux3.zhDmin]
     congr 1
     simp [sv]
   · simp only [letFS, if_true]
-    rw [shape_mul, aa_shape hF hL hh _ _ _ g hg, Formalism.FourierDecayAlt.P.hat_z_minimum_degree]
+    rw [shape_mul, aa_shape hF hL hh _ _ _ g hg, _root_.Formalism.FourierDecayAlt.P.Ux3.zhDmin]
     congr 1
     simp [sv]
 
@@ -1208,7 +1205,7 @@ lemma Zu_apply (n : ℕ) (t : ℂ) (u : G.UT (n + 1) → ℂ) (a b : Fin (n + 1)
 lemma Zu_entry (n : ℕ) (t : ℂ) (u : G.UT (n + 1) → ℂ) (q : G.UT (n + 1)) :
     Zu n t u q.1.1.rev q.1.2 = t * u q := by
   rw [Zu_apply, Fin.rev_rev]
-  simp [G.upper, G.strictUpper, Matrix.one_apply, ne_of_lt q.2, q.2]
+  simp [G.upper, G.strictUpper, ne_of_lt q.2, q.2]
 
 lemma norm_u_le (n : ℕ) {t : ℂ} (ht : t ≠ 0) (u : G.UT (n + 1) → ℂ) :
     ‖u‖ ≤ ‖t‖⁻¹ * ‖Zu n t u‖ := by
@@ -1226,45 +1223,14 @@ lemma one_add_u_le (n : ℕ) {t : ℂ} (ht : t ≠ 0) (u : G.UT (n + 1) → ℂ)
   have hM2 : ‖t‖⁻¹ ≤ max 1 ‖t‖⁻¹ := le_max_right _ _
   have hM1 : 1 ≤ max 1 ‖t‖⁻¹ := le_max_left _ _
   have hZ : 0 ≤ ‖Zu n t u‖ := norm_nonneg _
-  nlinarith [mul_le_mul_of_nonneg_right hM2 hZ]
-
-lemma det_wMat_ne (m : ℕ) : (G.wMat m).det ≠ 0 := by
-  intro h
-  have hw : G.wMat m * G.wMat m = 1 := by
-    ext i j
-    by_cases hij : i = j
-    · subst hij
-      simp only [G.wMat, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply_eq]
-      rw [Finset.sum_eq_single i.rev]
-      · simp
-      · intro b _ hb
-        simp [hb]
-      · simp
-    · simp only [G.wMat, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply_ne hij]
-      apply Finset.sum_eq_zero
-      intro x _
-      by_cases h1 : x = i.rev
-      · have h2 : ¬ j = x.rev := by rw [h1, Fin.rev_rev]; exact Ne.symm hij
-        rw [if_neg h2, mul_zero]
-      · rw [if_neg h1, zero_mul]
-  have := congrArg Matrix.det hw
-  rw [Matrix.det_mul, h, Matrix.det_one] at this
-  simp at this
-
-private theorem det_upper_eq_one' {d : ℕ} (u : G.UT d → ℂ) : (G.upper u).det = 1 := by
-  rw [Matrix.det_of_upperTriangular]
-  · apply Finset.prod_eq_one
-    intro i _
-    simp [G.upper, G.strictUpper]
-  · intro i j hij
-    have hij' : j < i := hij
-    have hne : i ≠ j := (ne_of_lt hij').symm
-    simp [G.upper, G.strictUpper, Matrix.one_apply, hne, not_lt.mpr hij'.le]
+  have hmul := mul_le_mul_of_nonneg_right hM2 hZ
+  have he : max 1 ‖t‖⁻¹ * (1 + ‖Zu n t u‖) = max 1 ‖t‖⁻¹ + max 1 ‖t‖⁻¹ * ‖Zu n t u‖ := by ring
+  linarith
 
 lemma detM_Zu (n : ℕ) {t : ℂ} (ht : t ≠ 0) (u : G.UT (n + 1) → ℂ) : G.detM (Zu n t u) ≠ 0 := by
   show Matrix.det (t • G.wMat (n + 1) * G.upper u) ≠ 0
-  rw [Matrix.det_mul, Matrix.det_smul, Fintype.card_fin, det_upper_eq_one', mul_one]
-  exact mul_ne_zero (pow_ne_zero _ ht) (det_wMat_ne _)
+  rw [Matrix.det_mul, Matrix.det_smul, Fintype.card_fin, _root_.Formalism.FourierDecayAlt.P.Ux3.det_upper, mul_one]
+  exact mul_ne_zero (pow_ne_zero _ ht) (_root_.Formalism.FourierDecayAlt.P.G2.det_wMat_ne_zero _)
 
 end Formalism.FourierDecayAlt.P.JCTx6.Int
 
@@ -1290,7 +1256,7 @@ lemma cont_gaXi2 {k ph n ρ : ℕ} (σ : Equiv.Perm (Fin ph)) (d : Fin ph → �
     (ht : t ≠ 0) (γ : B.Mat k ρ) :
     Continuous fun y : (U.RC k (ph + (n + 1)) ρ × U.RC k (ph + (n + 1)) ρ) × (U.XiH ph (n + 1) σ × (G.UT (n + 1) → ℂ)) =>
       U.gaXi k ρ σ d (y.1, y.2.1) (Zu n t y.2.2) γ := by
-  have hR := Formalism.FourierDecayAlt.P.radical_parametrisation
+  have hR := _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam
   have h1 : Continuous fun y : (U.RC k (ph + (n + 1)) ρ × U.RC k (ph + (n + 1)) ρ) ×
       (U.XiH ph (n + 1) σ × (G.UT (n + 1) → ℂ)) => (U.Rn k (ph + (n + 1)) ρ y.1.1)⁻¹ :=
     Formalism.FourierDecayAlt.P.Ux10.cont_inv ((Formalism.FourierDecayAlt.P.Ux10.cont_Rn k (ph + (n + 1)) ρ).comp (continuous_fst.comp continuous_fst))
@@ -1301,7 +1267,7 @@ lemma cont_gaXi2 {k ph n ρ : ℕ} (σ : Equiv.Perm (Fin ph)) (d : Fin ph → �
   have h2 : Continuous fun y : (U.RC k (ph + (n + 1)) ρ × U.RC k (ph + (n + 1)) ρ) ×
       (U.XiH ph (n + 1) σ × (G.UT (n + 1) → ℂ)) => (U.ZjH σ d y.2.1 (Zu n t y.2.2))ᴴ⁻¹ := by
     refine Formalism.FourierDecayAlt.P.Ux10.cont_inv h3.matrix_conjTranspose fun y => ?_
-    rw [Matrix.det_conjTranspose, Formalism.FourierDecayAlt.P.Ux10.detZj]
+    rw [Matrix.det_conjTranspose, _root_.Formalism.FourierDecayAlt.P.Ux3.detZj]
     exact star_ne_zero.2 (mul_ne_zero (Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd) (detM_Zu n ht _))
   have h4 : Continuous fun y : (U.RC k (ph + (n + 1)) ρ × U.RC k (ph + (n + 1)) ρ) ×
       (U.XiH ph (n + 1) σ × (G.UT (n + 1) → ℂ)) => U.Rn k (ph + (n + 1)) ρ y.1.2 :=
@@ -1321,13 +1287,6 @@ lemma cont_psiU (n : ℕ) : Continuous fun u : G.UT (n + 1) → ℂ => G.psi U.b
   unfold G.psi
   first
     | fun_prop
-    | exact Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp
-        (Complex.continuous_re.comp (continuous_const.mul hSU))))
-
-lemma norm_psiU (β w : ℂ) : ‖G.psi β w‖ = 1 := by
-  first
-    | simp [G.psi, Complex.norm_exp]
-    | (rw [G.psi, mul_comm]; exact Complex.norm_exp_ofReal_mul_I _)
 
 end Formalism.FourierDecayAlt.P.JCTx6.Int
 
@@ -1373,7 +1332,7 @@ theorem intG : IntG := by
       rw [e]; positivity
     obtain ⟨C₂, hC₂⟩ := Formalism.FourierDecayAlt.P.norm_decay_in_coordinates k ph (n + 1) ρ σ d hd (by omega) K hK hK0 A₁ hA0
     have hI1 : Integrable (fun ξ : U.Xi k ph (n + 1) ρ σ => U.wt ξ ^ (-a)) (U.muXi k ph (n + 1) ρ σ) :=
-      Formalism.FourierDecayAlt.P.weight_integrability k ph (n + 1) ρ σ a (by omega) ha
+      _root_.Formalism.FourierDecayAlt.P.Ux6.weight_integrability_holds k ph (n + 1) ρ σ a (by omega) ha
     have hfr : ((Module.finrank ℝ (G.UT (n + 1) → ℂ) : ℕ) : ℝ) < a := by
       have e1 : Module.finrank ℝ (G.UT (n + 1) → ℂ) = Fintype.card (G.UT (n + 1)) * 2 := by
         rw [Module.finrank_pi_fintype]
@@ -1387,7 +1346,11 @@ theorem intG : IntG := by
       have hn1 : (n : ℝ) ≤ R := by
         have : (n : ℝ) ≤ ((n + 1 : ℕ) : ℝ) := by push_cast; linarith
         linarith
-      nlinarith
+      have hmul := mul_le_mul hnR hn1 hn0 (by linarith)
+      have hmul2 := mul_le_mul_of_nonneg_left hnd (by linarith : 0 ≤ R)
+      have hR20 : 0 ≤ R * R := by positivity
+      linarith [show 2 * R * ((2 * (ph + (n + 1) + ρ) + k + 1 : ℕ) : ℝ) =
+        2 * (R * ((2 * (ph + (n + 1) + ρ) + k + 1 : ℕ) : ℝ)) by ring]
     have hI2 : Integrable (fun u : G.UT (n + 1) → ℂ => (1 + ‖u‖) ^ (-a)) volume := integrable_one_add_norm hfr
     have sR := sigma_RC k (ph + (n + 1)) ρ
     have hxi : SFinite (volume : Measure (U.XiH ph (n + 1) σ)) := by
@@ -1422,10 +1385,10 @@ theorem intG : IntG := by
         ‖gInt k ph n ρ σ d t z z' F₁ γ y‖ ≤ Cst * (U.wt (y.1, y.2.1) ^ (-a) * (1 + ‖y.2.2‖) ^ (-a)) := by
       intro y
       have hZ : G.detM (Zu n t y.2.2) ≠ 0 := detM_Zu n ht _
-      have hg := Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation σ d hd
+      have hg := Formalism.FourierDecayAlt.P.Ux10.gaXi_mem _root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam σ d hd
         (y.1, y.2.1) (Zu n t y.2.2) hZ hγ
       have e : ‖gInt k ph n ρ σ d t z z' F₁ γ y‖ = ‖F₁ (U.gaXi k ρ σ d (y.1, y.2.1) (Zu n t y.2.2) γ)‖ := by
-        simp only [gInt, norm_smul, norm_psiU, Formalism.FourierDecayAlt.P.Ux10.norm_psiStar, one_mul]
+        simp only [gInt, norm_smul, _root_.Formalism.FourierDecayAlt.P.StationaryPhaseModel.F_norm_psi, Formalism.FourierDecayAlt.P.Ux10.norm_psiStar, one_mul]
         rfl
       rw [e]
       have hw1 : 1 ≤ U.wt ((y.1, y.2.1) : U.Xi k ph (n + 1) ρ σ) := Formalism.FourierDecayAlt.P.Ux10.one_le_wt _
@@ -1477,7 +1440,7 @@ theorem intG : IntG := by
     have hcF : Continuous fun y : (U.RC k (ph + (n + 1)) ρ × U.RC k (ph + (n + 1)) ρ) × (U.XiH ph (n + 1) σ × (G.UT (n + 1) → ℂ)) =>
         F₁ (U.gaXi k ρ σ d (y.1, y.2.1) (Zu n t y.2.2) γ) :=
       hcont1.comp_continuous (cont_gaXi2 σ d hd ht γ) fun y =>
-        Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation σ d hd
+        Formalism.FourierDecayAlt.P.Ux10.gaXi_mem _root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam σ d hd
           (y.1, y.2.1) (Zu n t y.2.2) (detM_Zu n ht _) hγ
     have hcg : Continuous (gInt k ph n ρ σ d t z z' F₁ γ) := by
       have h1 := (cont_psiU n).comp (continuous_snd.comp continuous_snd :
@@ -1567,8 +1530,6 @@ theorem ldV_cle (e : E ≃L[ℂ] E') (X : Mat k r) (f : Mat k r → E) :
   first
     | exact deriv_cle_comp ((e : E →L[ℂ] E').restrictScalars ℝ) ((e.symm : E' →L[ℂ] E).restrictScalars ℝ)
         (fun y => e.symm_apply_apply y) (fun t : ℝ => f (NormedSpace.exp (-((t : ℂ) • X)) * g)) 0
-    | exact deriv_cle_comp ((e : E →L[ℂ] E').restrictScalars ℝ) ((e.symm : E' →L[ℂ] E).restrictScalars ℝ)
-        (fun y => e.symm_apply_apply y) _ 0
 
 theorem rw_cle (e : E ≃L[ℂ] E') : ∀ (v : List (Mat k r)) (f : Mat k r → E),
     Rw v (fun g => e (f g)) = fun g => e (Rw v f g)
@@ -1671,12 +1632,11 @@ theorem cont_DjU (k j ρ : ℕ) : Continuous (fun g : B.Mat k (j + ρ) => U.DjU 
   unfold U.DjU U.Zh
   first
     | fun_prop
-    | exact Continuous.matrix_det (by fun_prop)
 
 theorem detM_Zv (n : ℕ) (t : ℂ) (u : G.UT (n + 1) → ℂ) :
     G.detM (G.ptLong (n + 1) t * G.upper u) = t ^ (n + 1) * (G.wMat (n + 1)).det := by
   show Matrix.det (G.ptLong (n + 1) t * G.upper u) = _
-  rw [Matrix.det_mul, Formalism.FourierDecayAlt.P.JCTx6.Int.det_upper_eq_one', mul_one, G.ptLong, Matrix.det_smul, Fintype.card_fin]
+  rw [Matrix.det_mul, _root_.Formalism.FourierDecayAlt.P.Ux3.det_upper, mul_one, G.ptLong, Matrix.det_smul, Fintype.card_fin]
 
 def Zv (n : ℕ) (t : ℂ) (u : G.UT (n + 1) → ℂ) : G.Mat (n + 1) := fun i j => (G.ptLong (n + 1) t * G.upper u) i j
 
@@ -1708,12 +1668,12 @@ theorem Zv_decay (n : ℕ) {t : ℂ} (ht : t ≠ 0) (u : G.UT (n + 1) → ℂ) {
   have hxy : min 1 ‖t‖ * (1 + ‖u‖) ≤ 1 + ‖Zv n t u‖ := by
     have h1 : min 1 ‖t‖ ≤ 1 := min_le_left _ _
     have h2 : min 1 ‖t‖ ≤ ‖t‖ := min_le_right _ _
-    nlinarith [norm_nonneg u, mul_le_mul_of_nonneg_right h2 (norm_nonneg u)]
+    have hmul := mul_le_mul_of_nonneg_right h2 (norm_nonneg u)
+    have he : min 1 ‖t‖ * (1 + ‖u‖) = min 1 ‖t‖ + min 1 ‖t‖ * ‖u‖ := by ring
+    linarith
   rw [← Real.mul_rpow hm.le (by positivity)]
   first
     | exact Real.rpow_le_rpow_of_nonpos (by positivity) hxy (by linarith)
-    | (rw [Real.rpow_neg (by positivity), Real.rpow_neg (by positivity)]
-       exact inv_anti₀ (Real.rpow_pos_of_pos (by positivity) _) (Real.rpow_le_rpow (by positivity) hxy ha))
 
 end Formalism.FourierDecayAlt.P.JCTx6.Pos
 
@@ -1785,9 +1745,9 @@ theorem posCore : PosCore := by
   have hOrb : ∀ (ξ : U.Xi k ph (n + 1) ρ σ) (v : G.UT (n + 1) → ℂ) (γ : B.Mat k ρ), γ ∈ B.GV k ρ →
       F (U.gaXi k ρ σ d ξ (Zv n t v) γ) = F₁ (U.gaXi k ρ σ d ξ (Zv n t v) γ) := by
     intro ξ v γ hγ
-    apply hB _ (Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation σ d hd ξ _
+    apply hB _ (Formalism.FourierDecayAlt.P.Ux10.gaXi_mem _root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam σ d hd ξ _
       (hZne v) hγ)
-    rw [Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice]
+    rw [Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi _root_.Formalism.FourierDecayAlt.P.Ux3.zhSlice]
     have e : G.detM (Zv n t v) = t ^ (n + 1) * (G.wMat (n + 1)).det := detM_Zv n t v
     rw [e]
 
@@ -1818,15 +1778,20 @@ theorem posCore : PosCore := by
       apply div_le_div_of_nonneg_right _ hD.le
       push_cast
       have hm0 : (0 : ℝ) ≤ mm := Nat.cast_nonneg _
-      nlinarith
+      have he : 2 * (R + 1) * (0 * ((n : ℝ) + 1) ^ 2 + 1 + (mm : ℝ) + (o : ℝ)) =
+          2 * (R + 1) * (1 + (mm : ℝ)) + 2 * (R + 1) * (0 + (o : ℝ)) := by ring
+      have h1 : 0 ≤ 2 * (R + 1) * (1 + (mm : ℝ)) := by positivity
+      have h2 : 0 ≤ 5 * R * (0 * ((n : ℝ) + 1) ^ 2 + 1) := by positivity
+      have h3 : 0 ≤ 2 * R * (mm : ℝ) := by positivity
+      linarith
     have hlt : 2 * R * Nd < (((127 : ℕ) : ℝ) + 1) * (R + 1) ^ 3 * (As : ℝ) := by
       have hAs' : (1 : ℝ) ≤ As := by exact_mod_cast hAs1
-      have h1 : 2 * R * Nd < 128 * (R + 1) * Nd := by nlinarith
+      have h1 : 2 * R * Nd < 128 * (R + 1) * Nd := mul_lt_mul_of_pos_right (by linarith) (by linarith)
       have h2 : 128 * (R + 1) * Nd ≤ 128 * (R + 1) ^ 3 * (As : ℝ) := by
         have h3 : (R + 1) ≤ (R + 1) ^ 3 := le_self_pow₀ (by linarith) (by norm_num)
         have h4 : (R + 1) * Nd ≤ (R + 1) ^ 3 * (As : ℝ) :=
           mul_le_mul h3 hnd (by linarith) (by positivity)
-        nlinarith
+        linarith
       norm_num
       linarith
     exact lt_of_lt_of_le hlt (le_trans ha1' hle)
@@ -1903,8 +1868,11 @@ theorem posCore : PosCore := by
       linarith
     have hn0 : (1 : ℝ) ≤ (n : ℝ) + 1 := by linarith [(Nat.cast_nonneg n : (0:ℝ) ≤ n)]
     have h1 : 2 * (((n : ℝ) + 1) * ((n : ℝ) + 1)) ≤ 2 * (R1 * R1) := by gcongr
-    have h2 : 2 * (R1 * R1) < 128 * R1 ^ 3 := by nlinarith
-    have h3 : 128 * R1 ^ 3 ≤ 128 * R1 ^ 3 * (As : ℝ) := by nlinarith
+    have h2 : 2 * (R1 * R1) < 128 * R1 ^ 3 := by
+      have := le_mul_of_one_le_right (by positivity : 0 ≤ R1 * R1) hR1
+      have hpos : 0 < R1 ^ 3 := by positivity
+      linarith [show R1 * R1 * R1 = R1 ^ 3 by ring]
+    have h3 : 128 * R1 ^ 3 ≤ 128 * R1 ^ 3 * (As : ℝ) := le_mul_of_one_le_right (by positivity) hAs'
     linarith
   have hφint : Integrable (fun v : G.UT (n + 1) → ℂ => G.psi U.betaU (G.superSum (G.upper v)) • Φ (Zv n t v))
       (G.muPi U.betaU (G.UT (n + 1))) := by
@@ -1960,7 +1928,7 @@ theorem posCore : PosCore := by
 
   have hAa : A ≤ a := le_trans hA ha128
   have hCC : B.CCle A mm (fun γ => MM.ev Wf γ ()) ‖Wf‖ :=
-    Formalism.FourierDecayAlt.P.compactly_supported_monotone k ρ (Wq →L[ℂ] Wp) a A ‖Wf‖ mm _ hAa (ccle_unit (MM.mem Wf))
+    _root_.Formalism.FourierDecayAlt.P.Ux8.ccMono k ρ (Wq →L[ℂ] Wp) a A ‖Wf‖ mm _ hAa (ccle_unit (MM.mem Wf))
   have hCC' : B.CCle A mm (fun γ => U.PhiFun (p := ph + (n + 1)) (s := 0) k ρ (Dx2.SL.sigP σ)
       (Dx2.SL.dP d t) z z' F (fun a => a.elim0) γ) ‖Wf‖ :=
     Formalism.FourierDecayAlt.P.Ux1.cc_congr (fun γ hγ => (key γ hγ).symm) hCC

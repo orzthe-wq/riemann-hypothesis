@@ -251,7 +251,7 @@ theorem core {p : ℕ} [Fact p.Prime] (D : Datum p) {R : Type} [CommRing R] (b :
     have h := congrArg (fun g => g v2) (congrArg L hcef)
     simp only [map_add (f := _), map_mul, map_sub, map_one, Module.End.mul_apply, LinearMap.add_apply, LinearMap.sub_apply,
       Module.End.one_apply, L_int, L_nat, k2 c hc] at h
-    simp only [zero_add, add_zero] at h
+    simp only [zero_add] at h
     rw [← hTω, e2, hr2, map_smul, sub_self, hp, zero_smul, map_zero, add_zero] at h
     exact h.symm
   rw [hv12, z1, z2, add_zero]

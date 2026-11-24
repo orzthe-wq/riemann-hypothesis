@@ -143,7 +143,7 @@ private lemma tsum_one_div_add_int_sq_of_im_pos (z : ℂ) (hz : 0 < z.im) :
         / (1 - Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * z)) ^ 2) := by
   have h := EisensteinSeries.qExpansion_identity (k := 1) le_rfl ⟨z, hz⟩
   have hq := UpperHalfPlane.norm_exp_two_pi_I_lt_one ⟨z, hz⟩
-  simp only [UpperHalfPlane.coe_mk] at h hq
+  simp only at h hq
   simp only [Nat.reduceAdd, pow_one, Nat.factorial_one, Nat.cast_one, div_one] at h
   rw [h, tsum_coe_mul_geometric_of_norm_lt_one hq]
   ring
@@ -190,7 +190,7 @@ private lemma tsum_one_div_add_int_pow_three_of_im_pos (z : ℂ) (hz : 0 < z.im)
         / (1 - Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * z)) ^ 3) := by
   have h := EisensteinSeries.qExpansion_identity (k := 2) (by norm_num) ⟨z, hz⟩
   have hq := UpperHalfPlane.norm_exp_two_pi_I_lt_one ⟨z, hz⟩
-  simp only [UpperHalfPlane.coe_mk] at h hq
+  simp only at h hq
   simp only [Nat.reduceAdd, Nat.factorial_two, Nat.cast_ofNat] at h
   rw [h, tsum_sq_mul_geometric_of_norm_lt_one hq]
   ring

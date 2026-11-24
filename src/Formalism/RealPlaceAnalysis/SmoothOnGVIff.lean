@@ -142,10 +142,9 @@ instance instIsHaarMuK (n : ℕ) (ε : Fin n → Bool) : (muK ε).IsHaarMeasure 
 lemma inK_smul_real {n : ℕ} (ε : Fin n → Bool) {Z : Matrix (Fin n) (Fin n) ℂ} (h : inK ε Z) (t : ℝ) :
     inK ε ((t : ℂ) • Z) := by
   obtain ⟨hG, hJ⟩ := h
-  have hs : star (t : ℂ) = t := Complex.conj_ofReal t
   refine ⟨?_, ?_⟩
   · unfold inG at hG ⊢
-    rw [Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hG, smul_zero]
+    rw [Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hG, smul_zero]
   · rw [Matrix.smul_mul, Matrix.mul_smul, hJ]
 
 

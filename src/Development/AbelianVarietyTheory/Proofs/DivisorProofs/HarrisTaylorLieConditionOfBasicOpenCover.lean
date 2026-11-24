@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.DualMapSOfIdToRingHom
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.NonemptyIsLimitBaseChange
 
 @[expose] public section
 
@@ -145,9 +146,9 @@ theorem tan_iff (x : Sp R' ⟶ S) (v : epsPtR x ⟶ A) :
     spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ v.left = (1 : Over.mk x ⟶ A).left ↔
       Formalism.L2.Pj.smT x 0 v = 1 := by
   have e1 : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (algebraMap R' (DualNumber R')) = 𝟙 _ := by
-    rw [spMap_comp_loc]
+    rw [_root_.GlobalTheory.spMap_comp_ring]
     have : (TrivSqZeroExt.fstHom R' R' R').toRingHom.comp (algebraMap R' (DualNumber R')) = RingHom.id R' := by
-      ext r; simp [TrivSqZeroExt.algebraMap_eq_inl]
+      ext r; simp
     rw [this]
     exact Spec.map_id _
   let j : Over.mk x ⟶ epsPtR x := Over.homMk (spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom) (by
@@ -157,7 +158,7 @@ theorem tan_iff (x : Sp R' ⟶ S) (v : epsPtR x ⟶ A) :
   have ejh : j ≫ h = 𝟙 _ := Over.OverMorphism.ext (by simp only [Over.comp_left, Over.homMk_left, j, h, e1]; rfl)
   have e0 : Formalism.L2.Pj.homAt x (Formalism.L2.Pj.tm ((0 : R') • (LinearMap.id : R' →ₗ[R'] R'))) = h ≫ j := by
     apply Over.OverMorphism.ext
-    simp only [Formalism.L2.Pj.homAt, Over.comp_left, Over.homMk_left, j, h, spMap_comp_loc]
+    simp only [Formalism.L2.Pj.homAt, Over.comp_left, Over.homMk_left, j, h, _root_.GlobalTheory.spMap_comp_ring]
     congr 2
     ext r <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
   have es : Formalism.L2.Pj.smT x 0 v = h ≫ (j ≫ v) := by
@@ -210,7 +211,7 @@ def rho (x : Sp R' ⟶ S) (g : R' →+* R'') : epsPtR (spMap g ≫ x) ⟶ epsPtR
 theorem smT_rho (x : Sp R' ⟶ S) (g : R' →+* R'') (c : R') (w : epsPtR x ⟶ A) :
     Formalism.L2.Pj.smT (spMap g ≫ x) (g c) (rho x g ≫ w) = rho x g ≫ Formalism.L2.Pj.smT x c w := by
   apply Over.OverMorphism.ext
-  simp only [Over.comp_left, Formalism.L2.Pj.smT_left, rho, Over.homMk_left, ← Category.assoc, spMap_comp_loc]
+  simp only [Over.comp_left, Formalism.L2.Pj.smT_left, rho, Over.homMk_left, ← Category.assoc, _root_.GlobalTheory.spMap_comp_ring]
   have e : (epsMul (g c)).comp (Chart.dualMapR g) = (Chart.dualMapR g).comp (epsMul c) := by
     refine RingHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;>
       simp [Chart.dualMapR, epsMul, mul_comm]

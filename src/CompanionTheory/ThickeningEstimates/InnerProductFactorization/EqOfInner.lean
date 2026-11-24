@@ -4,51 +4,7 @@ import Development.WeilBound.ThetaLifts.CartanFactorisation.EqOfInner
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RealMetaplecticRepresentation
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IteratedLineDerivMemWeylAlg
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.MetaplecticRepresentation
-import Mathlib.Algebra.Order.Archimedean.Real.Hom
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 public import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -65,38 +21,24 @@ structure Impl (s : (l ⊕ l → ℝ) → (l ⊕ l → ℝ)) (S : Sch l →ₗ[�
   norm : ∀ f, ‖(S f).toLp 2 volume‖ = ‖f.toLp 2 volume‖
   impl : ∀ w (f g : Sch l), ⇑g = rhoFun w f → ⇑(S g) = rhoFun (s w) (S f)
 
+omit [DecidableEq l] in
+private theorem Impl.toPositivity {s} {S : Sch l →ₗ[ℂ] Sch l} (h : Impl s S) :
+    PositivityTheory.ThKF.E.Impl s S :=
+  ⟨h.norm, h.impl⟩
+
 theorem Impl.inner {s} {S : Sch l →ₗ[ℂ] Sch l} (h : Impl s S) (f g : Sch l) :
-    inner ℂ ((S f).toLp 2 volume) ((S g).toLp 2 volume) = inner ℂ (f.toLp 2 volume) (g.toLp 2 volume) := by
-  have e : ∀ (u v : Sch l) (c : ℂ), u.toLp 2 volume + c • v.toLp 2 volume = (u + c • v).toLp 2 volume := fun u v c => by
-    simp only [← schwartzToL2_apply, map_add (f := _), map_smul]
-  have e' : ∀ (u v : Sch l) (c : ℂ), u.toLp 2 volume - c • v.toLp 2 volume = (u - c • v).toLp 2 volume := fun u v c => by
-    simp only [← schwartzToL2_apply, map_sub, map_smul]
-  have e1 := e (S f) (S g) 1
-  have e2 := e' (S f) (S g) 1
-  have e3 := e f g 1
-  have e4 := e' f g 1
-  simp only [one_smul] at e1 e2 e3 e4
-  rw [inner_eq_sum_norm_sq_div_four, inner_eq_sum_norm_sq_div_four, e1, e2, e3, e4, e, e, e', e', ← map_add (f := _), ← map_sub,
-    ← map_smul, ← map_add, ← map_sub, h.norm, h.norm, h.norm, h.norm]
+    inner ℂ ((S f).toLp 2 volume) ((S g).toLp 2 volume) = inner ℂ (f.toLp 2 volume) (g.toLp 2 volume) :=
+  PositivityTheory.ThKF.E.Impl.inner (Impl.toPositivity h) f g
 
-theorem exists_rho (w : l ⊕ l → ℝ) (f : Sch l) : ∃ g : Sch l, ⇑g = rhoFun w f := by
-  apply PositivityTheory.ThKF.E.exists_rho <;> assumption
+theorem exists_rho (w : l ⊕ l → ℝ) (f : Sch l) : ∃ g : Sch l, ⇑g = rhoFun w f :=
+  PositivityTheory.ThKF.E.exists_rho w f
 
-theorem toLp_rho {w : l ⊕ l → ℝ} {f g : Sch l} (h : ⇑g = rhoFun w f) : g.toLp 2 volume = rho w (f.toLp 2 volume) := by
-  refine Lp.ext ((g.coeFn_toLp 2 volume).trans ?_)
-  rw [h]
-  exact ((coeFn_rho w _).trans (rhoFun_congr w (f.coeFn_toLp 2 volume))).symm
-
-theorem eq_of_inner {u v : Sch l} (h : ∀ φ : Sch l, inner ℂ (φ.toLp 2 volume) (u.toLp 2 volume) =
-    inner ℂ (φ.toLp 2 volume) (v.toLp 2 volume)) : u = v := by
-  apply injective_toLp 2 volume
-  have := h (u - v)
-  rw [← sub_eq_zero, ← inner_sub_right, ← toLpCLM_apply (𝕜 := ℂ), map_sub] at this
-  exact sub_eq_zero.1 (inner_self_eq_zero.1 this)
+theorem toLp_rho {w : l ⊕ l → ℝ} {f g : Sch l} (h : ⇑g = rhoFun w f) : g.toLp 2 volume = rho w (f.toLp 2 volume) :=
+  PositivityTheory.ThKF.E.toLp_rho h
 
 theorem Impl.dRho {s : (l ⊕ l → ℝ) →ₗ[ℝ] (l ⊕ l → ℝ)} {S : Sch l →ₗ[ℂ] Sch l} (h : Impl s S)
     (hs : Function.Surjective S) (w : l ⊕ l → ℝ) (f : Sch l) : S (dRho w f) = dRho (s w) (S f) := by
-  refine eq_of_inner fun φ => ?_
+  refine PositivityTheory.ThKF.E.eq_of_inner fun φ => ?_
   obtain ⟨φ', rfl⟩ := hs φ
   have d1 := hasDerivAt_inner_rho w φ' f
   have d2 := hasDerivAt_inner_rho (s w) (S φ') (S f)
@@ -106,64 +48,13 @@ theorem Impl.dRho {s : (l ⊕ l → ℝ) →ₗ[ℝ] (l ⊕ l → ℝ)} {S : Sch
   simp only
   rw [← toLp_rho hg, ← map_smul, ← toLp_rho (h.impl _ _ _ hg), h.inner]
 
-theorem exists_ne_zero (x : EuclideanSpace ℝ l) : ∃ φ : Sch l, φ x ≠ 0 := by
-  obtain ⟨f, h1, h2, h3, -, h4⟩ := exists_contDiff_tsupport_subset (n := ⊤) (s := Set.univ) (x := x) Filter.univ_mem
-  refine ⟨(h2.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)).toSchwartzMap (ofRealCLM.contDiff.comp h3), ?_⟩
-  show ((f x : ℝ) : ℂ) ≠ 0
-  simp [h4]
+theorem exists_ne_zero (x : EuclideanSpace ℝ l) : ∃ φ : Sch l, φ x ≠ 0 :=
+  PositivityTheory.ThKF.E.exists_ne_zero x
 
-theorem Impl.scalar {S : Sch l →ₗ[ℂ] Sch l} (h : Impl id S) (hs : Function.Surjective S) : ∃ c : ℂ, ∀ f, S f = c • f := by
-  have h1 : ∀ (φ f : Sch l) x, (starRingEnd ℂ) (S φ x) * S f x = (starRingEnd ℂ) (φ x) * f x := fun φ f x => by
-    have key : ∀ (a b : Sch l) (q : EuclideanSpace ℝ l) (g : Sch l), ⇑g = rhoFun (Sum.elim 0 fun i => -q i) b →
-        Inner.inner ℂ (a.toLp 2 volume) (g.toLp 2 volume) = 𝓕 (fun x => (starRingEnd ℂ) (a x) * b x) q := fun a b q g hg => by
-      rw [toLp_rho hg, inner_toLp_rho, Real.fourier_eq']
-      refine integral_congr_ae (.of_forall fun y => ?_)
-      have e1 : pPart (l := l) (Sum.elim 0 fun i => -q i) = 0 := rfl
-      have e2 : qPart (l := l) (Sum.elim 0 fun i => -q i) = -q := rfl
-      simp only [rhoFun, phase, e1, e2, inner_zero_left, mul_zero, add_zero, inner_neg_left, smul_eq_mul, RCLike.inner_apply,
-        real_inner_comm y q]
-      push_cast
-      ring_nf
-    have hi : ∀ a b : Sch l, Integrable (fun x => (starRingEnd ℂ) (a x) * b x) ∧
-        Continuous (fun x => (starRingEnd ℂ) (a x) * b x) := fun a b =>
-      ⟨b.integrable.bdd_mul (c := SchwartzMap.seminorm ℂ 0 0 a) (continuous_conj.comp a.continuous).aestronglyMeasurable
-        (.of_forall fun x => by simpa using a.norm_le_seminorm ℂ x), (continuous_conj.comp a.continuous).mul b.continuous⟩
-    set u := fun x => (starRingEnd ℂ) (S φ x) * S f x - (starRingEnd ℂ) (φ x) * f x with hu
-    have hz : 𝓕 u = 0 := by
-      funext q
-      obtain ⟨g, hg⟩ := exists_rho (Sum.elim 0 fun i => -q i) f
-      have := h.inner φ g
-      rw [key _ _ q _ (h.impl _ _ _ hg), key _ _ q _ hg, Real.fourier_eq', Real.fourier_eq'] at this
-      rw [Real.fourier_eq', hu]
-      simp only [smul_sub]
-      have hb : ∀ a b : Sch l, Integrable fun v => cexp (((-2 * π * ⟪v, q⟫ : ℝ) : ℂ) * I) • ((starRingEnd ℂ) (a v) * b v) :=
-        fun a b => (hi a b).1.bdd_mul (c := 1) (by fun_prop) (.of_forall fun v => (norm_exp_ofReal_mul_I _).le)
-      rw [integral_sub (hb _ _) (hb _ _), this, sub_self]
-      rfl
-    have := Continuous.fourierInv_fourier_eq (f := u) ((hi _ _).2.sub (hi _ _).2) ((hi _ _).1.sub (hi _ _).1)
-      (by rw [hz]; exact integrable_zero _ _ _)
-    rw [hz] at this
-    have h3 := congrFun this x
-    rw [Real.fourierInv_eq] at h3
-    simp only [Pi.zero_apply, smul_zero, integral_zero] at h3
-    exact sub_eq_zero.1 h3.symm
-  have h2 : ∀ x, ∃ m : ℂ, ∀ f : Sch l, S f x = m * f x := fun x => by
-    obtain ⟨φ, hφ⟩ := exists_ne_zero x
-    obtain ⟨φ', rfl⟩ := hs φ
-    have hn : (starRingEnd ℂ) (S φ' x) ≠ 0 := by simpa using hφ
-    refine ⟨(starRingEnd ℂ) (φ' x) / (starRingEnd ℂ) (S φ' x), fun f => ?_⟩
-    rw [div_mul_eq_mul_div, eq_div_iff hn, mul_comm, h1]
-  obtain ⟨m, hm⟩ := h2 0
-  refine ⟨m, fun f => SchwartzMap.ext fun x => ?_⟩
-  obtain ⟨g, hg⟩ := exists_rho (Sum.elim (fun i => x i) 0) f
-  have e1 : pPart (l := l) (Sum.elim (fun i => x i) 0) = x := rfl
-  have e2 : qPart (l := l) (Sum.elim (fun i => x i) 0) = 0 := rfl
-  have := hm g
-  rw [h.impl _ _ _ hg, hg] at this
-  simpa [rhoFun, phase, e1, e2] using this
+theorem Impl.scalar {S : Sch l →ₗ[ℂ] Sch l} (h : Impl id S) (hs : Function.Surjective S) : ∃ c : ℂ, ∀ f, S f = c • f :=
+  PositivityTheory.ThKF.E.Impl.scalar (Impl.toPositivity h) hs
 
-theorem sympl_eq (w u : l ⊕ l → ℝ) : sympl w u = -(w ⬝ᵥ Matrix.J l ℝ *ᵥ u) := by
-  simp [sympl, pPart, qPart, PiLp.inner_apply, Matrix.J, mulVec, dotProduct, Matrix.one_apply, Fintype.sum_sum_type,
-    mul_comm, sub_eq_add_neg, add_comm]
+theorem sympl_eq (w u : l ⊕ l → ℝ) : sympl w u = -(w ⬝ᵥ Matrix.J l ℝ *ᵥ u) :=
+  PositivityTheory.ThKF.E.sympl_eq w u
 
 end CompanionTheory.ThKF.E

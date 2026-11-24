@@ -64,7 +64,7 @@ theorem powK_pull {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (Comm
         (CH.Mor.restrict (O (smFun X q)) g).hom.mapH 0 (CH.oneH (thA (smFun X q)))
     have h0 : CH.d (CH.modF (g ⋙ thA (smFun X q))) 0 (cupPowC (g ⋙ thA (smFun X q)) z 0) = 0 := by
       funext s
-      simp only [CH.d, cupPowC, LinearMap.coe_mk, AddHom.coe_mk, Fin.sum_univ_two]
+      simp only [CH.d, cupPowC, LinearMap.coe_mk, AddHom.coe_mk]
       simp [CH.modF]
       change (((thA (smFun X q)).map (g.map (GlobalTheory.CatH.toLast 0 s))).hom 1) +
         -(((thA (smFun X q)).map (g.map (GlobalTheory.CatH.toLast 1 s))).hom 1) = 0

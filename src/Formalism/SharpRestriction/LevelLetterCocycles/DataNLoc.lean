@@ -65,6 +65,8 @@ namespace Formalism.BasicNotions
 
 open Formalism.WeaklyAdmissibleFiltrations PowerSeries TensorProduct
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure LocLat (G : Type) [Group G] [TopologicalSpace G] (Qp LL O : Type) [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] where
   V : Type
@@ -217,6 +219,8 @@ def herrZ1Δ {O D ι : Type} [CommRing O] [AddCommGroup D] [Module O D] (γ φ :
 
 
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure LocWach (PD : PeriodData G Qp K₀ K B BdR) (LL O : Type) [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] (v : AddValuation LL (WithTop ℚ)) (n : ℕ) where
 
@@ -515,6 +519,8 @@ open Loc
 
 variable {l : ℕ} [Fact l.Prime]
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure LocRings (l : ℕ) [Fact l.Prime] where
   B : Type
   BdR : Type
@@ -542,6 +548,8 @@ instance maxUnramifiedCrisTower (R : LocRings l) (K : FinExt l) : IsScalarTower 
 instance maxUnramifiedDeRhamTower (R : LocRings l) (K : FinExt l) : IsScalarTower ↥(K0 K) ↥K.1 R.BdR :=
   IsScalarTower.of_algebraMap_eq fun _ => rfl
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure LocPrime (l : ℕ) [Fact l.Prime] where
   R : LocRings l
   PD : ∀ K : FinExt l, PeriodData ↥(GK K) ℚ_[l] ↥(K0 K) ↥K.1 R.B R.BdR
@@ -589,6 +597,8 @@ open Loc
 
 variable {l : ℕ} [Fact l.Prime]
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure LocBridge (l : ℕ) [Fact l.Prime] (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω]
     (Gw : Subgroup (Ω ≃ₐ[E] Ω)) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] where
   Kw : FinExt l
@@ -802,6 +812,8 @@ def autCb (g : OCb l ≃+* OCb l) : Cb l ≃+* Cb l :=
 
 end Loc
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure LocAinf (l : ℕ) [Fact l.Prime] (P : LocPrime l) where
 
   actC : GQ l →* (PadicComplex l ≃+* PadicComplex l)
@@ -1066,6 +1078,8 @@ def TWact {R : Type} [CommRing R] [Algebra O R] (f : R →ₐ[O] R) (T : LocLat 
     TW R T →ₗ[O] TW R T :=
   TensorProduct.map f.toLinearMap (T.actT g)
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure EtTie (W : LocWach PD LL O v n) (RA RW : Type) [CommRing RA] [CommRing RW] [Algebra O RA]
     [Algebra O RW] (inclR : RA →ₐ[O] RW) (φR : RW →ₐ[O] RW) (gR : G → (RW →ₐ[O] RW)) (πA : RA) where
 
@@ -1140,6 +1154,8 @@ def LocAinf.gRW {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (g : GQ l) :
     RW LL →ₐ[↥(OL LL)] RW LL :=
   Algebra.TensorProduct.map (AlgHom.id _ _) (AI.actWCbHom g).toAlgHom
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure EtSit (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l)
     (_h : Good K s LL) (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K))) where
   tie : EtTie W (RA LL) (RW LL) (inclR LL) (φRW LL)
@@ -1179,6 +1195,8 @@ def TWincl {R R' : Type} [CommRing R] [CommRing R'] [Algebra O R] [Algebra O R']
 
 variable {Zl Ai : Type} [CommRing Zl] [CommRing Ai] [Algebra Zl O] [Algebra Zl Ai]
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure CmpTie (W : LocWach PD LL O v n) {RW : Type} [CommRing RW] [Algebra O RW]
     {inclR : (O ⊗[Zl] Ai) →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : O ⊗[Zl] Ai}
     (E : EtTie W (O ⊗[Zl] Ai) RW inclR φR gR πA) (ιdR : Ai →+* BdR) (p1 : Ai) (tS zS : BdR) where
@@ -1233,6 +1251,8 @@ end Generic
 
 variable {l : ℕ} [Fact l.Prime]
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure CmpSit (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l)
     (h : Good K s LL) {W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K))}
     (E : EtSit P AI K s LL h W) where
@@ -1243,6 +1263,8 @@ structure CmpSit (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (L
 
   π₁_inv : ∃ u ∈ (P.PD K).Fil 0, P.ιB (AI.ιA AI.π₁) * u = 1
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure LocHW (l : ℕ) [Fact l.Prime] (P : LocPrime l) where
 
   W : ∀ (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL →
@@ -1254,9 +1276,13 @@ structure LocHW (l : ℕ) [Fact l.Prime] (P : LocPrime l) where
     @Module.Projective (PowerSeries ℤ_[l]) _ ↥((W K s LL h).N T) _
       (Module.compHom _ (zlA LL (Module.finrank ℚ_[l] ↥(K0 K))))
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure LocFon (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (H : LocHW l P) where
   E : ∀ (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), EtSit P AI K s LL h (H.W K s LL h)
 
+set_option genInjectivity false in
+set_option genSizeOfSpec false in
 structure LocCmpT (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (H : LocHW l P)
     (F : LocFon l P AI H) where
   C : ∀ (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), CmpSit P AI K s LL h (F.E K s LL h)
@@ -1275,5 +1301,88 @@ def LocHW.IsPt {P : LocPrime l} (H : LocHW l P) {K : FinExt l} {s : ℕ} {LL : F
     (τ : ↥(Ks K s) →ₐ[ℚ_[l]] ↥LL.1) : Prop :=
   (∀ (x : ↥(K0 K)) (y : ↥(Ks K s)), (y : Om l) = (x : Om l) → τ y = (H.W K s LL h).emb i x) ∧
     ∀ y : ↥(Ks K s), (y : Om l) = P.ζQ s → τ y = ζ
+
+namespace Loc
+
+variable {l : ℕ} [Fact l.Prime]
+
+instance (priority := high) OL.instModuleSubmodule (LL : FinExt l) {M : Type*} [AddCommMonoid M]
+    [Module ↥(OL LL) M] (S : Submodule ↥(OL LL) M) : Module ↥(OL LL) ↥S :=
+  Submodule.module S
+
+instance (priority := high) OL.instSMulSubmodule (LL : FinExt l) {M : Type*} [AddCommMonoid M]
+    [Module ↥(OL LL) M] (S : Submodule ↥(OL LL) M) : SMul ↥(OL LL) ↥S :=
+  (Submodule.module S).toSMul
+
+instance (priority := high) FinExt.instModuleSubmodule (LL : FinExt l) {M : Type*} [AddCommMonoid M]
+    [Module ↥LL.1 M] (S : Submodule ↥LL.1 M) : Module ↥LL.1 ↥S :=
+  Submodule.module S
+
+instance (priority := high) FinExt.instSMulSubmodule (LL : FinExt l) {M : Type*} [AddCommMonoid M]
+    [Module ↥LL.1 M] (S : Submodule ↥LL.1 M) : SMul ↥LL.1 ↥S :=
+  (Submodule.module S).toSMul
+
+instance (priority := high) OL.instModuleSubmoduleField (LL : FinExt l) {M : Type*} [AddCommMonoid M]
+    [mL : Module ↥LL.1 M] [mO : Module ↥(OL LL) M]
+    [h : @IsScalarTower ↥(OL LL) ↥LL.1 M _ mL.toSMul mO.toSMul]
+    (S : Submodule ↥LL.1 M) : Module ↥(OL LL) ↥S :=
+  @Submodule.module' ↥(OL LL) ↥LL.1 M _ _ mL S _ _ mO h
+
+instance (priority := high) OL.instSMulSubmoduleField (LL : FinExt l) {M : Type*} [AddCommMonoid M]
+    [mL : Module ↥LL.1 M] [mO : Module ↥(OL LL) M]
+    [h : @IsScalarTower ↥(OL LL) ↥LL.1 M _ mL.toSMul mO.toSMul]
+    (S : Submodule ↥LL.1 M) : SMul ↥(OL LL) ↥S :=
+  (@Submodule.module' ↥(OL LL) ↥LL.1 M _ _ mL S _ _ mO h).toSMul
+
+instance (priority := high) OL.instModulePi (LL : FinExt l) {ι : Type*} {M : ι → Type*}
+    [∀ i, AddCommMonoid (M i)] [∀ i, Module ↥(OL LL) (M i)] : Module ↥(OL LL) (∀ i, M i) :=
+  Pi.module _ _ _
+
+instance (priority := high) OL.instSMulPi (LL : FinExt l) {ι : Type*} {M : ι → Type*}
+    [∀ i, SMul ↥(OL LL) (M i)] : SMul ↥(OL LL) (∀ i, M i) :=
+  Pi.instSMul
+
+instance (priority := high) FinExt.instModulePi (LL : FinExt l) {ι : Type*} {M : ι → Type*}
+    [∀ i, AddCommMonoid (M i)] [∀ i, Module ↥LL.1 (M i)] : Module ↥LL.1 (∀ i, M i) :=
+  Pi.module _ _ _
+
+instance (priority := high) FinExt.instSMulPi (LL : FinExt l) {ι : Type*} {M : ι → Type*}
+    [∀ i, SMul ↥LL.1 (M i)] : SMul ↥LL.1 (∀ i, M i) :=
+  Pi.instSMul
+
+instance (priority := high) OL.instAlgebraPi (LL : FinExt l) {ι : Type*} {B : ι → Type*}
+    [∀ i, Semiring (B i)] [∀ i, Algebra ↥(OL LL) (B i)] : Algebra ↥(OL LL) (∀ i, B i) :=
+  Pi.algebra _ _
+
+instance (priority := high) OL.instAlgebraPowerSeries (LL : FinExt l) :
+    Algebra ↥(OL LL) (PowerSeries ↥(OL LL)) :=
+  MvPowerSeries.instAlgebra
+
+instance (priority := high) OL.instAlgebraTensorProductLeft (LL : FinExt l) {B : Type*}
+    [CommSemiring B] [Algebra ℤ_[l] B] : Algebra ↥(OL LL) (↥(OL LL) ⊗[ℤ_[l]] B) :=
+  Algebra.TensorProduct.leftAlgebra
+
+instance (priority := high) OL.instModuleTensorProductLeft (LL : FinExt l) {M : Type*}
+    [AddCommMonoid M] [Module ℤ_[l] M] : Module ↥(OL LL) (↥(OL LL) ⊗[ℤ_[l]] M) :=
+  TensorProduct.leftModule
+
+instance (priority := high) RW.instAddCommGroupTensorProduct (LL : FinExt l) {M : Type*}
+    [AddCommGroup M] [Module ↥(OL LL) M] : AddCommGroup (RW LL ⊗[↥(OL LL)] M) :=
+  TensorProduct.addCommGroup
+
+instance (priority := high) RW.instModuleTensorProduct (LL : FinExt l) {M : Type*}
+    [AddCommMonoid M] [Module ↥(OL LL) M] : Module (RW LL) (RW LL ⊗[↥(OL LL)] M) :=
+  TensorProduct.leftModule
+
+instance (priority := high) RW.instSMulTensorProduct (LL : FinExt l) {M : Type*}
+    [AddCommMonoid M] [Module ↥(OL LL) M] : SMul (RW LL) (RW LL ⊗[↥(OL LL)] M) :=
+  TensorProduct.leftModule.toSMul
+
+instance (priority := high) RW.instHSMulTensorProduct (LL : FinExt l) {M : Type*}
+    [AddCommMonoid M] [Module ↥(OL LL) M] :
+    HSMul (RW LL) (RW LL ⊗[↥(OL LL)] M) (RW LL ⊗[↥(OL LL)] M) :=
+  @instHSMul _ _ TensorProduct.leftModule.toSMul
+
+end Loc
 
 end Formalism.BasicNotions

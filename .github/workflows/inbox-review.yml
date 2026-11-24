@@ -1,0 +1,43 @@
+name: inbox review
+
+# Tells the inbox workflow about a review, so that a pull request leaves the inbox as soon as it is
+# reviewed. Reviews on pull requests from forks only get a read-only token, which cannot change
+# labels, so this workflow does nothing but run. `inbox.yml` follows it with a token that can, and
+# reads the pull request's number from this run's name.
+#
+# The job is skipped when the review cannot change anything: the pull request is not in the inbox,
+# or a bot or the author wrote the review. On a pull request by a first-time contributor GitHub
+# may hold the run for approval. It does not need approving: the inbox workflow follows it anyway,
+# and the sweep catches the review in any case.
+#
+# A pull request from a fork can change this file in its own branch, since GitHub runs it from the
+# pull request's merge commit. That lets it start runs of the inbox workflow that look again at a
+# pull request it names, which changes nothing that should stay as it is.
+
+on:
+  pull_request_review:
+    types: [submitted]
+  pull_request_review_comment:
+    types: [created]
+
+run-name: 'inbox review #${{ github.event.pull_request.number }}'
+
+permissions: {}
+
+# A review with several comments sends several events. One run waiting behind another is enough.
+concurrency:
+  group: inbox-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  relay:
+    if: >-
+      ${{ contains(github.event.pull_request.labels.*.name, 'inbox') &&
+          github.event.sender.type != 'Bot' &&
+          github.event.sender.login != github.event.pull_request.user.login }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: echo "Reviewed by $SENDER. The inbox workflow takes it from here."
+        env:
+          SENDER: ${{ github.event.sender.login }}

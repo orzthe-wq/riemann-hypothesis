@@ -213,7 +213,7 @@ theorem exists_coe_eq_span_det {Λ Λ' : Submodule (𝓞 K) (Fin n → K)} (hle 
       FractionalIdeal.absNorm J =
         (Λ.toAddSubgroup.relIndex Λ'.toAddSubgroup : ℚ) * FractionalIdeal.absNorm J' := by
   classical
-  choose d hd0 hd using fun k : Fin n => exists_smul_mem_of_mem_span_fraction (K := K) Λ
+  choose d hd0 hd using fun k : Fin n => _root_.GlobalTheory.LatticeBoundedAction.main (K := K) Λ
     (Pi.single k (1 : K)) (hsp ▸ Submodule.mem_top)
   set δ : K := algebraMap (𝓞 K) K (∏ k, d k) with hδ
   have hδ0 : δ ≠ 0 := by simpa [hδ, Finset.prod_ne_zero_iff] using hd0

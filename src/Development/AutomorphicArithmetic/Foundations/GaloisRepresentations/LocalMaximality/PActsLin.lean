@@ -183,7 +183,7 @@ theorem UpperTheory.Gal.productCup_of_system.actsLin_of :
       | zero => simp
       | tmul f' w =>
         rw [sysP_act_tmul, mulP_tmul, mulP_tmul]
-        simp [smul_smul, mul_comm, mul_left_comm, mul_assoc]
+        simp [smul_smul, mul_comm]
         rw [← algebraMap_smul K f' w, smul_smul]
         congr 1
         ring

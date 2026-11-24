@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRationalPointOfMemMovedThetaLattice
 
 @[expose] public section
 
@@ -82,7 +83,7 @@ theorem exists_idem_of_limit : (∀ (D : D7) (x : 𝓞 D.host.E), ∃ e ∈ OhE 
     exact bot_ne_top hsup
   set x : 𝓞 D.host.E := s * δ * u with hx
   set X : AE D := inc D (x : D.host.E) with hX
-  have hXO : X ∈ OhE D := GlobalTheory.CongIdx.inc_int_mem x
+  have hXO : X ∈ OhE D := _root_.GlobalTheory.NormSum.MovedTheta.inc_int x
 
   have h1X : 1 - X ∈ hatId D 𝔫 := by
     have e : 1 - X = inc D (t : D.host.E) + inc D (s : D.host.E) * (-(inc D ((δ * u : 𝓞 D.host.E) : D.host.E) - 1)) := by
@@ -93,7 +94,7 @@ theorem exists_idem_of_limit : (∀ (D : D7) (x : 𝓞 D.host.E), ∃ e ∈ OhE 
       simp only [map_mul]
       linear_combination -e1
     rw [e]
-    exact add_mem (gen1 ht) (GlobalTheory.CongIdx.mul_mem_hatId (GlobalTheory.CongIdx.inc_int_mem s) (neg_mem hδu))
+    exact add_mem (gen1 ht) (GlobalTheory.CongIdx.mul_mem_hatId (_root_.GlobalTheory.NormSum.MovedTheta.inc_int s) (neg_mem hδu))
 
   have hxm : x ∈ 𝔪 := by rw [hx, mul_assoc]; exact Ideal.mul_mem_right _ _ hs
   have hsX : sgA D X ∈ hatId D 𝔫 := by
@@ -129,8 +130,8 @@ theorem exists_idem_of_limit : (∀ (D : D7) (x : 𝓞 D.host.E), ∃ e ∈ OhE 
     rw [hew, pow_succ, hNd, ← hX]
     linear_combination X ^ m * hXd
   refine ⟨(inc D ((s * u : 𝓞 D.host.E) : D.host.E) * X ^ m + inc D (c : D.host.E) * w) * (1 - ē),
-    mul_mem (add_mem (mul_mem (GlobalTheory.CongIdx.inc_int_mem _) (pow_mem hXO m))
-      (mul_mem (GlobalTheory.CongIdx.inc_int_mem _) hwO)) (sub_mem (one_mem _) hēO), ?_, ?_, ?_, ?_⟩
+    mul_mem (add_mem (mul_mem (_root_.GlobalTheory.NormSum.MovedTheta.inc_int _) (pow_mem hXO m))
+      (mul_mem (_root_.GlobalTheory.NormSum.MovedTheta.inc_int _) hwO)) (sub_mem (one_mem _) hēO), ?_, ?_, ?_, ?_⟩
   · linear_combination (1 - ē) ^ 2 * hee + e * hēē
   · have hs2 : sgA D (e * (1 - ē)) = ē * (1 - e) := by
       rw [map_mul, map_sub, map_one, hē, GlobalTheory.NormSum.VacMove.sgA_sgA]

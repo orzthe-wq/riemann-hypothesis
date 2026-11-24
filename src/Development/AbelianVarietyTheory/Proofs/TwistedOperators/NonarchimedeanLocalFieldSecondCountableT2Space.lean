@@ -145,7 +145,7 @@ theorem lowU_mem_KO {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (C : Matrix
   ext r s
   rcases r with r | r <;> rcases s with s | s <;>
     simp [lowU, C', Matrix.one_apply, apply_ite (algebraMap 𝒪[k] k)]
-  all_goals first | rfl | (split_ifs <;> simp)
+  all_goals first | rfl
 
 theorem upU_mem_KO {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (C : Matrix n (Fin c) k)
     (h : ∀ l s, valuation k (C l s) ≤ 1) : upU C ∈ KO k (n ⊕ Fin c) := by
@@ -155,7 +155,7 @@ theorem upU_mem_KO {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (C : Matrix 
   ext r s
   rcases r with r | r <;> rcases s with s | s <;>
     simp [upU, C', Matrix.one_apply, apply_ite (algebraMap 𝒪[k] k)]
-  all_goals first | rfl | (split_ifs <;> simp)
+  all_goals first | rfl
 
 theorem nonarchimedeanLocalField_secondCountable_t2Space : SecondCountableTopology k ∧ T2Space k := by
   let _ := IsTopologicalAddGroup.rightUniformSpace k

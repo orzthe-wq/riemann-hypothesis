@@ -73,18 +73,8 @@ open Filter Topology
 
 namespace GlobalTheory.RealMultChart
 
-theorem comp_mulN {S : Scheme.{0}} (B : Over S) [GrpObj B] {T : Over S} (x : T ⟶ B) (n : ℕ) :
-    x ≫ mulN B n = x ^ n := by
-  induction n with
-  | zero =>
-    show x ≫ (toUnit B ≫ η[B]) = x ^ 0
-    rw [pow_zero, Hom.one_def, ← Category.assoc, toUnit_unique (x ≫ toUnit B) (toUnit T)]
-  | succ n ih =>
-    show x ≫ (lift (mulN B n) (𝟙 B) ≫ μ[B]) = x ^ (n + 1)
-    rw [pow_succ, Hom.mul_def, ← ih, ← Category.assoc, comp_lift, Category.comp_id]
-
 theorem mulN_eq_mulA {S : Scheme.{0}} (B : Over S) [GrpObj B] (n : ℕ) : mulN B n = Out.mulA B n := by
-  have h1 := comp_mulN B (𝟙 B) n
+  have h1 := _root_.GlobalTheory.MulUnramified.comp_mulN B (𝟙 B) n
   rw [Category.id_comp] at h1
   rw [h1]
 
@@ -101,7 +91,7 @@ theorem exists_pow_eq (B : Over (Sp ℂ)) [GrpObj B] (hB : IsAbelianScheme B) (a
   have hw : (t ≫ pullback.fst (mulN B n).left a₀.left) ≫ B.hom = (𝟙_ (Over (Sp ℂ))).hom := by
     rw [← Over.w (mulN B n), ← Category.assoc, hb', Over.w a₀]
   refine ⟨Over.homMk _ hw, ?_⟩
-  rw [← comp_mulN]
+  rw [← _root_.GlobalTheory.MulUnramified.comp_mulN]
   exact Over.OverMorphism.ext hb'
 
 theorem compactSpace_points (A : Over (Sp ℂ)) (L : LB A.left) (hL : Out.RelAmple A L) :

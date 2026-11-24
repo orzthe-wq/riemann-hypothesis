@@ -185,15 +185,15 @@ theorem trR_inj (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) [FiniteDimensio
     Φ = Ψ := by
   have hRB := radBase P Bs hpl
   apply Subtype.ext
-  refine Formalism.FourierDecayAlt.P.radical_reduction_injective Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _ Φ.2 _ Ψ.2 ?_
+  refine _root_.Formalism.FourierDecayAlt.P.NFRadRedA.radRedInj Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _ Φ.2 _ Ψ.2 ?_
   funext x
   by_cases hx : x ∈ NF.QR P.k P.r Bs.z Bs.z'
   · have hxQ : x ∈ MA.Qset P.r P.TT := (qr_iff P Bs hpl x).1 hx
     let q : MA.Qp P.r P.TT := ⟨x, hxQ⟩
     have hζ : P.TT < Complex.normSq x.2 := hxQ.2
     simp only [NF.radR, Set.indicator_of_mem hx]
-    have hmΦ := (Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _ Φ.2).2.1 x hx
-    have hmΨ := (Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _ Ψ.2).2.1 x hx
+    have hmΦ := (_root_.Formalism.FourierDecayAlt.P.NFRadRedA.radRedMem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _ Φ.2).2.1 x hx
+    have hmΨ := (_root_.Formalism.FourierDecayAlt.P.NFRadRedA.radRedMem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _ Ψ.2).2.1 x hx
     simp only [NF.radR, Set.indicator_of_mem hx] at hmΦ hmΨ
     rw [(he.2 x.2 hζ).2.2 _ hmΦ, (he.2 x.2 hζ).2.2 _ hmΨ]
     refine Finset.sum_congr rfl fun ρ _ => ?_

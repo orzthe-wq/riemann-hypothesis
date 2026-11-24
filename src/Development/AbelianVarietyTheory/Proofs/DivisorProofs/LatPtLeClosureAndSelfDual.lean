@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulEqZeroOfInf
 
 @[expose] public section
 
@@ -70,15 +71,12 @@ theorem at_smul {M : Type} [AddCommGroup M] [Module (AF D.host.F) M] (v : Pl D.h
     At (evFin D.host.F v) (liftV v (1 : Fv D.host.F v) • z) := fun u hu => by
   rw [smul_smul, ← smul_eq_mul u, at_liftV v 1 u hu, zero_smul]
 
-theorem cA_smul (c : AF D.host.F) (z : AE D) : cA D (c • z) = c • cA D z :=
-  map_smul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) c z
-
 theorem symplO_swap (S T : HSp D) (c : AF D.host.F) (x y : WO S T) : symplO S T x (c • y) = symplO S T (c • x) y := by
   have h : hO S T x (c • y) = hO S T (c • x) y := by
     unfold hO
     refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ =>
       Finset.sum_congr rfl fun _ _ => ?_
-    rw [Matrix.smul_apply, Matrix.smul_apply, cA_smul, mul_smul_comm, smul_mul_assoc, smul_mul_assoc, mul_smul_comm]
+    rw [Matrix.smul_apply, Matrix.smul_apply, _root_.GlobalTheory.FinTranslate.cA_smul, mul_smul_comm, smul_mul_assoc, smul_mul_assoc, mul_smul_comm]
   unfold symplO
   rw [h]
 

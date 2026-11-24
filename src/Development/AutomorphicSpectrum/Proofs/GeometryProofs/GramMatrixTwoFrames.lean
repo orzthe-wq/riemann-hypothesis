@@ -2,7 +2,8 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeHermitianFormExistsStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HodgeIPIffHodgeFormConj
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeHermitianFormExists
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -80,7 +81,7 @@ theorem gramAt_change (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
     (hb : ∀ q, b' q = ∑ p, T p q • b p) (hT : ∀ p q, ValAt 𝔐.ξ z (T p q) (Tz p q)) :
     Γ' = Tz.conjTranspose * Γ * Tz := by
   obtain ⟨V, _, _, ⟨Mz⟩⟩ := lieModel_exists 𝔐.X 𝔐.t.G ℂ z
-  obtain ⟨h, hh, -, -⟩ := GlobalTheory.T.hodge_hermitian_form_exists E H 𝔐.X 𝔐.t z V Mz hP
+  obtain ⟨h, hh, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_hodgeInnerProduct_form E H 𝔐.X 𝔐.t z V Mz hP
   obtain ⟨v, hv, hΓ⟩ := hG
   obtain ⟨v', hv', hΓ'⟩ := hG'
   choose x hx using fun p => Mz.onto (v p) (hv p).isTanAt
@@ -98,8 +99,7 @@ theorem gramAt_change (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
   rw [e2]
 
   simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, e1, map_sum, LinearMap.sum_apply, map_smul,
-  map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, RCLike.star_def,
-  RingHom.id_apply]
+  map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, RCLike.star_def]
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 

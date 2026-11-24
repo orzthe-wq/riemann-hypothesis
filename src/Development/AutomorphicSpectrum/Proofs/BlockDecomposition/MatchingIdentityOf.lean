@@ -153,9 +153,6 @@ section Hecke
 
 variable {G : Type} [Group G] [TopologicalSpace G]
 
-theorem isHecke_zero' (L : Subgroup G) : IsHecke L (fun _ : G => (0 : ℂ)) :=
-  ⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩
-
 theorem isHecke_smul' {L : Subgroup G} {f : G → ℂ} (c : ℂ) (h : IsHecke L f) : IsHecke L (c • f) :=
   ⟨HasCompactSupport.mono h.1 (Function.support_const_smul_subset c f), fun k hk x => by
     simp only [Pi.smul_apply, (h.2 k hk x).1, (h.2 k hk x).2, and_self]⟩
@@ -167,7 +164,7 @@ theorem isHecke_diag (d : LocData E n) {a : ℕ} {w : Pl E} {L : Subgroup (GLw a
   unfold LocData.diag
   split_ifs
   · exact hf x
-  · exact isHecke_zero' L
+  · exact GlobalTheory.CompanionTheory.MatchPow.isHecke_zero L
 
 theorem idem_lev (hI : IdemAlg) {d : LocData E n} (hd : d.Ok) {a : ℕ} (ha : a ≤ n) (w : Pl E) :
     IsHecke (d.lev a w) (idem (d.lev a w)) :=

@@ -50,4 +50,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab HoweUnram)
 
 theorem _root_.GlobalTheory.T.exists_partner_combination_good_inert_lift : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), GlobalTheory.Chain.LiftInteg D → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → (∀ P, Good R.toRealDat A3.A.μ0 P → Formalism.DivisionValues.conjPl P = P → TwoSided R.toRealDat A3.A.μ0 P) := by
-  first | exact @GlobalTheory.VmTwo.twoSided_goodInert | exact GlobalTheory.VmTwo.twoSided_goodInert | (intros; apply GlobalTheory.VmTwo.twoSided_goodInert <;> assumption)
+  first | exact @GlobalTheory.VmTwo.twoSided_goodInert

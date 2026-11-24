@@ -52,57 +52,38 @@ import Std.Tactic.BVDecide.Normalize.Prop
 
 open scoped Classical
 
-@[reducible] noncomputable def UpperTheory.Reformulated.B.Qi11.Af :
-    (F : Type) → [inst : Field F] → [NumberField F] → Type :=
-    fun (F : Type) [Field F] [NumberField F] ↦ IsDedekindDomain.FiniteAdeleRing (NumberField.RingOfIntegers F) F
+namespace UpperTheory.Reformulated.B.Qi11
 
-theorem UpperTheory.Reformulated.B.Qi11.aux2 :
-    ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F]
-      (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))
-      (a : IsDedekindDomain.HeightOneSpectrum.adicCompletion F v),
-      ∀ᶠ (x : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) in Filter.cofinite,
-        Pi.single v a x ∈
-          (↑(IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F x) :
-            Set (IsDedekindDomain.HeightOneSpectrum.adicCompletion F x)) := by
-  intro F _ _ v a
+open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum NumberField
+
+@[reducible] noncomputable def Af (F : Type) [Field F] [NumberField F] : Type :=
+  FiniteAdeleRing (RingOfIntegers F) F
+
+theorem aux2 {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (RingOfIntegers F))
+    (a : adicCompletion F v) :
+    ∀ᶠ x : HeightOneSpectrum (RingOfIntegers F) in Filter.cofinite,
+      Pi.single v a x ∈ (adicCompletionIntegers F x : Set (adicCompletion F x)) := by
   refine (Set.finite_singleton v).subset fun x hx => ?_
   by_contra h
   apply hx
   have hne : x ≠ v := h
-  simp only [Set.mem_setOf_eq, Pi.single_eq_of_ne hne]
+  simp only [Set.mem_ofPred_eq, Pi.single_eq_of_ne hne]
   exact zero_mem _
 
-noncomputable def UpperTheory.Reformulated.B.Qi11.sglV :
-    {F : Type} →
-      [inst : Field F] →
-        [inst_1 : NumberField F] →
-          (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) →
-            IsDedekindDomain.HeightOneSpectrum.adicCompletion F v → UpperTheory.Reformulated.B.Qi11.Af F :=
-    fun {F : Type} [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))
-        (a : IsDedekindDomain.HeightOneSpectrum.adicCompletion F v) ↦
-      (⟨Pi.single v a, UpperTheory.Reformulated.B.Qi11.aux2 v a⟩ :
-        { x :
-          (i : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) →
-            (fun (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) ↦
-                IsDedekindDomain.HeightOneSpectrum.adicCompletion F v)
-              i //
-          ∀ᶠ (i : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) in Filter.cofinite,
-            x i ∈
-              (fun (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) ↦
-                  (↑(IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F v) :
-                    Set (IsDedekindDomain.HeightOneSpectrum.adicCompletion F v)))
-                i })
+noncomputable def sglV {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (RingOfIntegers F))
+    (a : adicCompletion F v) : Af F :=
+  (⟨Pi.single v a, aux2 v a⟩ :
+    { x : (i : HeightOneSpectrum (RingOfIntegers F)) →
+        (fun v : HeightOneSpectrum (RingOfIntegers F) ↦ adicCompletion F v) i //
+      ∀ᶠ i : HeightOneSpectrum (RingOfIntegers F) in Filter.cofinite,
+        x i ∈ (fun v : HeightOneSpectrum (RingOfIntegers F) ↦
+          (adicCompletionIntegers F v : Set (adicCompletion F v))) i })
 
-noncomputable def UpperTheory.Reformulated.B.Qi11.sglS :
-    {F : Type} →
-      [inst : Field F] →
-        [inst_1 : NumberField F] →
-          Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) → UpperTheory.Reformulated.B.Qi11.Af F :=
-    fun {F : Type} [Field F] [NumberField F]
-        (A : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))) ↦
-      ∑ v ∈ A, UpperTheory.Reformulated.B.Qi11.sglV v (1 : IsDedekindDomain.HeightOneSpectrum.adicCompletion F v)
+noncomputable def sglS {F : Type} [Field F] [NumberField F]
+    (A : Finset (HeightOneSpectrum (RingOfIntegers F))) : Af F :=
+  ∑ v ∈ A, sglV v (1 : adicCompletion F v)
 
-private theorem UpperTheory.Reformulated.B.Qi11.tendsto_cut {ι : Type*} {R : ι → Type*} [∀ i, Zero (R i)]
+private theorem tendsto_cut {ι : Type*} {R : ι → Type*} [∀ i, Zero (R i)]
     [∀ i, TopologicalSpace (R i)] {A : (i : ι) → Set (R i)} (h0 : ∀ i, (0 : R i) ∈ A i)
     (y z : RestrictedProduct R A Filter.cofinite) (hz : ∀ i, z i = 0)
     (f : Finset ι → RestrictedProduct R A Filter.cofinite)
@@ -123,25 +104,22 @@ private theorem UpperTheory.Reformulated.B.Qi11.tendsto_cut {ι : Type*} {R : ι
     filter_upwards [Filter.eventually_ge_atTop ({i} : Finset ι)] with B hB
     have hi : i ∈ B := hB (Finset.mem_singleton_self i)
     show (0 : R i) = if i ∈ B then 0 else y i
-    rw [if_pos hi]
+    simp [hi]
   have h1 : f = RestrictedProduct.inclusion R A hS ∘ g :=
     funext fun B => RestrictedProduct.ext _ _ fun i => hf B i
   have h2 : z = RestrictedProduct.inclusion R A hS o := RestrictedProduct.ext _ _ fun i => hz i
   rw [h1, h2]
   exact ((RestrictedProduct.continuous_inclusion hS).tendsto o).comp hg
 
-private theorem UpperTheory.Reformulated.B.Qi11.sglS_apply {F : Type} [Field F] [NumberField F]
-    (A : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)))
-    (w : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) :
-    UpperTheory.Reformulated.B.Qi11.sglS A w = if w ∈ A then 1 else 0 := by
+private theorem sglS_apply {F : Type} [Field F] [NumberField F]
+    (A : Finset (HeightOneSpectrum (RingOfIntegers F))) (w : HeightOneSpectrum (RingOfIntegers F)) :
+    sglS A w = if w ∈ A then 1 else 0 := by
   induction A using Finset.induction_on with
   | empty => rfl
   | insert v A hv ih =>
-    have h : UpperTheory.Reformulated.B.Qi11.sglS (insert v A) =
-        UpperTheory.Reformulated.B.Qi11.sglV v 1 + UpperTheory.Reformulated.B.Qi11.sglS A := Finset.sum_insert hv
-    have h' : UpperTheory.Reformulated.B.Qi11.sglS (insert v A) w =
-        (Pi.single v 1 : ∀ u, IsDedekindDomain.HeightOneSpectrum.adicCompletion F u) w +
-          UpperTheory.Reformulated.B.Qi11.sglS A w := by
+    have h : sglS (insert v A) = sglV v 1 + sglS A := Finset.sum_insert hv
+    have h' : sglS (insert v A) w =
+        (Pi.single v 1 : ∀ u, adicCompletion F u) w + sglS A w := by
       rw [h]
       rfl
     rw [h', ih]
@@ -150,21 +128,19 @@ private theorem UpperTheory.Reformulated.B.Qi11.sglS_apply {F : Type} [Field F] 
       simp [hv]
     · simp [hw]
 
-theorem UpperTheory.Reformulated.B.Qi11.tendsto_fin :
-    ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F] (y : UpperTheory.Reformulated.B.Qi11.Af F),
-      Filter.Tendsto
-        (fun (A : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))) ↦
-          ((1 : UpperTheory.Reformulated.B.Qi11.Af F) - UpperTheory.Reformulated.B.Qi11.sglS A) * y)
-        Filter.atTop (nhds (0 : UpperTheory.Reformulated.B.Qi11.Af F)) := by
-  intro F _ _ y
-  have key := UpperTheory.Reformulated.B.Qi11.tendsto_cut
-    (R := fun v => IsDedekindDomain.HeightOneSpectrum.adicCompletion F v)
-    (A := fun v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F) =>
-      SetLike.coe (IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F v))
+theorem tendsto_fin {F : Type} [Field F] [NumberField F] (y : Af F) :
+    Filter.Tendsto (fun (A : Finset (HeightOneSpectrum (RingOfIntegers F))) ↦ ((1 : Af F) - sglS A) * y)
+      Filter.atTop (nhds (0 : Af F)) := by
+  have key := tendsto_cut
+    (R := fun v => adicCompletion F v)
+    (A := fun v : HeightOneSpectrum (RingOfIntegers F) =>
+      SetLike.coe (adicCompletionIntegers F v))
     (fun v => zero_mem _)
-  refine key y (0 : UpperTheory.Reformulated.B.Qi11.Af F) (fun w => ?_)
-    (fun B => ((1 - UpperTheory.Reformulated.B.Qi11.sglS B) * y : UpperTheory.Reformulated.B.Qi11.Af F)) fun B w => ?_
+  refine key y (0 : Af F) (fun w => ?_)
+    (fun B => ((1 - sglS B) * y : Af F)) fun B w => ?_
   · rfl
-  · show (1 - UpperTheory.Reformulated.B.Qi11.sglS B w) * y w = if w ∈ B then 0 else y w
-    rw [UpperTheory.Reformulated.B.Qi11.sglS_apply]
+  · show (1 - sglS B w) * y w = if w ∈ B then 0 else y w
+    rw [sglS_apply]
     split_ifs <;> simp
+
+end UpperTheory.Reformulated.B.Qi11

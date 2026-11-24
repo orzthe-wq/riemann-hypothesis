@@ -142,14 +142,12 @@ theorem isSmoothHerm_pull {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')}
   subst h2
   exact ⟨pi, by rw [hp]; exact hi'⟩
 
-
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 theorem pullDeg_add (κ : K → K') (a b : K → ℤ) : pullDeg κ (a + b) = pullDeg κ a + pullDeg κ b := by
   funext k'
   simp only [pullDeg, Pi.add_apply]
   unfold Function.extend
   split_ifs <;> simp
-
 
 omit [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
 theorem isPullHerm_tensor {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} {A B : HermLine ι}
@@ -161,24 +159,12 @@ theorem isPullHerm_tensor {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')}
   · show A'.h z' * B'.h z' = A.h _ * B.h _
     rw [hA.2, hB.2]
 
-
-open Classical in
-theorem sum_block (F : (Σ k', ι' k') → ℕ) (k' : K') :
-    ∑ i, F ⟨k', i⟩ = ∑ q, if q.1 = k' then F q else 0 := by
-  classical
-  rw [Fintype.sum_sigma, Finset.sum_eq_single k']
-  · simp
-  · intro b _ hb
-    simp [hb]
-  · simp
-
 theorem isMultiHomog_rename {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {s : MRing ι} {α : K → ℕ} (hs : IsMultiHomog s α) :
     IsMultiHomog (rename v s) (Function.extend κ α 0) := by
   apply GroundTheory.Heights₂.Heights.Inter.ArithmeticIntersectionHorizontal.isMultiHomog_rename <;> assumption
 
 end ArithmeticIntersectionIntegral
-
 
 open ArithmeticIntersectionIntegral in
 theorem ArithmeticIntersectionIntegral.proof (hInt : PtsIntegrableStatement) (hSec : IntersectionWithSection.Statement) : ArithmeticIntersectionIntegral.Statement := by

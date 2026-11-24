@@ -141,17 +141,12 @@ theorem adelstab_incl_C (d : 𝓞 F) : ι (algebraMap (𝓞 F) E d) = levelafC E
       IsScalarTower.algebraMap_apply (𝓞 F) F (FiniteAdeleRing (𝓞 F) F),
       Algebra.algebraMap_eq_smul_one (A := E),
       Algebra.algebraMap_eq_smul_one (A := FiniteAdeleRing (𝓞 F) F), TensorProduct.smul_tmul])
-  | simp [Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.algebraMap_eq_smul_one,
-      TensorProduct.smul_tmul]
 
 theorem adelstab_algebraMap_ne_zero (d : 𝓞 F) (hd : d ≠ 0) : algebraMap (𝓞 F) E d ≠ 0 := by
   intro h
   apply hd
   first
   | exact (FaithfulSMul.algebraMap_injective (𝓞 F) E) (h.trans (map_zero _).symm)
-  | (rw [IsScalarTower.algebraMap_apply (𝓞 F) F E, map_eq_zero_iff _ (algebraMap F E).injective] at h
-     exact IsFractionRing.injective (𝓞 F) F (h.trans (map_zero _).symm))
-  | simpa using h
 
 
 variable (F E) in
@@ -332,7 +327,6 @@ theorem adelstab_levelafC_one : levelafC (F := F) E 1 = 1 := by
   simp [levelafC]
   first
   | rfl
-  | exact Algebra.TensorProduct.one_def.symm
 
 theorem adelstab_mem_stdLat (v : n → 𝒜) : v ∈ stdLat (n := n) (A := 𝒜) ↥𝒮 ↔ ∀ i, v i ∈ 𝒮 := by
   simp only [stdLat, Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.mem_range]

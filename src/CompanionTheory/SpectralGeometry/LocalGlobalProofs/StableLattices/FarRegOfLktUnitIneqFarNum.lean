@@ -62,7 +62,7 @@ variable {n : ℕ}
 
 theorem rho_sum (ε : Fin n → Bool) (a : Fin n) :
     rhoN ε a + rhoC ε a = ((n : ℝ) - 1) / 2 - ((a : ℕ) : ℝ) := by
-  apply GlobalTheory.DiscreteSeriesTest.rhoN_add_rhoC <;> assumption
+  apply GlobalTheory.DiscreteSeriesTest.rhoN_add_rhoC
 
 theorem abs_rhoC_le (ε : Fin n → Bool) (a : Fin n) : |rhoC ε a| ≤ n := by
   unfold rhoC

@@ -96,8 +96,6 @@ theorem continuous_blockDet {N h : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N
   unfold blockDet
   first
     | fun_prop
-    | exact Continuous.matrix_det (continuous_pi fun i => continuous_pi fun j =>
-        (Units.continuous_val.matrix_elem _ _))
 
 theorem blockDet_leviEmb {N h : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (a : Fin h)
     (x : Levi k (Bl d)) :

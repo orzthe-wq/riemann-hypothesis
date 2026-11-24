@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -70,7 +71,7 @@ theorem endU_gtTorus_comp {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {
       GlobalTheory.TorusPart.thickLift ha h ≫ ((Over.pullback (thick V (maximalIdeal V) 0)).map E.aG).left := by
     apply pullback.hom_ext
     · rw [Category.assoc, GlobalTheory.TorusPart.thickLift_fst, hf, Category.assoc]
-      simp only [GlobalTheory.TorusPart.thickLift, Over.pullback_map_left, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]
+      simp only [GlobalTheory.TorusPart.thickLift, Over.pullback_map_left, pullback.lift_fst, pullback.lift_fst_assoc]
     · simp only [GlobalTheory.TorusPart.thickLift, Over.pullback_map_left]
       rw [Category.assoc, pullback.lift_snd, Category.assoc, pullback.lift_snd, pullback.lift_snd, ← Category.assoc,
         Over.w]

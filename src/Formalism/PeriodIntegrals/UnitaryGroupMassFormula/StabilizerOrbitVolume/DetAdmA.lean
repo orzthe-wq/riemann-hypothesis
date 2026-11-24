@@ -43,7 +43,7 @@ import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.GeneralLinearIntegers.AlgebraMapIntMemOint
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.PosNear
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.PosNear
 
 @[expose] public section
 
@@ -52,7 +52,7 @@ noncomputable section
 namespace PI.VolStabSW.DeterminantAdmissible
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes NumberField IsDedekindDomain MeasureTheory Topology Filter Set
-  PI.VolStabSW.PositiveNearLattice MeasurableSpace
+ MeasurableSpace
 open scoped TensorProduct ENNReal RestrictedProduct
 
 section Borel

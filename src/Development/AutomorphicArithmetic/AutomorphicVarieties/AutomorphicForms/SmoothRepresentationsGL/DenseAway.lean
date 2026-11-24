@@ -96,19 +96,6 @@ private theorem dense_abs {K R A : Type} [Field K] [NormedCommRing R] [CompleteS
 
 variable {E : Type} [Field E] [NumberField E]
 
-private theorem cont_sLoc (w : HeightOneSpectrum (𝓞 E)) : Continuous (sLoc E w) := by
-  classical
-  have hle : (Filter.cofinite : Filter (HeightOneSpectrum (𝓞 E))) ≤ Filter.principal {w}ᶜ :=
-    Filter.le_principal_iff.2 (Set.finite_singleton w).compl_mem_cofinite
-  let f : w.adicCompletion E → RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E)
-      (fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) (Filter.principal {w}ᶜ) :=
-    fun x => ⟨Pi.single w x, Filter.eventually_principal.2 fun v hv => by
-      rw [Pi.single_eq_of_ne hv]
-      exact zero_mem _⟩
-  have hf : Continuous f := RestrictedProduct.continuous_rng_of_principal.2
-    (continuous_single (A := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) w)
-  exact (RestrictedProduct.continuous_inclusion hle).comp hf
-
 variable (S : Finset (HeightOneSpectrum (𝓞 E)))
 
 private theorem sum_mem (x : ∀ v : S, v.1.adicCompletion E) (w : S) : pLoc E w.1 (∑ v : S, sLoc E v.1 (x v)) = x w := by
@@ -151,7 +138,7 @@ private def sS : RS S →ₙ+* Ad E where
 
 private theorem cont_sS : Continuous (sS S) :=
   Continuous.prodMk (continuous_pi fun w => (continuous_apply _).comp continuous_snd)
-    (continuous_finsetSum _ fun v _ => (cont_sLoc v.1).comp ((continuous_apply v).comp continuous_fst))
+    (continuous_finsetSum _ fun v _ => (_root_.GlobalTheory.CuspRep.CuspSub.continuous_sLoc v.1).comp ((continuous_apply v).comp continuous_fst))
 
 private theorem pS_sS (x : RS S) : pS S (sS S x) = x :=
   Prod.ext (funext fun v => sum_mem S x.1 v) rfl

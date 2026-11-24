@@ -1,10 +1,11 @@
 module
 
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PdPBotPos
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StCocycle
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartDividedPowersGradedConstantStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SEqOne
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartDividedPowersGradedConstant
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChartIsGoodStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsChartFromCoordinatesStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PdPBotPos
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,12 +73,12 @@ open FrameEx in
 theorem stFrame : StFrame := by
   intro O _ l s hb X q W d c u hu
   letI := (strV q W).toAlgebra
-  obtain ⟨c', e, hTF, he1, het, hev⟩ := GlobalTheory.T.exists_chart_from_coordinates (O := O) (R := O) (I := ⊥) (dividedPowersBot O) l s hb q
+  obtain ⟨c', e, hTF, he1, het, hev⟩ := _root_.GlobalTheory.CompanionTheory.ChartAlg.chart_exists (O := O) (R := O) (I := ⊥) (dividedPowersBot O) l s hb q
     (Ideal.Quotient.mk ⊥) (fun a => rfl) c
-  have good := GlobalTheory.T.chart_is_good c'
+  have good := _root_.GlobalTheory.CompanionTheory.ChartMaps.good c'
   have hQ : ∀ T, SS q l s W T → InU W T := inU_of_SS
   have hD : SS q l s W c'.D := ⟨hTF, W, rfl, c'.inV⟩
-  obtain ⟨hpow, hgr⟩ := GlobalTheory.T.chart_divided_powers_graded_constant c' good (SS q l s W) hQ hD
+  obtain ⟨hpow, hgr⟩ := _root_.GlobalTheory.CompanionTheory.ChartFil.chart_grConst c' good (SS q l s W) hQ hD
   have hval : ∀ (T : Thick (LL q)) (h : InU W T) (σ : c'.D ⟶ T) (f : Γ(X, W)),
       Ideal.Quotient.mk T.J (σ.φ (e (1 ⊗ₜ f))) = ev T h f := by
     intro T h σ f

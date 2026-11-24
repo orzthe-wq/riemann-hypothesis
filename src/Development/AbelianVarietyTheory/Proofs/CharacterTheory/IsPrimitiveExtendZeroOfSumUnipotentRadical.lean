@@ -2,11 +2,13 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
 public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharacterCosetSumEqZeroOfSubgroupSumStatement
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyBlockAndInvariantUnderStabilizerNilradicStatement
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsStandardUnipotentRadicalBijOnNilradicalStatement
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.GeneralLinearFunctionExtendZeroEndPropertiesStatement
+public import Mathlib.Basic.Complex.Basic
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharacterCosetSumEqZeroOfSubgroupSum
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyBlockAndInvariantUnderStabilizerNilradic
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsStandardUnipotentRadicalBijOnNilradical
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.GeneralLinearFunctionExtendZeroEndProperties
 public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldRestrictClassFunctionOne
+public import Mathlib.LinearAlgebra.Charpoly.BaseChange
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -20,7 +22,6 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.Charpoly.BaseChange
 import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -92,7 +93,7 @@ theorem finsum_nilRad_extZero_eq_zero (F : Type) [Field F] [Finite F] (d : ℕ) 
     (h0 : ∑ᶠ u ∈ (H : Set (GL (Fin d) F)), χ u = 0)
     (g : Module.End F (Fin d → F)) (hg : ∀ x ∈ A, g x ∈ A) :
     ∑ᶠ h ∈ nilRad A, extZero χ (g + h) = 0 := by
-  obtain ⟨e1, e2, -, -⟩ := GlobalTheory.T.generalLinearFunctionExtendZeroEnd_properties F d χ
+  obtain ⟨e1, e2, -, -⟩ := _root_.GlobalTheory.CuspGL.extZero_spec F d χ
   by_cases hu : IsUnit g
   · have hm : IsUnit (LinearMap.toMatrix' g) := by
       have := hu.map (LinearMap.toMatrixAlgEquiv' (R := F) (n := Fin d))
@@ -107,7 +108,7 @@ theorem finsum_nilRad_extZero_eq_zero (F : Type) [Field F] [Finite F] (d : ℕ) 
         exact ⟨fun y => hg _ (hh.1 y), fun y hy => by simp [hh.2 y hy]⟩
       · intro a _ b _ hab
         exact hu.mul_left_cancel hab
-    have h1 := GlobalTheory.T.character_coset_sum_eq_zero_of_subgroup_sum _ χ hχ H
+    have h1 := _root_.GlobalTheory.BI.char_coset_sum_eq_zero _ χ hχ H
       ((finsum_set_coe_eq_finsum_mem (f := χ) (H : Set (GL (Fin d) F))).trans h0) x
     have h2 := (finsum_set_coe_eq_finsum_mem (f := fun u => χ (x * u)) (H : Set (GL (Fin d) F))).symm.trans h1
     rw [← h2]
@@ -120,7 +121,7 @@ theorem finsum_nilRad_extZero_eq_zero (F : Type) [Field F] [Finite F] (d : ℕ) 
     rfl
   · refine finsum_mem_of_eqOn_zero fun h hh => ?_
     refine e2 _ fun hu' => hu ?_
-    have hc := (GlobalTheory.T.charpoly_block_and_invariant_under_stabilizerNilradical F _ A g hg).2 h hh
+    have hc := (_root_.GlobalTheory.CuspGL.charpoly_block F _ A g hg).2 h hh
     rw [LinearMap.isUnit_iff_isUnit_det, LinearMap.det_eq_sign_charpoly_coeff] at hu' ⊢
     rwa [hc] at hu'
 
@@ -132,11 +133,11 @@ theorem isPrimitive_extZero_of_sum_unipotent : ∀ (F : Type) [Field F] [Finite 
   have ha1 : Module.finrank F A < d := by
     have := Submodule.finrank_lt hA1
     simpa using this
-  obtain ⟨B, H, hB, hH, hb⟩ := GlobalTheory.T.exists_standardUnipotentRadical_bijOn_nilradical F d _ ha1.le
+  obtain ⟨B, H, hB, hH, hb⟩ := _root_.GlobalTheory.CuspGL.UnipNilRad.exists_unip_bijOn_nilRad F d _ ha1.le
   have h0 := hs _ ha0 ha1
   rw [← hH] at h0
   obtain ⟨e, he⟩ := exists_linearEquiv_mem_iff_of_finrank_eq A B hB.symm
-  have hcl := (GlobalTheory.T.generalLinearFunctionExtendZeroEnd_properties F d χ).2.2.2 (GlobalTheory.isChar_restrict_conj_one ℂ ℂ _ χ hχ).2.1
+  have hcl := (_root_.GlobalTheory.CuspGL.extZero_spec F d χ).2.2.2 (GlobalTheory.isChar_restrict_conj_one ℂ ℂ _ χ hχ).2.1
   have key := finsum_nilRad_extZero_eq_zero F d χ hχ B H hb h0 (e.conj g) (fun x hx => by
     rw [LinearEquiv.conj_apply_apply, he]
     apply hg
@@ -144,7 +145,7 @@ theorem isPrimitive_extZero_of_sum_unipotent : ∀ (F : Type) [Field F] [Finite 
     simpa using hx)
   rw [← key]
   refine finsum_mem_eq_of_bijOn (fun h => e.conj h) ⟨fun h hh => ⟨fun y => ?_, fun y hy => ?_⟩,
-    e.conj.injective.injOn, fun h hh => ⟨e.symm.conj h, ⟨fun y => ?_, fun y hy => ?_⟩, by ext y; simp [LinearEquiv.conj_apply_apply]⟩⟩ fun h _ => ?_
+    e.conj.injective.injOn, fun h hh => ⟨e.symm.conj h, ⟨fun y => ?_, fun y hy => ?_⟩, by ext y; simp⟩⟩ fun h _ => ?_
   · rw [LinearEquiv.conj_apply_apply, he]
     exact hh.1 _
   · rw [LinearEquiv.conj_apply_apply, hh.2 _ (by rw [← he]; simpa using hy), map_zero]

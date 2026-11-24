@@ -62,9 +62,6 @@ theorem flat_norm_le_height_rpow {F E : Type} [Field F] [NumberField F] [Field E
     have h1 : ‖(χ (Matrix.GeneralLinearGroup.det t) : ℂ)‖ = 1 := by
       first
         | exact Circle.norm_coe _
-        | exact Circle.abs_coe _
-        | simp
-        | exact mem_sphere_zero_iff_norm.mp (χ (Matrix.GeneralLinearGroup.det t)).2
     rw [hlaw, ← hval, norm_mul, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hpos, h1, one_mul]
     congr 2
     simp

@@ -75,17 +75,15 @@ private theorem length_le_one_of_cyclic_smul_eq_zero {R Q : Type} [CommRing R] [
     [AddCommGroup Q] [Module R Q] (π : R) (hπ : Irreducible π) (x : Q)
     (hx : Submodule.span R {x} = ⊤) (h0 : π • x = 0) : Module.length R Q ≤ 1 := by
   have hm : IsLocalRing.maximalIdeal R ≤ LinearMap.ker (LinearMap.toSpanSingleton R Q x) := by
-    rw [(IsDiscreteValuationRing.irreducible_iff_uniformizer π).mp hπ,
-      Ideal.span_singleton_le_iff_mem, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]
-    exact h0
+    simpa only [(IsDiscreteValuationRing.irreducible_iff_uniformizer π).mp hπ,
+      Ideal.span_singleton_le_iff_mem, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply] using h0
   have hsurj : Function.Surjective
       ((IsLocalRing.maximalIdeal R).liftQ (LinearMap.toSpanSingleton R Q x) hm) := by
     rw [← LinearMap.range_eq_top, Submodule.range_liftQ, ← LinearMap.span_singleton_eq_range, hx]
-  have hs : IsSimpleModule R (R ⧸ IsLocalRing.maximalIdeal R) :=
-    isSimpleModule_iff_isCoatom.mpr (IsLocalRing.maximalIdeal.isMaximal R).out
   calc Module.length R Q ≤ Module.length R (R ⧸ IsLocalRing.maximalIdeal R) :=
         Module.length_le_of_surjective _ hsurj
-    _ = 1 := Module.length_eq_one_iff.mpr hs
+    _ = 1 := Module.length_eq_one_iff.mpr
+        (isSimpleModule_iff_isCoatom.mpr (IsLocalRing.maximalIdeal.isMaximal R).out)
 
 private theorem span_range_map_eq_univ_of_surjective {R A B : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] {n : ℕ} (F : A →ₗ[R] B) (hF : Function.Surjective F)
@@ -112,15 +110,10 @@ private theorem length_le_of_cyclic_pow_smul_eq_zero {R : Type} [CommRing R] [Is
     rw [pow_zero, one_smul] at h0
     subst h0
     rw [Submodule.span_singleton_eq_bot.mpr rfl] at hx
-    have h0 : ∀ z : Q, z = 0 := by
-      intro z
-      have hz : z ∈ (⊥ : Submodule R Q) := by
-        rw [hx]
-        exact Submodule.mem_top
-      exact (Submodule.mem_bot R).mp hz
-    have : Subsingleton Q := ⟨fun a b => (h0 a).trans (h0 b).symm⟩
-    rw [Module.length_eq_zero_iff.mpr this]
-    simp
+    have h0 : ∀ z : Q, z = 0 := fun z =>
+      (Submodule.mem_bot R).mp (by rw [hx]; exact Submodule.mem_top)
+    simpa using (Module.length_eq_zero_iff.mpr
+      ⟨fun a b => (h0 a).trans (h0 b).symm⟩).le
   | succ k ih =>
     intro Q _ _ x hx h0
     have hW : Module.length R (Submodule.span R {π • x}) ≤ k := by
@@ -132,9 +125,8 @@ private theorem length_le_of_cyclic_pow_smul_eq_zero {R : Type} [CommRing R] [Is
       exact h0
     have hq : Module.length R (Q ⧸ Submodule.span R {π • x}) ≤ 1 := by
       refine length_le_one_of_cyclic_smul_eq_zero π hπ (Submodule.mkQ _ x) ?_ ?_
-      · have e : ({(Submodule.span R {π • x}).mkQ x} : Set (Q ⧸ Submodule.span R {π • x})) =
-            (Submodule.span R {π • x}).mkQ '' {x} := Set.image_singleton.symm
-        rw [e, ← Submodule.map_span, hx, Submodule.map_top, Submodule.range_mkQ]
+      · rw [← Set.image_singleton (f := (Submodule.span R {π • x}).mkQ),
+          ← Submodule.map_span, hx, Submodule.map_top, Submodule.range_mkQ]
       · rw [← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
         exact Submodule.mem_span_singleton_self _
     rw [length_eq_length_add_length_quot (Submodule.span R {π • x})]
@@ -150,15 +142,10 @@ private theorem length_le_mul_of_span_fin_pow_smul_eq_zero {R : Type} [CommRing 
   | zero =>
     intro Q _ _ g hg _
     rw [Set.range_eq_empty g, Submodule.span_empty] at hg
-    have h0 : ∀ z : Q, z = 0 := by
-      intro z
-      have hz : z ∈ (⊥ : Submodule R Q) := by
-        rw [hg]
-        exact Submodule.mem_top
-      exact (Submodule.mem_bot R).mp hz
-    have : Subsingleton Q := ⟨fun a b => (h0 a).trans (h0 b).symm⟩
-    rw [Module.length_eq_zero_iff.mpr this]
-    simp
+    have h0 : ∀ z : Q, z = 0 := fun z =>
+      (Submodule.mem_bot R).mp (by rw [hg]; exact Submodule.mem_top)
+    simpa using (Module.length_eq_zero_iff.mpr
+      ⟨fun a b => (h0 a).trans (h0 b).symm⟩).le
   | succ n ih =>
     intro Q _ _ g hg hk
     have hW : Module.length R (Submodule.span R {g 0}) ≤ k :=
@@ -171,13 +158,11 @@ private theorem length_le_mul_of_span_fin_pow_smul_eq_zero {R : Type} [CommRing 
           (Submodule.span R {g 0}).mkQ_surjective g hg
         rw [eq_top_iff, ← htop, Submodule.span_le]
         rintro _ ⟨i, rfl⟩
-        induction i using Fin.cases with
-        | zero =>
-          show (Submodule.span R {g 0}).mkQ (g 0) ∈ _
-          rw [Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).mpr
-            (Submodule.mem_span_singleton_self _)]
-          exact Submodule.zero_mem _
-        | succ j => exact Submodule.subset_span ⟨j, rfl⟩
+        refine Fin.cases ?_ (fun j => Submodule.subset_span ⟨j, rfl⟩) i
+        show (Submodule.span R {g 0}).mkQ (g 0) ∈ _
+        rw [Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).mpr
+          (Submodule.mem_span_singleton_self _)]
+        exact Submodule.zero_mem _
       · intro q
         obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ q
         rw [← Submodule.Quotient.mk_smul, hk z, Submodule.Quotient.mk_zero]
@@ -217,8 +202,7 @@ private theorem length_quot_comap_le_mul_of_pow_smul_mem {R Z : Type} [CommRing 
     Module.length R (E ⧸ E'.comap E.subtype) ≤ ((S * n : ℕ) : ℕ∞) := by
   set ψ : (Fin n → R) →ₗ[R] Z :=
     ∑ i, (LinearMap.proj i : (Fin n → R) →ₗ[R] R).smulRight (g i) with hψdef
-  have hψ : ∀ i, ψ (Pi.single i 1) = g i := by
-    intro i
+  have hψ : ∀ i, ψ (Pi.single i 1) = g i := fun i => by
     simp [hψdef, Pi.single_apply]
   have hrange : E ≤ LinearMap.range ψ := by
     refine hg.trans (Submodule.span_le.mpr ?_)
@@ -230,7 +214,7 @@ private theorem length_quot_comap_le_mul_of_pow_smul_mem {R Z : Type} [CommRing 
     rw [Module.finrank_eq_card_basis b, Fintype.card_fin, Module.finrank_fin_fun] at h1
     exact h1
   set Ψ : (E.comap ψ) →ₗ[R] E := LinearMap.codRestrict E (ψ ∘ₗ (E.comap ψ).subtype)
-    (fun p => p.2) with hΨdef
+    (fun p => p.2)
   have hΨ : Function.Surjective Ψ := by
     intro e
     obtain ⟨r, hr⟩ := hrange e.2

@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SharpRestriction.GrowthBounds.RootWeights.ExponentFactorialAddSingleOne
 
 @[expose] public section
 
@@ -150,27 +151,13 @@ section Fock
 
 variable {K : Type} [Field K]
 
-private theorem fock_eq_sum_coeff_mul_expFact_of_support_subset {σ : Type} (F G : MvPolynomial σ K) (S : Finset (σ →₀ ℕ))
-    (hS : F.support ⊆ S) : Formalism.MainNotions.G.fock F G = ∑ m ∈ S, F.coeff m * G.coeff m * (expFact m : K) := by
-  unfold Formalism.MainNotions.G.fock
-  exact Finset.sum_subset hS (fun m _ hm => by
-    simp only [MvPolynomial.mem_support_iff, not_not] at hm
-    rw [hm]
-    ring)
-
-theorem br_fock_comm {σ : Type} (F G : MvPolynomial σ K) : Formalism.MainNotions.G.fock F G = Formalism.MainNotions.G.fock G F := by
-  classical
-  rw [fock_eq_sum_coeff_mul_expFact_of_support_subset F G (F.support ∪ G.support) Finset.subset_union_left,
-    fock_eq_sum_coeff_mul_expFact_of_support_subset G F (F.support ∪ G.support) Finset.subset_union_right]
-  exact Finset.sum_congr rfl fun m _ => by ring
-
 theorem br_fock_sub_left {σ : Type} (F F' G : MvPolynomial σ K) :
     Formalism.MainNotions.G.fock (F - F') G = Formalism.MainNotions.G.fock F G - Formalism.MainNotions.G.fock F' G := by
   classical
   have hsub : (F - F').support ⊆ F.support ∪ F'.support := MvPolynomial.support_sub σ F F'
-  rw [fock_eq_sum_coeff_mul_expFact_of_support_subset (F - F') G (F.support ∪ F'.support) hsub,
-    fock_eq_sum_coeff_mul_expFact_of_support_subset F G (F.support ∪ F'.support) Finset.subset_union_left,
-    fock_eq_sum_coeff_mul_expFact_of_support_subset F' G (F.support ∪ F'.support) Finset.subset_union_right, ← Finset.sum_sub_distrib]
+  rw [_root_.Formalism.MainNotions.G.GLWeightTheory.fock_form_finset_sum (F - F') G (F.support ∪ F'.support) hsub,
+    _root_.Formalism.MainNotions.G.GLWeightTheory.fock_form_finset_sum F G (F.support ∪ F'.support) Finset.subset_union_left,
+    _root_.Formalism.MainNotions.G.GLWeightTheory.fock_form_finset_sum F' G (F.support ∪ F'.support) Finset.subset_union_right, ← Finset.sum_sub_distrib]
   exact Finset.sum_congr rfl fun m _ => by rw [MvPolynomial.coeff_sub]; ring
 
 theorem br_Aset_eq {L : Type} [DecidableEq L] {r : ℕ} [NeZero r] (sg : L → Bool) (S : Finset L) (th : ℤ) :
@@ -191,7 +178,7 @@ theorem br_proj_iff {L : Type} [DecidableEq L] {r : ℕ} [NeZero r] (sg : L → 
     have h1 : Formalism.MainNotions.G.fock (G - π G) (π F) = 0 := (h G hG).2.2.2 (π F) (h F hF).1 (h F hF).2.1
     have h2 : Formalism.MainNotions.G.fock (F - π F) (π G) = 0 := (h F hF).2.2.2 (π G) (h G hG).1 (h G hG).2.1
     rw [br_fock_sub_left, sub_eq_zero] at h1 h2
-    rw [br_fock_comm (π F) G, h1, br_fock_comm (π G) (π F), h2]
+    rw [_root_.Formalism.MainNotions.G.GLWeightTheory.fock_form_symm (π F) G, h1, _root_.Formalism.MainNotions.G.GLWeightTheory.fock_form_symm (π G) (π F), h2]
   · intro h F hF
     refine ⟨(h.1 F hF).1, (h.1 F hF).2.2, fun hU => h.2.1 F hF ⟨hF, hU⟩, fun G hG hGU => ?_⟩
     show Formalism.MainNotions.G.fock (F - π F) G = 0

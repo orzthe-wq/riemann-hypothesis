@@ -138,9 +138,9 @@ theorem isLattice_latAt {S T : HSp D} {B : Base S T} (hF : B.F.Good) (h : Bridge
     let g : (Fin S.rank → D.host.E) →ₗ[D.host.E] Module.Dual D.host.E W :=
       { toFun := fun x => { toFun := fun y => ∑ i, ∑ j, x i * S.gram i j * y.1 j
                             map_add' := by intros; simp [mul_add, Finset.sum_add_distrib]
-                            map_smul' := by intros; simp [mul_comm, mul_left_comm, mul_assoc, Finset.mul_sum] }
+                            map_smul' := by intros; simp [mul_left_comm, mul_assoc, Finset.mul_sum] }
         map_add' := by intros; ext y; simp [add_mul, Finset.sum_add_distrib]
-        map_smul' := by intros; ext y; simp [mul_comm, mul_left_comm, mul_assoc, Finset.mul_sum] }
+        map_smul' := by intros; ext y; simp [mul_assoc, Finset.mul_sum] }
     have hdim : Module.finrank D.host.E (Module.Dual D.host.E W) < Module.finrank D.host.E (Fin S.rank → D.host.E) := by
       rw [Subspace.dual_finrank_eq]
       exact Submodule.finrank_lt hW
@@ -170,7 +170,7 @@ theorem isLattice_latAt {S T : HSp D} {B : Base S T} (hF : B.F.Good) (h : Bridge
       simp only [map_zero, Pi.smul_apply, smul_eq_mul]
       calc
         0 = r * (∑ i, ∑ j, star (y i) * S.gram i j * v j) := by rw [hzy, mul_zero]
-        _ = ∑ i, ∑ j, star (y i) * S.gram i j * (r * v j) := by simp [Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]
+        _ = ∑ i, ∑ j, star (y i) * S.gram i j * (r * v j) := by simp [Finset.mul_sum, mul_comm, mul_assoc]
     obtain ⟨i, hi⟩ : ∃ i, v i ≠ 0 := by
       by_contra hn
       apply hv0

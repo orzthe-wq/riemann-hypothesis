@@ -180,7 +180,7 @@ theorem UpperTheory.Esk.elliptic_terms_contribution_proof : UpperTheory.Esk.B1a 
     unfold Dat.orb
     refine Finset.prod_congr rfl fun v _ => ?_
     rw [(hB4 (k v) (hyp.four v) _ (hTv v)).2, tr_r, det_r]
-  haveI : Fintype S := Fintype.ofFinite S
+  have : Fintype S := Fintype.ofFinite S
   have hcard : (0 : ℝ) < Fintype.card S := by exact_mod_cast Fintype.card_pos_iff.2 ⟨1⟩
   let c : ℝ := (Fintype.card S : ℝ)⁻¹
   have hcut : IsCut S (fun _ : D.Xs => c) := ⟨measurable_const, fun _ => inv_nonneg.2 hcard.le, fun _ => by

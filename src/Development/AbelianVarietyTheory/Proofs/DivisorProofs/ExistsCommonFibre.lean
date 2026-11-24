@@ -61,10 +61,7 @@ namespace GlobalTheory.Poinc.GalTrans
 
 open GlobalTheory.CechPic
 
-theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {f : A →+* B} {g : B →+* C} {h : A →+* C}
-    (e : g.comp f = h) : spMap g ≫ spMap f = spMap h := by
-  subst e
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
+alias sp_comp := _root_.GlobalTheory.ModelDescent.spMap_comp_eq
 
 theorem iso_iff {X Y : Scheme.{0}} {L : LB X} {M : LB Y} (hL : L.IsLB) (hM : M.IsLB) (φ : X ⟶ Y) :
     LBIso L (M.pull φ) ↔ cls L hL = pull φ (cls M hM) := by

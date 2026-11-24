@@ -102,10 +102,6 @@ theorem inv_mulVec (a : GL (Fin r) E) (v : Fin r → E) :
     ((a⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((a : Matrix (Fin r) (Fin r) E) *ᵥ v) = v := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
-theorem mulVec_inv (a : GL (Fin r) E) (v : Fin r → E) :
-    (a : Matrix (Fin r) (Fin r) E) *ᵥ (((a⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v) = v := by
-  rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
-
 variable [NumberField E]
 
 theorem mem_mapL {a : GL (Fin r) E} {L : Lt E r} {v : Fin r → E} :
@@ -121,7 +117,7 @@ theorem mem_mapL {a : GL (Fin r) E} {L : Lt E r} {v : Fin r → E} :
 variable [IsCMField E] {X : Data E r}
 
 theorem isUn_inv {a : GL (Fin r) E} (ha : IsUn X a) : IsUn X a⁻¹ := fun x y => by
-  rw [← ha, mulVec_inv, mulVec_inv]
+  rw [← ha, _root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec, _root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec]
 
 theorem isUn_mul {a b : GL (Fin r) E} (ha : IsUn X a) (hb : IsUn X b) : IsUn X (a * b) := fun x y => by
   rw [Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ha, hb]

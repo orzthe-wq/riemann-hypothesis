@@ -330,7 +330,7 @@ private lemma charpoly3 (M : Matrix (Fin 3) (Fin 3) κ) :
       C ((M 0 0 * M 1 1 - M 0 1 * M 1 0) + (M 0 0 * M 2 2 - M 0 2 * M 2 0) + (M 1 1 * M 2 2 - M 1 2 * M 2 1)) * X
       - C M.det := by
   rw [Matrix.charpoly, det_fin_three, det_fin_three]
-  simp [charmatrix_apply]
+  simp
   ring
 
 private lemma minor_ne {n k : ℕ} (y : Matrix (Fin n) (Fin n) κ)

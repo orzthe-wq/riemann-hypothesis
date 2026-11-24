@@ -64,14 +64,8 @@ section Ball
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
 lemma sigma_norm_le_one {p q : ℕ} {σ : K →+* K} (hp : ‖(p : K)‖ ≤ 1)
-    (hσ : IsFrobLift p q σ) (a : K) (ha : ‖a‖ ≤ 1) : ‖σ a‖ ≤ 1 := by
-  have h1 : ‖σ a - a ^ q‖ ≤ ‖(p : K)‖ := hσ a ha
-  have h2 : ‖a ^ q‖ ≤ 1 := by
-    rw [norm_pow]
-    simpa using pow_le_pow_of_le_one (norm_nonneg a) ha (Nat.zero_le q)
-  calc ‖σ a‖ = ‖(σ a - a ^ q) + a ^ q‖ := by rw [sub_add_cancel]
-    _ ≤ max ‖σ a - a ^ q‖ ‖a ^ q‖ := IsUltrametricDist.norm_add_le_max _ _
-    _ ≤ 1 := max_le (h1.trans hp) h2
+    (hσ : IsFrobLift p q σ) (a : K) (ha : ‖a‖ ≤ 1) : ‖σ a‖ ≤ 1 :=
+  frobenius_norm_le_one hσ hp ha
 
 lemma coeff_split (p q : ℕ) (hq : q ≠ 0) (σ : K →+* K) (f : PowerSeries K) (n : ℕ) :
     coeff n f = coeff n (f - (p : K)⁻¹ • (PowerSeries.map σ f).subst
@@ -283,6 +277,4 @@ theorem powCongr : Formalism.LT.PowCongr.{u, v} := by
 
 end Formalism.LT.CoeffP
 
-theorem Formalism.LT.CoeffBound_valid : Formalism.LT.CoeffBound.{u} := Formalism.LT.CoeffP.coeffBound
-
-theorem Formalism.LT.PowCongr_valid : Formalism.LT.PowCongr.{u, v} := Formalism.LT.CoeffP.powCongr
+alias Formalism.LT.PowCongr_valid := _root_.Formalism.LT.CoeffP.powCongr

@@ -62,12 +62,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 private theorem nh_loc : IsLocalRing 𝒪[k] := (inferInstance : IsDiscreteValuationRing 𝒪[k]).toIsLocalRing
 attribute [local instance] nh_loc
 
-private theorem nh_unif : valuation k (unif k : k) = uniformizer k := by
-  obtain ⟨x, hx⟩ := valuation_surjective (uniformizer k)
-  have h0 : x ≠ 0 := by
-    rintro rfl
-    exact uniformizer_pos.ne (by simpa using hx)
-  exact Classical.epsilon_spec (p := fun x : kˣ => valuation k (x : k) = uniformizer k) ⟨Units.mk0 x h0, hx⟩
+private alias nh_unif := _root_.UpperTheory.V.Hi.GlAx.unif_spec
 
 private theorem nh_pow (c : ℕ) (x : 𝒪[k]) :
     x ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ c ↔ valuation k (x : k) ≤ uniformizer k ^ c := by

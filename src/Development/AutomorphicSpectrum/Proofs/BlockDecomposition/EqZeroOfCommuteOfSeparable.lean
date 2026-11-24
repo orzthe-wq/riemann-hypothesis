@@ -280,7 +280,7 @@ theorem mem_perpD (d : GL (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) (y : 
   · rintro ⟨w, hw, rfl⟩
     simpa [Matrix.mulVec_mulVec, hdi] using hw
   · intro h
-    exact ⟨_, h, by simp [Matrix.mulVec_mulVec, hid]⟩
+    exact ⟨_, h, by simp [Matrix.mulVec_mulVec]⟩
 
 theorem perpD_bot (d : GL (Fin n) ℂ) : perpD cj d ⊥ = ⊤ :=
   eq_top_iff.2 fun y _ => (mem_perpD d _ y).2 (by rw [perp_bot]; trivial)
@@ -295,7 +295,7 @@ theorem perpD_top (d : GL (Fin n) ℂ) : perpD cj d ⊤ = ⊥ := by
     have h4 : star w ⬝ᵥ w = 0 := by simpa [dotProduct] using h2
     exact dotProduct_star_self_eq_zero.1 h4
   have hid : d.val * (d⁻¹ : GL (Fin n) ℂ).val = 1 := by simp
-  have : y = d.val *ᵥ w := by simp [hw, Matrix.mulVec_mulVec, hid]
+  have : y = d.val *ᵥ w := by simp [hw, Matrix.mulVec_mulVec]
   rw [this, h3]; simp
 
 theorem slin_mulVec_mem (d : GL (Fin n) ℂ) (A B : Submodule ℂ (Fin n → ℂ)) (X : Mx)
@@ -447,7 +447,7 @@ theorem quad_add (d : GL (Fin n) ℂ) (h1 : perpD cj d W₁ = W₂) (h2 : perpD 
   have e7 : X * Y = 0 := nil_mul_two hX hY
   have e8 : Y * X = 0 := two_mul_nil hY' hX
   have e9 : Y * Y = 0 := two_mul_nil hY' (two_mem hle hY hY')
-  simp only [quad, hadd, add_mul, mul_add, e1, e2, e3, e4, e5, e6, e7, e8, e9, add_zero, zero_add]
+  simp only [quad, hadd, add_mul, mul_add, e1, e2, e3, e4, e5, e6, e7, e8, e9, add_zero]
 
 theorem continuous_slin (d : GL (Fin n) ℂ) : Continuous (slin d) := by
   unfold slin

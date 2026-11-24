@@ -143,11 +143,7 @@ theorem isInt_orbZ_inv {K : Type} [CommRing K] (R : Subring K) (w : Point K)
     IsInt R (orbZ w (a * x, y * b)) ↔ IsInt R (orbZ w (x, y)) := by
   have h := Formalism.DoubleCosetMeasures.P.intInv K R w.1.sum _ _ (orbZ w (x, y)) a.2.1 b.2 ha.1 hb.1
   rw [← h]
-  have : orbZ w (a * x, y * b) =
-      ((a : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) * orbZ w (x, y) *
-        ((b : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) := by
-    simp only [orbZ, Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]
-  rw [this]
+  simp only [orbZ, Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]
 
 end Formalism.FourierDecayAlt.P.A5x4
 
@@ -180,8 +176,7 @@ theorem integral_points_finite : Formalism.FourierDecayAlt.A5.IntFinite := by
     (Formalism.DoubleCosetMeasures.P.isOpen_intSub R hL.isOpen _) (Formalism.DoubleCosetMeasures.P.isOpen_intSub R hL.isOpen _) ℝ f hinv hc).1
   refine key.subset ?_
   intro q hq
-  have hq' : IsInt R (orbZ w (q.1.out, q.2.out)) := hq
-  simp [f, hq']
+  simpa [f, rep] using hq
 
 theorem kernel_quotient_finite : Formalism.FourierDecayAlt.A5.KpFinite := by
   intro K _ _ _ R ψ hL w w'
@@ -192,8 +187,7 @@ theorem kernel_quotient_finite : Formalism.FourierDecayAlt.A5.KpFinite := by
   apply hq
   rw [if_neg]
   · simp
-  · intro hI
-    exact hcon ⟨hI.1, hI.2⟩
+  · exact fun hI => hcon ⟨hI.1, hI.2⟩
 
 end Formalism.FourierDecayAlt.P
 
@@ -220,9 +214,7 @@ theorem Kp_eq_sum {K : Type} [CommRing K] (R : Subring K) (ψ : AddChar K ℂ) (
     apply hq
     rw [if_neg]
     · simp
-    · intro hI
-      apply hcon
-      simp [hI.1, hI.2]
+    · exact fun hI => hcon (by simp [hI.1, hI.2])
 
 
 open Classical in
@@ -242,7 +234,7 @@ theorem BB_eq_sum {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRin
     have := (hL.selfDual 1).2 R.one_mem r hr
     simpa using this
   rw [Formalism.DoubleCosetMeasures.Final.bbNorm K R hL.isOpen w.1 w.2 ψ hψ μ₁ μ₂ h1 h2 C e lam
-    (Formalism.DoubleCosetMeasures.Final.suppCompact K R hL.isOpen hL.isCompact w.1 w.2 ψ C e lam),
+    (_root_.Formalism.DoubleCosetMeasures.P.suppCompact K R hL.isOpen hL.isCompact w.1 w.2 ψ C e lam),
     finsum_eq_sum_of_support_subset (s := h.toFinset)]
   · refine Finset.sum_congr rfl fun q hq => ?_
     have h1 : IsInt R (orbZ w (rep R q)) := by simpa using hq
@@ -408,8 +400,7 @@ theorem lamLin_mk_eq {n : ℕ} (Z : Matrix (Fin n) (Fin n) K) {v v' : Fin n → 
       · exact Submodule.zero_mem _
     · rw [Matrix.nonsing_inv_apply_not_isUnit _ hd]
       simp
-  rw [map_sub, sub_eq_zero] at h2
-  exact h2
+  simpa only [map_sub, sub_eq_zero] using h2
 
 theorem isoZZ_refl {n : ℕ} (Z : Matrix (Fin n) (Fin n) K) :
     LinearEquiv.refl R (coker R Z) ∈ isoZZ R Z Z :=
@@ -418,8 +409,7 @@ theorem isoZZ_refl {n : ℕ} (Z : Matrix (Fin n) (Fin n) K) :
 theorem isoZZ_symm {n n' : ℕ} {Z : Matrix (Fin n) (Fin n) K} {Z' : Matrix (Fin n') (Fin n') K}
     {φ : coker R Z ≃ₗ[R] coker R Z'} (h : φ ∈ isoZZ R Z Z') : φ.symm ∈ isoZZ R Z' Z := by
   refine ⟨by rw [← h.1]; simp, fun v' v hv => ?_⟩
-  have : φ (Submodule.Quotient.mk v) = Submodule.Quotient.mk v' := by rw [← hv]; simp
-  exact (h.2 v v' this).symm
+  exact (h.2 v v' (by rw [← hv]; simp)).symm
 
 theorem isoZZ_trans {n n' n'' : ℕ} {Z : Matrix (Fin n) (Fin n) K}
     {Z' : Matrix (Fin n') (Fin n') K} {Z'' : Matrix (Fin n'') (Fin n'') K}
@@ -427,8 +417,7 @@ theorem isoZZ_trans {n n' n'' : ℕ} {Z : Matrix (Fin n) (Fin n) K}
     (h : φ ∈ isoZZ R Z Z') (h' : φ' ∈ isoZZ R Z' Z'') : φ.trans φ' ∈ isoZZ R Z Z'' := by
   refine ⟨by simp [h.1, h'.1], fun v v'' hv => ?_⟩
   obtain ⟨v', hv'⟩ := Submodule.Quotient.mk_surjective _ (φ (Submodule.Quotient.mk v))
-  simp only [LinearEquiv.trans_apply] at hv
-  rw [← hv'] at hv
+  simp only [LinearEquiv.trans_apply, ← hv'] at hv
   rw [h'.2 v' v'' hv, h.2 v v' hv'.symm]
 
 theorem card_isoZZ_congr {n n' m m' : ℕ} {A : Matrix (Fin n) (Fin n) K}

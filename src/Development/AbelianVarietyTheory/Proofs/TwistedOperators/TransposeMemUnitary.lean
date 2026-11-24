@@ -59,15 +59,10 @@ namespace GlobalTheory.RealColAct
 
 variable {D : D7}
 
-theorem gramAt_of_gram_one {V : HSp D} (hV : HSpace.gram V = 1) (τ : D.what₂.Tau) : gramAt D V τ = 1 := by
-  unfold gramAt
-  rw [hV]
-  exact Matrix.map_one _ (map_zero _) (map_one _)
-
 theorem compAt_mem_unitary {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} (hV : HSpace.gram V = 1) (g : GA D V)
     (τ : D.what₂.Tau) : compAt θ τ (Formalism.L2.Theta.mt V g) ∈ Matrix.unitaryGroup (Fin V.rank) ℂ := by
-  have h := GlobalTheory.StdUnn.CartanMove.compAt_isom hθ V g τ
-  rw [gramAt_of_gram_one hV, Matrix.mul_one] at h
+  have h := _root_.GlobalTheory.RealWeil.compAt_unitary hθ V g τ
+  rw [_root_.GlobalTheory.AdForm.RatMove.gramAt_one hV, Matrix.mul_one] at h
   rw [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
   exact h
 
@@ -90,7 +85,7 @@ def realCol (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (hV : HSpace.gram V 
   map_mul' g h := by
     funext τ
     apply Subtype.ext
-    simp only [Subgroup.coe_mul, mul_inv_rev, GlobalTheory.StdUnn.CartanMove.compAt_mt_mul, Matrix.transpose_mul, Pi.mul_apply]
+    simp only [Subgroup.coe_mul, mul_inv_rev, _root_.GlobalTheory.RatAut.compAt_mul, Matrix.transpose_mul, Pi.mul_apply]
     rfl
 
 theorem realCol_apply (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (hV : HSpace.gram V = 1) (g : GinfC V) (τ : D.what₂.Tau) :

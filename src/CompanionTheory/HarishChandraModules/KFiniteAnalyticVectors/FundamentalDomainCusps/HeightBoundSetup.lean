@@ -176,7 +176,7 @@ theorem isCompact_inv_bdd (K : ℝ) : IsCompact {x : I.Ginf | ∀ v i j, ‖uMat
       refine IsCompact.of_isClosed_subset (s := (Set.univ.pi fun _ : Fin I.n => Set.univ.pi fun _ : Fin I.n =>
         Metric.closedBall (0 : ℂ) K : Set (Matrix (Fin I.n) (Fin I.n) ℂ))) this ?_ fun A hA i _ j _ =>
           mem_closedBall_zero_iff.2 (hA i j)
-      simp only [Set.setOf_forall]
+      simp only [Set.ofPred_forall]
       exact isClosed_iInter fun i => isClosed_iInter fun j =>
         isClosed_le (continuous_id.matrix_elem i j).norm continuous_const
     exact ((Formalism.REAL.isClosedEmbeddingMatrix I.n (I.ε v)).1.isCompact_preimage h2).inv

@@ -1,27 +1,24 @@
 module
 
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TprodMemDegLE
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TprodMemTensSpan
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterPartTensorSpan
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonIrreducibleQuotient
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TprodMemDegLE
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemSpanTprodOfCommuteAtEachPlace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirst
+public import Formalism.LocalRingCardinality.DataTheta
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarmonicHighestWeight
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicHomogeneousOfKType
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsGradedCompactStable
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeights
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlBlockFiniteDimModuleStructure
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestDegreeComponentInvariant
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirst
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelReal
+public import Mathlib.RingTheory.MvPolynomial
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.PiTensorProduct.Finite
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
@@ -38,6 +35,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,10 +45,368 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicHomogeneousOfKType
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsGradedCompactStable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeights
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlBlockFiniteDimModuleStructure
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockToSchwartzIntertwinesMetaplecticQuadratic
+import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.LinearAlgebra.PiTensorProduct.Finite
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterPartTensorSpan, Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonIrreducibleQuotient, Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemTensSpanOfKilled
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterPartTensorSpan =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterPartTensorSpan", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TprodMemTensSpan\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TprodMemDegLE\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemSpanTprodOfCommuteAtEachPlace\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirst\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.CoassocSimps\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped TensorProduct
+
+noncomputable section
+
+namespace GlobalTheory.KFixIrr.TensProj
+
+open MvPolynomial Formalism.BasicNotions.TH
+
+theorem atPl_eq_zero_of_common {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V]
+    (w : ι) (F : Set (Module.End ℂ V)) (g : Module.End ℂ V) (hg : ∀ v, (∀ L ∈ F, L v = 0) → g v = 0)
+    (T : ⨂[ℂ] _ : ι, V) (hT : ∀ L ∈ F, GlobalTheory.RealLift.atPl (V := fun _ : ι => V) w L T = 0) :
+    GlobalTheory.RealLift.atPl (V := fun _ : ι => V) w g T = 0 := by
+  let hd : DecidableEq ι := inferInstance
+  let contrML (w₀ : ι) (μ : ι → Module.Dual ℂ V) : MultilinearMap (RingHom.id ℂ) (fun _ : ι => V) V := {
+    toFun x := (∏ i ∈ Finset.univ.erase w₀, μ i (x i)) • x w₀
+    map_update_add' := by
+      intro inst x i a b
+      obtain rfl : inst = hd := Subsingleton.elim _ _
+      by_cases h : i = w₀
+      · subst h
+        have e : ∀ c, ∏ k ∈ Finset.univ.erase i, μ k (Function.update x i c k) =
+            ∏ k ∈ Finset.univ.erase i, μ k (x k) := fun c =>
+          Finset.prod_congr rfl fun k hk => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk)]
+        simp only [e, Function.update_self, smul_add]
+      · have hi : i ∈ Finset.univ.erase w₀ := Finset.mem_erase.2 ⟨h, Finset.mem_univ _⟩
+        have e : ∀ c, ∏ k ∈ Finset.univ.erase w₀, μ k (Function.update x i c k) =
+            μ i c * ∏ k ∈ (Finset.univ.erase w₀).erase i, μ k (x k) := fun c => by
+          rw [← Finset.mul_prod_erase _ _ hi, Function.update_self]
+          congr 1
+          exact Finset.prod_congr rfl fun k hk => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk)]
+        simp only [e, Function.update_of_ne (Ne.symm h), map_add (f := _), add_mul, add_smul]
+    map_update_smul' := by
+      intro inst x i c a
+      obtain rfl : inst = hd := Subsingleton.elim _ _
+      by_cases h : i = w₀
+      · subst h
+        have e : ∀ c, ∏ k ∈ Finset.univ.erase i, μ k (Function.update x i c k) =
+            ∏ k ∈ Finset.univ.erase i, μ k (x k) := fun c =>
+          Finset.prod_congr rfl fun k hk => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk)]
+        simp only [e, Function.update_self, RingHom.id_apply, smul_comm c]
+      · have hi : i ∈ Finset.univ.erase w₀ := Finset.mem_erase.2 ⟨h, Finset.mem_univ _⟩
+        have e : ∀ c, ∏ k ∈ Finset.univ.erase w₀, μ k (Function.update x i c k) =
+            μ i c * ∏ k ∈ (Finset.univ.erase w₀).erase i, μ k (x k) := fun c => by
+          rw [← Finset.mul_prod_erase _ _ hi, Function.update_self]
+          congr 1
+          exact Finset.prod_congr rfl fun k hk => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk)]
+        simp only [e, Function.update_of_ne (Ne.symm h), map_smul, smul_eq_mul, mul_assoc, smul_smul, RingHom.id_apply]
+
+  }
+  let contr (w₀ : ι) (μ : ι → Module.Dual ℂ V) : (⨂[ℂ] _ : ι, V) →ₗ[ℂ] V :=
+    PiTensorProduct.lift (contrML w₀ μ)
+
+  have contr_tprod (w₀ : ι) (μ : ι → Module.Dual ℂ V) (x : ι → V) :
+      contr w₀ μ (PiTensorProduct.tprod ℂ x) = (∏ i ∈ Finset.univ.erase w₀, μ i (x i)) • x w₀ := by
+    change PiTensorProduct.lift (contrML w₀ μ) (PiTensorProduct.tprod ℂ x) = _
+    rw [PiTensorProduct.lift.tprod]; rfl
+
+  have dual_contr (w₀ : ι) (μ : ι → Module.Dual ℂ V) (ν : Module.Dual ℂ V) (T : ⨂[ℂ] _ : ι, V) :
+      ν (contr w₀ μ T) =
+        PiTensorProduct.dualDistrib (PiTensorProduct.tprod ℂ (Function.update μ w₀ ν)) T := by
+    induction T using PiTensorProduct.induction_on with
+    | smul_tprod r x =>
+      rw [map_smul, map_smul, map_smul, contr_tprod, PiTensorProduct.dualDistrib_apply, map_smul,
+        ← Finset.mul_prod_erase _ _ (Finset.mem_univ w₀), Function.update_self, smul_eq_mul, smul_eq_mul, smul_eq_mul]
+      congr 1
+      rw [mul_comm]
+      congr 1
+      exact Finset.prod_congr rfl fun k hk => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk)]
+    | add a b ha hb => rw [map_add (f := _), map_add (f := _), ha, hb, map_add (f := _)]
+
+  have contr_atPl (w₀ : ι) (μ : ι → Module.Dual ℂ V) (L : Module.End ℂ V) (T : ⨂[ℂ] _ : ι, V) :
+      contr w₀ μ (GlobalTheory.RealLift.atPl (V := fun _ : ι => V) w₀ L T) = L (contr w₀ μ T) := by
+    induction T using PiTensorProduct.induction_on with
+    | smul_tprod r x =>
+      rw [map_smul, map_smul, map_smul, GlobalTheory.RealLift.atPl, PiTensorProduct.map_tprod, contr_tprod, contr_tprod,
+        map_smul, Function.update_self, L.map_smul]
+      congr 2
+      exact Finset.prod_congr rfl fun k hk => by
+        simp [Function.update_of_ne (Finset.ne_of_mem_erase hk)]
+    | add a b ha hb => simp only [map_add (f := _), ha, hb]
+  apply GlobalTheory.PiTensorCommute.eq_zero_of_forall_dualDistrib
+  intro f
+  have hv : g (contr w f T) = 0 := hg _ fun L hL => by
+    rw [← contr_atPl, hT L hL, map_zero]
+  have h := dual_contr w f (f w) (GlobalTheory.RealLift.atPl (V := fun _ : ι => V) w g T)
+  rw [contr_atPl, hv, map_zero, Function.update_eq_self] at h
+  exact h.symm
+
+theorem atPl_sub_smul_one {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V]
+    (w : ι) (L : Module.End ℂ V) (c : ℂ) (T : ⨂[ℂ] _ : ι, V) :
+    GlobalTheory.RealLift.atPl (V := fun _ : ι => V) w (L - c • 1) T =
+      GlobalTheory.RealLift.atPl (V := fun _ : ι => V) w L T - c • T := by
+  have e1 : L - c • 1 = L + (-c) • (1 : Module.End ℂ V) := by rw [neg_smul, sub_eq_add_neg]
+  have e2 : GlobalTheory.RealLift.atPl (V := fun _ : ι => V) w (1 : Module.End ℂ V) = 1 := by
+    unfold GlobalTheory.RealLift.atPl
+    have : Function.update (fun i : ι => (LinearMap.id : V →ₗ[ℂ] V)) w (1 : Module.End ℂ V) =
+        fun _ => LinearMap.id := Function.update_eq_self_iff.2 rfl
+    rw [this, PiTensorProduct.map_id]; rfl
+  rw [e1]
+  unfold GlobalTheory.RealLift.atPl at e2 ⊢
+  rw [PiTensorProduct.map_update_add, PiTensorProduct.map_update_smul, e2]
+  simp [sub_eq_add_neg]
+
+end GlobalTheory.KFixIrr.TensProj
+
+namespace GlobalTheory.KFixIrr.TensProj
+
+open MvPolynomial Formalism.BasicNotions.TH
+
+theorem exists_proj_of_graded {σ : Type} (K : Submodule ℂ (MvPolynomial σ ℂ))
+    (hK : ∀ f ∈ K, ∀ n, homogeneousComponent n f ∈ K) :
+    ∃ p : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial σ ℂ, (∀ f, p f ∈ K) ∧ (∀ f ∈ K, p f = f) ∧
+      ∀ f, (p f).totalDegree ≤ f.totalDegree := by
+  classical
+  have hex : ∀ n : ℕ, ∃ g : MvPolynomial σ ℂ →ₗ[ℂ] ↥(K ⊓ homogeneousSubmodule σ ℂ n),
+      g ∘ₗ (K ⊓ homogeneousSubmodule σ ℂ n).subtype = LinearMap.id := fun n =>
+    LinearMap.exists_leftInverse_of_injective _ (Submodule.ker_subtype _)
+  choose g hg using hex
+  let q : ℕ → MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial σ ℂ := fun n =>
+    (K ⊓ homogeneousSubmodule σ ℂ n).subtype ∘ₗ g n ∘ₗ homogeneousComponent n
+  have hq0 : ∀ f : MvPolynomial σ ℂ, ∀ N, f.totalDegree < N →
+      ∑ i ∈ Finset.range (f.totalDegree + 1), q i f = ∑ i ∈ Finset.range N, q i f := by
+    intro f N hN
+    apply Finset.sum_subset (fun i hi => by simp only [Finset.mem_range] at hi ⊢; omega)
+    intro i _ hi
+    have : f.totalDegree < i := by simp at hi; omega
+    simp [q, homogeneousComponent_eq_zero _ _ this]
+  let p : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial σ ℂ :=
+    { toFun := fun f => ∑ i ∈ Finset.range (f.totalDegree + 1), q i f
+      map_add' := fun f f' => by
+        rw [hq0 f (max (max f.totalDegree f'.totalDegree) (f + f').totalDegree + 1) (by omega),
+          hq0 f' (max (max f.totalDegree f'.totalDegree) (f + f').totalDegree + 1) (by omega),
+          hq0 (f + f') (max (max f.totalDegree f'.totalDegree) (f + f').totalDegree + 1) (by omega),
+          ← Finset.sum_add_distrib]
+        simp only [map_add (f := _)]
+      map_smul' := fun c f => by
+        simp only [RingHom.id_apply]
+        rw [hq0 f (max f.totalDegree (c • f).totalDegree + 1) (by omega),
+          hq0 (c • f) (max f.totalDegree (c • f).totalDegree + 1) (by omega), Finset.smul_sum]
+        simp only [map_smul] }
+  refine ⟨p, ?_, ?_, ?_⟩
+  · intro f
+    show ∑ i ∈ Finset.range (f.totalDegree + 1), q i f ∈ K
+    exact Submodule.sum_mem _ fun i _ => (g i (homogeneousComponent i f)).2.1
+  · intro f hf
+    show ∑ i ∈ Finset.range (f.totalDegree + 1), q i f = f
+    conv_rhs => rw [← sum_homogeneousComponent f]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    have hm : homogeneousComponent i f ∈ K ⊓ homogeneousSubmodule σ ℂ i :=
+      ⟨hK f hf i, homogeneousComponent_isHomogeneous i f⟩
+    have := congrArg (fun h => ((h ⟨_, hm⟩ : ↥(K ⊓ homogeneousSubmodule σ ℂ i)) : MvPolynomial σ ℂ)) (hg i)
+    simpa [q] using this
+  · intro f
+    show (∑ i ∈ Finset.range (f.totalDegree + 1), q i f).totalDegree ≤ f.totalDegree
+    refine (totalDegree_finsetSum _ _).trans (Finset.sup_le fun i hi => ?_)
+    have hi' : i ≤ f.totalDegree := by simp at hi; omega
+    have hh : (q i f).IsHomogeneous i := (g i (homogeneousComponent i f)).2.2
+    by_cases h0 : q i f = 0
+    · rw [h0, totalDegree_zero]; exact Nat.zero_le _
+    · rw [hh.totalDegree h0]; exact hi'
+
+theorem homogeneousComponent_fockAct1 {P Q R S : ℕ} (X : Mat P Q) (hX : IsKC X) (n : ℕ) (f : Pol P Q R S) :
+    homogeneousComponent n (fockAct1 P Q R S X f) = fockAct1 P Q R S X (homogeneousComponent n f) := by
+  classical
+  have hh : ∀ i, fockAct1 P Q R S X (homogeneousComponent i f) ∈ homogeneousSubmodule (Ix P Q × Ix R S) ℂ i :=
+    fun i => GlobalTheory.FockAlg.MinFirst.kStable_homog i X hX _ (homogeneousComponent_isHomogeneous i f)
+
+  conv_lhs => rw [← sum_homogeneousComponent f, map_sum, map_sum]
+  simp_rw [homogeneousComponent_of_mem (hh _)]
+  rw [Finset.sum_ite_eq]
+  split_ifs with h
+  · rfl
+  · have : f.totalDegree < n := by simp at h; omega
+    rw [homogeneousComponent_eq_zero _ _ this, map_zero]
+
+theorem homogeneousComponent_mem_chiOne {P Q R S : ℕ} (x : ℚ) (f : Pol P Q R S) (hf : f ∈ chiOne P Q R S x) (n : ℕ) :
+    homogeneousComponent n f ∈ chiOne P Q R S x := by
+  rw [mem_chiOne] at hf ⊢
+  intro X hX
+  rw [← homogeneousComponent_fockAct1 X hX, hf X hX, map_smul]
+
+end GlobalTheory.KFixIrr.TensProj
+
+namespace GlobalTheory.KFixIrr
+
+open MvPolynomial Formalism.BasicNotions.TH TensProj
+
+theorem mem_span_tprod_chiOne : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P Q R S : ℕ) (x : ι → ℚ) (m : ℕ)
+    (T : ⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S), T ∈ GlobalTheory.KFixIrr.chiPart ι P Q R S x ⊓ GlobalTheory.KFixIrr.degLE ι P Q R S m →
+    T ∈ Submodule.span ℂ {U | ∃ g : ι → Formalism.BasicNotions.TH.Pol P Q R S, (∀ w, g w ∈ GlobalTheory.KFixIrr.chiOne P Q R S (x w)) ∧
+      ∑ w, (g w).totalDegree ≤ m ∧ U = PiTensorProduct.tprod ℂ g} := by
+  intro ι _ _ P Q R S x m T hT
+  classical
+  obtain ⟨hchi, hdeg⟩ := Submodule.mem_inf.1 hT
+  have hex : ∀ w, ∃ p : Pol P Q R S →ₗ[ℂ] Pol P Q R S, (∀ f, p f ∈ chiOne P Q R S (x w)) ∧
+      (∀ f ∈ chiOne P Q R S (x w), p f = f) ∧ ∀ f, (p f).totalDegree ≤ f.totalDegree := fun w =>
+    exists_proj_of_graded _ (homogeneousComponent_mem_chiOne (x w))
+  choose p hpK hpid hpdeg using hex
+
+  have hfix : ∀ w, GlobalTheory.RealLift.atPl (V := fun _ : ι => Pol P Q R S) w (p w) T = T := by
+    intro w
+    have h0 := atPl_eq_zero_of_common w
+      {L | ∃ X : Mat P Q, IsKC X ∧ L = fockAct1 P Q R S X - ((x w : ℂ) * X.trace) • 1}
+      (p w - 1) (fun v hv => by
+        have hv' : v ∈ chiOne P Q R S (x w) := by
+          rw [mem_chiOne]
+          intro X hX
+          have := hv _ ⟨X, hX, rfl⟩
+          rwa [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero] at this
+        rw [LinearMap.sub_apply, Module.End.one_apply, hpid w v hv', sub_self])
+      T (by
+        rintro L ⟨X, hX, rfl⟩
+        rw [atPl_sub_smul_one, (mem_chiPart x T).1 hchi w X hX, sub_self])
+    have h1 := atPl_sub_smul_one w (p w) 1 T
+    simp only [one_smul] at h1
+    rw [h0] at h1
+    exact (sub_eq_zero.1 h1.symm)
+
+  have hmap : ∀ s : Finset ι,
+      PiTensorProduct.map (fun w => if w ∈ s then p w else (LinearMap.id : Pol P Q R S →ₗ[ℂ] Pol P Q R S)) T = T := by
+    intro s
+    induction s using Finset.induction_on with
+    | empty => simp [PiTensorProduct.map_id]
+    | insert a s ha ih =>
+      have e : (fun w => if w ∈ insert a s then p w else (LinearMap.id : Pol P Q R S →ₗ[ℂ] Pol P Q R S)) =
+          fun w => (Function.update (fun _ => (LinearMap.id : Pol P Q R S →ₗ[ℂ] Pol P Q R S)) a (p a) w) ∘ₗ
+            (if w ∈ s then p w else LinearMap.id) := by
+        funext w
+        by_cases hw : w = a
+        · subst hw
+          simp [ha]
+        · simp [hw]
+      rw [e, PiTensorProduct.map_comp, LinearMap.comp_apply, ih]
+      exact hfix a
+  have hT' : PiTensorProduct.map p T = T := by
+    have := hmap Finset.univ
+    simpa using this
+  rw [← hT']
+
+  have hle : degLE ι P Q R S m ≤ (Submodule.span ℂ {U | ∃ g : ι → Formalism.BasicNotions.TH.Pol P Q R S,
+      (∀ w, g w ∈ GlobalTheory.KFixIrr.chiOne P Q R S (x w)) ∧ ∑ w, (g w).totalDegree ≤ m ∧
+        U = PiTensorProduct.tprod ℂ g}).comap (PiTensorProduct.map p) := by
+    refine Submodule.span_le.2 ?_
+    rintro U ⟨f, hf, rfl⟩
+    simp only [SetLike.mem_coe, Submodule.mem_comap, PiTensorProduct.map_tprod]
+    exact Submodule.subset_span ⟨fun w => p w (f w), fun w => hpK w _,
+      (Finset.sum_le_sum fun w _ => hpdeg w (f w)).trans hf, rfl⟩
+  exact hle hdeg
+
+end GlobalTheory.KFixIrr
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterPartTensorSpan =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonIrreducibleQuotient =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonIrreducibleQuotient", "h": "module\n\npublic import Formalism.LocalRingCardinality.DataTheta\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.IsFockIPOfFockData\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
+
+open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
+open GlobalTheory.FockAlg (genSub)
+
+noncomputable section
+
+namespace GlobalTheory.CommonQuot
+
+variable {p q : ℕ}
+
+section General
+
+variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
+
+theorem mem_hwSub' (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (μ : Ix p q → ℚ) (v : V) :
+    v ∈ hwSub act μ ↔ (∀ a, act (Eab a a) v - ((μ a : ℚ) : ℂ) • v = 0) ∧
+      ∀ a b, posC a b → act (Eab a b) v = 0 := by
+  simp only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker,
+    LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply]
+
+theorem isKC_diag' (a : Ix p q) : IsKC (Eab a a) := by
+  intro c d h
+  rw [Eab, Matrix.single_apply, ite_eq_right]
+  rintro ⟨rfl, rfl⟩
+  cases a <;> simp [sameBlock] at h
+
+theorem isKC_pos' {a b : Ix p q} (hab : posC a b) : IsKC (Eab a b) := by
+  intro c d h
+  rw [Eab, Matrix.single_apply, ite_eq_right]
+  rintro ⟨rfl, rfl⟩
+  cases a <;> cases b <;> simp_all [sameBlock, posC]
+
+theorem map_hw {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[ℂ] Module.End ℂ V'}
+    (g : V →ₗ[ℂ] V') (hg : ∀ Z v, g (a Z v) = b Z (g v)) {μ : Ix p q → ℚ} {v : V}
+    (hv : v ∈ hwSub a μ) : g v ∈ hwSub b μ := by
+  rw [mem_hwSub'] at hv ⊢
+  refine ⟨fun c => ?_, fun c d h => ?_⟩
+  · rw [← hg, ← map_smul, ← map_sub, hv.1 c, map_zero]
+  · rw [← hg, hv.2 c d h, map_zero]
+
+theorem map_wts {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[ℂ] Module.End ℂ V'}
+    (g : V →ₗ[ℂ] V') (hg : ∀ Z v, g (a Z v) = b Z (g v)) {x : V}
+    (hx : x ∈ ⨆ μ : Ix p q → ℚ, wtSub a μ) : g x ∈ ⨆ μ : Ix p q → ℚ, wtSub b μ := by
+  refine Submodule.iSup_induction _ (motive := fun v => g v ∈ _) hx ?_ (by simp) ?_
+  · intro μ y hy
+    refine Submodule.mem_iSup_of_mem μ ?_
+    simp only [wtSub, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
+      LinearMap.smul_apply, LinearMap.id_apply] at hy ⊢
+    intro c
+    rw [← hg, ← map_smul, ← map_sub, hy c, map_zero]
+  · intro x y hx hy
+    rw [map_add]; exact add_mem hx hy
+
+end General
+
+section Constructions
+
+end Constructions
+
+section Max
+
+end Max
+
+section Main
+
+end Main
+
+end GlobalTheory.CommonQuot
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonIrreducibleQuotient =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemTensSpanOfKilled =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemTensSpanOfKilled", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TprodMemDegLE\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TprodMemTensSpan\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterPartTensorSpan\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCommonIrreducibleQuotient\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarmonicHighestWeight\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicHomogeneousOfKType\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockHarmonicsGradedCompactStable\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeights\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlBlockFiniteDimModuleStructure\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestDegreeComponentInvariant\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.MinFirst\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKernelReal\npublic import Mathlib.RingTheory.MvPolynomial\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockToSchwartzIntertwinesMetaplecticQuadratic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.PiTensorProduct.Finite\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.CoassocSimps\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -236,7 +592,7 @@ theorem mem_tensSpan_of_killed (F : ι → Set (Module.End ℂ V)) (A : ι → S
         by_cases hw : w = a
         · subst hw
           simp [ha]
-        · simp [hw, Function.update_of_ne hw]
+        · simp [hw]
       rw [e, PiTensorProduct.map_comp, LinearMap.comp_apply, ih]
       exact hfix a
   have hT' : PiTensorProduct.map p T = T := by
@@ -352,7 +708,7 @@ theorem exists_harm (q : (⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S
       | empty => exact ⟨f, by simp, rfl⟩
       | insert w s hws ih =>
         obtain ⟨g, hg, e⟩ := ih
-        obtain ⟨h, hh, e'⟩ := GlobalTheory.HarmLift.lemA P Q R S Z (q ∘ₗ intersection_update_fsHerm_neg_one g w) (fun X hX v => by
+        obtain ⟨h, hh, e'⟩ := _root_.GlobalTheory.FockAlg.HarmLift.exists_harm2_rep P Q R S Z (q ∘ₗ intersection_update_fsHerm_neg_one g w) (fun X hX v => by
           rw [LinearMap.comp_apply, ← atPl_tprod_update]; exact h1 w X hX _) (g w)
         refine ⟨Function.update g w h, fun i hi => ?_, ?_⟩
         · by_cases hiw : i = w
@@ -360,7 +716,7 @@ theorem exists_harm (q : (⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S
           · rw [Function.update_of_ne hiw]; exact hg i ((Finset.mem_insert.1 hi).resolve_left hiw)
         · rw [← e, ← position_self g w, ← position_apply]; exact e'
     obtain ⟨g, hg, e⟩ := key Finset.univ
-    choose H fH hH hHh _ sH using fun w => GlobalTheory.HarmLift.lemB P Q R S (g w) (hg w (Finset.mem_univ w))
+    choose H fH hH hHh _ sH using fun w => _root_.GlobalTheory.FockAlg.fin_harm P Q R S (g w) (hg w (Finset.mem_univ w))
     refine ⟨tensSpan H, tensSpan_fin H, fun w Y hY T hT => atPl_tensSpan w (sH w Y hY) hT,
       tensSpan_mono fun w v hv => Submodule.subset_span (hHh w v hv), r • PiTensorProduct.tprod ℂ g,
       Submodule.smul_mem _ _ (tprod_mem_tensSpan _ _ hH), by rw [map_smul, map_smul, e]⟩
@@ -466,3 +822,6 @@ end Fock
 end GlobalTheory.DegKeep
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemTensSpanOfKilled =====

@@ -284,7 +284,7 @@ theorem exists_unit_frame (X : Data E r) {x b : Frame X.Ψ r} (hb : b ∈ Bor X.
           exact Submodule.zero_mem _
       · funext j
         simp only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, col, mat, lact, rmul,
-          Matrix.of_apply, Matrix.mul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hg,
+          Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hg,
           mul_comm]
         rfl) a
   refine ⟨conj u, by rw [Complex.norm_conj, hu], fun v => ?_⟩

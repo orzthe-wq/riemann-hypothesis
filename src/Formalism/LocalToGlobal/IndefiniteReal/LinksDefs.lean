@@ -160,17 +160,14 @@ theorem linInd (s : Bool) {ι : Type} [Fintype ι] {v : ι → E} (h : LinearInd
     LinearIndependent ℂ fun i => mk s (v i) := by
   rw [Fintype.linearIndependent_iff] at h ⊢
   intro g hg i
-  have h2 := h (fun i => cj s (g i)) hg i
-  have h3 := congrArg (cj s) h2
-  rwa [cj_cj, map_zero] at h3
+  simpa [cj_cj, map_zero] using congrArg (cj s) (h (fun i => cj s (g i)) hg i)
 
 theorem span_top (s : Bool) {ι : Type} [Fintype ι] {v : ι → E} (h : Submodule.span ℂ (Set.range v) = ⊤) :
     Submodule.span ℂ (Set.range fun i => mk s (v i)) = ⊤ := by
   have h1 : Set.range (fun i => mk s (v i)) = (mkL s E) '' Set.range v := by
     rw [← Set.range_comp]; rfl
   rw [h1, ← Submodule.map_span, h, Submodule.map_top, LinearMap.range_eq_top]
-  intro x
-  exact ⟨out x, rfl⟩
+  exact fun x => ⟨out x, rfl⟩
 
 end Tw
 
@@ -409,8 +406,7 @@ variable (D) in
 abbrev Vc (i : Fin D.R.m) : HSp D := D.sp.V ((i : ℕ) + 1)
 
 theorem r_le_Y (j : ℕ) : D.R.r ≤ (Yc D j).rank := by
-  show D.R.r ≤ (D.sp.Y (min j D.R.m)).rank
-  rw [D.sp.Y_rank _ (min_le_right _ _)]
+  rw [show (Yc D j).rank = D.R.r + _ from D.sp.Y_rank _ (min_le_right _ _)]
   exact Nat.le_add_right _ _
 
 theorem r_le_X : D.R.r ≤ D.sp.X'.rank := by
@@ -418,12 +414,10 @@ theorem r_le_X : D.R.r ≤ D.sp.X'.rank := by
   exact Nat.le_add_right _ _
 
 theorem r_le_rank_Wc (i : Fin D.R.m) : D.R.r ≤ (Wc D i).rank := by
-  show D.R.r ≤ (D.sp.W ((i : ℕ) + 1)).rank
-  rw [D.sp.W_rank _ (Nat.succ_pos _) i.2]
+  rw [show (Wc D i).rank = D.R.r from D.sp.W_rank _ (Nat.succ_pos _) i.2]
 
 theorem r_le_V (i : Fin D.R.m) : D.R.r ≤ (Vc D i).rank := by
-  show D.R.r ≤ (D.sp.V ((i : ℕ) + 1)).rank
-  rw [D.sp.V_rank _ (Nat.succ_pos _) i.2]
+  rw [show (Vc D i).rank = D.R.r + _ from D.sp.V_rank _ (Nat.succ_pos _) i.2]
   exact Nat.le_add_right _ _
 
 

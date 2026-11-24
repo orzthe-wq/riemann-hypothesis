@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeVOperatorPolynomialGrowthQExpansionStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoeffHeckeVOperatorPolynomialGrowthQExpansion
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -71,7 +71,7 @@ theorem Vo_level : ∀ (k L l : ℕ) (χ : ℤ → ℂ) (a : ℕ → ℂ), 0 < l
   intro k L l χ a hl
   have key : MF k L χ a → MF k (L * l) χ (Vo l a) := by
     rintro ⟨hP, hI⟩
-    obtain ⟨hP', hq⟩ := GlobalTheory.T.coeffHeckeVOperator_polynomialGrowth_qExpansion l a hl hP
+    obtain ⟨hP', hq⟩ := _root_.GlobalTheory.EisM.Vo_polyB_qs l a hl hP
     refine ⟨hP', ?_⟩
     intro γ hγ τ
     obtain ⟨m, hm⟩ := hγ
@@ -88,20 +88,20 @@ theorem Vo_level : ∀ (k L l : ℕ) (χ : ℤ → ℂ) (a : ℕ → ℂ), 0 < l
       simp only [scaleH, UpperHalfPlane.coe_mk, coe_sl_apply]
       have hd := denom_sl_ne γ τ
       rw [hc] at hd ⊢
-      simp only [γ', Matrix.SpecialLinearGroup.coe_mk, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
-        Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]
+      simp only [γ', Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+        Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one]
       push_cast
       have hd2 : (L : ℂ) * m * (l * (τ : ℂ)) + ((γ 1 1 : ℤ) : ℂ) ≠ 0 := by
         convert hd using 1; ring
       field_simp
     rw [hq (γ • τ) (scaleH l hl (γ • τ)) rfl, hq τ (scaleH l hl τ) rfl, ← e1, hI γ' h1]
-    simp only [γ', Matrix.SpecialLinearGroup.coe_mk, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
-        Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, scaleH, UpperHalfPlane.coe_mk]
+    simp only [γ', Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+        Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, scaleH, UpperHalfPlane.coe_mk]
     rw [hc]; push_cast; ring_nf
   refine ⟨key, ?_⟩
   rintro ⟨hM, C, hC⟩
   refine ⟨key hM, C, fun τ => ?_⟩
-  obtain ⟨_, hq⟩ := GlobalTheory.T.coeffHeckeVOperator_polynomialGrowth_qExpansion l a hl hM.1
+  obtain ⟨_, hq⟩ := _root_.GlobalTheory.EisM.Vo_polyB_qs l a hl hM.1
   rw [hq τ (scaleH l hl τ) rfl]
   have him : (scaleH l hl τ).im = l * τ.im := by
     change ((l:ℂ) * (τ:ℂ)).im = (l:ℝ) * (τ:ℂ).im

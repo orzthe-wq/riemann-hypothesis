@@ -48,6 +48,15 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.Mem.An
 
+/-- **Jutila's zero-density theorem** for Dirichlet L-functions, in the form used here:
+for any `ε > 0`, there exists a constant `c` such that for all `4 / 5 ≤ α ≤ 1` and all
+`Q, T ≥ 1`, the number of zeros `ρ = β + iγ` of all primitive Dirichlet L-functions with
+conductor at most `Q` satisfying `β ≥ α` and `|γ| ≤ T` is bounded by
+`c * (Q ^ 2 * T) ^ ((2 + ε) * (1 - α))`.
+
+Proposed reference:
+[M. Jutila, *Zero-density estimates for L-functions* (Theorem 1, p. 55)][jutila1977], which proves
+the estimate `N(α, T, Q) ≪ (Q² T)^((2 + ε)(1 - α))` for `4/5 ≤ α ≤ 1`. -/
 def Jutila : Prop :=
   ∀ ε : ℝ, 0 < ε → ∃ c : ℝ, ∀ α Q T : ℝ, 4 / 5 ≤ α → α ≤ 1 → 1 ≤ Q → 1 ≤ T →
     (({p : (Σ q : ℕ, DirichletCharacter ℂ (q + 1)) × ℂ | 1 ≤ p.1.1 ∧ ((p.1.1 + 1 : ℕ) : ℝ) ≤ Q ∧ p.1.2.IsPrimitive ∧

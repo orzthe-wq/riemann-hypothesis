@@ -54,7 +54,7 @@ namespace GlobalTheory.BSP.BK
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l}
 
 theorem X_pow_natDegree_mem_lE (bk : BK K) : (X : bk.S) ^ bk.Ep.natDegree ∈ bk.J := by
-  apply GlobalTheory.BSP.BK.X_pow_natDegree_mem_J <;> assumption
+  apply GlobalTheory.BSP.BK.X_pow_natDegree_mem_J
 
 theorem E_mem_span_l_X (bk : BK K) : bk.E ∈ Ideal.span {(l : bk.S)} ⊔ Ideal.span {(X : bk.S)} := by
   obtain ⟨w, hw⟩ := bk.coeff_zero

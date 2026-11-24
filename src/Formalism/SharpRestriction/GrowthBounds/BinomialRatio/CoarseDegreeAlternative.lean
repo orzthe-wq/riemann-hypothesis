@@ -250,7 +250,6 @@ theorem coarse_degree_alternative (hH : 1 ≤ H) (h : Std C0 Cde CE1 CE2 H X) (j
     calc be X C0 ≤ X.de C0 Cde / 2 - 18 * X.N1 * X.La C0 / X.k := this
       _ = _ := by ring
   have hde0 : 0 ≤ X.de C0 Cde := by linarith [h.eps0]
-  have hab0 : 0 < (X.a : ℝ) / X.b' := div_pos h.apos h.bpos
   have hk0 : 0 < X.k := by linarith [h.k5]
   constructor
   · intro hi

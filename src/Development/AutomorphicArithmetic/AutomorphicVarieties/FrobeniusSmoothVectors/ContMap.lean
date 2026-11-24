@@ -438,7 +438,7 @@ theorem UpperTheory.V.Fr.wpres :
         have := SetLike.GradedMul.mul_mem (BP b b.2) hx
         rw [zero_add] at this
         have hbx : ((b • x : S.A) : S.R) = (b : S.R) * (x : S.R) := by
-          first | rfl | simp [Algebra.smul_def] | simp [Subalgebra.smul_def]
+          first | rfl
         rw [hbx]
         exact this
     · intro ha

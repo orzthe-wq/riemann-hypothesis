@@ -1,8 +1,14 @@
 module
 
+public import Mathlib.RingTheory.Flat.Basic
+public import Mathlib.RingTheory.LocalRing.MaximalIdeal.Defs
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatCokerOfInjectiveModMaximalIdeal
+public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsFiniteProjectiveComplexQuasiIso
+public import Mathlib.LinearAlgebra.Dual.BaseChange
+public import Mathlib.RingTheory.RegularLocalRing.Defs
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExactDualMapOfExactFibresOfIsRegularLocalRing
 public import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing
 public import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff
-public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.NonemptyPerfectSectionsComplexOfSmoothProj
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.TrivBasicOpenOfTrivFibre
@@ -11,15 +17,16 @@ public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.Cycli
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPerfectFreeFiniteComplexStatement
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatClosedSubschemeFiniteOverLocalRingStatement
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatKernelPolarisationCosetsOverDVR
-public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatQuotientOfEquivCokerDualMapOfExactFibresStatement
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.InKIffTrivialTwist
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.StalkOfSmoothLocalStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -31,7 +38,6 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -40,7 +46,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -53,9 +58,207 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.Henselian
+import Mathlib.Tactic.Linter.Style
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.TangentLinearity.ConstPullback
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatCokerOfComplexExactModMaximalIdeal, Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatQuotientOfEquivCokerDualMapOfExactFibres, Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LineBundleKernelFlatOfFiniteNoetherianLocal
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatCokerOfComplexExactModMaximalIdeal =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatCokerOfComplexExactModMaximalIdeal", "h": "module\n\npublic import Mathlib.RingTheory.Flat.Basic\npublic import Mathlib.RingTheory.LocalRing.MaximalIdeal.Defs\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatCokerOfInjectiveModMaximalIdeal\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory CategoryTheory.Limits TensorProduct
+
+namespace GlobalTheory
+
+theorem flat_coker_of_complex_exact_mod_maximalIdeal : ∀ (V A : Type) [CommRing V] [IsNoetherianRing V] [IsLocalRing V] [CommRing A] [IsNoetherianRing A] [IsLocalRing A] [Algebra V A] [IsLocalHom (algebraMap V A)] (D : ℕ → Type) [∀ i, AddCommGroup (D i)] [∀ i, Module A (D i)] [∀ i, Module.Finite A (D i)] [∀ i, Module V (D i)] [∀ i, IsScalarTower V A (D i)] [∀ i, Module.Flat V (D i)] (d : ∀ i, D (i + 1) →ₗ[A] D i), (∀ i x, d i (d (i + 1) x) = 0) → (∃ n, ∀ i, n < i → Subsingleton (D i)) → (∀ i (x : D (i + 1)), d i x ∈ (((IsLocalRing.maximalIdeal V).map (algebraMap V A)) • ⊤ : Submodule A (D i)) → x ∈ LinearMap.range (d (i + 1)) ⊔ (((IsLocalRing.maximalIdeal V).map (algebraMap V A)) • ⊤ : Submodule A (D (i + 1)))) → Module.Flat V (D 0 ⧸ LinearMap.range (d 0)) := by
+  intro V A _ _ _ _ _ _ _ _ D _ _ _ _ _ _ d hdd _ hex
+  set J : Ideal A := (IsLocalRing.maximalIdeal V).map (algebraMap V A) with hJ
+  have hle : LinearMap.range (d 1) ≤ LinearMap.ker (d 0) := by
+    rintro _ ⟨x, rfl⟩
+    exact hdd 0 x
+  let u : (D 1 ⧸ LinearMap.range (d 1)) →ₗ[A] D 0 := (LinearMap.range (d 1)).liftQ (d 0) hle
+  have hr : LinearMap.range u = LinearMap.range (d 0) := Submodule.range_liftQ _ _ _
+  have h := _root_.GlobalTheory.flat_coker_of_injective_mod_maximalIdeal V A (D 1 ⧸ LinearMap.range (d 1)) (D 0) u (by
+    intro x hx
+    obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
+    have hy : y ∈ LinearMap.range (d 1) ⊔ (J • ⊤ : Submodule A (D 1)) := hex 0 y hx
+    obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.mp hy
+    have ha0 : (Submodule.Quotient.mk a : D 1 ⧸ LinearMap.range (d 1)) = 0 :=
+      (Submodule.Quotient.mk_eq_zero _).mpr ha
+    rw [Submodule.Quotient.mk_add, ha0, zero_add]
+    have : (LinearMap.range (d 1)).mkQ b ∈ (J • ⊤ : Submodule A (D 1)).map (LinearMap.range (d 1)).mkQ :=
+      Submodule.mem_map_of_mem hb
+    rw [Submodule.map_smul''] at this
+    exact Submodule.smul_mono le_rfl le_top this)
+  rwa [hr] at h
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatCokerOfComplexExactModMaximalIdeal =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatQuotientOfEquivCokerDualMapOfExactFibres =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatQuotientOfEquivCokerDualMapOfExactFibres", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsFiniteProjectiveComplexQuasiIso\npublic import Mathlib.LinearAlgebra.Dual.BaseChange\npublic import Mathlib.RingTheory.RegularLocalRing.Defs\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExactDualMapOfExactFibresOfIsRegularLocalRing\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatCokerOfComplexExactModMaximalIdeal\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory CategoryTheory.Limits TensorProduct Function
+
+namespace GlobalTheory
+namespace DualCokernelFlat
+
+section Modules
+
+variable {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
+
+theorem dual_baseChange_surjective (hs : Surjective (algebraMap A B)) (M : Type) [AddCommGroup M]
+    [Module A M] [Module.Projective A M] :
+    Surjective (Module.Dual.baseChange B : Module.Dual A M → Module.Dual B (B ⊗[A] M)) := by
+  intro g
+  obtain ⟨f, hf⟩ := Module.projective_lifting_property (Algebra.linearMap A B)
+    (g.restrictScalars A ∘ₗ TensorProduct.mk A B M 1) hs
+  refine ⟨f, ?_⟩
+  ext x
+  have := LinearMap.congr_fun hf x
+  simpa [Algebra.algebraMap_eq_smul_one] using this
+
+theorem dual_baseChange_eq_zero_iff (M : Type) [AddCommGroup M]
+    [Module A M] [Module.Free A M] [Module.Finite A M] (f : Module.Dual A M) :
+    Module.Dual.baseChange B f = 0 ↔
+      f ∈ (RingHom.ker (algebraMap A B) • ⊤ : Submodule A (Module.Dual A M)) := by
+  constructor
+  · intro h
+    let b := Module.Free.chooseBasis A M
+    rw [← b.sum_dual_apply_smul_coord f]
+    refine Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul ?_ trivial
+    have := LinearMap.congr_fun h (1 ⊗ₜ b i)
+    simpa [RingHom.mem_ker, Algebra.algebraMap_eq_smul_one] using this
+  · intro h
+    refine Submodule.smul_induction_on h (fun r hr x _ => ?_) (fun x y hx hy => ?_)
+    · rw [map_smul, ← algebraMap_smul B r, RingHom.mem_ker.mp hr, zero_smul]
+    · rw [map_add (f := _), hx, hy, add_zero]
+
+theorem dual_baseChange_dualMap {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N]
+    [Module A N] (a : M →ₗ[A] N) (f : Module.Dual A N) :
+    Module.Dual.baseChange B (a.dualMap f) =
+      (a.baseChange B).dualMap (Module.Dual.baseChange B f) := by
+  ext x
+  simp
+
+theorem mem_sup_of_exact (hs : Surjective (algebraMap A B)) {M₀ M₁ M₂ : Type}
+    [AddCommGroup M₀] [Module A M₀] [Module.Free A M₀] [Module.Finite A M₀]
+    [AddCommGroup M₁] [Module A M₁] [Module.Free A M₁] [Module.Finite A M₁]
+    [AddCommGroup M₂] [Module A M₂] [Module.Free A M₂] (a : M₀ →ₗ[A] M₁) (b : M₁ →ₗ[A] M₂)
+    (h : Exact (b.baseChange B).dualMap (a.baseChange B).dualMap) (x : Module.Dual A M₁)
+    (hx : a.dualMap x ∈ (RingHom.ker (algebraMap A B) • ⊤ : Submodule A (Module.Dual A M₀))) :
+    x ∈ LinearMap.range b.dualMap ⊔
+      (RingHom.ker (algebraMap A B) • ⊤ : Submodule A (Module.Dual A M₁)) := by
+  rw [← dual_baseChange_eq_zero_iff, dual_baseChange_dualMap] at hx
+  obtain ⟨y, hy⟩ := (h _).1 hx
+  obtain ⟨y, rfl⟩ := dual_baseChange_surjective hs M₂ y
+  have : x = b.dualMap y + (x - b.dualMap y) := by abel
+  rw [this]
+  refine Submodule.add_mem_sup ⟨y, rfl⟩ ?_
+  rw [← dual_baseChange_eq_zero_iff, map_sub, dual_baseChange_dualMap, hy, sub_self]
+
+end Modules
+
+theorem mem_sup_of_exact_fibres {A B : Type} [CommRing A] [IsLocalRing A] [CommRing B]
+    [IsRegularLocalRing B] (π : A →+* B) (hs : Surjective π) (g : ℕ) (hg : ringKrullDim B = g)
+    (C : CochainComplex (ModuleCat.{0} A) ℕ)
+    (hF : ∀ i, Module.Free A (C.X i) ∧ Module.Finite A (C.X i))
+    (hn : ∃ n, ∀ i, n < i → IsZero (C.X i))
+    (hex : ∀ p : PrimeSpectrum A, RingHom.ker π ≤ p.asIdeal → ∃ (K : Type) (_ : Field K)
+      (φ : A →+* K), RingHom.ker φ = p.asIdeal ∧
+        ∀ i, (p.asIdeal ≠ IsLocalRing.maximalIdeal A ∨ g < i) →
+          (((ModuleCat.extendScalars φ).mapHomologicalComplex _).obj C).ExactAt i)
+    (i : ℕ) (x : Module.Dual A (C.X (i + 1)))
+    (hx : (C.d i (i + 1)).hom.dualMap x ∈
+      (RingHom.ker π • ⊤ : Submodule A (Module.Dual A (C.X i)))) :
+    x ∈ LinearMap.range (C.d (i + 1) (i + 1 + 1)).hom.dualMap ⊔
+      (RingHom.ker π • ⊤ : Submodule A (Module.Dual A (C.X (i + 1)))) := by
+  have hfree := fun i => (hF i).1
+  have hfin := fun i => (hF i).2
+  let := π.toAlgebra
+  have key := GlobalTheory.exact_dualMap_of_exact_fibres_of_isRegularLocalRing B g hg (((ModuleCat.extendScalars π).mapHomologicalComplex _).obj C)
+    (fun i => ⟨inferInstanceAs (Module.Free B (B ⊗[A] C.X i)),
+      inferInstanceAs (Module.Finite B (B ⊗[A] C.X i))⟩)
+    (hn.imp fun n h i hi => (ModuleCat.extendScalars π).map_isZero (h i hi)) (fun q => ?_) i
+  · exact mem_sup_of_exact (B := B) hs _ _ key x hx
+  obtain ⟨K, _, φ, hφ, hK⟩ := hex (q.comap π) (by
+    rw [RingHom.ker_eq_comap_bot]
+    exact Ideal.comap_mono bot_le)
+  have hle : RingHom.ker π ≤ RingHom.ker φ := by
+    rw [hφ, RingHom.ker_eq_comap_bot]
+    exact Ideal.comap_mono bot_le
+  obtain ⟨ψ, rfl⟩ : ∃ ψ : B →+* K, ψ.comp π = φ :=
+    ⟨π.liftOfSurjective hs ⟨φ, hle⟩, π.liftOfSurjective_comp hs _⟩
+  refine ⟨K, inferInstance, ψ, ?_, fun j hj => ?_⟩
+  · apply Ideal.comap_injective_of_surjective π hs
+    rw [RingHom.comap_ker, hφ]
+    rfl
+  · refine (hK j (hj.imp_left fun h h' => h ?_)).of_iso
+      ((NatIso.mapHomologicalComplex (ModuleCat.extendScalarsComp π ψ) _).app C)
+    have hm : (q.asIdeal.comap π).IsMaximal := by
+      have : q.asIdeal.comap π = IsLocalRing.maximalIdeal A := h'
+      rw [this]
+      infer_instance
+    have := (Ideal.comap_isMaximal_of_surjective π hs (K := IsLocalRing.maximalIdeal B))
+    apply Ideal.comap_injective_of_surjective π hs
+    rw [IsLocalRing.eq_maximalIdeal hm, IsLocalRing.eq_maximalIdeal this]
+
+end DualCokernelFlat
+
+
+open DualCokernelFlat in
+theorem flat_quotient_of_equiv_coker_dualMap_of_exact_fibres :
+    ∀ (V A : Type) [CommRing V] [IsNoetherianRing V] [IsLocalRing V] [CommRing A]
+      [IsNoetherianRing A] [IsLocalRing A] [Algebra V A] [IsLocalHom (algebraMap V A)]
+      [Module.Flat V A] (g : ℕ),
+      IsRegularLocalRing (A ⧸ ((IsLocalRing.maximalIdeal V).map (algebraMap V A))) →
+      ringKrullDim (A ⧸ ((IsLocalRing.maximalIdeal V).map (algebraMap V A))) = g →
+      ∀ C : CochainComplex (ModuleCat.{0} A) ℕ,
+      (∀ i, Module.Free A (C.X i) ∧ Module.Finite A (C.X i)) → (∃ n, ∀ i, n < i → IsZero (C.X i)) →
+      (∀ p : PrimeSpectrum A, ((IsLocalRing.maximalIdeal V).map (algebraMap V A)) ≤ p.asIdeal →
+        ∃ (K : Type) (_ : Field K) (φ : A →+* K), RingHom.ker φ = p.asIdeal ∧
+          ∀ i, (p.asIdeal ≠ IsLocalRing.maximalIdeal A ∨ g < i) →
+            (((ModuleCat.extendScalars φ).mapHomologicalComplex _).obj C).ExactAt i) →
+      ∀ I : Ideal A, Nonempty ((Module.Dual A (C.X 0) ⧸
+        LinearMap.range (C.d 0 1).hom.dualMap) ≃ₗ[A] (A ⧸ I)) → Module.Flat V (A ⧸ I) := by
+  intro V A _ _ _ _ _ _ _ _ _ g hreg hg C hF hn hex I ⟨e⟩
+  have hfree := fun i => (hF i).1
+  have hfin := fun i => (hF i).2
+  have hflat : ∀ i, Module.Flat V (Module.Dual A (C.X i)) := fun i => Module.Flat.trans V A _
+  have key := mem_sup_of_exact_fibres (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective g hg C hF
+    hn (by rw [Ideal.mk_ker]; exact hex)
+  rw [Ideal.mk_ker] at key
+  have h := GlobalTheory.flat_coker_of_complex_exact_mod_maximalIdeal V A (fun i => Module.Dual A (C.X i))
+    (fun i => (C.d i (i + 1)).hom.dualMap) (fun i f => ?_) (hn.imp fun n h i hi => ?_) key
+  · exact Module.Flat.of_linearEquiv (e.restrictScalars V).symm
+  · ext x
+    rw [LinearMap.dualMap_apply, LinearMap.dualMap_apply, ← LinearMap.comp_apply (C.d _ _).hom,
+      ← ModuleCat.hom_comp, C.d_comp_d]
+    simp
+  · have := ModuleCat.subsingleton_of_isZero (h i hi)
+    infer_instance
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatQuotientOfEquivCokerDualMapOfExactFibres =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LineBundleKernelFlatOfFiniteNoetherianLocal =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LineBundleKernelFlatOfFiniteNoetherianLocal", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AbelianSchemeLaws.FirstCohomologyVanishesSpecOfIsLocalRing\npublic import Development.AbelianVarietyTheory.PublishedTheorems.RelativeAmpleness.RelAmpleAndKTrivIff\npublic import Mathlib.RingTheory.RegularLocalRing.Defs\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed\npublic import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.NonemptyPerfectSectionsComplexOfSmoothProj\npublic import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.TrivBasicOpenOfTrivFibre\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CyclicIdeal\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPerfectFreeFiniteComplexStatement\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatClosedSubschemeFiniteOverLocalRingStatement\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatKernelPolarisationCosetsOverDVR\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsFiniteProjectiveComplexQuasiIso\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.FlatQuotientOfEquivCokerDualMapOfExactFibres\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.InKIffTrivialTwist\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.StalkOfSmoothLocalStatement\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.TangentLinearity.ConstPullback\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
@@ -139,7 +342,7 @@ theorem exists_ideal (hG : GlobalFnsSt) {V : Type} [CommRing V] [IsNoetherianRin
   haveI : Module.Flat V A := h₁
   have key : Module.Flat V (A ⧸ I) → ((Ideal.Quotient.mk I).comp σ).Flat := fun h =>
     RingHom.flat_algebraMap_iff.2 h
-  refine key (GlobalTheory.T.flat_quotient_of_equiv_coker_dualMap_of_exact_fibres_alt V A g h₂ h₃ C c₁ c₂ (fun p hϖ => ?_) I ⟨eC.trans eI⟩)
+  refine key (_root_.GlobalTheory.flat_quotient_of_equiv_coker_dualMap_of_exact_fibres V A g h₂ h₃ C c₁ c₂ (fun p hϖ => ?_) I ⟨eC.trans eI⟩)
   let K := AlgebraicClosure p.asIdeal.ResidueField
   let φ : A →+* K := (algebraMap p.asIdeal.ResidueField K).comp (algebraMap A p.asIdeal.ResidueField)
   have hk : RingHom.ker φ = p.asIdeal := by
@@ -199,3 +402,7 @@ theorem flat_of_isFinite : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsNoethe
     rfl
 
 end GlobalTheory.StabFlatLocal
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LineBundleKernelFlatOfFiniteNoetherianLocal =====

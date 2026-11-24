@@ -4,45 +4,6 @@ public import GroundTheory.TateCohomology.TateLow
 public import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
 public import Mathlib.RepresentationTheory.Homological.GroupHomology.FiniteCyclic
 public import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -134,11 +95,11 @@ noncomputable def tateCohomologyNegOneIsoHomology :
     (subCompNormHom A σ).moduleCatHomologyIso.symm
 
 theorem odd_of_even_negSucc {i : ℕ} (h : Even (Int.negSucc i)) : Odd i := by
-  rw [Int.negSucc_eq, even_neg, ← Nat.cast_succ, Int.even_coe_nat, Nat.even_add_one] at h
+  rw [Int.negSucc_eq, even_neg, ← Nat.cast_succ, Int.even_natCast, Nat.even_add_one] at h
   exact Nat.not_even_iff_odd.1 h
 
 theorem even_of_odd_negSucc {i : ℕ} (h : Odd (Int.negSucc i)) : Even i := by
-  rw [Int.negSucc_eq, odd_neg, ← Nat.cast_succ, Int.odd_coe_nat, Nat.odd_add_one] at h
+  rw [Int.negSucc_eq, odd_neg, ← Nat.cast_succ, Int.odd_natCast, Nat.odd_add_one] at h
   exact Nat.not_odd_iff_even.1 h
 
 variable [DecidableEq G]
@@ -148,7 +109,7 @@ noncomputable def tateCohomologyIsoEven :
   | .ofNat 0, _ => tateCohomologyZeroIsoHomology A hσ
   | .ofNat (i + 1), hn =>
       (TateCohomology.isoGroupCohomology (i + 1)).app A ≪≫
-        groupCohomologyIsoEven A σ hσ (i + 1) ((Int.even_coe_nat (i + 1)).1 hn)
+        groupCohomologyIsoEven A σ hσ (i + 1) ((Int.even_natCast (i + 1)).1 hn)
   | .negSucc i, hn =>
       haveI : NeZero i := ⟨fun h => by
         have := odd_of_even_negSucc hn
@@ -162,7 +123,7 @@ noncomputable def tateCohomologyIsoOdd :
   | .ofNat 0, hn => absurd hn (by decide)
   | .ofNat (i + 1), hn =>
       (TateCohomology.isoGroupCohomology (i + 1)).app A ≪≫
-        groupCohomologyIsoOdd A σ hσ (i + 1) ((Int.odd_coe_nat (i + 1)).1 hn)
+        groupCohomologyIsoOdd A σ hσ (i + 1) ((Int.odd_natCast (i + 1)).1 hn)
   | .negSucc 0, _ => tateCohomologyNegOneIsoHomology A hσ
   | .negSucc (i + 1), hn =>
       (TateCohomology.isoGroupHomology (Int.negSucc (i + 1)) (i + 1)

@@ -94,7 +94,7 @@ theorem finUnit_pow (χ : HChar L) (hχ : χ.IsUnitary) :
   have hψ : Continuous ψ := (Units.continuous_val.comp χ.2.1).subtype_mk _
   obtain ⟨-, -, -, m, hm, h⟩ := GlobalTheory.CharFin.finite_order_of_small (R := AdeleRing (𝓞 L) L)
     (RingHom.fst (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)) (RingHom.snd _ _) id continuous_id (fun _ => rfl) (intFin L)
-    (fun W hW => GlobalTheory.AdLat.OpenLat.exists_nsmul_adele L W hW) finite_quot ψ hψ
+    (fun W hW => _root_.GlobalTheory.LocalNormBound.main L W hW) finite_quot ψ hψ
   refine ⟨m, hm, fun u h1 h2 => ?_⟩
   have := h u ⟨funext h1, fun v => (h2 v).le, fun v => ((unitIdl L).inv_mem h2 v).le⟩
   exact congrArg (fun z : Circle => (z : ℂ)) this

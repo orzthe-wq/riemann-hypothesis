@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 public import Development.AbelianVarietyTheory.Definitions.Divisors.PullHlComp
 public import Mathlib.Topology.LocallyConstant.Algebra
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsSepGlueOfSurjectiveFamilyStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsSepGlueOfSurjectiveFamily
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -69,7 +69,7 @@ theorem res_sub {V U : Scheme.{0}} (j : V ⟶ U) (x y : Sec F U) :
 
 theorem sep {U : Scheme.{0}} (ι : Type) (V : ι → Scheme.{0}) (j : ∀ i, V i ⟶ U) (he : ∀ i, Etale (j i))
     (hc : ∀ u : U, ∃ i v, j i v = u) (x y : Sec F U) (h : ∀ i, Sec.res (j i) x = Sec.res (j i) y) : x = y :=
-  sub_eq_zero.1 ((GlobalTheory.T.etaleSheafSections_sep_glue_of_surjective_family R F U ι V j he hc).1 (x - y) (fun i => by rw [res_sub, h i, sub_self]))
+  sub_eq_zero.1 ((_root_.GlobalTheory.EtC.sec_sep_glue_of_points R F U ι V j he hc).1 (x - y) (fun i => by rw [res_sub, h i, sub_self]))
 
 theorem sec_empty {V : Scheme.{0}} [IsEmpty V] (x y : Sec F V) : x = y :=
   sep PEmpty (fun _ => V) (fun _ => 𝟙 V) (fun _ => inferInstance) (fun u => isEmptyElim u) x y (fun i => i.elim)
@@ -119,7 +119,7 @@ theorem isMul_unique {S U : Scheme.{0}} (s : U ⟶ S) (g : Sec F S) (φ : Locall
 
 theorem isMul_exists {S U : Scheme.{0}} (s : U ⟶ S) (g : Sec F S) (φ : LocallyConstant U R) :
     ∃ x, IsMul s g φ x := by
-  obtain ⟨x, hx⟩ := (GlobalTheory.T.etaleSheafSections_sep_glue_of_surjective_family R F U U (fun u => (fib φ u).toScheme) (fun u => (fib φ u).ι) (fun _ => inferInstance)
+  obtain ⟨x, hx⟩ := (_root_.GlobalTheory.EtC.sec_sep_glue_of_points R F U U (fun u => (fib φ u).toScheme) (fun u => (fib φ u).ι) (fun _ => inferInstance)
     (fib_cov φ)).2 (fun u => (ULift.up (φ u) : ULift.{1} R) • Sec.res ((fib φ u).ι ≫ s) g) (by
       intro i k
       rw [res_smul, res_smul, ← res_comp, ← res_comp, ← Category.assoc, ← Category.assoc, pullback.condition]

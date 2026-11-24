@@ -74,7 +74,7 @@ def Ed (K : Type) [Field K] (k d : ℕ) (a b : Fin k) :
     simp [mul_add]
   map_smul' t F := by
     apply Subtype.ext
-    simp [mul_smul_comm]
+    simp
 
 def EdWord (K : Type) [Field K] (k d : ℕ) (l : List (Fin k × Fin k)) :
     Module.End K ↥(homogeneousSubmodule (Fin k) K d) :=

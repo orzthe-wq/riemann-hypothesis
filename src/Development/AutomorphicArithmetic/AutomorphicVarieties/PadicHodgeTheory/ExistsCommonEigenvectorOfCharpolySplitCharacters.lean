@@ -107,11 +107,11 @@ theorem UpperTheory.exists_common_eigenvector_of_charpoly_split_characters :
     intro q
     obtain ⟨s, rfl⟩ := QuotientGroup.mk_surjective q
     exact ⟨s, (QuotientGroup.kerLift_mk φ s).symm⟩
-  haveI : Finite (I ⧸ φ.ker) := by
-    haveI := hfinU.to_subtype
+  have : Finite (I ⧸ φ.ker) := by
+    have := hfinU.to_subtype
     exact Finite.of_injective (fun q => (⟨_, hr q⟩ : Set.range φ))
       (fun a b hab => QuotientGroup.kerLift_injective φ (congrArg Subtype.val hab))
-  letI : Fintype (I ⧸ φ.ker) := Fintype.ofFinite _
+  let : Fintype (I ⧸ φ.ker) := Fintype.ofFinite _
   let R : I ⧸ φ.ker →* Module.End ℂ W := (Units.coeHom (Module.End ℂ W)).comp (QuotientGroup.kerLift φ)
   let c : Fin n → (I ⧸ φ.ker →* ℂˣ) := fun k => QuotientGroup.lift φ.ker ((μ k).comp i) (hker k)
   have hR : ∀ s : I, R (s : I ⧸ φ.ker) = ρ (i s) := fun s => rfl
@@ -140,7 +140,7 @@ theorem UpperTheory.exists_common_eigenvector_of_charpoly_split_characters :
       _ = (μ j (i s) : ℂ) • ρ Φ y := by rw [hy t, map_smul, e2]
   have hmain : ∃ y ∈ E, y ≠ 0 ∧ ρ Φ y = (μ j Φ : ℂ) • y := by
     by_contra hno
-    push_neg at hno
+    push Not at hno
     let A : Module.End ℂ E := (ρ Φ).restrict hEinv
     let p := LinearMap.charpoly A
     have hp : p.eval (μ j Φ : ℂ) ≠ 0 := by
@@ -160,7 +160,7 @@ theorem UpperTheory.exists_common_eigenvector_of_charpoly_split_characters :
     have key : ∀ y (hy : y ∈ E), Polynomial.aeval (ρ Φ) p y = ((Polynomial.aeval A p) ⟨y, hy⟩ : W) := by
       intro y hy
       rw [Polynomial.aeval_eq_sum_range, Polynomial.aeval_eq_sum_range]
-      simp [A, Module.End.pow_restrict, LinearMap.sum_apply]
+      simp [A, LinearMap.sum_apply]
       refine Finset.sum_congr rfl (fun m _ => ?_)
       rw [Module.End.pow_restrict]
       rfl

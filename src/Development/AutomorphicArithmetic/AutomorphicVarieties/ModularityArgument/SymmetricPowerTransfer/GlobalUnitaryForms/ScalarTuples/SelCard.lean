@@ -91,7 +91,7 @@ private theorem dvd_of_ev (v : Pl F) (a : Fˣ) (h : EvenVal (Ov v) (cv v (a : F)
     rw [HeightOneSpectrum.valuationOfNeZero_eq, ← hva, hv, WithZero.coe_pow, hw]
   have h3 := WithZero.coe_inj.mp h2
   refine ⟨-Multiplicative.toAdd w, ?_⟩
-  simp only [Kum.ordv, h3, toAdd_pow, smul_eq_mul]
+  simp only [Kum.ordv, h3, toAdd_pow]
   push_cast
   ring
 

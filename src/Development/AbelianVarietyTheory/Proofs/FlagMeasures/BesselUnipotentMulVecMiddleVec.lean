@@ -62,7 +62,6 @@ private theorem gram_sum_smul_eq_conjTranspose_mul_gram_mul {n r : ℕ} (w : Fin
     inner_smul_left, inner_smul_right, starRingEnd_apply, Finset.mul_sum, Finset.sum_mul]
   first
     | exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => by ring
-    | (rw [Finset.sum_comm]; exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => by ring)
 
 theorem gramProj_comb {n r : ℕ} (P : Submodule ℂ (EuclideanSpace ℂ (Fin n))) (v : Fin r → Fin n → ℂ)
     (U : Matrix (Fin r) (Fin r) ℂ) (hU : U.det = 1) :
@@ -80,7 +79,7 @@ private theorem inner_unitary_mulVec_eq_inner {n : ℕ} (κ : Matrix (Fin n) (Fi
     (hκ : κ ∈ Matrix.unitaryGroup (Fin n) ℂ) (a b : Fin n → ℂ) :
     inner ℂ (WithLp.toLp 2 (κ *ᵥ a)) (WithLp.toLp 2 (κ *ᵥ b)) = inner ℂ (WithLp.toLp 2 a) (WithLp.toLp 2 b) := by
   rw [EuclideanSpace.inner_eq_star_dotProduct, EuclideanSpace.inner_eq_star_dotProduct]
-  simp only [WithLp.ofLp_toLp]
+  simp only
   rw [Matrix.star_mulVec, dotProduct_comm, ← dotProduct_mulVec, Matrix.mulVec_mulVec,
     ← Matrix.star_eq_conjTranspose, (Matrix.mem_unitaryGroup_iff').1 hκ, Matrix.one_mulVec, dotProduct_comm]
 
@@ -362,7 +361,7 @@ theorem Yv_K (z z' : Fin (2 * r + k + 1) → ℂ) (γ x : Mat k r) {κ : Mat k r
       WithLp.toLp 2 (κ *ᵥ p) ∈ Ppos k r z z' γ x := by
     intro p
     rw [mem_Ppos, mem_Ppos]
-    simp only [WithLp.ofLp_toLp]
+    simp only
     refine and_congr ?_ (by rw [Matrix.mulVec_mulVec])
     rw [Matrix.mulVec_mulVec, hc, ← Matrix.mulVec_mulVec]
     constructor

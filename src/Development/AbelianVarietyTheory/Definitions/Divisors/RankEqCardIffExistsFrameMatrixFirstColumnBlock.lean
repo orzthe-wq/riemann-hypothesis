@@ -774,7 +774,7 @@ theorem exists_secondBlock_of_frameFirstBlock_eq (σ : A ⊕ A' ≃ D) {h h' : G
   · rw [Units.val_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc]
     congr 1
     ext i j
-    obtain ⟨j | j, rfl⟩ := σ.surjective j <;> simp [frameMatrixSecondColumnBlock_mul_apply, H2, Matrix.mul_apply, Y0, C]
+    obtain ⟨j | j, rfl⟩ := σ.surjective j <;> simp [H2, Matrix.mul_apply, Y0, C]
   · rw [gdet_mul]; congr 1; exact Units.ext hdet
 
 theorem splitTheta_fFun_frameFirstBlock_mul (μ : Measure (GL A' k)) [μ.IsHaarMeasure] (σ : A ⊕ A' ≃ D) (ν : kˣ →* ℂˣ)

@@ -61,11 +61,6 @@ section helpers
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
-private theorem chartPartition_le_one (A : FinHolAtlas e X) (P : ChartPartition A) (k : Fin A.n) (x : X) :
-    P.χ k x ≤ 1 := by
-  rw [← P.sum_eq_one x]
-  exact Finset.single_le_sum (fun j _ => P.nonneg j x) (Finset.mem_univ k)
-
 private theorem smooth_continuous (A : FinHolAtlas e X) {f : X → ℝ} (hf : A.Smooth f) : Continuous f := by
   rw [continuous_iff_continuousAt]
   intro x

@@ -60,10 +60,7 @@ namespace Formalism.HN
 
 universe u v w w₂
 
-theorem shiftInv_zl_mono {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V]
-    [NormedAddCommGroup E] [InnerProductSpace ℝ E] (ρ : V →+ E) {A B : Submodule R V}
-    (h : A ≤ B) : zl ρ A ≤ zl ρ B := by
-  exact satBasic_zl_mono ρ h
+alias shiftInv_zl_mono := _root_.Formalism.HN.satBasic_zl_mono
 
 theorem shiftInv_isSat_iff {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V]
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (ρ : V →+ E)

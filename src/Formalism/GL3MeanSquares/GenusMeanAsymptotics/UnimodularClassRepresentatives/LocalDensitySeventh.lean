@@ -165,7 +165,6 @@ theorem exists_solve_matrix (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
   have e : Xᴴ * H * (X * R) - W = (Xᴴ * H * X - H) * R + (H * R - W) := by
     first
     | noncomm_ring
-    | (simp only [Matrix.sub_mul, Matrix.mul_assoc]; abel)
   have e1 : H * R = H.det • Matrix.of V := by
     rw [hR, ← Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.smul_mul, Matrix.one_mul]
   rw [e, Matrix.add_apply]

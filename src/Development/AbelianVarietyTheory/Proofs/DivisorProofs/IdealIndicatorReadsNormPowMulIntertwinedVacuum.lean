@@ -3,20 +3,21 @@ module
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinTensMemLatO
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsApprox
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexStandardInfSkewThetaLatticeEqAbsNormPow
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjSmulConjSmul
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergFinitePointReadsClassicalTranslation
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSelfDualCOfSd
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdmissibleAtOfIrreducibleTame
+public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumUnderAdelicPairModulusOne
 import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.StarPurelyImaginaryEqNeg
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SmulMemLatO
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjSmulConjSmul
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergFinitePointReadsClassicalTranslation
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSelfDualCOfSd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdmissibleAtOfIrreducibleTame
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardLatticeQuotIdeal
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsHalfIdem
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumUnderAdelicPairModulusOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdempotentMulEqZeroOfOrthogonal
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IdempotentSumInfPartIntegralOneSubMem
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemUniq
@@ -59,6 +60,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAdelicWeilRepresentationModel
 
 @[expose] public section
 
@@ -125,22 +127,16 @@ theorem pt_mem (δ : ℂ) {𝔪 : Ideal (𝓞 D.host.E)} {a d : ℕ} {z : Matrix
   rw [GlobalTheory.SkewIndex.La_skew_eq_map]
   exact ⟨z, hz, rfl⟩
 
-theorem ee_int (m : ℤ) : ee (m : ℝ) = 1 := by
-  rw [ee, ← Complex.exp_int_mul_two_pi_mul_I m]
-  congr 1
-  push_cast
-  ring
-
 theorem wd_pt_mul {δ : ℂ} (hc : Crv D ⊤ δ) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a d : ℕ}
     {z y : Matrix (Fin d) (Fin a) D.host.E} (hz : z ∈ skewMat D 𝔪 a d) (hy : y ∈ skewMat D 𝔪 a d) (F : VC D a d → ℂ) :
     Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ z) (Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ y) F) =
       Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (z + y)) F := by
   have h1 := (GlobalTheory.InducedType.induced_type D).1
   obtain ⟨w, -, hw⟩ := GlobalTheory.FinWeil.WdCocycle.wd_cocycle D h1 ⊤ δ hc
-  obtain ⟨m, hm⟩ := (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D h1 ⊤ δ hc a d _ (klat_skew δ h𝔪 a d)).2.2.1 _
+  obtain ⟨m, hm⟩ := (_root_.GlobalTheory.ThetaLine.theta_line D h1 ⊤ δ hc a d _ (klat_skew δ h𝔪 a d)).2.2.1 _
     (pt_mem δ (smul_mem_skewMat w hz)) _ (pt_mem δ hy)
   have h2 := (hw a d ((w : D.host.E) • z) y).1
-  rw [hm, ← Int.cast_neg, ee_int] at h2
+  rw [hm, ← Int.cast_neg, _root_.GlobalTheory.FinWeil.AdelicChar.ee_int] at h2
   rw [(hw a d z y).2.2 F]
   simp only [Matrix.smul_apply, smul_eq_mul] at h2
   rw [← h2, one_smul]
@@ -150,7 +146,7 @@ theorem wdPh_eq_one {δ : ℂ} (hc : Crv D ⊤ δ) {𝔪 : Ideal (𝓞 D.host.E)
     (hm : (m : D.host.E) * D.host.conj m = 4 * k) :
     wdPh D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ ((m : D.host.E) • z)) = 1 := by
   have h1 := (GlobalTheory.InducedType.induced_type D).1
-  have hq := (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D h1 ⊤ δ hc a d _ (klat_skew δ h𝔪 a d)).2.2.2.2.2.2
+  have hq := (_root_.GlobalTheory.ThetaLine.theta_line D h1 ⊤ δ hc a d _ (klat_skew δ h𝔪 a d)).2.2.2.2.2.2
   obtain ⟨n1, hn1⟩ := hq _ (pt_mem δ (smul_mem_skewMat (k + 1) hz))
   obtain ⟨n2, hn2⟩ := hq _ (pt_mem δ (smul_mem_skewMat k hz))
   obtain ⟨n3, hn3⟩ := hq _ (pt_mem δ hz)
@@ -181,7 +177,7 @@ theorem wdPh_eq_one {δ : ℂ} (hc : Crv D ⊤ δ) {𝔪 : Ideal (𝓞 D.host.E)
     rw [← hn1, ← hn2, ← hn3, qH, qH, qH, qH, key]
     simp only [Complex.mul_re, Complex.sub_re, Complex.re_ofNat, Complex.im_ofNat]
     ring
-  rw [wdPh, h2, ee_int]
+  rw [wdPh, h2, _root_.GlobalTheory.FinWeil.AdelicChar.ee_int]
 
 theorem char_sum {M V : Type} [AddCommGroup M] [AddCommGroup V] (p : M →+ V) (hp : Function.Injective p)
     (Y₀ : AddSubgroup M) (A B : AddSubgroup V) (hA : A ≤ Y₀.map p) [Fintype (B ⧸ A.addSubgroupOf B)]
@@ -397,7 +393,7 @@ theorem indicator_reads : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : In
   have hidx := GlobalTheory.SkewIndex.index_inter_skew D δ hs.crv 𝔪 h𝔪 (coprime_conj h) S.rank T.rank
   have hB := GlobalTheory.SkewIndex.La_skew_eq_map D δ 𝔪 S.rank T.rank
   have hA := La0_eq (D := D) δ S.rank T.rank
-  have hW := (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D h1 ⊤ δ hs.crv _ _ _ (klat_skew δ h𝔪 S.rank T.rank)).2.1
+  have hW := (_root_.GlobalTheory.ThetaLine.theta_line D h1 ⊤ δ hs.crv _ _ _ (klat_skew δ h𝔪 S.rank T.rank)).2.1
   have hn : 0 < Ideal.absNorm 𝔪 ^ (S.rank * T.rank) :=
     pow_pos (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h𝔪)) _
   rw [cosV, GlobalTheory.NormSum.VacMove.pt_zero, GlobalTheory.NormSum.VacMove.wd_zero, ← Nat.cast_pow]

@@ -1,63 +1,44 @@
 module
 
+public import Formalism.HermitianCurvature.StatementB
+public import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
 public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG
+public import Formalism.PeriodIntegrals.CapelliEig
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DiscreteSeriesUnitarySmoothBasic
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt
+public import Formalism.HermitianCurvature.RealInputsClosedAdmissibleSettings
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselGapExistsFunctional
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HaarEqSmul
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AbsCoordLeOfLOneNormLe
+public import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselDatumBothSidesAreSides
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps
+public import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FrepDiscreteSeriesSum
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorRawOfFrep
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselSettingGapDecay
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MirrorDecomposition.HpkRowEsI
 public import CompanionTheory.AutomorphicTheory.BesselWaveGrids.ProductMoment
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BaseRepCapelliEigenDual
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselPeriodAdjointPairStatement
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselSettingGapDecayStatement
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselSettingUniformConstantStatement
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CapelliKFiniteCoefficient
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CayleyEndomorphismsModularStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CayleyExistsAndAny
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DiscreteSeriesUnitarySmoothBasic
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsFamilyFunctionalsStatement
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselPeriodAdjointPair
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselSettingUniformConstant
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CayleyEndomorphismsModular
 public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsKTypeNonzeroBessel
 public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsLowestKFiniteVectorDiscreteSeriesStatement
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupBesselGrowthStatement
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupCayleyBoundStatement
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupBesselGrowth
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupCayleyBound
 public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupCayleyRecursionStatement
 public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupMomentClosure
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupMomentClosureStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HaarEqSmul
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HsqNonneg
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsCoefContinuousOn
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.N1AddEZLe
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.PieriTensorDecompositionStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.QuotientMeasureAeMemAndMeasurableBesselModelStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.SmoothVectorsDiscreteSeriesGlModuleStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorMomentEstimateStatement
-import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorMomentWeightedStatement
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselGapStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AbsCoordLeOfLOneNormLe
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AemeasurableBesselNormIntegrandBigCellStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselDatumBothSidesAreSidesStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselNormSqEqBigCellNormSqStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionOfBesselFunctionZeroStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionSmulStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsRegularRepBesselBigCellVectorEqBesselStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FixesWedgeAndForm
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HermCmpWedgeEqDet
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsFRepExteriorPowerStandardRep
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LenEqOfUnitriangular
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevZeroOfKHighest
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyProductBoundConstantLeStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGapsStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ProductMomentBoundDensityMassOneStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TopNum
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqUnitNormalizationLe
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularityAtPlaceOfSubadditive
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -65,8 +46,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -75,7 +54,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -88,11 +66,519 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.BesselNonvanishingReduction
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselNeZeroOfCyclicOrbit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselFunctionLocalityInvariantFactorFiniteSum
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CayleyExistsAndAny
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.PieriTensorDecomposition
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.QuotientMeasureAeMemAndMeasurableBesselModelStatement
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.SmoothVectorsDiscreteSeriesGlModuleStatement
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorMomentEstimate
+import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorMomentWeighted
+import Formalism.HermitianCurvature.StatementTBB
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AemeasurableBesselNormIntegrandBigCell
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselNormSqEqBigCellNormSq
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.BigCellExpansionOfSubadditive
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionOfBesselFunctionZero
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionSmul
+import Formalism.HermitianCurvature.StatementJF
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsRegularRepBesselBigCellVectorEqBessel
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FixesWedgeAndForm
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HermCmpWedgeEqDet
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsFRepExteriorPowerStandardRep
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LenEqOfUnitriangular
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevZeroOfKHighest
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyProductBoundConstantLe
+import Mathlib.MeasureTheory.Integral.Lebesgue.Basic
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ProductMomentBoundDensityMassOne
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.TopNum
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqUnitNormalizationLe
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularityAtPlaceOfSubadditive
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Real
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BaseRepCapelliEigenDual, CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CapelliKFiniteCoefficient, CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsFamilyFunctionals, CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HsqNonneg, CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsCoefContinuousOn, CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.N1AddEZLe, CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselSum, CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselSumStatement, CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselGap, CompanionTheory.AutomorphicTheory.BesselWaveGrids.WaveBallEstimateWeightedDualAlt
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BaseRepCapelliEigenDual =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BaseRepCapelliEigenDual", "h": "module\n\npublic import Formalism.HermitianCurvature.StatementB\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr\nimport Formalism.HermitianCurvature.BesselNonvanishingReduction\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+end GlobalTheory
+
+open GlobalTheory
+
+namespace Gp91
+open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
+open scoped InnerProductSpace ENNReal
+
+namespace GlobalTheory.CoefZero
+
+theorem continuousOn_of_ckOn {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ∞}
+    {f : B.Mat k r → E} (h : B.CkOn m (B.GV k r) f) : ContinuousOn f (B.GV k r) := by
+  letI : NormedAddCommGroup (B.Mat k r) := Matrix.normedAddCommGroup
+  letI : NormedSpace ℝ (B.Mat k r) := Matrix.normedSpace
+  intro g₀ hg₀
+  obtain ⟨U, f', hU, hgU, hf', he⟩ := h g₀ hg₀
+  have h1 : ContinuousWithinAt f' (B.GV k r) g₀ :=
+    (hf'.continuousOn.continuousAt (hU.mem_nhds hgU)).continuousWithinAt
+  refine h1.congr_of_eventuallyEq ?_ (he g₀ hgU hg₀)
+  filter_upwards [mem_nhdsWithin_of_mem_nhds (hU.mem_nhds hgU), self_mem_nhdsWithin] with g a b
+  exact he g a b
+
+end GlobalTheory.CoefZero
+end Gp91 -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BaseRepCapelliEigenDual =====
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CapelliKFiniteCoefficient =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CapelliKFiniteCoefficient", "h": "module\n\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG\npublic import Formalism.PeriodIntegrals.CapelliEig\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DiscreteSeriesUnitarySmoothBasic\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselNeZeroOfCyclicOrbit\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+end GlobalTheory
+
+open GlobalTheory
+
+namespace Gp91
+
+open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
+open scoped InnerProductSpace ENNReal
+
+namespace GlobalTheory
+
+theorem comp_eq_sum_inner_smul_rankOne {H Wp Wq : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+    [CompleteSpace H] [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
+    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] {ι κ : Type} [Fintype ι] [Fintype κ]
+    (b : OrthonormalBasis ι ℂ Wp) (c : OrthonormalBasis κ ℂ Wq)
+    (P : H →L[ℂ] Wp) (A : H →L[ℂ] H) (Q : Wq →L[ℂ] H) :
+    P.comp (A.comp Q) = ∑ p : ι × κ, ⟪ContinuousLinearMap.adjoint P (b p.1), A (Q (c p.2))⟫_ℂ •
+      (innerSL ℂ (c p.2)).smulRight (b p.1) := by
+  ext x
+  simp only [ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply,
+    innerSL_apply_apply, Fintype.sum_prod_type, smul_smul]
+  conv_lhs => rw [← c.sum_repr' x]
+
+  simp only [map_sum, map_smul]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  conv_lhs => rw [← b.sum_repr' (P (A (Q (c j))))]
+  simp only [Finset.smul_sum, smul_smul, mul_comm]
+
+theorem isCoef_of_translate_smul_exists : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq] [FiniteDimensional ℂ Wq] (l : R.H → Wp) (l' : R.H → Wq), R.IsDG ε mu → (∀ f : Mx k r → (Wq →L[ℂ] Wp), PI.CapelliEig.IsKFinCoefT (k := k) (r := r) R.σ f → ∃ s, IsCoef R l l' f s) ∧ (∀ F s (t : ℂ), IsCoef R l l' F s → IsCoef R l l' (fun g => t • F g) (t * s)) ∧ ((∃ x ∈ R.TK, l x ≠ 0) → (∃ y ∈ R.TK, l' y ≠ 0) → ∀ s : ℂ, ∃ F, IsCoef R l l' F s) := by
+  intro hK k r ε mu R Wp _ _ _ _ Wq _ _ _ _ l l' hR
+  obtain ⟨hmul, hone, hinner, -, -, hTK, hKF, -, -⟩ := rep_basic_of_isDS hK k r ε mu R hR
+  refine ⟨?_, ?_, ?_⟩
+  · rintro f ⟨a, ha, b, hb, P, Q, hQ, hP, h⟩
+    obtain ⟨hai, ha1, -⟩ := Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv ha
+    obtain ⟨hbi, -, hb2⟩ := Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv hb
+    let e := stdOrthonormalBasis ℂ Wp
+    let c := stdOrthonormalBasis ℂ Wq
+    let φ := (finProdFinEquiv (m := Module.finrank ℂ Wp) (n := Module.finrank ℂ Wq)).symm
+    refine ⟨_, _, fun i => R.σ a (ContinuousLinearMap.adjoint P (e (φ i).1)),
+      fun i => R.σ b⁻¹ (Q (c (φ i).2)), fun i => (innerSL ℂ (c (φ i).2)).smulRight (e (φ i).1),
+      fun i => ⟨hTK a ha _ (hKF _ (hP _)), hTK _ hbi _ (hKF _ (hQ _))⟩, fun g hg => ?_, rfl⟩
+    have hc : a * (a⁻¹ * g * b⁻¹) * b = g := by
+      calc a * (a⁻¹ * g * b⁻¹) * b = (a * a⁻¹) * g * (b⁻¹ * b) := by simp only [Matrix.mul_assoc]
+        _ = g := by rw [ha1, hb2, Matrix.one_mul, Matrix.mul_one]
+    have h1 : f g = P.comp ((R.σ (a⁻¹ * g * b⁻¹)).comp Q) := by
+      have := h (a⁻¹ * g * b⁻¹)
+      simpa only [hc] using this
+    have hm : a⁻¹ * g * b⁻¹ ∈ GG k r :=
+      Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul (Formalism.FourierDecayAlt.P.TranslationBesselVanishing.uh_mul hai hg) hbi
+    have h2 : ∀ u v, ⟪u, R.σ (a⁻¹ * g * b⁻¹) v⟫_ℂ = ⟪R.σ a u, R.σ g (R.σ b⁻¹ v)⟫_ℂ := by
+      intro u v
+      rw [← hinner a ha, ← hmul a ha _ hm, ← hmul g hg _ hbi, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ha1,
+        Matrix.one_mul]
+    rw [h1, comp_eq_sum_inner_smul_rankOne e c]
+    simp only [h2]
+    exact (φ.sum_comp (fun p => ⟪R.σ a (ContinuousLinearMap.adjoint P (e p.1)), R.σ g (R.σ b⁻¹ (Q (c p.2)))⟫_ℂ •
+      (innerSL ℂ (c p.2)).smulRight (e p.1))).symm
+  · rintro F s t ⟨m, x, y, X, hxy, hF, hs⟩
+    refine ⟨m, x, y, fun i => t • X i, hxy, fun g hg => ?_, ?_⟩
+    · simp only [hF g hg, Finset.smul_sum, smul_smul, mul_comm]
+    · simp only [hs, Finset.mul_sum, ContinuousLinearMap.smul_apply, inner_smul_right]
+  · rintro ⟨x, hx, hx0⟩ ⟨y, hy, hy0⟩ s
+    have h1 : ⟪l x, l x⟫_ℂ ≠ 0 := fun h => hx0 (inner_self_eq_zero.mp h)
+    have h2 : ⟪l' y, l' y⟫_ℂ ≠ 0 := fun h => hy0 (inner_self_eq_zero.mp h)
+    refine ⟨fun g => ∑ _i : Fin 1, ⟪x, R.σ g y⟫_ℂ •
+        ((s / (⟪l' y, l' y⟫_ℂ * ⟪l x, l x⟫_ℂ)) • (innerSL ℂ (l' y)).smulRight (l x)),
+      1, fun _ => x, fun _ => y,
+      fun _ => (s / (⟪l' y, l' y⟫_ℂ * ⟪l x, l x⟫_ℂ)) • (innerSL ℂ (l' y)).smulRight (l x),
+      fun _ => ⟨hx, hy⟩, fun g _ => rfl, ?_⟩
+    rw [Fin.sum_univ_one, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply,
+      innerSL_apply_apply, inner_smul_right, inner_smul_right, div_mul_cancel₀ _ (mul_ne_zero h2 h1)]
+
+end GlobalTheory
+end Gp91 -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CapelliKFiniteCoefficient =====
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsFamilyFunctionals =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsFamilyFunctionals", "h": "module\n\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG\npublic import Formalism.HermitianCurvature.RealInputsClosedAdmissibleSettings\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselGapExistsFunctional\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HaarEqSmul\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.AbsCoordLeOfLOneNormLe\npublic import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselDatumBothSidesAreSides\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+end GlobalTheory
+
+open GlobalTheory
+
+namespace Gp91
+open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
+open scoped InnerProductSpace ENNReal
+
+theorem GlobalTheory.exists_sideFam_both_sides : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r), Num P.k P.r lam P.u b bv ga h q0 → IsFamG lam q0 R → ∃ (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ), (haveI := FiniteDimensional.complete ℂ Wp; SideFam p.T.base.z p.T.base.π p.T.base.μW p.T.base.μN p.T.base.μG q0 R l dg) ∧ (haveI := FiniteDimensional.complete ℂ Wq; SideFam p.T.base.z' p.T.base.π' p.T.base.μW' p.T.base.μN p.T.base.μG q0 R l' dg) := by
+  intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R hN hF
+  have := FiniteDimensional.complete ℂ Wp
+  have := FiniteDimensional.complete ℂ Wq
+  obtain ⟨-, -, -, -, -, hu, hu'⟩ := p.hP
+  obtain ⟨νq, νq', hS, hS'⟩ := _root_.GlobalTheory.exists_sideG_both_of_isType P.k P.r Wp Wq p.T.base P.u P.u' hu hu'
+  obtain ⟨⟨-, -, -, -, hG⟩, hν⟩ := GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN
+  obtain ⟨c, hc, hd⟩ := GlobalTheory.BesselDegree.schur_fdeg hH P.k P.r (PI.BesselPeriodGGP.eps48 P.k P.r) p.T.base.μG
+    hS.2.2.2.2.2.2.1
+  have h1 : ∀ ν, ∃ l : (R ν).H → Wp, n1 ν ≤ q0 →
+      IsBeL (R ν) p.T.base.z p.T.base.π p.T.base.μW p.T.base.μN l := by
+    intro ν
+    by_cases hq : n1 ν ≤ q0
+    · obtain ⟨l, hl⟩ := _root_.Gp91.CompanionTheory.FamilyDerivativeExpansion.BeL.exists_normalised_bessel_map hH P.k P.r _ _ (h / 2) (R ν) Wp _ _ _ _ _ _ _ (hF ν hq) (hν ν hq).2.2.1 hG hS
+      exact ⟨l, fun _ => hl⟩
+    · exact ⟨0, fun h' => absurd h' hq⟩
+  have h2 : ∀ ν, ∃ l : (R ν).H → Wq, n1 ν ≤ q0 →
+      IsBeL (R ν) p.T.base.z' p.T.base.π' p.T.base.μW' p.T.base.μN l := by
+    intro ν
+    by_cases hq : n1 ν ≤ q0
+    · obtain ⟨l, hl⟩ := _root_.Gp91.CompanionTheory.FamilyDerivativeExpansion.BeL.exists_normalised_bessel_map hH P.k P.r _ _ (h / 2) (R ν) Wq _ _ _ _ _ _ _ (hF ν hq) (hν ν hq).2.2.1 hG hS'
+      exact ⟨l, fun _ => hl⟩
+    · exact ⟨0, fun h' => absurd h' hq⟩
+  choose l hl using h1
+  choose l' hl' using h2
+  have hp : ∀ ν, n1 ν ≤ q0 → 0 < c * Formalism.QuantumDeterminants.fdegHC (fun a => lam a + (ν a : ℝ)) := fun ν hq =>
+    mul_pos hc (GlobalTheory.FamilyDegreeRatio.degree_ratios P.k P.r lam P.u b bv ga h q0 hN ν hq).1
+  exact ⟨l, l', fun ν => c * Formalism.QuantumDeterminants.fdegHC (fun a => lam a + (ν a : ℝ)),
+    fun ν hq => ⟨hl ν hq, hp ν hq, (hd _ _ (hF ν hq)).1⟩,
+    fun ν hq => ⟨hl' ν hq, hp ν hq, (hd _ _ (hF ν hq)).1⟩⟩
+end Gp91 -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsFamilyFunctionals =====
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HsqNonneg =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HsqNonneg", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Jets.SideFam\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+end GlobalTheory
+
+open GlobalTheory
+
+namespace Gp91
+open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
+open scoped InnerProductSpace ENNReal
+
+namespace GlobalTheory.SupTau
+
+theorem hsq_nonneg (r : ℕ) (T b : ℝ) : 0 ≤ Hsq r T b := by
+  show 0 ≤ max 1 T * b ^ (20 * (r + 1))
+  have h1 : 0 ≤ max 1 T := le_trans zero_le_one (le_max_left _ _)
+  have h2 : 0 ≤ b ^ (20 * (r + 1)) := by
+    rw [pow_mul]
+    exact pow_nonneg (by positivity) _
+  exact mul_nonneg h1 h2
+
+theorem arith (a a' d e A A' : ℝ) (n : ℕ) (ha : 0 ≤ a) (ha' : 0 ≤ a') (hd : 0 < d) (he : 0 < e) (hA : 0 ≤ A)
+    (hA' : 0 ≤ A') (h : a ^ 2 * d / e ≤ A ^ n) (h' : a' ^ 2 * d / e ≤ A' ^ n) :
+    a' * a * d / e ≤ Real.sqrt (A * A') ^ n := by
+  have he0 : e ≠ 0 := ne_of_gt he
+  have hsq : (Real.sqrt (A * A') ^ n) ^ 2 = A ^ n * A' ^ n := by
+    rw [← pow_mul, mul_comm n 2, pow_mul, Real.sq_sqrt (mul_nonneg hA hA'), mul_pow]
+  have hprod : (a' * a * d / e) ^ 2 = (a ^ 2 * d / e) * (a' ^ 2 * d / e) := by
+    field_simp
+  have key : (a' * a * d / e) ^ 2 ≤ (Real.sqrt (A * A') ^ n) ^ 2 := by
+    rw [hprod, hsq]
+    exact mul_le_mul h h' (by positivity) (pow_nonneg hA n)
+  have hl : 0 ≤ a' * a * d / e := by positivity
+  have hr : 0 ≤ Real.sqrt (A * A') ^ n := pow_nonneg (Real.sqrt_nonneg _) n
+  calc a' * a * d / e = Real.sqrt ((a' * a * d / e) ^ 2) := (Real.sqrt_sq hl).symm
+    _ ≤ Real.sqrt ((Real.sqrt (A * A') ^ n) ^ 2) := Real.sqrt_le_sqrt key
+    _ = Real.sqrt (A * A') ^ n := Real.sqrt_sq hr
+
+end GlobalTheory.SupTau
+end Gp91 -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HsqNonneg =====
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsCoefContinuousOn =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsCoefContinuousOn", "h": "module\n\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContinuousMulMt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+end GlobalTheory
+
+open GlobalTheory
+
+namespace Gp91
+
+open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
+open scoped InnerProductSpace ENNReal
+
+namespace GlobalTheory.SupMeas
+
+theorem isDS_continuousOn {k r : ℕ} {R : Rep k r} {ε : Fin (2 * r + k + 1) → Bool} {μ : Fin (2 * r + k + 1) → ℝ}
+    (h : R.IsDG ε μ) (v : R.H) : ContinuousOn (fun g => R.σ g v) (GG k r) := by
+  obtain ⟨P, hP, -, -, ⟨-, -, hc⟩, -⟩ := h.2
+  have hdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP.1.1
+  have hPP : P⁻¹ * P = 1 := Matrix.nonsing_inv_mul P hdet
+  have hmaps := Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.cayley_maps hP
+  have e : ∀ g : Mx k r, P⁻¹ * (P * g * P⁻¹) * P = g := fun g => by
+    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hPP, Matrix.one_mul, Matrix.mul_assoc, hPP, Matrix.mul_one]
+  have h3 : Continuous fun g : Mx k r => P * g * P⁻¹ :=
+    (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
+  have := (hc v).comp h3.continuousOn hmaps
+  simpa only [Function.comp_def, e] using this
+
+theorem isCoef_continuousOn {k r : ℕ} {R : Rep k r} {ε : Fin (2 * r + k + 1) → Bool} {μ : Fin (2 * r + k + 1) → ℝ}
+    {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
+    {l : R.H → Wp} {l' : R.H → Wq} {F : Mx k r → (Wq →L[ℂ] Wp)} {s : ℂ}
+    (h : R.IsDG ε μ) (hF : IsCoef R l l' F s) : ContinuousOn F (GG k r) := by
+  obtain ⟨m, x, y, X, -, hF, -⟩ := hF
+  refine ContinuousOn.congr ?_ hF
+  exact continuousOn_finsetSum _ fun i _ =>
+    (ContinuousOn.inner (𝕜 := ℂ) continuousOn_const (isDS_continuousOn h (y i))).smul continuousOn_const
+
+end GlobalTheory.SupMeas
+end Gp91 -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsCoefContinuousOn =====
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.N1AddEZLe =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.N1AddEZLe", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Jets.SideFam\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+end GlobalTheory
+
+open GlobalTheory
+
+namespace Gp91
+
+open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
+open scoped InnerProductSpace ENNReal
+
+namespace GlobalTheory.SuppliedPieri
+
+theorem n1_add_eZ_le {n : ℕ} (ν : Fin n → ℤ) (I : Finset (Fin n)) : n1 (ν + eZ I) ≤ n1 ν + I.card := by
+  unfold n1
+  have h1 : I.card = ∑ i : Fin n, (if i ∈ I then 1 else 0) := by
+    rw [Finset.sum_boole]; simp
+  rw [h1, ← Finset.sum_add_distrib]
+  refine Finset.sum_le_sum fun i _ => ?_
+  simp only [Pi.add_apply, eZ]
+  split_ifs <;> omega
+
+theorem JF_zero {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
+    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (g : B.Mat k r) :
+    B.JF D 0 g = 0 := by
+  simp [B.JF, Formalism.QuantumDeterminants.besselJ]
+
+end GlobalTheory.SuppliedPieri
+end Gp91 -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.N1AddEZLe =====
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselSum =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselSum", "h": "module\n\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DiscreteSeriesUnitarySmoothBasic\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FrepDiscreteSeriesSum\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorRawOfFrep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+end GlobalTheory
+
+open GlobalTheory
+
+namespace Gp91
+
+open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
+open scoped InnerProductSpace ENNReal
+
+namespace GlobalTheory
+
+theorem coef_mul_split : PI.KFinSmooth → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ρ : Mx k r → Matrix ι ι ℂ) (Γ : Matrix ι ι ℂ) (d : ℕ) (R : Rep k r) (RI : κ → Rep k r) (io : ∀ I, ι → (RI I).H → R.H) (pr : ∀ I, ι → R.H → (RI I).H) (ep : κ → ℝ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (muI : κ → Fin (2 * r + k + 1) → ℝ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq] [FiniteDimensional ℂ Wq] (om om' : ι → ℂ) (l : R.H → Wp) (l' : R.H → Wq) (lI : ∀ I, (RI I).H → Wp) (lI' : ∀ I, (RI I).H → Wq) (F : Mx k r → (Wq →L[ℂ] Wp)) (s : ℂ), R.IsDG ε mu → (∀ I, (RI I).IsDG ε (muI I)) → IsFRep ρ Γ d → TensH ρ Γ R RI io pr ep → IsCoef R l l' F s → ∃ (Ft : κ → Mx k r → (Wq →L[ℂ] Wp)) (st : κ → ℂ), (∀ I, IsCoef (RI I) (lI I) (lI' I) (Ft I) (st I)) ∧ (∀ g ∈ GG k r, Formalism.QuantumDeterminants.herm Γ (ρ g *ᵥ om') om • F g = ∑ I, Ft I g) ∧ (∀ I, (¬ NzOn (RI I) (lI I) ∨ ¬ NzOn (RI I) (lI' I)) → st I = 0) ∧ ∀ I (κ₀ κ₁ : ℂ), (∀ v ∈ R.sm, lI I (∑ c, pr I c (tm R om v c)) = κ₀ • l v) → (∀ v ∈ R.sm, lI' I (∑ c, pr I c (tm R om' v c)) = κ₁ • l' v) → st I = (ep I : ℂ) * κ₁ * star κ₀ * s := by
+  intro hK k r ι κ _ _ _ _ ρ Γ d R RI io pr ep ε mu muI Wp _ _ _ _ Wq _ _ _ _ om om' l l' lI lI' F s
+    hR hRI hF hT hC
+  obtain ⟨m, x, y, X, hxy, hFg, hs⟩ := hC
+  have hsm : ∀ v ∈ R.TK, v ∈ R.sm := (GlobalTheory.rep_basic_of_isDS hK k r ε mu R hR).2.2.2.2.1
+  have hsmI : ∀ I, ∀ v ∈ (RI I).TK, v ∈ (RI I).sm := fun I =>
+    (GlobalTheory.rep_basic_of_isDS hK k r ε (muI I) (RI I) (hRI I)).2.2.2.2.1
+  have hadj := (GlobalTheory.TensAdj.tens_adj hK k r ι κ ρ Γ d R RI io pr ep ε mu muI hR hRI hF hT).2.2.2.2
+  have hkf := (GlobalTheory.tensor_decomposition_kfinite hK k r ι κ ρ Γ d R RI io pr ε mu muI hR hRI hF hT.raw).2.2.2
+  have hp : ∀ I (a : ι → ℂ), ∀ v ∈ R.TK, (∑ c, pr I c (tm R a v c)) ∈ (RI I).TK := fun I a v hv =>
+    Submodule.sum_mem _ fun c _ => hkf I c _ (Submodule.smul_mem _ _ hv)
+  refine ⟨fun I g => ∑ i, ⟪∑ c, pr I c (tm R om (x i) c), (RI I).σ g (∑ c, pr I c (tm R om' (y i) c))⟫_ℂ •
+      ((ep I : ℂ) • X i),
+    fun I => ∑ i, ⟪lI I (∑ c, pr I c (tm R om (x i) c)),
+      ((ep I : ℂ) • X i) (lI' I (∑ c, pr I c (tm R om' (y i) c)))⟫_ℂ, ?_, ?_, ?_, ?_⟩
+  · intro I
+    exact ⟨m, fun i => ∑ c, pr I c (tm R om (x i) c), fun i => ∑ c, pr I c (tm R om' (y i) c),
+      fun i => (ep I : ℂ) • X i, fun i => ⟨hp I om _ (hxy i).1, hp I om' _ (hxy i).2⟩, fun g _ => rfl, rfl⟩
+  · intro g hg
+    rw [hFg g hg, Finset.smul_sum, Finset.sum_comm]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [smul_smul, hadj om om' _ (hsm _ (hxy i).1) _ (hsm _ (hxy i).2) g hg, Finset.sum_smul]
+    refine Finset.sum_congr rfl fun I _ => ?_
+    rw [smul_smul, mul_comm]
+  · intro I h
+    refine Finset.sum_eq_zero fun i _ => ?_
+    rcases h with h | h
+    · have : lI I (∑ c, pr I c (tm R om (x i) c)) = 0 := by
+        by_contra hne
+        exact h ⟨_, hsmI I _ (hp I om _ (hxy i).1), hne⟩
+      rw [this, inner_zero_left]
+    · have : lI' I (∑ c, pr I c (tm R om' (y i) c)) = 0 := by
+        by_contra hne
+        exact h ⟨_, hsmI I _ (hp I om' _ (hxy i).2), hne⟩
+      rw [this, map_zero, inner_zero_right]
+  · intro I κ₀ κ₁ h0 h1
+    rw [hs, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [h0 _ (hsm _ (hxy i).1), h1 _ (hsm _ (hxy i).2), map_smul, ContinuousLinearMap.smul_apply,
+      inner_smul_left, inner_smul_right, inner_smul_right]
+    simp only [starRingEnd_apply]
+    ring
+
+end GlobalTheory
+end Gp91 -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselSum =====
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselSumStatement =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselSumStatement", "h": "module\n\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselSum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+end GlobalTheory
+
+open GlobalTheory
+
+namespace Gp91
+open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
+open scoped InnerProductSpace ENNReal
+
+theorem _root_.Gp91.GlobalTheory.T.tensor_weighted_bessel_sum : PI.KFinSmooth → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ρ : Mx k r → Matrix ι ι ℂ) (Γ : Matrix ι ι ℂ) (d : ℕ) (R : Rep k r) (RI : κ → Rep k r) (io : ∀ I, ι → (RI I).H → R.H) (pr : ∀ I, ι → R.H → (RI I).H) (ep : κ → ℝ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (muI : κ → Fin (2 * r + k + 1) → ℝ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq] [FiniteDimensional ℂ Wq] (om om' : ι → ℂ) (l : R.H → Wp) (l' : R.H → Wq) (lI : ∀ I, (RI I).H → Wp) (lI' : ∀ I, (RI I).H → Wq) (F : Mx k r → (Wq →L[ℂ] Wp)) (s : ℂ), R.IsDG ε mu → (∀ I, (RI I).IsDG ε (muI I)) → IsFRep ρ Γ d → TensH ρ Γ R RI io pr ep → IsCoef R l l' F s → ∃ (Ft : κ → Mx k r → (Wq →L[ℂ] Wp)) (st : κ → ℂ), (∀ I, IsCoef (RI I) (lI I) (lI' I) (Ft I) (st I)) ∧ (∀ g ∈ GG k r, Formalism.QuantumDeterminants.herm Γ (ρ g *ᵥ om') om • F g = ∑ I, Ft I g) ∧ (∀ I, (¬ NzOn (RI I) (lI I) ∨ ¬ NzOn (RI I) (lI' I)) → st I = 0) ∧ ∀ I (κ₀ κ₁ : ℂ), (∀ v ∈ R.sm, lI I (∑ c, pr I c (tm R om v c)) = κ₀ • l v) → (∀ v ∈ R.sm, lI' I (∑ c, pr I c (tm R om' v c)) = κ₁ • l' v) → st I = (ep I : ℂ) * κ₁ * star κ₀ * s := by
+  first | exact @GlobalTheory.coef_mul_split
+end Gp91 -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselSumStatement =====
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselGap =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselGap", "h": "module\n\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselSettingGapDecay\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselSumStatement\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MirrorDecomposition.HpkRowEsI\nimport Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselFunctionLocalityInvariantFactorFiniteSum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+end GlobalTheory
+
+open GlobalTheory
+
+namespace Gp91
+
+open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Matrix MeasureTheory Finset
+open scoped InnerProductSpace ENNReal
+
+namespace GlobalTheory.BesselPieri
+
+theorem gg_mul {k r : ℕ} {a b : Mx k r} (ha : a ∈ GG k r) (hb : b ∈ GG k r) : a * b ∈ GG k r := by
+  have ha' : aᴴ * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r := ha
+  have hb' : bᴴ * Formalism.QuantumDeterminants.Hpk k r * b = Formalism.QuantumDeterminants.Hpk k r := hb
+  show (a * b)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (a * b) = Formalism.QuantumDeterminants.Hpk k r
+  calc (a * b)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (a * b) = bᴴ * (aᴴ * Formalism.QuantumDeterminants.Hpk k r * a) * b := by
+        rw [conjTranspose_mul]; simp only [Matrix.mul_assoc]
+    _ = _ := by rw [ha', hb']
+
+theorem one_gg (k r : ℕ) : (1 : Mx k r) ∈ GG k r := by
+  show (1 : Mx k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r * 1 = Formalism.QuantumDeterminants.Hpk k r
+  simp
+
+theorem one_N (k r : ℕ) : (1 : Mx k r) ∈ Formalism.QuantumDeterminants.Nset k r :=
+  ⟨one_gg k r, fun _ _ _ => Matrix.one_apply, fun _ _ _ _ _ => Matrix.one_apply⟩
+
+theorem one_UW (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : (1 : Mx k r) ∈ Formalism.QuantumDeterminants.UWset k r z :=
+  ⟨one_gg k r, fun _ => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩
+
+theorem herm_iso {ι : Type} [Fintype ι] [DecidableEq ι] {Γ A : Matrix ι ι ℂ} (hA : Aᴴ * Γ * A = Γ) (x y : ι → ℂ) :
+    Formalism.QuantumDeterminants.herm Γ (A *ᵥ x) (A *ᵥ y) = Formalism.QuantumDeterminants.herm Γ x y := by
+  unfold Formalism.QuantumDeterminants.herm
+  rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hA]
+
+theorem coef_inv {k r : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] {ρ : Mx k r → Matrix ι ι ℂ} {Γ : Matrix ι ι ℂ}
+    {d : ℕ} (hρ : IsFRep ρ Γ d) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
+    [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) {om om' : ι → ℂ}
+    (h1 : ∀ g ∈ Formalism.QuantumDeterminants.Sset k r D.z, ρ g *ᵥ om = om) (h2 : ∀ g ∈ Formalism.QuantumDeterminants.Sset k r D.z', ρ g *ᵥ om' = om')
+    {γ : Mx k r} (hγ : γ ∈ GG k r) (p : B.SS k r) (hp : D.inSS p) :
+    Formalism.QuantumDeterminants.herm Γ (ρ (B.sgs p γ) *ᵥ om') om = Formalism.QuantumDeterminants.herm Γ (ρ γ *ᵥ om') om := by
+  obtain ⟨hh, hn, hh', hn'⟩ := hp
+  obtain ⟨-, -, -, hmul, hiso, -⟩ := hρ
+  have hi := PI.MirrorSection₂.uw_inv hh
+  have ni := PI.MirrorSection₂.n_inv hn
+  have ha : (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ ∈ GG k r := gg_mul hi.1 ni.1
+  have e1 := h1 _ ⟨_, hi, _, ni, rfl⟩
+  have e2 : ρ (Matrix.of p.2.1) *ᵥ om' = om' := h2 _ ⟨_, hh', 1, one_N k r, (Matrix.mul_one _).symm⟩
+  have e3 : ρ (Matrix.of p.2.2) *ᵥ om' = om' := h2 _ ⟨1, one_UW k r _, _, hn', (Matrix.one_mul _).symm⟩
+  unfold B.sgs
+  rw [hmul _ (gg_mul (gg_mul ha hγ) hn'.1) _ hh'.1, hmul _ (gg_mul ha hγ) _ hn'.1, hmul _ ha _ hγ,
+    ← mulVec_mulVec, e2, ← mulVec_mulVec, e3, ← mulVec_mulVec]
+  conv_lhs => rw [← e1]
+  exact herm_iso (hiso _ ha) _ _
+
+theorem pieri_bessel : HypsG → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ρ : Mx k r → Matrix ι ι ℂ) (Γ : Matrix ι ι ℂ) (d : ℕ) (R : Rep k r) (RI : κ → Rep k r) (io : ∀ I, ι → (RI I).H → R.H) (pr : ∀ I, ι → R.H → (RI I).H) (ep : κ → ℝ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (muI : κ → Fin (2 * r + k + 1) → ℝ) (h : ℝ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (om om' : ι → ℂ) (l : R.H → Wp) (l' : R.H → Wq) (lI : ∀ I, (RI I).H → Wp) (lI' : ∀ I, (RI I).H → Wq) (F : Mx k r → (Wq →L[ℂ] Wp)) (s : ℂ) (FI : κ → Mx k r → (Wq →L[ℂ] Wp)) (sI τ : κ → ℂ), R.IsDG ε mu → Formalism.QuantumDeterminants.GapAtLeast ε mu h → (∀ I, (RI I).IsDG ε (muI I) ∧ Formalism.QuantumDeterminants.GapAtLeast ε (muI I) h) → GapOK k r h → IsFRep ρ Γ d → TensH ρ Γ R RI io pr ep → (∀ g ∈ Formalism.QuantumDeterminants.Sset k r D.z, ρ g *ᵥ om = om) → (∀ g ∈ Formalism.QuantumDeterminants.Sset k r D.z', ρ g *ᵥ om' = om') → (∀ I, IsBeL (RI I) D.z D.π D.μW D.μN (lI I) ∧ IsBeL (RI I) D.z' D.π' D.μW' D.μN (lI' I)) → IsCoef R l l' F s → (∀ I, ((¬ NzOn (RI I) (lI I) ∨ ¬ NzOn (RI I) (lI' I)) ∧ τ I = 0) ∨ (IsCoef (RI I) (lI I) (lI' I) (FI I) (sI I) ∧ sI I ≠ 0 ∧ ∃ κ₀ κ₁ : ℂ, (∀ v ∈ R.sm, lI I (∑ c, pr I c (tm R om v c)) = κ₀ • l v) ∧ (∀ v ∈ R.sm, lI' I (∑ c, pr I c (tm R om' v c)) = κ₁ • l' v) ∧ τ I = (ep I : ℂ) * κ₁ * star κ₀ * s / sI I)) → ∀ γ ∈ JF.Om k r D.z D.z', Formalism.QuantumDeterminants.herm Γ (ρ γ *ᵥ om') om • B.JF D F γ = ∑ I, τ I • B.JF D (FI I) γ := by
+  intro H k r ι κ _ _ _ _ ρ Γ d R RI io pr ep ε mu muI h Wp _ _ _ _ Wq _ _ _ _ D om om' l l' lI lI' F s FI sI τ
+    hR _ hRI hgap hρ hT h1 h2 hBe hF hτ γ hγ
+  have hγG : γ ∈ GG k r := hγ.1
+  obtain ⟨Ft, st, hFt, hsum, hz, hst⟩ := GlobalTheory.T.tensor_weighted_bessel_sum H.1.2.2.1 k r ι κ ρ Γ d R RI io pr ep ε mu muI Wp Wq om om'
+    l l' lI lI' F s hR (fun I => (hRI I).1) hρ hT hF
+  obtain ⟨hloc, hfac, hfin, -⟩ := _root_.GlobalTheory.BesselFunctionBasic.JF_basic k r Wp Wq D γ hγG
+  have hOO := fun I => _root_.Gp91.GlobalTheory.BesselOrbital.bessel_integral_eq_smul H k r ε (muI I) h (RI I) Wp Wq D (lI I) (lI' I) (hRI I).1 (hRI I).2 hgap
+    (hBe I).1 (hBe I).2
+  choose OO hOO using hOO
+  rw [← hfac (fun g => Formalism.QuantumDeterminants.herm Γ (ρ g *ᵥ om') om) F (fun p hp => coef_inv hρ D h1 h2 hγG p hp),
+    (hloc _ (fun g => ∑ I, Ft I g) hsum).1, hfin κ Ft (fun I => (hOO I _ _ (hFt I) γ hγ).1)]
+  refine Finset.sum_congr rfl fun I _ => ?_
+  rw [(hOO I _ _ (hFt I) γ hγ).2]
+  rcases hτ I with ⟨hn, h0⟩ | ⟨hc, hs, κ₀, κ₁, a0, a1, ht⟩
+  · rw [hz I hn, h0, zero_smul, zero_smul]
+  · rw [(hOO I _ _ hc γ hγ).2, hst I κ₀ κ₁ a0 a1, ht, smul_smul, div_mul_cancel₀ _ hs]
+
+end GlobalTheory.BesselPieri
+end Gp91 -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselGap =====
+
+-- ===== clump member: CompanionTheory.AutomorphicTheory.BesselWaveGrids.WaveBallEstimateWeightedDualAlt =====
+-- clump-header: {"m": "CompanionTheory.AutomorphicTheory.BesselWaveGrids.WaveBallEstimateWeightedDualAlt", "h": "module\n\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG\npublic import CompanionTheory.AutomorphicTheory.BesselWaveGrids.ProductMoment\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BaseRepCapelliEigenDual\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselPeriodAdjointPair\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselSettingGapDecay\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.BesselSettingUniformConstant\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CapelliKFiniteCoefficient\npublic import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CayleyEndomorphismsModular\npublic import Formalism.HermitianCurvature.RealInputsClosedAdmissibleSettings\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsFamilyFunctionals\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsKTypeNonzeroBessel\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.ExistsLowestKFiniteVectorDiscreteSeriesStatement\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupBesselGrowth\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupCayleyBound\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupCayleyRecursionStatement\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.FamilySetupMomentClosure\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HsqNonneg\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsCoefContinuousOn\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.N1AddEZLe\npublic import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorWeightedBesselGap\nimport CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.CayleyExistsAndAny\nimport CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.DiscreteSeriesUnitarySmoothBasic\nimport CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.HaarEqSmul\nimport CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.PieriTensorDecomposition\nimport CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.QuotientMeasureAeMemAndMeasurableBesselModelStatement\nimport CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.SmoothVectorsDiscreteSeriesGlModuleStatement\nimport CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorMomentEstimate\nimport CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorMomentWeighted\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.AbsCoordLeOfLOneNormLe\nimport Formalism.HermitianCurvature.StatementTBB\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.AemeasurableBesselNormIntegrandBigCell\nimport Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselDatumBothSidesAreSides\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.BesselNormSqEqBigCellNormSq\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.BigCellExpansionOfSubadditive\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionOfBesselFunctionZero\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.BigCellExpansionSmul\nimport Formalism.HermitianCurvature.StatementJF\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsRegularRepBesselBigCellVectorEqBessel\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.FixesWedgeAndForm\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.HermCmpWedgeEqDet\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsFRepExteriorPowerStandardRep\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.LenEqOfUnitriangular\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevZeroOfKHighest\nimport Development.AbelianVarietyTheory.Definitions.Jets.SideFam\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyProductBoundConstantLe\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps\nimport Mathlib.MeasureTheory.Integral.Lebesgue.Basic\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.ProductMomentBoundDensityMassOne\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.TopNum\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.NormSqUnitNormalizationLe\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularityAtPlaceOfSubadditive\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace GlobalTheory
@@ -148,7 +634,7 @@ theorem family_through_discreteSeries : HypsG → ∀ (k r : ℕ) (lam : Fin (2 
   have hC : ∃ P, PI.UpqRep.IsCayleyU k r (PI.BesselPeriodGGP.eps48 k r) P := by
     obtain ⟨P, hP, -⟩ := hR0.2
     exact ⟨P, hP⟩
-  have hfam := (GlobalTheory.T.numericalFamily_shape_gaps k r lam u b bv ga h q0 hN).2
+  have hfam := (_root_.GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hN).2
   have key : ∀ ν : Fin (2 * r + k + 1) → ℤ, ∃ R : Rep k r,
       (∑ a, (ν a).natAbs ≤ q0 → R.IsDG (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ))) ∧
       (ν = ν₀ → R = R0) := by
@@ -159,7 +645,7 @@ theorem family_through_discreteSeries : HypsG → ∀ (k r : ℕ) (lam : Fin (2 
       exact hR0
     · by_cases hq : ∑ a, (ν a).natAbs ≤ q0
       · obtain ⟨R, hR⟩ := hex k r _ _ (hfam ν hq).1 hC
-          ⟨h / 2, (hfam ν hq).2.2.1, (GlobalTheory.T.numericalFamily_shape_gaps k r lam u b bv ga h q0 hN).1.2.2.2.2⟩
+          ⟨h / 2, (hfam ν hq).2.2.1, (_root_.GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hN).1.2.2.2.2⟩
         exact ⟨R, fun _ => hR, fun h => absurd h h0⟩
       · exact ⟨R0, fun h => absurd h hq, fun _ => rfl⟩
   choose R hR using key
@@ -213,7 +699,7 @@ theorem exists_tau : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGrou
   haveI := FiniteDimensional.complete ℂ Wp
   haveI := FiniteDimensional.complete ℂ Wq
   obtain ⟨-, hz1, hz2, -, -, ht1, ht2⟩ := p.hP
-  obtain ⟨νq, νq', hS, hS'⟩ := GlobalTheory.T.besselDatum_both_sides_are_sides P.k P.r Wp Wq p.T.base P.u P.u' ht1 ht2
+  obtain ⟨νq, νq', hS, hS'⟩ := _root_.GlobalTheory.exists_sideG_both_of_isType P.k P.r Wp Wq p.T.base P.u P.u' ht1 ht2
   have key : ∀ ν, ∃ t : Finset (Fin (2 * P.r + P.k + 1)) → ℂ,
       (∀ I, J ν = 0 ∨ J (ν + eZ I) = 0 → t I = 0) ∧
       (n1 ν + (P.r + 1) * (P.r + 2) ≤ q0 →
@@ -231,7 +717,7 @@ theorem exists_tau : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGrou
     · exact ⟨fun _ => 0, fun _ _ => rfl, fun h => absurd h hν⟩
     have hν1 : n1 ν + (P.r + 1) ≤ q0 := by nlinarith
     have hν0 : n1 ν ≤ q0 := by omega
-    obtain ⟨io, pr, ep, hT⟩ := (GlobalTheory.T.pieri_tensor_decomposition hH P.k P.r lam P.u b bv ga h q0 R hNum hFam ν).1 (P.r + 1) hν1
+    obtain ⟨io, pr, ep, hT⟩ := (_root_.Gp91.GlobalTheory.TensExists.tens_exists hH P.k P.r lam P.u b bv ga h q0 R hNum hFam ν).1 (P.r + 1) hν1
     have hI : ∀ I : Sub (2 * P.r + P.k + 1) (P.r + 1), n1 (ν + eZ I.1) ≤ q0 := by
       intro I
       have h1 : n1 (ν + eZ I.1) ≤ n1 ν + I.1.card := by
@@ -256,14 +742,14 @@ theorem exists_tau : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGrou
       have hn : n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν) := by
         by_contra hc
         exact hJ (hz ν hc)
-      obtain ⟨κ, hκ⟩ := (GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hH P.k P.r _ _ _ _ (P.r + 1) (R ν)
+      obtain ⟨κ, hκ⟩ := (_root_.Gp91.CompanionTheory.FamilyDerivativeExpansion.Kap.kappa_dual hH P.k P.r _ _ _ _ (P.r + 1) (R ν)
         (fun I : Sub (2 * P.r + P.k + 1) (P.r + 1) => R (ν + eZ I.1)) io pr ep _ _ _ Wp
         p.T.base.z p.T.base.π P.u p.T.base.μW p.T.base.μN p.T.base.μG νq
         (wedge (Formalism.QuantumDeterminants.fvec P.k P.r p.T.base.z)) (l ν) (hFam ν hν0) (fun I => hFam _ (hI I))
         (GlobalTheory.WedgeFRep.isFRep_cmp P.k P.r (P.r + 1)) hT hS
         (fun g hg => (GlobalTheory.FlagFix.fixes_wedge_and_form P.k P.r _ hz1 g hg).1) (hL ν hν0).1 hn.2.1 I
         (l (ν + eZ I.1)) (hL _ (hI I)).1).1
-      obtain ⟨κ', hκ'⟩ := (GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hH P.k P.r _ _ _ _ (P.r + 1) (R ν)
+      obtain ⟨κ', hκ'⟩ := (_root_.Gp91.CompanionTheory.FamilyDerivativeExpansion.Kap.kappa_dual hH P.k P.r _ _ _ _ (P.r + 1) (R ν)
         (fun I : Sub (2 * P.r + P.k + 1) (P.r + 1) => R (ν + eZ I.1)) io pr ep _ _ _ Wq
         p.T.base.z' p.T.base.π' P.u' p.T.base.μW' p.T.base.μN p.T.base.μG νq'
         (wedge (Formalism.QuantumDeterminants.fvec P.k P.r p.T.base.z')) (l' ν) (hFam ν hν0) (fun I => hFam _ (hI I))
@@ -287,7 +773,7 @@ theorem sup_norm : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup 
   intro hy P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hS
   haveI := FiniteDimensional.complete ℂ Wp
   haveI := FiniteDimensional.complete ℂ Wq
-  obtain ⟨c₁, hc₁, h1⟩ := GlobalTheory.T.bessel_setting_uniform_constant hy P.k P.r Wp Wq p.T.base
+  obtain ⟨c₁, hc₁, h1⟩ := _root_.Gp91.GlobalTheory.BesselNormSq.normSq_coef hy P.k P.r Wp Wq p.T.base
   have hH : PI.BesselPeriodGGP.IsHaarOn (GG P.k P.r) p.T.base.μG := by
     haveI : IsFiniteMeasureOnCompacts p.T.base.μG := ⟨fun K hK => p.T.base.haarG.finite_compact K hK⟩
     haveI : IsLocallyFiniteMeasure p.T.base.μG := inferInstance
@@ -300,14 +786,14 @@ theorem sup_norm : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup 
   obtain ⟨hl', -, -⟩ := hS.right ν hν
   have hP := h1 _ _ (h / 2) (R ν) (l ν) (l' ν) (dg ν) hDS (hfam ν hν).2.2.1 hgap hl hl' hfd
   have h0 : TBB.jN2 p (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) = 0 := by
-    rw [GlobalTheory.T.jN2_eq_normSq_base, hP 0 0 ⟨0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0,
+    rw [_root_.GlobalTheory.jN2_eq_normSq_base.besselNormSq_eq_bigCellNormSq, hP 0 0 ⟨0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0,
       fun g _ => by simp, by simp⟩]
     simp
   by_cases hnz : NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)
   · right
     obtain ⟨hc, hs⟩ := hS.coef ν hν hnz.1 hnz.2
     have hj : TBB.jN2 p (J ν) = ENNReal.ofReal (c₁ * dg ν) := by
-      rw [GlobalTheory.T.jN2_eq_normSq_base, hP _ _ hc, hs]
+      rw [_root_.GlobalTheory.jN2_eq_normSq_base.besselNormSq_eq_bigCellNormSq, hP _ _ hc, hs]
       congr 1
       field_simp
     obtain ⟨w, hw, -⟩ := (GlobalTheory.rep_basic_of_isDS hy.1.2.2.1 P.k P.r _ _ (R ν) hDS).2.2.2.2.2.2.2.1
@@ -330,7 +816,7 @@ theorem sup_norm : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup 
 
 theorem sup_meas : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ), Num P.k P.r lam P.u b bv ga h q0 → Sup0 p lam q0 R l l' dg s J tau → ∀ ν, AEMeasurable fun c : Fin (P.r + 1) → ℂ => ENNReal.ofReal (TBB.Ew p (fun _ => 1) (J ν) (P.r + 1) [] (TBB.bigPt P.r c)) := by
   intro _ P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau _ hS ν
-  apply GlobalTheory.T.aemeasurable_besselNormIntegrand_bigCell
+  apply _root_.GlobalTheory.bigCell_density_aemeasurable
   by_cases hν : n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)
   · exact GlobalTheory.SupMeas.isCoef_continuousOn (hS.fam ν hν.1) (hS.coef ν hν.1 hν.2.1 hν.2.2).1
   · rw [hS.zero ν hν]
@@ -352,12 +838,12 @@ theorem tau_bound : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup
     by_contra hc
     exact hz.2 (hS.zero _ hc)
   obtain ⟨-, -, -, hT, hT', hty, hty'⟩ := p.hP
-  obtain ⟨νq, νq', hG, hG'⟩ := GlobalTheory.T.besselDatum_both_sides_are_sides P.k P.r Wp Wq p.T.base P.u P.u' hty hty'
+  obtain ⟨νq, νq', hG, hG'⟩ := _root_.GlobalTheory.exists_sideG_both_of_isType P.k P.r Wp Wq p.T.base P.u P.u' hty hty'
   obtain ⟨io, pr, ep, hTens, hκ⟩ := hS.tau_eq ν hν
   obtain ⟨κ, κ', hk, hk', ht⟩ := hκ ⟨I, hI⟩ hz.1 hz.2
-  have b1 := GlobalTheory.T.wedge_raising_scalar_sq_mul_degree_ratio_le hyp P.k P.r Wp lam P.u b bv ga h q0 _ _ _ _ _ νq R l dg
+  have b1 := _root_.Gp91.GlobalTheory.WedgeKappa.kappa_bound hyp P.k P.r Wp lam P.u b bv ga h q0 _ _ _ _ _ νq R l dg
     ⟨hN, hS.fam, hG, hS.left⟩ ν hν io pr ep hTens h1.2.1 ⟨I, hI⟩ κ h2.2.1 hk
-  have b2 := GlobalTheory.T.wedge_raising_scalar_sq_mul_degree_ratio_le hyp P.k P.r Wq lam P.u' b bv ga h q0 _ _ _ _ _ νq' R l' dg
+  have b2 := _root_.Gp91.GlobalTheory.WedgeKappa.kappa_bound hyp P.k P.r Wq lam P.u' b bv ga h q0 _ _ _ _ _ νq' R l' dg
     ⟨hN', hS.fam, hG', hS.right⟩ ν hν io pr ep hTens h1.2.2 ⟨I, hI⟩ κ' h2.2.2 hk'
   rw [hT] at b1
   rw [hT'] at b2
@@ -375,7 +861,7 @@ theorem supplied_pieri : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddComm
   intro H P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hS ν hν c hc hG
   haveI := FiniteDimensional.complete ℂ Wp
   haveI := FiniteDimensional.complete ℂ Wq
-  obtain ⟨γ, hγ, hZ, hV⟩ := GlobalTheory.T.exists_regularRep_besselBigCellVector_eq_bessel P Wp Wq p c hc hG
+  obtain ⟨γ, hγ, hZ, hV⟩ := _root_.GlobalTheory.exists_regular_rep_vec_bigPt_eq_bessel P Wp Wq p c hc hG
   simp only [hV]
   by_cases hJ : J ν = 0
   · rw [hJ, GlobalTheory.SuppliedPieri.JF_zero, smul_zero]
@@ -395,7 +881,7 @@ theorem supplied_pieri : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddComm
   have hnz : NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν) := by
     by_contra hcon
     exact hJ (hS.zero ν fun hh => hcon hh.2)
-  have key := GlobalTheory.T.tensor_weighted_bessel_gap H P.k P.r (Sub (2 * P.r + P.k + 1) (P.r + 1)) (Sub (2 * P.r + P.k + 1) (P.r + 1))
+  have key := _root_.Gp91.GlobalTheory.BesselPieri.pieri_bessel H P.k P.r (Sub (2 * P.r + P.k + 1) (P.r + 1)) (Sub (2 * P.r + P.k + 1) (P.r + 1))
     (cmp (P.r + 1)) (cmp (P.r + 1) (Formalism.QuantumDeterminants.Hpk P.k P.r)) (P.r + 1) (R ν) (fun I => R (ν + eZ I.1)) io pr ep
     (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν a : ℝ))
     (fun I a => lam a + ((ν + eZ I.1) a : ℝ)) (h / 2) Wp Wq p.T.base
@@ -425,17 +911,17 @@ theorem suppliedData_existsW : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedA
   haveI := FiniteDimensional.complete ℂ Wq
   obtain ⟨R, hfam, hR⟩ := family_through_discreteSeries hH P.k P.r lam P.u b bv ga h q0 R0 ν₀ hN hR0
   subst hR
-  obtain ⟨l, l', dg, hl, hl'⟩ := GlobalTheory.T.exists_family_functionals hH P Wp Wq p lam b bv ga h q0 R hN hfam
+  obtain ⟨l, l', dg, hl, hl'⟩ := _root_.Gp91.GlobalTheory.exists_sideFam_both_sides hH P Wp Wq p lam b bv ga h q0 R hN hfam
   have hK : PI.KFinSmooth := hH.1.2.2.1
   obtain ⟨s₀, hs₀⟩ := hf (l ν₀) (l' ν₀)
-  obtain ⟨⟨-, -, -, -, hgap⟩, hnum⟩ := GlobalTheory.T.numericalFamily_shape_gaps P.k P.r lam P.u b bv ga h q0 hN
+  obtain ⟨⟨-, -, -, -, hgap⟩, hnum⟩ := _root_.GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN
   have hg : Formalism.QuantumDeterminants.GapAtLeast (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)) (h / 2) :=
     (hnum ν₀ h0).2.2.1
-  obtain ⟨c, -, hc⟩ := GlobalTheory.T.bessel_setting_uniform_constant hH P.k P.r Wp Wq p.T.base
+  obtain ⟨c, -, hc⟩ := _root_.Gp91.GlobalTheory.BesselNormSq.normSq_coef hH P.k P.r Wp Wq p.T.base
   have hne : s₀ ≠ 0 := by
     intro hz
     apply hj
-    rw [GlobalTheory.T.jN2_eq_normSq_base P Wp Wq p f,
+    rw [_root_.GlobalTheory.jN2_eq_normSq_base.besselNormSq_eq_bigCellNormSq P Wp Wq p f,
       hc _ _ (h / 2) (R ν₀) (l ν₀) (l' ν₀) (dg ν₀) hR0 hg hgap (hl ν₀ h0).1 (hl' ν₀ h0).1 (hl ν₀ h0).2.2 f s₀ hs₀, hz]
     simp
   obtain ⟨s, J, t, ht, hJ, -, hcoef, hzero⟩ :=
@@ -450,28 +936,28 @@ theorem coef_norm_finite_and_zeroW : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [N
   haveI := FiniteDimensional.complete ℂ Wq
   obtain ⟨R, hfam, hR⟩ := family_through_discreteSeries hH P.k P.r lam P.u b bv ga h q0 R0 ν₀ hN hR0
   subst hR
-  obtain ⟨l, l', dg, hl, hl'⟩ := GlobalTheory.T.exists_family_functionals hH P Wp Wq p lam b bv ga h q0 R hN hfam
+  obtain ⟨l, l', dg, hl, hl'⟩ := _root_.Gp91.GlobalTheory.exists_sideFam_both_sides hH P Wp Wq p lam b bv ga h q0 R hN hfam
   obtain ⟨hB, hdg, hfd⟩ := hl ν₀ h0
   obtain ⟨hB', -, -⟩ := hl' ν₀ h0
   obtain ⟨⟨-, -, -, -, hok⟩, hν⟩ := GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN
   have hgap : Formalism.QuantumDeterminants.GapAtLeast (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)) (h / 2) :=
     (hν ν₀ h0).2.2.1
   obtain ⟨s, hs⟩ := hf (l ν₀) (l' ν₀)
-  obtain ⟨c, hc, hnorm⟩ := GlobalTheory.T.bessel_setting_uniform_constant hH P.k P.r Wp Wq p.T.base
+  obtain ⟨c, hc, hnorm⟩ := _root_.Gp91.GlobalTheory.BesselNormSq.normSq_coef hH P.k P.r Wp Wq p.T.base
   have hj : TBB.jN2 p f = ENNReal.ofReal (c * ‖s‖ ^ 2 / dg ν₀) := by
-    rw [GlobalTheory.T.jN2_eq_normSq_base]
+    rw [_root_.GlobalTheory.jN2_eq_normSq_base.besselNormSq_eq_bigCellNormSq]
     exact hnorm _ _ (h / 2) (R ν₀) (l ν₀) (l' ν₀) (dg ν₀) hR0 hgap hok hB hB' hfd f s hs
-  have hck := (GlobalTheory.T.smooth_and_inCC_of_isCoef_of_gap hH P.k P.r _ _ (h / 2) (R ν₀) Wp Wq (l ν₀) (l' ν₀) f s hR0 hgap hok hs).1
+  have hck := (_root_.Gp91.GlobalTheory.isCoef_ckOn_inCC hH P.k P.r _ _ (h / 2) (R ν₀) Wp Wq (l ν₀) (l' ν₀) f s hR0 hgap hok hs).1
   refine ⟨by rw [hj]; exact ENNReal.ofReal_lt_top,
-    GlobalTheory.T.aemeasurable_besselNormIntegrand_bigCell P Wp Wq p f (GlobalTheory.CoefZero.continuousOn_of_ckOn hck), fun hz x hx hG => ?_⟩
+    _root_.GlobalTheory.bigCell_density_aemeasurable P Wp Wq p f (GlobalTheory.CoefZero.continuousOn_of_ckOn hck), fun hz x hx hG => ?_⟩
   have hs0 : s = 0 := by
     by_contra hne
     rw [hj, ENNReal.ofReal_eq_zero] at hz
     have hpos : 0 < ‖s‖ := norm_pos_iff.mpr hne
     have : 0 < c * ‖s‖ ^ 2 / dg ν₀ := by positivity
     linarith
-  obtain ⟨γ, hγ, -, hV⟩ := GlobalTheory.T.exists_regularRep_besselBigCellVector_eq_bessel P Wp Wq p x hx hG
-  obtain ⟨OO, hOO⟩ := GlobalTheory.T.bessel_orbital_integral_integrable_and_eq_smul hH P.k P.r _ _ (h / 2) (R ν₀) Wp Wq p.T.base (l ν₀) (l' ν₀) hR0 hgap hok hB hB'
+  obtain ⟨γ, hγ, -, hV⟩ := _root_.GlobalTheory.exists_regular_rep_vec_bigPt_eq_bessel P Wp Wq p x hx hG
+  obtain ⟨OO, hOO⟩ := _root_.Gp91.GlobalTheory.BesselOrbital.bessel_integral_eq_smul hH P.k P.r _ _ (h / 2) (R ν₀) Wp Wq p.T.base (l ν₀) (l' ν₀) hR0 hgap hok hB hB'
   rw [hV f, (hOO f s hs γ hγ).2, hs0, zero_smul]
 
 theorem familyDerivativeExpansion_of_isDS_of_coefOf (H : HypsG) (C : ℝ) (hC : 0 ≤ C) (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp]
@@ -489,7 +975,7 @@ theorem familyDerivativeExpansion_of_isDS_of_coefOf (H : HypsG) (C : ℝ) (hC : 
   have hν₀ : n1 ν₀ ≤ q0 := by omega
   obtain ⟨hfin, hmeas, hz⟩ := coef_norm_finite_and_zeroW H P Wp Wq p lam b bv ga h q0 R0 f ν₀ hν₀ hN hDS hf
   by_cases h0 : TBB.jN2 p f = 0
-  · exact GlobalTheory.T.familyDerivativeExpansion_of_V_eq_zero P Wp Wq p f b _ a₁ (by linarith) hmeas (hz h0)
+  · exact _root_.GlobalTheory.bigCellExpansion_of_besselFunction_zero P Wp Wq p f b _ a₁ (by linarith) hmeas (hz h0)
   obtain ⟨R, l, l', dg, s, J, tau, t, ht, hJ, hS⟩ :=
     suppliedData_existsW H P Wp Wq p lam b bv ga h q0 R0 f ν₀ hν₀ hN hDS hf h0
   have hn : ∀ μ : Fin (2 * P.r + P.k + 1) → ℤ, n1 μ ≤ Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.N1 (μ - ν₀) + n1 ν₀ := fun μ => by
@@ -569,7 +1055,7 @@ theorem familyDerivativeExpansion_of_isDS_of_coefOf (H : HypsG) (C : ℝ) (hC : 
   have hsc : Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) ≠ 0 := by
     unfold Formalism.FourierDecayAlt.P.CutBP.scF
     exact inv_ne_zero (Real.sqrt_pos.2 (ENNReal.toReal_pos hpos.ne' hlt.ne)).ne'
-  have hE' := GlobalTheory.T.bigCellExpansion_smul P Wp Wq p _ b _ a₁ (((Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) : ℂ) * (t : ℂ))⁻¹) hE
+  have hE' := _root_.GlobalTheory.familyDerivativeExpansion_smul P Wp Wq p _ b _ a₁ (((Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) : ℂ) * (t : ℂ))⁻¹) hE
   have hne : ((Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) : ℂ) * (t : ℂ)) ≠ 0 :=
     mul_ne_zero (Complex.ofReal_ne_zero.2 hsc) (Complex.ofReal_ne_zero.2 ht.ne')
   have e : (fun g => (((Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) : ℂ) * (t : ℂ))⁻¹) • Formalism.FourierDecayAlt.P.CutBP.unitF p (J ν₀) g) = f := by
@@ -618,7 +1104,7 @@ theorem product_moment : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGro
   choose E hE using hE
   have hDS := hFam ν hν0
   obtain ⟨w, hw1, -, hwK, hwF⟩ := GlobalTheory.T.exists_lowest_kFinite_vector_discreteSeries hK k r _ _ (R ν) hDS Q (E ν) hQ (hE ν hν0).1
-  have hMod := GlobalTheory.T.cayley_endomorphisms_modular hH k r _ _ (R ν) hk hDS Q (E ν) hQ (hE ν hν0).1
+  have hMod := _root_.Gp91.GlobalTheory.isMod_smooth_of_isDS hH k r _ _ (R ν) hk hDS Q (E ν) hQ (hE ν hν0).1
   have hLev := GlobalTheory.lev_zero_of_kHighest _ _ _ (E ν) _ w hMod.1 hMod.2.1 hwK hwF
   have hw1' : ‖(w : (R ν).H)‖ = 1 := hw1
   have hwsm : (w : (R ν).H) ∈ (R ν).sm := w.2
@@ -639,7 +1125,7 @@ theorem product_moment : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGro
   have hA : 0 ≤ (((2 * r + k + 1) : ℝ) ^ 2 * (Formalism.QuantumDeterminants.Tz k r z * b ^ 4) * (6 * bv) ^ (2 * (2 * r + 2))) := by
     have : 0 ≤ bv := by linarith
     positivity
-  have hmain := GlobalTheory.T.product_moment_bound_density_mass_one (Formalism.QuantumDeterminants.Mt k r) νq j (fun a x => lenA k r z (Matrix.of x) (Fin.castLE (Nat.succ_le_succ hj) a))
+  have hmain := _root_.GlobalTheory.MomentHolder.product_moment_le (Formalism.QuantumDeterminants.Mt k r) νq j (fun a x => lenA k r z (Matrix.of x) (Fin.castLE (Nat.succ_le_succ hj) a))
     (fun x => dg ν * ‖l ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)
     (((2 * r + k + 1) : ℝ) ^ 2 * (Formalism.QuantumDeterminants.Tz k r z * b ^ 4) * (6 * bv) ^ (2 * (2 * r + 2))) (b ^ 2)
     (fun a => hlen (Fin.castLE (Nat.succ_le_succ hj) a))
@@ -647,7 +1133,7 @@ theorem product_moment : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGro
     (((hmeas (l ν) hBeL.1 w hwsm).norm.aemeasurable.pow_const 2).const_mul _)
     (fun x => mul_nonneg hdg.le (by positivity))
     (by
-      have := ((GlobalTheory.T.bessel_functional_l2_bound_and_isometry hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hν0).2 hnz).2 w hwsm
+      have := ((_root_.Gp91.GlobalTheory.MomMass.mom_mass hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hν0).2 hnz).2 w hwsm
       simpa only [one_mul, hw1', one_pow, ENNReal.ofReal_one] using this)
     hA (one_le_pow₀ hb)
     (fun q hq => by
@@ -656,13 +1142,13 @@ theorem product_moment : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGro
       rw [← e0] at this
       simpa only [hw1, one_pow, mul_one] using this)
     (fun a q hq => by
-      have := GlobalTheory.T.family_setup_cayley_bound hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg Q E hS hQ hE ν hν0
+      have := _root_.Gp91.GlobalTheory.RatioMoment.ratio_moment hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg Q E hS hQ hE ν hν0
         0 q (hq2 q (hq.trans hjr)) (Fin.castLE hj a) w hLev
       rw [← e1, ← e2] at this
       simpa only [hw1, one_pow, mul_one] using this)
   refine hmain.trans (ENNReal.ofReal_le_ofReal ?_)
   have h1 : (b ^ 2) ^ (2 * j) ≤ (b ^ 2) ^ (2 * r) := pow_le_pow_right₀ (one_le_pow₀ hb) (by omega)
-  have h2 := (mul_le_mul_of_nonneg_left h1 hA).trans (GlobalTheory.T.numericalFamily_productBound_constant_le k r lam u b bv ga h q0 _ hNum hT)
+  have h2 := (mul_le_mul_of_nonneg_left h1 hA).trans (_root_.GlobalTheory.MomNum.mom_num k r lam u b bv ga h q0 _ hNum hT)
   have h3 : 1 ≤ Hsq r (Formalism.QuantumDeterminants.Tz k r z) b := one_le_mul_of_one_le_of_one_le (le_max_left _ _) (one_le_pow₀ hb)
   exact (pow_le_pow_left₀ (mul_nonneg hA (by positivity)) h2 _).trans (pow_le_pow_right₀ h3 (by omega))
 
@@ -683,7 +1169,7 @@ theorem kappa_bound : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup 
   have hDSJ := fun J : Sub (2 * r + k + 1) (j + 1) => hFam (ν + eZ J.1) (hνJ0 J)
   have hF := GlobalTheory.WedgeFRep.isFRep_cmp k r (j + 1)
   have hdual := fun J : Sub (2 * r + k + 1) (j + 1) =>
-    GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hyp k r _ _ _ _ _ (R ν) _ io pr ep _ _ _ Wp z π u μW μN μG νq
+    _root_.Gp91.CompanionTheory.FamilyDerivativeExpansion.Kap.kappa_dual hyp k r _ _ _ _ _ (R ν) _ io pr ep _ _ _ Wp z π u μW μN μG νq
       (wedge (fvL hj z)) (l ν) hDS hDSJ hF hT hG
       (fun s hs => fixes_wedge hj hG.1 s hs) (hSF ν hν0).1 hnz J
       (l (ν + eZ J.1)) (hSF _ (hνJ0 J)).1
@@ -699,7 +1185,7 @@ theorem kappa_bound : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup 
   choose κ hκI hκd using hex
   have hd0 : 0 < dg ν := (hSF ν hν0).2.1
   have hdJ : ∀ J : Sub (2 * r + k + 1) (j + 1), 0 < dg (ν + eZ J.1) := fun J => (hSF _ (hνJ0 J)).2.1
-  have hmass := GlobalTheory.T.bessel_functional_l2_bound_and_isometry hyp k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS
+  have hmass := _root_.Gp91.GlobalTheory.MomMass.mom_mass hyp k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS
   obtain ⟨w, hw, hw1, hint⟩ := product_moment hyp k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS j hj _ (hνJ I) hnzI
   have hinj : Function.Injective (fun (J : Sub (2 * r + k + 1) (j + 1)) (a : Fin (2 * r + k + 1)) =>
       lam a + (((ν + eZ J.1) a : ℤ) : ℝ)) := by
@@ -710,7 +1196,7 @@ theorem kappa_bound : HypsG → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup 
     have := congrFun hJ a
     simp only [Pi.add_apply, add_right_inj, Int.cast_inj] at this
     exact this
-  have h8 := GlobalTheory.T.tensor_moment_weighted hyp k r _ _ _ _ _ (R ν) _ io pr ep _ _ _ Wp z π u μW μN μG νq
+  have h8 := _root_.Gp91.GlobalTheory.MomLem8.moment_lemma_pieri hyp k r _ _ _ _ _ (R ν) _ io pr ep _ _ _ Wp z π u μW μN μG νq
     (wedge (fvL hj z)) (fun w => ((Real.sqrt (dg ν) : ℝ) : ℂ) • l ν w)
     (fun J w => ((Real.sqrt (dg (ν + eZ J.1)) : ℝ) : ℂ) • l (ν + eZ J.1) w)
     (fun J => if NzOn (R (ν + eZ J.1)) (l (ν + eZ J.1)) then
@@ -764,7 +1250,7 @@ theorem exists_tauL : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGro
   haveI := FiniteDimensional.complete ℂ Wp
   haveI := FiniteDimensional.complete ℂ Wq
   obtain ⟨-, hz1, hz2, -, -, ht1, ht2⟩ := p.hP
-  obtain ⟨νq, νq', hS, hS'⟩ := GlobalTheory.T.besselDatum_both_sides_are_sides P.k P.r Wp Wq p.T.base P.u P.u' ht1 ht2
+  obtain ⟨νq, νq', hS, hS'⟩ := _root_.GlobalTheory.exists_sideG_both_of_isType P.k P.r Wp Wq p.T.base P.u P.u' ht1 ht2
   have key : ∀ ν, ∃ t : Finset (Fin (2 * P.r + P.k + 1)) → ℂ,
       (∀ I, J ν = 0 ∨ J (ν + eZ I) = 0 → t I = 0) ∧
       (n1 ν + (P.r + 1) * (P.r + 2) ≤ q0 →
@@ -782,7 +1268,7 @@ theorem exists_tauL : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGro
     · exact ⟨fun _ => 0, fun _ _ => rfl, fun h => absurd h hν⟩
     have hν1 : n1 ν + (j + 1) ≤ q0 := by nlinarith
     have hν0 : n1 ν ≤ q0 := by omega
-    obtain ⟨io, pr, ep, hT⟩ := (GlobalTheory.T.pieri_tensor_decomposition hH P.k P.r lam P.u b bv ga h q0 R hNum hFam ν).1 (j + 1) hν1
+    obtain ⟨io, pr, ep, hT⟩ := (_root_.Gp91.GlobalTheory.TensExists.tens_exists hH P.k P.r lam P.u b bv ga h q0 R hNum hFam ν).1 (j + 1) hν1
     have hI : ∀ I : Sub (2 * P.r + P.k + 1) (j + 1), n1 (ν + eZ I.1) ≤ q0 := by
       intro I
       have h1 : n1 (ν + eZ I.1) ≤ n1 ν + I.1.card := by
@@ -807,14 +1293,14 @@ theorem exists_tauL : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGro
       have hn : n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν) := by
         by_contra hc
         exact hJ (hz ν hc)
-      obtain ⟨κ, hκ⟩ := (GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hH P.k P.r _ _ _ _ (j + 1) (R ν)
+      obtain ⟨κ, hκ⟩ := (_root_.Gp91.CompanionTheory.FamilyDerivativeExpansion.Kap.kappa_dual hH P.k P.r _ _ _ _ (j + 1) (R ν)
         (fun I : Sub (2 * P.r + P.k + 1) (j + 1) => R (ν + eZ I.1)) io pr ep _ _ _ Wp
         p.T.base.z p.T.base.π P.u p.T.base.μW p.T.base.μN p.T.base.μG νq
         (wedge (fvL hj p.T.base.z)) (l ν) (hFam ν hν0) (fun I => hFam _ (hI I))
         (GlobalTheory.WedgeFRep.isFRep_cmp P.k P.r (j + 1)) hT hS
         (fun g hg => fixes_wedge hj hz1 g hg) (hL ν hν0).1 hn.2.1 I
         (l (ν + eZ I.1)) (hL _ (hI I)).1).1
-      obtain ⟨κ', hκ'⟩ := (GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hH P.k P.r _ _ _ _ (j + 1) (R ν)
+      obtain ⟨κ', hκ'⟩ := (_root_.Gp91.CompanionTheory.FamilyDerivativeExpansion.Kap.kappa_dual hH P.k P.r _ _ _ _ (j + 1) (R ν)
         (fun I : Sub (2 * P.r + P.k + 1) (j + 1) => R (ν + eZ I.1)) io pr ep _ _ _ Wq
         p.T.base.z' p.T.base.π' P.u' p.T.base.μW' p.T.base.μN p.T.base.μG νq'
         (wedge (fvL hj p.T.base.z')) (l' ν) (hFam ν hν0) (fun I => hFam _ (hI I))
@@ -850,7 +1336,7 @@ theorem tau_boundL : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGrou
     by_contra hc
     exact hz.2 (hS.zero _ hc)
   obtain ⟨-, -, -, hT, hT', hty, hty'⟩ := p.hP
-  obtain ⟨νq, νq', hG, hG'⟩ := GlobalTheory.T.besselDatum_both_sides_are_sides P.k P.r Wp Wq p.T.base P.u P.u' hty hty'
+  obtain ⟨νq, νq', hG, hG'⟩ := _root_.GlobalTheory.exists_sideG_both_of_isType P.k P.r Wp Wq p.T.base P.u P.u' hty hty'
   obtain ⟨io, pr, ep, hTens, hκ⟩ := hSL.tau_eq ν hν
   obtain ⟨κ, κ', hk, hk', ht⟩ := hκ ⟨I, hI⟩ hz.1 hz.2
   have b1 := kappa_bound hyp P.k P.r Wp lam P.u b bv ga h q0 _ _ _ _ _ νq R l dg
@@ -873,7 +1359,7 @@ theorem supplied_pieriL : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCom
   intro H P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau₀ hN hS j hj tau hSL ν hν c hc hG
   haveI := FiniteDimensional.complete ℂ Wp
   haveI := FiniteDimensional.complete ℂ Wq
-  obtain ⟨γ, hγ, hZ, hV⟩ := GlobalTheory.T.exists_regularRep_besselBigCellVector_eq_bessel P Wp Wq p c hc hG
+  obtain ⟨γ, hγ, hZ, hV⟩ := _root_.GlobalTheory.exists_regular_rep_vec_bigPt_eq_bessel P Wp Wq p c hc hG
   simp only [hV]
   by_cases hJ : J ν = 0
   · rw [hJ, GlobalTheory.SuppliedPieri.JF_zero, smul_zero]
@@ -893,7 +1379,7 @@ theorem supplied_pieriL : HypsG → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCom
   have hnz : NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν) := by
     by_contra hcon
     exact hJ (hS.zero ν fun hh => hcon hh.2)
-  have key := GlobalTheory.T.tensor_weighted_bessel_gap H P.k P.r (Sub (2 * P.r + P.k + 1) (j + 1)) (Sub (2 * P.r + P.k + 1) (j + 1))
+  have key := _root_.Gp91.GlobalTheory.BesselPieri.pieri_bessel H P.k P.r (Sub (2 * P.r + P.k + 1) (j + 1)) (Sub (2 * P.r + P.k + 1) (j + 1))
     (cmp (j + 1)) (cmp (j + 1) (Formalism.QuantumDeterminants.Hpk P.k P.r)) (j + 1) (R ν) (fun I => R (ν + eZ I.1)) io pr ep
     (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν a : ℝ))
     (fun I a => lam a + ((ν + eZ I.1) a : ℝ)) (h / 2) Wp Wq p.T.base
@@ -1083,3 +1569,7 @@ theorem momL_le (H : HypsG) (C : ℝ) (hC : 0 ≤ C) (P : M.Par) (Wp Wq : Type) 
         nlinarith
 
 end Gp91.WG
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.AutomorphicTheory.BesselWaveGrids.WaveBallEstimateWeightedDualAlt =====

@@ -97,7 +97,7 @@ theorem eOp_eq_asAlgebraHom (e : MonoidAlgebra LL G) :
     rw [eOp_eq_sum, Finset.sum_eq_single g]
     · simp
     · intro b _ hb
-      simp [Finsupp.single_apply, hb.symm]
+      simp [hb.symm]
     · simp
 
 theorem eOp_idem_comm (e : MonoidAlgebra LL G) (h1 : e * e = e) (h2 : ∀ b, b * e = e * b) :

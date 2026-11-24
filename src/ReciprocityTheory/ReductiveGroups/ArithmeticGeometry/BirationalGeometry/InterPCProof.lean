@@ -1,52 +1,109 @@
 module
 
+public import ReciprocityTheory.AnalyticForms.RegularLocalRings.BaseChangeC
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterPC
 public import ReciprocityTheory.AnalyticForms.RegularLocalRings.IntToRat
-public import ReciprocityTheory.AnalyticForms.RegularLocalRings.BaseChangeC
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.AnalyticForms.RegularLocalRings.ExtCContract
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.WithBotEqOfAddOne
+import Mathlib.Algebra.Module.StablyFree.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.AnalyticForms.RegularLocalRings.ExtCContract, ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterPCProof
+
+-- ===== clump member: ReciprocityTheory.AnalyticForms.RegularLocalRings.ExtCContract =====
+-- clump-header: {"m": "ReciprocityTheory.AnalyticForms.RegularLocalRings.ExtCContract", "h": "module\n\npublic import ReciprocityTheory.AnalyticForms.RegularLocalRings.BaseChangeC\npublic import Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.LinearAlgebra.Dual.Lemmas\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace ReciprocityTheory.AnForm.R
+
+open MvPolynomial
+
+variable {σ : Type} [Fintype σ]
+
+theorem exists_linearForm_one : ∃ ℓ : ℂ →ₗ[ℚ] ℚ, ℓ 1 = 1 := by
+  have h : ¬ ∀ φ : Module.Dual ℚ ℂ, φ 1 = 0 := by
+    rw [Module.forall_dual_apply_eq_zero_iff]
+    exact one_ne_zero
+  push Not at h
+  obtain ⟨φ, hφ⟩ := h
+  exact ⟨(φ 1)⁻¹ • φ, by simp [hφ]⟩
+
+noncomputable def projQ (ℓ : ℂ →ₗ[ℚ] ℚ) (q : MvPolynomial σ ℂ) : MvPolynomial σ ℚ :=
+  ∑ m ∈ q.support, monomial m (ℓ (AddMonoidAlgebra.coeff q m))
+
+theorem coeff_projQ (ℓ : ℂ →ₗ[ℚ] ℚ) (q : MvPolynomial σ ℂ) (m : σ →₀ ℕ) :
+    AddMonoidAlgebra.coeff (projQ ℓ q) m = ℓ (AddMonoidAlgebra.coeff q m) := by
+  classical
+  rw [projQ, coeff_sum]
+  simp only [coeff_monomial]
+  rw [Finset.sum_ite_eq']
+  split_ifs with h
+  · rfl
+  · rw [MvPolynomial.mem_support_iff, not_not] at h
+    rw [h, map_zero]
+
+theorem projQ_add (ℓ : ℂ →ₗ[ℚ] ℚ) (a b : MvPolynomial σ ℂ) :
+    projQ ℓ (a + b) = projQ ℓ a + projQ ℓ b := by
+  ext m
+  simp [coeff_projQ]
+
+theorem projQ_zero (ℓ : ℂ →ₗ[ℚ] ℚ) : projQ ℓ (0 : MvPolynomial σ ℂ) = 0 := by
+  ext m
+  simp [coeff_projQ]
+
+theorem projQ_map (ℓ : ℂ →ₗ[ℚ] ℚ) (hℓ : ℓ 1 = 1) (g : MvPolynomial σ ℚ) :
+    projQ ℓ (MvPolynomial.map (algebraMap ℚ ℂ) g) = g := by
+  ext m
+  rw [coeff_projQ, coeff_map]
+  have : algebraMap ℚ ℂ (AddMonoidAlgebra.coeff g m) = AddMonoidAlgebra.coeff g m • (1 : ℂ) := by
+    rw [Algebra.smul_def, mul_one]
+  rw [this, map_smul, hℓ, smul_eq_mul, mul_one]
+
+theorem projQ_map_mul (ℓ : ℂ →ₗ[ℚ] ℚ) (g : MvPolynomial σ ℚ) (h : MvPolynomial σ ℂ) :
+    projQ ℓ (MvPolynomial.map (algebraMap ℚ ℂ) g * h) = g * projQ ℓ h := by
+  classical
+  ext m
+
+  rw [coeff_projQ, coeff_mul, coeff_mul, map_sum]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  rw [coeff_map, coeff_projQ]
+  have : algebraMap ℚ ℂ (AddMonoidAlgebra.coeff g x.1) * AddMonoidAlgebra.coeff h x.2 = AddMonoidAlgebra.coeff g x.1 • AddMonoidAlgebra.coeff h x.2 := by
+    rw [Algebra.smul_def]
+  rw [this, map_smul, smul_eq_mul]
+
+theorem comap_extC (I : Ideal (MvPolynomial σ ℚ)) :
+    (extC I).comap (MvPolynomial.map (algebraMap ℚ ℂ)) = I := by
+  obtain ⟨ℓ, hℓ⟩ := exists_linearForm_one
+  refine le_antisymm ?_ Ideal.le_comap_map
+  intro f hf
+  have key : ∀ x ∈ extC I, ∀ h : MvPolynomial σ ℂ, projQ ℓ (h * x) ∈ I := by
+    intro x hx
+    refine Submodule.span_induction ?_ ?_ ?_ ?_ hx
+    · rintro _ ⟨g, hg, rfl⟩ h
+      rw [mul_comm, projQ_map_mul]
+      exact I.mul_mem_right _ hg
+    · intro h
+      rw [mul_zero, projQ_zero]
+      exact I.zero_mem
+    · intro a b _ _ ha hb h
+      rw [mul_add, projQ_add]
+      exact I.add_mem (ha h) (hb h)
+    · intro a b _ hb h
+      rw [smul_eq_mul, ← mul_assoc]
+      exact hb (h * a)
+  have := key _ hf 1
+  rwa [one_mul, projQ_map ℓ hℓ] at this
+
+end ReciprocityTheory.AnForm.R
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.AnalyticForms.RegularLocalRings.ExtCContract =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterPCProof =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterPCProof", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterPC\npublic import ReciprocityTheory.AnalyticForms.RegularLocalRings.IntToRat\npublic import ReciprocityTheory.AnalyticForms.RegularLocalRings.BaseChangeC\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.AnalyticForms.RegularLocalRings.ExtCContract\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.WithBotEqOfAddOne\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -109,3 +166,7 @@ theorem pcContract : PCContractStatement := by
   exact h1
 
 end ReciprocityTheory.ChartRestriction.G.Geo
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterPCProof =====

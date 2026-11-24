@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGa
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisGaussNormEventuallyMonomial
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisNormOfNonzero
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaussGCTarget
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonomialLtOfBoundedIntervalEndsStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MonomialLtOfBoundedIntervalEnds
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,7 +61,7 @@ theorem gC_pos_of_ne_zero : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acri
     ρ < 1 → 0 < gC l ρ x := by
   intro l _ x hx ρ hρ0 hρ1
   have hN : ∀ r : ℝ, (l : ℝ)⁻¹ ≤ r → r < 1 → IsGauss l r (gC l r) :=
-    fun r h0 h1 => isGauss_gC_target l r h0 h1
+    fun r h0 h1 => _root_.GlobalTheory.PMon.Gauss.isGauss_gC_of_le l r h0 h1
   have hl : (1 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).one_lt
   have hi0 : (0 : ℝ) < (l : ℝ)⁻¹ := by positivity
   have hi1 : (l : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ hl
@@ -93,7 +93,7 @@ theorem gC_pos_of_ne_zero : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acri
       ρ ^ (1 - (Real.log ρ - Real.log ρ') / (Real.log ρ - Real.log (l : ℝ)⁻¹)) = ρ' := by
     rw [Real.rpow_def_of_pos hi0, Real.rpow_def_of_pos hρpos, ← Real.exp_add,
       log_interp _ _ _ hd.ne', Real.exp_log hρ'0]
-  have hcv := GlobalTheory.T.gaussNormAcris_logConvex_in_radius l x (l : ℝ)⁻¹ ρ _ le_rfl h.le hρ1 ht0 ht1.le
+  have hcv := _root_.GlobalTheory.PMon.Gauss.gC_logConvex l x (l : ℝ)⁻¹ ρ _ le_rfl h.le hρ1 ht0 ht1.le
   rw [he, hz, Real.zero_rpow (sub_pos.2 ht1).ne', mul_zero] at hcv
   linarith
 

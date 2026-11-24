@@ -205,7 +205,7 @@ theorem be_add_left {τ : Type} (x y z : MvPowerSeries τ ℂ_[p]) (hx0 : MvPowe
     sb_add', sb_be ![x, y, z] hs0 hex0 hinv ph _ _ (constantCoeff_var 0) (constantCoeff_var 2),
     sb_be ![x, y, z] hs0 hex0 hinv ph _ _ (constantCoeff_var 1) (constantCoeff_var 2), sb_X, sb_X, sb_X] at h1
   · exact h1
-  all_goals first | exact hs0 | exact hex0 | exact hinv
+  all_goals first | exact hs0
 
 include hSub hex0 hinv hB in
 theorem be_add_right {τ : Type} (x y z : MvPowerSeries τ ℂ_[p]) (hx0 : MvPowerSeries.constantCoeff x = 0)

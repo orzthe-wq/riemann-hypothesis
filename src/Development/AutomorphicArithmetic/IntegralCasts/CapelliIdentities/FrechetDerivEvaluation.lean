@@ -68,7 +68,7 @@ private theorem UpperTheory.Reformulated.B.FrechetDerivEvaluation.aux {σ : Type
     simp only [map_mul, eval_X]
     refine HasFDerivAt.congr_fderiv h ?_
     ext v
-    simp [Derivation.leibniz, pderiv_X, Pi.single_apply, Finset.mul_sum, mul_add, add_mul, Finset.sum_add_distrib, apply_ite (eval z), mul_assoc, mul_comm, mul_left_comm]
+    simp [Derivation.leibniz, pderiv_X, Pi.single_apply, Finset.mul_sum, mul_add, Finset.sum_add_distrib, apply_ite (eval z), mul_comm, mul_left_comm]
 
 open MvPolynomial in
 theorem UpperTheory.Reformulated.B.FrechetDerivEvaluation.hasFDerivAt_eval.{u_1}

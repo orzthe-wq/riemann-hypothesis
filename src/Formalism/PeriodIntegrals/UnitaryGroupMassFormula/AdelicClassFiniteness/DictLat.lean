@@ -100,9 +100,8 @@ theorem DictLat.inclE_int (I : AutInst) {e : I.E} (he : e ∈ (algebraMap (𝓞 
 
 theorem DictLat.star_int (I : AutInst) (a : 𝓞 I.E) :
     star (algebraMap (𝓞 I.E) I.E a) ∈ (algebraMap (𝓞 I.E) I.E).range := by
-  have hint : IsIntegral ℤ (star (algebraMap (𝓞 I.E) I.E a)) :=
-    (NumberField.RingOfIntegers.isIntegral_coe a).map (starRingEnd I.E).toIntAlgHom
-  exact ⟨⟨_, hint⟩, rfl⟩
+  exact ⟨⟨star (algebraMap (𝓞 I.E) I.E a),
+    (NumberField.RingOfIntegers.isIntegral_coe a).map (starRingEnd I.E).toIntAlgHom⟩, rfl⟩
 
 theorem DictLat.sigR_int (I : AutInst) {r : I.E ⊗[I.F] Af I.F} (hr : r ∈ IntAf I.F I.E) :
     Formalism.UG.sigR I.cm.sig (Af I.F) r ∈ IntAf I.F I.E := by
@@ -257,10 +256,8 @@ theorem lDenom_of (h : DDenom) : LDenom := by
   have hyeq : y = ∑ i, y i • Pi.single i (1 : I.E ⊗[I.F] Af I.F) := by
     funext j
     simp [Finset.sum_apply, Pi.single_apply]
-  have hy : y ∈ denomSub I h := by
-    rw [hyeq]
-    exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hei i)
-  exact hy
+  rw [hyeq]
+  exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hei i)
 
 private def denseSub (I : AutInst) (N : ℕ) (h : DDense) (hN : 0 < N) :
     Submodule (IntAf I.F I.E) (Fin I.n → I.E ⊗[I.F] Af I.F) where

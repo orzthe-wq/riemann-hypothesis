@@ -96,7 +96,7 @@ theorem exists_unit_quot (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {�
 theorem card_hermSub (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     Nat.card (hermSub r (RingHom.ker (piQ K 𝔭 k))) =
       Ideal.absNorm 𝔭 ^ (Fintype.card r * Fintype.card r) := by
-  haveI := finite_quot (K := K) h𝔭 (k + 1)
+  have := finite_quot (K := K) h𝔭 (k + 1)
   have hF : IsFixF K F := Fact.out
   obtain ⟨θ, e, he⟩ := exists_unit_quot hK h𝔭 (k + 1)
   have hJ : ∀ a ∈ RingHom.ker (piQ K 𝔭 k), star a ∈ RingHom.ker (piQ K 𝔭 k) := by
@@ -123,7 +123,7 @@ theorem card_rep_succ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭
       Ideal.absNorm 𝔭 ^ (2 * (Fintype.card m * Fintype.card r)) *
         Nat.card {X : Matrix m r (𝓞 K ⧸ extP K 𝔭 ^ k) // p' X ∧
           Xᴴ * H.map (mkk K 𝔭 k) * X = T.map (mkk K 𝔭 k)} := by
-  haveI := finite_quot (K := K) h𝔭 (k + 1)
+  have := finite_quot (K := K) h𝔭 (k + 1)
   have hF : IsFixF K F := Fact.out
   have hHq : (H.map (mkk K 𝔭 (k + 1)))ᴴ = H.map (mkk K 𝔭 (k + 1)) := by
     rw [map_conjTranspose, hH]

@@ -50,8 +50,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicCases.A
 
 @[expose] public section
 
-attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
-
 section SlopeTestRemainingChoices
 
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.UnitaryThreeInertia
@@ -61,11 +59,6 @@ section Abstract
 variable {K G : Type} [Field K] [Group G]
 
 private theorem f3 : ∀ i : Fin 3, i ≠ i + 1 ∧ i ≠ i + 2 ∧ ∀ k, k = i ∨ k = i + 1 ∨ k = i + 2 := by decide
-
-private theorem single_mem (d : Fin 3 → K) (hd : Function.Injective d) (W : Submodule K (Fin 3 → K))
-    (hW : ∀ v ∈ W, diagonal d *ᵥ v ∈ W) {v : Fin 3 → K} (hv : v ∈ W) {i : Fin 3} (hi : v i ≠ 0) :
-    Pi.single i (1 : K) ∈ W :=
-  _root_.UpperTheory.Reformulated.B.SingleMemSubmodule.single_mem d hd W hW hv hi
 
 private theorem le_of_single {W W' : Submodule K (Fin 3 → K)} (h : ∀ v ∈ W, ∀ i, v i ≠ 0 → Pi.single i (1 : K) ∈ W') :
     W ≤ W' := fun v hv => by
@@ -95,7 +88,7 @@ private theorem exists_line (H U : Subgroup G) (hUH : U ≤ H) [hn : U.Normal] (
     ∃ i, ∀ s ∈ U, ∀ j, j ≠ i → a s j i = 0 := by
   have key : ∀ W : Submodule K (Fin 3 → K), (∀ g ∈ U, ∀ v ∈ W, a g *ᵥ v ∈ W) →
       ∀ v ∈ W, ∀ i, v i ≠ 0 → Pi.single i (1 : K) ∈ W := fun W hW v hv i hi =>
-    single_mem d hd W (fun v hv => hud ▸ hW u hu v hv) hv hi
+    _root_.UpperTheory.Reformulated.B.SingleMemSubmodule.single_mem d hd W (fun v hv => hud ▸ hW u hu v hv) hv hi
   have fin : ∀ W : Submodule K (Fin 3 → K), (∀ g ∈ U, ∀ v ∈ W, a g *ᵥ v ∈ W) →
       (∃ i, Pi.single i (1 : K) ∈ W ∧ ∀ j, j ≠ i → ¬Pi.single j (1 : K) ∈ W) → ∃ i, ∀ s ∈ U, ∀ j, j ≠ i → a s j i = 0 :=
     fun W hW ⟨i, hi, hi'⟩ => ⟨i, fun s hs j hj => by

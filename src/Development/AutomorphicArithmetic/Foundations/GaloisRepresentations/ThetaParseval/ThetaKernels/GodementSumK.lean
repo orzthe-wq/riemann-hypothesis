@@ -4,9 +4,12 @@ public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentation
 public import Development.WeilBound.ThetaLifts.LatticeBasics.HypothesesE
 public import Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldC
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesConvergent
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftInvertibleExistsNonzeroMinorStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PluckerMinorsDetermineColumnSpaceStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableHeightPowOfPolynomialCountStatement
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftInvertibleExistsNonzeroMinor
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PluckerMinorsDetermineColumnSpace
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableHeightPowOfPolynomialCount
+import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -99,7 +102,7 @@ theorem godement_sum_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
     obtain ⟨P, hP⟩ := hP
     have hg1 : ((g q).1 : Matrix (Ix n) (Ix n) E) * ((g q)⁻¹).1 = 1 := by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
     have hb1 : (b.1 : Matrix (Ix n) (Ix n) E) * (b⁻¹).1 = 1 := by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
-    refine GlobalTheory.T.left_invertible_exists_nonzero_minor E (Ix n) n (pl b (g q)) ((P * ((g q).1 : Matrix (Ix n) (Ix n) E)) * (b.1 : Matrix (Ix n) (Ix n) E)) ?_
+    refine _root_.GlobalTheory.CompanionTheory.GodementH.exists_mnr_ne_zero_of_left_inverse E (Ix n) n (pl b (g q)) ((P * ((g q).1 : Matrix (Ix n) (Ix n) E)) * (b.1 : Matrix (Ix n) (Ix n) E)) ?_
     calc (P * ((g q).1 : Matrix (Ix n) (Ix n) E)) * (b.1 : Matrix (Ix n) (Ix n) E) * pl b (g q)
         = P * ((g q).1 : Matrix (Ix n) (Ix n) E) * ((b.1 : Matrix (Ix n) (Ix n) E) * (b⁻¹).1) * ((g q)⁻¹).1 *
           (diagCols (Fin n) : Matrix (Ix n) (Fin n) E) := by simp only [pl, Matrix.mul_assoc]
@@ -112,7 +115,7 @@ theorem godement_sum_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
   have hu1 : ∀ q, u q (f₀ q) = 1 := fun q => div_self (hf₀ q)
   have hinj : Function.Injective u := by
     intro q q' e
-    obtain ⟨c, hc⟩ := GlobalTheory.T.plucker_minors_determine_column_space E (Ix n) n _ _ _ _ (hf₀ q) (hf₀ q') (fun f => congrFun e f)
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.GodementH.Cramer.main E (Ix n) n _ _ _ _ (hf₀ q) (hf₀ q') (fun f => congrFun e f)
     have hp := isPar_of_pl (hg q) (hg q') hc
     have : (Quotient.mk _ (Quotient.out q') : Cos σ Y) = Quotient.mk _ (Quotient.out q) :=
       cos_eq.2 (Subgroup.subset_closure ⟨_, hp⟩)
@@ -135,7 +138,7 @@ theorem godement_sum_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
     rw [ha.val p t hp k hk]; exact NNReal.coe_nonneg _
   refine ⟨c, fun s' hs' => ?_⟩
   have hs0 : 0 < s' := lt_of_le_of_lt (Nat.cast_nonneg c) hs'
-  have hsum : Summable fun q => h q ^ (-s') := GlobalTheory.T.summable_height_pow_of_polynomial_count _ h h1 C₁ c hcnt s' hs'
+  have hsum : Summable fun q => h q ^ (-s') := _root_.GlobalTheory.CompanionTheory.GodementH.summable_rpow_neg_of_polynomial_count _ h h1 C₁ c hcnt s' hs'
   have hterm : ∀ (x : G2 σ Y) (q : Cos σ Y), a ((Quotient.out q).1 * x) ^ s' ≤
       ((C : ℝ) * (ht2 x : ℝ) ^ (2 * n)) ^ s' * h q ^ (-s') := by
     intro x q

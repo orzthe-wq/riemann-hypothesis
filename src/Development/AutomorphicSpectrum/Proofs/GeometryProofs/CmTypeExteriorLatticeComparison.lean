@@ -8,17 +8,21 @@ public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsP
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HolomorphicUniformizationTangentUnimodularRiemann
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsRigTransport
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaUniformisationComplexAbelianVariety
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmTypeLatticeComparisonStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentPointCmEigenFrameStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundleStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CmTypeLatticeComparison
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentPointCmEigenFrame
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GagaLineGeneratorEmbedding
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermStalkClosedPointToBaseChange
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeGramLinearCombinationStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeGramLinearCombination
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeGramPullbackIff
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolUnifCompareIsogenyStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolUnifCompareIsogeny
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeLatticeGenerator
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.LiePush
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundle
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermStalkClosedPointToBaseChange
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsVBOneOfChartGenerators
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeLatticeGenerator
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,7 +63,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.LiePush
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
 
 @[expose] public section
@@ -201,7 +204,7 @@ theorem gram_eq : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left) (
   ext p q
   obtain ⟨-, -, -, A, _, φ, g, u', Hm', χ', a', b', a, b, h1, h2, h3, h4, h5, h6, e⟩ :=
     hodgeInnerProduct_iff_hodgeForm.1 (hIP p q)
-  have key := GlobalTheory.T.hol_unif_compare_isogeny S G L x Q.A A ψ φ Q.g g (GlobalTheory.TorsionTauCompare.transport Q.isLB hM hw u) u' Hm Hm' χ χ'
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.HodgeUniq.hermForm_eq_of_pullbacks S G L x Q.A A ψ φ Q.g g (GlobalTheory.TorsionTauCompare.transport Q.isLB hM hw u) u' Hm Hm' χ χ'
     hL Q.isAb hp h1 ht₁ ht₂ (GlobalTheory.TorsionTauCompare.isAH_transport Q.isLB hM hw u hAH) h2 (v' q) (v' p) a' b' (W q) (W p) a b
     (htan q) (htan p) (h3.trans (hvW q).1.symm) (h4.trans (hvW p).1.symm) (hvW q).2 (hvW p).2 h5 h6
   rw [e, key, Matrix.transpose_apply, hΓ]
@@ -396,7 +399,7 @@ theorem frame_gram {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
     (hodgeGram_iff_of_sabMap E H _ _ _ _ _ 𝔐.m z (y₀ ≫ Y.j) n w v' Γ₀ hz.symm hu3).2 hG2
   let A : Matrix (Fin n) (Fin n) ℂ := ρ.mapMatrix T'
   have hG4 : IsHodgeGram 𝔐.t.G 𝔐.t.PP.L z vb (A * Γ₀ * A.conjTranspose) :=
-    GlobalTheory.T.hodge_gram_linear_combination _ _ _ z n n w vb Γ₀ A (fun k => (hw k).isTanAt) hG3 hcomb
+    _root_.GlobalTheory.CompanionTheory.Relay.hodge_gram_linear_combination _ _ _ z n n w vb Γ₀ A (fun k => (hw k).isTanAt) hG3 hcomb
   have hEq : Γ = (A * Γ₀ * A.conjTranspose).transpose :=
     gram_eq _ _ _ z n vb _ Γ 𝔐.t.PP.isLB htan' hG4 hIP
   have hdet : T.det * T'.det = 1 := by rw [← Matrix.det_mul, hTT, Matrix.det_one]
@@ -455,13 +458,13 @@ theorem hodge_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
     exact ⟨p, q, hq0, div_mul_cancel₀ _ hq0⟩
   obtain ⟨y₀, hz, hU, hs, h, hT⟩ := exists_point E H D l Xo c Y U Z S Ω K J y 𝔐 i j s z hc ht hint hcst
   have hτ : τ.1 (H.rt : E) = H.rt0 := τ.2
-  obtain ⟨hv1, hv2, -⟩ := GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c _ _ Y U Z τ.1 hβ hτ
+  obtain ⟨hv1, hv2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isVBOn_eig_genFib E H D l Xo c _ _ Y U Z τ.1 hβ hτ
   obtain ⟨W₁, hW₁, b₁, -, hb₁⟩ := hv1 _ hT
   have hb₁x := hb₁ _ hT hW₁
   obtain ⟨W₂, hW₂, b₂, -, hb₂⟩ := hv2 _ hT
   have hb₂x := hb₂ _ hT hW₂
-  obtain ⟨v, hvv, hve⟩ := GlobalTheory.T.component_point_cm_eigen_frame E H D l Xo c _ _ Y U Z τ.1 hβ hτ ℂ s y₀ hs hU h τ.1 D.p b₁ hb₁x
-  obtain ⟨w, hwv, hwe⟩ := GlobalTheory.T.component_point_cm_eigen_frame E H D l Xo c _ _ Y U Z τ.1 hβ hτ ℂ s y₀ hs hU h
+  obtain ⟨v, hvv, hve⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.Rep.valFam_eigFrame E H D l Xo c _ _ Y U Z τ.1 hβ hτ ℂ s y₀ hs hU h τ.1 D.p b₁ hb₁x
+  obtain ⟨w, hwv, hwe⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.Rep.valFam_eigFrame E H D l Xo c _ _ Y U Z τ.1 hβ hτ ℂ s y₀ hs hU h
     (ComplexEmbedding.conjugate τ.1) D.q b₂ hb₂x
   have hfr : IsFramed U τ.1 s y₀ v w := ⟨hs, hU, hve, hwe⟩
 
@@ -471,7 +474,7 @@ theorem hodge_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
   obtain ⟨κ₀, hb₀⟩ := coeff_of_span hB₁ (hw2.symm.trans (WedgeFrame.wedge_eq_span_ιMulti _ _ _ _ _ _ _ _ hb₂x).1)
   have hRep := hr ℂ s y₀ v w b₁ b₂ α₀ κ₀ hfr ha₀ hb₀ hvv hwv
 
-  obtain ⟨-, hst1, hst2⟩ := GlobalTheory.T.cm_type_lattice_comparison E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j ht ⟨centre z, hc⟩ (mem_genFibre _ z hc)
+  obtain ⟨-, hst1, hst2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.CptStalk.main E H D l Xo c Y U Z S Ω K J y 𝔐 τ i j ht ⟨centre z, hc⟩ (mem_genFibre _ z hc)
   have hcen : centre (y₀ ≫ Y.j) = 𝔐.f (centre z) := by rw [← hz]; rfl
   have h' : genPt (Z.ξ₀ ≫ Y.j) ⤳ 𝔐.f (centre z) := hcen ▸ h
   have hpt : (⟨centre (y₀ ≫ Y.j), h⟩ : Cpt (Z.ξ₀ ≫ Y.j)) = ⟨𝔐.f (centre z), h'⟩ := Subtype.ext hcen

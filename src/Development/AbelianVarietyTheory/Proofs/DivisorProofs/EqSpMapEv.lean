@@ -42,7 +42,9 @@ noncomputable section
 
 namespace GlobalTheory.FlagMod.FieldFlag
 
-open AlgebraicGeometry CategoryTheory Limits NumberField
+-- `Proj` is `LowRank.Proj` here. With `AlgebraicGeometry.Proj` open too, every use is slow.
+open AlgebraicGeometry hiding Proj
+open CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg GlobalTheory.FlagEmb GlobalTheory.ProjSpace
 open GlobalTheory.FlagMod.LowRank (ECh Proj str)
 

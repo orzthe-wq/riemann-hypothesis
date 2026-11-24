@@ -98,12 +98,12 @@ def realMap (g : Mat n) : (Fin n × Fin n → ℝ) →ₗ[ℝ] (Fin n × Fin n �
     simp [hOf_add, Matrix.mul_add, Matrix.add_mul, Matrix.trace_add]
   map_smul' c v := by
     funext p
-    simp [hOf_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul]
+    simp [hOf_smul, Matrix.trace_smul]
 
 def cplxMap (g : Mat n) : Mat n →ₗ[ℂ] Mat n where
   toFun X := g * X * gᴴ
   map_add' X Y := by simp [Matrix.mul_add, Matrix.add_mul]
-  map_smul' c X := by simp [Matrix.mul_smul, Matrix.smul_mul]
+  map_smul' c X := by simp
 
 theorem cplxMap_apply (g X : Mat n) : cplxMap g X = g * X * gᴴ := rfl
 

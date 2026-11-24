@@ -45,22 +45,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-
-namespace I195MixedCoordinates_e50a010289c1774166bfaddf
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-end I195MixedCoordinates_e50a010289c1774166bfaddf
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -154,13 +139,13 @@ theorem norm_mixS_dRho_ge : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStd
     congr 1
     push_cast
     ring
-  have hfun2 : (fun t : ℝ => ψ (symplO S T (d.extX T x) (d.extY T (lineAt θ τ z t))) * (_root_.I195MixedCoordinates_e50a010289c1774166bfaddf.source d) T ψ v.μ v.𝓕 f x w) =
+  have hfun2 : (fun t : ℝ => ψ (symplO S T (d.extX T x) (d.extY T (lineAt θ τ z t))) * (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f x w) =
       fun t : ℝ => Complex.exp ((2 * Real.pi * Complex.I *
-        (GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D ρ) T τ z (compAt θ τ x) : ℂ)) * t) * (_root_.I195MixedCoordinates_e50a010289c1774166bfaddf.source d) T ψ v.μ v.𝓕 f x w :=
+        (GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D ρ) T τ z (compAt θ τ x) : ℂ)) * t) * (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f x w :=
     funext fun t => by rw [hphase]
   rw [hfun2] at hder
   set a : ℝ := GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt (GlobalTheory.Size.posSp D ρ) T τ z (compAt θ τ x) with ha_def
-  set M := (_root_.I195MixedCoordinates_e50a010289c1774166bfaddf.source d) T ψ v.μ v.𝓕 f x w with hM
+  set M := (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f x w with hM
   have hexp : HasDerivAt (fun t : ℝ => Complex.exp ((2 * Real.pi * Complex.I * (a : ℂ)) * t) * M)
       ((2 * Real.pi * Complex.I * (a : ℂ)) * M) 0 := by
     have h2 : HasDerivAt (fun u : ℂ => Complex.exp ((2 * Real.pi * Complex.I * (a : ℂ)) * u) * M)

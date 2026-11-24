@@ -88,7 +88,7 @@ theorem algSat_pow (a q f : ℕ) (B : Multiset ℂˣ) :
     rw [Nat.cast_pow, ← Real.rpow_natCast_mul (Nat.cast_nonneg q), mul_comm,
       Real.rpow_mul_natCast (Nat.cast_nonneg q), Complex.ofReal_pow]
   simp only [algSat, hq]
-  simp [Multiset.map_map, Function.comp_def, mul_pow, Multiset.bind_map, Multiset.map_bind]
+  simp [Multiset.map_map, mul_pow]
 
 theorem tower (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (M : Type) [Field M] [NumberField M] [Algebra F M] [Algebra M Ω] [IsScalarTower F M Ω] [IsAlgClosure M Ω] [Algebra K M] [IsScalarTower F K M] [IsScalarTower K M Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (sat : HeightOneSpectrum (𝓞 F) → Multiset ℂˣ → Prop) (r : G K Ω →* GL (Fin a) (Qbar l)) (hatt : AttSys sat ι K r) : AttSys sat ι M (r.comp (res K Ω M)) := by
   unfold AttSys at hatt ⊢
@@ -107,7 +107,7 @@ theorem tower (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] 
   rw [Multiset.map_map] at h3
   rw [hff]
   convert h3 using 2
-  simp [Function.comp_def, pow_mul]
+  simp [pow_mul]
 
 theorem uniq (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (sat : HeightOneSpectrum (𝓞 F) → Multiset ℂˣ → Prop) (hu : ∀ v B B', sat v B → sat v B' → B = B') (r r' : G K Ω →* GL (Fin a) (Qbar l)) (hc : Continuous r) (hc' : Continuous r') (hs : IsSSRep r) (hs' : IsSSRep r') (h : AttSys sat ι K r) (h' : AttSys sat ι K r') : RepIso r r' := by
   refine GlobalTheory.IsoOfFrobFree.main K Ω l ι a r r' hc hc' hs hs' ?_

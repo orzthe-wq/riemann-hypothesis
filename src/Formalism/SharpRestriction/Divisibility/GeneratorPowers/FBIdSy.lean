@@ -73,7 +73,6 @@ private theorem jetSubstP_apply_mk {κ κ' : Type} (m : ℕ) (φ : κ → MvPoly
 private theorem degree_eq_sum_lemma_2 {τ : Type} (e : τ →₀ ℕ) : e.degree = ∑ i ∈ e.support, e i := by
   first
   | rfl
-  | simp [Finsupp.degree, Finsupp.sum]
 
 private theorem le_degree_lemma_4 {τ : Type} (e : τ →₀ ℕ) (i : τ) : e i ≤ e.degree := by
   by_cases h : e i = 0
@@ -120,7 +119,7 @@ theorem mk_psTrunc_X {τ : Type} [Fintype τ] [DecidableEq τ] (m : ℕ) (q : τ
     · have h4 : AddMonoidAlgebra.coeff (X q : MvPolynomial τ S) e = 0 := by
         rw [MvPolynomial.coeff_X']
         exact if_neg (Ne.symm h2)
-      split_ifs <;> simp [h4, h2]
+      split_ifs <;> simp [h4]
   rw [Ideal.Quotient.eq, hs]
   split_ifs with h
   · rw [sub_self]
@@ -184,7 +183,7 @@ variable {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ) (x : ∀ m, jOG x0
 theorem scaleGenG_scaleGenG {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ t.G.left)) (ε : K → ℤ)
     (v w : Γ(Y, ⊤)ˣ) (g : LB.Gen (LB.LinComb t.PP.L φ ε)) :
     scaleGenG t φ ε v (scaleGenG t φ ε w g) = scaleGenG t φ ε (v * w) g := by
-  simp only [scaleGenG, Units.val_mul, map_mul, mul_assoc]
+  simp only [scaleGenG, map_mul, mul_assoc]
 
 theorem unitΓ_mul {A : Type} [CommRing A] (a b : Aˣ) : unitΓ (a * b) = unitΓ a * unitΓ b := by
   exact map_mul (Units.map (toΓ A).toMonoidHom) a b

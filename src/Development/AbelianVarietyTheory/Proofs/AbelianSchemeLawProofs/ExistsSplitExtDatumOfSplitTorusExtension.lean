@@ -161,10 +161,7 @@ variable {q : G ⟶ B} {i : splitTorus S X ⟶ G} [IsMonHom q]
   (hk : IsPullback i (toUnit _) q (η[B]))
 include hk
 
-theorem act_comp {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) :
-    ((t ≫ i) * g) ≫ q = g ≫ q := by
-  rw [MonObj.mul_comp, Category.assoc, hk.w, ← Category.assoc, comp_toUnit]
-  exact _root_.one_mul _
+alias act_comp := _root_.GlobalTheory.TorsorUnit.act_comp
 
 theorem act_apply {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) (z : Z.left) :
     q.left (((t ≫ i) * g).left z) = q.left (g.left z) :=
@@ -280,7 +277,7 @@ theorem monoidHom_ext_basis {X K A : Type} [AddCommGroup X] [CommGroup A] (b : M
   exact congrArg Additive.toMul (LinearMap.congr_fun this x.toAdd)
 
 theorem inv_eq_div_mul_inv {A : Type} [CommGroup A] (a b : A) : a⁻¹ = b / a * b⁻¹ := by
-  simp [div_eq_mul_inv, mul_comm]
+  simp [div_eq_mul_inv]
 
 end Sums
 

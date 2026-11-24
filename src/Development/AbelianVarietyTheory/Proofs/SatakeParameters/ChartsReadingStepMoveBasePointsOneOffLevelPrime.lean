@@ -281,7 +281,7 @@ theorem readsMove_holds : ReadsMove := by
       rfl
     rw [e]
     exact R.k_T β P r j hr
-  have hkf := fun β => GlobalTheory.T.admissibleBasePoint_unitary_normalisesLevel B.sp.cm (B.R.N i) hB (k β) (diaT (Pr := B.primes X) u) (R.k_std β) (k3 β)
+  have hkf := fun β => _root_.GlobalTheory.Mem.Col2.ChEx.basePt_facts B.sp.cm (B.R.N i) hB (k β) (diaT (Pr := B.primes X) u) (R.k_std β) (k3 β)
   have hk' : ∀ β, ∃ k' : basePts (K β).lev, ∀ v : HeightOneSpectrum (𝓞 B.host.F), (B.T u : 𝓞 B.host.F) ∉ v.asIdeal →
       bc (prV (E := B.host.E) v) k'.1 = bc (prV (E := B.host.E) v) (k β) := fun β => by
     obtain ⟨hkU, hkV, -, -⟩ := hkf β

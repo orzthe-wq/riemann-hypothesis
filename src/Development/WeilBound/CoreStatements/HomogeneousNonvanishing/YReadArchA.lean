@@ -186,7 +186,7 @@ theorem interior_of {S : Finset ℕ} {Ω : Type} [Field Ω] {K : Type} [Fintype 
       have h2 : (v ≫ Y.jQ ≫ Limits.pullback.fst Y.s (spMap β))
           (IsLocalRing.closedPoint ℂ) = (z ≫ 𝔐.f) (IsLocalRing.closedPoint ℂ) := by
         rw [show v ≫ Y.jQ ≫ Limits.pullback.fst Y.s (spMap β) = z ≫ 𝔐.f from hv]
-      simp only [Scheme.Hom.comp_apply] at h2
+      simp only at h2
       exact h2
     have hab : 𝔐.f (GlobalTheory.CompanionTheory.Ar.centre z) ∈ abLocus Y.t.G := e ▸ hmem
     exact (abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 (GlobalTheory.CompanionTheory.Ar.centre z)).1 hab

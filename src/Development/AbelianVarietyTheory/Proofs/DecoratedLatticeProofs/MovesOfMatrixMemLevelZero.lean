@@ -67,8 +67,7 @@ theorem _root_.GlobalTheory.LevX.conj_embX_val (ϖ : kˣ) (ord : ι ≃ n ⊕ Fi
     ((_root_.GlobalTheory.StepData.typeFrame ϖ ord).bas⁻¹ *
         _root_.GlobalTheory.RootEx.embX c g *
         (_root_.GlobalTheory.StepData.typeFrame ϖ ord).bas).val.toBlocks₁₁ = g.val := by
-  simp [_root_.GlobalTheory.StepData.typeFrame, _root_.GlobalTheory.StepData.LatFrame.bas,
-    _root_.GlobalTheory.RootEx.embA, _root_.GlobalTheory.RootEx.embX, Matrix.fromBlocks_multiply]
+  simp [_root_.GlobalTheory.StepData.typeFrame, _root_.GlobalTheory.RootEx.embA, _root_.GlobalTheory.RootEx.embX, Matrix.fromBlocks_multiply]
 
 
 open MeasureTheory IsDedekindDomain NumberField Matrix ValuativeRel in

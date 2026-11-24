@@ -180,7 +180,7 @@ private theorem eig_loc (hG : GlobalTheory.Published.GlobalArtinReciprocity) {F 
       field_simp at e1
       linear_combination (-ψ i s) * e2 + algPow w (-htW lam i) (a s : w.adicCompletion F) * e1
     · have e : (Finset.univ.filter fun i : Fin n => (i : ℕ) < j + 1) = Finset.univ.filter fun i => i ≤ j := by
-        ext i; simp [Nat.lt_succ_iff]
+        ext i; simp
       rw [h2 j s hs, psEig, e, hs, map_prod ι, map_prod ι, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]
       refine Finset.prod_congr rfl fun i _ => ?_
       rw [map_mul, map_mul, ι.apply_symm_apply, map_inv₀, map_inv₀, map_pow, map_natCast, ← resCard_eq_normV]

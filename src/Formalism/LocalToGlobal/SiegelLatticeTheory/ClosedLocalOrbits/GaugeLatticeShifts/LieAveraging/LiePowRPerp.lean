@@ -213,7 +213,7 @@ theorem nexp_adj (hY : Y ∈ F.LieN) (hs : star s = s) (x y : S.V) :
   ring
 
 theorem nexp_mul_neg (hY : Y ∈ F.LieN) : nexp Y s * nexp Y (-s) = 1 := by
-  letI : Algebra ℚ (Module.End E S.V) := Algebra.compHom (Module.End E S.V) (algebraMap ℚ E)
+  let : Algebra ℚ (Module.End E S.V) := Algebra.compHom (Module.End E S.V) (algebraMap ℚ E)
   have hc : Commute (s • Y) ((-s) • Y) := ((Commute.refl Y).smul_left s).smul_right (-s)
   have key := IsNilpotent.exp_add_of_commute hc (sY_isNilp s hY) (sY_isNilp (-s) hY)
   have h0 : s • Y + (-s) • Y = 0 := by rw [neg_smul, add_neg_cancel]
@@ -225,7 +225,7 @@ theorem nexp_neg_mul (hY : Y ∈ F.LieN) : nexp Y (-s) * nexp Y s = 1 := by
   rwa [neg_neg] at h
 
 def nexpE (hY : Y ∈ F.LieN) (s : E) : S.V ≃ₗ[E] S.V :=
-  LinearEquiv.ofLinear (nexp Y s) (nexp Y (-s)) (nexp_mul_neg hY) (nexp_neg_mul hY)
+  LinearEquiv.ofLinearMap (nexp Y s) (nexp Y (-s)) (nexp_mul_neg hY) (nexp_neg_mul hY)
 
 theorem nexpE_apply (hY : Y ∈ F.LieN) (x : S.V) : nexpE hY s x = nexp Y s x := rfl
 

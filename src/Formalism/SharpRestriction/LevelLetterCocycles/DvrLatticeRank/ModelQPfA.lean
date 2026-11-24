@@ -71,7 +71,7 @@ theorem smulE_mul (π' : LetA O n) (c : ZMod n) (e f : W.EE) (x : LA W T π' c) 
     smulE W T π' c (e * f) x = smulE W T π' c e (smulE W T π' c f x) := by
   induction x using TensorProduct.induction_on with
   | zero => simp
-  | tmul y l => simp [smulE, mul_assoc]
+  | tmul y l => simp [smulE]
   | add x y hx hy => rw [map_add (f := _), map_add (f := _), map_add (f := _), hx, hy]
 
 theorem smulE_one (π' : LetA O n) (c : ZMod n) (x : LA W T π' c) : smulE W T π' c 1 x = x := by

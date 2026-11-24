@@ -5,10 +5,14 @@ public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.Glo
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PrimitiveCocycle
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenOfInvariant
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsHeckeIsog
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueFactorThroughEtaleIsogenyReducedStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.Etale
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueFactorThroughEtaleIsogenyReduced
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.NonzeroLocus
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TrivOfAxesTrivPullbackEtaleIsogeny
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfProper
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsPullCubicalOfIso
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TrivOfAxesTrivPullbackEtaleIsogenyStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -113,9 +117,9 @@ theorem exists_objMap_of_isIsog_of_kerSet : ∀ (E : Type) [Field E] [NumberFiel
   have hab₂ := isAbelianScheme_of_proper o₂.t o₂.proper
   have := o₁.proper
   have := o₂.proper
-  obtain ⟨α, homα, hα, uα⟩ := GlobalTheory.T.exists_unique_factor_through_etale_isogeny_reduced S _ _ _ ψ₁ ψ₂ hab hab₁ inferInstance hom₁ fin₁ et₁ sur₁ hom₂
+  obtain ⟨α, homα, hα, uα⟩ := _root_.GlobalTheory.HkFactor.exists_unique_factor S _ _ _ ψ₁ ψ₂ hab hab₁ inferInstance hom₁ fin₁ et₁ sur₁ hom₂
     fun k _ _ t x hx => (ker₂ k t x).2 ((ker₁ k t x).1 hx)
-  obtain ⟨β, -, hβ, -⟩ := GlobalTheory.T.exists_unique_factor_through_etale_isogeny_reduced S _ _ _ ψ₂ ψ₁ hab hab₂ inferInstance hom₂ fin₂ et₂ sur₂ hom₁
+  obtain ⟨β, -, hβ, -⟩ := _root_.GlobalTheory.HkFactor.exists_unique_factor S _ _ _ ψ₂ ψ₁ hab hab₂ inferInstance hom₂ fin₂ et₂ sur₂ hom₁
     fun k _ _ t x hx => (ker₁ k t x).2 ((ker₂ k t x).1 hx)
   have : Epi ψ₁.left := Flat.epi_of_flat_of_surjective _
   have : Epi ψ₁ := Over.epi_of_epi_left ψ₁
@@ -133,7 +137,7 @@ theorem exists_objMap_of_isIsog_of_kerSet : ∀ (E : Type) [Field E] [NumberFiel
   have i₁ := pull_isLB o₁.t.PP.isLB (𝟙 _)
   have i₂ := pull_isLB o₂.t.PP.isLB α.left
   have hlam : LBIso (abelian₂ o₁.t.G (o₁.t.PP.L.pull (𝟙 _))) (abelian₂ o₁.t.G (o₂.t.PP.L.pull α.left)) :=
-    GlobalTheory.T.triv_of_axes_triv_pullback_etale_isogeny S _ _ ψ₁ o₁.t.PP.L _ (p ^ 2) hab hab₁ o₁.t.PP.isLB o₁.ample
+    _root_.GlobalTheory.IsogenyBitriv.triv_of_triv_pull_isogeny S _ _ ψ₁ o₁.t.PP.L _ (p ^ 2) hab hab₁ o₁.t.PP.isLB o₁.ample
       (LB.isLB_div (DVR.linComb_isLB _ i₂ _ _) (DVR.linComb_isLB _ i₁ _ _)) hom₁ fin₁ et₁ sur₁ (pow_pos hp.pos 2) hunit
       (fun k _ _ t x hx => hK k t x ((ker₁ k t x).1 hx))
       (exists_gen_axis i₁ i₂ _ _ (Or.inl rfl)) (exists_gen_axis i₁ i₂ _ _ (Or.inr rfl))

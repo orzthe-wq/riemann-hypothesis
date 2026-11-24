@@ -369,9 +369,6 @@ theorem petersson_inner_eq_integral_quotient (hP : Published.CuspRapidDecay) (h�
 theorem petersson_eq [μ.IsMulLeftInvariant] {𝓕 : Set (GA D V)} (h : IsFundamentalDomain (GQ V) 𝓕 μ)
     (hφ : LeftInv (GQ V) φ) (hψ : LeftInv (GQ V) ψ) : petersson V μ φ ψ = ∫ g in 𝓕, φ g * conj (ψ g) ∂μ := pet_eq h hφ hψ
 
-theorem petersson_conj_symm (φ ψ : GA D V → ℂ) : conj (petersson V μ ψ φ) = petersson V μ φ ψ :=
-  integral_conj.symm.trans (integral_congr_ae (.of_forall fun _ => by simp [mul_comm]))
-
 theorem petersson_smul_left (c : ℂ) (φ ψ : GA D V → ℂ) : petersson V μ (c • φ) ψ = c * petersson V μ φ ψ :=
   (integral_congr_ae (.of_forall fun _ => mul_assoc _ _ _)).trans (integral_const_mul c _)
 

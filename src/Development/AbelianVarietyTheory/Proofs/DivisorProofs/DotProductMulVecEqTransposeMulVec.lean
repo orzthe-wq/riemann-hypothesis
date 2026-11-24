@@ -90,13 +90,13 @@ theorem secondBlock_intCast (σ : Fin g ≃ Fin g' ⊕ Fin r) (M : Fin g → ℤ
 theorem leftComponent_periodVector (d : CD N g' r bX) (σ : Fin g ≃ Fin g' ⊕ Fin r) (S : Matrix (Fin r) (Fin r) ℂ) (M Nn : Fin g → ℤ) :
     zP σ (perV (d.full σ S) M Nn) = perV d.τ (zP σ M) (zP σ Nn) + d.t12 *ᵥ cv (tP σ Nn) := by
   funext i
-  simp [perV, CD.full, zP, tP, cv, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, Function.comp_def, add_assoc]
+  simp [perV, CD.full, zP, cv, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, Function.comp_def, add_assoc]
   rfl
 
 theorem secondBlock_periodVector (d : CD N g' r bX) (σ : Fin g ≃ Fin g' ⊕ Fin r) (S : Matrix (Fin r) (Fin r) ℂ) (M Nn : Fin g → ℤ) :
     tP σ (perV (d.full σ S) M Nn) = cv (tP σ M) + d.t12ᵀ *ᵥ cv (zP σ Nn) + (d.t22 + S) *ᵥ cv (tP σ Nn) := by
   funext i
-  simp [perV, CD.full, zP, tP, cv, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, Function.comp_def, add_assoc]
+  simp [perV, CD.full, tP, cv, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, Function.comp_def, add_assoc]
   rfl
 
 end GlobalTheory.MBLow.Cl.Exp

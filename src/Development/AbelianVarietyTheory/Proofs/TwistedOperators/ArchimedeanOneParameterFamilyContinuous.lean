@@ -142,7 +142,7 @@ theorem continuous_family : ∀ {F E : Type} [Field F] [NumberField F] [Field E]
         have e1 := hev x
         have e2 := hfin x
         simp only [evI] at e1
-        simp only [LinearMap.funLeft_apply, Function.comp_apply, pureA, SchwartzMap.smul_apply, smul_eq_mul]
+        simp only [LinearMap.funLeft_apply, pureA, SchwartzMap.smul_apply, smul_eq_mul]
         rw [e1, e2, mul_comm]
       show L (LinearMap.funLeft ℂ ℂ liftV (pureA F (⇑f') g)) = _
       rw [e, hLc, map_smul]
@@ -156,7 +156,7 @@ theorem continuous_family : ∀ {F E : Type} [Field F] [NumberField F] [Field E]
       have e : (LinearMap.funLeft ℂ ℂ liftV (tens (evI F) ⇑(T t f) R) :
           (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) = ⇑(R 0 • T t f) := by
         funext x
-        simp only [LinearMap.funLeft_apply, Function.comp_apply, SchwartzMap.smul_apply, smul_eq_mul]
+        simp only [LinearMap.funLeft_apply, SchwartzMap.smul_apply, smul_eq_mul]
         rw [htl, mul_comm]
       show _ = L (LinearMap.funLeft ℂ ℂ liftV (tens (evI F) ⇑(T t f) R)) / R 0
       rw [e, hLc, map_smul, smul_eq_mul, hTφ, mul_div_cancel_left₀ _ hR0]

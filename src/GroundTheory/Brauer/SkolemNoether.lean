@@ -4,59 +4,7 @@ public import Mathlib.Algebra.Central.Defs
 public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
 public import Mathlib.RingTheory.TensorProduct.Maps
 import GroundTheory.Brauer.TensorSimple
-import Mathlib.Algebra.Lie.OfAssociative
-import Mathlib.Algebra.Module.Torsion.Prod
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.Basis.MulOpposite
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Mathlib.RingTheory.SimpleModule.WedderburnArtin
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.LinearAlgebra.Dimension.Constructions
 public import Mathlib.LinearAlgebra.Dimension.Finite
 public import Mathlib.RingTheory.Artinian.Defs
@@ -73,6 +21,20 @@ open TensorProduct
 
 section Modules
 
+theorem exists_linearEquiv_pi_simple_of_nontrivial_prod (R M N : Type*) [Ring R]
+    [IsSimpleRing R] [IsArtinianRing R] [AddCommGroup M] [Module R M] [Module.Finite R M]
+    [AddCommGroup N] [Module R N] [Module.Finite R N] [Nontrivial (M × N)] :
+    ∃ (S : Submodule R (M × N)) (m n : ℕ), IsSimpleModule R S ∧
+      Nonempty (M ≃ₗ[R] (Fin m → S)) ∧ Nonempty (N ≃ₗ[R] (Fin n → S)) := by
+  obtain ⟨S, hS⟩ := IsAtomic.exists_atom (Submodule R (M × N))
+  rw [← isSimpleModule_iff_isAtom] at hS
+  have hT : IsIsotypicOfType R (M × N) S := IsSimpleRing.isIsotypic R (M × N) S
+  obtain ⟨m, eM⟩ :=
+    (hT.of_injective (LinearMap.inl R M N) LinearMap.inl_injective).linearEquiv_fun
+  obtain ⟨n, eN⟩ :=
+    (hT.of_injective (LinearMap.inr R M N) LinearMap.inr_injective).linearEquiv_fun
+  exact ⟨S, m, n, hS, eM, eN⟩
+
 theorem nonempty_linearEquiv_of_finrank_eq {K R : Type*} {M N : Type*} [Field K] [Ring R]
     [Algebra K R] [IsSimpleRing R] [FiniteDimensional K R]
     [AddCommGroup M] [Module K M] [Module R M] [IsScalarTower K R M] [FiniteDimensional K M]
@@ -83,13 +45,10 @@ theorem nonempty_linearEquiv_of_finrank_eq {K R : Type*} {M N : Type*} [Field K]
   · have : Subsingleton M := (Prod.fst_surjective (β := N)).subsingleton
     have : Subsingleton N := (Prod.snd_surjective (α := M)).subsingleton
     exact ⟨LinearEquiv.ofSubsingleton M N⟩
-  have : Module.Finite R (M × N) := Module.Finite.of_restrictScalars_finite K R _
   have : Module.Finite R M := Module.Finite.of_restrictScalars_finite K R _
   have : Module.Finite R N := Module.Finite.of_restrictScalars_finite K R _
-  obtain ⟨k, _, S, hS, -⟩ := (IsSimpleRing.isIsotypic R (M × N)).linearEquiv_fun
-  have hT : IsIsotypicOfType R (M × N) S := IsSimpleRing.isIsotypic R (M × N) S
-  obtain ⟨m, ⟨eM⟩⟩ := (hT.of_injective (LinearMap.inl R M N) LinearMap.inl_injective).linearEquiv_fun
-  obtain ⟨n, ⟨eN⟩⟩ := (hT.of_injective (LinearMap.inr R M N) LinearMap.inr_injective).linearEquiv_fun
+  obtain ⟨S, m, n, hS, ⟨eM⟩, ⟨eN⟩⟩ :=
+    exists_linearEquiv_pi_simple_of_nontrivial_prod R M N
   have : Nontrivial S := IsSimpleModule.nontrivial R S
   have : FiniteDimensional K S :=
     FiniteDimensional.of_injective ((Submodule.subtype S).restrictScalars K) Subtype.val_injective

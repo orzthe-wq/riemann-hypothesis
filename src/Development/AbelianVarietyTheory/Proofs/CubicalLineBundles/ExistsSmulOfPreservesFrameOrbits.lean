@@ -58,6 +58,7 @@ import Mathlib.Topology.Sheaves.Init
 import Mathlib.Topology.UniformSpace.Uniformizable
 import Formalism.LocalToGlobal.ProjectiveLattices.AlgebraMapCAt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientDomain
 
 @[expose] public section
 
@@ -85,27 +86,6 @@ theorem _root_.GlobalTheory.OrbitScalar.exists_mem_dom (X : _root_.ReciprocityTh
   refine mul_self_pos.mpr (Finset.prod_ne_zero_iff.mpr fun a _ => ?_)
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn
   split_ifs <;> norm_num
-
-open NumberField in
-open scoped Matrix in
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
-private lemma isOpen_dom_cubical_line_bundles (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) :
-    IsOpen (X.dom : Set (X.Ψ → Fin r → Fin r → ℂ)) := by
-  have hset : (X.dom : Set (X.Ψ → Fin r → Fin r → ℂ)) =
-      ⋂ τ : X.Ψ, ({x | (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ).det ≠ 0} ∩
-        ⋂ i : Fin (r + 1), {x | 0 < _root_.ReciprocityTheory.ChartRestriction.G.FD.psgn X.p0 i * (_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm x τ i).re}) := by
-    ext x
-    simp only [Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq]
-    rfl
-  rw [hset]
-  refine isOpen_iInter_of_finite fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)
-  · refine isOpen_ne_fun ?_ continuous_const
-    unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.mat
-    fun_prop
-  · refine isOpen_lt continuous_const (Continuous.mul continuous_const ?_)
-    refine Complex.continuous_re.comp ?_
-    unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.dmin _root_.ReciprocityTheory.ChartRestriction.G.FD.lminor _root_.ReciprocityTheory.ChartRestriction.G.FD.gram _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC _root_.ReciprocityTheory.ChartRestriction.G.FD.col _root_.ReciprocityTheory.ChartRestriction.G.FD.mat
-    fun_prop
 
 open NumberField in
 open scoped Matrix in
@@ -239,7 +219,7 @@ theorem _root_.GlobalTheory.OrbitScalar.exists_smul_of_orbits : ∀ (E : Type) [
     o.elim (X.dom : Set (X.Ψ → Fin r → Fin r → ℂ))ᶜ C
   have hfc : ∀ o, IsClosed (f o) := by
     rintro (_ | g)
-    · exact (isOpen_dom_cubical_line_bundles X).isClosed_compl
+    · exact (_root_.ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom X).isClosed_compl
     · exact hCclosed g
   have hcover : ⋃ o, f o = Set.univ := by
     refine Set.eq_univ_of_forall fun x => ?_
@@ -259,8 +239,7 @@ theorem _root_.GlobalTheory.OrbitScalar.exists_smul_of_orbits : ∀ (E : Type) [
             rw [(hb τ).2 k i0 (Fin.lt_def.mpr (Nat.pos_of_ne_zero fun h0 => hk (Fin.ext h0))),
               mul_zero]) (by simp)
         rw [hR] at h
-        simp only [Matrix.mulVec, dotProduct, col, Pi.smul_apply, smul_eq_mul, Matrix.of_apply,
-          Matrix.mul_apply] at h ⊢
+        simp only [Matrix.mulVec, dotProduct, col, Pi.smul_apply, smul_eq_mul] at h ⊢
         rw [h, mul_comm]
         rfl
       rw [hcol]
@@ -268,7 +247,7 @@ theorem _root_.GlobalTheory.OrbitScalar.exists_smul_of_orbits : ∀ (E : Type) [
       ring
     · exact Set.mem_iUnion.mpr ⟨none, hx⟩
   obtain ⟨x, hxdom, hxint⟩ := (dense_iUnion_interior_of_closed hfc hcover).inter_open_nonempty _
-    (isOpen_dom_cubical_line_bundles X) (_root_.GlobalTheory.OrbitScalar.exists_mem_dom X)
+    (_root_.ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom X) (_root_.GlobalTheory.OrbitScalar.exists_mem_dom X)
   obtain ⟨o, ho⟩ := Set.mem_iUnion.mp hxint
   rcases o with _ | g
   · exact absurd hxdom (interior_subset ho)

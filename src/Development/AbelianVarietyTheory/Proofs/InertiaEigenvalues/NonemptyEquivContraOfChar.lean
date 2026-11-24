@@ -1,23 +1,19 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEqSumBallFn
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
 public import Mathlib.Topology.Compactification.OnePoint.ProjectiveLine
-import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
-import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
-import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.EmbedsLevelZeroDepthZero
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnMemAndOneMemOfSubMem
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnSubMemOfRadial
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsInvariantForm
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOpenNormalisedSubgroupSubset
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InductionContragredient
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
-import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -30,10 +26,10 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -43,7 +39,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -56,10 +51,255 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Order.Hom.Esakia
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.Style
+import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
+import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.EmbedsLevelZeroDepthZero
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Topology.Order.Hom.Esakia
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnMemAndOneMemOfSubMem, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnSubMemOfRadial, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyEquivContraOfChar
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnMemAndOneMemOfSubMem =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnMemAndOneMemOfSubMem", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEqSumBallFn\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open ValuativeRel OnePoint GlobalTheory.LocGL.ProjLine
+
+namespace GlobalTheory.LocGL.ProjLine
+
+variable {k : Type} [Field k] [ValuativeRel k]
+
+theorem Stable.scale_mem {S : Submodule ℂ (OnePoint k → ℂ)} (hS : Stable S) {c : k} (hc : c ≠ 0)
+    (α β γ : ℂ) (a r b s : k)
+    (h : α • (fun _ => (1 : ℂ)) + β • ballFn a r + γ • ballFn b s ∈ S) :
+    α • (fun _ => (1 : ℂ)) + β • ballFn (c * a) (c * r) + γ • ballFn (c * b) (c * s) ∈ S := by
+  have hv : 0 < valuation k c := zero_lt_iff.2 (by simpa using hc)
+  have key : ∀ a r x : k, ballFn (c * a) (c * r) x = ballFn a r ((c⁻¹ * x + 0 : k) : OnePoint k) := by
+    intro a r x
+    have h1 : x - c * a = c * (c⁻¹ * x + 0 - a) := by field_simp; ring
+    rw [ballFn_coe, ballFn_coe, h1, map_mul, map_mul]
+    congr 1
+    rw [mul_le_mul_iff_right₀ hv]
+  refine hS.1 _ h c⁻¹ 0 (inv_ne_zero hc) _ (by simp [ballFn]) fun x => ?_
+  simp only [Pi.add_apply, Pi.smul_apply, key]
+
+theorem ballFn_eq_ballFn_zero {a r : k} (h : valuation k a ≤ valuation k r) : ballFn a r = ballFn 0 r := by
+  funext x
+  induction x using OnePoint.rec with
+  | infty => rfl
+  | coe x =>
+    rw [ballFn_coe, ballFn_coe, sub_zero]
+    congr 1
+    refine propext ⟨fun hx => ?_, fun hx => (valuation k).map_sub_le hx h⟩
+    have := (valuation k).map_add_le hx h
+    rwa [sub_add_cancel] at this
+
+theorem ballFn_congr_radius (a : k) {r s : k} (h : valuation k r = valuation k s) : ballFn a r = ballFn a s := by
+  funext x
+  induction x using OnePoint.rec with
+  | infty => rfl
+  | coe x => rw [ballFn_coe, ballFn_coe, h]
+
+theorem Stable.ballFn_mem_and_one_mem_of_sub_mem (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
+    [IsNonarchimedeanLocalField k] (S : Submodule ℂ (OnePoint k → ℂ)) (hS : Stable S) (ϖ : k)
+    (hϖ : valuation k ϖ = uniformizer k) (h : ballFn 0 ϖ - ballFn 1 ϖ ∈ S) :
+    ballFn (0 : k) 1 ∈ S ∧ (fun _ => (1 : ℂ)) ∈ S := by
+  classical
+  have hlt : valuation k ϖ < 1 := hϖ ▸ uniformizer_lt_one
+  have hle : ∀ x : k, valuation k x ≤ valuation k ϖ ↔ valuation k x < 1 := fun x => by
+    rw [hϖ]; exact le_uniformizer_iff
+  have h0 : ϖ ≠ 0 := by
+    rintro rfl
+    exact uniformizer_ne_zero (hϖ.symm.trans (map_zero _))
+  have hdiff : ∀ a : k, valuation k a ≤ 1 → ballFn 0 ϖ - ballFn a ϖ ∈ S := by
+    intro a ha
+    rcases ha.lt_or_eq with ha | ha
+    · rw [ballFn_eq_ballFn_zero ((hle a).2 ha), sub_self]
+      exact S.zero_mem
+    · have ha0 : a ≠ 0 := by rintro rfl; simp at ha
+      have h1 := hS.scale_mem ha0 0 1 (-1) 0 ϖ 1 ϖ (by simpa [sub_eq_add_neg] using h)
+      have h2 : valuation k (a * ϖ) = valuation k ϖ := by rw [map_mul, ha, one_mul]
+      rw [ballFn_congr_radius _ h2, ballFn_congr_radius _ h2] at h1
+      simpa [sub_eq_add_neg] using h1
+  obtain ⟨T, hT1, hT2, hT3⟩ := exists_eq_sum_ballFn (r := ϖ) (R := 1) h0 (by simpa using hlt.le)
+  simp only [map_one] at hT1 hT2 hT3
+  set q : ℂ := (T.card : ℂ) with hqdef
+  have hsum : ballFn (0 : k) 1 = ∑ a ∈ T, ballFn a ϖ := by
+    rw [hT3 (ballFn 0 1) rfl (fun x hx => by rw [ballFn_coe, if_neg (by simpa using hx)]) (fun x b hb => ?_)]
+    · refine Finset.sum_congr rfl fun a ha => ?_
+      rw [ballFn_coe, if_pos (by simpa using hT1 a ha), one_smul]
+    · have hb1 : valuation k b ≤ 1 := hb.trans hlt.le
+      rw [ballFn_coe, ballFn_coe, sub_zero, sub_zero, map_one]
+      congr 1
+      refine propext ⟨fun hx => ?_, fun hx => (valuation k).map_add_le hx hb1⟩
+      have := (valuation k).map_sub_le hx hb1
+      rwa [add_sub_cancel_right] at this
+  set e : OnePoint k → ℂ := fun _ => 1 with he
+  have R1 : (0 : ℂ) • e + (1 : ℂ) • ballFn (0 : k) 1 + (-q) • ballFn (0 : k) ϖ ∈ S := by
+    have h1 := S.neg_mem (S.sum_mem fun a (ha : a ∈ T) => hdiff a (hT1 a ha))
+    rw [Finset.sum_sub_distrib, ← hsum, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, ← hqdef] at h1
+    convert h1 using 1
+    module
+  have R2 := hS.scale_mem h0 _ _ _ _ _ _ _ R1
+  have R3 : (1 - q) • e + q • ballFn (0 : k) 1 + (-1 : ℂ) • ballFn (0 : k) ϖ ∈ S := by
+    refine hS.2 _ R1 _ ?_ ?_ fun x hx => ?_
+    · simp [ballFn, he]; ring
+    · simp [ballFn, he]
+    · have hx0 : 0 < valuation k x := zero_lt_iff.2 (by simpa using hx)
+      simp only [Pi.add_apply, Pi.smul_apply, ballFn_coe, sub_zero, map_one, hϖ, le_uniformizer_iff, map_inv₀, he, smul_eq_mul,
+        inv_le_one₀ hx0, inv_lt_one₀ hx0]
+      rcases lt_trichotomy (valuation k x) 1 with h1 | h1 | h1
+      · simp [h1, h1.le, h1.not_ge, h1.not_gt]
+      · simp [h1]
+      · simp [h1, h1.le, h1.not_ge, h1.not_gt]; ring
+  have R4 := hS.scale_mem h0 _ _ _ _ _ _ _ R3
+  simp only [mul_zero, mul_one] at R2 R4
+  rw [← he] at R2 R4
+  have hq1 : (1 - q) ≠ 0 := by
+    rw [sub_ne_zero, hqdef]
+    exact_mod_cast (hT2 hlt).ne
+  have hq2 : (1 + q) ≠ 0 := by
+    rw [hqdef]
+    exact_mod_cast (by omega : 1 + T.card ≠ 0)
+  have h2 : ballFn (0 : k) (ϖ * ϖ) ∈ S := by
+    have h3 := S.sub_mem (S.add_mem (S.sub_mem R4 R3) (S.smul_mem q R1)) (S.smul_mem (q + 1 - q ^ 2) R2)
+    have h4 : -((1 - q) * (1 - q) * (1 + q)) ≠ 0 := neg_ne_zero.2 (mul_ne_zero (mul_ne_zero hq1 hq1) hq2)
+    refine (S.smul_mem_iff h4).1 ?_
+    convert h3 using 1
+    module
+  have hu0 : ballFn (0 : k) 1 ∈ S := hS.ballFn_mem (mul_ne_zero h0 h0) h2 0 one_ne_zero
+  have hu1 : ballFn (0 : k) ϖ ∈ S := hS.ballFn_mem (mul_ne_zero h0 h0) h2 0 h0
+  refine ⟨hu0, (S.smul_mem_iff hq1).1 ?_⟩
+  convert S.add_mem (S.sub_mem R3 (S.smul_mem q hu0)) hu1 using 1
+  module
+
+end GlobalTheory.LocGL.ProjLine
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnMemAndOneMemOfSubMem =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnSubMemOfRadial =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnSubMemOfRadial", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEqSumBallFn\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open ValuativeRel OnePoint GlobalTheory.LocGL.ProjLine
+
+namespace GlobalTheory.LocGL.ProjLine
+
+theorem exists_jump_point {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
+    (f : k → ℂ) {r : k} (hr : r ≠ 0) (h : ∀ x, valuation k x ≤ valuation k r → f x = f 0) {y : k} (hy : f y ≠ f 0) :
+    ∃ b : k, f b ≠ f 0 ∧ ∀ x, valuation k x < valuation k b → f x = f 0 := by
+  classical
+  have hπ : (0 : ValueGroupWithZero k) < uniformizer k := uniformizer_pos
+  have hr' : 0 < valuation k r := zero_lt_iff.2 (by simpa using hr)
+  have hex : ∃ n : ℕ, ∃ x, valuation k x * uniformizer k ^ n ≤ valuation k r ∧ f x ≠ f 0 := by
+    have hy0 : 0 < valuation k y := zero_lt_iff.2 (by rintro h0; rw [map_eq_zero] at h0; exact hy (by rw [h0]))
+    obtain ⟨n, hn⟩ := exists_pow_lt₀ (uniformizer_lt_one (R := k))
+      (Units.mk0 (valuation k r / valuation k y) (div_pos hr' hy0).ne')
+    refine ⟨n, y, ?_, hy⟩
+    rw [Units.val_mk0, lt_div_iff₀ hy0, mul_comm] at hn
+    exact hn.le
+  obtain ⟨b, hb, hb'⟩ := Nat.find_spec hex
+  refine ⟨b, hb', fun x hx => ?_⟩
+  by_contra hne
+  rcases hm : Nat.find hex with _ | m
+  · rw [hm, pow_zero, mul_one] at hb
+    exact hb' (h b hb)
+  · refine Nat.find_min hex (m := m) (by omega) ⟨x, ?_, hne⟩
+    rw [hm] at hb
+    have hb0 : 0 < valuation k b := zero_le'.trans_lt hx
+    have h1 : valuation k x / valuation k b ≤ uniformizer k := le_uniformizer_iff.2 ((div_lt_one₀ hb0).2 hx)
+    rw [div_le_iff₀ hb0] at h1
+    calc valuation k x * uniformizer k ^ m ≤ uniformizer k * valuation k b * uniformizer k ^ m := by gcongr
+      _ = valuation k b * uniformizer k ^ (m + 1) := by rw [pow_succ]; ac_rfl
+      _ ≤ _ := hb
+
+theorem ballFn_sub_mem_of_radial (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
+    [IsNonarchimedeanLocalField k] (S : Submodule ℂ (OnePoint k → ℂ)) (hS : Stable S) (F : OnePoint k → ℂ) (hF : F ∈ S)
+    (hrad : ∀ u x : k, valuation k u = 1 → F ((u * x : k) : OnePoint k) = F (x : OnePoint k))
+    (h0 : ∃ r : k, r ≠ 0 ∧ ∀ x : k, valuation k x ≤ valuation k r → F (x : OnePoint k) = F ((0 : k) : OnePoint k))
+    (hi : ∃ R : k, ∀ x : k, valuation k R < valuation k x → F (x : OnePoint k) = F ∞)
+    (hne : F ((0 : k) : OnePoint k) ≠ F ∞) (ϖ : k) (hϖ : valuation k ϖ = uniformizer k) :
+    ballFn 0 ϖ - ballFn 1 ϖ ∈ S := by
+  classical
+  obtain ⟨r, hr, h0⟩ := h0
+  obtain ⟨R, hi⟩ := hi
+  have hπ : (0 : ValueGroupWithZero k) < uniformizer k := uniformizer_pos
+  have hy : ∃ y : k, valuation k R < valuation k y := by
+    by_cases hR : R = 0
+    · exact ⟨1, by simp [hR]⟩
+    · have hR' : 0 < valuation k R := zero_lt_iff.2 (by simpa using hR)
+      refine ⟨R / ϖ, ?_⟩
+      rw [map_div₀, hϖ, lt_div_iff₀ hπ]
+      exact mul_lt_of_lt_one_right hR' uniformizer_lt_one
+  obtain ⟨y, hy⟩ := hy
+  obtain ⟨b, hb, hb'⟩ := exists_jump_point (fun x : k => F x) hr h0 (y := y) (by
+    show F y ≠ F (0 : k)
+    rw [hi y hy]; exact hne.symm)
+  have hb0 : b ≠ 0 := by rintro rfl; exact hb rfl
+  have hvb : 0 < valuation k b := zero_lt_iff.2 (by simpa using hb0)
+  let g : k → ℂ := fun x => F ((b * x : k) : OnePoint k)
+  have g1 : ∀ x, valuation k x < 1 → g x = F (0 : k) := fun x hx => hb' _ (by
+    rw [map_mul]; exact mul_lt_of_lt_one_right hvb hx)
+  have g2 : ∀ x, valuation k x = 1 → g x = F b := fun x hx => by
+    show F ((b * x : k) : OnePoint k) = _
+    rw [mul_comm]; exact hrad x b hx
+  have g3 : ∀ x z, x ≠ 0 → valuation k z = valuation k x → g z = g x := fun x z hx hz => by
+    have hvx : valuation k x ≠ 0 := by simpa using hx
+    have := hrad (z / x) (b * x) (by rw [map_div₀, hz, div_self hvx])
+    show F ((b * z : k) : OnePoint k) = F ((b * x : k) : OnePoint k)
+    rw [← this]; congr 2; field_simp
+  have hG : (fun x : OnePoint k => x.elim (F ∞) g) ∈ S :=
+    hS.1 F hF b 0 hb0 _ rfl fun x => by rw [add_zero]; rfl
+  have hG' : (fun x : OnePoint k => x.elim (F ∞) fun x => g (x - 1)) ∈ S :=
+    hS.1 F hF b (-b) hb0 _ rfl fun x => by
+      show F ((b * (x - 1) : k) : OnePoint k) = _
+      congr 2; ring
+  have hc : F (0 : k) - F b ≠ 0 := sub_ne_zero.2 hb.symm
+  rw [← S.smul_mem_iff hc]
+  convert S.sub_mem hG hG' using 1
+  funext x
+  induction x using OnePoint.rec with
+  | infty => simp [ballFn]
+  | coe x =>
+    show (F (0 : k) - F b) * (ballFn 0 ϖ x - ballFn 1 ϖ x) = g x - g (x - 1)
+    rw [ballFn_coe, ballFn_coe, hϖ, sub_zero]
+    simp only [le_uniformizer_iff]
+    by_cases h1 : valuation k x < 1
+    · have h2 : valuation k (x - 1) = 1 := by
+        rw [Valuation.map_sub_swap]; exact (valuation k).map_one_sub_of_lt h1
+      rw [if_pos h1, if_neg (by rw [h2]; exact lt_irrefl _), g1 x h1, g2 _ h2]; ring
+    · by_cases h2 : valuation k (x - 1) < 1
+      · have h3 : valuation k x = 1 := by
+          have := (valuation k).map_one_add_of_lt h2
+          rwa [add_sub_cancel] at this
+        rw [if_neg h1, if_pos h2, g1 _ h2, g2 _ h3]; ring
+      · have hx0 : x ≠ 0 := by rintro rfl; exact h1 (by simp)
+        have h3 : valuation k (x - 1) = valuation k x := by
+          rcases (not_lt.1 h1).eq_or_lt with h4 | h4
+          · refine le_antisymm ?_ (h4 ▸ not_lt.1 h2)
+            exact (valuation k).map_sub_le le_rfl (by rw [map_one]; exact h4.le)
+          · exact (valuation k).map_sub_eq_of_lt_left (by rwa [map_one])
+        rw [if_neg h1, if_neg h2, g3 x _ hx0 h3]; ring
+
+end GlobalTheory.LocGL.ProjLine
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnSubMemOfRadial =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyEquivContraOfChar =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyEquivContraOfChar", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEqSumBallFn\npublic import Mathlib.Topology.Compactification.OnePoint.ProjectiveLine\nimport Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup\nimport Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.EmbedsLevelZeroDepthZero\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnMemAndOneMemOfSubMem\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BallFnSubMemOfRadial\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsInvariantForm\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsOpenNormalisedSubgroupSubset\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InductionContragredient\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Order.Hom.Esakia\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -428,7 +668,7 @@ theorem exists_line {η : kˣ →* ℂˣ} (hη : IsSmoothChar η) :
     have h2 := h ∞
     have h3 := h (0 : k)
     have h4 := h (1 : k)
-    simp [ballFn, ballFn_coe, h1] at h2 h3 h4
+    simp [ballFn, h1] at h2 h3 h4
     exact ⟨h3.symm.trans h2, h4.symm.trans h2⟩
   refine ⟨_, _, _, _, f, nonempty_equiv_parInd hη, fun c d h => congrArg (fun F => F.1 ∞) h, fun h => ?_,
     fun S => (const_or_eq_top (subrepTwist _ _ S)).imp
@@ -515,3 +755,7 @@ theorem isL_detRep_two (hχ : IsSmoothChar χ) :
     exact (single_precedes χ hχ).2
 
 end GlobalTheory.LocGL
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyEquivContraOfChar =====

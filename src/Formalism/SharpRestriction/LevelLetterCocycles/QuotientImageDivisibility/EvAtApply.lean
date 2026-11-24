@@ -82,7 +82,7 @@ theorem ev_qp (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) [CharZero
     (evR PD.p (s + 1) hlm hy (W.π₀₁ + ((PD.p : ℕ) : PowerSeries O)) = 0) ↔
       (y ≠ 0 ∧ (1 + y) ^ PD.p = 1) := by
   obtain ⟨w, hw⟩ := hR.2.2.2.2.1
-  rw [Formalism.MainNotions.N.Pv.LocalLengthBound.eat_qp] at hw
+  rw [_root_.Formalism.MainNotions.LiftingTheory.eisenstein_at_uniformizer] at hw
   have hq0 : W.q₀ = (w : LetA O n) 0 * (W.π₀₁ + ((PD.p : ℕ) : PowerSeries O)) := by
     have := congrFun hw 0
     simpa [LocWach.q, Formalism.MainNotions.LiftingTheory.qp, LocWach.π₀] using this

@@ -2,49 +2,8 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.SiegelPullbackTransfer.ExistsGenTransfer
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubicalPullBaseChangeSt
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.SiegelPullbackTransfer.AdelicGL2ExtOfLocalComponents
 
@@ -62,17 +21,13 @@ open ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison (gU unit_ext g
 
 variable {X : Scheme.{0}}
 
-private theorem gUres_lemma {O O' : X.Opens} (hle : O' ≤ O) (x : X) (hx : x ∈ O')
-    (s : Γ(X, O)ˣ) : gU x hx (res hle s) = gU x (hle hx) s :=
-  gU_res hle x hx s
-
 private theorem isGenOfGerm_lemma {L : LB X} (t : LB.Gen L)
     (h : ∀ i j (x : X) (hx : x ∈ L.U i ⊓ L.U j),
       gU x hx.1 (t.s i) = gU x hx (L.g i j) * gU x hx.2 (t.s j)) : t.IsGen := by
   intro i j
   apply unit_ext
   intro x hx
-  rw [map_mul, gUres_lemma, gUres_lemma]
+  rw [map_mul, _root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res, _root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res]
   exact h i j x hx
 
 private theorem mapsOfGerm_lemma {A B : LB X} (w : LB.Iso A B) (a : LB.Gen A) (b : LB.Gen B)
@@ -81,14 +36,14 @@ private theorem mapsOfGerm_lemma {A B : LB X} (w : LB.Iso A B) (a : LB.Gen A) (b
   rintro ⟨p, q⟩
   apply unit_ext
   intro x hx
-  rw [map_mul, gUres_lemma, gUres_lemma]
+  rw [map_mul, _root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res, _root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res]
   exact h p q x hx
 
 private theorem germOfMaps_lemma {A B : LB X} (w : LB.Iso A B) (a : LB.Gen A) (b : LB.Gen B)
     (hab : LB.Gen.Maps w a b) (p : B.ι) (q : A.ι) (x : X) (hx : x ∈ B.U p ⊓ A.U q) :
     gU x hx.1 (b.s p) = gU x hx (w.s (p, q)) * gU x hx.2 (a.s q) :=
-  (gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x hx) (hab (p, q))).trans
-    ((map_mul _ _ _).trans (congrArg (_ * ·) (gUres_lemma _ _ _ _))))
+  (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _).symm.trans ((congrArg (gU x hx) (hab (p, q))).trans
+    ((map_mul _ _ _).trans (congrArg (_ * ·) (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _))))
 
 theorem glueU {J : Type} (V : X.Opens) (W : J → X.Opens) (hW : ∀ i, W i ≤ V) (hc : V ≤ iSup W)
     (u : ∀ i, Γ(X, W i)ˣ)
@@ -99,7 +54,7 @@ theorem glueU {J : Type} (V : X.Opens) (W : J → X.Opens) (hW : ∀ i, W i ≤ 
     intro i j
     apply unit_ext
     intro x hx
-    simp only [gUres_lemma]
+    simp only [_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res]
     exact h i j x hx
   have hcomp' : ∀ i j, res (inf_le_left : W i ⊓ W j ≤ W i) (u i)⁻¹ =
       res (inf_le_right : W i ⊓ W j ≤ W j) (u j)⁻¹ := by
@@ -122,26 +77,26 @@ theorem gU_cocycle {L : LB X} (hL : L.IsLB) {i j k : L.ι} (x : X) (hi : x ∈ L
     gU x (⟨hi, hj⟩ : x ∈ L.U i ⊓ L.U j) (L.g i j) * gU x (⟨hj, hk⟩ : x ∈ L.U j ⊓ L.U k) (L.g j k) =
       gU x (⟨hi, hk⟩ : x ∈ L.U i ⊓ L.U k) (L.g i k) := by
   have e := congrArg (gU x (⟨⟨hi, hj⟩, hk⟩ : x ∈ L.U i ⊓ L.U j ⊓ L.U k)) (hL.cocycle i j k)
-  exact (congrArg₂ (· * ·) (gUres_lemma _ _ _ _) (gUres_lemma _ _ _ _)).symm.trans
-    ((map_mul _ _ _).symm.trans (e.trans (gUres_lemma _ _ _ _)))
+  exact (congrArg₂ (· * ·) (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _) (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _)).symm.trans
+    ((map_mul _ _ _).symm.trans (e.trans (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _)))
 
 theorem gU_self {L : LB X} (hL : L.IsLB) {i : L.ι} (x : X) (hi : x ∈ L.U i) :
     gU x (⟨hi, hi⟩ : x ∈ L.U i ⊓ L.U i) (L.g i i) = 1 := by
-  exact (gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x hi) (hL.g_self i)).trans (map_one _))
+  exact (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _).symm.trans ((congrArg (gU x hi) (hL.g_self i)).trans (map_one _))
 
 theorem gU_isGen {L : LB X} {t : LB.Gen L} (ht : t.IsGen) {i j : L.ι} (x : X) (hi : x ∈ L.U i)
     (hj : x ∈ L.U j) :
     gU x hi (t.s i) = gU x (⟨hi, hj⟩ : x ∈ L.U i ⊓ L.U j) (L.g i j) * gU x hj (t.s j) := by
-  exact (gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x (⟨hi, hj⟩ : x ∈ L.U i ⊓ L.U j)) (ht i j)).trans
-    ((map_mul _ _ _).trans (congrArg (_ * ·) (gUres_lemma _ _ _ _))))
+  exact (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _).symm.trans ((congrArg (gU x (⟨hi, hj⟩ : x ∈ L.U i ⊓ L.U j)) (ht i j)).trans
+    ((map_mul _ _ _).trans (congrArg (_ * ·) (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _))))
 
 theorem gU_div (B A : LB X) (p q : (LB.div B A).ι) (x : X) (hp : x ∈ (LB.div B A).U p)
     (hq : x ∈ (LB.div B A).U q) :
     gU x (⟨hp, hq⟩ : x ∈ (LB.div B A).U p ⊓ (LB.div B A).U q) ((LB.div B A).g p q) =
       gU x (⟨hp.1, hq.1⟩ : x ∈ B.U p.1 ⊓ B.U q.1) (B.g p.1 q.1) *
         (gU x (⟨hp.2, hq.2⟩ : x ∈ A.U p.2 ⊓ A.U q.2) (A.g p.2 q.2))⁻¹ := by
-  exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (gUres_lemma _ _ _ _)
-    ((map_inv _ _).trans (congrArg (·⁻¹) (gUres_lemma _ _ _ _))))
+  exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _)
+    ((map_inv _ _).trans (congrArg (·⁻¹) (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _))))
 
 section Transport
 
@@ -163,8 +118,8 @@ private theorem cand_lemma {G : Type*} [CommGroup G] (g a d w w' b b' : G) (h1 :
 private theorem gUcand_lemma (w : LB.Iso A B) (b : LB.Gen B) (q : A.ι) (p : B.ι) (x : X)
     (hx : x ∈ A.U q ⊓ B.U p) :
     gU x hx (cand w b q p) = (gU x (le_divU p q hx) (w.s (pq p q)))⁻¹ * gU x hx.2 (b.s p) :=
-  (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_inv _ _).trans (congrArg (·⁻¹) (gUres_lemma _ _ _ _)))
-    (gUres_lemma _ _ _ _))
+  (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_inv _ _).trans (congrArg (·⁻¹) (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _)))
+    (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _))
 
 lemma gU_cand (hA : A.IsLB) (w : LB.Iso A B) (hw : w.IsGen) (b : LB.Gen B) (hb : b.IsGen)
     (q : A.ι) (p p' : B.ι) (x : X) (hx : x ∈ A.U q ⊓ B.U p) (hx' : x ∈ A.U q ⊓ B.U p') :
@@ -190,7 +145,7 @@ private theorem trgerm_lemma (w : LB.Iso A B) (b : LB.Gen B) (q : A.ι) (p : B.�
     (hsq : res (inf_le_left : A.U q ⊓ B.U p ≤ A.U q) sq = cand w b q p) (x : X)
     (hx : x ∈ A.U q ⊓ B.U p) :
     gU x hx.1 sq = (gU x (le_divU p q hx) (w.s (pq p q)))⁻¹ * gU x hx.2 (b.s p) :=
-  (gUres_lemma _ _ _ _).symm.trans ((congrArg (gU x hx) hsq).trans (gUcand_lemma w b q p x hx))
+  (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _).symm.trans ((congrArg (gU x hx) hsq).trans (gUcand_lemma w b q p x hx))
 
 theorem exists_transport (hA : A.IsLB) (hB : B.IsLB) (w : LB.Iso A B) (hw : w.IsGen) (b : LB.Gen B)
     (hb : b.IsGen) : ∃ a : LB.Gen A, a.IsGen ∧ LB.Gen.Maps w a b := by
@@ -237,7 +192,7 @@ def invIso (w : LB.Iso A B) : LB.Iso B A := ⟨fun qp => (res (swapLe qp) (w.s (
 private theorem invgerm_lemma (w : LB.Iso A B) (q : A.ι) (p : B.ι) (x : X)
     (hx : x ∈ A.U q ⊓ B.U p) :
     gU x hx ((invIso w).s (q, p)) = (gU x (le_divU p q hx) (w.s (pq p q)))⁻¹ :=
-  (map_inv _ _).trans (congrArg (·⁻¹) (gUres_lemma _ _ _ _))
+  (map_inv _ _).trans (congrArg (·⁻¹) (_root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.gU_res _ _ _ _))
 
 private theorem inv_lemma' {G : Type*} [CommGroup G] (w w' bg a d : G) (hg : w = bg * a⁻¹ * w')
     (hd : d = a * bg⁻¹) : w⁻¹ = d * w'⁻¹ := by

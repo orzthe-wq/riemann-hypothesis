@@ -102,6 +102,20 @@ abbrev Z (n : ℕ) : Submodule R (C.X n) := LinearMap.ker (C.d n)
 
 abbrev H (n : ℕ) : Type w := C.Z n ⧸ (C.B n).comap (C.Z n).subtype
 
+/-! Named instances for `C.H n`. Without them, instance search returns
+`Submodule.Quotient.addCommMonoid` and `Submodule.Quotient.module` applied to the whole submodule
+`(C.B n).comap (C.Z n).subtype`, and the kernel re-checks that submodule term wherever a
+statement mentions a linear map between cohomology groups. -/
+
+instance (priority := high) instAddCommGroupH (n : ℕ) : AddCommGroup (C.H n) :=
+  Submodule.Quotient.addCommGroup _
+
+instance (priority := high) instAddCommMonoidH (n : ℕ) : AddCommMonoid (C.H n) :=
+  (C.instAddCommGroupH n).toAddCommMonoid
+
+instance (priority := high) instModuleH (n : ℕ) : Module R (C.H n) :=
+  Submodule.Quotient.module _
+
 def cls {n : ℕ} (x : C.X n) (hx : C.d n x = 0) : C.H n := Submodule.Quotient.mk ⟨x, hx⟩
 
 variable {C}
@@ -236,6 +250,18 @@ abbrev cx : Cx.{max u v w} R where
   dd := d_d F
 
 abbrev H (n : ℕ) : Type (max u v w) := (cx F).H n
+
+/-! The instances of `Cx.H` again, for `H F n`. Instance search does not find those for this type:
+`cx F` is a structure instance, which it unfolds, so `H F n` no longer has the shape `C.H n`. -/
+
+instance (priority := high) instAddCommGroupH (n : ℕ) : AddCommGroup (H F n) :=
+  (cx F).instAddCommGroupH n
+
+instance (priority := high) instAddCommMonoidH (n : ℕ) : AddCommMonoid (H F n) :=
+  (cx F).instAddCommMonoidH n
+
+instance (priority := high) instModuleH (n : ℕ) : Module R (H F n) :=
+  (cx F).instModuleH n
 
 def aug {M : Type w'} [AddCommGroup M] [Module R M] (e : ∀ T : C, M →ₗ[R] F.obj T) : M →ₗ[R] Cn F 0 :=
   LinearMap.pi fun s => e _

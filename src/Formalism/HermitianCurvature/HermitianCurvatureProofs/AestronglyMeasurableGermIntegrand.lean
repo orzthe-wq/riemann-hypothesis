@@ -183,9 +183,9 @@ theorem gaXi_cont2 (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (Z : G.Mat 0) :
 theorem gaXi_dom (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0) (ξ : U.Xi k p 0 ρ σ) (Z : G.Mat 0)
     {γ : B.Mat k ρ} (hγ : γ ∈ B.GV k ρ) :
     U.gaXi k ρ σ d ξ Z γ ∈ {x : B.Mat k (p + 0 + ρ) | x ∈ B.GV k (p + 0 + ρ) ∧ U.DjU k (p + 0) ρ x ≠ 0} := by
-  refine ⟨Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation σ d hd ξ Z
+  refine ⟨Formalism.FourierDecayAlt.P.Ux10.gaXi_mem _root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam σ d hd ξ Z
     (by rw [detM_zero]; exact one_ne_zero) hγ, ?_⟩
-  rw [Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice, detM_zero, mul_one]
+  rw [Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi _root_.Formalism.FourierDecayAlt.P.Ux3.zhSlice, detM_zero, mul_one]
   exact Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd
 
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]

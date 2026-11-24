@@ -493,7 +493,7 @@ theorem existsAut_any : LL → AnyUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => 
       (fun i => ⟨Nat.succ_pos _, rfl⟩) (by show m 2 + 1 = m 0 + 1 + (m 1 + 1); omega) (fun i => q (m i))
       (fun i => ω (m i)) (fun i => ⟨rfl, rfl, hω _, vω _⟩) t (fun i => Ψ _ (t i)) s _
       (fun i => ⟨hs i, hs' i, ((hΦ' _).2 _ _).2 rfl⟩)
-  obtain ⟨ψ, hψ, hα⟩ := GlobalTheory.T.exists_automorphism_of_multiplicative_section_family F _ A (jFK (R := R) F) k hk Ψ lin (fun a b s s' s'' h =>
+  obtain ⟨ψ, hψ, hα⟩ := _root_.GlobalTheory.exists_iso_of_multiplicative_section_family F _ A (jFK (R := R) F) k hk Ψ lin (fun a b s s' s'' h =>
     (mul_chart_iff A.isLB _ _ _ _).2 (mul ![a, b, a + b + 1] rfl
       (Fin.cons s (Fin.cons s' (Fin.cons s'' finZeroElim))) ((mul_chart_iff A.isLB _ _ _ _).1 h)))
   refine ⟨ψ, fun n N hn hN' q' hy hg => ?_⟩

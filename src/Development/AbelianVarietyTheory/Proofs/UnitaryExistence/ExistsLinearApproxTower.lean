@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximationStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLatticeRationalVectorsInAdelicTranslateStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximation
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLatticeRationalVectorsInAdelicTranslate
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -60,22 +60,14 @@ namespace GlobalTheory.AdLat.Tower
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 omit [NumberField E] in
-lemma fv_add (x y : Fin n → E) : fv F (x + y) = fv F x + fv F y := by
-  funext i; simp [fv, TensorProduct.tmul_add]
+alias fv_add := _root_.GlobalTheory.AdLat.Translate.fv_add
 
 omit [NumberField E] in
 lemma fv_sub (x y : Fin n → E) : fv F (x - y) = fv F x - fv F y := by
   funext i; simp [fv, TensorProduct.tmul_sub]
 
 omit [NumberField E] in
-lemma fv_zero : fv F (0 : Fin n → E) = 0 := by
-  funext i; simp [fv]
-
-omit [NumberField E] in
-lemma fv_nsmul (N : ℕ) (x : Fin n → E) : fv F (N • x) = N • fv F x := by
-  induction N with
-  | zero => simp [fv_zero]
-  | succ k ih => rw [succ_nsmul, succ_nsmul, fv_add, ih]
+alias fv_nsmul := _root_.GlobalTheory.AdLat.Translate.fv_nsmul
 
 omit [NumberField E] in
 lemma fv_smul (c : 𝓞 E) (x : Fin n → E) :
@@ -85,26 +77,10 @@ lemma fv_smul (c : 𝓞 E) (x : Fin n → E) :
   rfl
 
 omit [NumberField E] in
-lemma nsmul_cancel {N : ℕ} (hN : 0 < N) {z u : Fin n → RA F E} (h : N • z = N • u) : z = u := by
-  have hN' : (N : F) ≠ 0 := by exact_mod_cast hN.ne'
-  rw [← Nat.cast_smul_eq_nsmul F, ← Nat.cast_smul_eq_nsmul F] at h
-  have := congrArg (fun t => (N : F)⁻¹ • t) h
-  simpa [smul_smul, inv_mul_cancel₀ hN'] using this
+alias nsmul_cancel := _root_.GlobalTheory.AdLat.Translate.nsmul_cancel
 
 omit [NumberField E] in
-lemma smul_mem_hat (L : Submodule (𝓞 E) (Fin n → E)) (c : 𝓞 E) {z : Fin n → RA F E}
-    (hz : z ∈ hat F (L : Set (Fin n → E))) :
-    ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (c : E) : RA F E) • z ∈ hat F (L : Set (Fin n → E)) := by
-  induction hz using AddSubgroup.closure_induction with
-  | mem z hz =>
-    obtain ⟨a, ha, x, hx, rfl⟩ := hz
-    refine AddSubgroup.subset_closure ⟨a, ha, c • x, L.smul_mem c hx, ?_⟩
-    funext i
-    simp only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]
-    rfl
-  | zero => rw [smul_zero]; exact zero_mem _
-  | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
-  | neg x _ hx => rw [smul_neg]; exact neg_mem hx
+alias smul_mem_hat := _root_.GlobalTheory.AdLat.Translate.hat_smul_ring
 
 lemma exists_div {M : Submodule (𝓞 E) (Fin n → E)}
     (hM : ∀ v, fv F v ∈ hat F (M : Set (Fin n → E)) ↔ v ∈ M) {N : ℕ} (hN : 0 < N)
@@ -134,7 +110,7 @@ def rel (L Λ : Submodule (𝓞 E) (Fin n → E)) (g : Matrix (Fin n) (Fin n) (R
     Submodule (𝓞 E) (L × Λ) where
   carrier := {p | ∃ w ∈ hat F (L : Set (Fin n → E)),
     fv F (p.2 : Fin n → E) = g *ᵥ (fv F (p.1 : Fin n → E) + N • w)}
-  zero_mem' := ⟨0, zero_mem _, by simp [fv_zero]⟩
+  zero_mem' := ⟨0, zero_mem _, by simp [_root_.GlobalTheory.AdLat.Translate.fv_zero]⟩
   add_mem' := by
     rintro p q ⟨w, hw, hp⟩ ⟨w', hw', hq⟩
     refine ⟨w + w', add_mem hw hw', ?_⟩
@@ -153,10 +129,10 @@ end GlobalTheory.AdLat.Tower
 open GlobalTheory.AdLat.Tower in
 theorem GlobalTheory.AdLat.exists_linear_approx_tower : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (g : GL (Fin n) (RA F E)) (Λ : Submodule (𝓞 E) (Fin n → E)), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → (Λ : Set (Fin n → E)) = latOf F (g : Matrix (Fin n) (Fin n) (RA F E)) L → ∃ f : ℕ → (L →ₗ[𝓞 E] Λ), (∀ N : ℕ, 0 < N → ∀ a : L, ∃ w ∈ (hat F (L : Set (Fin n → E))), fv F (f N a : Fin n → E) = (g : Matrix (Fin n) (Fin n) (RA F E)) *ᵥ (fv F (a : Fin n → E) + N • w)) ∧ (∀ N m : ℕ, 0 < N → 0 < m → ∀ a, ∃ v, f (N * m) a = f N a + N • v) ∧ ∀ N : ℕ, 0 < N → (∀ a, (∃ v, f N a = N • v) ↔ ∃ v, a = N • v) ∧ ∀ a', ∃ a v, a' = f N a + N • v := by
   intro F E _ _ _ _ _ n L g Λ hL hsp hΛ
-  obtain ⟨Λ', h1, hΛfg, hΛsp, hhat⟩ := GlobalTheory.T.exists_lattice_rationalVectorsInAdelicTranslate F E n L g hL hsp
+  obtain ⟨Λ', h1, hΛfg, hΛsp, hhat⟩ := _root_.GlobalTheory.AdLat.exists_lattice_latOf F E n L g hL hsp
   obtain rfl : Λ = Λ' := SetLike.coe_injective (hΛ.trans h1.symm)
-  obtain ⟨hLc, hLa, -, -⟩ := GlobalTheory.T.adelicCompletion_rational_points_and_approximation F E n L hL hsp
-  obtain ⟨hΛc, hΛa, -, -⟩ := GlobalTheory.T.adelicCompletion_rational_points_and_approximation F E n Λ hΛfg hΛsp
+  obtain ⟨hLc, hLa, -, -⟩ := _root_.GlobalTheory.AdLat.hat_rational_points_and_approx F E n L hL hsp
+  obtain ⟨hΛc, hΛa, -, -⟩ := _root_.GlobalTheory.AdLat.hat_rational_points_and_approx F E n Λ hΛfg hΛsp
   set G : Matrix (Fin n) (Fin n) (RA F E) := g.val with hG
   have hto : ∀ u ∈ hat F (L : Set (Fin n → E)), G *ᵥ u ∈ hat F (Λ : Set (Fin n → E)) := by
     intro u hu

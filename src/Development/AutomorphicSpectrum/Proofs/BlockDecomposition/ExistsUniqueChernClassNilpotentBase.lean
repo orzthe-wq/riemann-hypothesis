@@ -2,9 +2,10 @@ module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.ZariskiEtaleLifting.IsFirstChernClassOfLineBundle
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.ConeSectionRestriction.Precomp
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechRefinementCohomologyBijectiveStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CohomologyRestrictionBetweenStableFamiliesStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CrystallineCocycleClosedStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.InclStd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechRefinementCohomologyBijective
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CohomologyRestrictionBetweenStableFamilies
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CrystallineCocycleClosed
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCrystallineLift
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -165,14 +166,14 @@ theorem exu_core (D : E.LineData X) (Q : ObjectProperty (Thick ((B.schFn q).cr b
     (hN : ∀ (T : Thick ((B.schFn q).cr b ht κ)) (k : ℕ), N ≤ k → (k.factorial : T.B) = 0) :
     ∃! x, B.IsFirstChernClassOfLineBundle (q := q) (b := b) (ht := ht) (κ := κ) D c N x := by
   obtain ⟨Λ₀⟩ := GlobalTheory.CompanionTheory.CLiftEx.nonempty_cLift Q.ι D (fun T => (hQ _).1 T.property)
-  have hz₀ := (GlobalTheory.T.crystalline_cocycle_closed Q.ι D c N (fun T k hk x _ => by
+  have hz₀ := (_root_.GlobalTheory.CompanionTheory.CocCls.coc_cls Q.ι D c N (fun T k hk x _ => by
     change ((k.factorial : ℕ) : (T.obj).B) * _ = 0
     rw [hN _ k hk, zero_mul])).1 Λ₀
   obtain ⟨x, hx⟩ := hbij.2 ((CH.cx _).cls _ hz₀)
   refine ⟨x, ?_, ?_⟩
   · intro C _ G Λ₁
     have hG : ∀ T, Q (G.obj T) := fun T => (hQ _).2 ⟨Λ₁.p T, Λ₁.hp T⟩
-    have hcl := GlobalTheory.T.crystalline_cocycle_closed G D c N (fun T k hk x _ => by rw [hN _ k hk, zero_mul])
+    have hcl := _root_.GlobalTheory.CompanionTheory.CocCls.coc_cls G D c N (fun T k hk x _ => by rw [hN _ k hk, zero_mul])
     let Λ' : B.CLift G D := precomp Λ₀ (Q.lift G hG)
     refine ⟨hcl.1 Λ₁, ?_⟩
     rw [hcl.2 Λ₁ Λ' (hcl.1 Λ₁) (hcl.1 Λ')]
@@ -221,9 +222,9 @@ theorem res_bij (hp : p ≠ 0) (D : E.LineData X) (hD : sSup (𝒱D D) = ⊤) {�
   have h1 : St ⊤ (𝒱D D) ≤ Lifts (γ := γ) (p := p) (q := q) (κ := κ) D := st_le_lifts D
   have h1' : Lifts (γ := γ) (p := p) (q := q) (κ := κ) D ≤ St ⊤ {sSup (𝒱D D)} := fun T _ =>
   ⟨trivial, _, rfl, by rw [hD]; exact inU_top T⟩
-  have b1 := (GlobalTheory.T.cohomology_restriction_between_stable_families ⊤ hU (𝒱D D) (Lifts D) h1 h1' (fun T T' φ h _ => lifts_map D φ h) j).2.2
+  have b1 := (_root_.GlobalTheory.CompanionTheory.ZarCosieve.main ⊤ hU (𝒱D D) (Lifts D) h1 h1' (fun T T' φ h _ => lifts_map D φ h) j).2.2
   have h2 : St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ (𝒱D D) ≤ St ⊤ {⊤} := fun T _ => ⟨trivial, ⊤, rfl, inU_top T⟩
-  have b2 := (GlobalTheory.T.cech_refinement_cohomology_bijective ⊤ hU (𝒱D D) {⊤} h2 (by rintro W rfl; rw [hD]) j).2.2
+  have b2 := (_root_.GlobalTheory.CompanionTheory.NlZar.zariski_descent ⊤ hU (𝒱D D) {⊤} h2 (by rintro W rfl; rw [hD]) j).2.2
   have h3 : Lifts (γ := γ) (p := p) (q := q) (κ := κ) D ≤ St ⊤ {⊤} := fun T _ => ⟨trivial, ⊤, rfl, inU_top T⟩
   have hall : ∀ T, St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ {⊤} T := fun T => ⟨trivial, ⊤, rfl, inU_top T⟩
   exact bij_three (b := nlBase R I γ p) (L := nlFun γ p X q κ) c h3 h1 h2 j b1 b2 hall

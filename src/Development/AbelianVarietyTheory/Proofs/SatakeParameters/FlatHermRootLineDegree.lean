@@ -214,7 +214,7 @@ theorem pullC_delta (τ : κ → ι) (φ : E →ₗ[k] E') (c : Finset ι → E)
 theorem pullC_mem (A : Finset ι → Submodule k E) (B : Finset κ → Submodule k E') (τ : κ → ι) (φ : E →ₗ[k] E')
     (hφ : ∀ s : Finset κ, s.Nonempty → ∀ y ∈ A (s.image τ), φ y ∈ B s) (n : ℤ) (c : Finset ι → E)
     (hc : c ∈ cechC A n) : pullC τ φ c ∈ cechC B n := by
-  simp only [cechC, Submodule.mem_pi, Set.mem_univ, true_implies, forall_const] at hc ⊢
+  simp only [cechC, Submodule.mem_pi, Set.mem_univ, forall_const] at hc ⊢
   intro s
   rw [pullC_apply]
   split_ifs with hs hinj

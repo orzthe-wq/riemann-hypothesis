@@ -2,7 +2,8 @@ module
 
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LocalPublishedTheorems
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AlgClosureTensorBcrisToBdRInjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BcrisRegularOfTensorInjStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AcrisTorsionFreeComplete
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BcrisRegularOfTensorInj
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinExt
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineFormalismOfRegular
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LinearIndepOnOfInvariant
@@ -156,7 +157,7 @@ private theorem indepB (ρ : G → V →ₗ[Q] V) {ι : Type} (d : ι → ↥(DD
     hd.map' (DD F a ha ρ).subtype (DD F a ha ρ).ker_subtype
   rw [linearIndependent_iff_finset_linearIndependent]
   intro s
-  exact GlobalTheory.RegularRing.linearIndepOn_of_invariant (fun g b => a g b) (fun g => (sig a ρ g).toAddMonoidHom)
+  exact _root_.GlobalTheory.LinearIndependentFixed.linearIndepOn_of_fixed (fun g b => a g b) (fun g => (sig a ρ g).toAddMonoidHom)
     (sig_smul a ρ) hf _ (fun g i => (d i).2 g) s (h1.linearIndepOn _)
 
 include hf in
@@ -288,7 +289,7 @@ theorem UpperTheory.V.Loc.admissible_of_bilinear_openSubgroup_galois :
       obtain ⟨g, rfl⟩ := e.surjective g
       rw [← eB, ← eB]
       exact hxy g
-    · refine GlobalTheory.RegularRing.lineUnit hfit (GlobalTheory.T.bcris_regular_of_tensorInj l C (GlobalTheory.T.algClosure_tensor_bcris_to_bdR_injective l C)) K x hx fun g => ?_
+    · refine GlobalTheory.RegularRing.lineUnit hfit (_root_.GlobalTheory.MemLoc.regular_of_tensorInj l C (GlobalTheory.T.algClosure_tensor_bcris_to_bdR_injective l C)) K x hx fun g => ?_
       obtain ⟨g, rfl⟩ := e.surjective g
       rw [← eB]
       exact hxy g

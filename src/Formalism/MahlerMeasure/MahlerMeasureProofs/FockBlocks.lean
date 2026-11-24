@@ -1,9 +1,8 @@
 module
 
+public import Formalism.MahlerMeasure.LevelSum
 public import Formalism.MahlerMeasure.LevelLattice
 public import Formalism.MahlerMeasure.MahlerMeasureProofs.RemoveS
-import Formalism.MahlerMeasure.MahlerMeasureProofs.LevelAct
-public import Formalism.MahlerMeasure.MahlerMeasureProofs.LevelDecomp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -22,9 +21,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
@@ -36,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -51,8 +47,86 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.MahlerMeasure.GoodCount
+import Formalism.MahlerMeasure.MahlerMeasureProofs.LevelAct
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Tactic.Linter.Style
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.MahlerMeasure.MahlerMeasureProofs.LevelDecomp, Formalism.MahlerMeasure.MahlerMeasureProofs.FockBlocks
+
+-- ===== clump member: Formalism.MahlerMeasure.MahlerMeasureProofs.LevelDecomp =====
+-- clump-header: {"m": "Formalism.MahlerMeasure.MahlerMeasureProofs.LevelDecomp", "h": "module\n\npublic import Formalism.MahlerMeasure.LevelSum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.MahlerMeasure.GoodCount\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.GM
+
+open MvPolynomial Finset
+
+section
+variable {k σ : Type} [Field k] {r : ℕ} {w e : Fin r → σ}
+
+theorem ld_biHom_of_euler [CharZero k] {a b : ℕ} {g : MvPolynomial σ k}
+    (hW : ∑ c, X (w c) * pderiv (w c) g = (a : k) • g)
+    (hE : ∑ c, X (e c) * pderiv (e c) g = (b : k) • g) : BiHom w e a b g := by
+  classical
+  unfold BiHom
+  intro m hm
+  rw [MvPolynomial.mem_support_iff] at hm
+  have hterm : ∀ i : σ, AddMonoidAlgebra.coeff (X i * pderiv i g) m = (m i : k) * AddMonoidAlgebra.coeff g m := by
+    intro i
+    rw [MvPolynomial.coeff_X_mul']
+    split_ifs with hs
+    · have hmi : 1 ≤ m i := Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hs)
+      have e1 : m - Finsupp.single i 1 + Finsupp.single i 1 = m :=
+        tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr hmi)
+      have e2 : (((m - Finsupp.single i 1 : σ →₀ ℕ) i : ℕ) : k) + 1 = (m i : k) := by
+        rw [Finsupp.tsub_apply, Finsupp.single_eq_same, ← Nat.cast_add_one, Nat.sub_add_cancel hmi]
+      rw [MvPolynomial.coeff_pderiv, e1, e2, mul_comm]
+    · simp at hs
+      simp [hs]
+  have key : ∀ (v : Fin r → σ) (n : ℕ), ∑ c, X (v c) * pderiv (v c) g = (n : k) • g → ∑ c, m (v c) = n := by
+    intro v n hv
+    have hcoef := congrArg (AddMonoidAlgebra.coeff · m) hv
+    rw [MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul] at hcoef
+    simp only [hterm] at hcoef
+    rw [← Finset.sum_mul] at hcoef
+    have hc := mul_right_cancel₀ hm hcoef
+    exact_mod_cast hc
+  exact ⟨key w a hW, key e b hE⟩
+
+end
+
+section fockSec
+open Formalism.GM.M
+
+variable {p : ℕ} [Fact p.Prime] {σ : Type}
+
+end fockSec
+
+section
+variable {k σ : Type} [Field k] {r : ℕ} {w e : Fin r → σ}
+
+end
+
+section fockSec
+open Formalism.GM.M
+
+variable {p : ℕ} [Fact p.Prime] {σ : Type} {r : ℕ} {w e : Fin r → σ}
+
+end fockSec
+
+end Formalism.GM
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.MahlerMeasure.MahlerMeasureProofs.LevelDecomp =====
+
+-- ===== clump member: Formalism.MahlerMeasure.MahlerMeasureProofs.FockBlocks =====
+-- clump-header: {"m": "Formalism.MahlerMeasure.MahlerMeasureProofs.FockBlocks", "h": "module\n\npublic import Formalism.MahlerMeasure.LevelLattice\npublic import Formalism.MahlerMeasure.MahlerMeasureProofs.RemoveS\nimport Formalism.MahlerMeasure.MahlerMeasureProofs.LevelAct\npublic import Formalism.MahlerMeasure.MahlerMeasureProofs.LevelDecomp\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace Formalism.GM.FockB
@@ -193,7 +267,7 @@ theorem Pop_mem (o n z : ℕ) : (Pop w e zv sv o n z : Module.End k (MvPolynomia
 
 theorem tieP_eq_Pop (o n z : ℕ) (y : MvPolynomial σ k) :
     M.tieP w e zv sv o n z y = Pop w e zv sv o n z y := by
-  simp [M.tieP, Pop, LinearMap.sum_apply, Module.End.mul_apply]
+  simp [M.tieP, Pop, LinearMap.sum_apply]
 
 theorem good_of_ops {S : Set σ} (hS : Disjoint (V w e zv sv) S) {T : Module.End k (MvPolynomial σ k)}
     (hT : T ∈ Ops S) {o n : ℕ} {y : MvPolynomial σ k} (hy : Good w e zv sv o n y) :
@@ -609,8 +683,8 @@ theorem disjA (hB : D.BlockOK) {a b : Option (Fin D.T.t)} (hab : a ≠ b) :
     have hv0' : (finPos N (D.T.pos i') : ℕ) = D.T.pos i' := finPos_val (by omega)
     have hv1' : (finPos N (D.T.pos i' + 1) : ℕ) = D.T.pos i' + 1 := finPos_val (by omega)
     rcases hva with ((⟨c, rfl⟩ | ⟨c, rfl⟩) | rfl | rfl) <;> rcases hvb with ((⟨c', h⟩ | ⟨c', h⟩) | h | h) <;>
-      simp only [wA, eA, zA, sA, xiVar, scalZ, scalS, Option.elim, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq,
-        Prod.mk.injEq, Fin.ext_iff, Fin.val_castSucc, Fin.val_last] at h <;> omega
+      simp only [wA, eA, zA, sA, scalZ, scalS, Option.elim, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq,
+        Prod.mk.injEq, Fin.ext_iff, Fin.val_castSucc] at h <;> omega
 
 theorem nodupLA : (LA D).Nodup := by
   simp only [LA, List.nodup_cons, List.mem_map, reduceCtorEq, and_false, exists_false, not_false_eq_true,
@@ -794,6 +868,9 @@ end Formalism.GM.FockB
 
 namespace Formalism.GM
 
-theorem fock_block_decomposition : M.FockBlocks := FockB.fock_blocks_of_weights
+alias fock_block_decomposition := _root_.Formalism.GM.FockB.fock_blocks_of_weights
 
 end Formalism.GM
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.MahlerMeasure.MahlerMeasureProofs.FockBlocks =====

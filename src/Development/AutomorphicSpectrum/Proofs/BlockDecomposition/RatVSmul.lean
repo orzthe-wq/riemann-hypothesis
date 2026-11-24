@@ -187,7 +187,7 @@ private lemma exists_GL_mulVec_single_eq_of_ne_zero (m : ι) (v : ι → k) (hv 
     simp
   · intro c hc
     rw [IsUnit.unit_spec, hact]
-    simp [Pi.single_apply, hc.symm]
+    simp [hc.symm]
 
 lemma exists_inv_mulVec_eq (i : ι) {ξ : ι → k} (hξ : ξ ≠ 0) :
     ∃ g : GL ι k, ((g⁻¹ : GL ι k) : Matrix ι ι k) *ᵥ Pi.single i 1 = ξ := by

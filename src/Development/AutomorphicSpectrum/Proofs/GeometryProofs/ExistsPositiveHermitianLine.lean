@@ -73,7 +73,7 @@ theorem log_rho_eq_phi (I : Type) [Fintype I] :
   funext z
   change Real.log ‖WithLp.toLp 2 z‖ = _
   rw [EuclideanSpace.norm_eq, Real.log_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
-  simp only [FubiniLevi.phi, FubiniLevi.sqSum, PiLp.toLp_apply]
+  simp only [FubiniLevi.phi, FubiniLevi.sqSum]
   ring
 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]

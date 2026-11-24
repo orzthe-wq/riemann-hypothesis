@@ -3,52 +3,7 @@ module
 public import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.StatementA
 public import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.LogarithmicSubstitution.OneAddMulDerivLogSubst
 public import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.LogarithmicSubstitution.WeierstrassReducedEquations
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -94,12 +49,6 @@ private theorem pd_unit_eq_dz (f : PowerSeries K) : pd () f = dz f := by
 theorem mul_dz_fLog {g : PowerSeries K} (hg : constantCoeff g = 1) : g * dz (fLog g) = dz g := by
   have h := mul_pd_fLog (ι := Unit) () (g := g) hg
   rwa [pd_unit_eq_dz, pd_unit_eq_dz] at h
-
-private theorem dz_prim_eq_self (f : PowerSeries K) : dz (prim f) = f := by
-  ext n
-  rw [PowerSeries.coeff_derivative, coeff_prim_succ]
-  push_cast
-  exact div_mul_cancel₀ _ (Nat.cast_add_one_ne_zero n)
 
 private theorem eq_of_constantCoeff_eq_of_dz_eq {F G : PowerSeries K} (h0 : constantCoeff F = constantCoeff G)
     (hd : dz F = dz G) : F = G := by
@@ -169,9 +118,9 @@ theorem sigmaOneSquare : Sigma1Sq := by
     apply eq_of_constantCoeff_eq_of_dz_eq
     · rw [map_add (f := _), map_add (f := _), map_add (f := _), hs0, hs10, hL0]; ring
     · apply eq_of_constantCoeff_eq_of_dz_eq
-      · simp only [map_add (f := _), sigmaOneSeries, sigS, map_neg, dz_prim_eq_self, hp0, hL1]
+      · simp only [map_add (f := _), sigmaOneSeries, sigS, map_neg, _root_.Formalism.L2.Th1.B.dz_prim, hp0, hL1]
         ring
-      · simp only [map_add (f := _), sigmaOneSeries, sigS, map_neg, dz_prim_eq_self, hLdd]
+      · simp only [map_add (f := _), sigmaOneSeries, sigS, map_neg, _root_.Formalism.L2.Th1.B.dz_prim, hLdd]
         ring
   have hsq : fExp (sigmaOneSeries e1 (3 * e1 ^ 2 - q) w) ^ 2 = fExp (sigS P + sigS P) * u := by
     have hss : MvPowerSeries.constantCoeff (sigS P + sigS P) = 0 := by

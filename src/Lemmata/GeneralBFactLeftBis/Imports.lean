@@ -53,6 +53,6 @@ theorem goal1 :
     ∀ (v : Fin N → E),
       Exists.{1} fun (d : NumberField.RingOfIntegers.{0} E) ↦
         And (Ne.{1} d 0) (Membership.mem.{0, 0} L'' (HSMul.hSMul.{0, 0, 0} d v)) := by
-  apply ReciprocityTheory.MultiplicativeHeights.sc_scale <;> assumption
+  apply ReciprocityTheory.MultiplicativeHeights.sc_scale
 
 end Bl.general_b_fact_left_bis

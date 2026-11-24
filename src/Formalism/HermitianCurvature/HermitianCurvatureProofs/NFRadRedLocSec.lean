@@ -211,8 +211,7 @@ theorem cd_div {f g : X → ℂ} (hf : ContDiffOn ℝ n f s) (hg : ContDiffOn �
 theorem cdm_conjT {F : X → Matrix (Fin m) (Fin m) ℂ} (hF : ContDiffOn ℝ n F s) :
     ContDiffOn ℝ n (fun x => (F x)ᴴ) s := by
   refine cdm_iff.2 fun i j => ?_
-  simp only [Matrix.conjTranspose_apply]
-  exact cd_star ((cdm_iff.1 hF) j i)
+  simpa only [Matrix.conjTranspose_apply] using cd_star ((cdm_iff.1 hF) j i)
 
 theorem cdv_mulVec {F : X → Matrix (Fin m) (Fin m) ℂ} (hF : ContDiffOn ℝ n F s) (v : Fin m → ℂ) :
     ContDiffOn ℝ n (fun x => F x *ᵥ v) s := by
@@ -223,8 +222,7 @@ theorem cdv_mulVec {F : X → Matrix (Fin m) (Fin m) ℂ} (hF : ContDiffOn ℝ n
 theorem cdv_smul {c : X → ℂ} {v : X → Fin m → ℂ} (hc : ContDiffOn ℝ n c s) (hv : ContDiffOn ℝ n v s) :
     ContDiffOn ℝ n (fun x => c x • v x) s := by
   refine contDiffOn_pi.2 fun i => ?_
-  simp only [Pi.smul_apply, smul_eq_mul]
-  exact hc.mul (contDiffOn_pi.1 hv i)
+  simpa only [Pi.smul_apply, smul_eq_mul] using hc.mul (contDiffOn_pi.1 hv i)
 
 theorem cd_herm (H : Matrix (Fin m) (Fin m) ℂ) {A B : X → Fin m → ℂ} (hA : ContDiffOn ℝ n A s)
     (hB : ContDiffOn ℝ n B s) : ContDiffOn ℝ n (fun x => herm H (A x) (B x)) s := by
@@ -263,8 +261,7 @@ theorem cdm_tmat (H : Matrix (Fin m) (Fin m) ℂ) {A B : X → Fin m → ℂ} {Q
     exact Complex.ofReal_ne_zero.2 (ne_of_gt (by linarith))
 
 theorem cd_normSq : ContDiff ℝ n (fun w : ℂ => Complex.normSq w) := by
-  simp_rw [Complex.normSq_eq_norm_sq]
-  exact contDiff_norm_sq ℝ
+  simpa only [Complex.normSq_eq_norm_sq] using contDiff_norm_sq ℝ
 
 end Smooth
 
@@ -304,8 +301,7 @@ private lemma hpk_mulVec_apply_of_outer_index (v : Fin (2 * r + k + 1) → ℂ) 
     rw [if_neg, zero_mul]
     intro h
     exact hl (Fin.ext (by show l.val = 2 * r + k - i.val; omega))
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+  · simp
 
 theorem herm_out {d : Fin (2 * r + k + 1) → ℂ} (hd : inWb k r d) {i : Fin (2 * r + k + 1)}
     (hi : ¬ TwoByOneBlock.mid k r i) : herm (Hpk k r) (bvec i) d = 0 := by
@@ -391,8 +387,7 @@ variable {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (Fin (k + 
 
 theorem zeta_lt {g : Q.Mx k r} (hG : 0 < GGl k r z z' g) :
     Tz k r z * Tz k r z' < Complex.normSq (zetaL k r z z' (Fin.last r) g) := by
-  have h : 0 < Complex.normSq (zetaL k r z z' (Fin.last r) g) - Tz k r z * Tz k r z' := hG
-  linarith
+  simpa only [GGl, sub_pos] using hG
 
 theorem first_section_hermitian_facts (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hsec : IsSection k r z z' μsec)
     {g : Q.Mx k r} (hG : 0 < GGl k r z z' g) :
@@ -400,13 +395,11 @@ theorem first_section_hermitian_facts (hz : inWb k r z) (hz' : inWb k r z') (hT 
       herm (Hpk k r) z (u1 k r z z' μsec g) = 0 ∧ inWb k r (u1 k r z z' μsec g) := by
   have hζ := zeta_lt hG
   have hμ := NFRadRedA.muZ_uwb hsec hζ
-  have hμU : muZ k r μsec (zetaL k r z z' (Fin.last r) g) ∈ UH (Hpk k r) := hμ.1
   have hvz : herm (Hpk k r) (muZ k r μsec (zetaL k r z z' (Fin.last r) g) *ᵥ z') z = zetaL k r z z' (Fin.last r) g := by
-    rw [← NFRadRedA.zeta_eq]
-    exact NFRadRedA.zeta_muZ hz hz' hsec hζ
+    simpa only [NFRadRedA.zeta_eq] using NFRadRedA.zeta_muZ hz hz' hsec hζ
   have hvv : herm (Hpk k r) (muZ k r μsec (zetaL k r z z' (Fin.last r) g) *ᵥ z') (muZ k r μsec (zetaL k r z z' (Fin.last r) g) *ᵥ z') =
       -((Tz k r z' : ℝ) : ℂ) := by
-    rw [TwoByOneBlock.herm_UH hμU, TwoByOneBlock.herm_self_eq]
+    rw [TwoByOneBlock.herm_UH hμ.1, TwoByOneBlock.herm_self_eq]
   obtain ⟨h1, h2⟩ := key hT.ne' (TwoByOneBlock.herm_self_eq z) hvz hvv
   exact ⟨h1, h2, inWb_add (inWb_uwb hμ hz') (inWb_smul _ hz)⟩
 
@@ -455,8 +448,7 @@ theorem second_section_hermitian_facts (hz : inWb k r z) (hz' : inWb k r z') (hT
   exact ⟨h1, h2, hu⟩
 
 theorem qf_pos (hT : 0 < Tz k r z) {g : Q.Mx k r} (hG : 0 < GGl k r z z' g) : 0 < qf k r z z' g := by
-  unfold qf
-  exact div_pos (by linarith [zeta_lt hG]) hT
+  simpa only [qf] using div_pos (by linarith [zeta_lt hG]) hT
 
 theorem pt (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hsec : IsSection k r z z' μsec)
     {a₀ : Q.Mx k r} (ha₀ : a₀ ∈ UWset k r z) {g : Q.Mx k r} (hg : g ∈ Glev k r (Fin.last r))
@@ -648,8 +640,5 @@ theorem locSec : NFRadRedS.LocSec := by
 end Formalism.FourierDecayAlt.P.NFRadRedLocSec
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem local_smooth_section : NFRadRedS.LocSec := by
-  exact NFRadRedLocSec.locSec
 
 end Formalism.FourierDecayAlt.P

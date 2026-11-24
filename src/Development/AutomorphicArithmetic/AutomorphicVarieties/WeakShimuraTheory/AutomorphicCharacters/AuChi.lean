@@ -55,7 +55,7 @@ theorem UpperTheory.V.Ws.auChi :
   refine ⟨?_, ?_⟩
   · ext g
     simp only [W.pushCh, chiO, cycBar, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map,
-      MonoidHom.coe_coe, RingHom.coe_comp]
+      MonoidHom.coe_coe]
     exact IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l) _
   · have h1 : Continuous (algebraMap ℚ_[l] (Qbar l)) := continuous_algebraMap ℚ_[l] (Qbar l)
     have h2 : Continuous (PadicInt.Coe.ringHom (p := l)) := continuous_subtype_val

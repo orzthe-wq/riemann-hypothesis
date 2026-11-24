@@ -1,11 +1,11 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffMinpolyMemAdicCompletionIntegers
 public import Mathlib.Algebra.Central.Defs
 public import Mathlib.FieldTheory.Separable
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinrankIInfKerEqOfIsBaseChangeFamily
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixEqAevalOfCommuteStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixEqAevalOfCommute
 public import GroundTheory.Brauer.Degree
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffMinpolyMemAdicCompletionIntegers
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -131,7 +131,7 @@ theorem centralizer_eq_adjoin : ∀ (F B : Type) [Field F] [Ring B] [Algebra F B
     have hcomm : Commute (e y) N := by
       change e y * e x = e x * e y
       rw [← map_mul, ← map_mul, hy']
-    obtain ⟨q, hq⟩ := GlobalTheory.T.matrix_eq_aeval_of_commute_of_charpoly_separable k N (e y) hNsep hcomm
+    obtain ⟨q, hq⟩ := _root_.GlobalTheory.CentralizerSeparable.matrix_eq_aeval_of_commute k N (e y) hNsep hcomm
     have : y = aeval x q := by
       apply e.injective
       rw [hq, hN, ← aeval_algHom_apply]

@@ -114,7 +114,7 @@ theorem eq_unip_glEmb {n : ℕ} (p : Mir k n) :
   | last =>
     rw [hh]
     induction b using Fin.lastCases <;>
-      simp [glEmbMat, colMat, eLast, Fin.castSucc_ne_last, Pi.single_apply]
+      simp [glEmbMat, colMat, eLast, Fin.castSucc_ne_last]
   | cast a =>
     induction b using Fin.lastCases <;>
       simp [glEmbMat, colMat, blockMat, Fin.castSucc_ne_last]
@@ -122,7 +122,7 @@ theorem eq_unip_glEmb {n : ℕ} (p : Mir k n) :
 theorem unip_castSucc_castSucc (n : ℕ) (v : Fin n → k) (r c : Fin n) (h : r ≠ c) :
     (unip k n (Multiplicative.ofAdd v)).val (Fin.castSucc r) (Fin.castSucc c) = 0 := by
   show (1 + colMat k n v) _ _ = 0
-  simp [colMat, Matrix.one_apply, h, Fin.castSucc_ne_last]
+  simp [colMat, h, Fin.castSucc_ne_last]
 
 theorem glEmb_castSucc_castSucc (n : ℕ) (g : GL (Fin n) k) (r c : Fin n) :
     (glEmb k n g).val (Fin.castSucc r) (Fin.castSucc c) = g.val r c := by

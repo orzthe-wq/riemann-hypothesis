@@ -134,7 +134,7 @@ private theorem lie_mem (N : Submodule ℂ (Sm E n))
       ((X i j w).re • toL (Matrix.single i j (atEmb w.embedding 1)) +
         (X i j w).im • toL (Matrix.single i j (atEmb w.embedding Complex.I))) := by
     funext a b v
-    simp only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply, toL, Matrix.single_apply]
+    simp only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply, toL]
     rw [Finset.sum_eq_single a, Finset.sum_eq_single b, Finset.sum_eq_single v]
     · simp [atEmb_apply]
     · intro w _ hw

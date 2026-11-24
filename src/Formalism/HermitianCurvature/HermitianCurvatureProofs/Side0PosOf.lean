@@ -77,7 +77,7 @@ theorem side0Pos_of (hW : PartialBesselProperness.PbWords) (hPr : ProperLeftVari
     have h2 := Formalism.FourierDecayAlt.P.PBH.om_cast (by omega : P.r - (D.ptSize h + 1) + 1 = P.r - D.ptSize h) _ _ _
       (Formalism.FourierDecayAlt.P.PBH.mcOm P.k (P.r - (D.ptSize h + 1)) (p.T.bs (D.ptSize h + 1)).z (p.T.bs (D.ptSize h + 1)).z'
         (p.T.bs (D.ptSize h + 1)).z_mem (p.T.bs (D.ptSize h + 1)).z'_mem τ hτ γ hγ hΩ)
-    rw [Formalism.FourierDecayAlt.P.PBH.asm_castM_castM, Formalism.FourierDecayAlt.P.PBH.asm_castV_castV, Formalism.FourierDecayAlt.P.PBH.asm_castV_castV] at h2
+    rw [_root_.Formalism.FourierDecayAlt.P.Dx2.SplitF.castM_castM, Formalism.FourierDecayAlt.P.PBH.asm_castV_castV, Formalism.FourierDecayAlt.P.PBH.asm_castV_castV] at h2
     rw [Formalism.FourierDecayAlt.P.PBH.levTower_bs_z_eq_castV_liftVec p.T _ hj, Formalism.FourierDecayAlt.P.PBH.levTower_bs_z'_eq_castV_liftVec p.T _ hj]
     exact h2
   have hHc : ContinuousOn (D.uwG P.k P.r p.T.base.z p.T.base.z' F (D.ptSize h) hjr w e)

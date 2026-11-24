@@ -2,49 +2,9 @@ module
 
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.InvarianceRepresentativesTrivial
 public import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.HkLatTupUpdate
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.CoeffOneLNe
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.InvarianceIffAdditiveMapsExist
+import Mathlib.RingTheory.MvPolynomial
 
 @[expose] public section
 
@@ -95,7 +55,7 @@ theorem kapLaw_of_stabLaw (hp0 : (p : Kc) ≠ 0) (hS : StabLaw X Kc hfin ThR) :
   generalize delt X hfin j c L = δ at e0 ⊢
   generalize delt X hfin j c ((X.Lv.lev j c).smul γ L) = δ' at e1 ⊢
   have e2 : (X.Lv.lev j c).smul γ L = (X.Lv.lev j c).smul (γ * δ) L0 := by
-    rw [lsmul_mul, ← e0]
+    rw [_root_.Formalism.MainNotions.G.LatticeSystems.jd_smul_mul, ← e0]
   have h10 : L1 = L0 := (repOf_ex X.Lv hfin j c _ hL').unique ⟨h1, δ', e1⟩ ⟨h0, γ * δ, e2⟩
   subst h10
   have r1 : (X.Lv.lev j c).smul δ'⁻¹ ((X.Lv.lev j c).smul γ L) = L1 := by
@@ -105,7 +65,7 @@ theorem kapLaw_of_stabLaw (hp0 : (p : Kc) ≠ 0) (hS : StabLaw X Kc hfin ThR) :
     conv_lhs => rw [e0]
     exact lsmul_inv_lsmul _ _ _
   have hst : (X.Lv.lev j c).smul ((γ * δ)⁻¹ * δ') L1 = L1 := by
-    rw [lsmul_mul, ← e1, e2, lsmul_inv_lsmul]
+    rw [_root_.Formalism.MainNotions.G.LatticeSystems.jd_smul_mul, ← e1, e2, lsmul_inv_lsmul]
   rw [r1, r0]
   obtain ⟨ε, hε⟩ : ∃ ε, ε = (γ * δ)⁻¹ * δ' := ⟨_, rfl⟩
   rw [← hε] at hst

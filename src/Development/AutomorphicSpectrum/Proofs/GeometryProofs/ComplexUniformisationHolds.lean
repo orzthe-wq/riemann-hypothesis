@@ -47,6 +47,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
-theorem complex_uniformisation_holds : N1c := GlobalTheory.closing_of_abelianSchemeLaws
-
 end GlobalTheory.CompanionTheory.Ar.Top

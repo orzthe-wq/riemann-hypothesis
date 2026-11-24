@@ -4,7 +4,12 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsIsC
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.KerScheme
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsIsometryTriangularPeriodsOfFramePointMove
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeKernelSchemeGeometricPointsEqKernels
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyLiftsToLatticeMapScalingFormsStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.HeckeFr
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyLiftsToLatticeMapScalingForms
+public import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.ExpRowsPf
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExponentialDerivativeAtZeroIsTangent
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtIffIsDerivAt0
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsDerivAt0CompLinear
@@ -47,8 +52,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.ExpRowsPf
-public import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
 
 @[expose] public section
 
@@ -88,7 +91,7 @@ theorem exists_lift_deriv {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
         IsDerivAt0 (fun z => (F.ex i P z).left) w (v ≫ pullback.fst _ _) →
         IsDerivAt0 (fun z => (F.ex j P' z).left) (h w) (v ≫ ψ ≫ pullback.fst _ _) := by
   subst hy hy''
-  obtain ⟨gam, h, h1, h2, h3, h4⟩ := GlobalTheory.T.heckeIsogeny_lifts_to_lattice_map_scaling_forms _ H Dw l Xo σ' g ty F i j P P' p C ψ ψp hP hP' hp hC hI
+  obtain ⟨gam, h, h1, h2, h3, h4⟩ := _root_.GlobalTheory.HeckeLift.exists_linearMap_of_isHkIsog _ H Dw l Xo σ' g ty F i j P P' p C ψ ψp hP hP' hp hC hI
   refine ⟨gam, h, h1, h2, h3, fun w v hvs hd => ?_⟩
   have hfst : ∀ z, fibPt Xo.univ.t.G (F.ex i P z) ≫ pullback.fst _ _ = (F.ex i P z).left := fun z =>
     pullback.lift_fst _ _ _
@@ -135,7 +138,7 @@ theorem exists_similitude_tri_of_hkPt : ∀ (E : Type) [Field E] [NumberField E]
         intro a
         ext <;> simp [epsMul]
       rw [e0]
-      first | rfl | exact Spec.map_id _ | simp [spMap] | (rw [CommRingCat.ofHom_id]; exact Spec.map_id _)
+      first | exact Spec.map_id _
     have e3 : spMap (epsMul (p : ℂ)) ≫ z.u τ m = wv ≫ ψ ≫ pullback.fst _ _ := by
       rw [hw3]
       refine (spMap_epsMul_comp (p : ℂ) ((p : ℂ)⁻¹) _).trans ?_

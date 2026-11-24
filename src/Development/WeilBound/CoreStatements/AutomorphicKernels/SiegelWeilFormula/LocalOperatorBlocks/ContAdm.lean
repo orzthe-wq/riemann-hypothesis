@@ -59,7 +59,7 @@ namespace PositivityTheory.SiegelWeilFormula.KLI
 
 open Complex in
 theorem tg_exp : Function.HasTemperateGrowth (fun t : ℝ => cexp (I * t)) := by
-  apply GlobalTheory.ThK.Dbl.Dense.temperate_exp <;> assumption
+  apply GlobalTheory.ThK.Dbl.Dense.temperate_exp
 
 section admitted
 

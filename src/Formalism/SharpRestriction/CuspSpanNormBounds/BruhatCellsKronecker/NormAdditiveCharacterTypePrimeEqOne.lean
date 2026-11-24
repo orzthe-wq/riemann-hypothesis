@@ -267,7 +267,7 @@ theorem gram_det_eq (P : FPair H r) (hs : M.split = none) :
         by_cases ha : a = Fin.last r
         · exact P.B.h_iso b a (Or.inl (fun h => hab (by rw [ha, h])))
         · exact P.B.h_iso b a (Or.inr ha)
-  rw [MMgen_eq P hs, hG, Formalism.HermitianLatticeCounting.Final.LocalIntegralStructure.gramDetGen E r (Zh.transpose.map c) Zh]
+  rw [MMgen_eq P hs, hG, _root_.Formalism.HermitianLatticeCounting.P.gram_determinant_general E r (Zh.transpose.map c) Zh]
   have d1 : (Zh.transpose.map c).det = M.L.cj Zh.det := by
     rw [← hcx, RingHom.map_det, ← Matrix.det_transpose]
     rfl

@@ -87,7 +87,7 @@ theorem cart_frSgn_true_stdFr (V : HSp D) (h : V.gram = 1) (τ : D.what₂.Tau) 
   ext a b
   by_cases hab : a = b
   · subst hab; simp
-  · simp [Matrix.one_apply, hab]
+  · simp [hab]
 
 theorem cart_frSgn_false_stdFr (V : HSp D) (h : V.gram = 1) (τ : D.what₂.Tau) : (frSgn false (stdFr V h)).cart τ = 1 := by
   simp [Fr.cart, frSgn, stdFr, Formalism.REAL.Jm]

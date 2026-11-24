@@ -142,8 +142,7 @@ theorem splits_sq {K : Type*} [Field K] [Algebra ℚ K] (c : ℕ) (g : K) (hg : 
   have hC : (C g : K[X]) ^ 2 = -(c : K[X]) := by
     rw [← C_pow, hg, C_neg, map_natCast]
   have hm : (X ^ 2 + C (c : ℚ) : ℚ[X]).map (algebraMap ℚ K) = (X - C g) * (X - C (-g)) := by
-    simp only [Polynomial.map_add (f := _), Polynomial.map_pow, Polynomial.map_X, Polynomial.map_C,
-      map_natCast, C_neg, Polynomial.map_natCast]
+    simp only [Polynomial.map_add (f := _), Polynomial.map_pow, Polynomial.map_X, map_natCast, C_neg, Polynomial.map_natCast]
     linear_combination hC
   rw [hm]
   exact (Polynomial.Splits.X_sub_C g).mul (Polynomial.Splits.X_sub_C (-g))

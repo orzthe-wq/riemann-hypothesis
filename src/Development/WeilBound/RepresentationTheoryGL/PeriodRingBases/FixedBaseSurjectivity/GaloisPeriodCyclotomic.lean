@@ -1,12 +1,12 @@
 module
 
-public import Development.WeilBound.RepresentationTheoryGL.PeriodRingBases.PeriodRingUnits.DieudonneManinBasisModification
+public import Development.WeilBound.CoreStatements.CrystallinePeriodRings.FrobAinfMapFrobenius
 public import Development.WeilBound.CoreStatements.CrystallinePeriodRings.ExistsMapEqOfPowMul
+public import Development.WeilBound.RepresentationTheoryGL.PeriodRingBases.PeriodRingUnits.DieudonneManinBasisModification
 public import Development.WeilBound.CoreStatements.CrystallinePeriodRings.AinfMapSurjective
-public import Development.WeilBound.CoreStatements.CrystallinePeriodRings.AwayExistsSelf
-import Development.WeilBound.CoreStatements.CrystallinePeriodRings.FrobAinfMapFrobenius
-public import Development.WeilBound.CoreStatements.CrystallinePeriodRings.FundIotaTANeZero
 public import Development.WeilBound.CoreStatements.CrystallinePeriodRings.PhiGalCris
+public import GroundTheory.PAdicHodge.GalSmulAlgebraMapPadicPlus
+public import Mathlib.NumberTheory.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -24,12 +24,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -50,8 +46,19 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.RepresentationTheoryGL.PeriodRingBases.FixedBaseSurjectivity.GaloisPeriodCyclotomic
+
+-- ===== clump member: Development.WeilBound.RepresentationTheoryGL.PeriodRingBases.FixedBaseSurjectivity.GaloisPeriodCyclotomic =====
+-- clump-header: {"m": "Development.WeilBound.RepresentationTheoryGL.PeriodRingBases.FixedBaseSurjectivity.GaloisPeriodCyclotomic", "h": "module\n\npublic import Mathlib.NumberTheory.Basic\npublic import GroundTheory.PAdicHodge.GalSmulAlgebraMapPadicPlus\npublic import Development.WeilBound.RepresentationTheoryGL.PeriodRingBases.PeriodRingUnits.DieudonneManinBasisModification\npublic import Development.WeilBound.CoreStatements.CrystallinePeriodRings.ExistsMapEqOfPowMul\npublic import Development.WeilBound.CoreStatements.CrystallinePeriodRings.AinfMapSurjective\nimport Development.WeilBound.CoreStatements.CrystallinePeriodRings.FrobAinfMapFrobenius\npublic import Development.WeilBound.CoreStatements.CrystallinePeriodRings.PhiGalCris\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option backward.isDefEq.respectTransparency false
@@ -96,20 +103,8 @@ open BaseA
 theorem base_ι_inj (l : ℕ) [Fact l.Prime] : Function.Injective (ι l) := by
   rw [ι_eq]; exact PositivityTheory.LocInh.ιCD_injective
 
-theorem base_dom (l : ℕ) [Fact l.Prime] : IsDomain (B l) :=
-  Function.Injective.isDomain (ι l) (base_ι_inj l)
-
-theorem base_σ_one (l : ℕ) [Fact l.Prime] : σB (1 : GQ l) = RingHom.id _ :=
-  RingHom.ext fun b => PositivityTheory.LocInh.σB_one b
-
-theorem base_σ_mul (l : ℕ) [Fact l.Prime] : ∀ g h : GQ l, σB (g * h) = (σB g).comp (σB h) :=
-  fun g h => RingHom.ext fun b => PositivityTheory.LocInh.σB_mul g h b
-
-theorem base_φ_σ (l : ℕ) [Fact l.Prime] : ∀ (g : GQ l) x, φ l (σB g x) = σB g (φ l x) :=
-  fun g x => PositivityTheory.LocInh.φB_σB g x
-
 theorem base_ι_σ (l : ℕ) [Fact l.Prime] : ∀ (g : GQ l) x, ι l (σB g x) = σD g (ι l x) := by
-  intro g x; rw [ι_eq]; exact PositivityTheory.LocInh.ιCD_σB g x
+  intro g x; rw [ι_eq]; exact _root_.PositivityTheory.LocInh.GaloisCommutant.ιCD_σB_aux g x
 
 theorem base_φ_q (l : ℕ) [Fact l.Prime] : ∀ q, φ l (qB l q) = qB l q := by
   intro q; rw [qB_eq]; exact PositivityTheory.LocInh.φB_qB q
@@ -120,62 +115,19 @@ theorem base_σ_q (l : ℕ) [Fact l.Prime] : ∀ (g : GQ l) q, σB g (qB l q) = 
   rw [base_ι_σ, ι_eq, qB_eq, PositivityTheory.LocInh.ιCD_qB, PositivityTheory.LocInh.σD_oD, AlgEquiv.commutes]
 
 theorem base_ι_q (l : ℕ) [Fact l.Prime] : ∀ q, ι l (qB l q) = qQ l q := by
-  intro q; rw [ι_eq, qB_eq]; exact PositivityTheory.LocInh.fund_ιCD_qB q
+  intro q
+  rw [ι_eq, qB_eq, PositivityTheory.LocInh.ιCD_qB, PositivityTheory.LocInh.frob_oD_apply, AlgHom.commutes]
+  rfl
 
 theorem period_image_eq (l : ℕ) [Fact l.Prime] : ι l (t l) = tQ l := ι_cB l (tA l)
 
 theorem base_t_unit (l : ℕ) [Fact l.Prime] : IsUnit (t l) := Loc2.isUnit_right _ _
 
-theorem frobenius_period_holds (l : ℕ) [Fact l.Prime] : φ l (t l) = (l : B l) * t l := PositivityTheory.LocInh.φB_tB
-
 theorem galois_period_cyclotomic (l : ℕ) [Fact l.Prime] : ∀ g : GQ l, σB g (t l) = qB l (χ g) * t l := by
   intro g; rw [qB_eq]; exact PositivityTheory.LocInh.σB_tB g
 
-theorem base_χ_cont (l : ℕ) [Fact l.Prime] : Continuous (χ : GQ l → ℚ_[l]) :=
-  by
-  have h1 : Continuous (fun g : GQ l => ((DeRhamTwist.Twist.chi0 l g : ℤ_[l]ˣ) : ℤ_[l])) :=
-    Units.continuous_val.comp (DeRhamTwist.Twist.continuous_cyclotomic_character (l := l))
-  have h2 : Continuous (fun x : ℤ_[l] => (x : ℚ_[l])) := continuous_subtype_val
-  exact h2.comp h1
-
-private theorem mem_of_mul_pows_mul_eq {K : Type*} [Field K] {S : Subring K}
-    {a b z w : K} {m n : ℕ} (ha : a ≠ 0) (hb : b ≠ 0)
-    (haS : a⁻¹ ∈ S) (hbS : b⁻¹ ∈ S) (hw : w ∈ S)
-    (h : a ^ m * b ^ n * z = w) : z ∈ S := by
-  have hz : z = w * (a⁻¹) ^ m * (b⁻¹) ^ n := by
-    rw [inv_pow, inv_pow, mul_assoc, ← mul_inv,
-      eq_mul_inv_iff_mul_eq₀ (mul_ne_zero (pow_ne_zero m ha) (pow_ne_zero n hb))]
-    exact (mul_comm _ _).trans h
-  rw [hz]
-  exact S.mul_mem (S.mul_mem hw (S.pow_mem haS m)) (S.pow_mem hbS n)
-
-theorem base_ι_Bst (l : ℕ) [Fact l.Prime] : ∀ x, ι l x ∈ Bst l := by
-  intro x
-  obtain ⟨m, n, y, h⟩ := PositivityTheory.LocInh.bcris_surj x
-  have h1 : (l : BdR l) ^ m * tQ l ^ n * ι l x = iC l y := by
-    simpa only [map_mul (ι l), map_pow (ι l), ι_cB, map_natCast (iC l), tQ] using congrArg (ι l) h
-  have hl0 : (l : BdR l) ≠ 0 := map_natCast (iC l) l ▸ (isUnit_iC_l l).ne_zero
-  have ht0 : tQ l ≠ 0 := DeRhamTwist.Twist.tQ_ne
-  have mem : ∀ z ∈ ({((l : BdR l))⁻¹, (tQ l)⁻¹, uQ l} : Set (BdR l)), z ∈ Bst l :=
-    fun z hz => Subring.subset_closure (Or.inr hz)
-  exact mem_of_mul_pows_mul_eq hl0 ht0
-    (mem _ (Set.mem_insert _ _))
-    (mem _ (Set.mem_insert_of_mem _ (Set.mem_insert _ _)))
-    (Subring.subset_closure (Or.inl ⟨y, rfl⟩)) h1
-
-theorem base_u_Bst (l : ℕ) [Fact l.Prime] : uQ l ∈ Bst l :=
-  Subring.subset_closure (Or.inr (Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _ (Set.mem_singleton _))))
-
-theorem base_fs_ker (l : ℕ) [Fact l.Prime] : ∀ x, φ l x = x → ι l x ∈ Plus l → ∃ q, x = qB l q := by
-  intro x hφ hx
-  obtain ⟨z, hz⟩ := RingHom.mem_range.1 hx
-  rw [ι_eq] at hz
-  obtain ⟨q, hq⟩ := PositivityTheory.LocInh.fund x hφ ((IsPerfectoidField.mem_fil_zero_iff ℂ_[l] l).2 ⟨z, hz.symm⟩)
-  exact ⟨q, by rw [qB_eq]; exact hq.symm⟩
-
-theorem base_fs_surj (l : ℕ) [Fact l.Prime] : ∀ z : BdR l, ∃ x, φ l x = x ∧ ι l x - z ∈ Plus l := by
-  intro z
-  obtain ⟨x, hφ, c, hc⟩ := PositivityTheory.LocInh.fund_onto z
-  exact ⟨x, hφ, RingHom.mem_range.2 ⟨c, by rw [ι_eq]; exact hc.symm⟩⟩
-
 end period_ring_base
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.RepresentationTheoryGL.PeriodRingBases.FixedBaseSurjectivity.GaloisPeriodCyclotomic =====

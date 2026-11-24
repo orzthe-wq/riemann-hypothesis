@@ -71,20 +71,6 @@ theorem not_herm_skew {B : Base F E} {m r s : ℕ} (hm : 1 ≤ m) {A : Spc F E m
   · have := congrFun (congrFun hM (Sum.inl ⟨0, hr⟩)) (Sum.inl ⟨0, hr⟩)
     simp at this
 
-theorem eps_eq {d : SD σ} (L : LD d) : ∃ ε : ℤˣ, d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0 ∧
-    L.b.1ᵀ * dbl L.Y.J * L.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0 := by
-  obtain ⟨ε, hε⟩ := d.ok.frame.1
-  obtain ⟨ε', hε'⟩ := L.ok.frame.1
-  have s := KWhit.rel_sign d ε hε
-  have s' := KWhit.rel_sign L.sd ε' hε'
-  refine ⟨ε, hε, ?_⟩
-  suffices e : ε' = ε by rw [← e]; exact hε'
-  rcases d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩ <;> rcases L.ok.sign with ⟨hA', hY'⟩ | ⟨hA', hY'⟩
-  · rw [s.1 hY, s'.1 hY']
-  · exact (not_herm_skew d.ok.hm hA hA').elim
-  · exact (not_herm_skew d.ok.hm hA' hA).elim
-  · rw [s.2 hY, s'.2 hY']
-
 end PositivityTheory.SiegelWeilFormula.Avac
 
 end

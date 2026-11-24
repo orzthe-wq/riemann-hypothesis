@@ -103,5 +103,4 @@ theorem UpperTheory.V.FW.gcNeg :
   rw [hm]
   generalize ((2 * m + 1) * M - (2 * m + 1) * v) / M = P at key ⊢
   generalize (2 * m + 1) * v / M = Q at key ⊢
-  push_cast
   omega

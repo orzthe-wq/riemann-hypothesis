@@ -101,7 +101,7 @@ theorem _root_.GlobalTheory.mem_of_wild_of_pow_mem_open_normal :
       rw [← hA]
       simpa using h
     have h2 : A.valuation (n : Ω) ≤ 1 := by
-      simpa using A.valuation_le_one (n : A)
+      simp
     exact le_antisymm h2 (not_lt.1 h1)
   have hn0 : (n : Ω) ≠ 0 := by
     intro h
@@ -149,7 +149,7 @@ theorem _root_.GlobalTheory.mem_of_wild_of_pow_mem_open_normal :
     have e := congrArg σ hy'
     rw [hsy, map_mul, map_natCast, hy'] at e
     exact (mul_left_cancel₀ hn0 e).symm
-  haveI : IsGalois E Ω := inferInstance
+  have : IsGalois E Ω := inferInstance
   have hcl : IsClosed (H : Set (Ω ≃ₐ[E] Ω)) := H.isClosed_of_isOpen hH
   have hH' := InfiniteGalois.fixingSubgroup_fixedField (⟨H, hcl⟩ : ClosedSubgroup (Ω ≃ₐ[E] Ω))
   have hmem : σ ∈ (IntermediateField.fixedField H).fixingSubgroup := by

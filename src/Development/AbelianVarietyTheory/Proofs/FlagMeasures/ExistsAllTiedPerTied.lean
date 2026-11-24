@@ -72,28 +72,6 @@ end Iterated
 
 variable {D : D7}
 
-theorem flag_topology (B : HSp D) {ρ : ℕ} {e : Matrix (Fin B.rank) (Fin ρ) D.host.E} (he : IsIsoSub B e) :
-    LocallyCompactSpace (NFlag B e) ∧ SecondCountableTopology (NFlag B e) ∧ BorelSpace (NFlag B e) ∧
-      Countable (NFlagQ B e) := by
-  obtain ⟨i1, i2, i3, i4, i5, i6, i7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B
-  obtain ⟨K, hK, h⟩ := (GlobalTheory.Mem.UnipCocompact.radicals_cocompact D B ρ e he).1
-  haveI : DiscreteTopology (GQ B ⊓ NFlag B e : Subgroup (GA D B)) :=
-    DiscreteTopology.of_subset (s := (GQ B : Set (GA D B))) i6 (fun x hx => hx.1)
-  have h1 : IsClosed ((GQ B ⊓ NFlag B e : Subgroup (GA D B)) : Set (GA D B)) := Subgroup.isClosed_of_discrete
-  have h2 : IsClosed (NFlag B e : Set (GA D B)) := by
-    convert h1.mul_right_of_isCompact (hK.image continuous_subtype_val) using 1
-    ext x
-    constructor
-    · intro hx
-      obtain ⟨γ, hγ, k, hk, e⟩ := h ⟨x, hx⟩
-      exact ⟨γ, ⟨hγ, γ.2⟩, k, ⟨k, hk, rfl⟩, (congrArg Subtype.val e).symm⟩
-    · rintro ⟨γ, hγ, _, ⟨k, -, rfl⟩, rfl⟩
-      exact mul_mem hγ.2 k.2
-  refine ⟨h2.locallyCompactSpace,
-    (inferInstance : SecondCountableTopology (NFlag B e : Set (GA D B))), inferInstance, ?_⟩
-  exact Function.Injective.countable (f := fun γ : NFlagQ B e => (⟨γ.1.1, γ.2⟩ : GQ B))
-    fun a b h => Subtype.ext (Subtype.ext (congrArg (fun x : GQ B => (x : GA D B)) h))
-
 section Invariant
 
 variable {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} {ρ : ℕ} {e : Matrix (Fin B.rank) (Fin ρ) D.host.E}
@@ -159,12 +137,6 @@ structure Frame (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) {ρ : ℕ} (e : Ma
   emb : ∀ h, EmbRel B A ι (s h) h
 
 
-section
-
-variable {ρ : ℕ} {e : Matrix (Fin B.rank) (Fin ρ) D.host.E} {f f' f'' : Frame A B ι e → ℂ}
-
-end
-
 variable (hg : IsGood A B ι)
 
 include hg
@@ -172,14 +144,6 @@ include hg
 omit hg
 
 end Periods
-
-section Record
-
-variable {X : ThetaX D} {T : ThetaTied D X}
-
-variable (Wl : WeilTied D X T) {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V}
-
-end Record
 
 end GlobalTheory.Per.Inhab
 

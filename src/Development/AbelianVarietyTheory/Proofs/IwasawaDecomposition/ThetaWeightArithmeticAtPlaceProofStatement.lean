@@ -46,4 +46,4 @@ open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.thetaWeightArithmeticAtPlace_proof : ∀ (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau), GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.ArithAt D i τ := by
-  first | exact @GlobalTheory.PairWeightArith.arithAt | exact GlobalTheory.PairWeightArith.arithAt | (intros; apply GlobalTheory.PairWeightArith.arithAt <;> assumption)
+  first | exact @GlobalTheory.PairWeightArith.arithAt

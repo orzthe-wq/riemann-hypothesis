@@ -45,6 +45,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.UnivChartLoc
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeB
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeC
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -78,13 +80,13 @@ theorem finrank_range_idem' {V k : Type} [CommRing V] [IsLocalRing V] [CommRing 
     have : Module.Free R (LinearMap.ker e) := kr ▸ Formalism.L2.Pj.LocFrM.range_free _ k1
     have : Module.Finite R (LinearMap.ker e) := kr ▸ Module.Finite.range _
     rw [← (LinearMap.IsIdempotentElem.isProj_range e he).trace, LinearMap.trace_eq_matrix_trace R (Pi.basisFun R (Fin n))]
-    simp [Matrix.trace, LinearMap.toMatrix_apply]
+    simp [Matrix.trace]
   refine Nat.cast_injective (R := k) ?_
 
   rw [← tr e' he', ← map_natCast f, ← tr e he, map_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [show (Pi.single i 1 : Fin n → k) = f ∘ Pi.single i 1 from funext fun j => by
-    by_cases hj : j = i <;> simp [hj, Pi.single_apply], h]
+    by_cases hj : j = i <;> simp [hj], h]
   rfl
 
 theorem exists_generisation {X : Type} [TopologicalSpace X] [TopologicalSpace.NoetherianSpace X] [QuasiSober X]
@@ -274,8 +276,7 @@ theorem eigFrame_of_basis (Z : Model Xo c β) {R : Type} [CommRing R] (φ : c.F 
   simp only [k]
   exact existsUnique_eq'
 
-theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
-  congrArg CommRingCat.Hom.hom (Spec.map_injective h)
+alias spMap_inj := _root_.GlobalTheory.ZM.DenseFib.spMap_inj
 
 end GlobalTheory.ShFam.EigLoc
 

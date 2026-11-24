@@ -150,13 +150,13 @@ private theorem galois_lift_mem_first_order_deformations {l : ℕ} [Fact l.Prime
       rw [mem_part]
       by_cases hij : i = j
       · subst hij
-        simp [Matrix.one_apply, DD.epM, hκ]
-      · simp [hij, Matrix.one_apply, DD.epM, hκ]
+        simp [DD.epM, hκ]
+      · simp [hij, DD.epM, hκ]
     · have hne : i ≠ j := by
         rintro rfl
         exact h Iff.rfl
       rw [mem_part]
-      simp [hne, Matrix.one_apply, DD.epM]
+      simp [hne, DD.epM]
   have hZ : x.ρX (DD X k.g) g ∈ W1 n x.A X k.g x.a := by
     show _ ∈ blkMat n x.a (ddPart x.A X k.g true false false false) (ddPart x.A X k.g false true false false)
     refine mem_blkMat_iff_mem_of_same_block_and_mem_off.2 (fun i j => ⟨fun h => ?_, fun h => ?_⟩)

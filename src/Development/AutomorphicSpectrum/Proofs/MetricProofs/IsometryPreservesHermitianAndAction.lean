@@ -1,7 +1,7 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeEigenProjectionStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RiemannLatticeEigenProjection
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -51,18 +51,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.PeriodIso
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
-theorem ip_add_left' (R : RiemLat E g Λ) (x x' y : Fin g → ℂ) : R.ip (x + x') y = R.ip x y + R.ip x' y := by
-  simp [RiemLat.ip, star_add, Matrix.mulVec_add, dotProduct_add]
+alias ip_add_left' := _root_.LevelTowerAlt.ip_add_left
 
-theorem ip_add_right' (R : RiemLat E g Λ) (x y y' : Fin g → ℂ) : R.ip x (y + y') = R.ip x y + R.ip x y' := by
-  simp [RiemLat.ip, add_dotProduct]
+alias ip_add_right' := _root_.LevelTowerAlt.ip_add_right
 
 theorem ip_smul_left' (R : RiemLat E g Λ) (c : ℂ) (x y : Fin g → ℂ) :
     R.ip (c • x) y = star c * R.ip x y := by
   simp [RiemLat.ip, star_smul, Matrix.mulVec_smul, dotProduct_smul]
 
-theorem ip_smul_right' (R : RiemLat E g Λ) (c : ℂ) (x y : Fin g → ℂ) : R.ip x (c • y) = c * R.ip x y := by
-  simp [RiemLat.ip, smul_dotProduct]
+alias ip_smul_right' := _root_.LevelTowerAlt.ip_smul_right
 
 theorem real_smul_eq' (r : ℝ) (x : Fin g → ℂ) : r • x = (r : ℂ) • x := by
   ext i
@@ -142,7 +139,7 @@ theorem isometry_and_commutes : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     (∀ x y, R'.form (γ x) (γ y) = R.form x y) → (∀ x, R'.P (γ x) = φ (R.P x)) →
     (∀ x y, R'.ip (φ x) (φ y) = R.ip x y) ∧ ∀ a x, φ (R.B a x) = R'.B a (φ x) := by
   intro E _ _ _ g Λ _ _ R R' γ φ hf hP
-  have hs := (GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R).2.1
+  have hs := (_root_.GlobalTheory.CompanionTheory.Relay.riemann_lattice_eigen_projection E g Λ Unit R).2.1
   exact ⟨isometry_of_periods R R' hs γ φ hf hP, commutes_of_periods R R' hs γ φ hP⟩
 
 end GlobalTheory.CompanionTheory.Ar.Cusp.PeriodIso

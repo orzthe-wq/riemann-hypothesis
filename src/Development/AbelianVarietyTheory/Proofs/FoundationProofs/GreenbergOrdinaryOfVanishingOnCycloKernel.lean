@@ -78,7 +78,7 @@ theorem gr_of_vanish_on_trivial : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Fiel
     have := hcoc 1 1
     simpa [hone] using this
   have hb : ∀ s t, s ∈ D → y (s * t) 1 = y s 1 + mat W s 1 1 * y t 1 := by
-    intro s t hs; rw [hcoc]; simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, hup s hs]
+    intro s t hs; rw [hcoc]; simp [hup s hs]
 
   let P : G ℚ Ω → Prop := fun u => u ∈ D ∧ mat W u 0 0 = 1 ∧ mat W u 1 1 = 1 ∧ cycBar ℚ Ω l u = 1
 
@@ -94,8 +94,8 @@ theorem gr_of_vanish_on_trivial : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Fiel
     have hW' : W u = W v := Units.ext hm
     have hn : u⁻¹ * v ∈ N0g W := by
       refine ⟨?_, ?_⟩
-      · simp [MonoidHom.mem_ker, map_mul, map_inv, huc, hvc]
-      · simp [MonoidHom.mem_ker, map_mul, map_inv, hW']
+      · simp [map_mul, map_inv, huc, hvc]
+      · simp [map_mul, map_inv, hW']
     have e1 : v = u * (u⁻¹ * v) := by group
     rw [e1, hcoc, hN _ hn, Matrix.mulVec_zero, add_zero]
   have hPmul : ∀ u v, P u → P v → P (u * v) ∧ mat W (u * v) 0 1 = mat W u 0 1 + mat W v 0 1 ∧

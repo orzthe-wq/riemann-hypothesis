@@ -54,7 +54,7 @@ variable {D : D7}
 
 theorem exists_nat_integral {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ n : ℕ, 0 < n ∧ ∃ d : 𝓞 E, (d : E) = n * c := by
-  apply GlobalTheory.NatMulMemRingOfIntegers.exists_nat_mul_mem_ringOfIntegers <;> assumption
+  apply GlobalTheory.NatMulMemRingOfIntegers.exists_nat_mul_mem_ringOfIntegers
 
 theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   refine mul_ne_zero ?_ (inv_ne_zero ?_)

@@ -36,6 +36,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -48,4 +49,4 @@ open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 
 theorem _root_.GlobalTheory.T.exists_tensorTorusPoint_of_componentTuple : ∀ (F : Type) [Field F] (N N' : NumD F) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (φ : N'.A → Fin r → N.A) (e : N'.X → Fin r → N.X) (wv : N'.A → F), TensFacts W φ e wv → ∀ vs : Fin r → N.Gt, ∃ v' : N'.Gt, GtRelV W φ e wv v' vs := by
-  first | exact @GlobalTheory.Mum.TensTor.VExist.gtRelV_exists | exact GlobalTheory.Mum.TensTor.VExist.gtRelV_exists | (intros; apply GlobalTheory.Mum.TensTor.VExist.gtRelV_exists <;> assumption)
+  first | exact @GlobalTheory.Mum.TensTor.VExist.gtRelV_exists

@@ -54,6 +54,8 @@ public import Mathlib.Algebra.Module.Lattice.Basic
 public import Mathlib.RingTheory.DedekindDomain.Factorization
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -208,7 +210,7 @@ theorem exists_matrix_primeTo : ∀ (E : Type) [Field E] [NumberField E] (n : �
     rw [eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq, Submodule.span_le]
     rintro _ ⟨i, rfl⟩
     have h1 : (Pi.basisFun E (Fin n) i) ∈ stdLat E n :=
-      (hmem _).2 ⟨Pi.single i 1, funext fun j => by by_cases h : j = i <;> simp [h, Pi.single_apply]⟩
+      (hmem _).2 ⟨Pi.single i 1, funext fun j => by by_cases h : j = i <;> simp [h]⟩
     have h2 := hNL (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self (N : 𝓞 E)) h1)
     have h3 := Submodule.smul_mem (Submodule.span E (L : Set (Fin n → E))) (N : E)⁻¹ (Submodule.subset_span h2)
     rwa [← algebraMap_smul E (N : 𝓞 E), smul_smul, map_natCast, inv_mul_cancel₀ hN0, one_smul] at h3

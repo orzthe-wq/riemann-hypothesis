@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproximationAdditiveQuadraticExtensionStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproximationAdditiveQuadraticExtension
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -132,7 +132,7 @@ theorem GlobalTheory.HL.pattern_strong_approx : ∀ {F E : Type} [Field F] [Numb
     simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hno
     obtain ⟨⟨u, hu⟩, hint⟩ := hno
     exact hp ⟨u, by simp [d, hc'1 p hint, hu]⟩
-  have hap := (GlobalTheory.T.strong_approximation_additive_quadratic_extension A d hd).2.1
+  have hap := (_root_.GlobalTheory.HL.StrongApprox.strong_approx_additive A d hd).2.1
   have hx : ∀ i j, ∃ x : E, ∀ p, ∃ o ∈ (A.L p).O,
       (A.loc p).ιE x - s p i j = algebraMap (A.loc p).Fp (A.loc p).Ep (d p : (A.loc p).Fp) * o :=
     fun i j => hap (fun p => s p i j) (hsint.subset fun p hp hi => hp (hi i j))

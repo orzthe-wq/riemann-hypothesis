@@ -151,7 +151,7 @@ theorem rows_den_pos (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch �
     0 < wordPairGramNorm D u u' Z * rows_KZ D u u' Z ^ (2 * D.R.k) * (Tr D u)⁻¹ ^ (D.R.k * D.R.f) := by
   have h1 := rows_nZ_pos Y h hZ
   have h2 := rows_KZ_pos Y h hZ
-  have h3 := rows_Tr_pos D u
+  have h3 := _root_.Formalism.MainNotions.BridgeLemma₂.rowsT_Tr_pos D u
   positivity
 
 theorem rows_deg_term (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q) (t : D.s.Term u u')
@@ -223,7 +223,7 @@ theorem rows_DeD_nonneg (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 C
   have hg2 := two_le_gg_of_count_hypotheses h.hH.1
   have h1 := rows_KZ_pos Y h gx
   have h2 := rows_KZ_pos Y h gy
-  have h3 := rows_Tr_pos D u
+  have h3 := _root_.Formalism.MainNotions.BridgeLemma₂.rowsT_Tr_pos D u
   have : 0 ≤ gg D := by linarith
   unfold rows_DeD
   positivity
@@ -259,7 +259,7 @@ theorem rows_deg_count (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch
         (le_trans zero_le_one (rows_one_le_HHZ D large₂ h.hc x))
     have hT1 : 1 ≤ Tr D u := by unfold Tr; exact_mod_cast (D.mem u).A.T_prime.pos
     have h2 : rows_DeD D u u' s x y ≤ (HHZ D large₂.sc.b c x * HHZ D large₂.sc.b c y) ^ (3 : ℝ) := by
-      have := Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.deDegBound D.R.f s (gg D) (Tr D u) (wordPairGramProduct D u u' x) (wordPairGramProduct D u u' y)
+      have := _root_.Formalism.HermitianLatticeCounting.P.degenerateFactorBound D.R.f s (gg D) (Tr D u) (wordPairGramProduct D u u' x) (wordPairGramProduct D u u' y)
         (rows_KZ D u u' x) (rows_KZ D u u' y)
         (HHZ D large₂.sc.b c x) (HHZ D large₂.sc.b c y) hg2 hT1 (gramProductG0_pos Y h.hH.1 h.hT gx).le
         (gramProductG0_pos Y h.hH.1 h.hT gy).le (gramProductG0_le_height Y h.hH h.hHH h.hT gx)
@@ -324,7 +324,7 @@ theorem rows_deg_prod (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch 
     (wordSublatticeTripleBound D large₂ u c x y s (rows_DeD D u u' s x y)) (rows_alD D large₂ u u' c Ca C2 Ch q x)
     (rows_alD D large₂ u u' c Ca C2 Ch q y)
     (rows_lam D large₂ c Ca C2 Ch q x) (rows_lam D large₂ c Ca C2 Ch q y) hk1 hs (by linarith) (by linarith)
-    (rows_Tr_pos D u) (rows_NT_pos D u) (gramProductG0_pos Y h.hH.1 h.hT gx) (gramProductG0_pos Y h.hH.1 h.hT gy)
+    (_root_.Formalism.MainNotions.BridgeLemma₂.rowsT_Tr_pos D u) (rows_NT_pos D u) (gramProductG0_pos Y h.hH.1 h.hT gx) (gramProductG0_pos Y h.hH.1 h.hT gy)
     (rows_KZ_pos Y h gx) (rows_KZ_pos Y h gy) (rows_XiS_nonneg D u hh0 hc s)
     (by positivity) (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)
     (le_of_eq (by unfold wordSublatticeTripleBound pairCountExponent rows_DeD; ring)) (hαsq x gx) (hαsq y gy)

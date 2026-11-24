@@ -83,10 +83,6 @@ theorem lamOf_eq_map (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
   · rintro ⟨_, ⟨c, hc, rfl⟩, rfl⟩
     exact ⟨c, hc, rfl⟩
 
-theorem omega1_ne_zero (L : PeriodPair) : L.ω₁ ≠ 0 := by
-  have := L.indep.ne_zero 0
-  simpa using this
-
 theorem intCurve_of_disc_one (hIn : GlobalTheory.ThLoc.Inputs) (d : ℕ) (L : PeriodPair) (hsq : Squarefree d) (hd4 : d % 4 = 3)
     (hcm : Formalism.L2.Th1.CM.HasCMBy d L) (hΔ : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 = 1) (p : ℕ) [Fact p.Prime] (h5 : 5 ≤ p)
     (ι : ℂ ≃+* ℂ_[p]) : IntCurve (curveL p L ι) := by
@@ -142,7 +138,7 @@ theorem goodModel_five : GlobalTheory.ThLoc.Inputs → ∀ (D : D7) (cc : Ideal 
       rw [AddSubgroup.closure_le]
       rintro w ⟨c, -, rfl⟩
       simp
-    exact omega1_ne_zero L (by simpa using hle h1)
+    exact _root_.Formalism.L2.Th1.F.PeriodAreaSignLemmas.ω₁_ne_zero L (by simpa using hle h1)
 
   set L' := Formalism.L2.Th1.F.scalePair L δ⁻¹ (inv_ne_zero hδ0) with hL'
   have hH := Formalism.L2.Th1.F.homogeneity L δ⁻¹ (inv_ne_zero hδ0)
@@ -173,7 +169,7 @@ theorem goodModel_five : GlobalTheory.ThLoc.Inputs → ∀ (D : D7) (cc : Ideal 
     · exact h
   have hcm : Formalism.L2.Th1.CM.HasCMBy D.host.d L :=
     Formalism.L2.Th1.F.hasCMByScale D.host.d _ lam hlam
-      (Formalism.L2.Th1.F.cmPairHasCMBy a₀ b₀ c₀ D.host.d ha hd h4 hbodd)
+      (_root_.Formalism.L2.Th1.F.cm_pair_has_cm a₀ b₀ c₀ D.host.d ha hd h4 hbodd)
   exact intCurve_of_disc_one hIn D.host.d L hprime.prime.squarefree (by omega) hcm hΔ p h5 ι
 
 end GlobalTheory.GoodModelFive

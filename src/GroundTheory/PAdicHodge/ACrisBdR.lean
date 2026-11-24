@@ -1,52 +1,70 @@
 module
 
+public import Mathlib.RingTheory.AdicCompletion.Basic
 public import GroundTheory.PAdicHodge.FactorizationFactorialLe
 public import GroundTheory.PAdicHodge.BdRLattice
-public import GroundTheory.PowerSubgroups.CountableNeighbourhoods.PrecompleteOfSurjective
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.PowerSubgroups.CountableNeighbourhoods.PrecompleteOfSurjective, GroundTheory.PAdicHodge.ACrisBdR
+
+-- ===== clump member: GroundTheory.PowerSubgroups.CountableNeighbourhoods.PrecompleteOfSurjective =====
+-- clump-header: {"m": "GroundTheory.PowerSubgroups.CountableNeighbourhoods.PrecompleteOfSurjective", "h": "module\n\npublic import Mathlib.RingTheory.AdicCompletion.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Variant₂.N1
+
+theorem smodEq_span_singleton_pow_iff {R : Type*} [CommRing R] (a : R) (n : ℕ) (x y : R) :
+    x ≡ y [SMOD ((Ideal.span {a}) ^ n • (⊤ : Submodule R R))] ↔ a ^ n ∣ x - y := by
+  rw [SModEq.sub_mem, Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow,
+    Ideal.mem_span_singleton]
+
+theorem isPrecomplete_of_surjective {A : Type*} {B : Type*} [CommRing A] [CommRing B]
+    (f : A →+* B) (hf : Function.Surjective f) (a : A) [IsPrecomplete (Ideal.span {a}) A] :
+    IsPrecomplete (Ideal.span {f a}) B := by
+  refine ⟨fun b hb => ?_⟩
+  have hb' : ∀ {m n : ℕ}, m ≤ n → f a ^ m ∣ b m - b n := fun hmn =>
+    (smodEq_span_singleton_pow_iff (f a) _ _ _).1 (hb hmn)
+  have hstep : ∀ n : ℕ, ∃ x : A, b (n + 1) = b n + f (a ^ n * x) := by
+    intro n
+    obtain ⟨c, hc⟩ := hb' (Nat.le_add_right n 1)
+    obtain ⟨x, rfl⟩ := hf c
+    refine ⟨-x, ?_⟩
+    rw [map_mul, map_pow, map_neg]
+    linear_combination -hc
+  choose x hx using hstep
+  obtain ⟨y₀, hy₀⟩ := hf (b 0)
+  let y : ℕ → A := fun n => y₀ + ∑ k ∈ Finset.range n, a ^ k * x k
+  have hy_succ : ∀ n, y (n + 1) = y n + a ^ n * x n := by
+    intro n
+    simp only [y, Finset.sum_range_succ, add_assoc]
+  have hy : ∀ n, f (y n) = b n := by
+    intro n
+    induction n with
+    | zero => simp [y, hy₀]
+    | succ n ih => rw [hy_succ, map_add (f := _), ih, hx]
+  have hcauchy : ∀ {m n : ℕ}, m ≤ n → a ^ m ∣ y m - y n := by
+    intro m n hmn
+    induction n, hmn using Nat.le_induction with
+    | base => simp
+    | succ n hmn ih =>
+      rw [hy_succ, sub_add_eq_sub_sub]
+      exact dvd_sub ih (Dvd.dvd.mul_right (pow_dvd_pow a hmn) _)
+  obtain ⟨L, hL⟩ := IsPrecomplete.prec (I := Ideal.span {a}) inferInstance (f := y)
+    (fun {m n} hmn => (smodEq_span_singleton_pow_iff a m _ _).2 (hcauchy hmn))
+  refine ⟨f L, fun n => (smodEq_span_singleton_pow_iff (f a) n _ _).2 ?_⟩
+  have h := map_dvd f ((smodEq_span_singleton_pow_iff a n _ _).1 (hL n))
+  rwa [map_pow, map_sub, hy] at h
+
+end GroundTheory.Variant₂.N1
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.PowerSubgroups.CountableNeighbourhoods.PrecompleteOfSurjective =====
+
+-- ===== clump member: GroundTheory.PAdicHodge.ACrisBdR =====
+-- clump-header: {"m": "GroundTheory.PAdicHodge.ACrisBdR", "h": "module\n\npublic import GroundTheory.PAdicHodge.FactorizationFactorialLe\npublic import GroundTheory.PAdicHodge.BdRLattice\npublic import GroundTheory.PowerSubgroups.CountableNeighbourhoods.PrecompleteOfSurjective\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -157,7 +175,6 @@ theorem isPrecomplete_of_surjective {A B : Type*} [CommRing A] [CommRing B] (f :
     (hf : Function.Surjective f) (a : A) [IsPrecomplete (Ideal.span {a}) A] :
     IsPrecomplete (Ideal.span {f a}) B := by
   first
-  | exact GroundTheory.Variant₂.N1.isPrecomplete_of_surjective ..
   | (apply GroundTheory.Variant₂.N1.isPrecomplete_of_surjective <;> assumption)
 
 theorem isAdicComplete_of_pow_mul_mem {T S : Subring Q} (hTS : T ≤ S) (hp : IsUnit (p : Q)) (v : ℕ)
@@ -439,3 +456,7 @@ end Iota
 end ACris
 
 end GroundTheory.PAdicHodge
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.PAdicHodge.ACrisBdR =====

@@ -3,11 +3,12 @@ module
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.GlobalTraceComparison.BindPow
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.ReadSplit
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeValuesSameParameters
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMultisetSatakeEigenvalueEqStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMultisetSatakeEigenvalueEq
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeVecMemFixed
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.FrameA
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.LocalSeparation.PPairSat
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeVecMemFixed
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -167,10 +168,10 @@ theorem UpperTheory.Zero.ConvolutionTheory.EB.sat2Ex :
     tj_top_ne w a _ hu hk₀ (fA k₀) (by simpa using eA (Fin.last a) k₀)
   have htb : t (0, Fin.last b) ≠ 0 :=
     tj_top_ne w b _ hu hk₀ (fB k₀) (by simpa using eB (Fin.last b) k₀)
-  obtain ⟨B₁, c₁, h₁⟩ := GlobalTheory.T.exists_multiset_satakeEigenvalue_eq (qV E w) a (qV_ne_zero w)
+  obtain ⟨B₁, c₁, h₁⟩ := _root_.GlobalTheory.LFun.exists_satEig_eq (qV E w) a (qV_ne_zero w)
     (fun i => if h : i < a + 1 then t (⟨i, h⟩, 0) else 0) (by simpa using t00)
     (by simpa [Fin.last] using hta)
-  obtain ⟨B₂, c₂, h₂⟩ := GlobalTheory.T.exists_multiset_satakeEigenvalue_eq (qV E w) b (qV_ne_zero w)
+  obtain ⟨B₂, c₂, h₂⟩ := _root_.GlobalTheory.LFun.exists_satEig_eq (qV E w) b (qV_ne_zero w)
     (fun j => if h : j < b + 1 then t (0, ⟨j, h⟩) else 0) (by simpa using t00)
     (by simpa [Fin.last] using htb)
   have s₁ : ∀ i : Fin (a + 1), satEig (qV E w) a B₁ i = t (i, 0) := fun i => by

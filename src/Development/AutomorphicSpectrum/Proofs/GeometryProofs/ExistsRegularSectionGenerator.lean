@@ -1,26 +1,25 @@
 module
 
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Mathlib.AlgebraicGeometry.Noetherian
+public import Mathlib.AlgebraicGeometry.Properties
+public import Mathlib.Tactic.ENatToNat
+public import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 public import Mathlib.AlgebraicGeometry.Morphisms.Proper
-public import Mathlib.AlgebraicGeometry.Noetherian
-public import Mathlib.RingTheory.DiscreteValuationRing.Basic
-public import Mathlib.RingTheory.SimpleRing.Principal
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrOrderExistsUnitEqUnitMulZpowIff
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsMaxRatioCleared
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormalNoethLocalDimOneIsDVR
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkSpecializes
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializesOfSpecializes
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemRegAtOfCodimOne
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkClosedPointToGermTop
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SurjectiveOfDualHomomorphismKernelKilled
-import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.AlgebraicGeometry.QuasiAffine
+import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -36,10 +35,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PicardGroup
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -47,8 +44,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -61,7 +56,242 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
+import Mathlib.AlgebraicGeometry.QuasiAffine
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrOrderExistsUnitEqUnitMulZpowIff, Development.AutomorphicSpectrum.Proofs.GeometryProofs.SurjectiveOfDualHomomorphismKernelKilled, Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsRegularSectionGenerator
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrOrderExistsUnitEqUnitMulZpowIff =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrOrderExistsUnitEqUnitMulZpowIff", "h": "module\n\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.CompanionTheory.Ar.Flat
+
+section
+variable {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
+
+private theorem mul_zpow_mul_inv_pow_mul_zpow_lemma {G : Type*} [CommGroup G] (x y g : G) (k j a : ℤ)
+    (M : ℕ) :
+    (x * g ^ k) ^ a * ((y * g ^ j) ^ M)⁻¹ = x ^ a * (y ^ M)⁻¹ * g ^ (k * a - j * M) := by
+  rw [mul_zpow, ← zpow_mul, mul_pow, ← zpow_natCast (g ^ j), ← zpow_mul, zpow_sub, mul_inv]
+  exact mul_mul_mul_comm _ _ _ _
+
+theorem dvrOrder_exists_eq_unit_mul_zpow_iff {t : R} (ht : Irreducible t) (v : Rˣ) (e : ℤ) :
+    (∃ r : R, algebraMap R K r = algebraMap R K v * algebraMap R K t ^ e) ↔ 0 ≤ e := by
+  have ht0 : algebraMap R K t ≠ 0 :=
+    (map_ne_zero_iff _ (IsFractionRing.injective R K)).2 ht.ne_zero
+  constructor
+  · rintro ⟨r, hr⟩
+    by_contra he
+    obtain ⟨n, hn⟩ : ∃ n : ℕ, e = -((n + 1 : ℕ) : ℤ) := ⟨(-e - 1).toNat, by omega⟩
+    have key : algebraMap R K (r * t ^ (n + 1)) = algebraMap R K v := by
+      rw [map_mul, map_pow, hr, hn, zpow_neg, zpow_natCast, mul_assoc,
+        inv_mul_cancel₀ (pow_ne_zero _ ht0), mul_one]
+    have hu : IsUnit (r * t ^ (n + 1)) := by
+      rw [IsFractionRing.injective R K key]
+      exact v.isUnit
+    rw [pow_succ] at hu
+    exact ht.1 (isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_right hu))
+  · intro he
+    lift e to ℕ using he
+    exact ⟨v * t ^ e, by rw [map_mul, map_pow, zpow_natCast]⟩
+
+theorem dvrOrder_exists_unit_eq_unit_mul_zpow_iff {t : R} (ht : Irreducible t) (v : Rˣ) (e : ℤ) :
+    (∃ r : Rˣ, algebraMap R K r = algebraMap R K v * algebraMap R K t ^ e) ↔ e = 0 := by
+  constructor
+  · rintro ⟨r, hr⟩
+    have ht0 : algebraMap R K t ≠ 0 :=
+      (map_ne_zero_iff _ (IsFractionRing.injective R K)).2 ht.ne_zero
+    have h1 : 0 ≤ e := (GlobalTheory.CompanionTheory.Ar.Flat.dvrOrder_exists_eq_unit_mul_zpow_iff (K := K) ht v e).1 ⟨r, hr⟩
+    have h2 : 0 ≤ -e := by
+      refine (GlobalTheory.CompanionTheory.Ar.Flat.dvrOrder_exists_eq_unit_mul_zpow_iff (K := K) ht r (-e)).1 ⟨v, ?_⟩
+      rw [hr, zpow_neg, mul_assoc, mul_inv_cancel₀ (zpow_ne_zero _ ht0), mul_one]
+    omega
+  · rintro rfl
+    exact ⟨v, by rw [zpow_zero, mul_one]⟩
+
+end
+
+theorem dvr_order_integral_unit_iff : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (ϖ : R) (s : K), ϖ ≠ 0 → ¬ IsUnit ϖ → s ≠ 0 → ∃ (m : ℕ) (n : ℤ), 0 < m ∧ ∀ (M : ℕ) (a : ℤ), ((∃ r : R, algebraMap R K r * s ^ M = algebraMap R K ϖ ^ a) ↔ (M : ℤ) * n ≤ a * m) ∧ ((∃ r : Rˣ, algebraMap R K r * s ^ M = algebraMap R K ϖ ^ a) ↔ (M : ℤ) * n = a * m) := by
+  intro R K _ _ _ _ _ _ ϖ s hϖ hϖu hs
+  obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible R
+  have hinj : Function.Injective (algebraMap R K) := IsFractionRing.injective R K
+  have hπ0 : algebraMap R K π ≠ 0 := (map_ne_zero_iff _ hinj).2 hπ.ne_zero
+  obtain ⟨φ, hφ⟩ : ∃ φ : Rˣ →* Kˣ, ∀ x : Rˣ, ((φ x : Kˣ) : K) = algebraMap R K x :=
+    ⟨Units.map (algebraMap R K).toMonoidHom, fun _ => rfl⟩
+  obtain ⟨g, hg⟩ : ∃ g : Kˣ, (g : K) = algebraMap R K π := ⟨Units.mk0 _ hπ0, rfl⟩
+  obtain ⟨k, u, hu⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hϖ hπ
+  have hk : 0 < k := by
+    rcases Nat.eq_zero_or_pos k with h | h
+    · exfalso
+      apply hϖu
+      rw [hu, h, pow_zero, mul_one]
+      exact u.isUnit
+    · exact h
+  have hϖK : algebraMap R K ϖ = algebraMap R K u * algebraMap R K π ^ (k : ℤ) := by
+    rw [hu, map_mul, map_pow, zpow_natCast]
+  obtain ⟨x, y, hy, hxy⟩ := IsFractionRing.div_surjective (A := R) s
+  have hy0 : y ≠ 0 := nonZeroDivisors.ne_zero hy
+  have hx0 : x ≠ 0 := by
+    rintro rfl
+    apply hs
+    rw [← hxy, map_zero, zero_div]
+  obtain ⟨i, w₁, hx⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hπ
+  obtain ⟨l, w₂, hy'⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy0 hπ
+  obtain ⟨w, hw⟩ : ∃ w : Rˣ, w = w₁ * w₂⁻¹ := ⟨_, rfl⟩
+  obtain ⟨j, hj⟩ : ∃ j : ℤ, j = (i : ℤ) - l := ⟨_, rfl⟩
+  have hsK : s = algebraMap R K w * algebraMap R K π ^ j := by
+    rw [← hxy, hx, hy', hw, hj]
+    simp only [Units.val_mul, map_mul, map_units_inv, map_pow, zpow_sub₀ hπ0, zpow_natCast]
+    ring
+  refine ⟨k, j, hk, fun M a => ?_⟩
+  obtain ⟨v, hv⟩ : ∃ v : Rˣ, v = u ^ a * (w ^ M)⁻¹ := ⟨_, rfl⟩
+  have hU : (φ u * g ^ (k : ℤ)) ^ a * ((φ w * g ^ j) ^ M)⁻¹ =
+      φ v * g ^ ((k : ℤ) * a - j * M) := by
+    rw [mul_zpow_mul_inv_pow_mul_zpow_lemma, hv, map_mul, map_zpow, map_inv, map_pow]
+  have hU' := congrArg (fun z : Kˣ => (z : K)) hU
+  simp only [Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_inv_eq_inv_val,
+    Units.val_pow_eq_pow_val, hφ, hg] at hU'
+  have hX : ∀ r : K, r * s ^ M = algebraMap R K ϖ ^ a ↔
+      r = algebraMap R K v * algebraMap R K π ^ ((k : ℤ) * a - j * M) := by
+    intro r
+    rw [← hU', ← hϖK, ← hsK, ← div_eq_mul_inv, eq_div_iff (pow_ne_zero _ hs)]
+  constructor
+  · rw [exists_congr fun r : R => hX (algebraMap R K r),
+      GlobalTheory.CompanionTheory.Ar.Flat.dvrOrder_exists_eq_unit_mul_zpow_iff (K := K) hπ v ((k : ℤ) * a - j * M)]
+    constructor <;> intro h <;> linarith
+  · rw [exists_congr fun r : Rˣ => hX (algebraMap R K r),
+      GlobalTheory.CompanionTheory.Ar.Flat.dvrOrder_exists_unit_eq_unit_mul_zpow_iff (K := K) hπ v ((k : ℤ) * a - j * M)]
+    constructor <;> intro h <;> linarith
+
+end GlobalTheory.CompanionTheory.Ar.Flat
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrOrderExistsUnitEqUnitMulZpowIff =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.SurjectiveOfDualHomomorphismKernelKilled =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.SurjectiveOfDualHomomorphismKernelKilled", "h": "module\n\npublic import Mathlib.AlgebraicGeometry.Noetherian\npublic import Mathlib.AlgebraicGeometry.Properties\npublic import Mathlib.Tactic.ENatToNat\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\npublic import Mathlib.RingTheory.Ideal.KrullsHeightTheorem\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits
+namespace GlobalTheory.CompanionTheory.Ar.Flat
+
+theorem finite_primeSpectrum_height_one {A : Type*} [CommRing A] [IsDomain A] [IsNoetherianRing A]
+    {a : A} (ha : a ≠ 0) :
+    {P : PrimeSpectrum A | a ∈ P.asIdeal ∧ P.asIdeal.height = 1}.Finite := by
+  refine ((Ideal.finite_minimalPrimes_of_isNoetherianRing A (Ideal.span {a})).preimage
+    (f := PrimeSpectrum.asIdeal) (fun _ _ _ _ h => PrimeSpectrum.ext h)).subset ?_
+  rintro ⟨P, hP⟩ ⟨haP, h1⟩
+  simp only at haP h1
+  refine ⟨⟨hP, (Ideal.span_singleton_le_iff_mem _).mpr haP⟩, fun Q hQ hQP => ?_⟩
+  have := hQ.1
+  have haQ : a ∈ Q := (Ideal.span_singleton_le_iff_mem _).mp hQ.2
+  have hQ0 : Q ≠ ⊥ := fun h => ha (by rw [h] at haQ; exact haQ)
+  have hQ1 : P.height ≤ Q.height := by
+    rw [h1]
+    exact Order.one_le_iff_ne_zero.mpr (fun h => hQ0 (Ideal.height_eq_zero_iff_eq_bot.mp h))
+  exact (Ideal.eq_of_le_of_height_le (I := Q) hQP hQ1).ge
+
+theorem exists_primeSpectrum_height_one_le {A : Type*} [CommRing A] [IsDomain A]
+    [IsNoetherianRing A] {a : A} (ha : a ≠ 0) (P : PrimeSpectrum A) (hP : a ∈ P.asIdeal) :
+    ∃ Q : PrimeSpectrum A, a ∈ Q.asIdeal ∧ Q.asIdeal.height = 1 ∧ Q ≤ P := by
+  obtain ⟨Q, hQ, hQP⟩ := Ideal.exists_minimalPrimes_le (I := Ideal.span {a}) (J := P.asIdeal)
+    ((Ideal.span_singleton_le_iff_mem _).mpr hP)
+  have hQp : Q.IsPrime := hQ.1.1
+  have haQ : a ∈ Q := (Ideal.span_singleton_le_iff_mem _).mp hQ.1.2
+  have hQ0 : Q ≠ ⊥ := fun h => ha (by rw [h] at haQ; exact haQ)
+  refine ⟨⟨Q, hQp⟩, haQ, le_antisymm
+    (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ Q hQ)
+    (Order.one_le_iff_ne_zero.mpr (fun h => hQ0 (Ideal.height_eq_zero_iff_eq_bot.mp h))), hQP⟩
+
+theorem ringKrullDim_stalk_fromSpec {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U)
+    (P : PrimeSpectrum Γ(Z, U)) :
+    ringKrullDim (Z.presheaf.stalk (hU.fromSpec P)) = P.asIdeal.height := by
+  have hmem : hU.fromSpec P ∈ U := by
+    have : hU.fromSpec P ∈ Set.range hU.fromSpec := ⟨P, rfl⟩
+    rwa [hU.range_fromSpec] at this
+  letI := TopCat.Presheaf.algebra_section_stalk Z.presheaf (U := U) ⟨hU.fromSpec P, hmem⟩
+  have := hU.isLocalization_stalk' P hmem
+  exact @IsLocalization.AtPrime.ringKrullDim_eq_height _ _ P.asIdeal _ _ _ _ this
+
+theorem fromSpec_notMem_basicOpen_iff {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U)
+    (f : Γ(Z, ⊤)) (P : PrimeSpectrum Γ(Z, U)) :
+    hU.fromSpec P ∉ Z.basicOpen f ↔
+      Z.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op f ∈ P.asIdeal := by
+  have hmem : hU.fromSpec P ∈ U := by
+    have : hU.fromSpec P ∈ Set.range hU.fromSpec := ⟨P, rfl⟩
+    rwa [hU.range_fromSpec] at this
+  have h := hU.fromSpec_preimage_basicOpen (Z.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op f)
+  have h2 : hU.fromSpec P ∈ Z.basicOpen (Z.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op f) ↔
+      Z.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op f ∉ P.asIdeal := by
+    rw [← PrimeSpectrum.mem_basicOpen, ← h]
+    rfl
+  rw [Scheme.basicOpen_res] at h2
+  have h3 : hU.fromSpec P ∈ U ⊓ Z.basicOpen f ↔ hU.fromSpec P ∈ Z.basicOpen f :=
+    ⟨fun h => h.2, fun h => ⟨hmem, h⟩⟩
+  rw [← h3, h2, not_not]
+
+theorem finite_codim_one_zero_set_and_exists :
+    ∀ (Z : Scheme.{0}) [IsIntegral Z] [IsNoetherian Z] (ϖ : Γ(Z, ⊤)), ϖ ≠ 0 →
+      {x : Z | x ∉ Z.basicOpen ϖ ∧ ringKrullDim (Z.presheaf.stalk x) = 1}.Finite ∧
+      ∀ y : Z, y ∉ Z.basicOpen ϖ →
+        ∃ x : Z, x ∉ Z.basicOpen ϖ ∧ ringKrullDim (Z.presheaf.stalk x) = 1 ∧
+          y ∈ closure {x} := by
+  intro Z _ _ ϖ hϖ
+  have hex : ∀ y : Z, ∃ U : Z.Opens, IsAffineOpen U ∧ y ∈ U := fun y => by
+    obtain ⟨_, ⟨U, hU, rfl⟩, hy, -⟩ :=
+      Z.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ
+    exact ⟨U, hU, hy⟩
+  choose U hU hyU using hex
+  have hne : ∀ y, Nonempty (U y) := fun y => ⟨⟨y, hyU y⟩⟩
+  have hnoeth : ∀ y, IsNoetherianRing Γ(Z, U y) := fun y =>
+    IsLocallyNoetherian.component_noetherian ⟨U y, hU y⟩
+  have hres : ∀ y, Z.presheaf.map (homOfLE (le_top : U y ≤ ⊤)).op ϖ ≠ 0 := fun y h =>
+    hϖ (map_injective_of_isIntegral Z (homOfLE (le_top : U y ≤ ⊤)) (h.trans (map_zero _).symm))
+  constructor
+  · obtain ⟨t, ht⟩ := isCompact_univ.elim_finite_subcover (fun y : Z => (U y : Set Z))
+      (fun y => (U y).isOpen) (fun y _ => Set.mem_iUnion.mpr ⟨y, hyU y⟩)
+    refine (t.finite_toSet.biUnion (fun y _ =>
+      (finite_primeSpectrum_height_one (hres y)).image (hU y).fromSpec)).subset ?_
+    rintro x ⟨hx, hx1⟩
+    obtain ⟨y, hy, hxy⟩ := Set.mem_iUnion₂.mp (ht (Set.mem_univ x))
+    refine Set.mem_iUnion₂.mpr ⟨y, hy, ?_⟩
+    rw [← (hU y).range_fromSpec] at hxy
+    obtain ⟨P, rfl⟩ := hxy
+    refine ⟨P, ⟨(fromSpec_notMem_basicOpen_iff (hU y) ϖ P).mp hx, ?_⟩, rfl⟩
+    rw [ringKrullDim_stalk_fromSpec (hU y) P] at hx1
+    exact_mod_cast hx1
+  · intro y hy
+    have hy' : y ∈ Set.range (hU y).fromSpec := by
+      rw [(hU y).range_fromSpec]; exact hyU y
+    obtain ⟨P, hP⟩ := hy'
+    obtain ⟨Q, hQ, hQ1, hQP⟩ := exists_primeSpectrum_height_one_le (hres y) P
+      ((fromSpec_notMem_basicOpen_iff (hU y) ϖ P).mp (by rw [hP]; exact hy))
+    refine ⟨(hU y).fromSpec Q, (fromSpec_notMem_basicOpen_iff (hU y) ϖ Q).mpr hQ, ?_, ?_⟩
+    · rw [ringKrullDim_stalk_fromSpec (hU y) Q, hQ1]; rfl
+    · have := ((PrimeSpectrum.le_iff_specializes Q P).mp hQP).map (hU y).fromSpec.continuous
+      rw [hP] at this
+      exact specializes_iff_mem_closure.mp this
+
+end GlobalTheory.CompanionTheory.Ar.Flat
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.SurjectiveOfDualHomomorphismKernelKilled =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsRegularSectionGenerator =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsRegularSectionGenerator", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag\npublic import Mathlib.AlgebraicGeometry.Morphisms.Proper\npublic import Mathlib.AlgebraicGeometry.Noetherian\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\npublic import Mathlib.RingTheory.SimpleRing.Principal\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DvrOrderExistsUnitEqUnitMulZpowIff\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsMaxRatioCleared\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.NormalNoethLocalDimOneIsDVR\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkSpecializes\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializesOfSpecializes\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemRegAtOfCodimOne\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkClosedPointToGermTop\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SurjectiveOfDualHomomorphismKernelKilled\nimport Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.AlgebraicGeometry.QuasiAffine\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PicardGroup\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
@@ -310,3 +540,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_regular_section_gener
     rw [div_mul_cancel₀ _ (he i₀.1).1]
 
 end GlobalTheory.CompanionTheory.Ar.Flat.ZLat
+end GlobalTheory.CompanionTheory.Ar.Flat.ZLat -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsRegularSectionGenerator =====

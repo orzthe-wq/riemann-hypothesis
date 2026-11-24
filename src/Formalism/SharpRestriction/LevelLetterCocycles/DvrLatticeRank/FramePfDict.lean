@@ -68,7 +68,7 @@ theorem framepf_ι_mul (g h : PowerSeries O) :
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
   have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
+    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm
   simp only [framepf_ι, hS, map_mul, Pi.single_mul]
 
 theorem framepf_ι_add (g h : PowerSeries O) :
@@ -76,7 +76,7 @@ theorem framepf_ι_add (g h : PowerSeries O) :
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
   have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
+    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm
   simp only [framepf_ι, hS, map_add (f := _), Pi.single_add]
 
 theorem framepf_ι_sub (g h : PowerSeries O) :
@@ -84,7 +84,7 @@ theorem framepf_ι_sub (g h : PowerSeries O) :
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
   have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
+    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm
   simp only [framepf_ι, hS, map_sub, Pi.single_sub]
 
 theorem framepf_ι_C (o : O) :
@@ -92,32 +92,32 @@ theorem framepf_ι_C (o : O) :
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
   have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
+    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm
   have hC : PowerSeries.C o = o • (1 : PowerSeries O) := by rw [PowerSeries.smul_eq_C_mul, mul_one]
   simp only [framepf_ι, hS, letE, hC, map_smul, map_one, Algebra.algebraMap_eq_smul_one]
   funext j
   by_cases hj : j = i
   · subst hj; simp
-  · simp [Pi.single_apply, hj]
+  · simp [hj]
 
 theorem framepf_ι_one : framepf_ι π' i 1 = letE i := by
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
   have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
+    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm
   simp only [framepf_ι, hS, map_one, letE]
 
 theorem framepf_ι_X : framepf_ι π' i PowerSeries.X = letE i * π' := by
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' hπ0
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
   have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
+    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm
   have hSX : S PowerSeries.X = π' i := by rw [← hS]; exact PowerSeries.subst_X ha
   simp only [framepf_ι, hS, hSX, letE]
   funext j
   by_cases hj : j = i
   · subst hj; simp
-  · simp [Pi.single_apply, hj]
+  · simp [hj]
 
 private lemma powerSeries_algHom_eq_subst_X (ψ : PowerSeries O →ₐ[O] PowerSeries O)
     (hψ : PowerSeries.constantCoeff (ψ PowerSeries.X) = 0) (f : PowerSeries O) :
@@ -125,7 +125,7 @@ private lemma powerSeries_algHom_eq_subst_X (ψ : PowerSeries O →ₐ[O] PowerS
   have ha : PowerSeries.HasSubst (ψ PowerSeries.X) := PowerSeries.HasSubst.of_constantCoeff_zero' hψ
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
   have hS : ∀ g, PowerSeries.subst (ψ PowerSeries.X) g = S g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
+    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm
   have hSX : S PowerSeries.X = ψ PowerSeries.X := by
     rw [← hS]; exact PowerSeries.subst_X ha
   have hC : ∀ a : O, ψ (PowerSeries.C a) = S (PowerSeries.C a) := fun a => by
@@ -167,9 +167,9 @@ theorem framepf_ι_letγ (γ₀ : PowerSeries O →ₐ[O] PowerSeries O)
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
   let SG : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom hGs
   have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
+    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm
   have hSG : ∀ g, PowerSeries.subst G g = SG g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom hGs) g).symm | rfl
+    first | exact (congrFun (PowerSeries.coe_substAlgHom hGs) g).symm
   have hSX : S PowerSeries.X = π' i := by rw [← hS]; exact PowerSeries.subst_X ha
   have hSGX : SG PowerSeries.X = G := by rw [← hSG]; exact PowerSeries.subst_X hGs
   have h1X : (γ₀.comp S) PowerSeries.X = PowerSeries.subst (π' i) G := by
@@ -240,7 +240,7 @@ theorem framepf_coord {x : W.DD T} (hx : x ∈ NcS W T i) :
   funext j
   by_cases hj : j = i
   · subst hj; simp [framepf_ι, letE, hf k]
-  · simp [framepf_ι, letE, Pi.single_apply, hj]
+  · simp [framepf_ι, letE, hj]
 
 
 include hπ0 hΔπ hR2 in
@@ -249,7 +249,7 @@ theorem framepf_subst_inj (γ0 : ∀ δ ∈ W.DelF, PowerSeries.constantCoeff (W
   have ha : PowerSeries.HasSubst (π' i) := PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 i)
   let S : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom ha
   have hS : ∀ g, PowerSeries.subst (π' i) g = S g := fun g => by
-    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm | rfl
+    first | exact (congrFun (PowerSeries.coe_substAlgHom ha) g).symm
   have hSX : S PowerSeries.X = π' i := by rw [← hS]; exact PowerSeries.subst_X ha
   have hfix : ∀ δ ∈ W.DelF, ∀ g : PowerSeries O, W.γ₀ δ (PowerSeries.subst (π' i) g) = PowerSeries.subst (π' i) g := by
     intro δ hδ g
@@ -272,7 +272,6 @@ theorem framepf_subst_inj (γ0 : ∀ δ ∈ W.DelF, PowerSeries.constantCoeff (W
     have hj := PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 j)
     first
       | (rw [← PowerSeries.coe_substAlgHom hj]; exact map_zero _)
-      | exact map_zero (PowerSeries.substAlgHom hj)
   have hrep : ∀ g : PowerSeries O, ∀ j, framepf_ι π' i g j = PowerSeries.subst (π' j) ((Pi.single i g : ZMod n → PowerSeries O) j) := by
     intro g j
     by_cases hj : j = i
@@ -301,7 +300,7 @@ theorem framepf_letE_ι (g : PowerSeries O) : letE i * framepf_ι π' i g = fram
   funext j
   by_cases hj : j = i
   · subst hj; simp [letE, framepf_ι]
-  · simp [letE, framepf_ι, Pi.single_apply, hj]
+  · simp [letE, framepf_ι, hj]
 
 
 include hπ0 hΔπ hR2 in

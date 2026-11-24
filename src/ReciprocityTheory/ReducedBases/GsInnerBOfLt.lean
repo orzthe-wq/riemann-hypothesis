@@ -1,48 +1,6 @@
 module
 
 public import Mathlib.Analysis.InnerProductSpace.GramSchmidtOrtho
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -68,18 +26,9 @@ lemma gs_orth (b : Fin d → E) {i j : Fin d} (h : i ≠ j) : ⟪gs b i, gs b j�
 
 lemma b_sub_gs_mem (b : Fin d → E) (k : Fin d) : b k - gs b k ∈ span ℝ (b '' Set.Iio k) := by
   rw [← span_gramSchmidt_Iio ℝ b k]
-  have hdef := gramSchmidt_def ℝ b k
-  have hrw : b k - gs b k = b k - gramSchmidt ℝ b k := rfl
-  rw [hrw, hdef, sub_sub_cancel]
-  refine Submodule.sum_mem _ fun i hi => ?_
-  have hsub : (ℝ ∙ gramSchmidt ℝ b i) ≤ span ℝ (gramSchmidt ℝ b '' Set.Iio k) := by
-    rw [Submodule.span_singleton_le_iff_mem]
-    exact subset_span ⟨i, Finset.mem_Iio.mp hi, rfl⟩
-  apply hsub
-  first
-    | exact Submodule.coe_mem _
-    | exact Submodule.starProjection_apply_mem _ _
-    | simp
+  rw [sub_eq_iff_eq_add.mpr ((gramSchmidt_def'' ℝ b k).trans (add_comm _ _))]
+  exact Submodule.sum_mem _ fun i hi =>
+    Submodule.smul_mem _ _ (subset_span ⟨i, Finset.mem_Iio.mp hi, rfl⟩)
 
 lemma inner_gs_span (b : Fin d → E) (k : Fin d) {y : E} (hy : y ∈ span ℝ (b '' Set.Iio k)) :
     ⟪gs b k, y⟫_ℝ = 0 := by
@@ -134,32 +83,14 @@ private lemma inner_gs_sum_smul_gs (b : Fin d → E) (x : Fin d → ℝ) (j : Fi
   · intro h
     exact absurd (Finset.mem_univ j) h
 
-private lemma eq_zero_of_mem_span_gs_of_inner_eq_zero (b : Fin d → E) {y : E} (hy : y ∈ span ℝ (Set.range (gs b)))
-    (h : ∀ j, ⟪gs b j, y⟫_ℝ = 0) : y = 0 := by
-  have hle : span ℝ (Set.range (gs b)) ≤ (ℝ ∙ y)ᗮ := by
-    rw [Submodule.span_le]
-    rintro _ ⟨j, rfl⟩
-    rw [SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right, real_inner_comm]
-    exact h j
-  exact inner_self_eq_zero.1 (Submodule.mem_orthogonal_singleton_iff_inner_right.1 (hle hy))
-
-private lemma mu_mul_norm_gs_sq (b : Fin d → E) (hb : LinearIndependent ℝ b) (i j : Fin d) :
-    mu b i j * ‖gs b j‖ ^ 2 = ⟪gs b j, b i⟫_ℝ := by
-  have hne : ‖gs b j‖ ^ 2 ≠ 0 := pow_ne_zero _ (norm_ne_zero_iff.mpr (gs_ne_zero b hb j))
-  unfold mu
-  first
-    | exact div_mul_cancel₀ _ hne
-    | field_simp
-
 lemma b_eq_sum (b : Fin d → E) (hb : LinearIndependent ℝ b) (i : Fin d) :
     b i = ∑ j, mu b i j • gs b j := by
-  rw [← sub_eq_zero]
-  apply eq_zero_of_mem_span_gs_of_inner_eq_zero b
-  · refine Submodule.sub_mem _ ?_ ?_
-    · exact span_mono (Set.image_subset_range _ _) (mem_span_gramSchmidt ℝ b le_rfl)
-    · exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (subset_span ⟨j, rfl⟩)
-  · intro j
-    rw [inner_sub_right, inner_gs_sum_smul_gs, mu_mul_norm_gs_sq b hb, sub_self]
+  calc
+    b i = gs b i + ∑ j ∈ Iio i, mu b i j • gs b j := gramSchmidt_def'' ℝ b i
+    _ = ∑ j ∈ Iic i, mu b i j • gs b j := by
+      rw [← insert_Iio, sum_insert (by simp), mu_self b hb, one_smul]
+    _ = ∑ j, mu b i j • gs b j := sum_subset (subset_univ _) fun j _ hj => by
+      rw [mu_of_lt b (lt_of_not_ge (fun h => hj (mem_Iic.mpr h))), zero_smul]
 
 lemma sum_smul_b (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ) :
     ∑ l, c l • b l = ∑ j, nu b c j • gs b j := by
@@ -173,19 +104,15 @@ lemma sum_smul_b (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d →
         refine Finset.sum_congr rfl fun j _ => ?_
         rw [nu, Finset.sum_smul]
 
-lemma inner_gs_sum (b : Fin d → E) (x : Fin d → ℝ) (j : Fin d) :
-    ⟪gs b j, ∑ k, x k • gs b k⟫_ℝ = x j * ‖gs b j‖ ^ 2 := by
-  exact inner_gs_sum_smul_gs b x j
-
 lemma inner_gs_comb (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ) (j : Fin d) :
     ⟪gs b j, ∑ l, c l • b l⟫_ℝ = nu b c j * ‖gs b j‖ ^ 2 := by
-  rw [sum_smul_b b hb c, inner_gs_sum]
+  rw [sum_smul_b b hb c, _root_.ReciprocityTheory.ReducedBases.T2.inner_gs_sum_smul_gs]
 
 lemma norm_sq_comb (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ) :
     ‖∑ l, c l • b l‖ ^ 2 = ∑ j, nu b c j ^ 2 * ‖gs b j‖ ^ 2 := by
   rw [sum_smul_b b hb c, ← real_inner_self_eq_norm_sq, sum_inner]
   refine Finset.sum_congr rfl fun j _ => ?_
-  rw [real_inner_smul_left, inner_gs_sum]
+  rw [real_inner_smul_left, _root_.ReciprocityTheory.ReducedBases.T2.inner_gs_sum_smul_gs]
   ring
 
 end ReciprocityTheory.ReducedBases.T2

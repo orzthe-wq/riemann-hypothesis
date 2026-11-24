@@ -59,7 +59,6 @@ def LemmaEEnergy.Statement : Prop :=
 
 section Inhabitants
 
-open ReciprocityTheory.AnForm.M (p1)
 
 end Inhabitants
 

@@ -2,11 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.EigenfunctionFiniteCoefficients
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CuspidalOfConvolutionFixedModerateGrowthStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscreteSeriesCoefficientIntegrableMajorant
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousRepBoundedEvaluationRowsStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CuspidalOfConvolutionFixedModerateGrowth
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsContinuousRepBoundedEvaluationRows
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlobalConvolutionOrthogonalProjectorProof
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralDiscreteSeriesUnipotentVanishesStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralDiscreteSeriesUnipotentVanishes
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiscreteSeriesCoefficientIntegrableMajorant
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralInvOfSupport
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuous
 import Mathlib.Algebra.Order.Floor.Extended
@@ -154,12 +154,12 @@ theorem row_isCuspFn : StrictLow → ∀ (B : RowsAut) (d : InfinitePlace B.I.F 
     rw [hAc]
     exact congrArg (fun L : B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund => L (A₀ (B.tens B.w)))
       (level_comp_Re B k hk hg)
-  obtain ⟨C, hC⟩ := GlobalTheory.T.exists_continuousRep_bounded_evaluation_rows hSL B d hd hn hg
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.EvalBound.exists_contRep_bound hSL B d hd hn hg
   obtain ⟨f, hf, hfb⟩ := hC A hAS hfix
 
   have hTy : T (A (B.tens B.w)) = A (B.tens B.w) :=
     ((GlobalTheory.GlobProj.globalProj_holds B d hd (integrable_ph B d h hd hn hh hl)).2.2.2 T hT).2.1 A hA
-  exact (GlobalTheory.T.cuspidal_of_convolution_fixed_moderate_growth B d h hd (GlobalTheory.T.integral_discreteSeries_unipotent_vanishes hSL B d h hd hl hh) hl hH T hT (A (B.tens B.w)) f
+  exact (_root_.GlobalTheory.CuspFixed.cusp_of_fixed B d h hd (_root_.GlobalTheory.RealFibre.integral_phe_eq_zero hSL B d h hd hl hh) hl hH T hT (A (B.tens B.w)) f
     (C * ‖A (B.tens B.w)‖) hTy hf (fun x => (hfb x).trans_eq (by ring))).2
 
 end GlobalTheory.RowCusp

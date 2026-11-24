@@ -46,6 +46,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramHspOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinPartConjMem
 
 @[expose] public section
 
@@ -106,13 +107,6 @@ theorem mulG_rat {D : D7} (S : HSp D) {n : ℕ} (x : Matrix (Fin n) (Fin S.rank)
 
 theorem infPart_cA {D : D7} (x : AE D) :
     infPart D (cA D x) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp only [RingHom.map_zero]
-  | add x y hx hy => simp only [RingHom.map_add (f := _), hx, hy]
-  | tmul a x => rfl
-
-theorem finPart_cA {D : D7} (x : AE D) :
-    finPart D (cA D x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
   induction x using TensorProduct.induction_on with
   | zero => simp only [RingHom.map_zero]
   | add x y hx hy => simp only [RingHom.map_add (f := _), hx, hy]
@@ -179,7 +173,7 @@ theorem thetaPt_box : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G :
     (fun x y => (GlobalTheory.ThetaTransform.symplO_eq_symp eA eB x y).trans (symp_eq e Γ h.JW h.JWW x y))
     (mapV_rat e) (mapW_rat e)
     (maps_map_zero (infPart D) (fun x hx => by rw [infPart_cA, hx, map_zero]) e)
-    (maps_map_zero (finPart D) (fun x hx => by rw [finPart_cA, hx, map_zero]) e) hf₁ hf₂
+    (maps_map_zero (finPart D) (fun x hx => by rw [_root_.GlobalTheory.MovedIdem.finPart_cA, hx, map_zero]) e) hf₁ hf₂
 
 end GlobalTheory.BigDat.ThBox
 

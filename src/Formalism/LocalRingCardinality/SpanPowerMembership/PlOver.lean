@@ -83,7 +83,7 @@ theorem prime_unique {L : Type} [Field L] [NumberField L] {p q : ℕ} (hp : p.Pr
 
 theorem resChar_mem (w : D.what₂.places.Pl) :
     ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
-  apply Formalism.MainNotions.J.resChar_mem <;> assumption
+  apply Formalism.MainNotions.J.resChar_mem
 
 theorem resChar_eq_iff (p : ℕ) [hp : Fact p.Prime] (w : D.what₂.places.Pl) :
     D.what₂.places.resChar w = p ↔ ((p : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by

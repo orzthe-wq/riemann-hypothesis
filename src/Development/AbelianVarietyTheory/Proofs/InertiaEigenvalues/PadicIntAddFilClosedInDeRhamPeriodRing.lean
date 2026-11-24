@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowMulMemLatIff
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemDeRhamFiltrationOfForallAinfLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormLeOfQBMemLatStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemDeRhamFiltrationOfForallAinfLattice
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormLeOfQBMemLat
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,8 +72,8 @@ theorem nearZ_of_forall_Lat (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocA
   obtain ⟨y, hy⟩ := exists_padicInt_lim z (fun n m hnm => by
     have h1 := sub_mem (hz n) (Lat_anti AI hnm (hz m))
     rw [sub_sub_sub_cancel_right, ← map_sub] at h1
-    exact GlobalTheory.T.norm_le_of_qB_mem_Lat_alt l P AI T M n hM _ h1)
-  refine ⟨y, GlobalTheory.T.mem_deRhamFiltration_of_forall_ainfLattice l P AI T M _ fun n => ?_⟩
+    exact _root_.GlobalTheory.ExpImage.norm_le_of_qB_mem_Lat l P AI T M n hM _ h1)
+  refine ⟨y, _root_.GlobalTheory.ExpImage.mem_FilB_of_forall_Lat l P AI T M _ fun n => ?_⟩
   obtain ⟨w, hw⟩ := hy n
   have h2 := io_mem_Lat AI M n (algebraMap ℤ_[l] (Ainf l) w)
   rw [← map_natCast (algebraMap ℤ_[l] (Ainf l)), ← map_pow, ← map_mul, ← hw, io_zl AI T,

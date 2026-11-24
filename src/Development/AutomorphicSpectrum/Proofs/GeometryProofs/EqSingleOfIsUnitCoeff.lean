@@ -91,7 +91,7 @@ theorem eq_single_of_isUnit_coeff {A X : Type} [CommRing A] [IsReduced A] [AddCo
   ext z
   by_cases h : z = χ
   · subst h; simp
-  · simp [AddMonoidAlgebra.coeff_single, Finsupp.single_apply, key z h, Ne.symm h]
+  · simp [AddMonoidAlgebra.coeff_single, key z h, Ne.symm h]
 
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X] {Y : Over S}
 
@@ -119,7 +119,7 @@ theorem IsMonoNear.unique {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} {χ χ' : 
   obtain ⟨c', -, e'⟩ := h'.residueField
   by_contra hne
   have := congrArg (fun f => AddMonoidAlgebra.coeff f χ) (e.symm.trans e')
-  simp [AddMonoidAlgebra.coeff_single, Finsupp.single_apply, Ne.symm hne] at this
+  simp [AddMonoidAlgebra.coeff_single, Ne.symm hne] at this
   exact hc this
 
 theorem exists_isMonoNear [Module.Free ℤ X] [IsReduced Y.left]

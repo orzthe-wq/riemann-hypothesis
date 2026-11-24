@@ -114,7 +114,6 @@ theorem star_coeff_of_reverse : ∀ D : D7, (∀ (k : Fin 2) (f : (ZMod (D.host.
       rw [D.ntypes.eSer_zero _ _ (fun h => h.2.2 h0)]
       first
         | rfl
-        | simp
     · rfl
   have key : ∀ a, star (T a) = T (Φ a) := by
     intro a

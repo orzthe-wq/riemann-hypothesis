@@ -168,7 +168,6 @@ theorem test_factor {n r : ℕ} (e : Fin r ≃ PairIx Ψ p q) (hq : q ≤ p) (hn
     rw [Fintype.prod_prod_type]
     refine Finset.prod_congr rfl fun τ _ => ?_
     rw [← Finset.prod_subtype_eq_prod_filter, Finset.subtype_univ]
-    try rfl
   rw [Fin.prod_univ_add, hmu, hdim, hfib]
   simp only [Fin.append_left, Fin.append_right, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 

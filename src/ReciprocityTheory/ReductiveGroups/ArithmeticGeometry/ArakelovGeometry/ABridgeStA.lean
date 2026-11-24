@@ -3,49 +3,8 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.IsBergDensity
 public import ReciprocityTheory.GeometryOfNumbers.PluriharmonicAnalysis.BergmanDefs
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.IsSmoothPts
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 public import Mathlib.Topology.Algebra.MvPolynomial
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -82,7 +41,7 @@ theorem secFun_smul {b : MvPolynomial J ℚ} {n : ℕ}
   obtain ⟨f, hf, rfl⟩ := hb
   have hmap : map (algebraMap ℚ ℂ) (map (Int.castRingHom ℚ) f) = map (Int.castRingHom ℂ) f := by
     rw [map_map]
-    congr 1 <;> exact RingHom.ext_int _ _
+    congr 1
   simp only [secFun, hmap]
   exact eval_smul_of_homog (hf.map _) c z
 
@@ -94,7 +53,7 @@ theorem secFun_map_int (f : MvPolynomial J ℤ) (z : J → ℂ) :
     secFun (map (Int.castRingHom ℚ) f) z = eval z (map (Int.castRingHom ℂ) f) := by
   unfold secFun
   rw [map_map]
-  congr 2 <;> exact RingHom.ext_int _ _
+  congr 2
 
 theorem secFun_eq_zero_of_pts {x : J → Ω} {n : ℕ} {d : MvPolynomial J ℤ} (hd : d.IsHomogeneous n)
     (h0 : aeval x d = 0) {z : J → ℂ} (hz : z ∈ pts (coordIdeal ℤ x)) :
@@ -109,7 +68,7 @@ theorem secFun_eq_zero_of_pts {x : J → Ω} {n : ℕ} {d : MvPolynomial J ℤ} 
     have hC : eval (fun i => Polynomial.C (x i)) (map (algebraMap ℤ (Polynomial Ω)) d) =
         Polynomial.C (aeval x d) := by
       rw [eval_map, aeval_def, hom_eval₂]
-      congr 1 <;> exact RingHom.ext_int _ _
+      congr 1
     rw [hpt, eval_smul_of_homog (hd.map _), hC, h0, map_zero, mul_zero]
   rw [secFun_map_int]
   exact hz.2 d hmem
@@ -149,6 +108,5 @@ theorem conj_bGram {m : ConeMetric (C := ℂ) (ι := J)} {μ : Measure (J → �
   congr 1
   funext x
   simp [he, secFun_conjPt, wgt_conjPt hm]
-  try ring
 
 end ReciprocityTheory.ChartRestriction.G.ArakelovGeometry

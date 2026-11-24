@@ -199,7 +199,7 @@ theorem place_type_conj : ∀ (D : D7) (i : D.nd.Loc), SplitRowPrime D.host (D.n
   have h2 : D.nd.l i ≠ 2 := by omega
   have hj : jacobiSym (-(D.host.d : ℤ)) (D.nd.l i) = 1 := by
     by_contra hj
-    simp only [Host.cls, primeClass, if_neg h2, if_neg hq, if_neg hd, if_neg hj] at hcls
+    simp only [Host.cls, primeClass, if_neg hq, if_neg hd, if_neg hj] at hcls
     split_ifs at hcls
   obtain ⟨s, hs, hn⟩ := exists_sqrt (D.nd.l i) D.host.d h2 hj
   obtain ⟨s₀, hs₀, h₀⟩ := exists_root

@@ -48,6 +48,14 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.Mem.An
 
+/-- **Page's theorem** on exceptional zeros of Dirichlet L-functions: there exists an absolute
+constant `c > 0` such that for every `Q ≥ 3`, among all primitive quadratic Dirichlet characters
+with conductor at most `Q`, there is at most one character whose L-function has a real zero
+in the interval `(1 - c / log Q, 1)`.
+
+Proposed reference:
+[A. Page, *On the number of primes in an arithmetic progression*][page1935], which proves that at
+most one real primitive character with conductor `q ≤ Q` has a real zero `β > 1 - c / log Q`. -/
 def PageThm : Prop :=
   ∃ c : ℝ, 0 < c ∧ ∀ Q : ℝ, 3 ≤ Q → ∀ (q₁ q₂ : ℕ) [NeZero q₁] [NeZero q₂]
     (χ₁ : DirichletCharacter ℂ q₁) (χ₂ : DirichletCharacter ℂ q₂) (β₁ β₂ : ℝ),

@@ -49,7 +49,7 @@ import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.MeasureTheory.Measure.Haar.Unique
-public import Mathlib
+import Mathlib.Tactic
 
 @[expose] public section
 
@@ -82,16 +82,9 @@ lemma sigmaCompactSpace : SigmaCompactSpace F := by
     simp only [Set.sUnion_range, Set.mem_iUnion, Set.mem_ofPred_eq, Set.mem_univ, iff_true]
     exact ⟨_, le_rfl⟩
 
-lemma metrizableSpace : TopologicalSpace.MetrizableSpace F := by
-  let := IsTopologicalAddGroup.rightUniformSpace F
-  have := isUniformAddGroup_of_addCommGroup (G := F)
-  have := nhds_zero_isCountablyGenerated F
-  have := IsUniformAddGroup.uniformity_countably_generated (α := F)
-  exact UniformSpace.metrizableSpace
-
 lemma secondCountableTopology : SecondCountableTopology F := by
-  have := sigmaCompactSpace F
-  have := metrizableSpace F
+  have := _root_.GroundTheory.Automorphic.Measures.sigmaCompactSpace F
+  have := _root_.GroundTheory.Automorphic.Measures.metrizableSpace F
   infer_instance
 
 end LocalField

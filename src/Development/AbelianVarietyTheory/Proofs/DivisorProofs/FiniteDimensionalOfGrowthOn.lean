@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.Multiplier
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConeDegreeGrowthChowFormIntegralityStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConeDegreeGrowthChowFormIntegrality
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecZEqZeroOfGenVal
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SiegelSpaceAlgebraHolds
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.GenFrExAndGenFromTest
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -39,7 +40,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.SiegelSpaceAlgebraHolds
 import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.IndefiniteTreeX
 
 @[expose] public section
@@ -113,6 +113,86 @@ theorem even_nsmul {G : WTZ E} (hG : Even G.2) (n : ℕ) : Even (n • G).2 := b
 section
 
 set_option synthInstance.maxHeartbeats 100000
+
+local instance (priority := high) instAlgebraTRing_DegTop {K : Type} [Field K] (p : TRing K) :
+    Algebra K p.R :=
+  Ideal.Quotient.algebra K
+
+local instance (priority := high) instCommRingTRing_DegTop {K : Type} [Field K] (p : TRing K) :
+    CommRing p.R :=
+  Ideal.Quotient.commRing p.I
+
+local instance (priority := high) instModuleTRing_DegTop {K : Type} [Field K] (p : TRing K) :
+    Module K p.R :=
+  Algebra.toModule
+
+local instance (priority := high) instAddCommGroupRul_DegTop :
+    AddCommGroup (Rul Xo c) :=
+  inferInstance
+
+local instance (priority := high) instModuleRul_DegTop :
+    Module c.F (Rul Xo c) :=
+  inferInstance
+
+local instance (priority := high) instSMulWithZeroRul_DegTop :
+    SMulWithZero c.F (Rul Xo c) :=
+  Module.toMulActionWithZero.toSMulWithZero
+
+local instance (priority := high) instAddCommGroupCuspW_DegTop (G : WTZ E) :
+    AddCommGroup ↥(cuspW Xo c U G) :=
+  Submodule.addCommGroup _
+
+local instance (priority := high) instModuleCuspW_DegTop (G : WTZ E) :
+    Module c.F ↥(cuspW Xo c U G) :=
+  Submodule.module _
+
+local instance (priority := high) instSMulWithZeroCuspW_DegTop (G : WTZ E) :
+    SMulWithZero c.F ↥(cuspW Xo c U G) :=
+  Module.toMulActionWithZero.toSMulWithZero
+
+local instance (priority := high) instDistribMulActionCuspW_DegTop (G : WTZ E) :
+    DistribMulAction c.F ↥(cuspW Xo c U G) :=
+  Module.toDistribMulAction
+
+local instance (priority := high) instMulActionCuspW_DegTop (G : WTZ E) :
+    MulAction c.F ↥(cuspW Xo c U G) :=
+  DistribMulAction.toMulAction
+
+local instance (priority := high) instSMulCuspW_DegTop (G : WTZ E) :
+    SMul c.F ↥(cuspW Xo c U G) :=
+  Module.toDistribMulAction.toDistribSMul.toSMul
+
+local instance (priority := high) instHSMulCuspW_DegTop (G : WTZ E) :
+    HSMul c.F ↥(cuspW Xo c U G) ↥(cuspW Xo c U G) :=
+  instHSMul
+
+local instance (priority := high) instAddCommGroupCuspOn_DegTop (Z : Comp Xo c) (G : WTZ E) :
+    AddCommGroup ↥(cuspOn U Z G) :=
+  Submodule.addCommGroup _
+
+local instance (priority := high) instModuleCuspOn_DegTop (Z : Comp Xo c) (G : WTZ E) :
+    Module c.F ↥(cuspOn U Z G) :=
+  Submodule.module _
+
+local instance (priority := high) instSMulWithZeroCuspOn_DegTop (Z : Comp Xo c) (G : WTZ E) :
+    SMulWithZero c.F ↥(cuspOn U Z G) :=
+  Module.toMulActionWithZero.toSMulWithZero
+
+local instance (priority := high) instDistribMulActionCuspOn_DegTop (Z : Comp Xo c) (G : WTZ E) :
+    DistribMulAction c.F ↥(cuspOn U Z G) :=
+  Module.toDistribMulAction
+
+local instance (priority := high) instMulActionCuspOn_DegTop (Z : Comp Xo c) (G : WTZ E) :
+    MulAction c.F ↥(cuspOn U Z G) :=
+  DistribMulAction.toMulAction
+
+local instance (priority := high) instSMulCuspOn_DegTop (Z : Comp Xo c) (G : WTZ E) :
+    SMul c.F ↥(cuspOn U Z G) :=
+  Module.toDistribMulAction.toDistribSMul.toSMul
+
+local instance (priority := high) instHSMulCuspOn_DegTop (Z : Comp Xo c) (G : WTZ E) :
+    HSMul c.F ↥(cuspOn U Z G) ↥(cuspOn U Z G) :=
+  instHSMul
 
 theorem range_pow_le {Z : Comp Xo c} {G : WTZ E} (hG : Even G.2) (n : ℕ) :
     (LinearMap.range (genPoint Z (cuspOn U Z G))) ^ (n + 1) ≤
@@ -201,7 +281,7 @@ theorem compDeg_le (hP : Proport U) (Z : Comp Xo c) {u : Weight Dw} (hu : ∀ τ
   rcases (compDeg U Z (wtOf Dw u 0)).eq_zero_or_pos with h0 | h0
   · rw [h0, Nat.cast_zero]; exact topDeg_nonneg Z hu
   · have := finiteDimensional_cuspOn hP Z hu
-    have h1 := GlobalTheory.T.cone_degree_growth_chowForm_integrality.1 c.F _ _ _ _ 1 le_rfl _ ((imageDeg_pos_iff _ _).1 h0)
+    have h1 := _root_.GlobalTheory.ConeDeg.degree_growth_integral.1 c.F _ _ _ _ 1 le_rfl _ ((imageDeg_pos_iff _ _).1 h0)
     have h2 := growth_hilb_le hP Z hu le_rfl
     rw [h1, Nat.cast_one, Nat.cast_one, one_pow, one_pow, one_mul, one_mul, ← ENNReal.ofReal_natCast] at h2
     exact (ENNReal.ofReal_le_ofReal_iff (topDeg_nonneg Z hu)).1 h2

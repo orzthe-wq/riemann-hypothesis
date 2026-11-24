@@ -126,8 +126,6 @@ theorem pairKO_cont {V V' : Type u} [AddCommGroup V] [Module O V] [TopologicalSp
   have hm : IsOpenQuotientMap T.mkQ := by
     first
     | exact Submodule.isOpenQuotientMap_mkQ T
-    | exact QuotientAddGroup.isOpenQuotientMap_mk
-    | exact QuotientAddGroup.isOpenQuotientMap_mk (N := T.toAddSubgroup)
   have hq : IsOpenQuotientMap (Prod.map T.mkQ (id : dualLat b T → dualLat b T)) :=
     hm.prodMap IsOpenQuotientMap.id
   rw [hq.isQuotientMap.continuous_iff]

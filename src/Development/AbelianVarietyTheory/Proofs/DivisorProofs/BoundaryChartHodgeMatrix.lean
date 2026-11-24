@@ -103,9 +103,6 @@ theorem prod_ratio_ne_zero (h : IsPd k x) (I : Finset (Fin (d + 1))) (i : Fin (d
     ∏ j ∈ I, x j / x i ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun j _ => div_ne_zero (h.ne j) (h.ne i)
 
-theorem prod_ratio_mem (I : Finset (Fin (d + 1))) (i : Fin (d + 1)) : ∏ j ∈ I, x j / x i ∈ rA k x {i} :=
-  Subalgebra.prod_mem _ fun j _ => Algebra.subset_adjoin ⟨i, Finset.mem_singleton_self i, j, rfl⟩
-
 theorem prod_ratio_inv_mem (I : Finset (Fin (d + 1))) (i : Fin (d + 1)) : (∏ j ∈ I, x j / x i)⁻¹ ∈ rA k x I := by
   rw [← Finset.prod_inv_distrib]
   exact Subalgebra.prod_mem _ fun j hj => by
@@ -116,21 +113,21 @@ theorem rA_singleton_le {I : Finset (Fin (d + 1))} {i : Fin (d + 1)} (hi : i ∈
 
 theorem rA_isIntegrallyClosed (h : IsPd k x) {I : Finset (Fin (d + 1))} {i : Fin (d + 1)} (hi : i ∈ I) :
     IsIntegrallyClosed (rA k x I) := by
-  obtain ⟨e, -⟩ := GlobalTheory.T.standardAffineOpen_ring_polynomialEquiv k F d x h i
+  obtain ⟨e, -⟩ := _root_.GlobalTheory.PD.rA_single_polyEquiv k F d x h i
   haveI : IsIntegrallyClosed (rA k x {i}) := IsIntegrallyClosed.of_equiv e.toRingEquiv
   letI : Algebra (rA k x {i}) (rA k x I) := (Subalgebra.inclusion (rA_singleton_le hi)).toRingHom.toAlgebra
-  haveI : IsLocalization.Away (⟨_, prod_ratio_mem I i⟩ : rA k x {i}) (rA k x I) :=
+  haveI : IsLocalization.Away (⟨_, _root_.GlobalTheory.PD.Loc.prod_mem_single I i⟩ : rA k x {i}) (rA k x I) :=
     isLocalizationAway_of_le (fun _ => rfl) _ (prod_ratio_ne_zero h I i) (prod_ratio_inv_mem I i)
-      fun y hy => (GlobalTheory.T.mem_standardOpenCoordinateRing_iff_localization_chart k F d x h I i hi y).1 hy
-  exact isIntegrallyClosed_of_isLocalization (rA k x I) (Submonoid.powers (⟨_, prod_ratio_mem I i⟩ : rA k x {i}))
+      fun y hy => (_root_.GlobalTheory.PD.rA_eq_loc k F d x h I i hi y).1 hy
+  exact isIntegrallyClosed_of_isLocalization (rA k x I) (Submonoid.powers (⟨_, _root_.GlobalTheory.PD.Loc.prod_mem_single I i⟩ : rA k x {i}))
     (powers_le_nonZeroDivisors_of_noZeroDivisors fun h0 => prod_ratio_ne_zero h I i (congrArg Subtype.val h0))
 
 theorem rA_finite (h : IsFinCover k K x) {I : Finset (Fin (d + 1))} {i : Fin (d + 1)} (hi : i ∈ I) :
     Module.Finite (rA k x I) (integralClosure (rA k x I) K) := by
   haveI := h.fin
   haveI := h.sep
-  haveI : IsFractionRing (rA k x I) F := (GlobalTheory.T.standardOpenCoordinateRing_isFractionRing_isNoetherianRing k F d x h.pd I ⟨i, hi⟩).1
-  haveI : IsNoetherianRing (rA k x I) := (GlobalTheory.T.standardOpenCoordinateRing_isFractionRing_isNoetherianRing k F d x h.pd I ⟨i, hi⟩).2
+  haveI : IsFractionRing (rA k x I) F := (_root_.GlobalTheory.PD.rA_isFractionRing_isNoetherianRing k F d x h.pd I ⟨i, hi⟩).1
+  haveI : IsNoetherianRing (rA k x I) := (_root_.GlobalTheory.PD.rA_isFractionRing_isNoetherianRing k F d x h.pd I ⟨i, hi⟩).2
   haveI := rA_isIntegrallyClosed h.pd hi
   set_option synthInstance.maxHeartbeats 200000 in
     exact IsIntegralClosure.finite (rA k x I) F K (integralClosure (rA k x I) K)
@@ -138,16 +135,16 @@ theorem rA_finite (h : IsFinCover k K x) {I : Finset (Fin (d + 1))} {i : Fin (d 
 theorem rB_frac (h : IsFinCover k K x) {I : Finset (Fin (d + 1))} {i : Fin (d + 1)} (hi : i ∈ I) :
     IsFractionRing (rB k K x I) K := by
   haveI := h.fin
-  haveI : IsFractionRing (rA k x I) F := (GlobalTheory.T.standardOpenCoordinateRing_isFractionRing_isNoetherianRing k F d x h.pd I ⟨i, hi⟩).1
+  haveI : IsFractionRing (rA k x I) F := (_root_.GlobalTheory.PD.rA_isFractionRing_isNoetherianRing k F d x h.pd I ⟨i, hi⟩).1
   exact integralClosure.isFractionRing_of_finite_extension F K
 
 theorem rB_smooth [CharZero k] (h : IsFinCover k K x) {I : Finset (Fin (d + 1))} {i : Fin (d + 1)} (hi : i ∈ I) :
     Algebra.Smooth k (rB k K x I) := by
   have hleB : rB k K x {i} ≤ rB k K x I :=
-    (GlobalTheory.T.finite_cover_ring_localization_chart k F K d x h {i} i (Finset.mem_singleton_self i)).1 I (Finset.singleton_subset_iff.2 hi)
-  have hloc := (GlobalTheory.T.finite_cover_ring_localization_chart k F K d x h I i hi).2
+    (_root_.GlobalTheory.PD.rB_mono_loc k F K d x h {i} i (Finset.mem_singleton_self i)).1 I (Finset.singleton_subset_iff.2 hi)
+  have hloc := (_root_.GlobalTheory.PD.rB_mono_loc k F K d x h I i hi).2
   have hsB : algebraMap F K (∏ j ∈ I, x j / x i) ∈ rB k K x {i} :=
-    (integralClosure (rA k x {i}) K).algebraMap_mem ⟨_, prod_ratio_mem I i⟩
+    (integralClosure (rA k x {i}) K).algebraMap_mem ⟨_, _root_.GlobalTheory.PD.Loc.prod_mem_single I i⟩
   have hsiB : (algebraMap F K (∏ j ∈ I, x j / x i))⁻¹ ∈ rB k K x I := by
     rw [← map_inv₀]; exact (integralClosure (rA k x I) K).algebraMap_mem ⟨_, prod_ratio_inv_mem I i⟩
   haveI := h.smooth i

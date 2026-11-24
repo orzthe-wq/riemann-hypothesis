@@ -1,5 +1,6 @@
 module
 
+import Lemmata.CharpolySmul
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MonodromyZeroOfWeilDeligneRepClassIff
 public import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.AffineMonoid.UniqueSums
@@ -81,16 +82,9 @@ theorem eq_det_smul_one (hV : finrank ℂ V = 1) (f : Module.End ℂ V) :
   rw [LinearMap.det_smul, hV, pow_one]
   simp
 
-theorem charpoly_smul_eq_scaleRoots (f : Module.End ℂ V) {t : ℂ} (ht : t ≠ 0) :
-    (t • f).charpoly = f.charpoly.scaleRoots t := by
-  refine Polynomial.funext fun z => ?_
-  have h0 : t * (z / t) = z := by field_simp
-  have h1 := scaleRoots_eval₂_mul (p := f.charpoly) (RingHom.id ℂ) (z / t) t
-  simp only [RingHom.id_apply, h0, eval₂_id] at h1
-  rw [h1, LinearMap.eval_charpoly, LinearMap.eval_charpoly, LinearMap.charpoly_natDegree,
-    ← LinearMap.det_smul]
-  congr 1
-  rw [smul_sub, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, smul_smul, h0]
+theorem charpoly_smul_eq_scaleRoots (f : Module.End ℂ V) {t : ℂ} :
+    (ht : t ≠ 0) → (t • f).charpoly = f.charpoly.scaleRoots t :=
+  fun _ ↦ LinearMap.charpoly_smul f t
 
 theorem charpoly_map_one (hV' : finrank ℂ V' = 1) (f : Module.End ℂ V) :
     (TensorProduct.map f (1 : Module.End ℂ V')).charpoly = f.charpoly := by

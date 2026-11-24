@@ -323,9 +323,9 @@ open CubeGen
 
 theorem Core.exists_gen_normOne : ∀ (C : Core) (L : C.Law) (T : C.Theta) (Om : Set C.G.toScheme) (ν), IsOpen Om → T.Norms Om ν → L.CompanionTheory Om → (∀ w : C.G.toScheme, IsClosed ({w} : Set C.G.toScheme) → ∃ (W : C.G.toScheme.Opens) (W₀ : C.A.left.Opens) (gen₀ : LB.Gen (T.L.L.pull W₀.ι)), w ∈ W ∧ (W₀ : Set C.A.left).Nonempty ∧ gen₀.IsGen ∧ ∀ (p : ℕ) [Fact p.Prime] (x : Sp (PadicAlgCl p) ⟶ W₀.toScheme), IntAt (W₀.ι ≫ C.a) W x → NormOne ν gen₀ x) := by
   intro C L T Om ν hOm hN h6 w hw
-  letI := L.grp
-  haveI := L.comm
-  haveI := C.isOpenImmersion_a
+  let := L.grp
+  have := L.comm
+  have := C.isOpenImmersion_a
   obtain ⟨N, b, c, K, _, t, x', b', c', hx', hb', hc', hsix⟩ := h6 w hw
 
   let X : C.G.toScheme.Opens := C.GG.hom ⁻¹ᵁ N
@@ -389,9 +389,9 @@ theorem Core.exists_gen_normOne : ∀ (C : Core) (L : C.Law) (T : C.Theta) (Om :
   let W₁ : XA.toScheme.Opens := preInter VA (Out.nonzeroLocus T.θ) (Out.nonzeroLocus T.θ).isOpen
   let W₀ : C.A.left.Opens := XA.ι ''ᵁ W₁
   have hne : (W₀ : Set C.A.left).Nonempty := by
-    haveI := C.isIntegral_G
+    have := C.isIntegral_G
     obtain ⟨-, h₂, -, -, h₅, -⟩ := core_basic C
-    haveI := C.lft
+    have := C.lft
     obtain ⟨a₀⟩ := C.nonempty_A
     obtain ⟨p, _, β, hβ, hU⟩ := padicAlgCl_integral_points.1 C.G.toScheme (C.GG.hom ≫ C.π) w hw
       C.a.opensRange ⟨_, a₀, rfl⟩

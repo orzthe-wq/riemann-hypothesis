@@ -117,7 +117,7 @@ theorem not_first_orbit_weyl (h : _root_.PositivityTheory.SiegelWeilFormula.Act.
   have h1 := hS L.i₀
   rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply, Finset.sum_eq_single (Sum.inl L.i₀)] at h1
   · rw [hg, Matrix.one_apply_eq, mul_one, hW] at h1
-    simp [Matrix.single_apply, Matrix.one_apply] at h1
+    simp at h1
     exact hb (kfour.inclR_injective (F := F) (by rw [h1, map_zero]))
   · intro j _ hj; rw [hg j, Matrix.one_apply_ne hj, mul_zero]
   · simp
@@ -143,7 +143,7 @@ theorem weyl_commutes_embedding (h : _root_.PositivityTheory.SiegelWeilFormula.A
     rw [Matrix.sub_apply, hW]
     simp only [P, not_and_or] at hrc
     rcases hrc with hr | hr <;> push_neg at hr <;>
-      simp [Matrix.single_apply, Matrix.one_apply, hr.1, hr.2, Ne.symm hr.1, Ne.symm hr.2]
+      simp [Matrix.one_apply, Ne.symm hr.1, Ne.symm hr.2]
   have hJo : ∀ r c, (P r ∨ P c) → (J - 1) r c = 0 := by
     intro r c hrc
     rw [Matrix.sub_apply, sub_eq_zero]
@@ -191,7 +191,7 @@ theorem fix_cM'_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L 
   intro k
   rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.cM_frame_k h]
   rcases k with k | k
-  · simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L]
+  · simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.one_apply, Matrix.sum_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L]
   · simp
 theorem cM_rat'_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) {c : (Fin L.n → AE F E) × AF F} (hu : c.1 ∈ L.ratV)
     (ha : c.2 ∈ (algebraMap F (AF F)).range) : cM c ∈ rat2 σ d.Y := by
@@ -224,8 +224,8 @@ theorem emS_cM_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L n
     (inFrame d.b (cM c)).submatrix (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L) (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L) = 1 := by
   ext r r'
   rcases r with k | k <;> rcases r' with k' | k' <;>
-    simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.cM_frame_k h, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L, L.inj.eq_iff,
-      Ne.symm (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L _)] <;> split_ifs <;> simp
+    simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.cM_frame_k h, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k, Matrix.one_apply, Matrix.sum_apply, L.inj.eq_iff,
+      Ne.symm (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L _)]
 end PositivityTheory.SiegelWeilFormula.Act.C6
 end
 end

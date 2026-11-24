@@ -5,53 +5,9 @@ public import GroundTheory.PAdicHodge.CyclotomicField
 public import Mathlib.RingTheory.Polynomial.Cyclotomic.Basic
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormNatCastPrime
 import GroundTheory.PAdicHodge.GaloisOnCp
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.RingTheory.Polynomial.Cyclotomic.Eval
 
 @[expose] public section
@@ -65,9 +21,6 @@ open IntermediateField Polynomial Module
 noncomputable section
 
 variable {p : ℕ} [Fact p.Prime]
-
-theorem norm_natCast_prime : ‖(p : PadicAlgCl p)‖ = (p : ℝ)⁻¹ :=
-  _root_.UpperTheory.Reformulated.B.CapelliMiscellany.norm_natCast_prime
 
 theorem norm_eq_one_of_pow_eq_one {x : PadicAlgCl p} {N : ℕ} (hN : N ≠ 0) (hx : x ^ N = 1) :
     ‖x‖ = 1 := by
@@ -100,7 +53,7 @@ theorem norm_sub_one_pow_totient {ζ : PadicAlgCl p} {k : ℕ}
   have h1 := congrArg (eval 1) (cyclotomic_eq_prod_X_sub_primitiveRoots hζ)
   rw [eval_one_cyclotomic_prime_pow, eval_prod] at h1
   simp only [eval_sub, eval_X, eval_C] at h1
-  rw [← norm_natCast_prime]
+  rw [← _root_.UpperTheory.Reformulated.B.CapelliMiscellany.norm_natCast_prime]
   calc ‖ζ - 1‖ ^ Nat.totient (p ^ (k + 1))
       = ∏ _μ ∈ primitiveRoots (p ^ (k + 1)) (PadicAlgCl p), ‖ζ - 1‖ := by
         rw [Finset.prod_const, hζ.card_primitiveRoots]

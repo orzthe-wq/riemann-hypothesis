@@ -6,45 +6,7 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankP
 public import Formalism.FlagUnipotentLattices.AlgebraicIdentityHigherDegree
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.BlockEndMinorsOfCell
 import Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -132,7 +94,7 @@ theorem dr_eq {r : ℕ} (w : Point K (r + 1)) : DrPt (toPts w) = leadingPrincipa
     rw [Matrix.det_isEmpty]
   · symm
     rw [ptMat_eq]
-    refine Formalism.HermitianLatticeCounting.Final.ExpansionTerms.e4aVanish K (r + 1) (toComp w) (toT w) r (by omega) fun p hp => ?_
+    refine _root_.Formalism.HermitianLatticeCounting.P.leading_minor_vanishes_off_block_ends K (r + 1) (toComp w) (toT w) r (by omega) fun p hp => ?_
     have hb := (toPts w).1.one_le_blocksFun ⟨(toPts w).1.length - 1, by omega⟩
     have hb2 : 2 ≤ (toPts w).1.blocksFun ⟨(toPts w).1.length - 1, by omega⟩ := by omega
     by_cases hpl : (toPts w).1.length ≤ p
@@ -206,15 +168,6 @@ private theorem gauss_lemma_5 (r q : ℕ) (hq : q ≤ r + 1) :
       show 2 * (q + k) + 1 - (q + 1) = q + 2 * k by omega]
     ring
 
-private theorem e4_cast_lemma_6 {R : Type*} [CommRing R] {N : ℕ} (A : Matrix (Fin N) (Fin N) R) (q : ℕ) (hq : q ≤ N) :
-    leadingPrincipalMinor A q = (A.submatrix (Fin.castLE hq) (Fin.castLE hq)).det := by
-  unfold leadingPrincipalMinor
-  let e : Fin q ≃ {i : Fin N // (i : ℕ) < q} :=
-    { toFun := fun k => ⟨Fin.castLE hq k, k.2⟩, invFun := fun i => ⟨i.1, i.2⟩,
-      left_inv := fun _ => rfl, right_inv := fun _ => rfl }
-  rw [← Matrix.det_submatrix_equiv_self e]
-  rfl
-
 theorem lead_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ)
     {T T' : D.host.E} (F : LFlag (D.sp.Y 0) D.R.rS T) (F' : LFlag (D.sp.Y 0) D.R.rS T')
     (hz : F.fl.z ∈ Λ) (hX : XLam Λ F = XS D F.fl) (hz' : F'.fl.z ∈ Λ) (hX' : XLam Λ F' = XS D F'.fl)
@@ -222,7 +175,7 @@ theorem lead_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.Herm
     ∃ o ∈ dI D ^ (q * (2 * D.R.rS + 1 - q)), (o : D.host.E) = leadingPrincipalMinor (ZhatOM (ZhatL F F')) q := by
   choose O hO hOe using fun a b => zhatOM_mem hun F F' hz hX hz' hX' a b
   refine ⟨leadingPrincipalMinor (Matrix.of O) q, ?_, ?_⟩
-  · rw [e4_cast_lemma_6 _ q hq, Matrix.det_apply']
+  · rw [_root_.Formalism.HermitianLatticeCounting.P.gf_lead_eq _ q hq, Matrix.det_apply']
     refine Ideal.sum_mem _ (fun σ _ => ?_)
     have hp := Ideal.prod_mem_prod (s := Finset.univ)
       (I := fun i : Fin q => dI D ^ ((D.R.rS - ((σ i : Fin q) : ℕ)) + (D.R.rS - (i : ℕ))))

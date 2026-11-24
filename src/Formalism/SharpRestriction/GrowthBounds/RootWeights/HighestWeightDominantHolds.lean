@@ -77,9 +77,9 @@ theorem highest_weight_dominant_pair {n : ℕ} {K V : Type*} [Field K] [CharZero
     refine ⟨h0, ?_, ?_, ?_⟩
     · rw [Ring.lie_def, hE.1 a b b a]; simp
     · rw [sub_lie, Ring.lie_def, Ring.lie_def, hE.1 a a a b, hE.1 b b a b]
-      simp [hne, hne.symm, two_smul]
+      simp [hne.symm, two_smul]
     · rw [sub_lie, Ring.lie_def, Ring.lie_def, hE.1 a a b a, hE.1 b b b a]
-      simp [hne, hne.symm, two_smul]
+      simp [hne, two_smul]
       abel
   have P : t.HasPrimitiveVectorWith v (((lam a - lam b : ℤ) : K)) :=
     ⟨hv.1, hhv, hv.2.2 a b hab⟩

@@ -59,7 +59,7 @@ theorem UpperTheory.V.Ws.Chain.exists_residual_datum_over_restriction_to_rationa
     rcases hT.2 with h | h
     · exact h.1.1
     · exact h.1.1
-  haveI : NumberField T.F := T.nF
+  have : NumberField T.F := T.nF
   have hl : l.Prime := Fact.out
   have hpl : ∀ v, ∃ g : G ℚ Ω, (∀ x : Ω, g x ∈ T.pl v ↔ x ∈ D.pl l) ∧
       (∀ s ∈ Dec (T.pl v), g⁻¹ * resQ T.F s * g ∈ Dec (D.pl l)) ∧
@@ -116,7 +116,7 @@ theorem UpperTheory.V.Ws.Chain.exists_residual_datum_over_restriction_to_rationa
         rw [MonoidHom.mem_ker, map_mul, map_mul, hψ, mul_one, map_inv, inv_mul_cancel]⟩⟩)
       have hx : resQ T.F h = γ * (γ⁻¹ * resQ T.F h * γ) * γ⁻¹ := by group
       rw [hx, map_mul, map_mul, hk, mul_one, ← map_mul, mul_inv_cancel, map_one]
-    · push_neg at hS
+    · push Not at hS
       refine hc₀.pair.kill _ (Or.inl ⟨A, ?_, hI, hb⟩)
       intro q hq
       rcases Finset.mem_insert.1 hq with rfl | hq
@@ -131,8 +131,8 @@ theorem UpperTheory.V.Ws.Chain.exists_residual_datum_over_restriction_to_rationa
     obtain ⟨hsD, m, hm⟩ := hs
     refine ((key v s hsD).2 i).trans ?_
     have hchar : CharP k l := by
-      haveI := c.dvr
-      haveI := c.fin
+      have := c.dvr
+      have := c.fin
       have hmax : ((l : ℕ) : c.O) ∈ IsLocalRing.maximalIdeal c.O := by
         obtain ⟨Q, hQ, hQc⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral (R := ℤ_[l]) (S := c.O)
           (IsLocalRing.maximalIdeal ℤ_[l]) (IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top _))

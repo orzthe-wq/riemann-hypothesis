@@ -85,14 +85,3 @@ theorem hasChart_iff (Z : Model Xo c β) (x : gen Z) : HasChart Z x ↔ HasToric
     exact ⟨k, _, m, d, ξ, t, P, γ, hx, h₁, h₂, h₃, h₄, h₅, h₆⟩
 
 end GlobalTheory.MumfordChart
-
-namespace GlobalTheory.Published
-
-def ToroidalCharts : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q →
-    ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l),
-      ∃ Y : Model Xo c (RingHom.id c.F),
-        SmoothOfRelativeDimension Dw.dim (genStr Y) ∧ FinalTheorems.Snc (genBdIdeal Y) ∧
-          ∀ x ∈ genBd Y, GlobalTheory.MumfordChart.HasChart Y x
-
-end GlobalTheory.Published

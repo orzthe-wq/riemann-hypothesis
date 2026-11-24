@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.LevelLetterCocycles.StrictSesLetter
 
 @[expose] public section
 
@@ -333,13 +334,6 @@ private theorem crisMap_iV_lemma_17 {V V' : Type} [AddCommGroup V] [Module LL V]
   | tmul v c => simp [crisMap, ιV]
   | add x y hx hy => simp only [map_add (f := _), hx, hy]
 
-private theorem crisMap_mulVB_lemma_19 {V V' : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V'] (f : V →ₗ[LL] V') (c : K₀) (z : V ⊗[Qp] B) :
-    crisMap B f (mulVB (LL := LL) (V := V) (B := B) c z) = mulVB (LL := LL) (V := V') (B := B) c (crisMap B f z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
-  | tmul v w => simp [crisMap, mulVB]
-  | add x y hx hy => simp only [map_add (f := _), hx, hy]
-
 theorem fil_pull [FiniteDimensional Qp LL] (W : LocWach PD LL O v n)
     (hK : Function.Bijective (algebraMap K₀ K)) (h9 : DcrisExactStrict PD LL)
     (T₂ Y : LocLat G Qp LL O) (ι : LatHom T₂.L Y.L) (π : LatHom Y.L W.one.L) (hses : IsSESLat (Qp := Qp) ι π)
@@ -384,7 +378,7 @@ theorem fil_pull [FiniteDimensional Qp LL] (W : LocWach PD LL O v n)
       LinearMap.id_apply, sub_eq_zero] at hνL2 ⊢
     intro c
     apply hinj
-    rw [crisMap_mulVB_lemma_19 ι.f, map_smul, hμ, hνL2 c]
+    rw [_root_.Formalism.MainNotions.UnusedSlot80.Strict.crisMap_mulVB ι.f, map_smul, hμ, hνL2 c]
   exact ⟨μ, Submodule.mem_inf.2 ⟨hμF, hμL⟩, hμ⟩
 
 end SES

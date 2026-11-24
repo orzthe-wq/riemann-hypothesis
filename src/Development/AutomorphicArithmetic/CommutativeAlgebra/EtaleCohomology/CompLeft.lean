@@ -120,20 +120,20 @@ theorem comp_left' {U V W : B.Etale} (a : U ⟶ V) (b : V ⟶ W) : (a ≫ b).lef
 def gY {Y : Scheme.{0}} (p : Y ⟶ B) : B.Etale ⥤ Scheme.{0} where
   obj U := YU p U
   map a := resY p a
-  map_id U := by apply pullback.hom_ext <;> simp [resY, resYW, resBW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, id_left', comp_left']
-  map_comp a b := by apply pullback.hom_ext <;> simp [resY, resYW, resBW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, id_left', comp_left']
+  map_id U := by apply pullback.hom_ext <;> simp [resY, pullback.map, id_left']
+  map_comp a b := by apply pullback.hom_ext <;> simp [resY, pullback.map, comp_left']
 
 def gYW {Y W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) : B.Etale ⥤ Scheme.{0} where
   obj U := pullback (pullback.snd p U.hom ≫ U.hom) ι
   map a := resYW p ι a
   map_id U := by
     apply pullback.hom_ext
-    · apply pullback.hom_ext <;> simp [resY, resYW, resBW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, id_left', comp_left']
-    · simp [resY, resYW, resBW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, id_left', comp_left']
+    · apply pullback.hom_ext <;> simp [resY, resYW, pullback.map, id_left']
+    · simp [resY, resYW, pullback.map, id_left']
   map_comp a b := by
     apply pullback.hom_ext
-    · apply pullback.hom_ext <;> simp [resY, resYW, resBW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, id_left', comp_left']
-    · simp [resY, resYW, resBW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, id_left', comp_left']
+    · apply pullback.hom_ext <;> simp [resY, resYW, pullback.map, comp_left']
+    · simp [resY, resYW, pullback.map, comp_left']
 
 def gB (B : Scheme.{0}) : B.Etale ⥤ Scheme.{0} where
   obj U := U.left
@@ -142,8 +142,8 @@ def gB (B : Scheme.{0}) : B.Etale ⥤ Scheme.{0} where
 def gBW {W : Scheme.{0}} (ι : W ⟶ B) : B.Etale ⥤ Scheme.{0} where
   obj U := pullback U.hom ι
   map a := resBW ι a
-  map_id U := by apply pullback.hom_ext <;> simp [resY, resYW, resBW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, id_left', comp_left']
-  map_comp a b := by apply pullback.hom_ext <;> simp [resY, resYW, resBW, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, id_left', comp_left']
+  map_id U := by apply pullback.hom_ext <;> simp [resBW, pullback.map, id_left']
+  map_comp a b := by apply pullback.hom_ext <;> simp [resBW, pullback.map, comp_left']
 
 def fY {Y W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) : gYW p ι ⟶ gY p where
   app U := prU p ι U

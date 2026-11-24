@@ -1,48 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.HasDerivAtRealOfComplex
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.OneParam
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.OpEqExp
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.UniqueA
@@ -72,16 +31,12 @@ lemma uq_offdiag_zero {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX
   · exact h3
   · exact absurd (sub_eq_zero.mp h3).symm hd
 
-lemma uq_kHighest {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) :
-    Formalism.REAL.KHighest ε (kunits T) Λ T.w :=
-  ⟨fun a => T.w_wt a, fun a b hab he => T.w_hw a b hab he⟩
-
 theorem kType_unique {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T T' : KType ε Λ) :
     ∃ φ : T.V ≃ₗᵢ[ℂ] T'.V, (∀ (k : KG ε) (v : T.V), φ (T.op k v) = T'.op k (φ v)) ∧
       (∀ X : Matrix (Fin n) (Fin n) ℂ, X * Jm ε = Jm ε * X → ∀ v : T.V, φ (T.dτ X v) = T'.dτ X (φ v)) ∧
       φ T.w = T'.w := by
   obtain ⟨φ, hφF, hφw⟩ := uq_exists_isometry ε (kunits T) (kunits T') Λ T.w T'.w (KType.kRel T)
-    (KType.kRel T') (KType.kUnit T) (KType.kUnit T') (uq_kHighest T) (uq_kHighest T') T.w_norm
+    (KType.kRel T') (KType.kUnit T) (KType.kUnit T') (_root_.ReciprocityTheory.ChartRestriction.DS.HW.KType.kHighest_w T) (_root_.ReciprocityTheory.ChartRestriction.DS.HW.KType.kHighest_w T') T.w_norm
     T'.w_norm (KType.kSpan_eq_top T) (KType.kSpan_eq_top T')
   have expand : ∀ (S : KType ε Λ) (X : Matrix (Fin n) (Fin n) ℂ) (u : S.V),
       S.dτ X u = ∑ a, ∑ b, X a b • S.dτ (Matrix.single a b 1) u := by

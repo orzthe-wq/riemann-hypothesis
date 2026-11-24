@@ -64,7 +64,7 @@ theorem rows_psi_nonneg {κ : Type} [Fintype κ] (y : κ → ℂ) : 0 ≤ sumOfS
 theorem rows_finsum_le {κ : Type} [Fintype κ] (Λ : AddSubgroup (κ → ℂ))
     (hΛ : ∀ x ∈ Λ, x ≠ 0 → 1 ≤ ∏ v, ‖x v‖) (T : Finset (κ → ℂ)) (hT : ∀ y ∈ T, y ∈ Λ) :
     ∑ y ∈ T, sumOfSquaredModuli y ≤ (41 : ℝ) ^ Fintype.card κ := by
-  obtain ⟨hs, hle⟩ := Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.latticeSum κ Λ 1 le_rfl hΛ
+  obtain ⟨hs, hle⟩ := _root_.Formalism.HermitianLatticeCounting.P.lattice_sum_alt κ Λ 1 le_rfl hΛ
   have e : ∑ y ∈ T.subtype (fun y => y ∈ Λ), sumOfSquaredModuli (y : κ → ℂ) = ∑ y ∈ T, sumOfSquaredModuli y :=
     Finset.sum_subtype_of_mem (fun y => sumOfSquaredModuli y) hT
   rw [← e]

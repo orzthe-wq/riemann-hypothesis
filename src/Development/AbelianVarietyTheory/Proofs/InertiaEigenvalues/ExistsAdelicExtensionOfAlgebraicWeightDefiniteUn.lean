@@ -120,23 +120,13 @@ theorem polyMat_rat {ι : Type} (P : ι → ι → MvPolynomial ((E →+* ℂ) �
   rfl
 
 
-omit [NumberField E] [IsCMField E] in
-theorem continuous_coord' (τ : E →+* ℂ) : Continuous (coord τ) := by
-  unfold coord
-  split_ifs
-  · exact continuous_apply _
-  · exact Complex.continuous_conj.comp (continuous_apply _)
-
-theorem continuous_pInf' : Continuous (pInf E) :=
-  continuous_pi fun w =>
-    ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
-      (continuous_apply w)).comp continuous_fst
+alias continuous_pInf' := _root_.GlobalTheory.DefU.continuous_pInfComp
 
 theorem continuous_polyMat {ι : Type} (P : ι → ι → MvPolynomial ((E →+* ℂ) × Fin n × Fin n) ℂ) :
     Continuous (polyMat P) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   refine (MvPolynomial.continuous_eval (P i j)).comp (continuous_pi fun p => ?_)
-  refine (continuous_coord' p.1).comp (continuous_pInf'.comp
+  refine (_root_.GlobalTheory.CuspRep.InfType.continuous_coord p.1).comp (continuous_pInf'.comp
     (f := fun g : UA E n => (g.1 : Matrix (Fin n) (Fin n) (Ad E)) p.2.1 p.2.2) ?_)
   exact (Units.continuous_val.comp continuous_subtype_val).matrix_elem _ _
 

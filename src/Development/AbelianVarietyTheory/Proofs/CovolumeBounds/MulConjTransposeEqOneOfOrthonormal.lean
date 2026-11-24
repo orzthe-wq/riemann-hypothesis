@@ -108,7 +108,7 @@ theorem det_mul_eq_sum_minors {n : Type*} [Fintype n] [LinearOrder n] {i : ℕ}
   change Matrix.det _ = _
   congr 1
   ext a c
-  simp [Matrix.vecMulLinear_apply, Matrix.single_one_vecMul]
+  simp
 
 theorem det_mul_det_eq_of_range_eq {m k n : Type*} [Fintype m] [DecidableEq m] [Fintype k]
     [DecidableEq k] (A : Matrix m n R) (B : Matrix n m R) (φ : k ≃ m) (e : m → n) (g : k → n)

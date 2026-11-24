@@ -5,7 +5,7 @@ public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
 public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationSubringNonunitsPowModEqZeroStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationSubringNonunitsPowModEqZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -365,7 +365,7 @@ theorem prim_inv_mod_pow : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClo
   intro Ω _ _ _ l _ A hl n L P hL hP hPL
   have hnil : ∀ x ∈ A.nonunits, ∃ k : ℕ, ∃ z ∈ A, x ^ k = (l : Ω) * z := by
     intro x hx
-    obtain ⟨k, z, hz, e⟩ := GlobalTheory.T.valuationSubring_nonunits_pow_modEq_zero l A hl x hx
+    obtain ⟨k, z, hz, e⟩ := _root_.GlobalTheory.cgA_pow_of_mem_nonunits l A hl x hx
     exact ⟨k, z, hz, by rw [sub_zero, pow_one] at e; exact e⟩
   have hPL' : PrimInv.LatS L P := by
     intro r hr

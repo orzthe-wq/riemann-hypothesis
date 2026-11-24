@@ -2,63 +2,20 @@ module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ArithmeticUnitaryGroupDiscrete
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.BlockOneDetHermitianGram
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.BlockOneRightInjective
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.QuotientMeasureTowerStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelMeanValueNonnegativeStatement
+public import Mathlib.MeasureTheory.Group.FundamentalDomain
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.QuotientMeasureTower
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelMeanValueNonnegative
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionGlobal
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryGroupFiniteVolume
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionGlobalStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -308,8 +265,8 @@ theorem theta_stage : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
   obtain ⟨b1, b2, -, -⟩ := BlockAlg.block_alg F E σ hσ M J t
   have hJb : IsHermND σ (blockOne (algebraMap F E t) J) :=
     ⟨b2 hJ.1, by rw [b1]; exact mul_ne_zero ht' hJ.2⟩
-  obtain ⟨tg, lc, sc, t2, bs, act⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ (M + 1) _ hJb (AF F)
-  obtain ⟨tg₁, lc₁, sc₁, t2₁, bs₁, act₁⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (AF F)
+  obtain ⟨tg, lc, sc, t2, bs, act⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ (M + 1) _ hJb (AF F)
+  obtain ⟨tg₁, lc₁, sc₁, t2₁, bs₁, act₁⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ M J hJ (AF F)
   haveI := tg
   haveI := lc
   haveI := sc
@@ -348,7 +305,7 @@ theorem theta_stage : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
         gact σ g q.1 = fun _ => Fin.cons 1 (fun _ => 0) := by
     intro q
     have hq : gramE σ (blockOne (algebraMap F E t) J) q.1 = fun _ _ => algebraMap F E t := q.2
-    obtain ⟨g, hg, hgy⟩ := GlobalTheory.T.witt_extension_global F E σ hσ (M + 1) _ hJb 1 q.1
+    obtain ⟨g, hg, hgy⟩ := _root_.GlobalTheory.CompanionTheory.SW.WittE.witt_tuple F E σ hσ (M + 1) _ hJb 1 q.1
       (fun _ => Fin.cons 1 (fun _ => 0)) (by rw [hq, gram_first])
       (by rw [hq]; intro h; exact ht' ((Matrix.det_fin_one (fun _ _ => algebraMap F E t : Matrix (Fin 1) (Fin 1) E)).symm.trans h))
     exact ⟨⟨g, hg⟩, funext hgy⟩
@@ -428,7 +385,7 @@ theorem theta_stage : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
         exact congrArg _ (map_inv ι u').symm
       rw [h6, hmul, hstab, e3, hfix, hrinv]
     rw [← e1, ← e2]
-  have key := GlobalTheory.T.quotient_measure_tower _ _ ι hιc μ μ₁ Γ Γ₁ 𝓕 𝓕₁ h𝓕 h𝓕₁ hfin hΓ _ r (fun q => ratH_mem _ σ _ _) huniq φ hφ hinv
+  have key := _root_.GlobalTheory.CompanionTheory.SW.Averaging.lintegral_sum_cosets_average _ _ ι hιc μ μ₁ Γ Γ₁ 𝓕 𝓕₁ h𝓕 h𝓕₁ hfin hΓ _ r (fun q => ratH_mem _ σ _ _) huniq φ hφ hinv
   have hA : ∀ h : HA (AF F) σ (blockOne (algebraMap F E t) J),
       ∑' Y : {Y : Fin (n + 1) → Fin (M + 1) → E | gramE σ (blockOne (algebraMap F E t) J) Y =
           blockOne (algebraMap F E t) T},
@@ -450,12 +407,12 @@ theorem theta_stage : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
           actW (AF F) σ _ g⁻¹ (consTup X) :=
         (act (n + 1)).1.comp (continuous_const.prodMk continuous_consTup)
       exact this.measurable
-    rw [hyp g⁻¹, GlobalTheory.T.siegel_mean_value_nonnegative F E σ hσ M J hJ μ₁ 𝓕₁ hμ₁ h𝓕₁ n _ _ hm]
+    rw [hyp g⁻¹, _root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hσ M J hJ μ₁ 𝓕₁ hμ₁ h𝓕₁ n _ _ hm]
     congr 1
     refine lintegral_congr fun u => tsum_congr fun X => ?_
     rw [mul_inv_rev, hmul, ← map_inv ι, hιcons]
-  rw [GlobalTheory.T.siegel_mean_value_nonnegative F E σ hσ (M + 1) _ hJb μ 𝓕 hμ h𝓕 (n + 1) _ Φ hΦ,
-    GlobalTheory.T.siegel_mean_value_nonnegative F E σ hσ (M + 1) _ hJb μ 𝓕 hμ h𝓕 1 _ Ψ hΨ]
+  rw [_root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hσ (M + 1) _ hJb μ 𝓕 hμ h𝓕 (n + 1) _ Φ hΦ,
+    _root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hσ (M + 1) _ hJb μ 𝓕 hμ h𝓕 1 _ Ψ hΨ]
   congr 1
   calc _ = ∫⁻ h in 𝓕, ∑' q, φ (r q * h) ∂μ := lintegral_congr hA
     _ = _ := key

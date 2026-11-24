@@ -97,7 +97,7 @@ theorem mem_of_annihilates {R V : Type*} [CommRing R] [AddCommGroup V] [Module R
   haveI : Module.Projective R (LinearMap.range s) := Module.Projective.of_equiv es
   let pr : W' →ₗ[R] LinearMap.ker Φ := LinearMap.snd R _ _ ∘ₗ ep.symm.toLinearMap
   have hpr : pr ∘ₗ (LinearMap.ker Φ).subtype = LinearMap.id := LinearMap.ext fun x ↦ by
-    simp [pr, ep, Submodule.prodEquivOfIsCompl_symm_apply_right]
+    simp [pr, ep]
   haveI : Module.Finite R (LinearMap.ker Φ) :=
     Module.Finite.of_surjective pr (fun x ↦ ⟨x, by simpa using congrArg (fun m ↦ m x) hpr⟩)
   haveI : Module.Projective R (LinearMap.ker Φ) := Module.Projective.of_split _ _ hpr

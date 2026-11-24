@@ -79,9 +79,7 @@ open GlobalTheory.GeoLevel GlobalTheory.Member Formalism.L2.Host
 
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H}
 
-theorem natCast_mem_Mb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (l : Level H) :
-    (l.M : 𝓞 E) ∈ l.Mb :=
-  Ideal.mul_le_left (l.prod.ge (Ideal.mem_span_singleton_self _))
+alias natCast_mem_Mb := _root_.GlobalTheory.LevelPoints.natCast_mem
 
 
 

@@ -3,12 +3,12 @@ module
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 public import GroundTheory.GlobalFields.TateThesis.AdeleMeasure
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsFiniteAdeleHaarNormalized
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleHaarEqProductLocalMeasures
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LintegralFintypeProdEqProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TensTop
 import GroundTheory.AutomorphicForms.ReductionMeasure
 import GroundTheory.GlobalFields.TateThesis.IdeleMeasure
@@ -72,7 +72,7 @@ theorem measurableSet_latV (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ}
     (v : HeightOneSpectrum (𝓞 F)) : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
   obtain ⟨t1, t2, t3, t4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   haveI := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)).2.2.2.2.2.2.2.1 n M
-  exact ((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2.measurableSet
+  exact ((_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM d b n M).2.2.2.1 v).2.measurableSet
 
 theorem coordW_latV (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E)
     (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)) (hlam : ∀ v, IsStdV v (lam v)) (n M : ℕ) (v : HeightOneSpectrum (𝓞 F)) :
@@ -132,7 +132,7 @@ theorem lint_fin (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d : ℕ} (b : Modu
     unfold coordW
     infer_instance
   have hcV : ∀ v, Continuous (projV v : (Fin n → Fin M → Af F ⊗[F] E) → _) :=
-    (GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.1
+    (_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM d b n M).2.2.1
   have hpv : ∀ v, Measurable (projV v : (Fin n → Fin M → Af F ⊗[F] E) → _) := fun v => by
     haveI := hBv v
     exact (hcV v).measurable
@@ -214,7 +214,7 @@ theorem isFD_fundamentalSetInfinite (ν : Measure (InfiniteAdeleRing F)) :
     have hpre : fundamentalSetInfinite F =
         (fun x : InfiniteAdeleRing F => ((x, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)) ⁻¹' fundamentalSet F := by
       ext x
-      simp [fundamentalSet, Set.mem_prod, Subring.zero_mem]
+      simp [fundamentalSet]
     rw [hpre]
     exact (measurable_prodMk_right hmeas).nullMeasurableSet
   · obtain ⟨z, hz, hu⟩ := existsUnique_sub_mem_fundamentalSetInfinite F x

@@ -93,10 +93,10 @@ lemma y_int (W : WeierstrassCurve K)
     · simpa using mul_le (mul_le h1 hx) (le_refl ‖y‖)
     · simpa using mul_le h3 (le_refl ‖y‖)
   have hlt : ‖-(W.a₁ * x * y + W.a₃ * y)‖ < ‖y ^ 2‖ := by
-    rw [norm_neg, norm_pow]; nlinarith
+    rw [norm_neg, norm_pow]; linarith [lt_mul_of_one_lt_left (show 0 < ‖y‖ by linarith) hy]
   have key := le_sub_of_lt hlt
   rw [sub_neg_eq_add, ← add_assoc, h', norm_pow] at key
-  nlinarith
+  linarith [one_lt_pow₀ hy (by norm_num : 2 ≠ 0)]
 
 lemma y_sq_le (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
     (h : W.toAffine.Equation x y) (hx : 1 < ‖x‖) : ‖y‖ ^ 2 ≤ ‖x‖ ^ 3 := by
@@ -107,14 +107,14 @@ lemma y_sq_le (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
   push_neg at hy
   have hx0 : (0 : ℝ) < ‖x‖ := by linarith
   have hx2 : ‖x‖ ^ 2 < ‖x‖ ^ 3 := by
-    nlinarith [mul_pos (mul_pos hx0 hx0) (by linarith : (0 : ℝ) < ‖x‖ - 1)]
+    linarith [mul_pos (mul_pos hx0 hx0) (by linarith : (0 : ℝ) < ‖x‖ - 1)]
   have hx1 : ‖x‖ ≤ ‖x‖ ^ 3 := by
-    nlinarith [mul_pos hx0 (by linarith : (0 : ℝ) < ‖x‖ - 1)]
+    linarith [mul_pos hx0 (by linarith : (0 : ℝ) < ‖x‖ - 1), hx2]
   have hxy : ‖x‖ < ‖y‖ := by
     by_contra hc
     push_neg at hc
     have := mul_le_mul hc hc (norm_nonneg y) hx0.le
-    nlinarith
+    linarith
   have hR : ‖x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ ≤ ‖x‖ ^ 3 := by
     refine add_le (add_le (add_le (le_of_eq (norm_pow _ _)) ?_) ?_) ?_
     · exact (mul_le h2 (le_of_eq (norm_pow x 2))).trans (by linarith)
@@ -123,9 +123,9 @@ lemma y_sq_le (W : WeierstrassCurve K) (hW : IntegralModel W) {x y : K}
   have hT : ‖W.a₁ * x * y + W.a₃ * y‖ ≤ ‖x‖ * ‖y‖ := by
     refine add_le ?_ ?_
     · simpa using mul_le (mul_le h1 (le_refl ‖x‖)) (le_refl ‖y‖)
-    · exact (mul_le h3 (le_refl ‖y‖)).trans (by nlinarith [norm_nonneg y])
+    · exact (mul_le h3 (le_refl ‖y‖)).trans (by simpa using le_mul_of_one_le_left (norm_nonneg y) hx.le)
   have hlt : ‖-(W.a₁ * x * y + W.a₃ * y)‖ < ‖y ^ 2‖ := by
-    rw [norm_neg, norm_pow]; nlinarith [norm_nonneg y]
+    rw [norm_neg, norm_pow]; linarith [mul_lt_mul_of_pos_right hxy (lt_trans hx0 hxy)]
   have key := le_sub_of_lt hlt
   rw [sub_neg_eq_add, ← add_assoc, h', norm_pow] at key
   linarith
@@ -160,7 +160,7 @@ lemma addX_norm [DecidableEq K] (W : WeierstrassCurve K) (hW : IntegralModel W)
     have : ‖ℓ * (x₁ - x₃)‖ ≤ max ‖y₁‖ 1 := by
       rw [e]; exact sub_le (le_max_left _ _) (hy3.trans (le_max_right _ _))
     rw [norm_mul] at this
-    nlinarith
+    exact (mul_le_mul_of_nonneg_left hd hℓ0).trans this
   have hℓsq : ‖ℓ‖ ^ 2 ≤ ‖x₁‖ := by
     have hm : (max ‖y₁‖ 1) ^ 2 ≤ ‖x₁‖ ^ 3 := by
       rcases le_total ‖y₁‖ 1 with h | h
@@ -169,7 +169,7 @@ lemma addX_norm [DecidableEq K] (W : WeierstrassCurve K) (hW : IntegralModel W)
     have : (‖ℓ‖ * ‖x₁‖) ^ 2 ≤ ‖x₁‖ ^ 3 :=
       (pow_le_pow_left₀ (by positivity) hlin 2).trans hm
     have hx1p : 0 < ‖x₁‖ ^ 2 := by positivity
-    nlinarith
+    exact (mul_le_mul_iff_left₀ hx1p).mp (by linarith)
 
   set M := max 1 ‖ℓ‖ with hM
   have hM1 : 1 ≤ M := le_max_left _ _
@@ -177,12 +177,12 @@ lemma addX_norm [DecidableEq K] (W : WeierstrassCurve K) (hW : IntegralModel W)
   have hMsq : M ^ 2 ≤ ‖x₁‖ := by
     rcases le_total 1 ‖ℓ‖ with h | h
     · rw [hM, max_eq_right h]; exact hℓsq
-    · rw [hM, max_eq_left h]; nlinarith
+    · rw [hM, max_eq_left h]; linarith
   have ht : ‖x₃ + 1‖ ≤ 1 := add_le hC (by simp)
   have hu : ‖ℓ * (x₃ + 1 - x₁) + y₁‖ ≤ M := by
     have e : ℓ * (x₃ + 1 - x₁) + y₁ = y₃ + ℓ := by rw [hy3def]; ring
     rw [e]; exact add_le (hy3.trans hM1) hMℓ
-  have hM2 : M ≤ M ^ 2 := by nlinarith
+  have hM2 : M ≤ M ^ 2 := le_self_pow₀ hM1 two_ne_zero
   have hLHS : ‖(ℓ * (x₃ + 1 - x₁) + y₁) ^ 2 + W.a₁ * (x₃ + 1) * (ℓ * (x₃ + 1 - x₁) + y₁)
       + W.a₃ * (ℓ * (x₃ + 1 - x₁) + y₁)
       - ((x₃ + 1) ^ 3 + W.a₂ * (x₃ + 1) ^ 2 + W.a₄ * (x₃ + 1) + W.a₆)‖ ≤ ‖x₁‖ := by
@@ -192,7 +192,7 @@ lemma addX_norm [DecidableEq K] (W : WeierstrassCurve K) (hW : IntegralModel W)
       refine add_le (add_le (add_le ht3 ?_) ?_) a6
       · simpa using mul_le a2 ht2
       · simpa using mul_le a4 ht
-    refine sub_le (add_le (add_le ?_ ?_) ?_) (hc.trans (by nlinarith))
+    refine sub_le (add_le (add_le ?_ ?_) ?_) (hc.trans (by linarith))
     · rw [norm_pow]; exact (pow_le_pow_left₀ (norm_nonneg _) hu 2).trans hMsq
     · have := mul_le (mul_le a1 ht) hu
       linarith
@@ -214,7 +214,7 @@ lemma addX_norm [DecidableEq K] (W : WeierstrassCurve K) (hW : IntegralModel W)
     linear_combination hev
   rw [heq, norm_neg] at hLHS
   have := hRHS.trans hLHS
-  nlinarith
+  linarith [lt_mul_of_one_lt_right (show 0 < ‖x₁‖ by linarith) hx₂]
 
 end Formalism.ELL.FormalGroupPointsSubgroup
 

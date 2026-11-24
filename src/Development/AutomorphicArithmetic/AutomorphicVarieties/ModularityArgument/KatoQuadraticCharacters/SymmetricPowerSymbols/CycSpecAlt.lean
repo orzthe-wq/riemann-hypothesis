@@ -126,7 +126,7 @@ private theorem gr_ne {M : ℕ} (hM : 0 < M) (s : Ω ≃ₐ[ℚ] Ω) (x : Row M)
   have e0 := congrFun h0 0
   have e1 := congrFun h0 1
   simp only [gr, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons] at e0 e1
+    Matrix.cons_val_one] at e0 e1
   fin_cases i
   · simpa using e0
   · show (2 : ZMod M) * x 1 = 0
@@ -243,4 +243,4 @@ theorem UpperTheory.V.Z.Kato.Sym.rowB :
     · intro y
       refine ⟨fun i => ((y i).val : ZMod (k * M)), ?_⟩
       funext i
-      simp [dn, ZMod.natCast_zmod_val]
+      simp [dn]

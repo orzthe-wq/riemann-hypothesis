@@ -4,7 +4,7 @@ public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenFns
 public import GroundTheory.AutomorphicForms.GLnLocal
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIrreducibleSecondFactorOfIrreducibleProduct
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsGenericIffIsGenericFor
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellUnipotentUniquenessClosedStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OpenCellUnipotentUniquenessClosed
 public import GroundTheory.AutomorphicForms.GeometricLemmaCellSurjective
 public import GroundTheory.AutomorphicForms.IwahoriFactorization
 import Mathlib.Algebra.Order.Floor.Extended
@@ -213,7 +213,7 @@ theorem exists_level (ψ : AddChar k Circle) (hψ : Continuous ψ) {h N : ℕ} (
 theorem exists_openFns_bump : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ∀ (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Levi k fun a => Fin (d a)) W), IsSmooth ρ → ∀ v : W, ∃ L₀ : Subgroup (GL (Fin N) k), L₀ ≤ unipU k d hd ∧ IsCompact (L₀ : Set (GL (Fin N) k)) ∧ (∃ O : Set (GL (Fin N) k), IsOpen O ∧ O ∩ (unipU k d hd : Set (GL (Fin N) k)) = L₀) ∧ (∀ (l : GL (Fin N) k) (hl : l ∈ unipB k (Fin N)), l ∈ L₀ → whitChar ψ N ⟨l, hl⟩ = 1) ∧ ∃ f ∈ openFns d hd ρ, (∀ u ∈ L₀, f.1.1 (pm k (wOpen d hd) * u) = v) ∧ ∀ u ∈ unipU k d hd, u ∉ L₀ → f.1.1 (pm k (wOpen d hd) * u) = 0 := by
   intro k _ _ _ _ ψ hψ h N d hd W _ _ ρ hρ v
   obtain ⟨m, hm1, hσ, hW⟩ := exists_level ψ hψ d hd ρ hρ v
-  obtain ⟨hI1, -, hI3⟩ := GlobalTheory.T.open_cell_unipotent_uniqueness_closed k h N d hd
+  obtain ⟨hI1, -, hI3⟩ := _root_.GlobalTheory.CompanionTheory.Rodier.unipU_open_cell k h N d hd
   have hKo := isOpen_congruenceSubgroup k N m
   have hKc := isCompact_congruenceSubgroup k N m
   set K := congruenceSubgroup k N m with hKdef

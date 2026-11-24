@@ -1,51 +1,10 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -258,7 +217,7 @@ theorem components : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
         ((HA.mat (Fv F v) σ J (hMap σ J (evA v) h) : GL _ _) :
           Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) i j ∈ Lv b v := by
       intro h
-      obtain ⟨-, -, -, -, -, ev, -, -, -⟩ := GlobalTheory.T.adelic_tuple_projections F E σ hCM d b M M
+      obtain ⟨-, -, -, -, -, ev, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM d b M M
       filter_upwards [ev (projFin (fun a i =>
         ((HA.mat (AF F) σ J h : GL _ _) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) a i))] with v hv i j
       rw [projV_projFin] at hv
@@ -274,7 +233,7 @@ theorem components : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     classical
     haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)
     obtain ⟨-, -, -, -, -, -, inj, glue, -⟩ :=
-      GlobalTheory.T.adelic_tuple_projections F E σ hCM _ (Module.finBasis F E) M M
+      _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM _ (Module.finBasis F E) M M
     have injM : ∀ A B : Matrix (Fin M) (Fin M) (AF F ⊗[F] E),
         A.map (tm E (fstA F)) = B.map (tm E (fstA F)) →
         (∀ v : HeightOneSpectrum (𝓞 F), A.map (tm E (evA v)) = B.map (tm E (evA v))) → A = B := by

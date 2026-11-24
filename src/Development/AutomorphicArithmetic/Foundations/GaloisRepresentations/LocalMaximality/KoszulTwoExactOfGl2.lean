@@ -69,7 +69,7 @@ private theorem wd_single {σ E : Type} [LinearOrder σ] [Fintype σ] [AddCommGr
     refine Finset.sum_congr rfl fun i hi => ?_
     by_cases h : t.erase i = T
     · simp [hi, h]
-    · simp [hi, h, Pi.single_eq_of_ne h]
+    · simp [hi, h]
   have Rr : (∑ i ∈ Tᶜ, (Pi.single (insert i T) (GlobalTheory.cubeSign (insert i T) i • w i v) :
       Finset σ → E)) t =
       ∑ i, if i ∉ T ∧ t = insert i T then GlobalTheory.cubeSign t i • w i v else 0 := by
@@ -79,7 +79,7 @@ private theorem wd_single {σ E : Type} [LinearOrder σ] [Fintype σ] [AddCommGr
     have hi' : i ∉ T := by simpa using hi
     by_cases h : t = insert i T
     · subst h; simp [hi']
-    · simp [hi', h, Pi.single_eq_of_ne h]
+    · simp [hi', h]
   rw [hl, L, Rr]
   refine Finset.sum_congr rfl fun i _ => ?_
   have : (i ∈ t ∧ t.erase i = T) ↔ (i ∉ T ∧ t = insert i T) := by

@@ -6,7 +6,6 @@ import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Matrix.Normed
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 public import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -42,9 +41,10 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib
+public import Mathlib.Analysis.Matrix.Normed
+public import Mathlib.RingTheory.MvPolynomial
+public import Mathlib.Topology.Algebra.Group.Units
 
 @[expose] public section
 
@@ -71,7 +71,7 @@ theorem hasDerivAt_exp_entry (X : Matrix n n ℂ) (i j : n) :
 theorem hasDerivAt_det_of_one (A : ℝ → Matrix n n ℂ) (A' : Matrix n n ℂ) (h0 : A 0 = 1)
     (h : ∀ i j, HasDerivAt (fun t => A t i j) (A' i j) 0) :
     HasDerivAt (fun t => (A t).det) A'.trace 0 := by
-  first | exact Bl.ProductIdentities.goal1 .. | (apply Bl.ProductIdentities.goal1 <;> assumption) | (intros; apply Bl.ProductIdentities.goal1 <;> assumption)
+  first | (apply Bl.ProductIdentities.goal1 <;> assumption)
 
 theorem det_exp (X : Matrix n n ℂ) : (exp X).det = Complex.exp X.trace := by
   set φ : ℝ → ℂ := fun t => (exp (t • X)).det with hφ

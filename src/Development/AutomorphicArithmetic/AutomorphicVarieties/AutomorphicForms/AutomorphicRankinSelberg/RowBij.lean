@@ -67,13 +67,13 @@ private theorem UpperTheory.V.Af.Rs.eq_T_zpow_mul_of_row_eq {γ δ : SL(2, ℤ)}
 private theorem UpperTheory.V.Af.Rs.row_T_zpow_mul (n : ℤ) (δ : SL(2, ℤ)) :
     UpperTheory.V.Af.Rs.row (ModularGroup.T ^ n * δ) = UpperTheory.V.Af.Rs.row δ := by
   funext i
-  simp [UpperTheory.V.Af.Rs.row, ModularGroup.coe_T_zpow, Matrix.mul_apply, Fin.sum_univ_two]
+  simp [UpperTheory.V.Af.Rs.row]
 
 theorem UpperTheory.V.Af.Rs.rowBij :
     UpperTheory.V.Af.Rs.RowBij := by
   refine ⟨fun γ => ModularGroup.bottom_row_coprime γ, ?_⟩
   intro z x
-  obtain ⟨g, -, hg⟩ := ModularGroup.bottom_row_surj (R := ℤ) (Set.mem_setOf_eq ▸ x.2 : x.1 ∈ _)
+  obtain ⟨g, -, hg⟩ := ModularGroup.bottom_row_surj (R := ℤ) (Set.mem_ofPred_eq ▸ x.2 : x.1 ∈ _)
   have hrow : UpperTheory.V.Af.Rs.row g = x.1 := hg
   refine ⟨ModularGroup.T ^ (-⌊(g • z).re⌋) * g, ⟨?_, ?_⟩, ?_⟩
   · rw [UpperTheory.V.Af.Rs.row_T_zpow_mul, hrow]

@@ -1,28 +1,40 @@
 module
 
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.RingTheory.LocalRing.MaximalIdeal.Defs
+public import Mathlib.Data.Matrix.Basic
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.RingTheory.LocalRing.MaximalIdeal.Basic
+public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxStep
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.WProof
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IsClosedCongruenceSubgroup
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.MemSecondProjectionIff
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.SaturatedSplitLattice
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.SplitDecomp
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.WCoreG
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,7 +42,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,10 +54,90 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.TransitiveOverLocalRings
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.SplitDecomp
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.WCoreG, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.CongruenceLiftOfBasis
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.WCoreG =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.WCoreG", "h": "module\n\npublic import Mathlib.Data.Matrix.Mul\npublic import Mathlib.RingTheory.LocalRing.MaximalIdeal.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.TransitiveOverLocalRings\npublic import Mathlib.Data.Matrix.Basic\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Mathlib.LinearAlgebra.Matrix.NonsingularInverse\npublic import Mathlib.RingTheory.LocalRing.MaximalIdeal.Basic\npublic import Mathlib.RingTheory.LocalRing.ResidueField.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.LocMassTypL
+
+open Matrix PI.LocMassTypW.WCoreP
+
+theorem wCoreG (O : Type) [CommRing O] [IsLocalRing O] {n m : ℕ} (t : O)
+    (ht : t ∈ IsLocalRing.maximalIdeal O) (A0 A B0 B A' B' : Matrix (Fin n) (Fin m) O)
+    (L0 M : Matrix (Fin m) (Fin n) O) (hL0 : L0 * A0 = 1) (hM : M * B = 1)
+    (hC : A0ᵀ * B0 = Aᵀ * B) (hA : A = A0 + t • A') (hB : B = B0 + t • B') :
+    ∃ k K' : Matrix (Fin n) (Fin n) O, IsUnit k ∧ k * A0 = A ∧ kᵀ * B = B0 ∧ k = 1 + t • K' := by
+  classical
+  set K' : Matrix (Fin n) (Fin n) O := A' * L0 - Mᵀ * B'ᵀ * (1 - A0 * L0) with hK'
+
+  have h1 : (1 - A0 * L0) * A0 = 0 := by
+    rw [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hL0, Matrix.mul_one, sub_self]
+
+  have hkey : t • (A0ᵀ * B' + A'ᵀ * B) = 0 := by
+    have e : Aᵀ * B = A0ᵀ * B0 + t • (A0ᵀ * B' + A'ᵀ * B) := by
+      calc Aᵀ * B = A0ᵀ * B + t • (A'ᵀ * B) := by
+            rw [hA, Matrix.transpose_add, Matrix.transpose_smul, Matrix.add_mul, Matrix.smul_mul]
+        _ = A0ᵀ * B0 + t • (A0ᵀ * B') + t • (A'ᵀ * B) := by
+            nth_rewrite 1 [hB]; rw [Matrix.mul_add, Matrix.mul_smul]
+        _ = A0ᵀ * B0 + t • (A0ᵀ * B' + A'ᵀ * B) := by rw [smul_add, add_assoc]
+    rw [e] at hC
+    calc t • (A0ᵀ * B' + A'ᵀ * B) = (A0ᵀ * B0 + t • (A0ᵀ * B' + A'ᵀ * B)) - A0ᵀ * B0 := by abel
+      _ = 0 := by rw [← hC, sub_self]
+  have hBM : Bᵀ * Mᵀ = 1 := by rw [← Matrix.transpose_mul, hM, Matrix.transpose_one]
+  have key' : t • (Bᵀ * A') + t • (B'ᵀ * A0) = 0 := by
+    have := congrArg Matrix.transpose hkey
+    simp only [Matrix.transpose_smul, Matrix.transpose_add, Matrix.transpose_mul,
+      Matrix.transpose_transpose, Matrix.transpose_zero, smul_add] at this
+    rw [add_comm]; exact this
+  have hB0 : B0ᵀ = Bᵀ - t • B'ᵀ := by
+    rw [hB, Matrix.transpose_add, Matrix.transpose_smul, add_sub_cancel_right]
+  have hk : Bᵀ * (1 + t • K') = B0ᵀ := by
+    have e : Bᵀ * (1 + t • K') = Bᵀ - t • B'ᵀ + (t • (Bᵀ * A') + t • (B'ᵀ * A0)) * L0 := by
+      simp only [hK', Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, Matrix.mul_sub,
+        ← Matrix.mul_assoc, hBM, Matrix.one_mul, Matrix.add_mul, Matrix.smul_mul, smul_sub]
+      abel
+    rw [e, key', Matrix.zero_mul, add_zero, hB0]
+  refine ⟨1 + t • K', K', ?_, ?_, ?_, rfl⟩
+  ·
+    rw [Matrix.isUnit_iff_isUnit_det]
+    have ht0 : IsLocalRing.residue O t = 0 := (IsLocalRing.residue_eq_zero_iff t).2 ht
+    have hmap : (IsLocalRing.residue O).mapMatrix (1 + t • K') = 1 := by
+      ext i j
+      simp [Matrix.one_apply, apply_ite, ht0]
+    have hdet : IsLocalRing.residue O (1 + t • K').det = 1 := by
+      rw [RingHom.map_det, hmap, Matrix.det_one]
+    by_contra hnu
+    have hm : (1 + t • K').det ∈ IsLocalRing.maximalIdeal O := (IsLocalRing.mem_maximalIdeal _).2 hnu
+    rw [(IsLocalRing.residue_eq_zero_iff _).2 hm] at hdet
+    exact zero_ne_one hdet
+  · rw [Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, hK', Matrix.sub_mul, Matrix.mul_assoc A',
+      hL0, Matrix.mul_one, Matrix.mul_assoc (Mᵀ * B'ᵀ), h1, Matrix.mul_zero, sub_zero, hA]
+  · rw [← Matrix.transpose_transpose B, ← Matrix.transpose_mul, hk,
+      Matrix.transpose_transpose]
+
+end PI.LocMassTypL
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.WCoreG =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.CongruenceLiftOfBasis =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.CongruenceLiftOfBasis", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxStep\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.WProof\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IsClosedCongruenceSubgroup\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.MemSecondProjectionIff\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.SaturatedSplitLattice\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.SplitDecomp\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.WCoreG\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -270,7 +361,7 @@ theorem congruence_lift_of_basis {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin
         hU, SD.fst_proj_split_matrix_mulVec, hk1e, Matrix.map_add f (map_add f), Matrix.map_one f (map_zero f) (map_one f), add_mulVec,
         one_mulVec, Pi.add_apply, add_sub_cancel_left]
       simp only [mulVec, dotProduct, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul,
-        Finset.mul_sum, hf, Subring.coe_subtype]
+        Finset.mul_sum, hf]
       refine Finset.sum_congr rfl fun j _ => ?_
       rw [map_natCast]; ring
     · intro i
@@ -278,7 +369,7 @@ theorem congruence_lift_of_basis {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin
         hU, SD.snd_proj_split_matrix_mulVec, hk1i, Matrix.map_add f (map_add f), Matrix.map_one f (map_zero f) (map_one f), add_mulVec,
         one_mulVec, Pi.add_apply, add_sub_cancel_left]
       simp only [mulVec, dotProduct, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul,
-        Finset.mul_sum, hf, Subring.coe_subtype]
+        Finset.mul_sum, hf]
       refine Finset.sum_congr rfl fun j _ => ?_
       rw [map_natCast]; ring
 
@@ -348,3 +439,7 @@ theorem congruence_lift_of_split (hS : SplitR) : CongruenceSubgroupLift := by
   exact congruence_lift_of_basis D Q hQΛ hQh saturated_split_lattice hPr hgv k hk
 
 end PI.LocMassTypL
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.CongruenceLiftOfBasis =====

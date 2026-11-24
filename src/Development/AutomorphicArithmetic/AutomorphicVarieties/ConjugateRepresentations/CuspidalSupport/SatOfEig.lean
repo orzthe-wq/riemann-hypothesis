@@ -2,7 +2,8 @@ module
 
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresentations.CuspidalSupport.HeckeLocalBlock
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalHeckeValuesSameParameters
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMultisetSatakeEigenvalueEqStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsMultisetSatakeEigenvalueEq
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeVecMemFixed
 import Mathlib.Algebra.Order.Floor.Extended
@@ -78,7 +79,7 @@ theorem satOfEig : SatOfEig := by
       refine ⟨_, ⟨Finset.mem_singleton_self _, ?_⟩, fun γ hγ => Finset.mem_singleton.1 hγ.1⟩
       rw [← tor_const_comm, mul_assoc, inv_mul_cancel_left]
       exact mul_mem ha hb
-  obtain ⟨B, hB, hBc⟩ := GlobalTheory.T.exists_multiset_satakeEigenvalue_eq (qV E w) n (qV_ne_zero w) c c0 cn
+  obtain ⟨B, hB, hBc⟩ := _root_.GlobalTheory.LFun.exists_satEig_eq (qV E w) n (qV_ne_zero w) c c0 cn
   refine ⟨B, hx0, hx, hB, fun ϖ' hu' j hj => ?_⟩
   have hv : Valued.v (ϖ' / ϖ) = 1 := by
     rw [map_div₀, hu, hu', div_self WithZero.coe_ne_zero]

@@ -87,7 +87,6 @@ theorem stX_ok (a : I.ι) : (I.stX a).Ok := by
     haveI : Finite (autO p.1.1.deco.1.N) := by
       first
       | exact autO_finite (posStar_of_ok hX) p.1.1.deco.full_lattice
-      | exact autO_finite (posStar_of_ok hX) p.1.1.deco.full_lattice.toIsLattice
     exact Finite.of_injective _ (stabAut_inj y Unit (fun _ => Λ) (fun _ => Θ) (fun _ => True) b p)
   · intro _ g
     let M : Matrix (Fin (B.R.N B.R.m - 1)) (Fin (B.R.N B.R.m - 1)) B.fields.E := ↑(toGLm _ _ g.1.1)
@@ -104,7 +103,6 @@ theorem stX_ok (a : I.ι) : (I.stX a).Ok := by
   · intro _ p
     first
     | exact p.1.1.deco.2.Lsh_full_lattice
-    | exact p.1.1.deco.2.Lsh_full_lattice.toIsLattice
   · intro b g p h h₁
     exact stepY_eq_one y Unit (fun _ => Λ) (fun _ => Θ) (fun _ => True) b g p h
       (Subtype.ext ((toGLm B.fields.E (B.R.N B.R.m - 1)).injective (h₁.trans (map_one _).symm)))

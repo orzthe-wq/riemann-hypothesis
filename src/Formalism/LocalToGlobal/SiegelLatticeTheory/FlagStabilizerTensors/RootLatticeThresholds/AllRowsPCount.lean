@@ -1,54 +1,51 @@
 module
 
+public import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.JCount
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCountE
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsClosed
-public import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.JCountP
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsAdd
+import Formalism.SharpRestriction.LevelLetterCocycles.FamilyStatementsLocal
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsRedKer
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.RedBasicsPf
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicClassFiniteness.DictLat
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.JCountP, Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsPCount
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.JCountP =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.JCountP", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.JCount\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCountE\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.SharpRestriction.LevelLetterCocycles.FamilyStatementsLocal\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.N.CylinderCountFamily
+
+open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ArithmeticCylinders Formalism.MainNotions.FamilyNumericLemmas
+
+variable (D : D7) {Dall Dgood : ℕ}
+
+def PCountTie (A : AllRowsAt D Dall Dgood) : Prop :=
+  ∀ (k : Fin 2) (S : Set (Tup D k)),
+    Formalism.MainNotions.S.CountE.PCount A.B.I A.B.μf (D.host.g (1 - k)) (A.eT (cyl D k S))
+
+theorem countCylAt_of (A : AllRowsAt D Dall Dgood) {n₀ : ℕ} {Alev C₃ c₃ cb : ℝ}
+    (h1 : Formalism.MainNotions.S.CountE.CountIdempotentsClass Formalism.MainNotions.S.CountE.PCount D n₀ Alev C₃ c₃ cb)
+    (hT : TieCountAt A n₀ Alev C₃ cb) (hP : PCountTie D A) : CountCylAt D A c₃ := by
+  intro k S
+  obtain ⟨b, h, hST, hgap, hC, hlf, hlb, -⟩ := hT
+  exact h1 A.B.I b A.B.lam A.B.g (D.host.g (1 - k)) (A.eT (cyl D k S)) _ A.B.σ A.B.w _ A.B.σs A.B.tens
+    A.B.μf A.B.fund A.B.R (A.ReT (cyl D k S)) h (hST k S).1 (hP k S) (hST k S).2 hgap hC hlf hlb
+
+end Formalism.MainNotions.N.CylinderCountFamily
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.JCountP =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsPCount =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsPCount", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsClosed\npublic import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.JCountP\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsAdd\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsRedKer\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.RedBasicsPf\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicClassFiniteness.DictLat\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -401,38 +398,35 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.Arithm
 variable {D : D7} (P : G0g D.nd) (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ)
   (p : (Σ k : Fin 2, D.nd.PlG k) → Prop)
 
-abbrev cj (γ : G0g D.nd) (kv : Σ k : Fin 2, D.nd.PlG k) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)) :=
-  (((P kv)⁻¹ * γ kv * P kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)))
-
-theorem cj_mul (a b : G0g D.nd) (kv : Σ k : Fin 2, D.nd.PlG k) : cj P (a * b) kv = cj P a kv * cj P b kv := by
-  simp only [cj, Pi.mul_apply]
+theorem cj_mul (a b : G0g D.nd) (kv : Σ k : Fin 2, D.nd.PlG k) : _root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P (a * b) kv = _root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P a kv * _root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P b kv := by
+  simp only [_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM, Pi.mul_apply]
   rw [← Units.val_mul]
   congr 1
   group
 
-theorem cj_one (kv : Σ k : Fin 2, D.nd.PlG k) : cj P 1 kv = 1 := by
-  simp [cj]
+theorem cj_one (kv : Σ k : Fin 2, D.nd.PlG k) : _root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P 1 kv = 1 := by
+  simp [_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM]
 
 def Uj : Subgroup (Sub p : Subgroup (G0g D.nd)) where
-  carrier := {a | ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (cj P (a : G0g D.nd) kv)}
+  carrier := {a | ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P (a : G0g D.nd) kv)}
   one_mem' := fun kv _ => by
-    show PJ D.R.k (D.R.m / 2 - 1) (cj P 1 kv)
+    show PJ D.R.k (D.R.m / 2 - 1) (_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P 1 kv)
     rw [cj_one]; exact jPred_one _ _
   mul_mem' := fun {a b} ha hb kv hk => by
-    show PJ D.R.k (D.R.m / 2 - 1) (cj P ((a : G0g D.nd) * (b : G0g D.nd)) kv)
+    show PJ D.R.k (D.R.m / 2 - 1) (_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P ((a : G0g D.nd) * (b : G0g D.nd)) kv)
     rw [cj_mul]; exact Formalism.L2.SG.AllRowsOf.J_mul (ha kv hk) (hb kv hk)
   inv_mem' := fun {a} ha kv hk => by
-    show PJ D.R.k (D.R.m / 2 - 1) (cj P ((a : G0g D.nd)⁻¹) kv)
+    show PJ D.R.k (D.R.m / 2 - 1) (_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P ((a : G0g D.nd)⁻¹) kv)
     have h := PJ_inv ((P kv)⁻¹ * (a : G0g D.nd) kv * P kv) (ha kv hk)
-    unfold cj
+    unfold _root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM
     convert h using 2
     simp only [Pi.inv_apply]
     group
 
-def chij (a : G0g D.nd) : ℂ := ∏ kv, if p kv then ψ kv (phiJ D.R.k (D.R.m / 2 - 1) (cj P a kv)) else 1
+def chij (a : G0g D.nd) : ℂ := ∏ kv, if p kv then ψ kv (phiJ D.R.k (D.R.m / 2 - 1) (_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P a kv)) else 1
 
-theorem chij_mul (a b : G0g D.nd) (ha : ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (cj P a kv))
-    (hb : ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (cj P b kv)) :
+theorem chij_mul (a b : G0g D.nd) (ha : ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P a kv))
+    (hb : ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P b kv)) :
     chij P ψ p (a * b) = chij P ψ p a * chij P ψ p b := by
   unfold chij
   rw [← Finset.prod_mul_distrib]
@@ -462,13 +456,13 @@ theorem res_Ep_coeff (a : Sub p) :
     (res (Sub p) (Ep P ψ p)).coeff a = if a ∈ Uj P p then (chij P ψ p a)⁻¹ * cjc p else 0 := by
   rw [res_coeff, Ep, pA_coeff]
   split_ifs with hU
-  · have hU' : ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (cj P (a : G0g D.nd) kv) := hU
+  · have hU' : ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P (a : G0g D.nd) kv) := hU
     rw [chij, cjc, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]
     refine Finset.prod_congr rfl fun kv _ => ?_
     by_cases hp : p kv
     · rw [if_pos hp, if_pos hp, if_pos hp, Fv_coeff, if_pos (hU' kv hp), div_eq_mul_inv]
     · rw [if_neg hp, if_neg hp, if_neg hp, a.2 kv hp, MonoidAlgebra.coeff_one_one, inv_one, one_mul]
-  · have hU' : ¬ ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (cj P (a : G0g D.nd) kv) := hU
+  · have hU' : ¬ ∀ kv, p kv → PJ D.R.k (D.R.m / 2 - 1) (_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P (a : G0g D.nd) kv) := hU
     push_neg at hU'
     obtain ⟨kv, hp, hJ⟩ := hU'
     refine Finset.prod_eq_zero (Finset.mem_univ kv) ?_
@@ -701,8 +695,8 @@ theorem isCountIdem_cyl (k : Fin 2) (S : Set (Tup D k)) :
         intro kv
         by_cases hk : kv.1 = k
         · have h1 : γ kv = 1 := proj_mem pj _ kv (by simp [pj, hk])
-          show PJ D.R.k (D.R.m / 2 - 1) (cj P γ kv)
-          have h2 : cj P γ kv = 1 := by unfold cj; rw [h1]; simp
+          show PJ D.R.k (D.R.m / 2 - 1) (_root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P γ kv)
+          have h2 : _root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM P γ kv = 1 := by unfold _root_.Formalism.L2.SG.Pf.AllRowsKpp.cjM; rw [h1]; simp
           rw [h2]; exact jPred_one _ _
         · exact hU kv hk
       have hy : ((sec hS γ : KSub X.B.I) : X.B.I.Gf) ∈ X.K2 := (hmem (sec hS γ)).2 (by rw [rho_sec]; exact hJ)
@@ -754,3 +748,7 @@ theorem pCountTie_holds (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ)
 end Comparison₂
 
 end Formalism.L2.SG.Pf.AllRowsPCount
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsPCount =====

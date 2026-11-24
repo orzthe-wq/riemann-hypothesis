@@ -2,47 +2,9 @@ module
 
 public import Mathlib.Analysis.InnerProductSpace.Positive
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.IsClosedKset
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.MeasureTheory.Function.L2Space
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.ExpInPPosDef
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.PhiFacts
 
@@ -69,8 +31,6 @@ lemma psiPos_op_inv (T : KType ε Λ) (k : KG ε) :
   rw [map_inv, ← ContinuousLinearMap.star_eq_adjoint]
   first
     | rfl
-    | (rw [← unitary.star_eq_inv]; rfl)
-    | simp
 
 lemma psiPos_inner_P (T : KType ε Λ) (k : KG ε) (v : T.V) :
     ⟪v, (T.op k * projW T * T.op k⁻¹) v⟫_ℂ = ((‖⟪T.op k T.w, v⟫_ℂ‖ ^ 2 : ℝ) : ℂ) := by
@@ -104,7 +64,6 @@ lemma psiPos_integral_isPositive (T : KType ε Λ) {c : ℝ} (hc : 0 ≤ c) (g :
         rw [Complex.ofReal_mul]
         first
           | rw [integral_complex_ofReal]
-          | exact congrArg _ integral_ofReal
     · refine ⟨0, le_rfl, ?_⟩
       rw [hA, integral_undef hint, smul_zero, ContinuousLinearMap.zero_apply, inner_zero_right,
         Complex.ofReal_zero]
@@ -133,14 +92,12 @@ lemma psiPos_posDef_conj (k : KG ε) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.Po
     apply Matrix.mulVec_injective_iff_isUnit.mpr
     first
       | exact ⟨⟨U, star U, Unitary.mul_star_self_of_mem hU', Unitary.star_mul_self_of_mem hU'⟩, rfl⟩
-      | exact ⟨⟨U, star U, unitary.mul_star_self_of_mem hU', unitary.star_mul_self_of_mem hU'⟩, rfl⟩
   have hinv2 : ((((k⁻¹ : KG ε) : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) =
       star ((((k : KG ε) : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) := by
     rw [InvMemClass.coe_inv, InvMemClass.coe_inv]
     apply Units.inv_eq_of_mul_eq_one_left
     first
       | exact Unitary.star_mul_self_of_mem hU
-      | exact unitary.star_mul_self_of_mem hU
   rw [hinv2]
   exact gen' _ hU
 

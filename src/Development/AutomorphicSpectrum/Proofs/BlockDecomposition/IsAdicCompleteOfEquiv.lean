@@ -128,7 +128,6 @@ theorem unit_ainf (n : ℕ) (hn : n ≠ 0) : ∃ (k : ℕ) (u : Ainf l), (n : Ai
       (l : ℤ_[l]) ^ (n : ℤ_[l]).valuation := by
     have e2 := congrArg (· * (((PadicInt.unitCoeff h0)⁻¹ : ℤ_[l]ˣ) : ℤ_[l])) (PadicInt.unitCoeff_spec h0)
     refine e2.trans ?_
-    change ((PadicInt.unitCoeff h0 : ℤ_[l]ˣ) : ℤ_[l]) * _ * _ = _
     rw [mul_comm ((PadicInt.unitCoeff h0 : ℤ_[l]ˣ) : ℤ_[l]), mul_assoc, Units.mul_inv, mul_one]
   have h2 := congrArg (IsPerfectoidField.padicIntToWitt (K := ℂ_[l]) l) h1
   simpa only [map_mul, map_pow, map_natCast] using h2

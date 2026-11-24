@@ -1,14 +1,14 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CmHostIdempotentTraceEqOne
 public import Development.AbelianVarietyTheory.Definitions.CMLattices.IsDiffOf
 public import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.IsLocallyConstantRankAtStalkEigenSub
-import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLieRepresentationEigenLatticesStatement
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueDifferentialMonHomLieBasisStatement
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLieRepresentationEigenLattices
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueDifferentialMonHomLieBasis
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIsLieBasisEigen
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LieMultIffFinrank
+import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.CmHostIdempotentTraceEqOne
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -117,7 +117,7 @@ theorem finrank_eigenSub {K : Type} [Field K] [NumberField K] {P : Out.PolAV (Sp
     rfl
   have hl : ∀ a, ∃ f₀ : F.P₀.A ⟶ F.P₀.A, IsMonHom f₀ ∧ f₀.left ≫ F.φ = F.φ ≫ (act.act a).left ∧
       ∀ M, F.IsDiffOf F (act.act a) M → ∀ c w, IsLieComb c F.v w → IsLieComb (M c) F.v (w ≫ f₀) :=
-    fun a => (GlobalTheory.T.existsUnique_differential_monHom_lieBasis K P F P F (act.act a) (act.hom a)).2
+    fun a => (_root_.GlobalTheory.CM.DiffCoord.existsUnique_isDiffOf K P F P F (act.act a) (act.hom a)).2
   choose b hb he hlie using hl
   obtain ⟨act', hact'⟩ := exists_oAct F.fib.2.1 act b hb he
   have ha : ∀ a, (act'.act a).left ≫ F.φ = F.φ ≫ (act.act a).left := by
@@ -146,7 +146,7 @@ theorem finrank_eigenSub {K : Type} [Field K] [NumberField K] {P : Out.PolAV (Sp
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E)
 
 theorem bar_rt : H.bar H.rt = -H.rt := by
-  apply GlobalTheory.QuadTrace.bar_rt <;> assumption
+  apply GlobalTheory.QuadTrace.bar_rt
 
 theorem card_half {K : Type} [Field K] [NumberField K] {ρ : 𝓞 K} (hs : Splits E K) (hρ : ρ ^ 2 = -(H.d : 𝓞 K)) :
     (∀ τ : 𝓞 E →+* 𝓞 K, ¬ τ H.rt = ρ ↔ τ H.rt = -ρ) ∧
@@ -236,8 +236,7 @@ private theorem isSplitting_of_splits {E₁ K₁ : Type} [Field E₁] [NumberFie
     apply Finset.sum_congr rfl
     intro i _
     rw [map_zsmul, zsmul_eq_mul]
-  simp only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul, Pi.zero_apply,
-    MonoidHom.coe_coe]
+  simp only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul, Pi.zero_apply]
   show ∑ τ : 𝓞 E₁ →+* 𝓞 K₁, g τ * ((algebraMap (𝓞 K₁) K₁).comp τ) x = 0
   simp only [hx, Finset.mul_sum]
   rw [Finset.sum_comm]
@@ -255,7 +254,7 @@ private theorem isSplitting_of_splits {E₁ K₁ : Type} [Field E₁] [NumberFie
 theorem eigen_decomposition : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (T : PAT H (Sp (𝓞 K))) (F : GenFib T.pol) (p q : ℕ), Splits E K → HasType H T.t.act ρ p q → ρ ^ 2 = -(H.d : 𝓞 K) → (∀ τ : 𝓞 E →+* 𝓞 K, latRank K (F.eigLat T.t.act τ) = open Classical in if τ H.rt = ρ then p else q) ∧ iSupIndep (fun τ : 𝓞 E →+* 𝓞 K => Submodule.span K (F.eigLat T.t.act τ : Set (Fin F.P₀.g → K))) ∧ ⨆ τ : 𝓞 E →+* 𝓞 K, Submodule.span K (F.eigLat T.t.act τ : Set (Fin F.P₀.g → K)) = ⊤ ∧ T.g = Module.finrank ℚ E / 2 * (p + q) ∧ Nat.card {τ : 𝓞 E →+* 𝓞 K // τ H.rt = ρ} = Module.finrank ℚ E / 2 ∧ Nat.card {τ : 𝓞 E →+* 𝓞 K // τ H.rt = -ρ} = Module.finrank ℚ E / 2 := by
   intro E _ _ _ H K _ _ ρ T F p q hs hT hρ
   classical
-  obtain ⟨r, hr, hrl⟩ := GlobalTheory.T.exists_lieRepresentation_eigenLattices K T.pol F (𝓞 E) T.t.act
+  obtain ⟨r, hr, hrl⟩ := _root_.GlobalTheory.CM.GenFib.exists_lieRep_eigLat K T.pol F (𝓞 E) T.t.act
   have hfin : Finite (𝓞 E →+* 𝓞 K) :=
     Nat.finite_of_card_ne_zero (by rw [hs]; exact (Module.finrank_pos (R := ℚ) (M := E)).ne')
   haveI := Fintype.ofFinite (𝓞 E →+* 𝓞 K)

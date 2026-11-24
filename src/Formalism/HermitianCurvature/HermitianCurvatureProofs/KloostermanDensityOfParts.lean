@@ -1,20 +1,19 @@
 module
 
+public import Formalism.HermitianCurvature.BigCellVanishingOfCommute
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.KloostDensOfParts
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.AveragingVanishes
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BudgetTopConvergence
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.ComponentFamilySettingOfSetting
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.DerivativeBoundInBanachSpace
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.DirectionsInParabolic
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.FubiniHeadLastPart
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.InnerAveragingInputOfSliceData
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -27,7 +26,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
@@ -52,9 +50,224 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.DirectionsInParabolic
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.RingTheory.SimpleRing.Principal
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.HermitianCurvature.HermitianCurvatureProofs.AveragingVanishes, Formalism.HermitianCurvature.HermitianCurvatureProofs.KloostermanDensityOfParts
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.AveragingVanishes =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.AveragingVanishes", "h": "module\n\npublic import Formalism.HermitianCurvature.BigCellVanishingOfCommute\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.FourierDecayAlt Finset
+
+noncomputable section
+
+namespace Formalism.FourierDecayAlt.P.GeometricRayBounds
+
+theorem exists_dir {ι : Type*} (S : Finset ι) (c : ι → ℂ) (hc : ∀ i ∈ S, c i ≠ 0) :
+    ∃ u : ℂ, u ≠ 0 ∧ ∀ i ∈ S, (c i * u).re ≠ 0 := by
+  classical
+  obtain ⟨t, ht⟩ : ∃ t : ℝ, t ∉ S.image (fun i => (c i).re / (c i).im) := by
+    first
+    | exact Infinite.exists_notMem_finset _
+  refine ⟨1 + (t : ℂ) * Complex.I, ?_, fun i hi => ?_⟩
+  · intro h
+    have h1 := congrArg Complex.re h
+    simp at h1
+  · intro h0
+    have h0' : (c i).re = (c i).im * t := by
+      simp at h0
+      linarith
+    by_cases him : (c i).im = 0
+    · exact hc i hi (Complex.ext (by rw [h0', him, zero_mul, Complex.zero_re])
+        (by rw [him, Complex.zero_im]))
+    · exact ht (Finset.mem_image.2 ⟨i, hi, by rw [h0']; exact mul_div_cancel_left₀ t him⟩)
+
+theorem p_sum_le {V : Type*} [AddCommGroup V] [Module ℂ V] (p : Seminorm ℂ V) {ι : Type*} (S : Finset ι)
+    (f : ι → V) : p (∑ i ∈ S, f i) ≤ ∑ i ∈ S, p (f i) := by
+  induction S using Finset.cons_induction with
+  | empty => simp
+  | cons a S ha ih =>
+    rw [Finset.sum_cons, Finset.sum_cons]
+    exact (map_add_le_add p _ _).trans (add_le_add_right ih _)
+
+theorem geom_bound (q : ℂ) (hq : ‖q‖ = 1) (hq1 : q ≠ 1) (M : ℕ) :
+    ‖∑ m ∈ range M, q ^ m‖ ≤ 2 / ‖q - 1‖ := by
+  have hne : 0 < ‖q - 1‖ := norm_pos_iff.2 (sub_ne_zero.2 hq1)
+  rw [geom_sum_eq hq1, norm_div]
+  apply div_le_div_of_nonneg_right _ hne.le
+  calc ‖q ^ M - 1‖ ≤ ‖q ^ M‖ + ‖(1 : ℂ)‖ := norm_sub_le _ _
+    _ = 2 := by
+      rw [norm_pow, hq, one_pow, norm_one]
+      norm_num
+
+theorem exp_ne_one {x : ℝ} (h0 : x ≠ 0) (h1 : |x| < 2 * Real.pi) :
+    Complex.exp (Complex.I * (x : ℂ)) ≠ 1 := by
+  intro h
+  obtain ⟨n, hn⟩ := Complex.exp_eq_one_iff.1 h
+  have h2 := congrArg Complex.im hn
+  simp at h2
+  have hx : x = n * (2 * Real.pi) := by linarith
+  rw [hx, abs_lt] at h1
+  rcases lt_trichotomy n 0 with hn0 | hn0 | hn0
+  · have h3 : (n : ℝ) ≤ -1 := by exact_mod_cast Int.le_sub_one_of_lt hn0
+    nlinarith
+  · subst hn0
+    simp at hx
+    exact h0 hx
+  · have h3 : (1 : ℝ) ≤ n := by exact_mod_cast hn0
+    nlinarith
+
+end Formalism.FourierDecayAlt.P.GeometricRayBounds
+
+namespace Formalism.FourierDecayAlt.P
+
+open GeometricRayBounds
+
+theorem averaging_vanishes : C6.AveragingZero := by
+  intro β hβ V _ _ p s w a C' x₁ hw H j0
+  classical
+  set c : Fin s → ℂ := fun j => β * (w j - w j0) with hcdef
+  have hc : ∀ j ∈ Finset.univ.erase j0, c j ≠ 0 := by
+    intro j hj
+    have hj' : j ≠ j0 := Finset.ne_of_mem_erase hj
+    exact mul_ne_zero hβ (sub_ne_zero.2 fun h => hj' (hw h))
+  obtain ⟨u, hu0, hu⟩ := exists_dir (Finset.univ.erase j0) c hc
+  have hunorm : 0 < ‖u‖ := norm_pos_iff.2 hu0
+  have hsum0 : 0 ≤ ∑ j, |(c j * u).re| := Finset.sum_nonneg fun _ _ => abs_nonneg _
+  set K0 : ℝ := 1 + ∑ j, |(c j * u).re| with hK0
+  have hK0pos : 0 < K0 := by linarith
+  set t : ℝ := Real.pi / K0 with ht
+  have htpos : 0 < t := div_pos Real.pi_pos hK0pos
+  have hphase : ∀ j, |t * (c j * u).re| < 2 * Real.pi := by
+    intro j
+    have hle : |(c j * u).re| ≤ ∑ j, |(c j * u).re| :=
+      Finset.single_le_sum (f := fun j => |(c j * u).re|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)
+    rw [abs_mul, abs_of_pos htpos, ht, div_mul_eq_mul_div, div_lt_iff₀ hK0pos]
+    nlinarith [Real.pi_pos]
+  set q : Fin s → ℂ := fun j => Complex.exp (Complex.I * ((t * (c j * u).re : ℝ) : ℂ)) with hqdef
+  have hq1 : ∀ j ∈ Finset.univ.erase j0, q j ≠ 1 := fun j hj =>
+    exp_ne_one (mul_ne_zero htpos.ne' (hu j hj)) (hphase j)
+  have hqn : ∀ j, ‖q j‖ = 1 := fun j => Complex.norm_exp_I_mul_ofReal _
+  have hpsi : ∀ j (x : ℂ), G.psi β (-(w j0) * x) * G.psi β (w j * x) =
+      Complex.exp (Complex.I * (((c j * x).re : ℝ) : ℂ)) := by
+    intro j x
+    rw [show c j * x = β * (-(w j0) * x) + β * (w j * x) by simp only [hcdef]; ring, Complex.add_re,
+      Complex.ofReal_add, mul_add, Complex.exp_add]
+    rfl
+  have hpsin : ∀ x : ℂ, ‖G.psi β x‖ = 1 := fun x => Complex.norm_exp_I_mul_ofReal _
+  set Kc : ℝ := ∑ j ∈ Finset.univ.erase j0, 2 / ‖q j - 1‖ * p (a j) with hKc
+  have hC' : 0 ≤ C' := by
+    obtain ⟨N, hN⟩ := exists_nat_gt (|x₁| / ‖u‖ + 1)
+    have hq0 : 0 ≤ |x₁| / ‖u‖ := div_nonneg (abs_nonneg _) hunorm.le
+    have hNu : 0 < (N : ℝ) * ‖u‖ := mul_pos (by linarith) hunorm
+    have hx : x₁ ≤ ‖((N : ℝ) : ℂ) * u‖ := by
+      rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Nat.cast_nonneg N)]
+      have h2 := (div_lt_iff₀ hunorm).1 (by linarith : |x₁| / ‖u‖ < N)
+      linarith [le_abs_self x₁]
+    have h1 := (apply_nonneg p _).trans (H _ hx)
+    rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Nat.cast_nonneg N)] at h1
+    exact (div_nonneg_iff.1 h1).elim (fun h => h.1) (fun h => absurd h.2 (not_le.2 hNu))
+  have hmain : ∀ N : ℕ, 0 < N → x₁ ≤ N * ‖u‖ → p (a j0) ≤ (C' / ‖u‖ + Kc) / N := by
+    intro N hN hx₁
+    have hNpos : (0 : ℝ) < N := by exact_mod_cast hN
+    set x : ℕ → ℂ := fun m => (((N : ℝ) + m * t : ℝ) : ℂ) * u with hxdef
+    have hxn : ∀ m : ℕ, (N : ℝ) * ‖u‖ ≤ ‖x m‖ := by
+      intro m
+      have hmt : 0 ≤ (m : ℝ) * t := mul_nonneg (Nat.cast_nonneg _) htpos.le
+      simp only [hxdef, norm_mul, Complex.norm_real, Real.norm_eq_abs]
+      rw [abs_of_nonneg (add_nonneg (Nat.cast_nonneg _) hmt)]
+      gcongr
+      linarith
+    have hT : ∀ m : ℕ, p (∑ j, G.psi β (w j * x m) • a j) ≤ C' / (N * ‖u‖) := by
+      intro m
+      calc _ ≤ C' / ‖x m‖ := H _ (hx₁.trans (hxn m))
+        _ ≤ C' / (N * ‖u‖) := div_le_div_of_nonneg_left hC' (mul_pos hNpos hunorm) (hxn m)
+    set coef : Fin s → ℂ := fun j =>
+      ∑ m ∈ Finset.range N, G.psi β (-(w j0) * x m) * G.psi β (w j * x m) with hcoef
+    have hid : ∑ m ∈ Finset.range N, G.psi β (-(w j0) * x m) • ∑ j, G.psi β (w j * x m) • a j =
+        ∑ j, coef j • a j := by
+      simp only [Finset.smul_sum, smul_smul, hcoef, Finset.sum_smul]
+      exact Finset.sum_comm
+    have hc0 : coef j0 = N := by
+      have h0 : c j0 = 0 := by simp only [hcdef, sub_self, mul_zero]
+      simp only [hcoef, hpsi, h0, zero_mul, Complex.zero_re, Complex.ofReal_zero, mul_zero,
+        Complex.exp_zero, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
+    have hcj : ∀ j ∈ Finset.univ.erase j0, ‖coef j‖ ≤ 2 / ‖q j - 1‖ := by
+      intro j hj
+      have hterm : ∀ m : ℕ, G.psi β (-(w j0) * x m) * G.psi β (w j * x m) =
+          Complex.exp (Complex.I * (((N : ℝ) * (c j * u).re : ℝ) : ℂ)) * q j ^ m := by
+        intro m
+        rw [hpsi, show c j * x m = (((N : ℝ) + m * t : ℝ) : ℂ) * (c j * u) by simp only [hxdef]; ring,
+          Complex.re_ofReal_mul]
+        simp only [hqdef]
+        rw [← Complex.exp_nat_mul, ← Complex.exp_add]
+        congr 1
+        push_cast
+        ring
+      simp only [hcoef, hterm, ← Finset.mul_sum, norm_mul, Complex.norm_exp_I_mul_ofReal, one_mul]
+      exact geom_bound (q j) (hqn j) (hq1 j hj) N
+    have hsplit : ∑ j, coef j • a j = coef j0 • a j0 + ∑ j ∈ Finset.univ.erase j0, coef j • a j :=
+      (Finset.add_sum_erase _ _ (Finset.mem_univ j0)).symm
+    have hpa : (N : ℝ) * p (a j0) ≤ N * (C' / (N * ‖u‖)) + Kc := by
+      have e1 : (N : ℝ) * p (a j0) = p (coef j0 • a j0) := by
+        rw [hc0, map_smul_eq_mul]
+        simp
+      rw [e1]
+      have e2 : coef j0 • a j0 =
+          (∑ m ∈ Finset.range N, G.psi β (-(w j0) * x m) • ∑ j, G.psi β (w j * x m) • a j) -
+            ∑ j ∈ Finset.univ.erase j0, coef j • a j := by
+        rw [hid, hsplit]
+        abel
+      rw [e2]
+      refine (map_sub_le_add p _ _).trans (add_le_add ?_ ?_)
+      · refine (p_sum_le p _ _).trans ?_
+        calc ∑ m ∈ Finset.range N, p (G.psi β (-(w j0) * x m) • ∑ j, G.psi β (w j * x m) • a j)
+            = ∑ m ∈ Finset.range N, p (∑ j, G.psi β (w j * x m) • a j) := by
+              refine Finset.sum_congr rfl fun m _ => ?_
+              rw [map_smul_eq_mul, hpsin, one_mul]
+          _ ≤ ∑ m ∈ Finset.range N, C' / (N * ‖u‖) := Finset.sum_le_sum fun m _ => hT m
+          _ = N * (C' / (N * ‖u‖)) := by simp
+      · refine (p_sum_le p _ _).trans ?_
+        refine Finset.sum_le_sum fun j hj => ?_
+        rw [map_smul_eq_mul]
+        exact mul_le_mul_of_nonneg_right (hcj j hj) (apply_nonneg p _)
+    have e3 : (N : ℝ) * (C' / (N * ‖u‖)) = C' / ‖u‖ := by
+      field_simp
+    rw [e3] at hpa
+    rw [le_div_iff₀ hNpos]
+    linarith
+  have hnn := apply_nonneg p (a j0)
+  by_contra hne
+  have hδ : 0 < p (a j0) := lt_of_le_of_ne hnn (Ne.symm hne)
+  obtain ⟨N, hN⟩ := exists_nat_gt (max (|x₁| / ‖u‖) ((C' / ‖u‖ + Kc) / p (a j0)))
+  have hN1 : |x₁| / ‖u‖ < N := lt_of_le_of_lt (le_max_left _ _) hN
+  have hN2 : (C' / ‖u‖ + Kc) / p (a j0) < N := lt_of_le_of_lt (le_max_right _ _) hN
+  have hNpos : (0 : ℝ) < N := lt_of_le_of_lt (div_nonneg (abs_nonneg _) hunorm.le) hN1
+  have hx₁ : x₁ ≤ N * ‖u‖ := by
+    have h2 := (div_lt_iff₀ hunorm).1 hN1
+    linarith [le_abs_self x₁]
+  have hb := hmain N (by exact_mod_cast hNpos) hx₁
+  rw [div_lt_iff₀ hδ] at hN2
+  rw [le_div_iff₀ hNpos] at hb
+  nlinarith
+
+end Formalism.FourierDecayAlt.P
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.AveragingVanishes =====
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.KloostermanDensityOfParts =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.KloostermanDensityOfParts", "h": "module\n\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.KloostDensOfParts\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.AveragingVanishes\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.BudgetTopConvergence\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.ComponentFamilySettingOfSetting\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.DerivativeBoundInBanachSpace\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.DirectionsInParabolic\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.FubiniHeadLastPart\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.InnerAveragingInputOfSliceData\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix MeasureTheory Formalism.FourierDecayAlt
@@ -131,7 +344,7 @@ theorem ptMatN_append (h rest : C.LPt) :
   | left i =>
     induction j using Fin.addCases with
     | left j =>
-      rw [Dx2.SL.b_cc]; simp only [D.ptMatN]
+      rw [_root_.Formalism.FourierDecayAlt.P.Ux2.block2_apply_upper_left]; simp only [D.ptMatN]
       rw [ptEntry_append, if_pos ⟨by simp, by simp⟩]; rfl
     | right j =>
       rw [Dx2.SL.b_cn]; simp only [D.ptMatN, Matrix.zero_apply]
@@ -139,10 +352,10 @@ theorem ptMatN_append (h rest : C.LPt) :
   | right i =>
     induction j using Fin.addCases with
     | left j =>
-      rw [Dx2.SL.b_nc]; simp only [D.ptMatN, Matrix.zero_apply]
+      rw [_root_.Formalism.FourierDecayAlt.P.Ux2.block2_apply_lower_left]; simp only [D.ptMatN, Matrix.zero_apply]
       rw [ptEntry_append, if_neg (by simp), if_neg (by simp)]
     | right j =>
-      rw [Dx2.SL.b_nn]; simp only [D.ptMatN]
+      rw [_root_.Formalism.FourierDecayAlt.P.Ux2.block2_apply_lower_right]; simp only [D.ptMatN]
       rw [ptEntry_append, if_neg (by simp), if_pos ⟨by simp, by simp⟩]
       simp
 
@@ -160,7 +373,7 @@ theorem ptMatN_one (c : ℂ) : D.ptMatN [(1, c)] 1 = Matrix.of fun _ _ => c := b
   ext i j
   have hi : i.val = 0 := by omega
   have hj : j.val = 0 := by omega
-  simp [D.ptMatN, D.ptEntry, hi]
+  simp [D.ptMatN, D.ptEntry]
 
 theorem hMat_one_single (c : ℂ) : U.hMat (1 : Equiv.Perm (Fin 1)) (fun _ => c) = Matrix.of fun _ _ => c := by
   ext i j
@@ -189,23 +402,13 @@ theorem ptMatN_block (m : ℕ) (t c : ℂ) :
   rw [e1, e2] at h
   rw [ptBlock_eq]; exact h
 
-theorem ptScal_ne (a : C.LPt) (ha : ∀ b ∈ a, 1 ≤ b.1 ∧ b.2 ≠ 0) : ∀ i < D.ptSize a, D.ptScal a i ≠ 0 := by
-  induction a with
-  | nil => intro i hi; simp [D.ptSize] at hi
-  | cons x a ih =>
-    obtain ⟨s, t⟩ := x
-    intro i hi
-    simp only [D.ptScal]
-    have hS : D.ptSize ((s, t) :: a) = s + D.ptSize a := by simp [D.ptSize]
-    split_ifs with h
-    · exact (ha (s, t) List.mem_cons_self).2
-    · exact ih (fun b hb => ha b (List.mem_cons_of_mem _ hb)) _ (by omega)
+alias ptScal_ne := _root_.Formalism.FourierDecayAlt.P.Dx1.Rel.scal_ne
 
 theorem exists_hMat (a : C.LPt) (ha : ∀ b ∈ a, 1 ≤ b.1 ∧ b.2 ≠ 0) :
     ∃ (σ : Equiv.Perm (Fin (D.ptSize a))) (d : Fin (D.ptSize a) → ℂ), (∀ i, d i ≠ 0) ∧
       U.hMat σ d = D.ptMatN a (D.ptSize a) := by
   refine ⟨D.ptPerm a, D.ptDiag a, fun i => ptScal_ne a ha i i.isLt, ?_⟩
-  exact ((Formalism.FourierDecayAlt.P.ptPerm_spec a (D.ptSize a) ⟨ha, rfl⟩).2.2).symm
+  exact ((_root_.Formalism.FourierDecayAlt.P.Dx1.d_ptPermSpec a (D.ptSize a) ⟨ha, rfl⟩).2.2).symm
 
 end points
 
@@ -246,7 +449,7 @@ theorem phiTop_one (β : ℂ) (σ : Equiv.Perm (Fin 1)) (d : Fin 1 → ℂ) (Φ 
   subst hi; subst hj
   have hσ : σ = 1 := Subsingleton.elim _ _
   subst hσ
-  rw [U.ZjH, Formalism.FourierDecayAlt.P.level_z_affine, Dx2.SL.b_cc]
+  rw [U.ZjH, _root_.Formalism.FourierDecayAlt.P.Ux4.ux_zjAffine, _root_.Formalism.FourierDecayAlt.P.Ux2.block2_apply_upper_left]
   simp [U.headH, U.lowW, G.upper, U.wP, Matrix.mul_apply, G.strictUpper]
 
 end one
@@ -451,3 +654,7 @@ theorem kloosterman_density_of_parts : KloostDensOfParts := by
   exact main hFub hFr hOL hOB U.betaU Formalism.FourierDecayAlt.P.scale_matching.2.1 n V Ψ ⟨hs, hc, hdet⟩ hbig a σ d ha hM
 
 end Formalism.FourierDecayAlt.P.PBJ.Asm
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.KloostermanDensityOfParts =====

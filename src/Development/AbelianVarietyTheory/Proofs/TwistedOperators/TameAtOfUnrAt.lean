@@ -63,7 +63,6 @@ theorem isRes_one {χ : Formalism.L2.Host.HChar D.host.E} {PP : Pl D.host.E} (h 
   have hv : Formalism.L2.Host.IsUnitAt PP (Formalism.L2.Host.atFin PP k) := by
     show Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) (k : D.host.E)) = 1
     first
-      | rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation]
       | erw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
     rw [hk, Algebra.algebraMap_self, RingHom.id_apply, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]
     exact (IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff).mpr ha

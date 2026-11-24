@@ -1,6 +1,6 @@
 module
 
-public import CompanionTheory.AutomorphicTheory.ThetaDilations.IsOpenCoset
+public import Development.WeilBound.CoreStatements.ThetaDilations.IsOpenCoset
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,6 +59,10 @@ open scoped ENNReal ComplexConjugate MatrixGroups
 noncomputable section
 
 namespace CompanionTheory.PlacePermOperatorBicommutantSpan
+
+open PositivityTheory.PlacePermOperatorBicommutantSpan
+  (CO chi_sym co_cpt co_perp fou_add fou_sb fou_smul ind ind_add ind_of_mem ind_of_not isOpen_coset
+    perpG planch sb_add sb_chi sb_homeo sb_ind sb_mul sb_smul sb_span schur)
 
 open GlobalTheory.CompanionTheory.SW.Core
 
@@ -161,7 +165,7 @@ theorem impl_D (a : Rˣ) {m : ℝ} (hm : 0 < m)
   · funext u
     simp only [Heisenberg₂, opD, mMat, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one,
       Matrix.cons_val_fin_one, zero_smul, add_zero, zero_add, mulVec_smul, dotProduct_smul, smul_dotProduct, smul_add,
-      smul_eq_mul, Units.mul_inv_cancel_left, Units.inv_mul_cancel_left]
+      smul_eq_mul, Units.inv_mul_cancel_left]
     ring
 
 theorem impl_fou_chiB : Impl ψ h B μ wMat (fou (chiB ψ B) μ) := by

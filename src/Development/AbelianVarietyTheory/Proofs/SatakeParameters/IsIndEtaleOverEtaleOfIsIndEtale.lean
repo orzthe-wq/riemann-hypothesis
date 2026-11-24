@@ -76,7 +76,7 @@ theorem isIndEtale_of_etale_of_isIndEtale : ∀ (A W O : Type) [CommRing A] [Com
         g.comp (Algebra.TensorProduct.lmul' A) := by
       apply Algebra.TensorProduct.ext'
       intro a b
-      simp [μ, g, Algebra.TensorProduct.lmul'_apply_tmul, IsScalarTower.algebraMap_apply A W O]
+      simp [μ, g, Algebra.TensorProduct.lmul'_apply_tmul]
     have := DFunLike.congr_fun H t
     simp only [AlgHom.comp_apply, AlgHom.coe_restrictScalars'] at this
     rw [show μ e = _ from this, ht2, map_one]

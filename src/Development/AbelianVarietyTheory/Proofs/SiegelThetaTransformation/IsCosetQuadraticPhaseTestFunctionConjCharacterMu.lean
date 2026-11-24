@@ -74,13 +74,6 @@ theorem mu_ne {a : ℂ} (ha : IsMu a) : a ≠ 0 := by
   rw [zero_pow hm.ne'] at ha
   exact zero_ne_one ha
 
-theorem ph_mul {a b : ℂ} (ha : Ph a) (hb : Ph b) : Ph (a * b) := by
-  obtain ⟨m, hm, ha⟩ := ha
-  obtain ⟨n, hn, hb⟩ := hb
-  refine ⟨m * n, Nat.mul_pos hm hn, ?_⟩
-  rw [norm_mul, Complex.ofReal_mul, mul_pow, mul_pow, pow_mul a, ha, ← pow_mul, mul_comm m n, pow_mul b, hb,
-    ← pow_mul]
-
 theorem ph_conj {a : ℂ} (ha : Ph a) : Ph (conj a) := by
   obtain ⟨m, hm, ha⟩ := ha
   refine ⟨m, hm, ?_⟩
@@ -235,7 +228,7 @@ theorem shape_mul {φ ψ : Matrix κ ι ℚ → ℂ} (h : Shape φ) (h' : Shape 
   refine ⟨(isSB_algebra_haar_linear ℚ κ ι φ ψ hs hs').2.2.1, ?_⟩
   by_cases hb : ∃ b, b - a ∈ S ∧ b - a' ∈ S'
   · obtain ⟨b, hb, hb'⟩ := hb
-    refine ⟨c * c', b, S ⊓ S', _, ph_mul hc hc',
+    refine ⟨c * c', b, S ⊓ S', _, _root_.GlobalTheory.Phase.Ph.mul hc hc',
       quad_mul (quad_mono inf_le_left (quad_shift hf hb)) (quad_mono inf_le_right (quad_shift hf' hb')),
       fun x => ?_⟩
     have i1 : x - a ∈ S ↔ x - b ∈ S := by

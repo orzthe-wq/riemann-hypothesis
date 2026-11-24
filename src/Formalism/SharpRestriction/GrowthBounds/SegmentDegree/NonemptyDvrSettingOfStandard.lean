@@ -150,16 +150,14 @@ theorem degSet_finite (n' k : ℕ) (d : Fin n' → ℕ) :
     {m : Fin n' × Fin k →₀ ℕ | ∀ t, ∑ c : Fin k, m (t, c) = d t}.Finite := by
   have hpi : (Set.pi Set.univ fun v : Fin n' × Fin k => Set.Iic (d v.1)).Finite :=
     Set.Finite.pi fun v => Set.finite_Iic _
-  have hpre := Set.Finite.preimage (f := (Finsupp.equivFunOnFinite : (Fin n' × Fin k →₀ ℕ) → (Fin n' × Fin k → ℕ)))
-    (fun a _ b _ hab => Finsupp.equivFunOnFinite.injective hab) hpi
-  refine hpre.subset ?_
+  refine (Set.Finite.preimage
+    (f := (Finsupp.equivFunOnFinite : (Fin n' × Fin k →₀ ℕ) → (Fin n' × Fin k → ℕ)))
+    (fun a _ b _ hab => Finsupp.equivFunOnFinite.injective hab) hpi).subset ?_
   intro m hm
   simp only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Iic, Finsupp.equivFunOnFinite_apply]
   intro v
-  calc m v = m (v.1, v.2) := rfl
-    _ ≤ ∑ c : Fin k, m (v.1, c) :=
-        Finset.single_le_sum (f := fun c => m (v.1, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ v.2)
-    _ = d v.1 := hm v.1
+  simpa using (Finset.single_le_sum (f := fun c => m (v.1, c))
+    (fun _ _ => Nat.zero_le _) (Finset.mem_univ v.2)).trans_eq (hm v.1)
 
 theorem nonempty_dvr_setting_of_standard {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
     [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]

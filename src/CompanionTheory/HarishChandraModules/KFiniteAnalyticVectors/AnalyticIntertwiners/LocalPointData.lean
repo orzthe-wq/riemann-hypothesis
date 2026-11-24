@@ -145,7 +145,7 @@ theorem twD_rep (m : ℕ) (h : Formalism.MainNotions.S.IsURepOn (Formalism.MainN
   refine ⟨⟨by simp [twD, h.1.1], fun a ha b hb => ?_⟩, fun g hg v => ?_, fun v => ?_⟩
   · simp only [twD]
     rw [h.1.2 a ha b hb, det_mul, mul_pow, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_smul]
-  · simp only [twD, ContinuousLinearMap.smul_apply, norm_smul, norm_pow, norm_detD hg, one_pow, one_mul, h.2.1 g hg]
+  · simp only [twD, _root_.smul_apply, norm_smul, norm_pow, norm_detD hg, one_pow, one_mul, h.2.1 g hg]
   · exact ((continuous_id.matrix_det).pow m).continuousOn.smul (h.2.2 v)
 
 theorem twD_irr (m : ℕ) (h : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) σ) :
@@ -165,7 +165,7 @@ variable {p q : ℕ} {T : GrpData p q} {πU : URep T} {M : GKMod p q} {io : M.V 
 
 theorem skewD (h : IsHCMod πU M io) : SkewD M io := fun Y hY v w => by
   have h1 := (h.2.2 Y hY v).inner ℂ (h.2.2 Y hY w)
-  simp only [inner_piC, zero_smul, T.expt_zero, map_one, ContinuousLinearMap.one_apply] at h1
+  simp only [inner_piC, zero_smul, T.expt_zero, map_one, one_apply_eq_self] at h1
   have h2 := h1.unique (hasDerivAt_const _ _)
   linear_combination h2
 
@@ -190,7 +190,7 @@ theorem eigD (h : IsHCMod πU M io) {X : Mat p q} (hX : X ∈ upq p q) {v : M.V}
       zero_smul]
   have h2 := is_const_of_deriv_eq_zero (fun s => (hg s).differentiableAt) (fun s => (hg s).deriv) t 0
   simp only [Complex.ofReal_zero, mul_zero, neg_zero, Complex.exp_zero, zero_smul, T.expt_zero, map_one,
-    ContinuousLinearMap.one_apply, one_smul] at h2
+    one_apply_eq_self, one_smul] at h2
   conv_rhs => rw [← h2]
   rw [smul_smul, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_smul]
 
@@ -228,7 +228,7 @@ theorem signD (h : IsHCMod πU M io) {j : ℕ} {σ : Matrix (Fin (p + q)) (Fin (
     Complex.exp (Complex.I * c * (2 * Real.pi : ℝ)) = (-1) ^ j := by
   have e := eigD h (iE_memD a) (v := v) (c := Complex.I * c)
     (by rw [map_smul, LinearMap.smul_apply, hv, smul_smul]) (2 * Real.pi)
-  rw [(hex _ (iE_memD a)).2, exp_twoPiD, h1, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply] at e
+  rw [(hex _ (iE_memD a)).2, exp_twoPiD, h1, _root_.smul_apply, one_apply_eq_self] at e
   have hne : io v ≠ 0 := fun h0 => hv0 (h.1 (h0.trans (map_zero io).symm))
   rw [← smul_left_injective ℂ hne e, ← Complex.exp_pi_mul_I, ← Complex.exp_nat_mul, trace_smul, Eab,
     trace_single_eq_same]
@@ -256,18 +256,18 @@ theorem dictD (hS : KFSm) (h : IsHCMod πU M io) {j : ℕ} (m : ℕ)
     intro Y hY v
     refine Subtype.ext ((hder.deriv _ (hex Y hY).1 (κ v)).unique ?_)
     have d1 : HasDerivAt (fun t : ℝ => (NormedSpace.exp (t • rx Y)).det) (rx Y).trace 0 :=
-      PI.UnitaryCorollaryDerivatives.DjC.hasDerivAt_det_of_one _ _ (by simp) fun a b => PI.UnitaryCorollaryDerivatives.DjC.hasDerivAt_exp_entry (rx Y) a b
+      _root_.Bl.b110.goal1 _ _ (by simp) fun a b => PI.UnitaryCorollaryDerivatives.DjC.hasDerivAt_exp_entry (rx Y) a b
     have d2 := ((((hasDerivAt_id (0 : ℝ)).ofReal_comp.mul_const Y.trace).div_const 2).const_mul (j : ℂ)).fun_neg.cexp
     have d3 := ((d1.fun_pow m).fun_mul d2).fun_smul (h.2.2 Y hY v)
     convert (preTransparency := .reducible) d3 using 1
     · funext t
-      rw [(hex Y hY).2, ContinuousLinearMap.smul_apply, smul_smul, mul_assoc, ← Complex.exp_add]
-      simp only [id, neg_add_cancel, Complex.exp_zero, mul_one, twD, ContinuousLinearMap.smul_apply, Complex.coe_smul]
+      rw [(hex Y hY).2, _root_.smul_apply, smul_smul, mul_assoc, ← Complex.exp_add]
+      simp only [id, neg_add_cancel, Complex.exp_zero, mul_one, twD, _root_.smul_apply, Complex.coe_smul]
       rfl
     · show io _ = _
       simp only [map_add (f := _), map_smul, id, zero_smul, NormedSpace.exp_zero, det_one, one_pow, Complex.ofReal_zero, zero_mul,
         zero_div, mul_zero, neg_zero, Complex.exp_zero, mul_one, one_mul, one_smul, T.expt_zero, map_one,
-        ContinuousLinearMap.one_apply, trace_rxC, Complex.ofReal_one]
+        one_apply_eq_self, trace_rxC, Complex.ofReal_one]
       congr 2
       ring
   intro Z v
@@ -360,11 +360,11 @@ theorem clause2_of (h1 : Clause1) (hS : KFSm) (hC : CasScal) (hDe : Descend) : C
   rintro _ ⟨w, rfl⟩
   have h0 : ((T.sq x : ℂˣ) : ℂ) ^ j₂ ≠ 0 := pow_ne_zero _ (Units.ne_zero _)
   have h := main _ (mem_UJC T x) w
-  simp only [twD, ContinuousLinearMap.smul_apply, det_rxC, ← sq_sqC, ← pow_mul] at h
+  simp only [twD, _root_.smul_apply, det_rxC, ← sq_sqC, ← pow_mul] at h
   refine smul_right_injective _ h0 ?_
   beta_reduce
   rw [← map_smul U, hπ₁, hπ₂]
-  simp only [ContinuousLinearMap.smul_apply, smul_smul, ← pow_add]
+  simp only [_root_.smul_apply, smul_smul, ← pow_add]
   rw [show j₂ + j₁ = 2 * m by omega, show j₂ + j₂ = 2 * j₂ by omega]
   exact h
 

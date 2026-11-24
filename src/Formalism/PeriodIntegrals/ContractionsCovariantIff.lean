@@ -73,13 +73,12 @@ theorem contractionsCovariant_iff : ContractionsCovariant ↔ QnCovDet ∧ QnCov
   unfold ContractionsCovariant QnCovDet QnCovHat QnCovHat2
   constructor
   · intro h
-    refine ⟨?_, ?_, ?_⟩
-    · intro A _ _ n E P Q hE hQP hPQ u
-      exact (h A n E P Q hE hQP hPQ u 0 0 0 0).1
-    · intro A _ _ n E P Q hE hQP hPQ u a β
-      exact (h A n E P Q hE hQP hPQ u a 0 β 0).2.1
-    · intro A _ _ n E P Q hE hQP hPQ u a a' β β'
-      exact (h A n E P Q hE hQP hPQ u a a' β β').2.2
+    exact ⟨fun A _ _ n E P Q hE hQP hPQ u =>
+        (h A n E P Q hE hQP hPQ u 0 0 0 0).1,
+      fun A _ _ n E P Q hE hQP hPQ u a β =>
+        (h A n E P Q hE hQP hPQ u a 0 β 0).2.1,
+      fun A _ _ n E P Q hE hQP hPQ u a a' β β' =>
+        (h A n E P Q hE hQP hPQ u a a' β β').2.2⟩
   · rintro ⟨h1, h2, h3⟩ A _ _ n E P Q hE hQP hPQ u a a' β β'
     exact ⟨h1 A n E P Q hE hQP hPQ u, h2 A n E P Q hE hQP hPQ u a β,
       h3 A n E P Q hE hQP hPQ u a a' β β'⟩

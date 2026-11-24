@@ -3,10 +3,11 @@ module
 public import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.Narrow
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsUnitarisableTrivChar
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BaseChangeSpehOfDiscreteSeries
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitarisableOfIsSpehOne
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DiscreteAutomorphicRepGLLocalComponentIsUnitarisStatement
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqOfNodupSumMultisetOfEq
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlgebraicWeightOfAutomorphicDefiniteUnitarStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitarisableOfIsSpehOne
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlgebraicWeightOfAutomorphicDefiniteUnitar
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParameterSphericalProductSpehQuotientsStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -126,7 +127,7 @@ theorem bcSpeh_of (H2 : AscComp) (H1 : DefiniteN) : BcSpeh := by
   intro E _ _ _ hE n hn π hπ
   obtain ⟨c, N, h, V, σ, m, bc⟩ := H1 E hE n hn π hπ
   choose a d P _ hPn hPc hPs using bc.csd
-  exact baseChange_speh_of_discreteSeries H2 GlobalTheory.T.exists_algebraicWeight_of_automorphic_definiteUnitary hn hπ bc a d P hPn hPs hPc fun i => (ascEmb_mul_eq (hPs i)).symm
+  exact baseChange_speh_of_discreteSeries H2 _root_.GlobalTheory.DefU.exists_hasWeightAt_of_isAutRepU hn hπ bc a d P hPn hPs hPc fun i => (ascEmb_mul_eq (hPs i)).symm
 
 end UpperTheory.BaseChangeIdentities
 

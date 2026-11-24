@@ -102,7 +102,7 @@ noncomputable def coneIdeal {o I Z : Type} [CommRing o] (em : o →+* ℂ) (B : 
 theorem mem_coneIdeal {o I Z : Type} [CommRing o] {em : o →+* ℂ} {B : Set Z} {θ : Z → I → ℂ}
     {F : MvPolynomial I o} : F ∈ coneIdeal em B θ ↔
       ∀ z ∈ B, ∀ c : ℂ, c ≠ 0 → MvPolynomial.eval₂ em (c • θ z) F = 0 := by
-  simp [coneIdeal, Ideal.mem_iInf, RingHom.mem_ker]
+  simp [coneIdeal, RingHom.mem_ker]
 
 theorem coneIdeal_isPrime {o I : Type} [CommRing o] [Countable o] [Countable I] (em : o →+* ℂ)
     {d : ℕ} {B : Set (Fin d → ℂ)} (θ : (Fin d → ℂ) → I → ℂ) (ho : IsOpen B)
@@ -188,7 +188,7 @@ theorem exists_prime_independent_ratios : Out.Laws → Out.Laws2 → ∀ (g N' :
   have hmem : ∀ F, F ∈ thIdeal em C ↔ ∀ t v, C t → t.HasTh (𝟙 _) v →
       MvPolynomial.eval₂ em v F = 0 := by
     intro F
-    simp [thIdeal, Ideal.mem_iInf, RingHom.mem_ker]
+    simp [thIdeal, RingHom.mem_ker]
   have hinf : (Finset.univ : Finset (Fin r)).inf (fun i => coneIdeal em (B i) (θ i)) ≤ p := by
     refine le_trans (fun F hF => ?_) hle
     rw [hmem]

@@ -69,8 +69,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 variable {D : D7} {r : ℕ}
 
 instance countable_hermE (D : D7) (r : ℕ) : Countable (HermE D r) := by
-  haveI := GlobalTheory.ThetaTransformMeas.countable_field D.host.E
-  haveI : Countable (Matrix (Fin r) (Fin r) D.host.E) :=
+  have := GlobalTheory.ThetaTransformMeas.countable_field D.host.E
+  have : Countable (Matrix (Fin r) (Fin r) D.host.E) :=
     inferInstanceAs (Countable (Fin r → Fin r → D.host.E))
   exact inferInstanceAs (Countable {b : Matrix (Fin r) (Fin r) D.host.E // _})
 
@@ -81,15 +81,15 @@ theorem setIntegral_char_eq_zero {lam : Measure (hermA D r)} {𝓖 : Set (hermA 
     (hΓ : ∀ γ ∈ ratHerm D r, e γ = 1) (b₀ : hermA D r) (hb₀ : e b₀ ≠ 1) :
     ∫ b in 𝓖, e b ∂lam = 0 := by
   obtain ⟨i1, i2, i3, i4, -, -⟩ := lattice_Mx D r r
-  haveI : IsTopologicalAddGroup (Mx D r r) := i1
-  haveI : SecondCountableTopology (Mx D r r) := i3
-  haveI : BorelSpace (Mx D r r) := ⟨rfl⟩
-  haveI : SecondCountableTopology (hermA D r) := Topology.IsInducing.subtypeVal.secondCountableTopology
-  haveI : BorelSpace (hermA D r) := Subtype.borelSpace _
-  haveI : lam.IsAddHaarMeasure := hl.1
-  haveI : VAddInvariantMeasure (hermA D r) (hermA D r) lam := ⟨fun c s _ => measure_preimage_add lam c s⟩
-  haveI : VAddInvariantMeasure (ratHerm D r) (hermA D r) lam := ⟨fun c s _ => measure_preimage_add lam c.1 s⟩
-  haveI : Countable (ratHerm D r) :=
+  have : IsTopologicalAddGroup (Mx D r r) := i1
+  have : SecondCountableTopology (Mx D r r) := i3
+  have : BorelSpace (Mx D r r) := ⟨rfl⟩
+  have : SecondCountableTopology (hermA D r) := Topology.IsInducing.subtypeVal.secondCountableTopology
+  have : BorelSpace (hermA D r) := Subtype.borelSpace _
+  have : lam.IsAddHaarMeasure := hl.1
+  have : VAddInvariantMeasure (hermA D r) (hermA D r) lam := ⟨fun c s _ => measure_preimage_add lam c s⟩
+  have : VAddInvariantMeasure (ratHerm D r) (hermA D r) lam := ⟨fun c s _ => measure_preimage_add lam c.1 s⟩
+  have : Countable (ratHerm D r) :=
     (GlobalTheory.CompanionTheory.HermPoisson.ofHermE_bijective (D := D) (r := r)).2.countable
   have hF := hl.2.1
   have hF' : IsAddFundamentalDomain (ratHerm D r) (b₀ +ᵥ 𝓖) lam := hF.vadd_of_comm b₀
@@ -140,7 +140,7 @@ theorem setIntegral_pairH {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.hos
     ((GlobalTheory.CompanionTheory.HermPoisson.ofHermE_bijective (D := D) (r := r)).1 (Subtype.ext (sub_eq_zero.1 h)))
   have hex : ∃ b₀, pairH ψ (S - S') b₀ ≠ 1 := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     exact hne (h2 _ (sub_mem (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).2 (GlobalTheory.CompanionTheory.HermPoisson.ofHermE β).2) hcon)
   obtain ⟨b₀, hb₀⟩ := hex
   have hdec : ∀ b, pairH ψ S b = pairH ψ (S - S') b * pairH ψ S' b := fun b => by
@@ -227,9 +227,9 @@ theorem hasSum_twist {V : HSp D} {θ : InfFam D} (hθ : IsInfFam θ) {ν : Measu
       (⨍ q, descend (GQ V) (fun h => ∑' ξ : Matrix (Fin V.rank) (Fin r) D.host.E,
         u (gramOf V ξ) * φ (GlobalTheory.SiegelFormula.invPt V h ξ)) q ∂autMeasure V ν) := by
   have : BorelSpace (GA D V) := ⟨rfl⟩
-  haveI := hν
-  haveI := GlobalTheory.ThetaTransformMeas.countable_field D.host.E
-  haveI : Countable (Matrix (Fin V.rank) (Fin r) D.host.E) :=
+  have := hν
+  have := GlobalTheory.ThetaTransformMeas.countable_field D.host.E
+  have : Countable (Matrix (Fin V.rank) (Fin r) D.host.E) :=
     inferInstanceAs (Countable (Fin V.rank → Fin r → D.host.E))
   have hcont : Continuous φ :=
     (GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ φ hφ).1
@@ -237,7 +237,7 @@ theorem hasSum_twist {V : HSp D} {θ : InfFam D} (hθ : IsInfFam θ) {ν : Measu
       ‖u (gramOf V ξ) * φ (GlobalTheory.SiegelFormula.invPt V h ξ)‖ₑ) = GlobalTheory.SiegelFormula.absTheta V φ := by
     funext h
     refine tsum_congr fun ξ => ?_
-    rw [enorm_mul, ← ofReal_norm_eq_enorm (u _), hu]
+    rw [enorm_mul, ← ofReal_norm (u _), hu]
     simp
   have hterm : ∀ (T : HermE D r) (k : {x : Matrix (Fin V.rank) (Fin r) D.host.E // gramQ V x = T.1}),
       gramOf V (allEquiv V r ⟨T, k⟩) = T := fun T k => Subtype.ext k.2
@@ -297,8 +297,8 @@ theorem theta_mul_nb {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle
 theorem continuous_pairH {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (S : hermA D r) :
     Continuous (pairH ψ S) := by
   obtain ⟨i1, i2, i3, i4, -, -⟩ := lattice_Mx D r r
-  haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
-  haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
+  have := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
+  have : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
   have ht : Continuous (Algebra.trace (AF D.host.F) (AE D)) :=
     IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))
   unfold pairH trF
@@ -341,14 +341,14 @@ theorem thetaCoef : GlobalTheory.Published.WeilThetaConvergence → PositivityTh
   have hpn : ∀ (S b : hermA D n), ‖pairH ψ S b‖ = 1 := fun S b => hψ.2.1 _
   have hχc : Continuous χβ :=
     (continuous_pairH hψ _).inv₀ (pairH_ne_zero hψ _)
-  haveI : IsFiniteMeasure (lam.restrict 𝓖) :=
+  have : IsFiniteMeasure (lam.restrict 𝓖) :=
     ⟨by rw [Measure.restrict_apply_univ, hl.2.2]; exact ENNReal.one_lt_top⟩
   obtain ⟨i1, i2, i3, i4, -, -⟩ := lattice_Mx D n n
-  haveI : IsTopologicalAddGroup (Mx D n n) := i1
-  haveI : SecondCountableTopology (Mx D n n) := i3
-  haveI : BorelSpace (Mx D n n) := ⟨rfl⟩
-  haveI : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology
-  haveI : BorelSpace (hermA D n) := Subtype.borelSpace _
+  have : IsTopologicalAddGroup (Mx D n n) := i1
+  have : SecondCountableTopology (Mx D n n) := i3
+  have : BorelSpace (Mx D n n) := ⟨rfl⟩
+  have : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology
+  have : BorelSpace (hermA D n) := Subtype.borelSpace _
   set F : HermE D n → hermA D n → ℂ := fun T b => pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).1 b * A T * χβ b with hF
   have hFc : ∀ T, Continuous (F T) := fun T =>
     ((continuous_pairH hψ _).mul continuous_const).mul hχc

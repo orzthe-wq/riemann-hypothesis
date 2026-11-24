@@ -1,16 +1,19 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVecEq
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardPrincipalCongruenceTransversalLeAbsNormPowStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAddCharThetaCommutatorPhaseSkewLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexStandardInfSkewThetaLatticeEqAbsNormPowStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SkewIdealLatticePointRationalNormKillsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StabilizerCongruentOfCommutatorPhaseEqStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardLatticeTranslateUnitVectorVacuumExpansioStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumNormSqLeOfRootOfUnityAddCharCombinationStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilActionCosetVectorEqTranslateUnitVectorStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilIntegralPointSkewLatticeUnitVectorSameEigenStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilOperatorIntegralPointVacuumRootOfUnitySmulStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardPrincipalCongruenceTransversalLeAbsNormPow
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAddCharThetaCommutatorPhaseSkewLattice
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IndexStandardInfSkewThetaLatticeEqAbsNormPow
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SkewIdealLatticePointRationalNormKills
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StabilizerCongruentOfCommutatorPhaseEq
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardLatticeTranslateUnitVectorVacuumExpansio
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumNormSqLeOfRootOfUnityAddCharCombination
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilActionCosetVectorEqTranslateUnitVector
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilIntegralPointSkewLatticeUnitVectorSameEigen
+public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilOperatorIntegralPointVacuumRootOfUnitySmul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -65,7 +68,7 @@ theorem pres_stdSum : ∀ (D : D7) (δ t0 : ℂ), Crv D ⊤ δ → ∀ {a d : �
   intro D δ t0 hc a d e0 hv had W 𝔪 h𝔪 hco hb _hchar R hR huniq _hfix
   have he : e0 ∈ Th D (tor0 D ⊤ δ) (stdL D a) (stdL D d) := hv.1
   have hN0 : 0 < Ideal.absNorm 𝔪 := Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h𝔪)
-  have hidx := GlobalTheory.T.index_standard_inf_skewThetaLattice_eq_absNorm_pow D δ hc 𝔪 h𝔪 hco a d
+  have hidx := _root_.GlobalTheory.SkewIndex.index_inter_skew D δ hc 𝔪 h𝔪 hco a d
   haveI hfin : Finite (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d) ⧸
       (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))) :=
     AddSubgroup.index_ne_zero_iff_finite.1 (by rw [hidx]; positivity)
@@ -81,12 +84,12 @@ theorem pres_stdSum : ∀ (D : D7) (δ t0 : ℂ), Crv D ⊤ δ → ∀ {a d : �
         (c • Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ x)
           (Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) a d) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) e0)) := by
     intro i
-    obtain ⟨c, hcm, hce⟩ := GlobalTheory.T.weilOperator_integral_point_vacuum_rootOfUnity_smul D δ hc e0 he W i (hR i i.2)
-    obtain ⟨x, hx, hxc, hom⟩ := GlobalTheory.T.weilAction_cosetVector_eq_translate_unitVector D δ hc e0 he W 𝔪 h𝔪 i (hR i i.2)
+    obtain ⟨c, hcm, hce⟩ := _root_.GlobalTheory.FunObj.StdDatum.vacuum_int_root_of_unity D δ hc e0 he W i (hR i i.2)
+    obtain ⟨x, hx, hxc, hom⟩ := _root_.GlobalTheory.FunObj.StdDatum.LiftCoset.om_cosetV_eq D δ hc e0 he W 𝔪 h𝔪 i (hR i i.2)
     refine ⟨c, x, hcm, hx, hxc, ?_⟩
-    rw [hom, GlobalTheory.T.weil_integralPoint_skewLatticeUnitVector_same_eigen D δ hc e0 he W 𝔪 h𝔪 i (hR i i.2) c hce, wsm]
+    rw [hom, _root_.GlobalTheory.FunObj.EigUnit.eig_unit D δ hc e0 he W 𝔪 h𝔪 i (hR i i.2) c hce, wsm]
   choose c x hcm hx hxc hom using hr
-  choose χ hχ using fun i : R => GlobalTheory.T.exists_addChar_thetaCommutatorPhase_skewLattice D δ hc 𝔪 (pt D (tor0 D ⊤ δ) δ (x i)) (hx i)
+  choose χ hχ using fun i : R => _root_.GlobalTheory.CommPhase.chars D δ hc 𝔪 (pt D (tor0 D ⊤ δ) δ (x i)) (hx i)
   have hone : ∀ k : GA D a, CongOne D 𝔪 (k⁻¹ * k) := by
     intro k i' j
     rw [inv_mul_cancel]
@@ -98,17 +101,17 @@ theorem pres_stdSum : ∀ (D : D7) (δ t0 : ℂ), Crv D ⊤ δ → ∀ {a d : �
           Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (x j)) y := by
       intro y hy
       rw [← hχ i ⟨y, hy⟩, ← hχ j ⟨y, hy⟩, hij]
-    have h1 := GlobalTheory.T.stabilizer_congruent_of_commutatorPhase_eq D δ hc 𝔪 h𝔪 hco hb had i j (hR i i.2) (hR j j.2) (x i) (x j) (hx i) (hx j) (hxc i) (hxc j) hk
+    have h1 := _root_.GlobalTheory.FunObj.StdDatum.PhaseCong.cong_of_kap_eq D δ hc 𝔪 h𝔪 hco hb had i j (hR i i.2) (hR j j.2) (x i) (x j) (hx i) (hx j) (hxc i) (hxc j) hk
     exact Subtype.ext ((huniq j (hR j j.2)).unique ⟨i.2, h1⟩ ⟨j.2, hone j⟩)
   have hcard : Fintype.card R ≤ Ideal.absNorm 𝔪 ^ (a * d) := by
     rw [Fintype.card_coe]
-    refine (GlobalTheory.T.card_principalCongruence_transversal_le_absNorm_pow D 𝔪 h𝔪 a R hR huniq).trans (Nat.pow_le_pow_right hN0 ?_)
+    refine (_root_.GlobalTheory.card_congRep_le D 𝔪 h𝔪 a R hR huniq).trans (Nat.pow_le_pow_right hN0 ?_)
     rw [pow_two]; exact Nat.mul_le_mul_left a had
-  obtain ⟨rr, hrr, hint, hρ⟩ := GlobalTheory.T.sum_norm_sq_le_of_rootOfUnity_addChar_combination (Ideal.absNorm 𝔪) (a * d) c χ hN0 hcm hinj
+  obtain ⟨rr, hrr, hint, hρ⟩ := _root_.GlobalTheory.ParsevalRootsOfUnity.exists_integral_coeffs_sum_norm_sq_le_of_rootOfUnity (Ideal.absNorm 𝔪) (a * d) c χ hN0 hcm hinj
     (by rw [← hidx, AddSubgroup.index_eq_card, Nat.card_eq_fintype_card]) hcard
   choose z hz hzN using fun q : (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d) ⧸
       (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))) =>
-    GlobalTheory.T.skewIdealLattice_point_rational_normKills D δ hc 𝔪 h𝔪 _ (Quotient.out q).2
+    _root_.GlobalTheory.FunObj.StdDatum.SkewPoints.points D δ hc 𝔪 h𝔪 _ (Quotient.out q).2
   set e := Fintype.equivFin (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d) ⧸
       (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)))
   refine ⟨_, fun i => rr (e.symm i), fun i => z (e.symm i), fun i => hzN _, fun i => hint _, fun ρ => ?_, ?_⟩
@@ -117,7 +120,7 @@ theorem pres_stdSum : ∀ (D : D7) (δ t0 : ℂ), Crv D ⊤ δ → ∀ {a d : �
   rw [e.symm.sum_comp (fun q => ((rr q : Qbar) : ℂ) * Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (z q)) e0 y)]
   simp only [stdSum, Finset.sum_apply]
   rw [← Finset.sum_coe_sort R]
-  simp only [hom, Pi.smul_apply, smul_eq_mul, GlobalTheory.T.standardLattice_translate_unitVector_vacuum_expansion D δ hc 𝔪 h𝔪 e0 he _ (hx _), hidx,
+  simp only [hom, Pi.smul_apply, smul_eq_mul, _root_.GlobalTheory.FunObj.TransExp.wd_iop_expand D δ hc 𝔪 h𝔪 e0 he _ (hx _), hidx,
     finsum_eq_sum_of_fintype, hrr, ← hz]
   have hs : ((Real.sqrt ((Ideal.absNorm 𝔪 : ℝ) ^ (a * d)) : ℂ))⁻¹ *
       ((Real.sqrt (((Ideal.absNorm 𝔪 ^ (a * d) : ℕ) : ℝ)) : ℂ))⁻¹ = (((Ideal.absNorm 𝔪 : ℂ)) ^ (a * d))⁻¹ := by

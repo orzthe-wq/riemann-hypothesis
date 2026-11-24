@@ -49,4 +49,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Grid GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.ConstRatio
 
 theorem _root_.GlobalTheory.T.self_dual_lattice_has_rigidification : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), V.SigOK → IsSelfDualC V Λ → ∃ r : Rig V, r.Λ = Λ ∧ r.Is := by
-  first | exact @GlobalTheory.RigExists.exists_rig | exact GlobalTheory.RigExists.exists_rig | (intros; apply GlobalTheory.RigExists.exists_rig <;> assumption)
+  first | exact @GlobalTheory.RigExists.exists_rig

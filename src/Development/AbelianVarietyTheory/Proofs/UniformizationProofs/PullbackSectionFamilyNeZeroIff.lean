@@ -63,7 +63,7 @@ theorem sval_eq_zero_of_local_eq_zero {X Y Z : Scheme.{0}} {L : LB X} {K : Type}
 theorem appTop_field_point_injective (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F]
     [Algebra (FractionRing R) F] :
     Function.Injective (toUnit (TF (R := R) F)).left.appTop.hom := by
-  apply GlobalTheory.UU.FEDesc.toUnit_injective <;> assumption
+  apply GlobalTheory.UU.FEDesc.toUnit_injective
 
 theorem pullB_ne_zero_iff : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (f : ∀ α, SecBT D (𝟙_ _) k α) (s : Raw D F k), PullB D F (toUnit _) k f s → ∀ α, ((∃ j, (s α).f j ≠ 0) ↔ ∃ j, (f α).f j ≠ 0) := by
   intro R _ _ D F _ _ k f s h α

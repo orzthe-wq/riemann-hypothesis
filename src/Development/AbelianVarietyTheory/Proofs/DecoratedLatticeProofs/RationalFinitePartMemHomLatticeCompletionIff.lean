@@ -121,7 +121,6 @@ theorem mem_latRat_iff_perO {S T : HSp D}
             rw [LinearMap.toMatrix'_apply]
             first
               | rfl
-              | (congr 3; funext c; simp [Pi.single_apply])
 
           rw [e2, e1, map_sum, Matrix.sum_apply, Finset.sum_apply, Finset.mul_sum]
           apply Finset.sum_congr rfl

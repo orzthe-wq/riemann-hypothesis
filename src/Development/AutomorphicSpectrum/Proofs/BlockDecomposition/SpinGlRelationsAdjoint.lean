@@ -74,7 +74,7 @@ theorem term_comm {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) (a
   rw [h, h1, h2]
   by_cases hbd : b = d <;> by_cases heg : e = g <;> by_cases hag : a = g <;> by_cases hed : e = d <;>
     simp only [hbd, heg, hag, hed, and_self, and_true, and_false, true_and, false_and, if_true, if_false,
-      mul_zero, zero_mul, sub_zero, two_smul, mul_two, two_mul] <;> simp_all [two_smul, mul_two, two_mul]
+      mul_zero, zero_mul, sub_zero, two_smul, mul_two, two_mul] <;> simp_all [mul_two, two_mul]
 
 theorem quad_c {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) (a b d g : Fin n) :
     quadM c a b * c d g - c d g * quadM c a b =
@@ -106,17 +106,14 @@ theorem quad_quad {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCliff c) (a
   simp only [h, sub_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]
   by_cases hbd : b = d <;> by_cases hae : a = e
   · have hea : e = a := hae.symm
-    simp [hbd, hae, quadM, ite_mul, mul_ite, smul_sub, smul_add, Finset.sum_ite_eq, Finset.sum_ite_eq']
-    try abel
+    simp [hbd, hae, quadM, ite_mul, mul_ite, smul_sub, Finset.sum_ite_eq]
   · have hea : ¬ e = a := fun h => hae h.symm
-    simp [hbd, hae, hea, quadM, ite_mul, mul_ite, smul_sub, smul_add, Finset.sum_ite_eq, Finset.sum_ite_eq']
-    try abel
+    simp [hbd, hae, hea, quadM, ite_mul, mul_ite, Finset.sum_ite_eq]
   · have hea : e = a := hae.symm
-    simp [hbd, hae, quadM, ite_mul, mul_ite, smul_sub, smul_add, Finset.sum_ite_eq, Finset.sum_ite_eq']
+    simp [hbd, hae, quadM, ite_mul, mul_ite, smul_sub, smul_add, Finset.sum_ite_eq]
     try abel
   · have hea : ¬ e = a := fun h => hae h.symm
-    simp [hbd, hae, hea, quadM, ite_mul, mul_ite, smul_sub, smul_add, Finset.sum_ite_eq, Finset.sum_ite_eq']
-    try abel
+    simp [hbd, hae, hea, ite_mul, mul_ite, Finset.sum_ite_eq]
 
 theorem spinM_eq (c : Fin n → Fin n → Matrix ι ι ℂ) (a b : Fin n) :
     spinM c a b = quadM c a b - (if a = b then ((n : ℂ) / 2) • (1 : Matrix ι ι ℂ) else 0) := rfl
@@ -149,7 +146,7 @@ theorem spin_conjTranspose {c : Fin n → Fin n → Matrix ι ι ℂ} (hc : IsCl
   simp only [spinM_eq, quadM]
   by_cases hab : a = b
   · subst hab
-    simp [conjTranspose_sum, conjTranspose_mul, hc.2, conjTranspose_smul, Complex.conj_ofNat]
+    simp [conjTranspose_sum, conjTranspose_mul, hc.2, conjTranspose_smul]
   · simp [hab, Ne.symm hab, conjTranspose_sum, conjTranspose_mul, hc.2, conjTranspose_smul]
 
 theorem spinRel : ∀ {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (c : Fin n → Fin n → Matrix ι ι ℂ), IsCliff c →

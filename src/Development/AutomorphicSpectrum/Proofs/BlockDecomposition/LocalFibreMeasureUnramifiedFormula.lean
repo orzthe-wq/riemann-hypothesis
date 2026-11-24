@@ -48,6 +48,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GramNear
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ContinuousHermScal
 
 @[expose] public section
 
@@ -55,13 +56,6 @@ open scoped Matrix NNReal ENNReal TensorProduct
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.WhitFree GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.AvgFree MeasureTheory
 
 namespace GlobalTheory.CompanionTheory.AvgFree.FibMass
-
-theorem sig_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [hCM.2.2.2 τ, hCM.2.2.2 τ]
-  simp
 
 theorem gram_mem {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} (R : Type) [CommRing R]
     [Algebra F R] (hs : ∀ x, σ (σ x) = x) {M n : ℕ} {J : Matrix (Fin M) (Fin M) E}
@@ -94,7 +88,7 @@ theorem GlobalTheory.CompanionTheory.AvgFree.free_fibre_masses : ∀ (F E : Type
   haveI := a8 n M
   haveI hBH : BorelSpace (HermR (Fv F v) σ n) := ⟨rfl⟩
   obtain ⟨h1, h2, h3⟩ := hmv
-  have hinv : ∀ e, σ (σ e) = e := GlobalTheory.CompanionTheory.AvgFree.FibMass.sig_inv hσ
+  have hinv : ∀ e, σ (σ e) = e := _root_.GlobalTheory.CompanionTheory.SW.OneHerm.sigma_sigma hσ
   have hgc : Continuous (gramR (Fv F v) σ J : (Fin n → Fin M → Fv F v ⊗[F] E) → _) := a10 n M J
 
   let q : (Fin n → Fin M → Fv F v ⊗[F] E) → HermR (Fv F v) σ n := fun X =>

@@ -57,7 +57,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.indMap :
       ∀ w : W, σ p w = ρ (leviProj k e p) w := by
     intro p hK w
     have h3 := deltaHalf_of_mem_leviK hK
-    simp only [σ, MonoidHom.comp_apply, twist, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.smul_apply, h3,
+    simp only [σ, MonoidHom.comp_apply, twist, MonoidHom.coe_mk, OneHom.coe_mk, h3,
       Units.val_one, one_smul]
   have key : ∀ z : Z, ∀ p : parab k e, (p : GL (Fin N) k) ∈ KOne k (Fin N) → σ p (j z) = j z := by
     intro z p hp

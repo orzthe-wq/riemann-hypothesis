@@ -154,7 +154,7 @@ theorem suppF_iff {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) {V : F
     intro x hx
     rw [← idem_mul_iff v α' hw1 hw0, ← hT, ← hfin, ← (GlobalTheory.NJoin.tensCast hF).map_mul, ← (Formalism.L2.Theta.finPart D).map_mul,
       (GlobalTheory.NJoin.tensCast hF).injective.eq_iff]
-    refine ⟨fun h => by rw [h], fun h => sub_eq_zero.1 (GlobalTheory.PlaceSupp.AE_eq_zero D _ ?_ ?_)⟩
+    refine ⟨fun h => by rw [h], fun h => sub_eq_zero.1 (_root_.GlobalTheory.DualPairCompare.parts_zero D _ ?_ ?_)⟩
     · rw [RingHom.map_sub, RingHom.map_mul, hx, mul_zero, sub_zero]
     · rw [RingHom.map_sub, h, sub_self]
   have key2 : ∀ u, (∀ a b, compAt D.host.E u (GlobalTheory.NJoin.tensCast hF (Formalism.L2.Theta.finPart D

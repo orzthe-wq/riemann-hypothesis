@@ -58,7 +58,7 @@ namespace Formalism.F
 theorem linearIndependent_coe_basis {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (L : Submodule ℤ E) [hL : DiscreteTopology L] {ι : Type*} [Fintype ι]
     (b : Basis ι ℤ L) : LinearIndependent ℝ (fun i => (b i : E)) := by
-  apply Formalism.F.linearIndependent_coe_basis' <;> assumption
+  apply Formalism.F.linearIndependent_coe_basis'
 
 theorem covol_pos' : CovolPos := by
   intro E _ _ _ L hL
@@ -103,10 +103,8 @@ theorem covol_basic_properties : CovolBasic := by
         rw [linearIndependent_unique_iff]
         first
           | exact hv
-          | (intro r hr; exact (smul_eq_zero.1 hr).resolve_right hv)
       first
         | exact hR.restrict_scalars' ℤ
-        | exact hR.restrict_scalars (by intro a c h; simpa using h)
     have hr : span ℤ (Set.range fun _ : Unit => v) = span ℤ ({v} : Set E) := by
       rw [Set.range_const]
     let b : Basis Unit ℤ (span ℤ ({v} : Set E)) := (Basis.span hli).map (LinearEquiv.ofEq _ _ hr)

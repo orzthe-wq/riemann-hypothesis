@@ -49,34 +49,11 @@ import Mathlib.Tactic.TypeStar
 
 set_option maxSynthPendingDepth 1
 
+-- Use `sheafIsAbelian`, the instance Mathlib's `Sheaf.H` API is stated for, instead of the
+-- definitionally equal `TopCat.Sheaf.instAbelian`: the kernel is slow to identify the two.
+attribute [-instance] TopCat.Sheaf.instAbelian
+
 namespace GroundTheory.Arith.SchemeCoh
-
-section
-
-open AlgebraicGeometry CategoryTheory TopologicalSpace
-
-universe c236Ext c236Scheme
-
-private noncomputable def H.linearMapV436 {X : Scheme.{c236Scheme}}
-    [HasExt.{c236Ext} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{c236Scheme})]
-    (A : Type*) [CommRing A] [Algebra A Γ(X, ⊤)]
-    {F G : X.Modules} (φ : F ⟶ G) (n : ℕ) :
-    Sheaf.H.{c236Ext} (modulesAb F) n →ₗ[A] Sheaf.H.{c236Ext} (modulesAb G) n where
-  toFun := Sheaf.H.map.{c236Ext} (modulesAbMap φ) n
-  map_add' := map_add _
-  map_smul' a x := by
-    change Sheaf.H.map.{c236Ext} (modulesAbMap φ) n (a • x) =
-      a • Sheaf.H.map.{c236Ext} (modulesAbMap φ) n x
-    rw [H.smul_def, H.smul_def, ← Sheaf.H.map_comp_apply, ← Sheaf.H.map_comp_apply,
-      ← modulesAbMap_comp, ← modulesAbMap_comp, smulHom_comp]
-
-private lemma H.linearMapV436_apply {X : Scheme.{c236Scheme}}
-    [HasExt.{c236Ext} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{c236Scheme})]
-    (A : Type*) [CommRing A] [Algebra A Γ(X, ⊤)]
-    {F G : X.Modules} (φ : F ⟶ G) (n : ℕ) (x : Sheaf.H.{c236Ext} (modulesAb F) n) :
-    H.linearMapV436 A φ n x = Sheaf.H.map.{c236Ext} (modulesAbMap φ) n x := rfl
-
-end
 
 open AlgebraicGeometry CategoryTheory Opposite TopologicalSpace Limits
 
@@ -132,9 +109,12 @@ abbrev formalδ (n : ℕ) : Sheaf.H.{u} (modulesAb (quotPow I F n)) q →ₗ[A]
 def formalQ (n : ℕ) : Submodule A (Sheaf.H.{u} (modulesAb (idealPow I F (n + 1))) (q + 1)) :=
   LinearMap.range (formalδ I F q n)
 
+lemma formalK_le_ker_formalβ (n : ℕ) : formalK I F q n ≤ LinearMap.ker (formalβ I F q n) :=
+  (ker_formalβ I F q n).ge
+
 def formalι (n : ℕ) : (Sheaf.H.{u} (modulesAb F) q ⧸ formalK I F q n) →ₗ[A]
     Sheaf.H.{u} (modulesAb (quotPow I F n)) q :=
-  (formalK I F q n).liftQ (formalβ I F q n) (ker_formalβ I F q n).ge
+  (formalK I F q n).liftQ (formalβ I F q n) (formalK_le_ker_formalβ I F q n)
 
 lemma formalι_injective (n : ℕ) : Function.Injective (formalι I F q n) :=
   LinearMap.ker_eq_bot.mp

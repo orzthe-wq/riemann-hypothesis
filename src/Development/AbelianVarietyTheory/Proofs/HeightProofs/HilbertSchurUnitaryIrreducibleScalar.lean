@@ -91,7 +91,7 @@ theorem hilbert_schur_selfAdjoint (H : Type) [NormedAddCommGroup H] [InnerProduc
         have hv' : cfc f A v = 0 := hv
         show cfc f A (π x v) = 0
         have := congrArg (fun T : H →L[ℂ] H => T v) (hcomm x).eq
-        simp only [ContinuousLinearMap.mul_apply] at this
+        simp only [mul_apply_eq_comp] at this
         rw [this, hv', map_zero]) with h | h
       · apply hg0
         ext v

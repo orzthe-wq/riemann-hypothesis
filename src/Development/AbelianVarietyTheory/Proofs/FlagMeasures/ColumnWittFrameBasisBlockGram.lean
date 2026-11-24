@@ -54,22 +54,6 @@ namespace GlobalTheory.St
 
 variable {D : D7}
 
-theorem hspace_gram_det_ne {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) :
-    S.gram.det ≠ 0 := by
-  intro h
-  obtain ⟨v, hv, h0⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h
-  apply hv
-  have : S.frame.equivFun.symm v = 0 := by
-    refine S.nondeg.2 _ fun x => ?_
-    have hx : ∀ i, S.hT (S.frame i) (S.frame.equivFun.symm v) = 0 := fun i => by
-      have := congrFun h0 i
-      simpa [Matrix.mulVec, dotProduct, Formalism.BasicNotions.HSpace.gram, mul_comm] using this
-    rw [← S.frame.sum_repr x]
-
-    simp only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, hx, smul_zero,
-    Finset.sum_const_zero]
-  exact (LinearEquiv.map_eq_zero_iff _).1 this
-
 theorem hform_crd_setting (X : HidaSetting D) (v w : (VS D).V) :
     X.ιE (Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (X.crd v) (X.crd w)) = (VS D).hT v w := by
   conv_rhs => rw [← X.bas.sum_repr v, ← X.bas.sum_repr w]
@@ -198,7 +182,7 @@ theorem qFrame_basis_gram : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word
     refine (map_ne_zero _).2 ?_
     unfold Formalism.L2.Forms.gramN
     rw [Matrix.det_reindex_self]
-    exact hspace_gram_det_ne _
+    exact _root_.Formalism.MainNotions.S.Inh.tie_gram_det_ne _
   have hG : IsUnit (gramR X u).det := Matrix.isUnit_det_of_right_inverse (gramR_mul_inv X u)
   have hMu : IsUnit ((Q.map (starRingEnd X.B.I.E))ᵀ * X.B.I.J * Q).det := by
     rw [hM, Matrix.det_fromBlocks_zero₂₁]

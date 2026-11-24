@@ -113,12 +113,10 @@ private theorem blk_cont [TopologicalSpace R] [IsTopologicalRing R] :
 
 private theorem blk_ent (O : Subring S) (x : GL (Fin a) S) (y : GL (Fin b) S) (hx : ∀ i j, x i j ∈ O)
     (hy : ∀ i j, y i j ∈ O) (i j : Fin (a + b)) : blk x y i j ∈ O := by
-  change (blk x y).val i j ∈ O
   simp only [blk_val, Matrix.reindex_apply, Matrix.submatrix_apply]
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp [hx, hy]
 
 private theorem w_ent (O : Subring S) (i j : Fin (2 + 2)) : wGL S i j ∈ O := by
-  change (wGL S).val i j ∈ O
   simp only [wGL_val, Matrix.reindex_apply, Matrix.submatrix_apply]
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;>
     simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,

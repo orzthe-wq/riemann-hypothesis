@@ -96,8 +96,6 @@ lemma norm_zeta₁_le (t : ℝ) {z : ℂ} (hz : ‖z‖ ≤ 1) :
     ‖riemannZeta₁ (3/2 + t * I + z)‖ ≤ 5 * (|t| + 2) ^ 2 := by
   have ht := abs_nonneg t
   set w : ℂ := 3/2 + t * I + z with hw
-  by_cases h : w = 1
-  · rw [h, riemannZeta₁_one, norm_one]; nlinarith
   have hre : 1 / 2 ≤ w.re := by
     have := (abs_le.1 ((abs_re_le_norm z).trans hz)).1
     simp [hw]; linarith
@@ -110,16 +108,16 @@ lemma norm_zeta₁_le (t : ℝ) {z : ℂ} (hz : ‖z‖ ≤ 1) :
   have h2 : ‖w‖ ≤ 2 * (|t| + 2) := by
     refine norm_add₃_le.trans ?_
     rw [htI]; norm_num; linarith
-  have h3 := GlobalTheory.ZetaHalfPlane.norm_zeta_sub_le w (by linarith) h
+  have h3 := GlobalTheory.ZetaHalfPlane.norm_zeta₀_sub_one_le (s := w) (by linarith)
   have h4 : ‖w‖ / w.re ≤ 2 * ‖w‖ := by
     rw [div_le_iff₀ (by linarith)]; nlinarith [norm_nonneg w]
-  have e : riemannZeta₁ w = (w - 1) * (riemannZeta w - w / (w - 1)) + w := by
-    have := sub_ne_zero.2 h
-    rw [zeta₁_eq h]; field_simp; ring
+  have e : riemannZeta₁ w = (w - 1) * (riemannZeta₀ w - 1) + w := by
+    unfold riemannZeta₁
+    ring
   rw [e]
   refine (norm_add_le _ _).trans ?_
   rw [norm_mul]
-  have h5 : ‖w - 1‖ * ‖riemannZeta w - w / (w - 1)‖ ≤ (|t| + 2) * (4 * (|t| + 2)) :=
+  have h5 : ‖w - 1‖ * ‖riemannZeta₀ w - 1‖ ≤ (|t| + 2) * (4 * (|t| + 2)) :=
     mul_le_mul h1 (by linarith) (norm_nonneg _) (by linarith)
   nlinarith
 

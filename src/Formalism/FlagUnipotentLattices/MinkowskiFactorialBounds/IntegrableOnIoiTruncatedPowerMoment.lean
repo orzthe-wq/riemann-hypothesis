@@ -116,20 +116,6 @@ theorem lemSSupBound_of (hE : Formalism.HermitianLatticeCounting.ExpansionTerms.
       field_simp
       ring
 
-lemma gl_radial_integrable (f : ℝ → ℝ) :
-    Integrable (fun x : ℂ => f ‖x‖) ↔ IntegrableOn (fun y : ℝ => y * f y) (Set.Ioi 0) := by
-  have h := integrable_fun_norm_addHaar (E := ℂ) (volume : Measure ℂ) (f := f)
-  simpa [Complex.finrank_real_complex] using h
-
-lemma gl_radial_integral (f : ℝ → ℝ) :
-    ∫ x : ℂ, f ‖x‖ = 2 * π * ∫ y in Set.Ioi (0 : ℝ), y * f y := by
-  have h := integral_fun_norm_addHaar (E := ℂ) (volume : Measure ℂ) f
-  have hv : (volume : Measure ℂ).real (Metric.ball 0 1) = π := by
-    simp [Measure.real, Complex.volume_ball]
-  rw [h, hv]
-  simp [Complex.finrank_real_complex]
-  ring
-
 lemma gl_cut_le {K L y : ℝ} (hK : 0 ≤ K) (hy : 0 < y) (h : y ≤ L) : y * TruncationCutoff K L y = y := by
   unfold TruncationCutoff
   rw [if_neg hy.ne', min_eq_left, mul_one]
@@ -159,7 +145,7 @@ lemma integrableOn_Ioi_truncated_power_moment {K L : ℝ} (hK : 2 < K) (hL : 0 <
   exact Integrable.const_mul (integrableOn_Ioi_rpow_of_lt (by linarith) hL) _
 
 lemma gl_e3Integral : Formalism.HermitianLatticeCounting.ExpansionTerms.CutoffIntegralFormula := by
-  apply Formalism.HermitianLatticeCounting.P.cutoff_integral_formula <;> assumption
+  apply Formalism.HermitianLatticeCounting.P.cutoff_integral_formula
 
 theorem sup_bound_of_truncated_integral : Formalism.HermitianLatticeCounting.ExpansionTerms.LemSSupBound := lemSSupBound_of gl_e3Integral
 
@@ -174,8 +160,7 @@ open scoped ComplexConjugate fwdDiff
 
 theorem rank_two_operator_skew_hermitian : Formalism.HermitianLatticeCounting.ExpansionTerms.RankTwoOperatorSkewHermitian := by
   intro V _ _ h hs e v x y
-  simp only [map_sub, LinearMap.sub_apply, map_smul, LinearMap.smul_apply, map_smulₛₗ, smul_eq_mul,
-    RingHom.id_apply]
+  simp only [map_sub, LinearMap.sub_apply, map_smul, LinearMap.smul_apply, map_smulₛₗ, smul_eq_mul]
   rw [← hs y v, ← hs y e]
   ring
 
@@ -695,7 +680,7 @@ lemma gj_cols {m n : ℕ} (s : Matrix (Fin m) (Fin m) ℂ) (F : Matrix (Fin m) (
 
 lemma gj_fvec_apply (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin (r + 1)) (hc : c.val < r)
     (i : Fin (2 * r + k + 1)) : fvec k r z c i = if i.val = c.val then 1 else 0 := by
-  simp only [fvec, dif_pos hc, bvec, eI, Pi.single_apply, Fin.ext_iff, Fin.val_mk]
+  simp only [fvec, dif_pos hc, bvec, eI, Pi.single_apply, Fin.ext_iff]
 
 end GJ
 end Formalism.HermitianLatticeCounting.P
@@ -809,7 +794,7 @@ theorem majorant_phase_estimate_holds : Formalism.HermitianLatticeCounting.Expan
     rw [hθv, inner_smul_left, hS w hw, mul_zero]
   · unfold majorantHermitianForm
     rw [hθv, inner_smul_left, hy1, map_div₀, Complex.conj_I, Complex.conj_ofReal, Complex.ofReal_pow]
-    field_simp <;> ring
+    field_simp
 
 theorem gram_hilbert_schmidt_bound : Formalism.HermitianLatticeCounting.ExpansionTerms.SkewOperatorFrobeniusBound := by
   intro V _ _ θ h n bs e v

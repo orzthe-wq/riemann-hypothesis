@@ -76,11 +76,8 @@ lemma norm_sub_le_of {a b : K} {C : ℝ} (ha : ‖a‖ ≤ C) (hb : ‖b‖ ≤ 
   rw [sub_eq_add_neg]; exact norm_add_le_of ha (by simpa using hb)
 
 lemma norm_sigma_le_one {p q : ℕ} {σ : K →+* K} (hσ : IsFrobLift p q σ) (hp1 : ‖(p : K)‖ ≤ 1)
-    {a : K} (ha : ‖a‖ ≤ 1) : ‖σ a‖ ≤ 1 := by
-  have h1 : ‖σ a - a ^ q‖ ≤ 1 := (hσ a ha).trans hp1
-  have h2 : ‖a ^ q‖ ≤ 1 := by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha
-  have : σ a = (σ a - a ^ q) + a ^ q := by ring
-  rw [this]; exact norm_add_le_of h1 h2
+    {a : K} (ha : ‖a‖ ≤ 1) : ‖σ a‖ ≤ 1 :=
+  frobenius_norm_le_one hσ hp1 ha
 
 end InverseIntegralClassesKeyFacts
 

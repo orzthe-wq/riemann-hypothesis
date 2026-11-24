@@ -1,28 +1,18 @@
 module
 
-public import Formalism.PieriBlockIdeals.LastGradedOfGradedAlone
+public import Formalism.PieriBlockIdeals.BranchingBoundLastGradedOneRow
+public import Mathlib.LinearAlgebra.Matrix.Adjugate
 public import Formalism.PieriBlockIdeals.PieriColumnMinors.HighestWeightShiftEqDetMul
 public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LBidetMinor
 public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LGradedLemmas
 public import Mathlib.LinearAlgebra.Matrix.Transvection
-import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
-import Formalism.GradedWeylDivisibility.FinalC
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.HWRaise
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LBidetLemmas
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LBidetdomLemmas
 public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LDrowLemmas
 public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LEhwLemmas
-import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LHwrowLemmas
 public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LRowdivLemmas
 public import Formalism.PieriBlockIdeals.PieriColumnMinors.LastGradedImpliesOneBlock
-import Formalism.PieriBlockIdeals.PieriColumnMinors.ProdInitialMinorsMemDetSpan
-import Mathlib.Algebra.AffineMonoid.Basic
-import Mathlib.Algebra.AffineMonoid.UniqueSums
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -38,9 +28,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -60,12 +47,103 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
+import Formalism.GradedWeylDivisibility.FinalC
+import Formalism.GradedWeylDivisibility.FockSpaceTableaux.HWRaise
+import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LBidetLemmas
+import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LBidetdomLemmas
+import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LHwrowLemmas
+import Formalism.PieriBlockIdeals.PieriColumnMinors.ProdInitialMinorsMemDetSpan
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.AffineMonoid.UniqueSums
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PieriBlockIdeals.LastGradedOfGradedAlone, Formalism.PieriBlockIdeals.PieriColumnMinors.HighestWeightProdLeadingMinors
+
+-- ===== clump member: Formalism.PieriBlockIdeals.LastGradedOfGradedAlone =====
+-- clump-header: {"m": "Formalism.PieriBlockIdeals.LastGradedOfGradedAlone", "h": "module\n\npublic import Formalism.PieriBlockIdeals.BranchingBoundLastGradedOneRow\npublic import Mathlib.LinearAlgebra.Matrix.Adjugate\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MvPolynomial
+
+namespace Formalism.CohomologicalDescent.LD
+
+open Formalism.GradedWeylDivisibility
+
+def dualWt {r : ℕ} (M : ℕ) (κ : Fin r → ℕ) : Fin r → ℕ := fun a => M - κ (Fin.rev a)
+
+def DualWtSpec : Prop :=
+  ∀ (r M : ℕ) (κ : Fin r → ℕ), ((∀ a, κ a ≤ M) → dualWt M (dualWt M κ) = κ) ∧ (∀ a, dualWt M κ a ≤ M) ∧
+    (Antitone κ → Antitone (dualWt M κ))
+
+def BlockDual : Prop :=
+  ∀ (p q w M : ℕ) (κ : Fin q → ℕ),
+    (fun a : Fin (p + q) => dualWt M (blockWtLast p q w κ) (Fin.cast (Nat.add_comm p q) a)) =
+      blockWt p q (M - w) (dualWt M κ)
+
+def DepthDual : Prop :=
+  ∀ (p q w M i : ℕ) (μ : Fin (q + p) → ℕ), w ≤ M → (∀ a, μ a ≤ M) →
+    (IsDepthLast p q w μ i ↔
+      IsDepth p q (M - w) (fun a : Fin (p + q) => M - μ (Fin.rev (Fin.cast (Nat.add_comm p q) a))) i)
+
+def WtBound : Prop :=
+  ∀ (r M : ℕ) (ν μ : Fin r → ℕ), Antitone ν → (∀ a, ν a ≤ M) → nablaWt r ν μ ≠ ⊥ → ∀ a, μ a ≤ M
+
+def ExpDual : Prop :=
+  ∀ (l r M : ℕ) (ν μ : Fin r → ℕ) (e : ℕ), l.Prime → Antitone ν → (∀ a, ν a ≤ M) → (∀ a, μ a ≤ M) →
+    (ExpLe l r ν μ e ↔ ExpLe l r (fun a => M - ν (Fin.rev a)) (fun a => M - μ (Fin.rev a)) e)
+
+def LastGradedOfGraded : Prop := ExpDual → LemmaDGraded → LemmaDLastGraded
+
+noncomputable def genDet (r : ℕ) : MvPolynomial (Fin r × Fin r) ℤ :=
+  (Matrix.of fun a s : Fin r => (X (a, s) : MvPolynomial (Fin r × Fin r) ℤ)).det
+
+noncomputable def cofMap (r : ℕ) :
+    MvPolynomial (Fin r × Fin r) ℤ →ₐ[ℤ] MvPolynomial (Fin r × Fin r) ℤ :=
+  aeval fun v : Fin r × Fin r =>
+    (Matrix.of fun a s : Fin r => (X (a, s) : MvPolynomial (Fin r × Fin r) ℤ)).adjugate (Fin.rev v.2) (Fin.rev v.1)
+
+def NablaDual : Prop :=
+  ∀ (r M : ℕ) (ν : Fin r → ℕ), Antitone ν → (∀ a, ν a ≤ M) → ∀ x ∈ dualWeyl ℤ r r ν,
+    ∃ g ∈ dualWeyl ℤ r r (dualWt M ν), genDet r ^ (∑ a, ν a) * g = genDet r ^ M * cofMap r x
+
+def WeylDual : Prop :=
+  ∀ (r M : ℕ) (ν : Fin r → ℕ), Antitone ν → (∀ a, ν a ≤ M) → ∀ x ∈ weyl ℤ r r le_rfl ν,
+    ∃ g ∈ weyl ℤ r r le_rfl (dualWt M ν), genDet r ^ (∑ a, ν a) * g = genDet r ^ M * cofMap r x
+
+def DualWeight : Prop :=
+  ∀ (r M : ℕ) (μ : Fin r → ℕ) (x g : MvPolynomial (Fin r × Fin r) ℤ), (∀ a, μ a ≤ M) →
+    IsWeightedHomogeneous (rowW r r) x μ → genDet r ^ (∑ a, μ a) * g = genDet r ^ M * cofMap r x →
+      IsWeightedHomogeneous (rowW r r) g (dualWt M μ)
+
+def CofCof : Prop :=
+  ∀ r : ℕ, cofMap r (genDet r) = genDet r ^ (r - 1) ∧
+    ∀ (N : ℕ) (x : MvPolynomial (Fin r × Fin r) ℤ), x.IsHomogeneous N →
+      genDet r ^ N * cofMap r (cofMap r x) = genDet r ^ ((r - 1) * N) * x
+
+def ExpDualOfLattices : Prop := NablaDual → WeylDual → DualWeight → CofCof → ExpDual
+
+def LastGradedOfGradedAlone : Prop := LemmaDGraded → LemmaDLastGraded
+
+end Formalism.CohomologicalDescent.LD
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PieriBlockIdeals.LastGradedOfGradedAlone =====
+
+-- ===== clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.HighestWeightProdLeadingMinors =====
+-- clump-header: {"m": "Formalism.PieriBlockIdeals.PieriColumnMinors.HighestWeightProdLeadingMinors", "h": "module\n\npublic import Formalism.PieriBlockIdeals.LastGradedOfGradedAlone\npublic import Formalism.PieriBlockIdeals.PieriColumnMinors.HighestWeightShiftEqDetMul\npublic import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LBidetMinor\npublic import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LGradedLemmas\npublic import Mathlib.LinearAlgebra.Matrix.Transvection\nimport Formalism.GradedWeylDivisibility.DualWeylDominanceOf\nimport Formalism.GradedWeylDivisibility.FinalC\nimport Formalism.GradedWeylDivisibility.FockSpaceTableaux.HWRaise\nimport Formalism.GradedWeylDivisibility.FockSpaceTableaux.LBidetLemmas\nimport Formalism.GradedWeylDivisibility.FockSpaceTableaux.LBidetdomLemmas\npublic import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LDrowLemmas\npublic import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LEhwLemmas\nimport Formalism.GradedWeylDivisibility.FockSpaceTableaux.LHwrowLemmas\npublic import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LRowdivLemmas\npublic import Formalism.PieriBlockIdeals.PieriColumnMinors.LastGradedImpliesOneBlock\nimport Formalism.PieriBlockIdeals.PieriColumnMinors.ProdInitialMinorsMemDetSpan\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.AffineMonoid.UniqueSums\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MvPolynomial
@@ -812,7 +890,7 @@ theorem eval_neg_x_coeff {S : Type*} [CommRing S] (φ : S →+* S) (p : Polynomi
     · subst h
       simp
       ring
-    · simp [h, Ne.symm h]
+    · simp [Ne.symm h]
 
 theorem adjugate_transvection' {S : Type*} [CommRing S] {n : Type*} [Fintype n] [DecidableEq n] (i j : n)
     (h : i ≠ j) (c : S) : (Matrix.transvection i j c).adjugate = Matrix.transvection i j (-c) := by
@@ -1088,6 +1166,9 @@ theorem expDual : ExpDual := expDualOfLattices nablaDual weylDual dualWeight cof
 
 theorem lastGradedOfGradedAlone : LastGradedOfGradedAlone := lastGradedOfGraded expDual
 
-theorem last_graded_of_graded_alone : LastGradedOfGradedAlone := lastGradedOfGradedAlone
+alias last_graded_of_graded_alone := _root_.Formalism.CohomologicalDescent.LD.lastGradedOfGradedAlone
 
 end Formalism.CohomologicalDescent.LD
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.HighestWeightProdLeadingMinors =====

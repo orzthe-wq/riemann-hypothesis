@@ -86,7 +86,7 @@ theorem exists_contragredient {G X κ : Type} [Group G] [TopologicalSpace G] [Ad
         ext w : 1
         apply e.injective
         ext y
-        simp [mul_inv_rev, Module.End.mul_apply] }
+        simp [mul_inv_rev] }
   have hρ : ∀ g w x, e (ρ g w) x = e w (T g⁻¹ x) := by
     intro g w x
     simp [ρ]

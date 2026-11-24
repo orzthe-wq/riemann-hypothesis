@@ -107,7 +107,7 @@ theorem GlobalTheory.HilbAff.universal : ∀ (A B : Type) [CommRing A] [CommRing
     intro f hf
     apply pullback.hom_ext <;>
       simp only [GlobalTheory.HilbAff.bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd,
-        pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]
+        pullback.lift_snd_assoc, Category.comp_id]
   have cmp' : ∀ (f : T ⟶ H) (hf : f ≫ (R.homEquiv (𝟙 H)).1 = g),
       pullback.map (GlobalTheory.HilbAff.str A B) (f ≫ (R.homEquiv (𝟙 H)).1) (GlobalTheory.HilbAff.str A B) g
           (𝟙 _) (𝟙 _) (𝟙 _) (by simp) (by simp [hf]) ≫
@@ -117,7 +117,7 @@ theorem GlobalTheory.HilbAff.universal : ∀ (A B : Type) [CommRing A] [CommRing
     intro f hf
     apply pullback.hom_ext <;>
       simp only [GlobalTheory.HilbAff.bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd,
-        pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]
+        pullback.lift_snd_assoc, Category.comp_id]
   let f := R.homEquiv.symm y
   have hfy : R.homEquiv f = y := Equiv.apply_symm_apply _ _
   rw [key] at hfy

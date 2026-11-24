@@ -2,9 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ToBaseChangePtsBijective
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectedChartEvalSquareVariablesSwapConstantStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentXStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalAtNilpotentXEqCoordinateStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectedChartEvalSquareVariablesSwapConstant
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentX
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalAtNilpotentXEqCoordinate
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -53,7 +54,7 @@ namespace GlobalTheory.Katz
 
 theorem semiHom_ev₂_pull2 : ∀ (p : ℕ) (k k' : Type) [CommRing k] [CommRing k'] (σ : k →+* k') (d e : ℕ) (G : PDivGroup p k) (G' : PDivGroup p k') (c : Chart G d) (c' : Chart G' e) (s : SemiHom σ G' G) (φ : Fin d → MvPowerSeries (Fin e) k'), (∀ n j, c'.ev n (φ j) = s.app n (c.x n j)) → ∀ n t, c'.ev₂ n (pull2 φ (MvPowerSeries.map σ t)) = (s.app n).two (c.ev₂ n t) := by
   intro p k k' _ _ σ d e G G' c c' s φ hφ n t
-  have hev := GlobalTheory.T.connectedChart_evalSquare_variables_swap_constant p k' e G' c' n
+  have hev := _root_.GlobalTheory.EvSquare.main p k' e G' c' n
   let a : Fin d ⊕ Fin d → MvPowerSeries (Fin e ⊕ Fin e) k' :=
     Sum.elim (fun j => inL (φ j)) (fun j => inR (φ j))
   have ha : ∀ i, constantCoeff (a i) = 0 := by
@@ -106,13 +107,13 @@ theorem semiHom_ev₂_pull2 : ∀ (p : ℕ) (k k' : Type) [CommRing k] [CommRing
     change c'.ev₂ n (substAlgHom hs (MvPowerSeries.map σ f)) = _
     rw [coe_substAlgHom]; rfl
   have key : T.comp (c.ev₂ n) = L := by
-    refine GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (Fin d ⊕ Fin d) B _ _ (fun i => ?_) (fun i => ?_)
+    refine _root_.GlobalTheory.mvPowerSeries_algHom_ext_of_isNilpotent k (Fin d ⊕ Fin d) B _ _ (fun i => ?_) (fun i => ?_)
     · rw [AlgHom.comp_apply]
       change IsNilpotent (T (evA k (c.x₂ n) (c.nil₂ n) (X i)))
-      rw [GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate]; exact (c.nil₂ n i).map T
+      rw [_root_.GlobalTheory.Katz.evA_X]; exact (c.nil₂ n i).map T
     · rw [AlgHom.comp_apply, hL, hT, MvPowerSeries.map_X]
       change (s.app n).two (evA k (c.x₂ n) (c.nil₂ n) (X i)) = c'.ev₂ n (subst a (X i))
-      rw [GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate, subst_X hs]
+      rw [_root_.GlobalTheory.Katz.evA_X, subst_X hs]
       cases i with
       | inl j =>
         change (s.app n).two (c.x n j ⊗ₜ 1) = c'.ev₂ n (inL (φ j))

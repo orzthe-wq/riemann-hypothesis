@@ -166,22 +166,4 @@ theorem inParam_map {σ : Type} [Finite σ] (K1 : Type) [Field K1] [Algebra (K0 
 
 end Gen
 
-theorem restSInt (p : ℕ) [Fact p.Prime] : RestSInt p := by
-  intro n' r0 r1 B K1 _ _ R1 U hU K' _ _ _ _ R' vp hvp hRp hR1
-  have hc : coordZ (r0 := r0) (r1 := r1) B K' vp = fun x => MvPowerSeries.C vp * coordZ B K' 1 x := by
-    funext x
-    rcases x with ⟨r, a, b⟩ | ⟨r, a, b⟩ <;> simp [coordZ, Finset.mul_sum, map_mul, mul_assoc]
-  have hLint : ∀ x, IntR R' (coordZ (r0 := r0) (r1 := r1) B K' 1 x) := by
-    intro x n
-    rcases x with ⟨r, a, b⟩ | ⟨r, a, b⟩ <;>
-      simp only [coordZ, one_mul, map_sum] <;>
-      refine R'.sum_mem fun s _ => ?_ <;>
-      rw [MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X] <;>
-      split_ifs <;> simp only [mul_one, mul_zero]
-    all_goals first | exact hRp (Subring.subset_closure (Or.inl ⟨_, rfl⟩)) | exact R'.zero_mem
-  unfold ThZ
-  rw [hc]
-  exact genInt p K' R' vp hvp hRp (MvPowerSeries.map (algebraMap K1 K') U) (inParam_map p K' K1 R1 R' hR1 U hU)
-    (coordZ B K' 1) (coordZ_const (p := p) B K' 1) hLint
-
 end Formalism.MainNotions.FormalGroupSystem.Pf

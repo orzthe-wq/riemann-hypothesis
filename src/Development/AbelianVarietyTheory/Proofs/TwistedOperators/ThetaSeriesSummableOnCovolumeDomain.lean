@@ -347,16 +347,10 @@ section Coords
 
 variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
-theorem symplO_eq_add (w v : WO S T) : symplO S T w v = symplOH S T w v + symplOH S T w v := by
-  have h2 : algebraMap D.host.F (AF D.host.F) (1 / 2) * 2 = 1 := by
-    rw [← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]; norm_num
-  unfold symplOH
-  rw [← add_mul, ← two_mul, mul_comm 2, h2, one_mul]
-
 theorem psi_symplO (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) (w : WO S T) (x : RW T S) :
     ψ (symplO S T w (iotaW σ T S x)) =
       Complex.exp (-(2 * Real.pi * Complex.I) * (omO S T (piW θ T S w) x : ℝ)) := by
-  rw [symplO_eq_add, ψ.map_add_eq_mul, psi_symplOH h hψ, ← Complex.exp_add]
+  rw [_root_.GlobalTheory.ThetaCoefficient.symplO_eq, ψ.map_add_eq_mul, psi_symplOH h hψ, ← Complex.exp_add]
   congr 1
   ring
 
@@ -496,11 +490,6 @@ section Iso
 
 variable {D : D7}
 
-theorem cT_mul_rect {A : Type} [CommRing A] (s : A →+* A) {a b c : Type} [Fintype b] (M : Matrix a b A) (N : Matrix b c A) :
-    Formalism.UG.cT s (M * N) = Formalism.UG.cT s N * Formalism.UG.cT s M := by
-  unfold Formalism.UG.cT
-  rw [Matrix.map_mul, Matrix.transpose_mul]
-
 theorem trace_rearr {A : Type} [CommRing A] {v w r : ℕ} (X : Matrix (Fin v) (Fin v) A) (Y Z : Matrix (Fin v) (Fin r) A)
     (c : Matrix (Fin r) (Fin w) A) (g : Matrix (Fin w) (Fin w) A) (a : Matrix (Fin w) (Fin r) A)
     (P : Matrix (Fin r) (Fin v) A) (h : X * Y = Z) :
@@ -518,7 +507,7 @@ theorem adj_mul_gram (V : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.ho
   have h1 : adj D V.gram = V.gram := Matrix.ext fun i j => GlobalTheory.DualPairCheck.gram_star V j i
   have h2 : adj D (adj D C) = C := Matrix.ext fun i j => star_star _
   unfold adj at h1 h2 ⊢
-  rw [cT_mul_rect, h1, h2]
+  rw [_root_.Formalism.UG.cT_mul, h1, h2]
 
 theorem hO_isoPart (V W : HSp D) {r : ℕ} (C₁ C₂ : Matrix (Fin V.rank) (Fin r) D.host.E) (a b : Mx D W.rank r) :
     hO V W (isoPart V W C₁ a) (isoPart V W C₂ b) =
@@ -526,7 +515,7 @@ theorem hO_isoPart (V W : HSp D) {r : ℕ} (C₁ C₂ : Matrix (Fin V.rank) (Fin
   rw [GlobalTheory.SplitHecke.hO_trace]
   show Matrix.trace ((V.gram⁻¹).map (incA D) * Formalism.UG.cT (cA D) (b * (adj D C₂ * V.gram).map (incA D)) *
     W.gram.map (incA D) * (a * (adj D C₁ * V.gram).map (incA D))) = _
-  rw [cT_mul_rect, cT_map_incA, adj_mul_gram]
+  rw [_root_.Formalism.UG.cT_mul, cT_map_incA, adj_mul_gram]
   rw [Matrix.map_mul (L := adj D C₁ * V.gram) (M := C₂)]
   refine trace_rearr _ _ (C₂.map (incA D)) _ _ _ _ ?_
   rw [← Matrix.map_mul, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit V), Matrix.one_mul]
@@ -555,7 +544,7 @@ section Main
 variable {D : D7}
 
 theorem symplOH_sub (V W : HSp D) (a b : WO V W) : symplOH V W a b - symplOH V W b a = symplO V W a b := by
-  have e := symplO_eq_add a b
+  have e := _root_.GlobalTheory.ThetaCoefficient.symplO_eq a b
   have e2 : symplOH V W b a = -symplOH V W a b := by
     unfold symplOH
     rw [symplO_skew a b, mul_neg]
@@ -563,7 +552,7 @@ theorem symplOH_sub (V W : HSp D) (a b : WO V W) : symplOH V W a b - symplOH V W
 
 theorem continuous_symplO_left (S T : HSp D) (w : WO S T) : Continuous fun a : WO S T => symplO S T a w := by
   have h : Continuous fun a : WO S T => symplOH S T a w := continuous_symplOH continuous_id continuous_const
-  exact (h.add h).congr fun a => (symplO_eq_add a w).symm
+  exact (h.add h).congr fun a => (_root_.GlobalTheory.ThetaCoefficient.symplO_eq a w).symm
 
 theorem isoPart_map_eq_zero {B : Type} [CommRing B] (φ : AE D →+* B) (V W : HSp D) {r : ℕ}
     (C : Matrix (Fin V.rank) (Fin r) D.host.E) {a : Mx D W.rank r} (h : a.map φ = 0) :

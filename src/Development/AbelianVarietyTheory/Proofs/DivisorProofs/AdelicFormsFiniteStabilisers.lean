@@ -125,7 +125,7 @@ theorem _root_.GlobalTheory.InnerClassSum.integral_inner_eq_adInner {G H W : Typ
   have hmem : ∀ i (γ : Γ), γ ∈ _root_.Formalism.IndefR.Bridge.stab (π.comp Γ.subtype) J (y i) ↔ (a i)⁻¹ * (γ : G) * a i ∈ K := by
     intro i γ
     unfold _root_.Formalism.IndefR.Bridge.stab
-    simp [hK_def, Subgroup.mem_comap, MulAut.conj_apply, ← ha i, map_mul, map_inv]
+    simp [hK_def, Subgroup.mem_comap, ← ha i, map_mul, map_inv]
   have hK0 : ν K ≠ 0 := by rw [h1]; exact one_ne_zero
   have hKt : ν K ≠ ⊤ := by rw [h1]; exact ENNReal.one_ne_top
   have hfin : ∀ i, {γ : Γ | (a i)⁻¹ * (γ : G) * a i ∈ K}.Finite := fun i =>

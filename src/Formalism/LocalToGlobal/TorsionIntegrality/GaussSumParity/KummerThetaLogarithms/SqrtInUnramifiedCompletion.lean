@@ -325,7 +325,7 @@ theorem dense_criterion : DenseOK := by
   obtain ⟨hwm, hws⟩ := sqrt_in_unramified_completion dK hsq h4 l h5 hin ι
   set w : MaximalUnramifiedExtension l := ⟨ι (omegaK dK), hwm⟩ with hwdef
   have hw : σ w = 1 - w := hws σ hσ w rfl
-  have hiso : ∀ a : MaximalUnramifiedExtension l, ‖σ a‖ = ‖a‖ := sigmaIsom (MaximalUnramifiedExtension l) l σ hσ
+  have hiso : ∀ a : MaximalUnramifiedExtension l, ‖σ a‖ = ‖a‖ := _root_.Formalism.L2.Th1.D.sigma_isometry (MaximalUnramifiedExtension l) l σ hσ
 
   have hR2 : (w + w - 1) ^ 2 = ((-(dK : ℤ) : ℤ) : MaximalUnramifiedExtension l) := by
     apply Subtype.ext
@@ -375,8 +375,8 @@ theorem dense_criterion : DenseOK := by
 
   obtain ⟨k, hk⟩ := exists_pow_lt_of_lt_one (lt_min hε zero_lt_one) (KF.l_inv_lt_one l)
   rw [inv_pow] at hk
-  obtain ⟨m, hm⟩ := fixedIsLimit (MaximalUnramifiedExtension l) l σ hσ m0 hm01 hσm0 k
-  obtain ⟨n, hn⟩ := fixedIsLimit (MaximalUnramifiedExtension l) l σ hσ n0 hn01 hσn0 k
+  obtain ⟨m, hm⟩ := _root_.Formalism.L2.Th1.D.fixed_is_limit (MaximalUnramifiedExtension l) l σ hσ m0 hm01 hσm0 k
+  obtain ⟨n, hn⟩ := _root_.Formalism.L2.Th1.D.fixed_is_limit (MaximalUnramifiedExtension l) l σ hσ n0 hn01 hσn0 k
   set β : MaximalUnramifiedExtension l := (m : MaximalUnramifiedExtension l) + (n : MaximalUnramifiedExtension l) * w with hβ
   have hβα : ‖β - α‖ ≤ ((l : ℝ) ^ k)⁻¹ := by
     have h0 : β - α = -(m0 - m) + -(n0 - n) * w := by rw [hβ, hm0]; ring

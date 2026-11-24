@@ -159,16 +159,10 @@ theorem map_nonZeroDivisors (TB : TopBasis s I ι) (a : S) (ha : a ∈ nonZeroDi
     rw [TB.c_mul, map_zero] at this
     first
     | exact (mem_nonZeroDivisors_iff.1 ha).1 _ this
-    | exact (mem_nonZeroDivisors_iff.1 ha).1 _ (by rw [mul_comm]; exact this)
-    | exact (mem_nonZeroDivisors_iff.1 ha).2 _ this
-    | exact (mem_nonZeroDivisors_iff.1 ha).2 _ (by rw [mul_comm]; exact this)
   · have := congrArg (TB.c i) hx
     rw [c_s, map_zero] at this
     first
     | exact (mem_nonZeroDivisors_iff.1 ha).1 _ this
-    | exact (mem_nonZeroDivisors_iff.1 ha).1 _ (by rw [mul_comm]; exact this)
-    | exact (mem_nonZeroDivisors_iff.1 ha).2 _ this
-    | exact (mem_nonZeroDivisors_iff.1 ha).2 _ (by rw [mul_comm]; exact this)
 
 end GlobalTheory.BSP.TopBasis
 

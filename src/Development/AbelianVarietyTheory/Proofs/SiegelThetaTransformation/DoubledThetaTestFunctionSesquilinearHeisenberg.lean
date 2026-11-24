@@ -4,12 +4,15 @@ public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSy
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.DifferentiableOnDetHMat
 public import Mathlib.Data.Matrix.ColumnRowPartitioned
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ConjKappa
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionSpec
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianHeisenbergOperatorLaws
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ConjugateConjugate
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DblZMemHn
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DoubledHermitianTestFunctionSpecStatement
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianHeisenbergOperatorLawsStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaSummableAndDeterminesTestFnStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinearStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianThetaSummableAndDeterminesTestFn
+import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableNormSiegelThetaSeriesTerms
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -53,7 +56,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ConjugateConjugate
 import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
@@ -102,8 +104,7 @@ theorem hD_sub_conj (hW : W.IsHermitian) (h1 : W * imH Z = 1) (d b d' b' : Fin N
       conj (hD W (star b' + Z *ᵥ star d') (b' + d' ᵥ* Z) (star b + Z *ᵥ star d) (b + d ᵥ* Z)) =
       2 * I * ((b ⬝ᵥ star d' + d' ⬝ᵥ star b) - (b' ⬝ᵥ star d + d ⬝ᵥ star b')) := by
   rw [conj_hD W hW, hD_per Z W h1, hD_per Z W h1]
-  simp only [dotProduct_add _ (star _), add_dotProduct _ _ (star _), ← dotProduct_mulVec,
-    dotProduct_add d, dotProduct_add d']
+  simp only [dotProduct_add _ (star _), add_dotProduct _ _ (star _), ← dotProduct_mulVec]
   ring
 
 theorem gauss_per (h1 : W * imH Z = 1) (u u' d b : Fin N → ℂ) :
@@ -231,7 +232,7 @@ theorem trace_pair (b d : Fin r → E) : ((Algebra.trace ℚ E (∑ a, b a * cc 
     ∑ τ : X.Ψ, (Data.emb τ.1 b ⬝ᵥ star (Data.emb τ.1 d) +
       Data.emb τ.1 d ⬝ᵥ star (Data.emb τ.1 b)) := by
   rw [X.trace_eq_Psi]
-  simp [dotProduct, Data.emb, DblPer.emb_cc, mul_comm]
+  simp [dotProduct, Data.emb, _root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc, mul_comm]
 
 theorem trace_bv (a₁ a₂ d : Fin r → E) :
     Algebra.trace ℚ E (∑ a, bv X a₁ a₂ a * cc (d a)) = -(1 / 2) * EF X (a₁ + a₂) d := by
@@ -358,8 +359,8 @@ theorem thH_add {Ψ : Finset (E →+* ℂ)} {N : ℕ} (hΨ : IsType Ψ)
     {φ ψ : Matrix (Fin n) (Fin N) E → ℂ} (hφ : IsSB φ) (hψ : IsSB ψ)
     {Z : CM Ψ N N} (hZ : Z ∈ Hn Ψ N) (z z' : CM Ψ n N) :
     thH Ψ (φ + ψ) Z z z' = thH Ψ φ Z z z' + thH Ψ ψ Z z z' := by
-  have h1 := ((GlobalTheory.T.hermitianTheta_summable_and_determines_testFn E Ψ hΨ n N φ hφ Z hZ).1 z z').of_norm
-  have h2 := ((GlobalTheory.T.hermitianTheta_summable_and_determines_testFn E Ψ hΨ n N ψ hψ Z hZ).1 z z').of_norm
+  have h1 := ((_root_.GlobalTheory.SW.thH_summable_and_inj E Ψ hΨ n N φ hφ Z hZ).1 z z').of_norm
+  have h2 := ((_root_.GlobalTheory.SW.thH_summable_and_inj E Ψ hΨ n N ψ hψ Z hZ).1 z z').of_norm
   unfold thH
   rw [← h1.tsum_add h2]
   simp only [Pi.add_apply, add_mul]
@@ -395,7 +396,7 @@ theorem isDbl_heis (hs : IsSympl X bas) (hn : Even n) {φ₁ φ₂ : TF n g} (h�
     funext k i; simp
   rw [a1, a2, a3] at h'
   rw [(hG y₁ φ₁ hφ₁).2.2.2.2 x₁ h₁, (hG y₂ φ₂ hφ₂).2.2.2.2 x₂ h₂,
-    (GlobalTheory.T.hermitianHeisenbergOperator_laws E X.Ψ hΨ n r hn _ _ ψ hψ).2.1 _ hZ, map_mul, mul_mul_mul_comm, h',
+    (_root_.GlobalTheory.SW.heisH_laws E X.Ψ hΨ n r hn _ _ ψ hψ).2.1 _ hZ, map_mul, mul_mul_mul_comm, h',
     ← mul_assoc, ← mul_assoc]
   congr 1
   simp only [kZero, Finset.prod_mul_distrib, ← Complex.exp_sum, ← exp_conj]
@@ -415,29 +416,29 @@ theorem isDbl_heis (hs : IsSympl X bas) (hn : Even n) {φ₁ φ₂ : TF n g} (h�
 
 theorem dbl_lin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ φ₁ φ₂ : TF n g, IsSB φ₁ → IsSB φ₂ → (∀ ψ, IsSB ψ → dbl X bas idx (φ₁ + ψ) φ₂ = dbl X bas idx φ₁ φ₂ + dbl X bas idx ψ φ₂ ∧ dbl X bas idx φ₁ (φ₂ + ψ) = dbl X bas idx φ₁ φ₂ + dbl X bas idx φ₁ ψ) ∧ (∀ a b : ℂ, dbl X bas idx (a • φ₁) (b • φ₂) = (a * conj b) • dbl X bas idx φ₁ φ₂) ∧ ∀ y₁ y₂ : Matrix (Fin n) (Fin r) E, dbl X bas idx (heisG X bas y₁ φ₁) (heisG X bas y₂ φ₂) = heisH (Matrix.fromCols y₁ y₂ * dblT X).toCols₁ (Matrix.fromCols y₁ y₂ * dblT X).toCols₂ (dbl X bas idx φ₁ φ₂) := by
   intro E _ _ _ r X g bas idx n hs hn φ₁ φ₂ hφ₁ hφ₂
-  have ex := GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hs hn
+  have ex := _root_.GlobalTheory.SW.DblEx.dbl_spec E r X g bas idx n hs hn
   obtain ⟨s, d, -⟩ := ex φ₁ φ₂ hφ₁ hφ₂
   refine ⟨fun ψ hψ => ⟨?_, ?_⟩, fun a b => ?_, fun y₁ y₂ => ?_⟩
   · obtain ⟨s', d', -⟩ := ex ψ φ₂ hψ hφ₂
-    refine ((ex _ _ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ hφ₁ hψ).1 hφ₂).2.2 _ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ s s').1
+    refine ((ex _ _ (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ hφ₁ hψ).1 hφ₂).2.2 _ (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ s s').1
       fun x₁ h₁ x₂ h₂ z w => ?_).symm
     obtain ⟨hΨ, hZ, -⟩ := dblZ_mem_Hn E r X x₁ h₁ x₂ h₂
     rw [thA_add idx hs h₁ hφ₁ hψ, thH_add hΨ s s' hZ, add_mul, mul_add, d x₁ h₁ x₂ h₂,
       d' x₁ h₁ x₂ h₂]
   · obtain ⟨s', d', -⟩ := ex φ₁ ψ hφ₁ hψ
-    refine ((ex _ _ hφ₁ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ hφ₂ hψ).1).2.2 _ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ s s').1
+    refine ((ex _ _ hφ₁ (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ hφ₂ hψ).1).2.2 _ (_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ s s').1
       fun x₁ h₁ x₂ h₂ z w => ?_).symm
     obtain ⟨hΨ, hZ, -⟩ := dblZ_mem_Hn E r X x₁ h₁ x₂ h₂
     rw [thA_add idx hs h₂ hφ₂ hψ, thH_add hΨ s s' hZ, map_add (f := _), mul_add, mul_add, d x₁ h₁ x₂ h₂,
       d' x₁ h₁ x₂ h₂]
-  · refine ((ex _ _ ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ hφ₁ hφ₁).2.1 a)
-      ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ hφ₂ hφ₂).2.1 b)).2.2 _ ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ s s).2.1 _)
+  · refine ((ex _ _ ((_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ hφ₁ hφ₁).2.1 a)
+      ((_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ hφ₂ hφ₂).2.1 b)).2.2 _ ((_root_.GlobalTheory.SW.isSB_algebra_haar_linear _ _ _ _ _ s s).2.1 _)
       fun x₁ h₁ x₂ h₂ z w => ?_).symm
     rw [thA_smul, thA_smul, thH_smul, map_mul, mul_mul_mul_comm, d x₁ h₁ x₂ h₂, mul_left_comm]
   · have hG := (heisG_laws E r X g bas idx n hs hn).2.2.2
     rw [DblPer.cols, toCols₁_fromCols, toCols₂_fromCols]
     exact ((ex _ _ (hG y₁ φ₁ hφ₁).1 (hG y₂ φ₂ hφ₂).1).2.2 _
-      (GlobalTheory.T.hermitianHeisenbergOperator_laws E X.Ψ X.cmType n r hn _ _ _ s).1 (isDbl_heis idx hs hn hφ₁ hφ₂ s d y₁ y₂)).symm
+      (_root_.GlobalTheory.SW.heisH_laws E X.Ψ X.cmType n r hn _ _ _ s).1 (isDbl_heis idx hs hn hφ₁ hφ₂ s d y₁ y₂)).symm
 
 end Main
 

@@ -94,7 +94,6 @@ theorem sigR_inclE (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] (e
     PI.UnitaryApproxDefs.sigR σ R (PI.UnitaryApproxDefs.inclE (F := F) R e) = PI.UnitaryApproxDefs.inclE (F := F) R (σ e) := by
   first
   | rfl
-  | simp [PI.UnitaryApproxDefs.sigR, PI.UnitaryApproxDefs.inclE]
 
 end Tensor
 

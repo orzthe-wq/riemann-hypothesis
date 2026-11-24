@@ -71,7 +71,7 @@ def form6 (O : Type) [CommRing O] : FormData O wt6 where
     rcases a with a | a <;> rcases b with b | b <;> simp at h ⊢
   c := 0
   hw a b h := by
-    rcases a with a | a <;> rcases b with b | b <;> fin_cases a <;> fin_cases b <;> simp [Jmat] at h <;> first | rfl | exact absurd rfl h
+    rcases a with a | a <;> rcases b with b | b <;> fin_cases a <;> fin_cases b <;> simp [Jmat] at h <;> first | rfl
 
 theorem blockPairingForm_JR (O R : Type) [CommRing O] [CommRing R] [Algebra O R] :
     (form6 O).JR R = Matrix.fromBlocks 0 (Jmat R 3) (Jmat R 3) 0 := by

@@ -107,11 +107,9 @@ theorem cp_quot {k A : Type} [Field k] [Ring A] [Algebra k A] {V : Type} [AddCom
     [Module k V] [Module A V] [IsScalarTower k A V] [FiniteDimensional k V]
     (N : Submodule A V) (a : A) :
     cp k V a = cp k N a * cp k (V ⧸ N) a := by
-  have he : N.restrictScalars k ≤ (N.restrictScalars k).comap (Algebra.lsmul k k V a) :=
-    fun x hx => N.smul_mem a hx
   unfold cp
-  rw [charpoly_eq_restrict_mul_mapQ (N.restrictScalars k) _ he]
-  rfl
+  exact charpoly_eq_restrict_mul_mapQ (N.restrictScalars k) (Algebra.lsmul k k V a)
+    (fun x hx => N.smul_mem a hx)
 
 theorem charpoly_mem_closure_simple {k A : Type} [Field k] [Ring A] [Algebra k A] :
     ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module k V] [Module A V] [IsScalarTower k A V]
@@ -312,7 +310,7 @@ theorem exists_kills {K A : Type} [Field K] [Ring A] [Algebra K A]
     have hx : ∃ x : A, (∀ w : S1, x • w = 0) ∧ ∃ s : S0, x • s ≠ 0 := by
       by_contra hcon
       push Not at hcon
-      obtain ⟨f, hf⟩ := exists_ne_zero_hom (k := K) (A := A) (W := S1) (S := S0) hcon
+      obtain ⟨f, hf⟩ := _root_.Bl.general_b_fact_second_version.goal1 (k := K) (A := A) (W := S1) (S := S0) hcon
       have e : S1 ≃ₗ[A] S0 := LinearEquiv.ofBijective f (LinearMap.bijective_of_ne_zero hf)
       exact hne (by rw [hF]; funext b; exact (cp_congr e b).symm)
     obtain ⟨x, hx1, s, hs⟩ := hx
@@ -325,12 +323,6 @@ theorem exists_kills {K A : Type} [Field K] [Ring A] [Algebra K A]
     · have : u • x • s = s' := by simpa using hu
       rw [mul_smul, mul_smul, this]
       exact hs'
-
-theorem exists_lsmul_eq {K A : Type} [Field K] [IsAlgClosed K] [Ring A] [Algebra K A]
-    (S0 : Type) [AddCommGroup S0] [Module K S0] [Module A S0] [IsScalarTower K A S0]
-    [FiniteDimensional K S0] [IsSimpleModule A S0] (φ : S0 →ₗ[K] S0) :
-    ∃ u : A, ∀ v : S0, u • v = φ v := by
-  first | exact Bl.ScalarIdentities.goal1 .. | (apply Bl.ScalarIdentities.goal1 <;> assumption) | (intros; apply Bl.ScalarIdentities.goal1 <;> assumption)
 
 theorem lin_indep {K A : Type} [Field K] [IsAlgClosed K] [Ring A] [Algebra K A]
     (t : Finset (A → K[X])) (ht : ↑t ⊆ simpleCps K A) (c : (A → K[X]) → K)
@@ -345,7 +337,7 @@ theorem lin_indep {K A : Type} [Field K] [IsAlgClosed K] [Ring A] [Algebra K A]
     by_contra hcon
     push Not at hcon
     exact hs ((Module.forall_dual_apply_eq_zero_iff K _).mp hcon)
-  obtain ⟨u, hu⟩ := exists_lsmul_eq (A := A) S0 (l.smulRight s)
+  obtain ⟨u, hu⟩ := _root_.Bl.ScalarIdentities.goal1 (A := A) S0 (l.smulRight s)
   have hlin : Algebra.lsmul K K S0 (u * a) = (l ∘ₗ Algebra.lsmul K K S0 a).smulRight s := by
     ext v
     simp [hu]

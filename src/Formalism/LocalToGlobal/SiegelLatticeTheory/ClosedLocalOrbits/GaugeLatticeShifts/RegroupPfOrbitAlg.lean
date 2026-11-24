@@ -2,45 +2,6 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.RegroupPf
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.NilradicalLatticeZMemSpan
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -87,19 +48,15 @@ theorem ratLink_fst_inj {x y : X.B.I.GA} {m n : (VS D).V ≃ₗ[D.host.E] (VS D)
   simp only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mul] at e1
   have eMN : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = N :=
     Matrix.map_injective (X.B.I.φ v).injective e1
-  have hy' : RatLink X y m := by
-    refine ⟨M, hMU, fun w => ?_, ?_, hM3⟩
-    · rw [← h]
-      exact hM1 w
-    · rw [hN2, eMN]
+  have hy' : RatLink X y m :=
+    ⟨M, hMU, (fun w => by rw [← h]; exact hM1 w), (by rw [hN2, eMN]), hM3⟩
   exact Formalism.L2.SG.TermOp.Vanish.ratLink_unique X ⟨M, hMU, hM1, hM2, hM3⟩ hy'
 
 theorem nlam_srat (w : D.what₂.Word) (Λ : Submodule (𝓞 D.host.E) (VS D).V) {x : X.B.I.GA}
     {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x n) (hn : n ∈ NLam Λ (lf D (X.Fu w))) :
     x ∈ Srat X w := by
   refine ⟨Formalism.L2.SG.TermOp.ratLink_mem X hx, Subgroup.subset_closure ⟨?_, ?_⟩⟩
-  · have h1 := Formalism.L2.SG.Pf.nLamNinf_holds D X w Λ x n hx hn
-    exact fun v => (h1 v).1
+  · exact fun v => (Formalism.L2.SG.Pf.nLamNinf_holds D X w Λ x n hx hn v).1
   · have h2 := Formalism.L2.SG.Pf.nLamNfin_holds D X w Λ x n hx hn
     exact ⟨h2.1, h2.2.1⟩
 
@@ -118,13 +75,9 @@ theorem grel_equiv (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : 
     Equivalence (GRel X u u' F0 F0' Λ Λ') := by
   refine ⟨fun p => ⟨1, Formalism.L2.SG.Pf.nlam_one _ _, 1, Formalism.L2.SG.Pf.nlam_one _ _, by simp⟩, ?_, ?_⟩
   · rintro p q ⟨n, hn, n', hn', h⟩
-    refine ⟨n⁻¹, Formalism.L2.SG.Pf.nlam_inv hn, n'⁻¹, Formalism.L2.SG.Pf.nlam_inv hn', ?_⟩
-    rw [h]
-    group
+    exact ⟨n⁻¹, Formalism.L2.SG.Pf.nlam_inv hn, n'⁻¹, Formalism.L2.SG.Pf.nlam_inv hn', (by rw [h]; group)⟩
   · rintro p q s ⟨n, hn, n', hn', h⟩ ⟨m, hm, m', hm', h'⟩
-    refine ⟨m * n, Formalism.L2.SG.Pf.nlam_mul hm hn, n' * m', Formalism.L2.SG.Pf.nlam_mul hn' hm', ?_⟩
-    rw [h', h]
-    simp only [mul_assoc]
+    exact ⟨m * n, Formalism.L2.SG.Pf.nlam_mul hm hn, n' * m', Formalism.L2.SG.Pf.nlam_mul hn' hm', (by rw [h', h]; simp only [mul_assoc])⟩
 
 theorem grel_out {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V}
@@ -156,8 +109,7 @@ theorem liftN_spec (ρ : (Y.cs u).Cl) {y : X.B.I.Ginf} (h : y ∈ NOcol (X.Fu u)
 
 theorem liftN_eq (ρ : (Y.cs u).Cl) {x : X.B.I.GA} {m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x m)
     (hm : m ∈ NLam ((Y.cs u).lamOf ρ) (lf D (X.Fu u))) : liftN Y u ρ x.1 = x := by
-  have h : x.1 ∈ NOcol (X.Fu u) (Y.cs u) ρ := ⟨x, m, hx, rfl, hm⟩
-  obtain ⟨n, hn, he, _⟩ := liftN_spec Y u ρ h
+  obtain ⟨n, hn, he, _⟩ := liftN_spec Y u ρ ⟨x, m, hx, rfl, hm⟩
   exact ratLink_fst_inj hn hx he.symm
 
 theorem orbitAlgC_of (hK : Formalism.L2.SG.TermOp.Vanish.NilradicalConjLevel) (hC : TermCarC) (hS : StabNC) : OrbitAlgC := by

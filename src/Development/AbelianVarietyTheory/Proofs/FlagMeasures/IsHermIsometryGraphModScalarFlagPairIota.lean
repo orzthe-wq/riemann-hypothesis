@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NormalFormDualOrthogonalLast
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormGeometrySummaryStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormGeometrySummary
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsLocalizedModuleSubtype
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -367,7 +367,7 @@ theorem smul_prod_le (F F' : FlagD H r) (Λ : Submodule (𝓞 K) V) (g : ℕ) :
 
 theorem isModIso_iota : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → IsModIso H (g : 𝓞 K) (flagPairDefinitePartLattice N.F' N.F Λ) (flagPairDefinitePartLattice N.F N.F' Λ) (iotaGraph N.F N.F' Λ (g : 𝓞 K)) := by
   intro K V _ _ _ _ _ _ _ _ H hK r N g Λ hg ⟨⟨hU, hF, hF'⟩, hA⟩
-  obtain ⟨-, -, -, -, -, -, -, hl, hl'⟩ := (GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N).1
+  obtain ⟨-, -, -, -, -, -, -, hl, hl'⟩ := (_root_.GlobalTheory.DegCnt.NF.geometry K V H hK r N).1
   have hA' : IsAdm N.F' N.F Λ (g : 𝓞 K) := by
     refine isAdm_symm (fun a => ?_) hA
     refine Fin.lastCases ?_ (fun b => ?_) a

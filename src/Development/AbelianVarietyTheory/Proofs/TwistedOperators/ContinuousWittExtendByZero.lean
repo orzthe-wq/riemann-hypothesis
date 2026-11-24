@@ -233,7 +233,7 @@ theorem affPt_mul_rowE (q : Fin c) (u : n' → k) (x₀ : Matrix n n' k)
   rw [Fin.val_castSucc] at this
   rw [this, affPt_eq]
   rcases r with r | r <;> rcases s with s | s
-  · simp [mat, ext0, gRow, sRow, Free, basePt]
+  · simp [mat, ext0, gRow, Free, basePt]
   · by_cases h : Free (q.val + 1) ((Sum.inl r : n ⊕ Fin c), (Sum.inr s : n' ⊕ Fin (c + 1))) <;>
       simp [mat, ext0, gRow, sRow, h]
   · rcases lt_trichotomy r q with h | h | h
@@ -244,9 +244,9 @@ theorem affPt_mul_rowE (q : Fin c) (u : n' → k) (x₀ : Matrix n n' k)
         simpa [Free] using h'
       simp [mat, ext0, gRow, sRow, basePt, h1, h2, h.ne, h'.ne]
     · subst h
-      simp [mat, ext0, gRow, sRow, Free, basePt]
+      simp [mat, ext0, gRow, Free, basePt]
     · have h' : q.val < r.val := h
-      simp [mat, ext0, gRow, sRow, Free, basePt, h'.le, h'.not_gt, h.ne', h'.ne']
+      simp [mat, ext0, gRow, Free, basePt, h'.not_gt, h.ne', h'.ne']
   · by_cases h : Free (q.val + 1) ((Sum.inr r : n ⊕ Fin c), (Sum.inr s : n' ⊕ Fin (c + 1))) <;>
       simp [mat, ext0, gRow, sRow, h]
 
@@ -258,12 +258,12 @@ theorem colE_inv_mul_affPt (q : Fin c) (β : n → k) (x₀ : Matrix n n' k)
   ext r s
   rw [colE_inv_mul, affPt_eq]
   rcases r with r | r <;> rcases s with s | s
-  · simp [mat, ext0, gCol, sCol, Free, basePt]
+  · simp [mat, ext0, gCol, Free, basePt]
   · rcases lt_trichotomy s q.castSucc with h | h | h
     · have h' : s.val < q.val := h
-      simp [mat, ext0, gCol, sCol, Free, basePt, h'.not_gt, h.ne, h'.ne']
+      simp [mat, ext0, gCol, Free, basePt, h'.not_gt, h.ne, h'.ne']
     · subst h
-      simp [mat, ext0, gCol, sCol, Free, basePt]
+      simp [mat, ext0, gCol, Free, basePt]
     · have h' : q.val < s.val := h
       have h1 : Free (q.val + 1) ((Sum.inl r : n ⊕ Fin c), (Sum.inr s : n' ⊕ Fin (c + 1))) := by
         simpa [Free] using h'

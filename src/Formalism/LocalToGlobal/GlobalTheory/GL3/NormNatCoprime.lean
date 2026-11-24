@@ -4,43 +4,6 @@ public import Formalism.LocalToGlobal.GlobalTheory.GL3.IntegralityIffAwayAtD
 import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 public import Formalism.LocalToGlobal.GlobalTheory.GL3.DeterminantNormOneOfUnitDisc
 public import Formalism.SharpRestriction.GlobalSchurBounds.StandardIntegralLatticeExists
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -93,15 +56,12 @@ theorem norm_nat_coprime (p : ℕ) [Fact p.Prime] {s : ℕ} (h : Nat.Coprime s p
     have h1 : ‖((s : ℤ) : ℚ_[p])‖ ≤ 1 := by
       first
         | exact Padic.norm_int_le_one _
-        | exact padicNormE.norm_int_le_one _
     have h2 : ¬ ‖((s : ℤ) : ℚ_[p])‖ < 1 := by
       first
         | rw [Padic.norm_int_lt_one_iff_dvd]; exact_mod_cast hs
         | rw [Padic.norm_intCast_lt_one_iff_dvd]; exact_mod_cast hs
         | rw [Padic.norm_intCast_lt_one_iff]; exact_mod_cast hs
         | rw [padicNormE.norm_intCast_lt_one_iff_dvd]; exact_mod_cast hs
-        | (intro hlt; apply hs; exact_mod_cast (Padic.norm_int_lt_one_iff_dvd (s : ℤ)).mp hlt)
-        | (intro hlt; apply hs; exact_mod_cast (Padic.norm_intCast_lt_one_iff_dvd (s : ℤ)).mp hlt)
     have e : ((s : ℤ) : ℚ_[p]) = (s : ℚ_[p]) := by simp
     rw [← e]
     exact le_antisymm h1 (not_lt.mp h2)
@@ -115,8 +75,6 @@ theorem emb_mem (τ : D.what₂.Tau) (x : D.host.E) : embT D τ x ∈ Qbar := by
     (hx.map (D.host.emb ↑(D.eTau τ)).toRatAlgHom).isAlgebraic
   first
     | exact mem_algebraicClosure_iff.mpr hy
-    | exact IntermediateField.mem_algebraicClosure_iff.mpr hy
-    | exact (mem_algebraicClosure_iff' ).mpr hy.isIntegral
 
 def embQ (τ : D.what₂.Tau) : D.host.E →+* Qbar := (embT D τ).codRestrict Qbar (emb_mem τ)
 
@@ -127,8 +85,6 @@ theorem norm_lam_int {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (τ : D
   have ha : IsIntegral ℤ (algebraMap (𝓞 D.host.E) D.host.E a) := by
     first
       | exact NumberField.RingOfIntegers.isIntegral_coe a
-      | exact a.2
-      | exact isIntegral_algebraMap.tower_top
   obtain ⟨P, hm, hP⟩ := ha
   refine ⟨P, hm, ?_⟩
   have e1 := congrArg (lam.comp (embQ τ)) hP
@@ -136,7 +92,6 @@ theorem norm_lam_int {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (τ : D
   convert e1 using 2
   all_goals first
     | exact RingHom.ext_int _ _
-    | rfl
 
 theorem oneAt_pow_mem {𝔞 : IdE D} {s : ℕ} (h1 : ∀ x ∈ 𝔞, (s : D.host.E) * x ∈ (1 : IdE D)) (k : ℕ) :
     ∀ x ∈ 𝔞 ^ k, (s : D.host.E) ^ k * x ∈ (1 : IdE D) := by
@@ -221,7 +176,6 @@ theorem lemmaU : LemmaU D := by
 theorem smul_mulVec' {N : ℕ} (c : D.host.E) (A : Matrix (Fin N) (Fin N) D.host.E) (v : Fin N → D.host.E) :
     (c • A).mulVec v = c • A.mulVec v := by
   first
-    | exact Matrix.smul_mulVec_assoc c A v
     | (ext i; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc])
 
 theorem entry_mem_of_std {N : ℕ} {M : Matrix (Fin N) (Fin N) D.host.E}
@@ -304,7 +258,6 @@ theorem chiFacUnit : ChiFacUnit D := by
   have hl : lamC lam (Base.chiFac χ N N' L L') = lam (a ^ (((N' / 2 : ℕ) : ℤ)) * b ^ (-((N / 2 : ℕ) : ℤ))) := by
     simp only [lamC, dif_pos hmem]
     congr 1
-    try exact Subtype.ext hcf
   have hla : lam a = lamC lam (χ (detId D (Formalism.MainNotions.StandardLatticesGL3.stdL D N) L)) := by simp only [lamC, dif_pos m1]; try rfl
   have hlb : lam b = lamC lam (χ (detId D (Formalism.MainNotions.StandardLatticesGL3.stdL D N') L')) := by simp only [lamC, dif_pos m2]; try rfl
   rw [hl, map_mul, map_zpow₀, map_zpow₀, norm_mul, norm_zpow, norm_zpow, hla, hlb, u1, u2, one_zpow, one_zpow,

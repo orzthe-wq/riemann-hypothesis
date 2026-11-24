@@ -92,50 +92,33 @@ theorem translate_chart_ball_distortion
     simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.id_apply] at h2
     exact h2.trans (mul_le_mul_of_nonneg_right h1.le (norm_nonneg v))
   have hU : e '' ball 0 η ∈ 𝓝 (1 : G) := hopen η hη0
-  have hφ : Continuous (fun p : V × V => e p.1 * e p.2) :=
-    (he.comp continuous_fst).mul (he.comp continuous_snd)
-  have hψ : Continuous (fun p : V × V => (e p.1)⁻¹ * e p.2) :=
-    (he.comp continuous_fst).inv.mul (he.comp continuous_snd)
-  have hφU : (fun p : V × V => e p.1 * e p.2) ⁻¹' (e '' ball 0 η) ∈ 𝓝 ((0 : V), (0 : V)) :=
-    hφ.continuousAt.preimage_mem_nhds (by simpa [he0] using hU)
-  have hψU : (fun p : V × V => (e p.1)⁻¹ * e p.2) ⁻¹' (e '' ball 0 η) ∈
-      𝓝 ((0 : V), (0 : V)) :=
-    hψ.continuousAt.preimage_mem_nhds (by simpa [he0] using hU)
-  obtain ⟨η3, hη30, hη3⟩ := Metric.mem_nhds_iff.mp hφU
-  obtain ⟨η4, hη40, hη4⟩ := Metric.mem_nhds_iff.mp hψU
-  have hφ' : ∀ a b : V, ‖a‖ < η3 → ‖b‖ < η3 → ∃ z, ‖z‖ < η ∧ e z = e a * e b := by
-    intro a b ha hb
-    have hab : (a, b) ∈ ball ((0 : V), (0 : V)) η3 := by
+  have hlift : ∀ (f : V × V → G), Continuous f → f ((0 : V), (0 : V)) = 1 →
+      ∃ ηf : ℝ, 0 < ηf ∧ ∀ a b : V, ‖a‖ < ηf → ‖b‖ < ηf →
+        ∃ z, ‖z‖ < η ∧ e z = f (a, b) := by
+    intro f hf hf0
+    have hfU : f ⁻¹' (e '' ball 0 η) ∈ 𝓝 ((0 : V), (0 : V)) :=
+      hf.continuousAt.preimage_mem_nhds (by simpa [hf0] using hU)
+    obtain ⟨ηf, hηf0, hηf⟩ := Metric.mem_nhds_iff.mp hfU
+    refine ⟨ηf, hηf0, fun a b ha hb => ?_⟩
+    have hab : (a, b) ∈ ball ((0 : V), (0 : V)) ηf := by
       rw [mem_ball, Prod.dist_eq]
-      simp only [dist_zero_right]
-      exact max_lt ha hb
-    obtain ⟨z, hz, hze⟩ := hη3 hab
+      simpa using max_lt ha hb
+    obtain ⟨z, hz, hze⟩ := hηf hab
     exact ⟨z, mem_ball_zero_iff.mp hz, hze⟩
-  have hψ' : ∀ a b : V, ‖a‖ < η4 → ‖b‖ < η4 → ∃ z, ‖z‖ < η ∧ e z = (e a)⁻¹ * e b := by
-    intro a b ha hb
-    have hab : (a, b) ∈ ball ((0 : V), (0 : V)) η4 := by
-      rw [mem_ball, Prod.dist_eq]
-      simp only [dist_zero_right]
-      exact max_lt ha hb
-    obtain ⟨z, hz, hze⟩ := hη4 hab
-    exact ⟨z, mem_ball_zero_iff.mp hz, hze⟩
+  obtain ⟨η3, hη30, hφ'⟩ := hlift (fun p : V × V => e p.1 * e p.2)
+    ((he.comp continuous_fst).mul (he.comp continuous_snd)) (by simp [he0])
+  obtain ⟨η4, hη40, hψ'⟩ := hlift (fun p : V × V => (e p.1)⁻¹ * e p.2)
+    ((he.comp continuous_fst).inv.mul (he.comp continuous_snd)) (by simp)
   have h0η : ‖(0 : V)‖ < η := by simpa using hη0
   refine ⟨min (η / 2) (min η2 (min (η3 / 2) (η4 / 2))),
     lt_min (by linarith) (lt_min hη20 (lt_min (by linarith) (by linarith))), ?_⟩
   intro x hx r hr
   rw [mem_ball_zero_iff] at hx
+  simp only [lt_min_iff] at hx
+  obtain ⟨b1, b2, b3, b4⟩ := hx
   obtain ⟨hr0, hrδ⟩ := hr
-  have b1 : ‖x‖ < η / 2 := lt_of_lt_of_le hx (min_le_left _ _)
-  have b2 : ‖x‖ < η2 := lt_of_lt_of_le hx ((min_le_right _ _).trans (min_le_left _ _))
-  have b3 : ‖x‖ < η3 / 2 := lt_of_lt_of_le hx
-    ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _)))
-  have b4 : ‖x‖ < η4 / 2 := lt_of_lt_of_le hx
-    ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_right _ _)))
-  have r1 : r < η / 2 := lt_of_lt_of_le hrδ (min_le_left _ _)
-  have r3 : r < η3 / 2 := lt_of_lt_of_le hrδ
-    ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _)))
-  have r4 : r < η4 / 2 := lt_of_lt_of_le hrδ
-    ((min_le_right _ _).trans ((min_le_right _ _).trans (min_le_right _ _)))
+  simp only [lt_min_iff] at hrδ
+  obtain ⟨r1, -, r3, r4⟩ := hrδ
   have hmx : ∀ y, m (e x * e y) - m (e x) = L (e x) (m (e y) - m (e 0)) := by
     intro y
     rw [map_sub, he0, ← hm, ← hm, mul_one]

@@ -99,39 +99,14 @@ theorem coeffMap_mem_weyl {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S
     | add x y _ _ hx hy =>
       intro s
       have : coeffMap c (s • (x + y)) = coeffMap c (s • x) + coeffMap c (s • y) := by
-        ext m; simp [coeff_coeffMap, mul_add]
+        ext m; simp [coeff_coeffMap]
       rw [this]; exact Submodule.add_mem _ (hx s) (hy s)
     | smul a x _ hx =>
       intro s
       rw [smul_smul]; exact hx _
   simpa using key 1
 
-theorem map_mem_weyl {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ} (hn : n ≤ r)
-    (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) R) (hf : f ∈ Formalism.GradedWeylDivisibility.weyl R r n hn ν) :
-    map φ f ∈ Formalism.GradedWeylDivisibility.weyl S r n hn ν := by
-  unfold Formalism.GradedWeylDivisibility.weyl at hf
-  induction hf using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨w, rfl⟩ := hx
-    show map φ (Formalism.GradedWeylDivisibility.applyWord R w (Formalism.GradedWeylDivisibility.hw R hn ν)) ∈ _
-    rw [← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map]
-    exact Submodule.subset_span ⟨w, rfl⟩
-  | zero => simp
-  | add x y _ _ hx hy => rw [map_add (f := _)]; exact Submodule.add_mem _ hx hy
-  | smul a x _ hx =>
-    rw [smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]
-    exact Submodule.smul_mem _ _ hx
-
-theorem map_rowAct {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
-    (g : Matrix (Fin r) (Fin r) R) (f : MvPolynomial (Fin r × Fin n) R) :
-    map φ (Formalism.GradedWeylDivisibility.rowAct R g f) = Formalism.GradedWeylDivisibility.rowAct S (g.map φ) (map φ f) := by
-  induction f using MvPolynomial.induction_on with
-  | C a => simp [Formalism.GradedWeylDivisibility.rowAct]
-  | add p q hp hq => simp only [map_add (f := _), hp, hq]
-  | mul_X p v hp =>
-    simp only [map_mul, hp, map_X]
-    congr 1
-    simp [Formalism.GradedWeylDivisibility.rowAct]
+alias map_mem_weyl := _root_.Formalism.UG.P.wlocal_map_weyl
 
 def toInv (R : Type) [CommRing R] : Polynomial R →+* HahnSeries ℤ R :=
   Polynomial.eval₂RingHom HahnSeries.C (HahnSeries.single (-1 : ℤ) (1 : R))
@@ -171,8 +146,7 @@ theorem isUnit_shift (R : Type) [CommRing R] {r : ℕ} (M : Matrix (Fin r) (Fin 
     refine Matrix.ext fun i j => ?_
     simp only [hA, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add (f := _),
       map_mul, HahnSeries.ofPowerSeries_X, HahnSeries.ofPowerSeries_C, mul_add, ← mul_assoc, hT,
-      one_mul, toInv, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_C, Polynomial.eval₂_X,
-      Matrix.one_apply]
+      one_mul, toInv, Polynomial.coe_eval₂RingHom, Matrix.one_apply]
     rw [add_comm]
     split_ifs <;> simp
   rw [Matrix.isUnit_iff_isUnit_det, h3, Matrix.det_smul]
@@ -184,9 +158,9 @@ theorem rowAct_mem_weyl (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν :
   set B : Matrix (Fin r) (Fin r) (Polynomial R) :=
     M.map Polynomial.C + (Polynomial.X : Polynomial R) • (1 : Matrix (Fin r) (Fin r) _) with hB
   obtain ⟨u, hu⟩ := isUnit_shift R M
-  have h1 := Formalism.UG.Final.WeylGLStable (HahnSeries ℤ R) r n hn ν u⁻¹ _
+  have h1 := _root_.Formalism.UG.P.wlocal_global (HahnSeries ℤ R) r n hn ν u⁻¹ _
     (map_mem_weyl (toInv R) hn ν _ (map_mem_weyl Polynomial.C hn ν f hf))
-  rw [Formalism.UG.dwAct, inv_inv, hu, ← hB, ← map_rowAct] at h1
+  rw [Formalism.UG.dwAct, inv_inv, hu, ← hB, ← _root_.Formalism.UG.P.wlocal_map_rowAct] at h1
   have h2 := coeffMap_mem_weyl (HahnSeries.C : R →+* HahnSeries ℤ R)
     (HahnSeries.coeff.addMonoidHom (0 : ℤ)) (by
       intro s a
@@ -203,7 +177,7 @@ theorem rowAct_mem_weyl (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν :
   have h5 : map (Polynomial.evalRingHom (0 : R)) (map Polynomial.C f) = f := by
     ext m
     simp [coeff_map]
-  rwa [h3, map_rowAct, h4, h5] at h2
+  rwa [h3, _root_.Formalism.UG.P.wlocal_map_rowAct, h4, h5] at h2
 
 theorem rowAct_mem_weyl_square : ∀ (R : Type) [CommRing R] (n : ℕ) (ν : Fin n → ℕ), Antitone ν →
     ∀ (M : Matrix (Fin n) (Fin n) R), ∀ f ∈ Formalism.GradedWeylDivisibility.weyl R n n le_rfl ν,

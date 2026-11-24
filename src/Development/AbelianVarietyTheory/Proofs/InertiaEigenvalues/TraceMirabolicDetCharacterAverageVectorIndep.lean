@@ -93,7 +93,7 @@ theorem mirSet_true_conj {r : ℕ} (a : Fin r → ZMod g) (y z : Gn g r) :
     obtain ⟨c, hc⟩ := h ((↑y⁻¹ : Mt g r) *ᵥ x)
     refine ⟨c, ?_⟩
     have := congrArg (fun v => (y : Mt g r) *ᵥ v) hc
-    simp only [mulVec_sub, mulVec_smul, mulVec_mulVec, ← Matrix.mul_assoc, hAB, Matrix.one_mul, one_mulVec] at this
+    simp only [mulVec_sub, mulVec_smul, mulVec_mulVec, ← Matrix.mul_assoc, hAB, one_mulVec] at this
     rw [← this]
 
 theorem mirSet_false_conj {r : ℕ} (a : Fin r → ZMod g) (y z : Gn g r) :
@@ -123,7 +123,7 @@ theorem mirEl_coeff {r : ℕ} (θ : (ZMod g)ˣ →* ℂˣ) (a : Fin r → ZMod g
   unfold mirEl
   rw [MonoidAlgebra.coeff_sum, Finset.sum_apply', Finset.sum_eq_single x]
   · simp [MonoidAlgebra.coeff_single]
-  · intro h _ hne; simp [MonoidAlgebra.coeff_single, Finsupp.single_apply, hne]
+  · intro h _ hne; simp [MonoidAlgebra.coeff_single, hne]
   · intro h; exact absurd (Finset.mem_univ x) h
 
 theorem tr_mirEl_conj {r : ℕ} (ψ : Gn g r → ℂ) (hψ : IsClass ψ) (θ : (ZMod g)ˣ →* ℂˣ)

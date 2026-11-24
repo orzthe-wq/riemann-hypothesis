@@ -77,7 +77,6 @@ theorem act_mem (g : GQ l) (x : P.R.BdR) (hx : x ∈ fil0 T) : P.actQdR g x ∈ 
   refine ⟨Formalism.Per.σDp g a, ?_⟩
   change _ = T.eD (P.actQdR g x)
   rw [T.actD]
-  change _ = Formalism.Per.σD g (T.eD x)
   have ha' : algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l) a = T.eD x := ha
   rw [← ha']
   exact (GlobalTheory.MemLoc.ActLaws.σD_alg g a).symm

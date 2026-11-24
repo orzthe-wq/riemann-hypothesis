@@ -9,9 +9,12 @@ public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Mathlib.RingTheory.SimpleRing.Principal
 public import Development.AbelianVarietyTheory.Definitions.Foundations.SiegelNeZeroIff
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelFunctionHolomorphic
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelFunctionTransformationStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitIndexAddIntVectorStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitQExpansionCoeffsIntegralStatement
+public import Mathlib.Analysis.Complex.UpperHalfPlane.MoebiusAction
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelFunctionTransformation
+public import Development.AbelianVarietyTheory.Definitions.Foundations.CthFac
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitIndexAddIntVector
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitQExpansionCoeffsIntegral
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -152,8 +155,8 @@ theorem exp_int {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : �
     · rw [hyx]; push_cast; rw [hm0]; ring
     · rw [hyx]; push_cast; rw [hm1]; ring
   have hper : ∀ τ : ℍ, sg c y τ = sg c x' τ := fun τ => by
-    rw [hyx]; exact GlobalTheory.T.smoothedSiegelUnit_index_add_intVector c x' n τ hadm
-  obtain ⟨k, hk⟩ := GlobalTheory.T.smoothedSiegelUnit_qExpansion_coeffs_integral c M a0 hM hlt
+    rw [hyx]; exact _root_.GlobalTheory.Sieg.Per.sg_add_int c x' n τ hadm
+  obtain ⟨k, hk⟩ := _root_.GlobalTheory.SiegQ.sg_expansion_int c M a0 hM hlt
   obtain ⟨A, hQ, -, hA, -, -⟩ := hk a1 hadm
   have hε : ∀ j, ε (Function.invFun ε (A j)) = A j := fun j =>
     Function.invFun_eq (mem_range_of_isIntegral ε (isIntegral_of_mem_adjoin hM (hA j)))
@@ -196,9 +199,9 @@ theorem an_siegel_eq : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure
   set Px : Fin 2 → ℤ := ![(x 0).num * (x 1).den, (x 1).num * (x 0).den] with hPx
   have hMx : ∀ i, (M : ℚ) * x i = Px i := fun i => by
     fin_cases i
-    · simp only [hMdef, hPx, Matrix.cons_val_zero]; push_cast
+    · simp only [hMdef, hPx]; push_cast
       rw [← Rat.mul_den_eq_num (x 0)]; ring
-    · simp only [hMdef, hPx, Matrix.cons_val_one, Matrix.cons_val_zero]; push_cast
+    · simp only [hMdef, hPx]; push_cast
       rw [← Rat.mul_den_eq_num (x 1)]; ring
   have hd : DifferentiableOn ℂ (sgC c x) Hs :=
     UpperHalfPlane.mdifferentiable_iff.1 (GlobalTheory.Sieg.mdifferentiable_sg c x hx)
@@ -232,8 +235,8 @@ theorem an_siegel_eq : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure
       · simpa using r0
       · simpa using r1
     rw [e]
-    exact GlobalTheory.T.smoothedSiegelUnit_index_add_intVector c x _ τ hx
-  refine SiegelModel.an_siegel T M hM hd (fun γ τ => GlobalTheory.T.siegel_function_transformation c x γ τ hx) hlev (fun γ => ?_)
+    exact _root_.GlobalTheory.Sieg.Per.sg_add_int c x _ τ hx
+  refine SiegelModel.an_siegel T M hM hd (fun γ τ => _root_.GlobalTheory.Sieg.sg_smul c x γ τ hx) hlev (fun γ => ?_)
   refine exp_int ε hM (fun i => Px 0 * γ 0 i + Px 1 * γ 1 i) (fun i => ?_) (admissible_act_SL2 hx γ)
   simp only [act, Fin.sum_univ_two]
   push_cast

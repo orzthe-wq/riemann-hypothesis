@@ -342,12 +342,7 @@ theorem exists_sub_mem_pow_succ (hle : I ≤ J.comap φ) (h₀ : ∀ b, ∃ a, �
     (h₁ : ∀ y ∈ J, ∃ x ∈ I, φ x - y ∈ J ^ 2) (n : ℕ) :
     ∀ y ∈ J ^ n, ∃ x ∈ I ^ n, φ x - y ∈ J ^ (n + 1) := by
   first
-  | exact @_root_.GlobalTheory.exists_mem_pow_sub_mem_pow_succ_facts.exists_mem_pow_sub_mem_pow_succ
-  | exact _root_.GlobalTheory.exists_mem_pow_sub_mem_pow_succ_facts.exists_mem_pow_sub_mem_pow_succ
   | (apply _root_.GlobalTheory.exists_mem_pow_sub_mem_pow_succ_facts.exists_mem_pow_sub_mem_pow_succ <;> assumption)
-  | (intros; apply _root_.GlobalTheory.exists_mem_pow_sub_mem_pow_succ_facts.exists_mem_pow_sub_mem_pow_succ <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.exists_mem_pow_sub_mem_pow_succ_facts.exists_mem_pow_sub_mem_pow_succ <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.exists_mem_pow_sub_mem_pow_succ_facts.exists_mem_pow_sub_mem_pow_succ ..)
 
 theorem quotientMap_pow_surjective (hle : I ≤ J.comap φ) (h₀ : ∀ b, ∃ a, φ a - b ∈ J)
     (h₁ : ∀ y ∈ J, ∃ x ∈ I, φ x - y ∈ J ^ 2) (n : ℕ) :

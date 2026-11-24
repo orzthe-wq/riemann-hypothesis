@@ -3,47 +3,6 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PhiGen
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
 
 @[expose] public section
@@ -61,21 +20,17 @@ variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F
 def cP (T : Over (Spec (CommRingCat.of R))) (χ : D.X) : T ⟶ D.P.A := toUnit T ≫ D.c χ
 
 theorem cPoint_add (T : Over (Spec (CommRingCat.of R))) (a b : D.X) : cP D T (a + b) = cP D T a * cP D T b := by
-  simp only [cP, D.c_add, padd]
-  rw [← Category.assoc, comp_lift]
+  simp only [cP, D.c_add, padd, ← Category.assoc, comp_lift]
   rfl
 
 theorem cPoint_nsmul (T : Over (Spec (CommRingCat.of R))) (k : ℕ) (a : D.X) : cP D T (k • a) = cP D T a ^ k := by
   induction k with
-  | zero =>
-    have h0 : cP D T 0 = cP D T 0 * cP D T 0 := by rw [← cPoint_add, add_zero]
-    simpa using h0
+  | zero => simpa using (show cP D T 0 = cP D T 0 * cP D T 0 by rw [← cPoint_add, add_zero])
   | succ k ih => rw [succ_nsmul, cPoint_add, ih, pow_succ]
 
 theorem comp_cP {T T' : Over (Spec (CommRingCat.of R))} (ρ : T' ⟶ T) (a : D.X) : ρ ≫ cP D T a = cP D T' a := by
   simp only [cP, ← Category.assoc]
-  congr 1
-  exact toUnit_unique _ _
+  exact congrArg (fun f => f ≫ D.c a) (toUnit_unique _ _)
 
 abbrev th {T : Over (Spec (CommRingCat.of R))} (z : T.left) (J : (T.left ⟶ D.P.A.left) → D.P.L.ι) := cubV D.cub z J
 
@@ -87,10 +42,7 @@ theorem surj_appTop (hG : GlobalFnsSt) : Function.Surjective (fst (TF (R := R) F
       geomConnected := by
         have := D.P.isAb.geomConnected; show GeometricallyConnected (pullback.snd _ _); infer_instance }
   have hb := (hG _ _ hA).2
-  have e : (fst (TF (R := R) F) D.P.A).left =
-      (pullbackSymmetry (DegPre.jFR (R := R) F) D.P.A.hom).hom ≫ pullback.snd D.P.A.hom (DegPre.jFR (R := R) F) :=
-    (pullbackSymmetry_hom_comp_snd _ _).symm
-  rw [e, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp]
+  rw [show (fst (TF (R := R) F) D.P.A).left = (pullbackSymmetry (DegPre.jFR (R := R) F) D.P.A.hom).hom ≫ pullback.snd D.P.A.hom (DegPre.jFR (R := R) F) from (pullbackSymmetry_hom_comp_snd _ _).symm, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp]
   have : IsIso (pullbackSymmetry (DegPre.jFR (R := R) F) D.P.A.hom).hom.appTop :=
     inferInstanceAs (IsIso ((pullbackSymmetry (DegPre.jFR (R := R) F) D.P.A.hom).hom.app ⊤))
   exact (ConcreteCategory.bijective_of_isIso
@@ -300,11 +252,9 @@ theorem cPoint_y {k : ℕ} (p : QkPt D F k) : cP D _ p.y = p.g.b ^ k := by
   have key : ∀ i : Fin (k + 1), (gs i).b = p.g.b ^ (i : ℕ) := by
     intro i
     induction i using Fin.induction with
-    | zero =>
-      rw [h0.1, Fin.val_zero, pow_zero]
-      rfl
+    | zero => rw [h0.1, Fin.val_zero, pow_zero]; rfl
     | succ i ih =>
-      rw [(hadd i).1, Fin.val_succ, pow_succ, ← Fin.coe_castSucc, ← ih]
+      rw [(hadd i).1, Fin.val_succ, pow_succ, ← Fin.val_castSucc, ← ih]
       rfl
   show DegPre.cF D F p.y = _
   rw [← hio.1, ← hlast, key (Fin.last k), Fin.val_last]
@@ -388,8 +338,7 @@ theorem uVal_tr (α : D.X) (m m' : TF (R := R) F ⟶ D.P.A) (y : (DegPre.BF D F)
     uVal D F k α m (DegPre.trPt D F m') y J =
       cubN (th D y J) k (cP D _ α) (fst _ _ ≫ m) (DegPre.prB D F * (fst _ _ ≫ m')) *
         (th D y J (cP D _ α) (DegPre.prB D F * (fst _ _ ≫ m')) (fst _ _ ≫ m))⁻¹ := by
-  simp only [uVal]
-  rw [← Category.assoc, tr_fst, tr_pr]
+  simp only [uVal, ← Category.assoc, tr_fst, tr_pr]
 
 omit hG hw in
 theorem tr_comm (m m' : TF (R := R) F ⟶ D.P.A) :
@@ -398,7 +347,7 @@ theorem tr_comm (m m' : TF (R := R) F ⟶ D.P.A) :
   · simp only [Category.assoc, tr_fst]
   · show _ ≫ DegPre.prB D F = _ ≫ DegPre.prB D F
     simp only [Category.assoc, tr_pr, MonObj.comp_mul]
-    simp only [← Category.assoc, tr_fst, tr_pr]
+    simp only [← Category.assoc, tr_fst]
     exact mul_right_comm _ _ _
 
 omit hG hw in

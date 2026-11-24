@@ -60,7 +60,7 @@ theorem isCompact_Oh : IsCompact (Oh F) :=
   (GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).1
 
 theorem isOpen_Oh : IsOpen (Oh F) := by
-  haveI : Fact (∀ v : HeightOneSpectrum (𝓞 F),
+  have : Fact (∀ v : HeightOneSpectrum (𝓞 F),
       IsOpen (v.adicCompletionIntegers F : Set (v.adicCompletion F))) :=
     ⟨fun _ ↦ Valued.isOpen_valuationSubring _⟩
   exact RestrictedProduct.isOpen_forall_mem
@@ -101,7 +101,7 @@ theorem exists_mul_Oh_subset (U : Set (A F)) (hU : U ∈ 𝓝 (0 : A F)) :
     intro N
     have : V N = (fun c => ((N : ℕ) : A F) * c) '' Oh F := by
       ext a
-      simp only [V, Set.mem_setOf_eq, Set.mem_image, eq_comm]
+      simp only [V, Set.mem_ofPred_eq, Set.mem_image, eq_comm]
     rw [this]
     exact (isCompact_Oh F).image (continuous_const.mul continuous_id)
   obtain ⟨N, hN⟩ := exists_subset_nhds_of_isCompact' hV hc (fun N => h2 N N.pos) (U := U) (by

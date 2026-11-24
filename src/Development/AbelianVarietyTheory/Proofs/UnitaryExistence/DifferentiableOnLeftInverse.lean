@@ -109,7 +109,7 @@ theorem _root_.GlobalTheory.RiemannRel.det_ne_zero (G A B : Matrix (Fin g) (Fin 
   have hform : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G (A *ᵥ x) (A *ᵥ x) = Complex.I * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm G (A *ᵥ x) (A *ᵥ y) := by
     conv_lhs => arg 3; rw [hAx]
     unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm
-    simp [star_neg, star_smul, Matrix.mulVec_neg, Matrix.mulVec_smul, dotProduct_smul]
+    simp [star_neg, star_smul, Matrix.mulVec_smul, dotProduct_smul]
   have hx0 : A *ᵥ x = 0 := by
     by_contra hne
     have h1 := hpos _ hne
@@ -185,7 +185,7 @@ theorem _root_.GlobalTheory.RiemannRel.symm_posDef (G A τ : Matrix (Fin g) (Fin
     rw [Matrix.transpose_mul, Matrix.map_mul, hMdef]; simp only [Matrix.mul_assoc]
   have hKim : ∀ j k, ((τᵀ * M * τ.map (starRingEnd ℂ)) j k).im = (Yᵀ * S * X - Xᵀ * S * Y) j k := by
     intro j k
-    simp only [Matrix.mul_apply, Matrix.sub_apply, Complex.im_sum, Complex.re_sum, Complex.mul_im,
+    simp only [Matrix.mul_apply, Matrix.sub_apply, Complex.im_sum, Complex.mul_im,
       Complex.mul_re, hM, Matrix.map_apply, Matrix.transpose_apply, Complex.conj_re, Complex.conj_im,
       Finset.sum_mul, ← Finset.sum_sub_distrib, S, X, Y]
     refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_

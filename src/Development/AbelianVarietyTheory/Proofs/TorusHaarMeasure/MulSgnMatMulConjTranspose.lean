@@ -74,7 +74,7 @@ theorem sgnMat_mul_self (r p : ℕ) : sgnMat r p * sgnMat r p = 1 := by
 
 theorem sgnMat_map_conj (r p : ℕ) : (sgnMat r p).map (starRingEnd ℂ) = sgnMat r p := by
   ext a b
-  by_cases h : a = b <;> simp [Matrix.diagonal_apply, h]
+  by_cases h : a = b <;> simp [h]
 
 theorem mul_sgnMat_mul_conjTranspose {r p : ℕ} {g : Matrix (Fin r) (Fin r) ℂ}
     (h : gᵀ * sgnMat r p * g.map (starRingEnd ℂ) = sgnMat r p) :

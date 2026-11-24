@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsNormalisedThetaSub
 import Mathlib.Algebra.Order.Floor.Extended
@@ -56,7 +56,7 @@ namespace GlobalTheory.BCT.ThBasic
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 theorem cj_mem_integers (hU : Unr E) (w : Pl E) (x : w.adicCompletion E) (hx : x ∈ Ov E w) : cj w x ∈ Ov E w := by
-  have h := (GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.1 x
+  have h := (_root_.GlobalTheory.ConjAtPlace.main E hU w).2.2.1 x
   change Valued.v (cj w x) ≤ 1
   rw [h]; exact hx
 
@@ -64,13 +64,13 @@ theorem thL_thL (hU : Unr E) (n : ℕ) (w : Pl E) (g : GLw n w) : thL n w (thL n
   unfold thL
   split_ifs
   · rfl
-  · exact GlobalTheory.ThetaPull.thetaGL_thetaGL _ (GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.1 g
+  · exact GlobalTheory.ThetaPull.thetaGL_thetaGL _ (_root_.GlobalTheory.ConjAtPlace.main E hU w).2.1 g
 
 theorem continuous_thL (hU : Unr E) (n : ℕ) (w : Pl E) : Continuous (thL n w) := by
   unfold thL
   split_ifs
   · exact continuous_id
-  · exact GlobalTheory.ThetaPull.continuous_thetaGL _ (GlobalTheory.T.placeConjugation_properties_cmField E hU w).1
+  · exact GlobalTheory.ThetaPull.continuous_thetaGL _ (_root_.GlobalTheory.ConjAtPlace.main E hU w).1
 
 theorem thL_mem_KGL (hU : Unr E) (n : ℕ) (w : Pl E) (k : GLw n w) (hk : k ∈ GlobalTheory.LFun.KGL w (n := n)) :
     thL n w k ∈ GlobalTheory.LFun.KGL w (n := n) := by
@@ -97,7 +97,7 @@ theorem isClosed_UL (hU : Unr E) (n : ℕ) (w : Pl E) : IsClosed (UL n w : Set (
   unfold UL
   split_ifs
   · exact isClosed_univ
-  · have hc := (GlobalTheory.T.placeConjugation_properties_cmField E hU w).1
+  · have hc := (_root_.GlobalTheory.ConjAtPlace.main E hU w).1
     have : Continuous fun g : GLw n w => cT (cj w) (g : Matrix (Fin n) (Fin n) _) * 1 * (g : Matrix (Fin n) (Fin n) _) := by
       refine Continuous.mul (Continuous.mul ?_ continuous_const) Units.continuous_val
       exact continuous_matrix fun i j => hc.comp (Units.continuous_val.matrix_elem _ _)
@@ -110,7 +110,7 @@ theorem charpoly_nrmL (hU : Unr E) (n : ℕ) (w : Pl E) (δ : GL (Fin n) E) :
   · exact (Matrix.charpoly_map _ _)
   · have hm : thetaGL n (cj w) (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) δ) =
         GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (thE E n δ) :=
-      (GlobalTheory.ThetaPull.map_thetaGL _ _ _ (fun x => ((GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.2.1 hs).1 x |>.symm) δ).symm
+      (GlobalTheory.ThetaPull.map_thetaGL _ _ _ (fun x => ((_root_.GlobalTheory.ConjAtPlace.main E hU w).2.2.2.1 hs).1 x |>.symm) δ).symm
     rw [hm, ← map_mul]
     exact (Matrix.charpoly_map _ _)
 
@@ -118,7 +118,7 @@ theorem cLoc_mem_UL (hU : Unr E) (n : ℕ) (w : Pl E) (x : UA E n) : cLoc w x �
   unfold UL
   split_ifs with hs
   · exact Subgroup.mem_top _
-  · have hp := ((GlobalTheory.T.placeConjugation_properties_cmField E hU w).2.2.2.1 hs).2.2.1
+  · have hp := ((_root_.GlobalTheory.ConjAtPlace.main E hU w).2.2.2.1 hs).2.2.1
     have hx := x.2
     change cT (conjAd E) (x.1 : Matrix (Fin n) (Fin n) (Ad E)) * 1 * (x.1 : Matrix (Fin n) (Fin n) (Ad E)) = 1 at hx
     change cT (cj w) ((cLoc w x : GLw n w) : Matrix (Fin n) (Fin n) _) * 1 * ((cLoc w x : GLw n w) : Matrix (Fin n) (Fin n) _) = 1

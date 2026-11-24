@@ -1,7 +1,9 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsIsChart
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SiegelLimitImagBoundStatement
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Topology.Instances.Matrix
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SiegelLimitImagBound
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.ImLowerOnKernel
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.MulVecEqZeroOfPair
 import Mathlib.Algebra.Order.Floor.Extended
@@ -228,7 +230,7 @@ theorem extend_mem (h : IsChart L bas A T0 B c ρ) (x : Λ) (t : (Fin n → ℂ)
     have := inv_period h hdet (ws m) (hws_mem m) (hzs_ball m) x
     rw [hP _ (hws_mem m)] at this
     exact this
-  obtain ⟨u, v, hv, -, hev⟩ := GlobalTheory.T.siegel_limit_imag_bound g (∑ j, B j) (T0 0) (fun m => T0 (zs m))
+  obtain ⟨u, v, hv, -, hev⟩ := _root_.GlobalTheory.CompanionTheory.PeriodLimitSeq.limit_seq g (∑ j, B j) (T0 0) (fun m => T0 (zs m))
     (fun m => tauAt L.a_le T0 B (ws m)) tm c (fun _ => uCo bas x) (fun _ => vCo bas x) _ h.c_pos
     (T_tendsto h hzs_lim) him hdec hYm (lower_at_centre h) hy'
   obtain ⟨m, hm⟩ := hev.exists

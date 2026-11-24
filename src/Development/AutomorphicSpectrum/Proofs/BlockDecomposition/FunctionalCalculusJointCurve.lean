@@ -1,17 +1,18 @@
 module
 
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DifferentiableAtOfSmooth
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold
+public import Mathlib.Analysis.Calculus.ContDiff.FiniteDimension
+public import Mathlib.Analysis.Calculus.FDeriv.Partial
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdjKInner
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.FriedrichsKernels.Friedrichs
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContDiffOnUncurryOfFrame
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOnFderivApply
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeAsRightWords
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WordSmooth
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Calculus.ContDiff.FiniteDimension
-import Mathlib.Analysis.Calculus.FDeriv.Partial
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -25,8 +26,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -34,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,9 +45,225 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContDiffOnUncurryOfFrame, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WordSmooth, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusJointCurve
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContDiffOnUncurryOfFrame =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContDiffOnUncurryOfFrame", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt\npublic import Mathlib.Analysis.LocallyConvex.AbsConvexOpen\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DifferentiableAtOfSmooth\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.ContDiff.FiniteDimension\npublic import Mathlib.Analysis.Calculus.FDeriv.Partial\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix Finset
+open scoped ContDiff ComplexConjugate InnerProductSpace ENNReal
+
+namespace GlobalTheory.CompanionTheory.WaveCp.Frame
+
+open PositivityTheory.RgBcC
+open PositivityTheory.RgTw (Mat G)
+
+attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
+
+variable {n : ℕ}
+
+def eps (p : Bool × Fin n × Fin n) (A : Mat n) : ℝ :=
+  if p.1 then (A p.2.1 p.2.2).re else (A p.2.1 p.2.2).im
+
+theorem contDiff_eps (p : Bool × Fin n × Fin n) : ContDiff ℝ ∞ (eps p : Mat n → ℝ) := by
+  obtain ⟨b, i, j⟩ := p
+  cases b
+  · have e : (eps (false, i, j) : Mat n → ℝ) = Complex.imCLM ∘ fun y : Mat n => y i j := by
+      funext A; simp [eps]
+    rw [e]
+    exact Complex.imCLM.contDiff.comp (GlobalTheory.CompanionTheory.LengthGL.contDiff_ent i j)
+  · have e : (eps (true, i, j) : Mat n → ℝ) = Complex.reCLM ∘ fun y : Mat n => y i j := by
+      funext A; simp [eps]
+    rw [e]
+    exact Complex.reCLM.contDiff.comp (GlobalTheory.CompanionTheory.LengthGL.contDiff_ent i j)
+
+theorem sum_eps (A : Mat n) : ∑ p, eps p A • (bs p : Mat n) = A := by
+  ext a b
+  simp only [Fintype.sum_prod_type, Fintype.sum_bool, eps, bs, Matrix.sum_apply, Matrix.smul_apply]
+  simp [Matrix.single_apply, ite_and]
+
+variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
+
+theorem fderiv_frame (f : Mat n → V) {x : Mat n} (hx : x ∈ GLs n) (ξ : Mat n) :
+    fderiv ℝ f x ξ = ∑ p, eps p (ξ * x⁻¹) • fderiv ℝ f x (bs p * x) := by
+  have hu : IsUnit x.det := isUnit_iff_ne_zero.2 hx
+  have e : ξ = ∑ p, eps p (ξ * x⁻¹) • (bs p * x) := by
+    have : ξ * x⁻¹ * x = ξ := by rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]
+    conv_lhs => rw [← this, ← sum_eps (ξ * x⁻¹), Finset.sum_mul]
+    exact Finset.sum_congr rfl fun p _ => smul_mul_assoc _ _ _
+
+  conv_lhs => rw [e, map_sum]
+  exact Finset.sum_congr rfl fun p _ => map_smul _ _ _
+
+theorem contDiffOn_coeff (p : Bool × Fin n × Fin n) (ξ : Mat n) :
+    ContDiffOn ℝ ∞ (fun x : Mat n => eps p (ξ * x⁻¹)) (GLs n) :=
+  (contDiff_eps p).comp_contDiffOn
+    ((GlobalTheory.CompanionTheory.RCalc.mulL ξ).contDiff.comp_contDiffOn GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv)
+
+theorem contDiffOn_coeff' (p : Bool × Fin n × Fin n) (ξ : Mat n) :
+    ContDiffOn ℝ ∞ (fun z : ℝ × Mat n => eps p (ξ * z.2⁻¹)) (Set.univ ×ˢ GLs n) :=
+  (contDiffOn_coeff p ξ).comp contDiff_snd.contDiffOn fun _ hz => hz.2
+
+theorem isOpen_dom : IsOpen (Set.univ ×ˢ GLs n : Set (ℝ × Mat n)) :=
+  isOpen_univ.prod GlobalTheory.CompanionTheory.LengthGL.isOpen_GLs
+
+theorem hasFDerivAt_uncurry {h h₀ : ℝ → Mat n → V} {hp : (Bool × Fin n × Fin n) → ℝ → Mat n → V}
+    (c₀ : ContinuousOn (Function.uncurry h₀) (Set.univ ×ˢ GLs n))
+    (cp : ∀ p, ContinuousOn (Function.uncurry (hp p)) (Set.univ ×ˢ GLs n))
+    (ht : ∀ t, ∀ x ∈ GLs n, HasDerivAt (fun s => h s x) (h₀ t x) t)
+    (hd : ∀ t, DifferentiableOn ℝ (h t) (GLs n))
+    (hf : ∀ p t, ∀ x ∈ GLs n, fderiv ℝ (h t) x (bs p * x) = hp p t x)
+    {t : ℝ} {x : Mat n} (hx : x ∈ GLs n) :
+    HasFDerivAt (Function.uncurry h)
+      (((1 : ℝ →L[ℝ] ℝ).smulRight (h₀ t x)).coprod (fderiv ℝ (h t) x)) (t, x) := by
+  have hn : (Set.univ ×ˢ GLs n : Set (ℝ × Mat n)) ∈ nhds ((t, x) : ℝ × Mat n) :=
+    isOpen_dom.mem_nhds ⟨trivial, hx⟩
+  have c1 : ContinuousOn (Function.uncurry fun (t : ℝ) (x : Mat n) => (1 : ℝ →L[ℝ] ℝ).smulRight (h₀ t x))
+      (Set.univ ×ˢ GLs n) := by
+    rw [continuousOn_clm_apply]
+    intro y
+    refine ContinuousOn.congr (f := fun z : ℝ × Mat n => y • Function.uncurry h₀ z)
+      ((continuousOn_const (c := y)).smul c₀) ?_
+    rintro ⟨s, w⟩ -
+    simp
+  have c2 : ContinuousOn (Function.uncurry fun (t : ℝ) (x : Mat n) => fderiv ℝ (h t) x)
+      (Set.univ ×ˢ GLs n) := by
+    refine continuousOn_clm_apply.2 fun ξ => ?_
+    have h1 : ContinuousOn (fun z : ℝ × Mat n => ∑ p, eps p (ξ * z.2⁻¹) • hp p z.1 z.2)
+        (Set.univ ×ˢ GLs n) :=
+      continuousOn_finsetSum _ fun p _ => (contDiffOn_coeff' p ξ).continuousOn.smul (cp p)
+    refine h1.congr ?_
+    rintro ⟨s, y⟩ ⟨-, hy⟩
+    have hy' : y ∈ GLs n := hy
+    exact (fderiv_frame (h s) hy' ξ).trans (Finset.sum_congr rfl fun p _ => by rw [hf p s y hy'])
+  have key := hasStrictFDerivAt_uncurry_coprod (𝕜 := ℝ) (u := ((t, x) : ℝ × Mat n)) (f := h)
+    (f₁ := fun t x => (1 : ℝ →L[ℝ] ℝ).smulRight (h₀ t x)) (f₂ := fun t x => fderiv ℝ (h t) x)
+    ?_ ?_ (c1.continuousAt hn) (c2.continuousAt hn)
+  · exact key.hasFDerivAt
+  · filter_upwards [hn] with v hv
+    exact (ht v.1 v.2 hv.2).hasFDerivAt
+  · filter_upwards [hn] with v hv
+    exact ((hd v.1 v.2 hv.2).differentiableAt (GlobalTheory.CompanionTheory.LengthGL.isOpen_GLs.mem_nhds hv.2)).hasFDerivAt
+
+theorem contDiffOn_step (F : Set (ℝ → Mat n → V))
+    (hc : ∀ h ∈ F, ContinuousOn (Function.uncurry h) (Set.univ ×ˢ GLs n))
+    (hdt : ∀ h ∈ F, ∃ h' ∈ F, ∀ t, ∀ x ∈ GLs n, HasDerivAt (fun s => h s x) (h' t x) t)
+    (hd : ∀ h ∈ F, ∀ t, DifferentiableOn ℝ (h t) (GLs n))
+    (hfr : ∀ h ∈ F, ∀ p, ∃ h' ∈ F, ∀ t, ∀ x ∈ GLs n, fderiv ℝ (h t) x (bs p * x) = h' t x)
+    (k : ℕ) (ih : ∀ h ∈ F, ContDiffOn ℝ k (Function.uncurry h) (Set.univ ×ˢ GLs n)) :
+    ∀ h ∈ F, ContDiffOn ℝ ((k + 1 : ℕ) : WithTop ℕ∞) (Function.uncurry h) (Set.univ ×ˢ GLs n) := by
+  intro h hh
+  obtain ⟨h₀, h₀F, ht⟩ := hdt h hh
+  choose hp hpF hf using hfr h hh
+  have hD : ∀ z ∈ (Set.univ ×ˢ GLs n : Set (ℝ × Mat n)), HasFDerivAt (Function.uncurry h)
+      (((1 : ℝ →L[ℝ] ℝ).smulRight (h₀ z.1 z.2)).coprod (fderiv ℝ (h z.1) z.2)) z := fun z hz =>
+    hasFDerivAt_uncurry (hc _ h₀F) (fun p => hc _ (hpF p)) ht (hd h hh) hf hz.2
+  have e : ((k + 1 : ℕ) : WithTop ℕ∞) = (k : WithTop ℕ∞) + 1 := by norm_cast
+  rw [e, contDiffOn_succ_iff_fderiv_of_isOpen isOpen_dom]
+  refine ⟨fun z hz => (hD z hz).differentiableAt.differentiableWithinAt, by simp, ?_⟩
+  rw [contDiffOn_clm_apply]
+  rintro ⟨τ, ξ⟩
+  have h1 : ContDiffOn ℝ k (fun z : ℝ × Mat n =>
+      τ • h₀ z.1 z.2 + ∑ p, eps p (ξ * z.2⁻¹) • hp p z.1 z.2) (Set.univ ×ˢ GLs n) := by
+    refine ContDiffOn.add (contDiffOn_const.smul (ih _ h₀F)) (ContDiffOn.sum fun p _ => ?_)
+    exact ((contDiffOn_coeff' p ξ).of_le (by exact_mod_cast le_top)).smul (ih _ (hpF p))
+  refine h1.congr ?_
+  rintro ⟨s, y⟩ hz
+  have e1 : fderiv ℝ (Function.uncurry h) (s, y) = _ := (hD _ hz).fderiv
+  refine (congrArg (fun L => L (τ, ξ)) e1).trans ?_
+  simp only [ContinuousLinearMap.coprod_apply, ContinuousLinearMap.smulRight_apply]
+  rw [fderiv_frame _ hz.2]
+  simp only [ContinuousLinearMap.one_apply]
+  congr 1
+  exact Finset.sum_congr rfl fun p _ => by rw [hf p s y hz.2]
+
+theorem contDiffOn_uncurry_of_frame : ∀ {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
+    (F : Set (ℝ → Mat n → V)), (∀ h ∈ F, ContinuousOn (Function.uncurry h) (Set.univ ×ˢ GLs n)) →
+    (∀ h ∈ F, ∃ h' ∈ F, ∀ t, ∀ x ∈ GLs n, HasDerivAt (fun s => h s x) (h' t x) t) →
+    (∀ h ∈ F, ∀ t, DifferentiableOn ℝ (h t) (GLs n)) →
+    (∀ h ∈ F, ∀ p, ∃ h' ∈ F, ∀ t, ∀ x ∈ GLs n, fderiv ℝ (h t) x (bs p * x) = h' t x) →
+    ∀ h ∈ F, ContDiffOn ℝ ∞ (Function.uncurry h) (Set.univ ×ˢ GLs n) := by
+  intro n V _ _ F hc hdt hd hfr h hh
+  rw [contDiffOn_infty]
+  intro k
+  induction k generalizing h with
+  | zero =>
+    have h0 : ContDiffOn ℝ 0 (Function.uncurry h) (Set.univ ×ˢ GLs n) := contDiffOn_zero.2 (hc h hh)
+    simpa using h0
+  | succ k ih => exact contDiffOn_step F hc hdt hd hfr k (fun h hh => ih h hh) h hh
+
+end GlobalTheory.CompanionTheory.WaveCp.Frame
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContDiffOnUncurryOfFrame =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WordSmooth =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WordSmooth", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AdjKInner\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DifferentiableAtOfSmooth\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Matrix Finset Filter Topology
+open scoped ContDiff
+
+namespace GlobalTheory.CompanionTheory.WaveK.Base.RwLinPf
+
+open PositivityTheory.RgBcC GlobalTheory.CompanionTheory.WaveK
+open PositivityTheory.RgTw (Mat G)
+open GlobalTheory.CompanionTheory.RCalc (Rd_contDiffOn differentiableAt_of_smooth isOpen_GLs)
+
+attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
+
+theorem word_smooth {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : Mat n → V}
+    (hf : ContDiffOn ℝ ∞ f (GLs n)) (w : List (Bool × Fin n × Fin n)) :
+    ContDiffOn ℝ ∞ (Rw w f) (GLs n) := by
+  induction w with
+  | nil => exact hf
+  | cons p w ih => exact Rd_contDiffOn (bs p) ih
+
+theorem rwLin : RwLin := by
+  intro n V W _ _ _ _ ι _ L f hf w
+  induction w with
+  | nil => intro x _; rfl
+  | cons p w ih =>
+    intro x hx
+    have hs : ∀ i, ContDiffOn ℝ ∞ (Rw w (f i)) (GLs n) := fun i => word_smooth (hf i) w
+    have e : Rw w (fun y => ∑ i, L i (f i y)) =ᶠ[𝓝 x] fun y => ∑ i, L i (Rw w (f i) y) :=
+      Filter.eventuallyEq_of_mem (isOpen_GLs.mem_nhds hx) fun y hy => ih y hy
+    have hd : ∀ i, HasFDerivAt (fun y => L i (Rw w (f i) y))
+        ((L i).comp (fderiv ℝ (Rw w (f i)) x)) x := fun i =>
+      (L i).hasFDerivAt.comp x (differentiableAt_of_smooth (hs i) hx).hasFDerivAt
+    have hsum := (HasFDerivAt.fun_sum (u := Finset.univ) fun i _ => hd i).fderiv
+    show fderiv ℝ (Rw w fun y => ∑ i, L i (f i y)) x (x * bs p) =
+      ∑ i, L i (fderiv ℝ (Rw w (f i)) x (x * bs p))
+    rw [e.fderiv_eq]
+    refine (DFunLike.congr_fun hsum (x * bs p)).trans ?_
+    exact ContinuousLinearMap.sum_apply _ _ _
+
+end GlobalTheory.CompanionTheory.WaveK.Base.RwLinPf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WordSmooth =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusJointCurve =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusJointCurve", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.FriedrichsKernels.Friedrichs\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContDiffOnUncurryOfFrame\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousOnFderivApply\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeAsRightWords\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WordSmooth\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Calculus.ContDiff.FiniteDimension\nimport Mathlib.Analysis.Calculus.FDeriv.Partial\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -111,7 +325,7 @@ theorem hasFDerivAt_uncurry {h h₀ : ℝ → Mat n → V} {hp : (Bool × Fin n 
     refine ContinuousOn.congr (f := fun z : ℝ × Mat n => y • Function.uncurry h₀ z)
       ((continuousOn_const (c := y)).smul c₀) ?_
     rintro ⟨s, w⟩ -
-    simp [Function.uncurry_def]
+    simp
   have c2 : ContinuousOn (Function.uncurry fun (t : ℝ) (x : Mat n) => fderiv ℝ (h t) x)
       (Set.univ ×ˢ GLs n) := by
     refine continuousOn_clm_apply.2 fun ξ => ?_
@@ -353,3 +567,7 @@ theorem curveJoint : CurveJoint := by
     exact ⟨_, ⟨j, p :: w, rfl⟩, fun t x _ => rfl⟩
 
 end GlobalTheory.CompanionTheory.CurveJ
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FunctionalCalculusJointCurve =====

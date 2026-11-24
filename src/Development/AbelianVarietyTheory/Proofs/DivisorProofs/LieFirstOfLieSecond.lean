@@ -104,6 +104,6 @@ end Tensor
 
 open scoped Classical in
 theorem lieFirst_of_lieSecond : LieSecond → LieFirst := by
-  apply PositivityTheory.RL.lieFirst <;> assumption
+  apply PositivityTheory.RL.lieFirst
 
 end GlobalTheory.RealLift.LieFirstPf

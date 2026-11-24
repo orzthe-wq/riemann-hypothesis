@@ -188,7 +188,7 @@ theorem MirUin_step (ψ : AddChar k Circle) {m n : ℕ} (hnm : n ≤ m) (u : Mir
     have h12 : p.1 ≠ p.2 := fun e => by rw [e] at hc; omega
     have h2 : p.2 ≠ Fin.last (m + 1) := fun e => hne (Prod.ext (Fin.ext (by
       rw [e] at hc; simp at hc ⊢; omega)) e)
-    simp [unip, colMat, Matrix.one_apply, h12, h2]
+    simp [unip, colMat, h12, h2]
   · intro h
     exact absurd (Finset.mem_filter.2 ⟨Finset.mem_univ _, by simp, by simpa using hnm⟩) h
 
@@ -232,7 +232,7 @@ theorem levi_step (ψ : AddChar k Circle) {m n : ℕ} (hnm : n ≤ m) (a : derUn
     | last => simp at hj; omega
     | cast j =>
       induction i using Fin.lastCases with
-      | last => rw [glEmbMat_last_castSucc]; simp [Matrix.one_apply, (Fin.castSucc_ne_last j).symm]
+      | last => rw [glEmbMat_last_castSucc]; simp [(Fin.castSucc_ne_last j).symm]
       | cast i =>
         rw [glEmbMat_castSucc_castSucc, hC i j (by simpa using hj)]
         simp [Matrix.one_apply]

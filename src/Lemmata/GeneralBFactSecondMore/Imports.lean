@@ -55,6 +55,6 @@ theorem goal1 :
     ∀ (x : U),
       Exists.{1} fun (d : NumberField.RingOfIntegers.{0} E) ↦
         And (Ne.{1} d 0) (Membership.mem.{0, 0} N (HSMul.hSMul.{0, 0, 0} d x)) := by
-  apply GlobalTheory.TargetStatementBis.main <;> assumption
+  apply GlobalTheory.TargetStatementBis.main
 
 end Bl.general_b_fact_second'

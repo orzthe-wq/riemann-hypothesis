@@ -107,7 +107,7 @@ variable {V : Type} [AddCommGroup V] [Module ℂ V]
 theorem actM_single (E : Fin n → Fin n → Module.End ℂ V) (a b : Fin n) (c : ℂ) :
     actM E (Matrix.single a b c) = c • E a b := by
   classical
-  simp [actM, Matrix.single_apply, ite_smul, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']
+  simp [actM, Matrix.single_apply, ite_smul, ite_and, Finset.sum_ite_eq]
 
 theorem actM_add (E : Fin n → Fin n → Module.End ℂ V) (X Y : Mx n) : actM E (X + Y) = actM E X + actM E Y := by
   simp [actM, add_smul, Finset.sum_add_distrib]
@@ -172,7 +172,7 @@ theorem key (hU : IsURepOn (UJset ε) σ) (hD : Dens ε σ) {E : Fin n → Fin n
       map_smul' := fun c a => by
         simp only [RingHom.id_apply]
         rw [← Complex.coe_smul, map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply]
-        simp [Complex.coe_smul] }
+        simp }
   let ℓ2 : W →ₗ[ℝ] ℂ := ((B v).comp ι).restrictScalars ℝ
   let L1 : W →L[ℝ] ℂ := ⟨ℓ1, LinearMap.continuous_of_finiteDimensional ℓ1⟩
   let L2 : W →L[ℝ] ℂ := ⟨ℓ2, LinearMap.continuous_of_finiteDimensional ℓ2⟩
@@ -201,7 +201,7 @@ theorem compact_pair (hU : IsURepOn (UJset ε) σ) (hD : Dens ε σ) {E : Fin n 
     apply h
     have e1 : ¬ (a = i ∧ b = j) := fun ⟨h1, h2⟩ => hne (h1 ▸ h2 ▸ hab)
     have e2 : ¬ (b = i ∧ a = j) := fun ⟨h1, h2⟩ => hne (h1 ▸ h2 ▸ hab.symm)
-    simp [Matrix.single_apply, e1, e2]
+    simp [e1, e2]
   have s1 : (Matrix.single a b (1 : ℂ) + Matrix.single b a (-1))ᴴ =
       -(Matrix.single a b (1 : ℂ) + Matrix.single b a (-1)) := by
     rw [Matrix.conjTranspose_add, single_conjTranspose, single_conjTranspose]

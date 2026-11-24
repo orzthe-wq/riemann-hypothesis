@@ -2,7 +2,8 @@ module
 
 public import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.BaseFont
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDual1Dot
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedDualFamiliesContinuousStatement
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CentralIdemCoeff
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedDualFamiliesContinuous
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -70,14 +71,14 @@ theorem loc_mulVec {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)
   rw [RingHom.map_mulVec]
   congr 1
   ext p q
-  simp [Br.loc, Br.locM, Br.locO, mapM, Br.iota, Br.toLLK_alg]
+  simp [Br.loc, Br.locM, Br.locO, mapM, Br.toLLK_alg]
   rfl
 
 variable (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (Xs : Set (D.nd.X i))
 
 theorem contTw (hr : GoodR D.nd i r) (x : ↥Xs) (v : Fin D.R.nV → Br.LL D.nbr i w hw) :
     Continuous fun g => (Br.loc D.nbr i w hw (rTwO D.nd i r x) g).mulVec v :=
-  (GlobalTheory.JumpDual.loc_cont D i w hw _ (GlobalTheory.T.twisted_dual_families_continuous D i r hr x).1).matrix_mulVec continuous_const
+  (GlobalTheory.JumpDual.loc_cont D i w hw _ (_root_.GlobalTheory.Pass.FamCont.stepCont D i r hr x).1).matrix_mulVec continuous_const
 
 def sumG (hr : GoodR D.nd i r) {a : ℕ} (x : Fin a → ↥Xs) :
     GRep (Br.G D.nbr i w hw) ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) (Br.OLL D.nbr i w hw) :=

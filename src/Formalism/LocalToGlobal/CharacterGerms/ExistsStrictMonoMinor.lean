@@ -5,50 +5,7 @@ public import Mathlib.RingTheory.Derivation.Basic
 public import Mathlib.RingTheory.Valuation.Basic
 public import Mathlib.Topology.Algebra.InfiniteSum.Defs
 public import Mathlib.Topology.MetricSpace.Pseudo.Defs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Presheaf
 public import Mathlib.Analysis.SpecificLimits.Basic
@@ -170,7 +127,7 @@ theorem lenCoker_mul_le (v : AddValuation R (WithTop ℝ)) (hv : ∀ x, 0 ≤ v 
   let er : Fin n ⊕ Fin p ≃ Fin (n + p) := finSumFinEquiv
   let ec : Fin p ⊕ Fin n ≃ Fin (n + p) := (Equiv.sumComm (Fin p) (Fin n)).trans finSumFinEquiv
   have hZ : Z' * Zi = 1 := by
-    simp only [Z', Zi, Matrix.fromBlocks_multiply, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]
+    simp only [Z', Zi, Matrix.fromBlocks_multiply, Matrix.zero_mul, Matrix.mul_zero, add_zero]
     rw [hSW, hSQ, hQW, hQQ, Matrix.fromBlocks_one]
   have hZZ : Matrix.reindex er ec Z' * Matrix.reindex ec er Zi = 1 := by
     simp only [Matrix.reindex_apply]
@@ -288,7 +245,6 @@ theorem frobSum_alt {d : ℕ} {l : ℕ} (hl : 1 < l) (n j j' : ℕ) (big : ZMod 
   simp only [hev, hod, tsum_mul_left, tsum_geometric_of_lt_one hq0 hq1]
   unfold gam rho
   field_simp
-  try ring
 
 theorem frobSum_const {d : ℕ} {l : ℕ} (hl : 1 < l) (P : ℕ) (p : ZMod d → ℕ) (hp : ∀ τ, p τ = P)
     (a : ZMod d) : frobSum l p a = (P : ℝ) / ((l : ℝ) - 1) := by
@@ -307,7 +263,6 @@ theorem frobSum_const {d : ℕ} {l : ℕ} (hl : 1 < l) (P : ℕ) (p : ZMod d →
     ring
   simp only [hk, tsum_mul_left, tsum_geometric_of_lt_one h0 h1]
   field_simp
-  try ring
 
 end Numbers
 
@@ -361,7 +316,7 @@ theorem derivation_prod {F : Type*} [CommRing F] [Algebra R F] {n : ℕ} (D : De
   refine Finset.induction_on s (by simp) ?_
   intro i s hi ih
   rw [Finset.prod_insert hi, Finset.sum_insert hi, Derivation.leibniz, ih, hD]
-  simp only [Algebra.smul_def, smul_eq_mul, map_add (f := _), Algebra.algebraMap_self, RingHom.id_apply]
+  simp only [Algebra.smul_def, map_add (f := _), Algebra.algebraMap_self, RingHom.id_apply]
   ring
 
 end Derivatives

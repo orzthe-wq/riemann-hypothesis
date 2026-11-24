@@ -82,7 +82,6 @@ theorem root_eq (l : ℕ) [hp : Fact l.Prime] {x₀ y w : O} (hx : x₀ ≠ 0)
     rwa [orderOf_eq_prime hrx hζ1] at h
   have hζu : IsUnit (1 + x₀) := by
     first
-    | exact hprim.isUnit hl0
     | exact hprim.isUnit hl0.ne'
   have hwu : ¬ IsUnit w := (IsLocalRing.mem_maximalIdeal w).1 hw
   obtain ⟨i, hil, hi⟩ : ∃ i < l, (1 + x₀) ^ i = 1 + y := by

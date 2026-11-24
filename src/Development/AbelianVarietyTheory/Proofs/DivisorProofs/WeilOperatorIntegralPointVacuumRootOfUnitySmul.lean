@@ -3,7 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SphericalPair
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryHeckeCharacterValuesStatement
+public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryHeckeCharacterValues
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOfBalanced
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -44,7 +46,6 @@ import Development.AbelianVarietyTheory.Counterexamples.RotationExamples.LeafHyp
 import Development.AbelianVarietyTheory.Definitions.Divisors.CmHostImaginaryGeneratorNeZero
 import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVecEq
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsOfBalanced
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 
 @[expose] public section
@@ -64,8 +65,8 @@ theorem vacuum_int_root_of_unity : ∀ (D : D7) (δ : ℂ), Crv D ⊤ δ → ∀
   intro D δ crv a d e0 he W r hr
   obtain ⟨x, x', hx, hx', h⟩ := (GlobalTheory.NormSum.VacInt.vacuum_eigen D (GlobalTheory.InducedType.induced_type D).1 ⊤ δ crv a d e0 he W).2.1
     r hr 1 (one_mem _)
-  obtain ⟨m, hm, hxm⟩ := (GlobalTheory.T.unitaryHeckeCharacter_values D d W.chV' x).2.1 hx
-  obtain ⟨m', hm', hxm'⟩ := (GlobalTheory.T.unitaryHeckeCharacter_values D a W.chV x').2.1 hx'
+  obtain ⟨m, hm, hxm⟩ := (_root_.GlobalTheory.HeckeVal.hecke_values D d W.chV' x).2.1 hx
+  obtain ⟨m', hm', hxm'⟩ := (_root_.GlobalTheory.HeckeVal.hecke_values D a W.chV x').2.1 hx'
   refine ⟨_, ⟨m * m', Nat.mul_pos hm hm', ?_⟩, h⟩
   rw [← Units.val_pow_eq_pow_val, mul_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul,
     mul_comm W.ep, mul_comm W.ep', zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, mul_comm m m', pow_mul, hxm', one_pow, one_zpow,

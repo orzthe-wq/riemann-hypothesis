@@ -176,7 +176,7 @@ theorem hVCoeff_of (hl : KLow) (hw : KWtOrth) (ha : ArrModule) : HVCoeff := by
       have hbc : b ≠ a := Ne.symm hab
       simp only [if_true, if_neg hbc, sub_zero] at h1
       have : ((μ - root a b) a : ℝ) = μ a - 1 := by
-        simp [root, Pi.single_apply, hbc]
+        simp [root, hbc]
       rw [this]
       push_cast
       rw [sub_smul, one_smul, ← h1]
@@ -185,14 +185,14 @@ theorem hVCoeff_of (hl : KLow) (hw : KWtOrth) (ha : ArrModule) : HVCoeff := by
       · subst hbc
         simp only [if_neg hac, if_true, zero_sub] at h1
         have : ((μ - root a b) b : ℝ) = μ b + 1 := by
-          simp [root, Pi.single_apply, hab]
+          simp [root, hab]
         rw [this]
         push_cast
         rw [add_smul, one_smul, ← h1]
         simp [hf]
       · simp only [if_neg hac, if_neg hbc, sub_zero, zero_add] at h1
         have : ((μ - root a b) c : ℝ) = μ c := by
-          simp [root, Pi.single_apply, Ne.symm hac, Ne.symm hbc]
+          simp [root, Ne.symm hac, Ne.symm hbc]
         rw [this]
         exact h1
   have hhi : ∀ c d, c < d → ε c = ε d → E c d (f (a, b)) = 0 := by
@@ -265,7 +265,7 @@ theorem root_injective_of_ne {a b a' b' : Fin n} (hab : a ≠ b) (h : root a b =
   have hba : b ≠ a := Ne.symm hab
   have h1 := congrFun h a
   have h2 := congrFun h b
-  simp only [root, Pi.sub_apply, Pi.single_apply, if_pos rfl, if_neg hab, if_neg hba] at h1 h2
+  simp only [root, Pi.sub_apply, Pi.single_apply, if_neg hab, if_neg hba] at h1 h2
   have e1 : a = a' := by
     by_contra e1
     rw [if_neg e1] at h1
@@ -493,8 +493,8 @@ theorem omPlus_of (hd : KDecomp) (ho : KOrth) (hk : KCasSpan) (hca : CasArr) (ha
   let c : ι → ℝ := fun p => (ckv ε (LamOf ε lam + root p.1.1 p.1.2) - n - ckv ε (LamOf ε lam)) / 2
   have hcge : ∀ p : ι, g - 2 * n ≤ c p := by
     intro p
-    have h1 := omEigen n ε lam p.1.1 p.1.2 (ne_of_lt p.2.1)
-    have h2 := uGap n ε lam g p.1.1 p.1.2 p.2.1 p.2.2 (hgap _ _ p.2.1 p.2.2)
+    have h1 := _root_.Formalism.REAL.omega_eigenvalue_holds n ε lam p.1.1 p.1.2 (ne_of_lt p.2.1)
+    have h2 := _root_.Formalism.REAL.unitary_spectral_gap n ε lam g p.1.1 p.1.2 p.2.1 p.2.2 (hgap _ _ p.2.1 p.2.2)
     simp only [c, ckv, LamOf]
     linarith
   have hWeig : ∀ p : ι, ∀ G ∈ W p, OmS ε E (0 : Fin 1) G = (c p : ℂ) • G := by

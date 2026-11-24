@@ -307,7 +307,7 @@ theorem deltaC_congr {f g : Mc n → ℂ} {V : Set (Mc n)} (hV : IsOpen V) (h : 
 theorem conj_single (k : Mc n) (p : Fin n × Fin n) (c d : Fin n) :
     (k * E p * kᴴ) c d = k c p.1 * (k.map star) d p.2 := by
   simp [E, Matrix.mul_apply, Matrix.single_apply, Matrix.conjTranspose_apply, Matrix.map_apply,
-    Finset.sum_ite_eq', Finset.sum_ite_eq, ite_and]
+    Finset.sum_ite_eq, ite_and]
 
 theorem invar_one {F : Mc n → ℂ} {U : Set (Mc n)} (hU : IsOpen U) (hF : ContDiffOn ℂ (⊤ : ℕ∞) F U)
     {k : Mc n} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) (b : Mc n) (hb : k * b * kᴴ ∈ U) :
@@ -315,7 +315,7 @@ theorem invar_one {F : Mc n → ℂ} {U : Set (Mc n)} (hU : IsOpen U) (hF : Cont
   let Tl : Mc n →ₗ[ℂ] Mc n :=
     { toFun := fun c => k * c * kᴴ
       map_add' := fun x y => by simp [Matrix.mul_add, Matrix.add_mul]
-      map_smul' := fun a x => by simp [Matrix.mul_smul, Matrix.smul_mul] }
+      map_smul' := fun a x => by simp }
   let T : Mc n →L[ℂ] Mc n := LinearMap.toContinuousLinearMap Tl
   have hT : ∀ c, T c = k * c * kᴴ := fun c => rfl
   have hFT : (fun c => F (k * c * kᴴ)) = fun c => F (T c) := by funext c; rw [hT]

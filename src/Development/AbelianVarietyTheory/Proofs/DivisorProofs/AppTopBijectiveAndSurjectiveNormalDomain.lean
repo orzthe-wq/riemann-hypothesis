@@ -36,6 +36,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -46,19 +47,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
-
-theorem jK_appTop_injective (R : Type) [CommRing R] [IsDomain R] :
-    Function.Injective (jK R).appTop.hom := by
-  intro a b h
-  have e := Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R)))
-  have h2 := congrArg (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom h
-  have h3 : ∀ x, (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom ((jK R).appTop.hom x) =
-      algebraMap R (FractionRing R) ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom x) := fun x =>
-    congrArg (fun f => f.hom x) e
-  rw [h3, h3] at h2
-  have h4 := IsFractionRing.injective R (FractionRing R) h2
-  have := congrArg (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom h4
-  simpa using this
 
 theorem Modif.gp_appTop_injective {R : Type} [CommRing R] [IsDomain R] (M : Modif R) :
     Function.Injective M.gp.appTop.hom := by
@@ -83,7 +71,7 @@ theorem Modif.appTop_bijective_surjective : ∀ (R : Type) [CommRing R] [IsDomai
   intro R _ _ _ _ M
   haveI := M.proper
   haveI := M.integral
-  have hinj : Function.Injective M.π.appTop.hom := fun a b h => jK_appTop_injective R (by
+  have hinj : Function.Injective M.π.appTop.hom := fun a b h => _root_.GlobalTheory.PsiInt.jK_appTop_injective R (by
     rw [← M.appTop_comp, ← M.appTop_comp, h])
   refine ⟨⟨hinj, fun b => ?_⟩, ⟨?_⟩⟩
   ·

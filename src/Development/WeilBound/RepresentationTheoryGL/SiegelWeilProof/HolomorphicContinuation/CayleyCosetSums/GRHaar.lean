@@ -62,7 +62,7 @@ instance secondCountableBlockMatrices (n : ℕ) : SecondCountableTopology (M2 n)
 
 theorem JJ_mul_self : JJ n * JJ n = -1 := by
   rw [JJ, fromBlocks_multiply]
-  simp only [Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add, neg_zero]
+  simp only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, add_zero, zero_add, neg_zero]
   rw [← fromBlocks_one, fromBlocks_neg, neg_zero]
 
 theorem isClosed_inG : IsClosed {x : M2 n | InG x} :=

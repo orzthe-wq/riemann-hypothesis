@@ -106,7 +106,7 @@ theorem finrank_skewPart (B : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ)) (hB : 
         ext1; simp only [Prod.fst_add, Prod.snd_add, Submodule.coe_add, smul_add]; abel
       map_smul' := fun c x => by
         ext1
-        simp only [Prod.smul_fst, Prod.smul_snd, Submodule.coe_smul_of_tower, Submodule.coe_smul, RingHom.id_apply, smul_add]
+        simp only [Prod.smul_fst, Prod.smul_snd, Submodule.coe_smul_of_tower, RingHom.id_apply, smul_add]
         rw [smul_comm] }
   have hinj : Function.Injective f := by
     set_option backward.isDefEq.respectTransparency.instanceSearchTypes false in rw [injective_iff_map_eq_zero]
@@ -129,7 +129,7 @@ theorem finrank_skewPart (B : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ)) (hB : 
     · rw [conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose]
       simp only [one_div, star_inv₀, star_ofNat]; module
     · rw [conjTranspose_smul, conjTranspose_add, conjTranspose_conjTranspose]
-      simp only [star_div₀, star_neg, star_ofNat, Complex.star_def, Complex.conj_I, map_ofNat]; module
+      simp only [star_div₀, star_neg, star_ofNat, Complex.star_def, Complex.conj_I]; module
     · ext1
       change (1 / 2 : ℂ) • (X - Xᴴ) + Complex.I • (-Complex.I / 2 : ℂ) • (X + Xᴴ) = X
       rw [smul_smul, show Complex.I * (-Complex.I / 2) = 1 / 2 by

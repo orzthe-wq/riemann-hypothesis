@@ -45,4 +45,4 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.gluing_law_holds : ∀ (D : D7) (a b : ℕ), GlueLaw D a b := by
-  first | exact @GlobalTheory.Chain.RealIt.GlueProof.glueLaw | exact GlobalTheory.Chain.RealIt.GlueProof.glueLaw | (intros; apply GlobalTheory.Chain.RealIt.GlueProof.glueLaw <;> assumption)
+  first | exact @GlobalTheory.Chain.RealIt.GlueProof.glueLaw

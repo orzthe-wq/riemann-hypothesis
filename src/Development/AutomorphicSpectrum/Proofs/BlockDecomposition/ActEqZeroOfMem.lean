@@ -125,7 +125,7 @@ theorem exists_act {A : Type} [AddCommGroup A] [Module ℂ A] (G : Fin n → Fin
     · simp [E]
     · intro b _ hb
       have : ¬ (a.1 = b.1 ∧ a.2 = b.2) := fun h => hb (Prod.ext h.1 h.2).symm
-      simp [E, Matrix.single_apply, this]
+      simp [E, this]
     · simp
   have hE : ∀ a b : Fin n × Fin n, L ⁅E a, E b⁆ = ⁅L (E a), L (E b)⁆ := by
     intro a b
@@ -166,7 +166,7 @@ theorem IsAdW.e_mul {μ : Fin n → ℤ} {x : U n} (hx : IsAdW μ x) (a : Fin n 
 theorem ht_rootAt (a : Fin n × Fin n) :
     ht (rootAt a) = 2 * ((a.2 : ℕ) : ℤ) - 2 * ((a.1 : ℕ) : ℤ) := by
   simp only [ht, rootAt, mul_sub, mul_ite, mul_one, mul_zero, Finset.sum_sub_distrib,
-    Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    Finset.sum_ite_eq', Finset.mem_univ, if_true]
   ring
 
 theorem ht_add_rootAt (μ : Fin n → ℤ) (a : Fin n × Fin n) :

@@ -91,28 +91,7 @@ namespace GlobalTheory
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
-private theorem host_bar_rt' (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) : H.bar H.rt = -H.rt := by
-  obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have hconj : starRingEnd ℂ (φ (H.rt : E)) = -φ (H.rt : E) := by
-    set z := φ (H.rt : E)
-    have hz : z ^ 2 = -(H.d : ℂ) := by
-      have := congrArg (fun x : 𝓞 E => φ (x : E)) H.rt_sq
-      simpa [z] using this
-    have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-    have hre := congrArg Complex.re hz
-    have him := congrArg Complex.im hz
-    simp only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im,
-      Complex.natCast_re, Complex.natCast_im, neg_zero] at hre him
-    have hx : z.re = 0 := by
-      rcases mul_eq_zero.1 (by linarith : z.re * z.im = 0) with h | h
-      · exact h
-      · rw [h] at hre; nlinarith
-    apply Complex.ext <;> simp [hx]
-  have key : ((H.bar H.rt : 𝓞 E) : E) = ((-H.rt : 𝓞 E) : E) := by
-    rw [H.bar_eq]
-    apply φ.injective
-    simpa [IsCMField.complexEmbedding_complexConj] using hconj
-  exact RingOfIntegers.coe_injective key
+private alias host_bar_rt' := _root_.GlobalTheory.HostModel.bar_rt
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in

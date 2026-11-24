@@ -85,7 +85,7 @@ theorem hT_co (B : HSp D) (x y : B.V) :
   simp only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, Finset.mul_sum]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  simp only [co, HSpace.gram, RingHom.id_apply, starRingEnd_apply]
+  simp only [co, HSpace.gram, starRingEnd_apply]
   ring
 
 theorem cT_mulVec (B : HSp D) {ρ : ℕ} (e : Fin ρ → B.V) (v : B.V) (i : Fin ρ) :

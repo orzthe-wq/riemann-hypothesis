@@ -165,7 +165,7 @@ theorem tw_ins_mk (a : S) (t : ℂ) (x y z w : SlopeTestRemainingChoices S A) (h
   rw [key, hx', hw', hy, hz]
   conv_rhs => rw [← eU_zero_zero_add_eU_one_one (A := A) a]
   unfold ins
-  simp [Fin.sum_univ_two, mul_sub, smul_add, mul_smul_comm] <;> abel
+  simp [Fin.sum_univ_two, mul_sub, smul_add] <;> abel
 
 section Older
 
@@ -393,9 +393,6 @@ theorem minus_m (ihc : Commute (io f : SlopeTestRemainingChoices S A) fw.c) (mm1
       | (unfold io
          rw [Matrix.scalar_apply, Matrix.scalar_apply, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]
          rfl)
-      | (refine Matrix.ext fun i j => ?_
-         simp [io, Matrix.scalar_apply, Matrix.diagonal_apply, Matrix.star_apply]
-         split_ifs <;> simp_all)
   have hsf : star fi = f := by rw [← hW.star_f, star_star]
   have cjs : ∀ z : SlopeTestRemainingChoices S A, cj f fi (star z) = star (cj f fi z) := by
     intro z

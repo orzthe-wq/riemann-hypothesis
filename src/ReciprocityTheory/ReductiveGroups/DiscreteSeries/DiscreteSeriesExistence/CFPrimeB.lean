@@ -2,54 +2,9 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.CFPrimeA
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.CasValK
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.LayerWeight
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -148,11 +103,11 @@ theorem sg_raise_wt (ε : Fin n → Bool) {a b : Fin n} (hab : a ≠ b) (hε : �
     by_cases hca : c = a
     · subst hca
       have hbc : b ≠ c := fun h => hab h.symm
-      simp [root, Pi.single_apply, hbc, hab]
+      simp [root, hbc, hab]
     · by_cases hbc : b = c
       · subst hbc
-        simp [root, Pi.single_apply, hca, Ne.symm hca]
-      · simp [root, Pi.single_apply, hca, Ne.symm hca, hbc, Ne.symm hbc]
+        simp [root, hca]
+      · simp [root, hca, hbc, Ne.symm hbc]
   have h1 : sgE ε cpFock cmFock c c (sgE ε cpFock cmFock a b f) -
       sgE ε cpFock cmFock a b (sgE ε cpFock cmFock c c f) =
         ((root a b c : ℝ) : ℂ) • sgE ε cpFock cmFock a b f := by
@@ -234,7 +189,7 @@ theorem zPlus_comm {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ
       ((if c = a then (1 : ℂ) else 0) - (if b = c then (1 : ℂ) else 0)) • E a b := by
     intro c
     rw [← sub_eq_iff_eq_add', hE c c a b]
-    rcases eq_or_ne c a with rfl | h1 <;> rcases eq_or_ne b c with rfl | h2 <;> simp [*, sub_smul]
+    rcases eq_or_ne c a with rfl | h1 <;> rcases eq_or_ne b c with rfl | h2 <;> simp [*]
   unfold zPlus
   rw [Finset.sum_mul, Finset.sum_congr rfl (fun c _ => key c), Finset.sum_add_distrib,
     ← Finset.mul_sum, ← Finset.sum_smul]
@@ -259,7 +214,7 @@ theorem zPlus_V {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M}
     have hz := hv.2
     rw [LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, Module.End.one_apply] at hz
     have hc := LinearMap.congr_fun (zPlus_comm (ε := ε) hE a b) v
-    simp only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply, hz, hab, sub_self,
+    simp only [Module.End.mul_apply, hz, hab, sub_self,
       zero_smul, add_zero] at hc
     rw [LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, Module.End.one_apply, hc, map_smul]
   rcases hirr _ inf_le_left hS'st with h0 | hV'

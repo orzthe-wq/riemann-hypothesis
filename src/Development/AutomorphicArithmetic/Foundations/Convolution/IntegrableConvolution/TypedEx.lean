@@ -106,7 +106,7 @@ private theorem key_abs (π : UnitaryRep G H) {V : Submodule ℂ H} (hcl : IsClo
     (N : Submodule ℂ H) (hNV : N ≤ V) (hN : N ≠ ⊥) (hst : ∀ g, ∀ u ∈ N, π (φ g) u ∈ N) :
     ∃ u ∈ N, e u ≠ 0 := by
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   let M : Submodule ℂ H :=
     { carrier := {u | u ∈ V ∧ ∀ g, e (π (φ g) u) = 0}
       add_mem' := fun {a b} ha hb => ⟨V.add_mem ha.1 hb.1, fun g => by
@@ -156,7 +156,7 @@ private theorem exists_fixed_abs {Γ : Type} [Group Γ] [TopologicalSpace Γ] [I
   have hN : IsOpen {g : Γ | ‖σ g v - v‖ < ‖v‖ / 2} :=
     isOpen_lt ((σ.continuous_orbit v).sub continuous_const).norm continuous_const
   have h1N : (1 : Γ) ∈ {g : Γ | ‖σ g v - v‖ < ‖v‖ / 2} := by
-    simp only [Set.mem_setOf_eq, σ.map_one_apply, sub_self, norm_zero]
+    simp only [Set.mem_ofPred_eq, σ.map_one_apply, sub_self, norm_zero]
     exact hpos
   obtain ⟨Hh, hH⟩ := ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hN h1N
   set U : Subgroup Γ := Hh.toOpenSubgroup.toSubgroup with hUdef
@@ -356,7 +356,7 @@ theorem UpperTheory.ConvolutionTheory.L1.typedEx :
     refine ⟨e, he0, heV, fun w hw => (UpperTheory.ConvolutionTheory.L1.mem_eigL' μ).2 fun g hg => ?_⟩
     have hw1 : w ∉ I := fun h => hw (Finset.mem_coe.2 (Finset.mem_union_left _ h))
     have hw2 : w ∉ hb.toFinset := fun h => hw (Finset.mem_coe.2 (Finset.mem_union_right _ h))
-    simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not] at hw2
+    simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not] at hw2
     rw [hw2.1] at hg
     rw [hfix w hw1 g hg, hw2.2]
     simp

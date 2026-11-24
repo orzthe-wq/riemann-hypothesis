@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.GoodTopBot
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RowPolarizationOperatorsActionOnRowWeightStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RowPolarizationOperatorsActionOnRowWeight
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -187,7 +187,7 @@ theorem GlobalTheory.Alc.exists_dominant_highest_vector_of_lt : ∀ (k : Type) [
   · intro a b hab
     by_contra hnot
     have hne : a ≠ b := hab.ne
-    obtain ⟨_, hE⟩ := GlobalTheory.T.rowPolarizationOperators_action_on_rowWeight k N N μ v hvh
+    obtain ⟨_, hE⟩ := _root_.GlobalTheory.Alc.rowE_rowWeight k N N μ v hvh
     obtain ⟨hz, hw⟩ := hE a b hne
     by_cases hb : μ b = 0
     · exact hnot (by rw [hz hb]; exact M.zero_mem)
@@ -195,10 +195,10 @@ theorem GlobalTheory.Alc.exists_dominant_highest_vector_of_lt : ∀ (k : Type) [
       have hμ' : μ' + Pi.single b 1 = μ + Pi.single a 1 := by
         funext c
         by_cases hca : c = a
-        · subst hca; simp [μ', Pi.single_apply, hne]
+        · subst hca; simp [μ', hne]
         · by_cases hcb : c = b
-          · subst hcb; simp [μ', Pi.single_apply, hca]; omega
-          · simp [μ', Pi.single_apply, hca, hcb]
+          · subst hcb; simp [μ', hca]; omega
+          · simp [μ', hca, hcb]
       have h3 := hw μ' hμ'
       have h1 : rowE k N N a b v ∈ M' := hM'.1 a b v hv'
       have hle := hmax μ' _ h1 hnot h3

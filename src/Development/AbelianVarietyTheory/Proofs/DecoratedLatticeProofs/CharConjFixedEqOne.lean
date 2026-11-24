@@ -47,6 +47,7 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.WittSma
 import Formalism.LocalToGlobal.IndefiniteReal.IndefiniteWeightData
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+import Mathlib.Algebra.Azumaya.Basic
 
 @[expose] public section
 

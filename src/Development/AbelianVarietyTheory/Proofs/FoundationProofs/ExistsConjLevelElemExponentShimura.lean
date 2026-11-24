@@ -124,7 +124,7 @@ theorem _root_.GlobalTheory.exists_sl2_conj_diag_zmod (M i : ℕ) (hi : i.Coprim
   refine ⟨δ, ?_, ?_, ?_, ?_⟩ <;> simp only [_root_.GlobalTheory.KZ.en, he, hm_def]
   · simp
   · simp only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one,
-      Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]
+      Matrix.empty_val', Matrix.cons_val_fin_one]
     rw [← mul_assoc, ← hu, Units.mul_inv, one_mul]
   · simp
   · simp

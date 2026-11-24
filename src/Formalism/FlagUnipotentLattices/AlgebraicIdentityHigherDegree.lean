@@ -47,16 +47,4 @@ import Mathlib.Topology.Sheaves.Init
 
 namespace Formalism.HermitianLatticeCounting.Final.ExpansionTerms
 
-theorem integral_norm_estimate : Formalism.HermitianLatticeCounting.ExpansionTerms.AlgebraicIntegerNormGeOne := Formalism.HermitianLatticeCounting.P.integral_norm_estimate_holds
-theorem component_total_sixty_four : Formalism.HermitianLatticeCounting.ExpansionTerms.BlockMinorSumPowSixtyFour := Formalism.HermitianLatticeCounting.P.block_minor_sum_pow_sixty_four
-theorem integral_norm_application : Formalism.HermitianLatticeCounting.ExpansionTerms.NormGeOneMaxBound := Formalism.HermitianLatticeCounting.P.integral_norm_application_holds
-
-theorem leadingMinorUnipotentInvariant : Formalism.HermitianLatticeCounting.ExpansionTerms.LeadingMinorUnipotentInvariant := Formalism.HermitianLatticeCounting.P.invariant_value_holds
-theorem e4aVanish : Formalism.HermitianLatticeCounting.ExpansionTerms.LeadingMinorVanishesOffBlockEnds := Formalism.HermitianLatticeCounting.P.leading_minor_vanishes_off_block_ends
-theorem e4aValue : Formalism.HermitianLatticeCounting.ExpansionTerms.LeadingMinorAtBlockEnd := Formalism.HermitianLatticeCounting.P.leading_minor_at_block_end
-theorem integral_evaluation_fourth : Formalism.HermitianLatticeCounting.ExpansionTerms.OrbitIntegralEntries := Formalism.HermitianLatticeCounting.P.orbit_integral_entries
-
-theorem degStepBound : Formalism.HermitianLatticeCounting.ExpansionTerms.DegStepBound := Formalism.HermitianLatticeCounting.P.degree_increment_bound
-theorem sup_l2_ratio_majorant : Formalism.HermitianLatticeCounting.ExpansionTerms.supL2RatioMajorant := Formalism.HermitianLatticeCounting.P.first_operator_norm_bound
-
 end Formalism.HermitianLatticeCounting.Final.ExpansionTerms

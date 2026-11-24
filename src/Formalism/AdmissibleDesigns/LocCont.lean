@@ -73,12 +73,10 @@ theorem loc_cont {k : ℕ} {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ p
   refine Continuous.comp ?_ (Continuous.comp (Continuous.comp ?_ (Continuous.comp hM ?_)) ?_)
   · first
       | exact continuous_id.matrix_map continuous_subtype_val
-      | exact continuous_id.matrix_map continuous_induced_dom
   · exact continuous_id.matrix_map (D.nbr i w hw).eO_cont
   · exact continuous_subtype_val
   · first
       | exact (D.nbr i w hw).e_symm_cont
-      | exact continuous_subtype_val.comp (D.nbr i w hw).e_symm_cont
 
 theorem contW_of (hρ : Continuous fun g => rhoO D.nd i ρ π g) (l : K.Col i dc) :
     KDim.ContW (i := i) (dc := dc) (ρ := ρ) (π := π) l := by
@@ -89,7 +87,6 @@ theorem contW_of (hρ : Continuous fun g => rhoO D.nd i ρ π g) (l : K.Col i dc
   refine h2.congr fun g => ?_
   first
     | rfl
-    | simp [KDim.repW, matRep, Matrix.toLinAlgEquiv'_apply]
 
 end Formalism.MainNotions.N.KOrb
 

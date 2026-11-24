@@ -169,11 +169,11 @@ def smoothPart (ρ : Representation k G V) : Submodule k V where
     intro a b ha hb
     let T : Subgroup G :=
       { carrier := {g | ρ g (a + b) = a + b}
-        mul_mem' := by intro x y hx hy; simp only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *; rw [hy, hx]
+        mul_mem' := by intro x y hx hy; simp only [Set.mem_ofPred_eq, map_mul, Module.End.mul_apply] at *; rw [hy, hx]
         one_mem' := by simp
         inv_mem' := by
           intro x hx
-          simp only [Set.mem_setOf_eq] at *
+          simp only [Set.mem_ofPred_eq] at *
           conv_lhs => rw [← hx]
           rw [← Module.End.mul_apply, ← map_mul]; simp }
     refine T.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset ((ha.inter hb).mem_nhds (by simp)) ?_)
@@ -194,7 +194,7 @@ theorem smoothPart_stable (ρ : Representation k G V) (g : G) (v : V) (hv : v �
     ρ g v ∈ smoothPart ρ := by
   have : {x : G | ρ x (ρ g v) = ρ g v} = (fun x => g⁻¹ * x * g) ⁻¹' {x : G | ρ x v = v} := by
     ext x
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, map_mul, Module.End.mul_apply]
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage, map_mul, Module.End.mul_apply]
     constructor
     · intro h; rw [h, ← Module.End.mul_apply, ← map_mul]; simp
     · intro h

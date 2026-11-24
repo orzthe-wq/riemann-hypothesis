@@ -188,7 +188,7 @@ theorem residues {k : Type} [Field k] [Algebra C k] (hinj : Function.Injective (
     have h3 := huniq _ h1
     have h4 : ∀ j, j ≠ i → a j = 0 := fun j hj => by
       have h5 := congrFun h3 j
-      simp only [Pi.sub_apply, Pi.mul_apply, Pi.smul_apply, hd, Algebra.smul_def, Pi.zero_apply, ← sub_mul] at h5
+      simp only [Pi.sub_apply, Pi.mul_apply, hd, Algebra.smul_def, Pi.zero_apply, ← sub_mul] at h5
       exact (mul_eq_zero.1 h5).resolve_left fun h => hj (hδ (sub_eq_zero.1 h))
     obtain ⟨c, h5, h6⟩ := htr _ ha
     have hc : c = 1 := hinj (by simpa using h5)

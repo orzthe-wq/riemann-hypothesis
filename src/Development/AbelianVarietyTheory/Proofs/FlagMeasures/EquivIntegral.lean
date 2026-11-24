@@ -1,14 +1,18 @@
 module
 
+public import Formalism.SharpRestriction.CuspSpanNormBounds.FlagEEqHyperbolic
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoveringOHolds
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeIntegralUnipotentStabilizerOfTerm
 public import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusHolds
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniquePlace
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsZEquivGramBoundedMinorsStatement
-import Mathlib.Algebra.AffineMonoid.Basic
+import Formalism.FlagUnipotentLattices.CardSubgroupsOfIndexLe
+import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.DetMulEqSumProdMulDetSubmatrix
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -21,7 +25,6 @@ import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -29,7 +32,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,10 +45,233 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Presheaf
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsZEquivGramBoundedMinors, Development.AbelianVarietyTheory.Proofs.FlagMeasures.EquivIntegral
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsZEquivGramBoundedMinors =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsZEquivGramBoundedMinors", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.FlagEEqHyperbolic\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoveringOHolds\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CovolumeIntegralUnipotentStabilizerOfTerm\nimport Formalism.FlagUnipotentLattices.CardSubgroupsOfIndexLe\nimport Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.DetMulEqSumProdMulDetSubmatrix\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Presheaf\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Module Matrix Formalism.MainNotions.S Formalism.MainNotions.S.Lat
+open scoped Classical
+
+namespace GlobalTheory.ReducedGram
+
+open NumberField Module Matrix in
+open scoped Classical in
+private lemma upperUnitriangular_mul_apply_of_le {R : Type} [CommRing R] {N : ℕ}
+    (A B : Matrix (Fin N) (Fin N) R) (hA0 : ∀ i j, j < i → A i j = 0) (hA1 : ∀ i, A i i = 1)
+    (hB0 : ∀ i j, j < i → B i j = 0) (hB1 : ∀ i, B i i = 1) {i j : Fin N} (h : j ≤ i) :
+    (A * B) i j = if i = j then 1 else 0 := by
+  rw [Matrix.mul_apply, Finset.sum_eq_single i]
+  · split_ifs with hij
+    · subst hij
+      rw [hA1, hB1, one_mul]
+    · rw [hA1, one_mul]
+      exact hB0 i j (lt_of_le_of_ne h (fun e => hij e.symm))
+  · intro k _ hk
+    rcases lt_or_gt_of_ne hk with hki | hik
+    · rw [hA0 i k hki, zero_mul]
+    · rw [hB0 k j (lt_of_le_of_lt h hik), mul_zero]
+  · intro hi
+    exact absurd (Finset.mem_univ i) hi
+
+open NumberField Module Matrix in
+open scoped Classical in
+private lemma exists_integral_unitriangular_reduction {K : Type} [Field K] [NumberField K]
+    (hK : ∀ w : InfinitePlace K, w.IsComplex) {N : ℕ} (V : Matrix (Fin N) (Fin N) K)
+    (hV0 : ∀ i j, j < i → V i j = 0) (hV1 : ∀ i, V i i = 1) :
+    ∃ m : Matrix (Fin N) (Fin N) (𝓞 K), (∀ i j, j < i → m i j = 0) ∧ (∀ i, m i i = 1) ∧
+      ∀ (τ : K →+* ℂ) (i j : Fin N), ‖τ ((V * m.map (fun x : 𝓞 K => (x : K))) i j)‖ ≤
+        max 1 (Real.sqrt (finrank ℚ K) * |(discr K : ℝ)| ^ (1 / (finrank ℚ K : ℝ))) := by
+  set c := Real.sqrt (finrank ℚ K) * |(discr K : ℝ)| ^ (1 / (finrank ℚ K : ℝ)) with hc_def
+  let φ : K →+* (InfinitePlace K → ℂ) := Pi.ringHom fun w => w.embedding
+  let O : Subring (InfinitePlace K → ℂ) := (φ.comp (algebraMap (𝓞 K) K)).range
+  let FF : Set (InfinitePlace K → ℂ) := {x | ∀ w, ‖x w‖ ≤ c}
+  have hφ : ∀ (x : K) (w : InfinitePlace K), φ x w = w.embedding x := fun _ _ => rfl
+  have hcov : ∀ x : InfinitePlace K → ℂ, ∃ a ∈ O, x + a ∈ FF := by
+    intro x
+    obtain ⟨a, ha⟩ := _root_.GlobalTheory.coveringO_holds K hK (fun w => -x w)
+    refine ⟨φ (a : K), ⟨a, rfl⟩, fun w => ?_⟩
+    have e : (x + φ (a : K)) w = -(-x w - w.embedding (a : K)) := by
+      rw [Pi.add_apply, hφ]
+      ring
+    rw [e, norm_neg]
+    exact ha w
+  obtain ⟨n, hn1, hn0, hnO, hnF⟩ := _root_.Formalism.HermitianLatticeCounting.P.unitriangularReduction (InfinitePlace K → ℂ) O FF N (V.map φ) hcov
+    (fun i => by simp [hV1]) (fun i j h => by simp [hV0 i j h])
+  have hlift : ∀ i j, ∃ a : 𝓞 K, φ (a : K) = n i j := by
+    intro i j
+    obtain ⟨a, ha⟩ := hnO i j
+    exact ⟨a, ha⟩
+  choose m₀ hm₀ using hlift
+  let m : Matrix (Fin N) (Fin N) (𝓞 K) := Matrix.of m₀
+  have hm : ∀ i j, φ (m i j : K) = n i j := hm₀
+  have hinj : ∀ a b : 𝓞 K, φ (a : K) = φ (b : K) → a = b := fun a b h =>
+    RingOfIntegers.coe_injective (φ.injective h)
+  have hm0 : ∀ i j, j < i → m i j = 0 := fun i j h =>
+    hinj _ _ (by rw [hm, hn0 i j h]; simp)
+  have hm1 : ∀ i, m i i = 1 := fun i => hinj _ _ (by rw [hm, hn1]; simp)
+  refine ⟨m, hm0, hm1, ?_⟩
+  have hn : n = (m.map (fun x : 𝓞 K => (x : K))).map φ := by
+    exact Matrix.ext fun i j => (hm i j).symm
+  have hprod : V.map φ * n = (V * m.map (fun x : 𝓞 K => (x : K))).map φ := by
+    rw [hn, Matrix.map_mul]
+  have key : ∀ (i j : Fin N) (w : InfinitePlace K),
+      ‖w.embedding ((V * m.map (fun x : 𝓞 K => (x : K))) i j)‖ ≤ max 1 c := by
+    intro i j w
+    rcases lt_or_ge i j with hij | hji
+    · have h := hnF i j hij w
+      rw [hprod, Matrix.map_apply, hφ] at h
+      exact le_max_of_le_right h
+    · rw [upperUnitriangular_mul_apply_of_le V _ hV0 hV1
+        (fun a b h => by simp [hm0 a b h]) (fun a => by simp [hm1 a]) hji]
+      split_ifs <;> simp
+  intro τ i j
+  rw [← InfinitePlace.apply, ← InfinitePlace.norm_embedding_eq]
+  exact key i j _
+
+open NumberField Module Matrix in
+open scoped Classical in
+private lemma det_submatrix_mul_diagonal {R : Type} [CommRing R] {N t : ℕ}
+    (X : Matrix (Fin N) (Fin N) R) (s : Fin N → R) (I J : Fin t → Fin N) :
+    ((X * diagonal s).submatrix I J).det = (X.submatrix I J).det * ∏ k, s (J k) := by
+  have hsub : (X * diagonal s).submatrix I J = X.submatrix I J * diagonal (fun k => s (J k)) := by
+    ext a b
+    simp [Matrix.mul_diagonal]
+  rw [hsub, det_mul, det_diagonal]
+
+
+open NumberField Module Matrix in
+open scoped Classical in
+theorem _root_.GlobalTheory.ReducedGram.exists_reduced : ∀ (K : Type) [Field K] [NumberField K],
+    (∀ w : InfinitePlace K, w.IsComplex) → ∀ (r : ℕ) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K)
+    (p : _root_.Formalism.MainNotions.S.Point K (r + 1)), _root_.Formalism.MainNotions.S.IsInCell (_root_.Formalism.MainNotions.S.ZhatOM Z) p →
+    ∃ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) K, _root_.Formalism.MainNotions.S.Lat.ZEquiv Z Z₂ ∧
+      ∀ (τ : K →+* ℂ) (t : ℕ) (I J : Fin t → Fin (r + 1)),
+        ‖τ (Z₂.submatrix I J).det‖ ≤ 4 ^ (r + 1) * (((r + 1).factorial : ℕ) : ℝ) ^ 2 *
+          (Real.sqrt (finrank ℚ K) * |(discr K : ℝ)| ^ (1 / (finrank ℚ K : ℝ))) ^ (2 * (r + 1)) *
+          ∏ l ∈ Finset.Icc 1 (r + 1),
+            (max 1 ‖τ (_root_.Formalism.MainNotions.S.leadMinorE Z l)‖ * max 1 ‖τ (_root_.Formalism.MainNotions.S.leadMinorE Z l)‖⁻¹) := by
+  intro K _ _ hK r Z p hcell
+  set c := Real.sqrt (finrank ℚ K) * |(discr K : ℝ)| ^ (1 / (finrank ℚ K : ℝ)) with hc_def
+  have hc : 1 ≤ c := by
+    have h1 : (1 : ℝ) ≤ Real.sqrt (finrank ℚ K) := by
+      rw [Real.one_le_sqrt]
+      exact_mod_cast Module.finrank_pos
+    have h2 : (1 : ℝ) ≤ |(discr K : ℝ)| ^ (1 / (finrank ℚ K : ℝ)) := by
+      apply Real.one_le_rpow
+      · have hd : discr K ≠ 0 := discr_ne_zero K
+        have : (1 : ℤ) ≤ |discr K| := Int.one_le_abs hd
+        exact_mod_cast this
+      · positivity
+    nlinarith
+  have hmax : max 1 c = c := max_eq_right hc
+  unfold _root_.Formalism.MainNotions.S.IsInCell at hcell
+  obtain ⟨L, U, hL, hU, hZ⟩ := hcell
+  unfold _root_.Formalism.MainNotions.S.IsLoUni at hL
+  unfold _root_.Formalism.MainNotions.S.IsUpUni at hU
+  set P := _root_.Formalism.MainNotions.S.ptMat p with hP
+  let s : Fin (r + 1) → K := fun b => (-1) ^ (r - (b : ℕ))
+  have hss : ∀ b, s b * s b = 1 := by
+    intro b
+    simp only [s, ← mul_pow, neg_one_mul, neg_neg, one_pow]
+  have hDD : diagonal s * diagonal s = 1 := by
+    rw [diagonal_mul_diagonal]
+    simp only [hss]
+    exact diagonal_one
+  have hZD : Z = _root_.Formalism.MainNotions.S.ZhatOM Z * diagonal s := by
+    ext a b
+    simp only [_root_.Formalism.MainNotions.S.ZhatOM, mul_diagonal, s]
+    linear_combination (-Z a b) * hss b
+  have hZD' : Z = L * P * U * diagonal s := by
+    rw [← hZ]
+    exact hZD
+  let V := diagonal s * U * diagonal s
+  have hVapp : ∀ i j, V i j = s i * U i j * s j := by
+    intro i j
+    simp [V, mul_diagonal, diagonal_mul]
+  have hV0 : ∀ i j, j < i → V i j = 0 := fun i j h => by rw [hVapp, (hU i j).1 h]; ring
+  have hV1 : ∀ i, V i i = 1 := fun i => by
+    rw [hVapp, (hU i i).2 rfl, mul_one, hss]
+  have hZeq : Z = L * (P * diagonal s) * V := by
+    rw [hZD']
+    calc L * P * U * diagonal s = L * P * (diagonal s * diagonal s) * U * diagonal s := by
+          rw [hDD, Matrix.mul_one]
+      _ = L * (P * diagonal s) * V := by simp only [V, Matrix.mul_assoc]
+  obtain ⟨m, hm0, hm1, hmb⟩ := exists_integral_unitriangular_reduction hK V hV0 hV1
+  obtain ⟨m', hm'0, hm'1, hm'b⟩ := exists_integral_unitriangular_reduction hK Lᵀ
+    (fun i j h => by rw [transpose_apply]; exact (hL j i).1 h)
+    (fun i => by rw [transpose_apply]; exact (hL i i).2 rfl)
+  rw [hmax] at hmb hm'b
+  let A := m'ᵀ.map (fun x : 𝓞 K => (x : K)) * L
+  let B := V * m.map (fun x : 𝓞 K => (x : K))
+  let W := P * diagonal s
+  refine ⟨A * W * B, ⟨m'ᵀ, m, fun a b h => hm'0 b a h, fun a => hm'1 a, hm0, hm1, ?_⟩, ?_⟩
+  · simp only [A, B, W]
+    rw [hZeq]
+    simp only [Matrix.mul_assoc, transpose_map]
+  intro τ t I J
+  have hmin : ∀ (X : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (t : ℕ) (I J : Fin t → Fin (r + 1)),
+      ((X.map τ).submatrix I J).det = τ ((X.submatrix I J).det) := by
+    intro X t I J
+    rw [RingHom.map_det]
+    rfl
+  have hsign : ∀ (t : ℕ) (J : Fin t → Fin (r + 1)), ‖τ (∏ k, s (J k))‖ = 1 := by
+    intro t J
+    rw [map_prod, norm_prod]
+    simp [s]
+  have hA : ∀ i j, ‖(A.map τ) i j‖ ≤ c := by
+    intro i j
+    have hAt : A = (Lᵀ * m'.map (fun x : 𝓞 K => (x : K)))ᵀ := by
+      simp only [A, transpose_mul, transpose_transpose, transpose_map]
+    rw [Matrix.map_apply, hAt, transpose_apply]
+    exact hm'b τ j i
+  have hB : ∀ i j, ‖(B.map τ) i j‖ ≤ c := fun i j => hmb τ i j
+  set Pb := ∏ l ∈ Finset.range (r + 1), _root_.GlobalTheory.LoopC.CovTerm.gg2 ‖τ (_root_.Formalism.MainNotions.S.leadMinorE P (l + 1))‖ with hPb
+  have hW : ∀ (t : ℕ) (I J : Fin t → Fin (r + 1)), ‖((W.map τ).submatrix I J).det‖ ≤ Pb := by
+    intro t I J
+    rw [hmin, det_submatrix_mul_diagonal, map_mul, norm_mul, hsign, mul_one, ← hmin]
+    exact _root_.GlobalTheory.LoopC.CovTerm.minor_pt_le τ p t I J
+  have hbound := _root_.Formalism.HermitianLatticeCounting.P.normMinorMulLe (r + 1) (A.map τ) (W.map τ) (B.map τ) c Pb hc hA hB hW t I J
+  have hlead : ∀ l, ‖τ (_root_.Formalism.MainNotions.S.leadMinorE Z l)‖ = ‖τ (_root_.Formalism.MainNotions.S.leadMinorE P l)‖ := by
+    intro l
+    unfold _root_.Formalism.MainNotions.S.leadMinorE
+    split_ifs with hl
+    · rw [hZD', det_submatrix_mul_diagonal, map_mul, norm_mul, hsign, mul_one,
+        _root_.Formalism.HermitianLatticeCounting.P.leadingMinorTriangularInvariant K (r + 1) l hl L P U (fun i => (hL i i).2 rfl) (fun i j h => (hL i j).1 h)
+          (fun i => (hU i i).2 rfl) (fun i j h => (hU i j).1 h)]
+    · rfl
+  have hPbeq : Pb = ∏ l ∈ Finset.Icc 1 (r + 1),
+      (max 1 ‖τ (_root_.Formalism.MainNotions.S.leadMinorE Z l)‖ * max 1 ‖τ (_root_.Formalism.MainNotions.S.leadMinorE Z l)‖⁻¹) := by
+    rw [hPb, Finset.range_eq_Ico,
+      Finset.prod_Ico_add' (fun l => _root_.GlobalTheory.LoopC.CovTerm.gg2 ‖τ (_root_.Formalism.MainNotions.S.leadMinorE P l)‖) 0 (r + 1) 1,
+      zero_add, Finset.Ico_add_one_right_eq_Icc]
+    refine Finset.prod_congr rfl (fun l _ => ?_)
+    rw [hlead]
+    rfl
+  rw [← hmin, Matrix.map_mul, Matrix.map_mul, ← hPbeq]
+  exact hbound
+
+end GlobalTheory.ReducedGram
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsZEquivGramBoundedMinors =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.EquivIntegral =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.EquivIntegral", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusHolds\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUniquePlace\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.FlagEEqHyperbolic\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsZEquivGramBoundedMinors\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField Module Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.Cnt GlobalTheory.LoopC
@@ -57,7 +283,7 @@ namespace GlobalTheory.GramHeight
 theorem max_mul_le {c y : ℝ} (hc : 1 ≤ c) : max 1 (c * y) ≤ c * max 1 y := by
   have hy : 1 ≤ max 1 y := le_max_left _ _
   refine max_le ?_ ?_
-  · nlinarith
+  · exact one_le_mul_of_one_le_of_one_le hc hy
   · exact mul_le_mul_of_nonneg_left (le_max_right _ _) (by linarith)
 
 theorem one_le_prod' {ι : Type} (s : Finset ι) (x : ι → ℝ) (h : ∀ i ∈ s, 1 ≤ x i) : 1 ≤ ∏ i ∈ s, x i := by
@@ -98,7 +324,7 @@ theorem PP_inv_le {x : D.host.E} (hx : IsIntegral ℤ x) : ∏ τ, max 1 ‖embS
       have hsq := GlobalTheory.RealPlaces.prod_norm D x
       have hp0 : 0 ≤ ∏ τ, ‖embS D τ x‖ := Finset.prod_nonneg (fun τ _ => norm_nonneg _)
       rw [Finset.prod_pow] at hsq
-      nlinarith
+      exact (sq_le_sq₀ zero_le_one hp0).mp (by linarith)
     calc ∏ τ, max 1 ‖embS D τ x‖⁻¹ ≤ (∏ τ, max 1 ‖embS D τ x‖⁻¹) * ∏ τ, ‖embS D τ x‖ :=
           le_mul_of_one_le_right (Finset.prod_nonneg fun _ _ => le_trans zero_le_one (le_max_left _ _)) hN
       _ = ∏ τ, (max 1 ‖embS D τ x‖⁻¹ * ‖embS D τ x‖) := (Finset.prod_mul_distrib).symm
@@ -169,12 +395,6 @@ theorem equiv_integral {N : ℕ} {Z Z₂ : Matrix (Fin N) (Fin N) D.host.E} (h :
   refine IsIntegral.sum _ (fun j _ => IsIntegral.mul (IsIntegral.sum _ (fun i _ => ?_)) (hB _ _))
   exact IsIntegral.mul (hA _ _) (h _ _)
 
-theorem frameExp_le (r l : ℕ) (hl : l ≤ r + 1) : frameExp r l ≤ (r + 1) ^ 2 := by
-  unfold frameExp
-  calc ∑ a ∈ Finset.Icc 1 l, (r + 1 - a) ≤ ∑ a ∈ Finset.Icc 1 l, (r + 1) := Finset.sum_le_sum (fun _ _ => Nat.sub_le _ _)
-    _ = l * (r + 1) := by simp
-    _ ≤ (r + 1) ^ 2 := by rw [sq]; exact Nat.mul_le_mul_right _ hl
-
 theorem frameExp_succ (r : ℕ) : frameExp r (r + 1) = frameExp r r := by
   unfold frameExp
   rw [Finset.sum_Icc_succ_top (by omega)]
@@ -205,7 +425,7 @@ theorem QQ_le (Z : GramM D) {b C Y : ℝ} (hH : 1 ≤ b ^ (C * (D.R.m : ℝ) ^ 2
     have hl' : l ≤ D.R.rS + 1 := (Finset.mem_Icc.mp hl).2
     have hp : D.host.rdE ^ (2 * frameExp D.R.rS l) ≤ Y := by
       refine le_trans (pow_le_pow_right₀ hrd ?_) hY
-      have := frameExp_le D.R.rS l hl'
+      have := _root_.GlobalTheory.LoopC.CovTerm.frameExp_le D.R.rS l hl'
       omega
     have hpos : 0 < D.host.rdE ^ (2 * frameExp D.R.rS l) := pow_pos (by linarith) _
     have heq : ‖embS D τ (leadMinorE Z l)‖ = absDl D Z l τ * D.host.rdE ^ (2 * frameExp D.R.rS l) := by
@@ -238,7 +458,7 @@ theorem G_le (Z : GramM D) {T T' : ℝ} (hT : 0 ≤ T) (hT' : 0 ≤ T') :
       exact mul_le_of_le_one_right (norm_nonneg _) (inv_le_one_of_one_le₀ hp)
     have h0 : 0 ≤ absDl D Z (D.R.rS + 1) τ := by rw [absDl_eq]; positivity
     have hG : Gz D T T' Z τ ≤ absDl D Z (D.R.rS + 1) τ ^ 2 := by
-      simp only [Gz]; nlinarith [sq_nonneg (absDl D Z D.R.rS τ), mul_nonneg hT hT']
+      simp only [Gz]; linarith [mul_nonneg (mul_nonneg hT hT') (sq_nonneg (absDl D Z D.R.rS τ))]
     have hm := le_max_right 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖
     refine max_le (one_le_pow₀ (le_max_left _ _)) ?_
     calc Gz D T T' Z τ ≤ absDl D Z (D.R.rS + 1) τ ^ 2 := hG
@@ -278,7 +498,7 @@ theorem G_inv_le (Z : GramM D) (h : ∀ a b, IsIntegral ℤ (Z a b)) (hr : 1 ≤
     rw [this, Complex.norm_real, Real.norm_eq_abs]
   have hρY : D.host.rdE ^ (2 * frameExp D.R.rS D.R.rS) ≤ Y := by
     refine le_trans (pow_le_pow_right₀ hrd ?_) hY
-    have := frameExp_le D.R.rS D.R.rS (by omega)
+    have := _root_.GlobalTheory.LoopC.CovTerm.frameExp_le D.R.rS D.R.rS (by omega)
     omega
   have hρ1 : 1 ≤ D.host.rdE ^ (2 * frameExp D.R.rS D.R.rS) := one_le_pow₀ hrd
   have key : ∀ τ, max 1 (Gz D T T' Z τ)⁻¹ ≤ Y ^ 2 * max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1) * star (leadMinorE Z (D.R.rS + 1)) - ((T : D.host.E) * (T' : D.host.E)) * (leadMinorE Z D.R.rS * star (leadMinorE Z D.R.rS)))‖⁻¹ := by
@@ -328,7 +548,7 @@ theorem G_inv_le (Z : GramM D) (h : ∀ a b, IsIntegral ℤ (Z a b)) (hr : 1 ≤
       have hTP := mul_le_mul_of_nonneg_left (hy2.trans hyP) (by positivity : (0:ℝ) ≤ (T : ℝ) * T')
       have hTP' := mul_le_mul_of_nonneg_left hP1 (by positivity : (0:ℝ) ≤ (T : ℝ) * T')
       have hn0' : 0 ≤ (T : ℝ) * T' * ‖embS D τ (leadMinorE Z D.R.rS)‖ ^ 2 := by positivity
-      refine max_le (by nlinarith) (abs_le.mpr ⟨by nlinarith, by nlinarith⟩)
+      refine max_le (by nlinarith) (abs_le.mpr ⟨by linarith [sq_nonneg ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖], by nlinarith⟩)
     calc PP D (leadMinorE Z (D.R.rS + 1) * star (leadMinorE Z (D.R.rS + 1)) - ((T : D.host.E) * (T' : D.host.E)) * (leadMinorE Z D.R.rS * star (leadMinorE Z D.R.rS))) = ∏ τ, max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1) * star (leadMinorE Z (D.R.rS + 1)) - ((T : D.host.E) * (T' : D.host.E)) * (leadMinorE Z D.R.rS * star (leadMinorE Z D.R.rS)))‖ := rfl
       _ ≤ ∏ τ, ((2 * T * T') * ((max 1 ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖) ^ 2 * (max 1 ‖embS D τ (leadMinorE Z D.R.rS)‖) ^ 2)) :=
           Finset.prod_le_prod₀ (fun τ _ => le_trans zero_le_one (le_max_left _ _)) (fun τ _ => hτ τ)
@@ -403,7 +623,7 @@ theorem minors_le (Z Z₂ : GramM D) (h : ∀ a b, IsIntegral ℤ (Z a b)) (he :
     refine Finset.prod_le_one₀ (fun a _ => mul_nonneg (rho_bounds D _).1.le (rho_bounds D _).1.le) (fun a _ => ?_)
     have h1 := rho_bounds D (I a)
     have h2 := rho_bounds D (J a)
-    nlinarith [h1.1, h1.2.1, h2.1, h2.2.1]
+    exact (mul_le_mul_of_nonneg_left h2.2.1 h1.1.le).trans (by linarith [h1.2.1])
   have hj : j ≤ D.R.rS + 1 := by simpa using Fintype.card_le_of_embedding I.toEmbedding
   have hRinv : (∏ a, (rhoF D (I a) * rhoF D (J a)))⁻¹ ≤ Y := by
     rw [← Finset.prod_inv_distrib]
@@ -414,7 +634,7 @@ theorem minors_le (Z Z₂ : GramM D) (h : ∀ a b, IsIntegral ℤ (Z a b)) (he :
             exact mul_le_mul (rho_bounds D _).2.2 (rho_bounds D _).2.2 (inv_nonneg.mpr (rho_bounds D _).1.le) (by positivity)
       _ = D.host.rdE ^ (2 * (D.R.rS + 1) * j) := by
           rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_add, ← pow_mul]; ring_nf
-      _ ≤ D.host.rdE ^ (2 * (D.R.rS + 1) ^ 2) := pow_le_pow_right₀ hrd (by nlinarith)
+      _ ≤ D.host.rdE ^ (2 * (D.R.rS + 1) ^ 2) := pow_le_pow_right₀ hrd (by rw [sq, ← mul_assoc]; exact Nat.mul_le_mul_left _ hj)
       _ ≤ Y := hY
   constructor
   · calc ∏ τ, max 1 (UnitaryVolumeMass.absMinor D Z₂ I J τ) ≤ ∏ τ, max 1 ‖embS D τ (Z₂.submatrix I J).det‖ := by
@@ -470,7 +690,8 @@ theorem final_le (Z : GramM D) {b : ℝ} (hb : 1 ≤ b) (n : ℕ)
         refine mul_le_mul (pow_le_pow_right₀ hb ?_) (pow_le_pow_right₀ hs1 (by norm_num)) (pow_nonneg hs0 2)
           (pow_nonneg hb0.le _)
         have hexp : (2 * n + 5) + (1 + (2 * n + 7)) * D.R.m ≤ (2 * n + 7) * (2 * n + 7) * D.R.m := by
-          nlinarith [Nat.mul_le_mul_left n hm2, Nat.zero_le (n * n * D.R.m), Nat.zero_le (n * D.R.m)]
+          zify at hm2 ⊢
+          linarith [mul_nonneg (sq_nonneg (n : ℤ)) (show (0 : ℤ) ≤ D.R.m by linarith), mul_nonneg (Int.natCast_nonneg n) (show (0 : ℤ) ≤ (D.R.m : ℤ) - 2 by linarith), Int.natCast_nonneg n]
         have := Nat.mul_le_mul_left (D.R.m ^ 2 * D.R.f) hexp
         have e2 : (D.R.rS + 1) * 2 = D.R.m := by omega
         calc D.R.m ^ 2 * (2 * n + 5) * D.R.f + (D.R.m ^ 2 + (2 * n + 7) * D.R.m ^ 2) * ((D.R.rS + 1) * D.R.f) * 2
@@ -484,7 +705,7 @@ theorem const_le {b ρ : ℝ} (hb : 2 ≤ b) (r n : ℕ) (h0 : 0 ≤ ρ) (hρ : 
   have h1 : ρ ^ (2 * (r + 1)) ≤ b ^ ((n + 2) * (2 * (r + 1))) := by
     rw [pow_mul b (n + 2)]; exact pow_le_pow_left₀ h0 hρ _
   have h2 : (4:ℝ) ^ (r + 1) ≤ b ^ (2 * (r + 1)) := by
-    rw [pow_mul]; exact pow_le_pow_left₀ (by norm_num) (by nlinarith) _
+    rw [pow_mul]; exact pow_le_pow_left₀ (by norm_num) (by linarith [pow_le_pow_left₀ (by norm_num) hb 2]) _
   have h3 : ((((r + 1).factorial : ℕ) : ℝ)) ^ 2 ≤ b ^ (2 * (r + 1) ^ 2) := by
     have hf : (((r + 1).factorial : ℕ) : ℝ) ≤ ((r + 1 : ℕ) : ℝ) ^ (r + 1) := by
       exact_mod_cast Nat.factorial_le_pow (r + 1)
@@ -498,7 +719,7 @@ theorem const_le {b ρ : ℝ} (hb : 2 ≤ b) (r n : ℕ) (h0 : 0 ≤ ρ) (hρ : 
       ≤ b ^ (2 * (r + 1)) * b ^ (2 * (r + 1) ^ 2) * b ^ ((n + 2) * (2 * (r + 1))) :=
         mul_le_mul (mul_le_mul h2 h3 (by positivity) (by positivity)) h1 (by positivity) (by positivity)
     _ = b ^ (2 * (r + 1) + 2 * (r + 1) ^ 2 + (n + 2) * (2 * (r + 1))) := by rw [pow_add, pow_add]
-    _ ≤ b ^ ((2 * r + 2) ^ 2 * (n + 4)) := pow_le_pow_right₀ hb1 (by nlinarith [Nat.zero_le (r * n)])
+    _ ≤ b ^ ((2 * r + 2) ^ 2 * (n + 4)) := pow_le_pow_right₀ hb1 (by zify; linarith [mul_nonneg (Int.natCast_nonneg n) (sq_nonneg (r : ℤ)), mul_nonneg (Int.natCast_nonneg n) (Int.natCast_nonneg r), sq_nonneg (r : ℤ), Int.natCast_nonneg n, Int.natCast_nonneg r])
     _ = (b ^ ((2 * r + 2) ^ 2)) ^ (n + 4) := by rw [pow_mul]
 
 theorem height_bounds : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, 1 ≤ C ∧ ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl : ℝ), 1 ≤ Cl → Formalism.MainNotions.S.UnitaryVolumeMass.stHH D large₂ u u' C' Cl Cg cb Cu cT CT C0 A C := by
@@ -527,7 +748,7 @@ theorem height_bounds : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, 1 ≤ C ∧ 
     exact (Real.log_le_iff_le_exp (by linarith)).mp h1
   have hY : D.host.rdE ^ (2 * (D.R.rS + 1) ^ 2) ≤ (large₂.sc.b ^ (D.R.m ^ 2)) := by
     refine (pow_le_pow_left₀ (by linarith) hrdb _).trans (pow_le_pow_right₀ hb1 ?_)
-    rw [hm]; nlinarith
+    rw [hm]; zify; linarith [sq_nonneg (D.R.rS : ℤ), Int.natCast_nonneg D.R.rS]
   have hB1 : 1 ≤ (large₂.sc.b ^ (D.R.m ^ 2)) := one_le_pow₀ hb1
   have hB0 : 0 ≤ (large₂.sc.b ^ (D.R.m ^ 2)) := by linarith
   have hZint : ∀ a b, IsIntegral ℤ ((ZhatL (lf D F0) F') a b) := fun a b => zhat_integral D F0 Λ hΛ F' hF' a b
@@ -540,7 +761,7 @@ theorem height_bounds : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, 1 ≤ C ∧ 
     push_cast
     have e1 : CT * (D.R.m : ℝ) ≤ (N : ℝ) * D.R.m := mul_le_mul_of_nonneg_right hCT (by linarith)
     have e2 : (N : ℝ) * D.R.m ≤ (N : ℝ) * (D.R.m : ℝ) ^ 2 :=
-      mul_le_mul_of_nonneg_left (by nlinarith) (N.cast_nonneg)
+      mul_le_mul_of_nonneg_left (le_self_pow₀ (by linarith) two_ne_zero) (N.cast_nonneg)
     linarith
   refine ⟨?_, ?_, ?_, ?_⟩
   · calc NT D u = ((D.mem u).A.T : ℝ) ^ D.R.f := rfl
@@ -571,7 +792,7 @@ theorem height_bounds : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, 1 ≤ C ∧ 
       rw [← hτ, InfinitePlace.isComplex_mk_iff, ComplexEmbedding.isReal_iff]
       exact fun h => GlobalTheory.RealPlaces.ne_conj D τ τ h.symm
     obtain ⟨p, hp⟩ := hrel
-    obtain ⟨Z₂, hZ2, hbd⟩ := GlobalTheory.T.exists_zEquiv_gram_bounded_minors D.host.E hcx D.R.rS (ZhatL (lf D F0) F') p hp
+    obtain ⟨Z₂, hZ2, hbd⟩ := _root_.GlobalTheory.ReducedGram.exists_reduced D.host.E hcx D.R.rS (ZhatL (lf D F0) F') p hp
     refine ⟨Z₂, hZ2, fun j I J _ => ?_⟩
     have hfr : finrank ℚ D.host.E = 2 * D.R.f := GlobalTheory.RealPlaces.finrank_E D
     have hf1 : 1 ≤ D.R.f := le_trans (Nat.one_le_pow _ _ (by omega)) hmf
@@ -586,7 +807,7 @@ theorem height_bounds : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, 1 ≤ C ∧ 
     have hfb : (D.R.f : ℝ) ≤ large₂.sc.b ^ N := by
       have hk1 : (1 : ℝ) ≤ D.R.k := by exact_mod_cast (hf1.trans hfk)
       have hfk' : (D.R.f : ℝ) ≤ D.R.k := by exact_mod_cast hfk
-      have h1 : (D.R.f : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b := by nlinarith
+      have h1 : (D.R.f : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b := hfk'.trans (le_mul_of_one_le_right (by linarith) hb1)
       have h2 : (D.R.k : ℝ) * large₂.sc.b ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8 :=
         le_self_pow₀ (one_le_mul_of_one_le_of_one_le hk1 hb1) (by norm_num)
       have h3 : ((D.R.k : ℝ) * large₂.sc.b) ^ 8 ≤ large₂.sc.b ^ Cg := hkb.trans hg1
@@ -598,7 +819,7 @@ theorem height_bounds : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, 1 ≤ C ∧ 
       have h1 : ((finrank ℚ D.host.E : ℕ) : ℝ) ≤ (large₂.sc.b ^ (N + 1)) ^ 2 := by
         rw [hfr]; push_cast
         calc 2 * (D.R.f : ℝ) ≤ 2 * large₂.sc.b ^ N := by linarith
-          _ ≤ large₂.sc.b * large₂.sc.b ^ N := by nlinarith [pow_nonneg hb0.le N]
+          _ ≤ large₂.sc.b * large₂.sc.b ^ N := mul_le_mul_of_nonneg_right hb2 (pow_nonneg hb0.le N)
           _ = large₂.sc.b ^ (N + 1) := by ring
           _ ≤ (large₂.sc.b ^ (N + 1)) ^ 2 := le_self_pow₀ (one_le_pow₀ hb1) (by norm_num)
       calc Real.sqrt (finrank ℚ D.host.E) ≤ Real.sqrt ((large₂.sc.b ^ (N + 1)) ^ 2) := Real.sqrt_le_sqrt h1
@@ -625,3 +846,6 @@ theorem height_bounds : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C : ℝ, 1 ≤ C ∧ 
     exact ⟨hmA.trans hfW, hmB.trans hfW⟩
 
 end GlobalTheory.GramHeight
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.EquivIntegral =====

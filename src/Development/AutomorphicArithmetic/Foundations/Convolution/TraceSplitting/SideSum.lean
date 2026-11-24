@@ -1,11 +1,12 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.SplitStable
-import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.ExistsPowerSums
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.ListProdStable
-public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursBasics
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SummandFactor
+public import Development.WeilBound.CuspidalAdmissibility.OccursIff
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.AmpFin
+import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 import Development.AutomorphicArithmetic.TwistedTraces.IwahoriCompactOpenAndIwCosetIndicatorTest
 import Development.AutomorphicArithmetic.TwistedTraces.TrOnEqMulOfEqSmulOnSubspace
 import Mathlib.Algebra.Module.StablyFree.Basic
@@ -171,13 +172,13 @@ theorem UpperTheory.ConvolutionTheory.T.sideSum :
   set P : Set (Submodule ℂ (LL μ)) := {V | IsSummand μ V ∧ eigIn V 𝔣₀.toAmp.A x ≠ ⊥ ∧ p V} with hP
   have hPfin : P.Finite := hfin.subset fun V h => ⟨h.1, h.2.1⟩
   have hτ : ∀ V : P, ∃ τ : ∀ v : Pl F, SmIrr (Gw n v), ∀ v, Occurs μ V.1 v (τ v) := fun V => by
-    have := fun v => (UpperTheory.ConvolutionTheory.C.occursBasics F n μ V.1 v (m v) V.2.1).1
+    have := fun v => (_root_.PositivityTheory.TfC.OccursBasics_holds F n μ V.1 v (m v) V.2.1).1
     choose τ hτ using this
     exact ⟨τ, hτ⟩
   choose τ hτ using hτ
   have hZ : ∀ V : P, ∃ (c : ℂ) (Z : Multiset ℂ), 0 ∉ Z ∧ ∀ j : ℕ,
       HasTrace (m q) (τ V q).ρ ((GM.iwCoset q (j • e)).indicator 1) (c * (Z.map (· ^ j)).sum) := fun V => by
-    obtain ⟨s₀, hs₀⟩ := (UpperTheory.ConvolutionTheory.C.occursBasics F n μ V.1 q (m q) V.2.1).2.2 (τ V q) (hτ V q) _ (test_ind q)
+    obtain ⟨s₀, hs₀⟩ := (_root_.PositivityTheory.TfC.OccursBasics_holds F n μ V.1 q (m q) V.2.1).2.2 (τ V q) (hτ V q) _ (test_ind q)
     exact iw_pow_at q (m q) (τ V q) e he hs₀
   choose c Z hZ0 hZ using hZ
   have hN := fun V : P => hT a q w₀ S V.1 (τ V) x V.2.1 hx (fun v _ => hτ V v)

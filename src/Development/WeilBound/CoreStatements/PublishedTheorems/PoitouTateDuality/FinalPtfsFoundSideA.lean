@@ -3,7 +3,7 @@ module
 public import Development.WeilBound.CoreStatements.PublishedTheorems.PoitouTateDuality.FinalGenDefs
 public import GroundTheory.ProfiniteCohomology.RestrictedRamification.BaseDefs
 public import ReciprocityTheory.GaloisValuations.SeparatedDvrSecondCohomologyMem
-public import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohCmpA
+public import CompanionTheory.AutomorphicTheory.PadicCyclotomicFields.GcohCmp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -44,7 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.CohDimTwoLocalOfLocalFiniteness
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNineTermTransgressionZeroApply
-import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohDefs
+import CompanionTheory.AutomorphicTheory.PadicCyclotomicFields.GcohDefs
 import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.GelfandSpectralNormalisation.NormalisedInvariants.PoitouTateExactSecond
 import Formalism.ConjugateSelfDual.Statement
 
@@ -53,7 +53,8 @@ import Formalism.ConjugateSelfDual.Statement
 noncomputable section
 
 open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheory.Global GroundTheory.LocalField
-  ReciprocityTheory.Gal Formalism.ConjugateSelfDual GlobalTheory.Published GlobalTheory.Published.PoitouTate PositivityTheory.PoitouTateConclusion PositivityTheory.LocalTateOrthogonality.Gcoh
+ ReciprocityTheory.Gal Formalism.ConjugateSelfDual GlobalTheory.Published GlobalTheory.Published.PoitouTate PositivityTheory.PoitouTateConclusion
+open CompanionTheory.LocalTateOrthogonality.Gcoh (dn_app neg_one_pow_smul')
 
 namespace PositivityTheory.Lit1.PTN
 

@@ -52,4 +52,4 @@ open GlobalTheory.Published GlobalTheory.ContraPair
 open GlobalTheory.CuspRep.InfType GlobalTheory.CuspRep.AlgExpo
 
 theorem _root_.GlobalTheory.T.exponent_heckeChar_compNorm_conjEmbedding : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (χ : HChar (maximalRealSubfield E)) (τ : E →+* ℂ), expo (compNorm E χ) (ComplexEmbedding.conjugate τ) = expo (compNorm E χ) τ := by
-  first | exact @GlobalTheory.NormExpo.expo_compNorm_conjugate | exact GlobalTheory.NormExpo.expo_compNorm_conjugate | (intros; apply GlobalTheory.NormExpo.expo_compNorm_conjugate <;> assumption)
+  first | exact @GlobalTheory.NormExpo.expo_compNorm_conjugate

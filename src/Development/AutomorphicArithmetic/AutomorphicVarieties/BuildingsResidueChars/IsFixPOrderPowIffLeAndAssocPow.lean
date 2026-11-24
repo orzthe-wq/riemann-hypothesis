@@ -102,7 +102,7 @@ theorem UpperTheory.isFixP_order_pow_iff_le_and_assoc_pow :
     rw [algebraMap_etau, Algebra.algebraMap_eq_smul_one]
   have hxim : algebraMap O K (π ^ n) * x.im = 1 := by
     have := congrArg QuadraticAlgebra.im hc.om
-    simp [yy, algebraMap_etau, QuadraticAlgebra.omega_im] at this
+    simp [yy, algebraMap_etau] at this
     rw [map_pow]
     exact this.symm
   have hx0 : x.im ≠ 0 := by

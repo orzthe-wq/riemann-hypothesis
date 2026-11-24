@@ -92,7 +92,7 @@ def Nice (M : Vol G) (X : Node) : Prop :=
 theorem Nice.intOn {M : Vol G} {X : Node} (h : Nice M X) (f : GA D (G.V X) → ℂ) (hc : Continuous f)
     (hi : ∀ γ ∈ GQ (G.V X), ∀ g, f (γ * g) = f g) : IntegrableOn f (M.fd X) (M.ν X) := by
   obtain ⟨hpos, hH, hfd⟩ := h
-  obtain ⟨C, hC, hcov⟩ := GlobalTheory.definite_unitary_cocompact _ hpos
+  obtain ⟨C, hC, hcov⟩ := _root_.GlobalTheory.DefiniteQuotient.exists_compact _ hpos
   obtain ⟨_, _, _, _, _, _, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V X)
   exact GlobalTheory.CocompactIntegrable.integrableOn_of_cocompact _ _ _ C hfd hC hcov _ hc hi
 
@@ -100,7 +100,7 @@ theorem Nice.contInt {M : Vol G} {X : Node} (h : Nice M X) {Y : Type} [Topologic
     [FirstCountableTopology Y] (K : Y → GA D (G.V X) → ℂ) (hc : Continuous fun p : Y × GA D (G.V X) => K p.1 p.2)
     (hi : ∀ γ ∈ GQ (G.V X), ∀ y g, K y (γ * g) = K y g) : Continuous fun y => ∫ g in M.fd X, K y g ∂M.ν X := by
   obtain ⟨hpos, hH, hfd⟩ := h
-  obtain ⟨C, hC, hcov⟩ := GlobalTheory.definite_unitary_cocompact _ hpos
+  obtain ⟨C, hC, hcov⟩ := _root_.GlobalTheory.DefiniteQuotient.exists_compact _ hpos
   obtain ⟨_, _, _, _, _, _, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V X)
   exact GlobalTheory.DefLiftCont.continuous_integral_of_cocompact _ _ _ C hfd hC hcov K hc hi
 

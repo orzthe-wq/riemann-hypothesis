@@ -52,6 +52,4 @@ namespace Formalism.HermitianLattices.Ext.L3
 
 theorem hermRepUnram [Fact HermRepUnram] : HermRepUnram := Fact.out
 
-theorem orthBasisPos : OrthBasisPos := orthBasisPos_holds
-
 end Formalism.HermitianLattices.Ext.L3

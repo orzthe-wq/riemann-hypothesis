@@ -49,4 +49,4 @@ theorem _root_.GlobalTheory.T.pure_adelic_function_formula : ∀ (F : Type) [Fie
     PositivityTheory.Rg.Base1.pure S G g (fun v => rv v 0) a =
       if ∀ v, v ∉ S → (a : AF F).2 v ∈ v.adicCompletionIntegers F then
         ENNReal.ofReal (G (a : AF F).1 * ∏ v ∈ S, g v ((a : AF F).2 v)) else 0 := by
-  first | exact @GlobalTheory.CompanionTheory.BasePsi.pure_rv_zero_apply | exact GlobalTheory.CompanionTheory.BasePsi.pure_rv_zero_apply | (intros; apply GlobalTheory.CompanionTheory.BasePsi.pure_rv_zero_apply <;> assumption)
+  first | exact @GlobalTheory.CompanionTheory.BasePsi.pure_rv_zero_apply

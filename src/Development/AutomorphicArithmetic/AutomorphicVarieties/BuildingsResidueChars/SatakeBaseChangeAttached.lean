@@ -57,7 +57,7 @@ private theorem tendsto_under_cofinite' (K M : Type) [Field K] [NumberField K] [
 
 private theorem algSat_pow_map_pow (n q f : ℕ) (B : Multiset ℂˣ) : algSat n (q ^ f) (Multiset.map (fun x => x ^ f) B) = Multiset.map (fun x => x ^ f) (algSat n q B) := by
   unfold algSat
-  simp only [Multiset.bind_map, Multiset.map_map, Function.comp_def, Multiset.bind_singleton, Multiset.pure_def, Multiset.bind_def]
+  simp only [Multiset.map_map, Function.comp_def, Multiset.bind_singleton, Multiset.pure_def, Multiset.bind_def]
   refine Multiset.map_congr rfl fun b _ => ?_
   rw [mul_pow]
   congr 1

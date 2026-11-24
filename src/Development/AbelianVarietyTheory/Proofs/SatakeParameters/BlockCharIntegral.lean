@@ -56,7 +56,7 @@ open Formalism.MainNotions.SumRepresentations.At
 
 theorem charpoly_fin_one {k : Type} [CommRing k] (M : Matrix (Fin 1) (Fin 1) k) :
     M.charpoly = X - C (M 0 0) := by
-  simp [Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply]
+  simp [Matrix.charpoly]
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 

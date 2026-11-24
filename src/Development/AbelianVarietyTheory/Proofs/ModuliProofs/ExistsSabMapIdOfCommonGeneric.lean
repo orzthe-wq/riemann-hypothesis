@@ -4,11 +4,17 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsIntegralOfSmoothFieldOfConnectedSpace
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RangeSubsetAbLocusOfIsProper
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsSchemeTheoreticallyDominantSpecOfInjective
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLineBundleGeneratorExtendingDensePartStatement
+public import Mathlib.AlgebraicGeometry.Geometrically.Integral
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLineBundleGeneratorExtendingDensePart
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabMapOfLbIso
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueHomExtensionSemiAbelianNormalStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoStalkMapOfFlatOfSurjectiveOnStalks
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueHomExtensionSemiAbelianNormal
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SabMapOfIsoOfExtendGen
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoStalkMapOfFlatOfSurjectiveOnStalks
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -89,9 +95,9 @@ theorem GlobalTheory.exists_sabMap_id_of_common_generic : (∀ (T K : Type) [Com
   obtain ⟨_, _⟩ := ExtUnique.flat_and_isSeparated_of_isSemiAbelian t.G t.semi
   obtain ⟨_, _⟩ := ExtUnique.flat_and_isSeparated_of_isSemiAbelian t'.G t'.semi
   obtain ⟨F, hF, hφ⟩ := TripleExt.exists_hom a.cart a'.cart
-    (GlobalTheory.T.existsUnique_hom_extension_semiAbelian_normal_base_alt hdvr X U j hX hj₁ hj₂ hj₃ hj₄ t.G t'.G t.semi t'.semi)
+    (_root_.GlobalTheory.existsUnique_hom_extension_semiAbelian_normal hdvr X U j hX hj₁ hj₂ hj₃ hj₄ t.G t'.G t.semi t'.semi)
   obtain ⟨F', -, hφ'⟩ := TripleExt.exists_hom a'.cart a.cart
-    (GlobalTheory.T.existsUnique_hom_extension_semiAbelian_normal_base_alt hdvr X U j hX hj₁ hj₂ hj₃ hj₄ t'.G t.G t'.semi t.semi)
+    (_root_.GlobalTheory.existsUnique_hom_extension_semiAbelian_normal hdvr X U j hX hj₁ hj₂ hj₃ hj₄ t'.G t.G t'.semi t.semi)
   have hiso : IsIso F := ExtUnique.isIso_of_isPullback a.cart.1 a'.cart.1 (Iso.refl _) F F'
     ((Category.id_comp _).trans hφ.symm) ((Category.id_comp _).trans hφ'.symm)
   have gp : IsGrpPullback t.G t'.G (𝟙 X) F.left :=
@@ -114,7 +120,7 @@ theorem GlobalTheory.exists_sabMap_id_of_common_generic : (∀ (T K : Type) [Com
       t'.PP.rigGen t.PP.rigGen
     have sm := t.semi.smooth
     have gc := t.semi.geomConnected
-    exact GlobalTheory.T.exists_lineBundleGenerator_extending_densePart X U j hX.1 hj₁ hj₂ hj₃ hj₄ t.G (eSec t.G) (LB.div (t'.PP.L.pull F.left) t.PP.L) (Over.w η[t.G])
+    exact _root_.GlobalTheory.GenericExtend.exists_isGen_of_densePart X U j hX.1 hj₁ hj₂ hj₃ hj₄ t.G (eSec t.G) (LB.div (t'.PP.L.pull F.left) t.PP.L) (Over.w η[t.G])
       sm (grpObj_geometricallyIntegral_of_smooth X t.G) (LB.isLB_div (LB.isLB_pull t'.PP.isLB _) t.PP.isLB) ⟨ρ, hρ⟩ ⟨r, hr⟩
   obtain ⟨b, hb⟩ := exists_sabMap_of_lbIso E H X X t' t (𝟙 X) F.left
     ⟨hred, hgen.trans (range_subset_abLocus_of_isProper t.semi a.cart.1)⟩ gp hact hlb

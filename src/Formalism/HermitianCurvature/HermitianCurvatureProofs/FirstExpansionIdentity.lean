@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.SignPermutationIdentity
 
 @[expose] public section
 
@@ -77,19 +78,6 @@ theorem zb_col_zero (i0 s' : ℕ) (h : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (
     Zb i0 (s' + 1) h t a i0 = 0 := by
   unfold Zb
   split_ifs <;> first | rfl | (exfalso; omega)
-
-private theorem sgnW_succ' (s : ℕ) : sgnW (s + 1) = (-1) ^ s * sgnW s := by
-  unfold sgnW
-  rw [← pow_add]
-  congr 1
-  cases s with
-  | zero => rfl
-  | succ k =>
-    have e : (k + 1 + 1) * (k + 1 + 1 - 1) = (k + 1) * (k + 1 - 1) + 2 * (k + 1) := by
-      simp only [Nat.add_sub_cancel]
-      ring
-    rw [e, Nat.add_mul_div_left _ _ (by norm_num : 0 < 2)]
-    ring
 
 theorem first_expansion_identity : ExpansionOmittedColumn := by
   intro A _ _ M _ _ k r z' E La xi i0 s h t u hs hj hR hdet ht hxi
@@ -167,7 +155,7 @@ theorem first_expansion_identity : ExpansionOmittedColumn := by
   have hL := la_congr hR hpeel
   have hsc : (h.det * t ^ (s' + 1) * sgnW (s' + 1))⁻¹ * (h.det * t ^ s' * sgnW s') =
       (-1 : ℂ) ^ (s' + 1 - 1) * t⁻¹ * (h.det⁻¹ * h.det) := by
-    rw [sgnW_succ', Nat.add_sub_cancel, scal_E _ _ _ _ s' hdet ht (sgnW_sq s') (neg_one_sq' s')]
+    rw [_root_.Formalism.FourierDecayAlt.P.SignAntidiagonal.sgnW_succ, Nat.add_sub_cancel, scal_E _ _ _ _ s' hdet ht (sgnW_sq s') (neg_one_sq' s')]
   rw [hmain, hhead, map_smul, map_smul, hL, (derivative_leading_zb i0 (s' + 1) h t).2,
     (derivative_leading_zb i0 (s' + 1) h t).1, smul_smul, smul_smul, smul_smul]
   congr 1

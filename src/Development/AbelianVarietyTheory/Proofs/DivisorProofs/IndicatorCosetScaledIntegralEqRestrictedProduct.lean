@@ -167,7 +167,7 @@ theorem indicator_coset_scaledInt_eq_finprod : ∀ (F : Type) [Field F] [NumberF
         refine (Filter.eventually_cofinite.1 ((eventually_cosetBoxV_eq ha r).and hint)).subset ?_
         intro w hw h'
         apply hw
-        simp only [Function.mem_mulSupport, not_not]
+        simp only
         rw [h'.1, Set.indicator_of_mem (show (fun i => evalV F w (y i)) ∈ {x : κ → Fv F w | ∀ i, x i ∈ w.adicCompletionIntegers F} from h'.2)]
         rfl
 

@@ -57,7 +57,7 @@ section Orth
 
 variable (S : HSpace E)
 
-theorem hT_swap (x y : S.V) : S.hT y x = star (S.hT x y) := PI.PairCorankPos.W.hT_swap S x y
+alias hT_swap := _root_.PI.PairCorankPos.W.hT_swap
 
 theorem mem_orth {U : Submodule E S.V} {v : S.V} : v ∈ orth S U ↔ ∀ x ∈ U, S.hT x v = 0 := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]

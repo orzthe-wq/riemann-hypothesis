@@ -50,4 +50,4 @@ open GlobalTheory.Unf
 open scoped ComplexOrder ENNReal NNReal ContDiff
 
 theorem _root_.GlobalTheory.T.heisenbergTranslate_theta_continuous_differentiable_sobolev : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T : HSp D) (k : ℕ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → Filter.Tendsto (fun u : WO S T => supSob ψ θ k (heisO ψ S T u f - f)) (nhds 0) (nhds 0) ∧ ∀ L : ℝ →+ WO S T, Continuous L → (∀ t, (L t).map (finPart D) = 0) → IsThetaFunO ψ S T (fun p => deriv (fun t : ℝ => heisO ψ S T (L t) f p) 0) ∧ Filter.Tendsto (fun t : ℝ => supSob ψ θ k ((t⁻¹ : ℂ) • (heisO ψ S T (L t) f - f) - fun p => deriv (fun t : ℝ => heisO ψ S T (L t) f p) 0)) (nhdsWithin 0 {0}ᶜ) (nhds 0) := by
-  first | exact @GlobalTheory.HeisTaylor.heisO_taylor | exact GlobalTheory.HeisTaylor.heisO_taylor | (intros; apply GlobalTheory.HeisTaylor.heisO_taylor <;> assumption)
+  first | exact @GlobalTheory.HeisTaylor.heisO_taylor

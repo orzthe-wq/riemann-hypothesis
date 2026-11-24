@@ -55,7 +55,7 @@ open PositivityTheory.Rg.Sw
 theorem first_cayley_block_one (n : ℕ) : u1 (1 : M2 n) = 1 := by
   have h21 : toBlocks₂₁ (1 : M2 n) = 0 := by
     ext i j
-    simp [toBlocks₂₁, Matrix.one_apply]
+    simp [toBlocks₂₁]
   have h22 : toBlocks₂₂ (1 : M2 n) = 1 := by
     ext i j
     simp [toBlocks₂₂, Matrix.one_apply]
@@ -64,7 +64,7 @@ theorem first_cayley_block_one (n : ℕ) : u1 (1 : M2 n) = 1 := by
 theorem second_cayley_block_one (n : ℕ) : u2 (1 : M2 n) = 1 := by
   have h21 : toBlocks₂₁ (1 : M2 n) = 0 := by
     ext i j
-    simp [toBlocks₂₁, Matrix.one_apply]
+    simp [toBlocks₂₁]
   have h22 : toBlocks₂₂ (1 : M2 n) = 1 := by
     ext i j
     simp [toBlocks₂₂, Matrix.one_apply]

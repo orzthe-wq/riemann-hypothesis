@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.CintTranslate
 
 @[expose] public section
 
@@ -163,16 +164,6 @@ private lemma finsum_out_div_relIndex_eq_inf_of_fine {A B₁ B₂ : AddSubgroup 
 
 open scoped Pointwise Classical in
 variable {W : Type} [AddCommGroup W] {W' : Type} [AddCommGroup W'] in
-private lemma cint_eq_finsum_div_relIndex_of_fine {A B : AddSubgroup W} {φ : W → ℂ}
-    (hB : _root_.GlobalTheory.IdxInt.Fine A φ B) :
-    _root_.GlobalTheory.IdxInt.cint A φ = (∑ᶠ c : W ⧸ B, φ (Quotient.out c)) / (B.relIndex A : ℂ) := by
-  have hnice : _root_.GlobalTheory.IdxInt.Nice A φ := ⟨B, hB⟩
-  unfold _root_.GlobalTheory.IdxInt.cint
-  rw [dite_eq_left hnice, finsum_out_div_relIndex_eq_inf_of_fine hnice.choose_spec hB,
-    finsum_out_div_relIndex_eq_inf_of_fine hB hnice.choose_spec, inf_comm]
-
-open scoped Pointwise Classical in
-variable {W : Type} [AddCommGroup W] {W' : Type} [AddCommGroup W'] in
 private lemma Fine_inf_of_relIndex_ne_zero {A A' B : AddSubgroup W} {φ : W → ℂ}
     (hB : _root_.GlobalTheory.IdxInt.Fine A φ B) (h₂ : A'.relIndex A ≠ 0) (h₁ : A.relIndex A' ≠ 0) :
     _root_.GlobalTheory.IdxInt.Fine A φ (B ⊓ A') ∧ _root_.GlobalTheory.IdxInt.Fine A' φ (B ⊓ A') := by
@@ -213,7 +204,7 @@ theorem _root_.GlobalTheory.IdxInt.Transport.cint_map_and_change : ∀ {W : Type
     refine ⟨hiff, ?_⟩
     by_cases hN : _root_.GlobalTheory.IdxInt.Nice A (fun w => φ (e w))
     · obtain ⟨B, hB⟩ := hN
-      rw [cint_eq_finsum_div_relIndex_of_fine hB, cint_eq_finsum_div_relIndex_of_fine (Fine_map_addEquiv_and_finsum_eq e hB).1,
+      rw [_root_.GlobalTheory.IdxInt.Model.cint_eq hB, _root_.GlobalTheory.IdxInt.Model.cint_eq (Fine_map_addEquiv_and_finsum_eq e hB).1,
         (Fine_map_addEquiv_and_finsum_eq e hB).2, AddSubgroup.relIndex_map_map_of_injective _ _ e.injective]
     · unfold _root_.GlobalTheory.IdxInt.cint
       rw [dite_eq_right hN, dite_eq_right (hiff.not.mpr hN)]
@@ -232,7 +223,7 @@ theorem _root_.GlobalTheory.IdxInt.Transport.cint_map_and_change : ∀ {W : Type
         have h := hC.1.2.1
         rw [← AddSubgroup.relIndex_mul_relIndex (B ⊓ A') (A ⊓ A') A hCD inf_le_left] at h
         exact left_ne_zero_of_mul h
-      rw [cint_eq_finsum_div_relIndex_of_fine hC.1, cint_eq_finsum_div_relIndex_of_fine hC.2,
+      rw [_root_.GlobalTheory.IdxInt.Model.cint_eq hC.1, _root_.GlobalTheory.IdxInt.Model.cint_eq hC.2,
         ← AddSubgroup.relIndex_mul_relIndex (B ⊓ A') (A ⊓ A') A' hCD inf_le_right,
         ← AddSubgroup.relIndex_mul_relIndex (B ⊓ A') (A ⊓ A') A hCD inf_le_left,
         AddSubgroup.inf_relIndex_right, AddSubgroup.inf_relIndex_left]

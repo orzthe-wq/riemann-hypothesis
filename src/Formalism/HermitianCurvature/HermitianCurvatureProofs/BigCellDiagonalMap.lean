@@ -77,7 +77,7 @@ theorem leviElement_mul_mMap (W Z : Matrix (Fin j) (Fin j) ℂ) (γ : B.Mat k ρ
 
 theorem leviElement_nset (p : Matrix (Fin j) (Fin j) ℂ) (hp : Formalism.DoubleCosetMeasures.IsUpUni p) : muP k j ρ p ∈ Nset k (j + ρ) := by
   have hdet : p.det ≠ 0 := by rw [Formalism.DoubleCosetMeasures.isUpUni_det ℂ hp]; exact one_ne_zero
-  refine ⟨(Formalism.FourierDecayAlt.P.slice_membership k j ρ).2.1 p hdet, ?_, ?_⟩
+  refine ⟨(_root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem k j ρ).2.1 p hdet, ?_, ?_⟩
   · intro a i hai
     obtain ⟨x, rfl⟩ := (eB k j ρ).surjective i
     obtain ⟨y, hy⟩ := (eB k j ρ).surjective (eI k (j + ρ) a)
@@ -169,7 +169,6 @@ theorem mMap_diag (r : ℕ) (d : Fin r → ℂ) (hd : ∀ a, d a ≠ 0) (γ : B.
       | (simp; done)
       | (simp only [mul_one]; congr 3; ext; simp only [Fin.val_mk]; omega)
       | (simp only [muOf, eW, Matrix.reindex_apply, Matrix.submatrix_apply]; congr 1 <;> (ext; simp))
-      | skip
 
 theorem dmin_lead {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (l : ℕ) (hl : l ≤ r) : Dmin k r z z' g ⟨l, by omega⟩ = Formalism.FourierDecayAlt.S3.lead (Zh k r 0 g) l hl := by
@@ -187,10 +186,10 @@ theorem cellDecomp : BigCellDecomposition.CellDecomp := by
   have hDl : ∀ (l : ℕ) (hl : l ≤ r), Formalism.FourierDecayAlt.S3.lead (Zh k r 0 g) l hl ≠ 0 := fun l hl => by
     rw [← dmin_lead z z' g l hl]; exact hD ⟨l, by omega⟩ hl
   have hDj : DjU k r 0 g ≠ 0 := by
-    have h := Formalism.FourierDecayAlt.P.hat_z_minimum_degree k r 0 z z' g
+    have h := _root_.Formalism.FourierDecayAlt.P.Ux3.zhDmin k r 0 z z' g
     rw [← h]; exact hD ⟨r, by omega⟩ le_rfl
   obtain ⟨x, x', Z, γ, _hZ, hγ, hgeq⟩ := Ux3.bigCell_exists (k := k) (j := r) (ρ := 0) g hg hDj
-  have hZh : Zh k r 0 g = Z := by rw [hgeq]; exact Formalism.FourierDecayAlt.P.hat_z_on_slice k r 0 x x' Z γ
+  have hZh : Zh k r 0 g = Z := by rw [hgeq]; exact _root_.Formalism.FourierDecayAlt.P.Ux3.zhSlice k r 0 x x' Z γ
   have hDZ : ∀ (l : ℕ) (hl : l ≤ r), Formalism.FourierDecayAlt.S3.lead Z l hl ≠ 0 := by rw [← hZh]; exact hDl
   obtain ⟨L, U, d, hL, hU, hLDU, hlead⟩ :=
     Formalism.FourierDecayAlt.P.ldu_decomposition_exists ℂ r Z (fun l hl => (hDZ l hl.le).isUnit)
@@ -219,9 +218,6 @@ theorem cellDecomp : BigCellDecomposition.CellDecomp := by
 end Formalism.FourierDecayAlt.P.BigCellDiagonalMap
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem big_cell_decomposition : BigCellDecomposition.CellDecomp := by
-  exact BigCellDiagonalMap.cellDecomp
 
 theorem psiOnto_true : Formalism.FourierDecayAlt.JF.PsiOnto := jf_psiOnto_of_cellDecomp BigCellDiagonalMap.cellDecomp
 

@@ -87,7 +87,7 @@ theorem exists_lift_diff (N : ℕ) (A : Matrix (Fin 2) (Fin 2) ℤ) :
 theorem vecMul_scalar (N : ℕ) (w : Fin 2 → F) :
     Matrix.vecMul w ((((N : ℤ) • (1 : Matrix (Fin 2) (Fin 2) ℤ))).map (Int.cast : ℤ → F)) = (N : F) • w := by
   ext j
-  fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.one_apply, Matrix.natCast_apply, mul_comm]
+  fin_cases j <;> simp [Matrix.vecMul, dotProduct, Matrix.natCast_apply, mul_comm]
 
 theorem mem_twist_iff (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (N : ℕ) (L : Lat F)
     (A : Matrix (Fin 2) (Fin 2) ℤ) (v : Fin 2 → F) (hL : L ≤ stdLat F) :

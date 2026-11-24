@@ -47,4 +47,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.heisenbergThetaMixedModelTarget_of_mixedModel : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.HeisenbergTarget D := by
-  first | exact @GlobalTheory.HeisTarget.main | exact GlobalTheory.HeisTarget.main | (intros; apply GlobalTheory.HeisTarget.main <;> assumption)
+  first | exact @GlobalTheory.HeisTarget.main

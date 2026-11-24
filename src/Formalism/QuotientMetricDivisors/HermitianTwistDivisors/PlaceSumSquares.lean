@@ -1,17 +1,20 @@
 module
 
-public import Formalism.QuotientMetricDivisors.UntwistedChoice
-public import Formalism.LogFactorialIndices.SignedSubspaceIndex.LogProductFormula
+public import Formalism.QuotientMetricDivisors.Statement
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
+public import Mathlib.RingTheory.DedekindDomain.Factorization
+public import Mathlib.RingTheory.Ideal.Norm.AbsNorm
+public import Mathlib.RingTheory.FractionalIdeal.Norm
+public import Mathlib.RingTheory.Norm.Transitivity
+public import Mathlib.Analysis.Complex.ExponentialBounds
+public import Mathlib.Analysis.SpecialFunctions.Log.Monotone
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-public import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-public import Mathlib.Analysis.SpecialFunctions.Log.Monotone
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -23,13 +26,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -37,7 +34,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -50,9 +46,176 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Lemma
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.QuotientMetricDivisors.UntwistedChoice, Formalism.LogFactorialIndices.StatementNorm, Formalism.LogFactorialIndices.SignedSubspaceIndex.LogProductFormula, Formalism.QuotientMetricDivisors.HermitianTwistDivisors.PlaceSumSquares
+
+-- ===== clump member: Formalism.QuotientMetricDivisors.UntwistedChoice =====
+-- clump-header: {"m": "Formalism.QuotientMetricDivisors.UntwistedChoice", "h": "module\n\npublic import Formalism.QuotientMetricDivisors.Statement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Module NumberField IsDedekindDomain
+open scoped Matrix ComplexOrder
+
+noncomputable section
+
+namespace Formalism.DivisionValues
+
+def PrimeSumSq : Prop :=
+  (∀ s : Finset ℕ, (∀ p ∈ s, p.Prime) →
+    ∑ p ∈ s, 2 * Real.log (p : ℝ) / (p : ℝ) ^ 2 ≤ 999 / 1000) ∧
+  Summable (fun p : Nat.Primes => 2 * Real.log ((p : ℕ) : ℝ) / ((p : ℕ) : ℝ) ^ 2) ∧
+  ∑' p : Nat.Primes, 2 * Real.log ((p : ℕ) : ℝ) / ((p : ℕ) : ℝ) ^ 2 < 1
+
+def PlaceSumNat : Prop :=
+  ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n →
+    (Function.support fun w : HeightOneSpectrum (𝓞 K) => lw w * (vw w (n : K) : ℝ)).Finite ∧
+    ∑ᶠ w : HeightOneSpectrum (𝓞 K), lw w * (vw w (n : K) : ℝ) = Real.log (n : ℝ) ∧
+    ∀ S : Finset (HeightOneSpectrum (𝓞 K)), ∑ w ∈ S, lw w * (vw w (n : K) : ℝ) ≤ Real.log (n : ℝ)
+
+def UntwistedChoice : Prop :=
+  ∀ (Pl J : Type) [Fintype J] (S Tw : Finset Pl) (D : ℕ), 0 < D → Tw ⊆ S →
+    ∀ (l ell : Pl → ℝ) (I Ic jT F err Jx η : Pl → J → ℝ),
+    (∀ w ∈ S, w ∉ Tw → ∀ j, I w j + Ic w j + jT w j = 0) →
+    (∀ w ∈ S, w ∉ Tw → ∀ j, F w j = 0) →
+    (∀ w ∈ Tw, ∑ j, (I w j + Ic w j) ≤ (∑ j, (2 * F w j + err w j) + 2 / ell w ^ 2) * D) →
+    (∀ w ∈ Tw, ∀ j, jT w j ≤ Jx w j * D + η w j) →
+    ∃ err' Jx' η' : Pl → J → ℝ,
+      (∀ w ∈ Tw, ∀ j, err' w j = err w j ∧ Jx' w j = Jx w j ∧ η' w j = η w j) ∧
+      (∀ w ∈ S, ∑ j, (I w j + Ic w j) ≤ (∑ j, (2 * F w j + err' w j) + 2 / ell w ^ 2) * D) ∧
+      (∀ w ∈ S, ∀ j, jT w j ≤ Jx' w j * D + η' w j) ∧
+      (∀ j, ∑ w ∈ S, l w * (err' w j + Jx' w j) = ∑ w ∈ Tw, l w * (err w j + Jx w j)) ∧
+      (∀ j, ∑ w ∈ S, l w * η' w j / D = ∑ w ∈ Tw, l w * η w j / D) ∧
+      (∀ j, ∑ w ∈ S, l w * F w j = ∑ w ∈ Tw, l w * F w j)
+
+end Formalism.DivisionValues
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.QuotientMetricDivisors.UntwistedChoice =====
+
+-- ===== clump member: Formalism.LogFactorialIndices.StatementNorm =====
+-- clump-header: {"m": "Formalism.LogFactorialIndices.StatementNorm", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings\npublic import Mathlib.RingTheory.DedekindDomain.Factorization\npublic import Mathlib.RingTheory.Ideal.Norm.AbsNorm\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.LatticeIndexTer
+
+open scoped ComplexConjugate
+
+def LogProductFormula : Prop :=
+  ∀ (L : Type) [Field L] [NumberField L] (x : L), x ≠ 0 →
+    ∑ σ : L →+* ℂ, Real.log ‖σ x‖ =
+      ∑ᶠ 𝔭 : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers L),
+        (FractionalIdeal.count L 𝔭
+            (FractionalIdeal.spanSingleton (nonZeroDivisors (NumberField.RingOfIntegers L)) x) : ℝ) *
+          Real.log (Ideal.absNorm 𝔭.asIdeal : ℝ)
+
+end Formalism.LatticeIndexTer
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LogFactorialIndices.StatementNorm =====
+
+-- ===== clump member: Formalism.LogFactorialIndices.SignedSubspaceIndex.LogProductFormula =====
+-- clump-header: {"m": "Formalism.LogFactorialIndices.SignedSubspaceIndex.LogProductFormula", "h": "module\n\npublic import Formalism.LogFactorialIndices.StatementNorm\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RingTheory.FractionalIdeal.Norm\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.RingTheory.Norm.Transitivity\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.LatticeIndexTer
+
+open scoped ComplexConjugate
+open IsDedekindDomain NumberField
+
+theorem log_product_formula : LogProductFormula := by
+  intro L _ _ x hx
+  obtain ⟨I, hIdef⟩ : ∃ I : FractionalIdeal (nonZeroDivisors (𝓞 L)) L,
+      I = FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 L)) x := ⟨_, rfl⟩
+  rw [← hIdef]
+  have hI : I ≠ 0 := by
+    rw [hIdef, Ne, FractionalIdeal.spanSingleton_eq_zero_iff]
+    exact hx
+  have hfin : (Function.support fun v : HeightOneSpectrum (𝓞 L) => FractionalIdeal.count L v I).Finite :=
+    by
+      have hev := FractionalIdeal.finite_factors I
+      exact Filter.eventually_cofinite.mp hev
+  have hR : (∑ᶠ v : HeightOneSpectrum (𝓞 L), (FractionalIdeal.count L v I : ℝ) *
+        Real.log (Ideal.absNorm v.asIdeal : ℝ)) =
+      ∑ v ∈ hfin.toFinset, (FractionalIdeal.count L v I : ℝ) * Real.log (Ideal.absNorm v.asIdeal : ℝ) := by
+    apply finsum_eq_sum_of_support_subset
+    intro v hv
+    rw [Set.Finite.coe_toFinset, Function.mem_support]
+    rw [Function.mem_support] at hv
+    intro h0
+    exact hv (by simp [h0])
+  have hsub2 : Function.mulSupport (fun v : HeightOneSpectrum (𝓞 L) =>
+      (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 L)) L) ^ FractionalIdeal.count L v I) ⊆
+      (hfin.toFinset : Set _) := by
+    intro v hv
+    rw [Set.Finite.coe_toFinset, Function.mem_support]
+    rw [Function.mem_mulSupport] at hv
+    intro h0
+    exact hv (by simp [h0])
+  have hfac : ∏ v ∈ hfin.toFinset, (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 L)) L) ^
+      FractionalIdeal.count L v I = I := by
+    rw [← finprod_eq_prod_of_mulSupport_subset _ hsub2]
+    exact FractionalIdeal.finprod_heightOneSpectrum_factorization' L hI
+  have hN1 : FractionalIdeal.absNorm I =
+      ∏ v ∈ hfin.toFinset, (Ideal.absNorm v.asIdeal : ℚ) ^ FractionalIdeal.count L v I := by
+    conv_lhs => rw [← hfac]
+    rw [map_prod]
+    refine Finset.prod_congr rfl (fun v _ => ?_)
+    rw [map_zpow₀, FractionalIdeal.coeIdeal_absNorm]
+  have hN2 : FractionalIdeal.absNorm I = |Algebra.norm ℚ x| := by
+    rw [hIdef]
+    exact FractionalIdeal.absNorm_span_singleton (𝓞 L) x
+  have hprod : ∏ σ : L →+* ℂ, σ x = algebraMap ℚ ℂ (Algebra.norm ℚ x) := by
+    rw [Algebra.norm_eq_prod_embeddings ℚ ℂ x]
+    exact Fintype.prod_equiv (RingHom.equivRatAlgHom L ℂ) _ _ (fun σ => rfl)
+  have hne1 : ∀ σ ∈ (Finset.univ : Finset (L →+* ℂ)), ‖σ x‖ ≠ 0 := fun σ _ => by
+    rw [norm_ne_zero_iff]
+    exact (map_ne_zero σ).mpr hx
+  have hL : ∑ σ : L →+* ℂ, Real.log ‖σ x‖ = Real.log |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
+    rw [← Real.log_prod hne1, ← norm_prod, hprod]
+    congr 1
+    rw [eq_ratCast (algebraMap ℚ ℂ)]
+    simp
+  have hne2 : ∀ v ∈ hfin.toFinset, ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ FractionalIdeal.count L v I ≠ 0 := by
+    intro v _
+    apply zpow_ne_zero
+    rw [Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]
+    exact v.ne_bot
+  rw [hL, hR, ← Rat.cast_abs, ← hN2, hN1]
+  push_cast
+  rw [Real.log_prod hne2]
+  refine Finset.sum_congr rfl (fun v _ => ?_)
+  rw [Real.log_zpow]
+
+end Formalism.LatticeIndexTer
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LogFactorialIndices.SignedSubspaceIndex.LogProductFormula =====
+
+-- ===== clump member: Formalism.QuotientMetricDivisors.HermitianTwistDivisors.PlaceSumSquares =====
+-- clump-header: {"m": "Formalism.QuotientMetricDivisors.HermitianTwistDivisors.PlaceSumSquares", "h": "module\n\npublic import Formalism.QuotientMetricDivisors.UntwistedChoice\npublic import Formalism.LogFactorialIndices.SignedSubspaceIndex.LogProductFormula\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\npublic import Mathlib.Analysis.Complex.ExponentialBounds\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\npublic import Mathlib.Analysis.SpecialFunctions.Log.Monotone\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Module NumberField IsDedekindDomain
@@ -68,8 +231,7 @@ lemma log_le_near (p q : ℝ) (hp : 0 < p) (hq : 0 < q) :
     Real.log p ≤ Real.log q + (p - q) / q := by
   have h := Real.log_le_sub_one_of_pos (div_pos hp hq)
   rw [Real.log_div hp.ne' hq.ne'] at h
-  have : (p - q) / q = p / q - 1 := by field_simp
-  linarith
+  linarith [show (p - q) / q = p / q - 1 by field_simp]
 
 lemma log_smooth (a b c d : ℕ) :
     Real.log ((2 : ℝ) ^ a * 3 ^ b * 5 ^ c * 7 ^ d) =
@@ -81,9 +243,8 @@ lemma log_smooth (a b c d : ℕ) :
 lemma logp (p : ℝ) (a b c d : ℕ) (e : ℝ) (hp : 0 < p)
     (he : (p - (2 : ℝ) ^ a * 3 ^ b * 5 ^ c * 7 ^ d) / ((2 : ℝ) ^ a * 3 ^ b * 5 ^ c * 7 ^ d) ≤ e) :
     Real.log p ≤ a * Real.log 2 + b * Real.log 3 + c * Real.log 5 + d * Real.log 7 + e := by
-  have h := log_le_near p ((2 : ℝ) ^ a * 3 ^ b * 5 ^ c * 7 ^ d) hp (by positivity)
-  rw [log_smooth] at h
-  linarith
+  linarith [log_le_near p ((2 : ℝ) ^ a * 3 ^ b * 5 ^ c * 7 ^ d) hp (by positivity),
+    log_smooth a b c d]
 
 lemma log_three_le : Real.log 3 ≤ (19 * Real.log 2 + 7153 / 524288) / 12 := by
   have h := logp ((3 : ℝ) ^ 12) 19 0 0 0 (7153 / 524288) (by positivity) (by norm_num)
@@ -93,14 +254,12 @@ lemma log_three_le : Real.log 3 ≤ (19 * Real.log 2 + 7153 / 524288) / 12 := by
 
 lemma log_five_le : Real.log 5 ≤ (7 * Real.log 2 - 3 / 128) / 3 := by
   have h := logp ((5 : ℝ) ^ 3) 7 0 0 0 (-3 / 128) (by positivity) (by norm_num)
-  rw [Real.log_pow] at h
-  push_cast at h
+  simp only [Real.log_pow, Nat.cast_ofNat, Nat.cast_zero, zero_mul, add_zero] at h
   linarith
 
 lemma place_sum_over_primes : Real.log 7 ≤ (4 * Real.log 2 + Real.log 3 + 1 / 48) / 2 := by
   have h := logp ((7 : ℝ) ^ 2) 4 1 0 0 (1 / 48) (by positivity) (by norm_num)
   rw [Real.log_pow] at h
-  push_cast at h
   linarith
 
 lemma head_num :
@@ -213,8 +372,7 @@ set_option maxRecDepth 100000 in
 lemma head_sum :
     ∑ n ∈ Finset.range 240, (if n.Prime then Real.log (n : ℝ) / (n : ℝ) ^ 2 else 0) =
     Real.log 2 / 2 ^ 2 + Real.log 3 / 3 ^ 2 + Real.log 5 / 5 ^ 2 + Real.log 7 / 7 ^ 2 + Real.log 11 / 11 ^ 2 + Real.log 13 / 13 ^ 2 + Real.log 17 / 17 ^ 2 + Real.log 19 / 19 ^ 2 + Real.log 23 / 23 ^ 2 + Real.log 29 / 29 ^ 2 + Real.log 31 / 31 ^ 2 + Real.log 37 / 37 ^ 2 + Real.log 41 / 41 ^ 2 + Real.log 43 / 43 ^ 2 + Real.log 47 / 47 ^ 2 + Real.log 53 / 53 ^ 2 + Real.log 59 / 59 ^ 2 + Real.log 61 / 61 ^ 2 + Real.log 67 / 67 ^ 2 + Real.log 71 / 71 ^ 2 + Real.log 73 / 73 ^ 2 + Real.log 79 / 79 ^ 2 + Real.log 83 / 83 ^ 2 + Real.log 89 / 89 ^ 2 + Real.log 97 / 97 ^ 2 + Real.log 101 / 101 ^ 2 + Real.log 103 / 103 ^ 2 + Real.log 107 / 107 ^ 2 + Real.log 109 / 109 ^ 2 + Real.log 113 / 113 ^ 2 + Real.log 127 / 127 ^ 2 + Real.log 131 / 131 ^ 2 + Real.log 137 / 137 ^ 2 + Real.log 139 / 139 ^ 2 + Real.log 149 / 149 ^ 2 + Real.log 151 / 151 ^ 2 + Real.log 157 / 157 ^ 2 + Real.log 163 / 163 ^ 2 + Real.log 167 / 167 ^ 2 + Real.log 173 / 173 ^ 2 + Real.log 179 / 179 ^ 2 + Real.log 181 / 181 ^ 2 + Real.log 191 / 191 ^ 2 + Real.log 193 / 193 ^ 2 + Real.log 197 / 197 ^ 2 + Real.log 199 / 199 ^ 2 + Real.log 211 / 211 ^ 2 + Real.log 223 / 223 ^ 2 + Real.log 227 / 227 ^ 2 + Real.log 229 / 229 ^ 2 + Real.log 233 / 233 ^ 2 + Real.log 239 / 239 ^ 2 := by
-  simp only [Finset.sum_range_succ, Finset.sum_range_zero]
-  norm_num
+  norm_num [Finset.sum_range_succ, Finset.sum_range_zero]
 
 end W5
 
@@ -222,15 +380,12 @@ namespace W5
 
 lemma tele (u h : ℝ) (hh : 0 < h) (hu : 2 * h ≤ u) (hlog : 2 ≤ Real.log u) :
     h * (Real.log u / u ^ 2) ≤ (Real.log (u - h) + 1) / (u - h) - (Real.log u + 1) / u := by
-  obtain ⟨v, hv⟩ : ∃ v, v = u - h := ⟨_, rfl⟩
+  set v : ℝ := u - h
   have hu' : u = v + h := by linarith
   have hv0 : 0 < v := by linarith
-  have hu0 : 0 < u := by linarith
-  rw [← hv]
-  have h1 := log_le_near u v hu0 hv0
   have h2 : Real.log u - h / v ≤ Real.log v := by
     have : (u - v) / v = h / v := by rw [hu']; ring
-    linarith
+    linarith [log_le_near u v (by linarith) hv0]
   set ℓ := Real.log u with hℓ
   have h3 : (ℓ - h / v + 1) / v ≤ (Real.log v + 1) / v :=
     div_le_div_of_nonneg_right (by linarith) hv0.le
@@ -246,20 +401,16 @@ lemma tele (u h : ℝ) (hh : 0 < h) (hu : 2 * h ≤ u) (hlog : 2 ≤ Real.log u)
   linarith
 
 lemma exp_two_le : Real.exp 2 ≤ 8 := by
-  have h := Real.exp_one_lt_d9
-  have h0 := Real.exp_pos 1
-  have : Real.exp 2 = Real.exp 1 * Real.exp 1 := by rw [← Real.exp_add]; norm_num
-  rw [this]
-  nlinarith
+  rw [show Real.exp 2 = Real.exp 1 * Real.exp 1 by rw [← Real.exp_add]; norm_num]
+  nlinarith [Real.exp_one_lt_d9, Real.exp_pos 1]
 
 lemma anti (u v : ℝ) (hu : 8 ≤ u) (huv : u ≤ v) :
     Real.log v / v ^ 2 ≤ Real.log u / u ^ 2 := by
   have hA := Real.log_div_self_rpow_antitoneOn (a := 2) (by norm_num)
-  have he : Real.exp (2 : ℝ)⁻¹ ≤ 8 := by
-    refine le_trans (Real.exp_le_exp.2 ?_) exp_two_le
-    norm_num
-  have := hA (a := u) (b := v) (Set.mem_Ici.2 (by linarith)) (Set.mem_Ici.2 (by linarith)) huv
-  simpa [Real.rpow_two] using this
+  have he : Real.exp (2 : ℝ)⁻¹ ≤ 8 :=
+    (Real.exp_le_exp.2 (by norm_num)).trans exp_two_le
+  simpa [Real.rpow_two] using
+    hA (a := u) (b := v) (Set.mem_Ici.2 (by linarith)) (Set.mem_Ici.2 (by linarith)) huv
 
 lemma blk (K : ℕ) (hK : 40 ≤ K) :
     ∑ n ∈ Finset.Ico 240 (6 * K),
@@ -389,12 +540,10 @@ lemma lw_nonneg (w : HeightOneSpectrum (𝓞 K)) : 0 ≤ lw w :=
 lemma vw_int (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) :
     vw w (x : K) = FractionalIdeal.count K w
       ((Ideal.span {x} : Ideal (𝓞 K)) : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) := by
-  unfold vw
-  rw [FractionalIdeal.coeIdeal_span_singleton]
+  simp only [vw, FractionalIdeal.coeIdeal_span_singleton]
 
 lemma vw_nat_nonneg (w : HeightOneSpectrum (𝓞 K)) (n : ℕ) : 0 ≤ vw w (n : K) := by
-  have h : ((n : 𝓞 K) : K) = (n : K) := map_natCast _ n
-  rw [← h, vw_int]
+  rw [← map_natCast (algebraMap (𝓞 K) K) n, vw_int]
   exact FractionalIdeal.count_coe_nonneg K w _
 
 end W5
@@ -485,3 +634,7 @@ namespace W5
 end W5
 
 end Formalism.DivisionValues
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.QuotientMetricDivisors.HermitianTwistDivisors.PlaceSumSquares =====

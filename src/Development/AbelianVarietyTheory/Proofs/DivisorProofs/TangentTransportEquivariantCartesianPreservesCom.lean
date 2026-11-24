@@ -44,6 +44,8 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsoOverOfIsOpenImmersion
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GapGeSubKapBase
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointsLiftToLevelCover
 
 @[expose] public section
 
@@ -64,12 +66,6 @@ noncomputable section
 
 namespace GlobalTheory.EqvTrans
 
-theorem epsMul_comp_algebraMap {R : Type} [CommRing R] (c : R) :
-    spMap (epsMul c) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R (DualNumber R)) := by
-  simp only [spMap, ← Spec.map_comp]
-  congr 1
-  exact CommRingCat.hom_ext (RingHom.ext fun a => by ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl])
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
   {X Y : Scheme.{0}} {t : SAB H Y} {p : X ⟶ Y} {G' : Over X} [GrpObj G'] {ψ : G'.left ⟶ t.G.left}
 
@@ -79,7 +75,7 @@ theorem trv_epsMul (hψ : IsPullback ψ G'.hom t.G.hom p) (g : G'.left ⟶ G'.le
     trv hψ g q (spMap (epsMul c) ≫ v) = spMap (epsMul c) ≫ trv hψ g q v := by
   obtain ⟨w, hw, hw'⟩ := exists_lift hψ q hv
   rw [trv_eq hψ g q w hw hw', trv_eq hψ g q (spMap (epsMul c) ≫ w) (by rw [Category.assoc, hw])
-    (by rw [Category.assoc, hw', ← Category.assoc, epsMul_comp_algebraMap])]
+    (by rw [Category.assoc, hw', ← Category.assoc, _root_.GlobalTheory.FrameLift.eps_alg])]
   simp only [Category.assoc]
 
 end GlobalTheory.EqvTrans

@@ -49,6 +49,7 @@ import Mathlib.Topology.Sheaves.Init
 import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.PermFinTwoUniv
 public import Mathlib.MeasureTheory.Function.Jacobian
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.IsSemipositiveOn
+import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshExt
 
 @[expose] public section
 
@@ -60,13 +61,6 @@ open ReciprocityTheory.AnForm.A (coordDiv)
 open GroundTheory.Heights₂.Heights.Regular (RegChartData)
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
-
-theorem isClosed_coordDiv (S : Finset (Fin e)) : IsClosed (coordDiv S) := by
-  have h : coordDiv S = ⋃ i ∈ S, {z : Fin e → ℂ | z i = 0} := by
-    ext z
-    simp [coordDiv]
-  rw [h]
-  exact isClosed_biUnion_finset fun i _ => isClosed_eq (continuous_apply i) continuous_const
 
 theorem volume_coordDiv_eq_zero (S : Finset (Fin e)) : volume (coordDiv S) = 0 := by
   have h : coordDiv S = ⋃ i ∈ (S : Set (Fin e)),
@@ -97,7 +91,7 @@ theorem isOpen_Yo (R : RegChartData A) : IsOpen R.Yo := by
     · rintro ⟨j, hj, hc⟩
       exact (R.mem_Yo j x hj).2 hc
   rw [h]
-  exact isOpen_iUnion fun j => (R.chart j).isOpen_inter_preimage (isClosed_coordDiv _).isOpen_compl
+  exact isOpen_iUnion fun j => (R.chart j).isOpen_inter_preimage (_root_.ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.coordDiv_closed _).isOpen_compl
 
 theorem volume_compl_Yo (R : RegChartData A) (j : Fin A.n) :
     volume ((A.chart j).target ∩ (A.chart j).symm ⁻¹' R.Yoᶜ) = 0 := by
@@ -126,7 +120,7 @@ theorem continuousOn_r (R : RegChartData A) : ContinuousOn R.r R.Yo := by
   obtain ⟨k, hk⟩ := exists_mem_source R x
   have hxc : R.chart k x ∉ coordDiv (R.S k) := (R.mem_Yo k x hk).1 hx
   have hUo : IsOpen ((R.chart k).source ∩ (R.chart k) ⁻¹' (coordDiv (R.S k))ᶜ) :=
-    (R.chart k).isOpen_inter_preimage (isClosed_coordDiv _).isOpen_compl
+    (R.chart k).isOpen_inter_preimage (_root_.ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.coordDiv_closed _).isOpen_compl
   have hxU : x ∈ (R.chart k).source ∩ (R.chart k) ⁻¹' (coordDiv (R.S k))ᶜ := ⟨hk, hxc⟩
   have hg : ContinuousOn (fun y : Fin e → ℂ => Real.exp 1 + R.f k y + ∑ i ∈ R.S k, Real.log (‖y i‖ ^ 2)⁻¹)
       ((R.chart k).target \ coordDiv (R.S k)) := by

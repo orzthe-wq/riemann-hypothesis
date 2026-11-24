@@ -65,10 +65,10 @@ def homUnit (A : GL a R) (B : GL b R) : GL (a × b) R where
   inv := Matrix.kroneckerMap (· * ·) ((A⁻¹ : GL a R) : Matrix a a R) (B : Matrix b b R)ᵀ
   val_inv := by
     rw [← Matrix.mul_kronecker_mul, ← Matrix.transpose_mul]
-    simp [Matrix.one_kronecker_one]
+    simp
   inv_val := by
     rw [← Matrix.mul_kronecker_mul, ← Matrix.transpose_mul]
-    simp [Matrix.one_kronecker_one]
+    simp
 
 theorem homUnit_val (A : GL a R) (B : GL b R) :
     ((homUnit A B : GL (a × b) R) : Matrix (a × b) (a × b) R) =
@@ -96,7 +96,7 @@ def homRep {G : Type*} [Group G] (ρ₁ : G →* GL a R) (ρ₂ : G →* GL b R)
   toFun g := homUnit (ρ₁ g) (ρ₂ g)
   map_one' := by
     ext1
-    simp [homUnit_val, Matrix.one_kronecker_one]
+    simp [homUnit_val]
   map_mul' g h := by
     ext1
     show ((homUnit (ρ₁ (g * h)) (ρ₂ (g * h)) : GL (a × b) R) : Matrix _ _ R) = ((homUnit (ρ₁ g) (ρ₂ g) : GL (a × b) R) : Matrix (a × b) (a × b) R) * ((homUnit (ρ₁ h) (ρ₂ h) : GL (a × b) R) : Matrix (a × b) (a × b) R)

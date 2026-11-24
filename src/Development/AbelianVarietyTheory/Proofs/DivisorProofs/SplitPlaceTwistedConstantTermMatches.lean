@@ -1,13 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTerm
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralTwistedConjInvariant
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjGLOfCharpolyEqOfSeparable
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableTwistedOrbitalIntegralIntegralNormCongruen
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTermStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup
-import GroundTheory.GlobalFields.CompletionAtPlace.Integers
-import GroundTheory.LocalFields.PadicLogSeries
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -23,8 +20,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,7 +27,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,9 +39,36 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup
+import GroundTheory.GlobalFields.CompletionAtPlace.Integers
+import GroundTheory.LocalFields.PadicLogSeries
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTermStatement, Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceTwistedConstantTermMatches
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTermStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTermStatement", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTerm\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
+open scoped Classical TensorProduct
+attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+
+theorem _root_.GlobalTheory.T.twisted_orbital_integral_levi_constant_term : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∀ (n a : ℕ) (ha : a ≤ n) (w : Pl E) (f : GLw n w → ℂ), IsHecke (GlobalTheory.LFun.KGL w (n := n)) f ∨ (∃ K' : Subgroup (GLw n w), IsOpen (K' : Set (GLw n w)) ∧ IsHecke K' f) → ∀ m : GLw a w × GLw (n - a) w, (m.1.val.charpoly * m.2.val.charpoly).Separable → twOrb (MonoidHom.id _) ((GlobalTheory.LFun.KGL w (n := a)).prod (GlobalTheory.LFun.KGL w (n := (n - a)))) m (ct (Nat.add_sub_cancel' ha) w f) = absHalf w (resultant m.1.val.charpoly m.2.val.charpoly ^ 2 / (m.1.val.det ^ (n - a) * m.2.val.det ^ a)) * twOrb (MonoidHom.id _) (GlobalTheory.LFun.KGL w (n := n)) (blk (Nat.add_sub_cancel' ha) w m 0) f := by
+  first | exact @GlobalTheory.LeviDesc.orbInt_descent
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTermStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceTwistedConstantTermMatches =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceTwistedConstantTermMatches", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralTwistedConjInvariant\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsConjGLOfCharpolyEqOfSeparable\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StableTwistedOrbitalIntegralIntegralNormCongruen\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralLeviConstantTermStatement\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup\nimport GroundTheory.GlobalFields.CompletionAtPlace.Integers\nimport GroundTheory.LocalFields.PadicLogSeries\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
@@ -57,10 +78,6 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 noncomputable section
 
 namespace GlobalTheory.BCT.SplitCtMatch
-
-theorem conjOfCharpoly : ∀ (k : Type) [Field k] (a : ℕ) (x y : GL (Fin a) k), x.val.charpoly = y.val.charpoly →
-    x.val.charpoly.Separable → ∃ g : GL (Fin a) k, y = g⁻¹ * x * g :=
-  fun k _ a x y h hs => GlobalTheory.SepConj.conj_of_charpoly_eq_of_separable k a x y h hs
 
 theorem existsOfCharpoly : ∀ (k : Type) [Field k] (a : ℕ) (Q : k[X]), Q.Monic → Q.natDegree = a → Q.coeff 0 ≠ 0 →
     ∃ x : GL (Fin a) k, x.val.charpoly = Q := by
@@ -90,7 +107,7 @@ theorem twOrb_twConj : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologi
       rw [DoubleCoset.eq]
       refine ⟨g⁻¹ * t⁻¹ * g, ?_, k⁻¹, K.inv_mem hk, by group⟩
       rw [GlobalTheory.TwOrbConj.twCent_conj]
-      exact ⟨t⁻¹, (GlobalTheory.BCT.twCent θ δ).inv_mem ht, by simp [MulAut.conj_apply]⟩
+      exact ⟨t⁻¹, (GlobalTheory.BCT.twCent θ δ).inv_mem ht, by simp⟩
     right_inv q := by
       obtain ⟨t, ht, k, hk, he⟩ := DoubleCoset.mk_out_eq_mul (twCent θ (g⁻¹ * δ * θ g)) K (g⁻¹ * Quotient.out q)
       show DoubleCoset.mk _ K (g * Quotient.out (DoubleCoset.mk (GlobalTheory.BCT.twCent θ (g⁻¹ * δ * θ g)) K
@@ -344,10 +361,6 @@ end GlobalTheory.BCT.SplitCtMatch
 
 namespace GlobalTheory.BCT.SplitCtMatch
 
-theorem charpoly_conj' {k : Type} [Field k] {a : ℕ} (g x : GL (Fin a) k) :
-    (g⁻¹ * x * g).val.charpoly = x.val.charpoly := by
-  rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']
-
 theorem toSub_val {G : Type} [Group G] {H : Subgroup G} {g : G} (h : g ∈ H) : (toSub H g : G) = g := by
   rw [toSub, dite_eq_left h]
 
@@ -406,11 +419,11 @@ theorem match_ctMu_of_isSplitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCM
       · simp
       · exact ⟨hx₁, hx₂⟩
       · rintro y ⟨h1, h2⟩
-        obtain ⟨g₁, hg₁⟩ := conjOfCharpoly _ a x₁ y.1 (hx₁.trans h1.symm) (hx₁ ▸ hs₁)
-        obtain ⟨g₂, hg₂⟩ := conjOfCharpoly _ (n - a) x₂ y.2 (hx₂.trans h2.symm) (hx₂ ▸ hs₂)
+        obtain ⟨g₁, hg₁⟩ := _root_.GlobalTheory.SepConj.conj_of_charpoly_eq_of_separable _ a x₁ y.1 (hx₁.trans h1.symm) (hx₁ ▸ hs₁)
+        obtain ⟨g₂, hg₂⟩ := _root_.GlobalTheory.SepConj.conj_of_charpoly_eq_of_separable _ (n - a) x₂ y.2 (hx₂.trans h2.symm) (hx₂ ▸ hs₂)
         exact ⟨(g₁, g₂), Prod.ext hg₁ hg₂⟩
       · intro g
-        exact ⟨(charpoly_conj' g.1 x₁).trans hx₁, (charpoly_conj' g.2 x₂).trans hx₂⟩
+        exact ⟨(_root_.GlobalTheory.LeviDesc.conjP_charpoly g.1 x₁).trans hx₁, (_root_.GlobalTheory.LeviDesc.conjP_charpoly g.2 x₂).trans hx₂⟩
       · intro g; rfl
     obtain ⟨γ₀, hv⟩ : ∃ γ₀ : UL n w, (γ₀ : GLw n w) = blk (Nat.add_sub_cancel' ha) w (x₁, x₂) 0 :=
       ⟨_, toSub_val (hmem _)⟩
@@ -421,14 +434,14 @@ theorem match_ctMu_of_isSplitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCM
           (fun y => f (toSub (UL n w) y)) := by
       rw [clSum_oneClass _ _ _ _ _ γ₀ hcp ?_ ?_ ?_ (fun g => twOrb_twConj _ _ _ _ _), one_mul, twOrb_top _ hUL, hKL, hv]
       · intro γ hγ
-        obtain ⟨g, hg⟩ := conjOfCharpoly _ n (γ₀ : GLw n w) γ.1 (hcp.trans hγ.symm) (hcp ▸ hsep)
+        obtain ⟨g, hg⟩ := _root_.GlobalTheory.SepConj.conj_of_charpoly_eq_of_separable _ n (γ₀ : GLw n w) γ.1 (hcp.trans hγ.symm) (hcp ▸ hsep)
         refine ⟨toSub (UL n w) g, Subtype.ext ?_⟩
         simp only [MonoidHom.id_apply, Subgroup.coe_mul, Subgroup.coe_inv, toSub_val (hmem g)]
         exact hg
       · intro g
         show ((g⁻¹ * γ₀ * g : UL n w) : GLw n w).val.charpoly = _
         simp only [Subgroup.coe_mul, Subgroup.coe_inv]
-        rw [charpoly_conj', hcp]
+        rw [_root_.GlobalTheory.LeviDesc.conjP_charpoly, hcp]
       · intro g; rfl
     rw [hLHS, hRHS]
 
@@ -467,3 +480,7 @@ theorem match_ctMu_of_isSplitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCM
       simp only [MonoidHom.id_apply, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv, det_conj']
 
 end GlobalTheory.BCT.SplitCtMatch
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SplitPlaceTwistedConstantTermMatches =====

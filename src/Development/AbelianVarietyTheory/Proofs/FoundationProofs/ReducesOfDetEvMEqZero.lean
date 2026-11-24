@@ -1,27 +1,33 @@
 module
 
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.NumberTheory.ModularForms.EisensteinSeries.Basic
+public import Mathlib.NumberTheory.ModularForms.LevelOne.DimensionFormula
+public import ReciprocityTheory.DualLattices.HasSumNormalizedDeriv
+public import Mathlib.Analysis.Complex.Periodic
+public import Mathlib.NumberTheory.ModularForms.CuspFormSubmodule
+public import Mathlib.NumberTheory.ModularForms.Derivative
+public import Mathlib.NumberTheory.ModularForms.Discriminant
+public import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JInvariantEqualSl2Orbit
+public import Mathlib.RingTheory.RootsOfUnity.Complex
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteIndexOfGammaLe
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLevelOneSimpleZeroFormAtPoint
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
@@ -33,7 +39,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,13 +48,424 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.NormNum.Parity
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.NumberTheory.ModularForms.LevelOne.GradedRing
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinWronskianNeZero, Development.AbelianVarietyTheory.Proofs.FoundationProofs.EllipticPointsStabilizer, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLevelOneSimpleZeroFormAtPoint, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ReducesOfDetEvMEqZero
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinWronskianNeZero =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinWronskianNeZero", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.NumberTheory.ModularForms.EisensteinSeries.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\npublic import Mathlib.NumberTheory.ModularForms.LevelOne.DimensionFormula\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.DualLattices.HasSumNormalizedDeriv\npublic import Mathlib.Analysis.Complex.Periodic\npublic import Mathlib.NumberTheory.ModularForms.CuspFormSubmodule\npublic import Mathlib.NumberTheory.ModularForms.Derivative\npublic import Mathlib.NumberTheory.ModularForms.Discriminant\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open UpperHalfPlane hiding I
+open Complex ModularForm ModularFormClass MatrixGroups Function Filter EisensteinSeries
+open scoped Real Manifold Topology ModularForm Derivative
+
+namespace GlobalTheory.EisWronskian
+
+local notation "𝕢" => Periodic.qParam
+
+private lemma qParam_add_one (z : ℂ) : 𝕢 1 (z + 1) = 𝕢 1 z := by
+  simp only [Periodic.qParam, Complex.ofReal_one, div_one, mul_add, mul_one, Complex.exp_add,
+    Complex.exp_two_pi_mul_I]
+
+private def Good (G : ℍ → ℂ) : Prop :=
+  Periodic (G ∘ ofComplex) 1 ∧ MDiff G ∧ IsBoundedAtImInfty G
+
+private lemma good_of_hasSum {G : ℍ → ℂ} {c : ℕ → ℂ}
+    (hG : ∀ τ : ℍ, HasSum (fun m ↦ c m • 𝕢 1 τ ^ m) (G τ)) (hol : MDiff G) : Good G := by
+  refine ⟨?_, hol, isBoundedAtImInfty_of_hasSum_qExpansion one_pos hG⟩
+  intro w
+  by_cases hw : 0 < im w
+  · have h1 : 0 < im (w + 1) := by simp [hw]
+    simp only [comp_apply, ofComplex_apply_of_im_pos h1, ofComplex_apply_of_im_pos hw]
+    refine (hG ⟨w + 1, h1⟩).unique ?_
+    have := hG ⟨w, hw⟩
+    simpa [qParam_add_one] using this
+  · have h1 : im (w + 1) ≤ 0 := by simpa using hw
+    simp [ofComplex_apply_of_im_nonpos h1, ofComplex_apply_of_im_nonpos (not_lt.mp hw)]
+
+private lemma Good.mul {G H : ℍ → ℂ} (hG : Good G) (hH : Good H) : Good (G * H) :=
+  ⟨hG.1.mul hH.1, hG.2.1.mul hH.2.1, hG.2.2.mul hH.2.2⟩
+
+private lemma Good.smul {G : ℍ → ℂ} (hG : Good G) (a : ℂ) : Good (a • G) :=
+  ⟨hG.1.smul a, hG.2.1.const_smul a, hG.2.2.smul a⟩
+
+private lemma Good.sub {G H : ℍ → ℂ} (hG : Good G) (hH : Good H) : Good (G - H) :=
+  ⟨hG.1.sub hH.1, hG.2.1.sub hH.2.1, hG.2.2.sub hH.2.2⟩
+
+private lemma Good.analytic {G : ℍ → ℂ} (hG : Good G) : AnalyticAt ℂ (cuspFunction 1 G) 0 :=
+  analyticAt_cuspFunction_zero one_pos hG.1 hG.2.1 hG.2.2
+
+private lemma hasSum_f {w : ℤ} (f : ModularForm 𝒮ℒ w) (τ : ℍ) :
+    HasSum (fun m ↦ (qExpansion 1 f).coeff m • 𝕢 1 τ ^ m) (f τ) := by
+  have : Fact (IsCusp OnePoint.infty 𝒮ℒ) :=
+    ⟨Subgroup.isCusp_of_mem_strictPeriods one_pos one_mem_strictPeriods_SL⟩
+  simpa [smul_eq_mul] using
+    UpperHalfPlane.hasSum_qExpansion one_pos
+      (SlashInvariantFormClass.periodic_comp_ofComplex f one_mem_strictPeriods_SL)
+      (ModularFormClass.holo f) (ModularFormClass.bdd_at_infty f) τ
+
+private lemma hasSum_Df {w : ℤ} (f : ModularForm 𝒮ℒ w) (τ : ℍ) :
+    HasSum (fun m : ℕ ↦ ((m : ℂ) * (qExpansion 1 f).coeff m) • 𝕢 1 τ ^ m) (D f τ) :=
+  ReciprocityTheory.PGsh.hasSum_normalizedDeriv (hasSum_f f) τ
+
+private lemma good_f {w : ℤ} (f : ModularForm 𝒮ℒ w) : Good f :=
+  good_of_hasSum (hasSum_f f) (ModularFormClass.holo f)
+
+private lemma good_Df {w : ℤ} (f : ModularForm 𝒮ℒ w) : Good (D f) :=
+  good_of_hasSum (hasSum_Df f)
+    (Derivative.normalizedDerivOfComplex_mdifferentiable (ModularFormClass.holo f))
+
+private lemma coeff_of_hasSum {G : ℍ → ℂ} {c : ℕ → ℂ} (hG : Good G)
+    (hs : ∀ τ : ℍ, HasSum (fun m ↦ c m • 𝕢 1 τ ^ m) (G τ)) (m : ℕ) :
+    (qExpansion 1 G).coeff m = c m := by
+  have h1 := (UpperHalfPlane.hasFPowerSeriesOnBall_cuspFunction one_pos hG.analytic
+    hs).hasFPowerSeriesAt
+  have h2 : HasFPowerSeriesAt (cuspFunction 1 G)
+      (FormalMultilinearSeries.ofScalars ℂ fun m ↦ (qExpansion 1 G).coeff m) 0 := by
+    simpa [qExpansion_coeff, div_eq_mul_inv, mul_comm] using hG.analytic.hasFPowerSeriesAt
+  have := congr_arg (fun p ↦ FormalMultilinearSeries.coeff p m) (h1.eq_formalMultilinearSeries h2)
+  simpa [FormalMultilinearSeries.coeff_ofScalars] using this.symm
+
+private lemma coeff_Df {w : ℤ} (f : ModularForm 𝒮ℒ w) (m : ℕ) :
+    (qExpansion 1 (D f)).coeff m = (m : ℂ) * (qExpansion 1 f).coeff m :=
+  coeff_of_hasSum (good_Df f) (hasSum_Df f) m
+
+private noncomputable def wr : ℍ → ℂ :=
+  (2 : ℂ) • (⇑E₄ * D E₆) - (3 : ℂ) • (⇑E₆ * D E₄)
+
+private lemma good_wr : Good wr :=
+  (((good_f E₄).mul (good_Df E₆)).smul _).sub (((good_f E₆).mul (good_Df E₄)).smul _)
+
+private lemma wr_eq : wr = (2 : ℂ) • (⇑E₄ * Derivative.serreDerivative ((6 : ℤ) : ℂ) E₆) -
+    (3 : ℂ) • (⇑E₆ * Derivative.serreDerivative ((4 : ℤ) : ℂ) E₄) := by
+  ext z
+  simp only [wr, Pi.sub_apply, Pi.smul_apply, Pi.mul_apply, smul_eq_mul,
+    Derivative.serreDerivative_apply]
+  push_cast
+  ring
+
+private lemma wr_slash (γ : SL(2, ℤ)) : wr ∣[(12 : ℤ)] γ = wr := by
+  have h4 : (⇑E₄) ∣[(4 : ℤ)] γ = ⇑E₄ := E₄.slash_action_eq' _ ⟨γ, rfl⟩
+  have h6 : (⇑E₆) ∣[(6 : ℤ)] γ = ⇑E₆ := E₆.slash_action_eq' _ ⟨γ, rfl⟩
+  have s4 := Derivative.serreDerivative_slash_equivariant (k := 4) (γ := γ)
+    (ModularFormClass.holo E₄)
+  have s6 := Derivative.serreDerivative_slash_equivariant (k := 6) (γ := γ)
+    (ModularFormClass.holo E₆)
+  rw [h4] at s4
+  rw [h6] at s6
+  have m1 := ModularForm.mul_slash_SL2 4 (6 + 2) γ (⇑E₄)
+    (Derivative.serreDerivative ((6 : ℤ) : ℂ) E₆)
+  have m2 := ModularForm.mul_slash_SL2 6 (4 + 2) γ (⇑E₆)
+    (Derivative.serreDerivative ((4 : ℤ) : ℂ) E₄)
+  rw [h4, s6, show (4 + (6 + 2) : ℤ) = 12 by norm_num] at m1
+  rw [h6, s4, show (6 + (4 + 2) : ℤ) = 12 by norm_num] at m2
+  rw [wr_eq, sub_eq_add_neg, SlashAction.add_slash, SlashAction.neg_slash,
+    ModularForm.SL_smul_slash, ModularForm.SL_smul_slash, m1, m2]
+
+private noncomputable def wrForm : ModularForm 𝒮ℒ 12 where
+  toFun := wr
+  slash_action_eq' A hA := by
+    obtain ⟨A, rfl⟩ := hA
+    exact wr_slash A
+  holo' := good_wr.2.1
+  bdd_at_cusps' {c} hc := by
+    rw [Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z] at hc
+    rw [OnePoint.isBoundedAt_iff_forall_SL2Z hc]
+    intro γ _
+    rw [wr_slash γ]
+    exact good_wr.2.2
+
+private lemma qExp_wr : qExpansion 1 wr =
+    (2 : ℂ) • (qExpansion 1 E₄ * qExpansion 1 (D E₆)) -
+      (3 : ℂ) • (qExpansion 1 E₆ * qExpansion 1 (D E₄)) := by
+  have h1 := (good_f E₄).mul (good_Df E₆)
+  have h2 := (good_f E₆).mul (good_Df E₄)
+  rw [wr, UpperHalfPlane.qExpansion_sub (h1.smul _).analytic (h2.smul _).analytic,
+    UpperHalfPlane.qExpansion_smul h1.analytic, UpperHalfPlane.qExpansion_smul h2.analytic,
+    UpperHalfPlane.qExpansion_mul (good_f E₄).analytic (good_Df E₆).analytic,
+    UpperHalfPlane.qExpansion_mul (good_f E₆).analytic (good_Df E₄).analytic]
+
+private lemma coeff_wr_zero : (qExpansion 1 wr).coeff 0 = 0 := by
+  rw [qExp_wr]
+  simp [PowerSeries.coeff_mul, -PowerSeries.coeff_zero_eq_constantCoeff, coeff_Df]
+
+private lemma coeff_wr_one : (qExpansion 1 wr).coeff 1 = -1728 := by
+  rw [qExp_wr]
+  simp only [map_sub, PowerSeries.coeff_smul, PowerSeries.coeff_mul,
+    Finset.Nat.antidiagonal_succ, coeff_Df, smul_eq_mul]
+  norm_num [E₄_qExpansion_coeff_one, E₆_qExpansion_coeff_one,
+    E_qExpansion_coeff_zero _ ⟨2, rfl⟩, E_qExpansion_coeff_zero _ ⟨3, rfl⟩,
+    -PowerSeries.coeff_zero_eq_constantCoeff]
+
+private lemma wr_ne_zero (τ : ℍ) : wr τ ≠ 0 := by
+  have hcusp : IsCuspForm wrForm := (isCuspForm_iff_coeffZero_eq_zero _).mpr coeff_wr_zero
+  obtain ⟨g, hg⟩ := hcusp
+  obtain ⟨c, hc⟩ := CuspForm.exists_smul_discriminant_of_weight_eq_twelve g
+  have hgE : (g : ℍ → ℂ) = wr := congrArg DFunLike.coe hg
+  have hcΔ : (c • CuspForm.discriminant : ℍ → ℂ) = wr := (congrArg DFunLike.coe hc).trans hgE
+  have hc0 : c ≠ 0 := by
+    rintro rfl
+    have h := coeff_wr_one
+    rw [← hcΔ, zero_smul, UpperHalfPlane.qExpansion_zero, map_zero] at h
+    norm_num at h
+  rw [← hcΔ]
+  exact mul_ne_zero hc0 (discriminant_ne_zero τ)
+
+theorem wronskian_E₄_E₆_ne_zero : ∀ τ : ℍ,
+    2 * E₄ τ * deriv (⇑E₆ ∘ ofComplex) τ - 3 * E₆ τ * deriv (⇑E₄ ∘ ofComplex) τ ≠ 0 := by
+  intro τ h
+  apply wr_ne_zero τ
+  simp only [wr, Pi.sub_apply, Pi.smul_apply, Pi.mul_apply, smul_eq_mul,
+    Derivative.normalizedDerivOfComplex]
+  linear_combination (2 * π * I : ℂ)⁻¹ * h
+
+end GlobalTheory.EisWronskian
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinWronskianNeZero =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.EllipticPointsStabilizer =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.EllipticPointsStabilizer", "h": "module\n\npublic import Mathlib.NumberTheory.ModularForms.EisensteinSeries.Basic\npublic import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JInvariantEqualSl2Orbit\npublic import Mathlib.RingTheory.RootsOfUnity.Complex\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteIndexOfGammaLe\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open UpperHalfPlane Filter GlobalTheory.OddFrame
+open ModularForm (E₄ E₆)
+open scoped MatrixGroups ModularForm Manifold Topology
+
+namespace GlobalTheory.EllipticZero
+
+lemma denom_mul_SL (g h : SL(2, ℤ)) (z : ℍ) :
+    denom ((g * h : SL(2, ℤ)) : GL (Fin 2) ℝ) z
+      = denom (g : GL (Fin 2) ℝ) ((h • z : ℍ) : ℂ) * denom (h : GL (Fin 2) ℝ) z := by
+  have hd : 0 < ((h : GL (Fin 2) ℝ)).det.val := by simp
+  have := denom_cocycle (g : GL (Fin 2) ℝ) (h : GL (Fin 2) ℝ) z.im_ne_zero
+  rw [← coe_smul_of_det_pos hd, ← ModularGroup.sl_moeb] at this
+  rw [← this, map_mul, map_mul]
+
+lemma conj_fix (γ u : SL(2, ℤ)) (σ : ℍ) (hu : u • σ = σ) :
+    (γ * u * γ⁻¹) • (γ • σ) = γ • σ ∧
+      denom ((γ * u * γ⁻¹ : SL(2, ℤ)) : GL (Fin 2) ℝ) ((γ • σ : ℍ) : ℂ)
+        = denom (u : GL (Fin 2) ℝ) σ := by
+  refine ⟨by rw [mul_smul, mul_smul, inv_smul_smul, hu], ?_⟩
+  have h1 := denom_mul_SL (γ * u * γ⁻¹) γ σ
+  have h2 := denom_mul_SL γ u σ
+  rw [inv_mul_cancel_right, h2, hu, mul_comm] at h1
+  exact (mul_right_cancel₀ (denom_ne_zero _ _) h1).symm
+
+lemma eq_zero_of_fix {k : ℤ} (f : ModularForm 𝒮ℒ k) (u : SL(2, ℤ)) (σ : ℍ) (hu : u • σ = σ)
+    (hk : denom (u : GL (Fin 2) ℝ) σ ^ k ≠ 1) : f σ = 0 := by
+  have h : f (u • σ) = denom u σ ^ k * f σ :=
+    SlashInvariantForm.slash_action_eqn'' f (by simp) σ
+  rw [hu] at h
+  have : (denom (u : GL (Fin 2) ℝ) σ ^ k - 1) * f σ = 0 := by linear_combination -h
+  exact (mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hk)
+
+lemma exists_four : ∃ (σ : ℍ) (u : SL(2, ℤ)), u • σ = σ ∧
+    IsPrimitiveRoot (denom (u : GL (Fin 2) ℝ) σ) 4 := by
+  refine ⟨UpperHalfPlane.I, ModularGroup.S, ?_, ?_⟩
+  · rw [modular_S_smul]; ext1; simp
+  · rw [ModularGroup.denom_S]; exact Complex.isPrimitiveRoot_I
+
+lemma exists_six : ∃ (σ : ℍ) (u : SL(2, ℤ)), u • σ = σ ∧
+    IsPrimitiveRoot (denom (u : GL (Fin 2) ℝ) σ) 6 := by
+  have hp := Complex.isPrimitiveRoot_exp 6 (by norm_num)
+  set μ := Complex.exp (2 * Real.pi * Complex.I / (6 : ℕ)) with hμ
+  have him : 0 < μ.im := by
+    have : μ = Complex.exp (((Real.pi / 3 : ℝ) : ℂ) * Complex.I) := by
+      rw [hμ]; congr 1; push_cast; ring
+    rw [this, Complex.exp_ofReal_mul_I_im, Real.sin_pi_div_three]
+    positivity
+  have h6 : μ ^ 6 = 1 := hp.pow_eq_one
+  have h3 : μ ^ 3 - 1 ≠ 0 := sub_ne_zero.2 (hp.pow_ne_one_of_pos_of_lt (by norm_num) (by norm_num))
+  have h1 : μ + 1 ≠ 0 := fun h => by
+    have := congrArg Complex.im h
+    simp at this
+    exact him.ne' this
+  have hq : μ ^ 2 - μ + 1 = 0 := by
+    have : (μ ^ 3 - 1) * ((μ + 1) * (μ ^ 2 - μ + 1)) = 0 := by linear_combination h6
+    exact (mul_eq_zero.1 ((mul_eq_zero.1 this).resolve_left h3)).resolve_left h1
+  have h0 : μ ≠ 0 := hp.ne_zero (by norm_num)
+  refine ⟨⟨μ, him⟩, ModularGroup.T * ModularGroup.S, ?_, ?_⟩
+  · rw [mul_smul, modular_S_smul, modular_T_smul]
+    ext1
+    simp only [coe_vadd]
+    push_cast
+    field_simp
+    linear_combination -hq
+  · rw [denom_mul_SL, ModularGroup.denom_S]
+    have : ∀ z : ℍ, denom ((ModularGroup.T : SL(2, ℤ)) : GL (Fin 2) ℝ) z = 1 := fun z => by
+      rw [ModularGroup.denom_apply]; simp [ModularGroup.T]
+    rw [this, one_mul]
+    exact hp
+
+theorem elliptic_of_zero : ∀ τ₀ : ℍ,
+    (E₆ τ₀ = 0 → ∃ u : SL(2, ℤ), u • τ₀ = τ₀ ∧ IsPrimitiveRoot (denom (u : GL (Fin 2) ℝ) τ₀) 4) ∧
+    (E₄ τ₀ = 0 → ∃ u : SL(2, ℤ), u • τ₀ = τ₀ ∧
+      IsPrimitiveRoot (denom (u : GL (Fin 2) ℝ) τ₀) 6) := by
+  intro τ₀
+  constructor
+  · intro h
+    obtain ⟨σ, u, hu, hp⟩ := exists_four
+    have h0 : E₆ σ = 0 := eq_zero_of_fix E₆ u σ hu (by
+      rw [Ne, hp.zpow_eq_one_iff_dvd]; norm_num)
+    obtain ⟨γ, rfl⟩ := _root_.GlobalTheory.JOrbit.exists_smul_of_E₄_E₆ τ₀ σ (by rw [h, h0]; ring)
+    obtain ⟨h1, h2⟩ := conj_fix γ u σ hu
+    exact ⟨_, h1, h2 ▸ hp⟩
+  · intro h
+    obtain ⟨σ, u, hu, hp⟩ := exists_six
+    have h0 : E₄ σ = 0 := eq_zero_of_fix E₄ u σ hu (by
+      rw [Ne, hp.zpow_eq_one_iff_dvd]; norm_num)
+    obtain ⟨γ, rfl⟩ := _root_.GlobalTheory.JOrbit.exists_smul_of_E₄_E₆ τ₀ σ (by rw [h, h0]; ring)
+    obtain ⟨h1, h2⟩ := conj_fix γ u σ hu
+    exact ⟨_, h1, h2 ▸ hp⟩
+
+end GlobalTheory.EllipticZero
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.EllipticPointsStabilizer =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLevelOneSimpleZeroFormAtPoint =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLevelOneSimpleZeroFormAtPoint", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteIndexOfGammaLe\npublic import Mathlib.NumberTheory.ModularForms.EisensteinSeries.Basic\npublic import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinWronskianNeZero\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EllipticPointsStabilizer\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.JInvariantEqualSl2Orbit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.ModularForms.LevelOne.GradedRing\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open UpperHalfPlane Filter GlobalTheory.OddFrame
+open ModularForm (E₄ E₆)
+open scoped MatrixGroups ModularForm Manifold Topology
+
+namespace GlobalTheory.LevelOneLocal
+
+theorem tendsto_E {k : ℕ} (hk : 3 ≤ k) (hk2 : Even k) :
+    Tendsto (ModularForm.E hk : ℍ → ℂ) atImInfty (𝓝 1) := by
+  have h0 : valueAtInfty (ModularForm.E hk : ℍ → ℂ) = 1 := by
+    rw [← qExpansion_coeff_zero one_pos
+      (ModularFormClass.analyticAt_cuspFunction_zero (ModularForm.E hk) one_pos one_mem_strictPeriods_SL)
+      (SlashInvariantFormClass.periodic_comp_ofComplex (ModularForm.E hk) one_mem_strictPeriods_SL)]
+    exact EisensteinSeries.E_qExpansion_coeff_zero hk hk2
+  obtain ⟨c, hc, h⟩ := ModularFormClass.exp_decay_sub_atImInfty' (ModularForm.E hk)
+  rw [h0] at h
+  have h2 : Tendsto (fun τ : ℍ ↦ Real.exp (-c * τ.im)) atImInfty (𝓝 0) := by
+    refine Real.tendsto_exp_atBot.comp ?_
+    exact Tendsto.const_mul_atTop_of_neg (by linarith) tendsto_comap
+  simpa using (h.trans_tendsto h2).add_const 1
+
+theorem tendsto_E₄ : Tendsto (E₄ : ℍ → ℂ) atImInfty (𝓝 1) := tendsto_E _ ⟨2, rfl⟩
+
+theorem tendsto_E₆ : Tendsto (E₆ : ℍ → ℂ) atImInfty (𝓝 1) := tendsto_E _ ⟨3, rfl⟩
+
+theorem cube_sub_sq_ne_zero (τ : ℍ) : E₄ τ ^ 3 - E₆ τ ^ 2 ≠ 0 := by
+  intro h
+  apply ModularForm.discriminant_ne_zero τ
+  rw [ModularForm.discriminant_eq_E₄_cube_sub_E₆_sq, h, zero_div]
+
+theorem isMF_E₄ : IsMF ⊤ 4 (E₄ : ℍ → ℂ) := isMF_coe_top E₄
+
+theorem isMF_E₆ : IsMF ⊤ 6 (E₆ : ℍ → ℂ) := isMF_coe_top E₆
+
+theorem differentiableAt_comp {f : ℍ → ℂ} (hf : MDiff f) (τ : ℍ) :
+    DifferentiableAt ℂ (f ∘ ofComplex) τ :=
+  mdifferentiableAt_iff.mp (hf τ)
+
+theorem deriv_comb (α β : ℂ) (τ : ℍ) :
+    deriv ((α • (E₄ : ℍ → ℂ) ^ 3 - β • (E₆ : ℍ → ℂ) ^ 2) ∘ ofComplex) τ =
+      α * (3 * E₄ τ ^ 2 * deriv (⇑E₄ ∘ ofComplex) τ) - β * (2 * E₆ τ * deriv (⇑E₆ ∘ ofComplex) τ) := by
+  have h4 := (differentiableAt_comp isMF_E₄.2.1 τ).hasDerivAt
+  have h6 := (differentiableAt_comp isMF_E₆.2.1 τ).hasDerivAt
+  have h := ((h4.fun_pow 3).const_mul α).fun_sub ((h6.fun_pow 2).const_mul β)
+  have e : (α • (E₄ : ℍ → ℂ) ^ 3 - β • (E₆ : ℍ → ℂ) ^ 2) ∘ ofComplex =
+      fun x => α * (⇑E₄ ∘ ofComplex) x ^ 3 - β * (⇑E₆ ∘ ofComplex) x ^ 2 := by
+    ext x; simp
+  rw [e, h.deriv]
+  simp
+
+theorem exists_local_data : ∀ τ₀ : ℍ, ∃ (n : ℕ) (a b : ℤ) (E : ℍ → ℂ) (u : SL(2, ℤ)), u • τ₀ = τ₀ ∧ 0 < n ∧ IsPrimitiveRoot (denom (u : GL (Fin 2) ℝ) τ₀) n ∧ a < b ∧ Even (b - a) ∧ IsMF ⊤ b E ∧ (∀ τ : ℍ, E τ = 0 → deriv (E ∘ ofComplex) τ ≠ 0 ∧ ∃ γ : SL(2, ℤ), τ = γ • τ₀) ∧ (∃ c : ℂ, c ≠ 0 ∧ Tendsto E atImInfty (𝓝 c)) ∧ ∀ d : ℤ, 0 ≤ d → (n : ℤ) ∣ d → ∃ e : ℍ → ℂ, IsMF ⊤ (d + a) e ∧ e τ₀ ≠ 0 := by
+  intro τ₀
+  have hD := cube_sub_sq_ne_zero τ₀
+  by_cases h6 : E₆ τ₀ = 0
+  · obtain ⟨u, hu, hp⟩ := (_root_.GlobalTheory.EllipticZero.elliptic_of_zero τ₀).1 h6
+    have h4 : E₄ τ₀ ≠ 0 := fun h => hD (by simp [h, h6])
+    refine ⟨4, 0, 6, E₆, u, hu, by norm_num, hp, by norm_num, by decide, isMF_E₆, fun τ hτ => ⟨?_, ?_⟩,
+      ⟨1, one_ne_zero, tendsto_E₆⟩, ?_⟩
+    · intro h
+      exact _root_.GlobalTheory.EisWronskian.wronskian_E₄_E₆_ne_zero τ (by simp [h, hτ])
+    · exact _root_.GlobalTheory.JOrbit.exists_smul_of_E₄_E₆ τ τ₀ (by simp [h6, hτ])
+    · rintro d hd ⟨m, rfl⟩
+      obtain ⟨m, rfl⟩ := Int.eq_ofNat_of_zero_le (show 0 ≤ m by push_cast at hd; omega)
+      refine ⟨(E₄ : ℍ → ℂ) ^ m, ?_, by simpa using fun h => absurd h h4⟩
+      have := isMF_E₄.pow m
+      convert this using 1
+      push_cast; ring
+  by_cases h4 : E₄ τ₀ = 0
+  · obtain ⟨u, hu, hp⟩ := (_root_.GlobalTheory.EllipticZero.elliptic_of_zero τ₀).2 h4
+    refine ⟨6, 0, 4, E₄, u, hu, by norm_num, hp, by norm_num, by decide, isMF_E₄, fun τ hτ => ⟨?_, ?_⟩,
+      ⟨1, one_ne_zero, tendsto_E₄⟩, ?_⟩
+    · intro h
+      exact _root_.GlobalTheory.EisWronskian.wronskian_E₄_E₆_ne_zero τ (by simp [h, hτ])
+    · exact _root_.GlobalTheory.JOrbit.exists_smul_of_E₄_E₆ τ τ₀ (by simp [h4, hτ])
+    · rintro d hd ⟨m, rfl⟩
+      obtain ⟨m, rfl⟩ := Int.eq_ofNat_of_zero_le (show 0 ≤ m by push_cast at hd; omega)
+      refine ⟨(E₆ : ℍ → ℂ) ^ m, ?_, by simpa using fun h => absurd h h6⟩
+      have := isMF_E₆.pow m
+      convert this using 1
+      push_cast; ring
+  refine ⟨2, 4, 12, (E₆ τ₀ ^ 2) • (E₄ : ℍ → ℂ) ^ 3 - (E₄ τ₀ ^ 3) • (E₆ : ℍ → ℂ) ^ 2, -1, ?_, by norm_num, ?_,
+    by norm_num, by decide, ?_, fun τ hτ => ?_, ⟨E₆ τ₀ ^ 2 - E₄ τ₀ ^ 3, fun h => hD (by linear_combination -h), ?_⟩,
+    ?_⟩
+  · rw [ModularGroup.SL_neg_smul, one_smul]
+  · have : denom ((-1 : SL(2, ℤ)) : GL (Fin 2) ℝ) τ₀ = -1 := by simp [denom]
+    rw [this]
+    exact IsPrimitiveRoot.neg_one 0 (by norm_num)
+  · exact ((isMF_E₄.pow 3).smul _).sub ((isMF_E₆.pow 2).smul _)
+  · have hz : E₆ τ₀ ^ 2 * E₄ τ ^ 3 - E₄ τ₀ ^ 3 * E₆ τ ^ 2 = 0 := by simpa using hτ
+    refine ⟨?_, _root_.GlobalTheory.JOrbit.exists_smul_of_E₄_E₆ τ τ₀ (by linear_combination hz)⟩
+    have hDτ := cube_sub_sq_ne_zero τ
+    have k4 : E₄ τ ≠ 0 := by
+      intro h
+      have : E₆ τ = 0 := by simpa [h, h4] using hz
+      exact hDτ (by simp [h, this])
+    rw [deriv_comb]
+    intro h
+    have hW := _root_.GlobalTheory.EisWronskian.wronskian_E₄_E₆_ne_zero τ
+    apply mul_ne_zero (mul_ne_zero (pow_ne_zero 2 h6) (pow_ne_zero 3 k4)) hW
+    linear_combination (2 * E₄ τ * deriv (⇑E₆ ∘ ofComplex) τ) * hz - (E₄ τ * E₆ τ) * h
+  · have := ((tendsto_E₄.pow 3).const_mul (E₆ τ₀ ^ 2)).sub ((tendsto_E₆.pow 2).const_mul (E₄ τ₀ ^ 3))
+    simp only [one_pow, mul_one] at this
+    exact this
+  · rintro d hd ⟨m, rfl⟩
+    obtain ⟨m, rfl⟩ := Int.eq_ofNat_of_zero_le (show 0 ≤ m by push_cast at hd; omega)
+    rcases Nat.even_or_odd' m with ⟨p, rfl | rfl⟩
+    · refine ⟨(E₄ : ℍ → ℂ) ^ (p + 1), ?_, by simpa using h4⟩
+      have := isMF_E₄.pow (p + 1)
+      convert this using 1
+      push_cast; ring
+    · refine ⟨(E₄ : ℍ → ℂ) ^ p * E₆, (isMF_E₄.pow p).mul isMF_E₆ (by push_cast; ring), ?_⟩
+      exact mul_ne_zero (pow_ne_zero p h4) h6
+
+end GlobalTheory.LevelOneLocal
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLevelOneSimpleZeroFormAtPoint =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ReducesOfDetEvMEqZero =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ReducesOfDetEvMEqZero", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteIndexOfGammaLe\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLevelOneSimpleZeroFormAtPoint\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open UpperHalfPlane Filter GlobalTheory.OddFrame
@@ -360,3 +776,6 @@ theorem _root_.GlobalTheory.OddFrame.reduces_of_det_evM_eq_zero : ∀ (Γ : Subg
     rfl
 
 end GlobalTheory.OddFrame
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ReducesOfDetEvMEqZero =====

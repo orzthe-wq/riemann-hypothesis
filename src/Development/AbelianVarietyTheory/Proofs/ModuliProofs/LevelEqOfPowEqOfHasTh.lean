@@ -326,7 +326,7 @@ theorem level_eq_of_pow_eq_of_hasTh : Out.Laws → Out.Laws2 → ∀ (g n j : �
       rw [TObj.lab, Out.linComb, Out.linComb, List.prod_ofFn, List.prod_ofFn, map_prod, map_prod]
       exact Finset.prod_congr rfl fun i _ => by rw [map_pow, map_pow, (over_iff hφ _ hτ _ _).1 (hz i)])
   unfold TObj.HasTh at H H'
-  simp only [hid] at H H'
+  simp only at H H'
   have Hz : Out.IsThetaPtOver t'.pol (n ^ j) (fun a : Ix g ((n ^ j) ^ 2) => Out.linComb z fun i => (a i).val) _ :=
     isThetaPtOver_move (P₀ := t.pol) (P := t'.pol) (𝟙 B.left) hφ hw (B := B) (𝟙 _) (𝟙 B) (Category.id_comp _) hτ
       (fun _ => ThetaCoord.isGenSec_pullS t.isLB _ _ (Category.id_comp _)) hlab

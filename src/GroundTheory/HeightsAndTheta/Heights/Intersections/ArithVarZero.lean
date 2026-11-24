@@ -130,7 +130,7 @@ theorem killBlocks_comp {S S' : Set K} (h : S ⊆ S') :
   simp only [AlgHom.comp_apply, killBlocks, aeval_X]
   by_cases hp : p.1 ∈ S
   · simp [hp, h hp]
-  · simp [hp, killBlocks, aeval_X]
+  · simp [hp, aeval_X]
 
 theorem comap_killBlocks_mono {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {S S' : Set K}
     (h : S ⊆ S') : P.comap (killBlocks S) ≤ P.comap (killBlocks S') := by

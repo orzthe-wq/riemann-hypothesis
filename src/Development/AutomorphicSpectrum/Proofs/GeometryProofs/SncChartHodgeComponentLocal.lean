@@ -3,15 +3,26 @@ module
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianMapTangentCoordinatesStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryDiscMapEmbeddingFixedStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPointStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicDiscInAffineOpenStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicDiscOverNumberFieldRingStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeTangentVectorsAffineOpenStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUniqueStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncChartLocalNormalFormStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianMapTangentCoordinates
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BdryChart
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.BoundaryDiscMapEmbeddingFixed
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPoint
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExponentialFamilyPeriods
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicDiscInAffineOpen
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicDiscOverNumberFieldRing
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import Mathlib.Basic.Complex.Basic
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeTangentVectorsAffineOpen
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncChartLocalNormalForm
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUnique
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -109,7 +120,7 @@ theorem exists_bdryChart_at : Top.Given → ∀ (E : Type) [Field E] [NumberFiel
   intro _ E _ _ _ H D l Xo c Y S Ω _ _ K _ J _ y 𝔐 n Bd χ t₀ cc f I _ s z₀ hBd ht₀ hz₀ hdom hval
   classical
   obtain ⟨N, ⟨e⟩⟩ := Finite.exists_equiv_fin I
-  obtain ⟨a₀, π, ρ₀, ha, hρ₀, hρ₀', hπ, hgeo⟩ := GlobalTheory.T.snc_chart_local_normal_form K J Ω y _ n Bd χ t₀ cc f ht₀ hdom
+  obtain ⟨a₀, π, ρ₀, ha, hρ₀, hρ₀', hπ, hgeo⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ChartGeo.exists_recentre_chart K J Ω y _ n Bd χ t₀ cc f ht₀ hdom
   have hw : DifferentiableOn ℂ (fun u => χ.γ (HodgeMetric.recentre t₀ ρ₀ π u)) (Metric.ball 0 1) := by
     refine χ.analytic.differentiableOn.comp ?_ fun u hu => (hgeo ρ₀ hρ₀ le_rfl u hu).1
     unfold HodgeMetric.recentre
@@ -119,11 +130,11 @@ theorem exists_bdryChart_at : Top.Given → ∀ (E : Type) [Field E] [NumberFiel
   have htie := 𝔐.tie
   have hall := 𝔐.all
   have hex : ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, ∃ z : Sp ℂ ⟶ 𝔐.X, genPt 𝔐.ξ ⤳ centre z ∧ CoordsAt 𝔐.ξ y z (w u) := fun u hu =>
-    (GlobalTheory.T.complex_points_iff_centres 𝔐.X Ω 𝔐.ξ K J y htie (w u)).1 (χ.mem _ (hgeo ρ₀ hρ₀ le_rfl u hu).1)
+    (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt 𝔐.X Ω 𝔐.ξ K J y htie (w u)).1 (χ.mem _ (hgeo ρ₀ hρ₀ le_rfl u hu).1)
   haveI : Nonempty (Sp ℂ ⟶ 𝔐.X) := ⟨z₀⟩
   choose! p hp₀ hp using hex
   have huniq : ∀ (z z' : Sp ℂ ⟶ 𝔐.X) (w' : (Σ k, J k) → ℂ), CoordsAt 𝔐.ξ y z w' → CoordsAt 𝔐.ξ y z' w' → z = z' := fun z z' w' h h' => by
-    obtain ⟨e1, -, e3⟩ := GlobalTheory.T.local_ring_points_existsUnique 𝔐.X Ω 𝔐.ξ K J y htie ℂ
+    obtain ⟨e1, -, e3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.tie_points 𝔐.X Ω 𝔐.ξ K J y htie ℂ
     exact (e1 w' h.1 (e3 z w' (hall _) h).1).unique ⟨hall _, h⟩ ⟨hall _, h'⟩
   have hb0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1 := by simp
   have hp0 : p 0 = z₀ := by
@@ -133,10 +144,10 @@ theorem exists_bdryChart_at : Top.Given → ∀ (E : Type) [Field E] [NumberFiel
       rw [HodgeMetric.recentre_zero]
     rw [this]
     exact hz₀
-  have hhol : IsHolTo (Metric.ball 0 1) p := GlobalTheory.T.holomorphic_coords_of_generic_point 𝔐.X Ω 𝔐.ξ K J y htie hall n _ w p Metric.isOpen_ball hw hp
+  have hhol : IsHolTo (Metric.ball 0 1) p := _root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family 𝔐.X Ω 𝔐.ξ K J y htie hall n _ w p Metric.isOpen_ball hw hp
   haveI : FiniteDimensional ℚ c.F := c.fin
   haveI : NumberField c.F := ⟨⟩
-  obtain ⟨τ, hτ⟩ := GlobalTheory.T.holomorphic_disc_over_number_field_ring c.F 𝔐.X (𝔐.f ≫ Y.s) n p hhol
+  obtain ⟨τ, hτ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ConstEmbedding.exists_embedding c.F 𝔐.X (𝔐.f ≫ Y.s) n p hhol
   have hint : ∀ u ∈ Flat.punct n a₀ 1, 𝔐.Interior (p u) := fun u hu => by
     have h1 := (hgeo ρ₀ hρ₀ le_rfl u hu.1).2.2
     have h2 := hBd (p u) (w u) (hp u hu.1)
@@ -146,19 +157,19 @@ theorem exists_bdryChart_at : Top.Given → ∀ (E : Type) [Field E] [NumberFiel
     obtain ⟨_, _, v', hext, _⟩ := hval (e.symm k)
     exact Submodule.subset_span ⟨v', hext⟩
   have hsm : Smooth 𝔐.t.G.hom := 𝔐.t.semi.smooth
-  obtain ⟨W, hW, v, hq, htan, hv⟩ := GlobalTheory.T.lattice_tangent_vectors_affine_open 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ⟨centre z₀, hall _⟩ N
+  obtain ⟨W, hW, v, hq, htan, hv⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.FrameExt.exists_affine_frame 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ⟨centre z₀, hall _⟩ N
     (fun k => s (e.symm k)) 𝔐.tie.gen hlat
   have hW0 : ⊤ ≤ p 0 ⁻¹ᵁ W := fun x _ => by
     have : x = IsLocalRing.closedPoint ℂ := Subsingleton.elim _ _
     subst this
     rw [hp0]
     exact hq
-  obtain ⟨ρ₁, ψ, hρ₁, hρ₁', hψ, hψp⟩ := GlobalTheory.T.holomorphic_disc_in_affine_open 𝔐.X W hW n p hhol hW0
+  obtain ⟨ρ₁, ψ, hρ₁, hρ₁', hψ, hψp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HolFac.exists_ringMaps_of_hol 𝔐.X W hW n p hhol hW0
   have hp₁ : IsHolTo (Metric.ball 0 1) (fun u => spMap (ψ u)) :=
     ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_spMap Metric.isOpen_ball hψ.2
   obtain ⟨tW, ⟨mW⟩⟩ := exists_sab hW.fromSpec 𝔐.t
   obtain ⟨mY, -⟩ := GlobalTheory.ObjMaps.exists_sab_comp 𝔐.m mW
-  obtain ⟨ρ₂, C, h, hρ₂, hρ₂', ⟨mC⟩, hC⟩ := GlobalTheory.T.boundary_disc_map_embedding_fixed E H D l Xo c Y _ (hW.fromSpec ≫ 𝔐.f) tW mY τ n a₀
+  obtain ⟨ρ₂, C, h, hρ₂, hρ₂', ⟨mC⟩, hC⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ModelChart.exists_bdryChart_of_model E H D l Xo c Y _ (hW.fromSpec ≫ 𝔐.f) tW mY τ n a₀
     (fun u => spMap (ψ u)) ha hp₁
     (fun u hu => by
       have := hτ _ (smul_mem_ball hρ₁ hρ₁' hu)
@@ -169,7 +180,7 @@ theorem exists_bdryChart_at : Top.Given → ∀ (E : Type) [Field E] [NumberFiel
   obtain ⟨θ, hθ⟩ : ∃ θ : Γ(𝔐.X, W) →+* C.R, spMap θ = h := ⟨(Spec.preimage h).hom, Spec.map_preimage _⟩
   subst hθ
   obtain ⟨mX, -⟩ := GlobalTheory.ObjMaps.exists_sab_comp mW mC
-  obtain ⟨x, hx⟩ := GlobalTheory.T.abelian_map_tangent_coordinates E H 𝔐.X 𝔐.t Γ(𝔐.X, W) hW.fromSpec N v C.R C.t θ mX C.g C.M htan
+  obtain ⟨x, hx⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PeriodCoord.exists_coords E H 𝔐.X 𝔐.t Γ(𝔐.X, W) hW.fromSpec N v C.R C.t θ mX C.g C.M htan
   have hpt : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, spMap (C.ψ z) ≫ spMap θ ≫ hW.fromSpec =
       p (((ρ₁ * ρ₂ : ℝ) : ℂ) • z) := fun z hz => by
     rw [← Category.assoc, hC z hz, hψp _ (smul_mem_ball hρ₂ hρ₂' hz), smul_smul]

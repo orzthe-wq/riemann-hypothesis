@@ -176,8 +176,6 @@ variable {N : ℕ}
 theorem coe_smul (r : 𝓞 E) (v : Fin N → E) : (r : E) • v = r • v := by
   first
   | rfl
-  | (ext i; rfl)
-  | (ext i; simp [Algebra.smul_def])
 
 theorem pres_one_sub {L : Submodule (𝓞 E) (Fin N → E)} {e : Matrix (Fin N) (Fin N) E}
     (he : Pres L e) : Pres L (1 - e) := by
@@ -285,8 +283,6 @@ theorem pLocalAll_of_glued (h1 : LocGlob) (h2 : IntMul) (h3 : Glued) : PLocalAll
   refine ⟨s * (c' : ℤ), hnd, m, hm1, hm2, ?_⟩
   first
   | exact heq
-  | simpa only [coe_smul, Int.cast_smul_eq_zsmul] using heq
-  | simpa [coe_smul] using heq
 
 theorem glued_of (hG : Glue) (hS : SplitPlace) (hI : InertPlace) : Glued := by
   apply hG

@@ -63,27 +63,15 @@ theorem logDerivBoundRightHalfPlane : LogDerivRight := by
   rcases lt_or_ge s.re (1 + ε / 2) with hlt | hge
   · have hreal : ‖((s.re : ℂ) - 1)‖ = s.re - 1 := by
       rw [← ofReal_one, ← ofReal_sub, Complex.norm_real, Real.norm_of_nonneg hσ1.le]
-    have hd : dist (s.re : ℂ) 1 < ε := by
-      rw [Complex.dist_eq, hreal]; linarith
-    have hne : (s.re : ℂ) ∈ ({1}ᶜ : Set ℂ) := by
-      simp only [Set.mem_compl_iff, Set.mem_singleton_iff, ofReal_eq_one]; exact hs.ne'
-    have hb := hball hd hne
+    have hb := hball (by rw [Complex.dist_eq, hreal]; linarith) (by simpa using hs.ne')
     simp only [norm_one, mul_one] at hb
-    have hL := LSeries_vonMangoldt_eq_deriv_riemannZeta_div (s := (s.re : ℂ)) (by simpa using hs)
-    rw [lamF_eq_norm hs, hL, neg_div, norm_neg]
-    have htri : ‖deriv riemannZeta (s.re : ℂ) / riemannZeta (s.re : ℂ)‖ ≤
-        ‖deriv riemannZeta (s.re : ℂ) / riemannZeta (s.re : ℂ) + ((s.re : ℂ) - 1)⁻¹‖ +
-          ‖((s.re : ℂ) - 1)⁻¹‖ := by
-      have := norm_sub_le (deriv riemannZeta (s.re : ℂ) / riemannZeta (s.re : ℂ) +
-        ((s.re : ℂ) - 1)⁻¹) (((s.re : ℂ) - 1)⁻¹)
-      simpa using this
-    rw [norm_inv, hreal] at htri
-    have : B ≤ max (max B 0) (lamF (1 + ε / 2)) :=
-      le_max_of_le_left (le_max_left _ _)
+    rw [lamF_eq_norm hs, LSeries_vonMangoldt_eq_deriv_riemannZeta_div (by simpa using hs), neg_div, norm_neg]
+    have htri := norm_sub_le (deriv riemannZeta (s.re : ℂ) / riemannZeta (s.re : ℂ) + ((s.re : ℂ) - 1)⁻¹)
+      (((s.re : ℂ) - 1)⁻¹)
+    simp only [add_sub_cancel_right, norm_inv, hreal] at htri
+    have hBmax : B ≤ max (max B 0) (lamF (1 + ε / 2)) := le_max_of_le_left (le_max_left _ _)
     rw [one_div]
     linarith
-  · have h1 : lamF s.re ≤ lamF (1 + ε / 2) := lamF_anti (by linarith) hge
-    have : lamF (1 + ε / 2) ≤ max (max B 0) (lamF (1 + ε / 2)) := le_max_right _ _
-    linarith
+  · linarith [lamF_anti (by linarith) hge, le_max_right (max B 0) (lamF (1 + ε / 2))]
 
 end Formalism.ZF

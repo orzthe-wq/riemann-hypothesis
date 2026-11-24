@@ -122,17 +122,17 @@ theorem CrystallineSemistableComparison.P.leibniz : ∀ {R : Type} [CommRing R] 
   refine CrystallineSemistableComparison.Auxff.four (Finset.sum_congr rfl fun j _ => ?_) (Finset.sum_congr rfl fun k _ => ?_) ?_
   · congr 1
     refine congrArg₂ (fun x y => P.μ _ x y) (term_congr _ _ _ _ _ ?_) (term_congr _ _ _ _ _ ?_) <;>
-        funext t <;> apply Fin.ext <;> simp only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, front, back, Fin.val_cast, Fin.val_castAdd, Fin.val_castSucc, Fin.val_natAdd, Fin.val_succ, Fin.val_last, Fin.val_zero] <;> split_ifs <;> omega
+        funext t <;> apply Fin.ext <;> simp only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, front, back, Fin.val_cast, Fin.val_castAdd, Fin.val_castSucc] <;> split_ifs <;> omega
   · rw [smul_smul, ← pow_add]
     congr 1
     · congr 1; simp; omega
     · refine congrArg₂ (fun x y => P.μ _ x y) (term_congr _ _ _ _ _ ?_) (term_congr _ _ _ _ _ ?_) <;>
-        funext t <;> apply Fin.ext <;> simp only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, front, back, Fin.val_cast, Fin.val_castAdd, Fin.val_castSucc, Fin.val_natAdd, Fin.val_succ, Fin.val_last, Fin.val_zero] <;> split_ifs <;> omega
+        funext t <;> apply Fin.ext <;> simp only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, front, back, Fin.val_cast, Fin.val_natAdd, Fin.val_succ] <;> split_ifs <;> omega
   · rw [smul_smul, ← pow_add, add_eq_zero_iff_eq_neg, ← neg_smul]
     congr 1
     · simp [pow_succ]
     · refine congrArg₂ (fun x y => P.μ _ x y) (term_congr _ _ _ _ _ ?_) (term_congr _ _ _ _ _ ?_) <;>
-        funext t <;> apply Fin.ext <;> simp only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, front, back, Fin.val_cast, Fin.val_castAdd, Fin.val_castSucc, Fin.val_natAdd, Fin.val_succ, Fin.val_last, Fin.val_zero] <;> split_ifs <;> omega
+        funext t <;> apply Fin.ext <;> simp only [Function.comp, CrystallineSemistableComparison.Auxff.sa_val, front, back, Fin.val_last, Fin.val_zero] <;> split_ifs <;> omega
 
 namespace CrystallineSemistableComparison.Auxff
 open CategoryTheory CrystallineSemistableComparison CrystallineSemistableComparison.CH

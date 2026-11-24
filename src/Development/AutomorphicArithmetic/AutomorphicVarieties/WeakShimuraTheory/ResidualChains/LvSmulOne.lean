@@ -70,7 +70,7 @@ end UpperTheory.V.Ws.Chain.Levi
 private theorem levi_lemma {k : Type} [Field k] (X : M4 k) :
     adj (UpperTheory.V.Ws.Chain.Levi.lv X) = UpperTheory.V.Ws.Chain.Levi.lv (adj X) := by
   ext i j
-  fin_cases i <;> fin_cases j <;> simp [adj, UpperTheory.V.Ws.Chain.Levi.lv_apply] <;> rfl
+  fin_cases i <;> fin_cases j <;> simp [adj, UpperTheory.V.Ws.Chain.Levi.lv_apply]
 
 private theorem levi_lv_mul_of_par {k : Type} [Field k] (X Y : M4 k) (hX : UpperTheory.V.Ws.Chain.Levi.Par X)
     (hY : UpperTheory.V.Ws.Chain.Levi.Par Y) :

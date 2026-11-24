@@ -1,19 +1,23 @@
 module
 
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.Topology.ContinuousMap.Star
+public import Mathlib.MeasureTheory.Integral.BoundedContinuousFunction
+public import Mathlib.Topology.ContinuousMap.StoneWeierstrass
+public import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsFurtherExtra
 public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionHeisenbergInvariant
 public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissible
 public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaSumAdmissibility
-import GroundTheory.GlobalFields.Adele.Compact
-import GroundTheory.GlobalFields.Adele.Discrete
-import Mathlib.Algebra.Module.Torsion.Prod
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Analysis.CStarAlgebra.ContinuousMap
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -26,17 +30,11 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.TotallySplit
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -44,7 +42,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -57,11 +54,122 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import GroundTheory.GlobalFields.Adele.Compact
+import GroundTheory.GlobalFields.Adele.Discrete
+import Mathlib.Algebra.Module.Torsion.Prod
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.LocallyConstant.Algebra
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsFurtherExtra, Development.AutomorphicSpectrum.Proofs.MembershipProofs.RationalUnitsHaarCharacterOne
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsFurtherExtra =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsFurtherExtra", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.InnerProductSpace.Basic\npublic import Mathlib.MeasureTheory.Integral.Bochner.Basic\npublic import Mathlib.Topology.ContinuousMap.Star\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.CStarAlgebra.ContinuousMap\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.MeasureTheory.Integral.BoundedContinuousFunction\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import Mathlib.Topology.ContinuousMap.StoneWeierstrass\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory in
+theorem UpperTheory.Reformulated.B.Qo7.eq_zero_of_orth :
+    ∀ {K : Type} [inst : TopologicalSpace K] [CompactSpace K]
+    [inst_2 : MeasurableSpace K] [BorelSpace K] (μ : MeasureTheory.Measure K) [MeasureTheory.IsFiniteMeasure μ]
+    [μ.IsOpenPosMeasure] (S : Set C(K, ℂ)),
+    (1 : C(K, ℂ)) ∈ S →
+      (∀ a ∈ S, ∀ b ∈ S, a * b ∈ S) →
+        (∀ a ∈ S, Star.star a ∈ S) →
+          (∀ (x y : K), x ≠ y → ∃ a ∈ S, (a : K → ℂ) x ≠ (a : K → ℂ) y) →
+            ∀ (f : C(K, ℂ)), (∀ a ∈ S, ∫ (x : K), (a : K → ℂ) x * (f : K → ℂ) x ∂μ = (0 : ℂ)) → f = (0 : C(K, ℂ)) := by
+  intro K _ _ _ _ μ _ _ S h1 hmul hstar hsep f hf
+  have hint : ∀ g : C(K, ℂ), Integrable (fun x => g x) μ := fun g =>
+    (BoundedContinuousFunction.mkOfCompact g).integrable μ
+  have hint' : ∀ a : C(K, ℂ), Integrable (fun x => a x * f x) μ := fun a => hint (a * f)
+  let L0 : C(K, ℂ) →ₗ[ℂ] ℂ :=
+    { toFun := fun a => ∫ x, a x * f x ∂μ
+      map_add' := fun a b => by
+        simp only [ContinuousMap.add_apply, add_mul]
+        exact integral_add (hint' a) (hint' b)
+      map_smul' := fun c a => by
+        simp only [ContinuousMap.smul_apply, smul_eq_mul, mul_assoc, RingHom.id_apply]
+        exact integral_const_mul c _ }
+  have hL : Continuous L0 := by
+    refine (L0.mkContinuous (‖f‖ * μ.real Set.univ) fun a => ?_).continuous
+    have : ‖∫ x, a x * f x ∂μ‖ ≤ (‖a‖ * ‖f‖) * μ.real Set.univ := by
+      refine norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall fun x => ?_)
+      rw [norm_mul]
+      exact mul_le_mul (a.norm_coe_le_norm x) (f.norm_coe_le_norm x) (norm_nonneg _) (norm_nonneg _)
+    calc ‖L0 a‖ ≤ (‖a‖ * ‖f‖) * μ.real Set.univ := this
+      _ = _ := by ring
+  have hspan : ∀ a ∈ StarAlgebra.adjoin ℂ S, a ∈ Submodule.span ℂ S := by
+    intro a ha
+    induction ha using StarAlgebra.adjoin_induction with
+    | mem x hx => exact Submodule.subset_span hx
+    | algebraMap r =>
+      rw [Algebra.algebraMap_eq_smul_one]
+      exact Submodule.smul_mem _ _ (Submodule.subset_span h1)
+    | add x y _ _ hx hy => exact Submodule.add_mem _ hx hy
+    | mul x y _ _ hx hy =>
+      have h := Submodule.mul_mem_mul hx hy
+      rw [Submodule.span_mul_span] at h
+      refine Submodule.span_mono ?_ h
+      rintro _ ⟨u, hu, v, hv, rfl⟩
+      exact hmul u hu v hv
+    | star x _ hx =>
+      clear * - hx hstar
+      induction hx using Submodule.span_induction with
+      | mem y hy => exact Submodule.subset_span (hstar y hy)
+      | zero => simp
+      | add y z _ _ hy hz => rw [star_add]; exact Submodule.add_mem _ hy hz
+      | smul c y _ hy => rw [star_smul]; exact Submodule.smul_mem _ _ hy
+  have hker : Submodule.span ℂ S ≤ LinearMap.ker L0 :=
+    Submodule.span_le.2 fun a ha => hf a ha
+  have hsp : (StarAlgebra.adjoin ℂ S).SeparatesPoints := by
+    intro x y hxy
+    obtain ⟨a, ha, hne⟩ := hsep x y hxy
+    exact ⟨a, ⟨a, StarAlgebra.subset_adjoin ℂ S ha, rfl⟩, hne⟩
+  have htop := ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _ hsp
+  have hall : ∀ a : C(K, ℂ), L0 a = 0 := by
+    intro a
+    have ha : a ∈ closure (StarAlgebra.adjoin ℂ S : Set C(K, ℂ)) := by
+      have : a ∈ (StarAlgebra.adjoin ℂ S).topologicalClosure := by
+        rw [htop]; exact StarSubalgebra.mem_top
+      exact this
+    exact closure_minimal (t := {b | L0 b = 0}) (fun b hb => hker (hspan b hb))
+      (isClosed_eq hL continuous_const) ha
+  have h0 : ∫ x, ‖f x‖ ^ 2 ∂μ = 0 := by
+    have h := hall (star f)
+    change ∫ x, (star f) x * f x ∂μ = 0 at h
+    have e : (fun x => (star f) x * f x) = fun x => ((‖f x‖ ^ 2 : ℝ) : ℂ) := by
+      funext x
+      simp only [ContinuousMap.star_apply, RCLike.star_def]
+      rw [Complex.conj_mul']
+      push_cast
+      rfl
+    rw [e, integral_complex_ofReal] at h
+    exact_mod_cast h
+  have hc : Continuous fun x => ‖f x‖ ^ 2 := by fun_prop
+  have hi : Integrable (fun x => ‖f x‖ ^ 2) μ :=
+    (BoundedContinuousFunction.mkOfCompact ⟨_, hc⟩).integrable μ
+  have hae := (integral_eq_zero_iff_of_nonneg (fun x => by positivity) hi).1 h0
+  have heq := (hc.ae_eq_iff_eq μ continuous_zero).1 hae
+  ext x
+  simpa using congrFun heq x
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsFurtherExtra =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.MembershipProofs.RationalUnitsHaarCharacterOne =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.MembershipProofs.RationalUnitsHaarCharacterOne", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsFurtherExtra\npublic import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionHeisenbergInvariant\npublic import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissible\npublic import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaSumAdmissibility\nimport GroundTheory.GlobalFields.Adele.Compact\nimport GroundTheory.GlobalFields.Adele.Discrete\nimport Mathlib.Algebra.Module.Torsion.Prod\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.LocallyConstant.Algebra\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix NumberField IsDedekindDomain GlobalTheory.WeilM MeasureTheory
@@ -70,12 +178,6 @@ open scoped TensorProduct Pointwise Classical
 noncomputable section
 
 namespace GlobalTheory.CompanionTheory.ThetaAvg
-
-theorem eq_zero_of_orth {K : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K]
-    (μ : Measure K) [IsFiniteMeasure μ] [μ.IsOpenPosMeasure] (S : Set C(K, ℂ)) (h1 : 1 ∈ S)
-    (hmul : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S) (hstar : ∀ a ∈ S, star a ∈ S)
-    (hsep : ∀ x y : K, x ≠ y → ∃ a ∈ S, a x ≠ a y) (f : C(K, ℂ)) (hf : ∀ a ∈ S, ∫ x, a x * f x ∂μ = 0) : f = 0 :=
-  _root_.UpperTheory.Reformulated.B.Qo7.eq_zero_of_orth μ S h1 hmul hstar hsep f hf
 
 def IsPer {G : Type} [AddCommGroup G] [TopologicalSpace G] (Γ : AddSubgroup G) (f : G → ℂ) : Prop :=
   Continuous f ∧ ∀ γ ∈ Γ, ∀ x, f (x + γ) = f x
@@ -158,7 +260,7 @@ theorem exists_mean {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologi
     rw [integral_map hτ.measurable.aemeasurable h.continuous.aestronglyMeasurable]
     rfl
   · obtain ⟨h, rfl⟩ := hlift f hf
-    have := eq_zero_of_orth μ (π ⁻¹' S) h1 (fun a ha b hb => hmul _ ha _ hb) (fun a ha => hstar _ ha) ?_ h ?_
+    have := _root_.UpperTheory.Reformulated.B.Qo7.eq_zero_of_orth μ (π ⁻¹' S) h1 (fun a ha b hb => hmul _ ha _ hb) (fun a ha => hstar _ ha) ?_ h ?_
     · rw [this]; rfl
     · intro p q hpq
       induction p using QuotientAddGroup.induction_on with
@@ -502,7 +604,7 @@ theorem theta_mean : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompactSpa
   intro F _ _ _ _ κ _ ψ hc hne htriv L hL
   obtain ⟨-, ⟨θ, -, hθ⟩, Φ₀, hΦ₀, hΦ₀'⟩ := ThetaAdm.theta_adm F κ
   obtain ⟨hpres, hrat⟩ := AdelicHeis.schr_mem_and_thetaSum F κ ψ hc hne htriv
-  obtain ⟨hψ, hann⟩ := AdeleAnn.unitary_and_annihilator_eq F ψ hc hne htriv
+  obtain ⟨hψ, hann⟩ := _root_.UpperTheory.Reformulated.B.UnitaryAnnihilator.unitary_and_annihilator_eq F ψ hc hne htriv
   obtain ⟨C₀, hC₀, hC₀'⟩ := GroundTheory.Global.exists_isCompact_forall_exists_sub_mem F
   have hD₀ : IsCompact (C₀ ×ˢ (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F)) :
       Set (AdeleRing (𝓞 F) F)) := hC₀.prod (GroundTheory.Global.isCompact_integralFiniteAdeles F)
@@ -538,3 +640,7 @@ theorem theta_mean : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompactSpa
   · rw [hθ _ (hT _ hΦ), hθ _ hΦ, hTθ _ hΦ]
 
 end GlobalTheory.CompanionTheory.ThetaAvg
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.MembershipProofs.RationalUnitsHaarCharacterOne =====

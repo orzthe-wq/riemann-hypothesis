@@ -7,7 +7,7 @@ public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.Law
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionPullbackExistsUnique
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BaseCoverFramesDifferByRationalIsometry
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoverComponentEqImpliesBaseComponentEq
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoverFramedPointOverMovedBaseFrameStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoverFramedPointOverMovedBaseFrame
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCoverDictionaryAdelicElementComponent
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormGenEqOneOfFrOver
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RationalIsometryMapsFlagDomainFrames
@@ -61,18 +61,6 @@ namespace GlobalTheory.CoverFrameMod
 
 open CategoryTheory
 
-section Weight
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
-
-theorem wchar_gen {S : Type} [CommRing S] (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (u : Sˣ) :
-    wchar (ex Dw a n) (fun i : Ix Dw => Option.elim i u (fun _ => 1)) = (u : S) ^ n := by
-  unfold wchar
-  rw [Fintype.prod_option]
-  simp [ex]
-
-end Weight
-
 variable {D : D7} {T : CoreJ D} {j : ℕ} {σ : T.Q.c.F →+* ℂ}
 
 def midEmb (C : Cover T j σ) : C.c'.F →+* ℂ := C.σ₂.comp (C.d.eF : C.c'.F →+* C.d.c₂.F)
@@ -112,7 +100,7 @@ theorem exists_scalar (C : Cover T j σ) (hσ : C.σ₂.comp C.inc = σ) (y : Fr
     have hb : FrBor (fun i => Option.elim i t₀ (fun _ => 1)) y₀ (y'.res C.hle hov) := ht
     have h2 := (GlobalTheory.Frames.algebraic_laws GlobalTheory.lawsFieldsSeparately.2.1 _ _ _ _ (T.Q.Xo j) T.Q.c).2.2.2.2.2.2
       (CAt (midEmb C)) (inferInstanceAs (IsReduced ℂ)) a n f hf _ _ _ hb
-    rw [wchar_gen] at h2
+    rw [_root_.GlobalTheory.CoverFrameRead.wchar_generator] at h2
     exact h1.trans h2
 
 
@@ -129,7 +117,7 @@ theorem comp_over_comp_norm : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, For
     fun τ => ((hU.2.1 _).2 τ).trans ((hU₂.2.1 _).2 τ).symm
   have hx' : x' ∈ ((T.U j σ).X (T.dict j σ h₀).1).dom :=
     GlobalTheory.FrameDom.mem_dom_of_isometry _ _ _ _ γ ((hU.2.1 _).1.trans (hU₂.2.1 _).1.symm) hΨ hiso x x' hx hxx'
-  obtain ⟨o₁, o₂⟩ := GlobalTheory.T.coverFramedPoint_over_moved_base_frame D T hT j hj σ hσ C hC h₀ γ hΛ hiso hfr x x' hx hx' hxx'
+  obtain ⟨o₁, o₂⟩ := _root_.GlobalTheory.CoverFrameOver.un_over D T hT j hj σ hσ C hC h₀ γ hΛ hiso hfr x x' hx hx' hxx'
   obtain ⟨t, ht, hn, hr⟩ := exists_scalar C hC.2.2.1 _ _ o₁ o₂
   refine ⟨hx', t, ht, fun hd => ?_, fun n a _ f hf f₂ _ hp => ?_⟩
   · have hd' : ∀ τ i, ‖dmin ((T.U j σ).X (T.dict j σ h₀).1).Gm x' τ i‖ = 1 := by

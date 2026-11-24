@@ -58,18 +58,6 @@ noncomputable section
 
 namespace GlobalTheory.CoefScale
 
-lemma weight_colW_apply {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (t : Fin n) :
-    Finsupp.weight (Formalism.GradedWeylDivisibility.colW r n) m t = ∑ a : Fin r, m (a, t) := by
-  rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply,
-    Fintype.sum_prod_type_right]
-  rw [Finset.sum_eq_single t]
-  · refine Finset.sum_congr rfl fun a _ => ?_
-    simp [Formalism.GradedWeylDivisibility.colW]
-  · intro s _ hs
-    refine Finset.sum_eq_zero fun a _ => ?_
-    simp [Formalism.GradedWeylDivisibility.colW, Pi.single_apply, Ne.symm hs]
-  · simp
-
 theorem rowAct_scalar_dualWeyl {r n : ℕ} (ν : Fin n → ℕ) (c : ℂ) (F : MvPolynomial (Fin r × Fin n) ℂ)
     (hF : F ∈ Formalism.GradedWeylDivisibility.dualWeyl ℂ r n ν) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (Matrix.diagonal fun _ : Fin r => c) F = c ^ (∑ t, ν t) • F := by
@@ -85,7 +73,7 @@ theorem rowAct_scalar_dualWeyl {r n : ℕ} (ν : Fin n → ℕ) (c : ℂ) (F : M
     simp only [Formalism.GradedWeylDivisibility.rowDeg]
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun t _ => ?_
-    rw [← weight_colW_apply, hm]
+    rw [← _root_.Formalism.GradedWeylDivisibility.lccomp_weight_colW_apply, hm]
 
 end GlobalTheory.CoefScale
 

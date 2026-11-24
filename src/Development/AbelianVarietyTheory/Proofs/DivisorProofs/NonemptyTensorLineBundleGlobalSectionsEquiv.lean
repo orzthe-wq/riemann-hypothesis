@@ -124,7 +124,7 @@ def mulSec (A B : LB T) (s : LB.Sec A) (t : LB.Sec B) : LB.Sec (CechPic.tens A B
         (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)),
       sec_rel t p.2 q.2 (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)
         (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right))]
-    simp only [Units.val_mul, val_res, resG_resG]
+    simp only [Units.val_mul, val_res]
     ring
 
 def mulBil (A B : LB T) :

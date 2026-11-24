@@ -167,7 +167,7 @@ theorem exists_highest (M : GKMod p q) [Nontrivial M.V] : ∃ μ v, IsHW M.act �
   simp only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker]
   intro a b hab
   by_contra hne
-  have hs : sameBlock a b := by cases a <;> cases b <;> first | trivial | exact hab
+  have hs : sameBlock a b := by cases a <;> cases b <;> first | trivial
   have hlt : k b < k a := by
     cases a <;> cases b <;> first | exact hab.elim | skip
     all_goals

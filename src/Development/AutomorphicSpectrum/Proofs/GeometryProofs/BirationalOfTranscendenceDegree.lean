@@ -3,7 +3,7 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 public import GroundTheory.HeightsAndTheta.Heights.HeightKernels.PCoordConeArithVar
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsArithVarOfBlockAlgebraic
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PConeTrdeg
 import Mathlib.Algebra.AffineMonoid.UniqueSums
 import Mathlib.Algebra.MvPolynomial.Nilpotent
@@ -160,7 +160,7 @@ theorem coordTie_birational_isArithVar (X : Scheme.{0}) (Ω : Type) [Field Ω] (
   have htop : GroundTheory.Heights₂.Heights.CoordinateConeArithVar.ratioField y c = ⊤ := by
     rw [eq_top_iff]
     intro a _
-    obtain ⟨s, hs, hu, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ _ h c (TieArith.genCpt ξ) hchart a).mp
+    obtain ⟨s, hs, hu, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ _ _ h c (TieArith.genCpt ξ) hchart a).mp
       (TieArith.mem_regAt_genCpt ξ h.gen a)
     have h1 := TieArith.adjoin_le_ratioField y c hs
     have h2 := TieArith.adjoin_le_ratioField y c hsa

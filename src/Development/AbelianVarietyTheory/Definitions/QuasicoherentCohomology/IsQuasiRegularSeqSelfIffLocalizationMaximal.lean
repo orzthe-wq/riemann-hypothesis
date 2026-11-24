@@ -348,7 +348,7 @@ theorem isQuasiRegularSeq_self_iff (f : ι → R) :
     have hco : ∀ β : MonoDeg ι a,
         (∑ γ : MonoDeg ι a, MvPolynomial.monomial γ.1 (c γ)).coeff β.1 = c β := by
       intro β
-      simp [MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, Subtype.val_inj]
+      simp [MvPolynomial.coeff_monomial, Subtype.val_inj]
     have hp : (∑ γ : MonoDeg ι a, MvPolynomial.monomial γ.1 (c γ)).IsHomogeneous a :=
       MvPolynomial.IsHomogeneous.sum _ _ _ fun γ _ => MvPolynomial.isHomogeneous_monomial _ γ.2
     rw [← hco α]

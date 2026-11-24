@@ -72,11 +72,6 @@ theorem dilEx_pf (n : ℕ) (X : Fin n → ℝ) (τ : ℝ) : ∃ y : GR n, IsDil 
     simp [h1, h2, h3, h4]
   exact ⟨Krd.DM.mkG _ hg, rfl⟩
 
-theorem decW_pf {d : SD σ} (R : RD d) (w : InfinitePlace F) (x : d.G) :
-    ∃ (x' : d.G) (y : GR d.n), x = x' * R.ι w y ∧ ∀ y' : GR d.n, x' * R.ι w y' = R.ι w y' * x' := by
-  obtain ⟨x', y, h, hx⟩ := KSplitW.decompW d R w x
-  exact ⟨x', y, h, KSplitW.commW d R w x' hx⟩
-
 end PositivityTheory.SiegelWeilFormula.AStep
 
 end

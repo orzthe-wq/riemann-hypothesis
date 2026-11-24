@@ -101,7 +101,7 @@ theorem iso_bot_C {n : ℕ} (G B Bi : Matrix (Fin n) (Fin n) ℂ) (hB : B * Bi =
     have : (Matrix.scalar (Fin n) z - G).det = 0 := by
       refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨v, hv0, ?_⟩
       rw [Matrix.sub_mulVec, hGv]
-      simp [Matrix.scalar_apply, Matrix.smul_mulVec]
+      simp [Matrix.scalar_apply]
     rw [Polynomial.IsRoot, Matrix.eval_charpoly]
     exact this
   have hz1 : star z * z = 1 := by

@@ -1,12 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
-import Development.AbelianVarietyTheory.CrystallinePeriods.AdicMaps
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdicCompletionPrincipalPerfect
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfAdicTopologicalBasisOverBreuilKisinStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfAdicTopologicalBasisOverBreuilKisin
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EisensteinDivClosedDiscOfTopBasis
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElement
+import Development.AbelianVarietyTheory.CrystallinePeriods.AdicMaps
+import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox
 
 @[expose] public section
 
@@ -60,10 +61,6 @@ noncomputable section
 namespace GlobalTheory.AcrisDisc
 
 variable {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K)
-
-theorem ev_alg (n : ℕ) (x : Per.AinfP l) :
-    Per.ev l n (algebraMap (Per.AinfP l) (Per.BdRp l) x) = Ideal.Quotient.mk _ x :=
-  GlobalTheory.RingIface.ev_alg l n x
 
 theorem norm_l_le : ‖((l : ℕ) : bk.DA bk.ρ₀)‖ ≤ (l : ℝ)⁻¹ := by
   have hl0 : (0 : ℝ) < l := Nat.cast_pos.2 hl.out.pos
@@ -115,7 +112,7 @@ namespace GlobalTheory.AcrisDisc
 
 theorem isClosed_range_E_pow {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) (m : ℕ) :
     IsClosed (Set.range fun v : bk.DA bk.ρ₀ => bk.iS bk.E ^ m * v) := by
-  obtain ⟨ι, ⟨TB⟩⟩ := GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk
+  obtain ⟨ι, ⟨TB⟩⟩ := _root_.GlobalTheory.BSP.AinfTopBasis.main l K bk
   have hρ0 : 0 < bk.ρ₀ := NNReal.rpow_pos (Nat.cast_pos.2 hl.out.pos)
   have hρ1 : bk.ρ₀ < 1 := NNReal.rpow_lt_one_of_one_lt_of_neg (Nat.one_lt_cast.2 hl.out.one_lt)
     (neg_neg_of_pos (one_div_pos.2 (Nat.cast_pos.2 bk.deg_pos)))
@@ -162,7 +159,7 @@ theorem mem_kerTheta_pow_of_mem_filtration {l : ℕ} [hl : Fact l.Prime] (C : Co
       ((l : ℕ) : Per.BdRp l) ^ r * (((l : ℕ) : Per.BdRp l) ^ N * C.j z) := by
     rw [map_mul, map_add (f := _), map_mul, map_pow, map_pow, map_natCast, C.j_cris.on0]
     ring
-  rw [e, map_add (f := _), map_mul, map_mul, ha, map_pow, map_pow, map_natCast, ev_alg] at h0
+  rw [e, map_add (f := _), map_mul, map_mul, ha, map_pow, map_pow, map_natCast, _root_.GlobalTheory.MemLoc.CrisUnique.ev_alg] at h0
   rw [map_add (f := _), map_mul, map_mul, map_pow, map_pow, map_natCast]
   exact h0
 

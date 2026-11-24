@@ -1,17 +1,28 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaAdjointExactStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaIsomorphismTransportStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaEquivariantFrobeniusStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BetaEquivariantFrobeniusStatement
+public import Development.WeilBound.CoreStatements.HodgeTatePoints.FirstPowerZeroAt
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.ConstantCoeffEv
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalBilinearTermProduct
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MultiplicationByPFactorsFrobenius
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOneSeriesPFormula
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowerSeriesPowPFrobenius
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.RingTheory.LocalRing.ResidueField.Defs
+public import Mathlib.Data.Matrix.ColumnRowPartitioned
+public import Mathlib.Data.Matrix.Basic
+public import Mathlib.Data.Matrix.Block
+public import Mathlib.LinearAlgebra.Basis.VectorSpace
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaIsomorphismTransport
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaEquivariantFrobenius
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BetaEquivariantFrobenius
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualLatticeDegreeNeg
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalDataBaseChangeStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalGroupActionRingHomStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairingStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransportStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalDataBaseChange
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalGroupActionRingHom
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusLatticeDegreeMulP
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalMatrixCoprimeDecompositionStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -30,7 +41,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -38,7 +48,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -51,9 +60,482 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogChain
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
+import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
+import Mathlib.RingTheory.MvPowerSeries.Basic
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairing
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransport
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOnePowTwoCommutation, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowTwoSymplecticRelation, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaAdjointExact, Development.WeilBound.CoreStatements.HodgeTatePoints.CgSplit, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalMatrixCoprimeDecomposition, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FamilyGivesConjugateLieData
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOnePowTwoCommutation =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOnePowTwoCommutation", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.FirstPowerZeroAt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
+
+namespace GlobalTheory.CompanionTheory.Ar.Conj
+
+theorem pow_interchange : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (m n : ℕ), pow2 B n ^ m * ev (n := 2) ![pt R d 0, comp1 (B.A.act (n : O)) (pt R d 1)] (pow1 B m) = pow1 B m ^ n * ev (n := 2) ![comp1 (B.A.act (m : O)) (pt R d 0), pt R d 1] (pow2 B n) :=
+  PositivityTheory.HtPt.Cc.pow_inter
+
+end GlobalTheory.CompanionTheory.Ar.Conj
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOnePowTwoCommutation =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowTwoSymplecticRelation =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowTwoSymplecticRelation", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.FirstPowerZeroAt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
+
+namespace GlobalTheory.CompanionTheory.Ar.Conj
+
+theorem pow_sy_exchange : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (n : ℕ), pow2 B n * B.sy ^ n = ev (n := 2) ![pt R d 0, comp1 (B.A.act (n : O)) (pt R d 1)] B.sy * ev (n := 2) ![pt R d 1, pt R d 0] (pow1 B n) :=
+  @PositivityTheory.HtPt.Cc.pow_sy
+
+end GlobalTheory.CompanionTheory.Ar.Conj
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowTwoSymplecticRelation =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaAdjointExact =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaAdjointExact", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.ConstantCoeffEv\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalBilinearTermProduct\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MultiplicationByPFactorsFrobenius\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOnePowTwoCommutation\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOneSeriesPFormula\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowTwoSymplecticRelation\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowerSeriesPowPFrobenius\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogChain\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GlobalTheory.CompanionTheory.Ar.Conj.Isotropy
+
+open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.TB.LogPf GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
+
+variable {R : Type} [CommRing R] {d : ℕ}
+
+local notation "P₀" => pt R (n := 2) d 0
+local notation "P₁" => pt R (n := 2) d 1
+
+theorem cz_pair {n : ℕ} {a b : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0)
+    (hb : ∀ i, constantCoeff (b i) = 0) : CZ ![a, b] := by
+  intro j i
+  fin_cases j
+  · exact ha i
+  · exact hb i
+
+theorem cz_single {n : ℕ} {a : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0) : CZ ![a] := by
+  intro j i
+  fin_cases j
+  exact ha i
+
+theorem pt_noConst {n : ℕ} (j : Fin n) (i : Fin d) : constantCoeff (pt R d j i) = 0 := by
+  simp [pt]
+
+theorem ptPow_noConst {n p : ℕ} (hp : p ≠ 0) (j : Fin n) (i : Fin d) :
+    constantCoeff (ptPow R d p j i) = 0 := by
+  simp [ptPow, hp]
+
+theorem composition_no_constant_term {V : Pt R 1 d} (hV : ∀ i, constantCoeff (V i) = 0) {n : ℕ} {a : Pt R n d}
+    (ha : ∀ i, constantCoeff (a i) = 0) (i : Fin d) : constantCoeff (comp1 V a i) = 0 :=
+  constantCoeff_ev (cz_single ha) (hV i)
+
+theorem ev_pow_eq {m n : ℕ} {a : Fin m → Pt R n d} (ha : CZ a) (f : PS R m d) (k : ℕ) :
+    ev a (f ^ k) = ev a f ^ k := by
+  simp only [← evHom_apply ha, map_pow]
+
+theorem ev_pair_ev {n : ℕ} {a b : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0)
+    (hb : ∀ i, constantCoeff (b i) = 0) {u v : Pt R 2 d} (hu : ∀ i, constantCoeff (u i) = 0)
+    (hv : ∀ i, constantCoeff (v i) = 0) (f : PS R 2 d) :
+    ev ![a, b] (ev ![u, v] f) = ev ![fun i => ev ![a, b] (u i), fun i => ev ![a, b] (v i)] f := by
+  rw [ev_ev (cz_pair ha hb) (cz_pair hu hv)]
+  congr 1
+  funext j i
+  fin_cases j <;> rfl
+
+theorem ev_first {n : ℕ} {a b : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0)
+    (hb : ∀ i, constantCoeff (b i) = 0) : (fun i => ev ![a, b] (P₀ i)) = a :=
+  funext fun i => ev_X (cz_pair ha hb) 0 i
+
+theorem ev_second {n : ℕ} {a b : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0)
+    (hb : ∀ i, constantCoeff (b i) = 0) : (fun i => ev ![a, b] (P₁ i)) = b :=
+  funext fun i => ev_X (cz_pair ha hb) 1 i
+
+theorem ev_first_pow {n : ℕ} (p : ℕ) {a b : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0)
+    (hb : ∀ i, constantCoeff (b i) = 0) :
+    (fun i => ev ![a, b] (ptPow R d p 0 i)) = fun i => a i ^ p :=
+  funext fun i => by
+    simp only [ptPow]
+    rw [ev_pow_eq (cz_pair ha hb), ev_X (cz_pair ha hb)]
+    rfl
+
+theorem ev_second_pow {n : ℕ} (p : ℕ) {a b : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0)
+    (hb : ∀ i, constantCoeff (b i) = 0) :
+    (fun i => ev ![a, b] (ptPow R d p 1 i)) = fun i => b i ^ p :=
+  funext fun i => by
+    simp only [ptPow]
+    rw [ev_pow_eq (cz_pair ha hb), ev_X (cz_pair ha hb)]
+    rfl
+
+theorem pt_pow_eq {n : ℕ} (p : ℕ) (j : Fin n) : (fun i => pt R (n := n) d j i ^ p) = ptPow R d p j := rfl
+
+theorem ev_comp1_pair {V : Pt R 1 d} (hV : ∀ i, constantCoeff (V i) = 0) {m n : ℕ}
+    {a : Fin m → Pt R n d} (ha : CZ a) {b : Pt R m d} (hb : ∀ i, constantCoeff (b i) = 0) :
+    (fun i => ev a (comp1 V b i)) = comp1 V (fun i => ev a (b i)) := by
+  funext i
+  simp only [comp1]
+  rw [ev_ev ha (cz_single hb)]
+  congr 1
+  funext j l
+  fin_cases j
+  rfl
+
+theorem composition_frobenius_point {p n : ℕ} {a : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0) :
+    comp1 (ptPow R d p 0) a = fun i => a i ^ p := by
+  funext i
+  simp only [comp1, ptPow]
+  rw [ev_pow_eq (cz_single ha), ev_X (cz_single ha)]
+  rfl
+
+theorem composition_assoc_frobenius_point {V : Pt R 1 d} {p n : ℕ} (hp : p ≠ 0) {a : Pt R n d}
+    (ha : ∀ i, constantCoeff (a i) = 0) :
+    comp1 (comp1 V (ptPow R d p 0)) a = comp1 V (fun i => a i ^ p) := by
+  funext i
+  simp only [comp1]
+  rw [ev_ev (cz_single ha) (cz_single (ptPow_noConst hp 0))]
+  congr 1
+  funext j l
+  fin_cases j
+  exact congrFun (composition_frobenius_point ha) l
+
+theorem lin_tau {p : ℕ} (hp : p ≠ 1) : lin (ptPow R d p 0 : Pt R 1 d) 1 = 0 := by
+  ext i j
+  simp only [lin, ptPow, Matrix.zero_apply]
+  rw [coeff_X_pow, if_neg]
+  intro h
+  rcases (Finsupp.single_eq_single_iff _ _ _ _).1 h with ⟨_, h⟩ | ⟨h, _⟩
+  · exact hp h.symm
+  · exact one_ne_zero h
+
+theorem calc_cmp {f : PS R 2 d} (hf : AxOne f) {φ ψ : Pt R 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0)
+    (hψ : ∀ i, constantCoeff (ψ i) = 0) :
+    AxOne (ev (n := 2) ![comp1 φ P₀, comp1 ψ P₁] f) ∧
+      bil (ev (n := 2) ![comp1 φ P₀, comp1 ψ P₁] f) 1 1 = (lin φ 1).transpose * bil f 1 1 * lin ψ 1 :=
+  have t := _root_.GlobalTheory.CompanionTheory.Ar.Conj.BilCalc.bil_calc R d f f φ ψ hf hf hφ hψ
+  ⟨t.2.2.2.1, t.2.2.2.2.1⟩
+
+theorem comp1_identity_left {n : ℕ} (j : Fin n) : comp1 (pt R d 0) (pt R (n := n) d j) = pt R d j :=
+  germ_comp1_zero_point_left _ (pt_noConst j)
+
+theorem calc_right {f : PS R 2 d} (hf : AxOne f) {p : ℕ} (hp0 : p ≠ 0) (hp : p ≠ 1) :
+    AxOne (ev (n := 2) ![P₀, ptPow R d p 1] f) ∧ bil (ev (n := 2) ![P₀, ptPow R d p 1] f) 1 1 = 0 := by
+  have t := calc_cmp hf (φ := pt R d 0) (ψ := ptPow R d p 0) (pt_noConst 0) (ptPow_noConst hp0 0)
+  rw [comp1_identity_left, composition_frobenius_point (pt_noConst 1), pt_pow_eq, lin_tau hp, Matrix.mul_zero] at t
+  exact t
+
+theorem calc_left {f : PS R 2 d} (hf : AxOne f) {p : ℕ} (hp0 : p ≠ 0) (hp : p ≠ 1) :
+    AxOne (ev (n := 2) ![ptPow R d p 0, P₁] f) ∧ bil (ev (n := 2) ![ptPow R d p 0, P₁] f) 1 1 = 0 := by
+  have t := calc_cmp hf (φ := ptPow R d p 0) (ψ := pt R d 0) (ptPow_noConst hp0 0) (pt_noConst 0)
+  rw [comp1_identity_left, composition_frobenius_point (pt_noConst 0), pt_pow_eq, lin_tau hp, Matrix.transpose_zero,
+    Matrix.zero_mul, Matrix.zero_mul] at t
+  exact t
+
+theorem calc_map_right {f : PS R 2 d} (hf : AxOne f) {V : Pt R 1 d} (hV : ∀ i, constantCoeff (V i) = 0) :
+    AxOne (ev (n := 2) ![P₀, comp1 V P₁] f) ∧
+      bil (ev (n := 2) ![P₀, comp1 V P₁] f) 1 1 = bil f 1 1 * lin V 1 := by
+  have t := calc_cmp hf (φ := pt R d 0) (ψ := V) (pt_noConst 0) hV
+  rw [comp1_identity_left, lin_pt_eq_one, Matrix.transpose_one, Matrix.one_mul] at t
+  exact t
+
+theorem calc_map_left {f : PS R 2 d} (hf : AxOne f) {V : Pt R 1 d} (hV : ∀ i, constantCoeff (V i) = 0) :
+    AxOne (ev (n := 2) ![comp1 V P₀, P₁] f) ∧
+      bil (ev (n := 2) ![comp1 V P₀, P₁] f) 1 1 = (lin V 1).transpose * bil f 1 1 := by
+  have t := calc_cmp hf (φ := V) (ψ := pt R d 0) hV (pt_noConst 0)
+  rw [comp1_identity_left, lin_pt_eq_one, Matrix.mul_one] at t
+  exact t
+
+theorem axOne_swap {f : PS R 2 d} (hf : AxOne f) : AxOne (ev (n := 2) ![P₁, P₀] f) := by
+  have c0 : ∀ i, constantCoeff ((0 : Pt R 1 d) i) = 0 := fun i => by simp
+  have c1 : ∀ i, constantCoeff (pt R (n := 1) d 0 i) = 0 := pt_noConst 0
+  constructor
+  · rw [ev_pair_ev c0 c1 (pt_noConst 1) (pt_noConst 0), ev_first c0 c1, ev_second c0 c1]
+    exact hf.2
+  · rw [ev_pair_ev c1 c0 (pt_noConst 1) (pt_noConst 0), ev_first c1 c0, ev_second c1 c0]
+    exact hf.1
+
+theorem axOne_map {S : Type} [CommRing S] (φ : R →+* S) {f : PS R 2 d} (hf : AxOne f) :
+    AxOne (MvPowerSeries.map φ f) := by
+  have key : ∀ a : Fin 2 → Pt R 1 d, CZ a → ev a f = 1 →
+      ev (fun j l => MvPowerSeries.map φ (a j l)) (MvPowerSeries.map φ f) = 1 := by
+    intro a ha h
+    have e : MvPowerSeries.map φ (ev a f) =
+        ev (fun j l => MvPowerSeries.map φ (a j l)) (MvPowerSeries.map φ f) := by
+      unfold ev
+      exact map_subst ha.hasSubst f
+    rw [← e, h, map_one]
+  have c0 : ∀ i, constantCoeff ((0 : Pt R 1 d) i) = 0 := fun i => by simp
+  have c1 : ∀ i, constantCoeff (pt R (n := 1) d 0 i) = 0 := pt_noConst 0
+  constructor
+  · have := key _ (cz_pair c0 c1) hf.1
+    convert this using 2
+    funext j l
+    fin_cases j
+    · simp
+    · simp [pt]
+  · have := key _ (cz_pair c1 c0) hf.2
+    convert this using 2
+    funext j l
+    fin_cases j
+    · simp [pt]
+    · simp
+
+theorem calc_mul {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) :
+    AxOne (f * g) ∧ bil (f * g) 1 1 = bil f 1 1 + bil g 1 1 :=
+  have t := _root_.GlobalTheory.CompanionTheory.Ar.Conj.BilCalc.bil_calc R d f g (pt R d 0) (pt R d 0) hf hg (pt_noConst 0) (pt_noConst 0)
+  ⟨t.1, t.2.1 1⟩
+
+theorem calc_swap {f : PS R 2 d} (hf : AxOne f) :
+    bil (ev (n := 2) ![P₁, P₀] f) 1 1 = (bil f 1 1).transpose :=
+  (_root_.GlobalTheory.CompanionTheory.Ar.Conj.BilCalc.bil_calc R d f f (pt R d 0) (pt R d 0) hf hf (pt_noConst 0) (pt_noConst 0)).2.2.2.2.2.1 1 1
+
+theorem calc_pow {f : PS R 2 d} (hf : AxOne f) {p : ℕ} (hp : 1 ≤ p) :
+    bil (ev (n := 2) ![ptPow R d p 0, ptPow R d p 1] f) p p = bil f 1 1 :=
+  (_root_.GlobalTheory.CompanionTheory.Ar.Conj.BilCalc.bil_calc R d f f (pt R d 0) (pt R d 0) hf hf (pt_noConst 0) (pt_noConst 0)).2.2.2.2.2.2 p p hp hp
+
+theorem bil_map_eq_zero {S : Type} [CommRing S] (φ : R →+* S) {f : PS R 2 d} (h : bil f 1 1 = 0) :
+    bil (MvPowerSeries.map φ f) 1 1 = 0 := by
+  ext i j
+  have := congrFun (congrFun h i) j
+  simp only [bil, coeff_map, Matrix.zero_apply] at this ⊢
+  rw [this, map_zero]
+
+variable {O : Type} [CommRing O] [StarRing O]
+
+theorem am_mul_hw {p : ℕ} [Fact p.Prime] [CharP R p] (B : FB R d O) :
+    am B p * hw B p = (hw B p).transpose * (bil B.sy 1 1 * hw B p + (am B p).transpose) := by
+  have hp0 : p ≠ 0 := (Fact.out : p.Prime).ne_zero
+  have hp1 : p ≠ 1 := (Fact.out : p.Prime).ne_one
+  obtain ⟨V, hV, hact, hlin⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.mulp_factors_frobenius R p d O B
+  obtain ⟨g, hg, ha, hgb⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.pow_one_series_in_p R p d O B
+  have c0 : ∀ i, constantCoeff (P₀ i) = 0 := pt_noConst 0
+  have c1 : ∀ i, constantCoeff (P₁ i) = 0 := pt_noConst 1
+  have u0 : ∀ i, constantCoeff (ptPow R (n := 2) d p 0 i) = 0 := ptPow_noConst hp0 0
+  have u1 : ∀ i, constantCoeff (ptPow R (n := 2) d p 1 i) = 0 := ptPow_noConst hp0 1
+  have v0 := composition_no_constant_term hV c0
+  have v1 := composition_no_constant_term hV c1
+  have w0 := composition_no_constant_term hV u0
+  have w1 := composition_no_constant_term hV u1
+  have hA0 : comp1 (B.A.act (p : O)) P₀ = comp1 V (ptPow R d p 0) := by
+    rw [hact, composition_assoc_frobenius_point hp0 c0, pt_pow_eq]
+  have hA1 : comp1 (B.A.act (p : O)) P₁ = comp1 V (ptPow R d p 1) := by
+    rw [hact, composition_assoc_frobenius_point hp0 c1, pt_pow_eq]
+  have hsym : AxOne B.sy := ⟨B.symmetry_zero_fst, B.symmetry_zero_snd⟩
+  have hfs : ∀ f : PS R 2 d, f ^ p = ev (n := 2) ![ptPow R d p 0, ptPow R d p 1]
+      (MvPowerSeries.map (frobenius R p) f) := by
+    intro f
+    rw [_root_.GlobalTheory.CompanionTheory.Ar.Conj.pow_eq_ev_frobenius R p d 2 f]
+    congr 1
+    funext j
+    fin_cases j <;> rfl
+
+  obtain ⟨sy', hsy'⟩ : ∃ s, s = ev (n := 2) ![P₁, P₀] B.sy := ⟨_, rfl⟩
+  obtain ⟨s2, hs2⟩ : ∃ s, s = ev (n := 2) ![P₀, comp1 V P₁] B.sy := ⟨_, rfl⟩
+  obtain ⟨g1, hg1⟩ : ∃ s, s = ev (n := 2) ![P₁, P₀] g := ⟨_, rfl⟩
+  obtain ⟨t, ht⟩ : ∃ s, s = ev (n := 2) ![ptPow R d p 0, P₁] (MvPowerSeries.map (frobenius R p) sy') :=
+    ⟨_, rfl⟩
+  have axs2 : AxOne s2 := hs2 ▸ (calc_map_right hsym hV).1
+  have bs2 : bil s2 1 1 = bil B.sy 1 1 * hw B p := by rw [hs2, (calc_map_right hsym hV).2, hlin]
+  have axg1 : AxOne g1 := hg1 ▸ axOne_swap hg
+  have bg1 : bil g1 1 1 = (am B p).transpose := by rw [hg1, calc_swap hg, hgb]
+  have axsy' : AxOne (MvPowerSeries.map (frobenius R p) sy') :=
+    axOne_map _ (hsy' ▸ axOne_swap hsym)
+  have axt : AxOne t := ht ▸ (calc_left axsy' hp0 hp1).1
+  have bt : bil t 1 1 = 0 := ht ▸ (calc_left axsy' hp0 hp1).2
+  obtain ⟨g', hg'⟩ : ∃ s, s = s2 * g1 * t := ⟨_, rfl⟩
+  have axg' : AxOne g' := hg' ▸ (calc_mul (calc_mul axs2 axg1).1 axt).1
+  have bg' : bil g' 1 1 = bil B.sy 1 1 * hw B p + (am B p).transpose := by
+    rw [hg', (calc_mul (calc_mul axs2 axg1).1 axt).2, (calc_mul axs2 axg1).2, bs2, bg1, bt, add_zero]
+  have cQ := cz_pair c0 u1
+  have hb : pow2 B p = ev (n := 2) ![P₀, ptPow R d p 1] g' := by
+    have e1 := _root_.GlobalTheory.CompanionTheory.Ar.Conj.pow_sy_exchange R d O B p
+    have f1 : ev (n := 2) ![P₀, comp1 (B.A.act (p : O)) P₁] B.sy =
+        ev (n := 2) ![P₀, ptPow R d p 1] s2 := by
+      rw [hA1, hs2, ev_pair_ev c0 u1 c0 v1, ev_first c0 u1, ev_comp1_pair hV cQ c1, ev_second c0 u1]
+    have f2 : ev (n := 2) ![P₁, P₀] (pow1 B p) = ev (n := 2) ![P₀, ptPow R d p 1] g1 := by
+      rw [ha, hg1, ev_pair_ev c1 c0 u0 c1, ev_first_pow p c1 c0, ev_second c1 c0, pt_pow_eq,
+        ev_pair_ev c0 u1 c1 c0, ev_first c0 u1, ev_second c0 u1]
+    have f3 : sy' ^ p = ev (n := 2) ![P₀, ptPow R d p 1] t := by
+      rw [hfs, ht, ev_pair_ev c0 u1 u0 c1, ev_first_pow p c0 u1, ev_second c0 u1, pt_pow_eq]
+    have f4 : B.sy ^ p * sy' ^ p = 1 := by rw [← mul_pow, hsy', B.sy_inv, one_pow]
+    calc pow2 B p = pow2 B p * (B.sy ^ p * sy' ^ p) := by rw [f4, mul_one]
+      _ = pow2 B p * B.sy ^ p * sy' ^ p := (mul_assoc _ _ _).symm
+      _ = ev (n := 2) ![P₀, ptPow R d p 1] s2 * ev (n := 2) ![P₀, ptPow R d p 1] g1 *
+          ev (n := 2) ![P₀, ptPow R d p 1] t := by rw [e1, f1, f2, f3]
+      _ = ev (n := 2) ![P₀, ptPow R d p 1] g' := by rw [hg', ev_mul cQ, ev_mul cQ]
+
+  obtain ⟨g2, hg2⟩ : ∃ s, s = ev (n := 2) ![P₀, comp1 V P₁] g := ⟨_, rfl⟩
+  obtain ⟨g3, hg3⟩ : ∃ s, s = ev (n := 2) ![comp1 V P₀, P₁] g' := ⟨_, rfl⟩
+  have axg2 : AxOne g2 := hg2 ▸ (calc_map_right hg hV).1
+  have bg2 : bil g2 1 1 = am B p * hw B p := by rw [hg2, (calc_map_right hg hV).2, hgb, hlin]
+  have axg3 : AxOne g3 := hg3 ▸ (calc_map_left axg' hV).1
+  have bg3 : bil g3 1 1 = (hw B p).transpose * (bil B.sy 1 1 * hw B p + (am B p).transpose) := by
+    rw [hg3, (calc_map_left axg' hV).2, hlin, bg']
+  have cP := cz_pair u0 u1
+  have h1 : ev (n := 2) ![P₀, comp1 (B.A.act (p : O)) P₁] (pow1 B p) =
+      ev (n := 2) ![ptPow R d p 0, ptPow R d p 1] g2 := by
+    rw [hA1, ha, hg2, ev_pair_ev c0 w1 u0 c1, ev_first_pow p c0 w1, ev_second c0 w1, pt_pow_eq,
+      ev_pair_ev u0 u1 c0 v1, ev_first u0 u1, ev_comp1_pair hV cP c1, ev_second u0 u1]
+  have h2 : ev (n := 2) ![comp1 (B.A.act (p : O)) P₀, P₁] (pow2 B p) =
+      ev (n := 2) ![ptPow R d p 0, ptPow R d p 1] g3 := by
+    rw [hA0, hb, hg3, ev_pair_ev w0 c1 c0 u1, ev_first w0 c1, ev_second_pow p w0 c1, pt_pow_eq,
+      ev_pair_ev u0 u1 v0 c1, ev_comp1_pair hV cP c0, ev_first u0 u1, ev_second u0 u1]
+  have hmain : ev (n := 2) ![ptPow R d p 0, ptPow R d p 1]
+        (MvPowerSeries.map (frobenius R p) (pow2 B p) * g2) =
+      ev (n := 2) ![ptPow R d p 0, ptPow R d p 1]
+        (MvPowerSeries.map (frobenius R p) (pow1 B p) * g3) := by
+    rw [ev_mul cP, ev_mul cP, ← hfs, ← hfs, ← h1, ← h2]
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Conj.pow_interchange R d O B p p
+
+  have axb : AxOne (pow2 B p) := hb ▸ (calc_right axg' hp0 hp1).1
+  have bb : bil (pow2 B p) 1 1 = 0 := hb ▸ (calc_right axg' hp0 hp1).2
+  have axa : AxOne (pow1 B p) := ha ▸ (calc_left hg hp0 hp1).1
+  have ba : bil (pow1 B p) 1 1 = 0 := ha ▸ (calc_left hg hp0 hp1).2
+  have axfb := axOne_map (frobenius R p) axb
+  have axfa := axOne_map (frobenius R p) axa
+  have hp : 1 ≤ p := Nat.one_le_iff_ne_zero.2 hp0
+  have hco := congrArg (fun f => bil f p p) hmain
+  rw [calc_pow (calc_mul axfb axg2).1 hp, calc_pow (calc_mul axfa axg3).1 hp, (calc_mul axfb axg2).2,
+    (calc_mul axfa axg3).2, bil_map_eq_zero _ bb, bil_map_eq_zero _ ba, zero_add, zero_add, bg2, bg3] at hco
+  exact hco
+
+theorem beta_comp_alpha : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R p] (d : ℕ) (O : Type)
+    [CommRing O] [StarRing O] (B : FB R d O),
+    (∀ u y, u ⬝ᵥ beta B p y = pairH B (alpha B p u) y) ∧ beta B p ∘ₗ alpha B p = 0 := by
+  intro R _ p _ _ d O _ _ B
+  refine ⟨fun u y => dotProduct_beta B p u y, LinearMap.ext fun u => ?_⟩
+  have h : (hw B p).transpose * (am B p).transpose - am B p * hw B p +
+      (hw B p).transpose * bil B.sy 1 1 * hw B p = 0 := by
+    rw [am_mul_hw, Matrix.mul_add, Matrix.mul_assoc]
+    abel
+  rw [LinearMap.comp_apply, beta_alpha_apply, h, Matrix.zero_mulVec]
+  rfl
+
+end GlobalTheory.CompanionTheory.Ar.Conj.Isotropy
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaAdjointExact =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.CgSplit =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HodgeTatePoints.CgSplit", "h": "module\n\npublic import Mathlib.Data.Matrix.Mul\npublic import Mathlib.RingTheory.LocalRing.ResidueField.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\npublic import Mathlib.Data.Matrix.ColumnRowPartitioned\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Data.Matrix.Basic\npublic import Mathlib.Data.Matrix.Block\npublic import Mathlib.LinearAlgebra.Basis.VectorSpace\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Mathlib.LinearAlgebra.Matrix.NonsingularInverse\npublic import Mathlib.RingTheory.LocalRing.ResidueField.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace PositivityTheory.HtPt.Cg
+
+open Matrix
+
+theorem left_inv_of_residue {A : Type} [CommRing A] [IsLocalRing A] {m n : Type} [Fintype m] [Fintype n]
+    [DecidableEq m] [DecidableEq n] (M : Matrix m n A)
+    (h : ∀ u, (M.map (IsLocalRing.residue A)).mulVec u = 0 → u = 0) : ∃ N : Matrix n m A, N * M = 1 := by
+  have hi : LinearMap.ker (Matrix.toLin' (M.map (IsLocalRing.residue A))) = ⊥ := by
+    rw [LinearMap.ker_eq_bot']
+    intro u hu
+    exact h u (by simpa using hu)
+  obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective _ hi
+  have h1 : LinearMap.toMatrix' g * M.map (IsLocalRing.residue A) = 1 := by
+    have := congrArg LinearMap.toMatrix' hg
+    rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id] at this
+  choose l hl using fun i j => IsLocalRing.residue_surjective (LinearMap.toMatrix' g i j)
+  have h2 : (Matrix.of l * M).map (IsLocalRing.residue A) = 1 := by
+    rw [Matrix.map_mul, ← h1]
+    congr 1
+    ext i j
+    exact hl i j
+  have h3 : IsUnit (Matrix.of l * M).det := by
+    rw [← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, RingHom.mapMatrix_apply, h2, det_one]
+    exact one_ne_zero
+  exact ⟨(Matrix.of l * M)⁻¹ * Matrix.of l, by rw [Matrix.mul_assoc, nonsing_inv_mul _ h3]⟩
+
+theorem split_local : ∀ (A : Type) [CommRing A] [IsLocalRing A] (d : ℕ) (h a S : Matrix (Fin d) (Fin d) A), a * h - h.transpose * S * h - h.transpose * a.transpose = 0 → (∀ u : Fin d → IsLocalRing.ResidueField A, (h.map (IsLocalRing.residue A)).mulVec u = 0 → (a.transpose.map (IsLocalRing.residue A)).mulVec u = 0 → u = 0) → ∃ r₁ r₂ s₁ s₂ : Matrix (Fin d) (Fin d) A, r₁ * h + r₂ * a.transpose = 1 ∧ (a - h.transpose * S) * s₁ - h.transpose * s₂ = 1 ∧ h * r₁ + s₁ * (a - h.transpose * S) = 1 ∧ h * r₂ - s₁ * h.transpose = 0 ∧ a.transpose * r₁ + s₂ * (a - h.transpose * S) = 0 ∧ a.transpose * r₂ - s₂ * h.transpose = 1 := by
+  intro A _ _ d h a S hiso hinj
+  obtain ⟨N, hN⟩ := left_inv_of_residue (fromRows h a.transpose) (fun u hu => by
+    rw [fromRows_map, fromRows_mulVec] at hu
+    exact hinj u (funext fun i => congrFun hu (Sum.inl i)) (funext fun i => congrFun hu (Sum.inr i)))
+  obtain ⟨x, y, rfl⟩ : ∃ x y, N = fromCols x y := ⟨_, _, (fromCols_toCols N).symm⟩
+  rw [fromCols_mul_fromRows] at hN
+  have hT : h.transpose * x.transpose + a * y.transpose = 1 := by
+    have := congrArg Matrix.transpose hN
+    simpa [transpose_add, transpose_mul] using this
+  set b := a - h.transpose * S with hb
+  set s₁ := y.transpose
+  set s₂ := -(x.transpose + S * y.transpose) with hs₂
+  have e2 : b * s₁ - h.transpose * s₂ = 1 := by
+    rw [← hT, hb, hs₂]; noncomm_ring
+  have e0 : b * h - h.transpose * a.transpose = 0 := by
+    rw [← hiso, hb]; noncomm_ring
+  set w := x * s₁ + y * s₂ with hw
+  have e1 : (x - w * b) * h + (y + w * h.transpose) * a.transpose = 1 := by
+    have : (x - w * b) * h + (y + w * h.transpose) * a.transpose =
+      (x * h + y * a.transpose) - w * (b * h - h.transpose * a.transpose) := by noncomm_ring
+    rw [this, hN, e0]; simp
+  have e3 : (x - w * b) * s₁ + (y + w * h.transpose) * s₂ = 0 := by
+    have : (x - w * b) * s₁ + (y + w * h.transpose) * s₂ =
+      (x * s₁ + y * s₂) - w * (b * s₁ - h.transpose * s₂) := by noncomm_ring
+    rw [this, e2, ← hw]; simp
+  have hNM : fromBlocks (x - w * b) (y + w * h.transpose) b (-h.transpose) *
+      fromBlocks h s₁ a.transpose s₂ = 1 := by
+    rw [fromBlocks_multiply, e1, e3, ← fromBlocks_one]
+    congr 1
+    · rw [← e0]; noncomm_ring
+    · rw [← e2]; noncomm_ring
+  have hMN := mul_eq_one_comm.1 hNM
+  rw [fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj] at hMN
+  obtain ⟨f1, f2, f3, f4⟩ := hMN
+  refine ⟨_, _, s₁, s₂, e1, e2, f1, ?_, f3, ?_⟩
+  · rw [← f2]; noncomm_ring
+  · rw [← f4]; noncomm_ring
+
+end PositivityTheory.HtPt.Cg
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.CgSplit =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalMatrixCoprimeDecomposition =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalMatrixCoprimeDecomposition", "h": "module\n\npublic import Mathlib.Data.Matrix.Mul\npublic import Mathlib.RingTheory.LocalRing.ResidueField.Defs\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.CgSplit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft\nimport Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars\nimport Mathlib.RingTheory.MvPowerSeries.Basic\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
+
+namespace GlobalTheory.CompanionTheory.Ar.Split
+
+theorem isotropic_residue_injective_splits : ∀ (A : Type) [CommRing A] [IsLocalRing A] (d : ℕ) (h a S : Matrix (Fin d) (Fin d) A), a * h - h.transpose * S * h - h.transpose * a.transpose = 0 → (∀ u : Fin d → IsLocalRing.ResidueField A, (h.map (IsLocalRing.residue A)).mulVec u = 0 → (a.transpose.map (IsLocalRing.residue A)).mulVec u = 0 → u = 0) → ∃ r₁ r₂ s₁ s₂ : Matrix (Fin d) (Fin d) A, r₁ * h + r₂ * a.transpose = 1 ∧ (a - h.transpose * S) * s₁ - h.transpose * s₂ = 1 ∧ h * r₁ + s₁ * (a - h.transpose * S) = 1 ∧ h * r₂ - s₁ * h.transpose = 0 ∧ a.transpose * r₁ + s₂ * (a - h.transpose * S) = 0 ∧ a.transpose * r₂ - s₂ * h.transpose = 1 :=
+  @PositivityTheory.HtPt.Cg.split_local
+
+end GlobalTheory.CompanionTheory.Ar.Split
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalMatrixCoprimeDecomposition =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FamilyGivesConjugateLieData =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FamilyGivesConjugateLieData", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaAdjointExact\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaIsomorphismTransport\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaEquivariantFrobenius\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BetaEquivariantFrobenius\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualLatticeDegreeNeg\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalDataBaseChange\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalGroupActionRingHom\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusLatticeDegreeMulP\npublic import Mathlib.Data.Matrix.Mul\npublic import Mathlib.RingTheory.LocalRing.ResidueField.Defs\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LocalMatrixCoprimeDecomposition\nimport Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairing\nimport Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransport\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -440,13 +922,13 @@ theorem locSplit_of_mats (B : FB K d O) (p : ℕ) (i : C.I) (r₁ r₂ s₁ s₂
         rw [← Matrix.sub_mulVec, e₆, Matrix.one_mulVec]
       rw [alpha_apply, hs, hr, beta_apply]
       refine Prod.ext ?_ ?_
-      · simp only [Prod.fst_add, Matrix.mulVec_add, Matrix.mulVec_neg, Matrix.mulVec_sub,
+      · simp only [Prod.fst_add, Matrix.mulVec_add, Matrix.mulVec_sub,
           Matrix.mulVec_mulVec]
         calc _ = ((hw B p * r₁).mulVec y.1 +
               (s₁ * (am B p - (hw B p).transpose * bil B.sy 1 1)).mulVec y.1) +
             ((hw B p * r₂).mulVec y.2 - (s₁ * (hw B p).transpose).mulVec y.2) := by abel
           _ = y.1 := by rw [E₃, E₄, add_zero]
-      · simp only [Prod.snd_add, Matrix.mulVec_add, Matrix.mulVec_neg, Matrix.mulVec_sub,
+      · simp only [Prod.snd_add, Matrix.mulVec_add, Matrix.mulVec_sub,
           Matrix.mulVec_mulVec]
         calc _ = (((am B p).transpose * r₁).mulVec y.1 +
               (s₂ * (am B p - (hw B p).transpose * bil B.sy 1 1)).mulVec y.1) +
@@ -457,8 +939,8 @@ theorem locSplit {p : ℕ} [Fact p.Prime] [CharP K p] (F : Family C p d O) (i : 
     LocSplit C i (alpha (F.BK i) p) (beta (F.BK i) p) := by
   haveI : CharP (C.v i).valuationSubring p :=
     (RingHom.charP_iff (C.v i).valuationSubring.subtype Subtype.val_injective p).2 inferInstance
-  have mK := GlobalTheory.T.formal_data_base_change _ _ (C.v i).valuationSubring.subtype d O (F.Bi i) (F.BK i) (F.mapK i)
-  have mk := GlobalTheory.T.formal_data_base_change _ _ (IsLocalRing.residue _) d O (F.Bi i) (F.Bk i) (F.mapk i)
+  have mK := _root_.GlobalTheory.CompanionTheory.Ar.Conj.map_mats_baseChange _ _ (C.v i).valuationSubring.subtype d O (F.Bi i) (F.BK i) (F.mapK i)
+  have mk := _root_.GlobalTheory.CompanionTheory.Ar.Conj.map_mats_baseChange _ _ (IsLocalRing.residue _) d O (F.Bi i) (F.Bk i) (F.mapk i)
   have iz : am (F.Bi i) p * hw (F.Bi i) p -
       (hw (F.Bi i) p).transpose * bil (F.Bi i).sy 1 1 * hw (F.Bi i) p -
       (hw (F.Bi i) p).transpose * (am (F.Bi i) p).transpose = 0 := by
@@ -466,7 +948,7 @@ theorem locSplit {p : ℕ} [Fact p.Prime] [CharP K p] (F : Family C p d O) (i : 
         am (F.Bi i) p * hw (F.Bi i) p +
         (hw (F.Bi i) p).transpose * bil (F.Bi i).sy 1 1 * hw (F.Bi i) p) fun u => by
       rw [← beta_alpha_apply]
-      exact LinearMap.congr_fun (GlobalTheory.T.alpha_beta_adjoint_exact _ p d O (F.Bi i)).2 u
+      exact LinearMap.congr_fun (_root_.GlobalTheory.CompanionTheory.Ar.Conj.Isotropy.beta_comp_alpha _ p d O (F.Bi i)).2 u
     rw [← neg_eq_zero, ← h0]
     abel
   have inj : ∀ u : Fin d → IsLocalRing.ResidueField (C.v i).valuationSubring,
@@ -476,7 +958,7 @@ theorem locSplit {p : ℕ} [Fact p.Prime] [CharP K p] (F : Family C p d O) (i : 
     apply F.inj i
     rw [map_zero, alpha_apply, (mk.2.2 p).1, (mk.2.2 p).2, ← Matrix.transpose_map, h1, h2]
     rfl
-  obtain ⟨r₁, r₂, s₁, s₂, e₁, e₂, e₃, e₄, e₅, e₆⟩ := GlobalTheory.T.local_matrix_coprime_decomposition _ d _ _ _ iz inj
+  obtain ⟨r₁, r₂, s₁, s₂, e₁, e₂, e₃, e₄, e₅, e₆⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Split.isotropic_residue_injective_splits _ d _ _ _ iz inj
   let Φ := (C.v i).valuationSubring.subtype.mapMatrix (m := Fin d)
   have hT : ∀ M, Φ M.transpose = (Φ M).transpose := fun M => rfl
   have hh : hw (F.BK i) p = Φ (hw (F.Bi i) p) := (mK.2.2 p).1
@@ -491,7 +973,7 @@ theorem locSplit {p : ℕ} [Fact p.Prime] [CharP K p] (F : Family C p d O) (i : 
   simp only [map_add (f := _), map_sub, map_mul, map_one, map_zero, hT] at c₁ c₂ c₃ c₄ c₅ c₆
   refine locSplit_of_mats C (F.BK i) p i (Φ r₁) (Φ r₂) (Φ s₁) (Φ s₂) ?_ ?_ ?_
     (intM_map C i _) (intM_map C i _) (intM_map C i _) (intM_map C i _)
-    (fun u => LinearMap.congr_fun (GlobalTheory.T.alpha_beta_adjoint_exact K p d O (F.BK i)).2 u) ?_ ?_ ?_ ?_ ?_ ?_
+    (fun u => LinearMap.congr_fun (_root_.GlobalTheory.CompanionTheory.Ar.Conj.Isotropy.beta_comp_alpha K p d O (F.BK i)).2 u) ?_ ?_ ?_ ?_ ?_ ?_
   · rw [hh]; exact intM_map C i _
   · rw [ha]; exact intM_map C i _
   · rw [hS]; exact intM_map C i _
@@ -501,7 +983,7 @@ theorem locSplit {p : ℕ} [Fact p.Prime] [CharP K p] (F : Family C p d O) (i : 
 theorem rhoH_mem_stdH (i : C.I) (B₀ : FB (C.v i).valuationSubring d O) (B : FB K d O)
     (h : IsMapOf (C.v i).valuationSubring.subtype B₀ B) (a : O) {w : (Fin d → K) × (Fin d → K)}
     (hw : w ∈ stdH C d i) : rhoH B a w ∈ stdH C d i := by
-  obtain ⟨hm, -⟩ := GlobalTheory.T.formal_data_base_change _ _ (C.v i).valuationSubring.subtype d O B₀ B h
+  obtain ⟨hm, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.map_mats_baseChange _ _ (C.v i).valuationSubring.subtype d O B₀ B h
   have hr : ∀ b, IntM C i (rho B b) := fun b => by rw [(hm b).1]; exact intM_map C i _
   have ha : IntM C i (bil (B.ad a) 1 1) := by rw [(hm a).2]; exact intM_map C i _
   rw [mem_stdH] at hw ⊢
@@ -514,9 +996,9 @@ theorem family_conj : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.
     ∃ D : ConjData C p O d, (∀ a, D.ρ a = rho F.B a) ∧
       ∀ i u, u ∈ D.lie i ↔ ∀ j, C.v i ((lin (F.ψ i) 1).mulVec u j) ≤ 1 := by
   intro K _ C p _ _ d O _ _ F hI
-  obtain ⟨ρ, hρ⟩ := GlobalTheory.T.formal_group_action_ring_hom K d O F.B
-  obtain ⟨⟨ρH, hρH⟩, -, -⟩ := GlobalTheory.T.formal_hermitian_action_pairing K d O F.B
-  have iso := fun i => GlobalTheory.T.formal_isomorphism_transport K d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
+  obtain ⟨ρ, hρ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.rho_hom K d O F.B
+  obtain ⟨⟨ρH, hρH⟩, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.rhoH_hom_adjoint K d O F.B
+  have iso := fun i => _root_.GlobalTheory.CompanionTheory.Ar.Conj.Iso.rho_pairing K d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
   have h₁ := fun i => (iso i).1
   have h₂ := fun i => (iso i).2.1
   have hT := fun i => (iso i).2.2.1
@@ -525,7 +1007,7 @@ theorem family_conj : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.
       C.v i (bil (F.lam i) 1 1 a b) ≤ 1) → IntM C i (lin (F.φ i) 1) ∧ IntM C i (lin (F.ψ i) 1) ∧
         IntM C i (bil (F.lam i) 1 1) := fun i h =>
     ⟨fun a b => (h a b).1, fun a b => (h a b).2.1, fun a b => (h a b).2.2⟩
-  have hiso := fun i => GlobalTheory.T.alpha_beta_isomorphism_transport K p d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
+  have hiso := fun i => _root_.GlobalTheory.CompanionTheory.Ar.Conj.alpha_beta_of_isIso K p d O F.B (F.BK i) (F.φ i) (F.ψ i) (F.lam i) (F.iso i)
   refine ⟨{ lie := fun i => colLat C i (lin (F.φ i) 1)
             H := fun i => imLat C i (transH (F.φ i) (F.ψ i) (F.lam i))
             lie_bun := isBun_colLat C _ _ h₁ h₂ (F.ae.subset fun i hi h => hi ?_)
@@ -552,8 +1034,12 @@ theorem family_conj : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.
   · rw [hρH, rhoH_fst, hρ]
   · rw [hρH, rhoH_inr, hρ]
   · rw [hρ, hρH]
-    exact GlobalTheory.T.alpha_equivariant_frobenius K p d O F.B a u
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Conj.AlphaAct.alpha_comm_act K p d O F.B a u
   · rw [hρ, hρH]
-    exact GlobalTheory.T.beta_equivariant_frobenius K p d O F.B a y
+    exact _root_.GlobalTheory.CompanionTheory.Ar.Conj.beta_rhoH_eq K p d O F.B a y
 
 end GlobalTheory.CompanionTheory.Ar.Conj.Fam
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FamilyGivesConjugateLieData =====

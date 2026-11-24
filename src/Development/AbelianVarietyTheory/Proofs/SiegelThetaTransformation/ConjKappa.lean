@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Mathlib.Data.Matrix.ColumnRowPartitioned
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DblZMemHnStatement
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DblZMemHn
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -97,10 +97,6 @@ theorem of_row {m n : Type} (f : m → n → ℂ) (k : m) : Matrix.of f k = f k 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
-theorem emb_cc (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) := by
-  simp only [cc]
-  rw [IsCMField.complexEmbedding_complexConj]
-
 theorem cc_kappa : cc X.κ0 = -X.κ0 := by
   have h := X.ξ0_im
   simp only [cc] at h ⊢
@@ -109,9 +105,9 @@ theorem cc_kappa : cc X.κ0 = -X.κ0 := by
 theorem kappa_ne : X.κ0 ≠ 0 := by
   rcases X.κ0_xi with h | h <;> rw [h] <;> simp [X.ξ0_ne]
 
-theorem conj_kappa (τ : E →+* ℂ) : conj (τ X.κ0) = -τ X.κ0 := by rw [← emb_cc, cc_kappa X, map_neg]
+theorem conj_kappa (τ : E →+* ℂ) : conj (τ X.κ0) = -τ X.κ0 := by rw [← _root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc, cc_kappa X, map_neg]
 
-theorem conj_Gm (τ : E →+* ℂ) (a b : Fin r) : conj (τ (X.Gm a b)) = τ (X.Gm b a) := by rw [← emb_cc, X.Gm_herm]
+theorem conj_Gm (τ : E →+* ℂ) (a b : Fin r) : conj (τ (X.Gm a b)) = τ (X.Gm b a) := by rw [← _root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc, X.Gm_herm]
 
 theorem det_Gm (τ : E →+* ℂ) : (X.Gm.map τ).det ≠ 0 := by
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
@@ -268,7 +264,7 @@ theorem ccT_dblT : ccT (dblT X) =
 
 theorem dbl_per : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ x₁ ∈ X.dom, ∀ x₂ ∈ X.dom, ∀ y₁ y₂ : Matrix (Fin n) (Fin r) E, (∀ τ, dblz' X idx x₁ x₂ (fun k => per X x₁ (y₁ k) ∘ idx) (fun k i => conj (per X x₂ (y₂ k) (idx i))) τ = ((Matrix.fromCols y₁ y₂ * dblT X).toCols₂).map τ.1 + ((Matrix.fromCols y₁ y₂ * dblT X).toCols₁).map τ.1 * dblZ X x₁ x₂ τ) ∧ (∀ τ, dblz X idx x₁ x₂ (fun k => per X x₁ (y₁ k) ∘ idx) (fun k i => conj (per X x₂ (y₂ k) (idx i))) τ = (((Matrix.fromCols y₁ y₂ * dblT X).toCols₂).map τ.1).map conj + (((Matrix.fromCols y₁ y₂ * dblT X).toCols₁).map τ.1).map conj * (dblZ X x₁ x₂ τ)ᵀ) ∧ IsUnit (dblT X).det ∧ dblT X * Matrix.J (Fin r) E * ccT (dblT X) = (X.κ0 / 2) • Matrix.fromBlocks X.Gm 0 0 (-X.Gm) := by
   intro E _ _ _ r X g bas idx n _ _ x₁ hx₁ x₂ hx₂ y₁ y₂
-  have hI := GlobalTheory.T.dblZ_mem_Hn_and_det_ne_zero E r X x₁ hx₁ x₂ hx₂
+  have hI := _root_.GlobalTheory.SW.dblZ_mem_Hn E r X x₁ hx₁ x₂ hx₂
   have hm₁ : ∀ τ, (mat x₁ τ).det ≠ 0 := fun τ => (hx₁ τ).1
   have hm₂ : ∀ τ, (mat x₂ τ).det ≠ 0 := fun τ => (hx₂ τ).1
 

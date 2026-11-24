@@ -64,20 +64,6 @@ noncomputable section
 
 namespace LiftGraphMetric
 
-theorem pderiv_rename_of_injective {σ τ R : Type*} [CommSemiring R] {f : σ → τ} (hf : Function.Injective f)
-    (x : σ) (p : MvPolynomial σ R) : pderiv (f x) (rename f p) = rename f (pderiv x p) := by
-  classical
-  induction p using MvPolynomial.induction_on with
-  | C a => simp
-  | add p q hp hq => simp [hp, hq]
-  | mul_X p n hp =>
-    simp only [map_mul, rename_X, Derivation.leibniz, hp, smul_eq_mul, map_add (f := _)]
-    congr 1
-    rw [pderiv_X, pderiv_X]
-    by_cases hnx : n = x
-    · subst hnx; simp
-    · rw [Pi.single_eq_of_ne (hf.ne hnx), Pi.single_eq_of_ne hnx]; simp
-
 theorem pderiv_rename_of_not_mem_range {σ τ R : Type*} [CommSemiring R] {f : σ → τ} {t : τ}
     (ht : t ∉ Set.range f) (p : MvPolynomial σ R) : pderiv t (rename f p) = 0 := by
   classical
@@ -155,7 +141,7 @@ theorem isConeTangent_oldPart {y : (Σ k, ι k) → Ω} {v : Fin r → Ω} {P0 :
     rw [Fintype.sum_sigma, Fintype.sum_sigma, Fintype.sum_option]
     rw [Finset.sum_eq_zero (fun i _ => by rw [hnone i]; simp), zero_add]
     refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_
-    have e := pderiv_rename_of_injective (oldEmb_injective (r := r)) (⟨k, i⟩ : Σ k, ι k)
+    have e := MvPolynomial.pderiv_rename (oldEmb_injective (r := r)) (⟨k, i⟩ : Σ k, ι k)
       (map (Int.castRingHom ℂ) f)
     simp only [oldEmb] at e
     rw [e, eval_rename]

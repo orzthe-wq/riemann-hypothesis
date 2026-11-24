@@ -2,17 +2,19 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageStart
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotIsPrimZero
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BalancedFormCellMultiplicityPosStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellMultiplicityPositiveConeStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqSubfamilyOfFaceSimplicialConePrimitiveStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BalancedFormCellMultiplicityPos
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CellMultiplicityPositiveCone
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqSubfamilyOfFaceSimplicialConePrimitive
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLinFormCutFaceOfCellInCone
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLinFormCutFaceOfFaceOfCone
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRescalePrimitiveLinearIndependentCell
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeGeneratorsOfLinFormEqZero
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMulEqZeroOfSumToReal
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinearIndependentConsBalancedFormOfCoordNeZero
+public import Mathlib.Algebra.Module.Torsion.Basic
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NatCardTorsionQuotSpanDvdOfRangeSubset
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfToRealRel
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLinFormCutFaceOfCellInConeStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLinFormCutFaceOfFaceOfConeStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsRescalePrimitiveLinearIndependentCellStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeGeneratorsOfLinFormEqZeroStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsSmoothAdmissibleFanOfCellMultOneCMField
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LinearIndependentConsBalancedFormOfCoordNeZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NatCardTorsionQuotSpanDvdOfRangeSubsetStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SumMulEqOfSumToRealEq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -126,15 +128,15 @@ theorem GlobalTheory.PolFan.cellMult_lt_of_star_new : ∀ (E : Type) [Field E] [
   classical
 
   obtain ⟨m₀, δ, hδ, hliδ, -, hγδ⟩ := hSL.2 X hX m γ hγ
-  obtain ⟨δt, hδt, hliδt, hprimδt, hδδt⟩ := GlobalTheory.T.exists_rescale_primitive_linearIndependent_cell H.bar φ δ hδ hliδ
+  obtain ⟨δt, hδt, hliδt, hprimδt, hδδt⟩ := _root_.GlobalTheory.PolFan.SmoothEnd.exists_rescale_prim H.bar φ δ hδ hliδ
   have hγδt : ∀ k, InRCone δt (γ k) := fun k => hδδt _ (hγδ k)
 
-  obtain ⟨h₂, h₂0, h₂γ, h₂cut⟩ := GlobalTheory.T.exists_linForm_cut_face_of_cell_in_cone H.bar φ δt γ hδt hγ hγδt
+  obtain ⟨h₂, h₂0, h₂γ, h₂cut⟩ := _root_.GlobalTheory.PolFan.CellFace.exists_face_form H.bar φ δt γ hδt hγ hγδt
   have hcutγ : ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → h β = 0 →
       InRCone (fun k => γ (s k)) β :=
-    fun β _ _ hβ hβ0 => GlobalTheory.T.inRealCone_generators_of_linForm_eq_zero γ h s β hcut.1 (fun i hi => (hcut.2 i).1 hi) hβ hβ0
+    fun β _ _ hβ hβ0 => _root_.GlobalTheory.PolFan.inRCone_of_apply_eq_zero γ h s β hcut.1 (fun i hi => (hcut.2 i).1 hi) hβ hβ0
   have hhs : ∀ k, h (γ (s k)) = 0 := fun k => (hcut.2 (s k)).2 ⟨k, rfl⟩
-  obtain ⟨h₃, h₃0, h₃γs, h₃cut⟩ := GlobalTheory.T.exists_linForm_cut_face_of_face_of_cone H.bar δt γ (fun k => γ (s k)) h₂ h hδt.mem hδt.nonneg
+  obtain ⟨h₃, h₃0, h₃γs, h₃cut⟩ := _root_.GlobalTheory.PolFan.exists_linForm_cut_face_of_face H.bar δt γ (fun k => γ (s k)) h₂ h hδt.mem hδt.nonneg
     (fun k => inRCone_self γ (s k)) h₂0 h₂γ h₂cut hcut.1 hhs hcutγ
 
   set I : Finset (Fin m₀) := Finset.univ.filter (fun i => h₃ (δt i) = 0) with hI
@@ -145,7 +147,7 @@ theorem GlobalTheory.PolFan.cellMult_lt_of_star_new : ∀ (E : Type) [Field E] [
     rw [Finset.range_orderEmbOfFin]
     simp [I]
   have hsupp : ∀ β, InRCone δt β → h₃ β = 0 → InRCone (fun k => δt (eI k)) β :=
-    fun β hβ h0 => GlobalTheory.T.inRealCone_generators_of_linForm_eq_zero δt h₃ eI β h₃0 (fun i hi => (heI i).2 hi) hβ h0
+    fun β hβ h0 => _root_.GlobalTheory.PolFan.inRCone_of_apply_eq_zero δt h₃ eI β h₃0 (fun i hi => (heI i).2 hi) hβ h0
 
   obtain ⟨c, hc0, hcβ⟩ : InRCone δt β₀ := inRCone_trans hγδt hβ₀γ
   have hclt : ∀ i, c i < 1 := hcoord X hX m₀ δt hδt hliδt hprimδt β₀ hβ₀ hβ₀p hw c hc0 hcβ
@@ -179,7 +181,7 @@ theorem GlobalTheory.PolFan.cellMult_lt_of_star_new : ∀ (E : Type) [Field E] [
     ⟨fun i => (ρs i : LinearMap.BilinForm ℤ X), by simp [ρs, βs], fun k => by simp [ρs, δs], fun i => rfl⟩
   have hjeI : j ∉ Set.range eI := fun hh => hjI ((heI j).1 hh)
   have hliρ : LinearIndependent ℤ ρ := by
-    have h1 := GlobalTheory.T.linearIndependent_cons_balancedForm_of_coord_ne_zero H.bar δs βs c j eI hliδs hcβ hcj.ne' hjeI
+    have h1 := _root_.GlobalTheory.PolFan.linearIndependent_cons_of_coord_ne_zero H.bar δs βs c j eI hliδs hcβ hcj.ne' hjeI
     have h2 := h1.map' (balForms H.bar X).subtype (Submodule.ker_subtype _)
     have : ρ = (balForms H.bar X).subtype ∘ ρs := funext hρv
     rw [this]; exact h2
@@ -208,8 +210,8 @@ theorem GlobalTheory.PolFan.cellMult_lt_of_star_new : ∀ (E : Type) [Field E] [
       exact inRCone_trans (fun l => inRCone_cons_succ β₀ (fun j => γ (s j)) l)
         (h₃cut _ (hδt.mem _) (hδt.nonneg _) (inRCone_self δt _) ((heI _).1 ⟨k, rfl⟩))
 
-  obtain ⟨h₁, h₁0, h₁γ', h₁cut⟩ := GlobalTheory.T.exists_linForm_cut_face_of_cell_in_cone H.bar ψ' _ γ' hτ hγ' hγ'τ
-  obtain ⟨s', hs', -⟩ := GlobalTheory.T.eq_subfamily_of_face_simplicialCone_primitive H.bar ρ γ' hρmem hγ'.mem h₁ hliρ hliγ' hρprim hprimγ'
+  obtain ⟨h₁, h₁0, h₁γ', h₁cut⟩ := _root_.GlobalTheory.PolFan.CellFace.exists_face_form H.bar ψ' _ γ' hτ hγ' hγ'τ
+  obtain ⟨s', hs', -⟩ := _root_.GlobalTheory.PolFan.eq_subfamily_of_face H.bar ρ γ' hρmem hγ'.mem h₁ hliρ hliγ' hρprim hprimγ'
     (fun k => inRCone_trans hτρ (hγ'τ k)) (fun i => val_nonneg h₁ h₁0 (hρτ i)) h₁γ'
     (fun i hi => h₁cut (ρ i) (hρmem i) (hρnn i) (hρτ i) hi)
 
@@ -222,9 +224,9 @@ theorem GlobalTheory.PolFan.cellMult_lt_of_star_new : ∀ (E : Type) [Field E] [
     rw [Finset.range_orderEmbOfFin]
     simp [J]
   set ρ's : Fin (m₀ - 1 + 1) → balForms H.bar X := Fin.cons βs (fun k => δs (eJ k)) with hρ'sdef
-  have hliρ' : LinearIndependent ℤ ρ's := GlobalTheory.T.linearIndependent_cons_balancedForm_of_coord_ne_zero H.bar δs βs c j eJ hliδs hcβ hcj.ne' (fun hh => (heJ j).1 hh rfl)
+  have hliρ' : LinearIndependent ℤ ρ's := _root_.GlobalTheory.PolFan.linearIndependent_cons_of_coord_ne_zero H.bar δs βs c j eJ hliδs hcβ hcj.ne' (fun hh => (heJ j).1 hh rfl)
   have hmultρ' : (cellMult H.bar ρ's : ℝ) = c j * cellMult H.bar δs :=
-    GlobalTheory.T.cell_multiplicity_positive_cone H.bar δs βs c j eJ hliδs hcβ hcj heJ (GlobalTheory.T.balancedFormCellMultiplicity_pos H.bar δs)
+    _root_.GlobalTheory.PolFan.ConsMult.cellMult_cons_eq H.bar δs βs c j eJ hliδs hcβ hcj heJ (_root_.GlobalTheory.PolFan.cellMult_pos H.bar δs)
   have hrange : Set.range (fun i => (⟨γ' i, hγ'.mem i⟩ : balForms H.bar X)) ⊆ Set.range ρ's := by
     rintro _ ⟨k, rfl⟩
     have e := hs' k
@@ -238,9 +240,9 @@ theorem GlobalTheory.PolFan.cellMult_lt_of_star_new : ∀ (E : Type) [Field E] [
       simp [ρ's, δs]
       rw [e, hl, hρs, hr]
   have hdvd : cellMult H.bar (fun i => (⟨γ' i, hγ'.mem i⟩ : balForms H.bar X)) ∣ cellMult H.bar ρ's :=
-    GlobalTheory.T.natCard_torsion_quot_span_dvd_of_range_subset' (balForms H.bar X) ρ's _ hliρ' hrange
-  have hle := Nat.le_of_dvd (GlobalTheory.T.balancedFormCellMultiplicity_pos H.bar ρ's) hdvd
-  have hδpos := GlobalTheory.T.balancedFormCellMultiplicity_pos H.bar δs
+    _root_.GlobalTheory.natCard_torsion_quot_span_dvd_of_range_subset (balForms H.bar X) ρ's _ hliρ' hrange
+  have hle := Nat.le_of_dvd (_root_.GlobalTheory.PolFan.cellMult_pos H.bar ρ's) hdvd
+  have hδpos := _root_.GlobalTheory.PolFan.cellMult_pos H.bar δs
   have hlt : (cellMult H.bar ρ's : ℝ) < cellMult H.bar δs := by
     rw [hmultρ']; exact mul_lt_of_lt_one_left (by exact_mod_cast hδpos) (hclt j)
   have hlt' : cellMult H.bar ρ's < cellMult H.bar δs := by exact_mod_cast hlt

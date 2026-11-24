@@ -1,53 +1,156 @@
 module
 
-public import Formalism.LocalToGlobal.GlobalTheory.GL4.KronDetScalar
+public import Formalism.LocalToGlobal.Columns.BrpAevalScaleMonomial
+public import Formalism.LocalToGlobal.GlobalTheory.GL4.PDetAll
+public import Formalism.PeriodIntegrals.HookBound
+public import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
+public import Formalism.LocalToGlobal.Columns.CoefficientsModP.WeTransposeWordTransposeWord
 public import Formalism.LocalToGlobal.GlobalTheory.GL4.PColSlopeEq
 public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LClosedeqLemmas
 public import Formalism.LocalToGlobal.Columns.CoefficientsModP
-import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 public import Formalism.LocalToGlobal.GlobalTheory.GL4.PColStd
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardSlopeBound.GramMatrixDuality
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardSlopeBound.Inhabit
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardSlopeBound.NablaOperatorBasis
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
+import Formalism.LocalToGlobal.Columns.AlgebraMapMemMaximalIdealPowIff
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Formalism.LocalToGlobal.Columns.PolyFnLemmas
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.GlobalTheory.GL4.KronDetScalar, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardSlopeBound.Inhabit, Formalism.LocalToGlobal.GlobalTheory.GL4.PZBasis
+
+-- ===== clump member: Formalism.LocalToGlobal.GlobalTheory.GL4.KronDetScalar =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.GlobalTheory.GL4.KronDetScalar", "h": "module\n\npublic import Formalism.LocalToGlobal.Columns.BrpAevalScaleMonomial\npublic import Formalism.LocalToGlobal.GlobalTheory.GL4.PDetAll\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.Columns.AlgebraMapMemMaximalIdealPowIff\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped Matrix
+
+noncomputable section
+
+namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality
+
+open Formalism.L2.Col
+
+section Kron
+
+variable {ι : Type} [Fintype ι] [DecidableEq ι] {r : ι → ℕ}
+
+def kron (A : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) ℝ) : Matrix (∀ τ, Fin (r τ)) (∀ τ, Fin (r τ)) ℝ :=
+  Matrix.of fun I I' => ∏ τ, A τ (I τ) (I' τ)
+
+theorem kron_mul (A B : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) ℝ) : kron A * kron B = kron fun τ => A τ * B τ := by
+  ext I I''
+  simp only [kron, Matrix.mul_apply, Matrix.of_apply]
+  rw [Finset.prod_univ_sum, Fintype.piFinset_univ]
+  exact Finset.sum_congr rfl fun I' _ => Finset.prod_mul_distrib.symm
+
+theorem kron_one : kron (fun τ => (1 : Matrix (Fin (r τ)) (Fin (r τ)) ℝ)) = 1 := by
+  ext I I'
+  simp only [kron, Matrix.of_apply]
+  by_cases h : I = I'
+  · subst h
+    simp
+  · rw [Matrix.one_apply_ne h]
+    obtain ⟨τ, hτ⟩ := Function.ne_iff.1 h
+    exact Finset.prod_eq_zero (Finset.mem_univ τ) (Matrix.one_apply_ne hτ)
+
+theorem kron_smul (c : ι → ℝ) (A : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) ℝ) : kron (fun τ => c τ • A τ) = (∏ τ, c τ) • kron A := by
+  ext I I'
+  simp only [kron, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]
+  exact Finset.prod_mul_distrib
+
+def kronDet : (∀ τ, GL (Fin (r τ)) ℝ) →* ℝ where
+  toFun g := (kron fun τ => ((g τ : GL (Fin (r τ)) ℝ) : Matrix (Fin (r τ)) (Fin (r τ)) ℝ)).det
+  map_one' := by
+    have : (fun τ => (((1 : ∀ τ, GL (Fin (r τ)) ℝ) τ : GL (Fin (r τ)) ℝ) : Matrix (Fin (r τ)) (Fin (r τ)) ℝ)) = fun τ => 1 := by
+      funext τ; rfl
+    rw [this, kron_one, Matrix.det_one]
+  map_mul' g h := by
+    rw [← Matrix.det_mul, kron_mul]
+    rfl
+
+theorem kronDet_scalar (τ : ι) (t : ℝˣ) :
+    kronDet (r := r) (Pi.mulSingle τ (brpSc ℝ t)) = (t : ℝ) ^ ((Fintype.card (∀ τ, Fin (r τ)) : ℕ) : ℤ) := by
+  show (kron fun σ => (((Pi.mulSingle τ (brpSc ℝ t) : ∀ τ, GL (Fin (r τ)) ℝ) σ : GL (Fin (r σ)) ℝ) :
+    Matrix (Fin (r σ)) (Fin (r σ)) ℝ)).det = _
+  have h : (fun σ => (((Pi.mulSingle τ (brpSc ℝ t) : ∀ τ, GL (Fin (r τ)) ℝ) σ : GL (Fin (r σ)) ℝ) :
+      Matrix (Fin (r σ)) (Fin (r σ)) ℝ)) = fun σ => (if σ = τ then (t : ℝ) else 1) • (1 : Matrix (Fin (r σ)) (Fin (r σ)) ℝ) := by
+    funext σ
+    by_cases hσ : σ = τ
+    · subst hσ
+      rw [Pi.mulSingle_eq_same, if_pos rfl, brpSc_coe]
+    · rw [Pi.mulSingle_eq_of_ne hσ, if_neg hσ, one_smul]; rfl
+  rw [h, kron_smul, kron_one, Finset.prod_ite_eq' Finset.univ τ, if_pos (Finset.mem_univ τ), Matrix.det_smul, Matrix.det_one, mul_one,
+    zpow_natCast]
+
+theorem log_kron (A : ∀ τ, Matrix (Fin (r τ)) (Fin (r τ)) ℝ) (hA : ∀ τ, (A τ).det ≠ 0) (hr : ∀ τ, 0 < r τ) :
+    Real.log (kron A).det / (Fintype.card (∀ τ, Fin (r τ)) : ℝ) = ∑ τ, Real.log (A τ).det / (r τ : ℝ) := by
+  let g : ∀ τ, GL (Fin (r τ)) ℝ := fun τ => brpGL ℝ (A τ) (isUnit_iff_ne_zero.2 (hA τ))
+  have h0 := Finset.map_noncommProd Finset.univ (fun i => Pi.mulSingle i (g i))
+    (fun i _ j _ _ => Pi.mulSingle_apply_commute g i j) (kronDet (r := r))
+  rw [Finset.noncommProd_mulSingle g, Finset.noncommProd_eq_prod] at h0
+  have h1 : kronDet g = (kron A).det := rfl
+  rw [h1] at h0
+  have h2 : ∀ τ, kronDet (r := r) (Pi.mulSingle τ (g τ)) ^ r τ = (A τ).det ^ ((Fintype.card (∀ τ, Fin (r τ)) : ℕ) : ℤ) := fun τ =>
+    glChar_pow ℝ ((kronDet (r := r)).comp (MonoidHom.mulSingle (fun τ => GL (Fin (r τ)) ℝ) τ)) _ (kronDet_scalar τ) (g τ)
+  have hne : ∀ τ, kronDet (r := r) (Pi.mulSingle τ (g τ)) ≠ 0 := by
+    intro τ h
+    have := h2 τ
+    rw [h, zero_pow (hr τ).ne'] at this
+    exact (zpow_ne_zero _ (hA τ)) this.symm
+  have hD : (0 : ℝ) < (Fintype.card (∀ τ, Fin (r τ)) : ℝ) := by
+    have : Nonempty (∀ τ, Fin (r τ)) := ⟨fun τ => ⟨0, hr τ⟩⟩
+    exact_mod_cast Fintype.card_pos
+  rw [h0, Real.log_prod (fun τ _ => hne τ), Finset.sum_div]
+  refine Finset.sum_congr rfl fun τ _ => ?_
+  have h3 := congrArg Real.log (h2 τ)
+  rw [Real.log_pow, Real.log_zpow] at h3
+  have hrτ : (0 : ℝ) < (r τ : ℝ) := by exact_mod_cast hr τ
+  push_cast at h3
+  field_simp
+  linarith
+
+end Kron
+
+end Formalism.L2.GlobalTheoryTheory.TraceIntegrality
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.GlobalTheory.GL4.KronDetScalar =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardSlopeBound.Inhabit =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardSlopeBound.Inhabit", "h": "module\n\npublic import Formalism.PeriodIntegrals.HookBound\npublic import Formalism.GradedWeylDivisibility.DualWeylDominanceOf\npublic import Formalism.LocalToGlobal.Columns.CoefficientsModP.WeTransposeWordTransposeWord\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.SlopeSteps
+
+open MvPolynomial Formalism.GradedWeylDivisibility
+
+theorem muStd_exists (N : ℕ) (ν : Fin N → ℕ) (hν : Antitone ν) : ∃ μ, PI.MuStd ν μ := by
+  have hfg : (weyl ℤ N N le_rfl ν).FG :=
+    (Formalism.L2.DIV.we_nabla_fg N N ν).of_le (weylLeDual ℤ N N le_rfl ν hν)
+  have : Module.Finite ℤ (weyl ℤ N N le_rfl ν) := Module.Finite.iff_fg.mpr hfg
+  let e := (Module.Free.chooseBasis ℤ (weyl ℤ N N le_rfl ν)).reindex (Fintype.equivFin _)
+  have hmem : hw ℤ le_rfl ν ∈ weyl ℤ N N le_rfl ν := Submodule.subset_span ⟨[], rfl⟩
+  have hne : (⟨hw ℤ le_rfl ν, hmem⟩ : weyl ℤ N N le_rfl ν) ≠ 0 := fun h0 =>
+    hwNe ℤ N N le_rfl ν (congrArg Subtype.val h0)
+  have : Nontrivial (weyl ℤ N N le_rfl ν) := nontrivial_of_ne _ _ hne
+  exact ⟨_, _, e, Fin.pos_iff_nonempty.mpr e.index_nonempty, rfl⟩
+
+end PI.SlopeSteps
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardSlopeBound.Inhabit =====
+
+-- ===== clump member: Formalism.LocalToGlobal.GlobalTheory.GL4.PZBasis =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.GlobalTheory.GL4.PZBasis", "h": "module\n\npublic import Formalism.LocalToGlobal.GlobalTheory.GL4.KronDetScalar\npublic import Formalism.LocalToGlobal.GlobalTheory.GL4.PColSlopeEq\npublic import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LClosedeqLemmas\npublic import Formalism.LocalToGlobal.Columns.CoefficientsModP\nimport Formalism.LocalToGlobal.Columns.PolyFnLemmas\npublic import Formalism.LocalToGlobal.GlobalTheory.GL4.PColStd\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardSlopeBound.GramMatrixDuality\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardSlopeBound.Inhabit\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardSlopeBound.NablaOperatorBasis\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Module MvPolynomial
@@ -147,8 +250,6 @@ theorem li_int (F : Type) [Field F] [CharZero F] {N r : ℕ} {M : Submodule ℤ 
   have hvQ : LinearIndependent ℚ v := by
     first
       | exact (LinearIndependent.iff_fractionRing ℤ ℚ).1 hvZ
-      | exact (LinearIndependent.iff_fractionRing (R := ℤ) (K := ℚ)).1 hvZ
-      | exact hvZ.localization ℚ (nonZeroDivisors ℤ)
   have hb : LinearIndependent F fun m =>
       mapSL (σ := Fin N × Fin N) (algebraMap ℚ F) (MvPolynomial.basisMonomials (Fin N × Fin N) ℚ m) := by
     have h := (MvPolynomial.basisMonomials (Fin N × Fin N) F).linearIndependent
@@ -359,3 +460,6 @@ theorem colSlopeEq_of_Q (D : D7) (h3 : QSlope D) : ColSlopeEq D := colSlopeEq_of
 end Formalism.L2.GlobalTheoryTheory.TraceIntegrality
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.GlobalTheory.GL4.PZBasis =====

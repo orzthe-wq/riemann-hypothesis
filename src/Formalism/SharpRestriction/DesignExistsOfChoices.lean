@@ -89,8 +89,7 @@ theorem dGamSize_of_dvd {eps : ℝ} (Fm : FamP eps) (h : DGamDvdF Fm) : DGamSize
   refine ⟨12, x0, fun x hx i u => le_trans ?_ (log_minkM_fN _)⟩
   have hp := minkM_pos (2 * (Fm.D x i).R.f * (Fm.D x i).R.N (Fm.D x i).R.m)
   have hd := h x hx i u
-  have h0 : 0 < ((Fm.D x i).mem u).C.DGam := Nat.pos_of_dvd_of_pos hd hp
-  exact Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast Nat.le_of_dvd hp hd)
+  exact Real.log_le_log (by exact_mod_cast Nat.pos_of_dvd_of_pos hd hp) (by exact_mod_cast Nat.le_of_dvd hp hd)
 
 theorem designExists_of_choices {𝒞 : FamClass} {C0 : ℝ} {cT : ℝ → ℝ → ℝ} (hEx : DesignChoices 𝒞 C0 cT)
     (hTu : Closed 𝒞 fun {eps} Fm _ => cT eps Fm.CYL ≤ Fm.CTu → TuSize Fm)

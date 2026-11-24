@@ -203,11 +203,11 @@ variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 theorem glint_exists_approx (x : v.adicCompletionIntegers F) :
     ∃ r : 𝓞 F, Valued.v ((x : v.adicCompletion F) - algebraMap (𝓞 F) (v.adicCompletion F) r) < 1 := by
-  first | exact Bl.NearbyExistence.goal1 .. | (apply Bl.NearbyExistence.goal1 <;> assumption) | (intros; apply Bl.NearbyExistence.goal1 <;> assumption) | (apply @Bl.NearbyExistence.goal1 <;> assumption) | (intros; apply @Bl.NearbyExistence.goal1 <;> assumption) | (apply @Bl.NearbyExistence.goal1 <;> first | assumption | infer_instance)
+  first | exact Bl.NearbyExistence.goal1 ..
 
 theorem glint_finite_residueField :
     Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) := by
-  apply GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers <;> assumption
+  apply GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers
 
 theorem glint_finite_quotient_of_dvr {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     (h : Finite (IsLocalRing.ResidueField R)) (I : Ideal R) (hI : I ≠ ⊥) : Finite (R ⧸ I) := by

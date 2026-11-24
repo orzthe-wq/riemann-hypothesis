@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightEntriesSignsSizesStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightEntriesSignsSizes
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightGapsBlockAndBarStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -60,7 +60,7 @@ theorem Wts.divided_weight_small_block_le_neg_three_mul {ι : Type} [Fintype ι]
     have h1 := hH.kc_pos
     have h2 := hH.kc_lt
     have hg := ((GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hH hD τ ⟨W.p - 1, by omega⟩ ⟨W.p + 0, hk⟩ (by simp; omega)).2.1 (by simp)).2
-    have he := (GlobalTheory.T.dividedWeight_entries_signs_sizes ι N W hH hD τ ⟨W.p - 1, by omega⟩).2.1 (by simp; omega)
+    have he := (_root_.GlobalTheory.MeanTop.divided_entries ι N W hH hD τ ⟨W.p - 1, by omega⟩).2.1 (by simp; omega)
     have h3 := hH.h2.2
     have hN : (0 : ℤ) ≤ 24 * (N : ℤ) * W.T := by positivity
     have h4 : 0 ≤ W.u1 τ ⟨W.p - 1, by omega⟩ - W.u1 τ ⟨W.p + 0, hk⟩ - 3 * N := by
@@ -94,7 +94,7 @@ theorem divided_weight_size : ∀ (ι : Type) [Fintype ι] (N : ℕ) (W : Wts ι
   refine ⟨?_, ?_, fun τ i => W.abs_u'_le hH hD τ i⟩
   · have key : ∀ τ i, (W.T : ℝ) * |(W.u1 τ i : ℝ)| ≤ |(W.u τ i : ℝ)| + (W.c0 + 4 * N) := by
       intro τ i
-      have h1 := (GlobalTheory.T.dividedWeight_entries_signs_sizes ι N W hH hD τ i).1
+      have h1 := (_root_.GlobalTheory.MeanTop.divided_entries ι N W hH hD τ i).1
       have h0 : (0 : ℤ) ≤ ((W.Dd : ℤ) + 1) * |W.u1 τ i| := by positivity
       have h2 : (W.T : ℤ) * |W.u1 τ i| ≤ |W.u τ i| + (W.c0 + 4 * N) := by nlinarith
       exact_mod_cast h2

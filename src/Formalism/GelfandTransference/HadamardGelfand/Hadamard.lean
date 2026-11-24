@@ -52,13 +52,10 @@ noncomputable section
 
 namespace Formalism.HadamardInequality.P
 
-theorem hadamard_inequality_holds : Formalism.HadamardInequality.Hadamard := by
-  first | exact Bl.DetNormLeProdRows.goal1 .. | (apply Bl.DetNormLeProdRows.goal1 <;> assumption) | (intros; apply Bl.DetNormLeProdRows.goal1 <;> assumption)
-
 theorem hadamard_maximum_holds : Formalism.HadamardInequality.HadamardMax := by
   unfold Formalism.HadamardInequality.HadamardMax
   intro ρ A M hM
-  have hH := hadamard_inequality_holds
+  have hH := _root_.Bl.DetNormLeProdRows.goal1
   unfold Formalism.HadamardInequality.Hadamard at hH
   refine (hH ρ A).trans ?_
   calc ∏ i, ∑ j, ‖A i j‖ ^ 2 ≤ ∏ _i : Fin ρ, ((ρ : ℝ) * M ^ 2) := by

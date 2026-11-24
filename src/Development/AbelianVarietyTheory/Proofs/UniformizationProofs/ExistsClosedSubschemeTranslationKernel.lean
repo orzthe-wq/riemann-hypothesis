@@ -76,7 +76,7 @@ theorem exists_closed_twist_kernel : GlobalFnsSt → ∀ (R : Type) [CommRing R]
   intro hG R _ B _ hB hP L O hL hO
   have hF : (LB.div (translDiff B L (𝟙 B)) (O.pull (snd B B).left)).IsLB :=
     LB.isLB_div (LB.isLB_linComb hL _ _) (pull_isLB hO _)
-  obtain ⟨H, j, hj, h⟩ := GlobalTheory.T.exists_closedSubscheme_locallyTrivial_product_lineBundle hG R B B hB hP _ hF
+  obtain ⟨H, j, hj, h⟩ := _root_.GlobalTheory.TrivSubscheme.exists_closed_locTriv hG R B B hB hP _ hF
   refine ⟨H, j, hj, fun T x => Iff.trans ?_ (h T x)⟩
   have hx : (LB.div (translDiff B L x) (O.pull (snd T B).left)).IsLB :=
     LB.isLB_div (LB.isLB_linComb hL _ _) (pull_isLB hO _)

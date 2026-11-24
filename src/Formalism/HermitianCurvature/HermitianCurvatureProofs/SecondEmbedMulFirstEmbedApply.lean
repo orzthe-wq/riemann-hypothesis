@@ -69,7 +69,7 @@ theorem eU_mul (a : S) (i j k l : Fin 2) :
       rw [if_pos rfl]
       simp only [eU, Matrix.of_apply]
       by_cases hx : x a = i <;> by_cases hy : y a = l <;> by_cases hxy : ∀ b, b ≠ a → x b = y b <;>
-        simp (config := {contextual := true}) [Function.update_apply, hx, hy, hxy]
+        simp (config := {contextual := true}) [hx, hy, hxy]
     · rw [if_neg hjk]
       simp [eU, Function.update_apply, hjk]
   · intro z _ hz
@@ -146,12 +146,12 @@ theorem secondEmbed_mul_firstEmbed_apply {B : Type} [Ring B] (M N : M2 B) (i r j
 theorem Pf_mul {B : Type} [Ring B] (X : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) (i r : Fin 2)
     (y : Fin 2 × Fin 2) : (Pf B * X) (i, r) y = X (r, i) y := by
   rw [Matrix.mul_apply, Fintype.sum_prod_type]
-  simp [Pf, ite_and, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']
+  simp [Pf, ite_and, ite_mul, Finset.sum_ite_eq]
 
 theorem mul_Pf {B : Type} [Ring B] (X : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) (j s : Fin 2)
     (x : Fin 2 × Fin 2) : (X * Pf B) x (j, s) = X x (s, j) := by
   rw [Matrix.mul_apply, Fintype.sum_prod_type]
-  simp [Pf, ite_and, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']
+  simp [Pf, ite_and, mul_ite, Finset.sum_ite_eq']
 
 theorem rtt_entry {B : Type} [Ring B] [Algebra K B] (M N : M2 B) (D : K)
     (h : (D • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) - Pf B) * E1 M * E2 N =

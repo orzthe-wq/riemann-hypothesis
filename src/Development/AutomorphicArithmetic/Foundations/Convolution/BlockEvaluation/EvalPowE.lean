@@ -86,7 +86,7 @@ theorem UpperTheory.ConvolutionTheory.Ci.valBc :
         · simp [val, bcPR, bcInf]
     · intro y hy _
       have h := eval_powE (resDeg F y.1) y.2 _ (hP y hy)
-      simp only [val, bcPR, RingHom.comp_apply, eval₂Hom_X', coe_eval₂Hom, eval₂_map, eval₂_rename, eval₂_X]
+      simp only [val, bcPR, RingHom.comp_apply, eval₂Hom_X', coe_eval₂Hom, eval₂_map, eval₂_rename]
       rw [hval, bcSat, ← h]
       have hc : ((eval fun o : Option (Ix F n) => o.elim (x : ℂ) fun y => x * (Λ y.1).esymm (y.2 + 1)).comp C)
           = RingHom.id ℂ := by

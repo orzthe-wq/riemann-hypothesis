@@ -3,46 +3,8 @@ module
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IdemLoc
 public import Formalism.LocalToGlobal.BesselHermitianTheta.TiedWeil
 public import Formalism.LocalToGlobal.IndefiniteReal.SubgroupCharExtensionOneApply
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PicardGroup
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.Valuation.LocalSubring
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -231,8 +193,6 @@ theorem phiE_smul (f : D.host.F) (a : v.adicCompletion D.host.F) :
 theorem cA_phiE (a : v.adicCompletion D.host.F) : cA D (phiE v a) = phiE v a := by
   unfold phiE cA
   first
-    | exact AlgHom.commutes _ _
-    | exact AlgEquiv.commutes _ _
     | simp [sigR]
 
 theorem cA_incA (w : D.host.E) : cA D (incA D w) = incA D (star w) := by
@@ -244,7 +204,6 @@ theorem incA_alg (f : D.host.F) : incA D (algebraMap D.host.F D.host.E f) = alge
   unfold incA
   first
     | exact AlgHom.commutes _ _
-    | simp [inclR]
 
 def compV (ι : D.host.E →ₐ[D.host.F] v.adicCompletion D.host.F) :
     Af D.host.F ⊗[D.host.F] D.host.E →ₐ[D.host.F] v.adicCompletion D.host.F :=
@@ -254,7 +213,7 @@ theorem compV_phiE (ι : D.host.E →ₐ[D.host.F] v.adicCompletion D.host.F) (a
     compV v ι (finPart D (phiE v a)) = a := by
   have h1 : algebraMap (AF D.host.F) (AE D) (sA v a) = sA v a ⊗ₜ[D.host.F] (1 : D.host.E) := rfl
   simp only [compV, phiE, finPart, h1, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
-    Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.lift_tmul, map_one, mul_one]
+    Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.lift_tmul, map_one, mul_one]
   exact sglV_same v a
 
 theorem compV_incA (ι : D.host.E →ₐ[D.host.F] v.adicCompletion D.host.F) (w : D.host.E) :

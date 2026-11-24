@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsDCReps
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BinaryMonomialDegreeSubstExpansionStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BinaryMonomialDegreeSubstExpansion
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,7 +66,7 @@ theorem dehH_slP_mon (w : ℕ) (m : Matrix (Fin 2) (Fin 2) ℤ) (i : ℕ) :
 theorem dehH_expand (w : ℕ) (p : MvPolynomial (Fin 2) ℂ) (hp : p.IsHomogeneous w) :
     deh p = ∑ i ∈ Finset.range (w + 1),
       Polynomial.C (AddMonoidAlgebra.coeff p (Finsupp.single 0 i + Finsupp.single 1 (w - i))) * Polynomial.X ^ i := by
-  have h := (GlobalTheory.T.binaryMonomialDegree_subst_expansion ℂ w).2.1 p hp
+  have h := (_root_.GlobalTheory.KZ.H3.mon_expand ℂ w).2.1 p hp
   conv_lhs => rw [h]
 
   rw [map_sum, ← Fin.sum_univ_eq_sum_range (fun i => Polynomial.C (AddMonoidAlgebra.coeff
@@ -77,7 +77,7 @@ theorem dehH_expand (w : ℕ) (p : MvPolynomial (Fin 2) ℂ) (hp : p.IsHomogeneo
 
 theorem dehH_coeff (w : ℕ) (c : ℕ → ℂ) (j : ℕ) (hj : j < w + 1) :
     (∑ i ∈ Finset.range (w + 1), Polynomial.C (c i) * Polynomial.X ^ i).coeff j = c j := by
-  simp [Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow, hj]
+  simp [hj]
 
 end GlobalTheory.KZ.H3
 
@@ -113,7 +113,7 @@ theorem deh_homog_iso : ∀ w : ℕ, (∀ (m : Matrix (Fin 2) (Fin 2) ℤ) (p : 
   intro w
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro m p hp
-    have h := (GlobalTheory.T.binaryMonomialDegree_subst_expansion ℂ w).2.1 p hp
+    have h := (_root_.GlobalTheory.KZ.H3.mon_expand ℂ w).2.1 p hp
     rw [dehH_expand w p hp, dehH_slP_sum]
     conv_lhs => rw [h]
 
@@ -134,7 +134,7 @@ theorem deh_homog_iso : ∀ w : ℕ, (∀ (m : Matrix (Fin 2) (Fin 2) ℤ) (p : 
   · intro q hq
     refine ⟨∑ i : Fin (w + 1), MvPolynomial.C (q.coeff i) * mon ℂ w i, ?_, ?_⟩
     · exact MvPolynomial.IsHomogeneous.sum _ _ _ fun i _ =>
-        ((GlobalTheory.T.binaryMonomialDegree_subst_expansion ℂ w).2.2.1 i).C_mul _
+        ((_root_.GlobalTheory.KZ.H3.mon_expand ℂ w).2.2.1 i).C_mul _
     · set_option synthInstance.maxHeartbeats 100000 in
       rw [map_sum]
       simp only [map_mul, dehH_mon]
@@ -142,7 +142,7 @@ theorem deh_homog_iso : ∀ w : ℕ, (∀ (m : Matrix (Fin 2) (Fin 2) ℤ) (p : 
       rw [Fin.sum_univ_eq_sum_range (fun i => Polynomial.C (q.coeff i) * Polynomial.X ^ i)]
       exact dehH_sum_eq w q hq
   · intro p p' hp hp' he
-    rw [(GlobalTheory.T.binaryMonomialDegree_subst_expansion ℂ w).2.1 p hp, (GlobalTheory.T.binaryMonomialDegree_subst_expansion ℂ w).2.1 p' hp']
+    rw [(_root_.GlobalTheory.KZ.H3.mon_expand ℂ w).2.1 p hp, (_root_.GlobalTheory.KZ.H3.mon_expand ℂ w).2.1 p' hp']
     refine Finset.sum_congr rfl fun i _ => ?_
     have h1 := dehH_coeff w (fun i => AddMonoidAlgebra.coeff p (Finsupp.single 0 i + Finsupp.single 1 (w - i))) i i.2
     have h2 := dehH_coeff w (fun i => AddMonoidAlgebra.coeff p' (Finsupp.single 0 i + Finsupp.single 1 (w - i))) i i.2

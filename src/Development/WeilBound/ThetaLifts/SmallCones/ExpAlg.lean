@@ -3,7 +3,8 @@ module
 public import Development.WeilBound.ThetaLifts.SmallCones.ThetaUniq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportFinprodSchwartzBruhatFiniteAdel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLocallyConstantFinprodSchwartzBruhatFiniteAdel
-public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissibleStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissible
 public import Development.WeilBound.ThetaLifts.SmallCones.FourierUniq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -200,11 +201,11 @@ theorem rat_surj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 theorem schr_mem {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (w) {Φ} (hΦ : Φ ∈ schA F κ) :
-    schr ψ w Φ ∈ schA F κ := (GlobalTheory.T.theta_distribution_heisenberg_invariant F κ ψ h.1 (std_ne_one h) h.2.1).1 w Φ hΦ
+    schr ψ w Φ ∈ schA F κ := (_root_.GlobalTheory.CompanionTheory.AdelicHeis.schr_mem_and_thetaSum F κ ψ h.1 (std_ne_one h) h.2.1).1 w Φ hΦ
 
 theorem theta_schr_rat {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (y z : κ → F) (Φ) :
     thetaSum F (schr ψ (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i)) Φ) = thetaSum F Φ :=
-  (GlobalTheory.T.theta_distribution_heisenberg_invariant F κ ψ h.1 (std_ne_one h) h.2.1).2 (y, z) Φ
+  (_root_.GlobalTheory.CompanionTheory.AdelicHeis.schr_mem_and_thetaSum F κ ψ h.1 (std_ne_one h) h.2.1).2 (y, z) Φ
 
 variable {n d n₁ d₁ m : ℕ} {B : Base F E} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
   {M : Model σ X W} {M₁ : Model σ X₁ W₁} {ι : Matrix (Fin n) (Fin n₁) E} {ι' : Matrix (Fin d) (Fin d₁) E}

@@ -116,12 +116,9 @@ theorem unitLoc : UnitLoc := by
       refine le_antisymm (v.intValuation_le_one s) (not_lt.1 fun h => hs ?_)
       first
         | exact (v.intValuation_lt_one_iff_mem s).1 h
-        | exact (Ideal.dvd_span_singleton).1 ((v.intValuation_lt_one_iff_dvd s).1 h)
     rw [ha, ← h1]
     first
       | exact IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (algebraMap (𝓞 F) F s)
-      | exact IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation v (algebraMap (𝓞 F) F s)
-      | rfl
   have hmem : a⁻¹ ∈ v.adicCompletionIntegers F := by
     rw [IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hval, inv_one]
   refine ⟨(1 : E) ⊗ₜ[F] a⁻¹, one_tmul_mem_Oloc v hmem, ?_⟩

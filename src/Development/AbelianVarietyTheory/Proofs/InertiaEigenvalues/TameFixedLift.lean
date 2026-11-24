@@ -1,7 +1,8 @@
 module
 
 public import Formalism.SharpRestriction.LevelLetterCocycles.DataN
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCharInertiaSurjectiveStatement
+public import ReciprocityTheory.GaloisValuations.Global
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicCharInertiaSurjective
 public import Development.AutomorphicArithmetic.CyclotomicBounds.FactorizationConductorLeLocalLevel
 public import Development.AutomorphicArithmetic.PrimeDiscriminants.CycImage
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
@@ -194,7 +195,7 @@ theorem main : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R
       exact Dvd.dvd.mul_right (dvd_pow_self _ (by omega)) _
     have := IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ hm
     simpa using this
-  obtain ⟨σ, hσ, hv⟩ := GlobalTheory.T.cyclotomicChar_inertia_surjective N.Om (N.l i) (N.plOm.1 w) hA hunit.unit
+  obtain ⟨σ, hσ, hv⟩ := _root_.GlobalTheory.CycInertia.cycZ_Ine_surjective N.Om (N.l i) (N.plOm.1 w) hA hunit.unit
   have hv' : ((cycZ (F := ℚ) (Ω := N.Om) (N.l i) σ : ℤ_[N.l i]ˣ) : ℤ_[N.l i]) =
       1 + (N.l i : ℤ_[N.l i]) ^ N.s0 i * u := by rw [hv]; rfl
   obtain ⟨k, hk⟩ := pow_dvd_pow (N.l i) (UpperTheory.KStar.S0.factorization_conductor_le_localLevel N i)

@@ -2,43 +2,8 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.ParametersTermRelations
 public import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.NumericSettingWithGapSatisfiable
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 public import Mathlib.Analysis.InnerProductSpace.Trace
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.WeylBridge
 
 @[expose] public section
@@ -84,8 +49,7 @@ theorem hsNormSq_of_iso (A : Wq →L[ℂ] Wp) (A' : Wq' →L[ℂ] Wp') (V : Wq �
     (hg : ∀ y, ‖g y‖ = ‖y‖) (h : ∀ x, A' (V x) = g (A x)) : hsNormSq A' = hsNormSq A := by
   let b := stdOrthonormalBasis ℂ Wq
   rw [hsNormSq_eq_sum A' (b.map V), hsNormSq_eq_sum A b]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [OrthonormalBasis.map_apply, h, hg]
+  simp only [OrthonormalBasis.map_apply, h, hg]
 
 theorem hsNormSq_of_semi (A : Wq →L[ℂ] Wp) (A' : Wq' →L[ℂ] Wp') (f : Wq →+ Wq')
     (hfs : ∀ (c : ℂ) x, f (c • x) = conj c • f x) (hfi : ∀ x y, ⟪f x, f y⟫_ℂ = ⟪y, x⟫_ℂ)
@@ -202,8 +166,7 @@ theorem norm_shInv (x : CM cs) : ‖shInv hb x‖ = ‖x‖ := by
 
 theorem norm_tr_le (A : CM cs' →L[ℂ] CM cs) : ‖tr hb hb' A‖ ≤ ‖A‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun T' => ?_
-  rw [tr_apply, norm_shInv, ← norm_shT T']
-  exact A.le_opNorm _
+  simpa only [tr_apply, norm_shInv, norm_shT] using A.le_opNorm (shT hinj' T')
 
 def trAdd : (CM cs' →L[ℂ] CM cs) →+ (ColT hinj' →L[ℂ] ColT hinj) where
   toFun := tr hb hb'
@@ -390,9 +353,7 @@ theorem finrank_Vpi (u : D.what₂.Word) :
   simp only [Fintype.card_fin]
 
 theorem dimTie (u : D.what₂.Word) : DimTie (X := X) u := by
-  unfold DimTie dimPi
-  rw [finrank_Vpi, Nat.cast_prod]
-  exact Fintype.prod_equiv X.pl _ _ fun v => finrank_loc X u v
+  simpa [DimTie, dimPi, finrank_Vpi, Nat.cast_prod] using Fintype.prod_equiv X.pl _ _ fun v => finrank_loc X u v
 
 end Dim
 

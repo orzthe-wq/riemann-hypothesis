@@ -65,8 +65,6 @@ theorem ofFn_prod_sum {A : Type*} [Ring A] {ι : Type*} [Fintype ι] :
     first
     | (rw [← (Fin.consEquiv fun _ => ι).sum_comp, Fintype.sum_prod_type]
        simp [List.ofFn_succ, Fin.consEquiv])
-    | (rw [← (Equiv.piFinSucc t ι).symm.sum_comp, Fintype.sum_prod_type]
-       simp [List.ofFn_succ, Equiv.piFinSucc])
 
 theorem ofFn_prod_smul {A : Type*} [Ring A] [Algebra ℂ A] :
     ∀ (t : ℕ) (w : Fin t → ℂ) (X : Fin t → A),

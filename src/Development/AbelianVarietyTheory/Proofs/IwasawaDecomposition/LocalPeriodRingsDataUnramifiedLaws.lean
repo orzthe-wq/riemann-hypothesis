@@ -4,11 +4,11 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Development.AbelianVarietyTheory.CrystallinePeriods.CrisIncl
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusSimpleRootsSectionUniqueEquivariantStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApproxStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInjectiveBcrisToBdRStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusSimpleRootsSectionUniqueEquivariant
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInjectiveBcrisToBdR
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodRingsGaloisActionLawsFrobeniusComm
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootOfUnityPrimeToTeichmullerLiftStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootOfUnityPrimeToTeichmullerLift
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,10 +57,6 @@ namespace GlobalTheory.MemLoc.ULaws
 
 variable {l : ℕ} [Fact l.Prime]
 
-theorem alg_acris (a : Per.Ainf l) : algebraMap (Per.Ainf l) (Per.Acris l) a =
-    algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) a) :=
-  GlobalTheory.RingIface.tower l a
-
 theorem ringHom_ext_Kur {R : Type} [CommRing R] (f g : ↥(MaximalUnramifiedExtension l) →+* R)
     (hz : ∀ z : ℤ_[l], f (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (z : ℚ_[l])) =
       g (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (z : ℚ_[l])))
@@ -85,7 +81,7 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 theorem iota_injective (C : Core l) : Function.Injective C.ι := by
-  obtain ⟨ι, h1, h2⟩ := GlobalTheory.T.exists_injective_bcris_to_bdR l C.j C.j_cris
+  obtain ⟨ι, h1, h2⟩ := _root_.GlobalTheory.MemLoc.exists_iota_cris_dR l C.j C.j_cris
   have e : C.ι = ι := GlobalTheory.RingIface.bcris_ext l fun x => (C.ι_j x).trans (h1 x).symm
   rw [e]
   exact h2
@@ -94,7 +90,7 @@ theorem iota_aB (C : Core l) (a : Per.Ainf l) :
     C.ι (Per.aB l a) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l a) := by
   have e : Per.aB l a = algebraMap (Per.Acris l) (Per.Bcris l)
       (algebraMap (Per.Ainf l) (Per.Acris l) a) := GlobalTheory.RingIface.aB_eq_alg l a
-  rw [e, C.ι_j, alg_acris, C.j_cris.on0, Subalgebra.coe_algebraMap, aDp, RingHom.comp_apply]
+  rw [e, C.ι_j, _root_.GlobalTheory.MemLoc.algebraMap_ainf_acris_eq, C.j_cris.on0, Subalgebra.coe_algebraMap, aDp, RingHom.comp_apply]
 
 theorem iota_sigma (C : Core l) (g : GQ l) (b : Per.Bcris l) :
     C.ι (Per.σB g b) = Per.σD g (C.ι b) := by
@@ -102,13 +98,13 @@ theorem iota_sigma (C : Core l) (g : GQ l) (b : Per.Bcris l) :
   have e : C.ι.comp (Per.σB g) = (Per.σD g).comp C.ι := by
     refine GlobalTheory.RingIface.bcris_ext l fun x => ?_
     simp only [RingHom.comp_apply]
-    rw [hB, C.ι_j, C.ι_j, hD, (GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l C.j C.j_cris).2.1]
+    rw [hB, C.ι_j, C.ι_j, hD, (_root_.GlobalTheory.MemLoc.crisP_unique_equivariant l C.j C.j_cris).2.1]
   exact RingHom.congr_fun e b
 
 theorem iota_isCrisDR (C : Core l) : Per.IsCrisDR l C.ι := by
   obtain ⟨ι, hι⟩ := GlobalTheory.CrisIncl.exists_incl l
   obtain ⟨j, h1, h2, h3⟩ := GlobalTheory.CrisIncl.exists_restrict l ι hι
-  have e : j = C.j := (GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l C.j C.j_cris).1 j ⟨h2, h3⟩
+  have e : j = C.j := (_root_.GlobalTheory.MemLoc.crisP_unique_equivariant l C.j C.j_cris).1 j ⟨h2, h3⟩
   have e' : C.ι = ι := GlobalTheory.RingIface.bcris_ext l fun x => by rw [C.ι_j, h1, e]
   rwa [e']
 
@@ -123,7 +119,7 @@ theorem sigma_u (C : Core l) (g : GQ l) (c c' : ↥(MaximalUnramifiedExtension l
     Per.σB g (C.u c) = C.u c' := by
   obtain ⟨-, -, -, -, -, -, -, -, -, hD, -⟩ := ActLaws.act_laws l
   apply iota_injective C
-  rw [iota_sigma, C.ι_u, C.ι_u, hD, (GlobalTheory.T.bdRPlus_simple_roots_section_unique_equivariant l C.o C.o_sec).2.2, h]
+  rw [iota_sigma, C.ι_u, C.ι_u, hD, (_root_.GlobalTheory.MemLoc.SecUniq.main l C.o C.o_sec).2.2, h]
 
 theorem phi_u (C : Core l) (c : ↥(MaximalUnramifiedExtension l)) : Per.φB l (C.u c) = C.u (C.σ c) := by
   obtain ⟨-, -, -, -, -, -, hφ, -, hz, -⟩ := ActLaws.act_laws l
@@ -132,7 +128,7 @@ theorem phi_u (C : Core l) (c : ↥(MaximalUnramifiedExtension l)) : Per.φB l (
   · have e : Per.zB l z = Per.aB l (Per.zA l z) := GlobalTheory.RingIface.zB_eq_aB_zA l z
     simp only [RingHom.comp_apply, RingHom.coe_coe, AlgHom.commutes]
     rw [u_padicInt, e, hφ, hz]
-  · obtain ⟨⟨xb, hxb⟩, h2⟩ := GlobalTheory.T.rootOfUnity_prime_to_teichmuller_lift l C.o C.o_sec (c : Om l) m hm hlm
+  · obtain ⟨⟨xb, hxb⟩, h2⟩ := _root_.GlobalTheory.MemLoc.rootOfUnity_teichmuller l C.o C.o_sec (c : Om l) m hm hlm
       (congrArg Subtype.val hc)
     have hu : C.u c = Per.aB l (Per.tm xb) := by
       apply iota_injective C

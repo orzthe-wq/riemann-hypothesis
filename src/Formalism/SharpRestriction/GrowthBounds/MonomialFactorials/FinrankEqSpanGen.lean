@@ -51,10 +51,6 @@ section RankSpanGen
 variable {R K V : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
   [AddCommGroup V] [Module R V] [Module K V] [IsScalarTower R K V]
 
-theorem span_den_gen (M : Submodule R V) (y : V) (hy : y ∈ Submodule.span K (M : Set V)) :
-    ∃ s : R, s ≠ 0 ∧ s • y ∈ M := by
-  first | exact Bl.general_b_fact_left_ter_form.goal1 .. | (apply Bl.general_b_fact_left_ter_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_ter_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_ter_form.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_ter_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_ter_form.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› M y hy | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› M y | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› M | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› ‹_› | exact @Bl.general_b_fact_left_ter_form.goal1 R K V ‹_› | exact @Bl.general_b_fact_left_ter_form.goal1 R K V | exact @Bl.general_b_fact_left_ter_form.goal1 R K | exact @Bl.general_b_fact_left_ter_form.goal1 R
-
 def toSpanG (M : Submodule R V) : M →ₗ[R] (Submodule.span K (M : Set V)) where
   toFun x := ⟨x.1, Submodule.subset_span x.2⟩
   map_add' _ _ := rfl
@@ -77,7 +73,7 @@ instance toSpanG_loc (M : Submodule R V) : IsLocalizedModule (nonZeroDivisors R)
       simp only [Module.algebraMap_end_apply]
       rw [← algebraMap_smul K (x : R), smul_smul, mul_inv_cancel₀ hxK, one_smul]
   · intro y
-    obtain ⟨s, hs, hsy⟩ := span_den_gen (K := K) M y.1 y.2
+    obtain ⟨s, hs, hsy⟩ := _root_.Bl.general_b_fact_left_ter_form.goal1 (K := K) M y.1 y.2
     exact ⟨(⟨s • y.1, hsy⟩, ⟨s, mem_nonZeroDivisors_of_ne_zero hs⟩), rfl⟩
   · intro x₁ x₂ h
     refine ⟨1, ?_⟩

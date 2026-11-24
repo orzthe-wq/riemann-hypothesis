@@ -2,8 +2,8 @@ module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SEqOne
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.CapOComp
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InOpenOfThickeningMorphismStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StableCoverCechVanishingStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InOpenOfThickeningMorphism
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StableCoverCechVanishing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,7 +59,7 @@ section St
 variable {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}}
   {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
-theorem inU_map (V : X.Opens) {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (h : InU V T) : InU V T' := GlobalTheory.T.inOpen_of_thickening_morphism V φ h
+theorem inU_map (V : X.Opens) {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (h : InU V T) : InU V T' := _root_.GlobalTheory.CompanionTheory.ThickPt.inU_map V φ h
 
 end St
 
@@ -72,13 +72,13 @@ theorem glob_van_st : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I : I
     ((∀ S : Finset ι, S.Nonempty → ∀ j, Subsingleton (HU F (St Q {⨅ α ∈ S, U α}) j)) →
       ∀ j, Subsingleton (HU F (St Q (Set.range U)) j)) ∧
     ((∀ S : Finset ι, S.Nonempty → ∀ j > s, Subsingleton (HU F (St Q {⨅ α ∈ S, U α}) j)) →
-      ∀ j, s + Fintype.card ι ≤ j → Subsingleton (HU F (St Q (Set.range U)) j)) := GlobalTheory.T.stable_cover_cech_vanishing.1
+      ∀ j, s + Fintype.card ι ≤ j → Subsingleton (HU F (St Q (Set.range U)) j)) := _root_.GlobalTheory.CompanionTheory.GlobSt.glob_st.1
 
 theorem glob_serre_st : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} {Λ : Type} [CommRing Λ]
     (F : Thick (nlFun γ p X q κ) ⥤ ModuleCat.{0} Λ) (Q : ObjectProperty (Thick (nlFun γ p X q κ)))
     {ι : Type} (U : ι → X.Opens) (𝒮 : Serre.{1} Λ) (n : ℕ),
-    (∀ a b, a + b = n → 𝒮.P ((cechH F (fun α => St Q {U α}) b).cx.H a)) → 𝒮.P (HU F (St Q (Set.range U)) n) := GlobalTheory.T.stable_cover_cech_vanishing.2.1
+    (∀ a b, a + b = n → 𝒮.P ((cechH F (fun α => St Q {U α}) b).cx.H a)) → 𝒮.P (HU F (St Q (Set.range U)) n) := _root_.GlobalTheory.CompanionTheory.GlobSt.glob_st.2.1
 
 theorem glob_bc_st : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ}
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
@@ -99,6 +99,6 @@ theorem glob_bc_st : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] {I : Id
       (M' := HU F' (St Q' {⨅ α ∈ S, U' α}) j)
       fun i n x => (morU (⟨G, τ i n, hτ i n⟩ : CH.Mor (F i) F' σ) (hS S)).pull j x) →
     ∀ j, Tens Λ (N := N) (M := fun i => HU (F i) (St Q (Set.range U)) j) (M' := HU F' (St Q' (Set.range U')) j)
-      fun i n x => (morU (⟨G, τ i n, hτ i n⟩ : CH.Mor (F i) F' σ) hR).pull j x := GlobalTheory.T.stable_cover_cech_vanishing.2.2
+      fun i n x => (morU (⟨G, τ i n, hτ i n⟩ : CH.Mor (F i) F' σ) hR).pull j x := _root_.GlobalTheory.CompanionTheory.GlobSt.glob_st.2.2
 
 end CrystallineSemistableComparison.Pb

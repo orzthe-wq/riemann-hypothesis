@@ -2,8 +2,7 @@ module
 
 public import GroundTheory.ProfiniteCohomology.CupProducts.Pairing
 public import ReciprocityTheory.Hypotheses.GalCohDefs
-public import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohCmp
-import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohCmpA
+public import CompanionTheory.AutomorphicTheory.PadicCyclotomicFields.GcohCmp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -83,14 +82,14 @@ theorem transfer_cup_degree_zero_two {Lv Hv : Type} [Group Lv] [TopologicalSpace
     (m : ↥(H0 rho)) (z : ↥(Z2 rho')) :
     jp (cupProductH0H2 rho rho' rhoP b hb hbe m (Submodule.Quotient.mk z)) =
       - J (cupPairing μ (rfl : 0 + 2 = 2) (E m) (E' (Submodule.Quotient.mk z))) := by
-  obtain ⟨e2, he2a, -⟩ := PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 Hv R M' (rho'.comp ev.toMonoidHom) B eB heB
+  obtain ⟨e2, he2a, -⟩ := CompanionTheory.LocalTateOrthogonality.Gcoh.gc2 Hv R M' (rho'.comp ev.toMonoidHom) B eB heB
   obtain ⟨x2, hx2⟩ := he2a (restrictCocycles2 rho' ev.toMonoidHom hevc z)
   have hm : ∀ σ, (rho.comp ev.toMonoidHom) σ m.1 = m.1 := fun σ => (mem_riemannRochSpace_iff_regularAt_everywhere rho m.1).1 m.2 (ev σ)
-  obtain ⟨x0, hx0⟩ := PositivityTheory.LocalTateOrthogonality.Gcoh.exists_coc A 0 (fun _ => eA m.1) (IsLocallyConstant.const _)
+  obtain ⟨x0, hx0⟩ := CompanionTheory.LocalTateOrthogonality.Gcoh.exists_coc A 0 (fun _ => eA m.1) (IsLocallyConstant.const _)
     (by
-      refine (PositivityTheory.LocalTateOrthogonality.Gcoh.d_comp (rho.comp ev.toMonoidHom) A eA heA 0 fun _ => m.1).trans ?_
+      refine (CompanionTheory.LocalTateOrthogonality.Gcoh.d_comp (rho.comp ev.toMonoidHom) A eA heA 0 fun _ => m.1).trans ?_
       funext s
-      rw [PositivityTheory.LocalTateOrthogonality.Gcoh.dn_zero, hm (s 0), sub_self]
+      rw [CompanionTheory.LocalTateOrthogonality.Gcoh.dn_zero, hm (s 0), sub_self]
       exact map_zero eA)
   have hEm : E m = cohomologyπ A 0 x0 := hE m x0 (fun s => congrFun hx0 s)
   have hEz : E' (Submodule.Quotient.mk z) = cohomologyπ B 2 x2 := hE' z x2 (fun s => hx2 s)

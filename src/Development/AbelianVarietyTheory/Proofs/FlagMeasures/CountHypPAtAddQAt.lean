@@ -83,7 +83,7 @@ theorem countHyp_numerics : ∀ (B : RowsAut) (Cg : ℝ) (n₀ : ℕ) (d : Infin
   have h2q : 2 * q + 2 ≤ B.I.n := by
     rcases Nat.lt_or_ge q 3 with h | h
     · omega
-    · nlinarith
+    · linarith [Nat.mul_le_mul_right q h]
   have hqp : q ≤ p := by omega
   have hmin : min p q = q := min_eq_right hqp
   have hrk : ∀ v, rkR (B.I.ε v) = q := by
@@ -105,24 +105,24 @@ theorem countHyp_numerics : ∀ (B : RowsAut) (Cg : ℝ) (n₀ : ℕ) (d : Infin
   have hgr : (1 : ℝ) ≤ B.g := by exact_mod_cast hg1
   have hX : 16 ≤ bigX B b := by
     show 16 ≤ (B.I.n : ℝ) * B.I.f * B.I.rd * B.g * b
-    have a1 : 8 ≤ (B.I.n : ℝ) * B.I.f := by nlinarith
-    have a2 : 8 ≤ (B.I.n : ℝ) * B.I.f * B.I.rd := by nlinarith
-    have a3 : 8 ≤ (B.I.n : ℝ) * B.I.f * B.I.rd * B.g := by nlinarith
-    nlinarith
+    have a1 : 8 ≤ (B.I.n : ℝ) * B.I.f := by linarith [le_mul_of_one_le_right (show (0 : ℝ) ≤ B.I.n by linarith [hnr]) hfr]
+    have a2 : 8 ≤ (B.I.n : ℝ) * B.I.f * B.I.rd := by linarith [le_mul_of_one_le_right (show (0 : ℝ) ≤ (B.I.n : ℝ) * B.I.f by linarith) hrd]
+    have a3 : 8 ≤ (B.I.n : ℝ) * B.I.f * B.I.rd * B.g := by linarith [le_mul_of_one_le_right (show (0 : ℝ) ≤ (B.I.n : ℝ) * B.I.f * B.I.rd by linarith) hgr]
+    linarith [mul_le_mul a3 hb (by linarith) (by linarith)]
   have htpos : 0 < tauStar B q b := by
     show 0 < (bigX B b)⁻¹ ^ (11 * q)
     have : 0 < bigX B b := by linarith
     positivity
 
-  have hL : Real.log 2 ≤ Real.log (b * B.I.rd) := Real.log_le_log (by norm_num) (by nlinarith)
+  have hL : Real.log 2 ≤ Real.log (b * B.I.rd) := Real.log_le_log (by norm_num) (by linarith [le_mul_of_one_le_right (show 0 ≤ b by linarith) hrd])
   have hlog2 := Real.log_two_gt_d9
   have hF5 : (1 : ℝ) ≤ (B.I.f : ℝ) ^ 5 := one_le_pow₀ hfr
-  have hP1 : 2 ≤ (Cg + 4) * Real.log (b * B.I.rd) := by nlinarith
+  have hP1 : 2 ≤ (Cg + 4) * Real.log (b * B.I.rd) := by norm_num at hlog2; linarith [mul_nonneg hCg (show 0 ≤ Real.log (b * B.I.rd) by linarith)]
   have hP : 2 ≤ (Cg + 4) * (B.I.f : ℝ) ^ 5 * Real.log (b * B.I.rd) := by
     have : (Cg + 4) * (B.I.f : ℝ) ^ 5 * Real.log (b * B.I.rd)
         = ((Cg + 4) * Real.log (b * B.I.rd)) * (B.I.f : ℝ) ^ 5 := by ring
     rw [this]
-    nlinarith
+    linarith [le_mul_of_one_le_right (show 0 ≤ (Cg + 4) * Real.log (b * B.I.rd) by linarith) hF5]
   have hN : 0 ≤ (B.I.n : ℝ) ^ 19 := by positivity
   have hbig : 10 ^ 15 * (B.I.n : ℝ) ^ 19 ≤
       8 * 10 ^ 14 * (Cg + 4) * (B.I.n : ℝ) ^ 19 * (B.I.f : ℝ) ^ 5 * Real.log (b * B.I.rd) := by
@@ -130,14 +130,14 @@ theorem countHyp_numerics : ∀ (B : RowsAut) (Cg : ℝ) (n₀ : ℕ) (d : Infin
         = 8 * 10 ^ 14 * (B.I.n : ℝ) ^ 19 * ((Cg + 4) * (B.I.f : ℝ) ^ 5 * Real.log (b * B.I.rd)) := by
       ring
     rw [this]
-    nlinarith
+    linarith [mul_le_mul_of_nonneg_left hP hN]
   have hn1 : (1 : ℝ) ≤ B.I.n := by linarith
   have hn2 : (B.I.n : ℝ) ^ 2 ≤ (B.I.n : ℝ) ^ 19 := pow_le_pow_right₀ hn1 (by norm_num)
   have hn3 : (B.I.n : ℝ) ^ 3 ≤ (B.I.n : ℝ) ^ 19 := pow_le_pow_right₀ hn1 (by norm_num)
   have hqn : (q : ℝ) ≤ B.I.n := by exact_mod_cast (show q ≤ B.I.n by omega)
   have hq0 : (0 : ℝ) ≤ q := by positivity
   have hsq : Real.sqrt q ≤ B.I.n := by
-    calc Real.sqrt q ≤ Real.sqrt ((B.I.n : ℝ) ^ 2) := Real.sqrt_le_sqrt (by nlinarith)
+    calc Real.sqrt q ≤ Real.sqrt ((B.I.n : ℝ) ^ 2) := Real.sqrt_le_sqrt (hqn.trans (le_self_pow₀ hn1 two_ne_zero))
       _ = B.I.n := Real.sqrt_sq (by positivity)
   have hs40 : 40 * (B.I.n : ℝ) ^ 2 * Real.sqrt q ≤
       8 * 10 ^ 14 * (Cg + 4) * (B.I.n : ℝ) ^ 19 * (B.I.f : ℝ) ^ 5 * Real.log (b * B.I.rd) := by
@@ -178,9 +178,9 @@ theorem countHyp_numerics : ∀ (B : RowsAut) (Cg : ℝ) (n₀ : ℕ) (d : Infin
   · intro v
     rw [hrk v]
     have : 0 ≤ Real.sqrt q := Real.sqrt_nonneg _
-    nlinarith
+    linarith [mul_nonneg (sq_nonneg (B.I.n : ℝ)) this]
   · have hpos : 0 < (B.I.n : ℝ) ^ 19 := by positivity
-    have e1 : 8 * (B.I.n : ℝ) * q ≤ 8 * (B.I.n : ℝ) ^ 2 := by nlinarith
+    have e1 : 8 * (B.I.n : ℝ) * q ≤ 8 * (B.I.n : ℝ) ^ 2 := by linarith [mul_le_mul_of_nonneg_left hqn (show (0 : ℝ) ≤ B.I.n by positivity)]
     linarith
   · have r1 : (q : ℝ) ^ ((3 : ℝ) / 2) ≤ (B.I.n : ℝ) ^ ((3 : ℝ) / 2) :=
       Real.rpow_le_rpow hq0 hqn (by norm_num)

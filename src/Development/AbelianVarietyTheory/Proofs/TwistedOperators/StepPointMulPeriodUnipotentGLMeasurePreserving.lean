@@ -137,7 +137,7 @@ theorem mul_gen_nonvar {q : ℕ} (hq : q = c / 2 + 1 ∨ (c % 2 = 1 ∧ q = c / 
   split_ifs with h'
   · have : ¬ (Free (c / 2 + 1) (r, s') ∨ Kept (r, s')) ∧ basePt c x₀ r s' = 0 := by
       rcases r with r | r <;> rcases s with s | s <;> rcases s' with s' | s' <;>
-        simp [Free, Kept, GlobalTheory.RootEx.lev, basePt, Nat.even_iff, Nat.odd_iff, Fin.ext_iff] at hv h' ⊢ <;> omega
+        simp [Free, Kept, GlobalTheory.RootEx.lev, basePt, Nat.even_iff, Nat.odd_iff] at hv h' ⊢ <;> omega
     rw [Matrix.add_apply, varPart_nonvar _ this.1, this.2, add_zero, zero_mul]
   · rfl
 

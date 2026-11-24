@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -51,4 +52,4 @@ open GlobalTheory.Poinc.Sep
 
 
 theorem _root_.GlobalTheory.T.thetaModelMember_term_mem_maximalIdeal : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V1 : Type) [CommRing V1] [IsDomain V1] [IsLocalRing V1] (ev1 : X₁.M.Z.presheaf.stalk z₁ →+* V1) (Y1 : Type) [AddCommGroup Y1] (m1 : ℕ) (t1 : Fin m1 → V1) (δ1 : Fin m1 → LinearMap.BilinForm ℤ Y1) (𝔪1 : UMem X₁ z₁ act V1 ev1 Y1 t1 δ1) (C : Type) (lab : C → X₁.S.Gam), (∀ c, lab c ∈ X₁.S.HH X₁.M z₁) → ∀ T : (Fin 8 → Y1) → C → V1, 𝔪1.Terms x₀ lab T → ∀ (c : C) (mu : Fin 8 → Y1), mu ≠ 0 → T mu c ∈ maximalIdeal V1 := by
-  first | exact @GlobalTheory.Poinc.Sep.HighTerms.term_mem_maximalIdeal | exact GlobalTheory.Poinc.Sep.HighTerms.term_mem_maximalIdeal | (intros; apply GlobalTheory.Poinc.Sep.HighTerms.term_mem_maximalIdeal <;> assumption)
+  first | exact @GlobalTheory.Poinc.Sep.HighTerms.term_mem_maximalIdeal

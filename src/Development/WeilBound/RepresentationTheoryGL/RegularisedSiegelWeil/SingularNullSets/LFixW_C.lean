@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EventuallyAlgebraMapMemIntegers
 
 @[expose] public section
 
@@ -151,7 +152,7 @@ theorem psi_kernel {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
       (∀ v ∉ S, y.2 v ∈ v.adicCompletionIntegers F) → ψ y = 1 := by
   obtain ⟨α, hα, hk⟩ := GlobalTheory.CompanionTheory.PsiCondLoc.exists_int_kernel hψ
   have hα0 : (α : F) ≠ 0 := by exact_mod_cast hα
-  have h1 := Filter.eventually_cofinite.1 (eventually_int (F := F) ((α : F)⁻¹))
+  have h1 := Filter.eventually_cofinite.1 (_root_.GlobalTheory.AdelicU.eventually_algebraMap_mem_integers (F := F) ((α : F)⁻¹))
   refine ⟨h1.toFinset, fun S hS y hy1 hyS hyI => ?_⟩
   have hu : algebraMap F (Af F) ((α : F)⁻¹) * y.2 ∈ Formalism.UG.intAd F := by
     intro v

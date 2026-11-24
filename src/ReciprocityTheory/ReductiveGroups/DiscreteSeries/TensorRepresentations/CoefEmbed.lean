@@ -4,44 +4,7 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentat
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.Transported
 public import Mathlib.Analysis.InnerProductSpace.Positive
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.EqZeroOfDatumEmbeddingEqZero
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.OccDAdj
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.OccDTensKStable
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.OccATensWordMem
@@ -88,7 +51,7 @@ theorem coef_embed (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCom
     exact Filter.Eventually.of_forall fun g => (occA_coef_Eword dual hσ hD _ w f g.2).symm
   · intro k hk f' _ hff g hg
     show ∑ c, _ = ∑ c, _
-    rw [occA_tensGrp_mul dual hσ hg hk, ← hff]
+    rw [_root_.ReciprocityTheory.ChartRestriction.DS.tensor_group_mul_kDiag dual hσ hg hk, ← hff]
 
 theorem occ_exists (dual : Bool) {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {T' : S7.KType ε (lowK ε lam')} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
@@ -105,9 +68,9 @@ theorem occ_exists (dual : Bool) {ε : Fin n → Bool} {lam lam' : Fin n → ℝ
     ∃ ι : smD ε (rreg ε) →ₗ[ℂ] (Fin n → smD ε (rreg ε)),
       IsGKEmb dual ε (rreg ε) (smE ε (rreg ε)) (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)) (genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀')) ι ∧
       ∀ x ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀'), eeF dual (smE ε (rreg ε)) (ι x) = poleF dual lam s • ι x := by
-  have hB := occB_pairing_ne dual hP hP' hv₀' hpos hpos' (occB_memLp_psi hgap hP hv₀ hW) s hlam'
+  have hB := occB_pairing_ne dual hP hP' hv₀' hpos hpos' (_root_.ReciprocityTheory.ChartRestriction.DS.psi_weighted_memLp hgap hP hv₀ hW) s hlam'
   obtain ⟨ps, hps, hne⟩ :=
-    occC_exists_ps dual hgap hP hv₀ hgap' hP' hv₀' hW (occC_pairing dual hgap hP hv₀ hP' hW hB)
+    occC_exists_ps dual hgap hP hv₀ hgap' hP' hv₀' hW (_root_.ReciprocityTheory.ChartRestriction.DS.occurrence_pairing dual hgap hP hv₀ hP' hW hB)
   obtain ⟨ι, hι⟩ := occAdj_emb dual hgap hP hv₀ hgap' hP' hv₀' hps hne
   exact ⟨ι, hι, occD_eeF dual hP hP' s hlam' hι⟩
 

@@ -7,94 +7,30 @@ public import Formalism.HermitianCurvature.HermitianCurvatureProofs.EulerZetaGam
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.InterlaceSignTwo
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelNablaStarRelations
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.MultiplicationOpHom
-import Mathlib.Algebra.AffineMonoid.UniqueSums
-import Mathlib.Algebra.Module.StablyFree.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.CStarAlgebra.Classes
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Algebra.Polynomial.BigOperators
 public import Mathlib.Algebra.Polynomial.Roots
 public import Mathlib.LinearAlgebra.Dual.Lemmas
 
-@[expose] public section
-
-set_option linter.unusedSimpArgs false
-set_option linter.unusedVariables false
+section
 
 namespace Formalism.FourierDecayAlt.P.Mx6
 
 open Matrix Finset Polynomial Formalism.FourierDecayAlt.M
+open Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations
+  (Good rho_up xC_split xEx_split xEx_up rr good0 good1 goodm1 good_star xC_ne
+   coordinate_shift_ne_zero lc lc1 lcs lca commutator_identity_one commutator_identity_two
+   raising_pair_relation commutator_identity_four diagonal_lowering_absorb raising_operator_absorb
+   abs_Nc abs_Nsc abs_Ncz absSand absN half hh absCC star_xC star_qC)
 
 noncomputable section
-
-def Good (P : Par) (Y : ℂ) : Prop :=
-  ∀ π : Ty P, ∀ j ∈ Icc 1 (P.k - 1), ∀ n ∈ ({-2, -1, 0, 1, 2} : Finset ℤ), Y + (rho P π j : ℂ) + (n : ℂ) ≠ 0
 
 def dA (P : Par) (Y : ℂ) : A P := qC P Y • (ggiA P * kap P fun π => (xC P π (Y + 1))⁻¹)
 
 def mt (P : Par) (Y : ℂ) : A P := star (lA P (star Y))
 
-end
-
-end Formalism.FourierDecayAlt.P.Mx6
-
-namespace Formalism.FourierDecayAlt.P.Mx6
-
-open Matrix Finset Polynomial Formalism.FourierDecayAlt.M
-
-noncomputable section
-
 variable (P : Par)
 
-theorem kap_eq (f : Ty P → ℂ) :
-    kap P f = Matrix.diagonal fun π => algebraMap ℂ (Pr P.r) (f π) := rfl
+alias kap_eq := _root_.Formalism.FourierDecayAlt.P.Mx4.kap_eq
 
 theorem kap_mul (f g : Ty P → ℂ) : kap P f * kap P g = kap P (f * g) := (map_mul _ _ _).symm
 
@@ -126,8 +62,8 @@ theorem S_shift (l : ℕ) (f g : Ty P → ℂ) (h : ∀ π π', Up P l π π' �
   ext π' π
   rw [Matrix.diagonal_mul, Matrix.mul_diagonal]
   by_cases hu : Up P l π π'
-  · simp only [SS, Matrix.of_apply, if_pos hu, h π π' hu]
-    exact (Algebra.commutes _ _)
+  · simp only [SS, Matrix.of_apply, ite_eq_left hu, h π π' hu]
+    exact Algebra.commutes _ _
   · simp [SS, hu]
 
 theorem Ss_shift (l : ℕ) (f g : Ty P → ℂ) (h : ∀ π π', Up P l π π' → g π' = f π) :
@@ -141,41 +77,13 @@ theorem S_sc (l : ℕ) (w : Pr P.r) : SS P l * sc P w = sc P w * SS P l := by
   ext π' π
   simp only [sc, Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, SS, Matrix.of_apply]
   split_ifs
-  · exact (Algebra.commutes _ _)
+  · exact Algebra.commutes _ _
   · simp
 
 theorem Ss_sc (l : ℕ) (w : Pr P.r) : star (SS P l) * sc P w = sc P w * star (SS P l) := by
   have h2 := congrArg star (S_sc P l (star w))
   rw [star_mul, star_mul, Mx1.star_sc, star_star] at h2
   exact h2.symm
-
-theorem rho_up {l : ℕ} {π π' : Ty P} (h : Up P l π π') {i : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) :
-    (rho P π' i : ℂ) = (rho P π i : ℂ) + if i = l then 1 else 0 := by
-  rw [Mx3.rhoUp P l π π' h i hi]
-  split_ifs <;> simp
-
-theorem xC_split (π : Ty P) (u : ℂ) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) :
-    xC P π u = (u + (rho P π j : ℂ)) * xEx P {j} π u := by
-  rw [xC, xEx, Finset.sdiff_singleton_eq_erase]
-  exact (Finset.mul_prod_erase _ (fun i => u + (rho P π i : ℂ)) hj).symm
-
-theorem xEx_split (π : Ty P) (u : ℂ) {l j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hlj : j ≠ l) :
-    xEx P {l} π u = (u + (rho P π j : ℂ)) * xEx P {l, j} π u := by
-  have h1 : Icc 1 (P.k - 1) \ {l, j} = (Icc 1 (P.k - 1) \ {l}).erase j := by
-    ext x; simp only [mem_sdiff, mem_insert, mem_singleton, mem_erase]; tauto
-  have h2 : j ∈ Icc 1 (P.k - 1) \ {l} := by simp only [mem_sdiff, mem_singleton]; exact ⟨hj, hlj⟩
-  rw [xEx, xEx, h1]
-  exact (Finset.mul_prod_erase _ (fun i => u + (rho P π i : ℂ)) h2).symm
-
-theorem xEx_up {j : ℕ} {π π' : Ty P} (h : Up P j π π') (ex : Finset ℕ) (hj : j ∈ ex) (u : ℂ) :
-    xEx P ex π' u = xEx P ex π u := by
-  unfold xEx
-  refine Finset.prod_congr rfl fun i hi => ?_
-  have hi' := Finset.mem_sdiff.1 hi
-  have hne : i ≠ j := fun e => hi'.2 (e ▸ hj)
-  rw [rho_up P h hi'.1, if_neg hne, add_zero]
-
-def rr (j : ℕ) (u : ℂ) : Ty P → ℂ := fun π => (u + (rho P π j : ℂ))⁻¹
 
 def lam (j : ℕ) (u : ℂ) : A P := kap P (rr P j u) * SS P j
 
@@ -196,503 +104,19 @@ theorem star_Lam (u : ℂ) : star (abelian₂ P (star u)) = Lams P u := by
   funext π
   simp [rr]
 
-theorem good0 {u : ℂ} (h : Good P u) (π : Ty P) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) :
-    u + (rho P π j : ℂ) ≠ 0 := by simpa using h π j hj 0 (by decide)
-theorem good1 {u : ℂ} (h : Good P u) (π : Ty P) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) :
-    u + (rho P π j : ℂ) + 1 ≠ 0 := by simpa using h π j hj 1 (by decide)
-theorem goodm1 {u : ℂ} (h : Good P u) (π : Ty P) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) :
-    u + (rho P π j : ℂ) - 1 ≠ 0 := by simpa [sub_eq_add_neg] using h π j hj (-1) (by decide)
-
-theorem good_star {u : ℂ} (h : Good P u) : Good P (star u) := by
-  intro π j hj n hn h0
-  apply h π j hj n hn
-  have := congrArg star h0
-  simpa using this
-
-theorem xC_ne {u : ℂ} (h : Good P u) (π : Ty P) : xC P π u ≠ 0 :=
-  Finset.prod_ne_zero_iff.2 fun _ hj => good0 P h π hj
-
-theorem coordinate_shift_ne_zero {u : ℂ} (h : Good P u) (π : Ty P) : xC P π (u + 1) ≠ 0 :=
-  Finset.prod_ne_zero_iff.2 fun j hj => by
-    have := good1 P h π hj
-    intro h0; apply this; rw [← h0]; ring
-
 end
 
-end Formalism.FourierDecayAlt.P.Mx6
+namespace PC
 
-namespace Formalism.FourierDecayAlt.P.Mx6
-variable {B : Type*} [Ring B] [Algebra ℂ B]
-
-theorem lc {a b : B} (h : a * b = b * a) (x : B) : a * (b * x) = b * (a * x) := by
-  rw [← mul_assoc, h, mul_assoc]
-
-theorem lc1 {a b : B} (h : a * b = 1) (x : B) : a * (b * x) = x := by
-  rw [← mul_assoc, h, one_mul]
-
-theorem lcs {a b p q : B} (h : a * b = b * a - p * q) (x : B) : a * (b * x) = b * (a * x) - p * (q * x) := by
-  rw [← mul_assoc, h, sub_mul, mul_assoc, mul_assoc]
-
-theorem lca {a b p q : B} (h : a * b = b * a + p * q) (x : B) : a * (b * x) = b * (a * x) + p * (q * x) := by
-  rw [← mul_assoc, h, add_mul, mul_assoc, mul_assoc]
-
-theorem commutator_identity_one (N c g G X L L' : B) (α β : ℂ)
-    (hNg : N * g = g * N + g * c) (hNX : N * X = X * N)
-    (hgG : g * G = 1) (hGg : G * g = 1) (hcg : c * g = g * c)
-    (hXg : X * g = g * X) (hXG : X * G = G * X) (hXc : X * c = c * X)
-    (hLg : L * g = g * L) (hLg' : L' * g = g * L')
-    (h1 : (α - β) • (X * L' - L' * X) = -(X * (L - L'))) :
-    (α - β) • (g * X * (-N - β • c + G * L') - (-N - β • c + G * L') * (g * X)) =
-      -(g * X * ((-N - α • c + G * L) - (-N - β • c + G * L'))) := by
-  simp only [mul_add, add_mul, mul_sub, sub_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_add,
-    smul_sub, smul_neg, smul_smul, mul_assoc, neg_neg, hNg, lca hNg, hNX, lc hNX, hgG, lc1 hgG, hGg, lc1 hGg, hcg, lc hcg,
-    hXg, lc hXg, hXG, lc hXG, hXc, lc hXc, hLg, lc hLg, hLg', lc hLg'] at h1 ⊢
-  linear_combination (norm := module) h1
-
-theorem commutator_identity_two (N c G X L L' : B) (α β q : ℂ)
-    (hNG : N * G = G * N - c * G) (hNX : N * X = X * N)
-    (hGc : G * c = c * G)
-    (hXG : X * G = G * X) (hXc : X * c = c * X)
-    (hLG : L * G = G * L) (hLG' : L' * G = G * L')
-    (h1 : (α - β) • (X * L' - L' * X) = X * (L - L')) :
-    (α - β) • (q • (G * X) * (-N - β • c + G * L') - (-N - β • c + G * L') * (q • (G * X))) =
-      q • (G * X) * ((-N - α • c + G * L) - (-N - β • c + G * L')) := by
-  have h1' := congrArg (fun x => q • (G * (G * x))) h1
-  simp only [mul_add, add_mul, mul_sub, sub_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_add,
-    smul_sub, smul_neg, smul_smul, mul_assoc, neg_neg, hNG, lcs hNG, hNX, lc hNX, hGc, lc hGc,
-    hXG, lc hXG, hXc, lc hXc, hLG, lc hLG, hLG', lc hLG'] at h1' ⊢
-  linear_combination (norm := module) h1'
-
-theorem raising_pair_relation (N c G L L' : B) (α β : ℂ)
-    (hNc : N * c = c * N - c * c) (hNG : N * G = G * N - c * G)
-    (hNL : N * L = L * N - c * L) (hNL' : N * L' = L' * N - c * L')
-    (hGc : G * c = c * G) (hLc : L * c = c * L) (hLc' : L' * c = c * L')
-    (hLG : L * G = G * L) (hLG' : L' * G = G * L')
-    (h3 : (α - β) • (L * L' - L' * L) = (L - L') * (L - L')) :
-    (α - β) • ((-N - α • c + G * L) * (-N - β • c + G * L') - (-N - β • c + G * L') * (-N - α • c + G * L)) =
-      ((-N - α • c + G * L) - (-N - β • c + G * L')) * ((-N - α • c + G * L) - (-N - β • c + G * L')) := by
-  have h3' := congrArg (fun x => G * (G * x)) h3
-  simp only [mul_add, add_mul, mul_sub, sub_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_add,
-    smul_sub, smul_neg, smul_smul, mul_assoc, neg_neg, hNc, lcs hNc, hNG, lcs hNG, hNL, hNL', hGc, lc hGc, hLc, lc hLc,
-    hLc', lc hLc', hLG, lc hLG, hLG', lc hLG'] at h3' ⊢
-  linear_combination (norm := module) h3'
-
-theorem commutator_identity_four (N Ns c cz G K Ls L' : B) (α β t : ℂ)
-    (hcurv : Ns * N = N * Ns + K * (G * G))
-    (hNsc : Ns * c = c * Ns + t • (G * G)) (hNcz : N * cz = cz * N - t • (G * G))
-    (hNG : N * G = G * N - c * G) (hNsG : Ns * G = G * Ns + cz * G)
-    (hNsL' : Ns * L' = L' * Ns - cz * L') (hNLs : N * Ls = Ls * N + c * Ls)
-    (hGc : G * c = c * G) (hGcz : G * cz = cz * G) (hczc : cz * c = c * cz)
-    (hLc' : L' * c = c * L') (hLcz' : L' * cz = cz * L') (hLG' : L' * G = G * L')
-    (hLsc : Ls * c = c * Ls) (hLscz : Ls * cz = cz * Ls) (hLsG : Ls * G = G * Ls) :
-    (-Ns - α • cz + G * Ls) * (-N - β • c + G * L') - (-N - β • c + G * L') * (-Ns - α • cz + G * Ls) =
-      K * (G * G) + ((α + β) * t) • (G * G) + G * (G * (Ls * L' - L' * Ls)) := by
-  simp only [mul_add, add_mul, mul_sub, sub_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_add,
-    smul_sub, smul_neg, smul_smul, mul_assoc, neg_neg, hcurv, hNsc, hNcz, hNG, lcs hNG, hNsG, lca hNsG, hNsL', hNLs,
-    hGc, lc hGc, hGcz, lc hGcz, hczc, lc hczc, hLc', lc hLc', hLcz', lc hLcz', hLG', lc hLG',
-    hLsc, lc hLsc, hLscz, lc hLscz, hLsG, lc hLsG]
-  module
-
-theorem diagonal_lowering_absorb (g G X l0 L : B) (hgG : g * G = 1) (hXG : X * G = G * X) :
-    g * X * (l0 + G * L) = g * X * l0 + X * L := by
-  simp only [mul_add, mul_assoc, lc hXG, lc1 hgG]
-
-theorem raising_operator_absorb (Ns cz g G X Ls : B) (α : ℂ)
-    (hNsg : Ns * g = g * Ns - g * cz) (hNsX : Ns * X = X * Ns) (hGg : G * g = 1) (hczg : cz * g = g * cz)
-    (hczX : cz * X = X * cz) (hLsg : Ls * g = g * Ls) :
-    (-Ns - α • cz + G * Ls) * (g * X) = g * X * (-Ns - (α - 1) • cz) + Ls * X := by
-  simp only [mul_add, add_mul, mul_sub, sub_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_add,
-    smul_sub, smul_neg, smul_smul, mul_assoc, neg_neg, hNsg, lcs hNsg, hNsX, hGg, lc1 hGg, hczg, lc hczg, hczX, hLsg, lc hLsg]
-  module
-
-end Formalism.FourierDecayAlt.P.Mx6
-
-namespace Formalism.FourierDecayAlt.P.Mx6.GA
-
-section Gauss
-
-variable {B : Type*} [Ring B] [Algebra ℂ B]
-
-theorem solve_right {D : ℂ} (hD : D ≠ 0) {x y z : B} (h : D • (x - y) = z) : y = x - D⁻¹ • z := by
-  rw [← h, smul_smul, inv_mul_cancel₀ hD, one_smul]; abel
-
-theorem solve_left {D : ℂ} (hD : D ≠ 0) {x y z : B} (h : D • (x - y) = z) : x = y + D⁻¹ • z := by
-  rw [← h, smul_smul, inv_mul_cancel₀ hD, one_smul]; abel
-
-theorem assoc_var {a b R : B} (h : a * b = R) (x : B) : a * (b * x) = R * x := by
-  rw [← mul_assoc, h]
-
-theorem mul_assoc_four_right {a b c e R : B} (h : a * (b * (c * e)) = R) (x : B) : a * (b * (c * (e * x))) = R * x := by
-  rw [← h]; simp only [mul_assoc]
-
-theorem gauss_rtt (D : ℂ) (hD0 : D ≠ 0) (hD1 : D ≠ 1) (hD2 : D ≠ -1) (τ τ' d d' l l' m m' : B)
-    (c1 : τ' * τ = τ * τ') (c2 : d' * d = d * d') (c3 : d' * τ = τ * d') (c4 : d * τ' = τ' * d)
-    (D1 : D • (τ * l' - l' * τ) = -(τ * (l - l'))) (D1s : D • (τ' * l - l * τ') = -(τ' * (l - l')))
-    (D2 : D • (d * l' - l' * d) = d * (l - l')) (D2s : D • (d' * l - l * d') = d' * (l - l'))
-    (E1 : D • (τ * m' - m' * τ) = (m - m') * τ) (TwistedContraction : D • (τ' * m - m * τ') = (m - m') * τ')
-    (E2 : D • (d * m' - m' * d) = -((m - m') * d)) (E2VanishingOtherColumns : D • (d' * m - m * d') = -((m - m') * d'))
-    (D3 : D • (l * l' - l' * l) = (l - l') * (l - l')) (E3 : D • (m * m' - m' * m) = -((m - m') * (m - m')))
-    (D4 : D • (τ' * m * l' * τ - τ' * l' * m * τ) = d' * τ - τ' * d)
-    (D4s : D • (τ * m' * l * τ' - τ * l * m' * τ') = τ * d' - d * τ') :
-    ∀ i j k n : Fin 2,
-      D • ((!![d + m * τ * l, m * τ; τ * l, τ] : Matrix (Fin 2) (Fin 2) B) i j *
-            (!![d' + m' * τ' * l', m' * τ'; τ' * l', τ'] : Matrix (Fin 2) (Fin 2) B) k n -
-          (!![d' + m' * τ' * l', m' * τ'; τ' * l', τ'] : Matrix (Fin 2) (Fin 2) B) k n *
-            (!![d + m * τ * l, m * τ; τ * l, τ] : Matrix (Fin 2) (Fin 2) B) i j) =
-        (!![d + m * τ * l, m * τ; τ * l, τ] : Matrix (Fin 2) (Fin 2) B) k j *
-            (!![d' + m' * τ' * l', m' * τ'; τ' * l', τ'] : Matrix (Fin 2) (Fin 2) B) i n -
-          (!![d' + m' * τ' * l', m' * τ'; τ' * l', τ'] : Matrix (Fin 2) (Fin 2) B) k j *
-            (!![d + m * τ * l, m * τ; τ * l, τ] : Matrix (Fin 2) (Fin 2) B) i n := by
-  apply Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.GA.gauss_rtt <;> assumption
-
-end Gauss
-
-end Formalism.FourierDecayAlt.P.Mx6.GA
-
-namespace Formalism.FourierDecayAlt.P.Mx6.WB
-
-open Matrix Finset Polynomial Formalism.FourierDecayAlt.M Formalism.FourierDecayAlt
+open Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.PC
+  (IsPoly IsPolyS isPolyS_xC isPolyS_xEx isPolyS_wC bad_finite)
 
 noncomputable section
-
-def pX (I : Finset ℕ) (ρ : ℕ → ℂ) : ℂ[X] := ∏ i ∈ I, (X + C (ρ i))
-
-theorem pX_eval (I : Finset ℕ) (ρ : ℕ → ℂ) (u : ℂ) : (pX I ρ).eval u = ∏ i ∈ I, (u + ρ i) := by
-  simp [pX, eval_prod]
-
-theorem pX_erase (I : Finset ℕ) (ρ : ℕ → ℂ) {l : ℕ} (hl : l ∈ I) :
-    pX I ρ = (X + C (ρ l)) * pX (I.erase l) ρ := by
-  unfold pX; exact (Finset.mul_prod_erase I _ hl).symm
-
-theorem pX_monic (I : Finset ℕ) (ρ : ℕ → ℂ) : (pX I ρ).Monic :=
-  monic_prod_of_monic _ _ (fun _ _ => monic_X_add_C _)
-
-theorem pX_natDegree (I : Finset ℕ) (ρ : ℕ → ℂ) : (pX I ρ).natDegree = I.card := by
-  unfold pX; rw [natDegree_prod_of_monic _ _ (fun i _ => monic_X_add_C _)]; simp
-
-theorem pX_nextCoeff (I : Finset ℕ) (ρ : ℕ → ℂ) : (pX I ρ).nextCoeff = ∑ i ∈ I, ρ i := by
-  unfold pX; rw [Monic.nextCoeff_prod _ _ (fun i _ => monic_X_add_C _)]; simp
-
-def W1 (I : Finset ℕ) (ρ : ℕ → ℂ) (q w : ℂ[X]) (N : ℕ → ℂ) : Prop :=
-  w * pX I (fun i => ρ i + 1) = q + ∑ l ∈ I, C (N l) * (pX (I.erase l) ρ * pX (I.erase l) (fun i => ρ i + 1))
-
-theorem W1.eval {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ} (h : W1 I ρ q w N) (u : ℂ) :
-    w.eval u * ∏ i ∈ I, (u + (ρ i + 1)) = q.eval u +
-      ∑ l ∈ I, N l * ((∏ j ∈ I.erase l, (u + ρ j)) * ∏ j ∈ I.erase l, (u + (ρ j + 1))) := by
-  have := congrArg (Polynomial.eval u) h
-  simpa [eval_finsetSum, pX_eval] using this
-
-theorem rootA {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ} (Nd : ℕ → ℂ) (h : W1 I ρ q w N) {l : ℕ} (hl : l ∈ I)
-    (hE1 : ∏ j ∈ I.erase l, (ρ j - ρ l + 1) ≠ 0)
-    (hNd : Nd l * ((∏ j ∈ I.erase l, (ρ j - ρ l + 1)) * ∏ j ∈ I.erase l, (ρ j - ρ l)) = -(q.eval (-ρ l))) :
-    w.eval (-ρ l) = (N l - Nd l) * ∏ j ∈ I.erase l, (ρ j - ρ l) := by
-  have h1 := h.eval (-ρ l)
-  rw [← Finset.mul_prod_erase I _ hl, Finset.sum_eq_single l] at h1
-  · have e1 : ∏ j ∈ I.erase l, (-ρ l + (ρ j + 1)) = ∏ j ∈ I.erase l, (ρ j - ρ l + 1) :=
-      Finset.prod_congr rfl (fun j _ => by ring)
-    have e2 : ∏ j ∈ I.erase l, (-ρ l + ρ j) = ∏ j ∈ I.erase l, (ρ j - ρ l) :=
-      Finset.prod_congr rfl (fun j _ => by ring)
-    rw [e1, e2] at h1
-    apply mul_right_cancel₀ hE1
-    linear_combination h1 + hNd
-  · intro m _ hml
-    have : ∏ j ∈ I.erase m, (-ρ l + ρ j) = 0 :=
-      Finset.prod_eq_zero (i := l) (Finset.mem_erase.2 ⟨fun h => hml h.symm, hl⟩) (by ring)
-    rw [this]; simp
-  · intro h; exact absurd hl h
-
-theorem rootB {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ} (h : W1 I ρ q w N)
-    (hinj : ∀ i ∈ I, ∀ j ∈ I, ρ i = ρ j → i = j) {l j0 : ℕ} (hl : l ∈ I) (hj0 : j0 ∈ I) (hne : j0 ≠ l)
-    (hρ : ρ j0 + 1 = ρ l) (hq : (X + C (ρ l)) ^ 2 ∣ q) (hN0 : N j0 = 0) :
-    w.eval (-ρ l) = N l * ∏ j ∈ I.erase l, (ρ j - ρ l) := by
-  apply Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.WB.rootB <;> assumption
-
-theorem add_low {p r : ℂ[X]} (hp : p.Monic) (hr : r.natDegree + 1 < p.natDegree) :
-    (p + r).Monic ∧ (p + r).natDegree = p.natDegree ∧ (p + r).nextCoeff = p.nextCoeff := by
-  have hd : (p + r).natDegree = p.natDegree := natDegree_add_eq_left_of_natDegree_lt (by omega)
-  refine ⟨hp.add_of_left (degree_lt_degree (by omega)), hd, ?_⟩
-  rw [nextCoeff_of_natDegree_pos (by omega), nextCoeff_of_natDegree_pos (by omega), hd, coeff_add,
-    coeff_eq_zero_of_natDegree_lt (p := r) (by omega), add_zero]
-
-theorem pX_dvd {I : Finset ℕ} {ρ : ℕ → ℂ} (hinj : ∀ i ∈ I, ∀ j ∈ I, ρ i = ρ j → i = j) {R : ℂ[X]}
-    (hR : ∀ l ∈ I, R.eval (-ρ l) = 0) : pX I ρ ∣ R := by
-  unfold pX
-  apply Finset.prod_dvd_of_coprime
-  · intro i hi j hj hij
-    show IsCoprime (X + C (ρ i)) (X + C (ρ j))
-    have e : ∀ a : ℂ, (X + C a : ℂ[X]) = X - C (-a) := by intro a; simp
-    rw [e, e]
-    apply isCoprime_X_sub_C_of_isUnit_sub
-    apply IsUnit.mk0
-    intro h0
-    exact hij (hinj i hi j hj (by linear_combination -h0))
-  · intro l hl
-    have e : (X + C (ρ l) : ℂ[X]) = X - C (-(ρ l)) := by rw [C_neg, sub_neg_eq_add]
-    rw [e, dvd_iff_isRoot, IsRoot.def]
-    exact hR l hl
-
-theorem quad {I : Finset ℕ} {ρ : ℕ → ℂ} (hinj : ∀ i ∈ I, ∀ j ∈ I, ρ i = ρ j → i = j) {q1 w : ℂ[X]} (hq1 : q1.Monic)
-    (hdeg : q1.natDegree = 2 * I.card + 2) {c : ℂ} (hc : c ≠ 0) {N : ℕ → ℂ} (Nd : ℕ → ℂ) (h : W1 I ρ (C c * q1) w N)
-    (hroot : ∀ l ∈ I, w.eval (-ρ l) = (N l - Nd l) * ∏ j ∈ I.erase l, (ρ j - ρ l)) :
-    ∃ c0 : ℂ, ∀ u : ℂ, w.eval u = (∏ i ∈ I, (u + ρ i)) *
-      (c * (u ^ 2 + (q1.nextCoeff - ∑ i ∈ I, (ρ i + 1) - ∑ i ∈ I, ρ i) * u) + c0) +
-      ∑ l ∈ I, (N l - Nd l) * ∏ j ∈ I.erase l, (u + ρ j) := by
-  apply Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.WB.quad <;> assumption
-
-theorem absH {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ} (Nd : ℕ → ℂ) (h : W1 I ρ q w N) (Qf : ℂ → ℂ)
-    (hw : ∀ u, w.eval u = (∏ i ∈ I, (u + ρ i)) * Qf u + ∑ l ∈ I, (N l - Nd l) * ∏ j ∈ I.erase l, (u + ρ j))
-    (u : ℂ) (h0 : ∀ i ∈ I, u + ρ i ≠ 0) (h1 : ∀ i ∈ I, u + ρ i + 1 ≠ 0) :
-    q.eval u / ((∏ i ∈ I, (u + ρ i)) * ∏ i ∈ I, (u + (ρ i + 1))) =
-      Qf u + ∑ l ∈ I, (N l / (u + ρ l + 1) - Nd l / (u + ρ l)) := by
-  apply Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.WB.absH <;> assumption
-
-theorem weighted_sum_difference_identity {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ} (Nd : ℕ → ℂ) (h : W1 I ρ q w N) (c s c0 : ℂ)
-    (hw : ∀ u, w.eval u = (∏ i ∈ I, (u + ρ i)) * (c * (u ^ 2 + s * u) + c0) +
-      ∑ l ∈ I, (N l - Nd l) * ∏ j ∈ I.erase l, (u + ρ j))
-    (u v : ℂ) (h0 : ∀ i ∈ I, u + ρ i ≠ 0) (h1 : ∀ i ∈ I, u + ρ i + 1 ≠ 0)
-    (k0 : ∀ i ∈ I, v + ρ i ≠ 0) (k1 : ∀ i ∈ I, v + ρ i + 1 ≠ 0) :
-    (u - v) * ((u + v + s) * (-c) + ∑ j ∈ I, (N j / ((u + ρ j + 1) * (v + ρ j + 1)) - Nd j / ((u + ρ j) * (v + ρ j)))) =
-      q.eval v / ((∏ i ∈ I, (v + ρ i)) * ∏ i ∈ I, (v + (ρ i + 1))) -
-      q.eval u / ((∏ i ∈ I, (u + ρ i)) * ∏ i ∈ I, (u + (ρ i + 1))) := by
-  rw [absH Nd h (fun u => c * (u ^ 2 + s * u) + c0) hw u h0 h1, absH Nd h (fun u => c * (u ^ 2 + s * u) + c0) hw v k0 k1]
-  have s4 : (u - v) * ∑ j ∈ I, (N j / ((u + ρ j + 1) * (v + ρ j + 1)) - Nd j / ((u + ρ j) * (v + ρ j))) =
-      ∑ l ∈ I, (N l / (v + ρ l + 1) - Nd l / (v + ρ l)) - ∑ l ∈ I, (N l / (u + ρ l + 1) - Nd l / (u + ρ l)) := by
-    rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
-    refine Finset.sum_congr rfl fun l hl => ?_
-    have a0 := h0 l hl
-    have a1 := h1 l hl
-    have b0 := k0 l hl
-    have b1 := k1 l hl
-    field_simp
-    ring
-  linear_combination s4
-
-def rc (P : Par) (π : Ty P) : ℕ → ℂ := fun i => (rho P π i : ℂ)
-
-def q1P (P : Par) : ℂ[X] :=
-  ∏ i ∈ Icc 1 P.k, ((X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ))))
-
-theorem rc_inj (P : Par) (hP : P.OK) (π : Ty P) :
-    ∀ i ∈ Icc 1 (P.k - 1), ∀ j ∈ Icc 1 (P.k - 1), rc P π i = rc P π j → i = j := by
-  intro i hi j hj h
-  have h2 : rho P π i = rho P π j := by
-    unfold rc at h; exact_mod_cast h
-  by_contra hij
-  rcases lt_or_gt_of_ne hij with h' | h'
-  · exact absurd h2 (ne_of_gt (Mx3.rho_inj P hP π i j hi hj h'))
-  · exact absurd h2 (ne_of_lt (Mx3.rho_inj P hP π j i hj hi h'))
-
-theorem weight_model_identity (P : Par) (hP : P.OK) (π : Ty P) :
-    W1 (Icc 1 (P.k - 1)) (rc P π) (C (-((P.T : ℂ) * P.T')) * q1P P) (wNum P π /ₘ coordinatePolynomial P π)
-      (fun l => ((Nrm P l π : ℝ) : ℂ)) := by
-  have := Mx3.wExact P hP π
-  unfold W1
-  rw [mul_comm]
-  exact this.symm
-
-theorem q_polynomial_monic (P : Par) : (q1P P).Monic :=
-  monic_prod_of_monic _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))
-
-theorem natDegree_q1_polynomial (P : Par) (hP : P.OK) : (q1P P).natDegree = 2 * (Icc 1 (P.k - 1)).card + 2 := by
-  unfold q1P
-  rw [natDegree_prod_of_monic _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))]
-  have : ∀ i ∈ Icc 1 P.k, ((X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ)))).natDegree = 2 := by
-    intro i _
-    rw [(monic_X_add_C _).natDegree_mul (monic_X_add_C _), natDegree_X_add_C, natDegree_X_add_C]
-  rw [Finset.sum_congr rfl this]
-  have := hP.k_pos
-  simp
-  omega
-
-theorem q_polynomial_next_coeff (P : Par) :
-    (q1P P).nextCoeff = ∑ i ∈ Icc 1 P.k, ((1 / 2 + (P.u i : ℂ)) + (1 / 2 + (P.u' i : ℂ))) := by
-  unfold q1P
-  rw [Monic.nextCoeff_prod _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [(monic_X_add_C _).nextCoeff_mul (monic_X_add_C _), nextCoeff_X_add_C, nextCoeff_X_add_C]
-
-theorem q_eval (P : Par) (u : ℂ) : (C (-((P.T : ℂ) * P.T')) * q1P P).eval u = qC P u := by
-  unfold q1P qC
-  simp only [eval_mul, eval_C, eval_prod, eval_add, eval_X]
-  congr 1
-  exact Finset.prod_congr rfl (fun i _ => by ring)
-
-theorem model_root (P : Par) (hP : P.OK) (π : Ty P) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) :
-    (wNum P π /ₘ coordinatePolynomial P π).eval (-(rc P π l)) = (((Nrm P l π : ℝ) : ℂ) - ((NrmDown P l π : ℝ) : ℂ)) *
-      ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rc P π j - rc P π l) := by
-  apply Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.WB.model_root <;> assumption
-
-theorem s_eq (P : Par) (hP : P.OK) (π : Ty P) :
-    (q1P P).nextCoeff - ∑ i ∈ Icc 1 (P.k - 1), (rc P π i + 1) - ∑ i ∈ Icc 1 (P.k - 1), rc P π i =
-      1 + 2 * (aC P π : ℂ) := by
-  rw [q_polynomial_next_coeff]
-  have e1 : ∑ i ∈ Icc 1 P.k, ((1 / 2 + (P.u i : ℂ)) + (1 / 2 + (P.u' i : ℂ))) =
-      ∑ i ∈ Icc 1 P.k, ((P.u i : ℂ) + (P.u' i : ℂ)) + (P.k : ℂ) := by
-    rw [Finset.sum_congr rfl (fun i _ => (by ring : (1 / 2 + (P.u i : ℂ)) + (1 / 2 + (P.u' i : ℂ)) =
-      ((P.u i : ℂ) + P.u' i) + 1)), Finset.sum_add_distrib]
-    simp
-  have e2 : ∑ i ∈ Icc 1 (P.k - 1), (rc P π i + 1) = ∑ i ∈ Icc 1 (P.k - 1), rc P π i + ((P.k : ℂ) - 1) := by
-    rw [Finset.sum_add_distrib]
-    simp [Nat.cast_sub hP.k_pos]
-  rw [e1, e2]
-  unfold aC rc
-  push_cast
-  ring
-
-theorem good0 {P : Par} {u : ℂ} (hu : Good P u) (π : Ty P) : ∀ i ∈ Icc 1 (P.k - 1), u + rc P π i ≠ 0 := by
-  intro i hi
-  have := hu π i hi 0 (by simp)
-  simpa [rc] using this
-
-theorem good1 {P : Par} {u : ℂ} (hu : Good P u) (π : Ty P) : ∀ i ∈ Icc 1 (P.k - 1), u + rc P π i + 1 ≠ 0 := by
-  intro i hi
-  have := hu π i hi 1 (by simp)
-  simpa [rc] using this
-
-theorem coordinate_product_eq (P : Par) (π : Ty P) (u : ℂ) : xC P π u = ∏ i ∈ Icc 1 (P.k - 1), (u + rc P π i) := rfl
-
-theorem x_eval_shift_prod (P : Par) (π : Ty P) (u : ℂ) : xC P π (u + 1) = ∏ i ∈ Icc 1 (P.k - 1), (u + (rc P π i + 1)) := by
-  unfold xC rc
-  exact Finset.prod_congr rfl (fun i _ => by ring)
-
-theorem wC_eq (P : Par) (hP : P.OK) (π : Ty P) (u : ℂ) (hu : Good P u) :
-    wC P π u = qC P u / xC P π (u + 1) +
-      ∑ l ∈ Icc 1 (P.k - 1), ((Nrm P l π : ℝ) : ℂ) * xEx P {l} π u / (u + (rho P π l : ℂ) + 1) := by
-  have e1 := (weight_model_identity P hP π).eval u
-  have hx1 : ∏ i ∈ Icc 1 (P.k - 1), (u + (rc P π i + 1)) ≠ 0 :=
-    Finset.prod_ne_zero_iff.2 (fun i hi => by rw [← add_assoc]; exact good1 hu π i hi)
-  rw [q_eval] at e1
-  rw [x_eval_shift_prod]
-  show (wNum P π /ₘ coordinatePolynomial P π).eval u = _
-  apply mul_right_cancel₀ hx1
-  rw [e1, add_mul, div_mul_cancel₀ _ hx1, Finset.sum_mul]
-  congr 1
-  refine Finset.sum_congr rfl fun l hl => ?_
-  rw [← Finset.mul_prod_erase (Icc 1 (P.k - 1)) (fun i => u + (rc P π i + 1)) hl]
-  have a1 := good1 hu π l hl
-  have a2 : u + (rc P π l + 1) = u + rc P π l + 1 := by ring
-  have a3 : xEx P {l} π u = ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (u + rc P π j) := by
-    unfold xEx rc
-    rw [Finset.sdiff_singleton_eq_erase]
-  have a4 : (rho P π l : ℂ) = rc P π l := rfl
-  rw [a2, a3, a4]
-  field_simp
-
-theorem scalar_partial_fraction_identity (P : Par) (hP : P.OK) (π : Ty P) (u v : ℂ) (hu : Good P u) (hv : Good P v) :
-    (u - v) * ((u + v + 1 + 2 * (aC P π : ℂ)) * (P.TT : ℂ) + ∑ j ∈ Icc 1 (P.k - 1),
-      (((Nrm P j π : ℝ) : ℂ) / ((u + (rho P π j : ℂ) + 1) * (v + (rho P π j : ℂ) + 1)) -
-        ((NrmDown P j π : ℝ) : ℂ) / ((u + (rho P π j : ℂ)) * (v + (rho P π j : ℂ))))) =
-      qC P v / (xC P π v * xC P π (v + 1)) - qC P u / (xC P π u * xC P π (u + 1)) := by
-  apply Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.WB.scalar_partial_fraction_identity <;> assumption
-
-end
-
-end Formalism.FourierDecayAlt.P.Mx6.WB
-
-namespace Formalism.FourierDecayAlt.P.Mx6.PC
-
-open Matrix Finset Polynomial Formalism.FourierDecayAlt.M Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.W
-
-noncomputable section
-
-section Poly
-
-variable {B : Type*} [Ring B] [Algebra ℂ B]
-
-def ev (y : ℂ) : B[X] →+* B :=
-  Polynomial.eval₂RingHom' (RingHom.id B) (algebraMap ℂ B y) fun a => (Algebra.commutes y a).symm
-
-def IsPoly (f : ℂ → B) : Prop := ∃ p : B[X], ∀ y, f y = ev y p
-
-def IsPolyS (a : ℂ → ℂ) : Prop := ∃ s : ℂ[X], ∀ y, a y = s.eval y
-
-theorem ev_apply (y : ℂ) (p : B[X]) : ev y p = p.eval₂ (RingHom.id B) (algebraMap ℂ B y) := rfl
-
-theorem ev_C (y : ℂ) (b : B) : ev y (C b) = b := by rw [ev_apply, Polynomial.eval₂_C]; rfl
-
-theorem ev_map (y : ℂ) (s : ℂ[X]) : ev y (s.map (algebraMap ℂ B)) = algebraMap ℂ B (s.eval y) := by
-  rw [ev_apply, Polynomial.eval₂_map, RingHom.id_comp]
-  exact Polynomial.eval₂_at_apply (algebraMap ℂ B) y
-
-theorem IsPoly.const (b : B) : IsPoly fun _ => b := ⟨C b, fun y => (ev_C y b).symm⟩
-
-theorem IsPoly.add {f g : ℂ → B} (hf : IsPoly f) (hg : IsPoly g) : IsPoly fun y => f y + g y := by
-  obtain ⟨p, hp⟩ := hf; obtain ⟨q, hq⟩ := hg
-  exact ⟨p + q, fun y => by show f y + g y = _; rw [hp, hq, map_add (f := _)]⟩
-
-theorem IsPoly.sub {f g : ℂ → B} (hf : IsPoly f) (hg : IsPoly g) : IsPoly fun y => f y - g y := by
-  obtain ⟨p, hp⟩ := hf; obtain ⟨q, hq⟩ := hg
-  exact ⟨p - q, fun y => by show f y - g y = _; rw [hp, hq, map_sub]⟩
-
-theorem IsPoly.mul {f g : ℂ → B} (hf : IsPoly f) (hg : IsPoly g) : IsPoly fun y => f y * g y := by
-  obtain ⟨p, hp⟩ := hf; obtain ⟨q, hq⟩ := hg
-  exact ⟨p * q, fun y => by show f y * g y = _; rw [hp, hq, map_mul]⟩
-
-theorem IsPoly.algMap {a : ℂ → ℂ} (ha : IsPolyS a) : IsPoly fun y => algebraMap ℂ B (a y) := by
-  obtain ⟨s, hs⟩ := ha
-  exact ⟨s.map (algebraMap ℂ B), fun y => by show algebraMap ℂ B (a y) = _; rw [hs, ev_map]⟩
-
-theorem IsPoly.smul {a : ℂ → ℂ} {f : ℂ → B} (ha : IsPolyS a) (hf : IsPoly f) : IsPoly fun y => a y • f y := by
-  have := (IsPoly.algMap (B := B) ha).mul hf
-  simpa only [Algebra.smul_def] using this
-
-theorem IsPoly.sum {ι : Type*} (s : Finset ι) {f : ι → ℂ → B} (hf : ∀ i ∈ s, IsPoly (f i)) :
-    IsPoly fun y => ∑ i ∈ s, f i y := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simpa using IsPoly.const (0 : B)
-  | insert a s ha ih =>
-    have h1 := (hf a (Finset.mem_insert_self a s)).add (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
-    refine (funext fun y => ?_ : (fun y => ∑ i ∈ insert a s, f i y) = fun y => f a y + ∑ i ∈ s, f i y) ▸ h1
-    rw [Finset.sum_insert ha]
-
-theorem IsPolyS.id : IsPolyS fun y => y := ⟨X, fun y => by simp⟩
-theorem IsPolyS.const (c : ℂ) : IsPolyS fun _ => c := ⟨C c, fun y => by simp⟩
-theorem IsPolyS.add {a b : ℂ → ℂ} (ha : IsPolyS a) (hb : IsPolyS b) : IsPolyS fun y => a y + b y := by
-  obtain ⟨p, hp⟩ := ha; obtain ⟨q, hq⟩ := hb
-  exact ⟨p + q, fun y => by show a y + b y = _; rw [hp, hq, eval_add]⟩
-theorem IsPolyS.sub {a b : ℂ → ℂ} (ha : IsPolyS a) (hb : IsPolyS b) : IsPolyS fun y => a y - b y := by
-  obtain ⟨p, hp⟩ := ha; obtain ⟨q, hq⟩ := hb
-  exact ⟨p - q, fun y => by show a y - b y = _; rw [hp, hq, eval_sub]⟩
-theorem IsPolyS.prod {ι : Type*} (s : Finset ι) {a : ι → ℂ → ℂ} (ha : ∀ i ∈ s, IsPolyS (a i)) :
-    IsPolyS fun y => ∏ i ∈ s, a i y := by
-  classical
-  choose! p hp using ha
-  exact ⟨∏ i ∈ s, p i, fun y => by show ∏ i ∈ s, a i y = _; rw [eval_prod]; exact Finset.prod_congr rfl fun i hi => hp i hi y⟩
-
-theorem IsPoly.dual {f : ℂ → B} (hf : IsPoly f) (φ : Module.Dual ℂ B) : IsPolyS fun y => φ (f y) := by
-  obtain ⟨p, hp⟩ := hf
-  refine ⟨∑ n ∈ p.support, monomial n (φ (p.coeff n)), fun y => ?_⟩
-  show φ (f y) = _
-  rw [hp, ev_apply]
-
-  simp only [Polynomial.eval₂_eq_sum, Polynomial.sum_def, RingHom.id_apply,
-  map_sum, eval_finsetSum, eval_monomial]
-  refine Finset.sum_congr rfl fun n _ => ?_
-  rw [← map_pow, ← Algebra.commutes, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]
-
-theorem IsPoly.eq_zero {f : ℂ → B} (hf : IsPoly f) (S : Set ℂ) (hS : S.Finite) (h : ∀ y, y ∉ S → f y = 0) (y : ℂ) :
-    f y = 0 := by
-  rw [← Module.forall_dual_apply_eq_zero_iff ℂ]
-  intro φ
-  obtain ⟨s, hs⟩ := hf.dual φ
-  have h0 : s = 0 := by
-    refine Polynomial.eq_zero_of_infinite_isRoot s (Set.Infinite.mono ?_ hS.infinite_compl)
-    intro z hz
-    show s.eval z = 0
-    rw [← hs]
-    show φ (f z) = 0
-    rw [h z hz, map_zero]
-  have h1 : φ (f y) = s.eval y := hs y
-  rw [h1, h0, eval_zero]
-
-end Poly
 
 variable (P : Par)
 
 theorem kap_sum (f : Ty P → ℂ) : kap P f = ∑ π, f π • kap P (Pi.single π 1) := by
   conv_lhs => rw [pi_eq_sum_univ' f]
-
   simp only [map_sum, map_smul]
 
 theorem isPoly_kap {F : Ty P → ℂ → ℂ} (hF : ∀ π, IsPolyS (F π)) : IsPoly fun Y => kap P fun π => F π Y := by
@@ -700,14 +124,6 @@ theorem isPoly_kap {F : Ty P → ℂ → ℂ} (hF : ∀ π, IsPolyS (F π)) : Is
     funext Y; exact kap_sum P _
   rw [this]
   exact IsPoly.sum _ fun π _ => IsPoly.smul (hF π) (IsPoly.const _)
-
-theorem isPolyS_xC (π : Ty P) : IsPolyS fun Y => xC P π Y :=
-  IsPolyS.prod _ fun _ _ => IsPolyS.id.add (IsPolyS.const _)
-
-theorem isPolyS_xEx (ex : Finset ℕ) (π : Ty P) : IsPolyS fun Y => xEx P ex π Y :=
-  IsPolyS.prod _ fun _ _ => IsPolyS.id.add (IsPolyS.const _)
-
-theorem isPolyS_wC (π : Ty P) : IsPolyS fun Y => wC P π Y := ⟨_, fun _ => rfl⟩
 
 theorem isPoly_xA : IsPoly fun Y => xA P Y := isPoly_kap P (isPolyS_xC P)
 
@@ -747,16 +163,6 @@ theorem isPoly_QQr (i j : Fin 2) : IsPoly fun Y => QQr P Y i j := by
   · exact isPoly_t21 P
   · exact isPoly_diagonal_entry P
 
-theorem bad_finite : {Y : ℂ | ¬ Good P Y}.Finite := by
-  classical
-  refine Set.Finite.subset (Finset.finite_toSet ((Finset.univ : Finset (Ty P)).biUnion fun π =>
-    (Icc 1 (P.k - 1)).biUnion fun j => ({-2, -1, 0, 1, 2} : Finset ℤ).image fun n : ℤ => -(rho P π j : ℂ) - (n : ℂ))) ?_
-  intro Y hY
-  simp only [Set.mem_ofPred_eq, Good, not_forall, not_not] at hY
-  obtain ⟨π, j, hj, n, hn, h⟩ := hY
-  exact Finset.mem_coe.mpr (Finset.mem_biUnion.mpr ⟨π, Finset.mem_univ _, Finset.mem_biUnion.mpr ⟨j, hj,
-    Finset.mem_image.mpr ⟨n, hn, by linear_combination -h⟩⟩⟩)
-
 theorem entries_of_generic
     (h : ∀ u v : ℂ, Good P u → Good P v → u - v ≠ 0 → u - v ≠ 1 → u - v ≠ -1 → ∀ i j k l : Fin 2,
       (u - v) • (QQr P u i j * QQr P v k l - QQr P v k l * QQr P u i j) =
@@ -765,7 +171,7 @@ theorem entries_of_generic
     (u - v) • (QQr P u i j * QQr P v k l - QQr P v k l * QQr P u i j) =
       QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l := by
   set F : ℂ → ℂ → A P := fun u v => (u - v) • (QQr P u i j * QQr P v k l - QQr P v k l * QQr P u i j) -
-    (QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l) with hF
+    (QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l)
   have hu : ∀ v, IsPoly fun u => F u v := fun v =>
     (IsPoly.smul (IsPolyS.id.sub (IsPolyS.const v))
       (((isPoly_QQr P i j).mul (IsPoly.const _)).sub ((IsPoly.const _).mul (isPoly_QQr P i j)))).sub
@@ -790,35 +196,14 @@ theorem entries_of_generic
     exact h1 v' hv' u
   exact sub_eq_zero.mp h2
 
-section Entries
-
-variable {B : Type} [Ring B]
-
-theorem kronecker_E1_E2_apply (M N : Matrix (Fin 2) (Fin 2) B) (i k j l : Fin 2) :
-    (E1 M * E2 N) (i, k) (j, l) = M i j * N k l := by
-  simp [Matrix.mul_apply, E1, E2, Fintype.sum_prod_type]
-
-theorem kronecker_embed_mul_apply (M N : Matrix (Fin 2) (Fin 2) B) (i k j l : Fin 2) :
-    (E2 N * E1 M) (i, k) (j, l) = N k l * M i j := by
-  simp [Matrix.mul_apply, E1, E2, Fintype.sum_prod_type]
-
-theorem Pf_mul_apply (X : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) (i k : Fin 2) (p : Fin 2 × Fin 2) :
-    (Pf B * X) (i, k) p = X (k, i) p := by
-  fin_cases i <;> fin_cases k <;> simp [Matrix.mul_apply, Pf, Fintype.sum_prod_type]
-
-theorem mul_Pf_apply (X : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) (p : Fin 2 × Fin 2) (j l : Fin 2) :
-    (X * Pf B) p (j, l) = X p (l, j) := by
-  fin_cases j <;> fin_cases l <;> simp [Matrix.mul_apply, Pf, Fintype.sum_prod_type]
-
-end Entries
-
 end
 
-end Formalism.FourierDecayAlt.P.Mx6.PC
+end PC
 
-namespace Formalism.FourierDecayAlt.P.Mx6.L3
+namespace L3
 
-open Matrix Finset Polynomial Formalism.FourierDecayAlt.M
+open Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.L3
+  (sh ee ee_diag ee_off_diagonal_first ee_off_diagonal_second sum_antisymm)
 
 noncomputable section
 
@@ -855,7 +240,7 @@ theorem Lam1 (u v : ℂ) (hu : Good P u) (hv : Good P v) :
   have h := comm_sum P (fun π => xC P π u)
     (fun j π => (u + (rho P π j : ℂ) - 1) * xEx P {j} π u) (-1) u v
     (fun j hj π π' hU => by
-      rw [xEx_up P hU {j} (Finset.mem_singleton_self j), rho_up P hU hj, if_pos rfl, xC_split P π u hj]
+      rw [xEx_up P hU {j} (Finset.mem_singleton_self j), rho_up P hU hj, ite_eq_left rfl, xC_split P π u hj]
       ring)
     (fun j hj π => by
       have h1 := good0 P hu π hj
@@ -878,7 +263,7 @@ theorem Lam2 (u v : ℂ) (hu : Good P u) (hv : Good P v) :
       have h1 := good1 P hu π' hj
       rw [xC_split P π' (u + 1) hj, xC_split P π (u + 1) hj,
         xEx_up P hU {j} (Finset.mem_singleton_self j), mul_inv, mul_inv]
-      rw [rho_up P hU hj, if_pos rfl] at h0 h1 ⊢
+      rw [rho_up P hU hj, ite_eq_left rfl] at h0 h1 ⊢
       generalize (xEx P {j} π (u + 1))⁻¹ = Ei
       have h2 : u + 1 + ((rho P π j : ℂ) + 1) ≠ 0 := by intro h; apply h1; rw [← h]; ring
       have h3 : u + 1 + (rho P π j : ℂ) ≠ 0 := by intro h; apply h0; rw [← h]; ring
@@ -894,8 +279,6 @@ theorem Lam2 (u v : ℂ) (hu : Good P u) (hv : Good P v) :
   rw [one_smul] at h
   exact h
 
-def sh (i j : ℕ) (b : ℂ) : Ty P → ℂ := fun π => (b + (rho P π j : ℂ) - if j = i then 1 else 0)⁻¹
-
 theorem lam_mul (i : ℕ) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (a b : ℂ) :
     lam P i a * lam P j b = kap P (rr P i a * sh P i j b) * (SS P i * SS P j) := by
   have h := S_shift P i (rr P j b) (sh P i j b) (fun π π' hU => by
@@ -909,10 +292,6 @@ theorem lam_mul (i : ℕ) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (a b : ℂ) :
     _ = kap P (rr P i a) * (kap P (sh P i j b) * SS P i) * SS P j := by rw [h]
     _ = _ := by rw [← kap_mul]; simp only [mul_assoc]
 
-def ee (i j : ℕ) (u v : ℂ) : Ty P → ℂ :=
-  (u - v) • (rr P i u * sh P i j v - rr P i v * sh P i j u) -
-    (rr P i u * sh P i j u - rr P i u * sh P i j v - (rr P i v * sh P i j u - rr P i v * sh P i j v))
-
 def FF (i j : ℕ) (u v : ℂ) : A P :=
   (u - v) • (lam P i u * lam P j v - lam P i v * lam P j u) -
     (lam P i u - lam P i v) * (lam P j u - lam P j v)
@@ -923,45 +302,6 @@ theorem FF_eq (i : ℕ) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (u v : ℂ) :
   simp only [sub_mul, mul_sub, lam_mul P _ hj, map_sub, map_smul, smul_mul_assoc]
   abel
 
-theorem ee_diag {i : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (u v : ℂ) (hu : Good P u) (hv : Good P v) :
-    ee P i i u v = 0 := by
-  funext π
-  have h1 := good0 P hu π hi
-  have h2 := good0 P hv π hi
-  have h3 := goodm1 P hu π hi
-  have h4 := goodm1 P hv π hi
-  simp only [ee, sh, rr, Pi.sub_apply, Pi.smul_apply, Pi.mul_apply, smul_eq_mul, Pi.zero_apply, if_true]
-  field_simp
-  ring
-
-def cc (i j : ℕ) (u v : ℂ) : Ty P → ℂ := fun π =>
-  -((u - v) ^ 2) * (rr P i u π * rr P i v π * rr P j u π * rr P j v π)
-
-theorem ee_off_diagonal_first {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ i)
-    (u v : ℂ) (hu : Good P u) (hv : Good P v) :
-    ee P i j u v = cc P i j u v * fun π => (rho P π j : ℂ) - (rho P π i : ℂ) + 1 := by
-  funext π
-  have h1 := good0 P hu π hi
-  have h2 := good0 P hv π hi
-  have h3 := good0 P hu π hj
-  have h4 := good0 P hv π hj
-  simp only [ee, cc, sh, rr, Pi.sub_apply, Pi.smul_apply, Pi.mul_apply, smul_eq_mul, if_neg hne, sub_zero]
-  field_simp
-  ring
-
-theorem ee_off_diagonal_second {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ i)
-    (u v : ℂ) (hu : Good P u) (hv : Good P v) :
-    ee P j i u v = -(cc P i j u v * fun π => (rho P π j : ℂ) - (rho P π i : ℂ) - 1) := by
-  funext π
-  have h1 := good0 P hu π hi
-  have h2 := good0 P hv π hi
-  have h3 := good0 P hu π hj
-  have h4 := good0 P hv π hj
-  simp only [ee, cc, sh, rr, Pi.sub_apply, Pi.smul_apply, Pi.mul_apply, Pi.neg_apply, smul_eq_mul,
-    if_neg hne.symm, sub_zero]
-  field_simp
-  ring
-
 theorem comm_tgt (hC : SSComm) (hP : P.OK) {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1))
     (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ i) :
     (kap P fun π => (rho P π j : ℂ) - (rho P π i : ℂ) - 1) * (SS P j * SS P i) =
@@ -969,21 +309,21 @@ theorem comm_tgt (hC : SSComm) (hP : P.OK) {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 
   have h := hC P hP i hi j hj hne
   have a1 := S_shift P i (fun π => ((rho P π j - rho P π i - 1 : ℝ) : ℂ))
     (fun π => (rho P π j : ℂ) - (rho P π i : ℂ)) (fun π π' hU => by
-      rw [rho_up P hU hj, rho_up P hU hi, if_neg hne, if_pos rfl]
+      rw [rho_up P hU hj, rho_up P hU hi, ite_eq_right hne, ite_eq_left rfl]
       push_cast
       ring)
   have a2 := S_shift P j (fun π => (rho P π j : ℂ) - (rho P π i : ℂ))
     (fun π => (rho P π j : ℂ) - (rho P π i : ℂ) - 1) (fun π π' hU => by
-      rw [rho_up P hU hj, rho_up P hU hi, if_neg hne.symm, if_pos rfl]
+      rw [rho_up P hU hj, rho_up P hU hi, ite_eq_right hne.symm, ite_eq_left rfl]
       ring)
   have b1 := S_shift P j (fun π => ((rho P π j - rho P π i + 1 : ℝ) : ℂ))
     (fun π => (rho P π j : ℂ) - (rho P π i : ℂ)) (fun π π' hU => by
-      rw [rho_up P hU hj, rho_up P hU hi, if_neg hne.symm, if_pos rfl]
+      rw [rho_up P hU hj, rho_up P hU hi, ite_eq_right hne.symm, ite_eq_left rfl]
       push_cast
       ring)
   have b2 := S_shift P i (fun π => (rho P π j : ℂ) - (rho P π i : ℂ))
     (fun π => (rho P π j : ℂ) - (rho P π i : ℂ) + 1) (fun π π' hU => by
-      rw [rho_up P hU hj, rho_up P hU hi, if_neg hne, if_pos rfl]
+      rw [rho_up P hU hj, rho_up P hU hi, ite_eq_right hne, ite_eq_left rfl]
       ring)
   rw [← mul_assoc, a2, mul_assoc, a1, ← mul_assoc, h, mul_assoc, ← b1, ← mul_assoc, ← b2, mul_assoc]
 
@@ -997,17 +337,6 @@ theorem FF_pair (hC : SSComm) (hP : P.OK) {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1
       map_neg, ← kap_mul, ← kap_mul, neg_mul, mul_assoc, mul_assoc, comm_tgt P hC hP hi hj hne,
       add_neg_cancel]
 
-theorem sum_antisymm {M : Type*} [AddCommGroup M] [Module ℂ M] (I : Finset ℕ) (F : ℕ → ℕ → M)
-    (h : ∀ i ∈ I, ∀ j ∈ I, F i j + F j i = 0) : ∑ i ∈ I, ∑ j ∈ I, F i j = 0 := by
-  have h1 : ∑ i ∈ I, ∑ j ∈ I, F i j + ∑ i ∈ I, ∑ j ∈ I, F i j = 0 := by
-    nth_rewrite 2 [Finset.sum_comm]
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_eq_zero fun i hi => ?_
-    rw [← Finset.sum_add_distrib]
-    exact Finset.sum_eq_zero fun j hj => h i hi j hj
-  have h2 : (2 : ℂ) • ∑ i ∈ I, ∑ j ∈ I, F i j = 0 := by rw [two_smul]; exact h1
-  exact (smul_eq_zero.1 h2).resolve_left two_ne_zero
-
 theorem Lam3 (hC : SSComm) (hP : P.OK) (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (abelian₂ P u * abelian₂ P v - abelian₂ P v * abelian₂ P u) = (abelian₂ P u - abelian₂ P v) * (abelian₂ P u - abelian₂ P v) := by
   have h := sum_antisymm (Icc 1 (P.k - 1)) (fun i j => FF P i j u v)
@@ -1018,11 +347,12 @@ theorem Lam3 (hC : SSComm) (hP : P.OK) (u v : ℂ) (hu : Good P u) (hv : Good P 
 
 end
 
-end Formalism.FourierDecayAlt.P.Mx6.L3
+end L3
 
-namespace Formalism.FourierDecayAlt.P.Mx6.L4
+namespace L4
 
-open Matrix Finset Polynomial Formalism.FourierDecayAlt.M
+open Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.L4
+  (rr1 rr_up_same rr_up_ne rho_unchanged_off_index xC_rr xEx_rr)
 
 noncomputable section
 
@@ -1030,40 +360,10 @@ variable (P : Par)
 
 theorem kap_sum' (s : Finset ℕ) (f : ℕ → Ty P → ℂ) :
     kap P (fun π => ∑ l ∈ s, f l π) = ∑ l ∈ s, kap P (f l) := by
-
   rw [← map_sum]
   congr 1
   funext π
   simp [Finset.sum_apply]
-
-def rr1 (j : ℕ) (u : ℂ) : Ty P → ℂ := fun π => (u + (rho P π j : ℂ) + 1)⁻¹
-
-theorem rr_up_same {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) {π π' : Ty P} (h : Up P j π π') (u : ℂ) :
-    rr P j u π' = rr1 P j u π := by
-  unfold rr rr1
-  rw [rho_up P h hj, if_pos rfl, add_assoc]
-
-theorem rr_up_ne {i j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ i) {π π' : Ty P} (h : Up P i π π') (u : ℂ) :
-    rr P j u π' = rr P j u π := by
-  unfold rr
-  rw [rho_up P h hj, if_neg hne, add_zero]
-
-theorem rho_unchanged_off_index {i j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ i) {π π' : Ty P} (h : Up P i π π') (u : ℂ) :
-    rr1 P j u π' = rr1 P j u π := by
-  unfold rr1
-  rw [rho_up P h hj, if_neg hne, add_zero]
-
-theorem xC_rr {u : ℂ} (hu : Good P u) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (π : Ty P) :
-    xC P π u * rr P j u π = xEx P {j} π u := by
-  unfold rr
-  rw [xC_split P π u hj]
-  field_simp [good0 P hu π hj]
-
-theorem xEx_rr {u : ℂ} (hu : Good P u) {l j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ l) (π : Ty P) :
-    xEx P {l} π u * rr P j u π = xEx P {l, j} π u := by
-  unfold rr
-  rw [xEx_split P π u hj hne]
-  field_simp [good0 P hu π hj]
 
 theorem xLam {u : ℂ} (hu : Good P u) : xA P u * abelian₂ P u = weightedSumBis P u := by
   unfold abelian₂ weightedSumBis lam xA
@@ -1146,8 +446,7 @@ theorem Lam4 (hP : P.OK) (u v : ℂ) (hN : SSNorm) (hM : SSMixed) :
   have hlam : ∀ j ∈ Icc 1 (P.k - 1), lam P j v = SS P j * kap P (rr1 P j v) := fun j hj =>
     S_shift P j _ _ fun π π' h => rr_up_same P hj h v
   rw [Finset.sum_eq_single_of_mem i hi]
-  ·
-    have h1 : lams P i u * lam P i v = kap P ((fun π => ((Nrm P i π : ℝ) : ℂ)) * (rr1 P i u * rr1 P i v)) := by
+  · have h1 : lams P i u * lam P i v = kap P ((fun π => ((Nrm P i π : ℝ) : ℂ)) * (rr1 P i u * rr1 P i v)) := by
       unfold lams lam
       rw [mul_assoc, ← mul_assoc (kap P _) (kap P _), kap_mul,
         S_shift P i (rr1 P i u * rr1 P i v) _ (fun π π' h => by
@@ -1179,40 +478,7 @@ theorem Lam4 (hP : P.OK) (u v : ℂ) (hN : SSNorm) (hM : SSMixed) :
 
 end
 
-end Formalism.FourierDecayAlt.P.Mx6.L4
-
-namespace Formalism.FourierDecayAlt.P.Mx6
-
-open Matrix Finset Polynomial Formalism.FourierDecayAlt.M
-
-section Abs
-variable {B : Type*} [Ring B] [Algebra ℂ B]
-
-theorem abs_Nc (N w G : B) (hNw : N * w = w * N) (hNG : N * G = G * N - w * G * G) (hGw : G * w = w * G) :
-    N * (w * G) = (w * G) * N - (w * G) * (w * G) := by
-  simp only [mul_assoc, lc hNw, hNG, mul_sub, lc hGw]
-
-theorem smul_GG_sq_identity (g G z w : B) (t : ℂ) (hg : g = z * w - algebraMap ℂ B t) (hgG : g * G = 1) :
-    t • (G * G) = z * (w * (G * G)) - G := by
-  have h : algebraMap ℂ B t = z * w - g := by rw [hg]; abel
-  rw [Algebra.smul_def, h]
-  simp only [sub_mul, mul_assoc, lc1 hgG]
-
-theorem abs_Nsc (Ns g G z w : B) (t : ℂ) (hg : g = z * w - algebraMap ℂ B t) (hgG : g * G = 1)
-    (hNsw : Ns * w = w * Ns - 1) (hNsG : Ns * G = G * Ns + z * G * G) (hwz : w * z = z * w) :
-    Ns * (w * G) = (w * G) * Ns + t • (G * G) := by
-  rw [smul_GG_sq_identity g G z w t hg hgG, ← mul_assoc, hNsw]
-  simp only [sub_mul, mul_assoc, hNsG, mul_add, one_mul, lc hwz]
-  abel
-
-theorem abs_Ncz (N g G z w : B) (t : ℂ) (hg : g = z * w - algebraMap ℂ B t) (hgG : g * G = 1)
-    (hNz : N * z = z * N + 1) (hNG : N * G = G * N - w * G * G) :
-    N * (z * G) = (z * G) * N - t • (G * G) := by
-  rw [smul_GG_sq_identity g G z w t hg hgG, ← mul_assoc, hNz]
-  simp only [add_mul, mul_assoc, hNG, mul_sub, one_mul]
-  abel
-
-end Abs
+end L4
 
 noncomputable section
 
@@ -1335,33 +601,6 @@ theorem mt_eq (u : ℂ) : mt P u = -nabsA P - (u + 1 / 2) • cz P + ggiA P * La
   congr 3
   simp
 
-end
-
-end Formalism.FourierDecayAlt.P.Mx6
-
-namespace Formalism.FourierDecayAlt.P.Mx6
-
-open Matrix Finset Polynomial Formalism.FourierDecayAlt.M
-
-section Abs2
-variable {B : Type*} [Ring B] [Algebra ℂ B]
-
-theorem absSand (g G K1 K2 K3 : B) (hgG : g * G = 1) (hGg : G * g = 1)
-    (h1 : K1 * G = G * K1) (h2 : K2 * G = G * K2) (h1g : K1 * g = g * K1) (h2g : K2 * g = g * K2) :
-    g * K1 * (K2 * (G * G)) * (g * K3) = K1 * K2 * K3 := by
-  simp only [mul_assoc, lc h1, lc h2, lc1 hgG, lc1 hGg, lc h1g, lc h2g]
-
-theorem absN (g G X m0 l0 S12 L : B) (hXm : X * m0 = m0 * X) (hXG : X * G = G * X) (hSG : S12 * G = G * S12) :
-    (g * X * m0 + S12) * (l0 + G * L) = g * X * m0 * l0 + g * m0 * G * (X * L) + S12 * l0 + G * (S12 * L) := by
-  simp only [mul_add, add_mul, mul_assoc, lc hXm, lc hXG, lc hSG]
-  abel
-
-end Abs2
-
-noncomputable section
-
-variable (P : Par)
-
 theorem x_N (u : ℂ) : nabA P * xA P u = xA P u * nabA P := (kap_nab P _).symm
 theorem x_Ns (u : ℂ) : nabsA P * xA P u = xA P u * nabsA P := (kap_nabs P _).symm
 theorem kap_g (f : Ty P → ℂ) : kap P f * ggA P = ggA P * kap P f := kap_sc P _ _
@@ -1372,8 +611,6 @@ theorem Lam_cc (u : ℂ) : abelian₂ P u * cc P = cc P * abelian₂ P u := by r
 theorem Lam_cz (u : ℂ) : abelian₂ P u * cz P = cz P * abelian₂ P u := by rw [cz_sc]; exact Lam_sc P _ _
 theorem Lams_cc (u : ℂ) : Lams P u * cc P = cc P * Lams P u := by rw [cc_sc]; exact Lams_sc P _ _
 theorem Lams_cz (u : ℂ) : Lams P u * cz P = cz P * Lams P u := by rw [cz_sc]; exact Lams_sc P _ _
-
-theorem half (u v : ℂ) : (u + 1 / 2) - (v + 1 / 2) = u - v := by ring
 
 theorem lowering_relation_diagonal_left (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (t22 P u * lA P v - lA P v * t22 P u) = -(t22 P u * (lA P u - lA P v)) := by
@@ -1403,8 +640,6 @@ theorem commutator_l_sq (hC : SSComm) (hS : NabSS) (hP : P.OK) (u v : ℂ) (hu :
   rw [lA_eq, lA_eq, lowering_constant_eq_shift, lowering_constant_eq_shift]
   exact h
 
-def hh (u : ℂ) : Ty P → ℂ := fun π => qC P u / (xC P π u * xC P π (u + 1))
-
 theorem relD4core (hN : SSNorm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) (hP : P.OK)
     (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (mt P u * lA P v - lA P v * mt P u) = kap P (hh P v - hh P u) * (ggiA P * ggiA P) := by
@@ -1424,7 +659,7 @@ theorem relD4core (hN : SSNorm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) (hP
   rw [e1, e2, ← add_mul, ← add_mul, ← map_add (f := _), ← map_add (f := _), ← smul_mul_assoc, ← map_smul]
   congr 2
   funext π
-  have hs := WB.scalar_partial_fraction_identity P hP π u v hu hv
+  have hs := MAx1.ModelAlgebraRelations.WB.scalar_partial_fraction_identity P hP π u v hu hv
   simp only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, hh]
   rw [← hs]
   push_cast
@@ -1459,41 +694,6 @@ theorem mixed_relation_diagonal_four (hN : SSNorm) (hM : SSMixed) (hS : NabSS) (
   simp only [Pi.mul_apply, Pi.sub_apply, hh]
   field_simp
 
-end
-
-end Formalism.FourierDecayAlt.P.Mx6
-
-namespace Formalism.FourierDecayAlt.P.Mx6
-
-open Matrix Finset Polynomial Formalism.FourierDecayAlt.M
-
-section Abs3
-variable {B : Type*} [Ring B] [Algebra ℂ B]
-
-theorem absCC (a b K1 K2 : B) (hab : a * b = b * a) (hK : K1 * K2 = K2 * K1) (h1 : K1 * b = b * K1)
-    (h2 : K2 * a = a * K2) : (a * K1) * (b * K2) = (b * K2) * (a * K1) :=
-  calc a * K1 * (b * K2) = a * b * (K1 * K2) := by rw [mul_assoc, lc h1, mul_assoc]
-    _ = b * a * (K2 * K1) := by rw [hab, hK]
-    _ = b * K2 * (a * K1) := by rw [mul_assoc b K2, lc h2, mul_assoc]
-
-end Abs3
-
-noncomputable section
-
-variable (P : Par)
-
-theorem star_xC (π : Ty P) (u : ℂ) : star (xC P π (star u)) = xC P π u := by
-  unfold xC
-  rw [← starRingEnd_apply, map_prod]
-  exact Finset.prod_congr rfl fun i _ => by simp
-
-theorem star_qC (u : ℂ) : star (qC P (star u)) = qC P u := by
-  unfold qC
-  rw [← starRingEnd_apply, map_mul, map_prod]
-  congr 1
-  · simp
-  · exact Finset.prod_congr rfl fun i _ => by simp [map_ofNat]
-
 theorem star_t22 (u : ℂ) : star (t22 P (star u)) = t22 P u := by
   rw [t22, t22, star_mul, star_g, xA, xA, star_kap, kap_g]
   congr 2
@@ -1513,20 +713,20 @@ theorem commutator_t22_m (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (t22 P u * mt P v - mt P v * t22 P u) = (mt P u - mt P v) * t22 P u := by
   have h := congrArg star (lowering_relation_diagonal_left P (star u) (star v) (good_star P hu) (good_star P hv))
   simp only [star_smul, star_sub, star_mul, star_neg, star_star, star_t22, star_lA] at h
-  simp only [mul_sub, sub_mul, smul_sub] at h ⊢
+  simp only [sub_mul, smul_sub] at h ⊢
   linear_combination (norm := module) (-1 : ℂ) • h
 
 theorem commutator_d_m (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (dA P u * mt P v - mt P v * dA P u) = -((mt P u - mt P v) * dA P u) := by
   have h := congrArg star (lowering_relation_diagonal_right P (star u) (star v) (good_star P hu) (good_star P hv))
-  simp only [star_smul, star_sub, star_mul, star_neg, star_star, star_dA, star_lA] at h
-  simp only [mul_sub, sub_mul, smul_sub] at h ⊢
+  simp only [star_smul, star_sub, star_mul, star_star, star_dA, star_lA] at h
+  simp only [sub_mul, smul_sub] at h ⊢
   linear_combination (norm := module) (-1 : ℂ) • h
 
 theorem raising_relation_self (hC : SSComm) (hS : NabSS) (hP : P.OK) (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (mt P u * mt P v - mt P v * mt P u) = -((mt P u - mt P v) * (mt P u - mt P v)) := by
   have h := congrArg star (commutator_l_sq P hC hS hP (star u) (star v) (good_star P hu) (good_star P hv))
-  simp only [star_smul, star_sub, star_mul, star_neg, star_star, star_lA] at h
+  simp only [star_smul, star_sub, star_mul, star_star, star_lA] at h
   simp only [mul_sub, sub_mul, smul_sub] at h ⊢
   linear_combination (norm := module) (-1 : ℂ) • h
 
@@ -1559,7 +759,7 @@ theorem nf11 (hN : SSNorm) (hP : P.OK) {u : ℂ} (hu : Good P u) :
     rw [dA, ← mul_smul_comm, ← map_smul, ← mul_add, ← map_add (f := _)]
     congr 2
     funext π
-    rw [WB.wC_eq P hP π u hu]
+    rw [MAx1.ModelAlgebraRelations.WB.wC_eq P hP π u hu]
     simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, div_eq_mul_inv]
   rw [e]
   abel
@@ -1585,29 +785,29 @@ theorem generic (hN : SSNorm) (hC : SSComm) (hM : SSMixed) (hS : NabSS) (hK : Cu
     rw [QQr, nf11 P hN hP hy, nf12 P hy, nf21 P hy]
   have e : v - u = -(u - v) := by ring
   rw [eU hu, eU hv]
-  refine GA.gauss_rtt (u - v) h0 h1 h2 (t22 P u) (t22 P v) (dA P u) (dA P v) (lA P u) (lA P v) (mt P u) (mt P v)
+  refine MAx1.ModelAlgebraRelations.GA.gauss_rtt (u - v) h0 h1 h2 (t22 P u) (t22 P v) (dA P u) (dA P v) (lA P u) (lA P v) (mt P u) (mt P v)
     (comm_tt P u v) (comm_dd P u v) (comm_dt P u v) (comm_dt P v u)
     (lowering_relation_diagonal_left P u v hu hv) ?_ (lowering_relation_diagonal_right P u v hu hv) ?_ (commutator_t22_m P u v hu hv) ?_ (commutator_d_m P u v hu hv) ?_
     (commutator_l_sq P hC hS hP u v hu hv) (raising_relation_self P hC hS hP u v hu hv) (mixed_relation_diagonal_four P hN hM hS hK hP u v hu hv) ?_ i j k l
   · have h := lowering_relation_diagonal_left P v u hv hu
     rw [e] at h
-    simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
+    simp only [mul_sub, smul_sub, neg_smul] at h ⊢
     linear_combination (norm := module) (-1 : ℂ) • h
   · have h := lowering_relation_diagonal_right P v u hv hu
     rw [e] at h
-    simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
+    simp only [mul_sub, smul_sub, neg_smul] at h ⊢
     linear_combination (norm := module) (-1 : ℂ) • h
   · have h := commutator_t22_m P v u hv hu
     rw [e] at h
-    simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
+    simp only [sub_mul, smul_sub, neg_smul] at h ⊢
     linear_combination (norm := module) (-1 : ℂ) • h
   · have h := commutator_d_m P v u hv hu
     rw [e] at h
-    simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
+    simp only [sub_mul, smul_sub, neg_smul] at h ⊢
     linear_combination (norm := module) (-1 : ℂ) • h
   · have h := mixed_relation_diagonal_four P hN hM hS hK hP v u hv hu
     rw [e] at h
-    simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
+    simp only [smul_sub, neg_smul] at h ⊢
     linear_combination (norm := module) (-1 : ℂ) • h
 
 theorem entries_of (hN : SSNorm) (hC : SSComm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) : QQRTTEntries :=
@@ -1617,6 +817,38 @@ theorem entries_of (hN : SSNorm) (hC : SSComm) (hM : SSMixed) (hS : NabSS) (hK :
 end
 
 end Formalism.FourierDecayAlt.P.Mx6
+
+end
+
+@[expose] public section
+
+namespace Formalism.FourierDecayAlt.P.Mx6.PC
+
+open Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.W
+
+section Entries
+
+variable {B : Type} [Ring B]
+
+theorem kronecker_E1_E2_apply (M N : Matrix (Fin 2) (Fin 2) B) (i k j l : Fin 2) :
+    (E1 M * E2 N) (i, k) (j, l) = M i j * N k l :=
+  Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.PC.kronecker_E1_E2_apply M N i k j l
+
+theorem kronecker_embed_mul_apply (M N : Matrix (Fin 2) (Fin 2) B) (i k j l : Fin 2) :
+    (E2 N * E1 M) (i, k) (j, l) = N k l * M i j :=
+  Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.PC.kronecker_embed_mul_apply M N i k j l
+
+theorem Pf_mul_apply (X : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) (i k : Fin 2) (p : Fin 2 × Fin 2) :
+    (Pf B * X) (i, k) p = X (k, i) p :=
+  Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.PC.Pf_mul_apply X i k p
+
+theorem mul_Pf_apply (X : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) (p : Fin 2 × Fin 2) (j l : Fin 2) :
+    (X * Pf B) p (j, l) = X p (l, j) :=
+  Formalism.FourierDecayAlt.P.MAx1.ModelAlgebraRelations.PC.mul_Pf_apply X p j l
+
+end Entries
+
+end Formalism.FourierDecayAlt.P.Mx6.PC
 
 namespace Formalism.FourierDecayAlt.P
 

@@ -56,8 +56,8 @@ theorem rank_map_field {K L : Type} [Field K] [Field L] (f : K →+* L) {m n : T
   letI := f.toAlgebra
   rw [← Matrix.finrank_span_range_col, ← Matrix.finrank_span_range_col]
   obtain ⟨κ, a, ha, hspan, hli⟩ := exists_linearIndependent' K A.col
-  haveI : Finite κ := Finite.of_injective a ha
-  letI : Fintype κ := Fintype.ofFinite κ
+  have : Finite κ := Finite.of_injective a ha
+  let : Fintype κ := Fintype.ofFinite κ
   have hL : LinearIndependent L (fun i => algebraMap K L ∘ (A.col ∘ a) i) :=
     linearIndependent_algebraMap_comp_iff.2 hli
   have hs : Submodule.span L (Set.range (A.map f).col) =

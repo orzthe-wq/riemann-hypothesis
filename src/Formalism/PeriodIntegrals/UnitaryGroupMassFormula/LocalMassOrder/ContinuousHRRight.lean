@@ -95,7 +95,7 @@ theorem exists_gens : ∃ (m : ℕ) (w : Fin m → Fv F v ⊗[F] E), (∀ k, w k
   exact ⟨fun k => (c k : Fv F v), fun k => (c k).2, by rw [← hc]; rfl⟩
 
 theorem isCompact_oev : IsCompact (OEv (E := E) v) := by
-  apply PI.UnitaryGroupMassFormula.LocJacTyp.Sd.isCompact_oev <;> assumption
+  apply PI.UnitaryGroupMassFormula.LocJacTyp.Sd.isCompact_oev
 
 theorem isClosed_oev : IsClosed (OEv (E := E) v) := by
   have := LocMassOrdSF.finDim_FE (F := F) (E := E)

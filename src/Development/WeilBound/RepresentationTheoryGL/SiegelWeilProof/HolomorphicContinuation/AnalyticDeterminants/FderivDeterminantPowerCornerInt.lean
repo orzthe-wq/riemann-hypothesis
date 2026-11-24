@@ -79,7 +79,7 @@ theorem det_phiF (X : Matrix (Fin N) (Fin (N + 1)) ℂ) : (1 + phiF X).det = (1 
     intro j
     rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨j, rfl⟩
     · simp [phiF_zero_row]
-    · simp [phiF_zero_row, Matrix.one_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero j).symm]
+    · simp [phiF_zero_row, Fin.succ_ne_zero, (Fin.succ_ne_zero j).symm]
   rw [det_first_row_expansion _ 1 h0, one_mul]
   congr 1
   ext k l
@@ -103,11 +103,11 @@ theorem fderiv_determinant_power_corner_int (t : ℤ) (X : Matrix (Fin N) (Fin (
       intro j
       rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨j, rfl⟩
       · simp [phiF_zero_row]
-      · simp [phiF_zero_row, Matrix.one_apply, (Fin.succ_ne_zero j).symm, Matrix.single_apply]
+      · simp [phiF_zero_row, (Fin.succ_ne_zero j).symm]
     rw [det_first_row_expansion _ (1 + s) h0]
     congr 2
     ext k l
-    simp [Matrix.one_apply, phiF_succ_row, piF, Matrix.single_apply, (Fin.succ_ne_zero k).symm]
+    simp [Matrix.one_apply, phiF_succ_row, piF, (Fin.succ_ne_zero k).symm]
   rw [heq] at hl
   have hf : HasDerivAt (fun s : ℂ => (1 + s) * d) d 0 := by
     simpa using ((hasDerivAt_id (0:ℂ)).const_add 1).mul_const d
@@ -136,23 +136,23 @@ theorem fderiv_determinant_power_column_int (t : ℤ) (X : Matrix (Fin N) (Fin (
         (A.updateCol c.succ (fun k => A k c.succ + (-s) • A k 0)) 0 j = if j = 0 then 1 else 0 := by
       intro j
       rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨j, rfl⟩
-      · simp [hA, Matrix.updateCol_apply, phiF_zero_row, Matrix.single_apply,
+      · simp [hA, phiF_zero_row, Matrix.single_apply,
           (Fin.succ_ne_zero c).symm]
       · by_cases hj : j = c
         · subst hj
-          simp [hA, Matrix.updateCol_apply, phiF_zero_row, Matrix.single_apply, Matrix.one_apply,
+          simp [hA, phiF_zero_row, Matrix.single_apply, Matrix.one_apply,
             (Fin.succ_ne_zero j).symm]
-        · simp [hA, Matrix.updateCol_apply, phiF_zero_row, Matrix.single_apply, Matrix.one_apply,
+        · simp [hA, phiF_zero_row, Matrix.single_apply, Matrix.one_apply,
             (Fin.succ_ne_zero j).symm, hj, Ne.symm hj, Fin.succ_inj]
     rw [det_first_row_expansion _ 1 h0, one_mul]
     congr 1
     ext k l
     by_cases hlc : l = c
     · subst hlc
-      simp [hA, Matrix.updateCol_apply, phiF_succ_row, piF, colQ, Matrix.single_apply,
-        Matrix.one_apply, (Fin.succ_ne_zero k).symm, sub_eq_add_neg]
+      simp [hA, phiF_succ_row, piF, colQ, Matrix.single_apply,
+        Matrix.one_apply, (Fin.succ_ne_zero k).symm]
       ring
-    · simp [hA, Matrix.updateCol_apply, phiF_succ_row, piF, colQ, Matrix.single_apply,
+    · simp [hA, phiF_succ_row, piF, colQ, Matrix.single_apply,
         Matrix.one_apply, (Fin.succ_ne_zero k).symm, hlc, Fin.succ_inj]
   rw [heq] at hl
   refine (hl.unique hl').trans ?_

@@ -86,6 +86,14 @@ end AutFin
 
 
 open AutFin in
+/-- **Harish-Chandra's finiteness theorem** for automorphic forms: for a reductive group over
+a number field, the space of automorphic forms of a given level (open compact subgroup `U`),
+given K-type (finite-dimensional continuous representation `ρ`), and given infinitesimal
+character (eigenvalues `c` under the Casimir / center of the universal enveloping algebra)
+is finite-dimensional.
+
+Proposed reference:
+[Harish-Chandra, *Automorphic Forms on Semisimple Lie Groups* (Theorem 1, p. 7)][harishChandra1968]. -/
 def HarishChandraFinite : Prop :=
   ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ →
   ∀ (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) →
@@ -150,7 +158,7 @@ theorem exists_isFrameFam (hV : V.SigOK) : ∃ ε fr, IsFrameFam V ε fr := by
       · have hs : s i ≠ s j := fun h => hij (s.injective h)
         rw [Formalism.REAL.Jm, diagonal_apply_ne _ hij, submatrix_apply]
         revert hs
-        rcases s i with a | a <;> rcases s j with b | b <;> simp +contextual [Formalism.UG.Jpq, Matrix.one_apply]
+        rcases s i with a | a <;> rcases s j with b | b <;> simp +contextual [Formalism.UG.Jpq]
     refine ⟨fun i => (s i).isLeft, A.submatrix s id, ?_, ?_⟩
     · refine IsUnit.of_mul_eq_one (B.submatrix id s) ?_
       rw [← submatrix_mul A B s id s Function.bijective_id, hAB, submatrix_one_equiv]

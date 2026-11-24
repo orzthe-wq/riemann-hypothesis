@@ -65,9 +65,8 @@ theorem b'_pos : 0 < s.b' := div_pos s.a_pos (lt_of_lt_of_le one_pos s.one_le_X'
 theorem b'_le_a : s.b' ≤ s.a := div_le_self s.a_pos.le s.one_le_X'
 
 theorem w''_le_b' (n : ℕ) (hn : 1 ≤ n) : s.w'' n ≤ s.b' := by
-  have h1 : (1 : ℝ) ≤ n := by exact_mod_cast hn
-  have h2 : (1 : ℝ) ≤ s.x * n := by nlinarith [s.one_lt_alt]
-  exact div_le_self s.b'_pos.le h2
+  exact div_le_self s.b'_pos.le
+    (one_le_mul_of_one_le_of_one_le s.one_lt_alt.le (by exact_mod_cast hn))
 
 theorem w''_le_a (n : ℕ) (hn : 1 ≤ n) : s.w'' n ≤ s.a := (s.w''_le_b' n hn).trans s.b'_le_a
 
@@ -89,9 +88,7 @@ theorem five_le_k (_P : ParameterChoice' D L) : (5 : ℝ) ≤ D.R.k := by exact_
 theorem LaG_pos (P : ParameterChoice' D L) : 0 < L.LaG := by
   have hk : (0 : ℝ) < D.R.k := by linarith [P.five_le_k]
   have h1 : 0 < L.LaG * L.sc.b' / D.R.k := by linarith [P.S_le, L.Sc_pos]
-  have h2 : 0 < L.LaG * L.sc.b' := by
-    have := mul_pos h1 hk
-    rwa [div_mul_cancel₀ _ hk.ne'] at this
+  have h2 : 0 < L.LaG * L.sc.b' := (div_pos_iff_of_pos_right hk).mp h1
   exact (pos_iff_pos_of_mul_pos h2).mpr L.sc.b'_pos
 
 theorem Sc_ge (P : ParameterChoice' D L) : 4096 * (D.R.k : ℝ) ^ 2 ≤ L.Sc := by
@@ -113,14 +110,10 @@ theorem kSc_le_a (P : ParameterChoice' D L) : (D.R.k : ℝ) * L.Sc ≤ L.sc.a :=
   P.kS_le.trans (L.sc.w''_le_a _ D.R.one_le_n)
 
 theorem Sc_le (P : ParameterChoice' D L) : 5 * L.Sc ≤ L.sc.a := by
-  have := P.kSc_le_a
-  nlinarith [P.five_le_k, L.Sc_pos]
+  nlinarith [P.kSc_le_a, P.five_le_k, L.Sc_pos]
 
 theorem k_le_a (P : ParameterChoice' D L) : (D.R.k : ℝ) ≤ L.sc.a := by
-  have h1 := P.kSc_le_a
-  have h2 := P.Sc_ge
-  have h3 := P.five_le_k
-  nlinarith
+  nlinarith [P.kSc_le_a, P.Sc_ge, P.five_le_k]
 
 theorem four_le_a (P : ParameterChoice' D L) : 4 ≤ L.sc.a := by linarith [P.k_le_a, P.five_le_k]
 
@@ -206,7 +199,6 @@ theorem columnWeight_spread_off_top (P : ParameterChoice' D L) (u : D.what₂.Wo
     (ht : (D.eTau τ : D.R.GG) ∉ D.host.topPlaces) :
     ((((D.fm u).lam 0 τ).w (lamFst D) - ((D.fm u).lam 0 τ).w (lamLst D) : ℤ) : ℝ) ≤ 3 * L.Sc := by
   have hk := D.R.five_le_k
-  have hkR := P.five_le_k
   rw [columnWeight_spread_eq u τ]
   have h1 := P.cloud_place_bound τ (by omega) ht
   have h2 := P.uk_extreme τ (by omega) ht
@@ -214,7 +206,7 @@ theorem columnWeight_spread_off_top (P : ParameterChoice' D L) (u : D.what₂.Wo
   have h4 := (L.cloud_v τ ⟨D.R.k - 2, by omega⟩).1
   rw [h2]
   push_cast at h1 ⊢
-  linarith
+  linarith [P.five_le_k, h1, h3, h4]
 
 theorem columnWeight_spread_le (P : ParameterChoice' D L) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     ((((D.fm u).lam 0 τ).w (lamFst D) - ((D.fm u).lam 0 τ).w (lamLst D) : ℤ) : ℝ) ≤ 3 * L.sc.a := by
@@ -279,8 +271,7 @@ theorem gat_ellWt_lamAt_le (P : ParameterChoice' D L) (T : GatTies D) (u : D.wha
     (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (v : Fin (D.gat u w h).P.nV)
     (s : Fin ((D.gat u w h).P.n' v)) :
     (ellWt (lamAt ((D.gat u w h).P.lam0 v) s) : ℝ) ≤ 3 * L.sc.a := by
-  rw [ellWt_lamAt]
-  exact gat_ellWt_le P T u w h v s
+  simpa [ellWt_lamAt] using gat_ellWt_le P T u w h v s
 
 end Spread
 

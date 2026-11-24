@@ -65,7 +65,7 @@ private theorem mulR_mulR (a b : P.R.BdR) (x : V ⊗[ℚ_[l]] P.R.BdR) :
     mulR ℚ_[l] P.R.BdR LL V a (mulR ℚ_[l] P.R.BdR LL V b x) = mulR ℚ_[l] P.R.BdR LL V (a * b) x := by
   induction x using TensorProduct.induction_on with
   | zero => simp only [map_zero]
-  | tmul v c => simp [mul_assoc]
+  | tmul v c => simp
   | add y z hy hz => simp only [map_add (f := _), hy, hz]
 
 private theorem mulR_neg (a : P.R.BdR) (x : V ⊗[ℚ_[l]] P.R.BdR) :

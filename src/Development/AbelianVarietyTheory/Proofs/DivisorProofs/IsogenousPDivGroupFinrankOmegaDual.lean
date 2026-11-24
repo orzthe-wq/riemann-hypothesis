@@ -2,11 +2,13 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneFunctorBaseFunctorProperties
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneTheoryVEqVerschiebungInjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaDieudonneModFrobeniusDifferentialsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthGeFinrankOfSemilinearSurjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupIsogenyHeightEqDualSameDegreeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittModuleLengthCompositionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DieudonneTheoryVEqVerschiebungInjective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsThetaDieudonneModFrobeniusDifferentials
+public import Mathlib.RingTheory.Length
+public import Mathlib.RingTheory.WittVector.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LengthGeFinrankOfSemilinearSurjective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PDivGroupIsogenyHeightEqDualSameDegree
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WittModuleLengthComposition
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -152,8 +154,8 @@ theorem isog_core (T : GlobalTheory.Dieu.Theory p) {G H : PDivGroup p k} (q : G 
     rw [hvu a, hvu b] at h
     have h0 : p ^ n • (a - b) = 0 := by rw [smul_sub, h, sub_self]
     exact sub_eq_zero.1 (T.base.eq_zero_of_pow_smul (G := H) trivial n _ h0)
-  have LA := (GlobalTheory.T.witt_module_length_composition p k (T.M G) (T.M H) (T.M G)).1 (T.map q) (T.map q') hinj
-  have LB := (GlobalTheory.T.witt_module_length_composition p k (T.M G) (T.M G) (T.M G)).2.1 (T.base.free G trivial)
+  have LA := (_root_.GlobalTheory.Dieu.colength_add_and_pow_and_eq p k (T.M G) (T.M H) (T.M G)).1 (T.map q) (T.map q') hinj
+  have LB := (_root_.GlobalTheory.Dieu.colength_add_and_pow_and_eq p k (T.M G) (T.M G) (T.M G)).2.1 (T.base.free G trivial)
     (T.base.finite G trivial) n (T.map q ∘ₗ T.map q') (fun a => huv a)
   rw [LB] at LA
   have hfin : Module.length (WittVector p k) (T.M G ⧸ LinearMap.range (T.map q)) ≠ ⊤ := by
@@ -161,14 +163,14 @@ theorem isog_core (T : GlobalTheory.Dieu.Theory p) {G H : PDivGroup p k} (q : G 
     rw [h, top_add] at LA
     exact ENat.natCast_ne_top _ LA
   refine ⟨hinj, hfin, ?_⟩
-  obtain ⟨θ, hθ⟩ := GlobalTheory.T.exists_theta_dieudonne_mod_frobenius_differentials p T k
+  obtain ⟨θ, hθ⟩ := _root_.GlobalTheory.Dieu.theta_exists p T k
   have dimω : ∀ K : PDivGroup p k,
       Module.length (WittVector p k) (T.M K ⧸ frobImage (T.F K) ⊤) = Module.finrank k K.omega := by
     intro K
     obtain ⟨-, hs, hk, hl, -⟩ := hθ K
     haveI : Module.Finite (WittVector p k) (T.M K) := T.base.finite K trivial
     haveI := finite_of_frob_surj (θ K) hs hl
-    refine (GlobalTheory.T.length_ge_finrank_of_semilinear_surjective p k (T.M K) K.omega (WittVector.frobeniusEquiv p k) (θ K) hs ?_
+    refine (_root_.GlobalTheory.Dieu.length_ge_finrank_of_semilinear_surj p k (T.M K) K.omega (WittVector.frobeniusEquiv p k) (θ K) hs ?_
       (frobImage (T.F K) ⊤)).2 ?_
     · intro a m
       rw [WittVector.frobeniusEquiv_apply]
@@ -200,14 +202,14 @@ theorem isog_core (T : GlobalTheory.Dieu.Theory p) {G H : PDivGroup p k} (q : G 
     · rintro ⟨z, hz, rfl⟩
       obtain ⟨y, rfl⟩ := LinearMap.mem_range.1 hz
       exact ⟨⟨T.F H y, y, Submodule.mem_top, rfl⟩, hF y⟩
-  have eA := (GlobalTheory.T.witt_module_length_composition p k (T.M G) FG (Submodule.comap FG.subtype L3)).1
+  have eA := (_root_.GlobalTheory.Dieu.colength_add_and_pow_and_eq p k (T.M G) FG (Submodule.comap FG.subtype L3)).1
     FG.subtype (Submodule.comap FG.subtype L3).subtype (Submodule.injective_subtype _)
   rw [hr1, Submodule.range_subtype, Submodule.range_subtype] at eA
-  have eB := (GlobalTheory.T.witt_module_length_composition p k (T.M G) (T.M H) FH).1 (T.map q) FH.subtype hinj
+  have eB := (_root_.GlobalTheory.Dieu.colength_add_and_pow_and_eq p k (T.M G) (T.M H) FH).1 (T.map q) FH.subtype hinj
   rw [hr2, Submodule.range_subtype] at eB
   have hC : Module.length (WittVector p k) (FG ⧸ Submodule.comap FG.subtype L3) =
       Module.length (WittVector p k) (T.M G ⧸ X) :=
-    length_frobImage (T.F G) (GlobalTheory.T.dieudonneTheory_V_eq_verschiebung_injective p T k G).1 X
+    length_frobImage (T.F G) (_root_.GlobalTheory.Dieu.theory_V_verschiebung p T k G).1 X
   rw [hC, hFG, dimω G] at eA
   rw [hFH, dimω H] at eB
   obtain ⟨d, hd⟩ := ENat.ne_top_iff_exists.1 hfin
@@ -230,7 +232,7 @@ theorem isog_finrank_omega : ∀ (p : ℕ) [Fact p.Prime] (T : GlobalTheory.Dieu
       Module.finrank k G.dual.omega = Module.finrank k H.dual.omega := by
   intro p _ T k _ _ _ G H q hq
   obtain ⟨h1, h2, h3⟩ := IsogDim.isog_core T q hq
-  obtain ⟨-, hd, -⟩ := GlobalTheory.T.pDivGroupIsogeny_height_eq_dual_sameDegree p k G H q hq
+  obtain ⟨-, hd, -⟩ := _root_.GlobalTheory.Dieu.height_eq_and_dual_isog p k G H q hq
   exact ⟨h1, h2, h3, (IsogDim.isog_core T (dualHom G H q) hd).2.2.symm⟩
 
 end GlobalTheory.Dieu

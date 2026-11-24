@@ -76,10 +76,7 @@ open Formalism.UG
 
 variable {A : Type} [CommRing A]
 
-theorem cT_mul' (σ : A →+* A) {a b c : Type} [Fintype b] (M : Matrix a b A) (N : Matrix b c A) :
-    cT σ (M * N) = cT σ N * cT σ M := by
-  unfold cT
-  rw [Matrix.map_mul, Matrix.transpose_mul]
+alias cT_mul' := _root_.Formalism.UG.cT_mul
 
 theorem cT_one' (σ : A →+* A) {a : Type} [DecidableEq a] : cT σ (1 : Matrix a a A) = 1 := by
   unfold cT
@@ -151,7 +148,7 @@ theorem unimod_mix (S : Subring A) (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x)
       f • (cT σ β.val * J * β.val) + (1 - f) • (1 : Matrix (Fin n) (Fin n) A) := by
     rw [v1, v2]
     simp only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he, he', h0, a1, a2, a3, a4, a5, a6,
-      zero_smul, add_zero, zero_add, h1, h2, smul_add]
+      zero_smul, add_zero, zero_add, h1, h2]
     rw [show 1 - f = e + σ e by rw [hf]; ring, add_smul]
     abel
   rw [v3]

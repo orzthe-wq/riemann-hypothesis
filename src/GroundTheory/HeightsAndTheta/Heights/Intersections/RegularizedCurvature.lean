@@ -285,20 +285,15 @@ def blk (k : K) : ((Σ k, ι k) → ℂ) →L[ℂ] (ι k → ℂ) :=
 def F (k : K) (y : (Σ k, ι k) → ℂ) : ℝ :=
   Real.log ((fsMetric (ι := ι k)).ρ (fun i => y ⟨k, i⟩))
 
-theorem blk_ne {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) :
-    (fun i => z ⟨k, i⟩ : ι k → ℂ) ≠ 0 := by
-  obtain ⟨i, hi⟩ := hz k
-  exact fun h0 => hi (congrFun h0 i)
-
 theorem rho_pos {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) :
     0 < (fsMetric (ι := ι k)).ρ (fun i => z ⟨k, i⟩) :=
-  (fsMetric (ι := ι k)).pos _ (blk_ne hz k)
+  (fsMetric (ι := ι k)).pos _ (GroundTheory.Heights₂.Heights.Inter.SemipositiveTwist.blk_ne hz k)
 
 theorem contDiffAt_F {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) :
     ContDiffAt ℝ 2 (F k) z := by
   have hρ : ContDiffAt ℝ 2 (fsMetric (ι := ι k)).ρ (blk (ι := ι) k z) :=
     ((GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.isSmoothMetric_fs (J := ι k)).contDiffAt
-      (isOpen_ne.mem_nhds (blk_ne hz k))).of_le (WithTop.coe_le_coe.2 le_top)
+      (isOpen_ne.mem_nhds (GroundTheory.Heights₂.Heights.Inter.SemipositiveTwist.blk_ne hz k))).of_le (WithTop.coe_le_coe.2 le_top)
   have hφ := hρ.log (rho_pos hz k).ne'
   have hFk : F k = (fun u => Real.log ((fsMetric (ι := ι k)).ρ u)) ∘ blk (ι := ι) k := rfl
   rw [hFk]
@@ -308,11 +303,11 @@ theorem levi_F_nonneg {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i�
     (w : (Σ k, ι k) → ℂ) : 0 ≤ ReciprocityTheory.AnForm.levi (F k) z w := by
   have hρ : ContDiffAt ℝ 2 (fsMetric (ι := ι k)).ρ (blk (ι := ι) k z) :=
     ((GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.isSmoothMetric_fs (J := ι k)).contDiffAt
-      (isOpen_ne.mem_nhds (blk_ne hz k))).of_le (WithTop.coe_le_coe.2 le_top)
+      (isOpen_ne.mem_nhds (GroundTheory.Heights₂.Heights.Inter.SemipositiveTwist.blk_ne hz k))).of_le (WithTop.coe_le_coe.2 le_top)
   have hφ := hρ.log (rho_pos hz k).ne'
   have hFk : F k = (fun u => Real.log ((fsMetric (ι := ι k)).ρ u)) ∘ blk (ι := ι) k := rfl
   rw [hFk, ReciprocityTheory.AnForm.levi_comp w ((blk (ι := ι) k).analyticAt z) hφ]
-  exact GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.leviForm_log_fs_nonneg (blk_ne hz k) _
+  exact GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.leviForm_log_fs_nonneg (GroundTheory.Heights₂.Heights.Inter.SemipositiveTwist.blk_ne hz k) _
 
 end Blocks
 

@@ -114,7 +114,6 @@ theorem exists_adapted (E : Type) [Field E] [NumberField E] [IsCMField E] (H : R
       simp only [LinearEquiv.coe_pow] at hv
       first
         | rw [Module.End.coe_pow]
-        | rw [LinearMap.coe_pow]
       simpa using hv
     have h2 := GlobalTheory.end_eq_one_of_pow_eq_one_of_congr Y (s : Module.End ℤ Y) n M hn h1 hM h
     exact LinearEquiv.ext fun v => by simpa using LinearMap.congr_fun h2 v
@@ -177,10 +176,6 @@ theorem exists_holPeriods_adapted : ∀ (E : Type) [Field E] [NumberField E] [Is
     have hp : ∀ j, DifferentiableAt ℂ (fun b => P0 b a j) b' := fun j => differentiableAt_pi.1 (hPd b' hb' a) j
     first
       | exact DifferentiableAt.fun_sum fun j _ => (hv j).mul (hp j)
-      | fun_prop
-      | (convert DifferentiableAt.sum (u := Finset.univ) (fun j _ => (hv j).mul (hp j)) using 1
-         ext b
-         simp)
   exact hd.differentiableWithinAt.congr (fun b hb => hP'V b hb a) (hP'V b' hb' a)
 
 end GlobalTheory.AdaptedPeriods

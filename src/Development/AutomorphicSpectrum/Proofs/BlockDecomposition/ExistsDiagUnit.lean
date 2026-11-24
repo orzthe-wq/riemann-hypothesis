@@ -85,12 +85,6 @@ theorem ordL_congr {a b : L} (h : Valued.v a = Valued.v b) : ordL a = ordL b := 
   unfold ordL
   simp only [h]
 
-theorem ordL_one : ordL (1 : L) = 0 := by
-  have h : Valued.v (1 : L) = ((1 : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
-    rw [map_one, WithZero.coe_one]
-  rw [ordL_of_eq h]
-  simp
-
 theorem val_mul_entry_le {ι : Type} [Fintype ι] {A B : Matrix ι ι L}
     (hA : ∀ i j, Valued.v (A i j) ≤ 1) (hB : ∀ i j, Valued.v (B i j) ≤ 1) (i j : ι) :
     Valued.v ((A * B) i j) ≤ 1 := by
@@ -105,29 +99,20 @@ section Anti
 
 variable {L : Type} [Field L]
 
-theorem antiJ_apply {n : ℕ} (i j : Fin n) :
-    antiJ L n i j = if j = Fin.rev i then 1 else 0 := by
-  have : (i.val + j.val + 1 = n) ↔ j = Fin.rev i := by
-    rw [Fin.ext_iff, Fin.val_rev]
-    have := i.isLt
-    have := j.isLt
-    omega
-  simp only [antiJ, this]
-
 theorem antiJ_mul_self (n : ℕ) : antiJ L n * antiJ L n = 1 := by
   ext i j
   rw [Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]
-  · rw [antiJ_apply, antiJ_apply, if_pos rfl, one_mul, Matrix.one_apply, Fin.rev_rev]
+  · rw [_root_.Formalism.UG.P.fIwasawa_antiJ, _root_.Formalism.UG.P.fIwasawa_antiJ, if_pos rfl, one_mul, Matrix.one_apply, Fin.rev_rev]
     by_cases h : i = j
     · simp [h]
     · simp [h, Ne.symm h]
   · intro k _ hk
-    rw [antiJ_apply, if_neg hk, zero_mul]
+    rw [_root_.Formalism.UG.P.fIwasawa_antiJ, if_neg hk, zero_mul]
   · simp
 
 theorem cT_antiJ (σ : L →+* L) (n : ℕ) : cT σ (antiJ L n) = antiJ L n := by
   ext i j
-  simp only [cT, Matrix.transpose_apply, Matrix.map_apply, antiJ_apply]
+  simp only [cT, Matrix.transpose_apply, Matrix.map_apply, _root_.Formalism.UG.P.fIwasawa_antiJ]
   by_cases h : j = Fin.rev i
   · subst h
     simp
@@ -245,7 +230,7 @@ theorem main : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ)
   have hJc : cT σ J = J := cT_antiJ σ n
   have hJI : ∀ i j, Valued.v (J i j) ≤ 1 := by
     intro i j
-    rw [hJdef, antiJ_apply]
+    rw [hJdef, _root_.Formalism.UG.P.fIwasawa_antiJ]
     split_ifs
     · rw [map_one]
     · rw [map_zero]; exact zero_le_one
@@ -287,7 +272,7 @@ theorem main : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ)
       rw [h, map_zero] at this
       exact (d i).ne_zero ((Valuation.zero_iff _).1 this.symm)
     have h4 := ordL_mul_of_ne hσd (d j).ne_zero
-    rw [h1, ordL_one, ordL_congr (hσv _), hd, hd] at h4
+    rw [h1, _root_.Formalism.UG.P.fSatake_ord_one, ordL_congr (hσv _), hd, hd] at h4
     apply hy
     rw [hrev]
     omega
@@ -329,7 +314,7 @@ theorem main : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ)
     rw [hHdef]; simp only [Matrix.mul_assoc]
   rw [hre]
   ext i j
-  rw [cT_diag_conj, hJdef, antiJ_apply]
+  rw [cT_diag_conj, hJdef, _root_.Formalism.UG.P.fIwasawa_antiJ]
   by_cases hj : j = Fin.rev i
   · subst hj
     rw [if_pos rfl]

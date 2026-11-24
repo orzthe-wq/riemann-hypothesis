@@ -45,6 +45,19 @@ import Mathlib.Topology.Sheaves.Init
 
 noncomputable section
 
+namespace UpperTheory.GalS
+
+open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial Formalism.MainNotions.N Formalism.MainNotions.SumRepresentations Formalism.MainNotions.SumRepresentations.At UpperTheory.Lit.Car
+
+variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
+
+theorem inePol_monic (hLP : TieLP N A) {w : PlE H} (a : A.LP w) (τ) (hτ : τ ∈ Ine (F := H.E) (N.plOm.1 w)) :
+    (A.inePol a τ).Monic ∧ (A.inePol a τ).natDegree = A.lpDim a := by
+  have d1 : A.lpDim (A.lpUnr w {1}) = 1 := by rw [(A.lpUnr_spec w {1} (by simp)).2.2]; simp
+  exact ((hLP w a a _ _ 0 d1 d1).2.2.2.2.2 τ hτ).1
+
+end UpperTheory.GalS
+
 namespace UpperTheory.GalN
 
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial Formalism.MainNotions.N Formalism.MainNotions.SumRepresentations Formalism.MainNotions.SumRepresentations.At UpperTheory.Lit.Car
@@ -85,25 +98,8 @@ theorem RelA.unr {w : PlE H} {x y : A.LP w} (h : RelA N A x y) (hy : A.unr y) : 
   refine (A.unr_iff_ine x).mpr ⟨h.mono hm, fun σ hσ => ?_⟩
   rw [h.ine ⟨hm, fun τ hτ => hi τ (commutator_le_self' _ hτ)⟩ σ hσ, hi σ hσ, h.dim]
 
-private theorem eq_X_sub_one_pow_of_monic_mul_eq {p q : ℂ[X]} {n m : ℕ} (hp : p.Monic) (hpn : p.natDegree = n)
-    (h : p * q = (X - 1) ^ (n + m)) : p = (X - 1) ^ n := by
-  have hd : p ∣ (X - C 1) ^ (n + m) := ⟨q, by simpa using h.symm⟩
-  obtain ⟨i, -, hi⟩ := (dvd_prime_pow (Polynomial.prime_X_sub_C (1 : ℂ)) _).mp hd
-  have he : p = (X - C 1) ^ i :=
-    Polynomial.eq_of_monic_of_associated hp ((Polynomial.monic_X_sub_C 1).pow i) hi
-  have hin : i = n := by
-    rw [← hpn, he, Polynomial.natDegree_pow, Polynomial.natDegree_X_sub_C, mul_one]
-  subst hin
-  simpa using he
-
 theorem RelA.sum (hLP : TieLP N A) {w : PlE H} {x y x' y' : A.LP w} (h : RelA N A x y) (h' : RelA N A x' y') :
     RelA N A (A.lpSum x x') (A.lpSum y y') := by
-  have hu1 : A.lpDim (A.lpUnr w {1}) = 1 := by
-    rw [(A.lpUnr_spec w {1} (by simp)).2.2]
-    simp
-  have hmon : ∀ (a : A.LP w) σ, σ ∈ Ine (F := H.E) (N.plOm.1 w) →
-      (A.inePol a σ).Monic ∧ (A.inePol a σ).natDegree = A.lpDim a := fun a σ hσ =>
-    ((hLP w a a (A.lpUnr w {1}) (A.lpUnr w {1}) 0 hu1 hu1).2.2.2.2.2 σ hσ).1
   refine ⟨by rw [A.lpDim_sum, A.lpDim_sum, h.dim, h'.dim], fun hm => ?_, fun ⟨hm, hab⟩ σ hσ => ?_⟩
   · rw [A.monomial_sum_iff] at hm ⊢
     exact ⟨h.mono hm.1, h'.mono hm.2⟩
@@ -114,22 +110,19 @@ theorem RelA.sum (hLP : TieLP N A) {w : PlE H} {x y x' y' : A.LP w} (h : RelA N 
       have hτI : τ ∈ Ine (F := H.E) (N.plOm.1 w) := commutator_le_self' _ hτ
       have e := hab τ hτ
       rw [A.inePol_sum, A.lpDim_sum] at e
-      refine ⟨eq_X_sub_one_pow_of_monic_mul_eq (hmon y τ hτI).1 (hmon y τ hτI).2 e, ?_⟩
-      rw [mul_comm, add_comm] at e
-      exact eq_X_sub_one_pow_of_monic_mul_eq (hmon y' τ hτI).1 (hmon y' τ hτI).2 e
+      have hy := UpperTheory.GalS.inePol_monic hLP y τ hτI
+      have hy' := UpperTheory.GalS.inePol_monic hLP y' τ hτI
+      refine ⟨by rw [eq_pow_of_mul hy.1 e, hy.2], ?_⟩
+      rw [mul_comm] at e
+      rw [eq_pow_of_mul hy'.1 e, hy'.2]
     rw [A.inePol_sum, A.inePol_sum, h.ine ⟨hm.1, fun τ hτ => (key τ hτ).1⟩ σ hσ,
       h'.ine ⟨hm.2, fun τ hτ => (key τ hτ).2⟩ σ hσ]
 
 theorem RelA.char (hLP : TieLP N A) {w : PlE H} {x y : A.LP w} (h : RelA N A x y) (c : A.LP w) (hc : A.lpDim c = 1)
     (hu : A.unr c) : RelA N A (A.lpChar x c) (A.lpChar y c) := by
-  have hpc : ∀ τ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol c τ = X - C 1 := by
-    intro τ hτ
-    rw [((A.unr_iff_ine c).mp hu).2 τ hτ, hc]
-    simp
   have hch : ∀ (a : A.LP w) τ, τ ∈ Ine (F := H.E) (N.plOm.1 w) →
-      A.inePol (A.lpChar a c) τ = A.inePol a τ := by
-    intro a τ hτ
-    rw [((hLP w a a c c 0 hc hc).2.2.2.2.2 τ hτ).2 1 (hpc τ hτ), Polynomial.scaleRoots_one]
+      A.inePol (A.lpChar a c) τ = A.inePol a τ :=
+    fun a τ hτ => inePol_char_unr hLP a c hc hu τ hτ
   refine ⟨by rw [A.lpDim_char _ _ hc, A.lpDim_char _ _ hc, h.dim], fun hm => ?_,
     fun ⟨hm, hab⟩ σ hσ => ?_⟩
   · rw [A.monomial_char_iff _ _ hc] at hm ⊢

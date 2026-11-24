@@ -1,5 +1,8 @@
 module
 
+public import Mathlib.Algebra.Algebra.Operations
+public import Mathlib.RingTheory.Noetherian.Defs
+public import Mathlib.RingTheory.Filtration
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.ExistsUniquePartner
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.ToATotal
@@ -8,44 +11,19 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDesc
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SecEqZeroAndHomEqOfThickenings
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompareUniformisationDataPullbackStatement
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegDataPsiOfSectionNonzeroFibres
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsPullDegOfComparisonStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsThetaSectionNonzeroFibresLocalRingStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTwistedSectionThetaTranslateCoefStatement
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnifOfCmp
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformisationCompleteLocalDomainPrime
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformizationDataCompleteLocalPrimeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueExpansionSectionAdmissibleBase
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExpansionCoefMemAdicPowStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FibrewiseNonzeroSectionProdAndBaseChange
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ForallTermNeZeroOfPsiRelationStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiCmpOfSecCmpStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiEvenDescendBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiRelOfExpTStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiScalarEqExpansionCoefRatioStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiScalarMemOfPsiMemIdealStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.RigidificationComparisonUniformisationStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TauBimultOfBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisationChartValueFormsCorrespond
-import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UnitMapSnd
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsExtraMore
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralOfMemAdjoinInv
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsReducedAlgebraOfSmoothOfIsNoetherianRing
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.EgaHolds
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.UniformisationCompleteDVR
-import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsMulPullSec
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorsionEqOneOfTranslationKeepsRatios
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsExpansionSectionLineBundlePower
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPsiThetaExpansionPsiRelation
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitValEqMul
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PsiInIffScalarMem
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SvalEqZeroOfWeightSum
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OverExtOfPoints
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -57,6 +35,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -77,9 +57,69 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OverExtOfPoints
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsPullDegOfComparisonStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsThetaSectionNonzeroFibresLocalRingStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTwistedSectionThetaTranslateCoefStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformizationDataCompleteLocalPrimeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueExpansionSectionAdmissibleBase
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExpansionCoefMemAdicPowStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FibrewiseNonzeroSectionProdAndBaseChange
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ForallTermNeZeroOfPsiRelationStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiCmpOfSecCmpStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiEvenDescendBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiRelOfExpTStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiScalarEqExpansionCoefRatioStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiScalarMemOfPsiMemIdealStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.RigidificationComparisonUniformisationStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TauBimultOfBaseChangeStatement
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisationChartValueFormsCorrespond
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UnitMapSnd
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsReducedAlgebraOfSmoothOfIsNoetherianRing
+import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsMulPullSec
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorsionEqOneOfTranslationKeepsRatios
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsExpansionSectionLineBundlePower
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPsiThetaExpansionPsiRelation
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitValEqMul
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PsiInIffScalarMem
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SvalEqZeroOfWeightSum
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsExtraMore, Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiabelianGenericFibrePolarizationIso
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsExtraMore =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsExtraMore", "h": "module\n\npublic import Mathlib.Algebra.Algebra.Operations\npublic import Mathlib.RingTheory.Noetherian.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.RingTheory.Filtration\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.ClosingLemmaSecond
+
+theorem main : ∀ {R : Type} [inst : CommRing R] [IsDomain R] [IsNoetherianRing R] (I : Ideal R) {q : R}, q ≠ (0 : R) → ∃ (c : ℕ), ∀ (n : ℕ) (a : R), q * a ∈ I ^ (n + c) → a ∈ I ^ n := by
+  intro R _ _ _ I q hq
+  obtain ⟨k, hk⟩ := Ideal.exists_pow_inf_eq_pow_smul I (Ideal.span {q} : Submodule R R)
+  refine ⟨k, fun n a ha => ?_⟩
+  have hmem : q * a ∈ I ^ (n + k) • (⊤ : Submodule R R) ⊓ Ideal.span {q} := by
+    refine Submodule.mem_inf.2 ⟨?_, Ideal.mem_span_singleton.2 ⟨a, rfl⟩⟩
+    rw [Ideal.smul_eq_mul, Ideal.mul_top]
+    exact ha
+  rw [hk (n + k) (by omega), Nat.add_sub_cancel] at hmem
+  have hle : I ^ n • (I ^ k • (⊤ : Submodule R R) ⊓ Ideal.span {q}) ≤ I ^ n • Ideal.span {q} :=
+    Submodule.smul_le.2 fun r hr x hx => Submodule.smul_mem_smul hr (Submodule.mem_inf.1 hx).2
+  have h2 := hle hmem
+  rw [Ideal.smul_eq_mul, mul_comm, Ideal.mem_span_singleton_mul] at h2
+  obtain ⟨z, hz, hzq⟩ := h2
+  rwa [← mul_left_cancel₀ hq hzq]
+
+end GlobalTheory.ClosingLemmaSecond
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsExtraMore =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiabelianGenericFibrePolarizationIso =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiabelianGenericFibrePolarizationIso", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal\npublic import Development.AbelianVarietyTheory.Definitions.Degenerations.ExistsUniquePartner\npublic import Development.AbelianVarietyTheory.Definitions.Degenerations.ToATotal\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SecCmp\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt\npublic import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SecEqZeroAndHomEqOfThickenings\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsCompareUniformisationDataPullbackStatement\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsDegDataPsiOfSectionNonzeroFibres\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsIsPullDegOfComparisonStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsThetaSectionNonzeroFibresLocalRingStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTwistedSectionThetaTranslateCoefStatement\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnifOfCmp\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformisationCompleteLocalDomainPrime\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniformizationDataCompleteLocalPrimeStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUniqueExpansionSectionAdmissibleBase\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExpansionCoefMemAdicPowStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FibrewiseNonzeroSectionProdAndBaseChange\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ForallTermNeZeroOfPsiRelationStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiCmpOfSecCmpStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiEvenDescendBaseChangeStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiRelOfExpTStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiScalarEqExpansionCoefRatioStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.PsiScalarMemOfPsiMemIdealStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.RigidificationComparisonUniformisationStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.TauBimultOfBaseChangeStatement\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UniformisationChartValueFormsCorrespond\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.UnitMapSnd\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImportsExtraMore\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralOfMemAdjoinInv\nimport Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsReducedAlgebraOfSmoothOfIsNoetherianRing\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.EgaHolds\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.UniformisationCompleteDVR\nimport Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.ExistsMulPullSec\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TorsionEqOneOfTranslationKeepsRatios\nimport Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllSixAbelianSchemeLawsHold\nimport Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsExpansionSectionLineBundlePower\nimport Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPsiThetaExpansionPsiRelation\nimport Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitValEqMul\nimport Development.AbelianVarietyTheory.Proofs.UniformizationProofs.PsiInIffScalarMem\nimport Development.AbelianVarietyTheory.Proofs.UniformizationProofs.SvalEqZeroOfWeightSum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OverExtOfPoints\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
@@ -90,16 +130,6 @@ open GlobalTheory.UU GlobalTheory.LN GlobalTheory.PsiRing
 
 noncomputable section
 namespace GlobalTheory.SectionUnif
-
-theorem exists_shift {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] (I : Ideal R) {q : R} (hq : q ≠ 0) :
-    ∃ c : ℕ, ∀ (n : ℕ) (a : R), q * a ∈ I ^ (n + c) → a ∈ I ^ n := by
-  first
-  | exact @_root_.GlobalTheory.ClosingLemmaSecond.main
-  | exact _root_.GlobalTheory.ClosingLemmaSecond.main
-  | (apply _root_.GlobalTheory.ClosingLemmaSecond.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.ClosingLemmaSecond.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.ClosingLemmaSecond.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.ClosingLemmaSecond.main ..)
 
 section
 variable {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {I : Ideal R} {I' : Ideal V}
@@ -132,7 +162,7 @@ theorem exists_term_ne_zero [IsNoetherianRing R] (hI : I ≤ Ideal.jacobson ⊥)
       have hB : (lift (toUnit T) b).left ≫ (snd _ D.P.A).left = b.left := by rw [← Over.comp_left, lift_snd]
       have hF : (lift (toUnit T) b).left ≫ (fst _ D.P.A).left = (lift (toUnit T) x).left ≫ (fst _ G).left := by
         rw [← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst]
-      have hi : lift (toUnit T) x = x ≫ (λ_ G).inv := by ext1 <;> simp [toUnit_unique]
+      have hi : lift (toUnit T) x = x ≫ (λ_ G).inv := by ext1 <;> simp
       have hi' : (lift (toUnit T) x).left = (𝟙 _ ≫ (fstG I e G).left) ≫ (λ_ G).inv.left := by
         rw [hi, Category.id_comp]; rfl
       obtain ⟨J, hJ⟩ := exists_good_pt (Z := T.left) D.P.isLB z
@@ -269,9 +299,9 @@ theorem exists_unif_of_ne_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
   obtain ⟨ga, a, hSc⟩ := exists_psiScal R E
   obtain ⟨th, hth, hmul⟩ := GlobalTheory.T.exists_thetaSection_nonzeroFibres_localRing h₂.secTwist R D
   obtain ⟨q, hq⟩ := hmul (f 0)
-  choose b hb using fun χ : D.X => GlobalTheory.T.exists_twistedSection_thetaTranslate_coef R D th hmul χ (ga χ) (hSc χ).1 (f χ)
+  choose b hb using fun χ : D.X => _root_.GlobalTheory.PsiCoef.exists_coef R D th hmul χ (ga χ) (hSc χ).1 (f χ)
   have hab : ∀ χ, algebraMap R (FractionRing R) q * (a χ).val = algebraMap R (FractionRing R) (b χ) := fun χ =>
-    GlobalTheory.T.psiScalar_eq_expansionCoef_ratio R E ga a f th hSc hrelE hth χ q (b χ) hq (hb χ)
+    _root_.GlobalTheory.psiScal_eq_ratio R E ga a f th hSc hrelE hth χ q (b χ) hq (hb χ)
   have hq0 : q ≠ 0 := by
     rintro rfl
     obtain ⟨j, hj⟩ := hne 0
@@ -283,7 +313,7 @@ theorem exists_unif_of_ne_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
     obtain ⟨D₁, A₁, G₁, _, _, F₁, U₁, U₂, hU₁, ⟨C₁⟩⟩ := exists_cmp hR.1 U hW hsp hA W g hW₁ hg hgc
     obtain ⟨-, gam₁, hgam₁, hpsi₁⟩ := (ne_zero_and_psiCmp h₁ h₂ hW₁ hg C₁ hU₁ σ f hf y hy).2 psi h hrel
     obtain ⟨x, rfl⟩ := C₁.xe.surjective χ
-    exact GlobalTheory.T.psiScalar_mem_of_psi_mem_ideal R W g E D₁.toPre C₁.β C₁.v C₁.xe C₁.pbB C₁.v_gen C₁.c_pr gam₁ hgam₁ hpsi₁ ga a hSc x _
+    exact _root_.GlobalTheory.PsiRing.scalar_mem_of_psiIn R W g E D₁.toPre C₁.β C₁.v C₁.xe C₁.pbB C₁.v_gen C₁.c_pr gam₁ hgam₁ hpsi₁ ga a hSc x _
       (D₁.psi_pos x fun h0 => hχ (by rw [h0, map_zero])) _ q (hab _)
   have hdiv : ∀ χ : D.X, χ ≠ 0 → ∃ r ∈ IsLocalRing.maximalIdeal R, b χ = q * r := fun χ hχ => by
     obtain ⟨r, hr⟩ := ValCrit.dvd_of_forall_cdvr R (b χ) q hq0 fun W _ _ _ g hW₁ hg hgc =>
@@ -295,11 +325,11 @@ theorem exists_unif_of_ne_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
   have hin : ∀ (χ : D.X) (J : Ideal R) (r : R), r ∈ J → b χ = q * r → E.PsiIn χ J := fun χ J r hJ e =>
     (PsiScalIn.main_local E ga a hSc χ J).2 ⟨r, hJ, mul_left_cancel₀
       ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hq0) (((map_mul _ q r).symm.trans (congrArg _ e.symm)).trans (hab χ).symm)⟩
-  obtain ⟨c, hcs⟩ := exists_shift (IsLocalRing.maximalIdeal R) hq0
+  obtain ⟨c, hcs⟩ := _root_.GlobalTheory.ShiftMemPowOfMulMemPow.exists_shift_mem_pow_of_mul_mem_pow (IsLocalRing.maximalIdeal R) hq0
   let Dd : DegData R (IsLocalRing.maximalIdeal R) :=
     ⟨E, hev, hbi, fun χ hχ => (hdiv χ hχ).elim fun r hr => hin χ _ r hr.1 hr.2, fun n => by
       classical
-      obtain ⟨s, hs⟩ := GlobalTheory.T.expansionCoef_mem_adic_pow R _ hI D A G U σ f th hf hth (n + c)
+      obtain ⟨s, hs⟩ := _root_.GlobalTheory.PsiRing.coef_mem_pow R _ hI D A G U σ f th hf hth (n + c)
       refine (insert 0 s).finite_toSet.subset fun χ hχ => ?_
       by_contra hn
       rw [Finset.mem_coe, Finset.mem_insert, not_or] at hn
@@ -314,3 +344,6 @@ theorem exists_unif_of_ne_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoc
 
 end GlobalTheory.SectionUnif
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiabelianGenericFibrePolarizationIso =====

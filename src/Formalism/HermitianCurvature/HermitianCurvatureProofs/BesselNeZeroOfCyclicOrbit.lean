@@ -146,7 +146,7 @@ def mulRightCLM (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
   LinearMap.toContinuousLinearMap
     { toFun := fun h => h * g
       map_add' := fun a b => Matrix.add_mul a b g
-      map_smul' := fun c a => by simp [Matrix.smul_mul] }
+      map_smul' := fun c a => by simp }
 
 theorem smooth_translate {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]

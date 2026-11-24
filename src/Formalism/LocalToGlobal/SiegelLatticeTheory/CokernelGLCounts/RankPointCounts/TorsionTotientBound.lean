@@ -109,6 +109,6 @@ theorem le_two_totient_sq (n : ℕ) : n ≤ 2 * n.totient ^ 2 := by
 
 theorem torsionOrder_le (E : Type) [Field E] [NumberField E] :
     Units.torsionOrder E ≤ 2 * (Module.finrank ℚ E) ^ 2 := by
-  apply UpperTheory.torsionOrder_le_two_mul_finrank_sq <;> assumption
+  apply UpperTheory.torsionOrder_le_two_mul_finrank_sq
 
 end Formalism.L2.SG.NGCut.TorsionTotientBound

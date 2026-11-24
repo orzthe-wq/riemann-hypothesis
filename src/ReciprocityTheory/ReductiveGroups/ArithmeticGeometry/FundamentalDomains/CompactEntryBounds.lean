@@ -58,7 +58,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
 theorem hermC_expand (τ : E →+* ℂ) (P : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
     hermC τ X.Gm ((P.map τ) *ᵥ u) ((P.map τ) *ᵥ w) =
       ∑ k, ∑ l, u k * conj (w l) * τ (herm X.Gm (P *ᵥ Pi.single k 1) (P *ᵥ Pi.single l 1)) := by
-  apply GlobalTheory.FlagMahler.hermC_expand <;> assumption
+  apply GlobalTheory.FlagMahler.hermC_expand
 
 theorem hermC_stab {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ x y, herm X.Gm (γ *ᵥ x) (γ *ᵥ y) = herm X.Gm x y) (τ : E →+* ℂ) (u w : Fin r → ℂ) :

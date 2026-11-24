@@ -223,8 +223,8 @@ theorem numAt_of (hk : m + 1 = r + K) (hF : FramesOK TT L₁ L₂ N₁ G' F) (hp
 end At
 
 theorem numStep_of : ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → ∀ CLa : ℝ, NumStep C 20 CLa := by
-  obtain ⟨C0, hC0, H0⟩ := Formalism.CountingSumsFrames.Top.paramsII0 1 1 le_rfl le_rfl
-  obtain ⟨C5, hC5, H5⟩ := Formalism.CountingSumsFrames.Top.paramsII5 1 1 le_rfl le_rfl
+  obtain ⟨C0, hC0, H0⟩ := _root_.Formalism.CountingSumsFrames.secondParameterSizeBounds_holds 1 1 le_rfl le_rfl
+  obtain ⟨C5, hC5, H5⟩ := _root_.Formalism.CountingSumsFrames.secondParameterSlackBounds_holds 1 1 le_rfl le_rfl
   refine ⟨max (max C0 C5) 10, lt_of_lt_of_le (by norm_num) (le_max_right _ _), ?_⟩
   intro C hC CLa p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _
     hk F nb B hD

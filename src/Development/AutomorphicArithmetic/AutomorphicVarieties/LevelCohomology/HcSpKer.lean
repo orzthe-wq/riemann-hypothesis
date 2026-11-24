@@ -92,7 +92,7 @@ theorem UpperTheory.V.X.spKer :
       by_cases h : i = j
       · subst h
         simp [Raw.rbar, Raw.r0, mapRep, diagRep]
-      · simp [Raw.rbar, Raw.r0, mapRep, diagRep, Matrix.diagonal_apply, h]
+      · simp [Raw.rbar, Raw.r0, mapRep, diagRep, h]
     rw [e, ← Matrix.diagonal_one, Matrix.diagonal_eq_diagonal_iff]
   let φ : G ℚ Ω →* (Fin 4 → (ResidueField c.O)ˣ) :=
     Pi.monoidHom fun i => (Units.map (residue c.O : c.O →* ResidueField c.O)).comp (D.ps i)

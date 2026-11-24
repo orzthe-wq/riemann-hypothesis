@@ -134,39 +134,6 @@ def Core.HasCharts (C : Core) : Prop :=
 def SplitAll {Z : Scheme.{0}} (G : Over Z) [GrpObj G] : Prop :=
   ∀ z : Z, ∃ E : SplitExt (Sp (Z.residueField z)), E.IsGt ((Over.pullback (Z.fromSpecResidueField z)).obj G)
 
-theorem isUnit_resG_basicOpen (X : Scheme.{0}) (s : Γ(X, ⊤)) :
-    IsUnit (resG X (le_top : X.basicOpen s ≤ ⊤) s) := by
-  exact X.toRingedSpace.isUnit_res_basicOpen s
-
-def Charts.ofSections (X : Scheme.{0}) [IsAffine X] {I Cl : Type} [Finite I] [Finite Cl] (wt : I → Cl) (c₀ : Cl)
-    (s : I → Γ(X, ⊤)) (hs : ⨆ i : {i // wt i = c₀}, X.basicOpen (s i.1) = ⊤) : Charts X where
-  I := I
-  Cl := Cl
-  wt := wt
-  c₀ := c₀
-  W := fun i => X.basicOpen (s i.1)
-  aff := fun i => (isAffineOpen_top X).basicOpen (s i.1)
-  cover := hs
-  r := fun i j => resG X le_top (s j) * ↑(isUnit_resG_basicOpen X (s i.1)).unit⁻¹
-  r_self := fun i => (isUnit_resG_basicOpen X (s i.1)).mul_val_inv
-  inter := fun i i' => by
-    rw [Scheme.basicOpen_mul, X.basicOpen_of_isUnit (Units.isUnit _)]
-    erw [X.basicOpen_res (s i'.1) (homOfLE le_top).op]
-    exact (inf_eq_left.2 inf_le_left).symm
-  trans := fun i i' j => by
-    have h := congrArg (resG X (inf_le_right : X.basicOpen (s i.1) ⊓ X.basicOpen (s i'.1) ≤ _))
-      (isUnit_resG_basicOpen X (s i'.1)).mul_val_inv
-    have e : ∀ (V : X.Opens) (h : X.basicOpen (s i.1) ⊓ X.basicOpen (s i'.1) ≤ V) (u : Γ(X, ⊤)),
-        resG X h (resG X le_top u) = resG X le_top u := by
-      intro V h u
-      change (X.presheaf.map _ ≫ X.presheaf.map _).hom u = _
-      rw [← X.presheaf.map_comp]
-      rfl
-    rw [map_mul, map_one, e] at h
-    simp only [map_mul, e]
-    linear_combination (-(resG X le_top (s j)) * resG X inf_le_left
-      ↑(isUnit_resG_basicOpen X (s i.1)).unit⁻¹) * h
-
 def Charts.single (X : Scheme.{0}) [IsAffine X] {J : Type} [Finite J] (f : J → Γ(X, ⊤)) : Charts X where
   I := Option J
   Cl := Option J

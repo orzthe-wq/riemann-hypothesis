@@ -89,8 +89,7 @@ theorem scale_neg_mono {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [
 
 theorem RS.w_ne {p n' : ℕ} (R : RS p n') : algebraMap R.O R.Kf R.w ≠ 0 := by
   haveI := R.std.1.frac_O
-  intro h
-  exact R.std.2.1.ne_zero (IsFractionRing.injective R.O R.Kf (h.trans (map_zero _).symm))
+  exact fun h => R.std.2.1.ne_zero (IsFractionRing.injective R.O R.Kf (h.trans (map_zero _).symm))
 
 section Clean
 
@@ -108,12 +107,10 @@ theorem lattice_count_prime_mono_level {t t' : ℕ} (h : t ≤ t') (c : ℕ) (e 
 
 theorem RhoL_mono {t t' c : ℕ} {D D' X X' : ℝ} (ht : t ≤ t') (hD : D ≤ D') (hX : X' ≤ X)
     (h : RhoL R lam0 t c D X) : RhoL R lam0 t' c D' X' := by
-  intro e he
-  exact RhoGE_mono (lattice_count_mono_level R lam0 ht c e) (lattice_count_prime_mono_level R lam0 ht c e) hD hX (h e he)
+  exact fun e he => RhoGE_mono (lattice_count_mono_level R lam0 ht c e) (lattice_count_prime_mono_level R lam0 ht c e) hD hX (h e he)
 
 theorem RhoL_zero (t c : ℕ) (D : ℝ) {X : ℝ} (hX : X ≤ 0) : RhoL R lam0 t c D X := by
-  intro e _
-  exact ⟨0, by simpa using hX, Or.inl rfl⟩
+  exact fun e _ => ⟨0, by simpa using hX, Or.inl rfl⟩
 
 theorem normalized_group_order_nonneg (R : RS p n') (k : ℕ) : 0 ≤ gaussianNumber (p ^ n') k := by
   unfold gaussianNumber
@@ -161,8 +158,7 @@ end Clean
 theorem kF_mem (X : Dat) (K : Cst) (R : RS X.p X.n') (al be : X.TT → ℕ) :
     RhoL R (flatW X.m al be) (X.tStar K al be) X.c4 (X.D1 K)
       ((1 - X.kF K R al be) * dL R (flatW X.m al be)) := by
-  unfold Dat.kF
-  exact rho_inf_mem R _ _ _ _
+  simpa [Dat.kF] using rho_inf_mem R (flatW X.m al be) (X.tStar K al be) X.c4 (X.D1 K)
 
 theorem kF_nonneg' (X : Dat) (K : Cst) (R : RS X.p X.n') (al be : X.TT → ℕ) : 0 ≤ X.kF K R al be := by
   unfold Dat.kF
@@ -170,9 +166,7 @@ theorem kF_nonneg' (X : Dat) (K : Cst) (R : RS X.p X.n') (al be : X.TT → ℕ) 
 
 theorem kF_le_one (X : Dat) (K : Cst) (R : RS X.p X.n') (al be : X.TT → ℕ) : X.kF K R al be ≤ 1 := by
   unfold Dat.kF
-  refine csInf_le ⟨0, fun x hx => hx.1⟩ ⟨zero_le_one, ?_⟩
-  rw [sub_self, zero_mul]
-  exact RhoL_zero R _ _ _ _ le_rfl
+  exact csInf_le ⟨0, fun x hx => hx.1⟩ ⟨zero_le_one, by simpa using RhoL_zero R (flatW X.m al be) (X.tStar K al be) X.c4 (X.D1 K) le_rfl⟩
 
 theorem lpprime_of_one_le {p n' : ℕ} (R : RS p n') {m : ℕ} (r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ) (t D : ℕ)
     (κ : ℝ) (cStar : ℕ) (hc : 4 * (D + 1) ≤ cStar) (hκ : 1 ≤ κ) :
@@ -207,16 +201,14 @@ theorem topW_base {n' m : ℕ} {TT : Finset (Fin n')} {aw bw : Fin n' → ℤ} {
     IsBaseWeight TT aw bw c (topW TT lam0) := by
   intro s
   refine ⟨fun hs => ?_, fun hs i => ?_⟩
-  · simp only [topW, if_pos hs]
-    exact (h s).1 hs
+  · simpa only [topW, if_pos hs] using (h s).1 hs
   · simp [topW, hs]
 
 theorem topW_dom {n' m : ℕ} {TT : Finset (Fin n')} {lam0 : Fin n' → Fin (m + 1) → ℤ} (h : IsDominant lam0) :
     IsDominant (topW TT lam0) := by
   intro s
   by_cases hs : s ∈ TT
-  · simp only [topW, if_pos hs]
-    exact h s
+  · simpa only [topW, if_pos hs] using h s
   · simp only [topW, if_neg hs]
     exact antitone_const
 

@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 public import Formalism.SharpRestriction.ParConsts
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.FamilyCriticalLevelLowerBound
 
 @[expose] public section
 
@@ -68,20 +69,6 @@ theorem cfg_P (D : D7) (τ : D.what₂.Tau) (Y : ℝ) :
   rw [prod_Icc_one_eq_prod_fin_succ]
   exact Finset.prod_congr rfl fun s _ => congrArg (Y + ·) (cfg_lam D τ s)
 
-theorem cfg_aeff (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : (cfgOf D τ).aeff = aEff D u τ := by
-  have hk := D.R.m_add_three_le_k
-  have hv := cfg_v D τ 1 le_rfl (by omega)
-  have hD : (cfgOf D τ).Del = (D.s.Del : ℝ) := rfl
-  have ha : (cfgOf D τ).a = uOne D u τ 1 := (uOne_one D u τ).symm
-  unfold Formalism.FourierDecayAlt.Sz.Cfg.aeff aEff
-  rw [hv, hD, ha]
-  by_cases h : IsTop D τ
-  · have ht : (cfgOf D τ).top = true := (cfg_top_iff D τ).2 h
-    rw [if_pos ht, if_pos h]
-    rfl
-  · have ht : (cfgOf D τ).top = false := (cfg_top_false_iff D τ).2 h
-    rw [if_neg (by simp [ht]), if_neg h]
-
 theorem deOf_ne (D : D7) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (h5 : ∀ w : D.what₂.Word, ¬ IsTop D τ → uOne D w τ D.R.k = vOne D τ (D.R.k - 1) - 1 / 2)
     (l : ℕ) (h1 : 1 ≤ l) (h2 : l ≤ D.R.k - 2) (hne : uOne D u τ (l + 1) ≠ uOne D u' τ (l + 1)) :
@@ -97,9 +84,6 @@ theorem deOf_ne (D : D7) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
 theorem Tr_pos (D : D7) (u : D.what₂.Word) : 0 < Tr D u := by
   unfold Tr
   exact_mod_cast (D.mem u).A.T_prime.pos
-
-theorem ka_pos_of {D : D7} (hv : 1 ≤ D.host.v) : 0 < D.host.ka := by
-  exact div_pos Real.pi_pos (by linarith)
 
 section Family
 

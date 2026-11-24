@@ -80,7 +80,7 @@ private theorem cas_mem {n : ℕ} {e : Fin n → Herm E a} (he : IsFrame e) (r :
   rw [Cm.adjoin_genC] at hle
   rw [Cm.Zalg_eq_map]
   exact ⟨_, Subalgebra.mem_center_iff.2 fun x => (hle Algebra.mem_top _ rfl).symm,
-    by simp only [cas, map_sum, map_sub, map_mul, uC_sh, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]⟩
+    by simp only [cas, map_sum, map_sub, map_mul, uC_sh, RingHom.coe_coe]⟩
 
 private theorem cap_rt (τ : E →+* ℂ) (u : ℂ) (g : GA E a) : Commute (cap τ u) (rt E a g) := by
   rw [← infGL_mul_finGL g, map_mul]

@@ -104,7 +104,7 @@ theorem val_pull_g (L : LB X) (φ : Y ⟶ X) (x : Sp ℂ ⟶ Y) (j j' : (L.pull 
     (h : ⊤ ≤ x ⁻¹ᵁ ((L.pull φ).U j ⊓ (L.pull φ).U j')) :
     valAt' x ((L.pull φ).U j ⊓ (L.pull φ).U j') ((L.pull φ).g j j').val =
       valAt' (x ≫ φ) (L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit)) (L.g (j PUnit.unit) (j' PUnit.unit)).val := by
-  refine (valAt'_units_prod x h _ _).trans ((Fintype.prod_unique _).trans ((valAt'_zpow x h _ _).trans
+  refine (valAt'_units_prod x h _ _).trans ((Fintype.prod_unique _).trans ((_root_.GlobalTheory.valAt'_units_zpow x h _ _).trans
     ((zpow_one _).trans ?_)))
   exact (valAt'_res x _ _ h).trans (valAt'_comp x φ (L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit))
     (L.g (j PUnit.unit) (j' PUnit.unit)).val)

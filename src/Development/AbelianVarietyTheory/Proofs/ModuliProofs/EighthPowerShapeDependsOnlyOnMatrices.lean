@@ -7,9 +7,13 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDesc
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverIffIsProperAndExistsIsAmpleLB
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EqOfIsMinInClassTwoOfSameClassFour
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsIsoIffBijectiveOverAlgClosed
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.BiadditiveOfTrivAxesStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LineBundleIsoLinCombSymmBiadditiveSubstitutionStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleFormBundlePowerOfPosDefStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.BiadditiveOfTrivAxes
+public import Mathlib.CategoryTheory.Monoidal.Cartesian.Grp
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LineBundleIsoLinCombSymmBiadditiveSubstitution
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleFormBundlePowerOfPosDef
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -185,8 +189,8 @@ theorem bilin (hF : Out.GlobalFnsSt) (c : SiegPre h k ζ s) (hc : Out.RelAmple c
     ∑ uv : Fin n × Fin n, W' uv.1 uv.2 • pull (lift (x uv.1) (x uv.2)).left (cls c.P c.isLB) =
       ∑ uv : Fin m × Fin m, W uv.1 uv.2 •
         pull (lift (∏ i, x i ^ a uv.1 i) (∏ i, x i ^ a uv.2 i)).left (cls c.P c.isLB) := by
-  have h₁ := GlobalTheory.T.lineBundleIso_linComb_symm_biadditive_substitution S c.A c.P c.isLB
-    (GlobalTheory.T.biadditive_of_trivial_on_axes hF S c.A c.diag c.ab (pull_isLB c.isLB _) hc c.P c.isLB c.rig₁ c.rig₂) c.symm T n m x W W' a e
+  have h₁ := _root_.GlobalTheory.BilinCalc.main S c.A c.P c.isLB
+    (_root_.GlobalTheory.Biadditive.biadditive_of_triv_axes hF S c.A c.diag c.ab (pull_isLB c.isLB _) hc c.P c.isLB c.rig₁ c.rig₂) c.symm T n m x W W' a e
   rw [← cls_eq_iff (LB.isLB_linComb c.isLB _ _) (LB.isLB_linComb c.isLB _ _), cls_linComb c.isLB,
     cls_linComb c.isLB] at h₁
   exact h₁
@@ -383,7 +387,7 @@ theorem shape_of_isSharp : Out.Laws → Out.Laws2 → ∀ (h g : ℕ) (W : Matri
         rw [Matrix.add_mulVec, dotProduct_add, Matrix.mulVec_transpose, dotProduct_comm u (Matrix.vecMul _ _),
           ← Matrix.dotProduct_mulVec]
         exact add_pos (pos u hu) (pos u hu)
-    have amp := GlobalTheory.T.relAmple_formBundle_power_of_posDef hL.globalFns h k 8 o _ S' s' c' t'.A pr' W' hpr' hprod' hc'.1 pd
+    have amp := _root_.GlobalTheory.PosDefAmple.relAmple_linComb_of_posDef hL.globalFns h k 8 o _ S' s' c' t'.A pr' W' hpr' hprod' hc'.1 pd
     have e := cls_shape hL.globalFns c' hc'.1 t' pr' W (a j) hiso' _ (hact' j) κ
     have hB := LB.isLB_linComb c'.isLB (K := Fin 8 × Fin 8) (fun uv => (lift (pr' uv.1) (pr' uv.2)).left)
       (fun uv => W' uv.1 uv.2)

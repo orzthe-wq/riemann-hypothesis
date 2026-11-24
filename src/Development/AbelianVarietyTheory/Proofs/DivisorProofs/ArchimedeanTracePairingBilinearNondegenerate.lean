@@ -74,7 +74,7 @@ theorem trace_conjM_mul {F : Type} [Field F] [NumberField F] (z : mixedEmbedding
   rw [Algebra.trace_prod_apply, trace_pi', trace_pi']
   congr 1
   · refine Finset.sum_congr rfl fun w _ => ?_
-    simp [conjM, Algebra.trace_self_apply, sq]
+    simp [conjM, sq]
   · refine Finset.sum_congr rfl fun w _ => ?_
     simp [conjM, Algebra.trace_complex_apply, Complex.normSq_apply, Complex.mul_re]
 

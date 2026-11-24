@@ -294,7 +294,4 @@ namespace GlobalTheory.Published
 theorem chowFormIntExists_holds : ChowFormIntExists :=
   chowFormIntExists_iff.2 fun _ _ _ _ _ _ hP hp hD => GlobalTheory.ChowExists.exists_isChowFormInt hp hP hD
 
-theorem chowFormExists_holds : ChowFormExists :=
-  chowFormExists_iff.2 fun _ _ _ _ _ _ hP hp hD => GlobalTheory.ChowExists.exists_isChowForm hP hp hD
-
 end GlobalTheory.Published

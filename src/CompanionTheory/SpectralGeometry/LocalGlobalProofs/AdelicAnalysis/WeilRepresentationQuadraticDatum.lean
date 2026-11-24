@@ -1,62 +1,16 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesSelfDualStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureLinearChangeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AnnihilatorOfAnnihilatorLeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardAdelicCharacterStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesSelfDual
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureLinearChange
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AnnihilatorOfAnnihilatorLe
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopology
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardAdelicCharacter
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -91,24 +45,20 @@ def LL (ι : Type) (c : F) : AddSubgroup (ι → A F) where
 
 variable [Fintype ι] [DecidableEq ι]
 
-lemma Bf_mul (g h : Matrix ι ι F) : Bf (g * h) = Bf g * Bf h := Matrix.map_mul
-
-lemma Bf_one : Bf (1 : Matrix ι ι F) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
-
 lemma Bf_transpose (g : Matrix ι ι F) : Bf gᵀ = (Bf g)ᵀ := by
   ext i j; rfl
 
 lemma Bf_inv_mul {g : Matrix ι ι F} (hg : g.det ≠ 0) : Bf g⁻¹ * Bf g = 1 := by
-  rw [← Bf_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hg), Bf_one]
+  rw [← _root_.GlobalTheory.CompanionTheory.SW.Core.PiScale.Bf_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hg), _root_.GlobalTheory.CompanionTheory.SW.Core.PiScale.Bf_one]
 
 lemma Bf_mul_inv {g : Matrix ι ι F} (hg : g.det ≠ 0) : Bf g * Bf g⁻¹ = 1 := by
-  rw [← Bf_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hg), Bf_one]
+  rw [← _root_.GlobalTheory.CompanionTheory.SW.Core.PiScale.Bf_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hg), _root_.GlobalTheory.CompanionTheory.SW.Core.PiScale.Bf_one]
 
 lemma Bf_smul_one (c : F) : Bf (c • (1 : Matrix ι ι F)) = algebraMap F (A F) c • 1 := by
   ext i j
   by_cases h : i = j
   · subst h; simp [Bf]
-  · simp [Bf, Matrix.one_apply, h]
+  · simp [Bf, h]
 
 def Gs (g : Matrix ι ι F) (S : Set (A F)) : Set (ι → A F) :=
   (fun x => Bf g *ᵥ x) '' Set.univ.pi fun _ => S
@@ -157,7 +107,7 @@ lemma perp_Gs (ψ : AddChar (A F) ℂ) (B g : Matrix ι ι F) (hg : (gᵀ * B).d
   have key : ∀ s y : ι → A F, chiB ψ (Bf B) (Bf g *ᵥ s) y = ψ (s ⬝ᵥ (Bf (gᵀ * B) *ᵥ y)) := by
     intro s y
     unfold chiB
-    rw [Bf_mul, Bf_transpose, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec s,
+    rw [_root_.GlobalTheory.CompanionTheory.SW.Core.PiScale.Bf_mul, Bf_transpose, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec s,
       Matrix.vecMul_transpose]
   ext y
   rw [mem_Gs_iff (det_inv_ne hg), Matrix.nonsing_inv_nonsing_inv _ (isUnit_iff_ne_zero.2 hg)]
@@ -203,11 +153,11 @@ lemma pi_Gs (lf : Measure (A F)) (hlf : lf.IsAddHaarMeasure) (h1 : lf (Oh F) = 1
     {g : Matrix ι ι F} (hg : g.det ≠ 0) {S : Set (A F)} (hS : MeasurableSet S) :
     (Measure.pi fun _ : ι => lf) (Gs g S) =
       ENNReal.ofReal (|((Algebra.norm ℚ g.det : ℚ) : ℝ)|⁻¹) * lf S ^ Fintype.card ι := by
-  obtain ⟨hlc, hsc, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
+  obtain ⟨hlc, hsc, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
   haveI := hlc
   haveI := hsc
   haveI : SigmaFinite lf := inferInstance
-  have h := (GlobalTheory.T.adelic_haar_measure_linear_change F lf hlf h1 ι).1 g hg (Set.univ.pi fun _ => S)
+  have h := (_root_.GlobalTheory.CompanionTheory.SW.Core.PiScale.pi_scale F lf hlf h1 ι).1 g hg (Set.univ.pi fun _ => S)
     (MeasurableSet.univ_pi fun _ => hS)
   rw [Gs, h, Measure.pi_pi]
   simp
@@ -219,7 +169,7 @@ lemma exists_LL_subset {U : Set (ι → A F)} (hU : U ∈ 𝓝 (0 : ι → A F))
   rw [nhds_pi, Filter.mem_pi] at hU
   obtain ⟨I, -, t, ht, hsub⟩ := hU
   have hU' : (⋂ i, t i) ∈ 𝓝 (0 : A F) := Filter.iInter_mem.2 fun i => ht i
-  obtain ⟨-, -, -, -, -, -, -, hnb, -, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
+  obtain ⟨-, -, -, -, -, -, -, hnb, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
   obtain ⟨N, hN, hNU⟩ := hnb _ hU'
   refine ⟨N, hN, fun x hx => hsub fun i _ => ?_⟩
   have hN' : (N : F) ≠ 0 := Nat.cast_ne_zero.2 hN.ne'
@@ -234,7 +184,7 @@ lemma exists_subset_LL {K : Set (ι → A F)} (hK : IsCompact K) :
     ∃ N : ℕ, 0 < N ∧ K ⊆ (LL ι ((N : F)⁻¹) : Set (ι → A F)) := by
   have hK' : IsCompact (⋃ i, (fun x : ι → A F => x i) '' K) :=
     isCompact_iUnion fun i => hK.image (continuous_apply i)
-  obtain ⟨-, -, -, -, -, -, -, -, hcp, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
+  obtain ⟨-, -, -, -, -, -, -, -, hcp, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
   obtain ⟨N, hN, hNK⟩ := hcp _ hK'
   refine ⟨N, hN, fun x hx i => ?_⟩
   rw [inv_inv, map_natCast]
@@ -268,7 +218,7 @@ lemma mass_one (lf : Measure (A F)) (hlf : lf.IsAddHaarMeasure) (h1 : lf (Oh F) 
     rw [Matrix.det_mul, Matrix.det_transpose]
     exact mul_ne_zero hg hB
   have hOm : MeasurableSet (Oh F) := by
-    obtain ⟨-, -, -, -, hOo, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
+    obtain ⟨-, -, -, -, hOo, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
     exact hOo.measurableSet
   have hlP : lf P = ENNReal.ofReal ((kap F * kap F)⁻¹) := by
     rw [← mul_assoc, ← ENNReal.ofReal_mul hk.le] at hP
@@ -352,13 +302,13 @@ theorem naQuad : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)
     ∀ ψ : AddChar (A F) ℂ, IsStdChar F ψ → ∀ (ι : Type) [Fintype ι] [DecidableEq ι]
     (B : Matrix ι ι F), B.IsSymm → B.det ≠ 0 → NAQuad ψ (hf F) (Bf B) (muF B lf) := by
   intro F _ _ _ _ lf hlf h1 ψ hψ ι _ _ B hS hB
-  obtain ⟨hlc, hsc, ht2, hOc, hOo, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
+  obtain ⟨hlc, hsc, ht2, hOc, hOo, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
   haveI := hlc
   haveI := hsc
   haveI := ht2
   haveI : SigmaFinite lf := inferInstance
-  obtain ⟨hnorm, -, -⟩ := (GlobalTheory.T.standard_adelic_character F).2 ψ hψ
-  obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, hL⟩ := GlobalTheory.T.adeles_self_dual F lf hlf h1 ψ hψ
+  obtain ⟨hnorm, -, -⟩ := (_root_.GlobalTheory.CompanionTheory.SW.Core.StdChar.main F).2 ψ hψ
+  obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, hL⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.SelfDual.finiteAdeles_selfDual F lf hlf h1 ψ hψ
   have hO : IsCompact (perp (fun x y => ψ (x * y)) (Oh F)) ∧
       IsOpen (perp (fun x y => ψ (x * y)) (Oh F)) ∧
       perp (fun x y => ψ (x * y)) (perp (fun x y => ψ (x * y)) (Oh F)) ⊆ Oh F ∧
@@ -419,7 +369,7 @@ theorem naQuad : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)
     have hM' : ((M : F)⁻¹) ≠ 0 := inv_ne_zero (Nat.cast_ne_zero.2 hM.ne')
     obtain ⟨-, h1o, h1c, -, h1p, h1m⟩ := good hN'
     obtain ⟨h2c, -, -, h2o, h2p, h2m⟩ := good hM'
-    exact GlobalTheory.T.annihilator_of_annihilator_le (ι → A F) (chiB ψ (Bf B)) (muF B lf) hhaar
+    exact _root_.GlobalTheory.CompanionTheory.SW.CofinalDual.selfDual_of_between (ι → A F) (chiB ψ (Bf B)) (muF B lf) hhaar
       hsym (fun _ _ => hnorm _) hadd (LL ι (N : F)) L (LL ι ((M : F)⁻¹))
       hNU hMK h1o h2c h1c h2o h1p h2p h1m h2m
 

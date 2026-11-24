@@ -80,7 +80,7 @@ theorem norm_det_one_add_smul (E : Type) [NontriviallyNormedField E] [IsUltramet
     rw [RingHom.map_det, map_add (f := _), map_one]
     have : (Ideal.Quotient.mk (Ideal.span {w})).mapMatrix (w • y) = 0 := by
       ext i j
-      simp [Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']
+      simp
     rw [this, add_zero, Matrix.det_one]
   have hmem : (1 + w • y).det - 1 ∈ Ideal.span {w} := by
     rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, hq, map_one, sub_self]

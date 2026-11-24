@@ -60,11 +60,11 @@ namespace Formalism.REAL
 
 private theorem epow_zero_apply {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin n) : epow E 0 a b = if a = b then 1 else 0 := by
-  first | rfl | simp [epow]
+  first | rfl
 
 private theorem epow_succ_apply {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A)
     (k : ℕ) (a b : Fin n) : epow E (k + 1) a b = ∑ c, epow E k a c * E c b := by
-  first | rfl | simp [epow]
+  first | rfl
 
 theorem HWDiag_cov {A : Type*} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) :
     ∀ (k : ℕ) (a b c d : Fin n),

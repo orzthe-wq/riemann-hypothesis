@@ -3,9 +3,12 @@ module
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivOfIsSubquotient
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryLocalPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleRepIsotypicOfCentraliserFactorStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceUnitaryLocalPointsEquivGLStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryLocalPoints
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.Order.CompletePartialOrder
+public import Mathlib.RepresentationTheory.Irreducible
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleRepIsotypicOfCentraliserFactor
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceUnitaryLocalPointsEquivGL
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -58,8 +61,8 @@ theorem hasSatGL_of_isCompAlong_split : ∀ (E : Type) [Field E] [NumberField E]
     IsCompAlong π (locU n w) ((cLoc w).comp (locU n w).subtype) ρ₂ →
     ∀ T : Multiset ℂˣ, GlobalTheory.LFun.HasSatGL w ρ₁ T → GlobalTheory.LFun.HasSatGL w ρ₂ T := by
   intro E _ _ _ n π hπ w hw V W _ _ _ _ ρ₁ ρ₂ h₁ h₂ T hT
-  obtain ⟨e, he⟩ := GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL E n w hw
-  obtain ⟨r, -, -, hc⟩ := GlobalTheory.T.exists_continuous_retraction_onto_unitaryLocalPoints E n w
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.locU_equiv_GL E n w hw
+  obtain ⟨r, -, -, hc⟩ := _root_.GlobalTheory.DefU.LocRet.exists_ret E n w
   let s : GL (Fin n) (w.adicCompletion E) →* UA E n :=
     (locU n w).subtype.comp e.symm.toMulEquiv.toMonoidHom
   have hs : ∀ y, cLoc w (s y) = y := fun y => by
@@ -84,7 +87,7 @@ theorem hasSatGL_of_isCompAlong_split : ∀ (E : Type) [Field E] [NumberField E]
       have : s (e (r g)) = (r g : UA E n) := congrArg Subtype.val (e.symm_apply_apply (r g))
       rw [this]
       exact hc g (e.symm y)⟩
-  obtain ⟨q⟩ := (GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor _ _ _ _ _ P.rep s ρ₁ ρ₂ P.isIrreducible_rep h₁.1 h₂.1 hcomm f hf).2 f' hf'
+  obtain ⟨q⟩ := (_root_.GlobalTheory.CuspRep.CompUniq.isotypic _ _ _ _ _ P.rep s ρ₁ ρ₂ P.isIrreducible_rep h₁.1 h₂.1 hcomm f hf).2 f' hf'
   exact GlobalTheory.BaseChangeBridge.hasSatGL_of_equiv q.toLinearEquiv
     (fun g x => LinearMap.congr_fun (q.toIntertwiningMap.isIntertwining' g) x) hT
 

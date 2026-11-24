@@ -172,7 +172,7 @@ theorem lead_scale (a : Fin n) (s : ℂ) (z : Matrix (Fin n) (Fin n) ℂ) {j : �
   congr 1
   by_cases h : (a : ℕ) < j
   · rw [if_pos h, Finset.prod_eq_single (⟨a, h⟩ : Fin j)]
-    · simp [Fin.ext_iff]
+    · simp
     · intro r _ hr
       rw [if_neg]
       intro e
@@ -207,13 +207,13 @@ theorem lead_rowop {a b : Fin n} (hab : b < a) (s : ℂ) (z : Matrix (Fin n) (Fi
         ext r c
         by_cases hr : r = ⟨a, h⟩
         · subst hr
-          simp [Matrix.updateRow_self, single_mul_apply', Fin.ext_iff]
+          simp [Matrix.updateRow_self]
         · have h3 : Fin.castLE hj r ≠ a := by
             intro e
             apply hr
             ext
             simpa using congrArg Fin.val e
-          simp [Matrix.updateRow_ne hr, single_mul_apply', h3]
+          simp [Matrix.updateRow_ne hr, h3]
       rw [key]
       exact Matrix.det_updateRow_add_smul_self _ hne s
     · congr 1
@@ -223,7 +223,7 @@ theorem lead_rowop {a b : Fin n} (hab : b < a) (s : ℂ) (z : Matrix (Fin n) (Fi
         have h1 := r.isLt
         have h2 : (r : ℕ) = a := by simpa using congrArg Fin.val e
         omega
-      simp [single_mul_apply', h3]
+      simp [h3]
   · simp [lead, hj]
 
 theorem prod_zpow_eq {ι : Type*} (s : Finset ι) (f : ι → ℤ) {u : ℂ} (hu : u ≠ 0) :

@@ -3,7 +3,7 @@ module
 public import Development.WeilBound.CoreStatements.LocalThetaKernels.IwasFrame
 public import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceAdeleRing
 public import Development.AutomorphicSpectrum.Proofs.AdelicProofs.LocGram
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntAddConjEqOneOfBaseGood
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.ExistsIntAddConjEqOneOfBaseGood
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceSplitOrInert
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsLatticeFrameIsMajorantFrame
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueIsConjAt
@@ -49,6 +49,8 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
 
 @[expose] public section
 
@@ -218,7 +220,7 @@ theorem hasIwasawa_fin' {B : Base F E} (hB : B.IsGood σ) {Y : Spc F E n} {r s :
         isIntegral_one (fun z hz => ⟨1, (Ideal.ne_top_iff_one _).1 v.isPrime.ne_top, ⟨z, hz⟩, by simp; rfl⟩) P h1 h2⟩
     · obtain ⟨δ, d0, d1, d2⟩ := exists_locGen (E := E) v
       exact ⟨δ, d0, gram_loc hJ hL.fg (I := InD) (fun z hz b => hz.mul b) h.dual d1 d2 P h1 h2⟩
-  obtain ⟨t, ht⟩ : ∃ t : 𝓞 E, (t : E) + σ t = 1 := GlobalTheory.exists_int_add_conj_eq_one_of_base_good B hB
+  obtain ⟨t, ht⟩ : ∃ t : 𝓞 E, (t : E) + σ t = 1 := Tw.exists_int_add_conj_eq_one_of_base_good B hB
   set G := P.1ᵀ * Y.J * P.1.map σ with hG
   let ι := inclR (F := F) (E := E) (Fv F v)
   let l : (Fv F v ⊗[F] E)ˣ := Units.map ι.toMonoidHom (Units.mk0 (δ * ξ) (mul_ne_zero h0 hξ))⁻¹

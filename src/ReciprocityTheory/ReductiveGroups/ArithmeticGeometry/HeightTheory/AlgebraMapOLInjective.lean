@@ -75,7 +75,7 @@ theorem wt_add_eq_zero {a b : WithTop ℤ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a 
       have h' : a + b = 0 := by exact_mod_cast h
       have ha0 : a = 0 := by omega
       rw [ha0]
-      first | rfl | exact WithTop.coe_zero | simp
+      first | rfl
 
 section
 variable {S L : Type*} [CommRing S] [IsDedekindDomain S] [Field L] [Algebra S L]
@@ -138,7 +138,7 @@ theorem addv_nonneg (s : S) : 0 ≤ addv L v (algebraMap S L s) := by
   exact_mod_cast h2
 
 theorem addv_pos_iff (s : S) : 0 < addv L v (algebraMap S L s) ↔ s ∈ v.asIdeal := by
-  apply PI.HtPlacesSumWork.addv_pos_iff <;> assumption
+  apply PI.HtPlacesSumWork.addv_pos_iff
 
 theorem eq_addv (w : AddValuation L (WithTop ℤ)) (hw : IsNormDiscrete w)
     (h0 : ∀ s : S, 0 ≤ w (algebraMap S L s))
@@ -173,14 +173,11 @@ theorem placesOver_iff_loc {R O L : Type*} [CommRing R] [CommRing O] [IsLocalRin
     rw [hw]
     first
     | (rw [IsLocalization.AtPrime.mk'_mem_maximal_iff O P]; exact h r)
-    | (rw [IsLocalization.AtPrime.mk'_mem_maximal_iff (S := O) (I := P)]; exact h r)
-    | (rw [IsLocalization.AtPrime.mk'_mem_maximal_iff O]; exact h r)
   · intro h x
     have hx := h (algebraMap R O x)
     rw [← IsScalarTower.algebraMap_apply R O L x] at hx
     first
     | rwa [IsLocalization.AtPrime.to_map_mem_maximal_iff (S := O) (I := P)] at hx
-    | (rw [IsLocalization.AtPrime.to_map_mem_maximal_iff O P] at hx; exact hx)
 
 section DVR
 
@@ -194,7 +191,6 @@ theorem algebraMap_OL_injective : Function.Injective (algebraMap O L) := by
   rw [IsScalarTower.algebraMap_eq O F L]
   first
   | exact (algebraMap F L).injective.comp (IsFractionRing.injective O F)
-  | (rw [RingHom.coe_comp]; exact (algebraMap F L).injective.comp (IsFractionRing.injective O F))
 
 
 variable (O F L) in
@@ -205,9 +201,6 @@ theorem exists_heightOne (Q : Ideal (integralClosure O L)) (hQ : Q.IsMaximal) :
     intro a b hab
     first
     | exact algebraMap_OL_injective (F := F) (congrArg Subtype.val hab)
-    | (apply algebraMap_OL_injective (F := F)
-       rw [IsScalarTower.algebraMap_apply O (integralClosure O L) L a,
-         IsScalarTower.algebraMap_apply O (integralClosure O L) L b, hab])
   have hne : Q ≠ ⊥ := by
     rintro rfl
     have hB : IsField (integralClosure O L) := Ring.isField_iff_maximal_bot.mpr hQ
@@ -236,9 +229,7 @@ theorem addv_mem_placesOver (v : HeightOneSpectrum (integralClosure O L)) :
     have hcomap : v.asIdeal.comap (algebraMap O (integralClosure O L)) = maximalIdeal O := by
       apply IsLocalRing.eq_maximalIdeal
       first
-      | exact Ideal.isMaximal_comap_of_isIntegral_of_isMaximal v.asIdeal
       | exact Ideal.IsMaximal.under O v.asIdeal
-      | infer_instance
     rw [IsScalarTower.algebraMap_apply O (integralClosure O L) L x, ← hcomap, Ideal.mem_comap]
     exact ⟨addv_nonneg v _, addv_pos_iff v _⟩
 
@@ -318,19 +309,13 @@ theorem addv_count (v : HeightOneSpectrum (integralClosure O L)) (b : integralCl
   have hI : Ideal.span {b} ≠ 0 := by
     first
     | (rw [Ne, Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact hb)
-    | simpa using hb
   have hc := Ideal.count_associates_factors_eq hI v.isPrime v.ne_bot
   have hval : v.valuation L (algebraMap (integralClosure O L) L b) = v.intValuation b := by
     first
     | exact v.valuation_of_algebraMap b
-    | exact HeightOneSpectrum.valuation_of_algebraMap v b
-    | simp
   rw [addv_apply v hx, hval, v.intValuation_if_neg hb, log_exp, neg_neg, hc]
   first
   | (norm_cast; done)
-  | (norm_cast; convert rfl; done)
-  | (push_cast; convert rfl; done)
-  | (congr 1; convert rfl)
 
 
 end DVR

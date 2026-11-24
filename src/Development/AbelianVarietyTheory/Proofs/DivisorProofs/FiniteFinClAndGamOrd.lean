@@ -65,21 +65,21 @@ variable {D : D7}
 def gfcToGf (V : HSp D) : GfC V →* Bridge.Gf V := (finHom V).rangeRestrict.comp (GfC V).subtype
 
 theorem gfcToGf_surjective (V : HSp D) : Function.Surjective (gfcToGf V) := by
-  apply GlobalTheory.FunObj.gfcToGf_surjective <;> assumption
+  apply GlobalTheory.FunObj.gfcToGf_surjective
 
 theorem bc_swapAE_injective (n : ℕ) :
     Function.Injective (Formalism.UG.bc (Lev.swapAE D) : GL (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E) →* _) := by
-  apply GlobalTheory.FunObj.bc_swapAE_injective <;> assumption
+  apply GlobalTheory.FunObj.bc_swapAE_injective
 
 theorem finG_injective (V : HSp D) : Function.Injective (finG V) := by
-  apply GlobalTheory.FunObj.finG_injective <;> assumption
+  apply GlobalTheory.FunObj.finG_injective
 
 def finLev (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) : Subgroup (Bridge.Gf V) :=
   (K.comap (Formalism.UG.bc (Lev.swapAE D))).comap (Bridge.Gf V).subtype
 
 theorem mem_finLev_iff (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (g : GfC V) :
     gfcToGf V g ∈ finLev V K ↔ g ∈ K.comap (finG V) := by
-  apply GlobalTheory.FunObj.mem_finLev_iff <;> assumption
+  apply GlobalTheory.FunObj.mem_finLev_iff
 
 theorem isOpenLev_finLev (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (hK : IsCO V K) :
     GlobalTheory.IndefiniteRowSideFullHecke.SublevelSplitting.IsOpenLev V (finLev V K) := by
@@ -90,7 +90,7 @@ theorem finite_finCl (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D)))
   apply GlobalTheory.FunObj.finite_finCl <;> assumption
 
 theorem continuous_finHom (V : HSp D) : Continuous (finHom V) := by
-  apply GlobalTheory.FunObj.continuous_finHom <;> assumption
+  apply GlobalTheory.FunObj.continuous_finHom
 
 theorem gamOrd_ne_zero (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D)))
     (hV : ∀ τ, (gramAt D V τ).PosDef) (hK : IsCO V K) (x : GfC V) : gamOrd V K x ≠ 0 := by
@@ -98,6 +98,6 @@ theorem gamOrd_ne_zero (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D)))
 
 theorem finite_finCl_and_gamOrd : ∀ {D : D7} (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))),
     (∀ φ : D.host.E →+* ℂ, (V.gram.map φ).PosDef) → IsCO V K → Finite (FinCl V K) ∧ ∀ x, gamOrd V K x ≠ 0 := by
-  apply GlobalTheory.FunObj.finite_finCl_and_gamOrd <;> assumption
+  apply GlobalTheory.FunObj.finite_finCl_and_gamOrd
 
 end GlobalTheory.FunObj.ClassFin

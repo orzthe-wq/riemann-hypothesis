@@ -285,11 +285,6 @@ theorem IsTopLift.inv_mul_mem_geo {X : Tower Ω ε} {M : ℕ} {σ : Ω ≃ₐ[�
 
 def topT (l s N : ℕ) : ℕ := (((l : ZMod N) ^ s)⁻¹).val
 
-theorem topT_spec {l N : ℕ} [NeZero N] (h : Nat.Coprime l N) (s : ℕ) : (l : ZMod N) ^ s * (topT l s N : ZMod N) = 1 := by
-  unfold topT
-  rw [ZMod.natCast_zmod_val]
-  exact ZMod.mul_inv_of_unit _ (((ZMod.isUnit_iff_coprime l N).2 h).pow s)
-
 def topU (X : Tower Ω ε) (l s N : ℕ) (x : ZMod N) (c : ℕ) : X.K :=
   siegel X c ![1 / (l : ℚ) ^ s, (x.val : ℚ) * (topT l s N : ℚ) / N]
 

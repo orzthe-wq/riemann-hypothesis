@@ -86,7 +86,7 @@ theorem curve_deriv (Ψ : M2 n → ℂ) (hΨ : ContDiff ℂ ∞ Ψ) (X x : M2 n)
     rw [cE_zero, Matrix.mul_one]
     exact (hΨ.differentiable (by simp)).differentiableAt.hasFDerivAt
   have h := (hd.restrictScalars ℝ).comp_hasDerivAt (0 : ℝ) (curve_hasDerivAt X x)
-  simp only [Function.comp_def, ContinuousLinearMap.coe_restrictScalars'] at h
+  simp only [Function.comp_def] at h
   exact h
 
 theorem continuous_mR' : Continuous (mR : GR n → M2 n) :=
@@ -109,7 +109,7 @@ private theorem rD_mul_left_eq_of_det_ne_zero (P A X : M2 n) (hP : P.det ≠ 0) 
   have h1 : HasFDerivAt (fun y : M2 n => (P * y).det)
       ((fderiv ℂ (fun x : M2 n => x.det) (P * A)).comp L) A := by
     have := (hdet (P * A)).comp A (L.hasFDerivAt (x := A))
-    simp only [Function.comp_def, hL] at this
+    simp only [Function.comp_def] at this
     exact this
   have h2 : HasFDerivAt (fun y : M2 n => (P * y).det)
       (P.det • fderiv ℂ (fun x : M2 n => x.det) A) A := by
@@ -132,7 +132,7 @@ private theorem rA_mul_left_eq_of_u1_mul (D : Matrix (Fin n) (Fin n) ℂ) (P A X
   have h1 : HasFDerivAt (fun y : M2 n => (u1 (P * y)).det)
       ((fderiv ℂ (fun x : M2 n => (u1 x).det) (P * A)).comp L) A := by
     have := (hdet (P * A)).comp A (L.hasFDerivAt (x := A))
-    simp only [Function.comp_def, hL] at this
+    simp only [Function.comp_def] at this
     exact this
   have h2 : HasFDerivAt (fun y : M2 n => (u1 (P * y)).det)
       (D.det • fderiv ℂ (fun x : M2 n => (u1 x).det) A) A := by

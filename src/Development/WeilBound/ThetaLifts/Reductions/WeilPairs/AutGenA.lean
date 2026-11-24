@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermForm
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNormSqEqToL2
 public import Formalism.LocalToGlobal.IndefiniteReal.DatumF
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartanInvolutionCommQuasiReflectionStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCartanInvolutionCommQuasiReflection
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsThetaFunNeZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -111,7 +112,7 @@ theorem cart_refl {k : ℕ} (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ = G) (hd
     ∃ s, Formalism.IndefR.Datum.IsCartanInv ((r : ℂ) • G) s ∧
       s * (1 + d • vecMulVec y (star y ᵥ* G)) = (1 + d • vecMulVec y (star y ᵥ* G)) * s := by
   have hr' : (r : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 hr
-  obtain ⟨s, h1, h2⟩ := GlobalTheory.T.exists_cartanInvolution_comm_quasiReflection _ ((r : ℂ) • G)
+  obtain ⟨s, h1, h2⟩ := _root_.GlobalTheory.CartanRefl.exists_cartan_comm_quasiReflection _ ((r : ℂ) • G)
     (by rw [conjTranspose_smul, hG, Complex.star_def, Complex.conj_ofReal])
     (by rw [det_smul]; exact mul_ne_zero (pow_ne_zero _ hr') hd) y
     (by

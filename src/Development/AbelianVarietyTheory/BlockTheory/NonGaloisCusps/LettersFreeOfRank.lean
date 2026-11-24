@@ -96,7 +96,7 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.LetterBasisDecomposition.
   by_cases h : j = i
   · subst h
     simp
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 abbrev LetterBasis (i : ZMod n) : Type := Basis (Fin (rk T)) (PowerSeries O) ↥(W.Nl T i)
 

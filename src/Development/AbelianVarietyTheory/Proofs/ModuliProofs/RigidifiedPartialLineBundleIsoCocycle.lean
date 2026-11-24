@@ -54,20 +54,6 @@ noncomputable section
 
 namespace GlobalTheory.PartialCocycle
 
-private theorem gm_res_eq_gm {X Z : Scheme.{0}} (f : Z ⟶ X) (z : Z) {U V : X.Opens} (hle : V ≤ U)
-    (hz : f z ∈ V) (u : Γ(X, U)ˣ) : gm f z V (res hle u) = gm f z U u := by
-  have key : X.presheaf.map (homOfLE hle).op ≫ f.app V ≫ Z.presheaf.germ (f ⁻¹ᵁ V) z hz =
-      f.app U ≫ Z.presheaf.germ (f ⁻¹ᵁ U) z (hle hz) := by
-    rw [← Scheme.Hom.germ_stalkMap, ← Scheme.Hom.germ_stalkMap, ← Category.assoc, TopCat.Presheaf.germ_res]
-  unfold gm
-  rw [dite_eq_left hz, dite_eq_left (hle hz)]
-  ext
-  simp only [MonoidHom.comp_apply, Units.coe_map]
-  unfold res pullU
-  have h2 := congrArg (fun g => g.hom (u : Γ(X, U))) key
-  simp only [CommRingCat.hom_comp, RingHom.comp_apply] at h2
-  exact h2
-
 theorem gm_iso {X Z : Scheme.{0}} {L M : LB X} {w : LB.Iso L M} (hw : w.IsGen) (f : Z ⟶ X) (z : Z)
     (a a' : M.ι) (b b' : L.ι) (ha : f z ∈ M.U a) (ha' : f z ∈ M.U a') (hb : f z ∈ L.U b) (hb' : f z ∈ L.U b') :
     gm f z (M.U a ⊓ L.U b) (w.s (a, b)) =
@@ -82,11 +68,11 @@ theorem gm_iso {X Z : Scheme.{0}} {L M : LB X} {w : LB.Iso L M} (hw : w.IsGen) (
   have h₄ : (M.U a ⊓ L.U b) ⊓ (M.U a' ⊓ L.U b') ≤ M.U a' ⊓ L.U b' := inf_le_right
   have h1 := hw (a, b) (a', b')
   calc gm f z (M.U a ⊓ L.U b) (w.s (a, b))
-      = gm f z _ (res h₁ (w.s (a, b))) := (gm_res_eq_gm f z h₁ hz _).symm
+      = gm f z _ (res h₁ (w.s (a, b))) := (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res f z h₁ hz _).symm
     _ = gm f z _ (res h₂ (M.g a a') * (res h₃ (L.g b b'))⁻¹ * res h₄ (w.s (a', b'))) := congrArg _ h1
     _ = _ := by
-      rw [map_mul, map_mul, map_inv, gm_res_eq_gm f z h₂ hz, gm_res_eq_gm f z h₃ hz]
-      exact congrArg _ (gm_res_eq_gm f z h₄ hz _)
+      rw [map_mul, map_mul, map_inv, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res f z h₂ hz, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res f z h₃ hz]
+      exact congrArg _ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res f z h₄ hz _)
 
 private theorem algebraMap_OmS_eq_algebraMap_comp {G : Type*} [CommGroup G] (A B C s t u : G) :
     A * B⁻¹ * s * (B * C⁻¹ * t) * (A * C⁻¹ * u)⁻¹ = s * t * u⁻¹ := by
@@ -117,8 +103,8 @@ theorem cocycle_of_rigid : ∀ (X S : Scheme.{0}) (p : X ⟶ S) (e : S ⟶ X) (V
         (gm g z (M₁.U i.1 ⊓ M₃.U i.2.2) (w₁₃.s (i.1, i.2.2)))⁻¹ := by
     intro Z g z i hz
     simp only [t, map_mul, map_inv]
-    exact congrArg₂ _ (congrArg₂ _ (gm_res_eq_gm g z (l₁ i) hz _) (gm_res_eq_gm g z (l₂ i) hz _))
-      (congrArg _ (gm_res_eq_gm g z (l₃ i) hz _))
+    exact congrArg₂ _ (congrArg₂ _ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res g z (l₁ i) hz _) (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res g z (l₂ i) hz _))
+      (congrArg _ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res g z (l₃ i) hz _))
   have hindep : ∀ {Z : Scheme.{0}} (g : Z ⟶ X) (z : Z) i j (hi : g z ∈ T i) (hj : g z ∈ T j),
       gm g z (T i) (t i) = gm g z (T j) (t j) := by
     intro Z g z i j hi hj

@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.NormSubOneLeOfHsdA
 
 @[expose] public section
 
@@ -54,24 +55,13 @@ namespace GlobalTheory.SepReal.RealAsm
 
 variable {m : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
-theorem isUnit_Jm' (ε : Fin m → Bool) : IsUnit (Jm ε) := by
-  refine IsUnit.of_mul_eq_one (Jm ε) ?_
-  simp only [Jm, diagonal_mul_diagonal]
-  rw [← diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> simp
-
 theorem umat_mem (ε : Fin m → Bool) (g : UJ ε) : umat g ∈ UJset ε := g.2
 
 theorem one_mem (ε : Fin m → Bool) : (1 : Mat m) ∈ UJset ε := (1 : UJ ε).2
 
-theorem continuous_umat (ε : Fin m → Bool) : Continuous (fun g : UJ ε => umat g) :=
-  Units.continuous_val.comp continuous_subtype_val
-
 theorem smV_translate {ε : Fin m → Bool} {lam : Fin m → ℝ} {π : Mat m → (H →L[ℂ] H)} (hπ : IsDS ε lam π) {g : Mat m}
     (hg : g ∈ UJset ε) {v : H} (hv : SmV (lieOf (Jm ε)) π v) : SmV (lieOf (Jm ε)) π (π g v) :=
-  GlobalTheory.SmLinSub.rep_mem (isUnit_Jm' ε) hπ.2.2.1 hv hg
+  GlobalTheory.SmLinSub.rep_mem (_root_.Formalism.REAL.f1alg_isUnit_J ε) hπ.2.2.1 hv hg
 
 theorem smV_const_smul {L : Set (Mat m)} {π : Mat m → (H →L[ℂ] H)} (a : ℂ) {v : H} (hv : SmV L π v) : SmV L π (a • v) :=
   fun k Xs hX => by simpa only [map_smul] using (hv k Xs hX).const_smul a
@@ -86,7 +76,7 @@ theorem integrable_low_coef (hD : DecPow) (hI : PowInt) {n : ℕ} (ε : Fin n �
   have hpow := (hI n ε (40 * (n : ℝ) ^ 2) (by omega) hA).1
   refine (hpow.const_mul (Real.exp (100 * (n : ℝ) ^ 3))).mono' ?_ (Filter.Eventually.of_forall fun h => ?_)
   · refine Continuous.aestronglyMeasurable ?_
-    exact continuous_const.inner ((hσ.2.2.1.2.2 w).comp_continuous (continuous_umat ε) (umat_mem ε))
+    exact continuous_const.inner ((hσ.2.2.1.2.2 w).comp_continuous (_root_.ReciprocityTheory.ChartRestriction.DS.continuous_umatA ε) (umat_mem ε))
   · exact hdec _ (umat_mem ε h)
 
 theorem big_mul (a b : ℝ) (n : ℕ) (B : ℝ) : big a n B * big b n B = big (a + b) n B := by
@@ -120,8 +110,6 @@ theorem gap_mono {k : ℕ} {ε : Fin k → Bool} {lam : Fin k → ℝ} {a b : �
 end GlobalTheory.SepReal.RealAsm
 
 namespace GlobalTheory.SepReal
-
-open GlobalTheory.SepReal.RealAsm
 
 end GlobalTheory.SepReal
 

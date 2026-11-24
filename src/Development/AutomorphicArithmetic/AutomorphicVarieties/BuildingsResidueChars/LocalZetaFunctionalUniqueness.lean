@@ -75,13 +75,13 @@ private theorem val_one_entry_le {n : ℕ} (i j : Fin n) :
     ValuativeRel.valuation F ((1 : Matrix (Fin n) (Fin n) F) i j) ≤ 1 := by
   by_cases h : i = j
   · simp [Matrix.one_apply, h]
-  · simp [Matrix.one_apply, h]
+  · simp [h]
 
 private theorem coe_one_entry {n : ℕ} (i j : Fin n) :
     (((1 : Matrix (Fin n) (Fin n) 𝒪[F]) i j : 𝒪[F]) : F) = (1 : Matrix (Fin n) (Fin n) F) i j := by
   by_cases h : i = j
   · simp [Matrix.one_apply, h]
-  · simp [Matrix.one_apply, h]
+  · simp [h]
 
 private theorem mem_integralGL_of_congr {n r : ℕ} (hr : 1 ≤ r) {g : GL (Fin n) F}
     (hg : ∀ i j, ValuativeRel.valuation F ((g : Matrix (Fin n) (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j) ≤
@@ -113,7 +113,7 @@ private theorem mem_integralGL_of_congr {n r : ℕ} (hr : 1 ≤ r) {g : GL (Fin 
     rw [RingHom.mapMatrix_apply, Matrix.map_apply, Ideal.Quotient.eq.2 (hdiff i j)]
     by_cases h : i = j
     · simp [Matrix.one_apply, h]
-    · simp [Matrix.one_apply, h]
+    · simp [h]
   have hdet : IsUnit M.det := by
     by_contra hu
     have hm : M.det ∈ IsLocalRing.maximalIdeal 𝒪[F] := (IsLocalRing.mem_maximalIdeal _).2 hu

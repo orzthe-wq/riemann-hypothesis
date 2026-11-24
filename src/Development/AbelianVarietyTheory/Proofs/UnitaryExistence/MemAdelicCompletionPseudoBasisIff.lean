@@ -76,7 +76,7 @@ theorem _root_.GlobalTheory.AdLat.adCoord_tmul (e : Module.Basis (Fin n) E (Fin 
     simp only [map_sum, Finsupp.coe_finsetSum, Finset.sum_apply]
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [show Pi.single i (x i) = x i • (Pi.single i 1 : Fin n → E) by
-        ext j; by_cases h : j = i <;> simp [Pi.single_apply, h],
+        ext j; by_cases h : j = i <;> simp [h],
       map_smul, Finsupp.smul_apply, smul_eq_mul]
   change ∑ i, (a ⊗ₜ x i) * ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ e.repr (Pi.single i 1) b) = _
   simp only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, hx, TensorProduct.tmul_sum]

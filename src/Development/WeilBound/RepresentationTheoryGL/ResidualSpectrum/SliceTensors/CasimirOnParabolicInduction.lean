@@ -109,7 +109,7 @@ theorem casimir_on_parabolic_induction {n : Fin 2 → ℕ} (W₁ : Submodule ℂ
     rw [capS_lev W₁ W₂ τ M₂ h₂ _ _ hT' p, capR_lev W₁ W₂ τ M₁ h₁ _ ψ hT p, hc]
     ring
   refine Subtype.ext (funext fun x => ?_)
-  obtain ⟨v, hv, m, k, g, rfl⟩ := GlobalTheory.SpehInfChar.exists_iwasawa E n h x
+  obtain ⟨v, hv, m, k, g, rfl⟩ := _root_.GlobalTheory.IwasawaAdelic.iwasawa E n h x
   obtain ⟨xv, rfl⟩ := CapFactor.exists_unip_of_mem n h hv
   have hx : leviEmb (Ad E) (stdBlocks n h) m = lev (Ad E) (n 0) (n 1) (m 0, m 1) := by
     rw [CapFactor.lev_eq_leviEmb n h, levPair_eta]

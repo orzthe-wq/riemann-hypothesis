@@ -72,7 +72,7 @@ theorem coeff_single_subst {σ τ R : Type*} [CommRing R] [Fintype σ]
     have hle : Finsupp.degree e ≤ 1 := by omega
     rcases Nat.le_one_iff_eq_zero_or_eq_one.mp hle with h0 | h1
     · obtain rfl : e = 0 := (Finsupp.degree_eq_zero_iff e).mp h0
-      simp [coeff_zero_X, coeff_zero_eq_constantCoeff_apply]
+      simp [coeff_zero_eq_constantCoeff_apply]
     · have hr : e ∈ Set.range (fun t : σ => Finsupp.single t 1) := by
         rw [Finsupp.range_single_one]; exact h1
       obtain ⟨t, rfl⟩ := hr
@@ -138,7 +138,7 @@ theorem coeff_law_fst (G : FGLaw R d) (i l : Fin d) :
   rw [coeff_single_ev_two (n := 2) (pt R d 1) (pt R d 0) (fun m => constantCoeff_pt 1 m)
     (fun m => constantCoeff_pt 0 m)] at hc
   rw [← hc]
-  simp [pt, coeff_single_X, coeff_law_snd, mul_boole, Finset.sum_ite_eq, Finset.sum_ite_eq']
+  simp [pt, coeff_single_X, coeff_law_snd, Finset.sum_ite_eq]
 
 theorem coeff_single_law_add {n : ℕ} (G : FGLaw R d) (p q : Pt R n d)
     (hp : ∀ i, constantCoeff (p i) = 0) (hq : ∀ i, constantCoeff (q i) = 0) (i : Fin d)
@@ -147,7 +147,7 @@ theorem coeff_single_law_add {n : ℕ} (G : FGLaw R d) (p q : Pt R n d)
       coeff (Finsupp.single j 1) (p i) + coeff (Finsupp.single j 1) (q i) := by
   show coeff (Finsupp.single j 1) (ev ![p, q] (G.F i)) = _
   rw [coeff_single_ev_two p q hp hq]
-  simp [coeff_law_fst, coeff_law_snd, boole_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']
+  simp [coeff_law_fst, coeff_law_snd, Finset.sum_ite_eq']
 
 theorem dAct_add_and_one : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O]
     (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O),

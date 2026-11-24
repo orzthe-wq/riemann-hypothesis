@@ -51,31 +51,6 @@ noncomputable section
 namespace GlobalTheory.FrameCont
 open Matrix
 
-theorem gram_det_isUnit {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) :
-    IsUnit S.gram.det := by
-  rw [← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]
-  have key : ∀ v : Fin S.rank → E, S.gram *ᵥ v = 0 → v = 0 := by
-    intro v hv
-    have h0 : ∑ j, v j • S.frame j = 0 := by
-      apply S.nondeg.2
-      intro x
-      rw [← S.frame.sum_repr x]
-
-      simp only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
-      RingHom.id_apply, Finset.mul_sum]
-      rw [Finset.sum_comm]
-      refine Finset.sum_eq_zero fun i _ => ?_
-      have hi := congrFun hv i
-      simp only [Matrix.mulVec, dotProduct, HSpace.gram, Pi.zero_apply] at hi
-      calc _ = (starRingEnd E) (S.frame.repr x i) * ∑ j, S.hT (S.frame i) (S.frame j) * v j := by
-            rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring
-        _ = 0 := by rw [hi, mul_zero]
-    funext j
-    exact Fintype.linearIndependent_iff.1 S.frame.linearIndependent v h0 j
-  intro a b hab
-  have := key (a - b) (by rw [Matrix.mulVec_sub, hab, sub_self])
-  exact sub_eq_zero.1 this
-
 theorem continuous_of_parts {A T m : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [TopologicalSpace T] [Fintype m] [DecidableEq m] (σ : A →+* A) (hσ : Continuous σ) (e : A)
     (J : Matrix m m A) (hJ : IsUnit J.det) (M N : T → Matrix m m A)
@@ -120,7 +95,7 @@ theorem mt_inv_mul {D : D7} {S : HSp D} (x : GA D S) : mt S x⁻¹ * mt S x = 1 
   rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
 
 theorem gram_map_det_isUnit {D : D7} (S : HSp D) : IsUnit (S.gram.map (incA D)).det := by
-  have h0 := (gram_det_isUnit S).map (incA D)
+  have h0 := (_root_.GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit S).map (incA D)
   rw [RingHom.map_det] at h0
   exact h0
 

@@ -6,42 +6,6 @@ public import Formalism.HermitianCurvature.StatementJCT
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelsOfBuiltSetting
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CarrierSizes
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.Choice
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -166,7 +130,7 @@ theorem onCut_setting (S : Formalism.FourierDecayAlt.C.HidaSetting E Wp Wq) (hw 
       (S.G.place (S.pl v)).v S.l - 1 / 2 - de S.l * (S.G.place (S.pl v)).Del := by
     intro de
     simp only [Formalism.FourierDecayAlt.Sz.Cfg.u, if_neg hl1, if_neg hlk, Nat.add_sub_cancel]
-  simp only [Formalism.FourierDecayAlt.I.OnCut, Formalism.FourierDecayAlt.D.parOf, hu]
+  simp only [Formalism.FourierDecayAlt.I.OnCut, hu]
   have hN : (0 : ℝ) ≤ (S.Ntop : ℝ) := Nat.cast_nonneg _
   have hD : 5 ≤ (S.G.place (S.pl v)).Del := by
     nlinarith [pow_nonneg hN 3]
@@ -217,7 +181,6 @@ theorem isBuiltPlace_carrierInT (Cc : ℝ) (u u' : D.what₂.Word) (e : Infinite
     hl1, hl2, hG, hL, hCA, hsm, (by show 2 ≤ D.R.k; omega), hA, ?_⟩
   · first
       | exact Formalism.L2.SG.DataInst.unram_host D
-      | exact Formalism.L2.SG.Pf.CarrierSz.unram_host D
   · exact onCut_setting _ hw hw' hl1 hl2 hne hG
 
 theorem exists_Cc_data : ∃ Cc : ℝ, ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ)
@@ -251,10 +214,6 @@ theorem exists_Cc_data : ∃ Cc : ℝ, ∀ {D : D7} (X : Formalism.L2.SG.HidaSet
   have hLAB : Formalism.FourierDecayAlt.JCT.LevelsActualBuilt := by
     first
       | exact Formalism.FourierDecayAlt.P.levels_of_built_setting
-      | exact Formalism.FourierDecayAlt.P.JCT.levelsActualBuilt_proof
-      | exact Formalism.FourierDecayAlt.JCT.levelsActualBuilt
-      | exact Formalism.FourierDecayAlt.P.levelsActualBuilt_proof
-      | exact Formalism.FourierDecayAlt.P.levelsActualBuilt
   obtain ⟨Cc, hC⟩ := hLAB
   refine ⟨Cc, ?_⟩
   intro D X θ C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀ hB j

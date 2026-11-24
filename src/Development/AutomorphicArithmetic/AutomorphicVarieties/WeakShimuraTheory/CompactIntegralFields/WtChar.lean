@@ -91,8 +91,8 @@ private theorem open_ker {Ω K : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
     hfin.isClosed.isOpen_compl.preimage hc
   convert hopen using 1
   ext g
-  simp only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, Set.mem_compl_iff, Set.mem_diff,
-    Set.mem_setOf_eq, Set.mem_singleton_iff]
+  simp only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, Set.mem_compl_iff, Set.mem_sdiff,
+    Set.mem_ofPred_eq, Set.mem_singleton_iff]
   constructor
   · intro h1
     simp [h1]
@@ -174,7 +174,7 @@ theorem UpperTheory.V.Ws.wtChar :
       exact (places ℚ Ω l A).2.2.2 hlA hgM
     · have hA' : ∃ p ∈ D.T, A.valuation (p : Ω) < 1 := by
         unfold Raw.Away at hA
-        push_neg at hA
+        push Not at hA
         exact hA
       obtain ⟨p, hpT, hpA⟩ := hA'
       have hpT' : p = l ∨ p ∈ D.Sb := by

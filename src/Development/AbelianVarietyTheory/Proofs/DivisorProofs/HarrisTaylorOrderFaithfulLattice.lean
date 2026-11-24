@@ -203,7 +203,7 @@ lemma integral (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (c : 
   have hgam : Polynomial.aeval gam P = 0 := by
     have h4 := Polynomial.scaleRoots_eval₂_mul (p := P) (algebraMap ℤ D.F) gam (p : ℤ)
     have h5 : algebraMap ℤ D.F (p : ℤ) * gam = (c : D.F) := by
-      simp only [gam, map_natCast, eq_intCast, Int.cast_natCast]; field_simp
+      simp only [gam, map_natCast]; field_simp
     rw [h5, ← Polynomial.aeval_def, hQF, ← Polynomial.aeval_def] at h4
     have h6 : algebraMap ℤ D.F (p : ℤ) ^ P.natDegree ≠ 0 := by
       apply pow_ne_zero; simpa using hpF
@@ -275,7 +275,7 @@ theorem GlobalTheory.HTFaith.faithful : ∀ (p : ℕ) [Fact p.Prime] (D : Global
     have h1 : φ (algebraMap (𝓞 D.F) D.O c ⊗ₜ 1) = Matrix.scalar _ (c ⊗ₜ (1 : ℤ_[p])) := φ.commutes c
     rw [h1]
     ext i j
-    by_cases hij : i = j <;> simp [Matrix.scalar_apply, Matrix.diagonal_apply, hij]
+    by_cases hij : i = j <;> simp [Matrix.scalar_apply, hij]
   have hne' : Φ x' ≠ 0 := fun h => hx' (hker x' h)
   obtain ⟨i, j, hij⟩ : ∃ i j, Φ x' i j ≠ 0 := by
     by_contra h; push_neg at h; exact hne' (Matrix.ext h)
@@ -289,9 +289,9 @@ theorem GlobalTheory.HTFaith.faithful : ∀ (p : ℕ) [Fact p.Prime] (D : Global
     by_cases hab : a = b
     · subst hab
       rw [Finset.sum_eq_single a (fun k _ hk => by simp [Matrix.single_apply, hk]) (by simp)]
-      simp [Matrix.single_apply]
+      simp
     · rw [Finset.sum_eq_zero (fun k _ => by simp [Matrix.single_apply]; intro h1 h2; exact absurd (h1.symm.trans h2) hab)]
-      simp [Matrix.scalar_apply, Matrix.diagonal_apply, hab]
+      simp [Matrix.scalar_apply, hab]
   obtain ⟨c, hc⟩ := hsurjF (Φ x' i j)
   have h0 : Φ (y - algebraMap _ _ c) = 0 := by rw [map_sub, hy, hscal, hc, sub_self]
   obtain ⟨u, hu⟩ := hker _ h0

@@ -71,8 +71,7 @@ def colU : (m → A) ≃ Matrix m Unit A where
 
 theorem form_col (H : Matrix m m A) (x y : m → A) (a b : Unit) :
     ((colU x)ᴴ * H * colU y) a b = star x ⬝ᵥ (H *ᵥ y) := by
-  simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, colU, Equiv.coe_fn_mk, Matrix.of_apply,
-    dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]
+  simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, colU, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun l _ => ?_))
   show star (x i) * H i l * y l = _
@@ -282,12 +281,11 @@ theorem nkQ_succ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {𝔭 : Id
     · by_cases ha : a = j0
       · subst ha
         simpa using hr
-      · simp [Pi.single_apply, ha]
+      · simp [ha]
     · have e1 : fm H x (Pi.single j0 r) = (star x ᵥ* H) j0 * r := by
         rw [fm_eq]
         first
         | exact dotProduct_single _ _ _
-        | simp [dotProduct, Pi.single_apply]
       rw [fm_star hH x (Pi.single j0 r), e1]
       exact hr'
   have h := card_vec_succ hK h𝔭 H hH n hj (Qc 𝔭 k c H) hinv RC

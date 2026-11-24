@@ -81,7 +81,7 @@ theorem UpperTheory.V.CA.d_comm :
     rw [h]
     simp [ev, Polynomial.coeff_zero_eq_eval_zero]
   have hnz : D.D S[X] u ∈ nonZeroDivisors S[X] :=
-    Polynomial.mem_nonzeroDivisors_of_coeff_mem 0 (by rw [hc]; exact one_mem _)
+    Polynomial.mem_nonZeroDivisors_of_coeff_mem 0 (by rw [hc]; exact one_mem _)
   have key : D.D S[X] (1 + u * ι y) = D.D S[X] (1 + ι y * u) := by
     have h : (1 + u * ι y) * u = u * (1 + ι y * u) := by noncomm_ring
     have h2 := congrArg (D.D S[X]) h

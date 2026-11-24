@@ -1,33 +1,43 @@
 module
 
+public import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.StripEntire
+public import Mathlib.Analysis.Complex.Polynomial.Basic
+public import Mathlib.LinearAlgebra.FreeModule.PID
+public import Mathlib.RingTheory.Coalgebra.IsFrobenius
+public import Mathlib.RingTheory.Etale.Weakly
+public import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.HopfAlgebra.Basic
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Mathlib.RingTheory.TotallySplit
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousFrameEquivSymm
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.SiegelGrowthForms.SiegelMult
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockDetParabolicFrameStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockDetParabolicFrame
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousDerivFamily
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesConvergent
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteKTypeDecompositionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicIffFrameParabolicStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactFrameEquivStatement
-import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.AdelicHomeomorphisms.IsTopologicalGroupG2
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicIffFrameParabolic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactFrameEquiv
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,8 +45,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,8 +60,244 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+import Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyNormFinLeOne
+import Development.AbelianVarietyTheory.Definitions.Foundations.NormEulerPolySubOneLe
+import Development.WeilBound.ThetaLifts.LatticeBasics.FarRight
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.AdelicHomeomorphisms.IsTopologicalGroupG2
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteKTypeDecomposition, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinMultiplicativity
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteKTypeDecomposition =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteKTypeDecomposition", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.StripEntire\npublic import Mathlib.Analysis.Complex.Polynomial.Basic\npublic import Mathlib.LinearAlgebra.FreeModule.PID\npublic import Mathlib.RingTheory.Coalgebra.IsFrobenius\npublic import Mathlib.RingTheory.Etale.Weakly\npublic import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\npublic import Mathlib.RingTheory.Flat.TorsionFree\npublic import Mathlib.RingTheory.HopfAlgebra.Basic\npublic import Mathlib.RingTheory.SimpleRing.Principal\npublic import Mathlib.RingTheory.TotallySplit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels\nimport Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff\nimport Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyNormFinLeOne\nimport Development.AbelianVarietyTheory.Definitions.Foundations.NormEulerPolySubOneLe\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousFrameEquivSymm\nimport Development.WeilBound.ThetaLifts.LatticeBasics.FarRight\nimport Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GlobalTheory.CompanionTheory.SiegelRep
+
+open scoped TensorProduct NNReal Matrix
+open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
+open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl PositivityTheory.RgEis GlobalTheory.CompanionTheory.SiegelFrame
+
+section Rep
+
+variable {G : Type} [Group G] {K : Subgroup G} {V : Submodule ℂ (G → ℂ)}
+
+def rt (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) : K →* Module.End ℂ V where
+  toFun k :=
+    { toFun := fun v => ⟨fun x => v.1 (x * (k : G)), hV v.1 v.2 k⟩
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl }
+  map_one' := by
+    apply LinearMap.ext
+    intro v
+    apply Subtype.ext
+    funext x
+    simp
+  map_mul' a b := by
+    apply LinearMap.ext
+    intro v
+    apply Subtype.ext
+    funext x
+    simp [mul_assoc]
+
+theorem rt_apply (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) (k : K) (v : V) (x : G) :
+    (rt hV k v).1 x = v.1 (x * (k : G)) := rfl
+
+variable [FiniteDimensional ℂ V]
+
+def mat (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) (k : K) :
+    Matrix (Fin (Module.finrank ℂ V)) (Fin (Module.finrank ℂ V)) ℂ :=
+  LinearMap.toMatrix (Module.finBasis ℂ V) (Module.finBasis ℂ V) (rt hV k)
+
+theorem mat_mul (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) (a b : K) :
+    mat hV (a * b) = mat hV a * mat hV b := by
+  simp only [mat, map_mul]
+  exact LinearMap.toMatrix_mul _ _ _
+
+theorem mat_one (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) : mat hV 1 = 1 := by
+  simp only [mat, map_one]
+  exact LinearMap.toMatrix_one _
+
+def rho (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) :
+    K →* ((Fin (Module.finrank ℂ V) → ℂ) →L[ℂ] (Fin (Module.finrank ℂ V) → ℂ)) where
+  toFun k := LinearMap.toContinuousLinearMap (Matrix.toLin' (mat hV k⁻¹)ᵀ)
+  map_one' := by
+    apply ContinuousLinearMap.ext
+    intro a
+    simp [mat_one]
+  map_mul' a b := by
+    apply ContinuousLinearMap.ext
+    intro x
+    simp [mul_inv_rev, mat_mul, Matrix.transpose_mul, Matrix.mulVec_mulVec]
+
+theorem rho_apply (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) (k : K)
+    (a : Fin (Module.finrank ℂ V) → ℂ) (i : Fin (Module.finrank ℂ V)) :
+    rho hV k a i = ∑ j, (Module.finBasis ℂ V).repr (rt hV k⁻¹ (Module.finBasis ℂ V i)) j * a j := by
+  change ((mat hV k⁻¹)ᵀ *ᵥ a) i = _
+  simp [Matrix.mulVec, dotProduct, mat, LinearMap.toMatrix_apply]
+
+theorem sum_repr_apply (z : V) (x : G) :
+    ∑ j, (Module.finBasis ℂ V).repr z j * (Module.finBasis ℂ V j).1 x = z.1 x := by
+  have h := congrArg (fun y : V => y.1 x) ((Module.finBasis ℂ V).sum_repr z)
+  simp only [AddSubmonoidClass.coe_finsetSum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply,
+    smul_eq_mul] at h
+  exact h
+
+def w₀ (V : Submodule ℂ (G → ℂ)) [FiniteDimensional ℂ V] : Fin (Module.finrank ℂ V) → ℂ :=
+  fun j => (Module.finBasis ℂ V j).1 1
+
+theorem rho_w₀ (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V) (k : K)
+    (i : Fin (Module.finrank ℂ V)) : rho hV k (w₀ V) i = (Module.finBasis ℂ V i).1 ((k : G)⁻¹) := by
+  rw [rho_apply]
+  simp only [w₀]
+  rw [sum_repr_apply, rt_apply]
+  simp
+
+end Rep
+
+section Cont
+
+variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {K : Subgroup G}
+  {V : Submodule ℂ (G → ℂ)} [FiniteDimensional ℂ V]
+
+def evl (V : Submodule ℂ (G → ℂ)) (x : G) : Module.Dual ℂ V := (LinearMap.proj x).comp V.subtype
+
+theorem span_evl : Submodule.span ℂ (Set.range (evl V)) = ⊤ := by
+  have h : (Submodule.span ℂ (Set.range (evl V))).dualCoannihilator = ⊥ := by
+    rw [eq_bot_iff]
+    intro v hv
+    rw [Submodule.mem_dualCoannihilator] at hv
+    have : v = 0 := by
+      apply Subtype.ext
+      funext x
+      exact hv _ (Submodule.subset_span ⟨x, rfl⟩)
+    simp [this]
+  have h2 := Subspace.dualCoannihilator_dualAnnihilator_eq
+    (W := Submodule.span ℂ (Set.range (evl V)))
+  rw [h] at h2
+  simpa using h2.symm
+
+theorem cont_coef (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V)
+    (hc : ∀ v ∈ V, Continuous v) (ℓ : Module.Dual ℂ V) (v : V) :
+    Continuous fun k : K => ℓ (rt hV k⁻¹ v) := by
+  have hℓ : ℓ ∈ Submodule.span ℂ (Set.range (evl V)) := by
+    rw [span_evl]
+    trivial
+  induction hℓ using Submodule.span_induction with
+  | mem ℓ h =>
+    obtain ⟨x, rfl⟩ := h
+    have h1 : Continuous fun k : K => x * (((k⁻¹ : K)) : G) :=
+      continuous_const.mul (continuous_subtype_val.comp continuous_inv)
+    exact (hc v.1 v.2).comp h1
+  | zero => simpa using continuous_const
+  | add a b _ _ ha hb => exact ha.add hb
+  | smul a ℓ _ h => exact continuous_const.mul h
+
+theorem rho_cont (hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V)
+    (hc : ∀ v ∈ V, Continuous v) : Continuous (rho hV) := by
+  rw [continuous_clm_apply]
+  intro a
+  refine continuous_pi fun i => ?_
+  simp only [rho_apply]
+  refine continuous_finsetSum _ fun j _ => ?_
+  exact (cont_coef hV hc ((Module.finBasis ℂ V).coord j) _).mul continuous_const
+
+end Cont
+
+theorem ch_one {G : Type} [Group G] [TopologicalSpace G] {Γ P : Subgroup G} {c : G → ℂ}
+    (h : IsCh Γ P c) : c 1 = 1 := by
+  have h1 := h.mul 1 P.one_mem 1 P.one_mem
+  have h2 := h.norm 1 P.one_mem
+  have h0 : c 1 ≠ 0 := by
+    intro h0
+    simp [h0] at h2
+  rw [mul_one] at h1
+  exact mul_left_cancel₀ h0 (by rw [mul_one]; exact h1.symm)
+
+theorem exists_rep : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (Γ K P : Subgroup G) (c : G → ℂ) (η : G → ℝ), IsCh Γ P c → (∀ r ∈ P, r ∈ K → η r = 0) → (∀ p ∈ P, ∀ q ∈ P, η (p * q) = η p + η q) → ∀ (f : G → ℂ) (u : ℂ), Continuous f → (∀ p ∈ P, ∀ x, f (p * x) = c p * Complex.exp (u * η p) * f x) → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : K => fun x => f (x * (k : G)))) → ∃ (d : ℕ) (ρ : K →* ((Fin d → ℂ) →L[ℂ] (Fin d → ℂ))) (w : Fin d → ℂ) (e : (Fin d → ℂ) →L[ℂ] ℂ), Continuous ρ ∧ w ∈ secSp K P c ρ ∧ ∀ k : K, e (ρ k⁻¹ w) = f k := by
+  intro G _ _ _ Γ K P c η hch hηK _ f u hf hlaw hfd
+  obtain ⟨V, hVdef⟩ : ∃ V : Submodule ℂ (G → ℂ),
+      V = Submodule.span ℂ (Set.range fun k : K => fun x => f (x * (k : G))) := ⟨_, rfl⟩
+  rw [← hVdef] at hfd
+  have hV : ∀ v ∈ V, ∀ k : K, (fun x => v (x * (k : G))) ∈ V := by
+    intro v hv k
+    rw [hVdef] at hv ⊢
+    induction hv using Submodule.span_induction with
+    | mem v hv =>
+      obtain ⟨k', rfl⟩ := hv
+      exact Submodule.subset_span ⟨k * k', by funext x; simp [mul_assoc]⟩
+    | zero => exact Submodule.zero_mem _
+    | add a b _ _ ha hb => exact Submodule.add_mem _ ha hb
+    | smul a v _ hv => exact Submodule.smul_mem _ a hv
+  have hcont : ∀ v ∈ V, Continuous v := by
+    intro v hv
+    rw [hVdef] at hv
+    induction hv using Submodule.span_induction with
+    | mem v hv =>
+      obtain ⟨k', rfl⟩ := hv
+      exact hf.comp (continuous_id.mul continuous_const)
+    | zero => exact continuous_const
+    | add a b _ _ ha hb => exact ha.add hb
+    | smul a v _ hv => exact continuous_const.smul hv
+  have hl : ∀ v ∈ V, ∀ p ∈ P, ∀ x, v (p * x) = c p * Complex.exp (u * η p) * v x := by
+    intro v hv p hp x
+    rw [hVdef] at hv
+    induction hv using Submodule.span_induction generalizing x with
+    | mem v hv =>
+      obtain ⟨k', rfl⟩ := hv
+      change f (p * x * (k' : G)) = c p * Complex.exp (u * η p) * f (x * (k' : G))
+      rw [mul_assoc, hlaw p hp]
+    | zero => simp
+    | add a b _ _ ha hb => simp only [Pi.add_apply, ha, hb]; ring
+    | smul a v _ hv => simp only [Pi.smul_apply, hv, smul_eq_mul]; ring
+  have hfV : f ∈ V := by
+    rw [hVdef]
+    exact Submodule.subset_span ⟨1, by funext x; simp⟩
+  refine ⟨Module.finrank ℂ V, rho hV, w₀ V,
+    ∑ i, (Module.finBasis ℂ V).repr ⟨f, hfV⟩ i •
+      (ContinuousLinearMap.proj i : (Fin (Module.finrank ℂ V) → ℂ) →L[ℂ] ℂ),
+    rho_cont hV hcont, ?_, ?_⟩
+  · intro r hr
+    funext i
+    have hri : ((r : G))⁻¹ ∈ P := P.inv_mem hr
+    have hrK : ((r : G))⁻¹ ∈ K := K.inv_mem r.2
+    have h1 := hl _ (Module.finBasis ℂ V i).2 _ hri 1
+    have h2 : c r * c ((r : G))⁻¹ = 1 := by
+      rw [← hch.mul _ hr _ hri, mul_inv_cancel, ch_one hch]
+    simp only [Pi.smul_apply, smul_eq_mul]
+    rw [rho_w₀]
+    rw [mul_one, hηK _ hri hrK] at h1
+    rw [h1]
+    simp only [Complex.ofReal_zero, mul_zero, Complex.exp_zero, mul_one]
+    rw [← mul_assoc, h2, one_mul]
+    rfl
+  · intro k
+    have h := sum_repr_apply (V := V) ⟨f, hfV⟩ (k : G)
+    simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul',
+      Pi.smul_apply, ContinuousLinearMap.proj_apply, smul_eq_mul]
+    simp only [rho_w₀]
+    simpa using h
+
+end GlobalTheory.CompanionTheory.SiegelRep
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteKTypeDecomposition =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinMultiplicativity =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinMultiplicativity", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousFrameEquivSymm\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.SiegelGrowthForms.SiegelMult\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockDetParabolicFrame\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousDerivFamily\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesConvergent\npublic import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.StripEntire\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FiniteKTypeDecomposition\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicIffFrameParabolic\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactFrameEquiv\nimport Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.AdelicHomeomorphisms.IsTopologicalGroupG2\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -83,7 +327,7 @@ theorem scalar_wall (hSec : SecLaw) (hWL : WallLaw) {G : Type} [Group G] [Topolo
   have hzero : ∀ r ∈ P, r ∈ K → η r = 0 := fun r _ hr => by
     have := hη.right 1 r hr
     rwa [one_mul, h1] at this
-  obtain ⟨d, ρ, w, e, hρ, hw, he⟩ := GlobalTheory.T.finite_K_type_decomposition G Γ K P c η hP.ch hzero
+  obtain ⟨d, ρ, w, e, hρ, hw, he⟩ := _root_.GlobalTheory.CompanionTheory.SiegelRep.exists_rep G Γ K P c η hP.ch hzero
     (fun p hp q _ => hη.left p hp q) f u hf hlaw hfin
   obtain ⟨R, D, Op, H, hWl⟩ := hW (Fin d → ℂ) ρ hρ
   obtain ⟨hs₁, -, M₀, hM₀⟩ := hSec G (Fin d → ℂ) K ρ hK hρ Γ P c hP
@@ -248,7 +492,7 @@ theorem uH_eq (hD : Dict) (hBd : BdetLaw) (χ : Chr F E) (hg : (adCM σ χ).Good
   refine ⟨hpos, ?_⟩
   obtain ⟨-, hmul, -, -, hzero, -⟩ := hBd E (AE F E) (adCM σ χ) hg.toGoodL (Fin n ⊕ Fin n) (Sum.inl '' (Set.univ : Set (Fin n)))
   have hQ : frameEquiv χ ε b hb p ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n)) :=
-    (GlobalTheory.T.parabolic_iff_frame_parabolic F E σ n Y χ ε b hb t₀ ht₀ p).1 ⟨t, hp⟩
+    (_root_.GlobalTheory.CompanionTheory.SiegelFrame.ParStab.exists_isPar_iff_mem_uQ F E σ n Y χ ε b hb t₀ ht₀ p).1 ⟨t, hp⟩
   rw [map_mul]
   have h1 : (adCM σ χ).uH ε (Set.univ : Set (Fin n)) (frameEquiv χ ε b hb p * frameEquiv χ ε b hb k) =
       (adCM σ χ).lg (bdet (Sum.inl '' (Set.univ : Set (Fin n))) (frameEquiv χ ε b hb p).1) := by
@@ -258,7 +502,7 @@ theorem uH_eq (hD : Dict) (hBd : BdetLaw) (χ : Chr F E) (hg : (adCM σ χ).Good
       rw [hmul q₁.1 h₁ q₂.1 h₂, hg.lgmul]
     · intro r h₁ h₂
       exact hzero _ h₁ h₂
-  rw [h1, GlobalTheory.T.block_det_parabolic_frame F E σ n Y χ ε b hb t₀ ht₀ p t hp]
+  rw [h1, _root_.GlobalTheory.CompanionTheory.SiegelFrameDet.bdet_frameEquiv F E σ n Y χ ε b hb t₀ ht₀ p t hp]
   have h2 := (hD F E).2.2.2.2 (Matrix.GeneralLinearGroup.det t)
   show Real.log ((GroundTheory.Global.IdeleGroup.ideleModule E _ : ℝ)) = _
   rw [h2]
@@ -404,8 +648,8 @@ theorem siegelMult_of : SecLaw → WallLaw → Dict → DictInf → CMGood → G
   obtain ⟨-, -, -, ht2', hlc', hsc', hKc⟩ := hGT E (AE F E) (adCM σ χ) hgood (Fin n) ε
   let Φ := frameEquiv (Y := Y) χ ε b hε
   have hΓ : ∀ x, x ∈ rat2 σ Y ↔ Φ x ∈ (adCM σ χ).uΓ ε (Fin n) := rat_iff χ ε b hε
-  have hKK : ∀ x, x ∈ K ↔ Φ x ∈ (adCM σ χ).uK ε (Fin n) := fun x => GlobalTheory.T.standard_compact_frame_equiv F E σ n Y hD hDI hcm χ ε b hε B K hK x
-  have hIP : ∀ x, (∃ t, IsPar x t) ↔ Φ x ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n)) := GlobalTheory.T.parabolic_iff_frame_parabolic F E σ n Y χ ε b hε t₀ ht₀
+  have hKK : ∀ x, x ∈ K ↔ Φ x ∈ (adCM σ χ).uK ε (Fin n) := fun x => _root_.GlobalTheory.CompanionTheory.SiegelFrame.StdCompact.mem_isStdK_iff F E σ n Y hD hDI hcm χ ε b hε B K hK x
+  have hIP : ∀ x, (∃ t, IsPar x t) ↔ Φ x ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n)) := _root_.GlobalTheory.CompanionTheory.SiegelFrame.ParStab.exists_isPar_iff_mem_uQ F E σ n Y χ ε b hε t₀ ht₀
   have hPP : ∀ x, x ∈ par2 σ Y ↔ Φ x ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n)) := by
     intro x
     constructor
@@ -435,7 +679,7 @@ theorem siegelMult_of : SecLaw → WallLaw → Dict → DictInf → CMGood → G
   · intro p t hp
     refine ⟨?_, ?_⟩
     · show (((adCM σ χ).χ (bdet (Sum.inl '' (Set.univ : Set (Fin n))) (frameEquiv χ ε b hε p).1) : Circle) : ℂ) = _
-      rw [GlobalTheory.T.block_det_parabolic_frame F E σ n Y χ ε b hε t₀ ht₀ p t hp]
+      rw [_root_.GlobalTheory.CompanionTheory.SiegelFrameDet.bdet_frameEquiv F E σ n Y χ ε b hε t₀ ht₀ p t hp]
       rfl
     · have := ha.val p t hp 1 (one_mem _)
       rwa [mul_one] at this
@@ -443,3 +687,7 @@ theorem siegelMult_of : SecLaw → WallLaw → Dict → DictInf → CMGood → G
     exact ⟨C, N, fun x => (h x).2⟩
 
 end GlobalTheory.CompanionTheory.SiegelFrame
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinMultiplicativity =====

@@ -143,7 +143,7 @@ theorem comm_epw (m : ℕ) (a b c d : Fin n) :
       noncomm_ring
     rw [epw_succ e m c d, mul_sum, sum_mul, ← sum_sub_distrib, sum_congr rfl (fun f _ => step f)]
     simp only [sub_mul, mul_sub, sum_add_distrib, sum_sub_distrib, ite_mul, mul_ite, zero_mul,
-      mul_zero, sum_ite_eq, sum_ite_eq', mem_univ, if_true]
+      mul_zero, sum_ite_eq, mem_univ, if_true]
     by_cases h1 : b = c <;> by_cases h2 : a = d <;>
       simp only [h1, h2, if_true, if_false, ← epw_succ, sum_const_zero] <;> abel
 

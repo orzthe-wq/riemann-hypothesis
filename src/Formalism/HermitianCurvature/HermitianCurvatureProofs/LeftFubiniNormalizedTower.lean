@@ -1,20 +1,13 @@
 module
 
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CoreLF
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CornerBZero
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelZeroPointOver
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.SlicesFiniteRegularityBuilt
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CornerBZero
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.AestronglyMeasurableGermIntegrand
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContDiffBumpG
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CornerBlockActionInvariant
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.EmbeddedGroupMeasurePreserving
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftFubiniOfCore
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.OpNormPiLe
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.PhiBoundPartsOfRadicalParametrisation
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.PsiContOf
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.RightCosetActionMeasurePreserving
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.StrictUpperNeg
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.SymmetricScalarBlockMatrixMul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -32,8 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -53,10 +44,71 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.ContDiffBumpG
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.EmbeddedGroupMeasurePreserving
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.PhiBoundPartsOfRadicalParametrisation
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.RightCosetActionMeasurePreserving
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.StrictUpperNeg
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.SymmetricScalarBlockMatrixMul
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftFubiniOfCore, Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftFubiniNormalizedTower
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftFubiniOfCore =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftFubiniOfCore", "h": "module\n\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.CoreLF\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelZeroPointOver\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.SlicesFiniteRegularityBuilt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory
+
+noncomputable section
+
+namespace Formalism.FourierDecayAlt.P.LeftFubiniReduction
+
+open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
+
+theorem leftFubini_of_core (hC : LeftFubiniLemmas.CoreLF) : LeftFubiniLemmas.LeftFubini := by
+  intro k r Wp Wq _ _ _ _ _ _ T hT j hj hj1 a ha
+  obtain ⟨hab, rfl⟩ := ha
+  have e : D.ptSize a + (r - D.ptSize a) = r := by omega
+  have hd : ∀ q, D.ptDiag a q ≠ 0 := fun q => Formalism.FourierDecayAlt.P.JCTx6.Link2.ptScal_ne a hab q q.2
+  obtain ⟨X, hX, μ, ℓ, sx, hsx, hmain⟩ := hC k (D.ptSize a) (r - D.ptSize a) r e hj1 (D.ptPerm a) (D.ptDiag a) hd
+    Wp Wq (T.bs (D.ptSize a)) T.base (T.z_lev _ hj) (T.z'_lev _ hj) (T.π'_lev _ hj) (hT _ hj).2.1
+    (Formalism.FourierDecayAlt.P.PBM.tower_haarW' T hT _ hj e) (hT _ hj).2.2 (hT 0 (Nat.zero_le r)).2.2
+  refine ⟨X, hX, μ, ℓ, sx, hsx, fun g hg H hH hR => ?_⟩
+  have hx : ∀ (h1 : D.ptSize a ≤ r) (h2 : r - D.ptSize a = r - D.ptSize a),
+      LeftFubiniLemmas.levelZeroPointOver a h1 (D.castM h2 g) = D.castM e (U.mMap k (D.ptSize a) (r - D.ptSize a)
+        (U.hMat (D.ptPerm a) (D.ptDiag a)) g) := by
+    intro h1 h2
+    unfold LeftFubiniLemmas.levelZeroPointOver
+    rw [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]
+  have hs : ∀ h2 : r - D.ptSize a = r - D.ptSize a,
+      D.castF h2 (D.sliceAt k r T.base.z T.base.z' H a) =
+        U.PhiFun (s := 0) k (r - D.ptSize a) (D.ptPerm a) (D.ptDiag a) (D.castV e.symm T.base.z)
+          (D.castV e.symm T.base.z') (D.castF e H) (fun a => a.elim0) := by
+    intro h2
+    funext y
+    unfold D.castF
+    rw [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, D.sliceAt, dite_eq_left hj]
+    rfl
+  simp only [hx, hs]
+  exact hmain g hg H hH hR
+
+end Formalism.FourierDecayAlt.P.LeftFubiniReduction
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftFubiniOfCore =====
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftFubiniNormalizedTower =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftFubiniNormalizedTower", "h": "module\n\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.CoreLF\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.CornerBZero\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelZeroPointOver\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.AestronglyMeasurableGermIntegrand\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.ContDiffBumpG\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.CornerBlockActionInvariant\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.EmbeddedGroupMeasurePreserving\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftFubiniOfCore\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.OpNormPiLe\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.PhiBoundPartsOfRadicalParametrisation\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.PsiContOf\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.RightCosetActionMeasurePreserving\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.StrictUpperNeg\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.SymmetricScalarBlockMatrixMul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix MeasureTheory
@@ -114,9 +166,9 @@ theorem goodL_pt (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (d 
     cG.mul_mem _ (cG.mul_mem _ (cG.inv_mem _ hx.1.1) _ (cG.inv_mem _ hx.2.1)) _ hg
   rw [hx', ← e]
   have hZ : G.detM (fun a : Fin 0 => a.elim0 : G.Mat 0) ≠ 0 := by rw [detM_zero]; exact one_ne_zero
-  refine ⟨Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation σ d hd ξ0 _ hZ hγ, ?_⟩
+  refine ⟨Formalism.FourierDecayAlt.P.Ux10.gaXi_mem _root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam σ d hd ξ0 _ hZ hγ, ?_⟩
   intro h0
-  have h1 := Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice σ d ξ0 (fun a : Fin 0 => a.elim0)
+  have h1 := Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi _root_.Formalism.FourierDecayAlt.P.Ux3.zhSlice σ d ξ0 (fun a : Fin 0 => a.elim0)
     ((Matrix.of x.1.1 : B.Mat k ρ)⁻¹ * (Matrix.of x.1.2 : B.Mat k ρ)⁻¹ * g)
   rw [detM_zero, mul_one] at h1
   exact Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd (h1.symm.trans h0)
@@ -156,7 +208,7 @@ theorem left_fubini_reduced_form : CoreLF := by
       {x | x ∈ B.GV k (p + m) ∧ U.DjU k p m x ≠ 0} := by
     ext x
     simp only [Set.mem_setOf_eq]
-    rw [Formalism.FourierDecayAlt.P.hat_z_minimum_degree k p m B0.z B0.z' x]
+    rw [_root_.Formalism.FourierDecayAlt.P.Ux3.zhDmin k p m B0.z B0.z' x]
   have hHc' : ContinuousOn H {x | x ∈ B.GV k (p + m) ∧ U.DjU k p m x ≠ 0} := hset ▸ hHc
   have h := core_lf hp σ d hd Bj B0 hz'.symm hπ'' hW' hW0' hNj hN0 g hg H hHc' R hR
   have hF : D.castF (rfl : p + m = p + m) H = H := funext fun y => by
@@ -173,3 +225,7 @@ namespace Formalism.FourierDecayAlt.P
 theorem left_fubini_normalized_tower : LeftFubiniLemmas.LeftFubini := LeftFubiniReduction.leftFubini_of_core LeftFubiniLemmas.left_fubini_reduced_form
 
 end Formalism.FourierDecayAlt.P
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.LeftFubiniNormalizedTower =====

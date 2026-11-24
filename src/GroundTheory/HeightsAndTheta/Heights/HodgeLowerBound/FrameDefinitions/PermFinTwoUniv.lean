@@ -111,7 +111,7 @@ theorem sum_unit_perm {M : Type*} [AddCommMonoid M] (g : (Unit → Equiv.Perm (F
 
 theorem rhoMono_line : rhoMono Unit 2 = Finsupp.single ((), 0) 1 := by
   ext ⟨u, i⟩
-  fin_cases i <;> simp [rhoMono, Finsupp.single_apply]
+  fin_cases i <;> simp [rhoMono]
 
 theorem dimN_line : dimN Unit 2 1 = 1 := rfl
 
@@ -133,7 +133,7 @@ theorem Jint_line (cf : ℚ) : Jint Unit 2 1 cf = -cf := by
     Equiv.Perm.sign_swap (show (0 : Fin 2) ≠ 1 by decide), map_mul, rename_X, rename_C, MvPolynomial.coeff_add,
     MvPolynomial.coeff_smul, smul_eq_mul, weylAct]
   rw [coeff_X_mul', coeff_X_mul']
-  simp [coeff_C, Finsupp.single_apply, Equiv.swap_apply_of_ne_of_ne]
+  simp [coeff_C]
 
 theorem FA_line (cf : ℚ) : FA Unit 2 1 cf = C cf * X ((), 1) ^ 2 := by
   unfold FA fib

@@ -80,10 +80,4 @@ theorem intS_iff_ig (V : VF C) {σ : Type} (f : MvPowerSeries σ C) : IntS V f �
 
 variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {d : ℕ}
 
-omit [CharZero C] in
-theorem map_self {σ : Type} (f : MvPowerSeries σ C) : MvPowerSeries.map (algebraMap C C) f = f := by
-  ext n
-  rw [coeff_map]
-  rfl
-
 end GlobalTheory.GaugeCocycle

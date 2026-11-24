@@ -68,8 +68,7 @@ theorem massDataColumns_of (h1 : ColsDimStep) (h2 : ColsIdxStep) :
       (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E) (L : LocIn (TypX X))
       (A : AnIn), InColumnsAt X hb hK FdN FdN' u u' X0 L A := by
   intro D X hb hK FdN FdN' u u' X0 L A hH
-  exact And.intro (h1 X hb hK u hH.1 hH.2.1)
-    (And.intro (h2 X hb hK u hH.1 hH.2.1)
-      (And.intro (h1 X hb hK u' hH.1 hH.2.1) (h2 X hb hK u' hH.1 hH.2.1)))
+  exact ⟨h1 X hb hK u hH.1 hH.2.1, h2 X hb hK u hH.1 hH.2.1,
+    h1 X hb hK u' hH.1 hH.2.1, h2 X hb hK u' hH.1 hH.2.1⟩
 
 end PIW.MassDataColumns

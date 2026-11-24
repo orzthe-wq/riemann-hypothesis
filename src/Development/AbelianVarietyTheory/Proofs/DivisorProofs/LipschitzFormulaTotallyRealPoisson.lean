@@ -3,17 +3,23 @@ module
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TraceDualDifferent
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RembApply
 public import Formalism.LatticeTheta.Statement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousIsBigORpowLipschitzProductKernelStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CovolumeFractionalIdealRealLatticeImageStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteTopologyFractionalIdealRealLatticeImageStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualLatticeImageEqLatticeImageTraceDualStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierLipschitzOneVariableKernelEqStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsZLatticeFractionalIdealRealLatticeImageStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableLipschitzLatticeNormPowSummandStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousIsBigORpowLipschitzProductKernel
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CovolumeFractionalIdealRealLatticeImage
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteTopologyFractionalIdealRealLatticeImage
+public import Mathlib.RingTheory.DedekindDomain.Different
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualLatticeImageEqLatticeImageTraceDual
+public import Mathlib.Analysis.Fourier.FourierTransform
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FourierLipschitzOneVariableKernelEq
+public import Mathlib.Algebra.Module.ZLattice.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsZLatticeFractionalIdealRealLatticeImage
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableLipschitzLatticeNormPowSummand
 public import Formalism.LatticeTheta.LatticeThetaProofs.LatticeFourierSeries
 public import Formalism.LatticeTheta.LatticeThetaProofs.Periodization
 public import Formalism.LatticeTheta.LatticeThetaProofs.UnfoldCoeff
 public import Formalism.LatticeTheta.ThetaShiftInversion
+public import Mathlib.MeasureTheory.Integral.Pi
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -27,7 +33,6 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.MeasureTheory.Integral.Pi
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
@@ -77,33 +82,33 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent
 variable {F : Type} [Field F] [NumberField F]
 
 theorem latOf_discrete [IsTotallyReal F] (N : FractionalIdeal (𝓞 F)⁰ F) :
-    DiscreteTopology (latOf N) := GlobalTheory.T.discreteTopology_fractionalIdealRealLatticeImage F N
+    DiscreteTopology (latOf N) := _root_.GlobalTheory.LipschitzTR.discrete_latOf F N
 
 theorem latOf_isZLattice [IsTotallyReal F] (N : FractionalIdeal (𝓞 F)⁰ F) (hN : N ≠ 0)
-    [DiscreteTopology (latOf N)] : IsZLattice ℝ (latOf N) := GlobalTheory.T.isZLattice_fractionalIdealRealLatticeImage F N hN
+    [DiscreteTopology (latOf N)] : IsZLattice ℝ (latOf N) := _root_.GlobalTheory.LipschitzTR.isZLattice_latOf F N hN
 
 theorem covolume_latOf [IsTotallyReal F] (N : FractionalIdeal (𝓞 F)⁰ F) (hN : N ≠ 0)
     [DiscreteTopology (latOf N)] [IsZLattice ℝ (latOf N)] :
-    ZLattice.covolume (latOf N) = covol N := GlobalTheory.T.covolume_fractionalIdealRealLatticeImage F N hN
+    ZLattice.covolume (latOf N) = covol N := _root_.GlobalTheory.LipschitzCovol.covolume_latOf F N hN
 
 theorem dual_latOf [IsTotallyReal F] (N : FractionalIdeal (𝓞 F)⁰ F) (hN : N ≠ 0) :
-    Formalism.H.dual (latOf N) = latOf (FractionalIdeal.dual ℤ ℚ N) := GlobalTheory.T.dual_latticeImage_eq_latticeImage_traceDual F N hN
+    Formalism.H.dual (latOf N) = latOf (FractionalIdeal.dual ℤ ℚ N) := _root_.GlobalTheory.LipschitzTR.dual_latOf_eq_latOf_traceDual F N hN
 
 theorem fourier_lipschitzOneVariableKernel (k : ℕ) (hk : 2 ≤ k) (he : Even k) (w : ℂ) (hw : w.im ≠ 0) (x : ℝ) :
     𝓕 (phi1 k w) x = ((k - 1).factorial : ℂ) / (2 * Real.pi * Complex.I) ^ k * (w - x) ^ (-(k : ℤ)) :=
-  GlobalTheory.T.fourier_lipschitzOneVariableKernel_eq k hk he w hw x
+  _root_.GlobalTheory.LipschitzTR.fourier_phi1_eq_factorial_mul_zpow k hk he w hw x
 
 theorem Phi_cont_decay (k : ℕ) (hk : 2 ≤ k) (z : (F →+* ℝ) → ℂ) (hz : ∀ τ, (z τ).im ≠ 0) :
     Continuous (Phi k z) ∧
-      ∀ b : ℝ, Phi k z =O[Filter.cocompact (RSp F)] fun v => ‖v‖ ^ (-b) := GlobalTheory.T.continuous_isBigO_rpow_lipschitzProductKernel F k hk z hz
+      ∀ b : ℝ, Phi k z =O[Filter.cocompact (RSp F)] fun v => ‖v‖ ^ (-b) := _root_.GlobalTheory.LipschitzTR.continuous_and_isBigO_rpow_Phi F k hk z hz
 
 theorem summable_lhsTerm [IsTotallyReal F] (M : FractionalIdeal (𝓞 F)⁰ F) (hM : M ≠ 0) (k : ℕ)
     (hk : 2 ≤ k) (z : (F →+* ℝ) → ℂ) (hz : ∀ τ, (z τ).im ≠ 0) :
-    Summable (fun a : (M : Set F) => lhsTerm k z a) := GlobalTheory.T.summable_lipschitzLatticeNormPowSummand F M hM k hk z hz
+    Summable (fun a : (M : Set F) => lhsTerm k z a) := _root_.GlobalTheory.LipschitzTR.summable_lhsTerm_ideal F M hM k hk z hz
 
 theorem fourier_prod_coord (ι : Type) [Fintype ι] (f : ι → ℝ → ℂ) (x : EuclideanSpace ℝ ι) :
     𝓕 (fun ξ : EuclideanSpace ℝ ι => ∏ i, f i (ξ i)) x = ∏ i, 𝓕 (f i) (x i) := by
-  simp only [Real.fourier_eq', Real.fourier_real_eq]
+  simp only [Real.fourier_eq']
   rw [← integral_fintype_prod_volume_eq_prod,
     ← (PiLp.volume_preserving_toLp ι).integral_comp (MeasurableEquiv.toLp 2 (ι → ℝ)).measurableEmbedding]
   refine integral_congr_ae (Filter.Eventually.of_forall fun ξ => ?_)
@@ -142,7 +147,7 @@ theorem fourier_Phi (k : ℕ) (hk : 2 ≤ k) (he : Even k) (z : (F →+* ℝ) �
         lhsTerm k z (-a) := by
   rw [show Phi k z = fun ξ : RSp F => ∏ τ, phi1 k (z τ) (ξ τ) from rfl, fourier_prod_coord]
   simp only [remb_apply]
-  have h := fun τ : F →+* ℝ => fourier_lipschitzOneVariableKernel k hk he (z τ) (hz τ) (τ a)
+  have h := fun τ : F →+* ℝ => _root_.GlobalTheory.LipschitzTR.fourier_phi1_eq_factorial_mul_zpow k hk he (z τ) (hz τ) (τ a)
   simp only [h]
   rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, lhsTerm, Finset.prod_zpow]
   simp [map_neg, sub_eq_add_neg]

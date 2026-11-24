@@ -106,7 +106,7 @@ def shearIso {T G : Over S} [GrpObj G] (i : T ⟶ G) : T ⊗ G ≅ T ⊗ G where
   hom := lift (fst T G) ((fst T G ≫ i) * snd T G)
   inv := lift (fst T G) ((fst T G ≫ i)⁻¹ * snd T G)
   hom_inv_id := by ext1 <;> simp [MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc]
-  inv_hom_id := by ext1 <;> simp [MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc]
+  inv_hom_id := by ext1 <;> simp [MonObj.comp_mul, ← Category.assoc]
 
 def Equivar {T G Y : Over S} [GrpObj T] [GrpObj G] (i : T ⟶ G) (j : Y ⟶ G) (σ : Y ⟶ T) : Prop :=
   ∀ (Z : Over S) (t : Z ⟶ T) (y y' : Z ⟶ Y), y' ≫ j = (t ≫ i) * (y ≫ j) → y' ≫ σ = t * (y ≫ σ)

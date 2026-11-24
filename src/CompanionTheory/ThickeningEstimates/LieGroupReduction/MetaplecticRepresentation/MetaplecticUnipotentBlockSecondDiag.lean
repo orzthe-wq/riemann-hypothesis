@@ -177,7 +177,7 @@ theorem inner_sym {S : Matrix l l ℝ} (hS : S.IsSymm) (t : ℝ) (x y : Eu l) :
       ⟪y, (-(t • Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S)) x⟫ := by
   have hS' : ∀ a b, S a b = S b a := fun a b => by
     simpa using (congrFun (congrFun hS.eq b) a)
-  simp only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.smul_apply, inner_neg_right, real_inner_smul_right]
+  simp only [_root_.neg_apply, _root_.smul_apply, inner_neg_right, real_inner_smul_right]
   congr 2
   simp only [PiLp.inner_apply, tc_apply, RCLike.inner_apply, conj_trivial, Finset.sum_mul]
   rw [Finset.sum_comm]
@@ -190,7 +190,7 @@ theorem intw_UU {S : Matrix l l ℝ} (hS : S.IsSymm) (t : ℝ) (p q : Eu l) :
   have h := (intw_fou _ _).mul ((intw_ph (inner_sym hS t) _ _).mul (intw_fouInv p q))
   rw [show p + (t • Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S) q =
     -(-p + (-(t • Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S)) q) by
-      rw [ContinuousLinearMap.neg_apply, neg_add, neg_neg, neg_neg]]
+      rw [_root_.neg_apply, neg_add, neg_neg, neg_neg]]
   exact h
 
 theorem impl_UU {S : Matrix l l ℝ} (hS : S.IsSymm) (t : ℝ) :
@@ -208,7 +208,7 @@ theorem UU_dRho {S : Matrix l l ℝ} (hS : S.IsSymm) (t : ℝ) (w : l ⊕ l → 
     UU S t (dRho w f) = dRho (nn S t *ᵥ w) (UU S t f) := by
   have hs : Function.Surjective (UU S t).toLinearMap := fun f => ⟨Ring.inverse (UU S t) f, by
     show (UU S t * Ring.inverse (UU S t)) f = f
-    rw [Ring.mul_inverse_cancel _ (isUnit_UU S t), ContinuousLinearMap.one_apply]⟩
+    rw [Ring.mul_inverse_cancel _ (isUnit_UU S t), one_apply_eq_self]⟩
   exact Impl.dRho (s := Matrix.mulVecLin (nn S t)) (impl_UU hS t) hs w f
 
 theorem UU_zero (S : Matrix l l ℝ) : UU S 0 = 1 := by
@@ -222,9 +222,9 @@ theorem hasDerivAt_UU (S : Matrix l l ℝ) (f : Sch l) (t₀ : ℝ) :
     HasDerivAt (fun t => UU S t f 0)
       (fou l (mq (-(Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S)) (fouInv l (UU S t₀ f))) 0) t₀ := by
   have e1 : ∀ t, UU S t f 0 = ∫ x, ph (-(t • Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S)) (fouInv l f) x := fun t => by
-    rw [UU, ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, fou_zero]
+    rw [UU, mul_apply_eq_comp, mul_apply_eq_comp, fou_zero]
   have e2 : fouInv l (UU S t₀ f) = ph (-(t₀ • Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S)) (fouInv l f) := by
-    rw [UU, ← ContinuousLinearMap.mul_apply, ← mul_assoc, fouInv_mul_fou, one_mul, ContinuousLinearMap.mul_apply]
+    rw [UU, ← mul_apply_eq_comp, ← mul_assoc, fouInv_mul_fou, one_mul, mul_apply_eq_comp]
   have hq : ∀ x : Eu l, |⟪x, Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S x⟫| ≤
       ‖Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S‖ * ‖x‖ ^ 2 := fun x =>
     (abs_real_inner_le_norm _ _).trans (by
@@ -237,7 +237,7 @@ theorem hasDerivAt_UU (S : Matrix l l ℝ) (f : Sch l) (t₀ : ℝ) :
       exp (((π * ⟪x, Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S x⟫ * t : ℝ) : ℂ) * I) * fouInv l f x := fun t x => by
     have : -π * ⟪x, (-(t • Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S)) x⟫ =
         π * ⟪x, Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S x⟫ * t := by
-      simp only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.smul_apply, inner_neg_right,
+      simp only [_root_.neg_apply, _root_.smul_apply, inner_neg_right,
         real_inner_smul_right]
       ring
     rw [ph_apply, this]
@@ -245,7 +245,7 @@ theorem hasDerivAt_UU (S : Matrix l l ℝ) (f : Sch l) (t₀ : ℝ) :
       ((π * ⟪x, Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S x⟫ : ℝ) : ℂ) * I * h x := fun h x => by
     have : -π * ⟪x, (-(Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S)) x⟫ =
         π * ⟪x, Matrix.toEuclideanCLM (𝕜 := ℝ) (n := l) S x⟫ := by
-      simp only [ContinuousLinearMap.neg_apply, inner_neg_right]
+      simp only [_root_.neg_apply, inner_neg_right]
       ring
     rw [mq_apply, this]
   have key := hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := volume) (x₀ := t₀)
@@ -286,8 +286,8 @@ theorem hess {s : Mat l} {H : Sch l} (hA : Ann s H) (j k : l) :
       dRho w (∂_{(EuclideanSpace.single k 1 : Eu l)} H) + (2 * π * I * sympl (Pi.single (.inl k) 1) w : ℂ) • H :=
     fun w => by
       have := congrArg (fun T : Sch l →L[ℂ] Sch l => T H) (dRho_comm (Pi.single (.inl k) 1) w)
-      simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.mul_apply, ContinuousLinearMap.smul_apply,
-        ContinuousLinearMap.one_apply] at this
+      simp only [_root_.sub_apply, mul_apply_eq_comp, _root_.smul_apply,
+        one_apply_eq_self] at this
       rw [← dRho_single_inl, ← this]
       abel
   have hsy : ∀ w : l ⊕ l → ℝ, sympl (Pi.single (.inl k) 1) w = w (.inr k) := fun w => by
@@ -295,7 +295,7 @@ theorem hess {s : Mat l} {H : Sch l} (hA : Ann s H) (j k : l) :
   have hcol : ∀ b c, (s *ᵥ Pi.single b 1) c = s c b := fun b c => by
     simp [mulVec, dotProduct, Pi.single_apply]
   have e := congrArg (fun u : Sch l => dRho (Pi.single (.inl k) 1) u 0) (hA j)
-  simp only [map_smul, SchwartzMap.smul_apply, smul_eq_mul, comm, SchwartzMap.add_apply, dRho_eval_zero, hsy,
+  simp only [map_smul, _root_.smul_apply, smul_eq_mul, comm, _root_.add_apply, dRho_eval_zero, hsy,
     hcol] at e
   simp only [upperParabolic, loQ, sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum]
   linear_combination e
@@ -354,7 +354,7 @@ theorem nrmUp : NrmUp l := by
       ((upperParabolic s'.1 + (t : ℂ) • (S.map ofReal * loQ s'.1))⁻¹ * (S.map ofReal * loQ s'.1)).trace) t := fun t => by
     have h1 := hasDerivAt_UU S f t
     rw [fou_mq_fouInv] at h1
-    simp only [SchwartzMap.smul_apply, SchwartzMap.sum_apply, smul_eq_mul] at h1
+    simp only [_root_.smul_apply, _root_.sum_apply, smul_eq_mul] at h1
     have h2 := trace_eq (hdet t) (S.map ofReal)
       (Matrix.of fun a k => (∂_{(EuclideanSpace.single a 1 : Eu l)} (∂_{(EuclideanSpace.single k 1 : Eu l)}
         (UU S t f))) 0) (-(2 * π * I) * UU S t f 0) (fun j k => by

@@ -128,7 +128,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
-instance fintypePsi : Fintype (Psi H) := Fintype.ofFinite _
+-- Scoped: Mathlib's `Subtype.fintype` also applies to `Psi H` and is not defeq to this one.
+-- Activate with `open scoped GlobalTheory.CompHt`; without it, `Fintype (Psi H)` silently gets Mathlib's.
+scoped instance fintypePsi : Fintype (Psi H) := Fintype.ofFinite _
 
 def dimFlag (Dw : Datum H) : ℕ := Formalism.DegreeFormula.dimFl (Psi H) (Dw.p + Dw.q)
 

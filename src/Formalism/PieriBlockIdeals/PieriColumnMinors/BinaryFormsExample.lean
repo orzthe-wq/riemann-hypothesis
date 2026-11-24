@@ -464,7 +464,7 @@ theorem depth_skeleton_second_form_holds : LemmaDSkeleton2 := by
 
 theorem depth_skeleton_valuation_holds : LemmaDSkeleton2Val := by
   intro O K V P q _ _ _ _ _ _ _ _ _ _ S B n w lam2 DelL Mt xi lam l e i' hl hO H ν hν v hv hvr hvν
-  obtain ⟨η, hη, hD⟩ := valuation_unit_holds O l hl hO _ (LD.d_n_ne_zero (Fintype.card P) w n q lam2)
+  obtain ⟨η, hη, hD⟩ := valuation_unit_holds O l hl hO _ (_root_.Formalism.CohomologicalDescent.LD.dnNeZero (Fintype.card P) w n q lam2)
   exact (depth_skeleton_second_form_holds O K V P q S B n w lam2 DelL Mt xi lam (l : O) e i' H ν hν v hv hvr hvν).2 _ η hη hD
 
 theorem mem_eigen_piece_of_mem_iSup {O K V : Type*} [CommRing O] [Field K] [Algebra O K] [AddCommGroup V] [Module K V] [Module O V]

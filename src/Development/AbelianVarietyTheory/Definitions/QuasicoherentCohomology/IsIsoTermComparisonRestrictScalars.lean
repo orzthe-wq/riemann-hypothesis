@@ -132,7 +132,7 @@ def res (A : Cube.{v} ι R) {s t : Finset ι} (h : s ⊆ t) : A.obj s →ₗ[R] 
 theorem res_self (A : Cube.{v} ι R) {s : Finset ι} (h : s ⊆ s) (x : A.obj s) :
     res A h x = x := by
   have : (homOfLE h : s ⟶ s) = 𝟙 s := rfl
-  simp [res, this]
+  simp [res]
 
 @[simp]
 theorem res_res (A : Cube.{v} ι R) {s t w : Finset ι} (h : s ⊆ t) (h' : t ⊆ w) (x : A.obj s) :

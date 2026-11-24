@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSatakeGLOfHasSatakeParametersPrincipalSeriesStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HasSatakeGLOfHasSatakeParametersPrincipalSeries
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFixedIff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -82,7 +84,7 @@ theorem rec_hasSatGL (H : IsRec h rc) {n : ℕ} (σ : SmIrr (GL (Fin n) (w.adicC
     exact this
   have hu : (rc (clsOf σ)).unr := (ParLaws.unr_iff H _).2 hsph
   obtain ⟨α, hα⟩ := ParLaws.exists_hasSatake_of_unr H hu
-  have e : S = Finset.univ.val.map α := hS.unique (GlobalTheory.T.hasSatakeGL_of_hasSatakeParameters_principalSeries E w n _ σ.ρ α hα)
+  have e : S = Finset.univ.val.map α := hS.unique (_root_.GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake E w n _ σ.ρ α hα)
   refine ⟨hu, ?_⟩
   rw [clsOf, ParLaws.rec_eq_diag H hα, WD.frobEig_diag, e, Multiset.map_map]
   rfl

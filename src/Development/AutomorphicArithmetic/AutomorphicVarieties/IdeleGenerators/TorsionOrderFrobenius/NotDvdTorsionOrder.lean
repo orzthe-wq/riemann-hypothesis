@@ -110,7 +110,7 @@ private theorem not_dvd_torsionOrder (K : Type) [Field K] [NumberField K] (l : �
   have h3 := h2.intermediateField_adjoin_isCyclotomicExtension ℚ
   refine hd (Dvd.dvd.trans ?_ (discr_dvd_discr (IntermediateField.adjoin ℚ
     {algebraMap (𝓞 K) K ((x : (𝓞 K)ˣ) : 𝓞 K)}) K))
-  rw [@IsCyclotomicExtension.Rat.discr_prime l _ _ _ _ (by convert h3 <;> first | rfl | exact Subsingleton.elim _ _)]
+  rw [@IsCyclotomicExtension.Rat.discr_prime l _ _ _ _ (by convert h3)]
   have := hl.two_le
   exact Dvd.dvd.mul_left (dvd_pow_self _ (by omega)) _
 

@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.NormConst
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsInvariantNatLengthLattice
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramePeriodsStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramePeriods
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPeriodMulVec
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExponentialDerivativeAtZeroIsTangent
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtIffIsDerivAt0
@@ -129,7 +129,7 @@ theorem coverTri : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : R
     (fun j j' h => by rw [hVt j j' h])
   obtain ⟨-, hu, hex⟩ := GlobalTheory.FamRigid.ex_eq_of_level_group GlobalTheory.latMinkowski E H Dw l Xo _ g _ F k P P'
     (LinearEquiv.refl _ _) V hP hP' (fun _ _ => rfl) (fun a _ => ⟨0, by simp⟩) (fun a => ⟨0, by simp⟩) hP'e
-  obtain ⟨Pf, hPf, -, -, -, hon⟩ := GlobalTheory.T.exists_framePeriods_alt E H Dw l Xo c σ g e F r M hG hB hN k
+  obtain ⟨Pf, hPf, -, -, -, hon⟩ := _root_.GlobalTheory.exists_framePeriods E H Dw l Xo c σ g e F r M hG hB hN k
   obtain ⟨x, hx, hxP⟩ := hon P' hP'
   have hy' : F.u k P' = y.x := hu.symm.trans hy
   refine ⟨k, ⟨x, hx⟩, P', fun a j => by rw [← hxP]; exact hPf x a j, hy', fun v hv τ i => ?_⟩

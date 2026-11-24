@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Splits
 
 @[expose] public section
 
@@ -60,12 +61,6 @@ theorem gm_stalk (f : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : f z ∈ U) (a : Γ(Y, 
   simp [gm, h, pullU]
   exact (Scheme.Hom.germ_stalkMap_apply f U z h _).symm
 
-theorem gm_pull_id (g : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : g z ∈ U) (a : Γ(Y, U)ˣ) :
-    gm (𝟙 Z) z (g ⁻¹ᵁ U) (pullU g U a) = gm g z U a := by
-  ext1
-  simp [gm, h, pullU]
-  rfl
-
 private lemma gm_id_val_eq_germ (W : Z.Opens) (z : Z) (hz : z ∈ W) (u : Γ(Z, W)ˣ) :
     Units.val (gm (𝟙 Z) z W u) = (Z.presheaf.germ W z hz).hom u.1 := by
   simp [gm, hz, pullU]
@@ -84,14 +79,6 @@ private lemma gm_res_lemma_4 {U V : Y.Opens} (hVU : V ≤ U) (y : Y) (hy : y ∈
 private lemma gm_units_map_restrict (f : Z ⟶ Y) (z : Z) {U V : Y.Opens} (hVU : V ≤ U) (hz : f z ∈ V) (a : Γ(Y, U)ˣ) :
     gm f z V (Units.map (Y.presheaf.map (homOfLE hVU).op).hom.toMonoidHom a) = gm f z U a := by
   rw [gm_stalk f z V hz, gm_stalk f z U (hVU hz), gm_res_lemma_4 hVU (f z) hz]
-
-private lemma units_eq_of_gm_id_eq_on_open {O : X.Opens} {a b : Γ(X, O)ˣ}
-    (h : ∀ x, x ∈ O → gm (𝟙 X) x O a = gm (𝟙 X) x O b) : a = b := by
-  ext1
-  refine TopCat.Presheaf.section_ext X.sheaf O _ _ fun x hx => ?_
-  have hv := congrArg Units.val (h x hx)
-  rw [gm_id_val_eq_germ O x hx, gm_id_val_eq_germ O x hx] at hv
-  exact hv
 
 private lemma exists_unit_on_open_of_gm_agree_on_cover (V : X.Opens) {κ : Type} (O : κ → X.Opens) (hO : ∀ a, O a ≤ V)
     (hcov : ∀ x ∈ V, ∃ a, x ∈ O a) (u : ∀ a, Γ(X, O a)ˣ)
@@ -153,11 +140,6 @@ private lemma germ_appLE_unit_eq_gm_val (f : X ⟶ Y) (U : Y.Opens) (V : X.Opens
     (a : Γ(Y, U)ˣ) : (X.presheaf.germ V x hx).hom ((f.appLE U V hVU).hom a.1) = Units.val (gm f x U a) := by
   rw [gm_val_eq_germ_app f x U (hVU hx)]
   exact TopCat.Presheaf.germ_res_apply ..
-
-private lemma exists_mem_U_of_isLB {N : LB Y} (hN : N.IsLB) (y : Y) : ∃ i, y ∈ N.U i := by
-  have hy : y ∈ (⊤ : Y.Opens) := trivial
-  rw [← hN.cover] at hy
-  exact TopologicalSpace.Opens.mem_iSup.1 hy
 
 private lemma gm_id_res {U V : Y.Opens} (hVU : V ≤ U) (y : Y) (hy : y ∈ V) (a : Γ(Y, U)ˣ) :
     gm (𝟙 Y) y V (res hVU a) = gm (𝟙 Y) y U a :=
@@ -226,10 +208,10 @@ theorem exists_normalised {N : LB Y} (hN : N.IsLB) {p : Y ⟶ X} {e : X ⟶ Y} (
         Units.map (X.presheaf.map (homOfLE (hOe i)).op).hom.toMonoidHom (pullU e _ (s i))) =
       gm (𝟙 X) x _ (r.s fun _ => i) / gm e x (p ⁻¹ᵁ V ⊓ N.U i) (s i) := by
     intro i x hx
-    rw [map_div, gm_res_lemma_4 (hOr i) x hx, gm_res_lemma_4 (hOe i) x hx, gm_pull_id e x _ (hOe i hx)]
+    rw [map_div, gm_res_lemma_4 (hOr i) x hx, gm_res_lemma_4 (hOe i) x hx, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_id_pull e x _ (hOe i hx)]
   obtain ⟨d, hd⟩ := exists_unit_on_open_of_gm_agree_on_cover V (fun i => V ⊓ ((N.pull e).U fun _ => i)) (fun i => inf_le_left)
     (fun x hx => by
-      obtain ⟨i, hi⟩ := exists_mem_U_of_isLB hN (e x)
+      obtain ⟨i, hi⟩ := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hN (e x)
       exact ⟨i, hx, Set.mem_iInter.2 fun _ => hi⟩)
     (fun i => Units.map (X.presheaf.map (homOfLE (hOr i)).op).hom.toMonoidHom (r.s fun _ => i) /
         Units.map (X.presheaf.map (homOfLE (hOe i)).op).hom.toMonoidHom (pullU e _ (s i)))
@@ -269,7 +251,7 @@ theorem agree_of_rigid {N : LB Y} (hN : N.IsLB) {p : Y ⟶ X} {e : X ⟶ Y} (he 
     rw [map_div, gm_res_lemma_4 (h1 i) y hy, gm_res_lemma_4 (h2 i) y hy]
   obtain ⟨c, hc⟩ := exists_unit_on_open_of_gm_agree_on_cover (p ⁻¹ᵁ (V ⊓ V')) (fun i => p ⁻¹ᵁ (V ⊓ V') ⊓ N.U i) (fun i => inf_le_left)
     (fun y hy => by
-      obtain ⟨i, hi⟩ := exists_mem_U_of_isLB hN y
+      obtain ⟨i, hi⟩ := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hN y
       exact ⟨i, hy, hi⟩)
     (fun i => Units.map (Y.presheaf.map (homOfLE (h1 i)).op).hom.toMonoidHom (s i) /
         Units.map (Y.presheaf.map (homOfLE (h2 i)).op).hom.toMonoidHom (s' i))
@@ -283,7 +265,7 @@ theorem agree_of_rigid {N : LB Y} (hN : N.IsLB) {p : Y ⟶ X} {e : X ⟶ Y} (he 
       rw [hs Y (𝟙 Y) y i j a1.1 a1.2 b1.2, hs' Y (𝟙 Y) y i j a2.1 a2.2 b2.2, mul_div_mul_left_eq_div])
   have hle : V ⊓ V' ≤ e ⁻¹ᵁ (p ⁻¹ᵁ (V ⊓ V')) := fun x hx => sec_mem he hx
   have c1 : c.1 = 1 := rig (V ⊓ V') c.1 hle (TopCat.Presheaf.section_ext X.sheaf _ _ _ fun x hx => by
-    obtain ⟨i, hi⟩ := exists_mem_U_of_isLB hN (e x)
+    obtain ⟨i, hi⟩ := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hN (e x)
     have hxO : e x ∈ p ⁻¹ᵁ (V ⊓ V') ⊓ N.U i := ⟨hle hx, hi⟩
     have hx' : x ∈ V ⊓ V' := hx
     have hgm : gm e x (p ⁻¹ᵁ (V ⊓ V')) c = 1 := by
@@ -310,7 +292,7 @@ theorem exists_gen_of_rigid : ∀ (X : Scheme.{0}) (P : Over X) (e : X ⟶ P.lef
         (fun x0 h0 h0' j hj => (hn x x0 h0 j hj).trans (hn x' x0 h0' j hj).symm) y hx.1 hx'.1 i hx.2)
   choose T hT using glue_i
   refine ⟨⟨T⟩, fun i j => ?_⟩
-  apply units_eq_of_gm_id_eq_on_open
+  apply _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.unit_ext
   intro y hy
   have hy' : y ∈ N.U i ⊓ N.U j := hy
   have hx : y ∈ P.hom ⁻¹ᵁ V (P.hom y) := hxV (P.hom y)

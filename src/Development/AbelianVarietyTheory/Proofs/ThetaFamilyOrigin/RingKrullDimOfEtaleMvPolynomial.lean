@@ -80,7 +80,7 @@ theorem ringKrullDim_of_etale_mvPolynomial (K B : Type*) [Field K] [CommRing B] 
     (g : ℕ) [Algebra (MvPolynomial (Fin g) K) B] [Algebra.Etale (MvPolynomial (Fin g) K) B] :
     ringKrullDim B = g := by
   have hR : ringKrullDim (MvPolynomial (Fin g) K) = g := by
-    simp [MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]
+    simp [ringKrullDim_eq_zero_of_field]
   apply le_antisymm
   · rw [← hR]
     refine Order.krullDim_le_of_strictMono

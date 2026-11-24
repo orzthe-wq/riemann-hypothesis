@@ -240,8 +240,7 @@ theorem split2 {A : Type} [CommRing A] [IsLocalRing A] {κ : Type} [DecidableEq 
       simpa [hx, sub_eq_add_neg, add_comm] using this
     have hd : (derivative f).eval x * g.eval x + f.eval x * (derivative g).eval x = Q.eval x := by
       have := congrArg (fun p => (derivative p).eval x) h
-      simp only [derivative_mul, eval_add, eval_mul, derivative_add, derivative_X, derivative_C, add_zero, eval_one,
-        one_mul, hlin, zero_mul] at this
+      simp only [derivative_mul, eval_add, eval_mul, derivative_add, derivative_X, derivative_C, add_zero, one_mul, hlin, zero_mul] at this
       exact this
     have hz : f.eval x * g.eval x = 0 := by rw [← eval_mul, h, eval_mul, hlin, zero_mul]
     have hroot : ∀ p : A[X], p.eval x = 0 → ∃ p1, p = (X + C (ℓ a)) * p1 := by

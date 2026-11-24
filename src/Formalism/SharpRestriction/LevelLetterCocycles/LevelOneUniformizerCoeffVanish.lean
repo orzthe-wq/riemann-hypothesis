@@ -197,7 +197,7 @@ theorem hor_exp [IsDomain O] (Ti : Comparison₂ W levB) (hR : Formalism.MainNot
       have := Formalism.MainNotions.UnusedSlot80.ArcF.phi_trunc W T 0 M b y
       simpa using this
     rw [hH0, Formalism.MainNotions.UnusedSlot80.LevC.cmpD_sum W T c' _ b (fun m => (hb.1 m).1.1)
-      (fun m => Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' (hb.1 m).2)]
+      (fun m => _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c' (hb.1 m).2)]
     have hcc : ∀ m, PowerSeries.constantCoeff ((∑ r ∈ Finset.range M, W.π₀ ^ r *
         algebraMap O (LetA O n) (y r m)) c') = y 0 m := by
       intro m
@@ -211,7 +211,7 @@ theorem hor_exp [IsDomain O] (Ti : Comparison₂ W levB) (hR : Formalism.MainNot
     simp only [hcc, hy 0 hM, (hsol j).2]
     rw [Finset.sum_eq_single j]
     · simp
-    · intro m _ hm; simp [Pi.single_apply, hm]
+    · intro m _ hm; simp [hm]
     · intro h; exact absurd (Finset.mem_univ j) h
   · rw [if_neg (by omega)]
     obtain ⟨x', hx'Δ, hx'e⟩ := (hsol j).1 M κ y hy
@@ -225,7 +225,7 @@ theorem hor_exp [IsDomain O] (Ti : Comparison₂ W levB) (hR : Formalism.MainNot
       Subtype.ext (by simp [hγ])
     have h1 := Ti.hΓ T hTc c' ⟨Hh, hHN⟩ hγN k
     have hx'l : (letE c' : LetA O n) • (⟨x', hx'N⟩ : ↥(W.N T)) = ⟨x', hx'N⟩ :=
-      Subtype.ext (Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' hx'Δ.2)
+      Subtype.ext (_root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c' hx'Δ.2)
     have hLB : LB 0 (levB T c' 1 ⟨x', hx'N⟩) := fun k hk => by
       rw [← hx'l]; exact Ti.hneg T hTc c' _ k hk
     have hvan := smulS_vanish hLB (level_one_uniformizer_coeff_vanish hR c' M) k hk
@@ -257,8 +257,6 @@ theorem levB_Qφ (Ti : Comparison₂ W levB) (hs : W.s = 1) (T : LocLat G Qp LL 
   have hQ : W.Q = W.q := by
     first
     | exact Formalism.MainNotions.LiftingTheory.wmap_Q_one W hs
-    | exact Formalism.MainNotions.LiftingTheory.lifta_Q_eq W hs
-    | exact Formalism.MainNotions.N.Pv.LocalLengthBound.Q_eq_q hs
   have hx : W.Q ^ m • W.φD T (z : W.DD T) ∈ W.N T := by rw [hQ]; exact hz
   have h1 : (⟨W.q ^ m • W.φD T (z : W.DD T), hz⟩ : ↥(W.N T)) = ⟨W.Q ^ m • W.φD T (z : W.DD T), hx⟩ :=
     Subtype.ext (show W.q ^ m • W.φD T (z : W.DD T) = W.Q ^ m • W.φD T (z : W.DD T) by rw [hQ])
@@ -507,7 +505,7 @@ theorem expNoNeg0_of (Ti : Comparison₂ W levB) (hs : W.s = 1) (hR : Formalism.
   intro A hA c' hc' T hT e ζ hζ y hy m hZ r hr
   rw [levB_frame Ti hs hR hp0 h5 A hA c' hc' T hT e ζ hζ y hy m hZ]
   have hyl : (letE c' : LetA O n) • (⟨y, hy.1.1⟩ : ↥(W.N T)) = ⟨y, hy.1.1⟩ :=
-    Subtype.ext (Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' hy.2)
+    Subtype.ext (_root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c' hy.2)
   have hLB : LB 0 (resc ((PD.p : LL) ^ (e + 1)) (fun k => ((Formalism.WeaklyAdmissibleFiltrations.φVB PD (LL := LL) (V := T.V)) ^ (e + 1))
       (levB T c' 1 ⟨y, hy.1.1⟩ k))) :=
     LB_resc (LB_map _ (fun k hk => by rw [← hyl]; exact Ti.hneg T hT.1 c' _ k hk)) _

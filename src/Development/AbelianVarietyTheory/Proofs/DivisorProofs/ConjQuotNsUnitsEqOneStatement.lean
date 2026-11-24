@@ -47,4 +47,4 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 theorem _root_.GlobalTheory.T.conjQuot_eq_one_of_mem_nsUnits_of_isSplitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)), GlobalTheory.UnitaryBC.IsSplitAt w →
     ∀ u ∈ GlobalTheory.MuExist.nsUnits E, GlobalTheory.ConsEta.conjQuot E w u = 1 := by
-  first | exact @GlobalTheory.ConsEta.conjQuot_nsUnits_eq_one | exact GlobalTheory.ConsEta.conjQuot_nsUnits_eq_one | (intros; apply GlobalTheory.ConsEta.conjQuot_nsUnits_eq_one <;> assumption)
+  first | exact @GlobalTheory.ConsEta.conjQuot_nsUnits_eq_one

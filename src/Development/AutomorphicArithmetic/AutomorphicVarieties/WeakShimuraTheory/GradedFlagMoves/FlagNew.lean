@@ -89,7 +89,7 @@ private theorem upOf {k : Type} [Field k] {ν : k} {w : M4 k} (h : IsGSp ν w) (
     · exact absurd e2 h0
     · exact e2
   intro i j hij
-  fin_cases i <;> fin_cases j <;> simp_all <;> omega
+  fin_cases i <;> fin_cases j <;> simp_all
 
 private theorem core {k : Type} [Field k] {ν : k} {u : M4 k} (hu : IsGSp ν u) (h0 : u 0 0 ≠ 0) (h1 : u 1 1 ≠ 0)
     (h01 : u 0 1 = 0) : ∃ n' : M4 k, IsLow n' ∧ IsUp (adj n' * u) ∧ (u 2 1 = 0 → n' 2 1 = 0) := by

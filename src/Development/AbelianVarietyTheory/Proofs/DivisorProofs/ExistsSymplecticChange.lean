@@ -68,6 +68,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocalC
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -286,7 +287,7 @@ theorem exists_lift {h n d : ℕ} {k : Type} [Field k] [IsAlgClosed k] (b : TBas
         have e₃ : c.lev (n • fun i => a i / n) = 1 := (g₁ _).2 ⟨_, rfl⟩
         rw [e₃, _root_.mul_one] at e₂
         refine e₂.symm.trans (congrArg c.lev (funext fun i => ?_))
-        simp only [ZMod.val_intCast, Pi.add_apply, Pi.smul_apply, nsmul_eq_mul]
+        simp only [ZMod.val_intCast, Pi.add_apply, nsmul_eq_mul]
         exact Int.emod_add_mul_ediv _ _
     have e := (Nat.card_congr (Equiv.ofBijective F hF)).trans (card k (𝟙 _) n hnk)
     rw [Nat.card_fun, Nat.card_zmod, Nat.card_sum, Nat.card_eq_fintype_card, Fintype.card_fin] at e

@@ -197,9 +197,7 @@ theorem form_single {A : Type*} [CommRing A] [StarRing A] (N : Matrix κ κ A) (
     star (Pi.single i (1 : A)) ⬝ᵥ (N *ᵥ Pi.single j (1 : A)) = N i j := by
   have : star (Pi.single i (1 : A) : κ → A) = Pi.single i 1 := by
     funext l
-    by_cases hl : l = i
-    · subst hl; simp
-    · simp [hl]
+    by_cases hl : l = i <;> simp [hl]
   rw [this, mulVec_single_one, single_one_dotProduct]
   rfl
 

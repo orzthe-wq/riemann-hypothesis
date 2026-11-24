@@ -70,7 +70,7 @@ theorem idx_le_of_rel {A B A' B' : Submodule R W} (ρ : W → W → Prop) (hfin 
     (hinj : ∀ y ∈ B, ∀ y₂ ∈ B, ∀ z z₂, ρ y z → ρ y₂ z₂ → -z + z₂ ∈ A' → -y + y₂ ∈ A) :
     idx B A ≤ idx B' A' := by
   unfold idx AddSubgroup.relIndex AddSubgroup.index at *
-  haveI := Nat.finite_of_card_ne_zero hfin
+  have := Nat.finite_of_card_ne_zero hfin
   choose f hf hρ using hex
   refine Nat.card_le_card_of_injective
     (fun q => QuotientAddGroup.mk (⟨f q.out.1 q.out.2, hf _ _⟩ : B'.toAddSubgroup)) ?_

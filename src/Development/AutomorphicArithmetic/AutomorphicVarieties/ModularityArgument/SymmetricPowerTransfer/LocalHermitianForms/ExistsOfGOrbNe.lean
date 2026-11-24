@@ -111,7 +111,7 @@ theorem exists_of_gOrb_ne {j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K} (hj
       rw [hk, mul_inv_cancel_left]
     have hMat := congrArg Units.val hM
     simp only [jU, Units.val_mul, Units.coe_map, MonoidHom.coe_coe,
-      AlgHom.coe_toRingHom, Matrix.GeneralLinearGroup.coe_scalar,
+      Matrix.GeneralLinearGroup.coe_scalar,
       Matrix.scalar_apply, Matrix.GeneralLinearGroup.val_map_apply] at hMat
     have htr : (j z).trace = (((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) * j z * (g : Matrix (Fin 2) (Fin 2) K)).trace := by
       rw [Matrix.trace_mul_comm, ← mul_assoc, Units.mul_inv, one_mul]
@@ -120,7 +120,7 @@ theorem exists_of_gOrb_ne {j : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K} (hj
         mul_assoc, ← Matrix.det_mul, Units.inv_mul, Matrix.det_one, mul_one]
     refine ⟨w, Matrix.GeneralLinearGroup.det k, (k : Matrix (Fin 2) (Fin 2) O).trace, ?_, ?_⟩
     · rw [← j_det j hj, hdt, hMat]
-      simp [Matrix.det_fin_two, Matrix.diagonal_mul, Matrix.GeneralLinearGroup.val_det_apply] <;> ring
+      simp [Matrix.det_fin_two, Matrix.GeneralLinearGroup.val_det_apply] <;> ring
     · rw [← j_trace j hj, htr, hMat]
       simp [Matrix.trace_fin_two, Matrix.diagonal_mul] <;> ring
   by_contra hcon

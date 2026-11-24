@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValHalfInf
 public import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAdeleCoverModFieldShrunkCompactStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsAdeleCoverModFieldShrunkCompact
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SkewHermitianAdelicCoverOfAdeleCover
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummableRpowOfFibreCardLe
 import Mathlib.Algebra.Order.Floor.Extended
@@ -111,7 +111,7 @@ theorem cover_adele (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
         z = inclR (F := F) (AF F) x + y + (halfE F E).1 ^ m * ω := by
   classical
   haveI := hσ.1
-  obtain ⟨Ω₀, C₀, hΩ₀, hcov⟩ := GlobalTheory.T.exists_adele_cover_mod_field_shrunk_compact F
+  obtain ⟨Ω₀, C₀, hΩ₀, hcov⟩ := _root_.GlobalTheory.Eis.ConvCover.exists_cover F
   obtain ⟨δ, -, hsp⟩ := exists_delta F E σ hσ
   have : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   have : IsTopologicalRing (AF F ⊗[F] E) := isTopologicalRing_tens

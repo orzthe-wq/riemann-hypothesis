@@ -1,7 +1,7 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.Measures
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.PosNear
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.PosNear
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -84,7 +84,7 @@ theorem continuous_haMap [FiniteDimensional F E] {R S : Type} [CommRing R] [Alge
     [IsTopologicalRing R] [CommRing S] [Algebra F S] [TopologicalSpace S] [IsTopologicalRing S]
     (φ : R →ₐ[F] S) (hφ : Continuous φ) : Continuous (haMap σ J φ) := by
   have ht : Continuous (tensMap (E := E) φ) :=
-    PI.VolStabSW.PositiveNearLattice.continuous_map_tens (Module.finBasis F E) φ hφ
+    PI.VolStabS.PositiveNearLattice.continuous_map_tens (Module.finBasis F E) φ hφ
   have hv : Continuous fun g : HA R σ J =>
       ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :=
     Units.continuous_val.comp (continuous_subtype_val : Continuous fun g : HR R σ J => (g : GL (Fin n) (R ⊗[F] E)))

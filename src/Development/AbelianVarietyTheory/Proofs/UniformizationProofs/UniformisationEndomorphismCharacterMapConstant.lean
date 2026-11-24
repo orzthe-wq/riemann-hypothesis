@@ -104,8 +104,7 @@ theorem thickMap_comm (aG : G ⟶ G) (e : ℕ) :
     thickMap R I e G ≫ ((Over.pullback (thick R I (e + 1))).map aG).left =
       ((Over.pullback (thick R I e)).map aG).left ≫ thickMap R I e G := by
   apply pullback.hom_ext <;>
-    simp [thickMap, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc,
-      pullback.lift_snd_assoc]
+    simp [thickMap, pullback.map]
 
 theorem acts_down {D : DegData R I} {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
     (U : UnifPre I D A G) (aG : G ⟶ G) {f : D.toPre.X → D.toPre.X}

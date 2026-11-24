@@ -6,45 +6,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Pair
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Corank
 public import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleLayerExistsGenerators
 public import Formalism.SharpRestriction.CuspSpanNormBounds.LocalModelPeriodLattices
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -98,10 +59,8 @@ def phi (i : ℕ) (x : TB.Pt D.host.E) : ℝ := blockWeightPhi i 1 x
 
 theorem nrm_pos {t : D.host.E} (ht : t ≠ 0) (ν : ℕ) : 0 < nrm ν t := by
   have hg : (0 : ℝ) < ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) := by
-    have h0 := (D.host.g_prime 0).pos
-    have h1 := (D.host.g_prime 1).pos
     simp only [Formalism.MainNotions.S.Lat.gS]
-    exact_mod_cast Nat.mul_pos h0 h1
+    exact_mod_cast Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos
   have hr : 0 < D.host.rdE := by
     simp only [Formalism.BasicNotions.Host.rdE]
     exact Real.rpow_pos_of_pos (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero D.host.E)) _
@@ -134,10 +93,8 @@ theorem KrOf_zero (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.M
 
 private theorem isPtL_of_ptOfList_ne_none {i : ℕ} {z : TB.Pt D.host.E} (hz : ptOfList i z ≠ none) :
     Formalism.L2.S.IsPtL z i := by
-  unfold ptOfList at hz
-  split_ifs at hz with hh
-  · exact (isPtL_signPt _ _ _).mp hh
-  · exact absurd rfl hz
+  by_contra h
+  simp [ptOfList, h, isPtL_signPt] at hz
 
 def ThOf : ℕ → ℕ → D.host.E → TB.Pt D.host.E → TB.Pt D.host.E → ℂ := fun _ _ _ _ _ => 0
 
@@ -172,7 +129,7 @@ theorem inst_dOf (S : C.HidaSetting D.host.E Wp Wq) (δ : ∀ p : PlF D, (D.s.at
   exact ⟨rfl, rfl, fun _ _ => rfl, S.hv, fun _ _ => rfl, fun _ _ => rfl, fun _ => rfl,
     fun _ _ => rfl, fun _ _ _ => rfl, fun _ _ => rfl⟩
 
-theorem unram_host (D : Formalism.BasicNotions.D7) : S6.Unram D.host.E := MainNotions.LocalModelPeriodLattices.unramE D
+alias unram_host := _root_.Formalism.MainNotions.LocalModelPeriodLattices.unramE
 
 def LocalModelAt (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (Wp Wq : InfinitePlace D.host.E → Type) [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
@@ -242,16 +199,13 @@ def rowVec (vR : TermDef.Term D u u' F0 what₂ → ℝ) (κ : TermDef.Term D u 
 
 theorem isPt_of_isPtL {x : TB.Pt D.host.E} {i : ℕ} (h : Formalism.L2.S.IsPtL x i) : TB.IsPt x i := by
   obtain ⟨h1, h2⟩ := h
-  unfold TB.IsPt TB.level
-  exact ⟨h1, fun k hk => h2 _ (List.getElem_mem ..)⟩
+  simpa [TB.IsPt, TB.level] using ⟨h1, fun k _ => h2 _ (List.getElem_mem ..)⟩
 
 theorem rowVec_support (vR : TermDef.Term D u u' F0 what₂ → ℝ) (κ : TermDef.Term D u u' F0 what₂ → ℕ) (nc : ℝ)
     (ρ : ℕ) (x : TB.Pt D.host.E) (h : rowVec vR κ nc ρ x ≠ 0) : TB.IsPt x (D.R.rS + 1) := by
   apply isPt_of_isPtL
-  unfold rowVec at h
-  cases hx : ptOfList (D.R.rS + 1) x with
-  | none => rw [hx] at h; exact absurd rfl h
-  | some w => exact isPtL_of_ptOfList_ne_none (by simp [hx])
+  by_contra hx
+  exact h (by simp [rowVec, ptOfList, hx, isPtL_signPt])
 
 end Rows
 
@@ -288,9 +242,7 @@ theorem rowsInput_of {S : C.HidaSetting D.host.E Wp Wq} {δ : ∀ p : PlF D, (D.
       B.c0 * B.c0' * B.KV ≤ B.n0c * Mb) :
     PB.RowsInput (dOf S δ M u u') (supDens L δ ϖ u u' F0 what₂ / α) Vt (rowVec vR κ (nc * α)) B := by
   refine ⟨fun ρ p h => ?_, fun Y hY R => hPSD Y hY R, hSum, h4, hKV, hsd⟩
-  have := rowVec_support vR κ (nc * α) ρ p h
-  rw [dOf_r, hC.1]
-  exact this
+  simpa [dOf_r, hC.1] using rowVec_support vR κ (nc * α) ρ p h
 
 def RowLabelExists (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u))

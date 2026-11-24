@@ -1,46 +1,9 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
 
 @[expose] public section
 
@@ -53,13 +16,6 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 
 def isoInv {X : Scheme.{0}} {L M : LB X} (t : LB.Iso L M) : LB.Iso M L :=
   ⟨fun p => (res (fun _ hx => ⟨hx.2, hx.1⟩ : L.U p.1 ⊓ M.U p.2 ≤ M.U p.2 ⊓ L.U p.1) (t.s (p.2, p.1)))⁻¹⟩
-
-private theorem res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V)
-    (x : Γ(X, U)ˣ) : res h2 (res h1 x) = res (h2.trans h1) x := by
-  ext
-  change (X.presheaf.map (homOfLE h1).op ≫ X.presheaf.map (homOfLE h2).op).hom (x : Γ(X, U)) = _
-  rw [← Functor.map_comp]
-  rfl
 
 private theorem inv_of_eq_mul_inv_mul {G : Type*} [CommGroup G] {a b l m : G} (e : a = m * l⁻¹ * b) :
     a⁻¹ = l * m⁻¹ * b⁻¹ := by
@@ -88,21 +44,13 @@ theorem isoInv_isGen {X : Scheme.{0}} {L M : LB X} {t : LB.Iso L M} (ht : t.IsGe
     have hW : L.U p.1 ⊓ M.U p.2 ⊓ (L.U q.1 ⊓ M.U q.2) ≤ M.U p.2 ⊓ L.U p.1 ⊓ (M.U q.2 ⊓ L.U q.1) :=
       fun _ hx => ⟨⟨hx.1.2, hx.1.1⟩, ⟨hx.2.2, hx.2.1⟩⟩
     have e' := congrArg (res hW) e
-    simp only [map_mul, map_inv, res_res_lemma] at e' ⊢
+    simp only [map_mul, map_inv, _root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res'] at e' ⊢
     exact inv_of_eq_mul_inv_mul e'
   exact key _ _ (ht (p.2, p.1) (q.2, q.1))
 
 def pullGenLB {X Y : Scheme.{0}} {L : LB X} (c : LB.Gen L) (h : Y ⟶ X) : LB.Gen (L.pull h) :=
   ⟨fun j => res (fun _ hy => Set.mem_iInter.1 hy PUnit.unit : (L.pull h).U j ≤ h ⁻¹ᵁ L.U (j PUnit.unit))
     (pullU h _ (c.s (j PUnit.unit)))⟩
-
-private theorem pullU_res_lemma_2 {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens} (h : V ≤ U)
-    (x : Γ(X, U)ˣ) : pullU f V (res h x) = res ((TopologicalSpace.Opens.map f.base).monotone h : f ⁻¹ᵁ V ≤ f ⁻¹ᵁ U) (pullU f U x) := by
-  ext
-  change (X.presheaf.map (homOfLE h).op ≫ f.app V).hom (x : Γ(X, U)) =
-    (f.app U ≫ Y.presheaf.map (homOfLE ((TopologicalSpace.Opens.map f.base).monotone h : f ⁻¹ᵁ V ≤ f ⁻¹ᵁ U)).op).hom (x : Γ(X, U))
-  rw [f.naturality]
-  rfl
 
 theorem pullGenLB_isGen {X Y : Scheme.{0}} {L : LB X} {c : LB.Gen L} (hc : c.IsGen) (h : Y ⟶ X) :
     (pullGenLB c h).IsGen := by
@@ -127,8 +75,8 @@ theorem pullGenLB_isGen {X Y : Scheme.{0}} {L : LB X} {c : LB.Gen L} (hc : c.IsG
       fun _ hx => ⟨LB.wchart_le L (fun _ : PUnit => h) j PUnit.unit hx.1,
         LB.wchart_le L (fun _ : PUnit => h) j' PUnit.unit hx.2⟩
     have e' := congrArg (fun x => res hW (pullU h (L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit)) x)) e
-    simp only [map_mul, pullU_res_lemma_2, res_res_lemma] at e'
-    simp only [res_res_lemma, Fintype.prod_unique, zpow_one]
+    simp only [map_mul, _root_.ReciprocityTheory.ChartRestriction.G.DVR.pullU_res, _root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res'] at e'
+    simp only [_root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res', Fintype.prod_unique, zpow_one]
     exact e'
   exact key _ _ (hc (j PUnit.unit) (j' PUnit.unit))
 

@@ -4,13 +4,23 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.Integra
 public import Mathlib.Algebra.AffineMonoid.Basic
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AbelianPartLatticeEigenCompat
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspCorrespondenceBound
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LabelEmbeddingInjectiveStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorBundleStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LabelEmbeddingInjective
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import Mathlib.NumberTheory.NumberField.Discriminant.Defs
+public import Mathlib.Order.CompletePartialOrder
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorBundle
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalFractionField
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeStableUnderAction
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundleStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SandwichPointOverFieldExtStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundle
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SandwichPointOverFieldExt
+public import Mathlib.LinearAlgebra.Eigenspace.Pi
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapFromSpecStalk
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Development.WeilBound.CoreStatements.HodgeTatePoints.GhModelGeo
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -24,7 +34,6 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.Eigenspace.Pi
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
@@ -56,7 +65,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapFromSpecStalk
 
 @[expose] public section
 
@@ -236,11 +244,11 @@ theorem off_S (σ : CMType H ⊕ CMType H → (𝓞 E →+* R)) (hσ : ∀ s a, 
   rintro x ⟨hx1, hx2⟩
   refine mem_of_indep _ (eigSp_indep ρC _ hinj) _ hle s ?_ hx2
   haveI : CharZero Ω := charZero_of_injective_ringHom 𝔐.cst.injective
-  obtain ⟨hli, hcard⟩ := GlobalTheory.T.label_embedding_injective E H l c
+  obtain ⟨hli, hcard⟩ := _root_.GlobalTheory.CompanionTheory.Ar.labels_all_once E H l c
   have hσ' : Function.Injective 𝔐.emb := fun s s' h =>
     hli (RingHom.ext fun a => 𝔐.cst.injective (RingHom.congr_fun h a))
-  have hlat := (GlobalTheory.T.lie_omega_lattice_vector_bundle 𝔐.X Ω 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M hξ 𝔐.t.semi.smooth).1
-  obtain ⟨-, hsup⟩ := GlobalTheory.T.lattice_eigen_vector_bundle 𝔐.X Ω 𝔐.ξ 𝔐.Li E 𝔐.ρ 𝔐.M.lat {⟨centre z, h⟩} _ (CMType H ⊕ CMType H) 𝔐.emb hξ hσ'
+  have hlat := (_root_.GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth 𝔐.X Ω 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M hξ 𝔐.t.semi.smooth).1
+  obtain ⟨-, hsup⟩ := _root_.GlobalTheory.CompanionTheory.Ar.EigSplit.isVBOn_eigSp 𝔐.X Ω 𝔐.ξ 𝔐.Li E 𝔐.ρ 𝔐.M.lat {⟨centre z, h⟩} _ (CMType H ⊕ CMType H) 𝔐.emb hξ hσ'
     (by rw [← hcard, Nat.card_eq_fintype_card])
     (fun p _ => by
       obtain ⟨U, hU, b, hb, H⟩ := hlat p trivial
@@ -288,7 +296,7 @@ theorem on_S {p : ℕ} (hpS : p ∈ S) (κ : Ω) (hfree : HT.HTFree 𝔐 p) (hsa
   have hp : p.Prime := 𝔐.S_prime p hpS
   haveI : Fact p.Prime := ⟨hp⟩
   have h : genPt 𝔐.ξ ⤳ centre z := 𝔐.all _
-  obtain ⟨h1, h2, -⟩ := GlobalTheory.T.sandwich_point_over_field_ext E H D l Xo c _ _ Y S Ω K J y 𝔐 p hpS κ hfree hsand C v R hv hvp z EC MC ρC s σ κz
+  obtain ⟨h1, h2, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HT.hodge_tate_model_point_sandwich E H D l Xo c _ _ Y S Ω K J y 𝔐 p hpS κ hfree hsand C v R hv hvp z EC MC ρC s σ κz
     hact hσ hκ
   have hpu : ¬ IsUnit (p : R) := fun hu => by
     have := hv.one_of_isUnit hu

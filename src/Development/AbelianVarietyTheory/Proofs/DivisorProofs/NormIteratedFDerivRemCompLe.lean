@@ -311,7 +311,7 @@ theorem charForm_kills_linear_mul : ∀ (V : Type) [NormedAddCommGroup V] [Norme
     simp only [u, SchwartzMap.sub_apply, SchwartzMap.smul_apply, hft, hg, rem, smul_eq_mul]
     ring
   have hTu : ∀ t : ℝ, T (u t) = -I * T g := fun t => by
-    simp only [u, map_sub, map_smul, hTft, sub_self, smul_zero, smul_eq_mul, zero_sub]
+    simp only [u, map_sub, map_smul, hTft, sub_self, smul_eq_mul]
     ring
   have hlim : Filter.Tendsto u (nhdsWithin 0 {0}ᶜ) (nhds 0) := by
     rw [(schwartz_withSeminorms ℂ V ℂ).tendsto_nhds u 0]

@@ -3,11 +3,15 @@ module
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.Reframe
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
-public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FlagChartsCoverFramedFieldPointsStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.FlagChartsCoverFramedFieldPoints
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointBaseChangeAlgebraMap
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedModuliAlgebraicLawsChartWeightIntegralityStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointReducedFromTestRingStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.UnitIndepOfCharts
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedModuliAlgebraicLawsChartWeightIntegrality
 public import Formalism.LocalToGlobal.ProjectiveLattices.GenFrPf
+import Formalism.LocalToGlobal.ProjectiveLattices.AllTest
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointReducedFromTestRing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,10 +61,10 @@ theorem evLaws_genFr_atlas : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   intro E _ _ _ H Dw l Xo c
   have hB : Out.SecBaseChangeSt := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange
   have hT : Out.SecTwistSt := GlobalTheory.abelianSchemeLaws_all.2.secTwist
-  obtain ⟨-, -, hwd, hwt, hint, -⟩ := GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hB E H Dw l Xo c
+  obtain ⟨-, -, hwd, hwt, hint, -⟩ := _root_.GlobalTheory.Frames.algebraic_laws hB E H Dw l Xo c
   have hbc : FrBC Xo c := fun S T _ _ _ _ φ y =>
     GlobalTheory.Frames.FramedBaseChange.exists_frMap hB E H Dw l Xo c S T φ y
-  exact ⟨⟨hwd, GlobalTheory.T.framedPoint_reduced_from_testRing hB E H Dw l Xo c, hwt, hbc⟩, hint, genFrEx_of hT,
-    GlobalTheory.T.flagCharts_cover_framed_fieldPoints hT E H Dw l Xo c hbc⟩
+  exact ⟨⟨hwd, _root_.GlobalTheory.Frames.allTest_of_secBaseChange hB E H Dw l Xo c, hwt, hbc⟩, hint, genFrEx_of hT,
+    _root_.GlobalTheory.Reg.atlas hT E H Dw l Xo c hbc⟩
 
 end GlobalTheory.Reg

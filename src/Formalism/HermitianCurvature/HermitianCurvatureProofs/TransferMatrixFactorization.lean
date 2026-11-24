@@ -73,7 +73,7 @@ theorem eU_apply (a : S) (i j : Fin 2) (x y : Ix S) :
       · simp only [Function.update_apply, if_neg hb]
         exact (h3 b hb).symm
     · rintro ⟨h1, rfl⟩
-      exact ⟨h1, by simp, fun b hb => by simp [Function.update_apply, hb]⟩
+      exact ⟨h1, by simp, fun b hb => by simp [hb]⟩
   simp only [eU, Matrix.of_apply, key]
 
 theorem eU_mul_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
@@ -89,8 +89,8 @@ theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
   show (eU c i j : SlopeTestRemainingChoices S A) * eU a k l = eU a k l * eU c i j
   ext x y
   rw [eU_mul_apply, eU_mul_apply, eU_apply, eU_apply]
-  have h1 : Function.update x c j a = x a := by simp [Function.update_apply, Ne.symm hc]
-  have h2 : Function.update x a l c = x c := by simp [Function.update_apply, hc]
+  have h1 : Function.update x c j a = x a := by simp [Ne.symm hc]
+  have h2 : Function.update x a l c = x c := by simp [hc]
   have h3 : Function.update (Function.update x c j) a l = Function.update (Function.update x a l) c j :=
     Function.update_comm hc j l x
   rw [h1, h2, h3]
@@ -200,13 +200,11 @@ theorem wordModule_of (hS : StartModule) (hP : LetterPlus) (hM : LetterMinus) (h
       all_goals first
         | (simp [RRw, hpl]; done)
         | (ext Y; simp [Reg, RegL, TTw, qw, hpl, and_comm]; done)
-        | (funext Y; simp [TTw, qw, hpl])
     · have key := hP K A S _ _ _ _ l.intersection_update_fsHerm_neg_one l.pt hMod hFR hFT hmem hstar
       convert key using 1
       all_goals first
         | (simp [RRw, hpl]; done)
         | (ext Y; simp [Reg, RegL, TTw, qw, hpl, and_comm]; done)
-        | (funext Y; simp [TTw, qw, hpl])
 
 end Formalism.FourierDecayAlt.P.Wd5
 

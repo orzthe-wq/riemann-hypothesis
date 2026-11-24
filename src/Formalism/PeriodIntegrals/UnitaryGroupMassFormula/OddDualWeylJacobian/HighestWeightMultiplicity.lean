@@ -162,7 +162,7 @@ theorem good_rowGen (a b : Fin k) (hδ : ∀ s, wt (a, s) = wt (b, s) + δ) {d :
       (fun i _ => by rw [map_pow]; exact good_pow (good_rowGen_X a b hδ i) (m i))
     refine good_congr ?_ (good_mul h1 h2)
     rw [← hw, Finsupp.weight_apply, Finsupp.sum]
-    simp [nsmul_eq_mul]
+    simp
 
   rw [f.as_sum, map_sum]
   intro i
@@ -173,7 +173,7 @@ theorem good_rowGen (a b : Fin k) (hδ : ∀ s, wt (a, s) = wt (b, s) + δ) {d :
 
 theorem weight_cast (w : Fin k × Fin k → ℕ) (α : Fin k × Fin k →₀ ℕ) :
     Finsupp.weight (fun v => (w v : ℤ)) α = (Finsupp.weight w α : ℤ) := by
-  simp [Finsupp.weight_apply, Finsupp.sum, nsmul_eq_mul]
+  simp [Finsupp.weight_apply, Finsupp.sum]
 
 theorem toZ {w : Fin k × Fin k → ℕ} {f : MvPolynomial (Fin k × Fin k) R} {d : ℕ}
     (h : IsWeightedHomogeneous w f d) : IsWeightedHomogeneous (fun v => (w v : ℤ)) f (d : ℤ) := by
@@ -242,7 +242,7 @@ theorem hw_tot (ν : Fin k → ℕ) : IsHomogeneous (hw R (le_refl k) ν) (degW 
   intro s _
   have h0 : IsHomogeneous (lpMinor R (s.val + 1) (by omega) (by omega) : MvPolynomial (Fin k × Fin k) R)
       (s.val + 1) := lpMinor_tot _ _ _
-  convert h0.pow (ν s - nuNext ν s) using 1 <;> exact Nat.mul_comm _ _
+  convert h0.pow (ν s - nuNext ν s) using 1
 
 theorem rowGen_diag_X (a : Fin k) (v : Fin k × Fin k) :
     rowGen R a a (X v) = (1 + Polynomial.X) ^ (rowW a v) * Polynomial.C (X v) := by

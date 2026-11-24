@@ -129,9 +129,7 @@ theorem realPt_spec {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (z : D.what�
   · ext i j; exact hσ.fin _
   · ext i j; exact hσ.comp _ _
 
-theorem compAt_mul (θ : InfFam D) (τ : D.what₂.Tau) {m n k : ℕ} (x : Mx D m n) (y : Mx D n k) :
-    compAt θ τ (HMul.hMul x y : Mx D m k) = compAt θ τ x * compAt θ τ y :=
-  Matrix.map_mul (f := (θ τ).comp (infPart D))
+alias compAt_mul := _root_.GlobalTheory.WeilVacMove.compAt_mul
 
 theorem compAt_rat {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m n : ℕ} (U : Matrix (Fin m) (Fin n) D.host.E) :
     compAt θ τ (U.map (incA D)) = U.map (tauE D τ) := by

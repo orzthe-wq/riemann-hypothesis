@@ -3,7 +3,9 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.SplitCompsOfIsTowerOf
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointNormalCoordsStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointNormalCoords
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -41,7 +43,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 
 @[expose] public section
 
@@ -55,7 +56,7 @@ theorem exists_factor_XF_of_genericPoint : ∀ (E : Type) [Field E] [NumberField
     (ξ : Spec (CommRingCat.of Ω) ⟶ Y.X), GlobalTheory.CompanionTheory.Ar.genPt ξ ∈ genericPoints Y.X →
       ∃ y₀ : Sp Ω ⟶ Xo.XF c, ξ = y₀ ≫ Y.j := by
   intro E _ _ _ H D l Xo c Y Ω _ ξ hξ
-  obtain ⟨K, _, _, n, x, y, ht, -, he⟩ := GlobalTheory.T.generic_point_normal_coords E H D l Xo c Y _ hξ
+  obtain ⟨K, _, _, n, x, y, ht, -, he⟩ := _root_.GlobalTheory.CompanionTheory.Ar.XR.exists_cpt_of_genericPoint E H D l Xo c Y _ hξ
   obtain ⟨i, hi⟩ := GlobalTheory.CompanionTheory.Ar.TowerOfTest.factor (y ≫ Y.j) ht.gen ξ he.symm
   exact ⟨Spec.map (CommRingCat.ofHom i) ≫ y, by rw [hi, Category.assoc]⟩
 

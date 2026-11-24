@@ -3,9 +3,13 @@ module
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.SaturatedBaseChange.BcBackOffTOfSat
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsUnitarisableOfIsSpehOne
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryLocalPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleRepIsotypicOfCentraliserFactorStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceUnitaryLocalPointsEquivGLStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryLocalPoints
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.Order.CompletePartialOrder
+public import Mathlib.RepresentationTheory.Irreducible
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleRepIsotypicOfCentraliserFactor
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceUnitaryLocalPointsEquivGL
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,8 +63,8 @@ namespace PositivityTheory.AutomorphicGaloisHodgeTate.SaturatedBaseChange
 theorem compUnique : CompUnique := by
   intro E _ _ _ n π hπ w hw P P' h h'
   let Ψ : GlobalTheory.DefU.AutSub E n := ⟨π, hπ⟩
-  obtain ⟨e, he⟩ := GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL E n w hw
-  obtain ⟨r, -, -, hr2⟩ := GlobalTheory.T.exists_continuous_retraction_onto_unitaryLocalPoints E n w
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.locU_equiv_GL E n w hw
+  obtain ⟨r, -, -, hr2⟩ := _root_.GlobalTheory.DefU.LocRet.exists_ret E n w
   have hcl : ∀ g, cLoc w ((e.symm g : locU n w) : UA E n) = g := fun g => by rw [← he, e.apply_symm_apply]
   let s : GL (Fin n) (w.adicCompletion E) →* UA E n := (locU n w).subtype.comp e.symm.toMulEquiv.toMonoidHom
   have mk : ∀ Q : LocIrr w n, IsCompAlong π (locU n w) ((cLoc w).comp (locU n w).subtype) Q.ρ →
@@ -71,7 +75,7 @@ theorem compUnique : CompUnique := by
       exact this)⟩, fun h0 => hf0 (LinearMap.ext fun v => congrArg Subtype.val (DFunLike.congr_fun h0 v))⟩
   obtain ⟨F, hF⟩ := mk P h
   obtain ⟨F', hF'⟩ := mk P' h'
-  refine (GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor (UA E n) (GL (Fin n) (w.adicCompletion E)) Ψ.V P.V P'.V Ψ.rep s P.ρ P'.ρ Ψ.isIrreducible_rep P.irred
+  refine (_root_.GlobalTheory.CuspRep.CompUniq.isotypic (UA E n) (GL (Fin n) (w.adicCompletion E)) Ψ.V P.V P'.V Ψ.rep s P.ρ P'.ρ Ψ.isIrreducible_rep P.irred
     P'.irred (fun g => ⟨e (r g), fun y => ?_⟩) F hF).2 F' hF'
   have : s (e (r g)) = (r g : UA E n) := congrArg Subtype.val (e.symm_apply_apply (r g))
   rw [this]

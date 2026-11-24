@@ -155,19 +155,6 @@ theorem eig_mem {W ι : Type*} [AddCommGroup W] [Module ℂ W] [Fintype ι] [Dec
   rw [h2]
   exact Submodule.smul_mem _ _ (hmem u)
 
-theorem schur_core {Wq Wp : Type*} [AddCommGroup Wq] [Module ℂ Wq] [FiniteDimensional ℂ Wq]
-    [AddCommGroup Wp] [Module ℂ Wp] [FiniteDimensional ℂ Wp]
-    (S' : Submodule ℂ Wq) (S : Submodule ℂ Wp) (Gq : Set (Module.End ℂ Wq)) (Gp : Set (Module.End ℂ Wp))
-    (hirr' : ∀ K : Submodule ℂ Wq, K ≤ S' → (∀ A ∈ Gq, ∀ v ∈ K, A v ∈ K) → K = ⊥ ∨ K = S')
-    (hirr : ∀ K : Submodule ℂ Wp, K ≤ S → (∀ B ∈ Gp, ∀ w ∈ K, B w ∈ K) → K = ⊥ ∨ K = S)
-    (hst : ∀ A ∈ Gq, ∀ v ∈ S', A v ∈ S')
-    (E Z : Wq →ₗ[ℂ] Wp) (hES : ∀ v ∈ S', E v ∈ S) (hZS : ∀ v ∈ S', Z v ∈ S)
-    (hq : ∀ A ∈ Gq, ∃ B : Module.End ℂ Wp, E ∘ₗ A = B ∘ₗ E ∧ Z ∘ₗ A = B ∘ₗ Z)
-    (hp : ∀ B ∈ Gp, ∃ A ∈ Gq, E ∘ₗ A = B ∘ₗ E)
-    (hne : ∃ v ∈ S', E v ≠ 0) :
-    ∃ c : ℂ, ∀ v ∈ S', Z v = c • E v := by
-  first | exact Bl.general_b_fact_second_alt_form.goal1 .. | (apply Bl.general_b_fact_second_alt_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second_alt_form.goal1 <;> assumption)
-
 end LinAlg
 
 section Geo
@@ -431,7 +418,7 @@ theorem lie_weight_at_most_holds : KLAtMost := by
     have h2 := smul_right_injective _ hs h1
     exact (add_right_cancel h2).symm
 
-  obtain ⟨c0, hc0⟩ := KLAM.schur_core (S' σ0) (S τ0)
+  obtain ⟨c0, hc0⟩ := _root_.Bl.general_b_fact_second_alt_form.goal1 (S' σ0) (S τ0)
     ((fun h => (π' h : Wq →ₗ[ℂ] Wq)) '' {h | h ∈ UWset P.k P.r z' ∧ h *ᵥ e' = e'})
     ((fun h => (π h : Wp →ₗ[ℂ] Wp)) '' {h | h ∈ UWset P.k P.r z ∧ h *ᵥ (g *ᵥ f) = g *ᵥ f})
     (fun K hK hst => (hirr' σ0).2 K hK (fun h hh he v hv => hst _ ⟨h, ⟨hh, he⟩, rfl⟩ v hv))

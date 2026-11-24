@@ -49,6 +49,7 @@ import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsMatchOver
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RangeSndRel
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormal
 
 @[expose] public section
 
@@ -113,7 +114,7 @@ theorem exists_ctrl_conj [CompleteSpace H] {ε : Fin n → Bool} {σ : Mx n → 
     obtain ⟨Y, hY, rfl⟩ := List.mem_map.1 hX
     exact GlobalTheory.SmVecModel.lie_conj_inv hP hG (hS₁ l' hl' Y hY)
   · rw [sobNorm_conj_back σ hP, sobNorm_conj_back σ hP]
-    exact hc _ (GlobalTheory.TypeAtCompare.conj_mem hP hG hg) w (GlobalTheory.SmVecModel.smoothVec_of_conj hP hG hw)
+    exact hc _ (_root_.GlobalTheory.HolDict.ModelRep.conj_mem hP hG hg) w (GlobalTheory.SmVecModel.smoothVec_of_conj hP hG hw)
   · rw [sobNorm_conj_back σ hP, sobNorm_conj σ hP]
     exact hd w (GlobalTheory.SmVecModel.smoothVec_of_conj hP hG hw)
 
@@ -150,7 +151,7 @@ theorem hasTypeAll_single [CompleteSpace H] {ε : Fin n → Bool} {σ : Mx n →
         _ ≤ |C₀| * sobNorm (fun g => σ (P * g * P⁻¹)) S₀ w := h4
         _ ≤ |C₀| * (A * sobNorm (fun g => σ (P * g * P⁻¹)) S w) := mul_le_mul_of_nonneg_left h2 (abs_nonneg _)
         _ = |C₀| * A * sobNorm (fun g => σ (P * g * P⁻¹)) S w := by ring
-    · simp [hi, Pi.single_eq_of_ne hi]
+    · simp [hi]
   · refine (hasSum_single 0 fun i hi => ?_).summable
     simp [Pi.single_eq_of_ne hi]
   · rw [← hf g hg]

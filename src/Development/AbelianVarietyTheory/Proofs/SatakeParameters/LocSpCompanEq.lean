@@ -99,7 +99,7 @@ theorem _root_.GlobalTheory.TwV.CompSp.locSp_compan_eq : ∀ {R : _root_.Formali
       Submodule.subset_span ⟨_, key x hx, rfl⟩
     have h2 : (fun k => ρ ((T • x) k)) = (u : W) • (fun k => ρ (x k)) := by
       funext k
-      simp [hu, map_nsmul, Nat.cast_smul_eq_nsmul]
+      simp [hu, Nat.cast_smul_eq_nsmul]
     have h3 := Submodule.smul_mem _ ((u⁻¹ : Wˣ) : W) h1
     rwa [h2, smul_smul, Units.inv_mul, one_smul] at h3
   · exact Submodule.span_mono (Set.image_mono hsub)

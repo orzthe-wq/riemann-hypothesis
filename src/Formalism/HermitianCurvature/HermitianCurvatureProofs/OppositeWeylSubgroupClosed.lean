@@ -308,7 +308,6 @@ abbrev mid (k r : ℕ) (i : Fin (2 * r + k + 1)) : Prop := r ≤ i.val ∧ i.val
 def midx {i : Fin (2 * r + k + 1)} (hi : mid k r i) : Fin (k + 1) := ⟨i.val - r, by have := hi; omega⟩
 
 lemma wI_midx {i : Fin (2 * r + k + 1)} (hi : mid k r i) : wI k r (midx hi) = i := by
-  have := hi
   apply Fin.ext
   simp only [wI, midx]
   omega
@@ -496,9 +495,8 @@ lemma Hb_conjT : (Hb k)ᴴ = Hb k := by
   by_cases h : j = Fin.last k <;> simp [h]
 
 lemma EmT_Hpk : (Em k r)ᵀ * Hpk k r = Hb k * (Em k r)ᵀ := by
-  have h := congrArg Matrix.conjTranspose (Hpk_Em (k := k) (r := r))
-  rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Em_conjT, (hpkFacts k r).1, Hb_conjT] at h
-  exact h
+  simpa only [Matrix.conjTranspose_mul, Em_conjT, (hpkFacts k r).1, Hb_conjT] using
+    congrArg Matrix.conjTranspose (Hpk_Em (k := k) (r := r))
 
 lemma emb_form (a : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     (embWb k r a)ᴴ * Hpk k r * embWb k r a =
@@ -508,20 +506,16 @@ lemma emb_form (a : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
 
 lemma Hpk_eq : Hpk k r =
       Em k r * Hb k * (Em k r)ᵀ + (1 - Em k r * (Em k r)ᵀ) * Hpk k r * (1 - Em k r * (Em k r)ᵀ) := by
-  have h := emb_form (k := k) (r := r) 1
-  rw [emb_one, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one, Matrix.conjTranspose_one, Matrix.one_mul,
-    Matrix.mul_one] at h
-  exact h
+  simpa [emb_one] using emb_form (k := k) (r := r) 1
 
 lemma sand_inj {a b : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (h : Em k r * a * (Em k r)ᵀ = Em k r * b * (Em k r)ᵀ) :
     a = b := by
-  have h2 : (Em k r)ᵀ * (Em k r * a * (Em k r)ᵀ) * Em k r = (Em k r)ᵀ * (Em k r * b * (Em k r)ᵀ) * Em k r := by rw [h]
   have e : ∀ c : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ, (Em k r)ᵀ * (Em k r * c * (Em k r)ᵀ) * Em k r = c := by
     intro c
     calc (Em k r)ᵀ * (Em k r * c * (Em k r)ᵀ) * Em k r = ((Em k r)ᵀ * Em k r) * c * ((Em k r)ᵀ * Em k r) := by
           simp only [Matrix.mul_assoc]
       _ = c := by rw [EmT_Em, Matrix.one_mul, Matrix.mul_one]
-  rwa [e, e] at h2
+  simpa only [e] using congrArg (fun x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => (Em k r)ᵀ * x * Em k r) h
 
 lemma emb_mem (a : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     embWb k r a ∈ GV k r ↔ aᴴ * Hb k * a = Hb k := by
@@ -536,9 +530,8 @@ lemma emb_mem (a : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
 
 lemma emb_linv (a : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : (Em k r)ᵀ * embWb k r a * Em k r = a := by
   rw [emb_eq, Matrix.mul_add, Matrix.add_mul, EmT_Q, Matrix.zero_mul, add_zero]
-  calc (Em k r)ᵀ * (Em k r * a * (Em k r)ᵀ) * Em k r = ((Em k r)ᵀ * Em k r) * a * ((Em k r)ᵀ * Em k r) := by
-        simp only [Matrix.mul_assoc]
-    _ = a := by rw [EmT_Em, Matrix.one_mul, Matrix.mul_one]
+  simp only [Matrix.mul_assoc, EmT_Em, Matrix.mul_one]
+  rw [← Matrix.mul_assoc, EmT_Em, Matrix.one_mul]
 
 lemma mulVec_bvec {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (j l : Fin n) : (A *ᵥ bvec j) l = A l j := by
   simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
@@ -556,13 +549,8 @@ lemma hpk_e (a : Fin r) : Hpk k r *ᵥ bvec (eI k r a) = bvec (esI k r a) := by
   split_ifs <;> first | rfl | (exfalso; omega)
 
 lemma hpk_es (a : Fin r) : Hpk k r *ᵥ bvec (esI k r a) = bvec (eI k r a) := by
-  ext l
-  rw [mulVec_bvec, bvec_apply]
-  have := a.isLt
-  have := l.isLt
-  unfold Hpk
-  simp only [eI, esI, Fin.ext_iff]
-  split_ifs <;> first | rfl | (exfalso; omega)
+  rw [← hpk_e (k := k) (r := r) a]
+  simp only [Matrix.mulVec_mulVec, (hpkFacts k r).2.1, Matrix.one_mulVec]
 
 lemma not_mid_cases (i : Fin (2 * r + k + 1)) (hi : ¬ mid k r i) : ∃ a : Fin r, i = eI k r a ∨ i = esI k r a := by
   have := i.isLt
@@ -648,13 +636,11 @@ lemma Jm_εb : Jm (εb k) = Hb k := by
   by_cases h : j = Fin.last k <;> simp [h]
 
 lemma emb_cont : Continuous fun x : Fin (k + 1) → Fin (k + 1) → ℂ => (embWb k r (Matrix.of x) : Mt k r) := by
-  have : (fun x : Fin (k + 1) → Fin (k + 1) → ℂ => (embWb k r (Matrix.of x) : Mt k r)) =
-      fun x => (Em k r * Matrix.of x * (Em k r)ᵀ + (1 - Em k r * (Em k r)ᵀ) : Mat k r) := by
-    funext x
-    rw [emb_eq]
-  rw [this]
-  exact (Continuous.matrix_mul (Continuous.matrix_mul continuous_const continuous_id) continuous_const).add
-    continuous_const
+  have h : Continuous (fun x : Fin (k + 1) → Fin (k + 1) → ℂ =>
+      (Em k r * Matrix.of x * (Em k r)ᵀ + (1 - Em k r * (Em k r)ᵀ) : Mat k r)) :=
+    (Continuous.matrix_mul (Continuous.matrix_mul continuous_const continuous_id) continuous_const).add
+      continuous_const
+  simpa only [emb_eq] using h
 
 lemma emb_closedEmb :
     IsClosedEmbedding fun x : Fin (k + 1) → Fin (k + 1) → ℂ => (embWb k r (Matrix.of x) : Mt k r) := by
@@ -662,9 +648,8 @@ lemma emb_closedEmb :
     fun y => ((Em k r)ᵀ * Matrix.of y * Em k r : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
   have hc' : Continuous c' :=
     Continuous.matrix_mul (Continuous.matrix_mul continuous_const continuous_id) continuous_const
-  have hli : Function.LeftInverse c' fun x : Fin (k + 1) → Fin (k + 1) → ℂ => (embWb k r (Matrix.of x) : Mt k r) := by
-    intro x
-    exact emb_linv (Matrix.of x)
+  have hli : Function.LeftInverse c' (fun x : Fin (k + 1) → Fin (k + 1) → ℂ =>
+      (embWb k r (Matrix.of x) : Mt k r)) := fun x => emb_linv (Matrix.of x)
   exact hli.isClosedEmbedding hc' emb_cont
 
 theorem haarWb : HaarWbExists := by
@@ -841,8 +826,7 @@ lemma Em_EmT_mulVec (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) : Em k r
 
 lemma herm_wb (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) :
     herm (Hpk k r) z z = star ((Em k r)ᵀ *ᵥ z) ⬝ᵥ (Hb k *ᵥ ((Em k r)ᵀ *ᵥ z)) := by
-  have key : ∀ w : Fin (k + 1) → ℂ, herm (Hpk k r) (Em k r *ᵥ w) (Em k r *ᵥ w) = star w ⬝ᵥ (Hb k *ᵥ w) := by
-    intro w
+  have key : ∀ w : Fin (k + 1) → ℂ, herm (Hpk k r) (Em k r *ᵥ w) (Em k r *ᵥ w) = star w ⬝ᵥ (Hb k *ᵥ w) := fun w => by
     unfold herm
     rw [Matrix.mulVec_mulVec, Hpk_Em, ← Matrix.mulVec_mulVec, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec,
       Matrix.mulVec_mulVec, Em_conjT, EmT_Em, Matrix.one_mulVec]

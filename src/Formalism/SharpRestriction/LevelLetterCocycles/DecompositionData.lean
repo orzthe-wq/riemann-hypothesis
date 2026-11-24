@@ -189,8 +189,7 @@ private lemma mem_LL_of_GoodCoef_of_le_Ks {l : ℕ} [Fact l.Prime] (K LL : FinEx
       have hyK : y ∈ Ks K 1 :=
         (le_sup_right : IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1} ≤ K0 K ⊔ _)
           (IntermediateField.subset_adjoin _ _ hy)
-      have hy' : y ^ l = 1 := by simpa using hy
-      have h1 : (⟨y, hyK⟩ : ↥(Ks K 1)) ^ l = 1 := Subtype.ext (by simpa using hy')
+      have h1 : (⟨y, hyK⟩ : ↥(Ks K 1)) ^ l = 1 := Subtype.ext (by simpa using hy)
       have hpow : (τ ⟨y, hyK⟩) ^ Nat.lcm l N = 1 := by
         obtain ⟨c, hc⟩ := Nat.dvd_lcm_left l N
         rw [hc, pow_mul, ← map_pow τ, h1, map_one, one_pow]
@@ -198,16 +197,14 @@ private lemma mem_LL_of_GoodCoef_of_le_Ks {l : ℕ} [Fact l.Prime] (K LL : FinEx
     show K0 K ⊔ IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1} ≤ _
     exact sup_le ((inf_le_left : K0 K ≤ K.1).trans hK) hA
   obtain ⟨z, hz, hzx⟩ := hT x.2
-  have hzx' : z = x := Subtype.ext hzx
-  rw [← hzx']
+  rw [← Subtype.ext hzx]
   exact hz
 
 theorem CoefExt.IsGood.good_one {C : CoefExt D i w hw} (h : C.IsGood) (h2 : D.nd.l i ≠ 2)
     (hle : (D.nbr i w hw).Kw.1 ≤ Ks (D.nbr i w hw).Kw 1) : Good (D.nbr i w hw).Kw 1 C.LL := by
   delta Good
-  refine ⟨le_rfl, fun h' => absurd h' h2, hle, ?_⟩
-  intro τ x
-  exact mem_LL_of_GoodCoef_of_le_Ks _ _ _ h C.split hle τ x
+  exact ⟨le_rfl, fun h' => absurd h' h2, hle, fun τ x =>
+    mem_LL_of_GoodCoef_of_le_Ks _ _ _ h C.split hle τ x⟩
 
 end AtW
 

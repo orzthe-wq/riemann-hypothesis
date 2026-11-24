@@ -96,12 +96,9 @@ theorem UpperTheory.frame_criterion_residual :
     all_goals first
       | exact hg key
       | exact hu1 key
-      | exact hu2 key
-      | exact hu1 (inv_eq_one.mp key)
-      | exact hg (inv_eq_one.mp (by simpa [zpow_neg] using key))
   have hw : ∀ i : Fin n, Fr.w n (Fin.rev i) = - Fr.w n i := by
     intro i
-    rcases hn with rfl | rfl <;> fin_cases i <;> simp [Fr.w] <;> decide
+    rcases hn with rfl | rfl <;> fin_cases i <;> simp [Fr.w]
   have hΨc : ∀ g, F.Ψ (π (G.conj g) : F.Γ) = F.Ψ (π g : F.Γ) := by
     intro g
     rw [hc]
@@ -142,7 +139,7 @@ theorem UpperTheory.frame_criterion_residual :
       simp [W.GFrame.eps, W.pushCh, IsScalarTower.algebraMap_apply O (ResidueField O) B]
     have hs1 : ∀ (g : G.G₀) (b : B), G.star O B n (MonoidAlgebra.single g b) = MonoidAlgebra.single (G.conj g)⁻¹ (b * ((G.eps O B g ^ (1 - (n:ℤ)) : Bˣ) : B)) := by
       intro g b
-      simp [W.GFrame.star, W.GFrame.starOp, MonoidAlgebra.lift_single, MonoidAlgebra.smul_single']
+      simp [W.GFrame.star, W.GFrame.starOp, MonoidAlgebra.lift_single]
     have hrev : ∀ i z, MonoidAlgebra.lift B B G.G₀ (f i) (G.star O B n z) = MonoidAlgebra.lift B B G.G₀ (f (Fin.rev i)) z := by
       intro i z
       induction z using MonoidAlgebra.induction_linear with

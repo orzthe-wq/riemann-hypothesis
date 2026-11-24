@@ -71,8 +71,8 @@ theorem blockPoly_map {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) {d
   ext i j
   by_cases h : i = j
   · subst h
-    simp [Matrix.one_apply]
-  · simp [Matrix.one_apply, h]
+    simp
+  · simp [h]
 
 theorem r_mem' {O K : Type} [CommRing O] [CommRing K] [Algebra O K] {X : Type} (T : Subalgebra O (X → O))
     {d : Type} [Fintype d] [DecidableEq d] {G : Type} [Monoid G] (r : G →* (X → Matrix d d K)) (g : G) :

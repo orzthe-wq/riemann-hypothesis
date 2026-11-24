@@ -1,14 +1,16 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsometryEqReflOfCongrModGeThree
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMulEqZeroOfSumToReal
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothConeFaceOfInteriorCommonPoint
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ClassSums
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongruentTupleUnimodularImageOrLargeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothConeInteriorDefiniteBalancedFormStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeadingTermUniqueSupportedBalancedConeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedLatticeQuadraticSumGeDiagonalStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongruentTupleUnimodularImageOrLarge
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothConeInteriorDefiniteBalancedForm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedLatticeQuadraticSumGeDiagonal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -29,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,8 +43,85 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.Linter.Style
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeadingTermUniqueSupportedBalancedCone, Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongModOfSpan
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeadingTermUniqueSupportedBalancedCone =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeadingTermUniqueSupportedBalancedCone", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsometryEqReflOfCongrModGeThree\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMulEqZeroOfSumToReal\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothConeFaceOfInteriorCommonPoint\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.Poinc
+
+namespace GlobalTheory.Poinc
+
+theorem leadingTerm_unique : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (d : ℕ) (X : Type) [AddCommGroup X]
+    [Module O X] [Module.Finite O X] [Module.Projective O X] [Module.Free ℤ X] [Module.Finite ℤ X], IsPolFanOn bar φ X →
+    ∀ (r m : ℕ) (γ : Fin r → LinearMap.BilinForm ℤ X) (a : Fin m → X), IsCone bar φ γ → Supports bar φ d γ a →
+    ∀ (β : LinearMap.BilinForm ℤ X) (k : ℕ) (c : Fin r → ℕ), 0 < k → (∀ j, 0 < c j) → k • β = ∑ j, c j • γ j →
+    (∀ x, x ≠ 0 → 0 < β x x) → ∀ (e : X ≃ₗ[O] X) (N : ℕ), 3 ≤ N → (∀ x, CongMod N (e x) x) →
+    d * φ.evalZ β = (∑ i, β (e (a i)) (e (a i)) : ℤ) → ∀ x, e x = x := by
+  intro O _ bar φ d X _ _ _ _ _ _ hF r m γ a hγ hS β k c hk hc hβ hpos e N hN he hd
+  have hkβ : ∀ y z, (k : ℤ) * β y z = ∑ j, (c j : ℤ) * γ j y z := fun y z => by
+    have := LinearMap.congr_fun₂ hβ y z
+    simpa [LinearMap.sum_apply, nsmul_eq_mul] using this
+  have hk0 : (k : ℤ) ≠ 0 := by exact_mod_cast hk.ne'
+  have hbal : β ∈ balForms bar X := by
+    refine ⟨fun y z => mul_left_cancel₀ hk0 ?_, fun o y z => mul_left_cancel₀ hk0 ?_⟩
+    · rw [hkβ, hkβ]; exact Finset.sum_congr rfl fun j _ => by rw [(hγ.mem j).1]
+    · rw [hkβ, hkβ]; exact Finset.sum_congr rfl fun j _ => by rw [(hγ.mem j).2]
+  have hbal' : pull e.toLinearMap β ∈ balForms bar X := pull_mem _ hbal
+  have hnn' : ∀ y, 0 ≤ pull e.toLinearMap β y y := fun y => by
+    rw [pull_apply]
+    by_cases h0 : e.toLinearMap y = 0
+    · rw [h0]; simp
+    · exact (hpos _ h0).le
+  obtain ⟨k', c', hk', hβ'⟩ := hS.only _ hbal' hnn' (by rw [evalZ_pull φ e.surjective]; exact hd)
+  have hsum : ∑ j, (k' * c j) • pull e.toLinearMap (γ j) = ∑ j, (k * c' j) • γ j := by
+    refine LinearMap.ext₂ fun y z => ?_
+    have h1 := hkβ (e y) (e z)
+    have h2 := LinearMap.congr_fun₂ hβ' y z
+    simp only [LinearMap.sum_apply, LinearMap.smul_apply, pull_apply, nsmul_eq_mul, LinearEquiv.coe_coe] at h1 h2 ⊢
+    have e1 : ∑ j, ((k' * c j : ℕ) : ℤ) * γ j (e y) (e z) = k' * ∑ j, (c j : ℤ) * γ j (e y) (e z) := by
+      rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by push_cast; ring
+    have e2 : ∑ j, ((k * c' j : ℕ) : ℤ) * γ j y z = k * ∑ j, (c' j : ℤ) * γ j y z := by
+      rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by push_cast; ring
+    rw [e1, e2, ← h1, ← h2]; ring
+  have hγe : IsCone bar φ fun j => pull e.toLinearMap (γ j) := hγ.pull_equiv e
+  choose σ hσ using _root_.GlobalTheory.Poinc.intCone_face O bar φ X hF r r _ γ hγe hγ (fun j => k' * c j) (fun j => k * c' j)
+    (fun j => Nat.mul_pos hk' (hc j)) hsum
+  have hσinj : Function.Injective σ := fun i j hij => hγe.injective (by simp only [hσ, hij])
+  let σe := Equiv.ofBijective σ (Finite.injective_iff_bijective.1 hσinj)
+  have hG : ∀ y z, (∑ j, γ j) (e y) (e z) = (∑ j, γ j) y z := by
+    intro y z
+    simp only [LinearMap.sum_apply]
+    calc ∑ j, γ j (e y) (e z) = ∑ j, γ (σe j) y z :=
+          Finset.sum_congr rfl fun j _ => LinearMap.congr_fun₂ (hσ j) y z
+      _ = ∑ j, γ j y z := σe.sum_comp (fun j => γ j y z)
+  have hGpos : ∀ x, x ≠ 0 → 0 < (∑ j, γ j) x x := by
+    intro x hx
+    have h2 : 0 < (k : ℤ) * β x x := mul_pos (by exact_mod_cast hk) (hpos x hx)
+    rw [hkβ] at h2
+    obtain ⟨j, -, hj⟩ := Finset.exists_lt_of_sum_lt (show ∑ j : Fin r, (0 : ℤ) < _ by simpa using h2)
+    have hj' : 0 < γ j x x := pos_of_mul_pos_right hj (by positivity)
+    simp only [LinearMap.sum_apply]
+    exact hj'.trans_le (Finset.single_le_sum (fun i _ => hγ.nonneg i x) (Finset.mem_univ j))
+  have key := _root_.GlobalTheory.Poinc.eq_refl_of_isometry_congMod X (∑ j, γ j) hGpos e.toAddEquiv.toIntLinearEquiv (fun y z => hG y z) N hN he
+  intro x
+  simpa using LinearEquiv.congr_fun key x
+
+end GlobalTheory.Poinc
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeadingTermUniqueSupportedBalancedCone =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongModOfSpan =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongModOfSpan", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.ClassSums\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongruentTupleUnimodularImageOrLarge\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMulEqZeroOfSumToReal\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothConeInteriorDefiniteBalancedForm\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeadingTermUniqueSupportedBalancedCone\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedLatticeQuadraticSumGeDiagonal\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -168,7 +246,7 @@ end GlobalTheory.Poinc.LinearValuationCongruences
 open GlobalTheory.Poinc.LinearValuationCongruences in
 theorem GlobalTheory.Poinc.approx_of_fpre : ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (bar : O → O), BddAct bar → ∀ (q : ℕ) (φ : InvFun O), IsPolFan bar q φ → ∀ d₀, HasSupports bar q φ d₀ → ∀ (s : ℕ) (W : Matrix (Fin (s + 1)) (Fin (s + 1)) ℤ), PosW W → ∀ (N₁ p : ℕ) [Fact p.Prime], 3 ≤ N₁ → ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (Φ : FPre bar q p A), Φ.abelian₂ → Φ.Four W N₁ → Φ.Approx φ ((W 0 0).toNat * d₀) := by
   intro O _ _ bar hB q φ hφ d₀ hS s W hW N₁ p _ hN₁ A _ _ _ Φ hLam hFour y₀ e
-  obtain ⟨cW, hcW0, hcW⟩ := GlobalTheory.T.weightedLatticeQuadraticSum_ge_diagonal (s + 1) W hW
+  obtain ⟨cW, hcW0, hcW⟩ := _root_.GlobalTheory.Poinc.QWDom.qW_ge (s + 1) W hW
   obtain ⟨C, hC⟩ := hLam
   have hW00 : 0 < W 0 0 := by
     have := hW.diag_pos (i := 0)
@@ -190,11 +268,11 @@ theorem GlobalTheory.Poinc.approx_of_fpre : ∀ (O : Type) [CommRing O] [Module.
       exact φ.eval_of_subsingleton _
     refine ⟨1, ?_, fun y => Or.inl ?_⟩
     · simp [h0]
-    · simp [h0, Φ.ev_le]
+    · simp [h0]
   rw [not_subsingleton_iff_nontrivial] at hX₀
   have hPF := hφ (Φ.X y₀) (Φ.rank_le y₀)
   obtain ⟨r, γ, k₀, c₀, hγ, hk₀, hc₀, hβ₀⟩ :=
-    GlobalTheory.T.exists_smoothCone_interior_definite_balancedForm O bar φ (Φ.X y₀) hPF (Φ.β y₀) (Φ.bal y₀) (Φ.pos y₀)
+    _root_.GlobalTheory.Poinc.Cover.exists_cone O bar φ (Φ.X y₀) hPF (Φ.β y₀) (Φ.bal y₀) (Φ.pos y₀)
   obtain ⟨m, a₀, hsup⟩ := hS (Φ.X y₀) (Φ.rank_le y₀) r γ hγ
   have hD := linVal hγ.linear hsup hk₀ hβ₀
   obtain ⟨T, hT⟩ : ∃ T : ℝ, T = (W 0 0 : ℝ) * ((∑ i, Φ.β y₀ (a₀ i) (a₀ i) : ℤ) : ℝ) := ⟨_, rfl⟩
@@ -220,7 +298,7 @@ theorem GlobalTheory.Poinc.approx_of_fpre : ∀ (O : Type) [CommRing O] [Module.
     have : (T + 1) / cW ≤ K := hK ▸ le_max_right _ _
     rw [div_le_iff₀' hcW0] at this
     linarith
-  obtain ⟨N₀, hN₀⟩ := GlobalTheory.T.congruent_tuple_unimodular_image_or_large O bar hB (Φ.X y₀) (Fin m × Fin (s + 1)) a hspan K
+  obtain ⟨N₀, hN₀⟩ := _root_.GlobalTheory.Poinc.dichotomy O bar hB (Φ.X y₀) (Fin m × Fin (s + 1)) a hspan K
   obtain ⟨N, hNN₀, hN₁N, k, Q, t, hkid, hk, ⟨hTle, hTeq⟩, hfour⟩ := hFour y₀ N₀
   choose c hc using fun i => hTeq y₀ (fun u => a (i, u))
   obtain ⟨f, hf⟩ := hfour m a c (max e n)
@@ -301,7 +379,7 @@ theorem GlobalTheory.Poinc.approx_of_fpre : ∀ (O : Type) [CommRing O] [Module.
           rw [e1, hw, hkid, LinearMap.id_apply, hw', ht, mul_smul, smul_add]
           simp only [ha, ↓reduceIte]
           abel
-        have hid := GlobalTheory.T.leadingTerm_unique_supported_balancedCone O bar φ d₀ (Φ.X y₀) hPF r m γ a₀ hγ hsup (Φ.β y₀) k₀ c₀ hk₀ hc₀ hβ₀ (Φ.pos y₀) g N₁ hN₁
+        have hid := _root_.GlobalTheory.Poinc.leadingTerm_unique O bar φ d₀ (Φ.X y₀) hPF r m γ a₀ hγ hsup (Φ.β y₀) k₀ c₀ hk₀ hc₀ hβ₀ (Φ.pos y₀) g N₁ hN₁
           hcong heq
         exact hμa (funext fun iu => by rw [← hg, hid])
       · linarith
@@ -345,3 +423,7 @@ theorem GlobalTheory.Poinc.approx_of_fpre : ∀ (O : Type) [CommRing O] [Module.
     · exact Or.inr ⟨h₁, hh₁, h.trans (hpow h₁)⟩
     · exact Or.inl h
     · exact Or.inr ⟨h₂, hh₂, h.trans (hpow h₂)⟩
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongModOfSpan =====

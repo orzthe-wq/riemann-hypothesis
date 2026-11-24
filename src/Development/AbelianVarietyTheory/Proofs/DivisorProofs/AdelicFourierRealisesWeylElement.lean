@@ -170,7 +170,7 @@ theorem plancherel {φ : (κ → AF F) → ℂ} (hφ : φ ∈ schA F κ) :
     congr 1; funext y
     rw [map_mul, ← Circle.coe_inv_eq_conj, ← AddChar.map_neg_eq_inv]
     simp only [Pi.neg_apply, mul_neg, Finset.sum_neg_distrib, neg_neg]
-  simp only [e, Complex.mul_conj, Complex.normSq_eq_norm_sq, integral_ofReal] at h
+  simp only [e, Complex.mul_conj, Complex.normSq_eq_norm_sq] at h
   exact_mod_cast h
 
 theorem theta_four {φ : (κ → AF F) → ℂ} (hφ : φ ∈ schA F κ) : thetaSum F (adelicFourierPi F φ) = thetaSum F φ := by
@@ -303,9 +303,9 @@ theorem isOp_fourier : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (A
   · exact Submodule.smul_mem _ _ (compS_mem ε (hTm φ hφ))
   · exact Submodule.smul_mem _ _ (hTm _ (hTm _ (hTm _ (compS_mem ε hφ))))
   · simp only [LinearMap.smul_apply, LinearMap.comp_apply, map_smul, compS_compS, hT4 φ hφ, smul_smul,
-      inv_mul_cancel₀ hkc, mul_inv_cancel₀ hkc, one_smul]
+      mul_inv_cancel₀ hkc, one_smul]
   · simp only [LinearMap.smul_apply, LinearMap.comp_apply, map_smul, compS_compS, hT4 _ (compS_mem ε hφ), smul_smul,
-      inv_mul_cancel₀ hkc, mul_inv_cancel₀ hkc, one_smul]
+      inv_mul_cancel₀ hkc, one_smul]
   · rw [LinearMap.comp_smul]
     exact admissibleFunctional_smul _ (admissibleFunctional_comp_adelicFourier hT (admissibleFunctional_comp_compSignMul ε hl))
   · rw [LinearMap.comp_smul]

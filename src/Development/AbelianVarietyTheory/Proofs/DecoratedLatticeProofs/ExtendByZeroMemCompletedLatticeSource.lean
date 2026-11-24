@@ -63,13 +63,9 @@ theorem mxAt_mul {P : Pl D → Prop} {a b c : ℕ} {x : Mx D a b} (hx : MxAt P x
   rw [Matrix.mul_apply]
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hx i l)
 
-theorem symplO_add_left (S T : HSp D) (x x' y : WO S T) :
-    symplO S T (x + x') y = symplO S T x y + symplO S T x' y := by
-  simp only [symplO, hO, Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add (f := _)]
+alias symplO_add_left := _root_.GlobalTheory.LatVac.symplO_add_left
 
-theorem symplO_add_right (S T : HSp D) (x y y' : WO S T) :
-    symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
-  simp only [symplO, hO, Matrix.add_apply, map_add (f := _), mul_add, add_mul, Finset.sum_add_distrib]
+alias symplO_add_right := _root_.GlobalTheory.LatVac.symplO_add_right
 
 theorem symplO_conjHalf {S T : HSp D} {e : AE D} (he : IsSplitIdem D e) {x y : WO S T}
     (hx : IsHalf (cA D e) x) (hy : IsHalf (cA D e) y) : symplO S T x y = 0 := by

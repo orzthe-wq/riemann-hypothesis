@@ -88,7 +88,7 @@ theorem unipB_le_Mir (m : ℕ) : unipB k (Fin (m + 1)) ≤ Mir k m := by
   · subst hj
     simp [h2, eLast]
   · rw [h1 (Fin.last m) j (Fin.lt_last_iff_ne_last.2 hj)]
-    simp [eLast, Pi.single_apply, hj]
+    simp [eLast, hj]
 
 theorem derUnip_le_Mir (m n : ℕ) : derUnip k (m + 1) n ≤ Mir k m :=
   (derUnip_le_unipB k (m + 1) n).trans (unipB_le_Mir k m)

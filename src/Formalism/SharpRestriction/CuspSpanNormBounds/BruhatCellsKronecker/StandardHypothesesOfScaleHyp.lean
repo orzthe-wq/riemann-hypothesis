@@ -67,10 +67,9 @@ theorem std_drop {N : ℕ} (f : Fin N → ℝ) (g : ℝ) (hg : 0 ≤ g)
   intro a b hab
   have hlt : a.val < b.val := hab
   obtain ⟨d, hd⟩ : ∃ d, b.val = a.val + d + 1 := ⟨b.val - a.val - 1, by omega⟩
-  have := key d a.val (by have := b.isLt; omega)
   have eb : b = ⟨a.val + d + 1, by have := b.isLt; omega⟩ := Fin.ext hd
   rw [eb]
-  exact this
+  exact key d a.val (by have := b.isLt; omega)
 
 theorem std_two_rS (D : D7) : 2 * D.R.rS + 2 = D.R.m := by
   obtain ⟨t, ht⟩ := D.R.m_even
@@ -115,8 +114,7 @@ theorem std_castN : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ) := by
 theorem std_castM : ((2 * D.R.rS + 2 : ℕ) : ℝ) = (D.R.m : ℝ) := by rw [std_two_rS]
 
 theorem std_L_ge : 1 ≤ large₂.sc.L := by
-  unfold Scale.L
-  exact Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le
+  simpa only [Scale.L] using Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le
 
 theorem std_b_gt : 1 < large₂.sc.b := by
   unfold Scale.b
@@ -131,15 +129,13 @@ theorem std_gapAll (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.wha
     ∀ a b : Fin (2 * D.R.rS + D.R.k + 1), a < b →
       Cl * D.R.k * (D.R.m : ℝ) ^ 4 + (D.R.r : ℝ) * (D.R.m : ℝ) ^ 10 < lamD D τ a - lamD D τ b := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hgap, _, _, hCl⟩ := H.1
-  refine std_drop _ _ (by positivity) (fun s hs => ?_)
-  exact hgap τ ⟨s, by have := dimS_eq D.R; omega⟩ (by have := dimS_eq D.R; simp only; omega)
+  exact std_drop _ _ (by positivity) (fun s hs => hgap τ ⟨s, by have := dimS_eq D.R; omega⟩ (by have := dimS_eq D.R; simp only; omega))
 
 theorem std_anti (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what₂.Tau) : StrictAnti (lamD D τ) := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hCl⟩ := H.1
   intro a b hab
-  have := std_gapAll H τ a b hab
   have h0 : 0 ≤ Cl * D.R.k * (D.R.m : ℝ) ^ 4 + (D.R.r : ℝ) * (D.R.m : ℝ) ^ 10 := by positivity
-  linarith
+  linarith [std_gapAll H τ a b hab]
 
 theorem std_isHC (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what₂.Tau) : IsHCParam (lamD D τ) := by
   refine ⟨std_anti H τ, fun a => ?_⟩
@@ -166,8 +162,7 @@ theorem std_isHC (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what�
 
 theorem std_interlace (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (w : D.what₂.Word) (τ : D.what₂.Tau) :
     InterlaceS (by omega) (uS D w τ) (lamD D τ) := by
-  obtain ⟨_, _, _, _, _, _, hI, _⟩ := H.2.1
-  exact ⟨fun i hi => (hI w τ).1 i hi, fun h0 => (hI w τ).2 h0⟩
+  exact H.2.1.2.2.2.2.2.2.1 w τ
 
 end Rec
 
@@ -219,20 +214,18 @@ theorem std_cloud_bd (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 
   have hv := d1 τ (s.val + 1) (by omega) (by omega)
   have hb := h8 τ 1 le_rfl (by have := D.R.two_le_m; omega)
   have hD := std_Del_pos D
-  have hkD : 0 ≤ (D.R.k : ℝ) * (D.s.Del : ℝ) := by positivity
   have h64 : 64 ≤ Cl * (D.R.m : ℝ) := by nlinarith
   refine ⟨hv.1, ?_⟩
   have : 64 * ((D.R.k : ℝ) * (D.s.Del : ℝ)) ≤ bOne D τ 1 := by
     refine le_trans ?_ hb
-    have := mul_le_mul_of_nonneg_right h64 hkD
+    have := mul_le_mul_of_nonneg_right h64 (by positivity)
     nlinarith
   have hv2 := hv.2
   linarith
 
 theorem std_first_node (D : D7) (τ : D.what₂.Tau) :
     lamD D τ ⟨D.R.k - 1, by have := D.R.m_add_three_le_k; omega⟩ = -bOne D τ 1 := by
-  rw [std_lamD_node D τ _ (by simp)]
-  simp
+  simpa using std_lamD_node D τ ⟨D.R.k - 1, by have := D.R.m_add_three_le_k; omega⟩ (by simp)
 
 theorem std_last_node (D : D7) (τ : D.what₂.Tau) :
     lamD D τ ⟨2 * D.R.rS + D.R.k, by omega⟩ = -bOne D τ D.R.m := by

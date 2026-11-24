@@ -41,6 +41,7 @@ import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Development.AbelianVarietyTheory.Definitions.Divisors.LocallyCompactSpaceAxis
 import Development.AbelianVarietyTheory.Definitions.Divisors.LocallyCompactUnipFlag
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IwasawaIsotropicStabilizerInertPlace
 
 @[expose] public section
 
@@ -52,17 +53,9 @@ open Formalism.UG (cT bc)
 
 namespace GlobalTheory.SphEis
 
-theorem crdLaw_cT_mul {A : Type} [CommRing A] (s : A →+* A) {a b c : Type} [Fintype b] (M : Matrix a b A) (N : Matrix b c A) :
-    cT s (M * N) = cT s N * cT s M := by
-  simp [cT, Matrix.map_mul, Matrix.transpose_mul]
-
 theorem crdLaw_cT_add {A : Type} [CommRing A] (s : A →+* A) {a b : Type} (M N : Matrix a b A) :
     cT s (M + N) = cT s M + cT s N := by
   simp [cT, Matrix.map_add (f := _), Matrix.transpose_add]
-
-theorem crdLaw_cT_one {A : Type} [CommRing A] (s : A →+* A) {a : Type} [DecidableEq a] :
-    cT s (1 : Matrix a a A) = 1 := by
-  simp [cT]
 
 theorem crdLaw_plus_add {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {j m : ℕ} (J₀ : Matrix (Fin m) (Fin m) E) (b b' : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) :
@@ -72,7 +65,7 @@ theorem crdLaw_plus_add {F E : Type} [Field F] [NumberField F] [Field E] [Number
 theorem crdLaw_plus_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {j m : ℕ} (J₀ : Matrix (Fin m) (Fin m) E) (a : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) (b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) :
     plus σ J₀ (a * b) = plus σ J₀ b * cT (sigR (AF F) σ) a := by
-  simp only [plus, crdLaw_cT_mul, Matrix.mul_assoc]
+  simp only [plus, _root_.Formalism.UG.cT_mul, Matrix.mul_assoc]
 
 theorem crd_law : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), Fr σ J C D Z J₀ → ∀ lv : GL (Fin j) (AF F ⊗[F] E) →* GAd σ J, IsLv σ J C D Z lv → ∀ (u u' : GAd σ J) (b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) (c : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) (b' : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) (c' : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)), Crd σ J C D Z J₀ u b c → (Crd σ J C D Z J₀ u' b' c' → Crd σ J C D Z J₀ (u * u') (b + b') (c + c' - b * plus σ J₀ b')) ∧ (Crd σ J C D Z J₀ u' b c → u = u') ∧ ∀ α, Crd σ J C D Z J₀ (lv α * u * (lv α)⁻¹) (α.1 * b) (α.1 * c * cT (sigR (AF F) σ) α.1) := by
   intro F E _ _ _ _ _ σ n J j m C D Z J₀ hF lv hL u u' b c b' c' h
@@ -97,7 +90,7 @@ theorem crd_law : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
     have iD : (matHom _ σ J (lv α⁻¹)).1 * adMat F D = adMat F D * cT (sigR (AF F) σ) α.1 := by
       rw [hL.onD α⁻¹, inv_inv]
     have one : cT (sigR (AF F) σ) (α⁻¹).1 * cT (sigR (AF F) σ) α.1 = 1 := by
-      rw [← crdLaw_cT_mul, Units.mul_inv, crdLaw_cT_one]
+      rw [← _root_.Formalism.UG.cT_mul, Units.mul_inv, _root_.GlobalTheory.WittFrame.cT_one_r]
     have aC : (matHom _ σ J (lv α)).1 * (adMat F C * b) = adMat F C * (α.1 * b) := by
       rw [← Matrix.mul_assoc, hL.onC, Matrix.mul_assoc]
     rw [hinv]

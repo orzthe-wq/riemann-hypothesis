@@ -1,6 +1,6 @@
 module
 
-public import Formalism.SharpRestriction.GrowthBounds.RootWeights.PieAltApply
+public import Formalism.SharpRestriction.GrowthBounds.CovariantDegrees
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -25,8 +25,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -39,10 +37,87 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.GrowthBounds.RootWeights.PieAltApply, Formalism.SharpRestriction.GrowthBounds.RootWeights.PositivityConditionHolds
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.RootWeights.PieAltApply =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.RootWeights.PieAltApply", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.CovariantDegrees\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MvPolynomial Finset
+
+namespace Formalism.MainNotions.G.GLWeightTheory
+
+open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
+
+def pie_cnt {n b : ℕ} (s : Sym (Fin n) b) : Fin n → ℕ := fun i => (s : Multiset (Fin n)).count i
+
+theorem pie_hsymm (n b : ℕ) : hsymm (Fin n) ℤ b =
+    ∑ s : Sym (Fin n) b, ∏ i, (X i : MvPolynomial (Fin n) ℤ) ^ pie_cnt s i := by
+  rw [MvPolynomial.hsymm]
+  apply Finset.sum_congr rfl
+  intro s _
+  rw [Finset.prod_multiset_map_count]
+  simp only [pie_cnt]
+  apply Finset.prod_subset (Finset.subset_univ _)
+  intro i _ hi
+  rw [Multiset.mem_toFinset] at hi
+  rw [Multiset.count_eq_zero.mpr hi, pow_zero]
+
+theorem pie_alt_apply (n : ℕ) (al : Fin n → ℕ) : alt n al =
+    ∑ σ : Equiv.Perm (Fin n), Equiv.Perm.sign σ • ∏ i, (X (σ i) : MvPolynomial (Fin n) ℤ) ^ al i := by
+  unfold alt
+  rw [Matrix.det_apply]
+  rfl
+
+private theorem pie_cnt_map_equiv {n b : ℕ} (e : Fin n ≃ Fin n) (s : Sym (Fin n) b) (i : Fin n) :
+    pie_cnt (s.map e) i = pie_cnt s (e.symm i) := by
+  unfold pie_cnt
+  rw [Sym.coe_map]
+  conv_lhs => rw [← e.apply_symm_apply i]
+  exact Multiset.count_map_eq_count' e _ e.injective _
+
+theorem pie_step1 (n b : ℕ) (al : Fin n → ℕ) : alt n al * hsymm (Fin n) ℤ b =
+    ∑ s : Sym (Fin n) b, alt n (al + pie_cnt s) := by
+  rw [pie_alt_apply, pie_hsymm, Finset.sum_mul]
+  simp_rw [pie_alt_apply]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro σ _
+  rw [smul_mul_assoc, Finset.mul_sum, ← Finset.smul_sum]
+  congr 1
+  refine Finset.sum_nbij' (fun s => s.map σ.symm) (fun s => s.map σ) (by simp) (by simp) ?_ ?_ ?_
+  · intro s _
+    first
+    | simp [Sym.map_map]
+  · intro s _
+    first
+    | simp [Sym.map_map]
+  · intro s _
+    rw [← Equiv.prod_comp σ (fun i => (X i : MvPolynomial (Fin n) ℤ) ^ pie_cnt s i),
+      ← Finset.prod_mul_distrib]
+    apply Finset.prod_congr rfl
+    intro i _
+    rw [Pi.add_apply, pow_add, pie_cnt_map_equiv, Equiv.symm_symm]
+
+end Formalism.MainNotions.G.GLWeightTheory
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.RootWeights.PieAltApply =====
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.RootWeights.PositivityConditionHolds =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.RootWeights.PositivityConditionHolds", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.RootWeights.PieAltApply\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -352,3 +427,7 @@ theorem positivity_condition_holds (D : Formalism.BasicNotions.D7) : adm1 D := b
     pie_bad_zero n b lam hlam, zero_add, hset]
 
 end Formalism.MainNotions.G.GLWeightTheory
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.RootWeights.PositivityConditionHolds =====

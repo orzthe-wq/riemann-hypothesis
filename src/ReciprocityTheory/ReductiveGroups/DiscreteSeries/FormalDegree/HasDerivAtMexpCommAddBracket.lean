@@ -202,7 +202,7 @@ private theorem hasDerivAt_exp_conj_diag (U U' : Matrix (Fin n) (Fin n) ℂ) (h1
       Matrix.mul_diagonal, Matrix.of_apply]
     by_cases h : x i = x j
     · simp only [h, if_true, sub_self, shc, if_true, Complex.ofReal_one, mul_zero, zero_mul,
-        sub_zero, add_zero, one_mul]
+        add_zero, one_mul]
       rw [show (2 * (x j : ℂ)) = x j + x j by ring, Complex.exp_add]
       ring
     · simp only [h, if_false, mul_zero, zero_add]
@@ -237,7 +237,7 @@ private theorem hasDerivAt_exp_conj_diag (U U' : Matrix (Fin n) (Fin n) ℂ) (h1
     have hA2 : A = (2 : ℂ) • D := by
       rw [hA, hD]
       ext i j
-      by_cases hij : i = j <;> simp [Matrix.diagonal_apply, hij]
+      by_cases hij : i = j <;> simp [hij]
     rw [hA2, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, ← Complex.coe_smul,
       Matrix.mul_smul, Matrix.smul_mul, hW']
     congr 1
@@ -268,7 +268,6 @@ private theorem pmat_spectral {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
   conv_lhs => rw [h]
   first
   | rfl
-  | simp [Function.comp_def, Matrix.star_eq_conjTranspose, pev]
 
 theorem hasDerivAt_exp_two {ε : Fin n → Bool} (y : PCoord ε → ℂ) (W : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun s : ℝ => NormedSpace.exp ((2 : ℂ) • pmat y + (s : ℂ) • W))

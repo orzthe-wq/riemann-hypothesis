@@ -1,9 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSplitPureTypePeriodOfSignatureSplitStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HermitianLatticeSignatureSplitOfDefiniteStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HermitianLatticeSignatureSplitOfIndefiniteStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSplitPureTypePeriodOfSignatureSplit
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HermitianLatticeSignatureSplitOfDefinite
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HermitianLatticeSignatureSplitOfIndefinite
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -54,14 +54,14 @@ theorem exists_isSplit_period : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   intro E _ _ _ H D l Xo σ g ty F _ _ hty _ hc i
   have hp : (F.Di i).p = D.p := (F.sig i).1
   have hq : (F.Di i).q = D.q := (F.sig i).2
-  refine GlobalTheory.T.exists_splitPureTypePeriod_of_signatureSplit E H (F.Di i) g ty (by rw [hp, hq]; exact hty) ?_
+  refine _root_.GlobalTheory.CompRat.exists_isSplit_of_splitLat E H (F.Di i) g ty (by rw [hp, hq]; exact hty) ?_
   by_cases h0 : D.p = 0 ∨ D.q = 0
-  · exact GlobalTheory.T.hermitianLatticeSignatureSplit_of_definite E H (F.Di i) (by rw [hp, hq]; exact h0)
+  · exact _root_.GlobalTheory.CompRat.splitLat_of_definite E H (F.Di i) (by rw [hp, hq]; exact h0)
   · have h1 : D.p ≠ 0 := fun h => h0 (Or.inl h)
     have h2 : D.q ≠ 0 := fun h => h0 (Or.inr h)
     rcases hc with h | h | ⟨h3, h4⟩
     · exact absurd h h1
     · exact absurd h h2
-    · exact GlobalTheory.T.hermitianLatticeSignatureSplit_of_indefinite E H (F.Di i) h4 (by omega) (by omega) (by omega)
+    · exact _root_.GlobalTheory.SplitGenus.splitLat_of_indefinite E H (F.Di i) h4 (by omega) (by omega) (by omega)
 
 end GlobalTheory.CompRat

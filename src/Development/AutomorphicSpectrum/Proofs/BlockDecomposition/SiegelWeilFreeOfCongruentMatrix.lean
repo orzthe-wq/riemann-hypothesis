@@ -3,23 +3,24 @@ module
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.TensAll
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TrMMemFramesEIff
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
+public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureTransportStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureTransport
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FibreFamilySmul
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightActionIdentities
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightMulActionLawsStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramRightMulActionLaws
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatrixEulerProductStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatrixEulerProduct
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeStableAlmostEverywhere
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RightMultiplicationEulerProductStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelMeanValueNonnegativeStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RightMultiplicationEulerProduct
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelMeanValueNonnegative
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilMeasureOfCongruentTarget
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitProductClosurePropertiesStatement
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.EqZeroOfSetIntegral
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitProductClosureProperties
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.ProdFirstProjectionSmul
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.TensTop
 import Mathlib.Algebra.Order.Floor.Extended
@@ -122,7 +123,7 @@ theorem transport_univ {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [
       rwa [hU] at this
     rw [hr, hemb.lintegral_map, h2 (fun v => φ (e v)) (hφ.comp e.measurable), hτ.lintegral_map]
     refine lintegral_congr fun b => ?_
-    simp only [τ.symm_apply_apply, hemb.lintegral_map, Function.comp]
+    simp only [τ.symm_apply_apply, hemb.lintegral_map]
   · intro φ hφ hcs hts
     have hts' : tsupport (φ ∘ e) ⊆ U := by
       rw [tsupport_comp_eq_preimage]
@@ -451,9 +452,9 @@ theorem theta_map_free (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M : ℕ} (J 
       thetaMeas σ J μ 𝓕 (framesE σ J T) := by
   refine Measure.ext_of_lintegral _ fun Φ hΦ => ?_
   rw [lintegral_map hΦ he,
-    GlobalTheory.T.siegel_mean_value_nonnegative F E σ hcm M J hJ μ 𝓕 hH hF n _
+    _root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hcm M J hJ μ 𝓕 hH hF n _
       (fun X => Φ (rmul (AF F) X (H.map (inclR (F := F) (AF F))))) (hΦ.comp he),
-    GlobalTheory.T.siegel_mean_value_nonnegative F E σ hcm M J hJ μ 𝓕 hH hF n _ Φ hΦ]
+    _root_.GlobalTheory.CompanionTheory.SW.ThetaLint.theta_lint_eq F E σ hcm M J hJ μ 𝓕 hH hF n _ Φ hΦ]
   congr 1
   refine lintegral_congr fun h => ?_
   let eqv : (framesE σ J T' : Set (Fin n → Fin M → E)) ≃ (framesE σ J T : Set (Fin n → Fin M → E)) :=
@@ -475,7 +476,7 @@ theorem theta_map_free (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M : ℕ} (J 
     Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) (rE X.1 H)))
   rw [ratTup_rE]
   unfold actW
-  rw [(GlobalTheory.T.gram_right_mul_action_laws F E σ hcm (AF F) M n J (ratTup (AF F) X.1)
+  rw [(_root_.GlobalTheory.CompanionTheory.SW.RMulGram.rmul_gram_facts F E σ hcm (AF F) M n J (ratTup (AF F) X.1)
     (H.map (inclR (F := F) (AF F))) 1).2.2.2 _]
 
 theorem sw_free_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b) (g : GL (Fin n) E) (T' : Matrix (Fin n) (Fin n) E) (hT' : ∀ a b, σ (T' b a) = T' a b), T' = cT (σ : E →+* E) (g : Matrix (Fin n) (Fin n) E) * T * g → SWFree σ J T' hT' → SWFree σ J T hT := by
@@ -500,10 +501,10 @@ theorem sw_free_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
         = (cT (σ : E →+* E) H * cT (σ : E →+* E) G) * T * (G * H) := by
           simp only [Matrix.mul_assoc]
       _ = T := by rw [← cT_mul, hGH, cT_one, Matrix.one_mul, Matrix.mul_one]
-  obtain ⟨ai, a, hau, hai, hav⟩ := GlobalTheory.T.right_multiplication_euler_product F E σ hcm n M H hdetH
-  obtain ⟨ci, c, hcu, hci, hcv⟩ := GlobalTheory.T.hermitian_matrix_euler_product F E σ hcm n H hdetH
-  obtain ⟨-, ha0, -, -, hq, -⟩ := GlobalTheory.T.unit_product_closure_properties F ai ci a c hau hcu
-  obtain ⟨hci0, hc0, -⟩ := GlobalTheory.T.unit_product_closure_properties F ci ai c a hcu hau
+  obtain ⟨ai, a, hau, hai, hav⟩ := _root_.GlobalTheory.CompanionTheory.SW.RmulPF.rmul_product_formula F E σ hcm n M H hdetH
+  obtain ⟨ci, c, hcu, hci, hcv⟩ := _root_.GlobalTheory.CompanionTheory.SW.pf_herm F E σ hcm n H hdetH
+  obtain ⟨-, ha0, -, -, hq, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.UnitProdAlg.main F ai ci a c hau hcu
+  obtain ⟨hci0, hc0, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.UnitProdAlg.main F ci ai c a hcu hau
   have hrI : IsLocR (Ainf F) := isLocR_Ainf F hcm.1
   have hrV : ∀ v, IsLocR (Fv F v) := fun v => LocFv.isLocR_Fv F v
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩
@@ -529,7 +530,7 @@ theorem sw_free_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     exact measurable_rmul σ hcm (Fv F v) n M _
   have hE := hSW d b laminf lam hinf hv μ 𝓕 hH hF minf m hminf hm
   have hth := theta_map_free σ hcm J hJ μ 𝓕 hH hF G H T T' hGH hHG hrel' hrel.symm me
-  have hlat := (GlobalTheory.T.adelic_tuple_projections F E σ hcm d b n M).2.2.2
+  have hlat := (_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d b n M).2.2.2
 
   obtain ⟨c₀, hc₀, hden⟩ := exists_den b G
   obtain ⟨kinf, -, hkinf⟩ := coord_rescale σ hcm J (Ainf F) hrI b (scaleB b c₀ hc₀) laminf hinf.1 n minf hminf
@@ -568,7 +569,7 @@ theorem sw_free_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
     rw [e2] at h5
     exact lt_irrefl _ h5
   rw [← hth]
-  exact GlobalTheory.T.euler_product_measure_transport F E σ hcm d b n M _ (minf (hermOf (Ainf F) σ T' hT')) (minf (hermOf (Ainf F) σ T hT))
+  exact _root_.GlobalTheory.CompanionTheory.SW.EulerMove.euler_move F E σ hcm d b n M _ (minf (hermOf (Ainf F) σ T' hT')) (minf (hermOf (Ainf F) σ T hT))
     (fun v => m v (hermOf (Fv F v) σ T' hT')) (fun v => m v (hermOf (Fv F v) σ T hT))
     (fun X => rmul (AF F) X (H.map (inclR (F := F) (AF F))))
     (fun X => rmul (Ainf F) X (H.map (inclR (F := F) (Ainf F))))

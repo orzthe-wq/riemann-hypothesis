@@ -118,7 +118,7 @@ theorem cobColumn : StatCobColumn := by
   have hy₁ : ((y₁ : Ymod r χ E) : A) =
       (E - algebraMap T' A (∑ g ∈ s, t g * ((χ g : T'ˣ) : T'))) * E := by
     rw [hy₁def]
-    simp only [Submodule.coe_sum, Submodule.coe_smul, smul_eq_mul, yg, Submodule.coe_mk]
+    simp only [Submodule.coe_sum, Submodule.coe_smul, smul_eq_mul, yg]
 
     rw [Finset.sum_congr rfl (fun g _ => hterm g), ← Finset.sum_mul, Finset.sum_sub_distrib, ← hE,
     ← map_sum]

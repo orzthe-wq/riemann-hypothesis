@@ -57,7 +57,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 theorem gram_det_ne_zero (V : HSp D) : V.gram.det ≠ 0 := by
-  apply GlobalTheory.SplitOnto.gram_det_ne <;> assumption
+  apply GlobalTheory.SplitOnto.gram_det_ne
 
 theorem det_norm_one_gen {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (σ : A →+* A) (τ : B → B) (φ : A →+* B)
     (hφ : ∀ x, τ (φ x) = φ (σ x)) (J g : Matrix (Fin n) (Fin n) A) (hJ : IsUnit J.det)

@@ -1,6 +1,6 @@
 module
 
-public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.MahlerSectionBasic
+public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Statements
 public import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.ContinuousHermNormGroup
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -42,6 +42,38 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.MahlerSectionBasic, GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsMahler
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.MahlerSectionBasic =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.MahlerSectionBasic", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.Statements\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights
+
+open MvPolynomial MeasureTheory
+
+noncomputable section
+
+variable {n : ℕ}
+
+def ballH (h : HermNorm n) : Set (Fin n → ℂ) := {v | h.norm v < 1}
+
+def nrmv (h : HermNorm n) (v : Fin n → ℂ) : Fin n → ℂ := fun j => ((h.norm v : ℝ) : ℂ)⁻¹ * v j
+
+end
+
+end GroundTheory.Heights₂.Heights
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.MahlerSectionBasic =====
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsMahler =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsMahler", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.MahlerSectionBasic\npublic import GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.ContinuousHermNormGroup\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -74,7 +106,7 @@ structure IsChowCycleData (Z : ProjCycle ℂ n) (e δ : ℕ) (f : MvPolynomial (
 
   chow : IsChowFormCycle Z (e + 1) f
 
-  homog : IsMultiHomog δ f
+  homog : Heights.IsMultiHomog δ f
 
 def MahlerSectionDim (e : ℕ) : Prop :=
   ∀ (n δ : ℕ) (h : HermNorm n) (Z : ProjCycle ℂ n) (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ)
@@ -107,12 +139,12 @@ def BallVolume.Statement : Prop :=
   ∀ (n : ℕ) (h : HermNorm n), 0 < volume (ballH h) ∧ volume (ballH h) < ⊤
 
 def MahlerAverageSplit.Statement : Prop :=
-  ∀ (n e δ : ℕ) (h : HermNorm n) (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ), f ≠ 0 → IsMultiHomog δ f →
+  ∀ (n e δ : ℕ) (h : HermNorm n) (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ), f ≠ 0 → Heights.IsMultiHomog δ f →
     IntegrableOn (fun v => mahler h e (specFirst f (nrmv h v))) (ballH h) ∧
       mahler h (e + 1) f = ⨍ v in ballH h, mahler h e (specFirst f (nrmv h v))
 
 def MahlerIntegrand.Statement : Prop :=
-  ∀ (n k δ : ℕ) (h : HermNorm n) (f : MvPolynomial (Fin k × Fin n) ℂ), f ≠ 0 → IsMultiHomog δ f →
+  ∀ (n k δ : ℕ) (h : HermNorm n) (f : MvPolynomial (Fin k × Fin n) ℂ), f ≠ 0 → Heights.IsMultiHomog δ f →
     IntegrableOn (fun u => Real.log ‖eval (nrmGroups h k u) f‖) (ballProd h k)
 
 def SphereMeanFubini.Statement : Prop :=
@@ -134,7 +166,7 @@ def CycleAverage.Statement : Prop :=
 def ConeAverage.Statement : Prop :=
   ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
     (g : MvPolynomial (Fin (e + 1) × Fin n) ℂ),
-    IsProjPrime W → IsChowForm W (e + 1) g → IsMultiHomog δ g →
+    IsProjPrime W → IsChowForm W (e + 1) g → Heights.IsMultiHomog δ g →
       IntegrableOn (fun v => coneIntegral h W e (fsLog h (nrmv h v))) (ballH h) ∧
         ⨍ v in ballH h, coneIntegral h W e (fsLog h (nrmv h v)) = -(δ * (harmonic (n - 1) : ℝ)) / 2
 
@@ -177,11 +209,11 @@ def FsLogMeasurable.Statement : Prop :=
 
 def ChowDegreePos.Statement : Prop :=
   ∀ (n k δ : ℕ) (W : Ideal (MvPolynomial (Fin n) ℂ)) (g : MvPolynomial (Fin k × Fin n) ℂ),
-    0 < k → IsProjPrime W → IsChowForm W k g → IsMultiHomog δ g → 1 ≤ δ
+    0 < k → IsProjPrime W → IsChowForm W k g → Heights.IsMultiHomog δ g → 1 ≤ δ
 
 def SpecFirstHomog.Statement : Prop :=
   ∀ (n k δ : ℕ) (f : MvPolynomial (Fin (k + 1) × Fin n) ℂ) (u : Fin n → ℂ),
-    IsMultiHomog δ f → IsMultiHomog δ (specFirst f u)
+    Heights.IsMultiHomog δ f → Heights.IsMultiHomog δ (specFirst f u)
 
 def ChowFormAssoc.Statement : Prop :=
   ∀ (F : Type) [Field F] (n k : ℕ) (I : Ideal (MvPolynomial (Fin n) F))
@@ -203,3 +235,6 @@ end MahlerInhabit
 end
 
 end GroundTheory.Heights₂.Heights
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.ArithmeticBezout.StatementsMahler =====

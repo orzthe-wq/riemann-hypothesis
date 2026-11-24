@@ -157,7 +157,7 @@ theorem act_nU (u t : A F) (v : V4 F) : D.act (gl (nU (D.mkE u t))) v =
   rw [herm_act]
   have hθ := D.rt_θ_sq
   ext i j; fin_cases i <;> fin_cases j <;>
-    simp [herm, conjTransposeGal_apply, Matrix.mul_apply, Fin.sum_univ_two, gl, Matrix.SpecialLinearGroup.toGL, nU, bar_mkE, mkE_def, bar_rt, D.conj, ← hθ, map_ofNat] <;> ring
+    simp [herm, conjTransposeGal_apply, Matrix.mul_apply, Fin.sum_univ_two, gl, Matrix.SpecialLinearGroup.toGL, nU, mkE_def, bar_rt, D.conj, ← hθ, map_ofNat] <;> ring
 theorem act_scalar (z : (A E)ˣ) (v : V4 F) :
     D.act (Matrix.GeneralLinearGroup.scalar (Fin 2) z) v = ((ideleNorm F E z : (A F)ˣ) : A F) • v := by
   apply D.herm_injective

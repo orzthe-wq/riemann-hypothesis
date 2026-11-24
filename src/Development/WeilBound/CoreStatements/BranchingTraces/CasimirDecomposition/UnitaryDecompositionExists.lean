@@ -70,7 +70,7 @@ variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 theorem cas_dn {μ : Fin (2 * r + k + 1) → ℝ} {U : URep k r} (hU : U.R.IsDS ε μ) {P : Mx k r} (hP : IsCayleyU k r ε P)
     (x : M (vr k r true, U)) : casT ε (fun g => U.R.σ (P⁻¹ * g * P)) (dn U P x) = dn U P (kOp U x) := by
   have hPu : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det _).1 hP.1.1
-  have hexp := (GlobalTheory.T.derivedAction_expand_matrixUnits CompanionTheory.D.gk.admitted.k_finite_smooth k r ε μ U.R hU 1 _ isUnit_one (GlobalTheory.CompanionTheory.CasimirDS.isE_one U)).2.1
+  have hexp := (_root_.GlobalTheory.dC_expand_units CompanionTheory.D.gk.admitted.k_finite_smooth k r ε μ U.R hU 1 _ isUnit_one (GlobalTheory.CompanionTheory.CasimirDS.isE_one U)).2.1
   funext c
   show _ = ∑ a, P⁻¹ a c • (kOp U x a : U.R.H)
   have e1 : ∀ l, dn U P x l = ((∑ d, P⁻¹ d l • x d : U.R.smSub) : U.R.H) := fun l => by simp [dn]

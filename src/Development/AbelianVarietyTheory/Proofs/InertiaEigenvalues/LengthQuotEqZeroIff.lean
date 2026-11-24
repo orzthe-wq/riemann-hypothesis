@@ -3,19 +3,20 @@ module
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LenCob
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsUniqueHcharOfFiniteOrder
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ActDEqOfEqOne
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteQuotientCocycleSpanRhoCharLeCocyclesStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GlobalCore
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteQuotientCocycleSpanRhoCharLeCocycles
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IndexDvdClassNumber
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertiaCocyclesCharBlockOtherTypePrimeStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InertiaCocyclesCharBlockOtherTypePrime
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LenUnitQuotientPrimePowEqExponent
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCoboundariesAmongBlockCocyclesLeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCocyclesLeCoboundariesAddSelmerStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCyclotomicBlockCocyclesLeShaStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCoboundariesAmongBlockCocyclesLe
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCocyclesLeCoboundariesAddSelmer
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCyclotomicBlockCocyclesLeSha
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthEqInfKerAddMap
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthGlobalCocyclesLeSumPlacesOverStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthHeckeQuotientLeCocycleSpanDeterminantStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthInertiaRestrictionCocyclesLeStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthGlobalCocyclesLeSumPlacesOver
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthHeckeQuotientLeCocycleSpanDeterminant
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthInertiaRestrictionCocyclesLe
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalGlobalSelmer
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalisedGlobalCocyclesInLocalSpanStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalisedGlobalCocyclesInLocalSpan
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -125,14 +126,14 @@ theorem length_cocRho_le (eρ : ℕ) (hr : GoodR D.nd i r) (hS : GoodCongruenceO
       (((placesOver D.host.E (D.nd.l i)).ncard * eρ : ℕ) : ℕ∞) * lenQ i ((D.nd.l i : ℕ) : D.nd.O i) +
         (((2 * D.R.r : ℕ) : ℕ∞) * lenQ i (del51 D.nd S S.π') +
           Module.length (D.nd.O i) ↥(Br.selPi D.loc D.nbr i ρ π)) := by
-  obtain ⟨C, hC, hfin, hlen⟩ := GlobalTheory.T.length_global_cocycles_le_sum_places_over D i r Xs _ (WpO D.nd i ρ π) (cocRho i r S Xs) eρ
-    (fun w hw => ⟨hL w hw, (GlobalTheory.T.localised_global_cocycles_in_local_span D i r ρ π Xs S hr hS hπ w hw).1⟩)
+  obtain ⟨C, hC, hfin, hlen⟩ := _root_.GlobalTheory.Cut.CountL.main D i r Xs _ (WpO D.nd i ρ π) (cocRho i r S Xs) eρ
+    (fun w hw => ⟨hL w hw, (_root_.GlobalTheory.Cut.LocCoc.main D i r ρ π Xs S hr hS hπ w hw).1⟩)
   refine hlen.trans (add_le_add le_rfl ?_)
-  refine (GlobalTheory.T.length_cocycles_le_coboundaries_add_selmer D i ρ π C (hC.trans (GlobalTheory.T.finiteQuotientCocycleSpan_rho_char_le_cocycles D i r ρ π Xs S hr hS hπ).1) hfin ?_).trans
-    (add_le_add ((lenCob_mono i _ hC).trans (GlobalTheory.T.length_coboundaries_among_block_cocycles_le D i r ρ π Xs S hr hS hπ).1) le_rfl)
+  refine (_root_.GlobalTheory.Cut.SelClass.main D i ρ π C (hC.trans (_root_.GlobalTheory.Cut.Coc.main D i r ρ π Xs S hr hS hπ).1) hfin ?_).trans
+    (add_le_add ((lenCob_mono i _ hC).trans (_root_.GlobalTheory.Cut.Cob.main D i r ρ π Xs S hr hS hπ).1) le_rfl)
   intro v h1 h2 h3
   exact resIne_eq_bot_of_le i hC
-    (GlobalTheory.Proof.LocalGlobalSelmer.main D i r Xs S _ S.ψρ (inR'_one i r S) hU v h1 h2 h3)
+    (GlobalTheory.Proof.LocalGlobalSelmer.main D i r Xs S _ S.ψρ (_root_.GlobalTheory.Cut.Check.inR'_one i r S) hU v h1 h2 h3)
 
 
 
@@ -149,8 +150,8 @@ theorem exists_fin_unr (eχ : ℕ) (hr : GoodR D.nd i r) (hS : GoodCongruenceObj
       Module.length (D.nd.O i) ↥(cocChi i r S Xs c) ≤
         (((placesOver D.host.E (D.nd.l i)).ncard * eχ : ℕ) : ℕ∞) * lenQ i ((D.nd.l i : ℕ) : D.nd.O i) +
           (Module.length (D.nd.O i) ↥C + ∑ q ∈ D.nd.Q i, lenQ i (D.nd.zeta i q - 1)) := by
-  obtain ⟨C, hC, hfin, hlen⟩ := GlobalTheory.T.length_global_cocycles_le_sum_places_over D i r Xs _ (chiRatO D.nd i ((c : ℕ) + 1)) (cocChi i r S Xs c) eχ
-    (fun w hw => ⟨hL w hw, (GlobalTheory.T.localised_global_cocycles_in_local_span D i r ρ π Xs S hr hS hπ w hw).2 c⟩)
+  obtain ⟨C, hC, hfin, hlen⟩ := _root_.GlobalTheory.Cut.CountL.main D i r Xs _ (chiRatO D.nd i ((c : ℕ) + 1)) (cocChi i r S Xs c) eχ
+    (fun w hw => ⟨hL w hw, (_root_.GlobalTheory.Cut.LocCoc.main D i r ρ π Xs S hr hS hπ w hw).2 c⟩)
   obtain ⟨C', hC', hq, hlen'⟩ := GlobalTheory.Cut.Peel.main D i 1 C (D.nd.Q i)
   refine ⟨C', hC'.trans hC, fun f hf => hfin f (hC' hf), ?_, hlen.trans (add_le_add le_rfl
     (hlen'.trans (add_le_add le_rfl (Finset.sum_le_sum fun q hq' => ?_))))⟩
@@ -160,13 +161,13 @@ theorem exists_fin_unr (eχ : ℕ) (hr : GoodR D.nd i r) (hS : GoodCongruenceObj
     refine resIne_eq_bot_of_le i (hC'.trans hC) ?_
     by_cases h2 : v ∈ D.nd.S i
     · rcases hSv v h2 with ⟨hqd, hu⟩ | hp
-      · have h := GlobalTheory.T.length_inertia_restriction_cocycles_le D i r ρ π Xs S hr hS hπ v (Or.inl h2) hqd c
+      · have h := _root_.GlobalTheory.Cut.Quad.main D i r ρ π Xs S hr hS hπ v (Or.inl h2) hqd c
         rw [lenQ, length_quot_eq_zero_iff.mpr hu, nonpos_iff_eq_zero, Module.length_eq_zero_iff] at h
         exact Submodule.subsingleton_iff_eq_bot.mp h
-      · exact GlobalTheory.T.inertiaCocycles_charBlock_otherTypePrime D i r ρ π Xs S hr hS hπ v h2 hp c
+      · exact _root_.GlobalTheory.Cut.PolyInertia.main D i r ρ π Xs S hr hS hπ v h2 hp c
     · exact GlobalTheory.Proof.LocalGlobalSelmer.main D i r Xs S _ _ (inR'_one i r S) hU v h1 h2 h3
   · exact (length_mono (Submodule.map_mono hC)).trans
-      (GlobalTheory.T.length_inertia_restriction_cocycles_le D i r ρ π Xs S hr hS hπ q (Or.inr hq') (hQ q hq') c)
+      (_root_.GlobalTheory.Cut.Quad.main D i r ρ π Xs S hr hS hπ q (Or.inr hq') (hQ q hq') c)
 
 
 
@@ -186,7 +187,7 @@ theorem length_cocChi_le (hA : GlobalTheory.Published.GlobalArtinReciprocity) (e
           ∑ q ∈ D.nd.Q i, lenQ i (D.nd.zeta i q - 1)) := by
   obtain ⟨C, hC, hfin, hunr, hlen⟩ := exists_fin_unr i r ρ π Xs S eχ hr hS hπ hU hSv hQ c hL
   refine hlen.trans (add_le_add le_rfl (add_le_add ?_ le_rfl))
-  have hZ := hC.trans ((GlobalTheory.T.finiteQuotientCocycleSpan_rho_char_le_cocycles D i r ρ π Xs S hr hS hπ).2 c)
+  have hZ := hC.trans ((_root_.GlobalTheory.Cut.Coc.main D i r ρ π Xs S hr hS hπ).2 c)
   by_cases hc : (c : ℕ) = 0
   · rw [if_pos hc]
     rw [hc, zero_add] at hZ hfin
@@ -197,11 +198,11 @@ theorem length_cocChi_le (hA : GlobalTheory.Published.GlobalArtinReciprocity) (e
   · rw [if_neg hc]
     have h2 : 2 ≤ (c : ℕ) + 1 := by omega
     have ht : (c : ℕ) + 1 ≤ D.R.t := c.2
-    have h := GlobalTheory.T.length_cyclotomic_block_cocycles_le_sha D i ((c : ℕ) + 1) C hZ h2 ht
+    have h := _root_.GlobalTheory.Cut.ShaBound.main D i ((c : ℕ) + 1) C hZ h2 ht
       (fun f hf w hw => (hH w hw).1 _ (Finset.mem_Icc.mpr ⟨h2, ht⟩) (hfin f hf w hw)) hunr
     rw [Nat.add_sub_cancel] at h
     exact h.trans (add_le_add ((lenCob_mono i _ hC).trans
-      ((GlobalTheory.T.length_coboundaries_among_block_cocycles_le D i r ρ π Xs S hr hS hπ).2 c)) le_rfl)
+      ((_root_.GlobalTheory.Cut.Cob.main D i r ρ π Xs S hr hS hπ).2 c)) le_rfl)
 
 theorem sum_fin_ite {t : ℕ} (ht : 0 < t) (h : ℕ) (g : ℕ → ℕ) :
     ∑ c : Fin t, (if (c : ℕ) = 0 then h else g c) = h + ∑ e ∈ Finset.Ioo 0 t, g e := by
@@ -253,7 +254,7 @@ theorem main : GlobalTheory.Published.GlobalArtinReciprocity → GlobalCore := b
       push_cast
       rfl
   rw [lenQ, lenQ, hL, hd, ← hs] at hρ
-  have htot := (GlobalTheory.T.length_heckeQuotient_le_cocycleSpan_determinant D i r ρ π Xs S hr hS hπ hZ hN).trans
+  have htot := (_root_.GlobalTheory.CutDet.main D i r ρ π Xs S hr hS hπ hZ hN).trans
     (add_le_add hρ (Finset.sum_le_sum fun c _ => hχ c))
   rw [← Nat.cast_sum, ← Nat.cast_mul, ← Nat.cast_mul, ← Nat.cast_add, ← Nat.cast_add, ← Nat.cast_add] at htot
   have hnat := ENat.toNat_le_of_le_coe htot

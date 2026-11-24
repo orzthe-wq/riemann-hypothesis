@@ -112,7 +112,7 @@ theorem sum_embeddings_cm {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) (f
         rw [hr, hτ, hcc]
   rw [← (Equiv.ofBijective m hm).sum_comp, Fintype.sum_prod_type]
   refine Finset.sum_congr rfl fun τ _ => ?_
-  simp [m, Fintype.sum_bool, add_comm]
+  simp [m, add_comm]
 
 theorem trace_eq_sum_re {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) (z : E) :
     ((Algebra.trace ℚ E z : ℚ) : ℝ) = ∑ τ, 2 * (embOf (σ τ) z).re := by

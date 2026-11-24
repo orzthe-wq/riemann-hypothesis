@@ -6,46 +6,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.Unita
 public import Formalism.SharpRestriction.CuspSpanNormBounds.SGauge
 public import Formalism.SharpRestriction.CuspSpanNormBounds.CongruenceAtSplitFrobeniusHolds
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.ProductExactness
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -63,8 +23,6 @@ theorem muInf_compact_pos : ∃ K : Set X.B.I.Ginf, IsCompact K ∧ 0 < Formalis
   refine ⟨K, hK, ?_, hK.measure_lt_top⟩
   first
     | exact Measure.measure_pos_of_mem_nhds _ hKn
-    | exact MeasureTheory.Measure.measure_pos_of_mem_nhds _ hKn
-    | exact (measure_pos_of_nonempty_interior _ ⟨1, mem_interior_iff_mem_nhds.mpr hKn⟩)
 
 theorem cooOf_eq (u u' : D.what₂.Word) (sc C : ℝ) (hC : 0 < C) (h : Disint X u u' sc C) : DisintegrationConstant X u u' sc = C := by
   have hex : ∃ C, 0 < C ∧ Disint X u u' sc C := ⟨C, hC, h⟩
@@ -257,7 +215,7 @@ theorem realBracket_of (hP : ProdExact) (hA : AprimeInf) (hS : PlaceSplit)
     first | (field_simp; ring) | field_simp
   rw [e1, hprod, hcN, hY]
   simp only [_root_.zpow_neg, zpow_natCast, pow_mul, mul_pow, inv_pow]
-  first | (field_simp; ring) | field_simp | ring
+  first | (field_simp; ring) | field_simp
 
 end Reduction
 

@@ -56,4 +56,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 theorem _root_.GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem : ∀ (D : D7) (q : ℕ), q.Prime → ∀ a : AE D, (Formalism.MainNotions.StandardLatticesGL3.ZeroAt D q (finQ D a) ↔
   ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (η : AF D.host.F), IsPlaceIdem D v η → (q : 𝓞 D.host.F) ∈ v.asIdeal →
     algebraMap (AF D.host.F) (AE D) η * a = 0) := by
-  first | exact @GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff | exact GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff | (intros; apply GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff <;> assumption)
+  first | exact @GlobalTheory.ZeroAtPlaces.zeroAt_finQ_iff

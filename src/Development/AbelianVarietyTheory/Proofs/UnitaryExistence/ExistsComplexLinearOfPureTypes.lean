@@ -128,7 +128,7 @@ theorem _root_.GlobalTheory.CompRat.exists_complex_linear_of_pure_types : ∀ (E
     intro c v
     have hc : c = ((c.re - c.im / H.rt0.im * H.rt0.re : ℝ) : ℂ) +
         ((c.im / H.rt0.im : ℝ) : ℂ) * H.rt0 := by
-      apply Complex.ext <;> simp <;> field_simp <;> ring
+      apply Complex.ext <;> simp <;> field_simp
     rw [hc, add_smul, mul_smul, Complex.coe_smul, Complex.coe_smul, map_add (f := _), map_smul, map_smul,
       hrot, add_smul, mul_smul, Complex.coe_smul, Complex.coe_smul]
   have hl : ∀ v, r' (r v) = v := by

@@ -51,6 +51,8 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FnAlgC
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSectionOfChg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -87,15 +89,6 @@ theorem isDerivAt0_comp_linear {g g' : ℕ} {X : Scheme.{0}} (e : (Fin g → ℂ
   exact and_congr_right fun h0 => forall_congr' fun U => forall_congr' fun hU => forall_congr' fun f => by
     rw [key h0 U hU f]
 
-theorem valAt'_comp_app {X Y : Scheme.{0}} (x : Sp ℂ ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)) :
-    valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f := by
-  by_cases h : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)
-  · rw [Scheme.Hom.app_eq_appLE]
-    exact valAt'_appLE _ _ _ _ _ _ h
-  · have h' : ¬ ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U := h
-    unfold valAt'
-    rw [dite_eq_right h, dite_eq_right h']
-
 theorem isDerivAt0_of_isDiff {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) {Y : Scheme.{0}}
     (φ : A.left ⟶ Y) {w : Fin g → ℂ} {v : epsR ℂ ⟶ A} {e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)}
     (he : ∀ z, (u.ex z).left ≫ φ = e z) (hv : IsTangent v) (hd : u.IsDiff w v) :
@@ -107,7 +100,7 @@ theorem isDerivAt0_of_isDiff {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g :
     rw [(u.ker 0).2 u.Λ.zero_mem, Hom.one_def]
     simp
   · have := hd (φ ⁻¹ᵁ U) hU ((φ.app U).hom f)
-    simp only [valAt'_comp_app] at this
+    simp only [_root_.GlobalTheory.valAt'_comp] at this
     rw [← this, Scheme.Hom.comp_appLE]
     rfl
 

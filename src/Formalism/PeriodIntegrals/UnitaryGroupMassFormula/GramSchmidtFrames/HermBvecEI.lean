@@ -73,10 +73,6 @@ lemma mv_sum {ι : Type*} (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)
     (v : ι → Fin (2 * r + k + 1) → ℂ) : M *ᵥ (∑ i ∈ s, v i) = ∑ i ∈ s, M *ᵥ v i := by
   first
   | exact Matrix.mulVec_sum M s v
-  | simpa using map_sum (Matrix.mulVecLin M) v s
-  | (induction s using Finset.cons_induction with
-     | empty => simp
-     | cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, Matrix.mulVec_add, ih])
 
 lemma hm_sum_l {ι : Type*} (s : Finset ι) (c : ι → ℂ) (v : ι → Fin (2 * r + k + 1) → ℂ)
     (w : Fin (2 * r + k + 1) → ℂ) :
@@ -102,15 +98,13 @@ lemma hm_sum_r {ι : Type*} (s : Finset ι) (c : ι → ℂ) (v : ι → Fin (2 
 
 lemma herm_bvec_eI (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) v (bvec (eI k r a)) = v (esI k r a) := by
-  apply PI.StabPairsW.herm_e <;> assumption
+  apply PI.StabPairsW.herm_e
 
 lemma fvec_lt (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     fvec k r z ⟨a.val, by omega⟩ = bvec (eI k r a) := by
   unfold fvec
   first
   | exact dif_pos a.isLt
-  | simp
-  | rfl
 
 lemma wb_N {n : B.Mat k r} (hn : n ∈ Nset k r) {v : Fin (2 * r + k + 1) → ℂ}
     (hv : ∀ a : Fin r, v (esI k r a) = 0) : PI.UnitaryGroupMassFormula.GsFr.wbPart k r (n *ᵥ v) = PI.UnitaryGroupMassFormula.GsFr.wbPart k r v := by

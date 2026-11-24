@@ -129,7 +129,6 @@ theorem asmOne_smul_const {K : Type u} [NormedField K] {ι : Type v} (c : K)
     MvPowerSeries.constantCoeff (c • f) = 0 := by
   first
     | simp [hf]
-    | rw [MvPowerSeries.smul_eq_C_mul, map_mul, hf, mul_zero]
 
 theorem asmOne_zmod2 : ∀ s s' a b : ZMod 2, s.val % 2 = 0 → s'.val % 2 = 1 → s + a = s' + b →
     a + b = 1 := by
@@ -193,8 +192,6 @@ theorem oneLetterR_of (hS : LemmaS.{u}) (hG : GenLogWeight.{u, 0}) (hB : LogBrid
     have hs : MvPowerSeries.HasSubst a := by
       first
         | exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha
-        | exact MvPowerSeries.HasSubst.of_constantCoeff_zero ha
-        | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent fun s => by rw [ha s]; exact IsNilpotent.zero
     rw [MvPowerSeries.constantCoeff_subst hs]
     apply finsum_eq_zero_of_forall_eq_zero
     intro d
@@ -314,7 +311,6 @@ theorem oneLetterR_of (hS : LemmaS.{u}) (hG : GenLogWeight.{u, 0}) (hB : LogBrid
   refine (mul_le_mul hf hk (norm_nonneg _) (Real.rpow_nonneg hπ0.le _)).trans (le_of_eq ?_)
   rw [← Real.rpow_add hπ0, asmR_dot_fintype, hdeg]
   congr 1
-  beta_reduce
   linarith [e]
 
 end Formalism.DworkPowerSeriesWeights

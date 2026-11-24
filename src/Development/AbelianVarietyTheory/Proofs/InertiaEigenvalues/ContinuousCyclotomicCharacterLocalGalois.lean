@@ -111,7 +111,6 @@ theorem cyc_char_continuous {p : ℕ} [hp : Fact p.Prime] {K : IntermediateField
     funext g
     simp only [Function.comp_apply, hε', carry, MonoidHom.coe_comp, MulEquiv.coe_toMonoidHom]
     first
-    | rw [ContinuousMulEquiv.symm_apply_apply]
     | exact congrArg (fun x => ((ε x : Oˣ) : O)) (i.toMulEquiv.symm_apply_apply g).symm
   rw [e]
   exact hcont'.comp i.continuous

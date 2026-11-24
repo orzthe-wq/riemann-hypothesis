@@ -5,7 +5,7 @@ public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
 public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OverAffineJLineComapSlGalStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OverAffineJLineComapSlGal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -115,6 +115,6 @@ theorem GlobalTheory.KZ.kmap_A_stable : ∀ {Ω : Type} [Field Ω] [Algebra ℚ 
     ∀ (l : ℕ) [Fact l.Prime], (∀ (g : GQ), ∀ a ∈ X.A l, X.kmap l (X.sl g).toRingEquiv a ∈ X.A l) ∧
       ∀ (s : Ω ≃ₐ[ℚ] Ω), ∀ a ∈ X.A l, X.kmap l (X.gal s) a ∈ X.A l := by
   intro Ω _ _ _ ε X hinj hhol l _
-  have hY := GlobalTheory.T.overAffineJLine_comap_sl_gal ε X hinj hhol
+  have hY := _root_.GlobalTheory.KZ.Tower.overY_comap_sl_gal ε X hinj hhol
   exact ⟨fun g => kmap_mem_A X l _ (fun W hW => (hY W hW).1 g),
     fun s => kmap_mem_A X l _ (fun W hW => (hY W hW).2 s)⟩

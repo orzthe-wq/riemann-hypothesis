@@ -55,18 +55,18 @@ theorem rows_exp_nd {m f s r c mx cf C : ℝ} (hm : m = 2 * r + 2) (hr : 0 ≤ r
       C * m ^ 2 * f * (C * (s + m) * m ^ 2) := by
   have hm2 : 2 ≤ m := by linarith
   set Mx : ℝ := (s + m) * m with hMx
-  have hMx1 : m ^ 2 ≤ Mx := by rw [hMx]; nlinarith
-  have hMx2 : m ≤ Mx := by nlinarith
-  have hMx0 : 0 ≤ Mx := by nlinarith
+  have hMx1 : m ^ 2 ≤ Mx := by rw [hMx]; linarith [mul_nonneg hs (show 0 ≤ m by linarith)]
+  have hMx2 : m ≤ Mx := (le_self_pow₀ (by linarith : 1 ≤ m) two_ne_zero).trans hMx1
+  have hMx0 : 0 ≤ Mx := by linarith
   have hr1 : r + 1 = m / 2 := by linarith
-  have hrm : r ^ 2 ≤ Mx := by nlinarith
+  have hrm : r ^ 2 ≤ Mx := (pow_le_pow_left₀ hr (by linarith : r ≤ m) 2).trans hMx1
   have e1 : c ^ 2 * m ^ 3 * f + 4 * (mx * m ^ 2 * f * (r + 1)) = (c ^ 2 + 2 * mx) * (m ^ 3 * f) := by rw [hr1]; ring
   have b1 : c * cf ≤ c * Mx := mul_le_mul_of_nonneg_left (hcf.trans hMx2) hc
   have b2 : c * r ^ 2 ≤ c * Mx := mul_le_mul_of_nonneg_left hrm hc
-  have b3 : 6 * (r + 1) ^ 2 ≤ 2 * Mx := by rw [hr1]; nlinarith
+  have b3 : 6 * (r + 1) ^ 2 ≤ 2 * Mx := by rw [hr1]; linarith [sq_nonneg m]
   have br : 2 * (c * (s + m) * m + c * cf) + 2 * (c * r ^ 2) + 6 * (r + 1) ^ 2 ≤ (6 * c + 2) * Mx := by
     have : c * (s + m) * m = c * Mx := by rw [hMx]; ring
-    rw [this]; nlinarith
+    rw [this]; linarith
   have hK0 : 0 ≤ m ^ 3 * f := by positivity
   have hp0 : 0 ≤ (c ^ 2 + 2 * mx) * (m ^ 3 * f) := by positivity
   have t1 : (c ^ 2 + 2 * mx) * (m ^ 3 * f) * (2 * (c * (s + m) * m + c * cf) + 2 * (c * r ^ 2) + 6 * (r + 1) ^ 2) ≤
@@ -75,12 +75,12 @@ theorem rows_exp_nd {m f s r c mx cf C : ℝ} (hm : m = 2 * r + 2) (hr : 0 ≤ r
   have t2 : 1 + 12 * f * (r + 1) ^ 2 ≤ 4 * (m ^ 3 * f * Mx) := by
     rw [hr1]
     have a1 : f * m ^ 2 ≤ m ^ 3 * f * Mx := by
-      have : (1 : ℝ) ≤ m * Mx := by nlinarith
+      have : (1 : ℝ) ≤ m * Mx := one_le_mul_of_one_le_of_one_le (by linarith) (by linarith)
       calc f * m ^ 2 = f * m ^ 2 * 1 := by ring
         _ ≤ f * m ^ 2 * (m * Mx) := mul_le_mul_of_nonneg_left this (by positivity)
         _ = m ^ 3 * f * Mx := by ring
-    have a2 : (1 : ℝ) ≤ f * m ^ 2 := by nlinarith
-    nlinarith
+    have a2 : (1 : ℝ) ≤ f * m ^ 2 := one_le_mul_of_one_le_of_one_le hf (one_le_pow₀ (by linarith))
+    linarith
   have t3 : (4 + (c ^ 2 + 2 * mx) * (6 * c + 2)) * (m ^ 3 * f * Mx) ≤ C ^ 2 * (m ^ 3 * f * Mx) :=
     mul_le_mul_of_nonneg_right hC hKM
   rw [e1]
@@ -104,7 +104,7 @@ theorem rows_cF_le {C' Cl Cg cb Cu cT CT C0 A : ℝ} (hH : Cnt.Hyp D large₂ u 
   have h5' : Real.log (D.R.f : ℝ) ≤ Real.sqrt (D.R.rS : ℝ) := h5
   have hr : (1 : ℝ) ≤ D.R.rS := by exact_mod_cast hH.2.1.1
   have hf : (1 : ℝ) ≤ D.R.f := by exact_mod_cast rows_f_pos D
-  have hsq : Real.sqrt (D.R.rS : ℝ) ≤ D.R.rS := Real.sqrt_le_iff.2 ⟨by linarith, by nlinarith⟩
+  have hsq : Real.sqrt (D.R.rS : ℝ) ≤ D.R.rS := Real.sqrt_le_iff.2 ⟨by linarith, le_self_pow₀ hr two_ne_zero⟩
   have hl2 := Real.log_two_gt_d9
   have hl0 : 0 ≤ Real.log (D.R.f : ℝ) := Real.log_nonneg hf
   have e : cF D.R.f = 2 + Real.log (D.R.f : ℝ) / Real.log 2 := by
@@ -114,7 +114,7 @@ theorem rows_cF_le {C' Cl Cg cb Cu cT CT C0 A : ℝ} (hH : Cnt.Hyp D large₂ u 
     ring
   have h2 : Real.log (D.R.f : ℝ) / Real.log 2 ≤ 2 * Real.log (D.R.f : ℝ) := by
     rw [div_le_iff₀ (by linarith)]
-    nlinarith
+    linarith [mul_nonneg hl0 (show 0 ≤ 2 * Real.log 2 - 1 by linarith)]
   rw [e, rows_m_cast]
   linarith
 
@@ -175,7 +175,7 @@ theorem rows_ndB_le {C' Cl Cg cb Cu cT CT C0 A c Ch δ C : ℝ} (hH : Cnt.Hyp D 
     have h0 : 0 ≤ (D.R.m : ℝ) ^ 3 * D.R.f := by positivity
     have h1 : 2 * (c ^ 2 + 2 * max (Ch - c) 0) ≤ C ^ 2 := by
       have : 0 ≤ (c ^ 2 + 2 * max (Ch - c) 0) * (6 * c) := by positivity
-      nlinarith
+      linarith
     rw [e1]
     calc 2 * ((c ^ 2 + 2 * max (Ch - c) 0) * ((D.R.m : ℝ) ^ 3 * D.R.f))
         = (2 * (c ^ 2 + 2 * max (Ch - c) 0)) * ((D.R.m : ℝ) ^ 3 * D.R.f) := by ring

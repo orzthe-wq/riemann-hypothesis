@@ -74,10 +74,7 @@ lemma isExt_self {m : ℕ} {w : List C.Letter} (hw : AdmW P l0 Y w) (hl : w.leng
 lemma admissible_word_of_extension {m : ℕ} {w w' : List C.Letter} (hw : AdmW P l0 Y w) (h : IsExt P l0 Y N m w w') :
     AdmW P l0 Y w' := by
   obtain ⟨hc, -, L, rfl, -, hL⟩ := h
-  refine ⟨hc, fun l hl => ?_⟩
-  rcases List.mem_append.1 hl with hl | hl
-  · exact hL l hl
-  · exact hw.2 l hl
+  exact ⟨hc, fun l hl => (List.mem_append.1 hl).elim (hL l) (hw.2 l)⟩
 
 lemma isExt_len {m : ℕ} {w w' : List C.Letter} (h : IsExt P l0 Y N m w w') : w'.length ≤ w.length + m := by
   obtain ⟨-, -, L, rfl, hL, -⟩ := h
@@ -91,9 +88,7 @@ lemma isExt_trans {m₁ m₂ : ℕ} {w w' w'' : List C.Letter} (h1 : IsExt P l0 
   obtain ⟨-, -, L1, rfl, hL1, hY1⟩ := h1
   obtain ⟨hc, hN, L2, rfl, hL2, hY2⟩ := h2
   refine ⟨hc, hN, L2 ++ L1, by simp, by simp only [List.length_append]; omega, fun l hl => ?_⟩
-  rcases List.mem_append.1 hl with hl | hl
-  · exact hY2 l hl
-  · exact hY1 l hl
+  exact (List.mem_append.1 hl).elim (hY2 l) (hY1 l)
 
 lemma isExt_mono {m m' : ℕ} {w w' : List C.Letter} (h : IsExt P l0 Y N m w w') (hm : m ≤ m') :
     IsExt P l0 Y N m' w w' := by
@@ -118,8 +113,7 @@ lemma isExt_finite (m : ℕ) (w : List C.Letter) : {w' | IsExt P l0 Y N m w w'}.
 
 lemma exists_max_ext (m : ℕ) (w : List C.Letter) (f : List C.Letter → ℝ) (hw : IsExt P l0 Y N m w w) :
     ∃ w', IsExt P l0 Y N m w w' ∧ ∀ w'', IsExt P l0 Y N m w w'' → f w'' ≤ f w' := by
-  obtain ⟨a, ha, hmax⟩ := Set.exists_max_image _ f (isExt_finite m w) ⟨w, hw⟩
-  exact ⟨a, ha, fun b hb => hmax b hb⟩
+  exact Set.exists_max_image _ f (isExt_finite m w) ⟨w, hw⟩
 
 lemma admissible_word_nil : AdmW P l0 Y [] :=
   ⟨⟨fun a => (Nat.not_lt_zero _ a.2).elim, fun a => (Nat.not_lt_zero _ a.2).elim⟩, by simp⟩
@@ -379,8 +373,7 @@ theorem corollary_s_induction {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
   induction γ using List.reverseRecOn with
   | nil =>
     intro j hj _ w hw hl
-    have hj0 : j = 0 := by simpa [D.IsLocPt, D.ptSize] using hj.2.symm
-    subst hj0
+    obtain rfl : j = 0 := by simpa [D.IsLocPt, D.ptSize] using hj.2.symm
     exact ⟨w, isExt_self hw (by omega), by simp⟩
   | append_singleton h x ih =>
     intro j hj hjr w hw hl
@@ -419,4 +412,4 @@ end Formalism.FourierDecayAlt.P.TBBx1
 theorem Formalism.FourierDecayAlt.P.lemma_s_induction_base : Formalism.FourierDecayAlt.TBB.StepOne := Formalism.FourierDecayAlt.P.TBBx1.stepOne
 theorem Formalism.FourierDecayAlt.P.lemma_s_induction_up : Formalism.FourierDecayAlt.TBB.StepUp := Formalism.FourierDecayAlt.P.TBBx1.stepUp
 theorem Formalism.FourierDecayAlt.P.lemma_s_of_parts : Formalism.FourierDecayAlt.TBB.LemmaSOfSteps := Formalism.FourierDecayAlt.P.TBBx1.lemmaSOfSteps
-theorem Formalism.FourierDecayAlt.P.corSOfLemmaS_statement : Formalism.FourierDecayAlt.TBB.CorSOfLemmaS := Formalism.FourierDecayAlt.P.TBBx1.corSOfLemmaS
+alias Formalism.FourierDecayAlt.P.corSOfLemmaS_statement := _root_.Formalism.FourierDecayAlt.P.TBBx1.corSOfLemmaS

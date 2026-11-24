@@ -1,8 +1,9 @@
 module
 
+public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SandwichNormalForm
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtPrime
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentCharacterArgumentMulStabilizer
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingNonvanishingIffEventuallyNonzero
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtPrime
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormBoundsUnfolding
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -19,9 +20,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
@@ -45,11 +44,135 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAdmissibleIntegralBasisChangeOne
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormBoundsUnfolding, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasLatticeNormalFormOfBetween
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormBoundsUnfolding =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormBoundsUnfolding", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SandwichNormalForm\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtPrime\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentCharacterArgumentMulStabilizer\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col GlobalTheory.QNormal
+
+noncomputable section
+
+namespace GlobalTheory.Proof.normal_form_bounds_unfolding
+
+open GlobalTheory.IndefiniteRowSideFullHecke.SandwichNormalForm GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance GlobalTheory.Proof.NormalFormAtPrime
+
+variable {E : Type} [Field E] [NumberField E]
+
+theorem nonneg_of_intAt_zpow {P : HeightOneSpectrum (𝓞 E)} {k : ℤ} (h : IntAt P ((qOf P : E) ^ k)) : 0 ≤ k := by
+  by_contra hk
+  obtain ⟨m, hm⟩ : ∃ m : ℕ, k = -((m + 1 : ℕ) : ℤ) := ⟨(-k - 1).toNat, by omega⟩
+  subst hm
+  obtain ⟨r, s, hs, e⟩ := h
+  apply hs
+  have hq := qOf_ne_zero P
+  have e' : s = (qOf P : 𝓞 E) * ((qOf P : 𝓞 E) ^ m * r) := by
+    apply RingOfIntegers.ext
+    change algebraMap (𝓞 E) E s = algebraMap (𝓞 E) E _
+    rw [map_mul, map_mul, map_pow, map_natCast, ← e, zpow_neg, zpow_natCast]
+    field_simp
+    ring
+  rw [e']
+  exact Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)
+
+theorem le_of_zpow_eq {P : HeightOneSpectrum (𝓞 E)} {a b : ℤ} {u : E} (hu : IntAt P u)
+    (h : (qOf P : E) ^ a = (qOf P : E) ^ b * u) : b ≤ a := by
+  have hq := qOf_ne_zero P
+  have : (qOf P : E) ^ (a - b) = u := by
+    rw [zpow_sub₀ hq, h]
+    field_simp
+  have := nonneg_of_intAt_zpow (this ▸ hu)
+  omega
+
+variable [StarRing E] {n c : ℕ}
+
+omit [NumberField E] [StarRing E] in
+theorem inX_natAdd (x : Fin n → E) (b : Fin c) : Loc.inX E n c x (Fin.natAdd n b) = 0 := by
+  rw [inX_apply, dite_eq_right (by simp)]
+
+omit [NumberField E] [StarRing E] in
+theorem atN_natAdd (v : Fin (n + c) → E) (b : Fin c) : Loc.atN v (n + b.1) = v (Fin.natAdd n b) := by
+  unfold Loc.atN
+  rw [dite_eq_left (by omega)]
+  rfl
+
+omit [NumberField E] [StarRing E] in
+theorem nfGen_natAdd (q : ℕ) (e : Fin c → ℤ) (z : Fin n → E) (i b : Fin c) :
+    nfGen q n c e z i (Fin.natAdd n b) = if b = i then (q : E) ^ e i else 0 := by
+  unfold nfGen
+  rw [Pi.smul_apply, Pi.add_apply]
+  have h0 : (if i.1 = 0 then Loc.inX E n c z else 0 : Fin (n + c) → E) (Fin.natAdd n b) = 0 := by
+    split_ifs
+    · exact inX_natAdd _ _
+    · rfl
+  rw [h0]
+  simp [Loc.eN, Fin.val_inj]
+
+omit [NumberField E] [StarRing E] in
+theorem nfGen_castAdd (q : ℕ) (e : Fin c → ℤ) (z : Fin n → E) (i : Fin c) (a : Fin n) :
+    nfGen q n c e z i (Fin.castAdd c a) = if i.1 = 0 then (q : E) ^ e i * z a else 0 := by
+  unfold nfGen
+  rw [Pi.smul_apply, Pi.add_apply]
+  have h0 : Loc.eN E (n + c) (n + i.1) (Fin.castAdd c a) = 0 := by
+    unfold Loc.eN
+    rw [if_neg (by have := a.2; simp; omega)]
+  rw [h0]
+  split_ifs
+  · rw [inX_castAdd]; simp
+  · simp
+
+theorem coords_of_mem {P : HeightOneSpectrum (𝓞 E)} (hc : 1 ≤ c) {e : Fin c → ℤ} {z : Fin n → E} {y : Fin (n + c) → E}
+    (hy : y ∈ nfLat P n c e z) :
+    (∀ b, ∃ u, IntAt P u ∧ y (Fin.natAdd n b) = (qOf P : E) ^ e b * u) ∧
+      ∀ a, IntAt P (y (Fin.castAdd c a) - y (Fin.natAdd n ⟨0, hc⟩) * z a) := by
+  obtain ⟨l, hl, s, hs, rfl⟩ := hy
+  have h1 : ∀ b, (Loc.inX E n c l + ∑ i, s i • nfGen (qOf P) n c e z i : Fin (n + c) → E) (Fin.natAdd n b) =
+      (qOf P : E) ^ e b * s b := by
+    intro b
+    rw [Pi.add_apply, inX_natAdd, Finset.sum_apply]
+    simp [nfGen_natAdd, mul_comm]
+  refine ⟨fun b => ⟨s b, hs b, h1 b⟩, fun a => ?_⟩
+  rw [h1, Pi.add_apply, inX_castAdd, Finset.sum_apply, Finset.sum_eq_single ⟨0, hc⟩]
+  · rw [Pi.smul_apply, nfGen_castAdd, if_pos rfl, smul_eq_mul]
+    convert (mem_stdAt_iff l).1 hl a using 1
+    ring
+  · intro b _ hb
+    rw [Pi.smul_apply, nfGen_castAdd, if_neg (fun h => hb (Fin.ext h)), smul_zero]
+  · simp
+
+theorem nfGen_mem (P : HeightOneSpectrum (𝓞 E)) (e : Fin c → ℤ) (z : Fin n → E) (i : Fin c) :
+    nfGen (qOf P) n c e z i ∈ nfLat P n c e z :=
+  ⟨0, zero_mem _, Pi.single i 1, intV_single P i, by simp [Pi.single_apply]⟩
+
+omit [NumberField E] [StarRing E] in
+theorem nfGen_mem_Ufl (q : ℕ) (e : Fin c → ℤ) (z : Fin n → E) (i : Fin c) :
+    nfGen q n c e z i ∈ Loc.Ufl E n c (i.1 + 1) := by
+  unfold nfGen
+  refine Submodule.smul_mem _ _ (add_mem (eN_mem_Ufl (by omega)) ?_)
+  split_ifs
+  · exact inX_mem_Ufl _ _
+  · exact zero_mem _
+
+end GlobalTheory.Proof.normal_form_bounds_unfolding
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormBoundsUnfolding =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasLatticeNormalFormOfBetween =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasLatticeNormalFormOfBetween", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingNonvanishingIffEventuallyNonzero\nimport Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtPrime\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormBoundsUnfolding\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAdmissibleIntegralBasisChangeOne\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.Col Formalism.L2.DIV GlobalTheory.QNormal GlobalTheory.Mem.Col2.IdxEx
@@ -63,14 +186,6 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SandwichNormalForm GlobalTheory.Pro
 section General
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n c : ℕ}
-
-omit [StarRing E] in
-theorem intV_eN (P : HeightOneSpectrum (𝓞 E)) (N s : ℕ) : IntV P (Loc.eN E N s) := by
-  intro l
-  unfold Loc.eN
-  split_ifs
-  · exact intAt_one P
-  · exact IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P
 
 theorem read_bounds (P : HeightOneSpectrum (𝓞 E)) (j : ℕ) (h ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) → E))
     (e : Fin c → ℤ) (z : Fin n → E) (hρ : ρ ∈ Loc.R1 E n c) (h1 : IntHom P h.symm.toLinearMap)
@@ -96,11 +211,11 @@ theorem read_bounds (P : HeightOneSpectrum (𝓞 E)) (j : ℕ) (h ρ : (Fin (n +
     have := nonneg_of_intAt_zpow h4
     omega
   · have hc : 1 ≤ c := by have := i.2; omega
-    obtain ⟨u, hu, h'⟩ := (coords_of_mem hc (hmem _ (intV_eN P (n + c) (n + i.1)))).1 i
+    obtain ⟨u, hu, h'⟩ := (coords_of_mem hc (hmem _ (_root_.GlobalTheory.QNormal.intV_eN P (n + c) (n + i.1)))).1 i
     refine le_of_zpow_eq hu ?_
     rw [← h', ← atN_natAdd (ρ _) i, atN_of_R1cond hρ.1 (eN_mem_Ufl (by omega)), atN_natAdd]
     simp [Loc.eN]
-  · have h3 := (coords_of_mem hc (hmem _ (intV_eN P (n + c) n))).2 a
+  · have h3 := (coords_of_mem hc (hmem _ (_root_.GlobalTheory.QNormal.intV_eN P (n + c) n))).2 a
     have h4 : Loc.eN E (n + c) n (Fin.castAdd c a) = 0 := by
       unfold Loc.eN
       rw [if_neg (by have := a.2; simp; omega)]
@@ -125,3 +240,6 @@ theorem nf_of_between : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (j : ℕ) (
 end GlobalTheory.Proof.hasLatticeNormalForm_of_between
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasLatticeNormalFormOfBetween =====

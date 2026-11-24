@@ -75,25 +75,19 @@ namespace HalfMax
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
-theorem c_pos' (X : Data E r) (τ : X.Ψ) : 0 < X.c τ := by
-  have h : τ.1 X.ξ0 ≠ 0 := (map_ne_zero τ.1).2 X.ξ0_ne
-  have := norm_pos_iff.2 h
-  simp only [Data.c]
-  positivity
-
 theorem exists_herm_eq_zero (X : Data E r) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ z ∈ X.dom, ∀ v ∈ X.Λ,
       (∀ τ : X.Ψ, X.c τ * X.maj z τ (Data.emb τ.1 v) < δ) → herm X.Gm v v = 0 := by
   set S : ℝ := ∑ τ : X.Ψ, ‖τ.1 (X.den : E)‖ / X.c τ with hS
   have hterm : ∀ τ : X.Ψ, 0 ≤ ‖τ.1 (X.den : E)‖ / X.c τ := fun τ =>
-    div_nonneg (norm_nonneg _) (c_pos' X τ).le
+    div_nonneg (norm_nonneg _) (_root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantFamilyNorms.c_pos X τ).le
   have hS0 : 0 ≤ S := Finset.sum_nonneg fun τ _ => hterm τ
   refine ⟨1 / (1 + S), by positivity, fun z hz v hv hsmall => ?_⟩
   have hden : (X.den : E) ≠ 0 := by exact_mod_cast X.den_ne
   refine (mul_eq_zero.1 (UnipotentCoefficientShift.eq_zero_of_conj_lt_one (X.Λ_int v hv v hv) ?_)).resolve_left hden
   intro σ
   have key : ∀ τ : X.Ψ, ‖τ.1 ((X.den : E) * herm X.Gm v v)‖ < 1 := fun τ => by
-    have hc := c_pos' X τ
+    have hc := _root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantFamilyNorms.c_pos X τ
     have h1 : ‖τ.1 (herm X.Gm v v)‖ ≤ X.maj z τ (Data.emb τ.1 v) := by
       rw [← EmbeddingHermitianPairs.hermC_emb]
       exact UnipotentCoefficientShift.norm_hermC_le_maj hz τ (Data.emb τ.1 v)
@@ -238,7 +232,7 @@ theorem exists_le_maj_of_iso (X : Data E r) (la : Wt X.Ψ r) :
     intro τ
     simp only [Data.ttV]
     rw [show 2 * t = 1 / ε by rw [ht]; field_simp]
-    exact one_div_lt_one_div_of_lt (mul_pos (c_pos' X τ) (hmaj τ)) (hcon τ)
+    exact one_div_lt_one_div_of_lt (mul_pos (_root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantFamilyNorms.c_pos X τ) (hmaj τ)) (hcon τ)
   have hfl : ∀ s, X.flowV e s z0 = X.flow v s z0 := fun s => rfl
   have hdom : ∀ ζ : ℂ, -(2 * t) < ζ.im → X.flow v (fun _ => ζ) z0 ∈ X.dom := by
     intro ζ hζ
@@ -396,6 +390,6 @@ theorem exists_lower_bound_half_max_norm (E : Type) [Field E] [NumberField E] [I
       exact absurd ((min_le_right δ ε).trans hτ) (not_le.2 (hcon τ))
     exact hτ.trans (Finset.single_le_sum
       (f := fun τ : X.Ψ => X.c τ * X.maj z τ (Data.emb τ.1 v))
-      (fun σ _ => (mul_pos (HalfMax.c_pos' X σ) (hp σ)).le) (Finset.mem_univ τ))
+      (fun σ _ => (mul_pos (_root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantFamilyNorms.c_pos X σ) (hp σ)).le) (Finset.mem_univ τ))
 
 end GlobalTheory

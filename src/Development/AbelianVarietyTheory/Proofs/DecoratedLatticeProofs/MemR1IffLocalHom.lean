@@ -62,7 +62,7 @@ variable {E : Type} [Field E] {M c : ℕ}
 
 theorem eN_eq_single {N j : ℕ} (h : j < N) : Loc.eN E N j = Pi.single (⟨j, h⟩ : Fin N) 1 := by
   funext l
-  simp only [Loc.eN, Pi.single_apply, Fin.ext_iff, Fin.val_mk]
+  simp only [Loc.eN, Pi.single_apply, Fin.ext_iff]
 
 theorem eN_eq_zero {N j : ℕ} (h : N ≤ j) : Loc.eN E N j = 0 := by
   funext l
@@ -86,11 +86,11 @@ theorem colCond_of_R1cond {x : Sp E (M + c) ≃ₗ[E] Sp E (M + c)} (h : Loc.R1c
       rw [mem_Ufl]
       intro l' hl'
       have : l' ≠ m := by rintro rfl; omega
-      simp [Pi.single_apply, this]
+      simp [this]
     have h1 := (mem_Ufl.1 (h.1 0 _ hv)) l (by omega)
     have hne : l ≠ m := by rintro rfl; omega
     rw [h1]
-    simp [Pi.single_apply, hne]
+    simp [hne]
   · obtain ⟨j, hj⟩ : ∃ j, m.val = M + j := ⟨m.val - M, by omega⟩
     have hsingle : (Pi.single m 1 : Sp E (M + c)) = Loc.eN E (M + c) (M + j) := by
       rw [eN_eq_single (by omega : M + j < M + c)]
@@ -124,7 +124,7 @@ theorem R1cond_of_colCond {x : Sp E (M + c) ≃ₗ[E] Sp E (M + c)} (h : ColCond
     · rw [hv m hm, zero_mul]
     · have hne : l ≠ m := by rintro rfl; omega
       rw [h l m (by simp only [stepAt]; split_ifs <;> omega) (Or.inl (by omega))]
-      simp [Pi.single_apply, hne]
+      simp [hne]
   · by_cases hc : M < M + c
     · rw [eN_eq_single hc]
       funext l

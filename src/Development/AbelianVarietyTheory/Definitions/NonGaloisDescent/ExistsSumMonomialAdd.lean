@@ -344,7 +344,7 @@ theorem PiSys.exists_dpow_teich {e : ℕ} (ϖ : PiSys l e) (q : ℕ) :
     ∃ d : Per.Acris l, (q.factorial : Per.Acris l) * d = ainfToAcris l ϖ.teich ^ (e * q) := by
   have hE : Per.θ l (ϖ.teich ^ e + l) = 0 := by
     rw [map_add (f := _), map_pow, ϖ.theta_teich, ϖ.seqO_zero, map_natCast, neg_add_cancel]
-  choose c hc using GlobalTheory.RingBasics.exists_pow_div_factorial l
+  choose c hc using _root_.Reformulated.AutPerF.exists_factorial_mul_eq_pow l
   have hc' : ∀ n : ℕ, (n.factorial : Per.Acris l) * algebraMap ℤ_[l] _ (c n) = (l : Per.Acris l) ^ n :=
     fun n => by simpa only [map_mul, map_natCast, map_pow] using congrArg (algebraMap ℤ_[l] (Per.Acris l)) (hc n)
   have h1 : ainfToAcris l ϖ.teich ^ e = ainfToAcris l (ϖ.teich ^ e + l) + -(l : Per.Acris l) := by

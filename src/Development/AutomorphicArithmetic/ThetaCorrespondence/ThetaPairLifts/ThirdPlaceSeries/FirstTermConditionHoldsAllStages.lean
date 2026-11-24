@@ -51,7 +51,7 @@ namespace GlobalTheory.GoodFirst
 
 theorem firstTermCondition_forall_stages_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ _ x => _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevel hL x → GoodFTAll (Dof x) := by
   intro hP hL
-  have h := GlobalTheory.HeightCounting.Up.RowModel.overRows_allSt (_root_.GlobalTheory.T.nonGalois_typeVec_fixed_by_e0 hP)
+  have h := GlobalTheory.HeightCounting.Up.RowModel.overRows_allSt (_root_.GlobalTheory.TypeVec.exists_typeVec_nonGalois_ne_zero hP)
   refine EvG.imp h fun _ _ _ _ _ hK => large₂.imp hK fun B f T _ H kp fo tr w s P x l => ?_
   have hloc := H kp fo tr w s P x
   have ty : TypesTrue (Dof x).ntypes (Fr.at (w.st x.o.Z) f).P (Fr.at (w.st x.o.Z) f).W := x.fits.grp

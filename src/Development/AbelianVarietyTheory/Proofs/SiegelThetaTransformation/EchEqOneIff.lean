@@ -121,6 +121,46 @@ theorem intM_iff [Fintype κ] [Fintype ι] (x : Matrix κ ι ℚ) : IntM x ↔ �
   · rintro ⟨m, rfl⟩ k i
     simpa [zm] using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ ℚ (m k i)))
 
+/-- Every matrix integral after scaling by `R` is a level representative plus an integral period. -/
+theorem exists_rep_add_smul_zm_of_intM_smul [Fintype κ] [Fintype ι] {R : ℕ} (hR : 0 < R)
+    (x : Matrix κ ι ℚ) (hx : IntM (R • x)) :
+    ∃ (n : κ → ι → Fin (R * R)) (m : κ → ι → ℤ), x = rep R n + R • zm m := by
+  obtain ⟨M, hM⟩ := (intM_iff _).mp hx
+  have hRR : (0 : ℤ) < (R : ℤ) * R := by positivity
+  have hRq : (R : ℚ) ≠ 0 := by positivity
+  refine ⟨fun k i => ⟨(M k i % ((R : ℤ) * R)).toNat, ?_⟩, fun k i => M k i / ((R : ℤ) * R), ?_⟩
+  · rw [Int.toNat_lt (Int.emod_nonneg _ hRR.ne'), Nat.cast_mul]
+    exact Int.emod_lt_of_pos _ hRR
+  · ext k i
+    have hk := congrFun (congrFun hM k) i
+    simp only [Matrix.smul_apply, zm, Matrix.of_apply, nsmul_eq_mul] at hk
+    simp only [rep, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, zm, nsmul_eq_mul]
+    rw [← Int.cast_natCast, Int.toNat_of_nonneg (Int.emod_nonneg _ hRR.ne')]
+    have hdiv : ((M k i % ((R : ℤ) * R) : ℤ) : ℚ) +
+        (R : ℚ) * R * ((M k i / ((R : ℤ) * R) : ℤ) : ℚ) = (M k i : ℚ) := by
+      exact_mod_cast Int.emod_add_mul_ediv (M k i) ((R : ℤ) * R)
+    field_simp
+    linear_combination hk - hdiv
+
+/-- Two level representatives differing by an integral period have the same residue indices. -/
+theorem rep_eq_of_neg_add_eq_smul_zm {R : ℕ} (hR : 0 < R) {n n' : κ → ι → Fin (R * R)}
+    (m : κ → ι → ℤ) (hm : -rep R n + rep R n' = R • zm m) : n = n' := by
+  funext k i
+  have hk := congrFun (congrFun hm k) i
+  simp only [rep, Matrix.add_apply, Matrix.neg_apply, Matrix.of_apply, Matrix.smul_apply, zm,
+    nsmul_eq_mul] at hk
+  have hRq : (R : ℚ) ≠ 0 := by positivity
+  rw [neg_add_eq_sub, ← sub_div, div_eq_iff hRq, mul_right_comm] at hk
+  have hz : ((n' k i : ℕ) : ℤ) - (n k i : ℕ) = (R : ℤ) * R * m k i := by
+    exact_mod_cast hk
+  have hb : ((n' k i : ℕ) : ℤ) < (R : ℤ) * R := by exact_mod_cast (n' k i).isLt
+  have ha : ((n k i : ℕ) : ℤ) < (R : ℤ) * R := by exact_mod_cast (n k i).isLt
+  have h0 : ((n' k i : ℕ) : ℤ) - (n k i : ℕ) = 0 := by
+    apply Int.eq_zero_of_abs_lt_dvd ⟨m k i, hz⟩
+    rw [abs_lt]
+    omega
+  exact Fin.ext (by omega)
+
 end
 
 end GlobalTheory.SW.FourierJ

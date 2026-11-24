@@ -54,4 +54,4 @@ open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 
 theorem _root_.GlobalTheory.T.selfDualLattice_rationalLineTrace_fractionalIdeal : ∀ (D : D7) (S : HSp D) (L : Lat S) (x : Fin S.rank → D.host.E), IsSelfDualC S L → x ≠ 0 → ∃ 𝔞 : FI D, 𝔞 ≠ 0 ∧ (∀ t : D.host.E, t • x ∈ L ↔ t ∈ 𝔞) ∧ ∀ v : GlobalTheory.FinPl.Pl D, ∀ a ∈ idAt D (· = v), a • ratV x ∈ latV S L (· = v) ↔ a ∈ idV 𝔞 v := by
-  first | exact @GlobalTheory.Core.Mi.LatLine.line_trace | exact GlobalTheory.Core.Mi.LatLine.line_trace | (intros; apply GlobalTheory.Core.Mi.LatLine.line_trace <;> assumption)
+  first | exact @GlobalTheory.Core.Mi.LatLine.line_trace

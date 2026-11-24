@@ -254,7 +254,7 @@ theorem exists_mulEquiv_galLoc (A : ValuationSubring Ω) (w : HeightOneSpectrum 
       rw [AlgHom.commutes, IsScalarTower.algebraMap_apply E (w.adicCompletion E) (Kbar w)]
       exact spectralNorm_extends _
     have hv : ∀ y : E, Valued.v (algebraMap E (w.adicCompletion E) y) = w.valuation E y := fun y => by
-      first | exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w y | exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation w y | simp | rfl
+      first | exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w y
     refine ⟨(a : E), ?_, ?_⟩
     · rw [hn, norm_pos_iff, map_ne_zero]
       exact_mod_cast ha0

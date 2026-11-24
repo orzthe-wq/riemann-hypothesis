@@ -1,10 +1,12 @@
 module
 
+public import Formalism.MahlerMeasure.Statement
+public import Mathlib.Algebra.Polynomial.BigOperators
 public import Formalism.MahlerMeasure.StatementD
 public import Formalism.MahlerMeasure.StatementT
 public import Mathlib.NumberTheory.Padics.Complex
 public import Mathlib.RingTheory.SimpleRing.Principal
-public import Formalism.MahlerMeasure.LegendreDigits
+public import Mathlib.Algebra.BigOperators.Field
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -24,7 +26,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -34,8 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,11 +47,133 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Algebra.BigOperators.Field
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.MahlerMeasure.MahlerMeasureProofs.DeterminantBlockLeadingTerm, Formalism.MahlerMeasure.LegendreDigits, Formalism.MahlerMeasure.MahlerMeasureProofs.MeanGam
+
+-- ===== clump member: Formalism.MahlerMeasure.MahlerMeasureProofs.DeterminantBlockLeadingTerm =====
+-- clump-header: {"m": "Formalism.MahlerMeasure.MahlerMeasureProofs.DeterminantBlockLeadingTerm", "h": "module\n\npublic import Formalism.MahlerMeasure.Statement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Polynomial.BigOperators\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.GM
+
+open Finset Polynomial
+
+theorem prod_natDegree_coeff {K ι : Type*} [CommRing K] (s : Finset ι) (f : ι → K[X]) (d : ι → ℕ)
+    (h : ∀ i ∈ s, (f i).natDegree ≤ d i) :
+    (∏ i ∈ s, f i).natDegree ≤ ∑ i ∈ s, d i ∧
+      (∏ i ∈ s, f i).coeff (∑ i ∈ s, d i) = ∏ i ∈ s, (f i).coeff (d i) := by
+  classical
+  revert h
+  refine Finset.induction_on s ?_ ?_
+  · intro _
+    simp
+  · intro a s ha ih h
+    have ha' : (f a).natDegree ≤ d a := h a (Finset.mem_insert_self a s)
+    obtain ⟨ih1, ih2⟩ := ih (fun i hi => h i (Finset.mem_insert_of_mem hi))
+    rw [Finset.prod_insert ha, Finset.sum_insert ha, Finset.prod_insert ha]
+    exact ⟨Polynomial.natDegree_mul_le.trans (add_le_add ha' ih1),
+      by rw [Polynomial.coeff_mul_add_eq_of_natDegree_le ha' ih1, ih2]⟩
+
+theorem term_natDegree_coeff {K : Type*} [CommRing K] (u : ℤˣ) (p : K[X]) (N : ℕ)
+    (hp : p.natDegree ≤ N) :
+    (u • p).natDegree ≤ N ∧ (u • p).coeff N = u • p.coeff N := by
+  refine ⟨?_, ?_⟩
+  · rw [Units.smul_def]
+    exact (Polynomial.natDegree_smul_le _ _).trans hp
+  · rw [Units.smul_def, Units.smul_def, Polynomial.coeff_smul]
+
+theorem det_natDegree_coeff {K : Type*} [CommRing K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K[X]) (N : ℕ)
+    (c : Equiv.Perm (Fin n) → Fin n → ℕ) (hc : ∀ σ, ∑ i, c σ i = N)
+    (hA : ∀ σ i, (A (σ i) i).natDegree ≤ c σ i) :
+    A.det.natDegree ≤ N ∧
+      A.det.coeff N = ∑ σ : Equiv.Perm (Fin n), Equiv.Perm.sign σ • ∏ i, (A (σ i) i).coeff (c σ i) := by
+  have key : ∀ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ • ∏ i, A (σ i) i).natDegree ≤ N ∧
+      (Equiv.Perm.sign σ • ∏ i, A (σ i) i).coeff N =
+        Equiv.Perm.sign σ • ∏ i, (A (σ i) i).coeff (c σ i) := by
+    intro σ
+    obtain ⟨h1, h2⟩ := prod_natDegree_coeff univ (fun i => A (σ i) i) (c σ) (fun i _ => hA σ i)
+    rw [hc σ] at h1 h2
+    obtain ⟨k1, k2⟩ := term_natDegree_coeff (Equiv.Perm.sign σ) _ N h1
+    exact ⟨k1, by rw [k2, h2]⟩
+  rw [Matrix.det_apply]
+  refine ⟨natDegree_sum_le_of_forall_le _ _ (fun σ _ => (key σ).1), ?_⟩
+  rw [finsetSum_coeff]
+  exact sum_congr rfl (fun σ _ => (key σ).2)
+
+theorem determinant_block_leading_term : DetBlockLead := by
+  unfold DetBlockLead
+  intro K _ n A D e he hA
+  set M : Matrix (Fin n) (Fin n) K :=
+    Matrix.of fun i j => if e i = e j then (A i j).coeff (D - e i) else 0 with hM
+  have hdeg : ∀ σ : Equiv.Perm (Fin n), ∀ i, (A (σ i) i).natDegree ≤ D - e i := by
+    intro σ i
+    have h3 := hA (σ i) i
+    have h4 : e i ≤ max (e (σ i)) (e i) := le_max_right _ _
+    omega
+  obtain ⟨h1, h2⟩ := det_natDegree_coeff A (∑ i, (D - e i)) (fun _ i => D - e i)
+    (fun _ => rfl) hdeg
+  have hprod : ∀ σ : Equiv.Perm (Fin n),
+      ∏ i, (A (σ i) i).coeff (D - e i) = ∏ i, M (σ i) i := by
+    intro σ
+    by_cases hall : ∀ i, e (σ i) = e i
+    · refine Finset.prod_congr rfl (fun i _ => ?_)
+      simp [hM, Matrix.of_apply, hall i]
+    · push_neg at hall
+      have hex : ∃ j, e j < e (σ j) := by
+        by_contra hno
+        push_neg at hno
+        have hsum : ∑ j, e (σ j) = ∑ j, e j := Equiv.sum_comp σ e
+        have hall' := (Finset.sum_eq_sum_iff_of_le (fun j _ => hno j)).1 hsum
+        obtain ⟨i, hi⟩ := hall
+        exact hi (hall' i (Finset.mem_univ i))
+      obtain ⟨j, hj⟩ := hex
+      have hne : e (σ j) ≠ e j := ne_of_gt hj
+      have hL : (A (σ j) j).coeff (D - e j) = 0 := by
+        apply Polynomial.coeff_eq_zero_of_natDegree_lt
+        have h3 := hA (σ j) j
+        have h4 : e (σ j) ≤ max (e (σ j)) (e j) := le_max_left _ _
+        have h5 := he (σ j)
+        omega
+      have hR : M (σ j) j = 0 := by simp [hM, Matrix.of_apply, hne]
+      rw [Finset.prod_eq_zero (f := fun i => (A (σ i) i).coeff (D - e i)) (Finset.mem_univ j) hL,
+        Finset.prod_eq_zero (f := fun i => M (σ i) i) (Finset.mem_univ j) hR]
+  have hdet : A.det.coeff (∑ i, (D - e i)) = M.det := by
+    rw [h2, Matrix.det_apply]
+    exact Finset.sum_congr rfl (fun σ _ => by rw [hprod σ])
+  refine ⟨h1, hdet, fun hne => ?_⟩
+  have hN : A.det.natDegree = ∑ i, (D - e i) :=
+    le_antisymm h1 (Polynomial.le_natDegree_of_ne_zero (by rw [hdet]; exact hne))
+  refine ⟨hN, ?_⟩
+  rw [Polynomial.leadingCoeff, hN, hdet]
+
+end Formalism.GM
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.MahlerMeasure.MahlerMeasureProofs.DeterminantBlockLeadingTerm =====
+
+-- ===== clump member: Formalism.MahlerMeasure.LegendreDigits =====
+-- clump-header: {"m": "Formalism.MahlerMeasure.LegendreDigits", "h": "module\n\npublic import Formalism.MahlerMeasure.Statement\npublic import Formalism.MahlerMeasure.MahlerMeasureProofs.DeterminantBlockLeadingTerm\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.GM.Top
+end Formalism.GM.Top
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.MahlerMeasure.LegendreDigits =====
+
+-- ===== clump member: Formalism.MahlerMeasure.MahlerMeasureProofs.MeanGam =====
+-- clump-header: {"m": "Formalism.MahlerMeasure.MahlerMeasureProofs.MeanGam", "h": "module\n\npublic import Formalism.MahlerMeasure.StatementD\npublic import Formalism.MahlerMeasure.StatementT\npublic import Mathlib.NumberTheory.Padics.Complex\npublic import Mathlib.RingTheory.SimpleRing.Principal\npublic import Formalism.MahlerMeasure.LegendreDigits\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.BigOperators.Field\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace Formalism.GM.MeanGammaLemmas
@@ -417,7 +538,7 @@ lemma lead_part (hDeg : GamDeg) (hLead : GamLead) {p : ℕ} [hp : Fact p.Prime] 
     simp only [betaT, gramT, Matrix.of_apply]
     push_cast
     ring
-  obtain ⟨hdeg1, hcoef, hlead⟩ := Formalism.GM.Top.detBlockLead ℚ_[p] n₀ Aq (S + o) ord
+  obtain ⟨hdeg1, hcoef, hlead⟩ := _root_.Formalism.GM.determinant_block_leading_term ℚ_[p] n₀ Aq (S + o) ord
     (fun i => (hord_le i).trans (by omega)) hAdeg
   set B := Matrix.of fun i j => if ord i = ord j then (Aq i j).coeff (S + o - ord i) else 0 with hBdef
   have hB : ∀ i j, B i j = if ord i = ord j then betaT p (m + cI) z o S (ord i) * gramT p LLw ρ f ord i j
@@ -535,3 +656,6 @@ namespace Formalism.GM
 open Polynomial Finset Formalism.GM.M Formalism.GM.MeanGammaLemmas
 
 end Formalism.GM
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.MahlerMeasure.MahlerMeasureProofs.MeanGam =====

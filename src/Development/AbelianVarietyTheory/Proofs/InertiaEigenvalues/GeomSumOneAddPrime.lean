@@ -146,13 +146,11 @@ theorem geom_sum_one_add_prime {R : Type} [CommRing R] {p : ℕ} (hp : p.Prime) 
 
 variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
 
-theorem act_X_eq (c : ℤ_[l]) : act l O c PowerSeries.X = cyc l O c := (GlobalTheory.Cyc.act_laws l O).1 c
-
 theorem act_comm' (c c' : ℤ_[l]) (a) : act l O c (act l O c' a) = act l O c' (act l O c a) := by
   rw [(GlobalTheory.Cyc.act_laws l O).2.1, (GlobalTheory.Cyc.act_laws l O).2.1, mul_comm]
 
 theorem act_nat_X (k : ℕ) : act l O (k : ℤ_[l]) PowerSeries.X = (1 + PowerSeries.X) ^ k - 1 := by
-  rw [act_X_eq, (GlobalTheory.Cyc.act_laws l O).2.2.2.1]
+  rw [_root_.GlobalTheory.Cyc.Series.act_X, (GlobalTheory.Cyc.act_laws l O).2.2.2.1]
 
 theorem cyc_eq_X_mul (c : ℤ_[l]) :
     ∃ b, cyc l O c = PowerSeries.X * (PowerSeries.C (algebraMap ℤ_[l] O c) + PowerSeries.X * b) := by
@@ -195,7 +193,7 @@ theorem act_QQ_one (c : ℤ_[l]ˣ) :
     rw [act_nat_X]
     simpa [XX] using this
   have h2 := act_comm' l O c l PowerSeries.X
-  rw [← h1, map_mul, act_X_eq, hb] at h2
+  rw [← h1, map_mul, _root_.GlobalTheory.Cyc.Series.act_X, hb] at h2
   simp only [map_mul, map_add (f := _), act_C, ← h1] at h2
   have hU : IsUnit (PowerSeries.C (algebraMap ℤ_[l] O c) + PowerSeries.X * b) := by
     rw [PowerSeries.isUnit_iff_constantCoeff]
@@ -242,7 +240,7 @@ theorem XX_QQ_properties : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] 
     exact ⟨b, by linear_combination hb⟩
   · obtain ⟨b, hb⟩ := cyc_eq_X_mul l O c
     refine ⟨act l O ((l ^ (s - 1) : ℕ) : ℤ_[l]) b, ?_⟩
-    conv_lhs => rw [← hψ, act_comm', act_X_eq, hb]
+    conv_lhs => rw [← hψ, act_comm', _root_.GlobalTheory.Cyc.Series.act_X, hb]
     simp only [map_mul, map_add (f := _), act_C, hψ]
   · obtain ⟨b, hb⟩ := act_QQ_one l O c
     refine ⟨act l O ((l ^ (s - 1) : ℕ) : ℤ_[l]) b, ?_⟩
@@ -250,12 +248,12 @@ theorem XX_QQ_properties : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] 
     simp only [map_mul, map_add (f := _), map_one, hψ, hψQ]
   · intro u w hu a
     have hX : PowerSeries.X ∣ act l O u PowerSeries.X := by
-      rw [act_X_eq, PowerSeries.X_dvd_iff]; exact cyc_const l O u
+      rw [_root_.GlobalTheory.Cyc.Series.act_X, PowerSeries.X_dvd_iff]; exact cyc_const l O u
     refine Dvd.dvd.trans ?_ (algHom_sub_dvd (act l O u) hX a)
     obtain ⟨b, hb⟩ := cyc_eq_X_mul l O w
     have h1 : cyc l O (((l ^ s : ℕ) : ℤ_[l]) * w) = XX l O s * QQ l O s *
         act l O ((l ^ s : ℕ) : ℤ_[l]) (PowerSeries.C (algebraMap ℤ_[l] O w) + PowerSeries.X * b) := by
-      rw [← act_X_eq, ← (GlobalTheory.Cyc.act_laws l O).2.1, act_X_eq l O w, hb, map_mul, act_nat_X,
+      rw [← _root_.GlobalTheory.Cyc.Series.act_X, ← (GlobalTheory.Cyc.act_laws l O).2.1, _root_.GlobalTheory.Cyc.Series.act_X l O w, hb, map_mul, act_nat_X,
         XX_mul_QQ' l O s hs]
     have h2 : cyc l O u + 1 = (cyc l O ((1 : ℕ) : ℤ_[l]) + 1) * (cyc l O (((l ^ s : ℕ) : ℤ_[l]) * w) + 1) := by
       simp only [cyc, sub_add_cancel]
@@ -263,7 +261,7 @@ theorem XX_QQ_properties : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] 
       push_cast
       rfl
     rw [(GlobalTheory.Cyc.act_laws l O).2.2.2.1, h1] at h2
-    rw [act_X_eq]
+    rw [_root_.GlobalTheory.Cyc.Series.act_X]
     exact ⟨(1 + PowerSeries.X) * act l O ((l ^ s : ℕ) : ℤ_[l])
       (PowerSeries.C (algebraMap ℤ_[l] O w) + PowerSeries.X * b), by linear_combination h2⟩
 

@@ -1,9 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdRStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnitStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdR
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnit
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPrimitiveTiltedRootOfUnityLocalPeriodRingsData
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddMulDerivativeTrunc
 import Mathlib.Algebra.Order.Floor.Extended
@@ -72,8 +72,8 @@ theorem log_pow (l : ℕ) [Fact l.Prime] (j : Per.Acris l →+* Per.BdRp l) (hj 
   | succ n ih =>
     intro y hy
     have hn := untilt_pow_eq_one l e he n
-    obtain ⟨s, _, hs, -, -⟩ := GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l (e ^ n) hn
-    have hs' := (GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l (e ^ n) s hn hs).2.2.2 j hj
+    obtain ⟨s, _, hs, -, -⟩ := _root_.GlobalTheory.MemLoc.exists_isLogA l (e ^ n) hn
+    have hs' := (_root_.GlobalTheory.MemLoc.LogFun.log_fun l (e ^ n) s hn hs).2.2.2 j hj
     have h := LogAdd.log_add l (e ^ n) e (j s) x y hn he hs' hx (by rwa [← pow_succ])
     rw [h, ih _ hs', Nat.cast_succ, add_mul, one_mul]
 
@@ -81,9 +81,9 @@ theorem t_phi : ∀ (l : ℕ) [Fact l.Prime], ∀ C : Core l,
     phiA l C.t = (l : Per.Acris l) * C.t := by
   intro l _ C
   have he : C.ε.untilt = 1 := (core_isEps l C).1
-  obtain ⟨-, -, h3, h4⟩ := GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l C.ε C.t he C.t_log
-  have h5 := (GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l (C.ε ^ l) _ (untilt_pow_eq_one l _ he l) h3).2.2.2 C.j C.j_cris
-  apply GlobalTheory.T.acrisToBdRPlus_injective l C.j C.j_cris
+  obtain ⟨-, -, h3, h4⟩ := _root_.GlobalTheory.MemLoc.LogFun.log_fun l C.ε C.t he C.t_log
+  have h5 := (_root_.GlobalTheory.MemLoc.LogFun.log_fun l (C.ε ^ l) _ (untilt_pow_eq_one l _ he l) h3).2.2.2 C.j C.j_cris
+  apply _root_.GlobalTheory.MemLoc.crisP_injective l C.j C.j_cris
   rw [map_mul, map_natCast]
   exact log_pow l C.j C.j_cris C.ε he _ (h4 C.j C.j_cris) l _ h5
 

@@ -117,7 +117,7 @@ private theorem nrmT_mul (a b : Fin n → Eˣ) : nrmT k (a * b) = nrmT k a * nrm
 private theorem nrmT_div (a b : Fin n → Eˣ) : nrmT k (a / b) = nrmT k a / nrmT k b := by
   funext i
   ext
-  simp [nrmT, map_div₀]
+  simp [nrmT]
 
 private theorem nrmT_sg [FiniteDimensional k E] (σ : E ≃ₐ[k] E) (u : Fin n → Eˣ) :
     nrmT k (sgT (σ : E ≃+* E) u) = nrmT k u := by

@@ -67,10 +67,10 @@ theorem one_add_pow_prime_pow_add {T : Type} [CommRing T] {l ν k : ℕ} (hl : l
     by_cases hik : l ^ k ≤ i + 1
     · obtain ⟨j, hj⟩ := Nat.exists_eq_add_of_le hik
       rw [hj, pow_add, hx, zero_mul, zero_mul]
-    · push_neg at hik
+    · push Not at hik
       have hv : (i + 1).factorization l < k := by
         by_contra hc
-        push_neg at hc
+        push Not at hc
         have hd : l ^ k ∣ i + 1 := (hl.pow_dvd_iff_le_factorization (Nat.succ_ne_zero i)).2 hc
         exact absurd (Nat.le_of_dvd (Nat.succ_pos i) hd) (not_le.2 hik)
       have hiN : i + 1 ≤ l ^ (k + ν) := Finset.mem_range.1 hi

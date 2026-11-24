@@ -187,8 +187,7 @@ theorem _root_.GlobalTheory.LKDef.DPair.rel_equivalence (G : _root_.GlobalTheory
   · obtain ⟨y, s, hs, hβ, hγ⟩ := h
     refine ⟨y⁻¹, s⁻¹, inv_pos.mpr hs, ?_, ?_⟩
     · rw [hβ]
-      simp only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, smul_smul,
-        inv_mul_cancel₀ hs.ne', one_smul]
+      simp only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, smul_smul]
       simp only [mul_assoc, Units.inv_mul_cancel_left, lkMid_sh_mul_sh_units_inv_eq_one, mul_one]
       rw [mul_inv_cancel₀ hs.ne', one_smul]
     · rw [hγ]; group

@@ -86,7 +86,7 @@ theorem isAdicComplete_integers_local : ∀ (l : ℕ) [Fact l.Prime] (LL : FinEx
   have hl0 : ((l : ℕ) : ↥(OL LL)) ≠ 0 := by
     intro h
     have h' := congrArg (fun x : ↥(OL LL) => (x : ↥LL.1)) h
-    simp only [map_natCast, ZeroMemClass.coe_zero] at h'
+    simp only [ZeroMemClass.coe_zero] at h'
     have hp : (l : ℕ) ≠ 0 := (Fact.out : l.Prime).ne_zero
     exact hp (by exact_mod_cast h')
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible ↥(OL LL)

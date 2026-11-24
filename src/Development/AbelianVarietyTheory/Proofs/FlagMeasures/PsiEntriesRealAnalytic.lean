@@ -4,14 +4,14 @@ public import Development.AbelianVarietyTheory.Statements.CuspFrameWeights.Discr
 public import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Basic
 public import Mathlib.Analysis.Matrix.Order
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOfTendstoLocallyUniformlyOn
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiHolomorphicNearPositiveMatricesAtOneStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PsiHolomorphicNearPositiveMatricesAtOne
+public import Mathlib.Analysis.Calculus.InverseFunctionTheorem.ContDiff
+public import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Isometric
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IndefiniteUnitaryPreservesForm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.Calculus.InverseFunctionTheorem.ContDiff
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Isometric
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -331,6 +331,6 @@ theorem psiAnalytic_of_psBasic (hB : PsBasic) : PsiAnalytic := by
     rw [map_smul, inner_smul_right, projJ_of_comm hc]
     exact mul_comm _ _
 
-theorem psiAnalytic : PsiAnalytic := psiAnalytic_of_psBasic GlobalTheory.T.psi_holomorphic_near_positive_matrices_at_one
+theorem psiAnalytic : PsiAnalytic := psiAnalytic_of_psBasic _root_.GlobalTheory.Dec.psBasic
 
 end GlobalTheory.Dec

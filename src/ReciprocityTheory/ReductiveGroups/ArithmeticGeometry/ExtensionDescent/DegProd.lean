@@ -3,46 +3,7 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubicalPullBaseChangeSt
 public import Aesop.BuiltinRules
 public import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 
 @[expose] public section
 
@@ -70,10 +31,9 @@ lemma pullAlong_le {K : Type} [Fintype K] (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K 
   show h.base y ∈ (⋂ k, (φ k).base ⁻¹' (L.U (jj k ⟨⟩) : Set X))
   refine Set.mem_iInter.2 fun k => ?_
   have h1 : (ψ k).base y ∈ LB.wchart L (fun _ : PUnit => F) (jj k) := Set.mem_iInter.1 hy k
-  have h2 : F.base ((ψ k).base y) ∈ L.U (jj k ⟨⟩) := Set.mem_iInter.1 h1 ⟨⟩
+  have h2 := Set.mem_iInter.1 h1 ⟨⟩
   change (h ≫ φ k).base y ∈ (L.U (jj k ⟨⟩) : Set X)
-  rw [← hψ k]
-  exact h2
+  simpa [← hψ k] using h2
 
 def pullAlong {K : Type} [Fintype K] (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (ψ : K → (Y' ⟶ X')) (hψ : ∀ k, ψ k ≫ F = h ≫ φ k) (t : LB.Gen (LB.LinComb L φ ε)) :
@@ -87,9 +47,8 @@ lemma box_le {J K : Type} [Fintype J] [Fintype K] (F : J → (X' ⟶ X)) (φ : K
   intro y hy
   refine Set.mem_iInter.2 fun k => ?_
   have h1 : (φ k).base y ∈ LB.wchart L F (jj k) := Set.mem_iInter.1 hy k
-  have h2 : (F i).base ((φ k).base y) ∈ L.U (jj k i) := Set.mem_iInter.1 h1 i
-  show (φ k).base y ∈ (⋂ _u : PUnit, (F i).base ⁻¹' (L.U (jj k i) : Set X))
-  exact Set.mem_iInter.2 fun _ => h2
+  refine Set.mem_iInter.2 fun _ => ?_
+  exact Set.mem_iInter.1 h1 i
 
 def boxGen {J K : Type} [Fintype J] [Fintype K] (F : J → (X' ⟶ X)) (φ : K → (Y ⟶ X'))
     (ε : K → ℤ) (t : ∀ i, LB.Gen (LB.LinComb (L.pull (F i)) φ ε)) :
@@ -177,8 +136,7 @@ theorem inv_pr (p : IsPowGrp G' G j) (i : Fin j) (k : Fin 2) :
       (p.pr i).left ≫ (![(ι[G]).left, 𝟙 G.left] : Fin 2 → (G.left ⟶ G.left)) k := by
   have := p.hom i
   fin_cases k
-  · simp only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]
-    rw [← Over.comp_left, ← Over.comp_left, GrpObj.inv_hom]
+  · simp only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero, ← Over.comp_left, GrpObj.inv_hom]
   · simp
 
 def boxSym (p : IsPowGrp G' G j) (L : LB G.left)

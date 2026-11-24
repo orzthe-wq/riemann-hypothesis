@@ -1,12 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentralStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterDecompositionAndClassFunctionExpansionStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterPairingHarishChandraCuspidalMackeyStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspidalCharacterLabelUniqueGLnStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCuspidalListHarishChandraPairingNeZeroStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvariStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentral
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterDecompositionAndClassFunctionExpansion
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharacterPairingHarishChandraCuspidalMackey
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspidalCharacterLabelUniqueGLn
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCuspidalListHarishChandraPairingNeZero
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvari
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,10 +57,6 @@ open scoped Classical
 
 namespace GlobalTheory.GLq.Label
 
-theorem ip_add_left {G : Type} [Group G] [Fintype G] (a b c : G → ℂ) : ip (a + b) c = ip a c + ip b c := by
-  unfold ip
-  simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add]
-
 theorem ip_add_right {G : Type} [Group G] [Fintype G] (a b c : G → ℂ) : ip a (b + c) = ip a b + ip a c := by
   unfold ip
   simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
@@ -73,7 +69,7 @@ theorem ip_irr_sum {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : IsIr
     obtain ⟨m, hm, hmB⟩ := ih (fun r hr => hB r (by simp [hr]))
     have hρ : IsIrr ρ := hB ρ (by simp)
     refine ⟨(if χ = ρ then 1 else 0) + m, ?_, ?_⟩
-    · rw [List.sum_cons, ip_add_right, (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G χ ρ hχ hρ).2.2, hm]
+    · rw [List.sum_cons, ip_add_right, (_root_.GlobalTheory.GLq.ZOrth.zorth G χ ρ hχ hρ).2.2, hm]
       split_ifs <;> push_cast <;> ring
     · rw [List.mem_cons, ← hmB]
       by_cases h : χ = ρ
@@ -88,7 +84,7 @@ theorem ip_sum_sum {G : Type} [Group G] [Fintype G] (A B : List (G → ℂ)) (hA
     obtain ⟨m, hm, hmA⟩ := ih (fun r hr => hA r (by simp [hr]))
     obtain ⟨k, hk, hkB⟩ := ip_irr_sum ρ (hA ρ (by simp)) B hB
     refine ⟨k + m, ?_, ?_⟩
-    · rw [List.sum_cons, ip_add_left, hk, hm]
+    · rw [List.sum_cons, _root_.GlobalTheory.CharDec.ip_add_left, hk, hm]
       push_cast
       ring
     · intro χ hχ hχB
@@ -100,8 +96,8 @@ theorem ip_sum_sum {G : Type} [Group G] [Fintype G] (A B : List (G → ℂ)) (hA
 
 theorem ip_ne_zero_of_common {G : Type} [Group G] [Fintype G] (χ α β : G → ℂ) (hχ : IsIrr χ)
     (hα : IsChar α) (hβ : IsChar β) (h1 : ip χ α ≠ 0) (h2 : ip χ β ≠ 0) : ip α β ≠ 0 := by
-  obtain ⟨A, hA, rfl⟩ := (GlobalTheory.T.character_decomposition_and_classFunction_expansion G α).1 hα
-  obtain ⟨B, hB, rfl⟩ := (GlobalTheory.T.character_decomposition_and_classFunction_expansion G β).1 hβ
+  obtain ⟨A, hA, rfl⟩ := (_root_.GlobalTheory.charDec G α).1 hα
+  obtain ⟨B, hB, rfl⟩ := (_root_.GlobalTheory.charDec G β).1 hβ
   obtain ⟨m1, h1m, h1A⟩ := ip_irr_sum χ hχ A hA
   obtain ⟨m2, h2m, h2B⟩ := ip_irr_sum χ hχ B hB
   obtain ⟨m, hm, hmm⟩ := ip_sum_sum A B hA hB
@@ -110,9 +106,7 @@ theorem ip_ne_zero_of_common {G : Type} [Group G] [Fintype G] (χ α β : G → 
   rw [hm]
   exact_mod_cast hmm χ hχA hχB
 
-theorem isChar_of_isIrr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
-  obtain ⟨V, -, hV⟩ := h
-  exact ⟨V, hV⟩
+alias isChar_of_isIrr := _root_.GlobalTheory.CharDec.isChar_of_isIrr
 
 variable {g : ℕ} [Fact g.Prime]
 
@@ -124,7 +118,7 @@ theorem lab_eq (L : LabelDatum g) (hg : 5 ≤ g) (c : Pc g) (P : (ZMod g)[X]) (h
   have hex : ∃ P, IsCuspOf L P c.2 := ⟨P, h⟩
   unfold lab
   rw [dif_pos hex]
-  exact ((GlobalTheory.T.cuspidalCharacter_label_unique_GLn g L hg c.1 P _ c.2 c.2 h).1 hex.choose_spec).symm
+  exact ((_root_.GlobalTheory.GLq.isCuspOf_label_unique g L hg c.1 P _ c.2 c.2 h).1 hex.choose_spec).symm
 
 theorem map_fst_eq (L : LabelDatum g) (hg : 5 ≤ g) (Q : List ((ZMod g)[X] × Pc g))
     (hQ : ∀ p ∈ Q, IsCuspOf L p.1 p.2.2) : Q.map Prod.fst = (Q.map Prod.snd).map (lab L) := by
@@ -174,18 +168,18 @@ theorem label_unique (L : LabelDatum g) (hg : 5 ≤ g) {n : ℕ} (χ : Gn g n �
     (f f' : (ZMod g)[X]) (h : HasLabel L χ f) (h' : HasLabel L χ f') : f = f' := by
   obtain ⟨Q, hQ, hdQ, rfl, hχQ⟩ := h
   obtain ⟨Q', hQ', hdQ', rfl, hχQ'⟩ := h'
-  have hc := GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g (Q.map Prod.snd) (Q.map Prod.snd) n hdQ.symm (char_snd L Q hQ)
-  have hc' := GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g (Q'.map Prod.snd) (Q'.map Prod.snd) n hdQ'.symm (char_snd L Q' hQ')
+  have hc := _root_.GlobalTheory.gl_list_product_perm_char g (Q.map Prod.snd) (Q.map Prod.snd) n hdQ.symm (char_snd L Q hQ)
+  have hc' := _root_.GlobalTheory.gl_list_product_perm_char g (Q'.map Prod.snd) (Q'.map Prod.snd) n hdQ'.symm (char_snd L Q' hQ')
   have hne := ip_ne_zero_of_common χ _ _ hχ hc.1 hc'.1 hχQ hχQ'
   have hperm : (Q.map Prod.snd).Perm (Q'.map Prod.snd) := by
     by_contra hp
-    exact hne ((GlobalTheory.T.characterPairing_harishChandra_cuspidal_mackey g _ _ n hdQ hdQ' (cusp_snd L Q hQ) (cusp_snd L Q' hQ')).1 hp)
+    exact hne ((_root_.GlobalTheory.GLq.IpCuspProd.ip_hcL_cusp g _ _ n hdQ hdQ' (cusp_snd L Q hQ) (cusp_snd L Q' hQ')).1 hp)
   rw [map_fst_eq L hg Q hQ, map_fst_eq L hg Q' hQ']
   exact (hperm.map (lab L)).prod_eq
 
 theorem label_exists (L : LabelDatum g) (hg : 5 ≤ g) (hG : Green) {n : ℕ} (χ : Gn g n → ℂ)
     (hχ : IsIrr χ) : ∃ f, HasLabel L χ f := by
-  obtain ⟨C, hC, hdC, hip⟩ := GlobalTheory.T.exists_cuspidal_list_harishChandra_pairing_ne_zero g n χ hχ
+  obtain ⟨C, hC, hdC, hip⟩ := _root_.GlobalTheory.GLq.SuppCusp.exists_cusp_list g n χ hχ
   have hex : ∀ c ∈ C, ∃ P, IsCuspOf L P c.2 := by
     intro c hc
     obtain ⟨τ, hτ, -, hall⟩ := hG g L c.1 (hC c hc).1
@@ -276,9 +270,9 @@ theorem squarefree_series (L : LabelDatum g) (hg : 5 ≤ g) (hG : Green) (n : �
     have e2 := lab_eq L hg (s P') P' (ht P' (hmem P' hP')).1
     rw [← e1, ← e2, he]
   have hcusps := cusp_snd L Q hQc
-  have hchar := (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g (Q.map Prod.snd) (Q.map Prod.snd) n hdeg.symm (char_snd L Q hQc)).1
-  have hnorm1 := (GlobalTheory.T.characterPairing_harishChandra_cuspidal_mackey g _ _ n hdeg hdeg hcusps hcusps).2 hnd
-  have hirr : IsIrr (hcL (Q.map Prod.snd) n) := (GlobalTheory.T.character_decomposition_and_classFunction_expansion _ _).2.2.2.1 hchar hnorm1
+  have hchar := (_root_.GlobalTheory.gl_list_product_perm_char g (Q.map Prod.snd) (Q.map Prod.snd) n hdeg.symm (char_snd L Q hQc)).1
+  have hnorm1 := (_root_.GlobalTheory.GLq.IpCuspProd.ip_hcL_cusp g _ _ n hdeg hdeg hcusps hcusps).2 hnd
+  have hirr : IsIrr (hcL (Q.map Prod.snd) n) := (_root_.GlobalTheory.charDec _ _).2.2.2.1 hchar hnorm1
   refine ⟨Q, hQ, hcoe, hdeg, ?_⟩
   ext χ
   simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
@@ -289,7 +283,7 @@ theorem squarefree_series (L : LabelDatum g) (hg : 5 ≤ g) (hG : Green) (n : �
       have hc := hQ' _ hp
       have hd : P.natDegree = d := hc.1.2.2.2
       subst hd
-      have e := (GlobalTheory.T.cuspidalCharacter_label_unique_GLn g L hg P.natDegree P P (t P) χ' (ht P hc.1).1).2 hG hc
+      have e := (_root_.GlobalTheory.GLq.isCuspOf_label_unique g L hg P.natDegree P P (t P) χ' (ht P hc.1).1).2 hG hc
       show (⟨P.natDegree, χ'⟩ : Pc g) = ⟨P.natDegree, t P⟩
       rw [e]
     have hsnd' : Q'.map Prod.snd = (Q'.map Prod.fst).map s := by
@@ -301,11 +295,11 @@ theorem squarefree_series (L : LabelDatum g) (hg : 5 ≤ g) (hG : Green) (n : �
     have hperm2 : (Q'.map Prod.snd).Perm (Q.map Prod.snd) := by
       rw [hsnd', hQsnd]
       exact hperm.map s
-    have hhc := (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g (Q'.map Prod.snd) (Q.map Prod.snd) n hd'.symm
+    have hhc := (_root_.GlobalTheory.gl_list_product_perm_char g (Q'.map Prod.snd) (Q.map Prod.snd) n hd'.symm
       (char_snd L Q' hQ')).2 hperm2
     rw [hhc] at hip'
     by_contra hne
-    rw [(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ _ hχ hirr).2.2, if_neg hne] at hip'
+    rw [(_root_.GlobalTheory.GLq.ZOrth.zorth _ χ _ hχ hirr).2.2, if_neg hne] at hip'
     exact hip' rfl
   · rintro rfl
     refine ⟨hirr, Q, hQc, hdeg, hprod.symm, ?_⟩

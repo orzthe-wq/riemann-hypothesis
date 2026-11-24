@@ -76,9 +76,6 @@ theorem symplO_nsmul_left (k : ℕ) (x y : WO S T) : symplO S T (k • x) y = k 
   | zero => rw [zero_nsmul, zero_nsmul, symplO_zero_left]
   | succ n ih => rw [succ_nsmul, succ_nsmul, GlobalTheory.LatVac.symplO_add_left, ih]
 
-theorem symplO_nsmul_swap (k : ℕ) (x y : WO S T) : symplO S T (k • x) y = symplO S T x (k • y) := by
-  rw [symplO_nsmul_left, symplO_skew S T (k • y) x, symplO_nsmul_left, symplO_skew S T x y, neg_nsmul, neg_neg]
-
 theorem symplO_neg_left (x y : WO S T) : symplO S T (-x) y = -symplO S T x y := by
   have h := symplO_sub_left S T 0 x y
   rwa [zero_sub, symplO_zero_left, zero_sub] at h
@@ -205,13 +202,13 @@ theorem sum_translates_eq_zero {a : AE D} (ha : IsSplitIdem D a) (hψ : IsStdCha
   have hGx : ∀ d, IsHalf (cA D a) d → d ∈ K → heisO ψ S T d (heisO ψ S T x f) = heisO ψ S T x f := by
     intro d hdh hdK
     obtain ⟨v, hv, hvh, rfl⟩ := rep_half ha'.1 (hstab _ ha'.1) hdh ((hK d).1 hdK)
-    rw [heisO_comm, symplO_nsmul_swap, hpair v hv _ hkx, one_smul, hfix v hv (Or.inr hvh)]
+    rw [heisO_comm, _root_.GlobalTheory.DownLift.GenQuot.symplO_nsmul_swap, hpair v hv _ hkx, one_smul, hfix v hv (Or.inr hvh)]
   have hd : ∀ y, IsHalf (cA D a) y → y ∉ Λ' → ∃ l ∈ Λ', IsHalf (cA D (cA D a)) l ∧ ψ (symplO S T l y) ≠ 1 := by
     intro y hy hyΛ'
     have hky : k • y ∉ Λ := fun h => hyΛ' ((memC y hy).2 h)
     obtain ⟨l, hl, hlh, hne⟩ := exists_dual_half ha' hdual (hstab _ (by rw [hcc]; exact ha.1))
       (isHalf_nsmul hy k) hky
-    refine ⟨k • l, ?_, isHalf_nsmul hlh k, by rwa [symplO_nsmul_swap]⟩
+    refine ⟨k • l, ?_, isHalf_nsmul hlh k, by rwa [_root_.GlobalTheory.DownLift.GenQuot.symplO_nsmul_swap]⟩
     rw [hcc] at hlh
     exact (memA _ (isHalf_nsmul hlh k)).2 ⟨l, hl, rfl⟩
   have h1 : ∀ u ∈ Λ', IsHalf (cA D a) u →
@@ -226,7 +223,7 @@ theorem sum_translates_eq_zero {a : AE D} (ha : IsSplitIdem D a) (hψ : IsStdCha
     obtain ⟨v, hv, hvh, rfl⟩ := rep_half ha.1 (hstab _ ha.1) huh ((memA u huh).1 hu)
     rw [heisO_sum]
     refine Finset.sum_congr rfl fun y hy => ?_
-    rw [heisO_comm, symplO_nsmul_swap, hpair v hv _ (hY y hy).2, one_smul, heisO_comm ψ S T (k • v) x,
+    rw [heisO_comm, _root_.GlobalTheory.DownLift.GenQuot.symplO_nsmul_swap, hpair v hv _ (hY y hy).2, one_smul, heisO_comm ψ S T (k • v) x,
       half_orth ha (isHalf_nsmul hvh k) hxa, AddChar.map_zero_eq_one, one_smul, hfix v hv (Or.inl hvh)]
   obtain ⟨ℓ, hℓ0, hℓinv⟩ := GlobalTheory.SplitHecke.exists_invariant_form' (Λ := Λ') (ψ := ψ) ha' hd hn h1 h2
   apply hℓ0

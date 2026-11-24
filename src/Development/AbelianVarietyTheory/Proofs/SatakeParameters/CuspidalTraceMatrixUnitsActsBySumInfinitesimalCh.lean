@@ -105,7 +105,7 @@ theorem trace_Eop_of_hasInfChar (E : Type) [Field E] [NumberField E] [_root_.Num
   have hco := congrArg (fun p : ℂ[X] => p.coeff (a - 1)) hQR
   have hlt : a - 1 ∈ Finset.range (a + 1) := Finset.mem_range.2 (by omega)
   simp only [Q, R, finsetSum_coeff, coeff_C_mul, coeff_X_pow, mul_ite, mul_one, mul_zero,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', if_pos hlt] at hco
+    Finset.sum_ite_eq, if_pos hlt] at hco
   have hm : (m.map fun z => X + C (z - c)).prod =
       ((m.map fun z => z - c).map fun r => X + C r).prod := by rw [Multiset.map_map]; rfl
   rw [hm, Multiset.prod_X_add_C_coeff _ (by simp [hcard]), Multiset.card_map, hcard,

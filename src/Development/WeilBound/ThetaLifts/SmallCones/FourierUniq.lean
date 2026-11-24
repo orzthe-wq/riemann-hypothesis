@@ -3,7 +3,9 @@ module
 public import Development.WeilBound.ThetaLifts.SmallCones.ThetaUniq
 public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.AdelicCharacterRationalDual
 public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.HeisenbergCommutingOperatorScalar
-import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionHeisenbergInvariantStatement
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.NumberTheory.NumberField.AdeleRing
+import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionHeisenbergInvariant
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -86,7 +88,7 @@ theorem std_ne_one {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) : ψ ≠ 1 := by
   norm_num at hψa
 
 theorem std_norm {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (x : AF F) : ‖ψ x‖ = 1 :=
-  (GlobalTheory.T.adelic_character_rational_dual F ψ h.1 (std_ne_one h) h.2.1).1 x
+  (_root_.GlobalTheory.CompanionTheory.AdeleAnn.unitary_and_annihilator_eq F ψ h.1 (std_ne_one h) h.2.1).1 x
 
 theorem std_ne_zero {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (x : AF F) : ψ x ≠ 0 := by
   intro h0

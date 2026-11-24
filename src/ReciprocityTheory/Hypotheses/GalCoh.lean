@@ -173,12 +173,22 @@ end Global
 
 section Universal
 
+/-- For a finite place `v` of `F` and a finite module `M` killed by `l ^ r` with a continuous action
+of the decomposition group `D` at `v`, `H⁰`, `H¹`, `H²` of `D` are finite and `Hⁿ = 0` for `n ≥ 3`.
+[J. S. Milne, *Arithmetic Duality Theorems* (Chapter I, Theorem 2.1 and p. 31)][milne2006].
+This is a special case: `M` is killed by `l ^ r`, and `D` stands in for the Galois group of `F_v`.
+This reference is a reader's proposal and has not been checked by a mathematician. -/
 def LocalFiniteness : Prop :=
   ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
     (A : ValuationSubring Ω) (rho : Representation (ZMod (l ^ r)) (Dec (F := F) A) M)
     (v : HeightOneSpectrum (𝓞 F)), LocalFinitenessAt A rho v
 
+/-- With `D` and `M` as in `LocalFiniteness`, `H²(D, μ_{l^r})` is isomorphic to `ZMod (l ^ r)`, and
+cup product pairs `Hⁱ(D, M)` perfectly with `H²⁻ⁱ(D, Hom(M, μ_{l^r}))` for `i = 0, 1, 2`.
+[J. S. Milne, *Arithmetic Duality Theorems* (Chapter I, Corollary 2.3, p. 28; for `H²(μ_{l^r})`, p. 27)][milne2006].
+This is a special case: the modules are killed by `l ^ r`.
+This reference is a reader's proposal and has not been checked by a mathematician. -/
 def LocalTateDuality : Prop :=
   ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
@@ -191,12 +201,23 @@ def UnramifiedOrthogonality : Prop :=
     (A : ValuationSubring Ω) (rho : Representation (ZMod (l ^ r)) (Dec (F := F) A) M)
     (v : HeightOneSpectrum (𝓞 F)), UnramifiedOrthogonalityAt A rho v
 
+/-- With `D` and `M` as in `LocalFiniteness`, `#H¹ = #H⁰ · #H² · (#M) ^ [F_v : ℚ_l]` if `v` lies
+above `l` (here `locDeg v = [F_v : ℚ_l]`), and `#H¹ = #H⁰ · #H²` otherwise.
+[J. S. Milne, *Arithmetic Duality Theorems* (Chapter I, Theorem 2.8, p. 31)][milne2006].
+This is a special case: the modules are killed by `l ^ r`.
+This reference is a reader's proposal and has not been checked by a mathematician. -/
 def LocalEulerChar : Prop :=
   ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
     (A : ValuationSubring Ω) (rho : Representation (ZMod (l ^ r)) (Dec (F := F) A) M)
     (v : HeightOneSpectrum (𝓞 F)), LocalEulerCharAt A rho v
 
+/-- For a finite set `S` of finite places containing those above `l`, and a finite module `M` killed
+by `l ^ r` with a continuous action of `G_S` (unramified outside `S`), `H⁰`, `H¹`, `H²` of `G_S`
+are finite, and `Hⁿ = 0` for `n ≥ 3` when `l` is odd.
+[J. S. Milne, *Arithmetic Duality Theorems* (Chapter I, Corollary 4.15, Theorem 4.10)][milne2006].
+This is a special case: the modules are killed by `l ^ r`.
+This reference is a reader's proposal and has not been checked by a mathematician. -/
 def GlobalFiniteness : Prop :=
   ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
@@ -204,6 +225,12 @@ def GlobalFiniteness : Prop :=
     (rhoS : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M),
     GlobalFinitenessAt S rhoS
 
+/-- With `S`, `G_S` and `M` as in `GlobalFiniteness`, and `c_w` a complex conjugation at each real
+place `w`, `#H⁰ · #H² · (#M) ^ [F : ℚ] = #H¹ · ∏_{w real} #M^{c_w} · (#M) ^ r₂` (`archH0Card`),
+where `r₂` is the number of complex places.
+[J. S. Milne, *Arithmetic Duality Theorems* (Chapter I, Theorem 5.1, p. 67)][milne2006].
+This is a special case: the modules are killed by `l ^ r`.
+This reference is a reader's proposal and has not been checked by a mathematician. -/
 def GlobalEulerChar : Prop :=
   ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]

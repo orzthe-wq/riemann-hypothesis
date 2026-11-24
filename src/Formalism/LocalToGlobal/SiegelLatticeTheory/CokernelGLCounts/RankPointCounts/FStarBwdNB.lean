@@ -2,48 +2,8 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FStarBwdNA
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BetaUniqueness.Lemmas
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -59,16 +19,12 @@ theorem oSmulW {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [Is
     (o : 𝓞 E) (w : W) : o • w = (o : E) • w := by
   first
   | exact (algebraMap_smul E o w).symm
-  | rfl
-  | simp [Algebra.smul_def]
 
 private theorem coe_ne_zero_of_ne_zero (o : 𝓞 E) (h : o ≠ 0) : (o : E) ≠ 0 := by
   intro h'
   apply h
   first
   | exact_mod_cast h'
-  | exact RingOfIntegers.ext h'
-  | simpa using h'
 
 private theorem inv_smul_apply_smul_eq_of_smul_mem {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
     (P : Submodule (𝓞 E) S.V) (f : P →ₗ[𝓞 E] W) (u : S.V) (a b : 𝓞 E) (ha : a ≠ 0) (hb : b ≠ 0)
@@ -97,7 +53,7 @@ theorem ext_lat {W : Type*} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [I
     intro u a b h
     rw [mul_smul]
     exact P.smul_mem b h
-  have hal : ∀ o : 𝓞 E, algebraMap (𝓞 E) E o = (o : E) := fun o => by first | rfl | simp
+  have hal : ∀ o : 𝓞 E, algebraMap (𝓞 E) E o = (o : E) := fun o => by first | rfl
   refine ⟨{ toFun := fun x => ((d x.1 x.2 : E))⁻¹ • f ⟨d x.1 x.2 • x.1, hdP x.1 x.2⟩,
             map_add' := ?_, map_smul' := ?_ }, ?_⟩
   · intro x y
@@ -204,7 +160,7 @@ theorem dual_sum (Λ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) 
       simp
     obtain ⟨d, hd, hdu⟩ := hfull u
     have h1 := hm _ hdu (by rw [oSmul]; exact U.smul_mem _ hu)
-    rw [oSmul, hT_smulL] at h1
+    rw [oSmul, _root_.PI.ScalarPairDr.W.hT_smul_left] at h1
     have hd' : star ((d : E)) ≠ 0 := by
       rw [star_ne_zero]; exact coe_ne_zero hd
     exact (mul_eq_zero.1 h1).resolve_left hd'

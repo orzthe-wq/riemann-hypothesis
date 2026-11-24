@@ -7,48 +7,6 @@ import Formalism.DoubleCosetMeasures.LatticeCoset
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CharacterOrthogonalityDual
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.FirstKernelPropertiesOfHypotheses
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocModel
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -315,7 +273,7 @@ theorem fL_hasSum (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (
           have hZi : ∀ i j, (Loc.uLow hX.choose.1 * a.mat * Loc.uUp a hX.choose.2) i j ∈ (M p).R := by
             intro i j; rw [← hZ]; exact add_mem (hrepI i j) (shM_mem M δ T T' p w i j)
           have hZd : IsUnit (Loc.uLow hX.choose.1 * a.mat * Loc.uUp a hX.choose.2).det := by
-            rw [Matrix.det_mul, Matrix.det_mul, Formalism.L2.SG.Pf.LocModel.uLow_det, Formalism.L2.SG.Pf.LocModel.uUp_det,
+            rw [Matrix.det_mul, Matrix.det_mul, _root_.Formalism.L2.SG.Pf.det_uLow, _root_.Formalism.L2.SG.Pf.det_uUp,
               one_mul, mul_one, Formalism.MainNotions.LocalModelPeriodLattices.det_eq]
             exact Formalism.FourierDecayAlt.P.A5x6.pt_det_isUnit _
           have hth : thL M δ T T' p w rep = clsOf (M p) (Loc.uLow hX.choose.1 * a.mat * Loc.uUp a hX.choose.2) := by
@@ -391,7 +349,7 @@ theorem nAutNe_of (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (
   haveI := Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK (M p) hOK
   have hD := Formalism.MainNotions.LocalModelPeriodLattices.datum_of_OK (M p) hOK
   have hI : Formalism.DoubleCosetMeasures.IsInt (M p).R ((Quotient.out c).Z.map (M p).R.subtype) := fun i j => ((Quotient.out c).Z i j).2
-  have hfin := (Formalism.DoubleCosetMeasures.Final.isoFinite _ (M p).R (Formalism.FourierDecayAlt.P.A5x3.finite_quot hD) _ _ hI (Quotient.out c).unit).2
+  have hfin := (_root_.Formalism.DoubleCosetMeasures.P.isoFinite _ (M p).R (Formalism.FourierDecayAlt.P.A5x3.finite_quot hD) _ _ hI (Quotient.out c).unit).2
     ((M p).Cok (Quotient.out c)) ((M p).eCls (Quotient.out c)) (Formalism.MainNotions.LocalOrbitGerms.Cls.lamK (M p) (Quotient.out c))
   haveI : Finite ((M p).Iso (Quotient.out c) (Quotient.out c)) :=
     (Equiv.finite_iff (Formalism.MainNotions.LocalOrbitGerms.Cls.isoEquiv (M p) (Quotient.out c) (Quotient.out c))).2 hfin.to_subtype

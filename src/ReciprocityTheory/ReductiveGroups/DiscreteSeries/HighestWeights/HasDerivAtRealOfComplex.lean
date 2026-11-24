@@ -2,56 +2,11 @@ module
 
 public import Formalism.RealPlaceAnalysis.StatementKT
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.PsiExistsStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.OneParam
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Calculus.Deriv.Comp
 public import Mathlib.Analysis.Calculus.Deriv.Linear
 public import Mathlib.Analysis.Calculus.Deriv.Mul
@@ -81,9 +36,8 @@ theorem inK_iff' (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     refine ⟨?_, hC⟩
     have h1 : Xᴴ * Jm ε = -(X * Jm ε) := by
       rw [hC]; exact eq_neg_of_add_eq_zero_left hG
-    have h2 := congrArg (· * Jm ε) h1
-    simp only [Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one, Matrix.neg_mul] at h2
-    exact h2
+    simpa only [Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one, Matrix.neg_mul] using
+      congrArg (· * Jm ε) h1
   · rintro ⟨hH, hC⟩
     refine ⟨?_, hC⟩
     unfold inG
@@ -177,8 +131,7 @@ theorem KType.conj_dτ {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε 
   have hf : (fun y : ℝ => T.op k * NormedSpace.exp ((y : ℂ) • B) * star (T.op k)) =
       fun y : ℝ => NormedSpace.exp ((y : ℂ) • C) := funext key
   simp only [hf] at h1
-  have := h1.unique h2
-  simpa using this
+  simpa using h1.unique h2
 
 section MatDeriv
 
@@ -228,8 +181,7 @@ theorem KType.dτ_bracket {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType 
     (f₁ := fun s : ℝ => T.dτ (NormedSpace.exp ((s : ℂ) • X) * Y * NormedSpace.exp ((s : ℂ) • (-X))))
     (Filter.Eventually.of_forall fun s => (key s).symm)
   have := h1'.unique h2
-  rw [← this]
-  simp [sub_eq_add_neg]
+  simpa [sub_eq_add_neg] using this
 
 theorem single_mul_Jm {ε : Fin n → Bool} {a b : Fin n} (h : ε a = ε b) (c : ℂ) :
     Matrix.single a b c * Jm ε = Jm ε * Matrix.single a b c := by

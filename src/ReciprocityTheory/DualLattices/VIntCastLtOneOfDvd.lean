@@ -5,52 +5,10 @@ public import Mathlib.Basic.NNReal.Defs
 public import Mathlib.FieldTheory.IsAlgClosed.Basic
 public import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 public import Mathlib.RingTheory.Valuation.Integers
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Data.Nat.Prime.Int
 public import Mathlib.FieldTheory.Finite.Basic
 public import Mathlib.RingTheory.Polynomial.Cyclotomic.Basic
@@ -182,14 +140,8 @@ theorem exists_teich [IsAlgClosed C] (hv : v.Integers R) (hpv : v (p : C) < 1) (
   have heq : (Polynomial.X ^ p - Polynomial.X : Polynomial C) =
       ((Polynomial.X ^ p - Polynomial.X : Polynomial C).roots.map (fun a => Polynomial.X - Polynomial.C a)).prod := by
     first
-    | exact Polynomial.eq_prod_roots_of_monic_of_splits_id hmon (IsAlgClosed.splits _)
-    | exact (Polynomial.Monic.eq_prod_roots_of_splits_id hmon (IsAlgClosed.splits _))
     | (have hc := Polynomial.C_leadingCoeff_mul_prod_multiset_X_sub_C
           (Polynomial.splits_iff_card_roots.mp (IsAlgClosed.splits (Polynomial.X ^ p - Polynomial.X : Polynomial C)))
-       rw [hmon.leadingCoeff, map_one, one_mul] at hc
-       exact hc.symm)
-    | (have hc := Polynomial.C_leadingCoeff_mul_prod_multiset_X_sub_C
-          (IsAlgClosed.card_roots_eq_natDegree (k := C) (p := Polynomial.X ^ p - Polynomial.X))
        rw [hmon.leadingCoeff, map_one, one_mul] at hc
        exact hc.symm)
   have heval : (n : C) ^ p - n =
@@ -230,7 +182,7 @@ theorem exists_teichChar [IsAlgClosed C] (hv : v.Integers R) (hpv : v (p : C) < 
       have hd : (p : ℤ) ∣ (((a * b).val : ℤ) - (a.val : ℤ) * (b.val : ℤ)) := by
         rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]
         push_cast
-        simp [ZMod.natCast_zmod_val]
+        simp
       have := v_intCast_lt_one_of_dvd hv hpv hd
       push_cast at this
       exact this

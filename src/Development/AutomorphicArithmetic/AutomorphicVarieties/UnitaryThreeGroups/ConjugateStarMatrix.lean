@@ -71,7 +71,7 @@ theorem UpperTheory.V.U3.zmat_diag :
   have hJ : ∀ (M : Matrix (Fin 3) (Fin 3) R) (i j : Fin 3), (Jmat (R := R) 3 * Mᵀ * Jmat (R := R) 3) i j = M j.rev i.rev := by
     intro M i j
     simp only [Matrix.mul_apply, Jmat, Matrix.transpose_apply, ite_mul, mul_ite, one_mul, zero_mul, mul_zero,
-      Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+      Finset.sum_ite_eq', Finset.mem_univ, if_true]
     rw [Finset.sum_eq_single j.rev]
     · simp
     · intro x _ hx

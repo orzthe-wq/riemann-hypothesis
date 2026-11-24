@@ -338,7 +338,7 @@ theorem weight_blockWeight [Fintype σ] (d : β × σ →₀ ℕ) (i : β) :
     by_cases h : k = i
     · subst h
       simp [Finsupp.weight_single, blockWeight, Finsupp.single_apply]
-    · simp [Finsupp.weight_single, blockWeight, Finsupp.single_apply, h, Ne.symm h]
+    · simp [Finsupp.weight_single, blockWeight, Ne.symm h]
 
 theorem isBlockHomogeneous_iff [Fintype σ] {f : MvPolynomial (β × σ) K} {a : β → ℕ} :
     IsBlockHomogeneous f a ↔ ∀ d ∈ f.support, ∀ i, ∑ j, d (i, j) = a i := by

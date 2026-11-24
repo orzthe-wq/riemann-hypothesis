@@ -68,7 +68,7 @@ theorem hcOf (m n : ℕ) (c : Acris l) :
   Classical.choose_spec (redIn_ex (S.L m).γ (m + 1) (S.L m).lam ((hS.lev m).lat (m + 1) le_rfl).tf (hC m).1 (hC m).2 n) c
 
 abbrev chK (M : Model l K) (m s : ℕ) : Chain.{1} (per l K).A (S.L m).A (S.L m).B K :=
-  chainOf (hS.lev m) M s (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s)
+  chainOf (hS.lev m) M s (_root_.CrystallineSemistableComparison.Pb.Kap.qb_le_pf (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s)
 
 def rhoK {M : Model l K} (a : (dat Amp).Ch M) (j m : ℕ) (x : ((dat Amp).H a).N j)
     (f : Module.Dual K (HdR M.q j) →+ (S.L m).B) : Prop :=

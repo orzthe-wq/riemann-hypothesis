@@ -372,11 +372,7 @@ theorem prod_redFun (s : Finset (Formalism.L2.DIV.Pl D.host.E)) (es : Formalism.
 
 end Local
 
-theorem isSplitIdem_cA {e : AE D} (h : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
-  obtain ⟨h1, h2, v, ε, h3, h4⟩ := h
-  refine ⟨by rw [← RingHom.map_mul, h1], ?_, v, ε, h3, ?_⟩
-  · rw [GlobalTheory.DualPairCheck.cA_cA, mul_comm, h2]
-  · rw [GlobalTheory.DualPairCheck.cA_cA, add_comm, h4]
+alias isSplitIdem_cA := _root_.GlobalTheory.SplitScalar.isSplitIdem_conj
 
 theorem thetaVecLocal : ∀ D : D7, ThetaVecLocal D := by
   intro D ψ θ S T sS sT ΛS ΛT βS βT Pg Q ξ f₀ f μ 𝓕 t ht hB hμ _ _ hdis hv

@@ -318,8 +318,6 @@ theorem exp_pow_inv {S : Type} [CommRing S] [Algebra ℚ S] {σ : Type} (b : MvP
     rw [h2, PowerSeries.rescale_zero, RingHom.comp_apply, PowerSeries.constantCoeff_exp, map_one]
   rw [h1, one_pow]
   first
-    | exact PowerSeries.subst_one hs
-    | exact (PowerSeries.substAlgHom hs).map_one
     | simp [← PowerSeries.coe_substAlgHom hs]
 
 theorem isValueAt_of_eq {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left) (a : ℤ) {T : Over S0}

@@ -68,4 +68,4 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.AboveL
 
 theorem _root_.GlobalTheory.T.cm_subfields_compositum_closed : ∀ (Ω : Type) [Field Ω] (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra E Ω] [IsAlgClosure E Ω], (∀ (M N : IntermediateField E Ω) [NumberField M] [NumberField N] [NumberField ↥(M ⊔ N)], IsCMField M → IsCMField N → IsCMField ↥(M ⊔ N)) ∧ (∀ (M N : IntermediateField E Ω) [NumberField M] [NumberField N], N ≤ M → IsCMField M → IsCMField N) ∧ ∀ (M : IntermediateField E Ω) [NumberField M] (S : Set Ω), (∀ x ∈ S, ∀ φ : Ω →+* ℂ, (φ x).im = 0) → M = IntermediateField.adjoin E S → IsCMField M := by
-  first | exact @GlobalTheory.CMSub.isCMField_sup_le_adjoin | exact GlobalTheory.CMSub.isCMField_sup_le_adjoin | (intros; apply GlobalTheory.CMSub.isCMField_sup_le_adjoin <;> assumption)
+  first | exact @GlobalTheory.CMSub.isCMField_sup_le_adjoin

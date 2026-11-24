@@ -114,7 +114,7 @@ theorem basicOpen_res' {U V : X.Opens} (h : V ≤ U) (f : Γ(X, U)) :
 theorem g_finOne (L : LB X) (n : ℕ) (i j : Fin 1 → L.ι) :
     (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => (n : ℤ))).g i j =
       res (inf_le_inf (chart_le L i) (chart_le L j)) ((lbPow L n).g (fun _ => i 0) (fun _ => j 0)) := by
-  simp only [lbPow, LB.LinComb, Fin.prod_univ_one, Finset.univ_unique, Finset.prod_singleton, map_zpow]
+  simp only [lbPow, LB.LinComb, Finset.univ_unique, Finset.prod_singleton, map_zpow]
   congr 1
   exact (unitsRes_res _ _ _ _).symm
 

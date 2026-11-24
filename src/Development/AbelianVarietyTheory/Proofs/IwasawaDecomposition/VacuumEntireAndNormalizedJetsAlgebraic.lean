@@ -318,9 +318,7 @@ variable {N N' : ℕ}
 def TA (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (G : VC D N N' → ℂ) : Prop :=
   Differentiable ℂ G ∧ ∀ x ∈ sat (La D (tor0 D cc δ) (stdL D N) (stdL D N')), CoefIn D (U D (tor0 D cc δ) x G) Qbar
 
-theorem differentiable_U (T : Tor D) (x : VC D N N') {G : VC D N N' → ℂ} (hG : Differentiable ℂ G) : Differentiable ℂ (U D T x G) := by
-  unfold U Hf
-  fun_prop
+alias differentiable_U := _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.U_diff
 
 theorem TA.comb {α : Type} (s : Finset α) (c : α → ℂ) (F : α → VC D N N' → ℂ) (hc : ∀ a, c a ∈ Qbar) (h : ∀ a, TA cc δ (F a)) :
     TA cc δ fun z => ∑ a ∈ s, c a * F a z := by

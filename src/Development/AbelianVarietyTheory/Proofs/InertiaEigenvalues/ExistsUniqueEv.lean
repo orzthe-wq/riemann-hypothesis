@@ -67,7 +67,7 @@ theorem X_add_C_mem {c : O} (hc : c ∈ maximalIdeal O) : (X + C c : O⟦X⟧) �
   rw [mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff]
   simpa using hc
 
-variable [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
+variable [IsAdicComplete (maximalIdeal O) O]
 
 theorem exists_shift {c : O} (hc : c ∈ maximalIdeal O) :
     ∃ s : O⟦X⟧ →ₐ[O] O⟦X⟧, s X = X + C c := by

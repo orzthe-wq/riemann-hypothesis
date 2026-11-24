@@ -45,5 +45,3 @@ open Formalism.IndefR.Links
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
-theorem _root_.GlobalTheory.T.coeffPolynomial_eq_zero_of_vanishing_on_GLFamily : ∀ (D : D7) (n : ℕ) (lam : D.what₂.Tau → DomWeight n) (F : Formalism.L2.DIV.Pol ℂ D.what₂.Tau n), (∀ x : GLR D n, coefFn (RingHom.id ℂ) lam F x = 0) → F = 0 := by
-  first | exact @GlobalTheory.ExportSeries.eq_zero_of_coefFn_id_eq_zero | exact GlobalTheory.ExportSeries.eq_zero_of_coefFn_id_eq_zero | (intros; apply GlobalTheory.ExportSeries.eq_zero_of_coefFn_id_eq_zero <;> assumption)

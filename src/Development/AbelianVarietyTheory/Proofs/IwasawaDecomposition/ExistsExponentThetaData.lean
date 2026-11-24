@@ -105,7 +105,6 @@ def nthOfEmpty [IsEmpty tw.Tw] (Y : NExp R H whatâ‚‚ LL0 nd tw) : NTh R H whatâ‚
   Pt := fun i => isEmptyElim i
   ev := fun i => isEmptyElim i
   ev_smul := fun i => isEmptyElim i
-  ev_inj := fun i => isEmptyElim i
   Lt := fun i => isEmptyElim i
   acgLt := fun i => isEmptyElim i
   modLt := fun i => isEmptyElim i
@@ -143,7 +142,6 @@ def nthOfEmpty [IsEmpty tw.Tw] (Y : NExp R H whatâ‚‚ LL0 nd tw) : NTh R H whatâ‚
   FmUr := fun i => isEmptyElim i
   FmUr_smul := fun i => isEmptyElim i
   FmUr_span := fun i => isEmptyElim i
-  Bsup_def := fun i => isEmptyElim i
 
 end
 

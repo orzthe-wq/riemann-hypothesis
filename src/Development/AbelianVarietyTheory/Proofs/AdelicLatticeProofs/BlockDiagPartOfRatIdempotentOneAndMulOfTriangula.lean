@@ -80,7 +80,7 @@ theorem peirce_block_decomposition {A : Type*} [Ring A] (E F : A) (hE : E * E = 
       _ = E * x * E + F * x * F + E * x * F + F * x * E := by noncomm_ring
       _ = _ := by rw [hx, add_zero]
   · intro x
-    simp only [mul_add, add_mul, mul_assoc, hE', hF', hEF', hFE', hE, hF, add_zero, zero_add]
+    simp only [mul_add, mul_assoc, hE', hF', hEF', hFE', hE, hF, add_zero, zero_add]
 
 theorem blk_mul_of_triangular : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (e : Matrix ι ι ℚ) (R : Type) [CommRing R] [Algebra ℚ R], e * e = e → blk e (1 : Matrix ι ι R) = 1 ∧ (∀ x y : Matrix ι ι R, (1 - e.map (algebraMap ℚ R)) * x * e.map (algebraMap ℚ R) = 0 → (1 - e.map (algebraMap ℚ R)) * y * e.map (algebraMap ℚ R) = 0 → blk e (x * y) = blk e x * blk e y ∧ (1 - e.map (algebraMap ℚ R)) * (x * y) * e.map (algebraMap ℚ R) = 0) ∧ (∀ x : Matrix ι ι R, (1 - e.map (algebraMap ℚ R)) * x * e.map (algebraMap ℚ R) = 0 → x = blk e x + e.map (algebraMap ℚ R) * x * (1 - e.map (algebraMap ℚ R))) ∧ (∀ x : Matrix ι ι R, blk e (blk e x) = blk e x) ∧ ∀ γ : Matrix ι ι ℚ, blk e (γ.map (algebraMap ℚ R)) = (blk e γ).map (algebraMap ℚ R) := by
   intro ι _ _ e R _ _ he

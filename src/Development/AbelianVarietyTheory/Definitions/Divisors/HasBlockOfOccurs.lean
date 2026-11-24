@@ -147,12 +147,21 @@ def setting (jK : F.K →* alg F.O N lam)
     [sT : @IsScalarTower F.O F.T (Forms F.O (A := alg F.O N lam) F.Γ jK (NablaT F.O N lam)) _ mT.toSMul _]
     (m : Ideal F.T) [m.IsPrime] : HidaSetting ι N lam where
   O := F.O
+  cO := F.cO
+  dO := F.dO
+  zO := F.zO
   A := alg F.O N lam
+  rA := (alg F.O N lam).toRing
+  aA := (alg F.O N lam).algebra
   G := F.G
+  gG := F.gG
   Γ := F.Γ
   K := F.K
   jK := jK
+  mA := (alg F.O N lam).moduleLeft
   T := F.T
+  cT := AddMonoidAlgebra.commRing
+  aT := AddMonoidAlgebra.algebra
   mT := mT
   sT := sT
   S := m.primeCompl
@@ -208,16 +217,6 @@ def Reads.Occurs {w : HeightOneSpectrum (𝓞 K)} (R : Reads F lam B w) (Z : Sub
 
 def Reads.HasBlock {w : HeightOneSpectrum (𝓞 K)} (R : Reads F lam B w) (θ : F.I → PadicAlgCl l) : Prop :=
   ∃ x : B.Pl × ℕ → K, (∀ P, x (P, 0) = 1) ∧ Formalism.L2.Col.HasBlocks B.n B.q B.t B.bl x ∧ ∀ i, θ i = R.e0 (x (R.ix i))
-
-theorem eq_one_of_occurs {L V J : Type} [Field L] [AddCommGroup V] [Module L V] {op : J → Module.End L V} {x : J → L}
-    (hx : Formalism.L2.Col.Occurs op x) {j : J} (hj : op j = 1) : x j = 1 := by
-  obtain ⟨v, hv, hv0⟩ := (Submodule.ne_bot_iff _).1 hx
-  have h := Formalism.L2.Col.eigAt_le op x j hv
-  rw [Module.End.mem_maxGenEigenspace, hj] at h
-  obtain ⟨k, hk⟩ := h
-  have e : (1 : Module.End L V) - x j • 1 = (1 - x j) • 1 := by rw [sub_smul, one_smul]
-  rw [e, smul_pow, one_pow, LinearMap.smul_apply, Module.End.one_apply, smul_eq_zero] at hk
-  exact (sub_eq_zero.1 (eq_zero_of_pow_eq_zero (hk.resolve_right hv0))).symm
 
 end Reading
 

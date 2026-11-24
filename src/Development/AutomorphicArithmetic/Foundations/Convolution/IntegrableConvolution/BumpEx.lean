@@ -176,7 +176,7 @@ private def Good (P : archGroup K n → ℂ) : Prop :=
     ∀ k : archCompact K n, (fun g => P ((k : archGroup K n) * g)) ∈ W
 
 private theorem Good.cont {P : archGroup K n → ℂ} (h : Good P) : Continuous P := by
-  letI := (isExpLieAlgebra K n).chartedSpace
+  let := (isExpLieAlgebra K n).chartedSpace
   exact ContMDiff.continuous h.1
 
 private theorem Good.add {P Q : archGroup K n → ℂ} (hP : Good P) (hQ : Good Q) :
@@ -261,13 +261,13 @@ private def polS (C : Set (archGroup K n)) : StarSubalgebra ℂ C(C, ℂ) where
 private theorem exists_good_near {C : Set (archGroup K n)} (hC : IsCompact C) (f : archGroup K n → ℂ)
     (hf : Continuous f) {ε : ℝ} (hε : 0 < ε) :
     ∃ P : archGroup K n → ℂ, Good P ∧ ∀ x ∈ C, ‖P x - f x‖ < ε := by
-  haveI : CompactSpace C := isCompact_iff_compactSpace.1 hC
+  have : CompactSpace C := isCompact_iff_compactSpace.1 hC
   set b := Module.finBasis ℝ (ArchMatrix K n)
   have hsep : (polS C).SeparatesPoints := by
     intro x y hxy
     obtain ⟨i, hi⟩ : ∃ i, b.coord i (archVal (x : archGroup K n)) ≠ b.coord i (archVal (y : archGroup K n)) := by
       by_contra hall
-      push_neg at hall
+      push Not at hall
       refine hxy (Subtype.ext (Subtype.ext (Units.ext (b.ext_elem fun i => ?_))))
       exact hall i
     have hG := good_coord b i
@@ -371,7 +371,7 @@ theorem UpperTheory.ConvolutionTheory.L1.bumpEx :
   have hb : ∀ g, b g = (t : ℂ) * (P g * (c g : ℂ)) := fun g => rfl
   refine ⟨b, hQ.1, ?_, ?_, fun h0 => ?_⟩
   · obtain ⟨W, hW, hk⟩ := hQ.2
-    haveI : FiniteDimensional ℂ W := Module.Finite.iff_fg.2 hW
+    have : FiniteDimensional ℂ W := Module.Finite.iff_fg.2 hW
     refine Submodule.finiteDimensional_of_le (S₂ := W) (Submodule.span_le.2 ?_)
     rintro _ ⟨k, rfl⟩
     exact hk k

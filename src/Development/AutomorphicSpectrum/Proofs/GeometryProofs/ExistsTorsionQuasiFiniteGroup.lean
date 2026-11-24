@@ -4,8 +4,9 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsU
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.MemEigSpOfMemHtDual
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CardTorsionTranslateZerosLt
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FiniteTorsionSemiAbelian
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionEmbeddingGeometricPoints
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniqueOfIsAdicComplete
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionEmbeddingGeometricPointsStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -46,6 +47,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SABBaseChangeSt
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaObjOfDescendedData
 
 @[expose] public section
 
@@ -67,17 +69,6 @@ theorem pow_eq_one_of_res {A B : Scheme.{0}} (u : A ⟶ B) [Epi u] (ξ : B ⟶ X
   simp only [Over.comp_left] at h2
   exact (cancel_epi u).1 h2
 
-theorem epi_spMap {K L : Type} [Field K] [Field L] (a : K →+* L) : Epi (spMap a) := by
-  have : Flat (spMap a) := by
-    rw [spMap, Flat.SpecMap_iff]
-    letI := a.toAlgebra
-    exact (RingHom.flat_algebraMap_iff (R := K) (S := L)).2 inferInstance
-  have : Surjective (spMap a) := by
-    refine ⟨fun y => ?_⟩
-    obtain ⟨z⟩ : Nonempty (Spec (CommRingCat.of L)) := inferInstance
-    exact ⟨z, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩
-  exact Flat.epi_of_flat_of_surjective _
-
 theorem torsion_qfGroup : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CharZero R] (X : Scheme.{0})
     (G : Over X) [GrpObj G] (x : Sp R ⟶ X) (n : ℕ), IsSemiAbelian G → 0 < n →
     FullTorsion G (spMap (algebraMap R (FractionRing R)) ≫ x) n →
@@ -91,7 +82,7 @@ theorem torsion_qfGroup : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherian
   have hfin : Finite T := by
     let L := AlgebraicClosure (FractionRing R)
     let a : FractionRing R →+* L := algebraMap (FractionRing R) L
-    haveI := epi_spMap a
+    haveI := _root_.GlobalTheory.ThetaDescent.epi_spMap a
     let t : Sp L ⟶ X := spMap a ≫ ξ
     have h0 := GlobalTheory.finite_torsion_semiAbelian L ((Over.pullback t).obj G) (IsSemiAbelian.pullback t G hG) n hn
     have h1 : Finite {g : Over.mk t ⟶ G // g ^ n = 1} :=
@@ -103,10 +94,10 @@ theorem torsion_qfGroup : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherian
     have e1 := congrArg (fun w => (w.1 : Over.mk t ⟶ G).left) e
     simp only [φ, f, Over.comp_left, Over.homMk_left] at e1
     exact Subtype.ext (Over.OverMorphism.ext ((cancel_epi (spMap a)).1 e1))
-  obtain ⟨Γ, i, h, -⟩ := GlobalTheory.T.torsion_embedding_geometric_points R T X G hG x n hn T.subtype Subtype.val_injective hT
+  obtain ⟨Γ, i, h, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.Tors.exists_qfGroup_torsion R T X G hG x n hn T.subtype Subtype.val_injective hT
     (fun Ω _ _ a g hg => by
       obtain ⟨y, hy⟩ := hF Ω a g hg
-      haveI := epi_spMap a
+      haveI := _root_.GlobalTheory.ThetaDescent.epi_spMap a
       exact ⟨⟨y, MonoidHom.mem_ker.2 (pow_eq_one_of_res G (spMap a) ξ y n g hy hg)⟩, hy⟩)
   exact ⟨T, inferInstance, hfin, Γ, i, h⟩
 

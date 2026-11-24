@@ -111,10 +111,10 @@ theorem completionMap_algebraMap (x : K) :
     (HeightOneSpectrum.uniformContinuous_algebraMap_liesOver (K := K) L v w)]
   rfl
 
+open scoped WithZeroTopology in
 theorem valued_completionMap (x : v.adicCompletion K) :
     Valued.v (completionMap v w x) = Valued.v x ^ w.asIdeal.ramificationIdx (𝓞 K) := by
   set e := w.asIdeal.ramificationIdx (𝓞 K) with he
-  have he0 : e ≠ 0 := (Ideal.ramificationIdx_pos (R := 𝓞 K) w.asIdeal).ne'
   have hK : ∀ k : K, Valued.v (completionMap v w (algebraMap K _ k)) =
       Valued.v (algebraMap K (v.adicCompletion K) k) ^ e := by
     intro k
@@ -123,22 +123,12 @@ theorem valued_completionMap (x : v.adicCompletion K) :
     simpa only [Function.comp_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation',
       Algebra.algebraMap_self, RingHom.id_apply, he] using
       (HeightOneSpectrum.valuation_liesOver L v w k).symm
-  have hclosed : IsClosed
-      {x : v.adicCompletion K | Valued.v (completionMap v w x) = Valued.v x ^ e} := by
-    rw [← isOpen_compl_iff, isOpen_iff_mem_nhds]
-    intro x0 hx0
-    have h0 : x0 ≠ 0 := by
-      rintro rfl
-      simp [zero_pow he0] at hx0
-    have h1 : Valued.v x0 ≠ 0 := (Valuation.ne_zero_iff _).2 h0
-    have h2 : Valued.v (completionMap v w x0) ≠ 0 :=
-      (Valuation.ne_zero_iff _).2 ((map_ne_zero_iff _ (completionMap v w).injective).2 h0)
-    filter_upwards [Valued.locally_const h1,
-      (continuous_completionMap v w).continuousAt.preimage_mem_nhds (Valued.locally_const h2)]
-      with x hx hx'
-    simp only [Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_compl_iff] at hx hx' hx0 ⊢
-    rwa [hx, hx']
-  exact (HeightOneSpectrum.denseRange_algebraMap K v).induction_on x hclosed hK
+  have hv := Valued.continuous_valuation_of_surjective
+    (HeightOneSpectrum.valuedAdicCompletion_surjective K v)
+  have hw := Valued.continuous_valuation_of_surjective
+    (HeightOneSpectrum.valuedAdicCompletion_surjective L w)
+  exact (HeightOneSpectrum.denseRange_algebraMap K v).induction_on x
+    (isClosed_eq (hw.comp (continuous_completionMap v w)) (hv.pow e)) hK
 
 scoped instance algebraCompletion : Algebra (v.adicCompletion K) (w.adicCompletion L) :=
   (completionMap v w).toAlgebra

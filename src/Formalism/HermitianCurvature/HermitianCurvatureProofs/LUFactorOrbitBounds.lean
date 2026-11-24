@@ -1,22 +1,18 @@
 module
 
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentHeisenbergDecomposition
+public import Formalism.HermitianCurvature.StatementJF
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.SmoothnessOnGoodSet
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.JDomBoundOfNnMaj
-import Formalism.FormalDegreeBessel.FinalG
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDomainMeasurable
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentHeisenbergDecomposition
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BetaSesquilinearity
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.Block3MulBlocks
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationContinuousOnInvertible
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CoordinateSizesOfHypotheses
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.HeisenbergLeviConjugationMeasure
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.JfJqSmoothOfNnMaj
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormDiagonalEntryDilationGeneratorLeOne
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.OppositeWeylSubgroupClosed
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularisedPairingViaPhase
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -31,11 +27,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -44,9 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.Monotonicity.Lemmas
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -59,12 +48,108 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.FormalDegreeBessel.FinalG
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.HeisenbergLeviConjugationMeasure
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.NormDiagonalEntryDilationGeneratorLeOne
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularisedPairingViaPhase
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Monotonicity.Lemmas
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Presheaf
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.HermitianCurvature.HermitianCurvatureProofs.JConvOfJDom, Formalism.HermitianCurvature.HermitianCurvatureProofs.JfJqSmoothOfNnMaj, Formalism.HermitianCurvature.HermitianCurvatureProofs.LUFactorOrbitBounds
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.JConvOfJDom =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.JConvOfJDom", "h": "module\n\npublic import Formalism.HermitianCurvature.StatementJF\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.SmoothnessOnGoodSet\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix MeasureTheory Filter
+
+noncomputable section
+
+namespace Formalism.FourierDecayAlt.P.JFxDs1
+
+open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
+
+attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
+
+theorem jConv_of_jDom : Formalism.FourierDecayAlt.JF.JDom → Formalism.FourierDecayAlt.JF.JConv := by
+  intro hD k r Wp Wq _ _ _ _ _ _ D A F hT hC
+  obtain ⟨hmeas, hbd⟩ := hD k r Wp Wq D A 0 F hT hC
+  have hx : Continuous (fun p : SS k r => xiP D p) := by
+    clear hmeas hbd hD hT hC
+    unfold xiP psi ell
+    refine Continuous.mul ?_ (Continuous.star ?_)
+    · refine Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp
+        (Complex.continuous_re.comp (continuous_const.mul (continuous_finsetSum _ fun a _ => ?_)))))
+      split_ifs
+      · simp only [Matrix.of_apply]; fun_prop
+      · simp only [Matrix.of_apply, Matrix.mulVec, dotProduct]; fun_prop
+    · refine Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp
+        (Complex.continuous_re.comp (continuous_const.mul (continuous_finsetSum _ fun a _ => ?_)))))
+      split_ifs
+      · simp only [Matrix.of_apply]; fun_prop
+      · simp only [Matrix.of_apply, Matrix.mulVec, dotProduct]; fun_prop
+  have h0 : (0 : ℕ) + 0 ≤ 0 := le_rfl
+  refine ⟨?_, ?_⟩
+  · intro g hg
+    obtain ⟨b, hb, hbb⟩ := hbd {g} isCompact_singleton (Set.singleton_subset_iff.mpr hg)
+    have hbg := hbb [] [] (by simp) (by simp) h0 g (Set.mem_singleton g)
+    have hm := hmeas [] [] (by simp) (by simp) h0 g hg
+    refine Integrable.mono' hb (hx.aestronglyMeasurable.smul hm) ?_
+    filter_upwards [hbg] with p hp
+    calc ‖xiP D p • rho D p F g‖ = ‖xiP D p‖ * ‖rho D p F g‖ := norm_smul _ _
+      _ ≤ 1 * ‖rho D p F g‖ := by gcongr; exact SmoothnessOnGoodSet.norm_xiP D p
+      _ = ‖rho D p (dLR (List.map (AdL p) []) (List.map (AdR p) []) F) g‖ := by rw [one_mul]; rfl
+      _ ≤ b p := hp
+  · intro K hK hKO
+    obtain ⟨b, hb, hbb⟩ := hbd K hK hKO
+    exact ⟨b, hb, fun g hg => hbb [] [] (by simp) (by simp) h0 g hg⟩
+
+end Formalism.FourierDecayAlt.P.JFxDs1
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.JConvOfJDom =====
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.JfJqSmoothOfNnMaj =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.JfJqSmoothOfNnMaj", "h": "module\n\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.JDomBoundOfNnMaj\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDomainMeasurable\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.JConvOfJDom\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.FourierDecayAlt.P
+
+theorem jf_jDom_of_nnMaj : Formalism.FourierDecayAlt.P.JFxDs2.NNMaj → Formalism.FourierDecayAlt.JF.JDom := fun h =>
+  Formalism.FourierDecayAlt.P.JFxDs2.jDom_of_parts Formalism.FourierDecayAlt.P.JFxDs3.bessel_domain_measurable (Formalism.FourierDecayAlt.P.JFxDs2.jDomBound_of_nnMaj h)
+
+theorem jf_jConv_of_nnMaj : Formalism.FourierDecayAlt.P.JFxDs2.NNMaj → Formalism.FourierDecayAlt.JF.JConv := fun h =>
+  Formalism.FourierDecayAlt.P.JFxDs1.jConv_of_jDom (jf_jDom_of_nnMaj h)
+
+end Formalism.FourierDecayAlt.P
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.JfJqSmoothOfNnMaj =====
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.LUFactorOrbitBounds =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.LUFactorOrbitBounds", "h": "module\n\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentHeisenbergDecomposition\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.JDomBoundOfNnMaj\nimport Formalism.FormalDegreeBessel.FinalG\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.BetaSesquilinearity\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.Block3MulBlocks\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactGroupHaarExists\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConjugationContinuousOnInvertible\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.CoordinateSizesOfHypotheses\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.HeisenbergLeviConjugationMeasure\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.JfJqSmoothOfNnMaj\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.NormDiagonalEntryDilationGeneratorLeOne\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.OppositeWeylSubgroupClosed\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularisedPairingViaPhase\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.Monotonicity.Lemmas\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Separation.CompletelyRegular\nimport Mathlib.Topology.Sheaves.Presheaf\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -130,9 +215,8 @@ lemma inv_eq {y : Mat k r} (hy : y ∈ GV k r) : y⁻¹ = Hpk k r * yᴴ * Hpk k
 
 lemma hy_apply (y : Mat k r) (i l : Fin (2 * r + k + 1)) :
     (Hpk k r * yᴴ) i l = ep k r i * star (y l (sg k r i)) := by
-  rw [Matrix.mul_apply]
-  simp only [hpk_apply, ite_mul, zero_mul, Matrix.conjTranspose_apply]
-  rw [Finset.sum_ite_eq' Finset.univ (sg k r i)]
+  simp only [Matrix.mul_apply, hpk_apply, ite_mul, zero_mul, Matrix.conjTranspose_apply,
+    Finset.sum_ite_eq' Finset.univ (sg k r i)]
   simp
 
 lemma inv_apply {y : Mat k r} (hy : y ∈ GV k r) (i j : Fin (2 * r + k + 1)) :
@@ -277,8 +361,7 @@ lemma ep_eI (a : Fin r) : ep k r (eI k r a) = 1 := by
 
 lemma Lm_apply {n : Mat k r} (hn : n ∈ Nset k r) (a c : Fin r) :
     Lm n a c = star (n (eI k r c) (eI k r a)) := by
-  simp only [Lm, Matrix.of_apply]
-  rw [inv_apply (n_mem_G hn), sg_esI, sg_esI, ep_esI, ep_esI, one_mul, mul_one]
+  simp only [Lm, Matrix.of_apply, inv_apply (n_mem_G hn), sg_esI, sg_esI, ep_esI, ep_esI, one_mul, mul_one]
 
 lemma Lm_upper {n : Mat k r} (hn : n ∈ Nset k r) (a c : Fin r) (h : a < c) : Lm n a c = 0 := by
   rw [Lm_apply hn, n_colE hn a (eI k r c) (by simp [eI]; omega),
@@ -536,14 +619,12 @@ lemma transpose_upper_unitriangular {U : Matrix (Fin r) (Fin r) ℂ} (hU : IsUU 
 lemma transpose_lower_unitriangular {L : Matrix (Fin r) (Fin r) ℂ} (hL : IsLU L) : IsUU Lᵀ := ⟨fun i j h => hL.1 j i h, fun i => hL.2 i⟩
 
 lemma T_smul_mem_dual_lattice (Y : Matrix (Fin r) (Fin r) ℂ) (b : Fin r) : ld Yᵀ b = ld Y b := by
-  unfold ld mn
-  rw [rs_self]
+  simp only [ld, mn, rs_self]
   rw [show Yᵀ.submatrix (cs b) (cs b) = (Y.submatrix (cs b) (cs b))ᵀ from rfl, Matrix.det_transpose]
 
 lemma norm_det_le {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (B : ℝ) (hA : ∀ i j, ‖A i j‖ ≤ B) :
     ‖A.det‖ ≤ (n.factorial : ℝ) * B ^ n := by
-  have := Formalism.FourierDecayAlt.P.Ux5.det_norm_le A (m := B) hA
-  simpa using this
+  simpa using (Formalism.FourierDecayAlt.P.Ux5.det_norm_le A (m := B) hA)
 
 lemma norm_mn_le (Y : Matrix (Fin r) (Fin r) ℂ) (B : ℝ) (hB : 1 ≤ B) (hY : ∀ i j, ‖Y i j‖ ≤ B) (a b : Fin r) :
     ‖mn Y a b‖ ≤ (r.factorial : ℝ) * B ^ r := by
@@ -576,7 +657,6 @@ lemma norm_adj_le {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (B : ℝ) (hB : 1 �
 lemma norm_inv_le {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (B δ : ℝ) (hB : 1 ≤ B) (hδ : 0 < δ)
     (hA : ∀ i j, ‖A i j‖ ≤ B) (hdet : δ ≤ ‖A.det‖) (i j : Fin n) :
     ‖A⁻¹ i j‖ ≤ (n.factorial : ℝ) * B ^ n / δ := by
-  have hd : A.det ≠ 0 := fun h => by rw [h, norm_zero] at hdet; linarith
   have h1 := norm_adj_le A B hB hA i j
   have h2 := inv_anti₀ hδ hdet
   rw [Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul, norm_mul, norm_inv, div_eq_mul_inv]
@@ -801,8 +881,7 @@ lemma Pm_Es (y : Mat k r) (hy : IsUnit (Zm y).det) (a' a : Fin r) :
     Pm y (esI k r a') a = if a' = a then 1 else 0 := by
   have e := congrFun (congrFun (Matrix.mul_nonsing_inv (Zm y) hy) a') a
   rw [Matrix.one_apply] at e
-  rw [← e]
-  simp only [Pm, Matrix.mul_apply, cE, Zm, Matrix.of_apply]
+  simpa [Pm, Matrix.mul_apply, cE, Zm, Matrix.of_apply] using e
 
 lemma unit_of_det {δ : ℝ} (hδ : 0 < δ) {A : Matrix (Fin r) (Fin r) ℂ} (h : δ ≤ ‖A.det‖) : IsUnit A.det :=
   isUnit_iff_ne_zero.2 fun h' => by rw [h', norm_zero] at h; linarith
@@ -839,9 +918,8 @@ lemma Pmg_bd (hΓ : 1 ≤ Γ) (hδ : 0 < δ) (hgΓ : gN g ≤ Γ) (hdet : δ ≤
 lemma Q_bd (hΓ : 1 ≤ Γ) (hδ : 0 < δ) (hg : g ∈ GV k r) (hgΓ : gN g ≤ Γ) (hld : ∀ b, δ ≤ ‖ld (Zm g) b‖)
     (hdet : δ ≤ ‖(Zm g).det‖) (hn : n ∈ Nset k r) (hn' : n' ∈ Nset k r) (i : Fin (2 * r + k + 1)) (a : Fin r) :
     ‖(Pm (n⁻¹ * g * n') * Lm n) i a‖ ≤ c9 r Γ δ * gN (n⁻¹ * g * n') ^ (2 * r + 1) := by
-  have h := norm_mul_entry _ _ _ _ (by have := orbit_constant_eight_nonneg (r := r) hΓ hδ; have := gN_nonneg (n⁻¹ * g * n'); positivity)
-    (Pmx_bd hδ hg hdet hn hn') (Lm_bd hΓ hδ hg hgΓ hld hn hn') i a
-  refine h.trans (le_of_eq ?_)
+  refine (norm_mul_entry _ _ _ _ (by have := orbit_constant_eight_nonneg (r := r) hΓ hδ; have := gN_nonneg (n⁻¹ * g * n'); positivity)
+    (Pmx_bd hδ hg hdet hn hn') (Lm_bd hΓ hδ hg hgΓ hld hn hn') i a).trans (le_of_eq ?_)
   simp only [Fintype.card_fin, c9]; ring
 
 lemma rowM_eq (hδ : 0 < δ) (hdet : δ ≤ ‖(Zm g).det‖) (hn : n ∈ Nset k r) (hn' : n' ∈ Nset k r)
@@ -1051,8 +1129,7 @@ lemma both_bd {Γ δ : ℝ} {g n n' : Mat k r} (hΓ : 1 ≤ Γ) (hδ : 0 < δ) (
     (fun b => by rw [Zm_inv hg, ld_conjT]; exact hld b) (by rw [Zm_inv hg, det_conjT]; exact hdet) hn' hn
   have hnn : (n⁻¹)⁻¹ = n := Matrix.nonsing_inv_nonsing_inv n (closedN.unit n hn)
   have e : n'⁻¹ * g⁻¹ * n = (n⁻¹ * g * n')⁻¹ := by rw [xinv_eq hn hn', hnn]
-  rw [e, gN_inv (x_mem hg hn hn')] at h
-  exact h
+  simpa [e, gN_inv (x_mem hg hn hn')] using h
 
 lemma dot_bvec (e : Fin (2 * r + k + 1)) (v : Fin (2 * r + k + 1) → ℂ) : star (bvec e) ⬝ᵥ v = v e := by
   simp [bvec, dotProduct, Pi.single_apply]
@@ -1258,8 +1335,7 @@ lemma gN_heis_le (x : HPar k r') (n' : Mat k r') :
 lemma rpow_split {X A B a θ : ℝ} (hA : 0 < A) (hB : 0 < B) (hXA : A ≤ X) (hXB : B ≤ X) (ha : 0 ≤ a)
     (hθ0 : 0 ≤ θ) (hθ1 : θ ≤ 1) : X ^ (-a) ≤ A ^ (-(θ * a)) * B ^ (-((1 - θ) * a)) := by
   have hX : 0 < X := lt_of_lt_of_le hA hXA
-  have e : -a = -(θ * a) + -((1 - θ) * a) := by ring
-  rw [e, Real.rpow_add hX]
+  rw [show -a = -(θ * a) + -((1 - θ) * a) by ring, Real.rpow_add hX]
   apply mul_le_mul
   · exact Real.rpow_le_rpow_of_nonpos hA hXA (by nlinarith)
   · exact Real.rpow_le_rpow_of_nonpos hB hXB (by nlinarith)
@@ -1280,8 +1356,7 @@ lemma lint_heis_fin (k r' : ℕ) {c : ℝ} (hc : ((2 * (2 * r' + k + 1) + 1 : �
     intro x
     have hu : 0 ≤ 1 + ‖x‖ := by positivity
     rw [Real.div_rpow hu (by norm_num), Real.rpow_neg (by norm_num : (0:ℝ) ≤ 2), div_inv_eq_mul, mul_comm]
-  simp_rw [e]
-  simp_rw [ENNReal.ofReal_mul (Real.rpow_nonneg (by norm_num : (0:ℝ) ≤ 2) c)]
+  simp_rw [e, ENNReal.ofReal_mul (Real.rpow_nonneg (by norm_num : (0:ℝ) ≤ 2) c)]
   rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
   refine ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_
   apply finite_integral_one_add_norm
@@ -1441,10 +1516,8 @@ lemma orbit3 (z z' : Fin (2 * r + k + 1) → ℂ) (K : Set (Mat k r)) (hK : IsCo
       gN n ≤ C * gN (n⁻¹ * g * n') ^ (3 * r) ∧ gN n' ≤ C * gN (n⁻¹ * g * n') ^ (3 * r) := by
   rcases Nat.eq_zero_or_pos r with rfl | hr
   · refine ⟨gN (1 : Mat k 0), Orb.gN_nonneg _, fun g _ n hn n' hn' => ?_⟩
-    have hN := Formalism.FourierDecayAlt.P.unipotent_haar_base_case k
-    rw [hN] at hn hn'
-    rw [Set.mem_singleton_iff.1 hn, Set.mem_singleton_iff.1 hn']
-    simp
+    rw [Formalism.FourierDecayAlt.P.unipotent_haar_base_case k, Set.mem_singleton_iff] at hn hn'
+    simp [hn, hn']
   · obtain ⟨C, hC, h⟩ := Orb.orbit z z' K hK hKO
     refine ⟨C, hC, fun g hg n hn n' hn' => ?_⟩
     have hX := Orb.one_le_X (hKO hg).1 hn hn'
@@ -1463,8 +1536,7 @@ lemma sup_le_gN (M : Mat k r) : ‖M‖ ≤ gN M :=
   (Matrix.norm_le_iff (Orb.gN_nonneg M)).2 fun i j => Orb.ent_le M i j
 
 lemma gN_unit {X : Mat k r} (hX : unitLie k r X) : gN X ≤ ((2 * r + k + 1 : ℕ) : ℝ) := by
-  have := Orb.gN_le_of_ent X 1 zero_le_one (fun i j => hX.2 i j)
-  simpa using this
+  simpa using Orb.gN_le_of_ent X 1 zero_le_one (fun i j => hX.2 i j)
 
 lemma ad_bd {s X : Mat k r} (hs : s ∈ GV k r) (hX : unitLie k r X) :
     ‖s⁻¹ * X * s‖ ≤ ((2 * r + k + 1 : ℕ) : ℝ) * gN s ^ 2 := by
@@ -1685,3 +1757,7 @@ theorem Formalism.FourierDecayAlt.P.bessel_integral_domain : Formalism.FourierDe
 
 theorem Formalism.FourierDecayAlt.P.bessel_integral_converges : Formalism.FourierDecayAlt.JF.JConv :=
   Formalism.FourierDecayAlt.P.jf_jConv_of_nnMaj Formalism.FourierDecayAlt.P.WeakDominationMajorants.Asm.nnMaj
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.LUFactorOrbitBounds =====

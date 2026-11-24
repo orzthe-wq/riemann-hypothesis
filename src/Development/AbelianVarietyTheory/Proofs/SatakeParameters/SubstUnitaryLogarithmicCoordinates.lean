@@ -159,7 +159,7 @@ theorem HostLog.subst_unitary : ∀ (p : ℕ) [Fact p.Prime] (g2 g3 s2 ε : Maxi
     have := Formalism.L2.Th1.C.mvExp_neg hPh0
     rw [← Formalism.L2.Th1.E.CompatibleChartOperations.mvExp_eq, ← Formalism.L2.Th1.E.CompatibleChartOperations.mvExp_eq] at this
     rw [this, one_mul]
-  obtain ⟨h3, h4, h5'⟩ := Formalism.L2.Th1.E.substExpInt ℂ_[p] n m t hcc (fun i k => (hpt i).2 k)
+  obtain ⟨h3, h4, h5'⟩ := _root_.Formalism.L2.Th1.E.subst_exp_integral ℂ_[p] n m t hcc (fun i k => (hpt i).2 k)
     (Formalism.L2.Th1.E.phSum ph) _ hPh0 hΘ'
   rw [hΘe, Formalism.L2.Th1.E.CompatibleChartOperations.subst_phSum _ hcc] at h3
   rw [Formalism.L2.Th1.E.CompatibleChartOperations.subst_phSum _ hcc] at h5'

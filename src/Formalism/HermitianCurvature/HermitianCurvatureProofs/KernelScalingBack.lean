@@ -100,10 +100,8 @@ theorem entry_back (d : Fin n → Kˣ) (g : GL (Fin n) K) (a b : Fin n) :
     (g : Matrix (Fin n) (Fin n) K) a b = ((d a : Kˣ) : K) *
       ((cj d g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b * (((d b)⁻¹ : Kˣ) : K) := by
   rw [cj_apply]
-  have h1 : ((d a : Kˣ) : K) * (((d a)⁻¹ : Kˣ) : K) = 1 := Units.mul_inv _
-  have h2 : ((d b : Kˣ) : K) * (((d b)⁻¹ : Kˣ) : K) = 1 := Units.mul_inv _
-  linear_combination (-(g : Matrix (Fin n) (Fin n) K) a b * ((d b : Kˣ) : K) * (((d b)⁻¹ : Kˣ) : K)) * h1
-    - (g : Matrix (Fin n) (Fin n) K) a b * h2
+  simp only [mul_assoc]
+  rw [Units.mul_inv, mul_one, ← mul_assoc, Units.mul_inv, one_mul]
 
 theorem isUpUni_cj (d : Fin n → Kˣ) (g : GL (Fin n) K) :
     IsUpUni ((cj d g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) ↔
@@ -144,13 +142,9 @@ theorem isInt_mul_DG (R : Subring K) (d : Fin n → Kˣ)
   · intro h a b
     have h1 := h a b
     rw [DG_coe, mul_diagonal] at h1
-    have h2 : Z a b = Z a b * ((d b : Kˣ) : K) * (((d b)⁻¹ : Kˣ) : K) := by
-      rw [mul_assoc, Units.mul_inv, mul_one]
-    rw [h2]
-    exact R.mul_mem h1 (hd b).2
+    simpa [mul_assoc, Units.mul_inv] using R.mul_mem h1 (hd b).2
   · intro h a b
-    rw [DG_coe, mul_diagonal]
-    exact R.mul_mem (h a b) (hd b).1
+    simpa [DG_coe, mul_diagonal] using R.mul_mem (h a b) (hd b).1
 
 end Diag
 
@@ -183,8 +177,7 @@ theorem mem_lowW_scale {g : GL (Fin S.sum) K} (hg : g ∈ lowW K S T) : g ∈ lo
 
 theorem mem_lowW_scale_iff {g : GL (Fin S.sum) K} : g ∈ lowW K S (T * c) ↔ g ∈ lowW K S T := by
   refine ⟨fun hg => ?_, mem_lowW_scale S T c⟩
-  have := mem_lowW_scale S (T * c) c⁻¹ hg
-  rwa [mul_inv_cancel_right] at this
+  simpa [mul_inv_cancel_right] using mem_lowW_scale S (T * c) c⁻¹ hg
 
 def fm (p : lowW K S T × upUniG K S.sum) : lowW K S (T * c) × upUniG K S.sum :=
   (⟨p.1.1, mem_lowW_scale S T c p.1.2⟩, ⟨cj (dg S c) p.2.1, (isUpUni_cj _ _).2 p.2.2⟩)
@@ -192,9 +185,7 @@ def fm (p : lowW K S T × upUniG K S.sum) : lowW K S (T * c) × upUniG K S.sum :
 theorem fm_surj : Function.Surjective (fm S T c) := by
   rintro ⟨⟨v, hv⟩, ⟨u, hu⟩⟩
   refine ⟨(⟨v, (mem_lowW_scale_iff S T c).1 hv⟩, ⟨DG (dg S c) * u * (DG (dg S c))⁻¹, ?_⟩), ?_⟩
-  · have : IsUpUni ((cj (dg S c) (DG (dg S c) * u * (DG (dg S c))⁻¹) : GL (Fin S.sum) K) :
-        Matrix (Fin S.sum) (Fin S.sum) K) := by rw [cj_back]; exact hu
-    exact (isUpUni_cj _ _).1 this
+  · exact (isUpUni_cj (dg S c) (DG (dg S c) * u * (DG (dg S c))⁻¹)).1 (by rw [cj_back]; exact hu)
   · unfold fm
     simp only [cj_back]
 
@@ -267,15 +258,13 @@ theorem latZ_mul_DG (d : Fin n → Kˣ)
     rw [← e, ← Matrix.mulVec_mulVec]
     congr 1
     funext b
-    rw [DG_coe, mulVec_diagonal, Formalism.DoubleCosetMeasures.P.coeLin_apply, Formalism.DoubleCosetMeasures.P.coeLin_apply]
-    simp
+    simp [DG_coe, mulVec_diagonal, Formalism.DoubleCosetMeasures.P.coeLin_apply]
   · rintro ⟨t, e⟩
     refine ⟨fun b => ⟨_, (hd b).1⟩ * t b, ?_⟩
     rw [← e, ← Matrix.mulVec_mulVec]
     congr 1
     funext b
-    rw [DG_coe, mulVec_diagonal, Formalism.DoubleCosetMeasures.P.coeLin_apply, Formalism.DoubleCosetMeasures.P.coeLin_apply]
-    simp
+    simp [DG_coe, mulVec_diagonal, Formalism.DoubleCosetMeasures.P.coeLin_apply]
 
 theorem iso_mul_DG (d : Fin n → Kˣ)
     (hd : ∀ b, ((d b : Kˣ) : K) ∈ R ∧ (((d b)⁻¹ : Kˣ) : K) ∈ R) (Z : Matrix (Fin n) (Fin n) K)
@@ -389,7 +378,7 @@ theorem Kp_scale (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1)
   · obtain ⟨φ, hφ⟩ := A5x8.inv_iso R ((S, T * c) : Point K) a ha b hb
       (fm S T c p).1 (fm S T c p).2
     have hrefl := A5x4.isoZZ_refl R (orbZ w' p')
-    simp only [hInt.mpr hZ, hZ, if_true, A5x8.inv_phase R ψ hψ _ a ha b hb,
+    simp only [hInt.mpr hZ, hZ, A5x8.inv_phase R ψ hψ _ a ha b hb,
       ← A5x4.card_isoZZ_congr R hφ hrefl]
     rw [phase_fm R S T c ψ hψ p (hB p hZ.1), orbZ_fm,
       ← A5x4.card_isoZZ_congr R (iso_mul_DG R (dg S c) hd _ (hA p hZ.1)) hrefl]
@@ -403,8 +392,7 @@ variable {K : Type} [CommRing K] (R : Subring K)
 
 theorem inv_entry {n : ℕ} {Z : Matrix (Fin n) (Fin n) K} (hZ : IsInt R Z) {x : K}
     (hx : x * Ring.inverse Z.det ∈ R) (a b : Fin n) : x * Z⁻¹ a b ∈ R := by
-  rw [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, ← mul_assoc]
-  exact R.mul_mem hx (Formalism.DoubleCosetMeasures.P.isInt_adjugate R hZ a b)
+  simpa [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, mul_assoc] using R.mul_mem hx (Formalism.DoubleCosetMeasures.P.isInt_adjugate R hZ a b)
 
 theorem blk_last_iff (l : List ℕ) (s j : ℕ) (hj : j < (l ++ [s]).sum) :
     blk (l ++ [s]) j = l.length ↔ l.sum ≤ j := by
@@ -421,8 +409,7 @@ theorem blk_last_iff (l : List ℕ) (s j : ℕ) (hj : j < (l ++ [s]).sum) :
 
 theorem dg_ge (l : List ℕ) (s : ℕ) (k : Kˣ) (j : Fin (l ++ [s]).sum) (hj : l.sum ≤ j.val) :
     dg (l ++ [s]) (Function.update (1 : ℕ → Kˣ) l.length k) j = k := by
-  unfold dg
-  rw [(blk_last_iff l s j j.2).2 hj, Function.update_self]
+  simp [dg, (blk_last_iff l s j j.2).2 hj]
 
 theorem dg_lt (l : List ℕ) (s : ℕ) (k : Kˣ) (j : Fin (l ++ [s]).sum) (hj : j.val < l.sum) :
     dg (l ++ [s]) (Function.update (1 : ℕ → Kˣ) l.length k) j = 1 := by
@@ -523,10 +510,8 @@ theorem det_addBlock (h : Point K) (s : ℕ) : ∃ c0 : Kˣ, ∀ z : Kˣ,
     (pt (addBlock h s z).1 (addBlock h s z).2).det = ((c0 * z ^ s : Kˣ) : K) := by
   obtain ⟨e, he⟩ := det_pt_eq (K := K) (h.1 ++ [s])
   refine ⟨(∏ a : Fin h.1.sum, h.2 (blk h.1 a)) * e, fun z => ?_⟩
-  have h1 : (pt (addBlock h s z).1 (addBlock h s z).2).det =
-      (∏ a : Fin (addBlock h s z).1.sum,
-        (((addBlock h s z).2 (blk (addBlock h s z).1 a) : Kˣ) : K)) * (e : K) := he _
-  rw [h1, A5x5.prod_addBlock]
+  rw [show h.1 ++ [s] = (addBlock h s z).1 from rfl] at he
+  rw [he (addBlock h s z).2, A5x5.prod_addBlock]
   push_cast
   ring
 

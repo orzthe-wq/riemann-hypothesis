@@ -149,7 +149,7 @@ theorem central_dichotomy {μ : Representation ℂ G V} {τ : Representation ℂ
   by_cases hex : ∃ v, φL v ≠ 0
   · obtain ⟨v, hv⟩ := hex
     exact Or.inl ⟨φL.intertwiningMap_of_isIntertwiningMap μ τ hφ, v, hv⟩
-  · push_neg at hex
+  · push Not at hex
     right
     intro v
     have h1 : P v = 0 := by
@@ -192,8 +192,8 @@ theorem exists_map_of_image (ψ : H →* G) {A : Representation ℂ H W₀} {B :
     (hdec : ∀ g, ∃ (h : H) (g' : G), g = ψ h * g' ∧ ∀ x, ψ x * g' = g' * ψ x) :
     ∃ (φ : μ.IntertwiningMap τ) (v : V), φ v ≠ 0 := by
   classical
-  haveI := hτ
-  haveI := hρ
+  have := hτ
+  have := hρ
   let W' := imageSub ψ A μ hdec
   have hWspan : W'.toSubmodule =
       Submodule.span ℂ {u | ∃ (ι : A.IntertwiningMap (μ.comp ψ)) (w : W₀), ι w = u} := rfl
@@ -230,7 +230,7 @@ theorem exists_map_of_image (ψ : H →* G) {A : Representation ℂ H W₀} {B :
     let r := q.comp incl
     have hι : ∃ w, ι₀ w ≠ 0 := by
       by_contra hcon
-      push_neg at hcon
+      push Not at hcon
       exact hι₀ (Representation.IntertwiningMap.ext (LinearMap.ext hcon))
     obtain ⟨w0, hw0⟩ := hι
     have hrange : r.range = ⊤ := by
@@ -279,7 +279,7 @@ theorem exists_map_of_image (ψ : H →* G) {A : Representation ℂ H W₀} {B :
       exact Representation.IntertwiningMap.isIntertwining _ _ a.toIntertwiningMap g (P v)
     have hY : ∃ y : Y, y ≠ 0 := by
       by_contra hcon
-      push_neg at hcon
+      push Not at hcon
       apply (bot_ne_top : (⊥ : Subrepresentation τ) ≠ ⊤)
       apply Subrepresentation.toSubmodule_injective
       ext y

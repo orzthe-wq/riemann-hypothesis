@@ -125,7 +125,7 @@ theorem flt_L_C {A : Type*} [CommRing A] (e : ℤ) (a : A) : LaurentPolynomial.C
   · exfalso
     apply hk
     rw [← LaurentPolynomial.single_eq_C]
-    simp [Finsupp.single_apply, Ne.symm h]
+    simp
     intro h'
     exact absurd h' h
 

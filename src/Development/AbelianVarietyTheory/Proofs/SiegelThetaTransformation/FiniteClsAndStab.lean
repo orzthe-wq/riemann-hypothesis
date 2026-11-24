@@ -112,7 +112,7 @@ private lemma unitary_of_hermitian_mulVec {h : Matrix (Fin n) (Fin n) E}
   rw [_root_.GlobalTheory.SW.Base.herm_one, _root_.GlobalTheory.SW.Base.herm_one, Matrix.mulVec_single_one,
     Matrix.mulVec_single_one] at this
   rw [Matrix.mul_apply]
-  simp only [ccT_apply, Matrix.transpose_apply, Matrix.col_apply] at this ⊢
+  simp only [ccT_apply, Matrix.col_apply] at this ⊢
   rw [Finset.sum_congr rfl (fun a _ => mul_comm _ _), this]
   simp [Pi.single_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc, Matrix.one_apply, eq_comm]
 
@@ -192,7 +192,7 @@ private lemma related_of_same_reduction_lemma_5 (M : ℕ) {Λ₁ Λ₂ : _root_.
       have e₂ : (s₂ : E) = 1 + M * t₂ := by rw [hst₂]; push_cast; ring
       have hδ : (1 : Matrix (Fin n) (Fin n) E) a i = (Pi.single i (1 : E) : Fin n → E) a := by
         rw [Matrix.one_apply, Pi.single_apply]
-      simp only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, hδ, Pi.smul_apply]
+      simp only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, hδ]
       change _ = (M : E) * (-c a i + (s₁ : E) * ((t₁ : E) - t₂) * (Pi.single i (1 : E) : Fin n → E) a)
       push_cast
       linear_combination (-1 : E) * hce a i + (s₁ : E) * (Pi.single i (1 : E) : Fin n → E) a * (e₁ - e₂)

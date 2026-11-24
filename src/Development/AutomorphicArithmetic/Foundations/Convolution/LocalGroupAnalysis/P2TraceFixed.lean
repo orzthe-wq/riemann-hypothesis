@@ -1,14 +1,26 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.SelmerRankBounds.EllipticityFromProductFormula
-public import Development.AutomorphicArithmetic.AdelicQuotients.ExistsCompactConjMemCentralizerMulOfSeparableCha
-public import Development.AutomorphicArithmetic.AdelicQuotients.ExistsNatCombinationIsUnitOfIsUnitCombination
-public import Development.AutomorphicArithmetic.AdelicQuotients.GeneralLinearPiCentralizerCommOfCharpolySeparabl
-public import Development.AutomorphicArithmetic.AdelicQuotients.IsOpenEmbeddingUnitsValGeneralLinearPi
+public import Mathlib.Algebra.Field.Defs
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.Algebra.MvPolynomial.Funext
+public import Mathlib.Algebra.BigOperators.Finsupp.Basic
+public import Mathlib.Algebra.Group.Pi.Units
+public import Mathlib.Algebra.MonoidAlgebra.Defs
+public import Mathlib.Algebra.MvPolynomial.Basic
+public import Mathlib.Algebra.MvPolynomial.Eval
+public import Mathlib.Data.Matrix.Basic
+public import Mathlib.LinearAlgebra.Dual.Defs
+public import Mathlib.LinearAlgebra.Dual.Lemmas
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.FieldTheory.Separable
+public import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
+public import GroundTheory.AutomorphicForms.StableConjCyclic
+public import Mathlib.Analysis.Normed.Field.Basic
+public import Mathlib.Topology.Instances.Matrix
 public import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.GalBase
 public import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.GalField
-import GroundTheory.GlobalFields.CompletionAtPlace.Integers
-import GroundTheory.GlobalFields.LocalAtPlace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -24,10 +36,9 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,7 +46,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,10 +58,281 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.HaveILetI
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.LinearAlgebra.Charpoly.ToMatrix
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.TotallySplit
+import GroundTheory.GlobalFields.CompletionAtPlace.Integers
+import GroundTheory.GlobalFields.LocalAtPlace
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AdelicQuotients.ExistsCompactConjMemCentralizerMulOfSeparableCha, Development.AutomorphicArithmetic.AdelicQuotients.ExistsNatCombinationIsUnitOfIsUnitCombination, Development.AutomorphicArithmetic.AdelicQuotients.GeneralLinearPiCentralizerCommOfCharpolySeparabl, Development.AutomorphicArithmetic.AdelicQuotients.IsOpenEmbeddingUnitsValGeneralLinearPi, Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.P2TraceFixed
+
+-- ===== clump member: Development.AutomorphicArithmetic.AdelicQuotients.ExistsCompactConjMemCentralizerMulOfSeparableCha =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AdelicQuotients.ExistsCompactConjMemCentralizerMulOfSeparableCha", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.SelmerRankBounds.EllipticityFromProductFormula\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open PositivityTheory.Rg.Tf.Geo
+
+private def piGL {W : Type} (K : W → Type) [∀ w, CommRing (K w)] (n : ℕ) (g : ∀ w, GL (Fin n) (K w)) :
+    GL (Fin n) (∀ w, K w) where
+  val := Matrix.of fun i j w => (g w : Matrix (Fin n) (Fin n) (K w)) i j
+  inv := Matrix.of fun i j w => ((g w)⁻¹ : GL (Fin n) (K w)).val i j
+  val_inv := by
+    ext i j w
+    have h := congrFun (congrFun (g w).mul_inv i) j
+    simp only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_apply, Pi.mul_apply] at h ⊢
+    rw [h]
+    by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+  inv_val := by
+    ext i j w
+    have h := congrFun (congrFun (g w).inv_mul i) j
+    simp only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_apply, Pi.mul_apply] at h ⊢
+    rw [h]
+    by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+
+private def prGL {W : Type} (K : W → Type) [∀ w, CommRing (K w)] (n : ℕ) (w : W) :
+    GL (Fin n) (∀ w, K w) →* GL (Fin n) (K w) :=
+  Matrix.GeneralLinearGroup.map (Pi.evalRingHom K w)
+
+private theorem prGL_piGL {W : Type} (K : W → Type) [∀ w, CommRing (K w)] (n : ℕ) (g : ∀ w, GL (Fin n) (K w)) (w : W) :
+    prGL K n w (piGL K n g) = g w := by
+  ext i j
+  rfl
+
+private theorem prGL_ext {W : Type} (K : W → Type) [∀ w, CommRing (K w)] (n : ℕ) (a b : GL (Fin n) (∀ w, K w))
+    (h : ∀ w, prGL K n w a = prGL K n w b) : a = b := by
+  ext i j w
+  exact congrArg (fun g : GL (Fin n) (K w) => (g : Matrix (Fin n) (Fin n) (K w)) i j) (h w)
+
+private theorem prGL_cont {W : Type} (K : W → Type) [∀ w, CommRing (K w)] [∀ w, TopologicalSpace (K w)] (n : ℕ) (w : W) :
+    Continuous (prGL K n w) := by
+  rw [Units.continuous_iff]
+  constructor
+  · refine continuous_pi fun i => continuous_pi fun j => ?_
+    exact (continuous_apply w).comp ((continuous_apply j).comp ((continuous_apply i).comp
+      (Units.continuous_val (M := Matrix (Fin n) (Fin n) (∀ w, K w)))))
+  · refine continuous_pi fun i => continuous_pi fun j => ?_
+    exact (continuous_apply w).comp ((continuous_apply j).comp ((continuous_apply i).comp
+      (Units.continuous_coe_inv (M := Matrix (Fin n) (Fin n) (∀ w, K w)))))
+
+private theorem piGL_cont {W : Type} (K : W → Type) [∀ w, CommRing (K w)] [∀ w, TopologicalSpace (K w)] (n : ℕ) :
+    Continuous (piGL K n) := by
+  rw [Units.continuous_iff]
+  constructor
+  · refine continuous_pi fun i => continuous_pi fun j => continuous_pi fun w => ?_
+    exact (continuous_apply j).comp ((continuous_apply i).comp
+      ((Units.continuous_val (M := Matrix (Fin n) (Fin n) (K w))).comp (continuous_apply w)))
+  · refine continuous_pi fun i => continuous_pi fun j => continuous_pi fun w => ?_
+    exact (continuous_apply j).comp ((continuous_apply i).comp
+      ((Units.continuous_coe_inv (M := Matrix (Fin n) (Fin n) (K w))).comp (continuous_apply w)))
+
+theorem UpperTheory.exists_compact_conj_mem_centralizer_mul_of_separable_charpoly :
+    P1 → ∀ (W : Type) [Finite W] (K : W → Type) [∀ w, NontriviallyNormedField (K w)] [∀ w, LocallyCompactSpace (K w)] [∀ w, CharZero (K w)] (n : ℕ) (γ : GL (Fin n) (∀ w, K w)), (γ : Matrix (Fin n) (Fin n) (∀ w, K w)).charpoly.Separable → ∀ D : Set (GL (Fin n) (∀ w, K w)), IsCompact D → ∃ C : Set (GL (Fin n) (∀ w, K w)), IsCompact C ∧ ∀ x, x⁻¹ * γ * x ∈ D → ∃ t, t * γ = γ * t ∧ ∃ y ∈ C, x = t * y := by
+  intro hP W _ K _ _ _ n γ hγ D hD
+  have hsep : ∀ w, ((prGL K n w γ : GL (Fin n) (K w)) : Matrix (Fin n) (Fin n) (K w)).charpoly.Separable := by
+    intro w
+    have h : ((prGL K n w γ : GL (Fin n) (K w)) : Matrix (Fin n) (Fin n) (K w))
+        = (γ : Matrix (Fin n) (Fin n) (∀ w, K w)).map (Pi.evalRingHom K w) := rfl
+    rw [h, Matrix.charpoly_map]
+    exact hγ.map
+  choose C hC hCx using fun w => hP (K w) n (prGL K n w γ) (hsep w) (prGL K n w '' D) (hD.image (prGL_cont K n w))
+  refine ⟨piGL K n '' Set.pi Set.univ C, (isCompact_univ_pi hC).image (piGL_cont K n), fun x hx => ?_⟩
+  choose t ht y hy hxy using fun w => hCx w (prGL K n w x) ⟨_, hx, by simp only [map_mul, map_inv]⟩
+  refine ⟨piGL K n t, prGL_ext K n _ _ fun w => ?_, piGL K n y, ⟨y, fun w _ => hy w, rfl⟩, prGL_ext K n _ _ fun w => ?_⟩
+  · simp only [map_mul, prGL_piGL, ht w]
+  · simp only [map_mul, prGL_piGL, hxy w]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AdelicQuotients.ExistsCompactConjMemCentralizerMulOfSeparableCha =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AdelicQuotients.ExistsNatCombinationIsUnitOfIsUnitCombination =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AdelicQuotients.ExistsNatCombinationIsUnitOfIsUnitCombination", "h": "module\n\npublic import Mathlib.Algebra.Field.Defs\npublic import Mathlib.Data.Matrix.Mul\nimport Mathlib.Algebra.Module.StablyFree.Basic\npublic import Mathlib.Algebra.MvPolynomial.Funext\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Algebra.BigOperators.Finsupp.Basic\npublic import Mathlib.Algebra.Group.Pi.Units\npublic import Mathlib.Algebra.MonoidAlgebra.Defs\npublic import Mathlib.Algebra.MvPolynomial.Basic\npublic import Mathlib.Algebra.MvPolynomial.Eval\npublic import Mathlib.Data.Matrix.Basic\npublic import Mathlib.LinearAlgebra.Dual.Defs\npublic import Mathlib.LinearAlgebra.Dual.Lemmas\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Mathlib.LinearAlgebra.Matrix.NonsingularInverse\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MvPolynomial in
+private lemma UpperTheory.rational_polynomial_vanishing_naturals {K : Type} [Field K] [CharZero K] {m : ℕ}
+    (P : MvPolynomial (Fin m) K) (hP : P ≠ 0) :
+    ∃ Q : MvPolynomial (Fin m) ℚ, Q ≠ 0 ∧ ∀ a : Fin m → ℕ,
+      eval (fun i => (a i : K)) P = 0 → eval (fun i => (a i : ℚ)) Q = 0 := by
+  classical
+  obtain ⟨d, hd⟩ := MvPolynomial.ne_zero_iff.mp hP
+  obtain ⟨φ, hφ⟩ : ∃ φ : Module.Dual ℚ K, φ (P.coeff d) ≠ 0 := by
+    by_contra h
+    push Not at h
+    exact hd ((Module.forall_dual_apply_eq_zero_iff ℚ _).mp h)
+  refine ⟨∑ e ∈ P.support, monomial e (φ (P.coeff e)), ?_, ?_⟩
+  · apply MvPolynomial.ne_zero_iff.mpr
+    refine ⟨d, ?_⟩
+    rw [coeff_sum]
+    simp only [coeff_monomial]
+    rw [Finset.sum_ite_eq']
+    simpa [mem_support_iff, hd] using hφ
+  · intro a ha
+    have h1 := congrArg φ ha
+
+    rw [eval_eq', map_sum, map_zero] at h1
+
+    rw [map_sum, ← h1]
+    refine Finset.sum_congr rfl fun e _ => ?_
+    rw [eval_monomial, Finsupp.prod_fintype _ _ (by simp)]
+    have : P.coeff e * ∏ i, (a i : K) ^ e i = (∏ i, (a i : ℚ) ^ e i) • P.coeff e := by
+      rw [Rat.smul_def, mul_comm]
+      push_cast
+      rfl
+    rw [this, map_smul, smul_eq_mul, mul_comm]
+
+open MvPolynomial in
+private lemma UpperTheory.exists_nat_point_avoiding_polynomials {W : Type} [Finite W] {K : W → Type} [∀ w, Field (K w)]
+    [∀ w, CharZero (K w)] {m : ℕ}
+    (P : ∀ w, MvPolynomial (Fin m) (K w)) (hP : ∀ w, P w ≠ 0) :
+    ∃ a : Fin m → ℕ, ∀ w, eval (fun i => (a i : K w)) (P w) ≠ 0 := by
+  classical
+  haveI := Fintype.ofFinite W
+  choose Q hQ hQ' using fun w => UpperTheory.rational_polynomial_vanishing_naturals (P w) (hP w)
+  have hprod : ∏ w, Q w ≠ 0 := Finset.prod_ne_zero_iff.mpr fun w _ => hQ w
+  by_contra h
+  push Not at h
+  apply hprod
+  apply MvPolynomial.funext_set (fun _ => Set.range (Nat.cast : ℕ → ℚ))
+    (fun _ => Set.infinite_range_of_injective Nat.cast_injective)
+  intro x hx
+  choose a ha using fun i => hx i (Set.mem_univ i)
+  obtain rfl : x = fun i => (a i : ℚ) := funext fun i => (ha i).symm
+  obtain ⟨w, hw⟩ := h a
+  rw [map_prod, map_zero]
+  exact Finset.prod_eq_zero (Finset.mem_univ w) (hQ' w a hw)
+
+theorem UpperTheory.exists_nat_combination_isUnit_of_isUnit_combination :
+    ∀ (W : Type) [Finite W] (K : W → Type) [∀ w, Field (K w)] [∀ w, CharZero (K w)] (n m : ℕ) (z : Fin m → Matrix (Fin n) (Fin n) (∀ w, K w)) (x : Fin m → ∀ w, K w), IsUnit (∑ i, x i • z i) → ∃ a : Fin m → ℕ, IsUnit (∑ i, ((a i : ℕ) : ∀ w, K w) • z i) := by
+  intro W _ K _ _ n m z x hx
+  let P : ∀ w, MvPolynomial (Fin m) (K w) := fun w =>
+    (Matrix.of fun j k => ∑ i, MvPolynomial.X i * MvPolynomial.C (z i j k w)).det
+  have key : ∀ (y : Fin m → ∀ w, K w) (w : W),
+      (∑ i, y i • z i).det w = MvPolynomial.eval (fun i => y i w) (P w) := by
+    intro y w
+    have h1 := RingHom.map_det (Pi.evalRingHom K w) (∑ i, y i • z i)
+    simp only [Pi.evalRingHom_apply] at h1
+    rw [h1, RingHom.map_det]
+    congr 1
+    ext j k
+    simp [Matrix.sum_apply]
+  have hiff : ∀ y : Fin m → ∀ w, K w, IsUnit (∑ i, y i • z i) ↔
+      ∀ w, MvPolynomial.eval (fun i => y i w) (P w) ≠ 0 := by
+    intro y
+    rw [Matrix.isUnit_iff_isUnit_det, Pi.isUnit_iff]
+    simp only [key, isUnit_iff_ne_zero]
+  obtain ⟨a, ha⟩ := UpperTheory.exists_nat_point_avoiding_polynomials P (fun w h => (hiff x).mp hx w (by simp [h]))
+  exact ⟨a, (hiff fun i => (a i : ∀ w, K w)).mpr (by simpa using ha)⟩
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AdelicQuotients.ExistsNatCombinationIsUnitOfIsUnitCombination =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AdelicQuotients.GeneralLinearPiCentralizerCommOfCharpolySeparabl =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AdelicQuotients.GeneralLinearPiCentralizerCommOfCharpolySeparabl", "h": "module\n\npublic import Mathlib.FieldTheory.Separable\npublic import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs\npublic import GroundTheory.AutomorphicForms.StableConjCyclic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Charpoly.ToMatrix\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+private theorem UpperTheory.commute_of_commute_of_charpoly_separable {E : Type} [Field E] [CharZero E] {n : ℕ}
+    (γ a b : Matrix (Fin n) (Fin n) E) (h : γ.charpoly.Separable)
+    (ha : a * γ = γ * a) (hb : b * γ = γ * b) : a * b = b * a := by
+  haveI : Infinite E := Infinite.of_injective _ (Nat.cast_injective (R := E))
+  have hsep : (LinearMap.charpoly (Matrix.toLinAlgEquiv' γ : Module.End E (Fin n → E))).Separable := by
+    have : (Matrix.toLinAlgEquiv' γ : Module.End E (Fin n → E)) = Matrix.toLin' γ := rfl
+    rw [this, Matrix.charpoly_toLin']
+    exact h
+  have ha' : Commute γ a := ha.symm
+  have hb' : Commute γ b := hb.symm
+  have hc := GroundTheory.Automorphic.commute_of_commute_of_separable hsep
+    (ha'.map (Matrix.toLinAlgEquiv' (R := E) (n := Fin n)))
+    (hb'.map (Matrix.toLinAlgEquiv' (R := E) (n := Fin n)))
+  apply (Matrix.toLinAlgEquiv' (R := E) (n := Fin n)).injective
+  rw [map_mul, map_mul]
+  exact hc
+
+theorem UpperTheory.generalLinearPi_centralizer_comm_of_charpoly_separable :
+    ∀ (W : Type) (K : W → Type) [∀ w, Field (K w)] [∀ w, CharZero (K w)] (n : ℕ) (γ : GL (Fin n) (∀ w, K w)), (γ : Matrix (Fin n) (Fin n) (∀ w, K w)).charpoly.Separable → ∀ a b : GL (Fin n) (∀ w, K w), a * γ = γ * a → b * γ = γ * b → a * b = b * a := by
+  intro W K _ _ n γ hγ a b ha hb
+  apply Units.ext
+  ext i j w
+  have key := UpperTheory.commute_of_commute_of_charpoly_separable
+    ((Pi.evalRingHom K w).mapMatrix (γ : Matrix (Fin n) (Fin n) (∀ w, K w)))
+    ((Pi.evalRingHom K w).mapMatrix (a : Matrix (Fin n) (Fin n) (∀ w, K w)))
+    ((Pi.evalRingHom K w).mapMatrix (b : Matrix (Fin n) (Fin n) (∀ w, K w)))
+    (by rw [RingHom.mapMatrix_apply, Matrix.charpoly_map]; exact hγ.map)
+    (by rw [← map_mul, ← map_mul, ← Units.val_mul, ha, Units.val_mul])
+    (by rw [← map_mul, ← map_mul, ← Units.val_mul, hb, Units.val_mul])
+  rw [← map_mul, ← map_mul] at key
+  exact congrFun (congrFun key i) j
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AdelicQuotients.GeneralLinearPiCentralizerCommOfCharpolySeparabl =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AdelicQuotients.IsOpenEmbeddingUnitsValGeneralLinearPi =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AdelicQuotients.IsOpenEmbeddingUnitsValGeneralLinearPi", "h": "module\n\npublic import Mathlib.Analysis.Normed.Field.Basic\npublic import Mathlib.Topology.Instances.Matrix\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.isOpenEmbedding_units_val_generalLinearPi :
+    ∀ (W : Type) [Finite W] (K : W → Type) [∀ w, NontriviallyNormedField (K w)] (n : ℕ), Topology.IsOpenEmbedding (Units.val : GL (Fin n) (∀ w, K w) → Matrix (Fin n) (Fin n) (∀ w, K w)) := by
+  intro W _ K _ n
+  have hdet : Continuous (fun M : Matrix (Fin n) (Fin n) (∀ w, K w) => M.det) :=
+    continuous_id.matrix_det
+  have hadj : Continuous (fun M : Matrix (Fin n) (Fin n) (∀ w, K w) => M.adjugate) :=
+    continuous_id.matrix_adjugate
+  have hU : ∀ M : Matrix (Fin n) (Fin n) (∀ w, K w), IsUnit M ↔ ∀ w, M.det w ≠ 0 := by
+    intro M
+    rw [Matrix.isUnit_iff_isUnit_det, Pi.isUnit_iff]
+    simp only [isUnit_iff_ne_zero]
+  refine ⟨?_, ?_⟩
+  · refine Units.isEmbedding_val_mk'
+      (f := fun M : Matrix (Fin n) (Fin n) (∀ w, K w) =>
+        (fun w => (M.det w)⁻¹ : ∀ w, K w) • M.adjugate) ?_ ?_
+    · have h1 : ContinuousOn (fun M : Matrix (Fin n) (Fin n) (∀ w, K w) =>
+          (fun w => (M.det w)⁻¹ : ∀ w, K w)) {x | IsUnit x} := by
+        refine continuousOn_pi.2 fun w => ?_
+        exact (((continuous_apply w).comp hdet).continuousOn).inv₀ fun M hM => (hU M).1 hM w
+      refine continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => ?_
+      exact h1.mul (hadj.matrix_elem i j).continuousOn
+    · intro u
+      have hu := (hU u.1).1 u.isUnit
+      symm
+      refine Units.inv_eq_of_mul_eq_one_right ?_
+      rw [Matrix.mul_smul, Matrix.mul_adjugate, smul_smul]
+      have : ((fun w => ((u.1).det w)⁻¹ : ∀ w, K w) * (u.1).det) = 1 := by
+        funext w
+        exact inv_mul_cancel₀ (hu w)
+      rw [this, one_smul]
+  · have : Set.range (Units.val : GL (Fin n) (∀ w, K w) → Matrix (Fin n) (Fin n) (∀ w, K w))
+        = ⋂ w, {M : Matrix (Fin n) (Fin n) (∀ w, K w) | M.det w ≠ 0} := by
+      ext M
+      simp only [Set.mem_iInter, Set.mem_setOf_eq]
+      exact hU M
+    rw [this]
+    exact isOpen_iInter_of_finite fun w =>
+      isOpen_ne_fun ((continuous_apply w).comp hdet) continuous_const
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AdelicQuotients.IsOpenEmbeddingUnitsValGeneralLinearPi =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.P2TraceFixed =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.P2TraceFixed", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.SelmerRankBounds.EllipticityFromProductFormula\npublic import Development.AutomorphicArithmetic.AdelicQuotients.ExistsCompactConjMemCentralizerMulOfSeparableCha\npublic import Development.AutomorphicArithmetic.AdelicQuotients.ExistsNatCombinationIsUnitOfIsUnitCombination\npublic import Development.AutomorphicArithmetic.AdelicQuotients.GeneralLinearPiCentralizerCommOfCharpolySeparabl\npublic import Development.AutomorphicArithmetic.AdelicQuotients.IsOpenEmbeddingUnitsValGeneralLinearPi\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.GalBase\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.GalField\nimport GroundTheory.GlobalFields.CompletionAtPlace.Integers\nimport GroundTheory.GlobalFields.LocalAtPlace\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open PositivityTheory.Rg.Tf.Geo PositivityTheory.Rg.Tf.Loc
@@ -339,3 +620,6 @@ theorem UpperTheory.ConvolutionTheory.G.p2_of :
     exact p2_pi hP (InfinitePlace E) (fun w => w.Completion) infiniteAdeleRingMap (galInf σ) _ (p2_cont_inf σ)
       (p2_gal tensorInfiniteAdeleRingEquiv σ hσ _ fun a => by
         rw [tensorInfiniteAdeleRingEquiv_tmul', map_one, one_mul]) γ δ hγ hδ D hD
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.P2TraceFixed =====

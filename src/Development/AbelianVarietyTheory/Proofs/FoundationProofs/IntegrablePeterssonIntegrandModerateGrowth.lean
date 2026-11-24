@@ -1,14 +1,16 @@
 module
 
+public import Mathlib.Analysis.Complex.UpperHalfPlane.Measure
+public import Mathlib.NumberTheory.Modular
 public import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
+public import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals
 public import Development.AbelianVarietyTheory.Definitions.Foundations.RepL
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFormCoeffSeqExpDecayAtEveryCuspStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrableOnFdImPowMulExp
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFormCoeffSeqExpDecayAtEveryCusp
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionPolyGrowthSummableContinuous
+import Aesop.Main
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -17,6 +19,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -24,8 +27,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -45,11 +46,125 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+import Mathlib.NumberTheory.ModularForms.CongruenceSubgroups
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrableOnFdImPowMulExp, Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrablePeterssonIntegrandModerateGrowth
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrableOnFdImPowMulExp =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrableOnFdImPowMulExp", "h": "module\n\npublic import Mathlib.Analysis.Complex.UpperHalfPlane.Measure\npublic import Mathlib.NumberTheory.Modular\nimport Aesop.Main\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Separation.CompletelyRegular\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform\npublic import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals\nimport Mathlib.NumberTheory.ModularForms.CongruenceSubgroups\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
+open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
+
+namespace GlobalTheory.EisM
+
+theorem fd_half_le_im {z : ℍ} (hz : z ∈ ModularGroup.fd) : 1 / 2 ≤ z.im := by
+  have h := ModularGroup.three_le_four_mul_im_sq_of_mem_fd hz
+  have := z.im_pos
+  nlinarith
+
+theorem fd_volume_lt_top : volume ModularGroup.fd < ⊤ := by
+  rw [UpperHalfPlane.volume_eq_lintegral]
+  set S : Set ℂ := Complex.re ⁻¹' Set.Icc (-(1 / 2 : ℝ)) (1 / 2) ∩ Complex.im ⁻¹' Set.Ici (1 / 2 : ℝ)
+    with hS
+  have hsub : ((↑) '' ModularGroup.fd : Set ℂ) ⊆ S := by
+    rintro _ ⟨z, hz, rfl⟩
+    exact ⟨abs_le.1 hz.2, fd_half_le_im hz⟩
+  have hSm : MeasurableSet S :=
+    (Complex.measurable_re measurableSet_Icc).inter (Complex.measurable_im measurableSet_Ici)
+  refine lt_of_le_of_lt (lintegral_mono_set hsub) ?_
+  rw [← lintegral_indicator hSm]
+  set g : ℂ → ENNReal := fun z => ↑((1 / ‖z.im‖₊) ^ 2 : NNReal) with hg
+  have e := (Complex.volume_preserving_equiv_real_prod.symm _).lintegral_comp_emb
+    Complex.measurableEquivRealProd.symm.measurableEmbedding (S.indicator g)
+  rw [← e]
+  have hle : ∀ p : ℝ × ℝ, S.indicator g (Complex.measurableEquivRealProd.symm p) ≤
+      (Set.Icc (-(1 / 2 : ℝ)) (1 / 2)).indicator (fun _ => (1 : ENNReal)) p.1 *
+      (Set.Ici (1 / 2 : ℝ)).indicator (fun y => ENNReal.ofReal (1 / y ^ 2)) p.2 := by
+    rintro ⟨x, y⟩
+    have hsy : Complex.measurableEquivRealProd.symm (x, y) = ⟨x, y⟩ := rfl
+    rw [hsy]
+    by_cases hm : (⟨x, y⟩ : ℂ) ∈ S
+    · obtain ⟨hx, hy⟩ := id hm
+      have hx' : x ∈ Set.Icc (-(1 / 2 : ℝ)) (1 / 2) := hx
+      have hy' : y ∈ Set.Ici (1 / 2 : ℝ) := hy
+      rw [Set.indicator_of_mem hm, Set.indicator_of_mem hx', Set.indicator_of_mem hy', one_mul]
+      apply le_of_eq
+      simp only [hg]
+      rw [ENNReal.ofReal]
+      congr 1
+      ext
+      simp [sq_abs]
+      positivity
+    · rw [Set.indicator_of_notMem hm]
+      exact bot_le
+  refine lt_of_le_of_lt (lintegral_mono hle) ?_
+  rw [Measure.volume_eq_prod, lintegral_prod_mul (aemeasurable_const.indicator measurableSet_Icc)
+    ((by fun_prop : Measurable fun y : ℝ => ENNReal.ofReal (1 / y ^ 2)).aemeasurable.indicator
+      measurableSet_Ici)]
+  rw [lintegral_indicator measurableSet_Icc, lintegral_indicator measurableSet_Ici,
+    setLIntegral_const, one_mul, Real.volume_Icc]
+  refine ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_
+  have h : IntegrableOn (fun y : ℝ => y ^ (-2 : ℝ)) (Set.Ioi (1 / 2 : ℝ)) :=
+    integrableOn_Ioi_rpow_of_lt (by norm_num) (by norm_num)
+  have h' : IntegrableOn (fun y : ℝ => 1 / y ^ 2) (Set.Ici (1 / 2 : ℝ)) := by
+    rw [integrableOn_Ici_iff_integrableOn_Ioi]
+    refine h.congr_fun (fun y hy => ?_) measurableSet_Ioi
+    have hy0 : (0 : ℝ) ≤ y := le_trans (by norm_num) (le_of_lt hy)
+    simp only
+    rw [Real.rpow_neg hy0, Real.rpow_two, one_div]
+  exact h'.lintegral_lt_top
+
+theorem fd_measurableSet : MeasurableSet ModularGroup.fd := by
+  apply IsClosed.measurableSet
+  have h1 : IsClosed {z : ℍ | 1 ≤ Complex.normSq (z : ℂ)} :=
+    isClosed_le continuous_const (Complex.continuous_normSq.comp UpperHalfPlane.continuous_coe)
+  have h2 : IsClosed {z : ℍ | |z.re| ≤ (1 : ℝ) / 2} :=
+    isClosed_le (UpperHalfPlane.continuous_re.abs) continuous_const
+  exact h1.inter h2
+
+theorem pow_mul_exp_neg_le (δ : ℝ) (A : ℕ) (hδ : 0 < δ) {y : ℝ} (hy : 0 ≤ y) :
+    y ^ A * Real.exp (-δ * y) ≤ (A.factorial : ℝ) / δ ^ A := by
+  have h := Real.pow_div_factorial_le_exp (δ * y) (mul_nonneg hδ.le hy) A
+  have hf : (0 : ℝ) < A.factorial := by exact_mod_cast A.factorial_pos
+  have hδA : 0 < δ ^ A := pow_pos hδ A
+  rw [div_le_iff₀ hf, mul_pow] at h
+  rw [le_div_iff₀ hδA, neg_mul, Real.exp_neg]
+  have he := Real.exp_pos (δ * y)
+  calc y ^ A * (Real.exp (δ * y))⁻¹ * δ ^ A = δ ^ A * y ^ A * (Real.exp (δ * y))⁻¹ := by ring
+    _ ≤ Real.exp (δ * y) * A.factorial * (Real.exp (δ * y))⁻¹ := by gcongr
+    _ = A.factorial := by field_simp
+
+theorem integrableOn_fd_im_pow_mul_exp :
+    ∀ (δ : ℝ) (A : ℕ), 0 < δ →
+      IntegrableOn (fun τ : ℍ => τ.im ^ A * Real.exp (-δ * τ.im)) ModularGroup.fd := by
+  intro δ A hδ
+  refine Measure.integrableOn_of_bounded (M := (A.factorial : ℝ) / δ ^ A) fd_volume_lt_top.ne
+    (by fun_prop : Continuous fun τ : ℍ => τ.im ^ A * Real.exp (-δ * τ.im)).aestronglyMeasurable
+    ((ae_restrict_iff' fd_measurableSet).2 (Filter.Eventually.of_forall fun τ _ => ?_))
+  have hy := τ.im_pos.le
+  rw [Real.norm_of_nonneg (by positivity)]
+  exact pow_mul_exp_neg_le δ A hδ hy
+
+end GlobalTheory.EisM
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrableOnFdImPowMulExp =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrablePeterssonIntegrandModerateGrowth =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrablePeterssonIntegrandModerateGrowth", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.RepL\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CuspFormCoeffSeqExpDecayAtEveryCusp\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrableOnFdImPowMulExp\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionPolyGrowthSummableContinuous\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
@@ -68,14 +183,6 @@ theorem petInt_emb (γ : SL(2, ℤ)) : MeasurableEmbedding (fun z : ℍ => γ �
   convert h using 1
   ext z
   simp
-
-theorem petInt_fd_meas : MeasurableSet ModularGroup.fd := by
-  unfold ModularGroup.fd
-  apply IsClosed.measurableSet
-  change IsClosed ({z : ℍ | 1 ≤ Complex.normSq (z : ℂ)} ∩ {z : ℍ | |z.re| ≤ 1 / 2})
-  apply IsClosed.inter
-  · exact isClosed_le continuous_const (Complex.continuous_normSq.comp UpperHalfPlane.continuous_coe)
-  · exact isClosed_le (continuous_abs.comp (Complex.continuous_re.comp UpperHalfPlane.continuous_coe)) continuous_const
 
 theorem petInt_im_bd (γ : SL(2, ℤ)) (σ : ℍ) (hσ : σ ∈ ModularGroup.fd) :
     (γ • σ).im ≤ 2 * σ.im ∧
@@ -192,14 +299,14 @@ theorem integrable_pet_integrand : ∀ (k L L' N : ℕ) (ε : DirichletCharacter
     ext σ
     simp
   rw [← (petInt_mp γ⁻¹).integrableOn_comp_preimage (petInt_emb γ⁻¹), hpre]
-  obtain ⟨C, δ, hδ, hdec⟩ := GlobalTheory.T.cuspForm_coeffSeq_exp_decay_at_every_cusp k L' N ε a γ⁻¹ hk hL' hN hCF
+  obtain ⟨C, δ, hδ, hdec⟩ := _root_.GlobalTheory.EisM.cusp_decay k L' N ε a γ⁻¹ hk hL' hN hCF
   set K : ℝ := 3 * (((γ⁻¹ : SL(2, ℤ)) 1 0 : ℤ) : ℝ) ^ 2 + 8 * (((γ⁻¹ : SL(2, ℤ)) 1 1 : ℤ) : ℝ) ^ 2 with hK
   refine Integrable.mono' (g := fun σ : ℍ => C / 2 * (σ.im ^ 0 * Real.exp (-(δ / 2) * σ.im)) +
       (|C'| * (2 ^ A + K ^ A)) ^ 2 * 2 ^ k / 2 * (σ.im ^ (2 * A + k) * Real.exp (-(δ / 2) * σ.im))) ?_ ?_ ?_
   · exact ((integrableOn_fd_im_pow_mul_exp (δ / 2) 0 (by positivity)).const_mul _).add
       ((integrableOn_fd_im_pow_mul_exp (δ / 2) (2 * A + k) (by positivity)).const_mul _)
   · exact (hgm.comp_measurePreserving (petInt_mp γ⁻¹)).restrict
-  · refine (ae_restrict_iff' petInt_fd_meas).mpr (Filter.Eventually.of_forall fun σ hσ => ?_)
+  · refine (ae_restrict_iff' _root_.GlobalTheory.EisM.fd_measurableSet).mpr (Filter.Eventually.of_forall fun σ hσ => ?_)
     have hy : 1 / 2 ≤ σ.im := by
       have := ModularGroup.three_le_four_mul_im_sq_of_mem_fd hσ
       nlinarith [σ.im_pos]
@@ -213,3 +320,6 @@ theorem integrable_pet_integrand : ∀ (k L L' N : ℕ) (ε : DirichletCharacter
       (hdec σ hy) (hC' _)
 
 end GlobalTheory.EisM
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrablePeterssonIntegrandModerateGrowth =====

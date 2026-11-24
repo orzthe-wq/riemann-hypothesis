@@ -97,7 +97,7 @@ theorem avgVanish_conj (H : Subgroup G) (σ : Representation ℂ H Z) (U : Subgr
     (f : cIndSpace H σ) (hf : AvgVanish H σ U θ (cInd H σ y f) 1) : AvgVanish H σ U θ f y := by
   obtain ⟨L', hL', hc, g', h1, h2, h3⟩ := hf
   let c : G →* G := (MulAut.conj y⁻¹).toMonoidHom
-  have hcv : ∀ x, c x = y⁻¹ * x * y := fun x => by simp [c, MulAut.conj_apply]
+  have hcv : ∀ x, c x = y⁻¹ * x * y := fun x => by simp [c]
   have hcc : Continuous c := by
     have : (c : G → G) = fun x => y⁻¹ * x * y := funext hcv
     rw [this]; fun_prop
@@ -483,7 +483,7 @@ theorem eq_zero_of_fixed_twKer {G V : Type} [Group G] [TopologicalSpace G] [IsTo
   have ho : IsOpen (((1 : L →* ℂˣ).ker : Subgroup L) : Set L) := by
     have : (((1 : L →* ℂˣ).ker : Subgroup L) : Set L) = Set.univ := by
       ext x
-      simp [MonoidHom.mem_ker]
+      simp
     rw [this]
     exact isOpen_univ
   obtain ⟨K, T, -, -, -, hT, hsum⟩ :=

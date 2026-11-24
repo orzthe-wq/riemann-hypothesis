@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LatIntZero
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MahlerCoefficientNormLeOneIffJetsBoundedMeasureMStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MahlerJetCoefficientMulStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MahlerCoefficientNormLeOneIffJetsBoundedMeasureM
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MahlerJetCoefficientMul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,11 +62,11 @@ theorem momInt_mul (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] (v : κ →
     (hF : ContDiff ℂ ⊤ F) (hG : ContDiff ℂ ⊤ G) (mF : MomInt ι v F) (mG : MomInt ι v G) :
     MomInt ι v (fun z => F z * G z) := by
   classical
-  have cF := (GlobalTheory.T.mahlerCoefficient_norm_le_one_iff_jets_boundedMeasureMoments q ι V κ v F hF).1 mF
-  have cG := (GlobalTheory.T.mahlerCoefficient_norm_le_one_iff_jets_boundedMeasureMoments q ι V κ v G hG).1 mG
-  refine (GlobalTheory.T.mahlerCoefficient_norm_le_one_iff_jets_boundedMeasureMoments q ι V κ v _ (hF.mul hG)).2 fun n => ?_
+  have cF := (_root_.GlobalTheory.MomCrit.momInt_iff_norm_mahler_le q ι V κ v F hF).1 mF
+  have cG := (_root_.GlobalTheory.MomCrit.momInt_iff_norm_mahler_le q ι V κ v G hG).1 mG
+  refine (_root_.GlobalTheory.MomCrit.momInt_iff_norm_mahler_le q ι V κ v _ (hF.mul hG)).2 fun n => ?_
 
-  rw [GlobalTheory.T.mahlerJetCoefficient_mul V κ v F G hF hG n, map_sum]
+  rw [_root_.GlobalTheory.MomN.mahler_mul V κ v F G hF hG n, map_sum]
   refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_
   rw [map_mul, norm_mul]
   exact mul_le_one₀ (cF k) (norm_nonneg _) (cG _)

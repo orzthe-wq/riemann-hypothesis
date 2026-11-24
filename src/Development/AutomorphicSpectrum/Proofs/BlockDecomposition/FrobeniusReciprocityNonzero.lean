@@ -71,7 +71,6 @@ theorem mk_parab (e : (Σ a, m a) ≃ n) (τ : Representation ℂ (GL n k) V) (p
   have e1 : τ (p : GL n k) w = τ (leviEmb k e (leviProj k e p)) (τ u w) := by
     first
     | (rw [hp, map_mul]; rfl)
-    | rw [hp, map_mul]
   rw [e1, hL, hL, key]
 
 def frobFun (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} {ρ : Representation ℂ (Levi k m) W}
@@ -107,7 +106,6 @@ theorem frobFun_translate (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n
   show f (Submodule.Quotient.mk (τ (x * h) v)) = f (Submodule.Quotient.mk (τ x (τ h v)))
   first
   | (rw [map_mul]; rfl)
-  | rw [map_mul]
 
 theorem frobFun_smooth (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} (hτ : IsSmooth τ)
     {ρ : Representation ℂ (Levi k m) W} (f : (jac e τ).IntertwiningMap ρ) (v : V) :
@@ -131,7 +129,6 @@ theorem frobFun_smooth (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k)
     have h1 : R (g0 * (g0⁻¹ * g)) F = R g0 (R (g0⁻¹ * g) F) := by
       first
       | (rw [map_mul]; rfl)
-      | rw [map_mul]
     rw [mul_inv_cancel_left] at h1
     show R g F = F
     rw [h1, hstab _ hg]
@@ -163,7 +160,6 @@ theorem frobInv_one (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V}
   show f (Submodule.Quotient.mk (τ 1 v)) = f (Submodule.Quotient.mk v)
   first
   | (rw [map_one]; rfl)
-  | rw [map_one]
 
 theorem exists_frobInv_ne_zero (e : (Σ a, m a) ≃ n) {τ : Representation ℂ (GL n k) V} (hτ : IsSmooth τ)
     {ρ : Representation ℂ (Levi k m) W} (f : (jac e τ).IntertwiningMap ρ) (hf : ∃ v, f v ≠ 0) :

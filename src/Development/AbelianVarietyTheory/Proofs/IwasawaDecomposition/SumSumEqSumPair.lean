@@ -115,7 +115,7 @@ theorem kron_map {S : Type} [CommRing S] (f : R →+* S) (a : Matrix (Fin M) (Fi
   simp [kron]
 
 theorem kron_one : kron (1 : Matrix (Fin M) (Fin M) R) (1 : Matrix (Fin N) (Fin N) R) = 1 := by
-  simp [kron, Matrix.one_kronecker_one]
+  simp [kron]
 
 theorem kron_mul (a a' : Matrix (Fin M) (Fin M) R) (b b' : Matrix (Fin N) (Fin N) R) :
     kron (a * a') (b * b') = kron a b * kron a' b' := by
@@ -149,7 +149,7 @@ theorem sum_sum_eq_sum_pair (F : Fin M → Fin M → R) :
         · congr 1
           rw [Finset.sum_comm]
         · refine Finset.sum_congr rfl fun x _ => ?_
-          simp [eq_comm]
+          simp
 
 theorem wedge2_map {S : Type} [CommRing S] (f : R →+* S) (a : Matrix (Fin M) (Fin M) R) :
     (wedge2 a).map f = wedge2 (a.map f) := by

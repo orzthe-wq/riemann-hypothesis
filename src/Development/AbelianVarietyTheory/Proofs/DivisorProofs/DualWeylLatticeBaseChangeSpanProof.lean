@@ -157,7 +157,7 @@ theorem nabStd_le_span_map {ι : Type} [Fintype ι] {n : ℕ} (f : K₀ →+* K)
 theorem map_smul_int {σ : Type} (f : K₀ →+* K) (t : 𝓞 K₀) (P : MvPolynomial σ K₀) :
     RingOfIntegers.mapRingHom f t • MvPolynomial.map f P = MvPolynomial.map f (t • P) := by
   ext m
-  simp only [MvPolynomial.coeff_smul, MvPolynomial.coeff_map]
+  simp only [MvPolynomial.coeff_map]
   change ((RingOfIntegers.mapRingHom f t : 𝓞 K) : K) * f (P.coeff m) = f ((t : K₀) * P.coeff m)
   rw [map_mul]
   rfl
@@ -229,7 +229,7 @@ theorem nabBaseChange : ∀ (E K₀ K ι : Type) [Field E] [NumberField E] [Fiel
   obtain ⟨-, -, hV⟩ := GlobalTheory.TransLoc.nabDelLoc_free_leVV
   have hP : (F : Pol K ι n) ∈ Submodule.span (𝓞 K) (MvPolynomial.map f ''
       (nabP lam fun τ => dualFr (tauLat emb τ M) : Set (Pol K₀ ι n))) :=
-    GlobalTheory.TransLattice.mem_of_forall_mem_locP _ fun w => GlobalTheory.NabBC.mem_localization_span_map f emb lam M hM w hF
+    _root_.GlobalTheory.TransLoc.mem_of_forall_locP _ fun w => GlobalTheory.NabBC.mem_localization_span_map f emb lam M hM w hF
   have hS : ((VV K lam).subtype.restrictScalars (𝓞 K)) ''
       {y : VV K lam | ∃ x ∈ nabAtr emb lam M, (y : Pol K ι n) = MvPolynomial.map f (x : Pol K₀ ι n)} =
       MvPolynomial.map f '' (nabP lam fun τ => dualFr (tauLat emb τ M) : Set (Pol K₀ ι n)) := by

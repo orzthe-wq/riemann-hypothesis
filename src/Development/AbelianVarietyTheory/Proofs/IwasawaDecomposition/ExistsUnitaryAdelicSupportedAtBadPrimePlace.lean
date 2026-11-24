@@ -60,12 +60,12 @@ def sng (P : HeightOneSpectrum (𝓞 E)) (x : P.adicCompletion E) : AfE F E := (
 
 theorem adAt_sng_self (P : HeightOneSpectrum (𝓞 E)) (x : P.adicCompletion E) : adAt F P (sng F P x) = x := by
   rw [adAt_apply, sng]
-  simp only [RingEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]
+  simp only [RingEquiv.apply_symm_apply]
   exact Formalism.UG.P.afsplitF_self P x
 
 theorem adAt_sng_ne {P w : HeightOneSpectrum (𝓞 E)} (h : w ≠ P) (x : P.adicCompletion E) : adAt F w (sng F P x) = 0 := by
   rw [adAt_apply, sng]
-  simp only [RingEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]
+  simp only [RingEquiv.apply_symm_apply]
   exact Formalism.UG.P.afsplitF_ne P w h x
 
 def dev {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (A : Matrix (Fin n) (Fin n) (P.adicCompletion E)) :

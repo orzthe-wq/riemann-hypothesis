@@ -1,6 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.ZerosDisc
+import Development.AutomorphicArithmetic.CharacterBoxes.HalfPlane
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -60,7 +61,7 @@ theorem _root_.GlobalTheory.Lin.zeros_eq_zeros_primitiveCharacter :
       (LFunction χ s = 0 ↔ LFunction χ.primitiveCharacter s = 0) ∧
         _root_.GlobalTheory.Lin.ord χ s = _root_.GlobalTheory.Lin.ord χ.primitiveCharacter s := by
   intro q _ χ s hs hχs
-  haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩
+  have : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩
   set E : ℂ → ℂ := fun z => ∏ p ∈ q.primeFactors, (1 - χ.primitiveCharacter p * (p : ℂ) ^ (-z))
     with hE
   have hform : ∀ z, (χ.primitiveCharacter ≠ 1 ∨ z ≠ 1) →
@@ -77,21 +78,7 @@ theorem _root_.GlobalTheory.Lin.zeros_eq_zeros_primitiveCharacter :
             (changeLevel_primitiveCharacter χ).symm
         _ = 1 := by rw [h1, map_one]
     · exact Or.inr h
-  have hEne : E s ≠ 0 := by
-    rw [hE]
-    refine Finset.prod_ne_zero_iff.2 (fun p hp => ?_)
-    have hp1 : 1 < p := (Nat.prime_of_mem_primeFactors hp).one_lt
-    have hlt : ‖χ.primitiveCharacter p * (p : ℂ) ^ (-s)‖ < 1 := by
-      rw [norm_mul, Complex.norm_natCast_cpow_of_pos (by omega), Complex.neg_re]
-      calc _ ≤ 1 * (p : ℝ) ^ (-s.re) :=
-            mul_le_mul_of_nonneg_right (norm_le_one _ _) (by positivity)
-        _ < 1 := by
-            rw [one_mul]
-            exact Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast hp1) (by linarith)
-    intro h0
-    rw [sub_eq_zero] at h0
-    rw [← h0, norm_one] at hlt
-    exact lt_irrefl _ hlt
+  have hEne : E s ≠ 0 := Claim.eulerFactors_ne_zero χ.primitiveCharacter hs q
   have hEd : Differentiable ℂ E := by
     have h : Differentiable ℂ (∏ p ∈ q.primeFactors,
         fun z : ℂ => 1 - χ.primitiveCharacter p * (p : ℂ) ^ (-z)) :=
@@ -114,11 +101,9 @@ theorem _root_.GlobalTheory.Lin.zeros_eq_zeros_primitiveCharacter :
     rcases hprim with h1 | h1
     · exact Eventually.of_forall (fun z => hform z (Or.inl h1))
     · filter_upwards [isOpen_ne.mem_nhds h1] with z hz using hform z (Or.inr hz)
-  refine ⟨?_, ?_⟩
-  · rw [hform s hprim, mul_eq_zero]
-    simp [hEne]
-  · show (analyticOrderAt _ s).toNat = (analyticOrderAt _ s).toNat
-    rw [analyticOrderAt_congr hev, analyticOrderAt_mul hLa hEa,
-      analyticOrderAt_eq_zero.2 (Or.inr hEne), add_zero]
+  refine ⟨Claim.LFunction_eq_zero_iff_primitiveCharacter χ hs hχs, ?_⟩
+  show (analyticOrderAt _ s).toNat = (analyticOrderAt _ s).toNat
+  rw [analyticOrderAt_congr hev, analyticOrderAt_mul hLa hEa,
+    analyticOrderAt_eq_zero.2 (Or.inr hEne), add_zero]
 
 end GlobalTheory.Lin

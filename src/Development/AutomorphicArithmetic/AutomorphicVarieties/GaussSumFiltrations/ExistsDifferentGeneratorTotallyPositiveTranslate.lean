@@ -55,7 +55,7 @@ theorem exists_pos_val (T : Finset (HeightOneSpectrum (𝓞 F))) (γ : HeightOne
     ∃ a : F, (∀ w ∈ T, w.valuation F a = γ w) ∧ ∀ φ : F →+* ℝ, 0 < φ a := by
   choose t ht using fun w : HeightOneSpectrum (𝓞 F) => w.valuation_surjective F (γ w)
   set M : ℕ := T.sup (fun w => (WithZero.log (γ w)).natAbs) + 1 with hM
-  obtain ⟨a, ha, hpos⟩ := GlobalTheory.FinPlaceApproxPos.approxpos_target F T t M
+  obtain ⟨a, ha, hpos⟩ := _root_.GlobalTheory.FinPlaceApproxPos.exists_approx_totally_positive F T t M
   refine ⟨a, fun w hw => ?_, hpos⟩
   have hle : (WithZero.log (γ w)).natAbs ≤ T.sup (fun w => (WithZero.log (γ w)).natAbs) :=
     Finset.le_sup (f := fun w => (WithZero.log (γ w)).natAbs) hw
@@ -113,5 +113,3 @@ theorem GlobalTheory.HilbertThetaSeries.del_exists_and_move : ∀ (F : Type) [Fi
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 
-theorem _root_.GlobalTheory.T.exists_different_generator_totallyPositive_translate : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ), p.Prime → (∃ δ : F, IsDel p δ) ∧ ∀ δ : F, IsDel p δ → ∀ y : (Af F)ˣ, ∃ ξ : Fˣ, TP (ξ : F) ∧ AtP p δ (Units.map (algebraMap F (Af F)).toMonoidHom ξ * y) := by
-  first | exact @GlobalTheory.HilbertThetaSeries.del_exists_and_move | exact GlobalTheory.HilbertThetaSeries.del_exists_and_move | (intros; apply GlobalTheory.HilbertThetaSeries.del_exists_and_move <;> assumption)

@@ -1,8 +1,9 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.ResEmbCompat
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyOfIrreduciStatement
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePowStatement
+public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyOfIrreduci
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePow
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TransportKeepsProductsCosocles
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -43,6 +44,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.PowerMatchingTraces.MatchCut
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -230,7 +232,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.nameOf :
     rw [← hyγ, hτ γ]
     delta cusp psiG
     congr 1
-    refine (GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_of_irreducible F (Fin m → F) _ (GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow F (Θ.comp e) c).1 _ hirr).trans ?_
+    refine (_root_.GlobalTheory.CuspGL.psi_of_irreducible_charpoly F (Fin m → F) _ (_root_.GlobalTheory.CuspGL.rootSum_isAdditive_and_pow_X_sub_one F (Θ.comp e) c).1 _ hirr).trans ?_
     rw [Matrix.charpoly_toLin', hγc]
     delta GlobalTheory.CuspGL.rootSum
     rw [Polynomial.map_map]

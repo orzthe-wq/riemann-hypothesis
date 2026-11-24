@@ -203,25 +203,12 @@ theorem lin_F_right (i l : Fin d) :
   rw [lin_ev_two const_zero (const_pt 0), hX] at h
   simpa [coeff_single_pt] using h
 
-private lemma coeff_single_pt_eq_ite' (j j' : Fin n) (l l' : Fin d) :
-    coeff (Finsupp.single (j', l') 1) (pt R d j l) = if j = j' ∧ l = l' then 1 else 0 := by
-  show coeff _ (X (j, l)) = _
-  rw [coeff_X]
-  by_cases h : j = j' ∧ l = l'
-  · obtain ⟨rfl, rfl⟩ := h
-    simp
-  · rw [if_neg h, if_neg]
-    intro h'
-    have h2 := Finsupp.single_left_injective one_ne_zero h'
-    simp only [Prod.mk.injEq] at h2
-    exact h ⟨h2.1.symm, h2.2.symm⟩
-
 theorem lin_F_left (i l : Fin d) :
     coeff (Finsupp.single ((0 : Fin 2), l) 1) (G.F i) = if i = l then 1 else 0 := by
   have h := congrArg (coeff (Finsupp.single ((0 : Fin 2), l) 1)) (G.comm i)
   rw [lin_ev_two (const_pt 1) (const_pt 0)] at h
   rw [← h]
-  simp [coeff_single_pt_eq_ite', lin_F_right G]
+  simp [_root_.GlobalTheory.FormalMulN.coeff_single_pt_eq_ite, lin_F_right G]
 
 theorem dLin_add {x y : Pt R 1 d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) : dLin (G.add x y) = dLin x + dLin y := by

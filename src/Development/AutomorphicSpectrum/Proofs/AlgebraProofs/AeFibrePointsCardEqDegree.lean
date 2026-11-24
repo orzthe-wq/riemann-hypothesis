@@ -1,9 +1,9 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsScaleStable
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BallAverageFibreCountStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BallAverageFibreCount
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsSigmaCompactConeInter
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MeasurableFibreCountOverStatement
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MeasurableFibreCountOver
 import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.Assembly
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -59,7 +59,7 @@ private theorem ae_fibre_encard_eq {n e : ℕ} (S : Set (EuclideanSpace ℂ (Fin
     ∀ᵐ (π : Fin (e + 1) → Fin n → ℂ), (fibrePts S π).encard = δ := by
   let T : ℝ≥0∞ → ℝ≥0∞ := fun x => if x = (δ : ℝ≥0∞) then 0 else 1
   have hT : Measurable T := Measurable.ite (measurableSet_singleton _) measurable_const measurable_const
-  have hcross := GlobalTheory.T.ball_average_fibre_count n e S hss hsc T hT
+  have hcross := _root_.GlobalTheory.CompanionTheory.Relay.ball_average_fibre_count n e S hss hsc T hT
   have hlhs : ∫⁻ (π : Fin (e + 1) → Fin n → ℂ), matGauss π *
       ∫⁻ (w : EuclideanSpace ℂ (Fin (e + 1))) in Metric.ball 0 1, T (cntOver S π w) = 0 := by
     have hae : (fun π : Fin (e + 1) → Fin n → ℂ => matGauss π *
@@ -81,7 +81,7 @@ private theorem ae_fibre_encard_eq {n e : ℕ} (S : Set (EuclideanSpace ℂ (Fin
     measurable_id.prodMk measurable_const
   have hmeasc := Measurable.comp
     (g := fun p : (Fin (e + 1) → Fin n → ℂ) × EuclideanSpace ℂ (Fin (e + 1)) => cntOver S p.1 p.2)
-    (f := fun π : Fin (e + 1) → Fin n → ℂ => (π, firstCoordVec (e + 1))) (GlobalTheory.T.measurable_fibre_count_over n (e + 1) S hsc) hp
+    (f := fun π : Fin (e + 1) → Fin n → ℂ => (π, firstCoordVec (e + 1))) (_root_.GlobalTheory.CompanionTheory.Ar.Short.Crofton.measurable_cntOver n (e + 1) S hsc) hp
   have hmg : Measurable (matGauss : (Fin (e + 1) → Fin n → ℂ) → ℝ≥0∞) := by
     unfold matGauss
     fun_prop
@@ -102,7 +102,7 @@ private theorem ae_fibre_encard_eq {n e : ℕ} (S : Set (EuclideanSpace ℂ (Fin
 
 
 theorem _root_.GlobalTheory.CompanionTheory.Relay.ae_fibre_points_card_eq_degree : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
-  (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ), IsProjPrime W → IsChowForm W (e + 1) f → IsMultiHomog δ f →
+  (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ), IsProjPrime W → IsChowForm W (e + 1) f → GroundTheory.Heights₂.Heights.IsMultiHomog δ f →
     ∀ᵐ π : Fin (e + 1) → Fin n → ℂ, (fibrePts (coneSet h W) π).encard = δ := by
   intro n e δ h W f hW hf hd
   apply ae_fibre_encard_eq (coneSet h W) (isScaleStable_coneSet h hW)

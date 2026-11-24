@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -67,8 +68,8 @@ private theorem commute_of_semisimple_of_charpoly_prod_chars {G : Type} [Group G
       rw [hcp]
       have : ∀ i, ((χ i (g * k * g⁻¹ * k⁻¹) : ℂˣ) : ℂ) = 1 := by
         intro i
-        simp [map_mul, map_inv, mul_comm, mul_left_comm, mul_assoc]
-      simp [this]
+        simp [map_mul, map_inv, mul_assoc]
+      simp
     have hdvd : minpoly ℂ (T (g * k * g⁻¹ * k⁻¹)) ∣ (X - C (1 : ℂ)) ^ n :=
       h1 ▸ LinearMap.minpoly_dvd_charpoly _
     have hd : minpoly ℂ (T (g * k * g⁻¹ * k⁻¹)) ∣ X - C (1 : ℂ) := by
@@ -140,7 +141,7 @@ private theorem exists_linearEquiv_diagonal_chars_of_eigenbasis {G : Type} [Grou
     rw [LinearMap.toMatrix_apply, hT, map_smul, b.repr_self, Matrix.diagonal_apply]
     by_cases h : i = j
     · subst h; simp
-    · simp [Finsupp.single_apply, Ne.symm h, h]
+    · simp [h]
   have hsum : ∀ g, ∑ j, c j g = ∑ i, ((χ i g : ℂˣ) : ℂ) := by
     intro g
     have hp := LinearMap.charpoly_toMatrix (T g) b
@@ -176,7 +177,7 @@ private theorem exists_linearEquiv_diagonal_chars_of_eigenbasis {G : Type} [Grou
       (f₂ := c k g • (Finsupp.lapply k).comp b.repr.toLinearMap) (by
         intro j
         simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, hT, map_smul, b.repr_self,
-          Finsupp.lapply_apply, LinearMap.smul_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul]
+          Finsupp.lapply_apply, LinearMap.smul_apply, Finsupp.single_apply, smul_eq_mul]
         by_cases h : j = k
         · subst h; simp
         · simp [h])

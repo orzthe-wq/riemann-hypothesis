@@ -201,7 +201,6 @@ theorem integral_adeles_properties : ∀ (F E : Type) [Field F] [NumberField F] 
     obtain ⟨b, t, ht, hab⟩ := csGlob_approx (E := E) csGlob_intAdApprox (m : 𝓞 F) hm' a ha
     refine ⟨b, t, ht, ?_⟩
     rw [hab, levelafC_natCast]
-    try rfl
   · intro hx
     exact ⟨⟨x, csGlob_int x hx⟩, rfl⟩
   · rintro ⟨b, rfl⟩

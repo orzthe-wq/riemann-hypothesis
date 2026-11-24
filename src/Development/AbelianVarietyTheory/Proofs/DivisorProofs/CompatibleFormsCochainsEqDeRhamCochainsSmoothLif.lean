@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.DivPowerCompatTwoFormDerivativeCompOneForm
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivPowerCompatRelFiltrationTwoSidedRelEqBotOfBasStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivPowerCompatRelFiltrationTwoSidedRelEqBotOfBas
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -53,7 +53,7 @@ namespace GlobalTheory.PDForm.LiftRes
 variable {D : Data} (Λ : Lift D)
 
 theorem rel_bot (U : AffOp D.X) : rel D.R (Λ.L.obj U).δ = ⊥ :=
-  (GlobalTheory.T.divPowerCompatRel_filtration_twoSided_rel_eq_bot_of_base).2 D.R (Λ.L.obj U).B (Λ.L.obj U).J (Λ.L.obj U).δ D.I D.κ (Λ.L.obj U).dp (Λ.gen U).le
+  (_root_.GlobalTheory.PDForm.rel_two_sided_and_bot).2 D.R (Λ.L.obj U).B (Λ.L.obj U).J (Λ.L.obj U).δ D.I D.κ (Λ.L.obj U).dp (Λ.gen U).le
 
 theorem smoothLift_compatibleOneForms_mk_injective (U : AffOp D.X) :
     Function.Injective (Submodule.Quotient.mk : Ω[(Λ.L.obj U).B⁄D.R] → K1 D.R (Λ.L.obj U).δ) := by

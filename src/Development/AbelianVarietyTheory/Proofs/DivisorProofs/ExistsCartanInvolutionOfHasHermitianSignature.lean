@@ -54,7 +54,7 @@ open scoped ComplexOrder
 
 private lemma map_star_mul' {l m k : Type} [Fintype m] (X : Matrix l m ℂ) (Y : Matrix m k ℂ) :
     (X * Y).map star = X.map star * Y.map star := by
-  ext i j; simp [Matrix.mul_apply, star_sum]
+  ext i j; simp [Matrix.mul_apply]
 
 private lemma map_star_star {l m : Type} (X : Matrix l m ℂ) : (X.map star).map star = X := by
   ext i j; simp
@@ -73,7 +73,7 @@ theorem exists_isCartan : ∀ (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (r s : 
   have hDT : Dᵀ = D := by simp [hD, Matrix.fromBlocks_transpose]
   have hDs : D.map star = D := by
     simp only [hD, Matrix.fromBlocks_map]
-    congr 1 <;> ext i j <;> simp [Matrix.one_apply] <;> split_ifs <;> simp
+    congr 1 <;> ext i j <;> simp [Matrix.one_apply]
   clear_value D
   set L := D * Aᵀ * M with hLdef
   clear_value L

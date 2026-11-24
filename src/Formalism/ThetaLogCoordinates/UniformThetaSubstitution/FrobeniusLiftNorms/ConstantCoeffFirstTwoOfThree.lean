@@ -141,7 +141,7 @@ theorem partial_coboundary_product {F : MvPowerSeries (Fin 2) K} (hF : constantC
   rw [MvPowerSeries.subst_mul (has_subst_coboundary_first hF), MvPowerSeries.subst_mul (has_subst_last_pair 0), MvPowerSeries.subst_mul (has_subst_last_pair 1),
     subst_single_var (has_subst_coboundary_first hF), subst_single_var (has_subst_coboundary_first hF), subst_single_var (has_subst_last_pair 0), subst_single_var (has_subst_last_pair 0),
     subst_single_var (has_subst_last_pair 1), subst_single_var (has_subst_last_pair 1), include_three_coboundary hF]
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
   unfold at1
   ring
 
@@ -165,18 +165,14 @@ section Supp
 variable {K : Type} [Field K]
 
 theorem powq_modEq_one {p : ℕ} (hp : 2 ≤ p) (x : ℕ) : (p ^ 2) ^ x ≡ 1 [MOD p ^ 2 - 1] := by
-  have h : p ^ 2 ≡ 1 [MOD p ^ 2 - 1] := Nat.modEq_sub (Nat.one_le_pow _ _ (by omega))
-  simpa using h.pow x
+  simpa using (Nat.modEq_sub (Nat.one_le_pow _ _ (by omega))).pow x
 
 theorem suppOK_sub {p : ℕ} {f g : MvPowerSeries (Fin 2) K} (hf : SuppOK p f) (hg : SuppOK p g) :
     SuppOK p (f - g) := by
   intro n hn
   rw [map_sub] at hn
   by_cases h : MvPowerSeries.coeff n f = 0
-  · apply hg n
-    intro h'
-    apply hn
-    rw [h, h', sub_zero]
+  · exact hg n (by simpa [h] using hn)
   · exact hf n h
 
 theorem suppOK_C_mul {p : ℕ} (a : K) {f : MvPowerSeries (Fin 2) K} (hf : SuppOK p f) :
@@ -195,27 +191,11 @@ theorem suppOK_frob {p : ℕ} (hp : 2 ≤ p) (σ : K →+* K) {G : MvPowerSeries
   simp only [Finsupp.smul_apply, smul_eq_mul]
   exact ⟨Nat.mul_pos (by omega) h0, Nat.mul_pos (by omega) h1, h2.mul_left p⟩
 
-private theorem coeff_g0F_ne_lemma {p n : ℕ} (h : PowerSeries.coeff n (g0F K p) ≠ 0) :
-    ∃ j, n = p * (p ^ 2) ^ j := by
-  rw [g0F, PowerSeries.coeff_mk] at h
-  obtain ⟨j, -, hj⟩ := Finset.exists_ne_zero_of_sum_ne_zero h
-  by_cases hn : n = p * (p ^ 2) ^ j
-  · exact ⟨j, hn⟩
-  · exact absurd (if_neg hn) hj
-
-private theorem coeff_lgF_ne_lemma_2 {p n : ℕ} (h : PowerSeries.coeff n (lgF K p) ≠ 0) :
-    ∃ j, n = (p ^ 2) ^ j := by
-  rw [lgF, PowerSeries.coeff_mk] at h
-  obtain ⟨j, -, hj⟩ := Finset.exists_ne_zero_of_sum_ne_zero h
-  by_cases hn : n = (p ^ 2) ^ j
-  · exact ⟨j, hn⟩
-  · exact absurd (if_neg hn) hj
-
 theorem support_ok_g_zero_log {p : ℕ} (hp : 2 ≤ p) : SuppOK p (at1 0 (g0F K p) * at1 1 (lgF K p)) := by
   intro n hn
   rw [coeff_product_single_variables (by decide) (fun z => by fin_cases z <;> simp)] at hn
-  obtain ⟨j, hj⟩ := coeff_g0F_ne_lemma (left_ne_zero_of_mul hn)
-  obtain ⟨i, hi⟩ := coeff_lgF_ne_lemma_2 (right_ne_zero_of_mul hn)
+  obtain ⟨j, hj⟩ := _root_.Formalism.InvariantFactorPaths.G7.coeff_g0F_ne_zero (left_ne_zero_of_mul hn)
+  obtain ⟨i, hi⟩ := _root_.Formalism.InvariantFactorPaths.G7.coeff_lgF_ne_zero (right_ne_zero_of_mul hn)
   refine ⟨?_, ?_, ?_⟩
   · rw [hj]
     exact Nat.mul_pos (by omega) (pow_pos (pow_pos (by omega) _) _)
@@ -227,8 +207,8 @@ theorem support_ok_g_zero_log {p : ℕ} (hp : 2 ≤ p) : SuppOK p (at1 0 (g0F K 
 theorem support_ok_log_g_zero {p : ℕ} (hp : 2 ≤ p) : SuppOK p (at1 0 (lgF K p) * at1 1 (g0F K p)) := by
   intro n hn
   rw [coeff_product_single_variables (by decide) (fun z => by fin_cases z <;> simp)] at hn
-  obtain ⟨i, hi⟩ := coeff_lgF_ne_lemma_2 (left_ne_zero_of_mul hn)
-  obtain ⟨j, hj⟩ := coeff_g0F_ne_lemma (right_ne_zero_of_mul hn)
+  obtain ⟨i, hi⟩ := _root_.Formalism.InvariantFactorPaths.G7.coeff_lgF_ne_zero (left_ne_zero_of_mul hn)
+  obtain ⟨j, hj⟩ := _root_.Formalism.InvariantFactorPaths.G7.coeff_g0F_ne_zero (right_ne_zero_of_mul hn)
   refine ⟨?_, ?_, ?_⟩
   · rw [hi]
     exact Nat.one_le_pow _ _ (pow_pos (by omega : 0 < p) 2)
@@ -250,8 +230,8 @@ theorem coeff_lg_lg_eq_zero {p : ℕ} (hp : 2 ≤ p) {n : Fin 2 →₀ ℕ}
     coeff n (at1 0 (lgF K p) * at1 1 (lgF K p)) = 0 := by
   rw [coeff_product_single_variables (by decide) (fun z => by fin_cases z <;> simp)]
   by_contra h
-  obtain ⟨i, hi⟩ := coeff_lgF_ne_lemma_2 (left_ne_zero_of_mul h)
-  obtain ⟨j, hj⟩ := coeff_lgF_ne_lemma_2 (right_ne_zero_of_mul h)
+  obtain ⟨i, hi⟩ := _root_.Formalism.InvariantFactorPaths.G7.coeff_lgF_ne_zero (left_ne_zero_of_mul h)
+  obtain ⟨j, hj⟩ := _root_.Formalism.InvariantFactorPaths.G7.coeff_lgF_ne_zero (right_ne_zero_of_mul h)
   rw [hi, hj] at hn
   have h1 : 1 ≡ p * 1 [MOD p ^ 2 - 1] :=
     ((powq_modEq_one hp i).symm.trans hn).trans ((powq_modEq_one hp j).mul_left p)

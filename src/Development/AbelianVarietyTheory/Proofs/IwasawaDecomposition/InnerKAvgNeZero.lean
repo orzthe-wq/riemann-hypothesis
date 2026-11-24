@@ -89,19 +89,19 @@ theorem kFinFun_coef (hσ : IsURepOn (UJset ε) σ) {y : H} (hy : IsKFin ε σ y
         have : φ x 0 = 0 := by ext k; simp [φ]
         rw [this]; exact Submodule.zero_mem _
       | add a b _ _ ha hb =>
-        have : φ x (a + b) = φ x a + φ x b := by ext k; simp [φ, inner_add_left]
+        have : φ x (a + b) = φ x a + φ x b := by ext k; simp [φ]
         rw [this]; exact Submodule.add_mem _ ha hb
       | smul c a _ ha =>
-        have : φ x (c • a) = (starRingEnd ℂ c) • φ x a := by ext k; simp [φ, inner_smul_left, mul_comm]
+        have : φ x (c • a) = (starRingEnd ℂ c) • φ x a := by ext k; simp [φ, mul_comm]
         rw [this]; exact Submodule.smul_mem _ _ ha
     | zero =>
       have : φ 0 s' = 0 := by ext k; simp [φ]
       rw [this]; exact Submodule.zero_mem _
     | add a b _ _ ha hb =>
-      have : φ (a + b) s' = φ a s' + φ b s' := by ext k; simp [φ, inner_add_right]
+      have : φ (a + b) s' = φ a s' + φ b s' := by ext k; simp [φ]
       rw [this]; exact Submodule.add_mem _ ha hb
     | smul c a _ ha =>
-      have : φ (c • a) s' = c • φ a s' := by ext k; simp [φ, inner_smul_right]
+      have : φ (c • a) s' = c • φ a s' := by ext k; simp [φ]
       rw [this]; exact Submodule.smul_mem _ _ ha
   have htS : ∀ x ∈ (t : Set H), x ∈ S := fun x hx => ht ▸ Submodule.subset_span hx
   refine ⟨Submodule.span ℂ (Set.image2 φ (t : Set H) (t : Set H)), FiniteDimensional.span_of_finite ℂ hfin, ?_, ?_, ?_⟩

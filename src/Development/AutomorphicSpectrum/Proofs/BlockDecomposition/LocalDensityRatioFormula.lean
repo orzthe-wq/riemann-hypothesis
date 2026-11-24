@@ -46,6 +46,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.LocalToGlobal.ProjectiveLattices.OneLtAbsNormReal
 
 @[expose] public section
 
@@ -515,11 +516,8 @@ theorem step_pos (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S,
   rw [emb, map_pow, md_pow, ← emb, md_emb hu', ← ENNReal.ofReal_pow (Real.rpow_nonneg hq0 _), ← Real.rpow_natCast,
     ← Real.rpow_natCast, ← Real.rpow_mul hq0, ← Real.rpow_mul hq0, mul_comm]
 
-theorem one_lt_q (v : HeightOneSpectrum (𝓞 F)) : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ) := by
-  exact_mod_cast one_lt_absNorm_asIdeal v
-
 theorem q_lt_one (v : HeightOneSpectrum (𝓞 F)) {s : ℝ} (hs : 0 < s) : (Ideal.absNorm v.asIdeal : ℝ) ^ (-s) < 1 :=
-  Real.rpow_lt_one_of_one_lt_of_neg (one_lt_q v) (by linarith)
+  Real.rpow_lt_one_of_one_lt_of_neg (_root_.Formalism.L2.Pj.one_lt_absNorm_real v) (by linarith)
 
 theorem step (hG : Continuous G) (hG0 : ∀ y, 0 ≤ G y) (hg : ∀ v ∈ S, Continuous (g v)) (hg0 : ∀ v y, 0 ≤ g v y)
     (hw : Good w) (hW : Good W) (x₀ : Off S) {ε : ℝ} (hε : ε = 1 ∨ ε = -1) (h0 : w x₀.1 = rv x₀.1 0) (h1 : W x₀.1 = rv x₀.1 ε)
@@ -644,7 +642,7 @@ theorem countable_off (S : Finset (HeightOneSpectrum (𝓞 F))) : Countable (Off
   have hu : Function.support (fun x : Off S => (Ideal.absNorm x.1.asIdeal : ℝ) ^ (-(2 : ℝ))) = Set.univ := by
     ext x
     simp only [Function.mem_support, Set.mem_univ, iff_true]
-    exact (Real.rpow_pos_of_pos (by linarith [one_lt_q x.1]) _).ne'
+    exact (Real.rpow_pos_of_pos (by linarith [_root_.Formalism.L2.Pj.one_lt_absNorm_real x.1]) _).ne'
   rw [hu] at h
   exact Set.countable_univ_iff.1 h
 

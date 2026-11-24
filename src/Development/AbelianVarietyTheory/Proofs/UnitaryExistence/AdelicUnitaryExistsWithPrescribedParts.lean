@@ -122,7 +122,7 @@ open scoped TensorProduct Topology
 open GlobalTheory.RecDict
 
 theorem gram_det_ne_zero {E : Type} [Field E] [NumberField E] [StarRing E] (V : HSpace E) : V.gram.det ≠ 0 := by
-  apply GlobalTheory.RecDict.det_gram_ne_zero <;> assumption
+  apply GlobalTheory.RecDict.det_gram_ne_zero
 
 section Tens
 

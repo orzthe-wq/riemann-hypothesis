@@ -197,7 +197,7 @@ theorem eS_add (f g : MvPowerSeries τ K) (hf : constantCoeff f = 0) (hg : const
 theorem eS_zero : eS (0 : MvPowerSeries τ K) = 1 := by
   ext e
   rw [PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), finsum_eq_single _ 0]
-  · simp [coeff_exp_K]
+  · simp
   · intro d hd
     simp [zero_pow hd]
 

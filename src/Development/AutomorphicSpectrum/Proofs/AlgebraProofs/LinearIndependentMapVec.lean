@@ -3,10 +3,10 @@ module
 public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
 public import Mathlib.RingTheory.Coalgebra.IsFrobenius
 public import Mathlib.RingTheory.HopfAlgebra.Basic
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BundleDegreeEqSumValuationsStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusLatticeDegreeMulPStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeBasisAdaptedToSubspaceStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundlesStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BundleDegreeEqSumValuations
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusLatticeDegreeMulP
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeBasisAdaptedToSubspace
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundles
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -162,8 +162,7 @@ theorem linearIndependent_mapVec (σ : K →+* K) {d n : ℕ} (v : Fin n → Fin
   have h2 : Matrix.of v * B = 1 := by
     ext a b
     have := congrFun (LinearMap.congr_fun hg (Pi.single a 1)) b
-    simp only [LinearMap.comp_apply, hgB, Matrix.vecMulLinear_apply, Matrix.vecMul_vecMul,
-      LinearMap.id_apply, Matrix.single_one_vecMul] at this
+    simp only [LinearMap.comp_apply, hgB, Matrix.vecMulLinear_apply, LinearMap.id_apply, Matrix.single_one_vecMul] at this
     rw [Matrix.one_apply]
     change Matrix.vecMul (v a) B b = _
     simpa [Pi.single_apply, eq_comm] using this
@@ -211,9 +210,9 @@ theorem exists_basis_sub (σ : K →+* K) {d n : ℕ} (W : Submodule K (Fin d �
 theorem subDeg_frob : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p] (d : ℕ) (L : C.I → AddSubgroup (Fin d → K)) (W : Submodule K (Fin d → K)), IsBun C L → subDeg C (frobLat C p L) (frobSub p W) = p * subDeg C L W := by
   intro K _ C p _ _ d L W hL
   set σ := frobenius K p with hσ
-  have hL' : IsBun C (frobLat C p L) := (GlobalTheory.T.frobenius_lattice_degree_mul_p K C p d L hL).1
-  have hS := (GlobalTheory.T.sub_and_quotient_bundles K C _ L W hL).1
-  have hS' := (GlobalTheory.T.sub_and_quotient_bundles K C _ _ (frobSub p W) hL').1
+  have hL' : IsBun C (frobLat C p L) := (_root_.GlobalTheory.CompanionTheory.Ar.Crv.DegFrob.deg_frobLat K C p d L hL).1
+  have hS := (_root_.GlobalTheory.CompanionTheory.Ar.Crv.SubQuot.isBun_sub_quot K C _ L W hL).1
+  have hS' := (_root_.GlobalTheory.CompanionTheory.Ar.Crv.SubQuot.isBun_sub_quot K C _ _ (frobSub p W) hL').1
   have hv : ∀ i a, C.v i (σ a) = C.v i a ^ p := fun i a => by rw [hσ, frobenius_def, map_pow]
   have key : ∀ i, ∃ (c : Module.Basis (Fin (Module.finrank K W)) K W)
       (c' : Module.Basis (Fin (Module.finrank K W)) K (frobSub p W)),
@@ -221,7 +220,7 @@ theorem subDeg_frob : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.
       ∀ j, (c' j : Fin d → K) = mapVec σ d (c j) := by
     intro i
     obtain ⟨b, hb⟩ := hL.1 i
-    obtain ⟨c, -, b₁, hb₁, hc, -, hbc, -⟩ := GlobalTheory.T.lattice_basis_adapted_to_subspace K C _ i _ b (L i) W hb
+    obtain ⟨c, -, b₁, hb₁, hc, -, hbc, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.LatAdapted.exists_adapted K C _ i _ b (L i) W hb
     obtain ⟨b', hb'⟩ := exists_basis_top σ b₁
     obtain ⟨c', hc'⟩ := exists_basis_sub σ W c
     refine ⟨c, c', hc, ?_, hc'⟩
@@ -235,8 +234,8 @@ theorem subDeg_frob : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.
   let G : W →ₛₗ[σ] frobSub p W :=
     ((mapVec σ d).domRestrict W).codRestrict (frobSub p W)
       (fun x => Submodule.subset_span ⟨x, x.2, rfl⟩)
-  obtain ⟨-, h1⟩ := GlobalTheory.T.bundle_degree_eq_sum_valuations K C _ _ _ (Module.finBasis K W) c hS hc
-  obtain ⟨-, h2⟩ := GlobalTheory.T.bundle_degree_eq_sum_valuations K C _ _ _ e' c' hS' hc'
+  obtain ⟨-, h1⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.DegFormula.deg_formula K C _ _ _ (Module.finBasis K W) c hS hc
+  obtain ⟨-, h2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.DegFormula.deg_formula K C _ _ _ e' c' hS' hc'
   unfold subDeg
   rw [h1, h2, mul_finsum]
   refine finsum_congr fun i => ?_

@@ -62,14 +62,14 @@ namespace GlobalTheory.CompactDualUnique
 
 theorem isOmegaLeb_unique {P Q : ℕ} {lam lam' : Measure (lieU P Q)}
     (h : IsOmegaLeb lam) (h' : IsOmegaLeb lam') : lam = lam' := by
-  haveI : BorelSpace (lieU P Q) := ⟨rfl⟩
-  haveI : LocallyCompactSpace (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :=
+  have : BorelSpace (lieU P Q) := ⟨rfl⟩
+  have : LocallyCompactSpace (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :=
     inferInstanceAs (LocallyCompactSpace ((Fin P ⊕ Fin Q) → (Fin P ⊕ Fin Q) → ℂ))
-  haveI : SecondCountableTopology (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :=
+  have : SecondCountableTopology (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :=
     inferInstanceAs (SecondCountableTopology ((Fin P ⊕ Fin Q) → (Fin P ⊕ Fin Q) → ℂ))
-  haveI : LocallyCompactSpace (lieU P Q) :=
+  have : LocallyCompactSpace (lieU P Q) :=
     (Submodule.closed_of_finiteDimensional (lieU P Q)).isClosedEmbedding_subtypeVal.locallyCompactSpace
-  haveI : SecondCountableTopology (lieU P Q) :=
+  have : SecondCountableTopology (lieU P Q) :=
     TopologicalSpace.Subtype.secondCountableTopology _
   obtain ⟨h1, h2⟩ := h
   obtain ⟨h1', h2'⟩ := h'
@@ -123,11 +123,11 @@ theorem omegaDensity_smul {P Q : ℕ} {μ : Measure (UpqT P Q)} {c : ℝ≥0∞}
 
 theorem exists_eq_smul {P Q : ℕ} (μ ν : Measure (UpqT P Q)) [μ.IsHaarMeasure] [ν.IsHaarMeasure] :
     ∃ t : ℝ≥0, μ = t • ν := by
-  haveI : IsTopologicalGroup (UpqT P Q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))
-  haveI : BorelSpace (UpqT P Q) := ⟨rfl⟩
-  haveI : LocallyCompactSpace (UpqT P Q) :=
+  have : IsTopologicalGroup (UpqT P Q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))
+  have : BorelSpace (UpqT P Q) := ⟨rfl⟩
+  have : LocallyCompactSpace (UpqT P Q) :=
     (UpqUnimodular.modelEquiv P Q).toHomeomorph.isClosedEmbedding.locallyCompactSpace
-  haveI : SecondCountableTopology (UpqT P Q) :=
+  have : SecondCountableTopology (UpqT P Q) :=
     (UpqUnimodular.modelEquiv P Q).toHomeomorph.secondCountableTopology
   exact ⟨_, Measure.isMulLeftInvariant_eq_smul μ ν⟩
 
@@ -135,9 +135,9 @@ theorem eq_cd (cd : CDHaar) (P Q : ℕ) (ν : Measure (UpqT P Q)) (νc : Measure
     (c : ENNReal) (hν : ν.IsHaarMeasure) (hνc : νc.IsHaarMeasure) (hp : IsProbabilityMeasure νc)
     (_h0 : c ≠ 0) (_ht : c ≠ ⊤) (h1 : OmegaDensity ν c) (h2 : OmegaDensity νc c) :
     ν = cd.cd P Q := by
-  haveI := cd.haar P Q
-  haveI := cd.haar (P + Q) 0
-  haveI := cd.prob (P + Q)
+  have := cd.haar P Q
+  have := cd.haar (P + Q) 0
+  have := cd.prob (P + Q)
   obtain ⟨c', h0', ht', h1', h2'⟩ := cd.trick P Q
   obtain ⟨s, hs⟩ := exists_eq_smul νc (cd.cd (P + Q) 0)
   have hs1 : s = 1 := by

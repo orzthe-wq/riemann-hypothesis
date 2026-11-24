@@ -1,6 +1,6 @@
 module
 
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ProjectiveFrameCoordNeZero
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ProjDefs
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -24,7 +24,6 @@ import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,8 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -51,7 +48,163 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ProjectiveFrameCoordNeZero, ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.BasisOfLinearIndependentOfCardEqFinrank
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ProjectiveFrameCoordNeZero =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ProjectiveFrameCoordNeZero", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ProjDefs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.TraceNormBounds
+
+open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry Polynomial Module
+
+variable {Ω : Type*} [Field Ω] [CharZero Ω] {κ : Type*} {D : ℕ}
+
+theorem fnField_comp_le' (x : κ → Ω) (e : Fin (D + 1) → κ) : fnField (x ∘ e) ≤ fnField x := by
+  unfold fnField
+  rw [IntermediateField.adjoin_le_iff]
+  rintro t ⟨i, j, rfl⟩
+  exact IntermediateField.subset_adjoin _ _ ⟨e i, e j, rfl⟩
+
+theorem coord_ne_zero {o : Type*} [CommRing o] [Algebra o Ω] [Nontrivial o] {ι : Type*}
+    (y : ι → Ω) (h : coordIdeal o y = ⊥) (k : ι) : y k ≠ 0 := by
+  intro hk
+  have : (MvPolynomial.X k : MvPolynomial ι o) ∈ coordIdeal o y := by
+    simp [coordIdeal, coneMap, RingHom.mem_ker, hk]
+  rw [h, Ideal.mem_bot] at this
+  exact MvPolynomial.X_ne_zero k this
+
+theorem aeval_mem_subring {o σ : Type*} [CommRing o] [Algebra o Ω] (F : Subring Ω)
+    (hc : ∀ a : o, algebraMap o Ω a ∈ F) (v : σ → Ω) (hv : ∀ k, v k ∈ F)
+    (f : MvPolynomial σ o) : MvPolynomial.aeval v f ∈ F := by
+  induction f using MvPolynomial.induction_on with
+  | C a => simpa using hc a
+  | add p q hp hq => simpa using F.add_mem hp hq
+  | mul_X p k hp => simpa using F.mul_mem hp (hv k)
+
+theorem aeval_mem_field {o σ : Type*} [CommRing o] [Algebra o Ω] (F : IntermediateField ℚ Ω)
+    (hc : ∀ a : o, algebraMap o Ω a ∈ F) (v : σ → Ω) (hv : ∀ k, v k ∈ F)
+    (f : MvPolynomial σ o) : MvPolynomial.aeval v f ∈ F :=
+  aeval_mem_subring F.toSubfield.toSubring hc v hv f
+
+theorem div_mem_fnField (x : κ → Ω) (i j : κ) : x i / x j ∈ fnField x :=
+  IntermediateField.subset_adjoin _ _ ⟨i, j, rfl⟩
+
+theorem div_isIntegral (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsRatProjFrame x e) (i : κ) :
+    IsIntegral (fnField (x ∘ e)) (x i / x (e 0)) := by
+  set y := x ∘ e with hy
+  let ψ : Polynomial Ω →+* Ω := Polynomial.evalRingHom (y 0)⁻¹
+  change IsIntegral _ (x i / y 0)
+  have hev : ∀ f : MvPolynomial (Fin (D + 1)) ℚ,
+      ψ (coneMap ℚ y f) = MvPolynomial.aeval (fun k => y k * (y 0)⁻¹) f := by
+    intro f
+    induction f using MvPolynomial.induction_on with
+    | C a => simp [coneMap, ψ]
+    | add p q hp hq => rw [map_add (f := _), map_add (f := _), map_add (f := _), hp, hq]
+    | mul_X p k hp => rw [map_mul, map_mul, map_mul, hp]; simp [coneMap, ψ]
+  have hmem : ∀ r : coneRing ℚ y, ψ r ∈ fnField y := by
+    intro r
+    obtain ⟨f, hf⟩ := r.2
+    rw [← hf]
+    change ψ (coneMap ℚ y f) ∈ _
+    rw [hev]
+    refine aeval_mem_field _ (fun a => IntermediateField.algebraMap_mem _ a) _ (fun k => ?_) f
+    simpa [div_eq_mul_inv] using div_mem_fnField y k 0
+  let φ : coneRing ℚ y →+* fnField y :=
+    (ψ.comp (coneRing ℚ y).val.toRingHom).codRestrict (fnField y).toSubfield.toSubring hmem
+  have := IsIntegral.map_of_comp_eq φ ψ (by ext r; rfl) (h.integral i)
+  simpa [ψ, div_eq_mul_inv] using this
+
+theorem projective_frame_coord_ne_zero (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsRatProjFrame x e) : x (e 0) ≠ 0 :=
+  coord_ne_zero (x ∘ e) h.free 0
+
+theorem mem_sec_iff {o : Type*} [CommRing o] [Algebra o Ω] {ι : Type*} (x : ι → Ω) (d : ℕ) (s : Ω) :
+    s ∈ sec o x d ↔ ∃ f : MvPolynomial ι o, f.IsHomogeneous d ∧ MvPolynomial.aeval x f = s := by
+  simp [sec, Submodule.mem_map, MvPolynomial.mem_homogeneousSubmodule]
+
+theorem mul_mem_sec {o : Type*} [CommRing o] [Algebra o Ω] {ι : Type*} (x : ι → Ω) {d d' : ℕ}
+    {s t : Ω} (hs : s ∈ sec o x d) (ht : t ∈ sec o x d') : s * t ∈ sec o x (d + d') := by
+  obtain ⟨f, hf, rfl⟩ := (mem_sec_iff x d s).1 hs
+  obtain ⟨g, hg, rfl⟩ := (mem_sec_iff x d' t).1 ht
+  exact (mem_sec_iff x _ _).2 ⟨f * g, hf.mul hg, by simp⟩
+
+theorem aeval_smul_homog {o ι : Type*} [Fintype ι] [CommRing o] [Algebra o Ω]
+    {f : MvPolynomial ι o} {d : ℕ} (hf : f.IsHomogeneous d) (c : Ω) (v : ι → Ω) :
+    MvPolynomial.aeval (fun i => c * v i) f = c ^ d * MvPolynomial.aeval v f := by
+  classical
+  rw [MvPolynomial.aeval_def, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', MvPolynomial.eval₂_eq',
+    Finset.mul_sum]
+  refine Finset.sum_congr rfl fun m hm => ?_
+  have hd : ∑ i, m i = d := by
+    have := hf (MvPolynomial.mem_support_iff.mp hm)
+    rw [← this, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]
+    simp
+  simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]
+  ring
+
+theorem sec_div_mem [Fintype κ] (x : κ → Ω) (j : κ) {d : ℕ} {s : Ω}
+    (hs : s ∈ sec ℤ x d) : s / x j ^ d ∈ fnField x := by
+  obtain ⟨f, hf, rfl⟩ := (mem_sec_iff x d s).1 hs
+  have : MvPolynomial.aeval x f / x j ^ d = MvPolynomial.aeval (fun i => (x j)⁻¹ * x i) f := by
+    rw [aeval_smul_homog hf, inv_pow, div_eq_mul_inv, mul_comm]
+  rw [this]
+  refine aeval_mem_field _ (fun a => ?_) _ (fun i => ?_) f
+  · simpa using IntermediateField.intCast_mem (fnField x) a
+  · simpa [div_eq_inv_mul] using div_mem_fnField x i j
+
+theorem fnField_eq_adjoin (x : κ → Ω) (e : Fin (D + 1) → κ) (hy0 : x (e 0) ≠ 0) :
+    IntermediateField.extendScalars (fnField_comp_le' x e) =
+      IntermediateField.adjoin (fnField (x ∘ e)) (Set.range fun i => x i / x (e 0)) := by
+  apply le_antisymm
+  · rw [IntermediateField.extendScalars_le_iff]
+    change IntermediateField.adjoin ℚ {t | ∃ i j, t = x i / x j} ≤ _
+    rw [IntermediateField.adjoin_le_iff]
+    rintro t ⟨i, j, rfl⟩
+    have hi : x i / x (e 0) ∈ IntermediateField.adjoin (fnField (x ∘ e))
+        (Set.range fun i => x i / x (e 0)) := IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩
+    have hj : x j / x (e 0) ∈ IntermediateField.adjoin (fnField (x ∘ e))
+        (Set.range fun i => x i / x (e 0)) := IntermediateField.subset_adjoin _ _ ⟨j, rfl⟩
+    have : x i / x j = (x i / x (e 0)) / (x j / x (e 0)) := by
+      rw [div_div_div_cancel_right₀ hy0]
+    rw [this]
+    exact div_mem hi hj
+  · rw [IntermediateField.adjoin_le_iff]
+    rintro _ ⟨i, rfl⟩
+    exact div_mem_fnField x i (e 0)
+
+theorem finiteDimensional_ext [Finite κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsRatProjFrame x e) :
+    FiniteDimensional (fnField (x ∘ e)) (IntermediateField.extendScalars (fnField_comp_le' x e)) := by
+  rw [fnField_eq_adjoin x e (projective_frame_coord_ne_zero x e h)]
+  have : Finite (Set.range fun i => x i / x (e 0)) := Set.finite_range _ |>.to_subtype
+  exact IntermediateField.finiteDimensional_adjoin (by rintro _ ⟨i, rfl⟩; exact div_isIntegral x e h i)
+
+theorem projDeg_eq (x : κ → Ω) (e : Fin (D + 1) → κ) :
+    projDeg x e = finrank (fnField (x ∘ e)) (IntermediateField.extendScalars (fnField_comp_le' x e)) :=
+  IntermediateField.relfinrank_eq_finrank_of_le _
+
+theorem projDeg_pos' [Finite κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsRatProjFrame x e) :
+    0 < projDeg x e := by
+  have := finiteDimensional_ext x e h
+  rw [projDeg_eq]
+  exact Module.finrank_pos
+
+end ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.TraceNormBounds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ProjectiveFrameCoordNeZero =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.BasisOfLinearIndependentOfCardEqFinrank =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.BasisOfLinearIndependentOfCardEqFinrank", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ProjectiveFrameCoordNeZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -116,7 +269,6 @@ private theorem gens_lemma_2 [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → �
       first
         | (rw [Polynomial.algebraMap_apply, Polynomial.coe_evalRingHom, Polynomial.eval_C]
            exact IntermediateField.algebraMap_mem _ a)
-        | simpa using IntermediateField.algebraMap_mem (fnField (x ∘ e)) a
     next p1 p2 h1 h2 =>
       rw [map_add (f := _), map_add (f := _)]
       exact add_mem h1 h2
@@ -162,7 +314,6 @@ private theorem gens_lemma_2 [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → �
         have h3 : x i / x j = x i / x (e 0) / (x j / x (e 0)) := by
           first
             | rw [div_div_div_cancel_right₀ hne]
-            | field_simp
         show x i / x j ∈ IntermediateField.adjoin (fnField (x ∘ e)) S
         rw [h3]
         have hi : x i / x (e 0) ∈ IntermediateField.adjoin (fnField (x ∘ e)) S :=
@@ -218,9 +369,6 @@ theorem exists_indep_sections' [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) →
       exact hint i
     first
       | rw [IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun w hw => (hSi w hw).isAlgebraic)] at h1
-      | rw [IntermediateField.adjoin_toSubalgebra_of_isIntegral hSi] at h1
-      | rw [IntermediateField.adjoin_algebraic_toSubalgebra (fun w hw => (hSi w hw).isAlgebraic)] at h1
-      | rw [IntermediateField.adjoin_integral_toSubalgebra hSi] at h1
     have h2 : z ∈ Subalgebra.toSubmodule (Algebra.adjoin (fnField (x ∘ e))
         (Set.range fun i => x i / x (e 0))) := h1
     rwa [Algebra.adjoin_eq_span] at h2
@@ -247,7 +395,6 @@ theorem exists_indep_sections' [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) →
       (Set.range (Subtype.val : b → IntermediateField.extendScalars (fnField_comp_le' x e))) := by
     first
       | rw [Subtype.range_coe, hbspan, hspan]
-      | rw [Subtype.range_val, hbspan, hspan]
   let B := Basis.mk hbli hbtop
   haveI : Finite b := Module.Finite.finite_basis B
   haveI : Fintype b := Fintype.ofFinite b
@@ -256,7 +403,6 @@ theorem exists_indep_sections' [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) →
     unfold projDeg
     first
       | exact IntermediateField.relfinrank_eq_finrank_of_le (fnField_comp_le' x e)
-      | rfl
   have hcard : Fintype.card b = projDeg x e := by
     rw [hpd, Module.finrank_eq_card_basis B]
   let eqv : Fin (projDeg x e) ≃ b := (Fintype.equivFinOfCardEq hcard).symm
@@ -294,7 +440,6 @@ theorem exists_indep_sections' [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) →
       rw [hk']
       have hc := pow_ne_zero (d j) hne
       field_simp
-      try ring
     rw [hfun] at hli2
     exact hli2
 
@@ -333,7 +478,6 @@ theorem eq_zero_of_trace [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (
     unfold projDeg
     first
       | exact IntermediateField.relfinrank_eq_finrank_of_le (fnField_comp_le' x e)
-      | rfl
   haveI : Nonempty (Fin (projDeg x e)) := ⟨⟨0, by
     have h4 := hrank
     rw [Fintype.card_fin] at h4
@@ -350,7 +494,6 @@ theorem eq_zero_of_trace [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (
       (IntermediateField.extendScalars (fnField_comp_le' x e))).Nondegenerate := by
     first
       | exact traceForm_nondegenerate _ _
-      | exact Algebra.traceForm_nondegenerate _ _
   have key : ∀ n, Algebra.traceForm (fnField (x ∘ e))
       (IntermediateField.extendScalars (fnField_comp_le' x e)) t n = 0 := by
     intro n
@@ -359,11 +502,7 @@ theorem eq_zero_of_trace [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (
     refine Finset.sum_eq_zero fun j _ => ?_
     rw [mul_smul_comm, map_smul, hB j, h0 j, smul_zero]
   first
-    | exact hnd t key
     | exact hnd.1 t key
-    | exact hnd.1.1 t key
-    | (unfold LinearMap.BilinForm.Nondegenerate LinearMap.Nondegenerate LinearMap.SeparatingLeft at hnd
-       exact hnd.1 t key)
 
 def chartGen (x : κ → Ω) (e : Fin (D + 1) → κ) (l : Fin (D + 1)) (k : {k // k ≠ l}) :
     fnField (x ∘ e) :=
@@ -397,9 +536,6 @@ theorem chartGen_indep (x : κ → Ω) (e : Fin (D + 1) → κ) (hfree : coordId
       rw [← h1]
       first
         | simp [Finsupp.weight_apply, Finsupp.sum_fintype]
-        | simp [Finsupp.degree_eq_sum]
-        | exact (Finsupp.sum_fintype _ _ (by simp)).symm
-        | simp [Finsupp.degree, Finsupp.sum_fintype]
     rw [mul_div_assoc]
     congr 1
     simp_rw [div_pow]
@@ -418,9 +554,6 @@ theorem chartGen_indep (x : κ → Ω) (e : Fin (D + 1) → κ) (hfree : coordId
       rw [← h1]
       first
         | simp [Finsupp.weight_apply, Finsupp.sum_fintype]
-        | simp [Finsupp.degree_eq_sum]
-        | exact (Finsupp.sum_fintype _ _ (by simp)).symm
-        | simp [Finsupp.degree, Finsupp.sum_fintype]
     rw [← hdeg]
     simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, eq_intCast, map_mul,
       map_prod, map_pow, map_intCast]
@@ -457,7 +590,6 @@ theorem chartGen_indep (x : κ → Ω) (e : Fin (D + 1) → κ) (hfree : coordId
     have hc := pow_ne_zero n hne
     simp only [Function.comp_apply]
     field_simp
-    try ring
   have hHy : MvPolynomial.aeval (x ∘ e) H = 0 := by
 
     rw [hH, map_sum, Finset.sum_congr rfl hterm, ← Finset.mul_sum, ← map_sum,
@@ -540,7 +672,6 @@ theorem chartRing_frac (x : κ → Ω) (e : Fin (D + 1) → κ) (hfree : coordId
       simp only [Function.comp_apply]
       first
         | rw [div_div_div_cancel_right₀ (hne l)]
-        | field_simp
     show _ ∈ Subfield.closure T
     rw [h3]
     exact div_mem (hgen i) (hgen j)
@@ -632,7 +763,6 @@ theorem coord_div_isIntegral (x : κ → Ω) (e : Fin (D + 1) → κ) (h : IsPro
     have h2 := congrArg Subtype.val (eqv.apply_symm_apply (φ v))
     first
       | exact h2
-      | (simp only [eqv, Subring.coe_equivMapOfInjective_apply] at h2; exact h2)
   have hpt : x i / x (e l) = Polynomial.evalRingHom (x (e l))⁻¹ (Polynomial.C (x i) * Polynomial.X) := by
     simp [div_eq_mul_inv]
   rw [hcomp, hpt, ← Polynomial.hom_eval₂, hp, map_zero]
@@ -656,9 +786,6 @@ theorem sec_div_isIntegral (x : κ → Ω) (e : Fin (D + 1) → κ) [Fintype κ]
       rw [← h1]
       first
         | simp [Finsupp.weight_apply, Finsupp.sum_fintype]
-        | simp [Finsupp.degree_eq_sum]
-        | exact (Finsupp.sum_fintype _ _ (by simp)).symm
-        | simp [Finsupp.degree, Finsupp.sum_fintype]
     rw [mul_div_assoc]
     congr 1
     simp_rw [div_pow]
@@ -670,8 +797,6 @@ theorem sec_div_isIntegral (x : κ → Ω) (e : Fin (D + 1) → κ) [Fintype κ]
     have hS : MvPolynomial.aeval (fun i => x i / x (e l)) p = S.val (MvPolynomial.aeval y' p) := by
       first
         | (rw [← AlgHom.comp_apply, MvPolynomial.comp_aeval]; rfl)
-        | (rw [← AlgHom.comp_apply, MvPolynomial.comp_aeval])
-        | exact (DFunLike.congr_fun (MvPolynomial.comp_aeval (R := ℤ) S.val) p).symm
     rw [← hhom, hS]
     exact (MvPolynomial.aeval y' p).2
   exact (isIntegral_algHom_iff (IsScalarTower.toAlgHom (chartRing x e l)
@@ -696,14 +821,16 @@ theorem trace_mem_chart [Fintype κ] (x : κ → Ω) (e : Fin (D + 1) → κ) (h
         Nonempty (Basis s (fnField (x ∘ e)) (IntermediateField.extendScalars (fnField_comp_le' x e))) := by
       rintro ⟨s, ⟨b⟩⟩
       first
-        | exact hfd (FiniteDimensional.of_fintype_basis b)
         | exact hfd (Module.Finite.of_basis b)
     have h0 : Algebra.trace (fnField (x ∘ e))
         (IntermediateField.extendScalars (fnField_comp_le' x e)) = 0 := by
       first
         | exact Algebra.trace_eq_zero_of_not_exists_basis _ hnb
-        | exact Algebra.trace_eq_zero_of_not_exists_basis hnb
     rw [h0, LinearMap.zero_apply]
     exact zero_mem _
 
 end ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.TraceNormBounds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.BasisOfLinearIndependentOfCardEqFinrank =====

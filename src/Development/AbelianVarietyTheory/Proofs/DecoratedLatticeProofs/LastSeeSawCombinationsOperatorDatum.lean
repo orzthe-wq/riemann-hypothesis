@@ -105,8 +105,7 @@ theorem comb_single (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (z : WO S T) 
   · subst hc; simp [comb]
   · simp [comb, Finsupp.support_single_ne_zero _ hc]
 
-theorem symplOH_zero_right (S T : HSp D) (w : WO S T) : symplOH S T w 0 = 0 := by
-  simp [symplOH, symplO, hO]
+alias symplOH_zero_right := _root_.GlobalTheory.MixModel.symplOH_zero_right
 
 theorem ofAdj_starAdj (S T : HSp D) (x : WO S T) : ofAdj S T (starAdj S T x) = x := by
   have h : incA D (-D.host.xi0⁻¹) * cA D (incA D D.host.xi0) = 1 := by

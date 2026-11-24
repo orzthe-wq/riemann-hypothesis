@@ -83,8 +83,7 @@ theorem pick_spec (h : V →ₗ⋆[K] V →ₗ[K] K)
         Quotient.mk (isoSetoid h) M := by
   have hq : ∃ N ∈ s₀, Quotient.mk (isoSetoid h) N = Quotient.mk (isoSetoid h) M := ⟨M, hM, rfl⟩
   have e : pick h s₀ (Quotient.mk (isoSetoid h) M) = Classical.choose hq := by
-    unfold pick
-    exact dif_pos hq
+    simpa [pick] using dif_pos hq
   rw [e]
   exact Classical.choose_spec hq
 
@@ -93,19 +92,13 @@ theorem exists_reps (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (NumberFie
     (h₁ : ∀ M ∈ s₀, M ∈ genus h L) (h₂ : ∀ M ∈ genus h L, ∃ N ∈ s₀, ∃ g ∈ isom h, gmap g N = M) :
     ∃ s, IsClassReps h L s := by
   classical
-  have hsound : ∀ A B : Submodule (NumberField.RingOfIntegers K) V,
-      (∃ g ∈ isom h, gmap g A = B) → Quotient.mk (isoSetoid h) A = Quotient.mk (isoSetoid h) B :=
-    fun A B hAB => Quotient.sound hAB
-  have hexact : ∀ A B : Submodule (NumberField.RingOfIntegers K) V,
-      Quotient.mk (isoSetoid h) A = Quotient.mk (isoSetoid h) B → ∃ g ∈ isom h, gmap g A = B :=
-    fun A B e => Quotient.exact e
   refine ⟨s₀.image (fun N => pick h s₀ (Quotient.mk (isoSetoid h) N)), ?_, ?_⟩
   · intro M hM
     obtain ⟨N, hN, rfl⟩ := Finset.mem_image.mp hM
     exact h₁ _ (pick_spec h s₀ hN).1
   · intro M hM
     obtain ⟨N, hN, g, hg, e⟩ := h₂ M hM
-    obtain ⟨g', hg', e'⟩ := hexact _ _ (pick_spec h s₀ hN).2
+    obtain ⟨g', hg', e'⟩ := Quotient.exact (pick_spec h s₀ hN).2
     have hE : gmap (g * g') (pick h s₀ (Quotient.mk (isoSetoid h) N)) = M := by
       rw [gmap_mul, e', e]
     refine ⟨pick h s₀ (Quotient.mk (isoSetoid h) N),
@@ -114,7 +107,7 @@ theorem exists_reps (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (NumberFie
     obtain ⟨N₁, hN₁, rfl⟩ := Finset.mem_image.mp hP
     have hrel : Quotient.mk (isoSetoid h) (pick h s₀ (Quotient.mk (isoSetoid h) N₁)) =
         Quotient.mk (isoSetoid h) (pick h s₀ (Quotient.mk (isoSetoid h) N)) := by
-      apply hsound
+      apply Quotient.sound
       refine ⟨(g * g')⁻¹ * g₁,
         (isom h).mul_mem ((isom h).inv_mem ((isom h).mul_mem hg hg')) hg₁, ?_⟩
       rw [gmap_mul, e₁, ← hE, gmap_inv_gmap]

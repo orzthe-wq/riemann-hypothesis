@@ -1,8 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsRootOne
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerUnitClassModPrimePowPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneHolomorphicGermPropertiesStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.Letter
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerUnitClassModPrimePowProperties
+public import Development.AbelianVarietyTheory.Definitions.Foundations.ExpUpper
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneHolomorphicGermProperties
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -84,7 +86,7 @@ theorem exp_val_add {m : ℕ} [NeZero m] (x y : ZMod m) :
         = 2 * Real.pi * Complex.I * ((x.val : ℂ) + (y.val : ℂ)) / (m : ℂ) := by ring
       _ = 2 * Real.pi * Complex.I * ((((x.val + y.val) % m : ℕ) : ℂ) + (m : ℂ) * (((x.val + y.val) / m : ℕ) : ℂ)) /
             (m : ℂ) := by rw [hc]
-      _ = _ := by field_simp <;> ring
+      _ = _ := by field_simp
   rw [key, Complex.exp_add, Complex.exp_nat_mul_two_pi_mul_I, mul_one]
 
 instance neZero_pow (l n : ℕ) [Fact l.Prime] : NeZero (l ^ n) :=
@@ -106,17 +108,17 @@ theorem germ_mul_ne_zero {b b' : ℂ → ℂ} (hb : DifferentiableOn ℂ b Hs) (
     (h : (b : Mero) ≠ 0) (h' : (b' : Mero) ≠ 0) : ((b * b' : ℂ → ℂ) : Mero) ≠ 0 := by
   intro H
   have h0 : DifferentiableOn ℂ (fun _ => (0 : ℂ)) Hs := differentiableOn_const 0
-  have e := (GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.1 (b * b') (fun _ => 0) (hb.mul hb') h0).1 (by rw [H]; rfl)
-  rcases GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.2.1 b b' hb hb' (fun z hz => by simpa using e z hz) with h1 | h1
-  · exact h (by rw [(GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.1 b (fun _ => 0) hb h0).2 h1]; rfl)
-  · exact h' (by rw [(GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.1 b' (fun _ => 0) hb' h0).2 h1]; rfl)
+  have e := (_root_.GlobalTheory.KZ.Germ.main.1 (b * b') (fun _ => 0) (hb.mul hb') h0).1 (by rw [H]; rfl)
+  rcases _root_.GlobalTheory.KZ.Germ.main.2.1 b b' hb hb' (fun z hz => by simpa using e z hz) with h1 | h1
+  · exact h (by rw [(_root_.GlobalTheory.KZ.Germ.main.1 b (fun _ => 0) hb h0).2 h1]; rfl)
+  · exact h' (by rw [(_root_.GlobalTheory.KZ.Germ.main.1 b' (fun _ => 0) hb' h0).2 h1]; rfl)
 
 theorem kum_add_zero_near : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime],
     ∀ n : ℕ, (∀ (x x' : X.Khat l) (χ χ' : SL(2, ℤ) → ZMod (l ^ n)), Kum X l n x χ → Kum X l n x' χ' →
       Kum X l n (x + x') (χ + χ')) ∧ Kum X l n 0 0 ∧
       (∀ (x : X.Khat l) (χ χ' : SL(2, ℤ) → ZMod (l ^ n)), Kum X l n x χ → Near χ χ' → Kum X l n x χ') := by
   intro Ω _ _ ε X l _ n
-  have C := GlobalTheory.T.towerUnitClassModPrimePow_properties Ω ε X l n
+  have C := _root_.GlobalTheory.KZ.H3.cls_props Ω ε X l n
   refine ⟨?_, ?_, ?_⟩
   · rintro x x' χ χ' ⟨f, a, b, M, hM, hx, ⟨ha, hb, hb0, hr⟩, hδ⟩ ⟨f', a', b', M', hM', hx', ⟨ha', hb', hb0', hr'⟩, hδ'⟩
     refine ⟨f * f', a * a', b * b', M * M', Nat.mul_pos hM hM', ?_,
@@ -135,7 +137,7 @@ theorem kum_add_zero_near : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω
   · refine ⟨1, fun _ => 1, fun _ => 1, 1, one_pos, ?_, isRoot_one X _ ?_, ?_⟩
     · rw [map_zero, C.2.2.2.1]
     · intro H
-      have := (GlobalTheory.T.upperHalfPlane_holomorphic_germ_properties.1 (fun _ => (1 : ℂ)) (fun _ => 0) (differentiableOn_const 1)
+      have := (_root_.GlobalTheory.KZ.Germ.main.1 (fun _ => (1 : ℂ)) (fun _ => 0) (differentiableOn_const 1)
         (differentiableOn_const 0)).1 (by rw [H]; rfl) Complex.I (by simp [Hs])
       simp at this
     · intro δ _ z _

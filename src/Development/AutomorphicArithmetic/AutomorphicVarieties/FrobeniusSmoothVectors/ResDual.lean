@@ -60,7 +60,6 @@ private theorem res_dual (O : Type) [CommRing O] [IsLocalRing O] [IsCO O (DualNu
     rw [← ho]
     first
       | rfl
-      | rw [TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl, IsLocalRing.ResidueField.algebraMap_eq]
   have hfst : (x - algebraMap O _ o).fst = 0 := by
     rw [TrivSqZeroExt.fst_sub, ha, sub_self]
   have hsq : (x - algebraMap O _ o) * (x - algebraMap O _ o) = 0 := by
@@ -78,7 +77,6 @@ private theorem res_dual (O : Type) [CommRing O] [IsLocalRing O] [IsCO O (DualNu
   rw [h0, ← ha]
   first
     | rfl
-    | rw [TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl]
 
 theorem UpperTheory.V.Fr.pr_dof :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ [IsCO O (DualNumber (ResidueField O))] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (ρ : NRep F n R) (B : Box F n R), ρ.Univ O → B.Of ρ → ∀ (ρ' : NRep F n (DualNumber (ResidueField O))) (r' : F.Γ →* GG (m := n) (R := DualNumber (ResidueField O))), ρ'.Cont (maximalIdeal _) → ρ'.bar O = ρ.bar O → (∀ s, (r' s).right = F.del s) → (r' F.c).mat = 1 → (∀ s : F.G0, (r' s).mat = ρ'.r s) → ∃ D ∈ Tan O R, ∀ s, (r' s).mat.map TrivSqZeroExt.snd = B.tanCo O D s * ((B.bar O).r s).mat := by

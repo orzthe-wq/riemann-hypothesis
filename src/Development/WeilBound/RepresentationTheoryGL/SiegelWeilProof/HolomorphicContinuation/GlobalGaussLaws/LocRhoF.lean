@@ -70,9 +70,9 @@ theorem evX_eq_zero {m : ℕ} (P : PX m n) (h : ∀ u : Fin m → Fin n → ℂ,
   have hinv : ∀ k, bind₁ reImInv (reIm (n := n) (m := m) k) = X k := by
     rintro ⟨a, i, b⟩
     cases b
-    · simp only [reIm, reImInv, Bool.false_eq_true, ↓reduceIte, map_add (f := _), map_mul, map_sub, bind₁_X_right, bind₁_C_right]
+    · simp only [reIm, reImInv, Bool.false_eq_true, ↓reduceIte, map_add (f := _), map_mul, bind₁_X_right, bind₁_C_right]
       linear_combination (X (a, i, false) - X (a, i, true)) * hI + X (a, i, false) * h2
-    · simp only [reIm, reImInv, Bool.false_eq_true, ↓reduceIte, map_add (f := _), map_mul, map_sub, bind₁_X_right, bind₁_C_right]
+    · simp only [reIm, reImInv, Bool.false_eq_true, ↓reduceIte, map_mul, map_sub, bind₁_X_right, bind₁_C_right]
       linear_combination -(X (a, i, false) - X (a, i, true)) * hI + X (a, i, true) * h2
   have hQ : bind₁ reIm P = 0 := by
     apply GlobalTheory.UnitaryZariskiDense.eq_zero_of_eval_real

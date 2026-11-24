@@ -7,46 +7,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Gaug
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.StabMul
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.IsUpUniMul
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ZsVolGrp
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -77,9 +37,9 @@ def StP (p : PlF D) : Subgroup (GLp p × (GLp p)ᵐᵒᵖ) where
     rintro x y ⟨hx1, hx2, hx3⟩ ⟨hy1, hy2, hy3⟩
     refine ⟨?_, ?_, ?_⟩
     · show IsLoUni ((x.1 * y.1 : GLp p) : MP p)
-      rw [Units.val_mul]; exact ZsVolGrp.isLoUni_mul hx1 hy1
+      rw [Units.val_mul]; exact _root_.PI.TermAttrConst.UnitaryGroupMassFormula.isLoUni_mul hx1 hy1
     · show IsUpUni (((x.2 * y.2).unop : GLp p) : MP p)
-      rw [MulOpposite.unop_mul, Units.val_mul]; exact ZsVolGrp.isUpUni_mul hy2 hx2
+      rw [MulOpposite.unop_mul, Units.val_mul]; exact _root_.GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul hy2 hx2
     · show ((x.1 * y.1 : GLp p) : MP p) * _ * (((x.2 * y.2).unop : GLp p) : MP p) = _
       rw [MulOpposite.unop_mul, Units.val_mul, Units.val_mul]
       calc (x.1 : MP p) * (y.1 : MP p) * Y0 M δ u u' w p *
@@ -253,16 +213,16 @@ variable {p : PlF D} (hA : Agree δ M p)
 def lU (β : Formalism.L2.SG.PairVal.GLR D) : GLp p :=
   ⟨lOf δ M p β (VolPinAsm.bOf w β), lOf δ M p (β⁻¹ : Formalism.L2.SG.PairVal.GLR D) (VolPinAsm.bOf w β⁻¹),
     by rw [← lOf_mul δ M hA, ← Units.val_mul, ← bOf_mul]
-       simp only [mul_inv_cancel, inv_mul_cancel, Units.val_one, bOf_one]; exact lOf_one δ M hA,
+       simp only [mul_inv_cancel, Units.val_one, bOf_one]; exact lOf_one δ M hA,
     by rw [← lOf_mul δ M hA, ← Units.val_mul, ← bOf_mul]
-       simp only [mul_inv_cancel, inv_mul_cancel, Units.val_one, bOf_one]; exact lOf_one δ M hA⟩
+       simp only [inv_mul_cancel, Units.val_one, bOf_one]; exact lOf_one δ M hA⟩
 
 def ρU (β : Formalism.L2.SG.PairVal.GLR D) : GLp p :=
   ⟨ρOf δ M p β (VolPinAsm.bOf w β), ρOf δ M p (β⁻¹ : Formalism.L2.SG.PairVal.GLR D) (VolPinAsm.bOf w β⁻¹),
     by rw [← ρOf_mul δ M hA, ← Units.val_mul, ← bOf_mul]
-       simp only [mul_inv_cancel, inv_mul_cancel, Units.val_one, bOf_one]; exact ρOf_one δ M hA,
+       simp only [inv_mul_cancel, Units.val_one, bOf_one]; exact ρOf_one δ M hA,
     by rw [← ρOf_mul δ M hA, ← Units.val_mul, ← bOf_mul]
-       simp only [mul_inv_cancel, inv_mul_cancel, Units.val_one, bOf_one]; exact ρOf_one δ M hA⟩
+       simp only [mul_inv_cancel, Units.val_one, bOf_one]; exact ρOf_one δ M hA⟩
 
 def πP : VolPinAsm.StG w →* StP M δ u u' w p where
   toFun β := ⟨(lU M δ w hA β, MulOpposite.op (ρU M δ w hA β)), by

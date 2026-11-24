@@ -61,16 +61,6 @@ theorem iso_pull {X Y : Scheme.{0}} {L M : LB X} (d : Y ⟶ X) (h : LBIso L M) :
   obtain ⟨w, hw⟩ := h
   exact ⟨LB.linCombIso w (fun _ : PUnit => d) (fun _ => 1), DVR.linCombIso_isGen w hw _ _⟩
 
-private theorem gm_res_eq_gm {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) {U V : X.Opens} (h : V ≤ U) (hy : f y ∈ V)
-    (x : Γ(X, U)ˣ) : gm f y V (res h x) = gm f y U x := by
-  unfold gm
-  rw [dite_eq_left hy, dite_eq_left (h hy)]
-  simp only [MonoidHom.comp_apply]
-  rw [pullU_res₂]
-  ext
-  simp [res]
-  exact TopCat.Presheaf.germ_res_apply _ _ _ _ _
-
 private theorem lbIso_of_chart_le_of_gm_transition_eq {Y : Scheme.{0}} {A' B : LB Y} (hB : LBIso B B) (idx : A'.ι → B.ι)
     (le : ∀ i, A'.U i ≤ B.U (idx i))
     (hg : ∀ (y : Y) i j, y ∈ A'.U i → y ∈ A'.U j →
@@ -87,8 +77,8 @@ private theorem lbIso_of_chart_le_of_gm_transition_eq {Y : Scheme.{0}} {A' B : L
         change gm (𝟙 Y) y ((B.U p1 ⊓ A'.U p2) ⊓ (B.U q1 ⊓ A'.U q2)) (res _ (B.g p1 q1) * (res _ (A'.g p2 q2))⁻¹) =
           gm (𝟙 Y) y ((B.U p1 ⊓ B.U (idx p2)) ⊓ (B.U q1 ⊓ B.U (idx q2)))
             (res _ (B.g p1 q1) * (res _ (B.g (idx p2) (idx q2)))⁻¹)
-        rw [map_mul, map_mul, map_inv, map_inv, gm_res_eq_gm (𝟙 Y) y, gm_res_eq_gm (𝟙 Y) y, gm_res_eq_gm (𝟙 Y) y,
-          gm_res_eq_gm (𝟙 Y) y, hg y p2 q2 hp'.2 hq'.2]
+        rw [map_mul, map_mul, map_inv, map_inv, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res (𝟙 Y) y, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res (𝟙 Y) y, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res (𝟙 Y) y,
+          _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res (𝟙 Y) y, hg y p2 q2 hp'.2 hq'.2]
         all_goals first
           | exact ⟨hp', hq'⟩
           | exact ⟨⟨hp'.1, le _ hp'.2⟩, ⟨hq'.1, le _ hq'.2⟩⟩ }

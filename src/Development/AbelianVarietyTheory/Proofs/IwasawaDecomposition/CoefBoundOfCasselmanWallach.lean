@@ -1,11 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormDwLeSobNorm
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompactAverageKFiniteFiniteRank
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAvgClosure
 public import Mathlib.Analysis.CStarAlgebra.lpSpace
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CasselmanWallachExtensionBanachTargetStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAveragedOperatorMappingToKFiniteStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CasselmanWallachExtensionBanachTarget
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInnerApprox
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsKFinDRep
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InnerKAvgNeZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -20,10 +21,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -31,7 +29,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,10 +42,94 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsKFinDRep
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAveragedOperatorMappingToKFinite, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoefBoundOfCasselmanWallach
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAveragedOperatorMappingToKFinite =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAveragedOperatorMappingToKFinite", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormDwLeSobNorm\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompactAverageKFiniteFiniteRank\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAvgClosure\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InnerKAvgNeZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix Filter Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum
+open scoped InnerProductSpace Topology
+
+namespace GlobalTheory.TypeSum
+
+theorem exists_isAvg_apply_eq : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ a : H, a ≠ 0 → ∀ v, IsKFin ε σ v → ∃ T : H → H, IsAvg ε σ T ∧ T a = v := by
+  intro n ε H _ _ _ σ h a ha v hv
+  obtain ⟨a1, a2, a3, a4, a5⟩ := isAvg_closure n ε H σ h.1
+  obtain ⟨c1, c2, c3, c4⟩ := kCoef_kAvg n ε H σ h.1
+  let A : Submodule ℂ H :=
+    { carrier := {x | ∃ T : H → H, IsAvg ε σ T ∧ T a = x}
+      add_mem' := by
+        rintro _ _ ⟨T, hT, rfl⟩ ⟨T', hT', rfl⟩
+        exact ⟨_, (a2 T T' hT hT').1, rfl⟩
+      zero_mem' := ⟨_, a5, rfl⟩
+      smul_mem' := by
+        rintro c _ ⟨T, hT, rfl⟩
+        exact ⟨_, a3 c T hT, rfl⟩ }
+  have hA : ∀ T : H → H, IsAvg ε σ T → ∀ x ∈ A, T x ∈ A := by
+    rintro T hT _ ⟨T', hT', rfl⟩
+    exact ⟨_, (a2 T T' hT hT').2, rfl⟩
+  have haA : a ∈ A := ⟨_, a1 1 (one_mem_UJ ε), sigma_one h.1 a⟩
+  have hdense : Dense (A : Set H) :=
+    dense_of_irred h.2.1 (fun g hg x hx => hA _ (a1 g hg) x hx) ((Submodule.ne_bot_iff _).2 ⟨a, haA, ha⟩)
+  have hrange : ∀ e : KG ε → ℂ, KFinFun ε e → Continuous e → ∀ w, kAvg ε σ e w ∈ A := by
+    intro e he hc w
+    obtain ⟨m, b, c, -, -, -, hbc⟩ := _root_.GlobalTheory.TypeSum.kAvg_finite_rank n ε H σ h e he
+    obtain ⟨Q, hQ⟩ := c3 e hc
+    let F : Submodule ℂ H := Submodule.span ℂ (Set.range b)
+    haveI : FiniteDimensional ℂ F := FiniteDimensional.span_of_finite ℂ (Set.finite_range b)
+    haveI : FiniteDimensional ℂ (A ⊓ F : Submodule ℂ H) := Submodule.finiteDimensional_inf_right A F
+    have hcl : IsClosed (Q ⁻¹' ((A ⊓ F : Submodule ℂ H) : Set H)) :=
+      (Submodule.closed_of_finiteDimensional _).preimage Q.continuous
+    have hsub : (A : Set H) ⊆ Q ⁻¹' ((A ⊓ F : Submodule ℂ H) : Set H) := by
+      intro x hx
+      refine Submodule.mem_inf.2 ⟨?_, ?_⟩
+      · rw [hQ]; exact hA _ (a4 e hc) x hx
+      · rw [hQ, hbc]
+        exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
+    have := closure_minimal hsub hcl (hdense w)
+    rw [← hQ]
+    exact (Submodule.mem_inf.1 this).1
+  obtain ⟨S, hS, hvS, hK⟩ := hv
+  haveI : FiniteDimensional ℂ (S ⊓ A : Submodule ℂ H) := Submodule.finiteDimensional_inf_left S A
+  obtain ⟨w, hw, y, hy, hvwy⟩ := (S ⊓ A).exists_add_mem_mem_orthogonal v
+  have hyS : y ∈ S := by
+    have := S.sub_mem hvS (Submodule.mem_inf.1 hw).1
+    rwa [hvwy, add_sub_cancel_left] at this
+  have hy0 : y = 0 := by
+    by_contra hy0
+    have hk := c1 y ⟨S, hS, hyS, hK⟩
+    have hc : Continuous fun k : KG ε => star ⟪y, σ (toMK k) y⟫_ℂ := by
+      obtain ⟨F, -, h1, h2, -⟩ := hk
+      exact h2 _ h1
+    exact c2 y hy0 (Submodule.inner_left_of_mem_orthogonal
+      (Submodule.mem_inf.2 ⟨c4 _ hc S hS hK y hyS, hrange _ hk hc y⟩) hy)
+  rw [hvwy, hy0, add_zero]
+  exact (Submodule.mem_inf.1 hw).2
+
+end GlobalTheory.TypeSum
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAveragedOperatorMappingToKFinite =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoefBoundOfCasselmanWallach =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoefBoundOfCasselmanWallach", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormDwLeSobNorm\npublic import Mathlib.Analysis.CStarAlgebra.lpSpace\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CasselmanWallachExtensionBanachTarget\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAveragedOperatorMappingToKFinite\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInnerApprox\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsKFinDRep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -190,7 +272,7 @@ variable [CompleteSpace H]
 
 theorem orbit_bound (h : Std ε σ) {a : H} (ha : Sm ε σ a) (ha0 : a ≠ 0) (N : ℕ) {v : H} (hv : IsKFin ε σ v) :
     ∃ C, 0 ≤ C ∧ ∀ ℓ : Forms ε σ a N, ∀ g ∈ UJset ε, ‖ℓ.1 (σ g v)‖ ≤ C * wt N g := by
-  obtain ⟨T, ⟨Z, C, hZ, hZG, hC, hT⟩, rfl⟩ := GlobalTheory.T.exists_averaged_operator_mapping_to_KFinite n ε H σ h a ha0 v hv
+  obtain ⟨T, ⟨Z, C, hZ, hZG, hC, hT⟩, rfl⟩ := _root_.GlobalTheory.TypeSum.exists_isAvg_apply_eq n ε H σ h a ha0 v hv
   obtain ⟨B, hB⟩ := (hZ.bddAbove_image (continuous_wt N).continuousOn)
   refine ⟨C * |B|, by positivity, fun ℓ g hg => ?_⟩
   have := avgBd_sobCont n ε H σ h T Z C hZ hZG hC hT Unit (fun _ => ℓ.1 ∘ₗ (σ g : H →ₗ[ℂ] H)) (fun _ => a)
@@ -262,7 +344,7 @@ theorem unit_bound (hCW : GlobalTheory.Published.CasselmanWallach) (h : Std ε �
     rw [rt_apply hy, hT₀ v hv]
     have := wt_ne N (i.2.1 * y)
     field_simp
-  obtain ⟨T, hT1, hT2, S, C, hS, hC⟩ := GlobalTheory.T.casselmanWallach_extension_banach_target hCW n ε H σ h _ _ (modRep_rt ε (Forms ε σ a N) N) T₀
+  obtain ⟨T, hT1, hT2, S, C, hS, hC⟩ := _root_.GlobalTheory.TypeSum.casselmanWallach_banach hCW n ε H σ h _ _ (modRep_rt ε (Forms ε σ a N) N) T₀
     (fun k hk v hv => by
       ext i
       rw [key v hv k (K_le_UJ hk), hT₀ _ (isKFin_translate hv hk), sigma_mul h.1 i.2.2 (K_le_UJ hk)])
@@ -322,3 +404,6 @@ theorem coefBound_of_casselmanWallach : GlobalTheory.Published.CasselmanWallach 
 end GlobalTheory.TypeSum
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CoefBoundOfCasselmanWallach =====

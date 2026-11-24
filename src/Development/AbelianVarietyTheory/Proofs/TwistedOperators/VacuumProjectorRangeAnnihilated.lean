@@ -73,8 +73,7 @@ private theorem hasFDerivAt_gau {V : Type} [NormedAddCommGroup V]
   refine h3.congr_fderiv ?_
   ext y
   simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, Function.comp_apply,
-    Complex.ofRealCLM_apply, innerSL_apply_apply, smul_eq_mul, nsmul_eq_mul,
-    ContinuousLinearMap.coe_smul', Pi.smul_apply]
+    Complex.ofRealCLM_apply, innerSL_apply_apply, smul_eq_mul, nsmul_eq_mul]
   push_cast
   ring
 

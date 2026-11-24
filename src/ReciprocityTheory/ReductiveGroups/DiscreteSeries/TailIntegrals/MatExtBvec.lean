@@ -60,7 +60,7 @@ def sg (k r i : ℕ) : ℕ := if i < r ∨ r + k < i then 2 * r + k - i else i
 
 theorem hpk_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = sg k r i.val then (if i.val = r + k then -1 else 1) else 0 := by
-  apply ReciprocityTheory.ChartRestriction.DS.Lap.S0.DecA.hpk_apply <;> assumption
+  apply ReciprocityTheory.ChartRestriction.DS.Lap.S0.DecA.hpk_apply
 
 theorem hpk_symm (k r : ℕ) (i j : Fin (2 * r + k + 1)) : Hpk k r j i = Hpk k r i j := by
   rw [hpk_apply, hpk_apply]; unfold sg
@@ -85,7 +85,7 @@ theorem hpk_apply' (k r i : ℕ) (hi : i < 2 * r + k + 1) (j : Fin (2 * r + k + 
   hpk_apply k r ⟨i, hi⟩ j
 
 theorem hpk_mul (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  apply ReciprocityTheory.ChartRestriction.DS.Lap.S0.DecA.hpk_mul <;> assumption
+  apply ReciprocityTheory.ChartRestriction.DS.Lap.S0.DecA.hpk_mul
 
 theorem sum_mid {n N : ℕ} (h : N = n + 2) (f : Fin N → ℂ) (h0 : ∀ q : Fin N, q.val = 0 → f q = 0)
     (h1 : ∀ q : Fin N, q.val = n + 1 → f q = 0) : ∑ q, f q = ∑ q : Fin n, f ⟨q.val + 1, by omega⟩ := by

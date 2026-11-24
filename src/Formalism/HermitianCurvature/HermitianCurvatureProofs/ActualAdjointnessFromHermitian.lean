@@ -84,15 +84,13 @@ def partialFDerivFst (F : X × Y → E) (x : X × Y) : X →L[ℝ] E := (fderiv 
 
 theorem hasFDerivAt_partial_fst {F : X × Y → E} {U : Set (X × Y)} (hU : IsOpen U) (hF : ContDiffOn ℝ ∞ F U) {x : X × Y}
     (hx : x ∈ U) : HasFDerivAt (fun c' => F (c', x.2)) (partialFDerivFst F x) x.1 := by
-  have h1 : DifferentiableAt ℝ F x := (hF.contDiffAt (hU.mem_nhds hx)).differentiableAt (by simp)
-  have h2 : HasFDerivAt (fun c' : X => (c', x.2)) (ContinuousLinearMap.inl ℝ X Y) x.1 :=
-    hasFDerivAt_prodMk_left x.1 x.2
-  exact HasFDerivAt.comp (g := F) x.1 h1.hasFDerivAt h2
+  exact HasFDerivAt.comp (g := F) x.1
+    ((hF.contDiffAt (hU.mem_nhds hx)).differentiableAt (by simp)).hasFDerivAt
+    (hasFDerivAt_prodMk_left x.1 x.2)
 
 theorem contDiffOn_partial_fderiv_fst {F : X × Y → E} {U : Set (X × Y)} (hU : IsOpen U) (hF : ContDiffOn ℝ ∞ F U) (v : X) :
     ContDiffOn ℝ ∞ (fun x => partialFDerivFst F x v) U := by
-  have h1 : ContDiffOn ℝ ∞ (fderiv ℝ F) U := hF.fderiv_of_isOpen hU (by simp)
-  exact h1.clm_apply contDiffOn_const
+  exact (hF.fderiv_of_isOpen hU (by simp)).clm_apply contDiffOn_const
 
 theorem eventually_slice {U : Set (X × Y)} (hU : IsOpen U) {x : X × Y} (hx : x ∈ U) :
     ∀ᶠ c' in nhds x.1, (c', x.2) ∈ U := by
@@ -107,9 +105,8 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type*} [Norme
   [NormedAddCommGroup Wq] [NormedSpace ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 theorem isOpen_OmX (m : ℕ) : IsOpen (OmX m) := by
-  have : OmX m = ⋂ l : Fin m, {x : Fin m → ℂ | x l ≠ 0} := by
-    ext x; simp [OmX]
-  rw [this]
+  rw [show OmX m = ⋂ l : Fin m, {x : Fin m → ℂ | x l ≠ 0} from by
+    ext x; simp [OmX]]
   exact isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const
 
 def zetaLin (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (r + 1)) : Mx k r →ₗ[ℂ] ℂ where
@@ -147,14 +144,12 @@ theorem slice_hasFDerivAt {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {U : Set ((Fin r → ℂ) × Mx k r)} {F : (Fin r → ℂ) × Mx k r → E} (hU : IsOpen U) (hF : ContDiffOn ℝ ∞ F U)
     (hΦ : ∀ x ∈ U, x.2 ∈ Glev k r i → Φ x.1 x.2 = F x) {x : (Fin r → ℂ) × Mx k r} (hx : x ∈ U)
     (hg : x.2 ∈ Glev k r i) : HasFDerivAt (fun c' => Φ c' x.2) (partialFDerivFst F x) x.1 := by
-  refine (hasFDerivAt_partial_fst hU hF hx).congr_of_eventuallyEq ?_
-  filter_upwards [eventually_slice hU hx] with c' hc'
-  exact hΦ (c', x.2) hc' hg
+  exact (hasFDerivAt_partial_fst hU hF hx).congr_of_eventuallyEq
+    ((eventually_slice hU hx).mono fun c' hc' => hΦ (c', x.2) hc' hg)
 
 theorem slice_zero {Φ : Fn k r (Wq →L[ℂ] Wp)} (hΦ : Φ ∈ RadSp k r z z' π π') {g : Mx k r}
     (hg : ¬ (g ∈ Glev k r (Fin.last r) ∧ 0 < GGl k r z z' g)) : (fun c' => Φ c' g) = fun _ => 0 := by
-  funext c'
-  exact hΦ.1 (c', g) fun h => hg h.2
+  exact funext fun c' => hΦ.1 (c', g) fun h => hg h.2
 
 theorem slice_diff {Φ : Fn k r (Wq →L[ℂ] Wp)} (hΦ : Φ ∈ RadSp k r z z' π π') {c : Fin r → ℂ} (hc : c ∈ OmX r)
     (g : Mx k r) : DifferentiableAt ℝ (fun c' => Φ c' g) c := by
@@ -205,11 +200,10 @@ theorem dirD_lin (v : Fin r → ℂ) {Φ Ψ : Fn k r (Wq →L[ℂ] Wp)} (hΦ : �
   funext c g
   simp only [dirD, Pi.add_apply, Pi.smul_apply]
   split_ifs with hc
-  · have h1 := (slice_diff hΦ hc g).hasFDerivAt
-    have h2 := (slice_diff hΨ hc g).hasFDerivAt
-    have h3 := (h1.add (h2.const_smul s)).fderiv
-    have h4 : (fun c' => Φ c' g + s • Ψ c' g) = ((fun c' => Φ c' g) + s • fun c' => Ψ c' g) := rfl
-    rw [h4, h3]
+  · have h3 := ((slice_diff hΦ hc g).hasFDerivAt.add
+        ((slice_diff hΨ hc g).hasFDerivAt.const_smul s)).fderiv
+    rw [show (fun c' => Φ c' g + s • Ψ c' g) =
+      ((fun c' => Φ c' g) + s • fun c' => Ψ c' g) from rfl, h3]
     rfl
   · simp
 
@@ -237,27 +231,23 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type*} [Norme
 
 theorem herm_UH {ι : Type*} [Fintype ι] [DecidableEq ι] {H g : Matrix ι ι ℂ} (hg : g ∈ UH H) (x w : ι → ℂ) :
     herm H (g *ᵥ x) (g *ᵥ w) = herm H x w := by
-  have hg' : gᴴ * H * g = H := hg
   unfold herm
-  rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg']
+  rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, show gᴴ * H * g = H from hg]
 
 theorem fvec_last (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : fvec k r z (Fin.last r) = z := by
   simp [fvec]
 
 theorem UH_mul {ι : Type*} [Fintype ι] [DecidableEq ι] {H a b : Matrix ι ι ℂ} (ha : a ∈ UH H) (hb : b ∈ UH H) :
     a * b ∈ UH H := by
-  have ha' : aᴴ * H * a = H := ha
-  have hb' : bᴴ * H * b = H := hb
   change (a * b)ᴴ * H * (a * b) = H
   rw [Matrix.conjTranspose_mul]
   calc bᴴ * aᴴ * H * (a * b) = bᴴ * (aᴴ * H * a) * b := by simp only [Matrix.mul_assoc]
-    _ = H := by rw [ha', hb']
+    _ = H := by rw [show aᴴ * H * a = H from ha, show bᴴ * H * b = H from hb]
 
 theorem Glev_mul {i : Fin (r + 1)} {a b : Mx k r} (ha : a ∈ Glev k r i) (hb : b ∈ Glev k r i) :
     a * b ∈ Glev k r i := by
   refine ⟨UH_mul ha.1 hb.1, fun l hl => ?_⟩
-  rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, (hb.2 l hl).1, (hb.2 l hl).2]
-  exact ha.2 l hl
+  simpa only [← Matrix.mulVec_mulVec, (hb.2 l hl).1, (hb.2 l hl).2] using ha.2 l hl
 
 theorem UW_Glev {h : Mx k r} (hh : h ∈ UWset k r z) (i : Fin (r + 1)) : h ∈ Glev k r i :=
   ⟨hh.1, fun a _ => hh.2.1 a⟩
@@ -282,9 +272,7 @@ theorem DomR_inv {h h' : Mx k r} (hh : h ∈ UWset k r z) (hh' : h' ∈ UWset k 
 theorem zeta_ne (hT : 0 ≤ Tz k r z * Tz k r z') {g : Mx k r} (hg : 0 < GGl k r z z' g) :
     zetaL k r z z' (Fin.last r) g ≠ 0 := by
   intro h0
-  unfold GGl at hg
-  rw [h0] at hg
-  simp at hg
+  simp [GGl, h0] at hg
   linarith
 
 theorem crd_p (l : Fin r) (Φ : Fn k r (Wq →L[ℂ] Wp)) :
@@ -372,17 +360,14 @@ theorem fnVal_contDiffOn (hT : 0 ≤ Tz k r z * Tz k r z') (j : Fin 6) :
     ((zetaL_contDiff k r z z' (Fin.last r)).comp contDiff_snd).contDiffOn
   have hne : ∀ x ∈ OpR k r z z', zetaL k r z z' (Fin.last r) x.2 ≠ 0 := fun x hx => zeta_ne hT hx.2
   have h4 : ContDiffOn ℝ ∞ (fun x : (Fin r → ℂ) × Mx k r => (GGl k r z z' x.2 : ℂ)) (OpR k r z z') := by
-    simp only [GGl_cast]
-    exact (h0.mul (star_contDiff h0)).sub contDiffOn_const
+    simpa only [GGl_cast] using (h0.mul (star_contDiff h0)).sub contDiffOn_const
   fin_cases j
   · exact h0
   · exact h0.inv hne
   · exact star_contDiff h0
   · exact (star_contDiff h0).inv fun x hx => by simpa using hne x hx
   · exact h4
-  · exact h4.inv fun x hx => by
-      have : (0 : ℝ) < GGl k r z z' x.2 := hx.2
-      exact_mod_cast this.ne'
+  · exact h4.inv fun x hx => by exact_mod_cast (ne_of_gt hx.2)
 
 theorem fnVal_inv {h h' : Mx k r} (hh : h ∈ UWset k r z) (hh' : h' ∈ UWset k r z') (j : Fin 6) (g : Mx k r) :
     fnVal k r z z' j (h * g * h') = fnVal k r z z' j g := by
@@ -407,8 +392,7 @@ theorem place_alt_alt {Wp Wq : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ W
     {P : M.Par} {z z' : Fin (2 * P.r + P.k + 1) → ℂ} {π : Mx P.k P.r → (Wp →L[ℂ] Wp)}
     {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)} (h : IsPlace P z z' π π') : 0 ≤ Tz P.k P.r z * Tz P.k P.r z' := by
   obtain ⟨hOK, -, -, h1, h2, -, -⟩ := h
-  rw [h1, h2]
-  exact (mul_pos hOK.T_pos hOK.T'_pos).le
+  simpa only [h1, h2] using (mul_pos hOK.T_pos hOK.T'_pos).le
 
 section Geo
 
@@ -429,8 +413,7 @@ theorem Nlev_last {k r : ℕ} {n : Mx k r} (hn : n ∈ Nlev k r (Fin.last r)) : 
 theorem psi_one {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ) : psi k r z c 1 = 1 := by
   have : ell k r z 1 = 0 := by
     unfold ell
-    apply Finset.sum_eq_zero
-    intro a _
+    refine Finset.sum_eq_zero fun a _ => ?_
     split_ifs with h
     · rw [Matrix.one_apply, if_neg]
       intro e
@@ -438,9 +421,7 @@ theorem psi_one {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) 
       simp [eI] at this
     · rw [Matrix.one_mulVec]
       exact hz _ (Or.inl a.isLt)
-  unfold psi
-  rw [this]
-  simp
+  simp [psi, this]
 
 def Dp (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : Set (Mx k r) := {g | 0 < GGl k r z z' g}
 
@@ -450,8 +431,7 @@ theorem Dp_open (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : IsOpen (Dp k 
 theorem Slev_last {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {s : Mx k r} (hs : s ∈ Slev k r z (Fin.last r)) :
     s ∈ UWset k r z := by
   obtain ⟨h, hh, m, hm, rfl⟩ := hs
-  rw [Nlev_last hm, mul_one]
-  exact hh
+  simpa only [Nlev_last hm, mul_one] using hh
 
 theorem Dp_dom (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : IsDom k r z z' (Fin.last r) (Dp k r z z') := by
   refine ⟨Dp_open k r z z', ?_⟩
@@ -518,9 +498,7 @@ theorem tFun_lin (hLL : TLinLoc) (Y : ℂ) (a b : Fin 2) {Φ Ψ : Fn k r (Wq →
     rw [Set.indicator_of_mem hx, Set.indicator_of_mem hx, Set.indicator_of_mem hx]
     exact (hLL _ k r z z' (Fin.last r) (Dp k r z z') Y a b (Φ c) (Ψ c) s (Dp_open k r z z') (slice_smooth hΦ hx.1)
       (slice_smooth hΨ hx.1) g ⟨hx.2.1, hx.2.2⟩).1
-  · simp only [tFun, Pi.add_apply, Pi.smul_apply]
-    rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem hx, Set.indicator_of_notMem hx]
-    simp
+  · simp [tFun, hx]
 
 def mkEnd {V : Type*} [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V) (T : V → V) (hm : ∀ x ∈ S, T x ∈ S)
     (hl : ∀ x ∈ S, ∀ y ∈ S, ∀ s : ℂ, T (x + s • y) = T x + s • T y) : Module.End ℂ S where
@@ -700,9 +678,7 @@ theorem smoothLev_continuousOn {E : Type*} [NormedAddCommGroup E] [NormedSpace �
     {D : Set (Mx k r)} {f : Mx k r → E} (h : SmoothLev k r i D f) : ContinuousOn f (Glev k r i ∩ D) := by
   intro g₀ hg₀
   obtain ⟨U, F, hU, hgU, hF, he⟩ := h g₀ hg₀
-  have h1 : ContinuousWithinAt F (Glev k r i ∩ D) g₀ :=
-    (hF.continuousOn.continuousAt (hU.mem_nhds hgU)).continuousWithinAt
-  refine h1.congr_of_eventuallyEq ?_ (he g₀ hgU hg₀.1)
+  refine ((hF.continuousOn.continuousAt (hU.mem_nhds hgU)).continuousWithinAt).congr_of_eventuallyEq ?_ (he g₀ hgU hg₀.1)
   filter_upwards [mem_nhdsWithin_of_mem_nhds (hU.mem_nhds hgU), self_mem_nhdsWithin] with g a b
   exact he g a b.1
 
@@ -809,8 +785,7 @@ theorem adjoint_main [FiniteDimensional ℂ Wp] (hH : HermHaar) (hz : inWb k r z
     intro x
     have := congrArg star (key_pt X Ψ Φ hc (star Y) b a φ (Matrix.of x))
     simpa [mul_comm] using this
-  simp only [e1, e2]
-  exact hh.symm
+  simpa only [e1, e2] using hh.symm
 
 end Adj
 
@@ -1075,9 +1050,8 @@ theorem dP_four (E : Fin n → Fin n → A) {m : ℕ} (a b : Fin (m + 1) → Fin
   · intro k h1 h2; simp [Equiv.Perm.mul_apply, hs k h1 h2]
   · have e1 : (⟨(i : ℕ), by omega⟩ : Fin (m + 1)) = i.castSucc := rfl
     have e2 : (⟨(i : ℕ) + 1, by omega⟩ : Fin (m + 1)) = i.succ := rfl
-    simp only [e1, e2, Equiv.Perm.mul_apply, Function.comp_apply, Equiv.swap_apply_left,
-      Equiv.swap_apply_right]
-    exact mid_id E _ _ _ _ _ _
+    simpa only [e1, e2, Equiv.Perm.mul_apply, Function.comp_apply, Equiv.swap_apply_left,
+      Equiv.swap_apply_right] using mid_id E _ _ _ _ _ _
 
 theorem dsum_adj (E : Fin n → Fin n → A) {m : ℕ} (a b : Fin (m + 1) → Fin n) (θ : Fin (m + 1) → ℂ) (i : Fin m) :
     dsum E a b (θ ∘ Equiv.swap i.castSucc i.succ) = dsum E a b θ := by
@@ -1230,10 +1204,8 @@ variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {i :
 theorem lie_add {X Y : Mx k r} (hX : inLieLev k r i X) (hY : inLieLev k r i Y) : inLieLev k r i (X + Y) := by
   refine ⟨?_, fun a ha => ⟨?_, ?_⟩⟩
   · rw [conjTranspose_add, Matrix.add_mul, Matrix.mul_add]
-    have h1 := hX.1
-    have h2 := hY.1
     calc _ = (Xᴴ * Hpk k r + Hpk k r * X) + (Yᴴ * Hpk k r + Hpk k r * Y) := by abel
-      _ = 0 := by rw [h1, h2, add_zero]
+      _ = 0 := by rw [hX.1, hY.1, add_zero]
   · rw [Matrix.add_mulVec, (hX.2 a ha).1, (hY.2 a ha).1, add_zero]
   · rw [Matrix.add_mulVec, (hX.2 a ha).2, (hY.2 a ha).2, add_zero]
 
@@ -1244,8 +1216,7 @@ theorem lie_neg {X : Mx k r} (hX : inLieLev k r i X) : inLieLev k r i (-X) := by
   · rw [Matrix.neg_mulVec, (hX.2 a ha).2, neg_zero]
 
 theorem lie_sub {X Y : Mx k r} (hX : inLieLev k r i X) (hY : inLieLev k r i Y) : inLieLev k r i (X - Y) := by
-  rw [sub_eq_add_neg]
-  exact lie_add hX (lie_neg hY)
+  simpa [sub_eq_add_neg] using lie_add hX (lie_neg hY)
 
 theorem lie_bracket {X Y : Mx k r} (hX : inLieLev k r i X) (hY : inLieLev k r i Y) :
     inLieLev k r i (X * Y - Y * X) := by
@@ -1364,13 +1335,11 @@ theorem RZ_comm {f : Mx k r → E} (hf : SmoothLev k r i D f) {g Z W : Mx k r} (
   abel
 
 theorem hpart1_sub (Z W : Mx k r) : hpart1 (Hpk k r) (Z - W) = hpart1 (Hpk k r) Z - hpart1 (Hpk k r) W := by
-  unfold hpart1
-  rw [conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]
+  simp only [hpart1, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]
   module
 
 theorem hpart2_sub (Z W : Mx k r) : hpart2 (Hpk k r) (Z - W) = hpart2 (Hpk k r) Z - hpart2 (Hpk k r) W := by
-  unfold hpart2
-  rw [conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]
+  simp only [hpart2, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]
   module
 
 theorem RZ_sub {f : Mx k r → E} (hf : SmoothLev k r i D f) {g Z W : Mx k r} (hg : g ∈ Glev k r i ∩ D)
@@ -1385,9 +1354,7 @@ theorem RZ_zero (f : Mx k r → E) (g : Mx k r) : RZ (Hpk k r) 0 f g = 0 := by
 
 theorem lieC_zero : LieC k r i 0 := by
   have h : inLieLev k r i (0 : Mx k r) := ⟨by simp, fun a _ => by simp⟩
-  constructor
-  · simpa [hpart1] using h
-  · simpa [hpart2] using h
+  constructor <;> simpa [hpart1, hpart2] using h
 
 theorem eh_gl {f : Mx k r → E} (hf : SmoothLev k r i D f) {g : Mx k r} (hg : g ∈ Glev k r i ∩ D)
     (a b c d : Fin (mdim k r i)) :
@@ -1496,9 +1463,8 @@ theorem eh_inv (Λ : (Fin (2 * r + k + 1) → ℂ) →ₗ[ℂ] ℂ) (v : Fin (2 
 
 theorem uh_inv_eq {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   apply Matrix.inv_eq_left_inv
-  have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
   calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [hg', hpk_sq']
+    _ = 1 := by rw [show gᴴ * Hpk k r * g = Hpk k r from hg, hpk_sq']
 
 theorem smooth_inv (Λ : (Fin (2 * r + k + 1) → ℂ) →ₗ[ℂ] ℂ) (v : Fin (2 * r + k + 1) → ℂ) :
     SmoothLev k r i D (fun y => Λ (y⁻¹ *ᵥ v)) := by
@@ -1630,10 +1596,8 @@ theorem rep_Tm (hD : IsOpen D) (u : ℂ) (a b : Fin (mdim k r i)) :
   rw [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, ev_E hD a b v hg]
   congr 1
   by_cases h : a = b
-  · rw [if_pos h, if_pos (congrArg _ h), Module.algebraMap_end_apply]
-    rfl
-  · rw [if_neg h, if_neg ((posL_inj i).ne h)]
-    rfl
+  · subst h; simp
+  · simp [h, (posL_inj i).ne h]
 
 theorem rep_prod (hD : IsOpen D) (L : List (ℂ × Fin (mdim k r i) × Fin (mdim k r i))) :
     Rep ((L.map fun p => Tm (Eh (E := E) hD) p.1 p.2.1 p.2.2).prod)
@@ -1743,9 +1707,8 @@ theorem eh_zb (a b : Fin (mdim k r i)) (g : Mx k r) :
 theorem zb_eq {g : Mx k r} (hg : g ∈ Glev k r i) : star (zetaL k r z z' i g) = zbF k r z z' i g := by
   have h1 : g⁻¹ * g = 1 := by
     rw [uh_inv_eq hg.1]
-    have hg' : gᴴ * Hpk k r * g = Hpk k r := hg.1
     calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by simp only [Matrix.mul_assoc]
-      _ = 1 := by rw [hg', hpk_sq']
+      _ = 1 := by rw [show gᴴ * Hpk k r * g = Hpk k r from hg.1, hpk_sq']
   have h2 : g * g⁻¹ = 1 := mul_eq_one_comm.1 h1
   have hs : ∀ u w : Fin (2 * r + k + 1) → ℂ, star (herm (Hpk k r) u w) = herm (Hpk k r) w u := by
     intro u w
@@ -1954,10 +1917,8 @@ theorem comRule_zeta (z z' : Fin (2 * r + k + 1) → ℂ) (hD : IsOpen D) {g : M
     rw [finiteCocycles z z' hD a b w hf hg, one_smul]
     congr 1
     refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_
-    have e1 : (skip1 p : Fin t → Fin (t + 1)) = p.succAbove := Qx6.skip_one_eq_succAbove p
-    have e2 : (skip1 q : Fin t → Fin (t + 1)) = q.succAbove := Qx6.skip_one_eq_succAbove q
     show _ = _ • Mop k r i (a ∘ (skip1 p : Fin t → Fin (t + 1))) (b ∘ (skip1 q : Fin t → Fin (t + 1))) (w - 1) f g
-    rw [e1, e2]
+    rw [Qx6.skip_one_eq_succAbove p, Qx6.skip_one_eq_succAbove q]
     congr 1
     ring
 
@@ -2011,8 +1972,7 @@ theorem capelli_two_same_left (A B B' : Fin (mdim k r i) → ℂ) (w : ℂ) (f :
   refine Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun p' _ => Finset.sum_eq_zero fun q _ =>
     Finset.sum_eq_zero fun q' _ => ?_
   split_ifs
-  · rw [show A p * A p' - A p' * A p = 0 by ring]
-    simp
+  · simp [show A p * A p' - A p' * A p = 0 by ring]
   · rfl
 
 variable {c : Mx k r → ℂ} {g : Mx k r} {ρ κ : Fin (mdim k r i) → ℂ} {s d : ℂ}

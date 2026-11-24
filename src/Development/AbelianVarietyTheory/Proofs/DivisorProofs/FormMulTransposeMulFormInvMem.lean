@@ -82,7 +82,7 @@ theorem form_mul_formInv {d : ℕ} (hd : 0 < d) : form d * formInv d = 1 := by
   congr 1
   · rw [Matrix.mul_neg, quat_transpose_mul, h1]; simp [sub_smul]
   · simp
-  · simp only [Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_neg, smul_neg, add_neg_cancel]
+  · simp only [Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_neg, add_neg_cancel]
   · rw [Matrix.mul_neg, quat_mul_transpose, h1]; simp [sub_smul]
 
 theorem formInv_mul_form {d : ℕ} (hd : 0 < d) : formInv d * form d = 1 :=
@@ -110,10 +110,9 @@ theorem form_mul_transpose_mul_formInv_mem {d : ℕ} {N : Matrix (Fin 4 ⊕ Fin 
   rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]
   have key : ∀ i j, ((N (Sum.inr i) (Sum.inl j) : ℤ) : ZMod d) = 0 := fun i j =>
     (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr (hN i j)
-  simp only [Matrix.mul_apply, Fintype.sum_sum_type, form, formInv, fromBlocks_apply₁₁, fromBlocks_apply₁₂,
-    fromBlocks_apply₂₁, fromBlocks_apply₂₂, transpose_apply, Int.cast_add, Int.cast_sum, Int.cast_mul,
+  simp only [Matrix.mul_apply, Fintype.sum_sum_type, form, formInv, fromBlocks_apply₁₁, fromBlocks_apply₂₁, fromBlocks_apply₂₂, transpose_apply, Int.cast_add, Int.cast_sum, Int.cast_mul,
     Matrix.smul_apply, Matrix.neg_apply, Int.cast_neg, smul_eq_mul, Int.cast_natCast, ZMod.natCast_self, zero_mul,
-    mul_zero, key, Finset.sum_const_zero, add_zero, zero_add, mul_neg, neg_mul]
+    mul_zero, key, Finset.sum_const_zero, add_zero, zero_add, mul_neg]
   simp
 
 def barM (d : ℕ) (N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ :=

@@ -70,8 +70,7 @@ theorem scalar_frame_w_zero_exists (D : D7) : ∃ w₀ : 𝓞 D.host.E, (w₀ : 
   have hint : IsIntegral ℤ ((1 + D.host.sqd) / 2) := by
     refine ⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C ((m : ℤ) + 1), by monicity!, ?_⟩
     rw [← Polynomial.aeval_def]
-    simp only [map_add (f := _), map_sub, map_pow, map_one, map_natCast, Polynomial.aeval_X, Polynomial.aeval_C,
-      algebraMap_int_eq, eq_intCast, Int.cast_add, Int.cast_natCast, Int.cast_one]
+    simp only [map_add (f := _), map_sub, map_pow, map_one, map_natCast, Polynomial.aeval_X]
     linear_combination (1 / 4 : D.host.E) * hs
   refine ⟨⟨(1 + D.host.sqd) / 2, hint⟩, ?_⟩
   show (1 + D.host.sqd) / 2 + D.host.conj ((1 + D.host.sqd) / 2) = 1

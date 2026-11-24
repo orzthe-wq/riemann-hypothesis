@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -202,7 +203,7 @@ theorem terms_eq : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 
   obtain ⟨w₁, hw₁, hv₁⟩ := TorsionValue.exists_frm_scale (w' c') h₂' hd0
   have h₄ : LiesOver 𝔪.U.toUnifPre w₀ (p' c') w₁ (x (lab c)) (fr (lab c)) :=
     liesOver_change hd h₂' hv₁ (hf _) h₃'
-  obtain ⟨e, ev⟩ := GlobalTheory.T.framedTorsionPoint_torusExtension_eq_of_liesOver V 𝔪.cn 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U w₀ hw₀ _ hk _ _ _ _ _ _ h₁ h₁' h₂ hw₁ (hfr _).1 h₃ h₄
+  obtain ⟨e, ev⟩ := _root_.GlobalTheory.Poinc.Sep.LiesUniq.eq_of_liesOver V 𝔪.cn 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U w₀ hw₀ _ hk _ _ _ _ _ _ h₁ h₁' h₂ hw₁ (hfr _).1 h₃ h₄
   rw [coef_smul _ h₂', pow_one]
   generalize w c = om at h₂ ev
   generalize p c = q at om h₂ e ev

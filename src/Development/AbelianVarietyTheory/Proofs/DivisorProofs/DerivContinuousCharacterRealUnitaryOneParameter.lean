@@ -104,7 +104,7 @@ theorem prod_charD {ι : Type} [Fintype ι] [DecidableEq ι] {R S : ι → ℕ} 
         funext v
         by_cases hv : v = a
         · subst hv; simp [Finset.piecewise, ha]
-        · simp [Finset.piecewise, hv, Function.update_of_ne hv]
+        · simp [Finset.piecewise, hv]
       rw [e, hmul _ _ (upd a (g a) (hg a)) (pc s), hn a (g a) (hg a), ih, Finset.prod_insert ha]
   simpa using ind Finset.univ
 

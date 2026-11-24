@@ -77,7 +77,7 @@ theorem evFin_trace [FiniteDimensional F E] (v : Pl (F := F)) (z : AE F E) :
 theorem trace_split {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl (F := F)} (t : E →ₐ[F] Fv F v) (y : Fv F v ⊗[F] E) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) y = splitProj t y + splitProj (t.comp σ) y := by
   rw [← Algebra.trace_eq_of_algEquiv (splitAlgEquiv h t) y, Algebra.trace_prod_apply, splitAlgEquiv_apply]
-  simp [Algebra.trace_self_apply]
+  simp
 
 theorem piW_cA {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : Pl (F := F)} (t : E →ₐ[F] Fv F v) (y : AE F E) :
     piW (t.comp σ) (cA σ y) = piW t y := by

@@ -1,8 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsThetaL2NormSquared
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FramePeriodsAlongIsotropicFlowAndBlockChangeStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RiemannFormFramePeriodsEqMajorantStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FramePeriodsAlongIsotropicFlowAndBlockChange
+public import Formalism.LocalToGlobal.ProjectiveLattices.NormsFree
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RiemannFormFramePeriodsEqMajorant
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -46,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.HermitianTraceFormVanishing
 
 @[expose] public section
 
@@ -218,29 +221,6 @@ theorem block_le {g : ℕ} (Ψ : Finset (E →+* ℂ))
 
 variable [IsCMField E]
 
-theorem emb_cc (ρ : E →+* ℂ) (x : E) : ρ (cc x) = (starRingEnd ℂ) (ρ x) :=
-  IsCMField.complexEmbedding_complexConj E ρ x
-
-theorem herm_smul_left {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : Fin r → E) :
-    herm G (a • x) y = a * herm G x y := by
-  simp only [herm, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
-  exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-
-theorem herm_smul_right {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : Fin r → E) :
-    herm G x (a • y) = cc a * herm G x y := by
-  simp only [herm, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, cc, map_mul]
-  exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-
-theorem hermC_smul_left {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (a : ℂ) (x y : Fin r → ℂ) :
-    hermC τ G (a • x) y = a * hermC τ G x y := by
-  simp only [hermC, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
-  exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-
-theorem hermC_smul_right {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (a : ℂ) (x y : Fin r → ℂ) :
-    hermC τ G x (a • y) = (starRingEnd ℂ) a * hermC τ G x y := by
-  simp only [hermC, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]
-  exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-
 theorem maj_smul {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (a : ℂ) (v : Fin r → ℂ) :
     X.maj x τ (a • v) = ‖a‖ ^ 2 * X.maj x τ v := by
   have e : ((‖a‖ ^ 2 : ℝ) : ℂ) = a * (starRingEnd ℂ) a := by
@@ -249,10 +229,10 @@ theorem maj_smul {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (a : �
     simp only [Data.posPart]
     rw [← Complex.re_ofReal_mul, e]
     congr 1
-    simp only [hermC_smul_left, map_mul, Finset.mul_sum]
+    simp only [_root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left, map_mul, Finset.mul_sum]
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
   have h2 : (hermC τ.1 X.Gm (a • v) (a • v)).re = ‖a‖ ^ 2 * (hermC τ.1 X.Gm v v).re := by
-    rw [← Complex.re_ofReal_mul, e, hermC_smul_left, hermC_smul_right, mul_assoc]
+    rw [← Complex.re_ofReal_mul, e, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_right, mul_assoc]
   simp only [Data.maj, h1, h2]; ring
 
 noncomputable def diagMul {g : ℕ} (d : Fin g → ℂ) : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ) where
@@ -268,7 +248,7 @@ theorem block_of_adjoint {g : ℕ} (ty : Fin g → (E →+* ℂ)) (Hm : Matrix (
   have key : ∀ s : ℂ, (s * (ty i (a : E) * Hm i j)).im = (s * (ty j (a : E) * Hm i j)).im := fun s => by
     have := h a (Pi.single i s) (Pi.single j 1)
     simp only [hermForm_eq_sum, Pi.single_apply, mul_ite, ite_mul, mul_zero, zero_mul, apply_ite (starRingEnd ℂ),
-      map_zero, map_one, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, emb_cc, Complex.conj_conj] at this
+      map_zero, map_one, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, _root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc, Complex.conj_conj] at this
     convert this using 2 <;> ring
   have : ty i (a : E) * Hm i j = ty j (a : E) * Hm i j := by
     apply Complex.ext
@@ -297,7 +277,7 @@ theorem period_flow (U : Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (ξ' : Fin 
     (hv : herm (U.X k).Gm (Uw.φ k v : Fin r → E) ξ' = 0) : Uw.Pm k x' v = Uw.Pm k x v := by
   funext j
   rw [Uw.Pm_eq, Uw.Pm_eq, hx]
-  have hf := (GlobalTheory.T.framePeriods_along_isotropic_flow_and_block_change E r (U.X k)).1 ξ' hξ.2.1 s x.1 x.2 (Uw.φ k v : Fin r → E)
+  have hf := (_root_.GlobalTheory.PerFlow.perFr_flow_block E r (U.X k)).1 ξ' hξ.2.1 s x.1 x.2 (Uw.φ k v : Fin r → E)
   by_cases hm : relab c σ (Uw.e j).1 ∈ (U.X k).Ψ
   · have := (hf ⟨_, hm⟩ (Uw.e j).2).1
     simpa [hv] using this
@@ -335,7 +315,7 @@ theorem riem_block (U : Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (x : (U.X k)
     rw [Uw.iso, Uw.iso, map_smul, map_smul]
     have s1 : ((a • Uw.φ k u : (U.X k).Λ) : Fin r → E) = (a : E) • (Uw.φ k u : Fin r → E) := rfl
     have s2 : ((a' • Uw.φ k v : (U.X k).Λ) : Fin r → E) = (a' : E) • (Uw.φ k v : Fin r → E) := rfl
-    rw [s1, s2, herm_smul_left, herm_smul_right, ha']
+    rw [s1, s2, _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_right, ha']
     simp [cc]
   exact_mod_cast this
 
@@ -354,7 +334,7 @@ theorem lengths_along_flow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField
       simpa [hermForm_smul_left] using this
     · exact him _ (hV _ hz) _ (hV _ hz)
   · rw [← hper t (by rw [ht]; exact hξ.2.1)]
-    have hmaj := (GlobalTheory.T.riemann_form_frame_periods_eq_majorant E H Dw l Xo c σ r U Uw k x' Hm' hσ hU hH').1
+    have hmaj := (_root_.GlobalTheory.RiemMaj.riemann_eq_majorant E H Dw l Xo c σ r U Uw k x' Hm' hσ hU hH').1
     have hlin := (Uw.period k x').1
     have key := block_le (U.X k).Ψ (U.X k).cmType (fun j => relab c σ (Uw.e j).1) Hm' hH'.2.1
       (riem_block U Uw k x' Hm' hH') (Uw.Pm k x' t)

@@ -190,8 +190,7 @@ theorem theta_bijective [IsNoetherianRing A] (hs : Function.Surjective (algebraM
   have hσ : ∀ x, σ (psi B J x) = 1 ⊗ₜ[A] x := by
     intro x
     have : e.symm (psi B J x) = Ideal.Quotient.mk _ x := e.symm_apply_eq.mpr rfl
-    simp only [σ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, this,
-      Ideal.Quotient.lift_mk]
+    simp only [σ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, this]
     rfl
   have hleft : ∀ t, σ (theta J t) = t := by
     intro t

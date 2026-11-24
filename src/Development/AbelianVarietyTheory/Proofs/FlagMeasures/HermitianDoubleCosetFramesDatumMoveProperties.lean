@@ -3,8 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasisOfIsCompl
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBoundStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -70,18 +70,6 @@ theorem conj_form {L : LocE F E} {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h : 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
-private theorem hf_add_left_flag_measures' (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
-    (x x' y : Fin n → E) : hf L Hm (x + x') y = hf L Hm x y + hf L Hm x' y := by
-  simp only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]
-
-private theorem hf_smul_left_flag_measures' (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
-    (c : E) (x y : Fin n → E) : hf L Hm (c • x) y = c * hf L Hm x y := by
-  simp only [hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
-
-private theorem hf_zero_left_flag_measures (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
-    (y : Fin n → E) : hf L Hm 0 y = 0 := by
-  simp [hf]
-
 theorem form_zero_of_span {L : LocE F E} {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (h : IsHerm L Hm)
     (A : Set (Fin n → E)) (hA : ∀ a ∈ A, ∀ b ∈ A, hf L Hm a b = 0) :
     ∀ x ∈ Submodule.span E A, ∀ y ∈ Submodule.span E A, hf L Hm x y = 0 := by
@@ -90,20 +78,18 @@ theorem form_zero_of_span {L : LocE F E} {n : ℕ} {Hm : Matrix (Fin n) (Fin n) 
     intro a ha z hz
     induction hz using Submodule.span_induction with
     | mem w hw => exact hA w hw a ha
-    | zero => exact hf_zero_left_flag_measures L Hm a
-    | add u v _ _ hu hv => rw [hf_add_left_flag_measures', hu, hv, add_zero]
-    | smul c u _ hu => rw [hf_smul_left_flag_measures', hu, mul_zero]
+    | zero => exact _root_.GlobalTheory.HL.StdLat.hf_zero_l L Hm a
+    | add u v _ _ hu hv => rw [_root_.GlobalTheory.HL.Eichler.hf_add_l, hu, hv, add_zero]
+    | smul c u _ hu => rw [_root_.GlobalTheory.HL.Eichler.hf_smul_l, hu, mul_zero]
   induction hx using Submodule.span_induction with
   | mem w hw => rw [conj_form h y w, h1 w hw y hy, map_zero]
-  | zero => exact hf_zero_left_flag_measures L Hm y
-  | add u v _ _ hu hv => rw [hf_add_left_flag_measures', hu, hv, add_zero]
-  | smul c u _ hu => rw [hf_smul_left_flag_measures', hu, mul_zero]
+  | zero => exact _root_.GlobalTheory.HL.StdLat.hf_zero_l L Hm y
+  | add u v _ _ hu hv => rw [_root_.GlobalTheory.HL.Eichler.hf_add_l, hu, hv, add_zero]
+  | smul c u _ hu => rw [_root_.GlobalTheory.HL.Eichler.hf_smul_l, hu, mul_zero]
 
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
-theorem spanTo_mono (g : Fin (r + 1) → S.V) {i j : ℕ} (h : i ≤ j) : S.spanTo g i ≤ S.spanTo g j := by
-  unfold Frames.spanTo
-  exact Submodule.span_mono (Set.image_mono fun a (ha : (a : ℕ) < i) => lt_of_lt_of_le ha h)
+alias spanTo_mono := _root_.GlobalTheory.HL.FrameOnto.spanTo_mono
 
 theorem iso_spanTo (g : Fin (r + 1) → S.V) (c : E)
     (hg : ∀ a b, hf L S.Hm (g a) (g b) = if a = Fin.last r ∧ b = Fin.last r then c else 0)
@@ -198,7 +184,7 @@ theorem move_facts : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace
   obtain ⟨-, hW, -, hfrL, hfr'L, hli, -, -⟩ := GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT
   obtain ⟨-, -, hn, hn', -⟩ := hW
   obtain ⟨-, -, -, -, -, hth, hthO, -⟩ := GlobalTheory.FrameBasic.frames_basic L r k S
-  obtain ⟨-, -, -, -, -, -, -, -, hMa, -, -⟩ := GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT
+  obtain ⟨-, -, -, -, -, -, -, -, hMa, -, -⟩ := _root_.GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ hT
   have hthE : algebraMap F E S.th ∈ L.O := (GlobalTheory.UnramOrder.algebraMap_mem_iff L _).mpr hthO
   have hinv : algebraMap F E S.th⁻¹ * algebraMap F E S.th = 1 := by
     rw [← map_mul, inv_mul_cancel₀ hth, map_one]

@@ -117,7 +117,7 @@ theorem _root_.GlobalTheory.SW.Slab.exists_bound_upper {r : ℕ} (d : Fin r → 
       simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hj
       exact hzero j (lt_of_le_of_ne hj (Ne.symm hjk))
     have hfk : ‖f k‖ = ‖b k k‖ * ‖b k c‖ := by
-      simp [f, norm_mul, hd]
+      simp [f, hd]
     have hsum : ‖∑ j ∈ Finset.univ.filter (· < k), f j‖ ≤ r * C ^ 2 := by
       calc ‖∑ j ∈ Finset.univ.filter (· < k), f j‖
           ≤ ∑ j ∈ Finset.univ.filter (· < k), ‖f j‖ := norm_sum_le _ _
@@ -255,12 +255,6 @@ private theorem sign_re_pos_and_norm_bounds_of_near_sign {z : ℂ} {s : ℝ} (hs
 
 open Matrix Complex NumberField MeasureTheory in
 open scoped ComplexConjugate ComplexOrder Real Classical in
-private theorem lminor_last_eq_det {r : ℕ} (G : Matrix (Fin r) (Fin r) ℂ) :
-    _root_.ReciprocityTheory.ChartRestriction.G.FD.lminor G (Fin.last r) = G.det := by
-  unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.lminor; rfl
-
-open Matrix Complex NumberField MeasureTheory in
-open scoped ComplexConjugate ComplexOrder Real Classical in
 private theorem mem_Bor_iff_det_ne_zero_and_lower_eq_zero {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ}
     {b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame Ψ r} : b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor Ψ r ↔
       ∀ τ : Ψ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ).det ≠ 0 ∧ ∀ a c : Fin r, c < a → b τ a c = 0 := Iff.rfl
@@ -353,7 +347,7 @@ theorem _root_.GlobalTheory.SW.thin_slab : ∀ (E : Type) [Field E] [NumberField
     have hdg := _root_.GlobalTheory.SW.Slab.det_gram X τ.1 (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)
     have hzero : _root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm x τ (Fin.last r) = 0 := by
       show _root_.ReciprocityTheory.ChartRestriction.G.FD.lminor (_root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)) (Fin.last r) = 0
-      rw [lminor_last_eq_det, hdg, h0]
+      rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.lminor_last, hdg, h0]
       simp
     rw [hzero] at hlast
     simp at hlast

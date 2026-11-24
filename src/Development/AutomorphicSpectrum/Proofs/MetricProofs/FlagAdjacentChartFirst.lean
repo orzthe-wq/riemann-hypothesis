@@ -109,7 +109,6 @@ theorem analytic_wH_snd (s : Set (Fin e → ℂ)) (h : Ψ → Matrix (Fin N) (Fi
     AnalyticOnNhd ℂ (fun w => (wH h ε τ w * (1 + Matrix.single cb ca (wT ε w))) a b) s := by
   refine analytic_mul_entry (s := s) (fun w => wH h ε τ w) (fun w => 1 + Matrix.single cb ca (wT ε w))
     (fun a b => analytic_wH s h ε τ a b) (fun a' b' => ?_) a b
-  beta_reduce
   by_cases hc : cb = a' ∧ ca = b'
   · have hfun : (fun w => (1 + Matrix.single cb ca (wT ε w)) a' b') =
         fun w => (1 : Matrix (Fin N) (Fin N) ℂ) a' b' + w (ε (Sum.inr (Sum.inr ()))) := by

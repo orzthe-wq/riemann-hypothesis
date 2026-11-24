@@ -62,10 +62,6 @@ theorem gC_nonneg (L : SizeData₂ D) {C : ℝ} (hC : 0 ≤ C) (p : ℕ) : 0 ≤
   · exact div_nonneg hC (Nat.cast_nonneg _)
   · exact le_refl 0
 
-theorem logWeight_nonneg' (w : D.what₂.places.Pl) : 0 ≤ SizeData₂.lwP w := by
-  simp only [SizeData₂.lwP, lw]
-  exact div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)
-
 theorem sumSz_le (C : ℝ) (hC : 0 ≤ C) (y : D.what₂.places.Pl → ℝ)
     (hy : ∀ w, y w ≤ gC L C (D.what₂.places.resChar w)) (hM : Formalism.MainNotions.CornerGLContinuity.MertensBound D) :
     ∑ w ∈ L.supp, SizeData₂.sz w (y w) ≤ 4 * C * Real.log (L.sc.X'' D.R.n + 1) := by
@@ -80,7 +76,7 @@ theorem sumSz_le (C : ℝ) (hC : 0 ≤ C) (y : D.what₂.places.Pl → ℝ)
     refine Finset.sum_le_sum fun w _ => ?_
     unfold SizeData₂.sz
     have hc : 0 ≤ 2 * SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ) :=
-      mul_nonneg (mul_nonneg zero_le_two (logWeight_nonneg' w)) (Nat.cast_nonneg _)
+      mul_nonneg (mul_nonneg zero_le_two (_root_.Formalism.MainNotions.WeightDegreeSizes.logWeight_nonneg w)) (Nat.cast_nonneg _)
     calc 2 * SizeData₂.lwP w * ((D.what₂.places.ramIdx w : ℝ) * y w)
         = (2 * SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ)) * y w := by ring
       _ ≤ (2 * SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ)) * gC L C (D.what₂.places.resChar w) :=
@@ -273,7 +269,7 @@ theorem fo_le_pol (hFD : L.FDef) (hS : SizesAt L) (hM : Formalism.MainNotions.Co
       4 * (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b) * Real.log (L.sc.X'' D.R.n + 1) := by
     unfold SizeData₂.Fo
     exact Finset.sum_le_sum hj
-  rw [Finset.sum_const, nsmul_eq_mul, Formalism.MainNotions.DIV.HookProducts.Row4.card_lifts_eq] at hsum
+  rw [Finset.sum_const, nsmul_eq_mul, _root_.Formalism.MainNotions.AuxBlock8.Pf.card_lifts] at hsum
   have hlog := Formalism.MainNotions.DIV.HookProducts.Row4.logX_le hS.1 hS.2.2.1
   have hC4 : 0 ≤ 4 * (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b) := by linarith
   have s1 : (D.R.m : ℝ) * (4 * (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b) *

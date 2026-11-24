@@ -83,11 +83,11 @@ private theorem repAlg_map (ρ : G →* Matrix (Fin n) (Fin n) A) (B : Type) [Co
     have hm : MonoidAlgebra.mapRingHom G (algebraMap A B) (MonoidAlgebra.single 1 r)
         = MonoidAlgebra.single 1 (algebraMap A B r) := by
       ext g
-      simp [MonoidAlgebra.coeff_single, Finsupp.single_apply]
+      simp [MonoidAlgebra.coeff_single]
     rw [hr, map_mul, map_mul, map_mul, hx, Matrix.map_mul, hm, repAlg_single, repAlg_single, map_one]
     congr 1
     ext i j
-    by_cases h : i = j <;> simp [Matrix.one_apply, h]
+    by_cases h : i = j <;> simp [h]
 
 private theorem ofRep_D (ρ : G →* Matrix (Fin n) (Fin n) A) (B : Type) [CommRing B] [Algebra A B]
     (x : MonoidAlgebra B G) : (GDet.ofRep ρ).D B x = (GDet.repAlg ρ B x).det := rfl
@@ -99,7 +99,7 @@ private theorem chi_eq (ρ : G →* Matrix (Fin n) (Fin n) A) (y : MonoidAlgebra
   rw [Matrix.charpoly]
   congr 1
   ext i j
-  by_cases h : i = j <;> simp [Matrix.charmatrix_apply, Matrix.one_apply, h]
+  by_cases h : i = j <;> simp [h]
 
 private theorem chi_single (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
     (GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by

@@ -447,7 +447,6 @@ theorem auxiliary_prime_odd (D : D7) : q0 D % 2 = 1 := by
     exact dvd_mul_of_dvd_left (dvd_mul_of_dvd_left h2 _) _
   have h2k : 2 ∣ rPr D * LevelStarExponents.condE D := dvd_mul_of_dvd_right h2c _
   rw [← Nat.mod_mod_of_dvd (q0 D) h2k, (auxiliary_prime_mem D).2.1]
-  all_goals norm_num
 
 def covR {n : ℕ} (Λ : Submodule ℤ (EuclideanSpace ℝ (Fin n))) : ℝ :=
   sSup (Set.range fun x : EuclideanSpace ℝ (Fin n) => Metric.infDist x (Λ : Set (EuclideanSpace ℝ (Fin n))))

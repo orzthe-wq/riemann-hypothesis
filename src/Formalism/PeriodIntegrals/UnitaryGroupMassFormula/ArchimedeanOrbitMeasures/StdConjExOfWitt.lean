@@ -69,7 +69,7 @@ theorem theta_lin_indep {F E : Type} [Field F] [Field E] [Algebra F E] (φ : E �
       rw [hγ, map_div₀, div_eq_iff hφ0]
       push_cast
       field_simp
-      first | linear_combination h | linear_combination -h | linear_combination (↑(r 1) : ℂ)⁻¹ * h
+      first | linear_combination h
     have hσγ : σ γ = γ := by
       apply φ.injective
       rw [hσφ, hφγ, Complex.conj_ofReal]
@@ -107,7 +107,6 @@ theorem thetaInf_inj {D : D7} (X : HidaSetting D) (y : Ainf X.B.I.F ⊗[X.B.I.F]
     rw [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
   have hc : ∀ i, B.repr y i = 0 := by
     intro i
-    change (B.repr y i : (v : InfinitePlace X.B.I.F) → v.Completion) = 0
     funext v
     have hvr : v.IsReal := IsTotallyReal.isReal v
     have hv := h v

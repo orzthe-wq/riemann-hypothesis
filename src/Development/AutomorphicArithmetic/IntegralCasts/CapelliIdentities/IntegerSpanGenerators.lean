@@ -1,29 +1,38 @@
 module
 
+public import Mathlib.LinearAlgebra.Span.Defs
+public import Mathlib.Algebra.BigOperators.GroupWithZero.Action
+public import Mathlib.Algebra.Module.Submodule.Basic
+public import Mathlib.Algebra.Module.Submodule.Map
+public import Mathlib.Algebra.Ring.Divisibility.Basic
+public import Mathlib.LinearAlgebra.BilinearMap
+public import Mathlib.Algebra.Algebra.Defs
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+public import Mathlib.Algebra.Module.Submodule.Defs
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 public import Formalism.SharpRestriction.LevelLetterCocycles.CrystallineLiftingInputs
 public import Formalism.SharpRestriction.LevelLetterCocycles.BaseChangePreservesUnitaryOf
 public import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DivisibilityFiltration
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FiltrationExponentBound
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PowerSeries.NoZeroDivisors
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -43,10 +52,222 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PowerSeries.NoZeroDivisors
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DivisibilityFiltration, Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FiltrationExponentBound, Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegerSpanGenerators
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DivisibilityFiltration =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DivisibilityFiltration", "h": "module\n\npublic import Mathlib.LinearAlgebra.Span.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.BigOperators.GroupWithZero.Action\npublic import Mathlib.Algebra.Module.Submodule.Basic\npublic import Mathlib.Algebra.Module.Submodule.Map\npublic import Mathlib.Algebra.Ring.Divisibility.Basic\npublic import Mathlib.LinearAlgebra.BilinearMap\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.divisibility_filtration :
+    ∀ {A D : Type} [CommRing A] [AddCommGroup D] [Module A D] (l f ϖ : A) (σ R : ℕ) (E e : ℕ → ℕ)
+        (r s : ℕ → A) (S : Set D) (Z : Submodule A D),
+        (∀ a : A, f ∣ l * a → f ∣ a) →
+        (∀ a b, E a + E b ≤ E (a + b)) → (∀ y, E y ≤ e y) → e 0 = 0 →
+        (∀ y, f ∣ ϖ ^ y - r y) → (∀ y, l ^ e y * s y = l ^ σ * r y) → (∀ y, R < y → f ∣ ϖ ^ y) →
+        (∀ x ∈ S, ∃ c : ℕ → D, c 0 = 0 ∧ (∀ y, c y ∈ S) ∧
+          l ^ σ • x - ∑ y ∈ Finset.range (R + 1), (s y * l ^ (e y - E y)) • c y ∈ Z) →
+        ∀ p ∈ Submodule.span A S, ∃ p' ∈ Submodule.span A S, l ^ (2 * σ) • p - f • p' ∈ Z := by
+  intro A D _ _ _ l f ϖ σ R E e r s S Z hl hE hEe he0 hr hs hR hS
+  classical
+  let N : Submodule A D := Z ⊔ (Submodule.span A S).map (LinearMap.lsmul A D f)
+  have hZN : ∀ z ∈ Z, z ∈ N := fun z hz => Submodule.mem_sup_left hz
+  have hfN : ∀ w ∈ Submodule.span A S, f • w ∈ N := fun w hw =>
+    Submodule.mem_sup_right (Submodule.mem_map.2 ⟨w, hw, rfl⟩)
+  have hpow : ∀ (n : ℕ) (a : A), f ∣ l ^ n * a → f ∣ a := by
+    intro n
+    induction n with
+    | zero => intro a h; simpa using h
+    | succ n ih =>
+      intro a h
+      exact ih a (hl _ (by rwa [← mul_assoc, ← pow_succ']))
+  let t : ℕ → A := fun y => s y * l ^ (e y - E y)
+  have ht : ∀ y, l ^ E y * t y = l ^ σ * r y := by
+    intro y
+    rw [← hs y]
+    calc l ^ E y * (s y * l ^ (e y - E y))
+        = (l ^ E y * l ^ (e y - E y)) * s y := by ring
+      _ = l ^ e y * s y := by rw [← pow_add, Nat.add_sub_of_le (hEe y)]
+  have hbig : ∀ y, R < y → f ∣ t y := by
+    intro y hy
+    refine hpow (E y) _ ?_
+    rw [ht]
+    exact Dvd.dvd.mul_left ((dvd_sub_right (hR y hy)).1 (hr y)) _
+  have hprod : ∀ y z, ∃ u, t y * t z =
+      f * u + l ^ (σ + (E (y + z) - (E y + E z))) * t (y + z) := by
+    intro y z
+    have hd : f ∣ t y * t z - l ^ (σ + (E (y + z) - (E y + E z))) * t (y + z) := by
+      refine hpow (E y + E z) _ ?_
+      obtain ⟨a, ha⟩ := hr y
+      obtain ⟨b, hb⟩ := hr z
+      obtain ⟨c, hc⟩ := hr (y + z)
+      have hy : r y = ϖ ^ y - f * a := by rw [← ha]; ring
+      have hz : r z = ϖ ^ z - f * b := by rw [← hb]; ring
+      have hyz : r (y + z) = ϖ ^ (y + z) - f * c := by rw [← hc]; ring
+      have e1 : l ^ (E y + E z) * (t y * t z) = (l ^ σ * r y) * (l ^ σ * r z) := by
+        rw [← ht y, ← ht z]; ring
+      have e2 : l ^ (E y + E z) * (l ^ (σ + (E (y + z) - (E y + E z))) * t (y + z))
+          = l ^ σ * (l ^ σ * r (y + z)) := by
+        rw [← ht (y + z)]
+        calc l ^ (E y + E z) * (l ^ (σ + (E (y + z) - (E y + E z))) * t (y + z))
+            = l ^ σ * ((l ^ (E y + E z) * l ^ (E (y + z) - (E y + E z))) * t (y + z)) := by
+              rw [pow_add l σ]; ring
+          _ = l ^ σ * (l ^ E (y + z) * t (y + z)) := by
+              rw [← pow_add, Nat.add_sub_of_le (hE y z)]
+      rw [mul_sub, e1, e2, hy, hz, hyz]
+      refine ⟨l ^ σ * l ^ σ * (c - a * ϖ ^ z - b * ϖ ^ y + f * a * b), ?_⟩
+      rw [pow_add ϖ y z]
+      ring
+    obtain ⟨u, hu⟩ := hd
+    exact ⟨u, by rw [← hu]; ring⟩
+  have hsplit : ∀ (a : A) (x : D) (c : ℕ → D),
+      (a * l ^ σ) • x = a • (l ^ σ • x - ∑ z ∈ Finset.range (R + 1), t z • c z)
+        + ∑ z ∈ Finset.range (R + 1), (a * t z) • c z := by
+    intro a x c
+    rw [smul_sub, Finset.smul_sum, smul_smul]
+    simp only [smul_smul, sub_add_cancel]
+  have hkey : ∀ (n y : ℕ), R + 1 ≤ y + n → ∀ w ∈ S, (l ^ σ * t y) • w ∈ N := by
+    intro n
+    induction n with
+    | zero =>
+      intro y hy w hw
+      obtain ⟨u, hu⟩ := hbig y (by omega)
+      have : (l ^ σ * t y) • w = f • ((l ^ σ * u) • w) := by
+        rw [hu, smul_smul]; congr 1; ring
+      rw [this]
+      exact hfN _ (Submodule.smul_mem _ _ (Submodule.subset_span hw))
+    | succ n ih =>
+      intro y hy w hw
+      obtain ⟨c, hc0, hcS, hcZ⟩ := hS w hw
+      rw [mul_comm (l ^ σ) (t y), hsplit]
+      refine N.add_mem (hZN _ (Z.smul_mem _ hcZ)) (N.sum_mem ?_)
+      intro z _
+      rcases Nat.eq_zero_or_pos z with rfl | hz
+      · rw [hc0, smul_zero]
+        exact N.zero_mem
+      · obtain ⟨u, hu⟩ := hprod y z
+        have hsum : (t y * t z) • c z = f • (u • c z)
+            + l ^ (E (y + z) - (E y + E z)) • ((l ^ σ * t (y + z)) • c z) := by
+          rw [hu, add_smul, smul_smul, smul_smul, pow_add]
+          congr 2
+          ring
+        rw [hsum]
+        exact N.add_mem (hfN _ (Submodule.smul_mem _ _ (Submodule.subset_span (hcS z))))
+          (N.smul_mem _ (ih (y + z) (by omega) _ (hcS z)))
+  have hgen : ∀ x ∈ S, l ^ (2 * σ) • x ∈ N := by
+    intro x hx
+    obtain ⟨c, _, hcS, hcZ⟩ := hS x hx
+    rw [two_mul, pow_add, hsplit]
+    exact N.add_mem (hZN _ (Z.smul_mem _ hcZ))
+      (N.sum_mem fun z _ => hkey (R + 1) z (by omega) _ (hcS z))
+  have hall : Submodule.span A S ≤ N.comap (LinearMap.lsmul A D (l ^ (2 * σ))) :=
+    Submodule.span_le.2 fun x hx => hgen x hx
+  intro p hp
+  obtain ⟨z, hz, v, hv, hzv⟩ := Submodule.mem_sup.1 (hall hp)
+  obtain ⟨p', hp', rfl⟩ := Submodule.mem_map.1 hv
+  exact ⟨p', hp', by
+    rw [show l ^ (2 * σ) • p = z + f • p' from hzv.symm, add_sub_cancel_right]
+    exact hz⟩
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DivisibilityFiltration =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FiltrationExponentBound =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FiltrationExponentBound", "h": "module\n\npublic import Mathlib.Algebra.Algebra.Defs\npublic import Mathlib.Algebra.BigOperators.Group.Finset.Defs\npublic import Mathlib.Algebra.Module.Submodule.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.BigOperators.Group.Finset.Basic\npublic import Mathlib.Algebra.BigOperators.GroupWithZero.Action\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.filtration_exponent_bound :
+    ∀ {O A D : Type} [CommRing O] [CommRing A] [Algebra O A] [AddCommGroup D] [Module O D] [Module A D]
+        [IsScalarTower O A D] (N : Submodule O D) (γ : D →ₗ[O] D) (ϖ : A) (l : O) (E e : ℕ → ℕ) (lam : ℕ → O),
+        Monotone E → Monotone e → (∀ y, E y ≤ e y) →
+        (∀ r : ℕ, ∃ u : Oˣ, lam (r + 1) = (u : O) * l ^ (E (r + 1) - E r)) →
+        lam 0 = 0 → (∀ x ∈ N, ϖ • x ∈ N) →
+        (∀ (r : ℕ), ∀ x ∈ N, ∃ x' ∈ N,
+          γ (ϖ ^ r • x) - ϖ ^ r • x = lam r • (ϖ ^ r • x) + ϖ ^ (r + 1) • x') →
+        ∀ w ∈ N, ∃ c : ℕ → D, c 0 = 0 ∧ (∀ y, c y ∈ N) ∧ ∀ K : ℕ, ∃ t ∈ N,
+          l ^ e K • (γ w - w) - ∑ y ∈ Finset.range K, l ^ (e K - e y) •
+            (γ (ϖ ^ y • (l ^ (e y - E y) • c y)) - ϖ ^ y • (l ^ (e y - E y) • c y)) = ϖ ^ K • t := by
+  intro O A D _ _ _ _ _ _ _ N γ ϖ l E e lam hE he hEe hlam hlam0 hϖ hγ w hw
+  choose u hu using hlam
+  have hγ' : ∀ (r : ℕ) (x : N), ∃ x' : N,
+      γ (ϖ ^ r • (x : D)) - ϖ ^ r • (x : D) = lam r • (ϖ ^ r • (x : D)) + ϖ ^ (r + 1) • (x' : D) := by
+    intro r x
+    obtain ⟨x', h1, h2⟩ := hγ r x x.2
+    exact ⟨⟨x', h1⟩, h2⟩
+  choose f hf using hγ'
+  have h0 : γ w - w = ϖ • (f 0 ⟨w, hw⟩ : D) := by
+    simpa [hlam0] using hf 0 ⟨w, hw⟩
+  let s : ℕ → N := fun K => Nat.rec (l ^ E 0 • f 0 ⟨w, hw⟩)
+    (fun k sk => - f (k + 1) (((u k)⁻¹ : Oˣ).val • sk)) K
+  have hs0 : s 0 = l ^ E 0 • f 0 ⟨w, hw⟩ := rfl
+  have hsS : ∀ k, s (k + 1) = - f (k + 1) (((u k)⁻¹ : Oˣ).val • s k) := fun _ => rfl
+  let c : ℕ → N := fun K => Nat.casesOn K 0 (fun k => ((u k)⁻¹ : Oˣ).val • s k)
+  have hc0 : c 0 = 0 := rfl
+  have hcS : ∀ k, c (k + 1) = ((u k)⁻¹ : Oˣ).val • s k := fun _ => rfl
+  clear_value c s
+  have key : ∀ K, l ^ E K • (γ w - w) - ∑ y ∈ Finset.range (K + 1), l ^ (E K - E y) •
+      (γ (ϖ ^ y • (c y : D)) - ϖ ^ y • (c y : D)) = ϖ ^ (K + 1) • (s K : D) := by
+    intro K
+    induction K with
+    | zero =>
+      simp only [zero_add, Finset.sum_range_one, hc0, hs0, h0, ZeroMemClass.coe_zero, smul_zero,
+        map_zero, sub_zero, pow_one, Submodule.coe_smul]
+      rw [smul_comm]
+    | succ K ih =>
+      have hK : E K ≤ E (K + 1) := hE (Nat.le_succ K)
+      have hsum : ∑ y ∈ Finset.range (K + 1), l ^ (E (K + 1) - E y) •
+          (γ (ϖ ^ y • (c y : D)) - ϖ ^ y • (c y : D)) =
+          l ^ (E (K + 1) - E K) • ∑ y ∈ Finset.range (K + 1), l ^ (E K - E y) •
+          (γ (ϖ ^ y • (c y : D)) - ϖ ^ y • (c y : D)) := by
+        rw [Finset.smul_sum]
+        refine Finset.sum_congr rfl fun y hy => ?_
+        have hy' : E y ≤ E K := hE (Nat.lt_succ_iff.mp (Finset.mem_range.mp hy))
+        rw [smul_smul, ← pow_add]
+        rw [Nat.sub_add_sub_cancel hK hy']
+      have hp : l ^ E (K + 1) = l ^ (E (K + 1) - E K) * l ^ E K := by
+        exact (pow_sub_mul_pow l hK).symm
+      have hl : lam (K + 1) • (ϖ ^ (K + 1) • (c (K + 1) : D)) =
+          l ^ (E (K + 1) - E K) • (ϖ ^ (K + 1) • (s K : D)) := by
+        rw [hcS, Submodule.coe_smul, smul_comm (ϖ ^ (K + 1)), smul_smul, hu]
+        rw [mul_right_comm, Units.mul_inv, one_mul]
+      rw [Finset.sum_range_succ _ (K + 1), hsum, hp, mul_smul, ← sub_sub, ← smul_sub, ih, hf, hl,
+        hsS, ← hcS]
+      simp
+  refine ⟨fun y => (c y : D), by simp [hc0], fun y => (c y).2, fun K => ?_⟩
+  cases K with
+  | zero =>
+    refine ⟨l ^ e 0 • (ϖ • (f 0 ⟨w, hw⟩ : D)), N.smul_mem _ (hϖ _ (f 0 ⟨w, hw⟩).2), ?_⟩
+    simp [h0]
+  | succ K =>
+    have hK : E K ≤ e (K + 1) := (hEe K).trans (he (Nat.le_succ K))
+    refine ⟨l ^ (e (K + 1) - E K) • (s K : D), N.smul_mem _ (s K).2, ?_⟩
+    have hp : l ^ e (K + 1) = l ^ (e (K + 1) - E K) * l ^ E K := by
+      exact (pow_sub_mul_pow l hK).symm
+    rw [smul_comm (ϖ ^ (K + 1)), ← key, smul_sub (l ^ (e (K + 1) - E K)), ← mul_smul, ← hp,
+      Finset.smul_sum]
+    congr 1
+    refine Finset.sum_congr rfl fun y hy => ?_
+    have hyK : y ≤ K := Nat.lt_succ_iff.mp (Finset.mem_range.mp hy)
+    have h1 : E y ≤ E K := hE hyK
+    have h2 : e y ≤ e (K + 1) := he (hyK.trans (Nat.le_succ K))
+    rw [smul_comm (ϖ ^ y), map_smul, ← smul_sub, smul_smul, smul_smul, ← pow_add, ← pow_add]
+    rw [Nat.sub_add_sub_cancel h2 (hEe y), Nat.sub_add_sub_cancel hK h1]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FiltrationExponentBound =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegerSpanGenerators =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegerSpanGenerators", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.CrystallineLiftingInputs\npublic import Formalism.SharpRestriction.LevelLetterCocycles.BaseChangePreservesUnitaryOf\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ArcLiftingSetup\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DivisibilityFiltration\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FiltrationExponentBound\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PowerSeries.NoZeroDivisors\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 
@@ -292,3 +513,6 @@ theorem UpperTheory.Reformulated.B.IntegerSpanGenerators.span_gen
     ∃ p' ∈ pullJ W T i j, ((PD.p : ℕ) : O) ^ (2 * σ) • p - fMX W M X • p' ∈
       UpperTheory.Reformulated.B.IntegerSpanGenerators.Zspan W T i j M X σ :=
   aux W hinj hO hH hR hA hφ T hT i hj r s hrs p hp
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IntegerSpanGenerators =====

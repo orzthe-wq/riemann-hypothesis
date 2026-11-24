@@ -93,7 +93,7 @@ theorem phi_mul : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (w
   obtain ⟨r, hr, -⟩ := hB.1 u
   have hrs : r = s' 2 := by
     refine CoefDet.fam_eq_of_coef_eq hL R I hI D F (N 2) r (s' 2) fun g₀ => ?_
-    letI := GlobalTheory.TorusExt.gtGroup D.toPre F
+    let := GlobalTheory.TorusExt.gtGroup D.toPre F
     have hadd : g₀.IsAdd p.g (g₀ + p.g) := (GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 rfl
     obtain ⟨ω₀, hω₀⟩ : ∃ ω₀ : Frm D.toPre F k g₀.b, ω₀.IsGen :=
       exists_gen_of_local (V := F) D.toPre.P.L D.toPre.P.isLB _ _

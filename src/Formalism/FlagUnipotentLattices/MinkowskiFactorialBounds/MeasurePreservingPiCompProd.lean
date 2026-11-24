@@ -176,7 +176,7 @@ lemma s5b7_smul_top_prod {R M N : Type} [CommRing R] [AddCommGroup M] [Module R 
     [Module R N] (I : Ideal R) :
     I • (⊤ : Submodule R (M × N)) =
       (I • (⊤ : Submodule R M)).prod (I • (⊤ : Submodule R N)) := by
-  apply Formalism.HermitianLatticeCounting.P.ideal_smul_top_prod <;> assumption
+  apply Formalism.HermitianLatticeCounting.P.ideal_smul_top_prod
 
 theorem s5b7_quot (p : Ideal O) [hp : p.IsMaximal] [Finite (O ⧸ p)] (Y : Type) [AddCommGroup Y]
     [Module O Y] [Module.Finite O Y] [Module.Projective O Y] :

@@ -1,19 +1,23 @@
 module
 
+public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.DefsTw
+public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjCarries
+public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExCusp
+public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.IsoEq
+public import PositivityTheory.AutomorphicForms.PublishedInputs.CyclicBaseChange.PSConjSpaceC
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.NormCharSplit
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.FormsFiniteGL
-public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjIff
-import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExCusp
-import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.IsoEq
 public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.SInfEx
-import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.SInfIff
 public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.SSatIff
 public import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.AdBasic
-import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.AdUnique
 public import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalAdEq
 public import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalTwistExAlt
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places
 public import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.JacquetShalikaRigidity
+public import PositivityTheory.AutomorphicForms.PublishedInputs.CyclicBaseChange.PSGalAdEx
+public import PositivityTheory.AutomorphicForms.PublishedInputs.CyclicBaseChange.P_SSatEx
+import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExSummand
+import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.GalCentral
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -48,9 +52,50 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import PositivityTheory.AutomorphicForms.PublishedInputs.CyclicBaseChange.PSGalAdEx
-public import PositivityTheory.AutomorphicForms.PublishedInputs.CyclicBaseChange.P_SSatEx
+import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.SInfIff
+import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.AdUnique
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjIff, Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.CarryLift
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjIff =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjIff", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.DefsTw\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjCarries\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExCusp\nimport Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExSummand\nimport Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.GalCentral\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.IsoEq\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.CyclicBaseChange.PSConjSpaceC\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory NumberField IsDedekindDomain
+open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
+open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
+open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
+open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
+
+theorem UpperTheory.ConvolutionTheory.Dp.conjIff :
+    UpperTheory.ConvolutionTheory.Dp.ConjIff := by
+  intro E _ _ _ n μ _ θ σ s hs he π V hV
+  constructor
+  · intro h
+    obtain ⟨P', hsp, hiso⟩ := h s hs
+    cases P' with
+    | cx π' =>
+      have e : π' = π := (UpperTheory.ConvolutionTheory.Dp.isoEq E n π' π).1 hiso
+      subst e
+      have h1 := (UpperTheory.ConvolutionTheory.Dp.conjCarries E n μ θ σ s hs he π' π' V hsp).1 hV
+      exact ((UpperTheory.ConvolutionTheory.Dp.exSummand E n μ π' _).1 h1).2.trans ((UpperTheory.ConvolutionTheory.Dp.exSummand E n μ π' _).1 hV).2.symm
+    | re π' => exact hiso.elim
+  · intro h s' hs'
+    obtain rfl : s' = s := (UpperTheory.ConvolutionTheory.Dp.galCentral E n σ s hs).1 s' hs'
+    obtain ⟨π', hsp⟩ := UpperTheory.CBC.SConjSpaceC_holds E σ s' hs n π
+    have h1 : Carries μ π' V :=
+      (UpperTheory.ConvolutionTheory.Dp.conjCarries E n μ θ σ s' hs he π π' V hsp).2 (by rw [h]; exact hV)
+    have e : π' = π := (UpperTheory.ConvolutionTheory.Dp.exCusp E n μ V hV.summand).unique h1 hV
+    exact ⟨.cx π', hsp, (UpperTheory.ConvolutionTheory.Dp.isoEq E n π' π).2 e⟩
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjIff =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.CarryLift =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.CarryLift", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.NormCharSplit\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.FormsFiniteGL\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ConjIff\nimport Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExCusp\nimport Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.IsoEq\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.SInfEx\nimport Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.SInfIff\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.SSatIff\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.AdBasic\nimport Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.AdUnique\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalAdEq\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.GalTwistExAlt\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places\npublic import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigidity.JacquetShalikaRigidity\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.CyclicBaseChange.PSGalAdEx\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.CyclicBaseChange.P_SSatEx\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory NumberField IsDedekindDomain Filter
@@ -192,3 +237,6 @@ theorem UpperTheory.ConvolutionTheory.T.carryLift :
       change _ = pull n (σ ^ (k + 1)).toRingEquiv '' _
       rw [e, pull_trans, Set.image_comp]
       exact h0.trans (congrArg _ ih)
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.CarryLift =====

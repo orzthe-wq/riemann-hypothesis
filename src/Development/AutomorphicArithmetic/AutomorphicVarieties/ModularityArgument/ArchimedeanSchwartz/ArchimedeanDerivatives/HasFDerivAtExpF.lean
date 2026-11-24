@@ -88,10 +88,10 @@ private theorem pairL_single (y : Lie K n) (τ : K →+* ℂ) (i j : Fin n) (z :
   rw [Finset.sum_eq_single i, Finset.sum_eq_single j]
   · simp
   · intro b _ hb
-    simp [Matrix.single_apply, hb.symm]
+    simp [hb.symm]
   · simp
   · intro a _ ha
-    simp [Matrix.single_apply, ha.symm]
+    simp [ha.symm]
   · simp
 
 private def expF (e : ℝ) (y : Lie K n) (x : Lie K n) : ℂ := Complex.exp (Complex.I * e * (pairL y x : ℂ))

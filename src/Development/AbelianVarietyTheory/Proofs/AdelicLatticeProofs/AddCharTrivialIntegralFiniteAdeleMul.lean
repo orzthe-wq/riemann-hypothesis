@@ -56,7 +56,7 @@ theorem mem_of_isClosed (F : Type) [Field F] [NumberField F] {C : Set (FiniteAde
   have hc : Continuous fun y : FiniteAdeleRing (𝓞 F) F => α - y := continuous_const.sub continuous_id
   have hU : (fun y : FiniteAdeleRing (𝓞 F) F => α - y) ⁻¹' Cᶜ ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F) :=
     (hC.isOpen_compl.preimage hc).mem_nhds (by simpa using hn)
-  obtain ⟨N, hN, hNU⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ hU
+  obtain ⟨N, hN, hNU⟩ := _root_.GlobalTheory.LocalNormBound.main F _ hU
   obtain ⟨a, β, hβ, e⟩ := (GlobalTheory.AdLat.strong_approximation_mod_nat F N hN).2 α hα
   refine hNU β hβ ?_
   change α - N • β ∈ C

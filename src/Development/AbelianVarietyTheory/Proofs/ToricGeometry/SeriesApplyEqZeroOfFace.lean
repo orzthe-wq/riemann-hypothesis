@@ -106,7 +106,7 @@ private lemma isBigO_norm_cube_of_analytic_vanishing_coords {V : Type*} [NormedA
   let p : ℂ → ℂ → ℂ → (Fin 3 → V) := fun t₀ t₁ t₂ => t₀ • e 0 + t₁ • e 1 + t₂ • e 2
   have hpa : ∀ t₀ t₁ t₂ a, p t₀ t₁ t₂ a = ![t₀, t₁, t₂] a • y a := by
     intro t₀ t₁ t₂ a
-    fin_cases a <;> simp [p, e, Pi.single_apply]
+    fin_cases a <;> simp [p, e]
   have hpb : ∀ t₀ t₁ t₂, ‖t₀‖ < ρ → ‖t₁‖ < ρ → ‖t₂‖ < ρ → p t₀ t₁ t₂ ∈ Metric.ball 0 R := by
     intro t₀ t₁ t₂ h₀ h₁ h₂
     rw [mem_ball_zero_iff, pi_norm_lt_iff hR]

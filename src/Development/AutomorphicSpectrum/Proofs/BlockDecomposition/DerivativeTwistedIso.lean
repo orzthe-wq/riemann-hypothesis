@@ -104,12 +104,12 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 theorem det_of_last {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (h : A (Fin.last n) = eLast k n) :
     A.det = (blockMat k n A).det := by
   have h0 : ∀ j : Fin n, A (Fin.last n) (Fin.castSucc j) = 0 := fun j => by
-    rw [h]; simp [eLast, Pi.single_apply, Fin.castSucc_ne_last]
+    rw [h]; simp [eLast, Fin.castSucc_ne_last]
   have h1 : A (Fin.last n) (Fin.last n) = 1 := by
     rw [h]; simp [eLast]
   rw [Matrix.det_succ_row A (Fin.last n), Fin.sum_univ_castSucc]
   simp only [h0, h1, Fin.succAbove_last]
-  simp [blockMat, ← two_mul, Matrix.submatrix]
+  simp [← two_mul, Matrix.submatrix]
   rfl
 
 theorem det_uin {n : ℕ} (u : MirUin k n) :

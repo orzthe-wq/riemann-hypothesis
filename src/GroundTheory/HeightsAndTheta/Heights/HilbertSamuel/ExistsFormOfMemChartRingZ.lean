@@ -103,7 +103,7 @@ theorem mh_X (k : K) (i : ι k) : IsMultiHomog (X ⟨k, i⟩ : MRing ι) (Pi.sin
   · subst h
     simp [Finsupp.single_apply]
   · have : ∀ j : ι k', (⟨k, i⟩ : Σ k, ι k) ≠ ⟨k', j⟩ := fun j e => h (congrArg Sigma.fst e).symm
-    simp [Finsupp.single_apply, this, h, Pi.single_apply]
+    simp [h]
 
 theorem mh_pow {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (n : ℕ) : IsMultiHomog (f ^ n) (n • a) := by
   induction n with
@@ -355,26 +355,25 @@ theorem proof (hG3 : G3.Statement) (hW : EmbeddingWeight.Statement) (hT : TwistI
       rw [hi', hθ] at e1
       have e2 : algebraMap F Ω ((u n : 𝓞 F) : F) * algebraMap F Ω ((((u n)⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) = 1 := by
         rw [← map_mul, hmul n, map_one]
-      simp only [map_mul, e1, hGy, eq_intCast, Int.cast_pow, Int.cast_natCast, map_pow, map_natCast]
+      simp only [map_mul, e1, hGy, map_pow, map_natCast]
       linear_combination ((N : Ω) * N * iota n f * aeval y h' *
         aeval y (∏ k, (X ⟨k, c k⟩ : MRing ι) ^ d k)) * e2
     have hdeg'' : ∀ k, (((dg' + d) k : ℕ) : ℤ) = ((0 + dh' + d) k : ℕ) + (n : ℤ) * L.a k := by
       intro k
       have := hdd' k
-      simp only [Pi.add_apply, Pi.zero_apply, zero_add]
+      simp only [Pi.add_apply, zero_add]
       push_cast
       linarith
     have hNc : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
     have hden : eval z (map (Int.castRingHom ℂ) (C ((N : ℤ) ^ 2) * h' * ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ d k))
         ≠ 0 := by
-      simp only [map_mul, eval_mul]
+      simp only [map_mul]
       refine mul_ne_zero (mul_ne_zero ?_ h0') hHz
       simpa using pow_ne_zero 2 hNc
     have h1 := hb n hn0 han f hf sg dg dh (dg' + d) (0 + dh' + d) g h (g' * G)
       (C ((N : ℤ) ^ 2) * h' * ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ d k) hg hh hdd hgy (mh_mul hg' hG)
       (mh_mul (mh_mul (mh_C _) hh') hH) hdeg'' hrep z ⟨hz, hsg⟩ h0 hden
-    simp only [map_mul, eval_mul, map_C, eval_C, hGz, norm_mul, eq_intCast, Int.cast_pow, Int.cast_natCast,
-      map_pow, map_natCast, norm_pow, RCLike.norm_natCast] at h1
+    simp only [map_mul, hGz, norm_mul, map_pow, map_natCast, norm_pow, RCLike.norm_natCast] at h1
 
     have hw0 : 0 < ‖sg ((u n : 𝓞 F) : F)‖ := by
       rw [norm_pos_iff, map_ne_zero]

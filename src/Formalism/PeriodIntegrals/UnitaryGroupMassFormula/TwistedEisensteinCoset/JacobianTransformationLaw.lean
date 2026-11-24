@@ -221,7 +221,7 @@ theorem phi_eq (q : ℕ) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ r c' n' 
     PhiQ q ξ k₀ r c' n' c n x =
       if CondQ P q k₀ r c' n' c n x then unitV ξ (AYm q k₀ r c' n' c n x).det else 0 := by
   unfold PhiQ CondQ AYm
-  split_ifs with ha hb hb <;> first | rfl | exact absurd ha hb | exact absurd hb ha
+  split_ifs with ha hb hb <;> first | rfl
 
 theorem redP_zero' : redP P (0 : E) = 0 := by
   exact PI.TwChrOne.Pf.reduction_zero P

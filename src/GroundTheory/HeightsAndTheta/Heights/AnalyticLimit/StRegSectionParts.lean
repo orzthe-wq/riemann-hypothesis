@@ -193,7 +193,6 @@ def BdComparison.Statement : Prop :=
 
 section Inhabitants
 
-open ReciprocityTheory.AnForm.M (p1 holoOn_const)
 
 end Inhabitants
 

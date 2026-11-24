@@ -110,8 +110,6 @@ theorem ell_cont (z : Fin (2 * r + k + 1) → ℂ) : Continuous (ell k r z) := b
   · exact continuous_id.matrix_elem _ _
   · first
       | fun_prop
-      | (simp only [dotProduct]
-         exact continuous_finset_sum _ (fun j _ => (continuous_id.matrix_elem _ _).mul continuous_const))
 
 theorem psi_cont (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) : Continuous (psi k r z c) := by
   unfold psi
@@ -140,8 +138,6 @@ theorem beF_aesm (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (W
   have hπ2 : AEStronglyMeasurable (fun p : Mt k r × Mt k r => π (Matrix.of p.1)⁻¹) (μW.prod μN) := by
     first
       | exact hπm.comp_fst
-      | exact hπm.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_fst
-      | exact hπm.prod_fst
   exact (hco.mul hps.aestronglyMeasurable).smul hπ2
 
 theorem norm_beF_le (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))

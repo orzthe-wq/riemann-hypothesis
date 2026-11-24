@@ -48,4 +48,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.isMulRightInvariant_haar_adelicUnitaryGroup_hermitianSpace : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)), μ.IsHaarMeasure → μ.IsMulRightInvariant := by
-  first | exact @GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure | exact GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure | (intros; apply GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure <;> assumption)
+  first | exact @GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure

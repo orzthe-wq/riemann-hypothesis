@@ -1,7 +1,11 @@
 module
 
+public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+public import Formalism.SharpRestriction.LevelLetterCocycles.GoodCongruenceDataOf
+public import Formalism.WachLatticeTwists.RamifiedBlockRings.DistinctEigenvalueCornerPerturbation
+public import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs
+public import Formalism.SharpRestriction.LevelLetterCocycles.DecompositionData
 public import Formalism.AdmissibleDesigns.BlockTwistedCyclotomic
-public import Formalism.AdmissibleDesigns.SmulEval
 public import Formalism.AdmissibleDesigns.HigherColumnInvariantsBound
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -19,6 +23,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -41,7 +46,135 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.WachLatticeTwists.RealClassMaps.Statement
+import Formalism.WachLatticeTwists.ShapeRowIsomorphisms.Statement
+import Formalism.WachLatticeTwists.SplitClassesAll.Statement
+import Formalism.WachLatticeTwists.SplitLocalLifts.Statement
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.AdmissibleDesigns.SmulEval, Formalism.AdmissibleDesigns.H1MapMemLcH1
+
+-- ===== clump member: Formalism.AdmissibleDesigns.SmulEval =====
+-- clump-header: {"m": "Formalism.AdmissibleDesigns.SmulEval", "h": "module\n\npublic import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow\npublic import Formalism.SharpRestriction.LevelLetterCocycles.GoodCongruenceDataOf\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.DistinctEigenvalueCornerPerturbation\npublic import ReciprocityTheory.ReductiveGroups.TraceFormulas.LatDefs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DecompositionData\nimport Formalism.WachLatticeTwists.RealClassMaps.Statement\nimport Formalism.WachLatticeTwists.ShapeRowIsomorphisms.Statement\nimport Formalism.WachLatticeTwists.SplitClassesAll.Statement\nimport Formalism.WachLatticeTwists.SplitLocalLifts.Statement\n\n"}
+section -- clump:auto
+@[expose] public section
+
+variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
+
+noncomputable section
+
+open Finset Classical Formalism.BasicNotions
+
+namespace Formalism.MainNotions.N.K.ShaT
+
+open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic Formalism.RepresentationBoundsCohomology.JL Formalism.RepresentationBoundsCohomology.JT Formalism.RepresentationBoundsCohomology.SplitClassesAll Formalism.RepresentationBoundsCohomology.LocallyConstantCohomology Formalism.RepresentationBoundsCohomology.FIN
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.N.K
+open Formalism.RepresentationBoundsCohomology.ringDataObjects (RingData RingDef)
+
+section Eval
+variable {D : D7} {i : D.nd.Loc} {r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))}
+  {π : D.nd.X i} {g0 : GE D.nd} {eB e₁ s : D.nd.X i → MatN D.nd i}
+  {Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R)}
+
+structure EvS (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π : D.nd.X i)
+    (Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R)) : Prop where
+  r_eval : ∀ (g : GE D.nd) (x' : Dd.X'),
+    ((Dd.r g : Dd.R') : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) x' =
+      (rO D.nd i r (Dd.p x') g).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))
+  chi_eval : ∀ (g : GE D.nd) (x' : Dd.X'),
+    (((Dd.χ g : Dd.T'ˣ) : Dd.T') : Dd.X' → D.nd.O i) x' = ((D.nd.chi i 1 g : (D.nd.O i)ˣ) : D.nd.O i)
+  smul_eval : ∀ (f : Dd.T') (a : Dd.R') (x' : Dd.X'),
+    ((f • a : Dd.R') : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) x' =
+      algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) ((f : Dd.X' → D.nd.O i) x') •
+        (a : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) x'
+  blk_smul : ∀ (f : Dd.T') k (m : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k), f • m = ((f : Dd.X' → D.nd.O i) Dd.π') • m
+  ρπ_eval : ∀ a : Dd.R', (Dd.ρπ a).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) =
+    (a : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) Dd.π'
+  ρk_eval : ∀ (a : Dd.R') k, (Dd.ρπ a).toSquareBlock (RepresentationBoundsCohomology.blk D.R) k = Dd.ρk k a
+  pπ : Dd.p Dd.π' = π
+
+theorem evS_of (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd) :
+    EvS r π Dd := by
+  obtain ⟨-, -, -, -, h4, -, h6, -, h8, -, h10, h11, -, -, -, -, h16, h17, -⟩ := hD
+  exact ⟨fun g x' => h6 g x', fun g x' => h11 g x', h8, h10, h16, h17, h4⟩
+
+end Eval
+
+section GlobalTheory
+variable {D : D7} {i : D.nd.Loc} {r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))} {π : D.nd.X i}
+  {Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R)}
+
+theorem blkS_eq {c' : Fin D.R.t} (a : Fin D.R.nV) (h : RepresentationBoundsCohomology.blk D.R a = c'.succ) :
+    a = (Fin.natAdd D.R.r c' : Fin (D.R.r + D.R.t)) := by
+  have h' := h
+  simp only [Formalism.MainNotions.N.RepresentationBoundsCohomology.blk, Formalism.MainNotions.N.RepresentationBoundsCohomology.blkG] at h'
+  split_ifs at h' with h1
+  · exact absurd h'.symm (Fin.succ_ne_zero c')
+  · apply Fin.ext
+    have h2 := congrArg Fin.val h'
+    simp only [Fin.val_succ] at h2
+    simp only [Fin.coe_natAdd]
+    omega
+
+theorem blkS_act (c' : Fin D.R.t) (a : Dd.R') (m : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk c'.succ) (hE : EvS r π Dd) :
+    a • m = (Dd.ρπ a (Fin.natAdd D.R.r c') (Fin.natAdd D.R.r c')) • m := by
+  have hb : RepresentationBoundsCohomology.blk D.R (Fin.natAdd D.R.r c') = c'.succ := by
+    simp only [Formalism.MainNotions.N.RepresentationBoundsCohomology.blk, Formalism.MainNotions.N.RepresentationBoundsCohomology.blkG]
+    rw [dite_eq_right (by simp)]
+    ext
+    simp
+  have hu : ∀ y : {x : Fin D.R.nV // RepresentationBoundsCohomology.blk D.R x = c'.succ}, y = ⟨Fin.natAdd D.R.r c', hb⟩ :=
+    fun y => Subtype.ext (blkS_eq y.1 y.2)
+  funext j
+  show ∑ k, (Dd.ρk c'.succ a) j k • m k =
+    (Dd.ρπ a (Fin.natAdd D.R.r c') (Fin.natAdd D.R.r c')) • m j
+  rw [Fintype.sum_eq_single j (fun k hk => absurd ((hu k).trans (hu j).symm) hk),
+    ← hE.ρk_eval a c'.succ, hu j]
+  rfl
+
+end GlobalTheory
+
+section LocQ
+variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
+  (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
+  (Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
+  [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]
+  [∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]
+
+
+variable {i r ρ π Dd} in
+theorem rblkS (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (c' : Fin D.R.t) (g : GE D.nd) :
+    Dd.ρπ (Dd.r g) (Fin.natAdd D.R.r c') (Fin.natAdd D.R.r c') =
+      ((D.nd.chi i ((c' : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i) := by
+  have h3 : (Dd.ρπ (Dd.r g)).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) =
+      (rO D.nd i r π g).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) := by
+    rw [hE.ρπ_eval, hE.r_eval, hE.pπ]
+  have h4 := congrFun (congrFun h3 (Fin.natAdd D.R.r c')) (Fin.natAdd D.R.r c')
+  have h5 : Dd.ρπ (Dd.r g) (Fin.natAdd D.R.r c') (Fin.natAdd D.R.r c') =
+      rO D.nd i r π g (Fin.natAdd D.R.r c') (Fin.natAdd D.R.r c') :=
+    IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)) h4
+  rw [h5]
+  exact hN.2.1 g c'
+
+
+variable {i r ρ π Dd} in
+theorem rS_act (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (c' : Fin D.R.t) (g : GE D.nd)
+    (m : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk c'.succ) :
+    Dd.r g • m = ((D.nd.chi i ((c' : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i) • m := by
+  rw [blkS_act c' (Dd.r g) m hE, rblkS hE hN c' g]
+
+end LocQ
+
+end Formalism.MainNotions.N.K.ShaT
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.AdmissibleDesigns.SmulEval =====
+
+-- ===== clump member: Formalism.AdmissibleDesigns.H1MapMemLcH1 =====
+-- clump-header: {"m": "Formalism.AdmissibleDesigns.H1MapMemLcH1", "h": "module\n\npublic import Formalism.AdmissibleDesigns.BlockTwistedCyclotomic\npublic import Formalism.AdmissibleDesigns.SmulEval\npublic import Formalism.AdmissibleDesigns.HigherColumnInvariantsBound\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
@@ -101,7 +234,6 @@ theorem h1Map_mem_lcH1 [TopologicalSpace G] {x : H1z ρ} (hx : x ∈ lcH1 ρ) : 
     exact hc.comp φ
   · first
       | exact (h1Map_mk ρ ρ' φ hφ c).symm
-      | rfl
 
 theorem resH1_h1Map_mem_Fsha (D : ℕ → Subgroup G) (Iq : ∀ w, Subgroup (D w)) (qs : Finset ℕ) (w : ℕ) {x : H1z ρ}
     (hx : resH1 ρ (D w) x ∈ Fsha ρ D Iq qs w) : resH1 ρ' (D w) (h1Map ρ ρ' φ hφ x) ∈ Fsha ρ' D Iq qs w := by
@@ -194,7 +326,7 @@ theorem chi_ratio (c' : Fin D.R.t) (g : GE D.nd) :
     simp [Fin.val_succ]
   rw [hc, hn]
   simp only [MonoidHom.mul_apply, Units.val_mul, Units.inv_mul_cancel_left]
-  simp [cycE, map_zpow]
+  simp [cycE]
 
 theorem uRep_blk (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (c' : Fin D.R.t) (g : GE D.nd)
     (m : blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk c'.succ) :
@@ -217,7 +349,6 @@ theorem blkTw_of (hE : EvS r π Dd) (hN : RepresentationBoundsCohomology.NormAt 
     rw [h, map_smul]
     first
       | rfl
-      | simp [koE, Formalism.GaloisCohomology.scalRep]
 
 theorem blkTw_of_def {g0 : GE D.nd} {eB e₁ s : D.nd.X i → MatN D.nd i}
     (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
@@ -295,3 +426,6 @@ end Rec
 end Formalism.MainNotions.N.K.ShaT
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.AdmissibleDesigns.H1MapMemLcH1 =====

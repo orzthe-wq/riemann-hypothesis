@@ -1,11 +1,18 @@
 module
 
 public import Development.WeilBound.CoreStatements.VolumeEquality.Pieces
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspVolumeLimitStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreLatticeBaseChangeConjStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPointStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFundamentalSetStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsGroupDictionaryStatement
+public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUniqueLeftBasisCoordsAdicCompletion
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsFundSet
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspVolumeLimit
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FibreLatticeBaseChangeConj
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GroupDict
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsFundamentalSet
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsGroupDictionary
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPoint
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -86,11 +93,11 @@ def Sheets.pieces (hG : Top.Given) (hF : ∀ k, (B.F k).IsFundSet (B.Γ k) (FF k
   B_sub := Z.B_sub
   count := Z.count
   fibre m t ht := ⟨Z.z m t, (Z.at m t ht).1, (Z.at m t ht).2.1,
-    ((GlobalTheory.T.fibre_lattice_base_change_conj E H _ _ Y.t Or.𝔐.t Or.𝔐.f _ _ ((B.F _).R t) ((B.F _).R t) _).1 ⟨Or.𝔐.m⟩).2
+    ((_root_.GlobalTheory.CompanionTheory.Ar.Cusp.FibreMove.fibreLat_move E H _ _ Y.t Or.𝔐.t Or.𝔐.f _ _ ((B.F _).R t) ((B.F _).R t) _).1 ⟨Or.𝔐.m⟩).2
       (Z.z_over m t ht ▸ B.lat _ t (Z.V_sub m ht)), (Z.at m t ht).2.2⟩
-  pot m := GlobalTheory.T.cusp_volume_limit hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or _ _ (B.F (Z.pc m)) (Z.V m) (Z.z m) (Z.γ m) (Z.cover.isOpen m)
+  pot m := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.phMu_eq_ballPot_half hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or _ _ (B.F (Z.pc m)) (Z.V m) (Z.z m) (Z.γ m) (Z.cover.isOpen m)
     (Z.V_sub m) (Z.cover.hol m) (Z.at m) (B.vec S₀ Ω K J Dc.y Or.𝔐 _ _ _ (Z.cover.isOpen m) (Z.V_sub m)
-      (GlobalTheory.T.holomorphic_coords_of_generic_point _ Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie Or.𝔐.all _ _ _ _ (Z.cover.isOpen m) (Z.cover.hol m) (Z.z_coords m)) (Z.z_over m))
+      (_root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family _ Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie Or.𝔐.all _ _ _ _ (Z.cover.isOpen m) (Z.cover.hol m) (Z.z_coords m)) (Z.z_over m))
 
 variable (Or) in
 theorem exists_base (h : BaseUnifEx) (hG : Top.Given) : ∃ (B : BaseUnif Y Or.sm Dc.j Dc.j' Dc.n) (FF : Fin B.np → Set (Fin Dc.n → ℂ)),
@@ -99,7 +106,7 @@ theorem exists_base (h : BaseUnifEx) (hG : Top.Given) : ∃ (B : BaseUnif Y Or.s
   obtain ⟨B⟩ := h hG E H D l (Xo l) c Y Or.sm Dc.j Dc.j' Dc.n (by have := Dc.two_le_N; omega)
     (Or.side.imp (fun h => ⟨h.2.1, h.2.2, by have := h.2.2; unfold ComponentData.j'; omega⟩)
       fun h => ⟨h.2.1, h.2.2, by have := h.2.2; unfold ComponentData.j'; omega⟩) rfl
-  exact ⟨B, Classical.skolem.1 fun k => GlobalTheory.T.exists_fundamental_set E _ _ _ _ _ _ (B.F k) (GlobalTheory.T.exists_group_dictionary E _ _ _ _ _ _ H (B.F k)).some _ (B.arith k)⟩
+  exact ⟨B, Classical.skolem.1 fun k => _root_.GlobalTheory.CompanionTheory.Ar.Cusp.exists_isFundSet E _ _ _ _ _ _ (B.F k) (_root_.GlobalTheory.CompanionTheory.Ar.Cusp.Dict.groupDict_nonempty E _ _ _ _ _ _ H (B.F k)).some _ (B.arith k)⟩
 
 variable (Or) in
 theorem pieces_of (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 : CoverRoots) (h5 : LocInj) (h6 : BaseUnifEx)

@@ -170,7 +170,7 @@ theorem bigF_phiA {a : ℕ} {A' C : Type} [Fintype A'] [DecidableEq A'] [Fintype
     obtain ⟨x, hx, y, hy, e⟩ := mem_shellSet.1 hmem
     refine mem_shellSet.2 ⟨g * g₀⁻¹ * x, mul_mem hg hx, y, hy, ?_⟩
     calc g = g * g₀⁻¹ * g₀ := by group
-      _ = _ := by rw [e]; simp only [mul_assoc]; try rfl
+      _ = _ := by rw [e]; simp only [mul_assoc]
   rw [bigF, shellSum, finsum_eq_single _ ⟨m₀, hm₀⟩]
   · rw [hshell, Set.inter_eq_right.2 hsub, hS1, one_smul]
   · intro m hm
@@ -180,7 +180,7 @@ theorem bigF_phiA {a : ℕ} {A' C : Type} [Fintype A'] [DecidableEq A'] [Fintype
       obtain ⟨x, hx, y, hy, e⟩ := mem_shellSet.1 hg1
       refine mem_shellSet.2 ⟨(g * g₀⁻¹)⁻¹ * x, mul_mem (inv_mem hg2) hx, y, hy, ?_⟩
       calc g₀ = (g * g₀⁻¹)⁻¹ * g := by group
-        _ = _ := by rw [e]; simp only [mul_assoc]; try rfl
+        _ = _ := by rw [e]; simp only [mul_assoc]
     simp [this]
 
 end GlobalTheory.OneSquareZeta

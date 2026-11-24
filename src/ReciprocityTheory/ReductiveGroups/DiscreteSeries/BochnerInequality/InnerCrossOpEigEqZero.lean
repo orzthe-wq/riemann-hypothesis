@@ -3,56 +3,12 @@ module
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.CasValK
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.Permute
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.BigCas
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.BigRep
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.KhwWeightEqOfIrr
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.Weights
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -94,10 +50,6 @@ theorem Wm_perp_Wp (hU : IsInfUnitary ε E) {x y : Big n 1 M} (hx : x ∈ Wm ε 
     exact inner_crossOp_eig_eq_zero hU (ne_of_lt (hθ.trans hθ')) hu.1 hv.1
   exact Submodule.isOrtho_iff_inner_eq.mp h x hx y hy
 
-theorem mem_V_of_mem_ncV {k : ℕ} {F : Big n k M} (hF : F ∈ ncV ε V k)
-    (κ : Fin k → Fin n × Fin n) : F κ ∈ V := by
-  exact ncV_mem hF κ
-
 private theorem casimirK_eq_casValK_smul_of_isKHWVec {X : Type*} [AddCommGroup X] [Module ℂ X]
     {A : Fin n → Fin n → Module.End ℂ X} (hA : IsGlRep A) {μ : Fin n → ℝ} {w : X}
     (hw : IsKHWVec ε A μ w) : casimirK ε A w = (casValK ε μ : ℂ) • w := by
@@ -113,7 +65,7 @@ private theorem casimirK_eq_casValK_smul_of_isKHWVec {X : Type*} [AddCommGroup X
       rw [if_pos rfl, if_neg (lt_irrefl b), add_zero, hw.1 b, map_smul, hw.1 b, smul_smul,
         ← Complex.ofReal_mul, ← sq]
     · have e := LinearMap.congr_fun (hA' a b b a) w
-      simp only [LinearMap.sub_apply, Module.End.mul_apply, eq_self_iff_true, if_true,
+      simp only [LinearMap.sub_apply, Module.End.mul_apply, if_true,
         hw.2 a b h hab.symm, map_zero, sub_zero] at e
       rw [e, if_neg (ne_of_gt h), if_pos h, hw.1 a, hw.1 b]
       simp [sub_smul]
@@ -171,7 +123,7 @@ theorem crossOp_khw (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε 
       rfl
     have hcas := LinearMap.congr_fun (casimirK_bAct (ε := ε) (E := E) 1) x
     rw [casimirK_eq_casValK_smul_of_isKHWVec (bAct_isGlRep hE 1) hν] at hcas
-    simp only [LinearMap.add_apply, LinearMap.smul_apply, Fin.sum_univ_one, factorCasimir_ncV_one hx,
+    simp only [LinearMap.add_apply, Fin.sum_univ_one, factorCasimir_ncV_one hx,
       hm, two_smul] at hcas
     rw [two_smul]
     push_cast

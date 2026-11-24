@@ -59,7 +59,7 @@ theorem exists_approx_totally_positive (F : Type) [Field F] [NumberField F]
     ∃ a : F, (∀ v ∈ T, v.valuation F (a - t v) ≤ WithZero.exp (-(M : ℤ))) ∧
       ∀ φ : F →+* ℝ, 0 < φ a := by
   classical
-  obtain ⟨a₀, ha₀⟩ := GlobalTheory.FinPlaceApprox.approx_target F T t M
+  obtain ⟨a₀, ha₀⟩ := _root_.GlobalTheory.FinPlaceApprox.exists_approx_finite_places F T t M
   set J : Ideal (𝓞 F) := ∏ v ∈ T, v.asIdeal ^ M with hJ
   have hJ0 : J ≠ ⊥ := by
     rw [hJ, ← Ideal.zero_eq_bot, Finset.prod_ne_zero_iff]

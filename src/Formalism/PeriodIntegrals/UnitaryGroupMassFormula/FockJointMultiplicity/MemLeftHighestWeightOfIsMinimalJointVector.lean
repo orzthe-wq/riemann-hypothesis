@@ -366,7 +366,6 @@ theorem pureJ_of (hW1 : FormWt1) (hW2 : FormWt2) : PureJ := by
     have h0 := (mem_homogeneousSubmodule d P).mp hH (mem_support_iff.mp he)
     first
       | simpa [Finsupp.weight_apply, Finsupp.sum_fintype] using h0
-      | simpa [← Finsupp.degree_eq_weight_one, Finsupp.degree_eq_sum] using h0
   have hsum : (∑ a : Ix p q, ∑ c : Ix r s, (e (a, c) : ℤ)) = d := by
     rw [← Fintype.sum_prod_type']
     exact_mod_cast hdeg
@@ -431,7 +430,7 @@ theorem leftRootOperator_eq_signedPolarization {p q r s : ℕ} (a b : Ix p q) (h
     simp
   · have hne : ((b, c) : Ln p q r s) ≠ (a, c) := fun e => hab (Prod.ext_iff.mp e).1.symm
     simp only [if_neg h]
-    simp [Derivation.leibniz, pderiv_X_of_ne hne, hne]
+    simp [Derivation.leibniz, pderiv_X_of_ne hne]
 
 theorem rightRootOperator_eq_signedPolarization {p q r s : ℕ} (c d : Ix r s) (hcd : c ≠ d)
     (hsame : ∀ a : Ix p q, linePos ((a, d) : Ln p q r s) = linePos ((a, c) : Ln p q r s)) (P : Pol p q r s) :
@@ -449,7 +448,7 @@ theorem rightRootOperator_eq_signedPolarization {p q r s : ℕ} (c d : Ix r s) (
     simp
   · have hne : ((a, d) : Ln p q r s) ≠ (a, c) := fun e => hcd (Prod.ext_iff.mp e).2.symm
     simp only [if_neg h]
-    simp [Derivation.leibniz, pderiv_X_of_ne hne, hne]
+    simp [Derivation.leibniz, pderiv_X_of_ne hne]
 
 theorem ker_of_hw {p q : ℕ} {V : Type*} [AddCommGroup V] [Module ℂ V] {act : Mat p q →ₗ[ℂ] Module.End ℂ V}
     {μ : Ix p q → ℚ} {v : V} (hv : v ∈ hwSub act μ) (a b : Ix p q) (hab : posC a b) : act (Eab a b) v = 0 := by

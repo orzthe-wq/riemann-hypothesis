@@ -100,7 +100,7 @@ theorem smul_update (C : Level P) (γ : C.Γ) (v : Fin P.nV) (L : P.Tup)
   by_cases hw : w = v
   · subst hw
     simp [Function.update, Level.smul, nt_phi]
-  · simp [Function.update, hw, Level.smul, nt_phi]
+  · simp [Function.update, hw, Level.smul]
 
 theorem tm_equiv (C : Level P) (v : Fin P.nV) (i : ℕ) (F : P.Tup → P.Xsp)
     (hF' : ∀ (γ : C.Γ) (L : P.Tup), F (C.smul γ L) = (C.χ γ : O) • C.actX γ (F L)) (γ : C.Γ) (L : P.Tup) :

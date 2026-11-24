@@ -51,6 +51,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -192,5 +193,5 @@ theorem UpperTheory.Zero.LLC.abConv :
     rw [← WD.charPol_mk, hb, e]
     refine (hd _).trans ?_
     rw [hξ]
-    simp [h1]⟩
+    simp⟩
   exact hdim.symm.trans hn

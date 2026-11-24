@@ -175,9 +175,6 @@ private theorem tj_right {E : Type} [Field E] [NumberField E] (w : Pl E) (n : �
   have := (Tj_mem_hecke (n := n) hϖ i).1 1 ⟨k, hk⟩ g
   simpa using this
 
-private theorem sat_zero (q n : ℕ) (B : Multiset ℂˣ) : satEig q n B 0 = 1 := by
-  simp [satEig, Multiset.esymm]
-
 theorem UpperTheory.Zero.ConvolutionTheory.EB.sat2Slice :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (G : H E a b → ℂ) (B₁ B₂ : Multiset ℂˣ), IsSat2 w (pairRt a b w) G B₁ B₂ →
     (∀ (φ : Sm E a) m₂, (φ.1 = fun x => G (x, m₂)) → φ ≠ 0 → IsSatVecGL w (UpperTheory.V.Cj.S.fL a w) φ B₁) ∧
@@ -193,7 +190,7 @@ theorem UpperTheory.Zero.ConvolutionTheory.EB.sat2Slice :
       · exact GlobalTheory.LGrp.mem_fixed.1 hfix _ (Subgroup.mem_prod.2 ⟨hk, one_mem _⟩)
       · have h1 := hT ϖ hϖ i hi 0 (Nat.zero_le _)
         rw [heckeVec_fst _ _ _ hfix _ _ (tj_right w a hϖ i) (tj_zero_not w b ϖ) (tj_zero_mem w b ϖ),
-          sat_zero, mul_one] at h1
+          _root_.GlobalTheory.LFun.ConjPlace.satEig_zero, mul_one] at h1
         exact h1
     let L : (H E a b → ℂ) →ₗ[ℂ] (GA E a → ℂ) :=
       { toFun := fun F x => F (x, m₂), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }
@@ -212,7 +209,7 @@ theorem UpperTheory.Zero.ConvolutionTheory.EB.sat2Slice :
       · exact GlobalTheory.LGrp.mem_fixed.1 hfix _ (Subgroup.mem_prod.2 ⟨one_mem _, hk⟩)
       · have h1 := hT ϖ hϖ 0 (Nat.zero_le _) i hi
         rw [heckeVec_snd _ _ _ hfix _ _ (tj_right w b hϖ i) (tj_zero_not w a ϖ) (tj_zero_mem w a ϖ),
-          sat_zero, one_mul] at h1
+          _root_.GlobalTheory.LFun.ConjPlace.satEig_zero, one_mul] at h1
         exact h1
     let L : (H E a b → ℂ) →ₗ[ℂ] (GA E b → ℂ) :=
       { toFun := fun F x => F (m₁, x), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }

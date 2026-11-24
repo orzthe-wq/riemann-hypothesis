@@ -55,9 +55,6 @@ theorem underQ_notMem {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l 
     simpa using this
   exact ⟨key _ (l.pr.T_prime u) (hI.T_mem u), fun j => key _ (l.pr.g_prime j) (hI.g_mem j)⟩
 
-theorem underQ_prime_to_bad : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → I.Laws → ∀ (u : B.Word) (a : I.ι)
-    (v : HeightOneSpectrum (𝓞 B.host.F)), I.UnderQ a v →
-    ((B.T u : ℕ) : 𝓞 B.host.F) ∉ v.asIdeal ∧ ∀ j, ((B.host.g j : ℕ) : 𝓞 B.host.F) ∉ v.asIdeal :=
-  fun I hI l u a v hv => underQ_notMem I hI l u a v hv
+alias underQ_prime_to_bad := _root_.GlobalTheory.Mem.Col2.TC.underQ_notMem
 
 end GlobalTheory.Mem.Col2.TC

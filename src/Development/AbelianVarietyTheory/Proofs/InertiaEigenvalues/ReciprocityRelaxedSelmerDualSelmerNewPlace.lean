@@ -1,22 +1,25 @@
 module
 
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNineTermTransgressionZeroApply
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumInvEqZeroOfUnramifiedCocycle
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VecPairApply
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod
-public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNineTermTransgressionZeroApply
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TamePairing
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CocycleUnramifiedOutsideVanishOnKernel
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PairingEquivariantStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumInvEqZeroOfUnramifiedCocyclePowStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameCupProductInvariantUnramifiedHomStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedRepresentationKillsSmallSubgroupStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PairingEquivariant
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedRepresentationKillsSmallSubgroup
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -24,7 +27,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,7 +34,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,10 +46,347 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.H1MapSubgroup
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsDualDualRep
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTameInertiaElementAtTwistPrime
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Small2
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPlaceOverMoveValCc
+import Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases
+import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
+import Mathlib.Topology.Separation.CompletelyRegular
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumInvEqZeroOfUnramifiedCocyclePow, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameCupProductInvariantUnramifiedHom, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReciprocityRelaxedSelmerDualSelmerNewPlace
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumInvEqZeroOfUnramifiedCocyclePow =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumInvEqZeroOfUnramifiedCocyclePow", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNineTermTransgressionZeroApply\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumInvEqZeroOfUnramifiedCocycle\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.H1MapSubgroup\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsDualDualRep\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTameInertiaElementAtTwistPrime\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Small2\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPlaceOverMoveValCc\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VecPairApply\nimport Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun GlobalTheory.Published GlobalTheory.ResSel GlobalTheory.StepTwo GlobalTheory.TwistDet GlobalTheory.NewPrime GlobalTheory.Published.PoitouTate
+
+namespace GlobalTheory
+
+theorem sum_inv_eq_zero_of_unramified_cocycle_pow : PoitouTateTotallyComplex → ∀ (F Ω : Type) [Field F] [NumberField F] [_root_.NumberField.IsTotallyComplex F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (ζ : Ω), 0 < n → IsPrimitiveRoot ζ (l ^ n) → ∃ inv : InvFam F Ω l n, IsLocalInvariants ζ inv ∧ ∀ S : Finset (HeightOneSpectrum (𝓞 F)), ContainsAbove S l → ∀ Av : HeightOneSpectrum (𝓞 F) → ValuationSubring Ω, (∀ v, IsPlaceOver (Av v) v) → ∀ w : Z2 (muRep F Ω l n), (∀ g h : G F Ω, ∀ u ∈ NS Ω (S : Set (HeightOneSpectrum (𝓞 F))), ∀ u' ∈ NS Ω (S : Set (HeightOneSpectrum (𝓞 F))), w.1 (g * u, h * u') = w.1 (g, h)) → ∀ wl : ∀ v, Z2 (muLoc F l n (Av v)), (∀ v (g h : Dec (F := F) (Av v)), (wl v).1 (g, h) = w.1 ((g : G F Ω), (h : G F Ω))) → ∑ v ∈ S, inv (Av v) (Submodule.Quotient.mk (wl v)) = 0 := by
+  intro hPT F Ω _ _ _ _ _ _ l _ n ζ hn hζ
+  obtain ⟨inv, hinv, H⟩ := hPT.annihilators F Ω l n hn ζ hζ
+  refine ⟨inv, hinv, fun S hS Av hA w hw wl hwl => ?_⟩
+  obtain ⟨μ, hμ⟩ := exists_lift_cycMod (Ω := Ω) (r := n) hS
+  obtain ⟨W, hWc, hW⟩ := exists_descend_pair_quotient _ w.1 w.2.1 hw
+  have hmem : W ∈ Z2 (charRep μ) := by
+    refine ⟨hWc, fun g h k => ?_⟩
+    obtain ⟨g, rfl⟩ := QuotientGroup.mk_surjective g
+    obtain ⟨h, rfl⟩ := QuotientGroup.mk_surjective h
+    obtain ⟨k, rfl⟩ := QuotientGroup.mk_surjective k
+    have e := w.2.2 g h k
+    have e2 : μ (g : G F Ω ⧸ _) = cycMod F Ω l n g := DFunLike.congr_fun hμ g
+    rw [← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul, hW, hW, hW, hW, charRep_apply, e2]
+    exact e
+  have e := (H S hS (fun v => Av v.1) (fun v => hA v.1) μ hμ).1
+    (Submodule.Quotient.mk ⟨W, hmem⟩)
+  rw [← Finset.sum_coe_sort]
+  refine Eq.trans (Finset.sum_congr rfl fun v _ => ?_) e
+  refine congrArg (inv (Av v.1)) ?_
+  refine congrArg Submodule.Quotient.mk (Subtype.ext (funext fun p => ?_))
+  exact (hwl v.1 p.1 p.2).trans (hW _ _).symm
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumInvEqZeroOfUnramifiedCocyclePow =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameCupProductInvariantUnramifiedHom =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameCupProductInvariantUnramifiedHom", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod\npublic import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNineTermTransgressionZeroApply\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TamePairing\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.FieldTheory.Galois.Profinite\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Connected.Separation\nimport Mathlib.Topology.MetricSpace.Ultra.TotallySeparated\nimport Mathlib.Topology.Separation.CompletelyRegular\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.H1MapSubgroup\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsDualDualRep\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTameInertiaElementAtTwistPrime\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.Small2\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPlaceOverMoveValCc\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VecPairApply\nimport Formalism.SharpRestriction.LevelLetterCocycles.BlochKatoPhases\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.BlochKatoReduction Formalism.MainNotions.BlochKatoReduction.Gen GlobalTheory.TwSys GlobalTheory.SelFun GlobalTheory.Published GlobalTheory.ResSel GlobalTheory.StepTwo GlobalTheory.TwistDet GlobalTheory.NewPrime GlobalTheory.Published.PoitouTate
+
+namespace GlobalTheory.TamePairing
+
+open GlobalTheory.TameQuot
+
+theorem isProGen_of_char_eq_one (hQ : TameQuotient) {F Ω : Type} [Field F] [NumberField F] [Field Ω]
+    [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [hl : Fact l.Prime] {A : ValuationSubring Ω}
+    {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v) (hv : ((l : ℕ) : 𝓞 F) ∉ v.asIdeal)
+    {M : ℕ} (hM : 1 ≤ M) (d : G F Ω →* Multiplicative (ZMod (l ^ M)))
+    (hd : IsOpen (d.ker : Set (G F Ω))) {γ : G F Ω} (hγ : γ ∈ Ine (F := F) A)
+    (hdγ : d γ = Multiplicative.ofAdd 1) : IsProGen F A l γ := by
+  classical
+  obtain ⟨-, -, -, ⟨t, ht, htsurj, htker⟩, -, -⟩ := hQ F Ω l A v hA hv
+
+  have hJd : ∀ σ : G F Ω, σ ∈ ineKer F A l → d σ = 1 := by
+    intro σ hσ
+    obtain ⟨τ, hτ, rfl⟩ := Subgroup.mem_map.1 hσ
+    rw [mem_proKer] at hτ
+    have : NeZero (l ^ M) := ⟨pow_ne_zero _ hl.out.ne_zero⟩
+    have key := hτ ((d.comp (Ine (F := F) A).subtype).ker) inferInstance
+      (continuous_subtype_val.isOpen_preimage _ hd) (by
+        rw [Subgroup.index_ker]
+        have hdvd : Nat.card (d.comp (Ine (F := F) A).subtype).range ∣ l ^ M := by
+          have h1 := Subgroup.card_subgroup_dvd_card (d.comp (Ine (F := F) A).subtype).range
+          have h2 : Nat.card (Multiplicative (ZMod (l ^ M))) = l ^ M := Nat.card_zmod (l ^ M)
+          rwa [h2] at h1
+        obtain ⟨j, -, hj⟩ := (Nat.dvd_prime_pow hl.out).1 hdvd
+        exact ⟨j, hj⟩)
+    simpa using key
+
+  set s : Ine (F := F) A → ℤ_[l] := fun σ => Multiplicative.toAdd (t σ) with hs
+  have hsmul : ∀ σ τ, s (σ * τ) = s σ + s τ := fun σ τ => by
+    simp only [hs, map_mul, toAdd_mul]
+  have hscont : Continuous s := continuous_toAdd.comp ht
+  set γ' : Ine (F := F) A := ⟨γ, hγ⟩ with hγ'
+
+  have hunit : IsUnit (s γ') := by
+    by_contra hnu
+    obtain ⟨b, hb⟩ := (PadicInt.norm_lt_one_iff_dvd _).1 (PadicInt.mem_nonunits.1 hnu)
+    obtain ⟨σ, hσ⟩ := htsurj (Multiplicative.ofAdd b)
+    have h1 : t (σ ^ l) = t γ' := by
+      apply Multiplicative.toAdd.injective
+      rw [map_pow, hσ, toAdd_pow, toAdd_ofAdd, nsmul_eq_mul]
+      exact hb.symm
+    have h2 : ((((σ ^ l)⁻¹ * γ' : Ine (F := F) A)) : G F Ω) ∈ ineKer F A l := by
+      rw [← htker, map_mul, map_inv, h1, inv_mul_cancel]
+    have h3 := hJd _ h2
+    simp only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_pow, map_mul, map_inv,
+      map_pow, hγ'] at h3
+    rw [hdγ, inv_mul_eq_one] at h3
+    have h4 : (1 : ZMod (l ^ M)) = l • Multiplicative.toAdd (d σ) := by
+      rw [← toAdd_pow, h3, toAdd_ofAdd]
+    have h5 := congrArg (ZMod.castHom (dvd_pow_self l (by omega : M ≠ 0)) (ZMod l)) h4
+    rw [map_one, map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul] at h5
+    exact one_ne_zero h5
+  refine ⟨hγ, ?_⟩
+  intro σ hσ
+  set C := (Subgroup.zpowers γ ⊔ ineKer F A l).topologicalClosure with hC
+  have hCc : IsClosed (C : Set (G F Ω)) := Subgroup.isClosed_topologicalClosure _
+  have : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective
+  have : IsGalois F Ω := isGalois_iff.2 ⟨inferInstance, inferInstance⟩
+  have : CompactSpace (Ine (F := F) A) :=
+    isCompact_iff_compactSpace.1 (isClosed_Ine (F := F) A).isCompact
+  set K : Set (Ine (F := F) A) := Subtype.val ⁻¹' (C : Set (G F Ω)) with hK
+  have hKc : IsCompact K := (hCc.preimage continuous_subtype_val).isCompact
+  have hKimg : IsClosed (s '' K) := (hKc.image hscont).isClosed
+  have hdense : DenseRange (fun m : ℤ => (m : ℤ_[l]) * s γ') := by
+    have hsurj : Function.Surjective (fun a : ℤ_[l] => a * s γ') := fun a =>
+      ⟨a * ↑hunit.unit⁻¹, by simp [mul_assoc]⟩
+    exact hsurj.denseRange.comp PadicInt.denseRange_intCast (continuous_id.mul continuous_const)
+  have hsub : Set.range (fun m : ℤ => (m : ℤ_[l]) * s γ') ⊆ s '' K := by
+    rintro _ ⟨m, rfl⟩
+    refine ⟨γ' ^ m, ?_, ?_⟩
+    · show ((γ' ^ m : Ine (F := F) A) : G F Ω) ∈ C
+      apply Subgroup.le_topologicalClosure
+      apply Subgroup.mem_sup_left
+      rw [Subgroup.coe_zpow]
+      exact Subgroup.zpow_mem_zpowers γ m
+    · simp only [hs, map_zpow, toAdd_zpow, zsmul_eq_mul]
+  have hall : s '' K = Set.univ := by
+    apply Set.eq_univ_of_univ_subset
+    rw [← hdense.closure_range]
+    exact hKimg.closure_subset_iff.2 hsub
+  obtain ⟨κ, hκ, hκs⟩ : s ⟨σ, hσ⟩ ∈ s '' K := by rw [hall]; trivial
+  have htk : t κ = t ⟨σ, hσ⟩ := Multiplicative.toAdd.injective hκs
+  have hJ : ((κ⁻¹ * ⟨σ, hσ⟩ : Ine (F := F) A) : G F Ω) ∈ ineKer F A l := by
+    rw [← htker, map_mul, map_inv, htk, inv_mul_cancel]
+  have hmem : ((κ⁻¹ * ⟨σ, hσ⟩ : Ine (F := F) A) : G F Ω) ∈ C :=
+    Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_right hJ)
+  have := C.mul_mem hκ hmem
+  simpa using this
+
+theorem tame_pairing_hom : TameLocal → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), 0 < n → IsPlaceOver A v → ((l : ℕ) : 𝓞 F) ∉ v.asIdeal → normV v ≡ 1 [MOD l ^ n] → ∀ e : H2 (muLoc F l n A) →ₗ[ZMod (l ^ n)] ZMod (l ^ n), Function.Bijective e → ∀ (M : ℕ), 1 ≤ M → ∀ d : G F Ω →* Multiplicative (ZMod (l ^ M)), IsOpen (d.ker : Set (G F Ω)) → ∀ γ φ : Dec (F := F) A, (γ : G F Ω) ∈ Ine (F := F) A → d γ = Multiplicative.ofAdd 1 → IsFrob A (normV v) (φ : G F Ω) → ∃ u : (ZMod (l ^ n))ˣ, ∀ (W W' : Type) [AddCommGroup W] [TopologicalSpace W] [DiscreteTopology W] [AddCommGroup W'] [TopologicalSpace W'] [DiscreteTopology W'] (P : W →+ W' →+ ZMod (l ^ n)) (x : Dec (F := F) A → W) (y : Dec (F := F) A → W'), (∀ m : W', l ^ n • m = 0) → Continuous x → Continuous y → (∀ g h, x (g * h) = x g + x h) → (∀ g h, y (g * h) = y g + y h) → (∀ g : Dec (F := F) A, (g : G F Ω) ∈ Ine (F := F) A → y g = 0) → ∀ w : Z2 (muLoc F l n A), (∀ g h, w.1 (g, h) = P (x g) (y h)) → e (Submodule.Quotient.mk w) = (u : ZMod (l ^ n)) * P (x γ) (y φ) := by
+  intro hTL F Ω _ _ _ _ _ l hl n A v hn hA hv hq e he M hM d hd γ φ hγ hdγ hφ
+  classical
+  obtain ⟨hQ, hS⟩ := hTL
+  have hN : NeZero (l ^ n) := ⟨pow_ne_zero _ hl.out.ne_zero⟩
+  have hpg : IsProGen F A l (γ : G F Ω) := isProGen_of_char_eq_one hQ hA hv hM d hd hγ hdγ
+  obtain ⟨-, -, -, -, -, hgen⟩ := hQ F Ω l A v hA hv
+  obtain ⟨hdense, -, hhom⟩ := hgen φ γ hφ hpg
+
+  have hall : ∀ S : Subgroup (Dec (F := F) A), IsClosed (S : Set (Dec (F := F) A)) → φ ∈ S →
+      (∀ σ : Dec (F := F) A, (σ : G F Ω) ∈ Ine (F := F) A → σ ∈ S) → S = ⊤ := by
+    intro S hSc hφS hIS
+    rw [eq_top_iff, ← hdense]
+    apply Subgroup.topologicalClosure_minimal _ _ hSc
+    rw [sup_le_iff]
+    constructor
+    · rw [Subgroup.closure_le]
+      intro x hx
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+      rcases hx with rfl | rfl
+      · exact hφS
+      · exact hIS _ hγ
+    · intro x hx
+      exact hIS x (ineKer_le_Ine A l (Subgroup.mem_subgroupOf.1 hx))
+
+  have hχ : ∀ g : Dec (F := F) A, cycMod F Ω l n (g : G F Ω) = 1 := by
+    have hcont : Continuous fun g : Dec (F := F) A =>
+        ((cycMod F Ω l n (g : G F Ω) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) :=
+      (GlobalTheory.TameQuot.continuous_cycMod (F := F) (Ω := Ω) l n).comp continuous_subtype_val
+    let S : Subgroup (Dec (F := F) A) := ((cycMod F Ω l n).comp (Dec (F := F) A).subtype).ker
+    have hSc : IsClosed (S : Set (Dec (F := F) A)) := by
+      have : (S : Set (Dec (F := F) A)) = (fun g : Dec (F := F) A =>
+          ((cycMod F Ω l n (g : G F Ω) : (ZMod (l ^ n))ˣ) : ZMod (l ^ n))) ⁻¹' {1} := by
+        ext g
+        simp [S, MonoidHom.mem_ker, Units.val_eq_one]
+      rw [this]
+      exact isClosed_singleton.preimage hcont
+    have hone : ∀ σ : G F Ω, (∀ x : Ω, A.valuation x ≤ 1 → A.valuation (σ x - x ^ 1) < 1) →
+        cycMod F Ω l n σ = 1 := by
+      intro σ hσ
+      have := cycZ_toZModPow_eq hv hA hσ n
+      ext
+      simp only [cycMod, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map,
+        RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Units.val_one]
+      rw [this, Nat.cast_one, map_one]
+    have hSt := hall S hSc (by
+        show cycMod F Ω l n (φ : G F Ω) = 1
+        have h1 := cycZ_of_isFrob hv hA hφ
+        ext
+        simp only [cycMod, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map,
+          RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Units.val_one]
+        rw [h1, map_natCast, ← Nat.cast_one, ZMod.natCast_eq_natCast_iff]
+        exact hq)
+      (fun σ hσ => by
+        show cycMod F Ω l n (σ : G F Ω) = 1
+        apply hone
+        intro x hx
+        rw [pow_one]
+        exact ((mem_Ine.1 hσ).2 x hx))
+    intro g
+    have hg : g ∈ S := hSt ▸ Subgroup.mem_top g
+    exact hg
+
+  obtain ⟨f, hfker, -, hfφ, hfγ⟩ := hhom (Multiplicative (ZMod (l ^ n)))
+    (Multiplicative.ofAdd 1) 1 ⟨0, by simp⟩ (by simp)
+  have hfc : Continuous f := by
+    rw [continuous_discrete_rng]
+    intro b
+    by_cases hb : ∃ a, f a = b
+    · obtain ⟨a, rfl⟩ := hb
+      have : f ⁻¹' {f a} = (fun x => a⁻¹ * x) ⁻¹' (f.ker : Set (Dec (F := F) A)) := by
+        ext x
+        simp only [Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe, MonoidHom.mem_ker,
+          map_mul, map_inv]
+        rw [inv_mul_eq_one]
+        exact eq_comm
+      rw [this]
+      exact hfker.preimage (continuous_const.mul continuous_id)
+    · have : f ⁻¹' {b} = ∅ := by
+        ext x
+        simp only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]
+        exact fun h => hb ⟨x, h⟩
+      rw [this]
+      exact isOpen_empty
+  set k : Dec (F := F) A → ZMod (l ^ n) := fun g => Multiplicative.toAdd (f g) with hk
+  have hkc : Continuous k := continuous_toAdd.comp hfc
+  have hkadd : ∀ g h, k (g * h) = k g + k h := fun g h => by simp [hk, toAdd_mul]
+  have hkγ : k γ = 0 := by simp [hk, hfγ]
+  have hkφ : k φ = 1 := by simp [hk, hfφ]
+  have hkI : ∀ σ : Dec (F := F) A, (σ : G F Ω) ∈ Ine (F := F) A → k σ = 0 :=
+    fun σ hσ => eq_zero_of_isProGen hpg k hkc hkadd hkγ σ hσ
+
+  have hCZ : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective
+  have hAC : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F
+  have hNZ : NeZero ((l ^ n : ℕ) : Ω) := ⟨by exact_mod_cast pow_ne_zero n hl.out.ne_zero⟩
+  obtain ⟨ζ, hζ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)
+  obtain ⟨u₀, hu₀⟩ := TameSymbol.of_equiv hS hA hv hq hζ (LinearEquiv.ofBijective e he)
+  obtain ⟨x₀, hx₀⟩ := exists_isUnifRoot (F := F) (Ω := Ω) v (N := l ^ n) (pow_pos hl.out.pos n)
+  obtain ⟨c, hc⟩ := exists_apply_eq_pow_mul hζ hx₀ (γ : G F Ω)
+  have hcu : IsUnit c := ((hS F Ω l n A v hA hv hq ζ hζ).2 x₀ hx₀ γ c hγ hc).1 hpg
+  refine ⟨hcu.unit⁻¹ * u₀, ?_⟩
+  intro W W' _ _ _ _ _ _ P x y hW' hxc hyc hxadd hyadd hyI w hw
+
+  have hψ0 : zmultiplesHom W' (y φ) ((l ^ n : ℕ) : ℤ) = 0 := by
+    simp only [zmultiplesHom_apply, natCast_zsmul]
+    exact hW' _
+  let ψ : ZMod (l ^ n) →+ W' := ZMod.lift (l ^ n) ⟨zmultiplesHom W' (y φ), hψ0⟩
+  have hψ : ∀ a : ZMod (l ^ n), ψ a = (a.cast : ℤ) • y φ := by
+    intro a
+    have h := ZMod.lift_coe (l ^ n) ⟨zmultiplesHom W' (y φ), hψ0⟩ (a.cast : ℤ)
+    rw [ZMod.intCast_zmod_cast] at h
+    exact h.trans (by simp)
+  have hψ1 : ψ 1 = y φ :=
+    (by simpa using ZMod.lift_coe (l ^ n) ⟨zmultiplesHom W' (y φ), hψ0⟩ 1 :
+      ZMod.lift (l ^ n) ⟨zmultiplesHom W' (y φ), hψ0⟩ 1 = y φ)
+  let yH : Dec (F := F) A →* Multiplicative W' :=
+    MonoidHom.mk' (fun g => Multiplicative.ofAdd (y g)) (fun a b => by rw [hyadd, ofAdd_add])
+  let kH : Dec (F := F) A →* Multiplicative W' :=
+    MonoidHom.mk' (fun g => Multiplicative.ofAdd (ψ (k g))) (fun a b => by
+      rw [hkadd, map_add (f := _), ofAdd_add])
+  have hE := hall (yH.eqLocus kH) (by
+      have : ((yH.eqLocus kH : Subgroup (Dec (F := F) A)) : Set (Dec (F := F) A)) =
+          {g | Multiplicative.ofAdd (y g) = Multiplicative.ofAdd (ψ (k g))} := rfl
+      rw [this]
+      exact isClosed_eq (continuous_ofAdd.comp hyc)
+        (continuous_ofAdd.comp (continuous_of_discreteTopology.comp hkc)))
+    (by
+      show Multiplicative.ofAdd (y φ) = Multiplicative.ofAdd (ψ (k φ))
+      rw [hkφ, hψ1])
+    (fun σ hσ => by
+      show Multiplicative.ofAdd (y σ) = Multiplicative.ofAdd (ψ (k σ))
+      rw [hyI σ hσ, hkI σ hσ, map_zero ψ])
+  have hyk : ∀ h, y h = ψ (k h) := fun h => by
+    have hh : h ∈ yH.eqLocus kH := hE ▸ Subgroup.mem_top h
+    exact Multiplicative.ofAdd.injective hh
+
+  set z : Dec (F := F) A → ZMod (l ^ n) := fun g => P (x g) (y φ) with hz
+  have hzc : Continuous z :=
+    (continuous_of_discreteTopology (f := fun m : W => P m (y φ))).comp hxc
+  have hzadd : ∀ g h, z (g * h) = z g + z h := fun g h => by
+    simp only [hz, hxadd, map_add (f := _), AddMonoidHom.add_apply]
+  have hw' : ∀ g h, w.1 (g, h) = z g * k h := fun g h => by
+    rw [hw, hyk h, hψ, map_zsmul, zsmul_eq_mul, ZMod.intCast_zmod_cast, mul_comm]
+  let zZ : Z1 (trivDec F A l n) := ⟨z, (mem_Z1_iff_cocycle _ _).2 ⟨hzc, fun g h => by
+    rw [hzadd, Representation.trivial_apply]⟩⟩
+  let kZ : Z1 (muDec F A l n) := ⟨k, (mem_Z1_iff_cocycle _ _).2 ⟨hkc, fun g h => by
+    rw [hkadd, charRep_apply, MonoidHom.comp_apply, Subgroup.coe_subtype, hχ g, Units.val_one,
+      one_mul]⟩⟩
+  have hur : (Submodule.Quotient.mk kZ : H1 (muDec F A l n)) ∈
+      H1ur (muDec F A l n) ((Ine (F := F) A).subgroupOf (Dec (F := F) A)) := by
+    rw [H1ur, LinearMap.mem_ker]
+    delta ReciprocityTheory.Gal.resH1
+    rw [Submodule.mapQ_apply]
+    have : ReciprocityTheory.Gal.restrictCocycles1 (muDec F A l n) ((Ine (F := F) A).subgroupOf (Dec (F := F) A)).subtype
+        continuous_subtype_val kZ = 0 := by
+      apply Subtype.ext
+      funext h
+      show k (h : Dec (F := F) A) = 0
+      exact hkI _ (Subgroup.mem_subgroupOf.1 h.2)
+    rw [this, Submodule.Quotient.mk_zero]
+  have hcup := cupMu_mk zZ kZ w (fun g h => by
+    rw [hw', charRep_apply, MonoidHom.comp_apply, Subgroup.coe_subtype, hχ g, Units.val_one,
+      one_mul])
+  have key := hu₀ x₀ hx₀ γ c hγ hc φ hφ zZ kZ hur
+  rw [hcup] at key
+  change c * e (Submodule.Quotient.mk w) = u₀ * (z γ * k φ) at key
+  rw [hkφ, mul_one] at key
+  calc e (Submodule.Quotient.mk w)
+      = ((hcu.unit⁻¹ : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * (c * e (Submodule.Quotient.mk w)) := by
+        rw [← mul_assoc, hcu.val_inv_mul, one_mul]
+    _ = ((hcu.unit⁻¹ * u₀ : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * P (x γ) (y φ) := by
+        rw [key, Units.val_mul, mul_assoc]
+
+end GlobalTheory.TamePairing
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameCupProductInvariantUnramifiedHom =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReciprocityRelaxedSelmerDualSelmerNewPlace =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReciprocityRelaxedSelmerDualSelmerNewPlace", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.VecPairApply\npublic import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod\npublic import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.PoitouTateNineTermTransgressionZeroApply\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CocycleUnramifiedOutsideVanishOnKernel\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PairingEquivariant\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumInvEqZeroOfUnramifiedCocyclePow\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TameCupProductInvariantUnramifiedHom\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedRepresentationKillsSmallSubgroup\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -191,7 +529,7 @@ theorem local_pair (hT : TameLocal) {n : ℕ} (hn : 0 < n) {R W W' : Type} [Comm
       inv _ (Submodule.Quotient.mk (locZ (moveVal X.cc (N.plOm.1 P)) (cupZ hc hB x y))) =
         -((u : ZMod (X.l i ^ n)) * B (x.1 (cConj X γ)) (y.1 (cConj X φ))) := by
   have hA := N.plOm.2 P
-  obtain ⟨u, hu⟩ := GlobalTheory.T.tame_cupProduct_invariant_unramified_hom hT D.host.E N.Om (X.l i) n _ P hn hA hl hq (inv _) (hinv.1 _ _ hA).1 M hM d hd
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.TamePairing.tame_pairing_hom hT D.host.E N.Om (X.l i) n _ P hn hA hl hq (inv _) (hinv.1 _ _ hA).1 M hM d hd
     ⟨γ, Ine_le_Dec _ hγ⟩ ⟨φ, hφ.1⟩ hγ hdγ hφ
   refine ⟨u, fun x y hy hy' => ?_⟩
   have hμ : ∀ (g : DecV N P) m, muLoc D.host.E (X.l i) n (N.plOm.1 P) g m = m := fun g m => by
@@ -246,8 +584,8 @@ theorem reciprocity : PoitouTateTotallyComplex → TameLocal → ∀ (D : Formal
   haveI : NeZero ((X.l i : ℕ) : N.Om) := ⟨Nat.cast_ne_zero.mpr hl.ne_zero⟩
   haveI : NeZero ((X.l i ^ (nu X i + 1) : ℕ) : N.Om) := ⟨Nat.cast_ne_zero.mpr (pow_ne_zero _ hl.ne_zero)⟩
   obtain ⟨ζ, hζ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot N.Om (X.l i ^ (nu X i + 1))
-  obtain ⟨inv, hinv, hsum⟩ := GlobalTheory.T.sum_local_inv_eq_zero_of_unramified_cocycle_pow hPT D.host.E N.Om (X.l i) (nu X i + 1) ζ (show 0 < nu X i + 1 by omega) hζ
-  obtain ⟨hc, hc', hB, hunr⟩ := GlobalTheory.T.pairing_equivariant_alt D N X bkP i s A κ Q ρ hset hK hρ Y Y' β hβ
+  obtain ⟨inv, hinv, hsum⟩ := _root_.GlobalTheory.sum_inv_eq_zero_of_unramified_cocycle_pow hPT D.host.E N.Om (X.l i) (nu X i + 1) ζ (show 0 < nu X i + 1 by omega) hζ
+  obtain ⟨hc, hc', hB, hunr⟩ := _root_.GlobalTheory.NewPrime.PairEquiv.pairing_equivariant D N X bkP i s A κ Q ρ hset hK hρ Y Y' β hβ
   have hS0 : ∀ v, Over p v → v ∉ placesOver D.host.E (X.l i) ∧ v ∉ Spl (X := X) i := fun v hv =>
     ⟨fun e => hp0 v hv (X.twistExcludedPlaces_contains_residueChar i e), fun e => hp0 v hv (spl_subset e)⟩
   have hq : normV p ≡ 1 [MOD X.l i ^ (nu X i + 1)] := by
@@ -263,8 +601,8 @@ theorem reciprocity : PoitouTateTotallyComplex → TameLocal → ∀ (D : Formal
       rw [antiHom_cConj X hanti, show κ g = 1 from hg.2, inv_one]⟩
   have hHt : ∀ g ∈ H, (∀ m, repOn (Tgl i s) κ Y g m = m) ∧ (∀ m, repOn ρ κ⁻¹ Y' g m = m) ∧
       cycMod D.host.E N.Om (X.l i) (nu X i + 1) g = 1 := fun g hg => by
-    have h1 := GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl2 M L z (by omega) hS A κ ρ hK hρ Y g hg.1
-    have h2 := GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl2 M L z (by omega) hS A κ⁻¹ ρ hK hρ Y' g hg.1
+    have h1 := _root_.GlobalTheory.NewPrime.SmallActs.small_acts D N X i s hl2 M L z (by omega) hS A κ ρ hK hρ Y g hg.1
+    have h2 := _root_.GlobalTheory.NewPrime.SmallActs.small_acts D N X i s hl2 M L z (by omega) hS A κ⁻¹ ρ hK hρ Y' g hg.1
     have h3 : κ g = 1 := hg.2
     refine ⟨fun m => ?_, fun m => ?_, h1.2.2⟩
     · rw [h1.1, h3, Units.val_one, one_smul]
@@ -360,3 +698,7 @@ theorem reciprocity : PoitouTateTotallyComplex → TameLocal → ∀ (D : Formal
   exact h1
 
 end GlobalTheory.NewRecip
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ReciprocityRelaxedSelmerDualSelmerNewPlace =====

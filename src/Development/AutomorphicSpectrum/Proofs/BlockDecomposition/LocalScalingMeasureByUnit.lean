@@ -311,8 +311,8 @@ theorem hermCoord_cj [TopologicalSpace R] [CharZero F] {σ : E →ₐ[F] E} (hin
       simp [cU, Function.update_of_ne hij, mul_comm]
     · by_cases hi : i = l
       · subst hi
-        simp [cU, hj, Function.update_of_ne hj]
-      · simp [cU, hi, hj, Function.update_of_ne hi, Function.update_of_ne hj]
+        simp [cU, hj]
+      · simp [cU, hi, hj]
 
 end Tens
 

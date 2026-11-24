@@ -142,10 +142,4 @@ private theorem partialTrace_valuation_sum {K Ω : Type} [Field K] [NumberField 
 
 end
 
-theorem UpperTheory.potentiallyCrystalline_comp_conjugation :
-    ∀ {K Ω : Type} [Field K] [NumberField K] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K Ω] [IsAlgClosure K Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
-        (u : G ℚ Ω) (c : G K Ω ≃* G K Ω), (∀ s, UpperTheory.V.Base.galEmb ℚ K Ω (c s) = u * UpperTheory.V.Base.galEmb ℚ K Ω s * u⁻¹) →
-        ∀ (r : G K Ω →* GL (Fin n) (Qbar l)) (A A' : ValuationSubring Ω), (∀ x, x ∈ A' ↔ u x ∈ A) →
-          UpperTheory.V.Af.PotCrysAt r A → UpperTheory.V.Af.PotCrysAt (r.comp c.toMonoidHom) A' := by
-  intro K Ω _ _ _ _ _ _ _ l _ n u c hc r A A' hu hA
-  exact partialTrace_valuation_sum u c hc r A A' hu hA
+alias UpperTheory.potentiallyCrystalline_comp_conjugation := _root_.partialTrace_valuation_sum

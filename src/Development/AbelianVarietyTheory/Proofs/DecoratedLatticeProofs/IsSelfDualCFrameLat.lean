@@ -68,11 +68,7 @@ namespace GlobalTheory.Core.Rk.AbsConv
 
 open Filter Set GlobalTheory.Eis
 
-theorem isSelfDualC_frameLat {D : D7} (V : HSp D) : IsSelfDualC V (frameLat V) := by
-  have h : frameLat V = GlobalTheory.PlaceModel.latFrame V :=
-    Submodule.ext fun y => (mem_frameLat V y).trans (GlobalTheory.PlaceModel.mem_latFrame V y).symm
-  rw [h]
-  exact GlobalTheory.PlaceModel.isSelfDualC_latFrame V
+alias isSelfDualC_frameLat := _root_.GlobalTheory.WeilAtPlace.isSelfDualC_frameLat
 
 theorem enorm_dblIntegrand {D : D7} {V : HSp D} (μ : (AE D)ˣ →* Circle) (E : GA D (dblSp V) → ℂ)
     (f₁ f₂ : GA D V → ℂ) (x : GA D V × GA D V) :

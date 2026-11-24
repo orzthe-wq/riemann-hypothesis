@@ -2,47 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.CharacterGerms.LatticeInclusionFormsInjective
 public import Formalism.FrobeniusBaseCase.FrobeniusBaseCaseProofs.HasUniqueFixedPoint
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -146,8 +106,6 @@ theorem noConst_iff (t : B → MvPowerSeries Z k) :
     have hA1 : A = 0 := by
       first
       | exact (Finsupp.degree_eq_zero_iff A).mp hA0
-      | exact Finsupp.degree_eq_zero_iff.mp hA0
-      | simpa using hA0
     subst hA1
     simpa using h c
 
@@ -192,10 +150,6 @@ theorem coeff_Ps (t : I → MvPowerSeries I C) (c : I) (μ : I →₀ ℕ) :
 theorem two_le_pow (s : ℕ) : 2 ≤ V.l ^ (s + 1) := by
   first
   | exact V.3.two_le.trans (Nat.le_self_pow (Nat.succ_ne_zero s) _)
-  | exact le_trans V.3.two_le (Nat.le_self_pow (by omega) _)
-  | calc 2 ≤ V.l := V.3.two_le
-      _ = V.l ^ 1 := (pow_one _).symm
-      _ ≤ V.l ^ (s + 1) := Nat.pow_le_pow_right V.3.pos (by omega)
 
 theorem contr : Contr S.Ps := by
   refine ⟨?_, ?_⟩

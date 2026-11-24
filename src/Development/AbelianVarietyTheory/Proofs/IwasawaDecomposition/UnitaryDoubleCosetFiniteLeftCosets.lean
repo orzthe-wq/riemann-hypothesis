@@ -59,6 +59,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 import ReciprocityTheory.Automorphisms.PlaceA
 import ReciprocityTheory.GaloisValuations.GlobalA
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SatakeRes
 
 @[expose] public section
 
@@ -69,17 +70,6 @@ noncomputable section
 namespace GlobalTheory.SatInd.DCoset
 
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
-
-theorem le_ofAdd_neg_one_of_lt_one {y : WithZero (Multiplicative ℤ)} (h : y < 1) :
-    y ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
-  induction y using WithZero.recZeroCoe with
-  | zero => exact zero_le'
-  | coe a =>
-    rw [← WithZero.coe_one, WithZero.coe_lt_coe] at h
-    rw [WithZero.coe_le_coe]
-    have h' : Multiplicative.toAdd a < 0 := h
-    show Multiplicative.toAdd a ≤ -1
-    omega
 
 theorem exists_residue_reps {q : ℕ} (hq : 2 ≤ q)
     (hcard : Nat.card ((Valued.v : Valuation K (WithZero (Multiplicative ℤ))).integer ⧸
@@ -148,7 +138,7 @@ theorem exists_trunc (ϖ : K)
       exact (intL K).add_mem (hRO hr) ((intL K).mul_mem hϖO (hTO ht))
     · intro x hx
       obtain ⟨r, hr, hxr⟩ := hR x hx
-      have hle : v (x - r) ≤ v ϖ := hϖ ▸ le_ofAdd_neg_one_of_lt_one hxr
+      have hle : v (x - r) ≤ v ϖ := hϖ ▸ _root_.Formalism.UG.P.satake_lt_one_le hxr
       set y := (x - r) * ϖ⁻¹ with hy
       have hyO : y ∈ intL K := by
         apply (Valuation.mem_integer_iff _ _).2

@@ -102,8 +102,8 @@ theorem afsplit_one_map :
   ext i j
   by_cases h : i = j
   · subst h
-    simp [Matrix.one_apply, h1]
-  · simp [Matrix.one_apply, h]
+    simp [h1]
+  · simp [h]
 
 theorem afsplitC_one :
     afsplitC v (1 : Matrix n n (E ⊗[F] v.adicCompletion F))

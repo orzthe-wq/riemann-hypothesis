@@ -93,7 +93,6 @@ theorem ckOn_compSh {k r : ℕ} {f : B.Mat k r → (Wq →L[ℂ] Wp)} {A : B.Mat
   have hp : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g => (f1 g, f2 g)) (U1 ∩ U2) := by
     first
     | exact (hc1.mono Set.inter_subset_left).prodMk (hc2.mono Set.inter_subset_right)
-    | exact (hc1.mono Set.inter_subset_left).prod (hc2.mono Set.inter_subset_right)
   exact isBoundedBilinearMap_compSh.contDiff.comp_contDiffOn hp
 
 

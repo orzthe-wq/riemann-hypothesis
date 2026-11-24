@@ -77,7 +77,7 @@ theorem torus_step (hTC : TorusCell) (hGP : GaugeP) (hg₀ : g₀ ∈ Glev k r (
       Module.End ℂ (VS k r 0 D E)) v₀ : Mx k r → E) (wCell k r (Fin.last r) c * g₀) =
       ((y + ((2 * r + k : ℕ) : ℂ) / 2) - ((l : ℕ) : ℂ)) • H c + pOp l H c := by
     simp only [Tm, Subalgebra.coe_mul, Subalgebra.coe_add, Module.End.mul_apply, LinearMap.add_apply, EA_val,
-      Submodule.coe_add, Pi.add_apply, ite_true, if_true, Subalgebra.coe_algebraMap, Module.algebraMap_end_apply,
+      Submodule.coe_add, Pi.add_apply, ite_true, Subalgebra.coe_algebraMap, Module.algebraMap_end_apply,
       Submodule.coe_smul, Pi.smul_apply]
     rw [ev_E hD _ _ _ hγ, posL_cI, hTC E k r D h hD ((x : Module.End ℂ (VS k r 0 D E)) v₀).2.1 c hc g₀ hg₀ hγ.2 l]
   rw [resG_last, e1]
@@ -154,7 +154,7 @@ theorem claim (hRR : RightRuleE) (hLR : LeftRuleCell) (hTC : TorusCell) (hGP : G
   · rw [qminor_one]
     have hx0 : C3.xR k r 1 hm 0 = eI k r ⟨0, by omega⟩ := by ext; simp [C3.xR, eI]
     have hts := torus_step hD v₀ g₀ y hTC hGP hg₀ hcell hdiff ⟨0, by omega⟩ P c hc
-    simp only [Fin.val_mk, Nat.cast_zero, sub_zero] at hts
+    simp only [Nat.cast_zero, sub_zero] at hts
     rw [hx0, hts, (vAB_succ y 0 (show 0 < r by omega) _).1]
     simp [Q.vAB, cOp]
   · have hm2 : m + 2 ≤ r := hm

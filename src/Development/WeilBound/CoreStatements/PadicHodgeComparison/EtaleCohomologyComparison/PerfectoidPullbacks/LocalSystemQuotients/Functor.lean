@@ -3,7 +3,8 @@ module
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LocalSystemQuotients.RedMk
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.Coords
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LocalSystemQuotients.ModFSW
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatThickeningQuotientStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.InclStd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatThickeningQuotient
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -60,7 +61,7 @@ variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing 
   {F : B.Fn O} {ρ : O →+* k} {n : ℕ} (hn : n ≠ 0)
 
 def qG : (fl l F ρ (n + 1)).FullSubcategory ⥤ (fl l F ρ n).FullSubcategory :=
-  (fl l F ρ n).lift ((fl l F ρ (n + 1)).ι ⋙ qF hn) fun T => GlobalTheory.T.flat_thickening_quotient l k O F ρ n hn T.obj T.property
+  (fl l F ρ n).lift ((fl l F ρ (n + 1)).ι ⋙ qF hn) fun T => _root_.GlobalTheory.CompanionTheory.FlatThick.flatT_qT l k O F ρ n hn T.obj T.property
 
 def mq : QMor (sW l F ρ n) (sW l F ρ (n + 1)) (IdF.span _ ((l : WittVector l k) ^ n)) where
   G := qG hn

@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.UnipVal
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompactOpenSubgroupExhaustionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompactOpenSubgroupExhaustion
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -74,7 +74,7 @@ theorem quadExt_topology : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F
     have : (Algebra.norm F : E → F) = fun z => (2 : F)⁻¹ * Algebra.trace F E (z * c z) := funext hN
     rw [this]
     exact continuous_const.mul (htr.comp (continuous_id.mul hc))
-  have hT2 : T2Space E := (GlobalTheory.T.isSelfDualCompactOpenGroup_of_finiteDimensional F E).t2
+  have hT2 : T2Space E := (_root_.GlobalTheory.KSp.good_of_finiteDimensional F E).t2
   have hinv : ∀ z : E, z⁻¹ = (Algebra.norm F z)⁻¹ • c z := by
     intro z
     by_cases hz : z = 0
@@ -91,6 +91,6 @@ theorem quadExt_topology : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F
     exact ((continuousAt_inv₀ hn).comp hNc.continuousAt).smul hc.continuousAt
   refine ⟨hfd, inferInstance, hI, hT2, hc, hNc, htr, fun α ν _ _ => ?_⟩
   haveI hM : IsModuleTopology F (Matrix α ν E) := inferInstanceAs (IsModuleTopology F (α → ν → E))
-  exact ⟨hM, GlobalTheory.T.isSelfDualCompactOpenGroup_of_finiteDimensional F (Matrix α ν E)⟩
+  exact ⟨hM, _root_.GlobalTheory.KSp.good_of_finiteDimensional F (Matrix α ν E)⟩
 
 end GlobalTheory

@@ -309,7 +309,6 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 theorem finDim_FE : FiniteDimensional F E := by
   first
   | infer_instance
-  | exact Module.Finite.of_restrictScalars_finite ℚ F E
 
 theorem isOpen_indep (v : HeightOneSpectrum (𝓞 F)) (n a : ℕ) :
     IsOpen (IndepV (E := E) (n := n) v a) := by
@@ -332,7 +331,6 @@ theorem orbit_measure_sFinite : LocMassOrdW.OmSF := by
       haveI : SecondCountableTopology (Fv F v ⊗[F] E) := sc_tens (Fv F v)
       haveI : OpensMeasurableSpace (TupV (E := E) v n a) := by
         first
-        | exact ⟨le_rfl⟩
         | (haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩; infer_instance)
       exact sfinite_of_fib (isOpen_indep v n a) hfib.choose_spec ⟨T, hT⟩
     · infer_instance

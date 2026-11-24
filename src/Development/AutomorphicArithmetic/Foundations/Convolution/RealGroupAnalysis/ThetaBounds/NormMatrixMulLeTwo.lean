@@ -47,7 +47,7 @@ private theorem ht_le {E : Type} [Field E] [NumberField E] (y : GL (Fin 2) (Cinf
     ‖toL y.val‖ ≤ GlobalTheory.CuspRep.height y ∧ ‖toL (y⁻¹).val‖ ≤ GlobalTheory.CuspRep.height y := by
   have n1 := norm_nonneg (toL y.val)
   have n2 := norm_nonneg (toL (y⁻¹).val)
-  refine ⟨?_, ?_⟩ <;> first | (unfold GlobalTheory.CuspRep.height; linarith) | fail "height"
+  refine ⟨?_, ?_⟩ <;> first | (unfold GlobalTheory.CuspRep.height; linarith)
 
 private theorem norm_matrix_mul_le_two {E : Type} [Field E] [NumberField E]
     (x x' : Matrix (Fin 2) (Fin 2) (Cinf E)) : ‖toL (x * x')‖ ≤ 2 * ‖toL x‖ * ‖toL x'‖ := by

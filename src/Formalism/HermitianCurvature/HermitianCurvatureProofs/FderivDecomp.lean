@@ -66,7 +66,6 @@ theorem normSq_exp (w : ℂ) : Complex.normSq (Complex.exp w) = Real.exp w.re ^ 
 
   first
     | rw [Complex.normSq_eq_norm_sq, Complex.norm_exp]
-    | simp [Complex.normSq_eq_norm_sq, Complex.norm_exp]
 
 theorem isOpen_Hh (TT : ℝ) : IsOpen (Hh TT) := isOpen_lt continuous_const (Complex.continuous_normSq.comp Complex.continuous_exp)
 

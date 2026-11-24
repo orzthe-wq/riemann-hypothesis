@@ -198,12 +198,12 @@ theorem exists_tri {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (h12 : W₁ ≤ W
   refine ⟨P, F - P, 1 - F, ⟨by abel, hPP, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, fun v => ?_, fun v => ?_⟩
   · simp [sub_mul, mul_sub, hFF, hPF, hFP, hPP]
   · simp [sub_mul, mul_sub, hFF]
-  · simp [sub_mul, mul_sub, hPF, hPP]
-  · simp [sub_mul, mul_sub, hPF]
-  · simp [sub_mul, mul_sub, hFP, hPP]
-  · simp [sub_mul, mul_sub, hFF, hFP, hPF]
-  · simp [sub_mul, mul_sub, hFP]
-  · simp [sub_mul, mul_sub, hFF, hPF, hFP]
+  · simp [mul_sub, hPF, hPP]
+  · simp [mul_sub, hPF]
+  · simp [sub_mul, hFP, hPP]
+  · simp [sub_mul, mul_sub, hFF, hPF]
+  · simp [sub_mul, hFP]
+  · simp [sub_mul, mul_sub, hFF, hFP]
   · simp only [Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]
     constructor
     · intro hv
@@ -313,11 +313,11 @@ theorem conj_val {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {P Q R : Mat n} (h 
       (t : ℂ) • (P * X * Q + Q * X * R) + (t : ℂ) ^ 2 • (P * X * R) := by
     have hPXP : P * X * P = 0 := by rw [mul_assoc, hXP, mul_zero]
     have hQXP : Q * X * P = 0 := by rw [mul_assoc, hXP, mul_zero]
-    simp only [aM, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, hRX, hXP, hPXP, hQXP, hQXQ,
-      zero_mul, smul_zero, add_zero, zero_add]
+    simp only [aM, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, hRX, hPXP, hQXP, hQXQ,
+      smul_zero, add_zero, zero_add]
     module
   rw [Units.val_mul, Units.val_mul, hiv, hv, hu', mul_add, add_mul, mul_one, hone, e1]
-  simp only [add_sub_cancel_left, add_assoc]
+  simp only [add_assoc]
 
 def conjN (N : Subgroup (G n)) (g : G n) (hg : ∀ u ∈ N, g * u * g⁻¹ ∈ N)
     (hg' : ∀ u ∈ N, g⁻¹ * u * g ∈ N) : N ≃* N where

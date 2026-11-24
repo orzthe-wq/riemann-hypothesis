@@ -138,7 +138,7 @@ theorem hom_relation_holds : HomRel := by
   have h2 := congrArg φ (LinearMap.congr_fun (hV a b c d) x)
   simp only [LinearMap.sub_apply, Module.End.mul_apply, homAct_apply, map_sub] at h1 h2 ⊢
   split_ifs at h1 h2 ⊢ <;>
-    simp only [LinearMap.zero_apply, map_zero, homAct_apply, sub_zero, zero_sub, map_neg, LinearMap.sub_apply, map_sub] at h1 h2 ⊢ <;>
+    simp only [LinearMap.zero_apply, map_zero, homAct_apply, sub_zero, zero_sub] at h1 h2 ⊢ <;>
     rw [eq_add_of_sub_eq h1, eq_add_of_sub_eq h2] <;> abel
 
 theorem hom_divided_holds : HomDiv := by

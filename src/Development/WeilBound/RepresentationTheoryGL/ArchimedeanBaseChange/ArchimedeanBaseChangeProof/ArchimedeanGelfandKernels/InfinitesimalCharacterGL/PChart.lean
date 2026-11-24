@@ -196,8 +196,7 @@ theorem eu_along (w : InfinitePlace E) (g : GA E a) (s : Bool) (φ : Sm E a) (i 
       along_add]
   · have hE := GlobalTheory.CompanionTheory.CasFamily.Eop_embedding (a := a) w i j
     simp only [PositivityTheory.RgBcC.Eu, Pi.add_apply, Pi.smul_apply, smul_eq_mul, h1, h2, eopW, hE, if_true,
-      LinearMap.smul_apply, LinearMap.sub_apply, Submodule.coe_smul, Submodule.coe_sub, along_smul,
-      Pi.sub_apply]
+      LinearMap.smul_apply, LinearMap.sub_apply, Submodule.coe_smul, Submodule.coe_sub, along_smul]
     have hsub : ∀ f f' : GA E a → ℂ, along w g (f - f') = along w g f - along w g f' := fun f f' => by
       rw [sub_eq_add_neg, along_add, ← neg_one_smul ℂ f', along_smul]; simp [sub_eq_add_neg]
     rw [hsub, along_smul]
@@ -229,7 +228,7 @@ theorem epow_along (w : InfinitePlace E) (g : GA E a) (s : Bool) (m : ℕ) (i j 
     · simp [along_zero]
   | succ m ih =>
     simp only [PositivityTheory.RgBcC.Epow]
-    rw [Finset.sum_apply, epow_succ']
+    rw [Finset.sum_apply, _root_.GlobalTheory.TracedComatrix.epow_succ_left]
     simp only [LinearMap.sum_apply, Module.End.mul_apply, Submodule.coe_sum, along_sum, Finset.sum_apply]
     refine Finset.sum_congr rfl fun c _ => ?_
     have hev : PositivityTheory.RgBcC.Epow s m c j (along w g φ.1) =ᶠ[nhds x]

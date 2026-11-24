@@ -1,24 +1,22 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.Divisors.GalMapMul
 public import Development.EtaleCohomology.EtaleSheaves.CovOfPoints
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsSepGlueOfSurjectiveFamily
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCofilteredLimitAffineEtaleOfIsStalkStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStrictlyHenselianEtaleStalkOverPointStatement
-public import Development.EtaleCohomology.EtaleDuality.TASCohSplitPfEmpty
 public import Development.EtaleCohomology.EtaleSheaves.RelativeCohomologyForgetInjectiveDegreeZeroOfSub
 public import Development.EtaleCohomology.EtaleSheaves.SecondDegreeKilling.LeafKill2Of
+public import Mathlib.AlgebraicGeometry.AffineTransitionLimit
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-public import Mathlib.AlgebraicGeometry.AffineTransitionLimit
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.CategoryTheory.Limits.Preserves.Over
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
@@ -29,8 +27,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -38,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -51,9 +48,44 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.CategoryTheory.Limits.Preserves.Over
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.HaveILetI
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.EtaleCohomology.EtaleDuality.TASCohSplitPfEmpty, Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.EtaleCohomologyDegreeZeroSurjectiveLimit
+
+-- ===== clump member: Development.EtaleCohomology.EtaleDuality.TASCohSplitPfEmpty =====
+-- clump-header: {"m": "Development.EtaleCohomology.EtaleDuality.TASCohSplitPfEmpty", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.GalMapMul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC Opposite CochainComplex.HomComplex
+namespace LateralTheory.EDual
+
+theorem sec_empty_sub {R : Type} [CommRing R] (G : Shv R) (U : Scheme.{0}) [IsEmpty U] :
+    Subsingleton (G.obj.obj (op U)) := by
+  have hS := (G.property (ModuleCat.of (ULift.{1} R) (ULift.{1} R))) (⊥ : Sieve U)
+    (Scheme.bot_mem_grothendieckTopology U)
+  refine ⟨fun x y => ?_⟩
+  have e := hS.isSeparatedFor (fun _ _ h => h.elim) (ModuleCat.ofHom (LinearMap.toSpanSingleton _ _ x))
+    (ModuleCat.ofHom (LinearMap.toSpanSingleton _ _ y)) (fun _ _ h => h.elim) (fun _ _ h => h.elim)
+  have := congrArg (fun φ => φ.hom (1 : ULift.{1} R)) e
+  simpa using this
+
+end LateralTheory.EDual
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.EtaleCohomology.EtaleDuality.TASCohSplitPfEmpty =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.EtaleCohomologyDegreeZeroSurjectiveLimit =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.EtaleCohomologyDegreeZeroSurjectiveLimit", "h": "module\n\npublic import Development.EtaleCohomology.EtaleSheaves.CovOfPoints\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSheafSectionsSepGlueOfSurjectiveFamily\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCofilteredLimitAffineEtaleOfIsStalkStatement\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsStrictlyHenselianEtaleStalkOverPointStatement\npublic import Development.EtaleCohomology.EtaleDuality.TASCohSplitPfEmpty\npublic import Development.EtaleCohomology.EtaleSheaves.RelativeCohomologyForgetInjectiveDegreeZeroOfSub\npublic import Development.EtaleCohomology.EtaleSheaves.SecondDegreeKilling.LeafKill2Of\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\npublic import Mathlib.AlgebraicGeometry.AffineTransitionLimit\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.CategoryTheory.Limits.Preserves.Over\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -223,7 +255,7 @@ private theorem cont_step (hA : A9) (hB : B1) (q : ℕ) (i : ℤ) {S X : Scheme.
     ∃ (Z : Over S) (j : Spec (CommRingCat.of O) ⟶ Z.left) (d : H (ZMod q) (sch.obj Z.left) (tw q i) 0),
       j ≫ Z.hom = s ∧ Etale Z.hom ∧
       pull _ (sch.map (pullback.fst Z.hom r)) _ 0 d = pull _ (sch.map (pullback.snd Z.hom r)) _ 0 w := by
-  obtain ⟨I, _, _, G, π, ⟨hl⟩, hG⟩ := GlobalTheory.T.exists_cofiltered_limit_affine_etale_of_isStalk' S O s hs
+  obtain ⟨I, _, _, G, π, ⟨hl⟩, hG⟩ := _root_.GlobalTheory.EtC.exists_cofiltered_limit_affine_etale_of_isStalk S O s hs
   have hl1 : IsLimit ((Over.forget S).mapCone ⟨Over.mk s, π⟩) := isLimitOfPreserves (Over.forget S) hl
   have hl2 : IsLimit ((TF r).mapCone ⟨Over.mk s, π⟩) := isLimitOfPreserves (TF r) hl
   obtain ⟨j0, y, hy⟩ := (cont_aff hB q i 0 (G ⋙ Over.forget S) _ hl1 (fun j => (hG j).1)
@@ -268,7 +300,7 @@ private theorem locAbs (hA : A9) (hB : B1) (q : ℕ) (i : ℤ) {k : Type} [Field
     (x : U.left) :
     ∃ (U' : B.Etale) (a : U' ⟶ U) (c : H (ZMod q) (sch.obj U'.left) (tw q i) 0), x ∈ Set.range a.left ∧
       pull _ (sch.map (toBY P U')) _ 0 c = pull _ (sch.map (resY P a)) _ 0 w := by
-  obtain ⟨O, hO, s, g, hs, v, hv⟩ := GlobalTheory.T.exists_strictlyHenselianEtaleStalk_over_point U.left (Over.mk (𝟙 U.left)) (by dsimp; infer_instance) x
+  obtain ⟨O, hO, s, g, hs, v, hv⟩ := _root_.GlobalTheory.EtC.exists_isStalk_over_point U.left (Over.mk (𝟙 U.left)) (by dsimp; infer_instance) x
   have hsg : g.left = s := by simpa using Over.w g
   haveI hr : QuasiCompact (toBY P U) := by dsimp [toBY]; infer_instance
   have hu : ∀ (Z : Scheme.{0}), (Z ⟶ U.left) → IsUnit (q : Γ(Z, ⊤)) := fun Z g' => unit_of hq (g' ≫ U.hom ≫ toK)
@@ -387,3 +419,7 @@ theorem UpperTheory.Cb.etale_cohomology_degree_zero_surjective_limit :
     have e2 : toBY (g2 ≫ g1 ≫ p) U'' ≫ b.left = resY (g2 ≫ g1 ≫ p) b ≫ toBY (g2 ≫ g1 ≫ p) U' := by
       exact (pullback.lift_snd _ _ _).symm
     rw [e2, ← pp, hc, pp, pp, ← LateralTheory.E.SecondDegreeKilling.Nbhd.resY_comp, ← LateralTheory.E.SecondDegreeKilling.Nbhd.resY_comp, Category.assoc]
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.EtaleClopenDescent.EtaleCohomologyDegreeZeroSurjectiveLimit =====

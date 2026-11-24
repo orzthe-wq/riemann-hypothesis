@@ -461,13 +461,6 @@ theorem sa_sat {O : Type} [CommRing O] [IsDomain O] (ϖ : O) [(Ideal.span {ϖ}).
     rw [pow_succ, map_mul] at hw
     linear_combination hw
 
-theorem sa_it_add {O : Type} [CommRing O] (f : PowerSeries O →ₐ[O] PowerSeries O) (k : ℕ)
-    (a b : PowerSeries O) : (⇑f)^[k] (a + b) = (⇑f)^[k] a + (⇑f)^[k] b := by
-  induction k with
-  | zero => rfl
-  | succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_succ_apply', ih, map_add]
-
 theorem sa_p_ne {O : Type} [CommRing O] [IsDomain O] (ϖ : O) [(Ideal.span {ϖ}).IsMaximal]
     (B : Base O) (hd : ϖ ∣ (B.ℓ : O)) (hE3 : ∀ s, B.E3it s) (s : ℕ) :
     PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) (B.p s) ≠ 0 := by
@@ -479,7 +472,7 @@ theorem sa_p_ne {O : Type} [CommRing O] [IsDomain O] (ϖ : O) [(Ideal.span {ϖ})
       Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton.mpr hd)
     have hp : B.p s = (u : PowerSeries O) * X * ∏ k ∈ Finset.range s, B.p k ^ (B.ℓ - 1)
         + C (B.ℓ : O) := by
-      rw [Base.p, Base.q, sa_it_add, IdempotentNormalFormsRhoFacts.it_C, hu]
+      rw [Base.p, Base.q, _root_.Formalism.ExponentWindows.E.GoodPlacesAlt.it_add, IdempotentNormalFormsRhoFacts.it_C, hu]
     rw [hp, map_add (f := _), PowerSeries.map_C, hl, map_zero, add_zero, map_mul, map_mul, map_prod,
       PowerSeries.map_X]
     refine mul_ne_zero (mul_ne_zero ?_ X_ne_zero) ?_
@@ -992,16 +985,6 @@ theorem phi_maps_filtered_lattice (h3 : B.E3) {M : ℕ} (hq : L.FrobeniusMapsXPo
     rw [smul_add, map_add (f := _)]
     exact Submodule.add_mem _ hx hy
 
-theorem power_series_X_cancel (hX : L.XReg) (i : ZMod n) (M : ℕ) {w : V} (hw : w ∈ L.N i)
-    (h : (X : PowerSeries O) ^ M • w = 0) : w = 0 := by
-  induction M with
-  | zero => simpa using h
-  | succ M ih =>
-    apply ih
-    apply hX i _ ((L.N i).smul_mem _ hw)
-    rw [← mul_smul, ← pow_succ']
-    exact h
-
 theorem mem_all_filtered_powers_zero (hC : L.Complete) (hX : L.XReg) (i : ZMod n) (M : ℕ) {v : V}
     (h : ∀ k : ℕ, v ∈ sm (X ^ M) (B.mm ^ k • L.N i)) : v = 0 := by
   obtain ⟨w, hw, rfl⟩ := mem_sm.1 (h 0)
@@ -1012,7 +995,7 @@ theorem mem_all_filtered_powers_zero (hC : L.Complete) (hX : L.XReg) (i : ZMod n
     intro k
     obtain ⟨w', hw', e⟩ := mem_sm.1 (h k)
     have : w' - w = 0 := by
-      apply power_series_X_cancel L hX i M ((L.N i).sub_mem (ideal_smul_submodule_le _ _ hw') hwN)
+      apply _root_.Formalism.ExponentWindows.E.GoodPlacesAlt.sat_xreg_pow L hX i M ((L.N i).sub_mem (ideal_smul_submodule_le _ _ hw') hwN)
       rw [smul_sub, e, sub_self]
     rw [← sub_eq_zero.1 this]
     exact hw'

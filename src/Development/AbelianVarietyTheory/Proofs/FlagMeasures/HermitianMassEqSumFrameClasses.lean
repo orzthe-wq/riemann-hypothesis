@@ -1,9 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolumeStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerStabilizersCommensurableVolume
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTermsStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesStabilizerActsOnTerms
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassOrbitsEqTsumFiber
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -61,14 +61,14 @@ theorem mass_eq_sumCls : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalS
   have key := mass_orbits_eq_tsum_fiber S.St S.K0 (fun Λ => S.IsTerm d Λ ∧ P Λ) (S.Fr d) hK
     (by
       rintro h hh Λ ⟨ht, hp⟩
-      obtain ⟨ht', -, -, -, hFr, -⟩ := GlobalTheory.T.hermitianFrames_stabilizer_acts_on_terms L r k S d Λ ht h hh
+      obtain ⟨ht', -, -, -, hFr, -⟩ := _root_.GlobalTheory.FrameAct.stabiliser_acts_on_terms L r k S d Λ ht h hh
       have hlat := (TermBasic.term_basic L r k S d Λ ht).1.1
-      exact ⟨⟨ht', hP h hh Λ ht hp⟩, hFr, ((GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).1 Λ hlat).2.2 h hh⟩)
+      exact ⟨⟨ht', hP h hh Λ ht hp⟩, hFr, ((_root_.GlobalTheory.HL.volSt L r k S).1 Λ hlat).2.2 h hh⟩)
     (by
       rintro Λ ⟨ht, -⟩
       have tb := TermBasic.term_basic L r k S d Λ ht
-      have hA := (GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).1 Λ tb.1.1
-      have hC := (GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).2 (S.Fr d Λ) tb.2.2.2.2.2.2.1.1
+      have hA := (_root_.GlobalTheory.HL.volSt L r k S).1 Λ tb.1.1
+      have hC := (_root_.GlobalTheory.HL.volSt L r k S).2 (S.Fr d Λ) tb.2.2.2.2.2.2.1.1
       exact ⟨hA.1, hA.2.1, hC.1, hC.2.1⟩)
   beta_reduce at key
   unfold Frames.mass Frames.mu

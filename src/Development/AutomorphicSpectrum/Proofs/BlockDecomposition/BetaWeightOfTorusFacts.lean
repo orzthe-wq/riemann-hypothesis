@@ -146,7 +146,7 @@ lemma lop_lw (H : HolFacts) (μ : Fin n → ℤ) (c : Fin n) (w : List (Fin n ×
       · subst h1; subst h2; simp
       · subst h1; simp [h2]
       · subst h2; simp [h1, Ne.symm h1]
-      · simp [h1, h2, Ne.symm h1, Ne.symm h2]
+      · simp [h1, h2, Ne.symm h1]
     rw [hlw, rel', hwt, ← add_smul]
     congr 1
     push_cast
@@ -271,7 +271,6 @@ theorem betaWeight : HolFacts → RhoTorus → TorW → BetaWeight := by
     · simp [hx]
     · rw [wt_eq hR hT T ha x hx c, smul_comm]
       congr 2
-      push_cast
       ring
 
 end GlobalTheory.CompanionTheory.TorusSymbol

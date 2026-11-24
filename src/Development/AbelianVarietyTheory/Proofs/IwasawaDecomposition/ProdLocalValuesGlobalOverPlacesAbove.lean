@@ -2,7 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocUnitApply
 public import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntValuationNormEqSumResidueDegreeMulStatement
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
+public import Mathlib.RingTheory.RamificationInertia.Inertia
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntValuationNormEqSumResidueDegreeMul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -204,8 +207,8 @@ theorem prod_locUnit_eq_prod_locUnit_norm : ∀ (E K : Type) [Field E] [NumberFi
       · exact fun h => h.2
       · intro h
         exact ⟨(memTK w).mpr (h ▸ hv), h⟩
-    have key := GlobalTheory.T.intValuation_norm_eq_sum_residueDegree_mul E K v a _ hs
-    simp only [ordF, hNa, Units.coe_map, MonoidHom.coe_coe] at key ⊢
+    have key := _root_.GlobalTheory.NormValuation.log_valuation_norm_eq_sum E K v a _ hs
+    simp only [ordF, hNa, Units.coe_map] at key ⊢
     rw [key, ← Finset.sum_neg_distrib]
     refine Finset.sum_congr rfl fun w _ => ?_
     ring

@@ -287,20 +287,6 @@ theorem coDbl_rat {S T : HSp D} {ξ : AF D.host.F ⊗[D.host.F] D.host.E} {JA : 
 
 theorem isHeckeChar_one : IsHeckeChar D 1 := ⟨continuous_const, fun _ => rfl⟩
 
-theorem resEta_one_dblSp (T : HSp D) {χ : (AE D)ˣ →* Circle} {k : ℕ} (hr : ResEta D χ k) :
-    ResEta D 1 (GlobalTheory.Doubling.dblSp T).rank :=
-  ⟨hr.1, fun η hη a => by
-    have h4 := hη.2.2.1 (idF D a)
-    have h5 : Units.map (Algebra.norm (AF D.host.F) : AE D →* AF D.host.F) (idF D a) = a ^ 2 := Units.ext (by
-      change Algebra.norm (AF D.host.F) (algebraMap (AF D.host.F) (AE D) a.1) = _
-      have := GlobalTheory.Doubling.t2Space_adeleRing' (F := D.host.F)
-      have : Nontrivial (AF D.host.F) :=
-        (NumberField.AdeleRing.algebraMap_injective (NumberField.RingOfIntegers D.host.F) D.host.F).nontrivial
-      rw [Algebra.norm_algebraMap, Module.finrank_baseChange, D.sp.cm.deg2, Units.val_pow_eq_pow_val])
-    rw [h5, map_pow] at h4
-    change (1 : Circle) = η a ^ (T.rank + T.rank)
-    rw [← two_mul, pow_mul, h4, one_pow]⟩
-
 end HspCo
 
 section UgDbl

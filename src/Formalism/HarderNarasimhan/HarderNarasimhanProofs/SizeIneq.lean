@@ -64,10 +64,6 @@ variable {K : Type*} [Field K] [NumberField K]
   {V : Type*} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
   {W : Type*} [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
 
-theorem sizeIneq_exists_mul_mem (A : Submodule (𝓞 K) V) (x : V)
-    (hx : x ∈ Submodule.span K (A : Set V)) : ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ A := by
-  first | exact Bl.general_b_fact_second''''''.goal1 .. | (apply Bl.general_b_fact_second''''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second''''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_second''''''.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_second''''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_second''''''.goal1 <;> first | assumption | infer_instance)
-
 theorem sizeIneq_span_inf_ker (φ : V →ₗ[K] W) (A : Submodule (𝓞 K) V) :
     Submodule.span K ((A ⊓ (LinearMap.ker φ).restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V) =
       Submodule.span K (A : Set V) ⊓ LinearMap.ker φ := by
@@ -76,7 +72,7 @@ theorem sizeIneq_span_inf_ker (φ : V →ₗ[K] W) (A : Submodule (𝓞 K) V) :
     rintro x ⟨hxA, hxk⟩
     exact ⟨Submodule.subset_span hxA, hxk⟩
   · rintro x ⟨hxS, hxk⟩
-    obtain ⟨d, hd, hdx⟩ := sizeIneq_exists_mul_mem A x hxS
+    obtain ⟨d, hd, hdx⟩ := _root_.Bl.general_b_fact_second''''''.goal1 A x hxS
     have hd' : algebraMap (𝓞 K) K d ≠ 0 := by
       intro h0
       exact hd (FaithfulSMul.algebraMap_injective (𝓞 K) K (by rw [h0, map_zero]))

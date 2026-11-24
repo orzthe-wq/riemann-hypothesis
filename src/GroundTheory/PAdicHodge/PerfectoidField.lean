@@ -234,6 +234,10 @@ instance padicComplex (p : ℕ) [Fact p.Prime] : IsPerfectoidField ℂ_[p] p :=
     rw [← hc, h]
     exact Padic.norm_p_lt_one)
 
+instance (priority := high) fact_not_isUnit_padicComplex (p : ℕ) [Fact p.Prime] :
+    @Fact (¬ IsUnit (p : @normInteger ℂ_[p] (PadicComplex.nontriviallyNormedField p).toNormedField _)) :=
+  IsPerfectoidField.fact_not_isUnit (K := ℂ_[p]) p
+
 end IsPerfectoidField
 
 end GroundTheory.PAdicHodge

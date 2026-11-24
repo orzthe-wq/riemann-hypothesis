@@ -46,10 +46,6 @@ import Mathlib.Tactic.ReduceModChar
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.GalOfCusp Matrix IsLocalRing
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
-private theorem norm_sum_lt' {F ι : Type} [NormedField F] [IsUltrametricDist F] (s : Finset ι) (f : ι → F) {C : ℝ}
-    (hC : 0 < C) (h : ∀ i ∈ s, ‖f i‖ < C) : ‖∑ i ∈ s, f i‖ < C :=
-  _root_.UpperTheory.Reformulated.B.Qe17.norm_sum_lt s f hC h
-
 private theorem det_ne_zero' {F : Type} [NormedField F] [IsUltrametricDist F] {m : ℕ} (t : F) (ht : ‖t‖ = 1)
     (E : Matrix (Fin m) (Fin m) F) (hE : ∀ a b, ‖E a b‖ < 1) : (t • (1 : Matrix (Fin m) (Fin m) F) + E).det ≠ 0 :=
   _root_.UpperTheory.Reformulated.B.Qi6.det_ne_zero t ht E hE
@@ -77,9 +73,9 @@ private theorem conj_of_close {F Γ : Type} [NormedField F] [IsUltrametricDist F
     rw [hsplit]
     refine det_ne_zero' _ hΓ _ fun a b => ?_
     rw [Matrix.sum_apply]
-    refine norm_sum_lt' _ _ one_pos fun g _ => ?_
+    refine _root_.UpperTheory.Reformulated.B.Qe17.norm_sum_lt _ _ one_pos fun g _ => ?_
     rw [Matrix.mul_apply]
-    refine norm_sum_lt' _ _ one_pos fun k _ => ?_
+    refine _root_.UpperTheory.Reformulated.B.Qe17.norm_sum_lt _ _ one_pos fun k _ => ?_
     rw [norm_mul, Matrix.sub_apply]
     exact mul_lt_one_of_nonneg_of_lt_one_right (hi₀ _ _ _) (norm_nonneg _) (hc g k b)
   refine ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero M hdet, fun h => ?_⟩

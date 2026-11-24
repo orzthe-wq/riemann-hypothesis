@@ -1,50 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.DualLiftInjective
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.CoassocSimps
 import Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 
 @[expose] public section
 
@@ -64,7 +22,6 @@ private theorem jetAug_zR_lemma {κ : Type} {m : ℕ} (j : κ) : jetAug R κ m (
   first
   | (show MvPolynomial.aeval (fun _ : κ => (0 : R)) (MvPolynomial.X j) = 0
      simp)
-  | simp [jetAug, zR, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.lift_mk]
 
 theorem sum_smul_zR_mem {a : ℕ} (m : ℕ) (c : Fin a → R) :
     ∑ i, c i • zR (R := R) m i ∈ RingHom.ker (jetAug R (Fin a) m) := by
@@ -85,22 +42,15 @@ theorem jetSub_zR {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (m : �
     jetSub T m (zR m k) = ∑ i, T (Pi.single i 1) k • zR m i := by
   rw [jetSub, jetLift_zR]
 
-private theorem jet_ext_lemma_2 {κ : Type} {m : ℕ} {A : Type} [CommRing A] [Algebra R A]
-    {f g : JetR R κ m →ₐ[R] A} (h : ∀ j, f (zR m j) = g (zR m j)) : f = g := by
-  apply Ideal.Quotient.algHom_ext
-  apply MvPolynomial.algHom_ext
-  intro j
-  exact h j
-
 theorem jetSub_id {a : ℕ} (m : ℕ) : jetSub (R := R) (LinearMap.id : (Fin a → R) →ₗ[R] (Fin a → R)) m = AlgHom.id R _ := by
-  apply jet_ext_lemma_2
+  apply _root_.ReciprocityTheory.ChartRestriction.G.Chart.jet_ext
   intro k
   rw [jetSub_zR]
   simp [Pi.single_apply]
 
 theorem jetSub_comp {a b c : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (S : (Fin c → R) →ₗ[R] (Fin a → R)) (m : ℕ) :
     (jetSub S m).comp (jetSub T m) = jetSub (T.comp S) m := by
-  apply jet_ext_lemma_2
+  apply _root_.ReciprocityTheory.ChartRestriction.G.Chart.jet_ext
   intro k
 
   rw [AlgHom.comp_apply, jetSub_zR, jetSub_zR, map_sum]
@@ -115,7 +65,7 @@ theorem jetSub_comp {a b c : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (S
 
 theorem jetAug_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (m : ℕ) :
     (jetAug R (Fin a) m).comp (jetSub T m) = jetAug R (Fin b) m := by
-  apply jet_ext_lemma_2
+  apply _root_.ReciprocityTheory.ChartRestriction.G.Chart.jet_ext
   intro k
   rw [AlgHom.comp_apply, jetSub_zR, jetAug_zR_lemma]
   exact RingHom.mem_ker.mp (sum_smul_zR_mem m _)
@@ -128,14 +78,14 @@ private theorem zero_zR_lemma_4 {κ : Type} (m : ℕ) (j : κ) :
 
 theorem trunc_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (m : ℕ) :
     (jetTruncR R (Fin a) m).comp (jetSub T (m + 1)) = (jetSub T m).comp (jetTruncR R (Fin b) m) := by
-  apply jet_ext_lemma_2
+  apply _root_.ReciprocityTheory.ChartRestriction.G.Chart.jet_ext
   intro k
 
   simp only [AlgHom.comp_apply, jetSub_zR, trunc_zR_lemma_3, map_sum, map_smul]
 
 theorem zero_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (m : ℕ) :
     (jetZeroR R (Fin a) m).comp (jetSub T m) = (jetSub T 0).comp (jetZeroR R (Fin b) m) := by
-  apply jet_ext_lemma_2
+  apply _root_.ReciprocityTheory.ChartRestriction.G.Chart.jet_ext
   intro k
 
   simp only [AlgHom.comp_apply, jetSub_zR, zero_zR_lemma_4, map_sum, map_smul]
@@ -144,13 +94,10 @@ private theorem sum_inr_lemma_5 {I : Type} (s : Finset I) (f : I → R) :
     ∑ i ∈ s, (TrivSqZeroExt.inr (f i) : DualNumber R) = TrivSqZeroExt.inr (∑ i ∈ s, f i) := by
   first
   | exact (map_sum (TrivSqZeroExt.inrHom R R) f s).symm
-  | (induction s using Finset.cons_induction with
-     | empty => simp
-     | cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, ih, TrivSqZeroExt.inr_add])
 
 theorem dualLift_comp_jetSub {a b : ℕ} (T : (Fin a → R) →ₗ[R] (Fin b → R)) (c : Fin a → R) :
     (dualLift c).comp (jetSub T 1) = dualLift (T c) := by
-  apply jet_ext_lemma_2
+  apply _root_.ReciprocityTheory.ChartRestriction.G.Chart.jet_ext
   intro k
 
   simp only [AlgHom.comp_apply, jetSub_zR, map_sum, map_smul, dualLift_zR]

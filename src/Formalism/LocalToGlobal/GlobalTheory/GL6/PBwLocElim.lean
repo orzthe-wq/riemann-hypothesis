@@ -249,14 +249,7 @@ open scoped Matrix
 variable (D : D7) (u : D.what₂.Word)
 
 theorem bwE_loc_Ow (w : D.what₂.places.Pl) : bwE_Loc (bwA_Ow D w) := by
-  apply Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwD_loc_Ow <;> assumption
-
-theorem bwE_mem_Ow (w : D.what₂.places.Pl) (hw : OverT D u w) (τ : D.what₂.Tau) (y : D.host.E) (s : ℕ)
-    (hs : ¬ (D.mem u).A.T ∣ s) (hy : (s : D.host.E) * y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) :
-    embT D τ y ∈ bwA_Ow D w := by
-  rw [bwA_embT_eq]
-  exact Subring.mem_map.2 ⟨_, bwA_val_locInt D w ((D.host.sigmaOf (D.eTau τ : D.R.GG) : D.host.E →+* D.host.E)) y s
-    (by rw [hw]; exact hs) hy, rfl⟩
+  apply Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwD_loc_Ow
 
 theorem bwE_mulVec_col {n : ℕ} (A B : Matrix (Fin n) (Fin n) D.host.E) (a k : Fin n) :
     (A *ᵥ fun r => B r k) a = (A * B) a k := rfl
@@ -266,7 +259,7 @@ theorem bwE_locBasis_int (w : D.what₂.places.Pl) (hw : OverT D u w) (τ : D.wh
     (x : Fin n → D.host.E) (s : ℕ) (hs : ¬ (D.mem u).A.T ∣ s) (hx : (s : D.host.E) • x ∈ L) (a : Fin n) :
     embT D τ ((((B⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) *ᵥ x) a) ∈ bwA_Ow D w := by
   obtain ⟨s', hs', h⟩ := (hB x).1 ⟨s, hs, hx⟩
-  exact bwE_mem_Ow D u w hw τ _ s' hs' (h a)
+  exact Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwD_mem_Ow D u w hw τ _ s' hs' (h a)
 
 theorem bwE_col_loc (w : D.what₂.places.Pl) (hw : OverT D u w) {n : ℕ} {L : Set (Fin n → D.host.E)}
     {B : GL (Fin n) D.host.E} (hB : IsLocBasis (D.mem u).A.T L B) (k : Fin n) :

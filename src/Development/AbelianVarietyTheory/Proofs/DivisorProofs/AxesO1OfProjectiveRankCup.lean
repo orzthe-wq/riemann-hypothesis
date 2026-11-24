@@ -96,8 +96,8 @@ theorem isPullO_id {X : Scheme.{0}} (s : X ⟶ Sp R) (h : 𝟙 X ≫ s = s ≫ s
     { app := fun p ↦ (homOfLE (show p.unop.1.1 ≤ p.unop.1.2 from p.unop.2)).op
       naturality := fun _ _ _ ↦ Subsingleton.elim _ _ } ?_ a
   intro p b
-  simp only [pairRes, pairPull, secPull, Sec.res, CoefMap.restrict]
-  simp [Scheme.Hom.appLE, mp]
+  simp only [pairRes, pairPull, CoefMap.restrict]
+  simp [mp]
   rfl
 
 abbrev pb {Y A : Over (Sp R)} (f : Y ⟶ A) : HO1 A.hom →ₗ[R] HO1 Y.hom := pullHO1 (overW f)

@@ -67,7 +67,7 @@ lemma isClosed_UH : IsClosed (UH (Hpk k r)) := by
   exact isClosed_eq hc continuous_const
 
 lemma isClosed_N : IsClosed (Nset k r) := by
-  apply GlobalTheory.ProdHaar.isClosed_Nset <;> assumption
+  apply GlobalTheory.ProdHaar.isClosed_Nset
 
 lemma S_sub_UH {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ Sset k r z) :
     g ∈ UH (Hpk k r) := by
@@ -111,21 +111,19 @@ lemma mul_mem_S {a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ Sset k r z) (hb : b ∈ Sset k r z) : a * b ∈ Sset k r z := by
   obtain ⟨h1, hh1, n1, hn1, rfl⟩ := ha
   obtain ⟨h2, hh2, n2, hn2, rfl⟩ := hb
-  have hi2 := inv_mem_UW hh2
-  have hc : h2⁻¹ * n1 * h2 ∈ Nset k r := by
-    have := uw_conj_N hi2 hn1; rwa [inv_inv_UH hh2.1] at this
-  refine ⟨h1 * h2, mul_mem_UW hh1 hh2, h2⁻¹ * n1 * h2 * n2, (nilpotent_subgroup k r).2.1 _ hc _ hn2, ?_⟩
-  calc h1 * n1 * (h2 * n2) = h1 * (h2 * h2⁻¹) * n1 * h2 * n2 := by
-        rw [mul_inv_UH hh2.1, Matrix.mul_one]; simp only [Matrix.mul_assoc]
-    _ = h1 * h2 * (h2⁻¹ * n1 * h2 * n2) := by simp only [Matrix.mul_assoc]
+  refine ⟨h1 * h2, mul_mem_UW hh1 hh2, h2⁻¹ * n1 * h2 * n2,
+    (nilpotent_subgroup k r).2.1 _ ?_ _ hn2, ?_⟩
+  · simpa [inv_inv_UH hh2.1] using uw_conj_N (inv_mem_UW hh2) hn1
+  · calc h1 * n1 * (h2 * n2) = h1 * (h2 * h2⁻¹) * n1 * h2 * n2 := by
+          rw [mul_inv_UH hh2.1, Matrix.mul_one]; simp only [Matrix.mul_assoc]
+      _ = h1 * h2 * (h2⁻¹ * n1 * h2 * n2) := by simp only [Matrix.mul_assoc]
 
 lemma inv_mem_S {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ Sset k r z) : a⁻¹ ∈ Sset k r z ∧ a * a⁻¹ = 1 := by
   refine ⟨?_, mul_inv_UH (S_sub_UH ha)⟩
   obtain ⟨h, hh, n, hn, rfl⟩ := ha
-  have hi := inv_mem_UW hh
-  have hni : n⁻¹ ∈ Nset k r := (nilpotent_subgroup k r).2.2 _ hn
-  refine ⟨h⁻¹, hi, h * n⁻¹ * h⁻¹, uw_conj_N hh hni, ?_⟩
+  refine ⟨h⁻¹, inv_mem_UW hh, h * n⁻¹ * h⁻¹,
+    uw_conj_N hh ((nilpotent_subgroup k r).2.2 _ hn), ?_⟩
   rw [Matrix.mul_inv_rev]
   calc n⁻¹ * h⁻¹ = (h⁻¹ * h) * n⁻¹ * h⁻¹ := by rw [inv_mul_UH' hh.1, Matrix.one_mul]
     _ = h⁻¹ * (h * n⁻¹ * h⁻¹) := by simp only [Matrix.mul_assoc]

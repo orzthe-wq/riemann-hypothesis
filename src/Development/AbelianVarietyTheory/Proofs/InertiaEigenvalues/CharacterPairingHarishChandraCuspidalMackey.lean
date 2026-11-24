@@ -1,11 +1,11 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentralStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraFrobeniusReciprocityStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvariStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraRestrictionCuspidalProductSumSubsetStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraRestrictionTwoBlockCuspidalEqZeroStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentral
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraFrobeniusReciprocity
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraProductListIsCharacterAndPermInvari
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraRestrictionCuspidalProductSumSubset
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraRestrictionTwoBlockCuspidalEqZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -80,11 +80,7 @@ theorem ip_sum_left {G ι : Type} [Group G] [Fintype G] (S : Finset ι) (f : ι 
   simp only [Finset.sum_mul, Finset.mul_sum]
   exact Finset.sum_comm
 
-theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := by
-  obtain ⟨V, hV⟩ := h
-  intro x y
-  rw [← hV, ← hV]
-  exact FDRep.char_conj V x y
+alias isClass_of_isChar := _root_.GlobalTheory.CharDec.isClass_of_isChar
 
 theorem isChar_of_isCusp {d : ℕ} {χ : Gn g d → ℂ} (h : IsCusp χ) : IsChar χ := by
   obtain ⟨-, ⟨V, -, hV⟩, -⟩ := h
@@ -92,10 +88,6 @@ theorem isChar_of_isCusp {d : ℕ} {χ : Gn g d → ℂ} (h : IsCusp χ) : IsCha
 
 theorem degL_cons (p : Pc g) (L : List (Pc g)) : degL (p :: L) = p.1 + degL L := by
   simp [degL]
-
-theorem degL_perm {L L' : List (Pc g)} (h : L.Perm L') : degL L = degL L' := by
-  unfold degL
-  exact (h.map _).sum_eq
 
 theorem eq_nil_of_degL (L : List (Pc g)) (h0 : degL L = 0) (hc : ∀ p ∈ L, IsCusp p.2) : L = [] := by
   cases L with
@@ -113,12 +105,6 @@ theorem degL_pos (L : List (Pc g)) (hne : L ≠ []) (hc : ∀ p ∈ L, IsCusp p.
     have := (hc p (by simp)).1
     omega
 
-theorem degL_sort (L : List (Pc g)) (I : Finset (Fin L.length)) :
-    degL ((I.sort (· ≤ ·)).map L.get) = ∑ i ∈ I, (L.get i).1 := by
-  unfold degL
-  rw [List.map_map, ← Multiset.sum_coe, ← Multiset.map_coe, Finset.sort_eq]
-  rfl
-
 theorem perm_split (L : List (Pc g)) (I : Finset (Fin L.length)) :
     ((I.sort (· ≤ ·)).map L.get ++ (Iᶜ.sort (· ≤ ·)).map L.get).Perm L := by
   rw [← Multiset.coe_eq_coe, ← Multiset.coe_add, ← Multiset.map_coe, ← Multiset.map_coe, Finset.sort_eq,
@@ -133,11 +119,7 @@ theorem mem_sort_map {L : List (Pc g)} {I : Finset (Fin L.length)} {p : Pc g}
   exact List.get_mem L j
 
 theorem ip_triv : ip (hcL ([] : List (Pc g)) 0) (hcL ([] : List (Pc g)) 0) = 1 := by
-  simp [ip, hcL_nil, Finset.card_univ]
-
-theorem entN_fin' {n : ℕ} (M : Mt g n) (u v : Fin n) : entN M u v = M u v := by
-  unfold entN
-  simp
+  simp [ip, hcL_nil]
 
 theorem hcL_single (d : ℕ) (χ : Gn g d → ℂ) (hχ : IsClass χ) : hcL [⟨d, χ⟩] d = χ := by
   funext x
@@ -147,7 +129,7 @@ theorem hcL_single (d : ℕ) (χ : Gn g d → ℂ) (hχ : IsClass χ) : hcL [⟨
   have htl : ∀ y : Gn g d, toG (tl d (y : Mt g d)) = y := by
     intro y
     have : tl d (y : Mt g d) = (y : Mt g d) := by
-      funext i j; exact entN_fin' _ i j
+      funext i j; exact _root_.GlobalTheory.GLm.Cell.entN_fin _ i j
     rw [this]
     unfold toG
     rw [dite_eq_left (Units.isUnit y)]
@@ -173,8 +155,8 @@ theorem ip_long_cusp (a : ℕ) (ψ : Gn g a → ℂ) (hψ : IsCusp ψ) (K : List
     subst hd
     rw [hcL_cons, ip_comm]
     show ip ψ (hcT p.1 (degL r) (fun x y => p.2 x * hcL r (degL r) y) _) = 0
-    rw [GlobalTheory.T.harishChandra_frobenius_reciprocity g p.1 (degL r) _ rfl ψ _ (isClass_of_isChar (isChar_of_isCusp hψ))]
-    have h := GlobalTheory.T.harishChandraRestrictionTwoBlock_cuspidal_eq_zero g (p.1 + degL r) p.1 ψ hψ hp (by omega)
+    rw [_root_.GlobalTheory.GLq.FrobRecHC.hcT_adjoint g p.1 (degL r) _ rfl ψ _ (isClass_of_isChar (isChar_of_isCusp hψ))]
+    have h := _root_.GlobalTheory.GLq.res_cusp_eq_zero g (p.1 + degL r) p.1 ψ hψ hp (by omega)
     rw [Nat.add_sub_cancel_left] at h
     simp [ip, h]
 
@@ -183,7 +165,7 @@ theorem ip_single_cusp (a : ℕ) (ψ : Gn g a → ℂ) (hψ : IsCusp ψ) (p : Pc
   obtain ⟨d, χ⟩ := p
   dsimp only at hd hp
   subst hd
-  rw [hcL_single d χ (isClass_of_isChar (isChar_of_isCusp hp)), (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ ψ hp.2.1 hψ.2.1).2.2]
+  rw [hcL_single d χ (isClass_of_isChar (isChar_of_isCusp hp)), (_root_.GlobalTheory.GLq.ZOrth.zorth _ χ ψ hp.2.1 hψ.2.1).2.2]
   by_cases h : χ = ψ
   · subst h; simp
   · simp [h]
@@ -194,7 +176,7 @@ theorem ip_sub_cusp (L : List (Pc g)) (hc : ∀ p ∈ L, IsCusp p.2) (a : ℕ) (
   have hcI : ∀ p ∈ (I.sort (· ≤ ·)).map L.get, IsCusp p.2 := fun p hp => hc p (mem_sort_map hp)
   by_cases h2 : 2 ≤ I.card
   · rw [if_neg]
-    · exact ip_long_cusp a ψ hψ _ (by simpa using h2) ((degL_sort L I).trans hI) hcI
+    · exact ip_long_cusp a ψ hψ _ (by simpa using h2) ((_root_.GlobalTheory.GLq.ResCuspProd.degL_sort_map L I).trans hI) hcI
     · rintro ⟨i, rfl, -⟩
       simp at h2
   · have hcard : I.card = 0 ∨ I.card = 1 := by omega
@@ -237,15 +219,15 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card : ∀ (L' L : List (Pc g)) (n : ℕ)
     have hψ : IsCusp ψ := hc' ⟨a, ψ⟩ (by simp)
     have hcM : ∀ p ∈ M, IsCusp p.2 := fun p hp => hc' p (by simp [hp])
     have hclass : IsClass (hcL L (a + degL M)) :=
-      isClass_of_isChar (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g L L _ hL.symm (fun p hp => isChar_of_isCusp (hc p hp))).1
+      isClass_of_isChar (_root_.GlobalTheory.gl_list_product_perm_char g L L _ hL.symm (fun p hp => isChar_of_isCusp (hc p hp))).1
     have key : ip (hcL L (a + degL M)) (hcL (⟨a, ψ⟩ :: M) (a + degL M)) =
         ∑ I ∈ (Finset.univ : Finset (Finset (Fin L.length))).filter (fun I => ∑ i ∈ I, (L.get i).1 = a),
           ip (hcL ((I.sort (· ≤ ·)).map L.get) a) ψ *
             ip (hcL ((Iᶜ.sort (· ≤ ·)).map L.get) (degL M)) (hcL M (degL M)) := by
       rw [hcL_cons]
       show ip _ (hcT a (degL M) (fun x y => ψ x * hcL M (degL M) y) _) = _
-      rw [GlobalTheory.T.harishChandra_frobenius_reciprocity g a (degL M) _ rfl _ _ hclass]
-      have hres := GlobalTheory.T.harishChandraRestriction_cuspidal_product_sum_subsets g L a (degL M) hL hc
+      rw [_root_.GlobalTheory.GLq.FrobRecHC.hcT_adjoint g a (degL M) _ rfl _ _ hclass]
+      have hres := _root_.GlobalTheory.GLq.ResCuspProd.main g L a (degL M) hL hc
       simp only [hres]
       rw [ip_sum_left]
       refine Finset.sum_congr rfl fun I _ => ?_
@@ -257,7 +239,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card : ∀ (L' L : List (Pc g)) (n : ℕ)
       have hp := perm_split L {i}
       rw [Finset.sort_singleton, List.map_singleton, hi, List.singleton_append] at hp
       refine ⟨hp.symm, ?_⟩
-      have := degL_perm hp
+      have := _root_.GlobalTheory.GLqPerm.degL_perm hp
       rw [degL_cons, hL] at this
       dsimp only at this
       omega

@@ -119,7 +119,6 @@ private theorem PP_translate (X : Tower Ω ε) {l n N M : ℕ} [Fact l.Prime] [N
     have h1 : X.sl (ofSL δ) (X.sl (ofSL g) W) = X.sl (ofSL g') W := by
       have hν : (g * δ) * g'⁻¹ ∈ CongruenceSubgroup.Gamma M := by
         rw [CongruenceSubgroup.Gamma_mem']
-        change Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) _ = 1
         rw [map_mul, map_inv, hgg, mul_inv_cancel]
       have e1 : g * δ = ((g * δ) * g'⁻¹) * g' := by group
       rw [← X.sl_mul, ← map_mul, e1, map_mul, X.sl_mul, hW _ hν]

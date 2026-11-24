@@ -74,11 +74,10 @@ theorem WinC.map_inv {c s : ℝ} {B : Multiset ℂ} (h : WinC c s B) (hc : 0 < c
   obtain ⟨h1, h2⟩ := h
   refine ⟨fun x hx => ?_, ?_⟩
   · obtain ⟨b, hb, rfl⟩ := Multiset.mem_map.mp hx
-    beta_reduce
     obtain ⟨l, r⟩ := h1 b hb
     have hbpos : 0 < ‖b‖ := by
       by_contra hh
-      push_neg at hh
+      push Not at hh
       nlinarith [norm_nonneg b]
     rw [norm_inv]
     constructor
@@ -96,7 +95,7 @@ theorem WinC.map_inv {c s : ℝ} {B : Multiset ℂ} (h : WinC c s B) (hc : 0 < c
 
 theorem WinC.exists_le {c s : ℝ} {B : Multiset ℂ} (h : WinC c s B) (hc : 0 < c) (hB : B ≠ 0) : ∃ b ∈ B, ‖b‖ ≤ c := by
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   have key : ∀ C : Multiset ℂ, C ≠ 0 → (∀ b ∈ C, c < ‖b‖) → c ^ C.card < ‖C.prod‖ := by
     intro C
     induction C using Multiset.induction_on with

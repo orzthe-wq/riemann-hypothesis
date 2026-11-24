@@ -140,9 +140,7 @@ def PosW : Prop :=
 theorem gS_ge_three (D : D7) (hg : ∀ i, 3 ≤ D.host.g i ∧ PI.ScalPairs.Unram D.host.E (D.host.g i)) :
     3 ≤ gS D := by
   unfold gS
-  have h0 := (hg 0).1
-  have h1 := (hg 1).1
-  nlinarith
+  nlinarith [(hg 0).1, (hg 1).1]
 
 theorem betaModX_of (h1 : IotaSurj) (h2 : XLamSub) (h3 : PosW) (h4 : ModXAbs)
     (D : D7) (u u' : D.what₂.Word) : PI.ScalPairs.BetaL D u u' := by

@@ -163,7 +163,7 @@ theorem deltaHalf_eq_one (hc : c false = 0) (g : SmGL.Levi k (fun j => Fin (c j)
   have h2 : Matrix.GeneralLinearGroup.det (g false) = 1 := by
     ext; simp [Matrix.det_isEmpty]
   have h0 : SmGL.absPow k 0 = 1 := by
-    ext x; simp [SmGL.val_absPow]
+    ext x; simp
   rw [h1, h2]
   simp [h0]
 

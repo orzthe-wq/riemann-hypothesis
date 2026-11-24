@@ -49,4 +49,4 @@ open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.formalGroupAction_linearPart_ringHom : ∀ (R : Type) [CommRing R] (d : ℕ) (F : FGLaw R d) (OE : Type) [CommRing OE] (act : Geo.Tor.Germ.OAct OE F) (S : Type) [CommRing S] (β : R →+* S), ∃ ρ : OE →+* Matrix (Fin d) (Fin d) S, ∀ a, ρ a = linPart (actMap β act a) ∧ ρ a = (lin (act.act a)).map β := by
-  first | exact @GlobalTheory.ChF.linPart_act_ringHom | exact GlobalTheory.ChF.linPart_act_ringHom | (intros; apply GlobalTheory.ChF.linPart_act_ringHom <;> assumption)
+  first | exact @GlobalTheory.ChF.linPart_act_ringHom

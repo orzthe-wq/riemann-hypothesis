@@ -75,7 +75,7 @@ theorem Fz_nonneg (Y : Finset H) (κ : H → H → ℂ) (hκ : TB.PSDOn Y κ) (D
     intro o; rcases o with _ | v
     · exact hκ
     · exact hD v (z v) (hz v)
-  have hS := Formalism.FourierDecayAlt.P.schur_product _ (Option (Fin f)) Y k hk
+  have hS := _root_.Formalism.FourierDecayAlt.P.Jx7.t_SchurProduct _ (Option (Fin f)) Y k hk
   have hC := JCx1.decay.psd_compress Y _ hS (fun _ : Unit => Y) (fun _ => id) (fun _ h hh => hh)
   have := hC.diag_nonneg (i := ())
   simp only [Matrix.of_apply, id] at this

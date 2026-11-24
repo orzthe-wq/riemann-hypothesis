@@ -85,7 +85,7 @@ theorem exists_dual (R : RiemLat E g Λ) (i : Fin (2 * g)) :
   simp [Module.Basis.coord_apply, Finsupp.single_apply]
 
 theorem perExt_injective (R : RiemLat E g Λ) : Function.Injective (C.perExt R) := by
-  apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Change.perExt_injective <;> assumption
+  apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Change.perExt_injective
 
 theorem perExt_bijective (R : RiemLat E g Λ) : Function.Bijective (C.perExt R) := by
   have hd : Module.finrank ℝ (Ψ → Fin (j + j') → ℂ) = Module.finrank ℝ (Fin g → ℂ) := by
@@ -97,13 +97,13 @@ def latPt (x : Λ) : Ψ → Fin (j + j') → ℂ := ∑ k, ((C.lam.repr x k : �
 
 theorem perExt_latPt (R : RiemLat E g Λ) (x : Λ) : C.perExt R (C.latPt x) = R.P x := by
   have hb : ∀ k, C.perExt R (C.bas k) = R.P (C.lam k) := fun k => by
-    simp [perExt, Module.Basis.constr_basis]
+    simp [perExt]
 
   conv_rhs => rw [← C.lam.sum_repr x, map_sum]
   unfold latPt
 
   rw [map_sum]
-  simp only [map_smul, hb, Int.cast_smul_eq_zsmul, map_zsmul]
+  simp only [hb, Int.cast_smul_eq_zsmul, map_zsmul]
 
 
 omit [NumberField E] in

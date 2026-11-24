@@ -54,25 +54,22 @@ import Mathlib.Topology.Sheaves.Init
 @[expose] public section
 
 namespace Formalism.REAL
-theorem kHaar : KHaar := compact_haar_holds
 theorem kExp : KExp := compact_exponential_surjective
 theorem genExp : GenExp := genExp_of kExp
-theorem rdExtV : RdExtV := vector_right_derivative_extends
-theorem rdLeftV : RdLeftV := vector_right_derivative_left_invariant
-theorem rdSmoothV : RdSmoothV := rdSmoothV_of rdExtV
-theorem rdLinV : RdLinV := rdLinV_of rdExtV
-theorem rdBracketV : RdBracketV := rdBracketV_of rdExtV rdSmoothV
+alias rdLeftV := _root_.Formalism.REAL.vector_right_derivative_left_invariant
+theorem rdSmoothV : RdSmoothV := rdSmoothV_of _root_.Formalism.REAL.vector_right_derivative_extends
+theorem rdLinV : RdLinV := rdLinV_of _root_.Formalism.REAL.vector_right_derivative_extends
+theorem rdBracketV : RdBracketV := rdBracketV_of _root_.Formalism.REAL.vector_right_derivative_extends rdSmoothV
 theorem eabGlV : EabGlV := eabGlV_of rdLinV rdBracketV rdSmoothV
-theorem rdVPair : RdVPair := rdVPair_of rdExtV
+theorem rdVPair : RdVPair := rdVPair_of _root_.Formalism.REAL.vector_right_derivative_extends
 theorem ecSumV : EcSumV := ecSumV_of rdLinV
-theorem kWtOrth : KWtOrth := compact_weight_orthogonal
-theorem kLow : KLow := compact_lowering_holds
-theorem kCasSpan : KCasSpan := compact_casimir_span_holds
+alias kWtOrth := _root_.Formalism.REAL.compact_weight_orthogonal
+alias kLow := _root_.Formalism.REAL.compact_lowering_holds
+alias kCasSpan := _root_.Formalism.REAL.compact_casimir_span_holds
 theorem kOrth : KOrth := kOrth_of kLow kWtOrth
 theorem kHiUniq : KHiUniq := kHiUniq_of kLow kWtOrth kOrth
-theorem kHiExist : KHiExist := highestWeightExists_holds
-theorem kIrr : KIrr := kIrr_of kHiExist kHiUniq
-theorem kDecomp : KDecomp := kDecomp_of kHiExist kOrth
+theorem kIrr : KIrr := kIrr_of _root_.Formalism.REAL.highestWeightExists_holds kHiUniq
+theorem kDecomp : KDecomp := kDecomp_of _root_.Formalism.REAL.highestWeightExists_holds kOrth
 theorem kIsoSplit : KIsoSplit := kIsoSplit_of kDecomp kOrth
 theorem kWtBound : KWtBound := kWtBound_of kCasSpan
 theorem kCasBound : KCasBound := kCasBound_of kDecomp kCasSpan kOrth
@@ -83,8 +80,7 @@ theorem thetaFil : ThetaFil := theta_filtration_holds
 theorem hVCoeff : HVCoeff := hVCoeff_of kLow kWtOrth arrModule
 theorem typesSplit : TypesSplit := typesSplit_of hVCoeff kIsoSplit arrModule
 theorem casArr : CasArr := casArr_of kCasSpan
-theorem omSymSlice : OmSymSlice := symmetricSliceMixedCasimir_holds
-theorem nStable : NStable := positiveArraysInvariant_holds
+alias nStable := _root_.Formalism.REAL.positiveArraysInvariant_holds
 theorem omPlus : OmPlus := omPlus_of kDecomp kOrth kCasSpan casArr arrModule
-theorem nPos : NPos := nPos_of casArr omSymSlice omPlus
+theorem nPos : NPos := nPos_of casArr _root_.Formalism.REAL.symmetricSliceMixedCasimir_holds omPlus
 end Formalism.REAL

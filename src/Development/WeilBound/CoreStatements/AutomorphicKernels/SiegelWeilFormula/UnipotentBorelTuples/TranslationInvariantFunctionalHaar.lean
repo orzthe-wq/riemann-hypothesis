@@ -1,9 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicFourierRealisesWeylElementStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.DblActId
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicFourierRealisesWeylElement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzSpaceTranslateMem
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZeroStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -41,7 +42,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.Divisors.DblActId
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsoRows
 
 @[expose] public section
@@ -70,7 +70,7 @@ theorem translation_invariant_functional_haar (ψ : AddChar (AF F) ℂ) (hψ : I
     (l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (hl : l ∈ (adeleClass F).adm κ)
     (hinv : ∀ a : κ → AF F, ∀ φ ∈ schA F κ, l (fun x => φ (x + a)) = l φ) :
     ∃ c : ℂ, ∀ φ ∈ schA F κ, l φ = c * ∫ x, φ x ∂μ := by
-  obtain ⟨S, S', hS, hSf⟩ := GlobalTheory.T.adelicFourier_realises_weylElement F ψ hψ κ μ hμ (fun _ => 1)
+  obtain ⟨S, S', hS, hSf⟩ := _root_.GlobalTheory.TowU.FourWeyl.isOp_fourier F ψ hψ κ μ hμ (fun _ => 1)
   have hl' : l ∘ₗ S' ∈ (adeleClass F).adm κ := hS.adm' l hl
   have hchar : ∀ (y : κ → AF F), ∀ φ ∈ schA F κ,
       (l ∘ₗ S') (fun x => ψ (x ⬝ᵥ y) * φ x) = (l ∘ₗ S') φ := by
@@ -86,7 +86,7 @@ theorem translation_invariant_functional_haar (ψ : AddChar (AF F) ℂ) (hψ : I
       ext i <;> simp
     rw [← key, LinearMap.comp_apply, hS.left _ htr, LinearMap.comp_apply, schr_zero_right]
     exact hinv (-y) (S' φ) hφ₁m
-  obtain ⟨c, hc⟩ := GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F ψ hψ κ (l ∘ₗ S') hl' hchar
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.CharInvForm.main F ψ hψ κ (l ∘ₗ S') hl' hchar
   refine ⟨c, fun φ hφ => ?_⟩
   have h1 : l φ = (l ∘ₗ S') (S φ) := by
     rw [LinearMap.comp_apply, hS.left φ hφ]

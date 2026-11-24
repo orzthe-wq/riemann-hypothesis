@@ -3,18 +3,23 @@ module
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.FineJacquetModules.SegDefs
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.NotInSupportOfSubsingleton
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JhMultSubAddQuot
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSegmentRepresentationStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSocleSegmentProductStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSegmentRepresentation
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetLengthOneStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetSegmentInductionStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetSegmentLengthTwoStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrobeniusReciprocityNonzeroStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityConcatStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FineJacquetSegmentLengthTwo
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FrobeniusReciprocityNonzero
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityConcat
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.NotInSupportOfSubsingleton
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JhMultSubAddQuot
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSocleSegmentProduct
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetMultiplicityPos
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviIrreducibleTensorDecompositionStatement
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportSubschemeEmbeddingStatement
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.LeviEmbMemNormalizerLower
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NontrivialOfIrreducible
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviIrreducibleTensorDecomposition
+import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.PrincipalSeriesSupport.PrinSeriesWord
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SupportSubschemeEmbedding
 import Development.AutomorphicSpectrum.Proofs.GlobalProofs.JacquetModuleFiniteLength
 import GroundTheory.LocalFields.PadicLogSeries
 import Mathlib.Algebra.Order.Floor.Extended
@@ -59,7 +64,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 
 @[expose] public section
 
@@ -106,7 +110,7 @@ theorem fineJac_all (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hZ : 
     have h0 := Δ.len_pos
     obtain h1 | h2 | h3 : n = 1 ∨ n = 2 ∨ 3 ≤ n := by omega
     · exact @GlobalTheory.T.fine_jacquet_length_one k _ _ _ _ hA Δ (h.trans h1)
-    · exact @GlobalTheory.T.fine_jacquet_segment_length_two k _ _ _ _ hA hZ Δ (h.trans h2)
+    · exact @_root_.GlobalTheory.CompanionTheory.SegFine2.fineJac_of_len_eq_two k _ _ _ _ hA hZ Δ (h.trans h2)
     · exact @GlobalTheory.T.fine_jacquet_segment_induction k _ _ _ _ hA Δ (h ▸ h3) fun Δ' hlt => ih _ (h ▸ hlt) Δ' rfl
 
 theorem exists_eq_of_embeds_one {c : ℕ} (hc : c = 1) (x : Fin c → IrrGL (k := k)) (y : IrrGL (k := k))
@@ -136,14 +140,14 @@ theorem eq_dec_of_one_le_jm (hA : GlobalTheory.Published.IrreducibleAdmissibleGL
     {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hL : IsLSeg Δ π)
     (hs : IsSmooth π) (hi : π.IsIrreducible) (y : Fin Δ.len → IrrGL (k := k)) (hy : ∑ a, (y a).1 = N)
     (hpos : ∀ a, 0 < (y a).1) (h1 : 1 ≤ jm y hy π) : y = dec Δ := by
-  have hemb := fun a => GlobalTheory.T.support_subscheme_embedding k (y a).1 _ (y a).rep (y a).2.rep.smooth (y a).2.rep.irr
+  have hemb := fun a => _root_.GlobalTheory.CompanionTheory.SubEmb.subEmbedding k (y a).1 _ (y a).rep (y a).2.rep.smooth (y a).2.rep.irr
   choose c x hx hcusp φ hφ using hemb
   have hne : ∀ a, ∃ v, φ a v ≠ 0 := fun a =>
     exists_ne_zero_of_injective (y a).2.rep.irr (φ a) (hφ a)
   have hjm : ∀ a, 1 ≤ jm (x a) (hx a) (y a).rep := fun a =>
     GlobalTheory.CompanionTheory.FrobJm.one_le_jm hA (x a) (hx a) (y a).rep (y a).2.rep.smooth (φ a) (hne a)
   have hcat := sum_concat_fst y hy c x hx
-  have hle := GlobalTheory.T.jacquet_multiplicity_concat hA y hy c x hx hcat hjm π hs (hasFiniteLength_of_isIrreducible hi)
+  have hle := _root_.GlobalTheory.CompanionTheory.JmTrans.jm_le_jm_concat hA y hy c x hx hcat hjm π hs (hasFiniteLength_of_isIrreducible hi)
   have hcc : ∀ i, (concat c x i).IsCusp := fun i => hcusp _ _
   obtain ⟨hlen, -⟩ := (fine π hL).2 _ (concat c x) hcat hcc (h1.trans hle)
   have hc1 : ∀ a, 1 ≤ c a := fun a => by
@@ -170,7 +174,7 @@ theorem isLSeg_of_dec : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
     (f : τ.IntertwiningMap (prodIrr (dec Δ) hd)) (hf : Function.Injective f), IsLSeg Δ τ := by
   intro k _ _ _ _ hA hZ Δ N hd V _ _ τ hs hi f hf
   have fine : FineJac Δ := @fineJac_all k _ _ _ _ hA hZ Δ
-  obtain ⟨L, hL⟩ := GlobalTheory.T.exists_segment_representation hA Δ
+  obtain ⟨L, hL⟩ := _root_.GlobalTheory.CompanionTheory.SegExists.exists_isLSeg hA Δ
   have hN : Δ.deg = N := by
     rw [← hd]
     show Δ.deg = ∑ _ : Fin Δ.len, Δ.d
@@ -194,7 +198,7 @@ theorem isLSeg_of_dec : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
     exact ⟨v, rfl⟩
   have hirr : (subQuot ⊤ M).IsIrreducible := isIrreducible_subQuot hM.covBy_top
   have hsq : IsSubquotient (subQuot ⊤ M) (jac e L.ρ) := .of_surjective q hq
-  obtain ⟨σ, ⟨ψ⟩⟩ := GlobalTheory.T.levi_irreducible_tensor_decomposition hA (fun a => (dec Δ a).1)
+  obtain ⟨σ, ⟨ψ⟩⟩ := _root_.GlobalTheory.CompanionTheory.LeviTensor.nonempty_equiv_piTensor hA (fun a => (dec Δ a).1)
     ⟨_, subQuot ⊤ M, hsq.isSmooth (isSmooth_jac e L.smooth), hirr⟩
   let y : Fin Δ.len → IrrGL (k := k) := fun a => ⟨(dec Δ a).1, σ a⟩
   have hy : ∑ a, (y a).1 = Δ.deg := hd
@@ -206,7 +210,7 @@ theorem isLSeg_of_dec : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   have hyeq : y = dec Δ := eq_dec_of_one_le_jm hA fine L.ρ hL L.smooth L.irr y hy
     (fun a => Δ.d_pos) h1
   obtain ⟨w, hw⟩ := exists_ne_zero_of_surjective (GlobalTheory.CompanionTheory.FrobJm.piTensor_rep_isIrreducible hA y) g hg
-  have hfrob := GlobalTheory.T.frobenius_reciprocity_nonzero y hy L.ρ L.smooth g ⟨w, hw⟩
+  have hfrob := _root_.GlobalTheory.CompanionTheory.FrobInv.exists_map_prodIrr y hy L.ρ L.smooth g ⟨w, hw⟩
   have htr : ∀ (y' : Fin Δ.len → IrrGL (k := k)) (_ : y = y') (hy' : ∑ a, (y' a).1 = Δ.deg),
       (∃ g : L.ρ.IntertwiningMap (prodIrr y hy), ∃ v, g v ≠ 0) →
         ∃ g : L.ρ.IntertwiningMap (prodIrr y' hy'), ∃ v, g v ≠ 0 := by
@@ -215,7 +219,7 @@ theorem isLSeg_of_dec : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   obtain ⟨g', v, hv⟩ := htr _ hyeq hd hfrob
   have hemb : Embeds L.ρ (prodIrr (dec Δ) hd) :=
     (isotypic_ne_bot_iff_embeds L.irr).1 (isotypic_ne_bot_iff.2 ⟨g', fun e' => hv (by rw [e']; rfl)⟩)
-  obtain ⟨S, hS⟩ := GlobalTheory.T.exists_socle_segment_product hA Δ hd
+  obtain ⟨S, hS⟩ := _root_.GlobalTheory.CompanionTheory.SegSocle.exists_isSocle_prodIrr_dec hA Δ hd
   obtain ⟨a⟩ := hS.equiv_of_embeds hi ⟨f, hf⟩
   obtain ⟨b⟩ := hS.equiv_of_embeds L.irr hemb
   exact hL.of_equiv (b.trans a.symm)

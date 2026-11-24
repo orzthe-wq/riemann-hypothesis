@@ -55,7 +55,7 @@ namespace PositivityTheory.Rg.BcB.F.Rig
 open PositivityTheory.Rg.BcB.F
 
 theorem zpr : GlobalTheory.Published.ZelevinskyPolynomialRing :=
-  PositivityTheory.Prw.zelevinskyPolynomialRing_of PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds
+  _root_.GlobalTheory.zelevinskyPolynomialRing_of_parts PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds
     PositivityTheory.RgGu.segmentRepresentation
     (PositivityTheory.Groth.grothendieckRingPolynomial_of_seg PositivityTheory.RgGu.segmentRepresentation)
 

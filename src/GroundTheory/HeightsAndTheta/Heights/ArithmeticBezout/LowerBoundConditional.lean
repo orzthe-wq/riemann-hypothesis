@@ -86,7 +86,7 @@ theorem IsWeightedHomogeneous.bind₁ {σ τ : Type*} {w : σ → ℕ} {w' : τ 
 variable {k n : ℕ}
 
 theorem IsMultiHomog.specFirst {δ : ℕ} {f : MvPolynomial (Fin (k + 1) × Fin n) R}
-    (hf : IsMultiHomog δ f) (u : Fin n → R) : IsMultiHomog δ (specFirst f u) := by
+    (hf : Heights.IsMultiHomog δ f) (u : Fin n → R) : Heights.IsMultiHomog δ (specFirst f u) := by
   rw [isMultiHomog_iff] at hf ⊢
   intro i
   refine IsWeightedHomogeneous.bind₁ (hf i.succ) _ fun x => ?_

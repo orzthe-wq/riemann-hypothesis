@@ -63,25 +63,7 @@ noncomputable def geoS {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) : Ma
 
 theorem geom {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsStrictUpper X) (t : ℂ) :
     (t • (1 : Matrix (Fin n) (Fin n) ℂ) + X) * geoS X t = t ^ n • (1 : Matrix (Fin n) (Fin n) ℂ) := by
-  have hnil : ∀ k : ℕ, ∀ i j : Fin n, (j : ℕ) < i + k → (X ^ k) i j = 0 := by
-    intro k
-    induction k with
-    | zero =>
-      intro i j hij
-      rw [pow_zero, Matrix.one_apply_ne]
-      intro h; rw [h] at hij; omega
-    | succ k ih =>
-      intro i j hij
-      rw [pow_succ, Matrix.mul_apply]
-      apply Finset.sum_eq_zero
-      intro l _
-      by_cases hl : (l : ℕ) < i + k
-      · rw [ih i l hl, zero_mul]
-      · rw [hX l j (by rw [Fin.le_def]; omega), mul_zero]
-  have hXn : X ^ n = 0 := by
-    ext i j
-    have hj := j.isLt
-    simp [hnil n i j (by omega)]
+  have hXn : X ^ n = 0 := G7.pow_card_strict X hX
   have hc : Commute (-X) (t • (1 : Matrix (Fin n) (Fin n) ℂ)) := (Commute.one_right _).smul_right t
   have h := hc.mul_geom_sum₂ n
   have hS : ∑ i ∈ Finset.range n, (-X) ^ i * (t • (1 : Matrix (Fin n) (Fin n) ℂ)) ^ (n - 1 - i) = geoS X t := by
@@ -103,15 +85,9 @@ theorem det_shift {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : IsStrictUpper
 theorem sum_eq_geoS {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (B ρ : Fin n → ℂ) (t : ℂ) :
     ∑ j ∈ Finset.range n, (ρ ⬝ᵥ ((-X) ^ j *ᵥ B)) * t ^ (n - 1 - j) = ρ ⬝ᵥ (geoS X t *ᵥ B) := by
   unfold geoS
-  have key : ∀ m : ℕ, ∑ j ∈ Finset.range m, (ρ ⬝ᵥ ((-X) ^ j *ᵥ B)) * t ^ (n - 1 - j) =
-      ρ ⬝ᵥ ((∑ j ∈ Finset.range m, t ^ (n - 1 - j) • (-X) ^ j) *ᵥ B) := by
-    intro m
-    induction m with
-    | zero => simp
-    | succ k ih =>
-      rw [Finset.sum_range_succ, Finset.sum_range_succ, ih, Matrix.add_mulVec, dotProduct_add,
-        Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, mul_comm (t ^ (n - 1 - k))]
-  exact key n
+  rw [Matrix.sum_mulVec, dotProduct_sum]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, mul_comm]
 
 theorem Mcoord_eq {n : ℕ} (t : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (B ρ : Fin n → ℂ) (σ : ℂ) :
     Mcoord t X B ρ σ = blk (wMat n) 0 0 1 * blk (t • (1 : Matrix (Fin n) (Fin n) ℂ) + X) B ρ σ := by
@@ -148,7 +124,6 @@ theorem det_blk_ne {n : ℕ} (t : ℂ) (ht : t ≠ 0) (X : Matrix (Fin n) (Fin n
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => ?_
   field_simp
-  try ring
 
 theorem continuous_blk_shift {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (B ρ : Fin n → ℂ) (σ : ℂ) :
     Continuous fun t : ℂ => blk (t • (1 : Matrix (Fin n) (Fin n) ℂ) + X) B ρ σ := by
@@ -270,11 +245,5 @@ theorem innerXYOfReduced : InnerXYOfReduced := by
 end Formalism.FourierDecayAlt.P.CuspidalIrreducibleSubrep
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem det_matrix_xy : Formalism.FourierDecayAlt.G.DetMXY := CuspidalIrreducibleSubrep.detMXY
-
-theorem reduced_integrand_integrable : Formalism.FourierDecayAlt.G.RedIntegrable := CuspidalIrreducibleSubrep.redIntegrable
-
-theorem inner_xy_of_reduced : Formalism.FourierDecayAlt.G.InnerXYOfReduced := CuspidalIrreducibleSubrep.innerXYOfReduced
 
 end Formalism.FourierDecayAlt.P

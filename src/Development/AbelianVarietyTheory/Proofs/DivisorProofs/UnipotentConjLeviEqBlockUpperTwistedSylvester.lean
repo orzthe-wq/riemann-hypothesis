@@ -73,6 +73,6 @@ theorem conj_blk (E : Type) [Field E] [NumberField E] (n a b : ℕ) (h : a + b =
     add_zero, zero_add, Matrix.fromBlocks_inj, true_and, and_true]
   simp only [adL, LinearMap.coe_mk, AddHom.coe_mk, Matrix.mul_sub, ← Matrix.mul_assoc]
   rw [show m.1.val * (m.1⁻¹ : GL (Fin a) _).val = 1 from by simp]
-  simp [Matrix.one_mul, add_sub_cancel]
+  simp [Matrix.one_mul]
 
 end GlobalTheory.LeviDesc.LeviBlockConjugation

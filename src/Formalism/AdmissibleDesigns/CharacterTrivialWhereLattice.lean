@@ -159,7 +159,6 @@ theorem no_fixed_vector_off_z (hE : Ev r π Dd) (hG6 : TruncatedSeriesCountingId
       ((rO D.nd i r (Dd.p x') g).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))).mulVec
         (η : Fin D.R.nV → FractionRing (D.nd.O i)) := by
     first
-    | exact Matrix.smul_mulVec_assoc _ _ _
     | exact Matrix.smul_mulVec _ _ _
   exact e.symm.trans h2
 end G4

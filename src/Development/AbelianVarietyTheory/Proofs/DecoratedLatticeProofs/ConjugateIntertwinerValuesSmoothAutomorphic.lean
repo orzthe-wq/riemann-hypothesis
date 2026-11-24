@@ -5,13 +5,16 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesU
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiCongrLeftUpdate
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjIntertwinerPointValueSobolevContinuousStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ConjugateEvaluationMapIntertwinesRealPlacesStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicTransportMeasureThird
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CuspidalFrame
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DerivativeClosedClassBoundedByInverseLeastSizeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurePreservingReindex
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DerivativeClosedClassBoundedByInverseLeastSize
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HeightBoundByInfinityNorm
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TruncatedLeastLatticeSizeLipschitzProperties
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AdelicIdentificationRespectsRealFinite
+public import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.OrthonormalPlaceBasis
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicTransportMeasureThird
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TruncatedLeastLatticeSizeLipschitzProperties
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -52,7 +55,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.BlockTheory.SiegelWeilLocal.OrthonormalPlaceBasis
 
 @[expose] public section
 
@@ -213,7 +215,7 @@ theorem conjMap_isAutFunSm : GlobalTheory.Published.DiscreteSeriesClassification
       rw [this, mul_one, pow_zero, mul_one]
     have hn' : 1 ≤ X.B.I.n := by rw [← rank_eq X h]; exact hn
     have hti : (iotaX X h t⁻¹).1 = 1 := hfst _ ((GfC _).inv_mem ht)
-    obtain ⟨m, hm⟩ := GlobalTheory.T.derivativeClosedClass_bounded_by_inverseLeastSize X.B hn' hg
+    obtain ⟨m, hm⟩ := _root_.GlobalTheory.SobolevBound.derivative_closed_class_bound X.B hn' hg
     refine ⟨m, fun v x => ?_⟩
     obtain ⟨C, hC⟩ := hm (Set.range f) (by
       rintro _ ⟨u, rfl⟩

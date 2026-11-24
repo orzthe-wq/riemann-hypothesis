@@ -46,4 +46,4 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.definitePeriod_depends_on_productFunction : Big fun ch => TensAt ch := by
-  first | exact @GlobalTheory.RowVal.tensAt_big | exact GlobalTheory.RowVal.tensAt_big | (intros; apply GlobalTheory.RowVal.tensAt_big <;> assumption)
+  first | exact @GlobalTheory.RowVal.tensAt_big

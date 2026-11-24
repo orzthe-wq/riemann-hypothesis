@@ -66,4 +66,4 @@ theorem _root_.GlobalTheory.T.heisenbergEigen_proportional_localField : ∀ {k :
     (∀ l ∈ Λ, ∀ ξ, ψk (ξ ⬝ᵥ l.2 + (2 : k)⁻¹ * (l.1 ⬝ᵥ l.2)) * g (ξ + l.1) = χ l * g ξ) → f ≠ 0 →
     (∀ η : κ → k, (∀ b : κ → k, ((0 : κ → k), b) ∈ Λ → ψk (η ⬝ᵥ b) = 1) → ∃ y, (η, y) ∈ Λ) →
     ∃ c : ℂ, g = c • f := by
-  first | exact @GlobalTheory.heisenbergEigen_proportional | exact GlobalTheory.heisenbergEigen_proportional | (intros; apply GlobalTheory.heisenbergEigen_proportional <;> assumption)
+  first | exact @GlobalTheory.heisenbergEigen_proportional

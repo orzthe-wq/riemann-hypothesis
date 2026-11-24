@@ -182,13 +182,13 @@ lemma finite_small (hg : 0 < g) : {y | y ∈ Lc X g ∧ ‖y‖ < 1}.Finite := b
   have hre : ∀ (τ : X.Ψ) (i k : Fin 2), |(τ.1 (β i k)).re| < 1 ∧ |(τ.1 (β i k)).im| < 1 := by
     intro τ
     have h00 : |(τ.1 (β 0 0)).re| < 1 := by
-      first | exact hk τ 0 0 | simpa [kap, Data.embH] using hk τ 0 0
+      first | exact hk τ 0 0
     have h01 : |(τ.1 (β 0 1)).re| < 1 := by
-      first | exact hk τ 0 1 | simpa [kap, Data.embH] using hk τ 0 1
+      first | exact hk τ 0 1
     have h10 : |(τ.1 (β 0 1)).im| < 1 := by
-      first | exact hk τ 1 0 | simpa [kap, Data.embH] using hk τ 1 0
+      first | exact hk τ 1 0
     have h11 : |(τ.1 (β 1 1)).re| < 1 := by
-      first | exact hk τ 1 1 | simpa [kap, Data.embH] using hk τ 1 1
+      first | exact hk τ 1 1
     have e0 : τ.1 (β 0 0) = conj (τ.1 (β 0 0)) := hb τ 0 0
     have e1 : τ.1 (β 1 1) = conj (τ.1 (β 1 1)) := hb τ 1 1
     have e2 : τ.1 (β 1 0) = conj (τ.1 (β 0 1)) := hb τ 0 1
@@ -228,7 +228,7 @@ lemma finite_small (hg : 0 < g) : {y | y ∈ Lc X g ∧ ‖y‖ < 1}.Finite := b
     rw [en] at h2
     nlinarith [norm_nonneg (τ.1 (γ i k))]
   refine ⟨γ, ?_, ?_⟩
-  · simp only [Set.mem_pi, Set.mem_univ, true_implies, forall_const, Set.mem_setOf_eq]
+  · simp only [Set.mem_pi, Set.mem_univ, forall_const, Set.mem_setOf_eq]
     intro i k
     refine ⟨hγi i k, fun φ => ?_⟩
     by_cases hφ : φ ∈ X.Ψ
@@ -314,7 +314,6 @@ lemma span_fixed_integral_real_parts : Submodule.span ℝ {p : X.Ψ → ℝ | �
   have hcc : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ := by
     intro φ
     first
-    | exact ComplexEmbedding.conjugate_conjugate φ
     | exact star_star φ
   have hFinj : Function.Injective
       (Sum.elim (fun τ : X.Ψ => τ.1) (fun τ : X.Ψ => ComplexEmbedding.conjugate τ.1)) := by

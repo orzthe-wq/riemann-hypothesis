@@ -313,7 +313,7 @@ theorem levLaws : LevLaws (H.W K s LL h) := by
       rw [(H.W K s LL h).φ₀_X, (H.W K s LL h).q₀_def, P.PD_p]
     exact (GlobalTheory.Cyc.act_unique l ↥(OL LL) hl0 hlu ((H.W K s LL h).γ₀ g) (H.W K s LL h).φ₀ (c g) h0
       ((H.W K s LL h).γ₀_comm _) ((H.W K s LL h).γ₀_X _).1
-      (((H.W K s LL h).γ₀_X _).2.trans (hc g).symm)).2.trans (GlobalTheory.Cyc.act_eq_gam _ _ _)
+      (((H.W K s LL h).γ₀_X _).2.trans (hc g).symm)).2.trans (_root_.GlobalTheory.Cyc.Series.act_eq _ _ _)
   · convert evLaw_integers P LL using 1
     exact Algebra.algebra_ext _ _ fun r => PowerSeries.algebraMap_apply
 

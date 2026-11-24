@@ -71,12 +71,12 @@ def intRep {V : Type u} [AddCommGroup V] (φ : G →* AddMonoid.End V) :
 
 def intRepOfMonoidEnd {M : Type u} [CommGroup M] (φ : G →* Monoid.End M) :
     Representation (ULift.{w} ℤ) G (Additive M) :=
-  intRep.{w} ((monoidEndToAdditive M : Monoid.End M →* AddMonoid.End (Additive M)).comp φ)
+  intRep.{w} ((MulEquiv.monoidEnd M : Monoid.End M →* AddMonoid.End (Additive M)).comp φ)
 
 def zRepOfMonoidEnd {M : Type u} [CommGroup M] (φ : G →* Monoid.End M) :
     Representation ℤ G (Additive M) :=
   (addMonoidEndRingEquivInt (Additive M) : AddMonoid.End (Additive M) →* _).comp
-    ((monoidEndToAdditive M : Monoid.End M →* AddMonoid.End (Additive M)).comp φ)
+    ((MulEquiv.monoidEnd M : Monoid.End M →* AddMonoid.End (Additive M)).comp φ)
 
 end IntRep
 

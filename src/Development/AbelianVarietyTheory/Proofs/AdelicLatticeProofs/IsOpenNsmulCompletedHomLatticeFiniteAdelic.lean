@@ -78,7 +78,7 @@ theorem isOpen_of_nhds {G G' : Type} [AddCommGroup G] [TopologicalSpace G] [IsTo
 
 theorem isOpen_intAf (F : Type) [Field F] [NumberField F] : IsOpen (intAf F) :=
   RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F)))
-    fun v => Valued.isOpen_valuationSubring _
+    fun _v => Valued.isOpen_valuationSubring _
 
 theorem zero_mem_intAf (F : Type) [Field F] [NumberField F] : (0 : Af F) ∈ intAf F :=
   fun v => zero_mem (v.adicCompletionIntegers F)
@@ -115,7 +115,7 @@ theorem isOpen_nsmul_latO : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.
   let b := Module.finBasis D.host.F D.host.E
   let B := Algebra.TensorProduct.basis (AF D.host.F) b
   choose M hM hMl using fun p : Fin T.rank × Fin S.rank × Fin (Module.finrank D.host.F D.host.E) =>
-    GlobalTheory.T.scaled_matrix_mem_rational_lattice D S T ΛS ΛT (selfDual_isFullLattice S ΛS hS) (selfDual_isFullLattice T ΛT hT) (Matrix.single p.1 p.2.1 (b p.2.2))
+    _root_.GlobalTheory.LatVacFull.latRat_full D S T ΛS ΛT (selfDual_isFullLattice S ΛS hS) (selfDual_isFullLattice T ΛT hT) (Matrix.single p.1 p.2.1 (b p.2.2))
   let f : Fin T.rank × Fin S.rank × Fin (Module.finrank D.host.F D.host.E) → WO S T → Af D.host.F := fun p x =>
     algebraMap D.host.F (Af D.host.F) ((N * M p : ℕ) : D.host.F)⁻¹ * sndA D.host.F (B.coord p.2.2 (x p.1 p.2.1))
   have hf : ∀ p, Continuous (f p) := fun p => by

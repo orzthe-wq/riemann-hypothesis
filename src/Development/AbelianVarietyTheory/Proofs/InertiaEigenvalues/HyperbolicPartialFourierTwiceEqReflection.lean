@@ -61,9 +61,7 @@ theorem pt_pt_eq_reflect : ∀ (F E : Type) [NontriviallyNormedField F] [Nontriv
     let e := (Module.finBasis F A.K).equivFun
     have he : Continuous e := IsModuleTopology.continuous_of_linearMap e.toLinearMap
     first
-      | exact T2Space.of_continuous_injective e.injective he
       | exact T2Space.of_injective_continuous e.injective he
-      | exact e.injective.t2Space he
   funext p
   have hemb : Topology.IsClosedEmbedding (Prod.mk p.1 : A.K → A.K × A.K) := by
     refine ⟨isEmbedding_prodMkRight p.1, ?_⟩

@@ -3,9 +3,10 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLagrAt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicHeisenbergActsByLocalSchrodinger
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LagrangianInvariantFormsProportionalFinitePlaceStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LagrangianInvariantFormsProportionalFinitePlace
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchroedingerMemSchwartzBruhatFinitePlace
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticFormEqZeroOfLagrangianAtPlaceStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticFormEqZeroOfLagrangianAtPlace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -225,7 +226,7 @@ def lagCo (M : Model σ X W) (v : Pl (F := F)) {m : ℕ} (C : Matrix (Fin d) (Fi
 theorem lagCo_isotropic (M : Model σ X W) (v : Pl (F := F)) {m : ℕ} (C : Matrix (Fin d) (Fin m) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E)))
     (hC : IsLagrAt σ W v C) : ∀ a ∈ lagCo M v C, ∀ b ∈ lagCo M v C, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2 := by
   rintro _ ⟨u, hu, rfl⟩ _ ⟨u', hu', rfl⟩
-  have h0 := GlobalTheory.T.symplecticForm_eq_zero_of_lagrangianAtPlace σ X.J W v C hC (-1) u u' hu hu'
+  have h0 := _root_.GlobalTheory.InertVacIso.symp_eq_zero_of_lagAt σ X.J W v C hC (-1) u u' hu hu'
   change symp (cA σ) (-1) (incM F X.J) (incM F W.J) u u' = 0 at h0
   rw [M.co.form] at h0
   have h1 := congrArg (evFin F v) h0
@@ -258,7 +259,7 @@ theorem exists_test : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
   by_cases hex : ∃ l₂, HeisInv M ψ v C l₂ ∧ ∃ φ ∈ SB (Fin n × Fin d → Fv F v), l₂ φ ≠ 0
   · obtain ⟨l₂, hl₂, φ₀, hφ₀, hne⟩ := hex
     refine ⟨φ₀, hφ₀, fun l hl h0 φ hφ => ?_⟩
-    obtain ⟨c, hcl⟩ := GlobalTheory.T.lagrangian_invariant_forms_proportional_finitePlace F v (psiAt ψ v) hc (psiAt_ne_one ψ v hψ) _ (lagCo M v C) (lagCo_isotropic M v C hC)
+    obtain ⟨c, hcl⟩ := _root_.GlobalTheory.LagrInvForm.proportional_at_place F v (psiAt ψ v) hc (psiAt_ne_one ψ v hψ) _ (lagCo M v C) (lagCo_isotropic M v C hC)
       (finrank_lagCo M v C hC) l l₂ (hinv l hl) (hinv l₂ hl₂) ⟨φ₀, hφ₀, hne⟩
     have hc0 : c = 0 := (mul_eq_zero.1 ((hcl φ₀ hφ₀).symm.trans h0)).resolve_right hne
     rw [hcl φ hφ, hc0, zero_mul]

@@ -55,7 +55,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 theorem labelEmb_inl_rt (c : Coeff l) (τ : CMType H) : ((labelEmb c (.inl τ) H.rt : c.F) : ℂ) = H.rt0 := τ.2
 
 theorem imaginary_root_conj (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
-  apply Formalism.MainNotions.ModuliIntegralCharts.H1.rt0_conj_neg_ne_zero <;> assumption
+  apply Formalism.MainNotions.ModuliIntegralCharts.H1.rt0_conj_neg_ne_zero
 
 theorem labelEmb_inr_rt (c : Coeff l) (τ : CMType H) : ((labelEmb c (.inr τ) H.rt : c.F) : ℂ) = -H.rt0 := by
   show τ.1 ((H.bar H.rt : 𝓞 E) : E) = _

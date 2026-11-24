@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -51,18 +52,12 @@ noncomputable section
 
 namespace GlobalTheory.Mum
 
-theorem lbIso_pull_pull_comp {X Y Z : Scheme.{0}} {M : LB X} (hM : M.IsLB) (F : Y ⟶ X) (g : Z ⟶ Y) :
-    LBIso ((M.pull F).pull g) (M.pull (g ≫ F)) :=
-  Geo.Tor.LBIso.chartPull (h := g) (Geo.Tor.chartPullPull (M.pull F) g g rfl)
-    (Geo.Tor.chartPullSame M (fun _ => g ≫ F) (fun _ => F) (fun _ => 1) g (fun _ => rfl))
-    (GlobalTheory.PolBaseChange.lbIso_refl (LB.isLB_pull hM F))
-
 theorem exists_gen_pull_pull_iff {X Y Z : Scheme.{0}} {M : LB X} (hM : M.IsLB) (F : Y ⟶ X) (g : Z ⟶ Y) :
     (∃ t : LB.Gen ((M.pull F).pull g), t.IsGen) ↔ ∃ t : LB.Gen (M.pull (g ≫ F)), t.IsGen := by
   have h₁ := LB.isLB_pull (LB.isLB_pull hM F) g
   have h₂ := LB.isLB_pull hM (g ≫ F)
-  exact ⟨GlobalTheory.CM.PairingIso.exists_gen_of_lbIso h₁ h₂ (lbIso_pull_pull_comp hM F g),
-    GlobalTheory.CM.PairingIso.exists_gen_of_lbIso h₂ h₁ (Geo.Tor.LBIso.symm (lbIso_pull_pull_comp hM F g))⟩
+  exact ⟨GlobalTheory.CM.PairingIso.exists_gen_of_lbIso h₁ h₂ (_root_.GlobalTheory.SiegelPullComp.iso_pull_pull hM F g),
+    GlobalTheory.CM.PairingIso.exists_gen_of_lbIso h₂ h₁ (Geo.Tor.LBIso.symm (_root_.GlobalTheory.SiegelPullComp.iso_pull_pull hM F g))⟩
 
 theorem left_tensor_ext {S : Scheme.{0}} {X Y : Over S} {Z : Scheme.{0}} (u v : Z ⟶ (X ⊗ Y).left)
     (h₁ : u ≫ (fst X Y).left = v ≫ (fst X Y).left) (h₂ : u ≫ (snd X Y).left = v ≫ (snd X Y).left) : u = v := by
@@ -131,13 +126,13 @@ theorem pull_gen_lam_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
       rw [reassoc_of% hψ1]
       rw [hβ₂.1]
       rw [reassoc_of% hm1]
-      simp only [Category.assoc, hinc']
+      simp only [hinc']
     · simp only [Category.assoc, Category.comp_id]
       rw [hφ2, reassoc_of% hκ.2]
       rw [reassoc_of% hψ2]
       rw [hβ₂.2]
       rw [reassoc_of% hm2]
-      simp only [Category.assoc, hf']
+      simp only [hf']
       rw [reassoc_of% hinc']
   have eq2 : m ≫ γ₂ ≫ 𝟙 _ = χl := by
     apply left_tensor_ext
@@ -151,7 +146,7 @@ theorem pull_gen_lam_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocal
   have hP2 := LB.isLB_pull (LB.isLB_pull hQ (κ₀ ≫ φl)) ψl
   have g₀ := GlobalTheory.CM.PairingIso.exists_gen_of_lbIso hP1 hP2
     (Geo.Tor.LBIso.chartPull (Geo.Tor.chartPullPull _ ψl ψl rfl) (Geo.Tor.chartPullPull _ ψl ψl rfl)
-      (lbIso_pull_pull_comp hQ φl κ₀)) ⟨t, ht⟩
+      (_root_.GlobalTheory.SiegelPullComp.iso_pull_pull hQ φl κ₀)) ⟨t, ht⟩
   have g₁ := (exists_gen_pull_pull_iff hQ (κ₀ ≫ φl) ψl).1 g₀
   rw [eq1] at g₁
   have g₂ := (exists_gen_pull_pull_iff hQ (β₂ ≫ 𝟙 _) m).2 g₁

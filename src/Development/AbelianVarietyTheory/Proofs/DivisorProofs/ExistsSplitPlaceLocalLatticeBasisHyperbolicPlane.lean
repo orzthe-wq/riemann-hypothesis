@@ -120,7 +120,7 @@ theorem exists_isSplitBasis_plane_of_indep : ∀ (F E : Type) [Field F] [NumberF
     rw [hcolsum]
     exact sum_mem fun j _ => smul_mem_int (hw j) (hPcol j)
   have hQcolv : ∀ i, (fun r => M r i) ∈ Q := fun i =>
-    ⟨Pi.single i 1, funext fun r => by simp [Matrix.mulVec_single_one, Matrix.transpose_apply]⟩
+    ⟨Pi.single i 1, funext fun r => by simp⟩
   have hQx : (fun r => τ (x r)) ∈ Q := hc0 ▸ hQcolv _
   have hQy : (fun r => τ (y r)) ∈ Q := hc1 ▸ hQcolv _
   have hQimg : ∀ w₁ : Fin n₁ → v.adicCompletion F, (ι.map τ * β₁.1) *ᵥ w₁ ∈ Q := by
@@ -167,7 +167,7 @@ theorem exists_isSplitBasis_plane_of_indep : ∀ (F E : Type) [Field F] [NumberF
     · have : (fun r => M r i) = ι.map τ *ᵥ (β₁.1 *ᵥ Pi.single ⟨_, h2⟩ 1) := by
         funext r
         rw [Matrix.mulVec_mulVec, Matrix.mulVec_single_one]
-        simp only [hM, colMat, if_neg h0, if_neg h1, dif_pos h2, Matrix.transpose_apply]
+        simp only [hM, colMat, if_neg h0, if_neg h1, dif_pos h2]
         rfl
       rw [this]
       refine hImg _ ((hβ₁ _).1 fun k => ?_)

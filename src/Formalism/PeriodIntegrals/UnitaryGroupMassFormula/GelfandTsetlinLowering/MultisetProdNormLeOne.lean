@@ -142,8 +142,6 @@ theorem det_sub_norm_le_one {N s : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (hx : x
     first
     | rw [Algebra.algebraMap_eq_smul_one, Matrix.sub_mulVec, Matrix.smul_mulVec,
         Matrix.one_mulVec, sub_eq_zero] at hv
-    | rw [Algebra.algebraMap_eq_smul_one, Matrix.sub_mulVec, Matrix.smul_mulVec_assoc,
-        Matrix.one_mulVec, sub_eq_zero] at hv
     exact hv.symm
   have hc := sub_contract x hx I J hI hJ v
   rw [← hA, hAv] at hc

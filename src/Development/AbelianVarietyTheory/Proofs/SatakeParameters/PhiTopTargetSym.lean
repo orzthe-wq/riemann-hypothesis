@@ -162,15 +162,6 @@ theorem red_entB (k₀ : ℕ) (ex : ℕ → ℕ) (g : GLint E n P) (i j : Fin n)
   rw [entB_zero _ _ _ _ _ rfl, dif_pos ⟨i.2, j.2⟩]
   rfl
 
-theorem lamY_eq (ex : ℕ → ℕ) : LocE.lamY P (qOf P) n 0 ex = stdAt E n P := by
-  rw [show stdAt E n P = LocE.lamY P (qOf P) n 0 0 from stdAt_eq (c := 0)]
-  ext v
-  unfold LocE.lamY
-  rw [LastSteps.mem_sclLat, LastSteps.mem_sclLat]
-  refine forall_congr' fun l => ?_
-  have hl : l.1 < n := l.2
-  simp only [LocE.scE, if_pos hl]
-
 theorem levG_of_HPar (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {r k rS m t : ℕ} (hn : n = r + m * t) (h : r ≤ n) (ht : 0 < t)
     (hr : k + rS ≤ r) (ex : ℕ → ℕ) (g : GLint E n P)
     (hg : redGL n P g ∈ HPar n (𝓞 E ⧸ P.asIdeal) h (List.replicate m t) (HPsymF _ r k rS)) :
@@ -179,7 +170,7 @@ theorem levG_of_HPar (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {r k rS m
   rw [mem_btG] at hB
   obtain ⟨s1, s2, s3⟩ := (mem_HPsymF_iff hr).1 h0
   have hI : IntM P (n + 0) (n + 0) (LocE.entB (N' := n + 0) (N := n + 0) (qOf P) k 0 n 0 n ex ex g.1.toLinearMap) :=
-    ent_int (c := 0) (g := g.1) (by rw [lamY_eq]; exact g.2)
+    ent_int (c := 0) (g := g.1) (by rw [_root_.GlobalTheory.LastSteps.lamY_zero]; exact g.2)
   have e : ∀ p p' (hp : p < n) (hp' : p' < n),
       redP P (LocE.entB (N' := n + 0) (N := n + 0) (qOf P) k 0 n 0 n ex ex g.1.toLinearMap p p') =
       (redGL n P g : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) ⟨p, hp⟩ ⟨p', hp'⟩ :=
@@ -226,7 +217,7 @@ theorem phiGS_target (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ψ : Add
     (((HPar n (𝓞 E ⧸ P.asIdeal) h (List.replicate (i + 1) t) (HPsymF _ r k rS)).comap (redGL n P)).map (GLint E n P).subtype)
     ?_ ?_ ⟨g, hg, rfl⟩ x
   · rintro _ ⟨g', -, rfl⟩
-    rw [lamY_eq]
+    rw [_root_.GlobalTheory.LastSteps.lamY_zero]
     exact g'.2
   · rintro _ ⟨g', hg', rfl⟩
     exact levG_of_HPar hq hn h ht hr _ g' hg'

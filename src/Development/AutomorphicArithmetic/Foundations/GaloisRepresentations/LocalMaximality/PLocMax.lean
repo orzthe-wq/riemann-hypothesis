@@ -124,7 +124,7 @@ private lemma fin_quot {F L : Type} [Field F] [Field L] [Algebra ℂ F] [Algebra
     Module.Finite ℂ ((rB ℂ L (xv x) {0}) ⧸ (Ideal.span (Set.range fun j : Fin d =>
       (⟨_, tco_mem ℂ L (xv x) j⟩ : rB ℂ L (xv x) {0})))) := by
   classical
-  have hfin := (GlobalTheory.T.finite_cover_chart_smooth_normal ℂ F L d (xv x) hc {0} (Finset.singleton_nonempty 0)).1
+  have hfin := (_root_.GlobalTheory.PD.rB_finite_frac_smooth ℂ F L d (xv x) hc {0} (Finset.singleton_nonempty 0)).1
   obtain ⟨s, hs⟩ := hfin.fg_top
   refine ⟨⟨s.image (fun z => Ideal.Quotient.mk _ (⟨z.1, z.2⟩ : rB ℂ L (xv x) {0})), ?_⟩⟩
   rw [eq_top_iff]

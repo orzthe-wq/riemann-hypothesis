@@ -59,7 +59,7 @@ private theorem star_alg {K : Type} [Field K] {Δ : K} (x : K) :
 
 private theorem sigL_mul' {K : Type} [Field K] {Δ τ : K} (a b : EL Δ τ) :
     sigL (a * b) = sigL a * sigL b := by
-  ext <;> simp [sigL, star_alg] <;> ring
+  ext <;> simp [sigL, star_alg]
 
 private theorem sigL_one' {K : Type} [Field K] {Δ τ : K} : sigL (1 : EL Δ τ) = 1 := by
   apply QuadraticAlgebra.ext

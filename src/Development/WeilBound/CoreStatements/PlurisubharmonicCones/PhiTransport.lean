@@ -5,7 +5,7 @@ public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.InnerProductSpace.Basic
 public import Mathlib.LinearAlgebra.Matrix.Hermitian
 public import Mathlib.NumberTheory.NumberField.Basic
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsEigenComponentPolynomialStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsEigenComponentPolynomial
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -69,7 +69,7 @@ theorem phi_transport {E : Type} [Field E] [NumberField E] {V V' A : Type} [AddC
   have heig : ∀ (s₀ : 𝓞 E →+* ℂ) (x : V),
       Ψ (GlobalTheory.CompanionTheory.Ar.Cusp.eigComp ρ s₀ x) = GlobalTheory.CompanionTheory.Ar.Cusp.eigComp ρ' s₀ (Ψ x) := by
     intro s₀ x
-    obtain ⟨c₀, hc₀⟩ := GlobalTheory.T.exists_eigenComponent_polynomial E s₀
+    obtain ⟨c₀, hc₀⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.EigCoef.eigComp_eq_combination E s₀
 
     rw [(hc₀ V ρ).1 x, (hc₀ V' ρ').1 (Ψ x), map_sum]
     refine Finset.sum_congr rfl fun a _ => ?_

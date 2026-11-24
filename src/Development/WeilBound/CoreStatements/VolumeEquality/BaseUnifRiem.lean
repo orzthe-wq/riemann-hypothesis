@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.EmbEquivSymmApply
 
 @[expose] public section
 
@@ -166,9 +167,9 @@ theorem sum_eigComp {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : 𝓞 E →+
 theorem adj_herm (R : RiemLat E g Λ) (a a' : 𝓞 E) (ha : (a' : E) = IsCMField.complexConj E (a : E)) (z w : Fin g → ℂ) :
     R.B a z ⬝ᵥ R.Hm *ᵥ star w = z ⬝ᵥ R.Hm *ᵥ star (R.B a' w) := by
   have h : (imB R.Hm).comp ((R.B a).restrictScalars ℝ) = (imB R.Hm).compl₂ ((R.B a').restrictScalars ℝ) := by
-    refine LinearMap.ext_on (span_top R) ?_
+    refine LinearMap.ext_on (_root_.LevelTowerAlt.span_top R) ?_
     rintro _ ⟨x, rfl⟩
-    refine LinearMap.ext_on (span_top R) ?_
+    refine LinearMap.ext_on (_root_.LevelTowerAlt.span_top R) ?_
     rintro _ ⟨y, rfl⟩
     show imB R.Hm (R.B a (R.P x)) (R.P y) = imB R.Hm (R.P x) (R.B a' (R.P y))
     rw [← R.act, ← R.act, imB_P, imB_P, R.adj a a' ha]

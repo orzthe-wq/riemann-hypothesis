@@ -404,7 +404,7 @@ theorem TypeVec.up {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
       rfl
     have hfT : f T = (O.card : ℂ) • z.coeff.sum fun g c => c • τ (ℓ g) y := by
 
-      simp only [T, Finsupp.sum, map_sum, map_smul, f.isIntertwining, hfx', Finset.smul_sum]
+      simp only [T, Finsupp.sum, map_sum, map_smul, Finset.smul_sum]
       refine Finset.sum_congr rfl fun g _ => ?_
       rw [f.isIntertwining, hfx', map_smul]
       exact smul_comm _ _ _
@@ -505,7 +505,7 @@ theorem TypeVec.factor {α : Type} [Fintype α] [DecidableEq α] {m : α → Typ
     induction t using PiTensorProduct.induction_on with
     | smul_tprod r x =>
       rw [map_smul, map_smul, hΦt, map_smul, map_smul, Finsupp.smul_apply, Basis.piTensorProduct_repr_tprod_apply]
-      simp only [Finsupp.smul_apply, smul_eq_mul, Module.Basis.coord_apply]
+      simp only [smul_eq_mul, Module.Basis.coord_apply]
       rw [← Finset.prod_erase_mul _ _ (Finset.mem_univ a)]
     | add t₁ t₂ h₁ h₂ => rw [map_add (f := _), map_add (f := _), h₁, h₂, map_add (f := _), Finsupp.add_apply]
   refine ⟨Φ y, fun k hk => ?_, ℓ, hℓ, ?_⟩

@@ -78,18 +78,18 @@ theorem pderiv_fockSubst_X (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.wha
     pderiv (τ, i, b) (fockSubst p g (X u)) = if u.1 = τ ∧ u.2.1 = i then C (rowMat p g τ i u.2.2 b) else 0 := by
   rw [fockSubst_X]
 
-  simp only [map_sum, Derivation.leibniz, pderiv_C, smul_zero, add_zero, pderiv_X, smul_eq_mul]
+  simp only [map_sum, Derivation.leibniz, pderiv_C, pderiv_X, smul_eq_mul]
   split_ifs with h
   · obtain ⟨h1, h2⟩ := h
     subst h1; subst h2
     rw [Finset.sum_eq_single b]
-    · simp [Pi.single_apply]
-    · intro c _ hc; simp [Pi.single_apply, Prod.ext_iff, hc]
+    · simp
+    · intro c _ hc; simp [Prod.ext_iff, hc]
     · simp
   · refine Finset.sum_eq_zero fun c _ => ?_
     have : (u.1, u.2.1, c) ≠ (τ, i, b) := by
       intro e; simp [Prod.ext_iff] at e; exact h ⟨e.1, e.2.1⟩
-    simp [Pi.single_apply, this]
+    simp [this]
 
 theorem chain_X (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (i : Fin m) (c : Fin n)
     (C' : Matrix (Fin n) (Fin n) ℂ) (hC : rowMat p g τ i * C' = 1) (u : FVar D m n) :
@@ -112,17 +112,17 @@ theorem chain_X (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (
     by_cases h3 : u3 = c
     · subst h3; simp
     · have : ((u1, u2, u3) : FVar D m n) ≠ (u1, u2, c) := by simp [h3]
-      simp [Pi.single_apply, this, Matrix.one_apply, h3]
+      simp [this, h3]
   · simp only [if_neg h, smul_zero, Finset.sum_const_zero]
     have : u ≠ (τ, i, c) := by
       rintro rfl; exact h ⟨rfl, rfl⟩
-    simp [Pi.single_apply, this]
+    simp [this]
 
 theorem chain (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (i : Fin m) (c : Fin n)
     (C' : Matrix (Fin n) (Fin n) ℂ) (hC : rowMat p g τ i * C' = 1) (P : PolF D m n) :
     fockSubst p g (pderiv (τ, i, c) P) = ∑ b, C' b c • pderiv (τ, i, b) (fockSubst p g P) := by
   induction P using MvPolynomial.induction_on with
-  | C a => simp [pderiv_C]
+  | C a => simp
   | add P Q hP hQ =>
     simp only [map_add (f := _), hP, hQ, smul_add, Finset.sum_add_distrib]
   | mul_X P u ih =>

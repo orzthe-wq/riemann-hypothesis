@@ -2,54 +2,8 @@ module
 
 public import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.LogIntSt
 import Aesop.Main
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.MeasureTheory.Integral.Pi
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Separation.CompletelyRegular
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Calculus.FDeriv.Basic
 public import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
 public import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
@@ -86,9 +40,9 @@ theorem locallyIntegrable_comp_eval_fin {D : ℕ} (i : Fin D) {g : ℂ → ℝ}
   · rw [Set.indicator_apply, if_pos hz]
     rw [Set.mem_univ_pi] at hz
     rw [Finset.prod_eq_single i]
-    · simp [Set.indicator_apply, hz i]
+    · simp [hz i]
     · intro j _ hj
-      simp [hj, Set.indicator_apply, hz j]
+      simp [hj, hz j]
     · simp
   · rw [Set.indicator_apply, if_neg hz]
     rw [Set.mem_univ_pi] at hz
@@ -110,7 +64,7 @@ theorem locallyIntegrable_comp_fst_real {g : ℝ → ℝ} (hg : LocallyIntegrabl
       (isCompact_closedBall x.2 1))
   refine (h1.mul_prod h2).congr (Filter.Eventually.of_forall fun p => ?_)
   by_cases ha : p.1 ∈ Metric.closedBall x.1 1 <;> by_cases hb : p.2 ∈ Metric.closedBall x.2 1 <;>
-    simp [Set.indicator_apply, Set.mem_prod, ha, hb]
+    simp [Set.mem_prod, ha, hb]
 
 theorem locallyIntegrable_comp_snd_real {g : ℝ → ℝ} (hg : LocallyIntegrable g volume) :
     LocallyIntegrable (fun p : ℝ × ℝ => g p.2) volume := by
@@ -126,7 +80,7 @@ theorem locallyIntegrable_comp_snd_real {g : ℝ → ℝ} (hg : LocallyIntegrabl
     (hg.integrableOn_isCompact (isCompact_closedBall x.2 1))
   refine (h1.mul_prod h2).congr (Filter.Eventually.of_forall fun p => ?_)
   by_cases ha : p.1 ∈ Metric.closedBall x.1 1 <;> by_cases hb : p.2 ∈ Metric.closedBall x.2 1 <;>
-    simp [Set.indicator_apply, Set.mem_prod, ha, hb]
+    simp [Set.mem_prod, ha, hb]
 
 theorem locallyIntegrable_real_log : LocallyIntegrable Real.log volume := by
   intro x

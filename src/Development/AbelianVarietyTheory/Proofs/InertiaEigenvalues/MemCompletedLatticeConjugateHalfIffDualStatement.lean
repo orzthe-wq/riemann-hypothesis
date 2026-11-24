@@ -51,4 +51,4 @@ open GlobalTheory.ConjTwist GlobalTheory.GalTw ReciprocityTheory.ChartRestrictio
 open Classical
 
 theorem _root_.GlobalTheory.T.mem_completedLattice_conjugateHalf_iff_dual : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsStdChar D ψ (-1) → IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ e : AE D, e * e = e → e * cA D e = 0 → infPart D e = 0 → finPart D e ∈ intAE D → ∀ u : WO S T, IsHalf (cA D e) u → (u ∈ latO S T ΛS ΛT (fun _ => True) ↔ ∀ l ∈ latO S T ΛS ΛT (fun _ => True), IsHalf e l → ψ (symplO S T l u) = 1) := by
-  first | exact @GlobalTheory.ConjHalfDual.mem_latO_iff_of_conjHalf | exact GlobalTheory.ConjHalfDual.mem_latO_iff_of_conjHalf | (intros; apply GlobalTheory.ConjHalfDual.mem_latO_iff_of_conjHalf <;> assumption)
+  first | exact @GlobalTheory.ConjHalfDual.mem_latO_iff_of_conjHalf

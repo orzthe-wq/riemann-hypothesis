@@ -93,14 +93,10 @@ lemma avg_norm_le (e : ι → Λ) (c : ℕ → Λ) (g : Λ → ℂ) (B : ℝ) (h
 
 lemma tendsto_lim_of_bdd (u : ℕ → ℂ) (B : ℝ) (hu : ∀ n, ‖u n‖ ≤ B) :
     Tendsto u (hyperfilter ℕ : Filter ℕ) (𝓝 (limUnder (hyperfilter ℕ : Filter ℕ) u)) := by
-  have hc : IsCompact (Metric.closedBall (0 : ℂ) B) := isCompact_closedBall 0 B
-  obtain ⟨x, -, hx⟩ := hc.ultrafilter_le_nhds ((hyperfilter ℕ).map u) (by
+  obtain ⟨x, -, hx⟩ := (isCompact_closedBall (0 : ℂ) B).ultrafilter_le_nhds ((hyperfilter ℕ).map u) (by
     rw [Ultrafilter.coe_map, le_principal_iff, Filter.mem_map]
     exact Filter.univ_mem' (fun n => by simpa using hu n))
   exact tendsto_nhds_limUnder ⟨x, hx⟩
-
-lemma hyper_le_atTop : (hyperfilter ℕ : Filter ℕ) ≤ atTop := by
-  rw [← Nat.cofinite_eq_atTop]; exact hyperfilter_le_cofinite
 
 def LIMf (e : ι → Λ) (c : ℕ → Λ) (g : Λ → ℂ) : ℂ :=
   limUnder (hyperfilter ℕ : Filter ℕ) (avg e c g)
@@ -133,9 +129,8 @@ lemma avg_real_nonneg (e : ι → Λ) (c : ℕ → Λ) (g : Λ → ℂ)
     0 ≤ (avg e c g n).re ∧ (avg e c g n).im = 0 := by
   unfold avg
   rw [Complex.re_ofReal_mul, Complex.im_ofReal_mul, Complex.re_sum, Complex.im_sum]
-  constructor
-  · exact mul_nonneg (by positivity) (Finset.sum_nonneg (fun m _ => (hg _).1))
-  · simp [(hg _).2]
+  exact ⟨mul_nonneg (by positivity) (Finset.sum_nonneg (fun m _ => (hg _).1)),
+    by simp [(hg _).2]⟩
 
 lemma bpt_add_single (e : ι → Λ) (c : Λ) (m : ι → ℕ) (j : ι) :
     bpt e c m + e j = bpt e c (m + Pi.single j 1) := by
@@ -280,7 +275,7 @@ lemma LIMf_shift_gen (e : ι → Λ) (c : ℕ → Λ) (g : Λ → ℂ) (hg : Bdd
   apply LIMf_eq_of_tendsto
   have h0 : Tendsto (fun n => avg e c (fun x => g (x + e j)) n - avg e c g n)
       (hyperfilter ℕ : Filter ℕ) (𝓝 0) := by
-    apply Tendsto.mono_left _ hyper_le_atTop
+    apply Tendsto.mono_left _ Nat.hyperfilter_le_atTop
     apply squeeze_zero_norm (avg_shift_small e c g B hB j)
     have := (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul (2 * B)
     rw [mul_zero] at this
@@ -352,7 +347,7 @@ theorem exists_mean (e : ι → Λ) (he : AddSubgroup.closure (Set.range e) = �
     exact invAt_all e c he σ g hg
   · intro g hg hsmall
     apply LIMf_eq_of_tendsto
-    apply Tendsto.mono_left _ hyper_le_atTop
+    apply Tendsto.mono_left _ Nat.hyperfilter_le_atTop
     rw [Metric.tendsto_nhds]
     intro ε hε
     filter_upwards [hsmall (ε / 2) (by positivity)] with n hn
@@ -400,10 +395,8 @@ lemma le_atInfAll (f : ℕ) :
     (⨅ T : ℝ, 𝓟 {x : V f | ∀ v, T ≤ ‖x v‖}) ≤ atInfAll f := by
   unfold atInfAll
   refine le_iInf (fun v => ?_)
-  rw [← Filter.tendsto_iff_comap]
-  rw [Filter.tendsto_atTop]
-  intro T
-  exact Filter.mem_iInf_of_mem T (Filter.mem_principal.mpr (fun x hx => hx v))
+  rw [← Filter.tendsto_iff_comap, Filter.tendsto_atTop]
+  exact fun T => Filter.mem_iInf_of_mem T (Filter.mem_principal.mpr (fun x hx => hx v))
 
 lemma exists_T_of_mem {f : ℕ} {t : Set (V f)} (ht : t ∈ atInfAll f) :
     ∃ T : ℝ, {x : V f | ∀ v, T ≤ ‖x v‖} ⊆ t := by
@@ -482,6 +475,6 @@ theorem meanExists : MeanExists := by
 
 end Lattice
 
-theorem _root_.Formalism.FourierDecayAlt.P.invariantMeanExists : Formalism.FourierDecayAlt.crystallineComparison.MeanExists := meanExists
+alias _root_.Formalism.FourierDecayAlt.P.invariantMeanExists := _root_.Formalism.FourierDecayAlt.P.BoxAverageLimits.meanExists
 
 end Formalism.FourierDecayAlt.P.BoxAverageLimits

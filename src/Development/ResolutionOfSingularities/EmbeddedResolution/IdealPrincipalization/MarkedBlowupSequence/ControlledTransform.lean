@@ -280,13 +280,7 @@ theorem BlowupSequenceData.eq_of_pow_exceptionalIdeal_mul_eq_mul {X : Scheme.{u}
 
 namespace MarkedBlowupSequenceData
 
-theorem projectionToBase_eq_toBlowupSequenceData_projectionToBase {k : Type u} [Field k] {X : Scheme.{u}}
-    {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
-    {E : List X.IdealSheafData} (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
-    s.proj i = s.toBlowupSequenceData.projectionToBase i := by
-  induction i with
-  | zero => rw [s.proj_zero, s.toBlowupSequenceData.projectionToBase_zero]
-  | succ j ih => rw [s.proj_succ j, s.toBlowupSequenceData.projectionToBase_succ j, ih]
+alias projectionToBase_eq_toBlowupSequenceData_projectionToBase := _root_.FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData.projectionToBase_eq
 
 theorem controlledTransform_and_boundary_eq_of_cancel {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}

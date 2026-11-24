@@ -116,7 +116,7 @@ theorem ring_facts {A : Type} [Ring A] [Algebra R A] {Q Q' D N : A} {x y : R} (h
       hxy, hyx, one_smul, h1]
   · have hD : D = (Q + Q') * D * (Q + Q') := by rw [h1, one_mul, mul_one]
     conv_rhs => rw [hD]
-    simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul, a, b, smul_zero, add_zero, zero_add,
+    simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, a, b, smul_zero, add_zero, zero_add,
       hxy, hyx, one_smul]
   · have c1 : Q * N = N := by
       have := congrArg (· * N) h1

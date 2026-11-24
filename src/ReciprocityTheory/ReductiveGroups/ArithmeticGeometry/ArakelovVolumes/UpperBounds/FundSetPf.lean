@@ -2,48 +2,9 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.FundSetMeasStatement
 public import Lemmata.GeneralBFactTer.Imports
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustFStatementPfD
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExtFStatementPfA
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustFStatementPfC
@@ -81,12 +42,6 @@ theorem lact_rmul {Ψ : Finset (E →+* ℂ)} (δ : GL (Fin r) E) (y b : Frame �
 theorem lact_inv {Ψ : Finset (E →+* ℂ)} (δ : GL (Fin r) E) (y : Frame Ψ r) : lact δ⁻¹ (lact δ y) = y := by
   rw [← lact_mul, inv_mul_cancel, lact_one]
 
-theorem nb_uniq {N N' B B' : Matrix (Fin r) (Fin r) ℂ} (hN : ∀ a c : Fin r, a < c → N a c = 0)
-    (hN1 : ∀ a, N a a = 1) (hN' : ∀ a c : Fin r, a < c → N' a c = 0) (hN'1 : ∀ a, N' a a = 1)
-    (hB : ∀ a c : Fin r, c < a → B a c = 0) (hB' : ∀ a c : Fin r, c < a → B' a c = 0) (hBd : B.det ≠ 0)
-    (h : N * B = N' * B') : N = N' := by
-  exact Bl.general_b_fact_ter.goal1 hN hN1 hN' hN'1 hB hB' hBd h
-
 theorem cpt_uniq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {z z' : V (nd X)}
     {b b' : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (hb' : b' ∈ Bor X.Ψ r)
     (h : rmul (cpt X x0 z) b = rmul (cpt X x0 z') b') : z = z' := by
@@ -97,7 +52,7 @@ theorem cpt_uniq (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {z z' : V
     have h2 : ExF.nM X z τ * mat b τ = ExF.nM X z' τ * mat b' τ := by
       have := congrArg (fun M => (mat x0 τ)⁻¹ * M) h1
       simpa only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hu] using this
-    exact nb_uniq (fun a c hac => ExF.nM_upper X z τ hac) (ExF.nM_diag X z τ)
+    exact _root_.Bl.general_b_fact_ter.goal1 (fun a c hac => ExF.nM_upper X z τ hac) (ExF.nM_diag X z τ)
       (fun a c hac => ExF.nM_upper X z' τ hac) (ExF.nM_diag X z' τ) (fun a c h => (hb τ).2 a c h)
       (fun a c h => (hb' τ).2 a c h) (hb τ).1 h2
   ext e
@@ -302,6 +257,6 @@ open NumberField
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
-theorem fundSet_holds : FundSetStatement (E := E) := FundSetPf.fundSet_main
+alias fundSet_holds := _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.FundSetPf.fundSet_main
 
 end ReciprocityTheory.ChartRestriction.G.AR.Up

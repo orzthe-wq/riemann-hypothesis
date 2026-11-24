@@ -259,9 +259,9 @@ theorem sf_bound {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F
     exact le_abs_self _
   rw [hta, htb]
   have hn1 : ‖((ta : ℝ) : ℂ)‖ = |ta| := by
-    first | simp | rw [Complex.norm_real, Real.norm_eq_abs]
+    first | simp
   have hn2 : ‖((tb : ℝ) : ℂ)‖ = |tb| := by
-    first | simp | rw [Complex.norm_real, Real.norm_eq_abs]
+    first | simp
   rw [hn1, hn2]
   nlinarith [abs_nonneg ta, abs_nonneg tb, norm_nonneg (τ ((J * g) i j))]
 

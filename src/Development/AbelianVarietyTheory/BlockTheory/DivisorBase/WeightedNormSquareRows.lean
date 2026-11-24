@@ -65,12 +65,7 @@ section Ev
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ)
 
-theorem mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : HeightOneSpectrum A} (h : P ∈ divs a) :
-    a ∈ P.asIdeal := by
-  unfold divs at h
-  split_ifs at h with hf
-  · simpa using h
-  · simp at h
+alias mem_of_mem_divs := _root_.Formalism.L2.Col.decoFin_mem_of_mem_divs
 
 theorem evOk (hX : X.Ok) (hPr : Pr.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.Word) :
     (evGSD W Ch sel (mu0 X.F X.E X.K Sg) P u).Ok := by

@@ -182,7 +182,7 @@ theorem cob_mem_intCrys (hT : Continuous fun g => (T g : Matrix (Fin m) (Fin m) 
       (Bw.rep (T.comp Gw.subtype) g (Pi.single a 1) - Pi.single a 1 : Fin m → ↥Bw.LL.1) j := by
     intro g j
     by_cases hj : j = a <;>
-      simp [LocBridge.rep, Matrix.toLinAlgEquiv'_apply, Matrix.one_apply, Pi.single_apply, hj]
+      simp [LocBridge.rep, Matrix.toLinAlgEquiv'_apply, hj]
   change (fun (g : ↥(Loc.GK Bw.Kw)) (j : Fin m) =>
     Bw.toLL (((T (Bw.e.symm g : ↥Gw) : Matrix (Fin m) (Fin m) O) - 1) j a)) ∈
       Formalism.WeaklyAdmissibleFiltrations.finiteCocycles (P.PD Bw.Kw) (Bw.rep (T.comp Gw.subtype))

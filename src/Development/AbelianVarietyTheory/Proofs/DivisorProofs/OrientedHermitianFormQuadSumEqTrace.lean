@@ -124,24 +124,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
-theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
-  intro h
-  obtain ⟨v, hv, h0⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h
-  have hx : ∀ y, V.hT y (∑ j, v j • V.frame j) = 0 := by
-    intro y
-    rw [← V.frame.sum_repr y]
-
-    simp only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul]
-    simp only [Finset.mul_sum]
-    rw [Finset.sum_comm]
-    refine Finset.sum_eq_zero fun i _ => ?_
-    have := congrFun h0 i
-    simp only [mulVec, dotProduct, Formalism.BasicNotions.HSpace.gram, Pi.zero_apply] at this
-    calc _ = (starRingEnd _) (V.frame.repr y i) * ∑ j, V.hT (V.frame i) (V.frame j) * v j := by
-          rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring
-      _ = 0 := by rw [this, mul_zero]
-  have := V.nondeg.2 _ hx
-  exact hv (funext (Fintype.linearIndependent_iff.1 V.frame.linearIndependent v this))
+alias gram_det_ne := _root_.Formalism.L2.Theta.gram_det_ne
 
 theorem inv_mul_gram (V : HSp D) : (V.gram⁻¹).map (incA D) * V.gram.map (incA D) = 1 := by
   rw [← Matrix.map_mul, nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (gram_det_ne V)), Matrix.map_one _ (map_zero _) (map_one _)]

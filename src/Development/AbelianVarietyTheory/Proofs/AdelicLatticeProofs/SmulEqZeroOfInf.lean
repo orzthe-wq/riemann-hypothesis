@@ -183,8 +183,8 @@ theorem symplOH_real_fin {u v : WO S T} (hu : u.map (infPart D) = 0) (hv : v.map
 variable (S T)
 
 theorem continuous_symplOH (u : WO S T) : Continuous fun w : WO S T => symplOH S T w u := by
-  haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
-  haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
+  have : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
+  have : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
   have ht : Continuous (Algebra.trace (AF D.host.F) (AE D)) := IsModuleTopology.continuous_of_linearMap _
   unfold symplOH symplO hO
   refine continuous_const.mul (ht.comp (continuous_const.mul ?_))
@@ -213,8 +213,8 @@ variable {S T ψ}
 
 theorem isThetaFunO_heisO (hc : Continuous ψ) (hn : ∀ x, ‖ψ x‖ = 1) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     {u : WO S T} (hu : u.map (infPart D) = 0) : IsThetaFunO ψ S T (heisO ψ S T u f) := by
-  haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
-  haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
+  have : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
+  have : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
   refine ⟨fun γ w => ?_, ?_, ?_, fun k L hL hLf w => ?_⟩
   · simp only [heisO]
     rw [add_assoc, hf.quasi, symplOH_add_left, symplOH_add_right, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul,

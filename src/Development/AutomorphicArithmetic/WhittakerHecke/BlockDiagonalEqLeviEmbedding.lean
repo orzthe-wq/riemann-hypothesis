@@ -72,11 +72,11 @@ theorem UpperTheory.blockDiagonal_eq_leviEmbedding :
         simp [this, Matrix.one_apply]
       | right b =>
         have := UpperTheory.V.Af.Fin.matrixExtendByZero_apply_of_outside_col (UpperTheory.V.Af.Fin.e1 r s) (x.val - 1) (Fin.castAdd s a) (j := Fin.natAdd r b) (fun k => (hne k b).symm)
-        simp [this, Matrix.one_apply, hne]
+        simp [this, hne]
     | right a =>
       have := UpperTheory.V.Af.Fin.extendByZero_apply_eq_zero_of_row_not_mem (UpperTheory.V.Af.Fin.e1 r s) (x.val - 1) (i := Fin.natAdd r a) (fun k => (hne k a).symm) b
       induction b using Fin.addCases with
-      | left b => simp [this, Matrix.one_apply, (hne _ _).symm]
+      | left b => simp [this, (hne _ _).symm]
       | right b => simp [this, Matrix.one_apply]
   have h2 : (UpperTheory.V.Af.Fin.emb (UpperTheory.V.Af.Fin.e2 r s) y).val =
       Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 1 0 0 y.val) := by
@@ -91,12 +91,12 @@ theorem UpperTheory.blockDiagonal_eq_leviEmbedding :
         simp [this, Matrix.one_apply]
       | left b =>
         have := UpperTheory.V.Af.Fin.matrixExtendByZero_apply_of_outside_col (UpperTheory.V.Af.Fin.e2 r s) (y.val - 1) (Fin.natAdd r a) (j := Fin.castAdd s b) (fun k => hne b k)
-        simp [this, Matrix.one_apply, (hne _ _).symm]
+        simp [this, (hne _ _).symm]
     | left a =>
       have := UpperTheory.V.Af.Fin.extendByZero_apply_eq_zero_of_row_not_mem (UpperTheory.V.Af.Fin.e2 r s) (y.val - 1) (i := Fin.castAdd s a) (fun k => hne a k) b
       induction b using Fin.addCases with
       | left b => simp [this, Matrix.one_apply]
-      | right b => simp [this, Matrix.one_apply, hne]
+      | right b => simp [this, hne]
   refine Units.ext ?_
   rw [lev, GlobalTheory.SmGL.val_emb₂, hs, UpperTheory.V.Af.Fin.blk, Units.val_mul, h1, h2]
   simp only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul,

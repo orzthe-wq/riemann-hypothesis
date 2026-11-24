@@ -1,14 +1,18 @@
 module
 
-import Development.WeilBound.CoreStatements.PluriharmonicCharts.FderivValueZero
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsConstMul
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameFieldExtension
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameIffEigenspaceBasis
+public import Mathlib.Algebra.MvPolynomial.Cardinal
+public import Mathlib.FieldTheory.IsAlgClosed.Classification
+import Development.WeilBound.CoreStatements.PluriharmonicCharts.FderivValueZero
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModelBaseChangeStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModelBaseChange
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteBaseChange
-public import Mathlib.Algebra.MvPolynomial.Cardinal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -21,7 +25,6 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
-public import Mathlib.FieldTheory.IsAlgClosed.Classification
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -60,7 +63,7 @@ namespace PositivityTheory.Xgn.FramedPointSpecialization
 
 theorem exists_embedding (K k : Type) [Field K] [Field k] [Countable K] [Countable k] (β : K →+* k) (s : K →+* ℂ) :
     ∃ j : k →+* ℂ, j.comp β = s := by
-  apply PositivityTheory.Xgp.c_bm_exists_period.exists_embedding <;> assumption
+  apply PositivityTheory.Xgp.c_bm_exists_period.exists_embedding
 
 theorem exists_countable_field {X : Scheme.{0}} {K F : Type} [CommRing K] [Countable K] [Field F] (s : X ⟶ Sp K)
     [LocallyOfFiniteType s] (y : Sp F ⟶ X) :
@@ -129,7 +132,7 @@ theorem frame_up_down {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] 
   letI := f.toAlgebra
   subst hx
   obtain ⟨V, _, _, ⟨M⟩⟩ := lieModel_exists S G F x
-  obtain ⟨T, _, _, _, _, M', j, hl, hj⟩ := GlobalTheory.T.exists_lie_model_base_change S G F F' x V M
+  obtain ⟨T, _, _, _, _, M', j, hl, hj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.FlagFib.lieModel_liftBaseChange S G F F' x V M
   obtain ⟨ρ, hρ, -⟩ := lieModel_exists_unique_act S G F x V M P act.act act.hom act.one act.mul act.add
   obtain ⟨ρ', hρ', -⟩ := lieModel_exists_unique_act S G F' _ T M' P act.act act.hom act.one act.mul act.add
   have hl' : ∀ e, (M'.pt (j e)).left = spMap (dualMap (algebraMap F F')) ≫ (M.pt e).left := fun e => by

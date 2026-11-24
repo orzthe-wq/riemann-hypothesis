@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.AdIPowLe
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsStablePrismHomComp
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrismPushoutModAdicPowUniversalStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrismPushoutModAdicPowUniversal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -55,8 +55,7 @@ namespace GlobalTheory.BSP.CoverBC
 
 variable {l : ℕ} {R : Type} [CommRing R]
 
-theorem hom_ext {P P' : Obj l R} {a b : Hom P P'} (h : a.f = b.f) : a = b := by
-  cases a; cases b; cases h; rfl
+alias hom_ext := _root_.GlobalTheory.Prism.Hom.ext'
 
 theorem comp_assoc {P₁ P₂ P₃ P₄ : Obj l R} (c : Hom P₃ P₄) (b : Hom P₂ P₃) (a : Hom P₁ P₂) :
     (c.comp b).comp a = c.comp (b.comp a) := hom_ext rfl
@@ -104,7 +103,7 @@ theorem GlobalTheory.BSP.stable_cover_of_isPO : ∀ (l : ℕ) [Fact l.Prime] (R 
     refine ⟨flat_of_isPO H hs.flat, fun B'' k₂ => ?_⟩
     obtain ⟨C'', k₀, h'', H₂⟩ := hs.po B'' (k₂.comp k)
     have e : k₀.comp h = (h''.comp k₂).comp k := by rw [H₂.comm, comp_assoc]
-    obtain ⟨c, ⟨hc₁, hc₂⟩, -⟩ := GlobalTheory.T.prismPushoutModAdicPow_universal l R B C B' C' h k k' h' H C'' k₀ (h''.comp k₂) e
+    obtain ⟨c, ⟨hc₁, hc₂⟩, -⟩ := _root_.GlobalTheory.BSP.PoUniv.isPO_univ l R B C B' C' h k k' h' H C'' k₀ (h''.comp k₂) e
     refine ⟨C'', c, h'', ⟨hc₂, fun m => ?_⟩⟩
     have s := H₂.po m
     rw [← hc₁, qmap_comp, qmap_comp, CommRingCat.ofHom_comp, CommRingCat.ofHom_comp] at s

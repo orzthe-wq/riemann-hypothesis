@@ -1,13 +1,12 @@
 module
 
+public import Formalism.FrobeniusOrbits.DiscrMaximalRealCyclotomic
+public import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CoprimeTwoPow
 public import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.ZsmulGeneratorEqZeroOfProjection
-public import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardExtendedGaloisGroup
 public import Formalism.FrobeniusOrbits.HostThickExists
-import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CoprimeTwoPow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -51,8 +50,154 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Int
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardExtendedGaloisGroup, Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
+
+-- ===== clump member: Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardExtendedGaloisGroup =====
+-- clump-header: {"m": "Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardExtendedGaloisGroup", "h": "module\n\npublic import Formalism.FrobeniusOrbits.DiscrMaximalRealCyclotomic\npublic import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CoprimeTwoPow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IntermediateField Ideal
+
+noncomputable section
+
+namespace Formalism.FrobeniusOrbits
+
+open Formalism.TwoAdicCyclotomicDecomposition
+
+namespace Misc2
+
+theorem units_ne_one_iff (x : ℤˣ) : x ≠ 1 ↔ x = -1 := by
+  rcases Int.units_eq_one_or x with rfl | rfl <;> decide
+
+end Misc2
+
+open Misc2
+
+theorem hostPartner : HostPartner := by
+  intro e τ hτ
+  rw [mem_Psi_iff] at hτ
+  refine ⟨?_, ?_, ?_⟩
+  · intro g hg
+    simp only [Set.mem_ofPred_eq, mem_Psi_iff, units_ne_one_iff] at hg
+    show _ ∈ Psi e
+    rw [mem_Psi_iff]
+    simp [cc, c0, hg, hτ]
+  · intro g _ g' _ hgg
+    simpa using hgg
+  · intro t ht
+    rw [SetLike.mem_coe, mem_Psi_iff] at ht
+    refine ⟨(cc e)⁻¹ * t * τ⁻¹, ?_, ?_⟩
+    · simp only [Set.mem_ofPred_eq, mem_Psi_iff]
+      simp [cc, c0, ht, hτ]
+    · simp only
+      group
+
+namespace Misc2
+
+def conjHom {G : Type*} [Group G] (χ : G →* ℂˣ) : G →* ℂ :=
+  (starRingEnd ℂ).toMonoidHom.comp ((Units.coeHom ℂ).comp χ)
+
+def twHom (e : ℕ) (χ : GG e →* ℂˣ) : GG e →* ℂ :=
+  (Units.coeHom ℂ).comp (chC e) * conjHom χ
+
+theorem chC_apply (e : ℕ) (g : GG e) : ((chC e g : ℂˣ) : ℂ) = (((g.1.2 : ℤˣ) : ℤ) : ℂ) := rfl
+
+theorem conjHom_eq_one_iff {G : Type*} [Group G] (χ : G →* ℂˣ) : conjHom χ = 1 ↔ χ = 1 := by
+  constructor
+  · intro h
+    ext g
+    have := DFunLike.congr_fun h g
+    simp only [conjHom, MonoidHom.coe_comp, Function.comp_apply, Units.coeHom_apply,
+      RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, MonoidHom.one_apply] at this
+    have := congrArg (starRingEnd ℂ) this
+    simpa using this
+  · rintro rfl
+    ext g
+    simp [conjHom]
+
+theorem int_units_sq_C (x : ℤˣ) : (((x : ℤ) : ℂ)) * ((x : ℤ) : ℂ) = 1 := by
+  rcases Int.units_eq_one_or x with rfl | rfl <;> simp
+
+theorem twHom_eq_one_iff (e : ℕ) (χ : GG e →* ℂˣ) : twHom e χ = 1 ↔ χ = chC e := by
+  constructor
+  · intro h
+    ext g
+    have := DFunLike.congr_fun h g
+    simp only [twHom, conjHom, MonoidHom.mul_apply, MonoidHom.coe_comp, Function.comp_apply,
+      Units.coeHom_apply, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe,
+      MonoidHom.one_apply, chC_apply] at this
+    have h2 : starRingEnd ℂ ((χ g : ℂˣ) : ℂ) = (((g.1.2 : ℤˣ) : ℤ) : ℂ) := by
+      have := congrArg (fun z => (((g.1.2 : ℤˣ) : ℤ) : ℂ) * z) this
+      simp only [← mul_assoc, int_units_sq_C, one_mul, mul_one] at this
+      exact this
+    have := congrArg (starRingEnd ℂ) h2
+    rw [chC_apply]
+    simpa using this
+  · rintro rfl
+    ext g
+    simp only [twHom, conjHom, MonoidHom.mul_apply, MonoidHom.coe_comp, Function.comp_apply,
+      Units.coeHom_apply, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe,
+      MonoidHom.one_apply, chC_apply]
+    simp [int_units_sq_C]
+
+theorem chC_ne_one (e : ℕ) : chC e ≠ 1 := by
+  intro h
+  have := DFunLike.congr_fun h (cc e)
+  have h2 := congrArg (fun u : ℂˣ => (u : ℂ)) this
+  simp only [chC_apply, MonoidHom.one_apply, Units.val_one] at h2
+  simp [cc, c0] at h2
+  norm_num at h2
+
+theorem card_extended_galois_group (e : ℕ) [Fintype (GG e)] : (Fintype.card (GG e) : ℂ) = 2 ^ (e + 2) := by
+  rw [← Nat.card_eq_fintype_card, (hostGroup e).1]
+  push_cast; rfl
+
+end Misc2
+
+open Classical in
+theorem hostCharSum : HostCharSum := by
+  intro e
+  refine ⟨fun χ => ?_, fun g => ?_⟩
+  · have hpt : ∀ g : GG e, 2 * (if g ∉ Psi e then starRingEnd ℂ ((χ g : ℂˣ) : ℂ) else 0) =
+        conjHom χ g - twHom e χ g := by
+      intro g
+      simp only [twHom, conjHom, MonoidHom.mul_apply, MonoidHom.coe_comp, Function.comp_apply,
+        Units.coeHom_apply, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, chC_apply, mem_Psi_iff]
+      rcases Int.units_eq_one_or g.1.2 with h | h <;> rw [h] <;> simp <;> ring
+    have hA := sum_hom_units (conjHom χ)
+    have hB := sum_hom_units (twHom e χ)
+    simp only [conjHom_eq_one_iff, twHom_eq_one_iff, Nat.cast_ite, Nat.cast_zero] at hA hB
+    have hS : 2 * (∑ g ∈ Finset.univ.filter (fun g : GG e => g ∉ Psi e),
+        starRingEnd ℂ ((χ g : ℂˣ) : ℂ)) =
+        (∑ g : GG e, conjHom χ g) - ∑ g : GG e, twHom e χ g := by
+      rw [Finset.sum_filter, Finset.mul_sum, ← Finset.sum_sub_distrib]
+      exact Finset.sum_congr rfl (fun g _ => hpt g)
+    rw [hA, hB, card_extended_galois_group] at hS
+    have hne := chC_ne_one e
+    split_ifs at hS ⊢ with h1 h2 h2
+    · exact absurd (h1.symm.trans h2) (Ne.symm hne)
+    · linear_combination hS / 2
+    · linear_combination hS / 2
+    · linear_combination hS / 2
+  · simp only [chD, chQ, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.coe_fst,
+      MonoidHom.coe_snd, Prod.ext_iff]
+    rcases Int.units_eq_one_or g.1.1 with h | h <;> rcases Int.units_eq_one_or g.1.2 with h' | h' <;>
+      rw [h, h'] <;> decide
+
+end Formalism.FrobeniusOrbits
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardExtendedGaloisGroup =====
+
+-- ===== clump member: Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts =====
+-- clump-header: {"m": "Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts", "h": "module\n\npublic import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.ZsmulGeneratorEqZeroOfProjection\npublic import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CardExtendedGaloisGroup\npublic import Formalism.FrobeniusOrbits.HostThickExists\nimport Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.CoprimeTwoPow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -63,28 +208,16 @@ open Formalism.FrobeniusOrbits
 
 variable (φ : Frame)
 
-private theorem natCard_A_eq_ord : Nat.card φ.A = φ.ord := by
-  show Nat.card (Fin φ.ord) = φ.ord
-  rw [Nat.card_eq_fintype_card, Fintype.card_fin]
-
 theorem natCard_MA : Nat.card φ.MA = φ.ord := by
   rw [Nat.card_congr (Multiplicative.ofAdd (α := φ.A)).symm]
-  exact natCard_A_eq_ord φ
+  exact _root_.Formalism.HC.Frame.natCard_A φ
 
 private theorem natCard_int_units_eq_two : Nat.card ℤˣ = 2 := by
   first
   | (rw [Nat.card_eq_fintype_card]; rfl)
-  | (rw [Nat.card_eq_fintype_card]; decide)
-  | simp
-
-private theorem natCard_GG_eq_four_mul_ord : Nat.card φ.GG = 4 * φ.ord := by
-  have h3 : Nat.card φ.GG = Nat.card ℤˣ * Nat.card ℤˣ * Nat.card φ.MA := by
-    rw [Nat.card_prod, Nat.card_prod]
-  rw [natCard_int_units_eq_two, φ.natCard_MA] at h3
-  omega
 
 theorem card_GG [Fintype φ.GG] : Fintype.card φ.GG = 4 * φ.ord := by
-  rw [← Nat.card_eq_fintype_card, natCard_GG_eq_four_mul_ord]
+  rw [← Nat.card_eq_fintype_card, _root_.Formalism.HC.Frame.natCard_GG]
 
 theorem chC_apply (g : φ.GG) : ((φ.chC g : ℂˣ) : ℂ) = (((g.1.2 : ℤˣ) : ℤ) : ℂ) := rfl
 
@@ -95,7 +228,7 @@ theorem index_Psi : φ.Psi.index = 2 := by
 
 theorem natCard_Psi : Nat.card φ.Psi = 2 * φ.ord := by
   have h := φ.Psi.card_mul_index
-  rw [φ.index_Psi, natCard_GG_eq_four_mul_ord] at h
+  rw [φ.index_Psi, _root_.Formalism.HC.Frame.natCard_GG] at h
   omega
 
 private theorem int_units_neg_one_ne_one : (-1 : ℤˣ) ≠ 1 := by
@@ -137,7 +270,7 @@ theorem orderOf_cc : orderOf φ.cc = 2 := by
   exact orderOf_eq_prime (by rw [pow_two]; exact φ.cc_mul_cc) φ.cc_ne_one
 
 theorem hostGroup : Nat.card φ.GG = 4 * φ.ord ∧ φ.Psi.index = 2 ∧ φ.cc ∉ φ.Psi ∧ φ.sg ∈ φ.Psi ∧
-    orderOf φ.cc = 2 := ⟨by rw [natCard_GG_eq_four_mul_ord], φ.index_Psi, φ.cc_notMem_Psi, φ.sg_mem_Psi, φ.orderOf_cc⟩
+    orderOf φ.cc = 2 := ⟨by rw [_root_.Formalism.HC.Frame.natCard_GG], φ.index_Psi, φ.cc_notMem_Psi, φ.sg_mem_Psi, φ.orderOf_cc⟩
 
 theorem iota_injective : Function.Injective φ.iota := fun _ _ h => Multiplicative.ofAdd.injective h
 
@@ -198,18 +331,14 @@ theorem hH_surj : Function.Surjective φ.hH := by
   obtain ⟨t, ht⟩ := φ.projection_surjective_field (Additive.ofMul y)
   exact ⟨φ.iota t, congrArg Additive.toMul ht⟩
 
-private theorem ord_pos' : 0 < φ.ord := by
-  rw [← natCard_A_eq_ord]
-  exact Nat.card_pos
-
 theorem two_pow_dvd_ord : 2 ^ φ.e ∣ φ.ord := by
   have := Subgroup.card_dvd_of_surjective (f := φ.hH) φ.hH_surj
   rwa [Formalism.FrobeniusOrbits.Group.card_H, φ.natCard_MA] at this
 
-theorem two_pow_le_ord : 2 ^ φ.e ≤ φ.ord := Nat.le_of_dvd (ord_pos' φ) φ.two_pow_dvd_ord
+theorem two_pow_le_ord : 2 ^ φ.e ≤ φ.ord := Nat.le_of_dvd (_root_.Formalism.HC.Frame.ord_pos φ) φ.two_pow_dvd_ord
 
 theorem addOrderOf_dvd_ord (t : φ.A) : addOrderOf t ∣ φ.ord := by
-  rw [← natCard_A_eq_ord]
+  rw [← _root_.Formalism.HC.Frame.natCard_A]
   exact addOrderOf_dvd_natCard t
 
 theorem n0_pos : 0 < φ.n0 := addOrderOf_pos φ.a0
@@ -218,13 +347,13 @@ theorem cyclic_order_dvd_exponent : φ.n0 ∣ φ.ord := φ.addOrderOf_dvd_ord φ
 
 theorem exponent_eq_index_mul_cyclic_order : φ.ord = φ.o * φ.n0 := (Nat.div_mul_cancel φ.cyclic_order_dvd_exponent).symm
 
-theorem o_pos : 0 < φ.o := Nat.div_pos (Nat.le_of_dvd (ord_pos' φ) φ.cyclic_order_dvd_exponent) φ.n0_pos
+theorem o_pos : 0 < φ.o := Nat.div_pos (Nat.le_of_dvd (_root_.Formalism.HC.Frame.ord_pos φ) φ.cyclic_order_dvd_exponent) φ.n0_pos
 
 theorem natCard_cyclic_subgroup : Nat.card φ.A0 = φ.n0 := Nat.card_zmultiples φ.a0
 
 theorem index_A0_eq_o : φ.A0.index = φ.o := by
   have h := φ.A0.card_mul_index
-  rw [φ.natCard_cyclic_subgroup, natCard_A_eq_ord, φ.exponent_eq_index_mul_cyclic_order] at h
+  rw [φ.natCard_cyclic_subgroup, _root_.Formalism.HC.Frame.natCard_A, φ.exponent_eq_index_mul_cyclic_order] at h
   exact Nat.eq_of_mul_eq_mul_left φ.n0_pos (h.trans (mul_comm _ _))
 
 theorem eq_zero_of_mem_cyclic_of_projection {t : φ.A} (ht : t ∈ φ.A0) (h0 : φ.h t = 0) : t = 0 := by
@@ -260,7 +389,7 @@ theorem cyclic_order_dvd_two_pow : φ.n0 ∣ 2 ^ φ.e := by
 
 theorem cyclic_order_le_two_pow : φ.n0 ≤ 2 ^ φ.e := Nat.le_of_dvd (by positivity) φ.cyclic_order_dvd_two_pow
 
-theorem cyclic_order_le_exponent : φ.n0 ≤ φ.ord := Nat.le_of_dvd (ord_pos' φ) φ.cyclic_order_dvd_exponent
+theorem cyclic_order_le_exponent : φ.n0 ≤ φ.ord := Nat.le_of_dvd (_root_.Formalism.HC.Frame.ord_pos φ) φ.cyclic_order_dvd_exponent
 
 theorem ord_le_o_mul_two_pow : φ.ord ≤ φ.o * 2 ^ φ.e := by
   rw [φ.exponent_eq_index_mul_cyclic_order]
@@ -343,7 +472,7 @@ theorem even_orderOf_of_hH_ne_one {a : φ.MA} (ha : φ.hH a ≠ 1) : Even (order
 private theorem cc_mul_mem_Psi_iff_not_mem (g : φ.GG) : φ.cc * g ∈ φ.Psi ↔ g ∉ φ.Psi := by
   rw [mem_Psi_iff, mem_Psi_iff]
   show (-1 : ℤˣ) * g.1.2 = 1 ↔ ¬ g.1.2 = 1
-  rcases Int.units_eq_one_or g.1.2 with h | h <;> rw [h] <;> simp [int_units_neg_one_ne_one]
+  rcases Int.units_eq_one_or g.1.2 with h | h <;> rw [h] <;> simp
 
 theorem hostPartner (τ : φ.GG) (hτ : τ ∈ φ.Psi) :
     Set.BijOn (fun g : φ.GG => φ.cc * g * τ) {g | g ∉ φ.Psi} (φ.Psi : Set φ.GG) := by
@@ -384,7 +513,6 @@ theorem twHom_eq_one_iff (χ : φ.GG →* ℂˣ) : φ.twHom χ = 1 ↔ χ = φ.c
     rw [Complex.conj_conj, hr] at h3
     first
     | exact h3
-    | exact Units.ext h3
   · rintro rfl
     ext g
     show ((φ.chC g : ℂˣ) : ℂ) * starRingEnd ℂ ((φ.chC g : ℂˣ) : ℂ) = 1
@@ -439,7 +567,6 @@ theorem hostCharSum :
         rw [Complex.conj_conj, map_one] at h2
         first
         | exact h2
-        | exact Units.ext h2
       · intro h
         ext g
         rw [hfg, h]
@@ -663,3 +790,6 @@ theorem hostThickOrbit {L : ℕ} (T : Finset ℕ) (hT : ∀ s ∈ T, 4 * L * s <
 end Formalism.HC.Frame
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts =====

@@ -3,49 +3,6 @@ module
 public import Formalism.LocalToGlobal.Columns.ChainInstS
 import Formalism.LocalToGlobal.Columns.ChainInst
 public import Formalism.LocalToGlobal.Columns.ColumnsProofs.ChainCounts
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -201,10 +158,6 @@ theorem symIndex_injective {k₀ rS p p' : ℕ} (h : symIdx k₀ rS p = symIdx k
   have := congrArg (symIdxInv k₀ rS) h
   rwa [symIdxInv_symIdx, symIdxInv_symIdx] at this
 
-theorem symIndexInv_lt {k₀ rS r s : ℕ} (hr : k₀ + rS ≤ r) (hs : s < r) : symIdxInv k₀ rS s < r := by
-  unfold symIdxInv
-  split_ifs <;> omega
-
 theorem ob2Beta_lt_of_sym {k₀ rS r t p0 p : ℕ} (hr : k₀ + rS ≤ r) (hp0 : p0 < r) (h : symIdx k₀ rS p0 < symIdx k₀ rS p) :
     betaExponentOfRanks k₀ rS r t p0 < betaExponentOfRanks k₀ rS r t p := by
   unfold betaExponentOfRanks
@@ -309,7 +262,7 @@ theorem stdBasis_flag_submodule_of_blockTriangular (hq : ((q : ℕ) : 𝓞 E) �
     (hC : ∀ l l' : Fin (n + c), LocE.fPos k₀ c n l.1 < k₀ → LocE.fPos k₀ c n l'.1 = k₀ + rS → ob2M P q κ l l' = 0)
     (hs : s < r) : κ (LocE.bvecS E q k₀ rS n c s) - LocE.bvecS E q k₀ rS n c s ∈ LocE.flagS P q k₀ rS n c s := by
   have hq0 := ciQ_ne_zero hu
-  have hp0 : symIdxInv k₀ rS s < r := symIndexInv_lt hr.le hs
+  have hp0 : symIdxInv k₀ rS s < r := _root_.Formalism.L2.Col.symIdxInv_lt hr.le hs
   have hl0 : LocE.fIdx k₀ c n (symIdxInv k₀ rS s) < n + c := symFIdx_lt hk (by omega)
   have hpos0 : LocE.fPos k₀ c n (LocE.fIdx k₀ c n (symIdxInv k₀ rS s)) = symIdxInv k₀ rS s := symFPos_fIdx hk (by omega)
   have hsym0 : symIdx k₀ rS (symIdxInv k₀ rS s) = s := symIdx_symIdxInv k₀ rS s

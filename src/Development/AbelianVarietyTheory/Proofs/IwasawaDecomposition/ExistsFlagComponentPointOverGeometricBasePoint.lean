@@ -52,17 +52,6 @@ noncomputable section
 
 namespace GlobalTheory.FlagCptBase
 
-theorem exists_geomPt (S : Scheme.{0}) (s : S) :
-    ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (q : Sp K ⟶ S), s ∈ Set.range q := by
-  let K := AlgebraicClosure (S.residueField s)
-  obtain ⟨t⟩ : Nonempty (Sp K) := inferInstance
-  refine ⟨K, inferInstance, inferInstance, spMap (algebraMap (S.residueField s) K) ≫ S.fromSpecResidueField s, t, ?_⟩
-  have h : S.fromSpecResidueField s (spMap (algebraMap (S.residueField s) K) t) ∈
-      Set.range (S.fromSpecResidueField s) := ⟨_, rfl⟩
-  rw [Scheme.range_fromSpecResidueField] at h
-  rw [Scheme.Hom.comp_apply]
-  exact h
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
   {F : Type} [Field F] {e : F ≃+* c.F}
@@ -86,7 +75,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] {e : F ≃+* c.F} {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N}
 
 theorem exists_mem_range (Φ : FlagTor Z e U) (w : gen Z) : ∃ i, w ∈ Set.range (Φ.C i).π := by
-  obtain ⟨K, _, _, q, t, hq⟩ := exists_geomPt _ w
+  obtain ⟨K, _, _, q, t, hq⟩ := _root_.GlobalTheory.ZM.IsGaloisCover.exists_algClosed_point _ w
   let χ : c.F →+* K := (Spec.preimage (q ≫ genStr Z)).hom
   have hχ : q ≫ genStr Z = spMap χ := (Spec.map_preimage _).symm
   obtain ⟨g⟩ := GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c O β Z K χ q hχ
@@ -103,7 +92,7 @@ theorem eq_of_apply_eq (Φ : FlagTor Z e U)
       p ≫ (Φ.C i).π ≫ genStr Z = spMap χ → ∃ g : EigFrame Z χ (p ≫ (Φ.C i).π ≫ genι Z), (Φ.C i).Carries p g)
     {i i' : U.Comp} (y : (Φ.C i).Y.X) (y' : (Φ.C i').Y.X) (h : (Φ.C i).π y = (Φ.C i').π y') : i = i' := by
   obtain ⟨z, -, -⟩ := Scheme.Pullback.exists_preimage_pullback (f := (Φ.C i).π) (g := (Φ.C i').π) y y' h
-  obtain ⟨K, _, _, q, -⟩ := exists_geomPt _ z
+  obtain ⟨K, _, _, q, -⟩ := _root_.GlobalTheory.ZM.IsGaloisCover.exists_algClosed_point _ z
   let p := q ≫ pullback.fst (Φ.C i).π (Φ.C i').π
   let p' := q ≫ pullback.snd (Φ.C i).π (Φ.C i').π
   let w := p ≫ (Φ.C i).π

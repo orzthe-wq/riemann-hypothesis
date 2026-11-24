@@ -183,7 +183,7 @@ theorem mem_localization_of_component (hc : D.host.ccK = ⊤) (hN : IsSelfDualC 
     rw [LinearMap.sum_apply]
     exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
   have hb0 : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 :=
-    FractionalIdeal.coeIdeal_ne_zero.2 (ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.bb_ne_bot D)
+    FractionalIdeal.coeIdeal_ne_zero.2 (_root_.Formalism.L2.Pj.b_ne_bot D)
   have h1 : (1 : D.host.E) ∈ D.host.AA0 * (D.host.𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) := by
     rw [Formalism.BasicNotions.Host.AA0, inv_mul_cancel₀ hb0]
     exact FractionalIdeal.one_mem_one _

@@ -142,17 +142,12 @@ variable {E : Type} [Field E] [NumberField E]
 
 lemma isInt_mul {a b : E} (ha : IsInt a) (hb : IsInt b) : IsInt (a * b) := by
   first
-  | exact ha.mul hb
-  | exact IsIntegral.mul ha hb
   | (obtain ⟨x, hx⟩ := ha; obtain ⟨y, hy⟩ := hb; exact ⟨x * y, by rw [← hx, ← hy]; push_cast; ring⟩)
 lemma isInt_add {a b : E} (ha : IsInt a) (hb : IsInt b) : IsInt (a + b) := by
   first
-  | exact ha.add hb
-  | exact IsIntegral.add ha hb
   | (obtain ⟨x, hx⟩ := ha; obtain ⟨y, hy⟩ := hb; exact ⟨x + y, by rw [← hx, ← hy]; push_cast; ring⟩)
 lemma isInt_coe (y : 𝓞 E) : IsInt (y : E) := by
   first
-  | exact y.2
   | exact ⟨y, rfl⟩
 lemma isInt_map (σ : E →+* E) {a : E} (ha : IsInt a) : IsInt (σ a) := by
   obtain ⟨x, rfl⟩ := ha
@@ -223,7 +218,6 @@ private theorem exists_not_mem_prime_mul_eq_of_locIn {E : Type} [Field E] [Numbe
     haveI := hP
     first
     | exact Ideal.comap_isPrime f P
-    | infer_instance
   have hMQ : (M : 𝓞 E) ∈ P.comap f := by
     rw [Ideal.mem_comap, map_natCast]; exact hMP
   obtain ⟨y1, z1, hy1, h1⟩ := hu P hP hMP
@@ -236,11 +230,10 @@ private theorem exists_not_mem_prime_mul_eq_of_locIn {E : Type} [Field E] [Numbe
     rw [he]
     first
     | rw [mul_div_assoc', div_mul_cancel₀ _ hM0]
-    | field_simp
   have c1 : ((y1 * f y2 : 𝓞 E) : E) = (y1 : E) * ((f y2 : 𝓞 E) : E) := by
-    first | rfl | (push_cast; rfl) | simp
+    first | rfl
   have c2 : ((z1 * f z2 : 𝓞 E) : E) = (z1 : E) * ((f z2 : 𝓞 E) : E) := by
-    first | rfl | (push_cast; rfl) | simp
+    first | rfl
   refine ⟨y1 * f y2, z1 * f z2, ?_, ?_⟩
   · intro hmem
     rcases hP.mem_or_mem hmem with h | h
@@ -274,8 +267,6 @@ theorem s_integrality : Formalism.HermitianLatticeCounting.LocalIntegralStructur
       push_cast
       first
       | (rw [mul_div_assoc', mul_div_assoc', mul_div_cancel_left₀ _ hT0]; ring)
-      | (field_simp; ring)
-      | field_simp
   have hloc : ∀ P : Ideal (𝓞 E), P.IsPrime → ((T * T' : ℕ) : 𝓞 E) ∈ P →
       LocIn P ((g : E) ^ 2 * s) (T * T') := by
     intro P hP hmem
@@ -329,9 +320,6 @@ theorem theorem_B_statement : Formalism.HermitianLatticeCounting.LocalIntegralSt
   have hne : Nonempty (InfinitePlace E) := by
     first
     | infer_instance
-    | (apply Fintype.card_pos_iff.mp
-       have := Module.finrank_pos (R := ℚ) (M := E)
-       omega)
   obtain ⟨w0⟩ := hne
   have hcard : 1 ≤ Fintype.card (InfinitePlace E) := Fintype.card_pos_iff.mpr ⟨w0⟩
   have hnw : ∀ (w : InfinitePlace E) (y : E), w y = ‖w.embedding y‖ := fun w y =>
@@ -397,7 +385,7 @@ theorem theorem_B_statement : Formalism.HermitianLatticeCounting.LocalIntegralSt
       intro w
       have h := hiso w.embedding 1 0
       rw [hb0, hc0] at h
-      simp only [map_zero, mul_one, mul_zero, zero_mul, add_zero, zero_add, norm_zero, norm_one] at h
+      simp only [map_zero, mul_one, mul_zero, add_zero, norm_zero, norm_one] at h
       have h2 : (T : ℝ) * (‖w.embedding a‖ ^ 2 - 1) = 0 := by linear_combination h
       have h3 := (mul_eq_zero.mp h2).resolve_left hTr.ne'
       nlinarith [norm_nonneg (w.embedding a)]
@@ -405,7 +393,7 @@ theorem theorem_B_statement : Formalism.HermitianLatticeCounting.LocalIntegralSt
       intro w
       have h := hiso w.embedding 0 1
       rw [hb0, hc0] at h
-      simp only [map_zero, mul_one, mul_zero, zero_mul, add_zero, zero_add, norm_zero, norm_one] at h
+      simp only [map_zero, mul_one, mul_zero, add_zero, zero_add, norm_zero, norm_one] at h
       have h2 : (T' : ℝ) * (‖w.embedding d‖ ^ 2 - 1) = 0 := by linear_combination -h
       have h3 := (mul_eq_zero.mp h2).resolve_left hT'r.ne'
       nlinarith [norm_nonneg (w.embedding d)]
@@ -455,7 +443,7 @@ theorem theorem_B_statement : Formalism.HermitianLatticeCounting.LocalIntegralSt
         simpa [map_mul, map_pow, map_natCast, norm_mul, norm_pow] using h
       have B : ‖w.embedding s‖ = (T' : ℝ) * ‖w.embedding c‖ ^ 2 / T := by
         rw [hs1]
-        simp [hσ, norm_div] <;> ring
+        simp [hσ] <;> ring
       have C := hxw w
       rw [hnw w c] at C
       have hs_le : ‖w.embedding s‖ ≤ x w ^ 2 := by rw [B]; exact C
@@ -464,9 +452,7 @@ theorem theorem_B_statement : Formalism.HermitianLatticeCounting.LocalIntegralSt
         linear_combination A
       rw [hnw w, ← mul_pow, ← hs_eq]
       first
-      | exact pow_le_pow_left (norm_nonneg _) hs_le 2
       | exact pow_le_pow_left₀ (norm_nonneg _) hs_le 2
-      | nlinarith [norm_nonneg (w.embedding s)]
     apply complex_multiplication_root E q x hcx hq hx
     simp only [hm]
     rw [hn, pow_mul]

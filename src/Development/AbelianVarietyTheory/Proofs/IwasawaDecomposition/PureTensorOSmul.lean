@@ -1,21 +1,21 @@
 module
 
 public import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsKStableOfMemLowKSub
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemUJsetOfKset
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumVec
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonvanishingFiniteDatumDefiniteLift
+public import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorMaximalCompactBasisSubstitut
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorsInjectiveNonzeroVacuum
+public import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat
+public import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchrodingerIntertwinerInjectiveSchwartzBruhat
 public import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.StarPurelyImaginaryEqNeg
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PureTensorLIntertwine
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalCompactActsOnRealVacuaByDetPowersStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOrEqOfPlaceIdem
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImageStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonvanishingFiniteDatumDefiniteLiftStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNsmulIntMemLatO
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorMaximalCompactBasisSubstitutStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorsInjectiveNonzeroVacuumStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GramMapMulInv
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStableStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslatesStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchrodingerIntertwinerInjectiveSchwartzBruhatStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCharFamIsVacVec
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsFockVacAtOfIsThetaAt
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCoordLatticeOfSelfDualFrameStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -34,7 +34,6 @@ import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,7 +41,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -55,10 +53,807 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.RingTheory.PiTensorProduct
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNsmulIntMemLatO
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GramMapMulInv
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCharFamIsVacVec
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.BitVec
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExtremalNegativeSets, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImage, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImageStatement, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonvanishingFiniteDatumDefiniteLiftStatement, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorMaximalCompactBasisSubstitutStatement, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorsInjectiveNonzeroVacuumStatement, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStable, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStableStatement, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslates, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslatesStatement, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchrodingerIntertwinerInjectiveSchwartzBruhatStatement, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PureTensorOSmul
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExtremalNegativeSets =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExtremalNegativeSets", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S NumberField Matrix
+open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues
+open Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx Formalism.IndefR.Links Formalism.IndefR.FWT
+
+namespace GlobalTheory.Cmp.ExtremalNegativeSets
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+section Idx
+
+variable {n : ℕ} {ε : Fin n → Bool}
+
+theorem mem_negS {a : Fin n} : a ∈ negS ε ↔ ε a = false := by simp [negS]
+
+theorem revNeg_anti {a b : Fin n} (hab : a < b) (ha : ε a = false) (hb : ε b = false) :
+    revNeg ε b < revNeg ε a := by
+  have ha' : a ∈ negS ε := mem_negS.2 ha
+  have hb' : b ∈ negS ε := mem_negS.2 hb
+  rw [show revNeg ε a = (revOn ε ⟨a, ha'⟩ : Fin n) from Equiv.Perm.ofSubtype_apply_of_mem _ ha',
+    show revNeg ε b = (revOn ε ⟨b, hb'⟩ : Fin n) from Equiv.Perm.ofSubtype_apply_of_mem _ hb']
+  have h1 : ((negS ε).orderIsoOfFin rfl).symm ⟨a, ha'⟩ < ((negS ε).orderIsoOfFin rfl).symm ⟨b, hb'⟩ :=
+    (OrderIso.lt_iff_lt _).2 (Subtype.mk_lt_mk.2 hab)
+  exact ((negS ε).orderIsoOfFin rfl).strictMono (Fin.rev_lt_rev.2 h1)
+
+end Idx
+
+variable {D : D7}
+
+variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
+  {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
+
+end GlobalTheory.Cmp.ExtremalNegativeSets
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExtremalNegativeSets =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImage =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImage", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsKStableOfMemLowKSub\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemUJsetOfKset\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExtremalNegativeSets\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Formalism.MainNotions.S Formalism.IndefR.FWT Matrix
+open scoped InnerProductSpace
+
+namespace GlobalTheory.ExtRep
+
+section
+
+variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
+  {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
+
+theorem exists_proj_comm (hσ : IsURepOn (UJset ε) σ) (U : Submodule ℂ H) [FiniteDimensional ℂ U]
+    (hU : IsKStableOn ε σ U) :
+    ∃ E : H →L[ℂ] H, IsOrthProjOnto E U ∧ ∀ k ∈ Formalism.REAL.Kset ε, ∀ x, E (σ k x) = σ k (E x) := by
+  obtain ⟨E, hE⟩ := GlobalTheory.LowKProj.exists_proj U
+  refine ⟨E, hE, fun k hk x => ?_⟩
+  have := GlobalTheory.LowKProj.comm_of_stable hE (GlobalTheory.LowKProj.inner_adj hσ hk) (hU k hk)
+    (hU _ (Formalism.REAL.Kset_star ε hk))
+  exact congrArg (fun F : H →L[ℂ] H => F x) this
+
+theorem isWtOn_proj {E : H →L[ℂ] H} (hE : ∀ k ∈ Formalism.REAL.Kset ε, ∀ x, E (σ k x) = σ k (E x))
+    {μ : Fin n → ℝ} {w : H} (hw : IsWtOn (Formalism.REAL.Kset ε) σ μ w) :
+    IsWtOn (Formalism.REAL.Kset ε) σ μ (E w) := by
+  intro θ hθ
+  rw [← hE _ hθ, hw θ hθ, map_smul]
+
+theorem exists_not_orth {lam : Fin n → ℝ} {x : H} (hx : x ∈ lowKSub ε lam σ) (h0 : x ≠ 0) :
+    ∃ S, IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S ∧ ∃ s ∈ S, ⟪x, s⟫_ℂ ≠ 0 := by
+  by_contra h
+  push_neg at h
+  have h1 : lowKSub ε lam σ ≤ LinearMap.ker (innerSL ℂ x : H →ₗ[ℂ] ℂ) :=
+    sSup_le fun S hS s hs => h S hS s hs
+  have h2 : ⟪x, x⟫_ℂ = 0 := h1 hx
+  exact h0 (inner_self_eq_zero.1 h2)
+
+theorem cdom_of_mem (hσ : IsURepOn (UJset ε) σ) {lam ν : Fin n → ℝ} {x : H} (hx : x ∈ lowKSub ε lam σ)
+    (h0 : x ≠ 0) (hw : IsWtOn (Formalism.REAL.Kset ε) σ ν x) : CDom ε ν (Formalism.QuantumDeterminants.lowK ε lam) := by
+  obtain ⟨S, hS, s, hs, hne⟩ := exists_not_orth hx h0
+  haveI := hS.1
+  obtain ⟨E, hE, hc⟩ := exists_proj_comm hσ S hS.2.1
+  refine hS.2.2.2.2 ν (E x) (GlobalTheory.LowKProj.apply_mem hE x) (fun h => hne ?_) (isWtOn_proj hc hw)
+  rw [← GlobalTheory.LowKProj.fix_of_mem hE s hs, ← hE.2.1, h, inner_zero_left]
+
+theorem exists_ext_mem (hσ : IsURepOn (UJset ε) σ) {lam : Fin n → ℝ} (U : Submodule ℂ H)
+    [FiniteDimensional ℂ U] (hU : IsKStableOn ε σ U) (hle : U ≤ lowKSub ε lam σ) {x : H} (hx : x ∈ U)
+    (h0 : x ≠ 0) : ∃ u ∈ U, u ≠ 0 ∧
+      IsWtOn (Formalism.REAL.Kset ε) σ (fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a)) u := by
+  obtain ⟨S, hS, s, hs, hne⟩ := exists_not_orth (hle hx) h0
+  obtain ⟨E, hE, hc⟩ := exists_proj_comm hσ U hU
+  have hst : IsKStableOn ε σ (S ⊓ LinearMap.ker (E : H →ₗ[ℂ] H)) := by
+    intro k hk w hw
+    refine ⟨hS.2.1 k hk w hw.1, ?_⟩
+    have h1 : E w = 0 := hw.2
+    show E (σ k w) = 0
+    rw [hc k hk, h1, map_zero]
+  have hbot : S ⊓ LinearMap.ker (E : H →ₗ[ℂ] H) = ⊥ := by
+    rcases hS.2.2.1 _ inf_le_left hst with h | h
+    · exact h
+    · exfalso
+      apply hne
+      have h1 : s ∈ S ⊓ LinearMap.ker (E : H →ₗ[ℂ] H) := by rw [h]; exact hs
+      have h2 : E s = 0 := h1.2
+      rw [← GlobalTheory.LowKProj.fix_of_mem hE x hx, hE.2.1, h2, inner_zero_right]
+  obtain ⟨w, hwS, hw0, hw⟩ := hS.2.2.2.1
+  have hK := pM_mem (revNeg ε) (eps_revNeg ε)
+  have hn : ‖σ (pM (revNeg ε)) w‖ = ‖w‖ := hσ.2.1 _ (kset_uj hK) w
+  refine ⟨E (σ (pM (revNeg ε)) w), GlobalTheory.LowKProj.apply_mem hE _, fun h => hw0 ?_,
+    isWtOn_proj hc (isWtOn_perm hσ _ (eps_revNeg ε) hw)⟩
+  have h1 : σ (pM (revNeg ε)) w ∈ S ⊓ LinearMap.ker (E : H →ₗ[ℂ] H) := ⟨hS.2.1 _ hK w hwS, h⟩
+  rw [hbot, Submodule.mem_bot] at h1
+  rw [h1, norm_zero] at hn
+  exact norm_eq_zero.1 hn.symm
+
+theorem eq_of_cdom {ν Λ m : Fin n → ℝ} (h : CDom ε ν Λ)
+    (hm : ∀ a b, a < b → ε a = ε b → m b < m a) (hle : ∑ a, Λ a * m a ≤ ∑ a, ν a * m a) : ν = Λ := by
+  obtain ⟨c, hc, he⟩ := h
+  have hr : ∀ a b : Fin n, ∑ i, Formalism.REAL.root a b i * m i = m a - m b := by
+    intro a b
+    simp [Formalism.REAL.root, sub_mul, Finset.sum_sub_distrib, Pi.single_apply]
+  have h1 : ∑ a, Λ a * m a - ∑ a, ν a * m a = ∑ a, ∑ b, (c a b : ℝ) * (m a - m b) := by
+    rw [← Finset.sum_sub_distrib]
+    have : ∀ i, Λ i * m i - ν i * m i = ∑ a, ∑ b, (c a b : ℝ) * (Formalism.REAL.root a b i * m i) := by
+      intro i
+      have h2 := congrFun he i
+      simp only [Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h2
+      rw [← sub_mul, h2]
+      simp only [Finset.sum_mul, mul_assoc]
+    simp only [this]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun a _ => ?_
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun b _ => ?_
+    rw [← Finset.mul_sum, hr]
+  have hnn : ∀ a b, 0 ≤ (c a b : ℝ) * (m a - m b) := by
+    intro a b
+    by_cases h0 : c a b = 0
+    · simp [h0]
+    · exact mul_nonneg (Nat.cast_nonneg _) (sub_pos.2 (hm a b (hc a b h0).1 (hc a b h0).2)).le
+  have h3 : ∑ a, ∑ b, (c a b : ℝ) * (m a - m b) = 0 :=
+    le_antisymm (by linarith) (Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => hnn a b)
+  have h4 : ∀ a b, c a b = 0 := by
+    intro a b
+    by_contra h0
+    have h5 := (Finset.sum_eq_zero_iff_of_nonneg fun a _ => Finset.sum_nonneg fun b _ => hnn a b).1 h3 a
+      (Finset.mem_univ _)
+    have h6 := (Finset.sum_eq_zero_iff_of_nonneg fun b _ => hnn a b).1 h5 b (Finset.mem_univ _)
+    have h7 : (0 : ℝ) < c a b := Nat.cast_pos.2 (Nat.pos_of_ne_zero h0)
+    exact (mul_pos h7 (sub_pos.2 (hm a b (hc a b h0).1 (hc a b h0).2))).ne' h6
+  simp only [h4, Nat.cast_zero, zero_smul, Finset.sum_const_zero] at he
+  exact (sub_eq_zero.1 he).symm
+
+theorem eps_symm (a : Fin n) : ε ((revNeg ε).symm a) = ε a := by
+  rw [← eps_revNeg ε ((revNeg ε).symm a), Equiv.apply_symm_apply]
+
+theorem form_anti (a b : Fin n) (hab : a < b) (h : ε a = ε b) :
+    (fun a : Fin n => if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ)) ((revNeg ε).symm b) <
+      (fun a : Fin n => if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ)) ((revNeg ε).symm a) := by
+  simp only [eps_symm]
+  cases ha : ε a
+  · have hb : ε b = false := h ▸ ha
+    simp only [hb, Bool.false_eq_true, if_false, Nat.cast_lt]
+    rcases lt_trichotomy ((revNeg ε).symm b) ((revNeg ε).symm a) with h1 | h1 | h1
+    · exact h1
+    · exact absurd ((revNeg ε).symm.injective h1) hab.ne'
+    · have := GlobalTheory.Cmp.ExtremalNegativeSets.revNeg_anti (ε := ε) h1 ((eps_symm a).trans ha) ((eps_symm b).trans hb)
+      rw [Equiv.apply_symm_apply, Equiv.apply_symm_apply] at this
+      exact absurd this hab.not_gt
+  · have hb : ε b = true := h ▸ ha
+    have e1 : (revNeg ε).symm a = a := (Equiv.symm_apply_eq _).2 (revNeg_of_pos ε ha).symm
+    have e2 : (revNeg ε).symm b = b := (Equiv.symm_apply_eq _).2 (revNeg_of_pos ε hb).symm
+    simp only [hb, if_true, e1, e2, neg_lt_neg_iff, Nat.cast_lt]
+    exact hab
+
+theorem wt_eq (hσ : IsURepOn (UJset ε) σ) {lam μ : Fin n → ℝ} {x : H} (hx : x ∈ lowKSub ε lam σ)
+    (h0 : x ≠ 0) (hw : IsWtOn (Formalism.REAL.Kset ε) σ μ x)
+    (hle : ∑ a : Fin n, Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a) * (if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ)) ≤
+      ∑ a : Fin n, μ a * (if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ))) :
+    μ = fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a) := by
+  have hK := pM_mem (revNeg ε).symm (eps_symm (ε := ε))
+  have hn : ‖σ (pM (revNeg ε).symm) x‖ = ‖x‖ := hσ.2.1 _ (kset_uj hK) x
+  have h1 := cdom_of_mem hσ (GlobalTheory.LowKProj.lowKSub_stable ε lam σ _ hK x hx)
+    (fun h => h0 (by rw [h, norm_zero] at hn; exact norm_eq_zero.1 hn.symm))
+    (isWtOn_perm hσ _ (eps_symm (ε := ε)) hw)
+  have h2 := eq_of_cdom h1 (form_anti (ε := ε)) (by
+    rw [← Equiv.sum_comp (revNeg ε), ← Equiv.sum_comp (revNeg ε) (fun a => μ ((revNeg ε).symm a) * _)]
+    simpa only [Equiv.symm_apply_apply] using hle)
+  funext a
+  rw [← h2]
+  simp only [Equiv.symm_apply_apply]
+
+end
+
+theorem exists_extremal_same_image : ∀ (n : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (X : Type) [AddCommGroup X] [Module ℂ X] (ε : Fin n → Bool) (lam μ : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (π : Matrix (Fin n) (Fin n) ℂ → (X →ₗ[ℂ] X)) (L : Submodule ℂ H) (φ : H →ₗ[ℂ] X) (v : H), IsURepOn (UJset ε) σ → L ≤ lowKSub ε lam σ → IsKStableOn ε σ L → (∀ k ∈ Formalism.REAL.Kset ε, ∀ x ∈ L, φ (σ k x) = π k (φ x)) → v ∈ L → ‖v‖ = 1 → (∀ t : Fin n → ℝ, π (Matrix.diagonal fun a => Complex.exp ((t a : ℂ) * Complex.I)) (φ v) = Complex.exp (((∑ a, μ a * t a : ℝ) : ℂ) * Complex.I) • φ v) → (∀ (ν : Fin n → ℝ) (y : X), y ∈ Submodule.span ℂ {z | ∃ k ∈ Formalism.REAL.Kset ε, z = π k (φ v)} → y ≠ 0 → (∀ t : Fin n → ℝ, π (Matrix.diagonal fun a => Complex.exp ((t a : ℂ) * Complex.I)) y = Complex.exp (((∑ a, ν a * t a : ℝ) : ℂ) * Complex.I) • y) → ∑ a : Fin n, ν a * (if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ)) ≤ ∑ a : Fin n, μ a * (if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ))) → ∃ x ∈ L, ‖x‖ = 1 ∧ IsWtOn (Formalism.REAL.Kset ε) σ (fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a)) x ∧ φ x = φ v := by
+  intro n H _ _ X _ _ ε lam μ σ π L φ v hσ hL hLs hφ hv hv1 hwt hmax
+  set U : Submodule ℂ H := Submodule.span ℂ {z | ∃ k ∈ Formalism.REAL.Kset ε, z = σ k v} with hUdef
+  have hUL : U ≤ L := Submodule.span_le.2 (by rintro _ ⟨k, hk, rfl⟩; exact hLs k hk v hv)
+  have hfd : FiniteDimensional ℂ U := by
+    obtain ⟨S, h1, h2, h3⟩ := GlobalTheory.exists_kStable_of_mem_lowKSub n ε lam H σ v (hL hv)
+    have : U ≤ S := Submodule.span_le.2 (by rintro _ ⟨k, hk, rfl⟩; exact h2 k hk v h3)
+    exact Submodule.finiteDimensional_of_le this
+  have hUs : IsKStableOn ε σ U := by
+    intro g hg w hw
+    have : U ≤ U.comap (σ g : H →ₗ[ℂ] H) := Submodule.span_le.2 (by
+      rintro _ ⟨k, hk, rfl⟩
+      refine Submodule.subset_span ⟨g * k, Formalism.REAL.Kset_mul ε hg hk, ?_⟩
+      rw [hσ.1.2 g (kset_uj hg) k (kset_uj hk)]
+      rfl)
+    exact this hw
+  have h1K : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.REAL.Kset ε := by
+    have := diag_mem (ε := ε) (fun _ => 0)
+    simpa using this
+  have hvU : v ∈ U := Submodule.subset_span ⟨1, h1K, by rw [hσ.1.1]; rfl⟩
+  have hUφ : ∀ u ∈ U, φ u ∈ Submodule.span ℂ {z | ∃ k ∈ Formalism.REAL.Kset ε, z = π k (φ v)} := by
+    have : U ≤ (Submodule.span ℂ {z | ∃ k ∈ Formalism.REAL.Kset ε, z = π k (φ v)}).comap φ :=
+      Submodule.span_le.2 (by
+        rintro _ ⟨k, hk, rfl⟩
+        exact Submodule.subset_span ⟨k, hk, hφ k hk v hv⟩)
+    exact fun u hu => this hu
+  have hU0s : IsKStableOn ε σ (U ⊓ LinearMap.ker φ) := by
+    intro k hk w hw
+    refine ⟨hUs k hk w hw.1, ?_⟩
+    have h1 : φ w = 0 := hw.2
+    show φ (σ k w) = 0
+    rw [hφ k hk w (hUL hw.1), h1, map_zero]
+  haveI : FiniteDimensional ℂ ↥(U ⊓ LinearMap.ker φ) := Submodule.finiteDimensional_of_le inf_le_left
+  obtain ⟨E, hE, hc⟩ := exists_proj_comm hσ (U ⊓ LinearMap.ker φ) hU0s
+  have hU1s : IsKStableOn ε σ (U ⊓ LinearMap.ker (E : H →ₗ[ℂ] H)) := by
+    intro k hk w hw
+    refine ⟨hUs k hk w hw.1, ?_⟩
+    have h1 : E w = 0 := hw.2
+    show E (σ k w) = 0
+    rw [hc k hk, h1, map_zero]
+  haveI : FiniteDimensional ℂ ↥(U ⊓ LinearMap.ker (E : H →ₗ[ℂ] H)) :=
+    Submodule.finiteDimensional_of_le inf_le_left
+  have hinj : ∀ w ∈ U ⊓ LinearMap.ker (E : H →ₗ[ℂ] H), φ w = 0 → w = 0 := by
+    intro w hw h
+    have h1 : E w = 0 := hw.2
+    rw [← GlobalTheory.LowKProj.fix_of_mem hE w ⟨hw.1, h⟩, h1]
+  have hv0 : E v ∈ U ⊓ LinearMap.ker φ := GlobalTheory.LowKProj.apply_mem hE v
+  have hEv1 : E (v - E v) = 0 := by rw [map_sub, GlobalTheory.LowKProj.fix_of_mem hE _ hv0, sub_self]
+  have hv1m : v - E v ∈ U ⊓ LinearMap.ker (E : H →ₗ[ℂ] H) := ⟨U.sub_mem hvU hv0.1, hEv1⟩
+  have hφ1 : φ (v - E v) = φ v := by
+    have h1 : φ (E v) = 0 := hv0.2
+    rw [map_sub, h1, sub_zero]
+  have hw1 : IsWtOn (Formalism.REAL.Kset ε) σ μ (v - E v) := by
+    intro θ hθ
+    rw [← sub_eq_zero]
+    refine hinj _ (Submodule.sub_mem _ (hU1s _ hθ _ hv1m) (Submodule.smul_mem _ _ hv1m)) ?_
+    rw [map_sub, hφ _ hθ _ (hUL hv1m.1), map_smul, hφ1, hwt, sub_self]
+  have hw2 : IsWtOn (Formalism.REAL.Kset ε) σ (fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a)) (v - E v) := by
+    by_cases h0 : v - E v = 0
+    · intro θ hθ
+      rw [h0, map_zero, smul_zero]
+    · obtain ⟨u, hu, hu0, hwu⟩ := exists_ext_mem hσ (lam := lam) _ hU1s
+        (inf_le_left.trans (hUL.trans hL)) hv1m h0
+      have h1 := hmax (fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a)) (φ u) (hUφ u hu.1)
+        (fun h => hu0 (hinj u hu h)) (fun t => by
+          rw [← hφ _ (diag_mem t) u (hUL hu.1), hwu t (diag_mem t), map_smul])
+      rw [← wt_eq hσ (hL (hUL hv1m.1)) h0 hw1 h1]
+      exact hw1
+  by_cases h0 : E v = 0
+  · rw [h0, sub_zero] at hw2
+    exact ⟨v, hv, hv1, hw2, rfl⟩
+  · obtain ⟨u, hu, hu0, hwu⟩ := exists_ext_mem hσ (lam := lam) _ hU0s
+      (inf_le_left.trans (hUL.trans hL)) hv0 h0
+    have horth : ∀ w ∈ U ⊓ LinearMap.ker φ, ⟪v - E v, w⟫_ℂ = 0 := by
+      intro w hw
+      rw [← GlobalTheory.LowKProj.fix_of_mem hE w hw, ← hE.2.1, hEv1, inner_zero_left]
+    have hm : (((‖E v‖ / ‖u‖ : ℝ) : ℂ) • u) ∈ U ⊓ LinearMap.ker φ := Submodule.smul_mem _ _ hu
+    have hnm : ‖(((‖E v‖ / ‖u‖ : ℝ) : ℂ) • u)‖ = ‖E v‖ := by
+      rw [norm_smul, Complex.norm_real, Real.norm_of_nonneg (by positivity),
+        div_mul_cancel₀ _ (norm_ne_zero_iff.2 hu0)]
+    refine ⟨(v - E v) + ((‖E v‖ / ‖u‖ : ℝ) : ℂ) • u, L.add_mem (hUL hv1m.1) (hUL hm.1), ?_, ?_, ?_⟩
+    · have p1 := norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero (𝕜 := ℂ) _ _ (horth _ hm)
+      have p2 := norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero (𝕜 := ℂ) _ _ (horth _ hv0)
+      rw [sub_add_cancel, hv1] at p2
+      rw [hnm, ← p2] at p1
+      exact (mul_self_inj_of_nonneg (norm_nonneg _) zero_le_one).1 p1
+    · intro θ hθ
+      rw [map_add (f := _), hw2 θ hθ, isWtOn_smul hwu _ θ hθ, smul_add]
+    · have h1 : φ (((‖E v‖ / ‖u‖ : ℝ) : ℂ) • u) = 0 := hm.2
+      rw [map_add (f := _), hφ1, h1, add_zero]
+
+end GlobalTheory.ExtRep
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImage =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImageStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImageStatement", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImage\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT NumberField Matrix
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem _root_.GlobalTheory.T.exists_extremalUnitVector_same_highestImage : ∀ (n : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (X : Type) [AddCommGroup X] [Module ℂ X] (ε : Fin n → Bool) (lam μ : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (π : Matrix (Fin n) (Fin n) ℂ → (X →ₗ[ℂ] X)) (L : Submodule ℂ H) (φ : H →ₗ[ℂ] X) (v : H), IsURepOn (UJset ε) σ → L ≤ lowKSub ε lam σ → IsKStableOn ε σ L → (∀ k ∈ Formalism.REAL.Kset ε, ∀ x ∈ L, φ (σ k x) = π k (φ x)) → v ∈ L → ‖v‖ = 1 → (∀ t : Fin n → ℝ, π (Matrix.diagonal fun a => Complex.exp ((t a : ℂ) * Complex.I)) (φ v) = Complex.exp (((∑ a, μ a * t a : ℝ) : ℂ) * Complex.I) • φ v) → (∀ (ν : Fin n → ℝ) (y : X), y ∈ Submodule.span ℂ {z | ∃ k ∈ Formalism.REAL.Kset ε, z = π k (φ v)} → y ≠ 0 → (∀ t : Fin n → ℝ, π (Matrix.diagonal fun a => Complex.exp ((t a : ℂ) * Complex.I)) y = Complex.exp (((∑ a, ν a * t a : ℝ) : ℂ) * Complex.I) • y) → ∑ a : Fin n, ν a * (if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ)) ≤ ∑ a : Fin n, μ a * (if ε a then -((a : ℕ) : ℝ) else ((a : ℕ) : ℝ))) → ∃ x ∈ L, ‖x‖ = 1 ∧ IsWtOn (Formalism.REAL.Kset ε) σ (fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a)) x ∧ φ x = φ v := by
+  first | exact @GlobalTheory.ExtRep.exists_extremal_same_image
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImageStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonvanishingFiniteDatumDefiniteLiftStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonvanishingFiniteDatumDefiniteLiftStatement", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.DatumVec\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonvanishingFiniteDatumDefiniteLift\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT NumberField Matrix
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem _root_.GlobalTheory.T.exists_nonvanishing_finite_datum_definite_lift : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (Pg Q P : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (e : AE D), T.rank ≤ S.rank → IsIdemSum e P → (∀ PP ∈ Pg, PP ∈ P) → (∀ PP ∈ Q, PP ∈ P) → ∃ x : WO S T, IsHalf (cA D e) x ∧ IsIntM (frMapAdj S T βS βT x) ∧ omegaK Pg (fun PP => redM PP (frMapAdj S T βS βT x)) * omegaQ Q T.rank ξ (-1) (fun PP => redM PP (frMapAdj S T βS βT x)) ≠ 0 := by
+  first | exact @GlobalTheory.AdjDatumNe.exists_datum_ne_zero
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonvanishingFiniteDatumDefiniteLiftStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorMaximalCompactBasisSubstitutStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorMaximalCompactBasisSubstitutStatement", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.DatumVec\npublic import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorMaximalCompactBasisSubstitut\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT NumberField Matrix
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem _root_.GlobalTheory.T.fockPolynomialVector_maximalCompact_basis_substitution : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (S' : D.what₂.Tau → SPar) (M : DSModel T S') (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (f : WO S T → ℂ) (k c : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ), IsStdChar D ψ (-1) → IsInfFam θ → (∀ τ, IsCartanInv (gramAt D S τ) 1) → IsThetaFunO ψ S T f → (∀ τ, k τ ∈ Formalism.REAL.Kset (M.ε τ)) → (∀ τ a b, c τ b a = if M.ε τ a then k τ b a else starRingEnd ℂ (k τ b a)) → ∀ P : MvPolynomial (FVar D T.rank S.rank) ℂ, pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (fun τ => onb M τ * k τ) f P = pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (onb M) f (MvPolynomial.aeval (fun v : FVar D T.rank S.rank => ∑ b, c v.1 b v.2.1 • (MvPolynomial.X (v.1, b, v.2.2) : MvPolynomial (FVar D T.rank S.rank) ℂ)) P) := by
+  first | exact @GlobalTheory.FockSubst.pureTensorO_subst
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorMaximalCompactBasisSubstitutStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorsInjectiveNonzeroVacuumStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorsInjectiveNonzeroVacuumStatement", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.DatumVec\npublic import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorsInjectiveNonzeroVacuum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT NumberField Matrix
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem _root_.GlobalTheory.T.fockPolynomialVectors_injective_nonzero_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (S' : D.what₂.Tau → SPar) (M : DSModel T S') (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (f : WO S T → ℂ), IsStdChar D ψ (-1) → IsInfFam θ → (∀ τ, IsCartanInv (gramAt D S τ) 1) → (∀ τ, IsONBasis (gramAt D S τ) 1 (BS τ) S.rank) → IsThetaFunO ψ S T f → f ≠ 0 → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO 1 (cart M τ)) f) → Function.Injective (pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (onb M) f) := by
+  first | exact @GlobalTheory.FockIndep.pureTensorO_injective
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorsInjectiveNonzeroVacuumStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStable =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStable", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.MatrixExponential\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.IndefiniteReal.LinksDefs\nimport Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Matrix
+open scoped ContDiff
+
+namespace GlobalTheory.SmoothLowKStable
+
+open Formalism.MainNotions.S GlobalTheory.GardingVec
+
+theorem list_prod_conj {n : ℕ} {g h : Matrix (Fin n) (Fin n) ℂ} (hgh : g * h = 1)
+    (l : List (Matrix (Fin n) (Fin n) ℂ)) : l.prod * g = g * (l.map fun x => h * x * g).prod := by
+  induction l with
+  | nil => simp
+  | cons x l ih =>
+    rw [List.map_cons, List.prod_cons, List.prod_cons, Matrix.mul_assoc, ih]
+    simp only [← Matrix.mul_assoc, hgh, Matrix.one_mul]
+
+theorem smoothVec_apply {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+    {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
+    (hmul : ∀ g ∈ UJset ε, ∀ h ∈ UJset ε, σ (g * h) = σ g * σ h) {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P)
+    (h : Pᴴ * Formalism.REAL.Jm ε * P = G) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ UJset ε) {v : H}
+    (hv : Formalism.L2.Theta.SmoothVec {X | Xᴴ * G + G * X = 0} (fun g => σ (P * g * P⁻¹)) v) :
+    Formalism.L2.Theta.SmoothVec {X | Xᴴ * G + G * X = 0} (fun g => σ (P * g * P⁻¹)) (σ k v) := by
+  have hG : IsUnit G := by
+    rw [← h]
+    exact (((Matrix.isUnit_conjTranspose _).2 hP).mul
+      (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).mul hP
+  have hd : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).1 hP
+  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv _ hd
+  have hPP' : P⁻¹ * P = 1 := Matrix.nonsing_inv_mul _ hd
+  have hk' : kᴴ * Formalism.REAL.Jm ε * k = Formalism.REAL.Jm ε := hk
+  set g := P⁻¹ * k * P with hg
+  have hPg : P * g = k * P := by rw [hg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPP, Matrix.one_mul]
+  have hgG : gᴴ * G * g = G := by
+    calc gᴴ * G * g = (P * g)ᴴ * Formalism.REAL.Jm ε * (P * g) := by
+          rw [← h]; simp only [conjTranspose_mul, Matrix.mul_assoc]
+      _ = Pᴴ * (kᴴ * Formalism.REAL.Jm ε * k) * P := by rw [hPg]; simp only [conjTranspose_mul, Matrix.mul_assoc]
+      _ = G := by rw [hk', h]
+  have hgu : IsUnit g := by
+    have : IsUnit (gᴴ * G * g).det := by rw [hgG]; exact (Matrix.isUnit_iff_isUnit_det G).1 hG
+    rw [Matrix.det_mul] at this
+    exact (Matrix.isUnit_iff_isUnit_det g).2 (isUnit_of_mul_isUnit_right this)
+  have hgd : IsUnit g.det := (Matrix.isUnit_iff_isUnit_det g).1 hgu
+  have hgg : g * g⁻¹ = 1 := Matrix.mul_nonsing_inv _ hgd
+  have hGg : G * g⁻¹ = gᴴ * G := by
+    conv_lhs => rw [← hgG]
+    rw [Matrix.mul_assoc, hgg, Matrix.mul_one]
+  have hGg' : (g⁻¹)ᴴ * G = G * g := by
+    conv_lhs => rw [← hgG]
+    rw [Matrix.mul_assoc gᴴ, ← Matrix.mul_assoc, ← conjTranspose_mul, hgg, conjTranspose_one, Matrix.one_mul]
+  intro m Xs hX
+  have hY : ∀ i, (g⁻¹ * Xs i * g)ᴴ * G + G * (g⁻¹ * Xs i * g) = 0 := fun i => by
+    have hXi : (Xs i)ᴴ * G + G * Xs i = 0 := hX i
+    calc (g⁻¹ * Xs i * g)ᴴ * G + G * (g⁻¹ * Xs i * g)
+        = gᴴ * (Xs i)ᴴ * ((g⁻¹)ᴴ * G) + (G * g⁻¹) * Xs i * g := by
+          simp only [conjTranspose_mul, Matrix.mul_assoc]
+      _ = gᴴ * ((Xs i)ᴴ * G + G * Xs i) * g := by
+          rw [hGg, hGg']; simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
+      _ = 0 := by rw [hXi]; simp
+  have hs := hv m (fun i => g⁻¹ * Xs i * g) hY
+  have hmem : ∀ (Ys : Fin m → Matrix (Fin n) (Fin n) ℂ), (∀ i, (Ys i)ᴴ * G + G * Ys i = 0) → ∀ t : Fin m → ℝ,
+      P * (List.ofFn fun i => NormedSpace.exp (t i • Ys i)).prod * P⁻¹ ∈ UJset ε := fun Ys hYs t => by
+    refine conj_mem hP h (list_prod_mem _ fun g hg => ?_)
+    obtain ⟨i, rfl⟩ := (List.mem_ofFn' _ _).1 hg
+    exact exp_mem hG (hYs i) _
+  have key : ∀ t : Fin m → ℝ,
+      σ (P * (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * P⁻¹) (σ k v)
+        = σ k (σ (P * (List.ofFn fun i => NormedSpace.exp (t i • (g⁻¹ * Xs i * g))).prod * P⁻¹) v) := fun t => by
+    have e1 : (List.ofFn fun i => NormedSpace.exp (t i • (g⁻¹ * Xs i * g)))
+        = (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).map fun x => g⁻¹ * x * g := by
+      rw [List.map_ofFn]
+      congr 1
+      funext i
+      rw [Function.comp_apply, ← Matrix.exp_conj' _ _ hgu, Matrix.mul_smul, Matrix.smul_mul]
+    have e2 := list_prod_conj hgg (List.ofFn fun i => NormedSpace.exp (t i • Xs i))
+    rw [← ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply, ← hmul _ (hmem Xs hX t) _ hk,
+      ← hmul _ hk _ (hmem _ hY t), e1]
+    congr 2
+    have e3 : P⁻¹ * k = g * P⁻¹ := by rw [hg, Matrix.mul_assoc _ P, hPP, Matrix.mul_one]
+    rw [Matrix.mul_assoc _ P⁻¹, e3, ← Matrix.mul_assoc, Matrix.mul_assoc P, e2]
+    simp only [← Matrix.mul_assoc, hPg]
+  have := ((σ k).restrictScalars ℝ).contDiff.comp hs
+  refine (funext key : _ = _) ▸ this
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult
+  Formalism.IndefR.Datum Formalism.IndefR.FWT
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem isKStableOn_lowKSub_inf_sm (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S)
+    (τ : D.what₂.Tau) : IsKStableOn (M.ε τ) (M.σ τ) (lowKSub (M.ε τ) (M.lam τ) (M.σ τ) ⊓ M.sm τ) := by
+  intro k hk w hw
+  have hkU : k ∈ UJset (M.ε τ) := by
+    show kᴴ * Formalism.REAL.Jm _ * k = Formalism.REAL.Jm _
+    have h1 : kᴴ * k = 1 := (Matrix.mem_unitaryGroup_iff').1 hk.1
+    rw [Matrix.mul_assoc, ← hk.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
+  refine ⟨?_, ?_⟩
+  · have : lowKSub (M.ε τ) (M.lam τ) (M.σ τ)
+        ≤ (lowKSub (M.ε τ) (M.lam τ) (M.σ τ)).comap (M.σ τ k : _ →ₗ[ℂ] _) :=
+      sSup_le fun T hT v hv => (le_sSup hT : T ≤ _) (hT.2.1 k hk v hv)
+    exact this hw.1
+  · have : M.sm τ ≤ (M.sm τ).comap (M.σ τ k : _ →ₗ[ℂ] _) :=
+      Submodule.span_le.2 fun v hv => Submodule.subset_span
+        (smoothVec_apply (M.ds τ).2.2.1.1.2 (M.fr_unit τ) (M.fr_gram τ) hkU hv)
+    exact this hw.2
+
+end GlobalTheory.SmoothLowKStable
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStable =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStableStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStableStatement", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStable\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\nimport Formalism.LocalToGlobal.IndefiniteReal.LinksDefs\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT NumberField Matrix
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem _root_.GlobalTheory.T.lowestKType_smoothVectors_isKStable : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau), IsKStableOn (M.ε τ) (M.σ τ) (lowKSub (M.ε τ) (M.lam τ) (M.σ τ) ⊓ M.sm τ) := by
+  first | exact @GlobalTheory.SmoothLowKStable.isKStableOn_lowKSub_inf_sm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStableStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslates =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslates", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\nimport Formalism.LocalToGlobal.IndefiniteReal.LinksDefs\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT NumberField Matrix
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+namespace GlobalTheory.MinorWeight
+
+theorem det_mul_eq_sum {R : Type} [CommRing R] {k m : ℕ} (A : Matrix (Fin k) (Fin m) R) (B : Matrix (Fin m) (Fin k) R) :
+    (A * B).det = ∑ f : Fin k → Fin m, (∏ β, B (f β) β) * (A.submatrix id f).det := by
+  simp only [Matrix.det_apply', Matrix.mul_apply, Finset.prod_univ_sum, Finset.mul_sum, Fintype.piFinset_univ]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun f _ => Finset.sum_congr rfl fun σ _ => ?_
+  simp only [Finset.prod_mul_distrib, Matrix.submatrix_apply, id]
+  ring
+
+theorem sum_le_sum_of_injective {k : ℕ} (f : Fin k → ℕ) (hf : Function.Injective f) :
+    ∑ β : Fin k, (β : ℕ) ≤ ∑ β, f β := by
+  have h1 : ∑ β, f β = ∑ x ∈ Finset.univ.image f, x := by
+    rw [Finset.sum_image (fun a _ b _ h => hf h)]
+  have h2 : (Finset.univ.image f).card = k := by
+    rw [Finset.card_image_of_injective _ hf]; simp
+  set s := Finset.univ.image f
+  have h3 : ∑ x ∈ s, x = ∑ β : Fin k, s.orderEmbOfFin h2 β := by
+    conv_lhs => rw [← Finset.image_orderEmbOfFin_univ s h2]
+    rw [Finset.sum_image (fun a _ b _ h => (s.orderEmbOfFin h2).injective h)]
+  rw [h1, h3]
+  refine Finset.sum_le_sum fun β _ => ?_
+  have hm := (s.orderEmbOfFin h2).strictMono
+  obtain ⟨b, hb⟩ := β
+  induction b with
+  | zero => simp
+  | succ b ih =>
+    have := ih (by omega) (Finset.mem_univ _)
+    have h4 : (s.orderEmbOfFin h2) ⟨b, by omega⟩ < (s.orderEmbOfFin h2) ⟨b + 1, hb⟩ := hm (by simp [Fin.lt_def])
+    exact Nat.succ_le_of_lt (lt_of_le_of_lt this h4)
+
+variable {D : D7} {m n : ℕ}
+
+def wt (τ : D.what₂.Tau) (s : FVar D m n →₀ ℕ) : ℕ := ∑ a : Fin m, ∑ j : Fin n, (a : ℕ) * s (τ, a, j)
+
+theorem wt_add (τ : D.what₂.Tau) (s t : FVar D m n →₀ ℕ) : wt τ (s + t) = wt τ s + wt τ t := by
+  simp [wt, mul_add, Finset.sum_add_distrib]
+
+def Filt (τ : D.what₂.Tau) (N : ℕ) (P : MvPolynomial (FVar D m n) ℂ) : Prop := ∀ s ∈ P.support, N ≤ wt τ s
+
+theorem Filt.bot (τ : D.what₂.Tau) (P : MvPolynomial (FVar D m n) ℂ) : Filt τ 0 P := fun _ _ => Nat.zero_le _
+
+theorem Filt.zero (τ : D.what₂.Tau) (N : ℕ) : Filt τ N (0 : MvPolynomial (FVar D m n) ℂ) := fun s hs => by simp at hs
+
+theorem Filt.mono {τ : D.what₂.Tau} {N M : ℕ} {P : MvPolynomial (FVar D m n) ℂ} (h : Filt τ N P) (hM : M ≤ N) :
+    Filt τ M P := fun s hs => hM.trans (h s hs)
+
+theorem Filt.add {τ : D.what₂.Tau} {N : ℕ} {P Q : MvPolynomial (FVar D m n) ℂ} (h : Filt τ N P) (h' : Filt τ N Q) :
+    Filt τ N (P + Q) := by
+  classical
+  intro s hs
+  rcases Finset.mem_union.1 (MvPolynomial.support_add hs) with h1 | h1
+  exacts [h s h1, h' s h1]
+
+theorem Filt.mul {τ : D.what₂.Tau} {N M : ℕ} {P Q : MvPolynomial (FVar D m n) ℂ} (h : Filt τ N P) (h' : Filt τ M Q) :
+    Filt τ (N + M) (P * Q) := by
+  classical
+  intro s hs
+  obtain ⟨a, ha, b, hb, rfl⟩ := Finset.mem_add.1 (MvPolynomial.support_mul P Q hs)
+  rw [wt_add]
+  exact Nat.add_le_add (h a ha) (h' b hb)
+
+theorem Filt.mul_left {τ : D.what₂.Tau} {N : ℕ} (P : MvPolynomial (FVar D m n) ℂ) {Q : MvPolynomial (FVar D m n) ℂ}
+    (h' : Filt τ N Q) : Filt τ N (P * Q) := by
+  simpa using (Filt.bot τ P).mul h'
+
+theorem Filt.sum {τ : D.what₂.Tau} {N : ℕ} {ι : Type} (S : Finset ι) (P : ι → MvPolynomial (FVar D m n) ℂ)
+    (h : ∀ i ∈ S, Filt τ N (P i)) : Filt τ N (∑ i ∈ S, P i) :=
+  Finset.sum_induction _ (Filt τ N) (fun _ _ => Filt.add) (Filt.zero τ N) h
+
+theorem Filt.prod {τ : D.what₂.Tau} {ι : Type} (S : Finset ι) (N : ι → ℕ) (P : ι → MvPolynomial (FVar D m n) ℂ)
+    (h : ∀ i ∈ S, Filt τ (N i) (P i)) : Filt τ (∑ i ∈ S, N i) (∏ i ∈ S, P i) := by
+  classical
+  induction S using Finset.induction_on with
+  | empty => simpa using Filt.bot τ 1
+  | insert a S ha ih =>
+    rw [Finset.sum_insert ha, Finset.prod_insert ha]
+    exact (h a (by simp)).mul (ih fun i hi => h i (by simp [hi]))
+
+theorem filt_varF (τ : D.what₂.Tau) (i j : ℕ) : Filt τ i (varF τ i j : MvPolynomial (FVar D m n) ℂ) := by
+  classical
+  unfold varF
+  split_ifs with h
+  · intro s hs
+    rw [MvPolynomial.support_X, Finset.mem_singleton] at hs
+    subst hs
+    unfold wt
+    refine le_trans ?_ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ (⟨i, h.1⟩ : Fin m)))
+    refine le_trans ?_ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ (⟨j, h.2⟩ : Fin n)))
+    simp
+  · exact Filt.zero τ i
+
+noncomputable def subs (c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) :
+    MvPolynomial (FVar D m n) ℂ →ₐ[ℂ] MvPolynomial (FVar D m n) ℂ :=
+  MvPolynomial.aeval (fun v : FVar D m n => ∑ b, c v.1 b v.2.1 • (MvPolynomial.X (v.1, b, v.2.2) : MvPolynomial (FVar D m n) ℂ))
+
+theorem subs_varF (c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (τ : D.what₂.Tau) (i : Fin m) (j : ℕ) :
+    subs c (varF τ i j : MvPolynomial (FVar D m n) ℂ) = ∑ b : Fin m, varF τ b j * MvPolynomial.C (c τ b i) := by
+  by_cases hj : j < n
+  · simp [varF, hj, subs, MvPolynomial.smul_eq_C_mul, mul_comm]
+  · simp [varF, hj]
+
+theorem subs_varF_of_one (c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (τ : D.what₂.Tau) (hc : c τ = 1) (i j : ℕ) :
+    subs c (varF τ i j : MvPolynomial (FVar D m n) ℂ) = varF τ i j := by
+  by_cases hi : i < m
+  · have := subs_varF (n := n) c τ ⟨i, hi⟩ j
+    simp only at this
+    rw [this, Finset.sum_eq_single (⟨i, hi⟩ : Fin m)]
+    · simp [hc]
+    · intro b _ hb
+      simp [hc, Matrix.one_apply_ne hb]
+    · simp
+  · simp [varF, hi]
+
+noncomputable def mnr (τ : D.what₂.Tau) (p₀ k : ℕ) (r : Fin k → ℕ) : MvPolynomial (FVar D m n) ℂ :=
+  (Matrix.of fun α β : Fin k => (varF τ (p₀ + β) (r α) : MvPolynomial (FVar D m n) ℂ)).det
+
+def Good (τ : D.what₂.Tau) (p : ℕ) (P : MvPolynomial (FVar D m n) ℂ) (e : Fin m → ℕ) : Prop :=
+  (∀ (c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (l : Fin m → ℂ), (∀ ρ, ρ ≠ τ → c ρ = 1) → c τ = Matrix.diagonal l →
+    subs c P = (∏ a, l a ^ e a) • P) ∧
+  ∀ c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ, (∀ ρ, ρ ≠ τ → c ρ = 1) →
+    (∀ a b : Fin m, (b : ℕ) < p → p ≤ (a : ℕ) → c τ b a = 0) → Filt τ (∑ a : Fin m, (a : ℕ) * e a) (subs c P)
+
+theorem good_one (τ : D.what₂.Tau) (p : ℕ) : ∃ e, Good τ p (1 : MvPolynomial (FVar D m n) ℂ) e :=
+  ⟨0, fun c l _ _ => by simp, fun c _ _ => by simpa using Filt.bot τ _⟩
+
+theorem good_mul {τ : D.what₂.Tau} {p : ℕ} {P Q : MvPolynomial (FVar D m n) ℂ} (h : ∃ e, Good τ p P e)
+    (h' : ∃ e, Good τ p Q e) : ∃ e, Good τ p (P * Q) e := by
+  obtain ⟨e, h1, h2⟩ := h
+  obtain ⟨e', h1', h2'⟩ := h'
+  refine ⟨e + e', fun c l hc hl => ?_, fun c hc hb => ?_⟩
+  · rw [map_mul, h1 c l hc hl, h1' c l hc hl, smul_mul_smul_comm]
+    simp [pow_add, Finset.prod_mul_distrib]
+  · rw [map_mul]
+    simpa [mul_add, Finset.sum_add_distrib] using (h2 c hc hb).mul (h2' c hc hb)
+
+theorem good_pow {τ : D.what₂.Tau} {p : ℕ} {P : MvPolynomial (FVar D m n) ℂ} (h : ∃ e, Good τ p P e) (k : ℕ) :
+    ∃ e, Good τ p (P ^ k) e := by
+  induction k with
+  | zero => simpa using good_one τ p
+  | succ k ih => rw [pow_succ]; exact good_mul ih h
+
+theorem good_prod {τ : D.what₂.Tau} {p : ℕ} {ι : Type} (S : Finset ι) (P : ι → MvPolynomial (FVar D m n) ℂ)
+    (h : ∀ i ∈ S, ∃ e, Good τ p (P i) e) : ∃ e, Good τ p (∏ i ∈ S, P i) e :=
+  Finset.prod_induction _ (fun P => ∃ e, Good τ p P e) (fun _ _ => good_mul) (good_one τ p) h
+
+theorem subs_mnr (c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (τ : D.what₂.Tau) (p₀ k : ℕ) (r : Fin k → ℕ) :
+    subs c (mnr τ p₀ k r : MvPolynomial (FVar D m n) ℂ) =
+      (Matrix.of fun α β : Fin k => subs c (varF τ (p₀ + β) (r α) : MvPolynomial (FVar D m n) ℂ)).det := by
+  unfold mnr
+  rw [AlgHom.map_det]
+  rfl
+
+theorem good_mnr_ne {τ ρ : D.what₂.Tau} (hρ : ρ ≠ τ) (p p₀ k : ℕ) (r : Fin k → ℕ) :
+    ∃ e, Good τ p (mnr ρ p₀ k r : MvPolynomial (FVar D m n) ℂ) e := by
+  refine ⟨0, fun c l hc _ => ?_, fun c _ _ => by simpa using Filt.bot τ _⟩
+  rw [subs_mnr]
+  simp [subs_varF_of_one c ρ (hc ρ hρ), mnr]
+
+theorem good_mnr_self (τ : D.what₂.Tau) (p p₀ k : ℕ) (hp : p₀ = 0 ∨ p₀ = p) (r : Fin k → ℕ) :
+    ∃ e, Good τ p (mnr τ p₀ k r : MvPolynomial (FVar D m n) ℂ) e := by
+  classical
+  by_cases hk : ∀ β : Fin k, p₀ + β < m
+  swap
+  · push_neg at hk
+    obtain ⟨β, hβ⟩ := hk
+    have h0 : (mnr τ p₀ k r : MvPolynomial (FVar D m n) ℂ) = 0 := by
+      unfold mnr
+      refine Matrix.det_eq_zero_of_column_eq_zero β fun α => ?_
+      simp [varF, not_lt.2 hβ]
+    rw [h0]
+    exact ⟨0, fun c l _ _ => by simp, fun c _ _ => by simpa using Filt.bot τ _⟩
+  let col : Fin k → Fin m := fun β => ⟨p₀ + β, hk β⟩
+  have hs : ∀ c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ, ∀ α β : Fin k,
+      subs c (varF τ (p₀ + β) (r α) : MvPolynomial (FVar D m n) ℂ) =
+        ∑ b : Fin m, varF τ b (r α) * MvPolynomial.C (c τ b (col β)) := fun c α β => subs_varF c τ (col β) (r α)
+  refine ⟨fun a => ∑ β : Fin k, if col β = a then 1 else 0, fun c l _ hl => ?_, fun c _ hb => ?_⟩
+  · have h1 : ∏ a, l a ^ (∑ β : Fin k, if col β = a then 1 else 0) = ∏ β, l (col β) := by
+      simp only [← Finset.prod_pow_eq_pow_sum]
+      rw [Finset.prod_comm]
+      refine Finset.prod_congr rfl fun β _ => ?_
+      simp
+    rw [subs_mnr, h1, MvPolynomial.smul_eq_C_mul, map_prod]
+    unfold mnr
+    rw [← Matrix.det_mul_row]
+    congr 1
+    ext1 α β
+    simp only [Matrix.of_apply]
+    rw [hs, Finset.sum_eq_single (col β)]
+    · simp [hl, col, mul_comm]
+    · intro b _ hb
+      simp [hl, Matrix.diagonal_apply_ne _ hb]
+    · simp
+  · have h1 : ∑ a : Fin m, (a : ℕ) * (∑ β : Fin k, if col β = a then 1 else 0) = ∑ β : Fin k, (p₀ + β) := by
+      simp only [Finset.mul_sum]
+      rw [Finset.sum_comm]
+      refine Finset.sum_congr rfl fun β _ => ?_
+      simp [col]
+    have h2 : (Matrix.of fun α β : Fin k => subs c (varF τ (p₀ + β) (r α) : MvPolynomial (FVar D m n) ℂ)) =
+        (Matrix.of fun (α : Fin k) (b : Fin m) => (varF τ b (r α) : MvPolynomial (FVar D m n) ℂ)) *
+        (Matrix.of fun (b : Fin m) (β : Fin k) => (MvPolynomial.C (c τ b (col β)) : MvPolynomial (FVar D m n) ℂ)) := by
+      ext1 α β
+      simp only [Matrix.of_apply, Matrix.mul_apply, hs]
+    rw [subs_mnr, h1, h2, det_mul_eq_sum]
+    refine Filt.sum _ _ fun f _ => ?_
+    by_cases hge : ∀ β, p₀ ≤ (f β : ℕ)
+    swap
+    · push_neg at hge
+      obtain ⟨β, hβ⟩ := hge
+      rcases hp with rfl | rfl
+      · omega
+      · rw [Finset.prod_eq_zero (Finset.mem_univ β), zero_mul]
+        · exact Filt.zero τ _
+        · simp [hb (col β) (f β) hβ (by simp [col])]
+    by_cases hinj : Function.Injective f
+    swap
+    · obtain ⟨β, β', h, hne⟩ := Function.not_injective_iff.1 hinj
+      rw [Matrix.det_zero_of_column_eq hne (fun α => by simp [h]), mul_zero]
+      exact Filt.zero τ _
+    refine Filt.mul_left _ (Filt.mono (N := ∑ β, (f β : ℕ)) ?_ ?_)
+    · rw [Matrix.det_apply']
+      refine Filt.sum _ _ fun σ _ => Filt.mul_left _ (Filt.prod _ _ _ fun β _ => ?_)
+      simpa using filt_varF τ _ _
+    · have h3 := sum_le_sum_of_injective (fun β => (f β : ℕ) - p₀) (fun β β' h => hinj (Fin.ext (by
+        have := hge β; have := hge β'; simp only at h; omega)))
+      have h4 : ∑ β, (f β : ℕ) = ∑ β : Fin k, (p₀ + ((f β : ℕ) - p₀)) :=
+        Finset.sum_congr rfl fun β _ => by have := hge β; omega
+      rw [h4, Finset.sum_add_distrib, Finset.sum_add_distrib]
+      omega
+
+theorem good_delta (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) (τ : D.what₂.Tau) :
+    ∃ e, Good τ (p τ) (delta p q ap am : MvPolynomial (FVar D m n) ℂ) e := by
+  unfold delta deltaAt
+  refine good_prod _ _ fun ρ _ => good_mul (good_prod _ _ fun i _ => good_pow ?_ _) (good_prod _ _ fun i _ => good_pow ?_ _)
+  · have h : (minorPlus ρ (i + 1) : MvPolynomial (FVar D m n) ℂ) = mnr ρ 0 (i + 1) (fun α => α) := by
+      simp [minorPlus, mnr]
+    rw [h]
+    by_cases hρ : ρ = τ
+    · subst hρ; exact good_mnr_self _ _ _ _ (Or.inl rfl) _
+    · exact good_mnr_ne hρ _ _ _ _
+  · have h : (minorMinus ρ (p ρ) (i + 1) : MvPolynomial (FVar D m n) ℂ) =
+        mnr ρ (p ρ) (i + 1) (fun α => n - (i + 1) + α) := rfl
+    rw [h]
+    by_cases hρ : ρ = τ
+    · subst hρ; exact good_mnr_self _ _ _ _ (Or.inr rfl) _
+    · exact good_mnr_ne hρ _ _ _ _
+
+theorem delta_torus_weight : ∀ (D : D7) (m n : ℕ) (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) (τ : D.what₂.Tau), ∃ e : Fin m → ℕ, (∀ (c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (l : Fin m → ℂ), (∀ ρ, ρ ≠ τ → c ρ = 1) → c τ = Matrix.diagonal l → MvPolynomial.aeval (fun v : FVar D m n => ∑ b, c v.1 b v.2.1 • (MvPolynomial.X (v.1, b, v.2.2) : MvPolynomial (FVar D m n) ℂ)) (delta p q ap am : MvPolynomial (FVar D m n) ℂ) = (∏ a, l a ^ e a) • (delta p q ap am : MvPolynomial (FVar D m n) ℂ)) ∧ ∀ c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ, (∀ ρ, ρ ≠ τ → c ρ = 1) → (∀ a b : Fin m, (b : ℕ) < p τ → p τ ≤ (a : ℕ) → c τ b a = 0) → ∀ s ∈ (MvPolynomial.aeval (fun v : FVar D m n => ∑ b, c v.1 b v.2.1 • (MvPolynomial.X (v.1, b, v.2.2) : MvPolynomial (FVar D m n) ℂ)) (delta p q ap am : MvPolynomial (FVar D m n) ℂ)).support, ∑ a : Fin m, (a : ℕ) * e a ≤ ∑ a : Fin m, ∑ j : Fin n, (a : ℕ) * s (τ, a, j) :=
+  fun _ _ _ p q ap am τ => good_delta p q ap am τ
+
+end GlobalTheory.MinorWeight
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslates =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslatesStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslatesStatement", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslates\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\nimport Formalism.LocalToGlobal.IndefiniteReal.LinksDefs\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT NumberField Matrix
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem _root_.GlobalTheory.T.minorProduct_torusWeight_block_translates : ∀ (D : D7) (m n : ℕ) (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) (τ : D.what₂.Tau), ∃ e : Fin m → ℕ, (∀ (c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ) (l : Fin m → ℂ), (∀ ρ, ρ ≠ τ → c ρ = 1) → c τ = Matrix.diagonal l → MvPolynomial.aeval (fun v : FVar D m n => ∑ b, c v.1 b v.2.1 • (MvPolynomial.X (v.1, b, v.2.2) : MvPolynomial (FVar D m n) ℂ)) (delta p q ap am : MvPolynomial (FVar D m n) ℂ) = (∏ a, l a ^ e a) • (delta p q ap am : MvPolynomial (FVar D m n) ℂ)) ∧ ∀ c : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ, (∀ ρ, ρ ≠ τ → c ρ = 1) → (∀ a b : Fin m, (b : ℕ) < p τ → p τ ≤ (a : ℕ) → c τ b a = 0) → ∀ s ∈ (MvPolynomial.aeval (fun v : FVar D m n => ∑ b, c v.1 b v.2.1 • (MvPolynomial.X (v.1, b, v.2.2) : MvPolynomial (FVar D m n) ℂ)) (delta p q ap am : MvPolynomial (FVar D m n) ℂ)).support, ∑ a : Fin m, (a : ℕ) * e a ≤ ∑ a : Fin m, ∑ j : Fin n, (a : ℕ) * s (τ, a, j) := by
+  first | exact @GlobalTheory.MinorWeight.delta_torus_weight
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslatesStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchrodingerIntertwinerInjectiveSchwartzBruhatStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchrodingerIntertwinerInjectiveSchwartzBruhatStatement", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchrodingerIntertwinerInjectiveSchwartzBruhat\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.FWT NumberField Matrix
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem _root_.GlobalTheory.T.schrodingerIntertwiner_injective_schwartzBruhat : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (e : AE D) (f₀ Φ : WO S T → ℂ) (Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), IsStdChar D ψ (-1) → IsSelfDualC S ΛS → IsSelfDualC T ΛT → e * e = e → e * cA D e = 0 → infPart D e = 0 → IsPlaceModel ψ (symplO S T) (heisO ψ S T) e (latO S T ΛS ΛT fun _ => True) 1 f₀ Tm → f₀ ≠ 0 → IsSBHalf e (latO S T ΛS ΛT fun _ => True) Φ → Φ ≠ 0 → Tm Φ ≠ 0 := by
+  first | exact @GlobalTheory.PlaceModelInj.placeModel_ne_zero
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchrodingerIntertwinerInjectiveSchwartzBruhatStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PureTensorOSmul =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PureTensorOSmul", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector\npublic import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.StarPurelyImaginaryEqNeg\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.PureTensorLIntertwine\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalCompactActsOnRealVacuaByDetPowersStatement\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOrEqOfPlaceIdem\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtremalUnitVectorSameHighestImageStatement\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNonvanishingFiniteDatumDefiniteLiftStatement\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsNsmulIntMemLatO\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorMaximalCompactBasisSubstitutStatement\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FockPolynomialVectorsInjectiveNonzeroVacuumStatement\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GramMapMulInv\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowestKTypeSmoothVectorsIsKStableStatement\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MinorProductTorusWeightBlockTranslatesStatement\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SchrodingerIntertwinerInjectiveSchwartzBruhatStatement\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCharFamIsVacVec\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsFockVacAtOfIsThetaAt\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSelfDualCoordLatticeOfSelfDualFrameStatement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.BitVec\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -246,7 +1041,7 @@ theorem om_pt {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χ
           (pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (onb M) f P) =
         pureTensorO ψ θ S T (fun _ => 1) (cart M) BS (onb M) f
           (χ k • sub (Function.update (fun _ => 1) τ (tw (M.ε τ) k)) P) := by
-  obtain ⟨x₁, x₂, y₁, y₂, h⟩ := GlobalTheory.T.maximalCompact_acts_on_realVacua_by_detPowers D ψ θ S T χS χT om hW hθ kS kT (fun _ => 1) (cart M) hS
+  obtain ⟨x₁, x₂, y₁, y₂, h⟩ := _root_.GlobalTheory.VacuumChar.vacuum_char D ψ θ S T χS χT om hW hθ kS kT (fun _ => 1) (cart M) hS
     (GlobalTheory.Chain.VacVec.cart_isCartanInv M)
   refine ⟨fun k => ((1 / 2 : ℂ) • (1 + cart M τ) * ((M.fr τ)⁻¹ * k * M.fr τ) + (1 / 2 : ℂ) • (1 - cart M τ)).det ^ x₁ τ *
     ((1 / 2 : ℂ) • (1 - cart M τ) * ((M.fr τ)⁻¹ * k * M.fr τ) + (1 / 2 : ℂ) • (1 + cart M τ)).det ^ x₂ τ, x₁ τ, x₂ τ,
@@ -490,3 +1285,6 @@ theorem ioExt : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A 
 end GlobalTheory.IoExtremal
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PureTensorOSmul =====

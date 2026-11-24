@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.SimpleSum
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsMulLeftInvariantVolGL
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentHaarAndModulusStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentHaarAndModulus
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnipotentRadicalBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -314,7 +315,7 @@ theorem quotInt_unique_exists : ∀ (k : Type) [Field k] [ValuativeRel k] [Topol
   classical
   obtain ⟨bX, lX, sX, -, -, -, hXH, hXR⟩ := GlobalTheory.SplitWeil.volGL_haar k n ν
   obtain ⟨bG, lG, sG, hKc, hKo, -⟩ := GlobalTheory.SplitWeil.volGL_haar k (n ⊕ Fin c) ν
-  obtain ⟨hN, -, hH, hRi, hconj⟩ := GlobalTheory.T.rootExchangeUnipotent_haar_and_modulus k n c p hp hpc ν
+  obtain ⟨hN, -, hH, hRi, hconj⟩ := _root_.GlobalTheory.RootEx.VolN.volN_haar_and_modulus k n c p hp hpc ν
   obtain ⟨-, -, -, hnorm, hdec, -⟩ := GlobalTheory.RootEx.Radical.unipotent_radical_basic k n c p
   haveI : LocallyCompactSpace (N k n c p) := hN.isClosedEmbedding_subtypeVal.locallyCompactSpace
   haveI : SecondCountableTopology (N k n c p) :=

@@ -66,7 +66,7 @@ def ringHomPoint {k k' : Type*} [Field k] [Field k'] (f : k →+* k') (W : Weier
     refine GlobalTheory.map_add_of_triples _ rfl ?_ ?_
     · rintro (_ | ⟨x, y, hP⟩)
       · rfl
-      · simp only [Point.neg_some, ringHomPointFun, Point.some.injEq, true_and, negY,
+      · simp only [Point.neg_some, ringHomPointFun, negY,
           map_a₁, map_a₃, map_sub, map_neg, map_mul]
     · rintro (_ | ⟨x₁, y₁, h₁⟩) (_ | ⟨x₂, y₂, h₂⟩) (_ | ⟨x₃, y₃, h₃⟩) hP hQ hR h
       any_goals first | exact absurd rfl hP | exact absurd rfl hQ | exact absurd rfl hR

@@ -1,48 +1,7 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LocalWeightCharts.ColOfLeftInv
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -71,7 +30,6 @@ theorem pos_inj : Function.Injective (pos k r) := by
     | (congr 1; exact Fin.ext (by omega))
     | (congr 2; exact Fin.ext (by omega))
     | (exfalso; omega)
-    | skip
   all_goals (first | (exfalso; have := a.isLt; have := b.isLt; omega) | skip)
 
 theorem pos_bij : Function.Bijective (pos k r) := by
@@ -195,16 +153,14 @@ theorem bA_upper {g : Mx k r} (h : ColB g) : (bA g).IsUpperTriangular := by
 theorem bA_det {g : Mx k r} (h : ColB g) : (bA g).det = 1 := by
   rw [det_of_isUpperTriangular (bA_upper h)]
   refine Finset.prod_eq_one fun a _ => ?_
-  show g _ _ = 1
-  rw [h.aa a a le_rfl, if_pos rfl]
+  simpa [bA] using h.aa a a le_rfl
 
 theorem rel_F {g : Mx k r} (hc : ColB g) (hu : g ∈ UH (Hpk k r)) : (bF g)ᴴ * bA g = 1 := by
   ext a b
   have e := congrFun (congrFun (show gᴴ * Hpk k r * g = Hpk k r from hu) (esI k r a)) (eI k r b)
   rw [form_apply, hpk_esI_eI] at e
   simp only [hc.sa, hc.wa, mul_zero, Finset.sum_const_zero, zero_add] at e
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  simpa [bF, bA, conjTranspose_apply] using e
+  simpa [bF, bA, conjTranspose_apply, Matrix.mul_apply, Matrix.one_apply] using e
 
 theorem dD_mul_apply {m : Type*} (X : Matrix (Fin (k + 1)) m ℂ) (j : Fin (k + 1)) (b : m) :
     (dD k * X) j b = dD k j j * X j b := by

@@ -3,53 +3,10 @@ module
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.QuotientHighestWeightTensorStandard
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.IsKUnitaryOfIsInfUnitary
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.KhwWeightEqOfIrr
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.LinearAlgebra.Eigenspace.Minpoly
 import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -96,17 +53,6 @@ theorem partialSum_root_nonneg {a b : Fin n} (hab : a < b) (k : ℕ) : 0 ≤ kir
   · norm_num
   · exfalso; omega
   · norm_num
-
-theorem partialSum_single_bounds {β : Fin n → ℝ} (hβ : InRootCone β) (k : ℕ) : 0 ≤ kirrPs k β := by
-  obtain ⟨m, rfl⟩ := hβ
-  rw [partialSum_finset_sum_eq]
-  refine Finset.sum_nonneg fun a _ => ?_
-  rw [partialSum_finset_sum_eq]
-  refine Finset.sum_nonneg fun b _ => ?_
-  split_ifs with h
-  · rw [partialSum_smul]
-    exact mul_nonneg (Nat.cast_nonneg _) (partialSum_root_nonneg h k)
-  · simp [kirrPs]
 
 theorem partialSum_add_eq {ι : Type*} (s : Finset ι) (f : ι → Fin n → ℝ) :
     kUnitWtLin (∑ i ∈ s, f i) = ∑ i ∈ s, kUnitWtLin (f i) := by
@@ -185,8 +131,6 @@ theorem highestWeight_dominant {N : Type*} [NormedAddCommGroup N] [InnerProductS
   have key' : (ν a - ν b) * ‖y‖ ^ 2 = ‖A b a y‖ ^ 2 := by
     norm_cast at key
     first
-    | exact Complex.ofReal_injective key
-    | exact RCLike.ofReal_injective key
     | exact (Complex.ofReal_injective (by simpa using key))
   have hpos : 0 < ‖y‖ ^ 2 := pow_pos (norm_pos_iff.mpr hy0) 2
   by_contra hlt
@@ -343,8 +287,8 @@ theorem exists_kIrreducible_highestWeight {N : Type*} [NormedAddCommGroup N] [In
     by_cases h1 : c = a <;> by_cases h2 : c = b
     · subst h1; subst h2; simp
     · subst h1; simp [h2, Ne.symm h2]
-    · subst h2; simp [h1, Ne.symm h1]
-    · simp [h1, h2, Ne.symm h1, Ne.symm h2]
+    · subst h2; simp [h1]
+    · simp [h1, h2, Ne.symm h2]
   have hHr : ∀ a b x, H (A a b x) = A a b (H x) + (((b : ℕ) : ℂ) - ((a : ℕ) : ℂ)) • A a b x := by
     intro a b x
 

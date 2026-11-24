@@ -311,7 +311,7 @@ theorem exists_antisymm_eq_mul (p : LaurentRing n) :
     obtain ⟨q, hq⟩ := exists_alternant_eq_mul μ
     refine ⟨c • q, ?_⟩
     have : (single μ c : LaurentRing n) = c • monomial μ := by
-      simp [monomial, smul_single']
+      simp [monomial]
     rw [this, map_smul, ← alternant, hq, mul_smul_comm]
 
 theorem coeff_alternant_staircase :

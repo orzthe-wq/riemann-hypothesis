@@ -73,28 +73,6 @@ def fc (ψ : AddChar (AF F) ℂ) (b : GL (Fin n ⊕ Fin n) E) (nb : nA σ Y b �
 
 def IsND {b : GL (Fin n ⊕ Fin n) E} (T : nF σ Y b) : Prop := T.1.1.det ≠ 0
 
-structure Std (B : Base F E) {m : ℕ} (A : Spc F E m) (Y : Spc F E n) (r s r' s' : ℕ) (χ : Chr F E) (κ : Type) [Fintype κ]
-    (dd : Darboux (symp (R := AF F) (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) (-1) ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) A.J) (dbl ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) Y.J))) κ)
-    (om : G2 σ Y →* Module.End ℂ ((κ → AF F) → ℂ)) (S : UA σ A.J →* Module.End ℂ ((κ → AF F) → ℂ))
-    (l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (b : GL (Fin n ⊕ Fin n) E) (K : Subgroup (G2 σ Y)) (a : G2 σ Y → ℝ)
-    (μ : Measure (UA σ A.J)) (D : Set (UA σ A.J)) (Φ : (κ → AF F) → ℂ) : Prop where
-  good : B.IsGood σ
-  hm : 1 ≤ m
-  hn : 1 ≤ n
-  hnm : n < m
-  aniso : min r s = 0
-  sign : A.IsHerm σ B r s ∧ Y.IsSkew σ B r' s' ∨ A.IsSkew σ B r s ∧ Y.IsHerm σ B r' s'
-  hecke : IsHecke F E χ
-  res : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ m
-  dbl : IsDbl (σ := σ) (A := A) (Y := Y) B.ψ dd χ om S l
-  frame : IsFrame2 σ Y b
-  stdK : IsStdK (σ := σ) (Y := Y) B b K
-  hgt : IsHgt K a
-  haar : μ.IsHaarMeasure
-  dom : IsFundamentalDomain (ratU σ A.J) D μ
-  sch : Φ ∈ schA F κ
-  fin : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : K => om k.1 Φ))
-
 def s0 (m n : ℕ) : ℂ := ((m : ℂ) - n) / 2
 
 def sec {κ : Type} (om : G2 σ Y →* Module.End ℂ ((κ → AF F) → ℂ)) (l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (a : G2 σ Y → ℝ)
@@ -105,12 +83,6 @@ def thetaMean {m : ℕ} {A : Spc F E m} {κ : Type} (om : G2 σ Y →* Module.En
     (S : UA σ A.J →* Module.End ℂ ((κ → AF F) → ℂ)) (μ : Measure (UA σ A.J)) (D : Set (UA σ A.J))
     (Φ : (κ → AF F) → ℂ) (x : G2 σ Y) : ℂ :=
   ⨍ g in D, thetaSum F (om x (S g Φ)) ∂μ
-
-def SWStdLt : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (m n : ℕ)
-    (A : Spc F E m) (Y : Spc F E n) r s r' s' χ (κ : Type) [Fintype κ] dd om S l b K a μ D Φ,
-    Std (σ := σ) B A Y r s r' s' χ κ dd om S l b K a μ D Φ →
-      EisValueAt (sec om l a m Φ) (s0 m n) (thetaMean om S μ D Φ)
 
 end PositivityTheory.SiegelWeilFormula
 

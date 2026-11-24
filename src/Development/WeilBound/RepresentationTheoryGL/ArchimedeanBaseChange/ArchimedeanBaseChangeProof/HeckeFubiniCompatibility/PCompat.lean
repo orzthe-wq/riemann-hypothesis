@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.MeasureTheory.Measure.HasOuterApproxClosedProd
 
 @[expose] public section
 
@@ -192,7 +193,6 @@ theorem integral_tensH_splitH [MeasurableSpace (G a)] [MeasurableSpace (G b)] [M
   simp_rw [tensH_splitH]
   rw [integral_tensor _ _ _ (fun y : InfinitePlace E → G a => ∏ v, fa v (y v))
     (fun y : InfinitePlace E → G b => ∏ v, fb v (y v)) ψ]
-  beta_reduce
   rw [integral_fintype_prod_eq_prod, integral_fintype_prod_eq_prod]
 
 theorem compatFub : CompatFub := by
@@ -245,7 +245,6 @@ theorem compatEx : CompatEx := by
     rw [integral_tensor _ _ _ (fun y : InfinitePlace E → G a => ∏ v, fa (y v))
       (fun y : InfinitePlace E → G b => ∏ v, fb (y v)) (fun w : Hf E a b => ψ (w * h)),
       integral_tensH_splitH] at h1
-    beta_reduce at h1
     rw [integral_fintype_prod_eq_prod, integral_fintype_prod_eq_prod] at h1
     have e2 : ∫ w, ψ (w * h) ∂ν₀ = k • ∫ w, ψ w ∂ν₀ := by
       rw [← integral_smul_nnreal_measure, ← hk, integral_map (measurable_mul_const h).aemeasurable

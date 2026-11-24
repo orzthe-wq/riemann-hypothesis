@@ -55,6 +55,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsUnitValue
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -228,14 +229,7 @@ theorem coef_smul {g : GtPtF D F} {w : Frm D F k g.b} (hw : w.IsGen) (s : Fam D 
   have := coef_lin hw s 0 c χ
   rwa [add_zero, coef_zero hw, add_zero] at this
 
-theorem coef_scale {g : GtPtF D F} {w w' : Frm D F k g.b} (hw : w.IsGen) {c : F}
-    (hv : ∀ z J, Good D.P.L z J → (val w' (𝟙 _) z J).val = cst F z c * (val w (𝟙 _) z J).val) (s : Fam D F k) (χ : D.X) :
-    coef s g w' χ = c * coef s g w χ := by
-  refine coef_eq fun z J hJ => ?_
-  have a := isCoef_coef g hw χ s z J hJ
-  rw [hv z J hJ]
-  simp only [cst_eq, map_mul] at a ⊢
-  linear_combination cstH z c * a
+alias coef_scale := _root_.GlobalTheory.UT.TorsionValue.coef_scale
 
 variable {E : Type} [Field E] [Algebra (FractionRing R) E] [Algebra E F] [IsScalarTower (FractionRing R) E F]
 

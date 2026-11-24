@@ -102,7 +102,7 @@ theorem vBar_vBar (D : D7) {N N' : ℕ} (z : VC D N N') : vBar D (vBar D z) = z 
 
 theorem cBar_cBar (D : D7) {N N' : ℕ} (G : VC D N N' → ℂ) : cBar D (cBar D G) = G := by
   funext z
-  simp [cBar, vBar_vBar]
+  simp [cBar]
 
 def Facts (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {a d : ℕ}
     (L : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin d → D.host.E))

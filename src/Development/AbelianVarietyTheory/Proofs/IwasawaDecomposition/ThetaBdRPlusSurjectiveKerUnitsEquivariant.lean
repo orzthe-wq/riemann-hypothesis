@@ -101,8 +101,7 @@ theorem frob_surj : Function.Surjective (frobenius (ModP (Per.OC l) l) l) := by
 
 theorem θ_surj : Function.Surjective (Per.θ l) := surjective_fontaineTheta (frob_surj l)
 
-theorem fontaineTheta_algebraMap₂ (a : Per.Ainf l) : Per.θP l (algebraMap _ _ a) = (Per.θ l a : ℂ_[l]) :=
-  GlobalTheory.RingIface.fontaineTheta_algebraMap l a
+alias fontaineTheta_algebraMap₂ := _root_.GlobalTheory.RingIface.fontaineTheta_algebraMap
 
 theorem fontaineTheta_eq_zero (a : Per.AinfP l) : Per.θP l a = 0 ↔ a ∈ Per.kerP l := by
   refine ⟨fun h => ?_, fun h => GlobalTheory.RingBasics.fontaineTheta_eq_zero_of_mem_ker l a (by rwa [pow_one])⟩
@@ -147,8 +146,7 @@ theorem θD_of_ev (y : Per.BdRp l) (a : Per.AinfP l) (h : Ideal.Quotient.mk _ a 
   have h2 := GlobalTheory.RingIface.thetaD_of_mem_FilP l h1
   rwa [map_sub, GlobalTheory.RingIface.thetaD_alg, sub_eq_zero] at h2
 
-theorem θD_alg (a : Per.AinfP l) : Per.θD l (algebraMap _ _ a) = Per.θP l a :=
-  GlobalTheory.RingIface.thetaD_alg l a
+alias θD_alg := _root_.GlobalTheory.RingIface.thetaD_alg
 
 end GlobalTheory.MemLoc.ThetaD
 

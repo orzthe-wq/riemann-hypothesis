@@ -161,7 +161,7 @@ theorem cT_one {a : Type} [DecidableEq a] : cT s (1 : Matrix a a E) = 1 := by
   ext i j
   by_cases h : i = j
   · subst h; simp [cT]
-  · simp [cT, Matrix.one_apply, h, Ne.symm h]
+  · simp [cT, h, Ne.symm h]
 
 theorem gram_cT (hs : ∀ x, s (s x) = x) {J : Matrix (Fin n) (Fin n) E} (hJ : cT s J = J)
     {a b : Type} [Fintype a] [Fintype b] (A : Matrix (Fin n) a E) (B : Matrix (Fin n) b E) :

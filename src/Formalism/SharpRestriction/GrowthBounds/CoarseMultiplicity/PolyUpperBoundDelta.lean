@@ -53,12 +53,11 @@ open Formalism.MainNotions.G
 
 theorem poly_upper_bound_delta {de ε : ℝ} (hε : 0 ≤ ε) (h40 : 40 * ε ≤ de) (h6 : de < 1 / 6) :
     (1 - de / 2) * (1 - de / 4) ≤ (1 - de / 2 + 17 * ε) * (1 - de / 4 - ε) - ε := by
-  have h1 : 0 ≤ 15 - 15 / 4 * de - 17 * ε := by linarith
-  nlinarith [mul_nonneg hε h1]
+  grind [mul_nonneg hε (by linarith : 0 ≤ 15 - 15 / 4 * de - 17 * ε)]
 
 theorem poly_lower_bound_delta {de : ℝ} (h0 : 0 ≤ de) (h6 : de < 1 / 6) : 1 ≤ (1 + 2 * de) * ((1 - de / 2) * (1 - de / 4)) := by
   have h1 : 0 ≤ 5 / 4 - 11 / 8 * de := by linarith
-  nlinarith [mul_nonneg h0 h1, mul_nonneg (mul_nonneg h0 h0) h0]
+  grind [mul_nonneg h0 h1, mul_nonneg (mul_nonneg h0 h0) h0]
 
 theorem upper_real_bound {b' d ε t P c A La k g be : ℝ} (hb : 0 < b') (hP0 : 0 < P) (hε0 : 0 ≤ ε) (h40 : 40 * ε ≤ d)
     (hd0 : 0 ≤ d) (hd6 : d < 1 / 6) (htb : t * (1 + 2 * d) < b') (hcap : P * c ≤ t + ε * b')
@@ -147,39 +146,30 @@ theorem SegHyp.geo (H : SegHyp p S b' de be aS Q) : ∑ i : Fin s, 1 / (p : ℝ)
 variable {C0 Cde CE1 CE2 : ℝ} {X : Loc}
 
 theorem Std.forty_epsilon_le_delta (St : Std C0 Cde CE1 CE2 1 X) : 40 * eps X C0 ≤ X.de C0 Cde := by
-  have := St.LaK
-  unfold eps
-  linarith [this, (by ring : 40 * (X.N1 * X.La C0 / X.k) = 40 * X.N1 * X.La C0 / X.k)]
+  simpa only [eps, div_eq_mul_inv, mul_assoc] using St.LaK
 
 theorem Std.be18 (St : Std C0 Cde CE1 CE2 1 X) :
     _root_.Formalism.MainNotions.ColumnSystems.Pf.be X C0 ≤ X.de C0 Cde / 2 - 18 * eps X C0 := by
-  have := St.beLe
-  unfold eps
-  linarith [this, (by ring : 18 * (X.N1 * X.La C0 / X.k) = 18 * X.N1 * X.La C0 / X.k)]
+  simpa only [eps, div_eq_mul_inv, mul_assoc] using St.beLe
 
 theorem Std.Laeps (St : Std C0 Cde CE1 CE2 1 X) : X.La C0 / X.k ≤ eps X C0 := by
   have hk0 : 0 < X.k := by linarith [St.k5]
+  have h1 : (1 : ℝ) ≤ X.N1 := by exact_mod_cast St.N1pos
   have hLa0 : 0 ≤ X.La C0 := by linarith [St.La1]
   unfold eps
-  refine div_le_div_of_nonneg_right ?_ hk0.le
-  have h1 : (1 : ℝ) ≤ X.N1 := by exact_mod_cast St.N1pos
-  have := mul_le_mul_of_nonneg_right h1 hLa0
-  linarith
+  exact div_le_div_of_nonneg_right (le_mul_of_one_le_left hLa0 h1) hk0.le
 
 theorem Std.twoP (St : Std C0 Cde CE1 CE2 1 X) : 2 * (X.b' / X.p) ≤ eps X C0 * X.b' := by
-  have hk5 := St.k5
-  have hk0 : 0 < X.k := by linarith
+  have hk0 : 0 < X.k := by linarith [St.k5]
   have hp0 : (0 : ℝ) < X.p := by linarith [St.p1]
   have hpk : X.k ^ 2 ≤ (X.p : ℝ) := by
-    have h1 := St.pk
-    have h2 := St.Y1
-    have h3 : (1 : ℝ) ≤ X.Y ^ 2 := one_le_pow₀ h2
-    have : X.k ^ 2 * 1 ≤ X.k ^ 2 * X.Y ^ 2 := mul_le_mul_of_nonneg_left h3 (by positivity)
-    linarith
+    have h3 : (1 : ℝ) ≤ X.Y ^ 2 := one_le_pow₀ St.Y1
+    exact (le_mul_of_one_le_right (sq_nonneg X.k) h3).trans St.pk
   have h1 : 2 / (X.p : ℝ) ≤ 1 / X.k := by
     rw [div_le_div_iff₀ hp0 hk0]
-    have : 5 * X.k ≤ X.k ^ 2 := by nlinarith
-    linarith
+    have hk2 : 5 * X.k ≤ X.k ^ 2 := by
+      rw [sq]; exact mul_le_mul_of_nonneg_right St.k5 hk0.le
+    linarith [hpk]
   have h2 : 2 * (X.b' / X.p) = 2 / (X.p : ℝ) * X.b' := by ring
   rw [h2]
   exact mul_le_mul_of_nonneg_right (h1.trans St.eps_ge) St.bpos.le
@@ -234,8 +224,8 @@ theorem kept_upper_level_bound (St : Std C0 Cde CE1 CE2 1 X) (j : Fin (numSeg X.
       have h4 := St.Y1
       have h5 : (0 : ℝ) ≤ (X.N1 : ℝ) := Nat.cast_nonneg _
       have hk1 : 1 ≤ X.k := by linarith
-      have h6 : X.k ≤ X.k ^ 2 := by nlinarith
-      have h7 : X.k ^ 2 * 1 ≤ X.k ^ 2 * X.Y ^ 2 := mul_le_mul_of_nonneg_left (by nlinarith) (by positivity)
+      have h6 : X.k ≤ X.k ^ 2 := by rw [sq]; exact le_mul_of_one_le_right (by linarith) hk1
+      have h7 : X.k ^ 2 * 1 ≤ X.k ^ 2 * X.Y ^ 2 := mul_le_mul_of_nonneg_left (one_le_pow₀ h4) (by positivity)
       linarith
     Q := by
       show (X.p : ℝ) ^ (segG X.TT j) ≤ (X.p : ℝ) ^ X.G'
@@ -326,8 +316,8 @@ theorem extra_order_le_maximal (St : Std C0 Cde CE1 CE2 1 X) (j : Fin (numSeg X.
       have h4 := St.Y1
       have h5 : (0 : ℝ) ≤ (X.N1 : ℝ) := Nat.cast_nonneg _
       have hk1 : 1 ≤ X.k := by linarith
-      have h6 : X.k ≤ X.k ^ 2 := by nlinarith
-      have h7 : X.k ^ 2 * 1 ≤ X.k ^ 2 * X.Y ^ 2 := mul_le_mul_of_nonneg_left (by nlinarith) (by positivity)
+      have h6 : X.k ≤ X.k ^ 2 := by rw [sq]; exact le_mul_of_one_le_right (by linarith) hk1
+      have h7 : X.k ^ 2 * 1 ≤ X.k ^ 2 * X.Y ^ 2 := mul_le_mul_of_nonneg_left (one_le_pow₀ h4) (by positivity)
       linarith
     Q := by
       show (X.p : ℝ) ^ (segG X.TT j) ≤ (X.p : ℝ) ^ X.G'
@@ -422,7 +412,9 @@ theorem maximal_order_le_a (St : Std C0 Cde CE1 CE2 1 X) : localOrderCap C0 X �
     have a1 := St.LaN
     have a2 := mul_le_mul_of_nonneg_right St.N2 hLa0
     linarith
-  have hp25 : (25 : ℝ) ≤ (X.p : ℝ) ^ 2 := by nlinarith
+  have hp25 : (25 : ℝ) ≤ (X.p : ℝ) ^ 2 := by
+    calc (25 : ℝ) = 5 ^ 2 := by norm_num
+      _ ≤ (X.p : ℝ) ^ 2 := pow_le_pow_left₀ (by norm_num) hp5 2
   have b1 : (X.a : ℝ) / (X.p : ℝ) ^ 2 ≤ (X.a : ℝ) / 25 := div_le_div_of_nonneg_left ha0 (by norm_num) hp25
   have b0 : (X.a : ℝ) / X.p ≤ (X.a : ℝ) / 5 := div_le_div_of_nonneg_left ha0 (by norm_num) hp5
   have b2 : 3 * X.b' / X.p ≤ 3 * (X.a : ℝ) / 25 := by

@@ -9,20 +9,23 @@ public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.Eventu
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsNormaliseMeanSquareOfCocompact
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSelfDualCLatFrame
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MapFinNeg
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SqNormIntegralFundamentalDomainEqL2NormSq
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SymplecticAdelicFormBiadditiveAlternatingRationaStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompletedHomLatticeFinitelyGeneratedStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompletedHomLatticeMultipleMemOpenLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisAdaptedToCartanInvolutionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanHeisenbergTranslatesOfVacuumStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryPQContinuousCharacterEqDetPowProdStatement
+public import Mathlib.Analysis.CStarAlgebra.CStarMatrix
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBasisAdaptedToCartanInvolution
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.Span.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanHeisenbergTranslatesOfVacuum
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitaryPQContinuousCharacterEqDetPowProd
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryActionAtRealPlace
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.AdelicUnitaryRealPointsStructureRealPlaces
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.AtPlaceIffEqAtTau
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.CocompactTensor
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SymplecticAdelicFormBiadditiveAlternatingRationaStatement
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.CocompactTensor
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -106,8 +109,8 @@ theorem real_char {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (s : D.what₂
       s τ * k = k * s τ → c (atTau θ V τ k) = ((1 / 2 : ℂ) • (1 + s τ) * k + (1 / 2 : ℂ) • (1 - s τ)).det ^ x *
         ((1 / 2 : ℂ) • (1 - s τ) * k + (1 / 2 : ℂ) • (1 + s τ)).det ^ y := by
     intro τ
-    obtain ⟨p, q, B, B', b1, b2, b3, b4⟩ := GlobalTheory.T.exists_basis_adapted_to_cartan_involution' _ _ _ (hs τ).1 (hs τ).2.1 (hs τ).2.2
-    refine GlobalTheory.T.unitaryPQ_continuous_character_eq_det_pow_prod _ p q _ _ B B' b1 b2 b3 b4 (fun k => c (atTau θ V τ k)) (fun k k' h1 h2 h3 h4 => ?_)
+    obtain ⟨p, q, B, B', b1, b2, b3, b4⟩ := _root_.GlobalTheory.exists_basis_adapted_to_cartan_involution _ _ _ (hs τ).1 (hs τ).2.1 (hs τ).2.2
+    refine _root_.GlobalTheory.UpqChar.char_Upq _ p q _ _ B B' b1 b2 b3 b4 (fun k => c (atTau θ V τ k)) (fun k k' h1 h2 h3 h4 => ?_)
       (fun k h1 h2 => hn _ (hK τ k h1 h2)) ?_
     · rw [← hm _ _ (hK τ k h1 h2) (hK τ k' h3 h4)]
       exact congrArg c (GlobalTheory.PointAtPlaceHom.atTau_mul hθ V τ h1 h3)
@@ -280,7 +283,7 @@ theorem mem_span (kS : S.SigOK) (kT : T.SigOK) (hS : ∀ τ, IsCartanInv (gramAt
   let e : M := ⟨f₀, hM⟩
   have hsq : ∀ x a : WO S T, ψ (symplOH S T x a) ^ 2 = ψ (symplO S T x a) := fun x a => by
     rw [sq, ← AddChar.map_add_eq_mul, GlobalTheory.SplitScalar.symplOH_add_self]
-  have key := GlobalTheory.T.mem_span_heisenberg_translates_of_vacuum (finPts S T) M (fun x y => ψ (symplOH S T x y)) ρ (Λ.addSubgroupOf (finPts S T)) e
+  have key := _root_.GlobalTheory.HeisVacuum.mem_span_translates_vacuum (finPts S T) M (fun x y => ψ (symplOH S T x y)) ρ (Λ.addSubgroupOf (finPts S T)) e
     (fun x y z => by
       rw [← AddChar.map_add_eq_mul, ← GlobalTheory.SplitScalar.symplOH_add_left]; rfl)
     (fun x y z => by

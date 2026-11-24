@@ -1,53 +1,9 @@
 module
 
 public import ReciprocityTheory.ReducedBases.GsInnerBOfLt
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -76,23 +32,8 @@ lemma nu_eq_zero_of (b : Fin d → E) (c : Fin d → ℝ) (j : Fin d) (h : ∀ l
   · have h0 : ⟪gs b j, b l⟫_ℝ = 0 := by
       first
       | exact gramSchmidt_inv_triangular ℝ b hlj
-      | exact gramSchmidt_inv_triangular b hlj
     simp [mu, h0]
   · simp [h l hjl]
-
-private lemma mu_self_of_linearIndependent (b : Fin d → E) (hb : LinearIndependent ℝ b) (j : Fin d) :
-    mu b j j = 1 := by
-  have e : ⟪gs b j, b j⟫_ℝ = ‖gs b j‖ ^ 2 := by
-    conv_lhs => rw [gramSchmidt_def'' ℝ b j]
-    rw [inner_add_right, inner_sum, real_inner_self_eq_norm_sq, Finset.sum_eq_zero, add_zero]
-    intro i hi
-    rw [inner_smul_right, gramSchmidt_orthogonal ℝ b (ne_of_gt (Finset.mem_Iio.mp hi)), mul_zero]
-  have hne : gs b j ≠ 0 := by
-    first
-    | exact gramSchmidt_ne_zero j hb
-    | exact gramSchmidt_ne_zero (𝕜 := ℝ) j hb
-  rw [mu, e]
-  exact div_self (pow_ne_zero 2 (norm_ne_zero_iff.mpr hne))
 
 private lemma nu_eq_add_sum_mu (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ) (j : Fin d) :
     nu b c j = c j + ∑ l ∈ univ.filter (fun l : Fin d => j.val + 1 ≤ l.val), c l * mu b l j := by
@@ -100,7 +41,7 @@ private lemma nu_eq_add_sum_mu (b : Fin d → E) (hb : LinearIndependent ℝ b) 
   rw [← Finset.sum_filter_add_sum_filter_not univ (fun l : Fin d => j.val + 1 ≤ l.val), add_comm]
   congr 1
   rw [Finset.sum_eq_single j]
-  · rw [mu_self_of_linearIndependent b hb j, mul_one]
+  · rw [_root_.ReciprocityTheory.ReducedBases.T2.mu_self b hb j, mul_one]
   · intro l hl hlj
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, not_le] at hl
     have h1 : l.val ≠ j.val := fun h => hlj (Fin.ext h)
@@ -108,7 +49,6 @@ private lemma nu_eq_add_sum_mu (b : Fin d → E) (hb : LinearIndependent ℝ b) 
     have h0 : ⟪gs b j, b l⟫_ℝ = 0 := by
       first
       | exact gramSchmidt_inv_triangular ℝ b hlt
-      | exact gramSchmidt_inv_triangular b hlt
     simp [mu, h0]
   · intro hj
     exfalso
@@ -121,10 +61,6 @@ lemma nu_top (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ
   intro l hl
   simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hl
   rw [h l (Fin.lt_iff_val_lt_val.mpr (by omega)), zero_mul]
-
-lemma nu_split (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ) (j : Fin d) :
-    nu b c j = c j + ∑ l ∈ univ.filter (fun l : Fin d => j.val + 1 ≤ l.val), c l * mu b l j := by
-  exact nu_eq_add_sum_mu b hb c j
 
 lemma babai (b : Fin d → E) (hb : LinearIndependent ℝ b) (c : Fin d → ℝ) {N : ℝ} (hN : 0 < N)
     (t : ℕ) (ht : t ≤ d) : ∃ w : Fin d → ℤ, (∀ l : Fin d, t ≤ l.val → w l = 0) ∧
@@ -174,14 +110,14 @@ lemma filter_le_succ (n : ℕ) (h : n + 1 < d) :
     univ.filter (fun j : Fin d => j.val ≤ n + 1) =
       insert ⟨n + 1, h⟩ (univ.filter (fun j : Fin d => j.val ≤ n)) := by
   ext j
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff, Fin.val_mk]
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]
   omega
 
 lemma filter_ge (n : ℕ) (h : n < d) :
     univ.filter (fun j : Fin d => n ≤ j.val) =
       insert ⟨n, h⟩ (univ.filter (fun j : Fin d => n + 1 ≤ j.val)) := by
   ext j
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff, Fin.val_mk]
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]
   omega
 
 lemma sum_gs_le (b : Fin d → E)
@@ -216,7 +152,7 @@ lemma coeff_bound (b : Fin d → E) (hb : LinearIndependent ℝ b)
     (hM : ∀ j, |nu b c j| ≤ M) (j : Fin d) : |c j| ≤ (3 / 2) ^ d * M := by
   have key : ∀ j : Fin d, |c j| ≤ M + 1 / 2 * ∑ l ∈ univ.filter (fun l : Fin d => j.val + 1 ≤ l.val), |c l| := by
     intro j
-    have e := nu_split b hb c j
+    have e := _root_.ReciprocityTheory.ReducedBases.T2.nu_eq_add_sum_mu b hb c j
     have h1 : |∑ l ∈ univ.filter (fun l : Fin d => j.val + 1 ≤ l.val), c l * mu b l j| ≤
         1 / 2 * ∑ l ∈ univ.filter (fun l : Fin d => j.val + 1 ≤ l.val), |c l| := by
       rw [Finset.mul_sum]
@@ -256,7 +192,6 @@ lemma coeff_bound (b : Fin d → E) (hb : LinearIndependent ℝ b)
   have hp : ((3 : ℝ) / 2) ^ (d - (j.val + 1)) ≤ (3 / 2) ^ d := by
     first
     | exact pow_le_pow_right₀ (by norm_num) (by omega)
-    | exact pow_le_pow_right (by norm_num) (by omega)
   have hM' := mul_le_mul_of_nonneg_right hp hM0
   linarith
 

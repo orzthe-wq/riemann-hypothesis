@@ -2,45 +2,6 @@ module
 
 public import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.IsHolVOf
 import Mathlib.Algebra.Order.Archimedean.Real.Hom
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall
 
 @[expose] public section
@@ -267,20 +228,18 @@ theorem UpperTheory.Esk.hyperbolic_orbit_summable_proof : UpperTheory.Esk.Osg �
     by_cases hw : w = v
     · subst hw
       simp [iv, Matrix.single, ite_apply]
-    · simp [iv, Matrix.single, ite_apply, Pi.single_apply, hw]
+    · simp [iv, Matrix.single, ite_apply, hw]
   constructor
   · refine Subtype.ext (funext fun G => ?_)
     obtain ⟨F0, F', h0, hD⟩ := at_point hB k f φ h (fun x => hform.hol x) hrel v G
     change (TR.Eop v 0 1 (⟨φ, h⟩ : TR.Sm F 2)).1 G - (TR.Eop v 1 0 (⟨φ, h⟩ : TR.Sm F 2)).1 G = Complex.I * k v * φ G
     rw [E, E, hD, hD, h0]
-    simp only [sv, eq_false (show (1 : Fin 2) ≠ 0 by decide), eq_false (show (0 : Fin 2) ≠ 1 by decide), eq_self_iff_true,
-      and_true, true_and, and_false, false_and, and_self, if_true, if_false, Complex.ofReal_zero, Complex.ofReal_one]
+    simp only [sv, eq_false (show (1 : Fin 2) ≠ 0 by decide), eq_false (show (0 : Fin 2) ≠ 1 by decide), and_true, and_false, and_self, if_true, if_false, Complex.ofReal_zero, Complex.ofReal_one]
     ring
   · refine Subtype.ext (funext fun G => ?_)
     obtain ⟨F0, F', h0, hD⟩ := at_point hB k f φ h (fun x => hform.hol x) hrel v G
     change (TR.Eop v 0 0 (⟨φ, h⟩ : TR.Sm F 2)).1 G - (TR.Eop v 1 1 (⟨φ, h⟩ : TR.Sm F 2)).1 G =
       Complex.I * ((TR.Eop v 0 1 (⟨φ, h⟩ : TR.Sm F 2)).1 G + (TR.Eop v 1 0 (⟨φ, h⟩ : TR.Sm F 2)).1 G)
     rw [E, E, E, E, hD, hD, hD, hD]
-    simp only [sv, eq_false (show (1 : Fin 2) ≠ 0 by decide), eq_false (show (0 : Fin 2) ≠ 1 by decide), eq_self_iff_true,
-      and_true, true_and, and_false, false_and, and_self, if_true, if_false, Complex.ofReal_zero, Complex.ofReal_one]
+    simp only [sv, eq_false (show (1 : Fin 2) ≠ 0 by decide), eq_false (show (0 : Fin 2) ≠ 1 by decide), and_true, and_false, and_self, if_true, if_false, Complex.ofReal_zero, Complex.ofReal_one]
     linear_combination (k v * F0) * Complex.I_mul_I

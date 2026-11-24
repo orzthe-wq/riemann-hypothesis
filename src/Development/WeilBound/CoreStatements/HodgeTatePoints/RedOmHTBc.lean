@@ -1,12 +1,26 @@
 module
 
+public import Mathlib.Basic.NNReal.Defs
+public import Mathlib.RingTheory.Finiteness.Defs
+public import Mathlib.RingTheory.Valuation.Integers
+public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan
+public import Mathlib.Algebra.Module.Projective
+public import Mathlib.Algebra.Ring.Hom.InjSurj
+public import Mathlib.LinearAlgebra.Quotient.Defs
+public import Mathlib.RingTheory.Finiteness.Basic
+public import Mathlib.RingTheory.Flat.Basic
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.LocalRing.Module
+public import Mathlib.Algebra.Module.Lattice.Basic
+public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.OmStable
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigSubEqDifferentSmulEigQuot
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsDiffGenerator
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TwoMulFinrank
 public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsCompactUnitaryPointsAtPlaceFstMemCompact
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DifferentGeneratorDualIntegral
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsDiffGenerator
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTotallyRealEvenNegPlacesLocalNorm
-public import Development.WeilBound.CoreStatements.HodgeTatePoints.FinrankWAddConj
-public import Development.WeilBound.CoreStatements.HodgeTatePoints.GeneratesDiffMap
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.IsFractionRingOfIntegers
+public import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -25,11 +39,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
-public import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -37,6 +48,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,10 +61,512 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FgInfRestrictScalarsOfIntegers, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTotallyRealEvenNegPlacesLocalNorm, Development.WeilBound.CoreStatements.HodgeTatePoints.FinrankWAddConj, Development.WeilBound.CoreStatements.HodgeTatePoints.GeneratesDiffMap, Development.WeilBound.CoreStatements.HodgeTatePoints.RedOmHTBc
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FgInfRestrictScalarsOfIntegers =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FgInfRestrictScalarsOfIntegers", "h": "module\n\npublic import Mathlib.Basic.NNReal.Defs\npublic import Mathlib.RingTheory.Finiteness.Defs\npublic import Mathlib.RingTheory.Valuation.Integers\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan\npublic import Mathlib.Algebra.Module.Projective\npublic import Mathlib.Algebra.Ring.Hom.InjSurj\npublic import Mathlib.LinearAlgebra.Quotient.Defs\npublic import Mathlib.RingTheory.Finiteness.Basic\npublic import Mathlib.RingTheory.Flat.Basic\npublic import Mathlib.RingTheory.Flat.TorsionFree\npublic import Mathlib.RingTheory.LocalRing.Module\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Module NumberField GlobalTheory.CompanionTheory.Ar.HT
+
+namespace GlobalTheory.CompanionTheory.Ar.HT
+
+theorem fg_inf_restrictScalars_of_integers (C : Type) [Field C] (v : Valuation C NNReal) (O : Type)
+    [CommRing O] [Algebra O C] (hv : v.Integers O) (V : Type) [AddCommGroup V] [Module C V]
+    [Module O V] [IsScalarTower O C V] (L : Submodule O V) (U : Submodule C V) (hL : L.FG) :
+    (L ⊓ U.restrictScalars O).FG := by
+  have hinj : Function.Injective (algebraMap O C) := hv.hom_inj
+  haveI : IsDomain O := hinj.isDomain
+  haveI : ValuationRing O := ValuationRing.of_integers v hv
+  let f : L →ₗ[O] (V ⧸ U) := (U.mkQ.restrictScalars O).comp L.subtype
+  haveI : Module.Finite O L := Module.Finite.iff_fg.2 hL
+  haveI : Module.Finite O (LinearMap.range f) := inferInstance
+  haveI : Module.Flat O (LinearMap.range f) := by
+    rw [Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]
+    rintro ⟨x, hx⟩ ⟨⟨a, ha⟩, h⟩
+    have h1 : a • x = 0 := congrArg Subtype.val h
+    have ha0 : algebraMap O C a ≠ 0 := by
+      intro h0
+      exact nonZeroDivisors.ne_zero ha (hinj (by simpa using h0))
+    rw [← algebraMap_smul C a x] at h1
+    have : x = 0 := (smul_eq_zero.1 h1).resolve_left ha0
+    simp [this]
+  haveI : Module.Free O (LinearMap.range f) := Module.free_of_flat_of_isLocalRing
+  obtain ⟨s, hs⟩ := Module.projective_lifting_property f.rangeRestrict LinearMap.id
+    f.surjective_rangeRestrict
+  let p : L →ₗ[O] V := L.subtype.comp (LinearMap.id - s.comp f.rangeRestrict)
+  have key : L ⊓ U.restrictScalars O = LinearMap.range p := by
+    apply le_antisymm
+    · rintro x ⟨hxL, hxU⟩
+      refine ⟨⟨x, hxL⟩, ?_⟩
+      have : f.rangeRestrict ⟨x, hxL⟩ = 0 := by
+        apply Subtype.ext
+        change U.mkQ x = 0
+        exact (Submodule.Quotient.mk_eq_zero U).2 hxU
+      simp [p, this]
+    · rintro _ ⟨y, rfl⟩
+      refine ⟨(y - s (f.rangeRestrict y)).2, ?_⟩
+      have h2 : f.rangeRestrict (s (f.rangeRestrict y)) = f.rangeRestrict y :=
+        LinearMap.congr_fun hs _
+      have h3 : f (y - s (f.rangeRestrict y)) = 0 := by
+        rw [map_sub, sub_eq_zero]
+        exact (congrArg Subtype.val h2).symm
+      exact (Submodule.Quotient.mk_eq_zero U).1 h3
+  rw [key]
+  exact Module.Finite.iff_fg.1 inferInstance
+
+end GlobalTheory.CompanionTheory.Ar.HT
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FgInfRestrictScalarsOfIntegers =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTotallyRealEvenNegPlacesLocalNorm =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTotallyRealEvenNegPlacesLocalNorm", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.LatNormGrLatNeZeroOfSpan\npublic import Mathlib.Algebra.Module.Lattice.Basic\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FgInfRestrictScalarsOfIntegers\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.CompanionTheory.Ar.HT
+
+open Module NumberField
+
+theorem exists_smul_mem_of_mem_span_val {C : Type} [Field C] {v : Valuation C NNReal} {O : Type}
+    [CommRing O] [Algebra O C] (hv : v.Integers O) {V : Type} [AddCommGroup V] [Module C V]
+    [Module O V] [IsScalarTower O C V] (L : Submodule O V) {u : V}
+    (hu : u ∈ Submodule.span C (L : Set V)) : ∃ c : C, c ≠ 0 ∧ c • u ∈ L := by
+  have key : ∀ (a b : C) (x : V), b ≠ 0 → v a ≤ v b → b • x ∈ L → a • x ∈ L := by
+    intro a b x hb hab hx
+    have hvb : 0 < v b := (Valuation.pos_iff v).2 hb
+    have h1 : v (a / b) ≤ 1 := by
+      rw [map_div₀]
+      exact (div_le_one hvb).2 hab
+    obtain ⟨o, ho⟩ := hv.exists_of_le_one h1
+    have h2 : a • x = o • (b • x) := by
+      rw [← IsScalarTower.algebraMap_smul C o, ho, smul_smul, div_mul_cancel₀ _ hb]
+    rw [h2]
+    exact L.smul_mem o hx
+  induction hu using Submodule.span_induction with
+  | mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
+  | add x y _ _ hx hy =>
+    obtain ⟨a, ha, hx⟩ := hx
+    obtain ⟨b, hb, hy⟩ := hy
+    rcases le_total (v a) (v b) with h | h
+    · exact ⟨a, ha, by rw [smul_add]; exact L.add_mem hx (key a b y hb h hy)⟩
+    · exact ⟨b, hb, by rw [smul_add]; exact L.add_mem (key b a x ha h hx) hy⟩
+  | smul d x _ hx =>
+    obtain ⟨a, ha, hx⟩ := hx
+    by_cases hd : d = 0
+    · exact ⟨1, one_ne_zero, by simp [hd]⟩
+    · exact ⟨a / d, div_ne_zero ha hd, by rw [smul_smul, div_mul_cancel₀ _ hd]; exact hx⟩
+
+theorem latIn_isLattice : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (L : Submodule O V) (U : Submodule C V), L.FG → U ≤ Submodule.span C (L : Set V) → (latIn L U).IsLattice C := by
+  intro C _ v O _ _ hv V _ _ _ _ L U hL hU
+  have hfg := GlobalTheory.CompanionTheory.Ar.HT.fg_inf_restrictScalars_of_integers C v O hv V L U hL
+  refine ⟨?_, ?_⟩
+  · have hinj : Function.Injective (U.subtype.restrictScalars O) := Subtype.val_injective
+    apply Submodule.fg_of_fg_map_injective (U.subtype.restrictScalars O) hinj
+    convert hfg using 1
+    ext x
+    constructor
+    · rintro ⟨y, hy, rfl⟩
+      exact ⟨hy, y.2⟩
+    · rintro ⟨h1, h2⟩
+      exact ⟨⟨x, h2⟩, h1, rfl⟩
+  · intro s hs hli
+    letI : IsFractionRing O C := hv.isFractionRing
+    exact (LinearIndependent.iff_fractionRing _ _).mp hli
+end GlobalTheory.CompanionTheory.Ar.HT
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTotallyRealEvenNegPlacesLocalNorm =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.FinrankWAddConj =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HodgeTatePoints.FinrankWAddConj", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.OmStable\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigSubEqDifferentSmulEigQuot\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsDiffGenerator\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TwoMulFinrank\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PositivityTheory.HtPt.Gb
+
+open Module NumberField GlobalTheory.CompanionTheory.Ar.HT
+
+theorem eigQuot_lattice {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O]
+    [Algebra O C] (hv : v.Integers O) {E : Type} [Field E] [NumberField E]
+    {Ω : Type} [AddCommGroup Ω] [Module C Ω] [Module O Ω] [IsScalarTower O C Ω]
+    (ρ : 𝓞 E →+* Module.End C Ω) (σ : E →+* C) (X : Submodule O Ω) (hX : X.IsLattice C) :
+    (latIn (eigQuot ρ σ X) (eigSp ρ σ)).IsLattice C := by
+  let f : Ω →ₗ[O] eigSp ρ σ :=
+    ((eigProj ρ σ).codRestrict (eigSp ρ σ) (LatBasic.eigProj_mem ρ σ)).restrictScalars O
+  have hmap : latIn (eigQuot ρ σ X) (eigSp ρ σ) = X.map f := by
+    ext x
+    change (∃ y ∈ X, eigProj ρ σ y = (x : Ω)) ↔ ∃ y ∈ X, f y = x
+    constructor
+    · rintro ⟨y, hy, h⟩
+      exact ⟨y, hy, Subtype.ext h⟩
+    · rintro ⟨y, hy, h⟩
+      exact ⟨y, hy, congrArg Subtype.val h⟩
+  haveI : IsFractionRing O C := hv.isFractionRing
+  rw [hmap]
+  exact Submodule.IsLattice.of_fg C (hX.fg.map f)
+
+theorem pt_om_block : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) [IsAlgClosed C] [CharZero C] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (κ : O) (N : ℕ) (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (Ω : Type) [AddCommGroup Ω] [Module C Ω] [Module O Ω] [IsScalarTower O C Ω] (P : HTPoint C O c κ N V Ω) (σ : E →+* C), P.omHT σ ≤ P.omRec σ ∧ (∀ x ∈ P.omRec σ, κ • x ∈ P.omHT σ) ∧ (latIn (P.omHT σ) (P.Ωsp σ)).IsLattice C ∧ (latIn (P.omRec σ) (P.Ωsp σ)).IsLattice C := by
+  intro C _ v O _ _ hv _ _ E _ _ c hc κ N V _ _ _ _ Ω _ _ _ _ P σ
+  refine ⟨Submodule.map_mono ?_, ?_, eigQuot_lattice hv _ _ _ (PtBasic.om'_lattice P),
+    eigQuot_lattice hv _ _ _ P.om_lat.toIsLattice⟩
+  · rintro _ ⟨x, hx, rfl⟩
+    exact P.ht_mem x hx
+  · rintro _ ⟨y, hy, rfl⟩
+    obtain ⟨x, hx, e⟩ := P.κ_mem y hy
+    exact ⟨κ • y, ⟨x, hx, e⟩, map_smul _ _ _⟩
+
+section
+
+variable {C O : Type} [Field C] [CommRing O] [Algebra O C] {E : Type} [Field E] [NumberField E]
+  {c : E ≃+* E} {κ : O} {N : ℕ}
+  {V Ω : Type} [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V]
+  [AddCommGroup Ω] [Module C Ω] [Module O Ω] [IsScalarTower O C Ω]
+  (P : HTPoint C O c κ N V Ω)
+
+theorem e_eigProj (hc : ∀ x, c (c x) = x) (σ : E →+* C) {x : V} (hx : x ∈ eigSp P.ρ σ) (y : V) :
+    P.e x (eigProj P.ρ (σ.comp c.toRingHom) y) = P.e x y := by
+  have h : ∀ a : 𝓞 E, P.e x (P.ρ a y) = σ (c (a : E)) * P.e x y := by
+    intro a
+    have h1 := P.adj (RingOfIntegers.mapRingEquiv c a) x y
+    have h2 : RingOfIntegers.mapRingEquiv c (RingOfIntegers.mapRingEquiv c a) = a := by
+      ext; exact hc _
+    rw [h2, LatBasic.mem_eigSp.1 hx, map_smul, LinearMap.smul_apply, smul_eq_mul] at h1
+    exact h1.symm
+
+  simp only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, h, smul_eq_mul,
+  ← mul_assoc]
+  rw [← Finset.sum_mul]
+  have : ∑ k, (σ.comp c.toRingHom) (dualInt E k) * σ (c ((RingOfIntegers.basis E k : 𝓞 E) : E)) = 1 := by
+
+    rw [← map_one (σ.comp c.toRingHom), ← LatBasic.sum_dualInt_mul, map_sum]
+    simp
+  rw [this, one_mul]
+
+theorem finrank_eigSp [CharZero C] {v : Valuation C NNReal} (hv : v.Integers O) (σ : E →+* C) :
+    finrank C (eigSp P.ρ σ) = N := by
+  obtain ⟨h1, d, -, -, h2⟩ := exists_diff_generator C v O hv E σ
+  obtain ⟨-, -, h3, h4⟩ := SubDiffQuot.eigSub_eq_different_smul_eigQuot O C V E P.ρ P.T N P.t σ d
+    hv.hom_inj h1 h2 P.free
+  rw [← h4, finrank_span_eq_card h3, Fintype.card_fin]
+
+theorem finrank_W_add_Ω [CharZero C] {v : Valuation C NNReal} (hv : v.Integers O) (σ : E →+* C) :
+    finrank C (P.Wsp σ) + finrank C (P.Ωsp σ) = N := by
+  haveI := PtBasic.finite_V P
+  let f := P.ht ∘ₗ (eigSp P.ρ σ).subtype
+  have h := f.finrank_range_add_finrank_ker
+  have hr : LinearMap.range f = P.Ωsp σ := by
+    apply le_antisymm
+    · rintro _ ⟨x, rfl⟩
+      change P.ht x ∈ eigSp _ _
+      rw [← LatBasic.eigProj_of_mem x.2, PtBasic.ht_eigProj]
+      exact LatBasic.eigProj_mem _ _ _
+    · intro y hy
+      obtain ⟨x, rfl⟩ := PtBasic.ht_surjective P y
+      refine ⟨⟨_, LatBasic.eigProj_mem P.ρ σ x⟩, ?_⟩
+      change P.ht (eigProj P.ρ σ x) = _
+      rw [PtBasic.ht_eigProj, LatBasic.eigProj_of_mem hy]
+  have hk : finrank C (LinearMap.ker f) = finrank C (P.Wsp σ) := by
+    rw [← Submodule.finrank_map_subtype_eq, LinearMap.ker_comp, Submodule.map_comap_subtype,
+      inf_comm]
+    rfl
+  rw [hr, hk, finrank_eigSp P hv] at h
+  omega
+
+theorem finrank_W_add_conj [CharZero C] {v : Valuation C NNReal} (hv : v.Integers O)
+    (hc : ∀ x, c (c x) = x) (σ : E →+* C) :
+    finrank C (P.Wsp σ) + finrank C (P.Wsp (σ.comp c.toRingHom)) = N := by
+  haveI := PtBasic.finite_V P
+  set τ := σ.comp c.toRingHom
+  let B : eigSp P.ρ σ →ₗ[C] Module.Dual C (eigSp P.ρ τ) :=
+    (P.e.domRestrict₁₂ (eigSp P.ρ σ) (eigSp P.ρ τ))
+  have hinj : Function.Injective B := by
+    rw [← LinearMap.ker_eq_bot, eq_bot_iff]
+    intro x hx
+    have : (x : V) = 0 := P.nondeg _ fun y => by
+      rw [PtBasic.e_skew, ← e_eigProj P hc σ x.2, neg_eq_zero]
+      exact congrArg (fun φ => φ ⟨_, LatBasic.eigProj_mem P.ρ τ y⟩) (LinearMap.mem_ker.1 hx)
+    exact Subtype.ext this
+  have hsurj : Function.Surjective B :=
+    (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by
+      rw [Subspace.dual_finrank_eq, finrank_eigSp P hv, finrank_eigSp P hv])).1 hinj
+  let W₁ : Submodule C (eigSp P.ρ σ) := P.W.comap (eigSp P.ρ σ).subtype
+  let W₂ : Submodule C (eigSp P.ρ τ) := P.W.comap (eigSp P.ρ τ).subtype
+  have hW : W₁ = W₂.dualAnnihilator.comap B := by
+    ext x
+    rw [Submodule.mem_comap (f := B), Submodule.mem_dualAnnihilator]
+    change P.ht x = 0 ↔ _
+    rw [P.lagr]
+    refine ⟨fun h w hw => h w hw, fun h y hy => ?_⟩
+    rw [← e_eigProj P hc σ x.2]
+    refine h ⟨_, LatBasic.eigProj_mem P.ρ τ y⟩ ?_
+    change P.ht (eigProj P.ρ τ y) = 0
+    rw [PtBasic.ht_eigProj, hy, map_zero]
+  have e1 : finrank C W₁ = finrank C W₂.dualAnnihilator := by
+    rw [← (LinearEquiv.ofBijective B ⟨hinj, hsurj⟩).finrank_map_eq W₁, hW]
+    exact congrArg (fun U : Submodule C (Module.Dual C (eigSp P.ρ τ)) => finrank C U)
+      (Submodule.map_comap_eq_of_surjective hsurj _)
+  have e2 := Subspace.finrank_add_finrank_dualAnnihilator_eq W₂
+  have e3 : ∀ s : E →+* C, finrank C (P.W.comap (eigSp P.ρ s).subtype) = finrank C (P.Wsp s) := by
+    intro s
+    rw [← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype, inf_comm]
+    rfl
+  rw [← e1, finrank_eigSp P hv, e3, e3] at e2
+  omega
+
+theorem finrank_Ω_add_Ω [CharZero C] {v : Valuation C NNReal} (hv : v.Integers O)
+    (hc : ∀ x, c (c x) = x) (σ : E →+* C) :
+    finrank C (P.Ωsp σ) + finrank C (P.Ωsp (σ.comp c.toRingHom)) = N := by
+  have h1 := finrank_W_add_Ω P hv σ
+  have h2 := finrank_W_add_Ω P hv (σ.comp c.toRingHom)
+  have h3 := finrank_W_add_conj P hv hc σ
+  omega
+
+end
+
+end PositivityTheory.HtPt.Gb
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.FinrankWAddConj =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.GeneratesDiffMap =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HodgeTatePoints.GeneratesDiffMap", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsCompactUnitaryPointsAtPlaceFstMemCompact\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DifferentGeneratorDualIntegral\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PositivityTheory.HtPt.Gb
+
+open Module NumberField GlobalTheory.CompanionTheory.Ar.HT TensorProduct
+
+section
+
+variable {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} [Field E] [NumberField E]
+  {c : E ≃+* E} {p R N : ℕ}
+  {Ω : Type} [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω]
+  {D : HTChart A K c p R N Ω}
+  {C O : Type} [Field C] [CommRing O] [Algebra O C] {κ' : O}
+  {V Ω' : Type} [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V]
+  [AddCommGroup Ω'] [Module C Ω'] [Module O Ω'] [IsScalarTower O C Ω']
+  {φ : A →+* O} {P : HTPoint C O c κ' N V Ω'} {ι : D.om →ₛₗ[φ] Ω'}
+
+theorem om'_le_om (D : HTChart A K c p R N Ω) : D.om' ≤ D.om := by
+  refine sup_le (Submodule.span_le.2 ?_) ?_
+  · rintro _ ⟨x, rfl⟩
+    exact D.h_mem x
+  · rintro _ ⟨x, hx, rfl⟩
+    exact D.om.smul_mem _ hx
+
+theorem pow_smul_mem_om' (D : HTChart A K c p R N Ω) {x : Ω} (hx : x ∈ D.om) :
+    (p : A) ^ R • x ∈ D.om' :=
+  Submodule.mem_sup_right ⟨x, hx, rfl⟩
+
+theorem span_om' (hred : D.ReducesTo φ P ι) (hκ : κ' ∣ (p : O) ^ R) :
+    Submodule.span O (ι '' {x : D.om | (x : Ω) ∈ D.om'}) = P.om' := by
+  have hn : ∀ y : Ω', (p ^ R) • y = (p : O) ^ R • y := fun y => by
+    rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul]
+  have hι : ∀ x : D.om, ι ((p : A) ^ R • x) = (p : O) ^ R • ι x := fun x => by
+    rw [ι.map_smulₛₗ, map_pow, map_natCast]
+  have a1 : ∀ y ∈ P.om, (p : O) ^ R • y ∈ P.om' := by
+    intro y hy
+    obtain ⟨w, hw⟩ := hκ
+    obtain ⟨x, hx, e⟩ := P.κ_mem _ (P.om.smul_mem w hy)
+    exact ⟨x, hx, by rw [hw, mul_smul]; exact e⟩
+  have a2 : ∀ y ∈ P.om, (p : O) ^ R • y ∈
+      Submodule.span O (ι '' {x : D.om | (x : Ω) ∈ D.om'}) := by
+    intro y hy
+    rw [← hred.span_eq] at hy
+    have : Submodule.span O (Set.range ι) ≤ (Submodule.span O
+        (ι '' {x : D.om | (x : Ω) ∈ D.om'})).comap ((p : O) ^ R • LinearMap.id) := by
+      rw [Submodule.span_le]
+      rintro _ ⟨x, rfl⟩
+      exact Submodule.subset_span ⟨(p : A) ^ R • x, pow_smul_mem_om' D x.2, hι x⟩
+    exact this hy
+  have ht : ∀ x, P.tate x ∈ P.T := by
+    intro x
+    refine P.T.sum_mem fun i _ => ?_
+
+    rw [← (RingOfIntegers.basis E).sum_repr (x i), map_sum, LinearMap.sum_apply]
+    refine P.T.sum_mem fun k _ => ?_
+    rw [map_zsmul, LinearMap.smul_apply]
+    refine zsmul_mem ?_ _
+    rw [P.free.2.2]
+    exact Submodule.subset_span ⟨(i, k), rfl⟩
+  apply le_antisymm
+  · have h : D.om' ≤ (P.om'.comap ι).map D.om.subtype := by
+      refine sup_le (Submodule.span_le.2 ?_) ?_
+      · rintro _ ⟨x, rfl⟩
+        refine ⟨⟨D.h x, D.h_mem x⟩, ?_, rfl⟩
+        obtain ⟨y, hy, e⟩ := hred.ht_eq x
+        change ι _ ∈ P.om'
+        rw [e, hn]
+        exact P.om'.add_mem ⟨_, ht x, rfl⟩ (a1 y hy)
+      · rintro _ ⟨x, hx, rfl⟩
+        refine ⟨(p : A) ^ R • ⟨x, hx⟩, ?_, rfl⟩
+        change ι _ ∈ P.om'
+        rw [hι]
+        refine a1 _ ?_
+        rw [← hred.span_eq]
+        exact Submodule.subset_span ⟨_, rfl⟩
+    rw [Submodule.span_le]
+    rintro _ ⟨x, hx, rfl⟩
+    obtain ⟨x', hx', e⟩ := h hx
+    rw [← (Subtype.ext e : x' = x)]
+    exact hx'
+  · rw [HTPoint.om', Submodule.map_le_iff_le_comap]
+    conv_lhs => rw [P.free.2.2]
+    rw [Submodule.span_le]
+    rintro _ ⟨⟨i, k⟩, rfl⟩
+    have e0 : P.ρ (RingOfIntegers.basis E k) (P.t i) =
+        P.tate (Pi.single i (RingOfIntegers.basis E k)) := by
+      rw [HTPoint.tate, Finset.sum_eq_single i]
+      · simp
+      · intro j _ hj
+        simp [hj]
+      · simp
+    obtain ⟨y, hy, e⟩ := hred.ht_eq (Pi.single i (RingOfIntegers.basis E k))
+    change P.ht (P.ρ (RingOfIntegers.basis E k) (P.t i)) ∈ Submodule.span O _
+    rw [e0, eq_sub_of_add_eq e.symm, hn]
+    exact Submodule.sub_mem _ (Submodule.subset_span ⟨_, Submodule.mem_sup_left
+      (Submodule.subset_span ⟨_, rfl⟩), rfl⟩) (a2 y hy)
+
+omit [NumberField E] in
+theorem transfer_mul [NumberField E] (hAK : Function.Injective (algebraMap A K)) {σ : E →+* K}
+    {σ' : E →+* C} (hσ : ∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap A K).range)
+    (hφ : ∀ (a : 𝓞 E) (a' : A), algebraMap A K a' = σ (a : E) → algebraMap O C (φ a') = σ' (a : E))
+    {d a' : A} {e : E} (h : algebraMap A K a' = algebraMap A K d * σ e) :
+    algebraMap O C (φ a') = algebraMap O C (φ d) * σ' e := by
+  obtain ⟨a, b, hb, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 E) e
+  have hb0 : algebraMap (𝓞 E) E b ≠ 0 :=
+    IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb
+  obtain ⟨α, hα⟩ := hσ a
+  obtain ⟨β, hβ⟩ := hσ b
+  have h1 : a' * β = d * α := hAK (by
+    rw [map_mul, map_mul, h, hα, hβ, map_div₀, mul_assoc,
+      div_mul_cancel₀ _ ((map_ne_zero σ).2 hb0)])
+  have h2 := congrArg (fun t => algebraMap O C (φ t)) h1
+  simp only [map_mul, hφ a α hα, hφ b β hβ] at h2
+  rw [map_div₀, ← mul_div_assoc, eq_div_iff ((map_ne_zero σ').2 hb0)]
+  exact h2
+
+theorem generatesDiff_map (hAK : Function.Injective (algebraMap A K)) {σ : E →+* K}
+    {σ' : E →+* C} (hσ : ∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap A K).range)
+    (hφ : ∀ (a : 𝓞 E) (a' : A), algebraMap A K a' = σ (a : E) → algebraMap O C (φ a') = σ' (a : E))
+    {d : A} (hd : GeneratesDiff σ d) : GeneratesDiff σ' (φ d) := by
+  apply le_antisymm
+  · have key : ∀ y ∈ Submodule.span A {y : K | ∃ x ∈ differentIdeal ℤ (𝓞 E), y = σ (x : E)},
+        ∃ a', algebraMap A K a' = y ∧ algebraMap O C (φ a') ∈
+          Submodule.span O {y : C | ∃ x ∈ differentIdeal ℤ (𝓞 E), y = σ' (x : E)} := by
+      intro y hy
+      induction hy using Submodule.span_induction with
+      | mem y h =>
+        obtain ⟨x, hx, rfl⟩ := h
+        obtain ⟨a', ha'⟩ := hσ x
+        exact ⟨a', ha', Submodule.subset_span ⟨x, hx, hφ x a' ha'⟩⟩
+      | zero => exact ⟨0, map_zero _, by simp⟩
+      | add y z _ _ hy hz =>
+        obtain ⟨a, ha, ha'⟩ := hy
+        obtain ⟨b, hb, hb'⟩ := hz
+        exact ⟨a + b, by rw [map_add (f := _), ha, hb], by
+          rw [map_add (f := _), map_add (f := _)]; exact Submodule.add_mem _ ha' hb'⟩
+      | smul r y _ hy =>
+        obtain ⟨a, ha, ha'⟩ := hy
+        exact ⟨r * a, by rw [map_mul, ha, Algebra.smul_def], by
+          rw [map_mul, map_mul, ← Algebra.smul_def]; exact Submodule.smul_mem _ _ ha'⟩
+    obtain ⟨a', ha, ha'⟩ := key _ (hd.le (Submodule.mem_span_singleton_self _))
+    rw [hAK ha] at ha'
+    exact (Submodule.span_singleton_le_iff_mem _ _).2 ha'
+  · rw [Submodule.span_le]
+    rintro _ ⟨x, hx, rfl⟩
+    obtain ⟨a, ha⟩ := Submodule.mem_span_singleton.1 (hd.ge (Submodule.subset_span ⟨x, hx, rfl⟩))
+    refine Submodule.mem_span_singleton.2 ⟨φ a, ?_⟩
+    rw [← hφ x (a * d) (by rw [map_mul, ← ha, Algebra.smul_def]), map_mul, map_mul,
+      Algebra.smul_def]
+
+theorem smul_eigProj_eq (ρ : 𝓞 E →+* Module.End K Ω) {σ : E →+* K} {d : A}
+    {cc : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → A}
+    (h : ∀ k, algebraMap A K (cc k) = algebraMap A K d * σ (dualInt E k)) (x : Ω) :
+    d • eigProj ρ σ x = ∑ k, cc k • ρ (RingOfIntegers.basis E k) x := by
+  simp only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, Finset.smul_sum]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  rw [← algebraMap_smul K (cc k), h, mul_smul, algebraMap_smul]
+
+theorem span_eigQuot {σ : E →+* K} {σ' : E →+* C} {d : A}
+    (h1 : ∀ x ∈ D.om, d • eigProj D.ρΩ σ x ∈ D.om)
+    (h2 : ∀ (x y : D.om), (y : Ω) = d • eigProj D.ρΩ σ x → ι y = φ d • eigProj P.ρΩ σ' (ι x))
+    {X : Submodule A Ω} (hX : X ≤ D.om) {X' : Submodule O Ω'}
+    (hs : Submodule.span O (ι '' {x : D.om | (x : Ω) ∈ X}) = X') :
+    Submodule.span O (ι '' {y : D.om | ∃ z ∈ eigQuot D.ρΩ σ X, (y : Ω) = d • z}) =
+      (eigQuot P.ρΩ σ' X').map (φ d • LinearMap.id) := by
+  rw [eigQuot, eigQuot, ← Submodule.map_comp, ← hs, Submodule.map_span]
+  congr 1
+  ext w
+  constructor
+  · rintro ⟨y, ⟨_, ⟨x, hx, rfl⟩, e⟩, rfl⟩
+    exact ⟨_, ⟨⟨x, hX hx⟩, hx, rfl⟩, (h2 ⟨x, hX hx⟩ y e).symm⟩
+  · rintro ⟨_, ⟨x, hx, rfl⟩, rfl⟩
+    exact ⟨⟨_, h1 x x.2⟩, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, h2 x _ rfl⟩
+
+end
+
+theorem red_proj : ∀ (A K : Type) [CommRing A] [Field K] [Algebra A K] [CharZero K] (hAK : Function.Injective (algebraMap A K)) (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (p R N : ℕ) [Fact p.Prime] (Ω : Type) [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω] (D : HTChart A K c p R N Ω) (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) (κ' : O) (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (Ω' : Type) [AddCommGroup Ω'] [Module C Ω'] [Module O Ω'] [IsScalarTower O C Ω'] (φ : A →+* O) (P : HTPoint C O c κ' N V Ω') (ι : D.om →ₛₗ[φ] Ω') (hred : D.ReducesTo φ P ι) (σ : E →+* K) (σ' : E →+* C) (d : A), (∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap A K).range) → (∀ (a : 𝓞 E) (a' : A), algebraMap A K a' = σ (a : E) → algebraMap O C (φ a') = σ' (a : E)) → GeneratesDiff σ d → κ' ∣ (p : O) ^ R → GeneratesDiff σ' (φ d) ∧ (∀ x ∈ D.om, d • eigProj D.ρΩ σ x ∈ D.om) ∧ (∀ (x y : D.om), (y : Ω) = d • eigProj D.ρΩ σ x → ι y = φ d • eigProj P.ρΩ σ' (ι x)) ∧ Submodule.span O (ι '' {y : D.om | ∃ z ∈ D.omHT σ, (y : Ω) = d • z}) = (P.omHT σ').map (φ d • LinearMap.id) ∧ Submodule.span O (ι '' {y : D.om | ∃ z ∈ eigQuot D.ρΩ σ D.om, (y : Ω) = d • z}) = (P.omRec σ').map (φ d • LinearMap.id) := by
+  intro A K _ _ _ _ hAK E _ _ c hc p R N _ Ω _ _ _ _ D C _ _ _ v O _ _ hv κ' V _ _ _ _ Ω' _ _ _ _
+    φ P ι hred σ σ' d hσ hφ hd hκ
+  obtain ⟨-, hcc, -⟩ := different_generator_dualInt A K E σ d hAK hσ hd
+  choose cc hcc using hcc
+  have h1 : ∀ x ∈ D.om, d • eigProj D.ρΩ σ x ∈ D.om := by
+    intro x hx
+    rw [smul_eigProj_eq _ hcc]
+    exact D.om.sum_mem fun k _ => D.om.smul_mem _ (D.om_stable _ x hx)
+  have h2 : ∀ (x y : D.om), (y : Ω) = d • eigProj D.ρΩ σ x →
+      ι y = φ d • eigProj P.ρΩ σ' (ι x) := by
+    intro x y e
+    have hy : y = ∑ k, cc k • (⟨D.ρΩ (RingOfIntegers.basis E k) x, D.om_stable _ x x.2⟩ : D.om) := by
+      apply Subtype.ext
+      rw [e, smul_eigProj_eq _ hcc]
+      simp
+
+    rw [hy, map_sum, smul_eigProj_eq (cc := fun k => φ (cc k)) _
+    (fun k => transfer_mul hAK hσ hφ (hcc k))]
+    refine Finset.sum_congr rfl fun k _ => ?_
+    rw [ι.map_smulₛₗ, hred.lin]
+  refine ⟨generatesDiff_map hAK hσ hφ hd, h1, h2,
+    span_eigQuot h1 h2 (om'_le_om D) (span_om' hred hκ), span_eigQuot h1 h2 le_rfl ?_⟩
+  rw [← hred.span_eq]
+  congr 1
+  ext w
+  simp
+
+end PositivityTheory.HtPt.Gb
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.GeneratesDiffMap =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.RedOmHTBc =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HodgeTatePoints.RedOmHTBc", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsCompactUnitaryPointsAtPlaceFstMemCompact\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DifferentGeneratorDualIntegral\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsDiffGenerator\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.ExistsTotallyRealEvenNegPlacesLocalNorm\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.FinrankWAddConj\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.GeneratesDiffMap\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.IsFractionRingOfIntegers\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\npublic import Mathlib.RingTheory.Ideal.KrullsHeightTheorem\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -210,3 +724,7 @@ theorem chart_rank : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRin
   exact finrank_Ω_add_Ω P hv hc (ψ.comp σ)
 
 end PositivityTheory.HtPt.Gb
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.RedOmHTBc =====

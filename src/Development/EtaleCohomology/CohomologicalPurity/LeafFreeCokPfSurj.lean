@@ -139,7 +139,6 @@ theorem exists_finset_adjoin_laurent_preimage (R : Type) [CommRing R] {A' B' A B
     have := N.smul_mem r (gen x)
     convert this using 1
     first
-    | exact (Finsupp.smul_single_one x r).symm
     | (unfold ModuleCat.freeMk; erw [Finsupp.smul_single_one])
 
 theorem leafFreeCokSurj : LeafFreeCokSurj := by

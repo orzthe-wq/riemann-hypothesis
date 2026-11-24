@@ -3,7 +3,7 @@ module
 public import Development.WeilBound.ThetaLifts.LeviDeterminants.CharacterAdmissibility.DoublingGramFromBlocks
 public import Development.WeilBound.ThetaLifts.LeviDeterminants.CharacterAdmissibility.SchrodingerApplyZeroOfFst
 public import Development.WeilBound.ThetaLifts.LeviDeterminants.MixedModels.AdaptC
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddCharHalfTraceTensorLatticeHeisenbergCocycle
+import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.AddCharHalfTraceTensorLatticeHeisenbergCocycle
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerTransitive
 public import Development.WeilBound.ThetaLifts.LeviDeterminants.EqZeroOfTheta
 public import Development.WeilBound.ThetaLifts.LeviDeterminants.EvFrame
@@ -199,7 +199,7 @@ theorem chartW {n d d₁ r s r' s' i₀ i₁ : ℕ} {X : Spc F E n} {W : Spc F E
     conv_rhs => rw [← βA.sum_repr (b z k), Finset.sum_mul, map_sum, ← Finset.sum_neg_distrib]
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [smul_mul_assoc, map_smul, smul_eq_mul, ← mul_neg]
-  have hTr : ∀ z, Tr (cA σ z) = Tr z := GlobalTheory.VacCocycle.trace_conj (cA σ) (cA_cA hB)
+  have hTr : ∀ z, Tr (cA σ z) = Tr z := Tw.VacCocycle.trace_conj (cA σ) (cA_cA hB)
   have ta : ∀ z z', t (z + z') = t z + t z' := fun z z' => Matrix.add_mul _ _ _
   have ts : ∀ (c : AF F) z, t (c • z) = c • t z := fun c z => Matrix.smul_mul _ _ _
   have hb : IsLinearMap (AF F) b := ⟨fun z z' => by simp only [b, ta]; rfl, fun c z => by simp only [b, ts]; rfl⟩

@@ -4,9 +4,12 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.MemEigSpOfMemHtDual
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilEndomorphismStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilLocalStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundleStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilEndomorphism
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilLocal
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,7 +69,7 @@ theorem htOm_coherent : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type)
   have mult : ∀ (q : Cpt ξ) (u : Module.Dual Ω E), u ∈ M.omLat q → n • u ∈ M.htOm L n q := by
     intro q u hu
     obtain ⟨⟨U, hqU, w, hw⟩, hdiff⟩ :=
-      GlobalTheory.T.hodge_tate_weil_local X Ω ξ hgen hnorm G hsemi L n hn hfull e hW E M q
+      _root_.GlobalTheory.CompanionTheory.Ar.htLat_exists_lifts X Ω ξ hgen hnorm G hsemi L n hn hfull e hW E M q
     have h1 : (1 : Over.mk ξ ⟶ G) ^ n = 1 := one_pow n
     have h0 : M.IsHTAt L n 1 q (w 1) := hw 1 h1 q hqU
     have h2 : M.IsHTAt L n 1 q (w 1 + n • u) := (hdiff 1 (w 1) _ h1 h0).2 ⟨u, hu, rfl⟩
@@ -77,10 +80,10 @@ theorem htOm_coherent : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type)
     haveI := hsemi
     haveI : IsCommMonObj G := IsSemiAbelian.comm
     have hsm : AlgebraicGeometry.Smooth G.hom := IsSemiAbelian.smooth
-    obtain ⟨-, hVB⟩ := GlobalTheory.T.lie_omega_lattice_vector_bundle X Ω ξ G E M hgen hsm
+    obtain ⟨-, hVB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth X Ω ξ G E M hgen hsm
     obtain ⟨U2, hpU2, bv, -, hfr⟩ := hVB p (Set.mem_univ p)
     obtain ⟨⟨U1, hpU1, w, hw⟩, -⟩ :=
-      GlobalTheory.T.hodge_tate_weil_local X Ω ξ hgen hnorm G hsemi L n hn hfull e hW E M p
+      _root_.GlobalTheory.CompanionTheory.Ar.htLat_exists_lifts X Ω ξ hgen hnorm G hsemi L n hn hfull e hW E M p
     haveI : Finite {x : Over.mk ξ ⟶ G // x ^ n = 1} := hW.finite
     obtain ⟨k, ⟨eqv⟩⟩ := Finite.exists_equiv_fin {x : Over.mk ξ ⟶ G // x ^ n = 1}
     let b1 : Fin k → Module.Dual Ω E := fun i => w (eqv.symm i).1
@@ -90,7 +93,7 @@ theorem htOm_coherent : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type)
     have hq1 := (TopologicalSpace.Opens.mem_inf.1 hqU).1
     have hq2 := (TopologicalSpace.Opens.mem_inf.1 hqU).2
     obtain ⟨-, hframe⟩ := hfr q (Set.mem_univ q) hq2
-    obtain ⟨-, hdiff⟩ := GlobalTheory.T.hodge_tate_weil_local X Ω ξ hgen hnorm G hsemi L n hn hfull e hW E M q
+    obtain ⟨-, hdiff⟩ := _root_.GlobalTheory.CompanionTheory.Ar.htLat_exists_lifts X Ω ξ hgen hnorm G hsemi L n hn hfull e hW E M q
     apply le_antisymm
     · simp only [GlobalTheory.CompanionTheory.Ar.LieModel.htOm]
       refine Submodule.span_le.mpr ?_
@@ -135,7 +138,7 @@ theorem htOm_coherent : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Ω : Type)
         rw [MonObj.mul_comp]
         exact hW.mul_right x _ _ hx (by rw [← MonObj.pow_comp, hg, MonObj.one_comp])
           (by rw [← MonObj.pow_comp, hg', MonObj.one_comp]))
-      exact Submodule.subset_span ⟨y', hy', GlobalTheory.T.hodge_tate_weil_endomorphism X Ω ξ hgen hnorm G hsemi L n hn hfull e hW
+      exact Submodule.subset_span ⟨y', hy', _root_.GlobalTheory.CompanionTheory.Ar.LieModel.isHTAt_end X Ω ξ hgen hnorm G hsemi L n hn hfull e hW
         E M a A hA x y' hx hy' (fun g hg => (hrel g hg).symm) q w hxw⟩
     | zero => rw [LinearMap.zero_comp]; exact Submodule.zero_mem _
     | add w1 w2 _ _ h1 h2 => rw [LinearMap.add_comp]; exact Submodule.add_mem _ h1 h2

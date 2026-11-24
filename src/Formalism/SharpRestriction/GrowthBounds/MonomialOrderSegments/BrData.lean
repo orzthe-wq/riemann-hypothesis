@@ -757,9 +757,9 @@ theorem phDeg_mem (G0 : MvPolynomial (PlaneGramData.ML J Dt.nL r × Fin r) (G.KK
   rw [Finset.mem_singleton] at hβ'
   subst hβ'
   rcases i with b | t
-  · simp only [ldeg, TwistData.phE_apply_inl]
+  · simp only [ldeg]
     exact h1 b
-  · simp only [ldeg, TwistData.phE_apply_inr]
+  · simp only [ldeg]
     exact h2 t
 
 instance kkCharZero_data [CharZero O] : CharZero (G.KK O) :=

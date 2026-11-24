@@ -169,7 +169,7 @@ private theorem exists_injective_linearMap_gram_of_det_ne_zero {L : Type} [Field
     have h0 : Pᴴ * mat k w * P = 0 := by
       ext a b
       have := congrFun (congrFun (congrFun hk w) a) b
-      simp only [Matrix.mul_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul, mul_assoc,
+      simp only [Matrix.mul_apply, Finset.sum_mul, mul_assoc,
         conjTranspose_apply, Matrix.zero_apply]
       rw [Finset.sum_comm]
       simpa [Φ, toR, hP, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc] using this

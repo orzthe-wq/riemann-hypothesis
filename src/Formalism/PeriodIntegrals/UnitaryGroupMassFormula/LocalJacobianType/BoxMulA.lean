@@ -72,7 +72,6 @@ theorem locallyCompact_Fv : LocallyCompactSpace (Fv F v) :=
 
 theorem borel_Fv : BorelSpace (Fv F v) := by
   first
-  | exact inferInstance
   | exact ⟨rfl⟩
 
 abbrev Ov : Set (Fv F v) := (v.adicCompletionIntegers F : Set (Fv F v))
@@ -97,43 +96,6 @@ theorem q_ne_zero : Ideal.absNorm v.asIdeal ≠ 0 := by
   intro h
   exact v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)
 
-theorem mem_max_iff (x : v.adicCompletionIntegers F) :
-    x ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) ↔ Valued.v (x : Fv F v) < 1 := by
-  rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
-  have hx1 : Valued.v (x : Fv F v) ≤ 1 := x.2
-  constructor
-  · intro hx
-    refine lt_of_le_of_ne hx1 (fun h1 => hx ?_)
-    have hx0 : (x : Fv F v) ≠ 0 := by
-      intro h0
-      rw [h0, map_zero] at h1
-      exact zero_ne_one h1
-    have hinv : Valued.v ((x : Fv F v)⁻¹) ≤ 1 := by
-      rw [map_inv₀, h1, inv_one]
-    have hmul : x * ⟨(x : Fv F v)⁻¹, hinv⟩ = 1 := by
-      apply Subtype.ext
-      change (x : Fv F v) * (x : Fv F v)⁻¹ = 1
-      exact mul_inv_cancel₀ hx0
-    exact ⟨⟨x, ⟨(x : Fv F v)⁻¹, hinv⟩, hmul, by rw [mul_comm]; exact hmul⟩, rfl⟩
-  · intro hlt hu
-    obtain ⟨y, hy⟩ := hu.exists_right_inv
-    have h2 : (x : Fv F v) * (y : Fv F v) = 1 := congrArg Subtype.val hy
-    have hy1 : Valued.v (y : Fv F v) ≤ 1 := y.2
-    have h3 : Valued.v (x : Fv F v) * Valued.v (y : Fv F v) = 1 := by
-      rw [← map_mul, h2, map_one]
-    have h4 : Valued.v (x : Fv F v) * Valued.v (y : Fv F v) < 1 :=
-      calc Valued.v (x : Fv F v) * Valued.v (y : Fv F v) ≤ Valued.v (x : Fv F v) * 1 :=
-            by
-              first
-              | gcongr
-              | exact mul_le_mul_of_nonneg_left hy1 zero_le'
-              | exact mul_le_mul_right' hy1 _
-              | exact mul_le_mul_left hy1 _
-        _ = Valued.v (x : Fv F v) := mul_one _
-        _ < 1 := hlt
-    rw [h3] at h4
-    exact lt_irrefl _ h4
-
 theorem lt_one_iff (ϖ : Fv F v) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (y : Fv F v) :
     Valued.v y < 1 ↔ Valued.v (ϖ⁻¹ * y) ≤ 1 := by
   rw [map_mul, map_inv₀, hϖ]
@@ -143,8 +105,6 @@ theorem lt_one_iff (ϖ : Fv F v) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (
   · obtain ⟨n, hn⟩ : ∃ n : ℤ, Valued.v y = WithZero.exp n := by
       first
       | exact ⟨WithZero.log (Valued.v y), (WithZero.exp_log h0).symm⟩
-      | (obtain ⟨a, ha⟩ := WithZero.ne_zero_iff_exists.mp h0
-         exact ⟨Multiplicative.toAdd a, by rw [← ha]; rfl⟩)
     rw [hn, ← WithZero.exp_neg, neg_neg, ← WithZero.exp_add, ← WithZero.exp_zero,
       WithZero.exp_lt_exp, WithZero.exp_le_exp]
     omega
@@ -198,7 +158,7 @@ theorem measure_Ov [MeasurableSpace (Fv F v)] [BorelSpace (Fv F v)] (μ : Measur
   have hHset : (H : Set O') = Subtype.val ⁻¹' Mv v ϖ := by
     ext x
     show x ∈ IsLocalRing.maximalIdeal O' ↔ _
-    rw [mem_max_iff, lt_one_iff v ϖ hϖ]
+    rw [_root_.ReciprocityTheory.Aut.mem_maxIdeal_iff, lt_one_iff v ϖ hϖ]
     rfl
   have hH : MeasurableSet (H : Set O') := by
     rw [hHset]; exact measurable_subtype_coe (isOpen_Mv v ϖ).measurableSet
@@ -244,7 +204,6 @@ theorem dhc_unif (ϖ : Fv F v) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (h�
   have h3 : (Ideal.absNorm v.asIdeal : ℝ≥0∞) *
       ((distribHaarChar (Fv F v) (Units.mk0 ϖ hϖ0) : ℝ≥0) : ℝ≥0∞) = 1 := by
     first
-    | exact (ENNReal.mul_eq_mul_right h0 htop).mp (by rw [one_mul]; exact h2)
     | exact (ENNReal.mul_left_inj h0 htop).mp (by rw [one_mul]; exact h2)
   have h4 : (Ideal.absNorm v.asIdeal : ℝ≥0) *
       distribHaarChar (Fv F v) (Units.mk0 ϖ hϖ0) = 1 := by
@@ -267,7 +226,6 @@ theorem dhc_unit (u : Fv F v) (hu : Valued.v u = 1) (hu0 : u ≠ 0) :
     (isCompact_Ov v).measure_lt_top.ne
   have h2 : ((distribHaarChar (Fv F v) (Units.mk0 u hu0) : ℝ≥0) : ℝ≥0∞) = 1 := by
     first
-    | exact (ENNReal.mul_eq_mul_right h0 htop).mp (by rw [one_mul]; exact h1)
     | exact (ENNReal.mul_left_inj h0 htop).mp (by rw [one_mul]; exact h1)
   exact_mod_cast h2
 
@@ -281,7 +239,6 @@ private theorem exp_zpow_lemma_2 (k : ℤ) :
   have hne : (WithZero.exp (-1 : ℤ)) ≠ 0 := by
     first
     | exact WithZero.exp_ne_zero
-    | exact WithZero.coe_ne_zero
   refine Int.induction_on k ?_ (fun i ih => ?_) (fun i ih => ?_)
   · simp [WithZero.exp_zero]
   · rw [zpow_add_one₀ hne, ih, ← WithZero.exp_add]
@@ -299,11 +256,9 @@ theorem modF_Fv (a : Fv F v) (ha : a ≠ 0) :
     rw [h, map_zero] at hϖ
     first
     | exact WithZero.exp_ne_zero hϖ.symm
-    | exact WithZero.coe_ne_zero hϖ.symm
   have hva : Valued.v a ≠ 0 := by
     first
     | exact (map_ne_zero _).mpr ha
-    | exact (Valuation.ne_zero_iff _).mpr ha
   unfold PI.NglqJacSplitW.modF PI.LocJacTyp.absV
   simp only [dif_neg ha, dif_neg hva]
   obtain ⟨m, hm, hmdef⟩ : ∃ m : ℤ, Valued.v a = WithZero.exp m ∧
@@ -321,9 +276,6 @@ theorem modF_Fv (a : Fv F v) (ha : a ≠ 0) :
   have h2 := dhc_unif v ϖ hϖ hϖ0
   rw [hsplit, map_mul, map_zpow, h1, h2, one_mul, inv_zpow', neg_neg, ← ENNReal.ofReal_coe_nnreal]
   congr 1
-  all_goals first
-    | norm_cast
-    | simp
 
 end Char
 

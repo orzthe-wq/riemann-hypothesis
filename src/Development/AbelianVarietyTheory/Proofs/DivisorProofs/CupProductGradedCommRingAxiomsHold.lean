@@ -1,9 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupProductAssocStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupProductGradedCommStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupUnitAndPrimitiveRootClassesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.PullHlComp
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupProductAssoc
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupProductGradedComm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupUnitAndPrimitiveRootClasses
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -51,8 +52,8 @@ namespace GlobalTheory
 
 theorem EtC.a6ring_holds : GlobalTheory.EtC.DivisorRingCompatibility := by
   intro q _ E
-  exact ⟨fun hE _ _ a => (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 E hE a,
-    fun a b c => GlobalTheory.T.tateTwistCupProduct_assoc q E a b c,
-    fun a b => GlobalTheory.T.tateTwistCupProduct_graded_comm q E a b⟩
+  exact ⟨fun hE _ _ a => (_root_.GlobalTheory.EtC.CupGen.main q).1 E hE a,
+    fun a b c => _root_.GlobalTheory.EtC.CupAssoc.main q E a b c,
+    fun a b => _root_.GlobalTheory.EtC.cup_comm q E a b⟩
 
 end GlobalTheory

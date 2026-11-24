@@ -138,7 +138,7 @@ private theorem hom_substInj {R : Type*} [CommRing R] {ι : Type*} (f : PowerSer
   have key2 := congrArg (MvPowerSeries.substAlgHom hv) key
   simp only [map_mul, map_sub, MvPowerSeries.coe_substAlgHom] at key2
   rw [hsx 0, hsx 1, MvPowerSeries.subst_X hv, MvPowerSeries.subst_X hv] at key2
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at key2
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at key2
   rw [h, sub_self] at key2
   have c1 : MvPowerSeries.constantCoeff (H - 1) = 0 := by
     rw [map_sub, map_one, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, cH]

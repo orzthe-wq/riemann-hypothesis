@@ -126,7 +126,7 @@ theorem dd_X_mul (m m' l : Ln p q r s) (Q : Pol p q r s) :
       (if m' = l then pderiv m Q else 0) + (if m = l then pderiv m' Q else 0) := by
   classical
   by_cases h1 : m' = l <;> by_cases h2 : m = l <;>
-    simp [h1, h2, Derivation.leibniz, pderiv_X, Pi.single_apply, eq_comm] <;> ring
+    simp [h1, h2, Derivation.leibniz, pderiv_X, eq_comm]
 
 end PI.FockOneDegW.RedOps
 

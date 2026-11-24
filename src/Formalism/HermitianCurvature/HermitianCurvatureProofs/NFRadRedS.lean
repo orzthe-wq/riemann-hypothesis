@@ -306,7 +306,4 @@ end Formalism.FourierDecayAlt.P.NFRadRedS
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem radical_surjective_of_parts : NFRadRedS.LocSec → NFRadRedS.RepSmooth → Formalism.FourierDecayAlt.NF.RadRedSurj :=
-  fun hL hR => NFRadRedS.radRedSurj_of hL hR
-
 end Formalism.FourierDecayAlt.P

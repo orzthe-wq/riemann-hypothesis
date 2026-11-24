@@ -1,7 +1,10 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.GoodOrigin
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootLinesWeightBoundOfFreeStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IntegralClosureHeightEqOneOfLiesOver
+public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
+public import Development.AutomorphicSpectrum.PublishedTheorems.Algebra₂.FarguesHodgeTate
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootLinesWeightBoundOfFree
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -49,7 +52,7 @@ theorem or_m1nef : Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField
   intro hG E _ _ _ _ H D Xo l c Y _ T o II _ _ _ _ B a p hp mu hmu
   have hF : HT.FarguesHodgeTate := hG.2.2.2.2.2.2.1
   have hS : p ∈ o.S B := (o.S_iff B p).2 hp
-  exact GlobalTheory.T.root_lines_weight_bound_of_free hF E H D l (Xo l) c _ _ Y (o.S B) (T.M B a) (o.Or B a).𝔐 (o.Or B a).Fl (o.Or B a).e p hS
+  exact _root_.GlobalTheory.CompanionTheory.Ar.HT.rootModel_nefAt_of_hodgeCpt hF E H D l (Xo l) c _ _ Y (o.S B) (T.M B a) (o.Or B a).𝔐 (o.Or B a).Fl (o.Or B a).e p hS
     (o.omVB B a p hS) (o.Or B a).lines mu hmu
 
 end GlobalTheory.CompanionTheory.Ar.Top

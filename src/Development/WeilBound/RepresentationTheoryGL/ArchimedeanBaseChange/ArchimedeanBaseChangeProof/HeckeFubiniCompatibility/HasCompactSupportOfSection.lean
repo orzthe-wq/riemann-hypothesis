@@ -1,7 +1,8 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.HeckeFubiniCompatibility.CompatFub
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousGLAdelicProjectionsInclusionsStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DifferentiableAtChart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousGLAdelicProjectionsInclusions
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.HeckeFubiniCompatibility.MultHasCompactSupport
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.AdeleLC
 import Mathlib.Algebra.Order.Floor.Extended
@@ -119,13 +120,8 @@ theorem gInf_eq (v : InfinitePlace E) (g : GA E n) :
     gInf v g = GeneralLinearGroup.map (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) v)
       (GeneralLinearGroup.map (pInf E) g) := rfl
 
-theorem continuous_gInf (v : InfinitePlace E) : Continuous (gInf (E := E) (n := n) v) := by
-  have h : Continuous (GeneralLinearGroup.map (n := Fin n) (Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) v)) :=
-    Continuous.units_map _ (by exact continuous_id.matrix_map (continuous_apply v))
-  exact (h.comp (GlobalTheory.T.continuous_GL_adelic_projections_inclusions E n).1).congr fun g => (gInf_eq v g).symm
-
 theorem continuous_hFin : Continuous (hFin (E := E) (a := a) (b := b)) :=
-  ((GlobalTheory.T.continuous_GL_adelic_projections_inclusions E a).2.1.comp continuous_fst).prodMk ((GlobalTheory.T.continuous_GL_adelic_projections_inclusions E b).2.1.comp continuous_snd)
+  ((_root_.GlobalTheory.GLProj.continuous_proj_incl E a).2.1.comp continuous_fst).prodMk ((_root_.GlobalTheory.GLProj.continuous_proj_incl E b).2.1.comp continuous_snd)
 
 theorem hFin_inv (g : H E a b) : hFin g⁻¹ = (hFin g)⁻¹ :=
   Prod.ext (map_inv (gFin (E := E) (n := a)) g.1) (map_inv (gFin (E := E) (n := b)) g.2)
@@ -154,10 +150,10 @@ def ofParts (y : ((InfinitePlace E → G a) × (InfinitePlace E → G b)) × Hf 
   (infGL E a (ofComps y.1.1) * finGL E a y.2.1, infGL E b (ofComps y.1.2) * finGL E b y.2.2)
 
 theorem continuous_ofParts : Continuous (ofParts (E := E) (a := a) (b := b)) :=
-  (((GlobalTheory.T.continuous_GL_adelic_projections_inclusions E a).2.2.1.comp (continuous_ofComps.comp (continuous_fst.comp continuous_fst))).mul
-      ((GlobalTheory.T.continuous_GL_adelic_projections_inclusions E a).2.2.2.comp (continuous_fst.comp continuous_snd))).prodMk
-    (((GlobalTheory.T.continuous_GL_adelic_projections_inclusions E b).2.2.1.comp (continuous_ofComps.comp (continuous_snd.comp continuous_fst))).mul
-      ((GlobalTheory.T.continuous_GL_adelic_projections_inclusions E b).2.2.2.comp (continuous_snd.comp continuous_snd)))
+  (((_root_.GlobalTheory.GLProj.continuous_proj_incl E a).2.2.1.comp (continuous_ofComps.comp (continuous_fst.comp continuous_fst))).mul
+      ((_root_.GlobalTheory.GLProj.continuous_proj_incl E a).2.2.2.comp (continuous_fst.comp continuous_snd))).prodMk
+    (((_root_.GlobalTheory.GLProj.continuous_proj_incl E b).2.2.1.comp (continuous_ofComps.comp (continuous_snd.comp continuous_fst))).mul
+      ((_root_.GlobalTheory.GLProj.continuous_proj_incl E b).2.2.2.comp (continuous_snd.comp continuous_snd)))
 
 theorem ofParts_parts (g : H E a b) : ofParts ((fun v => gInf v g.1, fun v => gInf v g.2), hFin g) = g := by
   refine Prod.ext ?_ ?_
@@ -185,8 +181,8 @@ theorem tens_entry {Ma : Mods E a} {Mb : Mods E b} {κ : Type} [MeasurableSpace 
     have cB : ∀ v, Continuous fun y : G b => ent (Mb v) (kb v y.val) (i.1.2 v) (j.1.2 v) := fun v =>
       (mult_ent (hB v) _ _).1
     refine ⟨?_, ?_⟩
-    · exact ((continuous_finsetProd _ fun v _ => (cA v).comp ((continuous_gInf v).comp continuous_fst)).mul
-        (continuous_finsetProd _ fun v _ => (cB v).comp ((continuous_gInf v).comp continuous_snd))).mul
+    · exact ((continuous_finsetProd _ fun v _ => (cA v).comp ((continuous_gInf a v).comp continuous_fst)).mul
+        (continuous_finsetProd _ fun v _ => (cB v).comp ((continuous_gInf b v).comp continuous_snd))).mul
         ((hψ i.2 j.2).1.comp continuous_hFin)
     · refine hasCompactSupport_of_section (fun g : H E a b => ((fun v => gInf v g.1, fun v => gInf v g.2), hFin g))
         ofParts continuous_ofParts ofParts_parts

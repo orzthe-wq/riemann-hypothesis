@@ -47,6 +47,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.JointSmooth
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -66,14 +67,6 @@ theorem rz_gA : gA S = adj d.p0 ⬝ (gA S₀ ⬝ d.p0) := by
   rw [d.gA_eq, Subsingleton.elim d.pX 0, Subsingleton.elim d.pY 0]
   simp
 
-theorem rz_j0p0 : d.j0 ⬝ d.p0 = 1 := by
-  have := d.sum_eq_one
-  rwa [Subsingleton.elim d.jX 0, Subsingleton.elim d.jY 0, Matrix.zero_mul, Matrix.zero_mul, zero_add, add_zero] at this
-
-theorem unitaryMatrix_rankZeroWittEmbedding_eq (g : GA D S₀) : mt S (d.emb0 g) = d.j0 ⬝ mt S₀ g ⬝ d.p0 := by
-  rw [d.unitaryMatrix_wittCoreEmbedding, Subsingleton.elim d.jX 0, Subsingleton.elim d.jY 0]
-  simp
-
 theorem rz_unit (g : GA D S) : adj (d.p0 ⬝ mt S g ⬝ d.j0) ⬝ (gA S₀ ⬝ (d.p0 ⬝ mt S g ⬝ d.j0)) = gA S₀ := by
   have key : ∀ X : Mx D S.rank S₀.rank, adj d.p0 ⬝ (gA S₀ ⬝ (d.p0 ⬝ X)) = gA S ⬝ X := fun X => by
     rw [rz_gA d, Matrix.mul_assoc, Matrix.mul_assoc]
@@ -90,13 +83,13 @@ def rzEquiv : GA D S₀ ≃* GA D S where
   toFun := d.emb0
   invFun := rzInv d
   left_inv g := mt_injective S₀ (by
-    rw [mt_rzInv, unitaryMatrix_rankZeroWittEmbedding_eq]
+    rw [mt_rzInv, _root_.GlobalTheory.WeilSrc.Zero.unitaryMatrix_wittCoreEmbedding]
     simp only [Matrix.mul_assoc, d.p0_j0, Matrix.mul_one]
     rw [← Matrix.mul_assoc, d.p0_j0, Matrix.one_mul])
   right_inv g := mt_injective S (by
-    rw [unitaryMatrix_rankZeroWittEmbedding_eq, mt_rzInv]
-    simp only [Matrix.mul_assoc, rz_j0p0 d, Matrix.mul_one]
-    rw [← Matrix.mul_assoc, rz_j0p0 d, Matrix.one_mul])
+    rw [_root_.GlobalTheory.WeilSrc.Zero.unitaryMatrix_wittCoreEmbedding, mt_rzInv]
+    simp only [Matrix.mul_assoc, _root_.GlobalTheory.WeilSrc.Zero.witt_decomposition_zero_section_embed_eq_one d, Matrix.mul_one]
+    rw [← Matrix.mul_assoc, _root_.GlobalTheory.WeilSrc.Zero.witt_decomposition_zero_section_embed_eq_one d, Matrix.one_mul])
   map_mul' := map_mul d.emb0
 
 theorem rzInv_continuous : Continuous (rzInv d) :=
@@ -116,7 +109,7 @@ theorem weilRep_rankZeroWittEmbedding_valueAtZero : ∀ (D : D7) (ψ : AddChar (
   have hF := GlobalTheory.T.mixedModelFormulasWittSource_proof D ψ S S₀ T 0 d χS χT om om₀ hom hom₀ μ 𝓕 hμ
   have H1 := (hF (om (1, h) f) (hom.om_pres _ _ hf)).core g₀ 0
   have H2 := (hF f hf).target h 0
-  have hS : ∀ F x, _root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source d T ψ μ 𝓕 F x =
+  have hS : ∀ F x, _root_.I195MixedCoordinates.source d T ψ μ 𝓕 F x =
       fun w => F (d.ext0 T w) := mixS_rankZero ψ S S₀ T d μ 𝓕 hμ
   simp only [hS] at H1 H2
   rw [H2] at H1
@@ -150,9 +143,9 @@ theorem om_flatBF_rankZero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (B : 
   have hv := GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D
   rw [hflat, GlobalTheory.Unf.EvalCont.om_evalBF s hd hm hv hΨ h₀ g₀]
   unfold evalBF evalZero evalAt
-  have hT : ∀ F y, _root_.I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.target J.d B.V₀ ψ s.vT.μ s.vT.𝓕 F y =
+  have hT : ∀ F y, _root_.I195MixedCoordinates.target J.d B.V₀ ψ s.vT.μ s.vT.𝓕 F y =
       fun w => F (J.d.inc0 B.V₀ w) := mixT_rankZero ψ _ _ _ J.d s.vT.μ s.vT.𝓕 s.vT.covol
-  have hS : ∀ F x, _root_.I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.source B.d J.W ψ s.vS.μ s.vS.𝓕 F x =
+  have hS : ∀ F x, _root_.I195MixedCoordinates.source B.d J.W ψ s.vS.μ s.vS.𝓕 F x =
       fun w => F (B.d.ext0 J.W w) := mixS_rankZero ψ _ _ _ B.d s.vS.μ s.vS.𝓕 s.vS.covol
   rw [hT, hS]
   simp only [map_zero]

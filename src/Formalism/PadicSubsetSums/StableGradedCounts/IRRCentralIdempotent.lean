@@ -95,11 +95,6 @@ theorem schur_scalar [Nontrivial V] (ρ : Representation ℂ G V)
   · exfalso
     first
       | exact Module.End.hasEigenvalue_iff.1 hμ h0
-      | exact hμ h0
-      | (obtain ⟨v, hv⟩ := hμ.exists_hasEigenvector
-         have hv1 := hv.1
-         rw [h0] at hv1
-         exact hv.2 ((Submodule.mem_bot ℂ).1 hv1))
   · refine LinearMap.ext fun x => ?_
     have hx : x ∈ Module.End.eigenspace T μ := by
       rw [h0]
@@ -147,7 +142,6 @@ theorem centralIdem_mul {G V W : Type} [Group G] [Fintype G] [AddCommGroup V] [M
   have hone : σ.character 1 = (Module.finrank ℂ W : ℂ) := by
     first
       | exact σ.char_one
-      | (unfold Representation.character; simp)
   refine ⟨μ, ?_, ?_⟩
   · have h1 := hconv 1
     simp only [mul_one, hone] at h1
@@ -179,7 +173,6 @@ theorem centralIdem_comm_of {G V : Type} [Group G] [Fintype G] [AddCommGroup V] 
   have hc : ∀ h : G, ρ.character (k⁻¹ * (h * k)) = ρ.character h := by
     first
       | exact fun h => by simpa [mul_assoc] using ρ.char_conj h k⁻¹
-      | (intro h; unfold Representation.character; done)
   unfold centralIdem
   rw [Finset.sum_mul, Finset.mul_sum]
   refine Fintype.sum_equiv (MulAut.conj k⁻¹).toEquiv _ _ (fun g => ?_)

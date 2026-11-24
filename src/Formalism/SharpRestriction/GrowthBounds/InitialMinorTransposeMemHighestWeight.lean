@@ -576,15 +576,12 @@ theorem coarse_unit_product_prime_power (p : ℕ) [hp : Fact p.Prime] (t : ℕ) 
       ∏ i ∈ Finset.range n, ∏ y ∈ Finset.Ico 1 (p ^ (t + 1)), (1 + ((p ^ (t + 1) : ℕ) : ℚ) * i / y) :=
   Formalism.GrowthSums.blockFactorialQuotientProd (p ^ (t + 1)) n (Nat.one_le_pow _ _ hp.1.pos)
 
-theorem inv_norm_nat_le (p : ℕ) [hp : Fact p.Prime] (m : ℕ) (hm : m ≠ 0) : ‖(m : ℚ_[p])‖⁻¹ ≤ (m : ℝ) :=
-  F1.inv_norm_le p m hm
-
 theorem summable_log (p : ℕ) [hp : Fact p.Prime] (u : ℚ_[p]) (hu : ‖u‖ < 1) :
     Summable fun k : ℕ => (-1 : ℚ_[p]) ^ k * u ^ (k + 1) / ((k : ℚ_[p]) + 1) := by
   have hs : Summable fun k : ℕ => ((k + 1 : ℕ) : ℝ) ^ 1 * ‖u‖ ^ (k + 1) :=
     (summable_nat_add_iff 1).2 (summable_pow_mul_geometric_of_norm_lt_one 1 (r := ‖u‖) (by simpa using hu))
   refine Summable.of_norm_bounded hs fun k => ?_
-  have hk := inv_norm_nat_le p (k + 1) (Nat.succ_ne_zero k)
+  have hk := _root_.Formalism.MainNotions.G.Joints.F1.inv_norm_le p (k + 1) (Nat.succ_ne_zero k)
   rw [norm_div, norm_mul, norm_pow, norm_pow, norm_neg, norm_one, one_pow, one_mul, pow_one, div_eq_mul_inv,
     mul_comm]
   have e : ((k : ℚ_[p]) + 1) = ((k + 1 : ℕ) : ℚ_[p]) := by push_cast; ring
@@ -758,11 +755,7 @@ namespace Formalism.MainNotions.G.Joints.F5
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.G.GLWeightTheory Formalism.MainNotions.tableLineDegreeFive
 
-theorem mahlerCoef_eq_mah (f : ℕ → ℚ) (j : ℕ) : mahlerCoef f j = mah f j := by
-  unfold mahlerCoef mah
-  rw [fwdDiff_iter_eq_sum_shift]
-  refine sum_congr rfl fun i _ => ?_
-  simp [zsmul_eq_mul]
+alias mahlerCoef_eq_mah := _root_.Formalism.MainNotions.G.Joints.F4.mahlerCoef_eq_mah
 
 theorem dec_of_binomDecay {p : ℕ} {f : ℕ → ℚ} (h : BinomDecay p f) : Dec p (1 / 4) 0 f := by
   intro j
@@ -858,22 +851,9 @@ namespace Formalism.MainNotions.G.Joints.KP
 
 open MvPolynomial Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.MainNotions.G.CountingStatementReduction
 
-section GlobalTheory
-
-variable {A A' : Type} [CommRing A] [CommRing A'] {n : ℕ}
-
-variable (W : Fin n → A) (Dm : Matrix (Fin n) (Fin n) A) (γ : A) (v : Fin n → A) (b' : Matrix (Fin n) (Fin n) A)
-
-end GlobalTheory
-
 section Eval
 
 variable {O : Type} [CommRing O] {A : Type} [CommRing A] [Algebra O A]
-
-theorem kr_evalG_algebraMap {n : ℕ} (g : Matrix (Fin n) (Fin n) A)
-    (hg : IsUnit (aeval (fun x : Fin n × Fin n => g x.1 x.2) (genMat O n).det)) (c : O) :
-    evalG (R := O) g hg (algebraMap O (GLCoord O n) c) = algebraMap O A c := by
-  rw [IsScalarTower.algebraMap_apply O (MvPolynomial (Fin n × Fin n) O) (GLCoord O n), evalG_alg, AlgHom.commutes]
 
 variable {r : ℕ}
 
@@ -886,166 +866,30 @@ section Generic
 
 variable (O : Type) [CommRing O] [IsDomain O] (n : ℕ)
 
-theorem kr_genMat_det_ne : (genMat O n).det ≠ 0 := Matrix.det_mvPolynomialX_ne_zero (Fin n) O
-
 instance kr_instDomGL : IsDomain (GLCoord O n) :=
-  IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors (kr_genMat_det_ne O n))
-
-theorem kr_GL_inj : Function.Injective (algebraMap (MvPolynomial (Fin n × Fin n) O) (GLCoord O n)) :=
-  IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors (kr_genMat_det_ne O n))
+  IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors (_root_.Formalism.MainNotions.G.CountingStatementReduction.genMat_det_ne O n))
 
 end Generic
-
-section Loc
-
-variable {R : Type} [CommRing R] [IsDomain R]
-
-theorem kr_away_pow_dvd (s q : R) (hq : Prime q) (hs : ¬ q ∣ s) (e : ℕ) (x : R)
-    (h : algebraMap R (Localization.Away s) q ^ e ∣ algebraMap R (Localization.Away s) x) : q ^ e ∣ x := by
-  have hs0 : s ≠ 0 := fun h0 => hs (h0 ▸ dvd_zero q)
-  have hinj : Function.Injective (algebraMap R (Localization.Away s)) :=
-    IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors hs0)
-  obtain ⟨y, hy⟩ := h
-  obtain ⟨⟨z, ⟨t, k, hk⟩⟩, hz⟩ := IsLocalization.surj (Submonoid.powers s) y
-  have hz' : y * algebraMap R (Localization.Away s) t = algebraMap R (Localization.Away s) z := hz
-  have h1 : x * t = q ^ e * z := by
-    apply hinj
-    rw [map_mul, hy, mul_assoc, hz', map_mul, map_pow]
-  have hk' : s ^ k = t := hk
-  have ht : ¬ q ∣ t := by
-    rw [← hk']
-    exact fun hd => hs (hq.dvd_of_dvd_pow hd)
-  exact hq.pow_dvd_of_dvd_mul_right e ht ⟨z, h1⟩
-
-theorem kr_away_prime (s q : R) (hq : Prime q) (hs : ¬ q ∣ s) : Prime (algebraMap R (Localization.Away s) q) := by
-  have hs0 : s ≠ 0 := fun h0 => hs (h0 ▸ dvd_zero q)
-  have hinj : Function.Injective (algebraMap R (Localization.Away s)) :=
-    IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors hs0)
-  have hdvd : ∀ x : R, algebraMap R (Localization.Away s) q ∣ algebraMap R (Localization.Away s) x → q ∣ x := by
-    intro x hx
-    have := kr_away_pow_dvd s q hq hs 1 x (by rwa [pow_one])
-    rwa [pow_one] at this
-  refine ⟨fun h0 => hq.ne_zero (hinj (h0.trans (map_zero _).symm)), fun hu => ?_, fun a b hab => ?_⟩
-  · have h1 : algebraMap R (Localization.Away s) q ∣ algebraMap R (Localization.Away s) 1 := by
-      rw [map_one]; exact hu.dvd
-    exact hq.not_isUnit (isUnit_of_dvd_one (hdvd 1 h1))
-  · obtain ⟨⟨a0, t1⟩, ha⟩ := IsLocalization.surj (Submonoid.powers s) a
-    obtain ⟨⟨b0, t2⟩, hb⟩ := IsLocalization.surj (Submonoid.powers s) b
-    have ha' : a * algebraMap R (Localization.Away s) t1 = algebraMap R (Localization.Away s) a0 := ha
-    have hb' : b * algebraMap R (Localization.Away s) t2 = algebraMap R (Localization.Away s) b0 := hb
-    have hu1 : IsUnit (algebraMap R (Localization.Away s) (t1 : R)) := IsLocalization.map_units _ t1
-    have hu2 : IsUnit (algebraMap R (Localization.Away s) (t2 : R)) := IsLocalization.map_units _ t2
-    have h1 : algebraMap R (Localization.Away s) q ∣ algebraMap R (Localization.Away s) (a0 * b0) := by
-      rw [map_mul, ← ha', ← hb']
-      have : a * algebraMap R (Localization.Away s) (t1 : R) * (b * algebraMap R (Localization.Away s) (t2 : R)) =
-          a * b * (algebraMap R (Localization.Away s) (t1 : R) * algebraMap R (Localization.Away s) (t2 : R)) := by ring
-      rw [this]
-      exact Dvd.dvd.mul_right hab _
-    rcases hq.dvd_or_dvd (hdvd _ h1) with h | h
-    · left
-      have h2 : algebraMap R (Localization.Away s) q ∣ a * algebraMap R (Localization.Away s) (t1 : R) := by
-        rw [ha']; exact map_dvd _ h
-      exact (hu1.dvd_mul_right).1 h2
-    · right
-      have h2 : algebraMap R (Localization.Away s) q ∣ b * algebraMap R (Localization.Away s) (t2 : R) := by
-        rw [hb']; exact map_dvd _ h
-      exact (hu2.dvd_mul_right).1 h2
-
-end Loc
 
 section Primes
 
 variable (O : Type) [CommRing O] [IsDomain O] (n : ℕ)
 
-def kr_evOne : MvPolynomial (Fin n × Fin n) O →ₐ[O] O := aeval (fun x : Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) O) x.1 x.2)
-
-theorem kr_evOne_det : kr_evOne O n (genMat O n).det = 1 := by
-  unfold kr_evOne
+theorem kr_evOne_det : _root_.Formalism.MainNotions.G.CountingStatementReduction.evOne O n (genMat O n).det = 1 := by
+  unfold _root_.Formalism.MainNotions.G.CountingStatementReduction.evOne
   rw [aeval_genMat_det, Matrix.det_one]
 
-theorem kr_evOne_X (i j : Fin n) : kr_evOne O n (X (i, j)) = (1 : Matrix (Fin n) (Fin n) O) i j := by
-  unfold kr_evOne
+theorem kr_evOne_X (i j : Fin n) : _root_.Formalism.MainNotions.G.CountingStatementReduction.evOne O n (X (i, j)) = (1 : Matrix (Fin n) (Fin n) O) i j := by
+  unfold _root_.Formalism.MainNotions.G.CountingStatementReduction.evOne
   rw [aeval_X]
 
-theorem kr_not_dvd_det (q : MvPolynomial (Fin n × Fin n) O) (hq : ¬ IsUnit (kr_evOne O n q)) : ¬ q ∣ (genMat O n).det := by
+theorem kr_not_dvd_det (q : MvPolynomial (Fin n × Fin n) O) (hq : ¬ IsUnit (_root_.Formalism.MainNotions.G.CountingStatementReduction.evOne O n q)) : ¬ q ∣ (genMat O n).det := by
   intro h
-  have := map_dvd (kr_evOne O n) h
+  have := map_dvd (_root_.Formalism.MainNotions.G.CountingStatementReduction.evOne O n) h
   rw [kr_evOne_det] at this
   exact hq (isUnit_of_dvd_one this)
 
 end Primes
-
-section Coeff
-
-variable {O : Type} [CommRing O] {A : Type} [CommRing A] [Algebra O A] {r : ℕ}
-
-end Coeff
-
-theorem kr_HB_of_universal (O : Type) [CommRing O] [IsDomain O] (r : ℕ) (c : ℤ) (ka : Fin r → ℤ)
-    (f₁ : GLCoord O (r + 1))
-    (hG0 : IsUnit (aeval (fun x : Fin (r + 1) × Fin (r + 1) => G0 O (r + 1) x.1 x.2) (genMat O (r + 1)).det))
-    (hBG0 : IsUnit (aeval (fun x : Fin (r + 1) × Fin (r + 1) => (B0 O (r + 1) * G0 O (r + 1)) x.1 x.2)
-      (genMat O (r + 1)).det))
-    (hE : evalG (R := O) (B0 O (r + 1) * G0 O (r + 1)) hBG0 f₁ =
-      (chiB c ka (fun i => (lower_triangular_base_diag_isUnit O (r + 1) i).unit) : UA O (r + 1)) * evalG (R := O) (G0 O (r + 1)) hG0 f₁) :
-    f₁ ∈ HB O r c ka := by
-  intro A _ _ b g u hg hbg hlow hdiag
-  let U0 : Fin (r + 1) → (UA O (r + 1))ˣ := fun i => (lower_triangular_base_diag_isUnit O (r + 1) i).unit
-  have hdetg : IsUnit g.det := by rwa [aeval_genMat_det] at hg
-  have hbu : ∀ i, IsUnit (b i i) := fun i => by rw [hdiag i]; exact Units.isUnit _
-  let φ := spec O (r + 1) b g hbu hdetg
-  have hφB : (B0 O (r + 1)).map φ = b := by
-    ext i j
-    simp only [Matrix.map_apply, B0, uB]
-    rw [spec_alg]
-    split_ifs with h
-    · rw [aeval_X]; rfl
-    · rw [map_zero, hlow i j (not_le.mp h)]
-  have hφG : (G0 O (r + 1)).map φ = g := by
-    ext i j
-    simp only [Matrix.map_apply, G0, uG]
-    rw [spec_alg, aeval_X]; rfl
-  have hφBG : (B0 O (r + 1) * G0 O (r + 1)).map φ = b * g := by
-    rw [Matrix.map_mul, hφB, hφG]
-  have hφU : (fun i => Units.map ((φ : UA O (r + 1) →+* A) : UA O (r + 1) →* A) (U0 i)) = u := by
-    funext i
-    apply Units.ext
-    have : φ (B0 O (r + 1) i i) = b i i := by
-      have := congrFun (congrFun hφB i) i
-      simpa using this
-    rw [← hdiag i, ← this]
-    rfl
-  have h1 := congrArg φ hE
-  rw [map_mul, evalG_map φ _ hBG0 (by rw [hφBG]; exact hbg), evalG_map φ _ hG0 (by rw [hφG]; exact hg),
-    evalG_congr hφBG _ hbg, evalG_congr hφG _ hg] at h1
-  rw [h1]
-  congr 1
-  have h2 := chiB_map (φ : UA O (r + 1) →+* A) c ka U0
-  rw [hφU] at h2
-  exact h2
-
-theorem kr_HB_of_smul (O : Type) [CommRing O] [IsDomain O] (r : ℕ) (c : ℤ) (ka : Fin r → ℤ) (a : O) (ha : a ≠ 0)
-    (f₁ : GLCoord O (r + 1)) (hf : algebraMap O (GLCoord O (r + 1)) a * f₁ ∈ HB O r c ka) : f₁ ∈ HB O r c ka := by
-  have hG0 : IsUnit (aeval (fun x : Fin (r + 1) × Fin (r + 1) => G0 O (r + 1) x.1 x.2) (genMat O (r + 1)).det) := by
-    rw [aeval_genMat_det]; exact base_matrix_det_isUnit O (r + 1)
-  have hBG0 : IsUnit (aeval (fun x : Fin (r + 1) × Fin (r + 1) => (B0 O (r + 1) * G0 O (r + 1)) x.1 x.2)
-      (genMat O (r + 1)).det) := by
-    rw [aeval_genMat_det, Matrix.det_mul]; exact (lower_triangular_base_det_isUnit O (r + 1)).mul (base_matrix_det_isUnit O (r + 1))
-  refine kr_HB_of_universal O r c ka f₁ hG0 hBG0 ?_
-  have hlow0 : ∀ i j, i < j → B0 O (r + 1) i j = 0 := by
-    intro i j hij
-    simp [B0, uB, not_le.mpr hij]
-  have h0 := hf (UA O (r + 1)) (B0 O (r + 1)) (G0 O (r + 1)) (fun i => (lower_triangular_base_diag_isUnit O (r + 1) i).unit) hG0 hBG0 hlow0
-    (fun i => rfl)
-  rw [map_mul, map_mul, kr_evalG_algebraMap, kr_evalG_algebraMap] at h0
-  have hne : algebraMap O (UA O (r + 1)) a ≠ 0 := by
-    rw [IsScalarTower.algebraMap_apply O (MvPolynomial (UV (r + 1)) O) (UA O (r + 1))]
-    intro h
-    have h1 := UA_inj O (r + 1) (h.trans (map_zero _).symm)
-    rw [MvPolynomial.algebraMap_eq] at h1
-    exact ha (C_injective _ _ (h1.trans C_0.symm))
-  apply mul_left_cancel₀ hne
-  rw [h0]; ring
 
 end Formalism.MainNotions.G.Joints.KP
 
@@ -1607,14 +1451,8 @@ theorem redHB : RedHB := by
 
 end Red
 
-theorem genericMatrix_det_ne_zero (R : Type) [CommRing R] [IsDomain R] (n : ℕ) : (genMat R n).det ≠ 0 := by
-  intro h
-  have := kr_evOne_det R n
-  rw [h, map_zero] at this
-  exact zero_ne_one this
-
 theorem coordinate_inclusion_injective (R : Type) [CommRing R] [IsDomain R] (n : ℕ) : Function.Injective (io R n) :=
-  IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors (genericMatrix_det_ne_zero R n))
+  IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors (_root_.Formalism.MainNotions.G.CountingStatementReduction.genMat_det_ne R n))
 
 theorem redKer : RedKer := by
   intro O _ _ _ w hw n x hx
@@ -1728,14 +1566,14 @@ theorem top_right_not_dvd_det (R : Type) [CommRing R] [IsDomain R] (r : ℕ) (hr
 theorem g0rCancel : TopRightCancelConstant := by
   intro R _ _ r a y hr ha h
   have hnd := top_right_not_dvd_det R r hr
-  have hp : Prime (g0r R r) := kr_away_prime _ (X (0, Fin.last r)) X_prime hnd
+  have hp : Prime (g0r R r) := _root_.Formalism.MainNotions.G.CountingStatementReduction.away_prime _ (X (0, Fin.last r)) X_prime hnd
   rcases hp.dvd_or_dvd h with h1 | h1
   · exfalso
     have h2 : algebraMap R (GLCoord R (r + 1)) a =
         algebraMap (MvPolynomial (Fin (r + 1) × Fin (r + 1)) R) (GLCoord R (r + 1)) (C a) :=
       IsScalarTower.algebraMap_apply R (MvPolynomial (Fin (r + 1) × Fin (r + 1)) R) (GLCoord R (r + 1)) a
     rw [h2] at h1
-    have h3 := kr_away_pow_dvd _ (X (0, Fin.last r)) X_prime hnd 1 (C a) (by rw [pow_one]; exact h1)
+    have h3 := _root_.Formalism.MainNotions.G.CountingStatementReduction.away_pow_dvd _ (X (0, Fin.last r)) X_prime hnd 1 (C a) (by rw [pow_one]; exact h1)
     rw [pow_one] at h3
     have h4 := map_dvd (constantCoeff (σ := Fin (r + 1) × Fin (r + 1)) (R := R)) h3
     rw [constantCoeff_X, constantCoeff_C, zero_dvd_iff] at h4
@@ -1918,7 +1756,7 @@ theorem top_right_division_lift (hL : Lift) (hB2 : HBLin) (hB3 : HBMul) (hB4 : H
     have hz : redG (IsLocalRing.residue O) (r + 1) (f - g0r O r * f1) = 0 := by
       rw [map_sub, map_mul, hρg, hf1e, ← hk1e, sub_self]
     obtain ⟨y, hy⟩ := hC3 O w hw (r + 1) _ hz
-    have hyH : y ∈ HB O r c ka := kr_HB_of_smul O r c ka w hw.ne_zero y (hy ▸ hsub)
+    have hyH : y ∈ HB O r c ka := _root_.Formalism.MainNotions.G.CountingStatementReduction.HB_of_smul O r c ka w hw.ne_zero y (hy ▸ hsub)
     apply ih y h hyH
     apply hC5 O r w _ hr hw.ne_zero
     refine ⟨k - f1, ?_⟩
@@ -2272,17 +2110,11 @@ theorem shift_of (h : BR) : Shift := by
       omega
     rw [e, straight_count_shift_eq h n (fun s => ν s + N), ih]
 
-theorem sum_piFinset_cons {M : Type*} [AddCommMonoid M] (r : ℕ) (S : Fin (r + 1) → Finset ℕ)
-    (F : (Fin (r + 1) → ℕ) → M) :
-    ∑ μ ∈ Fintype.piFinset S, F μ =
-      ∑ a ∈ S 0, ∑ μ' ∈ Fintype.piFinset (fun t : Fin r => S t.succ), F (Fin.cons a μ') := by
-  first | exact Bl.SecondBlockLemmaF.goal1 .. | (apply Bl.SecondBlockLemmaF.goal1 <;> assumption) | (intros; apply Bl.SecondBlockLemmaF.goal1 <;> assumption) | (apply @Bl.SecondBlockLemmaF.goal1 <;> assumption) | (intros; apply @Bl.SecondBlockLemmaF.goal1 <;> assumption) | (apply @Bl.SecondBlockLemmaF.goal1 <;> first | assumption | infer_instance)
-
 theorem diff_of (h : BR) : Diff := by
   intro r c κ hκ
   have e1 : sC (r + 2) (r + 2) (Fin.cons (c + 1) κ : Fin (r + 2) → ℕ) = _ := h (r + 1) (Fin.cons (c + 1) κ)
   have e2 : sC (r + 2) (r + 2) (Fin.cons c κ : Fin (r + 2) → ℕ) = _ := h (r + 1) (Fin.cons c κ)
-  rw [e1, e2, sum_piFinset_cons, sum_piFinset_cons]
+  rw [e1, e2, _root_.Bl.SecondBlockLemmaF.goal1, _root_.Bl.SecondBlockLemmaF.goal1]
   simp only [Fin.cons_succ, Fin.castSucc_zero, Fin.cons_zero, ← Fin.succ_castSucc]
   have hI : Finset.Icc (κ 0) (c + 1) = insert (c + 1) (Finset.Icc (κ 0) c) := by
     ext a
@@ -2308,7 +2140,7 @@ section
 
 variable (K : Type) [Field K]
 
-theorem coordinate_inclusion_injective_field (n : ℕ) : Function.Injective (io K n) := kr_GL_inj K n
+theorem coordinate_inclusion_injective_field (n : ℕ) : Function.Injective (io K n) := _root_.Formalism.MainNotions.G.CountingStatementReduction.GL_inj K n
 
 theorem transpose_transpose_alt (n : ℕ) (P : MvPolynomial (Fin n × Fin n) K) : tr K n (tr K n P) = P := by
   simp [tr, rename_rename, Prod.swap_swap_eq]
@@ -2481,7 +2313,7 @@ theorem mem_span_highest_weight_iff (hB2 : HBLin) {K : Type} [Field K] {r : ℕ}
 
 theorem top_right_ne_zero (K : Type) [Field K] (r : ℕ) : g0r K r ≠ 0 := by
   intro h
-  exact X_ne_zero (R := K) _ (kr_GL_inj K (r + 1) (h.trans (map_zero _).symm))
+  exact X_ne_zero (R := K) _ (_root_.Formalism.MainNotions.G.CountingStatementReduction.GL_inj K (r + 1) (h.trans (map_zero _).symm))
 
 theorem finrank_quotient_add_eq (hC4 : TopRightDivisionDomain) (hB2 : HBLin) (hB3 : HBMul) (hB4 : HBDet)
     (K : Type) [Field K] (r : ℕ) (c : ℤ) (ka : Fin r → ℤ) (h1 : 1 ≤ r)

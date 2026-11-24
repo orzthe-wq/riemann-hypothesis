@@ -234,5 +234,4 @@ theorem row_lattice_mass_holds : RowM := by
 
 end PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf
 
-theorem PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.row_lattice_mass_holds : PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowM :=
-  PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf.row_lattice_mass_holds
+alias PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.row_lattice_mass_holds := _root_.PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.RowMPf.row_lattice_mass_holds

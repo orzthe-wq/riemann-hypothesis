@@ -84,7 +84,7 @@ theorem Good.dK (hΩ : IsOpen Ω) (hK : Good Ω K) : Good Ω (fun x u => fderiv 
         (iteratedFDeriv ℝ (N + 1) (K · p.2) p.1)) (Ω ×ˢ univ) :=
       (LinearIsometryEquiv.continuous _).comp_continuousOn (hK.cont (N + 1))
     refine h.congr fun p _ => ?_
-    simp only [Function.comp_apply]
+    simp only
     rw [iteratedFDeriv_succ_eq_comp_right]
     simp
   · obtain ⟨V, hV, hxV, C, hC, hKV⟩ := hK.supp x hx

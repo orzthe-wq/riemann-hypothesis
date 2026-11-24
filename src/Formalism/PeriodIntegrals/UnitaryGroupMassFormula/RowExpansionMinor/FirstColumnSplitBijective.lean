@@ -92,15 +92,13 @@ theorem firstColumnSplit_bijective (m : ℕ) : Function.Bijective (phi0 m) := by
     rintro ⟨j, τ⟩ ⟨j', τ'⟩ h
     simp only [phi0] at h
     have hj : j = j' := by
-      have := congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ 0) h
-      simpa [Equiv.Perm.mul_apply, matrixExtendByZero_zero, cycle_perm_zero] using this
+      simpa [Equiv.Perm.mul_apply, matrixExtendByZero_zero, cycle_perm_zero] using
+        congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ 0) h
     subst hj
-    have h2 : ext0 τ = ext0 τ' := mul_left_cancel h
     have hτ : τ = τ' := by
       ext k
-      have := congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ k.succ) h2
-      simp only [extByZero_succ, Fin.succ_inj] at this
-      rw [this]
+      rw [show τ k = τ' k by
+        simpa [extByZero_succ, Fin.succ_inj] using congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ k.succ) (mul_left_cancel h)]
     rw [hτ]
   refine (Fintype.bijective_iff_injective_and_card _).mpr ⟨hinj, ?_⟩
   simp [Fintype.card_perm, Nat.factorial_succ]

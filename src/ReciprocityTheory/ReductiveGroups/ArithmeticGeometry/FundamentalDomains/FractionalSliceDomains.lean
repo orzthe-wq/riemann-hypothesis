@@ -3,49 +3,7 @@ module
 public import ReciprocityTheory.L2DbarEstimates.PlurisubharmonicCharts.GROWCountStatement
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.AdmissibleHermitianColumns
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.RealEmbeddingCharacters
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.EmbeddingHermitianPairs
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowDomainCriterionHolds
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMeanContinuity
@@ -161,7 +119,6 @@ theorem hfun_periodic (P : Frame X.Ψ r → ℂ) (la : Wt X.Ψ r) (hP : X.IsSec 
       exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
     first
       | exact h1
-      | exact (AddSubgroup.mem_toIntSubmodule _).mp h1
   have hsum : (fun τ => ∑ j, (s + fun k => (m k : ℂ)) j * (ω j τ : ℂ)) =
       TransvectionPeriodicity.cR X (fun τ => ∑ j, (m j : ℝ) * ω j τ) + fun τ => ∑ j, s j * (ω j τ : ℂ) := by
     funext τ
@@ -173,7 +130,6 @@ theorem hfun_periodic (P : Frame X.Ψ r → ℂ) (la : Wt X.Ψ r) (hP : X.IsSec 
     P (X.flow ξ (fun τ => ∑ j, s j * (ω j τ : ℂ)) x)
   first
     | rw [hsum, ← EmbeddingHermitianPairs.flow_flow (X := X) hξ.2.1]
-    | rw [hsum, ← AdmissibleHermitianColumns.flow_flow (X := X) hξ.2.1]
   exact TransvectionPeriodicity.sec_periodic X la P hP hξ.1 hξ.2.1 hp _ hS
 
 theorem slice_fract (P : Frame X.Ψ r → ℂ) (la : Wt X.Ψ r) (hP : X.IsSec la P) (hx : x ∈ X.dom)

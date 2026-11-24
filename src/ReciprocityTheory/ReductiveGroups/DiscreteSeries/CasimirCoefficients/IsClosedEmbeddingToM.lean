@@ -4,46 +4,7 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DefsRep
 public import Mathlib.MeasureTheory.Measure.Haar.Basic
 public import Mathlib.Topology.Algebra.Group.Units
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsClosedEmbeddingToM
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -109,8 +70,7 @@ abbrev toM {ε : Fin n → Bool} (g : UJ ε) : Matrix (Fin n) (Fin n) ℂ :=
 lemma left_inv_of_inUJ (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) :
     (Jm ε * gᴴ * Jm ε) * g = 1 := by
   unfold inUJ at hg
-  calc (Jm ε * gᴴ * Jm ε) * g = Jm ε * (gᴴ * Jm ε * g) := by simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [hg, Jm_mul_self]
+  simpa only [Matrix.mul_assoc, Jm_mul_self] using congrArg (fun x => Jm ε * x) hg
 
 lemma toM_inv (ε : Fin n → Bool) (g : UJ ε) : toM g⁻¹ = Jm ε * (toM g)ᴴ * Jm ε :=
   Units.inv_eq_of_mul_eq_one_left (left_inv_of_inUJ ε _ g.2)
@@ -126,15 +86,13 @@ lemma isClosed_inUJ (ε : Fin n → Bool) : IsClosed {g : Matrix (Fin n) (Fin n)
 lemma range_toM (ε : Fin n → Bool) : Set.range (fun g : UJ ε => toM g) = {g | inUJ ε g} := by
   ext g
   constructor
-  · rintro ⟨u, rfl⟩
-    exact u.2
+  · rintro ⟨u, rfl⟩; exact u.2
   · intro hg
     have h2 := left_inv_of_inUJ ε g hg
-    have h1 : g * (Jm ε * gᴴ * Jm ε) = 1 := mul_eq_one_comm.mp h2
-    exact ⟨⟨⟨g, Jm ε * gᴴ * Jm ε, h1, h2⟩, hg⟩, rfl⟩
+    exact ⟨⟨⟨g, Jm ε * gᴴ * Jm ε, mul_eq_one_comm.mp h2, h2⟩, hg⟩, rfl⟩
 
 lemma isClosedEmbedding_toM (ε : Fin n → Bool) : IsClosedEmbedding (fun g : UJ ε => toM g) := by
-  first | exact UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM .. | (apply UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM <;> first | assumption | infer_instance)
+  first | exact UpperTheory.Reformulated.B.Qk16.isClosedEmbedding_toM ..
 
 instance (ε : Fin n → Bool) : LocallyCompactSpace (UJ ε) := by
   have : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) :=
@@ -160,9 +118,8 @@ lemma Kset_mul (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g 
 lemma Kset_star (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     star g ∈ Kset ε := by
   refine ⟨Unitary.star_mem hg.1, ?_⟩
-  have h := congrArg star hg.2
-  simp only [star_mul, Matrix.star_eq_conjTranspose, Jm_conjTranspose] at h
-  simpa [Matrix.star_eq_conjTranspose] using h.symm
+  simpa only [star_mul, Matrix.star_eq_conjTranspose, Jm_conjTranspose] using
+    (congrArg star hg.2).symm
 
 def KG (ε : Fin n → Bool) : Subgroup (UJ ε) where
   carrier := {g | toM g ∈ Kset ε}

@@ -40,5 +40,4 @@ import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
-theorem UpperTheory.ConvolutionTheory.T.places :
-    UpperTheory.ConvolutionTheory.T.Places := PositivityTheory.tft.places_holds
+alias UpperTheory.ConvolutionTheory.T.places := _root_.PositivityTheory.tft.places_holds

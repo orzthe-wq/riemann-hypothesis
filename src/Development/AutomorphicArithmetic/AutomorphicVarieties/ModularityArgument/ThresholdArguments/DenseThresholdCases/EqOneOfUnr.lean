@@ -71,7 +71,7 @@ private theorem full_chars [CharZero k] {n : ℕ} {V : Type} [AddCommGroup V] [M
     (hu : GlobalTheory.RoadU.Unlinked (GlobalTheory.RoadU.chars ξ hξ)) : Nonempty (ρ.Equiv (prinSeries ξ)) ∧
     IsL ((List.ofFn fun i => Segment.single (IrrGL.ofChar (ξ i) (hξ i)) (IrrGL.isCusp_ofChar _ _) : List (Segment k)) :
       Multiset (Segment k)) ρ := by
-  obtain ⟨hρ, hq⟩ := (UpperTheory.Gal.LocD.ofSupport_holds k n V ρ ξ hξ).1 hs
+  obtain ⟨hρ, hq⟩ := (_root_.UpperTheory.Gal.LocD.ofSupport k n V ρ ξ hξ).1 hs
   let y : Fin n → IrrGL (k := k) := fun i => IrrGL.ofChar (ξ i) (hξ i)
   have hy : ∀ i, (y i).IsCusp := fun i => IrrGL.isCusp_ofChar _ _
   have hd : ∑ i, (y i).1 = n := by simp [y, IrrGL.ofChar]

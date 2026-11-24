@@ -75,7 +75,7 @@ theorem strictWith_real : ∀ (X : Type) [AddCommGroup X] [Module.Finite ℤ X] 
         obtain ⟨k, e, hk, hke⟩ := h3 _ (hγ.mem i) (hγ.nonneg i) hi
         refine ⟨fun j => c i * e j / k, fun j => by positivity, LinearMap.ext₂ fun a b => ?_⟩
         have := LinearMap.congr_fun₂ hke a b
-        simp only [LinearMap.smul_apply, LinearMap.sum_apply, nsmul_eq_mul, smul_eq_mul] at this
+        simp only [LinearMap.smul_apply, LinearMap.sum_apply, nsmul_eq_mul] at this
         have hk' : (k : ℝ) ≠ 0 := by positivity
         have this' : (k : ℝ) * (γ i a b : ℝ) = ∑ j, (e j : ℝ) * (u j a b : ℝ) := by exact_mod_cast this
         simp only [LinearMap.smul_apply, LinearMap.sum_apply, toReal_apply, smul_eq_mul]

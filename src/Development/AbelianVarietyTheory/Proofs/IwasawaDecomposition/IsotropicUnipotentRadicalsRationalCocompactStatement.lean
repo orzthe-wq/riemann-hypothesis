@@ -46,4 +46,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.isotropic_unipotentRadicals_rational_cocompact : ∀ (D : D7) (B : HSp D) (ρ : ℕ) (e : Matrix (Fin B.rank) (Fin ρ) D.host.E), IsIsoSub B e → (∃ K : Set (NFlag B e), IsCompact K ∧ ∀ n, ∃ γ ∈ NFlagQ B e, ∃ k ∈ K, n = γ * k) ∧ (∃ K : Set (NI B e), IsCompact K ∧ ∀ n, ∃ γ ∈ NIQ B e, ∃ k ∈ K, n = γ * k) := by
-  first | exact @GlobalTheory.Mem.UnipCocompact.radicals_cocompact | exact GlobalTheory.Mem.UnipCocompact.radicals_cocompact | (intros; apply GlobalTheory.Mem.UnipCocompact.radicals_cocompact <;> assumption)
+  first | exact @GlobalTheory.Mem.UnipCocompact.radicals_cocompact

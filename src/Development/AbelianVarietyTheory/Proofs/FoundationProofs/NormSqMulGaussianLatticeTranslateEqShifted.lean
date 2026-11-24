@@ -1,43 +1,47 @@
 module
 
 public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdmissibleCharactersExistStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticFormEqAlternatingForm
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoordsAlongOrthonormalRealSubfieldBasisStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDeterminantIdealHermitianLatticeBasisStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorPowFractionalIdealNonarchSizeStatement
+public import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPeriodPairIdealCurveLattice
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeCovolumePosAndSelfDual
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.ClassGroup.Basic
+public import Mathlib.GroupTheory.FiniteAbelian.Basic
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdmissibleCharactersExist
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoordsAlongOrthonormalRealSubfieldBasis
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermitianPairingRationalValuesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalBasisLatticeIndexCoprimeStatement
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthoProductThetaMemThetaSpaceOfLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthonormalTransitionDetMulConjEqOneStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetAverageProdFundamentalDomainPlaneLatticePowStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StandardPairLatticeLocallyOrthonormalBasisStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPullbackConstantSqEqDetStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTaylorCoeffsAlgebraicAtComplexMultiplicatioStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitaryStatement
-import Mathlib.Algebra.Order.Archimedean.Real.Hom
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthoProductThetaMemThetaSpaceOfLattice
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthonormalTransitionDetMulConjEqOne
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+public import Mathlib.MeasureTheory.Group.FundamentalDomain
+public import Mathlib.MeasureTheory.Integral.Average
+public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetAverageProdFundamentalDomainPlaneLatticePow
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StandardPairLatticeLocallyOrthonormalBasis
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPullbackConstantSqEqDet
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTaylorCoeffsAlgebraicAtComplexMultiplicatio
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
+import Mathlib.GroupTheory.Nilpotent
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -45,7 +49,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -61,7 +64,500 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.NumberTheory.NumberField.ClassNumber
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Formalism.SharpRestriction.CuspSpanNormBounds.Point
+import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.TypeStar
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermitianPairingRationalValues
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticFormEqAlternatingForm, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDeterminantIdealHermitianLatticeBasis, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorPowFractionalIdealNonarchSize, Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalBasisLatticeIndexCoprime, Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormSqMulGaussianLatticeTranslateEqShifted
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticFormEqAlternatingForm =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticFormEqAlternatingForm", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\npublic import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPeriodPairIdealCurveLattice\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeCovolumePosAndSelfDual\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.GroupTheory.Nilpotent\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
+open scoped BigOperators
+
+namespace GlobalTheory.Vacuum.Parity
+
+theorem zmod_two : ∀ a b c f r s p q : ZMod 2, a * a + b * c = a → a * b + b * f = b → c * a + f * c = c →
+    c * b + f * f = f → ¬ (r * a + s * c = 0 ∧ r * b + s * f = 0) →
+    ¬ (r - (r * a + s * c) = 0 ∧ s - (r * b + s * f) = 0) →
+    (((p * b + q * f) * p - (p * a + q * c) * q) + (q * r - p * s) = 0 ↔ p = 0 ∧ q = 0) := by
+  decide
+
+theorem int_two (a b c f r s p q n e : ℤ) (he : e * e = 1) (h1 : a * a + b * c = a - 2 * n) (h2 : a * b + b * f = b)
+    (h3 : c * a + f * c = c) (h4 : c * b + f * f = f - 2 * n)
+    (h5 : ¬ (Even (r * a + s * c) ∧ Even (r * b + s * f)))
+    (h6 : ¬ (Even (r - (r * a + s * c)) ∧ Even (s - (r * b + s * f)))) :
+    Even (e * ((p * b + q * f) * p - (p * a + q * c) * q) + e * (q * r - p * s)) ↔ Even p ∧ Even q := by
+  have he' : ¬ Even e := by
+    intro h
+    have : Even (e * e) := h.mul_right e
+    rw [he] at this
+    exact Int.not_even_one this
+  rw [← mul_add, Int.even_mul, or_iff_right he']
+  simp only [← ZMod.intCast_eq_zero_iff_even] at h5 h6 ⊢
+  have two : (2 : ZMod 2) = 0 := rfl
+  have g1 := congrArg (Int.cast : ℤ → ZMod 2) h1
+  have g2 := congrArg (Int.cast : ℤ → ZMod 2) h2
+  have g3 := congrArg (Int.cast : ℤ → ZMod 2) h3
+  have g4 := congrArg (Int.cast : ℤ → ZMod 2) h4
+  push_cast at g1 g2 g3 g4 h5 h6 ⊢
+  rw [two, zero_mul, sub_zero] at g1 g4
+  exact zmod_two _ _ _ _ _ _ _ _ g1 g2 g3 g4 h5 h6
+
+theorem coord_unique (L : PeriodPair) {p q p' q' : ℤ}
+    (h : (p : ℂ) * L.ω₁ + q * L.ω₂ = p' * L.ω₁ + q' * L.ω₂) : p = p' ∧ q = q' := by
+  have hi := LinearIndependent.pair_iff.1 L.indep ((p : ℝ) - p') ((q : ℝ) - q') (by
+    simp only [Complex.real_smul]
+    push_cast
+    linear_combination h)
+  exact ⟨by exact_mod_cast sub_eq_zero.1 hi.1, by exact_mod_cast sub_eq_zero.1 hi.2⟩
+
+theorem half_mem_iff (L : PeriodPair) (p q : ℤ) :
+    ((p : ℂ) * L.ω₁ + q * L.ω₂) / 2 ∈ L.lattice ↔ Even p ∧ Even q := by
+  rw [PeriodPair.mem_lattice]
+  constructor
+  · rintro ⟨m, n, h⟩
+    have := coord_unique L (p := p) (q := q) (p' := m + m) (q' := n + n) (by
+      push_cast
+      linear_combination -2 * h)
+    exact ⟨⟨m, this.1⟩, ⟨n, this.2⟩⟩
+  · rintro ⟨⟨m, rfl⟩, ⟨n, rfl⟩⟩
+    exact ⟨m, n, by push_cast; ring⟩
+
+theorem exists_sign (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z : ℂ, z ∈ Λ ↔ z ∈ L.lattice) :
+    ∃ e : ℤ, e * e = 1 ∧ ∀ p q r s : ℤ,
+      gl3FieldFirst Λ ((p : ℂ) * L.ω₁ + q * L.ω₂) ((r : ℂ) * L.ω₁ + s * L.ω₂) = ((e * (q * r - p * s) : ℤ) : ℝ) := by
+  have hd := GlobalTheory.PlaneLattice.signedArea_ne_zero L
+  have ha := GlobalTheory.PlaneLattice.area_eq L Λ h
+  have hpos : 0 < area Λ := ha ▸ abs_pos.2 hd
+  obtain ⟨e, he, he2⟩ : ∃ e : ℤ, area Λ = e * ((starRingEnd ℂ) L.ω₁ * L.ω₂).im ∧ e * e = 1 := by
+    rcases abs_choice ((starRingEnd ℂ) L.ω₁ * L.ω₂).im with h' | h'
+    · exact ⟨1, by rw [ha, h']; simp only [Int.cast_one, one_mul], by simp⟩
+    · exact ⟨-1, by rw [ha, h']; simp only [Int.cast_neg, Int.cast_one, neg_mul, one_mul], by simp⟩
+  refine ⟨e, he2, fun p q r s => ?_⟩
+  have he3 : (e : ℝ) * e = 1 := by exact_mod_cast he2
+  rw [gl3FieldFirst, div_eq_iff hpos.ne', he]
+  simp
+  linear_combination (-((q : ℝ) * r - p * s) * (L.ω₁.re * L.ω₂.im - L.ω₁.im * L.ω₂.re)) * he3
+
+theorem cmQuadraticForm_eq_alternatingForm (D : D7) (Λ : AddSubgroup ℂ) (x : ℂ) : q1 D Λ x = gl3FieldFirst Λ (w0 D * x) x := by
+  rw [q1, gl3FieldFirst, mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq, w0]
+  simp [← Complex.ofReal_pow]
+  ring
+
+theorem cm_generator_sq_quadratic_eq (D : D7) : ∃ n : ℤ, w0 D * w0 D = w0 D - 2 * n := by
+  have hd16 : D.host.d % 16 = 7 := D.host.hyp.2.2.2.1
+  obtain ⟨n, hn⟩ : ∃ n : ℕ, D.host.d + 1 = 8 * n := ⟨(D.host.d + 1) / 8, by omega⟩
+  have hn' : (D.host.d : ℂ) + 1 = 8 * n := by exact_mod_cast hn
+  have hs : (Real.sqrt D.host.d : ℂ) ^ 2 = D.host.d := by
+    rw [← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]
+    simp
+  refine ⟨n, ?_⟩
+  rw [w0]
+  push_cast
+  linear_combination (Real.sqrt D.host.d : ℂ) ^ 2 / 4 * Complex.I_sq - 1 / 4 * hs - 1 / 4 * hn'
+
+theorem lamOf_stable (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a : 𝓞 D.host.K) :
+    ∀ w ∈ lamOf D cc δ, D.host.φ₀ (((a : D.host.K) : D.host.E)) * w ∈ lamOf D cc δ := by
+  intro w hw
+  induction hw using AddSubgroup.closure_induction with
+  | mem x hx =>
+    obtain ⟨c, hc, rfl⟩ := hx
+    exact AddSubgroup.subset_closure ⟨a * c, cc.mul_mem_left a hc, by simp; ring⟩
+  | zero => simp
+  | add x y _ _ hx hy => rw [mul_add]; exact add_mem hx hy
+  | neg x _ hx => rw [mul_neg]; exact neg_mem hx
+
+theorem lamOf_eq_closure (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) :
+    ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ lamOf D cc δ = AddSubgroup.closure {w₁, w₂} := by
+  obtain ⟨L, hL⟩ := GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc
+  refine ⟨L.ω₁, L.ω₂, L.indep, AddSubgroup.ext fun z => ?_⟩
+  rw [hL, AddSubgroup.mem_closure_pair, PeriodPair.mem_lattice]
+  simp only [zsmul_eq_mul]
+
+theorem even_im_hermitian_sub : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ t0, GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → t0 ∉ (lamOf D cc δ) ∧ ∀ ω ∈ (lamOf D cc δ), ∃ m k : ℤ, q1 D (lamOf D cc δ) ω = m ∧ gl3FieldFirst (lamOf D cc δ) ω (2 * t0) = k ∧ (Even (m + k) ↔ ω / 2 ∈ (lamOf D cc δ)) := by
+  intro D _ cc δ hc t0 ht
+  obtain ⟨L, hL⟩ := GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc
+  obtain ⟨α, hα⟩ := GlobalTheory.NormSum.exists_integer_map_eq_w0 D
+  have hst : ∀ w ∈ lamOf D cc δ, w0 D * w ∈ lamOf D cc δ := fun w hw =>
+    hα ▸ lamOf_stable D cc δ α w hw
+  obtain ⟨ht1, ht2, ht3⟩ := ht
+  refine ⟨fun h0 => ht2 (hst _ h0), fun ω hω => ?_⟩
+  obtain ⟨e, he, hE⟩ := exists_sign L _ hL
+  obtain ⟨n, hn⟩ := cm_generator_sq_quadratic_eq D
+  obtain ⟨a, b, hab⟩ := PeriodPair.mem_lattice.1 ((hL _).1 (hst _ ((hL _).2 L.ω₁_mem_lattice)))
+  obtain ⟨c, f, hcf⟩ := PeriodPair.mem_lattice.1 ((hL _).1 (hst _ ((hL _).2 L.ω₂_mem_lattice)))
+  obtain ⟨r, s, hrs⟩ := PeriodPair.mem_lattice.1 ((hL _).1 ht1)
+  obtain ⟨p, q, rfl⟩ := PeriodPair.mem_lattice.1 ((hL _).1 hω)
+  have h12 := coord_unique L (p := a * a + b * c) (q := a * b + b * f) (p' := a - 2 * n) (q' := b) (by
+    push_cast
+    linear_combination (a + w0 D - 1) * hab + b * hcf + L.ω₁ * hn)
+  have h34 := coord_unique L (p := c * a + f * c) (q := c * b + f * f) (p' := c) (q' := f - 2 * n) (by
+    push_cast
+    linear_combination c * hab + (f + w0 D - 1) * hcf + L.ω₂ * hn)
+  have h5 : ¬ (Even (r * a + s * c) ∧ Even (r * b + s * f)) := by
+    rw [← half_mem_iff L, ← hL]
+    intro h
+    apply ht2
+    convert h using 1
+    change w0 D * t0 = _
+    push_cast
+    linear_combination (-1 / 2 * r) * hab - 1 / 2 * s * hcf - 1 / 2 * w0 D * hrs
+  have h6 : ¬ (Even (r - (r * a + s * c)) ∧ Even (s - (r * b + s * f))) := by
+    rw [← half_mem_iff L, ← hL]
+    intro h
+    apply ht3
+    convert h using 1
+    have e1 : (1 - Complex.I * (Real.sqrt D.host.d : ℂ)) / 2 = 1 - w0 D := by rw [w0]; ring
+    rw [e1]
+    push_cast
+    linear_combination (1 / 2 * r) * hab + 1 / 2 * s * hcf - 1 / 2 * (1 - w0 D) * hrs
+  have hw : w0 D * ((p : ℂ) * L.ω₁ + q * L.ω₂) =
+      ((p * a + q * c : ℤ) : ℂ) * L.ω₁ + ((p * b + q * f : ℤ) : ℂ) * L.ω₂ := by
+    push_cast
+    linear_combination -p * hab - q * hcf
+  refine ⟨e * ((p * b + q * f) * p - (p * a + q * c) * q), e * (q * r - p * s), ?_, ?_, ?_⟩
+  · rw [cmQuadraticForm_eq_alternatingForm, hw, hE]
+  · rw [← hrs, hE]
+  · rw [hL, half_mem_iff]
+    exact int_two a b c f r s p q n e he h12.1 h12.2 h34.1 h34.2 h5 h6
+
+end GlobalTheory.Vacuum.Parity
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticFormEqAlternatingForm =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDeterminantIdealHermitianLatticeBasis =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDeterminantIdealHermitianLatticeBasis", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm\nimport Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
+open scoped BigOperators
+
+namespace GlobalTheory.NormSum
+
+theorem exists_detIdeal_abstract {R K V ι : Type} [CommRing R] [CommRing K] [Algebra R K]
+    [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
+    (B : V → V →ₗ[K] K) (hB : ∀ (s : ℕ) (y x : V), B ((s : K) • y) x = (s : K) * B y x)
+    (Y : Set V) (b₀ : ι → V)
+    (hY : ∀ x ∈ Y, ∀ y ∈ Y, B y x ∈ (algebraMap R K).range)
+    (h0 : ∀ i, ∃ s : ℕ, 0 < s ∧ (s : K) • b₀ i ∈ Y) :
+    ∃ I : Submodule R K, (∃ n : ℕ, 0 < n ∧ ∀ x ∈ I, (n : K) * x ∈ (algebraMap R K).range) ∧
+      ∀ (p : ℕ) (b : ι → V), (∀ i, ∃ s : ℕ, Nat.Coprime s p ∧ (s : K) • b i ∈ Y) →
+        (∀ y ∈ Y, ∃ s : ℕ, Nat.Coprime s p ∧ ∃ c : ι → R,
+          (s : K) • y = ∑ i, algebraMap R K (c i) • b i) →
+        (∃ s : ℕ, Nat.Coprime s p ∧ (s : K) * (Matrix.of fun i j => B (b₀ i) (b j)).det ∈ I) ∧
+        ∀ x ∈ I, ∃ (s : ℕ) (c : R), Nat.Coprime s p ∧
+          (s : K) * x = algebraMap R K c * (Matrix.of fun i j => B (b₀ i) (b j)).det := by
+  have hcol : ∀ (s : ι → ℕ) (y : ι → V),
+      (Matrix.of fun i j => B (b₀ i) ((s j : K) • y j)).det =
+        ((∏ j, s j : ℕ) : K) * (Matrix.of fun i j => B (b₀ i) (y j)).det := by
+    intro s y
+    rw [Nat.cast_prod, ← Matrix.det_mul_row]
+    congr 1
+    ext i j
+    simp
+  refine ⟨Submodule.span R {d | ∃ y : ι → V, (∀ j, y j ∈ Y) ∧
+    d = (Matrix.of fun i j => B (b₀ i) (y j)).det}, ?_, ?_⟩
+  · choose s hs hsY using h0
+    refine ⟨∏ i, s i, Finset.prod_pos fun i _ => hs i, ?_⟩
+    intro x hx
+    induction hx using Submodule.span_induction with
+    | mem d hd =>
+      obtain ⟨y, hy, rfl⟩ := hd
+      choose c hc using fun i j => hY (y j) (hy j) _ (hsY i)
+      refine ⟨(Matrix.of c).det, ?_⟩
+      rw [RingHom.map_det, Nat.cast_prod, ← Matrix.det_mul_column]
+      congr 1
+      ext i j
+      simp [hc, hB]
+    | zero => simp
+    | add x y _ _ hx hy => rw [mul_add]; exact add_mem hx hy
+    | smul a x _ hx =>
+      rw [Algebra.smul_def, mul_left_comm]
+      exact mul_mem ⟨a, rfl⟩ hx
+  · intro p b h1 h2
+    constructor
+    · choose s hs hsY using h1
+      refine ⟨∏ i, s i, Nat.Coprime.prod_left fun i _ => hs i, ?_⟩
+      rw [← hcol]
+      exact Submodule.subset_span ⟨_, hsY, rfl⟩
+    · intro x hx
+      induction hx using Submodule.span_induction with
+      | mem d hd =>
+        obtain ⟨y, hy, rfl⟩ := hd
+        choose s hs c hc using fun j => h2 (y j) (hy j)
+        refine ⟨∏ i, s i, (Matrix.of c).det, Nat.Coprime.prod_left fun i _ => hs i, ?_⟩
+        rw [← hcol, RingHom.map_det, mul_comm, ← Matrix.det_transpose (RingHom.mapMatrix _ _),
+          ← Matrix.det_mul]
+        congr 1
+        ext i j
+        simp [hc, Matrix.mul_apply, mul_comm]
+      | zero => exact ⟨1, 0, by simp, by simp⟩
+      | add x y _ _ hx hy =>
+        obtain ⟨s, c, hs, hc⟩ := hx
+        obtain ⟨t, d, ht, hd⟩ := hy
+        refine ⟨s * t, t * c + s * d, Nat.Coprime.mul_left hs ht, ?_⟩
+        simp only [Nat.cast_mul, map_add (f := _), map_mul, map_natCast]
+        linear_combination (t : K) * hc + (s : K) * hd
+      | smul a x _ hx =>
+        obtain ⟨s, c, hs, hc⟩ := hx
+        refine ⟨s, a * c, hs, ?_⟩
+        rw [Algebra.smul_def, map_mul]
+        linear_combination (algebraMap R K a) * hc
+
+noncomputable def detIdealForm (D : D7) {N N' : ℕ} (y : Matrix (Fin N') (Fin N) D.host.E) :
+    Matrix (Fin N') (Fin N) D.host.E →ₗ[D.host.K] D.host.K where
+  toFun x := hYY D x y
+  map_add' x x' := by
+    simp only [hYY, Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add (f := _)]
+  map_smul' c x := by
+    simp only [hYY, Matrix.smul_apply, smul_mul_assoc, ← Finset.smul_sum, map_smul, RingHom.id_apply]
+
+theorem exists_detIdeal : ∀ (D : D7) (N N' r : ℕ) (Y : Submodule (𝓞 D.host.E) (Matrix (Fin N') (Fin N) D.host.E)) (b₀ : Fin r → Matrix (Fin N') (Fin N) D.host.E), (∀ x ∈ Y, ∀ y ∈ Y, hYY D x y ∈ (algebraMap (𝓞 D.host.K) D.host.K).range) → (∀ i, ∃ s : ℕ, 0 < s ∧ (s : D.host.E) • b₀ i ∈ Y) → ∃ I : Submodule (𝓞 D.host.K) D.host.K, (∃ n : ℕ, 0 < n ∧ ∀ x ∈ I, (n : D.host.K) * x ∈ (algebraMap (𝓞 D.host.K) D.host.K).range) ∧ ∀ (p : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E), LocBasis D p Y b → (∃ s : ℕ, Nat.Coprime s p ∧ (s : D.host.K) * (Matrix.of fun i j => hYY D (b j) (b₀ i)).det ∈ I) ∧ ∀ x ∈ I, ∃ (s : ℕ) (c : 𝓞 D.host.K), Nat.Coprime s p ∧ (s : D.host.K) * x = (c : D.host.K) * (Matrix.of fun i j => hYY D (b j) (b₀ i)).det := by
+  intro D N N' r Y b₀ hY h0
+  have hsm : ∀ (s : ℕ) (y : Matrix (Fin N') (Fin N) D.host.E),
+      (s : D.host.K) • y = (s : D.host.E) • y := by
+    intro s y
+    rw [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
+  obtain ⟨I, hI1, hI2⟩ := exists_detIdeal_abstract (R := 𝓞 D.host.K) (K := D.host.K)
+    (detIdealForm D) (by
+      intro s y x
+      change hYY D x _ = _ * hYY D x y
+      rw [hsm, ← smul_eq_mul, hYY, hYY, ← map_smul, Nat.cast_smul_eq_nsmul D.host.K, nsmul_eq_mul]
+      congr 1
+      simp only [Matrix.smul_apply, smul_eq_mul, map_mul, map_natCast, Finset.mul_sum, mul_left_comm])
+    (Y : Set (Matrix (Fin N') (Fin N) D.host.E)) b₀ hY (by simpa only [hsm, SetLike.mem_coe] using h0)
+  refine ⟨I, hI1, fun p b hb => hI2 p b ?_ ?_⟩
+  · simpa only [hsm, SetLike.mem_coe] using hb.2.1
+  · intro y hy
+    obtain ⟨s, hs, c, hc⟩ := hb.2.2 y hy
+    exact ⟨s, hs, c, by rw [hsm, hc]; rfl⟩
+
+end GlobalTheory.NormSum
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDeterminantIdealHermitianLatticeBasis =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorPowFractionalIdealNonarchSize =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorPowFractionalIdealNonarchSize", "h": "module\n\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.NumberTheory.NumberField.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.NumberField.ClassNumber\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm\nimport Formalism.SharpRestriction.CuspSpanNormBounds.Point\nimport Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice\nimport Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\npublic import Mathlib.RingTheory.ClassGroup.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
+open scoped BigOperators
+
+namespace GlobalTheory
+
+theorem nonarch_le_pow_of_mem_ideal_pow {K : Type} [Field K] [NumberField K] (J : Ideal (𝓞 K))
+    (v : K →*₀ ℝ) (h0 : ∀ x, 0 ≤ v x) (hadd : ∀ x y, v (x + y) ≤ max (v x) (v y))
+    (hint : ∀ c : 𝓞 K, v (c : K) ≤ 1) (M : ℝ) (hM0 : 0 ≤ M)
+    (hM : ∀ y ∈ J, v (y : K) ≤ M) (k : ℕ) : ∀ y ∈ J ^ k, v (y : K) ≤ M ^ k := by
+  induction k with
+  | zero => intro y _; simpa using hint y
+  | succ k ih =>
+    intro y hy
+    rw [pow_succ] at hy
+    refine Submodule.mul_induction_on hy ?_ ?_
+    · intro a ha b hb
+      have : ((a * b : 𝓞 K) : K) = (a : K) * (b : K) := by simp
+      rw [this, map_mul, pow_succ]
+      exact mul_le_mul (ih a ha) (hM b hb) (h0 _) (pow_nonneg hM0 _)
+    · intro a b ha hb
+      have : ((a + b : 𝓞 K) : K) = (a : K) + (b : K) := by simp
+      rw [this]
+      exact (hadd _ _).trans (max_le ha hb)
+
+theorem exists_generator_pow_fractional_size : ∀ (K : Type) [Field K] [NumberField K] (I : Submodule (𝓞 K) K), I ≠ ⊥ → (∃ n : ℕ, 0 < n ∧ ∀ x ∈ I, (n : K) * x ∈ (algebraMap (𝓞 K) K).range) → ∃ (h : ℕ) (α : K), 0 < h ∧ α ≠ 0 ∧ ∀ v : K →*₀ ℝ, (∀ x, 0 ≤ v x) → (∀ x y, v (x + y) ≤ max (v x) (v y)) → (∀ c : 𝓞 K, v (c : K) ≤ 1) → ∀ x₀ ∈ I, (∀ x ∈ I, v x ≤ v x₀) → v α = v x₀ ^ h := by
+  intro K _ _ I hI ⟨n, hn, hnI⟩
+  have hnK : (n : K) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  let J : Ideal (𝓞 K) :=
+    { carrier := {c | ∃ x ∈ I, (c : K) = (n : K) * x}
+      zero_mem' := ⟨0, I.zero_mem, by simp⟩
+      add_mem' := by
+        rintro a b ⟨x, hx, ha⟩ ⟨y, hy, hb⟩
+        refine ⟨x + y, I.add_mem hx hy, ?_⟩
+        have : ((a + b : 𝓞 K) : K) = (a : K) + (b : K) := by simp
+        rw [this, ha, hb]; ring
+      smul_mem' := by
+        rintro c a ⟨x, hx, ha⟩
+        refine ⟨c • x, I.smul_mem c hx, ?_⟩
+        have : ((c • a : 𝓞 K) : K) = (c : K) * (a : K) := by simp
+        have h2 : c • x = (c : K) * x := Algebra.smul_def c x
+        rw [this, ha, h2]; ring }
+  have hmem : ∀ x ∈ I, ∃ c ∈ J, (c : K) = (n : K) * x := by
+    intro x hx
+    obtain ⟨c, hc⟩ := hnI x hx
+    exact ⟨c, ⟨x, hx, hc⟩, hc⟩
+  have hJ : J ≠ 0 := by
+    obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hI
+    obtain ⟨c, hc, hcx⟩ := hmem x hx
+    intro h
+    rw [h] at hc
+    have : c = 0 := by simpa using hc
+    rw [this] at hcx
+    exact mul_ne_zero hnK hx0 (by simpa using hcx.symm)
+  have hJ' : J ∈ nonZeroDivisors (Ideal (𝓞 K)) := mem_nonZeroDivisors_of_ne_zero hJ
+  set h := Fintype.card (ClassGroup (𝓞 K)) with hh
+  have hpos : 0 < h := Fintype.card_pos
+  have hprin : (J ^ h).IsPrincipal := by
+    have h1 : ClassGroup.mk0 (⟨J, hJ'⟩ ^ h : nonZeroDivisors (Ideal (𝓞 K))) = 1 := by
+      rw [map_pow]; exact pow_card_eq_one
+    exact (ClassGroup.mk0_eq_one_iff (pow_mem hJ' h)).mp h1
+  obtain ⟨a, ha⟩ := hprin
+  have ha0 : a ≠ 0 := by
+    intro h0
+    apply pow_ne_zero h hJ
+    rw [ha, h0]; simp
+  have haK : (a : K) ≠ 0 := by simpa using ha0
+  refine ⟨h, (a : K) / (n : K) ^ h, hpos, div_ne_zero haK (pow_ne_zero _ hnK), ?_⟩
+  intro v h0 hadd hint x₀ hx₀ hmax
+  have hvn : v (n : K) ≠ 0 := (map_ne_zero v).mpr hnK
+  have hM : ∀ y ∈ J, v (y : K) ≤ v (n : K) * v x₀ := by
+    rintro y ⟨x, hx, hy⟩
+    rw [hy, map_mul]
+    exact mul_le_mul_of_nonneg_left (hmax x hx) (h0 _)
+  have h1 : v (a : K) ≤ (v (n : K) * v x₀) ^ h :=
+    nonarch_le_pow_of_mem_ideal_pow J v h0 hadd hint _ (mul_nonneg (h0 _) (h0 _)) hM h a
+      (by rw [ha]; exact Submodule.mem_span_singleton_self a)
+  have h2 : (v (n : K) * v x₀) ^ h ≤ v (a : K) := by
+    obtain ⟨c, hc, hcx⟩ := hmem x₀ hx₀
+    have hch : c ^ h ∈ J ^ h := Ideal.pow_mem_pow hc h
+    rw [ha] at hch
+    obtain ⟨d, hd⟩ := Submodule.mem_span_singleton.mp hch
+    have hd' : (d : K) * (a : K) = (c : K) ^ h := by
+      have := congrArg (algebraMap (𝓞 K) K) hd
+      simpa using this
+    rw [← map_mul, ← hcx, ← map_pow, ← hd', map_mul]
+    exact mul_le_of_le_one_left (h0 _) (hint d)
+  rw [map_div₀, map_pow, le_antisymm h1 h2, mul_pow]
+  field_simp
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorPowFractionalIdealNonarchSize =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalBasisLatticeIndexCoprime =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalBasisLatticeIndexCoprime", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.GroupTheory.FiniteAbelian.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
+open scoped BigOperators
+
+namespace GlobalTheory.NormSum.LocIndex
+
+theorem index_coprime_of_multiples {G : Type*} [AddCommGroup G] [AddGroup.FG G] (H : AddSubgroup G) (p : ℕ)
+    (hp : p.Prime) (h : ∀ z : G, ∃ s : ℕ, Nat.Coprime s p ∧ s • z ∈ H) : Nat.Coprime H.index p := by
+  have hq : ∀ x : G ⧸ H, ∃ s : ℕ, Nat.Coprime s p ∧ s • x = 0 := by
+    intro x
+    obtain ⟨z, rfl⟩ := QuotientAddGroup.mk_surjective x
+    obtain ⟨s, hs, hz⟩ := h z
+    refine ⟨s, hs, ?_⟩
+    rw [← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]
+    exact hz
+  have htor : AddMonoid.IsTorsion (G ⧸ H) := by
+    intro x
+    obtain ⟨s, hs, hx⟩ := hq x
+    refine isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨s, Nat.pos_of_ne_zero ?_, hx⟩
+    rintro rfl
+    exact hp.one_lt.ne' (by simpa using hs)
+  haveI : Finite (G ⧸ H) := AddCommGroup.finite_of_fg_torsion _ htor
+  haveI := Fact.mk hp
+  rw [Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp]
+  intro hd
+  obtain ⟨x, hx⟩ := exists_prime_addOrderOf_dvd_card' (G := G ⧸ H) p hd
+  obtain ⟨s, hs, hs0⟩ := hq x
+  have : p ∣ s := hx ▸ addOrderOf_dvd_of_nsmul_eq_zero hs0
+  exact (Nat.Prime.coprime_iff_not_dvd hp).1 hs.symm this
+
+theorem mul_mem_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a : 𝓞 D.host.K) {w : ℂ}
+    (hw : w ∈ lamOf D cc δ) : w * D.host.φ₀ ((a : D.host.K) : D.host.E) ∈ lamOf D cc δ := by
+  unfold lamOf at hw
+  induction hw using AddSubgroup.closure_induction with
+  | mem x hx =>
+    obtain ⟨c, hc, rfl⟩ := hx
+    refine AddSubgroup.subset_closure ⟨c * a, cc.mul_mem_right a hc, ?_⟩
+    rw [mul_assoc, ← map_mul]
+    congr 2
+  | zero => rw [zero_mul]; exact zero_mem _
+  | add x y _ _ hx hy => rw [add_mul]; exact add_mem hx hy
+  | neg x _ hx => rw [neg_mul]; exact neg_mem hx
+
+theorem exists_multiple_mem (D : D7) (hD : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' r : ℕ}
+    (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
+    (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (p : ℕ) (hb : LocBasis D p (YYl D L L') b)
+    (z : VC D N N') (hz : z ∈ La D (tor0 D cc δ) L L') :
+    ∃ s : ℕ, Nat.Coprime s p ∧ s • z ∈ LaB D (tor0 D cc δ) b := by
+  unfold La at hz
+  induction hz using AddSubgroup.closure_induction with
+  | mem x hx =>
+    obtain ⟨w, hw, A, hA, rfl⟩ := hx
+    obtain ⟨s, hs, c, hc⟩ := hb.2.2 A hA
+    refine ⟨s, hs, ?_⟩
+    have key : s • w • embV D (tor0 D cc δ) A =
+        ∑ i, (w * D.host.φ₀ ((c i : D.host.K) : D.host.E)) • embV D (tor0 D cc δ) (b i) := by
+      funext τ i j
+      have h1 := congrArg (fun M => embT D τ (M i j)) hc
+
+      simp only [Matrix.smul_apply, smul_eq_mul, map_mul, map_natCast, Matrix.sum_apply, map_sum] at h1
+      simp only [hD.1 τ] at h1
+      simp only [Pi.smul_apply, Finset.sum_apply, embV, tor0, smul_eq_mul, nsmul_eq_mul]
+      rw [mul_left_comm, h1, Finset.mul_sum]
+      exact Finset.sum_congr rfl fun k _ => by ring
+    rw [key]
+    exact sum_mem fun i _ => AddSubgroup.subset_closure ⟨_, mul_mem_lamOf D cc δ (c i) hw, i, rfl⟩
+  | zero => exact ⟨1, Nat.coprime_one_left p, by rw [smul_zero]; exact zero_mem _⟩
+  | add x y _ _ hx hy =>
+    obtain ⟨s, hs, hx⟩ := hx
+    obtain ⟨t, ht, hy⟩ := hy
+    refine ⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩
+    rw [smul_add]
+    refine add_mem ?_ ?_
+    · rw [mul_comm, mul_smul]; exact nsmul_mem hx t
+    · rw [mul_smul]; exact nsmul_mem hy s
+  | neg x _ hx =>
+    obtain ⟨s, hs, hx⟩ := hx
+    exact ⟨s, hs, by rw [smul_neg]; exact neg_mem hx⟩
+
+theorem index_coprime : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (N N' r : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (p : ℕ), p.Prime → (La D (tor0 D cc δ) L L').FG → LocBasis D p (YYl D L L') b → Nat.Coprime (((LaB D (tor0 D cc δ) b).addSubgroupOf (La D (tor0 D cc δ) L L')).index) p := by
+  intro D hD cc δ N N' r L L' b p hp hfg hb
+  haveI : AddGroup.FG (La D (tor0 D cc δ) L L') := (AddGroup.fg_iff_addSubgroup_fg _).2 hfg
+  refine index_coprime_of_multiples _ p hp fun z => ?_
+  obtain ⟨s, hs, hz⟩ := exists_multiple_mem D hD cc δ L L' b p hb z.1 z.2
+  exact ⟨s, hs, AddSubgroup.mem_addSubgroupOf.2 hz⟩
+
+end GlobalTheory.NormSum.LocIndex
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalBasisLatticeIndexCoprime =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormSqMulGaussianLatticeTranslateEqShifted =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormSqMulGaussianLatticeTranslateEqShifted", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AdmissibleCharactersExist\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticFormEqAlternatingForm\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoordsAlongOrthonormalRealSubfieldBasis\npublic import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDeterminantIdealHermitianLatticeBasis\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsGeneratorPowFractionalIdealNonarchSize\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LocalBasisLatticeIndexCoprime\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthoProductThetaMemThetaSpaceOfLattice\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OrthonormalTransitionDetMulConjEqOne\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.LinearAlgebra.Complex.FiniteDimensional\npublic import Mathlib.MeasureTheory.Group.FundamentalDomain\npublic import Mathlib.MeasureTheory.Integral.Average\npublic import Mathlib.MeasureTheory.Measure.Haar.OfBasis\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetAverageProdFundamentalDomainPlaneLatticePow\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.StandardPairLatticeLocallyOrthonormalBasis\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPullbackConstantSqEqDet\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTaylorCoeffsAlgebraicAtComplexMultiplicatio\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermitianPairingRationalValues\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary\nimport Mathlib.Algebra.Order.Archimedean.Real.Hom\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
@@ -150,7 +646,7 @@ theorem normSq_pullB (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hC : Crv 
       nrm1Sq (lamOf D cc δ) g ^ r := by
   have hG := (GlobalTheory.InducedType.induced_type D).1
   have hlat := Parity.lamOf_eq_closure D cc δ hC
-  obtain ⟨-, -, hpar, hmem, hbij⟩ := GlobalTheory.T.coords_along_orthonormal_realSubfield_basis D hG cc δ N N' r b hb
+  obtain ⟨-, -, hpar, hmem, hbij⟩ := _root_.GlobalTheory.OnCoord.coords_of_orthonormal_basis D hG cc δ N N' r b hb
   let e0 : VC D N N' →ₗ[ℝ] (Fin r → ℂ) :=
     { toFun := fun z k => coordB D (tor0 D cc δ) b k z
       map_add' := fun z w => by
@@ -164,7 +660,7 @@ theorem normSq_pullB (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hC : Crv 
     MeasureTheory.Measure.pi.isAddHaarMeasure _
   haveI h3 : (MeasureTheory.volume : MeasureTheory.Measure (VC D N N')).IsAddHaarMeasure :=
     MeasureTheory.Measure.pi.isAddHaarMeasure _
-  have key := GlobalTheory.T.setAverage_prod_fundamentalDomain_planeLattice_pow (lamOf D cc δ) hlat
+  have key := _root_.GlobalTheory.LatticeMean.mean_prod_eq_pow (lamOf D cc δ) hlat
     (fun z => ‖g z‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2 / area (lamOf D cc δ)))
     (fun ω hω z => by rw [← norm_sq_mul_gaussian_latticeTranslate_eq_shifted, hg ω hω]) (VC D N N') MeasureTheory.volume r e
     (LaB D (tor0 D cc δ) b) hmem
@@ -234,7 +730,7 @@ theorem exists_kappa (D : D7) (N N' r : ℕ) (b₀ : Fin r → Matrix (Fin N') (
       ‖lamC lam κ‖ ^ 2 =
         ‖lam (phiQ D (((Matrix.of fun i j => hYY D (b j) (b₀ i)).det : D.host.K) : D.host.E))‖ := by
   have hG := (GlobalTheory.InducedType.induced_type D).1
-  obtain ⟨I, hI, hloc⟩ := GlobalTheory.T.exists_determinantIdeal_hermitianLattice_basis D N N' r _ b₀ (GlobalTheory.T.hermitian_pairing_integral_values D N N' _ _ hS hS') (fun i => by
+  obtain ⟨I, hI, hloc⟩ := _root_.GlobalTheory.NormSum.exists_detIdeal D N N' r _ b₀ (_root_.GlobalTheory.NormSum.TraceInt.hYY_integral D N N' _ _ hS hS') (fun i => by
     obtain ⟨s, hs, h⟩ := hl₀.2.1 i
     refine ⟨s, Nat.pos_of_ne_zero ?_, h⟩
     rintro rfl
@@ -242,13 +738,13 @@ theorem exists_kappa (D : D7) (N N' r : ℕ) (b₀ : Fin r → Matrix (Fin N') (
   have hI0 : I ≠ ⊥ := by
     obtain ⟨⟨s, hs, h⟩, -⟩ := hloc 2 b₀ hl₀
     rintro rfl
-    have hu := GlobalTheory.T.orthonormalTransition_det_mul_conj_eq_one D hG N N' r b₀ b₀ hb₀ hb₀
+    have hu := _root_.GlobalTheory.NormSum.det_onB_mul_conj D hG N N' r b₀ b₀ hb₀ hb₀
     rw [Submodule.mem_bot, mul_eq_zero] at h
     rcases h with h | h
     · have : s = 0 := by exact_mod_cast h
       subst this; simp at hs
     · rw [h] at hu; simp at hu
-  obtain ⟨h, α, hh, hα, hv⟩ := GlobalTheory.T.exists_generator_pow_fractionalIdeal_nonarch_size D.host.K I hI0 hI
+  obtain ⟨h, α, hh, hα, hv⟩ := _root_.GlobalTheory.exists_generator_pow_fractional_size D.host.K I hI0 hI
   have hαE : (α : D.host.E) ≠ 0 := by simpa using hα
   have hαE' : D.host.conj (α : D.host.E) ≠ 0 := by simpa using hα
   set β : Qbar := phiQ D ((α : D.host.E) / D.host.conj (α : D.host.E)) with hβ
@@ -286,7 +782,7 @@ theorem exists_kappa (D : D7) (N N' r : ℕ) (b₀ : Fin r → Matrix (Fin N') (
     have k1 := key ((lam.comp (phiQ D)).comp (algebraMap D.host.K D.host.E))
     have k2 := key (((lam.comp (phiQ D)).comp D.host.conj.toRingEquiv.toRingHom).comp
       (algebraMap D.host.K D.host.E))
-    have hu := congrArg (fun y => ‖lam (phiQ D y)‖) (GlobalTheory.T.orthonormalTransition_det_mul_conj_eq_one D hG N N' r b₀ b hb₀ hb)
+    have hu := congrArg (fun y => ‖lam (phiQ D y)‖) (_root_.GlobalTheory.NormSum.det_onB_mul_conj D hG N N' r b₀ b hb₀ hb)
     simp only [map_mul, norm_mul, map_one, norm_one] at hu
     change ‖lam (phiQ D (α : D.host.E))‖ = ‖lam (phiQ D (u : D.host.E))‖ ^ h at k1
     change ‖lam (phiQ D (D.host.conj (α : D.host.E)))‖ = ‖lam (phiQ D (D.host.conj (u : D.host.E)))‖ ^ h at k2
@@ -332,27 +828,27 @@ theorem exists_vacuum : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Cr
   have hP : ∀ b : Fin (fF D * N * N') → Matrix (Fin N') (Fin N) D.host.E, OnB D b →
       pullB D (tor0 D cc δ) b (GL3Theta.th0 (lamOf D cc δ) t0) ∈ ThSp D (tor0 D cc δ) (LaB D (tor0 D cc δ) b) := by
     intro b hb
-    obtain ⟨-, -, hpar, hmem, -⟩ := GlobalTheory.T.coords_along_orthonormal_realSubfield_basis D hG cc δ N N' _ b hb
-    exact GlobalTheory.T.orthoProductTheta_mem_thetaSpace_of_lattice D _ N N' _ b _ hpar hmem hd hth
-  obtain ⟨b₀, hb₀, hl₀⟩ := GlobalTheory.T.standardPairLattice_locally_orthonormal_basis D N N' hN 2 Nat.prime_two
+    obtain ⟨-, -, hpar, hmem, -⟩ := _root_.GlobalTheory.OnCoord.coords_of_orthonormal_basis D hG cc δ N N' _ b hb
+    exact _root_.GlobalTheory.ProdTheta.pullB_mem_ThSp D _ N N' _ b _ hpar hmem hd hth
+  obtain ⟨b₀, hb₀, hl₀⟩ := _root_.GlobalTheory.OddGenus.odd_one D N N' hN 2 Nat.prime_two
   obtain ⟨κ, hκ, hκv⟩ := exists_kappa D N N' _ b₀ hb₀ hl₀ (hSD N) (hSD N')
   obtain ⟨hκQ, hκ1⟩ := id hκ
   have hκn : ‖κ‖ = 1 := hκ1 (Qbar : IntermediateField ℚ ℂ).val.toRingHom
   have hκ0 : κ ≠ 0 := by rintro rfl; simp at hκn
-  obtain ⟨-, u1, u2, u3⟩ := GlobalTheory.T.intertwinerUnitary_all D cc δ hC N N' _ _ (hKb b₀ hb₀) hK0 _ (hP b₀ hb₀)
+  obtain ⟨-, u1, u2, u3⟩ := _root_.GlobalTheory.theta_translation_intertwiner_unitary D cc δ hC N N' _ _ (hKb b₀ hb₀) hK0 _ (hP b₀ hb₀)
   have hE : ThetaVectorUpToUnits D (tor0 D cc δ) t0 (stdL D N) (stdL D N') (fun z => κ * Iop D (tor0 D cc δ)
       (LaB D (tor0 D cc δ) b₀) (La0 D (tor0 D cc δ) N N')
       (pullB D (tor0 D cc δ) b₀ (GL3Theta.th0 (lamOf D cc δ) t0)) z) := ⟨b₀, κ, hb₀, hκ, rfl⟩
   refine ⟨_, ⟨smul_mem_ThSp D _ _ κ _ u1,
-    (GlobalTheory.T.thetaTaylorCoeffs_algebraic_at_complexMultiplication D cc δ hC t0 ht N N' _ _ (hSD N) (hSD N') hN _ hE).1, ?_, hE, ?_⟩, ?_⟩
+    (_root_.GlobalTheory.ThetaAlgebraic.taylor_algebraic D cc δ hC t0 ht N N' _ _ (hSD N) (hSD N') hN _ hE).1, ?_, hE, ?_⟩, ?_⟩
   · rw [normSq_smul D _ _ κ hκn, u2]
     refine normSq_pullB D cc δ hC b₀ hb₀ _ fun ω hω z => ?_
     obtain ⟨m, -, hm⟩ := hth ω hω
     rw [← hm z, norm_mul, norm_zpow]; simp
   · intro p hp lam _
-    obtain ⟨b, hb, hl⟩ := GlobalTheory.T.standardPairLattice_locally_orthonormal_basis D N N' hN p hp.out
-    obtain ⟨c, ζ, m, hm, hζ, hc, hpull⟩ := GlobalTheory.T.thetaPullbackConstant_sq_eq_det D cc δ hC t0 ht N N' _ b₀ b hb₀ hb
-    obtain ⟨μ, hμ, hI⟩ := GlobalTheory.T.admissible_characters_exist D cc δ hC N N' _ _ _ (hKb b₀ hb₀) (hKb b hb) hK0 _ (hP b₀ hb₀)
+    obtain ⟨b, hb, hl⟩ := _root_.GlobalTheory.OddGenus.odd_one D N N' hN p hp.out
+    obtain ⟨c, ζ, m, hm, hζ, hc, hpull⟩ := _root_.GlobalTheory.UnitaryTheta.const_sq_eq_det D cc δ hC t0 ht N N' _ b₀ b hb₀ hb
+    obtain ⟨μ, hμ, hI⟩ := _root_.GlobalTheory.TripleIntertwiner.triple_constant D cc δ hC N N' _ _ _ (hKb b₀ hb₀) (hKb b hb) hK0 _ (hP b₀ hb₀)
     have hζQ : ζ ∈ Qbar := mem_Qbar_of_pow hm (hζ ▸ one_mem _)
     have hμQ : μ ∈ Qbar := mem_Qbar_of_pow (n := 8) (by norm_num) (hμ ▸ one_mem _)
     set u := phiQ D (((Matrix.of fun i j => hYY D (b j) (b₀ i)).det : D.host.K) : D.host.E) with hu
@@ -384,8 +880,8 @@ theorem exists_vacuum : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Cr
     · rw [lamC_coe]
       simp only [ε, map_div₀, map_mul, norm_div, norm_mul, n2, n3, mul_one]
       exact div_self n4
-    · exact GlobalTheory.T.localBasisLattice_index_coprime D hG cc δ N N' _ _ _ b p hp.out
-        (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hG cc δ hC N N' _ hK0).2.2.2.2.1 hl
+    · exact _root_.GlobalTheory.NormSum.LocIndex.index_coprime D hG cc δ N N' _ _ _ b p hp.out
+        (_root_.GlobalTheory.ThetaLine.theta_line D hG cc δ hC N N' _ hK0).2.2.2.2.1 hl
     · rw [hpull, Iop_smul, hI, hε]
       funext z
       field_simp
@@ -399,3 +895,6 @@ theorem exists_vacuum : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Cr
     simp [Iop, U, pullB, coordB, h0] at h2
 
 end GlobalTheory.Vacuum
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormSqMulGaussianLatticeTranslateEqShifted =====

@@ -63,10 +63,7 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 
 namespace GlobalTheory.MulFlatSurj
 
-theorem mulN_eq_pow {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) : mulN G n = (𝟙 G) ^ n := by
-  induction n with
-  | zero => rfl
-  | succ n ih => rw [pow_succ, ← ih]; rfl
+alias mulN_eq_pow := _root_.GlobalTheory.GrpTangent.mulN_eq_pow
 
 theorem finite_flat_surjective_mulN : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A],
     IsAbelianScheme A → ∀ n : ℕ, 0 < n →

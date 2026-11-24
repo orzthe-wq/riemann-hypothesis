@@ -2272,10 +2272,6 @@ open Formalism.MainNotions.G Formalism.GradedWeylDivisibility MvPolynomial
 
 variable {p : ℕ}
 
-theorem fn_inj (G : GAtP p) (v : Fin G.P.nV) : Function.Injective (algebraMap G.O G.Kf) :=
-  have := (G.P.setting v).frac_O
-  IsFractionRing.injective G.O G.Kf
-
 theorem fn_prod_fg {R A ι : Type*} [CommSemiring R] [CommSemiring A] [Algebra R A] (s : Finset ι)
     (N : ι → Submodule R A) (h : ∀ i ∈ s, (N i).FG) : (∏ i ∈ s, N i).FG := by
   classical
@@ -2307,7 +2303,7 @@ theorem H0_le_finitely_generated (G : GAtP p) (v : Fin G.P.nV) (s : Fin (G.P.n' 
   obtain ⟨g, hg, rfl⟩ := hLv
   rw [la_extO_G]
   have hg' := la_tw_det (G.P.ι v) (G.P.σ v) s.val g hg
-  obtain ⟨B, -, hB, -, -⟩ := la_basis (fn_inj G v) G.P.m (lamAt (G.P.lam0 v) s) _ hg'
+  obtain ⟨B, -, hB, -, -⟩ := la_basis (_root_.Formalism.MainNotions.G.LatticeSystems.lb_inj G v) G.P.m (lamAt (G.P.lam0 v) s) _ hg'
   refine ⟨nablaLTw G.O G.Kf G.P.m (lamAt (G.P.lam0 v) s) (la_tw (G.P.ι v) (G.P.σ v) s.val g), ?_, ?_⟩
   · rw [← hB]
     have : Finite ↥(ssIdx (G.P.m + 1) (G.P.m + 1) (nuOf (lamAt (G.P.lam0 v) s))) :=
@@ -2387,7 +2383,7 @@ theorem mna_finite (G : GAtP p) (h2 : G.FinClasses) : Module.Finite G.O G.Mna :=
   mna_finite_of G (restHfin G) h2
 
 theorem fn_torsion (G : GAtP p) (v : Fin G.P.nV) (c : G.O) (hc : c ≠ 0) (F : G.Fn) (h : c • F = 0) : F = 0 := by
-  have ha : algebraMap G.O G.Kf c ≠ 0 := fun h0 => hc (fn_inj G v (by rw [h0, map_zero]))
+  have ha : algebraMap G.O G.Kf c ≠ 0 := fun h0 => hc (_root_.Formalism.MainNotions.G.LatticeSystems.lb_inj G v (by rw [h0, map_zero]))
   funext i L
   have h1 : c • F i L = 0 := congrFun (congrFun h i) L
   rw [← algebraMap_smul G.Kf c (F i L)] at h1
@@ -2422,6 +2418,26 @@ def RemainingCountingStatement (G : GAtP p) : Prop :=
 theorem esymmOn_nonneg {ι : Type} (VV : Finset ι) (κ : ι → ℝ) (hκ : ∀ v ∈ VV, 0 ≤ κ v) (k : ℕ) :
     0 ≤ esymmOn VV κ k :=
   Finset.sum_nonneg fun _ hB => Finset.prod_nonneg fun v hv => hκ v ((Finset.mem_powersetCard.1 hB).1 hv)
+
+/-- Bound the natural floor of a scaled elementary symmetric sum by a power of the full sum. -/
+theorem floor_scaled_esymmOn_le_sum_pow {ι : Type} (VV : Finset ι) (κ : ι → ℝ)
+    (hκ : ∀ v ∈ VV, 0 ≤ κ v) (m d k : ℕ) :
+    (⌊(d : ℝ) * (m : ℝ) ^ k * esymmOn VV κ k⌋₊ : ℝ) ≤
+      (d : ℝ) * ((m : ℝ) * ∑ v ∈ VV, κ v) ^ k := by
+  have h0 : (0 : ℝ) ≤ (d : ℝ) * (m : ℝ) ^ k * esymmOn VV κ k :=
+    mul_nonneg (by positivity) (esymmOn_nonneg VV κ hκ k)
+  have hs0 : 0 ≤ (m : ℝ) * ∑ v ∈ VV, κ v :=
+    mul_nonneg (Nat.cast_nonneg m) (Finset.sum_nonneg hκ)
+  have hpw : 0 ≤ (d : ℝ) * ((m : ℝ) * ∑ v ∈ VV, κ v) ^ k :=
+    mul_nonneg (Nat.cast_nonneg d) (pow_nonneg hs0 k)
+  have hf : (1 : ℝ) ≤ (k.factorial : ℝ) := by
+    exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero k)
+  calc
+    (⌊(d : ℝ) * (m : ℝ) ^ k * esymmOn VV κ k⌋₊ : ℝ) ≤
+        (d : ℝ) * (m : ℝ) ^ k * esymmOn VV κ k := Nat.floor_le h0
+    _ ≤ (d : ℝ) * ((m : ℝ) * ∑ v ∈ VV, κ v) ^ k / (k.factorial : ℝ) :=
+      esymm_clause VV κ hκ m d k
+    _ ≤ (d : ℝ) * ((m : ℝ) * ∑ v ∈ VV, κ v) ^ k := div_le_self hpw hf
 
 theorem counting_statement_of_block_form (D : Formalism.BasicNotions.D7) (G : GAtP p) (hA : admitted D G) (hR : RemainingCountingStatement G)
     (hfin : Module.Finite G.O G.Mna) (hfree : Fin G.P.nV → Module.Free G.O G.Mna) : Conclusion1 D G := by
@@ -2466,16 +2482,10 @@ theorem counting_statement_of_block_form (D : Formalism.BasicNotions.D7) (G : GA
     · intro β _
       obtain ⟨C, hCM, hcard, hx⟩ := hthm β
       refine ⟨C, hCM, ?_, hx⟩
-      have h0 : (0 : ℝ) ≤ (d : ℝ) * (m : ℝ) ^ (β + 1) * esymmOn VV κ (β + 1) :=
-        mul_nonneg (by positivity) (esymmOn_nonneg VV κ hκ _)
-      have hf : (1 : ℝ) ≤ (β + 1).factorial := by
-        exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero _)
-      have hpw : 0 ≤ (d : ℝ) * Sig ^ (β + 1) := by positivity
       calc (C.card : ℝ) ≤ (⌊(d : ℝ) * (m : ℝ) ^ (β + 1) * esymmOn VV κ (β + 1)⌋₊ : ℝ) := by
             exact_mod_cast hcard
-        _ ≤ (d : ℝ) * (m : ℝ) ^ (β + 1) * esymmOn VV κ (β + 1) := Nat.floor_le h0
-        _ ≤ (d : ℝ) * Sig ^ (β + 1) / ((β + 1).factorial : ℝ) := esymm_clause VV κ hκ m d (β + 1)
-        _ ≤ (d : ℝ) * Sig ^ (β + 1) := div_le_self hpw hf
+        _ ≤ (d : ℝ) * Sig ^ (β + 1) :=
+          floor_scaled_esymmOn_le_sum_pow VV κ hκ m d (β + 1)
     · refine ManyOrbitsP.allBut_mono (allLE G VV m Sv M) le_rfl ?_
       calc ∑ v ∈ VV, Sv v ≤ ∑ _v ∈ VV, S := Finset.sum_le_sum hS
         _ = VV.card * S := by simp
@@ -2761,7 +2771,7 @@ theorem jd_fmem (G : GAtP p) (Hv : G.P.Tup → Submodule G.O G.P.Xsp) (F : G.Fn)
       (∀ L, G.P.IsLatTup L → F i L ∈ Hv L) ∧ (∀ L, ¬ G.P.IsLatTup L → F i L = 0) ∧
       ∀ (γ : (G.lev i).Γ) (L : G.P.Tup),
         F i ((G.lev i).smul γ L) = ((G.lev i).χ γ : G.O) • (G.lev i).actX γ (F i L) := by
-  apply Formalism.L2.G.Cmp.mem_funMod_iff <;> assumption
+  apply Formalism.L2.G.Cmp.mem_funMod_iff
 
 theorem jd_mem (G : GAtP p) (h1 : G.TrivStab) (Hv : G.P.Tup → Submodule G.O G.P.Xsp) (hE : EquivSys G Hv)
     (i : G.comp) (L0 : G.P.Tup) (hL0 : G.P.IsLatTup L0) (ξ : G.P.Xsp) (hξ : ξ ∈ Hv L0) :
@@ -3231,13 +3241,6 @@ open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.G0
 
 variable {p : ℕ}
 
-theorem js_mem (G : GAtP p) (Hv : G.P.Tup → Submodule G.O G.P.Xsp) (F : G.Fn) :
-    F ∈ G.funMod Hv ↔ ∀ i : G.comp, (∀ L, G.P.IsLatTup L → F i L ∈ Hv L) ∧
-      (∀ L, ¬ G.P.IsLatTup L → F i L = 0) ∧
-      ∀ (γ : (G.lev i).Γ) (L : G.P.Tup),
-        F i ((G.lev i).smul γ L) = ((G.lev i).χ γ : G.O) • (G.lev i).actX γ (F i L) := by
-  apply Formalism.L2.G.Cmp.mem_funMod_iff <;> assumption
-
 theorem js_div (G : GAtP p) (v0 : Fin G.P.nV) (T : G.P.Tup → Submodule G.O G.P.Xsp) (E : ℕ) (W : G.Fn)
     (hW : W ∈ G.funMod T)
     (hpt : ∀ i L, G.P.IsLatTup L → W i L ∈ sc G ((p : G.O) ^ E) (T L)) :
@@ -3253,9 +3256,9 @@ theorem js_div (G : GAtP p) (v0 : Fin G.P.nV) (T : G.P.Tup → Submodule G.O G.P
     intro x
     rw [smul_comm, hq]
   refine ⟨fun i L => (((p : G.Kf) ^ E)⁻¹) • W i L, ?_, ?_⟩
-  · rw [SetLike.mem_coe, js_mem]
+  · rw [SetLike.mem_coe, _root_.Formalism.MainNotions.G.LatticeSystems.jd_fmem]
     intro i
-    obtain ⟨_, b, c⟩ := (js_mem G T W).1 hW i
+    obtain ⟨_, b, c⟩ := (_root_.Formalism.MainNotions.G.LatticeSystems.jd_fmem G T W).1 hW i
     refine ⟨fun L hL => ?_, fun L hL => ?_, fun γ L => ?_⟩
     · obtain ⟨z, hz, hzW⟩ := hpt i L hL
       have hzW' : (p : G.O) ^ E • z = W i L := hzW
@@ -3866,13 +3869,6 @@ theorem jl_mem_tenV (G : GAtP p) (v : Fin G.P.nV) (M : ∀ u, Submodule G.O (Pol
   · rw [Function.update_of_ne h]
     exact hf u h
 
-theorem jl_upd_self (G : GAtP p) (L : G.P.Tup) (v : Fin G.P.nV) (A : Lat G v) : upd G L v A v = A :=
-  Function.update_self (β := fun v => Lat G v) v A L
-
-theorem jl_upd_ne (G : GAtP p) (L : G.P.Tup) (v : Fin G.P.nV) (A : Lat G v) (u : Fin G.P.nV) (h : u ≠ v) :
-    upd G L v A u = L u :=
-  Function.update_of_ne (β := fun v => Lat G v) h A L
-
 theorem jl_delta_zero (G : GAtP p) (hD : JDelta G) (i : G.comp) (L : G.P.Tup) : delta G i L 0 = 0 := by
   have := hD.2.1 i L 0 0
   rw [zero_smul, zero_smul] at this
@@ -3901,10 +3897,10 @@ theorem jl_good (G : GAtP p) (t : Fin G.P.nV → ℕ) (B : Finset (Fin G.P.nV)) 
     refine hS1 v hv i L hL (src k) (h1 k) _ ?_ ?_
     · refine jl_mem_tenV G v (fun u => piLattice₂ G u (t u) (Function.update (vertexLabel B) v Slot.ball u)
         (upd G L v (src k) u)) f (F k) ?_ ?_
-      · simp only [Function.update_self, jl_upd_self]
+      · simp only [Function.update_self, _root_.Formalism.MainNotions.G.LatticeSystems.js_upd_self]
         exact h2 k
       · intro u hu
-        simp only [Function.update_of_ne hu, jl_upd_ne G L v _ u hu]
+        simp only [Function.update_of_ne hu, _root_.Formalism.MainNotions.G.LatticeSystems.js_upd_ne G L v _ u hu]
         exact hf u hu
     · intro L' he hne
       obtain ⟨y, hy, hyE⟩ := h3 k L' he hne
@@ -3914,10 +3910,10 @@ theorem jl_good (G : GAtP p) (t : Fin G.P.nV → ℕ) (B : Finset (Fin G.P.nV)) 
       · apply Submodule.smul_mem
         refine jl_mem_tenV G v (fun u => piLattice₂ G u (t u) (vertexLabel B u) (upd G L v L' u)) f y ?_ ?_
         · have hs : vertexLabel B v = Slot.dual := by simp [vertexLabel, hv]
-          simp only [jl_upd_self, hs]
+          simp only [_root_.Formalism.MainNotions.G.LatticeSystems.js_upd_self, hs]
           exact hy
         · intro u hu
-          simp only [jl_upd_ne G L v _ u hu]
+          simp only [_root_.Formalism.MainNotions.G.LatticeSystems.js_upd_ne G L v _ u hu]
           exact hf u hu
       · show (p : G.O) ^ (Dd + 1) • (G.P.w ^ (cStar - 2 * (Dd + 1)) •
           (G.P.vEmb v y * ∏ u ∈ Finset.univ \ {v}, G.P.vEmb u (f u))) = _
@@ -4426,7 +4422,5 @@ theorem theta_kernel_expansion (D : Formalism.BasicNotions.D7) (G : GAtP p) (hA 
 end Formalism.MainNotions.G.LatticeSystems
 
 namespace Formalism.MainNotions.G.LatticeSystems
-
-open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas
 
 end Formalism.MainNotions.G.LatticeSystems

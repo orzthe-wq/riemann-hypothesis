@@ -123,7 +123,7 @@ theorem capelli_inequivalence : Inequiv := by
   have e2 := hE k r ε' μ' _ ℂ ℂ 1 c2 Y 1 h1G
   rw [e1] at e2
   have e3 := congrArg (fun T : ℂ →L[ℂ] ℂ => T 1) e2
-  simp only [hσ1, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, smul_eq_mul, mul_one] at e3
+  simp only [hσ1, _root_.smul_apply, one_apply_eq_self, smul_eq_mul, mul_one] at e3
   exact mul_right_cancel₀ (inner_self_ne_zero.2 hv0) e3
 
 end CompanionTheory.CapEig

@@ -219,7 +219,7 @@ private theorem tri_of_bar {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP 
       · have hC : ∀ g h : F.G0, ρ.r g 0 2 * ρ.r h 2 1 = 0 := by
           intro g h
           have e := congrFun (congrFun (hP g h) 0) 1
-          simp only [Matrix.mul_apply, Fin.sum_univ_three, a01, a01 h] at e
+          simp only [Matrix.mul_apply, Fin.sum_univ_three, a01] at e
           linear_combination e
         rcases or_zero hC with a02 | a21
         · exact Or.inr (hR a01 a02 a12)
@@ -229,7 +229,7 @@ private theorem tri_of_bar {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP 
       · have hC : ∀ g h : F.G0, ρ.r g 2 0 * ρ.r h 0 1 = 0 := by
           intro g h
           have e := congrFun (congrFun (hP g h) 2) 1
-          simp only [Matrix.mul_apply, Fin.sum_univ_three, a21, a21 h] at e
+          simp only [Matrix.mul_apply, Fin.sum_univ_three, a21] at e
           linear_combination e
         rcases or_zero hC with a20 | a01
         · exact Or.inl (hL a10 a20 a21)

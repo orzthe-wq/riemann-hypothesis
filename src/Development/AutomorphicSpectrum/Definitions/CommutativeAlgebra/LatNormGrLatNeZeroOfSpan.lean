@@ -255,7 +255,7 @@ theorem repr_eq_trace (a : 𝓞 E) (k) :
   classical
   conv_rhs => rw [← (RingOfIntegers.basis E).sum_repr a]
 
-  simp only [map_sum, RingOfIntegers.coe_eq_algebraMap, Finset.mul_sum, map_zsmul, mul_smul_comm,
+  simp only [map_sum, Finset.mul_sum, map_zsmul, mul_smul_comm,
   ← integralBasis_apply, trace_dualInt]
   simp
 

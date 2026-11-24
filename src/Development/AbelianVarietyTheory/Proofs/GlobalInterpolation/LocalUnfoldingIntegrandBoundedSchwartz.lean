@@ -125,7 +125,7 @@ theorem _root_.GlobalTheory.Proof.localUnfoldingIntegrand_boundedSchwartz.intHom
   rw [_root_.GlobalTheory.QNormal.intHom_iff]
   intro s l
   simp only [_root_.GlobalTheory.Proof.localUnfoldingIntegrand_boundedSchwartz.freeMap, Matrix.toLin'_apply, Matrix.mulVec_single_one,
-    Matrix.transpose_apply, Matrix.col_apply, Matrix.of_apply]
+    Matrix.col_apply, Matrix.of_apply]
   split_ifs with hf
   · exact hu _
   · exact _root_.GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P

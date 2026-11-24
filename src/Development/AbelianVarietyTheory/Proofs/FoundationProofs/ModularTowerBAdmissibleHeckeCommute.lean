@@ -1,14 +1,12 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.Foundations.Letter
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondMatrixMulCommModGamma1CapGamma0Statement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeStableCongruenceConjDiamondMatrixStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermiteRightFactorOfPrimeDvdDetStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Sl2CoprimeFactorizationUniqueStatement
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.LinearAlgebra.Matrix.SpecialLinearGroup
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -25,10 +23,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,9 +43,215 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.Linter.HaveILetI
+import Development.AbelianVarietyTheory.Definitions.Foundations.ExpUpper
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondMatrixMulCommModGamma1CapGamma0, Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeStableCongruenceConjDiamondMatrix, Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermiteRightFactorOfPrimeDvdDet, Development.AbelianVarietyTheory.Proofs.FoundationProofs.Sl2CoprimeFactorizationUnique, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerBAdmissibleHeckeCommute
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondMatrixMulCommModGamma1CapGamma0 =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondMatrixMulCommModGamma1CapGamma0", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.Letter\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped MatrixGroups TensorProduct
+open Matrix GlobalTheory.KZ GlobalTheory.KZ.StabHecke
+
+namespace GlobalTheory.KZ
+
+theorem isDiam_mul_comm_mod_Gam (N l d d' : ℕ) (σ σ' : SL(2, ℤ)) (h : IsDiam N l d σ) (h' : IsDiam N l d' σ') :
+    ∃ g : SL(2, ℤ), g ∈ Gam N l ∧ σ' * σ = g * (σ * σ') := by
+  obtain ⟨⟨h0, h1⟩, -⟩ := h
+  obtain ⟨⟨h0', h1'⟩, -⟩ := h'
+  refine ⟨σ' * σ * (σ * σ')⁻¹, ⟨?_, ?_⟩, by group⟩
+  · set a : CongruenceSubgroup.Gamma0 N := ⟨σ, h0⟩ with ha
+    set b : CongruenceSubgroup.Gamma0 N := ⟨σ', h0'⟩ with hb
+    have hu : (CongruenceSubgroup.Gamma0Map N).toHomUnits (b * a * (a * b)⁻¹) = 1 := by
+      rw [map_mul, map_inv, map_mul, map_mul,
+        mul_comm ((CongruenceSubgroup.Gamma0Map N).toHomUnits b), mul_inv_cancel]
+    have h3 : b * a * (a * b)⁻¹ ∈ CongruenceSubgroup.Gamma1' N := by
+      rw [CongruenceSubgroup.Gamma1_mem', ← MonoidHom.coe_toHomUnits, hu, Units.val_one]
+    exact (CongruenceSubgroup.Gamma1_mem N _).2 ((CongruenceSubgroup.Gamma1_to_Gamma0_mem _).1 h3)
+  · exact Subgroup.mul_mem _ (Subgroup.mul_mem _ h1' h1) (Subgroup.inv_mem _ (Subgroup.mul_mem _ h1 h1'))
+
+end GlobalTheory.KZ
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondMatrixMulCommModGamma1CapGamma0 =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeStableCongruenceConjDiamondMatrix =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeStableCongruenceConjDiamondMatrix", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped MatrixGroups TensorProduct
+open Matrix GlobalTheory.KZ GlobalTheory.KZ.StabHecke
+
+namespace GlobalTheory.KZ.StabHecke
+
+theorem congruenceCondition_conj_diamond : ∀ (N l d : ℕ) (σ : SL(2, ℤ)) (r : Matrix (Fin 2) (Fin 2) ℤ), IsDiam N l d σ → PP N l r →
+    PP N l ((σ : Matrix (Fin 2) (Fin 2) ℤ) * r * ((σ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ)) := by
+  intro N l d σ r hσ hr
+  obtain ⟨h1, h2, -, h4⟩ := diam_facts hσ
+  obtain ⟨r1, r2, r3, r4⟩ := hr
+  have e00 : ((σ : Matrix (Fin 2) (Fin 2) ℤ) * r * ((σ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ)) 0 0 =
+      r 0 0 + σ 1 0 * (σ 0 1 * r 0 0 - σ 0 0 * r 0 1 - σ 0 1 * r 1 1) + σ 0 1 * σ 1 1 * r 1 0 := by
+    rw [Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]
+    simp [Matrix.mul_apply, Fin.sum_univ_two]
+    linear_combination (r 0 0) * h4
+  have e10 : ((σ : Matrix (Fin 2) (Fin 2) ℤ) * r * ((σ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ)) 1 0 =
+      σ 1 0 * (σ 1 1 * r 0 0 - σ 1 0 * r 0 1 - σ 1 1 * r 1 1) + σ 1 1 * σ 1 1 * r 1 0 := by
+    rw [Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two]
+    simp [Matrix.mul_apply, Fin.sum_univ_two]
+    ring
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · rw [e00, show r 0 0 + σ 1 0 * (σ 0 1 * r 0 0 - σ 0 0 * r 0 1 - σ 0 1 * r 1 1) + σ 0 1 * σ 1 1 * r 1 0 - 1 =
+        (r 0 0 - 1) + σ 1 0 * (σ 0 1 * r 0 0 - σ 0 0 * r 0 1 - σ 0 1 * r 1 1) + σ 0 1 * σ 1 1 * r 1 0 by ring]
+    exact dvd_add (dvd_add r1 (dvd_mul_of_dvd_left h1 _)) (dvd_mul_of_dvd_right r2 _)
+  · rw [e10]; exact dvd_add (dvd_mul_of_dvd_left h1 _) (dvd_mul_of_dvd_right r2 _)
+  · rw [e10]; exact dvd_add (dvd_mul_of_dvd_left h2 _) (dvd_mul_of_dvd_right r3 _)
+  · rw [e00]
+    obtain ⟨s, hs⟩ := h2
+    obtain ⟨t, ht⟩ := r3
+    have e : r 0 0 + σ 1 0 * (σ 0 1 * r 0 0 - σ 0 0 * r 0 1 - σ 0 1 * r 1 1) + σ 0 1 * σ 1 1 * r 1 0 =
+        r 0 0 + (l : ℤ) * (s * (σ 0 1 * r 0 0 - σ 0 0 * r 0 1 - σ 0 1 * r 1 1) + σ 0 1 * σ 1 1 * t) := by
+      rw [hs, ht]; ring
+    rw [e]
+    exact r4.add_mul_left_left _
+
+end GlobalTheory.KZ.StabHecke
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeStableCongruenceConjDiamondMatrix =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermiteRightFactorOfPrimeDvdDet =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermiteRightFactorOfPrimeDvdDet", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.ExpUpper\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped MatrixGroups TensorProduct
+open Matrix GlobalTheory.KZ GlobalTheory.KZ.StabHecke
+
+namespace GlobalTheory
+
+theorem hermite_right_factor_prime_det : ∀ (p : ℕ), p.Prime → ∀ (m : Matrix (Fin 2) (Fin 2) ℤ), (p : ℤ) ∣ m.det → (∃ y : Matrix (Fin 2) (Fin 2) ℤ, m = y * !![(p : ℤ), 0; 0, 1]) ∨ ∃ k : ℕ, k < p ∧ ∃ y : Matrix (Fin 2) (Fin 2) ℤ, m = y * !![1, (k : ℤ); 0, (p : ℤ)] := by
+  intro p hp m hdet
+  haveI := Fact.mk hp
+  obtain ⟨a, b, c, d, rfl⟩ : ∃ a b c d : ℤ, m = !![a, b; c, d] :=
+    ⟨m 0 0, m 0 1, m 1 0, m 1 1, by ext i j; fin_cases i <;> fin_cases j <;> rfl⟩
+  rw [Matrix.det_fin_two_of] at hdet
+  have hdetZ : (a : ZMod p) * d = b * c := by
+    have := (ZMod.intCast_zmod_eq_zero_iff_dvd (a * d - b * c) p).2 hdet
+    push_cast at this
+    linear_combination this
+  have fin : ∀ k : ℕ, k < p → (k : ZMod p) * a = b → (k : ZMod p) * c = d →
+      ∃ k : ℕ, k < p ∧ ∃ y : Matrix (Fin 2) (Fin 2) ℤ, !![a, b; c, d] = y * !![1, (k : ℤ); 0, (p : ℤ)] := by
+    intro k hk h1 h2
+    obtain ⟨u, hu⟩ : (p : ℤ) ∣ b - k * a := by
+      rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]; push_cast; rw [h1]; ring
+    obtain ⟨v, hv⟩ : (p : ℤ) ∣ d - k * c := by
+      rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]; push_cast; rw [h2]; ring
+    refine ⟨k, hk, !![a, u; c, v], ?_⟩
+    rw [Matrix.mul_fin_two]
+    ext i j; fin_cases i <;> fin_cases j <;> simp <;> linarith
+  by_cases ha : (a : ZMod p) = 0
+  · by_cases hc : (c : ZMod p) = 0
+    · left
+      obtain ⟨a', rfl⟩ := (ZMod.intCast_zmod_eq_zero_iff_dvd a p).1 ha
+      obtain ⟨c', rfl⟩ := (ZMod.intCast_zmod_eq_zero_iff_dvd c p).1 hc
+      refine ⟨!![a', b; c', d], ?_⟩
+      rw [Matrix.mul_fin_two]
+      ext i j; fin_cases i <;> fin_cases j <;> simp <;> ring
+    · right
+      refine fin ((d : ZMod p) * (c : ZMod p)⁻¹).val (ZMod.val_lt _) ?_ ?_
+      · rw [ZMod.natCast_zmod_val]
+        calc (d : ZMod p) * (c : ZMod p)⁻¹ * a = (a * d) * (c : ZMod p)⁻¹ := by ring
+          _ = b * c * (c : ZMod p)⁻¹ := by rw [hdetZ]
+          _ = b := by rw [mul_assoc, mul_inv_cancel₀ hc, mul_one]
+      · rw [ZMod.natCast_zmod_val, mul_assoc, inv_mul_cancel₀ hc, mul_one]
+  · right
+    refine fin ((b : ZMod p) * (a : ZMod p)⁻¹).val (ZMod.val_lt _) ?_ ?_
+    · rw [ZMod.natCast_zmod_val, mul_assoc, inv_mul_cancel₀ ha, mul_one]
+    · rw [ZMod.natCast_zmod_val]
+      calc (b : ZMod p) * (a : ZMod p)⁻¹ * c = (b * c) * (a : ZMod p)⁻¹ := by ring
+        _ = (a * d) * (a : ZMod p)⁻¹ := by rw [hdetZ]
+        _ = d := by rw [mul_comm (a : ZMod p) d, mul_assoc, mul_inv_cancel₀ ha, mul_one]
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermiteRightFactorOfPrimeDvdDet =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.Sl2CoprimeFactorizationUnique =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.Sl2CoprimeFactorizationUnique", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.SpecialLinearGroup\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.ExpUpper\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped MatrixGroups TensorProduct
+open Matrix GlobalTheory.KZ GlobalTheory.KZ.StabHecke
+
+namespace GlobalTheory
+
+theorem sl2_right_factor_of_coprime_factorizations :
+    ∀ (a c : ℤ), IsCoprime a c → c ≠ 0 → ∀ (y y' β β' : Matrix (Fin 2) (Fin 2) ℤ),
+      y.det = a → y'.det = a → β.det = c → β'.det = c → y * β = y' * β' →
+      ∃ g : SL(2, ℤ), (g : Matrix (Fin 2) (Fin 2) ℤ) * β = β' := by
+  intro a c hac hc y y' β β' hy hy' hβ hβ' hyβ
+  set P : Matrix (Fin 2) (Fin 2) ℤ := β' * adjugate β with hP
+  set Q : Matrix (Fin 2) (Fin 2) ℤ := adjugate y' * y with hQ
+  have hPQ : a • P = c • Q := by
+    have h1 : adjugate y' * y * β = a • β' := by
+      rw [Matrix.mul_assoc, hyβ, ← Matrix.mul_assoc, adjugate_mul, hy', Matrix.smul_mul, Matrix.one_mul]
+    have h2 : β * adjugate β = c • (1 : Matrix (Fin 2) (Fin 2) ℤ) := by
+      rw [mul_adjugate, hβ]
+    calc a • P = (a • β') * adjugate β := by rw [hP, Matrix.smul_mul]
+      _ = adjugate y' * y * β * adjugate β := by rw [h1]
+      _ = Q * (β * adjugate β) := by rw [hQ, Matrix.mul_assoc]
+      _ = c • Q := by rw [h2, Matrix.mul_smul, Matrix.mul_one]
+  have hdiv : ∀ i j, c ∣ P i j := by
+    intro i j
+    have := congrFun (congrFun hPQ i) j
+    simp only [Matrix.smul_apply, smul_eq_mul] at this
+    exact hac.symm.dvd_of_dvd_mul_left ⟨Q i j, this⟩
+  choose M hM using hdiv
+  set Mm : Matrix (Fin 2) (Fin 2) ℤ := Matrix.of M with hMm
+  have hPM : P = c • Mm := by
+    ext i j; simp [hMm, hM i j]
+  have hMβ : Mm * β = β' := by
+    have : c • (Mm * β) = c • β' := by
+      rw [← Matrix.smul_mul, ← hPM, hP, Matrix.mul_assoc, adjugate_mul, hβ, Matrix.mul_smul, Matrix.mul_one]
+    ext i j
+    have := congrFun (congrFun this i) j
+    simp only [Matrix.smul_apply, smul_eq_mul] at this
+    exact mul_left_cancel₀ hc this
+  have hdet : Mm.det = 1 := by
+    have h1 : P.det = c * c := by
+      rw [hP, det_mul, det_adjugate, hβ, hβ']
+      simp
+    rw [hPM, det_smul] at h1
+    simp at h1
+    have hc2 : c ^ 2 ≠ 0 := pow_ne_zero 2 hc
+    have : c ^ 2 * Mm.det = c ^ 2 * 1 := by rw [h1]; ring
+    exact mul_left_cancel₀ hc2 this
+  exact ⟨⟨Mm, hdet⟩, hMβ⟩
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.Sl2CoprimeFactorizationUnique =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerBAdmissibleHeckeCommute =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerBAdmissibleHeckeCommute", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeLetterPreservesBasisSet\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.Letter\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DiamondMatrixMulCommModGamma1CapGamma0\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeStableCongruenceConjDiamondMatrix\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermiteRightFactorOfPrimeDvdDet\npublic import Mathlib.LinearAlgebra.Matrix.SpecialLinearGroup\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Sl2CoprimeFactorizationUnique\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open scoped MatrixGroups TensorProduct
@@ -66,20 +266,16 @@ local notation "M₂" => Matrix (Fin 2) (Fin 2) ℤ
 theorem herm (p : ℕ) (hp : p.Prime) (m : M₂) (h : (p : ℤ) ∣ m.det) :
     (∃ y : M₂, m = y * !![(p : ℤ), 0; 0, 1]) ∨
       ∃ k : ℕ, k < p ∧ ∃ y : M₂, m = y * !![1, (k : ℤ); 0, (p : ℤ)] :=
-  GlobalTheory.T.hermite_right_factor_of_prime_dvd_det p hp m h
+  _root_.GlobalTheory.hermite_right_factor_prime_det p hp m h
 
 theorem bezout (a c : ℤ) (hac : IsCoprime a c) (hc : c ≠ 0) (y y' β β' : M₂)
     (hy : y.det = a) (hy' : y'.det = a) (hβ : β.det = c) (hβ' : β'.det = c) (h : y * β = y' * β') :
     ∃ g : SL(2, ℤ), (g : M₂) * β = β' :=
-  GlobalTheory.T.exists_sl2_mul_eq_of_coprime_det_factorization a c hac hc y y' β β' hy hy' hβ hβ' h
+  _root_.GlobalTheory.sl2_right_factor_of_coprime_factorizations a c hac hc y y' β β' hy hy' hβ hβ' h
 
 theorem PP_conj (N l d : ℕ) (σ : SL(2, ℤ)) (r : M₂) (hσ : IsDiam N l d σ) (hr : PP N l r) :
     PP N l ((σ : M₂) * r * ((σ⁻¹ : SL(2, ℤ)) : M₂)) :=
-  GlobalTheory.T.heckeStableCongruence_conj_diamondMatrix N l d σ r hσ hr
-
-theorem diam_comm (N l d d' : ℕ) (σ σ' : SL(2, ℤ)) (hσ : IsDiam N l d σ) (hσ' : IsDiam N l d' σ') :
-    ∃ g : SL(2, ℤ), g ∈ Gam N l ∧ σ' * σ = g * (σ * σ') :=
-  GlobalTheory.T.diamondMatrix_mul_comm_mod_gamma1CapGamma0 N l d d' σ σ' hσ hσ'
+  _root_.GlobalTheory.KZ.StabHecke.congruenceCondition_conj_diamond N l d σ r hσ hr
 
 theorem PP_cancel {N l : ℕ} {y β : M₂} (h : PP N l (y * β)) (hβ : PP N l β) : PP N l y := by
   obtain ⟨a1, a2, a3, a4⟩ := h
@@ -142,7 +338,7 @@ theorem classU {N l : ℕ} (hl : l.Prime) (m : M₂) (hm : m.det = l) (hPm : PP 
 
 theorem rfT {q : ℕ} (hq : q.Prime) (σ : SL(2, ℤ)) (m : M₂) (h : (q : ℤ) ∣ m.det) :
     ∃ o, ∃ y : M₂, m = y * repT q σ o := by
-  rcases herm q hq m h with ⟨y, hy⟩ | ⟨k, hk, y, hy⟩
+  rcases _root_.GlobalTheory.hermite_right_factor_prime_det q hq m h with ⟨y, hy⟩ | ⟨k, hk, y, hy⟩
   · refine ⟨none, y * ((σ⁻¹ : SL(2, ℤ)) : M₂), ?_⟩
     show m = _ * ((σ : M₂) * !![(q : ℤ), 0; 0, 1])
     rw [hy, Matrix.mul_assoc, ← Matrix.mul_assoc _ (σ : M₂), inv_mul_self, Matrix.one_mul]
@@ -150,7 +346,7 @@ theorem rfT {q : ℕ} (hq : q.Prime) (σ : SL(2, ℤ)) (m : M₂) (h : (q : ℤ)
 
 theorem rfU {l : ℕ} (hl : l.Prime) (m : M₂) (h : (l : ℤ) ∣ m.det) (hc : IsCoprime (m 0 0) (l : ℤ)) :
     ∃ k : Fin l, ∃ y : M₂, m = y * repU l k := by
-  rcases herm l hl m h with ⟨y, hy⟩ | ⟨k, hk, y, hy⟩
+  rcases _root_.GlobalTheory.hermite_right_factor_prime_det l hl m h with ⟨y, hy⟩ | ⟨k, hk, y, hy⟩
   · exfalso
     have hdvd : (l : ℤ) ∣ m 0 0 := ⟨y 0 0, by rw [hy]; simp [Matrix.mul_apply, Fin.sum_univ_two]; ring⟩
     have h2 := hc.of_isCoprime_of_dvd_left hdvd
@@ -217,7 +413,7 @@ theorem sum_swap (X : Tower Ω ε) (N l : ℕ) [Fact l.Prime] {ι κ : Type} [Fi
   have hdis : ∀ x x' : ι × κ, ∀ h : SL(2, ℤ), (h : M₂) * (r2 x.2 * r1 x.1) = r2 x'.2 * r1 x'.1 → x = x' := by
     rintro ⟨i, k⟩ ⟨i', k'⟩ h H
     rw [← Matrix.mul_assoc] at H
-    obtain ⟨g, hg⟩ := bezout (p2 : ℤ) (p1 : ℤ) hcop.symm hp1' _ _ _ _
+    obtain ⟨g, hg⟩ := _root_.GlobalTheory.sl2_right_factor_of_coprime_factorizations (p2 : ℤ) (p1 : ℤ) hcop.symm hp1' _ _ _ _
       (by rw [det_mul, Matrix.SpecialLinearGroup.det_coe, one_mul, hd2]) (hd2 k') (hd1 i) (hd1 i') H
     have hii : i = i' := dis1 i i' g hg
     subst hii
@@ -238,7 +434,7 @@ theorem sum_diam (X : Tower Ω ε) (N l : ℕ) [Fact l.Prime] {ι : Type} [Finty
     intro i
     have hdm : ((σ : M₂) * r i * ((σ⁻¹ : SL(2, ℤ)) : M₂)).det = p := by
       rw [det_mul, det_mul, Matrix.SpecialLinearGroup.det_coe, Matrix.SpecialLinearGroup.det_coe, hd]; ring
-    obtain ⟨j, g, hg, he⟩ := com _ hdm (PP_conj N l d σ (r i) hσ (hP i))
+    obtain ⟨j, g, hg, he⟩ := com _ hdm (_root_.GlobalTheory.KZ.StabHecke.congruenceCondition_conj_diamond N l d σ (r i) hσ (hP i))
     refine ⟨j, g, hg, ?_⟩
     calc (σ : M₂) * r i = (σ : M₂) * r i * (((σ⁻¹ : SL(2, ℤ)) : M₂) * σ) := by rw [inv_mul_self, Matrix.mul_one]
       _ = ((g : M₂) * r j) * σ := by rw [← he]; simp only [Matrix.mul_assoc]
@@ -359,7 +555,7 @@ theorem comm_DD (X : Tower Ω ε) (N l : ℕ) [Fact l.Prime] (hN : N ≠ 0) (d d
   have hσ' : IsDiam N l d' (sgD N l d') := Betti.isDiam_sgD hN hl.ne_zero hD'
   show X.act l (sgD N l d : M₂) (X.act l (sgD N l d' : M₂) b) = X.act l (sgD N l d' : M₂) (X.act l (sgD N l d : M₂) b)
   rw [act_act X l _ _ (det1 _) (det1 _), act_act X l _ _ (det1 _) (det1 _)]
-  obtain ⟨g, hg, he⟩ := diam_comm N l d d' _ _ hσ hσ'
+  obtain ⟨g, hg, he⟩ := _root_.GlobalTheory.KZ.isDiam_mul_comm_mod_Gam N l d d' _ _ hσ hσ'
   rw [← Matrix.SpecialLinearGroup.coe_mul, he, Matrix.SpecialLinearGroup.coe_mul, act_Gam X N l b hb g hg _ (det1 _),
     Matrix.SpecialLinearGroup.coe_mul]
 
@@ -398,3 +594,7 @@ theorem B_op_comm : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   exact HeckeComm.op_comm X N l (by omega) T T' hT hT' b (HeckeComm.B_inv X N l w b hb)
 
 end GlobalTheory.KZ
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerBAdmissibleHeckeCommute =====

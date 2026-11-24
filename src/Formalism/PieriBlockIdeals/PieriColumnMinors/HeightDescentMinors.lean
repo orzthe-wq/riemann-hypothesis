@@ -173,8 +173,6 @@ theorem map_binomialSeries_alt {A : Type*} [CommRing A] [Algebra R A] (c : R) :
   ext n
   first
     | simp [PowerSeries.binomialSeries_coeff, Algebra.smul_def]
-    | simp [PowerSeries.binomialSeries, Algebra.smul_def]
-    | simp [PowerSeries.binomialSeries]
 
 theorem binomialSeries_subst_sub_one_eq_mul {A : Type*} [CommRing A] [Algebra R A] (d e : R) :
     (binomialSeries A d).subst (binomialSeries A e - 1 : A⟦X⟧) = binomialSeries A (d * e) := by
@@ -184,16 +182,12 @@ theorem binomialSeries_subst_sub_one_eq_mul {A : Type*} [CommRing A] [Algebra R 
         (PowerSeries.map (algebraMap R A) (binomialSeries R e - 1 : R⟦X⟧)) := by
     first
       | exact PowerSeries.map_subst hs _
-      | exact PowerSeries.map_subst hs (algebraMap R A) _
-      | exact PowerSeries.map_subst (h := algebraMap R A) hs _
   rw [map_sub, map_one, map_binomialSeries_alt, map_binomialSeries_alt, binomialSeries_subst_comp, map_binomialSeries_alt] at hm
   exact hm.symm
 
 end Ode
 
 section Act
-
-theorem subst_X_eq_self {R : Type*} [CommRing R] (f : R⟦X⟧) : f.subst (X : R⟦X⟧) = f := PowerSeries.X_subst f
 
 theorem coeff_one_add_X_pow_alt (R : Type*) [CommRing R] (d n : ℕ) :
     coeff n ((1 + X : R⟦X⟧) ^ d) = (d.choose n : R) := by
@@ -236,7 +230,7 @@ theorem action_laws_holds : ActLaws := by
   intro l _ O _ _
   refine ⟨binomialAction_binomialSeriesSubOne l O, binomialAction_comp_eq_mul l O, ?_, phi_eq_act_l l O, ?_, ?_, ?_⟩
   · intro f
-    rw [act, binomialSeriesSubOne_one, subst_X_eq_self]
+    rw [act, binomialSeriesSubOne_one, PowerSeries.X_subst]
   · intro c f
     rw [phi_eq_act_l, phi_eq_act_l, binomialAction_comp_eq_mul, binomialAction_comp_eq_mul, mul_comm]
   · intro c f g
@@ -255,7 +249,7 @@ theorem action_laws_holds : ActLaws := by
 theorem X_mul_q_eq_one_add_X_pow_sub_one : X * q l O = (1 + X) ^ l - 1 := by
   ext n
   rcases n with _ | m
-  · simp [coeff_one_add_X_pow_alt]
+  · simp
   · simp [q, coeff_one_add_X_pow_alt, PowerSeries.coeff_succ_X_mul]
 
 theorem q_multiplicative_holds : QMul := by
@@ -493,9 +487,6 @@ lemma map_subst_powerSeries {R S : Type} [CommRing R] [CommRing S] (h : R →+* 
     PowerSeries.map h (f.subst a) = (PowerSeries.map h f).subst (PowerSeries.map h a) := by
   first
     | exact PowerSeries.map_subst ha f
-    | exact PowerSeries.map_subst ha h f
-    | exact PowerSeries.map_subst (R := R) (S := S) ha (h := h) f
-    | exact (PowerSeries.map_subst ha).symm
 
 lemma dvd_subst_self {R : Type} [CommRing R] {a f : R⟦X⟧} (ha : HasSubst a)
     (hf : constantCoeff f = 0) : a ∣ f.subst a := by
@@ -542,16 +533,7 @@ section A2
 
 variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
 
-lemma map_binomialSeriesSubOne_algebraMap (c : ℤ_[l]) :
-    PowerSeries.map (algebraMap ℤ_[l] O) (br l ℤ_[l] c) = br l O c := map_algebraMap_binomialSeriesSubOne l O c
-
-lemma map_pi0_algebraMap_padicInt : PowerSeries.map (algebraMap ℤ_[l] O) (pi0 l ℤ_[l]) = pi0 l O := map_pi0_padic l O
-
-lemma map_q_padic : PowerSeries.map (algebraMap ℤ_[l] O) (q l ℤ_[l]) = q l O := map_q_padicInt l O
-
-lemma map_q0_padic : PowerSeries.map (algebraMap ℤ_[l] O) (q0 l ℤ_[l]) = q0 l O := map_q0_padicInt l O
-
-lemma constantCoeff_binomialSeriesSubOne_eq_zero (c : ℤ_[l]) : constantCoeff (br l O c) = 0 := constantCoeff_binomialSeriesSubOne l O c
+alias map_binomialSeriesSubOne_algebraMap := _root_.Formalism.CohomologicalDescent.HeightDescentMinors.map_algebraMap_binomialSeriesSubOne
 
 lemma one_mem_mu : (1 : ℤ_[l]) ∈ mu l := by
   rw [mu, Polynomial.mem_nthRootsFinset (prime_sub_one_pos l), one_pow]
@@ -609,8 +591,8 @@ theorem pi0_relation_holds : FrobeniusPiZero := by
   obtain ⟨r, hr⟩ := r5_frobenius_holds l (pi0 l ℤ_[l])
   refine ⟨PowerSeries.map (algebraMap ℤ_[l] O) r, ?_⟩
   have h := congrArg (PowerSeries.map (algebraMap ℤ_[l] O)) hr
-  rw [map_phi_padic, map_pi0_algebraMap_padicInt] at h
-  simpa [map_pi0_algebraMap_padicInt] using h
+  rw [map_phi_padic, _root_.Formalism.CohomologicalDescent.HeightDescentMinors.map_pi0_padic] at h
+  simpa [_root_.Formalism.CohomologicalDescent.HeightDescentMinors.map_pi0_padic] using h
 
 theorem r5_character_holds : FrobeniusCharP := by
   intro l _ O _ _ _ g
@@ -681,7 +663,7 @@ lemma q_dvd_binomialSeriesSubOne_sub_pow (ha : ActLaws) (hq : QMul) (c : ℕ) (e
     rw [a4, a1]
   have h2 : ((1 + X) ^ l - 1 : ℤ_[l]⟦X⟧) ∣ br l ℤ_[l] (e * (l : ℤ_[l])) := by
     rw [h1]
-    exact dvd_subst_self (hasSubst_one_add_X_pow_sub_one_alt l) (constantCoeff_binomialSeriesSubOne_eq_zero l ℤ_[l] e)
+    exact dvd_subst_self (hasSubst_one_add_X_pow_sub_one_alt l) (_root_.Formalism.CohomologicalDescent.HeightDescentMinors.constantCoeff_binomialSeriesSubOne l ℤ_[l] e)
   rw [← (hq l ℤ_[l]).1] at h2
   obtain ⟨s, hs⟩ := h2
   have h3 : binomialSeries ℤ_[l] (e * (l : ℤ_[l])) = 1 + X * q l ℤ_[l] * s := by
@@ -690,8 +672,6 @@ lemma q_dvd_binomialSeriesSubOne_sub_pow (ha : ActLaws) (hq : QMul) (c : ℕ) (e
   refine ⟨(1 + X) ^ c * X * s, ?_⟩
   rw [br, binomialSeries_add, binomialSeries_nat, mul_comm (l : ℤ_[l]) e, h3]
   ring
-
-lemma toZMod_ne_zero_of_mem_mu_alt {d : ℤ_[l]} (hd : d ∈ mu l) : PadicInt.toZMod d ≠ 0 := toZMod_ne_zero_of_mem_mu l hd
 
 lemma padicInt_eq_digit_add_mul (d : ℤ_[l]) :
     ∃ e : ℤ_[l], d = (((PadicInt.toZMod d).val : ℕ) : ℤ_[l]) + (l : ℤ_[l]) * e := by
@@ -709,10 +689,10 @@ lemma prod_mu_toZMod_val_eq_prod_Ioo (hm : MuFacts) {M : Type} [CommMonoid M] (G
     rw [Finset.mem_Ioo]
     refine ⟨Nat.pos_of_ne_zero ?_, ZMod.val_lt _⟩
     intro h0
-    exact toZMod_ne_zero_of_mem_mu_alt l hd ((ZMod.val_eq_zero _).mp h0)
+    exact _root_.Formalism.CohomologicalDescent.HeightDescentMinors.toZMod_ne_zero_of_mem_mu l hd ((ZMod.val_eq_zero _).mp h0)
   · intro x hx y hy hxy
     have h' : PadicInt.toZMod x = PadicInt.toZMod y := ZMod.val_injective _ hxy
-    exact ((hm l).2.1 _ (toZMod_ne_zero_of_mem_mu_alt l hx)).unique ⟨hx, rfl⟩ ⟨hy, h'.symm⟩
+    exact ((hm l).2.1 _ (_root_.Formalism.CohomologicalDescent.HeightDescentMinors.toZMod_ne_zero_of_mem_mu l hx)).unique ⟨hx, rfl⟩ ⟨hy, h'.symm⟩
   · intro c hc
     rw [Finset.coe_Ioo, Set.mem_Ioo] at hc
     have hc0 : (c : ZMod l) ≠ 0 := by
@@ -765,7 +745,7 @@ theorem r3_unit_of_laws (ha : ActLaws) (hm : MuFacts) (hq : QMul) : UnitFactorQ 
     rw [isUnit_iff_constantCoeff, hg0]
     exact isUnit_one.neg
   refine ⟨Units.map (PowerSeries.map (algebraMap ℤ_[l] O) : ℤ_[l]⟦X⟧ →* O⟦X⟧) hu.unit, ?_, ?_⟩
-  · rw [Units.coe_map, IsUnit.unit_spec, ← map_q0_padic, ← map_q_padic, hg, map_mul, mul_comm]
+  · rw [Units.coe_map, IsUnit.unit_spec, ← _root_.Formalism.CohomologicalDescent.HeightDescentMinors.map_q0_padicInt, ← _root_.Formalism.CohomologicalDescent.HeightDescentMinors.map_q_padicInt, hg, map_mul, mul_comm]
     rfl
   · rw [Units.coe_map, IsUnit.unit_spec]
     change constantCoeff (PowerSeries.map (algebraMap ℤ_[l] O) g) = -1
@@ -1068,15 +1048,11 @@ section Pi0
 
 variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
 
-theorem prime_sub_one_pos_alt : 0 < l - 1 := by
-  have := (Fact.out : l.Prime).two_le
-  omega
+alias prime_sub_one_pos_alt := _root_.Formalism.CohomologicalDescent.HeightDescentMinors.prime_sub_one_pos
 
-theorem hasSubst_binomialSeriesSubOne (c : ℤ_[l]) : HasSubst (br l O c) := hasSubst_br_padic l O c
+alias hasSubst_binomialSeriesSubOne := _root_.Formalism.CohomologicalDescent.HeightDescentMinors.hasSubst_br_padic
 
-theorem constantCoeff_pi0 : constantCoeff (pi0 l O) = 0 := by
-  rw [pi0, map_prod]
-  exact Finset.prod_eq_zero (one_mem_mu l) (constantCoeff_binomialSeriesSubOne l O 1)
+alias constantCoeff_pi0 := _root_.Formalism.CohomologicalDescent.HeightDescentMinors.constantCoeff_pi0_eq_zero
 
 theorem hasSubst_pi0_alt : HasSubst (pi0 l O) := by
   apply PowerSeries.HasSubst.of_constantCoeff_zero
@@ -1227,12 +1203,6 @@ section
 
 variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
 
-lemma constantCoeff_br_zero (c : ℤ_[l]) : constantCoeff (br l O c) = 0 := constantCoeff_binomialSeriesSubOne l O c
-
-lemma br_eq_X_mul_const_alt (e : ℤ_[l]) :
-    ∃ β : O⟦X⟧, br l O e = X * β ∧ constantCoeff β = algebraMap ℤ_[l] O e := by
-  exact br_eq_X_mul_const l O e
-
 lemma constantCoeff_pi0_eq_zero_alt (hm : MuFacts) : constantCoeff (pi0 l O) = 0 := constantCoeff_pi0_eq_zero l O
 
 lemma exists_algHom_inc_pi0 (hm : MuFacts) :
@@ -1258,7 +1228,7 @@ lemma binomialSeriesSubOne_add_prime_mul_cong (ha : ActLaws) (hq : QMul) (d e : 
   obtain ⟨h1, -, -, h4, -⟩ := ha l O
   have hphi : br l O (e * (l : ℤ_[l])) = phi l O (br l O e) := by rw [h4, h1]
   have hs : HasSubst ((1 + X) ^ l - 1 : O⟦X⟧) := HasSubst.of_constantCoeff_zero' (by simp)
-  obtain ⟨t, ht⟩ := dvd_subst_of_constantCoeff_zero _ (br l O e) hs (constantCoeff_br_zero l O e)
+  obtain ⟨t, ht⟩ := dvd_subst_of_constantCoeff_zero _ (br l O e) hs (_root_.Formalism.CohomologicalDescent.HeightDescentMinors.constantCoeff_binomialSeriesSubOne l O e)
   have hX := (hq l O).1
   refine ⟨binomialSeries O d * t, ?_⟩
   have h0 : br l O (e * (l : ℤ_[l])) = X * q l O * t := by rw [hphi, phi, ht, hX]
@@ -1268,10 +1238,6 @@ lemma binomialSeriesSubOne_add_prime_mul_cong (ha : ActLaws) (hq : QMul) (d e : 
   simp only [br]
   rw [binomialSeries_add, h2]
   ring
-
-lemma map_pi0_padicInt_algebraMap : PowerSeries.map (algebraMap ℤ_[l] O) (pi0 l ℤ_[l]) = pi0 l O := map_pi0_padic l O
-
-lemma map_q0_padic_alt : PowerSeries.map (algebraMap ℤ_[l] O) (q0 l ℤ_[l]) = q0 l O := map_q0_padicInt l O
 
 lemma map_act_padic (c : ℤ_[l]) (f : ℤ_[l]⟦X⟧) :
     PowerSeries.map (algebraMap ℤ_[l] O) (act l ℤ_[l] c f) =
@@ -1294,7 +1260,7 @@ theorem act_unit_pi0_eq_mul_padic (ha : ActLaws) (hm : MuFacts) (hq : QMul) (hi 
   obtain ⟨hcard, -, hprod⟩ := hm l
   have hprod := hprod hl
   have hl2 : 2 ≤ l := (Fact.out : l.Prime).two_le
-  choose β hβ hβ0 using br_eq_X_mul_const_alt l ℤ_[l]
+  choose β hβ hβ0 using _root_.Formalism.CohomologicalDescent.HeightDescentMinors.br_eq_X_mul_const l ℤ_[l]
   obtain ⟨a1, a2, -, -, -, a6, -⟩ := ha l ℤ_[l]
   obtain ⟨B, hB⟩ : ∃ B, B = ∏ d ∈ mu l, β d := ⟨_, rfl⟩
   obtain ⟨B', hB'⟩ : ∃ B', B' = ∏ d ∈ mu l, β (d * u) := ⟨_, rfl⟩
@@ -1389,7 +1355,7 @@ theorem sixth_relation_of_action_and_mu_laws (ha : ActLaws) (hm : MuFacts) (hq :
       pi0 l O * (1 + inc l O (PowerSeries.map (algebraMap ℤ_[l] O) unZ) * q0 l O) := by
     have h0 := congrArg (PowerSeries.map (algebraMap ℤ_[l] O)) hA
     rw [map_act_padic, map_mul, map_add (f := _), map_one, map_mul, map_algebraMap_pi0Subst l O hm,
-      map_q0_padic_alt, map_pi0_padicInt_algebraMap] at h0
+      _root_.Formalism.CohomologicalDescent.HeightDescentMinors.map_q0_padicInt, _root_.Formalism.CohomologicalDescent.HeightDescentMinors.map_pi0_padic] at h0
     exact h0
   refine ⟨PowerSeries.map (algebraMap ℤ_[l] O) unZ, H1, ⟨algebraMap ℤ_[l] O e, ?_⟩, ?_, ?_⟩
   · rw [← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, he,
@@ -1403,16 +1369,6 @@ theorem sixth_relation_of_action_and_mu_laws (ha : ActLaws) (hm : MuFacts) (hq :
   · exact isUnit_iff_constantCoeff.mpr (by simp)
 
 end PartB2
-
-section PartC
-
-section CapelliProof
-
-variable {𝒰 : Type} [Ring 𝒰]
-
-end CapelliProof
-
-end PartC
 
 section PartD
 

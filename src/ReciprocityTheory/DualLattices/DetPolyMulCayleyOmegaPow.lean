@@ -113,7 +113,7 @@ theorem prod_map_ite_one {M ι : Type*} [Monoid M] (l : List ι) (p : ι → Pro
     (l.map fun j => if p j then d j else 1).prod = ((l.filter fun j => p j).map d).prod := by
   induction l with
   | nil => simp
-  | cons a l ih => by_cases h : p a <;> simp [List.filter_cons, h, ih]
+  | cons a l ih => by_cases h : p a <;> simp [h, ih]
 
 end General
 
@@ -130,8 +130,7 @@ def linSub (g : Matrix (Fin n) (Fin n) R) :
 theorem pderiv_linSub_X (g : Matrix (Fin n) (Fin n) R) (a b : Fin n) (v : Fin n × Fin n) :
     pderiv (a, b) (linSub g (X v)) = if v.2 = b then C (g v.1 a) else 0 := by
 
-  simp only [linSub, aeval_X, map_sum, Derivation.leibniz, pderiv_C, pderiv_X, smul_zero,
-  add_zero, smul_eq_mul, Pi.single_apply, Prod.mk.injEq]
+  simp only [linSub, aeval_X, map_sum, Derivation.leibniz, pderiv_C, pderiv_X, smul_eq_mul, Pi.single_apply, Prod.mk.injEq]
   by_cases hb : v.2 = b
   · subst hb; simp
   · simp [hb]
@@ -182,7 +181,7 @@ theorem dOp_linSub {m : ℕ} (g : Matrix (Fin n) (Fin n) R) (r c : Fin m → Fin
 
     rw [key, ih, map_sum, ← (Fin.consEquiv fun _ => Fin n).sum_comp, Fintype.sum_prod_type]
     simp only [hce, key, Fin.cons_zero, Fin.cons_succ, Fin.prod_univ_succ, Derivation.leibniz,
-      pderiv_C, smul_zero, smul_eq_mul, mul_zero, add_zero, pderiv_linSub, Finset.mul_sum, map_mul]
+      pderiv_C, smul_eq_mul, mul_zero, add_zero, pderiv_linSub, Finset.mul_sum, map_mul]
     exact Finset.sum_comm.trans
       (Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun τ _ => by ring)
 
@@ -373,7 +372,7 @@ theorem pderiv_yP (σ τ : Fin n → Fin n) (S : Finset (Fin n)) (j : Fin n) (hj
     by_cases hS : b₀ ∈ S
     · simp [hS, apply_ite (⇑(pderiv (σ j, j) : Derivation ℤ (MvPolynomial (Fin n × Fin n) ℤ)
         (MvPolynomial (Fin n × Fin n) ℤ))), Derivation.map_one_eq_zero]
-    · simp [hS, pderiv_X, Pi.single_apply, hb₀]
+    · simp [hS, pderiv_X, hb₀]
   · simp
 
 theorem list_pderiv_yP (σ τ : Fin n → Fin n) (l : List (Fin n)) (hl : l.Nodup)
@@ -419,8 +418,8 @@ theorem eval_fibOp_cayDet (σ : Fin n → Fin n) {s : ℕ} (φ : Fin n → Fin s
   simp only [yP, map_prod]
   refine Finset.prod_congr rfl fun b _ => ?_
   by_cases hb : φ b = k
-  · simp [hb, funMat, onePt, apply_ite (eval onePt)]
-  · simp [hb, funMat, onePt, Matrix.one_apply, apply_ite (eval onePt)]
+  · simp [hb, funMat, apply_ite (eval onePt)]
+  · simp [hb, funMat, onePt, Matrix.one_apply]
 
 theorem cayMono_pow (σ : Equiv.Perm (Fin n)) (s : ℕ) :
     cayMono n ℤ σ (cayDet n ℤ ^ s) = ∑ φ : Fin n → Fin s, ∏ k, fibOp σ φ k (cayDet n ℤ) := by
@@ -491,7 +490,7 @@ theorem eval_one_cayOp_pow (s : ℕ) :
     rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
 
   simp only [cayOp, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_zsmul, h1,
-  Finset.smul_sum, smul_ite, smul_zero, smul_eq_mul, Finset.mul_sum, mul_ite, mul_zero, hsq]
+  smul_eq_mul, Finset.mul_sum, mul_ite, mul_zero, hsq]
   rw [Finset.sum_comm]
   simp only [hstab]
   have h2 := sum_prod_factorial_fibres s n

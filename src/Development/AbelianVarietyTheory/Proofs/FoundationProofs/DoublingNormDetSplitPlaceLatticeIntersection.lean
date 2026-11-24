@@ -118,7 +118,7 @@ private theorem unit_mul_mem_iff' (t : (Fv F v)ˣ) (z : Fv F v) :
   · simp only [mem_int_iff, nnnorm_mul, Units.val_inv_eq_inv_val, nnnorm_inv, inv_mul_le_iff₀ ht, mul_one]
     exact ⟨fun h' => h'.2, fun h' => ⟨h'.trans h, h'⟩⟩
   · simp only [mem_int_iff, nnnorm_mul, Units.val_inv_eq_inv_val, nnnorm_inv, inv_mul_le_iff₀ ht, mul_one,
-      inv_one, Units.val_one, nnnorm_one, one_mul]
+      inv_one, Units.val_one, one_mul]
     exact ⟨fun h' => h'.1, fun h' => ⟨h', h'.trans (not_le.1 h).le⟩⟩
 
 theorem nnnorm_det_inter {a x : GL (Fin n) (Fv F v)} {d : Fin n → (Fv F v)ˣ} (hd : IsElemDiv x d)
@@ -196,7 +196,7 @@ theorem nnnorm_splitProj_det (h : IsCMExt F E σ) (hJ : IsHermND σ J) {L : Subm
   have hB : splitIncl h τ (β.1 *ᵥ u) ∈ latMoved σ J L v g ↔
       ∀ i, (((splitEquivIn h hJ τ β g)⁻¹).1 *ᵥ u) i ∈ v.adicCompletionIntegers F := by
     rw [mem_latMoved, matHom_mulVec_splitIncl, splitIncl_mem_latLoc_iff h, hβ.mem_iff, splitEquivIn_apply]
-    simp only [mul_inv_rev, inv_inv, map_inv, Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]
+    simp only [mul_inv_rev, inv_inv, map_inv, Units.val_mul, Matrix.mulVec_mulVec]
   have hC : (∃ z ∈ latLoc F L v, splitIncl h τ (β.1 *ᵥ u) = α.1 *ᵥ z) ↔
       (αw⁻¹).1 *ᵥ (β.1 *ᵥ u) ∈ splitLat τ L := by
     constructor
@@ -210,7 +210,7 @@ theorem nnnorm_splitProj_det (h : IsCMExt F E σ) (hJ : IsHermND σ J) {L : Subm
       rw [mulVec_splitIncl, ← hαw, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one,
         Matrix.one_mulVec]
   rw [← hA, ← hB, H, hC, hβ.mem_iff]
-  simp only [mul_inv_rev, inv_inv, Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]
+  simp only [mul_inv_rev, inv_inv, Units.val_mul, Matrix.mulVec_mulVec]
 
 private theorem algebra_norm_prod_pair_eq_mul {K : Type} [Field K] (a b : K) : Algebra.norm K ((a, b) : K × K) = a * b := by
   rw [Algebra.norm_apply]

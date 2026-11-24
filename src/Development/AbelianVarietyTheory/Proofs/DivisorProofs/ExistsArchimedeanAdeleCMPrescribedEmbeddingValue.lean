@@ -96,6 +96,6 @@ theorem smul_adAt_tmul (u : AF F) (hu : evI F u = 0) (w : InfinitePlace F) (c : 
 theorem exists_at_inf_values : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E}, IsCMExt F E σ → ∀ (τ : ∀ w : InfinitePlace F, EmbOver E w) (z : InfinitePlace F → ℂ),
     ∃ a : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E), At (evI F) a ∧ ∀ w, piInf (τ w) a = z w := by
-  apply PositivityTheory.ThKG.CayleyTransformDarboux.exists_inf <;> assumption
+  apply PositivityTheory.ThKG.CayleyTransformDarboux.exists_inf
 
 end GlobalTheory.PolRangeInf

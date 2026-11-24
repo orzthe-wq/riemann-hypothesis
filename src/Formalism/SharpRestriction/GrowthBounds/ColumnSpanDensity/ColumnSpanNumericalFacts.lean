@@ -67,17 +67,17 @@ theorem sum_pi_cast {ι : Type} [Fintype ι] [DecidableEq ι] (lo hi : ℕ) (g :
       ∑ A ∈ Fintype.piFinset (fun _ : ι => Finset.Icc lo hi), g (fun s => (A s : ℤ)) := by
   refine Finset.sum_nbij' (fun aa s => (aa s).toNat) (fun A s => (A s : ℤ)) ?_ ?_ ?_ ?_ ?_
   · intro aa haa
-    simp only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at haa ⊢
+    simp only [Fintype.mem_piFinset, Finset.mem_Icc] at haa ⊢
     intro s
     have := haa s
     omega
   · intro A hA
-    simp only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at hA ⊢
+    simp only [Fintype.mem_piFinset, Finset.mem_Icc] at hA ⊢
     intro s
     have := hA s
     omega
   · intro aa haa
-    simp only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at haa
+    simp only [Fintype.mem_piFinset, Finset.mem_Icc] at haa
     funext s
     have := haa s
     show ((aa s).toNat : ℤ) = aa s
@@ -87,7 +87,7 @@ theorem sum_pi_cast {ι : Type} [Fintype ι] [DecidableEq ι] (lo hi : ℕ) (g :
     show ((A s : ℤ)).toNat = A s
     omega
   · intro aa haa
-    simp only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at haa
+    simp only [Fintype.mem_piFinset, Finset.mem_Icc] at haa
     congr 1
     funext s
     have := haa s
@@ -139,8 +139,7 @@ theorem sum_of_meanN {ι : Type} [Fintype ι] [DecidableEq ι] (Sa Sb : Finset �
       M * ((Sa.card : ℝ) ^ Fintype.card ι * (Sb.card : ℝ) ^ Fintype.card ι) := by
   have hD : (0 : ℝ) < (Sa.card : ℝ) ^ Fintype.card ι * (Sb.card : ℝ) ^ Fintype.card ι :=
     mul_pos (pow_pos (by exact_mod_cast ha) _) (pow_pos (by exact_mod_cast hb) _)
-  unfold meanN at h
-  rwa [div_le_iff₀ hD] at h
+  simpa [meanN, div_le_iff₀ hD] using h
 
 
 open Classical in
@@ -200,12 +199,7 @@ theorem sum_first {ι : Type} [Fintype ι] [DecidableEq ι] (a ua lb ub c : ℕ)
       ((pa ×ˢ pb).filter (fun x : (ι → ℕ) × (ι → ℕ) => ¬ ∀ s, a + c ≤ x.1 s ∧ lb + c ≤ x.2 s)).card =
         (pa ×ˢ pb).card := by
     first
-    | exact Finset.filter_card_add_filter_neg_card_eq_card _
     | exact Finset.card_filter_add_card_filter_not _
-    | (rw [← Finset.card_union_of_disjoint (Finset.disjoint_filter_filter_neg _ _ _),
-        Finset.filter_union_filter_neg_eq])
-    | (rw [← Finset.card_disjoint_union (Finset.disjoint_filter_filter_neg _ _ _),
-        Finset.filter_union_filter_neg_eq])
   rw [hF] at hcard ⊢
   have hcS : (pa ×ˢ pb).card = (Finset.Icc a ua).card ^ Fintype.card ι * (Finset.Icc lb ub).card ^ Fintype.card ι := by
     rw [Finset.card_product, hpa, hpb, Fintype.card_piFinset, Fintype.card_piFinset, Finset.prod_const,
@@ -235,12 +229,12 @@ private theorem sum_piFinset_Icc_shift_eq {ι : Type} [Fintype ι] [DecidableEq 
       ∑ A ∈ Fintype.piFinset (fun _ : ι => Finset.Icc (lo + c) (hi + c)), g A := by
   refine Finset.sum_nbij' (fun A s => A s + c) (fun A s => A s - c) ?_ ?_ ?_ ?_ ?_
   · intro A hA
-    simp only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at hA ⊢
+    simp only [Fintype.mem_piFinset, Finset.mem_Icc] at hA ⊢
     intro s
     have := hA s
     omega
   · intro A hA
-    simp only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at hA ⊢
+    simp only [Fintype.mem_piFinset, Finset.mem_Icc] at hA ⊢
     intro s
     have := hA s
     omega
@@ -249,7 +243,7 @@ private theorem sum_piFinset_Icc_shift_eq {ι : Type} [Fintype ι] [DecidableEq 
     show A s + c - c = A s
     omega
   · intro A hA
-    simp only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc] at hA
+    simp only [Fintype.mem_piFinset, Finset.mem_Icc] at hA
     funext s
     have := hA s
     show A s - c + c = A s
@@ -303,21 +297,10 @@ theorem mean_of (K : Cst) (hKp : K.Pos) (X : Dat) (hF : ColumnSpanNumericalFacts
     refine Finset.sum_congr rfl fun A _ => ?_
     exact sum_piFinset_Icc_shift_eq X.lb X.ub X.ccl (fun B => X.kF K R (fun s => A s + X.ccl) B)
   rw [← hsh] at sc
-  have hS : (∑ aa ∈ Fintype.piFinset (fun _ : X.TT => Formalism.MainNotions.flipOneThree.IaZ X.m X.Y X.ar),
-      ∑ bb ∈ Fintype.piFinset (fun _ : X.TT => Formalism.MainNotions.flipOneThree.IbZ X.bl X.bu), X.kText K R aa bb) =
-      ∑ A ∈ Fintype.piFinset (fun _ : X.TT => Finset.Icc X.a X.ua),
-        ∑ B ∈ Fintype.piFinset (fun _ : X.TT => Finset.Icc X.lb X.ub),
-          ((if (∀ s, X.a + X.ccl ≤ A s ∧ X.lb + X.ccl ≤ B s) then
-            X.kF K R (fun s => A s - X.ccl) (fun s => B s - X.ccl) else 1) +
-          2 * X.kF K R (fun s => A s + X.ccl) (fun s => B s + X.ccl) +
-            12 * X.N * X.k * X.ccl / X.b') := by
-    rw [hIa, hIb, sum_pi_cast]
-    refine Finset.sum_congr rfl fun A _ => ?_
-    rw [sum_pi_cast]
-    refine Finset.sum_congr rfl fun B _ => ?_
-    exact kText_cast K X R blnn A B
   unfold Formalism.MainNotions.flipOneThree.meanKap
-  rw [hS, hIa, hIb, card_Icc_cast, card_Icc_cast, hNN, div_le_iff₀ hT]
+  rw [hIa, hIb]
+  simp_rw [sum_pi_cast, kText_cast K X R blnn]
+  rw [card_Icc_cast, card_Icc_cast, hNN, div_le_iff₀ hT]
   simp only [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, nsmul_eq_mul,
     Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, hN, Nat.cast_pow]
   have p1 := mul_le_mul_of_nonneg_left eps hT.le

@@ -156,7 +156,7 @@ theorem exists_nsmul_fix {e : AEF F E} (he : IsSplitIdemF σ e) {u : WOF F E nS 
     rw [show pairA F 0 0 = (0 : AF F) from rfl, map_zero, zero_mul]
   have hV : φ ⁻¹' (U : Set (WOF F E nS nT)) ∈ nhds (0 : Af F) :=
     (hU.preimage hφ).mem_nhds (by rw [Set.mem_preimage, h0]; exact U.zero_mem)
-  obtain ⟨N, hN, hNα⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ hV
+  obtain ⟨N, hN, hNα⟩ := _root_.GlobalTheory.LocalNormBound.main F _ hV
   have hint : ∀ w, α w ∈ w.adicCompletionIntegers F := fun w => by
     by_cases hw : w = v
     · subst hw

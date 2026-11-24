@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilDatumPowersUnramifiedEtaTilde
 
 @[expose] public section
 
@@ -109,17 +110,10 @@ theorem resAt_twist {t : Twist D Circle} (ht : t.Good) {P : Finset (Pl D.host.E)
     rw [e]
     exact resAt_of_unram ht.unram h hQ hPP hq
 
-theorem infPart_placeIdem {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) :
-    infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0 := by
-  obtain ⟨α, rfl, -⟩ := h
-  simp [infPart, Algebra.TensorProduct.algebraMap_apply]
-  show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) = 0
-  exact TensorProduct.zero_tmul _ _
-
 theorem infPart_eq_one {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) {x : AE D}
     (h : algebraMap (AF D.host.F) (AE D) ε * (x - 1) = x - 1) : infPart D x = 1 := by
   have k := congrArg (infPart D) h
-  rw [map_mul, map_sub, map_one, infPart_placeIdem hε, zero_mul] at k
+  rw [map_mul, map_sub, map_one, _root_.GlobalTheory.WeilProduct.infPart_placeIdem hε, zero_mul] at k
   linear_combination -k
 
 theorem unrOff_of_unram {χ : (AE D)ˣ →* Circle} {P Q : Finset (Pl D.host.E)} (hχ : UnramOutside χ Q) (h : SplitSet Q)

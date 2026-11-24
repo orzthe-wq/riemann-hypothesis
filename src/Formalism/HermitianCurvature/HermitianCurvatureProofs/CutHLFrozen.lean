@@ -218,7 +218,7 @@ private theorem sgn_sig_mul_y0_eq_star_esI_apply_of_mem_GV {k r : ℕ} (g : B.Ma
     have := p.isLt
     ext
     simp only [GBasic.sig]
-    split_ifs with h1 h2 h2 <;> simp only [Fin.val_mk] at * <;> omega
+    split_ifs with h1 h2 h2 <;> simp only at * <;> omega
   have hn : GBasic.sgn k r (eI k r a) = 1 := by
     have := a.isLt
     rw [GBasic.sgn, if_neg]

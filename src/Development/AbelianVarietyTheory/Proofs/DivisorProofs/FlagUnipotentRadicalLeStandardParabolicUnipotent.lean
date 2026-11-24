@@ -171,7 +171,7 @@ theorem unipFlag_le_unip (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     have hy' : y = adMat F (1 - initCols Y m * T) *ᵥ y := by
       rw [adMat, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_mul, sub_mulVec,
         one_mulVec, ← mulVec_mulVec, mem_colPerp_iff.1 hy, mulVec_zero, sub_zero]
-    have : (matHom _ σ J g).1 *ᵥ y - y = ((matHom _ σ J g).1 - 1).mulVecLin y := by simp [sub_mulVec]
+    have : (matHom _ σ J g).1 *ᵥ y - y = ((matHom _ σ J g).1 - 1).mulVecLin y := by simp
 
     rw [this, hy', mulVec_eq_sum, map_sum]
     refine sum_mem fun j _ => ?_

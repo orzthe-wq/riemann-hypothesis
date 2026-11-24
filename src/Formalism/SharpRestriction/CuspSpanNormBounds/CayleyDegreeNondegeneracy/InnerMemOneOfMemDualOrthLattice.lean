@@ -100,7 +100,7 @@ theorem exists_lattice_vector_inner_z_one : ∃ m ∈ Λ ⊓ toO (hS D) (orth (h
         have ea : a • x = (algebraMap (𝓞 D.host.E) D.host.E a) • x := (algebraMap_smul D.host.E a x).symm
         rw [ea]
         rw [LinearMap.map_smulₛₗ₂]
-        simp only [LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]
+        simp only [smul_eq_mul, starRingEnd_apply]
         exact mul_mem_one_submodule (star_mem_one_submodule (Submodule.mem_one.2 ⟨a, rfl⟩)) ih
     have : v = (algebraMap (𝓞 D.host.E) D.host.E d)⁻¹ • (d • v) := by
       rw [← algebraMap_smul D.host.E d v, smul_smul, inv_mul_cancel₀ hd0, one_smul]
@@ -215,7 +215,7 @@ theorem dual_orthLattice_quotient_cyclic : ∃ w₁ ∈ Formalism.HermitianLatti
         have ea : a • x = (algebraMap (𝓞 D.host.E) D.host.E a) • x := (algebraMap_smul D.host.E a x).symm
         rw [ea]
         rw [LinearMap.map_smulₛₗ₂]
-        simp only [LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]
+        simp only [smul_eq_mul, starRingEnd_apply]
         exact mul_mem_one_submodule (star_mem_one_submodule (Submodule.mem_one.2 ⟨a, rfl⟩)) ih
     have : v = (algebraMap (𝓞 D.host.E) D.host.E d)⁻¹ • (d • v) := by
       rw [← algebraMap_smul D.host.E d v, smul_smul, inv_mul_cancel₀ hd0, one_smul]

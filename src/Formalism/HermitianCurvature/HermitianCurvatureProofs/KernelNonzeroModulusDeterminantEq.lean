@@ -594,7 +594,7 @@ theorem dl_lower (hd : LocalDatum K R ψ) (r : Matrix Unit ι K) :
       fromBlocks (1 : Matrix ι ι K) 0 0 Di * fromBlocks (1 : Matrix ι ι K) 0 s 1 *
         fromBlocks (1 : Matrix ι ι K) 0 0 D := by
     rw [Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]
-    simp only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add]
+    simp only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, add_zero, zero_add]
     rw [hs_def, ← Matrix.mul_assoc, hDD, Matrix.one_mul]
   have hdet1 : IsUnit (fromBlocks (1 : Matrix ι ι K) 0 0 Di).det := by
     rw [Matrix.det_fromBlocks_zero₂₁, hDi, Matrix.det_diagonal]

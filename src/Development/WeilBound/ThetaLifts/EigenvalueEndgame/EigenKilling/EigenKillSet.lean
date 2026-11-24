@@ -6,7 +6,7 @@ public import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.P
 public import Development.WeilBound.ThetaLifts.EigenvalueEndgame.EigenKilling.ConeIntegralFactorisation
 public import Development.WeilBound.ThetaLifts.CTKernel
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianSelfDualLatticeSpaceFormHermitianNondeg
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAdelicAddCharLocalComponentNeOne
+import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.StandardTraceAdelicAddCharLocalComponentNeOne
 import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.PureEqPureA
 import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.IndicatorMem
 import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.KdMulRight
@@ -204,10 +204,6 @@ end
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
   {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {B : Base F E}
-
-theorem sig_sig (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
 
 theorem form_swap (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin n) (Fin n) E} (ε : E) (h : ∀ i j, σ (J j i) = ε * J i j) (x y : Fin n → E) :
     σ (form σ J x y) = ε * form σ J y x := by
@@ -629,7 +625,7 @@ theorem position_inj (hM : M.IsGood B.ψ) {f : SInf F (Fin n × Fin d)} (hf : f 
       funext w
       by_cases hw : w = v
       · subst w; simp [t]
-      · simp [t, hw, Function.update_of_ne hw]
+      · simp [t, hw]
     unfold GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure
     rw [key, finprod_mul_distrib ht hs, finprod_eq_single t v fun w hw => if_neg hw]
     simp only [t, if_true]
@@ -695,7 +691,7 @@ theorem acts_rho (M : Model σ X W) (ψ) {u} (hu : At (evFin F v) u) (φ) : Acts
 
 theorem sep {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {s s' : Fv F v} (h : ∀ c, ψ (liftV v (s * c)) = ψ (liftV v (s' * c))) : s = s' := by
   by_contra hne
-  refine GlobalTheory.PsiNontriv.psiV_ne_one ψ hψ v (AddChar.ext _ _ fun y => ?_)
+  refine Tw.PsiNontriv.psiV_ne_one ψ hψ v (AddChar.ext _ _ fun y => ?_)
   have h1 := h ((s - s')⁻¹ * y)
   have h2 : s * ((s - s')⁻¹ * y) = y + s' * ((s - s')⁻¹ * y) := by
     have := sub_ne_zero.2 hne
@@ -727,7 +723,7 @@ theorem map_vv (t : E →ₐ[F] Fv F v) (a : Fin n → AE F E) (x : Fin d → E)
 theorem soLower_of (hMx : PositivityTheory.ThKG.MixW) : SoLower := by
   intro F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ χX χW om om₁ r s r' s' r₁ s₁ H i₀ i₁ hp hp₁ hH hn hd hν e ei ev he hl φ hφ
   have hB := hp.base
-  have hσ : ∀ x, σ (σ x) = x := sig_sig hB.cm
+  have hσ : ∀ x, σ (σ x) = x := _root_.GlobalTheory.AdelicU.cm_conj_conj hB.cm
   have dX := det_herm hp.herm
   have dW := det_skew hp.skew
   have dW₁ := det_skew hp₁.skew

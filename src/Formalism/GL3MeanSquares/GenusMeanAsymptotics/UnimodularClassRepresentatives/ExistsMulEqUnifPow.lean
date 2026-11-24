@@ -72,8 +72,7 @@ abbrev zR (𝔭 : Ideal (𝓞 F)) (z : K) : AddSubgroup K :=
 
 theorem mul_mem₀ {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {k : ℕ} {a b : K} (ha : a ∈ pK K 𝔭 k)
     (hb : b ∈ pK K 𝔭 0) : a * b ∈ pK K 𝔭 k := by
-  have h := mul_mem_pK h𝔭 ha hb
-  rwa [add_zero] at h
+  simpa using mul_mem_pK h𝔭 ha hb
 
 theorem zR_le {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {z : K} (hz : z ∈ pK K 𝔭 0) :
     zR 𝔭 z ≤ (pK K 𝔭 0).toAddSubgroup := by
@@ -113,7 +112,6 @@ theorem exists_sub_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ
   obtain ⟨t, ht, z, -, e⟩ := (mem_pK h𝔭).1 ha
   obtain ⟨u, hu⟩ := MeanA.exists_mul_sub_one_mem_pow h𝔭 ht k
   refine ⟨algebraMap (𝓞 F) (𝓞 K) u * z, ?_⟩
-  have h1 := mul_mem₀ h𝔭 (algF_mem_pK (K := K) h𝔭 hu) ha
   have h2 : a - algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) u * z) =
       -(algebraMap F K ((u * t - 1 : 𝓞 F) : F) * a) := by
     rw [map_mul, e]
@@ -122,7 +120,7 @@ theorem exists_sub_mem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ
     rw [e1, e2, map_sub, map_mul, map_one]
     ring
   rw [h2]
-  exact (pK K 𝔭 k).neg_mem h1
+  exact (pK K 𝔭 k).neg_mem (mul_mem₀ h𝔭 (algF_mem_pK (K := K) h𝔭 hu) ha)
 
 theorem comap_pK {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     (pK K 𝔭 k).toAddSubgroup.comap (algebraMap (𝓞 K) K).toAddMonoidHom =
@@ -169,17 +167,14 @@ theorem nO_mul {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {z w : K} (hz : 
     (hw : w ∈ pK K 𝔭 0) : nO 𝔭 (z * w) = nO 𝔭 z * nO 𝔭 w := by
   have h1 := AddSubgroup.relIndex_mul_relIndex ((zR 𝔭 w).map (AddMonoidHom.mulLeft z)) (zR 𝔭 z)
     (pK K 𝔭 0).toAddSubgroup (AddSubgroup.map_mono (zR_le h𝔭 hw)) (zR_le h𝔭 hz)
-  have h2 : ((zR 𝔭 w).map (AddMonoidHom.mulLeft z)).relIndex (zR 𝔭 z) = nO 𝔭 w :=
-    AddSubgroup.relIndex_map_map_of_injective _ _ (mul_right_injective₀ hz0)
-  rw [h2, ← zR_mul] at h1
+  rw [AddSubgroup.relIndex_map_map_of_injective (zR 𝔭 w) (pK K 𝔭 0).toAddSubgroup
+    (mul_right_injective₀ hz0), ← zR_mul] at h1
   rw [mul_comm (nO 𝔭 z)]
   exact h1.symm
 
 open NO in
 theorem nO_star (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (z : K) :
     nO 𝔭 (star z) = nO 𝔭 z := by
-  have hs : ∀ a : K, star a ∈ pK K 𝔭 0 ↔ a ∈ pK K 𝔭 0 := fun a =>
-    ⟨fun h => by simpa using star_mem_pK hF h𝔭 h, star_mem_pK hF h𝔭⟩
   have h1 : (pK K 𝔭 0).toAddSubgroup.map (starAddEquiv : K ≃+ K).toAddMonoidHom =
       (pK K 𝔭 0).toAddSubgroup := by
     ext a
@@ -360,7 +355,6 @@ theorem comap_scal {κ : Type} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) 
       _ = f i j * algebraMap F K (π : F) ^ k * (v (i, j) : K) := by rw [← e]; ring
   · intro hv i j
     obtain ⟨b, hb, e⟩ := AddSubgroup.mem_addSubgroupOf.1 (hv (i, j) (Set.mem_univ _))
-    replace e : d i j * b = (v (i, j) : K) := e
     refine ⟨algebraMap F K (π : F) ^ (k + c) * b, (mem_pK_iff_unif h𝔭 hπ hπ').2 ⟨b, hb, rfl⟩, ?_⟩
     rw [scal_apply, ← e]
     calc f i j * (algebraMap F K (π : F) ^ k * (d i j * b))

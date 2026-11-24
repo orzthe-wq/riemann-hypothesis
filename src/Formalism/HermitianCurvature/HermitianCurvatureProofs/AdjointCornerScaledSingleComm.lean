@@ -232,15 +232,7 @@ section blk2alg
 
 variable {j : ℕ}
 
-theorem castM_mul' {k a b : ℕ} (h : a = b) (M N : B.Mat k a) : D.castM h (M * N) = D.castM h M * D.castM h N := by
-  subst h; simp only [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]
-
-theorem symmetricScalarBlockMatrix_mul {p s : ℕ} (A A' : Matrix (Fin p) (Fin p) ℂ) (B B' : Matrix (Fin p) (Fin s) ℂ)
-    (C C' : Matrix (Fin s) (Fin p) ℂ) (D D' : Matrix (Fin s) (Fin s) ℂ) :
-    U.blk2 A B C D * U.blk2 A' B' C' D' = U.blk2 (A * A' + B * C') (A * B' + B * D') (C * A' + D * C') (C * B' + D * D') := by
-  unfold U.blk2
-  simp only [Matrix.reindex_apply]
-  rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
+alias castM_mul' := _root_.Formalism.FourierDecayAlt.P.Dx2.Tower.castM_mul
 
 theorem smul_block_two {p s : ℕ} (c : ℂ) (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin p) (Fin s) ℂ)
     (C : Matrix (Fin s) (Fin p) ℂ) (D : Matrix (Fin s) (Fin s) ℂ) :
@@ -367,7 +359,7 @@ theorem weyl_corner_scaled_single_comm (Z : Matrix (Fin j) (Fin j) ℂ) (hZ : Z.
   congr 1
   rw [sum_single_last, single_last_eq_block_two, smul_block_two, smul_zero, smul_zero, smul_zero]
   unfold zfull
-  rw [symmetricScalarBlockMatrix_mul, symmetricScalarBlockMatrix_mul]
+  rw [_root_.Formalism.FourierDecayAlt.P.Ux2.symmetricScalarBlockMatrix_mul, _root_.Formalism.FourierDecayAlt.P.Ux2.symmetricScalarBlockMatrix_mul]
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
   congr 1
   have hinv : Z⁻¹ * Z = 1 := Matrix.nonsing_inv_mul Z (isUnit_iff_ne_zero.mpr hZ)
@@ -400,7 +392,7 @@ theorem adjoint_corner_scaled_single_comm (Z : Matrix (Fin j) (Fin j) ℂ) (hZ :
   congr 2
   rw [zfull_conjTranspose_inv hZ hτ, sum_single_col, single_column_eq_block_two]
   unfold zfull
-  rw [symmetricScalarBlockMatrix_mul, smul_block_two, symmetricScalarBlockMatrix_mul]
+  rw [_root_.Formalism.FourierDecayAlt.P.Ux2.symmetricScalarBlockMatrix_mul, smul_block_two, _root_.Formalism.FourierDecayAlt.P.Ux2.symmetricScalarBlockMatrix_mul]
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, smul_zero]
   congr 1
   ext u v

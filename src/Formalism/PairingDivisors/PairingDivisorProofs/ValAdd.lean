@@ -67,13 +67,10 @@ theorem intValuation_eq_exp (w : Pl K) (x : 𝓞 K) (hx : x ≠ 0) :
   rw [vw_ringOfIntegers_eq_count_factors_span w x hx]
   first
   | exact w.intValuation_if_neg hx
-  | (rw [w.intValuation_if_neg hx])
-  | (rw [IsDedekindDomain.HeightOneSpectrum.intValuation_def, if_neg hx])
 
 private theorem le_of_withZero_exp_le_exp {a b : ℤ} (h : WithZero.exp a ≤ WithZero.exp b) : a ≤ b := by
   first
   | exact WithZero.exp_le_exp.mp h
-  | simpa [WithZero.exp] using h
 
 theorem vw_add_int (w : Pl K) (x y : 𝓞 K) (hx : x ≠ 0) (hy : y ≠ 0) (hxy : x + y ≠ 0) :
     min (vw w (x : K)) (vw w (y : K)) ≤ vw w ((x + y : 𝓞 K) : K) := by

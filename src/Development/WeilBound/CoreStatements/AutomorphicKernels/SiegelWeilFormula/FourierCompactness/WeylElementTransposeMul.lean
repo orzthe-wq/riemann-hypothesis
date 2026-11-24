@@ -69,13 +69,13 @@ def w0 (n : ℕ) (ε : ℤˣ) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E := 
 omit [NumberField F] [NumberField E] in
 theorem weyl_element_mul_self (ε : ℤˣ) : w0 E n ε * w0 E n ε = ((ε : ℤ) : E) • 1 := by
   simp only [w0, Matrix.fromBlocks_multiply, Matrix.zero_mul, Matrix.mul_zero, Matrix.one_mul, Matrix.mul_one, zero_add,
-    add_zero, Matrix.smul_mul, Matrix.one_mul]
+    add_zero, Matrix.one_mul]
   rw [← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, smul_zero]
 
 omit [NumberField F] [NumberField E] in
 theorem weyl_element_transpose_mul (ε : ℤˣ) : (w0 E n ε)ᵀ * w0 E n ε = 1 := by
   rw [w0, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]
-  simp [Matrix.smul_mul, Matrix.mul_smul, smul_smul, int_units_sq]
+  simp [smul_smul, int_units_sq]
 
 omit [NumberField E] in
 theorem weyl_element_map_conj (ε : ℤˣ) : (w0 E n ε).map σ = w0 E n ε := by
@@ -138,12 +138,6 @@ theorem exists_w {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
     ∃ (ε : ℤˣ) (w : G2 σ Y), inFrame b w = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0 ∧ w ∈ rat2 σ Y := by
   obtain ⟨ε, hε⟩ := hb.1
   exact ⟨ε, wA σ Y b ε hε, wA_inFrame hε, wA_rat hε⟩
-
-theorem auxEx : AuxiliaryPrimeFunction := by
-  intro F E _ _ _ _ _ σ d
-  obtain ⟨ν, 𝓕, hν, h𝓕, h1⟩ := exists_cov (F := F) (E := E) d.m d.n
-  obtain ⟨i1, i2, i3, i4⟩ := doubled_group_topological_properties σ d.Y
-  exact ⟨⟨ν, hν, 𝓕, h𝓕, h1⟩, exists_w d.ok.frame, i1, i2, i3, i4⟩
 
 end PositivityTheory.SiegelWeilFormula.kfour
 

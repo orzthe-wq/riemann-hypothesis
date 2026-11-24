@@ -2,7 +2,12 @@ module
 
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.KatoQuadraticCharacters.EulerFactorBounds.KatoTwistedClassNormCompatibleCyclotomic
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerIntegrality
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OverAffineJLineComapSlGalStatement
+import Development.AbelianVarietyTheory.Definitions.Foundations.Letter
+import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
+import Mathlib.RingTheory.Flat.TorsionFree
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OverAffineJLineComapSlGal
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -44,6 +49,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Definitions.Foundations.OpLDOneSubMemTriv
 
 @[expose] public section
 
@@ -67,11 +73,7 @@ private theorem mulQ (m m' : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (h' : 0
   apply Units.ext
   simp only [Subgroup.coe_mul, Units.val_mul, coeQ _ hmm, coeQ _ h, coeQ _ h', Matrix.map_mul]
 
-private theorem slQ (γ : SL(2, ℤ)) : toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ) = ofSL γ := by
-  apply Subtype.ext
-  apply Units.ext
-  rw [coeQ _ (by rw [Matrix.SpecialLinearGroup.det_coe]; norm_num)]
-  rfl
+private alias slQ := _root_.GlobalTheory.KZ.Betti.toGQ_sl
 
 private theorem detD {N : ℕ} (hN : 0 < N) : (0 : ℤ) < (!![(N : ℤ), 0; 0, 1]).det := by
   simpa [Matrix.det_fin_two_of] using hN
@@ -191,7 +193,7 @@ theorem UpperTheory.V.Z.Kato.Nb.sSlD :
     UpperTheory.V.Z.Kato.Nb.SSlD := by
   intro Ω _ _ _ ε X N hN
   obtain ⟨φ, hφ1, hφ2⟩ := X.j_hol
-  have hover := GlobalTheory.T.overAffineJLine_comap_sl_gal ε X ε.injective ⟨φ, hφ2, hφ1⟩
+  have hover := _root_.GlobalTheory.KZ.Tower.overY_comap_sl_gal ε X ε.injective ⟨φ, hφ2, hφ1⟩
   refine ⟨fun s f => gal_slD X hN s f, fun h h' hh e f => sl_slD X hN h h' hh e f, slQ,
     fun h h' hh hh' => mulQ h h' hh hh', fun m q f hf => ?_, fun m s f hf => ?_, un_group X, fun M _ s => ?_⟩
   · exact KmapA.un_map X (X.sl q).toRingEquiv (fun W hW => (hover W hW).1 q) m f hf

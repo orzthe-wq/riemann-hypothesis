@@ -252,8 +252,8 @@ theorem cohOn.directSumMap_bijective {ι : Type} [Finite ι] {U : ι → X.Opens
     Function.Bijective (cohOn.directSumMap c R V n) := by
   refine ⟨cohOn.directSumMap_injective hc R V n, fun x => ?_⟩
   cases nonempty_fintype ι
-  letI : LinearOrder ι := LinearOrder.lift' _ (Fintype.equivFin ι).injective
-  haveI : c.pt.IsQuasicoherent := QCoh.isQuasicoherent_of_isColimit hc
+  let : LinearOrder ι := LinearOrder.lift' _ (Fintype.equivFin ι).injective
+  have : c.pt.IsQuasicoherent := QCoh.isQuasicoherent_of_isColimit hc
   have ha := cechAcyclicMod_of_isAffineOpen hU c.pt
   obtain ⟨y, rfl⟩ := (cechHEquivCohOn R hV ha n).surjective x
   obtain ⟨z, rfl⟩ := cechClass_surjective (cechCube R c.pt V U) n y
@@ -316,7 +316,7 @@ theorem SheafLES.pi_res_bijective_of_disjoint {T : TopCat.{u}} {κ : Type w} {V 
           by_cases hij : i = j
           · subst hij
             rfl
-          · haveI : Subsingleton (F.obj.obj (op (U i ⊓ U j))) :=
+          · have : Subsingleton (F.obj.obj (op (U i ⊓ U j))) :=
               AddCommGrpCat.subsingleton_of_isZero
                 (TopCat.Sheaf.isTerminalOfEqEmpty F (hd hij).eq_bot).isZero
             exact Subsingleton.elim (α := F.obj.obj (op (U i ⊓ U j))) _ _

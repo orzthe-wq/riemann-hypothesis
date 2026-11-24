@@ -84,7 +84,7 @@ theorem exists_gram {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V
 theorem discrIdeal_ne_bot [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hd : ∀ x, h x x = 0 → x = 0) {L : Submodule (𝓞 K) V} (hL : Submodule.IsFullLattice K L)
     (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) : discrIdeal h L ≠ ⊥ := by
-  choose n hn hnx using fun i => Formalism.HermitianLatticesTheory.traceReal_mult L hL (finBasis K V i)
+  choose n hn hnx using fun i => _root_.Bl.general_b_fact_second'''''.goal1 L hL (finBasis K V i)
   have hli : LinearIndependent K (fun i => n i • finBasis K V i) := by
     have h1 := (finBasis K V).linearIndependent.units_smul
       (fun i => Units.mk0 (n i : K) (by exact_mod_cast hn i))

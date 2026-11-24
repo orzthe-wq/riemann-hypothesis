@@ -177,7 +177,7 @@ private theorem map_heckeTj {σ : ℂ ≃+* ℂ} (p : V →+ V') (h1 : ∀ (c : 
     (finsum_congr fun c => ?_)
   rw [h1, h2]
   congr 1
-  simp only [Formalism.UG.Tj, Formalism.UG.dosetInd, Set.indicator]
+  simp only [Formalism.UG.Tj, Set.indicator]
   split_ifs <;> simp
 
 theorem Sep.hasSatGL {σ : ℂ ≃+* ℂ} (h : Sep σ ρ ρ') (h' : Sep σ.symm ρ' ρ) {B B' : Multiset ℂˣ} (hB : HasSatGL w ρ B)

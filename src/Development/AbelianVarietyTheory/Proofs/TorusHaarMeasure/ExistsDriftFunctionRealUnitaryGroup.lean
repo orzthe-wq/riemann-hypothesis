@@ -83,66 +83,7 @@ private theorem single_one_mulVec_eq_pi_single (r : ℕ) (j k : Fin r) (w : Fin 
   ext i
   by_cases hi : i = j
   · subst hi; simp [Matrix.mulVec, dotProduct, Matrix.single_apply]
-  · simp [Matrix.mulVec, dotProduct, Matrix.single_apply, hi, Ne.symm hi]
-
-open NumberField MeasureTheory Topology in
-open scoped ComplexOrder ENNReal Matrix in
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
-private theorem eq_bot_or_eq_whole_of_single_mulVec_invariant (r p : ℕ) (hp : 0 < p) (hpr : p < r)
-    (W : Submodule ℂ (Fin r → ℂ))
-    (hW : ∀ (j k : Fin r), (j : ℕ) < p → p ≤ (k : ℕ) → ∀ v ∈ W,
-      (Matrix.single j k 1).mulVec v ∈ W ∧ (Matrix.single k j 1).mulVec v ∈ W) :
-    W = ⊥ ∨ W = ⊤ := by
-  by_cases hbot : W = ⊥
-  · exact Or.inl hbot
-  right
-  obtain ⟨v, hvW, hv0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hbot
-  obtain ⟨m, hm⟩ : ∃ m, v m ≠ 0 := by
-    by_contra h
-    push_neg at h
-    exact hv0 (funext h)
-  have hsmul : ∀ (i : Fin r) (z : ℂ), z ≠ 0 → Pi.single i z ∈ W → Pi.single i (1 : ℂ) ∈ W := by
-    intro i z hz h
-    have e : z⁻¹ • (Pi.single i z : Fin r → ℂ) = Pi.single i 1 := by
-      ext l
-      by_cases hl : l = i <;> simp [hl, hz]
-    rw [← e]
-    exact W.smul_mem _ h
-  let j0 : Fin r := ⟨0, by omega⟩
-  let k0 : Fin r := ⟨p, hpr⟩
-  have hj0 : (j0 : ℕ) < p := hp
-  have hk0' : p ≤ (k0 : ℕ) := le_rfl
-  have hk0 : Pi.single k0 (1 : ℂ) ∈ W := by
-    rcases Nat.lt_or_ge (m : ℕ) p with h | h
-    · have h1 := (hW m k0 h hk0' v hvW).2
-      rw [single_one_mulVec_eq_pi_single] at h1
-      exact hsmul _ _ hm h1
-    · have h1 := (hW j0 m hj0 h v hvW).1
-      rw [single_one_mulVec_eq_pi_single] at h1
-      have h3 := (hW j0 k0 hj0 hk0' _ (hsmul _ _ hm h1)).2
-      rw [single_one_mulVec_eq_pi_single] at h3
-      simpa using h3
-  have he0 : Pi.single j0 (1 : ℂ) ∈ W := by
-    have h1 := (hW j0 k0 hj0 hk0' _ hk0).1
-    rw [single_one_mulVec_eq_pi_single] at h1
-    simpa using h1
-  have hall : ∀ i : Fin r, Pi.single i (1 : ℂ) ∈ W := by
-    intro i
-    rcases Nat.lt_or_ge (i : ℕ) p with h | h
-    · have h1 := (hW i k0 h hk0' _ hk0).1
-      rw [single_one_mulVec_eq_pi_single] at h1
-      simpa using h1
-    · have h1 := (hW j0 i hj0 h _ he0).2
-      rw [single_one_mulVec_eq_pi_single] at h1
-      simpa using h1
-  rw [eq_top_iff]
-  intro w _
-  have hw : w = ∑ i, w i • (Pi.single i (1 : ℂ) : Fin r → ℂ) := by
-    ext l
-    simp [Finset.sum_apply, Pi.single_apply]
-  rw [hw]
-  exact Submodule.sum_mem _ fun i _ => W.smul_mem _ (hall i)
-
+  · simp [Matrix.mulVec, dotProduct, hi, Ne.symm hi]
 
 open NumberField MeasureTheory Topology in
 open scoped ComplexOrder ENNReal Matrix in
@@ -151,7 +92,7 @@ theorem _root_.GlobalTheory.DriftUnitary.exists_drift_function :
     (∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (H : Subgroup (X.Ψ → GL (Fin r) ℂ)), (∀ g, g ∈ H ↔ X.IsUnitaryC fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) → ∀ [MeasurableSpace H] [BorelSpace H], 0 < X.p0 → X.p0 < r → ∀ x0, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x0 → ∃ (σ : Type) (_ : Fintype σ) (_ : Nonempty σ) (h : σ → H) (f : H → ℝ) (c b : ℝ), (∀ s, ∃ k : H, k * h s = (h s)⁻¹ * k) ∧ Measurable f ∧ (∀ g, 0 ≤ f g) ∧ (∀ u : H, (∃ γ : GL (Fin r) E, _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab X.Gm X.Λ γ ∧ ∀ τ : X.Ψ, ((((u : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1) → ∀ g, f (u * g) = f g) ∧ 0 ≤ c ∧ c < 1 ∧ 0 ≤ b ∧ (∀ g, ∑ s, f (g * h s) ≤ Fintype.card σ * (c * f g + b)) ∧ ∀ M : ℝ, ∃ ε : ℝ, 0 < ε ∧ ∀ g : H, f g ≤ M → ε ≤ X.la1 (X.lmulC (fun τ => (((g : H) : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0)) := by
   intro r X H hH _ _ hp0 hpr x0 hx0
   obtain ⟨S, hSne, hS1, hS2, hS3⟩ := _root_.GlobalTheory.exists_finite_symmetric_irreducible_rotations
-    eq_bot_or_eq_whole_of_single_mulVec_invariant r X.p0 hp0 hpr
+    _root_.GlobalTheory.offDiagonal_matrixUnits_irreducible r X.p0 hp0 hpr
   obtain ⟨τ0⟩ := _root_.GlobalTheory.LineHeight.nonempty_cmType X
   obtain ⟨f, c, b, hc0, hc1, hb, hlsc, hf0, hfinv, hdrift, hla⟩ :=
     _root_.GlobalTheory.exists_drift_function_orthFrames r X hp0 hpr τ0 S hS1 hS2 (fun a ha => (hS3 a ha).1)

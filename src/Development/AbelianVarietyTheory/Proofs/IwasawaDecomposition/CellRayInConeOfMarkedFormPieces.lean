@@ -5,10 +5,13 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Exist
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SysExOfPol
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfToRealRel
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalPullSemilinearOfIsTwInv
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntBilinFormDescendAlongSurjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeCellOfLinearPieceThroughCellPointStatement
+public import Mathlib.LinearAlgebra.BilinearMap
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntBilinFormDescendAlongSurjective
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageStart
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InRealConeCellOfLinearPieceThroughCellPoint
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonnegSumSmulIntBilinFormToRealMemPsdCone
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingOfIntegersAutCommHostConjugationStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RingOfIntegersAutCommHostConjugation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,7 +65,7 @@ theorem exists_face_coord_of_linearOn {O : Type} [CommRing O] {bar : O → O} {�
     (ht : ∀ i, 0 ≤ t i) (hb : ∀ i, 0 < b i) (hvt : toReal v = ∑ i, t i • toReal (γ i))
     (hvb : toReal v = ∑ i, b i • toReal (e i)) (j : Fin k) :
     ∃ a : Fin m → ℝ, (∀ i, 0 ≤ a i) ∧ (∀ i, t i = 0 → a i = 0) ∧ toReal (e j) = ∑ i, a i • toReal (γ i) := by
-  have h := GlobalTheory.T.inRealCone_cell_of_linearPiece_through_cellPoint bar φ γ e hγ hem hen hel v t b ht hb hvt hvb
+  have h := _root_.GlobalTheory.PolFan.inRCone_of_interior_linearOn' bar φ γ e hγ hem hen hel v t b ht hb hvt hvb
   choose a ha he using h
   have h1 : toReal v = ∑ i, (∑ l, b l * a l i) • toReal (γ i) := by
     rw [hvb]
@@ -92,7 +95,7 @@ theorem mem_balForms_of_descend {E : Type} [Field E] [NumberField E] [IsCMField 
   · obtain ⟨y, rfl⟩ := hf y
     obtain ⟨z, rfl⟩ := hf z
     obtain ⟨a, rfl⟩ := τ.surjective a
-    rw [← GlobalTheory.T.ringOfIntegers_aut_comm_hostConjugation E H τ a, ← hsm, ← hsm, hε, hε, hδ.2]
+    rw [← _root_.GlobalTheory.ringOfIntegers_equiv_bar_comm E H τ a, ← hsm, ← hsm, hε, hε, hδ.2]
 
 theorem exists_coord_pullAdd_of_pos : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)), IsTwInv H φ →
   ∀ {X₀ : Type} [AddCommGroup X₀] [Module (𝓞 E) X₀] [Module.Finite (𝓞 E) X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀),
@@ -127,7 +130,7 @@ theorem exists_coord_pullAdd_of_pos : ∀ (E : Type) [Field E] [NumberField E] [
     have : s i ∈ (S : Set (Fin m)) := hs ▸ Set.mem_range_self i
     simpa [hS] using this
   have hdesc : ∀ i : Fin S.card, ∃ ε : LinearMap.BilinForm ℤ Y, ∀ x y, ε (f x) (f y) = δ (s i) x y := fun i =>
-    GlobalTheory.T.exists_intBilinForm_descend_along_surjective f hf _ (hvan _ (hspos i)) fun x hx y => by rw [(hδ.mem _).1]; exact hvan _ (hspos i) x hx y
+    _root_.GlobalTheory.exists_bilinForm_descend_of_surjective f hf _ (hvan _ (hspos i)) fun x hx y => by rw [(hδ.mem _).1]; exact hvan _ (hspos i) x hx y
   choose ε hε using hdesc
   have hεm : ∀ i, ε i ∈ balForms H.bar Y := fun i => mem_balForms_of_descend H τ hf hsm (hδ.mem _) (hε i)
   have hεn : ∀ i y, 0 ≤ ε i y y := fun i y => by

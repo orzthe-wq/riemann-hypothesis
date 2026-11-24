@@ -276,7 +276,6 @@ theorem decay (hibp : RegIBP) : TestDecay := by
   have hcd' : ContDiff ℝ 2 (fun t : ℝ => (wh t : ℂ)) := by
     first
     | exact Complex.ofRealCLM.contDiff.comp hcd
-    | fun_prop
   have hcs' : HasCompactSupport (fun t : ℝ => (wh t : ℂ)) := hcs.comp_left Complex.ofReal_zero
   have hgc : Continuous (fun t : ℝ => (wh t : ℂ) - iteratedDeriv 2 (fun t : ℝ => (wh t : ℂ)) t) :=
     hcd'.continuous.sub (hcd'.continuous_iteratedDeriv 2 (by norm_num))
@@ -284,9 +283,7 @@ theorem decay (hibp : RegIBP) : TestDecay := by
       (fun t : ℝ => (wh t : ℂ) - iteratedDeriv 2 (fun t : ℝ => (wh t : ℂ)) t) :=
     hcs'.sub (by
       first
-      | (rw [iteratedDeriv_succ, iteratedDeriv_one]; exact hcs'.deriv.deriv)
-      | (rw [iteratedDeriv_eq_iterate]; exact hcs'.deriv.deriv)
-      | exact hcs'.iteratedDeriv 2)
+      | (rw [iteratedDeriv_succ, iteratedDeriv_one]; exact hcs'.deriv.deriv))
   have hn : ∀ y : ℝ, ‖Complex.exp (Complex.I * (y : ℂ))‖ = 1 := fun y => by
     rw [Complex.norm_exp]
     simp

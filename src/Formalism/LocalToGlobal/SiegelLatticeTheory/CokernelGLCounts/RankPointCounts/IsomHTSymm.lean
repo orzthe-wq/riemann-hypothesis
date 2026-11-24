@@ -4,43 +4,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Term
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.PairingOmegaPrimeZ
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.GflagSwap
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.YvMemUUE
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -52,8 +15,6 @@ open Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.BasicNotions 
 namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
-
-theorem isom_hT {γ : S.V ≃ₗ[E] S.V} (h : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (x y : S.V) : S.hT (γ x) (γ y) = S.hT x y := h x y
 
 theorem mapLF_fl {γ : S.V ≃ₗ[E] S.V} (h : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (L : LFlag S r T') :
     (mapLF γ L).fl = mapFlag γ h L.fl := by
@@ -73,7 +34,7 @@ private theorem Zhat_mapFlag' {T0 T1 : E} {γ : S.V ≃ₗ[E] S.V} (h : γ ∈ F
     (F : FlagG S r T0) (F' : FlagG S r T1) :
     Zhat (mapFlag γ h F) (mapFlag γ h F') = Zhat F F' := by
   ext a b
-  simp [Zhat, brS, mapFlag_fvec', isom_hT h]
+  simp [Zhat, brS, mapFlag_fvec', _root_.Formalism.L2.SG.Saturated.isom_apply h]
 
 private theorem Gflag_mapFlag {T0 T1 : E} {γ : S.V ≃ₗ[E] S.V} (h : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT)
     (F : FlagG S r T0) (F' : FlagG S r T1) :
@@ -100,10 +61,10 @@ private theorem mem_Hp_iff_orthogonal {T0 T1 : E} (Λ : Submodule (NumberField.R
       (∀ x ∈ F'.fl.X, S.hT x h = 0) ∧ S.hT F'.fl.z h = 0) := by
   constructor
   · intro hh
-    exact ⟨fun x hx => hT_UUE_Hp Λ F F' hh (X_le_UUE Λ hΛ F F' hF hF' hx),
-      hT_UUE_Hp Λ F F' hh (z_mem_UUE Λ hΛ.toIsLattice F F' hF hF'),
-      fun x hx => hT_UUE_Hp Λ F F' hh (X'_le_UUE Λ hΛ F F' hF hF' hx),
-      hT_UUE_Hp Λ F F' hh (z'_mem_UUE Λ hΛ.toIsLattice F F' hF hF')⟩
+    exact ⟨fun x hx => _root_.Formalism.L2.SG.NGCut.CorankRelation.hT_eq_zero_of_mem_Hp Λ F F' hh (X_le_UUE Λ hΛ F F' hF hF' hx),
+      _root_.Formalism.L2.SG.NGCut.CorankRelation.hT_eq_zero_of_mem_Hp Λ F F' hh (z_mem_UUE Λ hΛ.toIsLattice F F' hF hF'),
+      fun x hx => _root_.Formalism.L2.SG.NGCut.CorankRelation.hT_eq_zero_of_mem_Hp Λ F F' hh (X'_le_UUE Λ hΛ F F' hF hF' hx),
+      _root_.Formalism.L2.SG.NGCut.CorankRelation.hT_eq_zero_of_mem_Hp Λ F F' hh (z'_mem_UUE Λ hΛ.toIsLattice F F' hF hF')⟩
   · rintro ⟨h1, h2, h3, h4⟩
     have hU : UU Λ F F' ≤ (LinearMap.ker (S.hT.flip h)).restrictScalars
         (NumberField.RingOfIntegers E) := by
@@ -224,16 +185,16 @@ theorem line_pair' (k : ℕ) (hdim : finrank E S.V = k + 2 * r + 1) (Λ : Submod
         · intro x hx
           rw [hXF1] at hx
           obtain ⟨y, hy, rfl⟩ := Submodule.mem_map.1 hx
-          rw [show (δ : S.V →ₗ[E] S.V) y = δ y from rfl, isom_hT hδ]
+          rw [show (δ : S.V →ₗ[E] S.V) y = δ y from rfl, _root_.Formalism.L2.SG.Saturated.isom_apply hδ]
           exact c2.2.2.1 y hy
-        · rw [hzF1, isom_hT hδ]
+        · rw [hzF1, _root_.Formalism.L2.SG.Saturated.isom_apply hδ]
           exact c2.2.2.2
         · intro x hx
           rw [hXB] at hx
           obtain ⟨y, hy, rfl⟩ := Submodule.mem_map.1 hx
-          rw [show (δ : S.V →ₗ[E] S.V) y = δ y from rfl, isom_hT hδ]
+          rw [show (δ : S.V →ₗ[E] S.V) y = δ y from rfl, _root_.Formalism.L2.SG.Saturated.isom_apply hδ]
           exact c2.1 y hy
-        · rw [hzB, isom_hT hδ]
+        · rw [hzB, _root_.Formalism.L2.SG.Saturated.isom_apply hδ]
           exact c2.2.1
       · show h - δ p.2 ∈ Xsp (mapLF γ1 L0)
         show h - δ p.2 ∈ (mapLF γ1 L0).fl.X
@@ -252,11 +213,11 @@ theorem line_pair' (k : ℕ) (hdim : finrank E S.V = k + 2 * r + 1) (Λ : Submod
   set w2 := yv (mapLF γ2 L0).fl Fl.fl with hw2
   have hc1 : brS S (δ w2) w1 = brS S (γ2.symm w2) (γ1.symm w1) := by
     simp only [brS]
-    rw [← isom_hT hγ1 (γ1.symm w1) (γ2.symm w2)]
+    rw [← _root_.Formalism.L2.SG.Saturated.isom_apply hγ1 (γ1.symm w1) (γ2.symm w2)]
     simp [hδd]
   have hc2 : brS S w1 w1 = brS S (γ1.symm w1) (γ1.symm w1) := by
     simp only [brS]
-    rw [← isom_hT hγ1 (γ1.symm w1) (γ1.symm w1)]
+    rw [← _root_.Formalism.L2.SG.Saturated.isom_apply hγ1 (γ1.symm w1) (γ1.symm w1)]
     simp
   rw [hc1, hc2] at LP
   refine ⟨?_, LP.2⟩

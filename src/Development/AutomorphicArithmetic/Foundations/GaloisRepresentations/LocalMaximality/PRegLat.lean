@@ -160,7 +160,7 @@ private lemma act_sm (hA : ∀ a ∈ A, ∀ m ∈ M, a • m ∈ M) (hA' : ∀ a
     rw [Submodule.mem_comap]
     refine Submodule.mem_iSup_of_mem r (Submodule.mem_iSup_of_mem hr
       ⟨actF F V V' u (v ⊗ₜ v'), act_mem hA hA' hv hv' hu, ?_⟩)
-    simp [L, Module.End.mul_apply]
+    simp [L]
   exact hle hs
 
 end

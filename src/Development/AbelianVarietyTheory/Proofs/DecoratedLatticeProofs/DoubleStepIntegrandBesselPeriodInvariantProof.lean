@@ -68,23 +68,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-
-namespace I195MixedCoordinates_2089fe766d5afe6260d6ab44
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev target
-    {D : D7} {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D ρ S.rank))
-    (𝓕 : Set (Mx D ρ S.rank)) (f : WO S T → ℂ) (y : Mx D S.rank ρ) : WO S T₀ → ℂ :=
-  fun w₀ => ∫ ξ in 𝓕, heisO ψ S T (d.jX * ξ)
-    (heisO ψ S T (d.jY * (incA D (-D.host.xi0⁻¹) • (adj y * gA S)))
-      (heisO ψ S T (d.j0 * w₀) f)) 0 ∂μ
-
-end I195MixedCoordinates_2089fe766d5afe6260d6ab44
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -99,9 +83,7 @@ namespace GlobalTheory.FinPl.HandInvPf
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
-theorem mul_star_psi (hψ : IsStdChar D ψ (-1)) (x : AF D.host.F) : ψ x * star (ψ x) = 1 := by
-  have h1 : ‖ψ x‖ = 1 := hψ.1.2.1 x
-  rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, h1]; simp
+alias mul_star_psi := _root_.GlobalTheory.ThetaSchur.mul_star_psi
 
 theorem star_psi_neg (hψ : IsStdChar D ψ (-1)) (x : AF D.host.F) : star (ψ (-x)) = ψ x := by
   have h1 := mul_star_psi hψ (-x)
@@ -114,9 +96,9 @@ theorem om_mul {S T : HSp D} (om : Om S T) (a b : GA D S) (a' b' : GA D T) (f : 
 
 theorem mixT_zero_heis {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (v : VolM D ρ S.rank) {g : WO S T → ℂ}
     (hg : IsThetaFunO ψ S T g) (c : ℂ) (η : Mx D ρ S.rank) (w : WO S T₀) :
-    (_root_.I195MixedCoordinates_2089fe766d5afe6260d6ab44.target d) S ψ v.μ v.𝓕 (heisO ψ S T (d.incX S η + d.inc0 S w) (c • g)) 0 =
-      c • heisO ψ S T₀ w ((_root_.I195MixedCoordinates_2089fe766d5afe6260d6ab44.target d) S ψ v.μ v.𝓕 g 0) := by
-  have hmix : ∀ (f : WO S T → ℂ) w₀, (_root_.I195MixedCoordinates_2089fe766d5afe6260d6ab44.target d) S ψ v.μ v.𝓕 f 0 w₀ = ∫ ξ in v.𝓕, f (d.incX S ξ + d.inc0 S w₀) ∂v.μ := by
+    (_root_.I195MixedCoordinates.target d) S ψ v.μ v.𝓕 (heisO ψ S T (d.incX S η + d.inc0 S w) (c • g)) 0 =
+      c • heisO ψ S T₀ w ((_root_.I195MixedCoordinates.target d) S ψ v.μ v.𝓕 g 0) := by
+  have hmix : ∀ (f : WO S T → ℂ) w₀, (_root_.I195MixedCoordinates.target d) S ψ v.μ v.𝓕 f 0 w₀ = ∫ ξ in v.𝓕, f (d.incX S ξ + d.inc0 S w₀) ∂v.μ := by
     intro f w₀
     change ∫ ξ in v.𝓕, heisO ψ S T (d.incX S ξ) (heisO ψ S T (d.incAdj S 0) (heisO ψ S T (d.inc0 S w₀) f)) 0 ∂v.μ = _
     congr 1

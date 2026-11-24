@@ -74,15 +74,15 @@ theorem idl_ne_zero (g : ℕ) (hg : 0 < g) (k ν : ℤ) : S6.idl E g k ν ≠ 0 
     exact zpow_ne_zero _ (Nat.cast_ne_zero.mpr hg.ne')
 
 theorem idl_two_le_one (g : ℕ) (ν : ℤ) : S6.idl E g 2 ν ≤ S6.idl E g 1 ν := by
-  apply Formalism.FourierDecayAlt.P.S6x2.idl_le <;> assumption
+  apply Formalism.FourierDecayAlt.P.S6x2.idl_le
 
 theorem frame_facts (g : ℕ) (hg : 0 < g) (ν : ℤ) :
     DiscreteTopology (S6.frameLat E (S6.perLat E g ν 1) 1) ∧
     Submodule.span ℝ (S6.frameLat E (S6.perLat E g ν 1) 1 : Set (mixedEmbedding.mixedSpace E)) = ⊤ := by
   have hA : S6.idl E g 1 ν ≠ 0 := idl_ne_zero g hg 1 ν
   have hB : S6.idl E g 2 ν ≠ 0 := idl_ne_zero g hg 2 ν
-  obtain ⟨hBL, hLA⟩ := twistedLatticeBetween E (S6.idl E g 1 ν) (S6.idl E g 2 ν) 1 (idl_two_le_one g ν)
-    (different_power_conj_stable E g 2 ν)
+  obtain ⟨hBL, hLA⟩ := _root_.Formalism.FourierDecayAlt.P.S6x2.between E (S6.idl E g 1 ν) (S6.idl E g 2 ν) 1 (idl_two_le_one g ν)
+    (_root_.Formalism.FourierDecayAlt.P.S6x2.powConjStable E g 2 ν)
   have hmem : ∀ x, x ∈ S6.frameLat E (S6.perLat E g ν 1) 1 ↔
       ∃ t ∈ S6.perLat E g ν 1, mixedEmbedding E t = x := by
     intro x
@@ -147,11 +147,7 @@ def cj (S : HidaSetting E Wp Wq) : J.CV E ≃ₗᵢ[ℝ] J.CV E :=
 theorem cj_apply (S : HidaSetting E Wp Wq) (c : J.CV E) (v : Fin S.f) :
     (S.σ v = (S.pl v).embedding → cj S c (S.pl v) = c (S.pl v)) ∧
       (S.σ v ≠ (S.pl v).embedding → cj S c (S.pl v) = conj (c (S.pl v))) := by
-  constructor
-  · intro h
-    simp [cj, h]
-  · intro h
-    simp [cj, h]
+  constructor <;> intro h <;> simp [cj, h]
 
 theorem cj_cemb (S : HidaSetting E Wp Wq) (t : E) (v : Fin S.f) : cj S (J.cemb E t) (S.pl v) = S.σ v t := by
   have hc : J.cemb E t (S.pl v) = (S.pl v).embedding t := rfl
@@ -196,7 +192,7 @@ theorem first_norm_real_nonneg (S : HidaSetting E Wp Wq) (hP : ThmPPos S) (ε : 
     | some v =>
       exact Cx1.psd_pullback Y (fun h => loc (S.σ v) h ++ [(1, c (S.pl v))]) _ _
         (fun x hx => Finset.mem_image_of_mem _ hx) (hP v ε hε i hi w _)
-  have hM := schur_product (TB.Pt E) (Option (Fin S.f)) Y k hk
+  have hM := _root_.Formalism.FourierDecayAlt.P.Jx7.t_SchurProduct (TB.Pt E) (Option (Fin S.f)) Y k hk
   have hsum : 0 ≤ ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, S.gramLoc v ε i (w.1 v)
       (loc (S.σ v) h ++ [(1, c (S.pl v))]) (loc (S.σ v) h' ++ [(1, c (S.pl v))]) := by
     have h3 : ∀ F : TB.Pt E → TB.Pt E → ℂ,
@@ -268,7 +264,7 @@ theorem poisson_input_of_parts : C.PoissonInputOfParts := by
     · intro μ hμ
       have hfl := twistedIsRealOrderLattice E (S6.idl E S.g 1 (S6.nuBlock S.G.r i 1))
         (S6.idl E S.g 2 (S6.nuBlock S.G.r i 1)) 1 (Cx2.idl_ne_zero S.g hg 2 _)
-        (Cx2.idl_two_le_one S.g _) (different_power_conj_stable E S.g 2 _)
+        (Cx2.idl_two_le_one S.g _) (_root_.Formalism.FourierDecayAlt.P.S6x2.powConjStable E S.g 2 _)
       obtain ⟨l, hl, hlμ⟩ :=
         (hTD E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) S.g 1 hg one_ne_zero hfl.2 μ).1 hμ
       refine ⟨-l, ?_, ?_⟩

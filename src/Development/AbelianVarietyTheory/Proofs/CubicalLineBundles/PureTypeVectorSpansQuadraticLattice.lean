@@ -95,7 +95,7 @@ theorem _root_.GlobalTheory.pureType_vector_spans_quadratic_lattice :
     by_cases hi : ty i (H.rt : E) = ρ
     · have h2 : (2 : ℂ) * ty i (H.w0 : E) = 1 + ty i (H.rt : E) := by
         have := congrArg (fun x : 𝓞 E => ty i (x : E)) H.two_weight_eq_one_add_root
-        simp only [map_mul, map_add (f := _), map_one, RingOfIntegers.coe_eq_algebraMap, map_ofNat] at this
+        simp only [map_mul, map_add (f := _), map_one, map_ofNat] at this
         linear_combination this
       rw [hi] at h2
       have h3 : ty i (H.w0 : E) = (1 + ρ) / 2 := by linear_combination h2 / 2
@@ -150,12 +150,12 @@ theorem _root_.GlobalTheory.pureType_vector_spans_quadratic_lattice :
         div_nonneg (mul_nonneg hre hs.le) zero_le_two
       rcases hsq with h | h
       · rw [h] at hEF
-        simp [Complex.mul_im, Complex.div_re, Complex.div_im] at hEF
+        simp [Complex.mul_im] at hEF
         have he : ((D.EF (H.w0 • a) a : ℤ) : ℝ) = (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a)).re * Real.sqrt H.d / 2 := by
           linarith
         rw [he, abs_of_nonneg hnn]
       · rw [h] at hEF
-        simp [Complex.mul_im, Complex.div_re, Complex.div_im] at hEF
+        simp [Complex.mul_im] at hEF
         have he : ((D.EF (H.w0 • a) a : ℤ) : ℝ) = -((_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm Hm (Pe a) (Pe a)).re * Real.sqrt H.d / 2) := by
           linarith
         rw [he, abs_neg, abs_of_nonneg hnn]

@@ -1,6 +1,9 @@
 module
 
-public import Mathlib
+import Mathlib
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.JointGeneralisedEigenvectors.CasselmanStrictlyDominantExample
 
 @[expose] public section

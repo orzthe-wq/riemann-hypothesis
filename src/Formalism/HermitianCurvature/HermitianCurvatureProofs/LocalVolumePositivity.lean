@@ -154,7 +154,7 @@ theorem local_ratio_product : LocalProduct := by
   have a5 : 0 < ∏ p, B.μSppp' p := prod_pos fun p _ => (hp p).2.2.2.2.2.2.2.2.2.2.2.1
   unfold MassData.MM MassData.unitLevelVolume MassData.μK MassData.μKpp MassData.μSpp MassData.μSpp' MassData.μKnat MassData.μS MassData.μS'
   rw [hM, hMo, hKn, hSp, hSp']
-  constructor <;> field_simp <;> ring
+  constructor <;> field_simp
 
 theorem jacobian_natural_measure_constant : JacobianConstant := by
   intro P _ B hP hJ hNu

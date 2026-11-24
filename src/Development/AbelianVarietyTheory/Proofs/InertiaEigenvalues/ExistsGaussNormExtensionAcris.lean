@@ -3,10 +3,12 @@ module
 public import Formalism.LocalRingCardinality.AdicCompletionLocal.InstIsAdicCompleteOCSpanSingletonSetCast
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltNormUltrametricEqZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorGaussNormMulStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorGaussNormUltrametricStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UntiltNormUltrametricEqZero
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.RingTheory.WittVector.Defs
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorGaussNormMul
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WittVectorGaussNormUltrametric
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -244,11 +246,11 @@ theorem exists_gauss_acris (l : ℕ) [Fact l.Prime] (r : ℝ) (hr : (l : ℝ)⁻
   have a0 : a 0 = 0 := by simp only [a, untilt_zero]; simp
   have a1 : a 1 = 1 := by simp [a]
   have amul : ∀ x y, a (x * y) = a x * a y := by intro x y; simp [a]
-  have aadd : ∀ x y, a (x + y) ≤ max (a x) (a y) := fun x y => (GlobalTheory.T.untilt_norm_ultrametric_eq_zero l x y).1
+  have aadd : ∀ x y, a (x + y) ≤ max (a x) (a y) := fun x y => (_root_.GlobalTheory.TiltAbs.untilt_ultrametric_definite l x y).1
   obtain ⟨N, hN⟩ : ∃ N : Per.Ainf l → ℝ,
       ∀ x, N x = ⨆ n : ℕ, a (x.coeff n) ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n := ⟨_, fun _ => rfl⟩
-  obtain ⟨Nadd, Nneg, -⟩ := GlobalTheory.T.witt_vector_gauss_norm_ultrametric l (Per.Fl l) a a01 a0 a1 amul aadd r hr0 hr1 N hN
-  have Nmul := GlobalTheory.T.wittVector_gaussNorm_mul l (Per.Fl l) a a01 a0 a1 amul aadd r hr0 hr1 N hN
+  obtain ⟨Nadd, Nneg, -⟩ := _root_.GlobalTheory.WittGauss.gaussNorm_ultrametric_submul l (Per.Fl l) a a01 a0 a1 amul aadd r hr0 hr1 N hN
+  have Nmul := _root_.GlobalTheory.witt_gaussNorm_mul l (Per.Fl l) a a01 a0 a1 amul aadd r hr0 hr1 N hN
   have he : ∀ n : ℕ, (0 : ℝ) < 1 / (l : ℝ) ^ n := fun n => by positivity
   have ht0 : ∀ (y : Per.Fl l) (n : ℕ), 0 ≤ a y ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n := fun y n =>
     mul_nonneg (Real.rpow_nonneg (a01 y).1 _) (pow_nonneg hr0.le _)

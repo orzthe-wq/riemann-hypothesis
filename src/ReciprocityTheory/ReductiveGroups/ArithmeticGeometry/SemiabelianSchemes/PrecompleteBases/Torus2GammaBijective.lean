@@ -66,7 +66,6 @@ namespace Rosenlicht
 
 theorem ringHom_uliftInt_ext {A : Type*} [Semiring A] (f g : ULift.{u} ℤ →+* A) : f = g := by
   first
-  | exact Subsingleton.elim f g
   | (ext x
      exact RingHom.congr_fun (RingHom.ext_int (f.comp (ULift.ringEquiv : ULift.{u} ℤ ≃+* ℤ).symm.toRingHom)
        (g.comp (ULift.ringEquiv : ULift.{u} ℤ ≃+* ℤ).symm.toRingHom)) x.down)
@@ -78,14 +77,10 @@ theorem isUnit_eq_single {R A : Type*} [CommRing R] [IsDomain R] [AddCommMonoid 
     intro p q hpq
     first
     | exact AddMonoidAlgebra.coeff_injective hpq
-    | (cases p; cases q; simp_all)
   have key : ∀ a0 b0 : A, UniqueAdd u.coeff.support v.coeff.support a0 b0 →
       (u * v).coeff (a0 + b0) = u.coeff a0 * v.coeff b0 := by
     intro a0 b0 h
     first
-    | exact AddMonoidAlgebra.coeff_mul_apply_add_eq_mul_of_uniqueAdd h
-    | exact AddMonoidAlgebra.mul_coeff_add_eq_mul_of_uniqueAdd h
-    | exact AddMonoidAlgebra.coeff_mul_of_uniqueAdd h
     | exact AddMonoidAlgebra.coeff_mul_add_of_uniqueAdd h
   have hone : (u * v).coeff = Finsupp.single 0 1 := by
     rw [huv]
@@ -121,11 +116,9 @@ theorem isUnit_eq_single {R A : Type*} [CommRing R] [IsDomain R] [AddCommMonoid 
   have cu : u.coeff.support.card = 1 := by
     first
     | exact Nat.eq_one_of_mul_eq_one_right hprod
-    | nlinarith
   have cv : v.coeff.support.card = 1 := by
     first
     | exact Nat.eq_one_of_mul_eq_one_left hprod
-    | nlinarith
   obtain ⟨a, hc0, hca⟩ := Finsupp.card_support_eq_one.1 cu
   obtain ⟨b, hd0, hdb⟩ := Finsupp.card_support_eq_one.1 cv
   have hu' : u = single a (u.coeff a) := coeffInj _ _ (by simpa using hca)
@@ -141,7 +134,6 @@ theorem isUnit_eq_single {R A : Type*} [CommRing R] [IsDomain R] [AddCommMonoid 
     · exact absurd h5.2 one_ne_zero
   have hcu : IsUnit (u.coeff a) := by
     first
-    | exact isUnit_of_mul_eq_one _ _ hcd
     | exact IsUnit.of_mul_eq_one _ hcd
   exact ⟨a, u.coeff a, hcu, hu'⟩
 
@@ -150,8 +142,6 @@ theorem isUnit_single_one {R A : Type*} [CommRing R] [AddCommGroup A] (a : A) :
   first
   | exact ⟨⟨single a 1, single (-a) 1, by simp [single_mul_single, AddMonoidAlgebra.one_def],
       by simp [single_mul_single, AddMonoidAlgebra.one_def]⟩, rfl⟩
-  | exact isUnit_of_mul_eq_one _ (single (-a) 1)
-      (by rw [single_mul_single, add_neg_cancel, mul_one, AddMonoidAlgebra.one_def])
 
 theorem ringHom_ext_ZU {A Y : Type*} [Semiring A] [AddCommGroup Y]
     {f g : AddMonoidAlgebra (ULift.{u} ℤ) Y →+* A} (h : ∀ y, f (single y 1) = g (single y 1)) :
@@ -172,7 +162,6 @@ private theorem comp_appTop_lemma {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ 
     (f ≫ g).appTop = g.appTop ≫ f.appTop := by
   first
   | rfl
-  | (simp; done)
 
 theorem appTop_comp_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C) (x : Γ(C, ⊤)) :
     (f ≫ g).appTop.hom x = f.appTop.hom (g.appTop.hom x) := by
@@ -194,8 +183,6 @@ theorem coord_comp {Z W : Over S} {Y : Type u} [AddCommGroup Y] (h : W ⟶ Z)
     (g : Z ⟶ splitTorus S Y) : coord (h ≫ g) = coord g ≫ h.left.appTop := by
   first
   | (simp only [coord, Over.comp_left, comp_appTop_lemma, Category.assoc]; done)
-  | (simp only [coord, Comma.comp_left, comp_appTop_lemma, Category.assoc]; done)
-  | (simp [coord, comp_appTop_lemma]; done)
 
 theorem coord_injective {Z : Over S} {Y : Type u} [AddCommGroup Y] {g g' : Z ⟶ splitTorus S Y}
     (h : coord g = coord g') : g = g' := by
@@ -213,13 +200,11 @@ theorem coord_injective {Z : Over S} {Y : Type u} [AddCommGroup Y] {g g' : Z ⟶
 theorem toUnit_left (Z : Over S) : (toUnit Z).left = Z.hom := by
   first
   | simpa using Over.w (toUnit Z)
-  | (simp; done)
 
 theorem over_appTop_comp {W Z V : Over S} (p : W ⟶ Z) (q : Z ⟶ V) (x : Γ(V.left, ⊤)) :
     p.left.appTop.hom (q.left.appTop.hom x) = (p ≫ q).left.appTop.hom x := by
   first
   | exact (appTop_comp_apply p.left q.left x).symm
-  | (rw [Over.comp_left, appTop_comp_apply])
 
 theorem toUnit_comp_appTop (Z : Over S) {V : Over S} (e : 𝟙_ (Over S) ⟶ V) (x : Γ(V.left, ⊤)) :
     (toUnit Z ≫ e).left.appTop.hom x = Z.hom.appTop.hom (e.left.appTop.hom x) := by
@@ -232,8 +217,6 @@ theorem coord_toUnit_comp (Z : Over S) {Y : Type u} [AddCommGroup Y]
   rw [coord_comp]
   first
   | exact congrArg (fun f => Scheme.Hom.appTop f |>.hom ((coord e).hom x)) (toUnit_left Z)
-  | (rw [CommRingCat.comp_apply, toUnit_left])
-  | (simp [toUnit_left]; done)
 
 noncomputable def chi (X : Type u) [AddCommGroup X] (a : X) : Γ((splitTorus S X).left, ⊤) :=
   (coord (𝟙 (splitTorus S X))).hom (single a 1)
@@ -242,8 +225,6 @@ theorem chi_zero (X : Type u) [AddCommGroup X] : chi (S := S) X 0 = 1 := by
   first
   | (show (coord (𝟙 (splitTorus S X))).hom (single 0 1) = 1
      rw [← AddMonoidAlgebra.one_def, map_one])
-  | (simp only [chi]; rw [← AddMonoidAlgebra.one_def, map_one])
-  | (simp [chi, AddMonoidAlgebra.one_def]; done)
 
 end
 
@@ -273,9 +254,6 @@ theorem isPushout_torusRing :
       (CommRingCat.ofHom (algebraMap K (AddMonoidAlgebra K X))) := by
   first
   | exact CommRingCat.isPushout_of_isPushout ZU.{u} (AddMonoidAlgebra ZU.{u} X) K (AddMonoidAlgebra K X)
-  | (haveI := Algebra.IsPushout.symm
-        (inferInstance : Algebra.IsPushout ZU.{u} K (AddMonoidAlgebra ZU.{u} X) (AddMonoidAlgebra K X))
-     exact CommRingCat.isPushout_of_isPushout ZU.{u} (AddMonoidAlgebra ZU.{u} X) K (AddMonoidAlgebra K X))
 
 theorem isPullback_torus :
     IsPullback (Spec.map (CommRingCat.ofHom (algebraMap (AddMonoidAlgebra ZU.{u} X) (AddMonoidAlgebra K X))))
@@ -293,13 +271,11 @@ theorem torusIso_hom_fst : (torusIso K X).hom ≫ torusFst (Spec (.of K)) X =
     Spec.map (CommRingCat.ofHom (algebraMap (AddMonoidAlgebra ZU.{u} X) (AddMonoidAlgebra K X))) := by
   first
   | exact (isPullback_torus K X).isoPullback_hom_fst
-  | (simp [torusIso, torusFst]; done)
 
 theorem torusIso_hom_hom : (torusIso K X).hom ≫ (splitTorus (Spec (.of K)) X).hom =
     Spec.map (CommRingCat.ofHom (algebraMap K (AddMonoidAlgebra K X))) := by
   first
   | exact (isPullback_torus K X).isoPullback_hom_snd
-  | (simp [torusIso]; done)
 
 noncomputable def torusGamma :
     Γ((splitTorus (Spec (.of K)) X).left, ⊤) ⟶ CommRingCat.of (AddMonoidAlgebra K X) :=
@@ -310,7 +286,6 @@ theorem torusGamma_bijective : Function.Bijective (torusGamma K X).hom := by
   have h2 := cr_iso_bij (Scheme.ΓSpecIso (CommRingCat.of (AddMonoidAlgebra K X)))
   first
   | exact h2.comp h1
-  | (simp only [torusGamma, CommRingCat.hom_comp, RingHom.coe_comp]; exact h2.comp h1)
 
 theorem coord_id_torusGamma :
     coord (𝟙 (splitTorus (Spec (.of K)) X)) ≫ torusGamma K X =
@@ -339,7 +314,6 @@ theorem torusGamma_const (c : Γ(Spec (.of K), ⊤)) :
   refine (congrArg (fun φ => φ.hom c) e1).trans ?_
   first
   | (simp; done)
-  | (simp [AddMonoidAlgebra.coe_algebraMap]; done)
 
 end
 
@@ -355,7 +329,6 @@ theorem torus_units [TwoUniqueSums X] {w : Γ((splitTorus (Spec (.of K)) X).left
   have hinv : (Scheme.ΓSpecIso (.of K)).hom.hom ((Scheme.ΓSpecIso (.of K)).inv.hom c) = c := by
     first
     | exact congrArg (fun φ => φ.hom c) (Scheme.ΓSpecIso (.of K)).inv_hom_id
-    | (simp; done)
   rw [hinv]
 
 theorem torus_const_mul_chi {c₁ c₂ : Γ(Spec (.of K), ⊤)} (h1 : IsUnit c₁) {a : X}
@@ -367,11 +340,8 @@ theorem torus_const_mul_chi {c₁ c₂ : Γ(Spec (.of K), ⊤)} (h1 : IsUnit c�
   have hc : (Scheme.ΓSpecIso (.of K)).hom.hom c₁ ≠ 0 :=
     (h1.map (Scheme.ΓSpecIso (.of K)).hom.hom).ne_zero
   first
-  | exact (((AddMonoidAlgebra.single_eq_single_iff _ _ _ _).1 h').resolve_right (fun h => hc h.1)).1
-  | exact ((AddMonoidAlgebra.single_eq_single_iff.1 h').resolve_right (fun h => hc h.1)).1
-  | (simp [AddMonoidAlgebra.single_eq_single_iff, hc] at h'; exact h'.1)
-  | (simp [hc] at h'; exact h'.1)
-  | (simp [hc] at h'; exact h')
+  | (simp at h'; exact h'.1)
+  | (simp at h'; exact h')
   | (by_contra ha
      have h2 := congrArg (fun p => AddMonoidAlgebra.coeff p a) h'
      simp [Ne.symm ha] at h2
@@ -383,7 +353,6 @@ theorem torus_const_injective :
   have h' := congrArg (torusGamma K X).hom h
   rw [torusGamma_const, torusGamma_const] at h'
   first
-  | exact (cr_iso_bij (Scheme.ΓSpecIso (.of K))).1 (AddMonoidAlgebra.single_injective (0 : X) h')
   | exact (cr_iso_bij (Scheme.ΓSpecIso (.of K))).1 (by simpa using h')
 
 theorem isPullback_torus2 :
@@ -402,8 +371,6 @@ theorem isPullback_torus2 :
         AddMonoidAlgebra K X →ₐ[K] AddMonoidAlgebra K X ⊗[K] AddMonoidAlgebra K X).toRingHom) := by
     first
     | exact CommRingCat.isPushout_tensorProduct K (AddMonoidAlgebra K X) (AddMonoidAlgebra K X)
-    | exact CommRingCat.isPushout_of_isPushout K (AddMonoidAlgebra K X) (AddMonoidAlgebra K X)
-        (AddMonoidAlgebra K X ⊗[K] AddMonoidAlgebra K X)
   have h : IsPullback
       (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom :
         AddMonoidAlgebra K X →+* AddMonoidAlgebra K X ⊗[K] AddMonoidAlgebra K X)))
@@ -430,7 +397,6 @@ theorem torus2Iso_hom_fst : (torus2Iso K X).hom ≫
         AddMonoidAlgebra K X →+* AddMonoidAlgebra K X ⊗[K] AddMonoidAlgebra K X)) ≫ (torusIso K X).hom := by
   first
   | exact (isPullback_torus2 K X).isoPullback_hom_fst
-  | (simp [torus2Iso]; done)
 
 theorem torus2Iso_hom_snd : (torus2Iso K X).hom ≫
     (snd (splitTorus (Spec (.of K)) X) (splitTorus (Spec (.of K)) X)).left =
@@ -439,7 +405,6 @@ theorem torus2Iso_hom_snd : (torus2Iso K X).hom ≫
           (torusIso K X).hom := by
   first
   | exact (isPullback_torus2 K X).isoPullback_hom_snd
-  | (simp [torus2Iso]; done)
 
 noncomputable def torus2Gamma :
     Γ((splitTorus (Spec (.of K)) X ⊗ splitTorus (Spec (.of K)) X).left, ⊤) ⟶
@@ -452,7 +417,6 @@ theorem torus2Gamma_bijective : Function.Bijective (torus2Gamma K X).hom := by
     (CommRingCat.of (AddMonoidAlgebra K X ⊗[K] AddMonoidAlgebra K X)))
   first
   | exact h2.comp h1
-  | (simp only [torus2Gamma, CommRingCat.hom_comp, RingHom.coe_comp]; exact h2.comp h1)
 
 theorem torus2Gamma_fst (x : Γ((splitTorus (Spec (.of K)) X).left, ⊤)) :
     (torus2Gamma K X).hom
@@ -556,7 +520,6 @@ theorem splitTorus_rigidity (K : Type u) [Field K] (X : Type u) [AddCommGroup X]
     rintro Z g t rfl
     first
     | rfl
-    | (simp; done)
   have etachi : ∀ x : X, (η : 𝟙_ (Over (Spec (.of K))) ⟶ splitTorus (Spec (.of K)) X).left.appTop.hom (chi X x) = (coord (η : 𝟙_ (Over (Spec (.of K))) ⟶ splitTorus (Spec (.of K)) X)).hom (single x (1 : ULift.{u} ℤ)) := by
     intro x
     have h0 := congrArg (fun φ => φ.hom (single x (1 : ULift.{u} ℤ))) (coord_comp (η : 𝟙_ (Over (Spec (.of K))) ⟶ splitTorus (Spec (.of K)) X) (𝟙 (splitTorus (Spec (.of K)) X)))

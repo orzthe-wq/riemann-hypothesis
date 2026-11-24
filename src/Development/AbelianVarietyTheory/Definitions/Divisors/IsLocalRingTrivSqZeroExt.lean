@@ -6,10 +6,12 @@ public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.Law
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ChartCoverFOfSecBaseChange
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeComposeInvertBaseChangeTriangular
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFactorOpenImmersion
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointBaseChangeAlgebraMapStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsOpenChartFramedPointTestRingStatement
+import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFramedPointBaseChangeAlgebraMap
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsOpenChartFramedPointTestRing
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueFrameChangeByMatrices
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniversalFrameTestRingStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniversalFrameTestRing
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrameChangeExistsUniqueOfSamePoint
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointBaseChangeUniqueReflIff
 import Mathlib.Algebra.Order.Floor.Extended
@@ -72,13 +74,12 @@ section Local
 variable {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
 
 theorem exists_frMap (φ : S →ₐ[c.F] T) (y : FrPt Xo c S) : ∃ z, FrMap φ y z :=
-  GlobalTheory.T.exists_framedPoint_baseChange_algebraMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c S T φ y
+  _root_.GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c S T φ y
 
 theorem frMap_unique {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z z' : FrPt Xo c T} (h : FrMap φ y z) (h' : FrMap φ y z') :
     z = z' := (frMap_unique_refl_iff E H Dw l Xo c S T φ y).1 z z' h h'
 
-theorem frMap_id (y : FrPt Xo c S) : FrMap (AlgHom.id c.F S) y y :=
-  (frMap_unique_refl_iff E H Dw l Xo c S S (AlgHom.id c.F S) y).2.1
+alias frMap_id := _root_.GlobalTheory.FramedBaseChange.refl
 
 theorem frMap_comp {U : Type} [CommRing U] [Algebra c.F U] {φ : S →ₐ[c.F] T} {ψ : T →ₐ[c.F] U} {χ : S →ₐ[c.F] U}
     {y : FrPt Xo c S} {z : FrPt Xo c T} {w : FrPt Xo c U} (h : FrMap φ y z) (h' : FrMap ψ z w)
@@ -103,8 +104,8 @@ theorem exists_chart [IsLocalRing S] (w w' : FrPt Xo c S) (hw : w'.x = w.x) :
       (a a' : A.R →ₐ[c.F] S), OpenChart j y₀ ∧ UnivFrame y₀ π X s u ∧ FrMap a u w ∧ FrMap a' u w' := by
   have hS : Out.SecBaseChangeSt := GlobalTheory.lawsFieldsSeparately.2.1
   obtain ⟨xF, h1, h2⟩ := ChartCover.exists_lift w
-  obtain ⟨p, j, y₀, hj, hp⟩ := GlobalTheory.T.exists_openChart_framedPoint_testRing hS E H Dw l Xo c (xF (IsLocalRing.closedPoint S))
-  obtain ⟨A, π, X, s, u, hu⟩ := GlobalTheory.T.exists_universalFrame_testRing hS E H Dw l Xo c p y₀
+  obtain ⟨p, j, y₀, hj, hp⟩ := _root_.GlobalTheory.Frames.exists_openChart_testRing hS E H Dw l Xo c (xF (IsLocalRing.closedPoint S))
+  obtain ⟨A, π, X, s, u, hu⟩ := _root_.GlobalTheory.Frames.exists_univFrame_testRing hS E H Dw l Xo c p y₀
   have key : ∀ z : FrPt Xo c S, z.x = w.x → ∃ a : A.R →ₐ[c.F] S, FrMap a u z := fun z hz => by
     obtain ⟨g, hg, hT⟩ := ChartCover.near hS hj hu z xF (h1.trans hz.symm) h2 _ hp
     obtain ⟨z', a, h, ha⟩ := hT S (AlgHom.id _ _) (IsLocalRing.notMem_maximalIdeal.1 hg)
@@ -155,7 +156,7 @@ theorem exists_frPt [IsLocalRing S] (x : Sp S ⟶ Xo.X) (hx : x ≫ Xo.s = sOf c
       xF ≫ pullback.snd _ _ = spMap (algebraMap c.F S) := by
     refine ⟨pullback.lift x (spMap (algebraMap c.F S)) ?_, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
     rw [hx, sOf, ← Spec.map_comp]; rfl
-  obtain ⟨p, j, y₀, hj, hp⟩ := GlobalTheory.T.exists_openChart_framedPoint_testRing hS E H Dw l Xo c (xF (IsLocalRing.closedPoint S))
+  obtain ⟨p, j, y₀, hj, hp⟩ := _root_.GlobalTheory.Frames.exists_openChart_testRing hS E H Dw l Xo c (xF (IsLocalRing.closedPoint S))
   obtain ⟨g, hg, hT⟩ := openChart_factor_near_prime E H Dw l Xo c _ j y₀ hj S xF h2 _ hp
   obtain ⟨ψ, hψ⟩ := hT S (AlgHom.id _ _) (IsLocalRing.notMem_maximalIdeal.1 hg)
   obtain ⟨z, hz⟩ := exists_frMap ψ y₀

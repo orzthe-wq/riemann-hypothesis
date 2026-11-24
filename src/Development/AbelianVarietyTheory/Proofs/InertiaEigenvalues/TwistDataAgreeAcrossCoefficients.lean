@@ -114,7 +114,108 @@ structure SameForms {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.
 
 
 
-set_option maxRecDepth 100000 in
+/-- Bundled transfer conclusions proved once under a single staged one-sided `cases`/`subst`,
+keeping the target opaque while eliminating the primed structure fields. -/
+private def SameTransfer {D D' : D7} (N : NData D.R D.host D.what₂) (N' : NData D'.R D'.host D'.what₂)
+    (X : NTw D.R D.host D.what₂ D.LL0 N) (X' : NTw D'.R D'.host D'.what₂ D'.LL0 N')
+    (Y : NExp D.R D.host D.what₂ D.LL0 N X) (Y' : NExp D'.R D'.host D'.what₂ D'.LL0 N' X') : Prop :=
+  (∀ {B : BlochKatoReduction.Gen.BKPh X} {B' : BlochKatoReduction.Gen.BKPh X'},
+    HEq B.br B'.br → B.ex = Y → B'.ex = Y' →
+    ∀ {E : IntegralHeckeForms.ExpDat Y} {E' : IntegralHeckeForms.ExpDat Y'}, HEq E.Dat0 E'.Dat0 →
+    ∀ {N0 : X.Tw → ℕ} {N0' : X'.Tw → ℕ}, HEq N0 N0' →
+    ∀ {i : X.Tw} {i' : X'.Tw}, HEq i i' → ∀ (e : ℝ)
+    {S : ∀ (j : ℕ) (b : Bool), Finset (Y.Dat i j b)} {S' : ∀ (j : ℕ) (b : Bool), Finset (Y'.Dat i' j b)}, HEq S S' →
+    ∀ {A Q : Finset (PlE D.host)} {A' Q' : Finset (PlE D'.host)}, HEq A A' → HEq Q Q' → ∀ (k : ℕ)
+    {ψ : X.RCG i Q →* (X.Ok i k)ˣ} {ψ' : X'.RCG i' Q' →* (X'.Ok i' k)ˣ}, HEq ψ ψ' →
+    IntegralHeckeForms.GoodTw Y B E N0 i e S A Q k ψ →
+    IntegralHeckeForms.GoodTw Y' B' E' N0' i' e S' A' Q' k ψ') ∧
+  (∀ {E : IntegralHeckeForms.ExpDat Y} {E' : IntegralHeckeForms.ExpDat Y'}, HEq E.Dat0 E'.Dat0 →
+    ∀ {i : X.Tw} {i' : X'.Tw}, HEq i i' → ∀ (j : ℕ) (b : Bool)
+    {S : Finset (Y.Dat i j b)} {S' : Finset (Y'.Dat i' j b)}, HEq S S' →
+    IntegralHeckeForms.FullRk Y E i j b (IntegralHeckeForms.SgJ Y E i j b) ∧ IntegralHeckeForms.BasisOf Y i j b (IntegralHeckeForms.SgJ Y E i j b) S →
+    IntegralHeckeForms.FullRk Y' E' i' j b (IntegralHeckeForms.SgJ Y' E' i' j b) ∧ IntegralHeckeForms.BasisOf Y' i' j b (IntegralHeckeForms.SgJ Y' E' i' j b) S') ∧
+  (X.Tw = X'.Tw ∧
+    (Σ (i : X.Tw) (Q : Finset (PlE D.host)) (k : ℕ), X.RCG i Q →* (X.Ok i k)ˣ) =
+      (Σ (i : X'.Tw) (Q : Finset (PlE D'.host)) (k : ℕ), X'.RCG i Q →* (X'.Ok i k)ˣ) ∧
+    (∀ i j b, Finset (Y.Dat i j b)) = (∀ i j b, Finset (Y'.Dat i j b)) ∧
+    (∀ (p : Σ (i : X.Tw) (Q : Finset (PlE D.host)) (k : ℕ), X.RCG i Q →* (X.Ok i k)ˣ)
+      (p' : Σ (i : X'.Tw) (Q : Finset (PlE D'.host)) (k : ℕ), X'.RCG i Q →* (X'.Ok i k)ˣ), HEq p p' →
+      HEq p.1 p'.1 ∧ HEq p.2.1 p'.2.1 ∧ p.2.2.1 = p'.2.2.1 ∧ HEq p.2.2.2 p'.2.2.2) ∧
+    ∀ (i : X.Tw) (i' : X'.Tw), HEq i i' → X.l i = X'.l i' ∧
+      (∀ (S : ∀ i j b, Finset (Y.Dat i j b)) (S' : ∀ i j b, Finset (Y'.Dat i j b)), HEq S S' →
+        HEq (S i) (S' i') ∧ ∀ j b, HEq (S i j b) (S' i' j b)) ∧
+      ∀ (a : FractionRing (X.O0 i)) (a' : FractionRing (X'.O0 i')), HEq a a' →
+        ((∃ y ∈ IsLocalRing.maximalIdeal (X.O0 i), algebraMap (X.O0 i) (FractionRing (X.O0 i)) y = a) ↔
+          ∃ y ∈ IsLocalRing.maximalIdeal (X'.O0 i'), algebraMap (X'.O0 i') (FractionRing (X'.O0 i')) y = a'))
+
+private theorem same_all {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
+    {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
+    {Y : NExp D.R D.host D.what₂ D.LL0 N X} {Y' : NExp D'.R D'.host D'.what₂ D'.LL0 N' X'}
+    (h1 : SameGalois N N') (h2 : TwistDataAgreeAcrossCoefficients X X') (h3 : SameForms Y Y') :
+    SameTransfer N N' X X' Y Y' := by
+  have hcard' := N'.restN_card_levelGroup_eq
+  obtain ⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩ := h1
+  cases D'
+  dsimp only at a1 a2 a3 hcard'
+  subst a1 a2 a3
+  cases N'
+  dsimp only at nOm ninstOm nalgOm nplOm nPlG
+  subst nOm ninstOm nalgOm nplOm nPlG
+  obtain ⟨xcc, xTw, xl, xO0, xcrO0, xalgO0, xtopO0, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk,
+    xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, xS0, xhEig, xLam, xsideL, xRCG, xgrpRCG,
+    xfinRCG, xart, xth⟩ := h2
+  cases X'
+  dsimp only at xcc xTw xl xO0 xcrO0 xalgO0 xtopO0 xO xcrO xalgO xOk xcrOk xalgOk xzk xpD
+  dsimp only at xchi1 xSig xfinSig xjS xside xrhoS xS0 xhEig xLam xsideL xRCG xgrpRCG xfinRCG xart xth
+  subst xcc xTw xl xO0 xcrO0 xalgO0 xtopO0 xO xcrO xalgO xOk xcrOk xalgOk xzk xpD
+  subst xchi1 xSig xfinSig xjS xside xrhoS xS0 xhEig xLam xsideL xRCG xgrpRCG xfinRCG xart xth
+  obtain ⟨yFm, yacgFm, ymodFmK, ymodFmO, yactG, yU, ypsiU, yeAlg, yDat, yth, ylev, ythPsi,
+    yMtV, yacgMt, ymodMtK, ymodMtO, yMtLat, ythP, yhkF⟩ := h3
+  cases Y'
+  dsimp only at yFm yacgFm ymodFmK ymodFmO yactG yU ypsiU yeAlg yDat yth ylev ythPsi
+  dsimp only at yMtV yacgMt ymodMtK ymodMtO yMtLat ythP yhkF
+  subst yFm yacgFm ymodFmK ymodFmO yactG yU ypsiU yeAlg yDat yth ylev ythPsi
+  subst yMtV yacgMt ymodMtK ymodMtO yMtLat ythP yhkF
+  refine ⟨?_, ?_, ?_⟩
+  · intro B B' hB hY hY' E E' hE N0 N0' hN i i' hi e S S' hS A Q A' Q' hA hQ k ψ ψ' hψ h
+    obtain ⟨br, Y₁⟩ := B
+    obtain ⟨br', Y₁'⟩ := B'
+    obtain ⟨E, _⟩ := E
+    obtain ⟨E', _⟩ := E'
+    dsimp only at hB hY hY' hE
+    subst Y₁ Y₁' hB hE hN hi hS hA hQ hψ
+    delta IntegralHeckeForms.GoodTw IntegralHeckeForms.eG IntegralHeckeForms.eO IntegralHeckeForms.Fm0 IntegralHeckeForms.V0 IntegralHeckeForms.Th IntegralHeckeForms.ThPsi
+      IntegralHeckeForms.eTh IntegralHeckeForms.eThPsi IntegralHeckeForms.eThPMt IntegralHeckeForms.levs IntegralHeckeForms.SgJ IntegralHeckeForms.IdxAt IntegralHeckeForms.InclAt
+      BlochKatoReduction.Gen.GE BlochKatoReduction.Gen.phiK BlochKatoReduction.Gen.chiS BlochKatoReduction.Gen.goodE BlochKatoReduction.Gen.goodS BlochKatoReduction.Gen.SigG
+      BlochKatoReduction.Gen.Trep BlochKatoReduction.Gen.Tgl BlochKatoReduction.Gen.DecV BlochKatoReduction.Gen.PDv BlochKatoReduction.Gen.repV BlochKatoReduction.Gen.IsFrac BlochKatoReduction.Gen.IsImgK
+      BlochKatoReduction.Gen.bk BlochKatoReduction.Gen.Spl BlochKatoReduction.Gen.selT BlochKatoReduction.Gen.sLen BlochKatoReduction.Gen.kMap BlochKatoReduction.Gen.thEval BlochKatoReduction.Gen.c0
+      BlochKatoReduction.Gen.tameVal BlochKatoReduction.Gen.TrivAbove BlochKatoReduction.Gen.PsiOk BlochKatoReduction.Gen.partAT BlochKatoReduction.Gen.nu BlochKatoReduction.Gen.partC BlochKatoReduction.Gen.partD at h ⊢
+    dsimp only at h ⊢
+    exact h
+  · intro E E' hE i i' hi j b S S' hS h
+    delta IntegralHeckeForms.FullRk IntegralHeckeForms.BasisOf IntegralHeckeForms.AO at h ⊢
+    rw [N.restN_card_levelGroup_eq] at h
+    rw [hcard']
+    obtain ⟨E, _⟩ := E
+    obtain ⟨E', _⟩ := E'
+    dsimp only at hE
+    subst hE hi hS
+    delta IntegralHeckeForms.Th IntegralHeckeForms.V0 IntegralHeckeForms.Fm0 IntegralHeckeForms.eO
+      IntegralHeckeForms.eG IntegralHeckeForms.SgJ at h ⊢
+    dsimp only at h ⊢
+    exact h
+  · refine ⟨rfl, rfl, rfl, fun p p' hp => ?_, fun i i' hi => ?_⟩
+    · subst hp
+      exact ⟨HEq.rfl, HEq.rfl, rfl, HEq.rfl⟩
+    · subst hi
+      refine ⟨rfl, fun S S' hS => ?_, fun a a' ha => ?_⟩
+      · dsimp only at S'
+        subst hS
+        exact ⟨HEq.rfl, fun _ _ => HEq.rfl⟩
+      · dsimp only at a'
+        subst ha
+        exact Iff.rfl
+
 theorem goodTw_transfer {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
     {Y : NExp D.R D.host D.what₂ D.LL0 N X} {Y' : NExp D'.R D'.host D'.what₂ D'.LL0 N' X'}
@@ -125,41 +226,9 @@ theorem goodTw_transfer {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData
     {S : ∀ (j : ℕ) (b : Bool), Finset (Y.Dat i j b)} {S' : ∀ (j : ℕ) (b : Bool), Finset (Y'.Dat i' j b)} (hS : HEq S S')
     {A Q : Finset (PlE D.host)} {A' Q' : Finset (PlE D'.host)} (hA : HEq A A') (hQ : HEq Q Q') (k : ℕ)
     {ψ : X.RCG i Q →* (X.Ok i k)ˣ} {ψ' : X'.RCG i' Q' →* (X'.Ok i' k)ˣ} (hψ : HEq ψ ψ')
-    (h : IntegralHeckeForms.GoodTw Y B E N0 i e S A Q k ψ) : IntegralHeckeForms.GoodTw Y' B' E' N0' i' e S' A' Q' k ψ' := by
-  obtain ⟨br, Y₁⟩ := B
-  obtain ⟨br', Y₁'⟩ := B'
-  obtain ⟨E, hE₁⟩ := E
-  obtain ⟨E', hE₁'⟩ := E'
-  dsimp only at hB hY hY' hE
-  subst Y₁; subst Y₁'
-  obtain ⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩ := h1
-  obtain ⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fixedFieldTransport_initialPlaceSet_heq, xhEig, xLam, xsideL, xRCG, xgrpRCG, xfinRCG, xart, xth⟩ := h2
-  obtain ⟨yFm, yacgFm, ymodFmK, ymodFmO, yactG, yU, ypsiU, yeAlg, yDat, yth, ylev, ythPsi, yMtV, yacgMt, ymodMtK, ymodMtO, yMtLat, ythP, yhkF⟩ := h3
-  cases D; cases D'
-  dsimp only at a1 a2 a3
-  subst a1; subst a2; subst a3
-  cases N; cases N'
-  dsimp only at nOm ninstOm nalgOm nplOm nPlG
-  subst nOm; subst ninstOm; subst nalgOm; subst nplOm; subst nPlG
-  cases X; cases X'
-  dsimp only at xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk xpD xchi1 xSig xfinSig xjS xside xrhoS fixedFieldTransport_initialPlaceSet_heq xhEig xLam xsideL xRCG xgrpRCG xfinRCG xart xth
-  subst xcc; subst xTw; subst xl; subst fixedFieldTransport_baseIntegerRing_heq; subst fixedFieldTransport_baseIntegerCommRing_heq; subst fixedFieldTransport_baseIntegerAlgebra_heq; subst fixedFieldTransport_baseIntegerTopology_heq; subst xO; subst xcrO; subst xalgO; subst xOk; subst xcrOk; subst xalgOk; subst xzk; subst xpD; subst xchi1; subst xSig; subst xfinSig; subst xjS; subst xside; subst xrhoS; subst fixedFieldTransport_initialPlaceSet_heq; subst xhEig; subst xLam; subst xsideL; subst xRCG; subst xgrpRCG; subst xfinRCG; subst xart; subst xth
-  cases Y; cases Y'
-  dsimp only at yFm yacgFm ymodFmK ymodFmO yactG yU ypsiU yeAlg yDat yth ylev ythPsi yMtV yacgMt ymodMtK ymodMtO yMtLat ythP yhkF
-  subst yFm; subst yacgFm; subst ymodFmK; subst ymodFmO; subst yactG; subst yU; subst ypsiU; subst yeAlg; subst yDat; subst yth; subst ylev; subst ythPsi; subst yMtV; subst yacgMt; subst ymodMtK; subst ymodMtO; subst yMtLat; subst ythP; subst yhkF
-  subst hB; subst hE; subst hN; subst hi; subst hS; subst hA; subst hQ; subst hψ
-  delta IntegralHeckeForms.GoodTw IntegralHeckeForms.eG IntegralHeckeForms.eO IntegralHeckeForms.Fm0 IntegralHeckeForms.V0 IntegralHeckeForms.Th IntegralHeckeForms.ThPsi
-    IntegralHeckeForms.eTh IntegralHeckeForms.eThPsi IntegralHeckeForms.eThPMt IntegralHeckeForms.levs IntegralHeckeForms.SgJ IntegralHeckeForms.IdxAt IntegralHeckeForms.InclAt
-    BlochKatoReduction.Gen.GE BlochKatoReduction.Gen.phiK BlochKatoReduction.Gen.chiS BlochKatoReduction.Gen.goodE BlochKatoReduction.Gen.goodS BlochKatoReduction.Gen.SigG
-    BlochKatoReduction.Gen.Trep BlochKatoReduction.Gen.Tgl BlochKatoReduction.Gen.DecV BlochKatoReduction.Gen.PDv BlochKatoReduction.Gen.repV BlochKatoReduction.Gen.IsFrac BlochKatoReduction.Gen.IsImgK
-    BlochKatoReduction.Gen.bk BlochKatoReduction.Gen.Spl BlochKatoReduction.Gen.selT BlochKatoReduction.Gen.sLen BlochKatoReduction.Gen.kMap BlochKatoReduction.Gen.thEval BlochKatoReduction.Gen.c0
-    BlochKatoReduction.Gen.tameVal BlochKatoReduction.Gen.TrivAbove BlochKatoReduction.Gen.PsiOk BlochKatoReduction.Gen.partAT BlochKatoReduction.Gen.nu BlochKatoReduction.Gen.partC BlochKatoReduction.Gen.partD at h ⊢
-  dsimp only at h ⊢
-  exact h
+    (h : IntegralHeckeForms.GoodTw Y B E N0 i e S A Q k ψ) : IntegralHeckeForms.GoodTw Y' B' E' N0' i' e S' A' Q' k ψ' :=
+  (same_all h1 h2 h3).1 hB hY hY' hE hN hi e hS hA hQ k hψ h
 
-
-
-set_option maxRecDepth 100000 in
 theorem fullRk_basisOf_transfer {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
     {Y : NExp D.R D.host D.what₂ D.LL0 N X} {Y' : NExp D'.R D'.host D'.what₂ D'.LL0 N' X'}
@@ -168,34 +237,9 @@ theorem fullRk_basisOf_transfer {D D' : D7} {N : NData D.R D.host D.what₂} {N'
     {i : X.Tw} {i' : X'.Tw} (hi : HEq i i') (j : ℕ) (b : Bool)
     {S : Finset (Y.Dat i j b)} {S' : Finset (Y'.Dat i' j b)} (hS : HEq S S')
     (h : IntegralHeckeForms.FullRk Y E i j b (IntegralHeckeForms.SgJ Y E i j b) ∧ IntegralHeckeForms.BasisOf Y i j b (IntegralHeckeForms.SgJ Y E i j b) S) :
-    IntegralHeckeForms.FullRk Y' E' i' j b (IntegralHeckeForms.SgJ Y' E' i' j b) ∧ IntegralHeckeForms.BasisOf Y' i' j b (IntegralHeckeForms.SgJ Y' E' i' j b) S' := by
-  delta IntegralHeckeForms.FullRk IntegralHeckeForms.BasisOf IntegralHeckeForms.AO at h ⊢
-  rw [N.restN_card_levelGroup_eq] at h
-  rw [N'.restN_card_levelGroup_eq]
-  obtain ⟨E, hE₁⟩ := E
-  obtain ⟨E', hE₁'⟩ := E'
-  dsimp only at hE
-  obtain ⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩ := h1
-  obtain ⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fixedFieldTransport_initialPlaceSet_heq, xhEig, xLam, xsideL, xRCG, xgrpRCG, xfinRCG, xart, xth⟩ := h2
-  obtain ⟨yFm, yacgFm, ymodFmK, ymodFmO, yactG, yU, ypsiU, yeAlg, yDat, yth, ylev, ythPsi, yMtV, yacgMt, ymodMtK, ymodMtO, yMtLat, ythP, yhkF⟩ := h3
-  cases D; cases D'
-  dsimp only at a1 a2 a3
-  subst a1; subst a2; subst a3
-  cases N; cases N'
-  dsimp only at nOm ninstOm nalgOm nplOm nPlG
-  subst nOm; subst ninstOm; subst nalgOm; subst nplOm; subst nPlG
-  cases X; cases X'
-  dsimp only at xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk xpD xchi1 xSig xfinSig xjS xside xrhoS fixedFieldTransport_initialPlaceSet_heq xhEig xLam xsideL xRCG xgrpRCG xfinRCG xart xth
-  subst xcc; subst xTw; subst xl; subst fixedFieldTransport_baseIntegerRing_heq; subst fixedFieldTransport_baseIntegerCommRing_heq; subst fixedFieldTransport_baseIntegerAlgebra_heq; subst fixedFieldTransport_baseIntegerTopology_heq; subst xO; subst xcrO; subst xalgO; subst xOk; subst xcrOk; subst xalgOk; subst xzk; subst xpD; subst xchi1; subst xSig; subst xfinSig; subst xjS; subst xside; subst xrhoS; subst fixedFieldTransport_initialPlaceSet_heq; subst xhEig; subst xLam; subst xsideL; subst xRCG; subst xgrpRCG; subst xfinRCG; subst xart; subst xth
-  cases Y; cases Y'
-  dsimp only at yFm yacgFm ymodFmK ymodFmO yactG yU ypsiU yeAlg yDat yth ylev ythPsi yMtV yacgMt ymodMtK ymodMtO yMtLat ythP yhkF
-  subst yFm; subst yacgFm; subst ymodFmK; subst ymodFmO; subst yactG; subst yU; subst ypsiU; subst yeAlg; subst yDat; subst yth; subst ylev; subst ythPsi; subst yMtV; subst yacgMt; subst ymodMtK; subst ymodMtO; subst yMtLat; subst ythP; subst yhkF
-  subst hE; subst hi; subst hS
-  exact h
+    IntegralHeckeForms.FullRk Y' E' i' j b (IntegralHeckeForms.SgJ Y' E' i' j b) ∧ IntegralHeckeForms.BasisOf Y' i' j b (IntegralHeckeForms.SgJ Y' E' i' j b) S' :=
+  (same_all h1 h2 h3).2.1 hE hi j b hS h
 
-
-
-set_option maxRecDepth 100000 in
 theorem same_basic {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
     {Y : NExp D.R D.host D.what₂ D.LL0 N X} {Y' : NExp D'.R D'.host D'.what₂ D'.LL0 N' X'}
@@ -212,31 +256,8 @@ theorem same_basic {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R
         HEq (S i) (S' i') ∧ ∀ j b, HEq (S i j b) (S' i' j b)) ∧
       ∀ (a : FractionRing (X.O0 i)) (a' : FractionRing (X'.O0 i')), HEq a a' →
         ((∃ y ∈ IsLocalRing.maximalIdeal (X.O0 i), algebraMap (X.O0 i) (FractionRing (X.O0 i)) y = a) ↔
-          ∃ y ∈ IsLocalRing.maximalIdeal (X'.O0 i'), algebraMap (X'.O0 i') (FractionRing (X'.O0 i')) y = a') := by
-  obtain ⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩ := h1
-  obtain ⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fixedFieldTransport_initialPlaceSet_heq, xhEig, xLam, xsideL, xRCG, xgrpRCG, xfinRCG, xart, xth⟩ := h2
-  obtain ⟨yFm, yacgFm, ymodFmK, ymodFmO, yactG, yU, ypsiU, yeAlg, yDat, yth, ylev, ythPsi, yMtV, yacgMt, ymodMtK, ymodMtO, yMtLat, ythP, yhkF⟩ := h3
-  cases D; cases D'
-  dsimp only at a1 a2 a3
-  subst a1; subst a2; subst a3
-  cases N; cases N'
-  dsimp only at nOm ninstOm nalgOm nplOm nPlG
-  subst nOm; subst ninstOm; subst nalgOm; subst nplOm; subst nPlG
-  cases X; cases X'
-  dsimp only at xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk xpD xchi1 xSig xfinSig xjS xside xrhoS fixedFieldTransport_initialPlaceSet_heq xhEig xLam xsideL xRCG xgrpRCG xfinRCG xart xth
-  subst xcc; subst xTw; subst xl; subst fixedFieldTransport_baseIntegerRing_heq; subst fixedFieldTransport_baseIntegerCommRing_heq; subst fixedFieldTransport_baseIntegerAlgebra_heq; subst fixedFieldTransport_baseIntegerTopology_heq; subst xO; subst xcrO; subst xalgO; subst xOk; subst xcrOk; subst xalgOk; subst xzk; subst xpD; subst xchi1; subst xSig; subst xfinSig; subst xjS; subst xside; subst xrhoS; subst fixedFieldTransport_initialPlaceSet_heq; subst xhEig; subst xLam; subst xsideL; subst xRCG; subst xgrpRCG; subst xfinRCG; subst xart; subst xth
-  cases Y; cases Y'
-  dsimp only at yFm yacgFm ymodFmK ymodFmO yactG yU ypsiU yeAlg yDat yth ylev ythPsi yMtV yacgMt ymodMtK ymodMtO yMtLat ythP yhkF
-  subst yFm; subst yacgFm; subst ymodFmK; subst ymodFmO; subst yactG; subst yU; subst ypsiU; subst yeAlg; subst yDat; subst yth; subst ylev; subst ythPsi; subst yMtV; subst yacgMt; subst ymodMtK; subst ymodMtO; subst yMtLat; subst ythP; subst yhkF
-  refine ⟨rfl, rfl, rfl, fun p p' hp => ?_, fun i i' hi => ?_⟩
-  · subst hp
-    exact ⟨HEq.rfl, HEq.rfl, rfl, HEq.rfl⟩
-  · subst hi
-    refine ⟨rfl, fun S S' hS => ?_, fun a a' ha => ?_⟩
-    · subst hS
-      exact ⟨HEq.rfl, fun _ _ => HEq.rfl⟩
-    · subst ha
-      exact Iff.rfl
+          ∃ y ∈ IsLocalRing.maximalIdeal (X'.O0 i'), algebraMap (X'.O0 i') (FractionRing (X'.O0 i')) y = a') :=
+  (same_all h1 h2 h3).2.2
 
 structure SameExport (D D' : D7) : Prop where
   gal : SameGalois D.nd D'.nd

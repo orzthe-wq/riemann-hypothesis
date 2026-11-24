@@ -1,52 +1,8 @@
 module
 
+import Mathlib.LinearAlgebra.FreeModule.PID
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SelfDualLocalBasis.DualBasis
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
 public import Mathlib.RingTheory.DedekindDomain.PID
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -131,40 +87,34 @@ theorem goal1 :
     rw [← hmu]
     rfl
   let X : ι → Fin n → E := fun j => algebraMap F E (t j : F) • (b j : Fin n → E)
-  have hc : ∀ z ∈ Lb, algebraMap F E (u : F) • z ∈ Submodule.span (𝓞 E) (Set.range X) := by
-    intro z hz
-    rw [← hS] at hz
-    induction hz using Submodule.span_induction with
-    | mem g hg =>
-      have hsum := congrArg Subtype.val (b.sum_repr ⟨g, Submodule.subset_span hg⟩)
-      rw [Submodule.coe_sum] at hsum
-      simp only [Submodule.coe_smul] at hsum
-      rw [← hsum, Finset.smul_sum]
-      refine Submodule.sum_mem _ fun j _ => ?_
-      obtain ⟨r, hr⟩ := hm (⟨g, hg⟩, j)
-      have hrE : (r : E) = ((m : 𝓞 E) : E) *
-          (((b.repr ⟨g, Submodule.subset_span hg⟩ j : A) : E) *
-            ((IsLocalization.mk' A (1 : 𝓞 E) (zt j) : A) : E)) := congrArg Subtype.val hr
-      have htE : ((IsLocalization.mk' A (1 : 𝓞 E) (zt j) : A) : E) * algebraMap F E (t j : F) = 1 :=
-        h1 (zt j)
-      have heq : algebraMap F E (u : F) •
-          ((b.repr ⟨g, Submodule.subset_span hg⟩ j : A) • (b j : Fin n → E)) = r • X j := by
-        change algebraMap F E (u : F) •
-          (((b.repr ⟨g, Submodule.subset_span hg⟩ j : A) : E) • (b j : Fin n → E)) =
-            (r : E) • (algebraMap F E (t j : F) • (b j : Fin n → E))
-        rw [smul_smul, smul_smul, hrE, hmE, mul_assoc, mul_assoc, htE, mul_one]
-      rw [heq]
-      exact Submodule.smul_mem _ r (Submodule.subset_span ⟨j, rfl⟩)
-    | zero =>
-      rw [smul_zero]
-      exact Submodule.zero_mem _
-    | add x y _ _ hx hy =>
-      rw [smul_add]
-      exact Submodule.add_mem _ hx hy
-    | smul a x _ hx =>
-      rw [smul_comm]
-      exact Submodule.smul_mem _ a hx
-  obtain ⟨x, hx1, hx2⟩ := pad_fam Lb hcard X hX _ hc
+  let scale : Module.End (𝓞 E) (Fin n → E) :=
+    algebraMap F E (u : F) • LinearMap.id
+  have hscale : Lb ≤ (Submodule.span (𝓞 E) (Set.range X)).comap scale := by
+    rw [← hS, Submodule.span_le]
+    intro g hg
+    simp only [SetLike.mem_coe, Submodule.mem_comap, scale, LinearMap.smul_apply, LinearMap.id_apply]
+    have hsum := congrArg Subtype.val (b.sum_repr ⟨g, Submodule.subset_span hg⟩)
+    rw [Submodule.coe_sum] at hsum
+    simp only [Submodule.coe_smul] at hsum
+    rw [← hsum, Finset.smul_sum]
+    refine Submodule.sum_mem _ fun j _ => ?_
+    obtain ⟨r, hr⟩ := hm (⟨g, hg⟩, j)
+    have hrE : (r : E) = ((m : 𝓞 E) : E) *
+        (((b.repr ⟨g, Submodule.subset_span hg⟩ j : A) : E) *
+          ((IsLocalization.mk' A (1 : 𝓞 E) (zt j) : A) : E)) := congrArg Subtype.val hr
+    have htE : ((IsLocalization.mk' A (1 : 𝓞 E) (zt j) : A) : E) * algebraMap F E (t j : F) = 1 :=
+      h1 (zt j)
+    have heq : algebraMap F E (u : F) •
+        ((b.repr ⟨g, Submodule.subset_span hg⟩ j : A) • (b j : Fin n → E)) = r • X j := by
+      change algebraMap F E (u : F) •
+        (((b.repr ⟨g, Submodule.subset_span hg⟩ j : A) : E) • (b j : Fin n → E)) =
+          (r : E) • (algebraMap F E (t j : F) • (b j : Fin n → E))
+      rw [smul_smul, smul_smul, hrE, hmE, mul_assoc, mul_assoc, htE, mul_one]
+    rw [heq]
+    exact Submodule.smul_mem _ r (Submodule.subset_span ⟨j, rfl⟩)
+  obtain ⟨x, hx1, hx2⟩ := pad_fam Lb hcard X hX _ (fun z hz => by
+    have h := hscale hz
+    simpa only [Submodule.mem_comap, scale, LinearMap.smul_apply, LinearMap.id_apply] using h)
   exact ⟨x, u, hu, hx1, hx2⟩
 
 end Bl.PaddedFamilies

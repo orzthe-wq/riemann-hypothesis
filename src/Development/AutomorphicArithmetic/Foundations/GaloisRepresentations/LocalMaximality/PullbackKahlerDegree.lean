@@ -199,7 +199,7 @@ theorem UpperTheory.Gal.productCup_of_system.valG_of :
       (omB ℂ K (rB ℂ K (xv x) {0}) a) := hm
   obtain ⟨n, w', w, hww, rfl⟩ := exists_sum _ _ hm'
   have hCov : IsFinCover ℂ K' (xv x) := hY.covY
-  obtain ⟨⟨τ', hτ'⟩, htop⟩ := GlobalTheory.T.exists_topDegreeCoefficientForm_and_eq_on_top_forms ℂ F K' d (xv x) hCov
+  obtain ⟨⟨τ', hτ'⟩, htop⟩ := _root_.GlobalTheory.PD.isTop_exists_and_eq ℂ F K' d (xv x) hCov
   obtain ⟨-, -, hdt, -, -⟩ := hDtB F K' d x hCov τ' hτ'
   have hg0 : algebraMap F K' (omG x 0) ≠ 0 := by
     refine (map_ne_zero _).2 (Finset.prod_ne_zero_iff.2 fun l _ => ?_)

@@ -57,11 +57,6 @@ section Ord
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
-theorem v_eq {x : L} (hx : x ≠ 0) :
-    Valued.v x = ((Multiplicative.ofAdd (-ordL x) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
-  have h0 : Valued.v x ≠ 0 := (Valuation.ne_zero_iff _).mpr hx
-  simp [ordL, h0]
-
 theorem ordL_eq_of_v {x : L} {k : ℤ}
     (h : Valued.v x = ((Multiplicative.ofAdd k : Multiplicative ℤ) : WithZero (Multiplicative ℤ))) :
     ordL x = -k := by
@@ -71,14 +66,6 @@ theorem ordL_eq_of_v {x : L} {k : ℤ}
     rw [WithZero.coe_unzero, h]
   rw [ordL, dite_eq_right h0, hu, toAdd_ofAdd]
 
-theorem ordL_one : ordL (1 : L) = 0 := by
-  simpa using ordL_eq_of_v (x := (1 : L)) (k := 0) (by simp)
-
-theorem ordL_mul {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x + ordL y := by
-  have := ordL_eq_of_v (x := x * y) (k := -(ordL x + ordL y))
-    (by rw [map_mul, v_eq hx, v_eq hy, ← WithZero.coe_mul, ← ofAdd_add, neg_add])
-  simpa using this
-
 theorem ordL_neg (x : L) : ordL (-x) = ordL x := by
   unfold ordL
   simp only [Valuation.map_neg]
@@ -87,20 +74,20 @@ theorem ordL_prod {ι : Type*} (s : Finset ι) (f : ι → L) (hf : ∀ i ∈ s,
     ordL (∏ i ∈ s, f i) = ∑ i ∈ s, ordL (f i) := by
   classical
   induction s using Finset.induction_on with
-  | empty => simp [ordL_one]
+  | empty => simp [_root_.Formalism.UG.P.fSatake_ord_one]
   | insert a s ha ih =>
     rw [Finset.prod_insert ha, Finset.sum_insert ha,
-      ordL_mul (hf a (Finset.mem_insert_self a s))
+      _root_.Formalism.UG.P.fSatake_ord_mul (hf a (Finset.mem_insert_self a s))
         (Finset.prod_ne_zero_iff.mpr fun i hi => hf i (Finset.mem_insert_of_mem hi)),
       ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]
 
 theorem ordL_sub_of_lt {u v : L} (hu : u ≠ 0) (hv : v ≠ 0) (h : ordL u < ordL v) :
     ordL (u - v) = ordL u := by
   have hlt : Valued.v v < Valued.v u := by
-    rw [v_eq hu, v_eq hv, WithZero.coe_lt_coe, Multiplicative.ofAdd_lt]
+    rw [_root_.Formalism.UG.P.fSatake_v_eq hu, _root_.Formalism.UG.P.fSatake_v_eq hv, WithZero.coe_lt_coe, Multiplicative.ofAdd_lt]
     omega
   have key : Valued.v (u - v) = Valued.v u := Valuation.map_sub_eq_of_lt_left _ hlt
-  have := ordL_eq_of_v (x := u - v) (k := -ordL u) (by rw [key, v_eq hu])
+  have := ordL_eq_of_v (x := u - v) (k := -ordL u) (by rw [key, _root_.Formalism.UG.P.fSatake_v_eq hu])
   simpa using this
 
 theorem ordL_sub_of_ne {u v : L} (hu : u ≠ 0) (hv : v ≠ 0) (h : ordL u ≠ ordL v) :

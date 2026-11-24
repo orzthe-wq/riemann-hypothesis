@@ -55,10 +55,6 @@ namespace GlobalTheory.AVGood
 section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-theorem good_of_toral {x : IrrGL (k := k)} (h : Toral x) : Good x := by
-  obtain ⟨s, hs, h1⟩ := h
-  exact ⟨s, hs, fun y hy => Or.inl (h1 y hy)⟩
-
 theorem fixed_ne_bot_of_mem_support {x : IrrGL (k := k)} (hx : fixed x.rep (KOne k (Fin x.1)) ≠ ⊥)
     {s : Multiset (IrrGL (k := k))} (hs : HasSupport x.rep s) {y : IrrGL (k := k)} (hy : y ∈ s) :
     fixed y.rep (KOne k (Fin y.1)) ≠ ⊥ := by

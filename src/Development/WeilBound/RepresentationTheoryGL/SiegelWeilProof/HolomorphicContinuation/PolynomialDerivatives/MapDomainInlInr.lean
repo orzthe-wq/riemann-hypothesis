@@ -223,4 +223,4 @@ theorem compSt : CompSt := by
 
 end PositivityTheory.Rg.Sw.LC.PolynomialDifferentialOperators
 
-theorem PositivityTheory.Rg.Sw.LC.compSt : PositivityTheory.Rg.Sw.LC.CompSt := PositivityTheory.Rg.Sw.LC.PolynomialDifferentialOperators.compSt
+alias PositivityTheory.Rg.Sw.LC.compSt := _root_.PositivityTheory.Rg.Sw.LC.PolynomialDifferentialOperators.compSt

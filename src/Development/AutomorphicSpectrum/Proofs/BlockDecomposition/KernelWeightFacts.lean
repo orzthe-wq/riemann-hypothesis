@@ -1,16 +1,13 @@
 module
 
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.FriedrichsKernels.CalcSteps
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DifferentiableAtOfSmooth
-import Aesop.Main
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryMemGLs
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZOpMemCE
-import Mathlib.Algebra.Order.Archimedean.Real.Hom
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
@@ -34,8 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,10 +43,159 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
+import Aesop.Main
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
+import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Topology.Algebra.Group.Units
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZOpMemCE, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelWeightFacts
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZOpMemCE =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZOpMemCE", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Matrix Finset
+open scoped ContDiff
+
+namespace GlobalTheory.CompanionTheory.WaveWords
+
+open PositivityTheory.RgTw (Mat G)
+open PositivityTheory.RgBcC
+
+attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
+
+variable {n : ℕ}
+
+theorem isOpen_GLs (n : ℕ) : IsOpen (GLs n) := by
+  have hc : Continuous (fun g : Mat n => g.det) := Continuous.matrix_det continuous_id
+  exact isOpen_ne_fun hc continuous_const
+
+section Good
+
+variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
+
+def Good (T : (Mat n → V) → (Mat n → V)) : Prop :=
+  (∀ f, ContDiffOn ℝ ∞ f (GLs n) → ContDiffOn ℝ ∞ (T f) (GLs n)) ∧
+  (∀ (f h : Mat n → V) (a b : ℂ), ContDiffOn ℝ ∞ f (GLs n) → ContDiffOn ℝ ∞ h (GLs n) →
+    ∀ x ∈ GLs n, T (fun y => a • f y + b • h y) x = a • T f x + b • T h x) ∧
+  (∀ f f', Set.EqOn f f' (GLs n) → Set.EqOn (T f) (T f') (GLs n))
+
+theorem good_id : Good (n := n) (V := V) (fun f => f) :=
+  ⟨fun _ h => h, fun _ _ _ _ _ _ _ _ => rfl, fun _ _ h => h⟩
+
+theorem good_zero : Good (n := n) (V := V) (fun _ => 0) := by
+  refine ⟨fun _ _ => contDiffOn_const, fun _ _ a b _ _ x _ => by simp, fun _ _ _ _ _ => rfl⟩
+
+theorem good_Rd (hR : RCalc) (X : Mat n) : Good (n := n) (V := V) (Rd X) := by
+  refine ⟨fun f hf => ((hR n).1 V f hf).1 X, ?_, ?_⟩
+  · intro f h a b hf hh x hx
+    have hn : GLs n ∈ nhds x := (isOpen_GLs n).mem_nhds hx
+    have df : DifferentiableAt ℝ f x := (hf.contDiffAt hn).differentiableAt (by simp)
+    have dh : DifferentiableAt ℝ h x := (hh.contDiffAt hn).differentiableAt (by simp)
+    have key : HasFDerivAt (fun y => a • f y + b • h y)
+        (a • fderiv ℝ f x + b • fderiv ℝ h x) x :=
+      (df.hasFDerivAt.const_smul a).add (dh.hasFDerivAt.const_smul b)
+    simp only [Rd]
+    rw [key.fderiv]
+    simp
+  · intro f f' hE x hx
+    have hn : GLs n ∈ nhds x := (isOpen_GLs n).mem_nhds hx
+    have : f =ᶠ[nhds x] f' := Filter.eventuallyEq_of_mem hn hE
+    simp only [Rd]
+    rw [this.fderiv_eq]
+
+theorem good_comp {T T' : (Mat n → V) → (Mat n → V)} (hT : Good T) (hT' : Good T') :
+    Good (fun f => T (T' f)) := by
+  refine ⟨fun f hf => hT.1 _ (hT'.1 f hf), ?_, fun f f' hE => hT.2.2 _ _ (hT'.2.2 f f' hE)⟩
+  intro f h a b hf hh x hx
+  have e : Set.EqOn (T' (fun y => a • f y + b • h y)) (fun y => a • T' f y + b • T' h y) (GLs n) :=
+    fun y hy => hT'.2.1 f h a b hf hh y hy
+  beta_reduce
+  rw [hT.2.2 _ _ e hx]
+  exact hT.2.1 _ _ a b (hT'.1 f hf) (hT'.1 h hh) x hx
+
+theorem good_add {T T' : (Mat n → V) → (Mat n → V)} (hT : Good T) (hT' : Good T') :
+    Good (fun f => T f + T' f) := by
+  refine ⟨fun f hf => (hT.1 f hf).add (hT'.1 f hf), ?_, ?_⟩
+  · intro f h a b hf hh x hx
+    simp only [Pi.add_apply]
+    rw [hT.2.1 f h a b hf hh x hx, hT'.2.1 f h a b hf hh x hx]
+    module
+  · intro f f' hE x hx
+    simp only [Pi.add_apply]
+    rw [hT.2.2 f f' hE hx, hT'.2.2 f f' hE hx]
+
+theorem good_smul (c : ℂ) {T : (Mat n → V) → (Mat n → V)} (hT : Good T) :
+    Good (fun f => c • T f) := by
+  refine ⟨fun f hf => (hT.1 f hf).const_smul c, ?_, ?_⟩
+  · intro f h a b hf hh x hx
+    simp only [Pi.smul_apply]
+    rw [hT.2.1 f h a b hf hh x hx]
+    module
+  · intro f f' hE x hx
+    simp only [Pi.smul_apply]
+    rw [hT.2.2 f f' hE hx]
+
+theorem good_sum {ι : Type} (s : Finset ι) (T : ι → (Mat n → V) → (Mat n → V))
+    (h : ∀ i, Good (T i)) : Good (fun f => ∑ i ∈ s, T i f) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simpa using good_zero
+  | insert a s ha ih =>
+    simp only [Finset.sum_insert ha]
+    exact good_add (h a) ih
+
+theorem good_Eu (hR : RCalc) (s : Bool) (a b : Fin n) : Good (n := n) (V := V) (Eu s a b) :=
+  good_smul (1 / 2 : ℂ) (good_add (good_Rd hR _) (good_smul _ (good_Rd hR _)))
+
+theorem good_Epow (hR : RCalc) (s : Bool) (m : ℕ) :
+    ∀ a b : Fin n, Good (n := n) (V := V) (Epow s m a b) := by
+  induction m with
+  | zero =>
+    intro a b
+    by_cases h : a = b
+    · have e : Epow (n := n) (V := V) s 0 a b = fun f => f := by
+        funext f; simp [Epow, h]
+      rw [e]; exact good_id
+    · have e : Epow (n := n) (V := V) s 0 a b = fun _ => 0 := by
+        funext f; simp [Epow, h]
+      rw [e]; exact good_zero
+  | succ m ih =>
+    intro a b
+    exact good_sum Finset.univ (fun c f => Eu s a c (Epow s m c b f))
+      (fun c => good_comp (good_Eu hR s a c) (ih c b))
+
+theorem good_gel (hR : RCalc) (s : Bool) (m : ℕ) : Good (n := n) (V := V) (gel s m) :=
+  good_sum Finset.univ (fun a => Epow s m a a) (fun a => good_Epow hR s m a a)
+
+theorem good_zOp (hR : RCalc) (w : List (Bool × ℕ)) : Good (n := n) (V := V) (zOp w) := by
+  induction w with
+  | nil => exact good_id
+  | cons p w ih =>
+    have e : zOp (n := n) (V := V) (p :: w) = fun f => gel p.1 p.2 (zOp w f) := rfl
+    rw [e]
+    exact good_comp (good_gel hR p.1 p.2) ih
+
+end Good
+
+end GlobalTheory.CompanionTheory.WaveWords
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZOpMemCE =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelWeightFacts =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelWeightFacts", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.FriedrichsKernels.CalcSteps\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DifferentiableAtOfSmooth\nimport Aesop.Main\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryMemGLs\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZOpMemCE\nimport Mathlib.Algebra.Order.Archimedean.Real.Hom\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Algebra.Group.Units\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -70,11 +214,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
-theorem val_mem (y : G n) : y.val ∈ GLs n :=
-  ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
-
-theorem mul_mem {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n :=
-  GlobalTheory.CompanionTheory.RCalc.mul_mem_GLs hx hy
+alias mul_mem := _root_.GlobalTheory.CompanionTheory.RCalc.mul_mem_GLs
 
 theorem inv_mem {x : Mat n} (hx : x ∈ GLs n) : x⁻¹ ∈ GLs n := by
   have h : x.det ≠ 0 := hx
@@ -92,11 +232,11 @@ theorem val_inv (z : G n) : (z⁻¹ : G n).val = z.val⁻¹ := Matrix.coe_units_
 theorem lg_val_le (hL : LgFacts) (z : G n) {x : Mat n} (hx : x ∈ GLs n) :
     lg z.val ≤ lg ((z⁻¹ : G n).val * x) + lg x := by
   obtain ⟨hsub, hinv, -⟩ := hL n
-  have hy : (z⁻¹ : G n).val * x ∈ GLs n := mul_mem (val_mem _) hx
+  have hy : (z⁻¹ : G n).val * x ∈ GLs n := mul_mem (_root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val _) hx
   have e : ((z⁻¹ : G n).val * x) * x⁻¹ = (z⁻¹ : G n).val := by
     rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv x (isUnit_iff_ne_zero.2 hx), Matrix.mul_one]
   have h1 := hsub _ hy _ (inv_mem hx)
-  have h2 : lg (z⁻¹ : G n).val = lg z.val := by rw [val_inv, hinv _ (val_mem z)]
+  have h2 : lg (z⁻¹ : G n).val = lg z.val := by rw [val_inv, hinv _ (_root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val z)]
   rw [e, hinv x hx, h2] at h1
   exact h1
 
@@ -152,12 +292,12 @@ theorem continuousOn_Dk {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn ℝ ∞
   have h2 : Continuous fun p : Mat n × G n => (p.2⁻¹ : G n).val * p.1 :=
     (continuous_valinv.comp continuous_snd).mul continuous_fst
   have h3 : ContinuousOn (fun p : Mat n × G n => fderiv ℝ K ((p.2⁻¹ : G n).val * p.1)) (GLs n ×ˢ Set.univ) :=
-    h1.comp h2.continuousOn fun p hp => mul_mem (val_mem _) hp.1
+    h1.comp h2.continuousOn fun p hp => mul_mem (_root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val _) hp.1
   have h4 : Continuous fun p : Mat n × G n => mulL (p.2⁻¹ : G n).val :=
     mulLL.continuous.comp (continuous_valinv.comp continuous_snd)
   have h5 : Continuous fun p : Mat n × G n => evL (f p.2.val) := by
     refine evL.continuous.comp ?_
-    exact (hf.comp_continuous Units.continuous_val val_mem).comp continuous_snd
+    exact (hf.comp_continuous Units.continuous_val _root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val).comp continuous_snd
   exact h5.continuousOn.clm_comp (h3.clm_comp h4.continuousOn)
 
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
@@ -178,11 +318,11 @@ theorem integrable_Lk (hL : LgFacts) {K : Mat n → (V →L[ℂ] V)} (hK : Conti
     Integrable (fun z : G n => K ((z⁻¹ : G n).val * x) (f z.val)) μ := by
   obtain ⟨R, hR⟩ := hc
   have h1 : Continuous fun z : G n => K ((z⁻¹ : G n).val * x) :=
-    hK.comp_continuous (continuous_valinv.mul continuous_const) fun z => mul_mem (val_mem _) hx
-  have h2 : Continuous fun z : G n => f z.val := hf.comp_continuous Units.continuous_val val_mem
+    hK.comp_continuous (continuous_valinv.mul continuous_const) fun z => mul_mem (_root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val _) hx
+  have h2 : Continuous fun z : G n => f z.val := hf.comp_continuous Units.continuous_val _root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val
   refine integrable_far μ hL (h1.clm_apply h2) (R + lg x) fun z hz => ?_
   have := lg_val_le hL z hx
-  rw [hR _ (mul_mem (val_mem _) hx) (by linarith)]
+  rw [hR _ (mul_mem (_root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val _) hx) (by linarith)]
   simp
 
 theorem integrable_Dk (hL : LgFacts) {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn ℝ ∞ K (GLs n)) (hc : Cpt K)
@@ -194,12 +334,12 @@ theorem integrable_Dk (hL : LgFacts) {K : Mat n → (V →L[ℂ] V)} (hK : ContD
       fun z => ⟨hx, Set.mem_univ _⟩
   refine integrable_far μ hL h1 (R + lg x) fun z hz => ?_
   have := lg_val_le hL z hx
-  exact Dk_eq_zero f (fderiv_far hL hR (mul_mem (val_mem z⁻¹) hx) (by linarith))
+  exact Dk_eq_zero f (fderiv_far hL hR (mul_mem (_root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val z⁻¹) hx) (by linarith))
 
 theorem hasFDerivAt_integrand {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn ℝ ∞ K (GLs n)) (f : Mat n → V) {x : Mat n}
     (hx : x ∈ GLs n) (z : G n) :
     HasFDerivAt (fun x' => K ((z⁻¹ : G n).val * x') (f z.val)) (Dk K f x z) x := by
-  have hy : (z⁻¹ : G n).val * x ∈ GLs n := mul_mem (val_mem _) hx
+  have hy : (z⁻¹ : G n).val * x ∈ GLs n := mul_mem (_root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val _) hx
   have h1 : HasFDerivAt K (fderiv ℝ K ((z⁻¹ : G n).val * x)) ((z⁻¹ : G n).val * x) :=
     (GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth hK hy).hasFDerivAt
   have h2 : HasFDerivAt (fun x' : Mat n => mulL (z⁻¹ : G n).val x') (mulL (z⁻¹ : G n).val) x :=
@@ -225,7 +365,7 @@ theorem hasFDerivAt_Lk [CompleteSpace V] (hL : LgFacts) {K : Mat n → (V →L[�
     have h1 := lg_val_le hL z (hB hx)
     have h2 := hlg x hx
     have h3 : R + R₀ < lg z.val := not_le.1 hz
-    exact Dk_eq_zero f (fderiv_far hL hR (mul_mem (val_mem z⁻¹) (hB hx)) (by linarith))
+    exact Dk_eq_zero f (fderiv_far hL hR (mul_mem (_root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val z⁻¹) (hB hx)) (by linarith))
   refine hasFDerivAt_integral_of_dominated_of_fderiv_le
     (F := fun x (z : G n) => K ((z⁻¹ : G n).val * x) (f z.val)) (F' := Dk K f)
     (bound := {z : G n | lg z.val ≤ R + R₀}.indicator fun _ => M)
@@ -419,6 +559,10 @@ theorem kerW : KerW := by
     have h1 := (h0.zOp hL hf w).2.2 x hx
     rw [h1, act_eq_Lk μ E _ (u 0) hx]
     refine integral_congr_ae (ae_of_all _ fun z => ?_)
-    simp only [inv_inv_mat (mul_mem (val_mem z⁻¹) hx)]
+    simp only [inv_inv_mat (mul_mem (_root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val z⁻¹) hx)]
 
 end GlobalTheory.CompanionTheory.KerWord
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.KernelWeightFacts =====

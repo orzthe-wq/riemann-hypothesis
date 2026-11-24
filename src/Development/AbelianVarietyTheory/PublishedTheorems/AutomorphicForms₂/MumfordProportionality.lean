@@ -79,6 +79,13 @@ open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestric
 
 
 open Classical in
+/-- **Mumford's proportionality theorem** in the non-compact case: for a smooth toroidal
+compactification of a locally symmetric variety (modular variety), the top Chern numbers and
+intersection numbers of automorphic vector bundles equal the covolume of the arithmetic quotient
+multiplied by the corresponding flag degree / Chern numbers on the compact dual variety.
+
+Proposed reference:
+[D. Mumford, *Hirzebruch's proportionality theorem in the non-compact case* (Theorem 3.4, p. 259)][mumford1977]. -/
 def MumfordProportionality : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l)
     (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F]

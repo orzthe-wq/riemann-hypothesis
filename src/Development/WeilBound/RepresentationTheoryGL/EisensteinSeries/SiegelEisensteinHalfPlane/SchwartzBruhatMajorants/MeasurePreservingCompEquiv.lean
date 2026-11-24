@@ -51,7 +51,6 @@ open PositivityTheory.He2M1 GroundTheory.Global GroundTheory.Automorphic GroundT
 
 namespace GlobalTheory.CompanionTheory.LtrFourier.Hd
 
-
 open MeasureTheory in
 theorem measurePreserving_comp_equiv {ι κ : Type} [Fintype ι] [Fintype κ] {α : Type*} [MeasurableSpace α] (μ : Measure α)
     [SigmaFinite μ] (e : κ ≃ ι) :
@@ -75,7 +74,7 @@ theorem map_mulVec_fin {k : Type} [Field k] [NumberField k] {n : ℕ} (A : GL (F
     (adeleMeasurePi k).map (fun x : Fin n → 𝔸[k] => (A : Matrix (Fin n) (Fin n) 𝔸[k]) *ᵥ x) =
       ENNReal.ofReal ((ideleModule k (Matrix.GeneralLinearGroup.det A) : ℝ))⁻¹ •
         adeleMeasurePi k (ι := Fin n) := by
-  apply GlobalTheory.CompanionTheory.LtrFourier.map_mulVec_fin <;> assumption
+  apply GlobalTheory.CompanionTheory.LtrFourier.map_mulVec_fin
 
 theorem map_mulVec {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
     (A : GL ι 𝔸[k]) :
@@ -128,21 +127,10 @@ def mulVecHomeo {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [D
   continuous_toFun := continuous_const.matrix_mulVec continuous_id
   continuous_invFun := continuous_const.matrix_mulVec continuous_id
 
-theorem integral_comp_mulVec {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι]
-    [DecidableEq ι] (A : GL ι 𝔸[k]) (f : (ι → 𝔸[k]) → ℂ) :
-    ∫ x, f ((A : Matrix ι ι 𝔸[k]) *ᵥ x) ∂adeleMeasurePi k =
-      (((ideleModule k (Matrix.GeneralLinearGroup.det A) : ℝ))⁻¹ : ℂ) *
-        ∫ x, f x ∂adeleMeasurePi k := by
-  have hemb : MeasurableEmbedding (fun x : ι → 𝔸[k] => (A : Matrix ι ι 𝔸[k]) *ᵥ x) :=
-    (mulVecHomeo A).measurableEmbedding
-  rw [← hemb.integral_map, map_mulVec, integral_smul_measure, ENNReal.toReal_ofReal
-      (inv_nonneg.2 (ideleModule k (Matrix.GeneralLinearGroup.det A)).2.le),
-    Complex.real_smul, Complex.ofReal_inv]
-
 theorem adelicFourierPi_ltr : ∀ {k : Type} [Field k] [NumberField k], ∀ {ι : Type} [Fintype ι] [DecidableEq ι], ∀ (A : GL ι 𝔸[k]) (F : (ι → 𝔸[k]) → ℂ), adelicFourierPi k (ltr A F) =
       (((ideleModule k (Matrix.GeneralLinearGroup.det A) : ℝ))⁻¹ : ℂ) •
         ltr (tInv A) (adelicFourierPi k F) := by
-  apply GlobalTheory.CompanionTheory.LtrFourier.adelicFourierPi_ltr <;> assumption
+  apply GlobalTheory.CompanionTheory.LtrFourier.adelicFourierPi_ltr
 
 end
 

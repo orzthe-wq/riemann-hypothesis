@@ -151,14 +151,14 @@ theorem rep_single_sat (hOK : CmOK a b c d) (Λ : AddSubgroup (m → ℂ))
     rw [Finset.sum_eq_single j, Finset.sum_eq_single j]
     · simp [Matrix.smul_apply]
     · intro j' _ hj'
-      simp [Pi.single_apply, hj']
+      simp [hj']
     · simp
     · intro i _ hi
       refine Finset.sum_eq_zero fun j' _ => ?_
       by_cases hj' : j' = j
       · subst hj'
         simp [Matrix.smul_apply, Matrix.one_apply_ne hi]
-      · simp [Pi.single_apply, hj']
+      · simp [hj']
     · simp
   obtain ⟨N, hN, hw⟩ := hj
   have hN0 : N ≠ 0 := by rintro rfl; exact hN (dvd_zero _)
@@ -169,13 +169,13 @@ theorem rep_single_sat (hOK : CmOK a b c d) (Λ : AddSubgroup (m → ℂ))
     by_cases hi : i = j
     · subst hi
       simp [nsmul_eq_mul]
-    · simp [Pi.single_apply, hi]
+    · simp [hi]
   have hθw : θ • Pi.single j ((N : ℂ) * (lam * α)) = Pi.single j (θ * ((N : ℂ) * (lam * α))) := by
     funext i
     by_cases hi : i = j
     · subst hi
       simp
-    · simp [Pi.single_apply, hi]
+    · simp [hi]
   obtain ⟨m1, hm1⟩ := hz' _ hw
   obtain ⟨m2, hm2⟩ := hz' _ (hθ _ hw)
   simp only [altE] at hm1 hm2
@@ -232,7 +232,7 @@ theorem rep_single_sat (hOK : CmOK a b c d) (Λ : AddSubgroup (m → ℂ))
     by_cases hi : i = j
     · subst hi
       simp [hzj]
-    · simp [Pi.single_apply, hi]
+    · simp [hi]
   have hs : ¬ (l : ℤ) ∣ (N * Q : ℤ) := by
     have hp : Prime (l : ℤ) := Nat.prime_iff_prime_int.1 hl
     intro h

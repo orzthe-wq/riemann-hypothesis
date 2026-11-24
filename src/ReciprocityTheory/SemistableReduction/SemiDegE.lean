@@ -1,55 +1,12 @@
 module
 
 public import ReciprocityTheory.SemistableReduction.SemiDegSt
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.GroupTheory.FiniteAbelian.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.RingTheory.Norm.Transitivity
 
 @[expose] public section
@@ -68,8 +25,6 @@ theorem exists_kBasisIn {K : Type} [Field K] [NumberField K] {r : ℕ}
   have hfin : s.Finite := by
     first
     | exact hli.setFinite
-    | exact Set.toFinite s
-    | exact (Set.finite_coe_iff.mp hli.finite)
   haveI : Fintype s := hfin.fintype
   let e := Fintype.equivFin s
   refine ⟨Fintype.card s, fun i => ((e.symm i : s) : Fin r → K), fun i => hsB (e.symm i).2,
@@ -155,7 +110,6 @@ theorem spanIdx_ne_zero {K : Type} [Field K] [NumberField K] {r k : ℕ}
     have hdeg : (minpoly ℤ (β : 𝓞 K)).degree ≤ q.degree := by
       first
       | exact minpoly.min ℤ (β : 𝓞 K) hmon hq0
-      | exact minpoly.min (A := ℤ) (x := (β : 𝓞 K)) hmon hq0
     rw [hq, Polynomial.degree_mul, Polynomial.degree_X,
       Polynomial.degree_eq_natDegree hmon.ne_zero] at hdeg
     have h2 : 1 + q.natDegree ≤ q.natDegree := by exact_mod_cast hdeg
@@ -180,8 +134,6 @@ theorem spanIdx_ne_zero {K : Type} [Field K] [NumberField K] {r k : ℕ}
   haveI hfgQ : AddGroup.FG (B ⧸ N.toAddSubgroup) := by
     first
     | exact AddGroup.fg_of_surjective (QuotientAddGroup.mk'_surjective N.toAddSubgroup)
-    | exact QuotientAddGroup.fg N.toAddSubgroup
-    | infer_instance
   have htors : IsAddTorsion (B ⧸ N.toAddSubgroup) := by
     intro y
     induction y using QuotientAddGroup.induction_on with
@@ -199,7 +151,6 @@ theorem spanIdx_ne_zero {K : Type} [Field K] [NumberField K] {r k : ℕ}
   have hfinQ : Finite (B ⧸ N.toAddSubgroup) := by
     first
     | exact AddCommGroup.finite_of_fg_torsion _ htors
-    | exact AddCommGroup.finite_of_fg_torsion htors
   have : N.toAddSubgroup.index ≠ 0 := AddSubgroup.index_ne_zero_of_finite
   exact this
 
@@ -244,8 +195,6 @@ theorem sum_log_norm_emb {K : Type} [Field K] [NumberField K] (a : K) :
       ← h1]
     first
     | rw [← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]
-    | simp [Complex.norm_ratCast]
-    | simp
 
 def embMat {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ)
     (b : Fin k → Fin r → K) : Matrix (Fin r) (Fin k) ℂ :=

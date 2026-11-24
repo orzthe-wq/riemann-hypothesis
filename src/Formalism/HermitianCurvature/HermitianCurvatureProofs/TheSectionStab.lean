@@ -96,7 +96,7 @@ private theorem vec_lemma_4 {h : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hh : h
   by_cases hij : i = j
   · subst hij
     simp
-  · simp [hij, Pi.single_apply, Ne.symm hij]
+  · simp [hij, Ne.symm hij]
 
 theorem commute_nu {h : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hh : h ∈ UH (Hb k))
     (h0 : h *ᵥ Pi.single 0 1 = Pi.single 0 1) (hl : h *ᵥ Pi.single (Fin.last k) 1 = Pi.single (Fin.last k) 1)
@@ -180,13 +180,11 @@ private theorem nu_unit_lemma_5 (hk : 1 ≤ k) (w s : ℂ) (hs : star s = s)
     rw [Fintype.sum_eq_add 0 (Fin.last k) h0L]
     · by_cases hj0 : j = 0
       · subst hj0
-        simp only [h0L, h0L.symm, hs, star_star, eq_self_iff_true, if_true, if_false,
-          ↓reduceIte, mul_one, one_mul, mul_neg, neg_mul]
+        simp only [h0L, h0L.symm, hs, star_star, ↓reduceIte, mul_one, mul_neg, neg_mul]
         linear_combination hws
       · by_cases hjL : j = Fin.last k
         · subst hjL
-          simp only [h0L, h0L.symm, hs, star_star, eq_self_iff_true, if_true, if_false,
-            ↓reduceIte, mul_one, one_mul, mul_neg, neg_mul]
+          simp only [h0L, h0L.symm, hs, star_star, ↓reduceIte, mul_one, mul_neg, neg_mul]
           ring
         · simp [h0L, h0L.symm, hj0, hjL, Ne.symm hj0, Ne.symm hjL]
     · intro x hx
@@ -196,29 +194,27 @@ private theorem nu_unit_lemma_5 (hk : 1 ≤ k) (w s : ℂ) (hs : star s = s)
       rw [Fintype.sum_eq_add 0 (Fin.last k) h0L]
       · by_cases hj0 : j = 0
         · subst hj0
-          simp only [h0L, h0L.symm, hs, star_star, eq_self_iff_true, if_true, if_false,
-            ↓reduceIte, mul_one, one_mul, mul_neg, neg_mul]
+          simp only [h0L, h0L.symm, hs, ↓reduceIte, mul_one, mul_neg, neg_mul]
           ring
         · by_cases hjL : j = Fin.last k
           · subst hjL
-            simp only [h0L, h0L.symm, hs, star_star, eq_self_iff_true, if_true, if_false,
-              ↓reduceIte, mul_one, one_mul, mul_neg, neg_mul]
+            simp only [h0L, h0L.symm, hs, ↓reduceIte, mul_one, mul_neg, neg_mul]
             linear_combination (-1 : ℂ) * hws
           · simp [h0L, h0L.symm, hj0, hjL, Ne.symm hj0, Ne.symm hjL]
       · intro x hx
         simp [hx.1, hx.2]
     · rw [Fintype.sum_eq_single i]
-      · simp only [hi0, hiL, if_false, if_true, ↓reduceIte, eq_self_iff_true, star_one, one_mul]
+      · simp only [hi0, hiL, ↓reduceIte, star_one, one_mul]
         by_cases hj0 : j = 0
         · subst hj0
-          simp [hi0, hiL]
+          simp [hi0]
         · by_cases hjL : j = Fin.last k
           · subst hjL
-            simp [hi0, hiL]
+            simp [hiL]
           · by_cases hij : i = j
             · subst hij
               simp [hi0, hiL]
-            · simp [hj0, hjL, hij, Ne.symm hij]
+            · simp [hj0, hjL, hij]
       · intro x hx
         simp [hi0, hiL, hx]
 

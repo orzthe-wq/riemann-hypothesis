@@ -2,53 +2,8 @@ module
 
 public import ReciprocityTheory.AnalyticForms.LeviForms.HomDensA
 public import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -61,7 +16,7 @@ noncomputable section
 theorem cf_mul_zero {α β γ : Type*} [Fintype β] (P : Matrix α β ℂ[X]) (Q : Matrix β γ ℂ[X]) :
     cf 0 (P * Q) = cf 0 P * cf 0 Q := by
   rw [cf_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
-  simp [Finset.sum_range_succ]
+  simp
 
 theorem cf_mul_one {α β γ : Type*} [Fintype β] (P : Matrix α β ℂ[X]) (Q : Matrix β γ ℂ[X]) :
     cf 1 (P * Q) = cf 0 P * cf 1 Q + cf 1 P * cf 0 Q := by
@@ -207,15 +162,15 @@ def Gn (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → 
 
 theorem coeffMatrix_zero_unipotentLine {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) : cf 0 (tL A) = 1 := by
   ext i j
-  by_cases h : i = j <;> simp [tL, cf_apply, h, Matrix.one_apply, coeff_X_mul_C, coeff_one]
+  by_cases h : i = j <;> simp [tL, cf_apply, h, Matrix.one_apply]
 
 theorem coeffMatrix_one_unipotentLine {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) : cf 1 (tL A) = -A := by
   ext i j
-  by_cases h : i = j <;> simp [tL, cf_apply, h, Matrix.one_apply, coeff_X_mul_C, coeff_one]
+  by_cases h : i = j <;> simp [tL, cf_apply, h, coeff_one]
 
 theorem coeffMatrix_two_unipotentLine {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) : cf 2 (tL A) = 0 := by
   ext i j
-  by_cases h : i = j <;> simp [tL, cf_apply, h, Matrix.one_apply, coeff_X_mul_C, coeff_one]
+  by_cases h : i = j <;> simp [tL, cf_apply, h, coeff_one]
 
 theorem castLE_le {N m : ℕ} (hm : m ≤ N) {i j : Fin m} (h : i ≤ j) :
     Fin.castLE hm i ≤ Fin.castLE hm j :=
@@ -226,7 +181,7 @@ theorem det_tL_lower (N m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) : (tL (Zm 
   · exact Finset.prod_eq_one fun i _ => by simp [tL, Zm, zMat_eq_zero_of_le v le_rfl]
   · intro i j hij
     have hij' : i < j := OrderDual.toDual_lt_toDual.1 hij
-    simp [tL, Zm, Matrix.one_apply, hij'.ne, zMat_eq_zero_of_le v (castLE_le hm hij'.le)]
+    simp [tL, Zm, hij'.ne, zMat_eq_zero_of_le v (castLE_le hm hij'.le)]
 
 theorem det_tL_upper (N m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) :
     (tL (Zm N m hm v)ᴴ).det = 1 := by
@@ -234,7 +189,7 @@ theorem det_tL_upper (N m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) :
   · exact Finset.prod_eq_one fun i _ => by simp [tL, Zm, zMat_eq_zero_of_le v le_rfl]
   · intro i j hij
     have hij' : j < i := hij
-    simp [tL, Zm, Matrix.one_apply, hij'.ne', zMat_eq_zero_of_le v (castLE_le hm hij'.le)]
+    simp [tL, Zm, hij'.ne', zMat_eq_zero_of_le v (castLE_le hm hij'.le)]
 
 theorem det_Gn (N : ℕ) (hd : Fin N → ℝ) (m : ℕ) (hm : m ≤ N) (v : Pairs N → ℂ) :
     (Gn N hd m hm v).det = (Gm N hd m hm v).det := by

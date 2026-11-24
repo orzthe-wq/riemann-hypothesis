@@ -67,9 +67,9 @@ theorem cond_iff (a : S) (i j : Fin 2) (x y : Ix S) :
     funext b
     by_cases hb : b = a
     · subst hb; simp [h2]
-    · simp [Function.update_apply, hb, h3 b hb]
+    · simp [hb, h3 b hb]
   · rintro ⟨h1, rfl⟩
-    exact ⟨h1, by simp, fun b hb => by simp [Function.update_apply, hb]⟩
+    exact ⟨h1, by simp, fun b hb => by simp [hb]⟩
 
 theorem eU_apply (a : S) (i j : Fin 2) (x y : Ix S) :
     (eU a i j : SlopeTestRemainingChoices S A) x y = if x a = i ∧ y = Function.update x a j then 1 else 0 := by
@@ -108,7 +108,7 @@ theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
   ext x y
   rw [eU_mul_apply, eU_mul_apply, eU_apply, eU_apply]
   by_cases hxc : x c = i <;> by_cases hxa : x a = k <;>
-    simp [Function.update_apply, hc, Ne.symm hc, hxc, hxa, Function.update_comm hc j l x]
+    simp [hc, Ne.symm hc, hxc, hxa, Function.update_comm hc j l x]
 
 theorem star_eU [StarRing A] (a : S) (i j : Fin 2) :
     star (eU a i j : SlopeTestRemainingChoices S A) = eU a j i := by

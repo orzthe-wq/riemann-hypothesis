@@ -64,12 +64,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter
 
 variable {D : D7}
 
-theorem mt_mul (V : HSp D) (a b : GA D V) : Formalism.L2.Theta.mt V (a * b) = Formalism.L2.Theta.mt V a * Formalism.L2.Theta.mt V b := by
-  unfold Formalism.L2.Theta.mt
-  rw [map_mul, Units.val_mul]
-
-theorem mt_one (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by
-  simp [Formalism.L2.Theta.mt]
+alias mt_one := _root_.GlobalTheory.BesselCompare.mt_one
 
 theorem keeps_of_fwd {V : HSp D} {L : Set (Fin V.rank → D.host.E)} {g : GA D V}
     (h1 : ∀ y ∈ latHat D.host.F D.host.E L, ((Formalism.L2.Theta.mt V g).map (finPart D)).mulVec y ∈ latHat D.host.F D.host.E L)
@@ -79,7 +74,7 @@ theorem keeps_of_fwd {V : HSp D} {L : Set (Fin V.rank → D.host.E)} {g : GA D V
   intro y
   refine ⟨h1 y, fun hy => ?_⟩
   have := h2 _ hy
-  rwa [Matrix.mulVec_mulVec, ← Matrix.map_mul, ← mt_mul, inv_mul_cancel, mt_one,
+  rwa [Matrix.mulVec_mulVec, ← Matrix.map_mul, ← _root_.GlobalTheory.BesselCompare.mt_mul, inv_mul_cancel, mt_one,
     Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec] at this
 
 theorem keeps_inv {V : HSp D} {L : Set (Fin V.rank → D.host.E)} {g : GA D V}
@@ -94,9 +89,9 @@ theorem keeps_mul {V : HSp D} {L : Set (Fin V.rank → D.host.E)} {a b : GA D V}
     ∀ y, y ∈ latHat D.host.F D.host.E L ↔
       ((Formalism.L2.Theta.mt V (a * b)).map (finPart D)).mulVec y ∈ latHat D.host.F D.host.E L := by
   refine keeps_of_fwd (fun y hy => ?_) (fun y hy => ?_)
-  · rw [mt_mul, Matrix.map_mul, ← Matrix.mulVec_mulVec]
+  · rw [_root_.GlobalTheory.BesselCompare.mt_mul, Matrix.map_mul, ← Matrix.mulVec_mulVec]
     exact (ha _).1 ((hb y).1 hy)
-  · rw [mul_inv_rev, mt_mul, Matrix.map_mul, ← Matrix.mulVec_mulVec]
+  · rw [mul_inv_rev, _root_.GlobalTheory.BesselCompare.mt_mul, Matrix.map_mul, ← Matrix.mulVec_mulVec]
     exact (keeps_inv hb _).1 ((keeps_inv ha y).1 hy)
 
 theorem hom_one_apply {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {n : ℕ} (i j : Fin n) :

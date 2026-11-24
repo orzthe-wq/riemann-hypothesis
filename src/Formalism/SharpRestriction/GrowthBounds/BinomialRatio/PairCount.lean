@@ -119,7 +119,7 @@ theorem pc_shape {s r : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {M : ℕ} (hA : �
         · norm_num <;> linarith
         · rw [if_neg (by omega), if_neg (by omega), if_neg (by omega)]
           push_cast
-          nlinarith
+          exact le_of_eq (by ring)
       by_cases hv : t = 0 ∨ t % 2 = 1
       · have hvec : (kLetters A Ai Ci).vec ⟨t, by omega⟩ = true := by simp [kLetters, hv]
         rw [if_pos hvec] at hlet
@@ -280,10 +280,10 @@ theorem pairCount_of_std {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (h : Std C0 Cde CE1 
   have hk5 : 5 ≤ X.k := by have := h.N1k; linarith
   have hY := h.Y1
   have hY2 : 1 ≤ X.Y ^ 2 := one_le_pow₀ hY
-  have hpk : X.k ^ 2 ≤ X.p := le_trans (by nlinarith [sq_nonneg X.k]) h.pk
+  have hpk : X.k ^ 2 ≤ X.p := le_trans (le_mul_of_one_le_right (sq_nonneg X.k) hY2) h.pk
   have hb := h.bpos
   have hpb : (X.p : ℝ) * X.b' < X.a := (lt_div_iff₀ hb).mp h.pab
-  have hba : X.b' ≤ X.a := by nlinarith
+  have hba : X.b' ≤ X.a := (le_mul_of_one_le_left hb.le hp1).trans hpb.le
   have hapos : (0 : ℝ) < X.a := by linarith
   have ha1 : (1 : ℝ) ≤ X.a := by
     have : 0 < X.a := by exact_mod_cast hapos
@@ -307,7 +307,9 @@ theorem pairCount_of_std {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (h : Std C0 Cde CE1 
     have h2 : ((X.seg C0 CE1 CE2 j).bTop i : ℝ) ≤ X.b' * (1 + be X C0) := (h.winB _ (pos_mem X.TT j i).1).2
     have h3 : (0 : ℝ) ≤ (coarseA X.p (X.seg C0 CE1 CE2 j) (digitBlock rz ry) i : ℝ) := Nat.cast_nonneg _
     have h4 := mul_le_mul_of_nonneg_left (hPp i) h3
-    have h5 : X.b' * (1 + be X C0) ≤ 2 * X.b' := by nlinarith
+    have h5 : X.b' * (1 + be X C0) ≤ 2 * X.b' := by
+      calc X.b' * (1 + be X C0) ≤ X.b' * 2 := mul_le_mul_of_nonneg_left (by linarith) hb.le
+        _ = 2 * X.b' := by ring
     show (coarseA X.p (X.seg C0 CE1 CE2 j) (digitBlock rz ry) i : ℝ) * X.p ≤ 2 * X.a
     linarith
   have hCi : ∀ i, clC C0 CE1 CE2 X j rz ry i ≤ M := fun i => by
@@ -320,8 +322,11 @@ theorem pairCount_of_std {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (h : Std C0 Cde CE1 
     have h4 := mul_le_mul_of_nonneg_left (hPp i) h3
     have h6 : 2 / (X.k * X.Y) ≤ 1 := by
       rw [div_le_one (by positivity)]
-      nlinarith
-    have h5 : (X.a : ℝ) * (1 + 2 / (X.k * X.Y)) ≤ 2 * X.a := by nlinarith
+      calc (2 : ℝ) ≤ X.k := by linarith
+        _ ≤ X.k * X.Y := le_mul_of_one_le_right (by linarith) hY
+    have h5 : (X.a : ℝ) * (1 + 2 / (X.k * X.Y)) ≤ 2 * X.a := by
+      calc (X.a : ℝ) * (1 + 2 / (X.k * X.Y)) ≤ (X.a : ℝ) * 2 := mul_le_mul_of_nonneg_left (by linarith) hapos.le
+        _ = 2 * X.a := by ring
     show (coarseC X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (digitBlock rz ry) i : ℝ) * X.p ≤ 2 * X.a
     linarith
   have hcount := pc_count (r := X.m) (A := A) hAi hCi
@@ -340,13 +345,22 @@ theorem pairCount_of_std {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (h : Std C0 Cde CE1 
       mul_le_mul h1 hMr h2 (by linarith)
     have h4 : X.k * (2 * (X.a : ℝ) / X.p) ≤ X.a := by
       rw [mul_div_assoc', div_le_iff₀ hp0]
-      have hp2k : 2 * X.k ≤ X.p := by nlinarith
-      nlinarith [mul_le_mul_of_nonneg_left hp2k hapos.le]
+      have hp2k : 2 * X.k ≤ X.p := by
+        calc 2 * X.k ≤ X.k * X.k := mul_le_mul_of_nonneg_right (by linarith) (by linarith)
+          _ = X.k ^ 2 := by ring
+          _ ≤ X.p := hpk
+      calc X.k * (2 * (X.a : ℝ)) = (X.a : ℝ) * (2 * X.k) := by ring
+        _ ≤ (X.a : ℝ) * X.p := mul_le_mul_of_nonneg_left hp2k hapos.le
     linarith
   have hc : ((2 * (A + (2 * segS X.TT j + 1) * M) + 1 : ℕ) : ℝ) ≤ 8 * (X.a : ℝ) := by
     push_cast
     linarith
-  have he : (2 * segS X.TT j + 3) * (2 * segS X.TT j + 1) ≤ 4 * (X.N1 + 1) ^ 2 := by nlinarith
+  have he : (2 * segS X.TT j + 3) * (2 * segS X.TT j + 1) ≤ 4 * (X.N1 + 1) ^ 2 := by
+    calc (2 * segS X.TT j + 3) * (2 * segS X.TT j + 1)
+        ≤ (2 * X.N1 + 3) * (2 * X.N1 + 1) := Nat.mul_le_mul (by omega) (by omega)
+      _ ≤ 4 * (X.N1 + 1) ^ 2 := by
+          have : (2 * X.N1 + 3) * (2 * X.N1 + 1) + 1 = 4 * (X.N1 + 1) ^ 2 := by ring
+          omega
   calc ((pairSet X.m A (clA C0 CE1 CE2 X j rz ry) (clC C0 CE1 CE2 X j rz ry)).ncard : ℝ)
       ≤ (((2 * (A + (2 * segS X.TT j + 1) * M) + 1) ^ ((2 * segS X.TT j + 3) * (2 * segS X.TT j + 1)) : ℕ) : ℝ) := by
         exact_mod_cast hcount

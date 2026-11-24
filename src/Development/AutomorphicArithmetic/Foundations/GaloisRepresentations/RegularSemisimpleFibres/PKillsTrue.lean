@@ -69,7 +69,7 @@ private theorem gen_of_frob {F F' : Type} [Field F] [Field F'] [Algebra F F'] [F
   have : Fintype F := Fintype.ofFinite F
   have hs' : s = FiniteField.frobeniusAlgEquivOfAlgebraic F F' := by
     ext z
-    simp [hs z, FiniteField.coe_frobeniusAlgEquivOfAlgebraic, Nat.card_eq_fintype_card]
+    simp [hs z, Nat.card_eq_fintype_card]
   obtain ⟨n, hn⟩ := (FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow F F').2 t
   rw [hs']
   exact ⟨(n.1 : ℤ), by simpa using hn⟩

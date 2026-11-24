@@ -77,7 +77,7 @@ private lemma iotaV_injective (T : LocLat G Qp LL O) : Function.Injective (ιV P
     intro x
     induction x using TensorProduct.induction_on with
     | zero => simp
-    | tmul a b => first | rfl | simp [ιV]
+    | tmul a b => first | rfl
     | add a b ha hb => rw [map_add (f := _), map_add (f := _), ha, hb]
   intro x y hxy
   rw [h, h] at hxy
@@ -117,14 +117,14 @@ theorem rk_DcrisL_map (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Formal
     · rw [← hD]; exact Submodule.mem_map_of_mem hx.1
     · obtain ⟨c₀, rfl⟩ := hK.2 c
       rw [← iotaV_mulVB_comm, hx.2 c₀, map_smul]
-      first | rfl | simp
+      first | rfl
   · rintro ⟨hyD, hyc⟩
     rw [← hD, Submodule.mem_map] at hyD
     obtain ⟨x, hxD, rfl⟩ := hyD
     refine ⟨x, (mem_DcrisL_iff' T _ x).mpr ⟨hxD, fun c₀ => ?_⟩, rfl⟩
     apply iotaV_injective (PD := PD) T
     rw [iotaV_mulVB_comm, hyc, map_smul]
-    first | rfl | simp
+    first | rfl
 
 include W in
 theorem rk_finrank_DcrisL (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)

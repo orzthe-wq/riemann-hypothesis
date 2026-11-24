@@ -104,7 +104,7 @@ theorem lift_agree {R : Type} [CommRing R] {G : Over (Sp R)} {n : ℕ} {X : Sche
 
   simp only [op, pow_one, _root_.mul_one, Nat.cast_one, one_pow, map_add (f := _), map_sub, map_mul, map_sum, hΘ, zero_mul,
   Finset.sum_const_zero, sub_zero, map_ofNat, isField_one (hdd _) le_top, isField_one (h.lift i').1 hi', map_zero,
-  mul_zero, map_one] at e₁ e₀
+  mul_zero] at e₁ e₀
   rw [hs, (h.lift i).1.2.1 O hi, map_add (f := _), map_mul, map_mul] at e₁
   refine (h2.mul (hg.map π)).mul_left_cancel ?_
   linear_combination e₁ - π f * e₀

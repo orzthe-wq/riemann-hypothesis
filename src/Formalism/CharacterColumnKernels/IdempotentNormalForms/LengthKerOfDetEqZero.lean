@@ -1,59 +1,8 @@
 module
 
 public import Formalism.CharacterColumnKernels.Statement
-public import Mathlib.LinearAlgebra.Determinant
-public import Lemmata.AddValuationProducts.AddValProd
-public import Lemmata.SecondBlockLemmaA.Imports
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.OrderOfVanishing.Noetherian
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+public import Lemmata.DiscreteValuationQuotients.LenQuotSpan
+public import Mathlib.RingTheory.OrderOfVanishing.Noetherian
 
 @[expose] public section
 
@@ -73,13 +22,18 @@ lemma length_quot_span (a : O) :
 
 lemma addVal_prod {ι : Type*} (s : Finset ι) (a : ι → O) :
     addVal O (∏ i ∈ s, a i) = ∑ i ∈ s, addVal O (a i) := by
-  first | exact Bl.SecondBlockLemmaA.goal1 .. | (apply Bl.SecondBlockLemmaA.goal1 <;> assumption) | (intros; apply Bl.SecondBlockLemmaA.goal1 <;> assumption) | (apply @Bl.SecondBlockLemmaA.goal1 <;> assumption) | (intros; apply @Bl.SecondBlockLemmaA.goal1 <;> assumption) | (apply @Bl.SecondBlockLemmaA.goal1 <;> first | assumption | infer_instance) | exact @Bl.SecondBlockLemmaA.goal1 O ‹_› ‹_› ‹_› ι s a | exact @Bl.SecondBlockLemmaA.goal1 O ‹_› ‹_› ‹_› ι s | exact @Bl.SecondBlockLemmaA.goal1 O ‹_› ‹_› ‹_› ι | exact @Bl.SecondBlockLemmaA.goal1 O ‹_› ‹_› ‹_› | exact @Bl.SecondBlockLemmaA.goal1 O ‹_› ‹_› | exact @Bl.SecondBlockLemmaA.goal1 O ‹_› | exact @Bl.SecondBlockLemmaA.goal1 O
+  exact map_prod (AddValuation.toValuation (addVal O)) a s
 
 lemma length_quot_eq_addVal_det {ι : Type} [Fintype ι] [DecidableEq ι]
     (N : Submodule O (ι → O)) (e : (ι → O) ≃ₗ[O] N) :
     Module.length O ((ι → O) ⧸ N) =
       addVal O (LinearMap.det (N.subtype ∘ₗ (e : (ι → O) →ₗ[O] N))) := by
-  first | exact Bl.AddValuationProducts.goal1 .. | (apply Bl.AddValuationProducts.goal1 <;> assumption) | (intros; apply Bl.AddValuationProducts.goal1 <;> assumption) | (apply @Bl.AddValuationProducts.goal1 <;> assumption) | (intros; apply @Bl.AddValuationProducts.goal1 <;> assumption) | (apply @Bl.AddValuationProducts.goal1 <;> first | assumption | infer_instance) | exact @Bl.AddValuationProducts.goal1 O ‹_› ‹_› ‹_› ι ‹_› ‹_› N e | exact @Bl.AddValuationProducts.goal1 O ‹_› ‹_› ‹_› ι ‹_› ‹_› N | exact @Bl.AddValuationProducts.goal1 O ‹_› ‹_› ‹_› ι ‹_› ‹_› | exact @Bl.AddValuationProducts.goal1 O ‹_› ‹_› ‹_› ι ‹_› | exact @Bl.AddValuationProducts.goal1 O ‹_› ‹_› ‹_› ι | exact @Bl.AddValuationProducts.goal1 O ‹_› ‹_› ‹_› | exact @Bl.AddValuationProducts.goal1 O ‹_› ‹_› | exact @Bl.AddValuationProducts.goal1 O ‹_› | exact @Bl.AddValuationProducts.goal1 O
+  have h := Bl.DiscreteValuationQuotients.goal1 (N.subtype ∘ₗ e.toLinearMap)
+    (N.subtype_injective.comp e.injective)
+  have hrange : LinearMap.range (N.subtype ∘ₗ e.toLinearMap) = N := by
+    rw [LinearEquiv.range_comp, Submodule.range_subtype]
+  rw [hrange] at h
+  exact h
 
 lemma mk_eq_zero_iff (y : FractionRing O) :
     (Submodule.Quotient.mk y : KO O) = 0 ↔ ∃ x : O, algebraMap O (FractionRing O) x = y := by
@@ -92,7 +46,6 @@ lemma matQ_mk {ι : Type*} [Fintype ι] (A : Matrix ι ι O) (y : ι → Fractio
   show ∑ j, A i j • (Submodule.mkQ (1 : Submodule O (FractionRing O)) (y j)) =
     Submodule.mkQ (1 : Submodule O (FractionRing O))
       ((A.map (algebraMap O (FractionRing O)) *ᵥ y) i)
-
   rw [Matrix.mulVec, dotProduct, map_sum]
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [← map_smul, Matrix.map_apply, Algebra.smul_def]

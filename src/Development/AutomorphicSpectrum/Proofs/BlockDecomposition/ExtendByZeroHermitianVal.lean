@@ -1,6 +1,8 @@
 module
 
-public import Mathlib
+import Mathlib.Dynamics.Ergodic.Action.Regular
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.TotallySplit
 public import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.WeakApproximationFinitePlace
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FourierCoefficientConjugation
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianBlockDiagonalNormalForm

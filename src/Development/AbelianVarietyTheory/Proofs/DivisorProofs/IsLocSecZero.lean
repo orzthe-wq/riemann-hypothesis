@@ -48,6 +48,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SymTupOne
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsAddEquivOfSurjectiveOfKerIff
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DivMemOfForallPowSuccDivPowMem
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -97,6 +98,6 @@ def FibNz {N : S.Opens} (s : LocSec G L N) (W : S.Opens) : Prop :=
       valF y _ (s i) ≠ 0
 
 theorem isLocSec_zero {N : S.Opens} : IsLocSec (0 : LocSec G L N) := fun i j => by
-  simp [Pi.zero_apply, map_zero, mul_zero]
+  simp [map_zero, mul_zero]
 
 end GlobalTheory.UMin.ThBdl

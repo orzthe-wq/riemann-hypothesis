@@ -122,7 +122,7 @@ theorem mem_congrGal_iff {m : ℕ} (hm : m ∣ H.condN) (σ : H.E ≃ₐ[ℚ] H.
   refine ⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩
   simp only [val_modEq_one_iff hm]
   induction h using Subgroup.closure_induction with
-  | mem τ hτ => simpa only [Set.mem_setOf_eq, val_modEq_one_iff hm] using hτ
+  | mem τ hτ => simpa only [Set.mem_ofPred_eq, val_modEq_one_iff hm] using hτ
   | one => exact ⟨1, map_one _, by rw [map_one, map_one]⟩
   | mul a b _ _ ha hb =>
     obtain ⟨u, h1, h2⟩ := ha

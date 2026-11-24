@@ -266,7 +266,7 @@ theorem bound_mul_translate {A : P × E → ℂ} (hA : Function.HasTemperateGrow
 end family
 
 theorem temperate_exp : Function.HasTemperateGrowth (fun t : ℝ => cexp (I * t)) := by
-  apply GlobalTheory.CompanionTheory.AdelicHeis.temperate_exp_I <;> assumption
+  apply GlobalTheory.CompanionTheory.AdelicHeis.temperate_exp_I
 
 variable {κ : Type} [Fintype κ]
 

@@ -43,6 +43,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FnAlgC
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsAddEquivOfSurjectiveOfKerIff
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -52,4 +53,4 @@ open scoped Matrix CategoryTheory.Obj Topology
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.exists_analytic_local_lattice_basis : ∀ (n g : ℕ) (B : Set (Fin n → ℂ)) (K : (Fin n → ℂ) → Set (Fin g → ℂ)) (b₀ : Fin n → ℂ), IsLatFam B K → b₀ ∈ B → Submodule.span ℝ (K b₀) = ⊤ → ∃ lam : (Fin n → ℂ) → Fin (2 * g) → Fin g → ℂ, AnalyticAt ℂ lam b₀ ∧ ∀ᶠ b in 𝓝 b₀, IsLatBasis (K b) (lam b) := by
-  first | exact @GlobalTheory.ShFam.Hor.LogCh.IsLatFam.exists_analytic_locBasis | exact GlobalTheory.ShFam.Hor.LogCh.IsLatFam.exists_analytic_locBasis | (intros; apply GlobalTheory.ShFam.Hor.LogCh.IsLatFam.exists_analytic_locBasis <;> assumption)
+  first | exact @GlobalTheory.ShFam.Hor.LogCh.IsLatFam.exists_analytic_locBasis

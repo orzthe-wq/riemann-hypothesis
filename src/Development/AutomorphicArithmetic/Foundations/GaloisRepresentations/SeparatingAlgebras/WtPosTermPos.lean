@@ -105,11 +105,11 @@ theorem UpperTheory.Gal.Gen.wtPos_pf :
   ·
     obtain ⟨a, ha⟩ : ∃ a, l a ≠ 0 := by
       by_contra hc
-      push_neg at hc
+      push Not at hc
       exact hl0 (funext hc)
     obtain ⟨b, hb⟩ : ∃ b, l a ≠ l b := by
       by_contra hc
-      push_neg at hc
+      push Not at hc
       have hs : S = n * l a := by
         rw [hS, Finset.sum_congr rfl (fun i _ => (hc i).symm)]
         simp
@@ -125,7 +125,7 @@ theorem UpperTheory.Gal.Gen.wtPos_pf :
     have hn : (0 : ℤ) ≤ n := Int.natCast_nonneg n
     have hT0 : T < 0 := by
       by_contra hc
-      push_neg at hc
+      push Not at hc
       nlinarith [mul_nonneg hn hc]
     refine ⟨0, ?_⟩
     rw [wtPos_sum, ← hS, ← hT]

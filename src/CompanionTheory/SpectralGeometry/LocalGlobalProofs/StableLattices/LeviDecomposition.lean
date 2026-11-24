@@ -108,7 +108,7 @@ theorem Hq_sq (k r : ℕ) : Hq k r * Hq k r = 1 := by
 theorem mem_iff (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     g ∈ UH (Hq k r) ↔ ∀ i j, ∑ x, conj (g x i) * g (pr k r x) j = if pr k r i = j then 1 else 0 := by
   unfold UH
-  rw [Set.mem_setOf_eq, Matrix.mul_assoc, ← Matrix.ext_iff]
+  rw [Set.mem_ofPred_eq, Matrix.mul_assoc, ← Matrix.ext_iff]
   refine forall_congr' fun i => forall_congr' fun j => ?_
   rw [Matrix.mul_apply, Hq_apply]
   simp only [Hq_mul_apply, Matrix.conjTranspose_apply, RCLike.star_def]
@@ -116,7 +116,7 @@ theorem mem_iff (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 
 theorem mul_mem {n : ℕ} {H g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UH H) (hh : h ∈ UH H) :
     g * h ∈ UH H := by
   unfold UH at *
-  rw [Set.mem_setOf_eq] at *
+  rw [Set.mem_ofPred_eq] at *
   calc (g * h)ᴴ * H * (g * h) = hᴴ * (gᴴ * H * g) * h := by
         rw [Matrix.conjTranspose_mul]; simp only [Matrix.mul_assoc]
     _ = H := by rw [hg, hh]
@@ -242,7 +242,7 @@ theorem leviQ : LeviQ := by
     have : lᴴ * Hq k r * l = Hq k r := hlU
     calc _ = Hq k r * (lᴴ * Hq k r * l) := by simp only [Matrix.mul_assoc]
       _ = 1 := by rw [this, Hq_sq]
-  letI : Invertible l := invertibleOfLeftInverse _ _ hinv
+  let : Invertible l := invertibleOfLeftInverse _ _ hinv
   have hitri : l⁻¹.BlockTriangular id := Matrix.blockTriangular_inv_of_blockTriangular hltri
   have hiz : ∀ i j : Fin (2 * r + k + 1), j.val < i.val → l⁻¹ i j = 0 := fun i j h => hitri h
   have hll : l * l⁻¹ = 1 := Matrix.mul_inv_of_invertible l

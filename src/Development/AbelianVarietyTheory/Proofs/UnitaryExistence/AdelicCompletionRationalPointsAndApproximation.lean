@@ -1,11 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealPropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionFractionalIdealProperties
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsNatMulMem
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSmulMemOfMemSpanFraction
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteAdeleStrongApproximationModNatStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemAdelicCompletionPseudoBasisIffStatement
+public import Mathlib.RingTheory.DedekindDomain.FiniteAdeleRing
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteAdeleStrongApproximationModNat
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemAdelicCompletionPseudoBasisIff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -111,16 +112,7 @@ theorem cap_tmul_nsmul (d : ℕ) (a : FiniteAdeleRing (𝓞 F) F) (x : Fin n →
   | zero => simp
   | succ d ih => rw [succ_nsmul, succ_nsmul, TensorProduct.tmul_add, ih]
 
-theorem cap_exists_denom (L : Submodule (𝓞 E) (Fin n → E))
-    (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) (x : Fin n → E) :
-    ∃ d : ℕ, 0 < d ∧ d • x ∈ L := by
-  first
-  | exact @_root_.GlobalTheory.NatMulMemUnitaryExistence.target
-  | exact _root_.GlobalTheory.NatMulMemUnitaryExistence.target
-  | (apply _root_.GlobalTheory.NatMulMemUnitaryExistence.target <;> assumption)
-  | (intros; apply _root_.GlobalTheory.NatMulMemUnitaryExistence.target <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.NatMulMemUnitaryExistence.target <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.NatMulMemUnitaryExistence.target ..)
+alias cap_exists_denom := _root_.GlobalTheory.NatMulMemUnitaryExistence.main
 
 end RationalPoints
 
@@ -143,7 +135,7 @@ theorem hat_rational_points_and_approx :
         (fun i => a ⊗ₜ[F] y i : Fin n → RA F E) - fv F x ∈ (hat F (L : Set (Fin n → E))) := by
       intro a y
       obtain ⟨d, hd, hy⟩ := cap_exists_denom L hsp y
-      obtain ⟨r, a', ha', rfl⟩ := (GlobalTheory.T.finiteAdele_strong_approximation_mod_nat F d hd).1 a
+      obtain ⟨r, a', ha', rfl⟩ := (_root_.GlobalTheory.AdLat.strong_approximation_mod_nat F d hd).1 a
       refine ⟨algebraMap F E r • y, ?_⟩
       rw [cap_split, add_sub_cancel_left, ← cap_tmul_nsmul]
       exact cap_gen_mem F _ a' ha' _ hy
@@ -176,13 +168,13 @@ theorem hat_rational_points_and_approx :
       simp only [fv, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul,
         one_mul]
       rw [← TensorProduct.tmul_sum, h]
-    rw [hv, GlobalTheory.T.mem_adelicCompletion_pseudoBasis_iff F E n L e c hc, hc]
-    exact forall_congr' fun a => (GlobalTheory.T.adelicCompletion_fractionalIdeal_properties_alt F E).2.1 (c a) _
+    rw [hv, _root_.GlobalTheory.AdLat.mem_hat_pseudoBasis_iff F E n L e c hc, hc]
+    exact forall_congr' fun a => (_root_.GlobalTheory.AdLat.adelicCompletion_fractionalIdeal_properties F E).2.1 (c a) _
   · intro N hN z hz
     induction hz using AddSubgroup.closure_induction with
     | mem z hz =>
       obtain ⟨a, ha, x, hx, rfl⟩ := hz
-      obtain ⟨r, a', ha', rfl⟩ := (GlobalTheory.T.finiteAdele_strong_approximation_mod_nat F N hN).2 a ha
+      obtain ⟨r, a', ha', rfl⟩ := (_root_.GlobalTheory.AdLat.strong_approximation_mod_nat F N hN).2 a ha
       refine ⟨algebraMap F E (r : F) • x, ?_, _, cap_gen_mem F _ a' ha' x hx, cap_split F _ _ _ _⟩
       exact L.smul_mem (algebraMap (𝓞 F) (𝓞 E) r) hx
     | zero => exact ⟨0, L.zero_mem, 0, zero_mem _, by simp [cap_fv_zero]⟩

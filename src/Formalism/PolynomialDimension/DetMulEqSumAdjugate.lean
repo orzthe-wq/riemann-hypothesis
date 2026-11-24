@@ -1,13 +1,18 @@
 module
 
 public import Formalism.PolynomialDimension.FrameSum
-public import Formalism.PolynomialDimension.MultinomialDepth.ExistsNonzeroExchangedMinorHolds
-public import Formalism.PolynomialDimension.MultinomialDepth.FrobeniusDetVanishingHolds
+public import Mathlib.Algebra.CharP.Algebra
+public import Mathlib.Algebra.CharP.Frobenius
+public import Mathlib.Algebra.CharP.Defs
+public import Mathlib.Algebra.Field.Defs
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.Algebra.CharP.Lemmas
+public import Mathlib.LinearAlgebra.Matrix.Rank
+public import Mathlib.Analysis.SpecificLimits.Basic
+public import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -18,19 +23,12 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -40,7 +38,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -53,12 +50,101 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Analysis.SpecificLimits.Basic
-public import Mathlib.FieldTheory.Finite.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PolynomialDimension.MultinomialDepth.ExistsNonzeroExchangedMinorHolds, Formalism.PolynomialDimension.MultinomialDepth.FrobeniusDetVanishingHolds, Formalism.PolynomialDimension.DetMulEqSumAdjugate
+
+-- ===== clump member: Formalism.PolynomialDimension.MultinomialDepth.ExistsNonzeroExchangedMinorHolds =====
+-- clump-header: {"m": "Formalism.PolynomialDimension.MultinomialDepth.ExistsNonzeroExchangedMinorHolds", "h": "module\n\npublic import Formalism.PolynomialDimension.FrameSum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.CharP.Algebra\npublic import Mathlib.Algebra.CharP.Frobenius\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped BigOperators
+open Finset Matrix
+
+namespace Formalism.CountingSumsFrames
+
+theorem submatrix_swapCol {R : Type} [CommRing R] {r k : ℕ} (h : r ≤ k) (H : Matrix (Fin r) (Fin k) R)
+    (i : Fin r) (c : Fin k) :
+    H.submatrix id (swapCol r k h i c) = (H.submatrix id (Fin.castLE h)).updateCol i (fun m => H m c) := by
+  ext m j
+  by_cases hj : j = i
+  · subst hj
+    simp [swapCol]
+  · simp [swapCol, hj]
+
+theorem piMinor_map {p r k : ℕ} [Fact p.Prime] {F A : Type} [Field F] [CharP F p] [CommRing A] [Algebra F A]
+    [Nontrivial A] (H : Matrix (Fin r) (Fin k) F) (pos : Fin r → ℕ) (t : Fin r → Fin r → A) (zj : ℕ)
+    (cols : Fin r → Fin k) (hpos : ∀ l, pos l ≤ zj) :
+    piMinor p r k (H.map (algebraMap F A)) pos t zj cols =
+      (Matrix.of fun l m => t l m ^ p ^ (zj - pos l)).det *
+        algebraMap F A ((H.submatrix id cols).det ^ p ^ zj) := by
+  have : CharP A p := charP_of_injective_algebraMap (algebraMap F A).injective p
+  have : ExpChar A p := ExpChar.prime (Fact.out : p.Prime)
+  have : ExpChar F p := ExpChar.prime (Fact.out : p.Prime)
+  let g : F →+* A := (algebraMap F A).comp (iterateFrobenius F p zj)
+  have hg : ∀ x, g x = algebraMap F A (x ^ p ^ zj) := fun x => by
+    simp [g, iterateFrobenius_def]
+  have hmat : (Matrix.of fun l c' => (frameRow p r k (H.map (algebraMap F A)) (pos l) (t l) (cols c')) ^ p ^ (zj - pos l)) =
+      (Matrix.of fun l m => t l m ^ p ^ (zj - pos l)) * (g.mapMatrix (H.submatrix id cols)) := by
+    ext l c'
+    simp only [Matrix.of_apply, frameRow, Matrix.vecMul, dotProduct, Matrix.mul_apply, Matrix.map_apply,
+      RingHom.mapMatrix_apply, Matrix.submatrix_apply, id, hg]
+    rw [sum_pow_char_pow]
+    refine Finset.sum_congr rfl (fun m _ => ?_)
+    rw [mul_pow, ← pow_mul, ← pow_add, Nat.add_sub_of_le (hpos l), map_pow]
+  unfold piMinor
+  rw [hmat, Matrix.det_mul, ← RingHom.map_det, hg]
+
+end Formalism.CountingSumsFrames
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PolynomialDimension.MultinomialDepth.ExistsNonzeroExchangedMinorHolds =====
+
+-- ===== clump member: Formalism.PolynomialDimension.MultinomialDepth.FrobeniusDetVanishingHolds =====
+-- clump-header: {"m": "Formalism.PolynomialDimension.MultinomialDepth.FrobeniusDetVanishingHolds", "h": "module\n\npublic import Mathlib.Algebra.CharP.Defs\npublic import Mathlib.Algebra.Field.Defs\npublic import Mathlib.Data.Matrix.Mul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.CharP.Lemmas\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open scoped BigOperators
+open Finset Matrix
+
+namespace Formalism.CountingSumsFrames
+
+lemma frob_row {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [CharP F p] {k : ℕ}
+    (h : Matrix (Fin k) (Fin k) F) (a s : ℕ) (ha : a ≤ s) (t : Fin k → F) (c : Fin k) :
+    ((t ᵥ* h.map (fun x => x ^ p ^ a)) c) ^ p ^ (s - a) =
+      ((fun i => t i ^ p ^ (s - a)) ᵥ* h.map (fun x => x ^ p ^ s)) c := by
+  haveI : ExpChar F p := ExpChar.prime (Fact.out)
+  simp only [Matrix.vecMul, dotProduct, Matrix.map_apply]
+  rw [sum_pow_char_pow]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [mul_pow, ← pow_mul, ← pow_add, Nat.add_sub_of_le ha]
+
+end Formalism.CountingSumsFrames
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PolynomialDimension.MultinomialDepth.FrobeniusDetVanishingHolds =====
+
+-- ===== clump member: Formalism.PolynomialDimension.DetMulEqSumAdjugate =====
+-- clump-header: {"m": "Formalism.PolynomialDimension.DetMulEqSumAdjugate", "h": "module\n\npublic import Formalism.PolynomialDimension.FrameSum\npublic import Formalism.PolynomialDimension.MultinomialDepth.ExistsNonzeroExchangedMinorHolds\npublic import Formalism.PolynomialDimension.MultinomialDepth.FrobeniusDetVanishingHolds\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.LinearAlgebra.Matrix.Rank\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.SpecificLimits.Basic\npublic import Mathlib.FieldTheory.Finite.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace Formalism.CountingSumsFrames.Top
@@ -100,8 +186,6 @@ theorem graphMinor : Formalism.CountingSumsFrames.GraphMinor := by
       rw [Matrix.mulVec_mulVec, Matrix.mul_adjugate]
       first
         | rw [Matrix.smul_mulVec, Matrix.one_mulVec]
-        | rw [Matrix.smul_mulVec_assoc, Matrix.one_mulVec]
-        | (ext x; simp [Matrix.mulVec, dotProduct, Matrix.one_apply])
     rw [h0, Matrix.mulVec_zero] at h1
     exact (smul_eq_zero.mp h1.symm).resolve_left hA
   obtain ⟨i, hi⟩ : ∃ i, Matrix.mulVec (H.submatrix id (Fin.castLE h)).adjugate (fun m => H m c) i ≠ 0 := by
@@ -219,8 +303,6 @@ theorem detMulEqSumAdjugate : Formalism.CountingSumsFrames.DetMulEqSumAdjugate :
   calc T.det * s a = Matrix.mulVec (T.det • (1 : Matrix (Fin r) (Fin r) R)) s a := by
         first
           | (rw [Matrix.smul_mulVec, Matrix.one_mulVec]; rfl)
-          | (rw [Matrix.smul_mulVec_assoc, Matrix.one_mulVec]; rfl)
-          | simp [Matrix.mulVec, dotProduct, Matrix.one_apply, Matrix.smul_apply]
     _ = Matrix.mulVec (T.adjugate * T) s a := by rw [Matrix.adjugate_mul]
     _ = Matrix.mulVec T.adjugate (Matrix.mulVec T s) a := by rw [Matrix.mulVec_mulVec]
     _ = ∑ l, Matrix.mulVec T s l * T.adjugate a l := by
@@ -268,7 +350,7 @@ theorem keyVanish : Formalism.CountingSumsFrames.KeyVanish := by
     simp only [Matrix.mul_diagonal, Matrix.vecMul, dotProduct, T', P, G, Matrix.of_apply]
     refine Finset.sum_congr rfl fun i _ => ?_
     by_cases hi : i.val < r
-    · simp [hi, Matrix.diagonal_apply]
+    · simp [hi]
     · have h0 : t l i = 0 := ht l i (by omega)
       simp [hi, h0, zero_pow (hpne _)]
   · intro a t v ha ht hv
@@ -307,10 +389,8 @@ theorem cleanInduction : Formalism.CountingSumsFrames.CleanInduction := by
           obtain ⟨hxy, hyo, hsp⟩ := hch y hy
           refine ih (o + c' - level y) (by omega) y le_rfl (by omega) ?_ ?_
           · simp only [hsp]
-            push_cast at h1 ⊢
             linarith
           · simp only [hsp]
-            push_cast at h2 ⊢
             linarith
         choose! gy hgyD hgyF hgyF' using hy
         refine ⟨raw x - ∑ y ∈ ch, gy y, Deg.sub_mem (hdeg x).2 (sum_mem fun y hy => hgyD y hy), ?_, ?_⟩
@@ -336,7 +416,6 @@ theorem cleanInduction : Formalism.CountingSumsFrames.CleanInduction := by
       nlinarith [mul_nonneg (show (0 : ℤ) ≤ 2 * Q + 1 by positivity) (show (0 : ℤ) ≤ level x - o by linarith),
         (show (0 : ℤ) ≤ Q by positivity), (show (0 : ℤ) ≤ c' by positivity)]
     · simp only [hsp]
-      push_cast
       linarith
   choose! g hgD hgF hgF' using hinit
   refine ⟨∑ x ∈ S, g x, sum_mem fun x hx => hgD x hx, ?_, sum_mem fun x hx => hgF' x hx⟩
@@ -382,7 +461,6 @@ theorem lemma4Geom : Formalism.CountingSumsFrames.Lemma4Geom := by
     have h1 : ∑ m ∈ insert 0 S, (1 / p ^ 2) ^ m ≤ ∑' m : ℕ, (1 / p ^ 2) ^ m := by
       first
         | exact hsum.sum_le_tsum _ (fun m _ => pow_nonneg hx0 m)
-        | exact sum_le_tsum _ (fun m _ => pow_nonneg hx0 m) hsum
     rw [Finset.sum_insert h0S, pow_zero, tsum_geometric_of_lt_one hx0 hx1] at h1
     have h2 : (1 - 1 / p ^ 2)⁻¹ - 1 = 1 / (p ^ 2 - 1) := by
       have hp2' : p ^ 2 - 1 ≠ 0 := by linarith
@@ -410,3 +488,6 @@ theorem lemma4Count : Formalism.CountingSumsFrames.Lemma4Count := by
     _ = (N1 + 1) * (m + kQ + c' * al + 3 * c') := by ring
 
 end Formalism.CountingSumsFrames.Top
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PolynomialDimension.DetMulEqSumAdjugate =====

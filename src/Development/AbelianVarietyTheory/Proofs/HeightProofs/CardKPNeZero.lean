@@ -59,12 +59,6 @@ theorem not_unrAt_mul {L : Type} [Field L] [NumberField L] {d ψ : HChar L} {v :
   rw [hd x hx, one_mul] at this
   exact this
 
-theorem unrAt_mul {L : Type} [Field L] [NumberField L] {d ψ : HChar L} {v : HeightOneSpectrum (𝓞 L)}
-    (hd : d.UnrAt v) (hψ : ψ.UnrAt v) : (d * ψ).UnrAt v := by
-  intro x hx
-  change d.loc v x * ψ.loc v x = 1
-  rw [hd x hx, hψ x hx, one_mul]
-
 theorem card_residueField_ne_zero {L : Type} [Field L] [NumberField L] (Q : HeightOneSpectrum (𝓞 L)) : Nat.card (kP Q) ≠ 0 := by
   have h : Nat.card (kP Q) = Ideal.absNorm Q.asIdeal := by
     rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
@@ -113,8 +107,8 @@ theorem ram_finite (B : Base) (f : Fr B.toPre) (T : TwDat B) (χ : HChar B.host.
     apply hQ
     unfold TwDat.xiTw
     split_ifs
-    · exact unrAt_mul (f.isDel'.unr Q (h2 Q hc.1)) hψ
-    · exact unrAt_mul (f.isDel.unr Q (h1 Q hc.1)) hψ
+    · exact _root_.Formalism.L2.Host.HChar.UnrAt.mul (f.isDel'.unr Q (h2 Q hc.1)) hψ
+    · exact _root_.Formalism.L2.Host.HChar.UnrAt.mul (f.isDel.unr Q (h1 Q hc.1)) hψ
 
 
 open Classical in

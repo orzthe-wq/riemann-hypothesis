@@ -161,10 +161,13 @@ theorem orbJ_dom : ∃ c₃ : ℝ, ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddComm
   have hMR : 2 * ((r : ℝ) + 1) ^ 2 < M := by
     have hr2 : ((r : ℝ) + 1) ^ 2 ≤ (r : ℝ) * nn + 1 := by
       rw [hnn]; push_cast
-      nlinarith [mul_nonneg (Nat.cast_nonneg r : (0 : ℝ) ≤ r)
-        (show (0 : ℝ) ≤ r + k - 1 by linarith [(Nat.cast_nonneg r : (0 : ℝ) ≤ r)])]
-    rw [hM, hbN]; nlinarith [sq_nonneg ((r : ℝ) + 1)]
-  have hM0 : 0 ≤ M := by nlinarith [sq_nonneg ((r : ℝ) + 1)]
+      have hdiff : (r : ℝ) * (2 * (r : ℝ) + (k : ℝ) + 1) + 1 - ((r : ℝ) + 1) ^ 2 =
+          (r : ℝ) * ((r : ℝ) + (k : ℝ) - 1) := by ring
+      have hnn' : 0 ≤ (r : ℝ) * ((r : ℝ) + (k : ℝ) - 1) :=
+        mul_nonneg (Nat.cast_nonneg r) (by linarith [(Nat.cast_nonneg r : (0 : ℝ) ≤ r)])
+      linarith
+    rw [hM, hbN]; linarith
+  have hM0 : 0 ≤ M := by linarith [sq_nonneg ((r : ℝ) + 1)]
   have hG : P.Dx2.Rad.Good Bs γ w d := ⟨P.Dx2.Rad.exists_rho Bs hγ hpos hd hZ, P.Dx2.Rad.u_inj Bs hγ hpos hd hZ,
     fun ρ hρ => P.Dx2.Rad.u_lstg Bs hγ hpos hd hZ hρ⟩
   have hR := P.Dx2.Rad.haar_good Bs hγ hd hG
@@ -184,7 +187,7 @@ theorem orbJ_dom : ∃ c₃ : ℝ, ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddComm
   set Kγ := B.gN γ⁻¹ * B.gN γ with hKγ
   have hγi : B.gN γ⁻¹ = B.gN γ := (P.norm_of_inverse k r γ hγ).1
   have hγ1 : 1 ≤ B.gN γ := P.BetaSesquilinearity.gN_ge_one hγ
-  have hKγ0 : 0 < Kγ := by rw [hKγ, hγi]; nlinarith
+  have hKγ0 : 0 < Kγ := by rw [hKγ, hγi]; exact mul_pos (by linarith) (by linarith)
   set K0 := K1 ^ A * CP ^ (A / c) * Kγ ^ bN / cR with hK0
   refine ⟨Dx3.cut μR M, fun p => K0 * (B.gN (Matrix.of p.1.2 : B.Mat k r) ^ (-(A / c - 3 * bN)) *
       B.gN (Matrix.of p.2.2 : B.Mat k r) ^ (-bN)),
@@ -427,7 +430,8 @@ theorem opApply_bound (Bs : B.RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf 
       intro g hg
       rw [Complex.normSq_ofReal]
       have h1 := hg.2
-      have : ε₀ ^ 2 ≤ Gf k r Bs.z Bs.z' g * Gf k r Bs.z Bs.z' g := by nlinarith
+      have : ε₀ ^ 2 ≤ Gf k r Bs.z Bs.z' g * Gf k r Bs.z Bs.z' g := by
+        rw [sq]; exact mul_le_mul h1 h1 hε₀.le (by linarith)
       exact (min_le_right _ _).trans this
     have hcU := P.AdmissibleLieWords.ubl_coefP Bs fib hfib ∅ Pp a bb c es hP hab hlie hε₀ (fun g hg => hg) hc₀p hSD hSGf 0
     obtain ⟨⟨Cc, hCc0, hUB⟩, -⟩ := hcU
@@ -582,17 +586,22 @@ theorem thr_arith (r X N Cb' c₃ o κ A : ℝ) (hr : 0 ≤ r) (hX : r + 1 ≤ X
     have : (r + 1) ^ 1 ≤ (r + 1) ^ 4 := pow_le_pow_right₀ hR1 (by norm_num)
     simpa using this
   have hR24 : (r + 1) ^ 2 ≤ (r + 1) ^ 4 := pow_le_pow_right₀ hR1 (by norm_num)
-  have hX2 : X ≤ X ^ 2 := by nlinarith
-  have hX23 : X ^ 2 ≤ X ^ 3 := by nlinarith
-  have hrX : r * X + 1 ≤ X ^ 3 := by nlinarith
+  have hX2 : X ≤ X ^ 2 := by simpa using pow_le_pow_right₀ hX1 (show 1 ≤ 2 by norm_num)
+  have hX23 : X ^ 2 ≤ X ^ 3 := pow_le_pow_right₀ hX1 (by norm_num)
+  have hrX : r * X + 1 ≤ X ^ 3 := by
+    calc r * X + 1 ≤ r * X + X := by linarith
+      _ = (r + 1) * X := by ring
+      _ ≤ X * X := mul_le_mul_of_nonneg_right hX (by linarith)
+      _ = X ^ 2 := (sq X).symm
+      _ ≤ X ^ 3 := hX23
   have hNX : 0 ≤ N * X := by positivity
   have t1 : 5 * (r + 1) * o ≤ 5 * Cb' * ((r + 1) ^ 4 * (N * X ^ 2)) := by
     have a1 : (r + 1) * o ≤ (r + 1) * (Cb' * N * X) := mul_le_mul_of_nonneg_left ho (by linarith)
-    have a2 : (r + 1) * (Cb' * N * X) ≤ (r + 1) ^ 4 * (Cb' * N * X ^ 2) := by
-      apply mul_le_mul hR4 _ (by positivity) (by positivity)
-      have := mul_le_mul_of_nonneg_left hX2 (mul_nonneg hCb hN)
-      nlinarith
-    nlinarith
+    have a2 : (r + 1) * (Cb' * N * X) ≤ (r + 1) ^ 4 * (Cb' * N * X ^ 2) :=
+      mul_le_mul hR4 (mul_le_mul_of_nonneg_left hX2 (mul_nonneg hCb hN)) (by positivity) (by positivity)
+    calc 5 * (r + 1) * o = 5 * ((r + 1) * o) := by ring
+      _ ≤ 5 * ((r + 1) ^ 4 * (Cb' * N * X ^ 2)) := mul_le_mul_of_nonneg_left (a1.trans a2) (by norm_num)
+      _ = 5 * Cb' * ((r + 1) ^ 4 * (N * X ^ 2)) := by ring
   have t2 : κ ≤ Cb' ^ 2 * ((r + 1) ^ 4 * (N * X ^ 2)) := by
     have a1 : κ ≤ Cb' * (r + 1) * (Cb' * N * X) :=
       hκ.trans (mul_le_mul_of_nonneg_left ho (by positivity))
@@ -602,10 +611,8 @@ theorem thr_arith (r X N Cb' c₃ o κ A : ℝ) (hr : 0 ≤ r) (hX : r + 1 ≤ X
     calc κ ≤ _ := a1
       _ = _ := a2
       _ ≤ Cb' ^ 2 * ((r + 1) ^ 4 * (N * X ^ 2)) := mul_le_mul_of_nonneg_left a3 (by positivity)
-  have t3 : (1 : ℝ) ≤ (r + 1) ^ 4 * X ^ 3 := by
-    have : (1 : ℝ) ≤ (r + 1) ^ 4 := one_le_pow₀ hR1
-    have : (1 : ℝ) ≤ X ^ 3 := one_le_pow₀ hX1
-    nlinarith
+  have t3 : (1 : ℝ) ≤ (r + 1) ^ 4 * X ^ 3 :=
+    one_le_mul_of_one_le_of_one_le (one_le_pow₀ hR1) (one_le_pow₀ hX1)
   have t4 : c₃ * (r + 1) ^ 2 * (r * X + 1) ≤ |c₃| * ((r + 1) ^ 4 * X ^ 3) := by
     have a0 : 0 ≤ (r + 1) ^ 2 * (r * X + 1) := by positivity
     calc c₃ * (r + 1) ^ 2 * (r * X + 1) = c₃ * ((r + 1) ^ 2 * (r * X + 1)) := by ring
@@ -618,7 +625,7 @@ theorem thr_arith (r X N Cb' c₃ o κ A : ℝ) (hr : 0 ≤ r) (hX : r + 1 ≤ X
       (1 + |c₃|) * ((r + 1) ^ 4 * (N * X ^ 2)) := by ring
   have hpos1 : 0 ≤ (5 * Cb' + Cb' ^ 2) * ((r + 1) ^ 4 * X ^ 3) := by positivity
   have hpos2 : 0 ≤ (1 + |c₃|) * ((r + 1) ^ 4 * (N * X ^ 2)) := by positivity
-  nlinarith
+  linarith
 
 end Formalism.FourierDecayAlt.P.PBE
 
@@ -777,15 +784,13 @@ theorem vecV_cut_op : ∃ c₃ : ℝ, ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddC
       _ ≤ K * bF * B.gN g ^ (-A') + K * Kp * bF * B.gN g ^ (-A') * (1 / ((n : ℝ) + 1)) :=
           add_le_add (hb0 g hg) (hbψ n g hg)
       _ ≤ K * bF * B.gN g ^ (-A') + K * Kp * bF * B.gN g ^ (-A') * 1 := by
-          have : 0 ≤ K * Kp * bF * B.gN g ^ (-A') := by positivity
-          nlinarith
+          linarith [mul_le_mul_of_nonneg_left hn1 (by positivity : 0 ≤ K * Kp * bF * B.gN g ^ (-A'))]
       _ = cF * B.gN g ^ (-A') := by rw [hcF]; ring
   · refine (hb0 g hg).trans ?_
     have hpw : 0 ≤ B.gN g ^ (-A') := Real.rpow_nonneg (P.B6.gN_nonneg g) _
     have : K * bF ≤ cF := by
       rw [hcF]
-      have : 0 ≤ K * bF := by positivity
-      nlinarith
+      exact le_mul_of_one_le_right (by positivity) (by linarith)
     exact mul_le_mul_of_nonneg_right this hpw
   · have hz : Tendsto (fun n : ℕ => B.opApply Dop (fun g => P.JCx2.pdPsi ((n : ℝ) + 1) g • F g) g) atTop
         (𝓝 0) := by

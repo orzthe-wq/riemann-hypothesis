@@ -55,9 +55,6 @@ namespace GlobalTheory.RawLift.Model
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {χV χW : (AE D)ˣ →* Circle}
   {om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)}
 
-theorem cA_inc (e : D.host.E) : cA D (incA D e) = incA D (star e) := by
-  rfl
-
 theorem hO_eq_trace (x y : WO V W) :
     hO V W x y = Matrix.trace ((V.gram⁻¹).map (incA D) * ((y.map (cA D))ᵀ * W.gram.map (incA D) * x)) := by
   simp only [hO, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply,
@@ -71,7 +68,7 @@ theorem hO_ratMul (C : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (u v : WO V W)
     hO V W (ratMul C u) (ratMul C v) =
       Matrix.trace ((V.gram⁻¹).map (incA D) * ((v.map (cA D))ᵀ * (Cᴴ * W.gram * C).map (incA D) * u)) := by
   have h : (C.map (incA D)).map (cA D) = (Cᴴ.map (incA D))ᵀ := by
-    ext i j; simp [Matrix.map_apply, cA_inc]
+    ext i j; simp [Matrix.map_apply, _root_.GlobalTheory.DualPairCheck.cA_incA]
   rw [hO_eq_trace]
   unfold ratMul
   rw [Matrix.map_mul, h, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.map_mul, Matrix.map_mul]

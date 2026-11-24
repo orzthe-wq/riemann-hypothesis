@@ -227,23 +227,12 @@ theorem dmass_eq_qmass (A C : Subgroup H) : dmass A C = qmass A (H ⧸ C) := by
   refine finsum_congr fun q => ?_
   rw [card_stab_dq]
 
-theorem coset_fibre (D C : Subgroup H) (h : D ≤ C) (hDC : D.relIndex C ≠ 0)
-    (z : H ⧸ C) : Finite {y : H ⧸ D // Subgroup.quotientMapOfLE h y = z} ∧
-      Nat.card {y : H ⧸ D // Subgroup.quotientMapOfLE h y = z} = D.relIndex C := by
-  first
-  | exact @_root_.GlobalTheory.FibreEquivalence.fibre_finite_card
-  | exact _root_.GlobalTheory.FibreEquivalence.fibre_finite_card
-  | (apply _root_.GlobalTheory.FibreEquivalence.fibre_finite_card <;> assumption)
-  | (intros; apply _root_.GlobalTheory.FibreEquivalence.fibre_finite_card <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.FibreEquivalence.fibre_finite_card <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.FibreEquivalence.fibre_finite_card ..)
-
 theorem dmass_of_le (A C D : Subgroup H) (hDC : D ≤ C) (hi : D.relIndex C ≠ 0)
     (hfin : ∀ t : H, Finite (A ⊓ C.map (MulAut.conj t).toMonoidHom : Subgroup H)) :
     dmass A D = (D.relIndex C : ℚ) * dmass A C := by
   rw [dmass_eq_qmass, dmass_eq_qmass]
   refine qmass_eq_of_fibre (Subgroup.quotientMapOfLE hDC) ?_ _ hi
-    (fun z => (coset_fibre D C hDC hi z).1) (fun z => (coset_fibre D C hDC hi z).2) ?_
+    (fun z => (_root_.GlobalTheory.FibreEquivalence.fibre_finite_card D C hDC hi z).1) (fun z => (_root_.GlobalTheory.FibreEquivalence.fibre_finite_card D C hDC hi z).2) ?_
   · intro g y
     induction y using QuotientGroup.induction_on with
     | H a => rfl

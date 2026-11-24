@@ -121,22 +121,17 @@ variable {L : Type} [Field L] [NumberField L]
 
 theorem pm_of_sq {x : L} {c : ℕ} (hx : x ^ 2 = -(c : L)) (σ : Gal(L/ℚ)) :
     σ x = x ∨ σ x = -x := by
-  have : (σ x) ^ 2 = x ^ 2 := by rw [← map_pow, hx, map_neg, map_natCast]
-  exact sq_eq_sq_iff_eq_or_eq_neg.mp this
+  exact sq_eq_sq_iff_eq_or_eq_neg.mp (by rw [← map_pow, hx, map_neg, map_natCast])
 
 theorem ne_zero_of_sq {x : L} {c : ℕ} (hc : c ≠ 0) (hx : x ^ 2 = -(c : L)) : x ≠ 0 := by
   rintro rfl
-  have : (c : L) = 0 := by
-    have := hx.symm
-    simpa using this
-  exact hc (by exact_mod_cast this)
+  have hcL : (c : L) = 0 := by simpa using hx.symm
+  exact hc (by exact_mod_cast hcL)
 
 theorem ne_neg_self {x : L} (hx0 : x ≠ 0) : x ≠ -x := by
   intro h
-  have : (2 : L) * x = 0 := by linear_combination h
-  rcases mul_eq_zero.mp this with h2 | h2
-  · exact two_ne_zero h2
-  · exact hx0 h2
+  have h2 : (2 : L) * x = 0 := by linear_combination h
+  exact hx0 ((mul_eq_zero.mp h2).resolve_left two_ne_zero)
 
 theorem sgn_of_eq {x : L} {ρ : Gal(L/ℚ)} (h : ρ x = x) : sgn ρ x = 1 := by
   simp [sgn, h]
@@ -354,9 +349,8 @@ theorem layerGalois : LayerGalois := by
   have hle : Nat.card Gal(L/ℚ) ≤ Nat.card (GalL n) := Nat.card_le_card_of_injective _ hinj
   have hge := layer_finrank_ge h hn hqd
   rw [card_galL hn] at hle
-  refine ⟨hG, by omega, galMap_mul h hq0 hd0, hinj.bijective_of_nat_card_le ?_⟩
-  rw [card_galL hn]
-  omega
+  refine ⟨hG, by omega, galMap_mul h hq0 hd0,
+    hinj.bijective_of_nat_card_le (by rw [card_galL hn]; omega)⟩
 
 theorem layerExists : LayerExists := by
   intro n q d
@@ -367,7 +361,7 @@ theorem layerExists : LayerExists := by
   have hmap' : ∀ φ : ℚ →+* F, f.map φ =
       cyclotomic (2 ^ n) F * (X ^ 2 + C (q : F)) * (X ^ 2 + C (d : F)) := by
     intro φ
-    simp [f, map_cyclotomic, C_eq_natCast]
+    simp [f, map_cyclotomic]
   have hmap := hmap' (algebraMap ℚ F)
   have hsp : Splits (f.map (algebraMap ℚ F)) := SplittingField.splits f
   rw [hmap] at hsp

@@ -72,7 +72,7 @@ theorem _root_.GlobalTheory.scale_poly_comparison : ∀ eps c κ : ℝ, 0 < eps 
   have g3 := h3 s.x (le_trans (by simp) hx)
   have g4 := h4 s.x (le_trans (by simp) hx)
   have g5 := h5 s.x (le_trans (by simp) hx)
-  simp only [Real.rpow_zero, pow_zero, mul_one, zero_mul, add_zero, one_mul] at g1 g2 g3 g4
+  simp only [Real.rpow_zero, pow_zero, mul_one, add_zero, one_mul] at g1 g2 g3 g4
   have hxc : s.x ^ c = Real.exp (Real.log s.x * c) := Real.rpow_def_of_pos ht0 c
   have hX' : s.X' = Real.exp (s.x ^ (s.eps / 3)) := by unfold _root_.Formalism.BasicNotions.Scale.X'; rfl
   have hb : s.b = Real.exp (s.x ^ s.eps) := by unfold _root_.Formalism.BasicNotions.Scale.b _root_.Formalism.BasicNotions.Scale.L; rfl

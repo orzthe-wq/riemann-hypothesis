@@ -68,7 +68,7 @@ namespace GlobalTheory.ProjLiftLaw
 theorem reductionGroupAction_mul {G W : Type} [Group G] [NormedAddCommGroup W] [InnerProductSpace ℂ W] {Q : Subgroup G} (ch : Q →* ℂˣ)
     (q q' : Q) (f : G → W) : Bridge.g0Act ch q (Bridge.g0Act ch q' f) = Bridge.g0Act ch (q * q') f := by
   funext h
-  simp only [Bridge.g0Act, smul_smul, Subgroup.coe_mul, mul_assoc, map_mul, mul_inv, Units.val_mul, mul_comm]
+  simp only [Bridge.g0Act, smul_smul, Subgroup.coe_mul, mul_assoc, map_mul, mul_inv, Units.val_mul]
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}

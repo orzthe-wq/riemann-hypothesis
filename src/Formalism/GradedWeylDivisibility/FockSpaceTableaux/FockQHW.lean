@@ -57,8 +57,7 @@ theorem lehw_eval_idFrame_hw {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) :
     eval (idFrame ℚ r n) (hw ℚ hn ν) = 1 := by
   unfold hw
   rw [map_prod]
-  apply Finset.prod_eq_one
-  intro s _
+  refine Finset.prod_eq_one fun s _ => ?_
   rw [map_pow]
   convert one_pow (M := ℚ) _
   unfold lpMinor

@@ -1,16 +1,17 @@
 module
 
 public import Formalism.SharpRestriction.Divisibility.SchurIrreducible
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommuteStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeightsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteDimensionalForallMapMemStatement
+public import Formalism.LocalRingCardinality.DataTheta
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockOperatorsLieRepresentationCommute
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockPolynomialsLocallyFiniteRationalWeights
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteDimensionalForallMapMem
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLinearMapTensorOfPairing
+public import Mathlib.Analysis.InnerProductSpace.Calculus
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.InnerProductSpace.Calculus
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -160,15 +161,15 @@ theorem exists_finiteDimensional_kill {r s : ℕ} {T₂ : GrpData r s} (R₂ : D
     ∃ E : Submodule ℂ R₂.HK.V, FiniteDimensional ℂ E ∧
       ∀ y, (∀ x ∈ E, inner ℂ (R₂.ι y) (R₂.ι x) = 0) → B P y = 0 := by
   classical
-  obtain ⟨⟨W, hWfd, hPW, hWK⟩, -⟩ := (GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).2 P
+  obtain ⟨⟨W, hWfd, hPW, hWK⟩, -⟩ := (_root_.GlobalTheory.FockPolGK.pol_locFin_weights p q r s).2 P
   have hwt : ∀ v ∈ W, v ∈ ⨆ μ : Ix r s → ℚ, wtSub (fockAct2 p q r s) μ :=
-    fun v _ => ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).2 v).2
+    fun v _ => ((_root_.GlobalTheory.FockPolGK.pol_locFin_weights p q r s).2 v).2
   have hlie : IsKLieAct (fockAct2 p q r s) := by
     unfold IsKLieAct
     intro Y Z _ _
-    exact (GlobalTheory.T.fockOperators_lie_representation_commute p q r s).2.2.1 Y Z
+    exact (_root_.GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.2.1 Y Z
   obtain ⟨E, hEfd, hE⟩ :=
-    GlobalTheory.T.exists_finiteDimensional_forall_map_mem' r s R₂.HK hA (Pol p q r s) (fockAct2 p q r s) hlie W hWfd hWK hwt
+    _root_.GlobalTheory.KHomFinite.exists_finiteDimensional_forall_map_mem r s R₂.HK hA (Pol p q r s) (fockAct2 p q r s) hlie W hWfd hWK hwt
   refine ⟨E, hEfd, fun y hy => ?_⟩
   rw [← Module.forall_dual_apply_eq_zero_iff ℂ]
   intro l

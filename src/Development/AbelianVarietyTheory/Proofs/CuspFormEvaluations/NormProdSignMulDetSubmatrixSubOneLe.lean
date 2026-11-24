@@ -1,36 +1,35 @@
 module
 
+public import Mathlib.Analysis.Complex.Exponential
+public import Mathlib.Analysis.Normed.Ring.Basic
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ImportsAlt
+public import Mathlib.LinearAlgebra.Eigenspace.Matrix
+public import Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs
+public import Mathlib.LinearAlgebra.Matrix.Gershgorin
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.DiscriminantTheorems.ScaledBoundInequality
+public import Mathlib.Analysis.InnerProductSpace.GramMatrix
+public import Mathlib.LinearAlgebra.Eigenspace.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.Eigenspace.Matrix
-public import Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs
-public import Mathlib.LinearAlgebra.Matrix.Gershgorin
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -52,29 +51,71 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.DiscriminantTheorems.ScaledBoundInequality
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.TypeStar
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Mathlib.Analysis.InnerProductSpace.GramMatrix
-public import Mathlib.LinearAlgebra.Eigenspace.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ImportsAlt, Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.NormProdSignMulDetSubmatrixSubOneLe
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ImportsAlt =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ImportsAlt", "h": "module\n\npublic import Mathlib.Analysis.Complex.Exponential\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Normed.Ring.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.CuspFormEvaluationComplement
+
+theorem main : ∀ (s : Multiset ℂ) {t : ℝ}, (0 : ℝ) ≤ t → (∀ μ ∈ s, ‖μ - (1 : ℂ)‖ ≤ t) →
+    ‖Multiset.prod s - (1 : ℂ)‖ ≤ Real.exp ((↑(Multiset.card s) : ℝ) * t) - (1 : ℝ) := by
+  intro s t ht hs
+  induction s using Multiset.induction_on with
+  | empty => simp
+  | cons a s ih =>
+    have ha : ‖a - 1‖ ≤ t := hs a (Multiset.mem_cons_self a s)
+    have ih' := ih (fun μ hμ => hs μ (Multiset.mem_cons_of_mem hμ))
+    rw [Multiset.prod_cons, Multiset.card_cons]
+    have hna : ‖a‖ ≤ 1 + t := by
+      have h0 : a = (a - 1) + 1 := by ring
+      calc ‖a‖ = ‖(a - 1) + 1‖ := by rw [← h0]
+        _ ≤ ‖a - 1‖ + ‖(1:ℂ)‖ := norm_add_le _ _
+        _ ≤ 1 + t := by rw [norm_one]; linarith
+    have key : a * s.prod - 1 = a * (s.prod - 1) + (a - 1) := by ring
+    have h1 : ‖a * s.prod - 1‖ ≤ (1 + t) * (Real.exp ((Multiset.card s : ℝ) * t) - 1) + t := by
+      rw [key]
+      calc ‖a * (s.prod - 1) + (a - 1)‖ ≤ ‖a * (s.prod - 1)‖ + ‖a - 1‖ := norm_add_le _ _
+        _ = ‖a‖ * ‖s.prod - 1‖ + ‖a - 1‖ := by rw [norm_mul]
+        _ ≤ (1 + t) * (Real.exp ((Multiset.card s : ℝ) * t) - 1) + t :=
+          add_le_add (mul_le_mul hna ih' (norm_nonneg _) (by linarith)) ha
+    have h2 : 1 + t ≤ Real.exp t := by linarith [Real.add_one_le_exp t]
+    have hE := Real.exp_pos ((Multiset.card s : ℝ) * t)
+    have h3 := mul_le_mul_of_nonneg_right h2 hE.le
+    have hexp : Real.exp (((Multiset.card s + 1 : ℕ) : ℝ) * t)
+        = Real.exp t * Real.exp ((Multiset.card s : ℝ) * t) := by
+      rw [← Real.exp_add]; push_cast; ring_nf
+    rw [hexp]
+    nlinarith [h1, h3]
+
+end GlobalTheory.CuspFormEvaluationComplement
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ImportsAlt =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.NormProdSignMulDetSubmatrixSubOneLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.NormProdSignMulDetSubmatrixSubOneLe", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature\npublic import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ImportsAlt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.LinearAlgebra.Eigenspace.Matrix\npublic import Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs\npublic import Mathlib.LinearAlgebra.Matrix.Gershgorin\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.DiscriminantTheorems.ScaledBoundInequality\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Analysis.InnerProductSpace.GramMatrix\npublic import Mathlib.LinearAlgebra.Eigenspace.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField ReciprocityTheory.ChartRestriction.G.FD
 open Matrix hiding gram
 
 namespace GlobalTheory
-
-theorem norm_multisetProd_sub_one_le_exp (s : Multiset ℂ) {t : ℝ} (ht : 0 ≤ t)
-    (hs : ∀ μ ∈ s, ‖μ - 1‖ ≤ t) : ‖s.prod - 1‖ ≤ Real.exp (s.card * t) - 1 := by
-  first
-  | exact @_root_.GlobalTheory.CuspFormEvaluationComplement.main
-  | exact _root_.GlobalTheory.CuspFormEvaluationComplement.main
-  | (apply _root_.GlobalTheory.CuspFormEvaluationComplement.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.CuspFormEvaluationComplement.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.CuspFormEvaluationComplement.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.CuspFormEvaluationComplement.main ..)
 
 theorem norm_det_one_add_sub_one_le_exp {n : Type*} [Fintype n] [DecidableEq n]
     (M : Matrix n n ℂ) {ε : ℝ} (hε : 0 ≤ ε) (hM : ∀ a b, ‖M a b‖ ≤ ε) :
@@ -99,7 +140,7 @@ theorem norm_det_one_add_sub_one_le_exp {n : Type*} [Fintype n] [DecidableEq n]
   have hc : (1 + M).charpoly.roots.card = Fintype.card n := by
     rw [← charpoly_natDegree_eq_dim (1 + M)]
     exact (IsAlgClosed.splits _).natDegree_eq_card_roots.symm
-  have h := norm_multisetProd_sub_one_le_exp _ (by positivity) hs
+  have h := _root_.GlobalTheory.CuspFormEvaluationComplement.main _ (by positivity) hs
   rwa [← det_eq_prod_roots_charpoly, hc] at h
 
 theorem norm_gram_sign_sub_le {r : ℕ} (j : Fin r → ℂ) (hj : ∀ a, ‖j a‖ = 1)
@@ -108,7 +149,7 @@ theorem norm_gram_sign_sub_le {r : ℕ} (j : Fin r → ℂ) (hj : ∀ a, ‖j a�
     ‖((1 + z)ᵀ * diagonal j * (1 + z).map star - diagonal j : Matrix (Fin r) (Fin r) ℂ) a b‖ ≤ 3 * δ := by
   have hstar : (1 + z : Matrix (Fin r) (Fin r) ℂ).map star = 1 + z.map star := by
     ext a b
-    by_cases h : a = b <;> simp [one_apply, h]
+    by_cases h : a = b <;> simp [h]
   have heq : (1 + z)ᵀ * diagonal j * (1 + z).map star - diagonal j =
       zᵀ * diagonal j + diagonal j * z.map star + zᵀ * diagonal j * z.map star := by
     rw [hstar]
@@ -145,7 +186,7 @@ theorem norm_prod_sign_mul_det_submatrix_sub_one_le {r : ℕ} (j : Fin r → ℂ
     by_cases h : a = b
     · subst h
       rcases hj (e a) with h | h <;> simp [h]
-    · simp [h, he.eq_iff, diagonal_apply]
+    · simp [h, he.eq_iff]
   have h2 := norm_det_one_add_sub_one_le_exp
     (diagonal (fun a => j (e a)) * (G - diagonal j).submatrix e e) hε (fun a b => by
       rw [diagonal_mul, norm_mul, submatrix_apply]
@@ -181,8 +222,7 @@ omit [NumberField E] [IsCMField E] in
 theorem gram_eq_transpose_mul_mul_map_star {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (x : Matrix (Fin r) (Fin r) ℂ) : gram τ G x = xᵀ * G.map τ * x.map star := by
   ext a b
-  simp only [gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, of_apply, mul_apply, transpose_apply, map_apply,
-    Finset.sum_mul]
+  simp only [gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, of_apply]
   simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
   rw [Finset.sum_comm]
   rfl
@@ -268,7 +308,7 @@ omit [NumberField E] [IsCMField E] in
 theorem rmul_one_frame {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x : Frame Ψ r) :
     rmul x (fun _ a b => if a = b then 1 else 0) = x := by
   funext τ a b
-  simp [rmul, mat, Matrix.mul_apply, Matrix.one_apply]
+  simp [rmul, mat, Matrix.mul_apply]
 
 omit [NumberField E] [IsCMField E] in
 theorem differentiable_rmul_add {Ψ : Finset (E →+* ℂ)} {r : ℕ} (x I : Frame Ψ r) :
@@ -321,7 +361,7 @@ theorem pnorm_near_half_max {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (P : Frame
     exact ⟨h1, s, hs.trans (by rw [← hL]; nlinarith), hs' P⟩
   have hexp : ∀ s : ℝ, |s| ≤ 0.09 → 0.91 ≤ Real.exp s := fun s hs => by
     linarith [Real.add_one_le_exp s, (abs_le.1 hs).1]
-  have hsch := schwarz_ball_bound (Frame X.Ψ r) (fun z => P (rmul x (I + z))) δ (2.1 * S) hδ0
+  have hsch := _root_.PI.UnitaryGroupMassFormula.TBNum.schwarzBall (Frame X.Ψ r) (fun z => P (rmul x (I + z))) δ (2.1 * S) hδ0
     (hP.comp (differentiable_rmul_add x I).differentiableOn fun z hz =>
       (key z (mem_ball_zero_iff.1 hz).le).1)
     (fun z hz => by
@@ -349,3 +389,6 @@ theorem pnorm_near_half_max {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (P : Frame
   nlinarith [norm_nonneg (P (rmul x A))]
 
 end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.NormProdSignMulDetSubmatrixSubOneLe =====

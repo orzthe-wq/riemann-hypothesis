@@ -128,7 +128,7 @@ private theorem xJac_one (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField 
     rw [ffsum p _ _ (Nat.mul_pos hd0 (hval a t ha)) (hlt _) (Nat.mul_pos hd0 (hval b t hb)) (hlt _),
       hd, ← mul_add, mul_comm M, Nat.mul_lt_mul_left hd0, carry]
     split_ifs with h
-    · simp only [one_ne_zero, iff_false, not_lt]; exact h
+    · simp only [iff_false, not_lt]; exact h
     · simp only [iff_true]; omega
 
 private theorem xJac_step (M : ℕ) [NeZero M] (k : ℕ) (t : ZMod M) :

@@ -56,4 +56,4 @@ theorem _root_.GlobalTheory.T.realPolynomialVector_reached_by_realDatum : ∀ {D
     (om : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W) (om' : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V' Γ.W) (h : IsTripleOf W M t i j e Bs Γ X), IsTriple Bs Γ X om om' → ∀ n Φ τ τ', HasFlip B t ρ i j n Φ τ τ' →
     ∀ φ, IsFinPart Γ.M X.T φ → ∀ f₀, f₀ ≠ 0 → Γ.M.IsGauss Bs.ψ Bs.emb f₀ → IsDatumA W e Γ τ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ φ) →
     ∀ f ∈ Γ.M.Pol Bs.ψ Bs.emb, ∃ a, IsDatumA W e Γ (tensT W a τ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) := by
-  first | exact @GlobalTheory.BigNZ.DatReal.datum_real | exact GlobalTheory.BigNZ.DatReal.datum_real | (intros; apply GlobalTheory.BigNZ.DatReal.datum_real <;> assumption)
+  first | exact @GlobalTheory.BigNZ.DatReal.datum_real

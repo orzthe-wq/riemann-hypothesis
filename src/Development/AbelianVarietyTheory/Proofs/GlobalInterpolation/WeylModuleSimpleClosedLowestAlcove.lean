@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.GlobalTheta.WeylDualWeylLatticesAgreeOfLowestAlcove
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HighestWeightVectorMemOfLtStableDualWeylStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsRowOperatorStableDualWeylAndGLSubmodulesStatement
+public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.GoodTopBot
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HighestWeightVectorMemOfLtStableDualWeyl
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IsRowOperatorStableDualWeylAndGLSubmodules
 import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 import Mathlib.Algebra.Order.Floor.Extended
@@ -43,7 +44,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.GoodTopBot
 
 @[expose] public section
 
@@ -83,8 +83,8 @@ theorem inducedSimpleLowestAlcove : GlobalTheory.Published.InducedSimpleLowestAl
   refine ⟨hne, fun M hM hG => ?_⟩
   by_contra hc
   push_neg at hc
-  have key := GlobalTheory.T.highestWeightVector_mem_of_lt_stable_dualWeyl p hp k N lam.natW hN.1 (natW_alcove_bound p N lam hl)
-  have good := GlobalTheory.T.isRowOperatorStable_dualWeyl_and_GLSubmodules k N lam
+  have key := _root_.GlobalTheory.Alc.hw_mem_of_lt p hp k N lam.natW hN.1 (natW_alcove_bound p N lam hl)
+  have good := _root_.GlobalTheory.Alc.good_nablaSq_and_submodules k N lam
   have h1 := (key ⊥ M (good_top_bot k N N).2 (good.2 M hG) (bot_lt_iff_ne_bot.2 hc.1) hM).1
   have h2 := (key M (nablaSq k N lam) (good.2 M hG) good.1 (lt_of_le_of_ne hM hc.2) le_rfl).2
   exact h2 h1

@@ -1,15 +1,23 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.DegUnif
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThickenedPointToTorusExtensionGenerator
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsGenLiftOfIsNilpotent
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsMonHomOfMul
 public import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsUniqueTorusCompat
-public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPullLam
-public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivTransport
-public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CoeffMemOfPoints
-public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EqOneOfGroupLike
+public import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+public import Mathlib.Algebra.MonoidAlgebra.Basic
+public import Mathlib.RingTheory.Ideal.Maps
+public import Mathlib.RingTheory.Ideal.BigOperators
+public import Mathlib.RingTheory.Nilpotent.Basic
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCompRedIff
+public import Mathlib.Algebra.Algebra.Operations
+public import Mathlib.Algebra.MonoidAlgebra.MapDomain
+public import Mathlib.RingTheory.Ideal.Defs
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -25,7 +33,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -33,7 +40,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,10 +52,960 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.RingTheory.PiTensorProduct
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPullLam, Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivTransport, Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitCoboundaryOfMulCocycle, Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CoeffMemOfPoints, Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EqOneOfGroupLike, Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivLiftOfIsNilpotent
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPullLam =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPullLam", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CubeVal\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.DegUnif\npublic import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThickenedPointToTorusExtensionGenerator\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsGenLiftOfIsNilpotent\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsMonHomOfMul\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull\nimport Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsUniqueTorusCompat\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open scoped CategoryTheory.Obj
+attribute [local instance] Over.cartesianMonoidalCategory
+open GlobalTheory.UU
+
+noncomputable section
+namespace GlobalTheory.UU.BiLift
+
+section Gen
+variable {X Y Y₀ : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
+
+theorem exists_val_lift (hL : L.IsLB) (f : Y₀ ⟶ Y) [IsClosedImmersion f] [Surjective f] [IsAffine Y]
+    (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t₀ : LB.Gen (LB.LinComb L (fun k => f ≫ φ k) ε)) (ht₀ : t₀.IsGen) :
+    ∃ t : LB.Gen (LB.LinComb L φ ε), t.IsGen ∧
+      ∀ (Z : Scheme.{0}) (r : Z ⟶ Y₀) (z : Z) (J), Good L z J → val t (r ≫ f) z J = val t₀ r z J := by
+  have le : ∀ j : PUnit → K → L.ι, ((LB.LinComb L φ ε).pull f).U j ≤ LB.wchart L (fun k => f ≫ φ k) (j PUnit.unit) :=
+    fun j y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (mem_pull.1 hy) k
+  let c : LB.Gen ((LB.LinComb L φ ε).pull f) := ⟨fun j => res (le j) (t₀.s (j PUnit.unit))⟩
+  have hc : c.IsGen := isGen_of_gm (M := LB.LinComb L φ ε) c fun y j j' hj hj' => by
+    refine (gm_res _ y _ hj _).trans ((gen_trans ht₀ (𝟙 Y₀) y (le j hj) (le j' hj')).trans
+      (congrArg₂ (· * ·) ?_ (gm_res _ y _ hj' _).symm))
+    unfold trF
+    symm
+    rw [Fintype.prod_unique, zpow_one]
+    refine (gm_linComb L φ ε (𝟙 Y₀ ≫ f) y _ _ (mem_pull.1 hj) (mem_pull.1 hj')).trans ?_
+    simp only [Category.assoc]
+  obtain ⟨t, ht, e⟩ := GenLift.exists_genPull_eq f (LB.isLB_linComb hL φ ε) c hc
+  refine ⟨t, ht, fun Z r z J hJ => ?_⟩
+  rw [val_of t (r ≫ f) z J (fun k => J (r ≫ f ≫ φ k)) (fun k => by rw [Category.assoc])]
+  have hm := hJ.mem (fun k => f ≫ φ k) r
+  have hm' : r z ∈ ((LB.LinComb L φ ε).pull f).U (fun _ k => J (r ≫ f ≫ φ k)) :=
+    mem_pull.2 (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hm k)
+  have e' := congrArg (fun q : LB.Gen ((LB.LinComb L φ ε).pull f) => gm r z _ (q.s fun _ k => J (r ≫ f ≫ φ k))) e
+  refine Eq.trans ?_ (e'.trans (gm_res r z _ hm' _))
+  exact ((gm_res r z _ hm' _).trans (gm_pull r f z _ (mem_pull.1 hm') _)).symm
+
+theorem unit_eq_one {u : Γ(Y, ⊤)ˣ}
+    (h : ∀ y : Y, ∃ (W : Y.Opens) (hy : y ∈ W), gm W.ι (⟨y, hy⟩ : W.toScheme) ⊤ u = 1) : u = 1 :=
+  unit_ext fun y _ => by
+    obtain ⟨W, hy, e⟩ := h y
+    exact gm_inj W.ι (⟨y, hy⟩ : W.toScheme) (U := ⊤) (U' := ⊤) trivial trivial (e.trans (map_one _).symm)
+
+end Gen
+
+variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : RigLB G} (c : CubicalStr G L)
+
+def lam {Y : Over S} (a x : Y ⟶ G) : Fin 4 → (Y.left ⟶ G.left) := ![(a * x).left, a.left, x.left, (1 : Y ⟶ G).left]
+
+theorem comp_lam {Y Z : Over S} (r : Z ⟶ Y) (a x : Y ⟶ G) (k : Fin 4) : r.left ≫ lam a x k = lam (r ≫ a) (r ≫ x) k := by
+  fin_cases k
+  · exact congrArg (·.left) (MonObj.comp_mul r a x)
+  · rfl
+  · rfl
+  · exact congrArg (·.left) (MonObj.comp_one (M := G) r)
+
+theorem prod_lam {Y : Over S} (a x : Y ⟶ G) {U : Type} [CommGroup U] (h : (Y.left ⟶ G.left) → U) :
+    ∏ k, h (lam a x k) ^ Oε k = h (a * x).left * (h a.left)⁻¹ * (h x.left)⁻¹ * h (1 : Y ⟶ G).left := by
+  simp [Fin.prod_univ_four, lam, Oε]
+
+theorem exists_pull_lam {Y Z : Over S} (r : Z ⟶ Y) {a x : Y ⟶ G} {a' x' : Z ⟶ G} (ha : r ≫ a = a') (hx : r ≫ x = x')
+    (s : LB.Gen (LB.LinComb L.L (lam a x) Oε)) (hs : s.IsGen) :
+    ∃ s' : LB.Gen (LB.LinComb L.L (lam a' x') Oε), s'.IsGen ∧
+      ∀ (W : Scheme.{0}) (q : W ⟶ Z.left) (z : W) (J), Good L.L z J → val s' q z J = val s (q ≫ r.left) z J := by
+  subst ha hx
+  obtain ⟨s', hs', e⟩ := exists_gen L.isLB (φ' := lam (r ≫ a) (r ≫ x)) (ε' := Oε)
+    (fun U _ h => by simp only [comp_lam]) (LB.pullGen L.L _ _ s r.left) (DVR.pullGen_isGen _ _ _ _ hs _)
+  exact ⟨s', hs', fun W q z J hJ => (e W q z J hJ).trans (val_pull hJ _ _ _)⟩
+
+theorem exists_defect {Y : Over S} (a b x : Y ⟶ G) {φ₁ φ₂ φ₃ : Fin 4 → (Y.left ⟶ G.left)}
+    (h₁ : FormEq φ₁ Oε (lam (a * b) x) Oε) (h₂ : FormEq φ₂ Oε (lam a x) Oε) (h₃ : FormEq φ₃ Oε (lam b x) Oε)
+    (s₁ : LB.Gen (LB.LinComb L.L φ₁ Oε)) (s₂ : LB.Gen (LB.LinComb L.L φ₂ Oε)) (s₃ : LB.Gen (LB.LinComb L.L φ₃ Oε))
+    (g₁ : s₁.IsGen) (g₂ : s₂.IsGen) (g₃ : s₃.IsGen) :
+    ∃ f : Γ(Y.left, ⊤)ˣ, ∀ (Z : Over S) (r : Z ⟶ Y) (z : Z.left) (J), Good L.L z J →
+      val s₁ r.left z J = gm r.left z ⊤ f * (cubV c z J (r ≫ a) (r ≫ b) (r ≫ x) * val s₂ r.left z J * val s₃ r.left z J) := by
+  obtain ⟨f, hf⟩ := TorusCoord.exists_ratio L.isLB (fun U _ h => by
+      refine Eq.trans ?_ (DVR.prod_sum₂ (K := thK ⊕ Fin 4) (K' := Fin 4) (U := U) _
+        (DVR.prod_sum₂ (K := thK) (K' := Fin 4) (U := U) _ (prod_cub a b x h) ((h₂ U h).trans (prod_lam a x h)))
+        ((h₃ U h).trans (prod_lam b x h))).symm
+      rw [h₁ U h, prod_lam]
+      apply Additive.ofMul.injective
+      simp only [ofMul_mul, ofMul_inv]
+      abel) s₁ g₁
+    (LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _
+      (LB.pullGen L.L (thφ G (x3 G)) thε c.t (lift a (lift b x)).left) s₂) s₃)
+    (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ c.isGen _) g₂) g₃)
+  refine ⟨f, fun Z r z J hJ => (hf _ r.left z J hJ).trans (congrArg _ ?_)⟩
+  exact (val_mul hJ _ _ _).trans (congrArg (· * _) ((val_mul hJ _ _ _).trans (congrArg (· * _) (val_cub c r hJ _ _ _))))
+
+omit [GrpObj G] [IsCommMonObj G] in
+theorem formEq_refl {Y : Over S} (φ : Fin 4 → (Y.left ⟶ G.left)) : FormEq φ Oε φ Oε := fun _ _ _ => rfl
+
+theorem formEq_symm {Y : Over S} (a x : Y ⟶ G) : FormEq (lam a x) Oε (lam x a) Oε := fun U _ h => by
+  rw [prod_lam, prod_lam, mul_comm x a, mul_right_comm (h _) (h a.left)⁻¹]
+
+variable {H Y : Over S} [GrpObj H] {i : H ⟶ G} [IsMonHom i] {x : Y ⟶ G}
+
+theorem exists_defect₁ (s : LB.Gen (LB.LinComb L.L (lam (fst H Y ≫ i) (snd H Y ≫ x)) Oε)) (hs : s.IsGen) :
+    ∃ f : Γ((H ⊗ H ⊗ Y).left, ⊤)ˣ, ∀ (Z : Over S) (t t' : Z ⟶ H) (y : Z ⟶ Y) (z : Z.left) (J), Good L.L z J →
+      val s (lift (t * t') y).left z J = gm (lift t (lift t' y)).left z ⊤ f *
+        (cubV c z J (t ≫ i) (t' ≫ i) (y ≫ x) * val s (lift t y).left z J * val s (lift t' y).left z J) := by
+  let p : H ⊗ H ⊗ Y ⟶ H := fst _ _
+  let p' : H ⊗ H ⊗ Y ⟶ H := snd _ _ ≫ fst _ _
+  let q : H ⊗ H ⊗ Y ⟶ Y := snd _ _ ≫ snd _ _
+  obtain ⟨s₁, g₁, e₁⟩ := exists_pull_lam (lift (p * p') q) (a' := p ≫ i * p' ≫ i) (x' := q ≫ x)
+    (by rw [lift_fst_assoc, MonObj.mul_comp]) (lift_snd_assoc _ _ _) s hs
+  obtain ⟨s₂, g₂, e₂⟩ := exists_pull_lam (lift p q) (lift_fst_assoc _ _ _) (lift_snd_assoc _ _ _) s hs
+  obtain ⟨s₃, g₃, e₃⟩ := exists_pull_lam (lift p' q) (lift_fst_assoc _ _ _) (lift_snd_assoc _ _ _) s hs
+  obtain ⟨f, hf⟩ := exists_defect c _ _ _ (formEq_refl _) (formEq_refl _) (formEq_refl _) s₁ s₂ s₃ g₁ g₂ g₃
+  refine ⟨f, fun Z t t' y z J hJ => ?_⟩
+  have e := hf Z (lift t (lift t' y)) z J hJ
+  rw [e₁ _ _ z J hJ, e₂ _ _ z J hJ, e₃ _ _ z J hJ] at e
+  simpa only [← Over.comp_left, comp_lift, MonObj.comp_mul, p, p', q, lift_fst, lift_snd, lift_fst_assoc,
+    lift_snd_assoc, Category.assoc] using e
+
+
+omit [IsMonHom i] [GrpObj H] in
+theorem exists_defect₂ (s : LB.Gen (LB.LinComb L.L (lam (fst H G ≫ i) (snd H G)) Oε)) (hs : s.IsGen) :
+    ∃ f : Γ((H ⊗ G ⊗ G).left, ⊤)ˣ, ∀ (Z : Over S) (t : Z ⟶ H) (y : Z ⟶ G ⊗ G) (z : Z.left) (J), Good L.L z J →
+      val s (lift t (y ≫ fst _ _ * y ≫ snd _ _)).left z J = gm (lift t y).left z ⊤ f *
+        (cubV c z J (t ≫ i) (y ≫ fst _ _) (y ≫ snd _ _) * val s (lift t (y ≫ fst _ _)).left z J *
+          val s (lift t (y ≫ snd _ _)).left z J) := by
+  let p : H ⊗ G ⊗ G ⟶ H := fst _ _
+  let q : H ⊗ G ⊗ G ⟶ G := snd _ _ ≫ fst _ _
+  let q' : H ⊗ G ⊗ G ⟶ G := snd _ _ ≫ snd _ _
+  obtain ⟨s₁, g₁, e₁⟩ := exists_pull_lam (lift p (q * q')) (lift_fst_assoc _ _ _) (lift_snd _ _) s hs
+  obtain ⟨s₂, g₂, e₂⟩ := exists_pull_lam (lift p q) (lift_fst_assoc _ _ _) (lift_snd _ _) s hs
+  obtain ⟨s₃, g₃, e₃⟩ := exists_pull_lam (lift p q') (lift_fst_assoc _ _ _) (lift_snd _ _) s hs
+  obtain ⟨f, hf⟩ := exists_defect c _ _ _ (formEq_symm _ _) (formEq_symm _ _) (formEq_symm _ _) s₁ s₂ s₃ g₁ g₂ g₃
+  refine ⟨f, fun Z t y z J hJ => ?_⟩
+  have e := hf Z (lift t y) z J hJ
+  rw [e₁ _ _ z J hJ, e₂ _ _ z J hJ, e₃ _ _ z J hJ, (isCub_cubV c hJ).s12, (isCub_cubV c hJ).s01] at e
+  simpa only [← Over.comp_left, comp_lift, MonObj.comp_mul, p, q, q', lift_fst, lift_snd, lift_fst_assoc,
+    lift_snd_assoc, Category.assoc] using e
+
+end GlobalTheory.UU.BiLift
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPullLam =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivTransport =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivTransport", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton\npublic import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsUniqueTorusCompat\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open scoped CategoryTheory.Obj
+attribute [local instance] Over.cartesianMonoidalCategory
+open GlobalTheory.UU
+
+noncomputable section
+namespace GlobalTheory.UU.BiTransport
+
+variable {S S₀ : Scheme.{0}} {ρ : S₀ ⟶ S}
+
+theorem lift_lam {G H T : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj H] (i : H ⟶ G) (t : T ⟶ H) (x : T ⟶ G)
+    (k : Fin 4) : (lift t x).left ≫ lamφ i k = (![(t ≫ i) * x, t ≫ i, x, 1] k : T ⟶ G).left := by
+  fin_cases k
+  · exact congrArg (fun q => q.left) (show lift t x ≫ ((fst H G ≫ i) * snd H G) = (t ≫ i) * x by
+      rw [MonObj.comp_mul, lift_fst_assoc, lift_snd])
+  · exact congrArg (fun q => q.left) (lift_fst_assoc t x i)
+  · exact congrArg (fun q => q.left) (lift_snd t x)
+  · exact congrArg (fun q => q.left) (show lift t x ≫ (1 : H ⊗ G ⟶ G) = 1 from MonObj.comp_one _)
+
+theorem prod_lam {G H T : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj H] (i : H ⟶ G) (t : T ⟶ H) (x : T ⟶ G)
+    {U : Type} [CommGroup U] (h : (T.left ⟶ G.left) → U) :
+    ∏ k, h ((lift t x).left ≫ lamφ i k) ^ Oε k =
+      h ((t ≫ i) * x).left * (h (t ≫ i).left)⁻¹ * (h x.left)⁻¹ * h (1 : T ⟶ G).left := by
+  simp only [lift_lam, Fin.prod_univ_four]
+  show h ((t ≫ i) * x).left ^ (1 : ℤ) * h (t ≫ i).left ^ (-1 : ℤ) * h x.left ^ (-1 : ℤ) *
+    h (1 : T ⟶ G).left ^ (1 : ℤ) = _
+  simp only [zpow_one, zpow_neg]
+
+theorem toBase_surj {A : Over S} {A₀ : Over S₀} {E : A₀.left ⟶ A.left} (hE : IsPullback E A₀.hom A.hom ρ)
+    (hw : E ≫ A.hom = A₀.hom ≫ ρ) {T : Over S₀} (x : Over.mk (T.hom ≫ ρ) ⟶ A) : ∃ x₀ : T ⟶ A₀, toBase hw x₀ = x :=
+  ⟨Over.homMk (hE.lift x.left T.hom (Over.w x)) (hE.lift_snd _ _ _), Over.OverMorphism.ext (hE.lift_fst _ _ _)⟩
+
+theorem exists_over {Z : Over S} (r : Z.left ⟶ S₀) (h : r ≫ ρ = Z.hom) : ∃ T : Over S₀, Z = Over.mk (T.hom ≫ ρ) := by
+  obtain ⟨Z, ⟨⟨⟩⟩, f⟩ := Z
+  change Z ⟶ S₀ at r
+  change Z ⟶ S at f
+  obtain rfl : r ≫ ρ = f := h
+  exact ⟨Over.mk r, rfl⟩
+
+section
+variable {G H : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj H] {G₀ H₀ : Over S₀} [GrpObj G₀] [IsCommMonObj G₀]
+  [GrpObj H₀] {F : G₀.left ⟶ G.left} {hw : F ≫ G.hom = G₀.hom ≫ ρ} {E : H₀.left ⟶ H.left}
+  {P : CP G} {P₀ : CP G₀} {w : LB.Iso P₀.L.L (P.L.L.pull F)} {i : H ⟶ G} {i₀ : H₀ ⟶ G₀}
+
+
+omit [GrpObj G] [IsCommMonObj G] [GrpObj H] [GrpObj G₀] [IsCommMonObj G₀] [GrpObj H₀] in
+theorem toBase_comp (hE : E ≫ H.hom = H₀.hom ≫ ρ) (hi : E ≫ i.left = i₀.left ≫ F) {T : Over S₀} (t : T ⟶ H₀) :
+    toBase hE t ≫ i = toBase hw (t ≫ i₀) := Over.OverMorphism.ext (by
+  show (t.left ≫ E) ≫ i.left = (t.left ≫ i₀.left) ≫ F
+  rw [Category.assoc, hi, Category.assoc])
+
+theorem exists_gen_val [Mono ρ] (hF : IsPullback F G₀.hom G.hom ρ) (hE : IsPullback E H₀.hom H.hom ρ)
+    (hP : IsCPMap P₀ P ρ F hw w) (hi : E ≫ i.left = i₀.left ≫ F)
+    (σ : LB.Gen (LB.LinComb P₀.L.L (lamφ i₀) Oε)) (hσ : σ.IsGen) :
+    ∃ s : LB.Gen (LB.LinComb P.L.L (fun k => pullback.fst (H ⊗ G).hom ρ ≫ lamφ i k) Oε), s.IsGen ∧
+      ∀ (T : Over S₀) (t : T ⟶ H₀) (x : T ⟶ G₀) (a : T.left ⟶ pullback (H ⊗ G).hom ρ),
+        a ≫ pullback.fst _ _ = (lift (toBase hE.w t) (toBase hw x)).left →
+        ∀ (z : T.left) (J' J), Good P₀.L.L z J' → Good P.L.L z J →
+        ∀ W : (T ⟶ G₀) → (T.left.presheaf.stalk z)ˣ, (∀ y, W y = gw w y.left z (J (y.left ≫ F)) (J' y.left)) →
+          val s a z J = W ((t ≫ i₀) * x) * (W (t ≫ i₀))⁻¹ * (W x)⁻¹ * W 1 * val σ (lift t x).left z J' := by
+  let Y : Over S₀ := Over.mk (pullback.snd (H ⊗ G).hom ρ)
+  let j : Over.mk (Y.hom ≫ ρ) ⟶ H ⊗ G := Over.homMk (pullback.fst (H ⊗ G).hom ρ) pullback.condition
+  obtain ⟨t₀, ht₀⟩ := toBase_surj hE hE.w (j ≫ fst H G)
+  obtain ⟨x₀, hx₀⟩ := toBase_surj hF hw (j ≫ snd H G)
+  have hj : pullback.fst (H ⊗ G).hom ρ = (lift (toBase hE.w t₀) (toBase hw x₀)).left := by
+    rw [ht₀, hx₀, ← comp_lift, lift_fst_snd, Category.comp_id]; rfl
+  have hφ : (fun k => pullback.fst (H ⊗ G).hom ρ ≫ lamφ i k) = fun k => ((lift t₀ x₀).left ≫ lamφ i₀ k) ≫ F := by
+    funext k
+    refine ((congrArg (· ≫ lamφ i k) hj).trans (lift_lam i _ _ k)).trans
+      (Eq.trans ?_ (congrArg (· ≫ F) (lift_lam i₀ t₀ x₀ k)).symm)
+    rw [toBase_comp (hw := hw) hE.w hi]
+    fin_cases k
+    · exact (congrArg (fun q => q.left) (hP.mul Y (t₀ ≫ i₀) x₀)).symm
+    · rfl
+    · rfl
+    · exact (congrArg (fun q => q.left) (map_one (toBaseHom hP.mul Y))).symm
+  obtain ⟨s, hs, hv⟩ := exists_up ((isGen_iff w).1 hP.gen) P.L.isLB P₀.L.isLB
+    (LB.pullGen P₀.L.L (lamφ i₀) Oε σ (lift t₀ x₀).left) (DVR.pullGen_isGen _ _ _ _ hσ _)
+  rw [hφ]
+  refine ⟨s, hs, fun T t x a ha z J' J hJ' hJ W hW => ?_⟩
+  have e₀ : a ≫ pullback.snd (H ⊗ G).hom ρ = T.hom := by
+    rw [← cancel_mono ρ, Category.assoc, ← pullback.condition, ← Category.assoc, ha]
+    exact Over.w _
+  let a' : T ⟶ Y := Over.homMk a e₀
+  have e₁ : a' ≫ t₀ = t := Over.OverMorphism.ext (hE.hom_ext (by
+    have := congrArg (fun q => a ≫ q.left) ht₀
+    refine ((Category.assoc _ _ _).trans this).trans ?_
+    refine ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ (fst H G).left) ha)).trans ?_
+    exact congrArg (fun q => q.left) (lift_fst (toBase hE.w t) (toBase hw x))) ((Over.w _).trans (Over.w _).symm))
+  have e₂ : a' ≫ x₀ = x := Over.OverMorphism.ext (hF.hom_ext (by
+    have := congrArg (fun q => a ≫ q.left) hx₀
+    refine ((Category.assoc _ _ _).trans this).trans ?_
+    refine ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ (snd H G).left) ha)).trans ?_
+    exact congrArg (fun q => q.left) (lift_snd (toBase hE.w t) (toBase hw x))) ((Over.w _).trans (Over.w _).symm))
+  have e₃ : a ≫ (lift t₀ x₀).left = (lift t x).left :=
+    congrArg (fun q => q.left) (show a' ≫ lift t₀ x₀ = lift t x by rw [comp_lift, e₁, e₂])
+  have v := hv _ a z _ _ (hJ.mem (fun k => ((lift t₀ x₀).left ≫ lamφ i₀ k) ≫ F) a)
+    (hJ'.mem (fun k => (lift t₀ x₀).left ≫ lamφ i₀ k) a)
+  refine v.trans (congrArg₂ (· * ·) ?_ ((val_pull hJ' σ _ a).trans (congrArg (fun q => val σ q z J') e₃)))
+  simp only [hW]
+  refine Eq.trans ?_ (prod_lam i₀ t x (fun q => gw w q z (J (q ≫ F)) (J' q)))
+  refine Finset.prod_congr rfl fun k _ => ?_
+  rw [← e₃]
+  simp only [Category.assoc]
+
+theorem exists_transport [Mono ρ] (hF : IsPullback F G₀.hom G.hom ρ) (hE : IsGrpPullback H₀ H ρ E)
+    (hP : IsCPMap P₀ P ρ F hw w) (hi : E ≫ i.left = i₀.left ≫ F) [IsMonHom i₀] (σ : BiTriv P₀.c i₀) :
+    ∃ s : LB.Gen (LB.LinComb P.L.L (fun k => pullback.fst (H ⊗ G).hom ρ ≫ lamφ i k) Oε), s.IsGen ∧
+      (∀ (Z : Over S) (t t' : Z ⟶ H) (x : Z ⟶ G) (a b d : Z.left ⟶ pullback (H ⊗ G).hom ρ),
+        a ≫ pullback.fst _ _ = (lift (t * t') x).left → b ≫ pullback.fst _ _ = (lift t x).left →
+        d ≫ pullback.fst _ _ = (lift t' x).left → ∀ (z : Z.left) (I), Good P.L.L z I →
+        val s a z I = cubV P.c z I (t ≫ i) (t' ≫ i) x * val s b z I * val s d z I) ∧
+      (∀ (Z : Over S) (t : Z ⟶ H) (x x' : Z ⟶ G) (a b d : Z.left ⟶ pullback (H ⊗ G).hom ρ),
+        a ≫ pullback.fst _ _ = (lift t (x * x')).left → b ≫ pullback.fst _ _ = (lift t x).left →
+        d ≫ pullback.fst _ _ = (lift t x').left → ∀ (z : Z.left) (I), Good P.L.L z I →
+        val s a z I = cubV P.c z I (t ≫ i) x x' * val s b z I * val s d z I) := by
+  obtain ⟨s, hs, hv⟩ := exists_gen_val hF hE.1 hP hi σ.s σ.gen
+  have ov : ∀ (Z : Over S) (a : Z.left ⟶ pullback (H ⊗ G).hom ρ) (p : Z ⟶ H ⊗ G), a ≫ pullback.fst _ _ = p.left →
+      ∃ T : Over S₀, Z = Over.mk (T.hom ≫ ρ) := fun Z a p ha => exists_over (a ≫ pullback.snd _ _) (by
+    rw [Category.assoc, ← pullback.condition, ← Category.assoc, ha]; exact Over.w p)
+  refine ⟨s, hs, fun Z t t' x a b d ha hb hd z I hI => ?_, fun Z t x x' a b d ha hb hd z I hI => ?_⟩
+  · obtain ⟨T, rfl⟩ := ov Z a _ ha
+    obtain ⟨t, rfl⟩ := toBase_surj hE.1 hE.1.w t
+    obtain ⟨t', rfl⟩ := toBase_surj hE.1 hE.1.w t'
+    obtain ⟨x, rfl⟩ := toBase_surj hF hw x
+    obtain ⟨J', hJ'⟩ := exists_good_pt P₀.L.isLB (Z := T.left) z
+    have m : toBase hE.1.w t * toBase hE.1.w t' = toBase hE.1.w (t * t') :=
+      Over.OverMorphism.ext (hE.2 T t t' _ _ rfl rfl)
+    rw [m] at ha
+    obtain ⟨W, hW⟩ : ∃ W : (T ⟶ G₀) → (T.left.presheaf.stalk z)ˣ,
+      ∀ y, W y = gw w y.left z (I (y.left ≫ F)) (J' y.left) := ⟨_, fun _ => rfl⟩
+    have c := (hP.vals T z J' I hJ' hI W hW).2.2 (t ≫ i₀) (t' ≫ i₀) x
+    have l := σ.law1 T t t' x z J' hJ'
+    have va := hv T _ _ a ha z J' I hJ' hI W hW
+    have vb := hv T _ _ b hb z J' I hJ' hI W hW
+    have vd := hv T _ _ d hd z J' I hJ' hI W hW
+    rw [MonObj.mul_comp] at va
+    rw [toBase_comp (hw := hw) hE.1.w hi, toBase_comp (hw := hw) hE.1.w hi]
+    show @id (T.left.presheaf.stalk z)ˣ (val s a z I) = @id (T.left.presheaf.stalk z)ˣ
+      (cubV P.c (T := Over.mk (T.hom ≫ ρ)) z I (toBase hw (t ≫ i₀)) (toBase hw (t' ≫ i₀)) (toBase hw x)) *
+        @id (T.left.presheaf.stalk z)ˣ (val s b z I) * @id (T.left.presheaf.stalk z)ˣ (val s d z I)
+    generalize @id (T.left.presheaf.stalk z)ˣ (cubV P.c (T := Over.mk (T.hom ≫ ρ)) z I (toBase hw (t ≫ i₀))
+      (toBase hw (t' ≫ i₀)) (toBase hw x)) = C at c ⊢
+    refine va.trans (Eq.trans ?_ (congrArg₂ (· * ·) (congrArg (C * ·) vb) vd).symm)
+    rw [l]
+    apply Additive.ofMul.injective
+    have c' := congrArg Additive.ofMul c
+    simp only [ofMul_mul, ofMul_inv] at c' ⊢
+    linear_combination (norm := abel) -c'
+  · obtain ⟨T, rfl⟩ := ov Z a _ ha
+    obtain ⟨t, rfl⟩ := toBase_surj hE.1 hE.1.w t
+    obtain ⟨x, rfl⟩ := toBase_surj hF hw x
+    obtain ⟨x', rfl⟩ := toBase_surj hF hw x'
+    obtain ⟨J', hJ'⟩ := exists_good_pt P₀.L.isLB (Z := T.left) z
+    rw [← hP.mul] at ha
+    obtain ⟨W, hW⟩ : ∃ W : (T ⟶ G₀) → (T.left.presheaf.stalk z)ˣ,
+      ∀ y, W y = gw w y.left z (I (y.left ≫ F)) (J' y.left) := ⟨_, fun _ => rfl⟩
+    have c := (hP.vals T z J' I hJ' hI W hW).2.2 (t ≫ i₀) x x'
+    have l := σ.law2 T t x x' z J' hJ'
+    have va := hv T _ _ a ha z J' I hJ' hI W hW
+    have vb := hv T _ _ b hb z J' I hJ' hI W hW
+    have vd := hv T _ _ d hd z J' I hJ' hI W hW
+    rw [← _root_.mul_assoc (t ≫ i₀)] at va
+    rw [toBase_comp (hw := hw) hE.1.w hi]
+    show @id (T.left.presheaf.stalk z)ˣ (val s a z I) = @id (T.left.presheaf.stalk z)ˣ
+      (cubV P.c (T := Over.mk (T.hom ≫ ρ)) z I (toBase hw (t ≫ i₀)) (toBase hw x) (toBase hw x')) *
+        @id (T.left.presheaf.stalk z)ˣ (val s b z I) * @id (T.left.presheaf.stalk z)ˣ (val s d z I)
+    generalize @id (T.left.presheaf.stalk z)ˣ (cubV P.c (T := Over.mk (T.hom ≫ ρ)) z I (toBase hw (t ≫ i₀))
+      (toBase hw x) (toBase hw x')) = C at c ⊢
+    refine va.trans (Eq.trans ?_ (congrArg₂ (· * ·) (congrArg (C * ·) vb) vd).symm)
+    rw [l]
+    apply Additive.ofMul.injective
+    have c' := congrArg Additive.ofMul c
+    simp only [ofMul_mul, ofMul_inv] at c' ⊢
+    linear_combination (norm := abel) -c'
+
+end
+
+theorem biTriv_transport : ∀ (S S₀ : Scheme.{0}) (ρ : S₀ ⟶ S) [Mono ρ] (X : Type) [AddCommGroup X] (G : Over S) [GrpObj G] [IsCommMonObj G] (G₀ : Over S₀) [GrpObj G₀] [IsCommMonObj G₀] (F : G₀.left ⟶ G.left) (hw), IsGrpPullback G₀ G ρ F → ∀ (P : CP G) (P₀ : CP G₀) (w), IsCPMap P₀ P ρ F hw w → ∀ (i : splitTorus _ X ⟶ G) (i₀ : splitTorus _ X ⟶ G₀), IsMonHom i → IsMonHom i₀ → TorusCompat ρ F i₀ i → BiTriv P₀.c i₀ → ∃ s : LB.Gen (LB.LinComb P.L.L (fun k => pullback.fst (splitTorus S X ⊗ G).hom ρ ≫ lamφ i k) Oε), s.IsGen ∧ (∀ (Z : Over S) (t t' : Z ⟶ splitTorus S X) (x : Z ⟶ G) (a b d : Z.left ⟶ pullback (splitTorus S X ⊗ G).hom ρ), a ≫ pullback.fst _ _ = (lift (t * t') x).left → b ≫ pullback.fst _ _ = (lift t x).left → d ≫ pullback.fst _ _ = (lift t' x).left → ∀ (z : Z.left) (I), Good P.L.L z I → val s a z I = cubV P.c z I (t ≫ i) (t' ≫ i) x * val s b z I * val s d z I) ∧ (∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (x x' : Z ⟶ G) (a b d : Z.left ⟶ pullback (splitTorus S X ⊗ G).hom ρ), a ≫ pullback.fst _ _ = (lift t (x * x')).left → b ≫ pullback.fst _ _ = (lift t x).left → d ≫ pullback.fst _ _ = (lift t x').left → ∀ (z : Z.left) (I), Good P.L.L z I → val s a z I = cubV P.c z I (t ≫ i) x x' * val s b z I * val s d z I) := by
+  intro S S₀ ρ _ X _ G _ _ G₀ _ _ F hw hF P P₀ w hP i i₀ _ _ hi σ
+  exact exists_transport hF.1 (SplitTorus.isGrpPullback_bcMap ρ X) hP (torusCompat_iff.1 hi) σ
+
+end GlobalTheory.UU.BiTransport
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivTransport =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitCoboundaryOfMulCocycle =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitCoboundaryOfMulCocycle", "h": "module\n\npublic import Mathlib.Algebra.MonoidAlgebra.Basic\npublic import Mathlib.RingTheory.Ideal.Maps\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.RingTheory.Ideal.BigOperators\npublic import Mathlib.RingTheory.Nilpotent.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+open AddMonoidAlgebra
+
+namespace GlobalTheory.MulCocycle
+
+theorem finsupp_homotopy {X : Type*} [Zero X] {N : Type*} [AddCommGroup N] (f : X × X →₀ N)
+    (g : X →₀ N) (hg : ∀ x, g x = f (0, x)) (q : X × X) :
+    (f.mapDomain (fun p => ((0 : X), p.1, p.2)) - f.mapDomain (fun p => (p.1, p.1, p.2)) +
+        f.mapDomain (fun p => (p.1, p.2, p.2)) - f.mapDomain (fun p => (p.1, p.2, (0 : X))) :
+          X × X × X →₀ N) (0, q) =
+      (f - (g.mapDomain (fun y => ((0 : X), y)) - g.mapDomain (fun y => (y, y)) +
+        g.mapDomain (fun y => (y, (0 : X)))) : X × X →₀ N) q := by
+  classical
+  let s : (X × X →₀ N) →+ (X →₀ N) :=
+    Finsupp.comapDomain.addMonoidHom (f := fun x => ((0 : X), x)) (Prod.mk_right_injective 0)
+  have hs : ∀ f x, s f x = f (0, x) := fun _ _ => rfl
+  obtain rfl : g = s f := Finsupp.ext hg
+  clear hg
+  induction f using Finsupp.induction_linear with
+  | zero => simp
+  | add f g hf hg =>
+    simp only [map_add (f := _), Finsupp.mapDomain_add, Finsupp.add_apply, Finsupp.sub_apply] at hf hg ⊢
+    rw [← sub_eq_zero] at hf hg ⊢
+    rw [← add_zero (0 : N)]
+    nth_rewrite 1 [← hf]
+    rw [← hg]; abel
+  | single p m =>
+    obtain ⟨y, z⟩ := p
+    by_cases h : y = 0
+    · subst h
+      have : s (Finsupp.single (0, z) m) = Finsupp.single z m := by
+        ext x; simp [hs, Finsupp.single_apply]
+      simp [this, Finsupp.single_apply]
+      abel
+    · have : s (Finsupp.single (y, z) m) = 0 := by
+        ext x; simp [hs, h]
+      simp [this, Finsupp.single_apply, h]
+
+variable {B : Type*} [CommRing B] {X Y : Type*} [AddCommGroup X] [AddCommGroup Y]
+
+theorem mem_map_algebraMap_iff (J : Ideal B) (b : B[X]) :
+    b ∈ J.map (algebraMap B B[X]) ↔ ∀ x, b.coeff x ∈ J := by
+  constructor
+  · intro hb
+    have hb' : b ∈ J • (⊤ : Submodule B B[X]) := by
+      rw [Ideal.smul_top_eq_map]; exact hb
+    refine Submodule.smul_induction_on hb' (p := fun b => ∀ x, b.coeff x ∈ J) ?_ ?_
+    · intro r hr m _ x
+      simpa using J.mul_mem_right _ hr
+    · intro m m' h h' x
+      simpa using J.add_mem (h x) (h' x)
+  · intro h
+    rw [← AddMonoidAlgebra.sum_coeff_single b]
+    refine Ideal.sum_mem _ fun x _ => ?_
+    have : single x (b.coeff x) = single x 1 * algebraMap B B[X] (b.coeff x) := by
+      simp [AddMonoidAlgebra.single_mul_single]
+    rw [this]
+    exact Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (h x))
+
+theorem algHom_mem_map {C C' : Type*} [CommRing C] [Algebra B C] [CommRing C'] [Algebra B C']
+    {J : Ideal B} (φ : C →ₐ[B] C') {a : C} (ha : a ∈ J.map (algebraMap B C)) :
+    φ a ∈ J.map (algebraMap B C') := by
+  have := Ideal.mem_map_of_mem (φ : C →+* C') ha
+  rwa [Ideal.map_map, AlgHom.comp_algebraMap] at this
+
+theorem mul_mem_map_sq {C : Type*} [CommRing C] [Algebra B C] {J : Ideal B} {a b : C}
+    (ha : a ∈ J.map (algebraMap B C)) (hb : b ∈ J.map (algebraMap B C)) :
+    a * b ∈ (J ^ 2).map (algebraMap B C) := by
+  rw [Ideal.map_pow, pow_two]
+  exact Ideal.mul_mem_mul ha hb
+
+theorem exists_unit_of_faces {R₁ R₂ R₃ : Type*} [CommRing R₁] [CommRing R₂] [CommRing R₃]
+    [Algebra B R₁] [Algebra B R₂] [Algebra B R₃]
+    (e₀ e₁ e₂ : R₁ →ₐ[B] R₂) (d₀ d₁ d₂ d₃ : R₂ →ₐ[B] R₃)
+    (h₁ : ∀ w, d₁ (e₁ w) = d₂ (e₁ w)) (h₂ : ∀ w, d₁ (e₂ w) = d₃ (e₁ w))
+    (h₃ : ∀ w, d₁ (e₀ w) = d₀ (e₀ w)) (h₄ : ∀ w, d₃ (e₂ w) = d₂ (e₂ w))
+    (h₅ : ∀ w, d₃ (e₀ w) = d₀ (e₂ w)) (h₆ : ∀ w, d₂ (e₀ w) = d₀ (e₁ w))
+    (H : ∀ (K L : Ideal B) (φ : R₂), φ ∈ K.map (algebraMap B R₂) →
+      d₀ φ - d₁ φ + d₂ φ - d₃ φ ∈ L.map (algebraMap B R₃) →
+      ∃ ψ ∈ K.map (algebraMap B R₁), φ - (e₀ ψ - e₁ ψ + e₂ ψ) ∈ L.map (algebraMap B R₂))
+    (n : ℕ) : ∀ (K : Ideal B), K ^ 2 ^ n = ⊥ → ∀ f : R₂, f - 1 ∈ K.map (algebraMap B R₂) →
+      d₁ f * d₃ f = d₂ f * d₀ f →
+      ∃ g : R₁ˣ, g.val - 1 ∈ K.map (algebraMap B R₁) ∧ f * e₁ g.val = e₂ g.val * e₀ g.val := by
+  induction n with
+  | zero =>
+    intro K hK f hf _
+    rw [pow_zero, pow_one] at hK
+    rw [hK, Ideal.map_bot, Ideal.mem_bot, sub_eq_zero] at hf
+    exact ⟨1, by simp, by simp [hf]⟩
+  | succ n ih =>
+    intro K hK f hf hc
+    obtain ⟨φ, rfl⟩ : ∃ φ, f = 1 + φ := ⟨f - 1, by ring⟩
+    rw [add_sub_cancel_left] at hf
+    have hc' := hc
+    simp only [map_add (f := _), map_one] at hc'
+    obtain ⟨ψ, hψ, e⟩ := H K (K ^ 2) φ hf (by
+      have : d₀ φ - d₁ φ + d₂ φ - d₃ φ = d₁ φ * d₃ φ - d₂ φ * d₀ φ := by
+        linear_combination -hc'
+      rw [this]
+      exact sub_mem (mul_mem_map_sq (algHom_mem_map _ hf) (algHom_mem_map _ hf))
+        (mul_mem_map_sq (algHom_mem_map _ hf) (algHom_mem_map _ hf)))
+    have hn : IsNilpotent ψ := ⟨2 ^ (n + 1), by
+      have := Ideal.pow_mem_pow hψ (2 ^ (n + 1))
+      rwa [← Ideal.map_pow, hK, Ideal.map_bot, Ideal.mem_bot] at this⟩
+    obtain ⟨u, hu⟩ := hn.isUnit_one_add
+    have huv : u.val * (u⁻¹).val = 1 := u.mul_inv
+    generalize (u⁻¹).val = v at huv
+    have k (e : R₁ →ₐ[B] R₂) : e u.val * e v = 1 := by rw [← map_mul, huv, map_one]
+    have k' (d : R₂ →ₐ[B] R₃) (e : R₁ →ₐ[B] R₂) : d (e u.val) * d (e v) = 1 := by
+      rw [← map_mul, k, map_one]
+    obtain ⟨g, hg, hg'⟩ := ih (K ^ 2) (by rw [← pow_mul, ← pow_succ', hK])
+      ((1 + φ) * e₁ u.val * e₂ v * e₀ v) (by
+        have : (1 + φ) * e₁ u.val * e₂ v * e₀ v - 1 =
+            ((φ - (e₀ ψ - e₁ ψ + e₂ ψ)) + φ * e₁ ψ - e₂ ψ * e₀ ψ) * (e₂ v * e₀ v) := by
+          have k₀ := k e₀
+          have k₂ := k e₂
+          rw [hu] at k₀ k₂ ⊢
+          simp only [map_add (f := _), map_one] at k₀ k₂ ⊢
+          linear_combination ((1 + e₀ ψ) * e₀ v) * k₂ + k₀
+        rw [this]
+        exact Ideal.mul_mem_right _ _ (sub_mem (add_mem e
+          (mul_mem_map_sq hf (algHom_mem_map _ hψ)))
+          (mul_mem_map_sq (algHom_mem_map _ hψ) (algHom_mem_map _ hψ)))) (by
+        have k₁ := k' d₃ e₁
+        have k₂ := k' d₀ e₁
+        generalize 1 + φ = f at hc
+        simp only [map_mul, h₁, h₂, h₃, h₄, h₅, h₆]
+        linear_combination
+          (d₂ (e₁ u.val) * d₂ (e₂ v) * d₀ (e₂ v) * d₀ (e₀ v)) *
+            (d₁ f * d₃ f * k₁ - d₂ f * d₀ f * k₂ + hc))
+    refine ⟨u * g, ?_, ?_⟩
+    · have : (u * g).val - 1 = u.val * (g.val - 1) + ψ := by
+        rw [Units.val_mul, hu]; ring
+      rw [this]
+      exact add_mem (Ideal.mul_mem_left _ _
+        (Ideal.map_mono (Ideal.pow_le_self two_ne_zero) hg)) hψ
+    · have k₀ := k e₀
+      have k₂ := k e₂
+      simp only [Units.val_mul, map_mul]
+      linear_combination (e₂ u.val * e₀ u.val) * hg' -
+        ((1 + φ) * e₁ u.val * e₁ g.val) * (e₀ u.val * e₀ v * k₂ + k₀)
+
+end GlobalTheory.MulCocycle
+
+namespace GlobalTheory
+
+open MulCocycle
+
+theorem exists_unit_coboundary_of_mul_cocycle (B : Type) [CommRing B] (I : Ideal B)
+    (hI : IsNilpotent I) (X : Type) [AddCommGroup X] (f : AddMonoidAlgebra B (X × X))
+    (hf : ∀ p, (f - 1).coeff p ∈ I)
+    (hc : AddMonoidAlgebra.mapDomain (fun p : X × X => (p.1, p.1, p.2)) f *
+        AddMonoidAlgebra.mapDomain (fun p : X × X => (p.1, p.2, (0 : X))) f =
+      AddMonoidAlgebra.mapDomain (fun p : X × X => (p.1, p.2, p.2)) f *
+        AddMonoidAlgebra.mapDomain (fun p : X × X => ((0 : X), p.1, p.2)) f) :
+    ∃ g : (AddMonoidAlgebra B X)ˣ, (∀ x, (g.val - 1).coeff x ∈ I) ∧
+      f * AddMonoidAlgebra.mapDomain (fun x : X => (x, x)) g.val =
+        AddMonoidAlgebra.mapDomain (fun x : X => (x, (0 : X))) g.val *
+          AddMonoidAlgebra.mapDomain (fun x : X => ((0 : X), x)) g.val := by
+  obtain ⟨n, hn⟩ := hI
+  have hn' : I ^ 2 ^ n = ⊥ :=
+    le_bot_iff.1 ((Ideal.pow_le_pow_right (Nat.lt_two_pow_self).le).trans hn.le)
+  have key : ∀ (a a' : X →+ X × X) (b b' : X × X →+ X × X × X), (∀ x, b (a x) = b' (a' x)) →
+      ∀ w : B[X], mapDomainAlgHom B B b (mapDomainAlgHom B B a w) =
+        mapDomainAlgHom B B b' (mapDomainAlgHom B B a' w) := by
+    intro a a' b b' h w
+    induction w using AddMonoidAlgebra.induction_linear with
+    | zero => simp
+    | add x y hx hy => simp only [map_add (f := _), hx, hy]
+    | single x r => simp [h]
+  obtain ⟨g, hg, hg'⟩ := exists_unit_of_faces (B := B)
+    (mapDomainAlgHom B B (AddMonoidHom.inr X X))
+    (mapDomainAlgHom B B ((AddMonoidHom.id X).prod (AddMonoidHom.id X)))
+    (mapDomainAlgHom B B (AddMonoidHom.inl X X))
+    (mapDomainAlgHom B B (AddMonoidHom.inr X (X × X)))
+    (mapDomainAlgHom B B ((AddMonoidHom.fst X X).prod (AddMonoidHom.id (X × X))))
+    (mapDomainAlgHom B B ((AddMonoidHom.fst X X).prod
+      ((AddMonoidHom.snd X X).prod (AddMonoidHom.snd X X))))
+    (mapDomainAlgHom B B ((AddMonoidHom.id X).prodMap (AddMonoidHom.inl X X)))
+    (key _ _ _ _ fun _ => rfl) (key _ _ _ _ fun _ => rfl) (key _ _ _ _ fun _ => rfl)
+    (key _ _ _ _ fun _ => rfl) (key _ _ _ _ fun _ => rfl) (key _ _ _ _ fun _ => rfl)
+    (fun K L φ hφ hd => by
+      rw [mem_map_algebraMap_iff] at hφ hd
+      refine ⟨ofCoeff (φ.coeff.comapDomain (fun x => ((0 : X), x))
+        (Prod.mk_right_injective 0).injOn), (mem_map_algebraMap_iff _ _).2 fun x => hφ (0, x),
+        (mem_map_algebraMap_iff _ _).2 fun q => ?_⟩
+      have := finsupp_homotopy φ.coeff (φ.coeff.comapDomain (fun x => ((0 : X), x))
+        (Prod.mk_right_injective 0).injOn) (fun _ => rfl) q
+      exact (congrArg (· ∈ L) this).mp (hd (0, q)))
+    n I hn' f ((mem_map_algebraMap_iff _ _).2 hf) hc
+  exact ⟨g, (mem_map_algebraMap_iff _ _).1 hg, hg'⟩
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitCoboundaryOfMulCocycle =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CoeffMemOfPoints =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CoeffMemOfPoints", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCompRedIff\npublic import Mathlib.Algebra.Algebra.Operations\npublic import Mathlib.Algebra.MonoidAlgebra.MapDomain\npublic import Mathlib.RingTheory.Ideal.Defs\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUnitCoboundaryOfMulCocycle\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open scoped CategoryTheory.Obj
+attribute [local instance] Over.cartesianMonoidalCategory
+open GlobalTheory.UU GlobalTheory.UU.RingPoint
+
+noncomputable section
+namespace GlobalTheory.UU.UnitCob
+
+section Alg
+variable {B C : Type} [CommRing B] [CommRing C] {M N : Type} [AddCommGroup M] [AddCommGroup N]
+
+def ev (κ : B →+* C) (c : Multiplicative M →* Cˣ) : AddMonoidAlgebra B M →+* C :=
+  AddMonoidAlgebra.liftNCRingHom κ ((Units.coeHom C).comp c) fun _ _ => Commute.all _ _
+
+theorem ev_single (κ : B →+* C) (c : Multiplicative M →* Cˣ) (m : M) (b : B) :
+    ev κ c (AddMonoidAlgebra.single m b) = κ b * (c (Multiplicative.ofAdd m)).val := by
+  simp [ev, AddMonoidAlgebra.liftNCRingHom]
+
+def pair (c : Multiplicative M →* Cˣ) (c' : Multiplicative N →* Cˣ) : Multiplicative (M × N) →* Cˣ :=
+  MonoidHom.mk' (fun p => c (Multiplicative.ofAdd p.toAdd.1) * c' (Multiplicative.ofAdd p.toAdd.2)) fun p q => by
+    simp only [toAdd_mul, Prod.fst_add, Prod.snd_add, ofAdd_add, map_mul]
+    exact _root_.mul_mul_mul_comm _ _ _ _
+
+theorem map_mapDomain (s : M → N) (F : AddMonoidAlgebra B N →+* C) (G : AddMonoidAlgebra B M →+* C)
+    (h : ∀ m b, F (AddMonoidAlgebra.single (s m) b) = G (AddMonoidAlgebra.single m b)) (a : AddMonoidAlgebra B M) :
+    F (AddMonoidAlgebra.mapDomain s a) = G a := by
+  induction a using AddMonoidAlgebra.induction_linear with
+  | zero => simp
+  | add a b ha hb => rw [AddMonoidAlgebra.mapDomain_add, map_add (f := _), map_add (f := _), ha, hb]
+  | single m b => rw [AddMonoidAlgebra.mapDomain_single, h]
+
+theorem hom_eq (F G : AddMonoidAlgebra B M →+* C)
+    (h : ∀ m b, F (AddMonoidAlgebra.single m b) = G (AddMonoidAlgebra.single m b)) (a : AddMonoidAlgebra B M) :
+    F a = G a := by
+  induction a using AddMonoidAlgebra.induction_linear with
+  | zero => simp
+  | add a b ha hb => rw [map_add (f := _), map_add (f := _), ha, hb]
+  | single m b => exact h m b
+
+theorem ev_eq_zero (κ : B →+* C) (c : Multiplicative M →* Cˣ) (a : AddMonoidAlgebra B M)
+    (h : ∀ m, κ (a.coeff m) = 0) : ev κ c a = 0 := by
+
+  rw [← AddMonoidAlgebra.sum_coeff_single a, Finsupp.sum, map_sum]
+  exact Finset.sum_eq_zero fun m _ => by rw [ev_single, h, zero_mul]
+
+theorem coeff_mem (I : Ideal B) (G : AddMonoidAlgebra B M →+* AddMonoidAlgebra (B ⧸ I) M)
+    (hG : ∀ m b, G (AddMonoidAlgebra.single m b) = AddMonoidAlgebra.single m (Ideal.Quotient.mk I b))
+    (a : AddMonoidAlgebra B M) (h : G a = 1) (p : M) : (a - 1).coeff p ∈ I := by
+  have k : AddMonoidAlgebra.mapRingHom M (Ideal.Quotient.mk I) a = G a :=
+    hom_eq _ G (fun m b => by rw [hG]; simp) a
+  rw [← Ideal.Quotient.eq_zero_iff_mem, ← AddMonoidAlgebra.coeff_mapRingHom, map_sub, k, h, map_one, sub_self]
+  rfl
+
+def mon (B : Type) [CommRing B] (s : M →+ N) : Multiplicative M →* (AddMonoidAlgebra B N)ˣ :=
+  ((AddMonoidAlgebra.of B N).comp (AddMonoidHom.toMultiplicative s)).toHomUnits
+
+theorem mon_val (s : M →+ N) (m : M) :
+    (mon B s (Multiplicative.ofAdd m)).val = AddMonoidAlgebra.single (s m) 1 := rfl
+
+end Alg
+
+section Geo
+variable {S : Scheme.{0}} {X : Type} [AddCommGroup X] {Y : Over S}
+
+def ev₁ {Z : Over S} (t : Z ⟶ splitTorus S X) (y : Z ⟶ Y) : AddMonoidAlgebra Γ(Y.left, ⊤) X →+* Γ(Z.left, ⊤) :=
+  ev y.left.appTop.hom (splitTorusPointsEquiv S X Z t)
+
+def ev₂ {Z : Over S} (t t' : Z ⟶ splitTorus S X) (y : Z ⟶ Y) :
+    AddMonoidAlgebra Γ(Y.left, ⊤) (X × X) →+* Γ(Z.left, ⊤) :=
+  ev y.left.appTop.hom (pair (splitTorusPointsEquiv S X Z t) (splitTorusPointsEquiv S X Z t'))
+
+theorem ev₁_single {Z : Over S} (t : Z ⟶ splitTorus S X) (y : Z ⟶ Y) (m : X) (b) :
+    ev₁ t y (AddMonoidAlgebra.single m b) = y.left.appTop.hom b * (chV t m).val := ev_single _ _ _ _
+
+theorem ev₂_single {Z : Over S} (t t' : Z ⟶ splitTorus S X) (y : Z ⟶ Y) (m : X × X) (b) :
+    ev₂ t t' y (AddMonoidAlgebra.single m b) = y.left.appTop.hom b * ((chV t m.1).val * (chV t' m.2).val) :=
+  ev_single _ _ _ _
+
+theorem chV_comp {Z Z' : Over S} (σ : Z' ⟶ Z) (t : Z ⟶ splitTorus S X) (χ : X) :
+    (chV (σ ≫ t) χ).val = σ.left.appTop.hom (chV t χ).val := by
+  rw [chV_val, chV_val, Rosenlicht.over_appTop_comp]
+
+theorem chV_ext {Z : Over S} {t t' : Z ⟶ splitTorus S X} (h : ∀ χ, (chV t χ).val = (chV t' χ).val) : t = t' :=
+  (splitTorusPointsEquiv S X Z).injective (MonoidHom.ext fun a => Units.ext (h a.toAdd))
+
+theorem exists_point {U : Over S} {D : Type} [CommRing D] (e : Γ(U.left, ⊤) ≃+* D) (c : Multiplicative X →* Dˣ) :
+    ∃ t : U ⟶ splitTorus S X, ∀ χ, e (chV t χ).val = (c (Multiplicative.ofAdd χ)).val :=
+  ⟨(splitTorusPointsEquiv S X U).symm ((Units.map e.symm.toMonoidHom).comp c), fun χ => by
+    rw [chV, MulEquiv.apply_symm_apply]; exact e.apply_symm_apply _⟩
+
+theorem exists_coeffs [IsAffine Y.left] (f : Γ((splitTorus S X ⊗ splitTorus S X ⊗ Y).left, ⊤)) :
+    ∃ φ : AddMonoidAlgebra Γ(Y.left, ⊤) (X × X), ∀ (Z : Over S) (t t' : Z ⟶ splitTorus S X) (y : Z ⟶ Y),
+      (lift t (lift t' y)).left.appTop.hom f = ev₂ t t' y φ := by
+  obtain ⟨U, y₀, e, -, he, hU⟩ := exists_ringPoint Y (AddMonoidAlgebra Γ(Y.left, ⊤) (X × X))
+    AddMonoidAlgebra.singleZeroRingHom
+  obtain ⟨t₀, h₀⟩ := exists_point (S := S) e (mon _ (AddMonoidHom.inl X X))
+  obtain ⟨t₁, h₁⟩ := exists_point (S := S) e (mon _ (AddMonoidHom.inr X X))
+  refine ⟨e ((lift t₀ (lift t₁ y₀)).left.appTop.hom f), fun Z t t' y => ?_⟩
+  obtain ⟨σ, hσ, Hσ⟩ := hU Z y (ev₂ t t' y) fun b => (ev₂_single t t' y 0 b).trans (by simp [chV_zero])
+  have a₀ : σ ≫ t₀ = t := chV_ext fun χ => by
+    rw [chV_comp, Hσ, h₀, mon_val, ev₂_single]; simp [chV_zero]
+  have a₁ : σ ≫ t₁ = t' := chV_ext fun χ => by
+    rw [chV_comp, Hσ, h₁, mon_val, ev₂_single]; simp [chV_zero]
+  rw [← Hσ, Rosenlicht.over_appTop_comp, comp_lift, comp_lift, a₀, a₁, hσ]
+
+theorem appTop_ev₁ {Z : Over S} (t : Z ⟶ splitTorus S X) (y : Z ⟶ Y) (a : AddMonoidAlgebra Γ(Y.left, ⊤) X) :
+    (lift t y).left.appTop.hom (ev₁ (fst (splitTorus S X) Y) (snd _ _) a) = ev₁ t y a :=
+  hom_eq ((lift t y).left.appTop.hom.comp (ev₁ (fst (splitTorus S X) Y) (snd _ _))) _ (fun m b => by
+    rw [RingHom.comp_apply, ev₁_single, ev₁_single, map_mul, ← chV_comp, Rosenlicht.over_appTop_comp, lift_fst,
+      lift_snd]) a
+
+abbrev pl {Z W : Scheme.{0}} (r : Z ⟶ W) (u : Γ(W, ⊤)ˣ) : Γ(Z, ⊤)ˣ := Units.map r.appTop.hom.toMonoidHom u
+
+theorem gm_mul_iff {Z W W' W'' : Scheme.{0}} (r₁ : Z ⟶ W) (r₂ : Z ⟶ W') (r₃ : Z ⟶ W'') (r₄ : Z ⟶ W'')
+    (u : Γ(W, ⊤)ˣ) (v : Γ(W', ⊤)ˣ) (w : Γ(W'', ⊤)ˣ) :
+    (∀ z, gm r₁ z ⊤ u * gm r₂ z ⊤ v = gm r₃ z ⊤ w * gm r₄ z ⊤ w) ↔
+      r₁.appTop.hom u.val * r₂.appTop.hom v.val = r₃.appTop.hom w.val * r₄.appTop.hom w.val := by
+  have e : ∀ z, (gm r₁ z ⊤ u * gm r₂ z ⊤ v = gm r₃ z ⊤ w * gm r₄ z ⊤ w) =
+      (gm (𝟙 Z) z ⊤ (pl r₁ u * pl r₂ v) = gm (𝟙 Z) z ⊤ (pl r₃ w * pl r₄ w)) := fun z => by
+    rw [map_mul, map_mul, gm_top r₁, gm_top r₂, gm_top r₃, gm_top r₄]
+  simp only [e]
+  exact ⟨fun h => congrArg Units.val (unit_ext fun z _ => h z), fun h z => congrArg _ (Units.ext h)⟩
+
+theorem gm_one_iff {Z W : Scheme.{0}} (r : Z ⟶ W) (u : Γ(W, ⊤)ˣ) :
+    (∀ z, gm r z ⊤ u = 1) ↔ r.appTop.hom u.val = 1 := by
+  have e : ∀ z, (gm r z ⊤ u = 1) = (gm (𝟙 Z) z ⊤ (pl r u) = gm (𝟙 Z) z ⊤ 1) := fun z => by
+    rw [map_one, gm_top r]
+  simp only [e]
+  exact ⟨fun h => congrArg Units.val (unit_ext fun z _ => h z), fun h z => congrArg _ (Units.ext h)⟩
+
+theorem cocycle_of_points [IsAffine Y.left] (φ : AddMonoidAlgebra Γ(Y.left, ⊤) (X × X))
+    (h : ∀ (Z : Over S) (t t' t'' : Z ⟶ splitTorus S X) (y : Z ⟶ Y),
+      ev₂ (t * t') t'' y φ * ev₂ t t' y φ = ev₂ t (t' * t'') y φ * ev₂ t' t'' y φ) :
+    AddMonoidAlgebra.mapDomain (fun p : X × X => (p.1, p.1, p.2)) φ *
+        AddMonoidAlgebra.mapDomain (fun p : X × X => (p.1, p.2, (0 : X))) φ =
+      AddMonoidAlgebra.mapDomain (fun p : X × X => (p.1, p.2, p.2)) φ *
+        AddMonoidAlgebra.mapDomain (fun p : X × X => ((0 : X), p.1, p.2)) φ := by
+  obtain ⟨U, y₀, e, -, he, -⟩ := exists_ringPoint Y (AddMonoidAlgebra Γ(Y.left, ⊤) (X × X × X))
+    AddMonoidAlgebra.singleZeroRingHom
+  obtain ⟨t₀, h₀⟩ := exists_point (S := S) e (mon _ (AddMonoidHom.inl X (X × X)))
+  obtain ⟨t₁, h₁⟩ := exists_point (S := S) e (mon _ ((AddMonoidHom.inr X (X × X)).comp (AddMonoidHom.inl X X)))
+  obtain ⟨t₂, h₂⟩ := exists_point (S := S) e (mon _ ((AddMonoidHom.inr X (X × X)).comp (AddMonoidHom.inr X X)))
+  have key : ∀ (s : X × X → X × X × X) (t t' : U ⟶ splitTorus S X),
+      (∀ m : X × X, e (chV t m.1).val * e (chV t' m.2).val = AddMonoidAlgebra.single (s m) 1) →
+      AddMonoidAlgebra.mapDomain s φ = e (ev₂ t t' y₀ φ) := fun s t t' H =>
+    map_mapDomain s (RingHom.id _) (e.toRingHom.comp (ev₂ t t' y₀)) (fun m b => by
+      change _ = e (ev₂ t t' y₀ _)
+      rw [ev₂_single, map_mul, map_mul, H, he]
+      simp [AddMonoidAlgebra.single_mul_single]) φ
+  rw [key _ (t₀ * t₁) t₂, key _ t₀ t₁, key _ t₀ (t₁ * t₂), key _ t₁ t₂, ← map_mul, ← map_mul, h]
+  all_goals
+    intro m
+    simp [chV_mul, h₀, h₁, h₂, mon_val, AddMonoidAlgebra.single_mul_single]
+
+end Geo
+
+section Red
+variable {A : Type} [CommRing A] (J : Ideal A) {X : Type} [AddCommGroup X] {Y : Over (Spec (CommRingCat.of A))}
+
+theorem coeff_mem_of_points [IsAffine Y.left] (φ : AddMonoidAlgebra Γ(Y.left, ⊤) (X × X))
+    (h : ∀ (Z : Over (Spec (CommRingCat.of A))), (∃ s, s ≫ red J = Z.hom) →
+      ∀ (t t' : Z ⟶ splitTorus _ X) (y : Z ⟶ Y), ev₂ t t' y φ = 1) (p : X × X) :
+    (φ - 1).coeff p ∈ J.map (strMap Y) := by
+  obtain ⟨I, hI⟩ : ∃ I, I = J.map (strMap Y) := ⟨_, rfl⟩
+  rw [← hI]
+  obtain ⟨U, y₀, e, -, he, -⟩ := exists_ringPoint Y (AddMonoidAlgebra (Γ(Y.left, ⊤) ⧸ I) (X × X))
+    (AddMonoidAlgebra.singleZeroRingHom.comp (Ideal.Quotient.mk I))
+  obtain ⟨t₀, h₀⟩ := exists_point e (mon _ (AddMonoidHom.inl X X))
+  obtain ⟨t₁, h₁⟩ := exists_point e (mon _ (AddMonoidHom.inr X X))
+  have hU : ∃ s, s ≫ red J = U.hom := (exists_comp_red_iff J U).2 fun a ha => e.injective (by
+    have : Ideal.Quotient.mk I (strMap Y a) = 0 := Ideal.Quotient.eq_zero_iff_mem.2 (hI ▸ Ideal.mem_map_of_mem _ ha)
+    rw [← appTop_strMap y₀, he, RingHom.comp_apply, this, map_zero, map_zero])
+  refine coeff_mem I (e.toRingHom.comp (ev₂ t₀ t₁ y₀)) (fun m b => ?_) φ
+    ((congrArg e (h U hU t₀ t₁ y₀)).trans (map_one e)) p
+  change e (ev₂ t₀ t₁ y₀ _) = _
+  rw [ev₂_single, map_mul, map_mul, he, h₀, h₁, mon_val, mon_val]
+  simp [AddMonoidAlgebra.single_mul_single]
+
+end Red
+
+theorem exists_coboundary : ∀ (A : Type) [CommRing A] (J : Ideal A), IsNilpotent J → ∀ (X : Type) [AddCommGroup X] (Y : Over (Spec (CommRingCat.of A))) [IsAffine Y.left] (f : Γ((splitTorus (Spec (CommRingCat.of A)) X ⊗ splitTorus (Spec (CommRingCat.of A)) X ⊗ Y).left, ⊤)ˣ), (∀ (Z : Over (Spec (CommRingCat.of A))) (t t' t'' : Z ⟶ splitTorus _ X) (y : Z ⟶ Y) (z : Z.left), gm (lift (t * t') (lift t'' y)).left z ⊤ f * gm (lift t (lift t' y)).left z ⊤ f = gm (lift t (lift (t' * t'') y)).left z ⊤ f * gm (lift t' (lift t'' y)).left z ⊤ f) → (∀ (Z : Over (Spec (CommRingCat.of A))), (∃ s, s ≫ red J = Z.hom) → ∀ (t t' : Z ⟶ splitTorus _ X) (y : Z ⟶ Y) (z : Z.left), gm (lift t (lift t' y)).left z ⊤ f = 1) → ∃ g : Γ((splitTorus (Spec (CommRingCat.of A)) X ⊗ Y).left, ⊤)ˣ, (∀ (Z : Over (Spec (CommRingCat.of A))) (t t' : Z ⟶ splitTorus _ X) (y : Z ⟶ Y) (z : Z.left), gm (lift t (lift t' y)).left z ⊤ f * gm (lift (t * t') y).left z ⊤ g = gm (lift t y).left z ⊤ g * gm (lift t' y).left z ⊤ g) ∧ (∀ (Z : Over (Spec (CommRingCat.of A))), (∃ s, s ≫ red J = Z.hom) → ∀ (t : Z ⟶ splitTorus _ X) (y : Z ⟶ Y) (z : Z.left), gm (lift t y).left z ⊤ g = 1) := by
+  intro A _ J hJ X _ Y _ f hc h1
+  obtain ⟨φ, hφ⟩ := exists_coeffs f.val
+  have hI : IsNilpotent (J.map (strMap Y)) := by
+    obtain ⟨n, hn⟩ := hJ
+    exact ⟨n, by rw [← Ideal.map_pow, hn]; exact Ideal.map_bot⟩
+  obtain ⟨u, hu, Hu⟩ := _root_.GlobalTheory.exists_unit_coboundary_of_mul_cocycle _ _ hI X φ
+    (coeff_mem_of_points J φ fun Z hZ t t' y => (hφ Z t t' y).symm.trans ((gm_one_iff _ _).1 (h1 Z hZ t t' y)))
+    (cocycle_of_points φ fun Z t t' t'' y => by
+      rw [← hφ, ← hφ, ← hφ, ← hφ]
+      exact (gm_mul_iff _ _ _ _ _ _ _).1 (hc Z t t' t'' y))
+  refine ⟨Units.map (ev₁ (fst _ Y) (snd _ _)).toMonoidHom u, fun Z t t' y => (gm_mul_iff _ _ _ _ _ _ _).2 ?_,
+    fun Z hZ t y => (gm_one_iff _ _).2 ?_⟩
+  · have e := congrArg (ev₂ t t' y) Hu
+    rw [map_mul, map_mul, map_mapDomain _ _ (ev₁ (t * t') y), map_mapDomain _ _ (ev₁ t y),
+      map_mapDomain _ _ (ev₁ t' y), ← hφ, ← appTop_ev₁ (t * t'), ← appTop_ev₁ t, ← appTop_ev₁ t'] at e
+    · exact e
+    all_goals
+      intro m b
+      simp [ev₁_single, ev₂_single, chV_mul, chV_zero]
+  · refine (appTop_ev₁ t y u.val).trans ?_
+    have hle : J.map (strMap Y) ≤ RingHom.ker y.left.appTop.hom := Ideal.map_le_iff_le_comap.2 fun a ha =>
+      (appTop_strMap y a).trans ((exists_comp_red_iff J Z).1 hZ a ha)
+    have e : ev₁ t y (u.val - 1) = 0 := ev_eq_zero _ _ _ fun m => hle (hu m)
+    rwa [map_sub, map_one, sub_eq_zero] at e
+
+end GlobalTheory.UU.UnitCob
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CoeffMemOfPoints =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EqOneOfGroupLike =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EqOneOfGroupLike", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton\npublic import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsUniqueTorusCompat\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCompRedIff\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open scoped CategoryTheory.Obj
+attribute [local instance] Over.cartesianMonoidalCategory
+open GlobalTheory.UU
+
+noncomputable section
+namespace GlobalTheory.UU.UnitRigid
+
+theorem coeff_inl_mul_inr {B X : Type} [CommRing B] [AddCommGroup X] (a b : AddMonoidAlgebra B X) (x y : X) :
+    (AddMonoidAlgebra.mapDomainRingHom B (AddMonoidHom.inl X X) a *
+      AddMonoidAlgebra.mapDomainRingHom B (AddMonoidHom.inr X X) b).coeff (x, y) = a.coeff x * b.coeff y := by
+  classical
+  induction a using AddMonoidAlgebra.induction_linear with
+  | zero => simp
+  | add a a' h h' => simp only [map_add (f := _), add_mul, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, h, h']
+  | single p r =>
+    induction b using AddMonoidAlgebra.induction_linear with
+    | zero => simp
+    | add b b' h h' => simp only [map_add (f := _), mul_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, h, h']
+    | single q s =>
+      simp only [AddMonoidAlgebra.mapDomainRingHom_apply, AddMonoidAlgebra.mapDomain_single,
+        AddMonoidAlgebra.single_mul_single, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]
+      by_cases h₁ : p = x <;> by_cases h₂ : q = y <;> simp [h₁, h₂]
+
+theorem eq_one_of_groupLike {B X : Type} [CommRing B] [AddCommGroup X] (I : Ideal B) (hI : ∀ b ∈ I, IsNilpotent b)
+    (g : AddMonoidAlgebra B X)
+    (h : AddMonoidAlgebra.mapDomainRingHom B ((AddMonoidHom.id X).prod (AddMonoidHom.id X)) g =
+      AddMonoidAlgebra.mapDomainRingHom B (AddMonoidHom.inl X X) g *
+        AddMonoidAlgebra.mapDomainRingHom B (AddMonoidHom.inr X X) g)
+    (h₁ : AddMonoidAlgebra.mapRingHom X (Ideal.Quotient.mk I) g = 1) : g = 1 := by
+  classical
+  have idem : ∀ x, IsIdempotentElem (g.coeff x) := fun x => by
+    have e := congrArg (fun a => a.coeff (x, x)) h
+    simp only [coeff_inl_mul_inr] at e
+    refine e.symm.trans ?_
+    exact Finsupp.mapDomain_apply_of_injective (f := fun x : X => (x, x)) (fun _ _ q => congrArg Prod.fst q) g.coeff x
+  ext x
+  have e := congrArg (fun a => a.coeff x) h₁
+  simp only [AddMonoidAlgebra.coeff_mapRingHom, AddMonoidAlgebra.one_def, AddMonoidAlgebra.coeff_single,
+    Finsupp.single_apply] at e ⊢
+  split_ifs at e ⊢ with hx
+  · have m : 1 - g.coeff x ∈ I := by
+      rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, e, map_one, sub_self]
+    exact (sub_eq_zero.1 ((idem x).one_sub.eq_zero_of_isNilpotent (hI _ m))).symm
+  · exact (idem x).eq_zero_of_isNilpotent (hI _ (Ideal.Quotient.eq_zero_iff_mem.1 e))
+
+variable {S : Scheme.{0}} {X : Type} [AddCommGroup X]
+
+theorem chV_comp {Z Z' : Over S} (σ : Z' ⟶ Z) (t : Z ⟶ splitTorus S X) (χ : X) :
+    (chV (σ ≫ t) χ).val = σ.left.appTop.hom (chV t χ).val := by
+  rw [chV_val, chV_val, Rosenlicht.over_appTop_comp]
+
+theorem point_ext {Z : Over S} {t t' : Z ⟶ splitTorus S X} (h : ∀ χ, (chV t χ).val = (chV t' χ).val) : t = t' :=
+  (splitTorusPointsEquiv S X Z).injective (MonoidHom.ext fun a => Units.ext (h a.toAdd))
+
+theorem exists_point (Z : Over S) (c : Multiplicative X →* Γ(Z.left, ⊤)) :
+    ∃ t : Z ⟶ splitTorus S X, ∀ χ, (chV t χ).val = c (Multiplicative.ofAdd χ) :=
+  ⟨(splitTorusPointsEquiv S X Z).symm c.toHomUnits, fun χ => by rw [chV, MulEquiv.apply_symm_apply]; rfl⟩
+
+theorem exists_universal {Y W : Over S} [IsAffine W.left] (y : W ⟶ Y) (u : Γ((splitTorus S X ⊗ Y).left, ⊤)) :
+    ∃ g : AddMonoidAlgebra Γ(W.left, ⊤) X, ∀ (Z : Over S) (s : Z ⟶ W) (t : Z ⟶ splitTorus S X)
+      (θ : AddMonoidAlgebra Γ(W.left, ⊤) X →+* Γ(Z.left, ⊤)),
+      (∀ b, θ (AddMonoidAlgebra.single 0 b) = s.left.appTop.hom b) →
+      (∀ χ, θ (AddMonoidAlgebra.single χ 1) = (chV t χ).val) → (lift t (s ≫ y)).left.appTop.hom u = θ g := by
+  obtain ⟨U, y₀, e, -, -, H⟩ := RingPoint.exists_ringPoint W (AddMonoidAlgebra Γ(W.left, ⊤) X)
+    AddMonoidAlgebra.singleZeroRingHom
+  obtain ⟨t₀, ht₀⟩ := exists_point U (e.symm.toMonoidHom.comp (AddMonoidAlgebra.of _ X))
+  refine ⟨e ((lift t₀ (y₀ ≫ y)).left.appTop.hom u), fun Z s t θ h₁ h₂ => ?_⟩
+  obtain ⟨σ, hσ, hθ⟩ := H Z s θ h₁
+  have ht : σ ≫ t₀ = t := point_ext fun χ => by
+    rw [chV_comp, hθ, ht₀, ← h₂]
+    exact congrArg θ (e.apply_symm_apply _)
+  rw [← hθ, ← ht, ← hσ, Category.assoc, ← comp_lift, Rosenlicht.over_appTop_comp]
+
+theorem eq_one_affine {A : Type} [CommRing A] (J : Ideal A) (hJ : IsNilpotent J) {Y W : Over (Spec (CommRingCat.of A))}
+    [IsAffine W.left] (u : Γ((splitTorus (Spec (CommRingCat.of A)) X ⊗ Y).left, ⊤))
+    (hm : ∀ (Z : Over (Spec (CommRingCat.of A))) (t t' : Z ⟶ splitTorus _ X) (y : Z ⟶ Y),
+      (lift (t * t') y).left.appTop.hom u = (lift t y).left.appTop.hom u * (lift t' y).left.appTop.hom u)
+    (h₁ : ∀ (Z : Over (Spec (CommRingCat.of A))), (∃ s, s ≫ red J = Z.hom) → ∀ (t : Z ⟶ splitTorus _ X) (y : Z ⟶ Y),
+      (lift t y).left.appTop.hom u = 1) (t : W ⟶ splitTorus _ X) (y : W ⟶ Y) : (lift t y).left.appTop.hom u = 1 := by
+  obtain ⟨g, hg⟩ := exists_universal y u
+  let I : Ideal Γ(W.left, ⊤) := J.map (RingPoint.strMap W)
+  have hI : ∀ b ∈ I, IsNilpotent b := fun b hb => by
+    obtain ⟨n, hn⟩ := hJ
+    refine ⟨n, ?_⟩
+    have := Ideal.pow_mem_pow hb n
+    rw [← Ideal.map_pow, hn, Ideal.zero_eq_bot, Ideal.map_bot] at this
+    exact this
+  have one : g = 1 := by
+    refine eq_one_of_groupLike I hI g ?_ ?_
+    · obtain ⟨U, s, e, -, he, -⟩ := RingPoint.exists_ringPoint W (AddMonoidAlgebra Γ(W.left, ⊤) (X × X))
+        AddMonoidAlgebra.singleZeroRingHom
+      have key : ∀ (f : X →+ X × X) (t : U ⟶ splitTorus _ X),
+          (∀ χ, (chV t χ).val = e.symm (AddMonoidAlgebra.single (f χ) 1)) →
+          (lift t (s ≫ y)).left.appTop.hom u = e.symm (AddMonoidAlgebra.mapDomainRingHom _ f g) := fun f t ht =>
+        hg U s t (e.symm.toRingHom.comp (AddMonoidAlgebra.mapDomainRingHom _ f))
+          (fun b => e.symm_apply_eq.2 (by rw [he]; simp)) (fun χ => by rw [ht]; simp)
+      obtain ⟨t₁, ht₁⟩ := exists_point U (e.symm.toMonoidHom.comp ((AddMonoidAlgebra.of _ (X × X)).comp
+        (AddMonoidHom.toMultiplicative (AddMonoidHom.inl X X))))
+      obtain ⟨t₂, ht₂⟩ := exists_point U (e.symm.toMonoidHom.comp ((AddMonoidAlgebra.of _ (X × X)).comp
+        (AddMonoidHom.toMultiplicative (AddMonoidHom.inr X X))))
+      have a₁ : ∀ χ, (chV t₁ χ).val = e.symm (AddMonoidAlgebra.single (AddMonoidHom.inl X X χ) 1) := ht₁
+      have a₂ : ∀ χ, (chV t₂ χ).val = e.symm (AddMonoidAlgebra.single (AddMonoidHom.inr X X χ) 1) := ht₂
+      apply e.symm.injective
+      rw [map_mul, ← key _ t₁ a₁, ← key _ t₂ a₂, ← hm, key]
+      intro χ
+      rw [chV_mul, Units.val_mul, a₁, a₂, ← map_mul, AddMonoidAlgebra.single_mul_single]
+      simp
+    · obtain ⟨U, s, e, -, he, -⟩ := RingPoint.exists_ringPoint W (AddMonoidAlgebra (Γ(W.left, ⊤) ⧸ I) X)
+        (AddMonoidAlgebra.singleZeroRingHom.comp (Ideal.Quotient.mk I))
+      obtain ⟨t₁, ht₁⟩ := exists_point U (e.symm.toMonoidHom.comp (AddMonoidAlgebra.of _ X))
+      have a₁ : ∀ χ, (chV t₁ χ).val = e.symm (AddMonoidAlgebra.single χ 1) := ht₁
+      have hU : ∃ s, s ≫ red J = U.hom := (RingPoint.exists_comp_red_iff J U).2 fun a ha => by
+        apply e.injective
+        rw [← RingPoint.appTop_strMap s, he, RingHom.comp_apply,
+          Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ ha), map_zero, map_zero]
+      have k := hg U s t₁ (e.symm.toRingHom.comp (AddMonoidAlgebra.mapRingHom X (Ideal.Quotient.mk I)))
+        (fun b => e.symm_apply_eq.2 (by rw [he]; simp)) (fun χ => by rw [a₁]; simp)
+      apply e.symm.injective
+      rw [map_one]
+      exact k.symm.trans (h₁ U hU _ _)
+  have k := hg W (𝟙 W) t (AddMonoidAlgebra.liftNCRingHom (RingHom.id _)
+    ((Units.coeHom _).comp (splitTorusPointsEquiv _ X W t)) fun _ _ => Commute.all _ _)
+    (fun b => by simp) (fun χ => by simp [chV])
+  rwa [Category.id_comp, one, map_one] at k
+
+theorem unit_eq_one : ∀ (A : Type) [CommRing A] (J : Ideal A), IsNilpotent J → ∀ (X : Type) [AddCommGroup X] (Y : Over (Spec (CommRingCat.of A))) (u : Γ((splitTorus (Spec (CommRingCat.of A)) X ⊗ Y).left, ⊤)ˣ), (∀ (Z : Over (Spec (CommRingCat.of A))) (t t' : Z ⟶ splitTorus _ X) (y : Z ⟶ Y) (z : Z.left), gm (lift (t * t') y).left z ⊤ u = gm (lift t y).left z ⊤ u * gm (lift t' y).left z ⊤ u) → (∀ (Z : Over (Spec (CommRingCat.of A))), (∃ s, s ≫ red J = Z.hom) → ∀ (t : Z ⟶ splitTorus _ X) (y : Z ⟶ Y) (z : Z.left), gm (lift t y).left z ⊤ u = 1) → u = 1 := by
+  intro A _ J hJ X _ Y u hm h₁
+  have hm' : ∀ (Z : Over (Spec (CommRingCat.of A))) (t t' : Z ⟶ splitTorus _ X) (y : Z ⟶ Y),
+      (lift (t * t') y).left.appTop.hom u.val =
+        (lift t y).left.appTop.hom u.val * (lift t' y).left.appTop.hom u.val := fun Z t t' y => by
+    have e : Units.map (lift (t * t') y).left.appTop.hom.toMonoidHom u =
+        Units.map (lift t y).left.appTop.hom.toMonoidHom u * Units.map (lift t' y).left.appTop.hom.toMonoidHom u :=
+      unit_ext fun z _ => by rw [map_mul, ← gm_top, ← gm_top, ← gm_top, hm]
+    exact congrArg Units.val e
+  have h₁' : ∀ (Z : Over (Spec (CommRingCat.of A))), (∃ s, s ≫ red J = Z.hom) →
+      ∀ (t : Z ⟶ splitTorus _ X) (y : Z ⟶ Y), (lift t y).left.appTop.hom u.val = 1 := fun Z hZ t y => by
+    have e : Units.map (lift t y).left.appTop.hom.toMonoidHom u = 1 :=
+      unit_ext fun z _ => by rw [map_one, ← gm_top, h₁ Z hZ]
+    exact congrArg Units.val e
+  refine unit_ext fun z _ => ?_
+  let 𝒰 := (splitTorus (Spec (CommRingCat.of A)) X ⊗ Y).left.affineCover
+  obtain ⟨i, w, rfl⟩ := 𝒰.exists_eq z
+  let W : Over (Spec (CommRingCat.of A)) := Over.mk (𝒰.f i ≫ (splitTorus (Spec (CommRingCat.of A)) X ⊗ Y).hom)
+  haveI : IsAffine W.left := inferInstanceAs (IsAffine (𝒰.X i))
+  let κ : W ⟶ splitTorus (Spec (CommRingCat.of A)) X ⊗ Y := Over.homMk (𝒰.f i) rfl
+  have e := eq_one_affine J hJ u.val hm' h₁' (κ ≫ fst _ _) (κ ≫ snd _ _)
+  rw [lift_comp_fst_snd] at e
+  have e' : Units.map (𝒰.f i).appTop.hom.toMonoidHom u = 1 := Units.ext e
+  refine gm_inj (U := ⊤) (U' := ⊤) (𝒰.f i) w trivial trivial ?_
+  rw [gm_top, e', map_one, map_one]
+
+end GlobalTheory.UU.UnitRigid
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EqOneOfGroupLike =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivLiftOfIsNilpotent =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivLiftOfIsNilpotent", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton\npublic import Development.AbelianVarietyTheory.Definitions.Uniformization.ExistsUniqueTorusCompat\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsPullLam\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivTransport\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CoeffMemOfPoints\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.EqOneOfGroupLike\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -201,7 +1157,6 @@ theorem exists_reduces (hJ : IsNilpotent J) {Y : Over (Spec (CommRingCat.of A))}
       (Semi.toZ (Spec (CommRingCat.of A)))))
   have : IsAffine (𝕋 ⊗ Y).left := by
     first
-    | infer_instance
     | exact (inferInstance : IsAffine (pullback (splitTorus (Spec (CommRingCat.of A)) X).hom Y.hom))
   obtain ⟨s, hs, hv⟩ := exists_val_lift hL f (lam (fst 𝕋 Y ≫ i) (snd 𝕋 Y ≫ x)) Oε t₀ g₀
   refine ⟨s, hs, fun Z t y a ha z I hI => ?_⟩
@@ -363,7 +1318,6 @@ theorem exists_glued [IsMonHom i] (hJ : IsNilpotent J) :
           (lift (opnι (𝕋 ⊗ G) (Wo U) ≫ fst 𝕋 G) (opnι (𝕋 ⊗ G) (Wo U) ≫ snd 𝕋 G)).left ≫ lamφ i k := by
         first
         | rw [lift_comp_fst_snd]
-        | (congr 2; ext <;> simp)
       rw [e', BiTransport.lift_lam]
       fin_cases k <;> rfl
     obtain ⟨t, gt, vt⟩ := exists_gen hL (φ' := fun k => (Wo U).ι ≫ lamφ i k) (ε' := Oε)
@@ -378,11 +1332,9 @@ theorem exists_glued [IsMonHom i] (hJ : IsNilpotent J) :
     have w1 : (r ≫ (κ U).left) ≫ (𝕋 ⊗ opn G U.1).hom = FinalForm.hom := by
       first
       | (erw [Category.assoc, Over.w (κ U)]; rfl)
-      | (simp only [Category.assoc, Over.w]; rfl)
     have w2 : (r' ≫ (κ V).left) ≫ (𝕋 ⊗ opn G V.1).hom = FinalForm.hom := by
       first
       | erw [Category.assoc, Over.w (κ V)]
-      | simp only [Category.assoc, Over.w]
       show r' ≫ (Wo V).ι ≫ (𝕋 ⊗ G).hom = r ≫ (Wo U).ι ≫ (𝕋 ⊗ G).hom
       rw [← Category.assoc, ← hrr, Category.assoc]
     let ρ : FinalForm ⟶ 𝕋 ⊗ opn G U.1 := Over.homMk (r ≫ (κ U).left) w1
@@ -430,7 +1382,6 @@ theorem exists_glued [IsMonHom i] (hJ : IsNilpotent J) :
     all_goals first
     | (erw [← e3] at *; exact comp_opnI_mem U.1 y p)
     | (rw [← Scheme.Hom.comp_apply, e3]; exact comp_opnI_mem U.1 y p)
-    | exact e3 ▸ comp_opnI_mem U.1 y p
   have hq' : (lift t (y ≫ opnι G U.1)).left = q.left ≫ (Wo U).ι := by
     rw [← hq]; rfl
   have hqκ : q ≫ κ U = lift t y := by
@@ -613,10 +1564,12 @@ theorem biTriv_lift_of_isNilpotent : (∀ (A : Type) [CommRing A] (J : Ideal A),
   have : Mono (red J) := by
     first
     | infer_instance
-    | exact (inferInstance : IsImmersion (red J)).mono
   have : IsMonHom i := hi
   obtain ⟨s₀, g₀, l₀, m₀⟩ := BiTransport.biTriv_transport _ _ (red J) X G G₀ F hw hpb P P₀ w hP i i₀ hi hi₀ hc σ
   exact BiLift.nonempty_biTriv g₀ l₀ hJ m₀
 
 end GlobalTheory.UU
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UniformizationProofs.BiTrivLiftOfIsNilpotent =====

@@ -88,7 +88,6 @@ theorem aux4 : ∀ {n : ℕ} (ε : Fin n → Bool),
   (1 : Matrix (Fin n) (Fin n) ℂ).conjTranspose * Jm ε * 1 =
     Jm ε := by
   intro n ε
-  change (1 : Matrix (Fin n) (Fin n) ℂ).conjTranspose * Jm ε * 1 = Jm ε
   simp
 
 theorem aux5 : ∀ {n : ℕ} (ε : Fin n → Bool)

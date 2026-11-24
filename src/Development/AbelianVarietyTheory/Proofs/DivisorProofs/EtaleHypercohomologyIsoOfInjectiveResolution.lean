@@ -112,7 +112,6 @@ theorem hyper_iso_of_injective_resolution : ∀ (R : Type) [CommRing R] (M : Shv
              change cpush K e.hom n (cpush K e.inv n x) = x
              rw [← cpush_comp, cpush_homotopy K e.homotopyInvHomId, cpush_id]
            right_inv := fun y => by
-             change cpush K e.inv n (cpush K e.hom n y) = y
              rw [← cpush_comp, cpush_homotopy K e.homotopyHomInvId, cpush_id]
            map_add' := map_add _ }⟩
 

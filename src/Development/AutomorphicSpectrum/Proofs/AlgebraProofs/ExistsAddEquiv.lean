@@ -4,7 +4,8 @@ public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsT
 public import Development.AutomorphicSpectrum.Statements.AlgebraStatements.HodgeTateDatumStatement
 public import Mathlib.Data.ZMod.QuotientRing
 public import Mathlib.RingTheory.AdicCompletion.RingHom
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedAugmentationTheoremStatement
+public import Development.AutomorphicSpectrum.Statements.AlgebraStatements.PolarisedAFStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PolarisedAugmentationTheorem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -178,7 +179,7 @@ theorem sqIdeal_iff {I : Submodule R (X → C)} {I' : Submodule R (N → C)}
     refine ⟨(a ∘ e.symm) * (b ∘ e.symm), ⟨_, (h _).2 (by rwa [comp_symm]), _,
       (h _).2 (by rwa [comp_symm]), rfl⟩, ?_⟩
     ext x
-    simp [trL_apply]
+    simp
 
 def quotTr {A A₁ : Submodule R (X → C)} {B B₁ : Submodule R (N → C)}
     (hA : ∀ f, f ∈ A ↔ f ∘ e ∈ B) (hA₁ : ∀ f, f ∈ A₁ ↔ f ∘ e ∈ B₁) :
@@ -207,9 +208,9 @@ theorem hasColen_tr [Fintype X] [DecidableEq X] [Fintype N] [DecidableEq N]
     ext g
     constructor
     · rintro ⟨_, ⟨j, rfl⟩, rfl⟩
-      exact ⟨e.symm j, by ext x; simp [trL_apply]⟩
+      exact ⟨e.symm j, by ext x; simp⟩
     · rintro ⟨j, rfl⟩
-      exact ⟨_, ⟨e j, rfl⟩, by ext x; simp [trL_apply]⟩
+      exact ⟨_, ⟨e j, rfl⟩, by ext x; simp⟩
   · rw [show B.submatrix e e = B.submatrix e.toEquiv e.toEquiv from rfl,
       Matrix.det_submatrix_equiv_self, hv]
 
@@ -303,7 +304,7 @@ theorem gp_polAV : HodgeTateDatumStatement → ∀ (p : ℕ) [Fact p.Prime] (C :
   letI : Algebra ℤ_[p] R := (Av.zpLift p R hc).toAlgebra
   obtain ⟨-, cp, US, H, pt₀, h₀, hT⟩ := hHT p C v R hint hp hc P
   obtain ⟨e, he⟩ := Av.exists_addEquiv h₀ hpt
-  have key := GlobalTheory.T.polarised_augmentation_theorem p P.g C v R ℤ_[p] AlgEquiv.refl cp US H
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.GR.polarisedAF p P.g C v R ℤ_[p] AlgEquiv.refl cp US H
   dsimp only at key
   obtain ⟨-, -, -, -, -, -, -, hG, hTi⟩ := key
   rw [hT T] at hG hTi

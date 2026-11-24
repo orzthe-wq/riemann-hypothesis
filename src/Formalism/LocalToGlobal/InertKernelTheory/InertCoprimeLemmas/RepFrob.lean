@@ -4,49 +4,9 @@ public import Formalism.LocalToGlobal.InertKernelTheory.FrameInt
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.ExistsCoprimePowEqOne
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.FrobeniusSqIterateTeichmuller
 public import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.FinalFree
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Formalism.LocalToGlobal.InertKernelTheory.DefsRepFrame
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.SqrtInUnramifiedCompletion
 
 @[expose] public section
 
@@ -58,8 +18,6 @@ open Formalism.MainNotions.FormalGroupSystem Formalism.L2.KerInert.RepFrame
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 
 variable {p : ℕ} [hp : Fact p.Prime]
-
-theorem nK (x : MaximalUnramifiedExtension p) : ‖x‖ = ‖(x : ℂ_[p])‖ := rfl
 
 theorem nadd1 {a b : ℂ_[p]} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a + b‖ ≤ c := (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
 
@@ -74,13 +32,13 @@ theorem unr_norm_le {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedEx
   obtain ⟨-, -, -, -, h⟩ := hσ
   have h1 : ‖((σ a : MaximalUnramifiedExtension p) : ℂ_[p]) - ((a : MaximalUnramifiedExtension p) : ℂ_[p]) ^ p‖ ≤ 1 := by
     have h0 := h a ha
-    rw [nK] at h0
+    rw [_root_.Formalism.L2.Th1.D.GaussNormEstimates.normK] at h0
     push_cast at h0
     exact h0.trans pinv_le_one
   have h2 : ‖((a : MaximalUnramifiedExtension p) : ℂ_[p]) ^ p‖ ≤ 1 := by
     rw [norm_pow]
-    exact pow_le_one₀ (norm_nonneg _) (by rwa [nK] at ha)
-  rw [nK]
+    exact pow_le_one₀ (norm_nonneg _) (by rwa [_root_.Formalism.L2.Th1.D.GaussNormEstimates.normK] at ha)
+  rw [_root_.Formalism.L2.Th1.D.GaussNormEstimates.normK]
   have h3 := nadd1 h1 h2
   rwa [sub_add_cancel] at h3
 
@@ -183,7 +141,7 @@ theorem frob_teich {σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExt
     rw [norm_pow, norm_one] at this
     exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 this
   have ha0 : (a : ℂ_[p]) ≠ 0 := by intro h0; rw [h0, norm_zero] at hnz; exact zero_ne_one hnz
-  have hb : ‖((σ a - a ^ p : MaximalUnramifiedExtension p) : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ := hσ.2.2.2.2 a (by rw [nK, hnz])
+  have hb : ‖((σ a - a ^ p : MaximalUnramifiedExtension p) : ℂ_[p])‖ ≤ (p : ℝ)⁻¹ := hσ.2.2.2.2 a (by rw [_root_.Formalism.L2.Th1.D.GaussNormEstimates.normK, hnz])
   set u : ℂ_[p] := ((σ a : MaximalUnramifiedExtension p) : ℂ_[p]) * ((a : ℂ_[p]) ^ p)⁻¹ with hu
   have hap0 : (a : ℂ_[p]) ^ p ≠ 0 := pow_ne_zero _ ha0
   have hum : u ^ m = 1 := by
@@ -296,15 +254,5 @@ theorem frobTw_of (h5 : 5 ≤ p) : FrobTw X E := by
 
 end Tw
 
-section abelian₂
-
-variable (X : Sys p) (E : Formalism.L2.G.Pend.CEmbC X.G) (D : Formalism.BasicNotions.D7)
-  (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
-
-end abelian₂
-
 end Formalism.L2.KerInert.RepFrob
 
-section
-set_option pp.fullNames true
-end

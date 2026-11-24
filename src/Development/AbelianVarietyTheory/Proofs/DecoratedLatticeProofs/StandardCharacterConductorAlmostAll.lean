@@ -75,8 +75,7 @@ section General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
 
-theorem af_ext {a b : Af F} (h : ∀ w, evalV F w a = evalV F w b) : a = b :=
-  DFunLike.ext _ _ h
+alias af_ext := _root_.GlobalTheory.AdelicU.af_ext
 
 theorem ev_same (v : HeightOneSpectrum (𝓞 F)) : evalV F v (singleV F v 1) = 1 :=
   GlobalTheory.LatVac.evalV_singleV_same F v

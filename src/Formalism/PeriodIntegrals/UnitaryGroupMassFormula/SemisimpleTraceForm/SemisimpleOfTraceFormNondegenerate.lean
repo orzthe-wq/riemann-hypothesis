@@ -1,7 +1,7 @@
 module
 
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.TraceNilStep
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.IsSemisimpleOfIsSSRep
+public import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -15,18 +15,12 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -47,11 +41,144 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-public import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.IsSemisimpleOfIsSSRep, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.SemisimpleOfTraceFormNondegenerate
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.IsSemisimpleOfIsSSRep =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.IsSemisimpleOfIsSSRep", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.TraceNilStep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace PI.SSAscent.UnitaryGroupMassFormula
+
+open PI.SSAscent
+open Matrix
+
+section Bridge
+
+variable {k : Type} [Field k] {a : ℕ}
+
+def stabAlg (W : Submodule k (Fin a → k)) : Subalgebra k (Matrix (Fin a) (Fin a) k) where
+  carrier := {x | ∀ v ∈ W, x *ᵥ v ∈ W}
+  mul_mem' := by
+    intro x y hx hy v hv
+    rw [← Matrix.mulVec_mulVec]
+    exact hx _ (hy v hv)
+  add_mem' := by
+    intro x y hx hy v hv
+    rw [Matrix.add_mulVec]
+    exact W.add_mem (hx v hv) (hy v hv)
+  algebraMap_mem' := by
+    intro c v hv
+    rw [Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]
+    exact W.smul_mem c hv
+
+private theorem mem_stabAlg_iff (W : Submodule k (Fin a → k))
+    (x : Matrix (Fin a) (Fin a) k) : x ∈ stabAlg W ↔ ∀ v ∈ W, x *ᵥ v ∈ W :=
+  Iff.rfl
+
+theorem imAlg_le_stabAlg {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k) (W : Submodule k (Fin a → k))
+    (h : IsInv ρ W) : imAlg ρ ≤ stabAlg W := by
+  unfold imAlg
+  rw [Algebra.adjoin_le_iff]
+  rintro _ ⟨g, rfl⟩
+  exact (mem_stabAlg_iff W _).mpr (fun v hv => h g v hv)
+
+instance towerSub (A : Subalgebra k (Matrix (Fin a) (Fin a) k)) :
+    IsScalarTower k A (Fin a → k) where
+  smul_assoc c x v := by
+    change ((c • x : A) : Matrix (Fin a) (Fin a) k) *ᵥ v = c • ((x : Matrix (Fin a) (Fin a) k) *ᵥ v)
+    rw [Subalgebra.coe_smul, Matrix.smul_mulVec]
+
+theorem smul_sub_def (A : Subalgebra k (Matrix (Fin a) (Fin a) k)) (x : A) (v : Fin a → k) :
+    x • v = (x : Matrix (Fin a) (Fin a) k) *ᵥ v := rfl
+
+def liftSub (A : Subalgebra k (Matrix (Fin a) (Fin a) k)) (W : Submodule k (Fin a → k))
+    (h : A ≤ stabAlg W) : Submodule A (Fin a → k) where
+  carrier := W
+  add_mem' := W.add_mem
+  zero_mem' := W.zero_mem
+  smul_mem' x v hv := by
+    rw [smul_sub_def]
+    exact h x.2 v hv
+
+theorem isInv_restrict {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k)
+    (N : Submodule (imAlg ρ) (Fin a → k)) : IsInv ρ (N.restrictScalars k) := by
+  intro g v hv
+  have hg : (ρ g : Matrix (Fin a) (Fin a) k) ∈ imAlg ρ :=
+    Algebra.subset_adjoin ⟨g, rfl⟩
+  have hmem : (⟨_, hg⟩ : imAlg ρ) • v ∈ N := N.smul_mem _ hv
+  rw [smul_sub_def] at hmem
+  exact hmem
+
+private theorem mem_liftSub_iff (A : Subalgebra k (Matrix (Fin a) (Fin a) k))
+    (W : Submodule k (Fin a → k)) (h : A ≤ stabAlg W) (v : Fin a → k) :
+    v ∈ liftSub A W h ↔ v ∈ W :=
+  Iff.rfl
+
+private theorem exists_isCompl_of_isSSRep {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k)
+    (hρ : PI.SSAscent.IsSSRep ρ) (N : Submodule (imAlg ρ) (Fin a → k)) :
+    ∃ N', IsCompl N N' := by
+  obtain ⟨W', hW', hc⟩ := hρ (N.restrictScalars k) (isInv_restrict ρ N)
+  have hle : imAlg ρ ≤ stabAlg W' := imAlg_le_stabAlg ρ W' hW'
+  refine ⟨liftSub (imAlg ρ) W' hle, ?_, ?_⟩
+  · rw [Submodule.disjoint_def]
+    intro x hxN hxW'
+    exact (Submodule.disjoint_def.mp hc.disjoint) x hxN
+      ((mem_liftSub_iff _ W' hle x).mp hxW')
+  · rw [codisjoint_iff, Submodule.eq_top_iff']
+    intro x
+    have hx : x ∈ N.restrictScalars k ⊔ W' := by
+      rw [codisjoint_iff.mp hc.codisjoint]
+      exact Submodule.mem_top
+    obtain ⟨y, hy, z, hz, hyz⟩ := Submodule.mem_sup.mp hx
+    exact Submodule.mem_sup.mpr ⟨y, hy, z, (mem_liftSub_iff _ W' hle z).mpr hz, hyz⟩
+
+theorem isSemisimple_of_isSSRep {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k) (hρ : IsSSRep ρ) :
+    IsSemisimpleModule (imAlg ρ) (Fin a → k) := by
+  have key : ∀ N : Submodule (imAlg ρ) (Fin a → k), ∃ N', IsCompl N N' :=
+    exists_isCompl_of_isSSRep ρ hρ
+  haveI : ComplementedLattice (Submodule (imAlg ρ) (Fin a → k)) := ⟨key⟩
+  exact ⟨⟩
+
+theorem isSSRep_of_isSemisimple {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k)
+    (h : IsSemisimpleModule (imAlg ρ) (Fin a → k)) : IsSSRep ρ := by
+  intro W hW
+  have hle : imAlg ρ ≤ stabAlg W := imAlg_le_stabAlg ρ W hW
+  obtain ⟨N', hc⟩ := exists_isCompl (liftSub (imAlg ρ) W hle)
+  refine ⟨N'.restrictScalars k, isInv_restrict ρ N', ?_, ?_⟩
+  · rw [Submodule.disjoint_def]
+    intro x hxW hxN'
+    exact (Submodule.disjoint_def.mp hc.disjoint) x
+      ((mem_liftSub_iff _ W hle x).mpr hxW) hxN'
+  · rw [codisjoint_iff, Submodule.eq_top_iff']
+    intro x
+    have hx : x ∈ liftSub (imAlg ρ) W hle ⊔ N' := by
+      rw [codisjoint_iff.mp hc.codisjoint]
+      exact Submodule.mem_top
+    obtain ⟨y, hy, z, hz, hyz⟩ := Submodule.mem_sup.mp hx
+    exact Submodule.mem_sup.mpr ⟨y, (mem_liftSub_iff _ W hle y).mp hy, z, hz, hyz⟩
+
+end Bridge
+
+end PI.SSAscent.UnitaryGroupMassFormula
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.IsSemisimpleOfIsSSRep =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.SemisimpleOfTraceFormNondegenerate =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.SemisimpleOfTraceFormNondegenerate", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.TraceNilStep\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.IsSemisimpleOfIsSSRep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace PI.SSAscent.UnitaryGroupMassFormula
@@ -166,3 +293,6 @@ theorem semisimpleOfTraceFormNondegenerate : UpStep := by
   infer_instance
 
 end PI.SSAscent.UnitaryGroupMassFormula
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.SemisimpleOfTraceFormNondegenerate =====

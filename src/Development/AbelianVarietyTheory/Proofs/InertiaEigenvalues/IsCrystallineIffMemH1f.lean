@@ -163,7 +163,7 @@ variable {G LL O V : Type} [Group G] [TopologicalSpace G] [CompactSpace G] [Fiel
 theorem exists_lattice (hO : IsOpen (Set.range (algebraMap O LL))) (ρ : Representation LL G V)
     (hρ : ∀ x, Continuous fun g => ρ g x) : Nonempty (Lattice (O := O) ρ) := by
   classical
-  haveI : ContinuousSMul LL V := IsModuleTopology.toContinuousSMul LL V
+  have : ContinuousSMul LL V := IsModuleTopology.toContinuousSMul LL V
   let b := Module.finBasis LL V
   let M : Submodule O V := Submodule.span O (Set.range b)
   have hMfg : M.FG := Submodule.fg_span (Set.finite_range b)
@@ -201,8 +201,8 @@ theorem exists_lattice (hO : IsOpen (Set.range (algebraMap O LL))) (ρ : Represe
     change (algebraMap O LL a)⁻¹ • ((a : O) • x) = x
     rw [← algebraMap_smul LL (a : O) x, smul_smul, inv_mul_cancel₀ ha0, one_smul]
   have hfg : T.FG := (hMfg.map _).of_le hle
-  haveI : Module.Finite O T := Module.Finite.iff_fg.2 hfg
-  haveI : Module.IsTorsionFree O V := Module.IsTorsionFree.trans_faithfulSMul O LL V
+  have : Module.Finite O T := Module.Finite.iff_fg.2 hfg
+  have : Module.IsTorsionFree O V := Module.IsTorsionFree.trans_faithfulSMul O LL V
   refine ⟨{ T := T, stable := fun g x hx => ?_, fg := hfg, free := inferInstance, span := ?_ }⟩
   · induction hx using Submodule.span_induction with
     | mem x hx =>
@@ -238,7 +238,7 @@ theorem nontrivial_BdR : Nontrivial BdR :=
 
 include PD in
 theorem nontrivial_B : Nontrivial B := by
-  haveI := nontrivial_BdR PD
+  have := nontrivial_BdR PD
   exact PD.ι.toRingHom.domain_nontrivial
 
 theorem dcris_trivial [FiniteDimensional Qp LL] :
@@ -256,14 +256,14 @@ theorem ddR_trivial [FiniteDimensional Qp LL] :
 
 theorem finrank_dcris_trivial [FiniteDimensional Qp LL] :
     finrank LL ↥(Dcris PD (Representation.trivial LL G LL)) = finrank Qp K₀ := by
-  haveI := nontrivial_B PD
-  haveI := PD.finK₀
+  have := nontrivial_B PD
+  have := PD.finK₀
   rw [dcris_trivial, LinearMap.finrank_range_of_inj incl_injective]
   simp
 
 theorem isDR_trivial [FiniteDimensional Qp LL] : IsDR PD (Representation.trivial LL G LL) := by
-  haveI := nontrivial_BdR PD
-  haveI := PD.finK
+  have := nontrivial_BdR PD
+  have := PD.finK
   unfold IsDR
   rw [ddR_trivial, LinearMap.finrank_range_of_inj incl_injective]
   simp
@@ -307,8 +307,8 @@ theorem eq_zero_of_incl_mem_FilV {a : ℤ} (ha : 0 < a) (z : LL ⊗[Qp] K)
 
 theorem finrank_fildR_trivial [CharZero Qp] [FiniteDimensional Qp LL] (τ : K →ₐ[Qp] LL) (a : ℤ) :
     finrank LL ↥(FildR PD (Representation.trivial LL G LL) τ a) = if a ≤ 0 then 1 else 0 := by
-  haveI := nontrivial_BdR PD
-  haveI := PD.finK
+  have := nontrivial_BdR PD
+  have := PD.finK
   obtain ⟨z₀, h0, hz⟩ := exists_eigenline τ
   have hm : ∀ (c : K) (z : LL ⊗[Qp] K), mulVdR (LL := LL) (V := LL) c (incl Qp K BdR LL z) =
       incl Qp K BdR LL ((LinearMap.mulLeft Qp c).lTensor LL z) := by
@@ -347,9 +347,9 @@ variable {V W : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTowe
   {ρ : Representation LL G V} {ρ' : Representation LL G W} {i : V →ₗ[LL] W} {p : W →ₗ[LL] LL}
 
 theorem finite_dcris [FiniteDimensional LL V] (h : IsCrys PD ρ) : Module.Finite LL ↥(Dcris PD ρ) := by
-  haveI := PD.finK₀
+  have := PD.finK₀
   rcases subsingleton_or_nontrivial V with hV | hV
-  · haveI : Subsingleton (V ⊗[Qp] B) := inferInstance
+  · have : Subsingleton (V ⊗[Qp] B) := inferInstance
     exact Module.Finite.of_finite
   · refine Module.finite_of_finrank_pos ?_
     rw [h]
@@ -445,10 +445,10 @@ theorem finrank_ext [FiniteDimensional LL V] (h : IsExt ρ ρ' i p) :
 theorem isCrys_iff_surjective [FiniteDimensional Qp LL] [FiniteDimensional LL V] (hV : IsCrys PD ρ)
     (h : IsExt ρ ρ' i p) : IsCrys PD ρ' ↔
       Function.Surjective (GlobalTheory.CrysSub.Dmap PD ρ' (Representation.trivial LL G LL) p h.2.2.2.2) := by
-  haveI := PD.finK₀
-  haveI := finite_dcris PD hV
+  have := PD.finK₀
+  have := finite_dcris PD hV
   have hT := finrank_dcris_trivial PD (LL := LL)
-  haveI : Module.Finite LL ↥(Dcris PD (Representation.trivial LL G LL)) :=
+  have : Module.Finite LL ↥(Dcris PD (Representation.trivial LL G LL)) :=
     Module.finite_of_finrank_pos (by rw [hT]; exact finrank_pos)
   set f := GlobalTheory.CrysSub.Dmap PD ρ ρ' i h.2.2.2.1 with hf
   set q := GlobalTheory.CrysSub.Dmap PD ρ' (Representation.trivial LL G LL) p h.2.2.2.2 with hq
@@ -464,7 +464,7 @@ theorem isCrys_iff_surjective [FiniteDimensional Qp LL] [FiniteDimensional LL V]
   have hinj : Function.Injective f := fun x y hxy => Subtype.ext <|
     Module.Flat.rTensor_preserves_injective_linearMap (M := B) (i.restrictScalars Qp) h.1
       (by rw [← GlobalTheory.CrysSub.rTensor_eq, ← GlobalTheory.CrysSub.rTensor_eq]; exact congrArg Subtype.val hxy)
-  haveI := (GlobalTheory.CrysSub.finrank_le_of_ker_le f q hle).1
+  have := (GlobalTheory.CrysSub.finrank_le_of_ker_le f q hle).1
   have h1 := q.finrank_range_add_finrank_ker
   rw [hk, LinearMap.finrank_range_of_inj hinj, hV] at h1
   rw [IsCrys, (finrank_ext h).2, ← h1, mul_add, mul_one, add_comm, Nat.add_right_inj, ← hT,
@@ -511,17 +511,17 @@ theorem extCrysAt [CompactSpace G] [TopologicalSpace Qp] [CharZero Qp] [Topologi
   have hO' := hO
   obtain ⟨⟨_, _, _⟩, _, _, _, hop⟩ := hO'
   refine ⟨isCrystalline_iff_mem_H1f PD hV h c hc, fun hW j U hU τ hτ a => ?_⟩
-  haveI := (finrank_ext h).1
-  letI : Module O V := Module.compHom V (algebraMap O LL)
-  haveI : IsScalarTower O LL V := ⟨fun x y z => by
+  have := (finrank_ext h).1
+  let : Module O V := Module.compHom V (algebraMap O LL)
+  have : IsScalarTower O LL V := ⟨fun x y z => by
     rw [Algebra.smul_def, mul_smul]; rfl⟩
-  letI : Module O W := Module.compHom W (algebraMap O LL)
-  haveI : IsScalarTower O LL W := ⟨fun x y z => by
+  let : Module O W := Module.compHom W (algebraMap O LL)
+  have : IsScalarTower O LL W := ⟨fun x y z => by
     rw [Algebra.smul_def, mul_smul]; rfl⟩
-  letI : TopologicalSpace W := moduleTopology LL W
-  haveI : IsModuleTopology LL W := ⟨rfl⟩
-  haveI : ContinuousSMul LL W := IsModuleTopology.toContinuousSMul LL W
-  haveI : ContinuousAdd W := IsModuleTopology.toContinuousAdd LL W
+  let : TopologicalSpace W := moduleTopology LL W
+  have : IsModuleTopology LL W := ⟨rfl⟩
+  have : ContinuousSMul LL W := IsModuleTopology.toContinuousSMul LL W
+  have : ContinuousAdd W := IsModuleTopology.toContinuousAdd LL W
   have hρ' : ∀ y, Continuous fun g => ρ' g y := by
     intro y
     obtain ⟨e, he1, he⟩ := hc
@@ -538,13 +538,13 @@ theorem extCrysAt [CompactSpace G] [TopologicalSpace Qp] [CharZero Qp] [Topologi
   obtain ⟨L₂⟩ := exists_lattice hop (Representation.trivial LL G LL) hT
   obtain ⟨-, -, d₀⟩ := hF LL O hO { V := V, ρ := ρ, cont := hρ }
   obtain ⟨-, ⟨f₁, -⟩, d₁⟩ := hF LL O hO { V := W, ρ := ρ', cont := hρ' }
-  haveI : Module.Finite LL ↥(DdR PD ρ') := f₁
+  have : Module.Finite LL ↥(DdR PD ρ') := f₁
   have key : ∀ b : ℤ, finrank LL ↥(FildR PD ρ' τ b) = finrank LL ↥(FildR PD ρ τ b) + if b ≤ 0 then 1 else 0 := by
     intro b
     obtain ⟨k₀, k₁, k₂⟩ := hS { V := V, ρ := ρ, cont := hρ, L := L₀ } { V := W, ρ := ρ', cont := hρ', L := L₁ }
       { V := LL, ρ := Representation.trivial LL G LL, cont := hT, L := L₂ } i p h.2.2.2.1 h.2.2.2.2 h.1 h.2.1
       h.2.2.1 (d₀ hV) (d₁ hW) (isDR_trivial PD) τ b
-    haveI : Module.Finite LL ↥(FildR PD ρ' τ b) :=
+    have : Module.Finite LL ↥(FildR PD ρ' τ b) :=
       Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ') (inf_le_left.trans inf_le_left)
     rw [← finrank_fildR_trivial PD τ b]
     exact finrank_add_of_exact _ _ _ _ _ k₀ k₁ k₂
@@ -560,7 +560,7 @@ theorem extCrys {l : ℕ} [Fact l.Prime] (P : LocPrime l)
     (hF : ∀ K : Loc.FinExt l, Formalism.MainNotions.LocalSituation.fontCore (P.PD K)) (hS : GlobalTheory.IndefiniteRowSideFullHecke.JumpMultiplicityDual.Strictness l P) :
     ExtCrys P := by
   intro K LL n emb lam hst
-  haveI := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK K
+  have := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK K
   exact extCrysAt (P.PD K) ↥(Loc.OL LL) (GlobalTheory.LocalIntegers.goodO_integers l LL) (hF K)
     (hS K 1 LL hst.2.1.2.2) emb
 

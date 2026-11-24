@@ -2,9 +2,11 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
 public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentresStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundleStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAtStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsIffCentres
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundle
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ValAtIffValueAt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -127,7 +129,7 @@ theorem inFrameDomain_of_unitAt (hT : CoordTie ℤ ξ (segreCoord y)) {z : Spec 
       rw [map_mul, hs, ht, map_one, mul_inv_cancel₀ hf.1]
     have hval := congrArg ev hone
     rw [map_mul, map_one] at hval
-    exact ⟨ev s, (GlobalTheory.T.valAt_iff_value_at X Ω ξ K J y hT z w h hz f _).1 ⟨h, s, hs, rfl⟩,
+    exact ⟨ev s, (_root_.GlobalTheory.CompanionTheory.Ar.valAt_iff_isValueAt_coords X Ω ξ K J y hT z w h hz f _).1 ⟨h, s, hs, rfl⟩,
       left_ne_zero_of_mul_eq_one hval⟩
 
 variable {F : Type} [AddCommGroup F] [Module Ω F] {r : ℕ} {W : ChartBundle ℤ (segreCoord y) r F} {L : Lat ξ F}
@@ -167,7 +169,7 @@ theorem exists_frames_on_chart (hT : CoordTie ℤ ξ (segreCoord y)) (hV : L.IsV
     have hne : v q ≠ 0 := (hunit q ⟨q.1, hsp q⟩ q.2 (hq q)).1
     have hring : v q ∈ chartRing ℤ (segreCoord y) c :=
       (hT.ring c hc (v q)).2 fun p hp => ⟨_, (hv q p (hpU p hp)).symm⟩
-    exact (GlobalTheory.T.segre_chart_bundle X Ω ξ K J y F r W L hT hV hC c (v q) (b q) hc hring hne).2
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.isFrameOver_iff_forall_isFrameAt X Ω ξ K J y F r W L hT hV hC c (v q) (b q) hc hring hne).2
       fun p hp hu => hfr q p (hbasic q p (hpU p hp) hu)
   · intro p hp
     obtain ⟨q, hqt, hqp⟩ := Set.mem_iUnion₂.1 (ht (hpU p hp))
@@ -199,7 +201,7 @@ theorem exists_frames_cover_mcPts : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] 
       exact hframe c a ha
     exact fun i => hall _ (e.symm i).2
   · intro w hw
-    obtain ⟨z, h, hz⟩ := (GlobalTheory.T.complex_points_iff_centres X Ω ξ K J y hT w).1 hw
+    obtain ⟨z, h, hz⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.mem_mcPts_iff_exists_coordsAt X Ω ξ K J y hT w).1 hw
     obtain ⟨c, hc⟩ := hT.cover ⟨centre z, h⟩
     obtain ⟨a, ha, hu⟩ := hcov ⟨c, hc.1⟩ ⟨centre z, h⟩ hc
     have hmem : (c, a.1, a.2) ∈ T := Set.mem_iUnion.2 ⟨⟨c, hc.1⟩, a, ha, rfl⟩

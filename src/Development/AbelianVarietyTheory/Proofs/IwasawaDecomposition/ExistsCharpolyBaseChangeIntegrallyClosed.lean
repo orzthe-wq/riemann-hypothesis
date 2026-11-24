@@ -2,7 +2,12 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraMapNormCoeff
 public import Mathlib.RingTheory.IntegralClosure.IntegrallyClosed
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyDvdPowFinrankOfAevalEqZeroStatement
+public import Mathlib.LinearAlgebra.Charpoly.Basic
+public import Mathlib.LinearAlgebra.FreeModule.PID
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharpolyDvdPowFinrankOfAevalEqZero
+public import Mathlib.RingTheory.Polynomial.GaussLemma
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -43,7 +48,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.RingTheory.Polynomial.GaussLemma
 
 @[expose] public section
 
@@ -62,7 +66,7 @@ theorem exists_map_eq_charK : ∀ {A B K : Type} [CommRing A] [IsDomain A] [IsIn
     rw [Polynomial.aeval_algHom_apply, Polynomial.aeval_map_algebraMap]
     have : (1 : K) ⊗ₜ[A] b = Algebra.TensorProduct.includeRight b := rfl
     rw [this, Polynomial.aeval_algHom_apply, show aeval b g = 0 from hg, map_zero, map_zero]
-  have hd := GlobalTheory.T.charpoly_dvd_pow_finrank_of_aeval_eq_zero _ _ hT
+  have hd := _root_.GlobalTheory.CharpolyDvd.main _ _ hT
   rw [← Polynomial.map_pow] at hd
   obtain ⟨P, hP⟩ := IsIntegrallyClosed.eq_map_mul_C_of_dvd K (hgm.pow _) hd
   refine ⟨P, ?_⟩

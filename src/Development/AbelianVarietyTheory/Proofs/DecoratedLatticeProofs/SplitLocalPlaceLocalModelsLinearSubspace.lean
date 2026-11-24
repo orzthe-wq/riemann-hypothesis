@@ -55,9 +55,7 @@ theorem heisO_add' (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) (
     heisO ψ S T u (f + g) = heisO ψ S T u f + heisO ψ S T u g := by
   funext w; simp [heisO, mul_add]
 
-theorem heisO_smul' (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) (c : ℂ) (f : WO S T → ℂ) :
-    heisO ψ S T u (c • f) = c • heisO ψ S T u f := by
-  funext w; simp [heisO]; ring
+alias heisO_smul' := _root_.GlobalTheory.SplitScalar.heisO_smul
 
 theorem heisO_zero' (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) :
     heisO ψ S T u 0 = 0 := by
@@ -69,20 +67,7 @@ theorem isThetaFunO_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) : IsThet
   cont := continuous_const
   smooth := by intro k L _ _ w; exact contDiff_const }
 
-theorem isThetaFunO_add {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f g : WO S T → ℂ}
-    (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) : IsThetaFunO ψ S T (f + g) := {
-  quasi := by intro γ w; simp [hf.quasi, hg.quasi, mul_add]
-  level := by
-    obtain ⟨U, hU, hUf⟩ := hf.level
-    obtain ⟨V, hV, hVg⟩ := hg.level
-    refine ⟨U ⊓ V, ?_, ?_⟩
-    · rw [AddSubgroup.coe_inf]; exact hU.inter hV
-    · intro u hu h0
-      rw [heisO_add', hUf u hu.1 h0, hVg u hu.2 h0]
-  cont := hf.cont.add hg.cont
-  smooth := by
-    intro k L hL hL' w
-    exact (hf.smooth k L hL hL' w).add (hg.smooth k L hL hL' w) }
+alias isThetaFunO_add := _root_.GlobalTheory.OrientedHeis.theta_add
 
 theorem isThetaFunO_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f : WO S T → ℂ} (c : ℂ)
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (c • f) := {

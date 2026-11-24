@@ -259,13 +259,13 @@ theorem Jm_mul_Pm (h : IsDualOf σ s) : Jm n s * Pm n σ = ∑ k, s k • Ma R n
   simp only [Matrix.smul_apply, Ma, Jm, Pm, cz_apply, dl, smul_eq_mul, Pi.smul_apply, Pi.single_apply]
   by_cases hm : m.1 = m'.1
   · rw [Finset.sum_eq_single m.1 (by intro b _ hb; simp [Ne.symm hb]) (by simp)]
-    simp only [if_true, hm, mul_ite, mul_zero]
+    simp only [if_true, hm]
     rw [mul_comm (s m.2), h.2 (RingOfIntegers.basis E m'.2) m.2]
     refine Finset.sum_congr rfl (fun k _ => ?_)
     rw [mul_comm (RingOfIntegers.basis E m'.2)]
     ring
   · have hm' : m'.1 ≠ m.1 := Ne.symm hm
-    simp [hm, hm']
+    simp [hm]
 
 theorem vecMul_Ma (l : Ix E n → R) (a : 𝓞 E) (x : Fin n → 𝓞 E) :
     ∑ m, (l ᵥ* Ma R n a) m * (cz x m : R) = ∑ m, l m * (cz (a • x) m : R) := by

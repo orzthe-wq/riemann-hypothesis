@@ -74,7 +74,7 @@ theorem exists_ringEquiv : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L
 
   have hf : ∀ x : L, Valued.v (s.i.toRingHom x) = s.w.valuation L x :=
     fun x => PI.CompAtExist.muV_eq s x
-  obtain ⟨φ, hφc, hφ, -⟩ := GlobalTheory.DenseCompl.exists_extension s.w s.v (f := s.i.toRingHom) hf
+  obtain ⟨φ, hφc, hφ, -⟩ := _root_.GlobalTheory.ValuationExtensionContinuous.exists_extension s.w s.v (f := s.i.toRingHom) hf
 
   let g : maximalRealSubfield L →+* s.w.adicCompletion L :=
     (algebraMap L (s.w.adicCompletion L)).comp (algebraMap (maximalRealSubfield L) L)
@@ -83,7 +83,7 @@ theorem exists_ringEquiv : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L
     simp only [g, RingHom.comp_apply]
     rw [GlobalTheory.Idele.valued_algebraMap, ← PI.CompAtExist.muV_eq s, PI.CompAtExist.muV_apply, AlgHom.commutes,
       GlobalTheory.Idele.valued_algebraMap]
-  obtain ⟨ψ, hψc, hψ, -⟩ := GlobalTheory.DenseCompl.exists_extension s.v s.w g hg
+  obtain ⟨ψ, hψc, hψ, -⟩ := _root_.GlobalTheory.ValuationExtensionContinuous.exists_extension s.v s.w g hg
   have hcomp : ∀ y, φ (ψ y) = y := by
     intro y
     refine (HeightOneSpectrum.denseRange_algebraMap (maximalRealSubfield L) s.v).induction_on

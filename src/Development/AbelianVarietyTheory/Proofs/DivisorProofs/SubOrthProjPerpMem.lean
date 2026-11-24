@@ -65,7 +65,7 @@ theorem sub_orthProj_perp_mem {K : Type} [Field K] [NumberField K] [StarRing K] 
     ⟨k.1, k.2.2.1⟩
   have h1 : ∀ u y : Fin n → K, hform H u y = star u ⬝ᵥ H.mulVec y := fun u y => by
     simp [Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, starRingEnd_apply, mul_assoc,
-      mul_comm, mul_left_comm]
+      mul_comm]
   have hs : ∀ u y : Fin n → K, hform H u y = 0 → hform H y u = 0 := fun u y e => by
     rw [h1] at e ⊢
     have := congrArg star e

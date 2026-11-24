@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsLocallyConstantCycMod
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EmbeddingClosedIntegral
 
 @[expose] public section
 
@@ -73,10 +74,6 @@ theorem norm_unit (c : Coef l) (u : c.Oˣ) : ‖((u : c.O) : PadicAlgCl l)‖ = 
     mul_le_of_le_one_right (norm_nonneg _) h2
   linarith
 
-theorem norm_natCast_lt_one : ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by
-  rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)) l, PadicAlgCl.norm_extends, Padic.norm_p]
-  exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)
-
 theorem norm_algebraMap_padicInt (a : ℤ_[l]) : ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖ = ‖a‖ := by
   show ‖algebraMap ℚ_[l] (PadicAlgCl l) (a : ℚ_[l])‖ = ‖a‖
   rw [PadicAlgCl.norm_extends]; rfl
@@ -107,7 +104,7 @@ theorem exists_eq_pow_mul (c : Coef l) (m : ℕ) (x : c.O)
     rcases (norm_le_one c π).lt_or_eq with h | h
     · exact h
     · exfalso
-      have := (norm_natCast_lt_one (l := l))
+      have := (_root_.GlobalTheory.CoefEmbed.norm_prime_lt_one (l := l))
       rw [hlq, hqdef, h, one_pow] at this
       exact lt_irrefl _ this
   have hxq : ‖(((u : c.O) * π ^ k : c.O) : PadicAlgCl l)‖ = q ^ k := by

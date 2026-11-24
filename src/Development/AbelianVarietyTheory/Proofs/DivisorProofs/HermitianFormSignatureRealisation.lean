@@ -61,7 +61,7 @@ theorem gramOn_map_eq_H {E : Type} [Field E] [NumberField E] [IsCMField E] {n : 
       (Matrix.of fun k i => τ ((Module.finBasis E V i).1 k)) := by
   ext i j
   simp [gramOn, hform, Matrix.mul_apply, Matrix.conjTranspose_apply,
-    IsCMField.complexEmbedding_complexConj, Finset.sum_mul, Finset.mul_sum, mul_assoc]
+    IsCMField.complexEmbedding_complexConj, Finset.sum_mul, mul_assoc]
   rw [Finset.sum_comm]
 
 theorem gramOn_det_totallyPositive_of_posDef {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}

@@ -137,7 +137,7 @@ theorem heckeL_ne_zero_int (hFE : GlobalTheory.Published.HeckeFunctionalEquation
   have hn : ∃ i, 2 * m i ≠ 0 := ⟨i₀, by have := hpos i₀; omega⟩
   have hn' : ∃ i, -(2 * m i) ≠ 0 := ⟨i₀, by have := hpos i₀; omega⟩
   have hm' : Formalism.L2.Host.HChar.HasInf χ⁻¹ φ (fun i => -(2 * m i)) := GlobalTheory.Published.HeckeFEModel.hasInf_inv hm
-  have hu' := GlobalTheory.Published.HeckeFEModel.isUnitary_inv hu
+  have hu' := _root_.Formalism.L2.Host.HChar.IsUnitary.inv hu
   have hmi : HasInf χ⁻¹ φ (fun i => -m i) := by
     have e : (fun i => 2 * -m i) = fun i => -(2 * m i) := funext fun i => by ring
     show Formalism.L2.Host.HChar.HasInf χ⁻¹ φ (fun i => 2 * -m i)

@@ -77,15 +77,7 @@ theorem exists_of_mem_FilD_zero {x : Per.BdR l} (hx : x ∈ Per.FilD l 0) :
   obtain ⟨y, hy⟩ := (mem_FilD_iff_xi_pow l e he 0 x).1 hx
   exact ⟨y, by simpa using hy⟩
 
-theorem actC_eq {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (c : ℂ_[l]) :
-    AI.actC g c = Per.σC g c := by
-  have h1 : Continuous (AI.actC g) :=
-    (AddMonoidHomClass.isometry_of_norm (AI.actC g) (AI.actC_norm g)).continuous
-  have h2 : Continuous (Per.σC g) :=
-    (AddMonoidHomClass.isometry_of_norm (Per.σC g) (GlobalTheory.RingBasics.norm_σC g)).continuous
-  induction c using UniformSpace.Completion.induction_on with
-  | hp => exact isClosed_eq h1 h2
-  | ih a => exact (AI.actC_ext g a).trans (GlobalTheory.RingBasics.σC_coe g a).symm
+alias actC_eq := _root_.GlobalTheory.MemLoc.locAinf_actC
 
 theorem norm_untilt_sub (x : Per.Fl l) (y : Per.OC l)
     (h : PreTilt.coeff 0 x = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : Per.OC l)}) y) :

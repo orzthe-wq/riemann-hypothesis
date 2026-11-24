@@ -158,7 +158,6 @@ private theorem diagonal_rep_map_entries {G A B : Type} [Group G] [CommRing A] [
   split_ifs
   · first
       | (rw [← map_zpow, Units.coe_map]; rfl)
-      | (rw [← map_pow, Units.coe_map]; rfl)
   · simp
 
 theorem UpperTheory.V.U3.isPt_push :

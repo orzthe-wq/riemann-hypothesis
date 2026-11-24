@@ -94,8 +94,8 @@ theorem single_last_mul_w :
   rw [Matrix.mul_apply, Finset.sum_eq_single (Fin.last j)]
   · simp only [Matrix.single_apply, G.wMat, Matrix.of_apply]
     by_cases ha : a = Fin.last j <;> by_cases hb : b = (Fin.last j).rev <;>
-      simp [ha, hb, Fin.rev_eq_iff, eq_comm]
-  · intro c _ hc; simp [Matrix.single_apply, Ne.symm hc]
+      simp [ha, hb, eq_comm]
+  · intro c _ hc; simp [Ne.symm hc]
   · simp
 
 theorem zfull_mul_single_rev (W : Matrix (Fin j) (Fin j) ℂ) (σ : ℂ) :
@@ -126,7 +126,7 @@ theorem x0_sub_tau_formula (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} (
   unfold M1 M2
   rw [← castM_smul', ← castM_smul', ← castM_add', ← castM_add', smul_block_three, smul_block_three, Ux4.block3_add, Ux4.block3_add]
   congr 1
-  congr 1 <;> simp only [smul_zero, add_zero, zero_add, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul,
+  congr 1 <;> simp only [smul_zero, add_zero, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul,
     Matrix.mul_smul]
 
 theorem x0_mul_torus_element (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} (hZ : Z.det ≠ 0) {τ : ℂ} (hτ : τ ≠ 0)
@@ -150,7 +150,7 @@ theorem x0_mul_torus_element (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ}
       Matrix.single (Fin.last j) (Fin.last j).rev 1 from by
         ext c d
         rw [Ux3.wMat_mul_apply]
-        simp only [Matrix.single_apply, Fin.rev_rev, Fin.rev_inj], zfull_mul_single_rev, ← single_last_mul_w]
+        simp only [Matrix.single_apply, Fin.rev_inj], zfull_mul_single_rev, ← single_last_mul_w]
     simp only [Matrix.smul_apply, smul_eq_mul]
     ring
   ·
@@ -185,7 +185,7 @@ theorem hasFDerivAt_x0_in_tau (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ
   refine ⟨_, h3.congr_of_eventuallyEq ?_, ?_⟩
   · filter_upwards [isOpen_ne.mem_nhds hτ] with τ' hτ'
     rw [x0_sub_tau_formula hj hZ hτ hτ' γ]
-    simp [Complex.conjCLE_apply, Complex.star_def, add_assoc]
+    simp [add_assoc]
   · rw [x0_mul_torus_element hj hZ hτ γ s]
     change (s * τ) • M1 k r j hj + ((starRingEnd ℂ (s * τ)) * (-((starRingEnd ℂ τ) ^ 2)⁻¹)) • M2 k r j hj = _
     rw [sub_eq_add_neg, ← neg_smul]
@@ -224,12 +224,11 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 theorem lin_decomp (D : ℂ →L[ℝ] E) (w : ℂ) : D w = (w.re : ℂ) • D 1 + (w.im : ℂ) • D Complex.I := by
   have hw : w = (w.re : ℝ) • (1 : ℂ) + (w.im : ℝ) • Complex.I := by
-    apply Complex.ext <;> simp <;> norm_num
+    apply Complex.ext <;> simp
   conv_lhs => rw [hw]
   rw [map_add (f := _), map_smul, map_smul, Complex.coe_smul, Complex.coe_smul]
 
-theorem half_I : (1 / (2 * Complex.I) : ℂ) = -Complex.I / 2 := by
-  rw [one_div, mul_inv, Complex.inv_I]; ring
+alias half_I := _root_.PI.QnHermHaar.HermitianAdjointLemmas.two_I_inv
 
 theorem torus_id (D : ℂ →L[ℝ] E) (τ : ℂ) :
     D (1 / 2 * τ) + Complex.I • D (-Complex.I / 2 * τ) = τ • ((1 / 2 : ℂ) • (D 1 - Complex.I • D Complex.I)) := by
@@ -286,7 +285,7 @@ theorem hpart2_SS (hj : j + 1 ≤ r) :
   unfold hpart2 hM
   rw [Formalism.FourierDecayAlt.P.Qx2.hpk_inv, SingleEntryHermitianProducts.single_conjT, star_one, SingleEntryHermitianProducts.hpk_mul_single_esI, single_mul_hpk_esI, half_I]
   have h2 : star (-Complex.I / 2 : ℂ) = Complex.I / 2 := by
-    apply Complex.ext <;> simp <;> norm_num
+    apply Complex.ext <;> simp
   rw [h2]
   ext p q
   simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, smul_eq_mul, Fin.val_last]

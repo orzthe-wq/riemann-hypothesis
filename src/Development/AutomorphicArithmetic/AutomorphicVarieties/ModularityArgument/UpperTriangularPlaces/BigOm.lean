@@ -226,7 +226,7 @@ theorem UpperTheory.V.Keep.loc2 {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosu
   · rw [hs]
     simp [Raw.bar, hom]
   · rw [hfacts, hs]
-    simp only [wPs, pow_zero, one_mul]
+    simp only [wPs]
     have e : Raw.bar D.Psi (g ^ 2) = 1 := by
       simp only [Raw.bar, map_pow, Units.val_pow_eq_pow_val]
       have : (residue c.O) (↑(D.Psi g) : c.O) = 1 := hPs
@@ -234,7 +234,7 @@ theorem UpperTheory.V.Keep.loc2 {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosu
     rw [e]
     split_ifs <;> simp
   · rw [hfacts, hs]
-    simp only [wAl, Int.reduceNeg, neg_zero, zpow_zero, mul_one, zpow_one, ite_self]
+    simp only [wAl, neg_zero, zpow_zero, mul_one, zpow_one, ite_self]
     intro h
     apply hξ
     have e : Raw.bar D.ξ (g ^ 2) = Raw.bar D.ξ g ^ 2 := by

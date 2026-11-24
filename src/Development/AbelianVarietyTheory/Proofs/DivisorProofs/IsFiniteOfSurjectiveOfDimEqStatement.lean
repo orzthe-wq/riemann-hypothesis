@@ -50,4 +50,4 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.isFinite_of_surjective_of_dim_eq' : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), A.dim = B.dim → Surjective f.hom.left → IsFinite f.hom.left := by
-  first | exact @GlobalTheory.AV.AbVar.isFinite_of_surjective_of_dim_eq | exact GlobalTheory.AV.AbVar.isFinite_of_surjective_of_dim_eq | (intros; apply GlobalTheory.AV.AbVar.isFinite_of_surjective_of_dim_eq <;> assumption)
+  first | exact @GlobalTheory.AV.AbVar.isFinite_of_surjective_of_dim_eq

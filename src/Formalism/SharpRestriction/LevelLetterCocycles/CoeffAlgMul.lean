@@ -1,28 +1,35 @@
 module
 
+public import Mathlib.LinearAlgebra.LinearIndependent.Defs
+public import Mathlib.LinearAlgebra.Basis.Basic
+public import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
+public import Mathlib.RingTheory.Noetherian.Basic
 public import Formalism.SharpRestriction.LevelLetterCocycles.CoprimeFrobeniusUniformizerPowers
 public import Formalism.SharpRestriction.LevelLetterCocycles.ExistsSmulPowEqSumOfInFNc
 public import Formalism.SharpRestriction.LevelLetterCocycles.CrystallineFiltrationAntitone
-import Formalism.SharpRestriction.LevelLetterCocycles.DvOZeroHigh
-import Formalism.SharpRestriction.LevelLetterCocycles.LevLetEMul
-import Formalism.SharpRestriction.LevelLetterCocycles.ProdPsUnitE
-public import Formalism.SharpRestriction.LevelLetterCocycles.StageStep
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -47,8 +54,169 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.LevelLetterCocycles.DvOZeroHigh
+import Formalism.SharpRestriction.LevelLetterCocycles.LevLetEMul
+import Formalism.SharpRestriction.LevelLetterCocycles.ProdPsUnitE
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.LevelLetterCocycles.StageStep, Formalism.SharpRestriction.LevelLetterCocycles.CoeffAlgMul
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.StageStep =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.StageStep", "h": "module\n\npublic import Mathlib.LinearAlgebra.LinearIndependent.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.LinearAlgebra.Basis.Basic\npublic import Mathlib.LinearAlgebra.LinearIndependent.Lemmas\npublic import Mathlib.RingTheory.Noetherian.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Classical
+
+namespace Formalism.MainNotions.UnusedSlot80.CrA
+
+variable {K : Type*} [Field K] {d : ℕ}
+
+def PiLocalization₂ (G : ℤ → Submodule K (Fin d → K)) (hi u : ℤ) : Prop :=
+  ∃ (S : Set (Fin d → K)) (ℓ : (Fin d → K) → ℤ), LinearIndepOn K id S ∧
+    (∀ x ∈ S, x ∈ G (ℓ x) ∧ u ≤ ℓ x ∧ ℓ x ≤ hi) ∧ S ⊆ G u ∧
+    ∀ u', u ≤ u' → u' ≤ hi → G u' ≤ Submodule.span K {x | x ∈ S ∧ u' ≤ ℓ x}
+
+theorem stage_top (G : ℤ → Submodule K (Fin d → K)) (hi : ℤ) : PiLocalization₂ G hi hi := by
+  unfold PiLocalization₂
+  obtain ⟨b, hbt, hspan, hli⟩ := exists_linearIndependent K (G hi : Set (Fin d → K))
+  refine ⟨b, fun _ => hi, hli, fun x hx => ⟨hbt hx, le_rfl, le_rfl⟩, hbt, ?_⟩
+  intro u' h1 h2 v hv
+  have hsub : b ⊆ {x | x ∈ b ∧ u' ≤ (fun _ => hi) x} := fun x hx => ⟨hx, h2⟩
+  refine Submodule.span_mono hsub ?_
+  rw [hspan, Submodule.span_eq]
+  rwa [← le_antisymm h2 h1]
+
+theorem stage_step (G : ℤ → Submodule K (Fin d → K)) (hG : Antitone G) (hi u : ℤ) (hu : u < hi)
+    (h : PiLocalization₂ G hi (u + 1)) : PiLocalization₂ G hi u := by
+  unfold PiLocalization₂ at h ⊢
+  obtain ⟨S, ℓ, hli, hmem, hSG, hspan⟩ := h
+  have hSu : S ⊆ (G u : Set (Fin d → K)) := fun x hx => hG (by omega : u ≤ u + 1) (hSG hx)
+  obtain ⟨b, hbt, hSb, htb, hlib⟩ := exists_linearIndepOn_id_extension hli hSu
+  refine ⟨b, fun x => if x ∈ S then ℓ x else u, hlib, ?_, hbt, ?_⟩
+  · intro x hx
+    by_cases hxS : x ∈ S
+    · obtain ⟨h1, h2, h3⟩ := hmem x hxS
+      simp only [hxS, if_true]
+      exact ⟨h1, by omega, h3⟩
+    · simp only [hxS, if_false]
+      exact ⟨hbt hx, le_rfl, hu.le⟩
+  · intro u' h1 h2
+    rcases eq_or_lt_of_le h1 with rfl | hlt
+    · intro v hv
+      have hsub : b ⊆ {x | x ∈ b ∧ u ≤ (fun x => if x ∈ S then ℓ x else u) x} := by
+        intro x hx
+        refine ⟨hx, ?_⟩
+        by_cases hxS : x ∈ S
+        · have h3 := (hmem x hxS).2.1
+          simp only [hxS, if_true]
+          omega
+        · simp only [hxS, if_false]
+          exact le_rfl
+      exact Submodule.span_mono hsub (htb hv)
+    · refine (hspan u' (by omega) h2).trans (Submodule.span_mono ?_)
+      rintro x ⟨hxS, hx⟩
+      exact ⟨hSb hxS, by simpa [hxS] using hx⟩
+
+theorem stage_all (G : ℤ → Submodule K (Fin d → K)) (hG : Antitone G) (hi : ℤ) :
+    ∀ u ≤ hi, PiLocalization₂ G hi u := by
+  have key : ∀ k : ℕ, PiLocalization₂ G hi (hi - k) := by
+    intro k
+    induction k with
+    | zero => simpa using stage_top G hi
+    | succ k ih =>
+      refine stage_step G hG hi (hi - ((k + 1 : ℕ) : ℤ)) (by push_cast; omega) ?_
+      have e : hi - ((k + 1 : ℕ) : ℤ) + 1 = hi - (k : ℤ) := by push_cast; ring
+      rw [e]
+      exact ih
+  intro u hu
+  have h := key (hi - u).toNat
+  rwa [Int.toNat_of_nonneg (by omega), sub_sub_cancel] at h
+
+theorem adapted (G : ℤ → Submodule K (Fin d → K)) (hG : Antitone G) (lo hi : ℤ) (hlh : lo ≤ hi)
+    (hlo : G lo = ⊤) :
+    ∃ (I : ℕ) (P : Fin I → Fin d → K) (Q : Fin I → Fin d → K) (h : Fin I → ℤ),
+      (∀ c : Fin d → K, c = ∑ i, (∑ m, Q i m * c m) • P i) ∧
+      (∀ i, P i ∈ G (h i)) ∧ (∀ i, lo ≤ h i ∧ h i ≤ hi) ∧
+      ∀ u : ℤ, u ≤ hi → ∀ c ∈ G u, ∀ i, h i < u → ∑ m, Q i m * c m = 0 := by
+  obtain ⟨S, ℓ, hli, hmem, _, hspan⟩ := stage_all G hG hi lo hlh
+  have hfin : S.Finite := LinearIndependent.set_finite_of_isNoetherian hli
+  have := hfin.fintype
+  have hsp : ⊤ ≤ Submodule.span K (Set.range ((↑) : S → Fin d → K)) := by
+    rw [Subtype.range_coe, ← hlo]
+    exact (hspan lo le_rfl hlh).trans (Submodule.span_mono fun x hx => hx.1)
+  let B0 : Module.Basis S K (Fin d → K) := Module.Basis.mk (v := ((↑) : S → Fin d → K)) hli hsp
+  let e := Fintype.equivFin S
+  let B := B0.reindex e
+  have hB : ∀ i, B i = ((e.symm i : S) : Fin d → K) := fun i => by
+    simp only [B, B0, Module.Basis.reindex_apply]
+    exact Module.Basis.mk_apply hli hsp (e.symm i)
+  have hQ : ∀ (c : Fin d → K) i, ∑ m, B.repr (Pi.single m 1) i * c m = B.repr c i := by
+    intro c i
+    conv_rhs => rw [← Finset.univ_sum_single c]
+
+    rw [map_sum, Finsupp.finsetSum_apply]
+    refine Finset.sum_congr rfl fun m _ => ?_
+    have hs : (Pi.single m (c m) : Fin d → K) = c m • Pi.single m 1 := by
+      ext j
+      by_cases hj : j = m
+      · subst hj
+        simp
+      · simp [hj]
+    rw [hs, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_comm]
+  refine ⟨Fintype.card S, fun i => B i, fun i m => B.repr (Pi.single m 1) i, fun i => ℓ (B i),
+    ?_, ?_, ?_, ?_⟩
+  · intro c
+    simp only [hQ]
+    exact (B.sum_repr c).symm
+  · intro i
+    show B i ∈ G (ℓ (B i))
+    rw [hB]
+    exact (hmem _ (e.symm i).2).1
+  · intro i
+    show lo ≤ ℓ (B i) ∧ ℓ (B i) ≤ hi
+    rw [hB]
+    obtain ⟨_, h1, h2⟩ := hmem _ (e.symm i).2
+    exact ⟨h1, h2⟩
+  · intro u hu c hc i hi'
+    have hi'' : ℓ (B i) < u := hi'
+    show ∑ m, B.repr (Pi.single m 1) i * c m = 0
+    rw [hQ]
+    by_cases hul : u ≤ lo
+    · exfalso
+      have h1 := (hmem _ (e.symm i).2).2.1
+      rw [hB] at hi''
+      omega
+    · have hcs := hspan u (by omega) hu hc
+      have hset : {x | x ∈ S ∧ u ≤ ℓ x} = B '' {j | u ≤ ℓ (B j)} := by
+        ext x
+        constructor
+        · rintro ⟨hxS, hx⟩
+          refine ⟨e ⟨x, hxS⟩, ?_, ?_⟩
+          · show u ≤ ℓ (B (e ⟨x, hxS⟩))
+            rw [hB, Equiv.symm_apply_apply]
+            exact hx
+          · rw [hB, Equiv.symm_apply_apply]
+        · rintro ⟨j, hj, rfl⟩
+          exact ⟨by rw [hB]; exact (e.symm j).2, hj⟩
+      rw [hset, Module.Basis.mem_span_image] at hcs
+      by_contra hne
+      have hmemi := hcs (Finsupp.mem_support_iff.2 hne)
+      exact absurd (show u ≤ ℓ (B i) from hmemi) (not_le.2 hi'')
+
+end Formalism.MainNotions.UnusedSlot80.CrA
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.StageStep =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.CoeffAlgMul =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.CoeffAlgMul", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.CoprimeFrobeniusUniformizerPowers\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ExistsSmulPowEqSumOfInFNc\npublic import Formalism.SharpRestriction.LevelLetterCocycles.CrystallineFiltrationAntitone\nimport Formalism.SharpRestriction.LevelLetterCocycles.DvOZeroHigh\nimport Formalism.SharpRestriction.LevelLetterCocycles.LevLetEMul\nimport Formalism.SharpRestriction.LevelLetterCocycles.ProdPsUnitE\npublic import Formalism.SharpRestriction.LevelLetterCocycles.StageStep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -120,7 +288,7 @@ theorem secIn_of_fil (C : Formalism.MainNotions.UnusedSlot80.LevC.Ctx W) (A : Ar
     have h2 : dvO W T (e + 1) b (Pi.single m 1) = dv W T (e + 1) b (Pi.single m 1) := by
       unfold dvO; congr 1; funext k; by_cases hk : k = m
       · subst hk; simp
-      · simp [Pi.single_apply, hk]
+      · simp [hk]
     rwa [h2] at h1
   obtain ⟨I, P, Q, h, hPQ, hPG, hlev, hvan⟩ :=
     Formalism.MainNotions.UnusedSlot80.CrA.adapted Gf hGa (-(H : ℤ)) (H : ℤ) (by omega) hGtop
@@ -179,7 +347,6 @@ theorem secIn_of_fil (C : Formalism.MainNotions.UnusedSlot80.LevC.Ctx W) (A : Ar
         LU * ps W 0 ^ ((k i : ℤ) - H).toNat := by
       rw [Finset.prod_range_succ', hLU, lamUp_eq]
       congr 1
-      all_goals (try (refine Finset.prod_congr rfl fun s _ => ?_; simp only [α, if_neg (Nat.succ_ne_zero s), Int.toNat_natCast]))
     have hden : ∏ s ∈ Finset.range (e + 1), ps W s ^ (-(α i s)).toNat =
         ps W 0 ^ ((H : ℤ) - k i).toNat := by
       rw [Finset.prod_range_succ']
@@ -193,7 +360,7 @@ theorem secIn_of_fil (C : Formalism.MainNotions.UnusedSlot80.LevC.Ctx W) (A : Ar
     rw [hnum, hden]
     have hk : ((H : ℤ) - k i).toNat + k i = H + ((k i : ℤ) - H).toNat := by omega
     have hl2 : letE a * Vp i = letE a * (ps W 0 ^ k i * h' i) := by
-      rw [← hh' i, ← mul_assoc, Formalism.MainNotions.UnusedSlot80.DivLevR.letE_idem]
+      rw [← hh' i, ← mul_assoc, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
     apply (hunit.pow (k i)).mul_left_cancel
     rw [← map_pow, ← mul_assoc, ← map_mul, ← pow_add, add_comm, hk, pow_add, map_mul, mul_comm
       (algebraMap (LetA O n) W.EE (ps W 0 ^ H)), mul_assoc, hgV i, ← map_mul, ← map_mul]
@@ -236,7 +403,7 @@ theorem secIn_of_fil (C : Formalism.MainNotions.UnusedSlot80.LevC.Ctx W) (A : Ar
       rw [h3, ← h1]
       by_cases hmm : m = m'
       · subst hmm; simp
-      · simp [hmm, Pi.single_apply, Ne.symm hmm]
+      · simp [hmm]
     show lE W (κ1 + κ2) * f m = ∑ i, g i * algebraMap O W.EE (c₀ i m)
     simp only [g, c₀, Finset.sum_mul]
     rw [Finset.sum_comm]
@@ -253,3 +420,7 @@ theorem secIn_of_fil (C : Formalism.MainNotions.UnusedSlot80.LevC.Ctx W) (A : Ar
     · intro h0; exact absurd (Finset.mem_univ m) h0
 
 end Formalism.MainNotions.UnusedSlot80.CrD
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.CoeffAlgMul =====

@@ -149,16 +149,4 @@ end GlobalTheory.VanishAtSimpleZero
 
 namespace GlobalTheory
 
-variable {E : Type} [Field E] [NumberField E] [IsCMField E]
-
-theorem vanishAtS_holds : VanishAtSStatement (E := E) := by
-  intro r X x1 hn _ _ u w0 s ρ hρ hdu hds hdw hw0 hs0 hdet hint
-  have h0 := ReciprocityTheory.ChartRestriction.G.AR.Up.IW.cpt_zero X x1
-  have hb : Metric.ball (0 : V (nd X)) ρ ∈ 𝓝 0 := Metric.ball_mem_nhds 0 hρ
-  have key := VanishAtSimpleZero.vanish_of_simple_zero hn (u := fun z => u (cpt X x1 z))
-    (w := fun z => w0 (cpt X x1 z)) (s := fun k z => s k (cpt X x1 z)) hρ
-    ((hdu.differentiableAt hb).continuousAt) (fun k => (hds k).differentiableAt hb)
-    (hdw.differentiableAt hb) (by simpa [h0] using hw0) (fun k => by simpa [h0] using hs0 k) hdet hint
-  simpa [h0] using key
-
 end GlobalTheory

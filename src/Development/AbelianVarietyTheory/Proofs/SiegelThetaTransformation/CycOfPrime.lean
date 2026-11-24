@@ -165,7 +165,7 @@ theorem cyc_of_prime (N : Submodule O M) {q : ℕ} (hq : q.Prime)
 theorem finrank_fibre (O M k : Type) [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M]
     [Module.Finite O M] [Module.Projective O M] [Field k] [Algebra O k] :
     Module.finrank k (k ⊗[O] M) = Module.finrank O M := by
-  apply GlobalTheory.ZCount.finrank_fibre <;> assumption
+  apply GlobalTheory.ZCount.finrank_fibre
 
 
 attribute [local instance] Ideal.Quotient.field in

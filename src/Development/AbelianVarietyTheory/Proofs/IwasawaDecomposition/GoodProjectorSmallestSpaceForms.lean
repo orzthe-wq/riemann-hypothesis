@@ -189,22 +189,21 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 
 theorem cc_eq (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (b : Bool) (μ : D.what₂.Tup) (j : ℕ) (hj : j < D.R.m) :
-    (toChainReal R F tupT hm hTop).CC b μ j = R.CC (tupT μ) j := by
-  simp only [ChainReal.CC, toChainReal, if_pos hj]
-  rfl
+    (toChainReal R F tupT hm hTop).CC b μ j = R.CC (tupT μ) j :=
+  congrArg₂ (MultT R.θ (R.MY j)) (ite_eq_left hj) (ite_eq_left hj)
 
 theorem ccp_eq (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (b : Bool) (μ : D.what₂.Tup) (j : ℕ) (hj : j < D.R.m) :
     (toChainReal R F tupT hm hTop).CCP b μ j = MultT R.θ (R.MY j) (levS _ (R.βY j) (R.datYt (tupT μ) j (R.levR F b)))
-      (levChi _ (R.βY j) (R.datYt (tupT μ) j (R.levR F b))) := by
-  simp only [ChainReal.CCP, toChainReal, if_pos hj]
-  rfl
+      (levChi _ (R.βY j) (R.datYt (tupT μ) j (R.levR F b))) :=
+  congrArg₂ (MultT R.θ (R.MY j)) (ite_eq_left hj) (ite_eq_left hj)
 
 theorem ioC_val (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (b : Bool) (μ : D.what₂.Tup) (k : ℕ) (hk : k + 1 < D.R.m) (y : (toChainReal R F tupT hm hTop).CC b μ (k + 1))
     (hy : y.1 ∈ R.CC (tupT μ) (k + 1)) :
     ((toChainReal R F tupT hm hTop).ioC b μ k y).1 = (R.ioY (tupT μ) k ⟨y.1, hy⟩).1 := by
-  simp only [toChainReal, dif_pos hk]
+  dsimp only [toChainReal]
+  rw [dite_eq_left hk]
   rfl
 
 theorem ioX_val (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
@@ -365,8 +364,7 @@ theorem thDn_eq_dnFrom (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup
       ((toChainReal R F tupT hm hTop).ioX b μ u)).1 = R.thDn (tupT μ) y' := by
   have hu' : u.1 ∈ LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e) := ⟨y', hu.symm⟩
   have e1 : R.thDn (tupT μ) y' = (Lift.dnFrom (R.CC (tupT μ)) (R.ioY (tupT μ)) (D.R.m - 1)
-      (R.ioX (tupT μ) ((R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e).rangeRestrict y'))).1 := by
-    simp only [RealDat.thDn, Lift.thetaDn, LinearMap.comp_apply, Submodule.subtype_apply]
+      (R.ioX (tupT μ) ((R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e).rangeRestrict y'))).1 := rfl
   have e2 : (⟨u.1, hu'⟩ : LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e)) =
       (R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e).rangeRestrict y' := Subtype.ext hu
   rw [e1]

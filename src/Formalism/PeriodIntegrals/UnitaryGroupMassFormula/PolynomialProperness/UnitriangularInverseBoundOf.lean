@@ -136,6 +136,6 @@ theorem unitriangular_inverse_bound_of (h : MonomialFactorizationBound) (hZ : Zh
     · rw [← mx_inv_conjT]
       exact (finish_bound e hb.2.2.1 (hX g) (hzg g hg)).trans (mul_le_mul_of_nonneg_right hmax hG)
 
-theorem unitriangular_inverse_bound (h : MonomialFactorizationBound) : UnitriangularInversePolynomialBound := unitriangular_inverse_bound_of h zhatBound
+theorem unitriangular_inverse_bound (h : MonomialFactorizationBound) : UnitriangularInversePolynomialBound := unitriangular_inverse_bound_of h _root_.PI.PolynomialProperness.GN.zhat_norm_linear_bound
 
 end PI.PolynomialProperness

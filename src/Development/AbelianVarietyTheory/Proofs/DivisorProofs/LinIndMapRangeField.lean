@@ -285,23 +285,11 @@ theorem latD_iff {l : ℕ} [Fact l.Prime] {ι : Type} [DecidableEq ι] {N : ℕ}
       rw [map_add (f := _), map_add (f := _)]
       exact add_mem ha hb
 
-theorem rowAct_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
-    (M : Matrix (Fin r) (Fin r) R) (f : MvPolynomial (Fin r × Fin n) R) :
-    MvPolynomial.map φ (rowAct R M f) = rowAct S (M.map φ) (MvPolynomial.map φ f) := by
-  induction f using MvPolynomial.induction_on with
-  | C a => simp [rowAct]
-  | add p q hp hq => simp only [map_add (f := _), hp, hq]
-  | mul_X p v hp =>
-    rw [map_mul, map_mul, map_mul, hp, map_X]
-    congr 1
-
-    simp [rowAct, map_sum, Matrix.map_apply]
-
 theorem dwAct_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (r n : ℕ) (g : GL (Fin r) R)
     (f : MvPolynomial (Fin r × Fin n) R) :
     MvPolynomial.map φ (Formalism.UG.dwAct R r n g f) =
       Formalism.UG.dwAct S r n (Matrix.GeneralLinearGroup.map φ g) (MvPolynomial.map φ f) := by
-  simp only [Formalism.UG.dwAct, rowAct_map]
+  simp only [Formalism.UG.dwAct, _root_.Formalism.UG.P.wlocal_map_rowAct]
   rw [← map_inv]
   rfl
 

@@ -1,35 +1,27 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetFactorDepthInChartIndependentClosedField
 public import Mathlib.Algebra.MvPolynomial.Variables
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivAt0EqSumOfSubset
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDifferentialOperatorDepthEqIInfMonomiStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupExpTwoSidedInverseUnique
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsExpEqOfSubstLg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -37,7 +29,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -50,12 +41,81 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PtOrderProdSub
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Prop
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PtOrderProdSub
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDifferentialOperatorDepthEqIInfMonomi, Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupOperatorDepthMulDisjointColumns
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDifferentialOperatorDepthEqIInfMonomi =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDifferentialOperatorDepthEqIInfMonomi", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DetFactorDepthInChartIndependentClosedField\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsExpEqOfSubstLg\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PtOrderProdSub\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+noncomputable section
+
+namespace GlobalTheory.DepthDegree
+
+open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Sh GlobalTheory.FGDepth GlobalTheory.LawLog GlobalTheory.FactorDepth GlobalTheory.DepthField
+
+variable {C : Type} [Field C]
+
+theorem le_order_subst_monomial {σ τ : Type} {E : σ → MvPowerSeries τ C} (hE : HasSubst E)
+    (h0 : ∀ s, constantCoeff (E s) = 0) (β : σ →₀ ℕ) :
+    (((Finsupp.degree β : ℕ)) : ℕ∞) ≤ (subst E (monomial β (1 : C))).order := by
+  classical
+  rw [subst_monomial hE, map_one, one_mul, Finsupp.prod]
+  refine le_trans ?_ (le_order_prod _ _)
+  rw [show ((β.degree : ℕ) : ℕ∞) = ∑ s ∈ β.support, ((β s : ℕ) : ℕ∞) by
+    rw [Finsupp.degree_apply, Nat.cast_sum]]
+  exact Finset.sum_le_sum fun s _ => le_order_pow_of_constantCoeff_eq_zero _ (h0 s)
+
+theorem derivAt0_eq_zero_of_lt_order {σ : Type} (P : MvPolynomial σ C) (g : MvPowerSeries σ C)
+    (h : (P.totalDegree : ℕ∞) < g.order) : derivAt0 P g = 0 := by
+  refine Finset.sum_eq_zero fun α hα => ?_
+  have h1 : (((Finsupp.degree α : ℕ)) : ℕ∞) < g.order := by
+    refine lt_of_le_of_lt ?_ h
+    exact_mod_cast (MvPolynomial.le_totalDegree hα)
+  rw [coeff_of_lt_order h1, mul_zero]
+
+theorem depth_eq_iInf_monomial_degree_le : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (κ : Type) [Fintype κ] [DecidableEq κ] (d : κ → ℕ) (G : ∀ b, LogFGL v (d b)) (ι : κ → Type) [∀ b, Fintype (ι b)] [∀ b, DecidableEq (ι b)] (u : ∀ b, ι b → Fin (d b) → C) (P : MvPolynomial (Σ b, ι b) C), depth G u P = ⨅ β ∈ {β : (Σ b, Fin (d b)) →₀ ℕ | β.degree ≤ P.totalDegree}, toE (v (derivAt0 P (subst (expAlong G u) (monomial β (1 : C))))) := by
+  intro C _ _ v κ _ _ d G ι _ _ u P
+  rw [depth_eq_iInf_monomial]
+  refine le_antisymm (le_iInf₂ fun β _ => iInf_le _ β) (le_iInf fun β => ?_)
+  by_cases hβ : β.degree ≤ P.totalDegree
+  · exact iInf₂_le β hβ
+  · have h0 : ∀ x, constantCoeff (expAlong G u x) = 0 := fun x =>
+      constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero (hasSubst_lin u x.1)) (hasSubst_lin u x.1)
+        ((isExp_expOf (G x.1)).1 x.2)
+    have hz := derivAt0_eq_zero_of_lt_order P _ (lt_of_lt_of_le (by exact_mod_cast not_le.1 hβ)
+      (le_order_subst_monomial (hasSubst_expAlong G u) h0 β))
+    rw [hz, v.map_zero]
+    exact le_top
+
+end GlobalTheory.DepthDegree
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDifferentialOperatorDepthEqIInfMonomi =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupOperatorDepthMulDisjointColumns =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupOperatorDepthMulDisjointColumns", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame\npublic import Mathlib.Algebra.MvPolynomial.Variables\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DerivAt0EqSumOfSubset\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDifferentialOperatorDepthEqIInfMonomi\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupExpTwoSidedInverseUnique\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Presheaf\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PtOrderProdSub\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.Sh GlobalTheory.FGDepth
@@ -262,22 +322,17 @@ theorem hasSubst_of_constantCoeff_eq_zero {τ σ : Type} [Finite τ] {a : τ →
     (h : ∀ i, constantCoeff (a i) = 0) : HasSubst a :=
   ⟨fun i => by rw [h i]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩
 
-omit [CharZero C] [Fintype κ] in
-theorem colLin_const (c : κ) (e : Fin (d c)) :
-    constantCoeff (∑ a, u c a e • (X ⟨c, a⟩ : MvPowerSeries (Σ b, ι b) C)) = 0 := by
-  simp
-
 theorem expAlong_const (x : Σ b, Fin (d b)) : constantCoeff (expAlong G u x) = 0 := by
   unfold expAlong
-  exact constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_eq_zero (colLin_const u x.1))
-    (colLin_const u x.1) ((expOf_twoSided_unique C v (d x.1) (G x.1)).1.1 x.2)
+  exact constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_eq_zero (_root_.GlobalTheory.DepthField.hasSubst_lin u x.1))
+    (_root_.GlobalTheory.DepthField.hasSubst_lin u x.1) ((expOf_twoSided_unique C v (d x.1) (G x.1)).1.1 x.2)
 
 
 omit [CharZero C] [Fintype κ] in
 theorem expAlong_suppIn (x : Σ b, Fin (d b)) :
     SuppIn {y : Σ b, ι b | y.1 = x.1} (expAlong G u x) := by
   unfold expAlong
-  exact suppIn_subst (hasSubst_of_constantCoeff_eq_zero (colLin_const u x.1))
+  exact suppIn_subst (hasSubst_of_constantCoeff_eq_zero (_root_.GlobalTheory.DepthField.hasSubst_lin u x.1))
     (fun e => suppIn_sum _ _ fun a _ => suppIn_smul _ (suppIn_X rfl)) _
 
 theorem hasSubst_expAlong : HasSubst (expAlong G u) :=
@@ -345,7 +400,7 @@ theorem exists_monomial_depth_eq (C : Type) [Field C] [CharZero C] (v : AddValua
   obtain ⟨γ, hγ, hmin⟩ := Set.exists_min_image _
     (fun γ => toE (v (derivAt0 R (monAlong G u γ)))) hfin ⟨0, by simp⟩
   refine ⟨γ, ?_⟩
-  rw [GlobalTheory.T.formalGroupDifferentialOperatorDepth_eq_iInf_monomial C v κ d G ι u R]
+  rw [_root_.GlobalTheory.DepthDegree.depth_eq_iInf_monomial_degree_le C v κ d G ι u R]
   exact le_antisymm (iInf₂_le γ hγ) (le_iInf₂ fun β hβ => hmin β hβ)
 
 end
@@ -372,7 +427,7 @@ theorem depth_mul_of_disjoint_columns : ∀ (C : Type) [Field C] [CharZero C]
     rw [← monAlong_add]
     congr 1
     ext x
-    by_cases hx : x.1 ∈ S <;> simp [l, r, Finsupp.filter_apply, hx]
+    by_cases hx : x.1 ∈ S <;> simp [l, r]
   have hA : ∀ γ, SuppIn {y : Σ b, ι b | y.1 ∈ S} (monAlong G u (l γ)) := fun γ =>
     monAlong_suppIn G u _ S fun x hx => by
       by_contra h
@@ -410,10 +465,10 @@ theorem depth_mul_of_disjoint_columns : ∀ (C : Type) [Field C] [CharZero C]
   apply le_antisymm
   · have hl : l (l γ₁ + r γ₂) = l γ₁ := by
       ext x
-      by_cases hx : x.1 ∈ S <;> simp [l, r, Finsupp.filter_apply, hx]
+      by_cases hx : x.1 ∈ S <;> simp [l, r, hx]
     have hr : r (l γ₁ + r γ₂) = r γ₂ := by
       ext x
-      by_cases hx : x.1 ∈ S <;> simp [l, r, Finsupp.filter_apply, hx]
+      by_cases hx : x.1 ∈ S <;> simp [l, r, hx]
     refine (h5 _ (l γ₁ + r γ₂)).trans ?_
     rw [h1, hl, hr, e₁, e₂]
     exact add_le_add (h2 γ₁) (h3 γ₂)
@@ -421,3 +476,6 @@ theorem depth_mul_of_disjoint_columns : ∀ (C : Type) [Field C] [CharZero C]
     exact add_le_add (h5 P _) (h5 Q _)
 
 end GlobalTheory.FGDepth
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupOperatorDepthMulDisjointColumns =====

@@ -1,13 +1,14 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.MatchT
-import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmFieldStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOfIsOpen
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IwahoriProjSurjective
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsCompactSupportDcos
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalAlgebraHolds
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.UnitaryLevelSubgroupProperties
+import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
+import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
 import GroundTheory.AutomorphicForms.GLnLocal
 import GroundTheory.LocalFields.LocalFourierHaar
 import Mathlib.Algebra.Order.Floor.Extended
@@ -219,14 +220,6 @@ theorem vRes_add {n : ℕ} (a : ℕ) {l l' : Fin (n / 2) → ℤ} (h : Cone l) (
 theorem restr_anti {n m : ℕ} {x : Fin n → ℤ} (hx : StrictAnti x) (S : Finset (Fin n)) (h : S.card = m) :
     Antitone (restr x S h) := fun _ _ hij => hx.antitone ((S.orderEmbOfFin h).monotone hij)
 
-theorem relIndex_prod {A B : Type} [Group A] [Group B] (H K : Subgroup A) (H' K' : Subgroup B) :
-    (H.prod H').relIndex (K.prod K') = H.relIndex K * H'.relIndex K' := by
-  unfold Subgroup.relIndex
-  rw [← Subgroup.index_prod,
-    ← Subgroup.index_comap_of_surjective ((H.subgroupOf K).prod (H'.subgroupOf K'))
-      (f := (Subgroup.prodEquiv K K').toMonoidHom) (Subgroup.prodEquiv K K').surjective]
-  congr 1
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 theorem fU_left {w : Pl E} {n : ℕ} (b : GLw n w) (ϖ : (w.adicCompletion E)ˣ) (l : Fin (n / 2) → ℤ) {k : UL n w}
@@ -322,7 +315,7 @@ theorem iw_idx (a : ℕ) (w : Pl E) : (iwGL a w).relIndex (GlobalTheory.LFun.KGL
 
 theorem iwahori_pair_index_ne_zero (a b : ℕ) (w : Pl E) :
     ((iwGL a w).prod (iwGL b w)).relIndex ((GlobalTheory.LFun.KGL w (n := a)).prod (GlobalTheory.LFun.KGL w (n := b))) ≠ 0 := by
-  rw [relIndex_prod]
+  rw [_root_.GlobalTheory.BCT.OrbProd.relIndex_prod_prod]
   exact mul_ne_zero (iw_idx a w) (iw_idx b w)
 
 def tm (n : ℕ) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (a : ℕ) (x : Fin n → ℤ) (s : Finset (Fin (n / 2)))
@@ -469,7 +462,7 @@ theorem lconv_comb (hFU : FUMul) (hU : Unr E) {w : Pl E} (hw : ¬ IsSplitAt w) {
     lconv (fun γ => ∑ j, c j * fU n w b ϖ (lOf (x j)) γ) (fun γ => r * ∑ j, c' j * fU n w b ϖ (lOf (x' j)) γ) =
       fun γ => (r * alpha n w b) * ∑ p : J × J', (c p.1 * c' p.2) * fU n w b ϖ (lOf (x p.1 + x' p.2)) γ := by
   funext y
-  have hc : Continuous (cj w) := (GlobalTheory.T.placeConjugation_properties_cmField E hU w).1
+  have hc : Continuous (cj w) := (_root_.GlobalTheory.ConjAtPlace.main E hU w).1
   have ho := GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b
   have hle := GlobalTheory.CompanionTheory.IwLevels.iwU_le_KL n w b hb.1
   have hidx : (iwU n w b).relIndex (KL n w) ≠ 0 :=
@@ -508,7 +501,7 @@ theorem pow_claim (hFU : FUMul) (hD : DcosMul) (hU : Unr E) {w : Pl E} (hw : ¬ 
   induction k with
   | zero =>
     refine ⟨J, inferInstance, c, x, hx, ?_, fun s => ?_⟩
-    · have hc : Continuous (cj w) := (GlobalTheory.T.placeConjugation_properties_cmField E hU w).1
+    · have hc : Continuous (cj w) := (_root_.GlobalTheory.ConjAtPlace.main E hU w).1
       have ho := GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b
       have hle := GlobalTheory.CompanionTheory.IwLevels.iwU_le_KL n w b hb.1
       have hidx : (iwU n w b).relIndex (KL n w) ≠ 0 :=

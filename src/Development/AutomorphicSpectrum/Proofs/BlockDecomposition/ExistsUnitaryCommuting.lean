@@ -230,7 +230,7 @@ theorem exists_mem_K {n r : ℕ} (J P : Matrix (Fin n) (Fin n) ℂ) (X X' : Matr
   have hUT : Uᴴ * T * U = T := by rw [Matrix.mul_assoc, ← hU2, ← Matrix.mul_assoc, hU1, Matrix.one_mul]
   have hconj : ∀ M : Matrix (Fin n) (Fin n) ℂ,
       (R⁻¹ * U * R)ᴴ * (Rᴴ * M * R) * (R⁻¹ * U * R) = Rᴴ * (Uᴴ * M * U) * R := fun M => by
-    simp only [conjTranspose_mul, conjTranspose_conjTranspose]
+    simp only [conjTranspose_mul]
     calc Rᴴ * (Uᴴ * (R⁻¹)ᴴ) * (Rᴴ * M * R) * (R⁻¹ * U * R)
         = Rᴴ * Uᴴ * ((R⁻¹)ᴴ * Rᴴ) * M * (R * R⁻¹) * U * R := by simp only [Matrix.mul_assoc]
       _ = Rᴴ * (Uᴴ * M * U) * R := by rw [hRiH, hRi']; simp only [Matrix.mul_one, Matrix.mul_assoc]

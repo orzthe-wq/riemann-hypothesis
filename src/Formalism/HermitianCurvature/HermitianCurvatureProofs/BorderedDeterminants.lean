@@ -112,9 +112,7 @@ theorem qdet_sub {n : ℕ} (E : Fin (n + 1) → Fin (n + 1) → A) (u : ℂ) :
 
 theorem bS_id (n : ℕ) : bS (Fin.castSucc : Fin n → Fin (n + 1)) (Fin.last n) = id := by
   funext i
-  induction i using Fin.lastCases with
-  | last => simp [bS]
-  | cast j => simp [bS]
+  induction i using Fin.lastCases <;> simp [bS]
 
 theorem borderS' {n m : ℕ} (E : Fin n → Fin n → A) (es : Fin n) (v : Fin m → Fin n) (hE : GlRel E)
     (hvs : ∀ j, v j ≠ es) (u : ℂ) :
@@ -183,7 +181,6 @@ theorem icast_apply (z : ℤ) (f : Module.End ℂ V) (v : V) :
   rw [Module.End.mul_apply]
   first
   | (simp [Int.cast_smul_eq_zsmul]; done)
-  | (simp; exact (Int.cast_smul_eq_zsmul ℂ z (f v)).symm)
 
 theorem sumBorder {n : ℕ} (Y H : Fin n → Module.End ℂ V) (M : Fin n → Fin n → Module.End ℂ V)
     (Ψ : Fin n → Fin n → V) (c : Fin n → ℂ) (v : V) (h1 : ∀ x, ∑ i, Ψ i x = H x v)
@@ -236,7 +233,7 @@ theorem comm_last {n : ℕ} (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ 
   refine Commute.sum_right _ _ _ (fun σ _ => ?_)
   refine Commute.mul_right (Int.cast_commute _ _).symm ?_
   refine Commute.list_prod_right _ _ (fun y hy => ?_)
-  simp only [List.mem_ofFn, Set.mem_range] at hy
+  simp only [List.mem_ofFn] at hy
   obtain ⟨k, rfl⟩ := hy
   exact hT _ _ _
 

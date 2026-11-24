@@ -180,26 +180,13 @@ theorem kc_diff_smul_eq (σ : H.E ≃ₐ[ℚ] H.E) :
   rw [Ideal.mem_pointwise_smul_iff_inv_smul_mem]
   exact kc_diff_smul_mem H σ⁻¹ (kc_comm_of H σ⁻¹) x hx
 
-theorem kc_mem_one_iff (t : H.E) :
-    t ∈ (1 : FractionalIdeal (𝓞 H.E)⁰ H.E) ↔ IsIntegral ℤ t := by
-  rw [FractionalIdeal.mem_one_iff]
-  constructor
-  · rintro ⟨y, rfl⟩
-    exact NumberField.RingOfIntegers.isIntegral_coe y
-  · intro h
-    exact ⟨⟨t, h⟩, rfl⟩
-
-theorem kc_integ_iff (σ : H.E ≃ₐ[ℚ] H.E) (t : H.E) :
-    IsIntegral ℤ (σ t) ↔ IsIntegral ℤ t :=
-  isIntegral_algEquiv (σ.restrictScalars ℤ)
-
 theorem kc_smul_ne_bot (σ : H.E ≃ₐ[ℚ] H.E) (B : Ideal (𝓞 H.E))
     (hB : B ≠ ⊥) : σ • B ≠ ⊥ := by
   intro h
   apply hB
   rw [← inv_smul_smul σ B, h]
   ext x
-  simp [Ideal.mem_pointwise_smul_iff_inv_smul_mem]
+  simp
 
 theorem kc_mem_inv_smul (σ : H.E ≃ₐ[ℚ] H.E) (B : Ideal (𝓞 H.E))
     (hB : B ≠ ⊥) (y : H.E) :
@@ -218,20 +205,20 @@ theorem kc_mem_inv_smul (σ : H.E ≃ₐ[ℚ] H.E) (B : Ideal (𝓞 H.E))
       rw [Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_smul_smul]
       exact hb
     have := h (algebraMap (𝓞 H.E) H.E (σ • b)) (by rw [FractionalIdeal.mem_coeIdeal]; exact ⟨σ • b, hb', rfl⟩)
-    rw [kc_mem_one_iff] at this ⊢
+    rw [_root_.Formalism.HC.Der.mem_one_fractionalIdeal_iff_isIntegral] at this ⊢
     rw [show algebraMap (𝓞 H.E) H.E (σ • b) = σ (algebraMap (𝓞 H.E) H.E b) from rfl, ← map_mul,
-      kc_integ_iff] at this
+      _root_.Formalism.HC.Der.isIntegral_algEquiv_apply_iff] at this
     exact this
   · intro h w hw
     rw [FractionalIdeal.mem_coeIdeal] at hw
     obtain ⟨b, hb, rfl⟩ := hw
     rw [Ideal.mem_pointwise_smul_iff_inv_smul_mem] at hb
     have := h (algebraMap (𝓞 H.E) H.E (σ⁻¹ • b)) (by rw [FractionalIdeal.mem_coeIdeal]; exact ⟨σ⁻¹ • b, hb, rfl⟩)
-    rw [kc_mem_one_iff] at this ⊢
+    rw [_root_.Formalism.HC.Der.mem_one_fractionalIdeal_iff_isIntegral] at this ⊢
     have e : σ (algebraMap (𝓞 H.E) H.E (σ⁻¹ • b)) = algebraMap (𝓞 H.E) H.E b := by
       show σ (σ⁻¹ (b : H.E)) = b
       rw [AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]
-    rw [← kc_integ_iff H σ, map_mul, e] at this
+    rw [← _root_.Formalism.HC.Der.isIntegral_algEquiv_apply_iff H σ, map_mul, e] at this
     exact this
 
 theorem unimodular : ∀ 𝔟 : Ideal (𝓞 H.E), differentIdeal (𝓞 H.K) (𝓞 H.E) = 𝔟 * (H.conj • 𝔟) → ∀ x : H.E,

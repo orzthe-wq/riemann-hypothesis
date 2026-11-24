@@ -344,7 +344,7 @@ lemma diag_mem {N l q : ℕ} (hq : q.Prime) (hqNl : ¬ q ∣ N * l) (hqN : IsUni
     show mat σ * dg q 1 = mat γ * dg 1 q * mat (slMk (1 - (j : ℤ) * n) j (-n) 1 hdet2)
     rw [Matrix.mul_assoc, hUV, ← Matrix.mul_assoc, ← hM]
     ext a b
-    fin_cases a <;> fin_cases b <;> simp [dg, Matrix.mul_apply, Fin.sum_univ_two] <;> ring
+    fin_cases a <;> fin_cases b <;> simp [dg, Matrix.mul_apply, Fin.sum_univ_two]
 
 theorem tq_reps {N l q : ℕ} (hq : q.Prime) (hqNl : ¬ q ∣ N * l) (σ : SL(2, ℤ))
     (hσ : IsDiam N l (q : ZMod N) σ) : IsDCReps (Lev N l) (dg 1 q) (tqFam q σ) := by
@@ -426,7 +426,7 @@ lemma diam_conj {N l : ℕ} {d : ZMod N} {σ : SL(2, ℤ)} (hσ : IsDiam N l d �
   have hP11 : mat (σ * γ * σ⁻¹) 1 1 = -((mat σ 1 0 * mat γ 0 0 + mat σ 1 1 * mat γ 1 0) * mat σ 0 1) +
       (mat σ 1 0 * mat γ 0 1 + mat σ 1 1 * mat γ 1 1) * mat σ 0 0 := by
     rw [mat_mul', mat_mul', hinv]
-    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
+    simp [Matrix.mul_apply, Fin.sum_univ_two]
   rw [hP00, hP10, hP11]
   refine ⟨?_, ?_, ?_, ?_⟩ <;> push_cast
   · linear_combination ((mat σ 0 0 : ℤ) : ZMod N) * ((mat σ 1 1 : ℤ) : ZMod N) * g00 + eN + ((mat σ 0 1 : ℤ) : ZMod N) * ((mat σ 1 1 : ℤ) : ZMod N) * g10 + (((mat σ 0 1 : ℤ) : ZMod N) - ((mat σ 0 0 : ℤ) : ZMod N) * ((mat γ 0 1 : ℤ) : ZMod N) - ((mat σ 0 1 : ℤ) : ZMod N) * ((mat γ 1 1 : ℤ) : ZMod N)) * hs10N

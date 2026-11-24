@@ -70,7 +70,7 @@ def hsLE {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp'] [
   LinearMap.toContinuousLinearMap
     { toFun := fun X => B.hsVec (Eρ.comp X)
       map_add' := fun X Y => by rw [ContinuousLinearMap.comp_add]; unfold B.hsVec; rfl
-      map_smul' := fun c X => by rw [ContinuousLinearMap.comp_smul]; exact PBL.hsVec_smul c _ }
+      map_smul' := fun c X => by rw [ContinuousLinearMap.comp_smul]; exact _root_.PI.UnitaryGroupMassFormula.UsCompose.hsVec_smul c _ }
 
 theorem hsLE_apply {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp'] [NormedAddCommGroup Wq']
     [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wp'] [FiniteDimensional ℂ Wq'] (Eρ : Wp' →L[ℂ] Wp')

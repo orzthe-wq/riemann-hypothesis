@@ -53,7 +53,7 @@ open Formalism.MainNotions.S GlobalTheory.Count
 theorem totallyComplex (I : AutInst) : IsTotallyComplex I.E := I.cm.cmUnram.1
 
 theorem frm_det (I : AutInst) (x : I.GA) (w : InfinitePlace I.E) : IsUnit (frm I x w).det := by
-  apply GlobalTheory.NearLowerCompare.frm_isUnit <;> assumption
+  apply GlobalTheory.NearLowerCompare.frm_isUnit
 
 theorem least_pos (I : AutInst) (x : I.GA) (hfg : (lamX I x).FG) (h0 : lamX I x ≠ ⊥) : 0 < least I x := by
   have := totallyComplex I

@@ -163,7 +163,7 @@ lemma exists_blockGL (σ : K →+* K) (J : Matrix (Fin M) (Fin M) K) {s : K} (hs
   have hBi0 : ∀ i : Fin M, B i.succ 0 = 0 := by
     intro i
     rw [← hcol, hBA]
-    simp [Matrix.one_apply, Fin.succ_ne_zero]
+    simp [Fin.succ_ne_zero]
   have eB := eq_blockOne_of_col σ J hs (h := B) ((UJ σ (blockOne s J)).inv_mem hm) hB00 hBi0
   have e1 : A.submatrix Fin.succ Fin.succ * B.submatrix Fin.succ Fin.succ = 1 := by
     apply blockOne_right_injective (a := (1 : K)) (b := 1)
@@ -373,7 +373,7 @@ lemma isClosed_range_iotaHom [T2Space (R ⊗[F] E)] (hs : s ≠ 0) :
     ext h
     have := mem_range_iff R σ J s hs h
     simp only [MonoidHom.mem_range] at this
-    simp only [Set.mem_range, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]
+    simp only [Set.mem_range, Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq]
     exact this
   rw [e]
   refine IsClosed.inter (isClosed_eq (hp.fst.matrix_elem 0 0) continuous_const) ?_
@@ -386,7 +386,7 @@ end Grp
 lemma t2_tensor_product {F E : Type} [Field F] [Field E] [Algebra F E] [Module.Finite F E] (R : Type)
     [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] :
     T2Space (R ⊗[F] E) := by
-  haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
+  have : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
   let b := Algebra.TensorProduct.basis R (Module.finBasis F E)
   have hc : Continuous b.equivFun.toLinearMap :=
     IsModuleTopology.continuous_of_linearMap _
@@ -397,8 +397,8 @@ theorem stab_first :
   intro F E _ _ _ _ _ σ hCM M J _ t ht R _ _ _ _ _
   have hs : algebraMap F E t ≠ 0 := by
     simpa using ht
-  haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)
-  haveI : T2Space (R ⊗[F] E) := t2_tensor_product R
+  have : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)
+  have : T2Space (R ⊗[F] E) := t2_tensor_product R
   refine ⟨iotaHom R σ J (algebraMap F E t), ?_, fun _ => rfl, ?_, ?_, ?_⟩
   · exact ⟨isEmbedding_iotaHom R σ J _, isClosed_range_iotaHom R σ J _ hs⟩
   · intro h

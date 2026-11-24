@@ -79,9 +79,6 @@ structure ActRep (A : Over S) [GrpObj A] (Q : LB (A ⊗ A).left) (bar : O → O)
 
 attribute [instance] ActRep.grp
 
-theorem IsRAct.of_oAct {O : Type} [CommRing O] {A : Over S} [GrpObj A] (i : OAct O A) : IsRAct A i.act :=
-  ⟨i.hom, i.one, i.mul, i.add⟩
-
 theorem IsRAct.op_of_ringAct {A : Over S} [GrpObj A] [IsCommMonObj A] (ρ : Out.RingAct A O) :
     IsRAct A (fun a : Oᵐᵒᵖ => ρ.act a.unop) :=
   ⟨fun _ => ρ.hom _, ρ.map_one, fun _ _ => ρ.map_mul _ _, fun _ _ => ρ.map_add _ _⟩

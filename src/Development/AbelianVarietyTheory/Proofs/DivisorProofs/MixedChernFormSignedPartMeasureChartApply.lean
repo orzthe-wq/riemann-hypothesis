@@ -61,35 +61,6 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+*
 def colSum (H : Fin D → Matrix (Fin D) (Fin D) ℂ) : ℂ :=
   ∑ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => H (τ l) j l).det
 
-theorem colSum_mul_left (A : Matrix (Fin D) (Fin D) ℂ) (H : Fin D → Matrix (Fin D) (Fin D) ℂ) :
-    colSum (fun a => A * H a) = A.det * colSum H := by
-  simp only [colSum, Finset.mul_sum, ← Matrix.det_mul]
-  refine Finset.sum_congr rfl fun τ _ => congrArg _ ?_
-  ext j l
-  simp [Matrix.mul_apply]
-
-theorem colSum_transpose (H : Fin D → Matrix (Fin D) (Fin D) ℂ) :
-    colSum (fun a => (H a).transpose) = colSum H := by
-  simp only [colSum, Matrix.det_apply', Matrix.of_apply, Matrix.transpose_apply]
-  rw [Finset.sum_comm, Finset.sum_comm (f := fun (τ ρ : Equiv.Perm (Fin D)) => ((Equiv.Perm.sign ρ : ℤ) : ℂ) * ∏ i, H (τ i) (ρ i) i)]
-  refine Fintype.sum_equiv (Equiv.inv _) _ _ fun ρ => ?_
-  refine Fintype.sum_equiv (Equiv.mulRight ρ⁻¹) _ _ fun τ => ?_
-  simp only [Equiv.inv_apply, Equiv.Perm.sign_inv, Equiv.coe_mulRight]
-  congr 1
-  refine Fintype.prod_equiv ρ _ _ fun i => ?_
-  simp
-
-theorem colSum_mul (A B : Matrix (Fin D) (Fin D) ℂ) (H : Fin D → Matrix (Fin D) (Fin D) ℂ) :
-    colSum (fun a => A * H a * B) = A.det * B.det * colSum H := by
-  have e : colSum (fun a => H a * B) = B.det * colSum H := by
-    rw [← colSum_transpose, ← colSum_transpose H, ← Matrix.det_transpose B, ← colSum_mul_left]
-    simp only [Matrix.transpose_mul]
-  simp only [Matrix.mul_assoc]
-  rw [colSum_mul_left A fun a => H a * B, e, mul_assoc]
-
-theorem dens_eq (L : Fin D → MLine p σ) (c : AlgChart p σ D) (y : CxPts p σ) :
-    dens L c y = (Real.pi ^ D)⁻¹ * (colSum fun a => c.hess (L a).φ (pick (L a).φ.isLB y) y).re := rfl
-
 theorem dens_trans (L : Fin D → MLine p σ) (c c' : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (hy' : y ∈ c'.e.source) : dens L c y = ‖transDet c.e c'.e y‖ ^ 2 * dens L c' y := by
   apply _root_.GlobalTheory.Mix.ChartChange.dens_trans <;> assumption

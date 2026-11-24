@@ -53,7 +53,7 @@ private theorem sand_split (E : Type) [Field E] [NumberField E] [_root_.NumberFi
       (expU fun _ : InfinitePlace E => (t : ℂ)) : GL (Fin a) (Cinf E)).val =
       Real.exp t • (1 : Matrix (Fin a) (Fin a) (Cinf E)) := by
     ext i j w
-    by_cases hij : i = j <;> simp [expU, hij, Matrix.one_apply]
+    by_cases hij : i = j <;> simp [expU, hij]
   change Matrix.of (sand _ p).1 = (Real.exp t * Real.exp t) • Matrix.of p.1
   rw [sand_val, h, star_smul, star_one, star_trivial, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul]
 

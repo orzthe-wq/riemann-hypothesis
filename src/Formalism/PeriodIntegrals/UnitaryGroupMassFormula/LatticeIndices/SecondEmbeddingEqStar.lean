@@ -116,7 +116,6 @@ theorem unitElt_holds (hθ : IsSplitEquiv X p θ) : UnitElt X p θ := by
     apply hf0
     first
     | exact (FaithfulSMul.algebraMap_injective (𝓞 X.B.I.F) (𝓞 X.B.I.E)) (by rw [hmem, map_zero])
-    | exact (NoZeroSMulDivisors.algebraMap_injective (𝓞 X.B.I.F) (𝓞 X.B.I.E)) (by rw [hmem, map_zero])
   have hPmax : P.IsMaximal := Ideal.IsPrime.isMaximal hPprime hPne
   obtain ⟨a, t, ht, hat⟩ := X.B.I.cm.cmUnram.2.2 P hPmax
   rw [hmemP, not_lt] at hat

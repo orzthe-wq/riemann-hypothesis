@@ -49,4 +49,4 @@ open Classical
 
 
 theorem _root_.GlobalTheory.T.mem_completedPairLattice_iff_frameMatrix_integral_on_half : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m), VStd D i → ∀ (Q : Finset (Pl D.host.E)), (∃ t, Q ⊆ R.Q t) → ∀ eQ : AE D, IsIdemSum eQ Q → ∀ x : WO (Vc D i) (Wc D i), IsHalf eQ x → (IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x)) ↔ x ∈ lattice₂ R i) := by
-  first | exact @GlobalTheory.HalfLatInt.isIntM_iff_mem_latP | exact GlobalTheory.HalfLatInt.isIntM_iff_mem_latP | (intros; apply GlobalTheory.HalfLatInt.isIntM_iff_mem_latP <;> assumption)
+  first | exact @GlobalTheory.HalfLatInt.isIntM_iff_mem_latP

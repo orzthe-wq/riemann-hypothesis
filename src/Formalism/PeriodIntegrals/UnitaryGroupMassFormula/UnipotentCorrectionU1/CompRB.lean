@@ -139,7 +139,6 @@ theorem main (ψ : Mat k r → ℝ) (h : ℝ → ℝ) (cost : Mat k r → ℕ) (
     intro g
     first
     | (unfold gN; positivity)
-    | (simp only [gN]; positivity)
   intro m
   induction m with
   | zero =>

@@ -73,7 +73,7 @@ theorem hat_eq_sum_std {N : ℕ} [NeZero N] (φ : ZMod N → ℂ) (d : ℤ) :
   refine Finset.sum_nbij' (fun i => (i : ZMod N)) (fun y => y.val) ?_ ?_ ?_ ?_ ?_
   · intro i _; simp
   · intro y _; simp [ZMod.val_lt]
-  · intro i hi; simp only [Finset.mem_coe, Finset.mem_range] at hi; simp [ZMod.val_cast_of_lt hi]
+  · intro i hi; simp only [Finset.mem_range] at hi; simp [ZMod.val_cast_of_lt hi]
   · intro y _; simp
   · intro i _; rfl
 
@@ -149,9 +149,9 @@ theorem hat_mul_coprime (N l : ℕ) (θ : DirichletCharacter ℂ N) (ψ : Dirich
     (φ : DirichletCharacter ℂ (N * l)) (hN : 0 < N) (hl : 0 < l) (hc : N.Coprime l)
     (hφ : ∀ d : ℤ, ch φ d = ch θ d * ch ψ d) (x : ℤ) :
     hat φ x = ch θ l * ch ψ N * (hat θ x * hat ψ x) := by
-  haveI : NeZero N := ⟨hN.ne'⟩
-  haveI : NeZero l := ⟨hl.ne'⟩
-  haveI : NeZero (N * l) := ⟨(Nat.mul_pos hN hl).ne'⟩
+  have : NeZero N := ⟨hN.ne'⟩
+  have : NeZero l := ⟨hl.ne'⟩
+  have : NeZero (N * l) := ⟨(Nat.mul_pos hN hl).ne'⟩
   let f : ZMod N × ZMod l → ZMod (N * l) := fun p => ((p.1.val * l + p.2.val * N : ℕ) : ZMod (N * l))
   have hcN : ∀ k : ℕ, ZMod.castHom (Dvd.intro l rfl : N ∣ N * l) (ZMod N) (k : ZMod (N * l)) = (k : ZMod N) :=
     fun k => map_natCast _ k
@@ -200,13 +200,13 @@ theorem hat_mul_coprime (N l : ℕ) (θ : DirichletCharacter ℂ N) (ψ : Dirich
 theorem hat_char_props : (∀ (N : ℕ) (θ : DirichletCharacter ℂ N), 0 < N → (∀ x : ℤ, hat θ (x + N) = hat θ x) ∧ (∀ d x : ℤ, IsCoprime d N → hat θ (x * d) = ch θ⁻¹ d * hat θ x) ∧ (θ ≠ 1 → hat θ 0 = 0)) ∧ (∀ (N l : ℕ) (θ : DirichletCharacter ℂ N) (ψ : DirichletCharacter ℂ l) (φ : DirichletCharacter ℂ (N * l)), 0 < N → 0 < l → N.Coprime l → (∀ d : ℤ, ch φ d = ch θ d * ch ψ d) → ∀ x, hat φ x = ch θ l * ch ψ N * (hat θ x * hat ψ x)) ∧ ∀ (l : ℕ) (ψ : DirichletCharacter ℂ l), l.Prime → (ψ ≠ 1 → hat ψ 1 ≠ 0 ∧ ∀ x, hat ψ x = hat ψ 1 * ch ψ⁻¹ x) ∧ (ψ = 1 → ∀ x : ℤ, hat ψ x = (if (l : ℤ) ∣ x then (l : ℂ) else 0) - 1) := by
   refine ⟨?_, ?_, ?_⟩
   · intro N θ hN
-    haveI : NeZero N := ⟨hN.ne'⟩
+    have : NeZero N := ⟨hN.ne'⟩
     exact ⟨fun x => hat_add_period _ x, fun d x hd => hat_mul_unit θ d x (isUnit_of_isCoprime d hd),
       hat_zero_of_ne_one θ⟩
   · intro N l θ ψ φ hN hl hc hφ x
     exact hat_mul_coprime N l θ ψ φ hN hl hc hφ x
   · intro l ψ hl
-    haveI : Fact l.Prime := ⟨hl⟩
+    have : Fact l.Prime := ⟨hl⟩
     refine ⟨hat_prime_ne_one ψ, ?_⟩
     rintro rfl x
     exact hat_prime_one x

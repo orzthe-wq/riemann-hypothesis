@@ -2,44 +2,6 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.StepPinExistsOfPlace
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LocWSOf
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -57,23 +19,17 @@ variable {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (u u' : D.wha
 def g0 (γ : X.B.I.Ginf) (τ : D.what₂.Tau) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS :=
   Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (γ (vOf X τ))
 
-private theorem rdE_pos_rank_point_counts (D : D7) : 0 < D.host.rdE := by
-  simp only [Formalism.BasicNotions.Host.rdE]
-  apply Real.rpow_pos_of_pos
-  rw [abs_pos]
-  exact_mod_cast NumberField.discr_ne_zero (K := D.host.E)
-
 private theorem frS_eq_inv_rdE (D : D7) : frS D = ((D.host.rdE : ℝ) : ℂ)⁻¹ := by
-  have hne := (rdE_pos_rank_point_counts D).ne'
+  have hne := (_root_.Formalism.MainNotions.S.rdE_pos D).ne'
   have hpi := Real.pi_ne_zero
   have h : D.host.ka / (2 * Real.pi) = D.host.rdE⁻¹ := by
     simp only [Formalism.BasicNotions.Host.ka, Formalism.BasicNotions.Host.v]
-    field_simp <;> ring
+    field_simp
   simp only [frS, h, Complex.ofReal_inv]
 
 private theorem rhoF_eq_frS_pow (D : D7) (a : Fin (D.R.rS + 1)) :
     ((rhoF D a : ℝ) : ℂ) = frS D ^ (D.R.rS - (a : ℕ)) := by
-  have hpos := rdE_pos_rank_point_counts D
+  have hpos := _root_.Formalism.MainNotions.S.rdE_pos D
   have ha : (a : ℕ) ≤ D.R.rS := Nat.lt_succ_iff.mp a.isLt
   rw [frS_eq_inv_rdE]
   simp only [rhoF]
@@ -88,7 +44,7 @@ private theorem Q_mulVec_fvec_eq_smul_frm (τ : D.what₂.Tau) (a : Fin (D.R.rS 
   | last =>
     simp only [Formalism.QuantumDeterminants.fvec, Fin.val_last, lt_self_iff_false, dite_false, zB, Matrix.mulVec_mulVec, h2,
       Matrix.one_mulVec, rhoF_eq_frS_pow, Nat.sub_self, pow_zero, one_smul, Formalism.L2.SG.RealObj.frm,
-      Formalism.L2.SG.RealObj.famSc, Formalism.L2.SG.RealObj.fam, Fin.snoc_last, Complex.ofReal_one, one_pow, inv_one]
+      Formalism.L2.SG.RealObj.famSc, Formalism.L2.SG.RealObj.fam, Fin.snoc_last, Complex.ofReal_one, inv_one]
   | cast i =>
     obtain ⟨hq, -⟩ := h4 i i rfl
     simp only [Formalism.QuantumDeterminants.fvec, Fin.coe_castSucc, i.isLt, dite_true, Fin.eta, Formalism.QuantumDeterminants.bvec, hq, rhoF_eq_frS_pow,
@@ -125,7 +81,7 @@ private theorem ptEntry_locBlocksFrom_eq (D : D7) (τ : D.what₂.Tau) :
       ptEntry (locBlocksFrom D (rhoReal D) τ A L) i j =
         ((D.host.rdE ^ (-((D.R.rS : ℤ) - ((A + i : ℕ) : ℤ))) *
           D.host.rdE ^ (-((D.R.rS : ℤ) - ((A + j : ℕ) : ℤ))) : ℝ) : ℂ) * plEmb D τ (ptEntry L i j) := by
-  have hne : D.host.rdE ≠ 0 := (rdE_pos_rank_point_counts D).ne'
+  have hne : D.host.rdE ≠ 0 := (_root_.Formalism.MainNotions.S.rdE_pos D).ne'
   intro L
   induction L with
   | nil =>
@@ -176,7 +132,7 @@ theorem zhat_conjugator_eq_point (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.G
 
 theorem frS_mul_rd (D : D7) : frS D * (D.host.rdE : ℂ) = 1 := by
   rw [frS_eq_inv_rdE]
-  exact inv_mul_cancel₀ (by exact_mod_cast (rdE_pos_rank_point_counts D).ne')
+  exact inv_mul_cancel₀ (by exact_mod_cast (_root_.Formalism.MainNotions.S.rdE_pos D).ne')
 
 theorem rho_eq (D : D7) (b : Fin (D.R.rS + 1)) :
     ((rhoF D b : ℝ) : ℂ) = ((D.host.rdE : ℂ) ^ (D.R.rS - b.val))⁻¹ := by
@@ -208,8 +164,8 @@ private theorem mulVec_apply_eq_herm_single {m : ℕ} (H : Matrix (Fin m) (Fin m
     (H *ᵥ x) i = Formalism.QuantumDeterminants.herm H x (Pi.single i 1) := by
   have hs : star (Pi.single i 1 : Fin m → ℂ) = Pi.single i 1 := by
     ext j
-    by_cases h : j = i <;> simp [Pi.single_apply, h]
-  simp [Formalism.QuantumDeterminants.herm, hs, dotProduct, Pi.single_apply]
+    by_cases h : j = i <;> simp [h]
+  simp [Formalism.QuantumDeterminants.herm, dotProduct, Pi.single_apply]
 
 private theorem Q_mulVec_cMg_mulVec_eq (γ : X.B.I.Ginf) (τ : D.what₂.Tau) (y : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))
     (f : Fin (2 * D.R.rS + D.R.k + 1) → ℂ) :

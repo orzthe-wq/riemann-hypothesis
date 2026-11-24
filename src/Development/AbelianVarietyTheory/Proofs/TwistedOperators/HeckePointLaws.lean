@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckePrimeDetection
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyThetaGeneratorTransportStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckePointLawsOfTransport
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyThetaGeneratorTransport
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -47,6 +48,6 @@ set_option autoImplicit false
 namespace GlobalTheory.HeckePointLaw
 
 theorem heckePointLaws : GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws :=
-  heckePointLaws_of_transport GlobalTheory.T.heckeIsogeny_thetaGenerator_transport
+  heckePointLaws_of_transport _root_.GlobalTheory.ThetaTransport.thetaTransportLaw
 
 end GlobalTheory.HeckePointLaw

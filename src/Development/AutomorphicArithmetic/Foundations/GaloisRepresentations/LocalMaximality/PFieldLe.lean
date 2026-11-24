@@ -271,8 +271,8 @@ theorem UpperTheory.Gal.productCup_of_system.fieldLe_of :
   have h0 : Y0 x j2 := hY.toY0
   have hcZ := h0.covZ
   have hcY := h0.covY
-  obtain ⟨τ, hτ⟩ := (GlobalTheory.T.exists_topDegreeCoefficientForm_and_eq_on_top_forms ℂ F K d (xv x) hcZ).1
-  obtain ⟨ρ, hρ⟩ := GlobalTheory.T.exists_laurentConstantTermForm_functionField ℂ F d (xv x) hcZ.pd
+  obtain ⟨τ, hτ⟩ := (_root_.GlobalTheory.PD.isTop_exists_and_eq ℂ F K d (xv x) hcZ).1
+  obtain ⟨ρ, hρ⟩ := _root_.GlobalTheory.exists_isRes ℂ F d (xv x) hcZ.pd
   obtain ⟨m, n, z, hz⟩ := hZF F K d x hcZ
   obtain ⟨c, hc, hD⟩ := hZEx F K d x hcZ τ hτ a ha (Fin m) n z hz
   obtain ⟨h, hh1, hh2, hh3⟩ := hYM F K K' d x j2 Fx A hY τ hτ a ha (Fin m) n z hz c hc hD
@@ -293,7 +293,7 @@ theorem UpperTheory.Gal.productCup_of_system.fieldLe_of :
   let aa : Fin M → Finset (Fin (d + 1)) → DR ℂ K' := fun k I => mapDR ℂ K K' (e k I)
   let bb : Fin M → Finset (Fin (d + 1)) → DR ℂ K' := fun k I => bt k (uni I ∅)
   have hmulm : ∀ (B : Subalgebra ℂ K') (p q : ℕ), ∀ y ∈ omB ℂ K' B p, ∀ y' ∈ omB ℂ K' B q, y * y' ∈ omB ℂ K' B (p + q) :=
-    fun B p q => (GlobalTheory.T.kahlerFormsOverSubalgebra_closure_properties ℂ K' B p q).1
+    fun B p q => (_root_.GlobalTheory.PD.omB_alg ℂ K' B p q).1
   have haa : ∀ k, aa k ∈ (omCx (rB ℂ K' (xv x)) (d - a)).Z ((d : ℤ) - p k) := fun k =>
     mapC_Z' _ _ (fun I y hy => (hRmap I y hy).1) (d - a) _ _ (hpef k).2.1
   have hbb : ∀ k, bb k ∈ cechC (fun I => omB ℂ K' (rB ℂ K' (xv x) I) a) (p k) := by

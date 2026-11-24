@@ -146,7 +146,6 @@ private theorem eval₂_deh_eq_zero_of_mem_roots {w : Fin (D + 1) → ℂ} (hw :
     exact one_ne_zero h2
   have hdecomp : H %ₘ G.P + G.P * (H /ₘ G.P) = H := by
     first
-    | exact Polynomial.modByMonic_add_div H G.monic
     | exact Polynomial.modByMonic_add_div H G.P
   have hr : (H %ₘ G.P).eval₂ (deh (x ∘ e) 0) (deh x (e 0) G.Θ) = 0 := by
     have h1 := congrArg (Polynomial.eval₂ (deh (x ∘ e) 0) (deh x (e 0) G.Θ)) hdecomp
@@ -187,7 +186,6 @@ private theorem deh_dd_mul_deh_zOf_X_eq_eval₂_Q {w : Fin (D + 1) → ℂ} (hw 
     rw [Polynomial.eval₂_sub, Polynomial.eval₂_C, sub_eq_zero] at h1
     rw [h1]
     field_simp
-    first | done | ring
 
 private theorem exists_pow_mul_eq_eval₂_theta {w : Fin (D + 1) → ℂ} (hw : G.Good w) (f : MvPolynomial ι ℤ) :
     ∃ (N : ℕ) (H : Polynomial (MvPolynomial (Fin (D + 1)) ℤ)),
@@ -280,7 +278,6 @@ theorem exists_int_primitive {F E : Type*} [Field F] [Field E] [Algebra F E] [Ch
   classical
   haveI hfinite : Finite (IntermediateField F E) := by
     first
-    | exact inferInstance
     | exact Field.finite_intermediateField_of_exists_primitive_element F E
         (Field.exists_primitive_element F E)
   have key : ∀ s : Finset ι, ∃ c : ι → ℤ, ∀ i ∈ s, v i ∈ F⟮∑ j, (c j : E) * v j⟯ := by
@@ -365,6 +362,6 @@ theorem exists_clear {A K : Type*} [CommRing A] [IsDomain A] [Field K] [Algebra 
   · exact Finset.prod_ne_zero_iff.mpr fun i _ => nonZeroDivisors.ne_zero (hb i).1
   · rw [Polynomial.map_mul, (hb i).2, Polynomial.map_C, ← algebraMap_smul K (b i : A) (q i),
       Polynomial.smul_eq_C_mul, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i)]
-    simp only [map_mul, Polynomial.C_mul, mul_assoc]
+    simp only [map_mul, mul_assoc]
 
 end ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.Fib

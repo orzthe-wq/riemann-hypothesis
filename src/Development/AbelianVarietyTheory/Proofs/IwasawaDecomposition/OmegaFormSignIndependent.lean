@@ -1,5 +1,6 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsWeakOfDatum
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibExtMarked
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeLatticeVacuumTransport
 public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
@@ -7,17 +8,12 @@ public import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExample
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicThetaOfTestFunctionExistsLawsFockVectorsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugateModelSameThetaFunctions
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DualHalfLevelMarkingExistsAndMatch
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsLatticeVacuumIffSignedRationalFixed
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LatticeVacuaTensorCorrespondLine
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RdUEqConstMulClsSum
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticCharacterRealFinitePointsMatchStatement
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndex
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionFixesLevelVectorUpToUnit
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinTensMemLatO
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -52,10 +48,112 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugateModelSameThetaFunctions
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticCharacterRealFinitePointsMatchStatement
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndex
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinTensMemLatO
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaInnerProductEqRealTorusMean
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionFixesLevelVectorUpToUnit, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormSignIndependent
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionFixesLevelVectorUpToUnit =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionFixesLevelVectorUpToUnit", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsWeakOfDatum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.L2.Pj MeasureTheory IsDedekindDomain NumberField Matrix Complex
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.FD GlobalTheory GlobalTheory.ThFr GlobalTheory.Ker
+open GlobalTheory.SW hiding Level
+open GlobalTheory.Dict (hx pv)
+open ReciprocityTheory.ChartRestriction.G.I2 (polyDeriv)
+open scoped TensorProduct ComplexConjugate Real Classical
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+namespace GlobalTheory.Ker.LevEig
+
+section Alg
+
+variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r n : ℕ} {X : Data E r} (L : SW.Level X)
+
+
+end Alg
+
+section Hat
+
+variable {D : D7} {k : ℕ}
+
+theorem one_mem_intAf : (1 : Af D.host.F) ∈ intAf D.host.F := fun v => by
+  rw [map_one]; exact one_mem _
+
+theorem tmul_mem_hatV {L : Lt D.host.E k} {a : Af D.host.F} (ha : a ∈ intAf D.host.F) {x : Fin k → D.host.E}
+    (hx : x ∈ L) : (fun i => a ⊗ₜ[D.host.F] x i) ∈ hatV L :=
+  AddSubgroup.subset_closure ⟨a, ha, x, hx, rfl⟩
+
+theorem toAf_mem {L : Lt D.host.E k} {x : Fin k → D.host.E} (hx : x ∈ L) : toAf x ∈ hatV L :=
+  tmul_mem_hatV one_mem_intAf hx
+
+theorem toAf_sub (x y : Fin k → D.host.E) : toAf (x - y) = toAf x - toAf y := by
+  funext i; exact TensorProduct.tmul_sub _ _ _
+
+theorem hatV_map {G : Type} [AddCommGroup G] {L : Lt D.host.E k} (f : (Fin k → AfE D) →+ G) (H : AddSubgroup G)
+    (h : ∀ a ∈ intAf D.host.F, ∀ x ∈ L, f (fun i => a ⊗ₜ[D.host.F] x i) ∈ H) {u} (hu : u ∈ hatV L) : f u ∈ H := by
+  refine (AddSubgroup.closure_le (H.comap f)).2 ?_ hu
+  rintro _ ⟨a, ha, x, hx, rfl⟩
+  exact h a ha x hx
+
+theorem smul_mem_hatV {L L' : Lt D.host.E k} (c : 𝓞 D.host.E) (h : ∀ x ∈ L, c • x ∈ L') {u} (hu : u ∈ hatV L) :
+    ((1 : Af D.host.F) ⊗ₜ[D.host.F] (c : D.host.E)) • u ∈ hatV L' := by
+  refine hatV_map (DistribSMul.toAddMonoidHom _ ((1 : Af D.host.F) ⊗ₜ[D.host.F] (c : D.host.E))) _
+    (fun a ha x hx => ?_) hu
+  convert tmul_mem_hatV ha (h x hx) using 1
+  ext i
+  simp [smul_eq_mul, Algebra.smul_def, Algebra.TensorProduct.tmul_mul_tmul]
+
+theorem nsmul_mem_hatV {L : Lt D.host.E k} {𝔪 : Ideal (𝓞 D.host.E)} {M : ℕ} (hM : (M : 𝓞 D.host.E) ∈ 𝔪) {u}
+    (hu : u ∈ hatV L) : M • u ∈ hatV (𝔪 • L) := by
+  have := smul_mem_hatV (L' := 𝔪 • L) M (fun x hx => Submodule.smul_mem_smul hM hx) hu
+  have e : ((1 : Af D.host.F) ⊗ₜ[D.host.F] ((M : 𝓞 D.host.E) : D.host.E)) = (M : AfE D) :=
+    map_natCast ((Algebra.TensorProduct.includeRight (R := D.host.F) (A := Af D.host.F)).toRingHom.comp
+      (algebraMap (𝓞 D.host.E) D.host.E)) M
+  rwa [e, Nat.cast_smul_eq_nsmul] at this
+
+theorem fmt_one (V : HSp D) : fmt V 1 = 1 := by
+  simp only [fmt, Formalism.L2.Theta.mt, map_one, Units.val_one]
+  exact Matrix.map_one _ (map_zero _) (map_one _)
+
+variable {S T : HSp D}
+
+theorem actO_sub (h : GA D S) (g : GA D T) (w w' : WO S T) :
+    actO S T h g (w - w') = actO S T h g w - actO S T h g w' := by
+  simp only [actO, Matrix.mul_sub, Matrix.sub_mul]
+
+end Hat
+
+section Mov
+
+variable {D : D7} {S T : HSp D}
+
+end Mov
+
+section Main
+
+variable {D : D7} {S T : HSp D} (C : Ctx S T) (Lv : SW.Level C.X)
+
+end Main
+
+end GlobalTheory.Ker.LevEig
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionFixesLevelVectorUpToUnit =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormSignIndependent =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormSignIndependent", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibExtMarked\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.CompletedTensorLatticeLatticeVacuumTransport\npublic import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral\npublic import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.ZeroNotAdmissibleOfRankPos\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.SelfDualLatticePairingDual\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicThetaOfTestFunctionExistsLawsFockVectorsStatement\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsConjugateModelSameThetaFunctions\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DualHalfLevelMarkingExistsAndMatch\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.IsLatticeVacuumIffSignedRationalFixed\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LatticeVacuaTensorCorrespondLine\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RdUEqConstMulClsSum\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticCharacterRealFinitePointsMatchStatement\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndex\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionFixesLevelVectorUpToUnit\npublic import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicElementLatticeFullAndCompletion\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FinTensMemLatO\nimport Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaInnerProductEqRealTorusMean\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Datum Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.IndefR.FWT Formalism.L2.Pj
@@ -203,9 +301,6 @@ theorem inc_smul_finW (s : D.host.E) (y : Matrix (Fin S.rank) (Fin T.rank) D.hos
   change ((1 : AF D.host.F) ⊗ₜ[D.host.F] s) * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] y k a) = _
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
   rfl
-
-theorem finW_nsmul (n : ℕ) (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) : finW S T (n • y) = n • finW S T y := by
-  rw [← Nat.cast_smul_eq_nsmul D.host.E, ← inc_smul_finW, map_natCast, Nat.cast_smul_eq_nsmul]
 
 theorem finW_mem {L : Lt D.host.E T.rank} {y : Matrix (Fin S.rank) (Fin T.rank) D.host.E} (hy : ∀ b, y b ∈ L) :
     finW S T y ∈ hatA S T (tens (stdL D.host.E S.rank) L) := colM_mem fun b => LevEig.toAf_mem (hy b)
@@ -370,7 +465,7 @@ theorem heis_root (C : Ctx S T) {H : ReciprocityTheory.ChartRestriction.G.Geo.To
     exact colM_mem fun b => root_cong hι hm (ha b) (ha₀ b) ((ea₀ b).trans (ea b).symm) (ya b) (ya₀ b)
   have f2 : ∀ n : ℕ, (∀ b, (n : 𝓞 D.host.E) • q b = 0) →
       n • finW S T (Y q) ∈ hatA S T (tens (stdL D.host.E S.rank) (latG T g)) := fun n hn => by
-    rw [← finW_nsmul]
+    rw [← _root_.GlobalTheory.Ker.TorusMean.finW_nsmul]
     exact finW_mem fun b => nsmul_root_mem hmk (ha b) (ya b) (by rw [ea b]; exact hn b)
   have hMb : (l.M : 𝓞 D.host.E) ∈ l.Mb := by
     have hMM : (l.M : 𝓞 D.host.E) ∈ l.Mb * Mfr l := l.prod.ge (Ideal.subset_span rfl)
@@ -408,12 +503,12 @@ theorem heis_root (C : Ctx S T) {H : ReciprocityTheory.ChartRestriction.G.Geo.To
       incA D (s : D.host.E) • actO S T h g (finW S T (Y₀ q)) = (2 * l.M) • u := fun s hs => by
     obtain ⟨u, hu, eu⟩ := hj₀ _ (le_max_right _ _) s hs
     refine ⟨_, m2 _ (finW_mem hu), ?_⟩
-    rw [← actO_smul, inc_smul_finW, eu, finW_nsmul]
+    rw [← actO_smul, inc_smul_finW, eu, _root_.GlobalTheory.Ker.TorusMean.finW_nsmul]
     exact map_nsmul (TensLatMove.actHom S T h g) _ _
   have g2 : ∀ s ∈ l.Mb ^ max j j₀, ∃ u ∈ hatA S T (tens (stdL D.host.E S.rank) (latG T g)),
       incA D (s : D.host.E) • finW S T (Y q) = (2 * N) • u := fun s hs => by
     obtain ⟨u, hu, eu⟩ := hj _ (le_max_left _ _) s hs
-    exact ⟨_, finW_mem hu, by rw [inc_smul_finW, eu, finW_nsmul]⟩
+    exact ⟨_, finW_mem hu, by rw [inc_smul_finW, eu, _root_.GlobalTheory.Ker.TorusMean.finW_nsmul]⟩
   have hbar : cA D (incA D (t : D.host.E)) = incA D (H.bar t : D.host.E) := by rw [H.bar_eq]; rfl
   refine heis_congr (σ := incA D (s : D.host.E)) (τ := incA D (t : D.host.E)) (k := k) (M := l.M)
     (char_hatA C hΛ hL) hf ?_ (fun u hu => (smul_mem_of_int hΛ ?_ hu).1) f5 (nsmul_mem_of_le hk' f3) ?_ ?_ ?_ ?_
@@ -531,3 +626,6 @@ theorem zak_sum {r g : ℕ} {hr : T.rank = r} {ψ : AddChar (AF D.host.F) ℂ} {
   exact ((hz _ (key _).1).2 _ (key _).2).2.2.1 c
 
 end GlobalTheory.OneMapRef.Term
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormSignIndependent =====

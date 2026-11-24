@@ -1,9 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataPsiQuadraticGeneratorsLinearStatement
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLawsStatement
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormalisingFactorStatement
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataPsiQuadraticGeneratorsLinear
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLaws
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormalisingFactor
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -67,7 +67,7 @@ theorem vt_mul_tor_shift (g : N.Gt) (t : Multiplicative N.X →* Oˣ) (χ : N.X)
   rw [vt, vt, mul_comm g, N.tor_mul_s_apply, Gt.mul_b, tor_b, one_mul, mul_left_comm (N.ψ χ), Units.val_mul, mul_assoc]
 
 theorem tk_qTriv_right {k : ℕ} (p : N.QT k) (z : N.X) : N.tk p (N.qTriv k z) = p.1.2.s z ^ k :=
-  ((GlobalTheory.T.degenerationData_psi_quadratic_generators_linear O N k z).2.2 p.1.2).1
+  ((_root_.GlobalTheory.PsiQuadratic.main O N k z).2.2 p.1.2).1
 
 theorem tk_qTriv_left {k : ℕ} (p : N.QT k) (z : N.X) : N.tk (N.qTriv k z) p = p.1.2.s z ^ k := by
   rw [← Gt.pow_s, N.mem_QT.1 p.2, io_s, N.τ_symm]
@@ -75,8 +75,8 @@ theorem tk_qTriv_left {k : ℕ} (p : N.QT k) (z : N.X) : N.tk (N.qTriv k z) p = 
 
 theorem wQ_qTriv_odd {k : ℕ} (hk : Odd k) (z : N.X) : N.wQ (N.qTriv k z) = N.ψ z ^ k := by
   symm
-  rw [(GlobalTheory.T.wQ_characterization_and_mul_relation O N k hk (N.qTriv k z) (N.qTriv k z)).1, tk_qTriv_right]
-  obtain ⟨h₁, h₂, -⟩ := GlobalTheory.T.degenerationData_psi_quadratic_generators_linear O N k z
+  rw [(_root_.GlobalTheory.Ex.SymLift.normalising_factor O N k hk (N.qTriv k z) (N.qTriv k z)).1, tk_qTriv_right]
+  obtain ⟨h₁, h₂, -⟩ := _root_.GlobalTheory.PsiQuadratic.main O N k z
   constructor
   · change _ * dbl N.θ N.σ (N.c z) ^ k = N.τ z z ^ k
     rw [h₁, mul_pow, ← pow_mul, ← pow_mul, mul_comm k 2]
@@ -85,7 +85,7 @@ theorem wQ_qTriv_odd {k : ℕ} (hk : Odd k) (z : N.X) : N.wQ (N.qTriv k z) = N.�
 
 theorem wQ_mul_qTriv_odd {k : ℕ} (hk : Odd k) (p : N.QT k) (z : N.X) :
     N.wQ (p * N.qTriv k z) = N.wQ p * N.ψ z ^ k * p.1.2.s z ^ k := by
-  have h := (GlobalTheory.T.wQ_characterization_and_mul_relation O N k hk p (N.qTriv k z)).2.1
+  have h := (_root_.GlobalTheory.Ex.SymLift.normalising_factor O N k hk p (N.qTriv k z)).2.1
   rw [wp, tk_qTriv_right, tk_qTriv_left, div_self', one_pow, one_mul, N.wQ_qTriv_odd hk] at h
   exact h.symm
 
@@ -95,8 +95,8 @@ theorem txT_mul_qTriv {m : ℕ} (hm : Odd m) (p : N.QT (m ^ 2)) (z χ : N.X) :
   rw [txT, txT, N.wQ_mul_qTriv_odd hm.pow, e, mul_pow, ← N.io_nsmul, ← N.vt_mul_io_shift, ← mul_assoc,
     ← Units.val_mul]
   congr 2
-  have h₁ := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB m 0 p.1.2.b (N.c z)).2.1
-  obtain ⟨-, h₂, h₃⟩ := GlobalTheory.T.degenerationData_psi_quadratic_generators_linear O N m z
+  have h₁ := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB m 0 p.1.2.b (N.c z)).2.1
+  obtain ⟨-, h₂, h₃⟩ := _root_.GlobalTheory.PsiQuadratic.main O N m z
   have h₄ := congrArg (· ^ m) (h₃ p.1.2).1
   have h₅ := Gt.pow_s p.1.2 m (m • z)
   rw [N.c_nsmul] at h₅

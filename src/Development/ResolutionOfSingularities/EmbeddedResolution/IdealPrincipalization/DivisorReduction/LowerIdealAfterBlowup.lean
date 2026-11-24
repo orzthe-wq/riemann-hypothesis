@@ -1,15 +1,18 @@
 module
 
+public import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.IdealSheafOrder
+public import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.MaxContactIdeal
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import Mathlib.RingTheory.RegularLocalRing.Defs
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.BlowupDerivativeIdealBound
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantOnOpens
-import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.AmbientCenterImage
-import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.ControlledTransformRestriction
-public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.DerivBalancedFactor
-public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantInduction
-import Development.ResolutionOfSingularities.EmbeddedResolution.StrictTransformCharts.StrictNormalCrossingsBlowup
-import Development.ResolutionOfSingularities.Foundations.Schemes.IdealSheafData
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantSucc
+import Development.ResolutionOfSingularities.Foundations.Schemes.AffineOpens
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -26,8 +29,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,6 +36,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,8 +49,314 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.LogDerivIdealEstimate
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.StrictTransformRestriction
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.MarkedSequenceTransforms
+import Development.ResolutionOfSingularities.EmbeddedResolution.StrictTransformCharts.StrictNormalCrossingsBlowup
+import Development.ResolutionOfSingularities.Foundations.Schemes.SchemeMorphismProperties
+import Mathlib.Tactic.TypeStar
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.AmbientCenterImage
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.ControlledTransformRestriction
+import Development.ResolutionOfSingularities.Foundations.Schemes.IdealSheafData
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.BitVec
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.DerivBalancedFactor, Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantInduction, Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.LowerIdealAfterBlowup
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.DerivBalancedFactor =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.DerivBalancedFactor", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.IdealSheafOrder\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.MaxContactIdeal\npublic import Mathlib.AlgebraicGeometry.Morphisms.Smooth\npublic import Mathlib.RingTheory.RegularLocalRing.Defs\npublic import Mathlib.RingTheory.SimpleRing.Principal\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.BlowupDerivativeIdealBound\nimport Development.ResolutionOfSingularities.Foundations.Schemes.AffineOpens\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+open CategoryTheory AlgebraicGeometry TopologicalSpace
+
+namespace FunctorialResolution.EmbeddedResolution
+
+private theorem exists_affineOpen_ideal_eq_top_of_not_mem_support {X : Scheme.{u}}
+    (I : X.IdealSheafData) (y : ↥X) (hy : y ∉ I.support) :
+    ∃ V : X.affineOpens, y ∈ V.1 ∧ I.ideal V = ⊤ := by
+  obtain ⟨U, hyU, -⟩ :=
+    Scheme.exists_affineOpens_mem_le (X := X) (x := y) (U := ⊤) trivial
+  have hny := hy
+  rw [AlgebraicGeometry.Scheme.IdealSheafData.mem_support_iff_of_mem (I := I) (U := U) hyU,
+    AlgebraicGeometry.Scheme.mem_zeroLocus_iff] at hny
+  push Not at hny
+  obtain ⟨s, hs, hys⟩ := hny
+  refine ⟨X.affineBasicOpen s, hys, ?_⟩
+  let _ : Algebra Γ(X, U.1) Γ(X, X.basicOpen s) :=
+    (X.presheaf.map (homOfLE (X.basicOpen_le s)).op).hom.toAlgebra
+  have hloc : IsLocalization.Away s Γ(X, X.basicOpen s) := U.2.isLocalization_basicOpen s
+  have hunit : IsUnit (algebraMap Γ(X, U.1) Γ(X, X.basicOpen s) s) :=
+    IsLocalization.map_units (M := Submonoid.powers s) Γ(X, X.basicOpen s)
+      ⟨s, Submonoid.mem_powers s⟩
+  have hmem : algebraMap Γ(X, U.1) Γ(X, X.basicOpen s) s ∈ I.ideal (X.affineBasicOpen s) := by
+    rw [← I.map_ideal_basicOpen U s]
+    exact Ideal.mem_map_of_mem _ hs
+  exact Ideal.eq_top_of_isUnit_mem _ hmem hunit
+
+theorem not_mem_support_of_mem_support_of_pow_mul {X : Scheme.{u}}
+    (Z I I₀ : X.IdealSheafData) (m : ℕ) (hfac : I = Z ^ m * I₀)
+    (hord : ∀ x : ↥X, orderAt I x ≤ (m : ℕ∞)) {x : ↥X} (hx : x ∈ Z.support) :
+    x ∉ I₀.support := by
+  intro hx0
+  have hZ : stalkIdeal Z x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x) :=
+    (mem_support_iff_stalkIdeal_le_maximalIdeal Z x).mp hx
+  have hI0 : stalkIdeal I₀ x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x) :=
+    (mem_support_iff_stalkIdeal_le_maximalIdeal I₀ x).mp hx0
+  have hIle : stalkIdeal I x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x) ^ (m + 1) := by
+    rw [hfac, stalkIdeal_mul, stalkIdeal_pow, pow_succ]
+    exact Ideal.mul_mono (Ideal.pow_right_mono hZ m) hI0
+  have h1 := (le_orderAt_iff I x (m + 1)).mpr hIle
+  have h3 : ((m + 1 : ℕ) : ℕ∞) ≤ (m : ℕ∞) := le_trans h1 (hord x)
+  have h4 : m + 1 ≤ m := by exact_mod_cast h3
+  omega
+
+theorem isDerivBalanced_of_pow_mul (k : Type u) [Field k] {X : Scheme.{u}}
+    (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
+    (Z I I₀ : X.IdealSheafData) (m : ℕ) (hfac : I = Z ^ m * I₀)
+    (hord : ∀ x : ↥X, orderAt I x ≤ (m : ℕ∞)) (hbal : IsDerivBalanced k p I m) :
+    IsDerivBalanced k p I₀ m := by
+  refine (isDerivBalanced_iff k p I₀ m).mpr ?_
+  intro i hi
+  refine le_of_forall_exists_affineOpen ?_
+  intro y
+  by_cases hyZ : y ∈ Z.support
+  · obtain ⟨V, hyV, hV⟩ := exists_affineOpen_ideal_eq_top_of_not_mem_support I₀ y
+      (not_mem_support_of_mem_support_of_pow_mul Z I I₀ m hfac hord hyZ)
+    refine ⟨V, hyV, ?_⟩
+    have htop : (I₀ ^ (m - i)).ideal V = ⊤ := by
+      rw [Scheme.IdealSheafData.ideal_pow]
+      show I₀.ideal V ^ (m - i) = ⊤
+      rw [hV, ← Ideal.one_eq_top, one_pow]
+    rw [htop]
+    exact le_top
+  · obtain ⟨V, hyV, hV⟩ := exists_affineOpen_ideal_eq_top_of_not_mem_support Z y hyZ
+    refine ⟨V, hyV, ?_⟩
+    have hIV : I.ideal V = I₀.ideal V := by
+      rw [hfac, Scheme.IdealSheafData.ideal_mul, Scheme.IdealSheafData.ideal_pow]
+      show Z.ideal V ^ m * I₀.ideal V = I₀.ideal V
+      rw [hV, ← Ideal.one_eq_top, one_pow, one_mul]
+    have hder : (derivIdealSheafIterate k p i I).ideal V
+        = (derivIdealSheafIterate k p i I₀).ideal V := by
+      rw [derivIdealSheafIterate_ideal, derivIdealSheafIterate_ideal, hIV]
+    have hb : ((derivIdealSheafIterate k p i I).ideal V) ^ m ≤ (I.ideal V) ^ (m - i) := by
+      have hb0 := Scheme.IdealSheafData.le_def.mp ((isDerivBalanced_iff k p I m).mp hbal i hi) V
+      rwa [Scheme.IdealSheafData.ideal_pow, Scheme.IdealSheafData.ideal_pow] at hb0
+    rw [Scheme.IdealSheafData.ideal_pow, Scheme.IdealSheafData.ideal_pow]
+    show ((derivIdealSheafIterate k p i I₀).ideal V) ^ m ≤ (I₀.ideal V) ^ (m - i)
+    rw [← hIV, ← hder]
+    exact hb
+
+end FunctorialResolution.EmbeddedResolution
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.DerivBalancedFactor =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantInduction =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantInduction", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantOnOpens\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantSucc\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.LogDerivIdealEstimate\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.StrictTransformRestriction\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.MarkedSequenceTransforms\nimport Development.ResolutionOfSingularities.EmbeddedResolution.StrictTransformCharts.StrictNormalCrossingsBlowup\nimport Development.ResolutionOfSingularities.Foundations.Schemes.SchemeMorphismProperties\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+open CategoryTheory AlgebraicGeometry
+
+noncomputable section
+
+namespace FunctorialResolution.EmbeddedResolution
+
+namespace DivisorReduction
+
+namespace GoingUpInvariantOnOpen
+
+private theorem getElem_of_eq_map_append {α β : Type*} (f : α → β) (L : List α) (Lx : List β)
+    (L' : List β) (hL : L' = L.map f ++ Lx) (i : ℕ) (hi : i < L.length) (hi' : i < L'.length) :
+    L'[i]'hi' = f (L[i]'hi) := by
+  subst hL
+  have h1 : i < (L.map f).length := by simpa using hi
+  rw [List.getElem_append_left h1, List.getElem_map]
+
+theorem succ {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
+    {hno : BlowupPreservesNoetherian.{u}} {T : MarkedIdealWithBoundary.{u}}
+    [AlgebraicGeometry.IsNoetherian T.scheme] [AlgebraicGeometry.Smooth T.structMap]
+    [AlgebraicGeometry.LocallyOfFiniteType T.structMap] [CharZero T.base]
+    {j : ℕ} {hj : j < T.boundary.length}
+    {I₀ : T.scheme.IdealSheafData} {E₀ : List T.scheme.IdealSheafData}
+    {s : (restrictToBoundaryDivisor T j hj I₀ E₀).SequenceOfBlowups}
+    {hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent}
+    {U₀ : (s.toSequenceOfBlowups.schemeAt 0).Opens} {t : ℕ}
+    (hinv : GoingUpInvariantOnOpen hres hno T j hj I₀ E₀ s hpr U₀ t)
+    (hbal : IsDerivBalanced T.base T.structMap I₀ T.mult) (hm : 1 ≤ T.mult)
+    (hV : (restrictToBoundaryDivisor T j hj I₀ E₀).IsAdmissible) (hlift : StrictNormalCrossingsLiftFromDivisor.{u})
+    (hU : IsClosed ((U₀ : Set ↥(s.toSequenceOfBlowups.schemeAt 0))))
+    (hsupp : (((s.ideal 0).support : Set ↥(s.toSequenceOfBlowups.schemeAt 0))) ⊆
+      (U₀ : Set ↥(s.toSequenceOfBlowups.schemeAt 0)))
+    (ht : t < s.length) :
+    GoingUpInvariantOnOpen hres hno T j hj I₀ E₀ s hpr U₀ (t + 1) := by
+  have hsmT : AlgebraicGeometry.Smooth (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) :=
+    hinv.smooth_structMap
+  have hNt : AlgebraicGeometry.IsNoetherian ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj t) :=
+    isNoetherian_ambientBlowupSeq_schemeAt hres hno T j hj I₀ E₀ s hpr t (by omega)
+  have hNt1 : AlgebraicGeometry.IsNoetherian ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj (t + 1)) :=
+    isNoetherian_ambientBlowupSeq_schemeAt hres hno T j hj I₀ E₀ s hpr (t + 1) (by omega)
+  have hNs1 : AlgebraicGeometry.IsNoetherian (s.toSequenceOfBlowups.schemeAt (t + 1)) :=
+    MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hV s (t + 1) (by omega)
+  have hNs : AlgebraicGeometry.IsNoetherian (s.toSequenceOfBlowups.schemeAt t) :=
+    MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hV s t (by omega)
+  have hci : AlgebraicGeometry.IsClosedImmersion
+      (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t) :=
+    isClosedImmersion_restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ hU t
+  have hci1 : AlgebraicGeometry.IsClosedImmersion
+      (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ (t + 1)) :=
+    isClosedImmersion_restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ hU (t + 1)
+  have htd : t < (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).length := by
+    rw [ambientBlowupSeq_length]; exact ht
+  have hπ := (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isBlowup t htd
+  have hHZ := ker_restrictedEmbedding_le_center hres hno T j hj I₀ E₀ s hpr U₀ hU hm hsupp t ht
+  have hsncC := hinv.hasStrictNormalCrossingsWith_center_cons hlift hm hV hU hsupp ht
+  have hsncZ := hinv.hasStrictNormalCrossingsWith_center hlift hm hV hU hsupp ht
+  have hsmT1 : AlgebraicGeometry.Smooth
+      ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t ≫
+        ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) :=
+    smooth_comp_of_isBlowupAlongIdealSheaf hsncC hπ
+  have hps : ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr (t + 1) =
+      (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t ≫
+        ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t :=
+    structureMorphism_ambientBlowupSeq_succ hres hno T j hj I₀ E₀ s hpr t
+  have hker1 : Scheme.Hom.ker (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ (t + 1)) =
+      Blowup.strictTransform ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t)
+        ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t)
+        (Scheme.Hom.ker (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t)) :=
+    ker_restrictedEmbedding_succ T j hj I₀ E₀ s hres hno hpr U₀ hU t ht
+  have hidx : j < ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ (t + 1)).length := by
+    have h := hinv.idx_lt
+    rw [BlowupSequenceData.boundary_length] at h ⊢
+    omega
+  refine ⟨?_, hidx, ?_, ?_, ?_, ?_, ?_⟩
+  · intro l hl i hi
+    rcases lt_or_eq_of_le (Nat.lt_succ_iff.mp hi) with h | h
+    · exact hinv.divDeriv l hl i h
+    · subst h
+      exact hinv.exists_pow_mul_eq_comap_ambientDerivIdeal hbal hm hV hlift hU hsupp ht l hl
+  · intro instFt n hn
+    have hest : ∀ m, m < T.mult →
+        derivIdealSheafIterate T.base (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) m
+            (ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr 0 t) ≤
+          ⨆ l, ⨆ _ : l ≤ m, logDerivIdealSheafIterate T.base
+            (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t)
+            (Scheme.Hom.ker (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t)) (m - l)
+            (ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t) := by
+      intro m hmlt
+      rw [ambientDerivIdeal_order_zero_eq_controlledTransform]
+      exact hinv.deriv_le m hmlt
+    have hK : ∀ l, l ≤ T.mult →
+        ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t ≤
+          (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t ^ (T.mult - l) := fun l hl =>
+      hinv.ambientDerivIdeal_le_center_pow hbal hm hV hlift hU hsupp ht l hl
+    have hK' : ∀ l, l ≤ T.mult →
+        Blowup.exceptionalIdeal ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t)
+              ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t) ^ (T.mult - l) *
+            ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l (t + 1) =
+          (ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t).comap
+            ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t) := by
+      intro l hl
+      exact BlowupSequenceData.pow_exceptionalIdeal_mul_controlledTransform_succ _ _ _ _
+        (hinv.exists_pow_mul_eq_comap_ambientDerivIdeal hbal hm hV hlift hU hsupp ht l hl)
+    have hqc : AlgebraicGeometry.QuasiCompact
+        (strictTransformι ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t)
+          ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t)
+          (Scheme.Hom.ker (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t))) :=
+      FunctorialResolution.EmbeddedResolution.quasiCompact_strictTransformι_of_isLocallyNoetherian _ _ _
+    have key := derivIdealSheafIterate_le_biSup_logDerivIdealSheafIterate_of_blowup
+      T.base (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t)
+      ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t)
+      ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t)
+      (Scheme.Hom.ker (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t))
+      (((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t).eraseIdx j) hsncC hHZ hπ T.mult
+      (fun l => ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l t) hK hest
+      (fun l => ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l (t + 1)) hK' n hn
+    have e1 : derivIdealSheafIterate T.base (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr (t + 1)) n
+          ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult (t + 1)) =
+        derivIdealSheafIterate T.base
+          ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t ≫
+            ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t) n
+          ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult (t + 1)) :=
+      derivIdealSheafIterate_congr _ _ hps _ _
+    have e2 : ∀ l : ℕ,
+        logDerivIdealSheafIterate T.base (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr (t + 1))
+            (Scheme.Hom.ker (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ (t + 1))) (n - l)
+            (ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l (t + 1)) =
+          logDerivIdealSheafIterate T.base
+            ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t ≫
+              ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t)
+            (Blowup.strictTransform ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t)
+              ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t)
+              (Scheme.Hom.ker (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t))) (n - l)
+            (ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr l (t + 1)) := by
+      intro l
+      rw [hker1]
+      exact logDerivIdealSheafIterate_congr _ _ hps _ _ _
+    rw [e1]
+    simp only [e2]
+    have h0 : (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult (t + 1) =
+        ambientDerivIdeal hres hno T j hj I₀ E₀ s hpr 0 (t + 1) :=
+      (ambientDerivIdeal_order_zero_eq_controlledTransform hres hno T j hj I₀ E₀ s hpr (t + 1)).symm
+    rw [h0]
+    exact key
+  · have hbs := BlowupSequenceData.boundary_succ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr) E₀ t
+    have hlen : j < (List.map (Blowup.strictTransform ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t)
+        ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t))
+        ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t)).length := by
+      simpa using hinv.idx_lt
+    have hZι : ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t).comap
+        (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t) =
+        (s.center t).comap (iteratedPreimage T j hj I₀ E₀ s U₀ t).ι := by
+      rw [center_ambientBlowupSeq_eq_imageIdealSheaf T j hj I₀ E₀ s hres hno hpr U₀ hU hm hsupp t ht]
+      exact Blowup.comap_map_of_isClosedImmersion _ _
+    rw [hbs, List.eraseIdx_append_of_lt_length hlen _, List.eraseIdx_map,
+      map_comap_strictTransform_append_exceptionalIdeal (ambientBlowupSeqStructureMorphism hres hno T j hj I₀ E₀ s hpr t)
+        ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t)
+        ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t)
+        (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ t)
+        (restrictedEmbedding T j hj I₀ E₀ s hres hno hpr U₀ (t + 1))
+        (restrictedBlowupMorphism T j hj I₀ E₀ s U₀ t)
+        (restrictedEmbedding_comp_blowupMorphism T j hj I₀ E₀ s hres hno hpr U₀ t) hker1
+        (((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t).eraseIdx j) hsncC hHZ hπ,
+      boundary_comap_iteratedPreimage_succ T j hj I₀ E₀ s U₀ hV t ht, hZι]
+    refine filterNeTop_map_append_congr _ ?_ _ _ _ hinv.comap_eraseIdx
+    exact FunctorialResolution.EmbeddedResolution.strictTransform_top _ _
+  · rw [hps, BlowupSequenceData.boundary_succ]
+    exact inStrictNormalCrossingPosition_strictTransform_append _ _ _ _ hπ hinv.snc_bdry hsncZ
+  · rw [hker1, ← hinv.bdry_getElem]
+    exact getElem_of_eq_map_append
+      (Blowup.strictTransform ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t)
+        ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t))
+      ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ t)
+      [Blowup.exceptionalIdeal ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t)
+        ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t)]
+      ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ (t + 1))
+      (BlowupSequenceData.boundary_succ _ E₀ t) j hinv.idx_lt hidx
+  · rw [hps]
+    exact hsmT1
+
+end GoingUpInvariantOnOpen
+
+end DivisorReduction
+
+end FunctorialResolution.EmbeddedResolution
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantInduction =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.LowerIdealAfterBlowup =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.LowerIdealAfterBlowup", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantOnOpens\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.AmbientCenterImage\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.ControlledTransformRestriction\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.DerivBalancedFactor\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.GoingUpInvariantInduction\nimport Development.ResolutionOfSingularities.EmbeddedResolution.StrictTransformCharts.StrictNormalCrossingsBlowup\nimport Development.ResolutionOfSingularities.Foundations.Schemes.IdealSheafData\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Std.Tactic.BVDecide.Normalize.BitVec\n\n"}
+section -- clump:auto
 @[expose] public section
 
 universe u
@@ -703,3 +1011,6 @@ end DivisorReduction
 end FunctorialResolution.EmbeddedResolution
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.DivisorReduction.LowerIdealAfterBlowup =====

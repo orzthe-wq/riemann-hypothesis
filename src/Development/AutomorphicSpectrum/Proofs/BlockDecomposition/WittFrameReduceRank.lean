@@ -331,7 +331,7 @@ theorem mul_diag_mul {k l : Type} (X : Matrix k (Fin (r + 1)) R) (d : Fin (r + 1
     X * diagonal d * Z = hd X * (diagonal fun _ : Fin 1 => d 0) * Z.submatrix (fun _ : Fin 1 => 0) id +
       tl X * diagonal (fun i : Fin r => d i.succ) * Z.submatrix Fin.succ id := by
   ext i j
-  simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.diagonal_apply, Finset.sum_ite_eq]
+  simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.diagonal_apply]
 
 theorem cT_sub_row {a b : ℕ} (X : Matrix (Fin n) (Fin b) R) (f : Fin a → Fin b) :
     (cT s X * J).submatrix f id = cT s (X.submatrix id f) * J := by
@@ -468,8 +468,8 @@ theorem Fr.orth : cT (σ : E →+* E) (hd X) * J * tl X = 0 ∧ cT (σ : E →+*
     cT (σ : E →+* E) (hd Y) * J * tl X = 0 ∧ cT (σ : E →+* E) (hd Y) * J * tl Y = 0 := by
   refine ⟨?_, ?_, ?_, ?_⟩
   · rw [gram_sub, hW.xx]; rfl
-  · rw [gram_sub, hW.xy]; ext i j; simp [Matrix.one_apply, (Fin.succ_ne_zero j).symm]
-  · rw [gram_sub, h.yxW hW]; ext i j; simp [Matrix.one_apply, (Fin.succ_ne_zero j).symm]
+  · rw [gram_sub, hW.xy]; ext i j; simp [(Fin.succ_ne_zero j).symm]
+  · rw [gram_sub, h.yxW hW]; ext i j; simp [(Fin.succ_ne_zero j).symm]
   · rw [gram_sub, hW.yy]; rfl
 
 theorem Fr.P_tlX : P * (Q * tl X) = tl X := by

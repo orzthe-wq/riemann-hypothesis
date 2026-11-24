@@ -3,16 +3,17 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramHspOf
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingInl
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ImportsBis
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicWeilRepSchrodingerModelUniqueStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicWeilRepSchrodingerModelUnique
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousTransportedWeilDatumAdelicSchwartzStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledSchroedingerModelSiegelRuleStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledUnitaryPartnerDiagStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDoubledSchrodingerModelTransposedSiegelRulStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilDatumTransportAdelicSchwartzThetaTransStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianSelfDualLatticeSpaceFormHermitianNondegStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfStandardTraceAdelicAddCharStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrictsToQuadraticSignPowIdelicRestrictionStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SkewHermitianNegTraceZeroInvHermitianUnimodularStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledUnitaryPartnerDiagStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilDatumTransportAdelicSchwartzThetaTransStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumIsUnitaryAdelicSchwartzStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportedWeilDatumKeepsAdmissibleFormsStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -114,7 +115,7 @@ theorem exists_isTransport (D : D7) (B : Base D.host.F D.host.E) (hB : B.IsGood 
   have hdX : X.J.det ≠ 0 := by
     have := det_ne_zero_of_nondeg D X.Jᵀ h2X
     rwa [Matrix.det_transpose] at this
-  have huniq := GlobalTheory.T.adelicWeilRep_schrodingerModel_unique D.host.F D.host.E D.sp.cm.sig hB.cm T.rank S.rank X Y Mo B.ψ χX χW hB.std hX.herm hdX
+  have huniq := _root_.GlobalTheory.WeilSchUnique.weil_unique D.host.F D.host.E D.sp.cm.sig hB.cm T.rank S.rank X Y Mo B.ψ χX χW hB.std hX.herm hdX
     hY.skew hdY.ne_zero om om₀ hom hw₀
   refine ⟨ω, hω, fun a b g h ha hb Φ hΦ => ?_⟩
   rw [huniq (a, b) Φ hΦ]

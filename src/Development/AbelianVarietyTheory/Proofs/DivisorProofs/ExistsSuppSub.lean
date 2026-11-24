@@ -149,7 +149,6 @@ theorem supp_map {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} {a : Sec F U} (ha
   rcases hg with h | h
   · exact Or.inl h
   · right
-    change Sec.res g (Sec.map φ a) = 0
     rw [res_map, h]
     exact map_zero (φ.hom.app (op V)).hom
 

@@ -71,9 +71,7 @@ theorem val_pow_lt_one {ϖ : kˣ} (hϖ : IsUnif ϖ) {c : ℕ} (hc : 1 ≤ c) : v
   have h1 : valuation k (ϖ : k) < 1 := by
     rw [hϖ]
     first
-      | exact ValuativeRel.uniformizer_lt_one k
       | exact ValuativeRel.uniformizer_lt_one
-      | exact ValuativeRel.uniformizer_lt_one (R := k)
   exact pow_lt_one₀ zero_le h1 (by omega)
 
 theorem val_rep_unit {ϖ : kˣ} (hϖ : IsUnif ϖ) {c : ℕ} (hc : 1 ≤ c) (y : (Res k c)ˣ) :
@@ -498,7 +496,6 @@ theorem gauss_ne_zero : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (
     have hnot : condExp ν - 1 ∉ {c | CondLE (unifAt v) c ν} := by
       have hlt : condExp ν - 1 < condExp ν := by omega
       first
-        | exact Nat.not_mem_of_lt_sInf hlt
         | exact Nat.notMem_of_lt_sInf hlt
     by_contra hall
     push Not at hall
@@ -524,8 +521,6 @@ theorem gauss_ne_zero : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (
     refine Finset.sum_congr ?_ (fun y _ => ?_)
     · first
         | rfl
-        | congr 1
-        | exact Subsingleton.elim _ _
     · split_ifs with h
       · exact absurd h (rep_ne_zero hϖ hc1 y)
       · rw [one_mul]

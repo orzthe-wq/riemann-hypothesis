@@ -50,6 +50,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.MeasurePreservin
 import Development.AbelianVarietyTheory.Definitions.Foundations.WittIndexEqZeroIff
 import Formalism.LocalToGlobal.BesselHermitianTheta.NoncompactGapAtLeastRange
 import Formalism.LocalToGlobal.IndefiniteReal.ScalarOnPartsFull
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

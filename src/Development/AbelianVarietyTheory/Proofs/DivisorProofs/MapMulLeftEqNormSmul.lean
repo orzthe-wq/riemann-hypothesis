@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapLinearEquivAddHaarLocalFieldStatement
+public import Mathlib.MeasureTheory.Measure.Haar.DistribChar
+public import Mathlib.NumberTheory.LocalField.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapLinearEquivAddHaarLocalField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -71,6 +73,6 @@ theorem map_mul_left_eq_norm_smul (F : Type) [Field F] [CharZero F] [ValuativeRe
     rw [LinearEquiv.coe_det, Units.coe_map, Algebra.norm_apply]
     rfl
   rw [← hT]
-  exact GlobalTheory.T.map_linearEquiv_addHaar_localField F E μ T
+  exact _root_.GlobalTheory.KSp.map_linearEquiv_haar F E μ T
 
 end GlobalTheory.KSp

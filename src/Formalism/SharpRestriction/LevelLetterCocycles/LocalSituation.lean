@@ -260,13 +260,13 @@ def Htl (T : LocLat S.G S.Qp S.LL S.O) : Submodule S.O (TW S.RW T) where
   carrier := {x | ∀ g : S.G, g ∈ Hker S → TWact (S.gR g) T g x = x}
   add_mem' := by
     intro a b ha hb g hg
-    simp only [Set.mem_setOf_eq, map_add (f := _), ha g hg, hb g hg]
+    simp only [map_add (f := _), ha g hg, hb g hg]
   zero_mem' := by
     intro g _
     simp only [map_zero]
   smul_mem' := by
     intro c x hx g hg
-    simp only [Set.mem_setOf_eq, map_smul, hx g hg]
+    simp only [map_smul, hx g hg]
 
 def FNatW : Prop := FNat S (fun _ => ⊤)
 
@@ -375,10 +375,8 @@ theorem zpow_mem (h : XiOK AA act ξ) (u : WCˣ) (hu : (u : WC) ∈ AA) (hu' : (
   intro a
   induction a using Int.induction_on with
   | zero => simpa using AA.one_mem
-  | succ k ih =>
-    rw [zpow_add_one, Units.val_mul]; exact AA.mul_mem ih hu
-  | pred k ih =>
-    rw [zpow_sub_one, Units.val_mul]; exact AA.mul_mem ih hu'
+  | succ k ih => simpa only [zpow_add_one, Units.val_mul] using AA.mul_mem ih hu
+  | pred k ih => simpa only [zpow_sub_one, Units.val_mul] using AA.mul_mem ih hu'
 
 theorem act_inv (g : G) (u : WCˣ) (hg : act g ξ = u * ξ) :
     act g ((ξ⁻¹ : WCˣ) : WC) = (((u * ξ)⁻¹ : WCˣ) : WC) := by
@@ -394,27 +392,24 @@ theorem act_zpow (g : G) (a : ℤ) (u : WCˣ) (hg : act g ξ = u * ξ) :
   induction a using Int.induction_on with
   | zero => simp
   | succ k ih =>
-    rw [zpow_add_one, zpow_add_one, Units.val_mul, Units.val_mul, map_mul, ih, hg]
-    simp only [Units.val_mul]
+    simp only [zpow_add_one, Units.val_mul, map_mul, ih, hg]
   | pred k ih =>
-    rw [zpow_sub_one, zpow_sub_one, Units.val_mul, Units.val_mul, map_mul, ih, act_inv g u hg]
+    simp only [zpow_sub_one, Units.val_mul, map_mul, ih, act_inv g u hg]
 
 theorem Mxi_stable (h : XiOK AA act ξ) (g : G) (a : ℤ) :
     ∀ x ∈ Mxi AA ξ a, act g x ∈ Mxi AA ξ a := by
   rintro x ⟨y, hy, rfl⟩
   obtain ⟨u, hu, hu', hg⟩ := h.2.2 g
   refine ⟨((u ^ a : WCˣ) : WC) * act g y, AA.mul_mem (zpow_mem h u hu hu' a) (h.1 g y hy), ?_⟩
-  simp only [LinearMap.mulLeft_apply, map_mul]
-  rw [act_zpow g a u hg, mul_zpow, Units.val_mul]
+  simp only [LinearMap.mulLeft_apply, map_mul, act_zpow g a u hg, mul_zpow, Units.val_mul]
   ring
 
 theorem Mxi_anti (h : XiOK AA act ξ) {a b : ℤ} (hab : a ≤ b) : Mxi AA ξ b ≤ Mxi AA ξ a := by
   rintro x ⟨y, hy, rfl⟩
   obtain ⟨k, rfl⟩ := Int.exists_add_of_le hab
-  refine ⟨((ξ ^ (k : ℤ) : WCˣ) : WC) * y, AA.mul_mem ?_ hy, ?_⟩
-  · rw [zpow_natCast, Units.val_pow_eq_pow_val]; exact AA.pow_mem h.2.1 k
-  · simp only [LinearMap.mulLeft_apply]
-    rw [zpow_add, Units.val_mul]; ring
+  refine ⟨((ξ ^ (k : ℤ) : WCˣ) : WC) * y, AA.mul_mem (by simpa only [zpow_natCast, Units.val_pow_eq_pow_val] using AA.pow_mem h.2.1 k) hy, ?_⟩
+  simp only [LinearMap.mulLeft_apply, zpow_add, Units.val_mul]
+  ring
 
 def actM (h : XiOK AA act ξ) (a : ℤ) (g : G) : Mxi AA ξ a →ₗ[O] Mxi AA ξ a :=
   ((act g).toLinearMap).restrict (Mxi_stable h g a)
@@ -481,18 +476,16 @@ def botExt (l : ℕ) [Fact l.Prime] : FinExt l := ⟨⊥, inferInstance⟩
 
 theorem mem_GK_bot (g : GQ l) : g ∈ GK (botExt l) := by
   change g ∈ (⊥ : IntermediateField ℚ_[l] (Om l)).fixingSubgroup
-  rw [IntermediateField.fixingSubgroup_bot]
-  trivial
+  simp [IntermediateField.fixingSubgroup_bot]
 
 theorem xi_dvd_act (g : GQ l) (a : Ainf l) (h : ∃ b, a = AI.ξ * b) :
     ∃ b, AI.actWHom g a = AI.ξ * b := by
-  have h1 := (AI.ainf_image_mem_filtration_one_iff (botExt l) a).mpr h
   apply (AI.ainf_image_mem_filtration_one_iff (botExt l) (AI.actWHom g a)).mp
   have h2 : AI.ιA (AI.actWHom g a) = P.actQ g (AI.ιA a) := AI.ιA_act g a
   have h3 := (P.PD (botExt l)).ι_comm ⟨g, mem_GK_bot g⟩ (AI.ιA a)
   rw [P.PD_ι, P.PD_ι, P.PD_actB, P.PD_actdR] at h3
   rw [h2, h3, ← P.PD_actdR (botExt l) ⟨g, mem_GK_bot g⟩]
-  exact (P.PD (botExt l)).Fil_G _ 1 _ h1
+  exact (P.PD (botExt l)).Fil_G _ 1 _ ((AI.ainf_image_mem_filtration_one_iff (botExt l) a).mpr h)
 
 theorem xiOK : XiOK (AinfSub l) AI.actWCbHom (xiU AI) := by
   refine ⟨?_, ⟨AI.ξ, rfl⟩, ?_⟩
@@ -505,11 +498,10 @@ theorem xiOK : XiOK (AinfSub l) AI.actWCbHom (xiU AI) := by
       have := congrArg (AI.actWHom g) hb'
       rw [← AlgEquiv.mul_apply, ← map_mul, mul_inv_cancel, map_one, AlgEquiv.one_apply, map_mul,
         hb] at this
-      rw [← mul_assoc]; exact this
+      simpa only [mul_assoc] using this
     have h2 : inclW l b * inclW l (AI.actWHom g b') = 1 := by
-      have := congrArg (inclW l) h1
-      rw [map_mul, map_mul] at this
-      exact (AI.isUnit_inclW_ξ.mul_left_cancel (by rw [mul_one]; exact this)).symm
+      apply AI.isUnit_inclW_ξ.mul_left_cancel
+      simpa [map_mul] using (congrArg (inclW l) h1).symm
     refine ⟨⟨inclW l b, inclW l (AI.actWHom g b'), h2, by rw [mul_comm]; exact h2⟩, ⟨b, rfl⟩,
       ⟨AI.actWHom g b', rfl⟩, ?_⟩
     change AI.actWCbHom g (inclW l AI.ξ) = inclW l b * inclW l AI.ξ

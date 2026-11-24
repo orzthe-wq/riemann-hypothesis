@@ -1,52 +1,10 @@
 module
 
 public import Formalism.FormalDegreeBessel.StatementG
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.FramesTor
 import Formalism.SharpRestriction.CuspSpanNormBounds.Point
+import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.BigCellConjI
 
 @[expose] public section
 
@@ -82,20 +40,6 @@ private lemma Hpk_apply_sig_ne_zero {n : ℕ} {h H : Matrix (Fin n) (Fin n) ℂ}
   · subst hq; simp
   · simp [hq, Ne.symm hq]
 
-private lemma Hpk_esI_apply_eq_ite_eI (a : Fin r) (m : Fin (2 * r + k + 1)) :
-    Hpk k r (esI k r a) m = if m = eI k r a then 1 else 0 := by
-  have ha := a.isLt
-  have hm := m.isLt
-  simp only [Hpk, eI, esI, Fin.ext_iff, Fin.val_mk]
-  split_ifs <;> first | rfl | (exfalso; omega)
-
-private lemma Hpk_eI_apply_eq_ite_esI (a : Fin r) (m : Fin (2 * r + k + 1)) :
-    Hpk k r (eI k r a) m = if m = esI k r a then 1 else 0 := by
-  have ha := a.isLt
-  have hm := m.isLt
-  simp only [Hpk, eI, esI, Fin.ext_iff, Fin.val_mk]
-  split_ifs <;> first | rfl | (exfalso; omega)
-
 theorem fix_gen (d : Fin (2 * r + k + 1) → ℂ) (d0 : ℂ) (hmid : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → i.val ≤ r + k → d i = d0)
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU : h ∈ UH (Hpk k r))
     (hfix : ∀ a : Fin r, h *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ h *ᵥ bvec (esI k r a) = bvec (esI k r a))
@@ -106,9 +50,9 @@ theorem fix_gen (d : Fin (2 * r + k + 1) → ℂ) (d0 : ℂ) (hmid : ∀ i : Fin
   have colS : ∀ a : Fin r, ∀ l, h l (esI k r a) = if l = esI k r a then 1 else 0 :=
     fun a => apply_eq_ite_of_mulVec_bvec_eq' h _ (hfix a).2
   have rowE : ∀ a : Fin r, ∀ q, h (eI k r a) q = if eI k r a = q then 1 else 0 :=
-    fun a => Hpk_apply_sig_ne_zero hUe (colS a) (Hpk_esI_apply_eq_ite_eI a)
+    fun a => Hpk_apply_sig_ne_zero hUe (colS a) (_root_.Formalism.MainNotions.S.Pv.Frames.Hpk_esI_row a)
   have rowS : ∀ a : Fin r, ∀ q, h (esI k r a) q = if esI k r a = q then 1 else 0 :=
-    fun a => Hpk_apply_sig_ne_zero hUe (colE a) (Hpk_eI_apply_eq_ite_esI a)
+    fun a => Hpk_apply_sig_ne_zero hUe (colE a) (_root_.Formalism.MainNotions.S.Pv.Frames.Hpk_eI_row a)
   have out : ∀ p : Fin (2 * r + k + 1), (p.val < r ∨ r + k < p.val) →
       (∀ q, h p q = if p = q then 1 else 0) ∧ (∀ l, h l p = if l = p then 1 else 0) := by
     intro p hp

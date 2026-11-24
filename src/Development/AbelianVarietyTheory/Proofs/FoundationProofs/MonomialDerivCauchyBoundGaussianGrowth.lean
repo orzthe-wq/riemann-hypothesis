@@ -49,6 +49,7 @@ import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

@@ -2,48 +2,9 @@ module
 
 public import ReciprocityTheory.EigenFrames.EigenSt
 public import Mathlib.Analysis.Normed.Field.Instances
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Algebra.Algebra.Hom.Rat
+import Mathlib.Analysis.Complex.Polynomial.Basic
+import Mathlib.RingTheory.Valuation.Integral
 
 @[expose] public section
 
@@ -53,29 +14,17 @@ open NumberField
 
 namespace ReciprocityTheory.EigenFramesTheory
 
+private theorem norm_le_one_of_integral {p : ℕ} [Fact p.Prime] {y : ℂ_[p]}
+    (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
+  let val : Valuation ℂ_[p] NNReal := NormedField.valuation
+  have hval : IsIntegral val.integer y := hy.tower_top
+  exact NNReal.coe_le_coe.2 ((Valuation.integer.integers val).isIntegral_iff_v_le_one.1 hval)
+
 theorem norm_le_one_of_monic {p : ℕ} [Fact p.Prime] {f : Polynomial ℤ} (hf : f.Monic) {y : ℂ_[p]}
     (h : Polynomial.eval₂ (Int.castRingHom ℂ_[p]) y f = 0) : ‖y‖ ≤ 1 := by
-  by_contra hy
-  rw [not_le] at hy
-  set n := f.natDegree
-  have hn : n ≠ 0 := by
-    intro h0
-    have hf1 : f = 1 := Polynomial.eq_one_of_monic_natDegree_zero hf h0
-    rw [hf1, Polynomial.eval₂_one] at h
-    exact one_ne_zero h
-  rw [Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hf.coeff_natDegree, map_one, one_mul] at h
-  set S := ∑ i ∈ Finset.range n, Int.castRingHom ℂ_[p] (f.coeff i) * y ^ i
-  have hS : ‖S‖ ≤ ‖y‖ ^ (n - 1) := by
-    refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_
-    rw [norm_mul, norm_pow]
-    have hi' : i ≤ n - 1 := by have := Finset.mem_range.1 hi; omega
-    refine (mul_le_of_le_one_left (by positivity) ?_).trans (pow_le_pow_right₀ hy.le hi')
-    rw [eq_intCast]
-    exact IsUltrametricDist.norm_intCast_le_one _ _
-  have hyn : y ^ n = -S := by rw [eq_neg_iff_add_eq_zero, add_comm]; exact h
-  have h2 : ‖y‖ ^ n ≤ ‖y‖ ^ (n - 1) := by rw [← norm_pow, hyn, norm_neg]; exact hS
-  have h3 : ‖y‖ ^ (n - 1) < ‖y‖ ^ n := pow_lt_pow_right₀ hy (by omega)
-  linarith
+  refine norm_le_one_of_integral ⟨f, hf, ?_⟩
+  rw [RingHom.ext_int (algebraMap ℤ ℂ_[p]) (Int.castRingHom ℂ_[p])]
+  exact h
 
 theorem eig_norm_det_le_one {p : ℕ} [Fact p.Prime] {κ : Type*} [Fintype κ] [DecidableEq κ]
     (M : Matrix κ κ ℂ_[p]) (hM : ∀ i j, ‖M i j‖ ≤ 1) : ‖M.det‖ ≤ 1 := by
@@ -122,14 +71,10 @@ theorem eigenFrameDual : EigenFrameDual.{u, v} := by
     exact zero_ne_one hM1
   have hint : ∀ i j, ‖M i j‖ ≤ 1 := by
     intro i j
-    obtain ⟨f, hmon, hf⟩ := (NumberField.RingOfIntegers.isIntegral_coe (b i) : IsIntegral ℤ ((b i : 𝓞 E) : E))
-    refine norm_le_one_of_monic hmon ?_
-    let g : E →+* ℂ_[p] := (ι : ℂ →+* ℂ_[p]).comp (e j : E →+* ℂ)
-    have h := congrArg g hf
-    rw [map_zero, Polynomial.hom_eval₂] at h
-    rw [RingHom.ext_int (g.comp (algebraMap ℤ E)) (Int.castRingHom ℂ_[p])] at h
     rw [hMa]
-    exact h
+    let g : E →+* ℂ_[p] := (ι : ℂ →+* ℂ_[p]).comp (e j : E →+* ℂ)
+    exact norm_le_one_of_integral (IsIntegral.map_of_comp_eq (RingHom.id ℤ) g
+      (RingHom.ext_int _ _) (NumberField.RingOfIntegers.isIntegral_coe (b i)))
   let j₀ : κ := e.symm τ₀.toRatAlgHom
   refine ⟨fun i => (M.det)⁻¹ * M.adjugate j₀ i, fun i => ?_, fun φ => ?_⟩
   · rw [norm_mul, norm_inv, hM1, inv_one, one_mul, Matrix.adjugate_apply]

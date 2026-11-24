@@ -70,7 +70,7 @@ def crd (k : Fin m × Fin n × Bool) : (Fin m → Fin n → ℂ) →L[ℝ] ℂ :
 
 theorem crd_apply (k : Fin m × Fin n × Bool) (x : Fin m → Fin n → ℂ) :
     crd k x = if k.2.2 then star (x k.1 k.2.1) else x k.1 k.2.1 := by
-  unfold crd; split_ifs <;> simp [Complex.conjCLE_apply, Complex.star_def]
+  unfold crd; split_ifs <;> simp
 
 theorem evX_eq (P : PX m n) (x : Fin m → Fin n → ℂ) : evX P x = MvPolynomial.eval (fun k => crd k x) P := by
   simp only [evX, crd_apply]
@@ -105,7 +105,7 @@ theorem hasFDerivAt_evX (P : PX m n) (x : Fin m → Fin n → ℂ) : HasFDerivAt
         rw [Derivation.leibniz, pderiv_X]
         by_cases h : k = b
         · subst h; simp [evX_eq]; ring
-        · simp [evX_eq, Pi.single_apply, Ne.symm h, h]; ring
+        · simp [evX_eq, h]; ring
       simp only [dP, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.coe_sum',
         Finset.sum_apply, smul_eq_mul]
       rw [Finset.sum_congr rfl fun b _ => hb b, Finset.sum_add_distrib, Finset.sum_ite_eq, if_pos (Finset.mem_univ _),

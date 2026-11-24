@@ -4,10 +4,11 @@ public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PosPartUnitaryMul
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QminorPolyMap
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CapelliOfGelfand
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetAddOneSubEqSumQminorStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetPolyMapMonicStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracedQminorComatrixTruncatedInverseStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceElementGelfandPolynomialFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceElementGelfandPolynomialFormula
+import Formalism.RealPlaceAnalysis.StatementE
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetAddOneSubEqSumQminor
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QdetPolyMapMonic
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TracedQminorComatrixTruncatedInverse
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -65,11 +66,6 @@ theorem epow_eq_pow {A : Type} [Ring A] {n : ℕ} (M : Fin n → Fin n → A) (k
   induction k generalizing i j with
   | zero => simp [epow, Matrix.one_apply]
   | succ k ih => simp only [epow, pow_succ, Matrix.mul_apply, ih, Matrix.of_apply]
-
-theorem epow_succ' {A : Type} [Ring A] {n : ℕ} (M : Fin n → Fin n → A) (k : ℕ) (i j : Fin n) :
-    epow M (k + 1) i j = ∑ c, M i c * epow M k c j := by
-  rw [epow_eq_pow, pow_succ', Matrix.mul_apply]
-  simp only [epow_eq_pow, Matrix.of_apply]
 
 theorem defect_sub (t : ℕ → ℂ) (m N : ℕ) (P Q : ℂ[X]) (z : ℂ) :
     defect t m N (Q - C z * P) = defect t m N Q - C z * defect t m N P := by
@@ -134,7 +130,7 @@ theorem natDegree_capQ (m : ℕ) (χ : Fin (m + 1) → ℂ) : (∏ s, (X + C (χ
 theorem coeff_defect_gelf (m : ℕ) (χ : Fin (m + 1) → ℂ) (N : ℕ) :
     (defect (GlobalTheory.Dec.gelfVal χ) m N (∏ s, (X + C (χ s - (m : ℂ) / 2)))).coeff (m + 1) = 0 := by
   set P : ℂ[X] := ∏ s, (X + C (χ s - (m : ℂ) / 2)) with hP
-  have hG := GlobalTheory.T.trace_element_gelfand_polynomial_formula m χ N
+  have hG := _root_.GlobalTheory.CompanionTheory.GelfRec.gelfVal_newton m χ N
   rw [← hP] at hG
   set G : ℂ[X] := (X - C (m : ℂ)) ^ (N + 1) * (P.comp (X + 1) - P) -
     P * ∑ k ∈ range N, C ((-1) ^ k * GlobalTheory.Dec.gelfVal χ k) * (X - C (m : ℂ)) ^ (N - k) with hGd
@@ -195,8 +191,8 @@ theorem natDegree_defect_op (V : Type) [AddCommGroup V] [Module ℂ V] (m : ℕ)
   set Rp := GlobalTheory.CapelliNewton.polyOf m Rc f v with hRp
   have key : defect t m N Q = -(C ((-1 : ℂ) ^ N) * Rp) := by
     refine Polynomial.funext fun w => ?_
-    have h1 := congrArg (fun T : Module.End ℂ V => f (T v)) (GlobalTheory.T.traced_qminor_comatrix_truncated_inverse (Module.End ℂ V) m M hM w N)
-    rw [← GlobalTheory.T.qdet_add_one_sub_eq_sum_qminor', hR] at h1
+    have h1 := congrArg (fun T : Module.End ℂ V => f (T v)) (_root_.GlobalTheory.TracedComatrix.traced_comatrix (Module.End ℂ V) m M hM w N)
+    rw [← _root_.GlobalTheory.qdet_add_one_sub_eq_sum_qminor, hR] at h1
     have h2 : (qdet M w * ∑ k ∈ range (N + 1), algebraMap ℂ (Module.End ℂ V) ((-1) ^ k * (w - m) ^ (N - k)) * etr M k) v
         = (∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * t k) • qdet M w v := by
 
@@ -283,7 +279,7 @@ theorem gelfToCap (V : Type) [AddCommGroup V] [Module ℂ V] (m : ℕ)
     qdet M (Y + (((m + 1 : ℕ) : ℂ) - 1) / 2) v = Formalism.QuantumDeterminants.capP χ Y • v := by
   rw [← sub_eq_zero]
   refine (Module.forall_dual_apply_eq_zero_iff ℂ _).mp fun f => ?_
-  obtain ⟨c, hc1, hc⟩ := GlobalTheory.T.exists_monic_poly_eq_qdet (Module.End ℂ V) (m + 1) M
+  obtain ⟨c, hc1, hc⟩ := _root_.GlobalTheory.qdet_polyMap_monic (Module.End ℂ V) (m + 1) M
   set Q := GlobalTheory.CapelliNewton.polyOf (m + 1) c f v with hQd
   have hQ : ∀ u : ℂ, Q.eval u = f (qdet M u v) := fun u => by rw [hQd, GlobalTheory.CapelliNewton.polyOf_eval, hc]
   set P : ℂ[X] := ∏ s, (X + C (χ s - (m : ℂ) / 2)) with hP

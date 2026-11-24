@@ -1,10 +1,9 @@
 module
 
+public import Formalism.LocalToGlobal.CharacterGerms.IntSubst
+public import Formalism.LocalToGlobal.CharacterGerms.RowTieCartAdd
 public import Formalism.LocalToGlobal.CharacterGerms.ConstantCoeffTripleSubstitution
-public import Formalism.LocalToGlobal.CharacterGerms.RowTieValU
-import Formalism.LocalToGlobal.CharacterGerms.RowTieCartAdd
 public import Formalism.LocalToGlobal.CharacterGerms.RowTieJet
-import Formalism.LocalToGlobal.CharacterGerms.SubstSubst
 public import Formalism.LocalToGlobal.CharacterGerms.TripleSubstSecondCoordinate
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -24,9 +23,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -34,7 +30,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,11 +42,67 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.ProjectiveLattices.SubConstMemOrig
+import Formalism.LocalToGlobal.CharacterGerms.SubstSubst
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Prop
-import Formalism.LocalToGlobal.ProjectiveLattices.SubConstMemOrig
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.CharacterGerms.RowTieValU, Formalism.LocalToGlobal.CharacterGerms.FirstPartialLawAtPoints
+
+-- ===== clump member: Formalism.LocalToGlobal.CharacterGerms.RowTieValU =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.CharacterGerms.RowTieValU", "h": "module\n\npublic import Formalism.LocalToGlobal.CharacterGerms.IntSubst\npublic import Formalism.LocalToGlobal.CharacterGerms.RowTieCartAdd\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.ProjectiveLattices.SubConstMemOrig\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open scoped BigOperators
+open Classical
+
+namespace Formalism.L2.FormalSeriesBounds
+
+open Formalism.IncomingBounds ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Formalism.L2.Pj
+
+variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ} [NeZero d]
+  {Orb : Type} [Fintype Orb] {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
+
+def IsIU (V : VF C) {σ : Type} (U : MvPowerSeries σ C) : Prop :=
+  IntS V U ∧ V.v (MvPowerSeries.constantCoeff U) = 0
+
+theorem IsIU.one {σ : Type} : IsIU V (1 : MvPowerSeries σ C) := by
+  refine ⟨fun μ => ?_, ?_⟩
+  · unfold VF.Ge
+    rw [MvPowerSeries.coeff_one]
+    split_ifs
+    · rw [AddValuation.map_one]; exact le_rfl
+    · rw [AddValuation.map_zero]; exact le_top
+  · rw [map_one, AddValuation.map_one]
+
+theorem IsIU.mul {σ : Type} {U U' : MvPowerSeries σ C} (h : IsIU V U) (h' : IsIU V U') : IsIU V (U * U') :=
+  ⟨IntS.mul h.1 h'.1, by rw [map_mul, AddValuation.map_mul, h.2, h'.2, add_zero]⟩
+
+section Defs
+
+variable (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o))
+
+end Defs
+
+end Formalism.L2.FormalSeriesBounds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.CharacterGerms.RowTieValU =====
+
+-- ===== clump member: Formalism.LocalToGlobal.CharacterGerms.FirstPartialLawAtPoints =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.CharacterGerms.FirstPartialLawAtPoints", "h": "module\n\npublic import Formalism.LocalToGlobal.CharacterGerms.ConstantCoeffTripleSubstitution\npublic import Formalism.LocalToGlobal.CharacterGerms.RowTieValU\nimport Formalism.LocalToGlobal.CharacterGerms.RowTieCartAdd\npublic import Formalism.LocalToGlobal.CharacterGerms.RowTieJet\nimport Formalism.LocalToGlobal.CharacterGerms.SubstSubst\npublic import Formalism.LocalToGlobal.CharacterGerms.TripleSubstSecondCoordinate\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Presheaf\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Formalism.LocalToGlobal.ProjectiveLattices.SubConstMemOrig\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -104,9 +155,6 @@ theorem hAt_zero_left {c : Fin dd → MvPowerSeries τ C} (hc : ∀ i, MvPowerSe
     hAt Y (fun _ => 0) c = 0 := by
   have hA : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => c q.2) := by
     first
-      | exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun q => hc q.2)
-      | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent
-          (fun q => by rw [hc q.2]; exact IsNilpotent.zero)
       | exact ⟨fun q => by rw [hc q.2]; exact IsNilpotent.zero,
           by first
             | exact fun d => Set.toFinite _
@@ -125,7 +173,6 @@ theorem hAt_zero_left {c : Fin dd → MvPowerSeries τ C} (hc : ∀ i, MvPowerSe
         first
           | simp [pt, MvPowerSeries.subst_X hA]
     all_goals first
-      | exact hA
       | (intro i; simp [pt])
       | (intro i; rfl)
       | simp_all
@@ -135,9 +182,6 @@ theorem hAt_zero_right {c : Fin dd → MvPowerSeries τ C} (hc : ∀ i, MvPowerS
     hAt Y c (fun _ => 0) = 0 := by
   have hA : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => c q.2) := by
     first
-      | exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun q => hc q.2)
-      | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent
-          (fun q => by rw [hc q.2]; exact IsNilpotent.zero)
       | exact ⟨fun q => by rw [hc q.2]; exact IsNilpotent.zero,
           by first
             | exact fun d => Set.toFinite _
@@ -156,7 +200,6 @@ theorem hAt_zero_right {c : Fin dd → MvPowerSeries τ C} (hc : ∀ i, MvPowerS
       · funext i
         rw [Pi.zero_apply, ← MvPowerSeries.coe_substAlgHom hA, map_zero]
     all_goals first
-      | exact hA
       | (intro i; simp [pt])
       | (intro i; rfl)
       | simp_all
@@ -287,3 +330,7 @@ theorem biadd_right {c : Fin dd → MvPowerSeries τ C} (hc : GoodPt V c) :
 end VP
 
 end Formalism.L2.FormalSeriesBounds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.CharacterGerms.FirstPartialLawAtPoints =====

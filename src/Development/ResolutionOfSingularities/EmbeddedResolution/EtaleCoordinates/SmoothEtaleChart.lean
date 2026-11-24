@@ -162,14 +162,7 @@ private theorem exists_affineOpen_etale_over_affineSpace_resLE_le {X Y : Scheme.
   exact ⟨W₀.ι ''ᵁ W', (V₀ ⊓ h ⁻¹ᵁ W₀ : Y.Opens).ι ''ᵁ V', d, e, hWaff, hVaff,
     ⟨⟨y, hy'⟩, hyV', rfl⟩, hWle, hVle, g, hg, hgπ⟩
 
-theorem exists_isAffineOpen_etale_resLE_le {X Y : Scheme.{u}} (h : Y ⟶ X) [Smooth h]
-    (y : Y) (W₀ : X.Opens) (hW₀ : h.base y ∈ W₀) (V₀ : Y.Opens) (hV₀ : y ∈ V₀) :
-    ∃ (W : X.Opens) (V : Y.Opens) (d : ℕ) (e : V ≤ h ⁻¹ᵁ W),
-      IsAffineOpen W ∧ IsAffineOpen V ∧ y ∈ V ∧ W ≤ W₀ ∧ V ≤ V₀ ∧
-      ∃ g : V.toScheme ⟶ AffineSpace (ULift.{u} (Fin d)) W.toScheme,
-        Etale g ∧
-        g ≫ (AffineSpace (ULift.{u} (Fin d)) W.toScheme ↘ W.toScheme) = h.resLE W V e :=
-  exists_affineOpen_etale_over_affineSpace_resLE_le h y W₀ hW₀ V₀ hV₀
+alias exists_isAffineOpen_etale_resLE_le := _root_.FunctorialResolution.EmbeddedResolution.SmoothEtaleChart.exists_affineOpen_etale_over_affineSpace_resLE_le
 
 end SmoothEtaleChart
 

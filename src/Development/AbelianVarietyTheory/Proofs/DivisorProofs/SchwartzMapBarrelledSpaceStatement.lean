@@ -56,4 +56,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 
 theorem _root_.GlobalTheory.T.schwartzMap_barrelledSpace' : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V], BarrelledSpace ℂ (SchwartzMap V ℂ) := by
-  first | exact @GlobalTheory.schwartzMap_barrelledSpace | exact GlobalTheory.schwartzMap_barrelledSpace | (intros; apply GlobalTheory.schwartzMap_barrelledSpace <;> assumption)
+  first | exact @GlobalTheory.schwartzMap_barrelledSpace

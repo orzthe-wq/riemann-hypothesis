@@ -188,7 +188,7 @@ theorem chart_C2_convergence (A B : FinHolAtlas e X) (hAB : A.Compatible B) (jA 
       ∃ M : ℝ, ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ N,
         ‖fderiv ℝ (f t ∘ (A.chart jA).symm) z - fderiv ℝ (ph ∘ (A.chart jA).symm) z‖ ≤ M * t := by
   have h2 : (2 : WithTop ℕ∞) ≤ ∞ := by
-    first | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤) | simp | exact WithTop.coe_le_coe.2 le_top
+    first | simp
   set W := (A.chart jA).target ∩ (A.chart jA).symm ⁻¹' W' with hWdef
   have hWo : IsOpen W := (A.chart jA).isOpen_inter_preimage_symm hW'
   set U := ball (0 : Fin e → ℂ) (5 / 4) ∩
@@ -642,7 +642,7 @@ theorem glue_C2_local [T2Space X] (A B : FinHolAtlas e X) [Nonempty (Fin B.n)] (
   have ev : ∀ᶠ t in 𝓝[>] (0 : ℝ), 0 < t ∧ t ≤ t₀ := by
     filter_upwards [Ioc_mem_nhdsGT ht₀] with t ht using ht
   have h2' : (2 : WithTop ℕ∞) ≤ ∞ := by
-    first | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤) | simp | exact WithTop.coe_le_coe.2 le_top
+    first | simp
   obtain ⟨k₀, hk₀⟩ := hcov ((A.chart jA).symm z₀)
   obtain ⟨W, I, hWo, hyW, hWk, hk₀I, hWI, hrep⟩ := glue_loc_rep B h2 _ k₀ hk₀
   set W' := W ∩ (bdry s)ᶜ with hW'def

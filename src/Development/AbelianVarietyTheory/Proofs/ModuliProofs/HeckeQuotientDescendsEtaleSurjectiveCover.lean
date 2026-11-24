@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsAffin
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsReducedAlgebraOfSmoothOfIsNoetherianRing
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsogenyPullbackHeckeModuliObject
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeQuotientClassifyingMapIsogenyUniqueStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HeckeQuotientClassifyingMapIsogenyUnique
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsogOfSurjectiveBaseChange
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjPull
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RangeOfIsPullback
@@ -111,7 +111,7 @@ theorem desc_cocycle (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) {S S'
     ((GlobalTheory.heckeSets_pull E H D 𝔓 p i _ _ o.t oT.t _ mT.toSABMap o.proper).2 K).1 hK
   obtain ⟨na', hna⟩ := desc_comp n' na
   obtain ⟨nb', hnb⟩ := desc_comp n' nb
-  obtain ⟨e₁, e₂⟩ := GlobalTheory.T.heckeQuotient_classifyingMap_isogeny_unique E H D l Xo 𝔓 p i _ _ oT oa ob ψa ψb _ _ _ na' nb' hA hKT
+  obtain ⟨e₁, e₂⟩ := _root_.GlobalTheory.heckeQuot_unique E H D l Xo 𝔓 p i _ _ oT oa ob ψa ψb _ _ _ na' nb' hA hKT
     (by rw [Category.assoc, hf']) (by rw [Category.assoc, hf', reassoc_of% hab]) (ia hψ) (ib hψ) ka' kb'
   rw [hna, hnb, reassoc_of% hψa, reassoc_of% hψb] at e₂
   refine ⟨fun x y hxy => ?_, fun x y hxy => ?_⟩

@@ -141,7 +141,7 @@ theorem grpPullback_prod_firstLaw_pow {T : Over S'} (a b c : T ⟶ G') {U : Type
     · exact (MonObj.comp_mul _ _ _).trans (by simp [x3])
     · simp [x3]
   have e₁ : lift A (lift B C) ≫ lift (x3 G 0) (x3 G 2) = lift A C := by simp [x3, comp_lift]
-  have e₂ : lift A (lift B C) ≫ lift (x3 G 1) (x3 G 2) = lift B C := by simp [x3, comp_lift]
+  have e₂ : lift A (lift B C) ≫ lift (x3 G 1) (x3 G 2) = lift B C := by simp [x3]
   rw [← e₀, ← e₁]
   exact congrArg₂ (· * ·) rfl (congrArg (fun q => (h q.left)⁻¹) e₂)
 

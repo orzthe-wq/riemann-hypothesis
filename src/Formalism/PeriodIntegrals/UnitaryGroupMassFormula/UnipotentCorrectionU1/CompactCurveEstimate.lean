@@ -99,8 +99,6 @@ lemma cw_LR (cost : B.Mat k r → ℕ) (u v : List (B.Mat k r)) :
 lemma gN_nn (g : B.Mat k r) : 0 ≤ gN g := by
   first
   | (unfold gN; positivity)
-  | (simp only [gN]; positivity)
-  | (unfold B.gN; positivity)
 
 theorem faa (n : ℕ) (cost : B.Mat k r → ℕ) (ψ : B.Mat k r → ℂ) (hψ : ContDiff ℝ ∞ ψ) (K : Set ℂ)
     (C₀ : ℝ) (hC₀ : 0 ≤ C₀)
@@ -184,7 +182,6 @@ private theorem Dw_comp_eq_zero_of_not_mem_tsupport {k r : ℕ} (ψ : B.Mat k r 
     show χ (ψ g) = 0
     first
     | exact image_eq_zero_of_notMem_tsupport hg
-    | exact image_eq_zero_of_nmem_tsupport hg
   | succ m ih =>
     intro χ hχ w hw g hg
     rcases Nat.lt_or_ge w.length (m + 1) with hlt | hge

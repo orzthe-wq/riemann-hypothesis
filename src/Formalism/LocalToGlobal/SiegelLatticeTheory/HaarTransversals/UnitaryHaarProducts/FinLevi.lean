@@ -1,49 +1,8 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.RightInvOfLattice
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -144,7 +103,6 @@ private theorem hA_smul_left_zero_lemma_6 (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) 
   simp only [← Finset.mul_sum] at h ⊢
   first
   | rw [h, mul_zero]
-  | simp [h]
 
 theorem hA_symm_zero {x y : VA X.B.I} (h : hA X.B.I x y = 0) : hA X.B.I y x = 0 := by
   rw [unitaryCongruence.hA_symm, h, map_zero]
@@ -157,9 +115,6 @@ def PWl : VA X.B.I →ₗ[X.B.I.E ⊗[X.B.I.F] Af X.B.I.F] VA X.B.I :=
 theorem PWl_apply (y : VA X.B.I) : PWl X u y = y - ∑ a, hA X.B.I (fA X a) y • eA X a -
     ∑ a, hA X.B.I (eA X a) y • fA X a - (zinv X u * hA X.B.I (zA X u) y) • zA X u := by
   first
-  | rfl
-  | (simp only [PWl, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.coeFn_sum, Finset.sum_apply,
-      LinearMap.smulRight_apply, LinearMap.smul_apply, smul_eq_mul]; rfl)
   | simp [PWl, unitaryCongruence.hL, LinearMap.smulRight_apply]
 
 theorem hA_e_PW (a : Fin D.R.rS) (y : VA X.B.I) : hA X.B.I (eA X a) (PWl X u y) = 0 := by
@@ -207,14 +162,6 @@ theorem PW_span (s : VA X.B.I)
       | zero => exact map_zero _
       | add x y _ _ hx hy => rw [map_add (f := _), hx, hy, add_zero]
       | smul c x _ hx => rw [map_smul, hx, smul_zero])
-  | (refine Submodule.span_induction hs ?_ ?_ ?_ ?_
-      · rintro x ⟨a, rfl⟩
-        exact PW_e X u a
-      · exact map_zero _
-      · intro x y hx hy
-        rw [map_add (f := _), hx, hy, add_zero]
-      · intro c x hx
-        rw [map_smul, hx, smul_zero])
 
 theorem sub_PW (y : VA X.B.I) : y - PWl X u y = ∑ a, hA X.B.I (fA X a) y • eA X a +
     ∑ a, hA X.B.I (eA X a) y • fA X a + (zinv X u * hA X.B.I (zA X u) y) • zA X u := by
@@ -242,14 +189,6 @@ theorem hA_span_left (s w : VA X.B.I)
       | zero => exact hA_zero_left X w
       | add x y _ _ hx hy => rw [hA_add_left_lemma_4, hx, hy, add_zero]
       | smul c x _ hx => exact hA_smul_left_zero_lemma_6 X c x w hx)
-  | (refine Submodule.span_induction hs ?_ ?_ ?_ ?_
-      · rintro x ⟨a, rfl⟩
-        exact hw a
-      · exact hA_zero_left X w
-      · intro x y hx hy
-        rw [hA_add_left_lemma_4, hx, hy, add_zero]
-      · intro c x hx
-        exact hA_smul_left_zero_lemma_6 X c x w hx)
 
 theorem hA_span_right (x s : VA X.B.I)
     (hs : s ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range (eA X)))
@@ -260,14 +199,6 @@ theorem hA_span_right (x s : VA X.B.I)
       | zero => exact hA_zero_right_lemma_7 X x
       | add y z _ _ hy hz => rw [hA_add_right_lemma_2, hy, hz, add_zero]
       | smul c y _ hy => rw [hA_smul_right_lemma, hy, mul_zero])
-  | (refine Submodule.span_induction hs ?_ ?_ ?_ ?_
-      · rintro y ⟨a, rfl⟩
-        exact hx a
-      · exact hA_zero_right_lemma_7 X x
-      · intro y z hy hz
-        rw [hA_add_right_lemma_2, hy, hz, add_zero]
-      · intro c y hy
-        rw [hA_smul_right_lemma, hy, mul_zero])
 
 theorem e_mem_span (a : Fin D.R.rS) :
     eA X a ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Set.range (eA X)) := by
@@ -290,7 +221,7 @@ theorem unit_of_formA (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I
       X.B.I.J.map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) := by
   have hf : ∀ a b : VA X.B.I, hA X.B.I a b = (fun i => (sigA X.B.I) (a i)) ⬝ᵥ (X.B.I.J.map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) *ᵥ b) := by
     intro a b
-    simp only [hA, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc] <;> rfl
+    simp only [hA, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
   ext k l
   have h1 := hM (Pi.single k (1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (Pi.single l (1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)
   rw [hf, hf] at h1
@@ -305,7 +236,7 @@ theorem unit_of_formA (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I
     funext i
     by_cases hi : i = k
     · subst hi; simp
-    · simp [Pi.single_apply, hi]
+    · simp [hi]
   rw [hs] at h1
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using h1
 
@@ -381,7 +312,7 @@ theorem SA.symm (h : SA (u := u) G G')
 theorem SA.hA_G (h : SA (u := u) G G') (x y : VA X.B.I) : hA X.B.I (G *ᵥ x) (G *ᵥ y) = hA X.B.I x y := by
   have hf : ∀ a b : VA X.B.I, hA X.B.I a b = (fun i => (sigA X.B.I) (a i)) ⬝ᵥ (X.B.I.J.map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) *ᵥ b) := by
     intro a b
-    simp only [hA, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc] <;> rfl
+    simp only [hA, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
   rw [hf, hf]
   have hσ : (fun i => (sigA X.B.I) ((G *ᵥ x) i)) = (G.map (sigA X.B.I)) *ᵥ (fun i => (sigA X.B.I) (x i)) := by
     funext i
@@ -495,13 +426,11 @@ def Hm (G : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)
 theorem Hm_mulVec (y : VA X.B.I) : Hm X u G *ᵥ y = Hf X u G y := by
   first
   | (rw [Hm, LinearMap.toMatrix'_mulVec]; rfl)
-  | simp [Hm, Hl, LinearMap.toMatrix'_mulVec]
 
 theorem Hm_fix (y : VA X.B.I) (hy : PWl X u y = 0) : Hm X u G *ᵥ y = y := by
   rw [Hm_mulVec]
   first
   | simp [Hf, hy]
-  | (simp only [Hf, hy, Matrix.mulVec_zero, map_zero, zero_add, sub_zero])
 
 theorem Hm_e (a : Fin D.R.rS) : Hm X u G *ᵥ eA X a = eA X a := by
   exact Hm_fix _ (PW_e X u a)
@@ -570,11 +499,6 @@ theorem HGL_unit (h : SA (u := u) G G') (h' : SA (u := u) G' G) :
     HGL h h' ∈ Formalism.UG.UPts X.B.I.cm.sig X.B.I.J (Af X.B.I.F) := by
   first
   | exact unit_of_formA X (Hm X u G) (h.hA_H)
-  | (simp only [Formalism.UG.UPts, Set.mem_setOf_eq, Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk]
-     exact unit_of_formA X (Hm X u G) (h.hA_H))
-  | (show Formalism.UG.cT (sigA X.B.I) (Hm X u G) * X.B.I.J.map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) * Hm X u G =
-       X.B.I.J.map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F))
-     exact unit_of_formA X (Hm X u G) (h.hA_H))
 
 def HGf (h : SA (u := u) G G') (h' : SA (u := u) G' G) : X.B.I.Gf := ⟨HGL h h', HGL_unit h h'⟩
 

@@ -105,7 +105,7 @@ theorem glue_succ_update_eq {r : ℕ} (l : Fin r) (c : Fin r → ℂ) (s : ℂ) 
   by_cases hj : j = l
   · subst hj
     have : ¬ (j.succ.val ≤ j.val) := by simp [Fin.val_succ]
-    simp [glue, this]
+    simp [glue]
   · rw [Function.update_of_ne hj]
     unfold glue
     split_ifs <;> simp [Function.update_of_ne hj]

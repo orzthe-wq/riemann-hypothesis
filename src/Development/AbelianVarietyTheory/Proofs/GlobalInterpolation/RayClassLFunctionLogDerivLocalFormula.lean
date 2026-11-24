@@ -3,8 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LamIdealOfNotPrimePow
 public import Mathlib.Analysis.Analytic.Order
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormOneSubConjMul
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassFamilyLogDerivReGtOneStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionFamilyContinuationGrowthStatement
+public import Mathlib.NumberTheory.LSeries.Basic
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassFamilyLogDerivReGtOne
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RayClassLFunctionFamilyContinuationGrowth
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -71,7 +72,7 @@ theorem logDeriv_local : ∃ C : ℝ, 0 < C ∧ ∀ (𝓕 : LFam) (χ : AddChar 
   obtain ⟨C, hC, H⟩ := GlobalTheory.LogDerivZeros.main (5/7) (6/7) (by norm_num) (by norm_num) (by norm_num)
   refine ⟨12 * C, by positivity, ?_⟩
   intro 𝓕 χ t
-  obtain ⟨han, hLS, hgr, -⟩ := GlobalTheory.T.rayClassLFunctionFamily_continuation_growth 𝓕 χ
+  obtain ⟨han, hLS, hgr, -⟩ := _root_.GlobalTheory.Hk.RayCont.continuation_growth 𝓕 χ
   set c : ℂ := 5 / 4 + t * I with hc
   have hcre : c.re = 5 / 4 := by simp [hc]
   have hcn : ‖c‖ ≤ 5 / 4 + |t| := by
@@ -96,7 +97,7 @@ theorem logDeriv_local : ∃ C : ℝ, 0 < C ∧ ∀ (𝓕 : LFam) (χ : AddChar 
     exact AnalyticAt.comp (g := 𝓕.F χ) (f := fun z => c + ρ * z) h1 (by fun_prop)
   have hlow : 1 / 100 ≤ ‖𝓕.F χ (c + ρ * 0)‖ := by
     have h1 : 1 < c.re := by rw [hcre]; norm_num
-    have h2 := (GlobalTheory.T.rayClassFamily_logDeriv_re_gt_one 𝓕 χ c h1).2.1
+    have h2 := (_root_.GlobalTheory.Hk.LogDeriv.logDeriv_F 𝓕 χ c h1).2.1
     rw [hcre] at h2
     rw [mul_zero, add_zero, (hLS c h1).2, norm_mul]
     have h3 : 1 / 4 ≤ ‖(if χ = 1 then c - 1 else 1 : ℂ)‖ := by

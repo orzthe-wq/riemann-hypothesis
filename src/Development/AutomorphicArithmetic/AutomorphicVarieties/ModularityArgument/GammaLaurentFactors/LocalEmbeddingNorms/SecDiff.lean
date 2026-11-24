@@ -73,7 +73,6 @@ theorem UpperTheory.V.Z.Gam.secDiff :
     simp [Polynomial.eval_comp, hP, hP'] at h0
     first
       | exact h0.symm
-      | exact h0
   subst hc
   have hPne : P ≠ 0 := by
     rintro rfl

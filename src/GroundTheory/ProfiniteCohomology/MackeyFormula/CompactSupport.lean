@@ -1,49 +1,314 @@
 module
 
-public import GroundTheory.ProfiniteCohomology.MackeyFormula.Homotopy
+public import GroundTheory.ProfiniteCohomology.CompactSupportCohomology.HomApplyHomApplyEqOfCompEq
+public import GroundTheory.ProfiniteCohomology.ContinuousCochains.Functoriality
+public import GroundTheory.ProfiniteCohomology.MackeyDefs
+public import GroundTheory.ProfiniteCohomology.ShapiroDefs
+public import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom
+public import GroundTheory.ProfiniteCohomology.CohomologyFunctoriality.Naturality
+public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.InnerConj
+public import GroundTheory.ProfiniteCohomology.MackeyFormula
+public import GroundTheory.ProfiniteCohomology.Shapiro
+public import GroundTheory.ProfiniteCohomology.ContinuousCochains.LongExactSequence
+public import GroundTheory.ProfiniteCohomology.MackeyFormula.ConjHomotopy
 public import GroundTheory.ProfiniteCohomology.MackeyFormula.ConeHomotopy
 public import GroundTheory.ProfiniteCohomology.CompactSupportCohomology.HomologyMapPiLiftPiHomologyIsoHom
-import GroundTheory.ProfiniteCohomology.Shapiro
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.ProfiniteCohomology.MackeyFormula.Cohomology, GroundTheory.ProfiniteCohomology.MackeyFormula.Homotopy, GroundTheory.ProfiniteCohomology.MackeyFormula.CompactSupport
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.MackeyFormula.Cohomology =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.MackeyFormula.Cohomology", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.CompactSupportCohomology.HomApplyHomApplyEqOfCompEq\npublic import GroundTheory.ProfiniteCohomology.ContinuousCochains.Functoriality\npublic import GroundTheory.ProfiniteCohomology.MackeyDefs\npublic import GroundTheory.ProfiniteCohomology.ShapiroDefs\npublic import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom\npublic import GroundTheory.ProfiniteCohomology.CohomologyFunctoriality.Naturality\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.InnerConj\npublic import GroundTheory.ProfiniteCohomology.MackeyFormula\npublic import GroundTheory.ProfiniteCohomology.Shapiro\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import GroundTheory.ProfiniteCohomology.ContinuousCochains.LongExactSequence\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+open CategoryTheory Limits
+
+universe u
+
+variable {k G H : Type u} [CommRing k] [Group G] [Group H]
+
+section Additive
+
+variable {Γ : Type u} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
+  {A B : Rep.{u} k Γ} [IsDiscreteRep A] [IsDiscreteRep B]
+
+private theorem cochainsMap_add_alt (f g : A ⟶ B) :
+    cochainsMap (f + g) = cochainsMap f + cochainsMap g := by
+  ext n c : 3
+  apply Subtype.ext
+  funext x
+  rfl
+
+private noncomputable def cohomologyMapAddHom (n : ℕ) :
+    (A ⟶ B) →+ (cohomology A n ⟶ cohomology B n) where
+  toFun f := cohomologyMap f n
+  map_zero' := cohomologyMap_zero n
+  map_add' f g := by
+    rw [cohomologyMap, cochainsMap_add_alt]
+    exact HomologicalComplex.homologyMap_add _ _ _
+
+private theorem cohomologyMap_sum_alt {J : Type*} (s : Finset J) (f : J → (A ⟶ B)) (n : ℕ) :
+    cohomologyMap (∑ j ∈ s, f j) n = ∑ j ∈ s, cohomologyMap (f j) n :=
+  map_sum (cohomologyMapAddHom n) f s
+
+end Additive
+
+section Conj
+
+variable [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace H]
+  (V : OpenSubgroup G) (ι : H →ₜ* G)
+
+def mackeyConjₜ (x : G) : mackeySubgroup (V : Subgroup G) ι.toMonoidHom x →ₜ* (V : Subgroup G) :=
+  ⟨mackeyConj (V : Subgroup G) ι.toMonoidHom x,
+    continuous_mackeyConj V (continuous_toMonoidHom ι) x⟩
+
+end Conj
+
+variable [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
+  [TopologicalSpace H] [IsTopologicalGroup H] [CompactSpace H]
+  (V : OpenSubgroup G) (ι : H →ₜ* G) (N : Rep.{u} k (V : Subgroup G)) [IsDiscreteRep N]
+
+instance isDiscreteRep_res_coind :
+    IsDiscreteRep (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N)) :=
+  IsDiscreteRep.res (continuous_toMonoidHom ι) _
+
+instance isDiscreteRep_mackeyRep_continuousMonoidHom (x : G) :
+    IsDiscreteRep (mackeyRep (V : Subgroup G) ι.toMonoidHom N x) :=
+  isDiscreteRep_mackeyRep V (continuous_toMonoidHom ι) N x
+
+instance isDiscreteRep_mackeySummand (x : G) :
+    IsDiscreteRep (mackeySummand (V : Subgroup G) ι.toMonoidHom N x) :=
+  @isDiscreteRep_coind k H _ _ _ _ (mackeyOpenSubgroup V (continuous_toMonoidHom ι) x)
+    (mackeyRep (V : Subgroup G) ι.toMonoidHom N x)
+    (isDiscreteRep_mackeyRep_continuousMonoidHom V ι N x) _
+
+noncomputable instance fintype_mackeyDoubleCoset :
+    Fintype (MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom) :=
+  have := finite_mackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom
+  Fintype.ofFinite _
+
+noncomputable def mackeyCohomologyMap (x : G) (n : ℕ) :
+    cohomology (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N)) n ⟶
+      cohomology (mackeyRep (V : Subgroup G) ι.toMonoidHom N x) n :=
+  cohomologyMap (mackeyProj (V : Subgroup G) ι.toMonoidHom N x) n ≫
+    cohomologyMapAlong (mackeySubgroup (V : Subgroup G) ι.toMonoidHom x).subtype
+      (continuous_subgroup_subtype _)
+      (coindEvalOne (mackeySubgroup (V : Subgroup G) ι.toMonoidHom x)
+        (mackeyRep (V : Subgroup G) ι.toMonoidHom N x)) n
+
+omit [CompactSpace G] in
+theorem isIso_shapiroMap_mackey (x : G) (n : ℕ) :
+    IsIso (@shapiroMap k H _ _ _ _ _ (mackeyOpenSubgroup V (continuous_toMonoidHom ι) x)
+      (mackeyRep (V : Subgroup G) ι.toMonoidHom N x)
+      (isDiscreteRep_mackeyRep_continuousMonoidHom V ι N x) n) :=
+  @isIso_shapiroMap' k H _ _ _ _ _ (mackeyOpenSubgroup V (continuous_toMonoidHom ι) x)
+      (mackeyRep (V : Subgroup G) ι.toMonoidHom N x)
+      (isDiscreteRep_mackeyRep_continuousMonoidHom V ι N x) n
+
+theorem mackeyCohomology_bijective (n : ℕ) :
+    Function.Bijective fun (c : cohomology (Rep.res ι.toMonoidHom
+        (Rep.coind (V : Subgroup G).subtype N)) n)
+        (d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom) =>
+      (mackeyCohomologyMap V ι N d.out n).hom c := by
+  classical
+  set P := fun d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom =>
+    cohomologyMap (mackeyProj (V : Subgroup G) ι.toMonoidHom N d.out) n
+  set I := fun d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom =>
+    cohomologyMap (mackeyIncl (V : Subgroup G) ι.toMonoidHom N d) n
+  have hIP : ∀ d, I d ≫ P d = 𝟙 _ := fun d => by
+    simp only [I, P]
+    rw [← cohomologyMap_comp, mackeyIncl_comp_mackeyProj, cohomologyMap_id]
+  have hIP' : ∀ d d', d ≠ d' → I d ≫ P d' = 0 := fun d d' h => by
+    simp only [I, P]
+    rw [← cohomologyMap_comp, mackeyIncl_comp_mackeyProj_of_ne _ _ _ h, cohomologyMap_zero]
+  have hsum : ∑ d, P d ≫ I d = 𝟙 _ := by
+    simp only [I, P]
+    simp_rw [← cohomologyMap_comp]
+    rw [← cohomologyMap_sum_alt, sum_mackeyProj_comp_mackeyIncl, cohomologyMap_id]
+  set S := fun d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom =>
+    @shapiroMap k H _ _ _ _ _ (mackeyOpenSubgroup V (continuous_toMonoidHom ι) d.out)
+      (mackeyRep (V : Subgroup G) ι.toMonoidHom N d.out)
+      (isDiscreteRep_mackeyRep_continuousMonoidHom V ι N d.out) n
+  have key : ∀ d c, (mackeyCohomologyMap V ι N d.out n).hom c = (S d).hom ((P d).hom c) :=
+    fun _ _ => rfl
+  have hS : ∀ d, Function.Bijective (S d).hom := fun d => by
+    have := isIso_shapiroMap_mackey V ι N d.out n
+    exact ConcreteCategory.bijective_of_isIso _
+  constructor
+  · intro c c' hcc
+    have hP : ∀ d, (P d).hom c = (P d).hom c' := fun d => by
+      have h1 := congrFun hcc d
+      simp only [key] at h1
+      exact (hS d).1 h1
+    have e : ∀ c₀, c₀ = ∑ d, (I d).hom ((P d).hom c₀) := fun c₀ => by
+      have := congrArg (fun φ => φ.hom c₀) hsum
+      rw [ModuleCat.hom_sum, LinearMap.sum_apply] at this
+      exact this.symm
+    rw [e c, e c']
+    simp only [hP]
+  · intro y
+    choose z hz using fun d => (hS d).2 (y d)
+    refine ⟨∑ d, (I d).hom (z d), funext fun d' => ?_⟩
+    change (mackeyCohomologyMap V ι N d'.out n).hom (∑ d, (I d).hom (z d)) = y d'
+
+    rw [key, map_sum, Finset.sum_eq_single d']
+    · rw [hom_apply_hom_apply_of_comp_eq (hIP d') (z d')]
+      exact hz d'
+    · intro d _ hd
+      rw [hom_apply_hom_apply_of_comp_eq (hIP' d d' hd) (z d)]
+      rfl
+    · intro h
+      exact absurd (Finset.mem_univ d') h
+
+noncomputable def mackeyCohomologyPi (n : ℕ) :
+    cohomology (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N)) n →ₗ[k]
+      ∀ d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom,
+        cohomology (mackeyRep (V : Subgroup G) ι.toMonoidHom N d.out) n :=
+  LinearMap.pi fun d => (mackeyCohomologyMap V ι N d.out n).hom
+
+theorem mackeyCohomologyPi_apply (n : ℕ)
+    (c : cohomology (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N)) n)
+    (d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom) :
+    mackeyCohomologyPi V ι N n c d = (mackeyCohomologyMap V ι N d.out n).hom c :=
+  rfl
+
+theorem mackeyCohomologyPi_bijective (n : ℕ) : Function.Bijective (mackeyCohomologyPi V ι N n) := by
+  have h := mackeyCohomology_bijective V ι N n
+  refine ⟨fun c c' hc => h.1 (funext fun d => ?_), fun y => ?_⟩
+  · have := congrFun hc d
+    rwa [mackeyCohomologyPi_apply, mackeyCohomologyPi_apply] at this
+  · obtain ⟨c, hc⟩ := h.2 y
+    exact ⟨c, funext fun d => (mackeyCohomologyPi_apply V ι N n c d).trans (congrFun hc d)⟩
+
+noncomputable def mackeyCohomologyEquiv (n : ℕ) :
+    cohomology (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N)) n ≃ₗ[k]
+      ∀ d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom,
+        cohomology (mackeyRep (V : Subgroup G) ι.toMonoidHom N d.out) n :=
+  LinearEquiv.ofBijective (mackeyCohomologyPi V ι N n) (mackeyCohomologyPi_bijective V ι N n)
+
+theorem mackeyCohomologyEquiv_apply (n : ℕ)
+    (c : cohomology (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N)) n)
+    (d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom) :
+    mackeyCohomologyEquiv V ι N n c d = (mackeyCohomologyMap V ι N d.out n).hom c :=
+  rfl
+
+theorem cohomologyMapAlong_comp_mackeyCohomologyMap (x : G) (n : ℕ) :
+    cohomologyMapAlong ι.toMonoidHom (continuous_toMonoidHom ι)
+        (𝟙 (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N))) n ≫
+      mackeyCohomologyMap V ι N x n =
+    shapiroMap V N n ≫ cohomologyMapAlong (mackeyConj (V : Subgroup G) ι.toMonoidHom x)
+      (continuous_toMonoidHom (mackeyConjₜ V ι x)) (𝟙 _) n := by
+  rw [← Category.id_comp (cohomologyMapAlong ι.toMonoidHom _ _ n),
+    ← cohomologyInnerConj_eq_id n (Rep.coind (V : Subgroup G).subtype N) x⁻¹,
+    mackeyCohomologyMap, ← cohomologyMapAlong_id_eq_cohomologyMap, shapiroMap_eq,
+    cohomologyInnerConj, Category.assoc]
+  rw [← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]
+  refine Eq.trans ?_ (cohomologyMapAlong_comp _ _ _ _ _ _ n)
+  refine cohomologyMapAlong_congr _ _ _ _ ?_ (fun f => ?_) n
+  · ext h
+    change x⁻¹⁻¹ * ι.toMonoidHom (h : H) * x⁻¹ = x * ι.toMonoidHom (h : H) * x⁻¹
+    rw [inv_inv]
+  · change f.1 (x * ι.toMonoidHom 1 * x⁻¹) = f.1 1
+    rw [map_one, mul_one, mul_inv_cancel]
+
+theorem mackeyCohomologyEquiv_cohomologyMapAlong (n : ℕ)
+    (c : cohomology (Rep.coind (V : Subgroup G).subtype N) n)
+    (d : MackeyDoubleCoset (V : Subgroup G) ι.toMonoidHom) :
+    mackeyCohomologyEquiv V ι N n ((cohomologyMapAlong ι.toMonoidHom (continuous_toMonoidHom ι)
+        (𝟙 (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N))) n).hom c) d =
+      (cohomologyMapAlong (mackeyConj (V : Subgroup G) ι.toMonoidHom d.out)
+        (continuous_toMonoidHom (mackeyConjₜ V ι d.out)) (𝟙 _) n).hom ((shapiroMap V N n).hom c) := by
+  rw [mackeyCohomologyEquiv_apply]
+  exact hom_apply_hom_apply_eq_of_comp_eq (cohomologyMapAlong_comp_mackeyCohomologyMap V ι N d.out n) c
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.MackeyFormula.Cohomology =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.MackeyFormula.Homotopy =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.MackeyFormula.Homotopy", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.MackeyFormula.Cohomology\npublic import GroundTheory.ProfiniteCohomology.MackeyFormula.ConjHomotopy\nimport GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom\nimport GroundTheory.ProfiniteCohomology.CohomologyFunctoriality.Naturality\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+open CategoryTheory
+
+universe u
+
+variable {k G H : Type u} [CommRing k] [Group G] [Group H]
+  [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
+  [TopologicalSpace H] [IsTopologicalGroup H] [CompactSpace H]
+  (V : OpenSubgroup G) (ι : H →ₜ* G) (N : Rep.{u} k (V : Subgroup G)) [IsDiscreteRep N]
+
+noncomputable def shapiroCochains :
+    cochainsComplex (Rep.coind (V : Subgroup G).subtype N) ⟶ cochainsComplex N :=
+  cochainsMapAlong (V : Subgroup G).subtype (continuous_subgroup_subtype _)
+    (coindEvalOne (V : Subgroup G) N)
+
+omit [CompactSpace H] in
+theorem homologyMap_shapiroCochains (n : ℕ) :
+    HomologicalComplex.homologyMap (shapiroCochains V N) n = shapiroMap V N n :=
+  rfl
+
+noncomputable def mackeyCochainsMap (x : G) :
+    cochainsComplex (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N)) ⟶
+      cochainsComplex (mackeyRep (V : Subgroup G) ι.toMonoidHom N x) :=
+  cochainsMap (mackeyProj (V : Subgroup G) ι.toMonoidHom N x) ≫
+    cochainsMapAlong (mackeySubgroup (V : Subgroup G) ι.toMonoidHom x).subtype
+      (continuous_subgroup_subtype _)
+      (coindEvalOne (mackeySubgroup (V : Subgroup G) ι.toMonoidHom x)
+        (mackeyRep (V : Subgroup G) ι.toMonoidHom N x))
+
+theorem homologyMap_mackeyCochainsMap (x : G) (n : ℕ) :
+    HomologicalComplex.homologyMap (mackeyCochainsMap V ι N x) n = mackeyCohomologyMap V ι N x n := by
+  rw [mackeyCochainsMap, HomologicalComplex.homologyMap_comp]
+  rfl
+
+theorem innerConj_comp_mackeyCochainsMap (x : G) :
+    cochainsMapAlong (innerConjHom x⁻¹) (continuous_innerConjHom x⁻¹)
+        (innerConjMor (Rep.coind (V : Subgroup G).subtype N) x⁻¹) ≫
+      cochainsMapAlong ι.toMonoidHom (continuous_toMonoidHom ι)
+        (𝟙 (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N))) ≫
+      mackeyCochainsMap V ι N x =
+    shapiroCochains V N ≫ cochainsMapAlong (mackeyConj (V : Subgroup G) ι.toMonoidHom x)
+      (continuous_toMonoidHom (mackeyConjₜ V ι x)) (𝟙 _) := by
+  rw [mackeyCochainsMap, ← cochainsMapAlong_id_eq_cochainsMap, shapiroCochains]
+  rw [← cochainsMapAlong_comp, ← cochainsMapAlong_comp, ← cochainsMapAlong_comp]
+  refine Eq.trans ?_ (cochainsMapAlong_comp _ _ _ _ _ _)
+  refine cochainsMapAlong_congr _ _ _ _ ?_ (fun f => ?_)
+  · ext h
+    change x⁻¹⁻¹ * ι.toMonoidHom (h : H) * x⁻¹ = x * ι.toMonoidHom (h : H) * x⁻¹
+    rw [inv_inv]
+  · change f.1 (x * ι.toMonoidHom 1 * x⁻¹) = f.1 1
+    rw [map_one, mul_one, mul_inv_cancel]
+
+noncomputable def mackeyHomotopy (x : G) :
+    Homotopy (shapiroCochains V N ≫ cochainsMapAlong (mackeyConj (V : Subgroup G) ι.toMonoidHom x)
+        (continuous_toMonoidHom (mackeyConjₜ V ι x)) (𝟙 _))
+      (cochainsMapAlong ι.toMonoidHom (continuous_toMonoidHom ι)
+          (𝟙 (Rep.res ι.toMonoidHom (Rep.coind (V : Subgroup G).subtype N))) ≫
+        mackeyCochainsMap V ι N x) :=
+  (Homotopy.ofEq (innerConj_comp_mackeyCochainsMap V ι N x).symm).trans
+    ((conjHomotopy (Rep.coind (V : Subgroup G).subtype N) x⁻¹).compRightId _)
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.MackeyFormula.Homotopy =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.MackeyFormula.CompactSupport =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.MackeyFormula.CompactSupport", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.MackeyFormula.Homotopy\npublic import GroundTheory.ProfiniteCohomology.MackeyFormula.ConeHomotopy\npublic import GroundTheory.ProfiniteCohomology.CompactSupportCohomology.HomologyMapPiLiftPiHomologyIsoHom\nimport GroundTheory.ProfiniteCohomology.Shapiro\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -166,3 +431,6 @@ noncomputable def mackeyCompactCohomologyIso (n : ℕ) :
     (isIso_homologyMap_mackeyCompactMap V φ N n)
 
 end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.MackeyFormula.CompactSupport =====

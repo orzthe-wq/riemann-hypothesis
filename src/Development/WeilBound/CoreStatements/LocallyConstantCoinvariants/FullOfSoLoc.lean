@@ -5,12 +5,14 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.MatchingOfPa
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.BernsteinUnitaryProductIrreducible
 public import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.RightOnto
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianSelfDualLatticeSpaceFormHermitianNondeg
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OmegaEquivInducedFibreStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibRepApply
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OmegaEquivInducedFibre
 public import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.ContinuousFinId
 public import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.ExistsExtZ
 public import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.ExistsFull
 public import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.PfSurj
 public import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.SoStatement
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.OpenClosedSequences
 import Development.WeilBound.CoreStatements.LocallyConstantCoinvariants.TopOfMap
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -49,8 +51,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.OpenClosedSequences
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FibRepApply
 
 @[expose] public section
 
@@ -76,7 +76,7 @@ theorem irrF (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) {�
     (∀ Φ, Full Φ → Φ ∈ N) ∨ ∀ Φ ∈ N, Full Φ → Φ ∈ augF n d ν α := by
   obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le hnd
   have hμ : IsSmoothChar ν⁻¹ := IsSmoothChar.inv hν.2
-  obtain ⟨E⟩ := GlobalTheory.T.omega_equiv_induced_fibre k (Fin n) (Fin (n + t)) (Fin n) (Fin t) (stdSum rfl) n (Fintype.card_fin n).symm ν⁻¹ hμ
+  obtain ⟨E⟩ := _root_.GlobalTheory.CompanionTheory.ThetaGLLen.fibStr k (Fin n) (Fin (n + t)) (Fin n) (Fin t) (stdSum rfl) n (Fintype.card_fin n).symm ν⁻¹ hμ
   have hR : twRel ((omegaOn (Fin n) (Fin (n + t)) ν⁻¹ {n}).comp (MonoidHom.inl _ _)) 1 ≤
       (augF n (n + t) ν α).comap extZ := Submodule.span_le.2 (by
     rintro _ ⟨g, φ, rfl⟩

@@ -6,52 +6,9 @@ public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.StSegreChartAbsIn
 public import GroundTheory.HeightsAndTheta.Heights.Intersections.PSheetHessPSD
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSegreChartProjFinite
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.PSegreCoordGoodProj
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -97,7 +54,7 @@ theorem sheetDensity_nonneg {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
     have hpsd : ∀ j, (cxHessian (fun y' => pot N j (hγ.choose y')) y).PosSemidef := fun j =>
       Inter.SheetHessPSD.proof K ι P e Ψ (N j) y w _ (hNs j) (hNp j) hγ.choose_spec
     unfold maDensity
-    exact mul_nonneg (by positivity) (ReciprocityTheory.AnForm.A.mdisc_nonneg_of_posSemidef _ hpsd).2
+    exact mul_nonneg (by positivity) (_root_.ReciprocityTheory.AnForm.A.mixedDiscriminant_nonneg_of_gram _ hpsd).2
   · exact le_rfl
 
 end PtsSemiPosMassFinite

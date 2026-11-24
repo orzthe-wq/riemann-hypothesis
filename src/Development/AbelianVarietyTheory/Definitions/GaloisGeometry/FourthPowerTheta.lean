@@ -102,7 +102,7 @@ theorem data {a₀ : ℕ} {b₀ c₀ : ℤ} {dK : ℕ} (ha : 0 < a₀) (hdK : 0 
     (hcm : CmOK a₀ b₀ c₀ dK) :
     Squarefree dK ∧ dK % 4 = 3 ∧ Formalism.L2.Th1.CM.HasCMBy dK (cmL a₀ b₀ dK ha hdK lam hlam) :=
   ⟨hcm.2.2.2.prime.squarefree, by have := hcm.2.2.1; omega,
-    Formalism.L2.Th1.F.hasCMByScale dK _ lam hlam (Formalism.L2.Th1.F.cmPairHasCMBy a₀ b₀ c₀ dK ha hdK hcm.1
+    Formalism.L2.Th1.F.hasCMByScale dK _ lam hlam (_root_.Formalism.L2.Th1.F.cm_pair_has_cm a₀ b₀ c₀ dK ha hdK hcm.1
       (Formalism.L2.Th1.H.CmData.odd_b a₀ b₀ c₀ dK hcm.1 hcm.2.2.1))⟩
 
 theorem jets_comb {K : Type} [NormedField K] [IsUltrametricDist K] {X κ : Type} [Fintype κ] (r : κ → K)
@@ -263,11 +263,6 @@ theorem tens_std (p : ℕ) [Fact p.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[
     exact (Finset.sum_coe_sort S fun x => MvPowerSeries.C (ι (c x)) * ∏ w, Formalism.InvariantFactorPaths.G7.at1 w
       (PowerSeries.map (ι : ℂ →+* ℂ_[p]) (Formalism.L2.Th1.F.taylor0 (f x w)))).symm
 
-theorem conj_omegaK (d : ℕ) : conj (omegaK d) = (1 - Complex.I * ((Real.sqrt d : ℝ) : ℂ)) / 2 := by
-  unfold omegaK
-  rw [map_div₀, map_add (f := _), map_mul, map_one, Complex.conj_I, Complex.conj_ofReal, Complex.conj_ofNat]
-  ring
-
 theorem half_notMem {a : ℕ} {b c : ℤ} {d : ℕ} (ha : 0 < a) (hd : 0 < d) (lam : ℂ) (hlam : lam ≠ 0)
     (hOK : CmOK a b c d) (sg : ℤ) (hsg : sg = 1 ∨ sg = -1) :
     (1 + (sg : ℂ) * (Complex.I * ((Real.sqrt d : ℝ) : ℂ))) / 2 * (lam * (a : ℂ) / 2) ∉
@@ -323,7 +318,7 @@ theorem jets_two_of (hT : TensZ) (hG : GramTransfer) (hF : FrameCompose) (hJ : J
     simpa [omegaK] using this
   have hω2 : conj (omegaK dK) * (lam * (a₀ : ℂ) / 2) ∉ (cmL a₀ b₀ dK ha hdK lam hlam).lattice := by
     have := half_notMem ha hdK lam hlam hcmok (-1) (Or.inr rfl)
-    rw [conj_omegaK]
+    rw [_root_.Formalism.L2.Th1.B.LCm.conj_omegaK]
     simpa [sub_eq_add_neg] using this
   obtain ⟨g₁, ε, hiso, hidx, hidx', hε, hten⟩ := hLN
   obtain ⟨D, q0, hD, hq0, hfac, hgram⟩ :=

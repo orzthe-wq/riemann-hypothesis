@@ -1,13 +1,12 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeBadPrimesIffGramDet
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeBadPrimesIffGramDet
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
 public import Formalism.HermitianLattices.StatementMass
 public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMaximalIntegralHermitianLatticeOrthonormalStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeBadPrimesIffGramDetStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMaximalIntegralHermitianLatticeOrthonormal
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemHcompl
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WittExtensionTotallyDefiniteHermitianStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.WittExtensionTotallyDefiniteHermitian
 public import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.ExistsOrthogonalBasisDotProductApplyEq
 import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
 import Mathlib.Algebra.Module.StablyFree.Basic
@@ -80,24 +79,6 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 def NormUnit (P : Ideal (𝓞 K)) (x : K) : Prop :=
   ∃ c : K, c ≠ 0 ∧ star c * c * x ∈ locR (K := K) P ∧ (star c * c * x)⁻¹ ∈ locR (K := K) P
 
-theorem mem_locR_iff (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
-    (hc : conjIdeal (K := K) v.asIdeal = v.asIdeal) (a : K) :
-    a ∈ locR (K := K) v.asIdeal ↔ v.valuation K a ≤ 1 := by
-  have mR : a ∈ locR (K := K) v.asIdeal ↔ ∃ s, s ∉ v.asIdeal ∧ ∃ r : 𝓞 K,
-      algebraMap (𝓞 K) K r = algebraMap (𝓞 K) K s * a :=
-    exists_congr fun s => and_congr (LocWitt.mem_hcompl v.isMaximal hc s)
-      (by rw [Submodule.mem_one, Algebra.smul_def])
-  rw [mR]
-  constructor
-  · rintro ⟨s, hs, r, e⟩
-    have h1 : v.valuation K (algebraMap (𝓞 K) K s) = 1 :=
-      (v.valuation_eq_one_iff_notMem (K := K)).2 hs
-    have h2 : v.valuation K (algebraMap (𝓞 K) K r) ≤ 1 := v.valuation_le_one (K := K) r
-    rwa [e, map_mul, h1, one_mul] at h2
-  · intro ha
-    obtain ⟨n, d, e⟩ := v.exists_primeCompl_mul_eq_of_integer a ha
-    exact ⟨d, d.2, n, by rw [← e, mul_comm]⟩
-
 theorem star_mem_locR {P : Ideal (𝓞 K)} (hP : P.IsMaximal) (hc : conjIdeal (K := K) P = P) {a : K}
     (ha : a ∈ locR (K := K) P) : star a ∈ locR (K := K) P := by
   have mR : ∀ a : K, a ∈ locR (K := K) P ↔ ∃ s, s ∉ P ∧ ∃ r : 𝓞 K,
@@ -111,23 +92,18 @@ theorem star_mem_locR {P : Ideal (𝓞 K)} (hP : P.IsMaximal) (hc : conjIdeal (K
   rw [← hc]
   exact Ideal.subset_span ⟨s', a, by rw [es, star_star]⟩
 
-theorem valuation_star (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
-    (hc : conjIdeal (K := K) v.asIdeal = v.asIdeal) (a : K) :
-    v.valuation K (star a) = v.valuation K a := by
-  apply GlobalTheory.MaxLatDet.val_star <;> assumption
-
 theorem normUnit_iff (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
     (hc : conjIdeal (K := K) v.asIdeal = v.asIdeal) {x : K} {m : ℤ}
     (hx : v.valuation K x = WithZero.exp m) : NormUnit v.asIdeal x ↔ Even m := by
   have key : ∀ (c : K) (k : ℤ), v.valuation K c = WithZero.exp k →
       v.valuation K (star c * c * x) = WithZero.exp (k + k + m) := by
     intro c k hk
-    rw [map_mul, map_mul, valuation_star v hc, hk, hx, WithZero.exp_add, WithZero.exp_add]
+    rw [map_mul, map_mul, _root_.GlobalTheory.MaxLatDet.val_star v hc, hk, hx, WithZero.exp_add, WithZero.exp_add]
   constructor
   · rintro ⟨c, c0, h1, h2⟩
     have : v.valuation K c ≠ 0 := by simpa using c0
     have e := key c _ (WithZero.exp_log this).symm
-    rw [mem_locR_iff v hc] at h1 h2
+    rw [_root_.GlobalTheory.MaxLatDet.mem_locR_iff_le v hc] at h1 h2
     rw [map_inv₀, e, ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp] at h2
     rw [e, ← WithZero.exp_zero, WithZero.exp_le_exp] at h1
     exact ⟨-(WithZero.log (v.valuation K c)), by omega⟩
@@ -143,8 +119,8 @@ theorem normUnit_iff (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
     have e0 : -k + -k + (k + k) = 0 := by ring
     rw [e0, WithZero.exp_zero] at e
     refine ⟨π ^ k, zpow_ne_zero _ π0, ?_, ?_⟩
-    · rw [mem_locR_iff v hc, e]
-    · rw [mem_locR_iff v hc, map_inv₀, e, inv_one]
+    · rw [_root_.GlobalTheory.MaxLatDet.mem_locR_iff_le v hc, e]
+    · rw [_root_.GlobalTheory.MaxLatDet.mem_locR_iff_le v hc, map_inv₀, e, inv_one]
 
 theorem normUnit_mul {P : Ideal (𝓞 K)} (hP : P.IsMaximal) (hc : conjIdeal (K := K) P = P) {x y : K}
     (hx : x ≠ 0) (hy : y ≠ 0) (h : NormUnit P x ↔ NormUnit P y) : NormUnit P (x * y) := by
@@ -307,12 +283,12 @@ theorem exists_unimodular [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarT
     ∃ L : Submodule (𝓞 K) (V × K), Submodule.IsLattice K L ∧ IsUnimodular (ext h β) L := by
   have nd := nondeg_of_PD _ hp
   obtain ⟨M, hM⟩ := exists_intLat (ext h β)
-  obtain ⟨L, hL, -⟩ := (GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K (V × K) (ext h β) hK hs nd).1 M hM
+  obtain ⟨L, hL, -⟩ := (_root_.GlobalTheory.Mass.MaxExists.main K (V × K) (ext h β) hK hs nd).1 M hM
   obtain ⟨j, c, hc⟩ := exists_basis_ext h β b
   refine ⟨L, hL.1.1.toIsLattice, (locDual (𝓞 K) K (V × K) (ext h β) hs
     (fun r => LocWitt.star_int r) L hL.1.1.fg).2.2 fun P hm => ?_⟩
   by_contra hu
-  have := (GlobalTheory.T.maximalHermitianLattice_badPrimes_iff_gramDet K (V × K) (ext h β) hK hs nd L hL j c P hm).1 ⟨hm, hu⟩
+  have := (_root_.GlobalTheory.MaxLatDet.main K (V × K) (ext h β) hK hs nd L hL j c P hm).1 ⟨hm, hu⟩
   rw [hc] at this
   exact this.2 (hP P hm this.1)
 
@@ -342,7 +318,7 @@ theorem cancel {W : Type} [AddCommGroup W] [Module K W] [FiniteDimensional K V] 
   have w0 : φ (0, 1) ≠ 0 := by simp
   let e1 := LinearEquiv.toSpanNonzeroSingleton K _ _ w0
   let e2 := LinearEquiv.toSpanNonzeroSingleton K _ _ u0
-  obtain ⟨g, hg, hg1⟩ := (GlobalTheory.T.witt_extension_totally_definite_hermitian K (W × K) (ext k β) hK hs hp).1 _ _ (e1.symm.trans e2) (by
+  obtain ⟨g, hg, hg1⟩ := (_root_.GlobalTheory.Mass.Witt.witt_definite K (W × K) (ext k β) hK hs hp).1 _ _ (e1.symm.trans e2) (by
     intro x y
     obtain ⟨s, rfl⟩ := e1.surjective x
     obtain ⟨t, rfl⟩ := e1.surjective y
@@ -377,8 +353,8 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
   obtain ⟨b, d1, d2⟩ := exists_basis hK hs hp
   obtain ⟨b', -, d2'⟩ := exists_basis hK hs' hp'
   obtain ⟨τ⟩ : Nonempty (K →+* ℂ) := inferInstance
-  have p1 := fun P => GlobalTheory.T.maximalHermitianLattice_badPrimes_iff_gramDet K V h hK hs (nondeg_of_PD h hp) M hM _ b P
-  have p2 := fun P => GlobalTheory.T.maximalHermitianLattice_badPrimes_iff_gramDet K V' h' hK hs' (nondeg_of_PD h' hp') M' hM' _ b' P
+  have p1 := fun P => _root_.GlobalTheory.MaxLatDet.main K V h hK hs (nondeg_of_PD h hp) M hM _ b P
+  have p2 := fun P => _root_.GlobalTheory.MaxLatDet.main K V' h' hK hs' (nondeg_of_PD h' hp') M' hM' _ b' P
   generalize hβ : (Matrix.of fun i l => h (b i) (b l)).det = β at d1 d2 p1
   generalize hβ' : (Matrix.of fun i l => h' (b' i) (b' l)).det = β' at d2' p2
   have β0 : β ≠ 0 := by

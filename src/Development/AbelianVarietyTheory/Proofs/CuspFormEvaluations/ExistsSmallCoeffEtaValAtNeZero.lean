@@ -62,25 +62,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.EtaForm
 
-private theorem frMap_id_self {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
-    {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
-    FrMap (AlgHom.id c.F S) y y := by
-  have eid : spMap (AlgHom.id c.F S).toRingHom = 𝟙 (Sp S) := Spec.map_id _
-  have did : spMap (dualMap (AlgHom.id c.F S).toRingHom) = 𝟙 _ := by
-    have : dualMap (AlgHom.id c.F S).toRingHom = RingHom.id _ :=
-      RingHom.ext fun x => by ext <;> simp [dualMap]
-    rw [this]
-    exact Spec.map_id _
-  refine ⟨by rw [eid, Category.id_comp], fun τ i => by rw [did, Category.id_comp], 𝟙 _, by simp,
-    by rw [eid]; simp, ?_⟩
-  intro i h
-  have e : Scheme.Hom.appLE (𝟙 (Gx y.x)) ((PPx y.x).U i) ((PPx y.x).U i) h = 𝟙 _ := by
-    rw [Scheme.Hom.appLE, Scheme.Hom.id_app]
-    refine (Category.id_comp _).trans ?_
-    rw [← (Gx y.x).presheaf.map_id]
-    rfl
-  rw [e, CommRingCat.hom_id, RingHom.id_apply]
-
 theorem exists_small_coeff_etaValAt_ne_zero : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (R : ℕ), Odd R → 1 < R → ∀ [Fintype (LatMod Dw R)] (n : ℕ) (x₀ : Fin n → Dw.La) (K : Type) [Field K] [IsAlgClosed K] [Algebra c.F K] (Nc : ℕ) (y : Fin Nc → FrPt Xo c K), ∃ cf : (Fin n → LatMod Dw R) → ℕ, (∀ j, cf j ≤ Nc * Nat.card (LevGrp Dw (R ^ 4))) ∧ ∀ k v, EtaValAt Xo c R (fun j => (cf j : ℤ)) (shiftFam R x₀) (y k) v → v ≠ 0 := by
   intro hL E _ _ _ H Dw l Xo c R hodd hR _ n x₀ K _ _ _ Nc y
   classical
@@ -112,7 +93,7 @@ theorem exists_small_coeff_etaValAt_ne_zero : Laws → ∀ (E : Type) [Field E] 
   · have h0 : EtaValAt Xo c R (fun j => (cf j : ℤ)) (shiftFam R x₀) (y k)
         (etaExpr (R ^ 4) (fun j => (cf j : ℤ)) (shiftFam R x₀) (w k)) :=
       ⟨K, inferInstance, inferInstance, AlgHom.id c.F K, y k, ev k, w k,
-        RingHom.FaithfullyFlat.of_bijective Function.bijective_id, frMap_id_self (y k), hev k, hw k, rfl⟩
+        RingHom.FaithfullyFlat.of_bijective Function.bijective_id, _root_.GlobalTheory.FramedBaseChange.refl (y k), hev k, hw k, rfl⟩
     have hu := ((GlobalTheory.EtaForm.etaValAt_existsUnique_natural hL E H Dw l Xo c R hodd _ n (fun j => (cf j : ℤ)) (shiftFam R x₀)).1 K (y k)).unique
       hv h0
     rw [hu, etaExpr, finprod_eq_prod_of_fintype]

@@ -2,51 +2,12 @@ module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
 public import Mathlib.RingTheory.DedekindDomain.Different
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureScalingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AnnihilatorOfAnnihilatorLeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardAdelicCharacterStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureScaling
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AnnihilatorOfAnnihilatorLe
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardAdelicCharacter
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocDensHI
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopology
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -180,8 +141,7 @@ def fr : F →+ A F := (algebraMap F (A F)).toAddMonoidHom
 
 variable {F}
 
-theorem oh_mul {x y : A F} (hx : x ∈ Oh F) (hy : y ∈ Oh F) : x * y ∈ Oh F :=
-  fun v => mul_mem (hx v) (hy v)
+alias oh_mul := _root_.GlobalTheory.CompanionTheory.SW.Core.Scale.mul_mem_Oh
 
 def perpG (ψ : AddChar (A F) ℂ) (L : AddSubgroup (A F)) : AddSubgroup (A F) where
   carrier := perp (fun x y => ψ (x * y)) L
@@ -203,17 +163,17 @@ abbrev MG (ψ : AddChar (A F) ℂ) : AddSubgroup (A F) := perpG ψ (ohG F)
 variable {ψ : AddChar (A F) ℂ}
 
 theorem ohG_le_MG (hψ : IsStdChar F ψ) : ohG F ≤ MG ψ :=
-  fun _ hx z hz => ((GlobalTheory.T.standard_adelic_character F).2 ψ hψ).2.1 _ (oh_mul hz hx)
+  fun _ hx z hz => ((_root_.GlobalTheory.CompanionTheory.SW.Core.StdChar.main F).2 ψ hψ).2.1 _ (oh_mul hz hx)
 
 theorem algebraMap_mem_MG_iff (hψ : IsStdChar F ψ) {b : F} :
     algebraMap F (A F) b ∈ MG ψ ↔ b ∈ dinv F := by
-  rw [mem_dinv, ← ((GlobalTheory.T.standard_adelic_character F).2 ψ hψ).2.2 b]
+  rw [mem_dinv, ← ((_root_.GlobalTheory.CompanionTheory.SW.Core.StdChar.main F).2 ψ hψ).2.2 b]
   exact forall₂_congr fun z _ => by
     show ψ (z * _) = 1 ↔ _
     rw [mul_comm]
 
 theorem MG_eq (hψ : IsStdChar F ψ) : MG ψ = (dinv F).map (fr F) ⊔ ohG F := by
-  obtain ⟨-, -, -, -, hop, hden, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
+  obtain ⟨-, -, -, -, hop, hden, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
   apply le_antisymm
   · intro x hx
     have hopen : IsOpen {y : A F | y - x ∈ Oh F} :=
@@ -235,7 +195,7 @@ theorem MG_eq (hψ : IsStdChar F ψ) : MG ψ = (dinv F).map (fr F) ⊔ ohG F := 
     exact (algebraMap_mem_MG_iff hψ).2 hb
 
 theorem comap_ohG : (ohG F).comap (fr F) = oG F := by
-  obtain ⟨-, -, -, -, -, -, hint, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
+  obtain ⟨-, -, -, -, -, -, hint, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
   ext b
   rw [mem_oG, ← hint b]
   rfl
@@ -246,7 +206,7 @@ theorem relIndex_MG (hψ : IsStdChar F ψ) : (ohG F).relIndex (MG ψ) = (discr F
 
 theorem perp_MG_subset (hψ : IsStdChar F ψ) :
     perp (fun x y => ψ (x * y)) (MG ψ : Set (A F)) ⊆ Oh F := by
-  obtain ⟨-, -, -, -, -, -, hint, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
+  obtain ⟨-, -, -, -, -, -, hint, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
   intro y hy
   have hyM : y ∈ MG ψ := fun z hz => hy z (ohG_le_MG hψ hz)
   rw [MG_eq hψ] at hyM
@@ -351,7 +311,7 @@ theorem lat_all (hψ : IsStdChar F ψ) (lf : Measure (A F)) (hlf : lf.IsAddHaarM
         (lat c : Set (A F)) ∧
       (ENNReal.ofReal (kap F) • lf) (lat c : Set (A F)) *
         (ENNReal.ofReal (kap F) • lf) (perp (fun x y => ψ (x * y)) (lat c : Set (A F))) = 1 := by
-  obtain ⟨hlc, hsc, ht2, hcpt, hop, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
+  obtain ⟨hlc, hsc, ht2, hcpt, hop, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
   have hne : (ohG F).relIndex (MG ψ) ≠ 0 := by
     rw [relIndex_MG hψ]
     exact Int.natAbs_ne_zero.2 (discr_ne_zero F)
@@ -364,7 +324,7 @@ theorem lat_all (hψ : IsStdChar F ψ) (lf : Measure (A F)) (hlf : lf.IsAddHaarM
     have h1' : lf (ohG F : Set (A F)) = 1 := h1
     rw [h1', mul_one]
   have hci : c⁻¹ ≠ 0 := inv_ne_zero hc
-  have hs := (GlobalTheory.T.adelic_haar_measure_scaling F lf hlf h1).1
+  have hs := (_root_.GlobalTheory.CompanionTheory.SW.Core.Scale.lf_scale F lf hlf h1).1
   refine ⟨?_, ?_, ?_, ?_, perp_perp_lat hψ hc, ?_⟩
   · rw [coe_lat]
     exact hcpt.image (sc c hc).continuous
@@ -402,8 +362,8 @@ theorem finiteAdeles_selfDual : ∀ (F : Type) [Field F] [NumberField F] [Measur
     ∀ ψ : AddChar (A F) ℂ, IsStdChar F ψ →
       NADual (A F) (fun x y => ψ (x * y)) (ENNReal.ofReal (kap F) • lf) := by
   intro F _ _ _ _ lf hlf h1 ψ hψ
-  obtain ⟨hlc, hsc, ht2, hcpt, hop, -, -, hsm, hbd, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
-  have hnorm := ((GlobalTheory.T.standard_adelic_character F).2 ψ hψ).1
+  obtain ⟨hlc, hsc, ht2, hcpt, hop, -, -, hsm, hbd, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
+  have hnorm := ((_root_.GlobalTheory.CompanionTheory.SW.Core.StdChar.main F).2 ψ hψ).1
   have hμ : (ENNReal.ofReal (kap F) • lf).IsAddHaarMeasure :=
     Measure.IsAddHaarMeasure.smul lf (by simpa using kap_pos) ENNReal.ofReal_ne_top
   have hsymm : ∀ x y : A F, (fun x y => ψ (x * y)) x y = (fun x y => ψ (x * y)) y x :=
@@ -435,7 +395,7 @@ theorem finiteAdeles_selfDual : ∀ (F : Type) [Field F] [NumberField F] [Measur
     obtain ⟨N₂, hN₂, k₂⟩ := hbd _ hLc
     have a := hl (hNF hN₁)
     have b := hl (inv_ne_zero (hNF hN₂))
-    refine GlobalTheory.T.annihilator_of_annihilator_le (A F) (fun x y => ψ (x * y)) (ENNReal.ofReal (kap F) • lf) hμ hsymm
+    refine _root_.GlobalTheory.CompanionTheory.SW.CofinalDual.selfDual_of_between (A F) (fun x y => ψ (x * y)) (ENNReal.ofReal (kap F) • lf) hμ hsymm
       (fun x y => hnorm _) hadd (lat (N₁ : F)) L (lat (N₂ : F)⁻¹) ?_ ?_ a.2.1 b.1 a.2.2.1 b.2.2.2.1
       a.2.2.2.2.1 b.2.2.2.2.1 a.2.2.2.2.2 b.2.2.2.2.2
     · rintro _ ⟨z, hz, rfl⟩

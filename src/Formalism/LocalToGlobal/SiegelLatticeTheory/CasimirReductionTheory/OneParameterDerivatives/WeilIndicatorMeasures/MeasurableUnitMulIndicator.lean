@@ -3,54 +3,8 @@ module
 public import Mathlib.MeasureTheory.Group.Defs
 public import Mathlib.MeasureTheory.Integral.Lebesgue.Basic
 public import Mathlib.MeasureTheory.Measure.OpenPos
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.MeasureTheory.Constructions.Polish.Basic
 public import Mathlib.MeasureTheory.Group.LIntegral
 
@@ -101,7 +55,7 @@ lemma measure_coset_le (κ : Measure H) [κ.IsMulLeftInvariant] (y : G) (E : Set
     have h0 : κ {h : H | y * h ∈ E} = 0 :=
       measure_mono_null (fun h hh => (hne h hh).elim) measure_empty
     rw [h0]
-    first | exact zero_le _ | exact zero_le | simp
+    first | exact zero_le
 
 lemma measure_coset_lt_top (hH : IsClosed (H : Set G)) (κ : Measure H)
     [IsFiniteMeasureOnCompacts κ] {E : Set G} (hE : IsCompact E) :
@@ -110,13 +64,6 @@ lemma measure_coset_lt_top (hH : IsClosed (H : Set G)) (κ : Measure H)
   have hc2 : IsCompact {h : H | (h : G) ∈ E⁻¹ * E} := by
     first
     | exact hH.isClosedEmbedding_subtypeVal.isCompact_preimage hc
-    | exact hH.closedEmbedding_subtype_val.isCompact_preimage hc
-    | (rw [Subtype.isCompact_iff]
-       have e : ((↑) : H → G) '' {h : H | (h : G) ∈ E⁻¹ * E} = (E⁻¹ * E) ∩ (H : Set G) := by
-         ext x
-         simp
-       rw [e]
-       exact hc.inter_right hH)
   exact hc2.measure_lt_top
 
 lemma measure_nhds_pos (κ : Measure H) [IsOpenPosMeasure κ] {V : Set G} (hV : V ∈ 𝓝 (1 : G)) :
@@ -125,7 +72,6 @@ lemma measure_nhds_pos (κ : Measure H) [IsOpenPosMeasure κ] {V : Set G} (hV : 
     continuous_subtype_val.continuousAt.preimage_mem_nhds hV
   first
   | exact measure_pos_of_mem_nhds κ h1
-  | exact (measure_pos_of_nonempty_interior κ ⟨1, mem_interior_iff_mem_nhds.2 h1⟩)
 
 lemma exists_fib_eq_one (hH : IsClosed (H : Set G)) (κ : Measure H) [SFinite κ]
     [κ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts κ] [IsOpenPosMeasure κ] :
@@ -188,20 +134,15 @@ lemma exists_fib_eq_one (hH : IsClosed (H : Set G)) (κ : Measure H) [SFinite κ
           intro n
           first
           | exact mul_le_mul_of_nonneg_left (measure_coset_le κ _ V) (by simp)
-          | exact mul_le_mul_left (measure_coset_le κ _ V) _
         first
         | exact ENNReal.tsum_le_tsum hn
-        | exact tsum_le_tsum hn ENNReal.summable ENNReal.summable
-        | exact Summable.tsum_le_tsum hn ENNReal.summable ENNReal.summable
       refine lt_of_le_of_lt hle ?_
       rw [ENNReal.tsum_mul_right, ENNReal.tsum_geometric]
       first
       | exact ENNReal.mul_lt_top (by simp) hC
-      | exact ENNReal.mul_lt_top (by simp) hC.ne
   refine ⟨fun x => φ x * (fib κ φ x)⁻¹, ?_, ?_⟩
   · first
     | exact hφ.mul (measurable_fib κ hφ).inv
-    | exact hφ.mul (ENNReal.continuous_inv.measurable.comp (measurable_fib κ hφ))
   · intro x
     have e : ∀ h : H, φ (x * h) * (fib κ φ (x * h))⁻¹ = φ (x * h) * (fib κ φ x)⁻¹ := fun h => by
       rw [fib_mul]

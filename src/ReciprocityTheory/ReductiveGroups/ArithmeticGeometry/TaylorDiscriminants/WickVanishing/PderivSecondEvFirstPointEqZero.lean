@@ -1,9 +1,9 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.PderivSecondEvFirstPointEqZero
+public import Mathlib.RingTheory.MvPowerSeries.Derivative
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogClosed
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogPoinc
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogChain
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -15,6 +15,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -22,6 +23,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -31,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,11 +45,104 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogChain
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.PderivSecondEvFirstPointEqZero
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogPoinc, ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.PderivSecondEvFirstPointEqZero
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogPoinc =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogPoinc", "h": "module\n\npublic import Mathlib.RingTheory.MvPowerSeries.Derivative\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+noncomputable section
+
+open MvPowerSeries
+
+namespace ReciprocityTheory.ChartRestriction.G.TB.LogPf
+
+variable {k : Type} [CommRing k] [Algebra ℚ k] {τ : Type} [Fintype τ] [DecidableEq τ]
+
+def prim (ω : τ → MvPowerSeries τ k) : MvPowerSeries τ k := fun m =>
+  algebraMap ℚ k ((m.degree : ℚ)⁻¹) *
+    ∑ w, if m w = 0 then 0 else coeff (m - Finsupp.single w 1) (ω w)
+
+theorem coeff_prim (ω : τ → MvPowerSeries τ k) (m : τ →₀ ℕ) :
+    coeff m (prim ω) = algebraMap ℚ k ((m.degree : ℚ)⁻¹) *
+      ∑ w, if m w = 0 then 0 else coeff (m - Finsupp.single w 1) (ω w) := rfl
+
+theorem constantCoeff_prim (ω : τ → MvPowerSeries τ k) : constantCoeff (prim ω) = 0 := by
+  rw [← coeff_zero_eq_constantCoeff_apply, coeff_prim]
+  simp
+
+theorem degree_eq_sum (n : τ →₀ ℕ) : n.degree = ∑ w, n w := by
+  classical
+  unfold Finsupp.degree
+  exact Finset.sum_subset (Finset.subset_univ _) (fun i _ hi => by simpa using hi)
+
+theorem pderiv_prim (ω : τ → MvPowerSeries τ k)
+    (hω : ∀ a c, pderiv (R := k) c (ω a) = pderiv (R := k) a (ω c)) (v : τ) : pderiv (R := k) v (prim ω) = ω v := by
+  ext m
+  rw [coeff_pderiv, coeff_prim]
+  set n := m + Finsupp.single v 1 with hn
+  have key : ∀ w, (if n w = 0 then 0 else coeff (n - Finsupp.single w 1) (ω w)) * ((m v : k) + 1)
+      = (n w : k) * coeff m (ω v) := by
+    intro w
+    by_cases hw : w = v
+    · subst hw
+      have h1 : n w = m w + 1 := by simp [hn]
+      have h2 : n - Finsupp.single w 1 = m := by rw [hn]; exact add_tsub_cancel_right _ _
+      rw [if_neg (by omega), h2, h1]
+      push_cast
+      ring
+    · have h1 : n w = m w := by simp [hn, hw]
+      by_cases hm : m w = 0
+      · rw [if_pos (by rw [h1, hm]), h1, hm]
+        simp
+      · rw [if_neg (by rw [h1]; exact hm), h1]
+        have hle : Finsupp.single w 1 ≤ m := Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hm)
+        have hc := congrArg (coeff (m - Finsupp.single w 1)) (hω w v)
+        rw [coeff_pderiv, coeff_pderiv] at hc
+        have e1 : m - Finsupp.single w 1 + Finsupp.single v 1 = n - Finsupp.single w 1 := by
+          rw [hn]; exact tsub_add_eq_add_tsub hle
+        have e2 : m - Finsupp.single w 1 + Finsupp.single w 1 = m := tsub_add_cancel_of_le hle
+        have e3 : (m - Finsupp.single w 1 : τ →₀ ℕ) v = m v := by
+          simp [Ne.symm hw]
+        have e4' : (m - Finsupp.single w 1 : τ →₀ ℕ) w + 1 = m w := by
+          rw [Finsupp.tsub_apply, Finsupp.single_eq_same]; omega
+        have e4 : ((m - Finsupp.single w 1 : τ →₀ ℕ) w : k) + 1 = (m w : k) := by
+          rw [← e4', Nat.cast_add, Nat.cast_one]
+        rw [e1, e2, e3, e4] at hc
+        rw [hc]
+        ring
+  have hsum : (∑ w, if n w = 0 then 0 else coeff (n - Finsupp.single w 1) (ω w)) * ((m v : k) + 1)
+      = (n.degree : k) * coeff m (ω v) := by
+    rw [Finset.sum_mul, Finset.sum_congr rfl (fun w _ => key w), ← Finset.sum_mul, degree_eq_sum,
+      Nat.cast_sum]
+  have hnv : n v = m v + 1 := by simp [hn]
+  have hD : (n.degree : ℚ) ≠ 0 := by
+    have : n v ≤ n.degree := by
+      rw [degree_eq_sum]
+      exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ v)
+    exact_mod_cast (show n.degree ≠ 0 by omega)
+  rw [mul_assoc, hsum, ← mul_assoc, ← map_natCast (algebraMap ℚ k) n.degree, ← map_mul,
+    inv_mul_cancel₀ hD, map_one, one_mul]
+
+end ReciprocityTheory.ChartRestriction.G.TB.LogPf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogPoinc =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.PderivSecondEvFirstPointEqZero =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.PderivSecondEvFirstPointEqZero", "h": "module\n\nimport Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.PderivSecondEvFirstPointEqZero\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogClosed\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogPoinc\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.LogChain\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -92,10 +186,6 @@ theorem d_evY (h : PS k 1 d) (b : Fin d) :
     | (simp [MvPowerSeries.pderiv_X, Pi.single_apply]; done)
     | (by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne]; done)
     | (by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X]; done)
-    | (by_cases hvw : v = w
-       · subst hvw
-         simp
-       · simp [hvw])
   have hcz : CZ (![pt k d 1] : Fin 1 → Pt k 2 d) := by
     intro j i
     have hj : j = 0 := Subsingleton.elim _ _
@@ -103,7 +193,6 @@ theorem d_evY (h : PS k 1 d) (b : Fin d) :
     show constantCoeff (X ((1 : Fin 2), i) : PS k 2 d) = 0
     first
     | exact MvPowerSeries.constantCoeff_X _
-    | simp
   rw [pderiv_ev hcz, Fintype.sum_eq_single ((0 : Fin 1), b)]
   · show ev _ (pderiv (R := k) ((0 : Fin 1), b) h) * pderiv (R := k) ((1 : Fin 2), b) (X ((1 : Fin 2), b)) = _
     rw [hXd, if_pos rfl, mul_one]
@@ -124,10 +213,6 @@ theorem d_evX (h : PS k 1 d) (a : Fin d) :
     | (simp [MvPowerSeries.pderiv_X, Pi.single_apply]; done)
     | (by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne]; done)
     | (by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X]; done)
-    | (by_cases hvw : v = w
-       · subst hvw
-         simp
-       · simp [hvw])
   have hcz : CZ (![pt k d 0] : Fin 1 → Pt k 2 d) := by
     intro j i
     have hj : j = 0 := Subsingleton.elim _ _
@@ -135,7 +220,6 @@ theorem d_evX (h : PS k 1 d) (a : Fin d) :
     show constantCoeff (X ((0 : Fin 2), i) : PS k 2 d) = 0
     first
     | exact MvPowerSeries.constantCoeff_X _
-    | simp
   rw [pderiv_ev hcz, Fintype.sum_eq_single ((0 : Fin 1), a)]
   · show ev _ (pderiv (R := k) ((0 : Fin 1), a) h) * pderiv (R := k) ((0 : Fin 2), a) (X ((0 : Fin 2), a)) = _
     rw [hXd, if_pos rfl, mul_one]
@@ -155,10 +239,6 @@ theorem pderiv_first_ev_second_point_eq_zero (h : PS k 1 d) (a : Fin d) : pderiv
     | (simp [MvPowerSeries.pderiv_X, Pi.single_apply]; done)
     | (by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne]; done)
     | (by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X]; done)
-    | (by_cases hvw : v = w
-       · subst hvw
-         simp
-       · simp [hvw])
   have hcz : CZ (![pt k d 1] : Fin 1 → Pt k 2 d) := by
     intro j i
     have hj : j = 0 := Subsingleton.elim _ _
@@ -166,7 +246,6 @@ theorem pderiv_first_ev_second_point_eq_zero (h : PS k 1 d) (a : Fin d) : pderiv
     show constantCoeff (X ((1 : Fin 2), i) : PS k 2 d) = 0
     first
     | exact MvPowerSeries.constantCoeff_X _
-    | simp
   rw [pderiv_ev hcz]
   refine Finset.sum_eq_zero fun p _ => ?_
   obtain ⟨j, i⟩ := p
@@ -184,10 +263,6 @@ theorem pderiv_second_ev_first_point_eq_zero (h : PS k 1 d) (b : Fin d) : pderiv
     | (simp [MvPowerSeries.pderiv_X, Pi.single_apply]; done)
     | (by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne]; done)
     | (by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X]; done)
-    | (by_cases hvw : v = w
-       · subst hvw
-         simp
-       · simp [hvw])
   have hcz : CZ (![pt k d 0] : Fin 1 → Pt k 2 d) := by
     intro j i
     have hj : j = 0 := Subsingleton.elim _ _
@@ -195,7 +270,6 @@ theorem pderiv_second_ev_first_point_eq_zero (h : PS k 1 d) (b : Fin d) : pderiv
     show constantCoeff (X ((0 : Fin 2), i) : PS k 2 d) = 0
     first
     | exact MvPowerSeries.constantCoeff_X _
-    | simp
   rw [pderiv_ev hcz]
   refine Finset.sum_eq_zero fun p _ => ?_
   obtain ⟨j, i⟩ := p
@@ -253,15 +327,13 @@ theorem addPt : (![G.add (pt k (n := 2) d 0) (pt k d 1)] : Fin 1 → Pt k 2 d) =
     rw [hfam]
     first
     | exact congrFun MvPowerSeries.subst_self f
-    | (rw [MvPowerSeries.subst_self]; rfl)
-    | simp [MvPowerSeries.subst_self]
   funext j i
   have hj : j = 0 := Subsingleton.elim _ _
   subst hj
   exact hid (G.F i)
 
 theorem logSt : LogSt := by
-  apply GlobalTheory.FormalLog.logSt <;> assumption
+  apply GlobalTheory.FormalLog.logSt
 
 omit [Algebra ℚ k] in
 theorem ez_y (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1] h) = C (constantCoeff h) := by
@@ -271,7 +343,6 @@ theorem ez_y (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1
     · show constantCoeff (X ((0 : Fin 1), i) : PS k 1 d) = 0
       first
       | exact MvPowerSeries.constantCoeff_X _
-      | simp
     · show constantCoeff (0 : PS k 1 d) = 0
       exact map_zero _
   have hb : CZ (![pt k d 1] : Fin 1 → Pt k 2 d) := by
@@ -281,7 +352,6 @@ theorem ez_y (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1
     show constantCoeff (X ((1 : Fin 2), i) : PS k 2 d) = 0
     first
     | exact MvPowerSeries.constantCoeff_X _
-    | simp
   have hc : CZ (fun (j : Fin 0) (_ : Fin d) => (0 : PS k 1 d)) := fun j => Fin.elim0 j
   have hz : CZ (fun (_ : Fin 1) (_ : Fin d) => (0 : PS k 0 d)) := fun _ _ => map_zero _
   have hev0 : ev (fun (j : Fin 0) (_ : Fin d) => (0 : PS k 1 d)) (0 : PS k 0 d) = 0 := by
@@ -305,12 +375,14 @@ theorem ez_y (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1
     have he : e = 0 := by
       first
       | exact Subsingleton.elim _ _
-      | exact Finsupp.ext fun p => Fin.elim0 p.1
     subst he
     first
     | (simp; done)
-    | rw [MvPowerSeries.coeff_zero_C, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
   rw [ev_ev ha hb, hfam, ← ev_ev hc hz, hconst (ev (fun (_ : Fin 1) (_ : Fin d) => (0 : PS k 0 d)) h),
     cc_ev hz, ev_C hc]
 
 end ReciprocityTheory.ChartRestriction.G.TB.LogPf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.PderivSecondEvFirstPointEqZero =====

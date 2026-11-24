@@ -109,7 +109,6 @@ theorem cell_of_matRel (h1 : RelevanceUnipotentInvariant) (h2 : ColumnScalingBru
     intro c b hcb hv
     obtain ⟨e1, e2⟩ := hc c b hcb hv
     refine ⟨e1, ?_⟩
-    have hb : b.val < n := b.isLt
     have e3 : r - c.val = (r - b.val) + 1 := by omega
     rw [e2, e3, pow_succ]
     ring)

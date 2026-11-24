@@ -184,14 +184,14 @@ theorem weightedHomogeneousComponent_one_mem {I : Ideal (MvPolynomial ι k)}
 
 instance finite_homogeneousSubmodule' [Finite ι] (n : ℕ) :
     Module.Finite k (homogeneousSubmodule ι k n) := by
-  letI := weightedDecomposition k (fun _ : ι => (1 : ℤ))
+  let := weightedDecomposition k (fun _ : ι => (1 : ℤ))
   rw [← weightedHomogeneousSubmodule_one_natCast]
   exact GradedHilbert.finite_piece _ (X_smul_mem_weightedHomogeneousSubmodule ι k) _
 
 theorem exists_isHilbertPoly_quotPiece [Fintype ι] {I : Ideal (MvPolynomial ι k)}
     (hI : I.IsHomogeneous (homogeneousSubmodule ι k)) :
     ∃ P : ℚ[X], IsHilbertPoly (quotPiece I) P ∧ P.degree < (Fintype.card ι : ℕ) := by
-  letI := weightedDecomposition k (fun _ : ι => (1 : ℤ))
+  let := weightedDecomposition k (fun _ : ι => (1 : ℤ))
   have hfin := GradedHilbert.finite_piece _ (X_smul_mem_weightedHomogeneousSubmodule ι k)
   obtain ⟨P, hP, h⟩ := GradedHilbert.exists_polynomial_subquotient _
     (X_smul_mem_weightedHomogeneousSubmodule ι k) Finset.univ I ⊤ le_top
@@ -200,11 +200,11 @@ theorem exists_isHilbertPoly_quotPiece [Fintype ι] {I : Ideal (MvPolynomial ι 
       have := weightedHomogeneousComponent_one_mem hI n hm
       rwa [← weightedDecomposition.decompose'_apply] at this) (by simp) (by simp)
   refine ⟨P, ⟨fun n => ?_, ?_⟩, hP⟩
-  · haveI := hfin n
+  · have := hfin n
     unfold quotPiece
     infer_instance
   · filter_upwards [h] with n hn
-    haveI := hfin n
+    have := hfin n
     have e := GradedHilbert.finrank_map_add_finrank_inf_ker (Ideal.Quotient.mkₐ k I).toLinearMap
       (weightedHomogeneousSubmodule k (fun _ : ι => (1 : ℤ)) n)
     have e2 : LinearMap.ker (Ideal.Quotient.mkₐ k I).toLinearMap = I.restrictScalars k := by

@@ -68,7 +68,7 @@ theorem map_thetaGL {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (c : 
     apply Units.ext
     ext i j
     have e : (GeneralLinearGroup.map f x)⁻¹ = GeneralLinearGroup.map f x⁻¹ := (map_inv _ x).symm
-    simp only [invT, MonoidHom.coe_mk, OneHom.coe_mk, e]
+    simp only [invT]
     rfl
   have h2 : GeneralLinearGroup.map f (GeneralLinearGroup.map c g) =
       GeneralLinearGroup.map c' (GeneralLinearGroup.map f g) := by

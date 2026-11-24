@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
 
 @[expose] public section
 
@@ -52,10 +53,6 @@ noncomputable section
 namespace GlobalTheory.UnitaryEmbeddingColumns
 
 open GlobalTheory.FinPl GlobalTheory.SeeSaw
-
-theorem gram_star {D : D7} (B : HSp D) (i j : Fin B.rank) : star (B.gram i j) = B.gram j i := by
-  have := B.herm.eq (B.frame i) (B.frame j)
-  simpa [HSpace.gram, starRingEnd_apply] using this
 
 theorem incA_mul_tmul' {D : D7} (e : D.host.E) (y : AF D.host.F) (z : D.host.E) :
     incA D e * (y ⊗ₜ[D.host.F] z) = y ⊗ₜ[D.host.F] (e * z) := by
@@ -114,7 +111,7 @@ theorem mem_idV_of_mem {D : D7} {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : Glo
     rw [e3]
     have e4 : ∑ j, ∑ l, star (d.a l r) * B.gram l j * frameMat B A d.ι j i =
         star (∑ l, (∑ x, (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat B A d.ι x i) * B.gram x l) * d.a l r) := by
-      simp only [star_sum, star_mul', Finset.sum_mul, hsig, star_star, gram_star]
+      simp only [star_sum, star_mul', Finset.sum_mul, hsig, star_star, _root_.GlobalTheory.DualPairCheck.gram_star]
       rw [Finset.sum_comm]
       refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_
       ring

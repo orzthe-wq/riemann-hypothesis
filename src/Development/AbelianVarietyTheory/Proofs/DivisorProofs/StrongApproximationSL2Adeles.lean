@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NotIsCompactUnivFv
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveStrongApproximationAvoidingFinsetStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOrthogonalIdempotentsAdeleUnitCombinationStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdditiveStrongApproximationAvoidingFinset
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOrthogonalIdempotentsAdeleUnitCombination
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -166,11 +167,11 @@ theorem strongApprox_SL2 : ∀ (F : Type) [Field F] [NumberField F], ∀ (S₁ :
     rw [Fin.sum_univ_two]
     simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
     linear_combination hg
-  obtain ⟨η, h1, h2, h3, h4⟩ := GlobalTheory.T.exists_orthogonal_idempotents_adele_unit_combination F (Fin 2) (g 1) ![-g 0 1, g 0 0] (hdet ▸ isUnit_one)
+  obtain ⟨η, h1, h2, h3, h4⟩ := _root_.GlobalTheory.QSA.exists_idem_pick_unit F (Fin 2) (g 1) ![-g 0 1, g 0 0] (hdet ▸ isUnit_one)
   rw [Fin.sum_univ_two] at h3 h4
   obtain ⟨s, u, hu⟩ := exists_unit_of_idem (h1 0) (h1 1) (h2 0 1 (by decide)) h3 h4
   refine mem_closure_of_dense (algebraMap F (AF F)) ε (idem_of_isPlacesIdem hε) (fun x U hU => ?_) g hg s u hu
-  obtain ⟨t, -, s, h⟩ := GlobalTheory.T.additive_strongApproximation_avoiding_finset F S₁ S₂ ε hε hS x U hU ∅
+  obtain ⟨t, -, s, h⟩ := _root_.GlobalTheory.AddApproxPlaces.exists_approx_notMem F S₁ S₂ ε hε hS x U hU ∅
   exact ⟨t, s, h⟩
 
 end GlobalTheory.StrongApproximationSL2

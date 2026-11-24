@@ -84,24 +84,24 @@ theorem coord_wv (k : Fin d) (e e' : E n d) : coord k (wv k e) e' = if e' = e th
   rcases e with l | j <;> rcases e' with l' | j'
   · simp [coord, wv, oneE, Pi.single_apply]
   · by_cases h : j' = k
-    · simp [coord, wv, oneE, h, tdeg, Pi.single_apply]
-    · simp [coord, wv, oneE, h, Pi.single_apply]
+    · simp [coord, wv, oneE, h, tdeg]
+    · simp [coord, wv, oneE, h]
   · by_cases h : j = k
-    · simp [coord, wv, oneE, h, Pi.single_apply]
-    · simp [coord, wv, ratE, oneE, h, Pi.single_apply]
+    · simp [coord, wv, oneE, h]
+    · simp [coord, wv, ratE, oneE, h]
   · by_cases h : j = k
     · subst h
       by_cases h' : j' = j
       · simp [coord, wv, h', tdeg_oneE_inr]
-      · simp [coord, wv, oneE, h', Pi.single_apply]
+      · simp [coord, wv, oneE, h']
     · by_cases h' : j' = k
       · subst h'
         have hne : ¬ j' = j := fun e => h e.symm
         simp [coord, wv, h, hne, tdeg_ratE]
       · by_cases h'' : j' = j
         · subst h''
-          simp [coord, wv, ratE, oneE, h, h', Pi.single_apply]
-        · simp [coord, wv, ratE, oneE, h, h', h'', Pi.single_apply]
+          simp [coord, wv, ratE, oneE, h]
+        · simp [coord, wv, ratE, oneE, h, h', h'']
 
 theorem coord_inj (k : Fin d) {g g' : Gam n d} (h : coord k g = coord k g') : g = g' := by
   have hj : ∀ j, j ≠ k → g (Sum.inr j) = g' (Sum.inr j) := fun j hj => by

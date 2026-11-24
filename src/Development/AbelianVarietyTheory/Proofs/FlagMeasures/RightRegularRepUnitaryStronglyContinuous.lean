@@ -1,10 +1,10 @@
 module
 
 public import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariantStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariant
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AestronglyMeasurableCompRep
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopologyStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitaryPointsDiscreteFundamentalDomainStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitaryPointsDiscreteFundamentalDomain
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -58,9 +58,9 @@ theorem isRightReg_props (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] 
       (∀ F, Continuous fun g => R g F) ∧ ∀ F : I.L2 μf fund,
         (∀ᵐ y ∂(I.muA μf), ∀ γ ∈ I.GFset, I.ext F (γ * y) = I.ext F y) ∧
           AEStronglyMeasurable (I.ext F) (I.muA μf) := by
-  obtain ⟨hT, hL, hS, -⟩ := GlobalTheory.T.finiteAdelicUnitary_congruenceTopology I
-  obtain ⟨Γ, hΓ, hc, -, hfd⟩ := GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain I
-  obtain ⟨hl, hrt, -⟩ := GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf
+  obtain ⟨hT, hL, hS, -⟩ := _root_.GlobalTheory.CongTop.adelic_topology I
+  obtain ⟨Γ, hΓ, hc, -, hfd⟩ := _root_.GlobalTheory.RatDiscrete.rational_points I
+  obtain ⟨hl, hrt, -⟩ := _root_.GlobalTheory.AdelicUnimod.adelic_unimodular I μf
   have hD := hfd μf fund hfund
   have : BorelSpace I.GA := inferInstance
   have : (I.muA μf).IsMulLeftInvariant := ⟨hl⟩

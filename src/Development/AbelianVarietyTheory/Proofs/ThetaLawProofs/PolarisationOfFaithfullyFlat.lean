@@ -58,6 +58,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Cha
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniformBaseChange.Transport
 import Development.AbelianVarietyTheory.Definitions.KeyFormula.DegProd
 public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
 
 @[expose] public section
 
@@ -94,12 +95,6 @@ theorem isAbelianScheme_of_pull [Flat f] [Surjective f] [QuasiCompact f] (h : Is
       (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) h.1.flip ⟨⟨inferInstance, inferInstance⟩, inferInstance⟩ hA.smooth,
     GrpFlatDesc.isProper_of_isPullback h.1, GrpFlatDesc.geometricallyConnected_of_isPullback h.1⟩
 
-theorem inv_left_comp (h : IsGrpPullback A' A f φ) :
-    (GrpObj.inv : A' ⟶ A').left ≫ φ = φ ≫ (GrpObj.inv : A ⟶ A).left := by
-  have e := congrArg (fun q => q.left) (map_inv (pushHom h A') (𝟙 A'))
-  simp only [Hom.inv_def, Category.id_comp] at e
-  exact e.trans (congrArg (· ≫ _) (Category.id_comp φ))
-
 theorem exists_gen_pull_of_sym (hG : Out.GlobalFnsSt) (h : IsGrpPullback A' A f φ) (hA : IsAbelianScheme A')
     {L : LB A.left} {L' : LB A'.left} (hL : L.IsLB) (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ)) (hS : Out.Sym A' L')
     {Y : Scheme.{0}} (r : Y ⟶ A'.left) :
@@ -112,7 +107,7 @@ theorem exists_gen_pull_of_sym (hG : Out.GlobalFnsSt) (h : IsGrpPullback A' A f 
   let q := r ≫ φ
   let ψ : Fin 2 → (Y ⟶ A'.left) := fun k => r ≫ δ' k
   have e (k : Fin 2) : ψ k ≫ φ = q ≫ δ k := by
-    fin_cases k <;> simp [ψ, q, δ, δ', Category.assoc, inv_left_comp h]
+    fin_cases k <;> simp [ψ, q, δ, δ', Category.assoc, _root_.GlobalTheory.PolBaseChange.inv_comm h]
   let B := LB.LinComb L' ψ ε
   let C := LB.LinComb (L.pull φ) ψ ε
   let N := LB.LinComb L δ ε

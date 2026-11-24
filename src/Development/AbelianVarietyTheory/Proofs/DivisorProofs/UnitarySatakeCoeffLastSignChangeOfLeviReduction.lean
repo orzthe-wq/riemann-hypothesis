@@ -93,7 +93,7 @@ theorem expo_rev {n m : ℕ} (h : 2 * m ≤ n) (A : ℕ → ℤ) (x : Fin n) :
   rw [hr]
   have e : n - 1 - (n - 1 - x.val) = x.val := by omega
   rw [e]
-  split_ifs <;> first | omega | simp
+  split_ifs <;> first | omega
 
 def mid {n : ℕ} (k r : ℕ) (h : n = 2 * k + r) (j : Fin r) : Fin n := ⟨k + j.val, by have := j.2; omega⟩
 

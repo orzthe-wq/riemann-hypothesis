@@ -192,9 +192,7 @@ theorem exists_llPos (j x : ℤ) (hx : x ∈ Fr.LLset j) :
   unfold llPos
   rw [List.getD_eq_getElem _ _ hl, hlx]
 
-theorem posOf_add_n (x : ℤ) : posOf n' (x + n') = posOf n' x := by
-  apply Fin.ext
-  simp [posOf]
+alias posOf_add_n := _root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.bf_posOf_add
 
 theorem shift (hper : ∀ j : ℤ, ∀ i, Fr.fr (j + Fr.J) i = Fr.fr j i + n') {J : ℕ} [NeZero J] (hJ : J = Fr.J)
     (j : ZMod J) :

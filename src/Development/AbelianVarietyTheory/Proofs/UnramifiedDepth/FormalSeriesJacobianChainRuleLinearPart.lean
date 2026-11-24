@@ -118,7 +118,7 @@ private theorem coeff_sub {R : Type} [CommRing R] {d e : ℕ} (φ : Fin e → PS
           (∑ q ∈ t, g q).fst = ∑ q ∈ t, (g q).fst := fun t g =>
         map_sum (TrivSqZeroExt.fstHom R R R) g t
       simp [s, a, b, hf, apply_ite TrivSqZeroExt.fst]
-    · simp [s, a, b, TrivSqZeroExt.snd_sum, Fintype.sum_prod_type, lin, TrivSqZeroExt.algebraMap_eq_inl]
+    · simp [s, a, b, Fintype.sum_prod_type, lin, TrivSqZeroExt.algebraMap_eq_inl]
   rw [e0, h6, h6'] at h
   have h2 := congrArg TrivSqZeroExt.snd h
   simpa [s, a, b, TrivSqZeroExt.snd_sum, Fintype.sum_prod_type, TrivSqZeroExt.algebraMap_eq_inl, dl,

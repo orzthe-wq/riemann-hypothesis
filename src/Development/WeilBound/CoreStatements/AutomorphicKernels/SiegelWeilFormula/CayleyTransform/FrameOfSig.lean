@@ -1,6 +1,5 @@
 module
 
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.CayleyTransform.RdExOf
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.CayleyTransform.CompFinFinOne
 import Development.WeilBound.ThetaLifts.TowerModels.LeviAd
 import Mathlib.Algebra.Order.Floor.Extended
@@ -66,26 +65,6 @@ theorem conjT_frame {n : ℕ} (c : E) (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i
   rw [hm, hm, Matrix.transpose_mul, Matrix.transpose_mul, hb, h1, ← Matrix.transpose_map, Matrix.transpose_transpose,
     Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]
 
-theorem epsEx : EpsEx := by
-  intro F E _ _ _ _ _ σ d
-  obtain ⟨ε, hε⟩ := d.ok.frame.1
-  refine ⟨ε, hε, ?_⟩
-  have hss : ∀ x, σ (σ x) = x := PositivityTheory.ThKG.Tow.Levi.sig_sig d.cm
-  have i : Fin d.n := ⟨0, d.ok.hn⟩
-  have key : ∀ c : E, (∀ i j, σ (d.Y.J j i) = c * d.Y.J i j) → ((ε : ℤ) : E) = c := fun c hc => by
-    have e := congrFun (congrFun (conjT_frame c d.Y.J hc hss d.b.1) (Sum.inl i)) (Sum.inr i)
-    rw [hε] at e
-    simpa [Matrix.fromBlocks] using e
-  rcases d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩
-  · refine Or.inl ⟨hA, ?_⟩
-    have e := key (-1) fun i j => by rw [hY, neg_one_mul]
-    have e' : ((ε : ℤ) : E) = ((-1 : ℤ) : E) := by rw [e]; push_cast; rfl
-    exact Units.ext (by simpa using Int.cast_injective (α := E) e')
-  · refine Or.inr ⟨hA, ?_⟩
-    have e := key 1 fun i j => by rw [hY, one_mul]
-    have e' : ((ε : ℤ) : E) = ((1 : ℤ) : E) := by rw [e]; push_cast; rfl
-    exact Units.ext (by simpa using Int.cast_injective (α := E) e')
-
 theorem frame_of_sig {m r s : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (h : HasSig M r s) (h0 : min r s = 0) :
     ∃ (f : GL (Fin m) ℂ) (sg : ℤˣ), f.1.transpose * M * f.1.map star = ((sg : ℤ) : ℂ) • 1 := by
   obtain ⟨hrs, A, hA⟩ := h
@@ -117,15 +96,6 @@ theorem frame_of_sig {m r s : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (h : HasSig 
       Matrix.det_one, mul_one] at e1
     exact pow_ne_zero _ (Int.cast_ne_zero.2 (Units.ne_zero sg)) e1.symm
   exact ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero f0 hdet, sg, hsg⟩
-
-theorem frEx : FrEx := by
-  intro F E _ _ _ _ _ σ d
-  refine ⟨fun hA => ?_, fun hA => ?_⟩
-  · choose fr sg hfr using fun w => frame_of_sig (hA.sig w) d.ok.aniso
-    exact ⟨fr, sg, fun w => by rw [one_smul, hfr w]⟩
-  · choose fr sg hfr using fun w => frame_of_sig (hA.sig w) d.ok.aniso
-    refine ⟨fr, sg, fun w => ?_⟩
-    rw [← hfr w, Matrix.mul_smul, Matrix.smul_mul]
 
 end PositivityTheory.SiegelWeilFormula.Krd
 

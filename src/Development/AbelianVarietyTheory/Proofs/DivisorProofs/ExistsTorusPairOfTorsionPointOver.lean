@@ -53,6 +53,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUnifOfIsMumfo
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -84,7 +85,7 @@ theorem exists_pair_of_liesOver : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLo
     (AlgebraicClosure (FractionRing V)) (algebraMap _ _) (fun r => by simp) N p
   let xb : TFK (R := V) (AlgebraicClosure (FractionRing V)) ⟶ A.A :=
     GlobalTheory.TorsionExt.fieldMap (FractionRing V) (AlgebraicClosure (FractionRing V)) ≫ x
-  obtain ⟨wb, frb, hwb, hfrb, hlb⟩ := GlobalTheory.T.torusExtension_point_liesOver_after_field_extension V _ hA D A G hG U (AlgebraicClosure (FractionRing V)) w₀
+  obtain ⟨wb, frb, hwb, hfrb, hlb⟩ := _root_.GlobalTheory.Poinc.Tors.LiesOverExt.liesOver_ext V _ hA D A G hG U (AlgebraicClosure (FractionRing V)) w₀
     hw₀ g w x fr hw hfr hov xb rfl
   obtain ⟨f', f₁, -⟩ := GlobalTheory.TorsionIso.torsion_eq hL V _ hA D A G hG U (AlgebraicClosure (FractionRing V)) N hN
   have hq := (f₁ pb (f' pb)).2 rfl

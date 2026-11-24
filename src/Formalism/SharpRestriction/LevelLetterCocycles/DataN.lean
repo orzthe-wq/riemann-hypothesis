@@ -1019,7 +1019,6 @@ structure NTh (R : Ranks) (H : Host R) (what₂ : Rows.Data R) [NumberField what
   ev : ∀ i j b, ex.Fm i j b →+ (Pt i j → ℂ_[tw.l i])
   ev_smul : ∀ i j b (a : FractionRing (tw.O i)) (f : ex.Fm i j b) (y : Pt i j),
     ev i j b (a • f) y = iC i a * ev i j b f y
-  ev_inj : ∀ i j b, Function.Injective (ev i j b)
 
   Lt : tw.Tw → ℕ → Type
   [acgLt : ∀ i j, AddCommGroup (Lt i j)]
@@ -1078,8 +1077,6 @@ structure NTh (R : Ranks) (H : Host R) (what₂ : Rows.Data R) [NumberField what
   FmUr_smul : ∀ i j b (a : FractionRing (tw.O i)) (f : ex.Fm i j b), a ∈ MaximalUnramifiedExtension i → f ∈ FmUr i j b →
     a • f ∈ FmUr i j b
   FmUr_span : ∀ i j b, Submodule.span (FractionRing (tw.O i)) (FmUr i j b : Set (ex.Fm i j b)) = ⊤
-  Bsup_def : ∀ i j b, ex.Bsup i j b =
-    Submodule.span (tw.O i) {f | f ∈ FmUr i j b ∧ ∀ y, ‖ev i j b f y‖ ≤ 1}
 
 attribute [instance] NTh.acgLt NTh.modLt NTh.freeLt NTh.finLt NTh.finLet NTh.grpKq NTh.finHk
 

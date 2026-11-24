@@ -1,6 +1,6 @@
 module
 
-public import Development.EtaleCohomology.EtaleSheaves.AbsorbPf
+public import Development.EtaleCohomology.EtaleSheaves.StrictHenselColimits
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -28,7 +28,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -42,7 +41,126 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.EtaleCohomology.EtaleSheaves.AbsorbPf, Development.EtaleCohomology.WeilConjectures.AbsorbPf
+
+-- ===== clump member: Development.EtaleCohomology.EtaleSheaves.AbsorbPf =====
+-- clump-header: {"m": "Development.EtaleCohomology.EtaleSheaves.AbsorbPf", "h": "module\n\npublic import Development.EtaleCohomology.EtaleSheaves.StrictHenselColimits\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+open CategoryTheory Limits LateralTheory.E.t_E3Cut
+
+namespace LateralTheory.E.AbsorbPf
+
+def Sys : Prop := ∀ (A : CommRingCat.{0}) (Ω : Type) [Field Ω] (ι : A →+* Ω),
+  ∃ (J : Type) (_ : SmallCategory J) (_ : IsFiltered J) (D : J ⥤ CommRingCat.{0})
+    (t : (Functor.const J).obj A ⟶ D) (φ : ∀ j, D.obj j →+* Ω),
+    (∀ j, Et (t.app j)) ∧ (∀ j, (φ j).comp (t.app j).hom = ι) ∧
+    (∀ (j k : J) (a : j ⟶ k), (φ k).comp (D.map a).hom = φ j) ∧
+    (∀ (B : CommRingCat.{0}) (g : A ⟶ B), Et g → ∀ φB : B →+* Ω, φB.comp g.hom = ι →
+      ∃ (j : J) (h : B ⟶ D.obj j), g ≫ h = t.app j ∧ (φ j).comp h.hom = φB) ∧
+    (∀ (j : J) (x : D.obj j), φ j x ≠ 0 → ∃ (k : J) (a : j ⟶ k), IsUnit ((D.map a).hom x))
+
+theorem t_nat {J : Type} [SmallCategory J] {A : CommRingCat.{0}} {D : J ⥤ CommRingCat.{0}}
+    (t : (Functor.const J).obj A ⟶ D) {j k : J} (a : j ⟶ k) : t.app j ≫ D.map a = t.app k := by
+  have := t.naturality a
+  simp only [Functor.const_obj_obj, Functor.const_obj_map, Category.id_comp] at this
+  exact this.symm
+
+theorem Absorb_of (hS : Sys) : LateralTheory.E.ColimPf.Absorb := by
+  intro A Ω _ ι
+  obtain ⟨J, _, _, D, t, φ, hEt, hpt, hcomp, habs, hloc⟩ := hS A Ω ι
+  let O : CommRingCat.{0} := colimit D
+  let s : D ⟶ (Functor.const J).obj O := (colimit.cocone D).ι
+  let j0 : J := IsFiltered.nonempty.some
+  let f : A ⟶ O := t.app j0 ≫ colimit.ι D j0
+  have hf : ∀ j, t.app j ≫ colimit.ι D j = f := by
+    intro j
+    let k := IsFiltered.max j j0
+    show t.app j ≫ colimit.ι D j = t.app j0 ≫ colimit.ι D j0
+    rw [← colimit.w D (IsFiltered.leftToMax j j0), ← colimit.w D (IsFiltered.rightToMax j j0),
+      ← Category.assoc, ← Category.assoc, t_nat, t_nat]
+  let cΩ : Cocone D :=
+    { pt := CommRingCat.of Ω
+      ι := { app := fun j => CommRingCat.ofHom (φ j)
+             naturality := by
+               intro j k a
+               ext x
+               have := DFunLike.congr_fun (hcomp j k a) x
+               simpa using this } }
+  let ψ : O →+* Ω := (colimit.desc D cΩ).hom
+  have hψ : ∀ j (y : D.obj j), ψ (colimit.ι D j y) = φ j y := by
+    intro j y
+    have := colimit.ι_desc cΩ j
+    exact DFunLike.congr_fun (congrArg CommRingCat.Hom.hom this) y
+  refine ⟨O, f, ψ, ?_, ?_, ?_, ?_⟩
+  · refine ⟨J, inferInstance, inferInstance, D, t, s, colimit.isColimit D, fun j => ⟨hEt j, hf j⟩⟩
+  · ext a
+    have := DFunLike.congr_fun (hpt j0) a
+    simp only [RingHom.comp_apply] at this ⊢
+    rw [← this, ← hψ]; rfl
+  · intro x hx
+    obtain ⟨j, y, rfl⟩ := Concrete.colimit_exists_rep D x
+    rw [hψ] at hx
+    obtain ⟨k, a, hu⟩ := hloc j y hx
+    have : colimit.ι D j y = colimit.ι D k ((D.map a).hom y) := by
+      rw [← colimit.w D a]; rfl
+    rw [this]
+    exact hu.map (colimit.ι D k).hom
+  · intro B g hg φB hφB
+    obtain ⟨j, h, hh1, hh2⟩ := habs B g hg φB hφB
+    refine ⟨h ≫ colimit.ι D j, ?_, ?_⟩
+    · rw [← Category.assoc, hh1, hf]
+    · ext b
+      simp only [RingHom.comp_apply, CommRingCat.hom_comp]
+      rw [hψ]
+      exact DFunLike.congr_fun hh2 b
+
+def Sys2 : Prop := ∀ (A : CommRingCat.{0}) (Ω : Type) [Field Ω] (ι : A →+* Ω),
+  ∃ (J : Type) (_ : SmallCategory J) (_ : IsFiltered J) (D : J ⥤ CommRingCat.{0})
+    (t : (Functor.const J).obj A ⟶ D) (φ : ∀ j, D.obj j →+* Ω),
+    (∀ j, Et (t.app j)) ∧ (∀ j, (φ j).comp (t.app j).hom = ι) ∧
+    (∀ (j k : J) (a : j ⟶ k), (φ k).comp (D.map a).hom = φ j) ∧
+    (∀ (B : CommRingCat.{0}) (g : A ⟶ B), Et g → ∀ φB : B →+* Ω, φB.comp g.hom = ι →
+      ∃ (j : J) (h : B ⟶ D.obj j), g ≫ h = t.app j ∧ (φ j).comp h.hom = φB) ∧
+    (∀ (j : J) (B : CommRingCat.{0}) (g : D.obj j ⟶ B), Et g → ∀ φB : B →+* Ω, φB.comp g.hom = φ j →
+      ∃ (k : J) (a : j ⟶ k) (h : B ⟶ D.obj k), g ≫ h = D.map a)
+
+theorem Sys_of (h2 : Sys2) : Sys := by
+  intro A Ω _ ι
+  obtain ⟨J, i1, i2, D, t, φ, hEt, hpt, hcomp, habs, hst⟩ := h2 A Ω ι
+  refine ⟨J, i1, i2, D, t, φ, hEt, hpt, hcomp, habs, ?_⟩
+  intro j x hx
+  let B : CommRingCat.{0} := CommRingCat.of (Localization.Away x)
+  let g : D.obj j ⟶ B := CommRingCat.ofHom (algebraMap (D.obj j) (Localization.Away x))
+  have hg : Et g := by
+    change (algebraMap (D.obj j) (Localization.Away x)).Etale
+    rw [RingHom.etale_algebraMap]
+    infer_instance
+  have hu : IsUnit (φ j x) := isUnit_iff_ne_zero.mpr hx
+  let φB : B →+* Ω := IsLocalization.Away.lift x hu
+  obtain ⟨k, a, h, hh⟩ := hst j B g hg φB (IsLocalization.Away.lift_comp x hu)
+  refine ⟨k, a, ?_⟩
+  have e : (D.map a).hom x = h.hom (algebraMap (D.obj j) (Localization.Away x) x) := by
+    rw [← hh]; rfl
+  rw [e]
+  exact (IsLocalization.Away.algebraMap_isUnit x).map h.hom
+
+theorem etaleAbsorbing_of_strongFilteredEtaleSystemExists (h2 : Sys2) : LateralTheory.E.ColimPf.Absorb := Absorb_of (Sys_of h2)
+
+end LateralTheory.E.AbsorbPf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.EtaleCohomology.EtaleSheaves.AbsorbPf =====
+
+-- ===== clump member: Development.EtaleCohomology.WeilConjectures.AbsorbPf =====
+-- clump-header: {"m": "Development.EtaleCohomology.WeilConjectures.AbsorbPf", "h": "module\n\npublic import Development.EtaleCohomology.EtaleSheaves.AbsorbPf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -63,11 +181,6 @@ def Coeq : Prop := ∀ (A B C : CommRingCat.{0}) (Ω : Type) [Field Ω] (ι : A 
   ∀ (u v : B ⟶ C), gB ≫ u = gC → gB ≫ v = gC → φC.comp u.hom = φB → φC.comp v.hom = φB →
   ∃ (E : CommRingCat.{0}) (gE : A ⟶ E) (φE : E →+* Ω) (w : C ⟶ E), Et gE ∧ φE.comp gE.hom = ι ∧
     gC ≫ w = gE ∧ φE.comp w.hom = φC ∧ u ≫ w = v ≫ w
-
-theorem et_comp {A B C : CommRingCat.{0}} {f : A ⟶ B} {g : B ⟶ C} (hf : Et f) (hg : Et g) : Et (f ≫ g) := by
-  change (f ≫ g).hom.Etale
-  rw [CommRingCat.hom_comp]
-  exact RingHom.Etale.stableUnderComposition _ _ hf hg
 
 theorem et_id (A : CommRingCat.{0}) : Et (𝟙 A) := by
   change (𝟙 A : A ⟶ A).hom.Etale
@@ -161,7 +274,7 @@ theorem Sys2_of (hM : Model) (hP : Pair) (hC : Coeq) : LateralTheory.E.AbsorbPf.
     have hφB' : φB.comp g'.hom = X.φ := hφB
     have hφ' : φB.comp (tM X.n ≫ g').hom = ι := by
       rw [CommRingCat.hom_comp, ← RingHom.comp_assoc, hφB', X.hφ]
-    obtain ⟨Y, e, he, heφ⟩ := into B (tM X.n ≫ g') (et_comp (hEt _) hg') φB hφ'
+    obtain ⟨Y, e, he, heφ⟩ := into B (tM X.n ≫ g') (_root_.LateralTheory.E.ColimPf.et_comp (hEt _) hg') φB hφ'
     refine ⟨Y, (⟨g' ≫ e.hom, by rw [← Category.assoc, he], ?_⟩ : Hm X Y), e.hom, rfl⟩
     rw [CommRingCat.hom_comp, ← RingHom.comp_assoc, heφ, hφB']
 
@@ -169,3 +282,7 @@ theorem Absorb_of (hM : Model) (hP : Pair) (hC : Coeq) : LateralTheory.E.ColimPf
   LateralTheory.E.AbsorbPf.etaleAbsorbing_of_strongFilteredEtaleSystemExists (Sys2_of hM hP hC)
 
 end LateralTheory.EWeil.AbsorbPf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.EtaleCohomology.WeilConjectures.AbsorbPf =====

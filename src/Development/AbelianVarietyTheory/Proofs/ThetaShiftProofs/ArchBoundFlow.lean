@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValue
 public import Formalism.LocalToGlobal.ProjectiveLattices.NormsFree
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FjCauchyBound
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NfacParallelFlowV
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RiemannFormFramePeriodsEqMajorantStatement
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RiemannFormFramePeriodsEqMajorant
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -91,7 +91,7 @@ theorem arch_bound_flow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
       simp
     rw [this, add_neg_cancel, Real.exp_zero, one_mul]
   · intro Hm hH
-    have hb := (GlobalTheory.T.riemann_form_frame_periods_eq_majorant E H Dw l Xo c σ r U Uw k ⟨_, hd⟩ Hm hσ hU hH).2.2 xi a' hxi
+    have hb := (_root_.GlobalTheory.RiemMaj.riemann_eq_majorant E H Dw l Xo c σ r U Uw k ⟨_, hd⟩ Hm hσ hU hH).2.2 xi a' hxi
     have hf := nfac_parallel_flow E H Dw l Xo c σ r U k n ξ' hn hξ x.1 x.2 _ hd
     have hadd := nfac_of_add (U.X k) hd (laU U a' n k) (laU U a' 0 k) (laU U 0 n k) (by
       intro τ j

@@ -72,7 +72,7 @@ theorem repr_equiv_apply {M N : Type*} [AddCommGroup M] [Module A M] [AddCommGro
 theorem structMat_apply (b : Basis ι A Λ) (k l i j : ι) :
     structMat b (k, l) (i, j) = b.repr (b i * b l * b j) k := by
   rw [structMat, LinearMap.toMatrix_apply]
-  simp [Basis.end_repr_apply, Basis.tensorProduct_apply, LinearMap.toMatrix_apply, stdBasis_repr_apply']
+  simp [Basis.tensorProduct_apply, LinearMap.toMatrix_apply, stdBasis_repr_apply']
 
 theorem bijective_iff_isUnit_det (b : Basis ι A Λ) :
     Function.Bijective (AlgHom.mulLeftRight A Λ) ↔ IsUnit (structMat b).det := by

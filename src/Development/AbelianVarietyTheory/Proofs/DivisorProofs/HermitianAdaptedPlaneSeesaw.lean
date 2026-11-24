@@ -1,9 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
-public import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicStoneVonNeumannLagrangianUniquenessStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerGoodModelsStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicStoneVonNeumannLagrangianUniqueness
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerGoodModels
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EigenIntertwinerTransitive
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilRepresentationPreservesSchwartz
 import Mathlib.Algebra.Order.Floor.Extended
@@ -362,33 +362,6 @@ theorem evAt_zero_comp_eq_of_exp_phase_mul (M : Model σ X W) (M₁ : Model σ X
   simp only [LinearMap.comp_apply, ev0, LinearMap.proj_apply]
   rw [he, hI _ ⟨u, rfl⟩ _ h1, h2]
   simp [Darboux.rho, schr, hz]
-
-theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
-    (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
-    ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),
-      H.IsAdapted σ B X X₁ j₀ j₁ → IsPair B M₁ χX χW om₁ r₁ s₁ r' s' →
-      ∀ e, IsEv B M M₁ H.ι 1 {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} e →
-      ∀ e' : Fn F n d →ₗ[ℂ] Fn F n₁ d, (∀ Φ ∈ schA F (Fin n × Fin d), e' Φ ∈ schA F (Fin n₁ × Fin d)) →
-      (∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), e' (M.co.rho B.ψ (incM F H.ι * z * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ) Φ) = M₁.co.rho B.ψ z (e' Φ)) →
-      (∀ u ∈ {u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z}, ∀ Φ ∈ schA F (Fin n × Fin d), e' (M.co.rho B.ψ u Φ) = e' Φ) →
-      (∀ l ∈ (adeleClass F).adm (Fin n₁ × Fin d), l ∘ₗ e' ∈ (adeleClass F).adm (Fin n × Fin d)) →
-      ∃ c : ℂ, ∀ Φ ∈ schA F (Fin n × Fin d), e' Φ = c • e Φ := by
-  intro _ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he T _ hTh hTi hTa
-  have hψ : IsStd B.ψ := hP.base.std
-  obtain ⟨L, hiso, hrk, hL⟩ := exists_lagr B hP.base M M₁ hP.good hP₁.good H hH
-  have hadmT : ev0 F (Fin n₁ × Fin d) ∘ₗ T ∈ (adeleClass F).adm (Fin n × Fin d) := hTa _ (adelicCoordinatesEvalZeroForm_mem_admissible _)
-  have hadmE : ev0 F (Fin n₁ × Fin d) ∘ₗ e ∈ (adeleClass F).adm (Fin n × Fin d) :=
-    GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n₁ d X W X₁ W M M₁ _ _ _ e hP.good hP₁.good he _ (adelicCoordinatesEvalZeroForm_mem_admissible _)
-  obtain ⟨Φ₀, hΦ₀, hne⟩ := GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero F E σ B n d n₁ d X W X₁ W M M₁ _ _ _ e hP.good hP₁.good he
-  obtain ⟨y, hy⟩ := Function.ne_iff.1 hne
-  obtain ⟨c, hc⟩ := GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F B.ψ hψ (Fin n × Fin d) L hiso hrk _ hadmT _ hadmE
-    (fun t w hw Φ hΦ => evAt_zero_comp_eq_of_exp_phase_mul M M₁ B.ψ hψ H T hTh hTi _ (hL t w hw) Φ hΦ)
-    (fun t w hw Φ hΦ => evAt_zero_comp_eq_of_exp_phase_mul M M₁ B.ψ hψ H e he.Heisenberg₂ he.inv _ (hL t w hw) Φ hΦ)
-    ⟨_, GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ Φ₀ hΦ₀, by
-      rw [LinearMap.comp_apply, ← apply_eq_evaluation_zero M M₁ B.ψ H.ι e he.Heisenberg₂ Φ₀ hΦ₀ y]; exact hy⟩
-  refine ⟨c, fun Φ hΦ => funext fun y => ?_⟩
-  rw [apply_eq_evaluation_zero M M₁ B.ψ H.ι T hTh Φ hΦ y, Pi.smul_apply, apply_eq_evaluation_zero M M₁ B.ψ H.ι e he.Heisenberg₂ Φ hΦ y, smul_eq_mul]
-  exact hc _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ _ Φ hΦ)
 
 end GlobalTheory.MixXEvUniq
 

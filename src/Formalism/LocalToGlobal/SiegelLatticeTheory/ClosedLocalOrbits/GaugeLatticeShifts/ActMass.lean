@@ -5,47 +5,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Gaug
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.ColFreePf
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.LatSpanLeSpan
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LatDictK
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -159,11 +118,7 @@ theorem aK_eq (hb : Hfin X u) (γ : Gam X u) :
     ((hb : X.B.I.Gf) * X.xu u)⁻¹ * (iotaF X u γ : X.B.I.Gf) * ((hb : X.B.I.Gf) * X.xu u) =
       colD hb (iotaF X u γ * hb) := by
   first
-    | rfl
     | (simp only [colD, Subgroup.coe_mul]; group)
-    | (simp only [colD, Subgroup.coe_mul, Submonoid.coe_mul]; group)
-    | (unfold colD; group)
-    | (simp [colD, mul_assoc])
 
 def gamL_levi (TR : TypedRed X) (q : {Λ // Λ ∈ what₂}) (g : GamL cs q) : Aset TR cs q :=
   ⟨levi TR (colD (cs.h (cs.base q.1)) (iotaF X u g.1 * cs.h (cs.base q.1))),
@@ -172,8 +127,8 @@ def gamL_levi (TR : TypedRed X) (q : {Λ // Λ ∈ what₂}) (g : GamL cs q) : A
 theorem isUni_one (TR : TypedRed X) (v : TR.Pl) : Formalism.L2.SG.GGMirabolic.IsUni D.R.k ((1 : Iof TR) v) := by
   unfold Formalism.L2.SG.GGMirabolic.IsUni
   refine ⟨fun i => ?_, fun i j hij => ?_⟩
-  · simp [Matrix.one_apply]
-  · simp [Matrix.one_apply, ne_of_gt hij]
+  · simp
+  · simp [ne_of_gt hij]
 
 theorem gamL_levi_bij (TR : TypedRed X) (hK : X.LevelSubgroupCharacter) (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u hK)
     (q : {Λ // Λ ∈ what₂}) : Function.Bijective (gamL_levi cs TR q) := by
@@ -228,9 +183,6 @@ theorem isoG_spec (g : Gam X u) (y : (VS D).V) :
     incl X.B.I (X.crd (isoG g y)) = X.B.I.fmat (g : X.B.I.GA).2 *ᵥ incl X.B.I (X.crd y) := by
   first
     | exact (gamIsom_of X (inclInj_holds X) u g).choose_spec.2 y
-    | exact (gamIsom_of X (inclInj_holds X) u g).choose_spec.2.1 y
-    | exact ((gamIsom_of X (inclInj_holds X) u g).choose_spec.2 y).1
-    | exact (gamIsom_of X (inclInj_holds X) u g).choose_spec.2.1 y
 
 theorem isoG_fix (g : Gam X u) (y : (VS D).V) (hy : X.crd y ∈ fixSet X u) : isoG g y = y := by
   apply inclCrd_inj
@@ -253,10 +205,9 @@ theorem gf_eq {x x' : X.B.I.Gf} (h : ∀ y : (VS D).V,
       by_cases hk : k = j
       · subst hk
         simp [Formalism.L2.SG.HidaSetting.incl, Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf]
-      · simp [Formalism.L2.SG.HidaSetting.incl, Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, hk,
-          Ne.symm hk, Finsupp.single_apply]
+      · simp [Formalism.L2.SG.HidaSetting.incl, Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, hk]
     rw [hc] at hj
-    simp only [Matrix.mulVec_single_one, Matrix.transpose_apply] at hj
+    simp only [Matrix.mulVec_single_one] at hj
     exact hj
   apply Subtype.ext
   apply Units.ext
@@ -274,8 +225,6 @@ theorem lam_latOf (q : {Λ // Λ ∈ what₂}) : ((q.1 : Submodule (𝓞 D.host.
   ext y
   first
     | exact lam_iff cs q y
-    | (rw [SetLike.mem_coe, lam_iff cs q y]; rfl)
-    | simp [latOf, lam_iff cs q y]
 
 theorem isoG_lat (q : {Λ // Λ ∈ what₂}) (g : GamL cs q) : Formalism.HermitianLatticesTheory.gmap (isoG g.1) q.1 = q.1 := by
   set hb := cs.h (cs.base q.1)
@@ -321,7 +270,7 @@ theorem gamL_autLz_bij (hK : X.LevelSubgroupCharacter) (hN : Formalism.L2.SG.Poi
       refine hN 1 (g1⁻¹ * g2) ?_
       have e : (1 : Hfin X u)⁻¹ * iotaF X u (g1⁻¹ * g2) * 1 = 1 := by
         have : iotaF X u g1 = iotaF X u g2 := Subtype.ext h2
-        simp only [inv_one, one_mul, mul_one, map_mul, map_inv, this, inv_mul_cancel]
+        simp only [inv_one, mul_one, map_mul, map_inv, this, inv_mul_cancel]
       rw [e]; exact (Ku X u hK).one_mem
     rw [inv_mul_eq_one] at h0
     subst h0
@@ -424,8 +373,6 @@ theorem massA_of (TR : TypedRed X) (hK : X.LevelSubgroupCharacter) (hN : Formali
   rw [← card_autLz_eq cs TR hK hN q]
   first
     | rfl
-    | simp [wRow]
-    | simp [Formalism.L2.SG.NormCut.wRow]
 
 end Mass2
 

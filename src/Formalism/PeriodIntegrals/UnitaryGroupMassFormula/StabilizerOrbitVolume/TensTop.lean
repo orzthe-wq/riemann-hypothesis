@@ -147,22 +147,11 @@ theorem linIndep_of_isUnit_det (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin
 
 variable [LocallyCompactSpace R] [T2Space R]
 
-private theorem continuous_sigR_stabilizer_orbit_volume (σ : E →ₐ[F] E) : Continuous (sigR R σ) := by
-  haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
-  have e : ⇑(sigR R σ) = ⇑(LinearMap.baseChange R σ.toLinearMap) := by
-    funext z
-    induction z using TensorProduct.induction_on with
-    | zero => simp
-    | tmul r e => simp [sigR, LinearMap.baseChange_tmul]
-    | add a b ha hb => rw [map_add (f := _), map_add (f := _), ha, hb]
-  rw [e]
-  exact IsModuleTopology.continuous_of_linearMap _
-
 theorem continuous_hR (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     Continuous (fun p : (Fin M → R ⊗[F] E) × (Fin M → R ⊗[F] E) => hR R σ J p.1 p.2) := by
   haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
   haveI : IsTopologicalRing (R ⊗[F] E) := IsModuleTopology.isTopologicalRing R (R ⊗[F] E)
-  have hs := continuous_sigR_stabilizer_orbit_volume (F := F) (E := E) R σ
+  have hs := _root_.PI.AdicCompletionValuation.continuous_sigR (F := F) (E := E) R σ
   unfold hR Formalism.UG.hform
   exact continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
     ((hs.comp ((continuous_apply i).comp continuous_fst)).mul continuous_const).mul
@@ -172,7 +161,7 @@ theorem continuous_gramR_apply (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin
     (a b : Fin n) : Continuous (fun X : Fin n → Fin M → R ⊗[F] E => gramR R σ J X a b) := by
   haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
   haveI : IsTopologicalRing (R ⊗[F] E) := IsModuleTopology.isTopologicalRing R (R ⊗[F] E)
-  have hs := continuous_sigR_stabilizer_orbit_volume (F := F) (E := E) R σ
+  have hs := _root_.PI.AdicCompletionValuation.continuous_sigR (F := F) (E := E) R σ
   show Continuous fun X : Fin n → Fin M → R ⊗[F] E => hR R σ J (X a) (X b)
   unfold hR Formalism.UG.hform
   exact continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
@@ -189,7 +178,7 @@ theorem isClosed_HermR (σ : E →ₐ[F] E) (n : ℕ) :
     T2Space.of_injective_continuous (Algebra.TensorProduct.basis R (Module.finBasis F E)).equivFun.injective
       (IsModuleTopology.continuous_of_linearMap
         (Algebra.TensorProduct.basis R (Module.finBasis F E)).equivFun.toLinearMap)
-  have hs := continuous_sigR_stabilizer_orbit_volume (F := F) (E := E) R σ
+  have hs := _root_.PI.AdicCompletionValuation.continuous_sigR (F := F) (E := E) R σ
   have e : (HermR R σ n : Set (Matrix (Fin n) (Fin n) (R ⊗[F] E))) =
       ⋂ a, ⋂ b, {S | sigR R σ (S b a) = S a b} := by
     ext S

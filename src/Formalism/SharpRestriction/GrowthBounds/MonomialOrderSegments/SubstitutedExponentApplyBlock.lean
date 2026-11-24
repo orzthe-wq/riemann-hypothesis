@@ -84,11 +84,10 @@ theorem lg_nonneg' {p : ℕ} (hp : 2 ≤ p) {r : ℕ} (hr : 1 ≤ r) (a : ℕ) :
 theorem monomial_mem_PolK {L : Type} {r : ℕ} (ζ : L × Fin r →₀ ℕ) (c : K) :
     monomial ζ c ∈ PolK K r (fun i => ldeg ζ i) := by
   rw [PolK, MvPolynomial.mem_restrictSupport_iff]
-  intro m hm
+  intro m hm i
   have hm' := MvPolynomial.support_monomial_subset (Finset.mem_coe.1 hm)
   rw [Finset.mem_singleton] at hm'
   subst hm'
-  intro i
   rfl
 
 namespace TwistData
@@ -119,17 +118,15 @@ theorem mem_chainSet (j : Fin D.J) (i : Fin (D.nch j)) (z : D.ML) :
 theorem mem_Yset (j : Fin D.J) (m : Fin D.r) (z : D.ML) :
     z ∈ D.Yset j m ↔ (∃ m' : Fin D.r, D.mw (D.aux₃ j, m') = z) ∨ (∃ b ∈ D.LLj j, D.mb b = z) ∨
       ∃ m' : Fin D.r, m < m' ∧ D.mtp (j, m') = z := by
-  simp [Yset, wSet, or_assoc]
+  simp [Yset, wSet]
 
 theorem mlab_notMem_chainSet (j : Fin D.J) (i : Fin (D.nch j)) (t : D.Tau) :
     D.mlab t ∉ D.chainSet j i := by
-  rw [D.mem_chainSet]
-  rintro (⟨b, _, h⟩ | ⟨m, h⟩) <;> simp [mlab, mb, mw] at h
+  simp [D.mem_chainSet, mlab, mb, mw]
 
 theorem mtp_notMem_chainSet (j : Fin D.J) (i : Fin (D.nch j)) (t : D.Tau) :
     D.mtp t ∉ D.chainSet j i := by
-  rw [D.mem_chainSet]
-  rintro (⟨b, _, h⟩ | ⟨m, h⟩) <;> simp [mtp, mb, mw] at h
+  simp [D.mem_chainSet, mtp, mb, mw]
 
 theorem chainSet_mono (j : Fin D.J) (i i' : Fin (D.nch j)) (h : D.chain j i ⊆ D.chain j i') :
     D.chainSet j i ⊆ D.chainSet j i' := by

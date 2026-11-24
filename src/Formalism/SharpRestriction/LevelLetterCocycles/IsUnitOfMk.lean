@@ -198,7 +198,7 @@ theorem levDiv_of (W : LocWach PD LL O v n) (hR : ToolsR.RingP W) (hT : Formalis
     · exact (Polynomial.natDegree_lt_iff_degree_lt hr).2 hdeg
   have hr : r = 0 := Polynomial.map_injective _ hB.inj (by rw [hr0, Polynomial.map_zero])
   rw [hr, map_zero, mul_zero, add_zero] at key
-  have hpsΔ : ps W s ∈ W.AΔ := RatW.ps_mem W hR.1 s
+  have hpsΔ : ps W s ∈ W.AΔ := _root_.Formalism.MainNotions.UnusedSlot80.KL.ps_mem W hR.1 s
   have hp0 : ((PD.p : ℕ) : O) ≠ 0 := by
     intro h
     apply hB.hp

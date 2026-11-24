@@ -68,12 +68,10 @@ variable {n : ℕ} {ε : Fin n → Bool}
 theorem slm_le_inf (N : ℕ) : (N : WithTop ℕ∞) + 1 ≤ ∞ := by
   first
   | exact_mod_cast (le_top : ((N + 1 : ℕ) : ℕ∞) ≤ ⊤)
-  | (norm_cast; exact le_top)
 
 theorem slm_le_inf' (N : ℕ) : (N : WithTop ℕ∞) ≤ ∞ := by
   first
   | exact_mod_cast (le_top : ((N : ℕ) : ℕ∞) ≤ ⊤)
-  | (norm_cast; exact le_top)
 
 theorem slm_hd_iff {f : ℝ → Matrix (Fin n) (Fin n) ℂ} {f' : Matrix (Fin n) (Fin n) ℂ} {s : ℝ} :
     HasDerivAt f f' s ↔ ∀ i j, HasDerivAt (fun t => f t i j) (f' i j) s := by
@@ -137,7 +135,7 @@ def slmG (C : ι → Y →L[ℝ] ℝ) (fd : X →L[ℝ] Y) (w : ι → E) : X �
 
 theorem slmG_apply (C : ι → Y →L[ℝ] ℝ) (fd : X →L[ℝ] Y) (w : ι → E) (W : X) :
     slmG C fd w W = ∑ i, (C i (fd W)) • w i := by
-  simp [slmG, ContinuousLinearMap.sum_apply]
+  simp [slmG]
 
 theorem slmG_cd {V : Set X} (hV : IsOpen V) {γ : X → Y} (hγ : ContDiffOn ℝ ∞ γ V)
     (C : ι → Y →L[ℝ] ℝ) {N : ℕ} {w : ι → X → E} (hw : ∀ i, ContDiffOn ℝ N (w i) V) :
@@ -146,13 +144,10 @@ theorem slmG_cd {V : Set X} (hV : IsOpen V) {γ : X → Y} (hγ : ContDiffOn ℝ
   unfold slmG
   first
   | exact ContDiffOn.sum fun i _ => (contDiffOn_const.clm_comp hfd).smulRight (hw i)
-  | simp only [ContinuousLinearMap.sum_apply]
 
 theorem contDiffOn_zero_of_continuousOn {V : Set X} {f : X → E} (h : ContinuousOn f V) : ContDiffOn ℝ ((0 : ℕ) : WithTop ℕ∞) f V := by
   first
   | exact contDiffOn_zero.mpr h
-  | (rw [Nat.cast_zero]; exact contDiffOn_zero.mpr h)
-  | (simp only [Nat.cast_zero, CharP.cast_eq_zero]; exact contDiffOn_zero.mpr h)
 
 theorem slm_gen_hD {V : Set X} (hV : IsOpen V) {γ : X → Y} (hγ : ContDiffOn ℝ ∞ γ V)
     (C : ι → Y →L[ℝ] ℝ) {A : Type*} (c : ι → X → ℂ) (hc : ∀ i, ContDiffOn ℝ ∞ (c i) V)
@@ -264,8 +259,7 @@ theorem slmG_mat_apply (γ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin 
       ∑ a, ∑ b, ((m q * fderiv ℝ γ q W) a b) • v a b := by
   refine (slmG_apply (Y := Matrix (Fin n) (Fin n) ℂ) slmC (fderiv ℝ γ q) _ W).trans ?_
   simp only [Fintype.sum_prod_type, Fintype.sum_bool, slmC, slmc, ↓reduceIte, Bool.false_eq_true,
-    ContinuousLinearMap.coe_comp', Function.comp_apply, slmEnt_apply, Complex.reCLM_apply,
-    Complex.imCLM_apply, Matrix.mul_apply, Finset.sum_smul]
+    Matrix.mul_apply, Finset.sum_smul]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ =>
     Finset.sum_congr rfl fun k _ => ?_
   rw [← re_mul_add_im_mul_I (fderiv ℝ γ q W k b) (m q a k)]

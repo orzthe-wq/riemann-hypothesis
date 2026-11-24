@@ -1,12 +1,10 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.BlowOfBl
-public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.CoordBC
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.PresBC
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -29,7 +27,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,7 +40,95 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.Tactic.Lemma
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.CoordBC, Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.BlowBC
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.CoordBC =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.CoordBC", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.BlowOfBl\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory Limits AlgebraicGeometry UpperTheory.Gal.DifferentialFormSections ReciprocityTheory.ChartRestriction.G.Geo.Tor CrystallineSemistableComparison CrystallineSemistableComparison.Onto
+
+namespace UpperTheory.Gal.KunnethLefschetz.G
+
+private theorem etale_pushout {K K' B B' : Type} [CommRing K] [CommRing K'] [CommRing B] [CommRing B']
+    (φ : K →+* K') (s : K →+* B) (s' : K' →+* B') (t : B →+* B')
+    (po : IsPushout (CommRingCat.ofHom φ) (CommRingCat.ofHom s) (CommRingCat.ofHom s') (CommRingCat.ofHom t))
+    (σ : Type) (x : σ → B) (hE : (MvPolynomial.eval₂Hom s x).Etale) :
+    (MvPolynomial.eval₂Hom s' fun i => t (x i)).Etale := by
+  have hl : IsPushout (CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial σ K)) (CommRingCat.ofHom φ)
+      (CommRingCat.ofHom (MvPolynomial.map φ : MvPolynomial σ K →+* MvPolynomial σ K'))
+      (CommRingCat.ofHom (MvPolynomial.C : K' →+* MvPolynomial σ K')) := by
+    letI := φ.toAlgebra
+    letI : Algebra (MvPolynomial σ K) (MvPolynomial σ K') := MvPolynomial.algebraMvPolynomial
+    exact ((CommRingCat.isPushout_iff_isPushout (R := K) (S := MvPolynomial σ K) (R' := K')
+      (S' := MvPolynomial σ K')).mpr inferInstance).flip
+  have e1 : CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial σ K) ≫
+      CommRingCat.ofHom (MvPolynomial.eval₂Hom s x) = CommRingCat.ofHom s := by
+    ext a
+    simp
+  have e2 : CommRingCat.ofHom (MvPolynomial.C : K' →+* MvPolynomial σ K') ≫
+      CommRingCat.ofHom (MvPolynomial.eval₂Hom s' fun i => t (x i)) = CommRingCat.ofHom s' := by
+    ext a
+    simp
+  have big : IsPushout (CommRingCat.ofHom (MvPolynomial.C : K →+* MvPolynomial σ K) ≫
+      CommRingCat.ofHom (MvPolynomial.eval₂Hom s x)) (CommRingCat.ofHom φ) (CommRingCat.ofHom t)
+      (CommRingCat.ofHom (MvPolynomial.C : K' →+* MvPolynomial σ K') ≫
+        CommRingCat.ofHom (MvPolynomial.eval₂Hom s' fun i => t (x i))) := by
+    rw [e1, e2]
+    exact po.flip
+  have hw : ∀ a, t (s a) = s' (φ a) := fun a => by
+    have := congrArg (fun f => f.hom a) po.w
+    simpa using this.symm
+  have p : CommRingCat.ofHom (MvPolynomial.eval₂Hom s x) ≫ CommRingCat.ofHom t =
+      CommRingCat.ofHom (MvPolynomial.map φ : MvPolynomial σ K →+* MvPolynomial σ K') ≫
+        CommRingCat.ofHom (MvPolynomial.eval₂Hom s' fun i => t (x i)) := by
+    ext1
+    apply MvPolynomial.ringHom_ext
+    · intro a
+      simp [hw]
+    · intro i
+      simp
+  have r := big.of_left p hl
+  have hP : (RingHom.toMorphismProperty fun {R S} [CommRing R] [CommRing S] (f : R →+* S) =>
+      f.Etale).IsStableUnderCobaseChange :=
+    RingHom.isStableUnderCobaseChange_toMorphismProperty_iff.mpr RingHom.Etale.isStableUnderBaseChange
+  exact MorphismProperty.IsStableUnderCobaseChange.of_isPushout
+    (P := RingHom.toMorphismProperty fun {R S} [CommRing R] [CommRing S] (f : R →+* S) => f.Etale)
+    r.flip hE
+
+theorem coordBC : UpperTheory.Gal.KunnethLefschetz.G.CoordBC := by
+  intro K K' _ _ φ Z Z' q q' a hpb V hV σ x hE
+  haveI : IsAffineHom a := MorphismProperty.of_isPullback (P := @IsAffineHom) hpb.flip inferInstance
+  have hU : IsAffineOpen (a ⁻¹ᵁ V) := hV.preimage a
+  refine ⟨hU, ?_⟩
+  have hUY : a ⁻¹ᵁ V = a ⁻¹ᵁ V ⊓ q' ⁻¹ᵁ ⊤ := by simp
+  have h1 : (⊤ : (Spec (CommRingCat.of K')).Opens) ≤ Spec.map (CommRingCat.ofHom φ) ⁻¹ᵁ ⊤ := le_top
+  have h2 : V ≤ q ⁻¹ᵁ ⊤ := le_top
+  have hI := isIso_pushoutSection_of_isAffineOpen hpb h1 h2 hUY (isAffineOpen_top _) (isAffineOpen_top _) hV
+  have sq := ((isIso_pushoutSection_iff hpb h1 h2 hUY).mp hI).flip
+  have sq' : IsPushout (CommRingCat.ofHom φ) (CommRingCat.ofHom (Pb.strV q V))
+      (CommRingCat.ofHom (Pb.strV q' (a ⁻¹ᵁ V))) (CommRingCat.ofHom (Scheme.Hom.app a V).hom) := by
+    refine sq.of_iso (Scheme.ΓSpecIso _) (Scheme.ΓSpecIso _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_
+    · rw [← Scheme.ΓSpecIso_naturality]
+      simp [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
+    · simp [Pb.strV]
+    · simp [Pb.strV]
+    · simp [Scheme.Hom.app_eq_appLE]
+  exact etale_pushout φ (Pb.strV q V) (Pb.strV q' (a ⁻¹ᵁ V)) (Scheme.Hom.app a V).hom sq' σ x hE
+
+end UpperTheory.Gal.KunnethLefschetz.G
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.CoordBC =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.BlowBC =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.BlowBC", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.BlowOfBl\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.CoordBC\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.PresBC\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -97,7 +183,7 @@ private lemma loc_pb (D : E.LineData Y) (c : Y' ⟶ Y) (h : sSup (Pb.𝒱D D) = 
 
 private lemma topIso_nat (c : Y' ⟶ Y) (C : Y.Opens) :
     c.app C ≫ (c ⁻¹ᵁ C).topIso.inv = C.topIso.inv ≫ (c ∣_ C).appTop := by
-  simp [Scheme.Hom.appTop, morphismRestrict_app, Scheme.Opens.topIso_inv]
+  simp [Scheme.Hom.appTop, Scheme.Opens.topIso_inv]
   rw [Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map]
 
 private lemma eqn_pb {π : Y ⟶ Z} {π' : Y' ⟶ Z'} {a : Z' ⟶ Z} {c : Y' ⟶ Y} (h : IsPullback c π' π a) (V : Z.Opens)
@@ -264,3 +350,7 @@ theorem blowBC : BlowBC := by
       exact eqn_pb hc _ _ _ _ _ }⟩
 
 end UpperTheory.Gal.KunnethLefschetz.G
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.KunnethLefschetz.EtaleCharts.PolynomialChartSpans.BlowBC =====

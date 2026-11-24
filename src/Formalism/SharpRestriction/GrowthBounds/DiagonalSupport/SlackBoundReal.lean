@@ -59,16 +59,14 @@ variable {n' r : ℕ} [NeZero n'] (Fr : Frames n' r)
 
 theorem llPos_mem (j : ℤ) (l : ℕ) (hl : l < (Fr.LLset j).card) : llPos Fr j l ∈ Fr.LLset j := by
   unfold llPos
-  have hlen : l < ((Fr.LLset j).sort (· ≤ ·)).length := by rw [Finset.length_sort]; exact hl
-  rw [List.getD_eq_getElem _ _ hlen]
-  exact (Finset.mem_sort _).mp (List.getElem_mem hlen)
+  rw [List.getD_eq_getElem _ _ (by rw [Finset.length_sort]; exact hl)]
+  exact (Finset.mem_sort _).mp (List.getElem_mem (by rw [Finset.length_sort]; exact hl))
 
 theorem llPos_inj (j : ℤ) (l l' : ℕ) (hl : l < (Fr.LLset j).card) (hl' : l' < (Fr.LLset j).card)
     (h : llPos Fr j l = llPos Fr j l') : l = l' := by
   unfold llPos at h
-  have h1 : l < ((Fr.LLset j).sort (· ≤ ·)).length := by rw [Finset.length_sort]; exact hl
-  have h2 : l' < ((Fr.LLset j).sort (· ≤ ·)).length := by rw [Finset.length_sort]; exact hl'
-  rw [List.getD_eq_getElem _ _ h1, List.getD_eq_getElem _ _ h2] at h
+  rw [List.getD_eq_getElem _ _ (by rw [Finset.length_sort]; exact hl),
+      List.getD_eq_getElem _ _ (by rw [Finset.length_sort]; exact hl')] at h
   exact (List.Nodup.getElem_inj_iff (Finset.sort_nodup _ _)).mp h
 
 theorem mem_LLset (j x : ℤ) : x ∈ Fr.LLset j ↔
@@ -265,9 +263,7 @@ theorem lg_nonneg (p r n : ℕ) (hp : 2 ≤ p) (hr : 1 ≤ r) : 0 ≤ lg p r n :
   unfold lg
   have hp1 : (1 : ℝ) < p := by exact_mod_cast hp
   have hx : (1 : ℝ) ≤ (n : ℝ) + r := by
-    have : (1 : ℝ) ≤ r := by exact_mod_cast hr
-    have : (0 : ℝ) ≤ n := Nat.cast_nonneg n
-    linarith
+    exact_mod_cast (show 1 ≤ n + r by omega)
   have := Real.logb_nonneg hp1 hx
   linarith
 
@@ -280,7 +276,6 @@ theorem geom_inj_le {ι : Type} [Fintype ι] (t : ι → ℕ) (ht : Function.Inj
   rw [← tsum_geometric_of_lt_one h0 h1]
   first
     | exact hs.sum_le_tsum _ (fun i _ => pow_nonneg h0 i)
-    | exact sum_le_tsum _ (fun i _ => pow_nonneg h0 i) hs
 
 end Reals
 
@@ -302,14 +297,21 @@ theorem sizes_le (Dt : SignedChainData p O r J) (N k : ℕ) (a : ℝ) (hp : 2 �
   have hcardR : (Fintype.card (TL J Dt.nL r) : ℝ) ≤ N := by exact_mod_cast hcard
   have hN0 : (0 : ℝ) ≤ N := Nat.cast_nonneg N
   have ha0 : (0 : ℝ) < a := by linarith
-  have h4 : 4 ≤ a ^ 2 := by nlinarith
+  have h4 : 4 ≤ a ^ 2 := by
+    calc (4 : ℝ) = 2 ^ 2 := by norm_num
+      _ ≤ a ^ 2 := pow_le_pow_left₀ (by norm_num) ha2 2
   have ha3 : 4 * a ≤ a ^ 3 := by
-    have := mul_le_mul_of_nonneg_left h4 ha0.le
-    nlinarith
+    calc 4 * a = a * 4 := by ring
+      _ ≤ a * a ^ 2 := mul_le_mul_of_nonneg_left h4 ha0.le
+      _ = a ^ 3 := by ring
   have ha3' : a ^ 2 + a ≤ a ^ 3 := by
-    have h5 : a ≤ a ^ 2 - a := by nlinarith
-    have := mul_le_mul_of_nonneg_left h5 ha0.le
-    nlinarith
+    have h5 : a + 1 ≤ a ^ 2 := by
+      calc a + 1 ≤ 2 * a := by linarith
+        _ ≤ a * a := mul_le_mul_of_nonneg_right ha2 ha0.le
+        _ = a ^ 2 := by ring
+    calc a ^ 2 + a = (a + 1) * a := by ring
+      _ ≤ a ^ 2 * a := mul_le_mul_of_nonneg_right h5 ha0.le
+      _ = a ^ 3 := by ring
   have hlgd : ∀ x, lg p r (Dt.d x) ≤ 4 * Real.logb p a := by
     intro x
     apply lg_le_four p r _ a hp hr hpa
@@ -327,15 +329,24 @@ theorem sizes_le (Dt : SignedChainData p O r J) (N k : ℕ) (a : ℝ) (hp : 2 �
       have h6 : (Fintype.card (TL J Dt.nL r) : ℝ) * (2 * a) ≤ N * (2 * a) :=
         mul_le_mul_of_nonneg_right hcardR (by linarith)
       have h7 : 4 * (N : ℝ) * a ≤ a * a := mul_le_mul_of_nonneg_right h4N ha0.le
-      nlinarith
+      calc 2 * ((∑ x, Dt.d x : ℕ) : ℝ)
+          ≤ 2 * ((Fintype.card (TL J Dt.nL r) : ℝ) * (2 * a)) := by linarith
+        _ ≤ 2 * (N * (2 * a)) := by linarith
+        _ = 4 * (N : ℝ) * a := by ring
+        _ ≤ a * a := h7
+        _ = a ^ 2 := by ring
     linarith
   have heP0 : 0 ≤ Dt.eP := by
     unfold SignedChainData.eP
     exact mul_nonneg (by positivity) (lg_nonneg p r _ hp hr)
   have heP : Dt.eP ≤ 4 * (k : ℝ) ^ 2 * Real.logb p a := by
     unfold SignedChainData.eP
-    have : (r : ℝ) ^ 2 ≤ (k : ℝ) ^ 2 := by nlinarith
-    nlinarith [lg_nonneg p r (2 * ∑ x, Dt.d x) hp hr]
+    have hrk2 : (r : ℝ) ^ 2 ≤ (k : ℝ) ^ 2 :=
+      pow_le_pow_left₀ (by linarith) hrkR 2
+    calc (r : ℝ) ^ 2 * lg p r (2 * ∑ x, Dt.d x)
+        ≤ (k : ℝ) ^ 2 * (4 * Real.logb p a) :=
+          mul_le_mul hrk2 hlgS (lg_nonneg p r _ hp hr) (by positivity)
+      _ = 4 * (k : ℝ) ^ 2 * Real.logb p a := by ring
   have hkp0 : 0 ≤ Dt.kp := by
     unfold SignedChainData.kp kap
     exact Finset.sum_nonneg (fun x _ => mul_nonneg (by positivity) (lg_nonneg p r _ hp hr))
@@ -348,7 +359,7 @@ theorem sizes_le (Dt : SignedChainData p O r J) (N k : ℕ) (a : ℝ) (hp : 2 �
           mul_le_mul_of_nonneg_right hcardR (mul_nonneg (by linarith) (by linarith))
       _ = (4 * N * Real.logb p a) * (k : ℝ) := by ring
       _ ≤ (4 * N * Real.logb p a) * (k : ℝ) ^ 2 :=
-          mul_le_mul_of_nonneg_left (by nlinarith) (mul_nonneg (mul_nonneg (by norm_num) hN0) (by linarith))
+          mul_le_mul_of_nonneg_left (le_self_pow₀ hk1 (by norm_num)) (mul_nonneg (mul_nonneg (by norm_num) hN0) (by linarith))
       _ = 4 * N * (k : ℝ) ^ 2 * Real.logb p a := by ring
   have hcTL : (Fintype.card (TL J Dt.nL r) : ℝ) = ∑ j : ZMod J, ((Dt.nL j : ℝ) + r) := by
     rw [card_TL_eq]; push_cast; rfl
@@ -364,7 +375,7 @@ theorem sizes_le (Dt : SignedChainData p O r J) (N k : ℕ) (a : ℝ) (hp : 2 �
           have : ∑ j : ZMod J, ((Dt.nL j : ℝ) + r) ≥ ∑ _j : ZMod J, (r : ℝ) :=
             Finset.sum_le_sum (fun j _ => by have := Nat.cast_nonneg (α := ℝ) (Dt.nL j); linarith)
           simp only [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul] at this
-          nlinarith
+          linarith [Nat.cast_nonneg (α := ℝ) J]
       _ ≤ N := by rw [← hcTL]; exact hcardR
   refine ⟨hkp0, ?_⟩
   unfold SignedChainData.Dm SignedChainData.Dl
@@ -373,7 +384,7 @@ theorem sizes_le (Dt : SignedChainData p O r J) (N k : ℕ) (a : ℝ) (hp : 2 �
     mul_le_mul hnch heP heP0 hN0
   have hD2 : (J : ℝ) * ((r : ℝ) - 1) * Dt.eP ≤ N * (4 * (k : ℝ) ^ 2 * Real.logb p a) :=
     mul_le_mul hJr heP heP0 hN0
-  nlinarith
+  linarith
 
 end Sizes
 

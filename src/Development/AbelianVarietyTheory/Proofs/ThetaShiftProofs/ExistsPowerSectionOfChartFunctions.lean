@@ -106,7 +106,7 @@ theorem exists_powerSection_of_chartFunctions (s : L.Sec) : ∃ t : H0 L 1, ∀ 
       (congrArg₂ (· * ·) ((gs_unit (𝟙 X) y _ hy _).trans (congrArg Units.val ?_))
         ((gs_res (𝟙 X) y _ hy _).trans (gs_res (𝟙 X) y (le j) hy.2 _))))))
   refine (gm_linComb L _ _ (𝟙 X) y i j hy.1 hy.2).trans ?_
-  simp [Geo.Tor.trF]
+  simp
 
 theorem mem_basicOpen_iff_gs {U : X.Opens} (f : Γ(X, U)) {x : X} (hx : x ∈ U) :
     x ∈ X.basicOpen f ↔ IsUnit (gs (𝟙 X) x U f) := by

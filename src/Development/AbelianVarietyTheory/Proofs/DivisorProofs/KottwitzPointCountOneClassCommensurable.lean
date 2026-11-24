@@ -1,11 +1,10 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.Divisors.PointSide
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MassMulVolumeCommensurable
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VolEqIdxRatio
 public import Mathlib.GroupTheory.Commensurable
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MassMulVolumeCommensurable
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOpenCompact
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VolConjEqOneOfMassCNeZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -22,8 +21,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -43,11 +40,166 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsRootSelectionUnitaryRankOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsCyclotomicExtensionQI
 import Development.AbelianVarietyTheory.Definitions.Divisors.TwOrbMEqTwOrbUOfNormal
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerMassMapConj, Development.AbelianVarietyTheory.Proofs.DivisorProofs.VolConjEqOneOfMassCNeZero, Development.AbelianVarietyTheory.Proofs.DivisorProofs.KottwitzPointCountOneClassCommensurable
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerMassMapConj =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerMassMapConj", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.PointSide\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open scoped Classical
+
+namespace GlobalTheory.LKCount
+
+section ConjInvariance
+
+variable {H : Type} [Group H]
+
+theorem mem_map_conj_iff (B : Subgroup H) (x y : H) :
+    y ∈ B.map (MulAut.conj x).toMonoidHom ↔ x⁻¹ * y * x ∈ B := by
+  constructor
+  · rintro ⟨z, hz, rfl⟩
+    simpa [mul_assoc] using hz
+  · intro hy
+    exact ⟨x⁻¹ * y * x, hy, by simp [mul_assoc]⟩
+
+theorem map_conj_mul (B : Subgroup H) (x s : H) :
+    (B.map (MulAut.conj s).toMonoidHom).map (MulAut.conj x).toMonoidHom =
+      B.map (MulAut.conj (x * s)).toMonoidHom := by
+  ext y
+  simp only [mem_map_conj_iff, mul_inv_rev]
+  simp [mul_assoc]
+
+def stabInv (A B : Subgroup H) (x : H) : ℚ :=
+  ((Nat.card (A ⊓ B.map (MulAut.conj x).toMonoidHom : Subgroup H) : ℕ) : ℚ)⁻¹
+
+theorem stabInv_mul (A B : Subgroup H) (x : H) {a b : H} (ha : a ∈ A) (hb : b ∈ B) :
+    stabInv A B (a * x * b) = stabInv A B x := by
+  unfold stabInv
+  have e : (A ⊓ B.map (MulAut.conj (a * x * b)).toMonoidHom : Subgroup H) =
+      (A ⊓ B.map (MulAut.conj x).toMonoidHom : Subgroup H).map (MulAut.conj a).toMonoidHom := by
+    ext y
+    simp only [Subgroup.mem_inf, mem_map_conj_iff]
+    constructor
+    · rintro ⟨hyA, hyB⟩
+      refine ⟨A.mul_mem (A.mul_mem (A.inv_mem ha) hyA) ha, ?_⟩
+      have := B.mul_mem (B.mul_mem hb hyB) (B.inv_mem hb)
+      convert this using 1
+      group
+    · rintro ⟨hzA, hzB⟩
+      refine ⟨?_, ?_⟩
+      · have := A.mul_mem (A.mul_mem ha hzA) (A.inv_mem ha)
+        convert this using 1
+        group
+      · have := B.mul_mem (B.mul_mem (B.inv_mem hb) hzB) hb
+        convert this using 1
+        group
+  rw [e, Nat.card_congr ((A ⊓ B.map (MulAut.conj x).toMonoidHom).equivMapOfInjective _
+    (MulAut.conj a).injective).toEquiv.symm]
+
+theorem stabInv_eq_of_mk_eq (A B : Subgroup H) {x y : H}
+    (h : DoubleCoset.mk A B x = DoubleCoset.mk A B y) : stabInv A B x = stabInv A B y := by
+  obtain ⟨a, ha, b, hb, rfl⟩ := (@DoubleCoset.eq _ _ _ _ _ _).1 h
+  exact (stabInv_mul A B x ha hb).symm
+
+def dcMulRight (A B : Subgroup H) (s : H) :
+    DoubleCoset.Quotient (A : Set H) ((B.map (MulAut.conj s).toMonoidHom : Subgroup H) : Set H) ≃
+      DoubleCoset.Quotient (A : Set H) (B : Set H) :=
+  Quotient.congr (Equiv.mulRight s) (by
+    intro x y
+    rw [← DoubleCoset.eq'', ← DoubleCoset.eq'', DoubleCoset.eq, DoubleCoset.eq]
+    simp only [Equiv.coe_mulRight, mem_map_conj_iff]
+    constructor
+    · rintro ⟨a, ha, k, hk, rfl⟩
+      exact ⟨a, ha, s⁻¹ * k * s, hk, by simp [mul_assoc]⟩
+    · rintro ⟨a, ha, k, hk, e⟩
+      refine ⟨a, ha, s * k * s⁻¹, by simpa [mul_assoc] using hk, ?_⟩
+      have := congrArg (· * s⁻¹) e
+      simpa [mul_assoc] using this)
+
+theorem dcMulRight_mk (A B : Subgroup H) (s x : H) :
+    dcMulRight A B s (DoubleCoset.mk A (B.map (MulAut.conj s).toMonoidHom) x) =
+      DoubleCoset.mk A B (x * s) := rfl
+
+theorem finsum_stabInv_conj (A B : Subgroup H) (s : H) :
+    (∑ᶠ q : DoubleCoset.Quotient (A : Set H) ((B.map (MulAut.conj s).toMonoidHom : Subgroup H) : Set H),
+      stabInv A (B.map (MulAut.conj s).toMonoidHom) (Quotient.out q)) =
+    ∑ᶠ q : DoubleCoset.Quotient (A : Set H) (B : Set H), stabInv A B (Quotient.out q) := by
+  rw [← finsum_comp_equiv (dcMulRight A B s)]
+  refine finsum_congr fun q => ?_
+  unfold stabInv
+  rw [map_conj_mul]
+  refine stabInv_eq_of_mk_eq A B ?_
+  rw [← dcMulRight_mk, DoubleCoset.out_eq', DoubleCoset.out_eq']
+
+end ConjInvariance
+
+theorem massC_map_conj : ∀ {G : Type} [Group G] (Γ' T C : Subgroup G) (t : G), t ∈ T → C ≤ T →
+    massC Γ' T (C.map (MulAut.conj t).toMonoidHom) = massC Γ' T C := by
+  intro G _ Γ' T C t ht _
+  have hsub : (C.map (MulAut.conj t).toMonoidHom).subgroupOf T =
+      (C.subgroupOf T).map (MulAut.conj (⟨t, ht⟩ : T)).toMonoidHom := by
+    ext y
+    rw [Subgroup.mem_subgroupOf, mem_map_conj_iff, mem_map_conj_iff, Subgroup.mem_subgroupOf]
+    simp
+  unfold massC
+  rw [hsub]
+  exact finsum_stabInv_conj _ _ _
+
+end GlobalTheory.LKCount
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerMassMapConj =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.VolConjEqOneOfMassCNeZero =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.VolConjEqOneOfMassCNeZero", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.PointSide\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MassMulVolumeCommensurable\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerMassMapConj\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open GlobalTheory.LKCount
+
+namespace GlobalTheory.LKCount
+
+theorem vol_conj_eq_one_of_massC_ne_zero {G : Type} [Group G] (Γ' T C : Subgroup G) (t : G) (ht : t ∈ T)
+    (hC : C ≤ T) (h1 : C.relIndex (C.map (MulAut.conj t).toMonoidHom) ≠ 0)
+    (h2 : (C.map (MulAut.conj t).toMonoidHom).relIndex C ≠ 0)
+    (hf : ∀ s ∈ T, ((Γ' ⊓ C.map (MulAut.conj s).toMonoidHom : Subgroup G) : Set G).Finite)
+    (hf' : ∀ s ∈ T, ((Γ' ⊓ (C.map (MulAut.conj t).toMonoidHom).map (MulAut.conj s).toMonoidHom :
+      Subgroup G) : Set G).Finite)
+    (hm : massC Γ' T C ≠ 0) :
+    vol C (C.map (MulAut.conj t).toMonoidHom) = 1 := by
+  have hC' : C.map (MulAut.conj t).toMonoidHom ≤ T := by
+    rintro x ⟨c, hc, rfl⟩
+    have hcT := hC hc
+    simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]
+    exact T.mul_mem (T.mul_mem ht hcT) (T.inv_mem ht)
+  have hchange := _root_.GlobalTheory.LKCount.MassChange.massC_mul_vol Γ' T C (C.map (MulAut.conj t).toMonoidHom) hC hC' h1 h2 hf hf'
+  rw [_root_.GlobalTheory.LKCount.massC_map_conj Γ' T C t ht hC] at hchange
+  have := mul_left_cancel₀ hm (hchange.trans (mul_one _).symm)
+  exact this
+
+end GlobalTheory.LKCount
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.VolConjEqOneOfMassCNeZero =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.KottwitzPointCountOneClassCommensurable =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.KottwitzPointCountOneClassCommensurable", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VolEqIdxRatio\npublic import Mathlib.GroupTheory.Commensurable\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MassMulVolumeCommensurable\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOpenCompact\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VolConjEqOneOfMassCNeZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Divisors.ExistsRootSelectionUnitaryRankOne\nimport Development.AbelianVarietyTheory.Definitions.Divisors.IsCyclotomicExtensionQI\nimport Development.AbelianVarietyTheory.Definitions.Divisors.TwOrbMEqTwOrbUOfNormal\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount
@@ -120,9 +272,9 @@ theorem commensurable_prod (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
   rw [GlobalTheory.LKCountPoint.prod_map_conj]
   refine ⟨?_, ?_⟩
   · apply Subgroup.isFiniteRelIndex_iff_relIndex_ne_zero.mpr
-    rw [GlobalTheory.LKCountPoint.relIndex_prod]; exact mul_ne_zero (h₁ x.1).1.relIndex_ne_zero (h₂ x.2).1.relIndex_ne_zero
+    rw [_root_.GlobalTheory.BCT.OrbProd.relIndex_prod_prod]; exact mul_ne_zero (h₁ x.1).1.relIndex_ne_zero (h₂ x.2).1.relIndex_ne_zero
   · apply Subgroup.isFiniteRelIndex_iff_relIndex_ne_zero.mpr
-    rw [GlobalTheory.LKCountPoint.relIndex_prod]; exact mul_ne_zero (h₁ x.1).2.relIndex_ne_zero (h₂ x.2).2.relIndex_ne_zero
+    rw [_root_.GlobalTheory.BCT.OrbProd.relIndex_prod_prod]; exact mul_ne_zero (h₁ x.1).2.relIndex_ne_zero (h₂ x.2).2.relIndex_ne_zero
 
 end Prod
 
@@ -220,7 +372,7 @@ theorem core_count_of_commensurable (Γ' T K : Subgroup G) (F : G → ℂ) (hΓT
   have hvol : ∀ y, vol (T ⊓ K) (T ⊓ K.map (MulAut.conj y).toMonoidHom) ≠ 0 := fun y => by
     unfold vol; exact div_ne_zero (by exact_mod_cast hri1 y) (by exact_mod_cast hri2 y)
   refine ⟨?_, ?_⟩
-  · rw [GlobalTheory.LKCountPoint.fold_sum Γ' T K F hΓT hF hfin hsupp, mul_finsum]
+  · rw [_root_.GlobalTheory.finsum_fold_intermediate Γ' T K F hΓT hF hfin hsupp, mul_finsum]
     refine finsum_congr fun y => ?_
     have hv' : ((vol (T ⊓ K) (T ⊓ K.map (MulAut.conj (Quotient.out y)).toMonoidHom) : ℚ) : ℂ) ≠ 0 := by
       exact_mod_cast hvol (Quotient.out y)
@@ -230,7 +382,7 @@ theorem core_count_of_commensurable (Γ' T K : Subgroup G) (F : G → ℂ) (hΓT
   · rintro ⟨q₀, hq₀⟩ t ht
     have hmC : massC Γ' T (T ⊓ K) ≠ 0 := by
       rw [← hmc (Quotient.out q₀)]
-      exact mul_ne_zero (GlobalTheory.LKCountPoint.massC_ne_zero_of_ne Γ' T K F hΓT hF hfin hsupp _ hq₀) (hvol _)
+      exact mul_ne_zero (_root_.GlobalTheory.massC_ne_zero_of_support Γ' T K F hΓT hF hfin hsupp _ hq₀) (hvol _)
     refine GlobalTheory.LKCount.vol_conj_eq_one_of_massC_ne_zero Γ' T (T ⊓ K) t ht inf_le_left ?_ ?_ hfinC ?_ hmC
     · rw [GlobalTheory.LKCountPoint.map_conj_inf_of_mem ht K]; exact hri1 t
     · rw [GlobalTheory.LKCountPoint.map_conj_inf_of_mem ht K]; exact hri2 t
@@ -322,7 +474,11 @@ theorem pointSum_eq_pointSide_of_commensurable : ∀ {Γ G₁ G₂ : Type} [Grou
     rw [hPS]
     unfold pointSide orbK orbC
     rcases hor with h | h
-    · simp [hF0, h]
-    · simp [hF0, h]
+    · simp [h]
+    · simp [h]
 
 end GlobalTheory.LKCountComm
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.KottwitzPointCountOneClassCommensurable =====

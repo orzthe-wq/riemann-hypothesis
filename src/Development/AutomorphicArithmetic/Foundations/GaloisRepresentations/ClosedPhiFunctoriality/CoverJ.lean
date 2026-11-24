@@ -2,11 +2,15 @@ module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ClosedPhiFunctoriality.IntBasisAlt
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivariantTransitionMatrixCoverStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteExtensionEntriesOfCompactRepStatement
+public import Mathlib.NumberTheory.Padics.Complex
+public import Mathlib.Topology.Instances.Matrix
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFiniteExtensionEntriesOfCompactRep
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLatticeLayerCoverBasisModPowStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPadicIntSpanImageLatticeRegularStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStableSpanningFinsetMatricesStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallTracesDvdSpanImageStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TrivIsCr
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPadicIntSpanImageLatticeRegular
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsStableSpanningFinsetMatrices
+public import Formalism.SharpRestriction.LevelLetterCocycles.DataN
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallTracesDvdSpanImage
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,8 +61,8 @@ namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 theorem coverJ_holds : CoverJ := by
   intro l _ Γ _ _ _ _ a L₀ r hr hss Cl hCl p θ hap
   classical
-  obtain ⟨d, ρ, b, e, hρ, hreads, hind, hbr⟩ := GlobalTheory.T.exists_padicInt_span_image_lattice_regular l Γ a r hr
-  obtain ⟨c, hc⟩ := GlobalTheory.T.small_traces_dvd_span_image l Γ a r hr hss
+  obtain ⟨d, ρ, b, e, hρ, hreads, hind, hbr⟩ := _root_.GlobalTheory.BKLim.exists_zl_span_lattice_reads l Γ a r hr
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.smallTrace_dvd_span l Γ a r hr hss
   obtain ⟨K, hK⟩ := traceL l a d b
   have hl1 : (1 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).one_lt
   have hl0 : (0 : ℝ) < l := by linarith
@@ -70,13 +74,13 @@ theorem coverJ_holds : CoverJ := by
         ∀ g, ∀ x ∈ t, ∃ c' : Matrix (Fin a) (Fin a) (Om l) → ℤ_[l], ((ρ' g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) * x = ∑ y ∈ t, zOm l (c' y) • y) := by
     intro ρ'
     by_cases h : Continuous ρ'
-    · obtain ⟨L, hLf, hL⟩ := GlobalTheory.T.exists_finiteExtension_entries_of_compact_rep l Γ a ρ' h
+    · obtain ⟨L, hLf, hL⟩ := _root_.GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem_of_continuous l Γ a ρ' h
       haveI := hLf
       haveI := L₀.2
       let L' : FinExt l := ⟨L ⊔ L₀.1, inferInstance⟩
       have hL' : ∀ g i j, ((ρ' g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j ∈ L'.1 := fun g i j =>
         (le_sup_left : L ≤ L ⊔ L₀.1) (hL g i j)
-      obtain ⟨t, h1, h2, h3, h4⟩ := GlobalTheory.T.exists_stable_spanning_finset_matrices l Γ a ρ' L' h hL'
+      obtain ⟨t, h1, h2, h3, h4⟩ := _root_.GlobalTheory.exists_stable_spanning_finset l Γ a ρ' L' h hL'
       exact ⟨L', t, fun _ => ⟨le_sup_right, hL', h1, h2, h3, h4⟩⟩
     · exact ⟨L₀, ∅, fun h' => absurd h' h⟩
   choose Lf tf htf using hch
@@ -115,7 +119,7 @@ theorem coverJ_holds : CoverJ := by
           rw [pow_add, inv_pow, inv_pow, mul_assoc, inv_mul_cancel₀ (by positivity), mul_one]
   have hlay : ∀ n, ∃ M₀ : ℕ, ∀ M, M₀ ≤ M → ∃ (d' : ℕ) (ρ' : Γ →* GL (Fin d') ℤ_[l]) (bb : Fin d' → Fin (m n) → Matrix (Fin a) (Fin a) (Om l)) (e' : Fin d' → ℤ_[l]) (P : Matrix (Fin d) (Fin d') ℤ_[l]), Continuous ρ' ∧ (∀ s k i j, bb s k i j ∈ (Lf (ρs n k)).1) ∧ LinearIndependent ℚ_[l] bb ∧ (∀ x : Fin (m n) → Matrix (Fin a) (Fin a) (Om l), (∀ k i j, x k i j ∈ (Lf (ρs n k)).1) → x ∈ Submodule.span ℚ_[l] (Set.range bb)) ∧ (∀ k, Reads ρ' (ρs n k) (fun s => bb s k) e') ∧ (∀ s, bb s ∈ latT (ρs n) (fun k => tf (ρs n k)) M) ∧ (∀ x ∈ latT (ρs n) (fun k => tf (ρs n k)) M, ∃ z : Fin d' → ℤ_[l], x = ∑ s, zOm l (z s) • bb s) ∧ Carries r b (ρs n) (fun k => tf (ρs n k)) M bb P (n + K) ∧ Onto (fun g => ((ρ g : GL (Fin d) ℤ_[l]) : Matrix (Fin d) (Fin d) ℤ_[l])) (fun g => ((ρ' g : GL (Fin d') ℤ_[l]) : Matrix (Fin d') (Fin d') ℤ_[l])) P n ∧ (∀ i, (l : ℤ_[l]) ^ n ∣ (P *ᵥ e' - e) i) ∧ ∀ s, ‖(∑ i, zOm l (P i s) • b i).trace - ∑ k, cs n k * (bb s k).trace‖ ≤ ((l : ℝ) ^ n)⁻¹ := by
     intro n
-    exact GlobalTheory.T.exists_lattice_layer_cover_basis_mod_pow l Γ a r d ρ b e hreads hind hbr c hc n (n + K) (by omega) (hK' n) (m n) (ρs n)
+    exact _root_.GlobalTheory.CovLayer.layer l Γ a r d ρ b e hreads hind hbr c hc n (n + K) (by omega) (hK' n) (m n) (ρs n)
       (fun k => Lf (ρs n k)) (fun k => tf (ρs n k)) (hρsC n) (fun k => (htf _ (hρsC n k)).2.1)
       (fun k => (htf _ (hρsC n k)).2.2.1) (fun k => (htf _ (hρsC n k)).2.2.2.1)
       (fun k => (htf _ (hρsC n k)).2.2.2.2.1) (fun k => (htf _ (hρsC n k)).2.2.2.2.2) (cs n)
@@ -137,7 +141,7 @@ theorem coverJ_holds : CoverJ := by
     simp [ρs, ι]
   have htrans : ∀ n, ∃ f : Matrix (Fin (d' n)) (Fin (d' (n + 1))) ℤ_[l], (∀ g, f * ((ρ' (n + 1) g : GL (Fin (d' (n + 1))) ℤ_[l]) : Matrix (Fin (d' (n + 1))) (Fin (d' (n + 1))) ℤ_[l]) = ((ρ' n g : GL (Fin (d' n)) ℤ_[l]) : Matrix (Fin (d' n)) (Fin (d' n)) ℤ_[l]) * f) ∧ ∀ i j, (l : ℤ_[l]) ^ n ∣ (P n * f - P (n + 1)) i j := by
     intro n
-    exact GlobalTheory.T.exists_equivariant_transition_matrix_cover l Γ a r d b hind (m n) (m (n + 1)) (ρs n) (ρs (n + 1)) (ι n) (hι n)
+    exact _root_.GlobalTheory.CovTrans.transition l Γ a r d b hind (m n) (m (n + 1)) (ρs n) (ρs (n + 1)) (ι n) (hι n)
       (fun k => tf (ρs n k)) (fun k => tf (ρs (n + 1) k)) (fun k => by rw [hι n k]) (M n) (M (n + 1)) (hMmono n)
       (d' n) (d' (n + 1)) (ρ' n) (ρ' (n + 1)) (bb n) (bb (n + 1)) (e' n) (e' (n + 1)) (hind' n) (hreads' n)
       (hreads' (n + 1)) (hmem (n + 1)) (hcoord n) (P n) (P (n + 1)) n (n + K) (n + 1 + K) (by omega) (by omega)

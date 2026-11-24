@@ -64,9 +64,9 @@ theorem eventually_fin_eq_one {F : Type} [Field F] [NumberField F] {ψ : AddChar
     have : pairA F 0 0 = 0 := rfl
     rw [this, AddChar.map_zero_eq_one, sub_self, norm_zero]
     exact one_pos
-  obtain ⟨N, hN, h⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F {α | ‖ψ (pairA F 0 α) - 1‖ < 1}
+  obtain ⟨N, hN, h⟩ := _root_.GlobalTheory.LocalNormBound.main F {α | ‖ψ (pairA F 0 α) - 1‖ < 1}
     ((isOpen_lt hc continuous_const).mem_nhds h0)
-  refine Filter.mem_of_superset (GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds F N hN) ?_
+  refine Filter.mem_of_superset (_root_.GlobalTheory.IntegralNeighbourhoodZero.nsmul_integral_mem_nhds_zero F N hN) ?_
   rintro _ ⟨a, ha, rfl⟩
   refine eq_one_of_pow_near (hψ.2.1 _) fun k => ?_
   have e : pairA F 0 (N • k • a) = k • pairA F 0 (N • a) :=

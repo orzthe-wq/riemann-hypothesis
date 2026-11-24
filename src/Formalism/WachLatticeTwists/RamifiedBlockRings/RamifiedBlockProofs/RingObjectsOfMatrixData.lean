@@ -1,11 +1,12 @@
 module
 
+public import Formalism.WachLatticeTwists.RamifiedBlockRings.Statement
+public import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.LemmaDetPoly
+public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RingDataObjects
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RightIdealImageOfSurjective
 public import Formalism.CharacterColumnKernels.IdempotentNormalForms.IsUnitDetOfConst
 public import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.BridgeDet
-public import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.LemmaDetPoly
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.BurnsideMat
-public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CMemPolyT
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CharpolyRevMap
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.FinrankRangeEq
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.IdempotentImageSurjective
@@ -28,9 +29,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
@@ -41,7 +40,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -59,8 +57,147 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Linter.HaveILetI
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CMemPolyT, Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RingObjectsOfMatrixData
+
+-- ===== clump member: Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CMemPolyT =====
+-- clump-header: {"m": "Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CMemPolyT", "h": "module\n\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.Statement\npublic import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.LemmaDetPoly\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RingDataObjects\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset Classical Polynomial
+
+noncomputable section
+
+namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
+
+open Formalism.NG Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingIdentities
+
+section
+variable {O : Type} [CommRing O] {Xs : Type} (T : Subalgebra O (Xs → O))
+  {d : Type} [Fintype d] [DecidableEq d] {G : Type} [Group G] (r : G →* (Xs → Matrix d d O))
+
+def polyT : Subalgebra O[X] (Xs → O[X]) where
+  carrier := {f | ∀ k, (fun x => (f x).coeff k) ∈ T}
+  mul_mem' := by
+    intro f g hf hg k
+    have h : (fun x => ((f * g) x).coeff k) =
+        ∑ p ∈ Finset.HasAntidiagonal.antidiagonal k, (fun x => (f x).coeff p.1) * (fun x => (g x).coeff p.2) := by
+      funext x; simp [Polynomial.coeff_mul, Finset.sum_apply]
+    rw [h]
+    exact T.sum_mem fun p _ => T.mul_mem (hf _) (hg _)
+  add_mem' := by
+    intro f g hf hg k
+    have h : (fun x => ((f + g) x).coeff k) = (fun x => (f x).coeff k) + fun x => (g x).coeff k := by
+      funext x; simp
+    rw [h]
+    exact T.add_mem (hf k) (hg k)
+  algebraMap_mem' p := by
+    intro k
+    have h : (fun x => ((algebraMap O[X] (Xs → O[X]) p) x).coeff k) =
+        algebraMap O (Xs → O) (p.coeff k) := by
+      funext x; simp
+    rw [h]
+    exact T.algebraMap_mem _
+
+theorem C_mem_polyT {c : Xs → O} (hc : c ∈ T) : (fun x => C (c x)) ∈ polyT T := by
+  show ∀ k, (fun x => (C (c x)).coeff k) ∈ T
+  intro k
+  rcases Nat.eq_zero_or_pos k with rfl | hk
+  · simpa using hc
+  · have h0 : (fun x => (C (c x)).coeff k) = 0 := by
+      funext x
+      simp [Polynomial.coeff_C, hk.ne']
+    rw [h0]
+    exact T.zero_mem
+
+def rPoly : G →* (Xs → Matrix d d O[X]) where
+  toFun g x := (r g x).map C
+  map_one' := by funext x; simp
+  map_mul' g h := by funext x; simp [Matrix.map_mul]
+
+theorem lift_mem {a : Xs → Matrix d d O} (ha : a ∈ tSpan T r) :
+    (fun x => (a x).map C) ∈ tSpan (polyT T) (rPoly r) := by
+  obtain ⟨s, c, hc, rfl⟩ := ha
+  refine ⟨s, fun g x => C (c g x), fun g => C_mem_polyT T (hc g), ?_⟩
+  funext x
+  ext i j
+
+  simp [rPoly, Finset.sum_apply, Matrix.sum_apply, map_sum]
+
+private theorem matrix_charpolyRev_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
+    (M : Matrix d d R) : (M.map f).charpolyRev = M.charpolyRev.map f := by
+  unfold Matrix.charpolyRev
+  rw [← Polynomial.coe_mapRingHom, RingHom.map_det]
+  congr 1
+  ext i j
+  by_cases h : i = j
+  · subst h
+    simp
+  · simp [h]
+
+theorem detT (hG1 : ∀ (g : G) (k : ℕ), (fun x => (Matrix.charpolyRev (r g x)).coeff k) ∈ T)
+    (M : Xs → Matrix d d O[X]) (hM : M ∈ tSpan (polyT T) (rPoly r)) (k : ℕ) :
+    (fun x => (M x).det.coeff k) ∈ T := by
+  have h1 : ∀ (g : G) (k : ℕ), FromT (polyT T) (fun x => (Matrix.charpolyRev (rPoly r g x)).coeff k) := by
+    intro g k
+    refine ⟨fun x => C ((Matrix.charpolyRev (r g x)).coeff k), C_mem_polyT T (hG1 g k), fun x => ?_⟩
+    have hx : rPoly r g x = (r g x).map C := rfl
+    dsimp only
+    rw [hx, matrix_charpolyRev_map, Polynomial.coeff_map]
+    rfl
+  obtain ⟨u, hu, hux⟩ := det_poly_statement O[X] O[X] Xs G d (polyT T) (rPoly r) h1 1 (fun _ => M)
+    (fun _ => hM) (Finsupp.single 0 (Fintype.card d))
+  have key : ∀ x, u x = (M x).det := by
+    intro x
+    have hx := hux x
+    dsimp only at hx
+    rw [Fin.sum_univ_one, Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, mul_comm,
+      MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X_pow] at hx
+    simpa using hx
+  have hfun : (fun x => (M x).det.coeff k) = fun x => (u x).coeff k := by
+    funext x
+    rw [key x]
+  rw [hfun]
+  exact hu k
+
+end
+
+theorem blockPolyT : StatBlockPolyT := by
+  intro O _ X T d _ _ G _ r hG1 e he a ha k
+  have hE : (fun x => (e x).map C) ∈ spanSub (polyT T) (rPoly r) := lift_mem T r he
+  have hA : (fun x => (a x).map C) ∈ spanSub (polyT T) (rPoly r) := lift_mem T r ha
+  have hM : (fun x => (Polynomial.X : O[X]) • (e x).map C - (a x).map C + (1 - e x).map C) ∈
+      spanSub (polyT T) (rPoly r) := by
+    have hq : (fun x => (Polynomial.X : O[X]) • (e x).map C - (a x).map C + (1 - e x).map C) =
+        algebraMap O[X] (X → Matrix d d O[X]) Polynomial.X * (fun x => (e x).map C) -
+          (fun x => (a x).map C) + (1 - fun x => (e x).map C) := by
+      funext x
+      ext i j
+      by_cases h : i = j
+      · subst h
+        simp [Algebra.algebraMap_eq_smul_one]
+      · simp [Algebra.algebraMap_eq_smul_one, h]
+    rw [hq]
+    exact Subalgebra.add_mem _ (Subalgebra.sub_mem _
+      (Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) hE) hA)
+      (Subalgebra.sub_mem _ (Subalgebra.one_mem _) hE)
+  exact detT T r hG1 _ hM k
+
+end Formalism.RepresentationBoundsCohomology.ringDataObjects
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CMemPolyT =====
+
+-- ===== clump member: Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RingObjectsOfMatrixData =====
+-- clump-header: {"m": "Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RingObjectsOfMatrixData", "h": "module\n\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RightIdealImageOfSurjective\npublic import Formalism.CharacterColumnKernels.IdempotentNormalForms.IsUnitDetOfConst\npublic import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.BridgeDet\npublic import Formalism.TruncatedSeriesCounting.TruncatedSeriesProofs.LemmaDetPoly\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.BurnsideMat\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CMemPolyT\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.CharpolyRevMap\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.FinrankRangeEq\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.IdempotentImageSurjective\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RankDiagIte\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Finset Classical
@@ -77,7 +214,7 @@ theorem rank_block {K : Type*} [Field K] {d : Type} [Fintype d] [DecidableEq d] 
   let P : Matrix {a // bl a = k} d K := Matrix.of fun i a => if (i : d) = a then (1 : K) else 0
   have h1 : M.toSquareBlock bl k = P * M * P.transpose := by
     ext i j
-    simp [P, Matrix.mul_apply, Matrix.toSquareBlock_def, Matrix.transpose_apply]
+    simp [P, Matrix.mul_apply, Matrix.toSquareBlock_def]
   have h2 : M = P.transpose * M.toSquareBlock bl k * P := by
     ext a b
     simp only [P, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Matrix.toSquareBlock_def]
@@ -131,7 +268,7 @@ theorem eDiag' (A : Type) [CommRing A] (d : Type) [Fintype d] [DecidableEq d] (S
     by_cases hab : a = b
     · subst hab
       by_cases hs : S a <;> simp [hs]
-    · simp [Matrix.diagonal_apply, hab]
+    · simp [hab]
   have hp : ∀ l : List ℕ, (Matrix.diagonal fun a => if S a then (1 : A) else 0) *
       (l.map fun i => Matrix.diagonal fun a => if S a then β a - α i else 0).prod =
       Matrix.diagonal fun a => if S a then (l.map fun i => β a - α i).prod else 0 := by
@@ -653,3 +790,7 @@ theorem ring_objects_of_matrix_data (hEM : StatEMat) (hSP : StatSplitPts) (hKO :
     · exact hEblk c1 δO (fun a ha => hval1 a (by rw [ha]))
 
 end Formalism.RepresentationBoundsCohomology.ringDataObjects
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.WachLatticeTwists.RamifiedBlockRings.RamifiedBlockProofs.RingObjectsOfMatrixData =====

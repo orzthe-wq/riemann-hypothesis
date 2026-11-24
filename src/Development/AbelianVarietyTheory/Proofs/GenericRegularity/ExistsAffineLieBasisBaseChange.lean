@@ -326,7 +326,7 @@ theorem exists_affine_lieBasis_baseChange (X : Scheme.{0}) (G : Over X) [GrpObj 
     ((isGrpPullback_pullback G₀ (ReciprocityTheory.ChartRestriction.G.Chart.fB Γ(X, U) R')).comp hφ₀)
   refine ⟨fun j => ReciprocityTheory.ChartRestriction.G.Chart.tvec (x := y') (Pi.single j 1) ≫ a.inv, fun j => ?_, ?_⟩
   · have s : (algebraMap Γ(X, U) R' ∘ Pi.single j (1 : Γ(X, U)) : Fin n → R') = Pi.single j 1 := by
-      funext i; by_cases hij : i = j <;> simp [hij, Pi.single_apply]
+      funext i; by_cases hij : i = j <;> simp [hij]
     have := e' (Pi.single j 1)
     rw [s] at this
     rw [← haφ, ← Category.assoc, ← Over.comp_left, Category.assoc, a.inv_hom_id, Category.comp_id,

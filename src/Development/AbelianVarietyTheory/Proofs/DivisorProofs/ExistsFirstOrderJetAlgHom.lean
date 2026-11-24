@@ -76,7 +76,7 @@ def jet {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {W : Opens E} {p :
   map_zero' := by
     ext <;> simp
   map_add' f g := by
-    ext <;> simp <;> ring
+    ext <;> simp
   commutes' c := by
     ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
 

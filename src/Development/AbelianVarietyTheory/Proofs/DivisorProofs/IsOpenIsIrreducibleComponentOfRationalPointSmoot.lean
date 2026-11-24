@@ -2,8 +2,9 @@ module
 
 public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
 public import Mathlib.Combinatorics.Quiver.ReflQuiver
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrreducibleSpaceOfSmoothFieldOfConnectedSpaceStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenConnectedComponentOfIsLocallyNoetherianStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrreducibleSpaceOfSmoothFieldOfConnectedSpace
+public import Mathlib.AlgebraicGeometry.Noetherian
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenConnectedComponentOfIsLocallyNoetherian
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -73,13 +74,13 @@ theorem isOpen_and_isIrreducible_sectionComponent_of_smooth_field
     rw [Set.mem_setOf_eq, h1, h2, connectedComponentIn_univ]
   rw [hZ]
   have hN : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian f
-  have hO : IsOpen (connectedComponent (e p)) := GlobalTheory.T.isOpen_connectedComponent_of_isLocallyNoetherian' X hN (e p)
+  have hO : IsOpen (connectedComponent (e p)) := _root_.GlobalTheory.isOpen_connectedComponent_of_isLocallyNoetherian X hN (e p)
   refine ⟨hO, ?_⟩
   let U : X.Opens := ⟨connectedComponent (e p), hO⟩
   have hc : ConnectedSpace U.toScheme :=
     isConnected_iff_connectedSpace.mp (isConnected_connectedComponent (x := e p))
   have hi : IrreducibleSpace U.toScheme :=
-    GlobalTheory.T.irreducibleSpace_of_smooth_over_field_of_connected k U.toScheme (U.ι ≫ f) inferInstance hc
+    _root_.GlobalTheory.irreducibleSpace_of_smooth_field_of_connectedSpace k U.toScheme (U.ι ≫ f) inferInstance hc
   exact isIrreducible_iff_irreducibleSpace.mpr hi
 
 end GlobalTheory

@@ -67,13 +67,9 @@ def StepA : Prop :=
 
 theorem card_le_of_le (S : Finset ℕ) (Y : ℝ) (hY : 0 ≤ Y) (h : ∀ p ∈ S, 1 ≤ p ∧ (p : ℝ) ≤ Y) :
     (S.card : ℝ) ≤ Y := by
-  have hsub : S ⊆ Finset.Icc 1 ⌊Y⌋₊ := by
-    intro p hp
-    obtain ⟨h1, h2⟩ := h p hp
-    exact Finset.mem_Icc.mpr ⟨h1, Nat.le_floor h2⟩
   have hc : S.card ≤ ⌊Y⌋₊ := by
-    calc S.card ≤ (Finset.Icc 1 ⌊Y⌋₊).card := Finset.card_le_card hsub
-      _ = ⌊Y⌋₊ := by simp
+    simpa using Finset.card_le_card (fun p hp =>
+      Finset.mem_Icc.mpr ⟨(h p hp).1, Nat.le_floor (h p hp).2⟩)
   calc (S.card : ℝ) ≤ (⌊Y⌋₊ : ℝ) := by exact_mod_cast hc
     _ ≤ Y := Nat.floor_le hY
 

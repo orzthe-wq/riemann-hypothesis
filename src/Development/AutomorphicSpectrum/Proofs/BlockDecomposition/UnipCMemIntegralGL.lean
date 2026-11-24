@@ -228,7 +228,7 @@ theorem coeff_revCompl (hU : Unit' ρ B) (hv : ∀ g ∈ integralGL F n, ρ g v 
       GroundTheory.Automorphic.Iwasawa.coe_torusPow]
     show (Matrix.diagonal _ : Matrix (Fin n) (Fin n) F) i j = (P * Matrix.diagonal _ * P : Matrix (Fin n) (Fin n) F) i j
     rw [PEquiv.mul_toMatrix_toPEquiv, PEquiv.toMatrix_toPEquiv_mul]
-    simp only [Matrix.diagonal_apply, Fin.revPerm_symm, Fin.revPerm_apply, Fin.rev_inj, lamS,
+    simp only [Matrix.diagonal_apply, Fin.revPerm_symm, lamS,
       mem_revCompl, Finset.mem_compl]
     all_goals simp [Matrix.submatrix_apply, Matrix.diagonal_apply, Fin.rev_inj]
   rw [hconj, coeff_mul_mul hU hv hw (inv_mem hw)]

@@ -99,8 +99,6 @@ theorem hasSubst_Xs {N0 N1 : ℕ} (a : Fin N0) (b : Fin N1) :
     HasSubst (fun s : ZMod (nP D p) => (X (s, a, b) : MvPowerSeries (ZMod (nP D p) × Fin N0 × Fin N1) ℂ_[p])) := by
   first
   | exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => MvPowerSeries.constantCoeff_X _)
-  | exact MvPowerSeries.HasSubst.X
-  | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [MvPowerSeries.constantCoeff_X]; exact IsNilpotent.zero)
 
 theorem cc_bsum {N0 N1 : ℕ} (sg : ℂ_[p]) (be : MvPowerSeries (ZMod (nP D p)) ℂ_[p]) (hbe : constantCoeff be = 0) :
     constantCoeff (sg • bsum D p (N0 := N0) (N1 := N1) be) = 0 := by

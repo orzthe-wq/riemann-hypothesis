@@ -193,80 +193,6 @@ lemma conj_inv_eq_inv_conj {m : ℕ} (P X : Matrix (Fin m) (Fin m) ℂ) (hP : Is
     (P⁻¹ * X * P)⁻¹ = P⁻¹ * X⁻¹ * P := by
   rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv P hP, Matrix.mul_assoc]
 
-private lemma mul_mem_ltset {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.LTset m)
-    (hB : B ∈ C2.LTset m) : A * B ∈ C2.LTset m := by
-  refine ⟨fun i j h => ?_, fun i => ?_⟩
-  · rw [Matrix.mul_apply]
-    refine Finset.sum_eq_zero fun k _ => ?_
-    by_cases hik : i < k
-    · rw [hA.1 i k hik, zero_mul]
-    · rw [hB.1 k j (lt_of_le_of_lt (not_lt.1 hik) h), mul_zero]
-  · rw [Matrix.mul_apply, Finset.sum_eq_single i]
-    · rw [hA.2 i, hB.2 i, one_mul]
-    · intro k _ hki
-      rcases lt_or_gt_of_ne hki with h | h
-      · rw [hB.1 k i h, mul_zero]
-      · rw [hA.1 i k h, zero_mul]
-    · simp
-
-private lemma mul_mem_utset {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m)
-    (hB : B ∈ C2.UTset m) : A * B ∈ C2.UTset m := by
-  refine ⟨fun i j h => ?_, fun i => ?_⟩
-  · rw [Matrix.mul_apply]
-    refine Finset.sum_eq_zero fun k _ => ?_
-    by_cases hki : k < i
-    · rw [hA.1 i k hki, zero_mul]
-    · rw [hB.1 k j (lt_of_lt_of_le h (not_lt.1 hki)), mul_zero]
-  · rw [Matrix.mul_apply, Finset.sum_eq_single i]
-    · rw [hA.2 i, hB.2 i, one_mul]
-    · intro k _ hki
-      rcases lt_or_gt_of_ne hki with h | h
-      · rw [hA.1 i k h, zero_mul]
-      · rw [hB.1 k i h, mul_zero]
-    · simp
-
-private lemma det_eq_one_of_mem_ltset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.LTset m) :
-    A.det = 1 := by
-  rw [Matrix.det_of_lowerTriangular A (fun i j h => hA.1 i j h)]
-  simp [hA.2]
-
-private lemma det_eq_one_of_mem_utset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) :
-    A.det = 1 := by
-  rw [Matrix.det_of_upperTriangular (fun i j h => hA.1 i j h)]
-  simp [hA.2]
-
-private lemma inv_mem_ltset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.LTset m) :
-    A⁻¹ ∈ C2.LTset m := by
-  have hbt : A.BlockTriangular OrderDual.toDual := fun i j h => hA.1 i j h
-  have hdet : IsUnit A.det := by rw [det_eq_one_of_mem_ltset hA]; exact isUnit_one
-  haveI := A.invertibleOfIsUnitDet hdet
-  have hbi := Matrix.blockTriangular_inv_of_blockTriangular hbt
-  refine ⟨fun i j h => hbi h, fun i => ?_⟩
-  have h1 := congrFun (congrFun (Matrix.mul_nonsing_inv A hdet) i) i
-  rw [Matrix.mul_apply, Finset.sum_eq_single i, hA.2 i, one_mul] at h1
-  · simpa using h1
-  · intro k _ hki
-    rcases lt_or_gt_of_ne hki with h | h
-    · rw [hbi h, mul_zero]
-    · rw [hA.1 i k h, zero_mul]
-  · simp
-
-private lemma inv_mem_utset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) :
-    A⁻¹ ∈ C2.UTset m := by
-  have hbt : A.BlockTriangular id := fun i j h => hA.1 i j h
-  have hdet : IsUnit A.det := by rw [det_eq_one_of_mem_utset hA]; exact isUnit_one
-  haveI := A.invertibleOfIsUnitDet hdet
-  have hbi := Matrix.blockTriangular_inv_of_blockTriangular hbt
-  refine ⟨fun i j h => hbi h, fun i => ?_⟩
-  have h1 := congrFun (congrFun (Matrix.mul_nonsing_inv A hdet) i) i
-  rw [Matrix.mul_apply, Finset.sum_eq_single i, hA.2 i, one_mul] at h1
-  · simpa using h1
-  · intro k _ hki
-    rcases lt_or_gt_of_ne hki with h | h
-    · rw [hA.1 i k h, zero_mul]
-    · rw [hbi h, mul_zero]
-  · simp
-
 theorem lower_triangular_splitting : C2.LowSplit := by
   intro m P hP l hl
   obtain ⟨w, d, hd, rfl⟩ := hP
@@ -279,7 +205,7 @@ theorem lower_triangular_splitting : C2.LowSplit := by
     by_cases hab : a = b
     · subst hab
       simp [hd a]
-    · simp [Matrix.one_apply_ne hab, w.injective.ne hab, Ne.symm hab]
+    · simp [Matrix.one_apply_ne hab, Ne.symm hab]
   have hPinv : (C2.monoP w d)⁻¹ = Q := Matrix.inv_eq_left_inv hQP
   have hPdet : IsUnit (C2.monoP w d).det := Matrix.isUnit_det_of_left_inverse hQP
   have hconj : ∀ (X : Matrix (Fin m) (Fin m) ℂ) (a b : Fin m),
@@ -287,7 +213,7 @@ theorem lower_triangular_splitting : C2.LowSplit := by
     intro X a b
     rw [hPinv, Matrix.mul_apply]
     simp only [Matrix.mul_apply, hQ, C2.monoP, Matrix.of_apply, ite_mul, zero_mul, mul_ite,
-      mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+      mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   have I := inv_step w l hl m
   set A := (lsStep w l m).1 with hAdef
   set B := (lsStep w l m).2 with hBdef
@@ -321,8 +247,8 @@ theorem lower_triangular_splitting : C2.LowSplit := by
   refine ⟨(A, B), ⟨⟨hAL, hAc⟩, ⟨hBL, hBc⟩, hAB⟩, ?_⟩
   rintro ⟨A2, B2⟩ ⟨hA2, hB2, hl2⟩
   have hl2' : l = A2 * B2 := hl2
-  have hAdet : IsUnit A.det := by rw [det_eq_one_of_mem_ltset hAL]; exact isUnit_one
-  have hB2det : IsUnit B2.det := by rw [det_eq_one_of_mem_ltset hB2.1]; exact isUnit_one
+  have hAdet : IsUnit A.det := by rw [_root_.Formalism.FourierDecayAlt.P.C2x2.lt_det hAL]; exact isUnit_one
+  have hB2det : IsUnit B2.det := by rw [_root_.Formalism.FourierDecayAlt.P.C2x2.lt_det hB2.1]; exact isUnit_one
   have hkey : A⁻¹ * A2 = B * B2⁻¹ := by
     calc A⁻¹ * A2 = A⁻¹ * A2 * (B2 * B2⁻¹) := by
           rw [Matrix.mul_nonsing_inv B2 hB2det, Matrix.mul_one]
@@ -331,10 +257,10 @@ theorem lower_triangular_splitting : C2.LowSplit := by
       _ = B * B2⁻¹ := by rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul A hAdet, Matrix.one_mul]
   have hYL : (C2.monoP w d)⁻¹ * (A⁻¹ * A2) * C2.monoP w d ∈ C2.LTset m := by
     rw [conj_mul_eq_mul_conj _ _ _ hPdet, ← conj_inv_eq_inv_conj _ _ hPdet]
-    exact mul_mem_ltset (inv_mem_ltset hAc) hA2.2
+    exact _root_.Formalism.FourierDecayAlt.P.C2x2.lt_mul (_root_.Formalism.FourierDecayAlt.P.C2x2.lt_inv hAc) hA2.2
   have hYU : (C2.monoP w d)⁻¹ * (A⁻¹ * A2) * C2.monoP w d ∈ C2.UTset m := by
     rw [hkey, conj_mul_eq_mul_conj _ _ _ hPdet, ← conj_inv_eq_inv_conj _ _ hPdet]
-    exact mul_mem_utset hBc (inv_mem_utset hB2.2)
+    exact _root_.Formalism.FourierDecayAlt.P.C2x2.ut_mul hBc (_root_.Formalism.FourierDecayAlt.P.C2x2.ut_inv hB2.2)
   have hY : (C2.monoP w d)⁻¹ * (A⁻¹ * A2) * C2.monoP w d = 1 := by
     ext i j
     rcases lt_trichotomy i j with h | h | h
@@ -357,30 +283,18 @@ theorem lower_triangular_splitting : C2.LowSplit := by
       _ = B := Matrix.nonsing_inv_mul_cancel_left A B hAdet
   rw [hA2A, hB2B]
 
-private lemma conjTranspose_mem_ltset_of_mem_utset {m : ℕ} {v : Matrix (Fin m) (Fin m) ℂ} (hv : v ∈ C2.UTset m) :
-    vᴴ ∈ C2.LTset m :=
-  ⟨fun i j h => by simp [Matrix.conjTranspose_apply, hv.1 j i h],
-    fun i => by simp [Matrix.conjTranspose_apply, hv.2 i]⟩
-
-private lemma conjTranspose_mem_utset_of_mem_ltset {m : ℕ} {v : Matrix (Fin m) (Fin m) ℂ} (hv : v ∈ C2.LTset m) :
-    vᴴ ∈ C2.UTset m :=
-  ⟨fun i j h => by simp [Matrix.conjTranspose_apply, hv.1 j i h],
-    fun i => by simp [Matrix.conjTranspose_apply, hv.2 i]⟩
-
 theorem upper_splitting : C2.UpSplit := by
   intro m P hP u hu
-  obtain ⟨⟨a, b⟩, ⟨ha, hb, hab⟩, huniq⟩ := lower_triangular_splitting m P hP uᴴ (conjTranspose_mem_ltset_of_mem_utset hu)
-  refine ⟨(bᴴ, aᴴ), ⟨conjTranspose_mem_utset_of_mem_ltset hb.1, conjTranspose_mem_utset_of_mem_ltset ha.1,
+  obtain ⟨⟨a, b⟩, ⟨ha, hb, hab⟩, huniq⟩ := lower_triangular_splitting m P hP uᴴ (_root_.Formalism.FourierDecayAlt.P.C2x2.ut_conjT hu)
+  refine ⟨(bᴴ, aᴴ), ⟨_root_.Formalism.FourierDecayAlt.P.C2x2.lt_conjT hb.1, _root_.Formalism.FourierDecayAlt.P.C2x2.lt_conjT ha.1,
     by simpa only [Matrix.conjTranspose_conjTranspose] using hb,
     by simpa only [Matrix.conjTranspose_conjTranspose] using ha, ?_⟩, ?_⟩
-  · have hab' : uᴴ = a * b := hab
-    show u = bᴴ * aᴴ
-    rw [← Matrix.conjTranspose_mul, ← hab', Matrix.conjTranspose_conjTranspose]
+  · show u = bᴴ * aᴴ
+    rw [← Matrix.conjTranspose_mul, ← hab, Matrix.conjTranspose_conjTranspose]
   · rintro ⟨q1, q2⟩ ⟨_, _, hq1c, hq2c, hq⟩
-    have hq' : u = q1 * q2 := hq
     have h := huniq (q2ᴴ, q1ᴴ) ⟨hq2c, hq1c, by
       show uᴴ = q2ᴴ * q1ᴴ
-      rw [← Matrix.conjTranspose_mul, ← hq']⟩
+      rw [← Matrix.conjTranspose_mul, ← hq]⟩
     simp only [Prod.mk.injEq] at h
     rw [← h.1, ← h.2, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_conjTranspose]
 

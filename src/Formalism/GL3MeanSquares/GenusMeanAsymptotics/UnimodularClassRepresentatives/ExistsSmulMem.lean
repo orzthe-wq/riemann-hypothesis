@@ -79,9 +79,7 @@ theorem trace_pos {h : V →ₗ⋆[K] V →ₗ[K] K} (hd : IsTotPosDef h) :
   rw [this] at hpos
   exact_mod_cast hpos
 
-theorem exists_smul_mem {Λ : Submodule (𝓞 K) V} (hΛ : Submodule.IsFullLattice K Λ) (v : V) :
-    ∃ r : 𝓞 K, r ≠ 0 ∧ r • v ∈ Λ :=
-  Bl.general_b_fact_second_form.goal1 hΛ v
+alias exists_smul_mem := _root_.Bl.general_b_fact_second_form.goal1
 
 scoped instance latAct (h : V →ₗ⋆[K] V →ₗ[K] K) :
     MulAction (Formalism.HermitianLatticesTheory.isom h) (Submodule (𝓞 K) V) where
@@ -107,8 +105,7 @@ def pairs (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (n : K) 
 
 theorem apply_mem_gmap (g : V ≃ₗ[K] V) {Λ : Submodule (𝓞 K) V} {x : V} (hx : x ∈ Λ) :
     g x ∈ Formalism.HermitianLatticesTheory.gmap g Λ := by
-  rw [Formalism.HermitianLatticesTheory.isomAct_mem_gmap, LinearEquiv.symm_apply_apply]
-  exact hx
+  rwa [Formalism.HermitianLatticesTheory.isomAct_mem_gmap, LinearEquiv.symm_apply_apply]
 
 theorem pairs_stable (hs : h.IsSymm) (L : Submodule (𝓞 K) V) (n : K) (g : Formalism.HermitianLatticesTheory.isom h)
     (p : Submodule (𝓞 K) V × V) (hp : p ∈ pairs h L n) : g • p ∈ pairs h L n :=
@@ -131,8 +128,7 @@ theorem proj_smul (g : Formalism.HermitianLatticesTheory.isom h) (p : Submodule 
   rw [Submodule.mem_inf, Formalism.HermitianLatticesTheory.isomAct_mem_gmap, Formalism.HermitianLatticesTheory.isomAct_mem_gmap, Submodule.mem_inf,
     mem_perpO, mem_perpO]
   have : h (g.1 p.2) v = h p.2 (g.1.symm v) := by
-    conv_lhs => rw [← LinearEquiv.apply_symm_apply g.1 v]
-    exact g.2 _ _
+    simpa using g.2 p.2 (g.1.symm v)
   rw [this]
 
 end One
@@ -200,8 +196,7 @@ theorem gmap_extOf_emb (S : VecSplit h h') (g' : V' ≃ₗ[K] V') (C : Submodule
   unfold Formalism.HermitianLatticesTheory.gmap emb
   rw [← Submodule.map_comp, ← Submodule.map_comp]
   congr 1
-  ext a
-  exact extOf_ι S g' a
+  exact LinearMap.ext (extOf_ι S g')
 
 theorem cut_gmap_extOf (S : VecSplit h h') (g' : V' ≃ₗ[K] V') (Λ : Submodule (𝓞 K) V) :
     S.cut (Formalism.HermitianLatticesTheory.gmap (extOf S g') Λ) = Formalism.HermitianLatticesTheory.gmap g' (S.cut Λ) := by

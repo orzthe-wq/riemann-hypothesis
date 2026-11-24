@@ -154,7 +154,6 @@ theorem exists_ringEquiv_transcendental (p : ℕ) [Fact p.Prime] {z : ℂ} (hz :
 
 end Transc
 
-
 open Formalism.L2.Th1.CM in
 theorem isAlgebraic_g2_of_hasCMBy_of_disc_eq_one (hGood : CM2) (d : ℕ) (L : PeriodPair) (hsq : Squarefree d) (hd4 : d % 4 = 3)
     (hcm : HasCMBy d L) (p : ℕ) [Fact p.Prime] (h5 : 5 ≤ p) (hpd : ¬ p ∣ d)
@@ -187,24 +186,7 @@ theorem mem_Wp_of_kur {x : ℂ_[p]} (hx : x ∈ Formalism.L2.Th1.CM.MaximalUnram
   apply _root_.Formalism.L2.KerInert.GenusOneDatumExistence.mem_Wp_of_kur <;> assumption
 
 theorem logF_eq : logF p = Formalism.L2.Th1.CM.ltLog ℂ_[p] p := by
-  apply _root_.Formalism.L2.KerInert.GenusOneDatumExistence.logF_eq <;> assumption
-
-theorem isWq_wU (W : WeierstrassCurve ℂ_[p]) : Formalism.MainNotions.TaylorLogMetric.IsWq W (Formalism.L2.Th1.A.wU W) := by
-  have hF := (Formalism.L2.Th1.A.CurveSer.wSer_fixed W).2
-  rw [Formalism.L2.Th1.A.CurveSer.wSer_eq] at hF
-  unfold Formalism.MainNotions.TaylorLogMetric.IsWq
-  simp only [PowerSeries.algebraMap_eq]
-  apply mul_left_cancel₀ (pow_ne_zero 3 (X_ne_zero (R := ℂ_[p])))
-  linear_combination hF
-
-theorem norm_four (h5 : 5 ≤ p) : ‖(4 : ℂ_[p])‖ = 1 := by
-  have hp : p.Prime := Fact.out
-  have h := Formalism.DworkPowerSeriesWeights.norm_natCast_eq_one_of_not_dvd (K := ℂ_[p]) (m := 4) hp
-    (Formalism.L2.Th1.D.UnramifiedCompletion.normL_lt_one p) (by
-      intro hd
-      have := Nat.le_of_dvd (by norm_num) hd
-      omega)
-  exact_mod_cast h
+  apply _root_.Formalism.L2.KerInert.GenusOneDatumExistence.logF_eq
 
 theorem datum_of_short (h5 : 5 ≤ p) (lam : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ)
     (C : WeierstrassCurve.VariableChange ℂ_[p]) (g2 g3 : ℂ_[p])

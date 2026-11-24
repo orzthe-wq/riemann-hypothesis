@@ -80,7 +80,7 @@ open Polynomial in
 private lemma trace_mulLeft_complex_lemma (z : ℂ) :
     LinearMap.trace ℂ ℂ (Algebra.lmul ℂ ℂ z) = z := by
   have hz : (Algebra.lmul ℂ ℂ z : ℂ →ₗ[ℂ] ℂ) = z • LinearMap.id := by
-    ext x
+    ext
     simp
   rw [hz, map_smul, LinearMap.trace_id]
   simp

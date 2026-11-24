@@ -84,7 +84,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 theorem mem_dualL (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E)
     (Λ : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E) :
     y ∈ dualL σ J Λ ↔ y ∈ dualSet σ J Λ := by
-  apply _root_.GlobalTheory.OverLat.mem_span_dualSet <;> assumption
+  apply _root_.GlobalTheory.OverLat.mem_span_dualSet
 
 theorem exists_common_den {p : ℕ} (hp : p.Prime) (M : Submodule (𝓞 E) (Fin n → E)) (hM : M.FG) (B : GL (Fin n) E)
     (hB : IsLocBasis p (M : Set (Fin n → E)) B) :

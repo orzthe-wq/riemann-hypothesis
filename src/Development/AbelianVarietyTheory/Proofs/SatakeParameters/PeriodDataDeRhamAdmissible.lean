@@ -171,7 +171,7 @@ theorem sum_le_finrank_piRep {m : ℕ} (ρ : Fin m → Representation LL G V)
     | tmul v c =>
       by_cases h : a = b
       · subst h; simp
-      · simp [h, Pi.single_eq_of_ne (Ne.symm h)]
+      · simp [h]
     | add x y hx hy =>
       simp only [map_add (f := _), hx, hy]
       split_ifs <;> simp

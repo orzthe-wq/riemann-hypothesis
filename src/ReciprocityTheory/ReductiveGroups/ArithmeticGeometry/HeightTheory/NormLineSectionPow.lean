@@ -1,60 +1,301 @@
 module
 
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.CoeffEvWMem
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Real
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.IrreducibleFactorHeightBound
+public import Mathlib.Algebra.Order.Antidiag.FinsuppEquiv
+public import Mathlib.Algebra.Order.Chebyshev
 public import Mathlib.Analysis.Complex.ExponentialBounds
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.PTNonempty
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.TypeStar
+import ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality
+import Mathlib.Algebra.Order.Star.Int
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.PTNonempty
-import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.SumLeSqrtCardMul, ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.CoeffEvWMem, ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormLineSectionPow
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.SumLeSqrtCardMul =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.SumLeSqrtCardMul", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.IrreducibleFactorHeightBound\npublic import Mathlib.Algebra.Order.Antidiag.FinsuppEquiv\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport ReciprocityTheory.SemistableReduction.TorusL2CauchyInequality\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Algebra.Order.Chebyshev\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace ReciprocityTheory.ChartRestriction.G.T0
+
+open MvPolynomial
+
+theorem card_support_le {R : Type*} [CommSemiring R] {D N n n' : ℕ}
+    (Q : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) R) (hx : XHom n Q) (hu : UDegLE n' Q) :
+    Q.support.card ≤
+      (n + D + 1).choose (D + 1) * (n' + (D + 2) * (N + 1)).choose ((D + 2) * (N + 1)) := by
+  classical
+  let fx : (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N →₀ ℕ) → (Fin (D + 2) →₀ ℕ) := fun s =>
+    Finsupp.equivFunOnFinite.symm (fun i => s (Sum.inr i))
+  let fu : (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N →₀ ℕ) → (Option (Fin (D + 2) × Fin (N + 1)) →₀ ℕ) := fun s =>
+    Finsupp.equivFunOnFinite.symm (fun o => Option.elim o (n' - uDeg s) (fun p => s (Sum.inl p)))
+  have hmaps : ∀ s ∈ Q.support, (fun s => (fx s, fu s)) s ∈
+      (Finset.univ.finsuppAntidiag n) ×ˢ (Finset.univ.finsuppAntidiag n') := by
+    intro s hs
+    simp only [Finset.mem_product, Finset.mem_finsuppAntidiag, Finset.subset_univ, and_true]
+    constructor
+    · simpa [fx, xDeg] using hx s hs
+    · have := hu s hs
+      simp only [fu, Finsupp.coe_equivFunOnFinite_symm, Fintype.sum_option, Option.elim]
+      unfold uDeg at this ⊢
+      omega
+  have hinj : Set.InjOn (fun s => (fx s, fu s)) Q.support := by
+    intro s _ t _ hst
+    simp only [Prod.mk.injEq] at hst
+    ext v
+    rcases v with p | i
+    · have := congrArg (fun f => f (some p)) hst.2
+      simpa [fu] using this
+    · have := congrArg (fun f => f i) hst.1
+      simpa [fx] using this
+  calc Q.support.card ≤ ((Finset.univ.finsuppAntidiag n) ×ˢ (Finset.univ.finsuppAntidiag n')).card :=
+        Finset.card_le_card_of_injOn _ hmaps hinj
+    _ = _ := by
+      rw [Finset.card_product, Finset.card_finsuppAntidiag_nat_eq_choose,
+        Finset.card_finsuppAntidiag_nat_eq_choose]
+      simp only [Finset.card_univ, Fintype.card_fin, Fintype.card_option, Fintype.card_prod]
+      congr 1
+      · rw [show D + 2 + n - 1 = n + D + 1 by omega]
+        exact Nat.choose_symm_of_eq_add (by omega)
+      · rw [show (D + 2) * (N + 1) + 1 + n' - 1 = n' + (D + 2) * (N + 1) by omega]
+        exact Nat.choose_symm_of_eq_add (by omega)
+
+noncomputable def Ey {D N : ℕ} (y : Fin (N + 1) → ℂ) :
+    MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) ℂ →ₐ[ℂ] MvPolynomial (Fin (D + 2) × Fin (N + 1)) ℂ :=
+  aeval (Sum.elim X fun i => ∑ j, X (i, j) * C (y j))
+
+theorem sum_le_sqrt_card_mul {α : Type*} (s : Finset α) (a : α → ℝ) :
+    ∑ i ∈ s, a i ≤ Real.sqrt s.card * Real.sqrt (∑ i ∈ s, a i ^ 2) := by
+  calc ∑ i ∈ s, a i ≤ |∑ i ∈ s, a i| := le_abs_self _
+    _ = Real.sqrt ((∑ i ∈ s, a i) ^ 2) := (Real.sqrt_sq_eq_abs _).symm
+    _ ≤ Real.sqrt (s.card * ∑ i ∈ s, a i ^ 2) := Real.sqrt_le_sqrt sq_sum_le_card_mul_sum_sq
+    _ = Real.sqrt s.card * Real.sqrt (∑ i ∈ s, a i ^ 2) := Real.sqrt_mul (Nat.cast_nonneg _) _
+
+theorem coeff_Ey_le {D N n n' : ℕ} (R : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) ℂ) (hx : XHom n R)
+    (hu : UDegLE n' R) (y : Fin (N + 1) → ℂ) (β : Fin (D + 2) × Fin (N + 1) →₀ ℕ) :
+    ‖AddMonoidAlgebra.coeff (Ey y R) β‖ ≤ ReciprocityTheory.MultiplicativeHeights.polyL2 R *
+      Real.sqrt ((n + D + 1).choose (D + 1) *
+        (n' + (D + 2) * (N + 1)).choose ((D + 2) * (N + 1)) : ℕ) * (∑ j, ‖y j‖) ^ n := by
+  obtain ⟨θ, hθ⟩ := (ReciprocityTheory.MultiplicativeHeights.Closed.torus_l2_cauchy_inequality _ (Ey y R)).2 β
+  set z := ReciprocityTheory.MultiplicativeHeights.torusPoint θ with hzdef
+  have hz : ∀ p, ‖z p‖ = 1 := by
+    intro p
+    simp only [hzdef, ReciprocityTheory.MultiplicativeHeights.torusPoint]
+    rw [Complex.norm_exp]
+    simp
+  set Y := ∑ j, ‖y j‖ with hY
+  set pt : _root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N → ℂ := fun v => eval z (Sum.elim X (fun i => ∑ j, X (i, j) * C (y j)) v)
+    with hpt
+  have hev : eval z (Ey y R) = eval pt R := by
+    have := congrArg (fun φ => φ R)
+      (MvPolynomial.comp_aeval (R := ℂ) (Sum.elim X fun i => ∑ j, X (i, j) * C (y j))
+        (aeval z))
+    simp only [AlgHom.comp_apply] at this
+    calc eval z (Ey y R) = aeval z (Ey y R) := by simp
+      _ = _ := this
+      _ = eval pt R := by simp [hpt]
+  have hpt1 : ∀ p, ‖pt (Sum.inl p)‖ = 1 := fun p => by simp [hpt, hz]
+  have hpt2 : ∀ i, ‖pt (Sum.inr i)‖ ≤ Y := by
+    intro i
+
+    simp only [hpt, Sum.elim_inr, map_sum, map_mul, eval_X, eval_C]
+    refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)
+    rw [norm_mul, hz, one_mul]
+  have hY0 : 0 ≤ Y := Finset.sum_nonneg fun _ _ => norm_nonneg _
+  have hmono : ∀ α ∈ R.support, ‖∏ v, pt v ^ α v‖ ≤ Y ^ n := by
+    intro α hα
+    rw [norm_prod, Fintype.prod_sum_type]
+    simp only [norm_pow, hpt1, one_pow, Finset.prod_const_one, one_mul]
+    calc ∏ i, ‖pt (Sum.inr i)‖ ^ α (Sum.inr i) ≤ ∏ i, Y ^ α (Sum.inr i) :=
+          Finset.prod_le_prod₀ (fun _ _ => by positivity) fun i _ => pow_le_pow_left₀ (norm_nonneg _) (hpt2 i) _
+      _ = Y ^ n := by rw [Finset.prod_pow_eq_pow_sum, ← hx α hα]; rfl
+  have hcard := card_support_le R hx hu
+  calc ‖AddMonoidAlgebra.coeff (Ey y R) β‖ ≤ ‖eval z (Ey y R)‖ := hθ
+    _ = ‖∑ α ∈ R.support, AddMonoidAlgebra.coeff R α * ∏ v, pt v ^ α v‖ := by rw [hev, eval_eq']
+    _ ≤ ∑ α ∈ R.support, ‖AddMonoidAlgebra.coeff R α‖ * Y ^ n := by
+        refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun α hα => ?_)
+        rw [norm_mul]
+        exact mul_le_mul_of_nonneg_left (hmono α hα) (norm_nonneg _)
+    _ = (∑ α ∈ R.support, ‖AddMonoidAlgebra.coeff R α‖) * Y ^ n := by rw [Finset.sum_mul]
+    _ ≤ (Real.sqrt R.support.card * ReciprocityTheory.MultiplicativeHeights.polyL2 R) * Y ^ n := by
+        gcongr
+        exact sum_le_sqrt_card_mul _ _
+    _ ≤ _ := by
+        rw [mul_comm (Real.sqrt _) (ReciprocityTheory.MultiplicativeHeights.polyL2 R)]
+        gcongr
+        unfold ReciprocityTheory.MultiplicativeHeights.polyL2; positivity
+
+end ReciprocityTheory.ChartRestriction.G.T0
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.SumLeSqrtCardMul =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.CoeffEvWMem =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.CoeffEvWMem", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.SumLeSqrtCardMul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace ReciprocityTheory.ChartRestriction.G.T0
+
+open MvPolynomial
+
+section
+
+variable {R : Type*} [CommRing R] {B : Type*} [CommRing B] [Algebra R B] {D N : ℕ}
+
+noncomputable def evW (w : Fin (N + 1) → B) :
+    MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) R →ₐ[R] MvPolynomial (Fin (D + 2) × Fin (N + 1)) B :=
+  aeval (Sum.elim X fun i => ∑ j, X (i, j) * C (w j))
+
+def CoeffIn (W : Submodule R B) (m : ℕ) (p : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B) : Prop :=
+  ∀ β, AddMonoidAlgebra.coeff p β ∈ W ^ m
+
+variable (W : Submodule R B)
+
+theorem coeffIn_mul {m m' : ℕ} {p q : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B}
+    (hp : CoeffIn W m p) (hq : CoeffIn W m' q) : CoeffIn W (m + m') (p * q) := fun β => by
+  rw [coeff_mul, pow_add]
+  exact Submodule.sum_mem _ fun x _ => Submodule.mul_mem_mul (hp _) (hq _)
+
+theorem coeffIn_one : CoeffIn W 0 (1 : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B) := fun β => by
+  rw [pow_zero, coeff_one]
+  split_ifs
+  · exact Submodule.mem_one.2 ⟨1, map_one _⟩
+  · exact zero_mem _
+
+theorem coeffIn_pow {m : ℕ} {p : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B}
+    (hp : CoeffIn W m p) (k : ℕ) : CoeffIn W (m * k) (p ^ k) := by
+  induction k with
+  | zero => simpa using coeffIn_one W
+  | succ k ih =>
+    rw [pow_succ, Nat.mul_succ]
+    exact coeffIn_mul W ih hp
+
+theorem coeffIn_prod {ι : Type*} (s : Finset ι) (p : ι → MvPolynomial (Fin (D + 2) × Fin (N + 1)) B)
+    (m : ι → ℕ) (h : ∀ i ∈ s, CoeffIn W (m i) (p i)) : CoeffIn W (∑ i ∈ s, m i) (∏ i ∈ s, p i) := by
+  classical
+  revert h
+  refine Finset.induction_on s (fun _ => by simpa using coeffIn_one W) ?_
+  intro a s ha ih h
+  rw [Finset.prod_insert ha, Finset.sum_insert ha]
+  exact coeffIn_mul W (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
+
+theorem coeffIn_smul {m : ℕ} {p : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B}
+    (hp : CoeffIn W m p) (r : R) : CoeffIn W m (C (algebraMap R B r) * p) := fun β => by
+  rw [coeff_C_mul, ← Algebra.smul_def]
+  exact Submodule.smul_mem _ r (hp β)
+
+theorem coeffIn_X (u : Fin (D + 2) × Fin (N + 1)) : CoeffIn W 0 (X u : MvPolynomial _ B) := fun β => by
+  rw [pow_zero, coeff_X']
+  split_ifs
+  · exact Submodule.mem_one.2 ⟨1, map_one _⟩
+  · exact zero_mem _
+
+theorem coeffIn_lin (w : Fin (N + 1) → B) (hw : ∀ j, w j ∈ W) (i : Fin (D + 2)) :
+    CoeffIn W 1 (∑ j, X (i, j) * C (w j) : MvPolynomial (Fin (D + 2) × Fin (N + 1)) B) := fun β => by
+  rw [coeff_sum, pow_one]
+  refine Submodule.sum_mem _ fun j _ => ?_
+  rw [mul_comm, coeff_C_mul, coeff_X']
+  split_ifs
+  · rw [mul_one]
+    exact hw j
+  · rw [mul_zero]
+    exact zero_mem _
+
+private theorem sum_support_inr_eq_xDeg {D N : ℕ} (s : _root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N →₀ ℕ) :
+    ∑ x ∈ s.support, Sum.elim (fun _ => 0) (fun i => s (Sum.inr i)) x = xDeg s := by
+  rw [xDeg, Finset.sum_subset (Finset.subset_univ _), Fintype.sum_sum_type]
+  · simp
+  · intro x _ hx
+    cases x with
+    | inl p => rfl
+    | inr i => simpa using hx
+
+theorem coeffIn_evW (w : Fin (N + 1) → B) (hw : ∀ j, w j ∈ W) {n : ℕ}
+    (Q : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) R) (hx : XHom n Q) : CoeffIn W n (evW w Q) := by
+  intro β
+
+  rw [Q.as_sum, map_sum, coeff_sum]
+  refine Submodule.sum_mem _ fun s hs => ?_
+  have hterm : CoeffIn W n (evW w (monomial s (AddMonoidAlgebra.coeff Q s))) := by
+    rw [evW, aeval_monomial, MvPolynomial.algebraMap_apply]
+    apply coeffIn_smul
+    rw [Finsupp.prod, ← hx s hs, ← sum_support_inr_eq_xDeg s]
+    refine coeffIn_prod W s.support _ _ fun x _ => ?_
+    cases x with
+    | inl p => simpa using coeffIn_pow W (coeffIn_X W p) (s (Sum.inl p))
+    | inr i => simpa using coeffIn_pow W (coeffIn_lin W w hw i) (s (Sum.inr i))
+  exact hterm β
+
+theorem coeff_evW_mem (w : Fin (N + 1) → B) {n : ℕ} (Q : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) R)
+    (hx : XHom n Q) (β : Fin (D + 2) × Fin (N + 1) →₀ ℕ) :
+    AddMonoidAlgebra.coeff (evW w Q) β ∈
+      Submodule.span R (Set.range fun s : Fin n → Fin (N + 1) => ∏ k, w (s k)) := by
+  have h := coeffIn_evW (Submodule.span R (Set.range w)) w (fun j => Submodule.subset_span ⟨j, rfl⟩) Q hx β
+  rw [Submodule.span_pow] at h
+  refine Submodule.span_mono ?_ h
+  intro a ha
+  rw [Set.mem_pow] at ha
+  obtain ⟨f, rfl⟩ := ha
+  choose s hs using fun k => (f k).2
+  refine ⟨s, ?_⟩
+  show ∏ k, w (s k) = _
+  rw [List.prod_ofFn]
+  exact Finset.prod_congr rfl fun k _ => hs k
+
+end
+
+theorem evW_factor {R S B : Type*} [CommRing R] [CommRing S] [CommRing B] [Algebra R S]
+    [Algebra R B] [Algebra S B] [IsScalarTower R S B] {D N n : ℕ} (y : Fin (N + 1) → S) (w0 : B)
+    (Q : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) R) (hx : XHom n Q) :
+    evW (fun j => algebraMap S B (y j) * w0) Q =
+      MvPolynomial.map (algebraMap S B) (evW y Q) * C (w0 ^ n) := by
+
+  rw [Q.as_sum, map_sum, map_sum, map_sum, Finset.sum_mul]
+  refine Finset.sum_congr rfl fun s hs => ?_
+  simp only [evW, aeval_monomial, MvPolynomial.algebraMap_apply, map_mul, map_C, Finsupp.prod,
+    map_prod, map_pow]
+  rw [← IsScalarTower.algebraMap_apply, mul_assoc]
+  congr 1
+  rw [← hx s hs, ← sum_support_inr_eq_xDeg s]
+  rw [← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]
+  refine Finset.prod_congr rfl fun x _ => ?_
+  cases x with
+  | inl p => simp
+  | inr i =>
+
+    simp only [Sum.elim_inr, map_sum, map_mul, map_X, map_C]
+    rw [← mul_pow, Finset.sum_mul]
+    congr 1
+    refine Finset.sum_congr rfl fun j _ => ?_
+    ring
+
+theorem map_evW_eq {K S : Type*} [Field K] [CommRing S] [Algebra K S] {D N : ℕ} (P : S →+* ℂ)
+    (sg : K →+* ℂ) (hP : P.comp (algebraMap K S) = sg) (y : Fin (N + 1) → S)
+    (R : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) K) :
+    MvPolynomial.map P (evW (R := K) y R) = Ey (fun j => P (y j)) (MvPolynomial.map sg R) := by
+  have h : (MvPolynomial.map P).comp (evW (R := K) (D := D) y).toRingHom =
+      (Ey (D := D) (fun j => P (y j))).toRingHom.comp (MvPolynomial.map sg) := by
+    apply MvPolynomial.ringHom_ext
+    · intro a
+      simp [evW, Ey, ← hP]
+    · intro i
+      cases i <;> simp [evW, Ey]
+  exact RingHom.congr_fun h R
+
+end ReciprocityTheory.ChartRestriction.G.T0
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.CoeffEvWMem =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormLineSectionPow =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormLineSectionPow", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.CoeffEvWMem\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Real\npublic import Mathlib.Analysis.Complex.ExponentialBounds\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.PTNonempty\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace ReciprocityTheory.ChartRestriction.G.T0
@@ -71,15 +312,15 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
 def cardUX (D N n n' : ℕ) : ℕ :=
   (n + D + 1).choose (D + 1) * (n' + (D + 2) * (N + 1)).choose ((D + 2) * (N + 1))
 
-noncomputable def qnorm {D N : ℕ} (σ : K →+* ℂ) (F1 : MvPolynomial (UXVar D N) K) (n n' : ℕ)
-    (Q : MvPolynomial (UXVar D N) (𝓞 K)) : ℝ :=
-  ⨅ P : {P : MvPolynomial (UXVar D N) ℂ //
+noncomputable def qnorm {D N : ℕ} (σ : K →+* ℂ) (F1 : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) K) (n n' : ℕ)
+    (Q : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) (𝓞 K)) : ℝ :=
+  ⨅ P : {P : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) ℂ //
       XHom n (MvPolynomial.map σ F1 * P) ∧ UDegLE n' (MvPolynomial.map σ F1 * P)},
     ReciprocityTheory.MultiplicativeHeights.polyL2 (MvPolynomial.map (σ.comp (algebraMap (𝓞 K) K)) Q +
       MvPolynomial.map σ F1 * P.1)
 
-noncomputable abbrev mapK {D N : ℕ} (Q : MvPolynomial (UXVar D N) (𝓞 K)) :
-    MvPolynomial (UXVar D N) K :=
+noncomputable abbrev mapK {D N : ℕ} (Q : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) (𝓞 K)) :
+    MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V D N) K :=
   MvPolynomial.map (algebraMap (𝓞 K) K) Q
 
 namespace Data
@@ -94,30 +335,13 @@ theorem evc_eq (c : ι) : d.evc c = evW (R := K) (D := d.D) (fun j => d.w j c) :
   funext v
   cases v <;> rfl
 
-theorem w_eq_smul (hd : d.AxH 𝒜) (c : ι) (j : Fin (d.N + 1)) :
-    d.w j c = ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c) • d.w (d.jc c) c := by
-  have hex : ∃ a : Ω c, d.w j c = a • d.w (d.jc c) c := by
-    have h1 := hd.finrank_one c d.wL
-    obtain ⟨a, ha⟩ := (finrank_eq_one_iff_of_nonzero' (⟨d.w (d.jc c) c, hd.w_mem _ _⟩ : 𝒜 c d.wL)
-      (fun h => hd.w_base c (congrArg Subtype.val h))).mp h1 ⟨d.w j c, hd.w_mem _ _⟩
-    exact ⟨a, (congrArg Subtype.val ha).symm⟩
-  unfold ratio
-  rw [dite_eq_left hex]
-  exact hex.choose_spec
+alias w_eq_smul := _root_.ReciprocityTheory.ChartRestriction.G.T0.Data.w_eq_scalarRatio_smul
 
 theorem lineSection_pow_mem (hd : d.AxH 𝒜) (c : ι) (k : ℕ) : d.w (d.jc c) c ^ k ∈ 𝒜 c (k • d.wL) := by
   haveI := hd.graded c
   exact SetLike.pow_mem_graded k (hd.w_mem (d.jc c) c)
 
-theorem lineSection_pow_ne (hd : d.AxH 𝒜) (c : ι) (k : ℕ) : d.w (d.jc c) c ^ k ≠ 0 := by
-  induction k with
-  | zero =>
-    haveI : Nontrivial (A c) := nontrivial_of_ne _ _ (hd.w_base c)
-    rw [pow_zero]
-    exact one_ne_zero
-  | succ k ih =>
-    rw [pow_succ]
-    exact hd.mul_ne_zero c (lineSection_pow_mem d hd c k) (hd.w_mem _ _) ih (hd.w_base c)
+alias lineSection_pow_ne := _root_.ReciprocityTheory.ChartRestriction.G.T0.Data.lineSection_pow_ne_zero
 
 theorem norm_lineSection_pow (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) (k : ℕ) (hk : 1 ≤ k) :
     d.nrm c (k • d.wL) (d.w (d.jc c) c ^ k) P = d.nrm c d.wL (d.w (d.jc c) c) P ^ k := by
@@ -127,7 +351,7 @@ theorem norm_lineSection_pow (hd : d.AxH 𝒜) (c : ι) (P : Ω c →+* ℂ) (k 
     rw [succ_nsmul, pow_succ, pow_succ, hd.nrm_mul c P (lineSection_pow_mem d hd c k) (hd.w_mem _ _)
       (lineSection_pow_ne d hd c k) (hd.w_base c), ih]
 
-theorem map_evW_global (hd : d.AxH 𝒜) (c : ι) (Q : MvPolynomial (UXVar d.D d.N) (𝓞 K)) :
+theorem map_evW_global (hd : d.AxH 𝒜) (c : ι) (Q : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V d.D d.N) (𝓞 K)) :
     MvPolynomial.map (Pi.evalRingHom A c) (evW (R := 𝓞 K) (D := d.D) d.w Q) = d.evc c (mapK Q) := by
   haveI := hd.towerO c
   have key : (MvPolynomial.map (Pi.evalRingHom A c)).comp
@@ -157,10 +381,10 @@ theorem meanK_affine (a b : (K →+* ℂ) → ℝ) (u v e : ℝ) :
     Finset.sum_const, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, nsmul_eq_mul]
   field_simp
 
-theorem up_cauchy (hd : d.AxH 𝒜) (hdel : 1 ≤ d.del) (c : ι) (F1 : MvPolynomial (UXVar d.D d.N) K)
+theorem up_cauchy (hd : d.AxH 𝒜) (hdel : 1 ≤ d.del) (c : ι) (F1 : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V d.D d.N) K)
     (deF : ℕ) (hxF : XHom deF F1)
-    (hker : ∀ (n : ℕ) (Q : MvPolynomial (UXVar d.D d.N) K), XHom n Q → (d.evc c Q = 0 ↔ F1 ∣ Q))
-    (Q : MvPolynomial (UXVar d.D d.N) (𝓞 K)) (hQx : XHom d.n96 (mapK Q))
+    (hker : ∀ (n : ℕ) (Q : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V d.D d.N) K), XHom n Q → (d.evc c Q = 0 ↔ F1 ∣ Q))
+    (Q : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V d.D d.N) (𝓞 K)) (hQx : XHom d.n96 (mapK Q))
     (hQu : UDegLE d.n96' (mapK Q)) (hQ : ¬ F1 ∣ mapK Q) :
     ∃ g ∈ Submodule.span (𝓞 K)
         (Set.range fun s : Fin d.n96 → Fin (d.N + 1) => ∏ k, d.w (s k)), g c ≠ 0 ∧
@@ -183,13 +407,13 @@ theorem up_cauchy (hd : d.AxH 𝒜) (hdel : 1 ≤ d.del) (c : ι) (F1 : MvPolyno
   set y : Fin (d.N + 1) → Ω c := fun j => ratio (Ω := Ω c) (d.w j c) w0 with hy
   have hwy : (fun j => d.w j c) = fun j => algebraMap (Ω c) (A c) (y j) * w0 :=
     funext fun j => by rw [← Algebra.smul_def]; exact d.w_eq_smul hd c j
-  have hfac : ∀ (m : ℕ) (R : MvPolynomial (UXVar d.D d.N) K), XHom m R →
+  have hfac : ∀ (m : ℕ) (R : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V d.D d.N) K), XHom m R →
       d.evc c R = MvPolynomial.map (algebraMap (Ω c) (A c)) (evW (R := K) y R) *
         MvPolynomial.C (w0 ^ m) := by
     intro m R hR
     rw [d.evc_eq, hwy]
     exact evW_factor y w0 R hR
-  have hcoef : ∀ (m : ℕ) (R : MvPolynomial (UXVar d.D d.N) K), XHom m R → ∀ β,
+  have hcoef : ∀ (m : ℕ) (R : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V d.D d.N) K), XHom m R → ∀ β,
       AddMonoidAlgebra.coeff (d.evc c R) β = AddMonoidAlgebra.coeff (evW (R := K) y R) β • w0 ^ m := by
     intro m R hR β
     rw [hfac m R hR, mul_comm, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map,
@@ -269,7 +493,7 @@ theorem up_cauchy (hd : d.AxH 𝒜) (hdel : 1 ≤ d.del) (c : ι) (F1 : MvPolyno
       rw [hgφ, hd.nrm_smul c P φ (d.lineSection_pow_mem hd c n) (d.lineSection_pow_ne hd c n) hφ,
         d.norm_lineSection_pow hd c P n hn1, ← map_evW_eq (P : Ω c →+* ℂ) sg hP, MvPolynomial.coeff_map]
 
-    have hQ' : ∀ P' : {P' : MvPolynomial (UXVar d.D d.N) ℂ //
+    have hQ' : ∀ P' : {P' : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V d.D d.N) ℂ //
         XHom n (MvPolynomial.map sg F1 * P') ∧ UDegLE n' (MvPolynomial.map sg F1 * P')},
         d.nrm c (n • d.wL) (g c) P / Cst sg ≤
           ReciprocityTheory.MultiplicativeHeights.polyL2 (MvPolynomial.map (sg.comp (algebraMap (𝓞 K) K)) Q +
@@ -310,7 +534,7 @@ theorem up_cauchy (hd : d.AxH 𝒜) (hdel : 1 ≤ d.del) (c : ι) (F1 : MvPolyno
         _ ≤ ReciprocityTheory.MultiplicativeHeights.polyL2 R * Real.sqrt (cardUX d.D d.N n n') *
               (((d.N + 1 : ℕ) : ℝ) * Real.exp (S sg)) ^ n := by gcongr
         _ = _ := by ring
-    have hne : Nonempty {P' : MvPolynomial (UXVar d.D d.N) ℂ //
+    have hne : Nonempty {P' : MvPolynomial (_root_.ReciprocityTheory.ChartRestriction.G.T0.LinearSubstitution.V d.D d.N) ℂ //
         XHom n (MvPolynomial.map sg F1 * P') ∧ UDegLE n' (MvPolynomial.map sg F1 * P')} :=
       ⟨⟨0, by simp [XHom], by simp [UDegLE]⟩⟩
     have := le_ciInf hQ'
@@ -429,3 +653,6 @@ theorem up_count (hd : d.AxH 𝒜) (hdel : 1 ≤ d.del) :
 end Data
 
 end ReciprocityTheory.ChartRestriction.G.T0
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormLineSectionPow =====

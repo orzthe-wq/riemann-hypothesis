@@ -45,22 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
-
-namespace I195MixedCoordinates_5a743adb4eaabe3d936622f8
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-end I195MixedCoordinates_5a743adb4eaabe3d936622f8
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -74,7 +59,7 @@ noncomputable section
 
 namespace GlobalTheory.HeisMixSource
 
-theorem heis_mixS : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → (∀ x a, (_root_.I195MixedCoordinates_5a743adb4eaabe3d936622f8.source d) T ψ v.μ v.𝓕 (heisO ψ S T (d.extX T a) f) x = (_root_.I195MixedCoordinates_5a743adb4eaabe3d936622f8.source d) T ψ v.μ v.𝓕 f (x + a)) ∧ (∀ x a, (_root_.I195MixedCoordinates_5a743adb4eaabe3d936622f8.source d) T ψ v.μ v.𝓕 (heisO ψ S T (d.extY T a) f) x = ψ (symplO S T (d.extX T x) (d.extY T a)) • (_root_.I195MixedCoordinates_5a743adb4eaabe3d936622f8.source d) T ψ v.μ v.𝓕 f x) ∧ (∀ x w, (_root_.I195MixedCoordinates_5a743adb4eaabe3d936622f8.source d) T ψ v.μ v.𝓕 (heisO ψ S T (d.ext0 T w) f) x = heisO ψ S₀ T w ((_root_.I195MixedCoordinates_5a743adb4eaabe3d936622f8.source d) T ψ v.μ v.𝓕 f x)) ∧ (Continuous fun p : Mx D T.rank ρ × WO S₀ T => (_root_.I195MixedCoordinates_5a743adb4eaabe3d936622f8.source d) T ψ v.μ v.𝓕 f p.1 p.2) ∧ ∀ w, HasSum (fun x : Matrix (Fin T.rank) (Fin ρ) D.host.E => (_root_.I195MixedCoordinates_5a743adb4eaabe3d936622f8.source d) T ψ v.μ v.𝓕 f (rat x) w) (f (d.ext0 T w)) := by
+theorem heis_mixS : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → (∀ x a, (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 (heisO ψ S T (d.extX T a) f) x = (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f (x + a)) ∧ (∀ x a, (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 (heisO ψ S T (d.extY T a) f) x = ψ (symplO S T (d.extX T x) (d.extY T a)) • (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f x) ∧ (∀ x w, (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 (heisO ψ S T (d.ext0 T w) f) x = heisO ψ S₀ T w ((_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f x)) ∧ (Continuous fun p : Mx D T.rank ρ × WO S₀ T => (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f p.1 p.2) ∧ ∀ w, HasSum (fun x : Matrix (Fin T.rank) (Fin ρ) D.host.E => (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f (rat x) w) (f (d.ext0 T w)) := by
   intro D ψ hψ S S₀ T ρ d v f hf
   have hψc : Continuous ψ := hψ.1.1
   refine ⟨fun x a => GlobalTheory.MixModel.Check.mixS_heis_extX d v.μ v.𝓕 f a x, fun x a => ?_,
@@ -103,9 +88,9 @@ theorem heis_mixS : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D �
     rcases Nat.eq_zero_or_pos ρ with rfl | hρ
     · have hz := (GlobalTheory.T.wittDecomposition_mixedCoords_rank_zero D ψ).1 S S₀ T d v.μ v.𝓕 v.covol f
       haveI : Subsingleton (Matrix (Fin T.rank) (Fin 0) D.host.E) := ⟨fun a b => Matrix.ext fun _ j => j.elim0⟩
-      have h1 : ∀ x : Matrix (Fin T.rank) (Fin 0) D.host.E, (_root_.I195MixedCoordinates_5a743adb4eaabe3d936622f8.source d) T ψ v.μ v.𝓕 f (rat x) w = f (d.ext0 T w) :=
+      have h1 : ∀ x : Matrix (Fin T.rank) (Fin 0) D.host.E, (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f (rat x) w = f (d.ext0 T w) :=
         fun x => congrFun (hz (rat x)) w
-      rw [show (fun x : Matrix (Fin T.rank) (Fin 0) D.host.E => (_root_.I195MixedCoordinates_5a743adb4eaabe3d936622f8.source d) T ψ v.μ v.𝓕 f (rat x) w) =
+      rw [show (fun x : Matrix (Fin T.rank) (Fin 0) D.host.E => (_root_.I195MixedCoordinates.source d) T ψ v.μ v.𝓕 f (rat x) w) =
         fun _ => f (d.ext0 T w) from funext h1]
       exact hasSum_single (f := fun _ : Matrix (Fin T.rank) (Fin 0) D.host.E => f (d.ext0 T w))
         (0 : Matrix (Fin T.rank) (Fin 0) D.host.E) fun b hb => absurd (Subsingleton.elim b 0) hb

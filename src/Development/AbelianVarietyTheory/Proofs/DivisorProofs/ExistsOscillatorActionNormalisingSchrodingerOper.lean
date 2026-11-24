@@ -116,7 +116,7 @@ theorem diagonal_sgn : (diagonal fun n : Ix R S × (ι × Ix P Q) => if sgn n th
     blockDiagonal fun o : ι × Ix P Q => Jm P Q o.2 o.2 • Jm R S := by
   ext ⟨b, w, a⟩ ⟨b', w', a'⟩
   rcases a with a | a <;> rcases b with b | b <;> rcases b' with b' | b' <;>
-    simp [diagonal_apply, blockDiagonal_apply, Jm, Formalism.UG.Jpq, sgn, linePos, one_apply, Prod.ext_iff] <;>
+    simp [diagonal_apply, blockDiagonal_apply, Jm, Formalism.UG.Jpq, sgn, linePos, Prod.ext_iff] <;>
     split_ifs <;> simp_all [Matrix.one_apply]
 
 theorem blockDiagonal_mem (M : ι → Mat R S) (hM : ∀ w, (M w)ᴴ * Jm R S * M w = Jm R S) :

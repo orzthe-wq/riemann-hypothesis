@@ -52,6 +52,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSelfDualCLatFrame
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.NotMemSpanOfCommute
 
 @[expose] public section
 
@@ -73,7 +74,7 @@ theorem exists_nsmul_mulVec {m m' : ℕ} (M : Matrix (Fin m') (Fin m) D.host.E)
     (hL' : Submodule.IsFullLattice D.host.E L') : ∃ N : ℕ, 0 < N ∧ ∀ t ∈ L, N • M.mulVec t ∈ L' := by
   classical
   obtain ⟨s, rfl⟩ := hL
-  choose N hN hm using fun t => GlobalTheory.VacUnique.Den.exists_nsmul_mem_lattice L' hL' (M.mulVec t)
+  choose N hN hm using fun t => _root_.GlobalTheory.NatMulIntegralNsmul.exists_nsmul_mem L' hL' (M.mulVec t)
   refine ⟨∏ t ∈ s, N t, Finset.prod_pos fun t _ => hN t, fun t ht => ?_⟩
   induction ht using Submodule.span_induction with
   | mem x hx =>
@@ -183,8 +184,6 @@ theorem half_symm (o : OrthDec X T L) {e : AE D} {x : WO S T} {w : WO S L} (hx :
     IsHalf e ((o.resT S).symm (x, w)) :=
   GlobalTheory.FinPl.Rebase.isHalf_add (isHalf_mul o.jA hx) (isHalf_mul o.jB hw)
 
-theorem half_zero {m n : ℕ} (e : AE D) : IsHalf e (0 : Mx D m n) := fun _ _ => mul_zero _
-
 structure Near (o : OrthDec X T L) (ΛX : AddSubgroup (WO S X)) (ΛT : AddSubgroup (WO S T)) (ΛL : AddSubgroup (WO S L))
     (N : ℕ) : Prop where
   pos : 0 < N
@@ -232,7 +231,7 @@ theorem sb_slice_left (h : Near o ΛX ΛT ΛL N) {Φ : WO S X → ℂ} (hΦ : Is
     rwa [AddEquiv.apply_symm_apply] at this
   · beta_reduce
     rw [symm_add_left, mul_nsmul]
-    exact h2 _ (h.inl u hu) (GlobalTheory.FinPl.DatumBack.isHalf_nsmul' (half_symm o hh (half_zero e)) N) _
+    exact h2 _ (h.inl u hu) (GlobalTheory.FinPl.DatumBack.isHalf_nsmul' (half_symm o hh (_root_.GlobalTheory.SplitScalar.isHalf_zero e)) N) _
   · have := h.fst _ (h3 _ hx)
     rwa [map_nsmul, AddEquiv.apply_symm_apply, Prod.smul_fst, ← mul_nsmul'] at this
 
@@ -254,7 +253,7 @@ theorem sb_slice_right (h : Near o ΛX ΛT ΛL N) {Φ : WO S X → ℂ} (hΦ : I
   · have : (fun x => Φ ((o.resT S).symm (x, w + (N * k) • u))) = fun x => Φ ((o.resT S).symm (x, w)) := by
       funext x
       rw [symm_add_right, mul_nsmul]
-      exact h2 _ (h.inr u hu) (GlobalTheory.FinPl.DatumBack.isHalf_nsmul' (half_symm o (half_zero e) hh) N) _
+      exact h2 _ (h.inr u hu) (GlobalTheory.FinPl.DatumBack.isHalf_nsmul' (half_symm o (_root_.GlobalTheory.SplitScalar.isHalf_zero e) hh) N) _
     simp only [this]
   · obtain ⟨x, hx⟩ := hne w hw
     have := h.snd _ (h3 _ hx)
@@ -361,7 +360,7 @@ theorem over_boxT : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topologi
   obtain ⟨c, -, hc⟩ := GlobalTheory.FinPl.DatumBack.exists_back ψ hec _ hLL' hXX hfin hdX hden hb fun h0 => by
     have := congrFun h0 0
     rw [OrthDec.boxT_zero] at this
-    simp [halfInd, half_zero] at this
+    simp [halfInd, _root_.GlobalTheory.SplitScalar.isHalf_zero] at this
   have v₂ := h₂.vac
   have v₃ := h₃.vac
   rw [one_smul] at v₂ v₃

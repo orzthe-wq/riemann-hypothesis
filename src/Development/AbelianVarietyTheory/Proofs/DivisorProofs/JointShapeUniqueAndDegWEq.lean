@@ -58,7 +58,7 @@ theorem ofFn_getD {L : List ℚ} {n : ℕ} (h : L.length = n) :
     List.ofFn (fun i : Fin n => L.getD i 0) = L := by
   subst h
   refine List.ext_getElem (by simp) fun i h1 h2 => ?_
-  simp [List.getElem?_eq_getElem h2]
+  simp
 
 theorem filter_pos {x y : List ℤ} (hx : ∀ v ∈ x, 0 < v) (hy : ∀ v ∈ y, v < 0) (k : ℕ) :
     (x ++ List.replicate k 0 ++ y).filter (fun v => decide (0 < v)) = x := by

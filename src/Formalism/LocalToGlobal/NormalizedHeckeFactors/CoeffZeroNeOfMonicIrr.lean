@@ -126,13 +126,8 @@ theorem simple_transp (e : ι ≃ κ) {τ : FDRep ℂ (GL ι K)} (h : Simple τ)
     refine Fintype.sum_equiv (glEquiv K e).toEquiv _ _ (fun g => ?_)
     first
       | simp
-      | simp [map_inv]
-      | rfl
   rw [hs]
   first
-    | (rw [hc]; exact h)
-    | (simp only [hc]; exact h)
-    | (simp only [invOf_eq_inv] at h ⊢; rw [hc]; exact h)
     | (convert h using 3; simp [hc])
     | (convert h using 2; simp [hc])
 
@@ -190,12 +185,6 @@ theorem hasLabelO_spec {C : LabelConv (ZMod g)} (O : LabelMap (ZMod g) C) {r : �
   · rw [natDegree_prod_of_monic _ _ hmon, Finset.sum_congr rfl (fun c _ => (hfac c).2.2.2)]
     first
       | (rw [← Fintype.card_sigma, Fintype.card_congr (Equiv.sigmaFiberEquiv b), Fintype.card_fin])
-      | (simp only [Fintype.card_subtype]
-         rw [← Finset.card_eq_sum_card_fiberwise (fun x _ => Finset.mem_univ (b x)), Finset.card_univ,
-           Fintype.card_fin])
-      | (simp only [Fintype.card_subtype]
-         rw [← Finset.card_eq_sum_card_fiberwise (fun x _ => Finset.mem_univ (b x))]
-         simp)
   · rw [coeff_zero_eq_eval_zero, eval_prod]
     refine Finset.prod_ne_zero_iff.mpr fun c _ => ?_
     rw [← coeff_zero_eq_eval_zero]

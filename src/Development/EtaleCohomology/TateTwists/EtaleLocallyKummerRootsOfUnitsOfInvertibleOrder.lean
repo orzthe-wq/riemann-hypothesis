@@ -143,7 +143,7 @@ theorem pt (q : ℕ) [NeZero q] (U : Scheme.{0}) (hq : IsUnit (q : Γ(U, ⊤))) 
     have hnat : (Scheme.ΓSpecIso B).hom.hom ((Spec.map φ).appTop.hom w) =
         φ.hom ((Scheme.ΓSpecIso A).hom.hom w) := by
       rw [← CommRingCat.comp_apply, Scheme.ΓSpecIso_naturality, CommRingCat.comp_apply]
-    simp only [Units.val_pow_eq_pow_val, Units.coe_map, MonoidHom.coe_coe]
+    simp only [Units.val_pow_eq_pow_val, Units.coe_map]
     rw [Scheme.Hom.comp_appTop, CommRingCat.hom_comp]
     show ((Scheme.ΓSpecIso B).inv.hom (r : AdjoinRoot (kpol q (u₁ : A)))) ^ q =
       (Spec.map φ).appTop.hom w

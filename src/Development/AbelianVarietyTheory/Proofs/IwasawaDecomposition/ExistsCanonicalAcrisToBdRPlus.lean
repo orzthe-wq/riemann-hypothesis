@@ -7,8 +7,8 @@ public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisMembershipSpanIff
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadic
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineXiPowSaturatedQuotientCompleteStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElementStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineXiPowSaturatedQuotientComplete
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,10 +56,6 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.MemLoc.CrisMap
 
-theorem smodEq_iff {R : Type} [CommRing R] (a : R) (n : ℕ) (x y : R) :
-    x ≡ y [SMOD (Ideal.span {a} ^ n • ⊤ : Submodule R R)] ↔ a ^ n ∣ x - y := by
-  rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
-
 theorem complete_of_sandwich (p N : ℕ) {B R : Type} [CommRing B] [CommRing R]
     (hB : IsAdicComplete (Ideal.span {(p : B)}) B) (g : B →+* R) (hg : Function.Injective g)
     (h : ∀ r : R, ∃ b : B, (p : R) ^ N * r = g b) : IsAdicComplete (Ideal.span {(p : R)}) R := by
@@ -70,27 +66,27 @@ theorem complete_of_sandwich (p N : ℕ) {B R : Type} [CommRing B] [CommRing R]
     rw [hy, map_mul, map_pow, map_natCast, ← hc]
     ring
   refine { haus' := fun x hx => ?_, prec' := fun x hx => ?_ }
-  · simp only [smodEq_iff, sub_zero] at hx
+  · simp only [_root_.GlobalTheory.MemLoc.XiSat.smodEq_iff, sub_zero] at hx
     obtain ⟨y, hy⟩ := hx N
     obtain ⟨b, hb⟩ := h y
     have : b = 0 := by
       refine IsHausdorff.haus hB.toIsHausdorff b fun k => ?_
-      rw [smodEq_iff, sub_zero]
+      rw [_root_.GlobalTheory.MemLoc.XiSat.smodEq_iff, sub_zero]
       exact key b k (by rw [← hb, ← hy]; exact hx _)
     rw [hy, hb, this, map_zero]
-  · simp only [smodEq_iff] at hx ⊢
+  · simp only [_root_.GlobalTheory.MemLoc.XiSat.smodEq_iff] at hx ⊢
     have h1 : ∀ k, ∃ b : B, x (k + N) - x N = g b := fun k => by
       obtain ⟨y, hy⟩ := hx (Nat.le_add_left N k)
       obtain ⟨b, hb⟩ := h y
       exact ⟨-b, by rw [map_neg, ← hb, ← hy]; ring⟩
     choose b hb using h1
     obtain ⟨L, hL⟩ := IsPrecomplete.prec hB.toIsPrecomplete (f := b) (fun {m n} hmn => by
-      rw [smodEq_iff]
+      rw [_root_.GlobalTheory.MemLoc.XiSat.smodEq_iff]
       refine key _ _ ?_
       rw [map_sub, ← hb, ← hb, sub_sub_sub_cancel_right]
       exact hx (Nat.add_le_add_right hmn N))
     refine ⟨x N + g L, fun n => ?_⟩
-    have h2 := map_dvd g ((smodEq_iff _ _ _ _).1 (hL n))
+    have h2 := map_dvd g ((_root_.GlobalTheory.MemLoc.XiSat.smodEq_iff _ _ _ _).1 (hL n))
     rw [map_pow, map_natCast, map_sub, ← hb] at h2
     have h3 := dvd_add (hx (Nat.le_add_right n N)) h2
     convert h3 using 1
@@ -113,7 +109,7 @@ theorem extend_unique (p : ℕ) {D R : Type} [CommRing D] [CommRing R]
   ext1 x
   rw [← sub_eq_zero]
   refine IsHausdorff.haus hR _ fun k => ?_
-  rw [smodEq_iff, sub_zero]
+  rw [_root_.GlobalTheory.MemLoc.XiSat.smodEq_iff, sub_zero]
   obtain ⟨s, z, rfl⟩ := GlobalTheory.PrincipalCompletion.dense (p : D) x k
   refine ⟨F z - G z, ?_⟩
   simp only [map_add (f := _), map_mul, map_pow, map_natCast, h]
@@ -171,7 +167,7 @@ theorem bound (n : ℕ) (s : Per.AinfP l) (hs : s ∈ Per.Acris0 l) : ∃ a : Pe
   | mem y hy =>
     obtain ⟨k, hk⟩ := hy
     rcases le_total k n with hkn | hkn
-    · obtain ⟨c, hc⟩ := GlobalTheory.RingBasics.exists_pow_div_factorial l k
+    · obtain ⟨c, hc⟩ := _root_.Reformulated.AutPerF.exists_factorial_mul_eq_pow l k
       have hc' : ((k.factorial : ℕ) : Per.AinfP l) * algebraMap (Per.Ainf l) (Per.AinfP l) (Per.zA l c) =
           (l : Per.AinfP l) ^ k := by
         have h := congrArg ((algebraMap (Per.Ainf l) (Per.AinfP l)).comp (Per.zA l)) hc
@@ -189,7 +185,7 @@ theorem bound (n : ℕ) (s : Per.AinfP l) (hs : s ∈ Per.Acris0 l) : ∃ a : Pe
       obtain ⟨u, hu⟩ := (GlobalTheory.RingBasics.isUnit_nat l _ k.factorial_ne_zero).exists_left_inv
       have hy : y = u * algebraMap (Per.Ainf l) (Per.AinfP l) (xi e) ^ k := by
         rw [← hk, ← mul_assoc, hu, one_mul]
-      rw [map_zero, sub_zero, hy, GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he]
+      rw [map_zero, sub_zero, hy, _root_.GlobalTheory.MemLoc.ker_localizedTheta_eq_span_xi l e he]
       exact Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _
         (Ideal.pow_le_pow_right hkn (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) k)))
   | zero => exact ⟨0, by simp⟩
@@ -210,7 +206,7 @@ theorem bound (n : ℕ) (s : Per.AinfP l) (hs : s ∈ Per.Acris0 l) : ∃ a : Pe
 theorem algebraMap_mem_kerTheta_pow_iff₂ (e : Per.Fl l) (he : IsEps e) (n : ℕ) (a : Per.Ainf l) :
     algebraMap (Per.Ainf l) (Per.AinfP l) a ∈ Per.kerP l ^ n ↔ a ∈ Ideal.span {xi e ^ n} := by
   have h1 : Per.kerP l ^ n = (Ideal.span {xi e ^ n}).map (algebraMap (Per.Ainf l) (Per.AinfP l)) := by
-    rw [GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, map_pow]
+    rw [_root_.GlobalTheory.MemLoc.ker_localizedTheta_eq_span_xi l e he, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, map_pow]
   rw [h1]
   refine ⟨fun h => ?_, Ideal.mem_map_of_mem _⟩
   rw [IsLocalization.algebraMap_mem_map_algebraMap_iff (Submonoid.powers (l : Per.Ainf l))] at h
@@ -219,7 +215,7 @@ theorem algebraMap_mem_kerTheta_pow_iff₂ (e : Per.Fl l) (he : IsEps e) (n : �
   induction k with
   | zero => simpa using hk
   | succ k ih =>
-    refine ih ((GlobalTheory.T.fontaineXi_pow_saturated_quotient_complete l e he n).1 _ ?_)
+    refine ih ((_root_.GlobalTheory.MemLoc.XiSat.xi_sat l e he n).1 _ ?_)
     convert hk using 1
     ring
 
@@ -234,7 +230,7 @@ theorem range_complete (n : ℕ) : IsAdicComplete
   have hk : ∀ a, g0 a = 0 ↔ a ∈ Ideal.span {xi e ^ n} := fun a => by
     rw [← algebraMap_mem_kerTheta_pow_iff₂ l e he, ← Ideal.Quotient.eq_zero_iff_mem, ← hg0]
     exact Subtype.ext_iff
-  refine complete_of_sandwich l n (GlobalTheory.T.fontaineXi_pow_saturated_quotient_complete l e he n).2
+  refine complete_of_sandwich l n (_root_.GlobalTheory.MemLoc.XiSat.xi_sat l e he n).2
     (Ideal.Quotient.lift _ g0 fun a ha => (hk a).2 ha) ?_ ?_
   · refine RingHom.lift_injective_of_ker_le_ideal _ _ fun a ha => (hk a).1 ha
   · rintro ⟨_, s, rfl⟩

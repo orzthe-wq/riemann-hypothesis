@@ -1,60 +1,110 @@
 module
 
+public import GroundTheory.LocalFields.PrincipalUnitsModule
 public import GroundTheory.LocalFields.ExamplesCharZero
 public import GroundTheory.LocalFields.PadicLogHom
-public import GroundTheory.LocalFields.PrincipalUnitsModule
-import GroundTheory.LocalFields.Examples
 public import GroundTheory.LocalFields.Integers
-import GroundTheory.LocalFields.PadicExp
-public import GroundTheory.LocalFields.PadicLogLinear
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import GroundTheory.LocalFields.Examples
+import GroundTheory.LocalFields.PadicExp
+import Mathlib.RingTheory.PiTensorProduct
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.LocalFields.PadicLogLinear, GroundTheory.LocalFields.PrincipalUnitsRank
+
+-- ===== clump member: GroundTheory.LocalFields.PadicLogLinear =====
+-- clump-header: {"m": "GroundTheory.LocalFields.PadicLogLinear", "h": "module\n\npublic import GroundTheory.LocalFields.PrincipalUnitsModule\npublic import GroundTheory.LocalFields.ExamplesCharZero\npublic import GroundTheory.LocalFields.PadicLogHom\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.LocalField
+
+open ValuativeRel IsLocalRing Topology Filter
+open scoped WithZero
+
+variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
+
+theorem eq_zero_of_forall_mem_valBall {y : K} (h : ∀ N : ℤ, y ∈ valBall (K := K) N) : y = 0 := by
+  by_contra hy
+  have := h (ord y + 1)
+  rw [mem_valBall, normalizedValuation_eq_exp_ord hy, WithZero.exp_le_exp] at this
+  omega
+
+theorem exists_mem_valBall (y : K) : ∃ M : ℤ, y ∈ valBall (K := K) M := by
+  by_cases hy : y = 0
+  · exact ⟨0, by simp [hy]⟩
+  · exact ⟨ord y, by rw [mem_valBall, normalizedValuation_eq_exp_ord hy]⟩
+
+variable (p : ℕ) [hp : Fact p.Prime] [CharP 𝓀[K] p] [CharZero K]
+
+theorem padicHom_padicInt_mem_valBall_zero (t : ℤ_[p]) :
+    CharZero.padicHom K p (t : ℚ_[p]) ∈ valBall (K := K) 0 := by
+  rw [mem_valBall, neg_zero, WithZero.exp_zero, ← map_one (normalizedValuation K),
+    normalizedValuation_le_iff, map_one]
+  exact CharZero.valuation_padicHom_padicInt_le_one K p t
+
+
+include p in
+include p in
+theorem padicLog_mem_valBall_of_mem {k : ℕ} (hk : absRamificationIndex (K := K) ≤ k)
+    {w : Additive (unitFiltrationUnits K 1)} (hw : w ∈ principalFiltration (K := K) k) :
+    padicLog K w ∈ valBall (K := K) (k + 1) := by
+  rw [mem_principalFiltration] at hw
+  rw [padicLog_apply]
+  refine logSeries_mem_valBall p hw ?_
+  have hp2 : (2 : ℤ) ≤ p := by exact_mod_cast hp.out.two_le
+  have : (absRamificationIndex (K := K) : ℤ) ≤ k := by exact_mod_cast hk
+  nlinarith
+
+theorem padicLog_smul (a : ℤ_[p]) (u : Additive (unitFiltrationUnits K 1)) :
+    padicLog K (a • u) = CharZero.padicHom K p (a : ℚ_[p]) * padicLog K u := by
+  rw [← sub_eq_zero]
+  refine eq_zero_of_forall_mem_valBall fun N ↦ ?_
+  set e := absRamificationIndex (K := K)
+  have he := one_le_absRamificationIndex (K := K) p
+  obtain ⟨M, hM⟩ := exists_mem_valBall (padicLog K u)
+  set k : ℕ := N.toNat + M.natAbs + e + 1 with hk_def
+  set c : ℤ := ((a.appr k : ℕ) : ℤ)
+  have hac := dvd_sub_appr p k a
+  obtain ⟨t, ht⟩ := hac
+  have hw := smul_sub_intCast_smul_mem p (dvd_sub_appr p k a) u
+  have h1 := padicLog_mem_valBall_of_mem p (by omega : e ≤ k) hw
+  rw [map_sub, map_zsmul, zsmul_eq_mul] at h1
+  have h2 : CharZero.padicHom K p (a : ℚ_[p]) - (c : K) =
+      ((p ^ k : ℕ) : K) * CharZero.padicHom K p (t : ℚ_[p]) := by
+    have := congrArg (fun z : ℤ_[p] ↦ CharZero.padicHom K p (z : ℚ_[p])) ht
+    simp only [PadicInt.coe_sub, PadicInt.coe_intCast, map_sub, map_intCast, PadicInt.coe_mul,
+      PadicInt.coe_pow, PadicInt.coe_natCast, map_mul, map_pow, map_natCast] at this
+    rw [this]; push_cast; ring
+  have h3 : (CharZero.padicHom K p (a : ℚ_[p]) - (c : K)) * padicLog K u ∈
+      valBall (K := K) (e * k + 0 + M) := by
+    rw [h2]
+    exact mul_mem_valBall (mul_mem_valBall (natCast_prime_pow_mem_valBall p k)
+      (padicHom_padicInt_mem_valBall_zero p t)) hM
+  have heq : padicLog K (a • u) - CharZero.padicHom K p (a : ℚ_[p]) * padicLog K u =
+      (padicLog K (a • u) - (c : K) * padicLog K u) -
+        (CharZero.padicHom K p (a : ℚ_[p]) - (c : K)) * padicLog K u := by ring
+  rw [heq]
+  have hNt := Int.self_le_toNat N
+  have hMa := neg_abs_le M
+  have hMa' := abs_nonneg M
+  have hN1 : N ≤ (k : ℤ) + 1 := by rw [hk_def]; push_cast; omega
+  have hN2 : N ≤ (e : ℤ) * k + 0 + M := by
+    have : (k : ℤ) ≤ e * k := by
+      have : (1 : ℤ) ≤ e := by exact_mod_cast he
+      nlinarith [(by positivity : (0 : ℤ) ≤ k)]
+    rw [hk_def] at this ⊢; push_cast at this ⊢; omega
+  exact sub_mem (valBall_antitone hN1 h1) (valBall_antitone hN2 h3)
+
+end GroundTheory.LocalField
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.LocalFields.PadicLogLinear =====
+
+-- ===== clump member: GroundTheory.LocalFields.PrincipalUnitsRank =====
+-- clump-header: {"m": "GroundTheory.LocalFields.PrincipalUnitsRank", "h": "module\n\npublic import GroundTheory.LocalFields.ExamplesCharZero\npublic import GroundTheory.LocalFields.PadicLogHom\npublic import GroundTheory.LocalFields.PrincipalUnitsModule\nimport GroundTheory.LocalFields.Examples\npublic import GroundTheory.LocalFields.Integers\nimport GroundTheory.LocalFields.PadicExp\npublic import GroundTheory.LocalFields.PadicLogLinear\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace GroundTheory.LocalField
@@ -379,3 +429,6 @@ theorem finrank_principalUnits (p : ℕ) [Fact p.Prime] [CharP 𝓀[K] p] [CharZ
 end Rank
 
 end GroundTheory.LocalField
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.LocalFields.PrincipalUnitsRank =====

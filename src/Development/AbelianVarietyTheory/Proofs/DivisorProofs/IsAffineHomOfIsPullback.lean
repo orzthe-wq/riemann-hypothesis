@@ -158,7 +158,7 @@ theorem beta_nat (hp : IsPullback pr s₁ s₀ (spMap (algebraMap R₀ R₁))) {
     rw [beta_tmul, beta_tmul]
     erw [map_mul]
     congr 1
-    all_goals first | exact ((Sec.res s₁ _).commutes r).symm | exact hn
+    all_goals first | exact ((Sec.res s₁ _).commutes r).symm
   | add x y hx hy =>
     simp only [map_add (f := _), hx, hy]
     exact (map_add _ _ _).symm

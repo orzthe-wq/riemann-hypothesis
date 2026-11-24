@@ -158,7 +158,7 @@ theorem mem_latV_iff_parts (V : HSp D) (L : Lat V) (P : Pl D → Prop) (Q : Fins
     rw [e]
     exact add_mem (latV_mono V L (fun _ h => h.1) h1) (latV_mono V L (fun _ h => h.1) h2)
 
-theorem mt_mul (V : HSp D) (a b : GA D V) : mt V (a * b) = mt V a * mt V b := rfl
+alias mt_mul := _root_.GlobalTheory.BesselCompare.mt_mul
 
 theorem mt_inj (V : HSp D) {a b : GA D V} (h : mt V a = mt V b) : a = b :=
   Subtype.ext (Units.ext h)

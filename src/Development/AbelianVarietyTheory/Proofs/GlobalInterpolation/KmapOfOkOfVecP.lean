@@ -1,6 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReferenceCharactersFactorTame
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelNotMemRowSG
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnderEqIffMapLe
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.IndexExponentDegree
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.XiAtPenultimateEqXiCpl1
@@ -11,28 +13,28 @@ public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.Charac
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalCharEqHeckeCharLocalComponentOfValues
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalisedFamilyLatticeHypAndSmooth
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NotDvdDifferent
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrdSubEqOrdDet
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RelIndexLocPNeZero
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SubDSharpInDeg
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TameCharacterValuesEqHeckeCharLocalValuesStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TrueColumnChoicesHeckeCharReferenceEqOne
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TameCharacterValuesEqHeckeCharLocalValues
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TildeQDetPtEqChiId
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsPrimesOk
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinAfMemIntUIff
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevOkTwists
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValuedCompAtDetIdl
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AbsNormEqOfSplitFactor
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsOfStarEq
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDivLatticeQuotient
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertAtLeCongN
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NotDvdCardOfInjective
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaSupportInDivLattice
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrdDetConjFinite
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SplitOfConjPNe
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
-import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
-import Formalism.LocalToGlobal.UnitaryNorms.CharUniq
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -55,7 +57,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -70,7 +72,187 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PicardGroup
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinAfMemIntUIff
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.AbsNormEqOfSplitFactor
+import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
+import Formalism.LocalToGlobal.UnitaryNorms.CharUniq
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrdSubEqOrdDet, Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.KmapOfOkOfVecP
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrdSubEqOrdDet =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrdSubEqOrdDet", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReferenceCharactersFactorTame\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelNotMemRowSG\nimport Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrdDetConjFinite\nimport Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SplitOfConjPNe\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnderEqIffMapLe\nimport Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Mathlib.RingTheory.PicardGroup\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Ker GlobalTheory.Mem.Col2
+
+noncomputable section
+
+namespace GlobalTheory.DetIdlValue
+
+variable {X : Fields} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
+
+theorem finprod_group {M : Type} [CommMonoid M] (hX : X.Ok) (hsel : IsSel X sel) (g : HeightOneSpectrum (𝓞 X.E) → M)
+    (hfin : (Function.mulSupport g).Finite) (h1 : ∀ w, conjPrime₂ w = w → g w = 1) :
+    ∏ᶠ w, g w = ∏ᶠ v, g (sel v) * g (conjPrime₂ (sel v)) := by
+  classical
+  have hu : ∀ v, (sel v).under (𝓞 X.F) = v := fun v => HeightOneSpectrum.ext (hsel v)
+  have hu' : ∀ v, (conjPrime₂ (sel v)).under (𝓞 X.F) = v := fun v =>
+    HeightOneSpectrum.ext ((GlobalTheory.MuOffMove.under_conjP hX _).trans (hsel v))
+  have hsub : Function.mulSupport (fun v => g (sel v) * g (conjPrime₂ (sel v))) ⊆
+      (hfin.toFinset.image fun P => P.under (𝓞 X.F) : Finset _) := by
+    intro v hv
+    rw [Finset.mem_coe, Finset.mem_image]
+    by_cases h : g (sel v) = 1
+    · refine ⟨conjPrime₂ (sel v), hfin.mem_toFinset.2 fun h' => hv ?_, hu' v⟩
+      simp only [h, h', mul_one]
+    · exact ⟨sel v, hfin.mem_toFinset.2 h, hu v⟩
+  rw [finprod_eq_prod_of_mulSupport_subset _ hsub, finprod_eq_prod _ hfin,
+    ← Finset.prod_fiberwise_of_maps_to (g := fun P : HeightOneSpectrum (𝓞 X.E) => P.under (𝓞 X.F))
+      fun P hP => Finset.mem_image_of_mem (fun P : HeightOneSpectrum (𝓞 X.E) => P.under (𝓞 X.F)) hP]
+  refine Finset.prod_congr rfl fun v _ => ?_
+  by_cases hc : conjPrime₂ (sel v) = sel v
+  · rw [hc, h1 _ hc, mul_one]
+    refine Finset.prod_eq_one fun w hw => h1 w ?_
+    by_contra hw'
+    have hwv : w.asIdeal.under (𝓞 X.F) = v.asIdeal := congrArg HeightOneSpectrum.asIdeal (Finset.mem_filter.1 hw).2
+    rcases ((GlobalTheory.ThetaMove.split_of_conj_ne₂ X w v hX hw' hwv).2 (sel v)).1 (hsel v) with e | e
+    · exact hw' (e ▸ hc)
+    · rw [e, GlobalTheory.CharValCompare.conjP_conjP] at hc
+      exact hw' hc.symm
+  · have hsp := (GlobalTheory.ThetaMove.split_of_conj_ne₂ X (sel v) v hX hc (hsel v)).2
+    rw [← Finset.prod_pair (Ne.symm hc)]
+    refine Finset.prod_subset (fun w hw => ?_) fun w hw hw' => ?_
+    · rw [Finset.mem_insert, Finset.mem_singleton]
+      exact (hsp w).1 (congrArg HeightOneSpectrum.asIdeal (Finset.mem_filter.1 hw).2)
+    · by_contra hg
+      rw [Finset.mem_insert, Finset.mem_singleton] at hw
+      exact hw' (Finset.mem_filter.2 ⟨hfin.mem_toFinset.2 hg, HeightOneSpectrum.ext ((hsp w).2 hw)⟩)
+
+theorem pow_toNat_mul {G : Type} [CommGroup G] (a : G) (k : ℤ) : a ^ k.toNat * a⁻¹ ^ (-k).toNat = a ^ k := by
+  rw [inv_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_sub, Int.toNat_sub_toNat_neg]
+
+private theorem span_eq_top_of_isSdLat {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N) :
+    Submodule.span E (N : Set (Sp E n)) = ⊤ := by
+  classical
+  apply Submodule.dualAnnihilator_eq_bot_iff.mp
+  apply le_antisymm ?_ bot_le
+  intro f hf
+  let v : Sp E n := fun i => star (f (Pi.single i 1))
+  have hpair : hStd E n v = f := by
+    apply (Pi.basisFun E (Fin n)).ext
+    intro i
+    rw [Pi.basisFun_apply, hStd_apply, Finset.sum_eq_single i]
+    · simp [v]
+    · intro j _ hj
+      simp [hj]
+    · simp
+  have hline (r : E) : r • v ∈ N := by
+    rw [← show dual (hStd E n) N = N from hN.2, dualBasic_mem_dual]
+    intro y hy
+    have hy0 : hStd E n v y = 0 := by
+      rw [hpair]
+      exact (Submodule.mem_dualAnnihilator f).mp hf y (Submodule.subset_span hy)
+    have hz : hStd E n y v = 0 := by
+      simpa [hy0] using ((hStd_isSymm (E := E) (n := n)).eq v y).symm
+    simp [hz]
+  have hv : v = 0 := by
+    funext i
+    change v i = 0
+    by_contra hi
+    let coord := (LinearMap.proj i : Sp E n →ₗ[E] E).restrictScalars (𝓞 E)
+    have htop : N.map coord = ⊤ := by
+      rw [eq_top_iff]
+      intro x _
+      exact ⟨(x / v i) • v, hline _, div_mul_cancel₀ _ hi⟩
+    have : Module.Finite (𝓞 E) E := Module.finite_def.mpr (htop ▸ hN.1.fg.map coord)
+    exact RingOfIntegers.not_isField E
+      (isField_of_isIntegral_of_isField (IsFractionRing.injective (𝓞 E) E) (Field.toIsField E))
+  rw [Submodule.mem_bot]
+  simpa [hv] using hpair.symm
+
+
+theorem ordSub_eq_ordDet {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {N : Submodule (𝓞 E) (Sp E n)}
+    (hN : IsSdLat N) (w : HeightOneSpectrum (𝓞 E)) : GlobalTheory.Mem.Chr.ordSub w (GlobalTheory.Mem.Chr.detSub N) = ordDet w N := by
+  letI : Submodule.IsLattice E N := hN.1
+  have hfull : Submodule.IsFullLattice E N := ⟨span_eq_top_of_isSdLat hN⟩
+  apply ordSub_detSub_eq hfull
+  apply GlobalTheory.CharValCompare.isFr_frameAt
+  first
+  | exact GlobalTheory.CharValCompare.exists_isFr w hN
+
+theorem inv_val_detIdl : ∀ (X : Fields) (n : ℕ) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (SB : Finset (HeightOneSpectrum (𝓞 X.E))) (χ : Formalism.L2.Host.HChar X.E) (σ : X.K →+* ℂ) (mU : HeightOneSpectrum (𝓞 X.E) → X.Kˣ) (N : Submodule (𝓞 X.E) (Sp X.E n)) (fr : HeightOneSpectrum (𝓞 X.E) → Sp X.E n ≃ₗ[X.E] Sp X.E n), X.Ok → IsSel X sel → IsSdLat N → χ.TrivOn X.F → (∀ w, w ∉ SB → conjPrime₂ w ∉ SB → χ.UnrAt w ∧ σ ((mU w : X.Kˣ) : X.K) = ((χ.val w : ℂˣ) : ℂ)⁻¹) → ((χ.1 (detIdl SB N fr) : ℂˣ) : ℂ)⁻¹ = σ (muOff sel SB mU N) * ∏ P : SB, ((χ.locK P.1 (LinearEquiv.det (fr P.1)) : ℂˣ) : ℂ)⁻¹ := by
+  intro X n sel SB χ σ mU N fr hX hsel hN hT hU
+  classical
+  set g : HeightOneSpectrum (𝓞 X.E) → ℂˣ := fun w =>
+    if w ∈ SB ∨ conjPrime₂ w ∈ SB then 1 else χ.val w ^ (ordDet w N).toNat with hg
+  have hfin : (Function.mulSupport g).Finite := by
+    refine (GlobalTheory.OrdDetConj.ordDet_conj_finite X.E n N hN).2.subset fun w hw h0 => hw ?_
+    simp [hg, h0]
+  have h0 : ∀ w, conjPrime₂ w = w → ordDet w N = 0 := fun w hw => by
+    have := GlobalTheory.OrdDetConj.ordDet_conjP hN w
+    rw [hw] at this
+    omega
+  have h1 : ∀ w, conjPrime₂ w = w → g w = 1 := fun w hw => by simp [hg, h0 w hw]
+  have e1 : χ.1 (detIdl SB N fr) = (∏ P ∈ SB, χ.locK P (LinearEquiv.det (fr P))) * ∏ᶠ w, g w := by
+    unfold detIdl
+    rw [map_mul, map_prod, MonoidHom.map_finprod _ (finite_detIdl SB hN.1)]
+    congr 1
+    refine finprod_congr fun w => ?_
+    simp only [hg]
+    split_ifs
+    · exact map_one _
+    · rw [map_pow, ordSub_eq_ordDet hN]
+      rfl
+  have e2 : ∀ v, σ (GlobalTheory.MuOffMove.term sel SB mU N v) = (((g (sel v) * g (conjPrime₂ (sel v)))⁻¹ : ℂˣ) : ℂ) := by
+    intro v
+    unfold GlobalTheory.MuOffMove.term
+    by_cases hc : conjPrime₂ (sel v) = sel v
+    · rw [hc, h1 _ hc, h0 _ hc]
+      simp
+    · obtain ⟨hm, hsp⟩ := GlobalTheory.ThetaMove.split_of_conj_ne₂ X (sel v) v hX hc (hsel v)
+      by_cases hv : sel v ∈ SB ∨ conjPrime₂ (sel v) ∈ SB
+      · have hv' : ∃ P ∈ SB, P.asIdeal.under (𝓞 X.F) = v.asIdeal :=
+          hv.elim (fun h => ⟨_, h, (hsp _).2 (Or.inl rfl)⟩) fun h => ⟨_, h, (hsp _).2 (Or.inr rfl)⟩
+        rw [if_pos hv']
+        simp only [hg, GlobalTheory.CharValCompare.conjP_conjP]
+        rw [if_pos hv, if_pos hv.symm]
+        simp
+      · have hv' : ¬ ∃ P ∈ SB, P.asIdeal.under (𝓞 X.F) = v.asIdeal := by
+          rintro ⟨P, hP, e⟩
+          rcases (hsp P).1 e with rfl | rfl
+          exacts [hv (Or.inl hP), hv (Or.inr hP)]
+        obtain ⟨ha, hb⟩ := not_or.1 hv
+        obtain ⟨u1, s1⟩ := hU _ ha hb
+        obtain ⟨u2, -⟩ := hU _ hb (by rwa [GlobalTheory.CharValCompare.conjP_conjP])
+        rw [if_neg hv']
+        simp only [hg, GlobalTheory.CharValCompare.conjP_conjP]
+        rw [if_neg hv, if_neg fun h => hv (Or.symm h), GlobalTheory.OrdDetConj.ordDet_conjP hN,
+          GlobalTheory.HeckeSplit.val_eq_inv_of_split X.F X.E χ v _ _ hT u1 u2 (Ne.symm hc) hm, pow_toNat_mul,
+          Units.val_zpow_eq_zpow_val, map_zpow₀, s1, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, inv_zpow]
+  have hinj : Function.Injective sel := fun v w h => HeightOneSpectrum.ext (by rw [← hsel v, h, hsel w])
+  have e3 : σ (muOff sel SB mU N) = (((∏ᶠ w, g w)⁻¹ : ℂˣ) : ℂ) := by
+    change σ (∏ᶠ v, GlobalTheory.MuOffMove.term sel SB mU N v) = _
+    rw [finprod_group hX hsel g hfin h1, ← finprod_inv_distrib,
+      map_finprod σ (GlobalTheory.MuOffMove.term_finite hsel SB mU hN), finprod_congr e2]
+    exact ((Units.coeHom ℂ).map_finprod_of_injective Units.val_injective
+      fun v => (g (sel v) * g (conjPrime₂ (sel v)))⁻¹).symm
+  rw [e3, e1, Finset.prod_coe_sort SB fun P => ((χ.locK P (LinearEquiv.det (fr P)) : ℂˣ) : ℂ)⁻¹]
+  simp [mul_comm]
+
+end GlobalTheory.DetIdlValue
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrdSubEqOrdDet =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.KmapOfOkOfVecP =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.KmapOfOkOfVecP", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReferenceCharactersFactorTame\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.JetsInIffStepField\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.IndexExponentDegree\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.XiAtPenultimateEqXiCpl1\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.TrueWtAddSSNonneg\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemDivsOfMem\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AbsNormEqOfSplit\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CharacterValueAtT\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalCharEqHeckeCharLocalComponentOfValues\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalisedFamilyLatticeHypAndSmooth\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NotDvdDifferent\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.OrdSubEqOrdDet\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RelIndexLocPNeZero\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SubDSharpInDeg\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TrueColumnChoicesHeckeCharReferenceEqOne\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TameCharacterValuesEqHeckeCharLocalValues\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TildeQDetPtEqChiId\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsPrimesOk\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LevOkTwists\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValuedCompAtDetIdl\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsOfStarEq\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDivLatticeQuotient\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InertAtLeCongN\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NotDvdCardOfInjective\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ThetaSupportInDivLattice\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinAfMemIntUIff\nimport Development.AbelianVarietyTheory.Proofs.SatakeParameters.AbsNormEqOfSplitFactor\nimport Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic\nimport Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC\nimport Formalism.LocalToGlobal.UnitaryNorms.CharUniq\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.RingTheory.PicardGroup\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -262,7 +444,7 @@ theorem map_muAtT (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hg : ∀ k, Pr
   classical
   have hlp := GlobalTheory.ColPeriod.levelPrimes X Pr sel S mu hX hPr hsel P
   have hta := GlobalTheory.Mem.ReadTwist.tameAt h fun v => Subgroup.mem_iInf.1 mu.2.1.2 v
-  have hq := (GlobalTheory.T.tame_character_values_eq_heckeChar_local_values X.F X.E X.K σ _ ξ h hta P.1).2 hlp.1.2
+  have hq := (_root_.GlobalTheory.TwistVal.main X.F X.E X.K σ _ ξ h hta P.1).2 hlp.1.2
   have hm : ∀ x, (((m0 j * ξ)⁻¹.locK P.1 x : ℂˣ) : ℂ) = (((m0 j).locK P.1 x : ℂˣ) : ℂ)⁻¹ * ((ξ.locK P.1 x : ℂˣ) : ℂ)⁻¹ := fun x => by
     rw [← mul_inv, ← Units.val_mul, ← Units.val_inv_eq_inv_val]
     rfl
@@ -316,7 +498,7 @@ theorem map_muInvDet (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hg : ∀ k,
       exacts [h1 (Finset.mem_union_right _ (e ▸ h3)), h2 (Finset.mem_union_right _ (e ▸ h3))]
     refine ⟨((ht.mu0 j).unr w hg').mul hun, ?_⟩
     rw [mUof, dite_eq_left j.2, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_mul, map_inv₀, map_inv₀,
-      ht.muVal j w hg', (GlobalTheory.T.tame_character_values_eq_heckeChar_local_values X.F X.E X.K σ _ ξ h hta w).1 hun, Formalism.L2.Host.HChar.val_mul, Units.val_mul, mul_inv]
+      ht.muVal j w hg', (_root_.GlobalTheory.TwistVal.main X.F X.E X.K σ _ ξ h hta w).1 hun, Formalism.L2.Host.HChar.val_mul, Units.val_mul, mul_inv]
 
 end Scalar
 
@@ -396,3 +578,7 @@ theorem laHyp_of_vecP (C : Cols B) (W : RowsRest B C) (V : DivStage B C W) (S : 
 end True
 
 end GlobalTheory.LvT.Built.KMap
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.KmapOfOkOfVecP =====

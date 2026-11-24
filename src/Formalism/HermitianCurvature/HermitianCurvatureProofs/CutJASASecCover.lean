@@ -66,7 +66,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 theorem self_adjoint_cover_holds : SACover := by
   intro k r z z' hz hz' g hg
   obtain ⟨hg0, hD, hG⟩ := hg
-  obtain ⟨n, hn, n', hn', c, hc, μ, hμ, hgeq⟩ := Formalism.FourierDecayAlt.P.big_cell_decomposition k r z z' g hg0.1 hD
+  obtain ⟨n, hn, n', hn', c, hc, μ, hμ, hgeq⟩ := _root_.Formalism.FourierDecayAlt.P.BigCellDiagonalMap.cellDecomp k r z z' g hg0.1 hD
   have e : bigCell k r c μ = wCell k r (Fin.last r) c * B2.embWb k r μ := by
     rw [Formalism.FourierDecayAlt.P5.Rad.wCell_last_eq, ← (Formalism.FourierDecayAlt.P.bruhat_big_cell_factorization k r c μ).1]
   have hg1 : B2.embWb k r μ ∈ Glev k r (Fin.last r) :=

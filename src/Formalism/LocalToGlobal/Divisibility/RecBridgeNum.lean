@@ -1,48 +1,219 @@
 module
 
+public import Formalism.LogFactorialIndices.StatementSize
 public import Formalism.LocalRingCardinality.KernelPlaceMeanBound
 public import Formalism.LocalToGlobal.Divisibility.NumbersLemmas
 public import Formalism.LocalToGlobal.Divisibility.NumbersLink
-public import Formalism.SharpRestriction.Divisibility.HookProducts.HookProd
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Rat
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.Divisibility.HookProducts.HookProd, Formalism.LocalToGlobal.Divisibility.RecBridgeNum
+
+-- ===== clump member: Formalism.SharpRestriction.Divisibility.HookProducts.HookProd =====
+-- clump-header: {"m": "Formalism.SharpRestriction.Divisibility.HookProducts.HookProd", "h": "module\n\npublic import Formalism.LogFactorialIndices.StatementSize\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.MainNotions.DIV.HookProducts
+
+namespace HookLengthProduct
+
+open Finset
+
+def K (n : ℕ) (a : ℕ → ℕ) (c : ℕ) : ℕ := ((range n).filter (fun l => c < a l)).card
+
+def E (n : ℕ) (a : ℕ → ℕ) : ℕ :=
+  ∏ i ∈ range n, ∏ c ∈ range (a i), ((a i - c) + (K n a c - i) - 1)
+
+def D (n : ℕ) (a : ℕ → ℕ) : ℕ :=
+  ∏ i ∈ range n, ∏ l ∈ Ioo i n, (a i + l - a l - i)
+
+def F (n : ℕ) (a : ℕ → ℕ) : ℕ := ∏ i ∈ range n, (a i + n - 1 - i).factorial
+
+theorem K_succ_of_zero (m : ℕ) (a : ℕ → ℕ) (h : a m = 0) (c : ℕ) : K (m + 1) a c = K m a c := by
+  simp [K, Finset.range_add_one, Finset.filter_insert, h]
+
+theorem K_zero (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) : K n a 0 = n := by
+  unfold K
+  rw [Finset.filter_true_of_mem, Finset.card_range]
+  intro l hl
+  have := h1 l (Finset.mem_range.mp hl)
+  omega
+
+theorem K_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) (c : ℕ) :
+    K n a (c + 1) = K n (fun i => a i - 1) c := by
+  unfold K
+  congr 1
+  apply Finset.filter_congr
+  intro l hl
+  have := h1 l (Finset.mem_range.mp hl)
+  show c + 1 < a l ↔ c < a l - 1
+  omega
+
+theorem prod_range_pos (m : ℕ) (hm : 1 ≤ m) (f : ℕ → ℕ) :
+    ∏ c ∈ range m, f c = f 0 * ∏ c ∈ range (m - 1), f (c + 1) := by
+  obtain ⟨k, rfl⟩ : ∃ k, m = k + 1 := ⟨m - 1, by omega⟩
+  rw [Finset.prod_range_succ', mul_comm, Nat.add_sub_cancel]
+
+theorem E_succ_zero (m : ℕ) (a : ℕ → ℕ) (h : a m = 0) : E (m + 1) a = E m a := by
+  unfold E
+  rw [Finset.prod_range_succ, h, Finset.range_zero, Finset.prod_empty, mul_one]
+  refine Finset.prod_congr rfl (fun i _ => Finset.prod_congr rfl (fun c _ => ?_))
+  rw [K_succ_of_zero m a h c]
+
+theorem D_succ (m : ℕ) (a : ℕ → ℕ) :
+    D (m + 1) a = (∏ i ∈ range m, (a i + m - a m - i)) * D m a := by
+  unfold D
+  rw [Finset.prod_range_succ]
+  have h0 : Ioo m (m + 1) = ∅ := by
+    ext x
+    simp only [Finset.mem_Ioo]
+    simp
+  rw [h0, Finset.prod_empty, mul_one, ← Finset.prod_mul_distrib]
+  refine Finset.prod_congr rfl (fun i hi => ?_)
+  have hi' : i < m := Finset.mem_range.mp hi
+  have h1 : Ioo i (m + 1) = insert m (Ioo i m) := by
+    ext x
+    simp only [Finset.mem_Ioo, Finset.mem_insert]
+    omega
+  rw [h1, Finset.prod_insert (by simp)]
+
+theorem F_succ_zero (m : ℕ) (a : ℕ → ℕ) (h : a m = 0) :
+    F (m + 1) a = (∏ i ∈ range m, (a i + m - a m - i)) * F m a := by
+  unfold F
+  rw [Finset.prod_range_succ, ← Finset.prod_mul_distrib]
+  have hl : a m + (m + 1) - 1 - m = 0 := by omega
+  rw [hl, Nat.factorial_zero, mul_one]
+  refine Finset.prod_congr rfl (fun i hi => ?_)
+  have hi' : i < m := Finset.mem_range.mp hi
+  have e1 : a i + (m + 1) - 1 - i = (a i + m - 1 - i) + 1 := by omega
+  have e2 : a i + m - a m - i = (a i + m - 1 - i) + 1 := by omega
+  rw [e1, e2, Nat.factorial_succ]
+
+theorem E_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) :
+    E n a = (∏ i ∈ range n, (a i + n - 1 - i)) * E n (fun i => a i - 1) := by
+  simp only [E]
+  rw [← Finset.prod_mul_distrib]
+  refine Finset.prod_congr rfl (fun i hi => ?_)
+  have hi' : i < n := Finset.mem_range.mp hi
+  have hai := h1 i hi'
+  rw [prod_range_pos (a i) hai]
+  congr 1
+  · rw [K_zero n a h1]
+    omega
+  · refine Finset.prod_congr rfl (fun c _ => ?_)
+    rw [K_shift n a h1 c]
+    omega
+
+theorem D_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) :
+    D n a = D n (fun i => a i - 1) := by
+  simp only [D]
+  refine Finset.prod_congr rfl (fun i hi => Finset.prod_congr rfl (fun l hl => ?_))
+  have hi' : i < n := Finset.mem_range.mp hi
+  have hl' : l < n := (Finset.mem_Ioo.mp hl).2
+  have := h1 i hi'
+  have := h1 l hl'
+  omega
+
+theorem F_shift (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i) :
+    F n a = (∏ i ∈ range n, (a i + n - 1 - i)) * F n (fun i => a i - 1) := by
+  simp only [F]
+  rw [← Finset.prod_mul_distrib]
+  refine Finset.prod_congr rfl (fun i hi => ?_)
+  have hi' : i < n := Finset.mem_range.mp hi
+  have := h1 i hi'
+  have e : a i + n - 1 - i = (a i - 1 + n - 1 - i) + 1 := by omega
+  rw [e, Nat.factorial_succ]
+
+theorem E_mul_D (n : ℕ) :
+    ∀ a : ℕ → ℕ, (∀ i l, i < l → l < n → a l ≤ a i) → E n a * D n a = F n a := by
+  induction n with
+  | zero => intro a _; simp [E, D, F]
+  | succ m ih =>
+    suffices H : ∀ k (a : ℕ → ℕ), a m = k → (∀ i l, i < l → l < m + 1 → a l ≤ a i) →
+        E (m + 1) a * D (m + 1) a = F (m + 1) a from fun a h => H _ a rfl h
+    intro k
+    induction k with
+    | zero =>
+      intro a ha hmono
+      rw [E_succ_zero m a ha, D_succ, F_succ_zero m a ha,
+        ← ih a (fun i l hil hl => hmono i l hil (by omega))]
+      ring
+    | succ k ihk =>
+      intro a ha hmono
+      have h1 : ∀ i < m + 1, 1 ≤ a i := by
+        intro i hi
+        rcases Nat.lt_or_ge i m with h | h
+        · have := hmono i m h (by omega)
+          omega
+        · have e : i = m := by omega
+          rw [e, ha]
+          omega
+      rw [E_shift (m + 1) a h1, D_shift (m + 1) a h1, F_shift (m + 1) a h1,
+        ← ihk (fun i => a i - 1) (by show a m - 1 = k; omega)
+          (fun i l hil hl => by
+            have := hmono i l hil hl
+            show a l - 1 ≤ a i - 1
+            omega)]
+      ring
+
+theorem hookProd_eq_E (n : ℕ) (a : ℕ → ℕ) (w : List ℕ) (hw : w.SortedGE)
+    (hwe : w = (List.range n).map a) : Formalism.LatticeIndexTer.hookProd (YoungDiagram.ofRowLens w hw) = E n a := by
+  subst hwe
+  set μ := YoungDiagram.ofRowLens ((List.range n).map a) hw with hμ
+  have hmem : ∀ i j, (i, j) ∈ μ ↔ i < n ∧ j < a i := by
+    intro i j
+    rw [hμ, YoungDiagram.mem_ofRowLens]
+    simp
+  have hrow : ∀ i < n, μ.rowLen i = a i := by
+    intro i hi
+    apply eq_of_forall_lt_iff
+    intro j
+    rw [← YoungDiagram.mem_iff_lt_rowLen, hmem]
+    simp [hi]
+  have hcol : ∀ c, μ.colLen c = K n a c := by
+    intro c
+    have e : (range n).filter (fun l => c < a l) = range (μ.colLen c) := by
+      ext i
+      rw [Finset.mem_filter, Finset.mem_range, Finset.mem_range, ← YoungDiagram.mem_iff_lt_colLen,
+        hmem]
+    unfold K
+    rw [e, Finset.card_range]
+  unfold Formalism.LatticeIndexTer.hookProd E
+  rw [Finset.prod_finset_product μ.cells (range n) (fun i => range (a i))]
+  · refine Finset.prod_congr rfl (fun i hi => Finset.prod_congr rfl (fun c _ => ?_))
+    rw [hrow i (Finset.mem_range.mp hi), hcol c]
+  · rintro ⟨i, j⟩
+    rw [YoungDiagram.mem_cells, hmem]
+    simp
+
+end HookLengthProduct
+
+open HookLengthProduct in
+theorem hookProd_mul_prod (n : ℕ) (a : ℕ → ℕ) (h1 : ∀ i < n, 1 ≤ a i)
+    (hmono : ∀ i l, i < l → l < n → a l ≤ a i) :
+    Formalism.LatticeIndexTer.hookProd (YoungDiagram.ofRowLens (((List.range n).map a).insertionSort (· ≥ ·))
+              List.sortedGE_insertionSort) *
+              (∏ i ∈ Finset.range n, ∏ l ∈ Finset.Ioo i n, (a i + l - a l - i)) =
+      ∏ i ∈ Finset.range n, (a i + n - 1 - i).factorial := by
+  have hsorted : ((List.range n).map a).insertionSort (· ≥ ·) = (List.range n).map a := by
+    apply List.Pairwise.insertionSort_eq
+    rw [List.pairwise_iff_getElem]
+    intro i j hi hj hij
+    simp only [List.length_map, List.length_range] at hi hj
+    simp only [List.getElem_map, List.getElem_range]
+    exact hmono i j hij hj
+  rw [hookProd_eq_E n a _ List.sortedGE_insertionSort hsorted]
+  exact E_mul_D n a hmono
+
+end Formalism.MainNotions.DIV.HookProducts
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.Divisibility.HookProducts.HookProd =====
+
+-- ===== clump member: Formalism.LocalToGlobal.Divisibility.RecBridgeNum =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.Divisibility.RecBridgeNum", "h": "module\n\npublic import Formalism.LocalRingCardinality.KernelPlaceMeanBound\npublic import Formalism.LocalToGlobal.Divisibility.NumbersLemmas\npublic import Formalism.LocalToGlobal.Divisibility.NumbersLink\npublic import Formalism.SharpRestriction.Divisibility.HookProducts.HookProd\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -85,8 +256,7 @@ theorem hB_eq (hDel : D.s.Del = (Del : ℚ)) (C : ℝ) (u : D.what₂.Word) (j :
   rfl
 
 theorem Lp_eq : (ofRecord D L Del h0).Lp = DV.Lprime D L := by
-  unfold NumDatum.Lp DV.Lprime
-  rw [ofRecord_rd]
+  simp [NumDatum.Lp, DV.Lprime, ofRecord_rd]
 
 theorem sigPar_succ (τ : D.what₂.Tau) (i : ℕ) (hi : i + 1 < D.R.k - 1 + D.R.m) :
     DV.sigPar D τ (i + 1) + 1 ≤ DV.sigPar D τ i := by
@@ -157,30 +327,26 @@ theorem aPlusQ_one_le {j : ℕ} (h1 : 1 ≤ j) (hj : j ≤ D.R.m) (τ : D.what�
 theorem apN_cast {j : ℕ} (h1 : 1 ≤ j) (hj : j ≤ D.R.m) (z : Bool × HH D) {i : ℕ} (hi : i < (D.R.sigW j).1) :
     (((ofRecord D L Del h0).apN j z i : ℕ) : ℝ) = DV.aPlus D j (tauPl D z) i := by
   obtain ⟨w, hw⟩ := DV.aPlusQ_int D j (tauPl D z) i
-  have h1w : (1 : ℚ) ≤ w := hw ▸ aPlusQ_one_le D h1 hj (tauPl D z) hi
-  have h0w : 0 ≤ w := by exact_mod_cast (show (0 : ℚ) ≤ w by linarith)
+  have h0w : 0 ≤ w := by exact_mod_cast (show (0 : ℚ) ≤ w by linarith [(hw ▸ aPlusQ_one_le D h1 hj (tauPl D z) hi)])
   unfold NumDatum.apN DV.aPlus
   rw [ofRecord_aPlus, hw, Int.floor_intCast]
-  have e : ((w.toNat : ℕ) : ℤ) = w := Int.toNat_of_nonneg h0w
-  have e2 : ((w.toNat : ℕ) : ℝ) = (w : ℝ) := by exact_mod_cast congrArg (fun x : ℤ => (x : ℝ)) e
+  have e2 : ((w.toNat : ℕ) : ℝ) = (w : ℝ) := by exact_mod_cast Int.toNat_of_nonneg h0w
   rw [e2]
   simp
 
 theorem apN_ge {j : ℕ} (h1 : 1 ≤ j) (hj : j ≤ D.R.m) (z : Bool × HH D) {i : ℕ} (hi : i < (D.R.sigW j).1) :
     1 ≤ (ofRecord D L Del h0).apN j z i := by
-  have e := apN_cast D L Del h0 h1 hj z hi
-  have h := aPlusQ_one_le D h1 hj (tauPl D z) hi
-  have : (1 : ℝ) ≤ (((ofRecord D L Del h0).apN j z i : ℕ) : ℝ) := by
-    rw [e]; unfold DV.aPlus; exact_mod_cast h
-  exact_mod_cast this
+  exact_mod_cast (show (1 : ℝ) ≤ (((ofRecord D L Del h0).apN j z i : ℕ) : ℝ) by
+    rw [apN_cast D L Del h0 h1 hj z hi]
+    unfold DV.aPlus
+    exact_mod_cast aPlusQ_one_le D h1 hj (tauPl D z) hi)
 
 theorem apN_anti {j : ℕ} (h1 : 1 ≤ j) (hj : j ≤ D.R.m) (z : Bool × HH D) {i l : ℕ} (hil : i < l) (hl : l < (D.R.sigW j).1) :
     (ofRecord D L Del h0).apN j z l ≤ (ofRecord D L Del h0).apN j z i := by
-  have el := apN_cast D L Del h0 h1 hj z hl
-  have ei := apN_cast D L Del h0 h1 hj z (show i < (D.R.sigW j).1 by omega)
-  have h := aPlusQ_anti D hj (tauPl D z) hil.le hl
   have : (((ofRecord D L Del h0).apN j z l : ℕ) : ℝ) ≤ (((ofRecord D L Del h0).apN j z i : ℕ) : ℝ) := by
-    rw [el, ei]; unfold DV.aPlus; exact_mod_cast h
+    rw [apN_cast D L Del h0 h1 hj z hl, apN_cast D L Del h0 h1 hj z (show i < (D.R.sigW j).1 by omega)]
+    unfold DV.aPlus
+    exact_mod_cast aPlusQ_anti D hj (tauPl D z) hil.le hl
   exact_mod_cast this
 
 end Formalism.L2.DIV.NumTieH
@@ -277,9 +443,12 @@ theorem hnum_of_numRecTieH (Nd : NumDatum) {J : Type} [Fintype J] (eJ : J ≃ Fi
       ∑ j ∈ SizeData₂.lifts D, DV.kernelPlaceMeanBound D L Ch u j :=
     Finset.sum_congr rfl fun j _ => NumTieH.hB_eq D L Del h0 hDel Ch u j
   have sX : ∑ j ∈ (ofRecord D L Del h0).lifts, (ofRecord D L Del h0).hX Ch j = ∑ j ∈ SizeData₂.lifts D, DV.L6lo D L Ch j :=
-    Finset.sum_congr rfl fun j hj => by
-      have hj' : 1 ≤ j ∧ j ≤ D.R.m := Finset.mem_Icc.1 hj
-      exact NumTieH.hX_eq D L Del h0 Ch hj'.1 hj'.2
+    Finset.sum_congr rfl fun j hj =>
+      NumTieH.hX_eq D L Del h0 Ch (Finset.mem_Icc.1 hj).1 (Finset.mem_Icc.1 hj).2
   rw [sB, sX]
 
 end Formalism.L2.DIV
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.Divisibility.RecBridgeNum =====

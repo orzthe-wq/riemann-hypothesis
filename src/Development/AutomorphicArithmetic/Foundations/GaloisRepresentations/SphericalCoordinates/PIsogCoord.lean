@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -61,7 +62,7 @@ private theorem exists_bound (k : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)) :
   let S : Set (AfP p) := Set.range (fun ij : Module.Free.ChooseBasisIndex ℤ D.La × Module.Free.ChooseBasisIndex ℤ D.La =>
     (KNLevel.bA b).repr (k (KNLevel.bA b ij.2)) ij.1)
   have hS : IsCompact S := (Set.finite_range _).isCompact
-  obtain ⟨c, hc, hcS⟩ := GlobalTheory.T.exists_common_pos_denominator_of_isCompact_finiteAdeleAway p S hS
+  obtain ⟨c, hc, hcS⟩ := _root_.GlobalTheory.AfPCpctDen.exists_den p S hS
   refine ⟨c, hc, ?_⟩
   have hB : ∀ j, inAf D (b j) = KNLevel.bA b j := by
     intro j

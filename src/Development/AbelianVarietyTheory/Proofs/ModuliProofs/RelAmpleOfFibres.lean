@@ -8,11 +8,13 @@ public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.Exi
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ForallGeometricallyIntegralOfSmoothOfGeometrical
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.TrivPullCompIff
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubeDescendsAlongEtaleIsogeny
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSectionsGenerateSquareBundleStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSmulSecNonzeroOnSpecialFibreStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GeneratorExtendsFromGenericFibreValuationRingStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAffineOpenNonzeroLocusOfFibrewiseAmpleStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TheoremOfCubeProjectiveAbelianSchemeAffineBaseStatement
+public import Mathlib.RingTheory.Valuation.ValuationRing
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSectionsGenerateSquareBundle
+public import Mathlib.AlgebraicGeometry.Geometrically.Integral
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSmulSecNonzeroOnSpecialFibre
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GeneratorExtendsFromGenericFibreValuationRing
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAffineOpenNonzeroLocusOfFibrewiseAmple
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TheoremOfCubeProjectiveAbelianSchemeAffineBase
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.RelAmpleIffVeryAmpleBy
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.VeryAmpleByPwOfAffineLoci
 import Mathlib.Algebra.Order.Floor.Extended
@@ -135,7 +137,7 @@ theorem relAmple_of_fibres : Out.Laws → ∀ (O K : Type) [CommRing O] [IsDomai
   have hproj : IsProjBy ((Over.pullback (spMap (algebraMap O K))).obj A).hom :=
     ⟨_, isLB_pw (LB.isLB_pull hM _) _, n, s, hs⟩
   have cK := triv_theta_pull A _ (pw M d)
-    (GlobalTheory.T.theorem_of_cube_projective_abelianScheme_affineBase hL K _ hB hproj _ (LB.isLB_pull hH (pullback.fst A.hom (spMap (algebraMap O K)))))
+    (_root_.GlobalTheory.AbLaw.CubeAffine.triv_theta_of_isProjBy hL K _ hB hproj _ (LB.isLB_pull hH (pullback.fst A.hom (spMap (algebraMap O K)))))
   have s₂ : Smooth (A ⊗ A).hom := by
     change Smooth (pullback.fst A.hom A.hom ≫ A.hom); infer_instance
   have p₂ : IsProper (A ⊗ A).hom := by
@@ -152,7 +154,7 @@ theorem relAmple_of_fibres : Out.Laws → ∀ (O K : Type) [CommRing O] [IsDomai
     exact GeometricallyConnected.comp _ _
   have gi := GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected
   have cube : Triv (Theta A (pw M d)) :=
-    GlobalTheory.T.generator_extends_from_genericFibre_valuationRing O K _ _ (G3 A).hom _ _ (IsPullback.of_hasPullback _ _) s₃ inferInstance (gi _ _ _ s₃ c₃) _
+    _root_.GlobalTheory.ValGenExtend.triv_of_triv_generic O K _ _ (G3 A).hom _ _ (IsPullback.of_hasPullback _ _) s₃ inferInstance (gi _ _ _ s₃ c₃) _
       (LB.isLB_linComb hH _ _) cK
   have ne : Nonempty ((Over.pullback (spMap (algebraMap O K))).obj A).left :=
     ⟨(η[(Over.pullback (spMap (algebraMap O K))).obj A]).left (default : PrimeSpectrum K)⟩
@@ -161,12 +163,12 @@ theorem relAmple_of_fibres : Out.Laws → ∀ (O K : Type) [CommRing O] [IsDomai
     rw [GlobalTheory.TrivLocus.pull_pw]
     exact this
   obtain ⟨σ, hσ⟩ := hσ
-  obtain ⟨-, t, -, -, ht⟩ := GlobalTheory.T.exists_sec_nonzero_on_special_fibre_extending_smul O K _ _ A.hom _ _ (IsPullback.of_hasPullback _ _) hA.smooth
+  obtain ⟨-, t, -, -, ht⟩ := _root_.GlobalTheory.exists_smul_sec_nonzero_on_special_fibre O K _ _ A.hom _ _ (IsPullback.of_hasPullback _ _) hA.smooth
     inferInstance (gi _ _ _ hA.smooth hA.geomConnected) _ hH σ hσ
-  have hu := GlobalTheory.T.exists_sections_generate_square_bundle O K A hA _ hH cube t ht
+  have hu := _root_.GlobalTheory.SquareGenerated.exists_secs_sq_generate O K A hA _ hH cube t ht
   rw [show (2 : ℤ) = ((2 : ℕ) : ℤ) from rfl, pw_pw_natCast] at hu
   obtain ⟨m, u, hu⟩ := hu
-  have aff := GlobalTheory.T.isAffineOpen_nonzeroLocus_of_fibrewise_ample O _ A.hom M (d * 2) m u (by omega) hA.proper hM hu (fun q hq => by
+  have aff := _root_.GlobalTheory.FibreAmple.isAffineOpen_nonzeroLocus_of_fibres O _ A.hom M (d * 2) m u (by omega) hA.proper hM hu (fun q hq => by
     by_cases h0 : q = ⊥
     · exact ⟨K, inferInstance, algebraMap O K,
         h0 ▸ (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective O K), hK⟩

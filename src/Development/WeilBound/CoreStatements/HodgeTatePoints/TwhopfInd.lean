@@ -54,7 +54,7 @@ open GlobalTheory.CompanionTheory.Ar.BT TensorProduct
 namespace PositivityTheory.HtPt.Twhopf
 
 theorem translate_mem : ∀ (R : Type) [CommRing R] (T : Type) [CommGroup T] (A : Subalgebra R (T → R)), IsHopfOrder A → ∀ f ∈ A, ∀ t, (fun h => f (t * h)) ∈ A := by
-  apply PositivityTheory.HtPt.Twpair.translate_mem <;> assumption
+  apply PositivityTheory.HtPt.Twpair.translate_mem
 
 theorem exists_coset_coord {T H : Type} [CommGroup T] [CommGroup H] (ι : H →* T) :
     ∃ κ : T → H, ∀ t, (QuotientGroup.mk t : T ⧸ ι.range).out * ι (κ t) = t := by

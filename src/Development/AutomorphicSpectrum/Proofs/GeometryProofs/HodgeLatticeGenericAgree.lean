@@ -1,15 +1,14 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LinearIndependentEigProj
-public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLineGenOn
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorBundle
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLineGenOn
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdaptedSpan
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigProjMemOfFree
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFrameInter
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUnitWedge
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExtFrameOfQuotientKernel
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorBundle
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MatrixEqOfLinearIndependent
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEqSpanOfIsFrameAt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -30,7 +29,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -38,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -51,9 +48,137 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFrameInter, Development.AutomorphicSpectrum.Proofs.GeometryProofs.MatrixEqOfLinearIndependent, Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeGenericAgree
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFrameInter =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFrameInter", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LinearIndependentEigProj\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorBundle\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
+
+noncomputable section
+
+namespace GlobalTheory.CompanionTheory.Ar.Flat.InterFrame
+
+theorem exists_frame_inter : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) [CharZero Ω] (E : Type) [Field E] [NumberField E] (V : Type) [AddCommGroup V] [Module Ω V] [FiniteDimensional Ω V] (L : Lat ξ V) (ρ : 𝓞 E →+* Module.End Ω V) (bar : 𝓞 E ≃+* 𝓞 E) (p r : ℕ) (𝓗 : HodgeLat L ρ bar r) (σ : E →+* Ω) (v : Fin p → V) (x : Cpt ξ), (∀ z ∈ L x, HT.eigProj ρ σ z ∈ L x) → LinearIndependent Ω v → Submodule.span Ω (Set.range v) = HT.eigSp ρ σ → (∃ (n : ℕ) (b : Fin n → V), L.IsFrameAt b x) → ∃ P : Matrix (Fin p) (Fin p) Ω, (L.inter (HT.eigSp ρ σ)).IsFrameAt (fun i => ∑ j, P i j • v j) x := by
+  intro X Ω _ ξ _ E _ _ V _ _ _ L ρ bar p r 𝓗 σ v x hst hv hsp _
+  have hrange : LinearMap.range (HT.eigProj ρ σ) = HT.eigSp ρ σ := by
+    apply le_antisymm
+    · rintro _ ⟨w, rfl⟩
+      exact HT.LatBasic.eigProj_mem ρ σ w
+    · intro w hw
+      exact ⟨w, HT.LatBasic.eigProj_of_mem hw⟩
+  have hidem : HT.eigProj ρ σ ∘ₗ HT.eigProj ρ σ = HT.eigProj ρ σ :=
+    LinearMap.ext fun w => HT.LatBasic.eigProj_of_mem (HT.LatBasic.eigProj_mem ρ σ w)
+  have hVB : L.IsVBOn {x} (Module.finrank Ω V) ⊤ := fun q _ => by
+    obtain ⟨U, hU, b, hb, h⟩ := 𝓗.vb q trivial
+    exact ⟨U, hU, b, hb, fun q' _ hq' => h q' trivial hq'⟩
+  have h := EigSplit.isVBOn_inter_range L {x} _ (HT.eigProj ρ σ) hidem hVB
+    (fun q hq => by rw [Set.mem_singleton_iff.1 hq]; exact hst)
+  rw [hrange] at h
+  obtain ⟨U, hU, f, hf, hfr⟩ := h x rfl
+  have hfx := hfr x rfl hU
+  have hn : Module.finrank Ω (HT.eigSp ρ σ) = p := by
+    rw [← hsp, finrank_span_eq_card hv, Fintype.card_fin]
+  subst hn
+  have hmem : ∀ i, f i ∈ Submodule.span Ω (Set.range v) := fun i => by
+    rw [hsp, ← hf]
+    exact Submodule.subset_span ⟨i, rfl⟩
+  choose P hP using fun i => (Submodule.mem_span_range_iff_exists_fun Ω).1 (hmem i)
+  refine ⟨Matrix.of P, ?_⟩
+  simpa only [Matrix.of_apply, hP] using hfx
+
+end GlobalTheory.CompanionTheory.Ar.Flat.InterFrame
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFrameInter =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.MatrixEqOfLinearIndependent =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.MatrixEqOfLinearIndependent", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.CompanionTheory.Ggeo.FrameDet
+
+open scoped BigOperators
+
+private theorem det_mem_of_forall_mem' {Ω : Type} [CommRing Ω] (R : Subring Ω) {n : ℕ}
+    (P : Matrix (Fin n) (Fin n) Ω) (hP : ∀ i j, P i j ∈ R) : P.det ∈ R := by
+  have h : P = R.subtype.mapMatrix (Matrix.of fun i j => (⟨P i j, hP i j⟩ : R)) := by
+    ext i j
+    rfl
+  rw [h, ← RingHom.map_det]
+  exact (Matrix.det (Matrix.of fun i j => (⟨P i j, hP i j⟩ : R))).2
+
+theorem matrix_eq_of_linearIndependent {Ω M : Type} [Field Ω] [AddCommGroup M] [Module Ω M]
+    {n : ℕ} {w : Fin n → M} (hw : LinearIndependent Ω w)
+    {C D : Matrix (Fin n) (Fin n) Ω}
+    (h : ∀ i, ∑ j, C i j • w j = ∑ j, D i j • w j) : C = D := by
+  ext i j
+  have h' : ∑ k, (C i k - D i k) • w k = 0 := by
+    simp only [sub_smul, Finset.sum_sub_distrib, h i, sub_self]
+  exact sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hw (fun k => C i k - D i k) h' j)
+
+theorem sum_smul_sum_smul {Ω M : Type} [Field Ω] [AddCommGroup M] [Module Ω M]
+    {n : ℕ} (w : Fin n → M) (C D : Matrix (Fin n) (Fin n) Ω) (i : Fin n) :
+    ∑ j, C i j • ∑ k, D j k • w k = ∑ k, (C * D) i k • w k := by
+  simp only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]
+  exact Finset.sum_comm
+
+theorem det_eq_unit_mul : ∀ (Ω M : Type) [Field Ω] [AddCommGroup M] [Module Ω M] (R : Subring Ω) (n : ℕ) (u : Fin n → M) (A B : Matrix (Fin n) (Fin n) Ω), LinearIndependent Ω u → LinearIndependent Ω (fun i => ∑ j, A i j • u j) → LinearIndependent Ω (fun i => ∑ j, B i j • u j) → Submodule.span R (Set.range fun i => ∑ j, A i j • u j) = Submodule.span R (Set.range fun i => ∑ j, B i j • u j) → ∃ c : Ω, c ∈ R ∧ c⁻¹ ∈ R ∧ c ≠ 0 ∧ B.det = c * A.det := by
+  intro Ω M _ _ _ R n u A B hu ha _ hspan
+  have key : ∀ a b : Fin n → M, Submodule.span R (Set.range b) ≤ Submodule.span R (Set.range a) →
+      ∃ P : Matrix (Fin n) (Fin n) Ω, (∀ i j, P i j ∈ R) ∧ ∀ i, b i = ∑ j, P i j • a j := by
+    intro a b hle
+    have hex : ∀ i, ∃ c : Fin n → R, ∑ j, c j • a j = b i := fun i =>
+      (Submodule.mem_span_range_iff_exists_fun R).mp (hle (Submodule.subset_span ⟨i, rfl⟩))
+    choose c hc using hex
+    refine ⟨Matrix.of fun i j => (c i j : Ω), fun i j => (c i j).2, fun i => ?_⟩
+    rw [← hc i]
+    exact Finset.sum_congr rfl fun j _ => Subring.smul_def _ _
+  obtain ⟨P, hPR, hP⟩ := key (fun i => ∑ j, A i j • u j) (fun i => ∑ j, B i j • u j) hspan.ge
+  obtain ⟨Q, hQR, hQ⟩ := key (fun i => ∑ j, B i j • u j) (fun i => ∑ j, A i j • u j) hspan.le
+  have hP' : ∀ i, ∑ j, B i j • u j = ∑ j, P i j • ∑ k, A j k • u k := hP
+  have hQ' : ∀ i, ∑ j, A i j • u j = ∑ j, Q i j • ∑ k, B j k • u k := hQ
+  have hBPA : B = P * A := GlobalTheory.CompanionTheory.Ggeo.FrameDet.matrix_eq_of_linearIndependent hu fun i =>
+    (hP' i).trans (GlobalTheory.CompanionTheory.Ggeo.FrameDet.sum_smul_sum_smul u P A i)
+  have hQP : Q * P = 1 := by
+    apply GlobalTheory.CompanionTheory.Ggeo.FrameDet.matrix_eq_of_linearIndependent ha
+    intro i
+    calc ∑ j, (Q * P) i j • ∑ k, A j k • u k
+        = ∑ j, Q i j • ∑ k, P j k • ∑ l, A k l • u l :=
+          (GlobalTheory.CompanionTheory.Ggeo.FrameDet.sum_smul_sum_smul (fun k => ∑ l, A k l • u l) Q P i).symm
+      _ = ∑ j, Q i j • ∑ k, B j k • u k := Finset.sum_congr rfl fun j _ => by rw [hP' j]
+      _ = ∑ k, A i k • u k := (hQ' i).symm
+      _ = ∑ j, (1 : Matrix (Fin n) (Fin n) Ω) i j • ∑ k, A j k • u k := by
+          simp [Matrix.one_apply]
+  have hdet : P.det * Q.det = 1 := by
+    rw [mul_comm, ← Matrix.det_mul, hQP, Matrix.det_one]
+  refine ⟨P.det, det_mem_of_forall_mem' R P hPR, ?_, left_ne_zero_of_mul_eq_one hdet, ?_⟩
+  · rw [inv_eq_of_mul_eq_one_right hdet]
+    exact det_mem_of_forall_mem' R Q hQR
+  · rw [hBPA, Matrix.det_mul]
+
+end GlobalTheory.CompanionTheory.Ggeo.FrameDet
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.MatrixEqOfLinearIndependent =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeGenericAgree =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeGenericAgree", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LinearIndependentEigProj\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLineGenOn\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AdaptedSpan\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigProjMemOfFree\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsFrameInter\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUnitWedge\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExtFrameOfQuotientKernel\nimport Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorBundle\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MatrixEqOfLinearIndependent\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEqSpanOfIsFrameAt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Flat
@@ -62,27 +187,7 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.GenAgree
 
-theorem iotaMulti_rows {K V : Type} [Field K] [AddCommGroup V] [Module K V] {n : ℕ}
-    (M : Matrix (Fin n) (Fin n) K) (z : Fin n → V) :
-    exteriorPower.ιMulti K n (fun i => ∑ j, M i j • z j) = M.det • exteriorPower.ιMulti K n z := by
-  have hA : (exteriorPower.ιMulti K n).compLinearMap (Fintype.linearCombination K z) =
-      (Matrix.detRowAlternating : (Fin n → K) [⋀^Fin n]→ₗ[K] K).smulRight
-        (exteriorPower.ιMulti K n z) := by
-    refine (Pi.basisFun K (Fin n)).ext_alternating fun u hu => ?_
-    let s : Equiv.Perm (Fin n) := Equiv.ofBijective u (Finite.injective_iff_bijective.1 hu)
-    have e : (fun i => Pi.basisFun K (Fin n) (u i)) = (fun i => Pi.basisFun K (Fin n) i) ∘ s := rfl
-    rw [e, AlternatingMap.map_perm, AlternatingMap.map_perm]
-    congr 1
-    have e1 : (Matrix.detRowAlternating : (Fin n → K) [⋀^Fin n]→ₗ[K] K)
-        (fun i => Pi.basisFun K (Fin n) i) = 1 := by
-      change Matrix.det (Matrix.of fun i => Pi.basisFun K (Fin n) i) = 1
-      rw [show (Matrix.of fun i => Pi.basisFun K (Fin n) i) = 1 from by
-        ext i j; simp [Matrix.one_apply, Pi.single_apply, eq_comm], Matrix.det_one]
-    rw [AlternatingMap.smulRight_apply, e1, one_smul, AlternatingMap.compLinearMap_apply]
-    congr 1
-    funext i
-    simp [Fintype.linearCombination_apply, Pi.basisFun_apply]
-  exact AlternatingMap.congr_fun hA M
+alias iotaMulti_rows := _root_.GlobalTheory.CompanionTheory.Ar.Flat.WedgeFrame.wedge_rows
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
@@ -208,7 +313,7 @@ theorem key (𝓗 : HodgeLat L ρ bar (p + q)) {σ σ' : E →+* Ω} {v : Fin p 
     have hreg' : ∀ j, θ (b j) ∈ regAt ξ x := fun j => hθL _ (hbL j)
     have e : ((0 : V), θ) = ∑ j, (⟨θ (b j), hreg' j⟩ : regAt ξ x) • c j := by
       have e0 : ∀ j, (⟨θ (b j), hreg' j⟩ : regAt ξ x) • c j = θ (b j) • c j := fun j => rfl
-      simp only [e0, hc]
+      simp only [hc]
       refine Prod.ext ?_ ?_
       · simp [Prod.fst_sum]
       · simp only [Prod.snd_sum, Prod.smul_snd]
@@ -280,3 +385,7 @@ theorem generic_agree : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (
   exact ⟨h.2 ⟨_, b, hb x trivial hU⟩, h.1⟩
 
 end GlobalTheory.CompanionTheory.Ar.Flat.GenAgree
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeLatticeGenericAgree =====

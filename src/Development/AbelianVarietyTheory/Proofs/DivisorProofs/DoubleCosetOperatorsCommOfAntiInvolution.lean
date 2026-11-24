@@ -108,8 +108,8 @@ theorem card_pairs_le (J : Subgroup G) (τ : G → G) (hmul : ∀ a b, τ (a * b
     refine ⟨⟨hδ', hγ'⟩, ?_⟩
     rwa [mul_inv_rev, mul_assoc]
   · rintro ⟨δ', γ'⟩ - ⟨γ₁, δ₁⟩ h₁ ⟨γ₂, δ₂⟩ h₂
-    simp only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_filter, Finset.mem_product,
-      QuotientGroup.eq, Finset.mem_coe] at h₁ h₂
+    simp only [Set.mem_setOf_eq, Finset.mem_filter, Finset.mem_product,
+      QuotientGroup.eq] at h₁ h₂
     obtain ⟨⟨⟨hγ₁, hδ₁⟩, hj₁⟩, hr₁⟩ := h₁
     obtain ⟨⟨⟨hγ₂, hδ₂⟩, hj₂⟩, hr₂⟩ := h₂
     have h4 : γ₂⁻¹ * γ₁ ∈ J := by

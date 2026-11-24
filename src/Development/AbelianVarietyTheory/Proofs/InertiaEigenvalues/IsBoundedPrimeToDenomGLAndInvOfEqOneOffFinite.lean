@@ -139,18 +139,18 @@ theorem bnd_of_local {E : Type} [Field E] [NumberField E] (p : ℕ) (n : ℕ)
     obtain ⟨k, hk⟩ := Finset.dvd_prod_of_mem f hmem
     rw [hk, Nat.cast_mul, mul_comm ((f (Q, i, j) : ℕ) : Q.adicCompletion E), mul_assoc,
       Valuation.map_mul]
-    refine mul_le_one' (natCast_adicCompletion_v_le_one Q k) ?_
+    refine mul_le_one' (_root_.GlobalTheory.AdLat.valued_natCast_le_one Q k) ?_
     have := (Classical.choose_spec (hin Q hQ i j)).2
     simpa only [f, dif_pos hQ] using this
   · rw [Valuation.map_mul]
-    exact mul_le_one' (natCast_adicCompletion_v_le_one Q _) (hout Q hQ i j)
+    exact mul_le_one' (_root_.GlobalTheory.AdLat.valued_natCast_le_one Q _) (hout Q hQ i j)
 
 theorem one_entry_v_le_one {E : Type} [Field E] [NumberField E] (n : ℕ)
     (Q : HeightOneSpectrum (𝓞 E)) (i j : Fin n) :
     Valued.v (((1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E)) i j) Q) ≤ 1 := by
   rw [Matrix.one_apply]
   split_ifs
-  · have := natCast_adicCompletion_v_le_one Q 1
+  · have := _root_.GlobalTheory.AdLat.valued_natCast_le_one Q 1
     simpa using this
   · let ev : FiniteAdeleRing (𝓞 E) E →+* Q.adicCompletion E := RestrictedProduct.evalRingHom _ Q
     change Valued.v (ev 0) ≤ 1

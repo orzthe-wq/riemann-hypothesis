@@ -135,5 +135,5 @@ theorem UpperTheory.V.Pa.oddDiag :
     rw [e2]
     ext i j
     by_cases hij : i = j
-    · simp [Matrix.one_apply, GFrame.eps, hij]
-    · simp [Matrix.one_apply, GFrame.eps, hij]
+    · simp [GFrame.eps, hij]
+    · simp [GFrame.eps, hij]

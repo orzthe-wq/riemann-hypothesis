@@ -40,6 +40,8 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EventuallyAlgebraMapMemIntegers
+import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsIntMulIntegral
 
 @[expose] public section
 
@@ -77,9 +79,9 @@ theorem exists_den (x : E) : ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * 
 
 def den (x : E) : ℤ := Classical.choose (exists_den x)
 
-theorem den_ne (x : E) : den x ≠ 0 := (Classical.choose_spec (exists_den x)).1
+theorem den_ne (x : E) : den x ≠ 0 := (Classical.choose_spec (_root_.GlobalTheory.LatFin.exists_int_mul_integral x)).1
 
-theorem den_int (x : E) : IsIntegral ℤ ((den x : E) * x) := (Classical.choose_spec (exists_den x)).2
+theorem den_int (x : E) : IsIntegral ℤ ((den x : E) * x) := (Classical.choose_spec (_root_.GlobalTheory.LatFin.exists_int_mul_integral x)).2
 
 
 variable (F E) in
@@ -101,19 +103,15 @@ def IsGood (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Alg
     (∀ k, algebraMap F (Fv F v) (Algebra.trace F E (bE F E k)) ∈ v.adicCompletionIntegers F) ∧
     algebraMap F (Fv F v) (2 : F)⁻¹ ∈ v.adicCompletionIntegers F
 
-theorem eventually_int (x : F) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite,
-    algebraMap F (Fv F v) x ∈ v.adicCompletionIntegers F :=
-  (algebraMap F (Af F) x).2
-
 theorem eventually_good : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, IsGood F E v :=
-  (eventually_all.2 fun _ => eventually_all.2 fun _ => eventually_int _).and
-    ((eventually_all.2 fun _ => eventually_int _).and
-    ((eventually_all.2 fun _ => eventually_all.2 fun _ => eventually_int _).and
-    ((eventually_all.2 fun _ => eventually_int _).and (eventually_int _))))
+  (eventually_all.2 fun _ => eventually_all.2 fun _ => _root_.GlobalTheory.AdelicU.eventually_algebraMap_mem_integers _).and
+    ((eventually_all.2 fun _ => _root_.GlobalTheory.AdelicU.eventually_algebraMap_mem_integers _).and
+    ((eventually_all.2 fun _ => eventually_all.2 fun _ => _root_.GlobalTheory.AdelicU.eventually_algebraMap_mem_integers _).and
+    ((eventually_all.2 fun _ => _root_.GlobalTheory.AdelicU.eventually_algebraMap_mem_integers _).and (_root_.GlobalTheory.AdelicU.eventually_algebraMap_mem_integers _))))
 
 theorem eventually_coord (y : E) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite,
     ∀ k, algebraMap F (Fv F v) ((bE F E).repr y k) ∈ v.adicCompletionIntegers F :=
-  eventually_all.2 fun _ => eventually_int _
+  eventually_all.2 fun _ => _root_.GlobalTheory.AdelicU.eventually_algebraMap_mem_integers _
 
 variable {v : HeightOneSpectrum (𝓞 F)}
 

@@ -3,10 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 public import Development.AbelianVarietyTheory.CrystallinePeriods.CrisLoc
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AinfIsDomainAndAinfInvPInjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraMapAinfInvPrimeBdRPlusInjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
+public import Formalism.LocalRingCardinality.AdicCompletionLocal.InstIsAdicCompleteOCSpanSingletonSetCast
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AinfIsDomainAndAinfInvPInjective
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraMapAinfInvPrimeBdRPlusInjective
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -79,20 +80,20 @@ theorem algebraMap_ainf_acris_eq {l : ℕ} [Fact l.Prime] (x : Per.Ainf l) :
 
 theorem algebraMap_ainf_acris_ne_zero_pt {l : ℕ} [Fact l.Prime] (j : Per.Acris l →+* Per.BdRp l)
     (hj : IsCrisP j) (x : Per.Ainf l) (hx0 : x ≠ 0) : algebraMap (Per.Ainf l) (Per.Acris l) x ≠ 0 := by
-  obtain ⟨hd, -, hi⟩ := GlobalTheory.T.usage l
+  obtain ⟨hd, -, hi⟩ := _root_.GlobalTheory.MemLoc.ainf_isDomain_and_injective l
   intro h'
   apply hx0
   have h1 := hj.on0 (algebraMap (Per.Ainf l) (Per.Acris0 l) x)
   rw [← algebraMap_ainf_acris_eq] at h1
   rw [h', map_zero] at h1
   have h2 : ((algebraMap (Per.Ainf l) (Per.Acris0 l) x : Per.Acris0 l) : Per.AinfP l) = 0 :=
-    GlobalTheory.T.algebraMap_ainfInvPrime_bdRPlus_injective l (by rw [map_zero]; exact h1.symm)
+    _root_.GlobalTheory.MemLoc.algebraMap_AinfP_BdRp_injective l (by rw [map_zero]; exact h1.symm)
   exact hi (by rw [map_zero]; exact h2)
 
 theorem pow_root_ne_zero {l : ℕ} [Fact l.Prime] (j : Per.Acris l →+* Per.BdRp l) (hj : IsCrisP j)
     (e : Per.Fl l) (hne : e ≠ 1) (n : ℕ) :
     algebraMap (Per.Ainf l) (Per.Acris l) (Per.tm e - 1) ^ n ≠ 0 := by
-  obtain ⟨hd, -, -⟩ := GlobalTheory.T.usage l
+  obtain ⟨hd, -, -⟩ := _root_.GlobalTheory.MemLoc.ainf_isDomain_and_injective l
   rw [← map_pow]
   refine algebraMap_ainf_acris_ne_zero_pt j hj _ (pow_ne_zero n fun h => ?_)
   exact GlobalTheory.CrisLoc.constantCoeff_root_ne_zero l e hne (by rw [h, map_zero])
@@ -101,12 +102,12 @@ theorem exists_iota_cris_dR : ∀ (l : ℕ) [Fact l.Prime], ∀ j : Per.Acris l 
     ∃ ι : Per.Bcris l →+* Per.BdR l, (∀ x : Per.Acris l, ι (algebraMap (Per.Acris l) (Per.Bcris l) x) =
       algebraMap (Per.BdRp l) (Per.BdR l) (j x)) ∧ Function.Injective ι := by
   intro l _ j hj
-  obtain ⟨-, hi, hK, -⟩ := GlobalTheory.T.bdRPlus_isDomain_bdR_isField l
+  obtain ⟨-, hi, hK, -⟩ := _root_.GlobalTheory.MemLoc.BdRField.bdR_isField l
   obtain ⟨e, he, hne⟩ := GlobalTheory.CrisLoc.exists_root_ne_one l
   haveI := GlobalTheory.CrisLoc.bcris_away l e he hne
   refine exists_injective_lift_field
     (Submonoid.powers (algebraMap (Per.Ainf l) (Per.Acris l) (Per.tm e - 1))) hK
-    ((algebraMap (Per.BdRp l) (Per.BdR l)).comp j) (hi.comp (GlobalTheory.T.acrisToBdRPlus_injective l j hj)) ?_
+    ((algebraMap (Per.BdRp l) (Per.BdR l)).comp j) (hi.comp (_root_.GlobalTheory.MemLoc.crisP_injective l j hj)) ?_
   rintro _ ⟨n, rfl⟩
   exact pow_root_ne_zero j hj e hne n
 

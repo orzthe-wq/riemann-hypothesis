@@ -1,5 +1,6 @@
 module
 
+import Lemmata.CharpolySmul
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.IsAlgClosureField
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.DeterminantRepresentations.RepApi
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.DGext
@@ -44,26 +45,6 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.Commutative
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
-private theorem charpoly_smul_scale {K : Type} [Field K] [CharZero K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {c : K}
-    (hc : c ≠ 0) : (c • M).charpoly = M.charpoly.scaleRoots c := by
-  haveI : Infinite K := CharZero.infinite K
-  apply Polynomial.eq_of_infinite_eval_eq
-  refine Set.infinite_univ.mono ?_
-  intro t _
-  simp only [Set.mem_setOf_eq]
-  have ht : t = c * (c⁻¹ * t) := by field_simp
-  rw [ht, Polynomial.scaleRoots_eval_mul, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin,
-    Matrix.eval_charpoly, Matrix.eval_charpoly]
-  have hs := Matrix.det_smul (Matrix.scalar (Fin n) (c⁻¹ * t) - M) c
-  rw [Fintype.card_fin] at hs
-  rw [← hs]
-  congr 1
-  ext i j
-  by_cases h : i = j
-  · subst h
-    simp [Matrix.scalar_apply, Matrix.diagonal_apply_eq, mul_sub]
-  · simp [Matrix.scalar_apply, Matrix.diagonal_apply_ne _ h, mul_sub]
-
 private theorem chi_comap_single {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : W.GDet n A G) (φ : H →* G)
     (g : H) : (D.comap φ).chi (MonoidAlgebra.single g 1) = D.chi (MonoidAlgebra.single (φ g) 1) := by
   simp [W.GDet.chi, W.GDet.comap, MonoidAlgebra.mapRingHom_single]
@@ -84,18 +65,18 @@ private theorem chi_map_single {n : ℕ} {A B G : Type} [CommRing A] [CommRing B
     change MonoidAlgebra.single 1 (Polynomial.map f X) - MonoidAlgebra.single g 1 = _
     rw [Polynomial.map_X]
   rw [e] at h
-  simp only [W.GDet.chi, W.GDet.map, map_sub, MonoidAlgebra.mapRingHom_single, map_one]
+  simp only [W.GDet.chi, W.GDet.map, MonoidAlgebra.mapRingHom_single, map_one]
   exact h
 
-private theorem scale_point {A B K : Type} [CommRing A] [CommRing B] [Field K] [CharZero K] {n : ℕ} (i : B →+* A)
+private theorem scale_point {A B K : Type} [CommRing A] [CommRing B] [Field K] {n : ℕ} (i : B →+* A)
     (hi : Function.Injective i) (y : A →+* K) (p : B[X]) (M : Matrix (Fin n) (Fin n) A) (hp : p.map i = M.charpoly)
-    (b : B) (hb : y (i b) ≠ 0) : (p.scaleRoots b).map (y.comp i) = (y (i b) • M.map y).charpoly := by
+    (b : B) : (p.scaleRoots b).map (y.comp i) = (y (i b) • M.map y).charpoly := by
   haveI : Nontrivial A := y.domain_nontrivial
   have hlc : i p.leadingCoeff = 1 := by
     rw [← Polynomial.leadingCoeff_map_of_injective hi, hp]
     exact (Matrix.charpoly_monic M).leadingCoeff
   rw [Polynomial.map_scaleRoots _ _ _ (by simp [hlc]), ← Polynomial.map_map, hp, ← Matrix.charpoly_map,
-    RingHom.comp_apply, charpoly_smul_scale _ hb]
+    RingHom.comp_apply, Matrix.charpoly_smul]
 
 theorem UpperTheory.V.Ws.auRep :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D) (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (B : W.UniversalOrdinaryDeterminantRing K.r) (n : ℕ) (φ : B.B →ₐ[c'.O] X.B), K.IsPhi X n B φ → ∀ (y : X.A →ₐ[c'.O] PadicAlgCl l) (x : B.Pt), (∀ b, x b = y (algebraMap X.B X.A (φ b))) → x.IsRep (Af.tw ((X.P.map (y : X.A →+* PadicAlgCl l)).r.comp (resLe T.F_le)).toHomUnits (W.pushCh (algebraMap c'.O (PadicAlgCl l)) (K.κ * K.β ^ n))) := by
@@ -118,10 +99,6 @@ theorem UpperTheory.V.Ws.auRep :
   rw [hxφ, ← Polynomial.map_map]
   erw [hφ.1 g]
   rw [scale_point (algebraMap X.B X.A) X.inj (y : X.A →+* PadicAlgCl l) _ (X.P.r _) (X.cp_map _), e]
-  · set_option maxRecDepth 4096 in
-    congr 1
-    simp [W.mat.eq_1, Af.tw_val, W.pushCh.eq_1, PD.map.eq_1]
-    rfl
-  · rw [e]
-    have u := (Units.map (algebraMap c'.O (PadicAlgCl l) : c'.O →* PadicAlgCl l) (K.κ g * K.β g ^ n)).ne_zero
-    simpa using u
+  refine congrArg (fun M : Matrix (Fin 4) (Fin 4) (PadicAlgCl l) => M.charpoly.coeff) ?_
+  simp [W.mat.eq_1, Af.tw_val, W.pushCh.eq_1, PD.map.eq_1]
+  rfl

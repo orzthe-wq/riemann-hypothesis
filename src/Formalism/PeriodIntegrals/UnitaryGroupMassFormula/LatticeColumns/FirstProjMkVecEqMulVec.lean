@@ -109,7 +109,7 @@ theorem oep_int (hL : LatBasis X p θ (reindex₂ X p Q)) (t : TpX X p) (ht : t 
     rw [crd_mkVec]
     by_cases hs : s = s0
     · subst hs; simp
-    · simp [Pi.single_apply, hs]
+    · simp [hs]
   have h2 := crd_int_of_lat X p θ Q hL _ (imA_lat_OEp X p ht hμL) s0
   rw [crd_smul, crd_mkVec] at h2
   simpa using h2

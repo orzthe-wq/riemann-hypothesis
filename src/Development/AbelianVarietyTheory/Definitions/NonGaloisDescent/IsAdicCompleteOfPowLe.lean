@@ -687,14 +687,7 @@ theorem coeff_le_one {l : ℕ} [hl : Fact l.Prime]
     nlinarith
   positivity
 
-theorem norm_l_lt' {l : ℕ} [Fact l.Prime] : ‖(l : ℂ_[l])‖ < 1 := by
-  rw [← PadicComplex.coe_natCast, PadicComplex.norm_extends]
-  exact norm_l_lt
-
-theorem mem_int_iff {l : ℕ} [Fact l.Prime] (x : ℂ_[l]) : x ∈ PadicComplexInt l ↔ ‖x‖ ≤ 1 := by
-  rw [PadicComplexInt, Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm,
-    Valuation.norm_def, ← NNReal.coe_one, NNReal.coe_le_coe, (show Valuation.RankLeOne.hom' Valued.v = MonoidWithZeroHom.ValueGroup₀.embedding from rfl),
-    Valuation.embedding_restrict]
+alias mem_int_iff := _root_.GlobalTheory.RingBasics.mem_OC
 
 theorem hom_padicInt {l : ℕ} [Fact l.Prime] (f : ℤ_[l] →+* ℂ_[l]) (hf : ∀ z, ‖f z‖ ≤ 1)
     (z : ℤ_[l]) : f z = algebraMap ℚ_[l] ℂ_[l] (z : ℚ_[l]) := by
@@ -720,7 +713,7 @@ theorem hom_padicInt {l : ℕ} [Fact l.Prime] (f : ℤ_[l] →+* ℂ_[l]) (hf : 
     gcongr
     linarith
   have ht : Filter.Tendsto (fun k : ℕ => 2 * ‖(l : ℂ_[l])‖ ^ k) Filter.atTop (nhds (2 * 0)) :=
-    (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) norm_l_lt').const_mul 2
+    (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) _root_.GlobalTheory.RingBasics.norm_p_lt).const_mul 2
   have := ge_of_tendsto' ht hb
   rw [mul_zero] at this
   exact sub_eq_zero.mp (norm_le_zero_iff.mp this)
@@ -796,7 +789,7 @@ theorem unram {l : ℕ} [hl : Fact l.Prime] {W : Type} [CommRing W]
     rw [zpow_sub₀ hp.ne', zpow_natCast, zpow_natCast, hn]
     field_simp
   refine ⟨fun _ => ⟨_, hln ▸ hcz⟩, fun h => ?_⟩
-  rw [hcz, zpow_le_one_iff_right_of_lt_one₀ hp norm_l_lt'] at h
+  rw [hcz, zpow_le_one_iff_right_of_lt_one₀ hp _root_.GlobalTheory.RingBasics.norm_p_lt] at h
   obtain ⟨k, rfl⟩ : ∃ k, m = n + k := ⟨m - n, by omega⟩
   refine ⟨(l : W) ^ k * u, mul_left_cancel₀ (pow_ne_zero n hl0) ?_⟩
   rw [← hw, map_mul, map_pow, map_natCast]
@@ -942,9 +935,7 @@ variable (e : ℕ) [NeZero e]
 namespace PiSys
 variable {l e} (ϖ : PiSys l e)
 
-theorem exists_theta_ev_eq (x : ↥(OL (ϖ.field a))) :
-    ∃ y, Per.θ l (ϖ.ev a y) = intToOC (ϖ.field a) x := by
-  first | exact Bridge.exists_powerSeries_eval_eq | exact Bridge.exists_powerSeries_eval_eq .. | (intros; apply Bridge.exists_powerSeries_eval_eq <;> assumption)
+alias exists_theta_ev_eq := _root_.Bridge.exists_powerSeries_eval_eq
 
 def quotToOC : ((Wq l a)⟦X⟧ ⧸ Ideal.span {eis l a e}) →+* OC l :=
   Ideal.Quotient.lift _ ((Per.θ l).comp (ϖ.ev a)) fun x hx =>

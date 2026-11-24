@@ -1,49 +1,129 @@
 module
 
+public import GroundTheory.GlobalFields.IdeleGroups.GaloisOnAdeles.Action
 public import GroundTheory.GlobalFields.IdeleClassGroup.IdeleClassEquivIdeleClassMapOfComm
-import GroundTheory.GlobalFields.CyclotomicCharacters.Character
-public import GroundTheory.GlobalFields.IdeleClassGroup.ConjugateNorm
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.FieldTheory.Galois.Infinite
+import GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.InfiniteAdeleRingMapInfiniteAdeleRingMap
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.TypeStar
+import GroundTheory.GlobalFields.CyclotomicCharacters.Character
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.GlobalFields.IdeleClassGroup.ConjugateNorm, GroundTheory.GlobalFields.IdeleClassGroup.Invariants
+
+-- ===== clump member: GroundTheory.GlobalFields.IdeleClassGroup.ConjugateNorm =====
+-- clump-header: {"m": "GroundTheory.GlobalFields.IdeleClassGroup.ConjugateNorm", "h": "module\n\npublic import GroundTheory.GlobalFields.IdeleGroups.GaloisOnAdeles.Action\nimport GroundTheory.GlobalFields.IdeleGroups.IdeleNorms.InfiniteAdeleRingMapInfiniteAdeleRingMap\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Global
+
+open IsDedekindDomain NumberField AdeleBaseChange
+open scoped NumberField.AdeleRing
+
+noncomputable section
+
+variable {K L M : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Field M]
+  [NumberField M] [Algebra K L] [Algebra L M] [Algebra K M] [IsScalarTower K L M]
+  {ι : Type*} [Fintype ι]
+
+
+omit [NumberField K] [NumberField L] [NumberField M] in
+theorem det_conjugates_ne_zero [DecidableEq ι] (τ : ι → (M ≃ₐ[K] M))
+    (hτ : Function.Injective fun i ↦ (τ i : M →ₐ[K] M).comp (IsScalarTower.toAlgHom K L M))
+    (b : Module.Basis ι K L) :
+    (Matrix.of fun i j ↦ τ i (algebraMap L M (b j))).det ≠ 0 := by
+  classical
+  intro h
+  obtain ⟨v, hv0, hv⟩ := Matrix.exists_vecMul_eq_zero_iff.2 h
+  apply hv0
+  let χ : ι → (L →* M) := fun i ↦
+    ((τ i : M →ₐ[K] M).comp (IsScalarTower.toAlgHom K L M) : L →+* M).toMonoidHom
+  have hχ : Function.Injective χ := by
+    intro i j hij
+    apply hτ
+    ext x
+    exact DFunLike.congr_fun hij x
+  have hli := (linearIndependent_monoidHom L M).comp χ hχ
+  let f : L →ₗ[K] M := ∑ i, LinearMap.mulLeft K (v i) ∘ₗ
+    ((τ i : M →ₐ[K] M).comp (IsScalarTower.toAlgHom K L M)).toLinearMap
+  have hf : f = 0 := by
+    refine b.ext fun j ↦ ?_
+    have hj := congrFun hv j
+    simp only [Matrix.vecMul, dotProduct, Pi.zero_apply] at hj
+    simpa [f] using hj
+  have hsum : ∑ i, v i • ((χ i : L →* M) : L → M) = 0 := by
+    funext x
+    have hx := LinearMap.congr_fun hf x
+    simpa [f, χ] using hx
+  funext i
+  exact (Fintype.linearIndependent_iff.1 hli) v hsum i
+
+theorem adeleMap_norm_eq_prod (τ : ι → (M ≃ₐ[K] M))
+    (hτ : Function.Injective fun i ↦ (τ i : M →ₐ[K] M).comp (IsScalarTower.toAlgHom K L M))
+    (hcard : Fintype.card ι = Module.finrank K L) (y : 𝔸[L]) :
+    adeleMap K M (Algebra.norm 𝔸[K] y) = ∏ i, τ i • adeleMap L M y := by
+  classical
+  let b : Module.Basis ι K L :=
+    (Module.finBasis K L).reindex (Fintype.equivFinOfCardEq hcard).symm
+  let B := adeleBasis b
+  let A := Algebra.leftMulMatrix B y
+  let D : Matrix ι ι M := Matrix.of fun i j ↦ τ i (algebraMap L M (b j))
+  have hA : ∀ k j, A k j = B.repr (y * B j) k := fun k j ↦
+    Algebra.leftMulMatrix_eq_repr_mul B y k j
+  have hy : ∀ j, y * algebraMap L 𝔸[L] (b j) =
+      ∑ k, adeleMap K L (A k j) * algebraMap L 𝔸[L] (b k) := by
+    intro j
+    conv_lhs => rw [← B.sum_repr (y * algebraMap L 𝔸[L] (b j))]
+    refine Finset.sum_congr rfl fun k _ ↦ ?_
+    rw [Algebra.smul_def, algebraMap_adeleRing, adeleBasis_apply, hA, adeleBasis_apply]
+  have key : Matrix.diagonal (fun i ↦ τ i • adeleMap L M y) * D.map (algebraMap M 𝔸[M]) =
+      D.map (algebraMap M 𝔸[M]) * A.map (adeleMap K M) := by
+    ext i j
+    rw [Matrix.diagonal_mul, Matrix.mul_apply]
+    have h := congrArg (fun z ↦ τ i • adeleMap L M z) (hy j)
+
+    simp only [map_mul, map_sum, smul_mul', Finset.smul_sum, adeleMap_algebraMap,
+    adeleMap_adeleMap, AdeleBaseChange.smul_algebraMap, smul_adeleMap] at h
+    simp only [Matrix.map_apply, Matrix.of_apply, D, h]
+    exact Finset.sum_congr rfl fun k _ ↦ mul_comm _ _
+  have hdet := congrArg Matrix.det key
+  rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, ← RingHom.mapMatrix_apply,
+    ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.map_det] at hdet
+  rw [Algebra.norm_eq_matrix_det B]
+  rw [mul_comm] at hdet
+  have hu : IsUnit (algebraMap M 𝔸[M] D.det) :=
+    (isUnit_iff_ne_zero.2 (det_conjugates_ne_zero τ hτ b)).map _
+  exact (hu.mul_left_cancel hdet).symm
+
+theorem ideleEmbedding_ideleNorm_eq_prod (τ : ι → (M ≃ₐ[K] M))
+    (hτ : Function.Injective fun i ↦ (τ i : M →ₐ[K] M).comp (IsScalarTower.toAlgHom K L M))
+    (hcard : Fintype.card ι = Module.finrank K L) (x : IdeleGroup L) :
+    ideleEmbedding K M (ideleNorm K L x) = ∏ i, τ i • ideleEmbedding L M x :=
+  Units.ext (by
+    rw [coe_ideleEmbedding, coe_ideleNorm, adeleMap_norm_eq_prod τ hτ hcard, Units.coe_prod]
+    rfl)
+
+theorem ideleClassMap_ideleClassNorm_eq_prod (τ : ι → (M ≃ₐ[K] M))
+    (hτ : Function.Injective fun i ↦ (τ i : M →ₐ[K] M).comp (IsScalarTower.toAlgHom K L M))
+    (hcard : Fintype.card ι = Module.finrank K L) (c : IdeleClassGroup L) :
+    ideleClassMap K M (ideleClassNorm K L c) = ∏ i, τ i • ideleClassMap L M c := by
+  obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective L c
+  simp only [ideleClassNorm_mk, ideleClassMap_mk, ideleEmbedding_ideleNorm_eq_prod τ hτ hcard,
+    smul_mk, map_prod]
+
+end
+
+end GroundTheory.Global
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.GlobalFields.IdeleClassGroup.ConjugateNorm =====
+
+-- ===== clump member: GroundTheory.GlobalFields.IdeleClassGroup.Invariants =====
+-- clump-header: {"m": "GroundTheory.GlobalFields.IdeleClassGroup.Invariants", "h": "module\n\npublic import GroundTheory.GlobalFields.IdeleClassGroup.IdeleClassEquivIdeleClassMapOfComm\nimport GroundTheory.GlobalFields.CyclotomicCharacters.Character\npublic import GroundTheory.GlobalFields.IdeleClassGroup.ConjugateNorm\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.FieldTheory.Galois.Infinite\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace GroundTheory.Global
@@ -223,3 +303,6 @@ end IdeleClassLimit
 end
 
 end GroundTheory.Global
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.GlobalFields.IdeleClassGroup.Invariants =====

@@ -469,12 +469,12 @@ theorem cutSame : CutSame := by
 
 end Formalism.FourierDecayAlt.P.A6x8
 
-theorem Formalism.FourierDecayAlt.P.gramKernelHermitian : Formalism.FourierDecayAlt.A6.KpHerm := Formalism.FourierDecayAlt.P.A6x8.kpHerm
+alias Formalism.FourierDecayAlt.P.gramKernelHermitian := _root_.Formalism.FourierDecayAlt.P.A6x8.kpHerm
 
-theorem Formalism.FourierDecayAlt.P.shiftUnit_statement : Formalism.FourierDecayAlt.A6.ShiftUnit := Formalism.FourierDecayAlt.P.A6x8.shiftUnit
+alias Formalism.FourierDecayAlt.P.shiftUnit_statement := _root_.Formalism.FourierDecayAlt.P.A6x8.shiftUnit
 
-theorem Formalism.FourierDecayAlt.P.shiftSmall_statement : Formalism.FourierDecayAlt.A6.ShiftSmall := Formalism.FourierDecayAlt.P.A6x8.shiftSmall
+alias Formalism.FourierDecayAlt.P.shiftSmall_statement := _root_.Formalism.FourierDecayAlt.P.A6x8.shiftSmall
 
-theorem Formalism.FourierDecayAlt.P.rootCutStable : Formalism.FourierDecayAlt.A6.CutSame := Formalism.FourierDecayAlt.P.A6x8.cutSame
+alias Formalism.FourierDecayAlt.P.rootCutStable := _root_.Formalism.FourierDecayAlt.P.A6x8.cutSame
 
-theorem Formalism.FourierDecayAlt.P.rootCorrection : Formalism.FourierDecayAlt.A6.RootCorr := Formalism.FourierDecayAlt.P.A6x8.rootCorr
+alias Formalism.FourierDecayAlt.P.rootCorrection := _root_.Formalism.FourierDecayAlt.P.A6x8.rootCorr

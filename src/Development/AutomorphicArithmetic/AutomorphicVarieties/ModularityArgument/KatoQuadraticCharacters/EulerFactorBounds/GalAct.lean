@@ -97,7 +97,7 @@ private theorem act_mem [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [Fact 
   have hA := (kmap_A_stable ε X ε.injective ⟨φ, h2, h1⟩ l).1 (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ))
   have himg : X.act l (δ : Matrix (Fin 2) (Fin 2) ℤ) '' X.BSet N l w ⊆ X.BSet N l w := by
     rintro _ ⟨c, hc, rfl⟩
-    refine ⟨GlobalTheory.T.intMatrixAction_mem_homogeneousPolyFunctions X l w _ hA c hc.1, fun γ hγ => ?_⟩
+    refine ⟨_root_.GlobalTheory.KZ.PolAct.act_mem_pol X l w _ hA c hc.1, fun γ hγ => ?_⟩
     rw [act_act_conj, hc.2 _ (conj_mem N l γ δ hγ hδ)]
   exact Submodule.span_mono himg (Submodule.apply_mem_span_image_of_mem_span (X.act l _) hb)
 

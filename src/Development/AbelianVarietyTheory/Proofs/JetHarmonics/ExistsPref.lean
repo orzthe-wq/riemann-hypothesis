@@ -270,36 +270,7 @@ theorem linkRel : LinkRelSt := by
       have := congrArg (sb (![0, gen 0] : Fin 2 → Q V d 1)) ((formalSeriesValueAtThreePoints_eq_ev BT.ph1 0 (gen 0) (gen 1)).trans BT.cocycleLeft_zero_fst)
       rwa [formalPointSubstitutionSeries_valueAtThreePoints, map_zero, sq_gen, sq_gen, map_one] at this
     refine (formalSeriesValueAtTwoPoints_eq_ev ε 0 (gen 0)).symm.trans (VV_ext_pref j fun m y J hJ => ?_)
-    have C : IsCub (cubV t.cub y J) := by
-      exact {
-      face x y := by
-        have := val_corr hJ.1 (t.cub.face 0) (lift x y).left
-        rw [val_one] at this
-        refine Eq.trans ?_ this
-        refine Eq.trans ?_ (val_cub t.cub (lift x y) hJ.1 (pzero t.G _) (x2 t.G 0) (x2 t.G 1)).symm
-        congr 1 <;> simp [x2, pzero, Hom.one_def]
-      s01 x y w := by
-        have := (val_corr hJ.1 t.cub.cubeSymmetric_swap_first (lift x (lift y w)).left).trans (val_cub t.cub (lift x (lift y w)) hJ.1 _ _ _)
-        refine Eq.trans this ?_
-        congr 1 <;> simp [x3]
-      s12 x y w := by
-        have := (val_corr hJ.1 t.cub.cubeSymmetric_swap_last (lift x (lift y w)).left).trans (val_cub t.cub (lift x (lift y w)) hJ.1 _ _ _)
-        refine Eq.trans this ?_
-        congr 1 <;> simp [x3]
-      coc x x' x'' y := by
-        have := val_corr hJ.1 t.cub.cocycle (lift x (lift x' (lift x'' y))).left
-        have e := ((val_mul hJ.1 _ _ _).trans (congrArg₂ (· * ·) (val_cub t.cub _ hJ.1 _ _ _) (val_cub t.cub _ hJ.1 _ _ _))).symm.trans
-          (this.trans ((val_mul hJ.1 _ _ _).trans (congrArg₂ (· * ·) (val_cub t.cub _ hJ.1 _ _ _) (val_cub t.cub _ hJ.1 _ _ _))))
-        have a₀ : lift x (lift x' (lift x'' y)) ≫ x4 t.G 0 = x := by simp [x4]
-        have a₁ : lift x (lift x' (lift x'' y)) ≫ x4 t.G 1 = x' := by simp [x4]
-        have a₂ : lift x (lift x' (lift x'' y)) ≫ x4 t.G 2 = x'' := by simp [x4]
-        have a₃ : lift x (lift x' (lift x'' y)) ≫ x4 t.G 3 = y := by simp [x4]
-        have b₀ : lift x (lift x' (lift x'' y)) ≫ padd t.G (x4 t.G 0) (x4 t.G 1) = x * x' :=
-          (MonObj.comp_mul _ _ _).trans (by rw [a₀, a₁])
-        have b₁ : lift x (lift x' (lift x'' y)) ≫ padd t.G (x4 t.G 1) (x4 t.G 2) = x' * x'' :=
-          (MonObj.comp_mul _ _ _).trans (by rw [a₁, a₂])
-        rwa [b₀, b₁, a₀, a₁, a₂, a₃] at e
-      }
+    have C : IsCub (cubV t.cub y J) := isCub_cubV t.cub hJ.1
     have k := frame_biext_dictionary_first_partial_law hJ.1 hf (0 : Q V d 1) 0 (gen 0)
     rw [z, op0, PP_zero hc, C.face, _root_.one_mul, inv_mul_cancel, _root_.one_mul] at k
     rw [hE hJ, k]
@@ -307,36 +278,7 @@ theorem linkRel : LinkRelSt := by
       have := congrArg (sb (![gen 0, 0] : Fin 2 → Q V d 1)) ((formalSeriesValueAtThreePoints_eq_ev BT.ph2 (gen 0) 0 (gen 1)).trans BT.cocycleRight_zero_snd)
       rwa [formalPointSubstitutionSeries_valueAtThreePoints, map_zero, sq_gen, sq_gen, map_one] at this
     refine (formalSeriesValueAtTwoPoints_eq_ev ε (gen 0) 0).symm.trans (VV_ext_pref j fun m y J hJ => ?_)
-    have C : IsCub (cubV t.cub y J) := by
-      exact {
-      face x y := by
-        have := val_corr hJ.1 (t.cub.face 0) (lift x y).left
-        rw [val_one] at this
-        refine Eq.trans ?_ this
-        refine Eq.trans ?_ (val_cub t.cub (lift x y) hJ.1 (pzero t.G _) (x2 t.G 0) (x2 t.G 1)).symm
-        congr 1 <;> simp [x2, pzero, Hom.one_def]
-      s01 x y w := by
-        have := (val_corr hJ.1 t.cub.cubeSymmetric_swap_first (lift x (lift y w)).left).trans (val_cub t.cub (lift x (lift y w)) hJ.1 _ _ _)
-        refine Eq.trans this ?_
-        congr 1 <;> simp [x3]
-      s12 x y w := by
-        have := (val_corr hJ.1 t.cub.cubeSymmetric_swap_last (lift x (lift y w)).left).trans (val_cub t.cub (lift x (lift y w)) hJ.1 _ _ _)
-        refine Eq.trans this ?_
-        congr 1 <;> simp [x3]
-      coc x x' x'' y := by
-        have := val_corr hJ.1 t.cub.cocycle (lift x (lift x' (lift x'' y))).left
-        have e := ((val_mul hJ.1 _ _ _).trans (congrArg₂ (· * ·) (val_cub t.cub _ hJ.1 _ _ _) (val_cub t.cub _ hJ.1 _ _ _))).symm.trans
-          (this.trans ((val_mul hJ.1 _ _ _).trans (congrArg₂ (· * ·) (val_cub t.cub _ hJ.1 _ _ _) (val_cub t.cub _ hJ.1 _ _ _))))
-        have a₀ : lift x (lift x' (lift x'' y)) ≫ x4 t.G 0 = x := by simp [x4]
-        have a₁ : lift x (lift x' (lift x'' y)) ≫ x4 t.G 1 = x' := by simp [x4]
-        have a₂ : lift x (lift x' (lift x'' y)) ≫ x4 t.G 2 = x'' := by simp [x4]
-        have a₃ : lift x (lift x' (lift x'' y)) ≫ x4 t.G 3 = y := by simp [x4]
-        have b₀ : lift x (lift x' (lift x'' y)) ≫ padd t.G (x4 t.G 0) (x4 t.G 1) = x * x' :=
-          (MonObj.comp_mul _ _ _).trans (by rw [a₀, a₁])
-        have b₁ : lift x (lift x' (lift x'' y)) ≫ padd t.G (x4 t.G 1) (x4 t.G 2) = x' * x'' :=
-          (MonObj.comp_mul _ _ _).trans (by rw [a₁, a₂])
-        rwa [b₀, b₁, a₀, a₁, a₂, a₃] at e
-      }
+    have C : IsCub (cubV t.cub y J) := isCub_cubV t.cub hJ.1
     have k := frame_biext_dictionary_second_partial_law hJ.1 hf (gen 0 : Q V d 1) 0 0
     rw [z, op0, PP_zero hc, C.face₂, _root_.one_mul, inv_mul_cancel, _root_.one_mul] at k
     rw [hE hJ, k]

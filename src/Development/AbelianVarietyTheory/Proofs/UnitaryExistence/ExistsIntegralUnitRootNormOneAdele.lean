@@ -379,7 +379,6 @@ theorem _root_.GlobalTheory.AdLat.exists_integral_unit_root : ∀ (F E : Type) [
       (fun a b ha hb => hmulv a b ha.1 hb) Finset.univ
       (fun ij : Option (Fin n) × Option (Fin n) => p ij.1 ij.2)
       (fun ij : Option (Fin n) × Option (Fin n) => Y ij.1 * cy ij.2) hPv
-    beta_reduce at eN
     rw [hZ, map_one, mul_one, Algebra.TensorProduct.one_def] at eN
     have hN1 : N = 1 := (Algebra.TensorProduct.includeLeft_injective (R := F)
       (S := F) (A := FiniteAdeleRing (𝓞 F) F) (B := E) (algebraMap F E).injective eN).symm
@@ -424,7 +423,7 @@ theorem _root_.GlobalTheory.AdLat.exists_integral_unit_root : ∀ (F E : Type) [
 
     simp only [map_sum, map_mul]
     simp only [hevv, hev, hdv, ite_mul, one_mul, zero_mul, mul_ite, mul_one,
-      mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+      mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
     exact inv_mul_cancel₀ (hne v)
   refine ⟨∑ q, (e q ⊗ₜ[F] (1 : E)) * m q.1, ?_, ⟨(d ⊗ₜ[F] (1 : E)) *
     ∑ q, (e q ⊗ₜ[F] (1 : E)) * σ (m q.2), ?_, ?_⟩, ?_⟩

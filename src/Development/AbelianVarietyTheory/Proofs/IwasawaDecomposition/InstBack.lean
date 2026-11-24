@@ -78,11 +78,20 @@ theorem entC_tr {t : ColT w Z} {X : DivX (w.D Z)} {Gy : G.LatInst (w.D Z)} {ker 
     ∃ (Pl : Examples₂.EntPl (w.D (setDivZ Z N h))) (Bs : Formalism.L2.Ker.PlaceMatrixFamily (w.D (setDivZ Z N h)))
       (hh : Formalism.L2.Ker.KerEntHyp Pl (ktTr w Z N h kt).O Bs (divTrZ w Z N h X) (w.tw (setDivZ Z N h))),
       (ktTr w Z N h kt).E = Formalism.L2.Ker.kerEntC Pl (ktTr w Z N h kt).O Bs hh := by
+  -- State the transport for an arbitrary `D : D7`, so its proof is checked without
+  -- unfolding the concrete records `w.D Z` / `w.D (setDivZ Z N h)`.
+  have key (D : D7) (N' : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h' : D.what₂.Word → ℝ)
+      (P : Examples₂.EntPl D) (O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u μ))
+      (Bs : Formalism.L2.Ker.PlaceMatrixFamily D) (Dx : DivX D) (Tw : TwForms D)
+      (E : KerEnt D Dx Tw) (hh : Formalism.L2.Ker.KerEntHyp P O Bs Dx Tw)
+      (e : E = Formalism.L2.Ker.kerEntC P O Bs hh) :
+      ∃ hh' : Formalism.L2.Ker.KerEntHyp (D := setDiv D N' h') { P with } (fun u a => { O u a with }) Bs
+        (divTr N' h' Dx) (twTr N' h' Tw),
+        Formalism.L2.Ker.kerEntC _ _ _ hh' = { E with } :=
+    ⟨{ hh with }, by subst e; rfl⟩
   obtain ⟨Pl, Bs, hh, e⟩ := H
-  exact ⟨{ Pl with }, Bs, { hh with },
-    congrArg (fun E : Formalism.BasicNotions.KerEnt (w.D Z) X (w.tw Z) =>
-      ({ E with } : Formalism.BasicNotions.KerEnt (w.D (setDivZ Z N h))
-        (divTrZ w Z N h X) (w.tw (setDivZ Z N h)))) e⟩
+  obtain ⟨hh', e'⟩ := key (w.D Z) N h Pl kt.O Bs X (w.tw Z) kt.E hh e
+  exact ⟨_, Bs, hh', e'.symm⟩
 
 end GlobalTheory.Mem.Db.DivTr
 

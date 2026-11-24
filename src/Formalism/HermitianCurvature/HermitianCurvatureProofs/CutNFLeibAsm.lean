@@ -49,6 +49,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.OpApplyContinuousOn
 
 @[expose] public section
 
@@ -99,17 +100,6 @@ section cont
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
-theorem nfLeib_ckOn_contOn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ∞} {UU : Set (B.Mat k r)}
-    (hUU : UU ⊆ B.GV k r) {f : B.Mat k r → E} (h : B.CkOn m UU f) : ContinuousOn f UU := by
-  unfold B.CkOn at h
-  intro g₀ hg₀
-  obtain ⟨U, f', hU, hgU, hc, he⟩ := h g₀ hg₀
-  have hcont : ContinuousAt f' g₀ := hc.continuousOn.continuousAt (hU.mem_nhds hgU)
-  have heq : f =ᶠ[𝓝[UU] g₀] f' := by
-    filter_upwards [nhdsWithin_le_nhds (hU.mem_nhds hgU), self_mem_nhdsWithin] with g hgU' hgUU
-    exact he g hgU' (hUU hgUU)
-  exact hcont.continuousWithinAt.congr_of_eventuallyEq heq (he g₀ hgU (hUU hg₀))
-
 theorem nfLeib_domL_eq (Bs : B.RealPlaceData k r Wp Wq) : C6.domL Bs ∅ = B.GPos Bs := by
   unfold C6.domL B.GPos
   ext g
@@ -129,9 +119,9 @@ theorem nfLeib_opApply_contOn (Bs : B.RealPlaceData k r Wp Wq) (L : B.DiffOp k r
     refine ContinuousOn.add ?_ (ih fun T' hT' => hL T' (List.mem_cons_of_mem _ hT'))
     have h1 : ContinuousOn T.coef (B.GPos Bs) := by
       rw [← nfLeib_domL_eq Bs]
-      exact nfLeib_ckOn_contOn (fun g (hg : g ∈ C6.domL Bs ∅) => hg.1) (hL T List.mem_cons_self).1
+      exact _root_.Formalism.FourierDecayAlt.P.PBE.ckOn_continuousOn' (fun g (hg : g ∈ C6.domL Bs ∅) => hg.1) (hL T List.mem_cons_self).1
     have h2 : ContinuousOn (B.Rw T.word F) (B.GPos Bs) :=
-      (nfLeib_ckOn_contOn le_rfl (JFxI.ckOn_Rw_top' hF T.word T.word_lie)).mono fun g hg => hg.1
+      (_root_.Formalism.FourierDecayAlt.P.PBE.ckOn_continuousOn' le_rfl (JFxI.ckOn_Rw_top' hF T.word T.word_lie)).mono fun g hg => hg.1
     exact h1.clm_apply h2
 
 end cont

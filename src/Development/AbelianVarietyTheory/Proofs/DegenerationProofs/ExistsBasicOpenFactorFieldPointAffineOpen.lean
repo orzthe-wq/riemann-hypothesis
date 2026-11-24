@@ -66,7 +66,7 @@ theorem exists_basicOpen_factor : ∀ (k : Type) [CommRing k] (G : Over (Sp k)) 
   have hp : p ∈ (U : Set (Spec (CommRingCat.of B))) := by
     refine ⟨(algOverHom χ₀).left p₀, ?_⟩
     have := congrArg (fun x => x p₀) hl
-    simp only [Scheme.Hom.comp_apply] at this
+    simp only at this
     exact this.symm
   obtain ⟨_, ⟨e, rfl⟩, he, heU⟩ :=
     PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hp U.isOpen

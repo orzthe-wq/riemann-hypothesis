@@ -89,7 +89,7 @@ theorem prod_Oφ_zero {T : Over (Sp R)} (b : T ⟶ D.P.A) {Z : Scheme.{0}} (π :
   simp
 
 theorem exists_isZero (T : Over (Sp R)) : ∃ g : GtPt D T, g.IsZero := by
-  apply GlobalTheory.FormalValue.exists_isZero <;> assumption
+  apply GlobalTheory.FormalValue.exists_isZero
 
 
 variable {I : Ideal R} {e : ℕ} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)

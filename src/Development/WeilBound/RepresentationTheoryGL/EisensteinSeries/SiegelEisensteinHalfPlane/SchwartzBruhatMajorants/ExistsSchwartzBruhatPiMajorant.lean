@@ -3,9 +3,10 @@ module
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.HeisenbergTheta.HeisenbergThetaConstant.ThetaC
 public import GroundTheory.GlobalFields.TateThesis.TateMain
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNormTheta2TailLeOfLeOne
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSummableMajorantLatticeSumStatement
+public import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinContinuation.IsEpCont
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSummableMajorantLatticeSum
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LinearChangeMemSchwartzBruhatPiStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSubValueZeroRapidDecayStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSubValueZeroRapidDecay
 public import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinHalfPlane.SchwartzBruhatMajorants.ThetaCScalCEq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -165,7 +166,7 @@ theorem line_mem_schwartzBruhat {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwa
     have hAi : (A : Matrix ι ι 𝔸[k]) i i₀ = algebraMap k 𝔸[k] (ξ i) := by
       simp [hA, Matrix.GeneralLinearGroup.mkOfDetNeZero, hM, Matrix.updateCol_self]
     simp [Matrix.mulVec_single, hAi, ratV, mul_comm]
-  have h := single_mem_schwartzBruhat (GlobalTheory.T.linearChange_mem_schwartzBruhatPi hF A) i₀
+  have h := single_mem_schwartzBruhat (_root_.GlobalTheory.CompanionTheory.LinearChangeSchwartzBruhat.ltr_mem hF A) i₀
   simpa only [ltr, key] using h
 
 end SlopeTestRemainingChoices
@@ -231,7 +232,7 @@ theorem countable_proj : Countable (Projectivization k (ι → k)) := by
 theorem summable_norm_col {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi (K := k) (ι := ι))
     (h : GL ι 𝔸[k]) :
     Summable fun ξ : ι → k ↦ ‖F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ)‖ := by
-  obtain ⟨u, hu, hb⟩ := GlobalTheory.T.exists_summable_majorant_lattice_sum hF (isCompact_singleton (x := h))
+  obtain ⟨u, hu, hb⟩ := _root_.GlobalTheory.CompanionTheory.EisRkNBound.exists_summable_bound_thetaC hF (isCompact_singleton (x := h))
   exact Summable.of_nonneg_of_le (fun _ ↦ norm_nonneg _) (fun ξ ↦ hb h rfl ξ) hu
 
 theorem summable_line {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi (K := k) (ι := ι)) (h : GL ι 𝔸[k]) :
@@ -333,8 +334,8 @@ theorem exists_bound (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
   have hφ' : Continuous fun u : normOneSubgroup k ↦ (scalC (u : IdeleGroup k)⁻¹ : GL ι 𝔸[k]) :=
     continuous_scalC.comp (continuous_inv.comp continuous_subtype_val)
   have hE := isCompact_closure_normOneFundamentalDomain k
-  obtain ⟨M₁, h₁⟩ := GlobalTheory.T.theta_sub_value_zero_rapid_decay w hG (hE.image hφ) r
-  obtain ⟨M₀, h₀⟩ := GlobalTheory.T.theta_sub_value_zero_rapid_decay w (adelicFourierPi_mem_schwartzBruhatPi hG) (hE.image hφ') 0
+  obtain ⟨M₁, h₁⟩ := _root_.GlobalTheory.CompanionTheory.EisThCDecay.exists_norm_thetaC_sub_le w hG (hE.image hφ) r
+  obtain ⟨M₀, h₀⟩ := _root_.GlobalTheory.CompanionTheory.EisThCDecay.exists_norm_thetaC_sub_le w (adelicFourierPi_mem_schwartzBruhatPi hG) (hE.image hφ') 0
   set N := Fintype.card ι with hN
 
   have hsr : ∀ h : GL ι 𝔸[k], Summable fun ξ : ι → k ↦ ρ ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ) := by
@@ -535,7 +536,7 @@ theorem integrableOn_thetaC_mul {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwa
     continuous_scalC.comp (continuous_const.mul continuous_subtype_val)
   have hθ : ContinuousOn (thetaC F) ((fun u : normOneSubgroup k ↦
       (scalC (a * (u : IdeleGroup k)) : GL ι 𝔸[k])) '' closure (normOneFundamentalDomain k)) := by
-    obtain ⟨v, hv, hb⟩ := GlobalTheory.T.exists_summable_majorant_lattice_sum hF (hE.image hφ)
+    obtain ⟨v, hv, hb⟩ := _root_.GlobalTheory.CompanionTheory.EisRkNBound.exists_summable_bound_thetaC hF (hE.image hφ)
     refine continuousOn_tsum (fun ξ ↦ Continuous.continuousOn ?_) hv fun ξ h hh ↦ hb h hh ξ
     refine (continuous_of_mem_schwartzBruhatPi hF).comp ?_
     exact Units.continuous_val.matrix_mulVec continuous_const
@@ -667,7 +668,7 @@ theorem epstein_eq_mellin {k : Type} [Field k] [NumberField k] {ι : Type} [Fint
   · have hz1 : 1 < z.re := by
       have : (1 : ℝ) ≤ Fintype.card ι := by exact_mod_cast Fintype.card_pos
       linarith
-    have h := lines_eq_mellin w ω (GlobalTheory.T.linearChange_mem_schwartzBruhatPi hΨ m⁻¹) hz hz1
+    have h := lines_eq_mellin w ω (_root_.GlobalTheory.CompanionTheory.LinearChangeSchwartzBruhat.ltr_mem hΨ m⁻¹) hz hz1
     simp only [epstein, lineZeta_mulVec]
     exact h
 

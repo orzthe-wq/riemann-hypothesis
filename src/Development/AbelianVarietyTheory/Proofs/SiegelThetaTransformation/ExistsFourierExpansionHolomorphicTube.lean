@@ -123,7 +123,6 @@ private lemma mFourierCoeff_lift_eq_integral {ι : Type} [Fintype ι] (g : C(Uni
   refine setIntegral_congr_fun measurableSet_Icc fun x _ ↦ ?_
   simp only [hg, smul_eq_mul, mFourier_apply_coe]
   congr 2
-  push_cast
   simp only [Pi.neg_apply, Int.cast_neg, neg_mul, Finset.sum_neg_distrib]
   ring
 
@@ -200,7 +199,7 @@ theorem _root_.GlobalTheory.exists_fourier_expansion_tube :
     · rw [norm_mul, Complex.norm_exp, mul_comm]
       have hre : (-(2 * π * I * ∑ i, (ν i : ℂ) * ((x i : ℂ) + I * y i))).re =
           2 * π * ∑ i, (ν i : ℝ) * y i := by
-        simp [Complex.re_sum, Complex.im_sum, Complex.mul_re, Complex.mul_im, Finset.mul_sum]
+        simp [Complex.re_sum, Complex.mul_re, Complex.mul_im, Finset.mul_sum]
       rw [hre]
       exact mul_le_mul_of_nonneg_left (hM x) (Real.exp_pos _).le
     · simp [Measure.real, hvol]

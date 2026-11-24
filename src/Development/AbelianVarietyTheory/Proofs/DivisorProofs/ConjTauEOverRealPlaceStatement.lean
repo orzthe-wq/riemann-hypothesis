@@ -55,4 +55,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 theorem _root_.GlobalTheory.T.exists_conj_tauE_comp_algebraMap_eq_embedding : ∀ {D : D7} (w : InfinitePlace D.host.F), ∃ τ : D.what₂.Tau,
     ((starRingEnd ℂ).comp (tauE D τ)).comp (algebraMap D.host.F D.host.E) = w.embedding := by
-  first | exact @GlobalTheory.ConjTypeOverReal.conj_tauE_over_realPlace | exact GlobalTheory.ConjTypeOverReal.conj_tauE_over_realPlace | (intros; apply GlobalTheory.ConjTypeOverReal.conj_tauE_over_realPlace <;> assumption)
+  first | exact @GlobalTheory.ConjTypeOverReal.conj_tauE_over_realPlace

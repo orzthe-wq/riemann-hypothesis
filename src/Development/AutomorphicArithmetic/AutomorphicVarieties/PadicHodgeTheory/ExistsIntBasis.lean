@@ -319,7 +319,7 @@ private noncomputable def extRep (c : G → V) (hc : ∀ g h, c (g * h) = c g + 
     simp [this]
   map_mul' g h := by
     refine LinearMap.ext fun p => ?_
-    simp [hc, add_assoc, add_comm, add_left_comm]
+    simp [hc, add_comm, add_left_comm]
 
 private theorem extRep_apply (c : G → V) (hc : ∀ g h, c (g * h) = c g + ρ g (c h)) (g : G) (p : V × ℚ_[l]) :
     extRep ρ c hc g p = (ρ g p.1 + p.2 • c g, p.2) := rfl

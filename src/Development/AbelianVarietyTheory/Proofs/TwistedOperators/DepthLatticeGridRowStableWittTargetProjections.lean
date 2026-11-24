@@ -130,24 +130,18 @@ namespace GlobalTheory.AscFin.ProjTgt
 
 variable {D : D7}
 
-theorem cT_eq_cT {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) :
-    Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) M = Mᴴ := Matrix.ext fun _ _ => rfl
-
-theorem gram_herm (V : HSp D) : V.gramᴴ = V.gram :=
-  Matrix.ext fun i j => V.herm.eq (V.frame j) (V.frame i)
-
 section SlopeTestRemainingChoices
 
 variable {A B B₀ : HSp D} {c ρ : ℕ} {ε : D.host.E}
 
 theorem orthogonalExtension_conjTranspose_mul_gram_mul_eq_one (a : HermitianOrthogonalExtensionData A B c ε) : a.aᴴ * B.gram * a.a = antiDiagonalSignGramMatrix c ε := by
-  rw [← cT_eq_cT]; exact a.gram
+  rw [← _root_.GlobalTheory.MixModel.cT_sig]; exact a.gram
 
 theorem besselDatum_auxiliaryVector_orthogonal_image (a : HermitianOrthogonalExtensionData A B c ε) : a.aᴴ * B.gram * frameMat B A a.ι = 0 := by
   have h := a.perp
-  rw [cT_eq_cT] at h
+  rw [_root_.GlobalTheory.MixModel.cT_sig] at h
   have h2 := congrArg Matrix.conjTranspose h
-  simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, gram_herm, Matrix.conjTranspose_zero] at h2
+  simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, _root_.GlobalTheory.MixModel.gram_conjTranspose, Matrix.conjTranspose_zero] at h2
   rw [Matrix.mul_assoc]; exact h2
 
 theorem colsOf_cT_mul {n k m : ℕ} (a : Matrix (Fin n) (Fin c) D.host.E) (f : Fin k → Fin c) (s : Fin k → D.host.E)
@@ -155,7 +149,6 @@ theorem colsOf_cT_mul {n k m : ℕ} (a : Matrix (Fin n) (Fin c) D.host.E) (f : F
     (colsOf a f s)ᴴ * N = Matrix.of fun p j => star (s p) * (aᴴ * N) (f p) j := by
   ext p j
   simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, colsOf, Matrix.of_apply, star_mul', Finset.mul_sum, mul_assoc]
-  try rfl
 
 theorem colsOf_mulVec {n k : ℕ} (a : Matrix (Fin n) (Fin c) D.host.E) (f : Fin k → Fin c) (s : Fin k → D.host.E)
     (w : Fin k → D.host.E) : colsOf a f s *ᵥ w = fun i => ∑ p, a i (f p) * (s p * w p) := by
@@ -172,7 +165,7 @@ theorem sum_mem_sumLat {n k l : ℕ} (M : Matrix (Fin n) (Fin l) D.host.E) (Λ :
     · exact hu q
     · exact (𝔟 q).val.zero_mem
   · funext i
-    simp only [Matrix.mulVec_zero, Pi.zero_apply, zero_add, Matrix.mulVec, dotProduct, Finset.mul_sum]
+    simp only [Matrix.mulVec_zero, zero_add, Matrix.mulVec, dotProduct, Finset.mul_sum]
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun p _ => ?_
     simp only [mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]

@@ -174,7 +174,6 @@ private def tens (A B : LineBundle S x) : LineBundle S x :=
     mem_iff := fun I J h y =>
       ⟨tens_mem A B I J h y, fun ⟨a, ha, hay⟩ => mem_of_unit h a ha hay⟩
     fg := fun I => by
-      change ((A.toSubSystem.twist B.toSubSystem).sub I).FG
       rw [twist_sub_eq_mul]
       exact (A.fg I).mul (B.fg I)
     invertible := fun I => by

@@ -306,7 +306,7 @@ theorem repVV_zero_coord [FiniteDimensional Qp LL] (W : LocWach PD LL O v n)
     rw [hHφX]
     refine Matrix.ext fun k m => ?_
     simp only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]
-    split_ifs <;> simp only [map_add (f := _), map_mul, map_one, map_zero, mul_one, mul_zero] <;> rfl
+    split_ifs <;> simp only [map_add (f := _), map_mul, map_zero, mul_one, mul_zero] <;> rfl
   have hcond : ∀ m, Matrix.vecMul vv (cc • (1 : Matrix (Fin d) (Fin d) W.AΔ) + tt • ZZ) m ∈ JJ := by
     intro m
     refine Ideal.mem_span_singleton'.2 ⟨⟨_, hγα'Δ m⟩, Subtype.ext ?_⟩

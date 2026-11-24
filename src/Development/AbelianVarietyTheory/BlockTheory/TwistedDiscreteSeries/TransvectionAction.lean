@@ -36,22 +36,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-
-namespace I195MixedCoordinates_7862ec877d0c1b045a76795f
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-end I195MixedCoordinates_7862ec877d0c1b045a76795f
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -96,7 +81,7 @@ def TransvTrivial (D : D7) : Prop :=
     ∀ u : GA D S, IsTransv S (vecX d (ratVec a)) v u →
     ∀ x : Mx D T.rank ρ, x *ᵥ ratVec a = 0 →
     ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f →
-      (_root_.I195MixedCoordinates_7862ec877d0c1b045a76795f.source d) T ψ μ 𝓕 (om (u, 1) f) x = (_root_.I195MixedCoordinates_7862ec877d0c1b045a76795f.source d) T ψ μ 𝓕 f x
+      (_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 (om (u, 1) f) x = (_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 f x
 
 def TransvLemma (D : D7) : Prop := TransvUnitary D ∧ TransvConj D ∧ TransvTrivial D
 

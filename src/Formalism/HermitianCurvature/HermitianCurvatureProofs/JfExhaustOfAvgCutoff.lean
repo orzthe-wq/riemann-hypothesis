@@ -73,19 +73,11 @@ def AdjLeibniz : Prop :=
 
 variable {k r : ℕ}
 
-theorem ckOn_sub {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ∞} {U V : Set (Mat k r)}
-    (hUV : U ⊆ V) {f : Mat k r → E} (h : CkOn m V f) : CkOn m U f := by
-  exact fun g₀ hg => h g₀ (hUV hg)
-
 theorem om_sub_gv (z z' : Fin (2 * r + k + 1) → ℂ) : Om k r z z' ⊆ GV k r := by
   exact Set.inter_subset_left
 
 end Formalism.FourierDecayAlt.P.JFxI
 
 namespace Formalism.FourierDecayAlt.P
-
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
-
-attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 end Formalism.FourierDecayAlt.P

@@ -181,16 +181,15 @@ theorem rhoH_mul (B : FB R d O) (a b : O) : rhoH B (a * b) = rhoH B a * rhoH B b
   rintro ⟨u, v⟩
   refine Prod.ext ?_ ?_
   · simp [rhoH, rho_mul, Matrix.mulVec_mulVec]
-  · simp [rhoH, rho_mul, star_mul, bil_ad_mul, Matrix.transpose_mul, Matrix.add_mulVec,
-      Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.transpose_add]
+  · simp [rhoH, rho_mul, star_mul, bil_ad_mul, Matrix.transpose_mul, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.transpose_add]
     abel
 
 theorem rhoH_add (B : FB R d O) (a b : O) : rhoH B (a + b) = rhoH B a + rhoH B b := by
   apply LinearMap.ext
   rintro ⟨u, v⟩
   refine Prod.ext ?_ ?_
-  · simp [rhoH, rho_add, Matrix.add_mulVec]
-  · simp [rhoH, rho_add, star_add, bil_ad_add, Matrix.transpose_add, Matrix.add_mulVec]
+  · simp [rhoH, rho_add]
+  · simp [rhoH, rho_add, star_add, bil_ad_add, Matrix.transpose_add]
     abel
 
 theorem dot_mv (M : Matrix (Fin d) (Fin d) R) (u v : Fin d → R) : M.mulVec u ⬝ᵥ v = u ⬝ᵥ M.transpose.mulVec v := by
@@ -203,7 +202,7 @@ theorem pairH_adj (B : FB R d O) (a : O) (y y' : (Fin d → R) × (Fin d → R))
   have k := congrArg (fun M => u ⬝ᵥ M.mulVec u') (bil_ad_sy B a)
   simp only [Matrix.add_mulVec, dotProduct_add] at k
   rw [dotProduct_comm u ((bil (B.ad (star a)) 1 1).transpose.mulVec u')] at k
-  simp [pairH, rhoH, star_star, Matrix.sub_mulVec, Matrix.mulVec_sub]
+  simp [pairH, rhoH, star_star]
   rw [dotProduct_comm v', dotProduct_comm ((rho B a).transpose.mulVec v') u,
     dot_mv (rho B (star a)).transpose, dot_mv (bil (B.ad a) 1 1).transpose,
     dot_mv (rho B a) u ((bil B.sy 1 1).mulVec u'), Matrix.mulVec_mulVec,
@@ -279,7 +278,7 @@ theorem iso_rho : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] 
     · rintro ⟨u, v⟩
       simp [transH, Matrix.mulVec_mulVec, Matrix.mulVec_add, i2, ← Matrix.mul_assoc, t2]
     · rintro ⟨u, v⟩
-      simp [transH, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mulVec_add, i1, t1]
+      simp [transH, Matrix.mulVec_sub, Matrix.mulVec_mulVec, i1, t1]
   · intro a
     have k1 : lin ψ 1 * rho B (star a) = rho B₂ (star a) * lin ψ 1 := by
       calc lin ψ 1 * rho B (star a) = lin ψ 1 * rho B (star a) * (lin φ 1 * lin ψ 1) := by
@@ -310,14 +309,14 @@ theorem iso_rho : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] 
     · simp [rhoH, transH, Matrix.mulVec_mulVec, c a]
     · simp [rhoH, transH, Matrix.mulVec_mulVec, Matrix.mulVec_add, Matrix.mulVec_sub]
       rw [m1, m2]
-      simp [Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.mul_assoc]
+      simp [Matrix.add_mulVec, Matrix.sub_mulVec]
       abel
   · rintro ⟨u, v⟩ ⟨u', v'⟩
     have k := congrArg (fun M => u ⬝ᵥ M.mulVec u') (bil_sy_add_bil_eq_of_isIso h)
     simp only [Matrix.add_mulVec, dotProduct_add, Matrix.mul_assoc] at k
     rw [dotProduct_comm u ((bil lam 1 1).transpose.mulVec u'), dot_mv (bil lam 1 1).transpose u' u,
       Matrix.transpose_transpose] at k
-    simp [pairH, transH, Matrix.mulVec_add]
+    simp [pairH, transH]
     rw [dot_mv (lin ψ 1).transpose v', dot_mv ((lin ψ 1).transpose * (bil lam 1 1).transpose) u',
       dot_mv (lin ψ 1).transpose v, dot_mv ((lin ψ 1).transpose * (bil lam 1 1).transpose) u,
       dot_mv (lin φ 1) u]

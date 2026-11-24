@@ -150,7 +150,7 @@ theorem commute_cap_rt_infGL (τ : InfinitePlace E) (u : ℂ) (y : GL (Fin a) (R
   let c : Rinf E →+* ℂ := Complex.ofRealHom.comp (Pi.evalRingHom (fun _ => ℝ) τ)
   have hQP : ((y⁻¹).val.map c) * (y.val.map c) = 1 := by
     rw [← Matrix.map_mul, Units.inv_mul]; simp
-  have h2 := GlobalTheory.CapAdInv.qdet_ad _ (glRel_Eop τ) _ _ hQP (u + ((a : ℂ) - 1) / 2)
+  have h2 := _root_.GlobalTheory.QuantumMinorAdjacentSwap.qdet_conj _ (glRel_Eop τ) _ _ hQP (u + ((a : ℂ) - 1) / 2)
   exact (h.trans (congrArg (· * rt E a (infGL E a y)) h2)).symm
 
 theorem commute_cap_act (τ : InfinitePlace E) (u : ℂ) (o : Op E a) : Commute (cap (a := a) τ u) (act o) := by

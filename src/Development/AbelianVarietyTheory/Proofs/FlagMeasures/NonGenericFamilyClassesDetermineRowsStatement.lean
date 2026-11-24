@@ -47,4 +47,4 @@ open scoped Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.nonGeneric_family_classes_determine_rows : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ConcTie X Y → (∀ t ∈ (Y.tO u u').ngSet, t.G ≠ 0) ∧ (∀ t ∈ (Y.tO u u').ngSet, ∀ t' ∈ (Y.tO u u').ngSet, clsOf Y u u' t = clsOf Y u u' t' → (Y.tO u u').rowOf t = (Y.tO u u').rowOf t') ∧ ∀ t : TauC Y u u', (Y.tO u u').vec t ≠ 0 → t.relevant := by
-  first | exact @GlobalTheory.NGClass.ngClass_rows | exact GlobalTheory.NGClass.ngClass_rows | (intros; apply GlobalTheory.NGClass.ngClass_rows <;> assumption)
+  first | exact @GlobalTheory.NGClass.ngClass_rows

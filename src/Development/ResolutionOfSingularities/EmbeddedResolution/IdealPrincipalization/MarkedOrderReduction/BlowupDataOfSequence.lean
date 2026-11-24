@@ -52,12 +52,6 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
-theorem toMarkedSequence_projectionToBase {k : Type u} [Field k] {X : Scheme.{u}}
-    {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
-    {E : List X.IdealSheafData} (s : MarkedBlowupSequenceData p I m E) (i : ℕ) :
-    s.toMarkedSequenceOfBlowups.toSequenceOfBlowups.projectionToBase i = s.proj i :=
-  (s.projectionToBase_eq_toSequenceOfBlowups i).symm
-
 theorem isPullbackBlowupSequence_congr (F : PrincipalizationAssignment.{u})
     {k₁ k₂ : Type u} [Field k₁] [Field k₂] {B Q : Scheme.{u}}
     (pB : B ⟶ Spec (CommRingCat.of k₁)) (IB : B.IdealSheafData) (mB : ℕ)

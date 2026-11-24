@@ -194,14 +194,14 @@ private theorem exists_single_of_degree_eq_one {σ : Type} (d : σ →₀ ℕ) (
   · have hdi : d i = 0 := by
       by_contra hc
       exact hc (Finset.sum_eq_zero_iff.mp hrest i (Finset.mem_erase.mpr ⟨hi, Finsupp.mem_support_iff.mpr hc⟩))
-    simp [Finsupp.single_apply, Ne.symm hi, hdi]
+    simp [Ne.symm hi, hdi]
 
 private theorem cs_lin [Fintype σ] (g : MvPowerSeries σ O) (h0 : constantCoeff g = 0) :
     ((2 : ℕ) : ℕ∞) ≤ (g - ∑ s, coeff (Finsupp.single s 1) g • X s).order := by
   classical
   refine MvPowerSeries.nat_le_order (fun d hd => ?_)
 
-  simp only [map_sub, map_sum, coeff_smul, coeff_X, smul_eq_mul, mul_ite, mul_one, mul_zero]
+  simp only [map_sub, map_sum, coeff_smul, coeff_X, mul_ite, mul_one, mul_zero]
   rcases (Nat.lt_succ_iff.mp hd).lt_or_eq with hlt | h1
   · have hd0 : d = 0 := (Finsupp.degree_eq_zero_iff d).mp (by omega)
     subst hd0

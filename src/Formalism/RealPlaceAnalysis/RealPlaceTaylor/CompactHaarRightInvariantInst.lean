@@ -186,8 +186,6 @@ theorem compact_haar_holds : KHaar := by
 
 theorem compact_integration_by_parts : KByParts := by
   intro n ε E _ _ _ F D Z hZ hF hD hder
-  haveI : IsMulRightInvariant (muK ε) := ⟨fun g => compact_haar_right_invariant n ε g⟩
-  haveI : IsProbabilityMeasure (muK ε) := compact_haar_probability n ε
   haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) :=
     inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))
   haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ)ᵐᵒᵖ :=
@@ -203,10 +201,10 @@ theorem compact_integration_by_parts : KByParts := by
   have hhom : ∀ s t : ℝ, expK ε Z (s + t) = expK ε Z s * expK ε Z t := by
     intro s t
     apply Subtype.ext
-    rw [Subgroup.coe_mul, hk, hk, hk, hadd]
+    simpa [Subgroup.coe_mul, hk] using hadd s t
   have hzero : expK ε Z 0 = 1 := by
     apply Subtype.ext
-    exact (hk 0).trans h0
+    simpa [hk] using h0
   have hderiv : ∀ (k : KG ε) (t : ℝ),
       HasDerivAt (fun s => F (k * expK ε Z s)) (D (k * expK ε Z t)) t := by
     intro k t

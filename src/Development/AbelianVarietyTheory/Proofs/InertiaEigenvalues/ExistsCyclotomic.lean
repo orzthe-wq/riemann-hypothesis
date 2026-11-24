@@ -1,8 +1,11 @@
 module
 
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemOfAssembleMem
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
 public import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsPrimitiveRootSubIsUnitOfDvdSubOne
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.Algebra.Polynomial.Derivative
+public import Mathlib.FieldTheory.Finite.Basic
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemOfAssembleMem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -14,19 +17,17 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -34,7 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,11 +47,93 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PowerSeries.Basic
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsPrimitiveRootSubIsUnitOfDvdSubOne, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCyclotomic
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsPrimitiveRootSubIsUnitOfDvdSubOne =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsPrimitiveRootSubIsUnitOfDvdSubOne", "h": "module\n\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\npublic import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Polynomial.Derivative\npublic import Mathlib.FieldTheory.Finite.Basic\nimport Mathlib.RingTheory.PowerSeries.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open PowerSeries
+
+namespace GlobalTheory
+
+
+open IsLocalRing Polynomial in
+theorem exists_isPrimitiveRoot_sub_isUnit_of_dvd_sub_one {l : ℕ} {O : Type} [CommRing O]
+    [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
+    (hl : l.Prime) (hu : ¬ IsUnit (l : O)) (e : ℕ) (he : e ∣ l - 1) :
+    ∃ ω : O, IsPrimitiveRoot ω e ∧
+      ∀ i j : ℕ, i < e → j < e → i ≠ j → IsUnit (ω ^ i - ω ^ j) := by
+  classical
+  have : Fact l.Prime := ⟨hl⟩
+  have hl1 : l - 1 ≠ 0 := by have := hl.two_le; omega
+  have he0 : e ≠ 0 := by rintro rfl; exact hl1 (zero_dvd_iff.1 he)
+  have hel : e < l := by have := Nat.le_of_dvd (Nat.pos_of_ne_zero hl1) he; omega
+
+  have hlk : ((l : ℕ) : ResidueField O) = 0 := by
+    have h : residue O (l : O) = 0 := (residue_eq_zero_iff _).2 ((mem_maximalIdeal _).2 hu)
+    simpa using h
+  have : CharP (ResidueField O) l := (CharP.charP_iff_prime_eq_zero hl).2 hlk
+
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod l)ˣ)
+  have hg' : IsPrimitiveRoot g (l - 1) := by
+    have h := IsPrimitiveRoot.orderOf g
+    rwa [orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, ZMod.card_units] at h
+  have hd : (l - 1) / e ≠ 0 :=
+    (Nat.div_pos (Nat.le_of_dvd (Nat.pos_of_ne_zero hl1) he) (Nat.pos_of_ne_zero he0)).ne'
+  have hζ : IsPrimitiveRoot ((g ^ ((l - 1) / e) : (ZMod l)ˣ) : ZMod l) e := by
+    have h := hg'.pow_of_dvd hd (Nat.div_dvd_of_dvd he)
+    rw [Nat.div_div_self he hl1] at h
+    exact IsPrimitiveRoot.coe_units_iff.2 h
+  have hζk := hζ.map_of_injective (f := ZMod.castHom (dvd_refl l) (ResidueField O))
+    (RingHom.injective _)
+  obtain ⟨ω₀, hω₀⟩ := residue_surjective
+    (ZMod.castHom (dvd_refl l) (ResidueField O) ((g ^ ((l - 1) / e) : (ZMod l)ˣ) : ZMod l))
+  rw [← hω₀] at hζk
+
+  have heu : IsUnit (e : O) := by
+    rw [← residue_ne_zero_iff_isUnit, map_natCast]
+    intro h
+    have := Nat.le_of_dvd (Nat.pos_of_ne_zero he0) ((CharP.cast_eq_zero_iff _ l e).1 h)
+    omega
+  have hω₀u : IsUnit ω₀ := (residue_ne_zero_iff_isUnit _).1 (hζk.ne_zero he0)
+  obtain ⟨ω, hroot, hsub⟩ := HenselianRing.is_henselian (I := maximalIdeal O)
+    (Polynomial.X ^ e - Polynomial.C 1 : O[X]) (monic_X_pow_sub_C 1 he0) ω₀
+    (by
+      rw [← residue_eq_zero_iff]
+      simp [hζk.pow_eq_one])
+    (by
+      have h : IsUnit ((e : O) * ω₀ ^ (e - 1)) := heu.mul (hω₀u.pow _)
+      simpa [Polynomial.derivative_X_pow] using h.map (Ideal.Quotient.mk (maximalIdeal O)))
+  have hres : residue O ω = residue O ω₀ := by
+    rw [← sub_eq_zero, ← map_sub, residue_eq_zero_iff]; exact hsub
+  have hωe : ω ^ e = 1 := by
+    have h := hroot.eq_zero
+    simpa [sub_eq_zero] using h
+  refine ⟨ω, ⟨hωe, fun k hk => hζk.dvd_of_pow_eq_one k ?_⟩, fun i j hi hj hij => ?_⟩
+  · rw [← hres, ← map_pow, hk, map_one]
+  · rw [← residue_ne_zero_iff_isUnit, map_sub, map_pow, map_pow, hres, sub_ne_zero]
+    exact fun h => hij (hζk.pow_inj hi hj h)
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsPrimitiveRootSubIsUnitOfDvdSubOne =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCyclotomic =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCyclotomic", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemOfAssembleMem\npublic import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsIsPrimitiveRootSubIsUnitOfDvdSubOne\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -97,7 +179,7 @@ theorem mem_range_of_step (σ : k⟦X⟧ →ₐ[k] k⟦X⟧) (h : X ∣ σ X) (S
     ext n
     cases n with
     | zero => simp [A]
-    | succ n => simp [A, coeff_succ_X_mul, coeff_C]
+    | succ n => simp [A, coeff_succ_X_mul]
   have key : ∀ (N : ℕ) (b : {b // S b}), X ^ N ∣ σ (A b) - b.1 := by
     intro N
     induction N with
@@ -458,3 +540,7 @@ theorem exists_cyclotomic : ∀ (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [C
     simp only [one_mul]
 
 end GlobalTheory.CycRing
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsCyclotomic =====

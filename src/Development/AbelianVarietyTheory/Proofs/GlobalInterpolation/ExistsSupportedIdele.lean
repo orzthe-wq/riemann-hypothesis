@@ -107,7 +107,7 @@ theorem one_sub_eps (v : HeightOneSpectrum (𝓞 F)) :
     ∃ a ∈ v.asIdeal ^ 2, ∃ r ∈ v.asIdeal ^ 2, ∃ x ∈ intAd F,
       1 - afsplitI v 1 = (a : F) • x + (r : F) • (1 - afsplitI v 1) := by
   obtain ⟨a, ha, ha0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (pow_ne_zero 2 v.ne_bot)
-  haveI := v.isMaximal
+  have := v.isMaximal
   obtain ⟨Q, hQ, hI⟩ := Ideal.eq_prime_pow_mul_coprime (I := Ideal.span {a}) (by simpa using ha0) v.asIdeal
   have hc : IsCoprime (v.asIdeal ^ 2) Q := (Ideal.isCoprime_iff_sup_eq.2 hQ).pow_left
   obtain ⟨r, hr, q, hq, hrq⟩ := Ideal.isCoprime_iff_exists.1 hc
@@ -179,7 +179,7 @@ theorem exists_supported_idele (F E : Type) [Field F] [NumberField F] [Field E] 
     ∃ (y : (AfE F E)ˣ) (y₀ : RInt F E), (y₀ : AfE F E) = (y : AfE F E) ∧ y ∈ suppAt E v ∧
       y₀ - toRInt F E b ∈ (P.asIdeal ^ 2).map (toRInt F E) ∧
       ∀ P' : HeightOneSpectrum (𝓞 E), P' ≠ P → y₀ - 1 ∈ P'.asIdeal.map (toRInt F E) := by
-  haveI := P.isMaximal
+  have := P.isMaximal
   have hv0 : v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) ≠ ⊥ := by
     rw [Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]
     exact v.ne_bot
@@ -230,7 +230,7 @@ theorem exists_supported_idele (F E : Type) [Field F] [NumberField F] [Field E] 
     · rw [hI] at hle
       have hQP : Q ≤ P'.asIdeal := by
         rcases P'.isPrime.mul_le.1 hle with h | h
-        · haveI := P'.isPrime
+        · have := P'.isPrime
           exact absurd (HeightOneSpectrum.ext (P.isMaximal.eq_of_le P'.isPrime.ne_top
             (Ideal.IsPrime.le_of_pow_le h))).symm hP'
         · exact h
@@ -240,7 +240,7 @@ theorem exists_supported_idele (F E : Type) [Field F] [NumberField F] [Field E] 
     · have hc : ∃ c : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) c ∈ P'.asIdeal ∧ c ∉ v.asIdeal := by
         by_contra H
         push Not at H
-        haveI := P'.isMaximal
+        have := P'.isMaximal
         have hm : (P'.asIdeal.under (𝓞 F)).IsMaximal := inferInstance
         apply hle
         rw [← hm.eq_of_le v.isPrime.ne_top (fun c hc => H c hc)]

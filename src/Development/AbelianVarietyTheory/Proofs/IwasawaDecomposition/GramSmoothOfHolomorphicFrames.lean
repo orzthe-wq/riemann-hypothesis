@@ -41,6 +41,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.Hol
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LinearIndependentVecC
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsDerivAt0OfCart
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.ExpRowsPf
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

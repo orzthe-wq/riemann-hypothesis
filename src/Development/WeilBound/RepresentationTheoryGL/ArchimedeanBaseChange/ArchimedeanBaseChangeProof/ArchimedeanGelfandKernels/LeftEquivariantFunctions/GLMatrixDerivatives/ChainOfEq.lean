@@ -108,7 +108,7 @@ theorem om_equiv (A : V ≃L[ℂ] V) (f : Mat n → V) : Om (fun x => A (f x)) =
   unfold Om
   rw [gel_equiv, gel_equiv]
   funext x
-  simp [map_add (f := _), map_nsmul]
+  simp [map_add (f := _)]
 
 theorem zop_equiv (A : V ≃L[ℂ] V) : ∀ (w : List (Bool × ℕ)) (f : Mat n → V),
     zOp w (fun x => A (f x)) = fun x => A (zOp w f x) := by

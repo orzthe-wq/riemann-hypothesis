@@ -6,7 +6,6 @@ public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCoh
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GlobalSerreRelations.Transport
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GrCechFin
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.LocVan
-public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SplittingFieldLattices.Kh3
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.SplittingFieldLattices.SplitField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -57,21 +56,16 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 
 namespace CrystallineSemistableComparison.Pb
 
-theorem bcOn_true : BcOn True := bc_loc @loc_bc @poly_tf
+theorem bcOn_true : BcOn True := _root_.GlobalTheory.CompanionTheory.BcLoc.bc_single @loc_bc @_root_.CrystallineSemistableComparison.Pb.Site.poly_tf'
 
-theorem bcOn_false : BcOn False := bc_glob @glob_bc_st bcOn_true
+theorem bcOn_false : BcOn False := _root_.GlobalTheory.CompanionTheory.GlobBc.main @glob_bc_st bcOn_true
 
-theorem kh1 : KH.LocGr := @loc_gr
+theorem finO' : True ∧ FinO := ⟨trivial, _root_.GlobalTheory.CompanionTheory.FinOverO.finO _root_.CrystallineSemistableComparison.Pb.locGr_h @_root_.CrystallineSemistableComparison.Pb.Site.poly_tf' _root_.CrystallineSemistableComparison.Pb.globSerreSt_h @_root_.CrystallineSemistableComparison.Pb.gr_cech_fin_pf⟩
 
-theorem kh2 : KH.GlobSerreSt := @glob_serre_st
+theorem afgA : AfgA := _root_.GlobalTheory.CompanionTheory.LatticeFinite.afgA_of_bcOn_finO bcOn_false finO'.2
 
+theorem liftA : LiftA := _root_.GlobalTheory.CompanionTheory.LiftLat.liftA_of_afgA afgA
 
-theorem finO' : True ∧ FinO := ⟨trivial, fin_o kh1 @poly_tf kh2 kh3.2⟩
-
-theorem afgA : AfgA := afg_a bcOn_false finO'.2
-
-theorem liftA : LiftA := lift_a afgA
-
-theorem basisB : BasisB := basis_b bcOn_false @k_iso
+theorem basisB : BasisB := _root_.GlobalTheory.CompanionTheory.BasisBase.main bcOn_false @k_iso
 
 end CrystallineSemistableComparison.Pb

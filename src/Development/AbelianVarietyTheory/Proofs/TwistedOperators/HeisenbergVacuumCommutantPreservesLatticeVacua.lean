@@ -60,8 +60,7 @@ theorem symplOH_swap {S T : HSp D} (x y : WO S T) : symplOH S T y x = -symplOH S
   rw [symplOH_add_left, symplOH_add_right, symplOH_add_right, symplOH_self, symplOH_self] at h
   linear_combination h
 
-theorem symplO_swap {S T : HSp D} (x y : WO S T) : symplO S T y x = -symplO S T x y := by
-  rw [GlobalTheory.ThetaSquare.symplO_eq, GlobalTheory.ThetaSquare.symplO_eq, symplOH_swap]; ring
+alias symplO_swap := _root_.GlobalTheory.OrientedHeis.symplO_skew
 
 theorem psi_symplO_swap (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (x y : WO S T) :
     ψ (symplO S T y x) = 1 ↔ ψ (symplO S T x y) = 1 := by

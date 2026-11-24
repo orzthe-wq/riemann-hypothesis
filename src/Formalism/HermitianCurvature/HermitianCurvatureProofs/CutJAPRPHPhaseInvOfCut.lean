@@ -262,7 +262,7 @@ theorem phase_invariance_of_truncation : PhaseInvOfCut := by
     simp
   have hKπ : (d.κ (Pi.single π 1)).1 Φ = Φ := by
     apply Subtype.ext
-    refine Formalism.FourierDecayAlt.P.radical_reduction_injective Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _
+    refine _root_.Formalism.FourierDecayAlt.P.NFRadRedA.radRedInj Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _
       ((d.κ (Pi.single π 1)).1 Φ).2 _ Φ.2 (funext fun q => ?_)
     by_cases hq : q ∈ NF.QR P.k P.r Bs.z Bs.z'
     · simp only [NF.radR, Set.indicator_of_mem hq]
@@ -273,7 +273,7 @@ theorem phase_invariance_of_truncation : PhaseInvOfCut := by
     · simp only [NF.radR, Set.indicator_of_notMem hq]
   have hΦθ : Rθ Φ = aπ • Φ := by
     apply Subtype.ext
-    refine Formalism.FourierDecayAlt.P.radical_reduction_injective Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _
+    refine _root_.Formalism.FourierDecayAlt.P.NFRadRedA.radRedInj Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _
       (Rθ Φ).2 _ (aπ • Φ).2 (funext fun q => ?_)
     by_cases hq : q ∈ NF.QR P.k P.r Bs.z Bs.z'
     · simp only [NF.radR, Set.indicator_of_mem hq]

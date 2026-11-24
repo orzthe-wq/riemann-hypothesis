@@ -182,7 +182,7 @@ theorem pairingO_inj {G : PDivGroup p O} (hG : Function.Surjective (G.pairing O)
   have h2 : ∀ w : Fin h → O, IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO hε e w χ = w i := by
     intro w
     simp only [IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO, h1, LinearEquiv.apply_symm_apply]
-    rw [Finset.sum_eq_single i] <;> simp +contextual [Pi.single_apply, eq_comm]
+    rw [Finset.sum_eq_single i] <;> simp +contextual [eq_comm]
   rw [← h2 y, ← h2 z, H]
 
 variable {u₁ u₂ : Oˣ} {G : PDivGroup p O} {h : ℕ} {D : Datum ε h ℤ_[p]} {e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p])}

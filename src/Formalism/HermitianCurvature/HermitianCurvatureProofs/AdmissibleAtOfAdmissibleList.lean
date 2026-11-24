@@ -454,5 +454,3 @@ theorem newLetters1 : NewLetters1 := by
 
 end Formalism.FourierDecayAlt.P.PBD
 
-theorem Formalism.FourierDecayAlt.P.new_letters_admissible : Formalism.FourierDecayAlt.P.PBD.NewLetters := Formalism.FourierDecayAlt.P.PBD.newLetters
-theorem Formalism.FourierDecayAlt.P.new_letters_admissible_level_one : Formalism.FourierDecayAlt.P.PBD.NewLetters1 := Formalism.FourierDecayAlt.P.PBD.newLetters1

@@ -64,7 +64,7 @@ theorem detChar_map (i : k ≃+* k') (χ : kˣ →* ℂˣ) (g : GL (Fin 1) k') :
   simp only [detChar_apply, MonoidHom.comp_apply]
   congr 1
   ext
-  simp [RingHom.map_det]
+  simp
 
 theorem trGL_ofChar (i : k ≃+* k') (hi' : Continuous i.symm) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ)
     (h' : IsSmoothChar (χ.comp (Units.map i.symm.toRingHom.toMonoidHom))) :

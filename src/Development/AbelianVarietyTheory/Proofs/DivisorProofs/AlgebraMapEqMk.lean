@@ -105,7 +105,7 @@ def scalePoly (t : B) : MvPolynomial L B →ₐ[B] MvPolynomial L B := aeval fun
 theorem scalePoly_X (t : B) (ℓ : L) : scalePoly t (X ℓ) = C t * X ℓ := by simp [scalePoly]
 
 theorem scalePoly_C (t c : B) : scalePoly (L := L) t (C c) = C c := by
-  simp [scalePoly, aeval_C, MvPolynomial.algebraMap_eq]
+  simp [scalePoly, MvPolynomial.algebraMap_eq]
 
 theorem le_comap_scale (t : B) (ht : t ^ q = 1) : ideal φ ≤ (ideal φ).comap (scalePoly t) := by
   rw [ideal, Ideal.span_le]

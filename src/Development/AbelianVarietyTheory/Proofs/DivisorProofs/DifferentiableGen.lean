@@ -75,7 +75,7 @@ theorem const_of_periodic {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hp : (τ.
   have e : v = ∑ i, x i • P (Pi.single i 1, 0) + ∑ i, y i • P (0, Pi.single i 1) := by
     have c0 : cv (0 : Fin g → ℤ) = 0 := by ext i; simp [cv]
     have c1 : ∀ i : Fin g, cv (Pi.single i 1 : Fin g → ℤ) = Pi.single i 1 := fun i => by
-      ext k; by_cases h : k = i <;> simp [cv, h, Pi.single_apply]
+      ext k; by_cases h : k = i <;> simp [cv, h]
     ext k
     have hk := congrFun hy k
     simp only [Matrix.mulVec, dotProduct, Matrix.map_apply] at hk

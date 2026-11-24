@@ -4,48 +4,6 @@ public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters
 public import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.QuasiPeriodConstUnique
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.MatrixFormFourfoldBlock
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.Th0CharMulOpUTh0HalfPeriodEq
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -138,7 +96,7 @@ private theorem exists_sign_EE_lattice_eq_det : ∃ s : ℤ, (s = 1 ∨ s = -1) 
     unfold Formalism.L2.Th1.F.area
     rw [ht, show (conj L.ω₁ * L.ω₂).im = -(L.ω₁ * conj L.ω₂).im by
       simp only [Complex.mul_im, Complex.conj_re, Complex.conj_im]; ring, abs_neg]
-  have hpos : 0 < |t| := hA ▸ Formalism.L2.Th1.F.areaPos L
+  have hpos : 0 < |t| := hA ▸ _root_.Formalism.L2.Th1.F.areaPos_thm L
   have hIm : ∀ a b c e : ℤ, (((a : ℂ) * L.ω₁ + (b : ℂ) * L.ω₂) *
       conj ((c : ℂ) * L.ω₁ + (e : ℂ) * L.ω₂)).im = ((a : ℝ) * e - b * c) * t := by
     intro a b c e
@@ -168,13 +126,6 @@ private theorem exists_int_EE_eq_of_mem_lattice (x : ℂ) (hx : x ∈ L.lattice)
   obtain ⟨a, b, rfl⟩ := coord_lemma L x hx
   obtain ⟨c, e, rfl⟩ := coord_lemma L y hy
   exact ⟨_, hs a b c e⟩
-
-private theorem exp_pi_I_intCast_eq_neg_one_pow (m : ℤ) :
-    Complex.exp ((Real.pi : ℂ) * Complex.I * (((m : ℝ)) : ℂ)) = (-1 : ℂ) ^ m := by
-  have h : (Real.pi : ℂ) * Complex.I * (((m : ℝ)) : ℂ) = (m : ℂ) * ((Real.pi : ℂ) * Complex.I) := by
-    push_cast
-    ring
-  rw [h, Complex.exp_int_mul, Complex.exp_pi_mul_I]
 
 private theorem cmTheta_one_eq :
     cmTheta 1 d = ((1 / 2 : ℝ) : ℂ) + ((Real.sqrt d / 2 : ℝ) : ℂ) * Complex.I := by
@@ -236,7 +187,7 @@ theorem semi :
   refine ⟨hint, fun x hx => ?_, fun x hx y hy => ?_⟩
   · obtain ⟨m, hm⟩ := hint x hx
     unfold aa
-    rw [hm, exp_pi_I_intCast_eq_neg_one_pow]
+    rw [hm, _root_.Formalism.L2.Th1.H.exp_pi_int]
     rcases Int.even_or_odd m with he | ho
     · exact Or.inl he.neg_one_zpow
     · exact Or.inr ho.neg_one_zpow

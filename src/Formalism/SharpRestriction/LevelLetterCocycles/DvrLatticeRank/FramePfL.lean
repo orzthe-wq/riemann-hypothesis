@@ -148,7 +148,7 @@ theorem framepf_coordL_ker (x : ↥(NcS W T (c - 1))) :
       refine ⟨hdN, fun δ hδ => ?_, ?_⟩
       · rw [← sub_eq_zero]
         apply gradNPf_tf W T π' hu
-        rw [smul_sub, ← hΔπ δ hδ, ← gradNPf_γD_smul, hΔπ δ hδ, hd, hxc.2.1 δ hδ, sub_self]
+        rw [smul_sub, ← hΔπ δ hδ, ← _root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hΔπ δ hδ, hd, hxc.2.1 δ hδ, sub_self]
       · rw [← sub_eq_zero]
         apply gradNPf_tf W T π' hu
         rw [smul_sub, smul_smul, mul_comm, ← smul_smul, hd, hxc.2.2, sub_self]

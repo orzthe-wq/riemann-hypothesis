@@ -1,6 +1,7 @@
 module
 
 public import Mathlib.NumberTheory.LocalField.Basic
+public import Mathlib.NumberTheory.Padics.LocalField
 public import Mathlib.NumberTheory.Padics.ValuativeRel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -73,19 +74,6 @@ theorem mulValuation_le_iff_norm_le (x y : ℚ_[p]) :
   rw [Padic.norm_eq_zpow_neg_valuation hx, Padic.norm_eq_zpow_neg_valuation hy,
     zpow_le_zpow_iff_right₀ (by exact_mod_cast hp.out.one_lt)]
   simp [hx, hy, -exp_neg]
-
-instance isValuativeTopology : IsValuativeTopology ℚ_[p] :=
-  letI : Valued ℚ_[p] NNReal := NormedField.toValued
-  haveI : (Valued.v : Valuation ℚ_[p] NNReal).Compatible := ⟨fun x y => by
-    rw [Valuation.Compatible.vle_iff_le (v := Padic.mulValuation) x y,
-      mulValuation_le_iff_norm_le]
-    rfl⟩
-  isValuativeTopology_of_valued
-
-instance isNonarchimedeanLocalField : IsNonarchimedeanLocalField ℚ_[p] where
-  toIsValuativeTopology := inferInstance
-  toLocallyCompactSpace := inferInstance
-  toIsNontrivial := inferInstance
 
 end Padic
 

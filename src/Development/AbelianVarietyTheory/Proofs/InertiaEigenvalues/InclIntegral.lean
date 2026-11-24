@@ -119,7 +119,7 @@ abbrev extLat {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) (T : LocLat G ℚ_[l] ↥
       (IsModuleTopology.continuous_of_linearMap (b.coord i)).comp (T.cont (b j))
     have h2 : Continuous (incl h) := continuous_subtype_val.subtype_mk _
     refine (h2.comp h1).congr fun g => ?_
-    simp [matRepExt, matRep, LinearMap.toMatrixAlgEquiv_apply, LinearMap.toMatrix_apply]
+    simp [matRepExt, matRep, LinearMap.toMatrixAlgEquiv_apply]
   L :=
     { T := intVec LL' k
       stable := fun g x hx i => by
@@ -137,7 +137,7 @@ abbrev extLat {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) (T : LocLat G ℚ_[l] ↥
         rw [Pi.basisFun_apply]
         by_cases hij : i = j
         · subst hij; simp [one_mem]
-        · simp [Pi.single_apply, Ne.symm hij, zero_mem] }
+        · simp [Ne.symm hij, zero_mem] }
 
 theorem hom_integral {LL : FinExt l} {T₁ T₂ : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)} {k₁ k₂ : ℕ}
     {b₁ : Module.Basis (Fin k₁) ↥LL.1 T₁.V} {b₂ : Module.Basis (Fin k₂) ↥LL.1 T₂.V}

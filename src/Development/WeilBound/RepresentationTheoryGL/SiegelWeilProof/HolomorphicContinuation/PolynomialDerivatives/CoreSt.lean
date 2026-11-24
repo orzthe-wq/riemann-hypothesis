@@ -90,7 +90,7 @@ def D2 (ε : Fin m → Bool) (c : ℝ) (a b : Fin m) (p : PX m n) : PX m n :=
 def firstFamilyOperatorEnd (ε : Fin m → Bool) (c : ℝ) (a b : Fin m) : Module.End ℂ (PX m n) where
   toFun := D1 ε c a b
   map_add' p q := by unfold D1; split_ifs <;> simp [mul_add, Finset.sum_add_distrib, smul_add] <;> abel
-  map_smul' r p := by unfold D1; split_ifs <;> simp [Finset.mul_sum, Finset.smul_sum, smul_comm r, mul_smul_comm]
+  map_smul' r p := by unfold D1; split_ifs <;> simp [Finset.smul_sum, smul_comm r]
 
 abbrev Sym (m n : ℕ) := MvPolynomial ((Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool)) ℂ
 

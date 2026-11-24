@@ -3,7 +3,8 @@ module
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.ZelevinskyCosocles.LUnlinkedComm
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IrreducibleAdmissibleGL
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DualClassInvolutive
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SegmentDualPrecedesIffStatement
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.LSegJacquet
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SegmentDualPrecedesIff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -54,7 +55,7 @@ theorem exists_revOrdered_dual : ∀ {k : Type} [Field k] [ValuativeRel k] [Topo
       ∃ Γ : Fin h → Segment k, IsRevOrdered Γ ∧ ∀ i, IsLSeg (Γ i) (dualCl (x i)).rep := by
   intro k _ _ _ _ hA hD 𝔪 h x hx
   obtain ⟨Δ, ⟨-, hord⟩, hL⟩ := hx
-  refine ⟨fun i => segDual (Δ i), fun i j hij hp => hord i j hij ((GlobalTheory.T.segment_dual_precedes_iff hA _ _).1 hp), fun i => ?_⟩
+  refine ⟨fun i => segDual (Δ i), fun i j hij hp => hord i j hij ((_root_.GlobalTheory.CompanionTheory.SegDualPrec.segDual_precedes hA _ _).1 hp), fun i => ?_⟩
   rw [GlobalTheory.CompanionTheory.Zcore.dualCl_eq_of hA (x i)]
   exact (hD (Δ i) (x i).rep (hL i)).of_equiv (IrrGL.equivOf _ _ _)
 

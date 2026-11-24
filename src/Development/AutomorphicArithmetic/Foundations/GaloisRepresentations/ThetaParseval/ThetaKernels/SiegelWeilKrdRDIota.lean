@@ -146,7 +146,7 @@ theorem hQ_w_k {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.
   simp only [Qc, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]
   congr 1
   ext i j
-  by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+  by_cases hij : i = j <;> simp [hij]
 theorem fin_MxI_k (w : InfinitePlace F) (ζ : ℂ) (y : GR d.n) : finOne F • _root_.PositivityTheory.SiegelWeilFormula.Krd.MxI_k d w ζ y = finOne F • 1 := by
   rw [_root_.PositivityTheory.SiegelWeilFormula.Krd.MxI_k, fin_mul, fin_mul, _root_.PositivityTheory.SiegelWeilFormula.Krd.fin_atM_k, ← fin_mul, ← fin_mul, Matrix.mul_one, _root_.PositivityTheory.SiegelWeilFormula.Krd.bb_k]
 theorem MxI_unitary_k {ε : ℤˣ} {ζ : ℂ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)

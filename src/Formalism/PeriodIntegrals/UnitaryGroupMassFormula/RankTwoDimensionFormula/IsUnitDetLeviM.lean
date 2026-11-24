@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHAlg
 
 @[expose] public section
 
@@ -98,11 +99,11 @@ theorem fmat_inv_mul (x : X.B.I.Gf) : X.B.I.fmat x⁻¹ * X.B.I.fmat x = 1 := by
 
 theorem fixes_mul {x y : X.B.I.Gf} {v : VA X.B.I} (hx : X.B.I.fmat x *ᵥ v = v) (hy : X.B.I.fmat y *ᵥ v = v) :
     X.B.I.fmat (x * y) *ᵥ v = v := by
-  rw [fmat_mul, ← Matrix.mulVec_mulVec, hy, hx]
+  rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.fmat_mul, ← Matrix.mulVec_mulVec, hy, hx]
 
 theorem fixes_inv {x : X.B.I.Gf} {v : VA X.B.I} (hx : X.B.I.fmat x *ᵥ v = v) : X.B.I.fmat x⁻¹ *ᵥ v = v := by
   calc X.B.I.fmat x⁻¹ *ᵥ v = X.B.I.fmat x⁻¹ *ᵥ (X.B.I.fmat x *ᵥ v) := by rw [hx]
-    _ = v := by rw [Matrix.mulVec_mulVec, fmat_inv_mul, Matrix.one_mulVec]
+    _ = v := by rw [Matrix.mulVec_mulVec, _root_.Formalism.L2.SG.PoincareInHH.Cut.fmat_inv_mul, Matrix.one_mulVec]
 
 theorem mem_mL_of_Kset {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (m : ℕ) {y : VA X.B.I} (hy : y ∈ mL X.B.I m) :
     X.B.I.fmat x *ᵥ y ∈ mL X.B.I m := by

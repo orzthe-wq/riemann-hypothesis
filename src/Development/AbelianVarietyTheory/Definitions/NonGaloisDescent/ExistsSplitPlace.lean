@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.Automorphisms.PlaceA
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

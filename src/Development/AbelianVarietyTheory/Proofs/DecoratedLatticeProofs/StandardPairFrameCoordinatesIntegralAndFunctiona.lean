@@ -69,7 +69,7 @@ theorem hasVal_mulVec {n : ℕ} (Q : Pair k (Fin n)) (b' : Matrix (Fin n) (Fin n
       exact ((h r).smul _).add ih
   convert h1 Finset.univ using 1
   funext i
-  simp [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.single_apply, Finset.mul_sum]
+  simp [Matrix.mulVec, dotProduct, Finset.sum_apply]
   refine Finset.sum_congr rfl fun c _ => ?_
   rw [mul_comm]
   rfl

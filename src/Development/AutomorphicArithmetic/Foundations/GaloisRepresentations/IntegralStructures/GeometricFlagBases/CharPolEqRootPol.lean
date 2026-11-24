@@ -131,7 +131,7 @@ theorem UpperTheory.Gal.Int.Geo.twPhi :
       ((rk1 (χ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) g : GL (Fin 1) (Loc.Om l)) : Matrix (Fin 1) (Fin 1) (Loc.Om l)) :=
     Units.continuous_val.comp ck
   rw [← e3] at q3
-  have key := GlobalTheory.T.fontaineParameter_twist_potentiallySemistable l P AI hT ι E Ω A w h O Bw hj dd _ _ hcs hck (pst_of_crys hT c2) (pst_of_crys hT c1) q3
+  have key := _root_.GlobalTheory.TwistParamAbove.wdAt_twist l P AI hT ι E Ω A w h O Bw hj dd _ _ hcs hck (pst_of_crys hT c2) (pst_of_crys hT c1) q3
   rw [e3] at key
   rw [key]
   have hx := charPol_eq_rootPol (wdAt P ι Bw h hj (ρ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype)) g

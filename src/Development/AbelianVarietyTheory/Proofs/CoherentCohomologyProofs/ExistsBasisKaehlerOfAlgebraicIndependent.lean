@@ -308,7 +308,7 @@ theorem exists_basis_kaehler_of_algebraicIndependent {K F ι : Type*} [Field K] 
     ((mvPolynomialBasis K ι).baseChange A).map (tensorKaehlerEquivOfFormallyEtale K P A)
   refine ⟨(b₁.baseChange F).map (tensorKaehlerEquivOfFormallyEtale K A F), fun i => ?_⟩
   simp only [b₁, Basis.map_apply, Basis.baseChange_apply, tensorKaehlerEquivOfFormallyEtale_apply,
-    mapBaseChange_tmul, one_smul, mvPolynomialBasis_apply, map_D]
+    mapBaseChange_tmul, one_smul, mvPolynomialBasis_apply]
   have h : algebraMap A F (algebraMap P A (MvPolynomial.X i)) = v i := by
     change algebraMap A F (hv.aevalEquiv (MvPolynomial.X i)) = v i
     rw [hv.algebraMap_aevalEquiv, MvPolynomial.aeval_X]

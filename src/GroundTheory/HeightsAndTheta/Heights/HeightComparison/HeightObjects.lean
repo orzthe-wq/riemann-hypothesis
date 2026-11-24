@@ -97,7 +97,7 @@ theorem weight_coordDeg_apply (d : Coord n →₀ ℕ) (k : ι) :
   · simp [coordDeg]
   · intro j _ hj
     refine Finset.sum_eq_zero fun i _ ↦ ?_
-    simp [coordDeg, Pi.single_apply, Ne.symm hj]
+    simp [coordDeg, Ne.symm hj]
   · simp
 
 theorem geoMultiHomog_iff (f : MvPolynomial (Coord n) ℤ) (a : ι → ℕ) :
@@ -125,7 +125,7 @@ namespace HermLine
 
 open scoped Classical in
 open Classical in
-def toGeo (A : HermLine n) : Geo.HermLine (blockIdx n) where
+def toGeo (A : Heights.HermLine n) : Geo.HermLine (blockIdx n) where
   a := A.deg
   h w := if BlockNonzero (unflatCone w) then A.metric (unflatCone w) else 0
   pos w hw := by
@@ -153,13 +153,13 @@ def toGeo (A : HermLine n) : Geo.HermLine (blockIdx n) where
         simp [congrFun hk i]
       rw [if_neg hw, if_neg hcw, mul_zero]
 
-theorem toGeo_a (A : HermLine n) : A.toGeo.a = A.deg := rfl
+theorem toGeo_a (A : Heights.HermLine n) : A.toGeo.a = A.deg := rfl
 
-theorem toGeo_h_of_blockNonzero (A : HermLine n) {w : Coord n → ℂ}
+theorem toGeo_h_of_blockNonzero (A : Heights.HermLine n) {w : Coord n → ℂ}
     (hw : BlockNonzero (unflatCone w)) : A.toGeo.h w = A.metric (unflatCone w) := by
   simp only [toGeo, if_pos hw]
 
-theorem isSmoothHerm_toGeo (A : HermLine n) : Geo.IsSmoothHerm A.toGeo := by
+theorem isSmoothHerm_toGeo (A : Heights.HermLine n) : Geo.IsSmoothHerm A.toGeo := by
   have hu : ContDiff ℝ ∞ (fun w : Coord n → ℂ ↦ unflatCone w) :=
     contDiff_pi.2 fun k ↦ contDiff_pi.2 fun i ↦ contDiff_apply ℝ (fun _ => ℂ) (⟨k, i⟩ : Coord n)
   have hm : ContDiffOn ℝ ∞ (fun w : Coord n → ℂ ↦ A.metric (unflatCone w))
@@ -242,7 +242,7 @@ theorem chartMonomial_notMem_orbitIdeal (x : Cone n (AlgebraicClosure ℚ))
   rw [map_pow, Geo.mConeMap, aeval_X]
   exact pow_ne_zero _ (mul_ne_zero (C_ne_zero.mpr (hc k)) (X_ne_zero _))
 
-theorem isSectionOn_chartMonomial (A : HermLine n) (x : Cone n (AlgebraicClosure ℚ))
+theorem isSectionOn_chartMonomial (A : Heights.HermLine n) (x : Cone n (AlgebraicClosure ℚ))
     (c : (k : ι) → Fin (n k + 1)) (hc : ∀ k, x k (c k) ≠ 0) (d : ι → ℕ)
     (hd : ∀ k, A.deg k = d k) :
     Geo.IsSectionOn (orbitIdeal x) A.toGeo (chartMonomial c d) :=

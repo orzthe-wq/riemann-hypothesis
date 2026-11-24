@@ -213,7 +213,7 @@ theorem fg_latOf_of_lowerBound {K : Type} [Field K] [NumberField K] {R : Type} [
       eq_zero := fun σ F h0 => Subtype.ext ((hN σ).defin _ F.2 h0)
       smul := fun σ a F => (hN σ).smul a _ F.2
       add := fun σ F G => (hN σ).add _ F.2 _ G.2 }
-  exact formalGroup_of_discriminant _ _ Nf _ (discriminant_of_product_lower _ _ Nf _ B fun F hF h0 =>
+  exact _root_.PI.UnitaryGroupMassFormula.TBDisc.fGOfDisc _ _ Nf _ (_root_.PI.UnitaryGroupMassFormula.TBDisc.discOfProdLower _ _ Nf _ B fun F hF h0 =>
     hB F.1 F.2 hF fun h1 => h0 (Subtype.ext h1))
 
 end GlobalTheory.IntCuspLat

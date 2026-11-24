@@ -3,47 +3,6 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.EigLatBasis
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.ChartLaw
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.UnivChartLoc
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
@@ -71,10 +30,6 @@ theorem tan_push (w : epsR S ⟶ G') : IsTangent w ↔
     show (toUnit T ≫ η[H]).left = _
     rw [Over.comp_left]
     congr 1
-    all_goals first
-      | simpa using Over.w (toUnit T)
-      | (have e := Over.w (toUnit T)
-         rwa [show (𝟙_ (Over Y)).hom = 𝟙 Y from rfl, Category.comp_id] at e)
   have hmul : ∀ {T : Over (Sp S)} (a b : T ⟶ G'), pushPt h.1.w (a * b) = pushPt h.1.w a * pushPt h.1.w b :=
     fun {T} a b => Over.OverMorphism.ext (h.2 T a b (pushPt h.1.w a) (pushPt h.1.w b) rfl rfl).symm
   have hone : ∀ T : Over (Sp S), pushPt h.1.w (1 : T ⟶ G') = 1 := by
@@ -90,11 +45,6 @@ theorem tan_push (w : epsR S ⟶ G') : IsTangent w ↔
     simp only [epsR, Over.mk_hom, Geo.Tor.spMap, ← Spec.map_comp]
     rw [← Spec.map_id]
     congr 1
-    all_goals
-      ext r
-      first
-        | (simp [TrivSqZeroExt.algebraMap_eq_inl]; done)
-        | (simp; done)
   let t : Over.mk (𝟙 (Sp S)) ⟶ epsR S :=
     Over.homMk (Geo.Tor.spMap (TrivSqZeroExt.fstHom S S S).toRingHom) hfa
   rw [oneL]
@@ -142,7 +92,7 @@ theorem comb_push {n : ℕ} (c : Fin n → S) (v : Fin n → (epsR S ⟶ G')) (w
       intro i
       simp only [epsR, Over.mk_hom, Geo.Tor.spMap, ← Spec.map_comp]
       congr 1
-      ext r <;> first | simp [epsScaleR] | simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
+      ext r <;> first | simp [epsScaleR]
     let u' : Fin n → (epsR S ⟶ G') := fun i =>
       Over.homMk (Geo.Tor.spMap (epsScaleR (c i)) ≫ (v i).left) (by rw [Category.assoc, Over.w (v i)]; exact hs i)
     refine ⟨u', fun i => rfl, ?_⟩
@@ -162,14 +112,12 @@ theorem comb_baseChange {R : Type} [CommRing R] {G₀ : Over (Sp R)} [GrpObj G�
     intro s
     simp only [epsR, Over.mk_hom, Geo.Tor.spMap, ← Spec.map_comp]
     congr 1
-    ext r <;> first | simp [epsScaleR] | simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
+    ext r <;> first | simp [epsScaleR]
   have hd : Geo.Tor.spMap (dualMapR f) ≫ (epsR R).hom = (epsR S).hom ≫ Geo.Tor.spMap f := by
     simp only [epsR, Over.mk_hom, Geo.Tor.spMap, ← Spec.map_comp]
     congr 1
     ext r <;> first
       | (simp [dualMapR, TrivSqZeroExt.algebraMap_eq_inl]; done)
-      | (simp [dualMapR]; done)
-      | simp [dualMapR, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl]
   have hcomm : ∀ i, Geo.Tor.spMap (dualMapR f) ≫ Geo.Tor.spMap (epsScaleR (c i)) =
       Geo.Tor.spMap (epsScaleR (f (c i))) ≫ Geo.Tor.spMap (dualMapR f) := by
     intro i
@@ -177,10 +125,9 @@ theorem comb_baseChange {R : Type} [CommRing R] {G₀ : Over (Sp R)} [GrpObj G�
     congr 1
     ext a <;> first
       | (simp [dualMapR, epsScaleR]; done)
-      | (simp [dualMapR, epsScaleR, smul_eq_mul, map_mul]; done)
-      | (simp [dualMapR, epsScaleR, smul_eq_mul, map_mul, mul_comm]; done)
-      | (simp [dualMapR, epsScaleR, smul_eq_mul, map_mul, TrivSqZeroExt.algebraMap_eq_inl]; done)
-      | (simp [dualMapR, epsScaleR, smul_eq_mul, TrivSqZeroExt.algebraMap_eq_inl]; clear * -; done)
+      | (simp [dualMapR, epsScaleR, smul_eq_mul]; done)
+      | (simp [dualMapR, epsScaleR, smul_eq_mul, mul_comm]; done)
+      | (simp [dualMapR, epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]; done)
   let d : Over.mk ((epsR S).hom ≫ Geo.Tor.spMap f) ⟶ epsR R := Over.homMk (Geo.Tor.spMap (dualMapR f)) hd
   have cm : ∀ a b : epsR R ⟶ G₀, d ≫ (a * b) = (d ≫ a) * (d ≫ b) := fun a b => by
     show d ≫ (lift a b ≫ μ) = lift (d ≫ a) (d ≫ b) ≫ μ
@@ -225,10 +172,6 @@ theorem eq_of_comb_single [IsLocalRing S] [Smooth G'.hom] {d : ℕ} {v : Fin d �
     show (toUnit T ≫ η[H]).left = _
     rw [Over.comp_left]
     congr 1
-    all_goals first
-      | simpa using Over.w (toUnit T)
-      | (have e := Over.w (toUnit T)
-         rwa [show (𝟙_ (Over Y)).hom = 𝟙 Y from rfl, Category.comp_id] at e)
   have single : ∀ {m : ℕ} (a : Fin m → (epsR S ⟶ G')) (k : Fin m), (∀ i, i ≠ k → a i = 1) →
       (List.ofFn a).prod = a k := by
     intro m
@@ -249,15 +192,13 @@ theorem eq_of_comb_single [IsLocalRing S] [Smooth G'.hom] {d : ℕ} {v : Fin d �
     simp only [epsR, Over.mk_hom, Geo.Tor.spMap, ← Spec.map_comp]
     congr 1
     all_goals (ext r <;> first
-      | (simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]; done)
-      | (simp [epsScaleR]; done))
+      | (simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]; done))
   have h1 : Geo.Tor.spMap (epsScaleR (1 : S)) = 𝟙 _ := by
     simp only [Geo.Tor.spMap]
     rw [← Spec.map_id]
     congr 1
     all_goals (ext r <;> first
-      | (simp [epsScaleR]; done)
-      | (simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]; done))
+      | (simp [epsScaleR]; done))
   have hu1 : ∀ i, i ≠ j → u i = 1 := by
     intro i hi
     apply Over.OverMorphism.ext

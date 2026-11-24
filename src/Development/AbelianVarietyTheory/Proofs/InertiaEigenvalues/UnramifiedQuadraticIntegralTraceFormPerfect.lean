@@ -207,7 +207,7 @@ theorem fixed_eq {z : E} (hz : star z = z) : algebraMap F E (Algebra.trace F E z
     inv_mul_cancel₀ h2E, one_mul]
 
 theorem exists_far : ∃ w : E, ‖w‖ = 1 ∧ ∀ c : F, 1 ≤ ‖w - algebraMap F E c‖ := by
-  apply GlobalTheory.NormUnits.exists_far_unit <;> assumption
+  apply GlobalTheory.NormUnits.exists_far_unit
 
 theorem exists_diff_one (h2 : ‖(2 : F)‖ < 1) : ∃ w : E, ‖w‖ ≤ 1 ∧ ‖w - star w‖ = 1 := by
   haveI := hU.ultraE

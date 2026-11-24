@@ -44,6 +44,7 @@ import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.Model
 import Formalism.LocalToGlobal.CMDeterminantIdeals.DetIdeal
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.TieLDB
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.Rationality.QuotSt
+import Formalism.LocalToGlobal.ProjectiveLattices.HostRank
 
 @[expose] public section
 
@@ -89,6 +90,6 @@ theorem exists_dataX_discr_absNorm : FactPrincipalDatum → ∀ (D : D7) (T : Co
     | add v w _ _ hv hw => rw [smul_add]; exact add_mem hv hw
     | smul c v _ hv => rw [smul_comm]; exact Xx.L'.smul_mem c hv
   · rw [h3]
-    exact Submodule.subset_span ⟨_, GlobalTheory.LatticeData.absNorm_ccK_mem D, x, hx, rfl⟩
+    exact Submodule.subset_span ⟨_, _root_.Formalism.L2.Pj.normK_mem_AA D, x, hx, rfl⟩
 
 end GlobalTheory.ArcCM

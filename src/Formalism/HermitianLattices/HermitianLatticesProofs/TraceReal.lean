@@ -68,9 +68,8 @@ section TR
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
 
 lemma traceReal_star (z : K) : Algebra.trace ℚ K (starRingEnd K z) = Algebra.trace ℚ K z := by
-  let e : K ≃ₐ[ℚ] K :=
-    AlgEquiv.ofRingEquiv (f := (starRingAut : RingAut K)) (fun q => by simp [starRingAut])
-  exact Algebra.trace_eq_of_algEquiv e z
+  exact Algebra.trace_eq_of_algEquiv
+    (AlgEquiv.ofRingEquiv (f := (starRingAut : RingAut K)) (fun q => by simp [starRingAut])) z
 
 lemma traceReal_star_rat (q : ℚ) : starRingEnd K (algebraMap ℚ K q) = algebraMap ℚ K q := by
   rw [eq_ratCast (algebraMap ℚ K) q, map_ratCast]
@@ -87,10 +86,6 @@ lemma traceReal_den (a : K) :
 
 variable [Module (NumberField.RingOfIntegers K) V]
   [IsScalarTower (NumberField.RingOfIntegers K) K V]
-
-lemma traceReal_mult (M : Submodule (NumberField.RingOfIntegers K) V) (hM : Submodule.IsFullLattice K M)
-    (x : V) : ∃ n : ℤ, n ≠ 0 ∧ n • x ∈ M := by
-  exact Bl.general_b_fact_second'''''.goal1 M hM x
 
 lemma traceReal_lower (h : V →ₗ⋆[K] V →ₗ[K] K)
     (hpos : ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ K (h x x))
@@ -286,7 +281,7 @@ theorem traceReal_main (h : V →ₗ⋆[K] V →ₗ[K] K) (hS : h.IsSymm)
   have hspan : Submodule.span ℝ (zmap ι M : Set (EuclideanSpace ℝ (Fin (finrank ℚ V)))) = ⊤ := by
     have hin : ∀ x : V, ι x ∈ Submodule.span ℝ (zmap ι M : Set (EuclideanSpace ℝ (Fin (finrank ℚ V)))) := by
       intro x
-      obtain ⟨n, hn, hnx⟩ := traceReal_mult M hM x
+      obtain ⟨n, hn, hnx⟩ := _root_.Bl.general_b_fact_second'''''.goal1 M hM x
       have h1 : ι (n • x) ∈ Submodule.span ℝ (zmap ι M : Set (EuclideanSpace ℝ (Fin (finrank ℚ V)))) :=
         Submodule.subset_span ((hmem M _).mpr ⟨_, hnx, rfl⟩)
       rw [map_zsmul] at h1

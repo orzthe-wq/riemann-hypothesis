@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.FiniteDimensionalOfOrtho
 
 @[expose] public section
 
@@ -80,11 +81,6 @@ section Ring
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
-private lemma exists_int_algebraMap_eq_star (x : 𝓞 K) : ∃ y : 𝓞 K, algebraMap (𝓞 K) K y = star (algebraMap (𝓞 K) K x) := by
-  have hx : IsIntegral ℤ (algebraMap (𝓞 K) K x) := x.isIntegral_coe
-  have : IsIntegral ℤ (star (algebraMap (𝓞 K) K x)) := hx.map (starRingEnd K).toIntAlgHom
-  exact IsIntegralClosure.isIntegral_iff.mp this
-
 private lemma hcompl_mem_prime_ideal_property {p : Ideal (𝓞 K)} (hp : p.IsPrime) {s : 𝓞 K} (hs : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p) :
     s ∉ p ∧ ∀ t : 𝓞 K, algebraMap (𝓞 K) K t = star (algebraMap (𝓞 K) K s) → t ∉ p := by
   induction hs using Submonoid.closure_induction with
@@ -95,8 +91,8 @@ private lemma hcompl_mem_prime_ideal_property {p : Ideal (𝓞 K)} (hp : p.IsPri
     rwa [this] at h
   | mul x y _ _ hx hy =>
     refine ⟨fun h => (hp.mem_or_mem h).elim hx.1 hy.1, fun t ht h => ?_⟩
-    obtain ⟨x', hx'⟩ := exists_int_algebraMap_eq_star x
-    obtain ⟨y', hy'⟩ := exists_int_algebraMap_eq_star y
+    obtain ⟨x', hx'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int x
+    obtain ⟨y', hy'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int y
     have : t = x' * y' := IsFractionRing.injective (𝓞 K) K (by
       rw [ht, map_mul, map_mul, hx', hy', star_mul, mul_comm])
     rw [this] at h
@@ -110,8 +106,8 @@ private lemma hcompl_unit_property_of_isPrime {p : Ideal (𝓞 K)} (hp : p.IsPri
   obtain ⟨hS1, hS2⟩ := hcompl_mem_prime_ideal_property hp hS
   have ne0 : ∀ {u : 𝓞 K}, u ∉ p → algebraMap (𝓞 K) K u ≠ 0 := fun hu h0 =>
     hu (by rw [(map_eq_zero_iff _ inj).mp h0]; exact p.zero_mem)
-  obtain ⟨S', hS'⟩ := exists_int_algebraMap_eq_star S
-  obtain ⟨N', hN'⟩ := exists_int_algebraMap_eq_star N
+  obtain ⟨S', hS'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int S
+  obtain ⟨N', hN'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int N
   have hS'p := hS2 S' hS'
 
   have key : N' * S = N * S' := inj (by
@@ -186,7 +182,7 @@ theorem isUnitIn_algebraMap_iff {p : Ideal (𝓞 K)} (hp : p.IsPrime) (r : 𝓞 
     have hst : s = t * r := inj (by rw [map_mul, ht, mul_assoc, inv_mul_cancel₀ h0, mul_one])
     obtain ⟨hs1, hs2⟩ := hcompl_mem_prime_ideal_property hp hs
     refine Submonoid.subset_closure ⟨fun h => hs1 (hst ▸ p.mul_mem_left t h), fun u hu hup => ?_⟩
-    obtain ⟨t', ht'⟩ := exists_int_algebraMap_eq_star t
+    obtain ⟨t', ht'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int t
     apply hs2 (t' * u) _ (p.mul_mem_left t' hup)
     rw [map_mul, ht', hu, hst, map_mul, star_mul, mul_comm]
   · intro hr
@@ -245,7 +241,6 @@ theorem star_gram_det (hs : h.IsSymm) (x : Fin n → V) :
   simp only [Matrix.conjTranspose_apply, Matrix.of_apply]
   first
   | exact hs.eq (x j) (x i)
-  | exact hs (x j) (x i)
 
 end Gram
 
@@ -275,7 +270,6 @@ theorem det_smul_mem {L : Submodule (𝓞 K) V} (x : Fin n → V) (hx : ∀ i, x
       rw [Matrix.mulVec_mulVec, Matrix.adjugate_mul]
       first
       | rw [Matrix.smul_mulVec, Matrix.one_mulVec]
-      | simp
     rw [h1, hGc, RingHom.map_mulVec, ← hGg, ← RingHom.map_adjugate]
     rfl
   have hdet : algebraMap (𝓞 K) K g.det = G.det := by rw [RingHom.map_det, hGg]

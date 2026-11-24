@@ -1,45 +1,8 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.HidaSetting
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -74,7 +37,6 @@ theorem haarOnSet_isHaar (H : Subgroup G) (hH : IsClosed (H : Set G)) (μ : Meas
   have hce : Topology.IsClosedEmbedding ((↑) : H → G) := by
     first
       | exact hH.isClosedEmbedding_subtypeVal
-      | exact hH.closedEmbedding_subtype_val
   haveI : LocallyCompactSpace H := hce.locallyCompactSpace
   haveI : SigmaFinite (μ.comap ((↑) : H → G)) := by
     refine SigmaFinite.of_map _ he.measurable.aemeasurable ?_
@@ -95,7 +57,6 @@ theorem haarOnSet_isHaar (H : Subgroup G) (hH : IsClosed (H : Set G)) (μ : Meas
   have hKpos : (Measure.haar : Measure H) K ≠ 0 := by
     first
       | exact (measure_pos_of_mem_nhds _ hK1).ne'
-      | exact (measure_pos_of_nonempty_interior _ ⟨1, mem_interior_iff_mem_nhds.2 hK1⟩).ne'
   have hKfin : (Measure.haar : Measure H) K < ⊤ := hK.measure_lt_top
   obtain ⟨n, hn⟩ : ∃ n, (Measure.haar : Measure H) (K ∩ spanningSets (μ.comap ((↑) : H → G)) n) ≠ 0 := by
     by_contra hcon
@@ -114,19 +75,15 @@ theorem haarOnSet_isHaar (H : Subgroup G) (hH : IsClosed (H : Set G)) (μ : Meas
   haveI : BorelSpace H := by
     first
       | infer_instance
-      | exact Subtype.borelSpace _
   haveI : SecondCountableTopology H := by
     first
-      | infer_instance
       | exact TopologicalSpace.Subtype.secondCountableTopology _
   haveI : MeasurableMul₂ H := by
     first
       | infer_instance
-      | exact ContinuousMul.measurableMul₂
   haveI : MeasurableInv H := by
     first
       | infer_instance
-      | exact ContinuousInv.measurableInv
   have heq := measure_eq_div_smul (μ.comap ((↑) : H → G)) (Measure.haar : Measure H) hn hsfin
   have hc0 : (μ.comap ((↑) : H → G)) (K ∩ spanningSets (μ.comap ((↑) : H → G)) n) /
       (Measure.haar : Measure H) (K ∩ spanningSets (μ.comap ((↑) : H → G)) n) ≠ 0 := by
@@ -140,9 +97,7 @@ theorem haarOnSet_isHaar (H : Subgroup G) (hH : IsClosed (H : Set G)) (μ : Meas
   have hHaar : (μ.comap ((↑) : H → G)).IsHaarMeasure := by
     rw [heq]
     first
-      | exact Measure.isHaarMeasure_smul _ hc0 hctop
       | exact IsHaarMeasure.smul _ hc0 hctop
-      | exact isHaarMeasure_smul _ hc0 hctop
   haveI := hHaar
   refine ⟨hHaar, fun K' hK' => ?_, fun U hU hne => ?_⟩
   · rw [← hmap, he.map_apply]

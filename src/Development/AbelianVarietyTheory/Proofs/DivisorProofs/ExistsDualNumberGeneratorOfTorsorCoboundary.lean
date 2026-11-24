@@ -122,7 +122,7 @@ theorem ptV_nat (v : epsR R ⟶ B) {E E' : Type} [CommRing E] [Algebra R E] [Com
   · simp only [ptV, Category.assoc, lift_fst]
     rw [← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp]
     congr 2
-    ext a <;> simp [epsHom, DualNumber.lift_apply_inl]
+    ext a <;> simp [epsHom]
   · simp only [ptV, Category.assoc, lift_snd]
     rw [← Category.assoc, spOver_comp]
     congr 2

@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocalLanglandsTransport
 
 @[expose] public section
 
@@ -60,11 +61,11 @@ namespace GlobalTheory.DepthZeroLoc
 open GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil in
 theorem main_m_alt : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.DepthZeroSupport → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (w : PlE D.host) (n : ℕ) (π : Irr (w.adicCompletion D.host.E) n), (∃ v ∈ GlobalTheory.PRep.fixed π.π (GlobalTheory.SplitWeil.KOne (w.adicCompletion D.host.E) (Fin n)), v ≠ 0) → UpperTheory.One.M.IsQg (w.adicCompletion D.host.E) → ∀ σ ∈ wildSet D.nd (D.nd.plOm.1 w), (_root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D w n π).inePol σ = (X - 1) ^ n := by
   intro _ _ hL D w n π ⟨v, hv, hv0⟩ hq σ hσ
-  first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, _, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)
+  first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)); obtain ⟨a, ha, ε, H⟩ := hOpn)
   have h0 : fixed π.toIrrRep.ρ (KOne (w.adicCompletion D.host.E) (Fin n)) ≠ ⊥ :=
     (Submodule.ne_bot_iff _).2 ⟨v, hv, hv0⟩
   have h1 := fixed_ne_bot_of_equiv (equivRep π.toIrrRep) h0
-  obtain ⟨m, b, hb, hb'⟩ := haveI := UpperTheory.One.M.charZero_compl w; _root_.UpperTheory.One.M.LawsM.depth H (cls π.toIrrRep) (UpperTheory.One.M.good_of_fixed hq _ h1) h1
+  obtain ⟨m, b, hb, hb'⟩ := haveI := _root_.GlobalTheory.LocLanglands.FieldCompat.charZero_compl w; _root_.UpperTheory.One.M.LawsM.depth H (cls π.toIrrRep) (UpperTheory.One.M.good_of_fixed hq _ h1) h1
   have hd := H.dim (cls π.toIrrRep)
   have hI : σ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w) := GlobalTheory.TameGenPowers.wild_mem_Ine hσ
   have hW : Formalism.MainNotions.BlochKatoReduction.IsWild (D.nd.plOm.1 w)

@@ -78,14 +78,6 @@ theorem liftV_one_mul_comp (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTens
     · rw [GlobalTheory.AdelicU.evalV_singleFin_ne hw, GlobalTheory.AdelicU.evalV_singleFin_ne hw, zero_mul]
 
 
-omit [NumberField F] [NumberField E] in
-theorem trace_baseChange_tmul [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (a : R) (e : E) :
-    Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e) := by
-  have h1 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e) := by
-    rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]
-  rw [h1, map_smul, Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul,
-    LinearMap.trace_baseChange, smul_eq_mul]
-
 theorem add_conj_eq_trace {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) :
     x + σ x = algebraMap F E (Algebra.trace F E x) := by
   classical
@@ -131,7 +123,7 @@ theorem trace_at_split : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [N
     | zero => simp
     | add x y hx hy => rw [smul_add, map_add (f := _), hx, hy, ← map_add (f := _)]; congr 1; simp only [map_add (f := _)]; ring
     | tmul b e =>
-      rw [TensorProduct.smul_tmul', smul_eq_mul, trace_baseChange_tmul, mul_assoc, liftV_one_mul_comp, map_mul,
+      rw [TensorProduct.smul_tmul', smul_eq_mul, _root_.GlobalTheory.LatVac.trace_tmul, mul_assoc, liftV_one_mul_comp, map_mul,
         AlgHom.commutes]
       congr 1
       change evFin F v b * algebraMap F (Fv F v) (Algebra.trace F E e) = evFin F v b * τ e + evFin F v b * τ (σ e)

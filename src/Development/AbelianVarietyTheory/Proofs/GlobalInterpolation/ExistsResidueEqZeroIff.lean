@@ -138,8 +138,7 @@ private theorem exists_residueBox_eq_preimage_add_lemma_2 (e : V ≃L[_root_.For
   refine ⟨-e.symm (fun i => (t i : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v)), ?_⟩
   ext x
   simp only [Set.mem_setOf_eq, Set.mem_preimage, mem_residue_box_singleton_iff, Pi.zero_apply,
-    map_add, map_neg, map_sub, ContinuousLinearEquiv.apply_symm_apply, Pi.add_apply,
-    Pi.neg_apply, Pi.sub_apply, ← sub_eq_add_neg]
+    map_sub, ContinuousLinearEquiv.apply_symm_apply, Pi.sub_apply, ← sub_eq_add_neg]
   exact forall_congr' fun i => exists_residue_eq_iff_exists_residue_sub_eq_zero v _ _ _ (ht i)
 
 open scoped TensorProduct in

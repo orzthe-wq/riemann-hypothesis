@@ -48,4 +48,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 theorem _root_.GlobalTheory.T.traitExistsAfterFiniteExtension_of_completeDVR : TraitExtSt := by
-  first | exact @GlobalTheory.Poinc.traitExtSt | exact GlobalTheory.Poinc.traitExtSt | (intros; apply GlobalTheory.Poinc.traitExtSt <;> assumption)
+  first | exact @GlobalTheory.Poinc.traitExtSt

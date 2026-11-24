@@ -189,7 +189,7 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSp
 
 private theorem mem_eigIn (W : Submodule ℂ H) (A : H →L[ℂ] H) (x : ℝ) (v : H) :
     v ∈ eigIn W A x ↔ v ∈ W ∧ A v = (x : ℂ) • v := by
-  simp [eigIn, Module.End.mem_eigenspace_iff]
+  simp [eigIn]
 
 private theorem proj_comm (W : Submodule ℂ H) [W.HasOrthogonalProjection] (B : H →L[ℂ] H)
     (hB : ∀ x y, ⟪B x, y⟫_ℂ = ⟪x, B y⟫_ℂ) (hW : ∀ w ∈ W, B w ∈ W) (x : H) :

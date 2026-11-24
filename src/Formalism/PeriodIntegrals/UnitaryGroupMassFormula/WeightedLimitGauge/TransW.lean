@@ -105,7 +105,7 @@ theorem boost_mem (y : Fin k → ℂ) (c : ℂ)
           (if l = j then conj (y l) else 0) + (conj (y j) / (1 + (‖c‖ : ℂ))) * (conj (y l) * y l) := by
         intro l; split_ifs <;> ring
       rw [Finset.sum_congr rfl (fun l _ => h1 l), Finset.sum_add_distrib, Finset.sum_ite_eq', ← Finset.mul_sum, hS]
-      simp only [Finset.mem_univ, if_true, map_mul, map_div₀, Complex.conj_ofReal, Complex.conj_conj]
+      simp only [Finset.mem_univ, if_true]
       try simp only [hcb]
       field_simp
       ring
@@ -167,7 +167,7 @@ theorem wLast_inWb (s : ℂ) : inWb k r (s • wLast k r) := by
   intro i hi
   have : i ≠ wI k r (Fin.last k) := by
     intro h; have := congrArg Fin.val h; simp only [wI, Fin.val_last] at this; omega
-  simp [wLast, bvec, Pi.single_apply, this]
+  simp [wLast, bvec, this]
 
 theorem wbPart_wLast (s : ℂ) (m : Fin (k + 1)) :
     wbPart k r (s • wLast k r) m = if m = Fin.last k then s else 0 := by

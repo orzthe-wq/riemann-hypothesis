@@ -95,7 +95,7 @@ theorem smith_mem {O : Type*} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
         ∑ k, snf.bN.repr ⟨s, hs⟩ k * snf.a k * (if snf.f k = j then 1 else 0) := by
       conv_lhs => rw [hs']
 
-      simp [map_sum, map_smul, Finsupp.single_apply, mul_assoc]
+      simp [map_sum, map_smul, Finsupp.single_apply]
     by_cases hj : ∃ k, snf.f k = j
     · obtain ⟨k0, rfl⟩ := hj
       have hc0 : snf.bM.coord (snf.f k0) s = snf.bN.repr ⟨s, hs⟩ k0 * snf.a k0 := by

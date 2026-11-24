@@ -57,8 +57,6 @@ namespace GlobalTheory.CovTop
 
 structure Hypotheses₂ : Prop where
   p1 : GlobalTheory.Published.ToroidalCompactification
-  p2 : GlobalTheory.Published.VolGe
-  p3 : GlobalTheory.Published.VolNef
   p4 : GlobalTheory.Published.ArCalc
   p5 : GlobalTheory.Published.AbelianDeRham
   p6 : GlobalTheory.Published.TamagawaSpecialUnitary

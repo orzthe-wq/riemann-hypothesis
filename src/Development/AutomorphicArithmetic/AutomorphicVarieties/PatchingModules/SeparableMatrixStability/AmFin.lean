@@ -86,7 +86,7 @@ private theorem l_zero (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite K] 
         intro hd
         have e := (Nat.prime_dvd_prime_iff_eq (Fact.out : l.Prime) hpp).1 (Int.natCast_dvd_natCast.1 hd)
         exact hpl e.symm
-      push_neg at h1
+      push Not at h1
       simpa using h1
     have hu' := hu.map φ
     rw [map_natCast, CharP.cast_eq_zero K p] at hu'

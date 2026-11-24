@@ -90,12 +90,12 @@ def trF {E : Type*} (t : ℂ) (Φ : Fn k (1 + ρ) E) : Fn k ρ E := fun c g => �
 theorem ιLev_comp (g : Mx k 0) : ιLev k 1 ρ (ιLev k ρ 0 g) = ιLev k (1 + ρ) 0 g := by
   ext p q
   simp only [ιLev]
-  split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk] at *) <;> first | rfl | omega | (congr 1 <;> ext <;> simp only [Fin.val_mk] <;> omega)
+  split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | rfl | omega | (congr 1 <;> ext <;> simp only <;> omega)
 
 theorem liftVec_comp (v : Fin (2 * 0 + k + 1) → ℂ) : liftVec k 1 ρ (liftVec k ρ 0 v) = liftVec k (1 + ρ) 0 v := by
   funext p
   simp only [liftVec]
-  split_ifs <;> (try simp only [Fin.ext_iff, Fin.val_mk] at *) <;> first | rfl | omega | (congr 1 <;> ext <;> simp only [Fin.val_mk] <;> omega)
+  split_ifs <;> (try simp only at *) <;> first | rfl | omega | (congr 1 <;> ext <;> simp only <;> omega)
 
 def blk0 (z : Fin (2 * ρ + k + 1) → ℂ) : Fin (2 * 0 + k + 1) → ℂ := fun j => z ⟨ρ + j.val, by omega⟩
 
@@ -105,7 +105,7 @@ theorem lift_vector_zero_block {z : Fin (2 * ρ + k + 1) → ℂ} (hz : inWb k �
   split_ifs with h
   · congr 1
     ext
-    simp only [Fin.val_mk]
+    simp only
     omega
   · exact (hz p (by omega)).symm
 

@@ -87,7 +87,7 @@ theorem infEmb_continuous {τ : E →+* ℂ} {θ : Ainf F ⊗[F] E →+* ℂ} (h
 
 theorem infEmb_sigR (h : IsCMExt F E σ) {τ : E →+* ℂ} {θ : Ainf F ⊗[F] E →+* ℂ} (hθ : IsInfEmb τ θ)
     (z : Ainf F ⊗[F] E) : θ (sigR (Ainf F) σ z) = starRingEnd ℂ (θ z) := by
-  haveI := h.1
+  have := h.1
   induction z using TensorProduct.induction_on with
   | zero => simp
   | tmul a x =>
@@ -99,9 +99,9 @@ theorem infEmb_sigR (h : IsCMExt F E σ) {τ : E →+* ℂ} {θ : Ainf F ⊗[F] 
 theorem infEmb_bijective (h : IsCMExt F E σ) {I : Type} {τ : I → (E →+* ℂ)} (hτ : IsCMFam τ)
     {θ : I → (Ainf F ⊗[F] E →+* ℂ)} (hθ : ∀ ρ, IsInfEmb (τ ρ) (θ ρ)) :
     Function.Bijective fun (z : Ainf F ⊗[F] E) (ρ : I) => θ ρ z := by
-  haveI := h.1
-  haveI := h.2.1
-  haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
+  have := h.1
+  have := h.2.1
+  have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   let c : E ≃ₐ[F] E := AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ)
   have hc : ∀ (φ : E →+* ℂ) x, φ (c x) = starRingEnd ℂ (φ x) := h.2.2.2
   have hnr : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate φ ≠ φ := fun φ hφ =>
@@ -137,15 +137,15 @@ theorem exists_compact_adele (h : IsCMExt F E σ) {I : Type} [Fintype I] {τ : I
     (hC : IsCompact C) : ∃ K : Set (AF F ⊗[F] E), IsCompact K ∧ ∀ z : AF F ⊗[F] E,
       Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) z ∈ C →
       (∀ ρ, ‖θ ρ (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) z)‖ ≤ R) → z ∈ K := by
-  haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
-  haveI : IsModuleTopology (Ainf F) (Ainf F ⊗[F] E) := ⟨rfl⟩
-  haveI : IsTopologicalRing (Ainf F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Ainf F) _
-  haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_infiniteAdele F
+  have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
+  have : IsModuleTopology (Ainf F) (Ainf F ⊗[F] E) := ⟨rfl⟩
+  have : IsTopologicalRing (Ainf F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Ainf F) _
+  have := GlobalTheory.AdelicUnitaryTop.secondCountable_infiniteAdele F
   obtain ⟨e₀⟩ := GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (Ainf F)
-  haveI : LocallyCompactSpace (Ainf F ⊗[F] E) := e₀.isClosedEmbedding.locallyCompactSpace
-  haveI : SecondCountableTopology (Ainf F ⊗[F] E) := e₀.secondCountableTopology
+  have : LocallyCompactSpace (Ainf F ⊗[F] E) := e₀.isClosedEmbedding.locallyCompactSpace
+  have : SecondCountableTopology (Ainf F ⊗[F] E) := e₀.secondCountableTopology
   have hb := infEmb_bijective h hτ hθ
-  let Θ : Ainf F ⊗[F] E →+ (I → ℂ) := (Pi.ringHom θ).toAddMonoidHom
+  let Θ : Ainf F ⊗[F] E →+ (I → ℂ) := (RingHom.pi θ).toAddMonoidHom
   have hΘ : Continuous Θ := continuous_pi fun ρ => infEmb_continuous (hθ ρ)
   have ho : IsOpenMap Θ := AddMonoidHom.isOpenMap_of_sigmaCompact Θ hb.2 hΘ
   let Φ := (Equiv.ofBijective Θ hb).toHomeomorphOfContinuousOpen hΘ ho

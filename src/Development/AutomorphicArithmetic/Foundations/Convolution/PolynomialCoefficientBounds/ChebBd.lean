@@ -2,76 +2,40 @@ module
 
 public import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.AffineCharacterGenerators.AffChar
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoefficientBounds.ChebClosed
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
-open MvPolynomial Filter Topology PositivityTheory.Rg.Fx
-open scoped ContDiff
+open PositivityTheory.Rg.Fx
 
 theorem UpperTheory.ConvolutionTheory.FX.cheb_bound :
-    ∀ (η : ℝ) (m : ℕ), 0 < η → η ≤ 1 → (∀ a ∈ Set.Icc 0 η, |cheb η m a| ≤ 1) ∧ (∀ a ∈ Set.Icc (0 : ℝ) 1, |cheb η m a| ≤ (4 / η) ^ m) ∧ ∃ q : Polynomial ℝ, q.natDegree ≤ m ∧ ∀ a, q.eval a = cheb η m a := by
+    ∀ (η : ℝ) (m : ℕ), 0 < η → η ≤ 1 →
+      (∀ a ∈ Set.Icc 0 η, |cheb η m a| ≤ 1) ∧
+      (∀ a ∈ Set.Icc (0 : ℝ) 1, |cheb η m a| ≤ (4 / η) ^ m) ∧
+      ∃ q : Polynomial ℝ, q.natDegree ≤ m ∧ ∀ a, q.eval a = cheb η m a := by
   intro η m hη hη1
   have hA : ∀ a ∈ Set.Icc 0 η, |cheb η m a| ≤ 1 := by
     intro a ha
     unfold cheb
-    refine (UpperTheory.ConvolutionTheory.FX.cheb_facts m _).1 ?_
-    have h0 : 0 ≤ 2 * a / η := div_nonneg (by linarith [ha.1]) hη.le
-    have h2 : 2 * a / η ≤ 2 := by
-      rw [div_le_iff₀ hη]; linarith [ha.2]
-    rw [abs_le]; constructor <;> linarith
+    apply (UpperTheory.ConvolutionTheory.FX.cheb_facts m _).1
+    have h₀ : 0 ≤ 2 * a / η := div_nonneg (mul_nonneg zero_le_two ha.1) hη.le
+    have h₂ : 2 * a / η ≤ 2 := (div_le_iff₀ hη).2 (mul_le_mul_of_nonneg_left ha.2 zero_le_two)
+    simpa only [abs_le, le_sub_iff_add_le, sub_le_iff_le_add, neg_add_cancel,
+      one_add_one_eq_two] using And.intro h₀ h₂
   refine ⟨hA, ?_, ?_⟩
   · intro a ha
     by_cases h : a ≤ η
-    · refine (hA a ⟨ha.1, h⟩).trans (one_le_pow₀ ?_)
-      rw [le_div_iff₀ hη]; linarith
-    · have h : η < a := lt_of_not_ge h
-      have h2 : 2 ≤ 2 * a / η := by
-        rw [le_div_iff₀ hη]; linarith
-      have h3 : 2 * (2 * a / η) ≤ 4 / η := by
-        rw [← mul_div_assoc]
-        exact div_le_div_of_nonneg_right (by linarith [ha.2]) hη.le
+    · exact (hA a ⟨ha.1, h⟩).trans (one_le_pow₀ ((one_le_div hη).2 (hη1.trans (by norm_num))))
+    · have h₁ : 1 ≤ 2 * a / η - 1 := by
+        rw [le_sub_iff_add_le, one_add_one_eq_two, le_div_iff₀ hη]
+        exact mul_le_mul_of_nonneg_left (le_of_not_ge h) zero_le_two
       unfold cheb
-      refine ((UpperTheory.ConvolutionTheory.FX.cheb_facts m _).2 (by linarith)).2.trans ?_
-      exact pow_le_pow_left₀ (by linarith) (by linarith) m
+      refine ((UpperTheory.ConvolutionTheory.FX.cheb_facts m _).2 h₁).2.trans ?_
+      apply pow_le_pow_left₀ (mul_nonneg zero_le_two (zero_le_one.trans h₁))
+      calc
+        2 * (2 * a / η - 1) ≤ 2 * (2 * a / η) :=
+          mul_le_mul_of_nonneg_left (sub_le_self _ zero_le_one) zero_le_two
+        _ = 4 * a / η := by ring
+        _ ≤ 4 / η := div_le_div_of_nonneg_right (by linarith only [ha.2]) hη.le
   · refine ⟨(Polynomial.Chebyshev.T ℝ (m : ℤ)).comp
       (Polynomial.C (2 / η) * Polynomial.X + Polynomial.C (-1)), ?_, ?_⟩
     · refine Polynomial.natDegree_comp_le.trans ?_
@@ -80,7 +44,5 @@ theorem UpperTheory.ConvolutionTheory.FX.cheb_bound :
         _ = m := Nat.mul_one m
     · intro a
       unfold cheb
-      rw [Polynomial.eval_comp]
-      congr 1
-      simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
-      ring
+      simp only [Polynomial.eval_comp, Polynomial.eval_add, Polynomial.eval_mul,
+        Polynomial.eval_C, Polynomial.eval_X, div_mul_eq_mul_div, sub_eq_add_neg]

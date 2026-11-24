@@ -2,46 +2,8 @@ module
 
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CharacterNormMatrixInverse.FmatMulInv
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.HidaSetting
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -66,12 +28,10 @@ theorem K_one : (1 : I.Gf) ∈ I.Kset := by
 theorem K_inv {x : I.Gf} (hx : x ∈ I.Kset) : x⁻¹ ∈ I.Kset := by
   exact (Formalism.UG.stabGL I.Lf).inv_mem hx
 theorem K_mv {x : I.Gf} (hx : x ∈ I.Kset) {y : VA I} (hy : y ∈ I.Lf) : I.fmat x *ᵥ y ∈ I.Lf := by
-  have h : ∀ z, z ∈ I.Lf ↔ I.fmat x *ᵥ z ∈ I.Lf := hx
-  exact (h y).1 hy
+  exact ((show ∀ z, z ∈ I.Lf ↔ I.fmat x *ᵥ z ∈ I.Lf from hx) y).1 hy
 theorem K_sub_mv {x : I.Gf} (hx : x ∈ I.Kset) {y : VA I} (hy : y ∈ I.Lf) :
     (I.fmat x - 1) *ᵥ y ∈ I.Lf := by
-  rw [Matrix.sub_mulVec, Matrix.one_mulVec]
-  exact I.Lf.sub_mem (K_mv I hx hy) hy
+  simpa only [Matrix.sub_mulVec, Matrix.one_mulVec] using I.Lf.sub_mem (K_mv I hx hy) hy
 
 def mvO (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) : VA I →ₗ[IntAf I.F I.E] VA I where
   toFun v := M *ᵥ v
@@ -85,14 +45,12 @@ def Mo (g : ℕ) (S : Set (VA I)) : Submodule (IntAf I.F I.E) (VA I) :=
 
 theorem smul_mem_mL {g : ℕ} {y : VA I} (hy : y ∈ I.Lf) :
     ((g : I.E ⊗[I.F] Af I.F) • y) ∈ mL I g := by
-  unfold mL
   exact Submodule.subset_span ⟨y, hy, rfl⟩
 
 theorem Mo_mono {g : ℕ} {S T : Set (VA I)} (h : S ⊆ T) : Mo I g S ≤ Mo I g T := by
   exact sup_le_sup_right (Submodule.span_mono h) _
 theorem sub_Mo {g : ℕ} {S : Set (VA I)} : S ⊆ Mo I g S := by
-  intro s hs
-  exact Submodule.mem_sup_left (Submodule.subset_span hs)
+  exact fun s hs => Submodule.mem_sup_left (Submodule.subset_span hs)
 theorem mL_Mo {g : ℕ} {S : Set (VA I)} : mL I g ≤ Mo I g S := by
   exact le_sup_right
 
@@ -116,18 +74,14 @@ theorem mL_mv {M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)} (hM : ∀ y
     (g : ℕ) {N : Submodule (IntAf I.F I.E) (VA I)} (hN : mL I g ≤ N) :
     ∀ y ∈ I.Lf, M *ᵥ ((g : I.E ⊗[I.F] Af I.F) • y) ∈ N := by
   intro y hy
-  rw [Matrix.mulVec_smul]
-  exact hN (smul_mem_mL I (hM y hy))
+  simpa only [Matrix.mulVec_smul] using hN (smul_mem_mL I (hM y hy))
 
 theorem pres {x : I.Gf} (hx : x ∈ I.Kset) (g : ℕ) (S : Set (VA I)) (N : Submodule (IntAf I.F I.E) (VA I))
     (hSN : S ⊆ N) (hS : ∀ s ∈ S, (I.fmat x - 1) *ᵥ s ∈ N) (hN : mL I g ≤ N) :
     ∀ v ∈ Mo I g S, I.fmat x *ᵥ v ∈ N := by
   refine mv_mem I (I.fmat x) g S N (fun s hs => ?_) (mL_mv I (fun y hy => K_mv I hx hy) g hN)
-  have e : I.fmat x *ᵥ s = (I.fmat x - 1) *ᵥ s + s := by
-    rw [Matrix.sub_mulVec, Matrix.one_mulVec]
-    abel
-  rw [e]
-  exact N.add_mem (hS s hs) (hSN hs)
+  simpa only [Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel] using
+    N.add_mem (hS s hs) (hSN hs)
 
 theorem pres1 {x : I.Gf} (hx : x ∈ I.Kset) (g : ℕ) (S : Set (VA I)) (N : Submodule (IntAf I.F I.E) (VA I))
     (hS : ∀ s ∈ S, (I.fmat x - 1) *ᵥ s ∈ N) (hN : mL I g ≤ N) :
@@ -141,8 +95,7 @@ theorem mul_id (x y : I.Gf) (v : VA I) :
 
 theorem inv_id (x : I.Gf) (v : VA I) :
     (I.fmat x⁻¹ - 1) *ᵥ v = -(I.fmat x⁻¹ *ᵥ ((I.fmat x - 1) *ᵥ v)) := by
-  simp only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, fmat_inv_mul I x]
-  abel
+  simp only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, fmat_inv_mul I x, neg_sub]
 
 theorem fmat_mul_identity (x y : I.Gf) (v : VA I) :
     I.fmat (x * y) *ᵥ v = (I.fmat x - 1) *ᵥ ((I.fmat y - 1) *ᵥ v) + I.fmat x *ᵥ v + I.fmat y *ᵥ v - v := by
@@ -220,9 +173,7 @@ theorem hA_incl (x y : Fin I.n → I.E) : hA I (incl I x) (incl I y) =
   simp only [hA, Formalism.UG.hform, incl, Matrix.map_apply, map_sum, map_mul, key, starRingEnd_apply]
 
 theorem J_conj (i j : Fin I.n) : star (I.J i j) = I.J j i := by
-  have hh : Formalism.UG.cT (starRingEnd I.E) I.J = I.J := I.J_herm
-  have h := congrFun (congrFun hh j) i
-  simpa [Formalism.UG.cT, starRingEnd_apply] using h
+  simpa [Formalism.UG.cT, starRingEnd_apply] using congrFun (congrFun I.J_herm j) i
 
 theorem hA_symm (u v : VA I) : hA I v u = sigA I (hA I u v) := by
   have hs : ∀ a, Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.sigR I.cm.sig (Af I.F) a) = a := sigA_sigA I
@@ -248,8 +199,7 @@ end Gen
 section Cong
 
 theorem lt_sub {r : ℕ} {p q : ℕ} (h : p ≤ q) : {c : Fin r | c.1 < p} ⊆ {c | c.1 < q} := by
-  intro c hc
-  exact lt_of_lt_of_le hc h
+  exact fun c hc => lt_of_lt_of_le hc h
 
 variable (I : AutInst) (g : ℕ) {r k : ℕ} (e0 : Fin r → VA I) (z0 : VA I) (bw : Fin k → VA I)
 
@@ -433,8 +383,7 @@ include hadd hint
 theorem psi_Z (hg : g ≠ 0) {c : I.E ⊗[I.F] Af I.F} (hc : ZMod' I g c) : ψ (divN I g c) = 1 := by
   unfold ZMod' at hc
   obtain ⟨t, ht, rfl⟩ := hc
-  rw [divN_gmul I g hg]
-  exact hint t ht
+  simpa only [divN_gmul I g hg] using hint t ht
 
 theorem psi_mul_of_Z (hg : g ≠ 0) {a b c : I.E ⊗[I.F] Af I.F} (h : ZMod' I g (c - a - b)) :
     ψ (divN I g c) = ψ (divN I g a) * ψ (divN I g b) := by
@@ -446,9 +395,7 @@ theorem psi_mul_of_Z (hg : g ≠ 0) {a b c : I.E ⊗[I.F] Af I.F} (h : ZMod' I g
 
 theorem psi_pow (n : ℕ) (a : I.E ⊗[I.F] Af I.F) : ψ ((n : I.E ⊗[I.F] Af I.F) * a) = ψ a ^ n := by
   induction n with
-  | zero =>
-    rw [Nat.cast_zero, zero_mul, pow_zero]
-    exact hint 0 (IntAf I.F I.E).zero_mem
+  | zero => simpa only [Nat.cast_zero, zero_mul, pow_zero] using hint 0 (IntAf I.F I.E).zero_mem
   | succ n ih => rw [Nat.cast_succ, add_mul, one_mul, hadd, ih, pow_succ]
 
 theorem psi_norm (hg : g ≠ 0) {c : I.E ⊗[I.F] Af I.F} (hc : c ∈ IntAf I.F I.E) : ‖ψ (divN I g c)‖ = 1 := by
@@ -474,20 +421,13 @@ theorem term_Z {x y : I.Gf} (f n : VA I) (hn : ZMod' I g (hA I f n))
     (hq : (I.fmat x - 1) *ᵥ ((I.fmat y - 1) *ᵥ n) ∈ Qs I g f) :
     ZMod' I g (hA I f (I.fmat (x * y) *ᵥ n) - hA I f (I.fmat x *ᵥ n) - hA I f (I.fmat y *ᵥ n)) := by
   rw [fmat_mul_identity, hA_sub_right, hA_add_right, hA_add_right]
-  have e : hA I f ((I.fmat x - 1) *ᵥ ((I.fmat y - 1) *ᵥ n)) + hA I f (I.fmat x *ᵥ n) +
-      hA I f (I.fmat y *ᵥ n) - hA I f n - hA I f (I.fmat x *ᵥ n) - hA I f (I.fmat y *ᵥ n) =
-      hA I f ((I.fmat x - 1) *ᵥ ((I.fmat y - 1) *ᵥ n)) - hA I f n := by
-    abel
-  rw [e]
-  exact Z_sub I g hq hn
+  convert Z_sub I g hq hn using 1
+  abel
 
 theorem congruence_fixed_term {x : I.Gf} (f n : VA I) (hn : ZMod' I g (hA I f n))
     (hq : (I.fmat x - 1) *ᵥ n ∈ Qs I g f) : ZMod' I g (hA I f (I.fmat x *ᵥ n)) := by
-  have e : I.fmat x *ᵥ n = (I.fmat x - 1) *ᵥ n + n := by
-    rw [Matrix.sub_mulVec, Matrix.one_mulVec]
-    abel
-  rw [e, hA_add_right]
-  exact Z_add I g hq hn
+  simpa only [Matrix.sub_mulVec, Matrix.one_mulVec, hA_sub_right, sub_add_cancel]
+    using Z_add I g hq hn
 
 theorem Me_Q (hf0 : ∀ a, f0 a ∈ I.Lf) (hfe : ∀ a b : Fin r, a ≠ b → ZMod' I g (hA I (f0 a) (e0 b)))
     (a : Fin r) : Mo I g (e0 '' {b | b.1 < a.1}) ≤ Qs I g (f0 a) := by
@@ -589,8 +529,7 @@ theorem Afun_int {x : I.Gf} (hx : x ∈ I.Kset) (he0 : ∀ a, e0 a ∈ I.Lf) (hf
 
 theorem Kg_sub {x : I.Gf} (hx : x ∈ I.Kg g) : ∀ y ∈ I.Lf, (I.fmat x - 1) *ᵥ y ∈ mL I g := by
   intro y hy
-  have hx' : x ∈ I.Kset ∧ ∀ y ∈ I.Lf, ∃ z ∈ I.Lf, (I.fmat x - 1) *ᵥ y = (g : I.E ⊗[I.F] Af I.F) • z := hx
-  obtain ⟨z, hz, e⟩ := hx'.2 y hy
+  obtain ⟨z, hz, e⟩ := hx.2 y hy
   rw [e]
   exact smul_mem_mL I hz
 
@@ -632,8 +571,7 @@ def AutKCompact : Prop := ∀ I : AutInst, IsCompact I.Kset
 variable {D : Formalism.BasicNotions.D7} (X : HidaSetting D)
 
 theorem modulus_g_ne_zero : X.B.g ≠ 0 := by
-  rw [X.g_eq]
-  exact mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero
+  simpa only [X.g_eq] using mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero
 
 theorem reference_frame_congruences :
     (∀ a b, a ≠ b → ZMod' X.B.I X.B.g (hA X.B.I (X.f0 a) (X.e0 b))) ∧

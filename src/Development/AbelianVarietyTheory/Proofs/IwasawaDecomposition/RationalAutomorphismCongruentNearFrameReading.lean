@@ -117,10 +117,6 @@ end Rat
 section Core
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
-theorem vAlg' (P : HeightOneSpectrum (𝓞 E)) (x : E) :
-    Valued.v (algebraMap E (P.adicCompletion E) x) = P.valuation E x :=
-  HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P x
-
 theorem adAt_ratA (P : HeightOneSpectrum (𝓞 E)) (γ : GL (Fin n) E) (r s : Fin n) :
     adAt F P (((GlobalTheory.TwU.ratA F γ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) r s) =
       algebraMap E (P.adicCompletion E) ((γ : Matrix (Fin n) (Fin n) E) r s) :=
@@ -135,7 +131,7 @@ theorem core (P : HeightOneSpectrum (𝓞 E)) (hq : Valued.v ((qOf P : ℕ) : P.
     (h : GlobalTheory.TwU.CongAt P d (x⁻¹ * GlobalTheory.TwU.ratA F (G g))) (hC : CongE P c g' g) :
     GlobalTheory.TwU.CongAt P c (x⁻¹ * GlobalTheory.TwU.ratA F (G g')) := by
   have hq' : P.valuation E ((qOf P : ℕ) : E) = exp (-1 : ℤ) := by
-    rw [← vAlg', map_natCast]
+    rw [← GlobalTheory.Mem.Col2.valued_algebraMap, map_natCast]
     exact hq
   have e : x⁻¹ * GlobalTheory.TwU.ratA F (G g') = (x⁻¹ * GlobalTheory.TwU.ratA F (G g)) * GlobalTheory.TwU.ratA F (G (g⁻¹ * g')) := by
     rw [mul_assoc, ← map_mul, ← map_mul, mul_inv_cancel_left]
@@ -153,7 +149,7 @@ theorem core (P : HeightOneSpectrum (𝓞 E)) (hq : Valued.v ((qOf P : ℕ) : P.
     rw [adAt_ratA, hG]
     have h1 : (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s = algebraMap E _ ((1 : Matrix (Fin n) (Fin n) E) r s) := by
       rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp
-    rw [h1, ← map_sub, vAlg']
+    rw [h1, ← map_sub, GlobalTheory.Mem.Col2.valued_algebraMap]
     exact val_entry P hq' c _ (congE_inv_mul P c g g' hg hC) r s
 
 end Core

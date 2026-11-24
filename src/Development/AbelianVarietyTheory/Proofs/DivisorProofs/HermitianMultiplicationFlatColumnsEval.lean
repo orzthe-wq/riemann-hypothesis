@@ -54,11 +54,6 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 
 namespace GlobalTheory.HSShort.ColEval
 
-theorem word_succ {K A : Type} [Field K] [AddCommGroup A] [Module K A] {N : ℕ}
-    (mul : (Fin N → K) →ₗ[K] Module.End K A) {t : ℕ} (u : Fin (t + 1) → Fin N → K) :
-    word mul u = mul (u 0) * word mul (fun i => u i.succ) := by
-  simp [word, List.ofFn_succ]
-
 theorem mul_eq_sum {K A : Type} [Field K] [AddCommGroup A] [Module K A] {N : ℕ}
     (mul : (Fin N → K) →ₗ[K] Module.End K A) (v : Fin N → K) :
     mul v = ∑ k, v k • mul (Pi.single k 1) := by
@@ -82,7 +77,7 @@ theorem mul_single_ι (Φ : S.Flat E A' s δ) (k : Fin S.N) (y : A) :
   ext j
   by_cases h : j = k
   · subst h; simp
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 theorem word_ι_expand (Φ : S.Flat E A' s δ) : ∀ (t : ℕ) (U : Fin t → Fin S.N → E) (z : A),
     word Φ.mul U (Φ.ι z) =
@@ -90,9 +85,9 @@ theorem word_ι_expand (Φ : S.Flat E A' s δ) : ∀ (t : ℕ) (U : Fin t → Fi
   | 0, U, z => by simp [word]
   | t + 1, U, z => by
 
-    rw [word_succ, Module.End.mul_apply, word_ι_expand Φ t, map_sum]
+    rw [_root_.GlobalTheory.HSShort.Sys.word_succ, Module.End.mul_apply, word_ι_expand Φ t, map_sum]
     rw [← (Fin.consEquiv fun _ : Fin (t + 1) => Fin S.N).sum_comp, Fintype.sum_prod_type]
-    simp only [Fin.consEquiv_apply, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, word_succ,
+    simp only [Fin.consEquiv_apply, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, _root_.GlobalTheory.HSShort.Sys.word_succ,
       Module.End.mul_apply, map_smul, mul_eq_sum Φ.mul (U 0), LinearMap.sum_apply, LinearMap.smul_apply,
       mul_single_ι, Finset.smul_sum, smul_smul]
     rw [Finset.sum_comm]
@@ -154,7 +149,7 @@ theorem columns_eval : ∀ (F A : Type) [Field F] [NumberField F] [AddCommGroup 
   refine ⟨Submodule.sum_mem _ fun e _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hmem e, rfl⟩), fun i => ?_⟩
 
   simp only [coordP, map_sum, map_mul, aeval_C, map_prod, aeval_X, LinearMap.coe_comp, Function.comp_apply,
-  LinearMap.map_smul, LinearMap.coe_proj, Function.eval, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
+  LinearMap.map_smul, LinearMap.coe_proj, Function.eval, smul_eq_mul]
   refine Finset.sum_congr rfl fun e _ => ?_
   rw [h3 _ (hmem e) i, mul_comm]
 

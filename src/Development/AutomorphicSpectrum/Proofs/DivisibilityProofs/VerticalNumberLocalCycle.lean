@@ -4,7 +4,8 @@ public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Loc
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IsMultiProjPrimeExtTo
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.DivCycleMapLocalisation
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.IntersectionNumberFieldEquiv
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.VerticalNumberZeroOfHorizontalStatement
+public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.BundleObjects
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.VerticalNumberZeroOfHorizontal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -213,7 +214,7 @@ theorem GlobalTheory.CompanionTheory.Ar.Num.vertAt_eq_cycList : ∀ (K : Type) [
     have h1 := left_ne_zero_of_mul hW'
     refine ⟨h1, ?_⟩
     by_contra hp
-    have h0 := GlobalTheory.T.vertical_number_zero_of_horizontal (ZP p) ((p : ℕ) : ZP p) hirr K ι (extTo (ZP p) P) D hmodel a _ hf' hfP' W' h1 hp l hl
+    have h0 := _root_.GlobalTheory.CompanionTheory.Ar.Num.horizontal_vNumL_eq_zero (ZP p) ((p : ℕ) : ZP p) hirr K ι (extTo (ZP p) P) D hmodel a _ hf' hfP' W' h1 hp l hl
     exact right_ne_zero_of_mul hW' h0
   · intro W hW
     have h1 := left_ne_zero_of_mul hW

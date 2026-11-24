@@ -164,8 +164,8 @@ theorem homology_equiv_over (sq : IsPullback p q g h) [IsSeparated g] [IsSeparat
     (fun i => q ⁻¹ᵁ B i) _ (fun j => p ⁻¹ᵁ V j) hF inferInstance hD hc
     (by rw [← Scheme.Hom.preimage_iSup, hBc, Scheme.Hom.preimage_top])
     (by rw [← Scheme.Hom.preimage_iSup, hVc, Scheme.Hom.preimage_top])
-    (fun i _ hW => MumfordCohom.isAffineOpen_preimage_inf _ (hB i) hW)
-    (fun j _ hW => MumfordCohom.isAffineOpen_preimage_inf _ (hV j) hW)
+    (fun i _ hW => _root_.GlobalTheory.AbLaw.isAffineOpen_preimage_inf_of_isSeparated _ (hB i) hW)
+    (fun j _ hW => _root_.GlobalTheory.AbLaw.isAffineOpen_preimage_inf_of_isSeparated _ (hV j) hW)
     (fun i j => isAffineOpen_prod sq hF (hV j) B hB hBc i) n
   have e₂ := trunc₂HomologyIsoFstSingleton k (secCube (p ≫ g) F fun u : ν ⊕ₗ σ =>
       Sum.elim (fun i => q ⁻¹ᵁ B i) (fun j => p ⁻¹ᵁ V j) (ofLex u))

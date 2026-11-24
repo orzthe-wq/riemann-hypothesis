@@ -105,7 +105,7 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.locOp_nbar (hT : _root_.P
     · rw [he, hz]; simp [Complex.inv_I]
   have hsch := d.om_sch
   have h4 := R.step_comp w hsch (R.step_comp w hsch (R.step_comp w hsch hW' hW') hW') hW'
-  rw [_root_.PositivityTheory.SiegelWeilFormula.RD_k.w_four hw₀] at h4
+  rw [_root_.PositivityTheory.SiegelWeilFormula.RD_k.w_four_pf hw₀] at h4
   obtain ⟨Ψ, hΨ⟩ := hG F E σ d R w
   obtain ⟨X₀, hX₀⟩ : ∃ X₀, Ψ X₀ ≠ 0 := by
     by_contra hc

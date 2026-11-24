@@ -72,9 +72,7 @@ section Dim
 
 end Dim
 
-theorem InterNumCut.proof (hF : CycleSplit.Filt.Statement.{u, w}) (hA : CutRestrLenExact.Statement.{u, w})
-    (hB : MixedTwistShift.Statement.{u, w}) : InterNumCut.Statement.{u, w} :=
-  _root_.UpperTheory.Reformulated.B.KleimanIntersectionNumberCut.proof hF hA hB
+alias InterNumCut.proof := _root_.UpperTheory.Reformulated.B.KleimanIntersectionNumberCut.proof
 
 end
 

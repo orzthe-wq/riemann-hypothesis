@@ -65,7 +65,7 @@ def adicMap (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) :
 
 theorem adicMap_alg (I : Ideal R) (J : Ideal S) (f : R →+* S) (hf : I ≤ J.comap f) (r : R) :
     adicMap I J f hf (algebraMap R (AdicCompletion I R) r) = algebraMap S (AdicCompletion J S) (f r) := by
-  first | exact @AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg | exact AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg .. | (intros; apply AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg <;> assumption)
+  first | exact AdicMapAlgebra.Bridge.AdicMaps.adicMap_alg ..
 
 abbrev PHat (p : ℕ) (R : Type) [CommRing R] : Type := AdicCompletion (Ideal.span {(p : R)}) R
 
@@ -74,7 +74,7 @@ def padicMap (p : ℕ) (f : R →+* S) : PHat p R →+* PHat p S :=
 
 theorem padicMap_alg (p : ℕ) (f : R →+* S) (r : R) :
     padicMap p f (algebraMap R (PHat p R) r) = algebraMap S (PHat p S) (f r) := by
-  first | exact @PadicMapAlgebra.Bridge.AdicMaps.padicMap_alg | exact PadicMapAlgebra.Bridge.AdicMaps.padicMap_alg .. | (intros; apply PadicMapAlgebra.Bridge.AdicMaps.padicMap_alg <;> assumption)
+  first | exact PadicMapAlgebra.Bridge.AdicMaps.padicMap_alg ..
 
 end Gen
 
@@ -82,14 +82,14 @@ theorem exists_acris_completion (l : ℕ) [Fact l.Prime] :
     ∃ e : Per.Acris l ≃+* AdicCompletion (Ideal.span {(l : Per.Acris0 l)}) (Per.Acris0 l),
       ∀ s : Per.Acris0 l, e (algebraMap (Per.Acris0 l) (Per.Acris l) s) =
         algebraMap (Per.Acris0 l) (AdicCompletion (Ideal.span {(l : Per.Acris0 l)}) (Per.Acris0 l)) s := by
-  first | exact @CrisCompletionExists.Bridge.AdicMaps.exists_acris_completion | exact CrisCompletionExists.Bridge.AdicMaps.exists_acris_completion .. | (intros; apply CrisCompletionExists.Bridge.AdicMaps.exists_acris_completion <;> assumption)
+  first | exact CrisCompletionExists.Bridge.AdicMaps.exists_acris_completion ..
 
 theorem coeff_galois (l : ℕ) [Fact l.Prime] (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) (x : Per.Fl l)
     (n : ℕ) (y : Per.OC l)
     (h : PreTilt.coeff n x = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : Per.OC l)}) y) :
     PreTilt.coeff n (Per.σF g x) =
       Ideal.Quotient.mk (Ideal.span {((l : ℕ) : Per.OC l)}) (Per.σO g y) := by
-  first | exact @AdicCoeffGalois.Bridge.AdicMaps.coeff_galois | exact AdicCoeffGalois.Bridge.AdicMaps.coeff_galois .. | (intros; apply AdicCoeffGalois.Bridge.AdicMaps.coeff_galois <;> assumption)
+  first | (intros; apply AdicCoeffGalois.Bridge.AdicMaps.coeff_galois <;> assumption)
 
 end
 

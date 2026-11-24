@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SplittingProjection
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsGeneratorsMemCompletedLatticeIffStatement
+public import Formalism.SatakeDualWeyl.StatementC
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsGeneratorsMemCompletedLatticeIff
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
 import Mathlib.Algebra.Order.Floor.Extended
@@ -57,7 +58,7 @@ theorem mem_latS_adele_iff (Λ : Submodule (𝓞 E) (Fin k → E)) (hΛ : Module
     u ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F)
       (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ ↔
       ∀ v : HeightOneSpectrum (𝓞 F), (fun i => prV (E := E) v (u i)) ∈ locLat v Λ := by
-  obtain ⟨m, l, -, hl⟩ := GlobalTheory.T.exists_generators_mem_completedLattice_iff F E k Λ hΛ
+  obtain ⟨m, l, -, hl⟩ := _root_.GlobalTheory.OverCompare.exists_generators_mem_latS_iff F E k Λ hΛ
   have hv : ∀ (v : HeightOneSpectrum (𝓞 F)) (w : Fin k → E ⊗[F] v.adicCompletion F),
       w ∈ locLat v Λ ↔ ∃ t : Fin m → v.adicCompletion F,
         (∀ j, t j ∈ (v.adicCompletionIntegers F).toSubring) ∧ w = fun i => ∑ j, l j i ⊗ₜ[F] t j :=

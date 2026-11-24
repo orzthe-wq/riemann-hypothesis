@@ -63,7 +63,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Kloc.Fresnel
 
 theorem hasTemperateGrowth_expI : Function.HasTemperateGrowth (fun t : ℝ => cexp (I * t)) := by
-  apply GlobalTheory.ThK.Dbl.Dense.temperate_exp <;> assumption
+  apply GlobalTheory.ThK.Dbl.Dense.temperate_exp
 
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
   [MeasurableSpace V] [BorelSpace V]

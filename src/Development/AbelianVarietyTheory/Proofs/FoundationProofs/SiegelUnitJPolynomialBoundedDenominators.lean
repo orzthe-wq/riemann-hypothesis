@@ -9,10 +9,12 @@ public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Mathlib.RingTheory.SimpleRing.Principal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasQExpansionOfLevelCoeffAndFunctionUnique
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplex
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerSlActionRowVectorStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitQExpansionCoefficientsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitIndexAddIntVectorStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitQExpansionCoeffsIntegralStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.Imports
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerSlActionRowVector
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitQExpansionCoefficients
+import Development.AbelianVarietyTheory.Definitions.Foundations.CthFac
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitIndexAddIntVector
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitQExpansionCoeffsIntegral
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -58,7 +60,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.Foundations.EeProd
-public import Development.AbelianVarietyTheory.Definitions.Foundations.Imports
 import Development.AbelianVarietyTheory.Definitions.Foundations.Integral
 
 @[expose] public section
@@ -286,13 +287,13 @@ theorem siegel_coeff [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε)
     funext z
     unfold sgC
     rw [hx]
-    exact GlobalTheory.T.smoothedSiegelUnit_index_add_intVector c _ n _ hadm
+    exact _root_.GlobalTheory.Sieg.Per.sg_add_int c _ n _ hadm
   have hsie : siegel X c ![(a : ℚ) / M, (b : ℚ) / M] = siegel X c ![(a0 : ℚ) / M, (b0 : ℚ) / M] := by
     unfold siegel
     rw [hsg]
   rw [hsie]
-  obtain ⟨k, A, hQ, hc, hz⟩ := GlobalTheory.T.siegel_unit_q_expansion_coefficients Ω ε X c M a0 b0 hM hlt hadm
-  obtain ⟨k', hk'⟩ := GlobalTheory.T.smoothedSiegelUnit_qExpansion_coeffs_integral c M a0 hM hlt
+  obtain ⟨k, A, hQ, hc, hz⟩ := _root_.GlobalTheory.KExp.siegel_exp Ω ε X c M a0 b0 hM hlt hadm
+  obtain ⟨k', hk'⟩ := _root_.GlobalTheory.SiegQ.sg_expansion_int c M a0 hM hlt
   obtain ⟨A', hQ', -, -, hA', -⟩ := hk' b0 hadm
   have hAn : ∀ m, A m ∈ Subring.closure {eOm ε (1 / (M : ℚ))} := by
     intro m
@@ -331,7 +332,7 @@ theorem good_siegel [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) 
     (γ : SL(2, ℤ)) : Good (X.exp (X.sl (ofSL γ) (siegel X c ![(a : ℚ) / M, (b : ℚ) / M]))) := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
   have hMq : (M : ℚ) ≠ 0 := by exact_mod_cast hM.ne'
-  rw [GlobalTheory.T.siegelUnitInTower_sl_action_rowVector Ω ε X c _ γ (admissible_of_integral_conj_le hM hc1 hc6 hcM hab)]
+  rw [_root_.GlobalTheory.KZ.SiegelSL.sl_siegel Ω ε X c _ γ (admissible_of_integral_conj_le hM hc1 hc6 hcM hab)]
   have hdet : (γ 0 0 : ℤ) * γ 1 1 - γ 0 1 * γ 1 0 = 1 := by
     have := Matrix.SpecialLinearGroup.det_coe γ
     rw [Matrix.det_fin_two] at this

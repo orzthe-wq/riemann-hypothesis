@@ -72,7 +72,7 @@ end UpperTheory.Gal.TranscendenceTraces
 theorem UpperTheory.Gal.TranscendenceTraces.indDesc_of :
     IndDesc := by
   intro A O B C _ _ _ _ _ _ _ _ hO ⟨g⟩
-  obtain ⟨J, _, _, D, ι, ⟨hc⟩, hD⟩ := GlobalTheory.T.exists_filtered_colimit_of_etale_of_indEt A O hO
+  obtain ⟨J, _, _, D, ι, ⟨hc⟩, hD⟩ := _root_.GlobalTheory.EtC.exists_filtered_colimit_etale_of_indEt A O hO
   let F := Under.pushout (CommRingCat.ofHom (algebraMap A B))
   have hFc := isColimitOfPreserves F hc
   have : IsFinitelyPresentable.{0} (Under.mk (CommRingCat.ofHom (algebraMap B C))) :=

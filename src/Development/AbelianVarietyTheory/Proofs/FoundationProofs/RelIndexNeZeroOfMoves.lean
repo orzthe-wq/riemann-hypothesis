@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdxEqRelIndex
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteQuotientComap
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FrameEmbeddingUniqueFixedStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FrameEmbeddingUniqueFixed
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsDual
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -83,16 +83,7 @@ theorem factorization_relIndex_eq {G : Type} [AddCommGroup G] (A A' B : AddSubgr
     Nat.factorization_eq_zero_of_not_dvd d1, Nat.factorization_eq_zero_of_not_dvd d2, zero_add] at e
   exact e.symm
 
-theorem finite_quot {E : Type} [Field E] [NumberField E] {n : ℕ} (L₀ L : Submodule (𝓞 E) (Fin n → E))
-    (h₀ : L₀.FG) (h : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
-    Finite (L₀ ⧸ Submodule.comap L₀.subtype L) := by
-  first
-  | exact @_root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap
-  | exact _root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap
-  | (apply _root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap <;> assumption)
-  | (intros; apply _root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap ..)
+alias finite_quot := _root_.GlobalTheory.FiniteQuotientComap.finite_quotient_comap
 
 theorem eq_lat {D : D7} {n : ℕ} {g : GL (Fin n) (AE D)} {L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (h : Moves D g L) : L = AdLattice.lat g := by
@@ -187,7 +178,7 @@ theorem neg_one_pow_lenQ : ∀ (D : D7) (n : ℕ) (gs gi : GA D n) (Li L : Submo
   intro D n gs gi Li L hs hi hLi hL
   have := finite_of_moves hLi
   have h1 : sgn D (idx D Li) = (-1 : ℂ) ^ lenQ D (stdL D n) Li := by
-    refine (GlobalTheory.T.finite_module_sign_eq_neg_one_pow_length D (stdL D n ⧸ Submodule.comap (stdL D n).subtype Li)).2 fun q hq hd => ?_
+    refine (_root_.GlobalTheory.InertParity.FiniteOrder.ev_card_and_sgn_card D (stdL D n ⧸ Submodule.comap (stdL D n).subtype Li)).2 fun q hq hd => ?_
     by_contra hn
     obtain ⟨s, hsq, h⟩ := agree_std (hi q hq hn) hLi
     exact not_dvd_relIndex _ _ (relIndex_ne_zero_of_moves hLi) hq hsq h ((idx_eq_relIndex Li) ▸ hd)

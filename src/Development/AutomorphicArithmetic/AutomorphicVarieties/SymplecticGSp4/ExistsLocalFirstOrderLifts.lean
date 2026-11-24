@@ -152,7 +152,7 @@ private theorem dU_adj {Y : M4 O} (hY : Y ∈ sp4 O) :
   rw [dU_val, dU_inv]
   ext i j
   · rw [adj_apply]
-    fin_cases i <;> fin_cases j <;> simp [sgn, Fin.rev, Matrix.one_apply]
+    fin_cases i <;> fin_cases j <;> simp [sgn, Fin.rev]
   · have hij := congrFun (congrFun hY' i) j
     rw [adj_apply] at hij
     rw [adj_apply]
@@ -187,13 +187,13 @@ private theorem dU_conj (Y X : M4 O) (X' : M4 (DualNumber O)) (hX : ∀ a b, X' 
     by_cases h : a = b <;> simp [Matrix.one_apply, h]
   have p2 : (1 + Y.map (TrivSqZeroExt.inr : O → DualNumber O)).map TrivSqZeroExt.snd = Y := by
     ext a b
-    by_cases h : a = b <;> simp [Matrix.one_apply, h]
+    by_cases h : a = b <;> simp [h]
   have q1 : (1 - Y.map (TrivSqZeroExt.inr : O → DualNumber O)).map TrivSqZeroExt.fst = 1 := by
     ext a b
     by_cases h : a = b <;> simp [Matrix.one_apply, h]
   have q2 : (1 - Y.map (TrivSqZeroExt.inr : O → DualNumber O)).map TrivSqZeroExt.snd = -Y := by
     ext a b
-    by_cases h : a = b <;> simp [Matrix.one_apply, h]
+    by_cases h : a = b <;> simp [h]
   have x1 : (X.map (TrivSqZeroExt.inl : O → DualNumber O)).map TrivSqZeroExt.fst = X := by
     ext a b
     simp

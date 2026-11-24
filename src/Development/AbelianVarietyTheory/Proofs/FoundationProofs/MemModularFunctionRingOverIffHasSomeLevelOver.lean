@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.MemRingOfInR
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QExpansionCoeffsInSubringRingClosed
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GammaLeOfDvdStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GammaLeOfDvd
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,11 +57,11 @@ theorem inR_const (E : Subring ℂ) (c : ℂ) (hc : c ∈ E) : InR E fun _ => c 
 
 theorem lv_lift {E : Subring ℂ} {f : ℍ → ℂ} {N w : ℕ} (N₂ : ℕ) (hN₂ : 0 < N₂) (w' : ℕ) (hw : w ≤ w')
     (hN : 0 < N) (h : Lv E N w f) : Lv E (N * N₂) w' f :=
-  GlobalTheory.T.lv_mono_of_dvd_of_le E N (N * N₂) w w' f (Nat.mul_pos hN hN₂) (dvd_mul_right N N₂) hw h
+  _root_.GlobalTheory.FN.lv_mono E N (N * N₂) w w' f (Nat.mul_pos hN hN₂) (dvd_mul_right N N₂) hw h
 
 theorem lv_lift' {E : Subring ℂ} {f : ℍ → ℂ} {N w : ℕ} (N₁ : ℕ) (hN₁ : 0 < N₁) (w' : ℕ) (hw : w ≤ w')
     (hN : 0 < N) (h : Lv E N w f) : Lv E (N₁ * N) w' f :=
-  GlobalTheory.T.lv_mono_of_dvd_of_le E N (N₁ * N) w w' f (Nat.mul_pos hN₁ hN) (dvd_mul_left N N₁) hw h
+  _root_.GlobalTheory.FN.lv_mono E N (N₁ * N) w w' f (Nat.mul_pos hN₁ hN) (dvd_mul_left N N₁) hw h
 
 theorem inR_add {E : Subring ℂ} {f g : ℍ → ℂ} (hf : InR E f) (hg : InR E g) : InR E (f + g) := by
   obtain ⟨N₁, w₁, hN₁, hf⟩ := hf

@@ -60,4 +60,4 @@ theorem _root_.GlobalTheory.T.traceSymplectic_self_zero_splitSupported : ∀ {D 
     (u.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW Bs.τ₁) = 0 ∨ u.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (Bs.τ₁.comp D.sp.cm.sig)) = 0) →
     ∀ ξ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := D.host.F) (E := D.host.E),
       symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) ξ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.V'.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J) u u = 0 := by
-  first | exact @GlobalTheory.VacIso.symp_self_eq_zero | exact GlobalTheory.VacIso.symp_self_eq_zero | (intros; apply GlobalTheory.VacIso.symp_self_eq_zero <;> assumption)
+  first | exact @GlobalTheory.VacIso.symp_self_eq_zero

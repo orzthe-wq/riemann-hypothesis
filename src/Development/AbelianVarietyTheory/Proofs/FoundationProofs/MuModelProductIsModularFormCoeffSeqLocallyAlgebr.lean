@@ -1,11 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ChapterMu
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinPeriodicWeightsIsModularFormStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinProductSeriesEqDepletedEisensteinProduStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletionStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructure
+public import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinPeriodicWeightsIsModularForm
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EisensteinProductSeriesEqDepletedEisensteinProdu
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsModularFormCoeffSeqHeckeUAndDepletion
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqMulAndQExpansion
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormCoeffSeqLinearStructure
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,7 +63,7 @@ theorem ch_mul {M : ℕ} (χ : DirichletCharacter ℂ M) (x y : ℤ) : ch χ (x 
 
 theorem ch_add_dvd {M : ℕ} (χ : DirichletCharacter ℂ M) (K : ℕ) (h : M ∣ K) (x : ℤ) : ch χ (x + K) = ch χ x := by
   obtain ⟨t, rfl⟩ := h
-  simp [ch, ZMod.natCast_self]
+  simp [ch]
 
 theorem ch_zero {M : ℕ} [Fact (1 < M)] (χ : DirichletCharacter ℂ M) : ch χ 0 = 0 := by
   simp only [ch, Int.cast_zero]
@@ -77,7 +78,7 @@ theorem isUnit_of_coprime {M : ℕ} (d : ℤ) (h : IsCoprime d (M : ℤ)) : IsUn
   obtain ⟨a, b, hab⟩ := h
   have := congrArg (Int.cast : ℤ → ZMod M) hab
   push_cast at this
-  simp [ZMod.natCast_self] at this
+  simp at this
   exact isUnit_iff_exists_inv.2 ⟨a, by rw [mul_comm]; exact this⟩
 
 theorem mul_inv_unit {M : ℕ} (χ : DirichletCharacter ℂ M) (d : ℤ) (h : IsUnit (d : ZMod M)) : ch χ d * ch χ⁻¹ d = 1 := by
@@ -107,7 +108,7 @@ theorem GlobalTheory.zm_char_mf : ∀ (k j N l m : ℕ) (ε : DirichletCharacter
     have e : ((N * t : ℕ) : ℤ) = (t : ℤ) * N := by push_cast; ring
     rw [e]
     exact (Function.Periodic.nat_mul (show Function.Periodic u (N : ℤ) from hu) t) x
-  obtain ⟨c, hE1⟩ := GlobalTheory.T.eisenstein_periodic_weights_isModularForm (k - 1 - j) (N * l ^ m) 1 (fun x => u x * ch ψ x) (fun _ => 1)
+  obtain ⟨c, hE1⟩ := _root_.GlobalTheory.eis_periodic_weights (k - 1 - j) (N * l ^ m) 1 (fun x => u x * ch ψ x) (fun _ => 1)
     (fun d => ch θ⁻¹ d * ch ψ d) (fun _ => 1) (by omega) (by positivity) one_pos (by simp [ch_zero])
     (fun x => by rw [hup _ (dvd_mul_right _ _), ch_add_dvd _ _ (dvd_mul_left _ _)]) (fun _ => rfl)
     (fun d hd => by
@@ -116,21 +117,21 @@ theorem GlobalTheory.zm_char_mf : ∀ (k j N l m : ℕ) (ε : DirichletCharacter
       rw [hmul d x hdN, ch_mul]
       ring)
     (by simp only [ch, Int.cast_neg, Int.cast_one, mul_one]; rw [inv_apply_neg_one, mul_comm, hpar1])
-  obtain ⟨c', hE2⟩ := GlobalTheory.T.eisenstein_periodic_weights_isModularForm (j + 1) (l ^ m) N (ch ψ⁻¹) (ch ν) (ch ψ⁻¹) (ch ν) (by omega) hlm hN
+  obtain ⟨c', hE2⟩ := _root_.GlobalTheory.eis_periodic_weights (j + 1) (l ^ m) N (ch ψ⁻¹) (ch ν) (ch ψ⁻¹) (ch ν) (by omega) hlm hN
     (ch_zero _) (ch_add_dvd _ _ dvd_rfl) (ch_add_dvd _ _ dvd_rfl)
     (fun d _ => ⟨fun x => by rw [ch_mul, mul_comm], fun x => by rw [ch_mul, mul_comm]⟩)
     (by simp only [ch, Int.cast_neg, Int.cast_one]; rw [inv_apply_neg_one, hpar2])
-  have hD1 := (GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion (k - 1 - j) (N * l ^ m * 1) l _ _ (by omega) hl
+  have hD1 := (_root_.GlobalTheory.depletion_mf (k - 1 - j) (N * l ^ m * 1) l _ _ (by omega) hl
     (dvd_mul_of_dvd_left (dvd_mul_of_dvd_right (dvd_pow_self l (by omega)) _) _)
     (fun d => by rw [ch_add_dvd _ _ (dvd_mul_of_dvd_left (dvd_mul_right _ _) _),
       ch_add_dvd _ _ (dvd_mul_of_dvd_left (dvd_mul_left _ _) _)]) hE1).2
-  have hD2 := (GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion (j + 1) (l ^ m * N) l _ _ (by omega) hl
+  have hD2 := (_root_.GlobalTheory.depletion_mf (j + 1) (l ^ m * N) l _ _ (by omega) hl
     (dvd_mul_of_dvd_left (dvd_pow_self l (by omega)) _)
     (fun d => by rw [ch_add_dvd _ _ (dvd_mul_right _ _), ch_add_dvd _ _ (dvd_mul_left _ _)]) hE2).2
   have hD1' := (GlobalTheory.EisM.mf_linear _ _ _).2.2.2.2.1 (N * l ^ (m + 1)) _ ⟨1, by ring⟩ hD1
   have hD2' := (GlobalTheory.EisM.mf_linear _ _ _).2.2.2.2.1 (N * l ^ (m + 1)) _ ⟨1, by ring⟩ hD2
   have P := GlobalTheory.EisM.mul_main.2 _ _ _ _ _ _ _ hD1' hD2'
-  rw [GlobalTheory.T.eisensteinProductSeries_eq_depleted_eisenstein_product k l j u (ch ν) (ch ψ) (ch ψ⁻¹) c c' hjk]
+  rw [_root_.GlobalTheory.zm_eq_mul_dep_eis k l j u (ch ν) (ch ψ) (ch ψ⁻¹) c c' hjk]
   have hk : k - 1 - j + (j + 1) = k := by omega
   rw [hk] at P
   refine (GlobalTheory.EisM.mf_linear _ _ _).2.2.2.1 (ch ε) _ (fun d hd => ?_) P

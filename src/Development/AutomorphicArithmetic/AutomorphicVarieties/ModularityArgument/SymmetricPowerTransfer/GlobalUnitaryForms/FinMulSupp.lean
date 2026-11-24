@@ -122,15 +122,6 @@ theorem prod_split (Sg S : Finset (Pl F)) (h : Sg ⊆ S) (a b g : Pl F → ℂ) 
       exact hx (h3 x hS)
     simp [Finset.mem_sdiff, hxS]
 
-theorem zEx {K : Type} [Field K] {τ : K} (h : τ ^ 2 - 4 ≠ 0) : ∃ z : (Etau K τ)ˣ, (z : Etau K τ) = 1 + QuadraticAlgebra.omega := by
-  have hu : IsUnit (1 + QuadraticAlgebra.omega : Etau K τ) := by
-    rw [QuadraticAlgebra.isUnit_iff_norm_isUnit, isUnit_iff_ne_zero]
-    simp [QuadraticAlgebra.norm_def, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
-    intro h0
-    apply h
-    linear_combination (τ - 2) * h0
-  exact ⟨hu.unit, rfl⟩
-
 theorem gqOn_zero {H G : Type} [Group H] [Group G] (j : H →* G) (H₀ : Subgroup H) (U : Subgroup G) (k : G ⧸ U → ℂ) (h : ∀ y, k y = 0) :
     gqOn j H₀ U k = 0 := by
   simp [gqOn, gq, h]
@@ -242,7 +233,7 @@ theorem gqD (D : Dat Δ) (hD : D.Ok) (ι : DX Δ →* DA Δ) (hι : IsIotaD ι) 
   · intro v
     by_cases hvSg : v ∈ D.Sg
     · have hJS : D.J2v v = (D.S v).J2 := by simp [Dat.J2v, hvSg]
-      obtain ⟨z, hz⟩ := zEx (hτv v)
+      obtain ⟨z, hz⟩ := _root_.UpperTheory.V.Z.Sym.Loc.exists_unit_one_add_generator (hτv v)
       have hdo := SigOk.D_orb (hD.sig v hvSg) (t v) (ht v hvSg) (cv v τ) _ (jv v) (hτv v) (hγv v) (hjv v) z hz
       haveI := hchar v
       have hsl := (stabLe (Ov v) (Kv v) (cv v Δ) (cv v τ) (hΔv v) (hτv v)).1 _ (jv v) (hγv v) (hjv v)

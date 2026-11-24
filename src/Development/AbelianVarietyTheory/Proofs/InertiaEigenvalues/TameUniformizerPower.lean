@@ -137,10 +137,10 @@ theorem inflates_units (i : ℚ_[g] ≃+* w.adicCompletion E) (θ : (ZMod g)ˣ �
   refine ⟨LinearMap.id, fun e => (one_ne_zero : (1 : ℂ) ≠ 0) (LinearMap.congr_fun e (1 : ℂ)), fun k (v : ℂ) => ?_⟩
   have h1 : Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.inc g 1 k) =
       Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom (Matrix.GeneralLinearGroup.det k) := by
-    ext; simp [GlobalTheory.GLp.inc, RingHom.map_det]
+    ext; simp [GlobalTheory.GLp.inc]
   have h2 : Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.red g 1 k) =
       Units.map (PadicInt.toZMod (p := g)).toMonoidHom (Matrix.GeneralLinearGroup.det k) := by
-    ext; simp [GlobalTheory.GLp.red, RingHom.map_det]
+    ext; simp [GlobalTheory.GLp.red]
   have e2 : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k)) =
       Units.map i.toRingHom.toMonoidHom (Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.inc g 1 k)) := by
     ext; simp

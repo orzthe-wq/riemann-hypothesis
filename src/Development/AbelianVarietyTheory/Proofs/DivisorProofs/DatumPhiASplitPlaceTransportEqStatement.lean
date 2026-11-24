@@ -66,4 +66,4 @@ theorem _root_.GlobalTheory.T.datumPhiA_splitPlace_transport_eq : ∀ {D : D7} {
           (blockLat (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v) n (blockV e)) (fun Y => Ψ (trB t hv e Y)) Z) ∧
       ∀ Ξ, HasDepth (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v) n (blockLat (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v) n (blockV e)) Ξ →
         ∃ Ξ', HasDepth (unifAt w) n (blockLat (unifAt w) n (Assignment.one.block _ _)) Ξ' ∧ ∀ Y, Ξ' (trB t hv e Y) = Ξ Y := by
-  first | exact @GlobalTheory.PureMatch.phiA_transport_split_place | exact GlobalTheory.PureMatch.phiA_transport_split_place | (intros; apply GlobalTheory.PureMatch.phiA_transport_split_place <;> assumption)
+  first | exact @GlobalTheory.PureMatch.phiA_transport_split_place

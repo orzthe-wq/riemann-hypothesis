@@ -65,7 +65,7 @@ theorem aeval_semi {X h : M4 R} {c : Fin 4 → R} (H : X * h = h * Matrix.diagon
       ← mul_smul_comm]
     congr 1
     ext i j
-    by_cases hij : i = j <;> simp [Matrix.diagonal_apply, hij, Polynomial.eval_monomial]
+    by_cases hij : i = j <;> simp [hij, Polynomial.eval_monomial]
 
 theorem aeval_red (π : R →+* E) {X : M4 R} {c : Fin 4 → R} (H : X.map π = Matrix.diagonal fun a => π (c a)) (p : R[X]) :
     (aeval X p).map π = Matrix.diagonal fun a => π (p.eval (c a)) := by
@@ -147,7 +147,7 @@ theorem sandwich {X : M4 R} {h : (M4 R)ˣ} {c : Fin 4 → R} (hd : ∀ i j, i �
   · intro h0
     have h1 := hW j i
     rw [h0] at h1
-    simp only [Matrix.zero_apply, if_pos rfl] at h1
+    simp only [Matrix.zero_apply] at h1
     exact (isUnit_dd hd j).mul_right_eq_zero.mp ((isUnit_dd hd i).mul_left_eq_zero.mp h1.symm)
   · intro h0
     ext a b
@@ -512,7 +512,7 @@ theorem UpperTheory.V.Loc.spFlag :
     simp only [mapRep_apply] at e
     rw [Matrix.map_apply, e]
     simp [Raw.r0At, Raw.r0, diagRep, Matrix.diagonal_apply]
-    split_ifs <;> simp [IsScalarTower.algebraMap_apply c.O E B]
+    split_ifs <;> simp
   have key := fun hX => SpFlag.ord_iff (π : B →+* E) hπ' ((D.Ip l).subgroupOf (D.Gp l))
     (fun i g => algebraMap c.O B (D.ps i g)) (s₀ := D.s0) (Subgroup.mem_subgroupOf.mpr hs0) r
     hd hu hν hX hred

@@ -72,7 +72,7 @@ theorem rational_points_le_holds : Formalism.UG.RatPtsLe := by
   obtain ⟨g, hg, rfl⟩ := Subgroup.mem_map.mp hx
   have hc : (inclE (F := F) R).comp (σ : E →+* E) = (sigR σ R).comp (inclE (F := F) R) := by
     ext e
-    simp [inclE, sigR, Algebra.TensorProduct.map_tmul]
+    simp [inclE, sigR]
   exact base_change_mem_holds E (E ⊗[F] R) n (σ : E →+* E) (sigR σ R) (inclE (F := F) R) hc J g hg
 
 end Formalism.UG.P

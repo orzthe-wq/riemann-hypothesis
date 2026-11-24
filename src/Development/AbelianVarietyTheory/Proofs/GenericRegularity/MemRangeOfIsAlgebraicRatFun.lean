@@ -161,7 +161,6 @@ theorem exists_finset_roots (F : Type*) [Field F] [CharZero F] [Algebra.EssFinit
   let g : L →ₐ[ℚ] Ω := (φ.comp L.val.toRingHom).toRatAlgHom
   have hr : g θ ∈ ψ.range := by
     refine hs.mem_range_of_isRoot (S := Ω) ((minpoly.monic hi).map _).ne_zero ?_
-    change (Polynomial.map _ _).IsRoot _
     rw [Polynomial.map_map, Subsingleton.elim (RingHom.comp _ _) (algebraMap ℚ Ω), IsRoot.def, eval_map_algebraMap, aeval_algHom_apply, minpoly.aeval, map_zero]
   have hle : (⊤ : IntermediateField ℚ L) ≤ (ψ.toRatAlgHom.fieldRange).comap g := by
     rw [← hθ, adjoin_simple_le_iff]

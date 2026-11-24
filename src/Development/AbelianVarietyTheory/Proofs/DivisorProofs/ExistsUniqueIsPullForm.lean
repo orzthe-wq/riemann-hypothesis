@@ -77,7 +77,7 @@ theorem pairRes_bijective (φ : X' ⟶ X) (s' : X' ⟶ Sp R') :
   have hdir := _root_.GlobalTheory.CechDR.exists_pair_below_two φ s'
   have hs := _root_.GlobalTheory.sep_of_factoring_cover (OAff s') (pairFst φ) H hcov
   have hg := _root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s') (pairFst φ) H hcov hdir
-  have hv := _root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s') (pairFst φ) H hcov hdir
+  have hv := _root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_coboundary_comma_localBasis (OAff s') (pairFst φ) H hcov hdir
   have hs1 := _root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s' (pairFst φ) hcov
   have hg1 := _root_.GlobalTheory.CechDR.FormExt.glue_one_forms s' (pairFst φ) hcov hdir
   have hs2 := _root_.GlobalTheory.CechDR.twoForm_sep_of_basis s' (pairFst φ) hcov

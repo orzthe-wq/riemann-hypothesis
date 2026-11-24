@@ -64,4 +64,4 @@ theorem _root_.GlobalTheory.T.zetaIdentity_persists_row_column_changes : ∀ (k 
       bigP (haarVol (KO k (Fin a₁))) ϖ σ₁ ν β Ξ = smallP μ₁ σ₁ ν (ν * β) Ψ →
       bigP (haarVol (KO k (Fin a))) ϖ σ ν β (fun X => Ξ (reindex (finCongr ha) eC (gA.val * X * (invT c).val))) =
         smallP μ σ ν (ν * β) fun Y => lam * Ψ (reindex eB eC (gB.val * Y * c.val)) := by
-  first | exact @GlobalTheory.FlipMatch.ZMat.bigZeta_eq_smallZeta_change | exact GlobalTheory.FlipMatch.ZMat.bigZeta_eq_smallZeta_change | (intros; apply GlobalTheory.FlipMatch.ZMat.bigZeta_eq_smallZeta_change <;> assumption)
+  first | exact @GlobalTheory.FlipMatch.ZMat.bigZeta_eq_smallZeta_change

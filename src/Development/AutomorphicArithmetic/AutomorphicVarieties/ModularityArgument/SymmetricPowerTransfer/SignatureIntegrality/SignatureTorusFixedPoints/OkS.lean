@@ -144,7 +144,7 @@ theorem UpperTheory.V.Z.Sym.Sig.okS : UpperTheory.V.Z.Sym.Sig.OkS := by
       inj (by rw [← (hdt γ).2, htr])
     rw [hdet1, Matrix.det_diagonal, Fin.prod_univ_two] at hD
     rw [htr1, Matrix.trace_diagonal, Fin.sum_univ_two] at hT
-    simp only [Pi.mul_apply, Units.val_mul, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at hD hT
+    simp only [Pi.mul_apply, Units.val_mul, Matrix.cons_val_zero, Matrix.cons_val_one] at hD hT
     have hinv : (t * d 0)⁻¹ = d 1 * t⁻¹ := by
       refine inv_eq_of_mul_eq_one_right (Units.ext ?_)
       simp only [Units.val_mul, Units.val_one]

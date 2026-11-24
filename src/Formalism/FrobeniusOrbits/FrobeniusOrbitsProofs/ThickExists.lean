@@ -62,9 +62,7 @@ noncomputable section
 
 namespace Formalism.FrobeniusOrbits.ThickExists
 
-lemma coeff_zero (B : ℤ) : ∀ {S : ℕ} (c : Fin S → ℤ), (∀ m, |c m| < B) →
-    ∑ m, c m * B ^ (m : ℕ) = 0 → ∀ m, c m = 0 := by
-  first | exact Bl.general_b_fact_second_last.goal1 .. | (apply Bl.general_b_fact_second_last.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second_last.goal1 <;> assumption)
+alias coeff_zero := _root_.Bl.general_b_fact_second_last.goal1
 
 lemma map_lt (B : ℕ) : ∀ {S : ℕ} (v : Fin S → ℕ), (∀ m, v m < B) → Behrend.map B v < B ^ S := by
   intro S
@@ -84,8 +82,9 @@ lemma map_lt (B : ℕ) : ∀ {S : ℕ} (v : Fin S → ℕ), (∀ m, v m < B) →
     rw [hsplit, pow_succ]
     have h2 : B * (Behrend.map B (fun m : Fin S => v m.succ) + 1) ≤ B * B ^ S :=
       Nat.mul_le_mul_left B h1
-    have h3 := hv 0
-    nlinarith
+    rw [Nat.mul_add, Nat.mul_one, mul_comm B (B ^ S)] at h2
+    have h0 := hv 0
+    omega
 
 lemma sphere_rel {S : ℕ} (v₁ v₂ v₃ : Fin S → ℤ) (k : ℤ) (h₁ : ∑ m, v₁ m ^ 2 = k)
     (h₂ : ∑ m, v₂ m ^ 2 = k) (h₃ : ∑ m, v₃ m ^ 2 = k) (i j : ℤ) (hj : j ≠ 0) (hij : i ≠ j)
@@ -127,14 +126,11 @@ lemma sphere_rel {S : ℕ} (v₁ v₂ v₃ : Fin S → ℤ) (k : ℤ) (h₁ : �
 
 lemma cast_map (B : ℕ) {S : ℕ} (v : Fin S → ℕ) :
     ((Behrend.map B v : ℕ) : ℤ) = ∑ m, (v m : ℤ) * (B : ℤ) ^ (m : ℕ) := by
-  rw [Behrend.map_apply, Nat.cast_sum]
-  refine Finset.sum_congr rfl (fun m _ => ?_)
-  rw [Nat.cast_mul, Nat.cast_pow]
+  simp [Behrend.map_apply]
 
 private lemma sphere_mem_lemma {S d k : ℕ} {v : Fin S → ℕ} (hv : v ∈ Behrend.sphere S d k) :
     (∀ i, v i < d) ∧ ∑ i, v i ^ 2 = k := by
-  simp only [Behrend.sphere, Finset.mem_filter, Behrend.mem_box] at hv
-  exact hv
+  simpa only [Behrend.sphere, Finset.mem_filter, Behrend.mem_box] using hv
 
 lemma noRel_image (L S d k : ℕ) (hL : 1 ≤ L) :
     NoRel ((Behrend.sphere S d k).image (Behrend.map (4 * L * d))) L := by
@@ -151,8 +147,6 @@ lemma noRel_image (L S d k : ℕ) (hL : 1 ≤ L) :
   obtain ⟨B, hB⟩ : ∃ B : ℤ, B = ((4 * L * d : ℕ) : ℤ) := ⟨_, rfl⟩
   rw [← hB] at heq
   have hL' : (1 : ℤ) ≤ L := by exact_mod_cast hL
-  obtain ⟨hi1, hi2⟩ := abs_le.mp hiL
-  obtain ⟨hj1, hj2⟩ := abs_le.mp hjL
   have hbound : ∀ m : Fin S, |j * ((v₂ m : ℤ) - v₁ m) - i * ((v₃ m : ℤ) - v₁ m)| < B := by
     intro m
     have a1 : (v₁ m : ℤ) < d := by exact_mod_cast hb₁ m
@@ -162,20 +156,19 @@ lemma noRel_image (L S d k : ℕ) (hL : 1 ≤ L) :
     have z2 : (0 : ℤ) ≤ v₂ m := by positivity
     have z3 : (0 : ℤ) ≤ v₃ m := by positivity
     have hdpos : (1 : ℤ) ≤ d := by omega
-    have f1 : (0 : ℤ) ≤ L - j := by linarith
-    have f2 : (0 : ℤ) ≤ L + j := by linarith
-    have f3 : (0 : ℤ) ≤ L - i := by linarith
-    have f4 : (0 : ℤ) ≤ L + i := by linarith
-    have g1 : (0 : ℤ) ≤ d + ((v₂ m : ℤ) - v₁ m) := by linarith
-    have g2 : (0 : ℤ) ≤ d - ((v₂ m : ℤ) - v₁ m) := by linarith
-    have g3 : (0 : ℤ) ≤ d + ((v₃ m : ℤ) - v₁ m) := by linarith
-    have g4 : (0 : ℤ) ≤ d - ((v₃ m : ℤ) - v₁ m) := by linarith
-    have hLd : (1 : ℤ) ≤ L * d := by nlinarith
+    have hLd : (1 : ℤ) ≤ L * d := one_le_mul_of_one_le_of_one_le hL' hdpos
+    have h1 : |j * ((v₂ m : ℤ) - v₁ m)| ≤ L * d := by
+      rw [abs_mul]
+      exact mul_le_mul hjL (abs_le.mpr ⟨by linarith, by linarith⟩) (abs_nonneg _) (by linarith)
+    have h2 : |i * ((v₃ m : ℤ) - v₁ m)| ≤ L * d := by
+      rw [abs_mul]
+      exact mul_le_mul hiL (abs_le.mpr ⟨by linarith, by linarith⟩) (abs_nonneg _) (by linarith)
     rw [hB]
     push_cast
-    rw [abs_lt]
-    constructor <;> nlinarith [mul_nonneg f1 g1, mul_nonneg f2 g2, mul_nonneg f1 g2,
-      mul_nonneg f2 g1, mul_nonneg f3 g3, mul_nonneg f4 g4, mul_nonneg f3 g4, mul_nonneg f4 g3]
+    calc |j * ((v₂ m : ℤ) - v₁ m) - i * ((v₃ m : ℤ) - v₁ m)|
+        ≤ |j * ((v₂ m : ℤ) - v₁ m)| + |i * ((v₃ m : ℤ) - v₁ m)| := abs_sub _ _
+      _ ≤ L * d + L * d := add_le_add h1 h2
+      _ < 4 * L * d := by linarith
   have hsum : ∑ m, (j * ((v₂ m : ℤ) - v₁ m) - i * ((v₃ m : ℤ) - v₁ m)) * B ^ (m : ℕ) = 0 := by
     have E : ∑ m, (j * ((v₂ m : ℤ) - v₁ m) - i * ((v₃ m : ℤ) - v₁ m)) * B ^ (m : ℕ)
         = ∑ m, (j * ((v₂ m : ℤ) * B ^ (m : ℕ)) - j * ((v₁ m : ℤ) * B ^ (m : ℕ))
@@ -213,18 +206,17 @@ lemma card_image (L S d k : ℕ) (hL : 1 ≤ L) :
     have a2 : (w m : ℤ) < d := by exact_mod_cast hbw m
     have z1 : (0 : ℤ) ≤ v m := by positivity
     have z2 : (0 : ℤ) ≤ w m := by positivity
-    have z3 : (0 : ℤ) ≤ d := by positivity
     have hL' : (1 : ℤ) ≤ L := by exact_mod_cast hL
+    have hd : (d : ℤ) ≤ L * d := le_mul_of_one_le_left (by linarith) hL'
     push_cast
     rw [abs_lt]
-    constructor <;> nlinarith
+    constructor <;> linarith
   have hsum : ∑ m, ((v m : ℤ) - w m) * ((4 * L * d : ℕ) : ℤ) ^ (m : ℕ) = 0 := by
     simp only [sub_mul, Finset.sum_sub_distrib]
     rw [hc, sub_self]
   have hz := coeff_zero ((4 * L * d : ℕ) : ℤ) (fun m => (v m : ℤ) - w m) hbound hsum
   funext m
-  have h0 : (v m : ℤ) - w m = 0 := hz m
-  omega
+  exact Nat.cast_injective (sub_eq_zero.mp (hz m))
 
 end Formalism.FrobeniusOrbits.ThickExists
 
@@ -283,7 +275,7 @@ theorem hostThickExists : HostThickExists := by
   have hs32 : 32 * y < s := by
     by_contra hc
     push_neg at hc
-    nlinarith [mul_nonneg hs0 (sub_nonneg.mpr hc), mul_pos hpos hy0, sq_nonneg y]
+    grind [mul_nonneg hs0 (sub_nonneg.mpr hc), mul_pos hpos hy0, sq_nonneg y]
   have hs16 : 16 < s := by linarith
   obtain ⟨S, hSdef⟩ : ∃ S : ℕ, S = ⌊s / y⌋₊ := ⟨_, rfl⟩
   have hS1 : (S : ℝ) ≤ s / y := by rw [hSdef]; exact Nat.floor_le (div_nonneg hs0 hy0.le)
@@ -298,21 +290,21 @@ theorem hostThickExists : HostThickExists := by
   obtain ⟨a, ha⟩ : ∃ a : ℝ, a = (x - y - 3) / S := ⟨_, rfl⟩
   have haS : a * S = x - y - 3 := by rw [ha]; field_simp
   have h2Sy : s ≤ 2 * S * y := by
-    nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ S - 1) hy0.le]
+    grind
   have hxle : x ≤ 2 * s * S := by
-    have h : x * y ≤ (2 * s * S) * y := by nlinarith [mul_le_mul_of_nonneg_left h2Sy hs0]
+    have h : x * y ≤ (2 * s * S) * y := by grind [mul_le_mul_of_nonneg_left h2Sy hs0]
     exact le_of_mul_le_mul_right h hy0
   have ha2s : a ≤ 2 * s := by
-    have h : a * S ≤ (2 * s) * S := by nlinarith
+    have h : a * S ≤ (2 * s) * S := by linarith [show (2 * s) * S = 2 * s * S by ring]
     exact le_of_mul_le_mul_right h hSpos
   have ha7 : 7 + y ≤ a := by
     have h1 : (7 + y) * S * y ≤ (x - y - 3) * y := by
-      nlinarith [mul_nonneg hy0.le (sub_nonneg.mpr hSy), mul_nonneg hs0 (sub_nonneg.mpr hs32.le),
+      grind [mul_nonneg hy0.le (sub_nonneg.mpr hSy), mul_nonneg hs0 (sub_nonneg.mpr hs32.le),
         mul_nonneg hy0.le (sub_nonneg.mpr hs32.le), mul_nonneg hs0 (sub_nonneg.mpr hy_half.le)]
     have h2 : (7 + y) * S ≤ x - y - 3 := le_of_mul_le_mul_right h1 hy0
     exact le_of_mul_le_mul_right (by rw [haS]; exact h2) hSpos
   have hexpb : 3 + S * (7 + y) + S + 2 * a ≤ 32 * s := by
-    nlinarith [mul_nonneg (sub_nonneg.mpr hy_half.le) hSpos.le]
+    grind [mul_nonneg (sub_nonneg.mpr hy_half.le) hSpos.le]
   have h4L : (0 : ℝ) < 4 * L := by positivity
   obtain ⟨d, hddef⟩ : ∃ d : ℕ, d = ⌊Real.exp a / (4 * L)⌋₊ := ⟨_, rfl⟩
   have hd1 : (d : ℝ) ≤ Real.exp a / (4 * L) := by rw [hddef]; exact Nat.floor_le (by positivity)
@@ -322,15 +314,16 @@ theorem hostThickExists : HostThickExists := by
   have h8Ly : 8 * (L : ℝ) ≤ Real.exp (7 + y) := by
     have h87 : (8 : ℝ) ≤ Real.exp 7 := by linarith [Real.add_one_le_exp (7 : ℝ)]
     rw [Real.exp_add, eL]
-    nlinarith
+    exact mul_le_mul_of_nonneg_right h87 hLpos.le
   have h8L : 8 * (L : ℝ) ≤ Real.exp a := le_trans h8Ly (Real.exp_le_exp.mpr ha7)
   have hQd : Real.exp a / (8 * L) ≤ d := by
     rw [div_le_iff₀ (by positivity)]
-    nlinarith
+    linarith [show ((d : ℝ) + 1) * (4 * (L : ℝ)) = (d : ℝ) * (4 * (L : ℝ)) + 4 * (L : ℝ) by ring,
+              show (d : ℝ) * (8 * (L : ℝ)) = 2 * ((d : ℝ) * (4 * (L : ℝ))) by ring]
   have hd1r : (1 : ℝ) ≤ d := le_trans ((one_le_div (by positivity)).mpr h8L) hQd
   have hdpos : (0 : ℝ) < d := by linarith
-  have hdQ : (d : ℝ) ≤ Real.exp a := by
-    nlinarith [mul_nonneg hdpos.le (by linarith : (0 : ℝ) ≤ 4 * L - 1)]
+  have hdQ : (d : ℝ) ≤ Real.exp a :=
+    (le_mul_of_one_le_right hdpos.le (by linarith : (1 : ℝ) ≤ 4 * L)).trans hd1'
   have hdS : Real.exp a ^ S ≤ (d : ℝ) ^ S * (8 * L) ^ S := by
     have h : (Real.exp a / (8 * L)) ^ S ≤ (d : ℝ) ^ S := by gcongr
     rwa [div_pow, div_le_iff₀ (by positivity)] at h
@@ -360,15 +353,19 @@ theorem hostThickExists : HostThickExists := by
     rw [Finset.mem_image] at hm
     obtain ⟨v, hv, rfl⟩ := hm
     obtain ⟨hbox, -⟩ := sphere_mem_lemma hv
-    have hdd : d ≤ 4 * L * d := by nlinarith
+    have hdd : d ≤ 4 * L * d := Nat.le_mul_of_pos_left d (by omega)
     have hmlt := map_lt (4 * L * d) v (fun i => lt_of_lt_of_le (hbox i) hdd)
     have hpowle : ((4 : ℝ) * L * d) ^ S ≤ Real.exp a ^ S := by
       gcongr
       linarith
     have hreal : (4 : ℝ) * L * (4 * L * d) ^ S ≤ n := by
-      nlinarith [mul_le_mul_of_nonneg_left hpowle h4L.le,
-        mul_nonneg (by linarith [Real.add_one_le_exp (3 : ℝ)] : (0 : ℝ) ≤ Real.exp 3 - 4)
-          (by positivity : (0 : ℝ) ≤ L * Real.exp a ^ S)]
+      have h1 : (4 : ℝ) * L * (4 * L * d) ^ S ≤ (4 * L) * Real.exp a ^ S :=
+        mul_le_mul_of_nonneg_left hpowle h4L.le
+      have h2 : (4 : ℝ) ≤ Real.exp 3 := by linarith [Real.add_one_le_exp (3 : ℝ)]
+      have h3 : (4 : ℝ) * (Real.exp a ^ S * L) ≤ Real.exp 3 * (Real.exp a ^ S * L) :=
+        mul_le_mul_of_nonneg_right h2 (by positivity)
+      linarith [show (4 : ℝ) * L * Real.exp a ^ S = 4 * (Real.exp a ^ S * L) by ring,
+                show Real.exp 3 * (Real.exp a ^ S * L) = Real.exp a ^ S * L * Real.exp 3 by ring]
     have hnat : 4 * L * (4 * L * d) ^ S ≤ n := by exact_mod_cast hreal
     exact lt_of_lt_of_le (mul_lt_mul_of_pos_left hmlt (by omega)) hnat
   · rw [card_image L S d k (by omega)]

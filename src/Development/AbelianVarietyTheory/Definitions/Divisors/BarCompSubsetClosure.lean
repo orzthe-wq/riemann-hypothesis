@@ -54,6 +54,7 @@ set_option autoImplicit false
 
 noncomputable section
 
+open scoped GlobalTheory.CompHt
 namespace GlobalTheory.CompHS
 
 open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField

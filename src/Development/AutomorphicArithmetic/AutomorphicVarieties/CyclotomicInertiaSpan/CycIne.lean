@@ -79,8 +79,7 @@ private theorem cycIne_red_surj (l : ℕ) [Fact l.Prime] (n : ℕ) (b : (ZMod (l
       exact le_antisymm (PadicInt.norm_le_one _)
         (not_lt.mp fun h => hk ((PadicInt.norm_int_lt_one_iff_dvd _).mp h))
     refine ⟨hu.unit, Units.ext ?_⟩
-    simp only [KStar.TotallyRealRoots.redPow, Units.coe_map, IsUnit.unit_spec, MonoidHom.coe_coe, map_intCast,
-      Int.cast_natCast]
+    simp only [KStar.TotallyRealRoots.redPow, Units.coe_map, IsUnit.unit_spec, Int.cast_natCast]
     rw [hkdef]
     exact (map_natCast (PadicInt.toZModPow n) _).trans (ZMod.natCast_zmod_val _)
 

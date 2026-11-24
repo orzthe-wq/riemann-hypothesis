@@ -96,9 +96,7 @@ theorem divAt_conj {Q : Ideal (𝓞 E)} [hQ : Q.IsPrime] {N : ℕ} (ϖ d : 𝓞 
     intro h0
     apply hϖ
     first
-      | exact (map_eq_zero_iff _ (NoZeroSMulDivisors.algebraMap_injective (𝓞 E) E)).mp h0
       | exact (map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)).mp h0
-      | exact_mod_cast h0
   have hp : algebraMap (𝓞 E) E ϖ ^ (2 * k) ≠ 0 := pow_ne_zero _ hϖE
   have h3 : algebraMap (𝓞 E) E ϖ ^ (2 * k) *
       (algebraMap (𝓞 E) E s * algebraMap (𝓞 E) E d * X a b) =

@@ -1,13 +1,15 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
+public import Development.AbelianVarietyTheory.Definitions.Foundations.Letter
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.BlochKatoSelmerVanishes
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsZetaTW
 public import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ZetaUr
-public import Development.AbelianVarietyTheory.Definitions.Foundations.AdmissibleTwistIffAdmissibleUntwisted
 public import Development.AbelianVarietyTheory.Definitions.Foundations.OpLDOneSubMemTriv
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
 public import Mathlib.RingTheory.AdicCompletion.Noetherian
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFixingMulFrobAt
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.KatoTwCont
+public import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.LocalFieldAutomorphisms.ValuationIntCastLtOneIff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -15,7 +17,6 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
-import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -23,8 +24,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,8 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,12 +43,140 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Tactic.Linter.HaveILetI
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.QuotRepMk
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.GaloisValuations.GlobalA
-public import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.LocalFieldAutomorphisms.ValuationIntCastLtOneIff
 import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsRootOfIsAlgClosed
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Definitions.Foundations.AdmissibleTwistIffAdmissibleUntwisted, Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.KatoTwCont, Development.AbelianVarietyTheory.Proofs.FoundationProofs.UntwistedRepresentationOrdinaryTriangularShape
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.Foundations.AdmissibleTwistIffAdmissibleUntwisted =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.Foundations.AdmissibleTwistIffAdmissibleUntwisted", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.Letter\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open scoped MatrixGroups Matrix
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV
+
+namespace GlobalTheory.K4
+
+open GlobalTheory.KZ GlobalTheory.Ord2
+
+variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
+
+def admitted {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (e : ℕ) (gN : Newform (2 * e + 1)) (W : R2 Ω l) (X : Tower Ω ε)
+    (pr : X.Fn l → Fin 2 → Qbar l) (N : ℕ) [NeZero N] (x : ZMod N) (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)) : Prop :=
+  1 < c ∧ 1 < d ∧ Nat.Coprime c (6 * l * N) ∧ Nat.Coprime d (6 * l * N) ∧ IsUnit x ∧
+    (∀ b b', pr (b + b') = pr b + pr b') ∧
+    (∀ (s : Ω ≃ₐ[ℚ] Ω) b, b ∈ X.B N l (2 * e - 1) → pr (X.galB l s b) = mat W s *ᵥ pr b) ∧
+    ∃ δ : ℕ → Qbar l, ∀ q : ℕ, q.Prime → ¬ q ∣ l * N → ∀ b, b ∈ X.B N l (2 * e - 1) →
+      pr (X.heckeT N l q b) = ι.symm (gN.a q) • pr b ∧ pr (X.diam N l q b) = δ q • pr b
+
+def psiCyc {l : ℕ} [Fact l.Prime] (ψ : ZMod l → Qbar l) (s : Ω ≃ₐ[ℚ] Ω) : Qbar l :=
+  ψ ((((cycMod (F := ℚ) (Ω := Ω) l 1 s : ZMod (l ^ 1))).val : ℕ) : ZMod l)
+
+def AdmT {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (e : ℕ) (gN : Newform (2 * e + 1)) (W : R2 Ω l) (X : Tower Ω ε)
+    (pr : X.Fn l → Fin 2 → Qbar l) (N : ℕ) [NeZero N] (x : ZMod N) (c d : ℕ) (_gm : (ZMod l)ˣ → SL(2, ℤ))
+    (ψ : ZMod l → Qbar l) : Prop :=
+  1 ≤ e ∧ 1 < c ∧ 1 < d ∧ Nat.Coprime c (6 * l * N) ∧ Nat.Coprime d (6 * l * N) ∧ IsUnit x ∧
+    (ψ 1 = 1 ∧ ∀ a b : (ZMod l)ˣ, ψ ((a * b : (ZMod l)ˣ) : ZMod l) = ψ a * ψ b) ∧
+    (∀ b b', pr (b + b') = pr b + pr b') ∧
+    (∀ (a : ℤ_[l]) b, pr (a • b) = algebraMap ℚ_[l] (Qbar l) (a : ℚ_[l]) • pr b) ∧
+    (∀ (s : Ω ≃ₐ[ℚ] Ω) b, b ∈ X.B N l (2 * e - 1) →
+      pr (X.galB l s b) = ((cycBar ℚ Ω l s : Qbar l) ^ e * (psiCyc ψ s)⁻¹) • (mat W s *ᵥ pr b)) ∧
+    ∃ δ : ℕ → Qbar l, ∀ q : ℕ, q.Prime → ¬ q ∣ l * N → ∀ b, b ∈ X.B N l (2 * e - 1) →
+      pr (X.heckeT N l q b) = ι.symm (gN.a q) • pr b ∧ pr (X.diam N l q b) = δ q • pr b
+
+def unTw {l : ℕ} [Fact l.Prime] (W : R2 Ω l) (e : ℕ) (χ : G ℚ Ω →* (Qbar l)ˣ) : R2 Ω l :=
+  tw W (cycBar ℚ Ω l ^ e * χ⁻¹)
+
+end GlobalTheory.K4
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.Foundations.AdmissibleTwistIffAdmissibleUntwisted =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.KatoTwCont =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.KatoTwCont", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.BlochKatoSelmerVanishes\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.QuotRepMk\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published.Kato
+
+private theorem cont_units {Γ R : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Monoid R]
+    [TopologicalSpace R] (f : Γ →* Rˣ) (h : Continuous fun s => (f s : R)) : Continuous f := by
+  rw [Units.continuous_iff]
+  refine ⟨h, ?_⟩
+  have : (fun x => ((f x)⁻¹ : Rˣ).val) = (fun s => (f s : R)) ∘ (fun x => x⁻¹) := by
+    funext x
+    simp [map_inv]
+  rw [this]
+  exact h.comp continuous_inv
+
+private theorem cont_of_ker {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group H]
+    [TopologicalSpace H] [IsTopologicalGroup H] (f : Γ →* H) (U : Set Γ) (hU : IsOpen U) (h1 : 1 ∈ U)
+    (h : ∀ s ∈ U, f s = 1) : Continuous f := by
+  apply continuous_of_continuousAt_one
+  have hev : (fun _ : Γ => (1 : H)) =ᶠ[nhds 1] f :=
+    Filter.eventually_of_mem (hU.mem_nhds h1) fun s hs => (h s hs).symm
+  exact (continuousAt_const (y := (1 : H))).congr hev
+
+private theorem cont_kills {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
+    (M : ℕ) (hM : 1 ≤ M) (φ : G ℚ Ω →* (Qbar l)ˣ) (hφ : KillsMu M φ) : Continuous φ := by
+  classical
+  have hS : {ζ : Ω | ζ ^ M = 1} = ((Polynomial.nthRoots M (1 : Ω)).toFinset : Set Ω) := by
+    ext ζ
+    simp [Polynomial.mem_nthRoots (by omega : 0 < M)]
+  haveI : Finite ↥{ζ : Ω | ζ ^ M = 1} := by
+    rw [hS]
+    infer_instance
+  let E := IntermediateField.adjoin ℚ {ζ : Ω | ζ ^ M = 1}
+  haveI : FiniteDimensional ℚ E :=
+    IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x
+  refine cont_of_ker φ (E.fixingSubgroup : Set (G ℚ Ω)) E.fixingSubgroup_isOpen E.fixingSubgroup.one_mem ?_
+  intro s hs
+  apply hφ
+  intro ζ hζ
+  exact (IntermediateField.mem_fixingSubgroup_iff E s).mp hs ζ (IntermediateField.subset_adjoin ℚ _ hζ)
+
+theorem UpperTheory.V.X.Kato.twCont :
+    ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (n : ℕ) (W : G ℚ Ω →* GL (Fin n) (Qbar l)), Continuous W → ∀ (M : ℕ), 1 ≤ M → ∀ φ : G ℚ Ω →* (Qbar l)ˣ, KillsMu M φ → ∀ j : ℤ, Continuous (tw W (cycBar ℚ Ω l ^ j * φ)) := by
+  intro l _ Ω _ _ _ n W hW M hM φ hφ j
+  have hc1 : Continuous fun s : G ℚ Ω => ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) :=
+    (Units.continuous_val (M := ℤ_[l])).comp (continuous_cycZ ℚ Ω l)
+  have hc2 : Continuous fun x : ℤ_[l] => (x : ℚ_[l]) := continuous_subtype_val
+  have hcyc : Continuous (cycBar ℚ Ω l) := by
+    apply cont_units
+    exact (continuous_algebraMap ℚ_[l] (Qbar l)).comp (hc2.comp hc1)
+  have hχ : Continuous (cycBar ℚ Ω l ^ j * φ) := by
+    have e : ⇑(cycBar ℚ Ω l ^ j * φ) = fun s => (cycBar ℚ Ω l s) ^ j * φ s := by
+      funext s
+      simp
+    rw [e]
+    exact (hcyc.zpow j).mul (cont_kills M hM φ hφ)
+  apply cont_units
+  have e2 : (fun s => (((tw W (cycBar ℚ Ω l ^ j * φ)) s : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))) =
+      fun s => ((cycBar ℚ Ω l ^ j * φ) s : Qbar l) • (W s : Matrix (Fin n) (Fin n) (Qbar l)) :=
+    funext (tw_val W _)
+  rw [e2]
+  exact (Units.continuous_val.comp hχ).smul (Units.continuous_val.comp hW)
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.KatoTwCont =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.UntwistedRepresentationOrdinaryTriangularShape =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.UntwistedRepresentationOrdinaryTriangularShape", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.IsZetaTW\npublic import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ZetaUr\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.AdmissibleTwistIffAdmissibleUntwisted\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.OpLDOneSubMemTriv\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective\npublic import Mathlib.RingTheory.AdicCompletion.Noetherian\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFixingMulFrobAt\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.KatoTwCont\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.FieldTheory.Galois.Profinite\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport ReciprocityTheory.GaloisValuations.GlobalA\npublic import ReciprocityTheory.NeutralLocalFields.LocalFieldComparison.LocalFieldAutomorphisms.ValuationIntCastLtOneIff\nimport Development.AbelianVarietyTheory.Definitions.Foundations.ExistsRootOfIsAlgClosed\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -221,7 +346,7 @@ theorem att_inv_eq (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (s : 
       (unTw W e χ s : Matrix (Fin 2) (Fin 2) (Qbar l)).adjugate := by
   have hu : (cycBar ℚ Ω l ^ (-(e : ℤ)) * (dt W)⁻¹ * χ) s⁻¹ = (cycBar ℚ Ω l ^ (e : ℤ) * χ⁻¹) s * dt W s := by
     simp only [map_inv, MonoidHom.mul_apply, MonoidHom.inv_apply, zpow_neg, MonoidHom.zpow_apply]
-    simp [mul_comm, mul_left_comm, mul_assoc]
+    simp [mul_comm, mul_assoc]
   have hdet : ((dt W s : (Qbar l)ˣ) : Qbar l) = (mat W s).det := by
     simp [dt, mat, Matrix.GeneralLinearGroup.val_det_apply]
   have hne : (mat W s).det ≠ 0 := hdet ▸ Units.ne_zero _
@@ -269,7 +394,7 @@ theorem frob_trace_det (ι : Qbar l ≃+* ℂ) (e : ℕ) (W : R2 Ω l) (g : Newf
   · rw [← hdt, ed]
     apply ι.injective
     simp only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe] at h0
-    simp only [map_mul, map_pow, map_neg, map_one, RingEquiv.apply_symm_apply, map_natCast, h0, neg_one_sq, one_mul]
+    simp only [map_mul, map_pow, RingEquiv.apply_symm_apply, map_natCast, h0, neg_one_sq, one_mul]
     rw [show 2 * e + 1 - 1 = 2 * e by omega, mul_comm]
 
 theorem untw_cont [IsAlgClosure ℚ Ω] (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (hW : Continuous W)
@@ -400,3 +525,6 @@ theorem rho_ordinary_shape : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω]
 end GlobalTheory.RhoAdm
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.UntwistedRepresentationOrdinaryTriangularShape =====

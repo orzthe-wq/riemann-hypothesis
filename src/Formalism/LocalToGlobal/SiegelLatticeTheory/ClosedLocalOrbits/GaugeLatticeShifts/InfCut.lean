@@ -1,52 +1,10 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.RealObj
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -91,7 +49,7 @@ theorem rank_one_smul_isometry (a b : ℂ) (A : V ≃ₗᵢ[ℂ] V) (B : V' ≃�
   ext x
   have key : ⟪B w, x⟫_ℂ = ⟪w, B.symm x⟫_ℂ := by
     rw [← B.inner_map_map w (B.symm x), LinearIsometryEquiv.apply_symm_apply]
-  simp [TermOp.rk1, inner_smul_left, smul_smul, key, map_smul]
+  simp [TermOp.rk1, smul_smul, key, map_smul]
   try ring_nf
 
 theorem OO_equiv {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
@@ -115,14 +73,11 @@ theorem OO_equiv {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ
   simp only [e]
   rw [integral_smul, ContinuousLinearEquiv.integral_comp_comm]
   congr 1
-  try (ext x; simp [ContinuousLinearEquiv.arrowCongr_apply])
 
 private theorem norm_sq_eq_sum_norm_inner_sq_orthonormalBasis {W : Type*} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ι : Type*} [Fintype ι]
     (b : OrthonormalBasis ι ℂ W) (x : W) : ‖x‖ ^ 2 = ∑ i, ‖⟪b i, x⟫_ℂ‖ ^ 2 := by
   first
   | exact (b.sum_sq_norm_inner_right x).symm
-  | exact (b.sum_sq_norm_inner_left x).symm
-  | (rw [← b.repr.norm_map x, EuclideanSpace.norm_sq_eq]; simp [b.repr_apply_apply])
 
 theorem hsb_eq_adj [FiniteDimensional ℂ V] [CompleteSpace V] [CompleteSpace V'] {ι : Type*} [Fintype ι]
     (b : OrthonormalBasis ι ℂ V') (A : V' →L[ℂ] V) :
@@ -260,8 +215,6 @@ theorem norm_psiR {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → 
   unfold psiR
   have hS : ∀ x : ℂ, x + star x = ((2 * x.re : ℝ) : ℂ) := fun x => by
     rw [Complex.star_def, Complex.add_conj]
-    try push_cast
-    try ring
   simp only [hS]
   rw [Complex.norm_exp]
   simp [Complex.mul_re, Complex.div_re, Complex.div_im]
@@ -305,7 +258,6 @@ theorem dl_cont {r : ℕ} (l : ℕ) : Continuous (fun Z : Matrix (Fin (r + 1)) (
   · simp only [h, dif_pos]
     first
     | exact (continuous_id.matrix_submatrix _ _).matrix_det
-    | fun_prop
   · simp only [h, dif_neg, not_false_eq_true]
     exact continuous_const
 

@@ -143,7 +143,8 @@ theorem HasBasisAway.map {a : R} (φ : X →ₗ[R] M) (P : Submodule R M)
     have hinj : LinearMap.ker (mapQ (P.comap φ) P φ le_rfl) = ⊥ := by
       rw [mapQ, ker_liftQ_eq_bot]
       rw [LinearMap.ker_comp, ker_mkQ]
-    exact LinearIndependent.map' h2 _ hinj
+    rw [← LinearMap.coe_comp, ← mapQ_mkQ (P.comap φ) P φ (h := le_rfl), LinearMap.coe_comp]
+    exact h2.map_injOn _ (LinearMap.ker_eq_bot.1 hinj).injOn
   · obtain ⟨p, hp, _, ⟨x, rfl⟩, rfl⟩ := mem_sup.1 hm
     obtain ⟨n, hn⟩ := h3 x trivial
     obtain ⟨q, hq, y, hy, e⟩ := mem_sup.1 hn

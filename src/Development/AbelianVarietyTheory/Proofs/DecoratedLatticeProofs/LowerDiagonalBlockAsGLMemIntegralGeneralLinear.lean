@@ -332,7 +332,7 @@ theorem card_filter_eq {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (
     simpa [mul_assoc] using this
   apply Finset.card_nbij pick
   · intro j hj
-    simp only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter] at hj ⊢
+    simp only [Finset.coe_filter, Set.mem_setOf_eq] at hj ⊢
     obtain ⟨hjR, -, h22⟩ := hj
     have hJ := hJR j hjR
     obtain ⟨hg, hK⟩ := spec j hJ
@@ -361,7 +361,7 @@ theorem card_filter_eq {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (
       simp only [map_mul, map_inv]; group
     exact (hR.2 j₂ hJ2).unique ⟨h1R, hm⟩ ⟨h2R, by simp⟩
   · intro g hg
-    simp only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter] at hg
+    simp only [Finset.coe_filter, Set.mem_setOf_eq] at hg
     obtain ⟨hgR, hSg⟩ := hg
     obtain ⟨κ, hκ, κ', hκ', hgdef⟩ := hRK.1 g hgR
     have hj₀ : (nmat u)⁻¹ * dg A κ ∈ parahoric k A D := mul_mem (inv_mem (nmat_mem hu)) (dg_mem hκ)
@@ -370,7 +370,7 @@ theorem card_filter_eq {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (
     have hm' : m' ∈ parahoric k A D := inv_mem hm
     have hJ := hJR j hjR
     have eW : nmat u * j * dg A T = dg A (κ * T) * m' := by
-      rw [hm'def]; simp only [map_mul, map_inv]; group
+      rw [hm'def]; simp only [map_mul]; group
     have hv : (nmat u * j * dg A T).val = fromBlocks m'.val.toBlocks₁₁ m'.val.toBlocks₁₂
         ((κ * T).val * m'.val.toBlocks₂₁) ((κ * T).val * m'.val.toBlocks₂₂) := by
       rw [eW, Units.val_mul, val_dg, fromBlocks_diag_mul]
@@ -379,7 +379,7 @@ theorem card_filter_eq {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (
       rw [Units.val_mul, lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hJ, ← hW22, hv, toBlocks_fromBlocks₂₂, Units.val_mul (κ * T), lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hm']
     have hE' : g⁻¹ * (lowerDiagonalBlockAsGL j * T) = κ'⁻¹ * lowerDiagonalBlockAsGL m' := by rw [hE, hgdef]; group
     refine ⟨j, ?_, uniq j hJ g hgR (by rw [hE']; exact mul_mem (inv_mem hκ') (lowerDiagonalBlockAsGL_mem_integralGeneralLinear hm'))⟩
-    simp only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter]
+    simp only [Finset.coe_filter, Set.mem_setOf_eq]
     refine ⟨hjR, ?_, ?_⟩
     · rw [hv, toBlocks_fromBlocks₁₂]; exact (isIntM_toBlocks (isIntM_of_mem_parahoric hm')).2.1
     · have e2 : lowerDiagonalBlockAsGL j * T = g * (κ'⁻¹ * lowerDiagonalBlockAsGL m') := by rw [← hE']; group

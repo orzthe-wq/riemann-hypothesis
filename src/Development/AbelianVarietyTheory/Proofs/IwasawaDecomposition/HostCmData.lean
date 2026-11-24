@@ -51,6 +51,6 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem
 
 theorem host_cmData : ∀ (R : Ranks) (H : Host R), @CMData H.F H.E _ _ _ _ H.cmStar _ := by
-  apply Formalism.BasicNotions.Examples₂.cmData <;> assumption
+  apply Formalism.BasicNotions.Examples₂.cmData
 
 end GlobalTheory.Mem

@@ -122,7 +122,7 @@ def idealD (p : ℕ) (M : Submodule R (N → C)) (K : Submodule F N) (t : N) (χ
       simp only [Pi.smul_apply, Algebra.smul_def]; ring
     · exact Submodule.smul_mem _ r (h2 k hk)
     · convert Submodule.smul_mem _ r h3 using 1
-      simp only [Pi.smul_apply, Algebra.smul_def, smul_eq_mul, map_mul, Algebra.algebraMap_self,
+      simp only [Pi.smul_apply, Algebra.smul_def, map_mul, Algebra.algebraMap_self,
         RingHom.id_apply]; ring
 
 def flagSub {n : ℕ} (b : Module.Basis (Fin n) F N) (i : ℕ) : Submodule F N :=

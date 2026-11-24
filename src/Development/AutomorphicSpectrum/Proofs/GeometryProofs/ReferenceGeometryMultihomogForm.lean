@@ -322,7 +322,6 @@ theorem exists_point_at {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype 
       refine MvPolynomial.cardinalMk_le_max.trans ?_
       first
         | exact max_le (max_le Cardinal.mk_le_aleph0 Cardinal.mk_le_aleph0) le_rfl
-        | exact max_le (max_le (Cardinal.lift_le_aleph0.2 Cardinal.mk_le_aleph0) (Cardinal.lift_le_aleph0.2 Cardinal.mk_le_aleph0)) le_rfl
     have hs : (((Algebra.adjoin ℤ (Set.range fun j => x j / x cc) : Subalgebra ℤ Ω)) : Set Ω).Countable := by
       rw [Algebra.adjoin_range_eq_range_aeval, AlgHom.coe_range]
       exact Set.countable_range _

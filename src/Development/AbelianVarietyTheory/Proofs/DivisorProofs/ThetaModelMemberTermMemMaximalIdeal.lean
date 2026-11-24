@@ -67,6 +67,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRin
 public import Development.AbelianVarietyTheory.Counterexamples.JetSurvey.ExistsUniquePairIff
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.FromBase
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -127,7 +128,7 @@ theorem exists_integral (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (hV
     show jFK (R := V) (AlgebraicClosure (FractionRing V)) ≫ jK V =
       spMap (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))) ≫ jFK (R := V) (FractionRing V) ≫ jK V
     rw [← Category.assoc, hj]
-  obtain ⟨g, hg⟩ := GlobalTheory.ConstLie.exists_isPull s g₀
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.ConstLie.exists_isPullGt s g₀
   obtain ⟨q, hq⟩ := GlobalTheory.FieldRestrictionTest.exists_isPullF (toUnit (TF (R := V) (FractionRing V))) g
   have h2 := GlobalTheory.FlatTors.TorsMapExists.isPullF_trans hg hq
   rw [← Over.comp_left, ← hns] at h2
@@ -156,7 +157,7 @@ theorem term_mem_maximalIdeal : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W :
   obtain ⟨ρ', k, hk, hNW, hmove⟩ := GlobalTheory.T.exists_renormalization_rigidification_multiple V _ 𝔪.D 𝔪.A 𝔪.G 𝔪.U.toUnifPre w₀ hw₀ ρ hρ
   obtain ⟨hNu, h0, hdv⟩ := GlobalTheory.T.level_unit_thetaConstant_ne_zero_divides_all g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 x₀ hdiv
   obtain ⟨θ, hθ⟩ := IntTerm.exists_isTheta hV 𝔪.D.toPre
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.degree_one_term_eq_const_mul_psi_mul_theta V 𝔪.D.toPre θ hθ s
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.Poinc.IntTerm.term_eq_const_psi_theta V 𝔪.D.toPre θ hθ s
   choose υ hυ using 𝔪.psi
 
   have core : ∀ (a : X₁.S.Gam) (gi : GtPt 𝔪.D.toPre (𝟙_ (Over (Sp V)))) (g' : GtPtF 𝔪.D.toPre (FractionRing V))
@@ -173,7 +174,7 @@ theorem term_mem_maximalIdeal : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W :
       ![(η[𝔪.D.toPre.P.A]).left, gi.b.left] (DegPre.lineε 1)
     obtain ⟨u, hu⟩ := Sep.Frames.frame_unit_core hN gi.b (Sep.Frames.torsion_of_nsmul g' _ hb ho).2 hb w' hw' (by
       obtain ⟨o, h₁, h₂⟩ := ho
-      exact GlobalTheory.T.torsion_frame_abelian_part_torsion_frame hL V _ hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U _ w₀ ρ' hNW _ hN _ o h₁ h₂ _ _ _ hw' hov'
+      exact _root_.GlobalTheory.Poinc.Tors.FrameTors.frame_tors hL V _ hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U _ w₀ ρ' hNW _ hN _ o h₁ h₂ _ _ _ hw' hov'
         (hmove _ _ _ _ _ (htf _) hfr' hval)) τ hτ
     have hif : IntTerm.IntFrm 𝔪.D.toPre gi.b w' (algebraMap V (FractionRing V) (u⁻¹ : Vˣ)) :=
       ⟨τ, hτ, fun z J hJ => by
@@ -206,10 +207,10 @@ theorem term_mem_maximalIdeal : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W :
   have hyy : ∀ c, 𝔪.YY (lab c) 0 := fun c => (hint _).1 c.2
   choose p xb hp hq hxp using hyy
   have hp0 : ∀ c, (p c).y = 0 := fun c => (hp c).trans (map_zero _)
-  choose h gi hh hgt hfe hext hpull using fun c => GlobalTheory.T.rationalTorsionPoint_lift_section_torusExtension V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U _ hN (x (lab c)) (xb c) (p c)
+  choose h gi hh hgt hfe hext hpull using fun c => _root_.GlobalTheory.Poinc.TorsLift.lift V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U _ hN (x (lab c)) (xb c) (p c)
     (hxb _ _ (hxp c)) (hp0 c) (hq c)
   choose g' hg' using fun c => GlobalTheory.FieldRestrictionTest.exists_isPullF (toUnit (TF (R := V) (FractionRing V))) (gi c)
-  choose w hw hif hlies using fun c => GlobalTheory.T.sectionValue_integralPoint_eq_adicSum_terms V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U w₀ hw₀ (x (lab c)) (fr (lab c)) (h c) (gi c)
+  choose w hw hif hlies using fun c => _root_.GlobalTheory.Poinc.IntEval.eval_at_integral V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U w₀ hw₀ (x (lab c)) (fr (lab c)) (h c) (gi c)
     (g' c) l hl (hfe c) (hext c) (hg' c) (hlf _ _ _ (htf _) (hh c) (hext c))
   have htor : ∀ c, ∃ o, GtPtF.IsNsmul (X₁.S.r * X₁.S.N) (g' c) o ∧ o.IsZero := fun c => by
     obtain ⟨o, ho, hz⟩ := hgt c
@@ -219,9 +220,9 @@ theorem term_mem_maximalIdeal : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W :
   have hb : ∀ c, (g' c).b = toUnit _ ≫ (gi c).b := fun c =>
     ((GlobalTheory.FieldRestrictionTest.isPullF_iff _ _ _).1 (hg' c)).1
   have hex : IntTerm.Exhausts 𝔪.D.toPre.P (X₁.S.r * X₁.S.N) fun c => (gi c).b := by
-    refine GlobalTheory.T.torsionSections_exhaust_of_generic_geometric V _ _ hN C _ (fun c => (Sep.Frames.torsion_of_nsmul (g' c) _ (hb c) (htor c)).2) fun β hβ => ?_
-    obtain ⟨y, hy, ⟨q, hq0, hqy⟩, H⟩ := GlobalTheory.T.geometricTorsionPoint_abelianPart_lies_under_classZero V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U _ hN β hβ
-    obtain ⟨a, ha⟩ := GlobalTheory.T.geometricTorsionPoint_genericFibre_member_has_label g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 y hy
+    refine _root_.GlobalTheory.Poinc.IntTerm.exhausts_of_generic V _ _ hN C _ (fun c => (Sep.Frames.torsion_of_nsmul (g' c) _ (hb c) (htor c)).2) fun β hβ => ?_
+    obtain ⟨y, hy, ⟨q, hq0, hqy⟩, H⟩ := _root_.GlobalTheory.Poinc.IntTerm.torsion_lies_under V hV 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U _ hN β hβ
+    obtain ⟨a, ha⟩ := _root_.GlobalTheory.Poinc.IntTerm.torsion_has_label g n F W Z i X₁ z₁ act V ev X m t δ 𝔪 y hy
     have hmem : a ∈ X₁.S.HH X₁.M z₁ := (hint a).2 ⟨q, y, hq0.trans (map_zero _).symm, hqy, ha⟩
     let c : C := ⟨a, hmem⟩
     have e : xb c = y := Over.OverMorphism.ext ((hxb _ _ (hxp c)).trans (hxb _ _ ha).symm)

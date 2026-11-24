@@ -66,8 +66,7 @@ variable {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (ε : Fin n → Bo
     (E : Fin n → Fin n → Module.End ℂ V) (u : V)
 
 theorem mem_kSpan_self' : u ∈ kSpan ε E u := by
-  unfold kSpan
-  exact Submodule.mem_sInf.mpr fun S hS => hS.1
+  simpa only [kSpan] using (Submodule.mem_sInf.mpr (fun S hS => hS.1) : u ∈ sInf {p : Submodule ℂ V | u ∈ p ∧ KStable ε E p})
 
 theorem compact_span_compact_stable : KStable ε E (kSpan ε E u) := by
   intro a b hab x hx
@@ -95,10 +94,10 @@ theorem compact_span_le_cyclic : kSpan ε E u ≤ cyc E u := by
 
 theorem ew_cons (p : Fin n × Fin n) (w : List (Fin n × Fin n)) (y : V) :
     ew E (p :: w) y = E p.1 p.2 (ew E w y) := by
-  first | rfl | simp [ew]
+  first | rfl
 
 theorem ew_nil (y : V) : ew E [] y = y := by
-  first | rfl | simp [ew]
+  first | rfl
 
 theorem word_action_mem_pfil (j : ℕ) (w : List (Fin n × Fin n)) (hw : w.length ≤ j)
     (hnc : ∀ p ∈ w, ε p.1 ≠ ε p.2) (y : V) (hy : y ∈ kSpan ε E u) : ew E w y ∈ pfil ε E u j := by
@@ -144,10 +143,8 @@ theorem compact_generator_word_mem_pfil (hE : GlRel E) (a b : Fin n) (hab : ε a
   | nil =>
     intro _
     have hy' : E a b y ∈ kSpan ε E u := compact_span_compact_stable ε E u a b hab y hy
-    have h0 := word_action_mem_pfil ε E u 0 [] (le_refl _) (by intro p hp; cases hp) (E a b y) hy'
-    rw [ew_nil] at h0
-    rw [ew_nil]
-    exact h0
+    simpa [ew_nil] using
+      word_action_mem_pfil ε E u 0 [] (le_refl _) (by intro p hp; cases hp) (E a b y) hy'
   | cons p w ih =>
     intro hnc
     have hnc' : ∀ q ∈ w, ε q.1 ≠ ε q.2 := fun q hq => hnc q (List.mem_cons.mpr (Or.inr hq))
@@ -200,12 +197,11 @@ theorem poincare_filtration_zero : pfil ε E u 0 = kSpan ε E u := by
   · apply Submodule.span_le.mpr
     rintro z ⟨w, hw, hnc, y, hy, rfl⟩
     cases w with
-    | nil => rw [SetLike.mem_coe, ew_nil]; exact hy
+    | nil => simpa [ew_nil] using hy
     | cons p w => simp at hw
   · intro y hy
-    have h0 := word_action_mem_pfil ε E u 0 [] (le_refl _) (by intro p hp; cases hp) y hy
-    rw [ew_nil] at h0
-    exact h0
+    simpa [ew_nil] using
+      word_action_mem_pfil ε E u 0 [] (le_refl _) (by intro p hp; cases hp) y hy
 
 theorem pfil_le_cyclic (j : ℕ) : pfil ε E u j ≤ cyc E u := by
   apply Submodule.span_le.mpr
@@ -302,7 +298,7 @@ theorem factorAction_apply' {j : ℕ} (i : Fin j) (c d : Fin n) (F : Arr V n j) 
       (if (α i).2 = d then F (Function.update α i ((α i).1, c)) else 0) := by
   unfold factorAction
   rw [arrTo_comp_pi_comp_arrOf_apply]
-  split_ifs <;> first | rfl | simp [arrOf]
+  split_ifs <;> first | rfl
 
 theorem pointwise_operator_apply {j : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) (F : Arr V n j)
     (α : Fin j → Fin n × Fin n) : ptE E c d F α = E c d (F α) := by
@@ -379,8 +375,8 @@ theorem factorAction_commutator {j : ℕ} (i : Fin j) (a b c d : Fin n) :
   apply LinearMap.ext; intro F
   apply arr_ext; intro α
   show factorAction i a b (factorAction i c d F) α - factorAction i c d (factorAction i a b F) α = _
-  split_ifs <;> simp [arr_sub_apply, arr_zero_apply, factorAction_apply'] <;> (try split_ifs) <;>
-    first | abel1 | (simp_all; done) | (simp_all; abel1) | (subst_vars; abel1) | (subst_vars; simp_all)
+  split_ifs <;> simp [factorAction_apply'] <;> (try split_ifs) <;>
+    first | abel1 | (simp_all; done)
 
 end U1Arr2
 
@@ -395,7 +391,7 @@ theorem factorAction_commute_of_ne {j : ℕ} (i i' : Fin j) (hii : i ≠ i') (a 
       Function.update (Function.update α i' w) i v := fun v w => Function.update_comm hii v w α
   show factorAction i a b (factorAction i' c d F) α = factorAction i' c d (factorAction i a b F) α
   simp only [factorAction_apply', Function.update_apply, if_neg hii, if_neg (Ne.symm hii), hcomm]
-  split_ifs <;> first | abel1 | (simp_all; done) | (simp_all; abel1) | (subst_vars; abel1) | (subst_vars; simp_all)
+  split_ifs <;> first | abel1
 
 theorem factorAction_commute_pointwiseAction {j : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (i : Fin j) (a b c d : Fin n) :
     (factorAction i a b * ptE E c d : Module.End ℂ (Arr V n j)) = ptE E c d * factorAction i a b := by
@@ -412,7 +408,7 @@ theorem pointwise_operator_gl_relation {j : ℕ} (E : Fin n → Fin n → Module
   apply arr_ext; intro α
   show E a b (E c d (F α)) - E c d (E a b (F α)) = _
   rw [sub_eq_of_eq_add' (gl_commutator_apply E hE a b c d (F α))]
-  split_ifs <;> first | rfl | simp [arr_sub_apply, arr_zero_apply, pointwise_operator_apply]
+  split_ifs <;> first | rfl
 
 theorem commutator_of_sums_split {A : Type*} [Ring A] {ι : Type*} (s : Finset ι) (S T : ι → A) (P Q : A)
     (hST : ∀ i ∈ s, ∀ i' ∈ s, i ≠ i' → S i * T i' = T i' * S i)
@@ -466,11 +462,11 @@ theorem factorAction_adjoint {j : ℕ} (i : Fin j) (a b : Fin n) (F G : Arr V n 
   have hL : ∀ α, ⟪factorAction i a b F α, G α⟫_ℂ =
       (if (α i).1 = a then ⟪F (Function.update α i (b, (α i).2)), G α⟫_ℂ else 0) -
       (if (α i).2 = b then ⟪F (Function.update α i ((α i).1, a)), G α⟫_ℂ else 0) := by
-    intro α; rw [factorAction_apply']; split_ifs <;> simp [inner_sub_left]
+    intro α; rw [factorAction_apply']; split_ifs <;> simp
   have hR : ∀ β, ⟪F β, factorAction i b a G β⟫_ℂ =
       (if (β i).1 = b then ⟪F β, G (Function.update β i (a, (β i).2))⟫_ℂ else 0) -
       (if (β i).2 = a then ⟪F β, G (Function.update β i ((β i).1, b))⟫_ℂ else 0) := by
-    intro β; rw [factorAction_apply']; split_ifs <;> simp [inner_sub_right]
+    intro β; rw [factorAction_apply']; split_ifs <;> simp
   rw [PiLp.inner_apply, PiLp.inner_apply]
   simp only [hL, hR, Finset.sum_sub_distrib]
   rw [sum_update_first_index_swap i a b (fun α β => ⟪F β, G α⟫_ℂ), sum_update_second_index_swap i a b (fun α β => ⟪F β, G α⟫_ℂ)]
@@ -508,8 +504,7 @@ theorem word_product_zero (E : Fin n → Fin n → Module.End ℂ V) (α : Fin 0
 
 theorem word_product_succ (E : Fin n → Fin n → Module.End ℂ V) {j : ℕ} (α : Fin (j + 1) → Fin n × Fin n) :
     u1W E α = E (α (Fin.last j)).1 (α (Fin.last j)).2 * u1W E (Fin.init α) := by
-  unfold u1W
-  rw [List.ofFn_succ', List.concat_eq_append, List.reverse_append]
+  simp only [u1W, List.ofFn_succ', List.concat_eq_append, List.reverse_append]
   rfl
 
 theorem commutator_word_operator_sum (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (c d : Fin n) :
@@ -534,7 +529,7 @@ theorem commutator_word_operator_sum (E : Fin n → Fin n → Module.End ℂ V) 
       intro i v
       rw [word_product_succ]
       have hne : Fin.last j ≠ i.castSucc := (Fin.castSucc_lt_last i).ne'
-      simp [Function.update_apply, hne, Fin.init_update_castSucc]
+      simp [hne, Fin.init_update_castSucc]
     have hsplit : E c d * u1W E α - u1W E α * E c d =
         (E c d * E (α (Fin.last j)).1 (α (Fin.last j)).2 -
           E (α (Fin.last j)).1 (α (Fin.last j)).2 * E c d) * u1W E (Fin.init α) +
@@ -611,7 +606,7 @@ theorem mem_noncompact_arr_iff {j : ℕ} (F : Arr V n j) :
     F ∈ arrV0 ε E u j ↔ ∀ α, F α ∈ (if ∀ i, ε (α i).1 ≠ ε (α i).2 then kSpan ε E u else ⊥) := by
   unfold arrV0
   rw [Submodule.mem_iInf]
-  first | rfl | exact Iff.rfl | (simp only [Submodule.mem_comap]; rfl)
+  first | rfl
 
 theorem perm_arr_apply {j : ℕ} (σ : Equiv.Perm (Fin j)) (F : Arr V n j) (α : Fin j → Fin n × Fin n) :
     permArr V n σ F α = F (fun i => α (σ i)) := by
@@ -651,7 +646,6 @@ theorem pfil_succ_le_theta_image_sup (j : ℕ) : pfil ε E u (j + 1) ≤
       rw [List.reverse_eq_iff]
       first
       | (apply List.ext_get (by simp [hl]); intro k h1 h2; rw [List.get_ofFn]; rfl)
-      | (apply List.ext_getElem (by simp [hl]); intro k h1 h2; rw [List.getElem_ofFn]; rfl)
     have hnc0 : ∀ i, ε (α0 i).1 ≠ ε (α0 i).2 := by
       intro i
       have hm : α0 i ∈ w.reverse := by
@@ -770,13 +764,11 @@ end U1Theta
 
 theorem thetaFil_of (hp : PfilFacts) : ThetaFil := by
   intro V _ _ n ε E u hE
-  exact ⟨fun j F hF => theta_noncompact_mem_pfil ε E u j F hF, fun j => pfil_succ_le_theta_image_sup ε E u j,
-    fun j F hF σ => symmetrization_perm_sub_mem ε E u hE j F hF σ⟩
+  exact ⟨theta_noncompact_mem_pfil ε E u, pfil_succ_le_theta_image_sup ε E u, symmetrization_perm_sub_mem ε E u hE⟩
 
 theorem arr_module_facts : ArrModule := by
   intro V _ _ n ε E j
-  exact ⟨fun hE => ⟨arr_operators_gl_relation E hE, fun c d F => symmetrization_equivariant E hE c d F⟩,
-    fun hU => arr_operators_compact_unitary ε E hU⟩
+  exact ⟨fun hE => ⟨arr_operators_gl_relation E hE, symmetrization_equivariant E hE⟩, arr_operators_compact_unitary ε E⟩
 
 theorem theta_filtration_holds : ThetaFil := thetaFil_of pfil_facts_hold
 

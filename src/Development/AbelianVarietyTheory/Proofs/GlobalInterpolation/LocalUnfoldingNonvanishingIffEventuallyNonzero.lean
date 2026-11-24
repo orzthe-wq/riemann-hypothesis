@@ -2,22 +2,26 @@ module
 
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SandwichNormalForm
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentCharacterArgumentMulStabilizer
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.BoxSumNeZeroInvariantAffineChangeStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeSandwichOfLatticeNormalFormStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalCharacterNeZeroOfNeZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingIntegrandBoundedSchwartzStatement
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtPrime
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalFractionsRepresentPrimeNormQuotientStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SumCosetRepsNeZeroIffCommensurableStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TwistPrimeDatumIntegralSupportAndInvariantStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingAffineSpaceMemIffIntrinsicStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingCharacterArgumentCompUnipotentRadicalsStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentRadicalsActAffineUnfoldingSpacesStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VectorsLinearMapsBoundedDenominatorsAtPrimeStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeightedBoxSumAtPrimeEqOfBoundedSchwartzStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtPrime
+public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SourceLatticeInvariance
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralPowerExpansion
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.BoxSumNeZeroInvariantAffineChange
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingIntegrandBoundedSchwartz
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalFractionsRepresentPrimeNormQuotient
+public import Mathlib.Algebra.Field.Defs
+public import Mathlib.GroupTheory.Index
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SumCosetRepsNeZeroIffCommensurable
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TwistPrimeDatumIntegralSupportAndInvariant
+public import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingAffineSpaceMemIffIntrinsic
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingCharacterArgumentCompUnipotentRadicals
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentRadicalsActAffineUnfoldingSpaces
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VectorsLinearMapsBoundedDenominatorsAtPrime
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeightedBoxSumAtPrimeEqOfBoundedSchwartz
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -31,11 +35,10 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -43,6 +46,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -58,7 +62,217 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeSandwichOfLatticeNormalForm, Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalCharacterNeZeroOfNeZero, Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingNonvanishingIffEventuallyNonzero
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeSandwichOfLatticeNormalForm =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeSandwichOfLatticeNormalForm", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SandwichNormalForm\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentCharacterArgumentMulStabilizer\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtPrime\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col GlobalTheory.QNormal
+
+noncomputable section
+
+namespace GlobalTheory.Proof.latticeSandwich_of_latticeNormalForm
+
+open GlobalTheory.IndefiniteRowSideFullHecke.SandwichNormalForm
+
+section Lattice
+
+variable {E : Type} [Field E] [NumberField E] [StarRing E]
+
+theorem intAt_zpow_mul {P : HeightOneSpectrum (𝓞 E)} {e : ℤ} (he : 0 ≤ e) {a : E} (ha : IntAt P a) :
+    IntAt P ((qOf P : E) ^ e * a) := by
+  lift e to ℕ using he
+  rw [zpow_natCast]
+  exact GlobalTheory.Proof.NormalFormAtPrime.intAt_pow_mul e ha
+
+theorem intV_inX {P : HeightOneSpectrum (𝓞 E)} {n c : ℕ} {z : Fin n → E} (hz : IntV P z) : IntV P (Loc.inX E n c z) := by
+  intro l
+  rw [inX_apply]
+  split_ifs
+  · exact hz _
+  · exact ⟨0, 1, one_notMem P, by simp⟩
+
+theorem intV_eN (P : HeightOneSpectrum (𝓞 E)) (N i : ℕ) : IntV P (Loc.eN E N i) := by
+  intro l
+  simp only [Loc.eN]
+  split_ifs
+  · exact intAt_one P
+  · exact ⟨0, 1, one_notMem P, by simp⟩
+
+theorem intV_sum {P : HeightOneSpectrum (𝓞 E)} {N : ℕ} {ι : Type} (s : Finset ι) (f : ι → Fin N → E)
+    (h : ∀ i ∈ s, IntV P (f i)) : IntV P (∑ i ∈ s, f i) := by
+  intro l
+  rw [Finset.sum_apply]
+  exact intAt_sum s _ (fun i hi => h i hi l)
+
+theorem intV_glue {P : HeightOneSpectrum (𝓞 E)} {n c : ℕ} {z : Fin n → E} (hz : IntV P z) (i : Fin c) :
+    IntV P (if i.1 = 0 then Loc.inX E n c z else 0) := by
+  split_ifs
+  · exact intV_inX hz
+  · exact IntV.zero P
+
+theorem decomp {n c : ℕ} (x : Fin (n + c) → E) :
+    x = Loc.inX E n c (fun a => x (Fin.castAdd c a)) + ∑ i : Fin c, x (Fin.natAdd n i) • Loc.eN E (n + c) (n + i.1) := by
+  funext l
+  refine Fin.addCases (fun a => ?_) (fun b => ?_) l
+  · have h1 : ∀ i : Fin c, Loc.eN E (n + c) (n + i.1) (Fin.castAdd c a) = 0 := by
+      intro i
+      simp only [Loc.eN, Fin.val_castAdd]
+      rw [if_neg]
+      omega
+    simp [inX_castAdd, Finset.sum_apply, h1]
+  · have h2 : ∀ i : Fin c, Loc.eN E (n + c) (n + i.1) (Fin.natAdd n b) = if i = b then 1 else 0 := by
+      intro i
+      by_cases hib : i = b
+      · subst hib
+        simp [Loc.eN]
+      · simp only [Loc.eN, Fin.val_natAdd, if_neg hib]
+        rw [if_neg]
+        intro h
+        apply hib
+        ext
+        omega
+    have h3 : Loc.inX E n c (fun a => x (Fin.castAdd c a)) (Fin.natAdd n b) = 0 := by
+      rw [inX_apply, dite_eq_right (by simp)]
+    simp [Finset.sum_apply, h2, h3]
+
+theorem mem_nfLat {P : HeightOneSpectrum (𝓞 E)} {n c : ℕ} {e : Fin c → ℤ} (he : ∀ i, e i ≤ 0) {z : Sp E n}
+    (hz : IntV P z) {x : Sp E (n + c)} (hx : IntV P x) : x ∈ nfLat P n c e z := by
+  have hq : (qOf P : E) ≠ 0 := GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P
+  set w : Sp E n := ∑ i : Fin c, x (Fin.natAdd n i) • (if i.1 = 0 then z else 0) with hw
+  refine ⟨(fun a => x (Fin.castAdd c a)) - w, ?_, fun i => x (Fin.natAdd n i) * (qOf P : E) ^ (-e i), ?_, ?_⟩
+  · rw [mem_stdAt_iff, sub_eq_add_neg]
+    refine IntV.add (fun l => hx _) (IntV.neg ?_)
+    refine intV_sum _ _ (fun i _ => IntV.smul (hx _) ?_)
+    split_ifs
+    · exact hz
+    · exact IntV.zero P
+  · intro i
+    show IntAt P (x (Fin.natAdd n i) * (qOf P : E) ^ (-e i))
+    rw [mul_comm]
+    exact intAt_zpow_mul (by linarith [he i]) (hx _)
+  · have hs : ∀ i : Fin c, (x (Fin.natAdd n i) * (qOf P : E) ^ (-e i)) • nfGen (qOf P) n c e z i =
+        x (Fin.natAdd n i) • Loc.eN E (n + c) (n + i.1) +
+          Loc.inX E n c (x (Fin.natAdd n i) • (if i.1 = 0 then z else 0)) := by
+      intro i
+      simp only [nfGen, smul_smul, mul_assoc, ← zpow_add₀ hq, neg_add_cancel, zpow_zero, mul_one, smul_add]
+      congr 1
+      split_ifs <;> simp
+
+    rw [Finset.sum_congr rfl (fun i _ => hs i), Finset.sum_add_distrib, ← map_sum, ← hw, map_sub]
+    conv_lhs => rw [decomp x]
+    abel
+
+theorem smul_int_of_mem_nfLat {P : HeightOneSpectrum (𝓞 E)} {n c j : ℕ} {e : Fin c → ℤ} (he : ∀ i, -(j : ℤ) ≤ e i)
+    {z : Sp E n} (hz : IntV P z) {x : Sp E (n + c)} (hx : x ∈ nfLat P n c e z) : IntV P (((qOf P : E) ^ j) • x) := by
+  obtain ⟨l, hl, s, hs, rfl⟩ := hx
+  have hq : (qOf P : E) ≠ 0 := GlobalTheory.Proof.NormalFormAtPrime.qOf_ne_zero P
+  rw [mem_stdAt_iff] at hl
+  have key : ∀ i : Fin c, ((qOf P : E) ^ j) • (s i • nfGen (qOf P) n c e z i) =
+      ((qOf P : E) ^ ((j : ℤ) + e i) * s i) •
+        (Loc.eN E (n + c) (n + i.1) + if i.1 = 0 then Loc.inX E n c z else 0) := by
+    intro i
+    simp only [nfGen, smul_smul]
+    congr 1
+    rw [zpow_add₀ hq, zpow_natCast]
+    ring
+  rw [smul_add, Finset.smul_sum, ← LinearMap.map_smul (Loc.inX E n c)]
+  refine IntV.add (intV_inX (fun k => ?_)) (intV_sum _ _ (fun i _ => ?_))
+  · simp only [Pi.smul_apply, smul_eq_mul]
+    exact GlobalTheory.Proof.NormalFormAtPrime.intAt_pow_mul j (hl k)
+  · rw [key i]
+    refine IntV.smul ?_ (IntV.add (intV_eN P _ _) (intV_glue hz i))
+    exact intAt_zpow_mul (by linarith [he i]) (hs i)
+
+end Lattice
+
+theorem inclAt (X : Fields) (Pr : Primes X) (R : Ranks) : InclAt Pr R := by
+  intro j P hP h k hNF hk
+  obtain ⟨e, z, he, hz, himg⟩ := hNF
+  have hk' : ∀ x, k x ∈ lamYat (Pr := Pr) (R := R) j P ↔ x ∈ lamYat (Pr := Pr) (R := R) j P := hk
+  rw [mem_stdAt_iff] at hz
+  constructor
+  · intro x hx
+    have hxi : IntV P x := (mem_lamYat (R := R) hP x).1 hx
+    have hmem : x ∈ nfLat P (R.N j) (cOf R j) e z := mem_nfLat (fun i => (he i).2) hz hxi
+    rw [← himg] at hmem
+    obtain ⟨y', hy', rfl⟩ := hmem
+    refine ⟨k.symm y', ?_, ?_⟩
+    · rw [← hk']
+      simpa using hy'
+    · simp
+  · intro x hx
+    have h1 : h (k x) ∈ nfLat P (R.N j) (cOf R j) e z := by
+      rw [← himg]
+      exact ⟨k x, (hk' x).2 hx, rfl⟩
+    have h2 := smul_int_of_mem_nfLat (fun i => (he i).1) hz h1
+    rw [mem_lamYat hP]
+    intro l
+    have h3 := h2 l
+    simpa [LinearEquiv.mul_apply] using h3
+
+end GlobalTheory.Proof.latticeSandwich_of_latticeNormalForm
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeSandwichOfLatticeNormalForm =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalCharacterNeZeroOfNeZero =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalCharacterNeZeroOfNeZero", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SourceLatticeInvariance\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralPowerExpansion\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentCharacterArgumentMulStabilizer\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col GlobalTheory.QNormal
+
+namespace GlobalTheory.Proof.localCharacter_ne_zero_of_ne_zero
+
+variable {E : Type} [Field E] [NumberField E]
+
+theorem isUnit_reduction_of_valuation_eq_one (P : HeightOneSpectrum (𝓞 E)) {b : E} (hb : P.valuation E b = 1) :
+    IsUnit (redP P b) := by
+  have hb0 : b ≠ 0 := by
+    rintro rfl
+    simp at hb
+  have h1 : IntAt P b := (IntegralPowerExpansion.intAt_iff_val P b).2 hb.le
+  have h2 : IntAt P b⁻¹ := (IntegralPowerExpansion.intAt_iff_val P _).2 (by rw [map_inv₀, hb, inv_one])
+  have h3 := reduction_mul h1 h2
+  have h4 : redP P (1 : E) = 1 := by simpa using reduction_coe P 1
+  rw [mul_inv_cancel₀ hb0, h4] at h3
+  exact IsUnit.of_mul_eq_one _ h3.symm
+
+theorem exists_isUnit_reduction_div_pow {P : HeightOneSpectrum (𝓞 E)} (hP : GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P) {a : E} (ha : a ≠ 0) :
+    ∃ z : ℤ, IsUnit (redP P (a / (qOf P : E) ^ z)) := by
+  have hv : P.valuation E a ≠ 0 := (Valuation.ne_zero_iff _).2 ha
+  refine ⟨-WithZero.log (P.valuation E a), isUnit_reduction_of_valuation_eq_one P ?_⟩
+  rw [map_div₀, map_zpow₀, IntegralPowerExpansion.val_q hP, ← WithZero.exp_zsmul]
+  simp only [neg_neg, smul_eq_mul, mul_one, mul_neg]
+  rw [WithZero.exp_log hv, div_self hv]
+
+theorem locChar_ne_zero : ∀ (E : Type) [Field E] [NumberField E] (K : Type) [Field K] (P : HeightOneSpectrum (𝓞 E)),
+    GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P → ∀ (cq : K) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E), cq ≠ 0 → a ≠ 0 →
+      LocE.locChar (qOf P) cq χ a ≠ 0 := by
+  intro E _ _ K _ P hP cq χ a hcq ha
+  have h : IsUnit (redP P (a / (qOf P : E) ^ LocE.vP P (qOf P) a)) :=
+    Classical.epsilon_spec (exists_isUnit_reduction_div_pow hP ha)
+  unfold LocE.locChar LocE.unitV
+  rw [dite_eq_left h]
+  exact mul_ne_zero (zpow_ne_zero _ hcq) (Units.ne_zero _)
+
+end GlobalTheory.Proof.localCharacter_ne_zero_of_ne_zero
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalCharacterNeZeroOfNeZero =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingNonvanishingIffEventuallyNonzero =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingNonvanishingIffEventuallyNonzero", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SandwichNormalForm\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentCharacterArgumentMulStabilizer\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.BoxSumNeZeroInvariantAffineChange\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeSandwichOfLatticeNormalForm\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SourceLatticeInvariance\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalCharacterNeZeroOfNeZero\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingIntegrandBoundedSchwartz\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalFractionsRepresentPrimeNormQuotient\npublic import Mathlib.Algebra.Field.Defs\npublic import Mathlib.GroupTheory.Index\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SumCosetRepsNeZeroIffCommensurable\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TwistPrimeDatumIntegralSupportAndInvariant\npublic import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingAffineSpaceMemIffIntrinsic\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnfoldingCharacterArgumentCompUnipotentRadicals\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentRadicalsActAffineUnfoldingSpaces\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.VectorsLinearMapsBoundedDenominatorsAtPrime\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeightedBoxSumAtPrimeEqOfBoundedSchwartz\nimport Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalFormAtPrime\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain
@@ -105,15 +319,15 @@ theorem unfNe_transfer [CharZero K] (hP : IndefiniteRowSideFullHecke.SourceLatti
     (hrel : ∀ x, Psi' x = C * Psi (r.toLinearMap ∘ₗ x ∘ₗ r'.toLinearMap)) (H : UnfNe P psi Psi) : UnfNe P psi Psi' := by
   obtain ⟨A₀, B₀, H⟩ := H
   obtain ⟨xj', hx⟩ := Function.ne_iff.1 (H (max A₀ N) (max B₀ N) (le_max_left _ _) (le_max_left _ _))
-  obtain ⟨xj, T, b, hT⟩ := GlobalTheory.T.unipotentRadicals_act_affine_unfoldingSpaces GlobalTheory.T.exists_xx1_eq_iff_inX_eN_Ufl_conditions E n' c' n c hc hc' r hr r' hr' xj'
-  obtain ⟨d, hd⟩ := GlobalTheory.T.unfoldingCharacterArgument_comp_unipotentRadicals GlobalTheory.T.exists_xx1_eq_iff_inX_eN_Ufl_conditions E n' c' n c hc hc' r hr r' hr'
-  have I1 := GlobalTheory.T.localUnfoldingIntegrand_boundedSchwartz E K P n' c' n c psi D N Psi hN hpsi h1 xj'
-  have I2 := GlobalTheory.T.localUnfoldingIntegrand_boundedSchwartz E K P n' c' n c psi D N Psi' hN hpsi h2 xj
-  obtain ⟨A₁, B₁, hA⟩ := GlobalTheory.T.boxSum_ne_zero_invariant_affineChange GlobalTheory.T.vectors_linearMaps_bounded_denominators_atPrime GlobalTheory.T.sum_coset_reps_ne_zero_iff_commensurable GlobalTheory.T.rationalFractions_represent_primeNormQuotient E K P hP _ (integrand psi Psi xj') N I1.1 T b
+  obtain ⟨xj, T, b, hT⟩ := _root_.GlobalTheory.Proof.unipotentRadicals_act_affine_unfoldingSpaces.affine_action _root_.GlobalTheory.Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.unfoldingAffineSpace_mem_iff_intrinsic E n' c' n c hc hc' r hr r' hr' xj'
+  obtain ⟨d, hd⟩ := _root_.GlobalTheory.Proof.unfoldingCharacterArgument_comp_unipotentRadicals.chArg_comp _root_.GlobalTheory.Proof.exists_xx1_eq_iff_inX_eN_Ufl_conditions.unfoldingAffineSpace_mem_iff_intrinsic E n' c' n c hc hc' r hr r' hr'
+  have I1 := _root_.GlobalTheory.Proof.localUnfoldingIntegrand_boundedSchwartz.integrand_bdd E K P n' c' n c psi D N Psi hN hpsi h1 xj'
+  have I2 := _root_.GlobalTheory.Proof.localUnfoldingIntegrand_boundedSchwartz.integrand_bdd E K P n' c' n c psi D N Psi' hN hpsi h2 xj
+  obtain ⟨A₁, B₁, hA⟩ := _root_.GlobalTheory.Proof.boxSum_ne_zero_invariant_affineChange.affine _root_.GlobalTheory.Proof.vectors_linearMaps_bounded_denominators_atPrime.bounded_denominators _root_.GlobalTheory.Proof.sum_coset_reps_ne_zero_iff_commensurable.sum_reps_ne_zero_iff _root_.GlobalTheory.Proof.rationalFractions_represent_primeNormQuotient.valsQ_reps E K P hP _ (integrand psi Psi xj') N I1.1 T b
   refine ⟨max A₁ N, max B₁ N, fun A B hA' hB' => Function.ne_iff.2 ⟨xj, ?_⟩⟩
   have h3 : boxSum P A B (integrand psi Psi xj') ≠ 0 := by
-    rw [GlobalTheory.T.weightedBoxSumAtPrime_eq_of_boundedSchwartz E K P hP.1 _ _ N I1.1 A B (le_of_max_le_right hA') (le_of_max_le_right hB'),
-      ← GlobalTheory.T.weightedBoxSumAtPrime_eq_of_boundedSchwartz E K P hP.1 _ _ N I1.1 (max A₀ N) (max B₀ N) (le_max_right _ _) (le_max_right _ _)]
+    rw [_root_.GlobalTheory.boxSum_eq_of_funBdd E K P hP.1 _ _ N I1.1 A B (le_of_max_le_right hA') (le_of_max_le_right hB'),
+      ← _root_.GlobalTheory.boxSum_eq_of_funBdd E K P hP.1 _ _ N I1.1 (max A₀ N) (max B₀ N) (le_max_right _ _) (le_max_right _ _)]
     exact hx
   have h4 := (hA A B (le_of_max_le_left hA') (le_of_max_le_left hB')).2 h3
   have hdep : ∀ t, Psi (Loc.xx1 xj' (T t + b)) ≠ 0 → IntAt P ((qOf P : E) ^ D * d) ∧
@@ -186,7 +400,7 @@ theorem between_iff {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.
 
 theorem between_of_nf {j : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) {h : AutY X R j} (H : NF Pr j P h) :
     Between j P h := by
-  obtain ⟨h1, h2⟩ := GlobalTheory.T.latticeSandwich_of_latticeNormalForm X Pr R j P hP h 1 H (one_mem _)
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.Proof.latticeSandwich_of_latticeNormalForm.inclAt X Pr R j P hP h 1 H (one_mem _)
   rw [mul_one] at h1 h2
   refine (between_iff hP h).1 fun x hx => ⟨?_, h2 x hx⟩
   obtain ⟨y, hy, rfl⟩ := h1 x hx
@@ -226,7 +440,7 @@ theorem omScal_ne_zero (hc : cst.Ok) {i : ℕ} {P : rowSG Pr sel mu} (hd : DegOn
     have := hc.sq_sq P
     rw [e, zero_pow two_ne_zero] at this
     exact hd.1.ne_zero (by exact_mod_cast this.symm)
-  have hmu : ∀ a : X.Eˣ, muAt Ch sel mu cst i P a ≠ 0 := fun a => GlobalTheory.T.localCharacter_ne_zero_of_ne_zero X.E X.K P.1 hd _ _ _ hm a.ne_zero
+  have hmu : ∀ a : X.Eˣ, muAt Ch sel mu cst i P a ≠ 0 := fun a => _root_.GlobalTheory.Proof.localCharacter_ne_zero_of_ne_zero.locChar_ne_zero X.E X.K P.1 hd _ _ _ hm a.ne_zero
   exact mul_ne_zero (mul_ne_zero (mul_ne_zero (hmu _) (inv_ne_zero (hmu _))) (zpow_ne_zero _ hq)) (zpow_ne_zero _ hq)
 
 theorem rank_le (R : Ranks) (j : ℕ) : R.k ≤ R.N j ∧ R.r ≤ R.N j + cOf R j := by
@@ -239,7 +453,7 @@ theorem phiAt_prop {sharp : Bool} {i : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (
       ∀ x y, IntHom P y → PhiAt Ch mu sharp i P (x + (qOf P : X.E) • y) = PhiAt Ch mu sharp i P x := by
   unfold PhiAt
   rw [if_neg hP]
-  exact GlobalTheory.T.twistPrimeDatum_integral_support_and_invariant X.E X.K P _ _ _ _ _ _ _ (rank_le R i).1 (rank_le R (i + 1)).1 (rank_le R i).2 (rank_le R (i + 1)).2
+  exact _root_.GlobalTheory.Proof.twistPrimeDatum_integral_support_and_invariant.phiQ_bdd X.E X.K P _ _ _ _ _ _ _ (rank_le R i).1 (rank_le R (i + 1)).1 (rank_le R i).2 (rank_le R (i + 1)).2
 
 theorem omPhi_bdd {i : ℕ} {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) {hal : AutY X R i} {h : AutY X R (i + 1)}
     (h1 : Between i P.1 hal) (h2 : Between (i + 1) P.1 h) : HomBdd P.1 (i + 1) (omPhi Ch sel mu cst i P hal h) :=
@@ -275,3 +489,7 @@ variable {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {
 end Chain
 
 end GlobalTheory.QNormal
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnfoldingNonvanishingIffEventuallyNonzero =====

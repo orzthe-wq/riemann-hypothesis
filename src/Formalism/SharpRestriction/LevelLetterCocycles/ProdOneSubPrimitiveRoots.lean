@@ -119,7 +119,6 @@ theorem norm_l : ‖((l : ℕ) : Om l)‖ = (l : ℝ)⁻¹ := by
   rw [h]
   first
   | exact Padic.norm_p
-  | simp
 
 abbrev Q0 (l : ℕ) [Fact l.Prime] : IntermediateField ℚ_[l] (Om l) := ⊥
 
@@ -161,7 +160,6 @@ theorem norm_Kur_zpow {x : Om l} (hx : x ∈ MaximalUnramifiedExtension l) (h0 :
   rw [ha]
   first
   | exact Padic.norm_eq_zpow_neg_valuation ha0
-  | exact Padic.norm_eq_pow_val ha0
 
 theorem norm_eq_one_of_pow {n : ℕ} (hn : n ≠ 0) {z : Om l} (hz : z ^ n = 1) : ‖z‖ = 1 := by
   have h := congrArg norm hz
@@ -246,13 +244,11 @@ theorem natDegree_minpoly_eq (hF : F ≤ MaximalUnramifiedExtension l) {k : ℕ}
   have hcard : Multiset.card P.roots = m.natDegree := by
     first
     | exact (splits_iff_card_roots.mp hsplit).trans (natDegree_map _)
-    | exact (natDegree_eq_card_roots' hsplit).symm.trans (natDegree_map _)
-    | (rw [hP, natDegree_map]; exact (IsAlgClosed.card_roots_eq_natDegree).trans (natDegree_map _))
   have heval : P.eval 1 = (P.roots.map fun a => 1 - a).prod := by
     have hPdeg : P.natDegree = m.natDegree := natDegree_map _
     conv_lhs => rw [← prod_multiset_X_sub_C_of_monic_of_roots_card_eq hmon (hcard.trans hPdeg.symm)]
     rw [eval_multiset_prod, Multiset.map_map]
-    simp [Function.comp_def]
+    simp
   have hnorm : ‖(P.roots.map fun a => 1 - a).prod‖ = ‖1 - z‖ ^ m.natDegree := by
     rw [← hcard]
     have hr : ∀ a ∈ P.roots, ‖1 - a‖ = ‖1 - z‖ := fun a ha => norm_one_sub_eq (hroots a ha) hz
@@ -284,7 +280,6 @@ theorem natDegree_minpoly_eq (hF : F ≤ MaximalUnramifiedExtension l) {k : ℕ}
   have hφpos : 0 < (l ^ k).totient := by
     first
     | exact Nat.totient_pos.mpr hpos
-    | exact Nat.totient_pos hpos
   have hj' : j ≤ -1 := by
     by_contra hc
     push_neg at hc

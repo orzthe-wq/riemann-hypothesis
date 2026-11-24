@@ -72,8 +72,6 @@ theorem mem_integer_of_isIntegral {F : Type} [Field F] [ValuativeRel F] {s : F}
   have h := (Valuation.integer.integers (ValuativeRel.valuation F)).mem_of_integral hs
   first
     | exact h
-    | simpa using h
-    | (obtain ⟨y, hy⟩ := h; rw [← hy]; exact y.2)
 
 theorem mem_integer_of_isIntegral_map {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E) {s : F}

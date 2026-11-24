@@ -64,7 +64,7 @@ end Rep
 theorem real_bound (u v c b : ℂ) (hc : c ≠ 0) (hu : u.im = 0) (hv : v.im = 0)
     (hb : ‖b‖ ^ 2 ≤ u.re * v.re) :
     (u * (c * v) / c).im = 0 ∧ ‖b‖ ^ 2 ≤ (u * (c * v) / c).re := by
-  have h : u * (c * v) / c = u * v := by field_simp <;> ring
+  have h : u * (c * v) / c = u * v := by field_simp
   rw [h]
   constructor
   · simp [Complex.mul_im, hu, hv]

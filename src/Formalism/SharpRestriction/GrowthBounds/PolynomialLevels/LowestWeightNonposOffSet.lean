@@ -83,9 +83,8 @@ theorem lowest_weight_congr [NeZero n] (LL LL' : Letters ι) (S S' : Set ι) (F 
 theorem lowest_weight_nonpos_off_set [NeZero n] (LL : Letters ι) (S : Set ι) (F : MvPolynomial (ι × Fin n) R)
     (h : ∀ v ∈ F.vars, v.1 ∉ S) : lam1S LL S F ≤ 0 := by
   rw [lowest_weight_congr LL LL S ∅ F (fun v hv => ⟨by simp [h v hv], rfl⟩)]
-  have h0 := (Joints.StandardMonomialSpace.lowest_degree_le_iff LL ∅ F 0).mpr
+  simpa using (Joints.StandardMonomialSpace.lowest_degree_le_iff LL ∅ F 0).mpr
     (fun k hk => le_of_eq (by simpa using Joints.StandardMonomialSpace.sDegs_empty_subset LL 0 F k hk))
-  simpa using h0
 
 end Congr
 
@@ -99,8 +98,7 @@ private theorem posTL_mem_Ioc_fr_last (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL
   have hmono := hV.2.2.1
   obtain ⟨j, s⟩ := t
   have hgap : Fr.fr (segZ j - 1) (r - 1) < Fr.fr (segZ j) 0 := by
-    have h := hV.2.2.2.1 (segZ j - 1)
-    simpa using h
+    simpa using hV.2.2.2.1 (segZ j - 1)
   cases s with
   | inl l =>
     have hmem := DdG.llPos_mem Fr (segZ j) l.val (by rw [← hnL j]; exact l.isLt)
@@ -118,8 +116,7 @@ private theorem posTL_mem_Ioc_fr_last (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL
 private theorem fr_last_strictMono (hV : Fr.Valid L₁ N₁) : StrictMono (fun s : ℤ => Fr.fr s (r - 1)) := by
   have hr : 0 < r := NeZero.pos r
   apply strictMono_int_of_lt_succ
-  intro s
-  exact lt_of_lt_of_le (hV.2.2.2.1 s) (DdG.fr_le Fr hV.2.2.1 (s + 1) (Nat.zero_le _) (by omega))
+  exact fun s => lt_of_lt_of_le (hV.2.2.2.1 s) (DdG.fr_le Fr hV.2.2.1 (s + 1) (Nat.zero_le _) (by omega))
 
 private theorem posTL_injective (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) :
     Function.Injective (posTL Fr : TL J nL r → ℤ) := by
@@ -178,8 +175,7 @@ private theorem posTL_injective (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (
 
 theorem gT_posTL (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (t : TL J nL r) :
     gT Fr nL (posTL Fr t) = t := by
-  unfold gT
-  exact Function.leftInverse_invFun (posTL_injective hV hnL) t
+  simpa only [gT] using Function.leftInverse_invFun (posTL_injective hV hnL) t
 
 theorem tl_surj (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (x : ℤ)
     (hx : x ∈ Fr.letters (segZ j)) (hW : ¬ Fr.IsW (segZ j) x) : ∃ s, posTL Fr (⟨j, s⟩ : TL J nL r) = x := by
@@ -213,9 +209,7 @@ theorem tl_surj' (hV : Fr.Valid L₁ N₁) (hJ : J = Fr.J) (hnL : ∀ j, nL j = 
     ∃ t : TL J nL r, segZ t.1 = (i : ℤ) ∧ posTL Fr t = x := by
   have hiJ : i < J := by rw [hJ]; exact hi
   have hs := segZ_natCast (J := J) i hiJ
-  have hx' : x ∈ Fr.letters (segZ ((i : ℕ) : ZMod J)) := by rw [hs]; exact hx
-  have hW' : ¬ Fr.IsW (segZ ((i : ℕ) : ZMod J)) x := by rw [hs]; exact hW
-  obtain ⟨s, hs2⟩ := tl_surj hV hnL ((i : ℕ) : ZMod J) x hx' hW'
+  obtain ⟨s, hs2⟩ := tl_surj hV hnL ((i : ℕ) : ZMod J) x (by simpa [hs] using hx) (by simpa [hs] using hW)
   exact ⟨⟨(i : ZMod J), s⟩, hs, hs2⟩
 
 theorem mem_NSet_inl (j : ZMod J) (l : Fin (nL j)) (u : ℕ) :
@@ -258,8 +252,7 @@ private theorem posU_lt_posU_iff (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = 
     · exact lt_asymm h (posU_strictMono hV hnL j b a hc ha)
     · subst hc
       exact lt_irrefl _ h
-  · intro h
-    exact posU_strictMono hV hnL j a b h hb
+  · exact fun h => posU_strictMono hV hnL j a b h hb
 
 private theorem posU_le_posU_iff (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (j : ZMod J)
     (a b : ℕ) (ha : a < nL j + r) (hb : b < nL j + r) :
@@ -272,16 +265,14 @@ theorem NSet_lt (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ j
   have hr : 0 < r := Nat.pos_of_ne_zero (NeZero.ne r)
   cases s with
   | inl l =>
-    rw [mem_NSet_inl]
     have hl := l.isLt
     have hp : posTL Fr (⟨j, Sum.inl l⟩ : TL J nL r) = posU Fr (nL j) (segZ j) l.val := by
       simp [posTL, posU, l.isLt]
-    rw [hp, posU_lt_posU_iff hV hnL j _ _ (by omega) hu]
+    rw [mem_NSet_inl, hp, posU_lt_posU_iff hV hnL j _ _ (by omega) hu]
   | inr m =>
-    rw [mem_NSet_inr]
     have hp : posTL Fr (⟨j, Sum.inr m⟩ : TL J nL r) = posU Fr (nL j) (segZ j) (nL j + (r - 1 - m.val)) := by
       simp [posTL, posU]
-    rw [hp, posU_lt_posU_iff hV hnL j _ _ (by omega) hu]
+    rw [mem_NSet_inr, hp, posU_lt_posU_iff hV hnL j _ _ (by omega) hu]
 
 theorem NSet_le (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (u : ℕ)
     (hu : u < nL j + r) (s : Fin (nL j) ⊕ Fin r) :
@@ -289,16 +280,14 @@ theorem NSet_le (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, nL j = (Fr.LLset (segZ j
   have hr : 0 < r := Nat.pos_of_ne_zero (NeZero.ne r)
   cases s with
   | inl l =>
-    rw [mem_NSet_inl, Nat.lt_succ_iff]
     have hl := l.isLt
     have hp : posTL Fr (⟨j, Sum.inl l⟩ : TL J nL r) = posU Fr (nL j) (segZ j) l.val := by
       simp [posTL, posU, l.isLt]
-    rw [hp, posU_le_posU_iff hV hnL j _ _ (by omega) hu]
+    rw [mem_NSet_inl, Nat.lt_succ_iff, hp, posU_le_posU_iff hV hnL j _ _ (by omega) hu]
   | inr m =>
-    rw [mem_NSet_inr, Nat.lt_succ_iff]
     have hp : posTL Fr (⟨j, Sum.inr m⟩ : TL J nL r) = posU Fr (nL j) (segZ j) (nL j + (r - 1 - m.val)) := by
       simp [posTL, posU]
-    rw [hp, posU_le_posU_iff hV hnL j _ _ (by omega) hu]
+    rw [mem_NSet_inr, Nat.lt_succ_iff, hp, posU_le_posU_iff hV hnL j _ _ (by omega) hu]
 
 end Geo
 
@@ -310,8 +299,7 @@ variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
 theorem trueLet_vec (hV : Fr.Valid L₁ N₁) (hsgn : ∀ j l, Dt.sgn j l = decide (Even (llPos Fr (segZ j) l.val)))
     (t : TL J Dt.nL r) : Dt.trueLet.vec t = LZ.vec (posTL Fr t) := by
   obtain ⟨j, l | m⟩ := t
-  · simp only [SignedChainData.trueLet, LZ, posTL]
-    exact hsgn j l
+  · simpa only [SignedChainData.trueLet, LZ, posTL] using hsgn j l
   · simp only [SignedChainData.trueLet, LZ, posTL]
     have h := (hV.2.2.2.2.1 (segZ j) (r - 1 - m.val) (by have := NeZero.pos r; omega)).2
     simp [h]
@@ -328,8 +316,7 @@ theorem Rn_vars (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, Dt.nL j = (Fr.LLset (seg
     ∀ v ∈ (Rn Fr Dt.nL A).vars, v.1.1 = j := by
   intro v hv
   obtain ⟨w, hw, rfl⟩ := Finset.mem_image.mp (vars_rename _ _ hv)
-  have hw' : w ∈ A.vars := vars_map _ _ hw
-  obtain ⟨hx, hW⟩ := (mem_supported.mp hA) hw'
+  obtain ⟨hx, hW⟩ := (mem_supported.mp hA) (vars_map _ _ hw)
   obtain ⟨s, hs, -⟩ := exists_gT_eq_and_posTL_eq_of_not_isW hV hnL j w.1 hx hW
   simp [hs]
 
@@ -353,16 +340,13 @@ theorem lam_Rn_le (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, Dt.nL j = (Fr.LLset (s
   have hgood : ∀ i : {x : ℤ // x ∈ Fr.letters (segZ j) ∧ ¬ Fr.IsW (segZ j) x},
       ∃ s, gT Fr Dt.nL i.val = (⟨j, s⟩ : TL J Dt.nL r) ∧ posTL Fr (⟨j, s⟩ : TL J Dt.nL r) = i.val :=
     fun i => exists_gT_eq_and_posTL_eq_of_not_isW hV hnL j i.val i.2.1 i.2.2
-  have hpos : ∀ i : {x : ℤ // x ∈ Fr.letters (segZ j) ∧ ¬ Fr.IsW (segZ j) x},
-      posTL Fr (gT Fr Dt.nL i.val) = i.val := by
-    intro i
-    obtain ⟨s, hs, hs'⟩ := hgood i
-    rw [hs, hs']
   have hinj2 : Function.Injective
       (fun i : {x : ℤ // x ∈ Fr.letters (segZ j) ∧ ¬ Fr.IsW (segZ j) x} => gT Fr Dt.nL i.val) := by
     intro a b h
     apply Subtype.ext
-    rw [← hpos a, ← hpos b]
+    obtain ⟨sa, ha, ha'⟩ := hgood a
+    obtain ⟨sb, hb, hb'⟩ := hgood b
+    rw [← ha', ← hb', ← ha, ← hb]
     exact congrArg (posTL Fr) h
   have hvec : ∀ i : {x : ℤ // x ∈ Fr.letters (segZ j) ∧ ¬ Fr.IsW (segZ j) x},
       Dt.trueLet.vec (gT Fr Dt.nL i.val) = (Letters.mk fun i : {x : ℤ // x ∈ Fr.letters (segZ j) ∧ ¬ Fr.IsW (segZ j) x} => LZ.vec i.val).vec i := by
@@ -400,8 +384,7 @@ theorem lam_prod_le (hV : Fr.Valid L₁ N₁) (hJ : J = Fr.J) (hnL : ∀ j, Dt.n
     (hS : ∀ s, (⟨j, s⟩ : TL J Dt.nL r) ∈ S ↔ posTL Fr (⟨j, s⟩ : TL J Dt.nL r) ∈ Sz) :
     lam1S Dt.trueLet S (∏ i ∈ Finset.range Fr.J, Rn Fr Dt.nL (G i)) ≤ lam1S LZ Sz (G (segZ j)) := by
   have hjlt : j.val < Fr.J := hJ ▸ ZMod.val_lt j
-  have hmemr : j.val ∈ Finset.range Fr.J := Finset.mem_range.mpr hjlt
-  rw [← Finset.mul_prod_erase _ _ hmemr]
+  rw [← Finset.mul_prod_erase _ _ (Finset.mem_range.mpr hjlt)]
   have h1 : lam1S Dt.trueLet S (Rn Fr Dt.nL (G (j.val : ℤ))) ≤ lam1S LZ Sz (G (segZ j)) :=
     lam_Rn_le Dt hV hnL hsgn j (G (j.val : ℤ)) (hG j.val hjlt) S Sz hS
   have h2 : lam1S Dt.trueLet S (∏ i ∈ (Finset.range Fr.J).erase j.val, Rn Fr Dt.nL (G (i : ℤ))) ≤ 0 := by

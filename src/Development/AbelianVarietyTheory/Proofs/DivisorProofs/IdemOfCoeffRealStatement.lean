@@ -55,4 +55,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.CuspMult
 
 theorem _root_.GlobalTheory.T.star_idemOf_coeff_eq_self : ∀ {K G : Type} [Field K] [Group G] [Fintype G] (σ : K →+* ℂ) (X : Finset (G → K)), (∀ χ ∈ X, IsAbsIrrChar χ) → GoodStable X → ∀ g, star (σ ((idemOf X).coeff g)) = σ ((idemOf X).coeff g) := by
-  first | exact @GlobalTheory.CuspMult.idemOf_coeff_real | exact GlobalTheory.CuspMult.idemOf_coeff_real | (intros; apply GlobalTheory.CuspMult.idemOf_coeff_real <;> assumption)
+  first | exact @GlobalTheory.CuspMult.idemOf_coeff_real

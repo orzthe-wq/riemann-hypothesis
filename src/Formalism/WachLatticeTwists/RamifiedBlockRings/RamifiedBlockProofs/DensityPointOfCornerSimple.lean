@@ -79,7 +79,7 @@ theorem blockPoly_factor {A : Type*} [CommRing A] {d S : Type*} [Fintype d] [Dec
   unfold Matrix.charpoly
   congr 1
   ext i j
-  by_cases h : i = j <;> simp [h, Matrix.charmatrix_apply, Matrix.one_apply]
+  by_cases h : i = j <;> simp [h]
 
 private theorem separable_comp_C_mul_X_of_ne_zero {K : Type*} [Field K] {p : Polynomial K} (hp : p.Separable) {a : K}
     (ha : a ≠ 0) : (p.comp (Polynomial.C a * Polynomial.X)).Separable := by

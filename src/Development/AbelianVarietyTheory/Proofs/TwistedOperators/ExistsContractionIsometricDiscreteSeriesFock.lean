@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChosenSeries
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDerivedActionsTensorMembersStatement
+public import Formalism.LocalRingCardinality.DataTheta
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDerivedActionsTensorMembers
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockKsetPreservesHomogeneousDegree
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockPolynomialKFiniteBothMembers
 import Mathlib.Algebra.Order.Floor.Extended
@@ -164,7 +165,7 @@ theorem exists_isCoverIt : ∀ (p q r s : ℕ) (T₀ : GrpData (p * r + q * s) (
     rw [h1, norm_zero] at h2
     exact mul_ne_zero (norm_ne_zero_iff.2 hx) (norm_ne_zero_iff.2 hy) h2.symm
   · intro Z hZ P y
-    have hd := (GlobalTheory.T.fock_derived_actions_tensor_members p q r s T₀ T₁ T₂ F).2.1 Z hZ P
+    have hd := (_root_.GlobalTheory.FockEmbExp.fock_derived p q r s T₀ T₁ T₂ F).2.1 Z hZ P
     have hc := ((ContinuousLinearMap.adjoint (Tm.flip y)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd
     have e : (fun t : ℝ => R₁.U.π (T₁.expt (t • Z)) (B P y)) =
         (ContinuousLinearMap.adjoint (Tm.flip y)) ∘
@@ -184,7 +185,7 @@ theorem exists_isCoverIt : ∀ (p q r s : ℕ) (T₀ : GrpData (p * r + q * s) (
       have h := T₂.expt_add Z hZ (-t) t
       rw [neg_add_cancel, hone] at h
       exact (eq_inv_of_mul_eq_one_left h.symm).symm
-    have hd := (GlobalTheory.T.fock_derived_actions_tensor_members p q r s T₀ T₁ T₂ F).2.2 Z hZ P
+    have hd := (_root_.GlobalTheory.FockEmbExp.fock_derived p q r s T₀ T₁ T₂ F).2.2 Z hZ P
     have hd' : HasDerivAt (fun u : ℝ => F.π (1, T₂.expt (u • Z)) (F.ι P))
         (F.ι (fockAct2 p q r s Z P)) (-(0 : ℝ)) := by rw [neg_zero]; exact hd
     have hn := hd'.scomp (0 : ℝ) (hasDerivAt_neg (0 : ℝ))

@@ -1,20 +1,20 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.EqOneOfHeckeEigNeBot
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HxiTZeroComb
+public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.OmegaPullOmegaTraceOfSecTraceOne
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsGHeckeMapForget
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HasDivPlace
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjMemOfMemHeckeLevel
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsMonHomIdPow
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelEqKN
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelObjectLoweredLevel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibrePowerMapOfTotalSpacesIsPullback
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForgetIsHeckeOne
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OmegaPullId
-import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -33,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,7 +45,84 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelObjectLoweredLevel
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.OmegaPullId
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
+import Mathlib.Tactic.Linter.Style
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusAbelianQuotientPDivisibleSmoothGroup
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Definitions.GaloisGeometry.EqOneOfHeckeEigNeBot, Development.AbelianVarietyTheory.Definitions.GaloisGeometry.InvMemLatMonoidOfMemAwaySupp
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.GaloisGeometry.EqOneOfHeckeEigNeBot =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.GaloisGeometry.EqOneOfHeckeEigNeBot", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.HxiTZeroComb\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.OmegaPullOmegaTraceOfSecTraceOne\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsGHeckeMapForget\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GlobalTheory.W2
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheory.HodgeCoh
+
+variable {G : GDatum} {gb : GBase G ℂ}
+
+abbrev Z {N : ℕ} (X : GenModel gb N) (k : ℕ) : Scheme.{0} := (GlobalTheory.KS.pow X.univ.A k).left
+
+def zs {N : ℕ} (X : GenModel gb N) (k : ℕ) : Z X k ⟶ Sp ℂ := (GlobalTheory.KS.pow X.univ.A k).hom ≫ X.s
+
+def corrOp {Z Y : Scheme.{0}} {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ} (c1 c2 : Y ⟶ Z) [IsFinite c1] [Etale c1]
+    (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') (a b : ℕ) : hodgeH s a b →ₗ[ℂ] hodgeH s a b :=
+  hodgeTrace h1 a b ∘ₗ hodgePull h2 a b
+
+def IsHeckeLift {N k' : ℕ} (X : GenModel gb N) (X' : GenModel gb (N * k')) (g : G.La →ₗ[G.O] G.La) (c : ℕ)
+    (π : X'.X ⟶ X.X) (φ : X'.univ.A.left ⟶ X.univ.A.left) : Prop :=
+  π ≫ X.s = X'.s ∧ ∃ (o' : GObj gb N X'.s) (ψ : X'.univ.A ⟶ o'.A) (m : GObjMap o' X.univ π),
+    IsGHecke g c k' N X'.univ o' ψ ∧ φ = ψ.left ≫ m.φ
+
+def IsHeckeCorr {N : ℕ} (X : GenModel gb N) (k k' : ℕ) (g : G.La →ₗ[G.O] G.La) (c : ℕ)
+    (α : Matrix (Fin k) (Fin k) G.O) {Y : Scheme.{0}} (c1 c2 : Y ⟶ Z X k) : Prop :=
+  ∃ (X' : GenModel gb (N * k')) (e : Y ≅ Z X' k) (π1 π2 : X'.X ⟶ X.X) (φ1 φ2 : X'.univ.A.left ⟶ X.univ.A.left)
+    (h1 : φ1 ≫ X.univ.A.hom = X'.univ.A.hom ≫ π1) (h2 : φ2 ≫ X.univ.A.hom = X'.univ.A.hom ≫ π2),
+    IsHeckeLift X X' (k' • LinearMap.id) (k' ^ 2) π1 φ1 ∧ IsHeckeLift X X' g c π2 φ2 ∧
+    c1 = e.hom ≫ GlobalTheory.KS.powMap π1 φ1 h1 k ∧
+    c2 = e.hom ≫ GlobalTheory.KS.powMap π2 φ2 h2 k ≫ (GlobalTheory.KS.matEnd X.univ.act α).left
+
+def IsHeckeIdx (N : ℕ) (S : Finset ℕ) (g : G.La →ₗ[G.O] G.La) (c : ℕ) : Prop :=
+  0 < c ∧ c.Coprime N ∧ (∀ q ∈ S, c.Coprime q) ∧ ∀ x : G.La, ∃ y : G.La, g x - c • x = N • y
+
+def IsHeckeCorrOp {N : ℕ} (X : GenModel gb N) (k k' : ℕ) (g : G.La →ₗ[G.O] G.La) (c a b : ℕ)
+    (T : Module.End ℂ (hodgeH (zs X k) a b)) : Prop :=
+  ∃ (Y : Scheme.{0}) (c1 c2 : Y ⟶ Z X k) (_ : IsFinite c1) (_ : Etale c1) (h2 : c2 ≫ zs X k = c1 ≫ zs X k),
+    IsHeckeCorr X k k' g c 1 c1 c2 ∧ T = corrOp (s := zs X k) (s' := c1 ≫ zs X k) c1 c2 rfl h2 a b
+
+def heckeEig {N : ℕ} (X : GenModel gb N) (k : ℕ) (S : Finset ℕ) (θ : (G.La →ₗ[G.O] G.La) → ℕ → ℂ) (a b : ℕ) :
+    Submodule ℂ (hodgeH (zs X k) a b) :=
+  ⨅ (g : G.La →ₗ[G.O] G.La) (c : ℕ) (_ : IsHeckeIdx N S g c) (T : Module.End ℂ (hodgeH (zs X k) a b))
+    (_ : IsHeckeCorrOp X k c g c a b T), T.maxGenEigenspace (θ g c)
+
+def altPoly {N : ℕ} (X : GenModel gb N) (k : ℕ) (S : Finset ℕ) (θ : (G.La →ₗ[G.O] G.La) → ℕ → ℂ) (d : ℕ) :
+    Polynomial ℤ :=
+  ∑ a ∈ Finset.range (d + 1), Polynomial.C (∑ b ∈ Finset.range (d + 1),
+    (-1 : ℤ) ^ b * (Module.finrank ℂ (heckeEig X k S θ a b) : ℤ)) * Polynomial.X ^ a
+
+section Eig
+
+variable {N : ℕ} {X : GenModel gb N} {k : ℕ} {S : Finset ℕ} {θ : (G.La →ₗ[G.O] G.La) → ℕ → ℂ} {a b : ℕ}
+
+end Eig
+
+end GlobalTheory.W2
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.GaloisGeometry.EqOneOfHeckeEigNeBot =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.GaloisGeometry.InvMemLatMonoidOfMemAwaySupp =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.GaloisGeometry.InvMemLatMonoidOfMemAwaySupp", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.EqOneOfHeckeEigNeBot\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.HasDivPlace\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ConjMemOfMemHeckeLevel\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsMonHomIdPow\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLevelEqKN\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelObjectLoweredLevel\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FibrePowerMapOfTotalSpacesIsPullback\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ForgetIsHeckeOne\nimport Development.AbelianVarietyTheory.Proofs.SatakeParameters.OmegaPullId\nimport Formalism.SatakeDualWeyl.KpqSubgroupCompact\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\nimport Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusAbelianQuotientPDivisibleSmoothGroup\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -66,7 +142,7 @@ variable {Γ : Type} [Group Γ]
 
 theorem mem_heckeLevel_inv {K : Subgroup Γ} {h u : Γ} : u ∈ heckeLevel K h⁻¹ ↔ u ∈ K ∧ h * u * h⁻¹ ∈ K := by
   refine ⟨fun hu => ⟨heckeLevel_le K h⁻¹ hu, by simpa using conj_mem_of_mem_heckeLevel hu⟩, fun hu => ⟨hu.1, ?_⟩⟩
-  exact ⟨h * u * h⁻¹, hu.2, by simp [MulAut.conj_apply, _root_.mul_assoc]⟩
+  exact ⟨h * u * h⁻¹, hu.2, by simp [_root_.mul_assoc]⟩
 
 theorem heckeLevel_inv_of_comm (K : Subgroup Γ) {h : Γ} (hc : ∀ u, h * u = u * h) : heckeLevel K h⁻¹ = K := by
   ext u
@@ -251,7 +327,7 @@ theorem isGIsogWit_mul {S : Scheme.{0}} {s : S ⟶ Sp R} {N M : ℕ} (e : N = M)
     IsGIsogWit L h (relevelObj e o) o (𝟙 o.A ^ c) (𝟙 o.A ^ c) m (c * c) := by
   subst e
   show IsGIsogWit L h o o (𝟙 o.A ^ c) (𝟙 o.A ^ c) m (c * c)
-  haveI := GlobalTheory.DrinLev.HT.MulModel.isMonHom_id_pow o.A c
+  haveI := _root_.GlobalTheory.SS.DivSemi.isMonHom_id_pow o.A c
   refine ⟨inferInstance, inferInstance, fun a => ?_, fun a => ?_, ?_, ?_, hm, Nat.Coprime.mul_left hc hc,
     fun k _ _ t β ht => ?_⟩
   · haveI := o.act.hom a
@@ -398,3 +474,7 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : _root_.Glob
 end Basic₂
 
 end GlobalTheory.W2
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.GaloisGeometry.InvMemLatMonoidOfMemAwaySupp =====

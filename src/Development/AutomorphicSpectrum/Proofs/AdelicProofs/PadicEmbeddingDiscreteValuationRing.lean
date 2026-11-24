@@ -77,8 +77,7 @@ def unitBall : ValuationSubring K where
   neg_mem' := fun {a} ha => by
     simpa using ha
   mem_or_inv_mem' := fun a => by
-    simp only [Subring.mem_mk, Subsemiring.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk,
-      Set.mem_setOf_eq, map_inv₀, norm_inv]
+    simp only [Set.mem_setOf_eq, map_inv₀, norm_inv]
     rcases le_total ‖j a‖ 1 with h | h
     · exact Or.inl h
     · exact Or.inr (inv_le_one_of_one_le₀ h)

@@ -89,7 +89,7 @@ theorem kth_decomp (θ : Fin n → ℝ) (hc : ∀ j, Real.cos (θ j) ≠ 0) :
     simp only [inv_inv]
   rw [kth_eq]
   simp only [nU, nbar, mM, hinv, Matrix.fromBlocks_multiply, Matrix.mul_one, Matrix.one_mul,
-    Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.add_mul, dR_mul]
+    Matrix.mul_zero, add_zero, zero_add, Matrix.add_mul, dR_mul]
   rw [dR_add, dR_neg]
   congr 1
   · congr 1
@@ -124,7 +124,7 @@ theorem kth_half (θ : Fin n → ℝ) : kth θ = kth (fun j => θ j / 2) * kth (
     rw [this]
     ring
   rw [kth_eq, kth_eq, Matrix.fromBlocks_multiply]
-  simp only [Matrix.mul_neg, Matrix.neg_mul, dR_mul, dR_neg, dR_add]
+  simp only [dR_mul, dR_neg, dR_add]
   congr 1
   · congr 1
     funext j

@@ -44,6 +44,7 @@ public import ReciprocityTheory.ClassFieldTheory.LocalClassField.PowPowSuccSub
 public import ReciprocityTheory.ClassFieldTheory.LocalClassField.UnrExtC
 public import ReciprocityTheory.ClassFieldTheory.LocalClassField.MemOfPowQKSubOne
 public import ReciprocityTheory.ClassFieldTheory.LocalClassField.UnrExtA
+import Mathlib.Data.Nat.GCD.Basic
 
 @[expose] public section
 
@@ -78,18 +79,8 @@ theorem eqOn_Kn_of_primitive {n : ℕ} (h0 : qK p K ^ n - 1 ≠ 0) {ζ₀ : Padi
   rw [map_pow, map_pow, h]
 
 theorem pow_sub_one_dvd_iff {q : ℕ} (hq : 1 < q) {n : ℕ} (i : ℕ) :
-    q ^ n - 1 ∣ q ^ i - 1 ↔ n ∣ i := by
-  constructor
-  · intro h
-    have h1 := Nat.gcd_eq_left h
-    rw [Nat.pow_sub_one_gcd_pow_sub_one] at h1
-    have h2 : 1 ≤ q ^ Nat.gcd n i := Nat.one_le_pow _ _ (by omega)
-    have h3 : 1 ≤ q ^ n := Nat.one_le_pow _ _ (by omega)
-    have h4 : q ^ Nat.gcd n i = q ^ n := by omega
-    have h5 := Nat.pow_right_injective (show 2 ≤ q by omega) h4
-    exact Nat.gcd_eq_left_iff_dvd.1 h5
-  · intro h
-    exact Nat.pow_sub_one_dvd_pow_sub_one _ h
+    q ^ n - 1 ∣ q ^ i - 1 ↔ n ∣ i :=
+  Nat.pow_sub_one_dvd_pow_sub_one_iff hq
 
 end UnramifiedExtensions
 

@@ -80,6 +80,6 @@ theorem phiM_add_smul (μ D : Fin n → ℤ) (t : ℕ) {y : Matrix (Fin n) (Fin 
   ring
 
 theorem phiMul : PhiMul := by
-  apply _root_.CompanionTheory.RgFd.phiMul <;> assumption
+  apply _root_.CompanionTheory.RgFd.phiMul
 
 end PositivityTheory.RgFd

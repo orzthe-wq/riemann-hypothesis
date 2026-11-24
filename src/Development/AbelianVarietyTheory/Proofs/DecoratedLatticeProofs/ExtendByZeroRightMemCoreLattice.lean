@@ -1,9 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatticeCompletionIffSupportedMaps
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatticeCompletionIffSupportedMapsStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -55,20 +55,10 @@ namespace GlobalTheory.ContrComb.LatT
 
 variable {D : D7}
 
-theorem latV_entry_mem {S : HSp D} {L : Lat S} {P : Pl D → Prop} {y : Fin S.rank → AE D}
-    (hy : y ∈ latV S L P) (i : Fin S.rank) : y i ∈ idAt D P := by
-  induction hy using AddSubgroup.closure_induction with
-  | mem z hz =>
-    obtain ⟨β, -, hβ, c, -, x, -, rfl⟩ := hz
-    exact GlobalTheory.FinPl.LatMem.tmul_mem_idAt hβ _
-  | zero => exact zero_mem _
-  | add z z' _ _ hz hz' => exact add_mem hz hz'
-  | neg z _ hz => exact neg_mem hz
-
 theorem jA_latV {V₀ A L : HSp D} (o : OrthDec V₀ A L) {P : Pl D → Prop} {LA : Lat A} {M : Lat V₀}
     (hLA : IsSelfDualC A LA) (hM : IsSelfDualC V₀ M) (hloc : ∀ v, P v → ∃ LL, OrthAt o M LA LL v)
     {y : Fin A.rank → AE D} (hy : y ∈ latV A LA P) : o.jA *ᵥ y ∈ latV V₀ M P := by
-  have hG := GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P
+  have hG := _root_.GlobalTheory.FinPl.localComponents D P
   have hy' := ((hG.2 A).2.2.2 LA y hLA.1).1 hy
   refine ((hG.2 V₀).2.2.2 M _ hM.1).2 ⟨fun i => ?_, fun v hv e he => ?_⟩
   · simp only [Matrix.mulVec, dotProduct]
@@ -117,8 +107,8 @@ theorem latO_extR : ∀ (D : D7) (V₀ A L S : HSp D) (o : OrthDec V₀ A L) (P 
     ∀ u ∈ latO S A (LS : Set _) (LA : Set _) P, (o.resT S).symm (u, 0) ∈ latO S V₀ (LS : Set _) (M : Set _) P := by
   intro D V₀ A L S o P LA LS M hLA hLS hM hloc u hu
   rw [OrthDec.resT_symm_apply, Matrix.mul_zero, add_zero]
-  have hu' := (GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D S A LS LA hLS hLA P u).1 hu
-  refine (GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D S V₀ LS M hLS hM P _).2 ⟨fun i j => ?_, fun y hy => ?_⟩
+  have hu' := (_root_.GlobalTheory.FinPl.LatMem.mem_latO_iff D S A LS LA hLS hLA P u).1 hu
+  refine (_root_.GlobalTheory.FinPl.LatMem.mem_latO_iff D S V₀ LS M hLS hM P _).2 ⟨fun i j => ?_, fun y hy => ?_⟩
   · rw [Matrix.mul_apply]
     exact sum_mem fun k _ => Ideal.mul_mem_left _ _ (hu'.1 k j)
   · show (o.jA * u) *ᵥ y ∈ _

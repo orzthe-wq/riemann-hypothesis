@@ -126,7 +126,7 @@ def RDSOpR : Prop :=
     (D : B.RealPlaceData P.k P.r Wp Wq), IsData P z z' π π' X μ L st l0 → 1 ≤ l0 → l0 ≤ P.k → D.z = z → D.z' = z' →
     D.π = π → D.π' = π' → 0 < P.r →
     ∀ Y : ℂ, star Y = Y → Y - 1 ∈ st.inv → Y ∈ st.inv → Y + 1 ∈ st.inv →
-      ∃ Θ : B.DiffOp P.k P.r Wp Wq, OpProp1 D Θ ∧ RadApply1 (GiR L * st.xi Y * RhR L st Y) Θ
+      ∃ Θ : B.DiffOp P.k P.r Wp Wq, OpProp1 D Θ ∧ RadApply1 (_root_.Formalism.FourierDecayAlt.TL.gI L * st.xi Y * RhR L st Y) Θ
 
 def RDSOpRv : Prop :=
   ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -137,7 +137,7 @@ def RDSOpRv : Prop :=
     (D : B.RealPlaceData P.k P.r Wp Wq), IsData P z z' π π' X μ L st l0 → 1 ≤ l0 → l0 ≤ P.k → D.z = z → D.z' = z' →
     D.π = π → D.π' = π' → 0 < P.r →
     ∀ Y : ℂ, star Y = Y → Y - 1 ∈ st.inv → Y ∈ st.inv → Y + 1 ∈ st.inv →
-      ∃ Θ : B.DiffOp P.k P.r Wp Wq, OpProp1 D Θ ∧ RadApply1 (GiR L * st.xi (Y + 1) * RhvR L st (Y + 1)) Θ
+      ∃ Θ : B.DiffOp P.k P.r Wp Wq, OpProp1 D Θ ∧ RadApply1 (_root_.Formalism.FourierDecayAlt.TL.gI L * st.xi (Y + 1) * RhvR L st (Y + 1)) Θ
 
 def RDSOpA : Prop :=
   ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -247,11 +247,9 @@ section Closure
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
-theorem rds_fst_mul (a b : Pr V) : (a * b).1 = a.1 * b.1 := rfl
 theorem rds_snd_mul (a b : Pr V) : (a * b).2.unop = b.2.unop * a.2.unop := rfl
 theorem rds_fst_add (a b : Pr V) : (a + b).1 = a.1 + b.1 := rfl
 theorem rds_snd_add (a b : Pr V) : (a + b).2.unop = a.2.unop + b.2.unop := rfl
-theorem rds_fst_alg (w : ℂ) : (algebraMap ℂ (Pr V) w).1 = algebraMap ℂ (Module.End ℂ V) w := rfl
 theorem rds_snd_alg (w : ℂ) :
     (algebraMap ℂ (Pr V) w).2.unop = algebraMap ℂ (Module.End ℂ V) (starRingEnd ℂ w) := rfl
 
@@ -288,10 +286,10 @@ theorem rAdj_mul {a b : Pr (RadSp k r z z' π π')} (ha : RAdj μ a) (hb : RAdj 
   obtain ⟨ha1, ha2, ha3, ha4⟩ := ha
   obtain ⟨hb1, hb2, hb3, hb4⟩ := hb
   refine ⟨fun Ψ hΨ => ?_, fun Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_⟩
-  · rw [rds_fst_mul, Module.End.mul_apply]; exact ha1 _ (hb1 _ hΨ)
+  · rw [_root_.Formalism.FourierDecayAlt.P5.HerD.pr_fst_mul, Module.End.mul_apply]; exact ha1 _ (hb1 _ hΨ)
   · rw [rds_snd_mul, Module.End.mul_apply]; exact hb2 _ (ha2 _ hΨ)
-  · rw [rds_fst_mul, Module.End.mul_apply, ha3 _ _ hΨ, hb3 _ _ (ha2 _ hΨ), rds_snd_mul, Module.End.mul_apply]
-  · rw [rds_snd_mul, Module.End.mul_apply, hb4 _ _ hΨ, ha4 _ _ (hb1 _ hΨ), rds_fst_mul, Module.End.mul_apply]
+  · rw [_root_.Formalism.FourierDecayAlt.P5.HerD.pr_fst_mul, Module.End.mul_apply, ha3 _ _ hΨ, hb3 _ _ (ha2 _ hΨ), rds_snd_mul, Module.End.mul_apply]
+  · rw [rds_snd_mul, Module.End.mul_apply, hb4 _ _ hΨ, ha4 _ _ (hb1 _ hΨ), _root_.Formalism.FourierDecayAlt.P5.HerD.pr_fst_mul, Module.End.mul_apply]
 
 theorem rAdj_add (hL : IpLinAt μ z z' π π') {a b : Pr (RadSp k r z z' π π')} (ha : RAdj μ a) (hb : RAdj μ b) :
     RAdj μ (a + b) := by
@@ -307,11 +305,11 @@ theorem rAdj_add (hL : IpLinAt μ z z' π π') {a b : Pr (RadSp k r z z' π π')
 
 theorem rAdj_alg (hL : IpLinAt μ z z' π π') (w : ℂ) : RAdj μ (algebraMap ℂ (Pr (RadSp k r z z' π π')) w) := by
   refine ⟨fun Ψ hΨ => ?_, fun Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_⟩
-  · rw [rds_fst_alg, Module.algebraMap_end_apply]; exact rTest_smul _ hΨ
+  · rw [_root_.Formalism.FourierDecayAlt.P5.HerD.pr_fst_algebraMap, Module.algebraMap_end_apply]; exact rTest_smul _ hΨ
   · rw [rds_snd_alg, Module.algebraMap_end_apply]; exact rTest_smul _ hΨ
-  · rw [rds_fst_alg, rds_snd_alg, Module.algebraMap_end_apply, Module.algebraMap_end_apply, (hL.2.2 _ _ _).1,
+  · rw [_root_.Formalism.FourierDecayAlt.P5.HerD.pr_fst_algebraMap, rds_snd_alg, Module.algebraMap_end_apply, Module.algebraMap_end_apply, (hL.2.2 _ _ _).1,
       (hL.2.2 _ _ _).2]
-  · rw [rds_fst_alg, rds_snd_alg, Module.algebraMap_end_apply, Module.algebraMap_end_apply, (hL.2.2 _ _ _).1,
+  · rw [_root_.Formalism.FourierDecayAlt.P5.HerD.pr_fst_algebraMap, rds_snd_alg, Module.algebraMap_end_apply, Module.algebraMap_end_apply, (hL.2.2 _ _ _).1,
       (hL.2.2 _ _ _).2, Complex.conj_conj]
 
 def rAdjSub (hL : IpLinAt μ z z' π π') : Subalgebra ℂ (Pr (RadSp k r z z' π π')) where
@@ -327,7 +325,7 @@ theorem rAdj_inv {x xi : Pr (RadSp k r z z' π π')} (hx : RAdj μ x) (h1 : x * 
   obtain ⟨-, -, hx3, hx4⟩ := hx
   have e1 : ∀ Φ, x.1 (xi.1 Φ) = Φ := fun Φ => by
     have := congrArg (fun p : Pr (RadSp k r z z' π π') => p.1 Φ) h1
-    rw [rds_fst_mul, Module.End.mul_apply] at this
+    rw [_root_.Formalism.FourierDecayAlt.P5.HerD.pr_fst_mul, Module.End.mul_apply] at this
     exact this
   have e2 : ∀ Φ, x.2.unop (xi.2.unop Φ) = Φ := fun Φ => by
     have := congrArg (fun p : Pr (RadSp k r z z' π π') => p.2.unop Φ) h2
@@ -412,7 +410,7 @@ theorem rAdj_thR (hLin : RDSIpLin) (hC : RDSCoordAdj) (hF : RDSFnAdj) (hQ : RDSQ
   have hTv := rds_Tvprod_mem S L hpb hcb hcbi
   have hDr : L.Dr ∈ S := rds_ofFn_prod_mem S _ hcc
   have hDrb : L.Drb ∈ S := rds_ofFn_prod_mem S _ hcb
-  have hGi : GiR L ∈ S :=
+  have hGi : _root_.Formalism.FourierDecayAlt.TL.gI L ∈ S :=
     S.mul_mem (S.mul_mem (rds_ofFn_prod_mem S _ hci) (rds_ofFn_prod_mem S _ hcbi)) hG
   have hR : ∀ Y, RhR L st Y ∈ S := fun Y =>
     S.mul_mem hDrb (S.add_mem (S.mul_mem (hq Y 1 0) (hT Y 0 0)) (S.mul_mem (hq Y 1 1) (hT Y 1 0)))

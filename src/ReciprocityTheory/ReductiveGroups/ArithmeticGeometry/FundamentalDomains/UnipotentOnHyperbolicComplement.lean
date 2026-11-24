@@ -1,52 +1,11 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FlowMatMulVec
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.LminorSubmatrixCastSucc
 
 @[expose] public section
 
@@ -62,24 +21,6 @@ noncomputable section
 section herm
 
 variable {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
-
-private lemma hermC_sub_left_section (u u' v : Fin r → ℂ) :
-    hermC τ G (u - u') v = hermC τ G u v - hermC τ G u' v := by
-  simp only [hermC, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
-
-private lemma hermC_add_right_section (u v v' : Fin r → ℂ) :
-    hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
-  simp only [hermC, Pi.add_apply, map_add (f := _), mul_add, Finset.sum_add_distrib]
-
-private lemma hermC_smul_right_section (c : ℂ) (u v : Fin r → ℂ) :
-    hermC τ G u (c • v) = conj c * hermC τ G u v := by
-  simp only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-  ring
-
-lemma hC_sub_right (u v v' : Fin r → ℂ) :
-    hermC τ G u (v - v') = hermC τ G u v - hermC τ G u v' := by
-  simp only [hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
 lemma hC_zero_left (v : Fin r → ℂ) : hermC τ G 0 v = 0 := by
   simp [hermC]
@@ -137,7 +78,6 @@ private lemma hermC_Gm_eq_conj_swap (τ : X.Ψ) (u w : Fin r → ℂ) :
     rw [← X.Gm_herm b a, cc]
     first
       | exact NumberField.IsCMField.complexEmbedding_complexConj E _ _
-      | exact (NumberField.IsCMField.complexEmbedding_complexConj E _ _).symm
 
   simp only [hermC, map_sum, map_mul, Complex.conj_conj]
   conv_rhs => rw [Finset.sum_comm]
@@ -157,7 +97,7 @@ private lemma hermC_finset_sum_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin
     hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) := by
   induction s using Finset.cons_induction with
   | empty => simp [hermC]
-  | cons i s hi ih => rw [Finset.sum_cons, Finset.sum_cons, hermC_add_right_section, ih]
+  | cons i s hi ih => rw [Finset.sum_cons, Finset.sum_cons, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_add_right, ih]
 
 private lemma sum_mul_mul_eq_of_mul_eq_one {n : ℕ} (k : Fin n → ℂ) (A B : Matrix (Fin n) (Fin n) ℂ)
     (h : A * B = 1) (a : Fin n) : ∑ b, (∑ a', k a' * A a' b) * B b a = k a := by
@@ -196,26 +136,16 @@ lemma Jp_add (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
   simp only [Jp, positive_part_add, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
   ring
 
-private lemma ppos_smul' (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ) (v : Fin r → ℂ) :
-    X.ppos x τ (c • v) = c • X.ppos x τ v := by
-  simp only [ppos, hC_smul_left, Finset.smul_sum, smul_smul, mul_assoc, Finset.mul_sum]
-
-private lemma ppos_sub' (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
-    X.ppos x τ (u - v) = X.ppos x τ u - X.ppos x τ v := by
-  have h := X.positive_part_add x τ u ((-1 : ℂ) • v)
-  rw [ppos_smul'] at h
-  simpa [sub_eq_add_neg, neg_one_smul] using h
-
 lemma Jp_smul (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ) (v : Fin r → ℂ) :
     X.Jp x τ (c • v) = c • X.Jp x τ v := by
   funext i
-  simp only [Jp, ppos_smul', Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+  simp only [Jp, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.ppos_smul_eq, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
   ring
 
 lemma Jp_Jp {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (v : Fin r → ℂ) :
     X.Jp x τ (X.Jp x τ v) = v := by
   simp only [Jp]
-  rw [ppos_sub', ppos_smul', X.ppos_idem hx]
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.ppos_sub, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.ppos_smul_eq, X.ppos_idem hx]
   funext i
   simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
   ring
@@ -229,7 +159,7 @@ private lemma hermC_ppos_left_eq_ppos_right_frame (x : Frame X.Ψ r) (τ : X.Ψ)
   have hGi : ∀ a b, conj ((X.gramPos x τ)⁻¹ b a) = (X.gramPos x τ)⁻¹ a b :=
     fun a b => hH.inv.apply a b
 
-  simp only [ppos, hermC_finset_sum_left, hermC_finset_sum_right, hC_smul_left, hermC_smul_right_section, map_sum,
+  simp only [ppos, _root_.ReciprocityTheory.ChartRestriction.G.FD.hC_sum_left, hermC_finset_sum_right, hC_smul_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_right, map_sum,
   map_mul]
   simp only [← X.hermC_Gm_eq_conj_swap, hGi, Finset.sum_mul]
   rw [Finset.sum_comm]
@@ -238,7 +168,7 @@ private lemma hermC_ppos_left_eq_ppos_right_frame (x : Frame X.Ψ r) (τ : X.Ψ)
 
 lemma Jp_adj {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u w : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.Jp x τ u) w = hermC τ.1 X.Gm u (X.Jp x τ w) := by
-  simp only [Jp, hermC_sub_left_section, hC_sub_right, hC_smul_left, hermC_smul_right_section, X.hermC_ppos_left_eq_ppos_right_frame,
+  simp only [Jp, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_right, hC_smul_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_right, X.hermC_ppos_left_eq_ppos_right_frame,
     map_ofNat]
 
 section perTau
@@ -284,9 +214,6 @@ lemma hsym (u w : Fin r → ℂ) : hermC τ.1 X.Gm u w = conj (hermC τ.1 X.Gm w
     rw [← X.Gm_herm b a, cc]
     first
       | exact NumberField.IsCMField.complexEmbedding_complexConj E _ _
-      | exact (NumberField.IsCMField.complexEmbedding_complexConj E _ _).symm
-      | exact NumberField.IsCMField.complexEmbedding_complexConj E _
-      | exact (NumberField.IsCMField.complexEmbedding_complexConj E _).symm
 
   simp only [hermC, map_sum, map_mul, Complex.conj_conj]
   conv_rhs => rw [Finset.sum_comm]
@@ -319,12 +246,12 @@ lemma hyperbolic_projection_of_perp {u : Fin r → ℂ} (hu1 : hermC τ.1 X.Gm u
   simp
 
 lemma hyperbolic_projection_perp_e (v : Fin r → ℂ) : hermC τ.1 X.Gm (X.d2pi x τ e v) e = 0 := by
-  rw [hyperbolic_projection_apply, hermC_sub_left_section, hermC_sub_left_section, hC_smul_left, hC_smul_left, he, X.hermitian_pairing_Je_e,
+  rw [hyperbolic_projection_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_left, hC_smul_left, hC_smul_left, he, X.hermitian_pairing_Je_e,
     hyperbolic_coeff_b_apply, mul_zero, sub_zero, inv_mul_eq_div, div_mul_cancel₀ _ hq, sub_self]
 
 lemma hyperbolic_projection_perp_Je (v : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.d2pi x τ e v) (X.Jp x τ e) = 0 := by
-  rw [hyperbolic_projection_apply, hermC_sub_left_section, hermC_sub_left_section, hC_smul_left, hC_smul_left, X.hermitian_pairing_e_Je hx,
+  rw [hyperbolic_projection_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_left, hC_smul_left, hC_smul_left, X.hermitian_pairing_e_Je hx,
     X.hermitian_pairing_Je_Je_zero hx he, hyperbolic_coeff_a_apply, mul_zero, sub_zero, inv_mul_eq_div, div_mul_cancel₀ _ hq, sub_self]
 
 lemma unipotent_shift_spec (v : Fin r → ℂ) :
@@ -385,8 +312,8 @@ lemma unipotent_transform_unitary (hqr : conj (X.d2q x τ e) = X.d2q x τ e) (u 
     rw [hzz, map_mul, hqr] at h1
     exact (mul_left_cancel₀ hq h1).symm
   rw [unipotent_mulVec_formula, unipotent_mulVec_formula]
-  simp only [hC_add_left, hermC_sub_left_section, hC_smul_left, hermC_add_right_section, hC_sub_right,
-    hermC_smul_right_section]
+  simp only [hC_add_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_left, hC_smul_left, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_add_right, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_sub_right,
+    _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_smul_right]
   simp only [he, hze, hez, hzz]
   simp only [hb, hz, hew, hzw]
   simp only [map_sub, map_mul, map_div₀, hδ, map_ofNat]

@@ -3,47 +3,7 @@ module
 public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.CasValK
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.RigidityTheorems.MultOne
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Closure
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.CasimirGapAtNoncompactWeight
@@ -96,10 +56,8 @@ theorem kfin_starProj_comm (U : H →L[ℂ] H) (hU : ∀ x, ‖U x‖ = ‖x‖)
   apply Submodule.eq_starProjection_of_mem_of_inner_eq_zero
   · exact hS _ (Submodule.starProjection_apply_mem S w)
   · intro x hx
-    have hmem : w - S.starProjection w ∈ Sᗮ := Submodule.sub_starProjection_mem_orthogonal w
-    have h2 := kfin_mapsTo_orth U hU S hS hmem
-    rw [map_sub] at h2
-    exact Submodule.inner_left_of_mem_orthogonal hx h2
+    simpa only [map_sub] using Submodule.inner_left_of_mem_orthogonal hx
+      (kfin_mapsTo_orth U hU S hS (Submodule.sub_starProjection_mem_orthogonal w))
 
 end Helpers
 
@@ -112,9 +70,8 @@ theorem kfin_diag_mem_Kset (ε : Fin n → Bool) (θ : Fin n → ℝ) :
       Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
     congr 1
     funext a
-    rw [Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq,
+    norm_num [Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq,
       Complex.norm_exp_ofReal_mul_I]
-    norm_num
   · unfold Jm
     rw [Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]
     congr 1
@@ -172,10 +129,8 @@ theorem kfin_wts_finite (hσ : IsURepOn (UJset ε) σ) (S : Submodule ℂ H) [Fi
     fun μ => ⟨f μ, hfS μ⟩
   have hli : LinearIndependent ℂ (S.subtype ∘ g) := by
     apply linearIndependent_of_ne_zero_of_inner_eq_zero
-    · intro i
-      exact hf0 i
-    · intro i j hij
-      exact kfin_wt_orth hσ (hfw i) (hfw j) (fun h => hij (Subtype.ext h))
+    · exact hf0
+    · exact fun i j hij => kfin_wt_orth hσ (hfw i) (hfw j) (fun h => hij (Subtype.ext h))
   have hfin := (LinearIndependent.of_comp S.subtype hli).finite
   exact Set.finite_coe_iff.mp hfin
 
@@ -352,11 +307,9 @@ theorem data_kfin_le (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD :
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) (S : Submodule ℂ H) (hS : S ≤ closGen E V) (hSf : FiniteDimensional ℂ S)
     (hSK : ∀ k ∈ Kset ε, ∀ x ∈ S, σ k x ∈ S) : S ≤ (genSub E V).map D.subtype := by
   classical
-  have hE := hD.glRep
-  have hU : IsInfUnitary ε E := isInfUnitary_of_isDerivedOn hσ hD
   haveI := hSf
   have hWf := kfin_wts_finite (ε := ε) hσ S
-  choose kf hkf using fun μ => khw_mem_layer hE hU hV hc hgap μ
+  choose kf hkf using fun μ => khw_mem_layer hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV hc hgap μ
   refine (kfin_key hσ hD hV.1 hV.2.1 S hS hSK (hWf.toFinset.sup kf) ?_).trans
     (Submodule.map_mono (layer_le_genSub _))
   intro μ w hw hμ hμS

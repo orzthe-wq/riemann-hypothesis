@@ -62,7 +62,7 @@ namespace GlobalTheory.QNorm
 theorem exists_mem_only (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ a : 𝓞 F, a ≠ 0 ∧ a ∈ v.asIdeal ∧
       ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → a ∉ w.asIdeal := by
-  apply GlobalTheory.CompanionTheory.AdeleCharLocal.exists_mem_only <;> assumption
+  apply GlobalTheory.CompanionTheory.AdeleCharLocal.exists_mem_only
 
 theorem sUnits_rank :
     ∀ (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))),

@@ -527,17 +527,6 @@ structure GalData (G : Type) [Group G] [TopologicalSpace G] (Qp LL O : Type) [Fi
   χ₁ : G →* Oˣ
   ε : G →* Oˣ
 
-def exGal (l : ℕ) [Fact l.Prime] : GalData ℤ_[l]ˣ ℚ_[l] ℚ_[l] ℤ_[l] where
-  lam := l
-  T₀ := charLat ℚ_[l] (IsFractionRing.injective ℤ_[l] ℚ_[l]) ((MonoidHom.id ℤ_[l]ˣ)⁻¹ ^ 7) (by
-    change Continuous fun g : ℤ_[l]ˣ => (((g⁻¹ ^ 7 : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])
-    have h1 : Continuous fun x : ℤ_[l] => (x : ℚ_[l]) := continuous_subtype_val
-    have h2 : Continuous fun g : ℤ_[l]ˣ => ((g⁻¹ ^ 7 : ℤ_[l]ˣ) : ℤ_[l]) :=
-      Units.continuous_val.comp (continuous_inv.pow 7)
-    exact h1.comp h2)
-  χ₁ := (MonoidHom.id _)⁻¹
-  ε := MonoidHom.id _
-
 namespace GalData
 
 variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]

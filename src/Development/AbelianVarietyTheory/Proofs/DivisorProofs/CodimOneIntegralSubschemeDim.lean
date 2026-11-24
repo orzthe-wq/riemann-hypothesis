@@ -134,7 +134,7 @@ theorem succ_trdeg_le_ringKrullDim (B : Type) [CommRing B] [IsDomain B] [CharZer
     Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℤ m) Ideal.Quotient.mk_surjective
   letI := Ideal.Quotient.field m
   have : @Algebra.FiniteType ℤ (B ⧸ m) _ _ (Ring.toIntAlgebra (B ⧸ m)) := by
-    convert hft using 2 <;> first | rfl | exact Subsingleton.elim _ _
+    convert hft using 2 <;> first | rfl
   have := finite_field_of_finiteType_int (B ⧸ m)
   obtain ⟨l, hl⟩ := CharP.exists (B ⧸ m)
   have hl0 : l ≠ 0 := CharP.char_ne_zero_of_finite (B ⧸ m) l

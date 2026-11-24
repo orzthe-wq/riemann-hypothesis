@@ -61,4 +61,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 
 theorem _root_.GlobalTheory.T.cmHostFractionalIdeal_partitionOfUnity : ∀ (D : D7), ∃ (m : ℕ) (a c : Fin m → D.host.E), (∀ i, a i ∈ D.host.AA) ∧ (∀ i, ∀ x ∈ D.host.AA, ∃ b : 𝓞 D.host.E, (b : D.host.E) = c i * x) ∧ ∑ i, a i * c i = 1 := by
-  first | exact @GlobalTheory.HostAAPartition.host_AA_partition | exact GlobalTheory.HostAAPartition.host_AA_partition | (intros; apply GlobalTheory.HostAAPartition.host_AA_partition <;> assumption)
+  first | exact @GlobalTheory.HostAAPartition.host_AA_partition

@@ -184,7 +184,6 @@ private theorem mem_integers_of_isIntegral_algebraMap (s : (D.s.atP p).Fp) (hs :
   have h1 : IsIntegral 𝒪[(D.s.atP p).Fp] s := (isIntegral_algebraMap_iff ).1 hs
   first
   | exact (Valuation.integer.integers _).mem_of_integral h1
-  | (obtain ⟨t, ht⟩ := (Valuation.integer.integers _).mem_of_integral h1; rw [← ht]; exact t.2)
 
 private theorem algebraMap_mem_O_of_mem_integers (a : (D.s.atP p).Fp) (ha : a ∈ 𝒪[(D.s.atP p).Fp]) :
     algebraMap (D.s.atP p).Fp (D.s.atP p).Ep a ∈ (D.s.atP p).O := by
@@ -193,7 +192,6 @@ private theorem algebraMap_mem_O_of_mem_integers (a : (D.s.atP p).Fp) (ha : a �
   have h := isIntegral_algebraMap (R := 𝒪[(D.s.atP p).Fp]) (A := (D.s.atP p).Ep) (x := (⟨a, ha⟩ : 𝒪[(D.s.atP p).Fp]))
   first
   | exact h
-  | (rw [IsScalarTower.algebraMap_apply 𝒪[(D.s.atP p).Fp] (D.s.atP p).Fp (D.s.atP p).Ep] at h; exact h)
 
 private theorem linearIndependent_one_omega_of_cj_ne (ω : (D.s.atP p).Ep) (hne : (D.s.atP p).cj ω ≠ ω) :
     LinearIndependent (D.s.atP p).Fp ![(1 : (D.s.atP p).Ep), ω] := by
@@ -336,7 +334,6 @@ theorem c_eq (θ : D.host.E) (c tr nm : 𝓞 D.host.F) (hc : ((c : D.host.F) : D
     rw [hc, htr, hnm]; ring
   have hF : (c : D.host.F) = (tr : D.host.F) ^ 2 - 4 * (nm : D.host.F) := by
     first
-    | exact_mod_cast hE
     | exact Subtype.ext (by push_cast; exact hE)
   rw [hF, map_sub, map_pow, map_mul, map_ofNat]
 
@@ -403,7 +400,6 @@ theorem core {R : Type*} [CommRing R] (ϖ A B T N K C Dd : R) (hpr : Prime ϖ) (
   have h2 : ϖ ∣ B ^ 4 := by
     first
     | exact (hK.dvd_mul_right).1 h1
-    | (obtain ⟨u, rfl⟩ := hK; exact (Units.dvd_mul_right).1 h1)
   have hB : ϖ ∣ B := hpr.dvd_of_dvd_pow h2
   obtain ⟨b, rfl⟩ := hB
   exact ⟨hpr.dvd_of_dvd_pow (n := 2) ⟨C + ϖ * b ^ 2 * N, by linear_combination e1⟩,
@@ -416,9 +412,6 @@ theorem prime_of_irr (ϖ : 𝒪[(D.s.atP p).Fp]) (h : Irreducible ϖ) : Prime ϖ
   haveI := (D.s.atP p).lf
   first
   | exact h.prime
-
-theorem alg_mem_O (a : (D.s.atP p).Fp) (ha : a ∈ 𝒪[(D.s.atP p).Fp]) :
-    algebraMap (D.s.atP p).Fp (D.s.atP p).Ep a ∈ (D.s.atP p).O := algebraMap_mem_O_of_mem_integers p a ha
 
 theorem sq_coords (θ : D.host.E) (tr nm : 𝓞 D.host.F)
     (htr : ((tr : D.host.F) : D.host.E) = θ + D.conjF θ) (hnm : ((nm : D.host.F) : D.host.E) = θ * D.conjF θ)
@@ -465,8 +458,8 @@ theorem unramAt : UnramAt p := by
   have hA1 : A = (ϖ : (D.s.atP p).Fp) * (a1 : (D.s.atP p).Fp) := congrArg Subtype.val ha1
   have hB1 : B = (ϖ : (D.s.atP p).Fp) * (b1 : (D.s.atP p).Fp) := congrArg Subtype.val hb1
   refine ⟨⟨algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (a1 : (D.s.atP p).Fp) + algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (b1 : (D.s.atP p).Fp) * (D.s.atP p).ιE θ,
-    Subring.add_mem _ (alg_mem_O p _ a1.2)
-      (Subring.mul_mem _ (alg_mem_O p _ b1.2) (iotaE_mem p θ hθ))⟩, ?_⟩
+    Subring.add_mem _ (_root_.Formalism.L2.SG.Pf.LocUnramP.algebraMap_mem_O_of_mem_integers p _ a1.2)
+      (Subring.mul_mem _ (_root_.Formalism.L2.SG.Pf.LocUnramP.algebraMap_mem_O_of_mem_integers p _ b1.2) (iotaE_mem p θ hθ))⟩, ?_⟩
   change (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (a1 : (D.s.atP p).Fp) + algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (b1 : (D.s.atP p).Fp) * (D.s.atP p).ιE θ) *
     algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (ϖ : (D.s.atP p).Fp) = x
   rw [hAB, hA1, hB1]

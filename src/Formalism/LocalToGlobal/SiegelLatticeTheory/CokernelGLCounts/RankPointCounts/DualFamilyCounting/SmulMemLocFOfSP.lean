@@ -4,52 +4,9 @@ public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepre
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.SameGenusFix
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExtPPowLeSpanSup
 import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.StarAlgebraMap
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.NondegOnOfCompl
 
 @[expose] public section
@@ -197,28 +154,6 @@ theorem unit_part_c (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : I
   have hc : ((t * s₀ ^ vF 𝔭 a : 𝓞 F) : F) = (t : F) * (s₀ : F) ^ vF 𝔭 a := by simp
   rw [hc, map_mul, map_pow, ← mul_assoc, mul_comm (algebraMap F K (b : F)), mul_assoc, hbK]
   field_simp
-
-theorem pair_solve {q a c r X Y : K} (hq : q ≠ 0) (ha : a ≠ 0) (hc : c ≠ 0)
-    (hr : a + c = q ^ 2 * r) :
-    (X * q * (a⁻¹ * q) - Y * (a⁻¹ * q)) * (q⁻¹ ^ 2 * (a + c)) +
-        (Y * r * (a⁻¹ * q) * (c⁻¹ * q) - X * (a⁻¹ * q)) * (q⁻¹ * c) = X ∧
-      (X * q * (a⁻¹ * q) - Y * (a⁻¹ * q)) * (q⁻¹ * c) +
-        (Y * r * (a⁻¹ * q) * (c⁻¹ * q) - X * (a⁻¹ * q)) * c = Y := by
-  obtain rfl : c = q ^ 2 * r - a := by rw [← hr]; ring
-  constructor
-  · field_simp
-    ring
-  · field_simp
-    ring
-
-theorem pair_coeffs_mem {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {q a c r X Y : K}
-    (hp : q ∈ SP K 𝔭) (hua : a⁻¹ * q ∈ SP K 𝔭) (huc : c⁻¹ * q ∈ SP K 𝔭) (hr : r ∈ SP K 𝔭)
-    (hX : X ∈ SP K 𝔭) (hY : Y ∈ SP K 𝔭) :
-    X * q * (a⁻¹ * q) - Y * (a⁻¹ * q) ∈ SP K 𝔭 ∧
-      Y * r * (a⁻¹ * q) * (c⁻¹ * q) - X * (a⁻¹ * q) ∈ SP K 𝔭 := by
-  exact ⟨(SP K 𝔭).sub_mem ((SP K 𝔭).mul_mem ((SP K 𝔭).mul_mem hX hp) hua) ((SP K 𝔭).mul_mem hY hua),
-    (SP K 𝔭).sub_mem ((SP K 𝔭).mul_mem ((SP K 𝔭).mul_mem ((SP K 𝔭).mul_mem hY hr) hua) huc)
-      ((SP K 𝔭).mul_mem hX hua)⟩
 
 section Vec
 

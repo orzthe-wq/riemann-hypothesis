@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.TheoremOfAlternateForm
 
 @[expose] public section
 
@@ -76,18 +77,12 @@ theorem ea_nu_tail (J : ℕ) (s : Fin n') {i : ℕ} (h1 : k1 + 1 < i) (h2 : i �
   unfold nu
   rw [if_neg (by omega), if_pos ⟨h1, h2⟩]
 
-private theorem std_w_le_w_of_le (h : Std p n' k1 t m c r TT a b lam0 w) (s : Fin n') {l l' : ℕ} (hl : 1 ≤ l)
-    (hll : l ≤ l') (hl' : l' ≤ m) : w l s ≤ w l' s := by
-  induction l', hll using Nat.le_induction with
-  | base => exact le_refl _
-  | succ k hk ih => exact (ih (by omega)).trans (h.w_mono s k (by omega) (by omega))
-
 theorem ea_nu_nonneg (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ1 : 1 ≤ J) (hJ : J ≤ m) (s : Fin n') (i : ℕ) :
     0 ≤ nu t lam0 w J s i := by
   have hk : 1 ≤ k1 := by have := h.r_pos; have := h.two_r; omega
   unfold nu
   split_ifs with h1 h2
-  · have hw := std_w_le_w_of_le h s (le_refl 1) hJ1 hJ
+  · have hw := _root_.Formalism.MainNotions.FormalGroupSystem.Pf.w_le h s (le_refl 1) hJ1 hJ
     have hlow := (h.w_low s).2
     have hla : lam0 s (Fin.last k1) ≤ lamI lam0 s i := by
       unfold lamI
@@ -95,7 +90,7 @@ theorem ea_nu_nonneg (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ1 : 1 
       exact h.dom s (Fin.le_last _)
     omega
   · have hb := ea_block_le (k1 := k1) (t := t) h2.1 h2.2
-    have hw := std_w_le_w_of_le h s (l := (i - (k1 + 2)) / (t + 1) + 1) (Nat.le_add_left 1 _) hb hJ
+    have hw := _root_.Formalism.MainNotions.FormalGroupSystem.Pf.w_le h s (l := (i - (k1 + 2)) / (t + 1) + 1) (Nat.le_add_left 1 _) hb hJ
     omega
   · exact le_refl 0
 
@@ -110,7 +105,7 @@ theorem ea_nu_le_two (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ : J �
     omega
   · rw [ea_nu_tail J s (by omega) h3]
     have hb := ea_block_le (k1 := k1) (t := t) (J := J) (i := i) (by omega) h3
-    have hw := std_w_le_w_of_le h s (l := 1) (l' := (i - (k1 + 2)) / (t + 1) + 1) (le_refl 1) (Nat.le_add_left 1 _) (by omega)
+    have hw := _root_.Formalism.MainNotions.FormalGroupSystem.Pf.w_le h s (l := 1) (l' := (i - (k1 + 2)) / (t + 1) + 1) (le_refl 1) (Nat.le_add_left 1 _) (by omega)
     have hlow := (h.w_low s).2
     have hla : lam0 s (Fin.last k1) ≤ lamI lam0 s 2 := by
       unfold lamI

@@ -339,13 +339,13 @@ def Hyp1 : Type _ := cechDeRhamTotalCocyclesOne F ⧸ LinearMap.range ((dTot0 F)
 
 def Hyp2 : Type _ := cechDeRhamTotalCocyclesTwo F ⧸ LinearMap.range ((dTot1 F).codRestrict (cechDeRhamTotalCocyclesTwo F) (dTot1_mem F))
 
-instance : AddCommGroup (Hyp1 F) := inferInstanceAs (AddCommGroup (_ ⧸ LinearMap.range _))
+instance : AddCommGroup (Hyp1 F) := Submodule.Quotient.addCommGroup _
 
-instance : Module R (Hyp1 F) := inferInstanceAs (Module R (_ ⧸ LinearMap.range _))
+instance : Module R (Hyp1 F) := Submodule.Quotient.module _
 
-instance : AddCommGroup (Hyp2 F) := inferInstanceAs (AddCommGroup (_ ⧸ LinearMap.range _))
+instance : AddCommGroup (Hyp2 F) := Submodule.Quotient.addCommGroup _
 
-instance : Module R (Hyp2 F) := inferInstanceAs (Module R (_ ⧸ LinearMap.range _))
+instance : Module R (Hyp2 F) := Submodule.Quotient.module _
 
 def Hyp1.mk : cechDeRhamTotalCocyclesOne F →ₗ[R] Hyp1 F := Submodule.mkQ _
 

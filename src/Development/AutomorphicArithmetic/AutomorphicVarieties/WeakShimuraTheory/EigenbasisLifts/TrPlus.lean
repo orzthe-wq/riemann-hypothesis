@@ -104,11 +104,11 @@ theorem UpperTheory.V.Ws.Eb.trPlus :
         have hm : MonoidAlgebra.mapRingHom G (algebraMap A A[X]) (MonoidAlgebra.single 1 r)
             = MonoidAlgebra.single 1 (algebraMap A A[X] r) := by
           ext g
-          simp [MonoidAlgebra.coeff_single, Finsupp.single_apply]
+          simp [MonoidAlgebra.coeff_single]
         rw [hr, map_mul, map_mul, map_mul, hx, Matrix.map_mul, hm, hsingle, hsingle, map_one]
         congr 1
         ext i j
-        by_cases h : i = j <;> simp [Matrix.one_apply, h]
+        by_cases h : i = j <;> simp [h]
     have htr : ∀ y : MonoidAlgebra A G,
         (W.GDet.ofRep (W.mat ρ)).tr y = (W.GDet.repAlg (W.mat ρ) A y).trace := by
       intro y
@@ -119,7 +119,7 @@ theorem UpperTheory.V.Ws.Eb.trPlus :
         rw [Matrix.charpoly]
         congr 1
         ext i j
-        by_cases h : i = j <;> simp [Matrix.charmatrix_apply, Matrix.one_apply, h]
+        by_cases h : i = j <;> simp [h]
       haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
       unfold W.GDet.tr W.GDet.lam
       rw [hchi, Matrix.trace_eq_neg_charpoly_coeff, Fintype.card_fin]

@@ -3,51 +3,9 @@ module
 public import GroundTheory.GlobalFields.ComplexMultiplication.BaseChange
 public import GroundTheory.GlobalFields.ComplexMultiplication.DifferentialConstantField
 import Mathlib.Algebra.AffineMonoid.UniqueSums
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.FieldTheory.RatFunc.IntermediateField
 import Mathlib.FieldTheory.Relrank
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -75,39 +33,6 @@ theorem xOf_map {K L : Type*} [Field K] [Field L] [Algebra F K] [Algebra F L] [D
   cases P with
   | zero => exact (map_zero f).symm
   | some x y h => rfl
-
-theorem two_genY_add_ne_zero [E.IsElliptic] :
-    (2 : E.toAffine.FunctionField) * genY E + algebraMap F _ E.a₁ * genX E +
-      algebraMap F _ E.a₃ ≠ 0 := by
-  intro h
-  set A := E.toAffine.CoordinateRing
-  set K := E.toAffine.FunctionField
-  have key : (C E.a₁ * X + C E.a₃ : F[X]) • (1 : A) +
-      (2 : F[X]) • WeierstrassCurve.Affine.CoordinateRing.mk E.toAffine Y = 0 := by
-    apply IsFractionRing.injective A K
-    rw [map_zero, ← h]
-    simp only [Algebra.smul_def, mul_one, map_add (f := _), map_mul, ← IsScalarTower.algebraMap_apply,
-      genX_eq, genY, map_ofNat]
-    rw [IsScalarTower.algebraMap_apply F F[X] K, IsScalarTower.algebraMap_apply F F[X] K,
-      Polynomial.algebraMap_apply, Polynomial.algebraMap_apply]
-    simp only [Algebra.algebraMap_self, RingHom.id_apply]
-    ring
-  obtain ⟨h1, h2⟩ := WeierstrassCurve.Affine.CoordinateRing.smul_basis_eq_zero key
-  have h2F : (2 : F) = 0 := by
-    have := congrArg (AddMonoidAlgebra.coeff · 0) h2
-    simpa using this
-  have ha₁ : E.a₁ = 0 := by
-    have := congrArg (AddMonoidAlgebra.coeff · 1) h1
-    simpa using this
-  have ha₃ : E.a₃ = 0 := by
-    have := congrArg (AddMonoidAlgebra.coeff · 0) h1
-    simpa using this
-  have hΔ : E.Δ = 0 := by
-    simp only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆,
-      WeierstrassCurve.b₈, ha₁, ha₃]
-    linear_combination (-8 * E.a₂ ^ 2 * (4 * E.a₂ * E.a₆ - E.a₄ ^ 2) - 32 * E.a₄ ^ 3 -
-      216 * E.a₆ ^ 2 + 144 * E.a₂ * E.a₄ * E.a₆) * h2F
-  exact not_isUnit_zero (hΔ ▸ E.isUnit_Δ)
 
 end Neg
 
@@ -147,7 +72,7 @@ theorem mem_adjoin_genX_of_negFF {c : E.toAffine.FunctionField} (h : negFF E c =
   have hs0 : s = 0 := by
     have : s * ((2 : E.toAffine.FunctionField) * genY E + algebraMap F _ E.a₁ * genX E +
         algebraMap F _ E.a₃) = 0 := by linear_combination -h
-    exact (mul_eq_zero.mp this).resolve_right (two_genY_add_ne_zero E)
+    exact (mul_eq_zero.mp this).resolve_right (_root_.GroundTheory.Global.genDen_ne_zero E)
   rw [hs0, zero_mul, add_zero]
   exact hr
 

@@ -1,48 +1,35 @@
 module
 
+public import Formalism.WeaklyAdmissibleFiltrations.Statement
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LocalPublishedTheorems
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlochKatoRightExact
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineAndJumps
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineCoboundaryLiftStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamSubrepQuotientAndStrictness
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBlochKatoCocycleOfCrysDeRhamPairStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSumOfIsCrys
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineBoundsCrystallineDeRhamConcreteRings
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorFundamentalExactSequenceCrystallineStatement
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.CharFil
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrField
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrIff
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrysOfInertia
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.OpenField
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.Z1fMap
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsMoreExtra
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PhiMul
-import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.Padics.LocalField
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -50,7 +37,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -63,10 +49,132 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineCoboundaryLift
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamSubrepQuotientAndStrictness
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBlochKatoCocycleOfCrysDeRhamPair
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorFundamentalExactSequenceCrystalline
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrField
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrIff
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrysOfInertia
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.OpenField
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.NumberTheory.Padics.LocalField
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsMoreExtra, Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PhiMul, Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PosExact
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsMoreExtra =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsMoreExtra", "h": "module\n\npublic import Formalism.WeaklyAdmissibleFiltrations.Statement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace UpperTheory.Reformulated.B.Qh15
+
+theorem aux1 : ∀ {A : Type} [inst : CommRing A], SMulCommClass A A A := by
+  intro A _
+  infer_instance
+
+theorem aux2 : ∀ {G A : Type} [inst : Group G] [inst_1 : CommRing A] (κ : G →* Aˣ),
+  (↑(κ 1) : A) • (LinearMap.id : A →ₗ[A] A) = 1 := by
+  intro G A _ _ κ
+  ext
+  simp
+
+theorem aux3 : ∀ {G A : Type} [inst : Group G] [inst_1 : CommRing A] (κ : G →* Aˣ)
+  (g h : G), (↑(κ (g * h)) : A) • (LinearMap.id : A →ₗ[A] A) =
+    ((↑(κ g) : A) • LinearMap.id) * ((↑(κ h) : A) • LinearMap.id) := by
+  intro G A _ _ κ g h
+  ext
+  simp [mul_comm]
+
+noncomputable def chRep : {G A : Type} →
+  [inst : Group G] → [inst_1 : CommRing A] → (G →* Aˣ) → Representation A G A :=
+  fun {G A} [Group G] [CommRing A] κ =>
+    { toFun := fun g => ↑(κ g) • LinearMap.id, map_one' := aux2 κ,
+      map_mul' := aux3 κ }
+
+theorem act_mul : ∀ {G : Type} [inst : Group G] {Qp K₀ K : Type} [inst_1 : Field Qp]
+  [inst_2 : Field K₀] [inst_3 : Field K] [inst_4 : Algebra Qp K₀] [inst_5 : Algebra Qp K] [inst_6 : Algebra K₀ K]
+  [inst_7 : IsScalarTower Qp K₀ K] {B BdR : Type} [inst_8 : CommRing B] [inst_9 : CommRing BdR] [inst_10 : Algebra Qp B]
+  [inst_11 : Algebra K₀ B] [inst_12 : IsScalarTower Qp K₀ B] [inst_13 : Algebra Qp BdR] [inst_14 : Algebra K₀ BdR]
+  [inst_15 : Algebra K BdR] [inst_16 : IsScalarTower Qp K BdR] [inst_17 : IsScalarTower K₀ K BdR]
+  [inst_18 : IsScalarTower Qp K₀ BdR] (PD : Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR) {E : Type}
+  [inst_19 : Field E] [inst_20 : Algebra Qp E] (κ : G →* Eˣ) (g : G) (x y : TensorProduct Qp E B),
+  (Formalism.WeaklyAdmissibleFiltrations.actVB PD (chRep κ) g) x *
+      (Formalism.WeaklyAdmissibleFiltrations.actVB PD (chRep κ⁻¹) g) y =
+    (Formalism.WeaklyAdmissibleFiltrations.actVB PD (chRep 1) g) (x * y) := by
+  intro G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD E _ _ κ g x y
+  have hch : ∀ (μ : G →* Eˣ) (a : E), chRep μ g a = (μ g : E) * a :=
+    fun μ a => rfl
+  have hact : ∀ (μ : G →* Eˣ) (a : E) (b : B),
+      Formalism.WeaklyAdmissibleFiltrations.actVB PD (chRep μ) g (a ⊗ₜ[Qp] b) =
+        ((μ g : E) * a) ⊗ₜ[Qp] PD.actB g b := by
+    intro μ a b
+    rw [← hch]
+    rfl
+  induction x using TensorProduct.induction_on with
+  | zero => simp only [map_zero, zero_mul]
+  | add x₁ x₂ h₁ h₂ => simp only [map_add (f := _), add_mul, h₁, h₂]
+  | tmul a b =>
+    induction y using TensorProduct.induction_on with
+    | zero => simp only [map_zero, mul_zero]
+    | add y₁ y₂ h₁ h₂ => simp only [map_add (f := _), mul_add, h₁, h₂]
+    | tmul c d =>
+      have hu : (κ g : E) * a * ((κ⁻¹ g : E) * c) = ((1 : G →* Eˣ) g : E) * (a * c) := by
+        rw [mul_mul_mul_comm, ← Units.val_mul, MonoidHom.inv_apply, mul_inv_cancel,
+          MonoidHom.one_apply]
+      rw [Algebra.TensorProduct.tmul_mul_tmul, hact, hact, hact,
+        Algebra.TensorProduct.tmul_mul_tmul, hu, map_mul]
+
+end UpperTheory.Reformulated.B.Qh15
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsMoreExtra =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PhiMul =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PhiMul", "h": "module\n\npublic import Formalism.WeaklyAdmissibleFiltrations.Statement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open TensorProduct Formalism.WeaklyAdmissibleFiltrations in
+theorem UpperTheory.Reformulated.B.Qf14.phi_mul
+    {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
+    [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
+    {B BdR : Type} [CommRing B] [CommRing BdR]
+    [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
+    [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR]
+    [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
+    (PD : PeriodData G Qp K₀ K B BdR) {E : Type} [Field E] [Algebra Qp E]
+    (x y : E ⊗[Qp] B) :
+    φVB PD (LL := E) (V := E) (x * y) =
+      φVB PD (LL := E) (V := E) x * φVB PD (LL := E) (V := E) y := by
+  have h : ∀ z : E ⊗[Qp] B,
+      φVB PD (LL := E) (V := E) z = Algebra.TensorProduct.map (AlgHom.id E E) PD.φ z := by
+    intro z
+    induction z using TensorProduct.induction_on with
+    | zero => rw [map_zero, map_zero]
+    | tmul a b => rfl
+    | add a b ha hb => rw [map_add (f := _), map_add (f := _), ha, hb]
+  exact (h (x * y)).trans ((map_mul _ x y).trans (congrArg₂ (· * ·) (h x).symm (h y).symm))
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PhiMul =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PosExact =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PosExact", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LocalPublishedTheorems\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BlochKatoRightExact\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineAndJumps\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSumOfIsCrys\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineBoundsCrystallineDeRhamConcreteRings\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.CharFil\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.Z1fMap\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsMoreExtra\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PhiMul\nimport Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied\nimport Formalism.SharpRestriction.LevelLetterCocycles.LocCoh\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineCoboundaryLift\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamSubrepQuotientAndStrictness\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsBlochKatoCocycleOfCrysDeRhamPair\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TensorFundamentalExactSequenceCrystalline\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrField\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrIff\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrysOfInertia\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.OpenField\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.Padics.LocalField\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
@@ -111,10 +219,6 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
     (PD : PeriodData G Qp K₀ K B BdR) {E : Type} [Field E] [Algebra Qp E]
 
-theorem mem_Dcris {V : Type} [AddCommGroup V] [Module E V] [Module Qp V] [IsScalarTower Qp E V]
-    (ρ : Representation E G V) (x : V ⊗[Qp] B) : x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
-  simp only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]
-
 theorem sub_sigma_ne_one [CharZero Qp] (e : K₀) : e - PD.σ e ≠ 1 := by
   intro h
   haveI := PD.finK₀
@@ -128,11 +232,7 @@ theorem sub_sigma_ne_one [CharZero Qp] (e : K₀) : e - PD.σ e ≠ 1 := by
 
 theorem act_mul (κ : G →* Eˣ) (g : G) (x y : E ⊗[Qp] B) :
     actVB PD (chRep κ) g x * actVB PD (chRep κ⁻¹) g y = actVB PD (chRep (1 : G →* Eˣ)) g (x * y) :=
-  by apply _root_.UpperTheory.Reformulated.B.Qh15.act_mul <;> assumption
-
-theorem phi_mul (x y : E ⊗[Qp] B) :
-    φVB PD (LL := E) (x * y) = φVB PD (LL := E) x * φVB PD (LL := E) y :=
-  by apply _root_.UpperTheory.Reformulated.B.Qf14.phi_mul <;> assumption
+  by apply _root_.UpperTheory.Reformulated.B.Qh15.act_mul
 
 theorem ctr_act (μ : E →ₗ[Qp] Qp) (g : G) (x : E ⊗[Qp] B) :
     ctr B μ (actVB PD (chRep (1 : G →* Eˣ)) g x) = PD.actB g (ctr B μ x) := by
@@ -177,10 +277,10 @@ theorem char_generic [CharZero Qp] [FiniteDimensional Qp E] [Nontrivial B] (κ :
       (1 : E ⊗[Qp] B) = ∑ i, AlgebraTensorModule.map (LinearMap.id : E →ₗ[E] E) (LinearMap.mulLeft Qp (b i)) (d i))
     (hsurj : ∀ y ∈ Dcris PD (chRep κ⁻¹), ∃ z ∈ Dcris PD (chRep κ⁻¹), z - φVB PD (LL := E) z = y)
     (x : E ⊗[Qp] B) (hx : x ∈ Dcris PD (chRep κ)) (hφ : φVB PD (LL := E) x = x) : x = 0 := by
-  rw [mem_Dcris] at hx
+  rw [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris] at hx
   have hinv : ∀ (μ : E →ₗ[Qp] Qp), ∀ y ∈ Dcris PD (chRep κ⁻¹), ∃ c : K₀, algebraMap K₀ B c = ctr B μ (x * y) := by
     intro μ y hy
-    rw [mem_Dcris] at hy
+    rw [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris] at hy
     refine PD.invB _ fun g => ?_
     rw [← ctr_act, ← act_mul PD κ, hx, hy]
   have hzero : ∀ y ∈ Dcris PD (chRep κ⁻¹), x * y = 0 := by
@@ -190,14 +290,14 @@ theorem char_generic [CharZero Qp] [FiniteDimensional Qp E] [Nontrivial B] (κ :
     by_contra hne
     have hc0 : c ≠ 0 := by rintro rfl; exact hne (by rw [← hc, map_zero])
     have hy' : y * ((1 : E) ⊗ₜ[Qp] algebraMap K₀ B c⁻¹) ∈ Dcris PD (chRep κ⁻¹) := by
-      rw [mem_Dcris] at hy ⊢
+      rw [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris] at hy ⊢
       intro g
       rw [galois_action_mul_unramified, hy]
     obtain ⟨z, hz, hzy⟩ := hsurj _ hy'
     obtain ⟨e, he⟩ := hinv μ z hz
     have h1 : ctr B μ (x * (z - φVB PD (LL := E) z)) = 1 := by
       rw [hzy, ← mul_assoc, ctr_mul, ← hc, ← map_mul, mul_inv_cancel₀ hc0, map_one]
-    have h2 : x * φVB PD (LL := E) z = φVB PD (LL := E) (x * z) := by rw [phi_mul, hφ]
+    have h2 : x * φVB PD (LL := E) z = φVB PD (LL := E) (x * z) := by rw [_root_.UpperTheory.Reformulated.B.Qf14.phi_mul, hφ]
     rw [mul_sub, map_sub, h2, ctr_phi, ← he, PD.φ_K₀, ← map_sub, ← map_one (algebraMap K₀ B)] at h1
     exact sub_sigma_ne_one PD e ((algebraMap K₀ B).injective h1)
   obtain ⟨m, b, d, hd, h1⟩ := hspan
@@ -260,7 +360,7 @@ theorem isOpenEmbedding_GK (K : FinExt l) : IsOpenEmbedding (GK K).subtype := by
 
 theorem iota_mem (K : FinExt l) (ρ : Representation E ↥(GK K) V) {y : V ⊗[ℚ_[l]] Bcr l}
     (hy : y ∈ Dcris ((PP l).PD K) ρ) : ιV ((PP l).PD K) (LL := E) (V := V) y ∈ DdR ((PP l).PD K) ρ := by
-  rw [mem_Dcris] at hy
+  rw [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris] at hy
   have h : ∀ g (y : V ⊗[ℚ_[l]] Bcr l), actVdR ((PP l).PD K) ρ g (ιV ((PP l).PD K) (LL := E) (V := V) y) =
       ιV ((PP l).PD K) (LL := E) (V := V) (actVB ((PP l).PD K) ρ g y) := by
     intro g y
@@ -296,7 +396,7 @@ theorem surj_of_inj (K : FinExt l) (ρ : Representation E ↥(GK K) V)
       (LinearMap.id - φVB ((PP l).PD K) (LL := E) (V := V) : _ →ₗ[E] _) y ∈ Dcris ((PP l).PD K) ρ := by
     intro y hy
     refine Submodule.sub_mem _ hy ?_
-    rw [mem_Dcris] at hy ⊢
+    rw [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris] at hy ⊢
     intro g
     rw [hc, hy]
   have hi : Function.Injective (LinearMap.restrict _ hm) := by
@@ -304,7 +404,7 @@ theorem surj_of_inj (K : FinExt l) (ρ : Representation E ↥(GK K) V)
     rintro ⟨y, hy⟩ h0
     have h1 : y - φVB ((PP l).PD K) (LL := E) y = 0 := congrArg Subtype.val h0
     refine Subtype.ext (h y (fun g => ?_) ?_)
-    · rw [actC_eq]; exact (mem_Dcris _ _ _).1 hy g
+    · rw [actC_eq]; exact (_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris _ _ _).1 hy g
     · rw [phC_eq K]; exact (sub_eq_zero.1 h1).symm
   intro y hy
   obtain ⟨z, hz⟩ := LinearMap.injective_iff_surjective.1 hi ⟨y, hy⟩
@@ -351,9 +451,9 @@ theorem noFix_char_field (K : FinExt l) (κ : ↥(GK K) →* Eˣ) (hκ : Continu
     exact Nat.mul_pos finrank_pos finrank_pos
   have hno : NoFix (GK K).subtype (chRep κ⁻¹) := by
     intro y hy hφ
-    have h1 := hfil (iota_mem K _ ((mem_Dcris _ _ y).2 fun g => by rw [← actC_eq]; exact hy g))
+    have h1 := hfil (iota_mem K _ ((_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris _ _ y).2 fun g => by rw [← actC_eq]; exact hy g))
     rw [phC_eq K] at hφ
-    obtain ⟨v, rfl⟩ := (GlobalTheory.T.tensor_fundamental_exact_sequence_crystalline l _ _ T K E E).2 y hφ
+    obtain ⟨v, rfl⟩ := (_root_.GlobalTheory.FundSeq.tensor_fundamental_sequence l _ _ T K E E).2 y hφ
       (GlobalTheory.DRFil.FilV_antitone ((PP l).PD K) (show (0 : ℤ) ≤ 1 by omega) h1)
     by_contra hne
     have hv : v ≠ 0 := by rintro rfl; exact hne (zero_tmul _ _)
@@ -363,7 +463,7 @@ theorem noFix_char_field (K : FinExt l) (κ : ↥(GK K) →* Eˣ) (hκ : Continu
     exact GlobalTheory.DRFil.one_notMem_fil_one ((PP l).PD K) (by simpa using h2)
   intro x hx hφ
   refine char_generic ((PP l).PD K) κ ?_ (surj_of_inj K _ hno) x
-    ((mem_Dcris _ _ x).2 fun g => by rw [← actC_eq]; exact hx g) (by rw [← phC_eq K]; exact hφ)
+    ((_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris _ _ x).2 fun g => by rw [← actC_eq]; exact hx g) (by rw [← phC_eq K]; exact hφ)
   exact GlobalTheory.Per.TiedSpan.exists_sum_of_isCrys ((PP l).PD K) (GlobalTheory.TateDualCrys.fracInv_of_tied T K)
     (GlobalTheory.TateDualCrys.lineUnit_of_tied T K) _ hcr 1
 
@@ -572,7 +672,7 @@ theorem exists_fixed (hc : ∀ x, Continuous fun g => ρ g x) (hn : NoFix (GK K)
   letI : Module ℤ_[l] V := Module.compHom V (algebraMap ℤ_[l] ℚ_[l])
   haveI : IsScalarTower ℤ_[l] ℚ_[l] V := IsScalarTower.of_algebraMap_smul fun _ _ => rfl
   haveI : Module.Finite ℚ_[l] ↥(Dcris ((PP l).PD K) ρ) :=
-    (GlobalTheory.Per.FontaineTied.fontCore_all_of_tied l _ _ T K ℚ_[l] ℤ_[l] GlobalTheory.Published.BlochKato.goodO_padicInt
+    (_root_.GlobalTheory.Per.FontaineAll.fontCore_of_tied l _ _ T K ℚ_[l] ℤ_[l] GlobalTheory.Published.BlochKato.goodO_padicInt
       { V := V, ρ := ρ, cont := hc }).1.1
   have hcm : ∀ g (y : V ⊗[ℚ_[l]] Bcr l), actVB ((PP l).PD K) ρ g (φVB ((PP l).PD K) (LL := ℚ_[l]) y) =
       φVB ((PP l).PD K) (LL := ℚ_[l]) (actVB ((PP l).PD K) ρ g y) := by
@@ -582,7 +682,7 @@ theorem exists_fixed (hc : ∀ x, Continuous fun g => ρ g x) (hn : NoFix (GK K)
     | add x x' hx hx' => simp only [map_add (f := _), hx, hx']
     | tmul v b => simp [actVB, φVB, ((PP l).PD K).φ_comm]
   have hd : x - φVB ((PP l).PD K) (LL := ℚ_[l]) x ∈ Dcris ((PP l).PD K) ρ := by
-    rw [mem_Dcris]
+    rw [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris]
     intro g
     have h1 := congrArg (φVB ((PP l).PD K) (LL := ℚ_[l])) (hx g)
     have h2 : φVB ((PP l).PD K) (LL := ℚ_[l]) (c g ⊗ₜ[ℚ_[l]] (1 : Bcr l)) = c g ⊗ₜ[ℚ_[l]] (1 : Bcr l) := by
@@ -592,7 +692,7 @@ theorem exists_fixed (hc : ∀ x, Continuous fun g => ρ g x) (hn : NoFix (GK K)
   obtain ⟨z, hz, hzx⟩ := surj_of_inj K ρ hn _ hd
   refine ⟨x - z, ?_, fun g => ?_⟩
   · rw [map_sub, sub_eq_sub_iff_sub_eq_sub, ← neg_inj, neg_sub, neg_sub, ← hzx]
-  · rw [map_sub, (mem_Dcris _ _ _).1 hz g, hx g]
+  · rw [map_sub, (_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.mem_Dcris _ _ _).1 hz g, hx g]
     abel
 
 open GlobalTheory.BKRightExact in
@@ -608,15 +708,15 @@ theorem core_surj (hc : ∀ x, Continuous fun g => ρ g x) (hc' : ∀ x, Continu
   letI : Module ℤ_[l] V' := Module.compHom V' (algebraMap ℤ_[l] ℚ_[l])
   haveI : IsScalarTower ℤ_[l] ℚ_[l] V' := IsScalarTower.of_algebraMap_smul fun _ _ => rfl
   obtain ⟨hdr', hl2⟩ := lift_dR T K ℚ_[l] ρ ρ' f hf hs hdr
-  obtain ⟨-, d₂', hd2, hfil⟩ := GlobalTheory.T.crystalline_coboundary_lift l _ _ T K ℚ_[l] ℤ_[l] GlobalTheory.Published.BlochKato.goodO_padicInt
+  obtain ⟨-, d₂', hd2, hfil⟩ := _root_.GlobalTheory.CobCrisLift.coboundary_lift l _ _ T K ℚ_[l] ℤ_[l] GlobalTheory.Published.BlochKato.goodO_padicInt
     { V := V', ρ := ρ', cont := hc' } hdr' c' x' hx'
   obtain ⟨d₂, hd₂, e₂⟩ := hl2 _ hd2
-  obtain ⟨x, y, c, hy, hx1, hx2, hc, hcx⟩ := GlobalTheory.T.exists_blochKato_cocycle_of_crys_deRham_pair l _ _ T K ℚ_[l] ℤ_[l]
+  obtain ⟨x, y, c, hy, hx1, hx2, hc, hcx⟩ := _root_.GlobalTheory.FundDel.connecting_cocycle l _ _ T K ℚ_[l] ℤ_[l]
     GlobalTheory.Published.BlochKato.goodO_padicInt { V := V, ρ := ρ, cont := hc } 0 (zero_mem _) d₂ hd₂
   dsimp only at *
   refine ⟨c, hc, ?_⟩
   rw [← hx2, map_sub, map_ιV] at e₂
-  obtain ⟨v, hv⟩ := (GlobalTheory.T.tensor_fundamental_exact_sequence_crystalline l _ _ T K ℚ_[l] V').2
+  obtain ⟨v, hv⟩ := (_root_.GlobalTheory.FundSeq.tensor_fundamental_sequence l _ _ T K ℚ_[l] V').2
     (AlgebraTensorModule.map f (LinearMap.id : Bcr l →ₗ[ℚ_[l]] Bcr l) x - x')
     (by rw [map_sub, hφ, ← map_φVB, ← sub_eq_zero.1 hx1])
     (by
@@ -739,3 +839,7 @@ theorem UpperTheory.V.Loc.posExact :
         exact this)
     refine ⟨hc1, x, fun g => ?_⟩
     rw [actC_tr, ← hx, e.symm_apply_apply]
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PosExact =====

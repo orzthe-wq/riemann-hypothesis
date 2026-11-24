@@ -272,7 +272,7 @@ theorem UpperTheory.ConvolutionTheory.Ci.kfBc :
       exact ev_ren res L' f
     · intro y hy _
       have h1 := eval_powE (resDeg F y.1) y.2 _ (ht _ fun hh => hΦ.2 y hy ((hS _).2 hh))
-      simp only [evK, sb, h, RingHom.comp_apply, eval₂Hom_X', coe_eval₂Hom, eval₂_map, eval₂_rename, eval₂_X]
+      simp only [evK, sb, h, RingHom.comp_apply, eval₂Hom_X', coe_eval₂Hom, eval₂_map, eval₂_rename]
       rw [hval, bcSat, ← h1]
       have hc : (ev L').comp (algebraMap ℂ (EP (Ix F n))) = RingHom.id ℂ :=
         RingHom.ext fun c => lift_alg _ _ c

@@ -341,7 +341,7 @@ theorem alV_mul_self_halfA : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ :
   obtain ⟨n, hn⟩ := (char_rat hP.std _).1 hpair
   have key := GlobalTheory.SemiTrace.alV_embH_eq_neg_one_zpow D ψ θ S T S.rank T.rank rfl rfl δ sc hP x' n (by
     rw [← hn]
-    congr 3 <;> ext i j <;> simp)
+    congr 3)
   rw [key, ← mul_zpow]
   norm_num
 

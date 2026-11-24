@@ -79,7 +79,7 @@ theorem block_three_mul_apply_last (A11 : Matrix (Fin p) (Fin p) ℂ) (A12 : Mat
     · simp
     · simp
     · have : q ≠ a := fun h => hq (by rw [h])
-      simp [Matrix.one_apply, this.symm]
+      simp [this.symm]
   · intro h; exact absurd (Finset.mem_univ _) h
 
 theorem zh_row (a : Fin p) : (⟨2 * (p + ρ) + k - a.val, by omega⟩ : Fin (2 * (p + ρ) + k + 1)) =
@@ -210,7 +210,7 @@ theorem pb_head_support (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData 
       have hs : sP Bj x ∈ B.GV k (p + ρ) := by
         unfold sP
         rw [if_pos hx]
-        refine Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (LeftFubiniLemmas.rn_nset _).1 ?_
+        refine Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (_root_.Formalism.FourierDecayAlt.P.Ux3.rn_nset _).1 ?_
         rw [← Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG]
         exact Formalism.FourierDecayAlt.P.Dx2.Tower.lev_GV p ρ _
           (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hx.1.1) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hx.2.1))

@@ -56,7 +56,7 @@ private theorem pre_coef_differentiableAt {n : ℕ} (Ξ : Pre n) (i j : Fin Ξ.d
   obtain ⟨p, hp⟩ := Ξ.poly i j
   have h : Ξ.coef i j = fun y => MvPolynomial.aeval (fun ab : Fin n × Fin n => y ab.1 ab.2) p := by
     funext y
-    simp [Pre.coef, hp, MvPolynomial.coe_aeval_eq_eval]
+    simp [Pre.coef, hp]
   rw [h]
   exact (AnalyticAt.aeval_mvPolynomial (fun ab : Fin n × Fin n =>
     (((ContinuousLinearMap.proj ab.2 : (Fin n → ℂ) →L[ℂ] ℂ).comp

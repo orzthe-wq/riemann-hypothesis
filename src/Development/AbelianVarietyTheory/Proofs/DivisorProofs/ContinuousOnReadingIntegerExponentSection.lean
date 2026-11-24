@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HtValOnSubset
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegerExponentSectionEqZeroOfIncreasingFlagStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegerExponentSectionEqZeroOfIncreasingFlag
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DifferentiableOnRdUFlat
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -132,7 +133,7 @@ theorem continuousOn_rdU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   · push_neg at hanti
     obtain ⟨τ, i, j, hij, hlt⟩ := hanti
     have hij' : i < j := lt_of_le_of_ne hij (by rintro rfl; exact lt_irrefl _ hlt)
-    rw [GlobalTheory.T.integerExponentSection_eq_zero_of_increasing_flag E H Dw l Xo c e τ i j hij' hlt s hs, map_zero]
+    rw [_root_.GlobalTheory.IncrZero.secZ_eq_zero_of_lt E H Dw l Xo c e τ i j hij' hlt s hs, map_zero]
     exact continuousOn_const
 
 end GlobalTheory.ReadCont

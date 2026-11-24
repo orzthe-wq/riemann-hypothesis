@@ -38,10 +38,13 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.NonemptyIsLimitBaseChange
 
 @[expose] public section
 
-open AlgebraicGeometry CategoryTheory TopologicalSpace Limits NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg GlobalTheory.FlagEmb GlobalTheory.ProjSpace GlobalTheory.FlagMod GlobalTheory.FlagMod.FieldFlag
+-- `Proj` is `LowRank.Proj` here. With `AlgebraicGeometry.Proj` open too, every use is slow.
+open AlgebraicGeometry hiding Proj
+open CategoryTheory TopologicalSpace Limits NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg GlobalTheory.FlagEmb GlobalTheory.ProjSpace GlobalTheory.FlagMod GlobalTheory.FlagMod.FieldFlag
 open GlobalTheory.FlagMod.LowRank (ECh Proj str)
 
 namespace GlobalTheory.FlagMod.FieldFlag
@@ -52,15 +55,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {κ : ∀ b, Pm Dw.mult → (Sp (CR Dw.mult (A.V b)) ⟶ Z)} [∀ b w, IsOpenImmersion (κ b w)]
   {S : Type} [CommRing S]
 
-theorem spMap_comp_spMap_cell {R R' U : Type} [CommRing R] [CommRing R'] [CommRing U] (f : R →+* R')
-    (f' : R' →+* U) : spMap f' ≫ spMap f = spMap (f'.comp f) :=
-  (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom f')).symm
-
 theorem base_cellPt (hZ : Cells A π g κ) (k : A.B × Pm Dw.mult) (z : Sp S ⟶ Z)
     (hz : ⊤ ≤ z ⁻¹ᵁ (κ k.1 k.2).opensRange) :
     z ≫ π = spMap (((ev z _ hz).comp (cellθ κ k).toRingHom).comp MvPolynomial.C) ≫ tau (A.aff k.1) := by
   conv_lhs => rw [← eq_spMap_ev k z hz]
-  rw [Category.assoc, hZ.plk.base, cbase, ← Category.assoc, spMap_comp_spMap_cell]
+  rw [Category.assoc, hZ.plk.base, cbase, ← Category.assoc, _root_.GlobalTheory.spMap_comp_ring]
   rfl
 
 theorem le_cellPt (hZ : Cells A π g κ) (k : A.B × Pm Dw.mult) (z : Sp S ⟶ Z)
@@ -82,7 +81,7 @@ theorem g_cellPt (hZ : Cells A π g κ) (ht : FlagCellFrameChangeTriangular hZ) 
     exact ev_spMap_tau _ _ _
   have hstr : str x = (φ.comp MvPolynomial.C).comp (A.alpha k.1) := by
     refine LowRank.str_eq ?_
-    rw [← hx, hb, Category.assoc, ← spMap_comp_spMap_cell (A.alpha k.1) (φ.comp MvPolynomial.C)]
+    rw [← hx, hb, Category.assoc, ← _root_.GlobalTheory.spMap_comp_ring (A.alpha k.1) (φ.comp MvPolynomial.C)]
     congr 1
     exact (spMap_ev_top _).symm
   obtain ⟨hu, e⟩ := hZ.plk.plk k.1 k.2 en

@@ -154,7 +154,7 @@ theorem blk_map (f : R →ₐ[ℚ] R') (z : (R ⊗[ℚ] D) × R) :
     Matrix.reindex_apply, Matrix.submatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, lreg_map]
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;>
     (try rw [Subsingleton.elim i j]) <;>
-    simp [Matrix.fromBlocks_apply₁₁, Matrix.scalar_apply, Matrix.diagonal_apply, apply_ite]
+    simp [Matrix.fromBlocks_apply₁₁, Matrix.scalar_apply]
 
 theorem repr_coordA (X : Matrix (Fin (Module.finrank ℚ D + 1)) (Fin (Module.finrank ℚ D + 1)) R)
     (k : Fin (Module.finrank ℚ D)) :
@@ -293,8 +293,7 @@ theorem isUnit_of_blk_mul (z : (R ⊗[ℚ] D) × R)
       exact mul_eq_one_comm.1 this
     exact ⟨⟨a, a', e1, e2⟩, rfl⟩
   · have := congrFun (congrFun h22 0) 0
-    simp only [Matrix.scalar_apply, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_apply,
-      Matrix.one_apply_eq, smul_eq_mul] at this
+    simp only [Matrix.scalar_apply, Matrix.one_apply_eq] at this
     exact isUnit_iff_exists_inv.2 ⟨_, by simpa [Matrix.diagonal_mul] using this⟩
 
 variable (σ : D →+* Dᵐᵒᵖ) (β y : D)

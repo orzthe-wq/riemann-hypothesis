@@ -72,7 +72,7 @@ theorem hasVal_coord {D : DegPre V} {χ : D.X} {n : ℤ} {r : V} (hn : QForm.QVa
   obtain ⟨c, hc, eV, hce⟩ := genHasVal_top D.P.L (fun _ : PUnit => (D.c χ).left) (fun _ => -1) (D.psi χ) hn j htop h
   have hnat := congrArg (fun f => (CommRingCat.Hom.hom f) (DegPre.toOpen (R := V) ⊤ r))
     (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap V (FractionRing V))))
-  simp only [CommRingCat.comp_apply, CommRingCat.hom_ofHom] at hnat
+  simp only at hnat
   have hid : (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom (DegPre.toOpen ⊤ r) = r := by
     simp only [DegPre.toOpen, RingHom.coe_comp, Function.comp_apply]
     have : (homOfLE (le_top : (⊤ : (Spec (CommRingCat.of V)).Opens) ≤ ⊤)).op = 𝟙 _ := Subsingleton.elim _ _

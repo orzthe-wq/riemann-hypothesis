@@ -135,7 +135,7 @@ private theorem kill_red [IsDomain O] (x : B →ₐ[O] O) (I : Ideal B) (A : Sub
     apply hred _ (A.mul_mem hgA ha) (k + 1)
     have e : (aeval a g * a) ^ (k + 1) = (aeval a g ^ k * a) * aeval a q := by
       conv_rhs => rw [hg]
-      simp only [map_mul, map_pow, map_sub, aeval_X, aeval_C, map_zero, sub_zero]
+      simp only [map_mul, map_pow, aeval_X, map_zero, sub_zero]
       ring
     rw [e]
     exact I.mul_mem_left _ hI

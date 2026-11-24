@@ -4,48 +4,11 @@ public import Formalism.HermitianCurvature.FiniteOrderIntersectionInSmooth
 public import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.HeisenbergLeviConjugationMeasure
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianFormFlagVector
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Formalism.FormalDegreeBessel.FormalDegreeRatio.GroupFactorizationHolds
+import Formalism.SharpRestriction.CuspSpanNormBounds.BigCellDensity
 
 @[expose] public section
 
@@ -84,20 +47,10 @@ theorem herm_sum_right (H : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
   rw [Finset.sum_insert ha, Finset.sum_insert ha, star_add, add_dotProduct, ih, star_smul,
     smul_dotProduct, smul_eq_mul]
 
-private lemma isUnit_det_of_mem_UH_Hpk' {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
-    (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
-  have hH := hpk_isUnit (k := k) (r := r)
-  have h : gᴴ * Hpk k r * g = Hpk k r := hg
-  have h2 := congrArg Matrix.det h
-  rw [Matrix.det_mul, Matrix.det_mul] at h2
-  have h3 : gᴴ.det * g.det * (Hpk k r).det = 1 * (Hpk k r).det := by linear_combination h2
-  have h4 := mul_right_cancel₀ hH.ne_zero h3
-  exact isUnit_iff_exists.mpr ⟨gᴴ.det, by rw [mul_comm]; exact h4, h4⟩
-
 theorem herm_UH {ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hρ : ρ ∈ UH (Hpk k r))
     (x y : Fin (2 * r + k + 1) → ℂ) : herm (Hpk k r) (ρ *ᵥ x) y = herm (Hpk k r) x (ρ⁻¹ *ᵥ y) := by
   have hρ' : ρᴴ * Hpk k r * ρ = Hpk k r := hρ
-  have hdet := isUnit_det_of_mem_UH_Hpk' hρ
+  have hdet := _root_.Formalism.MainNotions.BigCellDensity.det_unit_of_UH hρ
   have hinv : (ρ⁻¹)ᴴ * ρᴴ = 1 := by
     rw [← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.conjTranspose_one]
   have hkey : (ρ⁻¹)ᴴ * Hpk k r = Hpk k r * ρ := by
@@ -120,7 +73,7 @@ theorem zhat_uMap {z z' : Fin (2 * r + k + 1) → ℂ} (hz : Formalism.FourierDe
     (hρ' : δ⁻¹ * ρ * δ ∈ Nset k r) :
     Zhat k r z z' δ * Formalism.FourierDecayAlt.C2.uMap k r z' (δ⁻¹ * ρ * δ) =
       (Formalism.FourierDecayAlt.C2.uMap k r z ρ⁻¹)ᴴ * Zhat k r z z' δ := by
-  have hδd := isUnit_det_of_mem_UH_Hpk' hδ
+  have hδd := _root_.Formalism.MainNotions.BigCellDensity.det_unit_of_UH hδ
   have hρU : ρ ∈ UH (Hpk k r) := hρ.1
   have hρi : ρ⁻¹ ∈ Nset k r := Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv hρ
   have hδs : δ * (δ⁻¹ * ρ * δ) = ρ * δ := by

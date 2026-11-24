@@ -88,7 +88,7 @@ theorem lat_X (hI : I.Ok) (j : ℕ) :
 theorem exists_vac (hI : I.Ok) {ψ : AddChar (AF (I.rec7 l Z).host.F) ℂ} {θ : InfFam (I.rec7 l Z)}
     (hψ : IsStdChar (I.rec7 l Z) ψ (-1)) (hθ : IsInfFam θ) (i : ℕ) :
     ∃ f, IsVacO ψ θ ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) (fun _ => 1) (fun _ => 1) (intVec _ _) (intVec _ _) f := by
-  obtain ⟨f, hf⟩ := GlobalTheory.Member.vacuum_oriented_exists (I.rec7 l Z) ψ θ hψ hθ ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1))
+  obtain ⟨f, hf⟩ := _root_.GlobalTheory.VacuumO.vacExists (I.rec7 l Z) ψ θ hψ hθ ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1))
     (fun _ => 1) (fun _ => 1) ((I.rec7 l Z).sp.X_sig _) ((I.rec7 l Z).sp.X_sig _)
     (fun τ => VacStd.cartan_of_gram (gram_X hI _) τ) (fun τ => VacStd.cartan_of_gram (gram_X hI _) τ)
     _ _ (GlobalTheory.PlaceModel.isSelfDualC_latFrame _) (GlobalTheory.PlaceModel.isSelfDualC_latFrame _)

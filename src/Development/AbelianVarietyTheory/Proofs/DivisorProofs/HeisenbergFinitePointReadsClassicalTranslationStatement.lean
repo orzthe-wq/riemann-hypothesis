@@ -56,4 +56,4 @@ theorem _root_.GlobalTheory.T.heisenbergFinitePoint_reads_classicalTranslation :
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →
   ∀ G f, Reads ψ θ hS hT cc δ r G f → ∀ z : Matrix (Fin d) (Fin a) D.host.E,
     Reads ψ θ hS hT cc δ r (U D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z) G) (heisO ψ S T (finPt hS hT r z) f) := by
-  first | exact @GlobalTheory.NormExact.heisO_finPt_reads | exact GlobalTheory.NormExact.heisO_finPt_reads | (intros; apply GlobalTheory.NormExact.heisO_finPt_reads <;> assumption)
+  first | exact @GlobalTheory.NormExact.heisO_finPt_reads

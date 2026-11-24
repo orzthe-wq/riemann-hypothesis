@@ -138,7 +138,7 @@ theorem submatrix_ld_eq_updateRow (X : Matrix (Fin s) (Fin s) ℂ) (i j : Fin s)
   ext a c
   rw [Matrix.updateRow_apply]
   by_cases h : a.1 = j
-  · simp [h, (eq_ldTop_iff a).2 h]
+  · simp [(eq_ldTop_iff a).2 h]
   · have : a ≠ ldTop j := fun e => h ((eq_ldTop_iff a).1 e)
     simp [h, this]
 

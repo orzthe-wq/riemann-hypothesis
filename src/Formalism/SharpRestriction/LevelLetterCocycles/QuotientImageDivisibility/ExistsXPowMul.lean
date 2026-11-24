@@ -127,17 +127,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 theorem conv_eq {M : Type} [AddCommGroup M] [Module LL M] (f : PowerSeries LL) (d : ℤ → M) :
     Formalism.MainNotions.RamifiedCoefficientChains.Sh.conv f d = smulS f d := rfl
 
-theorem p_ne_zero_LL (W' : LocWach PD LL O v n) : (PD.p : LL) ≠ 0 := by
-  intro h
-  have := W'.v_l
-  rw [h, AddValuation.map_zero] at this
-  exact WithTop.top_ne_coe this
-
-theorem eat_qp :
-    Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ : ZMod n => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ =
-      Formalism.MainNotions.LiftingTheory.qp W := by
-  funext i
-  simp [Formalism.MainNotions.DeltaInvariantLattices.Eat, Formalism.MainNotions.LiftingTheory.qp, LocWach.π₀]
+alias p_ne_zero_LL := _root_.Formalism.MainNotions.LiftingTheory.tr_pLL_ne
 
 theorem expRing_of (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpRing W := by
   intro hA i ζ hζ
@@ -145,7 +135,7 @@ theorem expRing_of (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) : Fo
   have hp := p_ne_zero_LL W
   obtain ⟨u₀, hu₀, hq⟩ := MC.lev_q_eq W i hζ hp
   obtain ⟨w, hw⟩ := hR.2.2.2.2.1
-  rw [eat_qp] at hw
+  rw [_root_.Formalism.MainNotions.LiftingTheory.eisenstein_at_uniformizer] at hw
 
   have hqp : W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W) =
       (W.lev i ζ ((w⁻¹ : (LetA O n)ˣ) : LetA O n) * u₀) * PowerSeries.X := by
@@ -165,7 +155,7 @@ theorem expRing_of (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) : Fo
   refine ⟨⟨_, hunit, hqp⟩, hcpi, ?_⟩
 
   obtain ⟨w', hw'⟩ := hR.2.2.2.2.2.1
-  rw [eat_qp] at hw'
+  rw [_root_.Formalism.MainNotions.LiftingTheory.eisenstein_at_uniformizer] at hw'
   have hp1 : 1 ≤ PD.p - 1 := by have := PD.hp.two_le; omega
   have hcφ : PowerSeries.constantCoeff (W.lev i ζ (W.φA W.π₀)) = 0 := by
     rw [hw', map_mul, map_mul, map_pow, map_mul, map_mul, map_pow, hcq,

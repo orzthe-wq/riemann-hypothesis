@@ -116,7 +116,7 @@ theorem UpperTheory.V.ConeExtensionAcyclic.bd_bd :
     intro t a
 
     simp only [LinearMap.comp_apply, LinearMap.zero_apply, bd, Finsupp.linearCombination_single,
-    map_smul, map_sum, one_smul, smul_smul, Finset.smul_sum]
+    map_smul, map_sum, smul_smul, Finset.smul_sum]
     have hterm : ∀ (i : Fin (n + 2)) (j : Fin (n + 1)),
         (a * (-1) ^ (i : ℕ) * (1 * (-1) ^ (j : ℕ))) •
             (Finsupp.single ((t ∘ i.succAbove) ∘ j.succAbove) (1 : ℤ)) =

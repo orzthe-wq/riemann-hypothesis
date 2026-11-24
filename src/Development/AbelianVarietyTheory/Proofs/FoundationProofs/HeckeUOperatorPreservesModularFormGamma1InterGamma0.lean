@@ -1,10 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMulPetProd
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUOperatorExplicitEqSumSlashStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUOperatorExplicitSlashInvariantGamma1InterGStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MdifferentiableHeckeOperatorsExplicitStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlashRatIsBoundedAtGamma1InterGamma0LevelStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUOperatorExplicitEqSumSlash
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUOperatorExplicitSlashInvariantGamma1InterGamma0
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.LeviCivita
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MdifferentiableHeckeOperatorsExplicit
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlashRatIsBoundedAtGamma1InterGamma0Level
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,10 +76,10 @@ theorem uOp_modularForm : ∀ (N l q : ℕ) (k : ℤ), 0 < N → 0 < l → q.Pri
   have hq0 : 0 < q := hq.pos
   have hinv : ∀ γ ∈ lev N l, (⇑f) ∣[k] γ = ⇑f := fun γ hγ => by
     rw [SL_slash]; exact f.slash_action_eq' _ ⟨γ, hγ, rfl⟩
-  have hU := GlobalTheory.T.heckeUOperatorExplicit_slash_invariant_gamma1InterGamma0 N l q k (⇑f) hN hl hq hqd hinv
+  have hU := _root_.GlobalTheory.Hk.uOp_slash_lev N l q k (⇑f) hN hl hq hqd hinv
   refine ⟨{ toFun := uOp q ⇑f
             slash_action_eq' := ?_
-            holo' := (GlobalTheory.T.mdifferentiable_heckeOperatorsExplicit q k 1 (⇑f) hq0 f.holo').1
+            holo' := (_root_.GlobalTheory.Hk.hecke_mdiff q k 1 (⇑f) hq0 f.holo').1
             bdd_at_cusps' := ?_ }, rfl⟩
   · intro γ hγ
     obtain ⟨s, hs, rfl⟩ := Subgroup.mem_map.1 hγ
@@ -85,8 +87,8 @@ theorem uOp_modularForm : ∀ (N l q : ℕ) (k : ℤ), 0 < N → 0 < l → q.Pri
     rw [SL_slash] at this
     exact this
   · intro c hc
-    rw [GlobalTheory.T.heckeUOperatorExplicit_eq_sum_slash q k (⇑f) hq0]
-    exact isBoundedAt_finsetSum _ c k fun j _ => GlobalTheory.T.slash_rat_isBoundedAt_gamma1InterGamma0Level N l k _ hN hl (by
+    rw [_root_.GlobalTheory.Hk.uOp_eq_sum_slash q k (⇑f) hq0]
+    exact isBoundedAt_finsetSum _ c k fun j _ => _root_.GlobalTheory.Hk.slash_rat_isBoundedAt N l k _ hN hl (by
       simp [Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.det_fin_two_of]; exact_mod_cast hq0) f c hc
 
 end GlobalTheory.Hk

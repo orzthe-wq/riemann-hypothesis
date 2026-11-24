@@ -3,48 +3,7 @@ module
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.LatticeInclusionOfDecompGlob
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.BwAValIntegralNonneg
 public import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -145,13 +104,13 @@ theorem bwD_single_mul_apply (p q : Fin r) (x : ℂ) (M : Matrix (Fin r) (Fin r)
     (Matrix.single p q x * M) a b = if a = p then x * M q b else 0 := by
   by_cases h : a = p
   · subst h; simp [Matrix.mul_apply, Matrix.single_apply]
-  · simp [Matrix.mul_apply, Matrix.single_apply, h, Ne.symm h]
+  · simp [Matrix.mul_apply, h, Ne.symm h]
 
 theorem bwD_mul_single_apply (p q : Fin r) (x : ℂ) (M : Matrix (Fin r) (Fin r) ℂ) (a b : Fin r) :
     (M * Matrix.single p q x) a b = if b = q then M a p * x else 0 := by
   by_cases h : b = q
   · subst h; simp [Matrix.mul_apply, Matrix.single_apply]
-  · simp [Matrix.mul_apply, Matrix.single_apply, h, Ne.symm h]
+  · simp [Matrix.mul_apply, h, Ne.symm h]
 
 private lemma one_add_single_mul_one_add_single_eq_one {r : ℕ} (p q : Fin r) (c d : ℂ)
     (h : d + c + (if q = p then d * c else 0) = 0) :
@@ -163,10 +122,10 @@ private lemma one_add_single_mul_one_add_single_eq_one {r : ℕ} (p q : Fin r) (
     by_cases hx : x = p
     · by_cases hz : z = q
       · by_cases hqp : q = p
-        · simp [Matrix.single_apply, hx, hz, hqp]
-        · simp [Matrix.single_apply, hx, hz, hqp, Ne.symm hqp]
-      · simp [Matrix.single_apply, hx, hz, Ne.symm hz]
-    · simp [Matrix.single_apply, hx, Ne.symm hx]
+        · simp [hx, hz, hqp]
+        · simp [hx, hz, hqp, Ne.symm hqp]
+      · simp [hx, Ne.symm hz]
+    · simp [hx, Ne.symm hx]
   rw [add_mul, one_mul, mul_add, mul_one, hdc]
   generalize (if q = p then d * c else 0) = e at h ⊢
   ext x z
@@ -257,7 +216,7 @@ theorem bwD_elim (hL : bwD_Loc O) (M : Matrix (Fin r) (Fin r) ℂ) (hM : bwD_Int
       have hb'j : b' ≠ j := Finset.ne_of_mem_erase hb'
       ext x z
       rw [bwD_single_mul_apply, Matrix.zero_apply]
-      simp [Matrix.single_apply, hb'j]
+      simp [hb'j]
     have hSS : S * S = 0 := by
       rw [hS, Finset.sum_mul_sum]
       exact Finset.sum_eq_zero fun b hb => Finset.sum_eq_zero fun b' hb' => hX0 b hb b' hb'
@@ -324,7 +283,7 @@ theorem bwD_decomp (hL : bwD_Loc O) (N M : Matrix (Fin r) (Fin r) ℂ) (t : ℂ)
     have hjk : j ≠ k := (Finset.ne_of_mem_erase hk).symm
     ext a b
     rw [bwD_single_mul_apply, Matrix.zero_apply]
-    simp [Matrix.single_apply, hjk]
+    simp [hjk]
   have hSS : S * S = 0 := by
     rw [hS, Finset.sum_mul_sum]
     exact Finset.sum_eq_zero fun b hb => Finset.sum_eq_zero fun b' hb' => hX0 b hb b' hb'

@@ -64,7 +64,7 @@ theorem UpperTheory.V.FW.conjEq :
     have hz : ‖φ ζ‖ = 1 := (hζ.map_of_injective φ.injective).norm'_eq_one (NeZero.ne M)
     rw [map_mul, map_one, cE]
     simp only [NumberField.IsCMField.complexEmbedding_complexConj, IsCMField.complexEmbedding_complexConj,
-      AlgEquiv.coe_toRingEquiv, RingEquiv.coe_toRingHom, AlgEquiv.coe_ringEquiv]
+      AlgEquiv.coe_toRingEquiv]
     rw [Complex.conj_mul', hz]
     simp
   have hc : sg M L (-1) = AlgEquiv.ofRingEquiv (f := cE L) (fun q => by simp) := by

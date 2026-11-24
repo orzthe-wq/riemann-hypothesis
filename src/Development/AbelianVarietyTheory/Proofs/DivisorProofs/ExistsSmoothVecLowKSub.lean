@@ -1,15 +1,14 @@
 module
 
+public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 public import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKTypeOfMap
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -29,7 +28,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,10 +40,92 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
+import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.UniformSpace.Uniformizable
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKTypeOfMap, Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothVecLowKSub
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKTypeOfMap =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKTypeOfMap", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.KTypeUnderMaps
+
+open Formalism.MainNotions.S
+
+theorem isKTypeOf_map {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
+    [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → H →L[ℂ] H} {Λ : Fin n → ℝ}
+    {S : Submodule ℂ H} (hS : Formalism.MainNotions.S.IsKTypeOf ε σ Λ S) (L : H →ₗ[ℂ] H)
+    (hL : ∀ k ∈ Formalism.REAL.Kset ε, ∀ (w : H), σ k (L w) = L (σ k w))
+    {v : H} (hv : v ∈ S) (hLv : L v ≠ 0) :
+    Formalism.MainNotions.S.IsKTypeOf ε σ Λ (Submodule.map L S) := by
+  obtain ⟨hfd, hst, hirr, ⟨u, huS, hu0, huw⟩, hdom⟩ := hS
+  have hpull : ∀ T : Submodule ℂ H, IsKStableOn ε σ T →
+      S ⊓ T.comap L = ⊥ ∨ S ⊓ T.comap L = S := by
+    intro T hT
+    refine hirr _ inf_le_left ?_
+    intro g hg x hx
+    refine ⟨hst g hg x hx.1, ?_⟩
+    have h2 : L x ∈ T := hx.2
+    change L (σ g x) ∈ T
+    rw [← hL g hg]
+    exact hT g hg _ h2
+  have hinj : ∀ x ∈ S, L x = 0 → x = 0 := by
+    intro x hx hx0
+    have hbot : IsKStableOn ε σ (⊥ : Submodule ℂ H) := by
+      intro g _ y hy
+      rw [Submodule.mem_bot] at hy ⊢
+      rw [hy, map_zero]
+    rcases hpull ⊥ hbot with h | h
+    · have : x ∈ S ⊓ (⊥ : Submodule ℂ H).comap L := ⟨hx, by simpa using hx0⟩
+      rw [h] at this
+      simpa using this
+    · have : v ∈ S ⊓ (⊥ : Submodule ℂ H).comap L := by rw [h]; exact hv
+      exact absurd (by simpa using this.2) hLv
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · haveI := hfd
+    infer_instance
+  · rintro g hg _ ⟨x, hx, rfl⟩
+    exact ⟨σ g x, hst g hg x hx, (hL g hg x).symm⟩
+  · intro T hTle hT
+    rcases hpull T hT with h | h
+    · left
+      rw [eq_bot_iff]
+      intro y hy
+      obtain ⟨x, hx, rfl⟩ := hTle hy
+      have : x ∈ S ⊓ T.comap L := ⟨hx, hy⟩
+      rw [h, Submodule.mem_bot] at this
+      rw [this, map_zero]
+      exact Submodule.zero_mem _
+    · right
+      refine le_antisymm hTle ?_
+      rintro _ ⟨x, hx, rfl⟩
+      have : x ∈ S ⊓ T.comap L := by rw [h]; exact hx
+      exact this.2
+  · refine ⟨L u, ⟨u, huS, rfl⟩, fun h => hu0 (hinj u huS h), ?_⟩
+    intro θ hθ
+    rw [hL _ hθ, huw θ hθ, map_smul]
+  · rintro μ _ ⟨x, hx, rfl⟩ hx0 hw
+    refine hdom μ x hx (fun h => hx0 (by rw [h, map_zero])) ?_
+    intro θ hθ
+    rw [← sub_eq_zero]
+    refine hinj _ (S.sub_mem (hst _ hθ x hx) (S.smul_mem _ hx)) ?_
+    rw [map_sub, map_smul, ← hL _ hθ, hw θ hθ, sub_self]
+
+end GlobalTheory.KTypeUnderMaps
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKTypeOfMap =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothVecLowKSub =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothVecLowKSub", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsKTypeOfMap\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat\nimport Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower\npublic import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ModularCharacterEqOneOnExpHermitian\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Mathlib.Topology.UniformSpace.Uniformizable\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -249,17 +329,6 @@ theorem contDiff_garding [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) (hφ :
   show x t * (y t * umat g) = umat g
   rw [← Matrix.mul_assoc, hxy, Matrix.one_mul]
 
-theorem isKTypeOf_map {Λ : Fin n → ℝ} {S : Submodule ℂ H} (hS : IsKTypeOf ε σ Λ S) (L : H →ₗ[ℂ] H)
-    (hL : ∀ k ∈ Formalism.REAL.Kset ε, ∀ w, σ k (L w) = L (σ k w)) {v : H} (hv : v ∈ S) (hLv : L v ≠ 0) :
-    IsKTypeOf ε σ Λ (S.map L) := by
-  first
-  | exact @_root_.GlobalTheory.KTypeUnderMaps.isKTypeOf_map
-  | exact _root_.GlobalTheory.KTypeUnderMaps.isKTypeOf_map
-  | (apply _root_.GlobalTheory.KTypeUnderMaps.isKTypeOf_map <;> assumption)
-  | (intros; apply _root_.GlobalTheory.KTypeUnderMaps.isKTypeOf_map <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.KTypeUnderMaps.isKTypeOf_map <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.KTypeUnderMaps.isKTypeOf_map ..)
-
 theorem exists_smoothVec_lowKSub {lam : Fin n → ℝ} (hσ : IsDS ε lam σ) {P G : Matrix (Fin n) (Fin n) ℂ}
     (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) :
     ∃ v ∈ lowKSub ε lam σ, v ≠ 0 ∧
@@ -274,7 +343,7 @@ theorem exists_smoothVec_lowKSub {lam : Fin n → ℝ} (hσ : IsDS ε lam σ) {P
   obtain ⟨U, hUn, hUs⟩ := mem_nhdsWithin_iff_exists_mem_nhds_inter.1 hnb
   obtain ⟨φ, hφ, hφc, hφU, hφ0, hφ1, hinv⟩ := exists_bump hUn
   have hne := garding_ne_zero hU hφ.continuous hφc hφ0 hφ1 hw fun g hg h0 => hUs ⟨hφU g h0, hg⟩
-  have hT := isKTypeOf_map hS (garding hU hφ.continuous hφc)
+  have hT := _root_.GlobalTheory.KTypeUnderMaps.isKTypeOf_map hS (garding hU hφ.continuous hφc)
     (fun k hk w => garding_comm hU hφ.continuous hφc hinv hk w) hwS hne
   have hG : IsUnit G := by
     rw [← h]
@@ -302,3 +371,6 @@ theorem lowT_ne_bot {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSMod
 end GlobalTheory.LowTypeRestriction
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSmoothVecLowKSub =====

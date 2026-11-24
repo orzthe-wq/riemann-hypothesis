@@ -3,8 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.BaseIdealIdeal
 public import Mathlib.AlgebraicGeometry.IdealSheaf.Functorial
 public import Mathlib.AlgebraicGeometry.Morphisms.Immersion
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseIdealSheafOfIdealComapSpecMapSupportStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafDataMapSupComapClosedImmersionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BaseIdealSheafOfIdealComapSpecMapSupport
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdealSheafDataMapSupComapClosedImmersion
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -86,19 +87,19 @@ theorem mapSystem : ∀ (R : Type) [CommRing R] (I : Ideal R) (W W' : Scheme.{0}
     have hle : t (e + 1) ≤ t e := by rw [ht e]; exact le_sup_left
     have hι : IsClosedImmersion (t (e + 1)).subschemeι := inferInstance
     have h1 : ((t e).comap (t (e + 1)).subschemeι).map (t (e + 1)).subschemeι = t e := by
-      have := (GlobalTheory.T.idealSheafData_map_sup_comap_closedImmersion _ _ _ hι ⊥ (t e)).1
+      have := (_root_.GlobalTheory.ClosedImmIdeal.map_sup_comap_and_comap_map _ _ _ hι ⊥ (t e)).1
       rw [bot_sup_eq, Scheme.IdealSheafData.map_bot, Scheme.IdealSheafData.ker_subschemeι,
         sup_eq_right.2 hle] at this
       exact this
     have hbot : (t (e + 1)).comap (t (e + 1)).subschemeι = ⊥ := by
-      have := (GlobalTheory.T.idealSheafData_map_sup_comap_closedImmersion _ _ _ hι ⊥ ⊥).2
+      have := (_root_.GlobalTheory.ClosedImmIdeal.map_sup_comap_and_comap_map _ _ _ hι ⊥ ⊥).2
       rwa [Scheme.IdealSheafData.map_bot, Scheme.IdealSheafData.ker_subschemeι] at this
     have h2 : (t e).comap (t (e + 1)).subschemeι =
         (baseIdeal f (I ^ (e + 1))).comap ((t (e + 1)).subschemeι ≫ π) := by
       conv_lhs => rw [ht e]
-      rw [Scheme.IdealSheafData.comap_sup, hbot, bot_sup_eq, GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support.1, GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support.1,
+      rw [Scheme.IdealSheafData.comap_sup, hbot, bot_sup_eq, _root_.GlobalTheory.FormalAlg.baseIdeal_calculus.1, _root_.GlobalTheory.FormalAlg.baseIdeal_calculus.1,
         Category.assoc]
-    have h3 := (GlobalTheory.T.idealSheafData_map_sup_comap_closedImmersion _ _ _ (hci (e + 1)) ⊥ (baseIdeal f (I ^ (e + 1)))).1
+    have h3 := (_root_.GlobalTheory.ClosedImmIdeal.map_sup_comap_and_comap_map _ _ _ (hci (e + 1)) ⊥ (baseIdeal f (I ^ (e + 1)))).1
     rw [bot_sup_eq, Scheme.IdealSheafData.map_bot] at h3
     calc (t e).map π = (((t e).comap (t (e + 1)).subschemeι).map (t (e + 1)).subschemeι).map π := by
           rw [h1]

@@ -108,7 +108,7 @@ theorem UpperTheory.V.Af.Nf.liftCent :
   have s1 : GeneralLinearGroup.scalar (Fin 2) (Units.map (algebraMap ℚ (Ad ℚ)).toMonoidHom r) =
       ratGL ℚ 2 (GeneralLinearGroup.scalar (Fin 2) r) := by
     ext i j
-    by_cases e : i = j <;> simp [ratGL, Matrix.diagonal_apply, e, Matrix.algebraMap_matrix_apply]
+    by_cases e : i = j <;> simp [ratGL, e, Matrix.algebraMap_matrix_apply]
   set T : GL (Fin 2) ℝ := GeneralLinearGroup.map ev (GeneralLinearGroup.scalar (Fin 2) t) with hT
   have s2 : GeneralLinearGroup.scalar (Fin 2) (TR.infId ℚ t) = upR T := by
     rw [hT, upR_ev]
@@ -134,7 +134,7 @@ theorem UpperTheory.V.Af.Nf.liftCent :
   have e2 : ((toR β)⁻¹ * (T * h)).val = t.val Rat.infinitePlace • ((toR β)⁻¹ * h).val := by
     have : T.val = t.val Rat.infinitePlace • (1 : Matrix (Fin 2) (Fin 2) ℝ) := by
       ext i j
-      by_cases e : i = j <;> simp [hT, ev, Matrix.diagonal_apply, e]
+      by_cases e : i = j <;> simp [hT, ev, e]
     simp only [Units.val_mul, this, Matrix.smul_mul, Matrix.mul_smul, one_mul]
   have e3 := ((nslInv k M f ((toR β)⁻¹ * h).val ((toR β)⁻¹ * h).det_ne_zero).2 χ hf δ hδ)
   rw [← hβ', ← Units.val_mul, mul_inv_cancel_left] at e3

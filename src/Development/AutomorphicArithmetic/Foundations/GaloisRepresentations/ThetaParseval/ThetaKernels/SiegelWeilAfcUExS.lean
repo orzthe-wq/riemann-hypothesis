@@ -2,15 +2,16 @@ module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.LiftedSchrodingerDatum
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.FourierCompactness.DoubledGroupTopologicalProperties
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.MeanSquareAddFundamentalDomainOfCocompact
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.SiegelWeilKfourNA
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.SiegelWeilKrdPlace
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.SiegelWeilKrdRDIota
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenseRationalsPlusSinglePlaceAdelesStatement
+public import Mathlib.NumberTheory.NumberField.AdeleRing
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenseRationalsPlusSinglePlaceAdeles
+public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicFormCongruences.ProjectedBlockUpperSum
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.MeanSquareAddFundamentalDomainOfCocompact
 import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.BlockTriangularFrames.SiegelParabolicEqStabiliserCols
 import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.G2HaarMeasure.CountableRationalPointsDoubled
 import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.UnitsBorelSpace.BorelSpaceDoubledGroup
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicFormCongruences.ProjectedBlockUpperSum
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.CayleyTransform.CompFinFinOne
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.FourierCompactness.SigmaSigmaOfGood
 import Development.WeilBound.ThetaLifts.LatticeBasics.IsCompactOfUnits
@@ -284,7 +285,7 @@ theorem sum_mem_Sw_k (w : InfinitePlace F) (s : Fin (Module.finrank F E) → AF 
     refine Finset.sum_eq_zero fun k _ => ?_
     rw [smul_smul, finOne_mul (hs k).1, zero_smul]
 theorem dense_Sw_k (w : InfinitePlace F) : Dense {z : AE F E | ∃ e : E, ∃ s ∈ _root_.PositivityTheory.SiegelWeilFormula.Afc.Sw_k d w, inclR (F := F) (AF F) e + s = z} := by
-  have hA := GlobalTheory.T.dense_rationals_plus_single_place_adeles F w
+  have hA := _root_.GlobalTheory.CompanionTheory.AddSA.dense_add_place F w
   let Φ : (Fin (Module.finrank F E) → AF F) → AE F E := fun a => ∑ k, a k • kfour.bsA F E k
   have hΦc : Continuous Φ := continuous_finsetSum _ fun k _ => (continuous_apply k).smul continuous_const
   have hΦs : Function.Surjective Φ := fun z => ⟨fun k => (kfour.bsA F E).repr z k, (kfour.bsA F E).sum_repr z⟩

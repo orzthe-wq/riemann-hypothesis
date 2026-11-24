@@ -1,7 +1,8 @@
 module
 
-public import Formalism.ResultantValuation.ResultantConjugate
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 public import Mathlib.Data.ZMod.IntUnitsPower
+public import Mathlib.Algebra.BigOperators.Intervals
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -21,8 +22,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,7 +29,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,12 +41,45 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Mathlib.Algebra.BigOperators.Intervals
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.ResultantValuation.ResultantConjugate, Formalism.ResultantValuation.ResultantAdjugateProofs.Laplace
+
+-- ===== clump member: Formalism.ResultantValuation.ResultantConjugate =====
+-- clump-header: {"m": "Formalism.ResultantValuation.ResultantConjugate", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+noncomputable section
+
+namespace Formalism.ResultantValuation
+
+def LaplaceRows : Prop :=
+  ∀ (R : Type) [CommRing R] (a b : ℕ) (M : Matrix (Fin (a + b)) (Fin (a + b)) R),
+    M.det = ∑ J : {J : Finset (Fin (a + b)) // J.card = a},
+      (-1 : R) ^ (a * (a - 1) / 2 + ∑ j ∈ J.1, (j : ℕ)) *
+        (M.submatrix (Fin.castAdd b) (J.1.orderEmbOfFin J.2)).det *
+        (M.submatrix (Fin.natAdd a)
+          ((J.1ᶜ).orderEmbOfFin (by rw [Finset.card_compl, Fintype.card_fin, J.2]; omega))).det
+
+end Formalism.ResultantValuation
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.ResultantValuation.ResultantConjugate =====
+
+-- ===== clump member: Formalism.ResultantValuation.ResultantAdjugateProofs.Laplace =====
+-- clump-header: {"m": "Formalism.ResultantValuation.ResultantAdjugateProofs.Laplace", "h": "module\n\npublic import Formalism.ResultantValuation.ResultantConjugate\npublic import Mathlib.Data.ZMod.IntUnitsPower\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Algebra.BigOperators.Intervals\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Finset Equiv
@@ -138,7 +169,6 @@ private theorem perm_inversion_sign_eq_prod {n : ℕ} (g : Perm (Fin n)) :
     Perm.signAux g = ∏ x : Fin n, ∏ y : Fin n,
       if y < x then (if g x ≤ g y then (-1 : ℤˣ) else 1) else 1 := by
   rw [Perm.signAux.eq_1, prod_finPairsLT]
-  all_goals rfl
 
 private lemma prod_fin_add_lt_split (F : Fin (a + b) → Fin (a + b) → ℤˣ) :
     ∏ x : Fin (a + b), ∏ y : Fin (a + b), (if y < x then F x y else 1) =
@@ -152,7 +182,7 @@ private lemma prod_fin_add_lt_split (F : Fin (a + b) → Fin (a + b) → ℤˣ) 
     have := i.isLt
     omega
   simp only [Fin.prod_univ_add, Finset.prod_mul_distrib, Fin.lt_iff_val_lt_val, Fin.coe_castAdd,
-    Fin.coe_natAdd, add_lt_add_iff_left, hlt, hnlt, ↓reduceIte, Finset.prod_const_one, mul_one, one_mul,
+    Fin.coe_natAdd, add_lt_add_iff_left, hlt, hnlt, ↓reduceIte, Finset.prod_const_one, one_mul,
     mul_assoc]
 
 private lemma card_filter_compl_orderEmbOfFin_le (J : Finset (Fin (a + b))) (hc : Jᶜ.card = b) (t : Fin (a + b)) :
@@ -273,12 +303,9 @@ theorem image_glue (x : Σ _ : {J : Finset (Fin (a + b)) // J.card = a},
 theorem glue_injective : Function.Injective (glue (a := a) (b := b)) := by
   rintro ⟨⟨J, hJ⟩, σ, τ⟩ ⟨⟨J', hJ'⟩, σ', τ'⟩ heq
   have hJJ : J = J' := by
-    have h1 := image_glue (⟨⟨J, hJ⟩, σ, τ⟩ : Σ _ : {J : Finset (Fin (a + b)) // J.card = a},
-      Perm (Fin a) × Perm (Fin b))
-    have h2 := image_glue (⟨⟨J', hJ'⟩, σ', τ'⟩ : Σ _ : {J : Finset (Fin (a + b)) // J.card = a},
-      Perm (Fin a) × Perm (Fin b))
-    rw [heq] at h1
-    exact h1.symm.trans h2
+    simpa only [image_glue] using
+      congrArg (fun f : Perm (Fin (a + b)) =>
+        (Finset.univ.image fun i : Fin a => f (Fin.castAdd b i))) heq
   subst hJJ
   have hσ : σ = σ' := by
     refine Equiv.ext fun i => ?_
@@ -321,3 +348,7 @@ theorem laplaceExpansionRows : LaplaceRows := by
   ring
 
 end Formalism.ResultantValuation
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.ResultantValuation.ResultantAdjugateProofs.Laplace =====

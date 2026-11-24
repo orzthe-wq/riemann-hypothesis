@@ -74,7 +74,7 @@ private lemma continuousAt_cutoff_mul_mix_curvAt {n : ℕ} {r : Type} [Fintype r
   refine _root_.GlobalTheory.GoodTop.continuousAt_mixTop (K := fun x _ => _root_.GlobalTheory.GoodTop.curvAt G x)
     fun i a b p q => ?_
   have h := hG.curv (j := 0) hdet
-    (by rw [zero_add]; first | exact le_top | exact_mod_cast (le_top : ((2 : ℕ∞) ≤ ⊤)) | exact WithTop.coe_le_coe.2 le_top)
+    (by rw [zero_add]; first | exact WithTop.coe_le_coe.2 le_top)
     (_root_.GlobalTheory.GoodMetric.coordVec a) (_root_.GlobalTheory.GoodMetric.coordVec b) p q
   exact h.continuousAt
 

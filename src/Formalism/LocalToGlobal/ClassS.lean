@@ -4,7 +4,6 @@ public import Formalism.LocalToGlobal.HermitianForms.ExtraSym
 public import Formalism.LocalToGlobal.HilbertRowConditions.TiedEMt
 public import Formalism.LocalToGlobal.GroupLattices.StdSubAtOfRing
 public import Formalism.LocalToGlobal.GroupLattices.Joint0
-public import Formalism.LocalToGlobal.LatticeGeometry.GeoTiedP
 public import Formalism.LocalToGlobal.BesselHermitianTheta.AllTied
 public import Formalism.LocalToGlobal.HilbertRowConditions.KaTiedIffKapDef
 public import Formalism.LocalToGlobal.JointCharacters.SameChr
@@ -82,10 +81,6 @@ structure LinkedFamilyData (ex : Extra D L hT Gi Gl K Y cX) where
   chrPsi : Host.PsiChoiceCompatible D n.cf ex.nch n.tp
   sameChr : JoinChr.SameChr theta.T thetaChr
   what₂ : Rows.RowsCompatible D host n.cf n.tp
-
-  inK : Y.Lev → ℕ → Prop
-
-  geo : Geo.GeoTiedP Y inK
 
   tw : Forms.SymmetricTwistedColumnsAtPrimes n.tp cols ex.tw
 

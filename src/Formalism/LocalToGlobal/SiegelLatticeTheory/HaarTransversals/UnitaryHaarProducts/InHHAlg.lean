@@ -2,49 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHCut
 public import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -324,7 +282,7 @@ theorem nfin_inv_pres {n : X.B.I.Gf} (hn : n ∈ X.NfinU u) :
 theorem mul_sub_one_mulVec (a b : X.B.I.Gf) (y : VA X.B.I) :
     (X.B.I.fmat (a * b) - 1) *ᵥ y = X.B.I.fmat a *ᵥ ((X.B.I.fmat b - 1) *ᵥ y) + (X.B.I.fmat a - 1) *ᵥ y := by
   rw [fmat_mul]
-  simp only [sub_mulVec, mulVec_sub, mulVec_mulVec, one_mulVec, Matrix.mul_sub, Matrix.mul_one]
+  simp only [sub_mulVec, mulVec_sub, mulVec_mulVec, one_mulVec]
   abel
 
 theorem inv_sub_one_mulVec (a : X.B.I.Gf) (y : VA X.B.I) :
@@ -490,7 +448,7 @@ theorem mulVec_inverse_mem_SpL_of_C1 {M M' : Matrix (Fin n) (Fin n) R} (hM : C1 
 
 theorem mul_sub_one_mulVec' (M N : Matrix (Fin n) (Fin n) R) (y : Fin n → R) :
     (M * N - 1) *ᵥ y = M *ᵥ ((N - 1) *ᵥ y) + (M - 1) *ᵥ y := by
-  simp only [sub_mulVec, mulVec_sub, mulVec_mulVec, one_mulVec, Matrix.mul_sub, Matrix.mul_one]
+  simp only [sub_mulVec, mulVec_sub, mulVec_mulVec, one_mulVec]
   abel
 
 theorem inv_sub_one_mulVec' (M M' : Matrix (Fin n) (Fin n) R) (hMM : M' * M = 1) (y : Fin n → R) :

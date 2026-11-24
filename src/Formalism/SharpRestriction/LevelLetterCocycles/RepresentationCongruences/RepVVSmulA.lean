@@ -107,7 +107,7 @@ theorem dvO_single (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.D
   funext m
   by_cases h : m = k
   · subst h; simp
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 theorem dv_eq_sum (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (c₀ : Fin d → LL) :
     dv W T e b c₀ = ∑ m, c₀ m • dv W T e b (Pi.single m 1) := by
@@ -164,13 +164,7 @@ theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i : LetA O n) = letE i
   funext k
   by_cases h : k = i
   · subst h; simp [LocWach.γA, letγ, letE]
-  · simp [LocWach.γA, letγ, letE, Pi.single_apply, h]
-
-theorem letE_mul_self (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
-  funext k
-  by_cases h : k = i
-  · subst h; simp [letE]
-  · simp [letE, Pi.single_apply, h]
+  · simp [LocWach.γA, letγ, letE, h]
 
 theorem avg_props {T : LocLat G Qp LL O} (a : ZMod n) {z : W.DD T} (hz : z ∈ W.N T)
     (hza : (letE a : LetA O n) • z = z) :

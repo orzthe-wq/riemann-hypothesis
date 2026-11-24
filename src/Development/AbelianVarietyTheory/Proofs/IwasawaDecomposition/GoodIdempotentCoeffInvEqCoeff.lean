@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PositionOfIntro
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FunKilled
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

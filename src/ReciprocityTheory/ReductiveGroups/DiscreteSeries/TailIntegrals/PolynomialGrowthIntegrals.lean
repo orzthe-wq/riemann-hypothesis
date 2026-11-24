@@ -1,53 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.TailInt
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
 @[expose] public section
@@ -78,12 +33,21 @@ lemma lagrange (c : Fin 3 → ℂ) {t1 t2 t3 g la : ℝ} (hg : 0 < g) (h1 : 1 �
     (p1 : ‖qv c t1‖ ≤ la) (p2 : ‖qv c t2‖ ≤ la) (p3 : ‖qv c t3‖ ≤ la) :
     ‖c‖ ≤ 12 * la / g ^ 2 := by
   have hla : 0 ≤ la := (norm_nonneg _).trans p1
-  have d1 : g ^ 2 ≤ |(t1 - t2) * (t1 - t3)| := by
-    rw [abs_of_nonneg (by nlinarith)]; nlinarith
-  have d2 : g ^ 2 ≤ |(t2 - t1) * (t2 - t3)| := by
-    rw [abs_of_nonpos (by nlinarith)]; nlinarith
-  have d3 : g ^ 2 ≤ |(t3 - t1) * (t3 - t2)| := by
-    rw [abs_of_nonneg (by nlinarith)]; nlinarith
+  have ht12 : t1 < t2 := sub_pos.mp (hg.trans_le h12)
+  have ht23 : t2 < t3 := sub_pos.mp (hg.trans_le h23)
+  have ht13 : t1 < t3 := ht12.trans ht23
+  have h13 : g ≤ t3 - t1 := by linarith only [h12, h23, hg]
+  have gap_mul {a b : ℝ} (ha : g ≤ |a|) (hb : g ≤ |b|) :
+      g ^ 2 ≤ |a * b| := by
+    rw [pow_two, abs_mul]
+    exact mul_le_mul ha hb hg.le (abs_nonneg _)
+  have gap_abs {a b : ℝ} (h : g ≤ b - a) : g ≤ |a - b| := by
+    rw [abs_sub_comm]
+    exact h.trans (le_abs_self _)
+  have d1 : g ^ 2 ≤ |(t1 - t2) * (t1 - t3)| := gap_mul (gap_abs h12) (gap_abs h13)
+  have d2 : g ^ 2 ≤ |(t2 - t1) * (t2 - t3)| := gap_mul (h12.trans (le_abs_self _)) (gap_abs h23)
+  have d3 : g ^ 2 ≤ |(t3 - t1) * (t3 - t2)| :=
+    gap_mul (h13.trans (le_abs_self _)) (h23.trans (le_abs_self _))
   have hg2 : 0 < g ^ 2 := by positivity
   have a12 : (t1 : ℂ) - t2 ≠ 0 := by
     rw [sub_ne_zero]; intro h; have := Complex.ofReal_injective h; linarith
@@ -107,19 +71,30 @@ lemma lagrange (c : Fin 3 → ℂ) {t1 t2 t3 g la : ℝ} (hg : 0 < g) (h1 : 1 �
     have := term_bd p3 hw3 hg2 d3
     have e : 12 * la / g ^ 2 = la * 4 / g ^ 2 + la * 4 / g ^ 2 + la * 4 / g ^ 2 := by ring
     linarith
+  have ht1 : t1 ∈ Icc (0 : ℝ) 2 := ⟨by linarith only [h1], ht13.le.trans h3⟩
+  have ht2 : t2 ∈ Icc (0 : ℝ) 2 := ⟨ht1.1.trans ht12.le, ht23.le.trans h3⟩
+  have ht3 : t3 ∈ Icc (0 : ℝ) 2 := ⟨ht2.1.trans ht23.le, h3⟩
+  have hprod {x y : ℝ} (hx : x ∈ Icc (0 : ℝ) 2) (hy : y ∈ Icc (0 : ℝ) 2) :
+      |x * y| ≤ 4 := by
+    rw [abs_of_nonneg (mul_nonneg hx.1 hy.1)]
+    calc
+      x * y ≤ 2 * 2 := mul_le_mul hx.2 hy.2 hy.1 (by norm_num)
+      _ = 4 := by norm_num
+  have hsum {x y : ℝ} (hx : x ∈ Icc (0 : ℝ) 2) (hy : y ∈ Icc (0 : ℝ) 2) :
+      |-(x + y)| ≤ 4 := by
+    rw [abs_neg, abs_of_nonneg (add_nonneg hx.1 hy.1)]
+    linarith only [hx.2, hy.2]
   rw [pi_norm_le_iff_of_nonneg (by positivity)]
   intro i
   fin_cases i
-  · have := key (t2 * t3) (t1 * t3) (t1 * t2) (by rw [abs_of_nonneg (by nlinarith)]; nlinarith)
-      (by rw [abs_of_nonneg (by nlinarith)]; nlinarith) (by rw [abs_of_nonneg (by nlinarith)]; nlinarith)
+  · have := key (t2 * t3) (t1 * t3) (t1 * t2) (hprod ht2 ht3) (hprod ht1 ht3) (hprod ht1 ht2)
     have e : c 0 = qv c t1 * ((t2 * t3 : ℝ) : ℂ) / (((t1 - t2) * (t1 - t3) : ℝ) : ℂ)
         + qv c t2 * ((t1 * t3 : ℝ) : ℂ) / (((t2 - t1) * (t2 - t3) : ℝ) : ℂ)
         + qv c t3 * ((t1 * t2 : ℝ) : ℂ) / (((t3 - t1) * (t3 - t2) : ℝ) : ℂ) := by
       simp only [qv]; push_cast; field_simp; ring
     show ‖c 0‖ ≤ _
     rw [e]; exact this
-  · have := key (-(t2 + t3)) (-(t1 + t3)) (-(t1 + t2)) (by rw [abs_le]; constructor <;> nlinarith)
-      (by rw [abs_le]; constructor <;> nlinarith) (by rw [abs_le]; constructor <;> nlinarith)
+  · have := key (-(t2 + t3)) (-(t1 + t3)) (-(t1 + t2)) (hsum ht2 ht3) (hsum ht1 ht3) (hsum ht1 ht2)
     have e : c 1 = qv c t1 * ((-(t2 + t3) : ℝ) : ℂ) / (((t1 - t2) * (t1 - t3) : ℝ) : ℂ)
         + qv c t2 * ((-(t1 + t3) : ℝ) : ℂ) / (((t2 - t1) * (t2 - t3) : ℝ) : ℂ)
         + qv c t3 * ((-(t1 + t2) : ℝ) : ℂ) / (((t3 - t1) * (t3 - t2) : ℝ) : ℂ) := by
@@ -241,7 +216,11 @@ theorem quadraticSublevelDecay' : SUB := by
       have e : K = ((1 + s ^ 2) ^ 2) ^ (-δ / 2) := by
         rw [hK, ← Real.rpow_natCast (1 + s ^ 2) 2, ← Real.rpow_mul (by positivity)]; congr 1; push_cast; ring
       rw [e]
-      exact Real.rpow_le_rpow_of_nonpos (by linarith) (by rw [← hs4]; nlinarith) (by linarith)
+      have hbase : 1 + M ≤ (1 + s ^ 2) ^ 2 := by
+        rw [← hs4]
+        simpa only [one_pow, ← pow_mul] using
+          pow_add_pow_le (show (0 : ℝ) ≤ 1 by norm_num) (sq_nonneg s) (by decide : (2 : ℕ) ≠ 0)
+      exact Real.rpow_le_rpow_of_nonpos (by linarith) hbase (by linarith)
     have hB : 1 / (2 * s) ≤ (1 + M) ^ (-δ / 2) := by
       calc 1 / (2 * s) ≤ (1 + s)⁻¹ := by
             rw [one_div]; exact inv_anti₀ (by positivity) (by linarith)
@@ -249,7 +228,8 @@ theorem quadraticSublevelDecay' : SUB := by
             rw [← Real.rpow_natCast, ← Real.rpow_mul (by positivity), ← Real.rpow_neg_one]; norm_num
         _ ≤ (1 + M) ^ (-(1:ℝ) / 4) := by
             apply Real.rpow_le_rpow_of_nonpos (by linarith) _ (by norm_num)
-            rw [← hs4]; nlinarith [pow_pos hs0 3]
+            simpa only [← hs4, one_pow] using
+              pow_add_pow_le (show (0 : ℝ) ≤ 1 by norm_num) hs0.le (by decide : (4 : ℕ) ≠ 0)
         _ ≤ (1 + M) ^ (-δ / 2) := Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)
     have e2 : 2 * (5 / s) = 20 * (1 / (2 * s)) := by field_simp; ring
     have hX : 0 ≤ (1 + M) ^ (-δ / 2) := by positivity

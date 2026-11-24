@@ -196,7 +196,7 @@ theorem _root_.GlobalTheory.exists_herm_coord_of_datum :
     exact (mul_eq_zero.1 h1).resolve_left (hσ0 s hs)
   let gram : Matrix (Fin r) (Fin r) E := Matrix.of fun i j => h0 (l i) (l j)
   have hgramσ : ∀ i j, σ (gram i j) = - gram j i := fun i j => by
-    simp [gram, hherm (l i) (l j), hσσ]
+    simp [gram, hherm (l i) (l j)]
   have hdet : gram.det ≠ 0 := by
     intro h
     obtain ⟨v, hv0, hv⟩ := Matrix.exists_vecMul_eq_zero_iff.2 h
@@ -206,7 +206,7 @@ theorem _root_.GlobalTheory.exists_herm_coord_of_datum :
       rw [map_zero, Pi.zero_apply, hψ, hsumL]
       have := congrFun hv j
       simp only [Matrix.vecMul, dotProduct, Pi.zero_apply, gram, Matrix.of_apply] at this
-      simp only [hc, Submonoid.smul_def, Algebra.smul_def, mul_assoc, ← Finset.mul_sum, this,
+      simp only [hc, Algebra.smul_def, mul_assoc, ← Finset.mul_sum, this,
         mul_zero]
     have hc0 := Fintype.linearIndependent_iff.1 hl c hx
     apply hv0

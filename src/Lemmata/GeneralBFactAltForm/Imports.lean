@@ -1,45 +1,7 @@
 module
 
+import Mathlib.RingTheory.Localization.Submodule
 public import Mathlib.RingTheory.Localization.FractionRing
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -56,26 +18,11 @@ theorem goal1 :
     Exists.{u_1 + 1} fun (d : R) ↦
       And (Ne.{u_1 + 1} d 0) (Membership.mem.{u_3, u_3} S (HSMul.hSMul.{u_1, u_3, u_3} d x))  := by
   intro R F X _ _ _ _ _ _ _ _ _ S x hx
-  induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩
-  | zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact S.zero_mem⟩
-  | add y z _ _ hy hz =>
-    obtain ⟨d1, hd1, h1⟩ := hy
-    obtain ⟨d2, hd2, h2⟩ := hz
-    refine ⟨d1 * d2, mul_ne_zero hd1 hd2, ?_⟩
-    have e : (d1 * d2) • (y + z) = d2 • (d1 • y) + d1 • (d2 • z) := by
-      rw [smul_add, ← mul_smul, ← mul_smul, mul_comm d2 d1]
-    rw [e]
-    exact S.add_mem (S.smul_mem d2 h1) (S.smul_mem d1 h2)
-  | smul a y _ hy =>
-    obtain ⟨d, hd, h⟩ := hy
-    obtain ⟨⟨n, ⟨m, hm⟩⟩, rfl⟩ := IsLocalization.mk'_surjective (nonZeroDivisors R) a
-    refine ⟨m * d, mul_ne_zero (nonZeroDivisors.ne_zero hm) hd, ?_⟩
-    have e1 : m • (IsLocalization.mk' F n (⟨m, hm⟩ : nonZeroDivisors R) • y) = n • y := by
-      rw [← smul_assoc, Algebra.smul_def, IsLocalization.mk'_spec' F n ⟨m, hm⟩, algebraMap_smul]
-    have e : (m * d) • (IsLocalization.mk' F n (⟨m, hm⟩ : nonZeroDivisors R) • y) = n • (d • y) := by
-      rw [mul_comm m d, mul_smul, e1, ← mul_smul, ← mul_smul, mul_comm d n]
-    rw [e]
-    exact S.smul_mem n h
+  obtain ⟨y, hy, z, rfl⟩ :=
+    (IsLocalization.mem_span_iff (R := R) (M := nonZeroDivisors R) (S := F)).mp hx
+  rw [Submodule.span_eq] at hy
+  refine ⟨(z : R), nonZeroDivisors.coe_ne_zero z, ?_⟩
+  rw [← IsScalarTower.algebraMap_smul F (z : R), smul_smul, IsLocalization.mk'_spec', map_one, one_smul]
+  exact hy
 
 end Bl.general_b_fact_alt_form

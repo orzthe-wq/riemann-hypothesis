@@ -131,8 +131,7 @@ private lemma fin_doset {X M : Type} [Group X] [Group M] (T : TyLev X M) (h : X)
   obtain ⟨t, ht, rfl⟩ := Subgroup.mem_map.mp hu
   refine ⟨c * (h * a), Finset.mem_biUnion.mpr ⟨a, ha, Finset.mem_image.mpr ⟨c, hc, rfl⟩⟩,
     1, ⟨t * v, T.K₀.mul_mem ht hv⟩, ?_⟩
-  simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, OneMemClass.coe_one, one_mul,
-    Subgroup.coe_mul]
+  simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, OneMemClass.coe_one, one_mul]
   group
 
 theorem pTfAdm : TfAdm := by

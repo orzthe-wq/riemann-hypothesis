@@ -53,27 +53,6 @@ noncomputable section
 
 open Classical
 
-section helpers
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
-  [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
-  [∀ x, InnerProductSpace ℂ (Wq x)]
-
-theorem mix_pushT (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (ε : ℝ) (i : ℕ) {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ)
-    (mk : List ℝ → List C.Letter) (P Q : C.LPt) :
-    KB.mix S v ε i (PBD.pushU grid mk) (PBD.pushTh grid mk) P Q =
-      ∑ n : Fin K → Fin (d + 1), ((F7.thGrid grid n : ℝ) : ℂ) * KB.gN S v ε i (mk (List.ofFn fun b => grid b (n b))) P Q := by
-  unfold KB.mix PBD.pushTh
-  simp only [Complex.ofReal_sum, Finset.sum_mul]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun n _ => ?_
-  have hmem : mk (List.ofFn fun b => grid b (n b)) ∈ PBD.pushU grid mk :=
-    Finset.mem_image_of_mem _ (Finset.mem_univ n)
-  simp only [apply_ite, Complex.ofReal_zero, zero_mul, ite_mul]
-  rw [Finset.sum_ite_eq, if_pos hmem]
-
-end helpers
-
 section lists
 
 theorem ofFn_split {K : ℕ} (f : Fin K → ℝ) (ys₁ : List ℝ) (y : ℝ) (ys₂ : List ℝ)

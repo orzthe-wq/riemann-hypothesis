@@ -4,9 +4,9 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissiblePadicIntMaximalIdeal
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AuxiliaryInertOddPrime
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AmpleDeterminantFramesPullbackOfIsAffineHomStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.AmpleDeterminantFramesPullbackOfIsAffineHom
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmModelCoefficientSubringDedekindCompatibleEmbed
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsNormalModelAboveFiniteCoverStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsNormalModelAboveFiniteCover
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.GenericPartDenseProOpen
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsFiniteLiftComp
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsFiniteLiftRestrict
@@ -73,9 +73,9 @@ theorem exists_closure {O F F' : Type} [CommRing O] [Field F] [Field F'] [CharZe
     ∃ (O' : Type) (_ : CommRing O') (β' : O' →+* F') (b : O →+* O'), IsDedFrac β' ∧ β'.comp b = k.comp β ∧ b.Finite ∧
       ∀ x : F', IsIntegral ℤ x → x ∈ β'.range := by
   obtain ⟨⟨_, _⟩, _, hfr⟩ := hβ
-  letI := β.toAlgebra
-  letI := k.toAlgebra
-  letI := (k.comp β).toAlgebra
+  let := β.toAlgebra
+  let := k.toAlgebra
+  let := (k.comp β).toAlgebra
   have : IsScalarTower O F F' := IsScalarTower.of_algebraMap_eq' rfl
   have : FiniteDimensional F F' := hk
   have hD : IsDedekindDomain (integralClosure O F') := integralClosure.isDedekindDomain O F F'
@@ -168,7 +168,7 @@ theorem exists_cover (L₁ : Out.Laws) (L₂ : Out.Laws2) (L₃ : Out.Laws3) {D 
     have : Smooth (Xo l').s := SmoothOfRelativeDimension.smooth D.dim _
     infer_instance
   have hnorm := (GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ _ hsm).2.1
-  obtain ⟨C, ⟨a⟩⟩ := GlobalTheory.T.exists_normal_model_above_finite_cover E H _ _ _ _ Y.oF.t β _ _ _
+  obtain ⟨C, ⟨a⟩⟩ := _root_.GlobalTheory.Models.Cpt.exists_above E H _ _ _ _ Y.oF.t β _ _ _
     (pullback.snd (Xo l').s (spMap (IntermediateField.inclusion c'.le).toRingHom)) o.t β' (ofModel Y) b _ r' hr₂ ν' hβ hβ'
     hb hnorm hf'
   have hπ : IsFinite a.π := by
@@ -182,7 +182,7 @@ theorem exists_cover (L₁ : Out.Laws) (L₂ : Out.Laws2) (L₃ : Out.Laws3) {D 
     infer_instance
   have hj : IsDominant (ofModel Y).j := by
     obtain ⟨⟨_, _⟩, -, hfr⟩ := hβ
-    letI := β.toAlgebra
+    let := β.toAlgebra
     exact (GlobalTheory.genericPart_dense_proOpen O c.F Y.X _ Y.s Y.jQ Y.flat Y.proj Y.jQ_open Y.jQ_dense).2.2.2.2.2.1
   have hd : IsDominant a.π := by
     have : IsDominant (C.j ≫ a.π) := by rw [a.j_comm]; infer_instance
@@ -212,7 +212,7 @@ theorem amp_of_raises : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) 
     ⟨(GlobalTheory.Models.above_comp E H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ B.C (ofModel Y) (ofModel Y') b₁ b r₁ ν₁ r ν ν₂
       a₁ a hν₂).choose⟩⟩
   have hi : Function.Injective (c'.F.val.toRingHom.comp β') := by
-    letI := β'.toAlgebra
+    let := β'.toAlgebra
     have := hβ'.2.2
     exact Subtype.val_injective.comp (IsFractionRing.injective O' c'.F)
   obtain ⟨z, hz⟩ : ∃ z : RZ H n N →+* O', IsInc (RZ H n N).subtype (c'.F.val.toRingHom.comp β') z := by
@@ -244,7 +244,7 @@ theorem amp_of_raises : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) 
       isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _).flip this
     rw [← pullback.lift_fst g Y'.s hg]
     infer_instance
-  obtain ⟨A', -⟩ := GlobalTheory.T.ampleDeterminantFrames_pullback_of_isAffineHom E H _ _ T.t Y'.t g mu _ A haff
+  obtain ⟨A', -⟩ := _root_.GlobalTheory.AmpPull.ampFrames_pull_of_isAffineHom E H _ _ T.t Y'.t g mu _ A haff
   exact ⟨n ^ k, Y'.X, a.π, Y'.t, a.mu, hodd.pow, by rw [Nat.cast_pow]; exact hu.pow k, hf, hs, ⟨A'⟩⟩
 
 end GlobalTheory.RaisedAmple

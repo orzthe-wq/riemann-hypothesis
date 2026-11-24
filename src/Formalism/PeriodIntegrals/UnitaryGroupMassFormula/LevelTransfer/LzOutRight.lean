@@ -176,7 +176,7 @@ theorem Lz_out_left (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) �
 theorem Lz_out_right (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (p q : Fin (2 * (i + r') + k + 1))
     (hq : ¬ (i ≤ q.val ∧ q.val < 2 * r' + k + 1 + i)) : Lz k i r' X p q = 0 := by
   simp only [Lz]
-  split_ifs <;> first | rfl | (exfalso; apply hq; assumption)
+  split_ifs <;> first | rfl
 
 def LzL (k i r' : ℕ) :
     Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ →ₗ[ℂ]

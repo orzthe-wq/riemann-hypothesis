@@ -78,7 +78,7 @@ theorem exists_extend_coeff {R : Type*} [Semiring R] {p n : ℕ} (e : Fin p ↪ 
     rfl
   refine ⟨Function.extend e d 0, h1, h2, fun f => ?_⟩
   rw [← Finset.sum_subset (Finset.subset_univ (Finset.univ.map e)) (fun x _ hx => ?_), Finset.sum_map]
-  · simp only [Function.Embedding.coeFn_mk, h1]
+  · simp only [h1]
   · rw [h2 x (fun ⟨j, hj⟩ => hx (by simp [← hj])), zero_smul]
 
 theorem exists_perm_append_cons {α : Type*} {p q : ℕ} (x : α) (f : Fin p → α) (g : Fin q → α) :
@@ -313,7 +313,7 @@ theorem star_cell_bary_step : ∀ (O : Type) [CommRing O] (bar : O → O) (ψ la
     simp only [hu'def, Fin.cons_zero, Fin.cons_succ] at hrel
     have h1 := congrArg h hrel
 
-    simp only [map_add (f := _), map_sum, map_zsmul, hvS0, huT0, smul_zero, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero] at h1
+    simp only [map_add (f := _), map_sum, map_zsmul, hvS0, huT0, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero] at h1
     have hc0 : c 0 = 0 := (mul_eq_zero.1 h1).resolve_right hpos.ne'
     rw [hc0, zero_smul, zero_add] at hrel
     obtain ⟨rc, hrc1, -, hrc⟩ := exists_extend_coeff eT (fun j => c j.succ)

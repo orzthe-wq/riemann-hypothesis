@@ -170,7 +170,10 @@ theorem mul_self_le_two_pow_succ (v : ℕ) : v * v ≤ 2 ^ (v + 1) := by
   | succ v ih =>
     rcases Nat.lt_or_ge v 3 with h | h
     · interval_cases v <;> norm_num
-    · rw [pow_succ]; nlinarith
+    · rw [pow_succ]
+      have h2 : 3 * v ≤ v * v := Nat.mul_le_mul_right v h
+      have h3 : (v + 1) * (v + 1) = v * v + 2 * v + 1 := by ring
+      omega
 
 theorem four_mul_padicValNat_le (p : ℕ) [hp : Fact p.Prime] (c : ℕ) {n : ℕ} (hn : n ≠ 0) :
     4 * c * padicValNat p n ≤ n + 32 * c ^ 2 := by
@@ -180,8 +183,12 @@ theorem four_mul_padicValNat_le (p : ℕ) [hp : Fact p.Prime] (c : ℕ) {n : ℕ
   have h3 := mul_self_le_two_pow_succ v
   rw [pow_succ] at h3
   rcases Nat.lt_or_ge v (8 * c) with h | h
-  · nlinarith
-  · nlinarith
+  · calc 4 * c * v ≤ 4 * c * (8 * c) := Nat.mul_le_mul_left _ h.le
+      _ = 32 * c ^ 2 := by ring
+      _ ≤ n + 32 * c ^ 2 := Nat.le_add_left _ _
+  · have h4 : 8 * c * v ≤ v * v := Nat.mul_le_mul_right v h
+    have h5 : 8 * c * v = 2 * (4 * c * v) := by ring
+    omega
 
 theorem sub_one_mul_padicValNat_lt (p : ℕ) [hp : Fact p.Prime] {n : ℕ} (hn : n ≠ 0) :
     (p - 1) * padicValNat p n < n := by
@@ -291,7 +298,7 @@ theorem summable_logSeries {x : K} (hx : x ∈ valBall K 1) :
     exact_mod_cast h1
   simp only [Nat.cast_add, Nat.cast_mul, Nat.cast_pow, Nat.cast_ofNat, Nat.cast_one,
     ] at h3 h4
-  nlinarith
+  lia
 
 theorem one_le_of_lt_sub_one_mul {a : ℤ} (ha : (absRamificationIndex (K := K) : ℤ) < (p - 1 : ℤ) * a) :
     1 ≤ a := by
@@ -299,7 +306,8 @@ theorem one_le_of_lt_sub_one_mul {a : ℤ} (ha : (absRamificationIndex (K := K) 
   have hp2 : (2 : ℤ) ≤ p := by exact_mod_cast hp.out.two_le
   by_contra h
   push Not at h
-  nlinarith
+  have h1 : ((p : ℤ) - 1) * a ≤ 0 := mul_nonpos_of_nonneg_of_nonpos (by omega) (by omega)
+  omega
 
 theorem logSeries_sub_self_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex (K := K) : ℤ) < (p - 1 : ℤ) * a) :
@@ -320,10 +328,17 @@ theorem logSeries_sub_self_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     have : (((p - 1) * v : ℕ) : ℤ) < k + 1 + 1 := by exact_mod_cast this
     push_cast [hp1] at this
     linarith
-  have hv : (0 : ℤ) ≤ v := by positivity
   have he : (0 : ℤ) ≤ e := by positivity
+  have hp1pos : (0 : ℤ) < (p : ℤ) - 1 := by omega
+  have hk1pos : (0 : ℤ) < (k : ℤ) + 1 := by positivity
+  have hlt : ((p : ℤ) - 1) * ((e : ℤ) * v) < ((p : ℤ) - 1) * (((k : ℤ) + 1) * a) := by
+    calc ((p : ℤ) - 1) * ((e : ℤ) * v) = (e : ℤ) * (((p : ℤ) - 1) * v) := by ring
+      _ ≤ (e : ℤ) * ((k : ℤ) + 1) := mul_le_mul_of_nonneg_left h1' he
+      _ < (((p : ℤ) - 1) * a) * ((k : ℤ) + 1) := mul_lt_mul_of_pos_right ha hk1pos
+      _ = ((p : ℤ) - 1) * (((k : ℤ) + 1) * a) := by ring
+  have hev : (e : ℤ) * v + 1 ≤ ((k : ℤ) + 1) * a := lt_of_mul_lt_mul_left hlt hp1pos.le
   push_cast
-  nlinarith [mul_le_mul_of_nonneg_left h1' he]
+  linarith
 
 end Series
 
@@ -347,7 +362,12 @@ theorem expTerm_order_bound {a : ℤ} (ha : (absRamificationIndex (K := K) : ℤ
     linarith
   have he : (0 : ℤ) ≤ e := by positivity
   have hk : (0 : ℤ) ≤ k := by positivity
-  nlinarith [mul_le_mul_of_nonneg_left h1' he, mul_le_mul_of_nonneg_left ha.le hk]
+  have hm1 : (e : ℤ) * (((p : ℤ) - 1) * v) ≤ (e : ℤ) * k := mul_le_mul_of_nonneg_left h1' he
+  have hm2 : (k : ℤ) * ((e : ℤ) + 1) ≤ (k : ℤ) * (((p : ℤ) - 1) * a) :=
+    mul_le_mul_of_nonneg_left (Int.add_one_le_iff.mpr ha) hk
+  have hrew : ((p : ℤ) - 1) * ((k : ℤ) * a - (e : ℤ) * v) =
+      (k : ℤ) * (((p : ℤ) - 1) * a) - (e : ℤ) * (((p : ℤ) - 1) * v) := by ring
+  linarith
 
 theorem summable_expSeries {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex (K := K) : ℤ) < (p - 1 : ℤ) * a) :
@@ -362,7 +382,9 @@ theorem summable_expSeries {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     rw [Nat.cast_sub hp.out.one_le]; simp
   have h3 : (((p - 1) * N.toNat : ℕ) : ℤ) ≤ k := by exact_mod_cast hk
   push_cast [hp1] at h3
-  nlinarith
+  have hp1pos : (0 : ℤ) < (p : ℤ) - 1 := by omega
+  have h4 : ((p : ℤ) - 1) * N ≤ ((p : ℤ) - 1) * (N.toNat : ℤ) := mul_le_mul_of_nonneg_left h2 hp1pos.le
+  exact le_of_mul_le_mul_left (h4.trans (h3.trans h1)) hp1pos
 
 theorem expSeries_sub_one_sub_self_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a)
     (ha : (absRamificationIndex (K := K) : ℤ) < (p - 1 : ℤ) * a) :
@@ -374,7 +396,6 @@ theorem expSeries_sub_one_sub_self_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a
   have : ∀ t : K, 1 + (x + t) - 1 - x = t := fun t ↦ by ring
   rw [this]
   refine tsum_mem_valBall fun k ↦ valBall_antitone ?_ (expTerm_mem p hx (k + 1 + 1))
-  have h1 := expTerm_order_bound p ha (k + 1 + 1)
   have h0 := sub_one_mul_multiplicity_factorial_lt_of_ne_zero p (by omega : k + 1 + 1 ≠ 0)
   set v := padicValNat p (k + 1 + 1).factorial
   set e := absRamificationIndex (K := K)
@@ -382,13 +403,19 @@ theorem expSeries_sub_one_sub_self_mem {a : ℤ} {x : K} (hx : x ∈ valBall K a
   have hp1 : ((p - 1 : ℕ) : ℤ) = (p : ℤ) - 1 := by
     rw [Nat.cast_sub hp.out.one_le]; simp
   have h0' : (((p - 1) * v : ℕ) : ℤ) < k + 1 + 1 := by exact_mod_cast (by simpa only [v, Nat.padicValNat_def] using h0)
-  push_cast [hp1] at h0' h1
+  push_cast [hp1] at h0'
   have he : (0 : ℤ) ≤ e := by positivity
   have h0'' : ((p : ℤ) - 1) * v ≤ k + 1 := by linarith
-  have ha' : (e : ℤ) + 1 ≤ ((p : ℤ) - 1) * a := by linarith
-  have hk : (0 : ℤ) ≤ k + 1 := by positivity
+  have hp1pos : (0 : ℤ) < (p : ℤ) - 1 := by omega
+  have hk1pos : (0 : ℤ) < (k : ℤ) + 1 := by positivity
+  have hlt : ((p : ℤ) - 1) * ((e : ℤ) * v) < ((p : ℤ) - 1) * (((k : ℤ) + 1) * a) := by
+    calc ((p : ℤ) - 1) * ((e : ℤ) * v) = (e : ℤ) * (((p : ℤ) - 1) * v) := by ring
+      _ ≤ (e : ℤ) * ((k : ℤ) + 1) := mul_le_mul_of_nonneg_left h0'' he
+      _ < (((p : ℤ) - 1) * a) * ((k : ℤ) + 1) := mul_lt_mul_of_pos_right ha hk1pos
+      _ = ((p : ℤ) - 1) * (((k : ℤ) + 1) * a) := by ring
+  have hev : (e : ℤ) * v + 1 ≤ ((k : ℤ) + 1) * a := lt_of_mul_lt_mul_left hlt hp1pos.le
   push_cast
-  nlinarith [mul_le_mul_of_nonneg_left h0'' he, mul_le_mul_of_nonneg_left ha' hk]
+  linarith
 
 theorem expSeries_add {a : ℤ} {x y : K} (hx : x ∈ valBall K a) (hy : y ∈ valBall K a)
     (ha : (absRamificationIndex (K := K) : ℤ) < (p - 1 : ℤ) * a) :

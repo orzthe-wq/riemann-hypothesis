@@ -269,7 +269,7 @@ theorem growthSob_lift_le (hG : ThetaGrowth D) (H : KernelBound V W A d) (hθ : 
   choose c hc using fun l => (tame_word ht l).2
   obtain ⟨C, hC⟩ := growthSize_lift_le H hθ hω hμ h𝓓 hU
   refine ⟨C * ∑ n ∈ Finset.range (k + 1), ∑ a : Fin n → _, c (List.ofFn a), fun f hf F hF => ?_⟩
-  simp only [growthSob, wordSum, ENNReal.coe_mul, Finset.mul_sum, Finset.sum_mul]
+  simp only [growthSob, wordSum, Finset.mul_sum]
   push_cast
   simp only [Finset.sum_mul]
   refine Finset.sum_le_sum fun n hn => Finset.sum_le_sum fun a _ => ?_

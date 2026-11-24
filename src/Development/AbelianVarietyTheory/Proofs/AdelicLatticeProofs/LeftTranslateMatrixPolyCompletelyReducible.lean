@@ -2,12 +2,15 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
 public import Mathlib.RepresentationTheory.Basic
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CompletelyReducibleKroneckerPowerTransposeStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CompletelyReducibleToMatrixIffIsSemisimpleRepresStatement
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGroupHomRangeEqOfAutStableStatement
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSemisimpleRepresentationOfISupRangeEquivariantStatement
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.LeftTranslateMatrixPolyTensorFormPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MatrixKroneckerPowerTensorActionAlgebraStatement
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CompletelyReducibleKroneckerPowerTranspose
+public import Mathlib.RepresentationTheory.Semisimple
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.Order.CompletePartialOrder
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSemisimpleRepresentationOfISupRangeEquivariant
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.LeftTranslateMatrixPolyTensorFormProperties
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.MatrixKroneckerPowerTensorActionAlgebra
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.CompletelyReducibleToMatrixIffIsSemisimpleRepres
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGroupHomRangeEqOfAutStable
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -96,17 +99,17 @@ noncomputable def dualPowRep {ι G : Type} [Fintype ι] [DecidableEq ι] [Group 
     Representation ℂ G ((Fin n → ι) → ℂ) where
   toFun g := Matrix.toLin' (tpow n (ρ g⁻¹))ᵀ
   map_one' := by
-    rw [inv_one, map_one, ((GlobalTheory.T.matrixKroneckerPower_tensorAction_algebra ι ℂ).1 n).1, transpose_one, Matrix.toLin'_one]; rfl
+    rw [inv_one, map_one, ((_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).1 n).1, transpose_one, Matrix.toLin'_one]; rfl
   map_mul' g h := by
-    rw [_root_.mul_inv_rev, map_mul, ((GlobalTheory.T.matrixKroneckerPower_tensorAction_algebra ι ℂ).1 n).2.1, transpose_mul, Matrix.toLin'_mul]; rfl
+    rw [_root_.mul_inv_rev, map_mul, ((_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).1 n).2.1, transpose_mul, Matrix.toLin'_mul]; rfl
 
 theorem ltr_completely_reducible : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → SS Γ → ∀ U : Submodule ℂ (MvPolynomial (ι × ι) ℂ), (∀ g ∈ Γ, ∀ f ∈ U, ltr g f ∈ U) → ∃ U' : Submodule ℂ (MvPolynomial (ι × ι) ℂ), (∀ g ∈ Γ, ∀ f ∈ U', ltr g f ∈ U') ∧ IsCompl U U' := by
   intro ι _ _ Γ hΓ hss U hU
-  obtain ⟨G, _, ρ, hρ⟩ := GlobalTheory.T.exists_group_hom_range_eq_of_isPre ι Γ hΓ
+  obtain ⟨G, _, ρ, hρ⟩ := _root_.GlobalTheory.ClassFin.IsPre.exists_group_range ι Γ hΓ
   have hs : ∀ n, (dualPowRep ρ n).IsSemisimpleRepresentation := by
     intro n
-    rw [← GlobalTheory.T.completelyReducible_toMatrix_iff_isSemisimpleRepresentation (Fin n → ι) G _ (dualPowRep ρ n) (Pi.basisFun ℂ _)]
-    have h := GlobalTheory.T.completelyReducible_kroneckerPower_transpose ι Γ hΓ hss n
+    rw [← _root_.GlobalTheory.ClassFin.ss_range_toMatrix_iff_isSemisimpleRepresentation (Fin n → ι) G _ (dualPowRep ρ n) (Pi.basisFun ℂ _)]
+    have h := _root_.GlobalTheory.ClassFin.ss_tpow_transpose ι Γ hΓ hss n
     convert h using 1
     subst hρ
     ext M
@@ -118,9 +121,9 @@ theorem ltr_completely_reducible : ∀ (ι : Type) [Fintype ι] [DecidableEq ι]
       refine ⟨g⁻¹, ?_⟩
       change LinearMap.toMatrix' (Matrix.toLin' (tpow n (ρ g⁻¹⁻¹))ᵀ) = _
       rw [inv_inv, LinearMap.toMatrix'_toLin']
-  choose p _ hp2 hp3 using (GlobalTheory.T.leftTranslateMatrixPoly_tensorForm_properties ι).2.2.2
+  choose p _ hp2 hp3 using (_root_.GlobalTheory.ClassFin.ltr_tensorForms ι).2.2.2
   have hsemi : (ltrRep ρ).IsSemisimpleRepresentation := by
-    refine GlobalTheory.T.isSemisimpleRepresentation_of_iSup_range_equivariant G _ (ltrRep ρ) (Σ n : ℕ, (Fin n → ι)) (fun j => (Fin j.1 → ι) → ℂ)
+    refine _root_.GlobalTheory.ClassFin.isSemisimpleRepresentation_of_iSup_range G _ (ltrRep ρ) (Σ n : ℕ, (Fin n → ι)) (fun j => (Fin j.1 → ι) → ℂ)
       (fun j => dualPowRep ρ j.1) (fun j => p j.1 j.2) (fun j => hs j.1) ?_ ?_
     · rintro ⟨n, b⟩ g v
       change p n b (Matrix.toLin' (tpow n (ρ g⁻¹))ᵀ v) = ltr (ρ g⁻¹) (p n b v)

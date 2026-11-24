@@ -281,7 +281,7 @@ theorem act_lev {fH : P →* Y} {ε : Γ →* P} (hε : Continuous ε) {K A : Su
   refine ⟨U', ?_, fun u hu x => ?_⟩
   · have : (U' : Set P) = ⋂ q ∈ T, (fun y => (ε (Quotient.out q))⁻¹ * y * ((ε (Quotient.out q))⁻¹)⁻¹) ⁻¹' (U : Set P) := by
       ext y
-      simp [U', Subgroup.mem_iInf, MulAut.conj_apply]
+      simp [U']
     rw [this]
     exact isOpen_biInter_finset fun q _ => hU.preimage (by fun_prop)
   · rw [hsum, hsum]

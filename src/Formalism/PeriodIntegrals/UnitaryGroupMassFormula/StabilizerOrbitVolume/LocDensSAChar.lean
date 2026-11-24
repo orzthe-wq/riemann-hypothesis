@@ -92,8 +92,6 @@ theorem chInf_of (hL : ChLift) (hA : AddIntF) : ChInf := by
   have hdense : DenseRange (algebraMap F (InfiniteAdeleRing F)) := by
     first
       | exact InfiniteAdeleRing.denseRange_algebraMap F
-      | exact InfiniteAdeleRing.denseRange_algebraMap
-      | exact NumberField.InfiniteAdeleRing.denseRange_algebraMap F
   have hx : ℓ x = 0 :=
     hdense.induction_on x (isClosed_eq hℓc continuous_const) hzero
   rw [hℓ, hx, Complex.exp_zero]

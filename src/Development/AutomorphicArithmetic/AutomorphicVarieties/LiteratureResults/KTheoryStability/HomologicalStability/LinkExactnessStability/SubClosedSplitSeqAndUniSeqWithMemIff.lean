@@ -103,13 +103,3 @@ end GlobalTheory.SeqCx
 theorem GlobalTheory.SeqCx.split_uni_closed : ∀ (R : Type) [CommRing R] (n : ℕ), SubClosed (splitSeq R n) ∧ SubClosed (uniSeq R n) ∧ (∀ l : List ((Fin n → R) × (Fin n → R)), l ∈ splitSeq R n ↔ (∀ y ∈ l, y.2 ⬝ᵥ y.1 = 1) ∧ l.Pairwise fun y z => y.2 ⬝ᵥ z.1 = 0 ∧ z.2 ⬝ᵥ y.1 = 0) ∧ (∀ w : List (Fin n → R), w ∈ uniSeq R n ↔ ∃ l ∈ splitSeq R n, l.map Prod.fst = w) :=
   fun R _ n => ⟨splitSeq_sublist_closed R n, uniSeq_sublist_closed R n, mem_splitSeq_iff_pairwise R n, mem_uniSeq_iff_exists_split R n⟩
 
-section
-open GlobalTheory.SeqCx Matrix
-theorem _root_.GlobalTheory.T.subClosed_splitSeq_and_uniSeq_with_mem_iff : ∀ (R : Type) [CommRing R] (n : ℕ), SubClosed (splitSeq R n) ∧ SubClosed (uniSeq R n) ∧ (∀ l : List ((Fin n → R) × (Fin n → R)), l ∈ splitSeq R n ↔ (∀ y ∈ l, y.2 ⬝ᵥ y.1 = 1) ∧ l.Pairwise fun y z => y.2 ⬝ᵥ z.1 = 0 ∧ z.2 ⬝ᵥ y.1 = 0) ∧ (∀ w : List (Fin n → R), w ∈ uniSeq R n ↔ ∃ l ∈ splitSeq R n, l.map Prod.fst = w) := by
-  first
-  | exact @GlobalTheory.SeqCx.split_uni_closed
-  | exact @GlobalTheory.SeqCx.uniSeq_sublist_closed
-  | exact @GlobalTheory.SeqCx.mem_uniSeq_iff_exists_split
-  | exact @GlobalTheory.SeqCx.splitSeq_sublist_closed
-  | exact @GlobalTheory.SeqCx.mem_splitSeq_iff_pairwise
-end

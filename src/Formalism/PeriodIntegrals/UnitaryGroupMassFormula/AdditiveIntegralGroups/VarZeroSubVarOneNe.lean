@@ -88,21 +88,11 @@ theorem root_rel {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : 
   have hD := congrArg D hG
   rw [map_zero] at hD
   simp only [G, map_add (f := _), map_sub, Derivation.leibniz, Derivation.leibniz_pow,
-    Derivation.map_algebraMap, smul_eq_mul, nsmul_eq_mul, smul_zero, zero_smul, mul_zero, zero_mul,
-    add_zero, zero_add, Nat.cast_ofNat] at hD
+    Derivation.map_algebraMap, smul_eq_mul, nsmul_eq_mul, mul_zero, add_zero, Nat.cast_ofNat] at hD
   simp only [Gv] at hω
   simp only [Acf, Bcf, Ccf, cc]
   linear_combination (PowerSeries.subst r (omegaW W wq)) * hD -
     (r * D (lam wq) + D (nu wq)) * hω
-
-theorem var_zero_sub_var_one_ne : (Xv 0 - Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) ≠ 0 := by
-  intro h
-  have h2 := congrArg (MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1)) h
-  have hne : (Finsupp.single (0 : Fin 2) 1 : Fin 2 →₀ ℕ) ≠ Finsupp.single 1 1 := by
-    intro hs
-    have h3 := congrArg (fun f => f 0) hs
-    simp at h3
-  simp [Xv, MvPowerSeries.coeff_X, hne] at h2
 
 theorem abel_cc_flog (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     PowerSeries.constantCoeff (flog W wq) = 0 := by
@@ -144,17 +134,17 @@ theorem abel {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq
     intro hs
     have h4 := congrArg (fun f => f 0) hs
     simp at h4
-  have h01 : (Xv 0 - Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) ≠ 0 := var_zero_sub_var_one_ne
+  have h01 : (Xv 0 - Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) ≠ 0 := _root_.PI.AddIntG.Wk.var_zero_sub_var_one_ne_zero
   have h02 : (Xv 0 - Z3 W wq : MvPowerSeries (Fin 2) ℂ_[p]) ≠ 0 := by
     intro h0
     have h3 := congrArg (MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1)) h0
     have hBA := rt_coeff_BA W wq 0
-    simp [Z3, Xv, MvPowerSeries.coeff_X, hne, hBA] at h3 <;> norm_num at h3
+    simp [Z3, Xv, MvPowerSeries.coeff_X, hne, hBA] at h3
   have h12 : (Xv 1 - Z3 W wq : MvPowerSeries (Fin 2) ℂ_[p]) ≠ 0 := by
     intro h0
     have h3 := congrArg (MvPowerSeries.coeff (Finsupp.single (1 : Fin 2) 1)) h0
     have hBA := rt_coeff_BA W wq 1
-    simp [Z3, Xv, MvPowerSeries.coeff_X, hne.symm, hBA] at h3 <;> norm_num at h3
+    simp [Z3, Xv, MvPowerSeries.coeff_X, hne.symm, hBA] at h3
   have key : ∀ j, PowerSeries.subst (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) (omegaW W wq) *
         MvPowerSeries.pderiv (R := ℂ_[p]) j (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) +
       PowerSeries.subst (Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) (omegaW W wq) *

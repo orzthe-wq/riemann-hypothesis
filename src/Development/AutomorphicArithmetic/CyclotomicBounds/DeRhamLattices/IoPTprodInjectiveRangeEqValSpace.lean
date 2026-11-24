@@ -106,7 +106,7 @@ theorem _root_.UpperTheory.KN.ioP_tprod_injective_and_range_eq_valSpace :
       exact absurd h0 hΔ0
   · rintro _ ⟨x, rfl⟩
     exact hval x
-  · obtain ⟨u1, cc, κ, hu1, -, hκ0, hv, hκ, -⟩ := GlobalTheory.T.exists_scale_twisted_place_coefficient_map D X X0 Y S YS Z c w j H
+  · obtain ⟨u1, cc, κ, hu1, -, hκ0, hv, hκ, -⟩ := _root_.GlobalTheory.PlaceScale.exists_scale D X X0 Y S YS Z c w j H
     have e : u1 = u := funext fun ρ => Subtype.ext ((hu1 ρ).trans (hu ρ).symm)
     subst e
     intro P hP

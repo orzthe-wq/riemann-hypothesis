@@ -2,6 +2,7 @@ module
 
 public import Formalism.MahlerMeasure.StatementTM
 public import Formalism.MahlerMeasure.StatementD
+import Formalism.MahlerMeasure.MahlerMeasureProofs.FockPairing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -639,41 +640,19 @@ variable {p : ℕ} [Fact p.Prime] {σ : Type}
 
 theorem fock_eq_sum (F G : MvPolynomial σ ℚ_[p]) (s : Finset (σ →₀ ℕ)) (hs : F.support ⊆ s) :
     fock p F G = ∑ m ∈ s, F.coeff m * G.coeff m * (m.prod fun _ k => (k.factorial : ℚ_[p])) := by
-  classical
-  unfold fock
-  apply Finset.sum_subset hs
-  intro m _ hm
-  rw [notMem_support_iff.mp hm, zero_mul, zero_mul]
+  simpa only [M.fock_eq_pair, cast_fock_weight] using FockPairing.pair_eq_sum F G s hs
 
 theorem fock_add_left (F F' G : MvPolynomial σ ℚ_[p]) : fock p (F + F') G = fock p F G + fock p F' G := by
-  classical
-  rw [fock_eq_sum (F + F') G (F.support ∪ F'.support) support_add,
-    fock_eq_sum F G (F.support ∪ F'.support) subset_union_left,
-    fock_eq_sum F' G (F.support ∪ F'.support) subset_union_right, ← Finset.sum_add_distrib]
-  apply Finset.sum_congr rfl
-  intro m _
-  rw [MvPolynomial.coeff_add]; ring
+  simpa only [M.fock_eq_pair] using FockPairing.pair_add_left F F' G
 
 theorem fock_smul_left (c : ℚ_[p]) (F G : MvPolynomial σ ℚ_[p]) : fock p (c • F) G = c * fock p F G := by
-  classical
-  rw [fock_eq_sum (c • F) G F.support (support_smul), fock_eq_sum F G F.support subset_rfl, Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro m _
-  rw [MvPolynomial.coeff_smul, smul_eq_mul]; ring
+  simpa only [M.fock_eq_pair] using FockPairing.pair_smul_left c F G
 
 theorem fock_add_right (F G G' : MvPolynomial σ ℚ_[p]) : fock p F (G + G') = fock p F G + fock p F G' := by
-  unfold fock
-  rw [← Finset.sum_add_distrib]
-  apply Finset.sum_congr rfl
-  intro m _
-  rw [MvPolynomial.coeff_add]; ring
+  simpa only [M.fock_eq_pair] using FockPairing.pair_add_right F G G'
 
 theorem fock_smul_right (c : ℚ_[p]) (F G : MvPolynomial σ ℚ_[p]) : fock p F (c • G) = c * fock p F G := by
-  unfold fock
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro m _
-  rw [MvPolynomial.coeff_smul, smul_eq_mul]; ring
+  simpa only [M.fock_eq_pair] using FockPairing.pair_smul_right c F G
 
 noncomputable def fockBil {N r : ℕ} (LL : Letters N)
     (φ : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p]) :

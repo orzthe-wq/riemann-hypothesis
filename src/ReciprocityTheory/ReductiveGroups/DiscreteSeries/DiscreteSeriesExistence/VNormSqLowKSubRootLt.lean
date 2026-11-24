@@ -117,7 +117,7 @@ theorem vNormSq_lowK_sub_root_lt {ε : Fin n → Bool} {lam : Fin n → ℝ} (hm
   have hsum : ∑ c, (root a b c * root a b c - 2 * (w c * root a b c)) = 2 - 2 * (w a - w b) := by
     rw [Fintype.sum_eq_add a b hab']
     · rw [hr a, hr b]
-      simp only [if_neg hab', if_neg hab'.symm, eq_self_iff_true, ↓reduceIte]
+      simp only [if_neg hab', if_neg hab'.symm, ↓reduceIte]
       ring
     · intro c hc
       rw [hr c]
@@ -212,10 +212,7 @@ theorem weights_le_of_irr_hw (hE : IsGlRep E) (hU : IsInfUnitary ε E) {μ : Fin
     Submodule.mem_orthogonal_singleton_iff_inner_left.1 (horth (heq ▸ hxS))
   exact hx0 (inner_self_eq_zero.1 h0)
 
-theorem khw_line_of_irr (hE : IsGlRep E) (hU : IsInfUnitary ε E) {μ : Fin n → ℝ} {S : Submodule ℂ M}
-    (hS : IsKIrrHW ε E μ S) {x y : M} (hx : x ∈ S) (hy : y ∈ S) (hxw : IsKHWVec ε E μ x)
-    (hyw : IsKHWVec ε E μ y) (hy0 : y ≠ 0) : ∃ c : ℂ, x = c • y :=
-  khw_line_of_kIrrHW hE hU hS hx hy hxw hyw hy0
+alias khw_line_of_irr := _root_.ReciprocityTheory.ChartRestriction.DS.khw_line_of_kIrrHW
 
 end Module
 

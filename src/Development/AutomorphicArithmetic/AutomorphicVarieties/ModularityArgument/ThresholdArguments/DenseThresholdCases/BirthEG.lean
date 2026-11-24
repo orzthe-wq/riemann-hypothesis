@@ -58,10 +58,9 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Algebra.ClopenNhdofOne
 import Mathlib.Topology.Connected.Separation
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.IsUnitOrIsUnitOfAddOne
+import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.TPropEGW
 
 @[expose] public section
-
-attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 
 
 
@@ -72,23 +71,6 @@ open GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.Pu
 namespace UpperTheory.V.Sd.EG
 section Norm
 variable {l : ℕ} [hl : Fact l.Prime]
-private theorem root_small {x : Qbar l} (h : x ^ l = 1) : ‖x - 1‖ < 1 := by
-  have hx := norm_root hl.out.ne_zero h
-  have hy : ‖x - 1‖ ≤ 1 := by
-    rw [sub_eq_add_neg]
-    exact (IsUltrametricDist.norm_add_le_max _ _).trans (by simp [hx])
-  have e := add_pow_prime_eq hl.out (x - 1) 1
-  rw [sub_add_cancel, h, one_pow] at e
-  set S := ∑ k ∈ Finset.Ioo 0 l, (x - 1) ^ (k - 1) * 1 ^ (l - k - 1) * ((l.choose k / l : ℕ) : Qbar l) with hS
-  have hs : ‖S‖ ≤ 1 := by
-    refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_
-    rw [one_pow, mul_one, norm_mul, norm_pow]
-    exact mul_le_one₀ (pow_le_one₀ (norm_nonneg _) hy) (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _)
-  have e2 : (x - 1) ^ l = -((l : Qbar l) * ((x - 1) * S)) := by linear_combination -e
-  have h3 : ‖x - 1‖ ^ l < 1 := by
-    rw [← norm_pow, e2, norm_neg, norm_mul, norm_mul]
-    exact mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) norm_l (mul_le_one₀ hy (norm_nonneg _) hs)
-  exact (pow_lt_one_iff_of_nonneg (norm_nonneg _) hl.out.ne_zero).1 h3
 variable (l) in
 private def U : Subgroup (Qbar l)ˣ where
   carrier := {u | ‖(u : Qbar l) - 1‖ < 1}
@@ -112,43 +94,9 @@ private theorem cong_mul {a u : (Qbar l)ˣ} (ha : ‖(a : Qbar l)‖ = 1) (hu : 
   unfold Cong
   rw [e, norm_mul, ha, one_mul]
   exact hu
-private theorem resSum_of {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin 2) (Qbar l)) (Φ : Γ →* (Qbar l)ˣ)
-    (ht : ∀ s, ‖(ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).trace - (1 + Φ s)‖ < 1)
-    (hd : ∀ s, ‖(ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).det - Φ s‖ < 1) : ResSum ρ ![1, Φ] := by
-  intro s i
-  have e : (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly - ∏ j, (X - C ((![1, Φ] j s : (Qbar l)ˣ) : Qbar l)) =
-      C (-((ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).trace - (1 + Φ s))) * X +
-        C ((ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).det - Φ s) := by
-    rw [Matrix.charpoly_fin_two, Fin.prod_univ_two]
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, MonoidHom.one_apply, Units.val_one, map_one, map_neg, map_sub, map_add (f := _)]
-    ring
-  rw [← coeff_sub, e, coeff_add, coeff_C_mul_X, coeff_C]
-  refine small_add ?_ ?_
-  · split_ifs
-    · rw [norm_neg]; exact ht s
-    · simp
-  · split_ifs
-    · exact hd s
-    · simp
-private theorem trace_inv {K : Type} [Field K] (g : GL (Fin 2) K) (d : Kˣ) (h : Matrix.GeneralLinearGroup.det g = d⁻¹) :
-    ((d : K) • (g : Matrix (Fin 2) (Fin 2) K)).trace = ((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K).trace := by
-  have h1 := congrArg Units.val h
-  rw [Matrix.GeneralLinearGroup.val_det_apply] at h1
-  rw [Matrix.coe_units_inv, Matrix.inv_def, h1, Ring.inverse_unit, inv_inv, Matrix.trace_smul, Matrix.trace_smul,
-    Matrix.adjugate_fin_two, Matrix.trace_fin_two, Matrix.trace_fin_two]
-  simp [add_comm]
 end Norm
 section Gal
 variable {l : ℕ} [hl : Fact l.Prime] {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
-private theorem dec_le {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 ℚ)} (hv : IsPlaceOver A v) {γ : G ℚ Ω}
-    (hγ : IsFrob A (normV v) γ) (K : Subgroup (G ℚ Ω)) (hI : Ine (F := ℚ) A ≤ K) (hK : γ ∈ K) :
-    Dec (F := ℚ) A ≤ K.topologicalClosure := by
-  haveI : IsGalois ℚ Ω := {}
-  have key := ProfiniteGrp.closedSubgroup_eq_sInf_open (G := G ℚ Ω) ⟨K.topologicalClosure, Subgroup.isClosed_topologicalClosure _⟩
-  refine le_trans (le_sInf ?_) key.ge
-  rintro N ⟨hNo, hN⟩
-  have h := (Subgroup.le_topologicalClosure _).trans hN
-  exact Kum.decGen ℚ Ω A _ γ N hv hγ hNo (hI.trans h) (h hK)
 private theorem above_of {ρ : G ℚ Ω →* GL (Fin 2) (Qbar l)} (hρ : Continuous ρ) {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 ℚ)} (hv : IsPlaceOver A v) {κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ}
     (hκ : IsFlagOn ρ (Dec (F := ℚ) A) κ) (hI : ∀ s : ↥(Dec (F := ℚ) A), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → κ 0 s = 1)
@@ -258,28 +206,7 @@ private theorem core (P : _root_.UpperTheory.V.Af.HypothesesH') (hl2 : l ≠ 2) 
       · show Cong (κ 1 s * D s) 1
         rw [h1]
         exact inv_mem (key s).2
-private theorem dirG_dvd {O : Type} [CommRing O] {N M : ℕ} [NeZero N] [NeZero M] (h : M ∣ N) (χ : DirichletCharacter O M) (s : G ℚ Ω) :
-    (Chr.dirG ℚ Ω χ s : O) = χ ((((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N).val : ℕ) : ZMod M) := by
-  rw [dirG_val, ← (Chr.clsFacts ℚ Ω N).2.1 M h, MonoidHom.comp_apply, ZMod.unitsMap_val, ZMod.natCast_val]
-private theorem dirG_ne_one {M : ℕ} [NeZero M] {O : Type} [CommRing O] {χ : DirichletCharacter O M} (h : Chr.dirG ℚ Ω χ ≠ 1) : M ≠ 1 := by
-  rintro rfl
-  refine h (MonoidHom.ext fun s => ?_)
-  rw [Chr.dirG, MonoidHom.comp_apply, Subsingleton.elim (Chr.cls ℚ Ω 1 s) 1, map_one, MonoidHom.one_apply]
 end Gal
-private theorem exists_mul {M w : ℕ} [NeZero (M * w)] (φ : DirichletCharacter ℂ M) (θ : DirichletCharacter ℂ w) :
-    ∃ χ : DirichletCharacter ℂ (M * w), ∀ n : ℕ, χ (n : ZMod (M * w)) = φ (n : ZMod M) * θ (n : ZMod w) := by
-  refine ⟨DirichletCharacter.changeLevel (dvd_mul_right M w) φ * DirichletCharacter.changeLevel (dvd_mul_left w M) θ, fun n => ?_⟩
-  by_cases h : n.Coprime (M * w)
-  · have h' : IsCoprime (n : ℤ) ((M * w : ℕ) : ℤ) := Nat.isCoprime_iff_coprime.2 h
-    have h1 := DirichletCharacter.changeLevel_eq_cast_of_dvd' φ (dvd_mul_right M w) h'
-    have h2 := DirichletCharacter.changeLevel_eq_cast_of_dvd' θ (dvd_mul_left w M) h'
-    rw [Int.cast_natCast, Int.cast_natCast] at h1 h2
-    rw [MulChar.mul_apply, h1, h2]
-  · rw [MulChar.map_nonunit _ (fun h' => h ((ZMod.isUnit_iff_coprime _ _).1 h'))]
-    rw [Nat.coprime_mul_iff_right, not_and_or] at h
-    rcases h with h | h
-    · rw [φ.map_nonunit (fun h' => h ((ZMod.isUnit_iff_coprime _ _).1 h')), zero_mul]
-    · rw [θ.map_nonunit (fun h' => h ((ZMod.isUnit_iff_coprime _ _).1 h')), mul_zero]
 end UpperTheory.V.Sd.EG
 open UpperTheory.V.Sd UpperTheory.V.Sd.EG in
 theorem UpperTheory.V.Z.Win.Birth.propEGP_of_printsH :

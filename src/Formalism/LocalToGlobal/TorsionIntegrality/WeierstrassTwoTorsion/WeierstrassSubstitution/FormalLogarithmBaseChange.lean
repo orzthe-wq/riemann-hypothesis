@@ -1,16 +1,13 @@
 module
 
+public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.StatementF
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FormalGroupEqWSeries
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.StatementZ
-import Formalism.FormalGroupLog.FormalGroupLogProofs.ChainRule
-import Formalism.FormalGroupLog.FormalGroupLogProofs.ConstantCoeffSubstOfZero
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.CompInv
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.CurveSer
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.EqWSerSubst
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowBasic
-public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowThird
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.LogExp
-import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -22,6 +19,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -29,10 +27,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -40,8 +34,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -54,12 +47,159 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowTwo
+import Formalism.FormalGroupLog.FormalGroupLogProofs.ChainRule
+import Formalism.FormalGroupLog.FormalGroupLogProofs.ConstantCoeffSubstOfZero
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowThird, Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FormalLogarithmBaseChange
+
+-- ===== clump member: Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowThird =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowThird", "h": "module\n\npublic import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.StatementF\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowTwo\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+namespace Formalism.L2.Th1.A
+namespace CubicFlow
+
+open QuadraticFlow
+
+variable {A : Type u} [CommRing A]
+
+def gE (W : WeierstrassCurve A) (z v : A) : A :=
+  z ^ 3 + W.a₁ * z * v + W.a₂ * z ^ 2 * v + W.a₃ * v ^ 2 + W.a₄ * z * v ^ 2 + W.a₆ * v ^ 3 - v
+
+def k3 (W : WeierstrassCurve A) (l : A) : A := 1 + W.a₂ * l + W.a₄ * l ^ 2 + W.a₆ * l ^ 3
+def k2 (W : WeierstrassCurve A) (l n : A) : A :=
+  W.a₁ * l + W.a₂ * n + W.a₃ * l ^ 2 + 2 * W.a₄ * l * n + 3 * W.a₆ * l ^ 2 * n
+def k1 (W : WeierstrassCurve A) (l n : A) : A :=
+  W.a₁ * n + 2 * W.a₃ * l * n + W.a₄ * n ^ 2 + 3 * W.a₆ * l * n ^ 2 - l
+def k0 (W : WeierstrassCurve A) (n : A) : A := W.a₃ * n ^ 2 + W.a₆ * n ^ 3 - n
+
+lemma gE_line (W : WeierstrassCurve A) (l n z : A) :
+    gE W z (l * z + n) = k3 W l * z ^ 3 + k2 W l n * z ^ 2 + k1 W l n * z + k0 W n := by
+  unfold gE k3 k2 k1 k0
+  ring
+
+lemma gE_line_der (W : WeierstrassCurve A) (l n z : A) :
+    fuAt W z (l * z + n) - l * fwAt W z (l * z + n)
+      = 3 * k3 W l * z ^ 2 + 2 * k2 W l n * z + k1 W l n := by
+  unfold fuAt fwAt k3 k2 k1
+  ring
+
+lemma wEq_iff (W : WeierstrassCurve A) (z v : A) : WEq W z v ↔ gE W z v = 0 := by
+  unfold WEq gE
+  constructor <;> intro h <;> linear_combination -h
+
+lemma der_gE {D : A → A} (hD : IsDer D) {W : WeierstrassCurve A} (hC : ConstCurve D W) (z v : A) :
+    D (gE W z v) = fuAt W z v * D z - fwAt W z v * D v := by
+  obtain ⟨hadd, hmul⟩ := hD
+  obtain ⟨c1, c2, c3, c4, c6⟩ := hC
+  have hsub : ∀ a b, D (a - b) = D a - D b := by
+    intro a b
+    have h := hadd (a - b) b
+    rw [sub_add_cancel] at h
+    rw [h]
+    ring
+  have hp2 : ∀ a, D (a ^ 2) = 2 * a * D a := fun a => by rw [sq, hmul]; ring
+  have hp3 : ∀ a, D (a ^ 3) = 3 * a ^ 2 * D a := fun a => by
+    rw [show a ^ 3 = a * a ^ 2 by ring, hmul, hp2]; ring
+  unfold gE fuAt fwAt
+  simp only [hsub, hadd, hmul, hp2, hp3, c1, c2, c3, c4, c6]
+  ring
+
+lemma cubic_roots [IsDomain A] {C3 C2 C1 C0 z1 z2 z3 : A} (hz : z1 ≠ z2)
+    (h1 : C3 * z1 ^ 3 + C2 * z1 ^ 2 + C1 * z1 + C0 = 0)
+    (h2 : C3 * z2 ^ 3 + C2 * z2 ^ 2 + C1 * z2 + C0 = 0)
+    (he1 : C3 * (z1 + z2 + z3) + C2 = 0) :
+    C3 * z3 ^ 3 + C2 * z3 ^ 2 + C1 * z3 + C0 = 0 ∧
+      C3 * (z1 * z2 + z1 * z3 + z2 * z3) - C1 = 0 ∧ C3 * (z1 * z2 * z3) + C0 = 0 := by
+  have hq : (z1 - z2) * (C3 * (z1 ^ 2 + z1 * z2 + z2 ^ 2) + C2 * (z1 + z2) + C1) = 0 := by
+    linear_combination h1 - h2
+  have hq' := (mul_eq_zero.mp hq).resolve_left (sub_ne_zero.mpr hz)
+  have e2 : C3 * (z1 * z2 + z1 * z3 + z2 * z3) - C1 = 0 := by
+    linear_combination -hq' + (z1 + z2) * he1
+  have e3 : C3 * (z1 * z2 * z3) + C0 = 0 := by
+    linear_combination h1 - z1 ^ 2 * he1 + z1 * e2
+  refine ⟨?_, e2, e3⟩
+  linear_combination z3 ^ 2 * he1 - z3 * e2 + e3
+
+end CubicFlow
+
+open QuadraticFlow CubicFlow
+
+theorem flowThirdPoint : FlowThird.{u} := by
+  intro A _ _ W D u1 w1 u2 w2 l n u3 hD hC hF hW2 hDu2 hDw2 hl hn hsum hk3 h12 h31 h32
+  obtain ⟨hW1, hDu1, hDw1⟩ := hF
+  have hD' := hD
+  obtain ⟨hadd, hmul⟩ := hD'
+  have hw1 : w1 = l * u1 + n := by linear_combination -hn
+  have hw2 : w2 = l * u2 + n := by linear_combination hl - hn
+  have r1 : k3 W l * u1 ^ 3 + k2 W l n * u1 ^ 2 + k1 W l n * u1 + k0 W n = 0 := by
+    rw [← gE_line, ← hw1]; exact (wEq_iff W u1 w1).1 hW1
+  have r2 : k3 W l * u2 ^ 3 + k2 W l n * u2 ^ 2 + k1 W l n * u2 + k0 W n = 0 := by
+    rw [← gE_line, ← hw2]; exact (wEq_iff W u2 w2).1 hW2
+  have hs : k3 W l * (u1 + u2 + u3) + k2 W l n = 0 := hsum
+  have hk : k3 W l ≠ 0 := hk3
+  obtain ⟨r3, e2, -⟩ := cubic_roots h12 r1 r2 hs
+  have hD0 : D 0 = 0 := by
+    have h := hadd 0 0
+    rw [add_zero] at h
+    linear_combination -h
+  have hDline : ∀ z, D (l * z + n) = l * D z + z * D l + D n := by
+    intro z; rw [hadd, hmul]
+
+  have T1 : u1 * D l + D n = 3 * k3 W l * u1 ^ 2 + 2 * k2 W l n * u1 + k1 W l n := by
+    have h := hDline u1
+    rw [← hw1, hDw1, hDu1] at h
+    have hd := gE_line_der W l n u1
+    rw [← hw1] at hd
+    linear_combination hd - h
+  have T2 : u2 * D l + D n = 0 := by
+    have h := hDline u2
+    rw [← hw2, hDw2, hDu2] at h
+    linear_combination -h
+  have hq : (u1 - u2) * (D l - k3 W l * (u1 - u3)) = 0 := by
+    linear_combination T1 - T2 + 2 * u1 * hs - e2
+  have hDl := sub_eq_zero.mp ((mul_eq_zero.mp hq).resolve_left (sub_ne_zero.mpr h12))
+  have hg3 : gE W u3 (l * u3 + n) = 0 := by rw [gE_line]; exact r3
+  have hd3 := der_gE hD hC u3 (l * u3 + n)
+  rw [hg3, hD0, hDline] at hd3
+  have hd3' := gE_line_der W l n u3
+  have hK : k3 W l * (u3 - u1) * (u3 - u2) ≠ 0 :=
+    mul_ne_zero (mul_ne_zero hk (sub_ne_zero.mpr h31)) (sub_ne_zero.mpr h32)
+  have hkey : (k3 W l * (u3 - u1) * (u3 - u2)) * (D u3 + fwAt W u3 (l * u3 + n)) = 0 := by
+    linear_combination -hd3 - D u3 * hd3' - D u3 * (2 * u3 * hs - e2)
+      + fwAt W u3 (l * u3 + n) * (u3 - u2) * hDl + fwAt W u3 (l * u3 + n) * T2
+  have hX : D u3 = -fwAt W u3 (l * u3 + n) := by
+    have := (mul_eq_zero.mp hkey).resolve_left hK
+    linear_combination this
+  refine ⟨(wEq_iff W u3 _).2 hg3, hX, ?_⟩
+  rw [hDline]
+  linear_combination l * hX + hd3' + 2 * u3 * hs - e2 + (u3 - u2) * hDl + T2
+
+end Formalism.L2.Th1.A
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowThird =====
+
+-- ===== clump member: Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FormalLogarithmBaseChange =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FormalLogarithmBaseChange", "h": "module\n\npublic import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FormalGroupEqWSeries\npublic import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.StatementZ\nimport Formalism.FormalGroupLog.FormalGroupLogProofs.ChainRule\nimport Formalism.FormalGroupLog.FormalGroupLogProofs.ConstantCoeffSubstOfZero\npublic import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.CompInv\npublic import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.CurveSer\npublic import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.EqWSerSubst\npublic import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowBasic\npublic import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowThird\npublic import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.LogExp\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open PowerSeries
@@ -86,7 +226,7 @@ theorem fw_subst {s : MvPowerSeries (Fin 2) R} (hs : MvPowerSeries.constantCoeff
     rw [← PowerSeries.coe_substAlgHom hs']
     exact (PowerSeries.substAlgHom hs').commutes a
   rw [← PowerSeries.coe_substAlgHom hs']
-  simp only [fw, fu, fwAt, fuAt, map_sub, map_mul, map_add (f := _), map_pow, map_ofNat, map_one]
+  simp only [fw, fwAt, map_sub, map_mul, map_pow, map_ofNat, map_one]
   rw [PowerSeries.coe_substAlgHom hs']
   simp only [hC, PowerSeries.subst_X hs', WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂,
     WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]
@@ -99,10 +239,10 @@ theorem fu_subst {s : MvPowerSeries (Fin 2) R} (hs : MvPowerSeries.constantCoeff
     rw [← PowerSeries.coe_substAlgHom hs']
     exact (PowerSeries.substAlgHom hs').commutes a
   rw [← PowerSeries.coe_substAlgHom hs']
-  simp only [fw, fu, fwAt, fuAt, map_sub, map_mul, map_add (f := _), map_pow, map_ofNat, map_one]
+  simp only [fu, fuAt, map_mul, map_add (f := _), map_pow, map_ofNat]
   rw [PowerSeries.coe_substAlgHom hs']
   simp only [hC, PowerSeries.subst_X hs', WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂,
-    WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]
+    WeierstrassCurve.map_a₄]
   try ring
 
 theorem weq_subst {s : MvPowerSeries (Fin 2) R} (hs : MvPowerSeries.constantCoeff s = 0) :
@@ -114,7 +254,7 @@ theorem weq_subst {s : MvPowerSeries (Fin 2) R} (hs : MvPowerSeries.constantCoef
   have h := (unit_flow R W).2.2.1.1
   unfold WEq at h ⊢
   have h2 := congrArg (PowerSeries.substAlgHom (R := R) hs') h
-  simp only [map_sub, map_mul, map_add (f := _), map_pow, map_ofNat, map_one] at h2
+  simp only [map_mul, map_add (f := _), map_pow] at h2
   rw [PowerSeries.coe_substAlgHom hs'] at h2
   simp only [hC, PowerSeries.subst_X hs', WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂,
     WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at h2 ⊢
@@ -360,7 +500,7 @@ private theorem eq_zero_of_pderiv_zero_of_pderiv_one_eq_zero {h : MvPowerSeries 
       · subst hj
         simp
         omega
-      · simp [Finsupp.single_apply, Ne.symm hj]
+      · simp [Ne.symm hj]
     rw [hsum] at h2
     exact (mul_eq_zero.mp h2).resolve_right (Nat.cast_add_one_ne_zero _)
 
@@ -510,7 +650,7 @@ theorem fgl_symm : fgl W = (fgl W).subst
       mvsubst_psubst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 0)) hsw,
       mvsubst_psubst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 1)) hsw,
       MvPowerSeries.subst_X hsw, MvPowerSeries.subst_X hsw]
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
     rw [add_comm]
     exact hL
   have hZsw : MvPowerSeries.HasSubst
@@ -579,7 +719,7 @@ theorem inv_field {K : Type u} [Field K] [CharZero K] (W : WeierstrassCurve K) :
       mvsubst_psubst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 0)) hb,
       mvsubst_psubst (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 1)) hb,
       MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb] at h
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at h
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at h
     rw [hself, hN.1, add_neg_cancel] at h
     exact h
   have hsh := PowerSeries.sub_const_eq_X_mul_shift (expSer W)
@@ -623,7 +763,6 @@ theorem formal_group_group_law : FglGroup.{u} := by
   rw [he]
   first
   | exact hs
-  | exact hs.symm
 
 theorem formal_group_inverse : FglInv.{u} := by
   intro R _ W
@@ -635,3 +774,7 @@ theorem formal_group_inverse : FglInv.{u} := by
   exact h2
 
 end Formalism.L2.Th1.A
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FormalLogarithmBaseChange =====

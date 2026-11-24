@@ -116,7 +116,7 @@ theorem cTX_mul_P (hW : IsWittFrame σ J X Y) (I : Set (Fin r)) :
 
 theorem cTY_mul_P (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (I : Set (Fin r)) :
     cT (σ : E →+* E) Y * J * USplit.P σ J X Y I = diagonal (ind I : Fin r → E) * (cT (σ : E →+* E) Y * J) := by
-  rw [mul_P, hW.yy, Comm.yJx hCM hJ hW]
+  rw [mul_P, hW.yy, _root_.GlobalTheory.StdPar.yx hCM hJ hW]
   simp [Matrix.mul_assoc]
 
 end Frame

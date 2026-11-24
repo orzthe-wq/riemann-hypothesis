@@ -5,19 +5,21 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbsNormEqUnd
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CongLevRelIndexLe
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjSmulLeOfIsConjPl
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinsetLeftTransversalOfRelIndexNeZero
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridConductorIdealCMIsCoprimeHalfDifferentStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.FinitePrimesUnder
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridConductorIdealCMIsCoprimeHalfDifferent
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeckeUNuInvEqOneOfCong
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemBlockCongruenceLevelSubgroupIffStabilizerEntr
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemPrincipalCongruenceLevelSubgroupIffIntegralCo
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ModTSupConj
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardThetaDatumEigenvectorBlockLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardThetaDatumPresentationLevelNormStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetVecEq
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardThetaDatumEigenvectorBlockLevel
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardThetaDatumPresentationLevelNorm
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumTransversalLeftTranslateInvariant
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitBlockCosetThetaVectorMemThetaFunctions
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilFixesCosetVectorCongruentOneModIdealStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ActAApply
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsWeilOfVacuum
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormSqMulGaussianLatticeTranslateEqShifted
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitBlockCosetThetaVectorMemThetaFunctions
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilFixesCosetVectorCongruentOneModIdeal
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ActAApply
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PrimeDvdAbsNormHalfDifferent
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HostCmEmbeddingProperties
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnderEqIffConjPl
@@ -73,22 +75,6 @@ namespace GlobalTheory.FunObj.StdDatum.TwBig
 
 variable {D : D7}
 
-theorem om_finset_sum {δ : ℂ} {a d : ℕ} {e0 : VC D a d → ℂ} (W : WeilO D ⊤ δ a d e0) (g : GA D a) (g' : GA D d) {ι : Type}
-    (s : Finset ι) (F : ι → VC D a d → ℂ) (hF : ∀ i ∈ s, F i ∈ TT D (tor0 D ⊤ δ) a d) :
-    W.Om g g' (∑ i ∈ s, F i) = ∑ i ∈ s, W.Om g g' (F i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-    simp only [Finset.sum_empty]
-    have h0 : (0 : VC D a d → ℂ) ∈ TT D (tor0 D ⊤ δ) a d := (GlobalTheory.FinWeil.TTs D (tor0 D ⊤ δ) a d).zero_mem
-    have := W.smul g g' 0 0 h0
-    simpa using this
-  | insert x s hx ih =>
-    rw [Finset.sum_insert hx, Finset.sum_insert hx,
-      W.add g g' _ (hF x (Finset.mem_insert_self _ _)) _
-        ((GlobalTheory.FinWeil.TTs D (tor0 D ⊤ δ) a d).sum_mem fun i hi => hF i (Finset.mem_insert_of_mem hi)),
-      ih fun i hi => hF i (Finset.mem_insert_of_mem hi)]
-
 theorem hatId_mono {𝔪 𝔫 : Ideal (𝓞 D.host.E)} (h : 𝔪 ≤ 𝔫) : hatId D 𝔪 ≤ hatId D 𝔫 :=
   AddSubgroup.closure_mono fun _ ⟨b, hb, s, hs, e⟩ => ⟨b, h hb, s, hs, e⟩
 
@@ -123,78 +109,7 @@ open GlobalTheory.SqTop (twPl Qn modT)
 namespace GlobalTheory.FunObj.StdDatum.TwBig
 open GlobalTheory.FunObj.SqNum.NuCond GlobalTheory.Mem.Col2.SplitChar
 
-theorem nuInv_base_eq_one : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → ∀ (G : GridData L sc) (i j : Fin D.R.m) (u : (AE D)ˣ), IntU D u → (u : AE D) - 1 ∈ hatId D (condE G.pl * D.host.conj • condE G.pl) → (nuH G μ₀ i j)⁻¹.1 (finIdl D u) = 1 := by
-  classical
-  intro D T L sc μ₀ hL G i j u hu hm
-  have k1 : 1 ≤ D.R.m - (i : ℕ) := by omega
-  have k2 : D.R.m - (i : ℕ) ≤ D.R.m := by omega
-  obtain ⟨c, hc, hcm, -⟩ := GlobalTheory.Mem.HostCM.host_cm D.R D.host
-  obtain ⟨n, hn⟩ : ∃ n : HeightOneSpectrum (𝓞 D.host.E) → ℕ, ∀ v, n v =
-      if v.under (𝓞 D.host.F) ∈ G.pl.S0 then condExp G.pl (v.under (𝓞 D.host.F)) else 0 := ⟨_, fun _ => rfl⟩
-  have hlev : ∀ v, (nuH G μ₀ i j).LevelLe v (n v) := by
-    intro v
-    have hμ := L.C.isMu0 j
-    rw [show nuH G μ₀ i j = L.C.mu0 j * L.xiH μ₀ / G.ch.chiH (D.R.m - i) from rfl, hL.xi_base, mul_one, div_eq_mul_inv]
-    refine Formalism.L2.Host.HChar.LevelLe.mul ?_ (Formalism.L2.Host.HChar.LevelLe.inv ?_)
-    · by_cases h : v.under (𝓞 D.host.F) ∈ G.pl.S0
-      · refine levelLe_mono (hμ.tame v) ?_
-        rw [hn v, if_pos h, condExp]
-        split_ifs <;> omega
-      · refine Formalism.L2.Host.HChar.UnrAt.levelLe (hμ.unr v fun k hk => h ?_) _
-        rw [G.pl.mem_S0_of_sum_eq]
-        right
-        rw [S1_mem_OmF]
-        have hk' : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (v.under (𝓞 D.host.F)).asIdeal := by
-          show _ ∈ v.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))
-          rw [Ideal.mem_comap, map_natCast]
-          exact hk
-        fin_cases k
-        · exact Or.inl hk'
-        · exact Or.inr (Or.inl hk')
-    · by_cases h : v.under (𝓞 D.host.F) ∈ G.pl.S0
-      · by_cases h0 : v.under (𝓞 D.host.F) = G.pl.v0
-        · rw [hn v, if_pos h, condExp, if_pos h0]
-          exact (G.ch.lev0 _ k1 k2 v h0).1
-        · have h1 := (G.pl.mem_S0_of_sum_eq.1 h).resolve_left h0
-          rw [hn v, if_pos h, condExp, if_neg h0]
-          exact (G.ch.lev1 _ k1 k2 v h1).1
-      · rw [hn v, if_neg h]
-        exact Formalism.L2.Host.HChar.UnrAt.levelLe (G.ch.unr _ k1 k2 v h) 0
-  have hval : ∀ v, vl D v ((u : AE D) - 1) ≤ WithZero.exp (-(n v : ℤ)) := by
-    intro v
-    by_cases h : v.under (𝓞 D.host.F) ∈ G.pl.S0
-    · rw [hn v, if_pos h]
-      refine vl_le_of_mem_hatId (fun b hb => ?_) hm
-      have hw : (G.pl.w (v.under (𝓞 D.host.F))).under (𝓞 D.host.F) = v.under (𝓞 D.host.F) := G.pl.w_over _ h
-      rcases (GlobalTheory.Mem.Chr.under_eq_iff_conjPl c hcm.rank hcm.ne (G.pl.w (v.under (𝓞 D.host.F))) v).1 hw.symm with e | e
-      · have hb1 : b ∈ condE G.pl := Ideal.mul_le_left hb
-        have hb2 := condE_le G.pl h hb1
-        rw [← e] at hb2
-        exact val_le_of_mem_pow hb2
-      · have hb1 : b ∈ D.host.conj • condE G.pl := Ideal.mul_le_right hb
-        rw [Ideal.mem_pointwise_smul_iff_inv_smul_mem] at hb1
-        have hb2 := val_le_of_mem_pow (condE_le G.pl h hb1)
-        have e2 := e (((D.host.conj⁻¹ • b : 𝓞 D.host.E)) : D.host.E)
-        have e3 : c.toRingEquiv (((D.host.conj⁻¹ • b : 𝓞 D.host.E)) : D.host.E) = (b : D.host.E) := by
-          show c _ = _
-          rw [hc]
-          show D.host.conj (D.host.conj⁻¹ (b : D.host.E)) = _
-          exact AlgEquiv.apply_symm_apply _ _
-        rw [e3] at e2
-        rw [e2]
-        exact hb2
-    · rw [hn v, if_neg h, Nat.cast_zero, neg_zero, WithZero.exp_zero]
-      exact vl_le (sub_mem hu.1 (one_mem _)) v
-  have hU := finIdl_unit hu
-  refine GlobalTheory.Mem.LocTriv.eq_one_of_local D.host.E _ (nuH G μ₀ i j)⁻¹.2.1 (finIdl D u) hU
-    (fun w => by rw [finIdl_fst]; rfl) (fun v x hx => ?_)
-  have hxu : Formalism.L2.Host.IsUnitAt v x := by
-    show Valued.v (x : v.adicCompletion D.host.E) = 1
-    rw [hx]
-    exact hU v
-  refine (hlev v).inv x hxu ?_
-  rw [hx, vl_sub_one]
-  exact hval v
+alias nuInv_base_eq_one := _root_.GlobalTheory.BotPairSmall.CondNu.nuH_inv_eq_one_of_cong
 
 theorem nuInv_eq_one_of_cong : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → ∀ (G : GridData L sc) (t : T) (i j : Fin D.R.m) {N : ℕ} (χν : HeckeU D N), (∀ x, χν.f x = (nuH G t i j)⁻¹.1 (finIdl D x)) → ∀ u, IntU D u → (u : AE D) - 1 ∈ hatId D (modT G t * D.host.conj • modT G t) → χν.f u = 1 := by
   intro D T L sc μ₀ hL G t i j N χν hχ u hu hm
@@ -265,7 +180,7 @@ theorem exists_bottom_big_modT : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : C
   obtain ⟨W, hW1, hW2, hW3, hW4⟩ := GlobalTheory.FinWeil.exists_weil_of_vacuum D ⊤ δ hc _ _ e0 vac.1 h0 χβ χν
   have hm : modT G t ≠ ⊥ := TwBig.modT_ne_bot G t
   have hcop : IsCoprime (modT G t) (D.host.conj • modT G t) := Ideal.isCoprime_iff_sup_eq.2 (GlobalTheory.SqTop.modT_sup_conj hL G t)
-  have hb : IsCoprime (modT G t) D.host.𝔟 := TwBig.modT_isCoprime_bb hL G t (GlobalTheory.T.gridConductorIdealCM_isCoprime_halfDifferent G.pl hpq hpq')
+  have hb : IsCoprime (modT G t) D.host.𝔟 := TwBig.modT_isCoprime_bb hL G t (_root_.GlobalTheory.FunObj.StdDatum.HalfDiff.condE_isCoprime_bb G.pl hpq hpq')
   have hnu : ∀ u, IntU D u → (u : AE D) - 1 ∈ hatId D (modT G t * D.host.conj • modT G t) → W.chV'.f u = 1 := by
     rw [hW2]; exact TwBig.nuInv_eq_one_of_cong hL G t i j χν hν
   have hN : Ideal.absNorm (modT G t) = levQ G.pl * Qn G t := TwBig.absNorm_modT G t
@@ -280,7 +195,7 @@ theorem exists_bottom_big_modT : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : C
   have hfix : ∀ k ∈ intG D (botBig D i j), W.Om k 1 (stdSum W (modT G t) 0 R) = stdSum W (modT G t) 0 R := by
     intro k hk
     unfold stdSum
-    rw [TwBig.om_finset_sum W k 1 R _ fun r _ => W.maps _ _ _ hcv]
+    rw [_root_.GlobalTheory.FunObj.StdDatum.CapelliMinorMembership.om_finsum W k 1 R _ fun r _ => W.maps _ _ _ hcv]
     have e1 : ∀ r, W.Om k 1 (W.Om r 1 (cosetV D δ (modT G t) 0 _ _ e0)) = W.Om (k * r) 1 (cosetV D δ (modT G t) 0 _ _ e0) := by
       intro r
       have := W.mul k r 1 1 _ hcv
@@ -292,7 +207,7 @@ theorem exists_bottom_big_modT : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : C
     have := W.mul r c 1 1 _ hcv
     rw [mul_one] at this
     obtain ⟨hc1, hc2⟩ := (GlobalTheory.FunObj.StdDatum.mem_congLev_iff _ _ _ _).1 hc'
-    rw [this, GlobalTheory.T.weil_fixes_cosetVector_congruent_one_mod_ideal D δ t0 hc e0 vac W (modT G t) hm hcop hnu 0 (by omega) c hc1 hc2]
+    rw [this, _root_.GlobalTheory.FunObj.FixKey.om_cosetV_of_congOne D δ t0 hc e0 vac W (modT G t) hm hcop hnu 0 (by omega) c hc1 hc2]
   have hle : congLev D (modT G t) (botBig D i j + botSmall D i j) ≤
       blockLev D (modT G t) (botBig D i j + botSmall D i j) (botBig D i j) := by
     intro k hk
@@ -316,7 +231,7 @@ theorem exists_bottom_big_modT : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : C
     omega
   have hpres : Pres D ⊤ δ (levQ G.pl * Qn G t) e0 (stdSum W (modT G t) 0 R) := by
     rw [← hN]
-    exact GlobalTheory.T.standardTheta_datum_presentation_level_norm D δ t0 hc e0 vac had W _ hm hcop hb hnu R hR1 hR2 hfix
+    exact _root_.GlobalTheory.FunObj.StdDatum.pres_stdSum D δ t0 hc e0 vac had W _ hm hcop hb hnu R hR1 hR2 hfix
   have hidx_ne : (blockLev D (modT G t) (botBig D i j + botSmall D i j) (botBig D i j)).relIndex
       (intG D (botBig D i j + botSmall D i j)) ≠ 0 := fun h =>
     hj0 (Subgroup.relIndex_eq_zero_of_le_left hle h)
@@ -325,7 +240,7 @@ theorem exists_bottom_big_modT : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : C
     refine (Subgroup.relIndex_le_of_le_left hle hj0).trans (hj1.trans ?_)
     rw [hN]
     exact Nat.pow_le_pow_right hQ (by omega)
-  have heig := GlobalTheory.T.standardThetaDatum_eigenvector_blockLevel D δ t0 hc e0 vac had W _ hm hcop hnu R hR1 hR2 hfix
+  have heig := _root_.GlobalTheory.FunObj.StdDatum.CapelliMinorMembership.stdSum_eig D δ t0 hc e0 vac had W _ hm hcop hnu R hR1 hR2 hfix
   let P : Pair D ⊤ δ t0 (levQ G.pl * Qn G t) :=
     { crv := hc
       pt0 := ht

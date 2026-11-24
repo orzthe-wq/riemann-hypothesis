@@ -3,7 +3,9 @@
 import argparse,concurrent.futures,hashlib,json,os,subprocess,sys,tempfile,time,tomllib
 from pathlib import Path
 SOURCE_SHA='56561f3340a6002317ba7886ffc3676ff648985fa8a2af345612ae0e91fea264'
-def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
 def publish(path,value):
  path=Path(path);path.parent.mkdir(parents=True,exist_ok=True);tmp=path.with_name(path.name+'.partial');tmp.write_text(json.dumps(value,separators=(',',':'))+'\n');tmp.replace(path)
 def flatten(value,prefix=''):

@@ -43,4 +43,4 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.fockVectors_overVacuum_isometry : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.VacuumFockVectors.VacuumFock D := by
-  first | exact @GlobalTheory.VacuumFockLaws.vacuumFock_onObjects | exact GlobalTheory.VacuumFockLaws.vacuumFock_onObjects | (intros; apply GlobalTheory.VacuumFockLaws.vacuumFock_onObjects <;> assumption)
+  first | exact @GlobalTheory.VacuumFockLaws.vacuumFock_onObjects

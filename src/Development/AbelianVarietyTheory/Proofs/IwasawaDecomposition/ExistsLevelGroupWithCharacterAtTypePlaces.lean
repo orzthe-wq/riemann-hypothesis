@@ -265,7 +265,7 @@ theorem diag_mul {r : ℕ} {K : Type} [CommRing K] {M N : Matrix (Fin n) (Fin n)
   · rw [hM h, zero_mul]
   · exfalso
     simp only [bG] at h
-    split_ifs at h with h1 h2 <;> first | omega | exact hc (Fin.ext h)
+    split_ifs at h with h1 h2 <;> first | omega
   · rw [hN h, mul_zero]
 
 end Res

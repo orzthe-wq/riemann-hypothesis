@@ -170,7 +170,7 @@ theorem inv_redG_mul_g0Hat_mem_grp : ∀ (X : Stages) (px : PreX X.B.toPre) (I :
       rw [← hG (eG.symm z) w.1 hw hPg, MulEquiv.apply_symm_apply]
     have key := reindex_inv_mul_diag_mem_HK (rank_X' X) (Formalism.L2.Col.rank_X'_eq X.B.R) (L.datXt t).hr
       (Formalism.L2.Col.r_le_X' X.B.R) _ hy
-    convert key using 3 <;> first | rfl | exact heq_of_eq (hgg _) | exact hgg _
+    convert key using 3 <;> first | rfl | exact heq_of_eq (hgg _)
   · have hwQ : w.1 ∈ Formalism.L2.Col.QE I.sel (t.1 : Formalism.L2.DIV.Chr _ _ _) := by
       classical
       exact (Finset.mem_union.1 w.2).resolve_left hw

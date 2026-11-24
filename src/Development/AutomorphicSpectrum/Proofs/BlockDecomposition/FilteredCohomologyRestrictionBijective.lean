@@ -81,7 +81,7 @@ theorem pull_bij_of_adj {F : C ⥤ ModuleCat.{w} R} {F' : C' ⥤ ModuleCat.{w} R
         rfl }
   have hR := CrystallineSemistableComparison.P.adj F' L m.G a n
   have hα : Function.Bijective ((CH.Mor.ofNatTrans α).pull n) := by
-    have h1 := CrystallineSemistableComparison.P.coef_upTo α 1
+    have h1 := _root_.GlobalTheory.CompanionTheory.CoefUpTo.coef_upTo α 1
       (fun T => (CrystallineSemistableComparison.P.upTo_alg (α.app T).hom LinearMap.id 1 1).2.2.2.2.2 (hb T)) n
     rw [one_pow] at h1
     exact (CrystallineSemistableComparison.P.upTo_alg _ LinearMap.id 1 1).2.2.2.2.1 h1

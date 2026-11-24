@@ -48,4 +48,4 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.exists_squareZeroSmoothLiftSystem_presents : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀), ∀ (X : Scheme.{0}) (s : X ⟶ Sp R) (i : X₀ ⟶ X), IsPullback i s₀ s (spMap π) → Smooth s → ∃ S : Sys I π s₀, Nonempty (S.Presents s i) := by
-  first | exact @GlobalTheory.LiftSys.exists_sys_presents | exact GlobalTheory.LiftSys.exists_sys_presents | (intros; apply GlobalTheory.LiftSys.exists_sys_presents <;> assumption)
+  first | exact @GlobalTheory.LiftSys.exists_sys_presents

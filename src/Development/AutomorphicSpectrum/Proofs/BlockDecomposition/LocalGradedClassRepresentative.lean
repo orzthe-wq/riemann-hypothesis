@@ -1,8 +1,9 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RepUnique
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGradedVanishingStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PolynomialTransferStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GlobalSerreRelations.GlobSerreSt
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalGradedVanishing
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PolynomialTransfer
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SheafFiltrationProperty
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -60,9 +61,9 @@ theorem loc_coef : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X
       CrystallineSemistableComparison.Pb.Rep (sFil (KS q s {W}) r) (sFil (KS q s {W}) (r + 1)) (fun u => ∑ I : Idx m d, E.form σ I.1 (ε (y I)) u) 0 → y = 0 := by
   intro K _ _ X q W d t s E ε hL σ m r hr hs
   obtain ⟨hc, h1, -⟩ := hL
-  obtain ⟨PQ, hPQ⟩ := GlobalTheory.T.polynomial_transfer (dividedPowersBot K) q (Ideal.Quotient.mk ⊥) 1 s {W}
+  obtain ⟨PQ, hPQ⟩ := _root_.GlobalTheory.CompanionTheory.PolyTfCon.polyTf (dividedPowersBot K) q (Ideal.Quotient.mk ⊥) 1 s {W}
   have hF := GlobalTheory.CompanionTheory.DPFil.isFil_sFil (KS q s {W})
-  have key := GlobalTheory.T.local_graded_vanishing PQ hF E σ hc r (fun r' hr' => (hPQ r' (by omega)).1) m
+  have key := _root_.GlobalTheory.CompanionTheory.LocGrStep.loc_gr PQ hF E σ hc r (fun r' hr' => (hPQ r' (by omega)).1) m
   obtain ⟨ha, hb⟩ := key.2 0 (by simpa using hr)
   refine ⟨fun c => ?_, fun y hy => ?_⟩
   · obtain ⟨x, -, hx⟩ := ha c

@@ -181,16 +181,10 @@ theorem isMu_mul {a b : ℂ} (ha : IsMu a) (hb : IsMu b) : IsMu (a * b) := by
   refine ⟨m * k, Nat.mul_pos hm hk, ?_⟩
   rw [mul_pow, pow_mul, h, mul_comm m, pow_mul, h']; simp
 
-theorem isMu_norm {a : ℂ} (ha : IsMu a) : ‖a‖ = 1 := by
-  obtain ⟨m, hm, h⟩ := ha
-  have := congrArg norm h
-  rw [norm_pow, norm_one] at this
-  exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 this
-
 theorem ph_sum : ∀ (M : Type) [AddCommGroup M] [Fintype M] (f : M → ℂ), Quad ⊤ f → Ph (∑ x, f x) := by
   intro M _ _ f ⟨h1, h3⟩
   have hmu : ∀ x, IsMu (f x) := fun x => h1 x trivial
-  let u : M → Circle := fun x => ⟨f x, mem_sphere_zero_iff_norm.2 (isMu_norm (hmu x))⟩
+  let u : M → Circle := fun x => ⟨f x, mem_sphere_zero_iff_norm.2 (_root_.GlobalTheory.Phase.IsMu.norm_eq_one (hmu x))⟩
   let p : M → Additive Circle := fun x => Additive.ofMul (u x)
   have hp : ∀ x y z, p (x + y + z) + p x + p y + p z = p (x + y) + p (y + z) + p (x + z) + p 0 := by
     intro x y z
@@ -242,7 +236,7 @@ theorem ph_sum : ∀ (M : Type) [AddCommGroup M] [Fintype M] (f : M → ℂ), Qu
     have h8 : (f 0 * S) ^ 8 = (f 0 ^ 8 * ∏ i, e (p (a i) - p 0)) * ((‖f 0 * S‖ : ℝ) : ℂ) ^ 8 := by
       have hn : ((‖S‖ : ℝ) : ℂ) ^ 8 = S ^ 4 * conj (S ^ 4) := by
         rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_pow]; push_cast; ring
-      rw [norm_mul, isMu_norm (hmu 0), one_mul, hn]
+      rw [norm_mul, _root_.GlobalTheory.Phase.IsMu.norm_eq_one (hmu 0), one_mul, hn]
       linear_combination f 0 ^ 8 * S ^ 4 * h
     rw [pow_mul, h8, mul_pow, hz, one_mul, pow_mul]
 

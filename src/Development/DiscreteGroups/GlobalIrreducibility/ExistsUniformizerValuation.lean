@@ -100,7 +100,7 @@ theorem exists_ball_char_trivial (ψ : AddChar k Circle) (hψ : Continuous ψ) :
     induction n with
     | zero => simp [cball]
     | succ n ih => rw [succ_nsmul]; exact add_mem_cball ih hy
-  have h := GlobalTheory.CharConductor.eq_one_of_pow_near_one (z := (ψ y : ℂ)) fun n => by
+  have h := _root_.GlobalTheory.IterationConvergence.main (z := (ψ y : ℂ)) fun n => by
     have := hs (hn n)
     simp only [Set.mem_ofPred_eq, AddChar.map_nsmul_eq_pow] at this
     simpa using this

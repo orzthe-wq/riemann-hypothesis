@@ -1,55 +1,11 @@
 module
 
 public import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.MdiscSt
 public import ReciprocityTheory.AnalyticForms.PotentialTheory.HessCIsHermitian
 public import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegrableOnTargetOfTsupport
@@ -244,7 +200,7 @@ theorem hessC_base {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e 
     filter_upwards [hS2] with z hz
     exact hG j z hz
   have hd1 : ∀ᶠ z in 𝓝 y, DifferentiableAt ℝ (P.φ x ∘ (A.chart j).symm) z :=
-    hcd.mono fun z hz => hz.differentiableAt (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))
+    hcd.mono fun z hz => hz.differentiableAt (by first | (simp; done))
   have hd2 : ∀ᶠ z in 𝓝 y, DifferentiableAt ℝ (fun z => (G ((A.chart j).symm z)).re) z :=
     han.mono fun z hz => by
       have h0 : ContDiffAt ℝ 1 (fun z => G ((A.chart j).symm z)) z :=
@@ -271,7 +227,7 @@ theorem hessC_base {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e 
         fderiv ℝ (fderiv ℝ fun z => (G ((A.chart j).symm z)).re) y := by
     rw [h1.fderiv_eq]
     exact fderiv_add
-      (((contDiffAt_infty.1 hcd.self_of_nhds 2).fderiv_right (m := 1) (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))).differentiableAt (by simp))
+      (((contDiffAt_infty.1 hcd.self_of_nhds 2).fderiv_right (m := 1) (by first | (simp; done) | (norm_num; done))).differentiableAt (by simp))
       ((hcd2.fderiv_right (m := 1) (le_of_eq one_add_one_eq_two)).differentiableAt (by simp))
   rw [hessC_eq_lemma_3, hessC_eq_lemma_3, hF, hessL_add_lemma_2, hessL_re_lemma _ y han, add_zero]
 
@@ -289,7 +245,7 @@ theorem hessC_base_continuousOn {e : ℕ} {X : Type} [TopologicalSpace X] (A : F
     (hP.1 _ j).contDiffAt hS
   have hc : ContinuousAt
       (fun y => fderiv ℝ (fderiv ℝ (P.φ ((A.chart j).symm y0) ∘ (A.chart j).symm)) y) y0 :=
-    (((contDiffAt_infty.1 hcd 2).fderiv_right (m := 1) (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))).fderiv_right (m := 0) (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))).continuousAt
+    (((contDiffAt_infty.1 hcd 2).fderiv_right (m := 1) (by first | (simp; done) | (norm_num; done))).fderiv_right (m := 0) (by first | (simp; done))).continuousAt
   refine (continuous_hessL.continuousAt.comp hc).congr ?_
   filter_upwards [hS] with y hy
   simp only [Function.comp_apply]
@@ -306,11 +262,11 @@ private theorem hessC_add_lemma_4 {D : ℕ} (f g : (Fin D → ℂ) → ℝ) (y :
     hessC (fun z => f z + g z) y = hessC f y + hessC g y := by
   have h1 : fderiv ℝ (fun z => f z + g z) =ᶠ[𝓝 y] fun z => fderiv ℝ f z + fderiv ℝ g z := by
     filter_upwards [hf, hg] with z hz1 hz2
-    exact fderiv_add (hz1.differentiableAt (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))) (hz2.differentiableAt (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two)))
+    exact fderiv_add (hz1.differentiableAt (by first | (simp; done))) (hz2.differentiableAt (by first | (simp; done)))
   have hsum : fderiv ℝ (fun z => fderiv ℝ f z + fderiv ℝ g z) y =
       fderiv ℝ (fderiv ℝ f) y + fderiv ℝ (fderiv ℝ g) y :=
-    (((hf.self_of_nhds.fderiv_right (m := 1) (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))).differentiableAt (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))).hasFDerivAt.add
-      ((hg.self_of_nhds.fderiv_right (m := 1) (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))).differentiableAt (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))).hasFDerivAt).fderiv
+    (((hf.self_of_nhds.fderiv_right (m := 1) (by first | (simp; done) | (norm_num; done))).differentiableAt (by first | (simp; done))).hasFDerivAt.add
+      ((hg.self_of_nhds.fderiv_right (m := 1) (by first | (simp; done) | (norm_num; done))).differentiableAt (by first | (simp; done))).hasFDerivAt).fderiv
   rw [hessC_eq_lemma_3, hessC_eq_lemma_3, hessC_eq_lemma_3, h1.fderiv_eq, hsum, hessL_add_lemma_2]
   all_goals rfl
 
@@ -366,7 +322,7 @@ theorem conv_dens_of_closed {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHo
     rw [hM]
   have hc2 : ∀ k, ContinuousOn (fderiv ℝ (fderiv ℝ (ph k ∘ (A.chart j).symm))) K := fun k y hy =>
     (((contDiffAt_infty.1 ((hph k j).contDiffAt (hO.mem_nhds (hK hy))) 2).fderiv_right (m := 1)
-      (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))).fderiv_right (m := 0) (by first | exact le_top | (simp; done) | (norm_num; done) | exact le_of_eq (by norm_num) | exact le_of_eq one_add_one_eq_two | (simp; exact le_of_eq one_add_one_eq_two))).continuousAt.continuousWithinAt
+      (by first | (simp; done) | (norm_num; done))).fderiv_right (m := 0) (by first | (simp; done))).continuousAt.continuousWithinAt
   have hbk : ∀ k, Bornology.IsBounded ((fderiv ℝ (fderiv ℝ (ph k ∘ (A.chart j).symm))) '' K) := fun k =>
     (hKc.image_of_continuousOn (hc2 k)).isBounded
   have hcf : ContinuousOn (fun y k => hessL (fderiv ℝ (fderiv ℝ fun y' => (th k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) + hessL (fderiv ℝ (fderiv ℝ (ph k ∘ (A.chart j).symm)) y) + hessL (fderiv ℝ (fderiv ℝ fun y' => Θ.φ ((A.chart j).symm y) ((A.chart j).symm y')) y)) K :=

@@ -78,7 +78,7 @@ theorem exists_cong_sub (K : Set (Af F)ˣ) (hK : K ∈ 𝓝 1) : ∃ M : ℕ, 0 
   have h2 : (fun b : Af F => MulOpposite.op (1 + b)) ⁻¹' T2 ∈ 𝓝 0 :=
     (MulOpposite.continuous_op.comp hf).continuousAt.preimage_mem_nhds
       (by rw [Function.comp_apply, add_zero]; exact hT2)
-  obtain ⟨N, hN, hNW⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ (Filter.inter_mem h1 h2)
+  obtain ⟨N, hN, hNW⟩ := _root_.GlobalTheory.LocalNormBound.main F _ (Filter.inter_mem h1 h2)
   refine ⟨N, hN, fun u ⟨a, ha, e⟩ ⟨b, hb, e'⟩ => hTK (hTT ⟨?_, ?_⟩)⟩
   · change (u : Af F) ∈ T1
     rw [eq_add_of_sub_eq' e]; exact (hNW a ha).1

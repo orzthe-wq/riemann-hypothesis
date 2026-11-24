@@ -1,60 +1,15 @@
 module
 
 public import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.IsPshLocallyIntegrableStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
 public import Mathlib.Analysis.Calculus.ContDiff.Convolution
 public import Mathlib.Analysis.Complex.Isometry
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.MeasureTheory.Measure.RegularityCompacts
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Separation.CompletelyRegular
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshBasic
 public import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PshMollA
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Complex.Circle
 public import Mathlib.MeasureTheory.Group.Integral
 public import Mathlib.MeasureTheory.Integral.Prod
@@ -70,21 +25,6 @@ open scoped ContDiff
 noncomputable section
 
 variable {D : ℕ}
-
-lemma measurable_indicator_usc {U : Set (Fin D → ℂ)} {φ : (Fin D → ℂ) → ℝ} (hU : IsOpen U)
-    (hφ : UpperSemicontinuousOn φ U) : Measurable (U.indicator φ) := by
-  refine measurable_of_Iio fun a => ?_
-  have hO : IsOpen {x | x ∈ U ∧ φ x < a} := by
-    rw [isOpen_iff_mem_nhds]
-    rintro x ⟨hxU, hx⟩
-    have h1 := hφ x hxU _ hx
-    rw [nhdsWithin_eq_nhds.2 (hU.mem_nhds hxU)] at h1
-    filter_upwards [h1, hU.mem_nhds hxU] with y hy hyU using ⟨hyU, hy⟩
-  have : U.indicator φ ⁻¹' Iio a = {x | x ∈ U ∧ φ x < a} ∪ (Uᶜ ∩ {_x | (0 : ℝ) < a}) := by
-    ext x
-    by_cases hx : x ∈ U <;> simp [hx, Set.indicator]
-  rw [this]
-  exact hO.measurableSet.union (hU.measurableSet.compl.inter (MeasurableSet.const _))
 
 lemma smul_measurePreserving {ζ : ℂ} (hζ : ‖ζ‖ = 1) :
     MeasurePreserving (fun y : Fin D → ℂ => ζ • y) ∧
@@ -178,9 +118,9 @@ lemma phiC (hU : IsOpen U) (hφ : IsPsh U φ) {C : Set (Fin D → ℂ)} (hC : Is
     by_cases hx : x ∈ C
     · simp [hx, hCU hx]
     · simp [hx]
-  refine ⟨e ▸ (measurable_indicator_usc hU hφ.1).indicator hC.isClosed.measurableSet, ?_⟩
+  refine ⟨e ▸ (_root_.ReciprocityTheory.AnForm.A.PshMean.measurable_piecewise hU hφ.1).indicator hC.isClosed.measurableSet, ?_⟩
   exact (integrable_indicator_iff hC.isClosed.measurableSet).2
-    ((isPsh_locallyIntegrable_thm D U φ hU hφ).integrableOn_compact_subset hCU hC)
+    ((_root_.ReciprocityTheory.AnForm.A.PshMean.plurisubharmonicLocallyIntegrable_holds D U φ hU hφ).integrableOn_compact_subset hCU hC)
 
 lemma molli_eq_C {ε : ℝ} (hε : 0 < ε) {C : Set (Fin D → ℂ)} {z : Fin D → ℂ}
     (hz : closedBall z ε ⊆ C) :

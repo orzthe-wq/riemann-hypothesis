@@ -5,7 +5,8 @@ public import Formalism.HermitianCurvature.HermitianCurvatureProofs.IntegrableUn
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.CellDataExists
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AmplitudesRelevantCellMonomialRep
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CellDataSupport
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnipotentHaarMeasureRatioStatement
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Admissible
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnipotentHaarMeasureRatio
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SymmetricMeasureL2NormEqResolutionL2
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.BetaSesquilinearity
@@ -159,7 +160,7 @@ theorem maj_pair {k r : ℕ} (L : LocBessel k r) (hκ : L.κN ≠ ⊤) {α β : 
     (hα : Integrable (fun x : Mt k r => B.gN (Matrix.of x) ^ (-α)) (Formalism.FourierDecayAlt.D.muN k r))
     (hβ : Integrable (fun x : Mt k r => B.gN (Matrix.of x) ^ (-β)) (Formalism.FourierDecayAlt.D.muN k r)) :
     Integrable (fun p : PairSp k r => B.gN (Matrix.of p.1.2) ^ (-α) * B.gN (Matrix.of p.2.2) ^ (-β)) (pairMeas L) := by
-  obtain ⟨cN, hN⟩ := GlobalTheory.T.exists_unipotentHaarMeasure_ratio k r
+  obtain ⟨cN, hN⟩ := _root_.GlobalTheory.ThA.exists_isRatioN k r
   have e : L.μN = (L.κN * ENNReal.ofReal cN) • Formalism.FourierDecayAlt.D.muN k r := by
     rw [← smul_smul, ← hN.2]
     unfold LocBessel.μN haarLie
@@ -169,7 +170,6 @@ theorem maj_pair {k r : ℕ} (L : LocBessel k r) (hκ : L.κN ≠ ⊤) {α β : 
   have hsN : SigmaFinite L.μN := by
     rw [e, ← ENNReal.coe_toNNReal hct]
     first
-    | exact inferInstance
     | exact (inferInstance : SigmaFinite ((L.κN * ENNReal.ofReal cN).toNNReal • Formalism.FourierDecayAlt.D.muN k r))
   have : IsFiniteMeasure L.μW := ⟨by rw [L.hμW.2]; exact ENNReal.one_lt_top⟩
   have : IsFiniteMeasure L.μW' := ⟨by rw [L.hμW'.2]; exact ENNReal.one_lt_top⟩

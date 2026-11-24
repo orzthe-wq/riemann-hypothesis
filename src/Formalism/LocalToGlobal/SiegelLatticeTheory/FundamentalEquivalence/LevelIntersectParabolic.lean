@@ -1,49 +1,7 @@
 module
 
 public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -71,13 +29,10 @@ def lin (g : HA R σ J) : (Fin n → R ⊗[F] E) →ₗ[R ⊗[F] E] (Fin n → R
 theorem lin_mul (g h : HA R σ J) (x : Fin n → R ⊗[F] E) :
     lin R σ J (g * h) x = lin R σ J g (lin R σ J h x) := by
   simp only [lin, Matrix.mulVecLin_apply]
-  show ((HA.mat R σ J g * HA.mat R σ J h : GL (Fin n) (R ⊗[F] E)) :
-    Matrix (Fin n) (Fin n) (R ⊗[F] E)).mulVec x = _
-  rw [Units.val_mul, ← Matrix.mulVec_mulVec]
+  rw [(show HA.mat R σ J (g * h) = HA.mat R σ J g * HA.mat R σ J h from rfl), Units.val_mul, ← Matrix.mulVec_mulVec]
 
 theorem lin_one (x : Fin n → R ⊗[F] E) : lin R σ J 1 x = x := by
-  simp only [lin, Matrix.mulVecLin_apply]
-  show ((1 : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)).mulVec x = x
+  change ((1 : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)).mulVec x = x
   simp
 
 theorem lin_inv_lin (g : HA R σ J) (x : Fin n → R ⊗[F] E) : lin R σ J g⁻¹ (lin R σ J g x) = x := by
@@ -92,12 +47,7 @@ def stabT {a : ℕ} (X : Fin a → Fin n → E) : Subgroup (HA R σ J) :=
 theorem mem_stabT {a : ℕ} (X : Fin a → Fin n → E) (g : HA R σ J) :
     g ∈ stabT R σ J X ↔ ∀ b, lin R σ J g (ratV (F := F) R (X b)) = ratV (F := F) R (X b) := by
   rw [stabT, MulAction.mem_stabilizer_iff]
-  constructor
-  · intro h b
-    exact congrFun h b
-  · intro h
-    funext b
-    exact h b
+  exact funext_iff
 
 def UniC {m : ℕ} (Y : Fin m → Fin n → E) (g : HA R σ J) : Prop :=
   ∀ b : Fin m, lin R σ J g (ratV (F := F) R (Y b)) - ratV (F := F) R (Y b) ∈ spanR (F := F) R Y {a | a < b}
@@ -113,13 +63,9 @@ theorem uni_map_le (hg : UniC R σ J Y g) (s : Set (Fin m))
   unfold spanR
   rw [Submodule.map_span, Submodule.span_le]
   rintro _ ⟨_, ⟨b, hb, rfl⟩, rfl⟩
-  have h1 : Submodule.span (R ⊗[F] E) ((fun a => ratV (F := F) R (Y a)) '' {a | a < b}) ≤
-      Submodule.span (R ⊗[F] E) ((fun a => ratV (F := F) R (Y a)) '' s) :=
-    Submodule.span_mono (Set.image_mono fun a ha => hs b hb a ha)
-  have h2 : ratV (F := F) R (Y b) ∈
-      Submodule.span (R ⊗[F] E) ((fun a => ratV (F := F) R (Y a)) '' s) :=
-    Submodule.subset_span ⟨b, hb, rfl⟩
-  have := Submodule.add_mem _ (h1 (hg b)) h2
+  have := Submodule.add_mem _
+    (Submodule.span_mono (Set.image_mono fun a ha => hs b hb a ha) (hg b))
+    (Submodule.subset_span ⟨b, hb, rfl⟩)
   simpa using this
 
 theorem uni_sub_mem (hg : UniC R σ J Y g) (s : Set (Fin m)) (t : Set (Fin m))
@@ -142,17 +88,15 @@ theorem uni_le_map (hg : UniC R σ J Y g) (s : Set (Fin m))
   rintro _ ⟨b, hb, rfl⟩
   induction b using WellFoundedLT.induction with
   | _ b ih =>
-  have hmem : ratV (F := F) R (Y b) ∈
-      Submodule.span (R ⊗[F] E) ((fun a => ratV (F := F) R (Y a)) '' s) :=
-    Submodule.subset_span ⟨b, hb, rfl⟩
-  have h1 := Submodule.mem_map_of_mem (f := lin R σ J g) hmem
   have h2 : Submodule.span (R ⊗[F] E) ((fun a => ratV (F := F) R (Y a)) '' {a | a < b}) ≤
       (Submodule.span (R ⊗[F] E) ((fun a => ratV (F := F) R (Y a)) '' s)).map (lin R σ J g) := by
     rw [Submodule.span_le]
     rintro _ ⟨a, ha, rfl⟩
     exact ih a ha (hs b hb a ha)
-  have := Submodule.sub_mem _ h1 (h2 (hg b))
-  simpa using this
+  simpa using Submodule.sub_mem _
+    (Submodule.mem_map_of_mem (f := lin R σ J g)
+      (Submodule.subset_span (⟨b, hb, rfl⟩ : ratV (F := F) R (Y b) ∈ (fun a => ratV (F := F) R (Y a)) '' s)))
+    (h2 (hg b))
 
 end UniLemmas
 

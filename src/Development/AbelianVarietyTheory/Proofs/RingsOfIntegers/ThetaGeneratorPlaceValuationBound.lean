@@ -1,7 +1,9 @@
 module
 
-public import Development.AbelianVarietyTheory.Statements.ShortVectorBound.ScaledLatticesInSupLattices
+public import Development.AutomorphicArithmetic.PrimeDiscriminants.SlopeTestRemainingChoices
 public import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd
+public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValuationLowerBoundHostFieldAllPlaces
+public import Development.AbelianVarietyTheory.Statements.ShortVectorBound.ScaledLatticesInSupLattices
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.EmbEqOfInPsi
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HalfPrincipalAndSplit
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.StarRingExtOfStar
@@ -9,10 +11,9 @@ public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaRuleValu
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DvdOfCastDvd
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsExtAllModelsUniformised
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsThetaValData
-public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValuationLowerBoundHostFieldAllPlacesStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValueTranslatedProductValuationBoundStatement
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SumSupportCMul
-import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymmetricTranslatesMultiplicationPullbackDescrip
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.SumSingleEmbeddingExtendLe
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -28,7 +29,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,10 +48,38 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymmetricTranslatesMultiplicationPullbackDescrip
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.FFVMap
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.SumSingleEmbeddingExtendLe
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValuationLowerBoundHostFieldAllPlacesStatement, Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ThetaGeneratorPlaceValuationBound
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValuationLowerBoundHostFieldAllPlacesStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValuationLowerBoundHostFieldAllPlacesStatement", "h": "module\n\npublic import Development.AutomorphicArithmetic.PrimeDiscriminants.SlopeTestRemainingChoices\npublic import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValuationLowerBoundHostFieldAllPlaces\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1
+open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheory.PtTie
+open ReciprocityTheory.ChartRestriction.G.TB (dAct dLin)
+attribute [local instance] Over.cartesianMonoidalCategory
+open GlobalTheory.PlaceInt
+open Formalism.BasicNotions Formalism.MainNotions IsDedekindDomain
+
+theorem _root_.GlobalTheory.T.harmonicValuationLowerBound_hostField_all_places : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 D.host.E)], (∀ a : 𝓞 D.host.E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y) (e : ℕ), 0 < e → ∀ (w : (D.host.E →+* ℂ) × ℕ → ℕ) (n DFw : ℕ), Formalism.L2.Pj.DF Dw w ≤ DFw → ChBound C e (∑ p ∈ D.host.condN.primeFactors, (vV T.V (p : T.Fr) : ℝ) / e * D.host.vdH p * (DFw : ℝ) / 2) w n := by
+  first | exact @GlobalTheory.PlaceInt.HostChart.chBound_host
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValuationLowerBoundHostFieldAllPlacesStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ThetaGeneratorPlaceValuationBound =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ThetaGeneratorPlaceValuationBound", "h": "module\n\npublic import Development.AbelianVarietyTheory.Statements.ShortVectorBound.ScaledLatticesInSupLattices\npublic import Development.AbelianVarietyTheory.Definitions.PlaceAdaptation.AdaptStd\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.EmbEqOfInPsi\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HalfPrincipalAndSplit\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.StarRingExtOfStar\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ThetaRuleValueIntegralFramedPointExtensionFieldStatement\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DvdOfCastDvd\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsExtAllModelsUniformised\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ExistsThetaValData\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValuationLowerBoundHostFieldAllPlacesStatement\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.HarmonicValueTranslatedProductValuationBoundStatement\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SumSupportCMul\nimport Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.SymmetricTranslatesMultiplicationPullbackDescrip\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.FFVMap\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.SumSingleEmbeddingExtendLe\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -95,12 +122,6 @@ theorem vLa_nonneg {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum 
   have h2 := (WithZero.log_le_log ((la.valuation K).ne_zero_iff.2 h0) one_ne_zero).2 h1
   simp only [WithZero.log_one] at h2
   simp only [vLa]; omega
-
-theorem vLa_mul {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {x y : K} (hx : x ≠ 0)
-    (hy : y ≠ 0) : vLa la (x * y) = vLa la x + vLa la y := by
-  simp only [vLa, map_mul,
-    WithZero.log_mul ((la.valuation K).ne_zero_iff.2 hx) ((la.valuation K).ne_zero_iff.2 hy)]
-  ring
 
 theorem killed_pow (Xo : Moduli Dw l) {T : Over Xo.X} (t : T ⟶ Xo.univ.t.G) (h : KilledBy Xo (l.Mb ^ 2) t) :
     KilledBy Xo l.Mb (t ^ l.M) := by
@@ -151,7 +172,7 @@ theorem bound_of_chBound (Xo : Moduli Dw l) (c : Coeff l) (π : 𝓞 E) (hπ : �
     (RatData.exists_thetaVal_data E H Dw l Xo c T'.Fr y'.1).1 hrat (x b)
   have hev : iT (evI y f) = thExpr Xo c nab y'.1 P F := by
     letI : Algebra T.Fr T'.Fr := iT.toAlgebra
-    exact GlobalTheory.T.thetaRule_value_integral_framed_point_extension_field E H Dw l Xo c nab hnab T io y T'.Fr φ hφ y'.1 hmap w n x P hP F hF f hf
+    exact _root_.GlobalTheory.PtTie.evI_eq_thExpr_ext E H Dw l Xo c nab hnab T io y T'.Fr φ hφ y'.1 hmap w n x P hP F hF f hf
   have ht : ∀ b, ∃ t' : ptO Xo (xOf y') ⟶ Xo.univ.t.G, KilledBy Xo (l.Mb ^ 2) t' ∧
       IsUUOver Xo.univ.t.G Xo.univ.t.PP l.M (sOf1 y') 1 t' (F b) := by
     intro b
@@ -162,7 +183,7 @@ theorem bound_of_chBound (Xo : Moduli Dw l) (c : Coeff l) (π : 𝓞 E) (hπ : �
     obtain ⟨t', -, b2, b3⟩ := (uu_through_moves E H Dw l Xo T'.Fr (xOf y') l.M l.odd (sOf1 y')).2 _ _ (F b) h1 (hF b)
     exact ⟨t', b2, b3⟩
   choose t' ht1 ht2 using ht
-  have hb := GlobalTheory.T.harmonicValue_translated_product_valuation_bound E H Dw l Xo c hnab.1 T' (iT.comp io) y' C' hgood nab hnab (r * e) ρ w n ho'.1
+  have hb := _root_.GlobalTheory.PlaceInt.TermBound.term_bound E H Dw l Xo c hnab.1 T' (iT.comp io) y' C' hgood nab hnab (r * e) ρ w n ho'.1
     (hρ T' _ y' C' _ ho') l.M n' A Bn α β l.odd a2 a3 a4 (hu n' a1) (fun _ => 1) t' F
     (fun b => ⟨one_pow _, (a5 _ _ (ht1 b)).1, by
       haveI := Xo.univ.t.act.hom (α * β)
@@ -173,7 +194,7 @@ theorem bound_of_chBound (Xo : Moduli Dw l) (c : Coeff l) (π : 𝓞 E) (hπ : �
   have hα' : α' ≠ 0 := by rintro rfl; exact hπ (by rw [← e1, mul_zero])
   rw [map_mul, _root_.mul_assoc, nval_smul ho' (nrm_ne_zero c w hα), ← hh] at hb
   have hv1 : vLa la (nrm Dw c w α) ≤ vLa la (nrm Dw c w π) := by
-    rw [← e1, nrm_mul, vLa_mul la (nrm_ne_zero c w hα) (nrm_ne_zero c w hα')]
+    rw [← e1, nrm_mul, _root_.Formalism.L2.Pj.Crude.crv_vLa_mul la (nrm_ne_zero c w hα) (nrm_ne_zero c w hα')]
     have := vLa_nonneg la (nrm_ne_zero (Dw := Dw) c w hα') (nrm_isIntegral c w α')
     omega
   rw [hev]
@@ -238,3 +259,7 @@ theorem thBound : ThBoundSt := by
     rw [mul_div_cancel_left₀ _ he]
 
 end GlobalTheory.ThetaBound
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ThetaGeneratorPlaceValuationBound =====

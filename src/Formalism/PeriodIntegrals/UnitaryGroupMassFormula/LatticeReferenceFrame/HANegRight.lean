@@ -72,13 +72,11 @@ theorem sigA_inclE (a : I.E) :
   rw [inclE_tmul, inclE_tmul]
   first
     | exact Algebra.TensorProduct.map_tmul _ _ _ _
-    | rfl
 
 theorem sigA_sigA (x : (I.E ⊗[I.F] Af I.F)) : sigA I (sigA I x) = x := by
   have e : ∀ (c : I.E) (d : Af I.F), sigA I (c ⊗ₜ[I.F] d) = star c ⊗ₜ[I.F] d := fun c d => by
     first
       | exact Algebra.TensorProduct.map_tmul _ _ _ _
-      | rfl
   induction x using TensorProduct.induction_on with
   | zero => rw [map_zero, map_zero]
   | tmul a b => rw [e, e, star_star]
@@ -89,10 +87,6 @@ theorem sigA_mem {x : (I.E ⊗[I.F] Af I.F)} (hx : x ∈ IntAf I.F I.E) : sigA I
     first
       | simp only [sigA, Formalism.UG.sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
           Algebra.TensorProduct.map_tmul, map_one, AlgHom.coe_id, id_eq]
-      | (show Algebra.TensorProduct.map I.cm.sig (AlgHom.id I.F (Af I.F)) ((1 : I.E) ⊗ₜ[I.F] r) = _
-         rw [Algebra.TensorProduct.map_tmul, map_one]
-         rfl)
-      | simp [sigA, Formalism.UG.sigR]
   have h : IntAf I.F I.E ≤ (IntAf I.F I.E).comap (sigA I) := by
     show Subring.closure _ ≤ _
     rw [Subring.closure_le]

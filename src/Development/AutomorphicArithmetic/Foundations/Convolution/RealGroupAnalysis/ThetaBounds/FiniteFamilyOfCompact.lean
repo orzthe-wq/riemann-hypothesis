@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 public import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.Smooth
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

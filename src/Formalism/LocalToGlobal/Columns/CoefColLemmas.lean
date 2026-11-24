@@ -6,54 +6,11 @@ import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 public import Formalism.LocalToGlobal.Columns.BaseLemmas
 public import Formalism.LocalToGlobal.Divisibility.CoefModLemmas
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Bridge
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -144,8 +101,6 @@ theorem mem_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) (x : 
 
 theorem dualFr_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) :
     dualFr (gLat g M) = gLat (inside₂ K n g) (dualFr M) := by
-  have hinv : (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))ᵀ * (g : Matrix (Fin n) (Fin n) K)ᵀ = 1 := by
-    rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]
   ext φ
   rw [mem_dualFr, mem_gLat]
   constructor
@@ -155,23 +110,20 @@ theorem dualFr_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) :
       have := h ((g : Matrix (Fin n) (Fin n) K) *ᵥ x) ((mem_gLat g M _).2 ⟨x, hx, rfl⟩)
       rwa [Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose] at this
     · show (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))ᵀ *ᵥ ((g : Matrix (Fin n) (Fin n) K)ᵀ *ᵥ φ) = φ
-      rw [Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]
+      rw [Matrix.mulVec_mulVec, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mulVec]
   · rintro ⟨ψ, hψ, rfl⟩ y hy
     obtain ⟨x, hx, rfl⟩ := (mem_gLat g M y).1 hy
-    have := (mem_dualFr M ψ).1 hψ x hx
     show (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))ᵀ *ᵥ ψ ⬝ᵥ ((g : Matrix (Fin n) (Fin n) K) *ᵥ x) ∈ _
-    rwa [Matrix.dotProduct_mulVec, Matrix.mulVec_transpose, Matrix.vecMul_vecMul, Units.inv_mul,
-      Matrix.vecMul_one]
+    simpa only [Matrix.dotProduct_mulVec, Matrix.mulVec_transpose, Matrix.vecMul_vecMul, Units.inv_mul, Matrix.vecMul_one] using (mem_dualFr M ψ).1 hψ x hx
 
 variable {ι : Type} [Fintype ι]
 
 theorem nabK_gLat (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (g : ι → GL (Fin n) K) :
     nabK lam (fun τ => gLat (g τ) (M τ)) = (nabK lam M).map ((rhoK lam g).restrictScalars (𝓞 K)) := by
-  have hE := (nabDelEquiv K ι n lam M g).1
   ext x
   simp only [nabK, Submodule.mem_comap, Submodule.mem_map,
     LinearMap.coe_restrictScalars, Submodule.subtype_apply]
-  rw [hE, Submodule.mem_map]
+  rw [(nabDelEquiv K ι n lam M g).1, Submodule.mem_map]
   constructor
   · rintro ⟨y, hy, hyx⟩
     have hyV : y ∈ VV K lam := by
@@ -179,8 +131,7 @@ theorem nabK_gLat (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin
         rw [← hyx]
         show y = actP lam g⁻¹ (actP lam g y)
         rw [← polyAction_mul, inv_mul_cancel, polyAction_one₂]
-      rw [this]
-      exact polyAction_mem_VV lam g⁻¹ x.2
+      simpa [this] using polyAction_mem_VV lam g⁻¹ x.2
     exact ⟨⟨y, hyV⟩, hy, Subtype.ext (by rw [rhoK_coe]; exact hyx)⟩
   · rintro ⟨y, hy, rfl⟩
     exact ⟨y.1, hy, (rhoK_coe lam g y).symm⟩
@@ -214,8 +165,7 @@ variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : 
 
 theorem tauLat_gmap (τ : ι) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     tauLat emb τ (gmap ga L) = gLat (embGL emb (toGLm E n ga) τ) (tauLat emb τ L) := by
-  rw [gmap_eq_map]
-  exact tauLatG E K ι n emb τ L (toGLm E n ga)
+  simpa only [gmap_eq_map] using tauLatG E K ι n emb τ L (toGLm E n ga)
 
 theorem nabAt_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     nabAt emb lam (gmap ga L) = (nabAt emb lam L).map ((rhoV emb lam (toGLm E n ga)).restrictScalars (𝓞 K)) := by
@@ -331,8 +281,7 @@ theorem gram_hStd : Formalism.UG.gram (hStd E n) = 1 := by
   change (∑ k, star ((Pi.single i (1 : E) : Sp E n) k) * (Pi.single j (1 : E) : Sp E n) k) = (1 : Matrix (Fin n) (Fin n) E) i j
   rw [Matrix.one_apply]
   by_cases h : i = j
-  · subst h
-    simp [Pi.single_apply]
+  · subst h; simp [Pi.single_apply]
   · simp [Pi.single_apply, h, Ne.symm h]
 
 theorem toGLm_mem_UJ (ga : UF E n) : toGLm E n ga.1 ∈ Formalism.UG.UJ (starRingEnd E) (1 : Matrix (Fin n) (Fin n) E) := by
@@ -380,9 +329,7 @@ theorem extVV_ne_zero (lam : ι → DomWeight n) : extVV K lam ≠ 0 := by
   unfold extVV ten
   rw [Finset.prod_ne_zero_iff]
   intro τ _
-  have hinj : Function.Injective (Formalism.GradedWeylDivisibility.blockEmb K (k := n) (n := n) τ) :=
-    MvPolynomial.rename_injective _ (fun a b h => (Prod.mk.inj h).2)
-  exact (map_ne_zero_iff _ hinj).mpr (Formalism.GradedWeylDivisibility.hwNe K n n le_rfl _)
+  exact (map_ne_zero_iff _ (MvPolynomial.rename_injective _ (fun a b h => (Prod.mk.inj h).2))).mpr (Formalism.GradedWeylDivisibility.hwNe K n n le_rfl _)
 
 instance VV_nontrivial (lam : ι → DomWeight n) : Nontrivial (VV K lam) :=
   ⟨⟨⟨extVV K lam, extVV_mem K lam⟩, 0, fun h => extVV_ne_zero K lam (congrArg Subtype.val h)⟩⟩

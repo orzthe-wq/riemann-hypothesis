@@ -44,6 +44,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RosVal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -97,8 +98,7 @@ theorem square_over_hom_ext {X : Scheme.{0}} {a b : X ⟶ (G2 G).left} (h₁ : a
 theorem cartesian_lift_three_comp_projection {T₀ : Over S} (p q r : T₀ ⟶ G) (i : Fin 3) : lift p (lift q r) ≫ x3 G i = ![p, q, r] i := by
   fin_cases i <;> simp [x3]
 
-theorem oneGen_isGen {X Y : Scheme.{0}} (L : LB X) : (LB.oneGen L (Y := Y)).IsGen := fun _ _ =>
-  (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm
+alias oneGen_isGen := _root_.GlobalTheory.SelfUnif.oneGen_isGen
 
 theorem lamVal_eq {S S' : Scheme.{0}} {B : Over S} {B' : Over S'} [GrpObj B] [IsCommMonObj B] [GrpObj B']
     [IsCommMonObj B'] {M : LB B.left} {M' : LB B'.left} {β₂ : (G2 B').left ⟶ (G2 B).left}

@@ -126,7 +126,7 @@ theorem exists_finset_factor {σ : Type} (W : Submodule ℂ (MvPolynomial σ ℂ
         rw [AddSubmonoidClass.coe_finsetSum] at h
         exact h.symm
       rw [hp']
-      simp [MvPolynomial.coeff_sum, h0]
+      simp [h0]
   obtain ⟨ψ, hψ⟩ := LinearMap.exists_leftInverse_of_injective L hL
   refine ⟨S, fun s => (φ ∘ₗ ψ) fun j => if s = j then 1 else 0, fun p => ?_⟩
   have e : φ p = (φ ∘ₗ ψ) (L p) := by

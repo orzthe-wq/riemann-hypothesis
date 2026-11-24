@@ -86,13 +86,13 @@ theorem diag_one_one_eq_identity : dg2 (1 : Jd) 1 = (1 : G2) := by
 theorem det_diagonal_two (a : Jd) : GeneralLinearGroup.det (dg2 a a : G2) = a * a := by
   ext
   rw [Matrix.GeneralLinearGroup.val_det_apply, hecke_diagonal_val, Units.val_mul]
-  simp [Matrix.det_fin_two, Matrix.scalar_apply, sq]
+  simp [Matrix.scalar_apply, sq]
 
 theorem det_rationalEmbedding (γ : GL (Fin 2) ℚ) :
     GeneralLinearGroup.det (dia2 γ) = IdeleGroup.diagonal ℚ (GeneralLinearGroup.det γ) := by
   ext
   delta Ad3.R.dia2 GroundTheory.Automorphic.AdelicGLn.diagonal GroundTheory.Global.IdeleGroup.diagonal
-  simp only [Matrix.GeneralLinearGroup.val_det_apply, Units.coe_map, MonoidHom.coe_coe]
+  simp only [Matrix.GeneralLinearGroup.val_det_apply, Units.coe_map]
   exact (RingHom.map_det _ _).symm
 
 theorem md_mul (a b : Jd) : md (a * b) = md a * md b := by
@@ -196,7 +196,7 @@ theorem scalar_diagonal_of_rational (d : ℚˣ) :
   rw [hecke_diagonal_val]
   delta Ad3.R.dia2 GroundTheory.Automorphic.AdelicGLn.diagonal GroundTheory.Global.IdeleGroup.diagonal Ad3.dg2
   ext i j
-  fin_cases i <;> fin_cases j <;> simp [Matrix.scalar_apply, Matrix.algebraMap_matrix_apply]
+  fin_cases i <;> fin_cases j <;> simp [Matrix.algebraMap_matrix_apply]
 
 theorem det_inverse_twist_mem_arithmetic {g : G2} (hg : g ∈ Gam) : inv2 g ∈ Gam := by
   obtain ⟨γ, rfl⟩ := hg

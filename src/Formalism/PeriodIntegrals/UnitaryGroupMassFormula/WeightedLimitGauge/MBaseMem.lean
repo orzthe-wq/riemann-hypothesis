@@ -139,7 +139,7 @@ lemma mul_EmT_out {X : Type*} [Fintype X] (A : Matrix X (Fin (k + 1)) ℂ) (j : 
   exact hj (h ▸ mid_wI b)
 
 lemma EmT_Em : (Em k r)ᵀ * Em k r = 1 := by
-  apply Formalism.FourierDecayAlt.P.B2x3.EmT_Em <;> assumption
+  apply Formalism.FourierDecayAlt.P.B2x3.EmT_Em
 
 lemma Em_conjT : (Em k r)ᴴ = (Em k r)ᵀ := by
   ext a b
@@ -151,10 +151,10 @@ lemma EmT_conjT : ((Em k r)ᵀ)ᴴ = Em k r := by
 
 lemma emb_eq (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     embWb k r μ = Em k r * μ * (Em k r)ᵀ + (1 - Em k r * (Em k r)ᵀ) := by
-  apply Formalism.FourierDecayAlt.P.B2x3.emb_eq <;> assumption
+  apply Formalism.FourierDecayAlt.P.B2x3.emb_eq
 
 lemma Hpk_Em : Hpk k r * Em k r = Em k r * Hb k := by
-  apply Formalism.FourierDecayAlt.P.B2x3.Hpk_Em <;> assumption
+  apply Formalism.FourierDecayAlt.P.B2x3.Hpk_Em
 
 lemma EmT_Q : (Em k r)ᵀ * (1 - Em k r * (Em k r)ᵀ) = 0 := by
   rw [Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, EmT_Em, Matrix.one_mul, sub_self]
@@ -254,6 +254,10 @@ end PI.RhsWLim.W.MB
 namespace PI.RhsWLim.W
 
 open PI.RhsWLim
+
+theorem hb_sq (k : ℕ) : Hb k * Hb k = 1 := by
+  rw [Hb, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
+  congr 1; funext j; split_ifs <;> norm_num
 
 theorem mBaseMem : MBaseMem := by
   intro k r z z' μW μW' a a' μsec hD

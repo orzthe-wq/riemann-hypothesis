@@ -226,7 +226,7 @@ private theorem isHeis_sum_map_eq_zero_of_sum_eq_zero {R X M : Type} [CommRing R
         rw [map_sum, ← map_sum]
         congr 1
 
-        simp only [u, map_sum, map_smul]
+        simp only [map_smul]
     _ = 0 := by rw [hu, map_zero, map_zero]
 
 

@@ -1,9 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointLatticeIntersectionSelfDualPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizePropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalCanonicalFiltrationStepsAutPointStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointLatticeIntersectionSelfDualProperties
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizeProperties
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalCanonicalFiltrationStepsAutPoint
+public import Mathlib.LinearAlgebra.LinearIndependent.BaseChange
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -14,7 +15,6 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.LinearIndependent.BaseChange
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
@@ -228,13 +228,13 @@ theorem hform_span (x : I.GA) (S : Submodule (𝓞 I.E) (Fin I.n → I.E)) {y s 
 
 theorem flag_isotropic : ∀ (I : AutInst) (x : I.GA), (∀ y ∈ stepLt I x (1 / 2), ∀ z ∈ stepLt I x (1 / 2), Formalism.UG.hform (starRingEnd I.E) I.J y z = 0) ∧ (∀ v, rkK (stepLt I x (1 / 2)) ≤ rkR (I.ε v)) ∧ ∀ R : Submodule (𝓞 I.E) (Fin I.n → I.E), IsSat (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) (lamX I x) R → R ≤ perpIn I x R → ∀ y ∈ Submodule.span I.E (perpIn I x R : Set (Fin I.n → I.E)), (∀ z ∈ perpIn I x R, Formalism.UG.hform (starRingEnd I.E) I.J z y ∈ (algebraMap (𝓞 I.E) I.E).range) → ∃ y' ∈ perpIn I x R, y - y' ∈ Submodule.span I.E (R : Set (Fin I.n → I.E)) := by
   intro I x
-  obtain ⟨-, -, hd1, hd2⟩ := GlobalTheory.T.orthogonal_canonicalFiltration_steps_autPoint I x
-  obtain ⟨-, hfg, hspan, hdual, -⟩ := GlobalTheory.T.autPointLatticeIntersection_selfDual_properties I x
+  obtain ⟨-, -, hd1, hd2⟩ := _root_.GlobalTheory.Count.PerpStep.main I x
+  obtain ⟨-, hfg, hspan, hdual, -⟩ := _root_.GlobalTheory.PointLattice.lamX_selfDual I x
   have hiso : ∀ y ∈ stepLt I x (1 / 2), ∀ z ∈ stepLt I x (1 / 2),
       Formalism.UG.hform (starRingEnd I.E) I.J y z = 0 := by
     intro y hy z hz
-    obtain ⟨-, -, h1, h2, -⟩ := GlobalTheory.T.canonicalLatticeFiltration_size_properties I x (1 / 2) (by norm_num)
-    obtain ⟨-, -, h3, -⟩ := GlobalTheory.T.canonicalLatticeFiltration_size_properties I x (1 / 2)⁻¹ (by norm_num)
+    obtain ⟨-, -, h1, h2, -⟩ := _root_.GlobalTheory.CountSteps.steps I x (1 / 2) (by norm_num)
+    obtain ⟨-, -, h3, -⟩ := _root_.GlobalTheory.CountSteps.steps I x (1 / 2)⁻¹ (by norm_num)
     have h4 := h3 (h2 (1 / 2)⁻¹ (by norm_num) (h1 hz))
     rw [← (hd1 (1 / 2) (by norm_num)).2] at h4
     exact ((mem_perpIn I x _ z).1 h4).2 y hy

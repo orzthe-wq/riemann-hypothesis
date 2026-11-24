@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTeichmullerTiltMinusOnePowDivEnvelopeStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTeichmullerTiltMinusOnePowDivEnvelope
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -169,10 +169,7 @@ theorem isUnit_nat_acris0 (l : ℕ) [Fact l.Prime] (a : ℕ) (ha : ¬ l ∣ a) :
   have := h.map ((algebraMap (Per.Ainf l) (Per.Acris0 l)).comp (Per.zA l))
   rwa [map_natCast] at this
 
-theorem algebraMap_acris (l : ℕ) [Fact l.Prime] (x : Per.Ainf l) :
-    algebraMap (Per.Ainf l) (Per.Acris l) x =
-      algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) x) :=
-  GlobalTheory.RingIface.tower l x
+alias algebraMap_acris := _root_.GlobalTheory.RingIface.tower
 
 theorem factorial_mul_sum {P : Type} [CommRing P] (m : P) (c : ℕ → P)
     (h : ∀ k, ((k + 1 : ℕ) : P) * c k = m ^ k) (n : ℕ) :
@@ -198,7 +195,7 @@ theorem exists_isLogA : ∀ (l : ℕ) [Fact l.Prime], ∀ e : Per.Fl l, e.untilt
     ∃ (t u : Per.Acris l), IsLogA e t ∧ IsUnit u ∧
       t = algebraMap (Per.Ainf l) (Per.Acris l) (mu e) * u := by
   intro l _ e he
-  obtain ⟨w, hw, hwl⟩ := GlobalTheory.T.exists_teichmullerTiltMinusOne_pow_div_envelope l e he
+  obtain ⟨w, hw, hwl⟩ := _root_.GlobalTheory.MemLoc.exists_mu_pow_div l e he
   obtain ⟨c, u, h1, hu, h2⟩ := exists_unit (algebraMap (Per.Acris0 l) (Per.Acris l)) l Fact.out
     (acris_basic l).1 (isUnit_nat_acris0 l) (algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e)) w
     (Subtype.ext (by simpa using hw)) hwl

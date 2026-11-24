@@ -48,69 +48,54 @@ import Mathlib.Topology.Sheaves.Init
 
 open scoped Classical
 
-noncomputable def UpperTheory.Reformulated.B.P9.IsReps.{u_1} :
-    {V : Type u_1} → [inst : AddCommGroup V] → AddSubgroup V → AddSubgroup V → Finset V → Prop :=
-    fun {V : Type u_1} [AddCommGroup V] (Λ₁ Λ₂ : AddSubgroup V) (S : Finset V) ↦
-      (∀ x ∈ S, x ∈ Λ₂) ∧ (∀ x ∈ S, ∀ y ∈ S, x - y ∈ Λ₁ → x = y) ∧ ∀ y ∈ Λ₂, ∃ x ∈ S, y - x ∈ Λ₁
+universe u_1
 
-theorem UpperTheory.Reformulated.B.P9.aux2 :
-    ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a b : V},
-      a ∈ {x : V | x ∈ Λ ∧ (p : V → V) x = x} →
-        b ∈ {x : V | x ∈ Λ ∧ (p : V → V) x = x} → a + b ∈ Λ ∧ (p : V → V) (a + b) = a + b := by
-  intro V _ p Λ a b ha hb
-  exact ⟨Λ.add_mem ha.1 hb.1, by rw [map_add (f := _), ha.2, hb.2]⟩
+namespace UpperTheory.Reformulated.B.P9
 
-theorem UpperTheory.Reformulated.B.P9.aux3 :
-    ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V), (0 : V) ∈ Λ ∧ (p : V → V) (0 : V) = (0 : V) := by
-  intro V _ p Λ
-  exact ⟨Λ.zero_mem, map_zero p⟩
+noncomputable def IsReps {V : Type u_1} [AddCommGroup V] (Λ₁ Λ₂ : AddSubgroup V) (S : Finset V) :
+    Prop :=
+  (∀ x ∈ S, x ∈ Λ₂) ∧ (∀ x ∈ S, ∀ y ∈ S, x - y ∈ Λ₁ → x = y) ∧ ∀ y ∈ Λ₂, ∃ x ∈ S, y - x ∈ Λ₁
 
-theorem UpperTheory.Reformulated.B.P9.aux4 :
-    ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a : V},
-      a ∈ {x : V | x ∈ Λ ∧ (p : V → V) x = x} → -a ∈ Λ ∧ (p : V → V) (-a) = -a := by
-  intro V _ p Λ a ha
-  exact ⟨Λ.neg_mem ha.1, by rw [map_neg, ha.2]⟩
+theorem aux2 {V : Type} [AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a b : V}
+    (ha : a ∈ {x : V | x ∈ Λ ∧ p x = x}) (hb : b ∈ {x : V | x ∈ Λ ∧ p x = x}) :
+    a + b ∈ Λ ∧ p (a + b) = a + b :=
+  ⟨Λ.add_mem ha.1 hb.1, by rw [map_add (f := _), ha.2, hb.2]⟩
 
-noncomputable def UpperTheory.Reformulated.B.P9.partP :
-    {V : Type} → [inst : AddCommGroup V] → (V →+ V) → AddSubgroup V → AddSubgroup V :=
-    fun {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) ↦
-      { carrier := {x : V | x ∈ Λ ∧ (p : V → V) x = x}, add_mem' := @UpperTheory.Reformulated.B.P9.aux2 V inst p Λ,
-        zero_mem' := UpperTheory.Reformulated.B.P9.aux3 p Λ, neg_mem' := @UpperTheory.Reformulated.B.P9.aux4 V inst p Λ : AddSubgroup V }
+theorem aux3 {V : Type} [AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) :
+    (0 : V) ∈ Λ ∧ p (0 : V) = (0 : V) :=
+  ⟨Λ.zero_mem, map_zero p⟩
 
-theorem UpperTheory.Reformulated.B.P9.aux6 :
-    ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a b : V},
-      a ∈ {x : V | x ∈ Λ ∧ (p : V → V) x = (0 : V)} →
-        b ∈ {x : V | x ∈ Λ ∧ (p : V → V) x = (0 : V)} → a + b ∈ Λ ∧ (p : V → V) (a + b) = (0 : V) := by
-  intro V _ p Λ a b ha hb
-  exact ⟨Λ.add_mem ha.1 hb.1, by rw [map_add (f := _), ha.2, hb.2, add_zero]⟩
+theorem aux4 {V : Type} [AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a : V}
+    (ha : a ∈ {x : V | x ∈ Λ ∧ p x = x}) : -a ∈ Λ ∧ p (-a) = -a :=
+  ⟨Λ.neg_mem ha.1, by rw [map_neg, ha.2]⟩
 
-theorem UpperTheory.Reformulated.B.P9.aux7 :
-    ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V), (0 : V) ∈ Λ ∧ (p : V → V) (0 : V) = (0 : V) := by
-  intro V _ p Λ
-  exact ⟨Λ.zero_mem, map_zero p⟩
+noncomputable def partP {V : Type} [AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) :
+    AddSubgroup V :=
+  { carrier := {x : V | x ∈ Λ ∧ p x = x}, add_mem' := @aux2 V _ p Λ,
+    zero_mem' := aux3 p Λ, neg_mem' := @aux4 V _ p Λ : AddSubgroup V }
 
-theorem UpperTheory.Reformulated.B.P9.aux8 :
-    ∀ {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a : V},
-      a ∈ {x : V | x ∈ Λ ∧ (p : V → V) x = (0 : V)} → -a ∈ Λ ∧ (p : V → V) (-a) = (0 : V) := by
-  intro V _ p Λ a ha
-  exact ⟨Λ.neg_mem ha.1, by rw [map_neg, ha.2, neg_zero]⟩
+theorem aux6 {V : Type} [AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a b : V}
+    (ha : a ∈ {x : V | x ∈ Λ ∧ p x = (0 : V)}) (hb : b ∈ {x : V | x ∈ Λ ∧ p x = (0 : V)}) :
+    a + b ∈ Λ ∧ p (a + b) = (0 : V) :=
+  ⟨Λ.add_mem ha.1 hb.1, by rw [map_add (f := _), ha.2, hb.2, add_zero]⟩
 
-noncomputable def UpperTheory.Reformulated.B.P9.partQ :
-    {V : Type} → [inst : AddCommGroup V] → (V →+ V) → AddSubgroup V → AddSubgroup V :=
-    fun {V : Type} [inst : AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) ↦
-      { carrier := {x : V | x ∈ Λ ∧ (p : V → V) x = (0 : V)}, add_mem' := @UpperTheory.Reformulated.B.P9.aux6 V inst p Λ,
-        zero_mem' := UpperTheory.Reformulated.B.P9.aux7 p Λ, neg_mem' := @UpperTheory.Reformulated.B.P9.aux8 V inst p Λ : AddSubgroup V }
+theorem aux7 {V : Type} [AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) :
+    (0 : V) ∈ Λ ∧ p (0 : V) = (0 : V) :=
+  ⟨Λ.zero_mem, map_zero p⟩
 
-theorem UpperTheory.Reformulated.B.P9.reps_prod :
-    ∀ {V : Type} [inst : AddCommGroup V] [_root_.Module ℂ V] {M Λ : AddSubgroup V} (p : V →+ V),
-      (∀ (x : V), (p : V → V) ((p : V → V) x) = (p : V → V) x) →
-        (∀ x ∈ Λ, (p : V → V) x ∈ Λ) →
-          (∀ x ∈ M, (p : V → V) x ∈ M) →
-            ∀ {A B : Finset V},
-              UpperTheory.Reformulated.B.P9.IsReps M (UpperTheory.Reformulated.B.P9.partP p Λ) A →
-                UpperTheory.Reformulated.B.P9.IsReps M (UpperTheory.Reformulated.B.P9.partQ p Λ) B →
-                  UpperTheory.Reformulated.B.P9.IsReps M Λ (Finset.image (fun (w : V × V) ↦ w.1 + w.2) (A ×ˢ B)) := by
-  intro V _ _ M Λ p hpp hΛ hM A B hA hB
+theorem aux8 {V : Type} [AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) {a : V}
+    (ha : a ∈ {x : V | x ∈ Λ ∧ p x = (0 : V)}) : -a ∈ Λ ∧ p (-a) = (0 : V) :=
+  ⟨Λ.neg_mem ha.1, by rw [map_neg, ha.2, neg_zero]⟩
+
+noncomputable def partQ {V : Type} [AddCommGroup V] (p : V →+ V) (Λ : AddSubgroup V) :
+    AddSubgroup V :=
+  { carrier := {x : V | x ∈ Λ ∧ p x = (0 : V)}, add_mem' := @aux6 V _ p Λ,
+    zero_mem' := aux7 p Λ, neg_mem' := @aux8 V _ p Λ : AddSubgroup V }
+
+theorem reps_prod {V : Type} [AddCommGroup V] [Module ℂ V] {M Λ : AddSubgroup V} (p : V →+ V)
+    (hpp : ∀ x : V, p (p x) = p x) (hΛ : ∀ x ∈ Λ, p x ∈ Λ) (hM : ∀ x ∈ M, p x ∈ M)
+    {A B : Finset V} (hA : IsReps M (partP p Λ) A) (hB : IsReps M (partQ p Λ) B) :
+    IsReps M Λ (Finset.image (fun (w : V × V) ↦ w.1 + w.2) (A ×ˢ B)) := by
   obtain ⟨hA1, hA2, hA3⟩ := hA
   obtain ⟨hB1, hB2, hB3⟩ := hB
   have hA1' : ∀ x ∈ A, x ∈ Λ ∧ p x = x := hA1
@@ -145,3 +130,5 @@ theorem UpperTheory.Reformulated.B.P9.reps_prod :
     have h : y - (a + b) = (p y - a) + (y - p y - b) := by abel
     rw [h]
     exact M.add_mem hya hyb
+
+end UpperTheory.Reformulated.B.P9

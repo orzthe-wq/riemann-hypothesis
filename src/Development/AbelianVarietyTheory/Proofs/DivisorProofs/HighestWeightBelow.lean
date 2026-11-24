@@ -322,7 +322,7 @@ theorem inCoset_weightX {j : ℕ} : InCoset (1 / 2) ((Γ).weightX j) := by
       rw [e]
       ring
 
-theorem rankX_even (j : ℕ) : Even (rankX D j) := even_rankX D j
+alias rankX_even := _root_.GlobalTheory.ChiGrid.even_rankX
 
 theorem isHC_top {j n : ℕ} (hj : j ≤ D.R.m) (hn : n = rankX D j) : IsHC n (Node.par D C (.top j) τ) := by
   have he : entries (Node.par D C (.top j) τ) = (Γ).weightX j := entries_plus _

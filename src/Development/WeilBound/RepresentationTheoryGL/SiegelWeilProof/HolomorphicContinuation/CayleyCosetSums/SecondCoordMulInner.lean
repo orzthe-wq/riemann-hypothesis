@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.AbsoluteConvergence.InGBlocks
 
 @[expose] public section
 
@@ -85,23 +86,9 @@ theorem nU_blocks (y : M2 n) (S : Matrix (Fin n) (Fin n) ℂ) :
 theorem det_nU (S : Matrix (Fin n) (Fin n) ℂ) : (nU S).det = 1 := by
   simp [nU]
 
-private theorem mul_JJ_mul_conjTranspose_eq_of_inG (y : M2 n) (hy : InG y) : y * JJ n * yᴴ = JJ n := by
-  have hJ : JJ n * JJ n = -1 := by
-    ext (i|i) (j|j) <;> simp [JJ, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
-  have hy' : yᴴ * JJ n * y = JJ n := hy
-  have h1 : (-(JJ n * yᴴ * JJ n)) * y = 1 := by
-    calc (-(JJ n * yᴴ * JJ n)) * y = -(JJ n * (yᴴ * JJ n * y)) := by
-          simp only [Matrix.neg_mul, Matrix.mul_assoc]
-      _ = 1 := by rw [hy', hJ, neg_neg]
-  have h2 : y * (-(JJ n * yᴴ * JJ n)) = 1 := mul_eq_one_comm.mp h1
-  calc y * JJ n * yᴴ = y * JJ n * yᴴ * (-(JJ n * JJ n)) := by rw [hJ, neg_neg, Matrix.mul_one]
-    _ = (y * (-(JJ n * yᴴ * JJ n))) * JJ n := by
-      simp only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]
-    _ = JJ n := by rw [h2, Matrix.one_mul]
-
 theorem hermit_cd (y : M2 n) (hy : InG y) (hc : IsUnit y.toBlocks₂₁.det) :
     (y.toBlocks₂₁⁻¹ * y.toBlocks₂₂).IsHermitian := by
-  have h := congrArg Matrix.toBlocks₂₂ (mul_JJ_mul_conjTranspose_eq_of_inG y hy)
+  have h := congrArg Matrix.toBlocks₂₂ (_root_.PositivityTheory.Rg.Sw.AbsSt.IwaPf.inG_rows y hy)
   rw [← Matrix.fromBlocks_toBlocks y] at h
   simp [JJ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_conjTranspose] at h
   rw [neg_add_eq_zero] at h

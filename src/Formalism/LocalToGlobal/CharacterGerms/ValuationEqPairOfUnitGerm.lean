@@ -5,51 +5,6 @@ import Formalism.LocalToGlobal.CharacterGerms.LemmaMLin
 public import Formalism.LocalToGlobal.CharacterGerms.RowTieAxes
 public import Formalism.LocalToGlobal.CharacterGerms.RowTieCartFB
 import Formalism.LocalToGlobal.CharacterGerms.SubstSubst
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 import Formalism.LocalToGlobal.ProjectiveLattices.SubConstMemOrig
 
 @[expose] public section
@@ -181,7 +136,7 @@ def J (m k : Fin dd) : MvPowerSeries (Fin dd) C := MvPowerSeries.subst (e Y) (Mv
 theorem pderiv_l_zero (m i : Fin dd) :
     MvPowerSeries.constantCoeff (MvPowerSeries.pderiv (R := C) i (l Y m)) = if m = i then 1 else 0 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]
-  simp only [Finsupp.coe_zero, Pi.zero_apply, zero_add, Nat.cast_zero, Nat.cast_one, one_mul, mul_one]
+  simp only [Finsupp.coe_zero, Pi.zero_apply, zero_add, Nat.cast_zero, mul_one]
   change MvPowerSeries.coeff (Finsupp.mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) (Finsupp.single i 1))
     (Y.lg m) = _
   rw [Finsupp.mapDomain_single, Y.lg_lin m _ (by simp), MvPowerSeries.coeff_X]
@@ -209,7 +164,6 @@ theorem eqA (m i : Fin dd) :
     hs (fun k => MvPowerSeries.constantCoeff_X _)
   have h := congrArg (MvPowerSeries.pderiv (R := C) ((1 : Fin 2), i)) (l_add Y m)
   rw [map_add (f := _), pderiv_subst hF, pderiv_subst (hX 0), pderiv_subst (hX 1)] at h
-  beta_reduce at h
   have s0 : ∑ w : Fin dd, MvPowerSeries.pderiv (R := C) ((1 : Fin 2), i) (MvPowerSeries.X ((0 : Fin 2), w) : PS C 2 dd) *
       MvPowerSeries.subst (fun k : Fin dd => (MvPowerSeries.X ((0 : Fin 2), k) : PS C 2 dd))
         (MvPowerSeries.pderiv (R := C) w (l Y m)) = 0 :=

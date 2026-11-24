@@ -64,26 +64,6 @@ namespace BergmanDensIntegrable
 
 variable {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X}
 
-theorem weight_contDiffOn {L : HolLineBundle A} (W : Weight L) (j : Fin A.n) :
-    ContDiffOn ℝ ∞ (W.φ j ∘ (A.chart j).symm) (A.chart j).target :=
-  (W.smooth j j).mono fun _ hy => ⟨hy, (A.chart j).map_target hy⟩
-
-theorem trans_source_eq (j k : Fin A.n) :
-    ((A.chart j).symm.trans (A.chart k)).source =
-      (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source := by
-  rw [OpenPartialHomeomorph.trans_source, OpenPartialHomeomorph.symm_source]
-
-theorem trans_target_eq (j k : Fin A.n) :
-    ((A.chart j).symm.trans (A.chart k)).target =
-      (A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart j).source := by
-  rw [OpenPartialHomeomorph.trans_target, OpenPartialHomeomorph.symm_target]
-
-theorem trans_analytic (j k : Fin A.n) :
-    AnalyticOnNhd ℂ ((A.chart j).symm.trans (A.chart k))
-      ((A.chart j).symm.trans (A.chart k)).source := by
-  rw [trans_source_eq, OpenPartialHomeomorph.coe_trans]
-  exact A.holo j k
-
 theorem hessC_weight_trans {L : HolLineBundle A} (W : Weight L) (j k : Fin A.n) {y : Fin D → ℂ}
     (hy : y ∈ ((A.chart j).symm.trans (A.chart k)).source) :
     hessC (W.φ j ∘ (A.chart j).symm) y =
@@ -91,25 +71,6 @@ theorem hessC_weight_trans {L : HolLineBundle A} (W : Weight L) (j k : Fin A.n) 
         hessC (W.φ k ∘ (A.chart k).symm) (((A.chart j).symm.trans (A.chart k)) y) *
         (jacC ((A.chart j).symm.trans (A.chart k)) y).map (starRingEnd ℂ) := by
   apply GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanDensChartSum.hessC_weight_trans <;> assumption
-
-theorem chernTopDens_trans {L : HolLineBundle A} (W : Weight L) (j k : Fin A.n) {y : Fin D → ℂ}
-    (hy : y ∈ ((A.chart j).symm.trans (A.chart k)).source) :
-    chernTopDens W j y = Complex.normSq (jacC ((A.chart j).symm.trans (A.chart k)) y).det *
-      chernTopDens W k (((A.chart j).symm.trans (A.chart k)) y) := by
-  unfold chernTopDens
-  rw [hessC_weight_trans W j k hy]
-  set J := jacC ((A.chart j).symm.trans (A.chart k)) y
-  set H := hessC (W.φ k ∘ (A.chart k).symm) (((A.chart j).symm.trans (A.chart k)) y)
-  set c : ℂ := ((1 / Real.pi : ℝ) : ℂ)
-  have h1 : c • (Jᵀ * H * J.map (starRingEnd ℂ)) = Jᵀ * (c • H) * J.map (starRingEnd ℂ) := by
-    rw [Matrix.mul_smul, Matrix.smul_mul]
-  have h2 : (J.map (starRingEnd ℂ)).det = starRingEnd ℂ J.det := by
-    rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
-  rw [h1, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h2,
-    show J.det * (c • H).det * starRingEnd ℂ J.det = ((Complex.normSq J.det : ℝ) : ℂ) * (c • H).det by
-      rw [← Complex.mul_conj]; ring,
-    Complex.re_ofReal_mul]
-  ring
 
 variable [MeasurableSpace X] [BorelSpace X]
 
@@ -120,16 +81,6 @@ theorem lintegral_dens_trans (dV : SmoothVolume A) (j k : Fin A.n)
         ENNReal.ofReal (Complex.normSq (jacC ((A.chart j).symm.trans (A.chart k)) y).det) *
           (f y * ENNReal.ofReal (dV.dens k (((A.chart j).symm.trans (A.chart k)) y))) := by
   apply GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanDensChartSum.lintegral_dens_trans <;> assumption
-
-
-omit [MeasurableSpace X] [BorelSpace X] in
-theorem jacC_trans_continuousOn (j k : Fin A.n) :
-    ContinuousOn (jacC ((A.chart j).symm.trans (A.chart k)))
-      ((A.chart j).symm.trans (A.chart k)).source := by
-  have h := (trans_analytic (A := A) j k).fderiv.continuousOn
-  refine continuousOn_pi.2 fun a => continuousOn_pi.2 fun b => ?_
-  exact (continuous_apply a).comp_continuousOn
-    ((ContinuousLinearMap.apply ℂ _ (Pi.single b 1)).continuous.comp_continuousOn h)
 
 theorem dens_trans (dV : SmoothVolume A) (j k : Fin A.n) {y : Fin D → ℂ}
     (hy : y ∈ ((A.chart j).symm.trans (A.chart k)).source) :
@@ -142,61 +93,13 @@ variable {L : HolLineBundle A}
 def densIn (W : Weight L) (dV : SmoothVolume A) (j : Fin A.n) (x : X) : ℝ :=
   chernTopDens W j (A.chart j x) / ((D.factorial : ℝ) * dV.dens j (A.chart j x))
 
-theorem densIn_eq (W : Weight L) (dV : SmoothVolume A) (j k : Fin A.n) {x : X}
-    (hx : x ∈ (A.chart j).source ∩ (A.chart k).source) :
-    densIn W dV j x = densIn W dV k x := by
-  have hy : A.chart j x ∈ ((A.chart j).symm.trans (A.chart k)).source := by
-    rw [trans_source_eq]
-    exact ⟨(A.chart j).map_source hx.1,
-      Set.mem_preimage.2 (by rw [(A.chart j).left_inv hx.1]; exact hx.2)⟩
-  have hT : ((A.chart j).symm.trans (A.chart k)) (A.chart j x) = A.chart k x := by
-    rw [OpenPartialHomeomorph.coe_trans, Function.comp_apply, (A.chart j).left_inv hx.1]
-  have hc := chernTopDens_trans W j k hy
-  have hd := dens_trans dV j k hy
-  rw [hT] at hc hd
-  set n := Complex.normSq (jacC ((A.chart j).symm.trans (A.chart k)) (A.chart j x)).det
-  have hpos : 0 < dV.dens j (A.chart j x) := dV.pos j _ ((A.chart j).map_source hx.1)
-  have hn : n ≠ 0 := by
-    intro h0; rw [hd, h0, zero_mul] at hpos; exact lt_irrefl 0 hpos
-  unfold densIn
-  rw [hc, hd, show (D.factorial : ℝ) * (n * dV.dens k (A.chart k x)) =
-    n * ((D.factorial : ℝ) * dV.dens k (A.chart k x)) by ring, mul_div_mul_left _ _ hn]
-
-
-omit [BorelSpace X] in
-theorem densIn_continuousAt (W : Weight L) (dV : SmoothVolume A) (j : Fin A.n) {x : X}
-    (hx : x ∈ (A.chart j).source) : ContinuousAt (densIn W dV j) x := by
-  have hy : A.chart j x ∈ (A.chart j).target := (A.chart j).map_source hx
-  have hnhds : (A.chart j).target ∈ 𝓝 (A.chart j x) := (A.chart j).open_target.mem_nhds hy
-  have hH : ContinuousAt (hessC (W.φ j ∘ (A.chart j).symm)) (A.chart j x) :=
-    (hessC_continuousOn _ _ (A.chart j).open_target
-      ((weight_contDiffOn W j).of_le (by first | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤) | simp |
-        exact WithTop.coe_le_coe.2 le_top))).continuousAt hnhds
-  have hdet : Continuous fun M : Matrix (Fin D) (Fin D) ℂ =>
-      (D.factorial : ℝ) * ((((1 / Real.pi : ℝ) : ℂ) • M).det).re := by fun_prop
-  have hC : ContinuousAt (chernTopDens W j) (A.chart j x) := hdet.continuousAt.comp hH
-  have hdens : ContinuousAt (dV.dens j) (A.chart j x) :=
-    (dV.smooth j).continuousOn.continuousAt hnhds
-  have hc := (A.chart j).continuousAt hx
-  refine (hC.comp hc).div (continuousAt_const.mul (hdens.comp hc)) ?_
-  exact mul_ne_zero (by exact_mod_cast (Nat.factorial_pos D).ne') (dV.pos j _ hy).ne'
-
-theorem bergmanDens_continuous (W : Weight L) (dV : SmoothVolume A) :
-    Continuous (bergmanDens W dV) := by
-  refine continuous_iff_continuousAt.2 fun x => ?_
-  have hx : x ∈ (A.chart (chartIdx A x)).source := Classical.choose_spec (A.cover x)
-  have hev : densIn W dV (chartIdx A x) =ᶠ[𝓝 x] bergmanDens W dV := by
-    filter_upwards [(A.chart (chartIdx A x)).open_source.mem_nhds hx] with x' hx'
-    exact densIn_eq W dV _ _ ⟨hx', Classical.choose_spec (A.cover x')⟩
-  exact (densIn_continuousAt W dV _ hx).congr hev
-
 end BergmanDensIntegrable
 
 theorem BergmanDensIntegrable.proof : BergmanDensIntegrable.Statement := by
   intro D X _ _ _ _ _ A L W dV
   have := dV.isProb
   exact integrableOn_univ.1
-    ((BergmanDensIntegrable.bergmanDens_continuous W dV).continuousOn.integrableOn_compact
+    ((GroundTheory.Heights₂.Heights.HilbertSamuel.BergmanDensChartSum.bergmanDens_continuous W dV).continuousOn.integrableOn_compact
       isCompact_univ)
 
 end

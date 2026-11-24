@@ -63,7 +63,7 @@ theorem coeff_prod_isIntegral (m : Multiset ℂ) (hm : ∀ a ∈ m, IsIntegral �
     rw [Multiset.map_cons, Multiset.prod_cons, coeff_mul]
     refine IsIntegral.sum _ fun x _ => IsIntegral.mul ?_ (ih hm' _)
     rw [coeff_sub, coeff_X, coeff_C]
-    split_ifs <;> simp [isIntegral_one, isIntegral_zero, ha.neg, isIntegral_one.sub ha, ha]
+    split_ifs <;> simp [isIntegral_one, isIntegral_zero, ha.neg, isIntegral_one.sub ha]
 
 theorem coeff_isIntegral_of_roots (Q : ℂ[X]) (hQ : Q.Monic) (c : ℕ) (h : ∀ a ∈ Q.roots, IsIntegral ℤ ((c : ℂ) * a)) (n : ℕ) :
     IsIntegral ℤ ((Q.scaleRoots (c : ℂ)).coeff n) := by

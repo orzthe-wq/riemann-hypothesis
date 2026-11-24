@@ -4,8 +4,9 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsInvDer
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.DenseInterior
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfForallField
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsLinearHomPull
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ChartFrameBaseHolds
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CechPrimitive
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDerOfIsPushout
@@ -16,7 +17,8 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueInvarian
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsLieCombZero
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LeISupInfPreimage
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LogDerivativePrincipalPolarisationIndependent
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TheoremOfCubePolAbelianSchemeStatement
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.NonzeroLocus
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.TheoremOfCubePolAbelianScheme
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -52,8 +54,8 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ExistsRosatiGen
-public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsLinearHomPull
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -173,7 +175,7 @@ theorem map_transpose_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     (hiso.chartPull (chartPullComp t.PP.L io m) (Geo.Tor.chartPullPull _ _ _ rfl))
   obtain ⟨⟨φ, hφ⟩, hφ'⟩ := GlobalTheory.KS.DlogPol.dlog_independent K P₀ n u dd hbas hdd _ _ L hL hI
   obtain ⟨Θ', hs', hΘ'⟩ := exists_symm_of_ksCoc_grp GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2
-    GlobalTheory.T.theorem_of_cube_polAbelianScheme K P₀ n u dd hbas hdd _ x₀ G m L _ d _ φ hm hL haff hI (hd φ hφ) hφ
+    _root_.GlobalTheory.Moduli.cube_of_isLB K P₀ n u dd hbas hdd _ x₀ G m L _ d _ φ hm hL haff hI (hd φ hφ) hφ
   have e : Θ' = -Θ.map x₀ := by
     rw [eq_comm, ← sub_eq_zero]
     funext b

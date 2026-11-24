@@ -3,50 +3,8 @@ module
 public import CompanionTheory.RealGroups.FormalDegrees.ArchimedeanFormalDegrees.FormalDegreeFormula.ModelFunctionsMultiply
 import Aesop.Frontend.Tactic
 import Aesop.Main
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.Weight
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -130,11 +88,11 @@ theorem cpart2_Eaa (ε : Fin n → Bool) (a : Fin n) :
   by_cases hi : i = a
   · subst hi
     by_cases hj : j = i
-    · subst hj; simp [single_apply]; ring
-    · simp [single_apply, hj, Ne.symm hj]
+    · subst hj; simp; ring
+    · simp [Ne.symm hj]
   · by_cases hj : j = a
-    · subst hj; simp [single_apply, hi, Ne.symm hi]
-    · simp [single_apply, hi, hj, Ne.symm hi, Ne.symm hj]
+    · subst hj; simp [Ne.symm hi]
+    · simp [Ne.symm hi, Ne.symm hj]
 
 theorem exp_Eaa (a : Fin n) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • ((-Complex.I) • single a a (1 : ℂ))) =
@@ -143,10 +101,10 @@ theorem exp_Eaa (a : Fin n) (t : ℝ) :
       diagonal (fun c => if c = a then -(Complex.I * t) else 0) := by
     ext i j
     by_cases hi : i = a <;> by_cases hj : j = a
-    · subst hi; subst hj; simp [diagonal_apply, single_apply]; ring
-    · subst hi; simp [diagonal_apply, single_apply, Ne.symm hj]
-    · subst hj; simp [diagonal_apply, single_apply, Ne.symm hi, hi]
-    · simp [diagonal_apply, single_apply, hi, hj, Ne.symm hi, Ne.symm hj]
+    · subst hi; subst hj; simp; ring
+    · subst hi; simp [Ne.symm hj]
+    · subst hj; simp [Ne.symm hi, hi]
+    · simp [diagonal_apply, hi, Ne.symm hi, Ne.symm hj]
   rw [e, Matrix.exp_diagonal]
   congr 1
   funext c

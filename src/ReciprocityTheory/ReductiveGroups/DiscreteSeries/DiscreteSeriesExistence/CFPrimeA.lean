@@ -2,51 +2,7 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.InhabCAR
 public import Mathlib.LinearAlgebra.ExteriorAlgebra.Basis
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -96,12 +52,12 @@ theorem sg_cp_comm {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp
       rw [Finset.sum_ite_eq']
       by_cases hx : ε x = false
       · have hxc : x ≠ c := fun h => by rw [h, hc] at hx; exact Bool.noConfusion hx
-        simp [minusIdx, hx, hc, modeWt, root, Pi.single_apply, hxc]
+        simp [minusIdx, hx, hc, modeWt, root, hxc]
       · simp [minusIdx, hx, modeWt]
     · simp only [hci, false_and, if_false, Finset.sum_const_zero]
       by_cases hx : ε i = true ∧ ε x = false
       · have hxc : x ≠ c := fun h => by rw [h, hc] at hx; exact Bool.noConfusion hx.2
-        simp [modeWt, hx, root, Pi.single_apply, Ne.symm hci, hxc]
+        simp [modeWt, hx, root, Ne.symm hci, hxc]
       · simp [modeWt, hx]
   · have hc' : ε c = false := by simpa using hc
     rw [if_neg (fun h => hc h.1), if_pos ⟨hc', hc'⟩, neg_mul, mul_neg, Finset.sum_mul, Finset.mul_sum]
@@ -110,23 +66,23 @@ theorem sg_cp_comm {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp
     congr 1
     by_cases hcx : c = x
     · subst hcx
-      simp only [eq_self_iff_true, and_true]
+      simp only [and_true]
       rw [Finset.sum_ite_eq']
       by_cases hi : ε i = true
       · have hic : i ≠ c := fun h => by rw [h, hc'] at hi; exact Bool.noConfusion hi
-        simp [plusIdx, hi, hc', modeWt, root, Pi.single_apply, hic]
+        simp [plusIdx, hi, hc', modeWt, root, hic]
       · simp [plusIdx, hi, modeWt]
     · simp only [hcx, and_false, if_false, neg_zero, Finset.sum_const_zero]
       by_cases hx : ε i = true ∧ ε x = false
       · have hic : i ≠ c := fun h => by rw [h, hc'] at hx; exact Bool.noConfusion hx.1
-        simp [modeWt, hx, root, Pi.single_apply, hic, Ne.symm hcx]
+        simp [modeWt, hx, root, hic, Ne.symm hcx]
       · simp [modeWt, hx]
 
 end Comm
 
 theorem sgE_one (ε : Fin n → Bool) (c : Fin n) : sgE ε cpFock cmFock c c (1 : Fock n) = 0 := by
   unfold sgE
-  split_ifs <;> simp [cmFock, LinearMap.sum_apply, Module.End.mul_apply, CliffordAlgebra.contractLeft_one]
+  split_ifs <;> simp [cmFock, LinearMap.sum_apply, CliffordAlgebra.contractLeft_one]
 
 theorem sg_prod_list (ε : Fin n → Bool) (c : Fin n) (l : List (Fin n × Fin n)) :
     sgE ε cpFock cmFock c c (l.map fun x => ExteriorAlgebra.ι ℂ (Pi.single x (1 : ℂ))).prod =
@@ -194,15 +150,15 @@ theorem cfa_rho_coord (ε : Fin n → Bool) (c : Fin n) :
       ← Finset.sum_neg_distrib]
     refine Finset.sum_congr rfl fun b _ => ?_
     rcases lt_trichotomy b c with h | h | h
-    · cases hb : ε b <;> simp [hb, hc, h, lt_asymm h, h.ne, h.ne'] <;> norm_num
+    · cases hb : ε b <;> simp [h, lt_asymm h]
     · subst h; simp [hc]
-    · cases hb : ε b <;> simp [hb, hc, h, lt_asymm h, h.ne, h.ne'] <;> norm_num
+    · cases hb : ε b <;> simp [h, lt_asymm h] <;> norm_num
   · simp only [if_true, Finset.sum_div, ← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]
     refine Finset.sum_congr rfl fun b _ => ?_
     rcases lt_trichotomy b c with h | h | h
-    · cases hb : ε b <;> simp [hb, hc, h, lt_asymm h, h.ne, h.ne'] <;> norm_num
+    · cases hb : ε b <;> simp [h, lt_asymm h] <;> norm_num
     · subst h; simp [hc]
-    · cases hb : ε b <;> simp [hb, hc, h, lt_asymm h, h.ne, h.ne'] <;> norm_num
+    · cases hb : ε b <;> simp [h, lt_asymm h]
 
 def cfaM (ε : Fin n → Bool) (lam : Fin n → ℝ) (x : Fin n × Fin n) : ℝ :=
   (if ε x.1 = true ∧ ε x.2 = false ∧ x.2 < x.1 then lam x.1 else 0) -

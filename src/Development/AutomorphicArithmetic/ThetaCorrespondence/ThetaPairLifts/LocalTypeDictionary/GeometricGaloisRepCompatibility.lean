@@ -5,7 +5,6 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForm
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HtCard
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.WeilRepresentationUnitaryPair
 public import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.DiscreteSeriesClassificationIff
-public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.AdmissibleCoefficientsAnalytic
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.CuspDiscreteDecompositionOfTraceClass
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsFactorisationCuspidal
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HeckeLPartialContinuationHolds
@@ -52,11 +51,9 @@ namespace GlobalTheory.NRows
 structure GeometricGaloisRepCompatibility : Prop where
   weil : GlobalTheory.Published.WeilRepresentationUnitaryPair
   ds : GlobalTheory.Published.DiscreteSeriesExists
-  ana : GlobalTheory.Published.HarishChandraAnalyticity
   dsc : GlobalTheory.Published.DiscreteSeriesClassification
   trc : GlobalTheory.Published.CuspTraceClass
   dm : GlobalTheory.Published.DixmierMalliavinFactorisation
-  flath : GlobalTheory.Published.FlathFactorisation
   sw : GlobalTheory.Published.WeilSiegelFormulaUnitary
   dbl : _root_.GlobalTheory.Published.DoublingMethodLocalZetaIntegrals
   udbl : GlobalTheory.Published.UnramifiedDoublingGL

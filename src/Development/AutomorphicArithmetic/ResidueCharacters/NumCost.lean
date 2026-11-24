@@ -94,7 +94,7 @@ theorem factorization_condN' (D : D7) {l : ℕ} (hq : l ≠ D.host.q) (hd : l �
   show (D.host.QS * D.host.q * D.host.d).factorization l = _
   rw [Nat.factorization_mul (mul_ne_zero D.host.QS_pos.ne' pq.ne_zero) pd.ne_zero,
     Nat.factorization_mul D.host.QS_pos.ne' pq.ne_zero, pq.factorization, pd.factorization]
-  simp [Finsupp.single_apply, hq.symm, hd.symm]
+  simp [hq.symm, hd.symm]
 
 
 theorem cost_le' (L : SizeData₂ D) (P : ParameterChoice' D L) {A B C0 : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (hC : 1 ≤ C0)

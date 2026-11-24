@@ -2,7 +2,8 @@ module
 
 public import Formalism.LocalRingCardinality.AdicCompletionLocal.InstIsAdicCompleteOCSpanSingletonSetCast
 public import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AxSenTateComplexPadicFixedClosureStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AxSenTateComplexPadicFixedClosure
+public import Mathlib.FieldTheory.Galois.Infinite
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -45,7 +46,6 @@ import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
-public import Mathlib.FieldTheory.Galois.Infinite
 
 @[expose] public section
 
@@ -56,7 +56,7 @@ namespace GlobalTheory.MemLoc
 
 theorem invariants_finExt : ∀ (l : ℕ) [Fact l.Prime], ∀ (K : FinExt l) (x : ℂ_[l]), (∀ g ∈ GK K, Per.σC g x = x) → ∃ y ∈ K.1, ((y : Om l) : ℂ_[l]) = x := by
   intro l _ K x hx
-  have h := GlobalTheory.T.ax_sen_tate_complex_padic_fixed_closure l (GK K) x hx
+  have h := _root_.GlobalTheory.MemLoc.ax_sen_tate l (GK K) x hx
   have hset : {y : Om l | ∀ g ∈ GK K, g y = y} = (K.1 : Set (Om l)) := by
     ext y
     have h1 := InfiniteGalois.fixedField_fixingSubgroup K.1

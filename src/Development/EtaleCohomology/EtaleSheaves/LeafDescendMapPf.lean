@@ -120,15 +120,15 @@ abbrev D : (J R)ᵒᵖ ⥤ Scheme.{0} where
   obj S := pullback q (incl S.unop.2.1)
   map {S T} h := pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ incl (leOfHom h.unop))
     (by rw [pullback.condition, Category.assoc, incl_incl])
-  map_id S := by apply pullback.hom_ext <;> simp only [pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.assoc, Category.id_comp, Category.comp_id, Functor.const_obj_map, incl_incl, toR_incl, incl_self, incl_base, CategoryTheory.Functor.id_obj]
-  map_comp f g := by apply pullback.hom_ext <;> simp only [pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.assoc, Category.id_comp, Category.comp_id, Functor.const_obj_map, incl_incl, toR_incl, incl_self, incl_base, CategoryTheory.Functor.id_obj]
+  map_id S := by apply pullback.hom_ext <;> simp only [pullback.lift_fst, pullback.lift_snd, Category.id_comp, Category.comp_id, incl_self]
+  map_comp f g := by apply pullback.hom_ext <;> simp only [pullback.lift_fst, pullback.lift_snd, pullback.lift_snd_assoc, Category.assoc, incl_incl]
 
 variable {C0 : Scheme.{0}} (c0 : C0 ⟶ Sp Ω) (v0 : C0 ⟶ D0) (hPB : IsPullback v0 c0 q (toR R))
 
 abbrev cone : Cone (D R q) where
   pt := C0
   π := { app S := pullback.lift v0 (c0 ≫ toR S.unop.1) (by rw [hPB.w, Category.assoc, toR_incl])
-         naturality S T h := by apply pullback.hom_ext <;> (dsimp only [D]; simp only [pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.assoc, Category.id_comp, Category.comp_id, Functor.const_obj_map, incl_incl, toR_incl, incl_self, incl_base, CategoryTheory.Functor.id_obj]) <;> simp }
+         naturality S T h := by apply pullback.hom_ext <;> (dsimp only [D]; simp only [pullback.lift_fst, pullback.lift_snd, pullback.lift_snd_assoc, Category.assoc, Functor.const_obj_map, toR_incl]) <;> simp }
 
 lemma fstAff {S : Subalgebra k Ω} (h : R ≤ S) : IsAffineHom (pullback.fst q (incl h)) :=
   MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback q (incl h)).flip

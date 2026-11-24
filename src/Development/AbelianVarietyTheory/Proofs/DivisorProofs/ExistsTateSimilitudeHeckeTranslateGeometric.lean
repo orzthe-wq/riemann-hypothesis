@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompEqOneOfT
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGaloisCover
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ProdSurjectiveGeometricPoints
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPairingHeckeTranslateEqZetaStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPairingHeckeTranslateEqZeta
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilCommutatorPairingTorsionGeometricPointStatement
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenMovePow
@@ -70,10 +71,7 @@ theorem ev_zero (n : ℕ) : I.ev n 0 = 1 := by
   rw [add_zero] at h
   simpa using h
 
-theorem ev_nsmul (n j : ℕ) (w : D.La) : I.ev n (j • w) = I.ev n w ^ j := by
-  induction j with
-  | zero => rw [zero_smul, ev_zero, pow_zero]
-  | succ j ih => rw [succ_nsmul, I.add, ih, pow_succ]
+alias ev_nsmul := _root_.GlobalTheory.UPel.HT.TateIsoO.ev_nsmul
 
 theorem ev_neg (n : ℕ) (w : D.La) : I.ev n (-w) = (I.ev n w)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← I.add, neg_add_cancel, ev_zero])
@@ -208,10 +206,10 @@ theorem exists_tateIsoO_transl : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.
     rw [← hΨ, ← map_pow, hΨ, Nat.mul_right_comm n m k, I.tower (n * k) m (Nat.mul_pos hn kpos) hm
       (by rw [Nat.mul_right_comm]; exact Nat.Coprime.mul_left hnm hkp)]
   · intro n hn hnp u v
-    obtain ⟨e, he⟩ := GlobalTheory.T.exists_weilCommutatorPairing_torsion_geometricPoint S A' (P'.pull (lift (𝟙 A') (𝟙 A')).left) hA' (pull_isLB hP' _) κ x n hn (hnκ n hnp) _ _
+    obtain ⟨e, he⟩ := _root_.GlobalTheory.WeilGeomPt.exists_weilIs_geomPt S A' (P'.pull (lift (𝟙 A') (𝟙 A')).left) hA' (pull_isLB hP' _) κ x n hn (hnκ n hnp) _ _
       (htor n hn hnp u) (htor n hn hnp v)
     have h2 := GlobalTheory.WeilIsogeny.weilIs_pull_hom GlobalTheory.globalFns_holds o.ab (pull_isLB o.isLB _) (pull_isLB hP' _) ψ hiso2 he
-    have h3 := GlobalTheory.T.commutatorPairing_heckeTranslate_eq_zeta p D R b g c k (N * k) hcp hkp hEF hg hck S s o κ x β hx I n hn hnp u v e
+    have h3 := _root_.GlobalTheory.UPel.HT.Hecke.weil_value_translate p D R b g c k (N * k) hcp hkp hEF hg hck S s o κ x β hx I n hn hnp u v e
       (by rw [Nat.cast_mul]; exact h2)
     rw [h3] at he
     exact he

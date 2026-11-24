@@ -145,8 +145,8 @@ private theorem entries_zero_and_relation_of_suppM_of_isGSp {x : M4 R} {ν : R} 
   have a21 : x 2 1 = 0 := hx 2 1 (by decide) (by decide)
   have a23 : x 2 3 = 0 := hx 2 3 (by decide) (by decide)
   have ex := congrArg (fun m : M4 R => m 2 0) gx
-  simp [IsGSp, Matrix.mul_apply, Fin.sum_univ_four, adj_apply, r0, r1, r2, r3, s0, s1, s2, s3,
-    a01, a02, a03, a13, a21, a23] at ex
+  simp [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, r0, r1, r2, r3, s0, s1, s2, s3,
+    a01, a21] at ex
   refine ⟨a01, a02, a03, a13, a21, a23, ?_⟩
   linear_combination -ex
 

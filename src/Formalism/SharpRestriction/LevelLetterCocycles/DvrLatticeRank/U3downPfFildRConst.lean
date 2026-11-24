@@ -177,7 +177,7 @@ theorem u3downPf_lemC (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Q
     rw [← mul_assoc, mul_comm (algebraMap (LetA O n) W.EE (Eπ ^ h')), mul_assoc, hΛ, ← map_mul, hea]
   have hγe : W.γE W.gamK (algebraMap (LetA O n) W.EE (letE c)) = algebraMap (LetA O n) W.EE (letE c) := by
     rw [show W.γE W.gamK (algebraMap (LetA O n) W.EE (letE c)) =
-      algebraMap (LetA O n) W.EE (W.γA W.gamK (letE c)) from W.γE_ext _ _, Formalism.MainNotions.LiftingTheory.wmap_γA_letE]
+      algebraMap (LetA O n) W.EE (W.γA W.gamK (letE c)) from W.γE_ext _ _, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent]
   have hegf : algebraMap (LetA O n) W.EE (letE c) * (W.γE W.gamK f - f) = W.γE W.gamK f - f := by
     rw [mul_sub, hef]
     congr 1

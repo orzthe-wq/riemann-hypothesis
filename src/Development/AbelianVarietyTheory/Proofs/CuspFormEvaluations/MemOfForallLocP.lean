@@ -1,5 +1,6 @@
 module
 
+import Formalism.LocalToGlobal.SubmoduleMembership
 public import Formalism.LocalToGlobal.Divisibility.CoefMod
 public import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ActPMemLocPNabStdOfIsBasisAt
@@ -87,7 +88,7 @@ theorem tauLat_stdLat {E K : Type} [Field E] [NumberField E] [Field K] [NumberFi
       · exact Submodule.mem_one.2 ⟨1, by simp [h]⟩
       · exact Submodule.mem_one.2 ⟨0, by simp [h]⟩
     · funext a
-      by_cases h : a = j <;> simp [h, Matrix.one_apply]
+      by_cases h : a = j <;> simp [h]
 
 theorem dualFr_colLat_one {K : Type} [Field K] [NumberField K] {n : ℕ} :
     dualFr (colLat (1 : GL (Fin n) K)) = colLat (1 : GL (Fin n) K) := by
@@ -108,15 +109,7 @@ theorem dualFr_colLat_one {K : Type} [Field K] [NumberField K] {n : ℕ} :
 
 theorem mem_of_forall_locP {K W : Type} [Field K] [NumberField K] [AddCommGroup W] [Module (𝓞 K) W]
     (T : Submodule (𝓞 K) W) (x : W) (h : ∀ w : HeightOneSpectrum (𝓞 K), x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal T) : x ∈ T := by
-  by_contra hx
-  let I : Ideal (𝓞 K) := T.comap (LinearMap.toSpanSingleton (𝓞 K) W x)
-  have hI : I ≠ ⊤ := by
-    intro hI
-    have h1 : (1 : 𝓞 K) ∈ I := hI ▸ Submodule.mem_top
-    exact hx (by simpa [I] using h1)
-  obtain ⟨m, hm, hIm⟩ := Ideal.exists_le_maximal I hI
-  obtain ⟨s, hs, hsx⟩ := h ⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)⟩
-  exact hs (hIm (show s ∈ I from hsx))
+  exact Submodule.mem_of_forall_heightOne_exists_smul_mem (NumberField.RingOfIntegers.not_isField K) T x h
 
 theorem polyAction_one₂ {K Ix : Type} [Field K] [Fintype Ix] {n : ℕ} (lam : Ix → DomWeight n) (F : Pol K Ix n) :
     actP lam 1 F = F := by

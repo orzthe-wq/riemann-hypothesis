@@ -141,9 +141,6 @@ theorem val_int_le (Q : HeightOneSpectrum (𝓞 E)) (x : 𝓞 E) :
   rw [Formalism.UG.P.levelaf_valued_algebraMap]
   exact Q.valuation_le_one _
 
-theorem val_nat_le (Q : HeightOneSpectrum (𝓞 E)) (n : ℕ) : Valued.v (n : Q.adicCompletion E) ≤ 1 :=
-  natCast_mem (Q.adicCompletionIntegers E) n
-
 theorem exists_den (s : FiniteAdeleRing (𝓞 E) E) :
     ∃ m : ℕ, 0 < m ∧ ∀ Q : HeightOneSpectrum (𝓞 E), Valued.v ((m : Q.adicCompletion E) * s Q) ≤ 1 := by
   obtain ⟨x, a, ha, rfl⟩ := (GlobalTheory.AdLat.strong_approximation_mod_nat E 1 one_pos).1 s
@@ -163,7 +160,7 @@ theorem exists_den (s : FiniteAdeleRing (𝓞 E) E) :
   rw [e]
   refine Valuation.map_add_le _ ?_ ?_
   · exact val_int_le Q r
-  · rw [Valuation.map_mul]; exact mul_le_one' (val_nat_le Q _) (ha Q)
+  · rw [Valuation.map_mul]; exact mul_le_one' (_root_.GlobalTheory.AdLat.valued_natCast_le_one Q _) (ha Q)
 
 theorem approx_int (c : 𝓞 E ≃+* 𝓞 E) (hc : ∀ x, c (c x) = x) (δ : 𝓞 E) (hδ : c δ ≠ δ) (N : ℕ) (hN : 0 < N)
     (s s' : FiniteAdeleRing (𝓞 E) E) (h : s * s' = 1) (hs : ∀ Q, Valued.v (s Q) ≤ 1) :
@@ -185,7 +182,7 @@ theorem approx_int (c : 𝓞 E ≃+* 𝓞 E) (hc : ∀ x, c (c x) = x) (δ : �
     rw [this, Valuation.map_mul]
     exact mul_le_of_le_one_left' (hm' Q)
   by_cases hlt : Valued.v ((N : Q.adicCompletion E) * m) < 1
-  · refine local_close _ hs0 hms (val_nat_le Q m) hlt ?_
+  · refine local_close _ hs0 hms (_root_.GlobalTheory.AdLat.valued_natCast_le_one Q m) hlt ?_
     have e1 : s Q = algebraMap E (Q.adicCompletion E) (y₀ : E) + (N * m * m) • a Q := by rw [e]; rfl
     have e2 : algebraMap E (Q.adicCompletion E) ((y₀ + (N * m * m : ℕ) * t : 𝓞 E) : E) - s Q =
         (N : Q.adicCompletion E) * m * m * (algebraMap E (Q.adicCompletion E) (t : E) - a Q) := by
@@ -194,7 +191,7 @@ theorem approx_int (c : 𝓞 E ≃+* 𝓞 E) (hc : ∀ x, c (c x) = x) (δ : �
       ring
     rw [e2, Valuation.map_mul]
     exact mul_le_of_le_one_right' (Valuation.map_sub_le _ (val_int_le Q t) (ha Q))
-  · refine local_unit _ (hs Q) hms (val_nat_le Q m) (val_nat_le Q N) hlt ?_
+  · refine local_unit _ (hs Q) hms (_root_.GlobalTheory.AdLat.valued_natCast_le_one Q m) (_root_.GlobalTheory.AdLat.valued_natCast_le_one Q N) hlt ?_
     refine le_antisymm (val_int_le Q _) (not_lt.1 fun h2 => hQ ⟨(val_int Q _).1 h2, fun h3 => hlt ?_⟩)
     have h4 : ((N * m : ℕ) : 𝓞 E) ∈ Q.asIdeal := by
       rw [Nat.cast_mul] at h3

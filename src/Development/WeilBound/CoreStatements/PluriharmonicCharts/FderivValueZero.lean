@@ -5,9 +5,10 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TangentBijectionOfValues
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HolDifferentiableAt
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 public import Development.WeilBound.CoreStatements.VolumeEquality.CoverRootsSch
 public import Mathlib.Algebra.MvPolynomial.Cardinal
+public import Mathlib.FieldTheory.IsAlgClosed.Classification
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -18,7 +19,6 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
-public import Mathlib.FieldTheory.IsAlgClosed.Classification
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -116,7 +116,7 @@ theorem countable_of_tie {κ : Type} [Finite κ] {x : κ → Ω} (h : CoordTie �
     exact MvPolynomial.cardinalMk_le_max.trans (max_le (max_le Cardinal.mk_le_aleph0 Cardinal.mk_le_aleph0) le_rfl)
   refine Function.Surjective.countable (f := fun a : MvPolynomial κ ℤ × MvPolynomial κ ℤ =>
     MvPolynomial.aeval (fun j => x j / x c) a.1 / MvPolynomial.aeval (fun j => x j / x c) a.2) fun a => ?_
-  obtain ⟨s, hs, hu, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x h c _ hc a).1 ((genMap_bij h.gen _ rfl _).2 a)
+  obtain ⟨s, hs, hu, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ κ x h c _ hc a).1 ((genMap_bij h.gen _ rfl _).2 a)
   rw [Algebra.adjoin_range_eq_range_aeval] at hs hsa
   obtain ⟨f, hf⟩ := hs
   obtain ⟨g, hg⟩ := hsa

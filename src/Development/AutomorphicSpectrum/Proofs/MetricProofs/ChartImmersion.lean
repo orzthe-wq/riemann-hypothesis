@@ -2,9 +2,9 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.UpVApply
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartNinth
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalIntegrabilityStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalResolutionOpenStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.PMatStepColsEntryStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalIntegrability
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FrameDataLocalResolutionOpen
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.PMatStepColsEntry
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -260,8 +260,8 @@ theorem line_zero (hc : IsPCtx M Rb keep κ v F kb V bl r h) {w : Fin e → ℂ}
     (hD : HasFDerivAt (fun w' => affCoord p (pPhi M F keep v bl h ε w')) D w)
     {u : Fin e → ℂ} (hu : D u = 0) (hb0 : pB ε u = 0) : u = 0 := by
   have hb : IsBaseChart M Rb F kb V bl := hc.2.2.2.1
-  have hE := GlobalTheory.T.frameData_local_resolution_open K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
-  have hR := GlobalTheory.T.frameData_local_integrability K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
+  have hE := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.Exact.chart_points K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
+  have hR := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.ChartRead.chart_reads K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc
   have hwB : ∀ s : ℂ, pB ε (w + s • u) = pB ε w := fun s => by
     funext i
     have : u (ε (Sum.inl i)) = 0 := congrFun hb0 i
@@ -295,7 +295,7 @@ theorem line_zero (hc : IsPCtx M Rb keep κ v F kb V bl r h) {w : Fin e → ℂ}
       simp only [pRho, Equiv.symm_apply_apply] at this
       rw [hbase s] at this
       simpa using this
-    have hS := GlobalTheory.T.pMat_stepCols_entry Ψ N j keep q M.j_le
+    have hS := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.SmallStep.pStep_reads Ψ N j keep q M.j_le
     cases hk : M.blk (q.1.1.1, pStep j keep q.1.1.1 q.1.1.2.2) with
     | none =>
       have e0 := hrel 0

@@ -123,8 +123,8 @@ theorem eAt_mul (p : P) (a b c d : Fin n) :
   refine LinearMap.ext fun f => funext fun I => ?_
   by_cases hbc : b = c
   · subst hbc
-    simp [Module.End.mul_apply, eAt_apply, Function.update_idem]
-  · simp [Module.End.mul_apply, eAt_apply, hbc]
+    simp [eAt_apply, Function.update_idem]
+  · simp [eAt_apply, hbc]
 
 theorem eAt_comm {p q : P} (h : p ≠ q) (a b c d : Fin n) :
     (eAt p a b * eAt q c d : Module.End ℂ (TV n M P)) = eAt q c d * eAt p a b := by

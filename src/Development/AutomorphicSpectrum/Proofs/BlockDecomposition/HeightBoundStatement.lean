@@ -281,7 +281,7 @@ theorem block_form (g κ₂ : GL (Ix n) L) (dd : GL (Fin n) L)
     have hij := congrFun (congrFun hbot i) (Sum.inl j)
     show X.1 (Sum.inr i) (Sum.inl j) = 0
     rw [show X.1 (Sum.inr i) (Sum.inl j) = X.1.submatrix Sum.inr id i (Sum.inl j) from rfl, hij]
-    simp [Matrix.mul_apply, Matrix.one_apply]
+    simp [Matrix.mul_apply]
   have h22 : toBlocks₂₂ X.1 = (dd⁻¹).1 := by
     ext i j
     have hij := congrFun (congrFun hbot i) (Sum.inr j)

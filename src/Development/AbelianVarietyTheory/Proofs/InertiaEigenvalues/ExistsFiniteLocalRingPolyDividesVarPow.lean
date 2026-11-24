@@ -302,7 +302,7 @@ theorem exists_truncation {R L : Type} [CommRing R] [Finite R] [Field L] (ψ : R
   have hA'coeff : ∀ j, A'.coeff j = if j < d0 then c j else 0 := by
     intro j
     rw [hA', Polynomial.finsetSum_coeff]
-    simp [Polynomial.coeff_C_mul_X_pow]
+    simp
   have hQ : X ^ d0 ∣ P - C π * A' := by
     rw [Polynomial.X_pow_dvd_iff]
     intro j hj

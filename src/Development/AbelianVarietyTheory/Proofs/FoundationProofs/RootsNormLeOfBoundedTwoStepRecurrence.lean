@@ -79,7 +79,7 @@ theorem norm_le_of_bounded_two_step_recursion (x y : ℂ) (c : ℕ → ℂ) (C R
           add_le_add (hb _) (mul_le_mul_of_nonneg_left (hb _) (norm_nonneg _))
       _ = C * (R + ‖y‖) * R ^ r := by ring
   by_contra hlt
-  push_neg at hlt
+  push Not at hlt
   have hxpos : 0 < ‖x‖ := lt_of_le_of_lt hR hlt
   have hq0 : 0 ≤ R / ‖x‖ := div_nonneg hR hxpos.le
   have hq1 : R / ‖x‖ < 1 := (div_lt_one hxpos).2 hlt

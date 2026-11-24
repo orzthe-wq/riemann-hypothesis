@@ -118,10 +118,7 @@ theorem exists_value (hL : L.IsLB) {ρ : LB.Gen (L.pull (eSec A))} (hρ : ρ.IsG
   exact (Units.inv_mul_cancel_right _ _).symm.trans
     (congrArg (· * _) ((gs_res (𝟙 _) z le trivial _).trans e).symm)
 
-theorem sec_ext {Y : Scheme.{0}} {M : LB Y} {s s' : LB.Sec M} (h : ∀ j, s.f j = s'.f j) : s = s' := by
-  cases s; cases s'
-  congr
-  exact funext h
+alias sec_ext := _root_.ReciprocityTheory.ChartRestriction.G.DVR.SecOps.sec_ext
 
 end General
 

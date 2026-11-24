@@ -1,18 +1,24 @@
 module
 
+public import Formalism.SubspaceCounting.Statement
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Mathlib.LinearAlgebra.Dimension.Constructions
+public import Mathlib.LinearAlgebra.Dimension.Finite
+public import Mathlib.LinearAlgebra.FreeModule.PID
 public import Formalism.SharpRestriction.GrowthBounds.FormalGroupSystem
 public import Formalism.SharpRestriction.GrowthBounds.LatticeSystems
-import Formalism.SubspaceCounting.SubspaceCountingProofs.ManyOrbits
-public import Formalism.ThetaLogCoordinates.ProductIdealMonotone.ProductIdealProofs.ElementarySymmetricExpBound
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -20,8 +26,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -29,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,11 +45,168 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.Style
+import Formalism.SubspaceCounting.SubspaceCountingProofs.ManyOrbits
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.ThetaLogCoordinates.ProductIdealMonotone.ElementarySymmetricExpBound, Formalism.ThetaLogCoordinates.ProductIdealMonotone.ProductIdealProofs.ElementarySymmetricExpBound, Formalism.SharpRestriction.GrowthBounds.MultisetValuation.StabilizerCount
+
+-- ===== clump member: Formalism.ThetaLogCoordinates.ProductIdealMonotone.ElementarySymmetricExpBound =====
+-- clump-header: {"m": "Formalism.ThetaLogCoordinates.ProductIdealMonotone.ElementarySymmetricExpBound", "h": "module\n\npublic import Formalism.SubspaceCounting.Statement\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open scoped BigOperators Classical Pointwise
+
+namespace Formalism.InvariantFactorPaths.G0
+
+open Formalism.G0
+
+def InvariantFactorsSubmodule : Prop :=
+  ∀ {R X : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [AddCommGroup X] [Module R X]
+    (π : R) (M M' P : Submodule R X) (g E : ℕ), P ≤ M' → M' ≤ M →
+    AllButLE π M P g E → AllButLE π M' P g E
+
+def InvShift : Prop :=
+  ∀ {R X : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [AddCommGroup X] [Module R X]
+    (π : R) (A B NA NB : Submodule R X) (g E e : ℕ), B ≤ A → NA ≤ A → π ^ e • NA ≤ NB → NB ≤ B →
+    AllButLE π A NA g E → AllButLE π B NB g (E + e)
+
+end Formalism.InvariantFactorPaths.G0
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.ThetaLogCoordinates.ProductIdealMonotone.ElementarySymmetricExpBound =====
+
+-- ===== clump member: Formalism.ThetaLogCoordinates.ProductIdealMonotone.ProductIdealProofs.ElementarySymmetricExpBound =====
+-- clump-header: {"m": "Formalism.ThetaLogCoordinates.ProductIdealMonotone.ProductIdealProofs.ElementarySymmetricExpBound", "h": "module\n\npublic import Formalism.ThetaLogCoordinates.ProductIdealMonotone.ElementarySymmetricExpBound\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.LinearAlgebra.Dimension.Constructions\npublic import Mathlib.LinearAlgebra.Dimension.Finite\npublic import Mathlib.LinearAlgebra.FreeModule.PID\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open scoped BigOperators Classical Pointwise
+
+namespace Formalism.InvariantFactorPaths.G0
+
+open Formalism.G0
+
+theorem invariant_factors_submodule : InvariantFactorsSubmodule := by
+  intro R X _ _ _ _ _ π M M' P g E hPM' hM'M h
+  classical
+  obtain ⟨C, hCM, hCg, hC⟩ := h
+
+  let f : (C → R) →ₗ[R] X ⧸ P :=
+    { toFun := fun a => ∑ c : C, a c • P.mkQ (c : X)
+      map_add' := by
+        intro a b
+        simp only [Pi.add_apply, add_smul, Finset.sum_add_distrib]
+      map_smul' := by
+        intro r a
+        simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.smul_sum, mul_smul] }
+  let W : Submodule R (X ⧸ P) := M'.map (P.mkQ ∘ₗ ((π ^ E) • LinearMap.id))
+  let U : Submodule R (C → R) := W.comap f
+
+  obtain ⟨n, b⟩ := Submodule.basisOfPid (Pi.basisFun R C) U
+  have hn : n ≤ C.card := by
+    have hli : LinearIndependent R (U.subtype ∘ b) :=
+      b.linearIndependent.map' U.subtype (Submodule.ker_subtype U)
+    have h1 := hli.fintype_card_le_finrank
+    simpa [Module.finrank_fintype_fun_eq_card, Fintype.card_coe] using h1
+  have hm : ∀ i, ∃ x ∈ M', P.mkQ (π ^ E • x) = f (b i) := by
+    intro i
+    have h1 : f (b i) ∈ W := (b i).2
+    obtain ⟨x, hx, hxe⟩ := Submodule.mem_map.mp h1
+    exact ⟨x, hx, hxe⟩
+  choose mm hmM hmf using hm
+  refine ⟨Finset.univ.image mm, ?_, ?_, ?_⟩
+  · intro z hz
+    obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp (Finset.mem_coe.mp hz)
+    exact hmM i
+  · refine Finset.card_image_le.trans ?_
+    rw [Finset.card_univ, Fintype.card_fin]
+    exact hn.trans hCg
+  · intro x hx
+    obtain ⟨p, hp, z, hz, hpz⟩ := Submodule.mem_sup.mp (hC x (hM'M hx))
+    obtain ⟨coef, -, hcoef⟩ := Submodule.mem_span_finset.mp hz
+    have hfa : f (fun c => coef c) = P.mkQ (π ^ E • x) := by
+      show ∑ c : C, coef c • P.mkQ (c : X) = _
+
+      rw [← hpz, map_add (f := _), Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero P).mpr hp, zero_add,
+      ← hcoef, map_sum, ← Finset.sum_coe_sort C]
+      refine Finset.sum_congr rfl fun c _ => ?_
+      rw [map_smul]
+    have ha : (fun c : C => coef (c : X)) ∈ U := by
+      show f _ ∈ W
+      rw [hfa]
+      exact Submodule.mem_map.mpr ⟨x, hx, rfl⟩
+    have hsum := congrArg Subtype.val (b.sum_repr ⟨_, ha⟩)
+    simp only [Submodule.coe_sum, Submodule.coe_smul] at hsum
+    set r := b.repr ⟨_, ha⟩ with hr
+    have hq : P.mkQ (π ^ E • x) = P.mkQ (∑ i, r i • π ^ E • mm i) := by
+
+      rw [← hfa, ← hsum, map_sum, map_sum]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      rw [map_smul, map_smul, hmf i]
+    have hmem : π ^ E • x - ∑ i, r i • π ^ E • mm i ∈ P := by
+      rw [← Submodule.ker_mkQ P, LinearMap.mem_ker, map_sub, hq, sub_self]
+    have hspan : ∑ i, r i • π ^ E • mm i ∈
+        Submodule.span R (↑(Finset.univ.image mm) : Set X) :=
+      Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.smul_mem _ _
+        (Submodule.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem mm (Finset.mem_univ i)))))
+    exact Submodule.mem_sup.mpr ⟨_, hmem, _, hspan, sub_add_cancel _ _⟩
+
+theorem inverse_shift : InvShift := by
+  intro R X _ _ _ _ _ π A B NA NB g E e hBA hNA hNANB hNBB h
+  classical
+  obtain ⟨C, hC, hCg, hCx⟩ :=
+    invariant_factors_submodule π A (B ⊔ NA) NA g E le_sup_right (sup_le hBA hNA) h
+  refine ⟨C.image (fun c => π ^ e • c), ?_, Finset.card_image_le.trans hCg, ?_⟩
+  · intro z hz
+    obtain ⟨c, hc, rfl⟩ := Finset.mem_image.mp (Finset.mem_coe.mp hz)
+    obtain ⟨b, hb, k, hk, hbk⟩ := Submodule.mem_sup.mp (hC hc)
+    rw [← hbk, smul_add]
+    exact B.add_mem (B.smul_mem _ hb)
+      (hNBB (hNANB (Submodule.smul_mem_pointwise_smul k _ _ hk)))
+  · intro x hx
+    obtain ⟨p, hp, z, hz, hpz⟩ := Submodule.mem_sup.mp (hCx x (le_sup_left (a := B) hx))
+    rw [pow_add, mul_comm, mul_smul, ← hpz, smul_add]
+    have hz' : π ^ e • z ∈ Submodule.span R (↑(C.image (fun c => π ^ e • c)) : Set X) := by
+      refine Submodule.span_induction (p := fun z _ => π ^ e • z ∈
+        Submodule.span R (↑(C.image (fun c => π ^ e • c)) : Set X)) ?_ ?_ ?_ ?_ hz
+      · intro c hc
+        exact Submodule.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem _ hc))
+      · simp
+      · intro a b _ _ ha hb
+        rw [smul_add]
+        exact add_mem ha hb
+      · intro r a _ ha
+        rw [smul_comm]
+        exact Submodule.smul_mem _ _ ha
+    exact Submodule.mem_sup.mpr ⟨_, hNANB (Submodule.smul_mem_pointwise_smul _ _ _ hp), _, hz', rfl⟩
+
+end Formalism.InvariantFactorPaths.G0
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.ThetaLogCoordinates.ProductIdealMonotone.ProductIdealProofs.ElementarySymmetricExpBound =====
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.MultisetValuation.StabilizerCount =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.MultisetValuation.StabilizerCount", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.FormalGroupSystem\npublic import Formalism.SharpRestriction.GrowthBounds.LatticeSystems\nimport Formalism.SubspaceCounting.SubspaceCountingProofs.ManyOrbits\npublic import Formalism.ThetaLogCoordinates.ProductIdealMonotone.ProductIdealProofs.ElementarySymmetricExpBound\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -207,18 +367,13 @@ theorem core (D : Formalism.BasicNotions.D7) (G : GAtP p) (v0 : Fin G.P.nV) (e :
       intro β _
       obtain ⟨C, hCM, hcard, hx⟩ := hshift β
       refine ⟨C, hCM, ?_, fun x hxM => ?_⟩
-      · have h0 : (0 : ℝ) ≤ (G.dna : ℝ) * (m : ℝ) ^ (β + 1) * esymmOn VV κ (β + 1) :=
-          mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg (Nat.cast_nonneg _) _)) (esymmOn_nonneg VV κ hκ _)
-        have hf : (1 : ℝ) ≤ (β + 1).factorial := by
-          exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero _)
-        have hpw2 : 0 ≤ Sig ^ (β + 1) := pow_nonneg hs0 _
-        have hpw : 0 ≤ (G.dna : ℝ) * Sig ^ (β + 1) := mul_nonneg (Nat.cast_nonneg _) hpw2
+      · have hpw : 0 ≤ Sig ^ (β + 1) := pow_nonneg hs0 _
         calc (C.card : ℝ) ≤ (⌊(G.dna : ℝ) * (m : ℝ) ^ (β + 1) * esymmOn VV κ (β + 1)⌋₊ : ℝ) := by
               exact_mod_cast hcard
-          _ ≤ (G.dna : ℝ) * (m : ℝ) ^ (β + 1) * esymmOn VV κ (β + 1) := Nat.floor_le h0
-          _ ≤ (G.dna : ℝ) * Sig ^ (β + 1) / ((β + 1).factorial : ℝ) := esymm_clause VV κ hκ m G.dna (β + 1)
-          _ ≤ (G.dna : ℝ) * Sig ^ (β + 1) := div_le_self hpw hf
-          _ ≤ (G.d : ℝ) * Sig ^ (β + 1) := mul_le_mul_of_nonneg_right (by exact_mod_cast hd) hpw2
+          _ ≤ (G.dna : ℝ) * Sig ^ (β + 1) :=
+            floor_scaled_esymmOn_le_sum_pow VV κ hκ m G.dna (β + 1)
+          _ ≤ (G.d : ℝ) * Sig ^ (β + 1) :=
+            mul_le_mul_of_nonneg_right (by exact_mod_cast hd) hpw
       · have he : e + τ + β * S = τ + β * S + e := by ring
         rw [he]
         exact hx x hxM)
@@ -518,3 +673,7 @@ theorem stmt6G (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (X : Inst D L
 end Record
 
 end Formalism.MainNotions.FormalGroupSystem.Pf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.MultisetValuation.StabilizerCount =====

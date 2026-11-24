@@ -95,7 +95,7 @@ theorem lbIso_diff_diff {L : LB X} (hL : L.IsLB) (u v : Y ⟶ X) (a b : Z ⟶ Y)
     LBIso (diff (diff L u v) a b) (diff (L.pull u) a b) := by
   refine lbIso_of_refines hL ((refines_self _ _).linComb _ _) ((refines_self _ _).linComb _ _) _ isGen_one
     fun U _ f => ?_
-  simp [Fintype.prod_prod_type, Fin.prod_univ_two, e, mul_comm (f (b ≫ u))⁻¹, mul_assoc]
+  simp [Fintype.prod_prod_type, Fin.prod_univ_two, e, mul_comm (f (b ≫ u))⁻¹]
 
 theorem lbIso_diff_pull {L : LB X} (hL : L.IsLB) (u v : Y ⟶ X) (a : Z ⟶ Y) (i : L.ι) (h : ∀ z, (a ≫ v) z ∈ L.U i) :
     LBIso ((diff L u v).pull a) (L.pull (a ≫ u)) := by
@@ -185,7 +185,7 @@ theorem exists_rigid_translate : Out.Laws → ∀ (R : Type) [CommRing R] (P : O
   rw [sq] at ht
   have := P.isAb.comm
   have := P.isAb.proper
-  obtain ⟨c, hc⟩ := Moduli.cube_of_isLB _ P P.L P.isLB
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.AbLaw.CubeAssembly.cube_gen _ P P.L P.isLB
   refine ⟨{ A := P.A, isAb := P.isAb, g := P.g, smoothDim := P.smoothDim, L := rigTransl P.L t
             isLB := DVR.linComb_isLB _ P.isLB _ _
             rigid := rigidified_rigTransl P.isLB

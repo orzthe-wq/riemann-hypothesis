@@ -58,12 +58,10 @@ def HostHyp (q d : ℕ) : Prop :=
   q.Prime ∧ d.Prime ∧ q % 8 = 3 ∧ d % 16 = 7 ∧ jacobiSym (-(d : ℤ)) q = 1
 
 theorem HostHyp.toHypQD {q d : ℕ} (h : HostHyp q d) : HypQD q d := by
-  obtain ⟨h1, h2, h3, h4, -⟩ := h
-  exact ⟨h1, h2, h3, by omega⟩
+  exact ⟨h.1, h.2.1, h.2.2.1, by have h4 := h.2.2.2.1; omega⟩
 
 theorem HostHyp.toHypOdd {q d : ℕ} (h : HostHyp q d) : HypOdd q d := by
-  obtain ⟨h1, h2, h3, h4, -⟩ := h
-  exact ⟨h1, h2, by omega, by omega, by omega⟩
+  exact h.toHypQD.toHypOdd
 
 abbrev HGrp (e : ℕ) : Type :=
   (ZMod (2 ^ (e + 2)))ˣ ⧸ Subgroup.zpowers (-1 : (ZMod (2 ^ (e + 2)))ˣ)
@@ -87,8 +85,7 @@ def chQ (e : ℕ) : GG e →* ℤˣ := (MonoidHom.fst ℤˣ ℤˣ).comp (MonoidH
 def Psi (e : ℕ) : Subgroup (GG e) := (chD e).ker
 
 theorem mem_Psi_iff {e : ℕ} (g : GG e) : g ∈ Psi e ↔ g.1.2 = 1 := by
-  rw [Psi, MonoidHom.mem_ker]
-  rfl
+  exact MonoidHom.mem_ker (f := chD e)
 
 section Fields
 

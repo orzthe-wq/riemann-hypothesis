@@ -67,23 +67,14 @@ theorem isHeckeChar_div {χ ψ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) 
     IsHeckeChar D (χ / ψ) := by
   rw [div_eq_mul_inv]; exact isHeckeChar_mul hχ (isHeckeChar_inv hψ)
 
-theorem isHeckeChar_pow {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (n : ℕ) : IsHeckeChar D (χ ^ n) :=
-  ⟨hχ.1.pow n, fun x => by rw [MonoidHom.pow_apply, hχ.2 x, one_pow]⟩
-
 theorem resEta_of_mod {χ : (AE D)ˣ →* Circle} {a b : ℕ} (h : ResEta D χ a) (hab : a % 2 = b % 2) : ResEta D χ b := by
   refine ⟨h.1, fun η hη x => ?_⟩
   rw [h.2 η hη x, ← Nat.mod_add_div a 2, ← Nat.mod_add_div b 2, pow_add, pow_add, pow_mul, pow_mul,
     GlobalTheory.EtaTildeOddParity.isEta_sq D η hη x, one_pow, one_pow, hab]
 
-theorem resEta_mul {χ ψ : (AE D)ˣ →* Circle} {a b : ℕ} (hχ : ResEta D χ a) (hψ : ResEta D ψ b) :
-    ResEta D (χ * ψ) (a + b) :=
-  ⟨hχ.1, fun η hη x => by rw [MonoidHom.mul_apply, hχ.2 η hη x, hψ.2 η hη x, pow_add]⟩
+alias resEta_mul := _root_.Formalism.L2.Theta.resEta_mul
 
-theorem resEta_inv {χ : (AE D)ˣ →* Circle} {a : ℕ} (hχ : ResEta D χ a) : ResEta D χ⁻¹ a := by
-  refine ⟨hχ.1, fun η hη x => ?_⟩
-  rw [MonoidHom.inv_apply, hχ.2 η hη x, ← inv_pow]
-  have h2 := GlobalTheory.EtaTildeOddParity.isEta_sq D η hη x
-  rw [inv_eq_of_mul_eq_one_right (by rw [← sq, h2] : η x * η x = 1)]
+alias resEta_inv := _root_.Formalism.L2.Theta.resEta_inv
 
 theorem resEta_pow {χ : (AE D)ˣ →* Circle} {a : ℕ} (hχ : ResEta D χ a) (k : ℕ) : ResEta D (χ ^ k) (a * k) :=
   ⟨hχ.1, fun η hη x => by rw [MonoidHom.pow_apply, hχ.2 η hη x, pow_mul]⟩

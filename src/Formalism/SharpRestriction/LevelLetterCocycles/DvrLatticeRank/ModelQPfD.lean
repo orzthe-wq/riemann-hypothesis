@@ -83,12 +83,6 @@ theorem mem_DelS' {x : W.DD T} : x ∈ DelS W T ↔ ∀ δ ∈ W.DelF, W.γD T �
 theorem mem_letS' {c : ZMod n} {x : W.DD T} : x ∈ letS W T c ↔ (letE c : LetA O n) • x = x := by
   simp [letS, sub_eq_zero]
 
-theorem γD_smulA' (g : W.Gam) (a : LetA O n) (x : W.DD T) :
-    W.γD T g (a • x) = W.γA g a • W.γD T g x := by
-  have := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
-  rw [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
-  exact this
-
 theorem expand_at (π' a : LetA O n) (i : ZMod n) (hπ0 : PowerSeries.constantCoeff (π' i) = 0)
     (F : PowerSeries O) (hF : a i = PowerSeries.subst (π' i) F) :
     a i = π' i * PowerSeries.subst (π' i) (PowerSeries.mk fun p => PowerSeries.coeff (p + 1) F) +
@@ -117,8 +111,8 @@ theorem basis_L [IsDomain O] (π' : LetA O n) (s' : ℕ) (hs : 1 ≤ s') (w₁ :
     intro j
     obtain ⟨hN, hΔ⟩ := hbΔ j
     refine ⟨⟨(W.N T).smul_mem _ hN, (mem_DelS' W T).2 fun δ hδ => ?_⟩, (mem_letS' W T).2 ?_⟩
-    · rw [γD_smulA', hΔ δ hδ, (show ∀ δ ∈ W.DelF, W.γA δ (letE d : LetA O n) = letE d from letE_mem W d) δ hδ]
-    · rw [smul_smul, letE_mul_self']
+    · rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hΔ δ hδ, (show ∀ δ ∈ W.DelF, W.γA δ (letE d : LetA O n) = letE d from _root_.Formalism.MainNotions.LiftingTheory.idempotent_mem_invariants W d) δ hδ]
+    · rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
   let v : Fin r → LcQ W T π' c := fun j => Submodule.Quotient.mk ⟨_, hmem j⟩
   have hli : LinearIndependent O v := by
     rw [Fintype.linearIndependent_iff]
@@ -176,7 +170,7 @@ theorem basis_L [IsDomain O] (π' : LetA O n) (s' : ℕ) (hs : 1 ≤ s') (w₁ :
         rw [PowerSeries.algebraMap_apply]
         simp only [Algebra.algebraMap_self, RingHom.id_apply, t, κ]
         ring
-      · simp [letE, Pi.single_apply, hi]
+      · simp [letE, hi]
     set y : W.DD T := ∑ j, ((letE d : LetA O n) * t j) • b j with hydef
     have hyN : y ∈ W.N T := Submodule.sum_mem _ fun j _ => (W.N T).smul_mem _ (hbΔ j).1
     have hxe : x = ∑ j, κ j • ((letE d : LetA O n) • b j) + π' • y := by

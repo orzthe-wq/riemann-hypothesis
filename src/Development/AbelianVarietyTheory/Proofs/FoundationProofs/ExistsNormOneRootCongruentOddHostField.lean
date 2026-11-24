@@ -4,7 +4,8 @@ public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsRoo
 public import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.CoeSelfDualLatticeInFrameCoordinatesEq
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsOpenCongruenceIdelesAndRealFiniteParts
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIntegralUnitRootNormOneAdeleStatement
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIntegralUnitRootNormOneAdele
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,7 +63,7 @@ theorem finite_root_odd (F E : Type) [Field F] [NumberField F] [Field E] [Number
   have huO : u ∈ intHat F E := by
     rw [hu1]
     exact add_mem (one_mem _) (mul_mem (natCast_mem _ n) hz)
-  obtain ⟨x₁, hx₁, ⟨y₁, hy₁, hxy₁⟩, hr₁⟩ := GlobalTheory.T.exists_integral_unit_root_norm_one_adele F E c h2 hc hP u huO hu
+  obtain ⟨x₁, hx₁, ⟨y₁, hy₁, hxy₁⟩, hr₁⟩ := _root_.GlobalTheory.AdLat.exists_integral_unit_root F E c h2 hc hP u huO hu
   obtain ⟨e, f, hee, hef, hun⟩ :=
     exists_idem (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletionIntegers F) n
   obtain ⟨h, hh⟩ : ∃ h, e = 2 * h := by

@@ -1,28 +1,38 @@
 module
 
+public import Mathlib.LinearAlgebra.Dimension.Finrank
+public import Mathlib.RingTheory.Finiteness.Defs
+public import Mathlib.Algebra.Algebra.Bilinear
+public import Mathlib.LinearAlgebra.Dimension.Constructions
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsDualDualRep
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPlaceOverMoveValCc
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlternatingFormLeftCorankLeOneStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemilinearCoefficientMapCocycles
 public import Development.AutomorphicArithmetic.CyclotomicBounds.CyclotomicOrders.ExistsCycZPowNeOne
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -32,7 +42,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,8 +57,139 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.Tactic.Linter.HaveILetI
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlternatingFormLeftCorankLeOne, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsElementsSelmerFormsSmallCorank
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlternatingFormLeftCorankLeOne =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlternatingFormLeftCorankLeOne", "h": "module\n\npublic import Mathlib.LinearAlgebra.Dimension.Finrank\npublic import Mathlib.RingTheory.Finiteness.Defs\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Algebra.Bilinear\npublic import Mathlib.LinearAlgebra.Dimension.Constructions\npublic import Mathlib.LinearAlgebra.Dual.Lemmas\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.AltCorank
+
+open Module
+
+variable {K V : Type} [Field K] [AddCommGroup V] [Module K V]
+
+def Good (S₁ S₂ : Submodule K V) : Prop :=
+  ∃ ω : V →ₗ[K] V →ₗ[K] K, (∀ v, ω v v = 0) ∧ ∀ x : Fin 2 → V, (∀ a, x a ∈ S₁) →
+    (∀ a, ∀ y ∈ S₂, ω (x a) y = 0) → ¬ LinearIndependent K x
+
+theorem good_step (S₁ S₂ T₁ T₂ : Submodule K V) (u v : V) (φ ψ : V →ₗ[K] K)
+    (hφu : φ u = 1) (hφv : φ v = 0) (hψu : ψ u = 0) (hψv : ψ v = 1) (hv : v ∈ S₂)
+    (hu : u ∈ S₂ ∨ ∀ x ∈ S₁, ψ x = 0)
+    (h₁ : ∀ x ∈ S₁, φ x = 0 → ψ x = 0 → x ∈ T₁)
+    (h₂ : ∀ y ∈ T₂, y ∈ S₂ ∧ φ y = 0 ∧ ψ y = 0) (h : Good T₁ T₂) : Good S₁ S₂ := by
+  obtain ⟨ω, hω, hk⟩ := h
+  let π : V →ₗ[K] V := LinearMap.id - φ.smulRight u - ψ.smulRight v
+  have hπ : ∀ x, π x = x - φ x • u - ψ x • v := fun x => rfl
+  let Ω : V →ₗ[K] V →ₗ[K] K :=
+    ω.compl₁₂ π π + (LinearMap.mul K K).compl₁₂ φ ψ - (LinearMap.mul K K).compl₁₂ ψ φ
+  have hΩ : ∀ x y, Ω x y = ω (π x) (π y) + φ x * ψ y - ψ x * φ y := fun x y => rfl
+  have hπu : π u = 0 := by simp [hπ, hφu, hψu]
+  have hπv : π v = 0 := by simp [hπ, hφv, hψv]
+  refine ⟨Ω, fun x => by rw [hΩ, hω]; ring, fun x hx hz => ?_⟩
+  have e1 : ∀ a, φ (x a) = 0 := fun a => by
+    have := hz a v hv
+    rw [hΩ, hπv, hφv, hψv] at this
+    simpa using this
+  have e2 : ∀ a, ψ (x a) = 0 := fun a => by
+    rcases hu with hu | hu
+    · have := hz a u hu
+      rw [hΩ, hπu, hφu, hψu] at this
+      simpa using this
+    · exact hu _ (hx a)
+  refine hk x (fun a => h₁ _ (hx a) (e1 a) (e2 a)) fun a y hy => ?_
+  obtain ⟨hy, f1, f2⟩ := h₂ y hy
+  have := hz a y hy
+  rw [hΩ, hπ, hπ, e1, e2, f1, f2] at this
+  simpa using this
+
+theorem finrank_inf_ker [Module.Finite K V] (S : Submodule K V) (φ : V →ₗ[K] K) (u : V)
+    (hu : u ∈ S) (hφ : φ u = 1) :
+    finrank K (S ⊓ LinearMap.ker φ : Submodule K V) + 1 = finrank K S := by
+  have hne : (φ.domRestrict S : Module.Dual K S) ≠ 0 := by
+    intro h
+    have := LinearMap.congr_fun h ⟨u, hu⟩
+    simp [hφ] at this
+  rw [← Module.Dual.finrank_ker_add_one_of_ne_zero hne, LinearMap.ker_domRestrict,
+    ← Submodule.map_comap_subtype, Submodule.finrank_map_subtype_eq]
+
+theorem exists_dual (S : Submodule K V) (u : V) (hu : u ∉ S) :
+    ∃ φ : V →ₗ[K] K, φ u = 1 ∧ ∀ x ∈ S, φ x = 0 := by
+  obtain ⟨f, hf, hS⟩ := S.exists_dual_map_eq_bot_of_notMem hu inferInstance
+  refine ⟨(f u)⁻¹ • f, by simp [hf], fun x hx => ?_⟩
+  have : f x ∈ S.map f := ⟨x, hx, rfl⟩
+  rw [hS] at this
+  simp [(Submodule.mem_bot K).1 this]
+
+theorem good_of_finrank_eq [Module.Finite K V] (n : ℕ) :
+    ∀ S₁ S₂ : Submodule K V, finrank K S₁ = n → finrank K S₂ = n → Good S₁ S₂ := by
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+  intro S₁ S₂ h₁ h₂
+  by_cases hE : S₁ = S₂
+  · subst hE
+    by_cases hx : ∃ x : Fin 2 → V, (∀ a, x a ∈ S₁) ∧ LinearIndependent K x
+    · obtain ⟨x, hx, hli⟩ := hx
+      have n0 : x 0 ∉ Submodule.span K {x 1} := by
+        have := hli.notMem_span_image (s := {1}) (x := 0) (by simp)
+        simpa using this
+      have n1 : x 1 ∉ Submodule.span K {x 0} := by
+        have := hli.notMem_span_image (s := {0}) (x := 1) (by simp)
+        simpa using this
+      obtain ⟨φ, a1, a2⟩ := exists_dual _ _ n0
+      obtain ⟨ψ, b1, b2⟩ := exists_dual _ _ n1
+      have a3 := a2 _ (Submodule.mem_span_singleton_self _)
+      have b3 := b2 _ (Submodule.mem_span_singleton_self _)
+      have hlt : finrank K (S₁ ⊓ LinearMap.ker φ ⊓ LinearMap.ker ψ : Submodule K V) < n := by
+        have := finrank_inf_ker S₁ φ _ (hx 0) a1
+        have := Submodule.finrank_mono
+          (inf_le_left : S₁ ⊓ LinearMap.ker φ ⊓ LinearMap.ker ψ ≤ S₁ ⊓ LinearMap.ker φ)
+        omega
+      refine good_step S₁ S₁ _ _ (x 0) (x 1) φ ψ a1 a3 b3 b1 (hx 1) (Or.inl (hx 0)) ?_ ?_
+        (ih _ hlt _ _ rfl rfl)
+      · intro y h1 h2 h3
+        exact ⟨⟨h1, h2⟩, h3⟩
+      · rintro y ⟨⟨h1, h2⟩, h3⟩
+        exact ⟨h1, h2, h3⟩
+    · exact ⟨0, fun _ => rfl, fun x h1 _ h2 => hx ⟨x, h1, h2⟩⟩
+  · have l1 : ¬ S₁ ≤ S₂ := fun h => hE (Submodule.eq_of_le_of_finrank_eq h (h₁.trans h₂.symm))
+    have l2 : ¬ S₂ ≤ S₁ := fun h =>
+      hE (Submodule.eq_of_le_of_finrank_eq h (h₂.trans h₁.symm)).symm
+    obtain ⟨u, hu1, hu2⟩ := SetLike.not_le_iff_exists.1 l1
+    obtain ⟨v, hv2, hv1⟩ := SetLike.not_le_iff_exists.1 l2
+    obtain ⟨φ, a1, a2⟩ := exists_dual _ _ hu2
+    obtain ⟨ψ, b1, b2⟩ := exists_dual _ _ hv1
+    have c1 := finrank_inf_ker S₁ φ u hu1 a1
+    have c2 := finrank_inf_ker S₂ ψ v hv2 b1
+    refine good_step S₁ S₂ (S₁ ⊓ LinearMap.ker φ) (S₂ ⊓ LinearMap.ker ψ) u v φ ψ a1 (a2 _ hv2)
+      (b2 _ hu1) b1 hv2 (Or.inr b2) ?_ ?_ (ih (n - 1) (by omega) _ _ (by omega) (by omega))
+    · intro y h1 h2 _
+      exact ⟨h1, h2⟩
+    · rintro y ⟨h1, h2⟩
+      exact ⟨h1, a2 _ h1, h2⟩
+
+theorem exists_alt_corank_le_one :
+    ∀ (K V : Type) [Field K] [AddCommGroup V] [Module K V] [Module.Finite K V]
+      (S₁ S₂ : Submodule K V), Module.finrank K S₁ = Module.finrank K S₂ →
+      ∃ ω : V →ₗ[K] V →ₗ[K] K, (∀ v, ω v v = 0) ∧ ∀ x : Fin 2 → V, (∀ a, x a ∈ S₁) →
+        (∀ a, ∀ y ∈ S₂, ω (x a) y = 0) → ¬ LinearIndependent K x :=
+  fun _ _ _ _ _ _ S₁ S₂ h => good_of_finrank_eq _ S₁ S₂ h rfl
+
+end GlobalTheory.AltCorank
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlternatingFormLeftCorankLeOne =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsElementsSelmerFormsSmallCorank =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsElementsSelmerFormsSmallCorank", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsDualDualRep\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsPlaceOverMoveValCc\npublic import Mathlib.LinearAlgebra.Dimension.Finrank\npublic import Mathlib.RingTheory.Finiteness.Defs\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlternatingFormLeftCorankLeOne\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemilinearCoefficientMapCocycles\npublic import Development.AutomorphicArithmetic.CyclotomicBounds.CyclotomicOrders.ExistsCycZPowNeOne\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ContinuousCycMod\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -333,7 +473,7 @@ theorem abs_two (hcc : ∀ g, cj (cj g) = g) (A : (Fin r → K) ≃ₗ[K] (Fin r
   let S₂ : Submodule K (H1 ρ) := S'.map C.toLinearMap
   let T : Submodule K (H1 ρ) := S ⊔ S₂
   refine ⟨Module.finrank K T * Module.finrank K T, fun L ho hn hc hL hL' hsp => ?_⟩
-  obtain ⟨ω, hω0, hω⟩ := GlobalTheory.T.exists_alternating_form_left_corank_le_one K T (S.comap T.subtype) (S₂.comap T.subtype) (by
+  obtain ⟨ω, hω0, hω⟩ := _root_.GlobalTheory.AltCorank.exists_alt_corank_le_one K T (S.comap T.subtype) (S₂.comap T.subtype) (by
     rw [(Submodule.comapSubtypeEquivOfLe (le_sup_left : S ≤ T)).finrank_eq,
       (Submodule.comapSubtypeEquivOfLe (le_sup_right : S₂ ≤ T)).finrank_eq, hd]
     exact (LinearEquiv.finrank_map_eq C S').symm)
@@ -419,7 +559,7 @@ theorem map_transpose_mul_dual (g : GE N) :
       algebraMap (X.O0 i) K ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) • (1 : Matrix _ _ K) := by
   rw [← Matrix.transpose_map, ← Matrix.map_mul, transpose_mul_dual]
   ext a b
-  by_cases h : a = b <;> simp [Matrix.one_apply, h]
+  by_cases h : a = b <;> simp [h]
 
 omit [TopologicalSpace K] [DiscreteTopology K] in
 theorem pairing {ρ : GE N →* GL (Fin D.R.r) (X.O0 i)} (hρ : IsDual i s ρ) (g : GE N) (v w : Fin D.R.r → K) :
@@ -633,3 +773,6 @@ theorem chooseH : GlobalFiniteness → ∀ (D : Formalism.BasicNotions.D7) (N : 
 end GlobalTheory.ChooseForms
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsElementsSelmerFormsSmallCorank =====

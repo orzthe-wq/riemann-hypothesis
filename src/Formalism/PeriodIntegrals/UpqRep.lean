@@ -139,8 +139,7 @@ def coeMatrixAlt {n : ℕ} (ε : Fin n → Bool) : UJ ε → Matrix (Fin n) (Fin
 
 lemma coeMatrix_left_inv {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) :
     (Jm ε * gᴴ * Jm ε) * g = 1 := by
-  calc Jm ε * gᴴ * Jm ε * g = Jm ε * (gᴴ * Jm ε * g) := by simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [hg, Jm_mul_self]
+  simpa only [← Matrix.mul_assoc, Jm_mul_self] using congrArg (fun x => Jm ε * x) hg
 
 lemma coeMatrix_inv_eq {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) :
     (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
@@ -175,8 +174,7 @@ lemma isInducing_coeMatrix {n : ℕ} (ε : Fin n → Bool) : IsInducing (coeMatr
   exact Units.isInducing_embedProduct.comp IsInducing.subtypeVal
 
 lemma injective_coeMatrix {n : ℕ} (ε : Fin n → Bool) : Function.Injective (coeMatrixAlt ε) := by
-  intro a b h
-  exact Subtype.ext (Units.ext h)
+  exact fun a b h => Subtype.ext (Units.ext h)
 
 theorem isClosedEmbeddingMatrix : UJEmb := by
   intro n ε
@@ -217,10 +215,8 @@ lemma Kset_mul {n : ℕ} (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ
 lemma Kset_star {n : ℕ} (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     star g ∈ Kset ε := by
   refine ⟨Unitary.star_mem hg.1, ?_⟩
-  have h := congrArg Matrix.conjTranspose hg.2
-  rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Jm_conjTranspose] at h
-  rw [Matrix.star_eq_conjTranspose]
-  exact h.symm
+  simpa [Matrix.star_eq_conjTranspose, Matrix.conjTranspose_mul, Jm_conjTranspose] using
+    (congrArg Matrix.conjTranspose hg.2).symm
 
 def KG {n : ℕ} (ε : Fin n → Bool) : Subgroup (UJ ε) where
   carrier := {g | toM g ∈ Kset ε}

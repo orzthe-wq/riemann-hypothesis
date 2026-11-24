@@ -68,7 +68,7 @@ variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) i
 private theorem valuation_le_one_iff_adicValuation_le_one (x : v.adicCompletion F) :
     letI := _root_.GlobalTheory.LocalData.complRel v
     (valuation (v.adicCompletion F)) x ≤ 1 ↔ Valued.v x ≤ 1 := by
-  letI := _root_.GlobalTheory.LocalData.complRel v
+  let := _root_.GlobalTheory.LocalData.complRel v
   have : Valuation.Compatible
       (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))) :=
     Valuation.Compatible.ofValuation _
@@ -80,8 +80,8 @@ private theorem residueFieldCard_adicCompletion_lemma :
     letI := _root_.GlobalTheory.LocalData.complRel v
     haveI := _root_.GlobalTheory.LocalData.isLocalField v
     _root_.GlobalTheory.SplitWeil.resCard (v.adicCompletion F) = _root_.Formalism.UG.qV F v := by
-  letI := _root_.GlobalTheory.LocalData.complRel v
-  haveI := _root_.GlobalTheory.LocalData.isLocalField v
+  let := _root_.GlobalTheory.LocalData.complRel v
+  have := _root_.GlobalTheory.LocalData.isLocalField v
   have hmem : ∀ x : v.adicCompletion F,
       x ∈ 𝒪[v.adicCompletion F] ↔ x ∈ v.adicCompletionIntegers F := fun x => by
     simpa [Valuation.mem_integer_iff, HeightOneSpectrum.mem_adicCompletionIntegers] using
@@ -105,8 +105,8 @@ theorem _root_.GlobalTheory.SmGL.SphCompletion.ord_completion (x : (v.adicComple
     haveI := _root_.GlobalTheory.LocalData.isLocalField v
     _root_.GlobalTheory.SmGL.ord (v.adicCompletion F) x =
       -WithZero.log (Valued.v (x : v.adicCompletion F)) := by
-  letI := _root_.GlobalTheory.LocalData.complRel v
-  haveI := _root_.GlobalTheory.LocalData.isLocalField v
+  let := _root_.GlobalTheory.LocalData.complRel v
+  have := _root_.GlobalTheory.LocalData.isLocalField v
   have h := _root_.GlobalTheory.LGrp.BorelCompletion.nabs_completion v x
   rw [_root_.GlobalTheory.LGrp.nabs_eq_zpow, residueFieldCard_adicCompletion_lemma] at h
   have hq : (1 : ℝ) < _root_.Formalism.UG.qV F v := by
@@ -122,9 +122,9 @@ theorem _root_.GlobalTheory.SmGL.SphCompletion.KO_completion (n : ℕ) :
     letI := _root_.GlobalTheory.LocalData.complRel v
     haveI := _root_.GlobalTheory.LocalData.isLocalField v
     _root_.GlobalTheory.SplitWeil.KO (v.adicCompletion F) (Fin n) = _root_.Formalism.UG.GLint (Fin n) (_root_.Formalism.UG.Ov F v) := by
-  letI := _root_.GlobalTheory.LocalData.complRel v
-  haveI := _root_.GlobalTheory.LocalData.isLocalField v
-  haveI := _root_.Formalism.UG.P.tjcosets_isLocalRing v
+  let := _root_.GlobalTheory.LocalData.complRel v
+  have := _root_.GlobalTheory.LocalData.isLocalField v
+  have := _root_.Formalism.UG.P.tjcosets_isLocalRing v
   ext g
   rw [_root_.GlobalTheory.SplitFlip.mem_KO_iff, _root_.Formalism.UG.P.tjcosets_mem_K_iff]
   simp only [Valuation.mem_integer_iff, _root_.Formalism.UG.P.cartan_mem_Ov, valuation_le_one_iff_adicValuation_le_one]
@@ -160,8 +160,8 @@ theorem _root_.GlobalTheory.SmGL.SphCompletion.law_completion (n : ℕ) (α : Fi
         (_root_.GlobalTheory.SmGL.leviTorus (v.adicCompletion F) (Fin n)).symm.toMonoidHom)
         (_root_.GlobalTheory.SmGL.leviProj _ (_root_.GlobalTheory.SmGL.points (Fin n)) b) c =
       _root_.Formalism.UG.chiDelta F v (fun i => (α i : ℂ)) b.1 * c := by
-  letI := _root_.GlobalTheory.LocalData.complRel v
-  haveI := _root_.GlobalTheory.LocalData.isLocalField v
+  let := _root_.GlobalTheory.LocalData.complRel v
+  have := _root_.GlobalTheory.LocalData.isLocalField v
   set t := _root_.GlobalTheory.SmGL.leviProj _ (_root_.GlobalTheory.SmGL.points (Fin n)) b with ht
   have hdet : ∀ i, ((Matrix.GeneralLinearGroup.det (t i) : (v.adicCompletion F)ˣ) :
       v.adicCompletion F) = (b.1 : Matrix _ _ _) i i := by
@@ -241,8 +241,8 @@ theorem _root_.GlobalTheory.SmGL.SphCompletion.isSpherical_iff : ∀ (F : Type) 
           (_root_.GlobalTheory.SmGL.prinSeries fun i => _root_.GlobalTheory.SmGL.unrChar (v.adicCompletion F) (α i))
           (_root_.GlobalTheory.SplitWeil.KO (v.adicCompletion F) (Fin n)), f.1.1 = φ) := by
   intro F _ _ v n α φ
-  letI := _root_.GlobalTheory.LocalData.complRel v
-  haveI := _root_.GlobalTheory.LocalData.isLocalField v
+  let := _root_.GlobalTheory.LocalData.complRel v
+  have := _root_.GlobalTheory.LocalData.isLocalField v
   have hlaw := _root_.GlobalTheory.SmGL.SphCompletion.law_completion v n α
   have hone : _root_.Formalism.UG.chiDelta F v (fun i => (α i : ℂ)) 1 = 1 := by
     unfold _root_.Formalism.UG.chiDelta

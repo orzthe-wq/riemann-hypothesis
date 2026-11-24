@@ -110,7 +110,7 @@ theorem gram_adapted {a m : ℕ} {j : Fin a → ℕ} (J : Matrix (Fin n) (Fin n)
       refine (congrFun (congrFun (h2 i).1 s) t).trans ?_
       simp [Matrix.one_apply]
     · refine (congrFun (congrFun ((h1 i k).2.2 h) s) t).trans ?_
-      simp [Matrix.one_apply, h]
+      simp [h]
   have a13 : (cat T)ᴴ * J * T₀ = 0 := by
     ext ⟨i, s⟩ t
     exact congrFun (congrFun (h2 i).2.1 s) t

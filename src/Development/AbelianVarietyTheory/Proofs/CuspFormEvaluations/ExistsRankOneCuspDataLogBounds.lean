@@ -3,9 +3,15 @@ module
 public import Development.AbelianVarietyTheory.Definitions.ThetaValues.GamAt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.SupGenTies
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EqOrEqNegOfPurelyImaginaryOfNormEq
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsRankOneCuspLatticeDataOfPrincipalStatement
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsClearingIntegersPrincipalDatumHostStatement
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ModelWeightSizeSpreadBoundStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
+public import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
+public import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
+public import Formalism.LocalToGlobal.ProjectiveLattices.CuspidalL2Subspace
+public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsRankOneCuspLatticeDataOfPrincipal
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsClearingIntegersPrincipalDatumHost
+public import Formalism.LocalToGlobal.ProjectiveLattices.HasDataCondition
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ModelWeightSizeSpreadBound
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TransvMem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -45,7 +51,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
-public import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
 
 @[expose] public section
 
@@ -97,26 +102,26 @@ theorem weight_bounds (L f r n d : ℝ) (hL : 2 ≤ L) (hf : 1 ≤ f) (hfr : f �
   have hdx : 1 + d ≤ x ^ 2 := by rw [← e2]; exact (Real.log_le_iff_le_exp (by linarith)).1 hD
   have hfx : f ≤ x := by linarith
   have hrx : r ≤ x := by linarith
-  have hfn : f * n ≤ x ^ 2 := by nlinarith
-  have hfn0 : 0 ≤ f * n := by nlinarith
-  have hx2 : 9 ≤ x ^ 2 := by nlinarith
-  have hx23 : 3 * x ^ 2 ≤ x ^ 3 := by nlinarith
-  have hx35 : 9 * x ^ 3 ≤ x ^ 5 := by nlinarith
+  have hfn : f * n ≤ x ^ 2 := by rw [sq]; exact mul_le_mul hfx hnx hn0.le (by linarith)
+  have hfn0 : 0 ≤ f * n := mul_nonneg (by linarith) hn0.le
+  have hx2 : 9 ≤ x ^ 2 := by linarith [pow_le_pow_left₀ (by norm_num) hx3 2]
+  have hx23 : 3 * x ^ 2 ≤ x ^ 3 := by linarith [mul_le_mul_of_nonneg_right hx3 (sq_nonneg x)]
+  have hx35 : 9 * x ^ 3 ≤ x ^ 5 := by rw [show x ^ 5 = x ^ 2 * x ^ 3 by ring]; exact mul_le_mul_of_nonneg_right hx2 (pow_nonneg (by linarith) 3)
   have hA : d + f * n + 1 ≤ 2 * x ^ 2 := by linarith
   refine ⟨?_, ?_, ?_⟩
   · rw [Real.log_le_iff_le_exp (by linarith), e3]
     linarith
   · have hB : f * (d + f * n + 1) ≤ x * (2 * x ^ 2) := mul_le_mul hfx hA (by linarith) (by linarith)
-    rw [Real.log_le_iff_le_exp (by nlinarith), e5]
-    nlinarith
+    rw [Real.log_le_iff_le_exp (by positivity), e5]
+    linarith [pow_nonneg (show 0 ≤ x by linarith) 3, one_le_pow₀ (n := 3) (show 1 ≤ x by linarith)]
   · intro s hs0 hs
-    have hfr0 : 0 ≤ f * r := by nlinarith
+    have hfr0 : 0 ≤ f * r := mul_nonneg (by linarith) (by linarith)
     have hC : f * r * n ≤ x ^ 3 := by
       have h1 : f * r ≤ x * x := mul_le_mul hfx hrx (by linarith) (by linarith)
       have h2 : f * r * n ≤ x * x * x := mul_le_mul h1 hnx hn0.le (by positivity)
-      nlinarith
+      linarith
     rw [Real.log_le_iff_le_exp (by linarith), e3]
-    nlinarith
+    linarith [sq_nonneg x]
 
 private theorem level_M_eq_g_zero_mul_g_one_of_lawsM {D : D7} (T : Core D) (h : Formalism.L2.Pj.LawsM T) :
     T.Q.l.M = D.host.g 0 * D.host.g 1 := by
@@ -128,8 +133,8 @@ theorem cusp_data_bounds : ∀ (D : D7) (T : Top D) (_h : LawsP T), GamAt T.toCo
   intro D T h hGam large₂ j hj w hP hL hrn σ hσ
   obtain ⟨hgi, hlrd, hdd, hcc, -, -, -, hDF, hn⟩ := hP
   obtain ⟨⟨NA, hNA0, hNAi, hNAL⟩, hccA, hcc0, ⟨m, hm0, hmi, hmL⟩, hk0L, hfdeg, -, -, hfr, hf1, hxicc, -,
-    hxiabs⟩ := GlobalTheory.T.exists_clearing_integers_principalDatum_host D large₂.sc.L hL hlrd hdd hcc
-  have h10 := GlobalTheory.T.modelWeight_size_spread_bound D T h j hj w σ hσ
+    hxiabs⟩ := _root_.GlobalTheory.HostClear.host_clear D large₂.sc.L hL hlrd hdd hcc
+  have h10 := _root_.GlobalTheory.RunIn.WtSize.laU_wtA_size D T h j hj w σ hσ
   obtain ⟨hW1, hW2, hW3⟩ := weight_bounds large₂.sc.L (D.R.f : ℝ) (D.R.r : ℝ) (w.n : ℝ) (WeightAlgebra.DF w : ℝ) hL
     (by exact_mod_cast hf1) (by exact_mod_cast hfr) (by exact_mod_cast hrn) (by positivity) hn hDF
   have hwg0 : 0 < (WeightAlgebra.DF w : ℝ) + D.R.f * w.n + 1 := by positivity
@@ -143,7 +148,7 @@ theorem cusp_data_bounds : ∀ (D : D7) (T : Top D) (_h : LawsP T), GamAt T.toCo
   · exact ⟨fun k => isEmptyElim k, 1, _, le_rfl, by simp; positivity, hwg0, hW1, hwgF, fun k => isEmptyElim k⟩
   have hPr : GlobalTheory.FrameNorm.HasPrinc (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) T.Q.l.M :=
     fun k γ h1 h2 => hGam j hj σ hσ k γ h1 h2
-  choose Xx hXx hXg hXΛ hXk0 hXNA hXNC using GlobalTheory.T.exists_rankOneCuspLatticeData_of_principal D T.toCore h.toLawsCore j hj σ hσ hPr
+  choose Xx hXx hXg hXΛ hXk0 hXNA hXNC using _root_.GlobalTheory.LatticeData.exists_dataX_of_hasPrinc D T.toCore h.toLawsCore j hj σ hσ hPr
   choose e heNA heNC heg hek0 using fun k => exists_ext (Xx k) _ (hXx k) _ (hXΛ k) NA
     (Ideal.absNorm D.host.ccK) hNA0 hcc0 hNAi hccA
   have hMpos : 0 < T.Q.l.M := by rw [← hXg k₁]; exact (Xx k₁).g_pos

@@ -84,14 +84,6 @@ theorem compAt_adjO {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (τ : D.wh
   rw [e, e, adjO, Matrix.map_mul, Matrix.map_mul, h1, h2, h3, cdag, gramAt, gramAt,
     GlobalTheory.OrientedChar.map_inv_field _ _ (Formalism.L2.Theta.gram_det_ne T)]
 
-theorem finPart_adjO (S T : HSp D) (y : WO T S) (hy : y.map (finPart D) = 0) :
-    (adjO S T y).map (finPart D) = 0 := by
-  have h0 : (((y : Matrix (Fin S.rank) (Fin T.rank) (AE D)).map (cA D)).transpose).map (finPart D) = 0 := by
-    ext a b
-    have : finPart D (y b a) = 0 := congrFun (congrFun hy b) a
-    simp [GlobalTheory.OrientedChar.finPart_cA_eq_zero this]
-  rw [adjO, Matrix.map_mul, Matrix.map_mul, h0, Matrix.mul_zero, Matrix.zero_mul]
-
 end GlobalTheory.FockAdjoint
 
 namespace GlobalTheory.FockAdjoint
@@ -110,7 +102,7 @@ theorem lineAt_adjO (hθ : IsInfFam θ) (L : AdjLaw ψ S T) (τ : D.what₂.Tau)
   have hw := GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ w
   let L' : ℝ →+ WO S T := (AddMonoidHom.mk' (adjO S T) L.add).comp (lineAt θ τ w)
   have hL' : IsLineAt θ τ (cdag S T τ w) L' := by
-    refine ⟨L.cont.comp hw.1, fun t => finPart_adjO S T _ (hw.2.1 t), fun t τ' => ?_⟩
+    refine ⟨L.cont.comp hw.1, fun t => _root_.GlobalTheory.AdjLawPf.adj_finPart S T _ (hw.2.1 t), fun t τ' => ?_⟩
     show compAt θ τ' (adjO S T (lineAt θ τ w t)) = _
     rw [compAt_adjO hθ, hw.2.2 t τ']
     split_ifs with h
@@ -143,20 +135,17 @@ theorem gramAt_det_ne (V : HSp D) (τ : D.what₂.Tau) : (gramAt D V τ).det ≠
   rw [gramAt, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
   exact (map_ne_zero _).2 (Formalism.L2.Theta.gram_det_ne V)
 
-theorem cart_adj {n : ℕ} {G s : Matrix (Fin n) (Fin n) ℂ} (h : IsCartanInv G s) : sᴴ * G = G * s := by
-  rw [← Matrix.mul_one (sᴴ * G), ← h.1, ← Matrix.mul_assoc, h.2.1]
-
 theorem cdag_cplx {aS : Matrix (Fin S.rank) (Fin S.rank) ℂ} {bT : Matrix (Fin T.rank) (Fin T.rank) ℂ} (τ : D.what₂.Tau)
     (hS : IsCartanInv (gramAt D S τ) aS) (hT : IsCartanInv (gramAt D T τ) bT)
     (w : Matrix (Fin S.rank) (Fin T.rank) ℂ) :
     cdag S T τ (cplxO bT aS w) = -cplxO aS bT (cdag S T τ w) := by
   have hu : IsUnit (gramAt D T τ).det := isUnit_iff_ne_zero.2 (gramAt_det_ne T τ)
-  have k1 : aSᴴ * gramAt D S τ = gramAt D S τ * aS := cart_adj hS
+  have k1 : aSᴴ * gramAt D S τ = gramAt D S τ * aS := _root_.GlobalTheory.CartanTrace.adj_mul hS
   have k2 : (gramAt D T τ)⁻¹ * bTᴴ = bT * (gramAt D T τ)⁻¹ := by
     calc (gramAt D T τ)⁻¹ * bTᴴ = (gramAt D T τ)⁻¹ * (bTᴴ * gramAt D T τ) * (gramAt D T τ)⁻¹ := by
           rw [Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]
       _ = (gramAt D T τ)⁻¹ * gramAt D T τ * bT * (gramAt D T τ)⁻¹ := by
-          rw [cart_adj hT]; simp only [Matrix.mul_assoc]
+          rw [_root_.GlobalTheory.CartanTrace.adj_mul hT]; simp only [Matrix.mul_assoc]
       _ = _ := by rw [Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]
   have key : (gramAt D T τ)⁻¹ * (bTᴴ * wᴴ * aSᴴ) * gramAt D S τ =
       bT * ((gramAt D T τ)⁻¹ * wᴴ * gramAt D S τ) * aS := by
@@ -213,13 +202,6 @@ def sg (b : Bool) : ℝ := if b then 1 else -1
 
 theorem sg_mul_self (b : Bool) : sg b * sg b = 1 := by cases b <;> norm_num [sg]
 
-theorem Jm_mul_self' {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  by_cases h : ε a <;> simp [h]
-
 theorem Jm_single_Jm {m n : ℕ} (εm : Fin m → Bool) (εn : Fin n → Bool) (i : Fin m) (j : Fin n) :
     Formalism.REAL.Jm εm * Matrix.single i j (1 : ℂ) * Formalism.REAL.Jm εn =
       ((sg (εm i) * sg (εn j) : ℝ) : ℂ) • Matrix.single i j (1 : ℂ) := by
@@ -243,7 +225,7 @@ theorem cdag_unitMap (A : Fr S) (B : Fr T) (τ : D.what₂.Tau) (i : Fin T.rank)
     have h : (B.fr τ)ᴴ = gramAt D T τ * ((B.fr τ)⁻¹ * Formalism.REAL.Jm (B.ε τ)) := by
       rw [← B.fr_gram τ]
       calc (B.fr τ)ᴴ = (B.fr τ)ᴴ * (Formalism.REAL.Jm (B.ε τ) * (B.fr τ * (B.fr τ)⁻¹) * Formalism.REAL.Jm (B.ε τ)) := by
-            rw [Matrix.mul_nonsing_inv _ hb, Matrix.mul_one, Jm_mul_self', Matrix.mul_one]
+            rw [Matrix.mul_nonsing_inv _ hb, Matrix.mul_one, _root_.Formalism.REAL.Jm_mul_self, Matrix.mul_one]
         _ = _ := by simp only [Matrix.mul_assoc]
     rw [h, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]
   have e2 : ((A.fr τ)⁻¹)ᴴ * gramAt D S τ = Formalism.REAL.Jm (A.ε τ) * A.fr τ := by
@@ -252,7 +234,7 @@ theorem cdag_unitMap (A : Fr S) (B : Fr T) (τ : D.what₂.Tau) (i : Fin T.rank)
   have e3 : (Matrix.single j i (1 : ℂ))ᴴ = Matrix.single i j (1 : ℂ) := by
     ext k l
     simp only [Matrix.conjTranspose_apply, Matrix.single_apply]
-    by_cases h1 : i = k <;> by_cases h2 : j = l <;> simp [h1, h2, eq_comm]
+    by_cases h1 : i = k <;> by_cases h2 : j = l <;> simp [h1, h2]
   simp only [unitMap, Fr.onb, Matrix.nonsing_inv_nonsing_inv _ ha, Matrix.nonsing_inv_nonsing_inv _ hb, cdag]
   rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, e3]
   calc (gramAt D T τ)⁻¹ * ((B.fr τ)ᴴ * (Matrix.single i j (1 : ℂ) * ((A.fr τ)⁻¹)ᴴ)) * gramAt D S τ

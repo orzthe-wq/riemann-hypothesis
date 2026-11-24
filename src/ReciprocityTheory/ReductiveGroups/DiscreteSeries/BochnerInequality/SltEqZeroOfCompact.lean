@@ -2,47 +2,8 @@ module
 
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.Permute
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.BigRep
 
 @[expose] public section
 
@@ -101,22 +62,11 @@ theorem slt_inner_eq_sum {k : ℕ} (i : Fin k) (A B : Big n k M) :
   exact (slt_sum_fin_one_fun
     (fun p => inner ℂ (A ((slRest i).symm (p, r))) (B ((slRest i).symm (p, r))))).symm
 
-theorem slt_ofCoords_apply {X : Type*} [AddCommGroup X] [Module ℂ X] (k : ℕ)
-    (f : (Fin k → Fin n × Fin n) → (X →ₗ[ℂ] M)) (x : X) (κ : Fin k → Fin n × Fin n) :
-    ofCoords k f x κ = f κ x := rfl
-
 theorem slt_coord_apply (k : ℕ) (κ : Fin k → Fin n × Fin n) (F : Big n k M) :
     coord k κ F = F κ := rfl
 
 theorem slt_mAct_apply (k : ℕ) (a b : Fin n) (F : Big n k M) (κ : Fin k → Fin n × Fin n) :
     mAct E k a b F κ = E a b (F κ) := rfl
-
-theorem slt_positionAd_apply (k : ℕ) (i : Fin k) (a b : Fin n) (F : Big n k M) (κ : Fin k → Fin n × Fin n) :
-    factorAd k i a b F κ =
-      (if (κ i).1 = a then F (Function.update κ i (b, (κ i).2)) else 0) -
-        (if (κ i).2 = b then F (Function.update κ i ((κ i).1, a)) else 0) := by
-  rw [factorAd, slt_ofCoords_apply, LinearMap.sub_apply]
-  split_ifs <;> simp [slt_coord_apply]
 
 theorem slt_crossOp_apply (k : ℕ) (i : Fin k) (F : Big n k M) (κ : Fin k → Fin n × Fin n) :
     crossOp ε E k i F κ = ∑ a, ∑ b ∈ univ.filter (fun b => ε b = ε a),
@@ -128,7 +78,7 @@ theorem slt_crossOp_apply (k : ℕ) (i : Fin k) (F : Big n k M) (κ : Fin k → 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   rw [slt_coord_apply]
   change factorAd k i a b (mAct E k b a F) κ = _
-  rw [slt_positionAd_apply, slt_mAct_apply, slt_mAct_apply]
+  rw [_root_.ReciprocityTheory.ChartRestriction.DS.factorAd_apply, slt_mAct_apply, slt_mAct_apply]
 
 private theorem slt_apply {k : ℕ} (i : Fin k) (r : {j // j ≠ i} → Fin n × Fin n)
     (A : Big n k M) (ι : Fin 1 → Fin n × Fin n) : slt i r A ι = A ((slRest i).symm (ι 0, r)) :=

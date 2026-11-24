@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasChr
 
 @[expose] public section
 
@@ -337,18 +338,12 @@ theorem grid_hga : 2 * (bigN D : ℚ) ^ 3 + (grid D τ).s + 2 ≤ (grid D τ).ga
   have : 2 * bigN D ^ 3 + sLen D + 2 ≤ gap D := by omega
   exact_mod_cast this
 
-theorem odd_r : Odd D.R.r := by
-  obtain ⟨a, ha⟩ := D.R.k_even
-  obtain ⟨b, hb⟩ := D.R.m_even
-  have := D.R.m_add_three_le_k
-  exact ⟨a + b - 1, by unfold Ranks.r; omega⟩
-
 theorem odd_sLen : Odd (sLen D) := by
-  obtain ⟨a, ha⟩ := odd_r D
+  obtain ⟨a, ha⟩ := _root_.Formalism.L2.Theta.r_odd D
   exact ⟨a + 3, by unfold sLen; omega⟩
 
 theorem odd_rkV_iff (i j : ℕ) : Odd (rkV D i j) ↔ ¬ Odd (i + j) := by
-  have hr := odd_r D
+  have hr := _root_.Formalism.L2.Theta.r_odd D
   have ht := D.R.t_odd
   have hs := odd_sLen D
   obtain ⟨a, ha⟩ := hr

@@ -56,4 +56,4 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 theorem _root_.GlobalTheory.T.valued_le_one_iff_of_continuous_ringEquiv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 F))
     (w : HeightOneSpectrum (𝓞 E)) (i : v.adicCompletion F ≃+* w.adicCompletion E), Continuous i →
     ∀ a : v.adicCompletion F, Valued.v (i a) ≤ 1 ↔ Valued.v a ≤ 1 := by
-  first | exact @GlobalTheory.IsoInteg.valued_le_one_iff_of_continuous | exact GlobalTheory.IsoInteg.valued_le_one_iff_of_continuous | (intros; apply GlobalTheory.IsoInteg.valued_le_one_iff_of_continuous <;> assumption)
+  first | exact @GlobalTheory.IsoInteg.valued_le_one_iff_of_continuous

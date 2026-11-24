@@ -194,7 +194,7 @@ theorem linearIndependent_pullChart (h : W ≤ r ⁻¹ᵁ O) (h' : r ⁻¹ᵁ O 
 
       simp only [map_sum, germ_smul, germ_pullChart, map_zero] at e
 
-      simp only [map_sum, map_mul, ger_algX, ger_appLE, ger_resG, map_zero]
+      simp only [map_sum, map_mul, ger_algX, ger_appLE, map_zero]
       refine Eq.trans (Finset.sum_congr rfl fun i _ => ?_) ((Finset.mul_sum _ _ _).symm.trans
         ((congrArg ((r.stalkMap z).hom (tr B (r z) c (a.idx d)).val * ·) e).trans (mul_zero _)))
       rw [mul_left_comm, ← map_mul]

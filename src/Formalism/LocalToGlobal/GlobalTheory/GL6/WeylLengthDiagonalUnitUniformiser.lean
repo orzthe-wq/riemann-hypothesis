@@ -1,60 +1,57 @@
 module
 
-import Formalism.LocalToGlobal.HermitianForms.TiedBrInj
+public import Formalism.GL3MeanSquares.FourierTransformKernelSurjective
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+public import Mathlib.Algebra.BigOperators.Ring.Finset
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.BwAValIntegralNonneg
 public import Formalism.GL3MeanSquares.HookFormulaTorsion.DoubleCosetDecompositionAll
-public import Formalism.GL3MeanSquares.HookFormulaTorsion.FourierCommutesHeckeScalar
+public import Mathlib.LinearAlgebra.LinearIndependent.BaseChange
+import Formalism.LocalToGlobal.HermitianForms.TiedBrInj
 import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.LinearIndependent.BaseChange
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.PicardGroup
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.GL3MeanSquares.HookFormulaTorsion.FourierCommutesHeckeScalar, Formalism.LocalToGlobal.GlobalTheory.GL6.WeylLengthDiagonalUnitUniformiser
+
+-- ===== clump member: Formalism.GL3MeanSquares.HookFormulaTorsion.FourierCommutesHeckeScalar =====
+-- clump-header: {"m": "Formalism.GL3MeanSquares.HookFormulaTorsion.FourierCommutesHeckeScalar", "h": "module\n\npublic import Formalism.GL3MeanSquares.FourierTransformKernelSurjective\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.BigOperators.Group.Finset.Basic\npublic import Mathlib.Algebra.BigOperators.Group.Finset.Sigma\npublic import Mathlib.Algebra.BigOperators.Ring.Finset\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.HermitianLattices.LocalLatticeBases
+
+open Finset
+
+theorem length_average_bound : LemmaB'_avg := by
+  intro k n S mult hS hm hn j
+  have key : ∀ i : Fin k, ∑ w ∈ S, mult w * w i = ∑ w ∈ S, mult w * w j := by
+    intro i
+    apply Finset.sum_nbij' (fun w => w ∘ Equiv.swap i j) (fun w => w ∘ Equiv.swap i j)
+    · intro w hw; exact hS _ w hw
+    · intro w hw; exact hS _ w hw
+    · intro w _; funext a; simp [Function.comp]
+    · intro w _; funext a; simp [Function.comp]
+    · intro w _; simp [hm]
+  have : ∑ i : Fin k, ∑ w ∈ S, mult w * w i = k * ∑ w ∈ S, mult w * w j := by
+    rw [Finset.sum_congr rfl (fun i _ => key i)]; simp
+  rw [← this, Finset.sum_comm, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro w hw
+  rw [← Finset.mul_sum, hn w hw, mul_comm]
+
+end Formalism.HermitianLattices.LocalLatticeBases
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GL3MeanSquares.HookFormulaTorsion.FourierCommutesHeckeScalar =====
+
+-- ===== clump member: Formalism.LocalToGlobal.GlobalTheory.GL6.WeylLengthDiagonalUnitUniformiser =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.GlobalTheory.GL6.WeylLengthDiagonalUnitUniformiser", "h": "module\n\nimport Formalism.LocalToGlobal.HermitianForms.TiedBrInj\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.BwAValIntegralNonneg\npublic import Formalism.GL3MeanSquares.HookFormulaTorsion.DoubleCosetDecompositionAll\npublic import Formalism.GL3MeanSquares.HookFormulaTorsion.FourierCommutesHeckeScalar\nimport Formalism.GradedWeylDivisibility.DualWeylDominanceOf\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.LinearAlgebra.LinearIndependent.BaseChange\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.PicardGroup\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -329,10 +326,10 @@ theorem swap_perm_eq_elementary_product (x y : Fin r) (hxy : x ≠ y) :
       (1 + Matrix.single y y (-2)) := by
   have hyx : y ≠ x := Ne.symm hxy
   simp only [add_mul, mul_add, mul_one, one_mul, Matrix.single_mul_single_same,
-    Matrix.single_mul_single_of_ne, ne_eq, hxy, hyx, not_false_eq_true, add_zero, zero_add]
+    Matrix.single_mul_single_of_ne, ne_eq, hxy, not_false_eq_true, add_zero]
   ext i j
   simp only [t2wPm, Matrix.of_apply, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply,
-    Matrix.zero_apply, Equiv.swap_apply_def]
+    Equiv.swap_apply_def]
   by_cases hi : i = x <;> by_cases hj : j = x <;> by_cases hi' : i = y <;> by_cases hj' : j = y <;>
     simp_all [eq_comm] <;> ring_nf
 
@@ -628,7 +625,7 @@ theorem length_quotient_dvr_basis (R : Type) [CommRing R] [IsDomain R] [IsDiscre
     · rw [Submodule.span_le]
       rintro _ ⟨_, ⟨i, rfl⟩, rfl⟩
       intro j _
-      simp only [LinearEquiv.coe_coe, map_smul, Module.Basis.equivFun_self, Pi.smul_apply, Pi.single_apply, smul_eq_mul]
+      simp only [LinearEquiv.coe_coe, map_smul, Module.Basis.equivFun_self, Pi.smul_apply, smul_eq_mul]
       split_ifs with h
       · subst h; rw [mul_one]; exact Ideal.mem_span_singleton_self _
       · rw [mul_zero]; exact Submodule.zero_mem _
@@ -705,7 +702,7 @@ theorem prod_update_pow_alt {R : Type} [CommRing R] (j : Fin r) (p : R) (μ : Fi
   rw [Finset.prod_eq_single j]
   · simp
   · intro b _ hb
-    simp [Function.update_apply, hb]
+    simp [hb]
   · intro h
     exact absurd (Finset.mem_univ j) h
 
@@ -829,3 +826,7 @@ theorem polynomial_function_frames_injective (G : ι → Matrix (Fin n) (Fin n) 
 end FnOf
 
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.GlobalTheory.GL6.WeylLengthDiagonalUnitUniformiser =====

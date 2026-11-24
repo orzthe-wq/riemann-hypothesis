@@ -24,7 +24,7 @@ private theorem prod_norm_update_zpow {K : Type} [Fintype K] [DecidableEq K] (k0
   rw [Finset.prod_eq_single k0]
   · simp
   · intro k _ hk
-    simp [Function.update_apply, hk]
+    simp [hk]
   · intro h
     exact absurd (Finset.mem_univ k0) h
 

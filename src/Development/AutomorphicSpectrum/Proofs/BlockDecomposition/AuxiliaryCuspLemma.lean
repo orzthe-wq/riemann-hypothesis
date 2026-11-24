@@ -2,9 +2,12 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SubsingletonRankZero
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.IsNormalisedOfIsDiscrete
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralEigenExponentialStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieCentralElementTraceStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceOperatorEigenvalueSumStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CentralEigenExponential
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousConjFin
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LieCentralElementTrace
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExpoConjOfIsCsd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceOperatorEigenvalueSum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -63,14 +66,14 @@ theorem exists_twist_isNormalised : ∀ (E : Type) [Field E] [NumberField E] [_r
   have hsum : ∀ τ : E →+* ℂ, (∑ i : Fin a, Eop τ i i) φ = ((m τ).sum + a * s) • φ := fun τ => by
     have h1 := (hm τ).twist (GlobalTheory.CuspRep.Model.absC E s)
     rw [GlobalTheory.CuspRep.Model.expo_absC] at h1
-    rw [GlobalTheory.T.trace_operator_eigenvalue_sum E a _ τ _ h1 φ hφ, Multiset.sum_map_add]
+    rw [_root_.GlobalTheory.CompanionTheory.CapelliTrace.trace_Eop_eq E a _ τ _ h1 φ hφ, Multiset.sum_map_add]
     simp [(hm τ).1]
   have hc : ∑ τ : E →+* ℂ, ((m τ).sum + a * s) = 0 := by
     rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hs]
     field_simp
     ring
   have hlie : lie E a (oneL E a) φ = (0 : ℂ) • φ := by
-    rw [GlobalTheory.T.lie_central_element_trace E a, LinearMap.sum_apply, Finset.sum_congr rfl fun τ _ => hsum τ, ← Finset.sum_smul, hc]
-  simpa using GlobalTheory.T.central_eigen_exponential E a φ 0 hlie t g
+    rw [_root_.GlobalTheory.CompanionTheory.ClozelLie.lie_oneL_eq_sum_Eop E a, LinearMap.sum_apply, Finset.sum_congr rfl fun τ _ => hsum τ, ← Finset.sum_smul, hc]
+  simpa using _root_.GlobalTheory.CompanionTheory.Clozel.eigen_along_splitCentre E a φ 0 hlie t g
 
 end GlobalTheory.CompanionTheory.Clozel

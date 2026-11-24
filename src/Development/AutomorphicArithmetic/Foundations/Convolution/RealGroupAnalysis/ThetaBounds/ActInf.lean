@@ -163,8 +163,8 @@ private theorem fin_part (y : GL (Fin 2) (Cinf E)) (v : V4 F) :
       exact h.trans (by
         change (1 : Matrix (Fin 2) (Fin 2) (Af E)) i j = _
         by_cases hij : i = j
-        · subst hij; simp <;> rfl
-        · simp [Matrix.one_apply_ne hij] <;> rfl)
+        · subst hij; simp
+        · simp [Matrix.one_apply_ne hij])
   have hS : e • D.star2 (infGL E 2 y).val = e • (1 : Matrix (Fin 2) (Fin 2) (A E)) := by
     have hs : ∀ X : Matrix (Fin 2) (Fin 2) (A E), D.star2 (e • X) = e • D.star2 X := fun X => by
       ext1 i j

@@ -108,7 +108,7 @@ theorem _root_.GlobalTheory.ZH.exists_basis_adapted_to_idempotents :
     simp only [map_sum, map_smul, map_zero, Matrix.mulVecLin_apply, W, w,
     mulVec_column_of_orthogonal_idempotents E hE, Fintype.sum_sigma, smul_ite, smul_zero] at h1
     rw [Finset.sum_eq_single d (fun c _ hc => by simp [Ne.symm hc]) (by simp)] at h1
-    simp only [if_pos rfl] at h1
+    simp only at h1
     exact Fintype.linearIndependent_iff.mp (hli d) (fun t => g ⟨d, t⟩) h1 t
   have hWsp : ⊤ ≤ Submodule.span (IsLocalRing.ResidueField O) (Set.range W) := by
     rw [← (Pi.basisFun (IsLocalRing.ResidueField O) J).span_eq, Submodule.span_le]

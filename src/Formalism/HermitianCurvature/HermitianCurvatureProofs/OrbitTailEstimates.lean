@@ -142,11 +142,9 @@ theorem norm_orbM_ge (m : ℕ) (t c : ℂ) (p : BlockCoord (m + 1)) : ‖t‖ �
     exact isStrictUpper_strictUpper _
   have h := (shape_of_matrix m t (c + p.1 ⬝ᵥ (wMat (m + 1) *ᵥ (t • p.2.2))) (Xof t p.2.1) (t • p.2.2)
     (rhoOf t p.1 p.2.1) hX).2.1 0 ⟨m, by omega⟩ (by simp)
-  have e0 : orbM (m + 1) t c p = Mcoord t (Xof t p.2.1) (t • p.2.2) (rhoOf t p.1 p.2.1)
-      (c + p.1 ⬝ᵥ (wMat (m + 1) *ᵥ (t • p.2.2))) := matrix_entries (m + 1) t c p
-  have e : orbM (m + 1) t c p 0 ⟨m, by omega⟩ = t := by
-    rw [e0]; exact h
-  calc ‖t‖ = ‖orbM (m + 1) t c p 0 ⟨m, by omega⟩‖ := by rw [e]
+  calc ‖t‖ = ‖orbM (m + 1) t c p 0 ⟨m, by omega⟩‖ := by
+        rw [(show orbM (m + 1) t c p = Mcoord t (Xof t p.2.1) (t • p.2.2) (rhoOf t p.1 p.2.1) (c + p.1 ⬝ᵥ (wMat (m + 1) *ᵥ (t • p.2.2))) from matrix_entries (m + 1) t c p)]
+        exact (congrArg norm h).symm
     _ ≤ _ := norm_entry_le _ _ _
 
 theorem detM_orbM (n : ℕ) (t c : ℂ) (p : BlockCoord n) :
@@ -248,12 +246,7 @@ theorem tailStepOfBound : TailStepOfBound := by
   have hD := (hC2 V Φ _ _ τ hτ1 hΦ).2
   have hD' : DerivBound 0 {(wMat (m + 1)).det * (c * t ^ (m + 1))}
       (fun Z => (C2 * K) * min 1 (‖Z‖ ^ (-A))) (cutPhiC τ Φ) := by
-    intro Z hZ
-    obtain ⟨h1, h2⟩ := hD Z hZ
-    refine ⟨h1, fun j hj => ?_⟩
-    have h3 : ‖iteratedFDeriv ℝ j (cutPhiC τ Φ) Z‖ ≤ C2 * (K * min 1 (‖Z‖ ^ (-A))) := h2 j hj
-    show ‖iteratedFDeriv ℝ j (cutPhiC τ Φ) Z‖ ≤ C2 * K * min 1 (‖Z‖ ^ (-A))
-    rwa [mul_assoc]
+    simpa only [mul_assoc] using hD
   have hvan : ∀ p : BlockCoord (m + 1), ‖orbM (m + 1) t c p‖ < τ →
       cutPhiC τ Φ (orbM (m + 1) t c p) = 0 := by
     intro p hp
@@ -294,9 +287,7 @@ theorem tailStepOfBound : TailStepOfBound := by
     _ = C1 * C2 * K * ‖t‖ := by rw [pow_arith m _ ht0]; ring
 
 theorem coef_nonneg {x c P : ℝ} (hx : 0 ≤ x) (hP : 0 < P) (h : x ≤ c * P) : 0 ≤ c := by
-  by_contra hneg
-  have : c * P < 0 := mul_neg_of_neg_of_pos (not_le.1 hneg) hP
-  linarith
+  exact nonneg_of_mul_nonneg_right (by simpa [mul_comm] using le_trans hx h) hP
 
 def longM (d : ℕ) (z : ℂ) (v : UT d → ℂ) : Mat d := ptLong d z * G.upper v
 
@@ -337,7 +328,7 @@ theorem norm_omLong_le (m : ℕ) (β : ℂ) (r : ℝ) (hr : 0 < r) {V : Type} [N
     _ ≤ (max 1 ‖longM (m + 1 + 1) z v‖) ^ (-(((m : ℝ) + 1) * ((m : ℝ) + 4) + 1)) :=
         Real.rpow_le_rpow_of_exponent_le (le_max_left _ _) (by linarith)
     _ ≤ _ := by
-        refine Real.rpow_le_rpow_of_nonpos (by positivity) ?_ (by nlinarith)
+        refine Real.rpow_le_rpow_of_nonpos (by positivity) ?_ (by nlinarith [(Nat.cast_nonneg m : (0 : ℝ) ≤ (m : ℝ))])
         refine max_le_max le_rfl ?_
         refine le_trans ?_ (norm_long_le z v (longM (m + 1 + 1) z v) rfl)
         rw [norm_smul, norm_smul, Real.norm_of_nonneg hr.le]
@@ -415,17 +406,13 @@ theorem germLargeT : GermLargeT := by
       have h1 : ‖z‖ < r := not_le.1 hlt
       have h2 : ‖z‖ ≤ 1 := h1.le.trans (min_le_left _ _)
       have h3 : ‖z‖ ^ (m + 2) ≤ ‖z‖ := pow_le_of_le_one (norm_nonneg _) h2 (by omega)
-      have h4 := hr0' _ hD
-      have h5 : r ≤ r0 := min_le_right _ _
-      linarith
+      linarith [hr0' _ hD, show r ≤ r0 from min_le_right _ _]
     have hzR : ‖z‖ ≤ R := by
       by_contra hlt
       have h1 : R < ‖z‖ := not_le.1 hlt
       have h2 : 1 ≤ ‖z‖ := (le_max_left _ _).trans h1.le
       have h3 : ‖z‖ ≤ ‖z‖ ^ (m + 2) := le_self_pow₀ h2 (by omega)
-      have h4 := hR0 _ hD
-      have h5 : R0 ≤ R := le_max_right _ _
-      linarith
+      linarith [hR0 _ hD, show R0 ≤ R from le_max_right _ _]
     rw [norm_smul, norm_mul, norm_mul, (additive_character_psi β _ 0).2.1, norm_one, mul_one, mul_one, Complex.norm_real,
       Real.norm_of_nonneg (by positivity)]
     refine mul_le_mul (pow_le_pow_left₀ (norm_nonneg _) hzR _) ?_ (norm_nonneg _) (by positivity)
@@ -463,11 +450,5 @@ theorem germLargeT : GermLargeT := by
 end Formalism.FourierDecayAlt.P.OrbitTailEstimates
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem tailBound_statement : Formalism.FourierDecayAlt.G.TailBound := OrbitTailEstimates.tailBound
-
-theorem tail_estimate_of_bound : Formalism.FourierDecayAlt.G.TailStepOfBound := OrbitTailEstimates.tailStepOfBound
-
-theorem germ_large_parameter : Formalism.FourierDecayAlt.G.GermLargeT := OrbitTailEstimates.germLargeT
 
 end Formalism.FourierDecayAlt.P

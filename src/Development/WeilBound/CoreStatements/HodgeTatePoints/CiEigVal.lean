@@ -4,7 +4,7 @@ public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsS
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
 public import Mathlib.Order.CompletePartialOrder
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenProjectorsSplitActionStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.EigenProjectorsSplitAction
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.EigFrob
@@ -128,7 +128,7 @@ theorem eig_val : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRi
   intro X Ω _ ξ k K _ _ _ z G _ _ V _ _ M Vz _ _ Mz h₀ O S _ _ act r rz σ χ hξ hs hm hr hrz hχ hσ hlat s
   classical
   have : Module.Finite K Vz := (PositivityTheory.HtPt.Htat.lie_fin X G K z Vz Mz).1
-  obtain ⟨e, -, -, he3, -, he5⟩ := GlobalTheory.T.eigen_projectors_split_action K (emptyCurve K) Vz (fun i => i.elim) O k S χ hχ (fun i => i.elim) rz
+  obtain ⟨e, -, -, he3, -, he5⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.SplitProj.split_proj K (emptyCurve K) Vz (fun i => i.elim) O k S χ hχ (fun i => i.elim) rz
     ⟨fun i => i.elim, Module.finBasis K Vz, Set.toFinite (α := Empty) _⟩ (fun a i => i.elim)
   obtain ⟨m, c, a, hc, hes⟩ := he5 s
   let U : S → Submodule K Vz := fun s =>

@@ -78,7 +78,7 @@ private theorem twOrb_conj' (θ : G →* G) (K : Subgroup G) (δ g : G) (f : G �
     rw [DoubleCoset.eq]
     refine ⟨g⁻¹ * t⁻¹ * g, ?_, k⁻¹, K.inv_mem hk, by group⟩
     rw [GlobalTheory.TwOrbConj.twCent_conj]
-    exact ⟨t⁻¹, (GlobalTheory.BCT.twCent θ δ).inv_mem ht, by simp [MulAut.conj_apply]⟩
+    exact ⟨t⁻¹, (GlobalTheory.BCT.twCent θ δ).inv_mem ht, by simp⟩
   right_inv q := by
     obtain ⟨t, ht, k, hk, he⟩ := (@DoubleCoset.eq _ _ _ _ _ _).1
       (DoubleCoset.out_eq' (DoubleCoset.mk (twCent θ (g⁻¹ * δ * θ g)) K (g⁻¹ * Quotient.out q))).symm

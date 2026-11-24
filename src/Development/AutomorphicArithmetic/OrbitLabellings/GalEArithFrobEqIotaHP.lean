@@ -54,7 +54,7 @@ theorem UpperTheory.galE_arithFrob_eq_iota_hP :
   intro D p hp hc P hP1 hP2 σ hσ
   have hcl : primeClass D.host.toHostRaw p = PrimeClass.inertClass := hc
   obtain ⟨hN, hj, hps⟩ := (primeClass_eq_inert_iff_symbols hp).1 hcl
-  haveI : Fact p.Prime := ⟨hp⟩
+  have : Fact p.Prime := ⟨hp⟩
   have hcop : Nat.Coprime p D.host.condN := hp.coprime_iff_not_dvd.2 hN
   have hne : ∃ g, g ∈ frobSet D p := ⟨_, P, hP1, hP2, σ, hσ, rfl⟩
   obtain ⟨P', hP'1, hP'2, σ', hσ', hg⟩ := Classical.epsilon_spec hne

@@ -65,7 +65,7 @@ theorem hecke_inv {χ : (AE D)ˣ →* Circle} (h : IsHeckeChar D χ) : IsHeckeCh
   ⟨(h.1.inv : Continuous fun x => (χ x)⁻¹), fun x => by rw [MonoidHom.inv_apply, h.2 x, inv_one]⟩
 
 theorem enorm_conj (z : ℂ) : ‖starRingEnd ℂ z‖ₑ = ‖z‖ₑ := by
-  simp [enorm]
+  simp
 
 theorem mt_negGA_symm (V : HSp D) (g : GA D (negSp V)) : mt V ((negGA V).symm g) = mt (negSp V) g := by
   rw [← mt_negGA, MulEquiv.apply_symm_apply]

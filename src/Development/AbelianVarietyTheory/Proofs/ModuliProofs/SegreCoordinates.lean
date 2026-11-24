@@ -2,10 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsProjByOfIsPullback
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsSectionCoordinateVectorOfLocallyOnRingStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsSectionCoordinateVectorOfLocallyOnRing
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ProjectiveRepresentationPullbackCoordinates
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SecCoordBcScaleUnique
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocallyStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocally
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -188,7 +188,7 @@ theorem glue_points (hM : M.IsLB) {R : Type} [CommRing R] (s : X ⟶ Sp R) {T : 
   refine ⟨g, ⟨𝒰.hom_ext _ _ fun (k : σ) => ?_, ?_⟩, fun y hy => 𝒰.hom_ext _ _ fun (k : σ) => ?_⟩
   · change spMap (algebraMap T (Localization.Away (w k))) ≫ _ = spMap (algebraMap T (Localization.Away (w k))) ≫ _
     rw [← Category.assoc, hg, (hx k).1, spc]
-  · refine GlobalTheory.T.isSectionCoordinateVector_of_locally_on_ring X M σ th T _ w hM hw fun p => ?_
+  · refine _root_.GlobalTheory.ZM.secCoord_of_locally X M σ th T _ w hM hw fun p => ?_
     obtain ⟨k, hk⟩ : ∃ k : σ, p ∈ Set.range (spMap (algebraMap T (Localization.Away (w k)))) := 𝒰.exists_eq p
     refine ⟨Localization.Away (w k), inferInstance, algebraMap _ _, inferInstance, hk, ?_⟩
     rw [hg]
@@ -220,8 +220,8 @@ theorem split_local (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] [IsLocal
         (Eq.trans ?_ (rs_mul p q _ _ _ _ _).symm))
       exact (mul_mul_mul_comm _ _ _ _).trans
         (congrArg₂ (· * ·) (ap_cocycle p hH _ _ _ _ _ _).symm (ap_cocycle q hK _ _ _ _ _ _).symm)
-  obtain ⟨a, ha⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally X H σ₁ s hH).1 T (x ≫ p)
-  obtain ⟨b, hb⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally Y K σ₂ t hK).1 T (x ≫ q)
+  obtain ⟨a, ha⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local X H σ₁ s hH).1 T (x ≫ p)
+  obtain ⟨b, hb⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local Y K σ₂ t hK).1 T (x ≫ q)
   obtain ⟨u, hu⟩ := uniq (hbox) (secCoord_box p q s t x a b ha hb) hw
   exact ⟨fun i => u * a i, b, scale hH ha u, hb, funext fun i => (hu i).trans (_root_.mul_assoc _ _ _).symm⟩
 
@@ -244,10 +244,10 @@ theorem split_near (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] (x : Sp T
         (Eq.trans ?_ (rs_mul p q _ _ _ _ _).symm))
       exact (mul_mul_mul_comm _ _ _ _).trans
         (congrArg₂ (· * ·) (ap_cocycle p hH _ _ _ _ _ _).symm (ap_cocycle q hK _ _ _ _ _ _).symm)
-  obtain ⟨f, hf, a, ha⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally X H σ₁ s hH).2.1 T (x ≫ p) z
+  obtain ⟨f, hf, a, ha⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local X H σ₁ s hH).2.1 T (x ≫ p) z
   obtain ⟨z', hz'⟩ : z ∈ Set.range (spMap (algebraMap T (Localization.Away f))) :=
     (PrimeSpectrum.localization_away_comap_range (Localization.Away f) f).ge hf
-  obtain ⟨g, hg, b, hb⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally Y K σ₂ t hK).2.1 _
+  obtain ⟨g, hg, b, hb⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local Y K σ₂ t hK).2.1 _
     (spMap (algebraMap T (Localization.Away f)) ≫ x ≫ q) z'
   obtain ⟨z'', hz''⟩ : z' ∈ Set.range (spMap (algebraMap _ (Localization.Away g))) :=
     (PrimeSpectrum.localization_away_comap_range (Localization.Away g) g).ge hg
@@ -267,13 +267,13 @@ theorem col_row (hH : H.IsLB) (hK : K.IsLB) {T : Type} [CommRing T] (x : Sp T �
     (k : σ₁ × σ₂) (hk : IsUnit (w k)) :
     SecCoord H s (x ≫ p) (fun i => w (i, k.2)) ∧ SecCoord K t (x ≫ q) (fun j => w (k.1, j)) := by
   constructor
-  · refine GlobalTheory.T.isSectionCoordinateVector_of_locally_on_ring X H σ₁ s T _ _ hH (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨k.1, rfl⟩) hk) fun z => ?_
+  · refine _root_.GlobalTheory.ZM.secCoord_of_locally X H σ₁ s T _ _ hH (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨k.1, rfl⟩) hk) fun z => ?_
     obtain ⟨T', _, φ, h1, h2, a, b, ha, hb, e⟩ := split_near p q s t hH hK x w hw z
     refine ⟨T', _, φ, h1, h2, ?_⟩
     have hu : IsUnit (b k.2) := isUnit_of_mul_isUnit_right (e k ▸ hk.map φ)
     convert scale hH ha hu.unit using 2 with i
     rw [e, IsUnit.unit_spec, _root_.mul_comm]
-  · refine GlobalTheory.T.isSectionCoordinateVector_of_locally_on_ring Y K σ₂ t T _ _ hK (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨k.2, rfl⟩) hk) fun z => ?_
+  · refine _root_.GlobalTheory.ZM.secCoord_of_locally Y K σ₂ t T _ _ hK (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨k.2, rfl⟩) hk) fun z => ?_
     obtain ⟨T', _, φ, h1, h2, a, b, ha, hb, e⟩ := split_near p q s t hH hK x w hw z
     refine ⟨T', _, φ, h1, h2, ?_⟩
     have hu : IsUnit (a k.1) := isUnit_of_mul_isUnit_left (e k ▸ hk.map φ)

@@ -160,10 +160,6 @@ theorem isCuspidal_iff_twoBlocks {V : Type} [AddCommGroup V] [Module ℂ V] (ρ 
     · simp only [hi, if_false]
       split_ifs <;> omega
 
-theorem not_isCuspidal_trivial (hN : 2 ≤ N) : ¬ IsCuspidal (Representation.trivial ℂ (GL (Fin N) k) ℂ) := by
-  intro h
-  exact one_ne_zero ((isCuspidal_iff_twoBlocks _).mp h 1 one_pos (by omega) (1 : ℂ) fun u _ => by simp)
-
 end Radical
 
 section Generic
@@ -223,32 +219,6 @@ theorem lineRep_isIrreducible {G : Type} [Group G] (χ : G →* ℂ) : (lineRep 
   · rcases hs.eq_bot_or_eq_top W.toSubmodule with h | h
     · exact Or.inl (Subrepresentation.toSubmodule_injective h)
     · exact Or.inr (Subrepresentation.toSubmodule_injective h)
-
-def signGL₂ : GL (Fin 2) (ZMod 2) →* ℂ :=
-  ((Int.castRingHom ℂ).toMonoidHom.comp (Units.coeHom ℤ)).comp
-    (Equiv.Perm.sign.comp (MulAction.toPermHom (GL (Fin 2) (ZMod 2)) (Fin 2 → ZMod 2)))
-
-def transvGL₂ : GL (Fin 2) (ZMod 2) := ⟨!![1, 1; 0, 1], !![1, 1; 0, 1], by decide, by decide⟩
-
-theorem signGL₂_transv : signGL₂ transvGL₂ = -1 := by
-  have h : Equiv.Perm.sign (MulAction.toPerm transvGL₂ : Equiv.Perm (Fin 2 → ZMod 2)) = -1 := by
-    decide
-  simp [signGL₂, h]
-
-theorem signGL₂_cuspidal : (lineRep signGL₂).IsIrreducible ∧ IsCuspidal (lineRep signGL₂) := by
-  refine ⟨lineRep_isIrreducible _, (isCuspidal_iff_twoBlocks _).mpr fun a ha0 ha2 v hv => ?_⟩
-  obtain rfl : a = 1 := by omega
-  have hmem : transvGL₂ ∈ unipRadical (ZMod 2) (twoBlocks 2 1) := by
-    rw [mem_unipRadical]
-    intro i j hij
-    fin_cases i <;> fin_cases j <;> simp_all [twoBlocks, transvGL₂]
-  have h := hv transvGL₂ hmem
-  rw [lineRep_apply, signGL₂_transv] at h
-  funext i
-  have hi := congrFun h i
-  simp only [Pi.smul_apply, smul_eq_mul, neg_one_mul] at hi
-  simp only [Pi.zero_apply]
-  linear_combination (-1 / 2 : ℂ) * hi
 
 end Examples
 

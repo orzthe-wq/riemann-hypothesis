@@ -1,59 +1,170 @@
 module
 
-public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.KernelLemma
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.IsInfUnitary
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.BlockAnti
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SchSharpA
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PRVComponents
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.CARUnit
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.LowFockD
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.ExistsNonzeroPhysicalHighestWeightVectorTensFock
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Formalism.RealPlaceAnalysis.StatementKT
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.TypeStar
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PRVComponents
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.LowFockD
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.KernelLemma, ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.FockWeightWedgeLowerModes
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.KernelLemma =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.KernelLemma", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.IsInfUnitary\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset
+
+namespace ReciprocityTheory.ChartRestriction.DS
+
+variable {n : ℕ}
+
+def oppCount (ε : Fin n → Bool) (a : Fin n) : ℕ := (univ.filter fun b => ε b ≠ ε a).card
+
+theorem dot_root_right (u : Fin n → ℝ) (a b : Fin n) : dot u (root a b) = u a - u b := by
+  simp [dot, root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]
+
+theorem dot_sum_root_right (u : Fin n → ℝ) (Ph : Finset (Fin n × Fin n)) :
+    dot u (∑ x ∈ Ph, root x.1 x.2) = ∑ x ∈ Ph, (u x.1 - u x.2) := by
+  have h := fun x : Fin n × Fin n => dot_root_right u x.1 x.2
+  simp only [dot] at h ⊢
+  simp only [Finset.sum_apply, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  exact Finset.sum_congr rfl fun x _ => h x
+
+theorem oppCount_add (ε : Fin n → Bool) {a b : Fin n} (hab : ε a ≠ ε b) :
+    (oppCount ε a : ℝ) + oppCount ε b = n := by
+  have key : oppCount ε a + oppCount ε b = n := by
+    unfold oppCount
+    rw [Finset.card_filter, Finset.card_filter, ← Finset.sum_add_distrib]
+    have hc : ∀ c : Fin n, ((if ε c ≠ ε a then 1 else 0) + (if ε c ≠ ε b then 1 else 0) : ℕ) = 1 := by
+      intro c
+      revert hab
+      cases ε a <;> cases ε b <;> cases ε c <;> simp
+    simp only [hc, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]
+  exact_mod_cast key
+
+theorem sum_root_apply (Ph : Finset (Fin n × Fin n)) (c : Fin n) :
+    (∑ x ∈ Ph, root x.1 x.2) c =
+      ((Ph.filter fun x => x.1 = c).card : ℝ) - ((Ph.filter fun x => x.2 = c).card : ℝ) := by
+  rw [Finset.sum_apply]
+  simp only [root, Pi.sub_apply, Finset.sum_sub_distrib, Finset.card_filter, Nat.cast_sum,
+    Nat.cast_ite, Nat.cast_one, Nat.cast_zero]
+  congr 1
+  · refine Finset.sum_congr rfl fun x _ => ?_
+    by_cases h : x.1 = c
+    · rw [h]; simp
+    · have h' : ¬ c = x.1 := fun e => h e.symm
+      simp [h, h']
+  · refine Finset.sum_congr rfl fun x _ => ?_
+    by_cases h : x.2 = c
+    · rw [h]; simp
+    · have h' : ¬ c = x.2 := fun e => h e.symm
+      simp [h, h']
+
+theorem card_fst_le (ε : Fin n → Bool) (Ph : Finset (Fin n × Fin n))
+    (hnc : ∀ x ∈ Ph, ε x.1 ≠ ε x.2) (c : Fin n) :
+    (Ph.filter fun x => x.1 = c).card ≤ oppCount ε c := by
+  unfold oppCount
+  apply Finset.card_le_card_of_injOn Prod.snd
+  · intro x hx
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢
+    have h1 := hnc x hx.1
+    rw [hx.2] at h1
+    exact Ne.symm h1
+  · intro x hx y hy hxy
+    simp only [Finset.mem_coe, Finset.mem_filter] at hx hy
+    exact Prod.ext (hx.2.trans hy.2.symm) hxy
+
+theorem card_snd_le (ε : Fin n → Bool) (Ph : Finset (Fin n × Fin n))
+    (hnc : ∀ x ∈ Ph, ε x.1 ≠ ε x.2) (c : Fin n) :
+    (Ph.filter fun x => x.2 = c).card ≤ oppCount ε c := by
+  unfold oppCount
+  apply Finset.card_le_card_of_injOn Prod.fst
+  · intro x hx
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢
+    have h1 := hnc x hx.1
+    rw [hx.2] at h1
+    exact h1
+  · intro x hx y hy hxy
+    simp only [Finset.mem_coe, Finset.mem_filter] at hx hy
+    exact Prod.ext hxy (hx.2.trans hy.2.symm)
+
+theorem nsq_sum_root_le (ε : Fin n → Bool) (Ph : Finset (Fin n × Fin n))
+    (hnc : ∀ x ∈ Ph, ε x.1 ≠ ε x.2) :
+    nsq (∑ x ∈ Ph, root x.1 x.2) ≤ n * Ph.card := by
+  have hpt : ∀ c, (∑ x ∈ Ph, root x.1 x.2) c * (∑ x ∈ Ph, root x.1 x.2) c ≤
+      (((Ph.filter fun x => x.1 = c).card : ℝ) + ((Ph.filter fun x => x.2 = c).card : ℝ)) *
+        (oppCount ε c : ℝ) := by
+    intro c
+    rw [sum_root_apply]
+    have h1 : ((Ph.filter fun x => x.1 = c).card : ℝ) ≤ oppCount ε c := by
+      exact_mod_cast card_fst_le ε Ph hnc c
+    have h2 : ((Ph.filter fun x => x.2 = c).card : ℝ) ≤ oppCount ε c := by
+      exact_mod_cast card_snd_le ε Ph hnc c
+    have h3 : (0 : ℝ) ≤ ((Ph.filter fun x => x.1 = c).card : ℝ) := Nat.cast_nonneg _
+    have h4 : (0 : ℝ) ≤ ((Ph.filter fun x => x.2 = c).card : ℝ) := Nat.cast_nonneg _
+    nlinarith [mul_nonneg h3 h4, mul_le_mul_of_nonneg_left h1 h3, mul_le_mul_of_nonneg_left h2 h4]
+  have hfib : ∀ g : Fin n × Fin n → Fin n,
+      ∑ c, ((Ph.filter fun x => g x = c).card : ℝ) * (oppCount ε c : ℝ) =
+        ∑ x ∈ Ph, (oppCount ε (g x) : ℝ) := by
+    intro g
+    simp only [Finset.card_filter, Nat.cast_sum, Nat.cast_ite, Nat.cast_one, Nat.cast_zero,
+      Finset.sum_mul, ite_mul, one_mul, zero_mul]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun x _ => ?_
+    simp
+  calc nsq (∑ x ∈ Ph, root x.1 x.2)
+        = ∑ c, (∑ x ∈ Ph, root x.1 x.2) c * (∑ x ∈ Ph, root x.1 x.2) c := rfl
+    _ ≤ ∑ c, (((Ph.filter fun x => x.1 = c).card : ℝ) + ((Ph.filter fun x => x.2 = c).card : ℝ)) *
+          (oppCount ε c : ℝ) := Finset.sum_le_sum fun c _ => hpt c
+    _ = ∑ c, ((Ph.filter fun x => x.1 = c).card : ℝ) * (oppCount ε c : ℝ) +
+          ∑ c, ((Ph.filter fun x => x.2 = c).card : ℝ) * (oppCount ε c : ℝ) := by
+        rw [← Finset.sum_add_distrib]
+        refine Finset.sum_congr rfl fun c _ => ?_
+        ring
+    _ = ∑ x ∈ Ph, (oppCount ε x.1 : ℝ) + ∑ x ∈ Ph, (oppCount ε x.2 : ℝ) := by
+        rw [hfib Prod.fst, hfib Prod.snd]
+    _ = ∑ x ∈ Ph, (n : ℝ) := by
+        rw [← Finset.sum_add_distrib]
+        exact Finset.sum_congr rfl fun x hx => oppCount_add ε (hnc x hx)
+    _ = n * Ph.card := by rw [Finset.sum_const, nsmul_eq_mul, mul_comm]
+
+theorem kernel_lemma (ε : Fin n → Bool) (μ : Fin n → ℝ) {h : ℝ} (_hh : 0 < h) (Ph : Finset (Fin n × Fin n))
+    (hnc : ∀ x ∈ Ph, ε x.1 ≠ ε x.2) (hpos : ∀ x ∈ Ph, h ≤ μ x.1 - μ x.2) :
+    nsq (μ - ∑ x ∈ Ph, root x.1 x.2) ≤ nsq μ - (2 * h - n) * Ph.card := by
+  have hexp : nsq (μ - ∑ x ∈ Ph, root x.1 x.2) =
+      nsq μ - 2 * dot μ (∑ x ∈ Ph, root x.1 x.2) + nsq (∑ x ∈ Ph, root x.1 x.2) := by
+    simp only [nsq, dot, Pi.sub_apply, Finset.mul_sum]
+    rw [← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl fun a _ => ?_
+    ring
+  have hd : h * Ph.card ≤ dot μ (∑ x ∈ Ph, root x.1 x.2) := by
+    rw [dot_sum_root_right]
+    have h2 : ∑ _x ∈ Ph, h ≤ ∑ x ∈ Ph, (μ x.1 - μ x.2) := Finset.sum_le_sum fun x hx => hpos x hx
+    rw [Finset.sum_const, nsmul_eq_mul] at h2
+    linarith
+  have hn := nsq_sum_root_le ε Ph hnc
+  rw [hexp]
+  linarith
+
+end ReciprocityTheory.ChartRestriction.DS
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.KernelLemma =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.FockWeightWedgeLowerModes =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.FockWeightWedgeLowerModes", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.KernelLemma\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.BlockAnti\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SchSharpA\nimport ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PRVComponents\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.CARUnit\nimport ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.LowFockD\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.ExistsNonzeroPhysicalHighestWeightVectorTensFock\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Formalism.RealPlaceAnalysis.StatementKT\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -79,20 +190,6 @@ theorem gb_rhoN_eq (ε : Fin n → Bool) {a b : Fin n} (hab : a < b) (he : ε a 
   rw [h1, h2, h3] at h
   have h' := congrArg (Nat.cast : ℕ → ℝ) h
   push_cast at h'
-  linarith
-
-theorem gb_rhoC_ge (ε : Fin n → Bool) {a b : Fin n} (hab : a < b) (he : ε a = ε b) :
-    1 ≤ rhoC ε a - rhoC ε b := by
-  have h := lfD_cnt (fun c => ε c = ε a) hab
-  have h1 : (univ.filter fun c => c = a ∧ ε c = ε a).card = 1 := by
-    rw [lfD_single]; simp
-  have h2 : (univ.filter fun c => c = b ∧ ε c = ε a).card = 1 := by
-    rw [lfD_single]; simp [he]
-  simp only [rhoC, ← he]
-  rw [h1, h2] at h
-  have h' := congrArg (Nat.cast : ℕ → ℝ) h
-  push_cast at h'
-  have : (0 : ℝ) ≤ ((univ.filter fun c => a < c ∧ c < b ∧ ε c = ε a).card : ℝ) := Nat.cast_nonneg _
   linarith
 
 theorem gb_phSum_le (ε : Fin n → Bool) {Ph : Finset (Fin n × Fin n)} (hnc : ∀ x ∈ Ph, ε x.1 ≠ ε x.2)
@@ -147,8 +244,8 @@ theorem dirac_block {ε : Fin n → Bool} {lam : Fin n → ℝ} (hg : Gap3 ε la
     have oc' : (2:ℝ) ≤ oppCount ε c := by exact_mod_cast oc
     linarith
   · push Not at hc
-    obtain ⟨N, hN⟩ := HW.kIrrHW_int ε hF hW' a b hab he
-    have hC := gb_rhoC_ge ε hab he
+    obtain ⟨N, hN⟩ := _root_.ReciprocityTheory.ChartRestriction.DS.HW.kIrrHW_int' ε hF hW' a b hab he
+    have hC := _root_.ReciprocityTheory.ChartRestriction.DS.HW.rhoC_sub_ge_one ε hab he
     have hR := gb_rhoN_eq ε hab he hc
     simp only [lowK, Pi.add_apply, Pi.sub_apply] at hN
     have : (0:ℝ) ≤ N := Nat.cast_nonneg _
@@ -214,3 +311,7 @@ theorem dirac_sharp {ε : Fin n → Bool} {lam : Fin n → ℝ} (hg : Gap3 ε la
   nlinarith
 
 end ReciprocityTheory.ChartRestriction.DS.TRGap
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.TraceGap.FockWeightWedgeLowerModes =====

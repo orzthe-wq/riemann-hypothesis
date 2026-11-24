@@ -87,9 +87,6 @@ theorem near_tch_pow {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp 
   field_simp
   simp
 
-theorem main : ∀ {l : ℕ} [Fact l.Prime] (S : Subring (Formalism.Per6.BdRp l)), (∀ a, wB l a ∈ S) →
-    ∀ (ϖ : Formalism.Per6.BdRp l), thB l ϖ ≠ 0 → ∀ x : Tl l, ‖thB l (tch l x)‖ < 1 →
-      ∃ M : ℕ, 0 < M ∧ Near S ϖ (FB l 1) 1 (tch l x ^ M) :=
-  fun S hS ϖ hϖ x hx => near_tch_pow S hS ϖ hϖ x hx
+alias main := _root_.GlobalTheory.CompanionTheory.LTPer.TopNil.near_tch_pow
 
 end GlobalTheory.CompanionTheory.LTPer.TopNil

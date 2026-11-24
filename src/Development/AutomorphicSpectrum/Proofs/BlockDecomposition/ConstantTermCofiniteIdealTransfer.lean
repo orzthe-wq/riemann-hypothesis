@@ -1,10 +1,9 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneMemGoodCT
-public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.AffineGLForms.GenSpace
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModerateGrowthConvolutionIntegral
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommuteRtOfMemZalg
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEmbeddingHeightBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRestrictionSmoothStatement
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.AffineGLForms.GenSpace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -39,10 +38,166 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEmbeddingHeightBound, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRestrictionSmooth, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermCofiniteIdealTransfer
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEmbeddingHeightBound =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEmbeddingHeightBound", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneMemGoodCT\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ModerateGrowthConvolutionIntegral\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField GlobalTheory.CuspRep GlobalTheory.CompanionTheory.CTFin Matrix
+
+noncomputable section
+namespace GlobalTheory.CompanionTheory.CTFin.Slice1.Height
+variable {E : Type} [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] {r s : ℕ}
+
+theorem norm_one_le : ‖(1 : Cinf E)‖ ≤ 1 := by
+  exact (pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => by simp
+
+theorem norm_lev_le (y : GL (Fin r) (Cinf E)) :
+    ‖toL (lev (Cinf E) r s (y, 1)).val‖ ≤ ‖toL y.val‖ + 1 := by
+  have n0 := norm_nonneg (toL y.val)
+  have hent : ∀ i j, ‖(y.val i j : Cinf E)‖ ≤ ‖toL y.val‖ := fun i j =>
+    (norm_le_pi_norm (toL y.val i) j).trans (norm_le_pi_norm (toL y.val) i)
+  refine (pi_norm_le_iff_of_nonneg (by positivity)).2 fun i =>
+    (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_
+  change ‖((lev (Cinf E) r s (y, 1) : GL _ _) : Matrix _ _ (Cinf E)) i j‖ ≤ _
+  have hv : ((lev (Cinf E) r s (y, 1) : GL _ _) : Matrix _ _ (Cinf E)) =
+      Matrix.reindex (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s))
+        (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s))
+        (Matrix.fromBlocks y.val 0 0 (1 : Matrix (Fin s) (Fin s) (Cinf E))) := by
+    ext i j
+    obtain ⟨a, rfl⟩ := (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i
+    obtain ⟨b, rfl⟩ := (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j
+    simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]
+    rcases a with a | a <;> rcases b with b | b <;>
+      simp [lev, GlobalTheory.SmGL.emb₂, GlobalTheory.SmGL.leviEmb,
+        GlobalTheory.SmGL.leviTwo, GlobalTheory.SmGL.two, Matrix.blockDiagonal'_apply]
+  rw [hv]
+  simp only [Matrix.reindex_apply, Matrix.submatrix_apply]
+  generalize (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i = i'
+  generalize (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j = j'
+  rcases i' with i' | i' <;> rcases j' with j' | j'
+  · simpa using (hent i' j').trans (by linarith)
+  · simp; linarith
+  · simp; linarith
+  · have h1 : ‖((1 : Matrix (Fin s) (Fin s) (Cinf E)) i' j')‖ ≤ 1 := by
+      by_cases h : i' = j'
+      · subst h; simpa using norm_one_le
+      · simp [Matrix.one_apply_ne h]
+    simpa using h1.trans (by linarith)
+
+theorem height_lev_le (y : GL (Fin r) (Cinf E)) :
+    height (lev (Cinf E) r s (y, 1)) ≤ 3 * height y := by
+  have e : (lev (Cinf E) r s (y, 1))⁻¹ = lev (Cinf E) r s (y⁻¹, 1) := by
+    rw [← map_inv, Prod.inv_mk, inv_one]
+  have h1 := norm_lev_le (s := s) y
+  have h2 := norm_lev_le (s := s) y⁻¹
+  have n1 := norm_nonneg (toL y.val)
+  have n2 := norm_nonneg (toL (y⁻¹).val)
+  unfold height
+  rw [e]
+  linarith
+
+end GlobalTheory.CompanionTheory.CTFin.Slice1.Height
+
+theorem GlobalTheory.CompanionTheory.CTFin.Slice1.height_lev_mul_le : ∀ (E : Type) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] (r s : ℕ) (c : GL (Fin (r + s)) (Cinf E)), ∃ B : ℝ, 0 ≤ B ∧ ∀ y : GL (Fin r) (Cinf E), height (lev (Cinf E) r s (y, 1) * c) ≤ B * height y := by
+  intro E _ _ _ r s c
+  have hb : 0 ≤ GlobalTheory.CompanionTheory.GrowthConv.bnd c := by
+    unfold GlobalTheory.CompanionTheory.GrowthConv.bnd
+    positivity
+  refine ⟨3 * GlobalTheory.CompanionTheory.GrowthConv.bnd c, by positivity, fun y => ?_⟩
+  refine (GlobalTheory.CompanionTheory.GrowthConv.height_mul_le_bnd c _).trans ?_
+  have := mul_le_mul_of_nonneg_left (Height.height_lev_le (s := s) y) hb
+  linarith
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEmbeddingHeightBound =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRestrictionSmooth =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRestrictionSmooth", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneMemGoodCT\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommuteRtOfMemZalg\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField GlobalTheory.CuspRep GlobalTheory.CompanionTheory.CTFin Matrix
+
+noncomputable section
+namespace GlobalTheory.CompanionTheory.CTFin.Slice1
+variable {E : Type} [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] {r s : ℕ}
+
+
+variable (E r s) in
+def blockOne (x : Lie E r) : Lie E (r + s) :=
+  toL (Matrix.reindex (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)) (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s))
+    (Matrix.fromBlocks (Matrix.of x) 0 0 1))
+
+theorem contDiff_blockOne : ContDiff ℝ (⊤ : ℕ∞) (blockOne E r s) := by
+  refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
+  change ContDiff ℝ _ (fun x : Lie E r => Matrix.fromBlocks (Matrix.of x) 0 0 (1 : Matrix (Fin s) (Fin s) (Cinf E))
+    ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i) ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j))
+  generalize (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i = i'
+  generalize (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j = j'
+  rcases i' with i' | i' <;> rcases j' with j' | j'
+  · exact contDiff_apply_apply ℝ i' j'
+  · exact contDiff_const
+  · exact contDiff_const
+  · exact contDiff_const
+
+theorem blockOne_val (y : GL (Fin r) (Cinf E)) :
+    blockOne E r s (toL (y : Matrix (Fin r) (Fin r) (Cinf E))) =
+      toL ((lev (Cinf E) r s (y, 1) : GL _ _) : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)) := by
+  have hv (g : GL (Fin r) (Cinf E) × GL (Fin s) (Cinf E)) :
+      (GlobalTheory.SmGL.emb₂ (Cinf E) (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)) g).val =
+        Matrix.reindex (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)) (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s))
+          (Matrix.fromBlocks g.1.val 0 0 g.2.val) := by
+    ext i j
+    simp [GlobalTheory.SmGL.emb₂, GlobalTheory.SmGL.leviEmb, GlobalTheory.SmGL.leviTwo,
+      GlobalTheory.SmGL.two, Matrix.reindex_apply, Matrix.blockDiagonal']
+    rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i with a | a <;>
+      rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j with b | b <;> simp
+  rw [lev, hv]
+  rfl
+
+theorem exists_val_of_mem_invSet {x : Lie E r} (hx : x ∈ invSet E r) :
+    ∃ y : GL (Fin r) (Cinf E), x = toL (y : Matrix (Fin r) (Fin r) (Cinf E)) :=
+  ⟨(show IsUnit (Matrix.of x) from hx).unit, rfl⟩
+
+theorem toL_val_mem_invSet (y : GL (Fin r) (Cinf E)) :
+    toL (y : Matrix (Fin r) (Fin r) (Cinf E)) ∈ invSet E r :=
+  show IsUnit (Matrix.of (Matrix.of.symm (y : Matrix (Fin r) (Fin r) (Cinf E)))) from y.isUnit
+
+theorem sm_lev_slice (E : Type) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] (r s : ℕ) (F : GA E (r + s) → ℂ)
+    (hF : F ∈ Sm E (r + s)) : (fun m : GA E r => F (lev (Ad E) r s (m, 1))) ∈ Sm E r := by
+  intro g
+  have hmaps : Set.MapsTo (blockOne E r s) (invSet E r) (invSet E (r + s)) := by
+    intro x hx
+    obtain ⟨y, rfl⟩ := exists_val_of_mem_invSet hx
+    rw [blockOne_val]
+    exact toL_val_mem_invSet _
+  have hcomp := (hF (lev (Ad E) r s (g, 1))).comp contDiff_blockOne.contDiffOn hmaps
+  refine hcomp.congr fun x hx => ?_
+  obtain ⟨y, rfl⟩ := exists_val_of_mem_invSet hx
+  rw [Function.comp_apply, blockOne_val, chart_val, chart_val]
+  have e1 : lev (Ad E) r s (infGL E r y, 1) = infGL E (r + s) (lev (Cinf E) r s (y, 1)) := by
+    rw [← lev_infGL, map_one]
+  rw [← e1, lev_mul_one]
+
+end GlobalTheory.CompanionTheory.CTFin.Slice1
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRestrictionSmooth =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermCofiniteIdealTransfer =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermCofiniteIdealTransfer", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OneMemGoodCT\npublic import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.AffineGLForms.GenSpace\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CommuteRtOfMemZalg\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviEmbeddingHeightBound\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeviRestrictionSmooth\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl GlobalTheory.CompanionTheory.CTFin Matrix
@@ -58,7 +213,7 @@ theorem slice_mem_genSpace : ∀ (E : Type) [Field E] [NumberField E] [_root_.Nu
   obtain ⟨hN, hM, hLv, hC, hG, hZ⟩ := hF
   let h : GA E (r + s) := lev (Ad E) r s (1, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ)
   let F' := rt E (r + s) h F
-  let G : Sm E r := ⟨_, GlobalTheory.T.levi_restriction_smooth E r s F'.1 F'.2⟩
+  let G : Sm E r := ⟨_, _root_.GlobalTheory.CompanionTheory.CTFin.Slice1.sm_lev_slice E r s F'.1 F'.2⟩
   have hGv : ∀ m₁, G.1 m₁ = F.1 (lev (Ad E) r s (m₁, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ)) := by
     intro m₁
     change F.1 (lev (Ad E) r s (m₁, 1) * h) = _
@@ -105,7 +260,7 @@ theorem slice_mem_genSpace : ∀ (E : Type) [Field E] [NumberField E] [_root_.Nu
     exact hM (γ, 1) _
   ·
     obtain ⟨C, N, hb⟩ := hG (lev (Ad E) r s (g, m₂) * finGL E (r + s) t)
-    obtain ⟨B, hB0, hB⟩ := GlobalTheory.T.levi_embedding_height_bound E r s (Unitary.toUnits κ)
+    obtain ⟨B, hB0, hB⟩ := _root_.GlobalTheory.CompanionTheory.CTFin.Slice1.height_lev_mul_le E r s (Unitary.toUnits κ)
     refine ⟨|C| * B ^ N, N, fun y => ?_⟩
     have e1 : G.1 (g * infGL E r y) = F.1 (lev (Ad E) r s (g, m₂) * finGL E (r + s) t *
         infGL E (r + s) (lev (Cinf E) r s (y, 1) * Unitary.toUnits κ)) := by
@@ -122,3 +277,6 @@ theorem slice_mem_genSpace : ∀ (E : Type) [Field E] [NumberField E] [_root_.Nu
 
 end GlobalTheory.CompanionTheory.CTFin.Slice1
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConstantTermCofiniteIdealTransfer =====

@@ -297,13 +297,13 @@ end Abstract
 variable {l : ℕ} [Fact l.Prime]
 
 theorem finite_Ks (K : FinExt l) (j : ℕ) : FiniteDimensional ℚ_[l] (Ks K j) := by
-  apply _root_.GlobalTheory.TateDecomp.finite_Ks <;> assumption
+  apply _root_.GlobalTheory.TateDecomp.finite_Ks
 
 theorem isCyc_unique {χ χ' : GQ l →* ℚ_[l]ˣ} (h : IsCyc χ) (h' : IsCyc χ') : χ = χ' := by
   ext g
   rw [← sub_eq_zero, ← norm_le_zero_iff]
   by_contra hne
-  obtain ⟨m, hm⟩ := exists_zpow_neg_lt (l := l) (not_le.1 hne)
+  obtain ⟨m, hm⟩ := PadicInt.exists_pow_neg_lt (p := l) (not_le.1 hne)
   obtain ⟨ζ, hζ⟩ := exists_primRoot_pow (l := l) m
   obtain ⟨a, ha, hga⟩ := h g m ζ hζ.pow_eq_one
   obtain ⟨a', ha', hga'⟩ := h' g m ζ hζ.pow_eq_one

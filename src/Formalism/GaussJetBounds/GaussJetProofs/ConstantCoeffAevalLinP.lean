@@ -127,11 +127,8 @@ lemma jetPair_C_left (c : K) (F : MvPowerSeries ι K) :
   classical
   rw [jetPair_eq_sum (MvPolynomial.C c) F {0}]
   · simp [mfact, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
-  · intro κ hκ
-    rw [MvPolynomial.mem_support_iff, MvPolynomial.coeff_C] at hκ
-    rw [Finset.mem_singleton]
-    by_contra h
-    exact hκ (if_neg (fun h' => h h'.symm))
+  · rw [MvPolynomial.support_C]
+    split_ifs <;> simp
 
 lemma mfact_add_single (κ : ι →₀ ℕ) (i : ι) :
     mfact (κ + Finsupp.single i 1) = mfact κ * (κ i + 1) := by
@@ -251,7 +248,6 @@ lemma jetPair_poly (A : ι → ι' → K) (P : MvPolynomial ι K) :
     have h := constantCoeff_aeval_linP A G
     first
     | exact h
-    | simpa [MvPolynomial.constantCoeff_eq] using h
   · rename_i P Q hP hQ
     intro G
     rw [jetPair_add_left, hP, hQ, map_add (f := _), jetPair_add_left]
@@ -278,7 +274,7 @@ lemma jetPair_monomial_right (P : MvPolynomial ι' K) (μ : ι' →₀ ℕ) :
       AddMonoidAlgebra.coeff P μ * ((mfact μ : ℕ) : K) := by
   classical
   rw [jetPair_eq_sum P _ (insert μ P.support) (Finset.subset_insert _ _), Finset.sum_eq_single μ]
-  · simp [MvPolynomial.coeff_coe]
+  · simp
   · intro κ _ hκ
     rw [MvPolynomial.coeff_coe, MvPolynomial.coeff_monomial, if_neg (Ne.symm hκ), mul_zero]
   · intro h
@@ -348,9 +344,6 @@ lemma subst_linSub {K : Type u} [Field K] {d N0 N1 : ℕ} {ι ι' : Type} [Finty
     intro c
     first
     | simpa using (MvPowerSeries.substAlgHom ha).commutes c
-    | (rw [← MvPowerSeries.coe_substAlgHom ha]; simpa using (MvPowerSeries.substAlgHom ha).commutes c)
-    | (rw [← MvPowerSeries.coe_substAlgHom ha]
-       exact (MvPowerSeries.substAlgHom ha).commutes c)
   unfold linSub
 
   rw [← MvPowerSeries.coe_substAlgHom ha, map_sum]
@@ -365,11 +358,9 @@ lemma subst_mvExp {K : Type u} [NormedField K] [CharZero K] {ι ι' : Type} {a :
     (hs : MvPowerSeries.HasSubst a) (f : MvPowerSeries ι' K)
     (hf : MvPowerSeries.constantCoeff f = 0) :
     MvPowerSeries.subst a (mvExp f) = mvExp (MvPowerSeries.subst a f) := by
-  unfold mvExp
-  have hf' : MvPowerSeries.HasSubst (fun _ : Unit => f) :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hf)
-  unfold PowerSeries.subst
-  exact MvPowerSeries.subst_comp_subst_apply hf' hs _
+  unfold mvExp PowerSeries.subst
+  exact MvPowerSeries.subst_comp_subst_apply
+    (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ : Unit => hf)) hs _
 
 lemma sum_ZV_slice {d N0 N1 : ℕ} [NeZero d] {M : Type*} [AddCommMonoid M] (s : ZMod d)
     (b : Fin N1) (f : ZV d N0 N1 → M) (hf : ∀ y, ¬ (y.1 = s ∧ y.2.2 = b) → f y = 0) :
@@ -396,7 +387,7 @@ lemma frameM_genA {K : Type u} [Field K] {d N0 N1 : ℕ} [NeZero d] (TT : Finset
     frameM (N1 := N1) xg z i = ∑ y, frameM (N1 := N1) x z y * genA TT T i y := by
   classical
   rw [sum_ZV_slice z.1 z.2.2]
-  · simp only [frameM, genA, eq_self_iff_true, and_self, ↓reduceIte]
+  · simp only [frameM, genA, and_self, ↓reduceIte]
     by_cases h : i.1 = z.1 ∧ i.2.2 = z.2.2
     · rw [if_pos h, hxg]
       obtain ⟨h1, h2⟩ := h
@@ -416,7 +407,7 @@ lemma sum_genA_eq_rowOp {K : Type u} [Field K] {d N0 N1 : ℕ} [NeZero d] (TT : 
       MvPolynomial (ZV d N0 N1) K) = rowOp (N1 := N1) TT T s i b := by
   classical
   rw [sum_ZV_slice s b]
-  · simp only [genA, rowOp, effMat, eq_self_iff_true, and_self, ↓reduceIte]
+  · simp only [genA, rowOp, effMat, and_self, ↓reduceIte]
     by_cases h : s ∈ TT ∧ i.val = 0
     · simp only [if_pos h]
       rw [Finset.sum_eq_single i]
@@ -499,8 +490,6 @@ theorem thmAGen : ThmAGen.{u} := by
   have hf0 : MvPowerSeries.constantCoeff (ε • bSum (frameM (N1 := N1) x) be) = 0 := by
     first
     | (rw [MvPowerSeries.smul_eq_C_mul, map_mul, hB, mul_zero])
-    | (rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_smul,
-        MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hB]; simp)
   have hF : MvPowerSeries.subst (fun j : ZV d N0 N1 =>
       (∑ i : ZV d N0 N1, MvPowerSeries.C (genA TT T i j) * MvPowerSeries.X i :
         MvPowerSeries (ZV d N0 N1) K))

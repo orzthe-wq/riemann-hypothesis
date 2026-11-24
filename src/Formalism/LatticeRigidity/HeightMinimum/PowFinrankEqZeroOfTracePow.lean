@@ -67,12 +67,6 @@ variable {K V : Type*} [Field K] [IsAlgClosed K] [AddCommGroup V] [Module K V]
 theorem finite_eig (f : Module.End K V) : {μ | f.maxGenEigenspace μ ≠ ⊥}.Finite := by
   first
   | exact WellFoundedGT.finite_ne_bot_of_iSupIndep (Module.End.independent_maxGenEigenspace f)
-  | exact CompleteLattice.WellFoundedGT.finite_ne_bot_of_iSupIndep
-      (Module.End.independent_maxGenEigenspace f)
-  | exact CompleteLattice.WellFoundedGT.finite_ne_bot_of_independent
-      (Module.End.independent_maxGenEigenspace f)
-  | exact CompleteLattice.WellFounded.finite_ne_bot_of_independent wellFounded_gt
-      (Module.End.independent_maxGenEigenspace f)
 
 theorem trace_pow_restrict_maxGen (f : Module.End K V) (μ : K) (j : ℕ) :
     LinearMap.trace K _ ((f ^ j).restrict
@@ -114,12 +108,8 @@ theorem trace_pow_restrict_maxGen (f : Module.End K V) (μ : K) (j : ℕ) :
       · first
         | exact Commute.sum_left _ _ _ fun i _ =>
             ((Commute.refl x).pow_left i).mul_left (hc.symm.pow_left _)
-        | exact Commute.sum_left fun i _ =>
-            ((Commute.refl x).pow_left i).mul_left (hc.symm.pow_left _)
       · first
         | exact Commute.sum_left _ _ _ fun i _ =>
-            (hc.pow_left i).mul_left ((Commute.refl _).pow_left _)
-        | exact Commute.sum_left fun i _ =>
             (hc.pow_left i).mul_left ((Commute.refl _).pow_left _)
     first
     | exact hcomm.isNilpotent_mul_left hxy

@@ -132,7 +132,7 @@ theorem UpperTheory.V.Af.Rs.deplete :
         simp only [hmul, hψ1 p hpL, one_mul]
         linear_combination (1 : DirichletCharacter ℂ L) (m : ZMod L) * gE
       · linear_combination (1 : DirichletCharacter ℂ L) (n : ZMod L) * gE
-    · simp only [hc, hχ0 p hpL, hψu p hpL, hmul, zero_mul, mul_zero, zero_add]
+    · simp only [hc, hχ0 p hpL, hψu p hpL, hmul, zero_mul, zero_add]
   · intro p hp
     refine ⟨fun hpL => ?_, fun hpL => ?_⟩
     · have hcop : p.Coprime L := (Nat.Prime.coprime_iff_not_dvd hp).2 hpL

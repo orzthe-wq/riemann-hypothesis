@@ -59,7 +59,7 @@ theorem evalAt_mul_intVec {n : ℕ} (la : Fin n → ℕ) {K S : Type} [Field K] 
   rw [coe_rho, Matrix.transpose_transpose] at h1
   rw [← hmap j, ← evalAt_rowAct, ← GlobalTheory.NabStab.map_rowAct, coe_basis, ← coe_basis, h1]
 
-  simp only [map_sum, map_smul, smul_eq_C_mul, map_mul, map_C]
+  simp only [map_sum, smul_eq_C_mul, map_mul, map_C]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [hmap i]
   simp [GlobalTheory.DualWeyl.evalAt]

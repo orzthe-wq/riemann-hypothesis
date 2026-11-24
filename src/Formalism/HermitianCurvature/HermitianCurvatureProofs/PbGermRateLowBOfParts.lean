@@ -133,8 +133,7 @@ theorem psi_conj (β w : ℂ) : conj (G.psi β w) = G.psi β (-w) := by
   simp only [map_mul, Complex.conj_I, Complex.conj_ofReal, mul_neg, Complex.neg_re, Complex.ofReal_neg]
   ring
 
-theorem mem_rootSet4 {s : ℕ} (hs : s ≠ 0) {a z : ℂ} : z ∈ G.rootSet s a ↔ z ^ s = a := by
-  simp [G.rootSet, Polynomial.mem_nthRoots (Nat.pos_of_ne_zero hs)]
+alias mem_rootSet4 := _root_.Formalism.FourierDecayAlt.P.PBK.mem_rootSet'
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]

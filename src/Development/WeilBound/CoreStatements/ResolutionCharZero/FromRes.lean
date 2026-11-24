@@ -117,7 +117,7 @@ theorem princW_of_functorialPrincipalization (H : FunctorialPrincipalizationChar
   have : Smooth g := hd.smooth d _
   have : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace g
   have : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian g
-  have : IsNoetherian X := by first | infer_instance | exact ⟨⟩
+  have : IsNoetherian X := by first | exact ⟨⟩
   have : NoetherianSpace X := inferInstance
   let I : X.IdealSheafData := Scheme.IdealSheafData.vanishingIdeal ⟨(U : Set X)ᶜ, U.isOpen.isClosed_compl⟩
   have hsupp : I.support = ⟨(U : Set X)ᶜ, U.isOpen.isClosed_compl⟩ :=

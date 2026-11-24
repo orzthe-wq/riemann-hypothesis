@@ -150,7 +150,6 @@ private theorem surj_comm {F O : Type} [Field F] [NumberField F] [CommRing O] [A
     have hcoe : ((e : 𝓞 F) : F) = (e : F) := by
       first
         | simp
-        | exact map_intCast (algebraMap (𝓞 F) F) e
     rw [hcoe]
     field_simp
   refine ⟨d, ?_⟩

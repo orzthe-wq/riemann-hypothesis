@@ -224,9 +224,9 @@ theorem slicePoly_of_pt (T : D.LevTower k r Wp Wq) (F : B.Mat k r → (Wq →L[�
     intro l
     by_cases hl : l = Fin.last j
     · by_cases he : e = 0
-      · simp only [hl, if_pos rfl, htop, he, if_true]
+      · simp only [hl, htop, he, if_true]
         exact nice_vec_of_cpt (T.bs j) (fun a => hc j hj hj1 w' hh a)
-      · simp only [hl, if_pos rfl, htop, he, if_false]
+      · simp only [hl, htop, he, if_false]
         exact ⟨0, fun a => Formalism.FourierDecayAlt.P.JCx2.mn_nice_zero⟩
     · simp only [hl, if_false]
       refine nice_vec_of_cpt (T.bs j) (fun a => ?_)

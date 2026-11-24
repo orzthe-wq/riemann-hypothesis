@@ -140,11 +140,7 @@ theorem integral_zero_right (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T U :
 
 end Unit
 
-theorem lift_post {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
-    (L : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) (U : MMap M) :
-    PiTensorProduct.lift (postOn M L U) = L ∘ₗ PiTensorProduct.lift U := by
-  ext v
-  simp [postOn]
+alias lift_post := _root_.GlobalTheory.ThetaFireLift.lift_postOn
 
 section Row
 

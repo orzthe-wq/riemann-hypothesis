@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.EqZeroOfNegEq
 
 @[expose] public section
 
@@ -51,12 +52,9 @@ theorem natCast_sub_eq_neg {p n : ℕ} (h : n ≤ p) : ((p - n : ℕ) : ZMod p) 
 theorem neg_one_not_isSquare {p : ℕ} [Fact p.Prime] (h3 : p % 4 = 3) : ¬ IsSquare (-1 : ZMod p) := by
   rw [ZMod.exists_sq_eq_neg_one_iff]; omega
 
-theorem ringChar_ne_two {p : ℕ} [Fact p.Prime] (h3 : p % 4 = 3) : ringChar (ZMod p) ≠ 2 := by
-  rw [ZMod.ringChar_zmod_n]; omega
-
 theorem isSquare_neg_of_not {p : ℕ} [Fact p.Prime] (h3 : p % 4 = 3) {a : ZMod p} (ha : a ≠ 0)
     (hs : ¬ IsSquare a) : IsSquare (-a) := by
-  have hc := ringChar_ne_two h3
+  have hc := _root_.Formalism.FrobeniusOrbits.Cond.ringChar_ne_two h3
   have h1 : quadraticChar (ZMod p) a = -1 := (quadraticChar_neg_one_iff_not_isSquare).2 hs
   have h2 : quadraticChar (ZMod p) (-1) = -1 :=
     (quadraticChar_neg_one_iff_not_isSquare).2 (neg_one_not_isSquare h3)

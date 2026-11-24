@@ -111,7 +111,7 @@ theorem exists_flagPt_of_orbit : ∀ (K : Type) [Fintype K] (ι : K → Type) [�
       have hf' : f ∈ mCoordIdeal z₁ := by
         rw [GlobalTheory.CompanionTheory.Ar.PB.FibreCount.mCoordIdeal_eq_of_orbit hz₁z]
         exact GlobalTheory.CompanionTheory.Ar.PB.CPts.mCoordIdeal_le hz hf
-      exact eval_eq_zero_of_mem_mCoordIdeal hf'
+      exact _root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.An.eval_eq_zero_of_mem hf'
   have hgood : M.GoodAt (BM.F l) (mCoordIdeal (basePart M.blk z₁)) := by
     rw [hbeq]
     exact hβgood

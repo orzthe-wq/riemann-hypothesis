@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfAeFundamentalDomain
 
 @[expose] public section
 
@@ -111,11 +112,6 @@ theorem theta_incA {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (e :
     θ τ (infPart D (incA D e)) = tauE D τ e :=
   (hθ τ).1 e
 
-theorem compAt_mul' (θ : InfFam D) (τ : D.what₂.Tau) {l m n : ℕ} (x : Mx D l m) (y : Mx D m n) :
-    compAt θ τ (HMul.hMul x y : Mx D l n) = compAt θ τ x * compAt θ τ y := by
-  have := Matrix.map_mul (L := x) (M := y) (f := (θ τ).comp (infPart D))
-  exact this
-
 theorem compAt_adj {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m n : ℕ} (y : Mx D m n) :
     compAt θ τ (adj y) = (compAt θ τ y)ᴴ := by
   ext i j
@@ -141,7 +137,7 @@ theorem multM_eq_quadForm {θ : InfFam D} (hθ : IsInfFam θ) (α : D.host.F) (V
   show _ * compAt θ τ (inner V y y) = _
   congr 1
   unfold GlobalTheory.StdUnn.inner
-  rw [compAt_mul', compAt_mul', compAt_adj hθ, gA, compAt_rat hθ]
+  rw [_root_.GlobalTheory.WeilVacMove.compAt_mul, _root_.GlobalTheory.WeilVacMove.compAt_mul, compAt_adj hθ, gA, compAt_rat hθ]
   rfl
 
 theorem multM_tempered : ∀ (D : D7) (r : ℕ) (θ : InfFam D), IsInfFam θ → ∀ (α : D.host.F) (V : HSp D) (a : HermE D r), ∃ q : (D.what₂.Tau → Fin V.rank → Fin r → ℂ) → ℂ, q.HasTemperateGrowth ∧ ∀ y, ((multM θ α V a y : ℝ) : ℂ) = q (fun τ i j => compAt θ τ y i j) := by

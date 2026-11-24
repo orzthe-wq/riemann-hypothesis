@@ -92,11 +92,11 @@ theorem tri_gram (E : ℕ → ℝ) (Y : ℕ → ℂ) (τ : ℝ) (ρ : ℕ → �
         simp
       · rw [hj, tri_self, if_pos (show k ≤ k ∧ k ≤ k from ⟨le_rfl, le_rfl⟩),
           if_neg (show ¬(k + 1 ≤ k ∧ k + 1 ≤ k) from fun h => by omega), if_pos (rfl : k = k)]
-        simp only [Complex.star_def, map_div₀, map_mul, Complex.conj_ofReal, Complex.conj_conj] at hk ⊢
+        simp only [Complex.star_def, map_div₀, Complex.conj_ofReal] at hk ⊢
         linear_combination ((E k : ℂ) * ((ρ k : ℂ) * (ρ k : ℂ)⁻¹ + 1)) * hrk + ((ρ k : ℂ)⁻¹ ^ 2 * (E k : ℂ)) * hk
       · rw [tri_self, tri_of_lt E Y τ ρ hj, if_pos (show k ≤ k ∧ k ≤ j from ⟨le_rfl, hj.le⟩),
           if_neg (show ¬(k + 1 ≤ k ∧ k + 1 ≤ j) from fun h => by omega), if_neg (show ¬(k = j) from by omega)]
-        simp only [Complex.star_def, map_div₀, map_mul, Complex.conj_ofReal, Complex.conj_conj] at hk ⊢
+        simp only [Complex.star_def, map_div₀, Complex.conj_ofReal] at hk ⊢
         linear_combination ((τ : ℂ) * (E k : ℂ) * Y k * (E j : ℂ) * (starRingEnd ℂ) (Y j) * (ρ k : ℂ)⁻¹ ^ 2) * hrk1
     · rcases lt_trichotomy j k with hj | hj | hj
       · rw [tri_eq_zero_of_gt E Y τ ρ hj, if_neg (show ¬(k ≤ i ∧ k ≤ j) from fun h => by omega),
@@ -247,7 +247,7 @@ theorem core (n q : ℕ) (y : Fin n → ℂ) (hy : star y ⬝ᵥ (sgnM n q).mulV
       Matrix.vecMul_diagonal, Pi.star_apply, smul_eq_mul]
     by_cases hij : i = j
     · subst hij
-      simp only [eq_self_iff_true, if_true] at key ⊢
+      simp only [if_true] at key ⊢
       linear_combination key
     · have hij' : (i : ℕ) ≠ j := fun h => hij (Fin.ext h)
       simp only [hij, hij', if_false] at key ⊢
@@ -353,7 +353,6 @@ theorem flowGS : ∀ (n : ℕ) (Hm : Mt n) (q : ℕ) (x₀ : Mt n), OrthFr Hm q 
     funext a
     first
     | exact Complex.conj_ofReal _
-    | simp only [Pi.star_apply, Complex.star_def, Complex.conj_ofReal]
   have hHH : Hmᴴ = Hm := by
     have h1 : x₀ᴴ * Hmᴴ * x₀ = x₀ᴴ * Hm * x₀ := by
       have h2 := congrArg Matrix.conjTranspose hS
@@ -391,12 +390,12 @@ theorem flowGS : ∀ (n : ℕ) (Hm : Mt n) (q : ℕ) (x₀ : Mt n), OrthFr Hm q 
   have expand : ∀ (c : ℂ) (P Q : Mt n),
       (1 - c • P) * Hm * (1 - c • Q) = Hm - c • (Hm * Q) - c • (P * Hm) + (c * c) • (P * (Hm * Q)) := by
     intro c P Q
-    simp only [sub_mul, mul_sub, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_smul,
+    simp only [sub_mul, mul_sub, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul,
       Matrix.mul_assoc]
     abel
   have ha : Mᴴ *ᵥ (Hm *ᵥ e) = -(sgnM n q *ᵥ y) := by
     rw [← hMy]
-    simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc]
+    simp only [Matrix.mulVec_mulVec]
     rw [hMM, Matrix.neg_mulVec]
   have hb : star e ᵥ* Hm ᵥ* M = -(star y ᵥ* sgnM n q) := by
     rw [← hMy, Matrix.star_mulVec]

@@ -115,22 +115,7 @@ theorem sg_comm (h : IsCMExt F E σ) (g : E ≃ₐ[ℚ] E) (x : E) : g (σ x) = 
   rw [h2]
   exact h1
 
-theorem sg_sg (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [h.2.2.2, h.2.2.2, star_star]
-
-theorem sg_ne (h : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
-  have := h.2.1
-  by_contra hn
-  push Not at hn
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  refine IsTotallyComplex.complexEmbedding_not_isReal τ ?_
-  rw [ComplexEmbedding.isReal_iff]
-  ext y
-  have := h.2.2.2 τ y
-  rw [hn y] at this
-  simpa using this.symm
+alias sg_sg := _root_.GlobalTheory.AdelicU.cm_conj_conj
 
 theorem inertQ_of_fix (h : IsCMExt F E σ) [IsGalois ℚ E] {P : Ideal (𝓞 E)} (hP : P.IsMaximal) {q : ℕ}
     (hq : q.Prime) (hqP : (q : 𝓞 E) ∈ P) (hfix : ∀ r ∈ P, sgOF σ r ∈ P) : InertQF σ q := by
@@ -161,7 +146,7 @@ theorem exists_move (h : IsCMExt F E σ) (hu : Algebra.Unramified (𝓞 F) (𝓞
     Ideal.ramificationIdx_eq_one_of_isUnramifiedAt] at hcard
   let s : E ≃ₐ[F] E := AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ)
   have hs1 : s ≠ 1 := fun hs => by
-    obtain ⟨x, hx⟩ := sg_ne h
+    obtain ⟨x, hx⟩ := _root_.GlobalTheory.AdelicU.exists_cm_conj_ne h
     exact hx (congrArg (fun t : E ≃ₐ[F] E => t x) hs)
   by_contra hn
   push Not at hn

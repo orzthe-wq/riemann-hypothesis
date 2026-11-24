@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.CMLattices.IsDiffOf
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CmCurveBaseChangeComp
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeLocalBasisDescriptionStatement
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LieLatticeLocalBasisDescription
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LieCombBaseChange
 import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.IsLieBasisIffIsUnitDet
 import Mathlib.Algebra.Order.Floor.Extended
@@ -89,7 +89,7 @@ theorem lieLat_localization : ∀ (K : Type) [Field K] [NumberField K] (P : Out.
   (∀ i, ∃ s ∈ N, s • M i ∈ F.lieLat) ∧ ∀ c ∈ F.lieLat, ∃ a : Fin F.P₀.g → R, c = ∑ i, algebraMap R K (a i) • M i := by
   intro K _ _ P F R _ _ _ _ N _ G _ φ ψ e e₀ M hφ hψ hF he hM
   refine ⟨fun i => ?_, fun c hc => ?_⟩
-  · obtain ⟨n, r, M', -, hr, hL, hb⟩ := GlobalTheory.T.lie_lattice_local_basis_description K P F
+  · obtain ⟨n, r, M', -, hr, hL, hb⟩ := _root_.GlobalTheory.CM.LieGlue.exists_cover_lieLat K P F
     have key : ∀ j, ∃ s ∈ N, ∃ (k : ℕ) (a : Fin F.P₀.g → 𝓞 K), (r j ^ k * s) • M i = ∑ l, a l • M' j l := by
       intro j
       let R' := Localization.Away (algebraMap (𝓞 K) R (r j))

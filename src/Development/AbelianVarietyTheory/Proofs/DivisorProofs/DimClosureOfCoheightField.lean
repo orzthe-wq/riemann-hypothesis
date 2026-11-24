@@ -75,7 +75,7 @@ theorem dim_closure_of_coheight_field {K : Type} [Field K] {X : Scheme.{0}} [IsI
   have hup : topologicalKrullDim (closure ({w} : Set X)) + 1 ≤ (n + 1 : ℕ) :=
     hX1 ▸ topologicalKrullDim_add_one_le isClosed_closure isClosed_univ
       fun x _ => ⟨genericPoint X, trivial, hgen, genericPoint_specializes x⟩
-  refine le_antisymm (GlobalTheory.PullVanish.withBot_le_of_add_one_le hup) ?_
+  refine le_antisymm (_root_.GlobalTheory.NatCastUpperBound.le_natCast_of_add_one_le hup) ?_
   obtain ⟨A, _, _, _, _, _, j, _, ⟨a, ha⟩, -, hA⟩ := exists_affine_chart_trdeg_eq t w
   obtain ⟨d, hd⟩ := exists_trdeg_eq_natCast K (A := A)
   have hdimX : topologicalKrullDim X ≤ (d : ℕ) := by

@@ -103,7 +103,7 @@ theorem exists_Y {Ω : Type} [Field Ω] (τ : ℚ → Ω) (hτ : Function.Inject
       rw [← h, hu, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_one]
       abel
     rw [e1, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← hcu]
-    simp [Matrix.mul_neg, sub_eq_add_neg]
+    simp [sub_eq_add_neg]
   rw [key, Matrix.det_mul]
   exact mul_ne_zero h3 (isUnit_iff_ne_zero.1 (by
     rw [Matrix.det_nonsing_inv]; exact hdet.ringInverse))

@@ -131,9 +131,9 @@ private lemma local_lemma_4 {A : Type} [CommRing A] (ψ : A →+* ℂ) {U : (Sp 
   obtain ⟨pt⟩ : Nonempty (Sp ℂ) := by
     first
       | infer_instance
-  have hpt : pt ∈ spMap ψ ⁻¹ᵁ U := e (show pt ∈ (⊤ : (Sp ℂ).Opens) by first | trivial | simp)
+  have hpt : pt ∈ spMap ψ ⁻¹ᵁ U := e (show pt ∈ (⊤ : (Sp ℂ).Opens) by first | trivial)
   obtain ⟨g', hD, hxD⟩ := (isAffineOpen_top (Sp A)).exists_basicOpen_le ⟨(spMap ψ).base pt, hpt⟩
-    (by first | trivial | simp)
+    (by first | trivial)
   obtain ⟨g, rfl⟩ : ∃ g : A, (Scheme.ΓSpecIso (CommRingCat.of A)).inv g = g' :=
     ⟨(Scheme.ΓSpecIso (CommRingCat.of A)).hom g', by simp⟩
   refine ⟨g, ?_, hD⟩
@@ -146,10 +146,8 @@ private lemma local_lemma_4 {A : Type} [CommRing A] (ψ : A →+* ℂ) {U : (Sp 
   have hpt' : pt ∈ spMap ψ ⁻¹ᵁ (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g) := hxD
   rw [Scheme.preimage_basicOpen] at hpt'
   first
-    | rw [hc0] at hpt'
     | erw [hc0] at hpt'
   first
-    | (rw [Scheme.basicOpen_zero] at hpt'; simp at hpt')
     | (erw [Scheme.basicOpen_zero] at hpt'; simp at hpt')
 
 private lemma alg_lemma_5 {A : Type} [CommRing A] (ψ : A →+* ℂ) (g' : Γ(Sp A, ⊤))

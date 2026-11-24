@@ -221,11 +221,8 @@ theorem cnt_biUnion (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V
     have h1 : y' - y ∈ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A) := by
       rw [← Submodule.Quotient.eq, e, e']
     rw [Submodule.mem_smul_top_iff] at h1
-    have h2 := hst i hi y hy _ h1
-    have h3 : (y : V) + ((y' - y : ↥A) : V) = y' := by
-      simp
-    rw [h3] at h2
-    exact Set.disjoint_left.1 (hdis i hi j hj hij) h2 hy'
+    exact Set.disjoint_left.1 (hdis i hi j hj hij)
+      (by simpa using hst i hi y hy _ h1) hy'
 
 theorem cnt_gmap {h : V →ₗ⋆[K] V →ₗ[K] K} {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (k : ℕ) (n : 𝓞 F) (Ω : Set V) :

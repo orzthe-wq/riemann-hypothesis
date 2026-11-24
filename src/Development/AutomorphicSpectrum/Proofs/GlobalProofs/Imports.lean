@@ -45,7 +45,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂
 
-theorem globalArtinReciprocity : GlobalTheory.Published.GlobalArtinReciprocity :=
-  CompanionTheory.FamInh.globalArtin
+alias globalArtinReciprocity := _root_.CompanionTheory.FamInh.globalArtin
 
 end GlobalTheory.CompanionTheory.Hypotheses₂

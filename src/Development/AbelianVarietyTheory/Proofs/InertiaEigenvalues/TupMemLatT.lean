@@ -80,9 +80,7 @@ theorem zOm_smul {α : Type} [AddCommGroup α] [Module (Om l) α] [Module ℤ_[l
   rw [← algebraMap_smul (Om l) c x]
   congr 1
 
-theorem norm_l : ‖(l : Om l)‖ = (l : ℝ)⁻¹ := by
-  rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l))]
-  exact (PadicAlgCl.norm_extends l (l : ℚ_[l])).trans Padic.norm_p
+alias norm_l := _root_.GlobalTheory.UnramValue.norm_l
 
 theorem norm_zOm_le (c : ℤ_[l]) : ‖zOm l c‖ ≤ 1 := by
   simp only [zOm, RingHom.comp_apply]

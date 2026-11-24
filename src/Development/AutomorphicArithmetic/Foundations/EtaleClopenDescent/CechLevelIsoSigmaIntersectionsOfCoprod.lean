@@ -166,7 +166,7 @@ private theorem cmp_disj : Pairwise (Function.onFun Disjoint
   rintro _ ⟨u, rfl⟩ ⟨v, hv⟩
   obtain ⟨k, hk⟩ : ∃ k, a k ≠ b k := by
     by_contra h
-    push_neg at h
+    push Not at h
     exact hab (funext h)
   have e : Sigma.ι (fun j => (V j).toScheme) (b k) (X.homOfLE (le_V V W hW b k) v) =
       Sigma.ι (fun j => (V j).toScheme) (a k) (X.homOfLE (le_V V W hW a k) u) := by

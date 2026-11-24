@@ -69,11 +69,11 @@ theorem nonempty_twAct_equiv {ρ : Representation ℂ G V} {σ : Representation 
     constructor
     · rintro ⟨x, ⟨n, v, rfl⟩, rfl⟩
       refine ⟨n, e v, ?_⟩
-      simp only [LinearEquiv.coe_coe, map_sub, map_smul, he, hl, eint]
+      simp only [map_sub, map_smul, hl, eint]
     · rintro ⟨n, w', rfl⟩
       refine ⟨ρ n (e.toLinearEquiv.symm w') - ((θ n : ℂˣ) : ℂ) • e.toLinearEquiv.symm w', ⟨n, _, rfl⟩, ?_⟩
       have hw : e (e.toLinearEquiv.symm w') = w' := e.toLinearEquiv.apply_symm_apply w'
-      simp only [LinearEquiv.coe_coe, map_sub, map_smul, he, hl, eint, hw]
+      simp only [map_sub, map_smul, hl, eint, hw]
   refine ⟨Representation.Equiv.mk (Submodule.Quotient.equiv _ _ e.toLinearEquiv hmap) fun m => ?_⟩
   apply Submodule.linearMap_qext
   ext v

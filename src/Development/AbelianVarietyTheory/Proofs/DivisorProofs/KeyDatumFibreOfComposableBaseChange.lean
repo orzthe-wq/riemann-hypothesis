@@ -36,6 +36,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -47,13 +48,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 namespace GlobalTheory.KeyEven
-
-theorem spMap_comp' {A B K : Type} [CommRing A] [CommRing B] [CommRing K] (f : A →+* B) (h : B →+* K) :
-    spMap (h.comp f) = spMap h ≫ spMap f := by
-  simp [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
-
-theorem eSec_hom' {S : Scheme.{0}} (G : Over S) [GrpObj G] : eSec G ≫ G.hom = 𝟙 _ := by
-  simpa [eSec] using Over.w η[G]
 
 theorem gs_appLE' {X Y Z : Scheme.{0}} (φ : Y ⟶ X) (r : Z ⟶ Y) (p : Z) (U : X.Opens) (V : Y.Opens) (e : V ≤ φ ⁻¹ᵁ U)
     (hp : r p ∈ V) (a : Γ(X, U)) : gs r p V ((φ.appLE U V e).hom a) = gs (r ≫ φ) p U a := by
@@ -88,7 +82,7 @@ theorem keyPB_of_keyOn_comp : ∀ (A B K : Type) [CommRing A] [CommRing B] [Comm
   intro A B K _ _ _ f h G _ _ L σ g y x x' hg hg' H H'
   obtain ⟨φ, he, ψ, F, hpb, hψ, hrig, hsec, hF1, hF2, hv⟩ := H
   obtain ⟨φ', he', ψ', F', hpb', hψ', hrig', hsec', hF1', hF2', hv'⟩ := H'
-  have hc : spMap (h.comp f) = spMap h ≫ spMap f := spMap_comp' f h
+  have hc : spMap (h.comp f) = spMap h ≫ spMap f := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp f h
   obtain ⟨φ₁, h1, h2⟩ : ∃ φ₁ : x'.P.A.left ⟶ x.P.A.left, φ₁ ≫ φ = φ' ∧ φ₁ ≫ x.P.A.hom = x'.P.A.hom ≫ spMap h :=
     ⟨hpb.1.lift φ' (x'.P.A.hom ≫ spMap h) (by rw [hpb'.1.w, hc, Category.assoc]), hpb.1.lift_fst _ _ _,
       hpb.1.lift_snd _ _ _⟩
@@ -97,7 +91,7 @@ theorem keyPB_of_keyOn_comp : ∀ (A B K : Type) [CommRing A] [CommRing B] [Comm
   have he₁ : eSec x'.P.A ≫ φ₁ = spMap h ≫ eSec x.P.A := by
     apply hpb.1.hom_ext
     · rw [Category.assoc, he', Category.assoc, he, hc, Category.assoc]
-    · rw [Category.assoc, h2, ← Category.assoc, eSec_hom', Category.assoc, eSec_hom']
+    · rw [Category.assoc, h2, ← Category.assoc, _root_.ReciprocityTheory.ChartRestriction.G.Out.CubePf.eSec_hom, Category.assoc, _root_.ReciprocityTheory.ChartRestriction.G.Out.CubePf.eSec_hom]
       rfl
   have hL := L.isLB
   have hx := x.P.isLB
@@ -154,14 +148,14 @@ theorem keyPB_of_keyOn_comp : ∀ (A B K : Type) [CommRing A] [CommRing B] [Comm
     · have a1 := hv (i.cast hg₁)
       have a2 := hv' i
       simp only at a1 a2
-      rw [Category.assoc, a2, Category.assoc, a1, Fin.cast_cast, ← Category.assoc, ← spMap_comp']
+      rw [Category.assoc, a2, Category.assoc, a1, Fin.cast_cast, ← Category.assoc, ← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]
       congr 2
       refine ringHom_dual_ext _ _ (fun a => ?_) ?_
       · simp only [RingHom.comp_apply, hF1, hF1', dualMap_alg]
       · simp only [RingHom.comp_apply, hF2, hF2', dualMap_eps]
     · rw [Category.assoc, h2, ← Category.assoc, Over.w (x'.v i), Category.assoc, Over.w (x.v _)]
       show spMap (algebraMap K (DualNumber K)) ≫ spMap h = spMap (GlobalTheory.MBLow.dualMap h) ≫ spMap (algebraMap B (DualNumber B))
-      rw [← spMap_comp', ← spMap_comp']
+      rw [← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]
       congr 1
       exact RingHom.ext fun a => (dualMap_alg h a).symm
 

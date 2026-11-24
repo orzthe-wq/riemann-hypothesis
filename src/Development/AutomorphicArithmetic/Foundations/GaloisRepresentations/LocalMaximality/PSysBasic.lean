@@ -124,7 +124,7 @@ private lemma top_C (hU : WdUni) (n : κ → ℕ × ℕ) (z : κ → S) (N : ℤ
   simp only [top, mixF, lft_uni' hU, rgt_uni' hU, card_uni' hU, Finset.prod_empty,
     Finset.card_empty, add_zero, Units.val_one, map_one] at h1 ⊢
   rw [Module.End.one_eq_id, Submodule.map_id] at h1
-  split_ifs at h1 ⊢ <;> first | exact h1 | (exfalso; tauto) | simp_all
+  split_ifs at h1 ⊢ <;> first | exact h1 | (exfalso; tauto)
 
 private lemma top_D (hU : WdUni) (z : κ → S) (c : Finset (Two d ⊕ₗ κ) → E) :
     top (wd (T.wt z) c) = wd (fun _ : Two d => (1 : Module.End ℂ E)) (top c) := by
@@ -245,7 +245,7 @@ theorem UpperTheory.Gal.productCup_of_system.sysBasic_of :
       rw [hz1, zero_add] at e1
       simp only [hwr, Pi.zero_apply] at e1 ⊢
       rcases neg_one_pow_eq_or ℤ (uni I J).card with h | h <;> rw [h] at e1 <;> simp at e1 <;>
-        first | exact e1.symm | exact e1 | exact neg_eq_zero.mp e1.symm
+        first | exact e1.symm | exact e1
   · intro κ' _ _ e c hc
     obtain ⟨hC, hD⟩ := Submodule.mem_inf.mp hc
     refine Submodule.mem_inf.mpr ⟨?_, ?_⟩

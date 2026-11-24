@@ -1,52 +1,252 @@
 module
 
-public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsEuclideanSections
 public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLattice
-public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLatticeCount
-public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSmallBallVolume
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
+public import GroundTheory.HeightsAndTheta.Heights.CovolumeCount
+public import Mathlib.Data.Nat.Factorial.DoubleFactorial
+public import Mathlib.Analysis.Real.Pi.Bounds
+public import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsEuclideanSections
+import Mathlib.Dynamics.Ergodic.Action.Regular
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.SimpleRing.Principal
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLatticeCount, GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSmallBallVolume, GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.UnipotentCharacter
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLatticeCount =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLatticeCount", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLattice\npublic import GroundTheory.HeightsAndTheta.Heights.CovolumeCount\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Dynamics.Ergodic.Action.Regular\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.HilbertSamuel
+
+open MeasureTheory Metric Module ZSpan
+
+noncomputable section
+
+section
+
+variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
+  (La : Submodule ℤ V) {c : ℝ}
+
+theorem LatticeCount.exists_near (B : ShortLatticeBasis La c) (x : V) :
+    ∃ μ ∈ La, ‖x + μ‖ ≤ finrank ℝ V * c := by
+  let e := basisOfLinearIndependentOfCardEqFinrank' B.vec B.linearIndependent (Fintype.card_fin _)
+  have he : ∀ i, e i = B.vec i := fun i ↦ by simp [e]
+  refine ⟨-((floor e x : Submodule.span ℤ (Set.range e)) : V), ?_, ?_⟩
+  · refine La.neg_mem ?_
+    have hle : Submodule.span ℤ (Set.range e) ≤ La := by
+      rw [Submodule.span_le]
+      rintro _ ⟨i, rfl⟩
+      rw [he]
+      exact B.mem i
+    exact hle (floor e x).2
+  · rw [← sub_eq_add_neg, ← fract_apply]
+    calc ‖fract e x‖ ≤ ∑ i, ‖e i‖ := norm_fract_le e x
+      _ ≤ ∑ _i : Fin (finrank ℝ V), c :=
+          Finset.sum_le_sum fun i _ ↦ by rw [he]; exact B.norm_le i
+      _ = _ := by simp
+
+theorem LatticeCount.encard_le (B : ShortLatticeBasis La c) (b : ℝ) (x : V) :
+    {y : V | y ∈ La ∧ ‖y‖ ≤ b}.encard ≤
+      {g : La | g +ᵥ x ∈ closedBall (0 : V) (b + finrank ℝ V * c)}.encard := by
+  classical
+  obtain ⟨μ, hμ, hxμ⟩ := LatticeCount.exists_near La B x
+  refine Set.encard_le_encard_of_injOn
+    (f := fun y : V ↦ if h : y ∈ La then (⟨y + μ, La.add_mem h hμ⟩ : La) else 0) ?_ ?_
+  · rintro y ⟨hy, hyb⟩
+    simp only [Set.mem_ofPred_eq, hy, dif_pos, mem_closedBall, dist_zero_right,
+      Submodule.vadd_def, vadd_eq_add]
+    calc ‖y + μ + x‖ = ‖y + (x + μ)‖ := by congr 1; abel
+      _ ≤ ‖y‖ + ‖x + μ‖ := norm_add_le _ _
+      _ ≤ b + finrank ℝ V * c := add_le_add hyb hxμ
+  · rintro y ⟨hy, -⟩ y' ⟨hy', -⟩ h
+    simp only [hy, hy', dif_pos, Subtype.mk.injEq, add_left_inj] at h
+    exact h
+
+end
+
+theorem LatticeCount.proof : LatticeCount.Statement := by
+  intro V _ _ _ _ _ La _ _ c b B hb
+  set R := finrank ℝ V with hRdef
+  set S := {x : V | x ∈ La ∧ ‖x‖ ≤ b}
+  have hfin : S.Finite := finite_lattice_closedBall La b
+  refine ⟨hfin, ?_⟩
+  have hRc : 0 ≤ (R : ℝ) * c := by
+    rcases Nat.eq_zero_or_pos R with h | h
+    · simp [h]
+    · exact mul_nonneg (Nat.cast_nonneg _) ((norm_nonneg _).trans (B.norm_le ⟨0, h⟩))
+  set r := b + R * c with hrdef
+  have hr : 0 ≤ r := add_nonneg hb hRc
+  have : MeasurableVAdd La V := (inferInstance : MeasurableVAdd La.toAddSubgroup V)
+  have : VAddInvariantMeasure La V volume :=
+    (inferInstance : VAddInvariantMeasure La.toAddSubgroup V volume)
+  set bz := Free.chooseBasis ℤ La
+  have hF := ZLattice.isAddFundamentalDomain bz volume
+  set F := fundamentalDomain (bz.ofZLatticeBasis ℝ La)
+  set A := closedBall (0 : V) r
+  have hA : MeasurableSet A := measurableSet_closedBall
+  have hmeas : ∀ g : La, Measurable fun x : V ↦ A.indicator (1 : V → ENNReal) (g +ᵥ x) :=
+    fun g ↦ (measurable_one.indicator hA).comp (measurable_const_vadd g)
+  have key : ∀ x : V,
+      (S.encard : ENNReal) ≤ ∑' g : La, A.indicator (1 : V → ENNReal) (g +ᵥ x) := by
+    intro x
+    have hind : (fun g : La ↦ A.indicator (1 : V → ENNReal) (g +ᵥ x)) =
+        {g : La | g +ᵥ x ∈ A}.indicator 1 := by
+      funext g
+      by_cases hg : g +ᵥ x ∈ A <;> simp [hg]
+    rw [hind, ← tsum_subtype]
+    simp only [Pi.one_apply]
+    rw [ENNReal.tsum_set_one]
+    exact_mod_cast LatticeCount.encard_le La B b x
+  have hFfin : volume F ≠ ⊤ := (fundamentalDomain_isBounded _).measure_lt_top.ne
+  have hvol : (S.encard : ENNReal) * ENNReal.ofReal (ZLattice.covolume La) ≤ volume A := by
+    calc (S.encard : ENNReal) * ENNReal.ofReal (ZLattice.covolume La)
+        = (S.encard : ENNReal) * volume F := by
+          rw [ZLattice.covolume_eq_measure_fundamentalDomain La volume hF,
+            ofReal_measureReal hFfin]
+      _ = ∫⁻ _ in F, (S.encard : ENNReal) := (setLIntegral_const F _).symm
+      _ ≤ ∫⁻ x in F, ∑' g : La, A.indicator 1 (g +ᵥ x) := lintegral_mono key
+      _ = ∑' g : La, ∫⁻ x in F, A.indicator 1 (g +ᵥ x) :=
+          lintegral_tsum fun g ↦ (hmeas g).aemeasurable
+      _ = ∫⁻ x, A.indicator 1 x := (hF.lintegral_eq_tsum'' _).symm
+      _ = volume A := lintegral_indicator_one hA
+  have hunit : volume (ball (0 : V) 1) =
+      volume (ball (0 : EuclideanSpace ℝ (Fin R)) 1) := by
+    let f := (stdOrthonormalBasis ℝ V).repr
+    rw [← f.measurePreserving.measure_preimage measurableSet_ball.nullMeasurableSet,
+      f.preimage_ball, map_zero]
+  have hunitfin : volume (ball (0 : EuclideanSpace ℝ (Fin R)) 1) ≠ ⊤ :=
+    isBounded_ball.measure_lt_top.ne
+  have hball : volume A = ENNReal.ofReal (unitBallVolume R * r ^ R) := by
+    rw [Measure.addHaar_closedBall volume 0 hr, hunit, unitBallVolume,
+      ENNReal.ofReal_mul ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hunitfin, mul_comm]
+  have hS : (S.encard : ENNReal) * ENNReal.ofReal (ZLattice.covolume La) =
+      ENNReal.ofReal (S.ncard * ZLattice.covolume La) := by
+    rw [← hfin.cast_ncard_eq, ENat.toENNReal_coe, ← ENNReal.ofReal_natCast,
+      ← ENNReal.ofReal_mul (Nat.cast_nonneg _)]
+  have hpos : 0 ≤ unitBallVolume R * r ^ R :=
+    mul_nonneg ENNReal.toReal_nonneg (pow_nonneg hr _)
+  have := (hS ▸ hvol).trans_eq hball
+  exact (ENNReal.ofReal_le_ofReal_iff hpos).1 this
+
+end
+
+end GroundTheory.Heights₂.Heights.HilbertSamuel
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLatticeCount =====
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSmallBallVolume =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSmallBallVolume", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLattice\npublic import Mathlib.Data.Nat.Factorial.DoubleFactorial\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\npublic import Mathlib.Analysis.Real.Pi.Bounds\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.HilbertSamuel
+
+open MeasureTheory Real Module
+open scoped Nat
+
+noncomputable section
+
+theorem pi_pow_div_factorial_le_six (k : ℕ) : π ^ k / (k ! : ℝ) ≤ 6 := by
+  have hπ := pi_lt_d2
+  have hπ0 := pi_pos
+  have step : ∀ k, 3 ≤ k → π ^ (k + 1) / ((k + 1) ! : ℝ) ≤ π ^ k / (k ! : ℝ) := by
+    intro k hk
+    have hk' : (4 : ℝ) ≤ (k : ℝ) + 1 := by
+      have : (3 : ℝ) ≤ k := by exact_mod_cast hk
+      linarith
+    rw [Nat.factorial_succ, Nat.cast_mul, pow_succ]
+    have hf : (0 : ℝ) < (k ! : ℝ) := by exact_mod_cast Nat.factorial_pos k
+    rw [div_le_div_iff₀ (by positivity) hf]
+    push_cast
+    have hp : 0 < π ^ k := pow_pos hπ0 k
+    nlinarith [mul_pos hp hf]
+  have h3 : π ^ 3 / ((3 : ℕ) ! : ℝ) ≤ 6 := by
+    norm_num [Nat.factorial]
+    nlinarith [sq_nonneg π, mul_pos hπ0 hπ0]
+  rcases lt_or_ge k 3 with hk | hk
+  · interval_cases k
+    · norm_num
+    · norm_num; linarith
+    · norm_num [Nat.factorial]; nlinarith
+  · induction k, hk using Nat.le_induction with
+    | base => exact h3
+    | succ n hn ih => exact (step n hn).trans ih
+
+theorem pi_pow_mul_two_pow_div_doubleFactorial_le_six (k : ℕ) :
+    π ^ k * 2 ^ (k + 1) / ((2 * k + 1)‼ : ℝ) ≤ 6 := by
+  have hπ := pi_lt_d2
+  have hπ0 := pi_pos
+  have step : ∀ k, 2 ≤ k → π ^ (k + 1) * 2 ^ (k + 1 + 1) / ((2 * (k + 1) + 1)‼ : ℝ) ≤
+      π ^ k * 2 ^ (k + 1) / ((2 * k + 1)‼ : ℝ) := by
+    intro k hk
+    have hk' : (7 : ℝ) ≤ 2 * (k : ℝ) + 3 := by
+      have : (2 : ℝ) ≤ k := by exact_mod_cast hk
+      linarith
+    have he : 2 * (k + 1) + 1 = (2 * k + 1) + 2 := by ring
+    rw [he, Nat.doubleFactorial_add_two, Nat.cast_mul, pow_succ, pow_succ (2 : ℝ) (k + 1)]
+    have hf : (0 : ℝ) < ((2 * k + 1)‼ : ℝ) := by exact_mod_cast Nat.doubleFactorial_pos _
+    rw [div_le_div_iff₀ (by positivity) hf]
+    push_cast
+    have hp : 0 < π ^ k * 2 ^ (k + 1) := by positivity
+    nlinarith [mul_pos hp hf]
+  have h2 : π ^ 2 * 2 ^ (2 + 1) / ((2 * 2 + 1)‼ : ℝ) ≤ 6 := by
+    norm_num [Nat.doubleFactorial]
+    nlinarith
+  rcases lt_or_ge k 2 with hk | hk
+  · interval_cases k
+    · norm_num [Nat.doubleFactorial]
+    · norm_num [Nat.doubleFactorial]; linarith
+  · induction k, hk using Nat.le_induction with
+    | base => exact h2
+    | succ n hn ih => exact (step n hn).trans ih
+
+theorem SmallBallVolume.proof : SmallBallVolume.Statement := by
+  intro R
+  unfold unitBallVolume
+  have hfin : finrank ℝ (EuclideanSpace ℝ (Fin R)) = R := finrank_euclideanSpace_fin
+  rcases Nat.even_or_odd' R with ⟨k, hk | hk⟩
+  · rcases Nat.eq_zero_or_pos k with h0 | hpos
+    · subst h0
+      simp only [mul_zero] at hk
+      subst hk
+      have : (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin 0)) 1)).toReal ≤ 1 := by
+        have hle : volume (Metric.ball (0 : EuclideanSpace ℝ (Fin 0)) 1) ≤ 1 := by
+          calc volume (Metric.ball (0 : EuclideanSpace ℝ (Fin 0)) 1)
+              ≤ volume (Set.univ : Set (EuclideanSpace ℝ (Fin 0))) := measure_mono (Set.subset_univ _)
+            _ = 1 := by
+              rw [← (PiLp.volume_preserving_toLp (Fin 0)).measure_preimage
+                MeasurableSet.univ.nullMeasurableSet, Set.preimage_univ, MeasureTheory.volume_pi,
+                Measure.pi_univ]
+              simp
+        exact ENNReal.toReal_le_of_le_ofReal zero_le_one (by simpa using hle)
+      linarith
+    · have : Nontrivial (EuclideanSpace ℝ (Fin R)) :=
+        Module.nontrivial_of_finrank_pos (R := ℝ) (by omega)
+      rw [InnerProductSpace.volume_ball_of_dim_even (hfin.trans hk), ENNReal.ofReal_one, one_pow,
+        one_mul, ENNReal.toReal_ofReal (by positivity)]
+      exact pi_pow_div_factorial_le_six k
+  · rw [InnerProductSpace.volume_ball_of_dim_odd (hfin.trans hk), ENNReal.ofReal_one, one_pow,
+      one_mul, ENNReal.toReal_ofReal (by positivity), hfin, hk]
+    exact pi_pow_mul_two_pow_div_doubleFactorial_le_six k
+
+end
+
+end GroundTheory.Heights₂.Heights.HilbertSamuel
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSmallBallVolume =====
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.UnipotentCharacter =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.UnipotentCharacter", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsEuclideanSections\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLattice\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLatticeCount\npublic import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PSmallBallVolume\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -298,3 +498,6 @@ theorem G7.proof (hG1 : SuccessiveMinimaSpan.Statement) (hE : EuclideanSections.
 end
 
 end GroundTheory.Heights₂.Heights.HilbertSamuel
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.UnipotentCharacter =====

@@ -118,7 +118,7 @@ theorem ChowDegreeClosedPoint.proof (hField : ClosedPointChartField.Statement)
     exact Ideal.Quotient.mkₐ_surjective F J
 
   obtain ⟨f, hf⟩ := chowFormExists F n 1 I hI hdim
-  have hhom : IsMultiHomog (chowDegree I 1) f := chowFormHomog F n 1 I f hf
+  have hhom : Heights.IsMultiHomog (chowDegree I 1) f := chowFormHomog F n 1 I f hf
   have hfH : f.IsHomogeneous (chowDegree I 1) := by
     intro m hm
     have h := congrFun (hhom hm) 0

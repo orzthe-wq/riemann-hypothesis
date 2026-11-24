@@ -93,19 +93,15 @@ private theorem det_gram_basis_eq' {ι : Type} [Fintype ι] [DecidableEq ι] (L 
       P.transpose * Matrix.gram ℝ (fun i => ((C i : L) : F)) * P := by
     ext i j
     simp only [Matrix.gram, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, hC', sum_inner,
-      inner_sum, real_inner_smul_left, real_inner_smul_right, Finset.sum_mul, Finset.mul_sum]
+      inner_sum, real_inner_smul_left, real_inner_smul_right, Finset.sum_mul]
     first
       | (refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_; ring)
-      | (rw [Finset.sum_comm]; refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_; ring)
-      | (rw [Finset.sum_comm]; refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_;
-          rw [real_inner_comm]; ring)
   have hdet : (C.toMatrix C').det * (C'.toMatrix C).det = 1 := by
     rw [← Matrix.det_mul, Module.Basis.toMatrix_mul_toMatrix_flip, Matrix.det_one]
   have hPd : P.det = ((C.toMatrix C').det : ℝ) := by
     rw [hP]
     first
       | exact (Int.cast_det _).symm
-      | exact ((Int.castRingHom ℝ).map_det _).symm
   have hsq : P.det ^ 2 = 1 := by
     rw [hPd]
     rcases Int.eq_one_or_neg_one_of_mul_eq_one hdet with h | h <;> simp [h]

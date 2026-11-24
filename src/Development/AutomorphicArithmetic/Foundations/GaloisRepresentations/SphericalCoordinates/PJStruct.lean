@@ -1,27 +1,29 @@
 module
 
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.InnerProductSpace.Basic
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.LineBasis
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.HermitianForm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -41,9 +43,104 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.PerCApply
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.AppellHumbertTrivialOfNowhereVanishing
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EqZeroOfSumEmbeddingMul
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.HermitianForm, Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.PJStruct
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.HermitianForm =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.HermitianForm", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.InnerProductSpace.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable def UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm :
+    {g : ℕ} → Matrix (Fin g) (Fin g) ℂ → (Fin g → ℂ) → (Fin g → ℂ) → ℂ :=
+    fun {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) ↦ z ⬝ᵥ Hm.mulVec (Star.star w)
+
+noncomputable def UpperTheory.Reformulated.B.HermitianFormImEqSum.hv :
+    {n : ℕ} → Matrix (Fin n) (Fin n) ℂ → (Fin n → ℂ) → (Fin n → ℂ) → ℂ :=
+    fun {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) ↦ Star.star y ⬝ᵥ M.mulVec x
+
+private theorem UpperTheory.Reformulated.B.HermitianFormImEqSum.ext_span {V : Type} [AddCommGroup V] [Module ℝ V]
+    (f h : V → ℝ) (S : Set V) (hS : Submodule.span ℝ S = ⊤)
+    (fa : ∀ x y, f (x + y) = f x + f y) (fs : ∀ (c : ℝ) x, f (c • x) = c * f x)
+    (ha : ∀ x y, h (x + y) = h x + h y) (hs : ∀ (c : ℝ) x, h (c • x) = c * h x)
+    (H : ∀ a ∈ S, f a = h a) (x : V) : f x = h x := by
+  have hx : x ∈ Submodule.span ℝ S := hS ▸ Submodule.mem_top
+  induction hx using Submodule.span_induction with
+  | mem a ha => exact H a ha
+  | zero =>
+    have h1 := fs 0 0
+    have h2 := hs 0 0
+    simp only [zero_smul, zero_mul] at h1 h2
+    rw [h1, h2]
+  | add a b _ _ h1 h2 => rw [fa, ha, h1, h2]
+  | smul c a _ h1 => rw [fs, hs, h1]
+
+private theorem UpperTheory.Reformulated.B.HermitianFormImEqSum.re_hermitian_combination_nonpos (c : ℝ) (a b : ℂ) : (a * (c • b)).re = c * (a * b).re := by
+  rw [mul_smul_comm, Complex.smul_re, smul_eq_mul]
+
+theorem UpperTheory.Reformulated.B.HermitianFormImEqSum.bil_eq :
+    ∀ {P : Type} [inst : Fintype P] [DecidableEq P] {n g : ℕ} (R : (P → Fin n → ℂ) ≃ₗ[ℝ] Fin g → ℂ)
+      (Hm : Matrix (Fin g) (Fin g) ℂ) (M : P → Matrix (Fin n) (Fin n) ℂ) (s : P → ℂ) (r : P → ℝ) (S : Set (P → Fin n → ℂ)),
+      Submodule.span ℝ S = ⊤ →
+        (∀ a ∈ S,
+            ∀ b ∈ S,
+              (UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm Hm ((R : (P → Fin n → ℂ) → Fin g → ℂ) a) ((R : (P → Fin n → ℂ) → Fin g → ℂ) b)).im =
+                ∑ v : P, r v * (-s v * Complex.I * UpperTheory.Reformulated.B.HermitianFormImEqSum.hv (M v) (a v) (b v)).re) →
+          ∀ (x y : P → Fin n → ℂ),
+            (UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm Hm ((R : (P → Fin n → ℂ) → Fin g → ℂ) x) ((R : (P → Fin n → ℂ) → Fin g → ℂ) y)).im =
+              ∑ v : P, r v * (-s v * Complex.I * UpperTheory.Reformulated.B.HermitianFormImEqSum.hv (M v) (x v) (y v)).re := by
+  intro P _ _ n g R Hm M s r S hS H x y
+  have step : ∀ a ∈ S, ∀ y : P → Fin n → ℂ,
+      (UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm Hm (R a) (R y)).im =
+        ∑ v : P, r v * (-s v * Complex.I * UpperTheory.Reformulated.B.HermitianFormImEqSum.hv (M v) (a v) (y v)).re := by
+    intro a ha y
+    refine UpperTheory.Reformulated.B.HermitianFormImEqSum.ext_span (fun y => (UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm Hm (R a) (R y)).im)
+      (fun y => ∑ v : P, r v * (-s v * Complex.I * UpperTheory.Reformulated.B.HermitianFormImEqSum.hv (M v) (a v) (y v)).re)
+      S hS ?_ ?_ ?_ ?_ (H a ha) y
+    · intro u w
+      simp only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm, map_add (f := _), star_add, Matrix.mulVec_add, dotProduct_add,
+        Complex.add_im]
+    · intro c u
+      simp only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm, map_smul, star_smul, star_trivial, Matrix.mulVec_smul,
+        dotProduct_smul, Complex.smul_im, smul_eq_mul]
+    · intro u w
+      simp only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hv, Pi.add_apply, star_add, add_dotProduct, mul_add,
+        Complex.add_re, Finset.sum_add_distrib]
+    · intro c u
+      simp only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hv, Pi.smul_apply, star_smul, star_trivial, smul_dotProduct,
+        UpperTheory.Reformulated.B.HermitianFormImEqSum.re_hermitian_combination_nonpos, Finset.mul_sum, mul_left_comm c]
+  refine UpperTheory.Reformulated.B.HermitianFormImEqSum.ext_span (fun x => (UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm Hm (R x) (R y)).im)
+    (fun x => ∑ v : P, r v * (-s v * Complex.I * UpperTheory.Reformulated.B.HermitianFormImEqSum.hv (M v) (x v) (y v)).re)
+    S hS ?_ ?_ ?_ ?_ (fun a ha => step a ha y) x
+  · intro u w
+    simp only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm, map_add (f := _), add_dotProduct, Complex.add_im]
+  · intro c u
+    simp only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hermForm, map_smul, smul_dotProduct, Complex.smul_im, smul_eq_mul]
+  · intro u w
+    simp only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hv, Pi.add_apply, Matrix.mulVec_add, dotProduct_add, mul_add,
+      Complex.add_re, Finset.sum_add_distrib]
+  · intro c u
+    simp only [UpperTheory.Reformulated.B.HermitianFormImEqSum.hv, Pi.smul_apply, Matrix.mulVec_smul, dotProduct_smul,
+      UpperTheory.Reformulated.B.HermitianFormImEqSum.re_hermitian_combination_nonpos, Finset.mul_sum, mul_left_comm c]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.HermitianForm =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.PJStruct =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.PJStruct", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.LineBasis\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.HermitianForm\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.PerCApply\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\nimport Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.AppellHumbertTrivialOfNowhereVanishing\nimport Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EqZeroOfSumEmbeddingMul\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -67,16 +164,8 @@ private theorem hf_add_r (H : Matrix (Fin g) (Fin g) ℂ) (a b c : Fin g → ℂ
     hermForm H a (b + c) = hermForm H a b + hermForm H a c := by
   simp [hermForm, star_add, Matrix.mulVec_add, dotProduct_add]
 
-private theorem hf_smul_l (H : Matrix (Fin g) (Fin g) ℂ) (t : ℂ) (a b : Fin g → ℂ) :
-    hermForm H (t • a) b = t * hermForm H a b := by
-  simp [hermForm, smul_dotProduct]
-
 private theorem star_smulC {m : ℕ} (t : ℂ) (b : Fin m → ℂ) : star (t • b) = (starRingEnd ℂ) t • star b := by
   ext i; simp
-
-private theorem hf_smul_r (H : Matrix (Fin g) (Fin g) ℂ) (t : ℂ) (a b : Fin g → ℂ) :
-    hermForm H a (t • b) = (starRingEnd ℂ) t * hermForm H a b := by
-  simp only [hermForm, star_smulC, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 private theorem hv_add_l (M : Matrix (Fin n) (Fin n) ℂ) (a b c : Fin n → ℂ) :
     hv M (a + b) c = hv M a c + hv M b c := by
@@ -99,10 +188,10 @@ private noncomputable def hBil {X : Type} [AddCommGroup X] [Module ℝ X] (R : X
   LinearMap.mk₂ ℝ (fun x y => (hermForm Hm (R x) (R y)).im)
     (fun a b c => by simp only [map_add (f := _), hf_add_l, Complex.add_im])
     (fun c a b => by
-      simp only [map_smul, smulR, hf_smul_l, Complex.im_ofReal_mul, smul_eq_mul])
+      simp only [map_smul, smulR, _root_.GlobalTheory.AppellHumbertTrivial.hermForm_smul_left, Complex.im_ofReal_mul, smul_eq_mul])
     (fun a b c => by simp only [map_add (f := _), hf_add_r, Complex.add_im])
     (fun c a b => by
-      simp only [map_smul, smulR, hf_smul_r, Complex.conj_ofReal, Complex.im_ofReal_mul, smul_eq_mul])
+      simp only [map_smul, smulR, _root_.GlobalTheory.EigenNorm.hermForm_smul_right, Complex.conj_ofReal, Complex.im_ofReal_mul, smul_eq_mul])
 
 private theorem bil_eq (R : (P → Fin n → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (M : P → Matrix (Fin n) (Fin n) ℂ) (s : P → ℂ) (r : P → ℝ) (S : Set (P → Fin n → ℂ))
@@ -206,7 +295,7 @@ private theorem core (R : (P → Fin n → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)) (Hm
       (-(s v) * Complex.I * hv (M v) a b).re := by
     intro a b
     have h1 := hEv (J v *ᵥ a) (J v *ᵥ b)
-    rw [hsv, hsv, hf_smul_l, hf_smul_r,
+    rw [hsv, hsv, _root_.GlobalTheory.AppellHumbertTrivial.hermForm_smul_left, _root_.GlobalTheory.EigenNorm.hermForm_smul_right,
       show Complex.I * ((starRingEnd ℂ) Complex.I * hermForm Hm (R (Pi.single v a)) (R (Pi.single v b))) =
         hermForm Hm (R (Pi.single v a)) (R (Pi.single v b)) by
         rw [Complex.conj_I, ← _root_.mul_assoc, mul_neg, Complex.I_mul_I]; simp, hEv] at h1
@@ -237,7 +326,7 @@ private theorem core (R : (P → Fin n → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)) (Hm
       have h1 : (Pi.single v x : P → Fin n → ℂ) = 0 := by simpa using h0
       exact hx (by simpa using h1)
     have h1 := hEv (J v *ᵥ x) x
-    rw [hsv, hf_smul_l] at h1
+    rw [hsv, _root_.GlobalTheory.AppellHumbertTrivial.hermForm_smul_left] at h1
     have h2 := hpos _ hz
     have h3 : 0 < r v * (-(s v) * Complex.I * hv (M v) (J v *ᵥ x) x).re := by
       rw [← h1]; simpa [Complex.mul_im] using h2
@@ -345,3 +434,6 @@ theorem UpperTheory.Gal.W2.jStruct_of :
     refine Finset.sum_congr rfl fun v _ => ?_
     rw [A.act]
     simp only [hv, GlobalTheory.LKCx.herm, Matrix.mulVec_mulVec]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SphericalCoordinates.PJStruct =====

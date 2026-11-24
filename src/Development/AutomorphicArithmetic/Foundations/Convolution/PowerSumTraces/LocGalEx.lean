@@ -6,9 +6,10 @@ public import Development.AutomorphicArithmetic.AdelicQuotients.CentralSectionBa
 public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.TwUnitary
 public import Development.AutomorphicArithmetic.Foundations.Convolution.ConvolutionKernels.KernelTransforms.LocEmb
 public import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.CharacterColumnKernelsOfBlockChiCOfBlockChiOne
-public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursBasics
-import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.TwistUnitary
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SummandFactor
+public import Development.WeilBound.CuspidalAdmissibility.OccursIff
 public import Development.WeilBound.NonsplitUniqueness.Places
+import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.TwistUnitary
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DetAdmA
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -48,6 +49,8 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import PositivityTheory.AutomorphicForms.PublishedInputs.CyclicBaseChange.PSConjSpaceR
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 
 @[expose] public section
 
@@ -311,7 +314,7 @@ theorem UpperTheory.ConvolutionTheory.C.locGalEx :
       exact e
   letI : MeasurableSpace (Gw n w.1) := borel _
   haveI : BorelSpace (Gw n w.1) := ⟨rfl⟩
-  obtain ⟨-, h2, -⟩ := UpperTheory.ConvolutionTheory.C.occursBasics E n μ V w.1 Measure.haar hV
+  obtain ⟨-, h2, -⟩ := _root_.PositivityTheory.TfC.OccursBasics_holds E n μ V w.1 Measure.haar hV
   obtain ⟨J⟩ := h2 τ' τ hocc' hocc
   refine ⟨J.toLinearEquiv, fun g x => ?_⟩
   have e := Representation.IntertwiningMap.isIntertwining _ _ J.toIntertwiningMap (s g) x

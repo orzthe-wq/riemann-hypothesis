@@ -1,10 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffOnReprPullbackComplexFormFderiv
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolAtlasPullbackEqChartExpression
 import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOfTendstoLocallyUniformlyOn
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffOnReprPullbackComplexFormFderivStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolAtlasPullbackEqChartExpressionStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackComplexFormsLinearMapCompStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullbackComplexFormsLinearMapComp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -75,12 +75,12 @@ theorem smooth_pullback {f : M' → M} {α : A.Fld} (hf : A.IsHolo A' f) (hα : 
       (bas n').repr (pull (fderiv ℂ (A.e i ∘ f ∘ (A'.e j).symm) w) (bas n T)) S)
       ((A'.e j).target ∩ (A'.e j).symm ⁻¹' (f ⁻¹' (A.e i).source)) :=
     ContDiffOn.sum fun T _ => ((hα.smooth i T).comp hτ' fun w hw => (A.e i).map_source hw.2).mul
-      (GlobalTheory.T.contDiffOn_repr_pullbackComplexForm_fderiv _ _ _ _ (bas n T) hU hτ S)
+      (_root_.GlobalTheory.PullSmooth.contDiffOn_repr_pull_fderiv _ _ _ _ (bas n T) hU hτ S)
   refine key.congr fun w hw => ?_
   have h₁ : A'.loc (A.pullback A' f α) j w = pull (fderiv ℂ (A.e i ∘ f ∘ (A'.e j).symm) w)
       (A.loc α i ((A.e i ∘ f ∘ (A'.e j).symm) w)) := by
     rw [HolAtlas.loc, dite_eq_left hw.1]
-    refine (GlobalTheory.T.holAtlas_pullback_eq_chart_expression M M' n n' A A' f α hf hα ⟨(j, (A'.e j).symm w), (A'.e j).map_target hw.1⟩ i hw.2).trans ?_
+    refine (_root_.GlobalTheory.CxForm.pullback_eq_chart M M' n n' A A' f α hf hα ⟨(j, (A'.e j).symm w), (A'.e j).map_target hw.1⟩ i hw.2).trans ?_
     refine (congrArg _ (A.loc_crd α ⟨(i, f ((A'.e j).symm w)), hw.2⟩).symm).trans ?_
     show pull (fderiv ℂ (A.e i ∘ f ∘ (A'.e j).symm) (A'.e j ((A'.e j).symm w))) _ = _
     rw [(A'.e j).right_inv hw.1]
@@ -97,9 +97,9 @@ theorem compat_pullback {f : M' → M} {α : A.Fld} (hf : A.IsHolo A' f) (hα : 
   obtain ⟨⟨j', y'⟩, hy'⟩ := x'
   obtain rfl : y = y' := h
   obtain ⟨i, hi⟩ := A.cover (f y)
-  refine (GlobalTheory.T.holAtlas_pullback_eq_chart_expression M M' n n' A A' f α hf hα ⟨(j, y), hy⟩ i hi).trans (Eq.trans ?_
-    (congrArg _ (GlobalTheory.T.holAtlas_pullback_eq_chart_expression M M' n n' A A' f α hf hα ⟨(j', y), hy'⟩ i hi).symm))
-  rw [← GlobalTheory.T.pullbackComplexFormsLinearMap_comp]
+  refine (_root_.GlobalTheory.CxForm.pullback_eq_chart M M' n n' A A' f α hf hα ⟨(j, y), hy⟩ i hi).trans (Eq.trans ?_
+    (congrArg _ (_root_.GlobalTheory.CxForm.pullback_eq_chart M M' n n' A A' f α hf hα ⟨(j', y), hy'⟩ i hi).symm))
+  rw [← _root_.GlobalTheory.CxForm.pull_comp]
   show pull (fderiv ℂ (A.e i ∘ f ∘ (A'.e j).symm) (A'.e j y)) _ =
     pull ((fderiv ℂ (A.e i ∘ f ∘ (A'.e j').symm) (A'.e j' y)).comp
       (fderiv ℂ (A'.e j' ∘ (A'.e j).symm) (A'.e j y))) _

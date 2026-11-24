@@ -44,7 +44,5 @@ import Mathlib.Tactic.NormNum.RealSqrt
 @[expose] public section
 
 namespace LateralTheory.Fin.EtaleSheafSectionsSeparatedAndGlue
-theorem etale_sections_glue_over_cover_of_components : LateralTheory.EtaleFoundations.EtaleSheafSectionsSeparatedAndGlue := by
-  apply LateralTheory.EtaleFoundations.etale_sheaf_sections_glue_of_forget_isSheaf
-theorem intersectionNumber_baseChange : LateralTheory.EtaleFoundations.EtaleSheafSectionsSeparatedAndGlue := etale_sections_glue_over_cover_of_components
+alias intersectionNumber_baseChange := _root_.LateralTheory.EtaleFoundations.etale_sheaf_sections_glue_of_forget_isSheaf
 end LateralTheory.Fin.EtaleSheafSectionsSeparatedAndGlue

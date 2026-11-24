@@ -55,7 +55,6 @@ theorem psiR_tmul (G : HTGroup p) (v : InfinitePlace G.F) (r : ℝ) (c : G.C) :
   rw [Algebra.smul_def]
   first
     | (unfold HTGroup.psiR; erw [Algebra.TensorProduct.lift_tmul]; rfl)
-    | exact Algebra.TensorProduct.lift_tmul _ _ _ r c
 
 theorem psiR_starT (G : HTGroup p) (v : InfinitePlace G.F) (x : ℝ ⊗[ℚ] G.C) :
     G.psiR v (starT G.star ℝ x).unop = (G.gram v)⁻¹ * (G.psiR v x)ᴴ * G.gram v := by

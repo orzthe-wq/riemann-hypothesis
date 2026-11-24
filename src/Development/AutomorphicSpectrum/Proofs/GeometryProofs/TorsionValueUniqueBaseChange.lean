@@ -81,7 +81,7 @@ theorem valF_spMap {F F' : Type} [Field F] [Field F'] (f : F →+* F') {X : Sche
   by_cases h : ⊤ ≤ x ⁻¹ᵁ U
   · have h' : ⊤ ≤ (spMap f ≫ x) ⁻¹ᵁ U :=
       (top_le_iff_mem _ U z').2 ((top_le_iff_mem x U (spMap f z')).1 h)
-    have e₀ : (spMap f).appLE ⊤ ⊤ (by first | exact le_rfl | simp) = (spMap f).appTop := by
+    have e₀ : (spMap f).appLE ⊤ ⊤ (by first | exact le_rfl) = (spMap f).appTop := by
       rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
       rfl
     have e : (spMap f ≫ x).appLE U ⊤ h' = x.appLE U ⊤ h ≫ (spMap f).appTop := by

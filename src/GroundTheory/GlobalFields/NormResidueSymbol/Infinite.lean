@@ -171,7 +171,7 @@ variable {K L : Type*} [Field K] [Field L] [Algebra K L] [IsGalois K L] {v : Inf
 theorem extensionEmbedding_algebraMap_self (l : L) :
     extensionEmbedding w (algebraMap L w.Completion l) = w.embedding l := by
   rw [AbsoluteValue.Completion.algebraMap_def, extensionEmbedding_coe]
-  simp [WithAbs.algebraMap_right_apply, WithAbs.ofAbs_toAbs]
+  simp [WithAbs.algebraMap_right_apply]
 
 theorem completionConj_algebraMap (hv : v.IsReal) (l : L) :
     InfinitePlace.completionConj (w := w) hv (algebraMap L w.Completion l) =

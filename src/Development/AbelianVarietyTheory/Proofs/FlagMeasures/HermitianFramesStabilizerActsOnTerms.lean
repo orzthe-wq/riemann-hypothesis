@@ -1,9 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramesCharactersAgreeCommonStabiliserStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramesCharactersAgreeCommonStabiliser
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormAdditiveCharacterTypePrimeEqOne
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnessesStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnesses
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -421,10 +421,10 @@ theorem stabiliser_acts_on_terms : ∀ {F : Type} [Field F] [ValuativeRel F] [To
   have hn' : n' ∈ S.N' := W0.2.2.2.1
   have hN : h ∈ S.N := (Subgroup.mem_inf.mp hh).1
   have hN' : h ∈ S.N' := (Subgroup.mem_inf.mp hh).2
-  obtain ⟨omA, MA, FrA, levA, -⟩ := GlobalTheory.T.term_invariants_independent_of_witnesses L r k S d Λ n n' W0
-  obtain ⟨omB, MB, FrB, levB, -⟩ := GlobalTheory.T.term_invariants_independent_of_witnesses L r k S d (h • Λ) (h * n) (h * n') W2
+  obtain ⟨omA, MA, FrA, levA, -⟩ := _root_.GlobalTheory.HL.WitIndep.witness_independence L r k S d Λ n n' W0
+  obtain ⟨omB, MB, FrB, levB, -⟩ := _root_.GlobalTheory.HL.WitIndep.witness_independence L r k S d (h • Λ) (h * n) (h * n') W2
   obtain ⟨pm, pm', pn, -⟩ := GlobalTheory.FramePsi.psi_unitary_character L r k S
-  have hpp : S.psi h = S.psi' h := GlobalTheory.T.frames_characters_agree_commonStabiliser L r k S h hh
+  have hpp : S.psi h = S.psi' h := _root_.GlobalTheory.HL.CharAgree.psi_eq_psi' L r k S h hh
   have hM : S.M d (h • Λ) = h • S.M d Λ := by
     rw [MB, MA]
     exact mof_smul S h _ _

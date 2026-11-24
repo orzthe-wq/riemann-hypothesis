@@ -235,8 +235,7 @@ theorem lamDet_of (hB : BetaIso) (hM : MuBridge) (hN : NuBridge) (hD : DKForm) (
     rw [e1, e2, ← reimV_smul, ← reimV_add]
     congr 1
     funext v
-    simp only [Pi.add_apply, hw, Matrix.mul_add, Matrix.mul_assoc, ← Matrix.smul_mul,
-      hcc, Matrix.one_mul]
+    simp only [Pi.add_apply, hw, Matrix.mul_add, Matrix.mul_assoc, ← Matrix.smul_mul]
     norm_num
     rw [← Matrix.mul_assoc, hcc, Matrix.one_mul]
   ·

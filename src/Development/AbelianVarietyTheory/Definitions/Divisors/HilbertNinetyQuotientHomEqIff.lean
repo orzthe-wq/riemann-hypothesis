@@ -117,7 +117,7 @@ theorem norm_eq_one_of_lintegral_eq {X : Type} [MeasurableSpace X] {μ : Measure
   simp only [Pi.smul_apply, smul_eq_mul, enorm_mul, mul_pow] at h
   rw [lintegral_const_mul' _ _ (by simp [enorm_eq_nnnorm])] at h
   have h2 : ‖a‖ₑ ^ 2 = 1 := (ENNReal.mul_left_inj h0 h1).mp (h.trans (one_mul _).symm)
-  rw [enorm_eq_nnnorm, ← ENNReal.coe_pow, ENNReal.coe_eq_one, pow_eq_one_iff_of_nonneg zero_le' two_ne_zero] at h2
+  rw [enorm_eq_nnnorm, ← ENNReal.coe_pow, ENNReal.coe_eq_one, pow_eq_one_iff_of_nonneg zero_le two_ne_zero] at h2
   exact congrArg NNReal.toReal h2
 
 end Unitary
@@ -184,7 +184,7 @@ def UG {ι : Type} [Fintype ι] [DecidableEq ι] (J : Matrix ι ι E) : Subgroup
   one_mem' := by simp [Matrix.map_one _ (map_zero c) (map_one c)]
   mul_mem' := by
     intro a b ha hb
-    simp only [Set.mem_setOf_eq, Units.val_mul, Matrix.transpose_mul] at *
+    simp only [Set.mem_ofPred_eq, Units.val_mul, Matrix.transpose_mul] at *
     rw [show ((a : Matrix ι ι E) * (b : Matrix ι ι E)).map c = (a : Matrix ι ι E).map c * (b : Matrix ι ι E).map c from
       Matrix.map_mul (f := c.toRingHom)]
     calc _ = (b : Matrix ι ι E)ᵀ * ((a : Matrix ι ι E)ᵀ * J * (a : Matrix ι ι E).map c) * (b : Matrix ι ι E).map c := by
@@ -192,7 +192,7 @@ def UG {ι : Type} [Fintype ι] [DecidableEq ι] (J : Matrix ι ι E) : Subgroup
       _ = J := by rw [ha, hb]
   inv_mem' := by
     intro a ha
-    simp only [Set.mem_setOf_eq] at *
+    simp only [Set.mem_ofPred_eq] at *
     have h1 : (a : Matrix ι ι E).map c * ((a⁻¹ : GL ι E) : Matrix ι ι E).map c = 1 := by
       rw [← show ((a : Matrix ι ι E) * ((a⁻¹ : GL ι E) : Matrix ι ι E)).map c =
         (a : Matrix ι ι E).map c * ((a⁻¹ : GL ι E) : Matrix ι ι E).map c from Matrix.map_mul (f := c.toRingHom),
@@ -317,9 +317,9 @@ theorem isLagr_diagCols (JB : Matrix β β E) : IsLagr c (dbl JB) (diagCols β :
   · simp [diagCols, dbl, h3, h1, transpose_fromRows, fromCols_mul_fromBlocks, fromCols_mul_fromRows]
   · simp [dbl, h3, h1', transpose_fromRows, fromCols_mul_fromBlocks, fromCols_mul_fromRows]
   · rw [diagCols, fromCols_fromRows_eq_fromBlocks, Matrix.mul_smul, fromBlocks_multiply, fromBlocks_smul, ← fromBlocks_one]
-    simp [← add_smul, h2]
+    simp [← add_smul]
   · rw [diagCols, fromCols_fromRows_eq_fromBlocks, Matrix.smul_mul, fromBlocks_multiply, fromBlocks_smul, ← fromBlocks_one]
-    simp [← add_smul, h2]
+    simp [← add_smul]
 
 def SiegelRule (C : TestClass R) (ψ : AddChar R ℂ) (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) {κ : Type} [Fintype κ]
     (d : Darboux (symp c ξ JA JB) κ) (χ : Eˣ →* Circle) {ν : Type} [Fintype ν] [DecidableEq ν] (Cy : Matrix β ν E)

@@ -83,27 +83,6 @@ variable {G : Type} [Group G] [Fintype G] (r : Representation K G X) (ρ : G →
 
 end Lin
 
-section Block
-
-open Formalism.DivisionValues Formalism.L2.DIV Formalism.IndefR.Cx
-
-variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
-  (B : BlockDat K G Pl0) (ℓ : Lvl K G)
-  {E W : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] [NormedAddCommGroup W]
-  [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] {σ : K →+* ℂ} {j : B.S.Forms →ₛₗ[σ] E} (θ : E →ₗ[ℂ] W)
-  (ρ : G → W →ₗ[ℂ] W)
-
-theorem toF_mem (Z : Submodule K B.S.Forms) (y : Fin (B.dZ ℓ Z) → K) : B.toF ℓ Z y ∈ Z :=
-  (B.mem_goodPart_iff ℓ Z _).1 (B.zE_mem ℓ Z y)
-
-end Block
-
-section Content
-
-open Formalism.BasicNotions Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Indef.Tree.DepthCond
-
-end Content
-
 section Real
 
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S

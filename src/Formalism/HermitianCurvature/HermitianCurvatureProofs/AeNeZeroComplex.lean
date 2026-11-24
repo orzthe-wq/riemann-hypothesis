@@ -93,18 +93,9 @@ def sW (S : C.HidaSetting E Wp Wq) (j : ℕ) (l : ℂ) : ℂ :=
 def dW (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (j : ℕ) (w : List C.Letter) (h h' : C.LPt) : ℝ :=
   √(nnS S h) * √(nnS S h') / (bS S h * bS S h' * ΓS S j) / S.sizeAt v w
 
-private theorem tsize_lemma (r : ℕ) (g : ℝ) (P : C.LPt) :
-    ∀ x : ℕ, D.ptSize (D.toStd r g x P) = D.ptSize P := by
-  induction P with
-  | nil => intro x; simp only [D.toStd]
-  | cons a l ih =>
-    intro x
-    simp only [D.toStd, D.ptSize, List.map_cons, List.sum_cons] at ih ⊢
-    rw [ih]
-
 theorem stdS_size (S : C.HidaSetting E Wp Wq) (P : C.LPt) : D.ptSize (stdS S P) = D.ptSize P := by
   unfold stdS
-  exact tsize_lemma _ _ P 1
+  exact _root_.Formalism.FourierDecayAlt.P.PBD.toStd_size' _ _ P 1
 
 theorem sizeAt_nonneg (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (w : List C.Letter) : 0 ≤ S.sizeAt v w := by
   unfold C.HidaSetting.sizeAt
@@ -176,8 +167,6 @@ theorem lamS_pos (S : C.HidaSetting E Wp Wq) (hg : (0 : ℝ) < S.g) (j : ℕ) : 
   unfold lamS
   first
     | exact zpow_pos (div_pos hg (by positivity)) _
-    | exact pow_pos (div_pos hg (by positivity)) _
-    | exact zpow_pos_of_pos (div_pos hg (by positivity)) _
 
 theorem psiL_eq_fsv (S : C.HidaSetting E Wp Wq) (hg : (0 : ℝ) < S.g) (j : ℕ) (l c : ℂ) :
     KB.psiL S l c = P5.fsv (sW S j l) ((lamS S j : ℂ) * c) := by
@@ -231,7 +220,7 @@ theorem stdS_app (S : C.HidaSetting E Wp Wq) (j : ℕ) (H : C.LPt) (c : ℂ) (hH
     stdS S (H ++ [(1, c)]) = stdS S H ++ [(1, (lamS S j : ℂ) * c)] := by
   unfold stdS
   rw [tapp_lemma, hH]
-  simp only [D.toStd, Nat.sub_self, pow_zero, mul_one, List.append_nil]
+  simp only [D.toStd, Nat.sub_self, pow_zero, mul_one]
   unfold lamS
   rw [Nat.add_comm 1 j]
 

@@ -115,8 +115,8 @@ theorem toA_of_toA : GlobalTheory.UT.LL → ∀ (E : Type) [Field E] [NumberFiel
   intro hL E _ _ _ H R O' _ _ _ _ _ I _ t P D₀ hB f ψ w e gp _ k hk p₀ s x₀ C _ _ _ _ hC q₀ q x h₀ hy hg hx hA
     F _ _ _ _ hF q₀' q' x' h₀' hy' hg' hx'
   obtain ⟨F', _, _, σ, τ, hστ⟩ := exists_common_field (algebraMap (FractionRing R) C) (algebraMap (FractionRing R) F)
-  letI : Algebra (FractionRing R) F' := (σ.comp (algebraMap _ C)).toAlgebra
-  letI : Algebra (FractionRing O') F' := (σ.comp (algebraMap _ C)).toAlgebra
+  let : Algebra (FractionRing R) F' := (σ.comp (algebraMap _ C)).toAlgebra
+  let : Algebra (FractionRing O') F' := (σ.comp (algebraMap _ C)).toAlgebra
   have hσ : σ.comp (algebraMap (FractionRing R) C) = algebraMap (FractionRing R) F' := rfl
   have hσ₀ : σ.comp (algebraMap (FractionRing O') C) = algebraMap (FractionRing O') F' := rfl
   have hτ : τ.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F' := hστ.symm
@@ -139,10 +139,10 @@ theorem toA_of_toA : GlobalTheory.UT.LL → ∀ (E : Type) [Field E] [NumberFiel
       have b := genRel_ext hτ hτ₀ hr' hr₀' (hg' χ)
       rwa [show τ (algebraMap (FractionRing R) F (s χ)) = algebraMap (FractionRing R) F' (s χ) from
         RingHom.congr_fun hτ _] at b)
-  letI : Algebra C F' := σ.toAlgebra
-  letI : Algebra F F' := τ.toAlgebra
-  haveI : IsScalarTower (FractionRing R) C F' := IsScalarTower.of_algebraMap_eq' hσ.symm
-  haveI : IsScalarTower (FractionRing R) F F' := IsScalarTower.of_algebraMap_eq' hτ.symm
+  let : Algebra C F' := σ.toAlgebra
+  let : Algebra F F' := τ.toAlgebra
+  have : IsScalarTower (FractionRing R) C F' := IsScalarTower.of_algebraMap_eq' hσ.symm
+  have : IsScalarTower (FractionRing R) F F' := IsScalarTower.of_algebraMap_eq' hτ.symm
   have hj : spMap σ ≫ jFK (R := R) C = jFK (R := R) F' := (spMap_comp _ _).symm.trans (congrArg spMap hσ)
   have hj' : spMap τ ≫ jFK (R := R) F = jFK (R := R) F' := (spMap_comp _ _).symm.trans (congrArg spMap hτ)
   have ex : TorsionExt.fieldMap (R := R) C F' ≫ x = TorsionExt.fieldMap (R := R) F F' ≫ x' := by

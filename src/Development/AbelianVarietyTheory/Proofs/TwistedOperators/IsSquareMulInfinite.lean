@@ -1,24 +1,24 @@
 module
 
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
+public import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.QuadraticClassFieldTheory
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Mathlib.RingTheory.SimpleRing.Principal
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentatives
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSubSqLtOneOfTwoLtOne
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitMulSqQuadraticDefectStep
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteResidueFieldAdicCompletionIntegers
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSquareMulOfNonsquareUnits
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSquareOfValuedSubOneLt
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.QuadraticExtNormFormOverAlgebra
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitNormFormAtOddPlace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -31,9 +31,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,6 +39,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -54,10 +52,114 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSquareOfValuedSubOneLt
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSubSqLtOneOfTwoLtOne, Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSquareMulInfinite
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSubSqLtOneOfTwoLtOne =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSubSqLtOneOfTwoLtOne", "h": "module\n\npublic import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.LinearAlgebra.FreeModule.IdealQuotient\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLeNormSub\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain GlobalTheory.QNorm
+open scoped WithZero
+
+namespace GlobalTheory.QNorm
+
+theorem exists_sub_sq_mem_of_two_mem (F : Type) [Field F] [NumberField F]
+    (v : HeightOneSpectrum (𝓞 F)) (h2 : (2 : 𝓞 F) ∈ v.asIdeal) (a : 𝓞 F) :
+    ∃ b : 𝓞 F, a - b ^ 2 ∈ v.asIdeal := by
+  haveI : Finite (𝓞 F ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot v.asIdeal v.ne_bot
+  haveI := v.isPrime
+  have h0 : (2 : 𝓞 F ⧸ v.asIdeal) = 0 := by
+    have := Ideal.Quotient.eq_zero_iff_mem.2 h2
+    rwa [map_ofNat] at this
+  have hinj : Function.Injective (fun t : 𝓞 F ⧸ v.asIdeal => t ^ 2) := by
+    intro s t hst
+    have hst' : s ^ 2 = t ^ 2 := hst
+    have : (s - t) ^ 2 = 0 := by
+      linear_combination hst' + (t ^ 2 - s * t) * h0
+    exact sub_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 this)
+  obtain ⟨t, ht⟩ := Finite.surjective_of_injective hinj (Ideal.Quotient.mk v.asIdeal a)
+  obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective t
+  refine ⟨b, Ideal.Quotient.eq.1 ?_⟩
+  rw [map_pow]
+  exact ht.symm
+
+theorem exists_sub_sq_lt_one_of_two_lt_one :
+    ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)),
+      Valued.v (2 : v.adicCompletion F) < 1 → ∀ x : v.adicCompletion F, Valued.v x ≤ 1 →
+        ∃ y : v.adicCompletion F, Valued.v y ≤ 1 ∧ Valued.v (x - y ^ 2) < 1 := by
+  intro F _ _ v h2 x hx
+  set φ := algebraMap F (v.adicCompletion F) with hφ
+  have hval : ∀ k : F, Valued.v (φ k) = v.valuation F k := fun k =>
+    HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v k
+  have hmem : ∀ r : 𝓞 F, v.valuation F (algebraMap (𝓞 F) F r) < 1 ↔ r ∈ v.asIdeal :=
+    fun r => HeightOneSpectrum.valuation_lt_one_iff_mem v r
+
+  have h2' : (2 : 𝓞 F) ∈ v.asIdeal := by
+    rw [← hmem, ← hval, map_ofNat, map_ofNat]
+    exact h2
+
+  obtain ⟨k, hk⟩ : ∃ k : F, Valued.v (φ k - x) < 1 := by
+    have hU : {y : v.adicCompletion F | Valued.v (y - x) < 1} ∈ nhds x := by
+      rw [Valued.mem_nhds]
+      refine ⟨1, fun y hy => ?_⟩
+      have hy' : Valued.v.restrict (y - x) < Valued.v.restrict 1 := by simpa using hy
+      simpa using Valued.v.restrict_lt_iff.mp hy'
+    exact (HeightOneSpectrum.denseRange_algebraMap F v).mem_nhds hU
+  have hk1 : v.valuation F k ≤ 1 := by
+    rw [← hval]
+    have e : φ k = (φ k - x) + x := by ring
+    rw [e]
+    exact (Valuation.map_add _ _ _).trans (max_le hk.le hx)
+
+  obtain ⟨r, hr⟩ : ∃ r : 𝓞 F, v.valuation F (k - algebraMap (𝓞 F) F r) < 1 := by
+    obtain ⟨s, m, hs, hsm⟩ : ∃ s m : 𝓞 F, s ∉ v.asIdeal ∧
+        k * algebraMap (𝓞 F) F s = algebraMap (𝓞 F) F m := by
+      obtain ⟨n, d, h | h⟩ := HeightOneSpectrum.exists_primeCompl_mul_eq_or_mul_eq (K := F) v k
+      · exact ⟨d, n, d.2, h⟩
+      · refine ⟨n, d, fun hn => d.2 ?_, h⟩
+        show (d : 𝓞 F) ∈ v.asIdeal
+        rw [← hmem, ← h, map_mul]
+        exact (mul_le_of_le_one_left' hk1).trans_lt ((hmem n).2 hn)
+    obtain ⟨t, i, hi, hti⟩ := (Ideal.IsPrime.isMaximal v.isPrime v.ne_bot).exists_inv hs
+    refine ⟨t * m, ?_⟩
+    have hi' : i = 1 - t * s := by rw [← hti]; ring
+    have e : k - algebraMap (𝓞 F) F (t * m) = k * algebraMap (𝓞 F) F i := by
+      rw [hi', map_mul, ← hsm, map_sub, map_one, map_mul]; ring
+    rw [e, map_mul]
+    exact (mul_le_of_le_one_left' hk1).trans_lt ((hmem i).2 hi)
+
+  obtain ⟨b, hb⟩ := exists_sub_sq_mem_of_two_mem F v h2' r
+  refine ⟨φ (algebraMap (𝓞 F) F b), ?_, ?_⟩
+  · rw [hval]
+    exact HeightOneSpectrum.valuation_le_one v b
+  · have e : x - φ (algebraMap (𝓞 F) F b) ^ 2 =
+        -(φ k - x) + (φ (k - algebraMap (𝓞 F) F r) + φ (algebraMap (𝓞 F) F (r - b ^ 2))) := by
+      simp only [map_sub, map_pow]; ring
+    rw [e]
+    refine Valuation.map_add_lt _ (by rwa [Valuation.map_neg]) (Valuation.map_add_lt _ ?_ ?_)
+    · rw [hval]; exact hr
+    · rw [hval]; exact (hmem _).2 hb
+
+end GlobalTheory.QNorm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSubSqLtOneOfTwoLtOne =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSquareMulInfinite =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSquareMulInfinite", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.QuadraticClassFieldTheory\npublic import Mathlib.RingTheory.Henselian\npublic import Mathlib.RingTheory.RegularLocalRing.Defs\npublic import Mathlib.RingTheory.SimpleRing.Principal\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsGlobalUniformizerResidueRepresentatives\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsSubSqLtOneOfTwoLtOne\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUnitMulSqQuadraticDefectStep\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FiniteResidueFieldAdicCompletionIntegers\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSquareMulOfNonsquareUnits\nimport Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSquareOfValuedSubOneLt\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.QuadraticExtNormFormOverAlgebra\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.UnitNormFormAtOddPlace\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain IsLocalRing
@@ -318,11 +420,11 @@ theorem isSquare_mul_of_near {x y : v.adicCompletion F} (hx : Valued.v x = 1) (h
     (hx4 : Valued.v (x - 1) ≤ Valued.v (4 : v.adicCompletion F))
     (hy4 : Valued.v (y - 1) ≤ Valued.v (4 : v.adicCompletion F))
     (hx' : ¬ IsSquare x) (hy' : ¬ IsSquare y) : IsSquare (x * y) := by
-  haveI : CharZero (v.adicCompletion F) :=
+  have : CharZero (v.adicCompletion F) :=
     charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective
   rcases (map_two_le (Valued.v : Valuation (v.adicCompletion F) ℤᵐ⁰)).eq_or_lt with h2 | h2
   · exact GlobalTheory.QNorm.isSquare_mul_of_nonsquare_units F v h2 x y hx hy hx' hy'
-  haveI := GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers v
+  have := GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers v
   have hres : ∀ z : v.adicCompletionIntegers F,
       residue (v.adicCompletionIntegers F) z = 0 ↔ Valued.v (z : v.adicCompletion F) < 1 := by
     intro z
@@ -374,7 +476,7 @@ theorem isSquare_mul_of_near {x y : v.adicCompletion F} (hx : Valued.v x = 1) (h
 
 theorem nm_mul_adicCompletion {d x y : v.adicCompletion F} (hd : d ≠ 0) (hx0 : x ≠ 0) (hy0 : y ≠ 0)
     (hx : ¬ Nm d x) (hy : ¬ Nm d y) : Nm d (x * y) := by
-  haveI : CharZero (v.adicCompletion F) :=
+  have : CharZero (v.adicCompletion F) :=
     charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective
   obtain ⟨⟨π, -, hπ⟩, -⟩ := GlobalTheory.QNorm.exists_uniformizer_and_residue_representatives F v
   have hres := GlobalTheory.QNorm.exists_sub_sq_lt_one_of_two_lt_one F v
@@ -462,3 +564,6 @@ theorem localCharacters : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [
       fun h => hb (Nm.of_isSquare _ h))
 
 end GlobalTheory.QuadSymbol
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsSquareMulInfinite =====

@@ -54,6 +54,8 @@ import Mathlib.Topology.Sheaves.Init
 import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.FinalB
 import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.CubeThreeR
 import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.TwoTorsionU
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.TraceDualExists
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.LubinTateLogIsArtinHasse
 
 @[expose] public section
 
@@ -67,54 +69,16 @@ open Formalism.DworkPowerSeriesWeights (Integral)
 open Formalism.InvariantFactorPaths.G7 (lgF at1 Simeq cob UnrOK IsLawOfLog)
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension cW wpNum wpDen uSer)
 
-theorem lubin_tate_log_is_artin_hasse : LtLogIsLgF := by
-  intro K _ l hl
-  ext n
-  unfold Formalism.L2.Th1.CM.ltLog lgF
-  rw [PowerSeries.coeff_mk, PowerSeries.coeff_mk]
-  have h1 : 1 < l ^ 2 := by nlinarith
-  split_ifs with h
-  · have hs := Nat.find_spec h
-    rw [Finset.sum_eq_single (Nat.find h)]
-    · rw [if_pos hs]
-    · intro j _ hj
-      rw [if_neg]
-      intro hj'
-      exact hj (Nat.pow_right_injective h1 (hj'.symm.trans hs))
-    · intro hn
-      exfalso
-      apply hn
-      rw [Finset.mem_range]
-      have h2 : Nat.find h < (l ^ 2) ^ Nat.find h := Nat.lt_pow_self h1
-      exact Nat.lt_succ_of_lt (lt_of_lt_of_eq h2 hs.symm)
-  · symm
-    apply Finset.sum_eq_zero
-    intro j _
-    rw [if_neg]
-    intro hj
-    exact h ⟨j, hj⟩
-
 namespace FAux
 
 section Maps
 
 variable {K K' : Type} [Field K] [Field K'] (φ : K →+* K')
 
-theorem cW_eq (g2 g3 : K) (k : ℕ) :
-    cW g2 g3 k =
-      if k = 2 then g2 / 20 else if k = 3 then g3 / 28 else
-      if 4 ≤ k then
-        3 / ((2 * (k : K) + 1) * ((k : K) - 3)) *
-          ∑ m : Fin (k - 3), cW g2 g3 (m.val + 2) * cW g2 g3 (k - (m.val + 2))
-      else 0 := by
-  unfold cW
-  rw [Nat.strongRecOn_eq]
-  split_ifs <;> rfl
-
 theorem cW_map (g2 g3 : K) (k : ℕ) : φ (cW g2 g3 k) = cW (φ g2) (φ g3) k := by
   induction k using Nat.strong_induction_on with
   | _ k ih =>
-    rw [cW_eq, cW_eq (φ g2) (φ g3) k]
+    rw [_root_.Formalism.L2.Th1.A.BridgeK.cW_eq, _root_.Formalism.L2.Th1.A.BridgeK.cW_eq (φ g2) (φ g3) k]
     split_ifs with h2 h3 h4
     · rw [map_div₀, map_ofNat]
     · rw [map_div₀, map_ofNat]
@@ -234,7 +198,7 @@ end FAux
 theorem complex_multiplication_field_data : FieldDataCM := by
   intro l _ h5
   obtain ⟨σ, hσ, -⟩ := kurFrob l (by omega)
-  refine ⟨σ, hσ, (Formalism.InvariantFactorPaths.G7.Top.lawExists (MaximalUnramifiedExtension l) l hσ.1 hσ.2.2.1).1, ?_⟩
+  refine ⟨σ, hσ, (_root_.Formalism.InvariantFactorPaths.G7.formal_law_exists (MaximalUnramifiedExtension l) l hσ.1 hσ.2.2.1).1, ?_⟩
   intro d _ hd
   have hl2 := hσ.1.two_le
   have hd0 : d ≠ 0 := NeZero.ne d
@@ -245,7 +209,7 @@ theorem complex_multiplication_field_data : FieldDataCM := by
       have := (Nat.dvd_sub h2 hdv)
       rwa [Nat.sub_sub_self h1.le] at this
     exact hσ.1.one_lt.ne' (Nat.dvd_one.1 h3))
-  obtain ⟨om, oms, h1, h2⟩ := trDualExists (MaximalUnramifiedExtension l) l d σ hσ hd ζ hζ
+  obtain ⟨om, oms, h1, h2⟩ := _root_.Formalism.L2.Th1.D.trace_dual_exists (MaximalUnramifiedExtension l) l d σ hσ hd ζ hζ
   exact ⟨ζ, om, oms, hζ, h1, h2⟩
 
 end Formalism.L2.Th1.D

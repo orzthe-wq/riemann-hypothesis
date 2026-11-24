@@ -1,46 +1,7 @@
 module
 
 public import Formalism.HermitianCurvature.WeylElementCommutesLevelOne
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -73,19 +34,11 @@ theorem eq_smul_of_sigmaFinite (μ ν : Measure G) [SigmaFinite μ] [SigmaFinite
   have hμf : μ (spanningSets (μ + ν) n) ≠ ∞ := (lt_of_le_of_lt le_self_add hfin).ne
   have heq : μ = (μ (spanningSets (μ + ν) n) / ν (spanningSets (μ + ν) n)) • ν := by
     first
-    | exact measure_eq_div_smul μ ν (spanningSets (μ + ν) n) hn hνf
-    | exact measure_eq_div_smul μ ν hS hn hνf
-    | exact measure_eq_div_smul μ ν (spanningSets (μ + ν) n) hS hn hνf
     | (ext t ht
-       have key := measure_mul_measure_eq μ ν (spanningSets (μ + ν) n) t hn hνf ht
        rw [Measure.smul_apply, smul_eq_mul, ENNReal.div_eq_inv_mul, mul_assoc, key, ← mul_assoc,
          ENNReal.inv_mul_cancel hn hνf, one_mul])
     | (ext t ht
        have key := measure_mul_measure_eq μ ν (spanningSets (μ + ν) n) t hn hνf
-       rw [Measure.smul_apply, smul_eq_mul, ENNReal.div_eq_inv_mul, mul_assoc, key, ← mul_assoc,
-         ENNReal.inv_mul_cancel hn hνf, one_mul])
-    | (ext t ht
-       have key := measure_mul_measure_eq μ ν (spanningSets (μ + ν) n) t hS ht hn hνf
        rw [Measure.smul_apply, smul_eq_mul, ENNReal.div_eq_inv_mul, mul_assoc, key, ← mul_assoc,
          ENNReal.inv_mul_cancel hn hνf, one_mul])
   have hμ0 : μ (spanningSets (μ + ν) n) ≠ 0 := by
@@ -179,7 +132,7 @@ theorem mEmb : MeasurableEmbedding (Subtype.val : Aset U → Mt k r) := by
 theorem map_comap_val (μ : Measure (Mt k r)) (hc : μ (Aset U)ᶜ = 0) :
     (μ.comap (Subtype.val : Aset U → Mt k r)).map Subtype.val = μ := by
   rw [(mEmb (U := U)).map_comap μ]
-  first | rw [Subtype.range_coe] | rw [Subtype.range_val] | skip
+  first | rw [Subtype.range_coe]
   exact Measure.restrict_eq_self_of_ae_mem (ae_iff.mpr hc)
 
 theorem sigmaFinite_comap (μ : Measure (Mt k r)) [SigmaFinite μ] :

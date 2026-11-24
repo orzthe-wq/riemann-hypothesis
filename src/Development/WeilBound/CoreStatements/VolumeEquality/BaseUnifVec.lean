@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsDifferentiableOnTransfer
 
 @[expose] public section
 
@@ -104,7 +105,7 @@ theorem goodExp_univ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
 theorem vecSlice {n g : ℕ} {V : Set (Fin n → ℂ)} {Z : Scheme.{0}} {e : (Fin n → ℂ) → (Fin g → ℂ) → (Sp ℂ ⟶ Z)}
     (he : IsHolTo (V ×ˢ Set.univ) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => e bz.1 bz.2)) {t : Fin n → ℂ} (ht : t ∈ V) :
     IsHolTo Set.univ (e t) := by
-  have k := vecHolPre (C := Set.univ) (φ := fun ζ : Fin g → ℂ => (t, ζ)) he isOpen_univ
+  have k := _root_.GlobalTheory.HolPeriods.isHolTo_comp (C := Set.univ) (φ := fun ζ : Fin g → ℂ => (t, ζ)) he isOpen_univ
     ((differentiable_const t).prodMk differentiable_id).differentiableOn fun ζ _ => ⟨ht, trivial⟩
   exact k
 
@@ -130,7 +131,7 @@ theorem liftFam {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} 
   haveI : Nonempty (Sp ℂ ⟶ t'.G.left) := ⟨(ex t₀ ht₀ 0).choose⟩
   choose! e' a₁ b₁ using ex
   have base : IsHolTo (V ×ˢ Set.univ) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => z bz.1) :=
-    vecHolPre (φ := Prod.fst) hz (hV.prod isOpen_univ) (by fun_prop) fun b hb => hb.1
+    _root_.GlobalTheory.HolPeriods.isHolTo_comp (φ := Prod.fst) hz (hV.prod isOpen_univ) (by fun_prop) fun b hb => hb.1
   have hE : IsHolTo (V ×ˢ Set.univ) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => e' bz.1 bz.2) :=
     GlobalTheory.HolTorsion.isHolTo_of_isPullback p (GlobalTheory.HolTorsion.isHolTo_congr he fun b hb => a₁ b.1 hb.1 b.2)
       (GlobalTheory.HolTorsion.isHolTo_congr base fun b hb => b₁ b.1 hb.1 b.2)

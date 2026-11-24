@@ -1,18 +1,27 @@
 module
 
+public import Mathlib.Topology.MetricSpace.Pseudo.Defs
+public import Mathlib.Analysis.Calculus.InverseFunctionTheorem.FDeriv
+public import Mathlib.Algebra.Module.Equiv.Defs
+public import Mathlib.Analysis.Calculus.FDeriv.Add
+public import Mathlib.Analysis.Calculus.FDeriv.Bilinear
+public import Mathlib.Topology.Algebra.Module.FiniteDimension
+public import Mathlib.Topology.Instances.RealVectorSpace
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.PolarCut
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.DetNZHolds
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.ExistsLocalSolve
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.PushInv
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.ProdFirstProjectionSmul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -20,6 +29,8 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -27,7 +38,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -42,7 +52,107 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.PushInv
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.ProdFirstProjectionSmul
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.ExistsLocalSolve, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.SqChartCore
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.ExistsLocalSolve =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.ExistsLocalSolve", "h": "module\n\npublic import Mathlib.Topology.MetricSpace.Pseudo.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.InverseFunctionTheorem.FDeriv\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Module.Equiv.Defs\npublic import Mathlib.Analysis.Calculus.FDeriv.Add\npublic import Mathlib.Analysis.Calculus.FDeriv.Bilinear\npublic import Mathlib.Topology.Algebra.Module.FiniteDimension\npublic import Mathlib.Topology.Instances.RealVectorSpace\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.AprimeInfW
+
+open Topology Filter
+
+private theorem local_right_inverse_lemma {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [CompleteSpace E] (F : E → E) (f' : E ≃L[ℝ] E) (a : E)
+    (hf : HasStrictFDerivAt F (f' : E →L[ℝ] E) a) :
+    ∃ φ : E → E, ContinuousAt φ (F a) ∧ φ (F a) = a ∧ ∀ᶠ y in 𝓝 (F a), F (φ y) = y :=
+  ⟨hf.localInverse F f' a, hf.localInverse_continuousAt, hf.localInverse_apply_image,
+    hf.eventually_right_inverse⟩
+
+theorem exists_local_solve {V : Type} [AddCommGroup V] [TopologicalSpace V] {N : ℕ}
+    (e : V ≃ₜ (Fin N → ℝ)) (he : ∀ x y, e (x + y) = e x + e y)
+    (B : V → V → V) (hB1 : ∀ x x' y, B (x + x') y = B x y + B x' y)
+    (hB2 : ∀ x y y', B x (y + y') = B x y + B x y')
+    (hBc : Continuous (fun p : V × V => B p.1 p.2))
+    (L : V → V) (hL : ∀ x y, L (x + y) = L x + L y) (hLc : Continuous L)
+    (x0 : V) (hD : ∀ u, B x0 u + B u x0 + L u = u + u) :
+    ∃ g : V → V, ContinuousAt g (B x0 x0 + L x0) ∧ g (B x0 x0 + L x0) = x0 ∧
+      ∀ᶠ y in 𝓝 (B x0 x0 + L x0), B (g y) (g y) + L (g y) = y := by
+  have hs : ∀ a b : Fin N → ℝ, e.symm (a + b) = e.symm a + e.symm b := fun a b =>
+    e.injective (by rw [he]; simp)
+  let b : (Fin N → ℝ) → (Fin N → ℝ) → (Fin N → ℝ) := fun z w => e (B (e.symm z) (e.symm w))
+  have hb1 : ∀ z z' w, b (z + z') w = b z w + b z' w := fun z z' w => by
+    simp only [b]; rw [hs, hB1, he]
+  have hb2 : ∀ z w w', b z (w + w') = b z w + b z w' := fun z w w' => by
+    simp only [b]; rw [hs, hB2, he]
+  have hpair : Continuous fun p : (Fin N → ℝ) × (Fin N → ℝ) => (e.symm p.1, e.symm p.2) :=
+    (e.symm.continuous.comp continuous_fst).prodMk (e.symm.continuous.comp continuous_snd)
+  have hbc : Continuous fun p : (Fin N → ℝ) × (Fin N → ℝ) => b p.1 p.2 :=
+    e.continuous.comp (hBc.comp hpair)
+  have hb3 : ∀ (c : ℝ) z w, b (c • z) w = c • b z w := fun c z w =>
+    map_real_smul (AddMonoidHom.mk' (fun z => b z w) fun z z' => hb1 z z' w)
+      (hbc.comp (continuous_id.prodMk continuous_const)) c z
+  have hb4 : ∀ (c : ℝ) z w, b z (c • w) = c • b z w := fun c z w =>
+    map_real_smul (AddMonoidHom.mk' (fun w => b z w) fun w w' => hb2 z w w')
+      (hbc.comp (continuous_const.prodMk continuous_id)) c w
+  let l : (Fin N → ℝ) → (Fin N → ℝ) := fun z => e (L (e.symm z))
+  have hl1 : ∀ z z', l (z + z') = l z + l z' := fun z z' => by
+    simp only [l]; rw [hs, hL, he]
+  have hlc : Continuous l := e.continuous.comp (hLc.comp e.symm.continuous)
+  let lc : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ) := (AddMonoidHom.mk' l hl1).toRealLinearMap hlc
+  let β₂ : (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ) := LinearMap.mk₂ ℝ b hb1 hb3 hb2 hb4
+  let βc : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ) →L[ℝ] (Fin N → ℝ) :=
+    LinearMap.toContinuousLinearMap
+      ((LinearMap.toContinuousLinearMap : ((Fin N → ℝ) →ₗ[ℝ] (Fin N → ℝ)) ≃ₗ[ℝ]
+        ((Fin N → ℝ) →L[ℝ] (Fin N → ℝ))).toLinearMap ∘ₗ β₂)
+  have hF : ∀ z, e (B (e.symm z) (e.symm z) + L (e.symm z)) = βc z z + lc z := fun z => by
+    rw [he]; rfl
+  have hD' : ∀ u, βc (e x0) u + βc u (e x0) + lc u = (2 : ℝ) • u := fun u => by
+    show e (B (e.symm (e x0)) (e.symm u)) + e (B (e.symm u) (e.symm (e x0))) + e (L (e.symm u))
+      = (2 : ℝ) • u
+    rw [← he, ← he, e.symm_apply_apply, hD, he, e.apply_symm_apply, two_smul]
+  have hder : HasStrictFDerivAt (fun z => βc z z + lc z)
+      ((2 : ℝ) • ContinuousLinearMap.id ℝ (Fin N → ℝ)) (e x0) := by
+    have h1 := (βc.hasStrictFDerivAt_of_bilinear (hasStrictFDerivAt_id (e x0))
+      (hasStrictFDerivAt_id (e x0))).add lc.hasStrictFDerivAt
+    refine h1.congr_fderiv (ContinuousLinearMap.ext fun u => ?_)
+    change _ = (2 : ℝ) • u
+    rw [← hD' u]
+    rfl
+  let f' : (Fin N → ℝ) ≃L[ℝ] (Fin N → ℝ) := ContinuousLinearEquiv.equivOfInverse
+    ((2 : ℝ) • ContinuousLinearMap.id ℝ (Fin N → ℝ))
+    ((1 / 2 : ℝ) • ContinuousLinearMap.id ℝ (Fin N → ℝ))
+    (fun u => by simp [smul_smul]) (fun u => by simp [smul_smul])
+  have hf : HasStrictFDerivAt (fun z => e (B (e.symm z) (e.symm z) + L (e.symm z)))
+      (f' : (Fin N → ℝ) →L[ℝ] (Fin N → ℝ)) (e x0) := by
+    have hfun : (fun z => e (B (e.symm z) (e.symm z) + L (e.symm z))) = fun z => βc z z + lc z :=
+      funext hF
+    rw [hfun]
+    exact hder.congr_fderiv (ContinuousLinearMap.ext fun u => rfl)
+  obtain ⟨φ, h1, h2, h3⟩ := local_right_inverse_lemma _ f' (e x0) hf
+  simp only [e.symm_apply_apply] at h1 h2 h3
+  refine ⟨fun y => e.symm (φ (e y)), ?_, ?_, ?_⟩
+  · exact e.symm.continuous.continuousAt.comp (h1.comp e.continuous.continuousAt)
+  · simp only [h2, e.symm_apply_apply]
+  · exact (e.continuous.continuousAt.tendsto.eventually h3).mono fun y hy => e.injective hy
+
+end PI.AprimeInfW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.ExistsLocalSolve =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.SqChartCore =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.SqChartCore", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.PolarCut\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.DetNZHolds\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.ExistsLocalSolve\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.PushInv\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MassComputations.ProdFirstProjectionSmul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -228,3 +338,7 @@ theorem sqChart_holds : SqChart := by
   exact ⟨Ω, a, h1', h2', h3', fun T hT' => h4' T hT'⟩
 
 end PI.AprimeInfW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.SqChartCore =====

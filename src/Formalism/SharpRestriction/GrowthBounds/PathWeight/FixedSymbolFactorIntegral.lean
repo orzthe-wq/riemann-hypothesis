@@ -209,7 +209,7 @@ theorem core (D : Formalism.BasicNotions.D7) (c' o : ℕ) (T Z Y' : PP) (hZ : Z 
       have hp : (p : O) ^ c' = X.S.w ^ c' * X.S.w ^ c' := by
         rw [← X.hO.1, ← pow_mul, ← pow_add]; congr 1; omega
       rw [hp, pow_add]
-      simp only [map_mul, C_mul]
+      simp only [map_mul]
       ring
     rw [e2]
     have := inWj_mul (inWj_C (σ := TV n' (r + K)) (w := X.S.w) (o + c') (X.S.w ^ c')) (inWj_compN (r := r) o hY)

@@ -59,14 +59,6 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory
 
-private lemma res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (a : Γ(X, U)ˣ) :
-    res h₂ (res h₁ a) = res (h₂.trans h₁) a := by
-  unfold res
-  ext
-  simp only [Units.coe_map, MonoidHom.coe_coe]
-  rw [← CommRingCat.comp_apply, ← Functor.map_comp]
-  rfl
-
 private lemma U_le_pull_id_U {X : Scheme.{0}} (N : LB X) (i : N.ι) :
     N.U i ≤ (N.pull (𝟙 X)).U (fun _ => i) := by
   intro x hx
@@ -90,8 +82,8 @@ theorem exists_gen_of_pull_id {X : Scheme.{0}} (N : LB X) (t : (N.pull (𝟙 X))
   refine ⟨⟨fun i => res (U_le_pull_id_U N i) (t.s (fun _ => i))⟩, ?_⟩
   intro i j
   have key := congrArg (res (inf_le_inf (U_le_pull_id_U N i) (U_le_pull_id_U N j))) (ht (fun _ => i) (fun _ => j))
-  rw [map_mul, res_res_lemma, res_res_lemma] at key
-  simp only [res_res_lemma]
+  rw [map_mul, _root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res', _root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res'] at key
+  simp only [_root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res']
   refine key.trans ?_
   congr 1
   have hle : (N.pull (𝟙 X)).U (fun _ => i) ⊓ (N.pull (𝟙 X)).U (fun _ => j) ≤ (𝟙 X) ⁻¹ᵁ (N.U i ⊓ N.U j) := by
@@ -104,7 +96,7 @@ theorem exists_gen_of_pull_id {X : Scheme.{0}} (N : LB X) (t : (N.pull (𝟙 X))
   have hG : (N.pull (𝟙 X)).g (fun _ => i) (fun _ => j) = res hle (pullU (𝟙 X) (N.U i ⊓ N.U j) (N.g i j)) := by
     show ∏ _k : PUnit, (res hle (pullU (𝟙 X) (N.U i ⊓ N.U j) (N.g i j))) ^ (1 : ℤ) = _
     rw [Fintype.prod_unique, zpow_one]
-  rw [hG, res_res_lemma]
+  rw [hG, _root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res']
   exact (res_pullU_id_moduli _ le_rfl _).trans (res_self_moduli _ _)
 
 private theorem val_mul_val_comm_of_fst_eq (hG : Out.GlobalFnsSt) {S S' : Scheme.{0}} (π : S' ⟶ S) (A : Over S) [GrpObj A]

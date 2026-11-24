@@ -236,7 +236,7 @@ theorem mul_prod_thTerm_locally_normal {κ : Type*} [Fintype κ] {U : Set W} (hU
     (hG.continuousAt (hU.mem_nhds hx)).norm.eventually (gt_mem_nhds (lt_add_one _))
   refine ⟨{w | ‖G w‖ < ‖G x‖ + 1} ∩ ⋂ k, t k, inter_mem hG' (iInter_mem.2 ht),
     fun m => (‖G x‖ + 1) * ∏ k, v k (m k),
-    (summable_prod_tuples (J := fun _ : κ => Fin g → ℤ) h0 hv).mul_left _, fun m w hw => ?_⟩
+    (_root_.GlobalTheory.SummablePiProd.summable_pi_prod (J := fun _ : κ => Fin g → ℤ) h0 hv).mul_left _, fun m w hw => ?_⟩
   rw [norm_mul, norm_prod]
   exact mul_le_mul (le_of_lt hw.1) (Finset.prod_le_prod₀ (fun k _ => norm_nonneg _)
     fun k _ => h k _ w (Set.mem_iInter.1 hw.2 k))

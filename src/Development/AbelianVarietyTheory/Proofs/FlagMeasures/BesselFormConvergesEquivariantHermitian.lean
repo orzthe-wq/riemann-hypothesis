@@ -1,12 +1,13 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselConstantBoundsOfGeTwoNPowFiveStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOpNormPowerIntegralLtTopClosedSubgroupStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRepStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompactStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnimodularBesselSubgroupsUWNStatement
+public import Mathlib.Basic.Real.Basic
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselConstantBoundsOfGeTwoNPowFive
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormProperties
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselOpNormPowerIntegralLtTopClosedSubgroup
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupRepTwistedIsUnitaryRep
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselSubgroupsClosedUnitaryWCompact
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnimodularBesselSubgroupsUWN
 import Formalism.FormalDegreeBessel.FinalG
 import Mathlib.Algebra.Order.Archimedean.Real.Hom
 import Mathlib.Algebra.Order.Floor.Extended
@@ -62,15 +63,9 @@ namespace GlobalTheory.SgInf.BeForm
 variable {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable {Wp : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
-theorem isUnit_det_of_mem {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det :=
-  ((uHGroup _ (Hpk k r) (Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1)).2.2 g hg).1
-
-theorem mul_inv_of_mem {g : Mat k r} (hg : g ∈ GG k r) : g * g⁻¹ = 1 :=
-  Matrix.mul_nonsing_inv g (GlobalTheory.SgInf.BeForm.isUnit_det_of_mem hg)
-
 theorem continuousOn_inv : ContinuousOn (fun g : Mat k r => g⁻¹) (GG k r) := by
   intro g hg
-  obtain ⟨w, hw⟩ := GlobalTheory.SgInf.BeForm.isUnit_det_of_mem hg
+  obtain ⟨w, hw⟩ := _root_.GlobalTheory.SgInf.isUnit_det_of_mem_GG hg
   refine (continuousAt_matrix_inv g ?_).continuousWithinAt
   rw [← hw]
   exact NormedRing.inverse_continuousAt w
@@ -81,7 +76,7 @@ theorem continuous_of : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)) :
 theorem integrable_opn {μ : Measure (Mt k r)} {a : ℝ} (hint : normInt μ a < ⊤) :
     Integrable (fun x : Mt k r => opn (Matrix.of x : Mat k r) ^ (-a)) μ := by
   have hc : Continuous (fun x : Mt k r => opn (Matrix.of x : Mat k r)) :=
-    (GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).2.2.1.comp GlobalTheory.SgInf.BeForm.continuous_of
+    (_root_.GlobalTheory.SgInf.opn_facts k r).2.2.1.comp GlobalTheory.SgInf.BeForm.continuous_of
   have hm : AEStronglyMeasurable (fun x : Mt k r => opn (Matrix.of x : Mat k r) ^ (-a)) μ :=
     (hc.measurable.pow_const (-a)).aestronglyMeasurable
   refine (lintegral_ofReal_ne_top_iff_integrable hm
@@ -110,7 +105,7 @@ theorem inner_act {t : Mat k r} (ht : t ∈ GG k r) (x y : H) : ⟪σ t x, σ t 
 
 theorem act_inv {t : Mat k r} (ht : t ∈ GG k r) (hti : t⁻¹ ∈ GG k r) (x : H) : σ t (σ t⁻¹ x) = x := by
   have h := hσ.1.2 t ht t⁻¹ hti
-  rw [GlobalTheory.SgInf.BeForm.mul_inv_of_mem ht, hσ.1.1] at h
+  rw [_root_.GlobalTheory.SgInf.OpNormU.mul_inv ht, hσ.1.1] at h
   have h2 := congrArg (fun A : H →L[ℂ] H => A x) h
   simpa using h2.symm
 
@@ -194,7 +189,7 @@ theorem be_left (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hP : IsUR
   have hof : (Matrix.of (rmulM t s) : Mat k r) = Matrix.of s * t := rfl
   simp only [bint, hof, ContinuousLinearMap.comp_smul]
   rw [GlobalTheory.SgInf.BeForm.coef_act_left hσ hsG htG, Matrix.mul_inv_rev, ← hP.1.2 t ht _ hmem,
-    ← mul_assoc, GlobalTheory.SgInf.BeForm.mul_inv_of_mem htG, one_mul]
+    ← mul_assoc, _root_.GlobalTheory.SgInf.OpNormU.mul_inv htG, one_mul]
 
 theorem be_right (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hP : IsURepOn S P)
     (hμ : IsHaarOn S μ) {u u' : H} (hI : Integrable (bint σ P u u') μ)
@@ -222,7 +217,7 @@ theorem be_right (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hP : IsU
   simp only [bint, hof, ContinuousLinearMap.smul_comp]
   rw [GlobalTheory.SgInf.BeForm.coef_act_right hσ hsG htG htiG (hS.1 hm1)]
   congr 1
-  rw [← hP.1.2 _ hm2 _ hti, ← Matrix.mul_inv_rev, ← mul_assoc, GlobalTheory.SgInf.BeForm.mul_inv_of_mem htG,
+  rw [← hP.1.2 _ hm2 _ hti, ← Matrix.mul_inv_rev, ← mul_assoc, _root_.GlobalTheory.SgInf.OpNormU.mul_inv htG,
     one_mul]
 
 def adjR (Wp : Type*) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] :
@@ -260,7 +255,7 @@ theorem be_continuousOn (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (h
     (hPb : ∀ s ∈ S, ‖P s‖ ≤ 1) (hμ : IsHaarOn S μ) (hint : normInt μ a < ⊤) (ha : 0 < a)
     {u u' : H} {C : ℝ} (hC : ∀ g ∈ GG k r, ‖coef σ u u' g‖ ≤ C * opn g ^ (-a)) :
     ContinuousOn (fun x => ∫ s, bint σ P (σ x u) u' s ∂μ) (GG k r) := by
-  have hop := GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r
+  have hop := _root_.GlobalTheory.SgInf.opn_facts k r
   have hdet : IsUnit (Hpk k r).det := Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1
   have : FirstCountableTopology (Mat k r) := inferInstanceAs (FirstCountableTopology (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ))
   intro x0 hx0
@@ -323,13 +318,13 @@ theorem be_converges_equivariant_hermitian_continuous : ∀ (k r : ℕ) {H : Typ
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide V hV hDec u hu u' hu'
   obtain ⟨hk, hσ, -, -, -, -, ha5, -, -⟩ := hStd
   obtain ⟨hz, hT, hπ, hHaar, -⟩ := hSide
-  have hS : IsClosedSub k r (Sset k r z) := (GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT).2.2.2.1
-  have h47 := GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ
-  have hU : IsUnimod (Sset k r z) μS := (GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μS).1 hHaar
-  have hb := GlobalTheory.T.bessel_constant_bounds_of_ge_two_n_pow_five k r a hk ha5
+  have hS : IsClosedSub k r (Sset k r z) := (_root_.GlobalTheory.SgInf.closedSub_groups k r z hz hT).2.2.2.1
+  have h47 := _root_.GlobalTheory.SgInf.PiUnitary.piS_unitary k r z c π hz hT hπ
+  have hU : IsUnimod (Sset k r z) μS := (_root_.GlobalTheory.SgInf.unimodular_S_N_UW k r z hz hT μS).1 hHaar
+  have hb := _root_.GlobalTheory.SgInf.a_bounds_of_ge_two_n_pow_five k r a hk ha5
   have hn : (0:ℝ) ≤ 2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 := by positivity
   have hapos : 0 < a := by linarith [hb.1]
-  have hint : normInt μS a < ⊤ := GlobalTheory.T.besselOpNormPowerIntegral_lt_top_closedSubgroup k r _ μS a hS hHaar (by linarith [hb.1])
+  have hint : normInt μS a < ⊤ := _root_.GlobalTheory.SgGrowth.normInt_lt_top k r _ μS a hS hHaar (by linarith [hb.1])
   obtain ⟨C, hC⟩ := hDec u hu u' hu'
   obtain ⟨C', hC'⟩ := hDec u' hu' u hu
   have hPc := h47.2.2.2.1

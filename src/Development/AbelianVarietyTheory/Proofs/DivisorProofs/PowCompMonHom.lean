@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniformBaseChange.PullGt
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 import Development.AbelianVarietyTheory.Definitions.Divisors.SharpOverIff
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -59,12 +60,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 namespace GlobalTheory.Poinc.HomTor
-
-theorem pow_comp_monHom {S : Scheme.{0}} {G G' Z : Over S} [MonObj G] [MonObj G'] (φ : G ⟶ G')
-    [IsMonHom φ] (x : Z ⟶ G) (n : ℕ) : (x ^ n) ≫ φ = (x ≫ φ) ^ n := by
-  induction n with
-  | zero => rw [pow_zero, pow_zero, MonObj.one_comp]
-  | succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]
 
 theorem exists_torMatch : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (D' : DegData R (maximalIdeal R)) (A' : PolAV (Sp (FractionRing R))) (U' : Unif (maximalIdeal R) D' A' G') (p : G' ⟶ G), IsMonHom p → ∃ ρ, TorMatch U U' (RingHom.id R) p.left ρ := by
   intro R _ _ _ hR G _ _ hG D A U G' _ _ hG' D' A' U' p hpm
@@ -115,7 +110,7 @@ theorem exists_torMatch : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing 
   have hxy : s O φ τR hτR = s' O φ τO hτOk ≫ p := by
     refine GlobalTheory.LocalRigid.eq_of_pow_eq_of_closedPoint (Sp R) G hG.smooth O (spMap φ) k hkO _ _ ?_
       (ResidueField O) (residue O) inferInstance ?_
-    · rw [s1, ← pow_comp_monHom, s1', MonObj.one_comp]
+    · rw [s1, ← _root_.GlobalTheory.TorSecLocal.pow_comp_of_isMonHom, s1', MonObj.one_comp]
     · let τ₀ : Multiplicative D'.toPre.X →* (ResidueField O)ˣ := (Units.map (residue O).toMonoidHom).comp τO
       have h₀ : τ₀ ^ k = 1 := by
         rw [show τ₀ ^ k = (Units.map (residue O).toMonoidHom).comp (τO ^ k) by ext x; simp [τ₀]]

@@ -147,9 +147,6 @@ theorem adapt_of_eps (hθ : IsSplitEquiv X p θ) (hε : θ (epsP X p) = (1, 0)) 
     have h2 : ((gOf p : ℕ) : FpX X p) = (((gOf p : ℕ) : X.B.I.F) : FpX X p) := by
       first
         | exact (map_natCast (algebraMap X.B.I.F (FpX X p)) _).symm
-        | exact (map_natCast (IsDedekindDomain.HeightOneSpectrum.coeRingHom p.1) _).symm
-        | (norm_cast; done)
-        | (simp; done)
     rw [h2, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation',
       ← map_natCast (algebraMap (𝓞 X.B.I.F) X.B.I.F),
       IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem]

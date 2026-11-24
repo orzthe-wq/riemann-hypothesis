@@ -256,7 +256,7 @@ theorem jAGroupAdj_of_leaves (hCut : GACutGraded) (hComm : GAJComm) (hPair : GAP
       B.InCC (B.AB S.G.k S.G.r + (d + Bg * ((B.opOrder Θ : ℝ) + 5))) (B.opOrder Θ + 5) F := by
     intro F hF
     obtain ⟨c, hc⟩ := hF (B.opOrder Θ + 5)
-    refine ⟨c, Formalism.FourierDecayAlt.P.compactly_supported_monotone S.G.k S.G.r _ _ _ c _ F ?_ hc⟩
+    refine ⟨c, _root_.Formalism.FourierDecayAlt.P.Ux8.ccMono S.G.k S.G.r _ _ _ c _ F ?_ hc⟩
     have h0 : 0 ≤ Cc * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2 := mul_nonneg (mul_nonneg hCc hr1) (sq_nonneg _)
     have h1 : (0 : ℝ) ≤ 6 * (S.G.r : ℝ) * ((B.opOrder Θ : ℝ) + 5) := by positivity
     push_cast

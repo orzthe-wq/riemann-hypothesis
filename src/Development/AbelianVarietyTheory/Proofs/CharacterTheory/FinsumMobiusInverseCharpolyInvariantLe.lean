@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyEqFinsumPsiStatement
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyLinearEquiStatement
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyEqFinsumPsi
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyLinearEqui
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -54,7 +54,7 @@ theorem finsum_psi_le (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V
     (hg : ∀ x ∈ A, g x ∈ A) :
     ∑ᶠ W : {W : Submodule F V // W ≤ A ∧ ∀ x ∈ W, g x ∈ W}, psi s W.1 (g.restrict W.2.2)
       = s (LinearMap.charpoly (g.restrict hg)) := by
-  rw [GlobalTheory.T.apply_charpoly_eq_finsum_psi_invariant_submodules F A s (g.restrict hg)]
+  rw [_root_.GlobalTheory.CuspGL.charpoly_eq_finsum_psi F A s (g.restrict hg)]
   let e : {W : Submodule F V // W ≤ A ∧ ∀ x ∈ W, g x ∈ W} ≃
       {W' : Submodule F A // ∀ x ∈ W', g.restrict hg x ∈ W'} :=
     { toFun := fun W => ⟨W.1.comap A.subtype, fun x hx => by
@@ -75,7 +75,7 @@ theorem finsum_psi_le (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V
       ((g.restrict hg).restrict (e W).2) = g.restrict W.2.2 := by
     ext x
     simp [LinearEquiv.conj_apply, Submodule.comapSubtypeEquivOfLe]
-  rw [← hc, GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_linearEquiv_conj]
+  rw [← hc, _root_.GlobalTheory.CuspGL.psi_conj]
   rfl
 
 end GlobalTheory.CuspGL

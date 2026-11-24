@@ -219,7 +219,7 @@ theorem weight_groupWeight_apply (d : Fin k × Fin n →₀ ℕ) (i : Fin k) :
 variable {R : Type*} [CommRing R]
 
 theorem isMultiHomog_iff (δ : ℕ) (f : MvPolynomial (Fin k × Fin n) R) :
-    IsMultiHomog δ f ↔ ∀ i : Fin k, IsWeightedHomogeneous (inGroup i) f δ := by
+    Heights.IsMultiHomog δ f ↔ ∀ i : Fin k, IsWeightedHomogeneous (inGroup i) f δ := by
   constructor
   · intro h i d hd
     rw [← weight_groupWeight_apply, h hd]
@@ -270,7 +270,7 @@ section Cycle
 variable {k n : ℕ} {F : Type} [Field F]
 
 theorem isWeightedHomogeneous_inGroup_of_dvd {f g : MvPolynomial (Fin k × Fin n) F} {δ : ℕ}
-    (hf : IsMultiHomog δ f) (hf0 : f ≠ 0) (hgf : g ∣ f) (i : Fin k) :
+    (hf : Heights.IsMultiHomog δ f) (hf0 : f ≠ 0) (hgf : g ∣ f) (i : Fin k) :
     ∃ a, IsWeightedHomogeneous (inGroup i) g a := by
   obtain ⟨r, rfl⟩ := hgf
   exact isWeightedHomogeneous_of_mul_left ((isMultiHomog_iff δ _).mp hf i) (left_ne_zero_of_mul hf0)
@@ -279,11 +279,11 @@ theorem isWeightedHomogeneous_inGroup_of_dvd {f g : MvPolynomial (Fin k × Fin n
 theorem exists_degrees_of_chowFormCycle (hk : 0 < k) (Z : ProjCycle F n) (c : F)
     (g : Ideal (MvPolynomial (Fin n) F) → MvPolynomial (Fin k × Fin n) F)
     (hg : ∀ W ∈ Z.support, IsChowForm W k (g W)) {δ : ℕ}
-    (hf : IsMultiHomog δ (C c * ∏ W ∈ Z.support, g W ^ Z W)) (hf0 : C c * ∏ W ∈ Z.support, g W ^ Z W ≠ 0) :
-    ∃ δW : Ideal (MvPolynomial (Fin n) F) → ℕ, (∀ W ∈ Z.support, IsMultiHomog (δW W) (g W)) ∧
+    (hf : Heights.IsMultiHomog δ (C c * ∏ W ∈ Z.support, g W ^ Z W)) (hf0 : C c * ∏ W ∈ Z.support, g W ^ Z W ≠ 0) :
+    ∃ δW : Ideal (MvPolynomial (Fin n) F) → ℕ, (∀ W ∈ Z.support, Heights.IsMultiHomog (δW W) (g W)) ∧
       ∑ W ∈ Z.support, Z W * δW W = δ := by
   classical
-  have hdeg : ∀ W ∈ Z.support, ∃ d, IsMultiHomog d (g W) := by
+  have hdeg : ∀ W ∈ Z.support, ∃ d, Heights.IsMultiHomog d (g W) := by
     intro W hW
     have hdvd : g W ∣ C c * ∏ W ∈ Z.support, g W ^ Z W := by
       apply Dvd.dvd.mul_left
@@ -297,12 +297,12 @@ theorem exists_degrees_of_chowFormCycle (hk : 0 < k) (Z : ProjCycle F n) (c : F)
     exact ha i
   choose! δW hδW using hdeg
   refine ⟨δW, hδW, ?_⟩
-  have hprod : IsMultiHomog (∑ W ∈ Z.support, Z W * δW W) (C c * ∏ W ∈ Z.support, g W ^ Z W) := by
+  have hprod : Heights.IsMultiHomog (∑ W ∈ Z.support, Z W * δW W) (C c * ∏ W ∈ Z.support, g W ^ Z W) := by
     have h1 : IsWeightedHomogeneous (groupWeight k n) (∏ W ∈ Z.support, g W ^ Z W)
         (∑ W ∈ Z.support, Z W • fun _ : Fin k => δW W) :=
       IsWeightedHomogeneous.prod _ _ _ fun W hW => (hδW W hW).pow (Z W)
     have h2 := h1.C_mul c
-    unfold IsMultiHomog
+    unfold Heights.IsMultiHomog
     convert h2 using 1
     funext i
     simp [Finset.sum_apply]

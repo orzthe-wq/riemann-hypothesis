@@ -361,7 +361,7 @@ theorem eps_alg (a : S) : spMap (epsMul a) ≫ spMap (algebraMap S (DualNumber S
 theorem fst_alg : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _ := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, ← Spec.map_id]
   refine congrArg spMap (RingHom.ext fun s => ?_)
-  simp [TrivSqZeroExt.algebraMap_eq_inl]
+  simp
 
 theorem tan_iff (e : x₂ ≫ r = x) {v : Sp (DualNumber S) ⟶ Xo₂.univ.t.G.left}
     (hv : v ≫ Xo₂.univ.t.G.hom = spMap (algebraMap S (DualNumber S)) ≫ x₂) :

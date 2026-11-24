@@ -76,7 +76,7 @@ theorem vcompat : letI := vrel v
 theorem finite_quot : Finite (𝓞 F ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot
 
 theorem proper : ProperSpace (v.adicCompletion F) := by
-  apply GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion <;> assumption
+  apply GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion
 
 theorem isLocalField : letI := vrel v; IsNonarchimedeanLocalField (v.adicCompletion F) := by
   let _ := vrel v

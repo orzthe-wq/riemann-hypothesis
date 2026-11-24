@@ -75,7 +75,7 @@ theorem mul_c₁ (hn : r + t = n) (y : Mx D a r) : mm y ((c₁ D hn).map (incA D
   obtain ⟨s, rfl⟩ := (ee hn).surjective j
   rw [jn_ee]
   rcases s with k | k <;>
-    simp [mm, c₁, Matrix.mul_apply, Matrix.one_apply, (ee hn).injective.eq_iff] <;>
+    simp [mm, c₁, Matrix.mul_apply, Matrix.one_apply] <;>
     exact Finset.sum_eq_zero fun x _ => if_neg (by simp [Fin.ext_iff]; omega)
 
 theorem mul_c₃ (hn : r + t = n) (y : Mx D a t) : mm y ((c₃ D hn).map (incA D)) = jn hn 0 y := by
@@ -83,13 +83,13 @@ theorem mul_c₃ (hn : r + t = n) (y : Mx D a t) : mm y ((c₃ D hn).map (incA D
   obtain ⟨s, rfl⟩ := (ee hn).surjective j
   rw [jn_ee]
   rcases s with k | k <;>
-    simp [mm, c₃, Matrix.mul_apply, Matrix.one_apply, (ee hn).injective.eq_iff] <;>
+    simp [mm, c₃, Matrix.mul_apply, Matrix.one_apply] <;>
     exact Finset.sum_eq_zero fun x _ => if_neg (by simp [Fin.ext_iff]; omega)
 
 theorem compl_c₁ (hn : r + t = n) : IsCompl (c₁ D hn) 1 := by
   refine ⟨by simp, fun i hi => ?_⟩
   have : ee hn (Sum.inl ⟨i, hi⟩) = i := Fin.ext (ee_inl_val hn _)
-  simp only [c₁, this]
+  simp only [c₁]
   rfl
 
 theorem compl_c₃ (hn : r + t = n) : IsCompl (c₃ D hn) (Pm D.host.E hn) := by

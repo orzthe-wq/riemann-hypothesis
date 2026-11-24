@@ -2,11 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsNormalFormStabilizerMeasure
 public import Formalism.PeriodIntegrals.QuotInv
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerSetEqRangeNormalFormStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonStabilizerSetEqRangeNormalForm
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StabilizerHaarUnimodularNormal
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MatGroupHaarUniqueFiniteCompactOpenPos
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicLeviEmbeddingHomomorphismProperties
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicStabilizerRadicalStructure
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StabilizerHaarUnimodularNormalStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MatGroupHaarUniqueFiniteCompactOpenPos
 import Formalism.FormalDegreeBessel.FinalG
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -65,13 +65,11 @@ theorem conj_cont (a : Mat k r) : Continuous (conjM a : Mt k r → Mt k r) := by
   show Continuous fun x : Mt k r => a * Matrix.of x * a⁻¹
   first
   | fun_prop
-  | exact (continuous_const.mul continuous_id).mul continuous_const
 
 theorem lmul_cont (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) := by
   show Continuous fun x : Mt k r => a * Matrix.of x
   first
   | fun_prop
-  | exact continuous_const.mul continuous_id
 
 theorem conj_conj (a b : Mat k r) : (conjM a : Mt k r → Mt k r) ∘ conjM b = conjM (a * b) := by
   funext x
@@ -134,9 +132,7 @@ theorem haar_conj {G G' : Set (Mat k r)} {μ : Measure (Mt k r)} (a : Mat k r) (
     rw [Measure.map_map (lmul_cont s).measurable hm, hc,
       ← Measure.map_map hm (lmul_cont _).measurable, hinv _ ht]
 
-theorem unit_of_GG {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det := by
-  have hH : IsUnit (Hpk k r).det := Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1
-  exact ((uHGroup _ (Hpk k r) hH).2.2 g hg).1
+alias unit_of_GG := _root_.GlobalTheory.Amp.NfMid.unit_det
 
 theorem matGroup {G : Set (Mat k r)} (h : IsClosedSub k r G) : PI.IsMatGroup G := by
   obtain ⟨hsub, hcl, h1, hmul, hinv⟩ := h
@@ -190,7 +186,6 @@ theorem le_of_tendsto_conj (ν : Measure (Mt k r)) (U : Set (Mt k r)) (hU : IsOp
   have hU' : ν (⋃ m, V m) = ⨆ m, ν (V m) := by
     first
     | exact hVmono.measure_iUnion
-    | exact measure_iUnion_eq_iSup hVmono.directed_le
   calc ν U ≤ ν (⋃ m, V m) := measure_mono hsub
     _ = ⨆ m, ν (V m) := hU'
     _ ≤ C := iSup_le hVle
@@ -612,7 +607,7 @@ theorem rEl_ee (j : ℕ) (β : Fin r → ℕ) (q : (UTin β → ℂ) × PTop k r
     · intro a'
       simp only [pTop, pOf, Rad.pEl_se, Rad.esI_ne_eI, if_false]
   simp only [rEl, Matrix.mul_apply, hcol, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
-    Finset.sum_ite_eq, Finset.mem_univ, if_true, UEmb.u_ee]
+    Finset.mem_univ, if_true, UEmb.u_ee]
 
 theorem block_of_subset (j : ℕ) {β β' : Fin r → ℕ} (h : Set.range (rEl k r j β) ⊆ Set.range (rEl k r j β'))
     (p : UT r) (hp : β p.1.1 = β p.1.2) : β' p.1.1 = β' p.1.2 := by
@@ -749,9 +744,7 @@ theorem le_of_conj (j : ℕ) {β : Fin r → ℕ} {n : Mat k r} (hn : n ∈ Nset
     (fun i => le_of_eq (congrArg (fun μ : Measure (Mt k r) => μ U) (key i)))
   simp only [Measure.smul_apply, smul_eq_mul] at hle
   first
-  | exact (ENNReal.mul_le_mul_right hUpos.ne' hUfin.ne).mp hle
   | exact (ENNReal.mul_le_mul_iff_left hUpos.ne' hUfin.ne).mp hle
-  | exact le_of_mul_le_mul_right hle hUpos
 
 private theorem conj_mem_Rset_of_two_Nset_decompositions {γ g₀ g₀' n₁ n₂ m₁ m₂ : Mat k r} (hn₁ : n₁ ∈ Nset k r)
     (hn₂ : n₂ ∈ Nset k r) (hm₁ : m₁ ∈ Nset k r) (hm₂ : m₂ ∈ Nset k r) (hγ : γ = n₁ * g₀ * n₂)
@@ -774,9 +767,9 @@ theorem normalFormStabilizerMeasure_scalar_le {j : ℕ} (hj : j ≤ r) (z z' : F
     (h : IsNormalFormStabilizerMeasure k r hj z z' γ s μ) (h' : IsNormalFormStabilizerMeasure k r hj z z' γ s' μ) : ENNReal.ofReal s ≤ ENNReal.ofReal s' := by
   obtain ⟨hz, hz', hT, n₁, hn₁, n₂, hn₂, g₀, β, c, hg₀, hγ, hμ⟩ := h
   obtain ⟨-, -, -, m₁, hm₁, m₂, hm₂, g₀', β', c', hg₀', hγ', hμ'⟩ := h'
-  obtain ⟨hR, hcl⟩ := GlobalTheory.T.commonStabilizerSet_eq_range_normalForm k r j hj z z' g₀ β c hz hz' hT hg₀
-  obtain ⟨hR', hcl'⟩ := GlobalTheory.T.commonStabilizerSet_eq_range_normalForm k r j hj z z' g₀' β' c' hz hz' hT hg₀'
-  obtain ⟨hH, -⟩ := GlobalTheory.T.stabilizer_haar_unimodular_normal k r j hj z z' g₀ β c hz hz' hT hg₀
+  obtain ⟨hR, hcl⟩ := _root_.GlobalTheory.Amp.rset_normal0 k r j hj z z' g₀ β c hz hz' hT hg₀
+  obtain ⟨hR', hcl'⟩ := _root_.GlobalTheory.Amp.rset_normal0 k r j hj z z' g₀' β' c' hz hz' hT hg₀'
+  obtain ⟨hH, -⟩ := _root_.GlobalTheory.Amp.StabHaar.lebesgue_haar_unimodular_stabilizer k r j hj z z' g₀ β c hz hz' hT hg₀
   obtain ⟨-, hNmul, hNinv⟩ := nSubgroup k r
   have hv₂ : IsUnit m₂.det := unit_of_GG hm₂.1
   have hn : m₂ * n₂⁻¹ ∈ Nset k r := hNmul _ hm₂ _ (hNinv _ hn₂)

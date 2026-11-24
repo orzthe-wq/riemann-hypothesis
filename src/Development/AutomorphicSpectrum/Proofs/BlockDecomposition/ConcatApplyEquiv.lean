@@ -113,11 +113,6 @@ theorem concat_apply_equiv {s : ℕ} (c : Fin s → ℕ) (x : ∀ a, Fin (c a) �
   change (fun q : (b : Fin s) × Fin (c b) => x q.1 q.2) (finSigmaFinEquiv.symm (finSigmaFinEquiv p)) = _
   rw [Equiv.symm_apply_apply]
 
-theorem sum_concat {s : ℕ} (c : Fin s → ℕ) (x : ∀ a, Fin (c a) → IrrGL (k := k)) :
-    ∑ i, (concat c x i).1 = ∑ a, ∑ j, (x a j).1 := by
-  rw [← Equiv.sum_comp finSigmaFinEquiv, Fintype.sum_sigma]
-  simp only [concat_apply_equiv]
-
 theorem sum_dec (Δ : Segment k) : ∑ a, (dec Δ a).1 = Δ.deg := by
   rw [← Segment.sum_term_fst]
   exact Equiv.sum_comp Fin.revPerm (fun a => (Δ.term a).1)

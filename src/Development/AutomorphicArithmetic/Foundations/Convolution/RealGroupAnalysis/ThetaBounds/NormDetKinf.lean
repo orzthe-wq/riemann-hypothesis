@@ -67,9 +67,7 @@ private theorem norm_det_kinf {E : Type} [Field E] [NumberField E] [_root_.Numbe
   change ‖k.1.det w‖ = 1
   nlinarith
 
-private theorem dM_one' {F : Type} [Field F] [NumberField F] : dM (1 : (A F)ˣ) = 1 := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [dM]
+private alias dM_one' := _root_.UpperTheory.ConvolutionTheory.R2.dM_one
 
 theorem UpperTheory.ConvolutionTheory.R2.Ff.kFin :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), KFin W M π := by

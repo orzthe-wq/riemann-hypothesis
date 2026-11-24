@@ -197,7 +197,7 @@ private theorem cf_alt_mul (f : FR n) (x y : Wt n) :
 private theorem alt_supp (x y : Wt n) (h : cf (alt x) y ≠ 0) :
     ∃ w : Equiv.Perm (Fin n), y = x ∘ w := by
   by_contra hc
-  push_neg at hc
+  push Not at hc
   apply h
   rw [cf_alt]
   refine Finset.sum_eq_zero fun w _ => ?_
@@ -270,7 +270,7 @@ theorem UpperTheory.RealTr.cfBasic :
     fun x hx => ⟨alt_top x hx, fun y hy hne => alt_other x y hx hy hne⟩, alt_zero⟩
   · intro f g x h
     by_contra hc
-    push_neg at hc
+    push Not at hc
     apply h
     rw [cf_mul]
     refine Finset.sum_eq_zero fun y _ => ?_

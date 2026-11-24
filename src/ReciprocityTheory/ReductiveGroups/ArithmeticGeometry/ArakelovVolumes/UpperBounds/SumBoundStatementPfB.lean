@@ -1,51 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.SumBoundStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.SumBoundStatementPfA
 
 @[expose] public section
 
@@ -63,18 +20,12 @@ theorem sumBdJf_eq_diag : Jf p q = diagonal (Sum.elim (fun _ => (1 : ℂ)) (fun 
   rcases i with i | i <;> rcases j with j | j <;> simp [Jf, Matrix.diagonal_apply, Matrix.one_apply] <;>
     split_ifs <;> simp
 
-private theorem Jf_mul_self_eq_one : Jf p q * Jf p q = 1 := by
-  rw [sumBdJf_eq_diag, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext i
-  rcases i with i | i <;> simp
-
 private theorem inv_eq_lemma_2 {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq g) :
     g⁻¹ = Jf p q * gᴴ * Jf p q := by
   have hg : gᴴ * Jf p q * g = Jf p q := h
   apply Matrix.inv_eq_left_inv
   calc Jf p q * gᴴ * Jf p q * g = Jf p q * (gᴴ * Jf p q * g) := by simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [hg, Jf_mul_self_eq_one]
+    _ = 1 := by rw [hg, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.sumBdJf_mul_Jf]
 
 theorem sumBd_inv_entry {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq g)
     (i j : Fin p ⊕ Fin q) : ‖g⁻¹ i j - (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j‖ =
@@ -137,20 +88,17 @@ theorem sumBd_sep {f : ℕ} (Γ : Subgroup (Fin f → GL (Fin p ⊕ Fin q) ℂ))
   obtain ⟨n, hn⟩ := hev.exists
   exact hγ1 n (congrArg Subtype.val hn)
 
-theorem sumBd_inv_eq {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq g) :
-    g⁻¹ = Jf p q * gᴴ * Jf p q := inv_eq_lemma_2 h
-
 theorem sumBd_mul_inv {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq g) : g * g⁻¹ = 1 := by
   have hg : gᴴ * Jf p q * g = Jf p q := h
   have hl : g⁻¹ * g = 1 := by
-    rw [sumBd_inv_eq h]
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.inv_eq_lemma_2 h]
     calc Jf p q * gᴴ * Jf p q * g = Jf p q * (gᴴ * Jf p q * g) := by simp only [Matrix.mul_assoc]
-      _ = 1 := by rw [hg, Jf_mul_self_eq_one]
+      _ = 1 := by rw [hg, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.sumBdJf_mul_Jf]
   exact Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse hl)
 
 theorem sumBd_inv_entry' {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (h : IsUpq g)
     (i j : Fin p ⊕ Fin q) : ‖g⁻¹ i j‖ = ‖g j i‖ := by
-  rw [sumBd_inv_eq h, sumBdJf_eq_diag]
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.inv_eq_lemma_2 h, sumBdJf_eq_diag]
   simp only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]
   rcases i with i | i <;> rcases j with j | j <;> simp
 

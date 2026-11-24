@@ -82,7 +82,7 @@ theorem modEq_of_cong {v' : HeightOneSpectrum (𝓞 L)} (h' : IsPlaceOver A v') 
     rw [← h']
     have e : algebraMap L Ω (((ζ ^ (Q ^ b) - ζ ^ (Q ^ a) : 𝓞 L)) : L) =
         (algebraMap L Ω (ζ : L)) ^ (Q ^ b) - (algebraMap L Ω (ζ : L)) ^ (Q ^ a) := by
-      push_cast; simp [map_sub, map_pow]
+      push_cast; simp
     rw [e]; exact hc ζ
   have h0 := (Ideal.Quotient.eq_zero_iff_mem).mpr hmem
   rw [map_sub, map_pow, map_pow, hζ, sub_eq_zero] at h0

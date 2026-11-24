@@ -156,11 +156,6 @@ section Conj
 variable {E : Type} [Field E] [NumberField E] (T : PT E) {ι : Type} [Fintype ι]
   (e : ι ≃ Idx T.dim)
 
-theorem Hf_self' (v : EuclideanSpace ℂ ι) : Hf v v = ((‖v‖ ^ 2 : ℝ) : ℂ) := by
-  rw [EuclideanSpace.norm_sq_eq, Hf]
-  push_cast
-  exact Finset.sum_congr rfl fun i _ => mul_conj' _
-
 def cj : Vsp T.dim ≃ₗ[ℝ] EuclideanSpace ℂ ι where
   toFun y := WithLp.toLp 2 fun i => conj (y (e i))
   invFun z := WithLp.toLp 2 fun j => conj (z (e.symm j))
@@ -183,7 +178,7 @@ def cjFn (w : Fin 1 → Vsp T.dim) : ℂ := conj (F (cj T e (w 0)))
 theorem pointwiseNorm_conjugateFunctionOnConjugateSpace (y : Vsp T.dim) :
     T.ptN2 1 (cjFn T e F) (fun _ => y) = Y.ptN2 1 F (cj T e y) := by
   have h := congrArg Complex.re (Hf_cj T e y y)
-  rw [Hf_self', ofReal_re, conj_re] at h
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.DimC.Hf_self, ofReal_re, conj_re] at h
   simp only [PT.ptN2, GT.ptN2, cjFn, HC, Fin.sum_univ_one, Complex.norm_conj, h]
 
 variable {T e Y F} (hL : ∀ y, y ∈ T.L ↔ cj T e y ∈ lat Y.b)
@@ -359,7 +354,7 @@ theorem pointwiseNorm_canonicalTheta_eq_sq_thetaConstant (hs : IsSympl X bas) {x
   have h := congrArg norm (canTh_translate (tauMat_isSymm idx hs hx) (tauMat_im_posDef idx hs hx)
     a b a' b' hz 0)
   have h1 := Hf_eq_normCoord idx hs ho (scaleUp X idx z) (scaleUp X idx z)
-  rw [normCoord_scaleUp, Hf_self'] at h1
+  rw [normCoord_scaleUp, _root_.ReciprocityTheory.ChartRestriction.G.I2.DimC.Hf_self] at h1
   rw [← h1, norm_mul, norm_mul, norm_translConst, one_mul, zero_add, Complex.norm_exp] at h
   have h2 : canTh (tauMat X bas idx x) (a + a') (b + b') 0 =
       thetaChar (tauMat X bas idx x) (fun i => ((a + a') i : ℂ)) (fun i => ((b + b') i : ℂ)) 0 := by

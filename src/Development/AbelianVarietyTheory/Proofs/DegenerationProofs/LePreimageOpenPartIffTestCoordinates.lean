@@ -135,7 +135,6 @@ theorem le_preimage_G_iff_test : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Alge
     (c.at_ _).trans (RatModel.val_algebraMap hg a)
   have hgy : gPt p ≫ y = (spMap (algebraMap (FractionRing t.u.V) (PadicAlgCl p)) ≫ c.yK) ≫ U₀.ι := by
     refine (congrArg (gPt p ≫ ·) c.fac.symm).trans ?_
-    beta_reduce
     rw [Category.assoc, c.yK_fac, ← Category.assoc, ← Category.assoc, ← Spec.map_comp]
     congr 1
     exact Spec.map_comp (CommRingCat.ofHom (algebraMap t.u.V (FractionRing t.u.V)))

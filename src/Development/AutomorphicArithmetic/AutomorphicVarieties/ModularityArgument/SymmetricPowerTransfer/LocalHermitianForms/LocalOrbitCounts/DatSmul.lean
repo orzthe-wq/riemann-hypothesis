@@ -53,7 +53,7 @@ theorem UpperTheory.V.Z.Sym.Loc.datSmul : UpperTheory.V.Z.Sym.Loc.DatSmul := by
     ext <;> simp [sigL]
   have hst : ∀ z : EL Δ τ, star ((t : K) • z) = (t : K) • star z := by
     intro z
-    ext <;> simp <;> ring
+    ext <;> simp
   refine ⟨h.reg, h.c_ne, h.d_norm, ?_, ?_, ?_⟩
   · rw [Algebra.smul_def]
     exact (t.isUnit.map (algebraMap K (EL Δ τ))).mul h.m_unit

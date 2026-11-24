@@ -150,8 +150,7 @@ theorem integral_sq_eq {V : Type} [TopologicalSpace V] [MeasurableSpace V] [Open
   refine lintegral_congr fun x => ?_
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
 
-theorem opensMeasurable (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
-    OpensMeasurableSpace (κ → mixedEmbedding.mixedSpace F) := opensMeasurableSpace_pi_mixedSpace F κ
+alias opensMeasurable := _root_.GlobalTheory.ArchimedeanUnitaryL2.opensMeasurableSpace_pi_mixedSpace
 
 theorem snd_eq_zero {F : Type} [Field F] [NumberField F] {κ : Type} {z : κ → AF F} (hz : At (evI F) z) (i : κ) :
     (z i).2 = 0 := by

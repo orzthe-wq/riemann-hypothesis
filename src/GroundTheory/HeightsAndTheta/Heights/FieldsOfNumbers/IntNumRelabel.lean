@@ -98,7 +98,7 @@ theorem eventualValue_precomp (g : (K₁ → ℤ) → ℤ) :
 
 theorem mixedDiff_precomp {n : ℕ} (bs : Fin n → K₂ → ℤ) (h : (K₁ → ℤ) → ℤ) :
     mixedDiff bs (fun m => h (m ∘ e)) = fun m => mixedDiff (fun i => bs i ∘ e) h (m ∘ e) := by
-  apply _root_.GroundTheory.Heights₂.Heights.FieldNumbers.RenameIntNum.mixedDiff_comp <;> assumption
+  apply _root_.GroundTheory.Heights₂.Heights.FieldNumbers.RenameIntNum.mixedDiff_comp
 
 end Eventual
 

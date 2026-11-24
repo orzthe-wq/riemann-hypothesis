@@ -72,7 +72,7 @@ theorem exists_equiv_tensor {α : Type} [Fintype α] [DecidableEq α] (X : α �
         exact hv ((Module.forall_dual_apply_eq_zero_iff ℂ v).1 h)
       refine ⟨v, (f v)⁻¹ • f, fun _ => ⟨by simp [hf], fun w => ?_⟩⟩
       obtain ⟨a, rfl⟩ := hs w
-      simp [hf, mul_comm]
+      simp [hf]
   choose x c hc using hx'
   let T : X i₀ →ₗ[ℂ] ⨂[ℂ] i, X i := (PiTensorProduct.tprod ℂ).toLinearMap x i₀
   have hT : ∀ v, T v = PiTensorProduct.tprod ℂ (Function.update x i₀ v) := fun v => rfl

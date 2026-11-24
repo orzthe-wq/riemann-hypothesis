@@ -192,7 +192,7 @@ private theorem w1_mem_UH_Hpk_of_ne_zero {k r : ℕ} (l : Fin r) (x : ℂ) (hx :
   show (Q.w1 k r l x)ᴴ * Hpk k r * Q.w1 k r l x = Hpk k r
   ext p q
   simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, hcol, apply_ite star, star_zero, ite_mul, mul_ite,
-    zero_mul, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    zero_mul, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   by_cases hp1 : p = eI k r l <;> by_cases hp2 : p = esI k r l <;>
     by_cases hq1 : q = eI k r l <;> by_cases hq2 : q = esI k r l <;>
     first

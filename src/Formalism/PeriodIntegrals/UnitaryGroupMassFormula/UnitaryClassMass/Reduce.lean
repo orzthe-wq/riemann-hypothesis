@@ -78,12 +78,10 @@ private lemma gmap_mul_lemma (a b : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) :
     gmap (a * b) L = gmap a (gmap b L) := by
   first
   | (simp only [Formalism.HermitianLatticesTheory.gmap]; rw [← Submodule.map_comp]; rfl)
-  | (ext x; simp [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map])
 
 private lemma gmap_one_unitary_class_mass (L : Submodule (𝓞 K) V) : gmap (1 : V ≃ₗ[K] V) L = L := by
   first
   | (simp only [Formalism.HermitianLatticesTheory.gmap]; exact Submodule.map_id L)
-  | (ext x; simp [Formalism.HermitianLatticesTheory.gmap])
 
 private lemma gmap_inv_gmap_unitary_class_mass (g : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V) : gmap g⁻¹ (gmap g L) = L := by
   rw [← gmap_mul_lemma, inv_mul_cancel, gmap_one_unitary_class_mass]

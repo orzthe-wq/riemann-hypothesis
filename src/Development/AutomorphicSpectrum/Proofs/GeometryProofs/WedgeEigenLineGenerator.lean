@@ -1,22 +1,21 @@
 module
 
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PullbackFramesComplexPoint
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsValFam
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentPointCmEigenFrameStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentSpecializationTangentCombStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentPointCmEigenFrame
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentSpecializationTangentComb
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundOfFlag
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameFieldExtension
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundleStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenvectorLinearCombinationStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiChangeOfBasisDetStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiNeZeroOfLinIndepStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombFieldExtension
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombIdentityMatrixStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombMatrixMulStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenvectorLinearCombination
+public import Mathlib.LinearAlgebra.ExteriorPower.Basic
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiChangeOfBasisDet
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiNeZeroOfLinIndep
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombIdentityMatrix
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombMatrixMul
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalFractionField
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemSpanOfIotaMultiProportionalStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemSpanOfIotaMultiProportional
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEqSpanOfIsFrameAt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -31,13 +30,11 @@ import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
+import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -45,8 +42,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -59,7 +54,51 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLineGenOn
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PullbackFramesComplexPoint
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundle
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombFieldExtension, Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEigenLineGenerator
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombFieldExtension =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombFieldExtension", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsLineGenOn\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat
+
+namespace GlobalTheory.CompanionTheory.Ar.CombBase
+
+theorem comp_list_prod {S : Scheme.{0}} {G A B : Over S} [GrpObj G] (g : A ⟶ B) (l : List (B ⟶ G)) :
+    g ≫ l.prod = (l.map (g ≫ ·)).prod := by
+  induction l with
+  | nil => simp [comp_one]
+  | cons a l ih => simp only [List.prod_cons, List.map_cons, comp_mul, ih]
+
+theorem isComb_base : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (F : Type) [Field F] (x : Sp F ⟶ S) (F' : Type) [Field F'] (f : F →+* F') (x' : Sp F' ⟶ S), spMap f ≫ x = x' → ∀ (n : ℕ) (v : Fin n → (epsAt x ⟶ G)) (cf : Fin n → F) (w : epsAt x ⟶ G) (v' : Fin n → (epsAt x' ⟶ G)) (w' : epsAt x' ⟶ G), (∀ i, (v' i).left = spMap (dualMap f) ≫ (v i).left) → w'.left = spMap (dualMap f) ≫ w.left → IsComb cf v w → IsComb (fun i => f (cf i)) v' w' := by
+  rintro S G _ _ F _ x F' _ f x' hx n v cf w v' w' hv hw ⟨u, hu, e⟩
+  refine ⟨fun i => LieTangent.epsBase f hx ≫ u i, fun i => ?_, ?_⟩
+  · change spMap (dualMap f) ≫ (u i).left = _
+    rw [hu i, ← Category.assoc, LieTangent.spec_dual_eps, Category.assoc, hv i]
+  · rw [(LieTangent.left_eq_iff f hx w' w).1 hw, e, comp_list_prod, List.map_ofFn]
+    rfl
+
+end GlobalTheory.CompanionTheory.Ar.CombBase
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombFieldExtension =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEigenLineGenerator =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEigenLineGenerator", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsValFam\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentPointCmEigenFrame\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentSpecializationTangentComb\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundOfFlag\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenFrameFieldExtension\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenvectorLinearCombination\npublic import Mathlib.LinearAlgebra.ExteriorPower.Basic\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiChangeOfBasisDet\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiNeZeroOfLinIndep\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombFieldExtension\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombIdentityMatrix\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombMatrixMul\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalFractionField\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemSpanOfIotaMultiProportional\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEqSpanOfIsFrameAt\nimport Development.AutomorphicSpectrum.Proofs.GeometryProofs.PullbackFramesComplexPoint\nimport Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsFlatAnIffIsConstMul\nimport Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeVectorBundle\nimport Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
@@ -78,16 +117,16 @@ theorem comb_mul {m n k : ℕ} {v : Fin n → (epsAt x ⟶ G)} {u : Fin m → (e
     {A : Matrix (Fin k) (Fin m) F} {C : Matrix (Fin m) (Fin n) F}
     (hv : ∀ i, IsTanAt G x (v i)) (hC : ∀ i, IsComb (C i) v (u i)) (hA : ∀ i, IsComb (A i) u (w i)) :
     ∀ i, IsComb ((A * C) i) v (w i) :=
-  GlobalTheory.T.is_comb_matrix_mul S G F x m n k v u w A C hv hC hA
+  _root_.GlobalTheory.CompanionTheory.Ar.CombMul.isComb_mul S G F x m n k v u w A C hv hC hA
 
 theorem comb_self {n : ℕ} {v : Fin n → (epsAt x ⟶ G)} (hv : ∀ i, IsTanAt G x (v i)) :
     ∀ i, IsComb ((1 : Matrix (Fin n) (Fin n) F) i) v (v i) :=
-  GlobalTheory.T.is_comb_identity_matrix S G F x n v hv
+  _root_.GlobalTheory.CompanionTheory.Ar.Flat.isComb_unit_row S G F x n v hv
 
 theorem comb_eig {P : Type} [CommRing P] (act : OAct P G) (σ : P →+* F) {n : ℕ} {v : Fin n → (epsAt x ⟶ G)}
     {cf : Fin n → F} {w : epsAt x ⟶ G} (hv : ∀ i, IsEigVec act x σ (v i)) (h : IsComb cf v w) :
     IsEigVec act x σ w :=
-  GlobalTheory.T.eigenvector_linear_combination S G F x P act σ n v cf w hv h
+  _root_.GlobalTheory.CompanionTheory.Ar.CombEig.isEigVec_comb S G F x P act σ n v cf w hv h
 
 theorem comb_base {F' : Type} [Field F'] (f : F →+* F') {x' : Sp F' ⟶ S} (hx : spMap f ≫ x = x') {n : ℕ}
     {v : Fin n → (epsAt x ⟶ G)} {cf : Fin n → F} {w : epsAt x ⟶ G} {v' : Fin n → (epsAt x' ⟶ G)}
@@ -118,16 +157,16 @@ theorem wedge_span {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {n : 
     (he : LinearIndependent Ω e) (ht : t ≠ 0)
     (h : exteriorPower.ιMulti Ω n b = t • exteriorPower.ιMulti Ω n e) (i : Fin n) :
     b i ∈ Submodule.span Ω (Set.range e) :=
-  GlobalTheory.T.mem_span_of_iota_multi_proportional Ω V n b e t he ht h i
+  _root_.GlobalTheory.CompanionTheory.WedgeSpan.span_of_wedge_proportional Ω V n b e t he ht h i
 
 theorem wedge_matrix {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {n : ℕ} (e : Fin n → V)
     (P : Matrix (Fin n) (Fin n) Ω) :
     exteriorPower.ιMulti Ω n (fun i => ∑ j, P i j • e j) = P.det • exteriorPower.ιMulti Ω n e :=
-  GlobalTheory.T.iota_multi_change_of_basis_det Ω V n e P
+  _root_.GlobalTheory.CompanionTheory.Ar.Lat.wedge_matrix_mul_family Ω V n e P
 
 theorem wedge_ne_zero {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {n : ℕ} {e : Fin n → V}
     (he : LinearIndependent Ω e) : exteriorPower.ιMulti Ω n e ≠ 0 :=
-  GlobalTheory.T.iota_multi_ne_zero_of_lin_indep Ω V n e he
+  _root_.GlobalTheory.CompanionTheory.Exterior.ιMulti_ne_zero_of_linearIndependent Ω V n e he
 
 end Lemmas
 
@@ -139,7 +178,7 @@ theorem valFam_comb (Z : CptOver Y U) {F : Type} [Field F] {y : Sp F ⟶ Xo.XF c
     (hg : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j))
     (h : IsValFam Z y b v) (hs : ∀ j, ValAt (Z.ξ₀ ≫ Y.j) (y ≫ Y.j) (s j) (r j)) (hw : IsComb r v w) :
     ∃ w', Z.M.ValAt (y ≫ Y.j) (∑ j, s j • b j) w' ∧ SameVec Y y w w' :=
-  GlobalTheory.T.component_specialization_tangent_comb E H D l Xo c O β Y U Z F y n b v s r w hg h hs hw
+  _root_.GlobalTheory.CompanionTheory.Ar.Flat.Rep.valFam_sum_comb E H D l Xo c O β Y U Z F y n b v s r w hg h hs hw
 
 theorem valFam_base (Z : CptOver Y U) {F F' : Type} [Field F] [Field F'] (f : F →+* F') {y : Sp F ⟶ Xo.XF c}
     {y' : Sp F' ⟶ Xo.XF c} (hy : y' = spMap f ≫ y) {n : ℕ} {b : Fin n → Z.V} {v : Vecs y n} {v' : Vecs y' n}
@@ -172,7 +211,7 @@ theorem exists_valFam (Z : CptOver Y U) (τ : E →+* ℂ)
     (hy : y ≫ pullback.snd _ _ = spMap βF) (hU : Set.range y ⊆ U) (h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j))
     (σ : E →+* ℂ) {n : ℕ} (b : Fin n → Z.V) (hb : (Z.eig σ).IsFrameAt b ⟨_, h⟩) :
     ∃ v : Vecs y n, IsValFam Z y b v ∧ IsEigFrame Xo.univ.t.act (under y) (βF.comp (tauIn c σ)) v :=
-  GlobalTheory.T.component_point_cm_eigen_frame E H D l Xo c O β Y U Z τ hβ hτ F βF y hy hU h σ n b hb
+  _root_.GlobalTheory.CompanionTheory.Ar.Flat.Rep.valFam_eigFrame E H D l Xo c O β Y U Z τ hβ hτ F βF y hy hU h σ n b hb
 
 end Val2
 
@@ -337,7 +376,7 @@ theorem exists_chart
       ValAt (Z.ξ₀ ≫ Y.j) (y ≫ Y.j) (α₀ / κ₀) r₀ ∧ r₀ ≠ 0 := by
   have h := spec_pt Z hU
   have hx := pt_mem_genFib Z y h
-  obtain ⟨hvb₁, hvb₂, -, -⟩ := GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c O β Y U Z τ hβ hτ
+  obtain ⟨hvb₁, hvb₂, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isVBOn_eig_genFib E H D l Xo c O β Y U Z τ hβ hτ
   obtain ⟨W₁, hW₁, c₁, -, hc₁⟩ := hvb₁ _ hx
   obtain ⟨W₂, hW₂, c₂, -, hc₂⟩ := hvb₂ _ hx
   have f₁ := hc₁ _ hx hW₁
@@ -577,3 +616,7 @@ theorem exists_frameFn_of_gen : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   exact ⟨Rep.repFn Z τ a b, Rep.isLineFn_repFn hβ hτ hg, Rep.represents_repFn hβ hτ hg⟩
 
 end GlobalTheory.CompanionTheory.Ar.Flat
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.WedgeEigenLineGenerator =====

@@ -295,7 +295,7 @@ theorem lie_derivative_eisenstein_integral {χ : HChar F} {c : HeightOneSpectrum
     rw [← hy, UpperTheory.V.TR.chart_val, eis_decomp χ c g hC' y i1x i2x, hyd, hyi, hy, Dc, Ac]
   have hsum : HasFDerivAt (fun x => Dc g x * I1 x + C * Ac g x * Dc g x * I2 (invL x)) _ one :=
     L1diff.hasFDerivAt.add L2diff.hasFDerivAt
-  rw [UpperTheory.V.TR.lieD, hev.fderiv_eq, hsum.fderiv, ContinuousLinearMap.add_apply, ← L1diff.hasFDerivAt.fderiv,
+  rw [UpperTheory.V.TR.lieD, hev.fderiv_eq, hsum.fderiv, add_apply, ← L1diff.hasFDerivAt.fderiv,
     ← L2diff.hasFDerivAt.fderiv, L1eq, L2eq]
   congr 1
   · congr 1

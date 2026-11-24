@@ -100,9 +100,6 @@ theorem derivation_det {K R : Type} [CommRing K] [CommRing R] [Algebra K R]
   rw [derivation_det_rows]
   exact Finset.sum_congr rfl fun i _ => det_updateRow_eq_sum_adjugate M i _
 
-theorem main : ∀ {K R : Type} [CommRing K] [CommRing R] [Algebra K R] (δ : Derivation K R R)
-    {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι R),
-    δ M.det = ∑ i, ∑ j, M.adjugate j i * δ (M i j) :=
-  fun δ _ _ _ M => derivation_det δ M
+alias main := _root_.GlobalTheory.DetDeriv.derivation_det
 
 end GlobalTheory.DetDeriv

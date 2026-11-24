@@ -61,57 +61,6 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 open scoped TensorProduct
 
-theorem eig_generic : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (E : Type) [AddCommGroup E] [Module Ω E] (F : Type) [Field F] [NumberField F] (ρ : NumberField.RingOfIntegers F →+* Module.End Ω E) (I : Type) [Fintype I] [DecidableEq I] (σ : I → (NumberField.RingOfIntegers F →+* Ω)), Function.Injective σ → Fintype.card I = Module.finrank ℚ F → DirectSum.IsInternal fun s => eigSp ρ (σ s) := by
-  intro Ω _ _ E _ _ F _ _ ρ I _ _ σ hσ hcard
-  classical
-  let τ : I → (F →+* Ω) := fun s => IsFractionRing.lift (EigSplit.injective_of_charZero F (σ s))
-  have hτ : ∀ s (a : 𝓞 F), τ s (a : F) = σ s a := fun s a =>
-    IsFractionRing.lift_algebraMap (EigSplit.injective_of_charZero F (σ s)) a
-  have hτinj : Function.Injective τ := by
-    intro s t hst'
-    apply hσ
-    ext a
-    rw [← hτ, ← hτ, hst']
-  let j : (F →+* Ω) → (F →ₐ[ℚ] AlgebraicClosure Ω) := fun φ =>
-    ((algebraMap Ω (AlgebraicClosure Ω)).comp φ).toRatAlgHom
-  have hj : Function.Injective j := by
-    intro φ ψ hφψ
-    ext x
-    apply (algebraMap Ω (AlgebraicClosure Ω)).injective
-    have := DFunLike.congr_fun hφψ x
-    simpa [j] using this
-  haveI : Finite (F →+* Ω) := Finite.of_injective j hj
-  letI : Fintype (F →+* Ω) := Fintype.ofFinite _
-  have hle : Fintype.card (F →+* Ω) ≤ Module.finrank ℚ F := by
-    rw [← AlgHom.card ℚ F (AlgebraicClosure Ω)]
-    exact Fintype.card_le_of_injective j hj
-  have hge : Module.finrank ℚ F ≤ Fintype.card (F →+* Ω) := hcard ▸ Fintype.card_le_of_injective τ hτinj
-  have hc : Fintype.card (F →+* Ω) = Module.finrank ℚ F := le_antisymm hle hge
-  have hbij : Function.Bijective τ :=
-    (Fintype.bijective_iff_injective_and_card τ).2 ⟨hτinj, hcard.trans hc.symm⟩
-  have hsum : ∑ s, HT.eigProj ρ (τ s) = 1 := by
-    rw [← HT.sum_eigProj_eq_one Ω E F ρ hc]
-    exact hbij.sum_comp fun φ => HT.eigProj ρ φ
-  have heig : ∀ s, eigSp ρ (σ s) = HT.eigSp ρ (τ s) := by
-    intro s
-    ext v
-    simp [GlobalTheory.CompanionTheory.Ar.eigSp, HT.eigSp, Submodule.mem_iInf, sub_eq_zero, hτ]
-  have spec := fun s => HT.ProjEig.eigProj_spec Ω E F ρ (τ s)
-  simp only [heig]
-  refine DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top (fun s => ?_) ?_
-  · rw [Submodule.disjoint_def]
-    intro x hx hx'
-    have h0 : ⨆ t, ⨆ (_ : t ≠ s), HT.eigSp ρ (τ t) ≤ LinearMap.ker (HT.eigProj ρ (τ s)) :=
-      iSup₂_le fun t ht y hy => (spec s).2.2.1 (τ t) (hτinj.ne ht) y hy
-    have := h0 hx'
-    rwa [LinearMap.mem_ker, (spec s).2.1 x hx] at this
-  · rw [eq_top_iff]
-    intro x _
-    have h : x = ∑ s, HT.eigProj ρ (τ s) x := by
-      rw [← LinearMap.sum_apply, hsum, Module.End.one_apply]
-    rw [h]
-    exact Submodule.sum_mem _ fun s _ => Submodule.mem_iSup_of_mem s ((spec s).1 x)
-
 theorem isIntegral_tensor {O Ω₀ F : Type} [CommRing O] [Field Ω₀] [CharZero Ω₀] [Field F] [Algebra O Ω₀]
     [Algebra O F] (hF : ∀ u : F, IsAlgebraic ℤ u) : Algebra.IsIntegral Ω₀ (Ω₀ ⊗[O] F) := by
   have h1 : ∀ u : F, _root_.IsIntegral Ω₀ ((1 : Ω₀) ⊗ₜ[O] u) := by
@@ -240,7 +189,7 @@ theorem two_mul_finrank : 2 * Module.finrank Ω 𝔐.Li = Module.finrank ℤ D.L
   letI : Fintype (CMType H) := Fintype.ofFinite _
   have hcard : Fintype.card (CMType H ⊕ CMType H) = Module.finrank ℚ E := by
     rw [Fintype.card_of_bijective (HodgeBasic.labelHom_bijective H), Embeddings.card]
-  have hint : DirectSum.IsInternal 𝔐.Vgen := eig_generic Ω 𝔐.Li E 𝔐.ρ (CMType H ⊕ CMType H) 𝔐.emb hinj hcard
+  have hint : DirectSum.IsInternal 𝔐.Vgen := _root_.GlobalTheory.CompanionTheory.Ar.isInternal_eigSp Ω 𝔐.Li E 𝔐.ρ (CMType H ⊕ CMType H) 𝔐.emb hinj hcard
   haveI := fun s => (finrank_Vgen 𝔐 s).1
   have h1 : Module.finrank Ω 𝔐.Li = ∑ s, labelRk D s := by
     rw [← (LinearEquiv.ofBijective (DirectSum.coeLinearMap 𝔐.Vgen) hint).finrank_eq, Module.finrank_directSum]

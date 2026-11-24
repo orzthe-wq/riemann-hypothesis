@@ -51,4 +51,4 @@ open GlobalTheory.KeyKa
 
 
 theorem _root_.GlobalTheory.T.exists_koszulTorsion_transversal_split_zeros : Out.Laws → ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (x : KeyIn R) (n l d : ℕ) (s : Fin x.P.g → RR x n) (b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι), 1 ≤ n → x.P.g * n < l → (∀ j ≤ x.P.g, IsBasis x (b j)) → EtZ x s z ch → d = x.P.g.factorial * n ^ x.P.g ∧ ∃ t : Rˣ, KosVal x l s z ch b t := by
-  first | exact @GlobalTheory.KeyKa.KoszulEx.exists_kosVal | exact GlobalTheory.KeyKa.KoszulEx.exists_kosVal | (intros; apply GlobalTheory.KeyKa.KoszulEx.exists_kosVal <;> assumption)
+  first | exact @GlobalTheory.KeyKa.KoszulEx.exists_kosVal

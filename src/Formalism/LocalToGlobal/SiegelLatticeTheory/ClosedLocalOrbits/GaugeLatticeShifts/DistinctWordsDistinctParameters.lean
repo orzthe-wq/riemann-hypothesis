@@ -2,54 +2,11 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.IdBlocks
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.Vanish
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Rat
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Separation.CompletelyRegular
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -123,7 +80,7 @@ theorem inner_tens_update (z x : ∀ i, V i) (i : ι) (p : V i) :
   · apply Finset.prod_congr rfl
     intro j hj
     have hji : j ≠ i := by simpa using hj
-    simp [Function.update_apply, hji]
+    simp [hji]
 
 
 include hin hspan in
@@ -206,12 +163,12 @@ theorem commutant_scalar [FiniteDimensional ℂ W] [∀ i, FiniteDimensional ℂ
         funext k
         by_cases hk : k = j
         · subst hk; simp [fill]
-        · simp [fill, Function.update_apply, hk]
+        · simp [fill, hk]
       have hx : Function.update (fill e x t) j (e j) = fill e x (insert j t) := by
         funext k
         by_cases hk : k = j
         · subst hk; simp [fill]
-        · simp [fill, Function.update_apply, hk]
+        · simp [fill, hk]
       have hzj : fill e z t j = z j := by simp [fill, hj]
       have hxj : fill e x t j = x j := by simp [fill, hj]
       rw [hz, hx, hzj, hxj]
@@ -344,10 +301,8 @@ include hon in
 theorem smat_fix (G : Matrix (Fin k) (Fin k) ℂ) (x : Fin n → ℂ) (hx : ∀ a, star (wf a) ⬝ᵥ (J *ᵥ x) = 0) :
     smat J wf G *ᵥ x = x := by
   have h0 : (Wm wf)ᴴ *ᵥ (J *ᵥ x) = 0 := by
-    funext a
-    simp only [Pi.zero_apply]
-    rw [← hx a]
-    simp [Matrix.mulVec, dotProduct, Wm, Matrix.conjTranspose_apply]
+    ext a
+    simpa [Matrix.mulVec, dotProduct, Wm, Matrix.conjTranspose_apply] using hx a
   simp only [smat, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, h0, Matrix.mulVec_zero, add_zero]
 
 include hon in
@@ -361,7 +316,7 @@ theorem smat_mat (G : Matrix (Fin k) (Fin k) ℂ) (a b : Fin k) :
   rw [← Matrix.mulVec_mulVec] at e
   rw [← e]
   have h2 : (Wm wf)ᴴ * (J * smat J wf G) * Wm wf = G := by
-    simp only [smat, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, hO1, hO2]
+    simp only [smat, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_assoc, hO1, hO2]
     abel
   rw [h2]
 
@@ -373,10 +328,9 @@ theorem one_mat (a b : Fin k) : star (wf a) ⬝ᵥ (J *ᵥ ((1 : Matrix (Fin n) 
 theorem smat_inv (hJ2 : J * J = 1) (hJh : Jᴴ = J) (G : Matrix (Fin k) (Fin k) ℂ) (hG : Gᴴ * G = 1)
     (hon : ∀ a b, star (wf a) ⬝ᵥ (J *ᵥ wf b) = if a = b then 1 else 0) :
     (J * (smat J wf G)ᴴ * J) * smat J wf G = 1 := by
-  have h := smat_unitary J wf hon hJh G hG
   calc (J * (smat J wf G)ᴴ * J) * smat J wf G = J * ((smat J wf G)ᴴ * J * smat J wf G) := by
         simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [h, hJ2]
+    _ = 1 := by rw [smat_unitary J wf hon hJh G hG, hJ2]
 
 end Formalism.L2.SG.Pf.IdBlocks2.UkEmb
 
@@ -453,26 +407,21 @@ theorem jm_allPos' : Formalism.REAL.Jm (allPos k) = 1 := by
 
 theorem kset_uj {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Formalism.REAL.Kset (allPos k)) : g ∈ UJset (allPos k) := by
   show Formalism.REAL.inUJ (allPos k) g
-  unfold Formalism.REAL.inUJ
-  rw [jm_allPos', Matrix.mul_one]
-  have h := Matrix.mem_unitaryGroup_iff'.mp hg.1
-  rwa [Matrix.star_eq_conjTranspose] at h
+  simpa [Formalism.REAL.inUJ, jm_allPos', Matrix.star_eq_conjTranspose] using
+    (Matrix.mem_unitaryGroup_iff'.mp hg.1)
 
 theorem kset_star {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Formalism.REAL.Kset (allPos k)) :
     gᴴ ∈ Formalism.REAL.Kset (allPos k) := by
   refine ⟨?_, ?_⟩
   · rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]
-    have h := Matrix.mem_unitaryGroup_iff'.mp hg.1
-    rwa [Matrix.star_eq_conjTranspose] at h
+    simpa [Matrix.star_eq_conjTranspose] using (Matrix.mem_unitaryGroup_iff'.mp hg.1)
   · rw [jm_allPos', Matrix.mul_one, Matrix.one_mul]
 
 theorem kset_mul_star {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Formalism.REAL.Kset (allPos k)) : g * gᴴ = 1 := by
-  have h := Matrix.mem_unitaryGroup_iff.mp hg.1
-  rwa [Matrix.star_eq_conjTranspose] at h
+  simpa [Matrix.star_eq_conjTranspose] using (Matrix.mem_unitaryGroup_iff.mp hg.1)
 
 theorem kset_star_mul {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Formalism.REAL.Kset (allPos k)) : gᴴ * g = 1 := by
-  have h := Matrix.mem_unitaryGroup_iff'.mp hg.1
-  rwa [Matrix.star_eq_conjTranspose] at h
+  simpa [Matrix.star_eq_conjTranspose] using (Matrix.mem_unitaryGroup_iff'.mp hg.1)
 
 theorem hc_inner {u : Fin k → ℝ} {σ : Matrix (Fin k) (Fin k) ℂ → (V →L[ℂ] V)} (hσ : IsHCTypeU k u σ)
     {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Formalism.REAL.Kset (allPos k)) (p q : V) :
@@ -645,22 +594,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.L2.SG.Pf.IdBlocks2.UkEmb Formalism.L2.SG.Pf.IdBlocks2.TensIrr
 
 theorem jm_allPos (k : ℕ) : Formalism.REAL.Jm (allPos k) = 1 := by
-  ext a b
-  simp [Formalism.REAL.Jm, allPos, Matrix.diagonal_apply, Matrix.one_apply]
+  exact Formalism.L2.SG.Pf.IdBlocks2.HW.jm_allPos'
 
 theorem kset_unitary {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Formalism.REAL.Kset (allPos k)) :
     gᴴ * g = 1 ∧ g * gᴴ = 1 := by
-  refine ⟨?_, ?_⟩
-  · have h := Matrix.mem_unitaryGroup_iff'.mp hg.1
-    rwa [Matrix.star_eq_conjTranspose] at h
-  · have h := Matrix.mem_unitaryGroup_iff.mp hg.1
-    rwa [Matrix.star_eq_conjTranspose] at h
+  exact ⟨Formalism.L2.SG.Pf.IdBlocks2.HW.kset_star_mul hg,
+    Formalism.L2.SG.Pf.IdBlocks2.HW.kset_mul_star hg⟩
 
 theorem uj_of_unitary {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : gᴴ * g = 1) : g ∈ UJset (allPos k) := by
   show Formalism.REAL.inUJ (allPos k) g
-  unfold Formalism.REAL.inUJ
-  rw [jm_allPos, Matrix.mul_one]
-  exact hg
+  simpa [Formalism.REAL.inUJ, jm_allPos] using hg
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
@@ -715,7 +658,7 @@ theorem matW_sAt_self (v : InfinitePlace X.B.I.F) (g : Matrix (Fin D.R.k) (Fin D
 theorem matW_sAt_ne (v w : InfinitePlace X.B.I.F) (hw : w ≠ v) (g : Matrix (Fin D.R.k) (Fin D.R.k) ℂ)
     (hg : gᴴ * g = 1) : matW X.B.I (X.wfr u w) w (sAt X u v g hg) = 1 := by
   ext a b
-  have hw' : sAt X u v g hg w = 1 := by simp [sAt, Function.update_apply, hw]
+  have hw' : sAt X u v g hg w = 1 := by simp [sAt, hw]
   simp only [matW]
   rw [hw']
   exact one_mat _ _ (fun a b => X.wfr_on u w a b) a b
@@ -781,14 +724,12 @@ theorem uS_ne {D : D7} {u u' : D.what₂.Word} (hu : u ≠ u') (τ : D.what₂.T
     push_neg at h
     exact hu (D.s.letter_inj (funext h))
   intro heq
-  have h1 := D.s.u_letter u τ l.1 l.2
-  have h2 := D.s.u_letter u' τ l.1 l.2
-  have hv : (D.hcW u τ).v = (D.hcW u' τ).v := (D.hcW_v u τ).trans (D.hcW_v u' τ).symm
   have he := congrFun heq ⟨l.1 + 1, by omega⟩
   have he' : (D.hcW u τ).u ⟨l.1 + 1, by omega⟩ = (D.hcW u' τ).u ⟨l.1 + 1, by omega⟩ := by
     simp only [uS] at he
     exact_mod_cast he
-  rw [h1, h2, hv] at he'
+  rw [D.s.u_letter u τ l.1 l.2, D.s.u_letter u' τ l.1 l.2,
+    (D.hcW_v u τ).trans (D.hcW_v u' τ).symm] at he'
   have hD := D.s.Del_pos
   have hl' : D.s.letter u ⟨l.1, l.2⟩ ≠ D.s.letter u' ⟨l.1, l.2⟩ := hl
   by_cases ha : D.s.letter u ⟨l.1, l.2⟩ = true <;> by_cases hb : D.s.letter u' ⟨l.1, l.2⟩ = true <;>
@@ -833,7 +774,7 @@ theorem piU_sAt (v : InfinitePlace X.B.I.F) (g : Matrix (Fin D.R.k) (Fin D.R.k) 
 
 theorem sAt_ne (v w : InfinitePlace X.B.I.F) (hw : w ≠ v) (g : Matrix (Fin D.R.k) (Fin D.R.k) ℂ)
     (hg : gᴴ * g = 1) : sAt X u v g hg w = 1 := by
-  simp [sAt, Function.update_apply, hw]
+  simp [sAt, hw]
 
 end Formalism.L2.SG.Pf.IdBlocks2.Geo
 
@@ -873,9 +814,7 @@ theorem idOffIneq_of_lift (hL : IdOffLift F0 F0' what₂ rows' (X := X)) :
   intro g hg
   have hgu := Formalism.L2.SG.Pf.IdBlocks2.HW.kset_star_mul hg
   refine ⟨sAt X u v g hgu, sAt_mem X u v g hgu, fun x => piU_sAt X u v g hgu x, fun x => ?_⟩
-  have := hAl (sAt X u v g hgu) (sAt_mem X u v g hgu) (fun w hw => sAt_ne X u v w hw g hgu) x
-  rw [matW_sAt_self] at this
-  exact this
+  simpa [matW_sAt_self] using hAl (sAt X u v g hgu) (sAt_mem X u v g hgu) (fun w hw => sAt_ne X u v w hw g hgu) x
 
 end Formalism.L2.SG.Pf.IdBlocks2.Geo
 
@@ -889,18 +828,15 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Fo
   Formalism.L2.SG.PoincareInHH.Cut
 
 theorem piIrrC_holds : PiIrrC := by
-  intro D X u
-  exact Formalism.L2.SG.Pf.IdBlocks2.Geo.piIrr X u
+  exact fun D X u => Formalism.L2.SG.Pf.IdBlocks2.Geo.piIrr X u
 
 theorem idMeetRO_of (hN : Formalism.L2.SG.TermOp.Vanish.NLamNinf) (D : D7) (X : HidaSetting D) (Y : Full X)
     (u : D.what₂.Word) : IdMeetRO (X.Fu u) (Y.cs u) := by
-  intro _ t _ _
-  exact Formalism.L2.SG.Pf.IdBlocks2.Geo.ro_of hN X t
+  exact fun _ t _ _ => Formalism.L2.SG.Pf.IdBlocks2.Geo.ro_of hN X t
 
 theorem idOffRO_of (hN : Formalism.L2.SG.TermOp.Vanish.NLamNinf) (D : D7) (X : HidaSetting D) (Y : Full X)
     (u u' : D.what₂.Word) : IdOffRO (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') (X := X) := by
-  intro _ t _
-  exact Formalism.L2.SG.Pf.IdBlocks2.Geo.ro_of hN X t
+  exact fun _ t _ => Formalism.L2.SG.Pf.IdBlocks2.Geo.ro_of hN X t
 
 def IdOffConjC : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),

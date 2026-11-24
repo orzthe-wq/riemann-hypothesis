@@ -114,7 +114,7 @@ theorem orbIntegrand_swap (Ds : B.RealPlaceData k r Wp Wq) (Ds' : B.RealPlaceDat
     simp only [B.sgs, Matrix.of.apply_symm_apply, inv_one, one_mul, mul_one]
   have e0 : B.sgs ((q.1.1, q.1.2), (Matrix.of.symm (1 : B.Mat k r), q.2.2)) γ
       = (Matrix.of q.1.1)⁻¹ * (Matrix.of q.1.2)⁻¹ * γ * Matrix.of q.2.2 := by
-    simp only [B.sgs, Matrix.of.apply_symm_apply, inv_one, one_mul, mul_one]
+    simp only [B.sgs, Matrix.of.apply_symm_apply, mul_one]
   have g1GV : (Matrix.of q.1.2)⁻¹ * γ * Matrix.of q.2.2 ∈ B.GV k r :=
     Dx2.DF.mul_UH (Dx2.DF.mul_UH (WeylGroupFacts.uh_inv (B6.Nset_sub k r n1m)) hγ) (B6.Nset_sub k r n2m)
   have g0GV : (Matrix.of q.1.1)⁻¹ * (Matrix.of q.1.2)⁻¹ * γ * Matrix.of q.2.2 ∈ B.GV k r := by
@@ -212,7 +212,7 @@ theorem cell_identity_shifted : CellIdSh := by
     have hGf : 0 < Gf Pa.k Pa.r p.T.base.z p.T.base.z' g := by
       rw [TBBx2.Gf_of_Zhat _ _ g γ hZ]
       exact hG'
-    have hrel := Final.d_ptRelevant _ _ _ _ p.T.base γ g hγ hgGV hZ
+    have hrel := _root_.Formalism.FourierDecayAlt.P.Dx1.Rel.ptRelevant _ _ _ _ p.T.base γ g hγ hgGV hZ
     have hH := Formalism.FourierDecayAlt.P.radial_measure_is_haar _ _ _ _ p.T.base g _ _ hgGV hd hZm
     obtain ⟨θ, hθ, hi⟩ := hc Pa.k Pa.r Wp Wq p.T.base g _ _ A₀ f hgGV hrel hd hZm hGf hA₀ hf
     simp only [KB.Pl.V]

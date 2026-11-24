@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
 
 @[expose] public section
 
@@ -58,7 +59,7 @@ theorem UpperTheory.WildA.ratReal :
     show finHom (G.V X) (γ⁻¹ * (r : GA D (G.V X))) = 1
     rw [map_mul, map_inv, hf, inv_mul_cancel]
   refine ⟨γ, hγ, γ⁻¹ * (r : GA D (G.V X)), hk, fun x => ?_, ?_⟩
-  · have hc := GlobalTheory.AdelicSplit.commute_GinfC_GfC (G.V X) hk x.2
+  · have hc := _root_.GlobalTheory.PointAtPlaceHom.comm_of_mem (G.V X) hk x.2
     rw [← hc, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul]
     rfl
   · have hrat : Bridge.IsRatMat (G.V X) ⟨γ, hγ⟩ (fr X * Unitary.toUnits U * (fr X)⁻¹) := Units.ext hm

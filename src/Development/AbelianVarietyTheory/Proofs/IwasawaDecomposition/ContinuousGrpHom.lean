@@ -1,7 +1,7 @@
 module
 
 public import Formalism.LocalRingCardinality.DataCD
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaDensityUpqUniqueAndSmulStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaDensityUpqUniqueAndSmul
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UpqLocallyCompactGroup
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -226,9 +226,9 @@ theorem cd_zero_univ : ∀ (c : CDHaar) (N : ℕ), c.cd 0 N Set.univ = 1 := by
   have h4 := Measure.isMulLeftInvariant_eq_smul ((c.cd 0 N).map G) (c.cd (0 + N) 0)
   set a := Measure.haarScalarFactor ((c.cd 0 N).map G) (c.cd (0 + N) 0)
   have h5 : OmegaDensity ((c.cd 0 N).map G) (a * d) := by
-    rw [h4]; exact (GlobalTheory.T.omegaDensity_upq_unique_and_smul _ _ _ _ h2).2 a
+    rw [h4]; exact (_root_.GlobalTheory.OmegaDensityScale.omegaDensity_unique_and_smul _ _ _ _ h2).2 a
   have h6 : (a : ENNReal) * d = 1 * d := by
-    rw [one_mul]; exact (GlobalTheory.T.omegaDensity_upq_unique_and_smul _ _ _ _ h3).1 _ h5
+    rw [one_mul]; exact (_root_.GlobalTheory.OmegaDensityScale.omegaDensity_unique_and_smul _ _ _ _ h3).1 _ h5
   have h7 : (a : ENNReal) = 1 := (ENNReal.mul_left_inj hd0 hdt).1 h6
   have h8 : ((c.cd 0 N).map G) Set.univ = 1 := by
     rw [h4, Measure.smul_apply, measure_univ, ENNReal.smul_def, h7, one_smul]

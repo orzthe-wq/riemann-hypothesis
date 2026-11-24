@@ -90,7 +90,7 @@ theorem hasDerivAt_thetaSum_along_line : _root_.GlobalTheory.FunPr.ThetaLocalInp
           (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (f i) (fun x => ∏ᶠ v, φ i v fun j => evFin F v (x j))))))
       (GlobalTheory.WeilM.thetaSum F (M.co.rho ψ u
                    (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (f₁ i) (fun x => ∏ᶠ v, φ i v fun j => evFin F v (x j))))) 0 :=
-    fun i => _root_.GlobalTheory.T.thetaSum_differentiable_along_line hP M ψ χX χW om hψ hG hW γ hγ (f i) (f₁ i) _
+    fun i => _root_.GlobalTheory.ThetaLineDerY.hasDerivAt_thetaSum_along_line_y_direction hP M ψ χX χW om hψ hG hW γ hγ (f i) (f₁ i) _
       (GlobalTheory.ThK.EvUniqInf.rest_pure (f i) (φ i) (hφ i).1 (hstd i)) (hD i) u
   rw [hcurve, hend]
   have := HasDerivAt.sum (u := Finset.univ) fun i _ => hi i

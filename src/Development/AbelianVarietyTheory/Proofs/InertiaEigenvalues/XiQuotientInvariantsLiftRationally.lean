@@ -571,7 +571,7 @@ theorem goodO : GoodO (Qp := ℚ_[l]) ℚ_[l] ℤ_[l] := by
   exact PadicInt.isOpenEmbedding_coe.isOpen_range
 
 theorem finKs (K : FinExt l) (s : ℕ) : FiniteDimensional ℚ_[l] ↥(Ks K s) := by
-  apply Formalism.MainNotions.WachCoordinates.Br.fd_Ks <;> assumption
+  apply Formalism.MainNotions.WachCoordinates.Br.fd_Ks
 
 def lev (K : FinExt l) (j : ℕ) : FinExt l := ⟨Ks K j, finKs K j⟩
 

@@ -96,19 +96,6 @@ theorem trace_mul_submatrix {A : Type} [CommRing A] {m d : ℕ} (e : Fin m ≃ F
   rw [← Equiv.sum_comp e]
   simp
 
-theorem cA_inc (a : D.host.E) : cA D (incA D a) = incA D (star a) := by
-  simp [cA, sigR, CMData.sig, inclR]; rfl
-
-theorem gram_herm (S : HSp D) : S.gramᴴ = S.gram :=
-  Matrix.ext fun _ _ => S.herm.eq _ _
-
-theorem gram_map_herm (S : HSp D) : ((S.gram.map (incA D)).map (cA D))ᵀ = S.gram.map (incA D) := by
-  refine Matrix.ext fun i j => ?_
-  exact (cA_inc _).trans (congrArg (incA D) (congrFun (congrFun (gram_herm S) i) j))
-
-theorem gram_inv_mul (T : HSp D) : T.gram⁻¹.map (incA D) * T.gram.map (incA D) = 1 := by
-  rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 (gram_det_ne _))]; simp
-
 theorem hTens_eq_trace' {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) (c' : A →+* A)
     (hc : ∀ a, c a = c' a) {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A)
     (x y : Matrix α β A) : GlobalTheory.WeilM.hTens c JA JB x y = (xᵀ * JA * y.map c' * JBᵀ).trace := by
@@ -149,8 +136,8 @@ theorem symp_eq (ε : Bool) (S X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d)
     rw [hJW]; ext i j; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]
   unfold GlobalTheory.WeilM.symp symplO
   rw [hTens_eq_trace' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (cA D) (fun _ => rfl), hO_eq_trace, hcS, hcS, hGs, hJA, hJB]
-  have hinv := gram_inv_mul (sgn ε S)
-  have hh := gram_map_herm (sgn ε S)
+  have hinv := _root_.GlobalTheory.RouteCoords.inv_mul_gram (sgn ε S)
+  have hh := _root_.GlobalTheory.RouteCoords.gram_conj_transpose (sgn ε S)
   have hW : ((wᵀ.submatrix e id).map (cA D))ᵀ = (w.map (cA D)).submatrix id e := rfl
   congr 1
   rw [Matrix.map_mul, Matrix.transpose_mul, hh, ← Matrix.mul_assoc _ _ (((wᵀ.submatrix e id).map (cA D))ᵀ), hinv,
@@ -166,10 +153,6 @@ end GlobalTheory.SquareAgree.HeisCov
 namespace GlobalTheory.SquareAgree.HeisCov
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-theorem invOf_two' {D : D7} : ⅟(2 : AF D.host.F) = algebraMap D.host.F (AF D.host.F) (1 / 2) := by
-  refine invOf_eq_right_inv ?_
-  rw [← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul, mul_one_div_cancel two_ne_zero, map_one]
 
 theorem isDatum_rho : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)
@@ -190,6 +173,6 @@ theorem isDatum_rho : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam
     exact GlobalTheory.HeisSchA.rho_mem_schA M ψ hstd w Φ hD.1
   · rw [GlobalTheory.BigDat.rho_rho M.co ψ u w Φ, GlobalTheory.WeilM.thetaSum_smul, hD.2 (u + w)]
     unfold heisO symplOH
-    rw [symp_eq ε S X e Vs.J Ws.J hJ hJW cS hcS u w, map_add (f := _), invOf_two']
+    rw [symp_eq ε S X e Vs.J Ws.J hJ hJW cS hcS u w, map_add (f := _), _root_.GlobalTheory.BigDat.invOf_two]
 
 end GlobalTheory.SquareAgree.HeisCov

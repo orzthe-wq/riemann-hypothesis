@@ -242,7 +242,7 @@ theorem exists_nsmul_mem {m n : ℕ} (U : AddSubgroup (Mx D m n)) (hU : IsOpen (
   have hp : Continuous fun α : Af D.host.F => pairA D.host.F 0 α := continuous_const.prodMk continuous_id
   have hφ : Continuous φ := continuous_pi fun i => continuous_pi fun j => hp.smul continuous_const
   have h0 : φ 0 = 0 := Matrix.ext fun i j => zero_smul (AF D.host.F) (y i j)
-  obtain ⟨N, hN, h⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele D.host.F (φ ⁻¹' U)
+  obtain ⟨N, hN, h⟩ := _root_.GlobalTheory.LocalNormBound.main D.host.F (φ ⁻¹' U)
     (hφ.continuousAt.preimage_mem_nhds (hU.mem_nhds (h0 ▸ U.zero_mem)))
   refine ⟨N, hN, ?_⟩
   have h1 : φ (N • 1) ∈ U := h 1 fun v => one_mem _

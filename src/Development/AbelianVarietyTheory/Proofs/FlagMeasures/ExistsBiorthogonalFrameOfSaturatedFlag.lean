@@ -125,7 +125,7 @@ theorem exists_biorth_of_saturated_flag : ∀ (E : Type) [Field E] [NumberField 
     · exact (hm b h).le
   have key : ∀ b, ∃ A : Submodule (𝓞 E) (Fin n → E), A ⊓ F b = ⊥ ∧ A ⊔ F b = F (b + 1) := by
     intro b
-    refine exists_compl_of_saturated _ _ (hmono b.le_succ) (Submodule.FG.of_le hL.fg (hle _)) ?_
+    refine _root_.GlobalTheory.SaturatedSublatticeComplement.saturated_has_complement _ _ (hmono b.le_succ) (Submodule.FG.of_le hL.fg (hle _)) ?_
     intro c y hc hy hcy
     apply hsat _ y (hle _ hy)
     have hc' : (c : E) ≠ 0 := by simpa using hc

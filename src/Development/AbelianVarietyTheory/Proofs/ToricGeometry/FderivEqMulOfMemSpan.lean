@@ -88,21 +88,6 @@ private theorem valAt'_resG {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {U' V' : Y.Opens
   rw [← key]
   rfl
 
-private theorem valAt'_ne_zero_of_isUnit {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {W : Y.Opens} (hx : ⊤ ≤ x ⁻¹ᵁ W)
-    {g : Γ(Y, W)} (hg : IsUnit g) : valAt' x W g ≠ 0 := by
-  unfold valAt'
-  rw [dite_eq_left hx]
-  unfold valAt
-  exact ((hg.map (x.appLE W ⊤ hx).hom).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom).ne_zero
-
-private theorem valAt'_mul' {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (U : Y.Opens) (f f' : Γ(Y, U)) :
-    valAt' x U (f * f') = valAt' x U f * valAt' x U f' := by
-  unfold valAt'
-  split_ifs with hx
-  · unfold valAt
-    simp only [map_mul]
-  · simp
-
 theorem IsHolFamily.fderiv_eq_zero (h : IsHolFamily ex) {U V : X.Opens} (hU : IsAffineOpen U) {z ξ : E}
     (hz : ⊤ ≤ ex z ⁻¹ᵁ U) (hV : ⊤ ≤ ex z ⁻¹ᵁ V)
     (h0 : ∀ f : Γ(X, U), fderiv ℂ (fun w => valAt' (ex w) U f) z ξ = 0) (r : Γ(X, V)) :
@@ -122,12 +107,12 @@ theorem IsHolFamily.fderiv_eq_zero (h : IsHolFamily ex) {U V : X.Opens} (hU : Is
     exact hfx
   have hSz : valAt' (ex z) U (s : Γ(X, U)) ≠ 0 := by
     rw [← valAt'_resG (ex z) (X.basicOpen_le f) hzD]
-    exact valAt'_ne_zero_of_isUnit (ex z) hzD hsu
+    exact _root_.GlobalTheory.valAt'_isUnit_ne_zero (ex z) hzD hsu
   have hev : (fun w => valAt' (ex w) V r * valAt' (ex w) U (s : Γ(X, U))) =ᶠ[𝓝 z]
       fun w => valAt' (ex w) U a := by
     filter_upwards [h.eventually hzD] with w hw
     rw [← valAt'_resG (ex w) hfV hw, ← valAt'_resG (ex w) (X.basicOpen_le f) hw,
-      ← valAt'_resG (ex w) (X.basicOpen_le f) hw a, ← valAt'_mul']
+      ← valAt'_resG (ex w) (X.basicOpen_le f) hw a, ← _root_.GlobalTheory.valAt'_mul]
     exact congrArg _ hq
   have hd : fderiv ℂ (fun w => valAt' (ex w) V r * valAt' (ex w) U (s : Γ(X, U))) z ξ =
       fderiv ℂ (fun w => valAt' (ex w) U a) z ξ := by
@@ -152,7 +137,7 @@ theorem IsHolFamily.der_mul (h : IsHolFamily ex) {U : X.Opens} {z : E} (hz : ⊤
   simp only [IsHolFamily.der_apply]
   have e : (fun w => valAt' (ex w) U (f * f')) = fun w => valAt' (ex w) U f * valAt' (ex w) U f' := by
     funext w
-    exact valAt'_mul' _ _ _ _
+    exact _root_.GlobalTheory.valAt'_mul _ _ _ _
   rw [e]
   rw [fderiv_fun_mul (h.differentiableAt hz f) (h.differentiableAt hz f')]
   simp only [_root_.add_apply, _root_.smul_apply, smul_eq_mul]

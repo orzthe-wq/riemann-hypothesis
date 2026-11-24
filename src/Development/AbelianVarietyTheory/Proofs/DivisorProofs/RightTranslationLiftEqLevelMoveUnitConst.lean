@@ -76,6 +76,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.Hol
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

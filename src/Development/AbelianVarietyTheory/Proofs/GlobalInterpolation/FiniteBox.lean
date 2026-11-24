@@ -63,10 +63,10 @@ theorem finite_box (f : ℂ → ℂ)
   · rw [abs_le]
     constructor <;> linarith [Int.floor_le ρ.im, Int.lt_floor_add_one ρ.im]
 
-theorem norm_term_le (m : ℕ) {u T : ℝ} (hT : 2 ≤ T) (hu : T ≤ u) {ρ : ℂ} (h1 : ρ.re < 1)
+theorem norm_term_le_of_pos (m : ℕ) {u T : ℝ} (hT : 0 < T) (hu : 1 ≤ u) {ρ : ℂ} (h1 : ρ.re < 1)
     (h2 : T ≤ |ρ.im|) : ‖(m : ℂ) * ((u : ℂ) ^ ρ / ρ)‖ ≤ (m : ℝ) * (u / T) := by
   have hu0 : 0 < u := by linarith
-  have hT0 : 0 < T := by linarith
+  have hT0 : 0 < T := hT
   have hρ : T ≤ ‖ρ‖ := h2.trans (Complex.abs_im_le_norm ρ)
   have hρ0 : 0 < ‖ρ‖ := hT0.trans_le hρ
   rw [norm_mul, norm_div, Complex.norm_natCast, Complex.norm_cpow_eq_rpow_re_of_pos hu0]
@@ -77,16 +77,20 @@ theorem norm_term_le (m : ℕ) {u T : ℝ} (hT : 2 ≤ T) (hu : T ≤ u) {ρ : �
   calc u ^ ρ.re / ‖ρ‖ ≤ u / ‖ρ‖ := div_le_div_of_nonneg_right hup hρ0.le
     _ ≤ u / T := div_le_div_of_nonneg_left hu0.le hT0 hρ
 
-theorem band_le (f : ℂ → ℂ) (m : ℂ → ℕ) (B : ℝ → ℝ)
+theorem norm_term_le (m : ℕ) {u T : ℝ} (hT : 2 ≤ T) (hu : T ≤ u) {ρ : ℂ} (h1 : ρ.re < 1)
+    (h2 : T ≤ |ρ.im|) : ‖(m : ℂ) * ((u : ℂ) ^ ρ / ρ)‖ ≤ (m : ℝ) * (u / T) :=
+  norm_term_le_of_pos m (by linarith) (by linarith) h1 h2
+
+theorem band_le_of_pos (f : ℂ → ℂ) (m : ℂ → ℕ) (B : ℝ → ℝ)
     (hW : ∀ t : ℝ, {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - t| ≤ 1 ∧ f ρ = 0}.Finite ∧
       ∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - t| ≤ 1 ∧ f ρ = 0}, (m ρ : ℝ) ≤ B t)
-    {u T T' : ℝ} (hT : 2 ≤ T) (hu : T ≤ u) (hT1 : T ≤ T') (hT2 : T' ≤ T + 1) :
+    {u T T' : ℝ} (hT : 0 < T) (hu : 1 ≤ u) (hT1 : T ≤ T') (hT2 : T' ≤ T + 1) :
     ‖(∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T' ∧ f ρ = 0},
         (m ρ : ℂ) * ((u : ℂ) ^ ρ / ρ)) -
       ∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T ∧ f ρ = 0},
         (m ρ : ℂ) * ((u : ℂ) ^ ρ / ρ)‖ ≤ (B T + B (-T)) * (u / T) := by
   classical
-  have hT0 : 0 < T := by linarith
+  have hT0 : 0 < T := hT
   have hS' := finite_box f (fun t => (hW t).1) T'
   have hS := finite_box f (fun t => (hW t).1) T
   have hA := (hW T).1
@@ -133,21 +137,50 @@ theorem band_le (f : ℂ → ℂ) (m : ℂ → ℕ) (B : ℝ → ℝ)
   calc _ ≤ ∑ ρ ∈ hS'.toFinset \ hS.toFinset, (m ρ : ℝ) * (u / T) := by
         refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun ρ hρ => ?_)
         obtain ⟨-, h1, h2⟩ := hD ρ hρ
-        exact norm_term_le (m ρ) hT hu h1 h2
+        exact norm_term_le_of_pos (m ρ) hT hu h1 h2
     _ = (∑ ρ ∈ hS'.toFinset \ hS.toFinset, (m ρ : ℝ)) * (u / T) := by rw [Finset.sum_mul]
     _ ≤ (B T + B (-T)) * (u / T) :=
         mul_le_mul_of_nonneg_right hm (div_nonneg (by linarith) hT0.le)
 
-theorem zeros_band : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ.IsPrimitive → ∀ u T T' : ℝ, 2 ≤ T → T ≤ u → T ≤ T' → T' ≤ T + 1 → {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T ∧ LFunction χ ρ = 0}.Finite ∧ ‖(∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T' ∧ LFunction χ ρ = 0}, ((analyticOrderNatAt (LFunction χ) ρ : ℕ) : ℂ) * ((u : ℂ) ^ ρ / ρ)) - ∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T ∧ LFunction χ ρ = 0}, ((analyticOrderNatAt (LFunction χ) ρ : ℕ) : ℂ) * ((u : ℂ) ^ ρ / ρ)‖ ≤ C * (u * Real.log (N * u * T) ^ 2 / T) := by
+theorem band_le (f : ℂ → ℂ) (m : ℂ → ℕ) (B : ℝ → ℝ)
+    (hW : ∀ t : ℝ, {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - t| ≤ 1 ∧ f ρ = 0}.Finite ∧
+      ∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - t| ≤ 1 ∧ f ρ = 0}, (m ρ : ℝ) ≤ B t)
+    {u T T' : ℝ} (hT : 2 ≤ T) (hu : T ≤ u) (hT1 : T ≤ T') (hT2 : T' ≤ T + 1) :
+    ‖(∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T' ∧ f ρ = 0},
+        (m ρ : ℂ) * ((u : ℂ) ^ ρ / ρ)) -
+      ∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T ∧ f ρ = 0},
+        (m ρ : ℂ) * ((u : ℂ) ^ ρ / ρ)‖ ≤ (B T + B (-T)) * (u / T) :=
+  band_le_of_pos f m B hW (by linarith) (by linarith) hT1 hT2
+
+/-- A unit-height change of truncation costs only one logarithm. The height can be any
+positive real number, independently of the evaluation point `u ≥ 1`. -/
+theorem zeros_band_log :
+    ∃ C : ℝ, 0 < C ∧
+      ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N),
+      χ.IsPrimitive → ∀ u T T' : ℝ, 0 < T → 1 ≤ u → T ≤ T' → T' ≤ T + 1 →
+      {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T ∧ LFunction χ ρ = 0}.Finite ∧
+      ‖(∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T' ∧ LFunction χ ρ = 0},
+          ((analyticOrderNatAt (LFunction χ) ρ : ℕ) : ℂ) * ((u : ℂ) ^ ρ / ρ)) -
+        ∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T ∧ LFunction χ ρ = 0},
+          ((analyticOrderNatAt (LFunction χ) ρ : ℕ) : ℂ) * ((u : ℂ) ^ ρ / ρ)‖ ≤
+        C * (u * Real.log (N * (T + 2)) / T) := by
   obtain ⟨C, hC, hcount⟩ := GlobalTheory.ZeroWindow.count_zeros_window
   refine ⟨2 * C, by linarith, ?_⟩
   intro N _ χ hχ u T T' hT hu hT1 hT2
   have hw := hcount N χ hχ
   refine ⟨finite_box _ (fun t => (hw t).1) T, ?_⟩
-  refine (band_le (LFunction χ) (fun ρ => analyticOrderNatAt (LFunction χ) ρ)
-    (fun t => C * Real.log (N * (|t| + 2))) hw hT hu hT1 hT2).trans ?_
+  convert band_le_of_pos (LFunction χ) (fun ρ => analyticOrderNatAt (LFunction χ) ρ)
+    (fun t => C * Real.log (N * (|t| + 2))) hw hT hu hT1 hT2 using 1
+  rw [abs_neg, abs_of_pos hT]
+  ring
+
+theorem zeros_band : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), χ.IsPrimitive → ∀ u T T' : ℝ, 2 ≤ T → T ≤ u → T ≤ T' → T' ≤ T + 1 → {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T ∧ LFunction χ ρ = 0}.Finite ∧ ‖(∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T' ∧ LFunction χ ρ = 0}, ((analyticOrderNatAt (LFunction χ) ρ : ℕ) : ℂ) * ((u : ℂ) ^ ρ / ρ)) - ∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T ∧ LFunction χ ρ = 0}, ((analyticOrderNatAt (LFunction χ) ρ : ℕ) : ℂ) * ((u : ℂ) ^ ρ / ρ)‖ ≤ C * (u * Real.log (N * u * T) ^ 2 / T) := by
+  obtain ⟨C, hC, hsharp⟩ := zeros_band_log
+  refine ⟨C, hC, ?_⟩
+  intro N _ χ hχ u T T' hT hu hT1 hT2
+  obtain ⟨hfinite, hbound⟩ := hsharp N χ hχ u T T' (by linarith) (by linarith) hT1 hT2
+  refine ⟨hfinite, ?_⟩
   have hT0 : 0 < T := by linarith
-  rw [abs_neg, abs_of_pos hT0]
   have hN : (1 : ℝ) ≤ N := by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne N)
   have huT : T + 2 ≤ u * T := by nlinarith
   have hx : (N : ℝ) * (T + 2) ≤ N * u * T := by
@@ -160,11 +193,8 @@ theorem zeros_band : ∃ C : ℝ, 0 < C ∧ ∀ (N : ℕ) [NeZero N] (χ : Diric
     have he : Real.exp 1 < 4 := by have := Real.exp_one_lt_d9; linarith
     exact ((Real.lt_log_iff_exp_lt (by linarith)).2 (by linarith)).le
   have hL2 : Real.log (N * (T + 2)) ≤ Real.log (N * u * T) ^ 2 := hL1.trans (by nlinarith)
-  have hq : 0 ≤ u / T := div_nonneg (by linarith) hT0.le
-  calc (C * Real.log (N * (T + 2)) + C * Real.log (N * (T + 2))) * (u / T)
-      = 2 * C * Real.log (N * (T + 2)) * (u / T) := by ring
-    _ ≤ 2 * C * Real.log (N * u * T) ^ 2 * (u / T) :=
-        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hL2 (by linarith)) hq
-    _ = 2 * C * (u * Real.log (N * u * T) ^ 2 / T) := by ring
+  calc _ ≤ C * (u * Real.log (N * (T + 2)) / T) := hbound
+    _ ≤ C * (u * Real.log (N * u * T) ^ 2 / T) := by
+      gcongr <;> linarith
 
 end GlobalTheory.ZeroBand

@@ -1,13 +1,17 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.ConvexBody
+public import Mathlib.NumberTheory.NumberField.Discriminant.Defs
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
+public import Mathlib.MeasureTheory.Group.GeometryOfNumbers
+public import Mathlib.NumberTheory.NumberField.Discriminant.Basic
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsLieDataCircle
-public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.ExistsNeZeroMemFractionalIdealNormSqLe
 public import Development.AbelianVarietyTheory.PublishedTheorems.AdelicLattices₂.ExistsIntMulIsIntegralOfTrace
+import Aesop.Main
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -25,6 +29,7 @@ import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
@@ -48,9 +53,129 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Real
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.CovolumeBounds.ExistsNeZeroMemFractionalIdealNormSqLe, Development.AbelianVarietyTheory.Proofs.HeightProofs.AnisotropicFiniteLengthsOfShortLatticeVector
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.CovolumeBounds.ExistsNeZeroMemFractionalIdealNormSqLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.CovolumeBounds.ExistsNeZeroMemFractionalIdealNormSqLe", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.ConvexBody\npublic import Mathlib.NumberTheory.NumberField.Discriminant.Defs\npublic import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex\nimport Aesop.Main\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.MeasureTheory.Group.GeometryOfNumbers\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\npublic import Mathlib.NumberTheory.NumberField.Discriminant.Basic\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Separation.CompletelyRegular\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+
+open NumberField NumberField.InfinitePlace NumberField.mixedEmbedding Module MeasureTheory
+open scoped nonZeroDivisors NNReal ENNReal Classical
+
+section General
+
+variable (K : Type*) [Field K] [NumberField K]
+
+
+open scoped Classical in
+theorem exists_ne_zero_mem_fractionalIdeal_place_le (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
+    (g : InfinitePlace K → ℝ≥0) (h : minkowskiBound K I ≤ volume (convexBodyLT K g)) :
+    ∃ a ∈ (I : FractionalIdeal (𝓞 K)⁰ K), a ≠ 0 ∧ ∀ w : InfinitePlace K, w a ≤ g w := by
+  classical
+  set S : Set (mixedSpace K) :=
+    (Set.univ.pi (fun w : { w : InfinitePlace K // IsReal w } => Metric.closedBall 0 (g w))) ×ˢ
+    (Set.univ.pi (fun w : { w : InfinitePlace K // IsComplex w } => Metric.closedBall 0 (g w)))
+    with hS
+  have hsub : convexBodyLT K g ⊆ S :=
+    Set.prod_mono (Set.pi_mono fun _ _ => Metric.ball_subset_closedBall)
+      (Set.pi_mono fun _ _ => Metric.ball_subset_closedBall)
+  have hneg : ∀ x ∈ S, -x ∈ S := by
+    intro x hx
+    simp only [hS, Set.mem_prod, Prod.fst_neg, Set.mem_pi, Set.mem_univ, Pi.neg_apply,
+      mem_closedBall_zero_iff, norm_neg, forall_true_left, Prod.snd_neg] at hx ⊢
+    exact hx
+  have hconv : Convex ℝ S :=
+    Convex.prod (convex_pi (fun _ _ => convex_closedBall _ _))
+      (convex_pi (fun _ _ => convex_closedBall _ _))
+  have hcomp : IsCompact S :=
+    IsCompact.prod (isCompact_univ_pi fun _ => isCompact_closedBall _ _)
+      (isCompact_univ_pi fun _ => isCompact_closedBall _ _)
+  have h_fund := ZSpan.isAddFundamentalDomain' (fractionalIdealLatticeBasis K I) volume
+  have : Countable (Submodule.span ℤ
+      (Set.range (fractionalIdealLatticeBasis K I))).toAddSubgroup := by
+    change Countable (Submodule.span ℤ (Set.range (fractionalIdealLatticeBasis K I)))
+    infer_instance
+  obtain ⟨⟨x, hx⟩, h_nz, h_mem⟩ := exists_ne_zero_mem_lattice_of_measure_mul_two_pow_le_measure
+      h_fund hneg hconv hcomp (h.trans (measure_mono hsub))
+  rw [Submodule.mem_toAddSubgroup, mem_span_fractionalIdealLatticeBasis] at hx
+  obtain ⟨a, ha, rfl⟩ := hx
+  refine ⟨a, ha, by simpa using h_nz, fun w => ?_⟩
+  simp only [hS, Set.mem_prod, Set.mem_pi, Set.mem_univ, forall_true_left,
+    mem_closedBall_zero_iff] at h_mem
+  rw [← normAtPlace_apply]
+  rcases isReal_or_isComplex w with hw | hw
+  · rw [normAtPlace_apply_of_isReal hw]
+    exact h_mem.1 ⟨w, hw⟩
+  · rw [normAtPlace_apply_of_isComplex hw]
+    exact h_mem.2 ⟨w, hw⟩
+
+end General
+
+section TotallyComplex
+
+variable {E : Type*} [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] {f : ℕ}
+
+theorem exists_ne_zero_mem_fractionalIdeal_norm_sq_le (hf : finrank ℚ E = 2 * f)
+    (J : FractionalIdeal (𝓞 E)⁰ E) (hJ : J ≠ 0) :
+    ∃ a ∈ J, a ≠ 0 ∧ ∀ τ : E →+* ℂ, ‖τ a‖ ^ 2 ≤
+      2 / Real.pi * ((FractionalIdeal.absNorm J : ℝ) * √|(discr E : ℝ)|) ^ ((f : ℝ)⁻¹) := by
+  classical
+  have hc : nrComplexPlaces E = f := by
+    have := IsTotallyComplex.finrank E
+    omega
+  have hr : nrRealPlaces E = 0 := IsTotallyComplex.nrRealPlaces_eq_zero E
+  have hf0 : f ≠ 0 := by
+    have : 0 < finrank ℚ E := finrank_pos
+    omega
+  set X : ℝ := (FractionalIdeal.absNorm J : ℝ) * √|(discr E : ℝ)| with hX
+  have hN : (0 : ℝ) ≤ (FractionalIdeal.absNorm J : ℝ) := by
+    exact_mod_cast FractionalIdeal.absNorm_nonneg J
+  have hX0 : 0 ≤ X := mul_nonneg hN (Real.sqrt_nonneg _)
+  set B : ℝ := 2 / Real.pi * X ^ ((f : ℝ)⁻¹) with hB
+  have hB0 : 0 ≤ B := by positivity
+  let R : ℝ≥0 := ⟨√B, Real.sqrt_nonneg _⟩
+  have hR : (R : ℝ) ^ 2 = B := Real.sq_sqrt hB0
+  obtain ⟨a, ha, ha0, hle⟩ := exists_ne_zero_mem_fractionalIdeal_place_le E
+    (Units.mk0 J hJ) (fun _ => R) (by
+      rw [convexBodyLT_volume, minkowskiBound,
+        volume_fundamentalDomain_fractionalIdealLatticeBasis,
+        volume_fundamentalDomain_latticeBasis, mixedEmbedding.finrank,
+        Finset.prod_pow_eq_pow_sum, sum_mult_eq, hf, convexBodyLTFactor, hc, hr]
+      refine (ENNReal.toReal_le_toReal (by finiteness) (by finiteness)).mp (le_of_eq ?_)
+      simp only [ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_inv, ENNReal.coe_toReal,
+        ENNReal.toReal_ofNat, Units.val_mk0, ENNReal.toReal_ofReal hN, pow_zero, one_mul,
+        NNReal.coe_pow, NNReal.coe_real_pi, Real.coe_sqrt, coe_nnnorm, Int.norm_eq_abs]
+      rw [pow_mul (R : ℝ), hR, hB, mul_pow, Real.rpow_inv_natCast_pow hX0 hf0, hX, pow_mul,
+        div_pow, show ((2 : ℝ) ^ 2) ^ f = 2 ^ f * 2 ^ f by rw [← mul_pow]; norm_num, inv_pow]
+      have := Real.pi_pos
+      field_simp)
+  refine ⟨a, ha, ha0, fun τ => ?_⟩
+  rw [← hR]
+  have := hle (InfinitePlace.mk τ)
+  rw [InfinitePlace.apply] at this
+  exact pow_le_pow_left₀ (norm_nonneg _) this 2
+
+end TotallyComplex
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.CovolumeBounds.ExistsNeZeroMemFractionalIdealNormSqLe =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.HeightProofs.AnisotropicFiniteLengthsOfShortLatticeVector =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.HeightProofs.AnisotropicFiniteLengthsOfShortLatticeVector", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsLieDataCircle\npublic import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.ExistsNeZeroMemFractionalIdealNormSqLe\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AdelicLattices₂.ExistsIntMulIsIntegralOfTrace\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open GlobalTheory.SmoothForms NumberField Matrix Module Submodule
@@ -118,7 +243,7 @@ theorem exists_near_integer : ∃ C : ℝ, ∀ c : E, ∃ t : E, IsIntegral ℤ 
     rw [integralBasis_apply]; exact (RingOfIntegers.basis E i).isIntegral_coe
   · have h1 : c - ∑ i, (⌊b.repr c i⌋ : E) * b i = ∑ i, (Int.fract (b.repr c i) : ℚ) • b i := by
       conv_lhs => rw [← b.sum_repr c]
-      simp only [b.repr_sum_self, Int.fract, sub_smul, Finset.sum_sub_distrib, Int.cast_smul_eq_zsmul,
+      simp only [Int.fract, sub_smul, Finset.sum_sub_distrib, Int.cast_smul_eq_zsmul,
         zsmul_eq_mul, b.sum_repr]
     rw [h1]
     refine (house_sum_le_sum_house _ _).trans (Finset.sum_le_sum fun i _ => ?_)
@@ -404,7 +529,7 @@ theorem anisoSmall_of_shortSmall (E : Type) [Field E] [NumberField E] [IsCMField
   have h4 : ∀ s : E, star s = s → h (w - s • v') (w - s • v') = h w w - 2 * (N * M) * s := by
     intro s hs'
     simp only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, map_smulₛₗ,
-      starRingEnd_apply, hs', smul_eq_mul, h1, h2, h3, RingHom.id_apply]
+      starRingEnd_apply, hs', smul_eq_mul, h1, h2, h3]
     ring
   obtain ⟨ρ, hρ, y, hy, hwρ⟩ := hRL (h w w) ((hL _).2 ⟨hint w hw w hw, (hs w w).symm⟩)
   obtain ⟨hyi, hys⟩ := (hL y).1 hy
@@ -434,3 +559,6 @@ theorem anisoSmall_of_shortSmall (E : Type) [Field E] [NumberField E] [IsCMField
     exact ⟨Or.inl (Or.inr hρ), hρ0⟩
 
 end GlobalTheory.AnisoSize
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.HeightProofs.AnisotropicFiniteLengthsOfShortLatticeVector =====

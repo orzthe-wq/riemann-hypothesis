@@ -71,10 +71,10 @@ private theorem infGL_scalar {F : Type} [Field F] [NumberField F] [IsTotallyReal
   refine ga_ext ?_ ?_
   · rw [TR.pInf_infGL]
     ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h1]
+    by_cases e : i = j <;> simp [e, h1]
   · rw [TR.pFin_infGL]
     ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]
+    by_cases e : i = j <;> simp [e, h2]
 
 private theorem fin_expU {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {ω : HChar F} (h : IsOfFinOrder ω)
     (z : Rinf F) : ω.1 (infId F (expU z)) = 1 := by
@@ -226,7 +226,7 @@ theorem kfin (hB : B1b) (k : InfinitePlace F → ℕ) (f : X (InfinitePlace F) �
     (hrel : Rel k f φ.1) : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun r => TR.cptRep F 2 r φ)) := by
   classical
   let T := Submodule.span ℂ (Set.range fun S : Set (InfinitePlace F) => TR.rt F 2 (TR.infGL F 2 (eS S)) φ)
-  haveI : FiniteDimensional ℂ T := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)
+  have : FiniteDimensional ℂ T := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)
   refine Submodule.finiteDimensional_of_le (S₂ := T) (Submodule.span_le.2 ?_)
   rintro _ ⟨r, rfl⟩
   have e : TR.cptRep F 2 r φ = TR.rt F 2 (TR.infGL F 2 (Unitary.toUnits r)) φ := rfl

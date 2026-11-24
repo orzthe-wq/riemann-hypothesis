@@ -148,7 +148,7 @@ theorem UpperTheory.Gal.Ord.lie :
   set τ : 𝓞 D.F →+* k := β.comp (b.t i) with hτ
   have hhom_mul : ∀ (c d : 𝓞 D.F) (h : HdR o.A), hom o (c * d) h = hom o c (hom o d h) := by
     intro c d h
-    simp [UpperTheory.Gal.Ord.hom, map_mul, Module.End.mul_apply]
+    simp [UpperTheory.Gal.Ord.hom, map_mul]
   have hhom_add : ∀ (c d : 𝓞 D.F) (h : HdR o.A), hom o (c + d) h = hom o c h + hom o d h := by
     intro c d h
     simp [UpperTheory.Gal.Ord.hom, map_add (f := _), LinearMap.add_apply]

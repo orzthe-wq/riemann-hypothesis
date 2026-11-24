@@ -6,8 +6,8 @@ public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Mathlib.RingTheory.SimpleRing.Principal
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmpPropsStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FractionFieldExtClosureInjectiveStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmpProps
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FractionFieldExtClosureInjective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,8 +56,8 @@ namespace GlobalTheory.FN
 
 theorem frac_sl_right_action : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε), (∀ f, T.sl 1 f = f) ∧ ∀ g h f, T.sl (g * h) f = T.sl h (T.sl g f) := by
   intro Ω _ _ _ ε T
-  obtain ⟨hext, hcl, -, -⟩ := GlobalTheory.T.fractionField_ext_closure_injective Ω ε T
-  obtain ⟨c1, cmul, -, -⟩ := GlobalTheory.T.cmp_mul_ofSL_and_up_cmp_eq_up_mob
+  obtain ⟨hext, hcl, -, -⟩ := _root_.GlobalTheory.FN.frac_ext_clo_inj Ω ε T
+  obtain ⟨c1, cmul, -, -⟩ := _root_.GlobalTheory.FN.cmp_props
   refine ⟨fun f => ?_, fun g h f => ?_⟩
   · have e : (T.sl 1 : T.K ≃ₐ[Ω] T.K).toRingEquiv.toRingHom = RingHom.id T.K := by
       apply hext

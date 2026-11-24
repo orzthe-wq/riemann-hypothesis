@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Std.Tactic.BVDecide.Normalize.Prop
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RankLie
 
 @[expose] public section
 
@@ -110,14 +111,9 @@ private lemma tan_pow {κ : Type} [Field κ] (p : ℕ) [CharP κ p] {S : Scheme.
   have h2 := congrArg (fun w => ((Additive.toMul w : GlobalTheory.TanPtMod.tanSub x G) : epsPtR x ⟶ G)) hv
   simpa using h2
 
-private theorem left_one_eq_hom_comp_eta {S : Scheme.{0}} {T A : Over S} [GrpObj A] :
-    Over.Hom.left (1 : T ⟶ A) = T.hom ≫ Over.Hom.left (η[A] : 𝟙_ (Over S) ⟶ A) := by
-  rw [Hom.one_def, Over.comp_left]
-  congr 1
-
 private theorem left_one_algPt_dualNumber_eq_epsPtR {κ : Type} [Field κ] {A : Over (Sp κ)} [GrpObj A] :
     Over.Hom.left (1 : algPt κ (DualNumber κ) ⟶ A) = Over.Hom.left (1 : epsPtR (𝟙 (Sp κ)) ⟶ A) := by
-  rw [left_one_eq_hom_comp_eta, left_one_eq_hom_comp_eta]
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.Chart.one_left', _root_.ReciprocityTheory.ChartRestriction.G.Chart.one_left']
   simp
 
 theorem UpperTheory.Gal.crystallineComparison.Mod.tanOne_of :

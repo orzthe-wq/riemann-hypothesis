@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationWeilPairingPropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationWeilPairingProperties
+public import Mathlib.RingTheory.RootsOfUnity.EnoughRootsOfUnity
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -49,7 +50,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
-public import Mathlib.RingTheory.RootsOfUnity.EnoughRootsOfUnity
 
 @[expose] public section
 
@@ -119,7 +119,7 @@ theorem chr_basis (u : ι → U) (i : ι) : chr v u (Multiplicative.ofAdd (v i))
   rw [chr_apply, Finset.prod_eq_single i]
   · simp
   · intro j _ hj
-    simp [Finsupp.single_apply, hj.symm]
+    simp [hj.symm]
   · simp
 
 theorem chr_eq (t : Multiplicative X →* U) : chr v (fun i => t (Multiplicative.ofAdd (v i))) = t := by
@@ -272,11 +272,11 @@ theorem orth_iff (hk : (k : C) ≠ 0)
     · obtain ⟨γ, hγ, hγ'⟩ := root_over N hk0 1 b' hb'
       let p' : N.QT k := ⟨(1, γ), hγ'.trans N.io_zero.symm⟩
       have e := N.wp_of_eq_zero (p * N.qTriv k (-z)) p' h1 rfl
-      rw [← (GlobalTheory.T.degenerationWeilPairing_properties C N k p _ p').2.2.2.2.1 hq, h p' rfl] at e
+      rw [← (_root_.GlobalTheory.Ex.WpPairing.wp_pairing C N k p _ p').2.2.2.2.1 hq, h p' rfl] at e
       rw [← hγ]
       exact e.symm
   · rintro ⟨p₀, hq, h1, h2⟩ p' hp'
-    rw [(GlobalTheory.T.degenerationWeilPairing_properties C N k p p₀ p').2.2.2.2.1 hq, (GlobalTheory.T.degenerationWeilPairing_properties C N k p₀ p' p').2.2.2.2.2.1 h1 h2, hp']
+    rw [(_root_.GlobalTheory.Ex.WpPairing.wp_pairing C N k p p₀ p').2.2.2.2.1 hq, (_root_.GlobalTheory.Ex.WpPairing.wp_pairing C N k p₀ p' p').2.2.2.2.2.1 h1 h2, hp']
     exact NumD.Gt.s_zero _
 
 end Main
@@ -307,7 +307,7 @@ theorem qStructure : ∀ (C : Type) [NormedField C] [IsAlgClosed C] (N : NumD C)
   have : p₀ = 1 := by
     refine Subtype.ext (Prod.ext h1 (NumD.Gt.ext hb (funext fun χ => ?_)))
     obtain ⟨p', rfl⟩ := h3 χ
-    rw [← (GlobalTheory.T.degenerationWeilPairing_properties C N _ p₀ p' p').2.2.2.2.2.1 h1 hb, ← (GlobalTheory.T.degenerationWeilPairing_properties C N _ p p₀ p').2.2.2.2.1 hq, hp p']
+    rw [← (_root_.GlobalTheory.Ex.WpPairing.wp_pairing C N _ p₀ p' p').2.2.2.2.2.1 h1 hb, ← (_root_.GlobalTheory.Ex.WpPairing.wp_pairing C N _ p p₀ p').2.2.2.2.1 hq, hp p']
     rfl
   rwa [this] at hq
 

@@ -68,7 +68,7 @@ theorem trace_inclR (x : E) :
   have e : Algebra.lmul (Fv F v) (Fv F v ⊗[F] E) (inclR (F := F) (Fv F v) x) =
       (Algebra.lmul F E x).baseChange (Fv F v) := by
     apply TensorProduct.AlgebraTensorModule.curry_injective
-    ext a e
+    ext a
     simp [inclR]
   rw [Algebra.trace_apply, e, LinearMap.trace_baseChange]
   rfl

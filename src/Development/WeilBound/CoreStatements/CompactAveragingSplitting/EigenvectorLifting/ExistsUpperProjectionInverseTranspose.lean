@@ -558,14 +558,14 @@ theorem upperProjection_right_inverse (h : GL (Fin (a + a')) k) : X0 k (finSumFi
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc h.val, Units.mul_inv, Matrix.one_mul]
   ext i j
   rw [frameMatrixFirstColumnBlock_mul_apply]
-  simp only [X0, transpose_apply, of_apply, one_apply, EmbeddingLike.apply_eq_iff_eq, Sum.inl.injEq, eq_comm, Matrix.one_apply]
+  simp only [X0, transpose_apply, of_apply, EmbeddingLike.apply_eq_iff_eq, Sum.inl.injEq, eq_comm, Matrix.one_apply]
 
 theorem lowerProjection_right_inverse (h : GL (Fin (a + a')) k) : Y0 k (finSumFinEquiv (m := a) (n := a')) * h.val *
     ((h⁻¹).val * (Y0 k (finSumFinEquiv (m := a) (n := a')))ᵀ) = 1 := by
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc h.val, Units.mul_inv, Matrix.one_mul]
   ext i j
   rw [frameMatrixSecondColumnBlock_mul_apply]
-  simp only [Y0, transpose_apply, of_apply, one_apply, EmbeddingLike.apply_eq_iff_eq, Sum.inr.injEq, eq_comm, Matrix.one_apply]
+  simp only [Y0, transpose_apply, of_apply, EmbeddingLike.apply_eq_iff_eq, Sum.inr.injEq, eq_comm, Matrix.one_apply]
 
 theorem gdet_block {b : GL (Fin (a + a')) k} (hb : IsBlockUpper b) {dA dD : kˣ} (h1 : (dA : k) = (blkA b).det)
     (h2 : (dD : k) = (blkD b).det) : gdet b = dA * dD := by

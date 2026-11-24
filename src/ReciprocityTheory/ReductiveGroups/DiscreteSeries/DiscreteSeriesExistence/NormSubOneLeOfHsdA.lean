@@ -3,50 +3,8 @@ module
 public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 public import Mathlib.Analysis.SpecialFunctions.SmoothTransition
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DefsRep
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 public import Mathlib.Analysis.InnerProductSpace.Calculus
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import Formalism.RealPlaceAnalysis.QuotientSettingHolds
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CasComm
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ComplexifiedDerivativeCommutator
@@ -73,13 +31,6 @@ theorem umat_mem_UJset (ε : Fin n → Bool) (g : Formalism.REAL.UJ ε) : Formal
 
 theorem continuous_umatA (ε : Fin n → Bool) : Continuous (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g) := Units.continuous_val.comp continuous_subtype_val
 
-private theorem Jm_sq_lemma (e : Fin n → Bool) : Formalism.REAL.Jm e * Formalism.REAL.Jm e = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  by_cases h : e a <;> simp [h]
-
 private theorem inv_eq_lemma_2 (e : Fin n → Bool) (g : Formalism.REAL.UJ e) :
     (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
       = Formalism.REAL.Jm e * (Formalism.MainNotions.S.umat g)ᴴ * Formalism.REAL.Jm e := by
@@ -88,7 +39,7 @@ private theorem inv_eq_lemma_2 (e : Fin n → Bool) (g : Formalism.REAL.UJ e) :
     calc (Formalism.REAL.Jm e * (Formalism.MainNotions.S.umat g)ᴴ * Formalism.REAL.Jm e) * Formalism.MainNotions.S.umat g
         = Formalism.REAL.Jm e * ((Formalism.MainNotions.S.umat g)ᴴ * Formalism.REAL.Jm e * Formalism.MainNotions.S.umat g) := by
           simp only [mul_assoc]
-      _ = 1 := by rw [hg, Jm_sq_lemma]
+      _ = 1 := by rw [hg, _root_.Formalism.REAL.Jm_mul_self]
   exact Units.inv_eq_of_mul_eq_one_left hl
 
 theorem isClosedEmbedding_umatA (ε : Fin n → Bool) :
@@ -124,7 +75,7 @@ theorem isClosedEmbedding_umatA (ε : Fin n → Bool) :
       have hl : (Formalism.REAL.Jm ε * Mᴴ * Formalism.REAL.Jm ε) * M = 1 := by
         calc (Formalism.REAL.Jm ε * Mᴴ * Formalism.REAL.Jm ε) * M = Formalism.REAL.Jm ε * (Mᴴ * Formalism.REAL.Jm ε * M) := by
               simp only [mul_assoc]
-          _ = 1 := by rw [hM, Jm_sq_lemma]
+          _ = 1 := by rw [hM, _root_.Formalism.REAL.Jm_mul_self]
       have hr : M * (Formalism.REAL.Jm ε * Mᴴ * Formalism.REAL.Jm ε) = 1 := by
         first
         | exact mul_eq_one_comm.mp hl
@@ -219,7 +170,6 @@ theorem cvA_near (hσ : IsURepOn (UJset ε) σ) {φ : Matrix (Fin n) (Fin n) ℂ
   have hw : w = ∫ g : Formalism.REAL.UJ ε, ((φ (Formalism.MainNotions.S.umat g) : ℂ)) • w ∂(Formalism.REAL.muG ε) := by
     rw [integral_smul_const]
     first
-    | rw [integral_ofReal, hφ1, Complex.ofReal_one, one_smul]
     | rw [integral_complex_ofReal, hφ1, Complex.ofReal_one, one_smul]
   have hdiff : ∫ g : Formalism.REAL.UJ ε, ((φ (Formalism.MainNotions.S.umat g) : ℂ)) • (σ (Formalism.MainNotions.S.umat g) w - w) ∂(Formalism.REAL.muG ε)
       = cvA ε σ (fun g => (φ g : ℂ)) w - w := by

@@ -53,6 +53,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Si
 public import Mathlib.RingTheory.LocalProperties.IntegrallyClosed
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.CanonGenIsGen
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

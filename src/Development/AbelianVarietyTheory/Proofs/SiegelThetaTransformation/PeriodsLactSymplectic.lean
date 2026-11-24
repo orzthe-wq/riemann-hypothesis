@@ -67,9 +67,7 @@ noncomputable def spOf (γ : GL (Fin r) E) : Matrix (Fin g ⊕ Fin g) (Fin g ⊕
 
 
 omit [NumberField E] [IsCMField E] in
-theorem gl_mulVec_inv_mulVec (γ : GL (Fin r) E) (v : Fin r → E) :
-    (γ : Matrix (Fin r) (Fin r) E) *ᵥ ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v = v := by
-  rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
+alias gl_mulVec_inv_mulVec := _root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec
 
 variable {X bas}
 

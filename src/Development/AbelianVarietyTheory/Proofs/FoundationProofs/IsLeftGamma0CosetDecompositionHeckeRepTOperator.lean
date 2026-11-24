@@ -76,8 +76,8 @@ namespace GlobalTheory.EisM
 open GlobalTheory.EisM.LRepTriangular in
 theorem lRep_DT_repT : ∀ L q : ℕ, q.Prime → ¬ q ∣ L → LRep L (DT L q) (repT q) := by
   intro L q hq hqL
-  haveI : Fact q.Prime := ⟨hq⟩
-  haveI : NeZero q := ⟨hq.ne_zero⟩
+  have : Fact q.Prime := ⟨hq⟩
+  have : NeZero q := ⟨hq.ne_zero⟩
   have hq0 : (q : ℤ) ≠ 0 := by exact_mod_cast hq.ne_zero
   refine ⟨?_, ?_, ?_⟩
   · rintro ⟨γ, x⟩ -

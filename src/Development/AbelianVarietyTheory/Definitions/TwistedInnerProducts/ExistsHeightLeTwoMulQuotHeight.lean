@@ -1,25 +1,36 @@
 module
 
+public import Formalism.UnipotentAdelicQuotients.BruhatFunctionExistsVariant
+public import Mathlib.MeasureTheory.Group.Integral
+public import Mathlib.MeasureTheory.Integral.Bochner.Set
+public import Mathlib.Topology.UrysohnsLemma
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
 public import Formalism.LocalToGlobal.BesselHermitianTheta.TiedSmooth
-public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.QuotIntegrableIffCutoff
 public import Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyNormFinLeOne
-import Development.AbelianVarietyTheory.Definitions.Foundations.OfInfProjInfMulOfFinProjFin
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -29,6 +40,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,8 +55,411 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.Foundations.OfInfProjInfMulOfFinProjFin
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BruhatFunctionExistsClosedSubgroup, Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.QuotIntegrableIffCutoff, Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHeightLeTwoMulQuotHeight
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BruhatFunctionExistsClosedSubgroup =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BruhatFunctionExistsClosedSubgroup", "h": "module\n\npublic import Formalism.UnipotentAdelicQuotients.BruhatFunctionExistsVariant\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.MeasureTheory.Group.Integral\npublic import Mathlib.MeasureTheory.Integral.Bochner.Set\npublic import Mathlib.Topology.UrysohnsLemma\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+namespace GlobalTheory
+
+open MeasureTheory Pointwise in
+private lemma exists_nonneg_continuous_ne_zero_on_cosets {G : Type*} [Group G] [TopologicalSpace G]
+    [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
+    (H : Subgroup G) (hH : IsClosed (H : Set G)) :
+    ∃ f : G → ℝ, Continuous f ∧ (∀ x, 0 ≤ f x) ∧
+      (∀ K : Set G, IsCompact K → IsCompact (tsupport f ∩ (K * (H : Set G)))) ∧
+      ∀ x, ∃ h : H, f (x * h) ≠ 0 := by
+
+  obtain ⟨V₀, hV₀c, hV₀n⟩ := exists_compact_mem_nhds (1 : G)
+  obtain ⟨V, hVc, hVn, hVinv⟩ : ∃ V : Set G, IsCompact V ∧ V ∈ nhds (1 : G) ∧ V⁻¹ = V :=
+    ⟨V₀ ∩ V₀⁻¹, hV₀c.inter_right hV₀c.inv.isClosed, Filter.inter_mem hV₀n (inv_mem_nhds_one G hV₀n),
+      by rw [Set.inter_inv, inv_inv, Set.inter_comm]⟩
+  have hPc : ∀ n : ℕ, IsCompact (V ^ n) := by
+    intro n
+    induction n with
+    | zero => rw [pow_zero, ← Set.singleton_one]; exact isCompact_singleton
+    | succ n ih => rw [pow_succ]; exact ih.mul hVc
+  have h1V : (1 : G) ∈ interior V := mem_interior_iff_mem_nhds.2 hVn
+  have hPint : ∀ n : ℕ, V ^ n ⊆ interior (V ^ (n + 1)) := by
+    intro n x hx
+    have hx' : x ∈ V ^ n * interior V := by simpa using Set.mul_mem_mul hx h1V
+    refine interior_maximal ?_ (isOpen_interior.mul_left) hx'
+    rw [pow_succ]
+    exact Set.mul_subset_mul subset_rfl interior_subset
+  have hPinv : ∀ n : ℕ, (V ^ n)⁻¹ = V ^ n := fun n => by rw [← inv_pow, hVinv]
+
+  obtain ⟨Rel, hRel⟩ : ∃ Rel : G → G → Prop, ∀ y z,
+      Rel y z ↔ ∃ n : ℕ, ∃ a ∈ V ^ n, ∃ h ∈ H, z = a * y * h := ⟨_, fun _ _ => Iff.rfl⟩
+  have hrefl : ∀ y, Rel y y := fun y =>
+    (hRel y y).2 ⟨0, 1, by simp, 1, H.one_mem, by simp⟩
+  have hsymm : ∀ y z, Rel y z → Rel z y := by
+    intro y z hyz
+    obtain ⟨n, a, ha, h, hh, rfl⟩ := (hRel y z).1 hyz
+    refine (hRel _ _).2 ⟨n, a⁻¹, ?_, h⁻¹, H.inv_mem hh, by group⟩
+    rw [← hPinv n]
+    exact Set.inv_mem_inv.2 ha
+  have htrans : ∀ y z w, Rel y z → Rel z w → Rel y w := by
+    intro y z w hyz hzw
+    obtain ⟨n, a, ha, h, hh, rfl⟩ := (hRel y z).1 hyz
+    obtain ⟨m, b, hb, k, hk, rfl⟩ := (hRel _ w).1 hzw
+    refine (hRel _ _).2 ⟨m + n, b * a, ?_, h * k, H.mul_mem hh hk, by group⟩
+    rw [pow_add]
+    exact Set.mul_mem_mul hb ha
+
+  let σ : G → G := fun y => Classical.epsilon (Rel y)
+  have hσ : ∀ y, Rel y (σ y) := fun y => Classical.epsilon_spec ⟨y, hrefl y⟩
+  have hσeq : ∀ y z, Rel y z → σ z = σ y := by
+    intro y z hyz
+    change Classical.epsilon (Rel z) = Classical.epsilon (Rel y)
+    congr 1
+    funext w
+    exact propext ⟨fun h => htrans _ _ _ hyz h, fun h => htrans _ _ _ (hsymm _ _ hyz) h⟩
+
+  let U : G → ℕ → Set G := fun r m => interior (V ^ (m + 1)) * {r} * (H : Set G)
+  have hUo : ∀ r m, IsOpen (U r m) := fun r m => isOpen_interior.mul_right.mul_right
+  have hUrel : ∀ r m z, z ∈ U r m → Rel r z := by
+    rintro r m z ⟨_, ⟨a, ha, _, rfl, rfl⟩, h, hh, rfl⟩
+    exact (hRel _ _).2 ⟨m + 1, a, interior_subset ha, h, hh, rfl⟩
+  have hUH : ∀ r m z, z ∈ U r m → ∀ h ∈ H, z * h ∈ U r m := by
+    rintro r m z ⟨x, hx, k, hk, rfl⟩ h hh
+    exact ⟨x, hx, k * h, H.mul_mem hk hh, by rw [mul_assoc]⟩
+  have hUsub : ∀ r m, U r m ⊆ V ^ (m + 1) * {r} * (H : Set G) := fun r m =>
+    Set.mul_subset_mul (Set.mul_subset_mul interior_subset subset_rfl) subset_rfl
+  have hexh : ∀ r z, Rel r z → ∃ m, z ∈ U r m := by
+    intro r z hz
+    obtain ⟨n, a, ha, h, hh, rfl⟩ := (hRel r z).1 hz
+    exact ⟨n, Set.mul_mem_mul (Set.mul_mem_mul (hPint n ha) rfl) hh⟩
+
+  let C : G → ℕ → Set G := fun r n => (V ^ (n + 1) * {r}) \ ⋃ k, ⋃ (_ : k < n), U r k
+  let D : G → ℕ → Set G := fun r n => ⋃ k, ⋃ (_ : k < n), V ^ k * {r} * (H : Set G)
+  have hCc : ∀ r n, IsCompact (C r n) := fun r n =>
+    ((hPc _).mul isCompact_singleton).diff (isOpen_iUnion fun k => isOpen_iUnion fun _ => hUo r k)
+  have hDc : ∀ r n, IsClosed (D r n) := by
+    intro r n
+    have : D r n = ⋃ k ∈ {k : ℕ | k < n}, V ^ k * {r} * (H : Set G) := rfl
+    rw [this]
+    exact (Set.finite_lt_nat n).isClosed_biUnion fun k _ =>
+      hH.mul_left_of_isCompact ((hPc k).mul isCompact_singleton)
+  have hCD : ∀ r n, Disjoint (C r n) (D r n) := by
+    intro r n
+    rw [Set.disjoint_left]
+    rintro x ⟨-, hxU⟩ hxD
+    simp only [D, Set.mem_iUnion] at hxD
+    obtain ⟨k, hk, hx⟩ := hxD
+    exact hxU (Set.mem_iUnion.2 ⟨k, Set.mem_iUnion.2 ⟨hk,
+      Set.mul_subset_mul (Set.mul_subset_mul (hPint k) subset_rfl) subset_rfl hx⟩⟩)
+  choose φ hφ1 hφ0 hφcs hφI using fun r n =>
+    exists_continuous_one_zero_of_isCompact (hCc r n) (hDc r n) (hCD r n)
+
+  have hDU : ∀ r m n, m + 2 ≤ n → U r m ⊆ D r n := by
+    intro r m n hmn z hz
+    exact Set.mem_iUnion.2 ⟨m + 1, Set.mem_iUnion.2 ⟨by omega, hUsub r m hz⟩⟩
+  have hloc : ∀ r m z, z ∈ U r m →
+      ∑ᶠ n, φ r n z = ∑ n ∈ Finset.range (m + 2), φ r n z := by
+    intro r m z hz
+    apply finsum_eq_sum_of_support_subset
+    intro n hn
+    by_contra hn'
+    simp only [Finset.coe_range, Set.mem_Iio, not_lt] at hn'
+    exact hn (hφ0 r n (hDU r m n hn' hz))
+  have hσU : ∀ y m z, z ∈ U (σ y) m → σ z = σ y := fun y m z hz =>
+    (hσeq y z (htrans _ _ _ (hσ y) (hUrel _ m z hz)))
+  have hyU : ∀ y, ∃ m, y ∈ U (σ y) m := fun y => hexh _ _ (hsymm _ _ (hσ y))
+  have hfeq : ∀ y m z, z ∈ U (σ y) m →
+      ∑ᶠ n, φ (σ z) n z = ∑ n ∈ Finset.range (m + 2), φ (σ y) n z := by
+    intro y m z hz
+    rw [hσU y m z hz]
+    exact hloc _ m z hz
+  refine ⟨fun y => ∑ᶠ n, φ (σ y) n y, ?_, fun y => finsum_nonneg fun n => (hφI _ _ y).1, ?_, ?_⟩
+  · rw [continuous_iff_continuousAt]
+    intro y
+    obtain ⟨m, hm⟩ := hyU y
+    have hc : Continuous fun z => ∑ n ∈ Finset.range (m + 2), φ (σ y) n z :=
+      continuous_finsetSum _ fun n _ => (φ (σ y) n).continuous
+    refine hc.continuousAt.congr ?_
+    filter_upwards [(hUo _ m).mem_nhds hm] with z hz
+    exact (hfeq y m z hz).symm
+  ·
+    have hloc' : ∀ y, ∃ O Q : Set G, IsOpen O ∧ y ∈ O ∧ (∀ z ∈ O, ∀ h ∈ H, z * h ∈ O) ∧
+        IsCompact Q ∧ tsupport (fun y => ∑ᶠ n, φ (σ y) n y) ∩ O ⊆ Q := by
+      intro y
+      obtain ⟨m, hm⟩ := hyU y
+      refine ⟨U (σ y) m, ⋃ n ∈ Finset.range (m + 2), tsupport (φ (σ y) n), hUo _ m, hm,
+        hUH _ m, (Finset.range (m + 2)).isCompact_biUnion fun n _ => hφcs _ n, ?_⟩
+      intro x hx
+      rw [Set.inter_comm] at hx
+      refine closure_minimal ?_ ((Finset.range (m + 2)).isCompact_biUnion
+        fun n _ => hφcs _ n).isClosed ((hUo _ m).inter_closure hx)
+      rintro z ⟨hzU, hz⟩
+      rw [Function.mem_support, hfeq y m z hzU] at hz
+      obtain ⟨n, hn, hne⟩ := Finset.exists_ne_zero_of_sum_ne_zero hz
+      exact Set.mem_biUnion hn (subset_tsupport _ hne)
+    choose O Q hOo hyO hOH hQc hOQ using hloc'
+    intro K hK
+    obtain ⟨t, ht⟩ := hK.elim_finite_subcover (fun y : K => O y) (fun y => hOo y)
+      fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hyO y⟩
+    refine ((t.isCompact_biUnion fun i _ => hQc i)).of_isClosed_subset
+      ((isClosed_tsupport _).inter (hH.mul_left_of_isCompact hK)) ?_
+    rintro x ⟨hxs, _, hk, h, hh, rfl⟩
+    obtain ⟨i, hi, hkO⟩ := Set.mem_iUnion₂.1 (ht hk)
+    exact Set.mem_biUnion hi (hOQ i ⟨hxs, hOH i _ hkO h hh⟩)
+  · intro y
+    set r := σ y with hr
+    have hex : ∃ m, y ∈ U r m := hyU y
+    classical
+    let m := Nat.find hex
+    have hm : y ∈ U r m := Nat.find_spec hex
+    obtain ⟨_, ⟨a, ha, _, rfl, rfl⟩, h, hh, hya⟩ := hm
+    refine ⟨⟨h, hh⟩⁻¹, ?_⟩
+    have hz : y * ((⟨h, hh⟩ : H)⁻¹ : H) = a * r := by
+      rw [← hya]; simp
+    rw [hz]
+    have hzU : a * r ∈ U r m := ⟨a * r, Set.mul_mem_mul ha rfl, 1, H.one_mem, mul_one _⟩
+    have hzC : a * r ∈ C r m := by
+      refine ⟨Set.mul_mem_mul (interior_subset ha) rfl, ?_⟩
+      simp only [Set.mem_iUnion]
+      rintro ⟨k, hk, hkU⟩
+      exact Nat.find_min hex hk (hya ▸ hUH r k _ hkU h hh)
+    change ∑ᶠ n, φ (σ (a * r)) n (a * r) ≠ 0
+    rw [hfeq y m _ hzU]
+    refine (lt_of_lt_of_le ?_ (Finset.single_le_sum (fun n _ => (hφI _ n _).1)
+      (Finset.mem_range.2 (by omega : m < m + 2)))).ne'
+    rw [hφ1 _ m hzC]
+    norm_num
+
+open MeasureTheory Pointwise in
+private lemma exists_bruhat_function_of_positive_on_cosets {G : Type*} [Group G] [TopologicalSpace G]
+    [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
+    (H : Subgroup G) (hH : IsClosed (H : Set G)) (μ : Measure H) [μ.IsHaarMeasure]
+    (f : G → ℝ) (hf : Continuous f) (hf0 : ∀ x, 0 ≤ f x)
+    (hfK : ∀ K : Set G, IsCompact K → IsCompact (tsupport f ∩ (K * (H : Set G))))
+    (hpos : ∀ x, ∃ h : H, f (x * h) ≠ 0) :
+    ∃ β : G → ℝ, Continuous β ∧ (∀ x, 0 ≤ β x) ∧
+      (∀ K : Set G, IsCompact K → IsCompact (tsupport β ∩ (K * (H : Set G)))) ∧
+      ∀ x, ∫ h : H, β (x * h) ∂μ = 1 := by
+  have hemb : Topology.IsClosedEmbedding ((↑) : H → G) := hH.isClosedEmbedding_subtypeVal
+
+  have hsupp : ∀ K : Set G, IsCompact K → ∃ S : Set H, IsCompact S ∧
+      ∀ x ∈ K, ∀ h : H, h ∉ S → f (x * h) = 0 := by
+    intro K hK
+    refine ⟨(↑) ⁻¹' (K⁻¹ * (tsupport f ∩ (K * (H : Set G)))),
+      hemb.isCompact_preimage (hK.inv.mul (hfK K hK)), ?_⟩
+    intro x hx h hS
+    by_contra hne
+    apply hS
+    refine ⟨x⁻¹, by simpa using hx, x * h, ⟨subset_tsupport _ hne, x, hx, h, h.2, rfl⟩, ?_⟩
+    simp
+  have hcont_h : ∀ x, Continuous fun h : H => f (x * h) :=
+    fun x => hf.comp (continuous_const.mul continuous_subtype_val)
+  have hcs : ∀ x, HasCompactSupport fun h : H => f (x * h) := by
+    intro x
+    obtain ⟨S, hS, hSf⟩ := hsupp {x} isCompact_singleton
+    exact HasCompactSupport.intro hS fun h hh => hSf x rfl h hh
+  set F : G → ℝ := fun x => ∫ h : H, f (x * h) ∂μ with hFdef
+  have hFpos : ∀ x, 0 < F x := by
+    intro x
+    obtain ⟨h, hh⟩ := hpos x
+    exact (hcont_h x).integral_pos_of_hasCompactSupport_nonneg_nonzero (hcs x)
+      (fun h => hf0 _) hh
+  have hFinv : ∀ x (h : H), F (x * h) = F x := by
+    intro x h
+    simp only [hFdef]
+    have := integral_mul_left_eq_self (μ := μ) (fun k : H => f (x * k)) h
+    rw [← this]
+    congr 1
+    ext k
+    simp [mul_assoc]
+  have hFcont : Continuous F := by
+    rw [continuous_iff_continuousAt]
+    intro x₀
+    obtain ⟨K, hK, hKn⟩ := exists_compact_mem_nhds x₀
+    obtain ⟨S, hS, hSf⟩ := hsupp K hK
+    have hc : ContinuousOn F K :=
+      continuousOn_integral_of_compact_support (f := fun x (h : H) => f (x * h)) hS
+        (hf.comp (continuous_fst.mul (continuous_subtype_val.comp continuous_snd))).continuousOn
+        fun x h hx hh => hSf x hx h hh
+    exact hc.continuousAt hKn
+  refine ⟨fun x => f x / F x, hf.div hFcont fun x => (hFpos x).ne',
+    fun x => div_nonneg (hf0 x) (hFpos x).le, ?_, ?_⟩
+  · intro K hK
+    have hsub : tsupport (fun x => f x / F x) ⊆ tsupport f := by
+      apply closure_mono
+      intro x hx
+      simp only [Function.mem_support] at hx ⊢
+      intro h0
+      simp [h0] at hx
+    refine ((hfK K hK).inter_right (isClosed_tsupport (fun x => f x / F x))).of_isClosed_subset
+      ((isClosed_tsupport _).inter (hH.mul_left_of_isCompact hK)) ?_
+    rintro y ⟨hy1, hy2⟩
+    exact ⟨⟨hsub hy1, hy2⟩, hy1⟩
+  · intro x
+    simp only [hFinv]
+    rw [integral_div]
+    exact div_self (hFpos x).ne'
+
+
+open MeasureTheory Pointwise in
+theorem _root_.GlobalTheory.bruhatFunctionExists_closedSubgroup : _root_.HeckeCharacterZeroLocus.BruhatFunctionExistsVariant.{u} := by
+  unfold _root_.HeckeCharacterZeroLocus.BruhatFunctionExistsVariant
+  intro G _ _ _ _ _ _ _ H hH μ _
+  obtain ⟨f, hf, hf0, hfK, hpos⟩ := exists_nonneg_continuous_ne_zero_on_cosets H hH
+  exact exists_bruhat_function_of_positive_on_cosets H hH μ f hf hf0 hfK hpos
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BruhatFunctionExistsClosedSubgroup =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.QuotIntegrableIffCutoff =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.QuotIntegrableIffCutoff", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.InnerProductSpace.Basic\npublic import Mathlib.MeasureTheory.Integral.Bochner.Basic\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BruhatFunctionExistsClosedSubgroup\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory Topology
+open scoped ENNReal
+
+noncomputable section
+
+namespace GlobalTheory.Tw
+
+section Defs
+variable {G : Type} [Group G] [MeasurableSpace G]
+
+abbrev RCoset (T : Subgroup G) : Type := Quotient (QuotientGroup.rightRel T)
+
+def IsQuotMeasure (T : Subgroup G) (μ : Measure G) (μT : Measure T) (ν : Measure (RCoset T)) : Prop :=
+  ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂μ = ∫⁻ c, ∫⁻ t : T, f (t * Quotient.out c) ∂μT ∂ν
+
+def IsCosetCutoff (T : Subgroup G) (μT : Measure T) (β : G → NNReal) : Prop :=
+  Measurable β ∧ ∀ x, ∫⁻ t : T, β (t * x) ∂μT = 1
+
+def quotMeas (T : Subgroup G) (μ : Measure G) (μT : Measure T) : Measure (RCoset T) :=
+  Classical.epsilon (IsQuotMeasure T μ μT)
+
+def quotInt {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (T : Subgroup G) (μ : Measure G) (μT : Measure T)
+    (F : G → E) : E :=
+  ∫ c, F (Quotient.out c) ∂quotMeas T μ μT
+
+
+omit [MeasurableSpace G] in
+theorem apply_out_mk {T : Subgroup G} {α : Type} {F : G → α} (hF : ∀ t ∈ T, ∀ x, F (t * x) = F x) (x : G) :
+    F (Quotient.out (Quotient.mk (QuotientGroup.rightRel T) x)) = F x := by
+  have h := Quotient.mk_out (s := QuotientGroup.rightRel T) x
+  rw [QuotientGroup.rightRel_apply] at h
+  have := hF _ h (Quotient.out (Quotient.mk (QuotientGroup.rightRel T) x))
+  rw [inv_mul_cancel_right] at this
+  exact this.symm
+
+theorem measurable_comp_out {T : Subgroup G} {α : Type} [MeasurableSpace α] {F : G → α} (hm : Measurable F)
+    (hF : ∀ t ∈ T, ∀ x, F (t * x) = F x) : Measurable fun c : RCoset T => F (Quotient.out c) := by
+  refine measurable_from_quotient.2 ?_
+  have : (fun c : RCoset T => F (Quotient.out c)) ∘ Quotient.mk'' = F := funext (apply_out_mk hF)
+  rwa [this]
+
+end Defs
+
+section Exist
+variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
+  [MeasurableSpace G] [BorelSpace G] {T : Subgroup G} {μ : Measure G} {μT : Measure T}
+
+
+omit [SecondCountableTopology G] in
+theorem exists_isCosetCutoff [LocallyCompactSpace G] [T2Space G] (hT : IsClosed (T : Set G)) [μT.IsHaarMeasure]
+    [μT.IsInvInvariant] : ∃ β : G → NNReal, Continuous β ∧ IsCosetCutoff T μT β := by
+  obtain ⟨β, hc, h0, -, h1⟩ := GlobalTheory.bruhatFunctionExists_closedSubgroup G T hT μT inferInstance
+  have hcont : Continuous fun x => (β x⁻¹).toNNReal := continuous_real_toNNReal.comp (hc.comp continuous_inv)
+  refine ⟨fun x => (β x⁻¹).toNNReal, hcont, hcont.measurable, fun x => ?_⟩
+  have hi : Integrable (fun h : T => β (x⁻¹ * h)) μT := by
+    by_contra hn
+    have := h1 x⁻¹
+    rw [integral_undef hn] at this
+    exact zero_ne_one this
+  have h2 := ofReal_integral_eq_lintegral_ofReal hi (Filter.Eventually.of_forall fun h => h0 _)
+  rw [h1, ENNReal.ofReal_one, ← lintegral_inv_eq_self] at h2
+  rw [h2]
+  simp [ENNReal.ofReal]
+
+theorem IsCosetCutoff.isQuotMeasure [SFinite μ] [μ.IsMulLeftInvariant] [SFinite μT] [μT.IsMulLeftInvariant]
+    [μT.IsInvInvariant] {β : G → NNReal} (hβ : IsCosetCutoff T μT β) :
+    IsQuotMeasure T μ μT ((μ.withDensity fun x => β x).map (Quotient.mk (QuotientGroup.rightRel T))) := by
+  intro f hf
+  have hb : Measurable fun x => (β x : ℝ≥0∞) := hβ.1.coe_nnreal_ennreal
+  have hmul : Measurable fun p : G × T => (p.2 : G) * p.1 :=
+    (measurable_subtype_coe.comp measurable_snd).mul measurable_fst
+  have hmul' : Measurable fun p : G × T => ((p.2⁻¹ : T) : G) * p.1 :=
+    (measurable_subtype_coe.comp measurable_snd.inv).mul measurable_fst
+  have : μT.IsMulRightInvariant := by
+    rw [← Measure.inv_eq_self μT]; infer_instance
+  have hF : Measurable fun x => ∫⁻ t : T, f (t * x) ∂μT := (hf.comp hmul).lintegral_prod_right'
+  have hinv : ∀ s ∈ T, ∀ x, ∫⁻ t : T, f (t * (s * x)) ∂μT = ∫⁻ t : T, f (t * x) ∂μT := fun s hs x => by
+    rw [← lintegral_mul_right_eq_self (μ := μT) (fun t : T => f (t * x)) ⟨s, hs⟩]
+    simp [mul_assoc]
+  have hmk : Measurable (Quotient.mk (QuotientGroup.rightRel T)) := measurable_quotient_mk''
+  rw [lintegral_map (measurable_comp_out hF hinv) hmk,
+    lintegral_withDensity_eq_lintegral_mul _ hb (g := fun a => ∫⁻ t : T,
+      f (t * Quotient.out (Quotient.mk (QuotientGroup.rightRel T) a)) ∂μT) ((measurable_comp_out hF hinv).comp hmk)]
+  have e1 : ∀ x, ((fun x => (β x : ℝ≥0∞)) * fun a => ∫⁻ t : T,
+      f (t * Quotient.out (Quotient.mk (QuotientGroup.rightRel T) a)) ∂μT) x = ∫⁻ t : T, β x * f (t * x) ∂μT := fun x => by
+    rw [Pi.mul_apply, apply_out_mk (F := fun x => ∫⁻ t : T, f (t * x) ∂μT) hinv, lintegral_const_mul' _ _ ENNReal.coe_ne_top]
+  rw [lintegral_congr e1, lintegral_lintegral_swap ((hb.comp measurable_fst).mul (hf.comp hmul)).aemeasurable]
+  have e2 : ∀ t : T, ∫⁻ x, β x * f (t * x) ∂μ = ∫⁻ x, β ((t⁻¹ : T) * x) * f x ∂μ := fun t => by
+    rw [← lintegral_mul_left_eq_self (μ := μ) (fun x => β ((t⁻¹ : T) * x) * f x) t]
+    simp
+  rw [lintegral_congr e2,
+    ← lintegral_lintegral_swap (f := fun x (t : T) => β ((t⁻¹ : T) * x) * f x)
+      ((hb.comp hmul').mul (hf.comp measurable_fst)).aemeasurable]
+  refine lintegral_congr fun x => ?_
+  rw [lintegral_mul_const _ (f := fun t : T => (β ((t⁻¹ : T) * x) : ℝ≥0∞)) (hb.comp (hmul'.comp (measurable_prodMk_left))),
+    lintegral_inv_eq_self (μ := μT) (fun t : T => (β (t * x) : ℝ≥0∞)), hβ.2, one_mul]
+
+
+omit [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [BorelSpace G] in
+theorem IsQuotMeasure.eq_map {ν : Measure (RCoset T)} (hν : IsQuotMeasure T μ μT ν) {β : G → NNReal}
+    (hβ : IsCosetCutoff T μT β) :
+    ν = (μ.withDensity fun x => β x).map (Quotient.mk (QuotientGroup.rightRel T)) := by
+  have hb : Measurable fun x => (β x : ℝ≥0∞) := hβ.1.coe_nnreal_ennreal
+  ext S hS
+  have hS' : MeasurableSet (Quotient.mk (QuotientGroup.rightRel T) ⁻¹' S) := measurable_quotient_mk'' hS
+  rw [Measure.map_apply measurable_quotient_mk'' hS, withDensity_apply _ hS', ← lintegral_indicator hS',
+    hν _ (hb.indicator hS'), ← lintegral_indicator_one hS]
+  refine lintegral_congr fun c => ?_
+  have hq : ∀ t : T, Quotient.mk (QuotientGroup.rightRel T) (t * c.out) = c := fun t => by
+    conv_rhs => rw [← c.out_eq]
+    refine Quotient.sound (QuotientGroup.rightRel_apply.2 ?_)
+    simp
+  by_cases hc : c ∈ S
+  · simp [Set.indicator, hq, hc, hβ.2]
+  · simp [Set.indicator, hq, hc]
+
+variable [LocallyCompactSpace G] [T2Space G] [SFinite μ] [μ.IsMulLeftInvariant] [μT.IsHaarMeasure] [μT.IsInvInvariant]
+
+theorem isQuotMeasure_quotMeas (hT : IsClosed (T : Set G)) : IsQuotMeasure T μ μT (quotMeas T μ μT) := by
+  obtain ⟨β, -, hβ⟩ := exists_isCosetCutoff (μT := μT) hT
+  have : LocallyCompactSpace T := hT.locallyCompactSpace
+  have : SecondCountableTopology T := TopologicalSpace.Subtype.secondCountableTopology (T : Set G)
+  exact Classical.epsilon_spec ⟨_, hβ.isQuotMeasure⟩
+
+end Exist
+
+end GlobalTheory.Tw
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.QuotIntegrableIffCutoff =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHeightLeTwoMulQuotHeight =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHeightLeTwoMulQuotHeight", "h": "module\n\npublic import Formalism.LocalToGlobal.BesselHermitianTheta.TiedSmooth\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.QuotIntegrableIffCutoff\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyNormFinLeOne\nimport Development.AbelianVarietyTheory.Definitions.Foundations.OfInfProjInfMulOfFinProjFin\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -292,28 +707,6 @@ theorem IsQuotIntL1.unique (hR : IsClosed (R : Set G)) (h : IsQuotIntL1 μR μG 
   rw [(h.cutoff hβ).2, (h'.cutoff hβ).2]
 
 
-open GlobalTheory.Tw in
-theorem isQuotIntL1_iff (hR : IsClosed (R : Set G)) (hm : Measurable f) :
-    IsQuotIntL1 μR μG f z ↔
-      (∀ s ∈ R, ∀ x, f (s * x) = f x) ∧ QuotIntegrable R μG μR f ∧ z = quotInt R μG μR f := by
-  obtain ⟨β, -, hβ⟩ := exists_isCosetCutoff (μT := μR) hR
-  have : LocallyCompactSpace R := hR.locallyCompactSpace
-  have : SecondCountableTopology R := TopologicalSpace.Subtype.secondCountableTopology (R : Set G)
-  have : μR.IsMulRightInvariant := by rw [← Measure.inv_eq_self μR]; infer_instance
-  constructor
-  · intro h
-    have hl : ∀ s ∈ R, ∀ x, f (s * x) = f x := fun s hs => h.left hs
-    exact ⟨hl, (quotIntegrable_iff_cutoff hR hβ hm hl).2 (h.cutoff hβ).1,
-      by rw [quotInt_eq_cutoff hR hβ hm hl, (h.cutoff hβ).2]⟩
-  · rintro ⟨hl, hi, rfl⟩
-    have hb := fun x => integrable_of_lintegral_eq_one (μ := μR) (b := fun t : R => β (t * x))
-      (hβ.1.comp (measurable_subtype_coe.mul_const x)) (hβ.2 x)
-    have hb' := fun x => (hb x).2
-    refine ⟨fun x => (β x : ℝ) • f x, (quotIntegrable_iff_cutoff hR hβ hm hl).1 hi, fun x => ?_, fun x => ?_,
-      quotInt_eq_cutoff hR hβ hm hl⟩
-    · simpa only [hl _ (Subtype.property _)] using (hb x).1.smul_const (f x)
-    · simp only [hl _ (Subtype.property _), integral_smul_const, hb', one_smul]
-
 end Quot
 
 section Unitary
@@ -462,15 +855,6 @@ def RapidDec (Φ : GA D V → X) : Prop :=
 
 def decaySize (N : ℕ) (Φ : GA D V → X) : ℝ≥0∞ := ⨆ g, ENNReal.ofReal (‖Φ g‖ * quotHeight V g ^ N)
 
-theorem rapidDec_exp_neg : RapidDec V fun g => (Real.exp (-quotHeight V g) : ℂ) := by
-  refine ⟨fun γ hγ g => by simp only [quotHeight_left V hγ],
-    Complex.continuous_ofReal.comp (Real.continuous_exp.comp (continuous_quotHeight V).neg),
-    fun N => ⟨N.factorial, fun g => ?_⟩⟩
-  have h := Real.pow_div_factorial_le_exp _ (quotHeight_pos V g).le N
-  rw [div_le_iff₀ (by positivity)] at h
-  rw [Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, Real.exp_neg, inv_mul_le_iff₀ (Real.exp_pos _)]
-  exact h
-
 variable {V}
 
 theorem decaySize_le_iff {N : ℕ} {Φ : GA D V → X} {C : ℝ} (hC : 0 ≤ C) :
@@ -578,3 +962,6 @@ theorem isQuotIntL1_bot {G : Type} [Group G] [MeasurableSpace G] {μG : Measure 
 end GlobalTheory.Grow
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHeightLeTwoMulQuotHeight =====

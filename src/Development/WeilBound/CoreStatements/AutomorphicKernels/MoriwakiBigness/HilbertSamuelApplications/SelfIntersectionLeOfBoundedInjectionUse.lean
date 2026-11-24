@@ -1,10 +1,11 @@
 module
 
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.MoriwakiBigness.HilbertSamuelApplications.SmallGeneratedCountUpperOfUse
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PackingStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PackingAlt
+public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNefOnGenericOfSemipos
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PConstantShift
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PLocalRep
-public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PNefOnGenericOfSemipos
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.SmallSectionCountLeOfInjOn
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -58,6 +59,6 @@ theorem selfIntersection_le_of_boundedInjection_use :
       GroundTheory.Heights₂.Heights.HilbertSamuel.LocalRep.proof
       GroundTheory.Heights₂.Heights.HilbertSamuel.ConstantShift.proof
       (GroundTheory.Heights₂.Heights.HilbertSamuel.ArithmeticVolumeBig.of_moriwakiBig_only hBig)
-      hU.g7 GlobalTheory.T.packing'
+      hU.g7 _root_.GlobalTheory.CompanionTheory.Ar.Small.packing
 
 end GlobalTheory.CompanionTheory.Ar.Giv

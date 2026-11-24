@@ -63,12 +63,12 @@ theorem star_Ts_mul_0 (P : M.Par) (σ : Wd.Site (MA.A P (MA.DQ P))) (Y : ℂ) (V
     star ((Wd.Ts σ Y * V) 0 0) =
       star (V 0 0) * star (algebraMap ℂ (MA.A P (MA.DQ P)) Y + σ.p) + -(star (V 1 0) * star σ.c) := by
   simp only [Wd.Ts, Formalism.YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply,
-    Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val',
-    Matrix.cons_val_fin_one, star_add, star_mul, star_neg, neg_mul, mul_neg]
+    Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val',
+    Matrix.cons_val_fin_one, star_add, star_mul, star_neg, neg_mul]
 
 theorem star_Ts_mul_1 (P : M.Par) (σ : Wd.Site (MA.A P (MA.DQ P))) (Y : ℂ) (V : Wd.M2 (MA.A P (MA.DQ P))) :
     star ((Wd.Ts σ Y * V) 1 0) = star (V 0 0) * star σ.ci := by
-  simp [Wd.Ts, Formalism.YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two, star_add, star_mul]
+  simp [Wd.Ts, Formalism.YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two, star_mul]
 
 theorem actA_sp (P : M.Par) (l : Fin P.r) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (star (MA.siteA P (MA.DQ P) l).p) f = fun ρ => -MA.eulerQ (TT := P.TT) (M.vcb l) (f ρ) := by

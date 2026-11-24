@@ -91,12 +91,7 @@ theorem germs_of_isGen {A B : LB X} {w : LB.Iso A B} (hw : w.IsGen) (x : X) (p q
   exact (gm_res _ x _ hx _).symm.trans ((congrArg (gm (𝟙 X) x _) (hw p q)).trans ((map_mul _ _ _).trans
     (congrArg₂ (· * ·) (gm_div A B (𝟙 X) x p q hx) (gm_res _ x _ hx _))))
 
-theorem lbIso_self {A : LB X} (hA : A.IsLB) : LBIso A A := by
-  refine lbIso_of_germs (fun p => A.g p.1 p.2) fun x p q h₁ h₂ h₃ h₄ => ?_
-  rw [← gm_cocycle hA (𝟙 X) x h₁ h₂ h₃, ← gm_cocycle hA (𝟙 X) x h₂ h₃ h₄]
-  apply Additive.ofMul.injective
-  simp only [ofMul_mul, ofMul_inv]
-  abel
+alias lbIso_self := _root_.GlobalTheory.lbIso_refl
 
 def chartPullTw {A' H' : LB Y} {A H : LB X} {h : Y ⟶ X} (a : ChartPull A' A h) (b : ChartPull H' H h) (t : ℤ) :
     ChartPull (tw A' H' t) (tw A H t) h where

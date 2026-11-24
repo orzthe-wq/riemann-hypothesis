@@ -1,7 +1,11 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.EulerFactorLevels.EulerFinOf
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumDoubleCosetRegroupCommutativeStatement
+public import Mathlib.Algebra.BigOperators.Finprod
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.GroupTheory.DoubleCoset
+public import Mathlib.GroupTheory.Index
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinsumDoubleCosetRegroupCommutative
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -102,7 +106,7 @@ theorem DcCount_pf : DcCount := by
       rw [this, e2]
     rw [e3]
     exact DoubleCosetCounting.avg_comp_mul_left (fun y : K => f ((x * y)⁻¹ * δ * θ (x * y))) ⟨k, hk⟩
-  have hreg := GlobalTheory.T.finsum_doubleCoset_regroup_commutative G (twCent θ δ) Γ (cptPart (twCent θ δ)) K
+  have hreg := _root_.GlobalTheory.finsum_doubleCoset_regroup G (twCent θ δ) Γ (cptPart (twCent θ δ)) K
     (fun x => avg fun k : K => f ((x * k)⁻¹ * δ * θ (x * k))) hG.1 hCT hG.2 hinv
   rw [inf_eq_left.2 hΓ] at hreg
   have key : dcSum Γ K (fun x => f (x⁻¹ * δ * θ x)) =

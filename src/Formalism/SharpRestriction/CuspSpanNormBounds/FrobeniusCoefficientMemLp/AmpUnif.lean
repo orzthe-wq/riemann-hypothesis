@@ -1,11 +1,11 @@
 module
 
-public import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.LemmaJ
+public import Formalism.HermitianCurvature.FiniteOrderIntersectionInSmooth
+public import Formalism.SharpRestriction.CuspSpanNormBounds.CntPartners
 public import Formalism.SharpRestriction.CuspSpanNormBounds.SBridge
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -38,10 +38,53 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.LemmaJ, Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.AmpUnif
+
+-- ===== clump member: Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.LemmaJ =====
+-- clump-header: {"m": "Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.LemmaJ", "h": "module\n\npublic import Formalism.HermitianCurvature.FiniteOrderIntersectionInSmooth\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.CntPartners\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory
+
+noncomputable section
+
+namespace Formalism.MainNotions.S.Pv.LemmaJ
+
+open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S
+
+def AmpOrb (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : ℝ) : Prop :=
+  Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0 → 1000 ≤ Cl → Cn ≤ Cl →
+  ∀ τ w w', HypTT D w w' → ∀ θ (W : LocW D.R.k D.R.rS) (hW : GoodW D τ w w' θ W)
+    (lam' : Fin (2 * D.R.rS + D.R.k + 1) → ℝ), l1dist lam' (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 →
+    ∀ (A : LocS W) (hA : GoodS D lam' A) (hT : 0 < Tr D w) (hT' : 0 < Tr D w'),
+    ∃ f : MatKR D.R.k D.R.rS →
+        ((toBessel D τ w w' θ W lam' A hW hA hT hT').Wq →L[ℂ] (toBessel D τ w w' θ W lam' A hW hA hT hT').Wp),
+      IsKFinCoefH (toBessel D τ w w' θ W lam' A hW hA hT hT').σ f ∧
+      ∀ γ : MatKR D.R.k D.R.rS, γ ∈ UH (Hpk D.R.k D.R.rS) → 0 < Gf D.R.k D.R.rS W.z W.z' γ →
+        Formalism.FourierDecayAlt.C2.IsMonomial (Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS W.z W.z' γ) →
+        IsRelStab (toBessel D τ w w' θ W lam' A hW hA hT hT') γ →
+        ∀ (μR νR : Measure (Mt D.R.k D.R.rS)) (ν : Measure (PairSp D.R.k D.R.rS)),
+          IsHaarOn (RStab D.R.k D.R.rS γ) μR →
+          IsOrbQuot (toBessel D τ w w' θ W lam' A hW hA hT hT') γ μR ν →
+          IsQuotMeas W.μG (μR.map (fun x => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)) νR →
+          A.J νR γ = OrbInt (toBessel D τ w w' θ W lam' A hW hA hT hT') f γ ν
+
+end Formalism.MainNotions.S.Pv.LemmaJ
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.LemmaJ =====
+
+-- ===== clump member: Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.AmpUnif =====
+-- clump-header: {"m": "Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.AmpUnif", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.LemmaJ\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.SBridge\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory
@@ -110,9 +153,7 @@ theorem l1dist_zero {N : ℕ} {x y : Fin N → ℝ} (h : l1dist x y ≤ 0) : x =
   have h0 : ∑ i, |x i - y i| = 0 := le_antisymm h (Finset.sum_nonneg fun i _ => abs_nonneg _)
   rw [Finset.sum_eq_zero_iff_of_nonneg (fun i _ => abs_nonneg _)] at h0
   funext i
-  have := h0 i (Finset.mem_univ i)
-  rw [abs_eq_zero, sub_eq_zero] at this
-  exact this
+  simpa only [abs_eq_zero, sub_eq_zero] using h0 i (Finset.mem_univ i)
 
 theorem window_pow {b θ' C1 Ca m : ℝ} (hb : 1 ≤ b) (hθ : b ^ (-(C1 * m ^ 2)) ≤ θ') (hCa : 2 * C1 ≤ Ca) :
     θ' ^ (-(2 : ℤ)) ≤ 1 * b ^ (Ca * m ^ 2) := by
@@ -120,17 +161,15 @@ theorem window_pow {b θ' C1 Ca m : ℝ} (hb : 1 ≤ b) (hθ : b ^ (-(C1 * m ^ 2
   have hp : 0 < b ^ (-(C1 * m ^ 2)) := Real.rpow_pos_of_pos hb0 _
   have hθ0 : 0 < θ' := lt_of_lt_of_le hp hθ
   rw [one_mul, zpow_neg, zpow_two]
-  have hsq : b ^ (-(C1 * m ^ 2)) * b ^ (-(C1 * m ^ 2)) ≤ θ' * θ' := mul_le_mul hθ hθ hp.le hθ0.le
-  have hinv : (θ' * θ')⁻¹ ≤ (b ^ (-(C1 * m ^ 2)) * b ^ (-(C1 * m ^ 2)))⁻¹ :=
-    inv_anti₀ (mul_pos hp hp) hsq
-  have heq : (b ^ (-(C1 * m ^ 2)) * b ^ (-(C1 * m ^ 2)))⁻¹ = b ^ (2 * C1 * m ^ 2) := by
-    rw [← Real.rpow_add hb0, ← Real.rpow_neg hb0.le]
-    ring_nf
-  have hmono : b ^ (2 * C1 * m ^ 2) ≤ b ^ (Ca * m ^ 2) := by
-    apply Real.rpow_le_rpow_of_exponent_le hb
-    have : 0 ≤ m ^ 2 := sq_nonneg m
-    nlinarith
-  linarith
+  calc
+    (θ' * θ')⁻¹ ≤ (b ^ (-(C1 * m ^ 2)) * b ^ (-(C1 * m ^ 2)))⁻¹ :=
+      inv_anti₀ (mul_pos hp hp) (mul_le_mul hθ hθ hp.le hθ0.le)
+    _ = b ^ (2 * C1 * m ^ 2) := by
+      rw [← Real.rpow_add hb0, ← Real.rpow_neg hb0.le]
+      ring_nf
+    _ ≤ b ^ (Ca * m ^ 2) := by
+      apply Real.rpow_le_rpow_of_exponent_le hb
+      nlinarith [sq_nonneg m]
 
 theorem ampUnif_of (hAO : AmpOrbU) (hBC : BigCellEq) (hRC : RootCmp) (hNZ : AmpNZ) : AmpUnif := by
   intro Cg cb Cu cT CT C0 C1
@@ -138,24 +177,20 @@ theorem ampUnif_of (hAO : AmpOrbU) (hBC : BigCellEq) (hRC : RootCmp) (hNZ : AmpN
   obtain ⟨C'n, Cln, hNZ'⟩ := hNZ Cg cb Cu cT CT C0
   refine ⟨max 0 (2 * C1), le_max_left _ _, max C'a C'n, max (max Cla Cln) 1000, ?_⟩
   intro C' Cl hC' hCl D large₂ hH τ w w' hTT θ hθ W hW lam' hlam A hA hT hT'
-  have hCla : Cla ≤ Cl := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hCl
-  have hCln : Cln ≤ Cl := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hCl
-  have h1000 : (1000 : ℝ) ≤ Cl := le_trans (le_max_right _ _) hCl
-  have hC'a : C'a ≤ C' := le_trans (le_max_left _ _) hC'
-  have hC'n : C'n ≤ C' := le_trans (le_max_right _ _) hC'
+  rw [max_le_iff] at hC'
+  rw [max_le_iff, max_le_iff] at hCl
+  obtain ⟨hC'a, hC'n⟩ := hC'
+  obtain ⟨⟨hCla, hCln⟩, h1000⟩ := hCl
   have hb : 1 ≤ large₂.sc.b := by
     unfold Formalism.BasicNotions.Scale.b Formalism.BasicNotions.Scale.L
     exact Real.one_le_exp (Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _)
   have hl : lam' = lamD D τ := l1dist_zero (by simpa using hlam)
   subst hl
-  have hl0 : l1dist (lamD D τ) (lamD D τ) ≤ 0 * (D.R.k : ℝ) * (D.R.m : ℝ) ^ 3 := by
-    simp [l1dist]
-  obtain ⟨f, hf, horb⟩ := hAO' C' Cl hC'a hCla D large₂ hH h1000 (by linarith) τ w w' hTT θ W hW (lamD D τ) hl0
-    A hA hT hT'
-  have hOE : OrbEq D hW hA hT hT' f := horb
+  obtain ⟨f, hf, horb⟩ := hAO' C' Cl hC'a hCla D large₂ hH h1000 (by linarith) τ w w' hTT θ W hW (lamD D τ)
+    (by simp [l1dist]) A hA hT hT'
   refine ⟨f, 1, one_pos, hf, ?_, ?_⟩
   · intro μsec hsec
-    have hBC' := hBC D τ w w' θ W hW (lamD D τ) A hA hT hT' f hOE μsec hsec
+    have hBC' := hBC D τ w w' θ W hW (lamD D τ) A hA hT hT' f horb μsec hsec
     have hnz := hNZ' C' Cl hC'n hCln D large₂ hH τ w w' hTT θ W hW A hA hT hT' μsec hsec
     refine ⟨by rw [hBC']; exact hnz, ?_⟩
     rw [hBC', ENNReal.ofReal_one, one_mul]
@@ -163,12 +198,15 @@ theorem ampUnif_of (hAO : AmpOrbU) (hBC : BigCellEq) (hRC : RootCmp) (hNZ : AmpN
     have hθ'0 : 0 < θ' := lt_of_lt_of_le (Real.rpow_pos_of_pos (by linarith) _) hθ'.1
     obtain ⟨g₀, μR, νR₀, ν, hrep, hG, hmono, hrel, hroot, hhaar, hquot, hqm, hle⟩ :=
       hRC D τ w w' θ W hW (lamD D τ) A hA hT hT' γ p hp θ' hθ'0 νR hνR
-    have hJ := hOE g₀ ?_ hG hmono hrel μR νR₀ ν hhaar hquot hqm
-    · refine le_trans hle (mul_le_mul' (ENNReal.ofReal_le_ofReal
-        (window_pow hb hθ'.1 (le_max_right _ _))) ?_)
-      rw [hJ]
-      exact le_iSup_of_le g₀ (le_iSup_of_le μR (le_iSup_of_le ν
-        (le_iSup_of_le ⟨hrep, hrel, hroot, hquot⟩ le_rfl)))
-    · exact hrep.1
+    have hJ := horb g₀ hrep.1 hG hmono hrel μR νR₀ ν hhaar hquot hqm
+    refine le_trans hle (mul_le_mul' (ENNReal.ofReal_le_ofReal
+      (window_pow hb hθ'.1 (le_max_right _ _))) ?_)
+    rw [hJ]
+    exact le_iSup_of_le g₀ (le_iSup_of_le μR (le_iSup_of_le ν
+      (le_iSup_of_le ⟨hrep, hrel, hroot, hquot⟩ le_rfl)))
 
 end Formalism.MainNotions.S.Pv.LemmaJ
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.AmpUnif =====

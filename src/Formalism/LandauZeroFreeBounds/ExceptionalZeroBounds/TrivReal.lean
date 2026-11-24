@@ -1,5 +1,7 @@
 module
 
+import Development.AutomorphicArithmetic.DedekindLFunctions.LandauTheorems.LFunctionConj
+import Mathlib.Algebra.Group.SelfInv
 public import Formalism.LandauZeroFreeBounds.NoZeroComplexOf
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -84,43 +86,16 @@ lemma conj_apply_of_sq_eq_one {q : ℕ} (χ : DirichletCharacter ℂ q) (hχ : �
   · rw [MulChar.map_nonunit χ ha, map_zero]
 
 lemma conj_LFunction_conj_of_sq_eq_one {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ^ 2 = 1)
-    (z : ℂ) (hz : 1 < z.re) :
+    (z : ℂ) : (hz : 1 < z.re) →
     starRingEnd ℂ (DirichletCharacter.LFunction χ (starRingEnd ℂ z)) =
       DirichletCharacter.LFunction χ z := by
-  have hz' : 1 < (starRingEnd ℂ z).re := by rwa [Complex.conj_re]
-  rw [DirichletCharacter.LFunction_eq_LSeries χ hz', DirichletCharacter.LFunction_eq_LSeries χ hz,
-    LSeries, LSeries, Complex.conj_tsum]
-  congr 1
-  funext m
-  rw [LSeries.term_def, LSeries.term_def]
-  split_ifs with hm
-  · exact map_zero _
-  · show starRingEnd ℂ (χ m / (m : ℂ) ^ starRingEnd ℂ z) = χ m / (m : ℂ) ^ z
-    have harg : (m : ℂ).arg ≠ Real.pi := by
-      rw [Complex.natCast_arg]
-      exact Real.pi_ne_zero.symm
-    rw [map_div₀, conj_apply_of_sq_eq_one χ hχ, Complex.cpow_conj _ _ harg, map_natCast (starRingEnd ℂ) m,
-      Complex.conj_conj]
+  intro _
+  have hinv : χ⁻¹ = χ := (isSelfInv_iff_sq_eq_one.mpr hχ).inv_eq
+  simpa only [hinv, Complex.conj_conj] using (Deduction.LFunction_conj χ (starRingEnd ℂ z)).symm
 
 theorem realCharConj : RealConj := by
-  intro q _ χ hχ h1 s
-  have hL : Differentiable ℂ (DirichletCharacter.LFunction χ) :=
-    DirichletCharacter.differentiable_LFunction h1
-  have hG : Differentiable ℂ
-      (fun z => starRingEnd ℂ (DirichletCharacter.LFunction χ (starRingEnd ℂ z))) := by
-    intro z
-    have := (hL (starRingEnd ℂ z)).conj_conj
-    rw [Complex.conj_conj] at this
-    exact this
-  have heq : (fun z => starRingEnd ℂ (DirichletCharacter.LFunction χ (starRingEnd ℂ z))) =
-      DirichletCharacter.LFunction χ := by
-    refine AnalyticOnNhd.eq_of_eventuallyEq (z₀ := 2) (analyticOnNhd_univ_iff_differentiable.2 hG)
-      (analyticOnNhd_univ_iff_differentiable.2 hL) ?_
-    have hopen : IsOpen {z : ℂ | 1 < z.re} := isOpen_lt continuous_const Complex.continuous_re
-    filter_upwards [hopen.mem_nhds (show (1 : ℝ) < (2 : ℂ).re by norm_num)] with z hz
-    exact conj_LFunction_conj_of_sq_eq_one χ hχ z hz
-  have := congrFun heq (starRingEnd ℂ s)
-  simp only [Complex.conj_conj] at this
-  exact this.symm
+  intro q _ χ hχ _ s
+  have hinv : χ⁻¹ = χ := (isSelfInv_iff_sq_eq_one.mpr hχ).inv_eq
+  simpa only [hinv] using Deduction.LFunction_conj χ s
 
 end Formalism.ZeroFreeDirichlet

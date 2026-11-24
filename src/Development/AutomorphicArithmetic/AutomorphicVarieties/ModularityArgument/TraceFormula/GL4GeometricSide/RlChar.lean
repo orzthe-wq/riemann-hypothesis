@@ -56,7 +56,7 @@ private theorem map_epow {n : ℕ} {U W : Type} [NormedAddCommGroup U] [InnerPro
     by_cases hab : a = b <;> simp [PositivityTheory.RgBcC.RealD.epow, Formalism.REAL.epow, hab]
   | succ m ih =>
     intro a b u
-    rw [PositivityTheory.RgBcC.Bridge.epow_succ']
+    rw [_root_.GlobalTheory.TracedComatrix.epow_succ_left]
 
     simp only [PositivityTheory.RgBcC.RealD.epow, LinearMap.sum_apply, map_sum, Module.End.mul_apply, h, ih]
 
@@ -89,6 +89,6 @@ theorem UpperTheory.V.Z.GSp4Splitting.rlChar :
       (fun a b u => by
         have := D.hE2 w b a u
         simp only [barF, LinearMap.neg_apply, map_neg, LinearMap.comp_apply, Submodule.subtype_apply,
-          Submodule.coe_neg, this, neg_neg]) m x
+          this, neg_neg]) m x
     rw [e, map_smul]
     simpa [PositivityTheory.RgBcC.Bridge.eopW] using h2 _ (D.i x).2 m

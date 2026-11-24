@@ -93,13 +93,13 @@ theorem cml_perm {l l' : List V} (p : l.Perm l') :
         simp only [Function.comp_apply, Equiv.swap_apply_def, Fin.mk.injEq]
         split_ifs with h1 h2
         · subst h1
-          simp [List.getElem_append]
+          simp
         · subst h2
-          simp [List.getElem_append]
+          simp
         · rcases lt_or_ge i l₀.length with h3 | h3
-          · simp [List.getElem_append, h3]
+          · simp [h3]
           · obtain ⟨j, rfl⟩ : ∃ j, i = l₀.length + (j + 2) := ⟨i - (l₀.length + 2), by omega⟩
-            simp [List.getElem_append]
+            simp
       · have hk' : ¬ (l₀ ++ x :: y :: k).length = n := by simpa using hk
         rw [dite_eq_right hk, dite_eq_right hk']
     | trans _ _ ih₁ ih₂ => intro l₀; exact (ih₁ l₀).trans (ih₂ l₀)
@@ -133,8 +133,8 @@ theorem lD_cons (φ : V → ℂ) (x v : V) (l : List V) :
   congr 1
   funext i
   refine Fin.cases ?_ (fun j => ?_) i
-  · first | rfl | simp
-  · first | rfl | simp
+  · first | rfl
+  · first | rfl
 
 theorem mD_cons {φ : V → ℂ} {x : V} (hφ : ContDiffAt ℂ ω φ x) (v : V) (s : Multiset V) :
     mD φ x (v ::ₘ s) =
@@ -163,10 +163,8 @@ variable {R}
 
 theorem ev_zero' {m n d : ℕ} (a : Fin m → Pt R n d) : ev a (0 : PS R m d) = 0 := by
   first
-  | exact map_zero _
   | (simp only [ev]; exact MvPowerSeries.subst_zero _)
   | simp [ev, MvPowerSeries.subst, MvPowerSeries.eval₂]
-  | simp [ev, MvPowerSeries.subst]
 
 theorem dof_addF {g : ℕ} (v : Fin g → R) (f : PS R 1 g) :
     Dof (addF R g) v f = ∑ j, C (v j) * MvPowerSeries.pderiv ((0 : Fin 1), j) f := by
@@ -175,9 +173,9 @@ theorem dof_addF {g : ℕ} (v : Fin g → R) (f : PS R 1 g) :
   refine Finset.sum_congr rfl fun j _ => ?_
   congr 1
   rw [Finset.sum_eq_single j]
-  · simp [addF, MvPowerSeries.pderiv_X, Pi.single_apply]
+  · simp [addF]
   · intro b _ hb
-    simp [addF, MvPowerSeries.pderiv_X, Pi.single_apply, hb, Ne.symm hb, ev_zero']
+    simp [addF, Ne.symm hb, ev_zero']
   · intro h
     exact absurd (Finset.mem_univ j) h
 
@@ -203,7 +201,6 @@ theorem dirs_add_single (n : Fin 1 × Fin g →₀ ℕ) (p : Fin 1 × Fin g) :
   first
   | (simp only [dirs, map_add (f := _), Finsupp.toMultiset_single, one_nsmul, Multiset.map_add (f := _), Multiset.map_singleton]
      rw [add_comm, Multiset.singleton_add])
-  | simp [dirs, Finsupp.toMultiset_add, add_comm]
 
 theorem fct_ne_zero (n : Fin 1 × Fin g →₀ ℕ) : fct n ≠ 0 := Finset.prod_ne_zero_iff.mpr fun p _ => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)
 
@@ -216,7 +213,7 @@ theorem fct_add_single (n : Fin 1 × Fin g →₀ ℕ) (p : Fin 1 × Fin g) :
       ((((n + Finsupp.single p 1 : Fin 1 × Fin g →₀ ℕ) q).factorial : ℕ) : ℂ) = ((n q).factorial : ℂ) := by
     intro q hq
     have hqp := Finset.ne_of_mem_erase hq
-    simp [Finsupp.single_apply, hqp, Ne.symm hqp]
+    simp [hqp]
   rw [Finset.prod_congr rfl h1, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]
   push_cast
   ring
@@ -273,7 +270,7 @@ theorem toMultiset_map_eq {ι : Type} [Fintype ι] (u : ι → Fin g → ℂ) (m
     rw [Finset.sum_eq_single a]
     · simp
     · intro l _ hl
-      simp [Finsupp.single_apply, Ne.symm hl]
+      simp [Ne.symm hl]
     · intro h
       exact absurd (Finset.mem_univ a) h
 
@@ -282,8 +279,6 @@ theorem constantCoeff_tay (θ : (Fin g → ℂ) → ℂ) (s : Multiset (Fin g �
   first
   | (rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_tay]
      simp [dirs, fct])
-  | (show tay θ s 0 = _
-     simp [tay, dirs, fct])
 
 theorem constantCoeff_dmonOf_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) {ι : Type} [Fintype ι]
     (u : ι → Fin g → ℂ) (m : ι →₀ ℕ) :
@@ -292,17 +287,13 @@ theorem constantCoeff_dmonOf_tay {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffA
   rw [foldr_tay hθ, add_zero, constantCoeff_tay, toMultiset_map_eq]
   congr 1
   first
-  | exact Finset.sum_toList _ _
-  | exact Finset.sum_to_list _ _
-  | simp [Finset.sum_toList]
+  | simp
 
 theorem coeff_tay_zero (θ : (Fin g → ℂ) → ℂ) (n : Fin 1 × Fin g →₀ ℕ) :
     fct n * coeff n (tay θ 0) = mD θ 0 (dirs n) := by
   rw [coeff_tay, add_zero]
   first
   | (field_simp [fct_ne_zero n]; done)
-  | (field_simp [fct_ne_zero n]; ring)
-  | exact mul_div_cancel₀ _ (fct_ne_zero n)
 
 theorem polyDeriv_eq_mD {θ : (Fin g → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0) {ι : Type} (P : MvPolynomial ι ℂ)
     (u : ι → Fin g → ℂ) :

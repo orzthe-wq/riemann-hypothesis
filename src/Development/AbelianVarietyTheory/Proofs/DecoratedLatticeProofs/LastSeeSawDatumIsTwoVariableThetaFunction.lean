@@ -54,12 +54,6 @@ namespace GlobalTheory.LastBiTheta
 
 variable {D : D7}
 
-theorem sOH_zero_left (S T : HSp D) (y : WO S T) : symplOH S T 0 y = 0 := by
-  simp [symplOH, symplO, hO]
-
-theorem sOH_zero_right (S T : HSp D) (x : WO S T) : symplOH S T x 0 = 0 := by
-  simp [symplOH, symplO, hO]
-
 theorem sOH_resS_symm {V₀ A L : HSp D} (o : OrthDec V₀ A L) (S : HSp D) (a a' : WO A S) (b b' : WO L S) :
     symplOH V₀ S ((o.resS S).symm (a, b)) ((o.resS S).symm (a', b')) = symplOH A S a a' + symplOH L S b b' := by
   rw [o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]
@@ -129,7 +123,7 @@ theorem isBiTheta_lastBi : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdC
         (o.resS S).symm (ratW S A γ, 0) + (o.resS S).symm (u, kap τ S (o''.resT S v).2) := by
       rw [← map_add (f := _), Prod.mk_add_mk, zero_add]
     have hγ : ratW S A γ ∈ ratMx D S.rank A.rank := rat_mem γ
-    rw [e, quasi_of_mem hΞ (resS_symm_mem o S hγ (zero_mem _)), sOH_resS_symm, sOH_zero_left, add_zero]
+    rw [e, quasi_of_mem hΞ (resS_symm_mem o S hγ (zero_mem _)), sOH_resS_symm, _root_.GlobalTheory.MixModel.symplOH_zero_left, add_zero]
     ring
   ·
     intro γ u v
@@ -144,7 +138,7 @@ theorem isBiTheta_lastBi : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdC
       rw [← AddChar.map_add_eq_mul, o''.symplOH_resT S (ratW X S γ) v]
       exact congrArg ψ (neg_add _ _)
     rw [map_add (f := _), Prod.fst_add, Prod.snd_add, e, quasi_of_mem hΦ h1,
-      quasi_of_mem hΞ (resS_symm_mem o S (zero_mem _) (krat _ h2)), sOH_resS_symm, sOH_zero_left, zero_add, kH, ph]
+      quasi_of_mem hΞ (resS_symm_mem o S (zero_mem _) (krat _ h2)), sOH_resS_symm, _root_.GlobalTheory.MixModel.symplOH_zero_left, zero_add, kH, ph]
     ring
   ·
     obtain ⟨U, hUo, hU⟩ := hΞ.level
@@ -161,7 +155,7 @@ theorem isBiTheta_lastBi : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdC
       rw [← map_add (f := _), Prod.mk_add_mk, add_zero]
     have ph : symplOH V₀ S ((o.resS S).symm (u, kap τ S (o''.resT S v).2)) (iA a) = symplOH A S u a := by
       show symplOH V₀ S ((o.resS S).symm (u, _)) ((o.resS S).symm (a, 0)) = _
-      rw [sOH_resS_symm, sOH_zero_right, add_zero]
+      rw [sOH_resS_symm, _root_.GlobalTheory.MixModel.symplOH_zero_right, add_zero]
     simp only [heisO] at h1 ⊢
     rw [ph] at h1
     rw [hC, hC, e, ← h1]
@@ -187,7 +181,7 @@ theorem isBiTheta_lastBi : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdC
       rw [kadd, ← map_add (f := _), Prod.mk_add_mk, add_zero]
     have ph : symplOH V₀ S ((o.resS S).symm (u, kap τ S w)) (jL b) = symplOH S L'' w (o''.resT S b).2 := by
       show symplOH V₀ S ((o.resS S).symm (u, _)) ((o.resS S).symm (0, kap τ S (o''.resT S b).2)) = _
-      rw [sOH_resS_symm, sOH_zero_right, zero_add, kH]
+      rw [sOH_resS_symm, _root_.GlobalTheory.MixModel.symplOH_zero_right, zero_add, kH]
     simp only [heisO] at h2 ⊢
     rw [ph] at h2
     rw [e]

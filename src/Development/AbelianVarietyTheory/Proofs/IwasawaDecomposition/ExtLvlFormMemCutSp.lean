@@ -226,8 +226,7 @@ theorem ext_lvlForm_mem_cutSp (x : Fin (S.lvlDim act P ψ) → K) :
   have e3 := congrFun e1 h
   simp only [Pi.smul_apply, Bridge.g0Act] at e3
   have h1 : ((ch κ : ℂˣ) : ℂ) ≠ 0 := Units.ne_zero _
-  simp only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, Units.val_mul, RingHom.id_apply,
-    RingHom.toMonoidHom_eq_coe]
+  simp only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, Units.val_mul, RingHom.toMonoidHom_eq_coe]
   rw [mul_smul, e3, smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]
 
 end Pres
@@ -249,7 +248,7 @@ theorem ext_lvlForm_single (a : Fin (S.lvlDim act P ψ)) :
   rw [← Bridge.ClassPres.extL_apply, lvlForm_eq_sum, map_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_smulₛₗ, Bridge.ClassPres.extL_apply]
-  simp [Matrix.mulVec_single_one]
+  simp
 
 theorem lvlForm_linInd : LinearIndependent ℂ fun a => pres.ext (lvlForm S act P ψ (Pi.single a 1)).1 := by
   classical

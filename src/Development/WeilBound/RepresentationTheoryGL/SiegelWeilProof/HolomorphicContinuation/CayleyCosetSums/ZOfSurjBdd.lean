@@ -80,7 +80,7 @@ theorem zOf_nm {X a b : Matrix (Fin n) (Fin n) ℂ} (hX : X.IsHermitian) (hab : 
   have hinv : (bᴴ)⁻¹ = aᴴ := Matrix.inv_eq_right_inv hbh
   simp only [zOf, mR_mkGR, u1, nU, mab, fromBlocks_multiply, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂,
     toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add,
-    Matrix.mul_one, smul_zero]
+    smul_zero]
   rw [hinv, Matrix.add_mul, Matrix.mul_assoc, hbh, Matrix.mul_one, Matrix.smul_mul, add_comm]
 
 theorem posdef_factor {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Y.PosDef) :
@@ -127,7 +127,7 @@ theorem zOf_surj' {W : Fin n → Fin n → ℂ} (hW : W ∈ Dom n) : ∃ y : GR 
   set X : Matrix (Fin n) (Fin n) ℂ := (1 / 2 : ℂ) • (Matrix.of W + (Matrix.of W)ᴴ) with hXdef
   have hX : X.IsHermitian := by
     simp only [IsHermitian, hXdef, conjTranspose_smul, conjTranspose_add, conjTranspose_conjTranspose]
-    rw [add_comm]; congr 1; simp [Complex.ext_iff]
+    rw [add_comm]; congr 1; simp
   refine ⟨mkGR (nU X * mab _ _) (inG_nm hX hba), ?_⟩
   rw [zOf_nm hX hab hba, haa, hXdef]
   ext i j
@@ -175,7 +175,7 @@ theorem posdef_margin {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Y.PosDef) :
       rw [mem_sphere_zero_iff_norm]
       apply le_antisymm
       · refine (pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_
-        by_cases h : i = i₀ <;> simp [h, Pi.single_apply]
+        by_cases h : i = i₀ <;> simp [h]
       · simpa using norm_le_pi_norm (Pi.single i₀ (1 : ℂ) : Fin n → ℂ) i₀
     have hcont : Continuous fun v : Fin n → ℂ => (star v ⬝ᵥ (Y *ᵥ v)).re :=
       Complex.continuous_re.comp ((continuous_id.star).dotProduct (continuous_const.matrix_mulVec continuous_id))

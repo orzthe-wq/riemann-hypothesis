@@ -139,6 +139,9 @@ def C2off (D : D7) (L : SizeData₂ D) (C : ℝ) : Prop :=
 
 def IsotypicRank (D : D7) (L : SizeData₂ D) (C : ℝ) : Prop := LocalQuadraticParts.adm11 D L C
 
+/-- Combines the `g`-place local energy bound `C2atG` (over places `w | g_i` for `i ∈ {0, 1}`,
+using `log (g 0 * g 1) = log (g 0) + log (g 1)`) and the off-`g` bound `C2off` into
+`IsotypicRank D L (2 * C1 + C2)` (i.e. `LocalQuadraticParts.adm11`). -/
 theorem secondComplement_of_split (L : SizeData₂ D) (C1 C2 : ℝ) (h0 : 0 ≤ C1) (h1 : C2atG D L C1) (h2 : C2off D L C2) :
     IsotypicRank D L (2 * C1 + C2) := by
   classical
@@ -182,6 +185,8 @@ theorem stmtZ {L : SizeData₂ D} (Gi : Inst D L) (K : Consts) (X : ErrX D) (c :
 theorem zero_gain_above_family {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, ConclusionZ (Fm.D x i) (Fm.L x i) :=
   fun x hx i => stmtZ (Fm.Gx x i) Fm.GK (Fm.ex x hx i).errX Fm.cX.err (Fm.fills x hx i) (Fm.ex x hx i).err.edef
 
+/-- Local norm-decomposition condition at places `w` over `g_i`: the weighted sum of `vNN` over
+the places above `g_i` equals `(∑ τ, nuAbs D u j τ) * log (g_i)`. -/
 def NormDecompositionCond (D : D7) (X : ErrX D) : Prop :=
   ∀ (i : Fin 2) u, ∀ j ∈ SizeData₂.lifts D, ∀ S : Finset D.what₂.places.Pl, Ovr D (D.host.g i) S →
     ∑ w ∈ S, SizeData₂.sz w (vNN X i u j w) = (∑ τ : D.what₂.Tau, nuAbs D u j τ) * Real.log (D.host.g i : ℝ)
@@ -193,6 +198,8 @@ def errG (L : SizeData₂ D) (C : ℝ) (j : ℕ) : ℝ :=
     C * ((D.R.f : ℝ) * ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * D.R.t * L.etaSz + (D.R.k : ℝ) * Nm D) +
       (D.host.TT.card : ℝ) * L.sc.b' / L.sc.x)
 
+/-- Degree-count bound at lift `j`: the sum of `nuAbs D u j τ` over archimedean places `τ`,
+shifted by the Fock degree `fockDeg D j`, matches `sumA L = ∑ t, aT t` up to `errG L C j`. -/
 def DegreeCountBound (D : D7) (L : SizeData₂ D) (C : ℝ) : Prop :=
   ∀ u, ∀ j ∈ SizeData₂.lifts D,
     |(∑ τ : D.what₂.Tau, nuAbs D u j τ) - (fockDeg D j : ℝ) - sumA L| ≤ errG L C j

@@ -1,9 +1,11 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.SplitStable
-import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
-public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursBasics
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SummandFactor
+public import Development.WeilBound.CuspidalAdmissibility.OccursIff
 public import Development.AutomorphicArithmetic.TwistedTraces.SummandLeClosureSpanLocalTypeImages
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.LocUApply
+import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -42,7 +44,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Separation.Connected
 import Mathlib.Topology.Sheaves.Init
-public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.LocUApply
 
 @[expose] public section
 
@@ -195,6 +196,6 @@ theorem UpperTheory.ConvolutionTheory.T.unitTrace :
     have h2 := Submodule.topologicalClosure_minimal _ hle (Submodule.isClosed_orthogonal _)
       (UpperTheory.summand_le_closure_span_local_type_images K n μ V w τ hV hocc hv.1)
     exact hv0 (inner_self_eq_zero.1 (Submodule.mem_orthogonal_singleton_iff_inner_right.1 h2))
-  obtain ⟨-, -, h3⟩ := UpperTheory.ConvolutionTheory.C.occursBasics K n μ V w m hV
+  obtain ⟨-, -, h3⟩ := _root_.PositivityTheory.TfC.OccursBasics_holds K n μ V w m hV
   obtain ⟨s, hs⟩ := h3 τ hocc _ htest
   exact ⟨hfix, htest, hind, s, trace_ne m τ.ρ J hJ hfix hs, hs⟩

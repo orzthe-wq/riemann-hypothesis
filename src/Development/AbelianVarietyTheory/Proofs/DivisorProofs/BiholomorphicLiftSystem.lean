@@ -108,6 +108,6 @@ theorem Datum.exists_zsmul_eq_algebraMap (D : Datum p) (hm : D.m = 1) (x : D.O) 
 
 theorem Datum.algebraMap_surjective_of_m_eq_one :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p), D.m = 1 → Function.Surjective (algebraMap (𝓞 D.F) D.O) := by
-  apply UpperTheory.Gal.Ord.surjO <;> assumption
+  apply UpperTheory.Gal.Ord.surjO
 
 end GlobalTheory.UPel.HT

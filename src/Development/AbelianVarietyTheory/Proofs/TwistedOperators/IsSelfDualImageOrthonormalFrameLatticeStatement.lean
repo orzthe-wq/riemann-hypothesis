@@ -56,4 +56,4 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 
 
 theorem _root_.GlobalTheory.T.isSelfDual_image_orthonormalFrame_lattice : ∀ {D : D7} (S : HSp D) (fr : GL (Fin S.rank) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) fr.1 * S.gram * fr.1 = 1 → ∀ Ls : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E), SD D Ls → ∃ Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E), (Λ : Set (Fin S.rank → D.host.E)) = GlobalTheory.MovedDict.inV fr Ls ∧ IsSelfDualC S Λ := by
-  first | exact @GlobalTheory.MovedDict.isSelfDualC_inV | exact GlobalTheory.MovedDict.isSelfDualC_inV | (intros; apply GlobalTheory.MovedDict.isSelfDualC_inV <;> assumption)
+  first | exact @GlobalTheory.MovedDict.isSelfDualC_inV

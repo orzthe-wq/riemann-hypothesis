@@ -45,6 +45,7 @@ import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacte
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifAlong
 import Development.AbelianVarietyTheory.Definitions.KeyFormula.KeyRootOfKeyFormula
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsAddEquivOfSurjectiveOfKerIff
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -61,15 +62,12 @@ namespace GlobalTheory.GlueRat
 
 variable {S : Scheme.{0}} [IsIntegral S]
 
-theorem genericPoint_mem' {U : S.Opens} {x : S} (hx : x ∈ U) : genericPoint S ∈ U :=
-  ((genericPoint_spec S).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, hx⟩
-
 theorem unit_eq_of_germ {V : S.Opens} {a b : Γ(S, V)ˣ}
     (h : ∀ hg : genericPoint S ∈ V, S.presheaf.germ V (genericPoint S) hg (a : Γ(S, V)) =
       S.presheaf.germ V (genericPoint S) hg (b : Γ(S, V))) : a = b := by
   by_cases hg : genericPoint S ∈ V
   · exact Units.ext (germ_injective_of_isIntegral S (genericPoint S) hg (h hg))
-  · exact unit_ext fun x hx => (hg (genericPoint_mem' hx)).elim
+  · exact unit_ext fun x hx => (hg (_root_.GlobalTheory.ExtendLineBundle.genericPoint_mem hx)).elim
 
 theorem germ_res_unit {U V : S.Opens} (hle : V ≤ U) (hg : genericPoint S ∈ V) (a : Γ(S, U)ˣ) :
     S.presheaf.germ V (genericPoint S) hg ((res hle a : Γ(S, V)ˣ) : Γ(S, V)) =

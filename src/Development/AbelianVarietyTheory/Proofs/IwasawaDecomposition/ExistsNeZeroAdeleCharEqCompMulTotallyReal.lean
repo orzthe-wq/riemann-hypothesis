@@ -72,7 +72,7 @@ theorem algebraMap_eq_pairA (x : F) :
   rfl
 
 theorem denseRange_fin : DenseRange (algebraMap F (Af F)) := by
-  apply GlobalTheory.CompanionTheory.AdeleCharLocal.denseRange_fin <;> assumption
+  apply GlobalTheory.CompanionTheory.AdeleCharLocal.denseRange_fin
 
 theorem ext_of_inf {ψ ψ' : AF F → ℂ} (hc : Continuous ψ) (hc' : Continuous ψ')
     (ha : ∀ x y, ψ (x + y) = ψ x * ψ y) (ha' : ∀ x y, ψ' (x + y) = ψ' x * ψ' y)
@@ -83,7 +83,7 @@ theorem ext_of_inf {ψ ψ' : AF F → ℂ} (hc : Continuous ψ) (hc' : Continuou
 
 theorem exists_nsmul_inf {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) :
     ∃ N : ℕ, 0 < N ∧ ∀ r : 𝓞 F, ψ (pairA F (algebraMap F _ ((N : F) * r)) 0) = 1 := by
-  obtain ⟨N, hN, h⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ (GlobalTheory.FinTranslate.ker_mem_nhds hψ.1 hψ.2.1)
+  obtain ⟨N, hN, h⟩ := _root_.GlobalTheory.LocalNormBound.main F _ (GlobalTheory.FinTranslate.ker_mem_nhds hψ.1 hψ.2.1)
   refine ⟨N, hN, fun r => ?_⟩
   have h1 : ψ (pairA F 0 (N • algebraMap F (Af F) r)) = 1 :=
     h _ fun v => HeightOneSpectrum.coe_mem_adicCompletionIntegers v r

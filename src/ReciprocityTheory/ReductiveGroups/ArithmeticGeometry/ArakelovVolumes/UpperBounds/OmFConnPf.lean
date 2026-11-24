@@ -2,53 +2,11 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.FundSetMeasStatement
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustFStatementPfC
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -77,7 +35,7 @@ theorem scaledWm_linear (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.Wm X (S1 X t 
     rw [Fin.lt_def]
     simp only [Fin.coe_castLE, ExF.qI]
     omega
-  simp only [ExF.Wm, ExF.n1, ExF.nM, mat, nmat, Matrix.submatrix_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, WithLp.ofLp_toLp, PiLp.toLp_apply, S1, dif_pos hlt]
+  simp only [ExF.Wm, ExF.nM, mat, nmat, Matrix.submatrix_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, S1, dif_pos hlt]
   rw [if_pos]
   simp only [isW, Equiv.symm_apply_apply, ExF.qI, Fin.coe_castLE]
   omega
@@ -85,7 +43,7 @@ theorem scaledWm_linear (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.Wm X (S1 X t 
 theorem unipotentFrame_scaling_invariant (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.n1 X (S1 X t z) τ = ExF.n1 X z τ := by
   ext a b
   have ha := a.isLt
-  simp only [ExF.Wm, ExF.n1, ExF.nM, mat, nmat, Matrix.submatrix_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, WithLp.ofLp_toLp, PiLp.toLp_apply, S1]
+  simp only [ExF.n1, ExF.nM, mat, nmat, Matrix.submatrix_apply, Matrix.of_apply, S1]
   split_ifs with h1 h2 <;>
     first
     | rfl
@@ -100,7 +58,7 @@ theorem retractedWm_eq_zero (t : ℝ) (z : V (nd X)) (τ : X.Ψ) : ExF.Wm X (S2 
     rw [Fin.lt_def]
     simp only [Fin.coe_castLE, ExF.qI]
     omega
-  simp only [ExF.Wm, ExF.n1, ExF.nM, mat, nmat, Matrix.submatrix_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, WithLp.ofLp_toLp, PiLp.toLp_apply, S2, dif_pos hlt, Matrix.zero_apply]
+  simp only [ExF.Wm, ExF.nM, mat, nmat, Matrix.submatrix_apply, Matrix.of_apply, S2, dif_pos hlt, Matrix.zero_apply]
   rw [if_pos]
   simp only [isW, Equiv.symm_apply_apply, ExF.qI, Fin.coe_castLE]
   omega
@@ -162,17 +120,17 @@ theorem continuous_radialRetraction (z : V (nd X)) : Continuous fun t : ℝ => S
 
 theorem linearScaling_zero_eq_retraction (z : V (nd X)) : S1 X 0 z = S2 X 1 z := by
   ext i
-  simp only [S1, S2, WithLp.ofLp_toLp, PiLp.toLp_apply]
+  simp only [S1, S2, PiLp.toLp_apply]
   split_ifs <;> simp
 
 theorem radialRetraction_at_zero (z : V (nd X)) : S2 X 0 z = 0 := by
   ext i
-  simp only [S2, WithLp.ofLp_toLp, PiLp.toLp_apply]
+  simp only [S2, PiLp.toLp_apply]
   split_ifs <;> simp
 
 theorem linearScaling_at_one (z : V (nd X)) : S1 X 1 z = z := by
   ext i
-  simp only [S1, WithLp.ofLp_toLp, PiLp.toLp_apply]
+  simp only [S1, PiLp.toLp_apply]
   split_ifs <;> simp
 
 end
@@ -197,8 +155,6 @@ namespace ReciprocityTheory.ChartRestriction.G.AR.Up
 
 open NumberField
 
-theorem OmFConnStatement_holds {E : Type} [Field E] [NumberField E] [IsCMField E] :
-    OmFConnStatement (E := E) :=
-  OFC.omFConn_of_cm
+alias OmFConnStatement_holds := _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OFC.omFConn_of_cm
 
 end ReciprocityTheory.ChartRestriction.G.AR.Up

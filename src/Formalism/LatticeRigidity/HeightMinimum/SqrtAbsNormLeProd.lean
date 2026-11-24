@@ -63,8 +63,6 @@ theorem absNorm_le_norm {E : Type} [Field E] [NumberField E]
     have h1 : c ≤ b⁻¹ * b := by
       first
         | exact mul_le_mul_right hs _
-        | (rw [← FractionalIdeal.coe_le_coe, FractionalIdeal.coe_mul, FractionalIdeal.coe_mul]
-           exact Submodule.mul_le_mul_right (FractionalIdeal.coe_le_coe.mpr hs))
     rwa [inv_mul_cancel₀ hb] at h1
   obtain ⟨I, hI⟩ := FractionalIdeal.le_one_iff_exists_coeIdeal.mp hc1
   have hc0 : c ≠ 0 := by

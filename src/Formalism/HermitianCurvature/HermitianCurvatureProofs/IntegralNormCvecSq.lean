@@ -112,7 +112,6 @@ theorem memLp_cvec (s : ℕ) (F : ℂ → ℂ → H) (x : ℂ) (hx : x ≠ 0) :
     exact (memLp_comp_mul h _ (inv_ne_zero ha)).const_smul _
   · have := (memLp_comp_mul h (x ^ (s - 1)) ha).const_smul ((‖x‖ ^ (s - 1) : ℝ) : ℂ)
     convert this using 1
-    congr 1
     funext D
     simp only [cvec, Pi.smul_apply]
     rw [mul_div_cancel_left₀ D ha, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hr, Complex.ofReal_one, one_smul]

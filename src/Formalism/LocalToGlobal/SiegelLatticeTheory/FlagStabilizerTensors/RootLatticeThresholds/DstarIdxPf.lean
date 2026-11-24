@@ -15,48 +15,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalVolumeIndices.Help
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalVolumeIndices.LocIdx
 public import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLp
 public import Formalism.SharpRestriction.AdmissibleParameterJoins.SfromGLu
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -72,39 +31,39 @@ section Glob
 variable {D : Formalism.BasicNotions.D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
 
 theorem lIdx_ne (p : TypX X) : lIdx X hb p ≠ 0 := by
-  obtain ⟨K, hKe, -, -, -, hfin⟩ := LocIdx_main X hb (Formalism.L2.SG.Closed.level_subgroup_is_group X)
+  obtain ⟨K, hKe, -, -, -, hfin⟩ := LocIdx_main X hb (_root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X)
     (Formalism.L2.SG.Closed.level_subgroup_properties X) p
   have hcl : KvS X p = K := by rw [KvS, ← hKe, Subgroup.closure_eq]
-  rw [lIdx, LocIdx_KppvS X hb (Formalism.L2.SG.Closed.level_subgroup_is_group X) p, hcl]
+  rw [lIdx, LocIdx_KppvS X hb (_root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X) p, hcl]
   exact hfin
 
-theorem g_pos : 1 ≤ X.B.g := Nat.one_le_iff_ne_zero.mpr (Formalism.L2.SG.Pf.modulus_g_ne_zero X)
+alias g_pos := _root_.Formalism.L2.SG.PoincareInHH.Cut.one_le_g
 
 theorem isOpen_Kg : IsOpen (X.B.I.Kg X.B.g) := X.B.I.topf_open X.B.g (g_pos X)
 
 theorem one_mem_Kg : (1 : X.B.I.Gf) ∈ X.B.I.Kg X.B.g :=
   ⟨Formalism.L2.SG.Pf.unitaryCongruence.K_one _, fun y _ => ⟨0, zero_mem _, by rw [show X.B.I.fmat 1 = 1 from rfl, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩
 
-theorem isOpen_levelSubgroup' : IsOpen ((levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X) : Subgroup X.B.I.Gf) : Set X.B.I.Gf) := by
+theorem isOpen_levelSubgroup' : IsOpen ((levelSubgroupOfCharacter X (_root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X) : Subgroup X.B.I.Gf) : Set X.B.I.Gf) := by
   refine Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_
   refine Filter.mem_of_superset ((isOpen_Kg X).mem_nhds (one_mem_Kg X)) ?_
   intro x hx
   exact ((Formalism.L2.SG.Closed.level_subgroup_properties X).1 x hx).1
 
-theorem relIdx_eq : ((levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X)).relIndex (KsetSub X.B.I)) =
+theorem relIdx_eq : ((levelSubgroupOfCharacter X (_root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X)).relIndex (KsetSub X.B.I)) =
     ∏ p : TypX X, lIdx X hb p := by
-  rw [← PI.MassDataKppVolLemmas.IP_gIdx X hb (Formalism.L2.SG.Closed.level_subgroup_is_group X)]
+  rw [← PI.MassDataKppVolLemmas.IP_gIdx X hb (_root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X)]
   exact PI.MassDataKppVolLemmas.IP_idxProd X hb PI.MassDataKppVolLemmas.single_component_surjective
-    (Formalism.L2.SG.Closed.level_subgroup_is_group X) (Formalism.L2.SG.Closed.level_subgroup_properties X)
+    (_root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X) (Formalism.L2.SG.Closed.level_subgroup_properties X)
 
 theorem muK_eq : X.B.μf X.B.I.Kset =
     ((∏ p : TypX X, lIdx X hb p : ℕ) : ℝ≥0∞) * X.B.μf X.K2 := by
-  have hle : levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X) ≤ KsetSub X.B.I :=
+  have hle : levelSubgroupOfCharacter X (_root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X) ≤ KsetSub X.B.I :=
     fun x hx => (Formalism.L2.SG.Closed.level_subgroup_properties X).2.1 x hx
-  have hi : (levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X)).relIndex (KsetSub X.B.I) ≠ 0 := by
+  have hi : (levelSubgroupOfCharacter X (_root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X)).relIndex (KsetSub X.B.I) ≠ 0 := by
     rw [relIdx_eq X hb]
     exact Finset.prod_ne_zero_iff.2 fun p _ => lIdx_ne X hb p
-  have := Glob_measure_eq_relIndex_mul X.B.μf (KsetSub X.B.I) (levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X)) hle
+  have := Glob_measure_eq_relIndex_mul X.B.μf (KsetSub X.B.I) (levelSubgroupOfCharacter X (_root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X)) hle
     (isOpen_levelSubgroup' X) hi
   rw [relIdx_eq X hb] at this
   exact this
@@ -174,7 +133,7 @@ theorem ggC_eq (R : Formalism.BasicNotions.Ranks) (g : ℕ) :
   have hc0 : Nat.card (Formalism.FourierDecayAlt.S3.Idx R.rS R.k) = Nat.card (Fin (R.k + R.m - 1)) := by
     obtain ⟨t, ht⟩ := R.m_even
     have h2 := R.two_le_m
-    simp only [Formalism.FourierDecayAlt.S3.Idx, Formalism.FourierDecayAlt.S3.Mid, Nat.card_sum, Nat.card_eq_fintype_card, Fintype.card_sum, Fintype.card_fin,
+    simp only [Formalism.FourierDecayAlt.S3.Idx, Formalism.FourierDecayAlt.S3.Mid, Nat.card_eq_fintype_card, Fintype.card_sum, Fintype.card_fin,
       Fintype.card_unit, Formalism.BasicNotions.Ranks.rS]
     omega
   have hc : Fintype.card (Formalism.FourierDecayAlt.S3.Idx R.rS R.k) = Fintype.card (Fin (R.k + R.m - 1)) := by

@@ -84,7 +84,7 @@ theorem embV_single {K : Type} [Field K] (σ : K →+* ℂ) (N : ℕ) (k : Fin N
   change σ ((Pi.single k (1 : K) : Fin N → K) j) = (Pi.single k (1 : ℂ) : Fin N → ℂ) j
   by_cases h : j = k
   · subst h; simp
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 theorem embV_li {K : Type} [Field K] (σ : K →+* ℂ) (N : ℕ) :
     LinearIndependent ℂ fun k => embV σ N (Pi.single k 1) := by

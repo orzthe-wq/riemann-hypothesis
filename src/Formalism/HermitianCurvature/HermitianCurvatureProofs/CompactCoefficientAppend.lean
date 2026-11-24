@@ -65,7 +65,7 @@ variable {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 theorem ptG_one (TT : ℝ) (ζ : ℂ) : D.ptG TT 0 [(1, ζ)] = Complex.normSq ζ - TT := by
-  simp [D.ptG, D.ptMatN, D.ptEntry, Matrix.det_fin_one]
+  simp [D.ptG, D.ptMatN, D.ptEntry]
 
 theorem isLocPt_one {ζ : ℂ} (hζ : ζ ≠ 0) : D.IsLocPt [(1, ζ)] (0 + 1) := by
   refine ⟨?_, ?_⟩

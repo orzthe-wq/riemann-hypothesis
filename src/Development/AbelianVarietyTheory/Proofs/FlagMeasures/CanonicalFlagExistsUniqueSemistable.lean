@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizePropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizeProperties
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NearTrivialPointwise
 import Formalism.HarderNarasimhan.ShiftInvariance
 import Mathlib.Algebra.Order.Floor.Extended
@@ -123,7 +123,7 @@ variable (I : AutInst) (x : I.GA)
 theorem fg_of_le {N : Submodule (𝓞 I.E) (Fin I.n → I.E)} (h : N ≤ lamX I x) : N.FG :=
   (GlobalTheory.NearLowerCompare.lamX_isLattice I x).fg.of_le h
 
-theorem frm_unit : ∀ w, IsUnit (frm I x w).det := GlobalTheory.NearLowerCompare.frm_isUnit I x
+alias frm_unit := _root_.GlobalTheory.Count.FrameMajorant.frm_unit
 
 theorem stepLe_le (t : ℝ) : stepLe I x t ≤ lamX I x := sSup_le fun _ h => h.1
 
@@ -161,37 +161,37 @@ theorem isJump_of_large {s : ℝ} (h0 : stepLe I x s ≠ ⊥)
     (h : largestSize (bas I) (frm I x) (stepLe I x s) = s) : IsJump I x s := by
   have hs : 0 < s := h ▸ large_pos I x (stepLe_le I x s) h0
   refine ⟨hs, lt_of_le_of_ne (stepLt_le_stepLe I x s) fun e => ?_⟩
-  have := (GlobalTheory.T.canonicalLatticeFiltration_size_properties I x s hs).2.2.2.2.2.1 (e ▸ h0)
+  have := (_root_.GlobalTheory.CountSteps.steps I x s hs).2.2.2.2.2.1 (e ▸ h0)
   rw [e, h] at this
   exact lt_irrefl _ this
 
 theorem IsJump.large {t : ℝ} (h : IsJump I x t) : largestSize (bas I) (frm I x) (stepLe I x t) = t := by
   have h0 : stepLe I x t ≠ ⊥ := ne_bot_of_gt h.2
-  refine le_antisymm ((GlobalTheory.T.canonicalLatticeFiltration_size_properties I x t h.1).2.2.2.2.1 h0) (not_lt.1 fun hlt => ?_)
+  refine le_antisymm ((_root_.GlobalTheory.CountSteps.steps I x t h.1).2.2.2.2.1 h0) (not_lt.1 fun hlt => ?_)
   exact h.2.not_ge (le_sSup ⟨stepLe_le I x t, h0, hlt⟩)
 
 theorem IsJump.sizeQ_eq {t : ℝ} (h : IsJump I x t) :
     sizeQ (bas I) (frm I x) (stepLe I x t) (stepLt I x t) = t := by
-  have H := GlobalTheory.T.canonicalLatticeFiltration_size_properties I x t h.1
+  have H := _root_.GlobalTheory.CountSteps.steps I x t h.1
   refine le_antisymm ?_ (H.2.2.2.2.2.2.2.1 _ h.2 (stepLe_le I x t))
   exact (sizeQ_le I x (stepLe_le I x t) (isSat_of_le _ _ H.2.1 h.2.le (stepLe_le I x t)) h.2.ne).trans
     (h.large I x).le
 
 theorem IsJump.rkK_lt {t : ℝ} (h : IsJump I x t) : rkK (stepLt I x t) < rkK (stepLe I x t) :=
   GlobalTheory.PointFlag.rkK_lt _ _ (frm_unit I x) (fg_of_le I x (stepLe_le I x t))
-    (isSat_of_le _ _ (GlobalTheory.T.canonicalLatticeFiltration_size_properties I x t h.1).2.1 h.2.le (stepLe_le I x t)) h.2.ne
+    (isSat_of_le _ _ (_root_.GlobalTheory.CountSteps.steps I x t h.1).2.1 h.2.le (stepLe_le I x t)) h.2.ne
 
 theorem exists_jump_le {t : ℝ} (h0 : stepLe I x t ≠ ⊥) :
     ∃ s, s ≤ t ∧ IsJump I x s ∧ stepLe I x s = stepLe I x t := by
   have ht : 0 < t := not_le.1 fun h => h0 (stepLe_nonpos I x h)
-  have hle := (GlobalTheory.T.canonicalLatticeFiltration_size_properties I x t ht).2.2.2.2.1 h0
+  have hle := (_root_.GlobalTheory.CountSteps.steps I x t ht).2.2.2.2.1 h0
   have e : stepLe I x (largestSize (bas I) (frm I x) (stepLe I x t)) = stepLe I x t :=
     le_antisymm (stepLe_mono I x hle) (le_sSup ⟨stepLe_le I x t, h0, le_rfl⟩)
   exact ⟨_, hle, isJump_of_large I x (e.symm ▸ h0) (by rw [e]), e⟩
 
 theorem exists_jump_lt {t : ℝ} (ht : 0 < t) (h0 : stepLt I x t ≠ ⊥) :
     ∃ s, s < t ∧ IsJump I x s ∧ stepLe I x s = stepLt I x t := by
-  have hle := (GlobalTheory.T.canonicalLatticeFiltration_size_properties I x t ht).2.2.2.2.2.1 h0
+  have hle := (_root_.GlobalTheory.CountSteps.steps I x t ht).2.2.2.2.2.1 h0
   have e : stepLe I x (largestSize (bas I) (frm I x) (stepLt I x t)) = stepLt I x t :=
     le_antisymm (stepLe_le_stepLt I x hle) (le_sSup ⟨stepLt_le I x t, h0, le_rfl⟩)
   exact ⟨_, hle, isJump_of_large I x (e.symm ▸ h0) (by rw [e]), e⟩
@@ -263,7 +263,7 @@ theorem flag_sat (h : HasFlag I x S τ) (m : Fin (a + 1)) :
   obtain ⟨h0, -, -, -, hi, -⟩ := h
   induction m using Fin.cases with
   | zero => rw [h0]; exact isSat_bot _ _ (frm_unit I x) (fg_of_le I x le_rfl)
-  | succ k => rw [(hi k).2.2.1]; exact (GlobalTheory.T.canonicalLatticeFiltration_size_properties I x _ (hi k).1).1
+  | succ k => rw [(hi k).2.2.1]; exact (_root_.GlobalTheory.CountSteps.steps I x _ (hi k).1).1
 
 theorem flag_jump (h : HasFlag I x S τ) (i : Fin a) : IsJump I x (τ i) := by
   have hlt : S i.castSucc < S i.succ := h.2.1 Fin.castSucc_lt_succ
@@ -272,7 +272,7 @@ theorem flag_jump (h : HasFlag I x S τ) (i : Fin a) : IsJump I x (τ i) := by
     (isSat_of_le _ _ (flag_sat h i.castSucc) hlt.le (flag_sat h i.succ).1) hlt.ne
   rw [h4, h3] at hle
   have h0 : stepLe I x (τ i) ≠ ⊥ := h3 ▸ ne_bot_of_gt hlt
-  exact isJump_of_large I x h0 (le_antisymm ((GlobalTheory.T.canonicalLatticeFiltration_size_properties I x _ h1).2.2.2.2.1 h0) hle)
+  exact isJump_of_large I x h0 (le_antisymm ((_root_.GlobalTheory.CountSteps.steps I x _ h1).2.2.2.2.1 h0) hle)
 
 theorem flag_range (h : HasFlag I x S τ) : Set.range τ = {t | IsJump I x t ∧ t < 1 / 2} := by
   ext s
@@ -334,14 +334,14 @@ theorem flag_spec : ∀ (I : AutInst) (x : I.GA), (∃ (a : ℕ) (S : Fin (a + 1
     have e := flag_castSucc h i
     have e' := (h.2.2.2.2.1 i).2.2.1
     rw [e, e']
-    refine ⟨rfl, hj.rkK_lt I x, hj.large I x, (GlobalTheory.T.canonicalLatticeFiltration_size_properties I x _ hj.1).2.2.2.2.2.2.2.1, fun N _ hN hne => ?_⟩
+    refine ⟨rfl, hj.rkK_lt I x, hj.large I x, (_root_.GlobalTheory.CountSteps.steps I x _ hj.1).2.2.2.2.2.2.2.1, fun N _ hN hne => ?_⟩
     exact (sizeQ_le I x (stepLe_le I x _) hN hne).trans (hj.large I x).le
-  · rw [← ((GlobalTheory.T.canonicalLatticeFiltration_size_properties I x (1 / 2) (by norm_num)).2.2.2.2.2.2.2.2 hn).2.2, ← h.2.2.1, ← h.1,
+  · rw [← ((_root_.GlobalTheory.CountSteps.steps I x (1 / 2) (by norm_num)).2.2.2.2.2.2.2.2 hn).2.2, ← h.2.2.1, ← h.1,
       h.2.1.injective.eq_iff, Fin.ext_iff]
     simp
   · intro ha
     have hj := flag_jump h ⟨0, ha⟩
-    obtain ⟨-, h1, h2⟩ := (GlobalTheory.T.canonicalLatticeFiltration_size_properties I x _ hj.1).2.2.2.2.2.2.2.2 hn
+    obtain ⟨-, h1, h2⟩ := (_root_.GlobalTheory.CountSteps.steps I x _ hj.1).2.2.2.2.2.2.2.2 hn
     refine le_antisymm (h2.1 ?_) (not_lt.1 fun hlt => ne_bot_of_gt hj.2 (h1.2 hlt))
     rw [← flag_castSucc h, ← h.1]
     rfl

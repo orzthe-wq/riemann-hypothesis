@@ -1,67 +1,269 @@
 module
 
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QuotMeasUniq
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.LintegralMulRightOfMem
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountableStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleCompactSetsStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupProjectionsStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuityStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresInvariantStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramMatrixLocalGlobalStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyRealStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ProperActionOrbitMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionArtinianRingStatement
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleCompactSets
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupProjections
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuity
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresInvariant
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramMatrixLocalGlobal
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionArtinianRing
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.PiDens
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.Topology.Compactness.Paracompact
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ProperActionOrbitMeasure, CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilOrbitalMeasure
+
+-- ===== clump member: CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ProperActionOrbitMeasure =====
+-- clump-header: {"m": "CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ProperActionOrbitMeasure", "h": "module\n\npublic import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic\npublic import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QuotMeasUniq\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.LintegralMulRightOfMem\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Compactness.Paracompact\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory Topology
+open scoped ENNReal NNReal Matrix
+
+namespace GlobalTheory.CompanionTheory.SW.AbsUniq
+
+def stabilizerOf {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x, act 1 x = x)
+    (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) : Subgroup G where
+  carrier := {g | act g x₀ = x₀}
+  mul_mem' := by
+    intro a b ha hb
+    simp only [Set.mem_setOf_eq] at *
+    rw [hm, hb, ha]
+  one_mem' := h1 x₀
+  inv_mem' := by
+    intro a ha
+    simp only [Set.mem_setOf_eq] at *
+    have h : act a⁻¹ (act a x₀) = x₀ := by rw [← hm, inv_mul_cancel, h1]
+    rwa [ha] at h
+
+def orbitQuot {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x, act 1 x = x)
+    (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) :
+    G ⧸ stabilizerOf act h1 hm x₀ → V :=
+  Quotient.lift (fun g => act g x₀) (by
+    intro a b hab
+    have h : a⁻¹ * b ∈ stabilizerOf act h1 hm x₀ := QuotientGroup.leftRel_apply.1 hab
+    have h' : act (a⁻¹ * b) x₀ = x₀ := h
+    show act a x₀ = act b x₀
+    conv_lhs => rw [← h']
+    rw [← hm, mul_inv_cancel_left])
+
+theorem orbitQuot_mk {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x, act 1 x = x)
+    (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) (g : G) :
+    orbitQuot act h1 hm x₀ (g : G ⧸ stabilizerOf act h1 hm x₀) = act g x₀ := rfl
+
+theorem orbitQuot_injective {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x, act 1 x = x)
+    (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) :
+    Function.Injective (orbitQuot act h1 hm x₀) := by
+  intro a b
+  induction a using QuotientGroup.induction_on with | _ a => ?_
+  induction b using QuotientGroup.induction_on with | _ b => ?_
+  intro hab
+  rw [orbitQuot_mk, orbitQuot_mk] at hab
+  refine QuotientGroup.eq.2 ?_
+  show act (a⁻¹ * b) x₀ = x₀
+  rw [hm, ← hab, ← hm, inv_mul_cancel, h1]
+
+theorem orbitQuot_smul {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x, act 1 x = x)
+    (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) (g : G)
+    (y : G ⧸ stabilizerOf act h1 hm x₀) :
+    orbitQuot act h1 hm x₀ (g • y) = act g (orbitQuot act h1 hm x₀ y) := by
+  induction y using QuotientGroup.induction_on with | _ a => ?_
+  show act (g * a) x₀ = act g (act a x₀)
+  rw [hm]
+
+theorem range_orbitQuot {G V : Type} [Group G] (act : G → V → V) (h1 : ∀ x, act 1 x = x)
+    (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) (Z : Set V) (hx : x₀ ∈ Z)
+    (hinv : ∀ g, ∀ x ∈ Z, act g x ∈ Z) (htr : ∀ x ∈ Z, ∀ y ∈ Z, ∃ g, act g x = y) :
+    Set.range (orbitQuot act h1 hm x₀) = Z := by
+  ext y
+  constructor
+  · rintro ⟨a, rfl⟩
+    induction a using QuotientGroup.induction_on with | _ a => ?_
+    exact hinv a x₀ hx
+  · intro hy
+    obtain ⟨g, rfl⟩ := htr x₀ hx y hy
+    exact ⟨(g : G ⧸ stabilizerOf act h1 hm x₀), rfl⟩
+
+theorem continuous_orbitQuot {G V : Type} [Group G] [TopologicalSpace G]
+    [TopologicalSpace V] (act : G → V → V) (hc : Continuous fun p : G × V => act p.1 p.2)
+    (h1 : ∀ x, act 1 x = x)
+    (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) :
+    Continuous (orbitQuot act h1 hm x₀) :=
+  Continuous.quotient_lift (hc.comp (continuous_id.prodMk continuous_const)) _
+
+theorem measurableEmbedding_orbitQuot {G V : Type} [Group G] [TopologicalSpace G]
+    [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G]
+    [MeasurableSpace G] [BorelSpace G]
+    [TopologicalSpace V] [T2Space V] [SecondCountableTopology V] [MeasurableSpace V]
+    [BorelSpace V] (act : G → V → V) (hc : Continuous fun p : G × V => act p.1 p.2)
+    (h1 : ∀ x, act 1 x = x)
+    (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V) (Z : Set V) (hZ : IsClosed Z)
+    (hx : x₀ ∈ Z) (hinv : ∀ g, ∀ x ∈ Z, act g x ∈ Z)
+    (htr : ∀ x ∈ Z, ∀ y ∈ Z, ∃ g, act g x = y) :
+    MeasurableEmbedding (orbitQuot act h1 hm x₀) := by
+  have hcont : Continuous fun g : G => act g x₀ :=
+    hc.comp (continuous_id.prodMk continuous_const)
+  refine ⟨orbitQuot_injective act h1 hm x₀, ?_, ?_⟩
+  · intro A hA
+    rw [measurableSet_quotient]
+    exact hcont.measurable hA
+  · intro S hS
+    have hS' : MeasurableSet ((fun g : G => (g : G ⧸ stabilizerOf act h1 hm x₀)) ⁻¹' S) :=
+      measurableSet_quotient.1 hS
+    let o : G → Z := fun g => ⟨act g x₀, hinv g x₀ hx⟩
+    have hoc : Continuous o := hcont.subtype_mk _
+    have hos : Function.Surjective o := by
+      rintro ⟨y, hy⟩
+      obtain ⟨g, rfl⟩ := htr x₀ hx y hy
+      exact ⟨g, rfl⟩
+    haveI : PolishSpace G := PI.AprimeInfA.polish_of_lcsc G
+    have hb := hoc.map_eq_borel hos
+    let T : Set Z := Subtype.val ⁻¹' (orbitQuot act h1 hm x₀ '' S)
+    have hT : MeasurableSet T := by
+      have hpre : o ⁻¹' T = (fun g : G => (g : G ⧸ stabilizerOf act h1 hm x₀)) ⁻¹' S := by
+        ext g
+        constructor
+        · rintro ⟨y, hy, hyg⟩
+          have : y = (g : G ⧸ stabilizerOf act h1 hm x₀) :=
+            orbitQuot_injective act h1 hm x₀ hyg
+          simpa [this] using hy
+        · intro hg
+          exact ⟨_, hg, rfl⟩
+      have hm' : MeasurableSet[MeasurableSpace.map o ‹MeasurableSpace G›] T := by
+        show MeasurableSet (o ⁻¹' T)
+        rw [hpre]
+        exact hS'
+      rw [hb, ← BorelSpace.measurable_eq] at hm'
+      exact hm'
+    have himg : orbitQuot act h1 hm x₀ '' S = Subtype.val '' T := by
+      rw [Subtype.image_preimage_coe, Set.inter_eq_right.2]
+      rintro _ ⟨y, -, rfl⟩
+      rw [← range_orbitQuot act h1 hm x₀ Z hx hinv htr]
+      exact ⟨y, rfl⟩
+    rw [himg]
+    exact (MeasurableEmbedding.subtype_coe hZ.measurableSet).measurableSet_image.2 hT
+
+theorem comap_orbitQuot_invariant {G V : Type} [Group G] [TopologicalSpace G]
+    [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G]
+    [MeasurableSpace G] [BorelSpace G]
+    [TopologicalSpace V] [T2Space V] [SecondCountableTopology V] [MeasurableSpace V]
+    [BorelSpace V] (act : G → V → V) (hc : Continuous fun p : G × V => act p.1 p.2)
+    (h1 : ∀ x, act 1 x = x)
+    (hm : ∀ g h x, act (g * h) x = act g (act h x)) (x₀ : V)
+    (hφ : MeasurableEmbedding (orbitQuot act h1 hm x₀)) (μ : Measure V)
+    (hμ : ∀ g, μ.map (act g) = μ) (g : G) (s : Set (G ⧸ stabilizerOf act h1 hm x₀))
+    (hs : MeasurableSet s) :
+    μ.comap (orbitQuot act h1 hm x₀) ((fun y => g • y) ⁻¹' s) =
+      μ.comap (orbitQuot act h1 hm x₀) s := by
+  have hact : Measurable (act g) :=
+    (hc.comp (continuous_const.prodMk continuous_id)).measurable
+  rw [hφ.comap_apply, hφ.comap_apply]
+  have himg : orbitQuot act h1 hm x₀ '' ((fun y => g • y) ⁻¹' s) =
+      act g ⁻¹' (orbitQuot act h1 hm x₀ '' s) := by
+    ext x
+    constructor
+    · rintro ⟨y, hy, rfl⟩
+      exact ⟨g • y, hy, orbitQuot_smul act h1 hm x₀ g y⟩
+    · rintro ⟨y, hy, hyx⟩
+      refine ⟨g⁻¹ • y, ?_, ?_⟩
+      · show g • g⁻¹ • y ∈ s
+        simpa using hy
+      · rw [orbitQuot_smul, hyx, ← hm, inv_mul_cancel, h1]
+  rw [himg]
+  conv_rhs => rw [← hμ g]
+  rw [Measure.map_apply hact (hφ.measurableSet_image.2 hs)]
+
+theorem invariant_measure_unique :
+    ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
+      [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
+      (V : Type) [TopologicalSpace V] [T2Space V] [LocallyCompactSpace V]
+      [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V] (act : G → V → V),
+      (Continuous fun p : G × V => act p.1 p.2) → (∀ x, act 1 x = x) →
+      (∀ g h x, act (g * h) x = act g (act h x)) → ∀ Z : Set V, IsClosed Z →
+      (∀ g, ∀ x ∈ Z, act g x ∈ Z) → (∀ x ∈ Z, ∀ y ∈ Z, ∃ g, act g x = y) →
+      ∀ (μ ν : Measure V), IsLocallyFiniteMeasure μ → IsLocallyFiniteMeasure ν → μ Zᶜ = 0 →
+      ν Zᶜ = 0 → (∀ g, μ.map (act g) = μ) → (∀ g, ν.map (act g) = ν) → ν ≠ 0 →
+      ∃ c : ℝ≥0, μ = c • ν := by
+  intro G _ _ _ _ _ _ _ _ V _ _ _ _ _ _ act hc h1 hm Z hZ hinv htr μ ν hμf hνf hμZ hνZ hμ hν hν0
+
+  have hne : Z.Nonempty := by
+    by_contra hemp
+    rw [Set.not_nonempty_iff_eq_empty] at hemp
+    apply hν0
+    rw [← Measure.measure_univ_eq_zero]
+    simpa [hemp] using hνZ
+  obtain ⟨x₀, hx⟩ := hne
+  set H := stabilizerOf act h1 hm x₀ with hH
+  have hcont : Continuous fun g : G => act g x₀ :=
+    hc.comp (continuous_id.prodMk continuous_const)
+  have hHc : IsClosed (H : Set G) := by
+    have : (H : Set G) = (fun g : G => act g x₀) ⁻¹' {x₀} := rfl
+    rw [this]
+    exact isClosed_singleton.preimage hcont
+  set φ := orbitQuot act h1 hm x₀ with hφdef
+  have hφc : Continuous φ := continuous_orbitQuot act hc h1 hm x₀
+  have hφ : MeasurableEmbedding φ :=
+    measurableEmbedding_orbitQuot act hc h1 hm x₀ Z hZ hx hinv htr
+  have hr : Set.range φ = Z := range_orbitQuot act h1 hm x₀ Z hx hinv htr
+  have hfin : ∀ (m : Measure V), IsLocallyFiniteMeasure m → ∀ K : Set (G ⧸ H), IsCompact K →
+      m.comap φ K < ⊤ := by
+    intro m _ K hK
+    rw [hφ.comap_apply]
+    exact (hK.image hφc).measure_lt_top
+  have hrec : ∀ (m : Measure V), m Zᶜ = 0 → (m.comap φ).map φ = m := by
+    intro m hm0
+    rw [hφ.map_comap, hr]
+    exact Measure.restrict_eq_self_of_ae_mem (by
+      rw [ae_iff]; exact hm0)
+  have hρ0 : ν.comap φ ≠ 0 := by
+    intro h0
+    apply hν0
+    rw [← hrec ν hνZ, h0, Measure.map_zero]
+  obtain ⟨c, hcc⟩ := PI.wqUnique G H hHc (ν.comap φ) (μ.comap φ) hρ0 (hfin ν hνf)
+    (comap_orbitQuot_invariant act hc h1 hm x₀ hφ ν hν) (hfin μ hμf)
+    (comap_orbitQuot_invariant act hc h1 hm x₀ hφ μ hμ)
+  have hμν : μ = c • ν := by
+    have hφν : AEMeasurable φ (ν.comap φ) := hφ.measurable.aemeasurable
+    rw [← hrec μ hμZ, hcc, Measure.map_smul, hrec ν hνZ]
+    exact hφν
+
+  have hct : c ≠ ⊤ := by
+    rintro rfl
+    have hK : ∃ K : Set V, IsCompact K ∧ ν K ≠ 0 := by
+      by_contra hno
+      push_neg at hno
+      apply hν0
+      rw [← Measure.measure_univ_eq_zero, ← iUnion_compactCovering V]
+      exact measure_iUnion_null fun n => hno _ (isCompact_compactCovering V n)
+    obtain ⟨K, hKc, hK0⟩ := hK
+    have h := hKc.measure_lt_top (μ := μ)
+    rw [hμν, Measure.smul_apply, smul_eq_mul, ENNReal.top_mul hK0] at h
+    exact lt_irrefl _ h
+  refine ⟨c.toNNReal, ?_⟩
+  rw [hμν]
+  ext s hs
+  simp [ENNReal.smul_def, ENNReal.coe_toNNReal hct]
+
+end GlobalTheory.CompanionTheory.SW.AbsUniq
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ProperActionOrbitMeasure =====
+
+-- ===== clump member: CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilOrbitalMeasure =====
+-- clump-header: {"m": "CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilOrbitalMeasure", "h": "module\n\npublic import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd\npublic import Formalism.UnipotentAdelicQuotients.SWXSDefs\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleCompactSets\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupProjections\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuity\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresInvariant\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramMatrixLocalGlobal\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal\npublic import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ProperActionOrbitMeasure\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.WittExtensionArtinianRing\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.PiDens\nimport CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
@@ -149,7 +351,7 @@ theorem prod_factor
       rcases e1 with e1 | ⟨i, -, e1⟩
       · exact hn₀ ⟨x₀, hx₀⟩ (Measure.measure_univ_eq_zero.mp e1)
       · exact hn i ⟨x i, hxi i⟩ (Measure.measure_univ_eq_zero.mp e1)
-    obtain ⟨c, hcP⟩ := GlobalTheory.T.proper_action_orbit_measure (G₀ × ∀ i, G i) (W₀ × ∀ i, W i)
+    obtain ⟨c, hcP⟩ := _root_.GlobalTheory.CompanionTheory.SW.AbsUniq.invariant_measure_unique (G₀ × ∀ i, G i) (W₀ × ∀ i, W i)
       (fun g x => (a₀ g.1 x.1, fun i => a i (g.2 i) (x.2 i)))
       (by
         refine Continuous.prodMk ?_ (continuous_pi fun i => ?_)
@@ -203,10 +405,10 @@ theorem exists_scale (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {d : ℕ} (b : 
     (hK : IsCompact K) :
     ∃ N : ℕ, 0 < N ∧ ∀ Y ∈ K, (fun a i => (N : Fv F v ⊗[F] E) * Y a i) ∈ latV b v := by
   classical
-  obtain ⟨tr, lc, sc, t2, -⟩ := GlobalTheory.T.completion_is_local_ring F v
-  have tk := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Fv F v)
+  obtain ⟨tr, lc, sc, t2, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
+  have tk := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)
   haveI := tk.1
-  obtain ⟨-, -, -, hlat, -, -, -, hglue, -⟩ := GlobalTheory.T.adelic_tuple_projections F E σ hσ d b n M
+  obtain ⟨-, -, -, hlat, -, -, -, hglue, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hσ d b n M
   have hpt : ∀ Y : Fin n → Fin M → Fv F v ⊗[F] E, ∃ N : ℕ, 0 < N ∧
       (fun a i => (N : Fv F v ⊗[F] E) * Y a i) ∈ latV b v := by
     intro Y
@@ -220,7 +422,7 @@ theorem exists_scale (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {d : ℕ} (b : 
       rw [Pi.single_eq_of_ne (by simpa using hne)]
       exact zero_mem_lat b w
     obtain ⟨X, -, hX⟩ := hglue 0 _ hev
-    obtain ⟨N, r, hN, -, h⟩ := (GlobalTheory.T.adelic_tuple_compact_sets F E σ hσ d b n M).2 {X} isCompact_singleton
+    obtain ⟨N, r, hN, -, h⟩ := (_root_.GlobalTheory.CompanionTheory.SW.Cpt.compact_tuples F E σ hσ d b n M).2 {X} isCompact_singleton
     refine ⟨N, hN, ?_⟩
     have := (h X rfl).1 v
     rwa [hX, Pi.single_eq_same] at this
@@ -260,14 +462,14 @@ theorem preimage_lt_top (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {d : ℕ} (b
     (K : Set ((Fin n → Fin M → Ainf F ⊗[F] E) × ∀ v : S, Fin n → Fin M → Fv F v.1 ⊗[F] E))
     (hK : IsCompact K) : I (pr S ⁻¹' K ∩ intOff b S) < ⊤ := by
   classical
-  obtain ⟨-, -, -, -, -, -, -, -, hsz⟩ := GlobalTheory.T.adelic_tuple_projections F E σ hσ d b n M
+  obtain ⟨-, -, -, -, -, -, -, -, hsz⟩ := _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hσ d b n M
   have hK₀ : IsCompact (Prod.fst '' K) := hK.image continuous_fst
   have hKv : ∀ v : S, IsCompact ((fun x => x.2 v) '' K) := fun v =>
     hK.image ((continuous_apply v).comp continuous_snd)
   obtain ⟨r, hr⟩ := (hK₀.image hsz).bddAbove
   choose N hN hNK using fun v : S => exists_scale σ hσ b n M v.1 _ (hKv v)
   have hL : 0 < ∏ v : S, N v := Finset.prod_pos fun v _ => hN v
-  have hcpt := (GlobalTheory.T.adelic_tuple_compact_sets F E σ hσ d b n M).1 (∏ v : S, N v) r hL
+  have hcpt := (_root_.GlobalTheory.CompanionTheory.SW.Cpt.compact_tuples F E σ hσ d b n M).1 (∏ v : S, N v) r hL
   refine lt_of_le_of_lt (measure_mono ?_) hcpt.measure_lt_top
   rintro X ⟨hXK, hXo⟩
   refine ⟨fun v => ?_, hr ⟨_, ⟨_, hXK, rfl⟩, rfl⟩⟩
@@ -300,7 +502,7 @@ theorem push_inv (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {M : ℕ} (J : Matr
       (fun x => (actW (Ainf F) σ J g₀ x.1, fun v => actW (Fv F v.1) σ J (g v) (x.2 v))) =
       (I.restrict (intOff b S)).map (pr S) := by
   classical
-  obtain ⟨pinf, p, hcomp, -, hex⟩ := GlobalTheory.T.adelic_unitary_group_projections F E σ hσ M J hJ
+  obtain ⟨pinf, p, hcomp, -, hex⟩ := _root_.GlobalTheory.CompanionTheory.SW.HProj.components F E σ hσ M J hJ
   obtain ⟨h, hh₀, hhS, hhO⟩ := hex S g₀ (fun v => if hv : v ∈ S then g ⟨v, hv⟩ else 1)
   have hpre : actW (AF F) σ J h ⁻¹' (intOff b S : Set (Fin n → Fin M → AF F ⊗[F] E)) =
       intOff b S := by
@@ -355,11 +557,11 @@ theorem local_pack (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {M : ℕ} (J : Ma
   haveI := t2
   haveI := art
   haveI := red
-  obtain ⟨-, hW, hH⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hσ R d b lam hlam
+  obtain ⟨-, hW, hH⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ R d b lam hlam
   haveI := hW n M
   haveI := hH n
-  have hfin := GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hσ M J hJ R hR n _ _ m (hW n M) (hH n) hm (hermOf R σ T hT)
-  have hinv := GlobalTheory.T.gram_fiber_measures_invariant F E σ hσ M J hJ R hR n _ _ m (hW n M) (hH n) hm
+  have hfin := _root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hσ M J hJ R hR n _ _ m (hW n M) (hH n) hm (hermOf R σ T hT)
+  have hinv := _root_.GlobalTheory.CompanionTheory.SW.FibreInv.map_actW_fibre F E σ hσ M J hJ R hR n _ _ m (hW n M) (hH n) hm
   have hunit : ∀ X : Fin n → Fin M → R ⊗[F] E, gramR R σ J X = T.map (inclR R) →
       IsUnit (gramR R σ J X).det := by
     intro X hX
@@ -376,7 +578,7 @@ theorem local_pack (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {M : ℕ} (J : Ma
     have := hfin.2 Set.univ isOpen_univ ⟨X, Set.mem_univ X, hX, hunit X hX⟩
     exact this (by rw [h0]; rfl)
   · intro X hX Y hY
-    exact GlobalTheory.T.witt_extension_artinian_ring F E σ hσ M J hJ R n X Y (hX.trans hY.symm) (hunit X hX)
+    exact _root_.GlobalTheory.CompanionTheory.SW.WittTuples.exists_actW_eq_of_gramR_eq F E σ hσ M J hJ R n X Y (hX.trans hY.symm) (hunit X hX)
 
 end Concrete
 
@@ -384,9 +586,9 @@ theorem fact_S : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   intro F E _ _ _ _ _ σ hσ M J hJ n T hT hdet d b laminf lam hinf hlam minf hminf m hm I hIl hIinv
     hIT S
   classical
-  obtain ⟨⟨lcA, scA, t2A⟩, -⟩ := GlobalTheory.T.adeles_locally_compact_second_countable F
-  have hRI := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hσ.1
-  have hRv := GlobalTheory.T.completion_is_local_ring F
+  obtain ⟨⟨lcA, scA, t2A⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.AdeleTop.adele_top F
+  have hRI := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hσ.1
+  have hRv := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F
   obtain ⟨trI, lcI, scI, t2I, -⟩ := id hRI
   haveI : ∀ v, IsTopologicalRing (Fv F v) := fun v => (hRv v).1
   haveI : ∀ v, LocallyCompactSpace (Fv F v) := fun v => (hRv v).2.1
@@ -394,9 +596,9 @@ theorem fact_S : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   haveI : ∀ v, T2Space (Fv F v) := fun v => (hRv v).2.2.2.1
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩
   haveI : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩
-  have kA := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (AF F)
-  have kI := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)
-  have kV := fun v => GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Fv F v)
+  have kA := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (AF F)
+  have kI := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Ainf F)
+  have kV := fun v => _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)
   haveI := kA.1
   haveI := kA.2.1
   haveI := kA.2.2.1
@@ -412,9 +614,9 @@ theorem fact_S : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   haveI : ∀ v, SecondCountableTopology (Fv F v ⊗[F] E) := fun v => (kV v).2.2.1
   haveI : ∀ v, T2Space (Fv F v ⊗[F] E) := fun v => (kV v).2.2.2.1
   haveI : ∀ v, BorelSpace (Fin n → Fin M → Fv F v ⊗[F] E) := fun v => (kV v).2.2.2.2.2.2.2.1 n M
-  have uA := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (AF F)
-  have uI := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (Ainf F)
-  have uV := fun v => GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (Fv F v)
+  have uA := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ M J hJ (AF F)
+  have uI := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ M J hJ (Ainf F)
+  have uV := fun v => _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ M J hJ (Fv F v)
   haveI := uI.1
   haveI := uI.2.1
   haveI := uI.2.2.1
@@ -427,7 +629,7 @@ theorem fact_S : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   have LV := fun v => local_pack σ hσ J hJ (Fv F v) (hRv v) T hT hdet b (lam v) (hlam v).1 (m v) (hm v)
   haveI := LI.1
   haveI : ∀ v : S, IsLocallyFiniteMeasure (m v.1 (hermOf (Fv F v.1) σ T hT)) := fun v => (LV v.1).1
-  obtain ⟨cI, cF, cV, hlat, hint, -, -, -, -⟩ := GlobalTheory.T.adelic_tuple_projections F E σ hσ d b n M
+  obtain ⟨cI, cF, cV, hlat, hint, -, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hσ d b n M
   have hprc : Continuous (pr S : (Fin n → Fin M → AF F ⊗[F] E) → _) :=
     cI.prodMk (continuous_pi fun v => (cV v.1).comp cF)
   have hprm : Measurable (pr S : (Fin n → Fin M → AF F ⊗[F] E) → _) := hprc.measurable
@@ -468,7 +670,7 @@ theorem fact_S : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
     refine le_trans (measure_mono ?_) hIT.le
     intro X hX hXT
     apply hX
-    have hg := ((GlobalTheory.T.gram_matrix_local_global F E σ hσ M J hJ n X T).1.mp hXT)
+    have hg := ((_root_.GlobalTheory.CompanionTheory.SW.GramLocal.gram_local F E σ hσ M J hJ n X T).1.mp hXT)
     exact ⟨hg.1, fun v _ => hg.2 v.1⟩
   obtain ⟨c, hc⟩ := prod_factor (ι := S) (G := fun v : S => HA (Fv F v.1) σ J)
     (W := fun v : S => Fin n → Fin M → Fv F v.1 ⊗[F] E)
@@ -497,3 +699,7 @@ theorem fact_S : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   rw [Finset.prod_coe_sort S fun v => φ v (projV v (projFin X))]
 
 end GlobalTheory.CompanionTheory.SW.FactS
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilOrbitalMeasure =====

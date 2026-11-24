@@ -2,19 +2,21 @@ module
 
 public import Development.AutomorphicArithmetic.Foundations.LocalLanglands.RecTTransport
 public import Development.AbelianVarietyTheory.Definitions.Divisors.LineOppositeParabolicUnitaryLeviSectionEq
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreduciblesStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentsSimpleFDRepFiniteFinsumEqOne
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CentralCharacterSubquotientProductIrreducibles
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DepthZeroSupercuspidalCuspidalModule
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSupercuspidalCompGeneralLinearGroupMapOfFieldE
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsSupercuspidalOfIsCuspidal
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubsingletonJacquetOfPerm
 public import Development.DiscreteGroups.GlobalIrreducibility.DzIsoKO
 public import Development.DiscreteGroups.GlobalIrreducibility.DzKSchur
 public import Development.DiscreteGroups.GlobalIrreducibility.DzTwChar
-import Development.DiscreteGroups.GlobalIrreducibility.ExistsOfMemKOne
 public import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal
 public import Development.WeilBound.RepresentationTheoryGL.GaloisPermutationReps.SubquotientEquivalence.ConjTorusSubApply
 public import Development.WeilBound.RepresentationTheoryGL.GaloisPermutationReps.SubquotientEquivalence.FiniteCuspidalOfIsCuspidal
+public import Development.DiscreteGroups.GlobalIrreducibility.DzIsoRes
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentsSimpleFDRepFiniteFinsumEqOne
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubsingletonJacquetOfPerm
+import Development.DiscreteGroups.GlobalIrreducibility.ExistsOfMemKOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -53,7 +55,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Development.DiscreteGroups.GlobalIrreducibility.DzIsoRes
 
 @[expose] public section
 
@@ -241,7 +242,7 @@ theorem UpperTheory.Zero.LLC.typeEx :
         rw [he1, he0s]) τ' hinf'
     obtain ⟨φ, h0, hφ⟩ := hR
     obtain ⟨φ', h0', hφ'⟩ := hR'
-    obtain ⟨ω, hω⟩ := (GlobalTheory.T.centralCharacter_subquotient_productIrreducibles (w.adicCompletion E)).1 (GlobalTheory.LocLanglands.cls σ)
+    obtain ⟨ω, hω⟩ := (_root_.GlobalTheory.GamMul.centralChar_subquotient_prodIrr (w.adicCompletion E)).1 (GlobalTheory.LocLanglands.cls σ)
     have F := fixed_eq_range i hi τ hτ R ω hω φ h0 hφ
     have F' := fixed_eq_range i hi τ' hτ' R ω hω φ' h0' hφ'
     exact char_eq τ τ' φ φ' F.1 F'.1 (F.2.symm.trans F'.2)

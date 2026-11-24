@@ -93,7 +93,7 @@ theorem resL_X_mul (v u : σ) (huv : u ≠ v) (e : ℕ) (g : MvPolynomial σ ℚ
   rw [coeff_initPart, MvPolynomial.coeff_X_mul', MvPolynomial.coeff_X_mul']
   by_cases hu : u ∈ m.support
   · have hmv : (m - Finsupp.single u 1 : σ →₀ ℕ) v = m v := by
-      simp [Finsupp.single_apply, huv]
+      simp [huv]
     simp only [hu, if_true, coeff_initPart, hmv]
   · simp only [hu, if_false]
     split_ifs <;> rfl
@@ -114,7 +114,7 @@ theorem resL_pderiv (v u : σ) (huv : u ≠ v) (e : ℕ) (g : MvPolynomial σ �
   | monomial m a =>
     rw [hr, hr, MvPolynomial.pderiv_monomial, hi, hi]
     have hmv : (m - Finsupp.single u 1 : σ →₀ ℕ) v = m v := by
-      simp [Finsupp.single_apply, huv]
+      simp [huv]
     rw [hmv]
     split_ifs <;> simp [MvPolynomial.pderiv_monomial]
   | add f g hf hg =>
@@ -254,7 +254,7 @@ theorem pderiv_glAct (LL : Letters (K + 1)) (hv : LL.vec (Fin.last K) = true) (a
   · subst hac
     simp only [Pi.single_eq_same, mul_one, if_true]
     ring
-  · simp [Pi.single_apply, hac, add_assoc]
+  · simp [hac]
 
 private theorem yCond_le_restrictSupport_wt_le {N : ℕ} [NeZero r] (LL : Letters N) (j : ℕ) (Mt : WithTop ℤ) :
     YCond p LL j Mt ≤
@@ -444,7 +444,7 @@ private theorem pderiv_last_eulL_eq (c : Fin r) (g : MvPolynomial (Fin (K + 1) �
     · simp
     · intro d _ hd
       have hne : ((Fin.last K, d) : Fin (K + 1) × Fin r) ≠ (Fin.last K, c) := by simp [hd]
-      simp [Pi.single_apply, hne]
+      simp [hne]
     · intro h
       exact absurd (Finset.mem_univ c) h
   · refine Finset.sum_congr rfl fun d _ => ?_

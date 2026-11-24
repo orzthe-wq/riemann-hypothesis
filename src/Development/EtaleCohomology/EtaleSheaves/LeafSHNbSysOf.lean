@@ -240,7 +240,7 @@ theorem LeafSHNbSys_of : LeafSHNbSys := by
   let s : Spec (CommRingCat.of Ω) ⟶ U.left :=
     Spec.map (CommRingCat.ofHom (algebraMap (U.left.residueField x) Ω)) ≫ U.left.fromSpecResidueField x
   have hx : s default = x := by
-    first | exact Scheme.fromSpecResidueField_apply x _ | (simp [s]; exact Scheme.fromSpecResidueField_apply x _)
+    first | exact Scheme.fromSpecResidueField_apply x _
   obtain ⟨Q, hQs, haff, hwi⟩ := exists_small s
   haveI := hQs
   exact ⟨Ω, inferInstance, inferInstance, s, main s Q haff x hx hwi⟩

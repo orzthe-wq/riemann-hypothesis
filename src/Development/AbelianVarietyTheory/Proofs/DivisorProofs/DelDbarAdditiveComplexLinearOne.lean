@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DelOperatorAtDbarOperatorAtLinearLocalStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DelOperatorAtDbarOperatorAtLinearLocal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -88,7 +88,7 @@ theorem GlobalTheory.CxForm.HolAtlas.del_dbar_linear : ∀ (M : Type) [Topologic
   intro M _ n A
   refine ⟨⟨funext fun x => ?_, funext fun x => ?_⟩, fun c α β hα hβ =>
     ⟨funext fun x => ?_, funext fun x => ?_, funext fun x => ?_, funext fun x => ?_⟩⟩
-  all_goals obtain ⟨hadd, hsmul, -, hgerm, hconst⟩ := GlobalTheory.T.delOperatorAt_dbarOperatorAt_linear_local n x.crd
+  all_goals obtain ⟨hadd, hsmul, -, hgerm, hconst⟩ := _root_.GlobalTheory.CxForm.delAt_dbarAt_linear_local n x.crd
   · exact (hgerm _ _ (loc_one_eventuallyEq A x)).1.trans (hconst 1).1
   · exact (hgerm _ _ (loc_one_eventuallyEq A x)).2.trans (hconst 1).2
   · rw [HolAtlas.del, loc_add]

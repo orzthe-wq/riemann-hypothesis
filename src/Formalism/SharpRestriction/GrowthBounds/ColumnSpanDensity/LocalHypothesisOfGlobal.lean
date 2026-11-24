@@ -108,10 +108,8 @@ theorem sum_pi_marginal_injective {ι ι' : Type} [Fintype ι] [DecidableEq ι] 
     (t := Fintype.piFinset (fun _ : ι' => S)) (g := fun A => A ∘ φ)
     (fun A hA => Fintype.mem_piFinset.2 fun i => Fintype.mem_piFinset.1 hA (φ i)), Finset.mul_sum]
   refine Finset.sum_congr rfl fun A' hA' => ?_
-  have h1 : ∑ A ∈ (Fintype.piFinset (fun _ : ι => S)).filter (fun A => A ∘ φ = A'), g (A ∘ φ) =
-      ∑ A ∈ (Fintype.piFinset (fun _ : ι => S)).filter (fun A => A ∘ φ = A'), g A' :=
-    Finset.sum_congr rfl fun A hA => by rw [(Finset.mem_filter.1 hA).2]
-  rw [h1, Finset.sum_const, nsmul_eq_mul, card_fiber_restriction_pi φ hφ S A' (Fintype.mem_piFinset.1 hA')]
+  rw [Finset.sum_congr rfl (fun A hA => by rw [(Finset.mem_filter.1 hA).2]),
+    Finset.sum_const, nsmul_eq_mul, card_fiber_restriction_pi φ hφ S A' (Fintype.mem_piFinset.1 hA')]
   push_cast
   rfl
 

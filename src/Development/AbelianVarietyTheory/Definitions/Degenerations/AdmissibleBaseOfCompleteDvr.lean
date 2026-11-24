@@ -267,9 +267,7 @@ def AllA (P : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
     (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (O' : Type) [CommRing O'] [IsDomain O']
     [CharZero O'] (b : c.V W₀ →+* O') (ϖ : O') (a : ArcIn D l (c.V W₀).subtype O' b), GlobalTheory.LN.ArcBase O' ϖ → P Y a
 
-theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  rw [← Spec.map_comp]; rfl
+alias spMap_comp' := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp
 
 theorem ArcPt.comp {Y : Model Xo c β} {R₁ R₂ : Type} [CommRing R₁] [IsDomain R₁] [CommRing R₂] [IsDomain R₂]
     {g : PowerSeries O' →+* R₁} {y₁ : Sp (FractionRing R₁) ⟶ Xo.XF c} (hy : ArcPt Y b g y₁) (h : R₁ →+* R₂)

@@ -336,10 +336,10 @@ theorem UpperTheory.V.Fr.of_form :
     have hb : (a : ResidueField O) ≠ 0 := a.ne_zero
     rw [hX, map_sub, htr.2, htr.2, hP1, hP2, hz, Units.val_inv_eq_inv_val]
     rcases hn with rfl | rfl
-    · simp [Fin.sum_univ_two, UpperTheory.V.Fr.w, Units.val_inv_eq_inv_val]
+    · simp [Fin.sum_univ_two, UpperTheory.V.Fr.w]
       field_simp
       ring
-    · simp [Fin.sum_univ_three, UpperTheory.V.Fr.w, Units.val_inv_eq_inv_val]
+    · simp [Fin.sum_univ_three, UpperTheory.V.Fr.w]
       field_simp
       ring
   have hk2 : (2 : ResidueField O) ≠ 0 := by

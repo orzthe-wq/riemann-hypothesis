@@ -58,10 +58,4 @@ theorem coef_smoothOnG (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddComm
   · exact (((innerSL ℂ w).restrictScalars ℝ).contDiff.comp_contDiffOn hF)
   · exact congrArg (fun z => ⟪w, z⟫_ℂ) (hfF g hg hgJ)
 
-theorem coef_smooth : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H]
-    [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
-    (v : GlobalTheory.SmoothVecMod.smoothVec ε σ) (w : H),
-    Formalism.REAL.SmoothOnG ε (fun g => ⟪w, σ g (v : H)⟫_ℂ) :=
-  fun n ε H _ _ σ v w => coef_smoothOnG n ε H σ v w
-
 end GlobalTheory.CompanionTheory.CoefSmooth

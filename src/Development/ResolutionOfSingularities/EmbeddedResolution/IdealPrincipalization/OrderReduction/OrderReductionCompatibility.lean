@@ -1,44 +1,41 @@
 module
 
-public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.CanonicalPrincipalization
-public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.SmoothDivisorSmoothPullback
-public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderCertificateDescent
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.BoundarySeparationBaseChange
+public import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.OrderAtGenericPoint
+public import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.OrderPullback
+public import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.SmoothDivisorEtaleChart
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.DescentHypotheses
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.IteratedStrictTransformPullback
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactGeometry
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCoverProperties
+public import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.StrictNormalCrossingsNil
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.KrullDimClosedSubset
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.CoverMapSurjective
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCover
+public import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.EtaleChartFieldBaseChange
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderReductionFieldBaseChange
+public import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.DerivativeIdealSheafFieldBaseChange
+public import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheaf
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReductionProperties
+public import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.SupportFlatPullback
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.CanonicalPrincipalization
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderCertificateDescent
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.RemoveUnitIdeals
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.SmoothPullbackMaxContactCover
-public import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.DerivativeIdealSheafFieldBaseChange
-import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.DerivativeIdealSheafSmoothPullback
-import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.SmoothDivisorEtaleChart
-import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.StrictNormalCrossingsSmoothBaseChange
 public import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.StrictNormalCrossingsWithoutUnitIdeals
-import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.FiniteKrullDim
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.KrullDimEtaleBaseChange
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.DimensionNonincreasing
-import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.SupportsAlongSequence
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.EmptyOrderLocusAfterReduction
-public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.EmptyOrderLocusPullback
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.EtalePullbackOfMaxContact
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.HypersurfaceReductionFunctoriality
-import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.LevelwiseIso
-import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCover
-public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCoverDescent
-import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactGeometry
-public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactHypersurfaceFieldBaseChange
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactOrderReduction
-import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactResolution
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MultiplicityOneCover
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderCertificatesMultiplicityOne
 public import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.MaxContactEtaleUniqueness
 public import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheafBlowupSequence
-public import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheafMultiplicativity
-public import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.FieldBaseChangeAdmissible
-import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.IsoBlowupRemoval
-import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.IsoBlowupRemovalBaseChange
-import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceComposition
-import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceIsomorphism
 public import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.SmoothPullbackAdmissible
-import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.StrictPullbackCriterion
 public import Development.ResolutionOfSingularities.EmbeddedResolution.StrictTransformIsolation.VanishingIdealHypotheses
+import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.CoordinateDivisorSmoothness
 import Development.ResolutionOfSingularities.Foundations.Schemes.IdealSheafData
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -59,8 +56,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -80,8 +75,678 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupCoproduct
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.TunedMarkedBlowupSeq
+import Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.NoetherianBlowup
+import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheafBasic
+import Development.ResolutionOfSingularities.Foundations.Schemes.SchemeMorphismProperties
+import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.SmoothCenterChart
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.IsoInvariance
+import Mathlib.Tactic.Linter.Style
+import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.DerivativeIdealSheafSmoothPullback
+import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.StrictNormalCrossingsSmoothBaseChange
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.FiniteKrullDim
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.SupportsAlongSequence
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.LevelwiseIso
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactResolution
+import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.IsoBlowupRemoval
+import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.IsoBlowupRemovalBaseChange
+import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceComposition
+import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceIsomorphism
+import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.StrictPullbackCriterion
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.BitVec
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.SmoothDivisorSmoothPullback, Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.EmptyOrderLocusPullback, Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCoverDescent, Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactHypersurfaceFieldBaseChange, Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheafMultiplicativity, Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.FieldBaseChangeAdmissible, Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderReductionCompatibility
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.SmoothDivisorSmoothPullback =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.SmoothDivisorSmoothPullback", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.BoundarySeparationBaseChange\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.OrderAtGenericPoint\nimport Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.OrderPullback\nimport Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.CoordinateDivisorSmoothness\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.SmoothDivisorEtaleChart\nimport Development.ResolutionOfSingularities.Foundations.Schemes.IdealSheafData\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+open CategoryTheory AlgebraicGeometry
+
+noncomputable section
+
+namespace FunctorialResolution.EmbeddedResolution
+
+def IsSmoothDivisorStableUnderSmoothPullback : Prop :=
+  ∀ (k : Type u) [Field k] [CharZero k] (P Y : Scheme.{u})
+    (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
+    [AlgebraicGeometry.LocallyOfFiniteType p]
+    (g : Y ⟶ P) [AlgebraicGeometry.Smooth g]
+    [AlgebraicGeometry.LocallyOfFiniteType (g ≫ p)]
+    (D : P.IdealSheafData), IsSmoothDivisor p D → IsSmoothDivisor (g ≫ p) (D.comap g)
+
+private theorem restrictIdeal_comap_eq_comap_restrictIdeal {P Y : Scheme.{u}} (g : Y ⟶ P)
+    (I : P.IdealSheafData) {U : P.Opens} {V : Y.Opens} {f : V.toScheme ⟶ U.toScheme}
+    (hf : f ≫ U.ι = V.ι ≫ g) :
+    restrictIdeal (I.comap g) V = (restrictIdeal I U).comap f := by
+  rw [restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp,
+    ← Scheme.IdealSheafData.comap_comp, hf]
+
+private theorem restrictIdeal_comap_le_of_restrictIdeal_le {P Y : Scheme.{u}} (g : Y ⟶ P)
+    {I J : P.IdealSheafData} {U : P.Opens}
+    (hle : restrictIdeal I U ≤ restrictIdeal J U) (V : Y.Opens) (hV : V ≤ g ⁻¹ᵁ U) :
+    restrictIdeal (I.comap g) V ≤ restrictIdeal (J.comap g) V := by
+  have hf : (Y.homOfLE hV ≫ (g ∣_ U)) ≫ U.ι = V.ι ≫ g := by
+    rw [Category.assoc, morphismRestrict_ι, ← Category.assoc, Scheme.homOfLE_ι]
+  rw [restrictIdeal_comap_eq_comap_restrictIdeal g I hf,
+    restrictIdeal_comap_eq_comap_restrictIdeal g J hf]
+  exact Scheme.IdealSheafData.comap_mono _ hle
+
+theorem IsMaxContactHypersurface.isSmoothDivisor {k : Type u} [Field k] [CharZero k]
+    {P : Scheme.{u}} {p : P ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.Smooth p]
+    [AlgebraicGeometry.LocallyOfFiniteType p] {A : P.IdealSheafData} {μ : ℕ}
+    {H : P.IdealSheafData} (h : IsMaxContactHypersurface k p A μ H) :
+    IsSmoothDivisor p H := by
+  refine isSmoothDivisor_of_locally_coordIdeal H ?_
+  intro x
+  obtain ⟨U, hU, hxU, hcase⟩ := h x
+  rcases hcase with ⟨-, htop⟩ | ⟨n, c, j, hHU, -⟩
+  · obtain ⟨U', m, hxU', hU'U, -, ⟨c'⟩⟩ := exists_etaleChart_le p x U hxU
+    exact ⟨U', hxU', m, c', Or.inl (restrictIdeal_eq_top_of_le H hU'U htop)⟩
+  · exact ⟨U, hxU, n, c, Or.inr ⟨j, hHU⟩⟩
+
+theorem IsMaxContactHypersurface.comap_of_forall_etaleChart_coordIdeal {k : Type u} [Field k] [CharZero k]
+    {P Y : Scheme.{u}} {p : P ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.Smooth p]
+    [AlgebraicGeometry.LocallyOfFiniteType p] (g : Y ⟶ P) [AlgebraicGeometry.Smooth g]
+    [AlgebraicGeometry.LocallyOfFiniteType (g ≫ p)] {A : P.IdealSheafData} {μ : ℕ}
+    {H : P.IdealSheafData} (h : IsMaxContactHypersurface k p A μ H) (hμ : 1 ≤ μ)
+    (hcharts : ∀ y : Y, y ∈ (H.comap g).support →
+      ∃ (V : Y.Opens) (n : ℕ) (c : EtaleChart (g ≫ p) V n) (j : Fin n),
+        y ∈ V ∧ restrictIdeal (H.comap g) V = c.coordIdeal {j}) :
+    IsMaxContactHypersurface k (g ≫ p) (A.comap g) μ (H.comap g) := by
+  intro y
+  by_cases hy : y ∈ (H.comap g).support
+  · obtain ⟨V, n, c, j, hyV, hHV⟩ := hcharts y hy
+    have hx : g.base y ∈ H.support := (Scheme.IdealSheafData.mem_support_comap ..).mp hy
+    obtain ⟨U, hU, hxU, hcase⟩ := h (g.base y)
+    have hle : restrictIdeal H U ≤ restrictIdeal (maxContactIdeal k p A μ) U := by
+      rcases hcase with ⟨-, htop⟩ | ⟨n₀, c₀, j₀, hHU, hmc⟩
+      · exact absurd hx (notMem_support_of_mem_opens_of_restrictIdeal_eq_top H U htop _ hxU)
+      · rw [hHU]
+        exact hmc
+    have hyVU : y ∈ (V ⊓ g ⁻¹ᵁ U : Y.Opens) := ⟨hyV, hxU⟩
+    obtain ⟨V', hV'aff, hyV', hV'le⟩ :=
+      TopologicalSpace.Opens.isBasis_iff_nbhd.mp Y.isBasis_affineOpens hyVU
+    have hV'V : V' ≤ V := le_trans hV'le inf_le_left
+    have hV'U : V' ≤ g ⁻¹ᵁ U := le_trans hV'le inf_le_right
+    have heq : restrictIdeal (H.comap g) V' = (c.restrict hV'V).coordIdeal {j} :=
+      restrictIdeal_eq_restrict_coordIdeal_of_le hV'V c (H.comap g) {j} hHV
+    refine ⟨V', hV'aff, hyV', Or.inr ⟨n, c.restrict hV'V, j, heq, ?_⟩⟩
+    have hgoal : (c.restrict hV'V).coordIdeal {j} ≤
+        restrictIdeal (maxContactIdeal k (g ≫ p) (A.comap g) μ) V' := by
+      rw [← heq, maxContactIdeal_comap k p g A μ]
+      exact restrictIdeal_comap_le_of_restrictIdeal_le g hle V' hV'U
+    exact hgoal
+  · have hWopen : IsOpen (((H.comap g).support : Set ↥Y)ᶜ) :=
+      (H.comap g).support.2.isOpen_compl
+    obtain ⟨V, hVaff, hyV, hVW⟩ :=
+      TopologicalSpace.Opens.isBasis_iff_nbhd.mp Y.isBasis_affineOpens
+        (show y ∈ (⟨((H.comap g).support : Set ↥Y)ᶜ, hWopen⟩ : Y.Opens) from hy)
+    refine ⟨V, hVaff, hyV, Or.inl ⟨?_, ?_⟩⟩
+    · rw [Set.disjoint_left]
+      intro z hz hzV
+      have hz2 := hz
+      rw [orderAtLeastLocus_comap k p g A μ] at hz2
+      have hz3 : g.base z ∈ H.support := h.orderAtLeastLocus_subset_support hμ hz2
+      have hz4 : z ∈ (H.comap g).support :=
+        (Scheme.IdealSheafData.mem_support_comap ..).mpr hz3
+      exact (hVW hzV) hz4
+    · refine (FunctorialResolution.EmbeddedResolution.restrictIdeal_eq_top_iff_forall_notMem_support _ _).mpr ?_
+      intro z hzV
+      exact hVW hzV
+
+theorem IsMaxContactHypersurface.comap_of_isSmoothDivisorStableUnderSmoothPullback {k : Type u} [Field k]
+    [CharZero k] {P Y : Scheme.{u}} {p : P ⟶ Spec (CommRingCat.of k)}
+    [AlgebraicGeometry.Smooth p] [AlgebraicGeometry.LocallyOfFiniteType p] (g : Y ⟶ P)
+    [AlgebraicGeometry.Smooth g] [AlgebraicGeometry.LocallyOfFiniteType (g ≫ p)]
+    {A : P.IdealSheafData} {μ : ℕ} {H : P.IdealSheafData}
+    (hdiv : IsSmoothDivisorStableUnderSmoothPullback.{u})
+    (hH : IsSmoothDivisor p H)
+    (h : IsMaxContactHypersurface k p A μ H) (hμ : 1 ≤ μ) :
+    IsMaxContactHypersurface k (g ≫ p) (A.comap g) μ (H.comap g) := by
+  refine IsMaxContactHypersurface.comap_of_forall_etaleChart_coordIdeal g h hμ ?_
+  intro y hy
+  obtain ⟨V, m, c, j, hyV, heq⟩ :=
+    exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton (g ≫ p) (H.comap g)
+      (hdiv k P Y p g H hH) y hy
+  exact ⟨V, m, c, j, hyV, heq⟩
+
+theorem maxContactHypersurfaceSmoothPullback_of_isSmoothDivisorStableUnderSmoothPullback
+    (hdiv : IsSmoothDivisorStableUnderSmoothPullback.{u}) : BoundarySeparationBaseChange.MaxContactHypersurfaceSmoothPullback.{u} := by
+  intro k hk hk0 P p hsp hfp Y g hsg hfg A μ hμ H hH
+  exact IsMaxContactHypersurface.comap_of_isSmoothDivisorStableUnderSmoothPullback g hdiv
+    (IsMaxContactHypersurface.isSmoothDivisor hH) hH hμ
+
+end FunctorialResolution.EmbeddedResolution
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.SmoothDivisorSmoothPullback =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.EmptyOrderLocusPullback =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.EmptyOrderLocusPullback", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.DescentHypotheses\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.OrderPullback\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.IteratedStrictTransformPullback\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactGeometry\nimport Development.ResolutionOfSingularities.Foundations.Blowup.BlowupCoproduct\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+open CategoryTheory AlgebraicGeometry
+
+namespace FunctorialResolution.EmbeddedResolution
+
+namespace MaxContactFunctoriality
+
+theorem isPullback_of_orderAtLeastLocus_comap_eq_empty
+    (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})
+    (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T)
+    (Y : Scheme.{u}) (φ : Y ⟶ T.scheme) [AlgebraicGeometry.Smooth φ]
+    (n : SequenceOfBlowups Y) (hn : n.length = 0)
+    (hempty : orderAtLeastLocus (T.ideal.comap φ) T.mult = (∅ : Set ↥Y)) :
+    IsPullbackBlowupSequence φ n (maxContactPrincipalization hinv A T).toSequenceOfBlowups := by
+  have : CharZero T.base := h.valid.charZero
+  have : AlgebraicGeometry.Smooth T.structMap := h.valid.smooth
+  refine isPullback_of_length_zero_of_comap_center_eq_top φ n
+    (maxContactPrincipalization hinv A T).toSequenceOfBlowups hn ?_
+  intro i hi ψ hψ
+  refine Blowup.comap_eq_top_of_notMem_support ψ ((maxContactPrincipalization hinv A T).toSequenceOfBlowups.center i) ?_
+  intro y hy
+  have hmem : ((maxContactPrincipalization hinv A T).toSequenceOfBlowups.projectionToBase i).base (ψ.base y)
+      ∈ orderAtLeastLocus T.ideal T.mult :=
+    OrderReductionCorrectness.projectionToBase_mem_orderAtLeastLocus_of_mem_center T h.valid (maxContactPrincipalization hinv A T) i hi
+      (ψ.base y) hy
+  have hfy : φ.base y ∈ orderAtLeastLocus T.ideal T.mult := by
+    have h1 : φ.base y
+        = ((maxContactPrincipalization hinv A T).toSequenceOfBlowups.projectionToBase i).base (ψ.base y) := by
+      rw [← hψ]
+      rfl
+    rw [h1]
+    exact hmem
+  have hcs := orderAtLeastLocus_comap T.base T.structMap φ T.ideal T.mult
+  rw [hempty] at hcs
+  have hy2 : y ∈ (∅ : Set ↥Y) := by
+    rw [hcs]
+    exact hfy
+  exact hy2.elim
+
+end MaxContactFunctoriality
+
+end FunctorialResolution.EmbeddedResolution
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.EmptyOrderLocusPullback =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCoverDescent =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCoverDescent", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.DescentHypotheses\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCoverProperties\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.StrictNormalCrossingsNil\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.KrullDimClosedSubset\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.CoverMapSurjective\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCover\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.TunedMarkedBlowupSeq\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.NoetherianBlowup\nimport Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheafBasic\nimport Development.ResolutionOfSingularities.Foundations.Schemes.SchemeMorphismProperties\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+open CategoryTheory AlgebraicGeometry
+
+noncomputable section
+
+namespace FunctorialResolution.EmbeddedResolution
+
+namespace MaxContactFunctoriality
+
+variable (hinv : ComapIsoInvariance) (A : ℕ → PrincipalizationAssignment.{u})
+variable {P : ℕ → Prop}
+
+theorem balancedTunedIdeal_eq_of_mult_eq_one (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (hm : T.mult = 1) :
+    MaxContactCoverData.balancedTunedIdeal T hv = T.ideal := by
+  have := hv.charZero
+  have := hv.locallyOfFiniteType
+  have := hv.smooth
+  simp only [MaxContactCoverData.balancedTunedIdeal, hm, FunctorialResolution.EmbeddedResolution.balancedTunedSheaf_eq, FunctorialResolution.EmbeddedResolution.tuningExponent_one,
+    FunctorialResolution.EmbeddedResolution.tunedSheaf_one_one]
+
+theorem coverMap_flat (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T) :
+    AlgebraicGeometry.Flat (MaxContactCoverData.coverMap T h.valid) :=
+  MaxContactCoverData.flat_coverMap_of_isAdmissible T h.valid
+
+private theorem orderAt_balancedTunedIdeal_le_tunedMult_of_nonempty (htune : TunedSheafProperties.{u})
+    (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
+    (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))
+    (hne : (orderAtLeastLocus T.ideal T.mult).Nonempty) :
+    ∀ x : ↥T.scheme,
+      orderAt (MaxContactCoverData.balancedTunedIdeal T hv) x ≤ ((MaxContactCoverData.tunedMult T : ℕ) : ℕ∞) := by
+  have := hv.charZero
+  have := hv.smooth
+  have := hv.locallyOfFiniteType
+  have hmax : MaxOrderEq T.ideal T.mult :=
+    ⟨(orderLE_iff T.ideal T.mult).mpr hord, hne⟩
+  have hkey := htune.coSupport_tunedSheaf_eq_and_orderLE.orderLE T.base T.scheme T.structMap
+    T.ideal T.mult hv.one_le_mult hmax (tuningExponent T.mult) (one_le_tuningExponent T.mult)
+  have he0 : MaxContactCoverData.balancedTunedIdeal T hv = balancedTunedSheaf T.base T.structMap T.ideal T.mult := rfl
+  have he : MaxContactCoverData.balancedTunedIdeal T hv
+      = tunedSheaf T.base T.structMap T.ideal T.mult (tuningExponent T.mult) := by
+    rw [he0, balancedTunedSheaf_eq]
+  have hm : MaxContactCoverData.tunedMult T = tuningExponent T.mult := rfl
+  intro x
+  rw [he, hm]
+  exact (orderLE_iff _ _).mp hkey x
+
+theorem coverMap_surjective (htune : TunedSheafProperties.{u}) (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T) :
+    AlgebraicGeometry.Surjective (MaxContactCoverData.coverMap T h.valid) :=
+  MaxContactCoverData.surjective_coverMap T h.valid
+    (MaxContactOpenCover.exists_isMaxContactCover T h.valid
+      (orderAt_balancedTunedIdeal_le_tunedMult_of_nonempty htune T h.valid h.orderLE h.coSupport_nonempty))
+
+theorem IsLocalIsomorphism.comp_isIso {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
+    [CategoryTheory.IsIso g] (hf : IsLocalIsomorphism f) :
+    IsLocalIsomorphism (f ≫ g) := by
+  intro x
+  obtain ⟨U, hxU, hU⟩ := hf x
+  have := hU
+  refine ⟨U, hxU, ?_⟩
+  rw [← Category.assoc]
+  infer_instance
+
+theorem IsLocalIsomorphism.isIso_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) [CategoryTheory.IsIso f]
+    (g : Y ⟶ Z) (hg : IsLocalIsomorphism g) :
+    IsLocalIsomorphism (f ≫ g) := by
+  have hsurj : Function.Surjective ⇑f.base := by
+    intro y
+    refine ⟨(CategoryTheory.inv f).base y, ?_⟩
+    exact congrArg (fun m : Y ⟶ Y => m.base y) (CategoryTheory.IsIso.inv_hom_id f)
+  intro x
+  obtain ⟨U, hxU, hU⟩ := hg (f.base x)
+  refine ⟨f ⁻¹ᵁ U, hxU, ?_⟩
+  have : AlgebraicGeometry.IsOpenImmersion f := inferInstance
+  have hrange : Set.range ((f ⁻¹ᵁ U).ι ≫ f).base = Set.range U.ι.base := by
+    have h1 : Set.range ⇑((f ⁻¹ᵁ U).ι ≫ f).base
+        = Set.range (⇑f.base ∘ ⇑(f ⁻¹ᵁ U).ι.base) := rfl
+    rw [h1, Set.range_comp]
+    simp only [AlgebraicGeometry.Scheme.Opens.range_ι]
+    exact Set.image_preimage_eq _ hsurj
+  obtain ⟨φ, hfac⟩ : ∃ φ : (f ⁻¹ᵁ U).toScheme ≅ U.toScheme,
+      φ.hom ≫ U.ι = (f ⁻¹ᵁ U).ι ≫ f :=
+    ⟨AlgebraicGeometry.IsOpenImmersion.isoOfRangeEq ((f ⁻¹ᵁ U).ι ≫ f) U.ι hrange,
+      AlgebraicGeometry.IsOpenImmersion.isoOfRangeEq_hom_fac _ _ hrange⟩
+  have heq : (f ⁻¹ᵁ U).ι ≫ f ≫ g = φ.hom ≫ U.ι ≫ g := by
+    rw [← Category.assoc, ← hfac, Category.assoc]
+  rw [heq]
+  have := hU
+  infer_instance
+
+private theorem isLocalIsomorphism_of_eq {W' W : Scheme.{u}} {f f' : W' ⟶ W}
+    (h : f = f') (hf : IsLocalIsomorphism f') : IsLocalIsomorphism f := by
+  subst h
+  exact hf
+
+theorem isLocalIsomorphism_map_of_isLocalIsomorphism {X' X : Scheme.{u}} {g : X' ⟶ X}
+    (hg : IsLocalIsomorphism g) {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
+    (D : StrictPullbackBlowupSeq g t s) (i : ℕ) (hi : i ≤ t.length) :
+    IsLocalIsomorphism (D.comp i hi) := by
+  revert hi
+  induction i with
+  | zero =>
+    intro hi
+    exact isLocalIsomorphism_of_eq D.map_zero_eq
+      (IsLocalIsomorphism.isIso_comp t.isoZero.hom (g ≫ s.isoZero.inv)
+        (IsLocalIsomorphism.comp_isIso g s.isoZero.inv hg))
+  | succ n ih =>
+    intro hi
+    have hn : n < t.length := hi
+    exact MaxContactOpenCover.isLocalIsomorphism_fst_of_isPullback (D.pullback n hn) (ih hn.le)
+
+theorem isLocalIsomorphism_map_coverBlowupSequence (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T)
+    (d : BlowupSequenceData T.scheme)
+    (D : StrictPullbackBlowupSeq (MaxContactCoverData.coverMap T h.valid)
+      (coverBlowupSequence hinv A T h.valid).toMarkedSequenceOfBlowups.toSequenceOfBlowups d.toSequenceOfBlowups)
+    (i : ℕ) (hi : i ≤ (coverBlowupSequence hinv A T h.valid).length) :
+    IsLocalIsomorphism
+      (D.comp i ((coverBlowupSequence hinv A T h.valid).le_toSequenceOfBlowups_length hi)) :=
+  isLocalIsomorphism_map_of_isLocalIsomorphism
+    (MaxContactOpenCover.isLocalIsomorphism_coverMap T h.valid) D i
+    ((coverBlowupSequence hinv A T h.valid).le_toSequenceOfBlowups_length hi)
+
+theorem isNoetherian_blowupSequenceData_schemeAt (X : Scheme.{u}) [AlgebraicGeometry.IsNoetherian X]
+    (d : BlowupSequenceData X) (i : ℕ) (hi : i ≤ d.length) :
+    AlgebraicGeometry.IsNoetherian (d.obj i) := by
+  have hi' : i ≤ d.toSequenceOfBlowups.length := by
+    rw [BlowupSequenceData.toSequenceOfBlowups_length]
+    exact hi
+  have h : AlgebraicGeometry.IsNoetherian (d.toSequenceOfBlowups.schemeAt i) :=
+    isNoetherian_schemeAt d.toSequenceOfBlowups i hi'
+  rwa [BlowupSequenceData.toSequenceOfBlowups_schemeAt] at h
+
+theorem isLocallyNoetherian_schemeAt_coverBlowupSequence (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u}) (T : MarkedIdealWithBoundary.{u})
+    (h : OrderReductionHypotheses P T) (d : BlowupSequenceData T.scheme)
+    (_hd : IsStrictPullbackBlowupSeq (MaxContactCoverData.coverMap T h.valid)
+      (coverBlowupSequence hinv A T h.valid).toSequenceOfBlowups d.toSequenceOfBlowups) :
+    (∀ i ≤ d.length, AlgebraicGeometry.IsLocallyNoetherian (d.obj i)) ∧
+      ∀ i ≤ (coverBlowupSequence hinv A T h.valid).length,
+        AlgebraicGeometry.IsLocallyNoetherian ((coverBlowupSequence hinv A T h.valid).obj i) := by
+  have := h.valid.locallyOfFiniteType
+  have := h.valid.quasiCompact
+  have : IsNoetherianRing ↑(CommRingCat.of T.base) := inferInstanceAs (IsNoetherianRing T.base)
+  have : AlgebraicGeometry.IsNoetherian (Spec (CommRingCat.of T.base)) := inferInstance
+  have : AlgebraicGeometry.IsNoetherian T.scheme :=
+    isNoetherian_of_locallyOfFiniteType T.structMap
+  have hgood := MaxContactCoverData.isMaxContactCover_chosenCoverData T h.valid
+    (hstar.exists_goodCover T h.valid h.orderLE)
+  have hvc : (MaxContactCoverData.coverTriple T h.valid).IsAdmissible :=
+    hstar.coverTriple_valid T h.valid h.orderLE hgood
+  have := hvc.locallyOfFiniteType
+  have := hvc.quasiCompact
+  have : IsNoetherianRing ↑(CommRingCat.of (MaxContactCoverData.coverTriple T h.valid).base) :=
+    inferInstanceAs (IsNoetherianRing (MaxContactCoverData.coverTriple T h.valid).base)
+  have : AlgebraicGeometry.IsNoetherian
+      (Spec (CommRingCat.of (MaxContactCoverData.coverTriple T h.valid).base)) := inferInstance
+  have : AlgebraicGeometry.IsNoetherian (MaxContactCoverData.coverTriple T h.valid).scheme :=
+    isNoetherian_of_locallyOfFiniteType (MaxContactCoverData.coverTriple T h.valid).structMap
+  refine ⟨?_, ?_⟩
+  · intro i hi
+    have := isNoetherian_blowupSequenceData_schemeAt T.scheme d i hi
+    infer_instance
+  · intro i hi
+    have := isNoetherian_blowupSequenceData_schemeAt (MaxContactCoverData.coverTriple T h.valid).scheme
+      (coverBlowupSequence hinv A T h.valid).toBlowupSequenceData i hi
+    infer_instance
+
+theorem orderAt_sequenceOfBlowups_ideal_le_mult (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u}) (T : MarkedIdealWithBoundary.{u})
+    (hv : T.IsAdmissible) (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))
+    (s : T.SequenceOfBlowups) (i : ℕ) (hi : i ≤ s.length) (x : ↥(s.schemeAt i)) :
+    orderAt (s.ideal i) x ≤ (T.mult : ℕ∞) :=
+  hstar.orderAt_level_le T hv hord s i hi x
+
+private theorem imageIdealSheaf_inv_eq_comap {X Y : Scheme.{u}} (φ : X ≅ Y)
+    (J : Y.IdealSheafData) :
+    _root_.FunctorialResolution.Blowup.schemeImageIdeal φ.inv J = J.comap φ.hom := by
+  have h1 : (_root_.FunctorialResolution.Blowup.schemeImageIdeal φ.inv J).comap φ.inv = J :=
+    Blowup.comap_map_of_isClosedImmersion φ.inv J
+  have h2 : ((_root_.FunctorialResolution.Blowup.schemeImageIdeal φ.inv J).comap φ.inv).comap φ.hom = _root_.FunctorialResolution.Blowup.schemeImageIdeal φ.inv J := by
+    rw [← Scheme.IdealSheafData.comap_comp, Iso.hom_inv_id, Scheme.IdealSheafData.comap_id]
+  calc _root_.FunctorialResolution.Blowup.schemeImageIdeal φ.inv J = ((_root_.FunctorialResolution.Blowup.schemeImageIdeal φ.inv J).comap φ.inv).comap φ.hom := h2.symm
+    _ = J.comap φ.hom := by rw [h1]
+
+theorem isAdmissible_and_dim_eq_withSchemeIdealBoundary_ker (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (Y : Scheme.{u})
+    (q : Y ⟶ Spec (CommRingCat.of T.base)) (e : Y ⟶ T.scheme)
+    [AlgebraicGeometry.IsClosedImmersion e] (hq : e ≫ T.structMap = q)
+    (J : Y.IdealSheafData) (hJ : (T.withSchemeIdealBoundary Y q J []).IsAdmissible)
+    (ε : Y ⟶ (Scheme.Hom.ker e).subscheme)
+    (hε : ε ≫ (Scheme.Hom.ker e).subschemeι = e) :
+    (T.withSchemeIdealBoundary (Scheme.Hom.ker e).subscheme
+        ((Scheme.Hom.ker e).subschemeι ≫ T.structMap) (_root_.FunctorialResolution.Blowup.schemeImageIdeal ε J) []).IsAdmissible ∧
+      (T.withSchemeIdealBoundary (Scheme.Hom.ker e).subscheme
+          ((Scheme.Hom.ker e).subschemeι ≫ T.structMap) (_root_.FunctorialResolution.Blowup.schemeImageIdeal ε J) []).krullDimSucc
+        = (T.withSchemeIdealBoundary Y q J []).krullDimSucc := by
+  have : CategoryTheory.Mono ((Scheme.Hom.ker e).subschemeι) := inferInstance
+  have hεi : ε = (kerSubschemeIso e).inv := by
+    apply (CategoryTheory.cancel_mono ((Scheme.Hom.ker e).subschemeι)).mp
+    rw [hε, kerSubschemeIso_inv_comp]
+  subst hεi
+  have hsmq : AlgebraicGeometry.Smooth q := by
+    have h := hJ.smooth
+    rwa [MarkedIdealWithBoundary.withSchemeIdealBoundary_structureMorphism] at h
+  have hftq : AlgebraicGeometry.LocallyOfFiniteType q := by
+    have h := hJ.locallyOfFiniteType
+    rwa [MarkedIdealWithBoundary.withSchemeIdealBoundary_structureMorphism] at h
+  have hqcq : AlgebraicGeometry.QuasiCompact q := by
+    have h := hJ.quasiCompact
+    rwa [MarkedIdealWithBoundary.withSchemeIdealBoundary_structureMorphism] at h
+  have hnzJ : NonzeroOnComponents J := by
+    have h := hJ.nonzeroOnComponents
+    rwa [MarkedIdealWithBoundary.withSchemeIdealBoundary_ideal] at h
+  have hkey : (Scheme.Hom.ker e).subschemeι ≫ T.structMap
+      = (kerSubschemeIso e).hom ≫ q := by
+    rw [← hq, ← Category.assoc, kerSubschemeIso_hom_comp]
+  have hsm' : AlgebraicGeometry.Smooth
+      ((Scheme.Hom.ker e).subschemeι ≫ T.structMap) := by
+    rw [hkey]
+    infer_instance
+  have hft' : AlgebraicGeometry.LocallyOfFiniteType
+      ((Scheme.Hom.ker e).subschemeι ≫ T.structMap) := by
+    rw [hkey]
+    infer_instance
+  have hqc' : AlgebraicGeometry.QuasiCompact
+      ((Scheme.Hom.ker e).subschemeι ≫ T.structMap) := by
+    rw [hkey]
+    infer_instance
+  have hnz : NonzeroOnComponents (_root_.FunctorialResolution.Blowup.schemeImageIdeal (kerSubschemeIso e).inv J) := by
+    rw [imageIdealSheaf_inv_eq_comap (kerSubschemeIso e) J]
+    exact _root_.FunctorialResolution.EmbeddedResolution.PrincipalizationIsoTransport.nonzeroOnComponents_comap_iso (kerSubschemeIso e) J hnzJ
+  have hdim : krullDimSucc ((Scheme.Hom.ker e).subscheme) = krullDimSucc Y := by
+    rw [krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim, krullDimSucc_eq_withBotSuccToNat_topologicalKrullDim,
+      topologicalKrullDim_eq_of_homeomorph (Scheme.homeoOfIso (kerSubschemeIso e))]
+  exact ⟨⟨hv.charZero, hft', hnz, hv.one_le_mult, hqc', hsm',
+    inStrictNormalCrossingPosition_nil ((Scheme.Hom.ker e).subschemeι ≫ T.structMap)⟩, hdim⟩
+
+end MaxContactFunctoriality
+
+end FunctorialResolution.EmbeddedResolution
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCoverDescent =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactHypersurfaceFieldBaseChange =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactHypersurfaceFieldBaseChange", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.EtaleChartFieldBaseChange\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderReductionFieldBaseChange\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.DerivativeIdealSheafFieldBaseChange\nimport Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.SmoothCenterChart\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.IsoInvariance\nimport Development.ResolutionOfSingularities.Foundations.Schemes.IdealSheafData\nimport Development.ResolutionOfSingularities.Foundations.Schemes.SchemeMorphismProperties\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace
+
+noncomputable section
+
+namespace FunctorialResolution.EmbeddedResolution
+
+theorem isMaxContactHypersurface_comap_fieldBaseChange {k K : Type u} [Field k] [Field K]
+    [CharZero k] [CharZero K] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
+    [AlgebraicGeometry.Smooth p] [AlgebraicGeometry.LocallyOfFiniteType p]
+    (φ : CommRingCat.of k ⟶ CommRingCat.of K)
+    [AlgebraicGeometry.LocallyOfFiniteType (pullback.snd p (Spec.map φ))]
+    (A : X.IdealSheafData) (m : ℕ) (H : X.IdealSheafData)
+    (h : IsMaxContactHypersurface k p A m H) :
+    IsMaxContactHypersurface K (pullback.snd p (Spec.map φ))
+      (A.comap (pullback.fst p (Spec.map φ))) m
+      (H.comap (pullback.fst p (Spec.map φ))) := by
+  intro y
+  obtain ⟨U, hU, hxU, hcase⟩ := h ((pullback.fst p (Spec.map φ)).base y)
+  have hVaff : IsAffineOpen (pullback.fst p (Spec.map φ) ⁻¹ᵁ U) :=
+    hU.preimage (pullback.fst p (Spec.map φ))
+  refine ⟨pullback.fst p (Spec.map φ) ⁻¹ᵁ U, hVaff, hxU, ?_⟩
+  rcases hcase with ⟨hdisj, hHtop⟩ | ⟨n, c, j, hH, hmc⟩
+  · left
+    refine ⟨?_, ?_⟩
+    · rw [orderAtLeastLocus_comap_fieldBaseChange p φ A m, Set.disjoint_left]
+      intro a ha ha'
+      exact Set.disjoint_left.mp hdisj ha ha'
+    · have h1 := restrictIdeal_comap (pullback.fst p (Spec.map φ)) H U
+      rw [hHtop, Scheme.IdealSheafData.comap_top] at h1
+      exact h1
+  · right
+    refine ⟨n, c.baseChange (isPullback_pullback_specMap p φ), j, ?_, ?_⟩
+    · refine restrictIdeal_eq_coordIdeal_of_ideal_eq_span hVaff
+        (c.baseChange (isPullback_pullback_specMap p φ))
+        (H.comap (pullback.fst p (Spec.map φ))) {j} ?_
+      rw [Scheme.IdealSheafData.comap_ideal_eq_map_appLE H (pullback.fst p (Spec.map φ))
+          ⟨U, hU⟩ ⟨pullback.fst p (Spec.map φ) ⁻¹ᵁ U, hVaff⟩ le_rfl,
+        c.ideal_eq_span_coord hU H {j} hH, Ideal.map_span]
+      simp only [Finset.coe_singleton, Set.image_singleton]
+      rw [EtaleChart.baseChange_coord]
+    · refine (isMaxContactCoord_iff_coord_mem K (pullback.snd p (Spec.map φ))
+        (A.comap (pullback.fst p (Spec.map φ))) m hVaff
+        (c.baseChange (isPullback_pullback_specMap p φ)) j).mpr ?_
+      rw [maxContactIdeal_comap_fieldBaseChange p φ m A,
+        Scheme.IdealSheafData.comap_ideal_eq_map_appLE (maxContactIdeal k p A m)
+          (pullback.fst p (Spec.map φ)) ⟨U, hU⟩
+          ⟨pullback.fst p (Spec.map φ) ⁻¹ᵁ U, hVaff⟩ le_rfl,
+        EtaleChart.baseChange_coord]
+      exact Ideal.mem_map_of_mem _ ((isMaxContactCoord_iff_coord_mem k p A m hU c j).mp hmc)
+
+namespace OrderReductionFieldBaseChange
+
+private theorem isMaxContactHypersurface_comap_specMapOfFieldHom (k L : Type u) [Field k] [Field L]
+    [CharZero k] [CharZero L] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
+    [AlgebraicGeometry.Smooth p] [AlgebraicGeometry.LocallyOfFiniteType p] (f : k →+* L)
+    [hft : AlgebraicGeometry.LocallyOfFiniteType (pullback.snd p (specMapOfFieldHom k L f))]
+    (A : X.IdealSheafData) (m : ℕ) (H : X.IdealSheafData)
+    (h : IsMaxContactHypersurface k p A m H) :
+    IsMaxContactHypersurface L (pullback.snd p (specMapOfFieldHom k L f))
+      (A.comap (pullback.fst p (specMapOfFieldHom k L f))) m
+      (H.comap (pullback.fst p (specMapOfFieldHom k L f))) := by
+  revert hft
+  rw [specMapOfFieldHom_eq k L f]
+  intro hft
+  exact @isMaxContactHypersurface_comap_fieldBaseChange k L _ _ _ _ X p _ _
+    (CommRingCat.ofHom f) hft A m H h
+
+private theorem inStrictNormalCrossingPosition_comap_specMapOfFieldHom (k L : Type u) [Field k] [Field L]
+    {X : Scheme.{u}}
+    (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] (f : k →+* L)
+    (H : X.IdealSheafData) (hsnc : InStrictNormalCrossingPosition p [H]) :
+    InStrictNormalCrossingPosition (pullback.snd p (specMapOfFieldHom k L f))
+      [H.comap (pullback.fst p (specMapOfFieldHom k L f))] := by
+  rw [specMapOfFieldHom_eq k L f]
+  exact inStrictNormalCrossingPosition_comap_pullback_specMap p (CommRingCat.ofHom f) [H] hsnc
+
+theorem maxContactHypersurfaceBaseChange : MaxContactHypersurfaceBaseChange.{u} := by
+  intro S L instL instCZ f hV hV' H hadm hsnc
+  refine ⟨?_, ?_⟩
+  · rw [S.baseChange_structureMorphism L f, S.baseChange_ideal L f, S.baseChange_mult L f]
+    intro hlft
+    exact @isMaxContactHypersurface_comap_specMapOfFieldHom S.base L S.instField instL hV.charZero
+      instCZ S.scheme S.structMap hV.smooth hV.locallyOfFiniteType f hlft S.ideal S.mult H
+      (@hadm hV.locallyOfFiniteType)
+  · rw [S.baseChange_structureMorphism L f]
+    exact @inStrictNormalCrossingPosition_comap_specMapOfFieldHom S.base L S.instField instL S.scheme S.structMap
+      hV.smooth f H hsnc
+
+end OrderReductionFieldBaseChange
+
+end FunctorialResolution.EmbeddedResolution
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactHypersurfaceFieldBaseChange =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheafMultiplicativity =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheafMultiplicativity", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheaf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u v w
+
+open AlgebraicGeometry CategoryTheory
+
+namespace FunctorialResolution.EmbeddedResolution
+
+private theorem listProd_map_pow_mul_listProd_map_pow {M : Type u} [CommMonoid M] (f : ℕ → M) (c d : ℕ → ℕ) :
+    ∀ L : List ℕ, ((L.map fun j => f j ^ c j).prod * (L.map fun j => f j ^ d j).prod)
+      = (L.map fun j => f j ^ (c j + d j)).prod := by
+  intro L
+  rw [← List.prod_map_mul]
+  simp [pow_add]
+
+private theorem ideal_iSup {X : Scheme.{u}} {ι : Type v} (f : ι → X.IdealSheafData)
+    (U : X.affineOpens) : (⨆ i, f i).ideal U = ⨆ i, (f i).ideal U := by simp
+
+private theorem iSup_mul_iSup_le {X : Scheme.{u}} {ι : Type v} {κ : Type w}
+    (f : ι → X.IdealSheafData) (g : κ → X.IdealSheafData) (h : X.IdealSheafData)
+    (H : ∀ i j, f i * g j ≤ h) : (⨆ i, f i) * (⨆ j, g j) ≤ h := by
+  refine Scheme.IdealSheafData.le_def.mpr fun U => ?_
+  show (⨆ i, f i).ideal U * (⨆ j, g j).ideal U ≤ h.ideal U
+  rw [ideal_iSup, ideal_iSup, Submodule.iSup_mul]
+  refine iSup_le fun i => ?_
+  rw [Submodule.mul_iSup]
+  refine iSup_le fun j => ?_
+  exact Scheme.IdealSheafData.le_def.mp (H i j) U
+
+theorem tunedSheaf_succ_le : TunedSheafSuccLe.{u} := by
+  intro k _ _ _ X p _ _ I m _ _ s
+  rw [tunedSheaf_eq_iSup, tunedSheaf_eq_iSup]
+  refine iSup_le fun c => ?_
+  exact le_iSup_of_le ⟨c.1, le_trans (Nat.le_succ s) c.2⟩ le_rfl
+
+theorem tunedSheaf_mul_le_add : TunedSheafMulLeAdd.{u} := by
+  intro k _ _ _ X p _ _ I m _ _ s t
+  rw [tunedSheaf_eq_iSup, tunedSheaf_eq_iSup, tunedSheaf_eq_iSup]
+  refine iSup_mul_iSup_le _ _ _ fun c d => ?_
+  refine le_iSup_of_le ⟨fun j => c.1 j + d.1 j, ?_⟩ (le_of_eq ?_)
+  · show s + t ≤ ∑ j ∈ Finset.range m, (m - j) * (c.1 j + d.1 j)
+    have hsum : ∑ j ∈ Finset.range m, (m - j) * (c.1 j + d.1 j)
+        = (∑ j ∈ Finset.range m, (m - j) * c.1 j) + ∑ j ∈ Finset.range m, (m - j) * d.1 j := by
+      rw [← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl fun j _ => Nat.mul_add _ _ _
+    have h1 := c.2
+    have h2 := d.2
+    omega
+  · exact listProd_map_pow_mul_listProd_map_pow (fun j => derivIdealSheafIterate k p j I) c.1 d.1 (List.range m)
+
+end FunctorialResolution.EmbeddedResolution
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheafMultiplicativity =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.FieldBaseChangeAdmissible =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.FieldBaseChangeAdmissible", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReductionProperties\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.EtaleChartFieldBaseChange\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.SupportFlatPullback\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
+
+noncomputable section
+
+namespace FunctorialResolution.EmbeddedResolution
+
+namespace MarkedIdealWithBoundary
+
+theorem isAdmissible_baseChange (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (L : Type u) [Field L]
+    [CharZero L] (f : T.base →+* L) : (T.baseChange L f).IsAdmissible := by
+  have := hV.smooth
+  have := hV.locallyOfFiniteType
+  have := hV.quasiCompact
+  have hflat : AlgebraicGeometry.Flat (specMapOfFieldHom T.base L f) :=
+    instFlatSpecMapOfFieldHom T.base L f
+  have hfst : AlgebraicGeometry.Flat (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) :=
+    inferInstance
+  refine
+    { charZero := ‹CharZero L›
+      locallyOfFiniteType := ?_
+      nonzeroOnComponents := ?_
+      one_le_mult := hV.one_le_mult
+      quasiCompact := ?_
+      smooth := ?_
+      snc := ?_ }
+  · exact
+      (inferInstance : AlgebraicGeometry.LocallyOfFiniteType
+        (pullback.snd T.structMap (specMapOfFieldHom T.base L f)))
+  · exact hV.nonzeroOnComponents.comap_of_flat
+      (pullback.fst T.structMap (specMapOfFieldHom T.base L f))
+  · exact
+      (inferInstance : AlgebraicGeometry.QuasiCompact
+        (pullback.snd T.structMap (specMapOfFieldHom T.base L f)))
+  · exact smooth_pullbackSnd_specMap T.structMap (CommRingCat.ofHom f)
+  · exact inStrictNormalCrossingPosition_comap_pullback_specMap T.structMap (CommRingCat.ofHom f) T.boundary hV.snc
+
+end MarkedIdealWithBoundary
+
+end FunctorialResolution.EmbeddedResolution
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.FieldBaseChangeAdmissible =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderReductionCompatibility =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderReductionCompatibility", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.CanonicalPrincipalization\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.SmoothDivisorSmoothPullback\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderCertificateDescent\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderReductionFieldBaseChange\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.RemoveUnitIdeals\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.SmoothPullbackMaxContactCover\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.DerivativeIdealSheafFieldBaseChange\nimport Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.DerivativeIdealSheafSmoothPullback\nimport Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.SmoothDivisorEtaleChart\nimport Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.StrictNormalCrossingsSmoothBaseChange\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.StrictNormalCrossingsWithoutUnitIdeals\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.FiniteKrullDim\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.KrullDimEtaleBaseChange\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.DimensionNonincreasing\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.SupportsAlongSequence\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.EmptyOrderLocusAfterReduction\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.EmptyOrderLocusPullback\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.EtalePullbackOfMaxContact\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.HypersurfaceReductionFunctoriality\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.LevelwiseIso\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCover\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactCoverDescent\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactGeometry\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactHypersurfaceFieldBaseChange\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactOrderReduction\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactResolution\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MultiplicityOneCover\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderCertificatesMultiplicityOne\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.MaxContactEtaleUniqueness\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheafBlowupSequence\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.MaximalContactHypersurfaces.TunedSheafMultiplicativity\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.FieldBaseChangeAdmissible\nimport Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.IsoBlowupRemoval\nimport Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.IsoBlowupRemovalBaseChange\nimport Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceComposition\nimport Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceIsomorphism\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.SmoothPullbackAdmissible\nimport Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.StrictPullbackCriterion\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.StrictTransformIsolation.VanishingIdealHypotheses\nimport Development.ResolutionOfSingularities.Foundations.Schemes.IdealSheafData\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Std.Tactic.BVDecide.Normalize.BitVec\n\n"}
+section -- clump:auto
 @[expose] public section
 
 universe u
@@ -1031,3 +1696,6 @@ theorem isOrderReduction_orderFamily_of_strictTransformIsBlowup
   exact h
 
 end FunctorialResolution.EmbeddedResolution.OrderReductionProperties
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.OrderReductionCompatibility =====

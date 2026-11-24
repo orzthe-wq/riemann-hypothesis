@@ -126,12 +126,12 @@ theorem prod_factorial_add_single [DecidableEq σ] (i : σ) (α : σ →₀ ℕ)
     · simp [Nat.factorial_succ]
     · refine Finset.prod_congr rfl fun j hj => ?_
       have : j ≠ i := (Finset.mem_erase.mp hj).1
-      simp [Finsupp.single_apply, this.symm]
+      simp [this.symm]
   · intro j hj
     by_cases h : j = i
     · simp [h]
     · have := Finsupp.mem_support_iff.mp hj
-      simp [Finsupp.single_apply, Ne.symm h] at this
+      simp [Ne.symm h] at this
       simp [this]
 
 theorem inner_X_mul [DecidableEq σ] {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -160,7 +160,7 @@ theorem inner_X_mul [DecidableEq σ] {H : Type} [NormedAddCommGroup H] [InnerPro
         ext j
         by_cases hj : j = i
         · subst hj; simp; omega
-        · simp [Finsupp.single_apply, Ne.symm hj]
+        · simp [Ne.symm hj]
   have hm : ∀ (α : σ →₀ ℕ) (c : ℂ), (monomial α c : MvPolynomial σ ℂ) = c • monomial α 1 := by
     intro α c; rw [smul_monomial]; simp
   induction P using MvPolynomial.induction_on' with
@@ -239,7 +239,7 @@ theorem omAct_eq_up_add_down {M : Matrix (Ln p q r s) (Ln p q r s) ℂ}
       congr 1
       ext1 P
       ext1
-      simp [mul_assoc]
+      simp
 
 theorem upOp_apply (M : Matrix (Ln p q r s) (Ln p q r s) ℂ) (P : Pol p q r s) :
     upOp M P = ∑ l, ∑ l', (if linePos l then M l l' else 0) • (X l * X l' * P) := by

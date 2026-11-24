@@ -137,7 +137,7 @@ def lmulL : Mat n →L[ℝ] Mat n →L[ℝ] Mat n :=
           map_add' := fun x y => Matrix.mul_add M x y
           map_smul' := fun c x => Matrix.mul_smul M c x }
       map_add' := fun M M' => by ext x : 1; simp [Matrix.add_mul]
-      map_smul' := fun c M => by ext x : 1; simp [Matrix.smul_mul] }
+      map_smul' := fun c M => by ext x : 1; simp }
 
 theorem secondCountable_G : SecondCountableTopology (G n) := by
   haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) :=

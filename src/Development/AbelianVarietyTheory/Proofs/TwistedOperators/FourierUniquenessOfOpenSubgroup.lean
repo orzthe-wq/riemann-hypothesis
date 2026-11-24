@@ -57,14 +57,9 @@ open MeasureTheory in
 theorem _root_.GlobalTheory.fourier_uniqueness_of_openSubgroup : ∀ {H A : Type} [AddCommGroup H] [TopologicalSpace H] [IsTopologicalAddGroup H] [MeasurableSpace H] [BorelSpace H] (μ : Measure H) [μ.IsAddHaarMeasure] [AddCommGroup A] (χ : A → H → ℂ), (∀ a s t, χ a (s + t) = χ a s * χ a t) → (∀ a, χ a 0 = 1) → (∀ t, χ 0 t = 1) → (∀ a b t, χ (a + b) t = χ a t * χ b t) → ∀ L : AddSubgroup H, IsOpen (L : Set H) → (∀ x, x ∉ L → ∃ a, (∀ l ∈ L, χ a l = 1) ∧ χ a x ≠ 1) → ∀ (φ : H → ℂ) (Kc : Set H), IsCompact Kc → (∀ t, t ∉ Kc → φ t = 0) → (∀ t, ∀ l ∈ L, φ (t + l) = φ t) → (∀ a, (∀ l ∈ L, χ a l = 1) → ∫ t, χ a t * φ t ∂μ = 0) → φ = 0 := by
   intro H A _ _ _ _ _ μ _ _ χ hs ha0 h0t hadd L hL hsep φ Kc hK hsupp hφL hint
   by_contra hφ
-  obtain ⟨t₀, ht₀⟩ : ∃ t, φ t ≠ 0 := by
-    by_contra h
-    push_neg at h
-    exact hφ (funext h)
-  have hχne : ∀ a s, χ a s ≠ 0 := fun a s h => by
-    have := hs a s (-s)
-    rw [add_neg_cancel, ha0, h, zero_mul] at this
-    exact one_ne_zero this
+  obtain ⟨t₀, ht₀⟩ : ∃ t, φ t ≠ 0 := Function.ne_iff.mp hφ
+  have hχne : ∀ a s, χ a s ≠ 0 := fun a s =>
+    left_ne_zero_of_mul (by rw [← hs, add_neg_cancel, ha0]; exact one_ne_zero)
   haveI : DiscreteTopology (H ⧸ L) := QuotientAddGroup.discreteTopology hL
   have hTfin : (QuotientAddGroup.mk '' Kc : Set (H ⧸ L)).Finite :=
     (hK.image QuotientAddGroup.continuous_mk).finite_of_discrete
@@ -79,15 +74,11 @@ theorem _root_.GlobalTheory.fourier_uniqueness_of_openSubgroup : ∀ {H A : Type
     ext x
     simp only [Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe]
     conv_lhs => rw [← hmkr q]
-    rw [eq_comm]
-    exact QuotientAddGroup.eq
-  have hmeas : ∀ q : H ⧸ L, μ (QuotientAddGroup.mk ⁻¹' ({q} : Set (H ⧸ L))) = μ L := by
-    intro q
-    rw [hpre, measure_preimage_add]
-  have hmset : ∀ q : H ⧸ L, MeasurableSet (QuotientAddGroup.mk ⁻¹' ({q} : Set (H ⧸ L))) := by
-    intro q
-    rw [hpre]
-    exact (hL.preimage (continuous_const_add (-r q))).measurableSet
+    rw [QuotientAddGroup.eq_iff_sub_mem, neg_add_eq_sub]
+  have hmeas : ∀ q : H ⧸ L, μ (QuotientAddGroup.mk ⁻¹' ({q} : Set (H ⧸ L))) = μ L :=
+    fun q => by rw [hpre q, measure_preimage_add]
+  have hmset : ∀ q : H ⧸ L, MeasurableSet (QuotientAddGroup.mk ⁻¹' ({q} : Set (H ⧸ L))) :=
+    fun q => by rw [hpre q]; exact (hL.preimage (continuous_const_add (-r q))).measurableSet
   have hLtop : μ L < ⊤ := by
     have hsub : (QuotientAddGroup.mk ⁻¹' ({(t₀ : H ⧸ L)} : Set (H ⧸ L))) ⊆ Kc := by
       intro x hx
@@ -98,12 +89,8 @@ theorem _root_.GlobalTheory.fourier_uniqueness_of_openSubgroup : ∀ {H A : Type
       exact ht₀ this.symm
     rw [← hmeas (t₀ : H ⧸ L)]
     exact (measure_mono hsub).trans_lt hK.measure_lt_top
-  have hLpos : 0 < μ.real L := by
-    rw [measureReal_def]
-    exact ENNReal.toReal_pos (hL.measure_pos μ ⟨0, L.zero_mem⟩).ne' hLtop.ne
-  have hχL : ∀ a, (∀ l ∈ L, χ a l = 1) → ∀ t l, l ∈ L → χ a (t + l) = χ a t := by
-    intro a ha t l hl
-    rw [hs, ha l hl, mul_one]
+  have hLpos : 0 < μ.real L :=
+    ENNReal.toReal_pos (hL.measure_pos μ ⟨0, L.zero_mem⟩).ne' hLtop.ne
   have hsum : ∀ a, (∀ l ∈ L, χ a l = 1) →
       ∑ q ∈ hTfin.toFinset, χ a (r q) * φ (r q) = 0 := by
     intro a ha
@@ -111,24 +98,24 @@ theorem _root_.GlobalTheory.fourier_uniqueness_of_openSubgroup : ∀ {H A : Type
         (QuotientAddGroup.mk ⁻¹' ({q} : Set (H ⧸ L))).indicator
           (fun _ => χ a (r q) * φ (r q)) t := by
       funext t
-      obtain ⟨l, hl, hrt⟩ := hr t
-      by_cases htT : (t : H ⧸ L) ∈ (QuotientAddGroup.mk '' Kc : Set (H ⧸ L))
-      · rw [Finset.sum_eq_single (t : H ⧸ L)]
-        · rw [Set.indicator_of_mem (show t ∈ QuotientAddGroup.mk ⁻¹' ({(t : H ⧸ L)} : Set (H ⧸ L)) from rfl), hrt, hχL a ha t l hl, hφL t l hl]
+      by_cases htT : (t : H ⧸ L) ∈ hTfin.toFinset
+      · obtain ⟨l, hl, hrt⟩ := hr t
+        rw [Finset.sum_eq_single (t : H ⧸ L),
+          Set.indicator_of_mem (show t ∈ QuotientAddGroup.mk ⁻¹' ({(t : H ⧸ L)} :
+            Set (H ⧸ L)) from rfl), hrt, hs, ha l hl, mul_one, hφL t l hl]
         · intro q _ hq
-          exact Set.indicator_of_notMem (show t ∉ QuotientAddGroup.mk ⁻¹' ({q} : Set (H ⧸ L)) from
-            fun h => hq (Set.mem_singleton_iff.mp h).symm) _
-        · intro h
-          exact absurd (hTfin.mem_toFinset.mpr htT) h
-      · have htK : t ∉ Kc := fun h => htT ⟨t, h, rfl⟩
+          exact Set.indicator_of_notMem (fun h => hq (Set.mem_singleton_iff.mp h).symm) (fun _ => χ a (r q) * φ (r q))
+        · exact absurd htT
+      · have htK : t ∉ Kc := fun h => htT (hTfin.mem_toFinset.mpr ⟨t, h, rfl⟩)
         rw [hsupp t htK, mul_zero]
         symm
         refine Finset.sum_eq_zero fun q hq => Set.indicator_of_notMem
-          (show t ∉ QuotientAddGroup.mk ⁻¹' ({q} : Set (H ⧸ L)) from fun h => htT ?_) _
+          (show t ∉ QuotientAddGroup.mk ⁻¹' ({q} : Set (H ⧸ L)) from fun h => htT ?_)
+          (fun _ => χ a (r q) * φ (r q))
         rw [show (t : H ⧸ L) = q from Set.mem_singleton_iff.mp h]
-        exact hTfin.mem_toFinset.mp hq
+        exact hq
     have hI := hint a ha
-    rw [hpt, MeasureTheory.integral_finsetSum] at hI
+    rw [hpt, integral_finsetSum] at hI
     · simp_rw [integral_indicator_const _ (hmset _), measureReal_def, hmeas,
         ← measureReal_def] at hI
       rw [← Finset.smul_sum] at hI
@@ -147,16 +134,11 @@ theorem _root_.GlobalTheory.fourier_uniqueness_of_openSubgroup : ∀ {H A : Type
   have hfinj : Function.Injective f := by
     intro q q' hqq
     by_contra hne
-    have hx : r q - r q' ∉ L := by
-      intro hx
-      apply hne
-      rw [← hmkr q, ← hmkr q']
-      refine QuotientAddGroup.eq.mpr ?_
-      have := L.neg_mem hx
-      rwa [neg_sub, ← neg_add_eq_sub] at this
+    have hx : r q - r q' ∉ L := fun hx => hne (by
+      rw [← hmkr q, ← hmkr q', QuotientAddGroup.eq_iff_sub_mem]
+      exact hx)
     obtain ⟨a, ha, hax⟩ := hsep _ hx
-    have hval := DFunLike.congr_fun hqq (Multiplicative.ofAdd (⟨a, ha⟩ : A'))
-    change χ a (r q) = χ a (r q') at hval
+    have hval : χ a (r q) = χ a (r q') := DFunLike.congr_fun hqq (Multiplicative.ofAdd (⟨a, ha⟩ : A'))
     apply hax
     have e : χ a (r q) = χ a (r q - r q') * χ a (r q') := by rw [← hs, sub_add_cancel]
     rw [hval] at e
@@ -168,15 +150,11 @@ theorem _root_.GlobalTheory.fourier_uniqueness_of_openSubgroup : ∀ {H A : Type
   have hzero := Fintype.linearIndependent_iff.mp hli (fun q => φ (r q)) (by
     funext g
     simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]
-    have h := hsum _ (Multiplicative.toAdd g).2
-    rw [← Finset.sum_coe_sort] at h
-    refine Eq.trans (Finset.sum_congr rfl fun q _ => ?_) h
-    exact mul_comm _ _)
-  have ht₀T : (t₀ : H ⧸ L) ∈ hTfin.toFinset :=
-    hTfin.mem_toFinset.mpr ⟨t₀, by_contra fun h => ht₀ (hsupp t₀ h), rfl⟩
-  have h0 := hzero ⟨_, ht₀T⟩
+    rw [Finset.sum_coe_sort (f := fun q => φ (r q) * (f q) g)]
+    simpa [f, mul_comm] using hsum _ (Multiplicative.toAdd g).2)
   obtain ⟨l, hl, hrt⟩ := hr t₀
-  change φ (r (t₀ : H ⧸ L)) = 0 at h0
+  have h0 : φ (r (t₀ : H ⧸ L)) = 0 :=
+    hzero ⟨_, hTfin.mem_toFinset.mpr ⟨t₀, by_contra fun h => ht₀ (hsupp t₀ h), rfl⟩⟩
   rw [hrt, hφL t₀ l hl] at h0
   exact ht₀ h0
 

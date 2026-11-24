@@ -71,13 +71,10 @@ abbrev ql (A B : Submodule O V) : ℕ∞ := Module.length O (↥A ⧸ B.comap A.
 private theorem len_quot_le_lemma {M Q : Type*} [AddCommGroup M] [Module O M] [AddCommGroup Q]
     [Module O Q] (S : Submodule O M) (φ : M →ₗ[O] Q) (h : LinearMap.ker φ ≤ S) :
     Module.length O (M ⧸ S) ≤ Module.length O Q := by
-  refine (Module.length_le_of_surjective (Submodule.factor h) ?_).trans
+  refine (Module.length_le_of_surjective (Submodule.factor h)
+    (Submodule.factor_surjective h)).trans
     (Module.length_le_of_injective ((LinearMap.ker φ).liftQ φ le_rfl) ?_)
-  · intro q
-    obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
-    exact ⟨Submodule.Quotient.mk x, rfl⟩
-  · rw [← LinearMap.ker_eq_bot]
-    exact Submodule.ker_liftQ_eq_bot _ _ _ le_rfl
+  exact LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot _ _ _ le_rfl)
 
 theorem ql_le_of_map {A S : Submodule O V} {L P : Submodule O W} (f : ↥A →ₗ[O] W)
     (h1 : ∀ x, f x ∈ L) (h2 : ∀ x, f x ∈ P → (x : V) ∈ S) : ql A S ≤ ql L P := by
@@ -95,12 +92,10 @@ theorem ql_anti_right {A B B' : Submodule O V} (h : B ≤ B') : ql A B' ≤ ql A
 
 theorem ql_sup_le (A B : Submodule O V) : ql (A ⊔ B) B ≤ ql A B := by
   have e := LinearMap.quotientInfEquivSupQuotient A B
-  have h1 : ql (A ⊔ B) B ≤ ql A (A ⊓ B) :=
-    Module.length_le_of_surjective e.toLinearMap e.surjective
-  have h2 : ql A (A ⊓ B) ≤ ql A B :=
-    ql_le_of_map (A := A) (S := A ⊓ B) (L := A) (P := B) A.subtype (fun x => x.2)
-      (fun x hx => Submodule.mem_inf.2 ⟨x.2, hx⟩)
-  exact h1.trans h2
+  exact (Module.length_le_of_surjective e.toLinearMap e.surjective :
+    ql (A ⊔ B) B ≤ ql A (A ⊓ B)).trans
+    (ql_le_of_map (A := A) (S := A ⊓ B) (L := A) (P := B) A.subtype
+      (fun x => x.2) (fun x hx => Submodule.mem_inf.2 ⟨x.2, hx⟩))
 
 theorem ql_le_of_le_sup {A A' B : Submodule O V} (h : A ≤ A' ⊔ B) : ql A B ≤ ql A' B :=
   (ql_mono_left h).trans (ql_sup_le A' B)
@@ -201,10 +196,9 @@ variable {O K V : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [F
 theorem mem_span_basisFun (n : ℕ) (y : Fin n → K) (h : ∀ i, ∃ a : O, y i = algebraMap O K a) :
     y ∈ Submodule.span O (Set.range (Pi.basisFun K (Fin n))) := by
   choose a ha using h
-  have hy : y = ∑ i, a i • Pi.basisFun K (Fin n) i := by
+  rw [show y = ∑ i, a i • Pi.basisFun K (Fin n) i by
     ext j
-    simp [ha, Finset.sum_apply, Pi.single_apply, Algebra.smul_def]
-  rw [hy]
+    simp [ha, Finset.sum_apply, Pi.single_apply, Algebra.smul_def]]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 theorem quot_core (ϖ : O) (hϖ : Irreducible ϖ) (n : ℕ) (c : V →ₗ[K] (Fin n → K))

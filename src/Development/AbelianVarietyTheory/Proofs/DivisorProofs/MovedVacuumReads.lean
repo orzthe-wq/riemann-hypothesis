@@ -3,21 +3,22 @@ module
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramAtPosDef
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCongLevelIntG
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EqZeroOfLintegralEqZero
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.FockVacuumAnnihilationEquationRealCoordinates
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockVacuumRealRestrictionGaussianEntire
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HeisenbergFinitePointReadsClassicalTranslation
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockVacuumOfReadsGaussianEntireStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeilPairMovesPhasedHeisenbergTranslateStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaLatticePointMemThetaLatticeOfAdelicStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRationalPointOfMemMovedThetaLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitaryStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumUnderAdelicPairModulusOne
+public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaTranslationIntertwinerUnitary
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CompAtMtOfMemGfC
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsInverseChart
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPeriodSq
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaLatticePointMemThetaLatticeOfAdelic
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsRationalPointOfMemMovedThetaLattice
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.VacuumUnderAdelicPairModulusOne
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -175,12 +176,12 @@ theorem mem_thSp_of_lift {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : 
   have hcc : cc ≠ ⊥ := hc.1.1
   have k0 : KLat D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') := klat _ (moves_one D N) (moves_one D N')
   have k1 := klat (tor0 D cc δ) h h'
-  obtain ⟨-, hF, -, hinv⟩ := GlobalTheory.T.intertwinerUnitary_all D cc δ hc N N' _ _ k0 k1 e0 he
+  obtain ⟨-, hF, -, hinv⟩ := _root_.GlobalTheory.theta_translation_intertwiner_unitary D cc δ hc N N' _ _ k0 k1 e0 he
   have hF0 : Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') (La D (tor0 D cc δ) L₁ L₁') e0 ≠ 0 := by
     intro h0
     rw [h0, iop_zero] at hinv
     exact hne hinv.symm
-  obtain ⟨-, hW, -⟩ := GlobalTheory.T.theta_space_selfDual_pair_at_most_line D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc N N' _ k1
+  obtain ⟨-, hW, -⟩ := _root_.GlobalTheory.ThetaLine.theta_line D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hc N N' _ k1
   refine ⟨hG, fun x hx => ?_⟩
   suffices hs : Wd D (tor0 D cc δ) x G = G by
     rw [hW x hx] at hs; exact congrFun hs
@@ -189,7 +190,7 @@ theorem mem_thSp_of_lift {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : 
     intro a ha b hb F
     obtain ⟨φ, hφ⟩ := wd_wd D (tor0 D cc δ) a b
     have h2 := hφ (Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') (La D (tor0 D cc δ) L₁ L₁') e0)
-    rw [wd_fix (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc k1 hF hb, wd_fix (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc k1 hF ha, wd_fix (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc k1 hF (add_mem ha hb)] at h2
+    rw [wd_fix (_root_.GlobalTheory.InducedType.induced_type D).1 hc k1 hF hb, wd_fix (_root_.GlobalTheory.InducedType.induced_type D).1 hc k1 hF ha, wd_fix (_root_.GlobalTheory.InducedType.induced_type D).1 hc k1 hF (add_mem ha hb)] at h2
     have h3 : φ = 1 := by
       by_contra hne
       apply hF0
@@ -197,9 +198,9 @@ theorem mem_thSp_of_lift {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : 
         rw [sub_smul, one_smul, ← h2, sub_self]
       exact (smul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)
     rw [hφ, h3, one_smul]
-  obtain ⟨z', rfl, hz'⟩ := GlobalTheory.T.exists_rationalPoint_of_mem_movedThetaLattice D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hcc N N' g g' L₁ L₁' h h' x hx
-  have hlatb := GlobalTheory.T.cmThetaLatticePoint_mem_thetaLattice_of_adelic D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hcc N N' g g' L₁ L₁' h h'
-  have hlat0 := GlobalTheory.T.cmThetaLatticePoint_mem_thetaLattice_of_adelic D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hcc N N' 1 1 _ _ (moves_one D N) (moves_one D N')
+  obtain ⟨z', rfl, hz'⟩ := _root_.GlobalTheory.NormSum.exists_pt_of_mem_La_moved D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hcc N N' g g' L₁ L₁' h h' x hx
+  have hlatb := _root_.GlobalTheory.NormSum.pt_mem_La_of_adelic D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hcc N N' g g' L₁ L₁' h h'
+  have hlat0 := _root_.GlobalTheory.NormSum.pt_mem_La_of_adelic D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hcc N N' 1 1 _ _ (moves_one D N) (moves_one D N')
   simp only [OneMemClass.coe_one, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_one] at hlat0
   simp only [← MI_one] at hz' hlatb hlat0
   obtain ⟨m0, hm0, hl0⟩ := hlift 0 (by rw [VacMove.pt_zero, VacMove.wd_zero])
@@ -222,7 +223,7 @@ theorem mem_thSp_of_lift {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : 
   obtain ⟨z, hz⟩ := MI_approx hcc (P' * z'.map (inc D) * Q) (n * m0) (Nat.mul_pos hn hm0)
   have hz0 : MI D cc 1 (z.map (inc D)) := by
     simpa using (hz.of_dvd (one_dvd _)).add hz'
-  obtain ⟨m, hm, hl⟩ := hlift z (wd_fix (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc k0 he (hlat0 z hz0))
+  obtain ⟨m, hm, hl⟩ := hlift z (wd_fix (_root_.GlobalTheory.InducedType.induced_type D).1 hc k0 he (hlat0 z hz0))
   obtain ⟨w, hw⟩ := MI_approx hcc (P * z.map (inc D) * Q') (n' * (m * m0)) (by positivity)
   have hw1 : MI D cc 1 (P' * w.map (inc D) * Q) := by
     have := ((hb' _ _ hw).of_dvd (one_dvd _)).add hz0
@@ -263,7 +264,7 @@ theorem eq_smul_of_lift {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : C
   obtain ⟨Lt', h1', -⟩ := exists_lattice_of_adelic_point D N'
   have h := (h1 g).1
   have h' := (h1' g').1
-  have hT := vac_TT (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 hc he
+  have hT := vac_TT (_root_.GlobalTheory.InducedType.induced_type D).1 hc he
   have hO := mem_thSp_of_lift hc he W.nz g g' h h' (W.maps g g' e0 hT).1 (fun z hz => by
     obtain ⟨m, hm, hl⟩ := W.lift g g' z e0 hT
     rw [hz] at hl
@@ -275,7 +276,7 @@ theorem eq_smul_of_lift {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : C
     rw [zero_smul, zero_smul] at h3
     rw [inv_mul_cancel, inv_mul_cancel, W.one e0 hT, h0, h3] at h2
     exact W.nz h2
-  exact (GlobalTheory.T.theta_space_selfDual_pair_at_most_line D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc N N' _ (klat (tor0 D cc δ) h h')).1 _
+  exact (_root_.GlobalTheory.ThetaLine.theta_line D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hc N N' _ (klat (tor0 D cc δ) h h')).1 _
     (mem_thSp_of_lift hc he W.nz g g' h h' hG hlift) _ hO hO0
 
 end GlobalTheory.VacLine
@@ -327,7 +328,7 @@ theorem exists_reads {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d) (hset : Set
     ext i j
     by_cases hij : i = j
     · subst hij; simp [Formalism.UG.cT]
-    · simp [Formalism.UG.cT, hij, Ne.symm hij, Matrix.one_apply]
+    · simp [Formalism.UG.cT, hij, Ne.symm hij]
   obtain ⟨Φ, hΦ, hw⟩ := fock_real_entire ψ θ S T 1 1 (hon S hset.gS) (hon T hset.gT) hset.std hset.inf f hf hv
   refine ⟨fun Y => Φ fun τ i j => (δ * embT D τ r)⁻¹ * Y τ i j, hΦ.comp (by fun_prop), ?_⟩
   rw [reads_iff hset.crv hset.scale]

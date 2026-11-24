@@ -87,18 +87,6 @@ private theorem dx_unr (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
   rw [CF.ineAbs ℚ K Ω A w hw, hb, Subgroup.mem_bot] at h1
   exact (dx_ker Ω K σ).1 h1
 
-private theorem dx_lc {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group M] (f : Γ →* M)
-    (h : IsOpen (f.ker : Set Γ)) : IsLocallyConstant f := by
-  rw [IsLocallyConstant.iff_eventually_eq]
-  intro x
-  have hc : Continuous fun y : Γ => x⁻¹ * y := by fun_prop
-  have h1 : (fun y : Γ => x⁻¹ * y) ⁻¹' (f.ker : Set Γ) ∈ nhds x :=
-    (h.preimage hc).mem_nhds (by simp)
-  filter_upwards [h1] with y hy
-  have h2 : f (x⁻¹ * y) = 1 := hy
-  rw [map_mul, map_inv, inv_mul_eq_one] at h2
-  exact h2.symm
-
 private theorem dx_zpow {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (I : Ideal R)
     (Ψ : Γ → Rˣ) (h : AdicCont I fun g => (Ψ g : R)) (j : ℤ) : AdicCont I fun g => ((Ψ g ^ j : Rˣ) : R) := by
   classical
@@ -139,7 +127,7 @@ private theorem dx_lmem (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLoca
 
 private theorem dx_dir (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {O : Type} [CommRing O] {N : ℕ} [NeZero N]
     (ψ : DirichletCharacter O N) : IsLocallyConstant (Chr.dirG ℚ Ω ψ) :=
-  (dx_lc _ (Chr.clsFacts ℚ Ω N).1).comp ψ.toUnitHom
+  (_root_.UpperTheory.Reformulated.B.LocallyConstantFunctions.locConst _ (Chr.clsFacts ℚ Ω N).1).comp ψ.toUnitHom
 
 private theorem dx_cont (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
     {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]

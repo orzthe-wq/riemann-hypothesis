@@ -106,7 +106,7 @@ theorem lineVar_natDegree_coeff (t : Fin n → F) (m : Fin n) (ij : Fin (e + 1) 
     simp [lineVar, specFirstVar, groupWeight, (Fin.succ_ne_zero i).symm]
 
 theorem linePoly_natDegree_coeff {δ : ℕ} {f : MvPolynomial (Fin (e + 1) × Fin n) F}
-    (hf : IsMultiHomog δ f) (t : Fin n → F) (m : Fin n) :
+    (hf : Heights.IsMultiHomog δ f) (t : Fin n → F) (m : Fin n) :
     (linePoly f t m).natDegree ≤ δ ∧ (linePoly f t m).coeff δ = specFirst f t := by
   classical
   have hw : ∀ d ∈ f.support, ∑ ij ∈ d.support, d ij * groupWeight (e + 1) n ij 0 = δ := by

@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundaryTwoCoboundaryOne
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSubInOfCob2InStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSubInOfCob2In
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -73,22 +73,13 @@ theorem map_op (h : R →+* S) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R
       fun i => map h (op μ u v i) :=
   funext fun i => (mvPowerSeriesMap_evalTwoGroups h hu hv (μ i)).symm
 
-theorem map_threeGroupsFirstVariables (h : R →+* S) : (fun i => map h (x1 (R := R) (d := d) i)) = x1 := by
-  funext i; simp [x1]
-
-theorem map_threeGroupsSecondVariables (h : R →+* S) : (fun i => map h (x2 (R := R) (d := d) i)) = x2 := by
-  funext i; simp [x2]
-
-theorem map_threeGroupsThirdVariables (h : R →+* S) : (fun i => map h (x3 (R := R) (d := d) i)) = x3 := by
-  funext i; simp [x3]
-
 theorem map_assoc (h : R →+* S) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (hc : ∀ i, constantCoeff (μ i) = 0) (ha : op μ (op μ x1 x2) x3 = op μ x1 (op μ x2 x3)) :
     op (fun i => map h (μ i)) (op (fun i => map h (μ i)) x1 x2) x3 =
       op (fun i => map h (μ i)) x1 (op (fun i => map h (μ i)) x2 x3) := by
   have h12 := CobCob.op_const hc (CobCob.constantCoeff_threeGroupsFirstVariables (R := R) (d := d)) CobCob.constantCoeff_threeGroupsSecondVariables
   have h23 := CobCob.op_const hc (CobCob.constantCoeff_threeGroupsSecondVariables (R := R) (d := d)) CobCob.constantCoeff_threeGroupsThirdVariables
-  rw [← map_threeGroupsFirstVariables h, ← map_threeGroupsSecondVariables h, ← map_threeGroupsThirdVariables h, map_op h μ CobCob.constantCoeff_threeGroupsFirstVariables CobCob.constantCoeff_threeGroupsSecondVariables,
+  rw [← _root_.GlobalTheory.CobSymCoc.map_threeGroupsFirstVariables h, ← _root_.GlobalTheory.CobSymCoc.map_threeGroupsSecondVariables h, ← _root_.GlobalTheory.CobSymCoc.map_threeGroupsThirdVariables h, map_op h μ CobCob.constantCoeff_threeGroupsFirstVariables CobCob.constantCoeff_threeGroupsSecondVariables,
     map_op h μ CobCob.constantCoeff_threeGroupsSecondVariables CobCob.constantCoeff_threeGroupsThirdVariables, map_op h μ h12 CobCob.constantCoeff_threeGroupsThirdVariables,
     map_op h μ CobCob.constantCoeff_threeGroupsFirstVariables h23, ha]
 
@@ -146,7 +137,7 @@ theorem GlobalTheory.QLog.exists_log_of_lin : ∀ (p : ℕ) [Fact p.Prime] (O C 
     map_assoc h μ hμ.const hμ.assoc
   have hcomm : (fun i => swap (up C μ i)) = up C μ := by
     funext i; rw [hup]; dsimp only; rw [← map_swap, hμ.comm i]
-  obtain ⟨g, hg0, hglin, -, hgc⟩ := GlobalTheory.T.swap_sub_in_of_cob2_in p O O C (RingHom.id O) hF d μ hlift ⊥ ⊤ bot_le
+  obtain ⟨g, hg0, hglin, -, hgc⟩ := _root_.GlobalTheory.symmetric_cocycle_is_coboundary_mod p O O C (RingHom.id O) hF d μ hlift ⊥ ⊤ bot_le
     (cob1 (up C μ) (map h F)) (Or.inl hμ)
     (by rw [hcmap, constantCoeff_map, constantCoeff_formalGroupLawCoboundaryOne_eq_zero μ hμ.const hF0, map_zero])
     (fun α => ⟨0, coeff α (cob1 μ F), Submodule.mem_top, by

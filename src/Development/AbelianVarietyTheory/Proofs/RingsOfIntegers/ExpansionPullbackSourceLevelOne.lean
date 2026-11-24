@@ -131,7 +131,7 @@ theorem expands_pull_level_one : Laws → ∀ (V : Type) [CommRing V] [IsDomain 
       obtain ⟨τ', hτ', hv⟩ := hpow m τ
       obtain ⟨T, hT, -⟩ := (P.U.expand m (by omega)).1 τ
       obtain ⟨T', hT', hTT⟩ := GlobalTheory.T.expansion_commutes_pullback_cmEndo_four_le hLaws V E H t P a N hN hN0 m hm τ T hT τ' hτ'
-      have g := GlobalTheory.T.mixed_cross_identity_genericFibre hLaws V E H t P a N hN hN0 1 s F s'' F' hs hs'' hF' m τ T τ' T' hT hT' hTT m 1
+      have g := _root_.GlobalTheory.GenericCross.main hLaws V E H t P a N hN hN0 1 s F s'' F' hs hs'' hF' m τ T τ' T' hT hT' hTT m 1
         (by ring) y J hJ
       rw [pow_one, pow_one, hv y J hJ] at g
       refine hτ.mul_right_cancel (g.trans ?_)

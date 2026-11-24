@@ -208,7 +208,7 @@ theorem fderiv_b (K : (I → ℝ) × (I → ℝ) → (V →L[ℂ] V)) (A : V →
         trL (A * (∑ j, (v - o) j • c j) * fderiv ℝ K (path o s v) (s • w, w)) := by
   set Jd : (I → ℝ) →L[ℝ] (V →L[ℂ] V) :=
     ∑ j, (ContinuousLinearMap.proj j : (I → ℝ) →L[ℝ] ℝ).smulRight (c j) with hJd
-  have hJa : ∀ x, Jd x = ∑ j, x j • c j := fun x => by simp [hJd, ContinuousLinearMap.sum_apply]
+  have hJa : ∀ x, Jd x = ∑ j, x j • c j := fun x => by simp [hJd]
   have hJ : HasFDerivAt (fun v => ∑ j, (v - o) j • c j) Jd v := by
     have h := Jd.hasFDerivAt.comp v ((hasFDerivAt_id v).sub_const o)
     have h2 : (⇑Jd ∘ fun x => id x - o) = fun v => ∑ j, (v - o) j • c j := by

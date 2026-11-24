@@ -67,12 +67,6 @@ private theorem gm_inv' {Y Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (
   rw [dite_eq_left h]
   exact map_inv _ a
 
-private theorem gm_res' {Y Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) {U V : Y.Opens} (hle : V ≤ U) (h : r z ∈ V)
-    (a : Γ(Y, U)ˣ) : gm r z V (res hle a) = gm r z U a := by
-  ext
-  rw [← gs_unit r z V h, ← gs_unit r z U (hle h)]
-  exact gs_res r z hle h a.val
-
 theorem gs_secOfIso_eq {A B : LB Y} (u : LB.Iso A B) (t : LB.Sec B) (hu : u.IsGen) (hA : A.IsLB) (hB : B.IsLB)
     (a : A.ι) (b : B.ι) (r : Z ⟶ Y) (z : Z) (hz : r z ∈ A.U a ⊓ B.U b) :
     gs r z (A.U a) ((secOfIso t hu hA hB).f a) =
@@ -81,7 +75,7 @@ theorem gs_secOfIso_eq {A B : LB Y} (u : LB.Iso A B) (t : LB.Sec B) (hu : u.IsGe
   rw [← gs_res r z (inf_le_left : A.U a ⊓ B.U b ≤ A.U a) hz]
   change gs r z _ (rs inf_le_left ((secOfIso t hu hA hB).f a)) = _
   rw [secOfIso_spec t hu hA hB a b, isoCand, gs_mul r z _ hz, gs_unit r z _ hz, gm_inv' r z _ hz,
-    gm_res' r z (divLe a b) hz]
+    _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res r z (divLe a b) hz]
   congr 1
   exact gs_res r z inf_le_right hz (t.f b)
 

@@ -2,9 +2,15 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ContDiffUncentre
 public import Development.WeilBound.CoreStatements.CentralCharts.PshAt0
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramComparisonBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramSmoothPuncturedStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GramMatrixSubScalarPosSemidefStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramComparisonBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodGramSmoothPunctured
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.Analysis.Normed.Operator.Basic
+public import Mathlib.Analysis.SpecialFunctions.Log.Basic
+public import Mathlib.LinearAlgebra.Matrix.PosDef
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GramMatrixSubScalarPosSemidef
 public import Development.WeilBound.CoreStatements.CentralCharts.ContDiffAtLogNorm
 public import Development.WeilBound.CoreStatements.CentralCharts.TraceMulReNonneg
 import Mathlib.Algebra.Order.Floor.Extended
@@ -80,7 +86,7 @@ theorem tame_logdet {a₀ k r : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.Log
     (ha : ∀ i : Fin n, (i : ℕ) < a₀ → ((π.symm i : Fin n) : ℕ) < a) :
     Tame a fun t => Real.log (HodgeMetric.periodGram L U (HodgeMetric.uncentre 0 ρ π t)).det.re := by
   classical
-  obtain ⟨ε, c, C, hε, hερ, hc, hC, hB⟩ := GlobalTheory.T.period_gram_comparison_bound n a₀ k r a Λ L U 0 π ρ hρ hρ1 hU hli
+  obtain ⟨ε, c, C, hε, hερ, hc, hC, hB⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.logBound_recentred n a₀ k r a Λ L U 0 π ρ hρ hρ1 hU hli
     (fun i hi => ⟨ha i hi, rfl⟩)
   set G : (Fin n → ℂ) → Matrix (Fin r) (Fin r) ℂ :=
     fun y => HodgeMetric.periodGram L U (HodgeMetric.uncentre 0 ρ π y) with hGdef
@@ -101,7 +107,7 @@ theorem tame_logdet {a₀ k r : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.Log
   have hentry : ∀ y : Fin n → ℂ, ‖y‖ < ε → (∀ i : Fin n, (i : ℕ) < a → y i ≠ 0) →
       ∀ p q, ContDiffAt ℝ (⊤ : ℕ∞) (fun u => G u p q) y := by
     intro y hy hy0 p q
-    exact (GlobalTheory.T.period_gram_smooth_punctured n a₀ k r Λ L U hU p q _ (hpunct y hy hy0)).comp y
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.GramSmooth.periodGram_contDiffAt n a₀ k r Λ L U hU p q _ (hpunct y hy hy0)).comp y
       (HodgeMetric.contDiff_uncentre 0 ρ π).contDiffAt
   have hgood : ∀ y : Fin n → ℂ, ‖y‖ < ε → ‖y‖ < 1 → (∀ i : Fin n, (i : ℕ) < a → y i ≠ 0) →
       ∀ᶠ z in 𝓝 y, ‖z‖ < ε ∧ ‖z‖ < 1 ∧ ∀ i : Fin n, (i : ℕ) < a → z i ≠ 0 := by
@@ -158,7 +164,7 @@ theorem tame_logdet {a₀ k r : ℕ} {Λ : Type} [AddCommGroup Λ] (L : Flat.Log
       have : P ≤ max P C := le_max_left _ _
       have : 0 ≤ max P C := by linarith
       nlinarith
-    have hd := GlobalTheory.T.gram_matrix_sub_scalar_posSemidef r r (Fin n → ℂ) G (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) y
+    have hd := _root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.gram_grad_scaled r r (Fin n → ℂ) G (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) y
       (C * logR a y)⁻¹ P Q (inv_pos.2 hK) (by linarith) hPQ
       (fun p q => ((hentry y hy hy0 p q).differentiableAt (by simp)))
       (fun p q => differentiableAt_const _)

@@ -1,10 +1,18 @@
 module
 
+public import GroundTheory.GlobalFields.Adele.IntegersLattice
+public import GroundTheory.GlobalFields.TateThesis.IdeleMeasureNormOne
+public import GroundTheory.GlobalFields.TateThesis.AdelePoisson
+public import GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform
+public import GroundTheory.GlobalFields.TateThesis.TateThetaDecay
+public import GroundTheory.GlobalFields.TateThesis.AdeleIdealMeasure
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.Topology.Algebra.InfiniteSum.Defs
+public import Mathlib.Topology.MetricSpace.Pseudo.Defs
+public import Mathlib.Topology.Algebra.InfiniteSum.Order
+public import Mathlib.Topology.Algebra.InfiniteSum.Real
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.HeisenbergTheta.HeisenbergThetaConstant.ThetaC
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormLeNormInfCModuleSectionMul
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsTailFurther
-import GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform
-import GroundTheory.GlobalFields.TateThesis.TateThetaDecay
+import GroundTheory.GlobalFields.TateThesis.AdeleScaling
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -21,8 +29,12 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,9 +54,176 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import GroundTheory.AutomorphicForms.GL2.SummableNormIffAndTsumEqCoset2
+import GroundTheory.AutomorphicForms.LocallyProfinite
+import GroundTheory.AutomorphicForms.GL2.GodementSection
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Tactic.Lemma
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormLeNormInfCModuleSectionMul, Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsTailFurther, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSubValueZeroRapidDecay
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormLeNormInfCModuleSectionMul =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormLeNormInfCModuleSectionMul", "h": "module\n\npublic import GroundTheory.GlobalFields.Adele.IntegersLattice\npublic import GroundTheory.GlobalFields.TateThesis.IdeleMeasureNormOne\npublic import GroundTheory.GlobalFields.TateThesis.AdelePoisson\npublic import GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform\nimport GroundTheory.GlobalFields.TateThesis.AdeleScaling\npublic import GroundTheory.GlobalFields.TateThesis.TateThetaDecay\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport GroundTheory.AutomorphicForms.GL2.SummableNormIffAndTsumEqCoset2\nimport GroundTheory.AutomorphicForms.LocallyProfinite\npublic import GroundTheory.GlobalFields.TateThesis.AdeleIdealMeasure\nimport GroundTheory.AutomorphicForms.GL2.GodementSection\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+open NumberField NumberField.mixedEmbedding IsDedekindDomain IsDedekindDomain.HeightOneSpectrum
+  Matrix MeasureTheory Filter Topology
+open scoped NumberField.AdeleRing SchwartzMap Classical nonZeroDivisors Pointwise
+open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.Adele2
+  GroundTheory.Automorphic.GodementSection IdeleGroup
+
+set_option synthInstance.maxSize 1000
+
+namespace GlobalTheory.CompanionTheory.EisRk1
+
+noncomputable section
+
+variable {K : Type*} [Field K] [NumberField K]
+
+def infC (a : 𝔸[K]) : mixedSpace K := GroundTheory.Global.homeomorphMixedSpace K a.1
+
+theorem infC_mul (a b : 𝔸[K]) : infC (a * b) = infC a * infC b :=
+  homeomorphMixedSpace_mul _ _
+
+theorem infC_add (a b : 𝔸[K]) : infC (a + b) = infC a + infC b := by
+  simp only [infC, homeomorphMixedSpace_apply]
+  exact map_add (InfiniteAdeleRing.ringEquiv_mixedSpace K) a.1 b.1
+
+theorem infC_algebraMap (x : K) : infC (algebraMap K 𝔸[K] x) = mixedEmbedding K x := by
+  simp only [infC, adeleRing_algebraMap_fst, homeomorphMixedSpace_algebraMap]
+
+theorem continuous_infC : Continuous (infC (K := K)) :=
+  (homeomorphMixedSpace K).continuous.comp continuous_fst
+
+theorem exists_ideal_of_isCompact {S : Set 𝔸ᶠ[K]} (hS : IsCompact S) :
+    ∃ (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (κ₀ : ℝ), 0 < κ₀ ∧
+      (∀ ξ : K, algebraMap K 𝔸ᶠ[K] ξ ∈ S → ξ ∈ (J : FractionalIdeal (𝓞 K)⁰ K)) ∧
+      ∀ ξ ∈ (J : FractionalIdeal (𝓞 K)⁰ K), ξ ≠ 0 →
+        κ₀ ≤ mixedEmbedding.norm (mixedEmbedding K ξ) := by
+  obtain ⟨d, hd0, hd⟩ := exists_mul_mem_integralFiniteAdeles_of_isCompact hS
+  set dK := algebraMap (𝓞 K) K d
+  have hdK : dK ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hd0
+  have hNd : ((Algebra.norm ℚ dK : ℚ) : ℝ) ≠ 0 := by
+    rw [Rat.cast_ne_zero]
+    exact (Algebra.norm_ne_zero_iff).2 hdK
+  refine ⟨Units.mk0 (FractionalIdeal.spanSingleton (𝓞 K)⁰ dK⁻¹)
+    ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr (inv_ne_zero hdK)),
+    |((Algebra.norm ℚ dK : ℚ) : ℝ)|⁻¹, inv_pos.2 (abs_pos.2 hNd), ?_, ?_⟩
+  · intro ξ hmem
+    have h1 := hd _ hmem
+    rw [← map_mul] at h1
+    have h2 : dK * ξ ∈ ((1 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) := by
+      rw [← algebraMap_mem_idealFiniteAdeles_iff, ← SetLike.mem_coe, idealFiniteAdeles_one]
+      exact h1
+    rw [Units.val_one] at h2
+    obtain ⟨r, hr⟩ := (FractionalIdeal.mem_one_iff _).mp h2
+    refine (FractionalIdeal.mem_spanSingleton _).mpr ⟨r, ?_⟩
+    rw [Algebra.smul_def, hr, mul_comm dK, mul_assoc, mul_inv_cancel₀ hdK, mul_one]
+  · intro ξ hξ hξ0
+    obtain ⟨r', hr'⟩ := (FractionalIdeal.mem_spanSingleton _).1 hξ
+    have hr'0 : r' ≠ 0 := by
+      rintro rfl
+      rw [zero_smul] at hr'
+      exact hξ0 hr'.symm
+    have hmul : Algebra.norm ℚ dK * Algebra.norm ℚ ξ = Algebra.norm ℚ (r' : K) := by
+      rw [← map_mul, ← hr', Algebra.smul_def, mul_left_comm, mul_inv_cancel₀ hdK, mul_one]
+    have hξN : ((Algebra.norm ℚ ξ : ℚ) : ℝ) =
+        ((Algebra.norm ℚ (r' : K) : ℚ) : ℝ) * ((Algebra.norm ℚ dK : ℚ) : ℝ)⁻¹ := by
+      rw [← hmul, Rat.cast_mul]
+      field_simp
+    rw [mixedEmbedding.norm_eq_norm, Rat.cast_abs, hξN, abs_mul, abs_inv]
+    exact le_mul_of_one_le_left (by positivity) (one_le_abs_norm_of_ne_zero hr'0)
+
+theorem norm_le_norm_infC_moduleSection_mul (w : InfinitePlace K) {t : {x : ℝ // 0 < x}}
+    (ht : 1 ≤ (t : ℝ)) (x : mixedSpace K) :
+    ‖x‖ ≤ ‖infC ((moduleSection w t : NumberField.IdeleGroup (𝓞 K) K) : 𝔸[K]) * x‖ := by
+  set e := infC ((moduleSection w t : NumberField.IdeleGroup (𝓞 K) K) : 𝔸[K])
+  set e' := infC ((moduleSection w t⁻¹ : NumberField.IdeleGroup (𝓞 K) K) : 𝔸[K])
+  have hee : e' * e = 1 := by
+    rw [← infC_mul, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
+    simp only [infC, homeomorphMixedSpace_apply]
+    exact map_one (InfiniteAdeleRing.ringEquiv_mixedSpace K)
+  have he' : ∀ v, normAtPlace v e' ≤ 1 := by
+    intro v
+    simp only [e', infC]
+    rw [normAtPlace_homeomorphMixedSpace]
+    refine norm_moduleSection_apply_le_one w ?_ v
+    change (t : ℝ)⁻¹ ≤ 1
+    exact inv_le_one_of_one_le₀ ht
+  calc ‖x‖ = ‖e' * (e * x)‖ := by rw [← mul_assoc, hee, one_mul]
+    _ ≤ ‖e * x‖ := norm_mul_le_of_normAtPlace_le_one he' _
+
+theorem norm_infC_moduleSection (w : InfinitePlace K) (t : {x : ℝ // 0 < x}) :
+    mixedEmbedding.norm (infC ((moduleSection w t : NumberField.IdeleGroup (𝓞 K) K) : 𝔸[K])) = t := by
+  have h := mixedEmbedding_norm_toInfinite (moduleSection w t)
+  rw [infiniteModule_moduleSection] at h
+  exact h
+
+end
+
+end GlobalTheory.CompanionTheory.EisRk1
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormLeNormInfCModuleSectionMul =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsTailFurther =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsTailFurther", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Mathlib.Topology.Algebra.InfiniteSum.Defs\npublic import Mathlib.Topology.MetricSpace.Pseudo.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Topology.Algebra.InfiniteSum.Order\npublic import Mathlib.Topology.Algebra.InfiniteSum.Real\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace UpperTheory.Reformulated.B.Yva3.Helpers
+
+private lemma key {α ι : Type} [Fintype ι] [DecidableEq ι] [DecidableEq α] {f : α → ℝ}
+    (hf : Summable f) (h0 : ∀ a, 0 ≤ f a) (u : Finset (ι → α)) :
+    ∑ ξ ∈ u, ∏ i, f (ξ i) ≤ ∏ _i : ι, ∑' x, f x := by
+  have h1 : ∑ ξ ∈ u, ∏ i, f (ξ i)
+      ≤ ∑ ξ ∈ Fintype.piFinset (fun i => u.image (fun η => η i)), ∏ i, f (ξ i) := by
+    apply Finset.sum_le_sum_of_subset_of_nonneg
+    · intro ξ hξ
+      rw [Fintype.mem_piFinset]
+      intro i
+      exact Finset.mem_image_of_mem _ hξ
+    · intro ξ _ _
+      exact Finset.prod_nonneg fun i _ => h0 (ξ i)
+  have h2 : ∑ ξ ∈ Fintype.piFinset (fun i => u.image (fun η => η i)), ∏ i, f (ξ i)
+      = ∏ i, ∑ x ∈ u.image (fun η => η i), f x :=
+    by rw [Finset.prod_univ_sum]
+  have h3 : ∏ i, ∑ x ∈ u.image (fun η => η i), f x ≤ ∏ _i : ι, ∑' x, f x := by
+    apply Finset.prod_le_prod₀
+    · intro i _
+      exact Finset.sum_nonneg fun x _ => h0 x
+    · intro i _
+      exact hf.sum_le_tsum _ (fun x _ => h0 x)
+  exact h1.trans (h2.le.trans h3)
+
+private lemma summ {α ι : Type} [Fintype ι] {f : α → ℝ}
+    (hf : Summable f) (h0 : ∀ a, 0 ≤ f a) : Summable fun (ξ : ι → α) ↦ ∏ i : ι, f (ξ i) := by
+  classical
+  exact summable_of_sum_le (fun ξ => Finset.prod_nonneg fun i _ => h0 (ξ i)) (key hf h0)
+
+end UpperTheory.Reformulated.B.Yva3.Helpers
+
+theorem UpperTheory.Reformulated.B.Yva3.main :
+    ∀ {k : Type} [inst : Field k] [NumberField k] {ι : Type} [inst : Fintype ι] {f : k → ℝ},
+      Summable f → (∀ (a : k), (0 : ℝ) ≤ f a) → Summable fun (ξ : ι → k) ↦ ∏ i : ι, f (ξ i) := by
+  intro k _ _ ι _ f hf h0
+  exact UpperTheory.Reformulated.B.Yva3.Helpers.summ hf h0
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsTailFurther =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSubValueZeroRapidDecay =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSubValueZeroRapidDecay", "h": "module\n\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.HeisenbergTheta.HeisenbergThetaConstant.ThetaC\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormLeNormInfCModuleSectionMul\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsTailFurther\nimport GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform\nimport GroundTheory.GlobalFields.TateThesis.TateThetaDecay\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -80,12 +259,6 @@ theorem apply_eq_of_mulVec (h : GL ι 𝔸[k]) (v : ι → 𝔸[k]) (j : ι) :
     rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
   conv_lhs => rw [← h1]
   simp only [Matrix.mulVec, dotProduct]
-
-
-omit [DecidableEq ι] in
-theorem summable_prod_coord {f : k → ℝ} (hf : Summable f) (h0 : ∀ a, 0 ≤ f a) :
-    Summable fun ξ : ι → k ↦ ∏ i, f (ξ i) :=
-  _root_.UpperTheory.Reformulated.B.Yva3.main hf h0
 
 
 omit [DecidableEq ι] in
@@ -193,7 +366,7 @@ theorem exists_decay_boundC_tensor (w : InfinitePlace k) (φ : 𝓢(ι → mixed
     · exact le_rfl
   have hc0 : 0 ≤ A * B' ^ (N * m) * (κ ^ r)⁻¹ := by positivity
   refine ⟨fun ξ ↦ A * B' ^ (N * m) * (κ ^ r)⁻¹ * ∏ i, u₁ (ξ i),
-    (summable_prod_coord hu₁ hu₁0).mul_left _, ?_⟩
+    (_root_.UpperTheory.Reformulated.B.Yva3.main hu₁ hu₁0).mul_left _, ?_⟩
   intro h hh t ht ξ hξ0
   have ht0 : (0 : ℝ) < t := t.2
   set s := moduleSection w t
@@ -354,3 +527,6 @@ theorem exists_norm_thetaC_sub_le : ∀ {k : Type} [Field k] [NumberField k], �
 end
 
 end GlobalTheory.CompanionTheory.EisThCDecay
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaSubValueZeroRapidDecay =====

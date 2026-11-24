@@ -110,7 +110,7 @@ theorem pW_inW (y : (VS D).V) : InW X (pW X y) := by
   constructor
   · simp only [pW, map_sub, hT_sumR, X.ee, X.ef, mul_zero, Finset.sum_const_zero, sub_zero, mul_ite, mul_one,
       Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]
-  · simp only [pW, map_sub, hT_sumR, X.ff, hfe, mul_zero, Finset.sum_const_zero, sub_zero, mul_ite, mul_one,
+  · simp only [pW, map_sub, hT_sumR, X.ff, hfe, mul_zero, Finset.sum_const_zero, mul_ite, mul_one,
       Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]
 
 theorem decomp (y : (VS D).V) :
@@ -128,7 +128,7 @@ theorem pW_smul (c : D.host.E) (x : (VS D).V) : pW X (c • x) = c • pW X x :=
 
 theorem pW_e (a : Fin D.R.rS) : pW X (X.eX a) = 0 := by
   simp only [pW, X.ee, hfe, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true,
-    Finset.sum_const_zero, sub_zero, sub_self]
+    Finset.sum_const_zero, sub_self]
 
 theorem pW_sum_e (c : Fin D.R.rS → D.host.E) : pW X (∑ d, c d • X.eX d) = 0 := by
   induction (Finset.univ : Finset (Fin D.R.rS)) using Finset.induction_on with

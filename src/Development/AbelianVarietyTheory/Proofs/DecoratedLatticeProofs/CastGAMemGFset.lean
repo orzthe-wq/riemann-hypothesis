@@ -69,7 +69,7 @@ theorem besGrp_iff_sA (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (
       have hg' : (iotaX X h g).1 ∈ X.SinfU u ∧ (iotaX X h g).2 ∈ SfinU X u := hg
       obtain ⟨hg1, hg2⟩ := hg'
       obtain ⟨hi, hhi, ni, hni, ei⟩ := Formalism.L2.SG.Pf.Sinf.levi X u hg1
-      obtain ⟨hf, nf, hnf, ef⟩ := Formalism.L2.SG.Closed.FinLeviC_holds D X u _ hg2
+      obtain ⟨hf, nf, hnf, ef⟩ := _root_.Formalism.L2.SG.Pf.FinLeviPf.finLeviC_holds D X u _ hg2
       have hgeq : g = (iotaX X h).symm (hi, (hf : X.B.I.Gf)) * (iotaX X h).symm (ni, nf) := by
         rw [← map_mul, (iotaX X h).eq_symm_apply]
         exact Prod.ext ei ef

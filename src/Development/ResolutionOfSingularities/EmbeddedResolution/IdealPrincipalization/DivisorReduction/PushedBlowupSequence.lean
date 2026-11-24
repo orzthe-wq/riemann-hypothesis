@@ -210,7 +210,7 @@ structure PushedBlowupSequenceProperties (hres : FunctorialResolution.Blowup.Str
   support_imageIdeal_subset_ker :
     ∀ (X Y : Scheme.{u}) (f : X ⟶ Y) [AlgebraicGeometry.IsClosedImmersion f]
       (I : X.IdealSheafData),
-      ((imageIdealSheaf f I).support : Set ↥Y) ⊆
+      ((_root_.FunctorialResolution.Blowup.schemeImageIdeal f I).support : Set ↥Y) ⊆
         ((AlgebraicGeometry.Scheme.Hom.ker f).support : Set ↥Y)
   support_preIdeal_subset_boundary :
     ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible → ∀ (j : ℕ) (hj : j < T.boundary.length),
@@ -317,7 +317,7 @@ private theorem divisorReductionShape_of_pullback_then_strictTransforms {T : Mar
 
 private theorem comap_imageIdealSheaf_eq_self_of_isClosedImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsClosedImmersion f] (I : X.IdealSheafData) :
-    (imageIdealSheaf f I).comap f = I :=
+    (_root_.FunctorialResolution.Blowup.schemeImageIdeal f I).comap f = I :=
   Blowup.comap_map_of_isClosedImmersion f I
 
 private theorem orderAtLeastLocus_comap_iso_eq_empty {X Y : Scheme.{u}} (e : X ≅ Y)
@@ -334,7 +334,7 @@ private theorem exists_principalizationCertificate_ker_of_isClosedImmersion {k :
     (hp : pX = f ≫ pY)
     (hMem : Mem ⊆ ⇑f ⁻¹' MemY)
     (hIY : IY.comap f = I)
-    (hZY : ZY = imageIdealSheaf f Z)
+    (hZY : ZY = _root_.FunctorialResolution.Blowup.schemeImageIdeal f Z)
     (hnz : NonzeroOnComponents I)
     (hcert : PrincipalizationCertificate X pX I m Mem Z) :
     ∃ J : (AlgebraicGeometry.Scheme.Hom.ker f).subscheme.IdealSheafData,
@@ -355,7 +355,7 @@ private theorem exists_principalizationCertificate_ker_of_isClosedImmersion {k :
       IY.comap (AlgebraicGeometry.Scheme.Hom.ker f).subschemeι := by
     rw [← hIY, ← kerSubschemeIso_hom_comp f, Scheme.IdealSheafData.comap_comp]
   refine ⟨I.comap (kerSubschemeIso f).hom,
-    nonzeroOnComponents_comap_iso_hom (kerSubschemeIso f) I hnz, ?_, ?_⟩
+    _root_.FunctorialResolution.EmbeddedResolution.PrincipalizationIsoTransport.nonzeroOnComponents_comap_iso (kerSubschemeIso f) I hnz, ?_, ?_⟩
   · intro x _
     refine ⟨⊤, trivial, ?_⟩
     exact congrArg
@@ -493,7 +493,7 @@ private theorem center_ambientMarkedSeq_eq_imageIdealSheaf (hres : FunctorialRes
         (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr).IsMarked
           T.structMap T.ideal T.mult T.boundary) (t : ℕ) :
     (DivisorReduction.pushedMarkedSeq hres blowupPreservesNoetherian T j hj s hpr hmk).center t =
-      imageIdealSheaf (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj
+      _root_.FunctorialResolution.Blowup.schemeImageIdeal (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj
         (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) s hpr t)
         (s.center t) :=
   DivisorReduction.ambientBlowupSeq_center_eq_imageIdealSheaf hres blowupPreservesNoetherian
@@ -793,7 +793,7 @@ private theorem center_prependedAmbientSeq_succ_eq_imageIdealSheaf (hres : Funct
           hpr)).IsMarked T.structMap T.ideal T.mult T.boundary) (t : ℕ) :
     (DivisorReduction.prependedPushedMarkedSeq hres blowupPreservesNoetherian T j hj hb s hpr
         hmk).center (t + 1) =
-      imageIdealSheaf (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj
+      _root_.FunctorialResolution.Blowup.schemeImageIdeal (DivisorReduction.embeddingIntoAmbient hres blowupPreservesNoetherian T j hj
         (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) s hpr t)
         (s.center t) :=
   DivisorReduction.ambientBlowupSeq_center_eq_imageIdealSheaf hres blowupPreservesNoetherian

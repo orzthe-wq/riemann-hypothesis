@@ -2,7 +2,8 @@ module
 
 public import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.TensFactor
 public import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.LineRank
-public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursBasics
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SummandFactor
+public import Development.WeilBound.CuspidalAdmissibility.OccursIff
 import GroundTheory.AutomorphicForms.Satake
 import GroundTheory.GlobalFields.LocalAtPlace
 import Mathlib.Algebra.Order.Floor.Extended
@@ -52,7 +53,7 @@ theorem UpperTheory.ConvolutionTheory.L1.sphRank :
   intro K _ _ n μ _ V hV w
   letI : MeasurableSpace (Gw n w) := borel _
   haveI : BorelSpace (Gw n w) := ⟨rfl⟩
-  obtain ⟨⟨σ, hσ⟩, -, -⟩ := UpperTheory.ConvolutionTheory.C.occursBasics K n μ V w Measure.haar hV
+  obtain ⟨⟨σ, hσ⟩, -, -⟩ := _root_.PositivityTheory.TfC.OccursBasics_holds K n μ V w Measure.haar hV
   have hmem : ∀ x : σ.V, (∀ g ∈ GLnLocal.integralGL (w.adicCompletion K) n,
       σ.ρ g x = (1 : Gw n w → ℂ) g • x) → x ∈ fixedVectors σ.ρ (GLnLocal.integralGL (w.adicCompletion K) n) := by
     intro x hx

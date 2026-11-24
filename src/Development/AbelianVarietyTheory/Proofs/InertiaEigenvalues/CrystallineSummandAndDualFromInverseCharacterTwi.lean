@@ -1,35 +1,37 @@
 module
 
-public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycZpowCrysDRJump
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DirectSumDeRhamCrystallineJumpsAdd
+public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ResidualConstruction
 public import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.CrystallineSubrepresentation
-public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycZpowCrysDRJumpStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DirectSumDeRhamCrystallineJumpsAddStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineBcrisBasicTheoremsProofStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineBcrisBasicTheoremsProof
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineFormalismOfRegular
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensionalStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensional
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrysIffOfTwist
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocChiEpsU
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegCycPowerBlockCrysDeRhamJumpsStatement
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitsOfConjugatesMem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Coalgebra.CoassocSimps
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
@@ -40,7 +42,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -53,9 +54,84 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegCycPowerBlockCrysDeRhamJumps, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineSummandAndDualFromInverseCharacterTwi
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegCycPowerBlockCrysDeRhamJumps =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegCycPowerBlockCrysDeRhamJumps", "h": "module\n\npublic import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied\npublic import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycZpowCrysDRJump\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DirectSumDeRhamCrystallineJumpsAdd\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.CoassocSimps\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct
+
+namespace GlobalTheory
+
+noncomputable def negPowBlock {G LL : Type} [Group G] [Field LL] (χ : G →* LLˣ) (t : ℕ) :
+    Representation LL G (Fin t → LL) where
+  toFun g := LinearMap.pi fun c : Fin t =>
+    (((χ g)⁻¹ ^ (c : ℕ) : LLˣ) : LL) • LinearMap.proj c
+  map_one' := by ext; simp
+  map_mul' g h := by
+    refine LinearMap.ext fun v => funext fun c => ?_
+    simp only [map_mul, LinearMap.pi_apply, LinearMap.smul_apply, LinearMap.proj_apply,
+      Module.End.mul_apply, smul_eq_mul, mul_inv, mul_pow, Units.val_mul]
+    ring
+
+noncomputable def snocSplit (LL : Type) [Field LL] (t : ℕ) :
+    (Fin (t + 1) → LL) ≃ₗ[LL] ((Fin t → LL) × LL) where
+  toFun v := (fun c => v c.castSucc, v (Fin.last t))
+  invFun p := Fin.snoc (α := fun _ => LL) p.1 p.2
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+  left_inv v := Fin.snoc_init_self v
+  right_inv p := by
+    ext <;> simp
+
+theorem negCycBlock_jumps : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (t : ℕ) (ρ : Representation ↥LL.1 ↥(GK K) (Fin t → ↥LL.1)), (∀ g v (c : Fin t), ρ g v c = (((cycLL (P.PD K) ↥LL.1 g)⁻¹ ^ (c : ℕ) : (↥LL.1)ˣ) : ↥LL.1) * v c) → IsCrys (P.PD K) ρ ∧ IsDR (P.PD K) ρ ∧ ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ), multV (P.PD K) ρ τ a = if 0 ≤ a ∧ a < (t : ℤ) then 1 else 0 := by
+  set_option synthInstance.maxHeartbeats 200000 in
+  intro l _ P AI hT K LL t
+  induction t with
+  | zero =>
+    intro ρ _
+    refine ⟨?_, ?_, fun τ a => ?_⟩
+    · unfold IsCrys
+      rw [Module.finrank_zero_of_subsingleton, Module.finrank_zero_of_subsingleton (M := Fin 0 → ↥LL.1), mul_zero]
+    · unfold IsDR
+      rw [Module.finrank_zero_of_subsingleton, Module.finrank_zero_of_subsingleton (M := Fin 0 → ↥LL.1), mul_zero]
+    · unfold multV
+      rw [Module.finrank_zero_of_subsingleton, Module.finrank_zero_of_subsingleton, if_neg (by omega)]
+      simp
+  | succ t ih =>
+    intro ρ hρ
+    obtain ⟨c1, d1, m1⟩ := ih (negPowBlock (cycLL (P.PD K) ↥LL.1) t) (fun _ _ _ => rfl)
+    obtain ⟨c2, d2, m2⟩ := _root_.GlobalTheory.CycPow.cyc_zpow_crys_dR_jump l P AI hT K LL (-(t : ℤ))
+    obtain ⟨hd, hc, hm⟩ := _root_.GlobalTheory.Per.DirectSumHT.directSum_hodgeTate l P AI hT K LL _ ρ _
+      (negPowBlock (cycLL (P.PD K) ↥LL.1) t) _ (charRep (cycLL (P.PD K) ↥LL.1 ^ (-(t : ℤ))))
+      (snocSplit ↥LL.1 t) (by
+        intro g v
+        refine Prod.ext (funext fun c => ?_) ?_
+        · exact hρ g v c.castSucc
+        · refine (hρ g v (Fin.last t)).trans ?_
+          change _ = (((cycLL (P.PD K) ↥LL.1 ^ (-(t : ℤ))) g : (↥LL.1)ˣ) : ↥LL.1) * v (Fin.last t)
+          rw [MonoidHom.zpow_apply, Fin.val_last, zpow_neg, zpow_natCast, inv_pow])
+    refine ⟨hc.2 ⟨c1, c2⟩, hd.2 ⟨d1, d2⟩, fun τ a => ?_⟩
+    rw [hm, m1, m2]
+    push_cast
+    split_ifs <;> omega
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegCycPowerBlockCrysDeRhamJumps =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineSummandAndDualFromInverseCharacterTwi =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineSummandAndDualFromInverseCharacterTwi", "h": "module\n\npublic import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow\npublic import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh\npublic import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.ResidualConstruction\npublic import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.CrystallineSubrepresentation\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle\npublic import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CycZpowCrysDRJump\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DirectSumDeRhamCrystallineJumpsAdd\npublic import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineBcrisBasicTheoremsProof\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineFormalismOfRegular\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensional\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrysIffOfTwist\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LocChiEpsU\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NegCycPowerBlockCrysDeRhamJumps\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitsOfConjugatesMem\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain
@@ -196,7 +272,7 @@ theorem exists_decomp_twist {O L Γ : Type} [CommRing O] [IsDomain O] [IsLocalRi
       erw [h0]
       refine Prod.ext rfl (funext fun c => ?_)
       have hk := congrArg (fun χ : Γ →* Oˣ => χ g) (key c c.2)
-      simp only [MonoidHom.mul_apply, MonoidHom.zpow_apply, zpow_neg, zpow_natCast] at hk
+      simp only [MonoidHom.mul_apply, zpow_neg, zpow_natCast] at hk
       simp only [Prod.smul_snd, Pi.smul_apply, smul_eq_mul]
       rw [← mul_assoc, ← map_mul, ← Units.val_mul, mul_comm (_ : Oˣ), hk]
       simp)
@@ -230,8 +306,8 @@ theorem local_core (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) 
           multV (P.PD K) (matRep M) τ a - (if 0 ≤ a ∧ a < (t : ℤ) then 1 else 0) ∧
         multV (P.PD K) (matRep T) τ a = multV (P.PD K) (matRep W) τ (-a - 1)) := by
   obtain ⟨Z, hZ⟩ := exists_block t (cycLL (P.PD K) ↥LL.1)
-  obtain ⟨-, -, zm⟩ := GlobalTheory.T.negCycPowerBlock_crys_deRham_jumps l P AI hT K LL t Z hZ
-  obtain ⟨sd, sc, sm⟩ := GlobalTheory.T.directSum_deRham_crystalline_jumps_add l P AI hT K LL _ (matRep M) _ (matRep W) _ Z e
+  obtain ⟨-, -, zm⟩ := _root_.GlobalTheory.negCycBlock_jumps l P AI hT K LL t Z hZ
+  obtain ⟨sd, sc, sm⟩ := _root_.GlobalTheory.Per.DirectSumHT.directSum_hodgeTate l P AI hT K LL _ (matRep M) _ (matRep W) _ Z e
     (fun g v => by
       rw [matRep_apply, he, matRep_apply]
       exact Prod.ext rfl (funext fun c => (hZ g _ c).symm))
@@ -240,7 +316,7 @@ theorem local_core (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) 
     have hW := (sc.1 hM).1
     refine ⟨hW, ?_⟩
     have h := (GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.fontaineFormalism_iff l P).1
-      (GlobalTheory.RegularRing.fontaineFormalism GlobalTheory.T.fontaineBcrisBasicTheorems_proof l P AI ⟨hT⟩) K LL
+      (GlobalTheory.RegularRing.fontaineFormalism _root_.GlobalTheory.MemLoc.fontaineBcris l P AI ⟨hT⟩) K LL
     have hq := h.2.2.2.2.1
     have ht := h.2.2.2.2.2.2.1
     have hd := h.2.2.2.2.2.2.2.1
@@ -250,10 +326,10 @@ theorem local_core (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) 
     exact GlobalTheory.TwistCrys.isCrys_twist (P.PD K) ht hq (matRep (dualM W)) (matRep T)
       (WeaklyAdmissibleFiltrations.charRep (cycLL (P.PD K) ↥LL.1 ^ (1 : ℤ)))
       (fun g => ((cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1)) LinearMap.id 1 rfl
-      (charRep_one_apply _) (twist_dual_apply W T _ hTW) (GlobalTheory.T.cyc_zpow_crys_dR_jump_alt l P AI hT K LL 1).1 hD
+      (charRep_one_apply _) (twist_dual_apply W T _ hTW) (_root_.GlobalTheory.CycPow.cyc_zpow_crys_dR_jump l P AI hT K LL 1).1 hD
   · intro hM
     have hW := (sd.1 hM).1
-    obtain ⟨td, tm⟩ := GlobalTheory.T.galois_representation_hom_finite_dimensional l P AI hT K LL _ (matRep W) _ (matRep T)
+    obtain ⟨td, tm⟩ := _root_.GlobalTheory.DRDual.twisted_dual_deRham l P AI hT K LL _ (matRep W) _ (matRep T)
       _ 1 (LinearEquiv.bijective _) (pairing_twist W T _ hTW) hW
     refine ⟨hW, td, fun τ a => ⟨?_, ?_⟩⟩
     · rw [sm τ a, zm τ a, add_sub_cancel_right]
@@ -309,3 +385,6 @@ theorem main : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E
     exact (hloc (T2O D.nd i ρ π) g).trans h1
 
 end GlobalTheory.SummandJumps
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineSummandAndDualFromInverseCharacterTwi =====

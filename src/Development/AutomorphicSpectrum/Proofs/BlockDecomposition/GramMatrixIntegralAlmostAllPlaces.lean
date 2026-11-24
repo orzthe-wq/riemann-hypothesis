@@ -56,7 +56,7 @@ private theorem tensorBasis_repr_tmul {F E R : Type} [Field F] [Field E] [Algebr
     {d : ℕ} (b : Module.Basis (Fin d) F E) (c : R) (e : E) (m : Fin d) :
     (Algebra.TensorProduct.basis R b).repr (c ⊗ₜ[F] e) m = c * algebraMap F R (b.repr e m) := by
   rw [Algebra.TensorProduct.basis_repr_tmul]
-  simp [Algebra.smul_def]
+  simp
 
 private theorem eq_sum_repr_tmul_basis {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     {d : ℕ} (b : Module.Basis (Fin d) F E) (z : R ⊗[F] E) :

@@ -130,7 +130,7 @@ private theorem toG_conj (z : GL (Fin b) F) (M : Matrix (Fin b) (Fin b) F) :
         (z : Matrix (Fin b) (Fin b) F)) :=
       ((Units.isUnit _).mul h).mul (Units.isUnit _)
     apply Units.ext
-    simp [toG, h, h']
+    simp [toG, h]
   · have h' : ¬ IsUnit (((z⁻¹ : GL (Fin b) F) : Matrix (Fin b) (Fin b) F) * M *
         (z : Matrix (Fin b) (Fin b) F)) := by
       intro hu
@@ -141,7 +141,7 @@ private theorem toG_conj (z : GL (Fin b) F) (M : Matrix (Fin b) (Fin b) F) :
         simp [mul_assoc]
       rw [this]
       exact ((Units.isUnit _).mul hu).mul (Units.isUnit _)
-    simp [toG, h, h']
+    simp [toG, h]
 
 private theorem inPar_conj (z : GL (Fin b) F) (p : GL (Fin (a + b)) F) :
     InPar a ((dg a z)⁻¹ * p * dg a z) ↔ InPar a p := by

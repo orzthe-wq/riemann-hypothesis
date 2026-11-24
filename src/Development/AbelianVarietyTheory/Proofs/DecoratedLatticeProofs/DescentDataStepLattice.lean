@@ -62,12 +62,8 @@ namespace GlobalTheory.MidVacLat
 
 variable {D : D7}
 
-theorem mt_mul' (V : HSp D) (g h : GA D V) : mt V (g * h) = mt V g * mt V h := rfl
-
-theorem mt_one' (V : HSp D) : mt V 1 = 1 := rfl
-
 theorem mt_mul_inv_mulVec (V : HSp D) (g : GA D V) (y : Fin V.rank → AE D) : mt V g *ᵥ (mt V g⁻¹ *ᵥ y) = y := by
-  rw [Matrix.mulVec_mulVec, ← mt_mul', mul_inv_cancel, mt_one', Matrix.one_mulVec]
+  rw [Matrix.mulVec_mulVec, ← _root_.GlobalTheory.BesselCompare.mt_mul, mul_inv_cancel, _root_.GlobalTheory.BesselCompare.mt_one, Matrix.one_mulVec]
 
 theorem mulVec_mem_idAt {n : ℕ} (A : Matrix (Fin n) (Fin n) (AE D)) {P : GlobalTheory.FinPl.Pl D → Prop} {y : Fin n → AE D}
     (hy : ∀ i, y i ∈ GlobalTheory.FinPl.idAt D P) (i : Fin n) : (A *ᵥ y) i ∈ GlobalTheory.FinPl.idAt D P := by
@@ -155,9 +151,9 @@ theorem isHalf_actO {S T : HSp D} (g : GA D S) (h : GA D T) {e : AE D} {x : WO S
 theorem actO_actO_inv {S T : HSp D} (g : GA D S) (h : GA D T) (x : WO S T) :
     actO S T g h (actO S T g⁻¹ h⁻¹ x) = x := by
   show HMul.hMul (HMul.hMul (mt T h) (HMul.hMul (HMul.hMul (mt T h⁻¹) (x : Matrix (Fin T.rank) (Fin S.rank) (AE D))) (mt S g⁻¹⁻¹))) (mt S g⁻¹) = x
-  rw [inv_inv, Matrix.mul_assoc, Matrix.mul_assoc, ← mt_mul' S g g⁻¹, mul_inv_cancel,
-    mt_one', Matrix.mul_one, ← Matrix.mul_assoc, ← mt_mul' T h h⁻¹, mul_inv_cancel,
-    mt_one', Matrix.one_mul]
+  rw [inv_inv, Matrix.mul_assoc, Matrix.mul_assoc, ← _root_.GlobalTheory.BesselCompare.mt_mul S g g⁻¹, mul_inv_cancel,
+    _root_.GlobalTheory.BesselCompare.mt_one, Matrix.mul_one, ← Matrix.mul_assoc, ← _root_.GlobalTheory.BesselCompare.mt_mul T h h⁻¹, mul_inv_cancel,
+    _root_.GlobalTheory.BesselCompare.mt_one, Matrix.one_mul]
 
 theorem isLatVac_move {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hW : IsWeilDatumO ψ S T χS χT om) {Λ M : GlobalTheory.FinPl.Lat S} {Λ' M' : GlobalTheory.FinPl.Lat T} (hΛ : IsSelfDualC S Λ)

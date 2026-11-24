@@ -3,10 +3,9 @@ module
 public import ReciprocityTheory.Hypotheses.GalCoh
 public import Formalism.GaloisCohomology.StatementLoc
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionGroupEquivLocalGaloisGroup
-public import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohCmp
-public import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohEuler
-public import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohField
-public import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohTopEuler
+public import CompanionTheory.AutomorphicTheory.PadicCyclotomicFields.GcohCmp
+public import CompanionTheory.AutomorphicTheory.PadicCyclotomicFields.GcohTopEuler
+public import CompanionTheory.AutomorphicTheory.PadicCyclotomicFields.GcohField
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.EulerCharGaloisOfCardEq
 import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.MainCount
 import GroundTheory.ProfiniteCohomology.LocalTateDuality.TensorHomDualRepRootsOfUnityIsoCartierPairing
@@ -59,7 +58,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.LocalEuler
 
 
-open PositivityTheory.LocalTateOrthogonality.Gcoh in
+open CompanionTheory.LocalTateOrthogonality.Gcoh (exists_card_eq_pow gc0 gc1 gc2 gcField gcRep top_euler) in
 theorem card_H1_eq_card_H0_mul_card_H2 (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     (hK : FiniteDimensional ℚ_[p] K) (l : ℕ) [hl : Fact l.Prime] (hlp : l ≠ p) (r : ℕ) (M : Type)
     [AddCommGroup M] [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
@@ -118,7 +117,7 @@ theorem localEulerChar_holds : ReciprocityTheory.Gal.LocalEulerChar := by
     have hcomp : ∀ h m, rhoK (i h) m = rho h m := fun h m =>
       congrArg (fun g => rho g m) (i.symm_apply_apply h)
     have hcK : ContAction rhoK := hc.comp' i.symm.continuous
-    have h := PositivityTheory.LocalTateOrthogonality.Gcoh.top_euler l K hK r M rhoK hr hcK
+    have h := CompanionTheory.LocalTateOrthogonality.Gcoh.top_euler l K hK r M rhoK hr hcK
     rw [hdeg v hA] at h
     rw [← Nat.card_congr (ReciprocityTheory.Neutral.Bridge.equivH0OfIso i rhoK rho hcomp).toEquiv,
       ← Nat.card_congr (ReciprocityTheory.Neutral.Bridge.equivH1OfIso i rhoK rho hcomp).toEquiv,

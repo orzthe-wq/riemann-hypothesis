@@ -58,4 +58,4 @@ theorem _root_.GlobalTheory.T.smallModel_thetaTransform_injective_products : ∀
     (∀ Φ ∈ schA D.host.F (GlobalTheory.SmallDat.IxS G i j), ∀ Φ' ∈ schA D.host.F (GlobalTheory.SmallDat.IxS G i j), GlobalTheory.SmallDat.thetaS Γ W.ψ Φ = GlobalTheory.SmallDat.thetaS Γ W.ψ Φ' → Φ = Φ') ∧
     ∀ (f₁ : GlobalTheory.SmallDat.HomA G t i j → ℂ) (f₂ : GlobalTheory.SmallDat.HomB G i j → ℂ), IsThetaFunO W.ψ _ _ f₁ → IsThetaFunO W.ψ _ _ f₂ →
       ∃ Φ ∈ schA D.host.F (GlobalTheory.SmallDat.IxS G i j), GlobalTheory.SmallDat.thetaS Γ W.ψ Φ = GlobalTheory.SmallDat.boxS t e f₁ f₂ := by
-  first | exact @GlobalTheory.SmallDat.ThBox.thetaS_box | exact GlobalTheory.SmallDat.ThBox.thetaS_box | (intros; apply GlobalTheory.SmallDat.ThBox.thetaS_box <;> assumption)
+  first | exact @GlobalTheory.SmallDat.ThBox.thetaS_box

@@ -2,10 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NoTowerQ
 public import GroundTheory.LocalFields.HerbrandFunction
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardMulHerbrandPhiNatCastTotallyRamifiedStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInitialSegmentNotInfLeFiltrationStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RamificationJumpSumEqSumRangeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WildLowerRamificationGroupAntitoneEventuallyBotStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardMulHerbrandPhiNatCastTotallyRamified
+public import Mathlib.Algebra.Group.Subgroup.Lattice
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsInitialSegmentNotInfLeFiltration
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RamificationJumpSumEqSumRange
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WildLowerRamificationGroupAntitoneEventuallyBot
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -67,10 +68,10 @@ theorem card_mul_le_jumpSum_of_mem_upper_not_mem : ∀ (F L : Type) [Field F] [V
   have hcast : ((m : ℝ) - 1) = ((m - 1 : ℕ) : ℝ) := by
     rw [Nat.cast_sub hm1]; simp
   rw [hcast] at hv
-  obtain ⟨hanti, hbot⟩ := GlobalTheory.T.wildLowerRamificationGroup_antitone_eventually_bot F L
-  obtain ⟨n, hn⟩ := GlobalTheory.T.exists_initialSegment_not_inf_le_filtration (L ≃ₐ[F] L) (wild F L) ⊤ B hanti hbot
-  have hjs := GlobalTheory.T.ramificationJumpSum_eq_sum_range (L ≃ₐ[F] L) (wild F L) ⊤ B n hanti hn
-  have hphi := GlobalTheory.T.card_mul_herbrandPhi_natCast_totallyRamified F L h0 (m - 1)
+  obtain ⟨hanti, hbot⟩ := _root_.GlobalTheory.PMon.Ram.wild_antitone_and_eventually_bot F L
+  obtain ⟨n, hn⟩ := _root_.GlobalTheory.PMon.Ram.exists_initialSegment_not_inf_le (L ≃ₐ[F] L) (wild F L) ⊤ B hanti hbot
+  have hjs := _root_.GlobalTheory.PMon.Ram.jumpSum_eq_sum_range (L ≃ₐ[F] L) (wild F L) ⊤ B n hanti hn
+  have hphi := _root_.GlobalTheory.PMon.Ram.card_mul_herbrandPhi_natCast_of_totallyRamified F L h0 (m - 1)
   have hle : m - 1 ≤ n := by
     by_contra hlt
     push_neg at hlt

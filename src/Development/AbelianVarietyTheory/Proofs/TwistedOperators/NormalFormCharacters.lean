@@ -1,13 +1,19 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRationalUnitaryDeterminantMapRationalUnitaryTo
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryRationalInfTypeSubgroupAndInfTypeUnique
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AlgebraicValuesFinite.AlgValsFinMain
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AlgebraicValuesFinite.ClassSame
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TwistPlacesOffPrimeQZero
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNumberFieldValuesInEtaCharHalfTwistStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharLocalValueDivUniformiserPowStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUniformiserValueIsAlgebraicStatement
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AlgebraicValuesFinite.AlgValsFinMain
+public import Formalism.LocalToGlobal.UnitaryNorms.CharHost
+public import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUniformiserValueIsAlgebraic
+import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -28,6 +34,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -37,11 +44,164 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AlgebraicValuesFinite.EvFLocalIdeleSelf
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNumberFieldValuesInEtaCharHalfTwist, Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharLocalValueDivUniformiserPow, Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalFormCharacters
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNumberFieldValuesInEtaCharHalfTwist =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNumberFieldValuesInEtaCharHalfTwist", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRationalUnitaryDeterminantMapRationalUnitaryTo\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitaryRationalInfTypeSubgroupAndInfTypeUnique\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AlgebraicValuesFinite.AlgValsFinMain\nimport Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.L2.Host
+
+noncomputable section
+
+namespace GlobalTheory.EtaValsNumberField
+
+open Formalism.BasicNotions Formalism.FrobeniusOrbits
+
+variable {R : Ranks} (H : Formalism.BasicNotions.Host R)
+
+def embSum : R.Psi ⊕ R.Psi → (H.E →+* ℂ) :=
+  Sum.elim (embPsi H) fun g => (starRingEnd ℂ).comp (embPsi H g)
+
+theorem embSum_injective : Function.Injective (embSum H) := by
+  rintro (i | i) (j | j) hij
+  · exact congrArg _ (GlobalTheory.HalfIntChars.embPsi_inj H hij)
+  · exact absurd hij (GlobalTheory.HalfIntChars.embPsi_ne_conj H i j)
+  · exact absurd hij.symm (GlobalTheory.HalfIntChars.embPsi_ne_conj H j i)
+  · refine congrArg _ (GlobalTheory.HalfIntChars.embPsi_inj H (RingHom.ext fun x => ?_))
+    have := congrArg (fun f : H.E →+* ℂ => starRingEnd ℂ (f x)) hij
+    simpa [embSum] using this
+
+theorem card_sum : Fintype.card (R.Psi ⊕ R.Psi) = Fintype.card (H.E →+* ℂ) := by
+  rw [Fintype.card_sum, NumberField.Embeddings.card, H.finrank_cmField,
+    ← Nat.card_eq_fintype_card, Formalism.HC.Frame.natCard_Psi]
+  ring
+
+def embEquiv : R.Psi ⊕ R.Psi ≃ (H.E →+* ℂ) :=
+  Equiv.ofBijective _ ((Fintype.bijective_iff_injective_and_card _).mpr ⟨embSum_injective H, card_sum H⟩)
+
+theorem algType_eta : ∃ m : (H.E →+* ℂ) → ℤ, ∀ k : H.Eˣ,
+    (∏ g, (embPsi H g (k : H.E) / ((‖embPsi H g (k : H.E)‖ : ℝ) : ℂ)) ^ (1 : ℤ)) *
+      ∏ φ : H.E →+* ℂ, ((‖φ (k : H.E)‖ : ℝ) : ℂ) ^ (((1 / 2 : ℝ)) : ℂ) = ∏ φ : H.E →+* ℂ, φ (k : H.E) ^ m φ := by
+  set bij := embEquiv H
+  let g : R.Psi ⊕ R.Psi → ℤ := fun x => Sum.elim (fun _ => 1) (fun _ => 0) x
+  refine ⟨fun ψ => g (bij.symm ψ), fun k => ?_⟩
+  have hR : ∏ ψ : H.E →+* ℂ, ψ (k : H.E) ^ g (bij.symm ψ) = ∏ x : R.Psi ⊕ R.Psi, (bij x) (k : H.E) ^ g x :=
+    (Fintype.prod_equiv bij _ _ fun x => by rw [Equiv.symm_apply_apply]).symm
+  have hL : ∏ ψ : H.E →+* ℂ, ((‖ψ (k : H.E)‖ : ℝ) : ℂ) ^ (((1 / 2 : ℝ)) : ℂ) =
+      ∏ x : R.Psi ⊕ R.Psi, ((‖bij x (k : H.E)‖ : ℝ) : ℂ) ^ (((1 / 2 : ℝ)) : ℂ) :=
+    (Fintype.prod_equiv bij _ _ fun x => rfl).symm
+  rw [hR, hL, Fintype.prod_sum_type, Fintype.prod_sum_type, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib,
+    ← Finset.prod_mul_distrib]
+  refine Finset.prod_congr rfl fun τ _ => ?_
+  set z := embPsi H τ (k : H.E) with hzdef
+  have hz : z ≠ 0 := (map_ne_zero _).2 k.ne_zero
+  have hn : (((‖z‖ : ℝ) : ℂ)) ≠ 0 := by exact_mod_cast (norm_ne_zero_iff.mpr hz)
+  show (z / ((‖z‖ : ℝ) : ℂ)) ^ (1 : ℤ) * ((((‖z‖ : ℝ) : ℂ)) ^ (((1 / 2 : ℝ)) : ℂ) *
+    (((‖starRingEnd ℂ z‖ : ℝ) : ℂ)) ^ (((1 / 2 : ℝ)) : ℂ)) = z ^ (1 : ℤ) * (starRingEnd ℂ z) ^ (0 : ℤ)
+  rw [Complex.norm_conj, ← Complex.cpow_add _ _ hn]
+  norm_num
+  rw [div_mul_cancel₀ _ hn]
+
+theorem etaVals : ∀ {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar H.E), IsEtaT H χ →
+    ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ χ.ValuesIn (1 / 2) (algebraMap M ℂ) := by
+  intro R H χ hχ
+  obtain ⟨m, hm⟩ := algType_eta H
+  obtain ⟨C, hC, hv⟩ := PI.AlgValsFin.W.algValsFin_main H.E χ (1 / 2) m (fun k => by rw [hχ.inf k]; exact hm k)
+  let M : IntermediateField ℚ ℂ := C.toIntermediateField fun x => by simp
+  let e : C ≃+ M :=
+    { toFun := fun x => ⟨x, x.2⟩
+      invFun := fun x => ⟨x, x.2⟩
+      left_inv := fun _ => rfl
+      right_inv := fun _ => rfl
+      map_add' := fun _ _ => rfl }
+  have hM : FiniteDimensional ℚ M := LinearEquiv.finiteDimensional
+    { e.toAddMonoidHom.toRatLinearMap with
+      invFun := e.symm
+      left_inv := e.left_inv
+      right_inv := e.right_inv }
+  refine ⟨M, hM, fun v hv' => ?_⟩
+  obtain ⟨y, hy⟩ := hv v hv'
+  exact ⟨e y, hy⟩
+
+end GlobalTheory.EtaValsNumberField
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNumberFieldValuesInEtaCharHalfTwist =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharLocalValueDivUniformiserPow =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharLocalValueDivUniformiserPow", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AlgebraicValuesFinite.ClassSame\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AlgebraicValuesFinite.AlgValsFinMain\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AlgebraicValuesFinite.EvFLocalIdeleSelf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.L2.Host
+
+noncomputable section
+
+open Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR
+
+namespace GlobalTheory.HeckeLocDec
+
+theorem localIdele_unitPart_mem (L : Type) [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L))
+    (x : (w.adicCompletion L)ˣ) (a : ℤ) (ha : Valued.v (x : w.adicCompletion L) = WithZero.exp (-a)) :
+    localIdele L w (x * (atFin w (unif w)) ^ (-a)) ∈ PI.AlgValsFin.W.UFin L := by
+  refine ⟨?_, fun w' => ?_⟩
+  · funext v
+    exact (localIdele_isSupportedAt L w _).1 v
+  · by_cases h : w' = w
+    · subst h
+      rw [← PI.AlgValsFin.W.evF_val, PI.AlgValsFin.W.evF_localIdele_self]
+      have h1 : Valued.v ((atFin w' (unif w') : (w'.adicCompletion L)ˣ) : w'.adicCompletion L) =
+          WithZero.exp (-1) := unif_spec w'
+      rw [Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, h1, ha,
+        ← WithZero.exp_zsmul, ← WithZero.exp_add]
+      simp
+    · rw [← PI.AlgValsFin.W.evF_val, PI.AlgValsFin.W.evF_localIdele_ne w' w h]
+      simp
+
+theorem loc_div_val_pow (L : Type) [Field L] [NumberField L] (χ : HChar L) :
+    ∃ N : ℕ, 0 < N ∧ ∀ (w : HeightOneSpectrum (𝓞 L)) (x : (w.adicCompletion L)ˣ),
+      ∃ a : ℤ, ((χ.loc w x / χ.val w ^ a : ℂˣ) : ℂ) ^ N = 1 := by
+  obtain ⟨N, hN, hT⟩ := PI.AlgValsFin.W.torsUnits L χ
+  refine ⟨N, hN, fun w x => ?_⟩
+  have hx0 : Valued.v (x : w.adicCompletion L) ≠ 0 := by simp
+  obtain ⟨a, ha⟩ : ∃ a : ℤ, Valued.v (x : w.adicCompletion L) = WithZero.exp (-a) :=
+    ⟨-WithZero.log (Valued.v (x : w.adicCompletion L)), by rw [neg_neg, WithZero.exp_log hx0]⟩
+  refine ⟨a, ?_⟩
+  have hmem := localIdele_unitPart_mem L w x a ha
+  have h := hT _ hmem
+  have e : χ.loc w x / χ.val w ^ a = χ.1 (localIdele L w (x * (atFin w (unif w)) ^ (-a))) := by
+    show χ.loc w x / χ.loc w (atFin w (unif w)) ^ a = χ.loc w (x * (atFin w (unif w)) ^ (-a))
+    rw [map_mul, map_zpow, zpow_neg, div_eq_mul_inv]
+  rw [e, ← Units.val_pow_eq_pow_val, h, Units.val_one]
+
+end GlobalTheory.HeckeLocDec
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharLocalValueDivUniformiserPow =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalFormCharacters =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalFormCharacters", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.TwistPlacesOffPrimeQZero\npublic import Formalism.LocalToGlobal.UnitaryNorms.CharHost\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsNumberFieldValuesInEtaCharHalfTwist\npublic import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharLocalValueDivUniformiserPow\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeCharUniformiserValueIsAlgebraic\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AlgebraicValuesFinite.AlgValsFinMain\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -159,14 +319,14 @@ theorem locIn_alg (L : Type) [Field L] [NumberField L] (χ : HChar L) (m : (L �
     (hS : ∀ v, v ∉ S → χ.UnrAt v) :
     ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ ∀ w x, ((χ.loc w x : ℂˣ) : ℂ) ∈ M := by
   classical
-  obtain ⟨N, hN, hdec⟩ := GlobalTheory.T.heckeChar_local_value_div_uniformiser_pow L χ
+  obtain ⟨N, hN, hdec⟩ := _root_.GlobalTheory.HeckeLocDec.loc_div_val_pow L χ
   obtain ⟨M0, hM0, hval⟩ := unr_vals' L χ m hm
   let Z : Finset ℂ := S.image (fun w => ((χ.val w : ℂˣ) : ℂ)) ∪ (Polynomial.nthRoots N (1 : ℂ)).toFinset
   have hint : ∀ z ∈ (Z : Set ℂ), IsIntegral ℚ z := fun z hz => by
     rw [Finset.coe_union, Set.mem_union] at hz
     rcases hz with hz | hz
     · obtain ⟨w, -, rfl⟩ := Finset.mem_image.1 hz
-      exact (GlobalTheory.T.heckeChar_uniformiser_value_isAlgebraic L χ m hm w).isIntegral
+      exact (_root_.GlobalTheory.heckeChar_val_isAlgebraic L χ m hm w).isIntegral
     · have hz' : z ^ N = 1 := by simpa [Polynomial.mem_nthRoots hN] using hz
       exact ⟨Polynomial.X ^ N - 1, Polynomial.monic_X_pow_sub_C 1 hN.ne', by simp [hz']⟩
   haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ (Z : Set ℂ)) := IntermediateField.finiteDimensional_adjoin hint
@@ -257,7 +417,7 @@ theorem charsIn_nf {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ0 : T} (hL 
       ∀ w x, ((L.C.del'.loc w x : ℂˣ) : ℂ) ∈ M := by
     obtain ⟨n, hn, h⟩ := L.C.isDel'.fin
     exact locIn_fin _ n hn h
-  obtain ⟨Me, hMe, he⟩ := GlobalTheory.T.exists_numberField_valuesIn_etaChar_halfTwist D.host L.C.eta L.C.isEta
+  obtain ⟨Me, hMe, he⟩ := _root_.GlobalTheory.EtaValsNumberField.etaVals D.host L.C.eta L.C.isEta
   choose Mmu hMmu hmu using hmu
   choose Mxi hMxi hxi using hxi
   choose Mchi hMchi hchi using hchi
@@ -291,3 +451,6 @@ theorem GlobalTheory.RowEx.nfChars : NFChars :=
     exact charsIn_nf hS.core.lev ch.G⟩⟩
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormalFormCharacters =====

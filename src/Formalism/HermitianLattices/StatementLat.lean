@@ -1,6 +1,7 @@
 module
 
 public import Formalism.FockGram.StatementHerm
+public import Formalism.HermitianLattices.LocS
 public import Mathlib.Algebra.Module.Lattice.Full
 public import Mathlib.NumberTheory.NumberField.Basic
 public import Mathlib.RingTheory.Length
@@ -82,23 +83,6 @@ def IsIntegralLat (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule R V) : Prop 
 
 def IsUnimodular (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule R V) : Prop :=
   dual h L = L
-
-def locS {W : Type*} [AddCommGroup W] [Module R W] (S : Submonoid R) (L : Submodule R W) :
-    Submodule R W where
-  carrier := {x | ∃ s ∈ S, s • x ∈ L}
-  zero_mem' := ⟨1, S.one_mem, by simp⟩
-  add_mem' := by
-    rintro x y ⟨s, hs, hx⟩ ⟨t, ht, hy⟩
-    refine ⟨s * t, S.mul_mem hs ht, ?_⟩
-    have e : (s * t) • (x + y) = t • (s • x) + s • (t • y) := by
-      rw [smul_add, mul_smul, smul_comm s t x, mul_smul]
-    rw [e]
-    exact L.add_mem (L.smul_mem t hx) (L.smul_mem s hy)
-  smul_mem' := by
-    rintro r x ⟨s, hs, hx⟩
-    refine ⟨s, hs, ?_⟩
-    rw [smul_comm]
-    exact L.smul_mem r hx
 
 def hcompl (p : Ideal R) : Submonoid R :=
   Submonoid.closure {s | s ∉ p ∧ ∀ t : R, algebraMap R K t = star (algebraMap R K s) → t ∉ p}

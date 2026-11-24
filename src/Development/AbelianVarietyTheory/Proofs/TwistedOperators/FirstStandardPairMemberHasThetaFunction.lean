@@ -496,7 +496,6 @@ open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Mult Formalism.Ind
 open scoped Pointwise TensorProduct InnerProductSpace ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Grid GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.ConstRatio
-theorem _root_.GlobalTheory.Adopt.first_standard_pair_member_has_theta_function : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A WW : HSp D) (rA : Rig A) (rW : Rig WW) (ν : (AE D)ˣ →* Circle) (e : AE D) (S : Finset (Pl D.host.E)) (I : Ideal (𝓞 D.host.E)) (vac : WO A WW → ℂ), rA.Is → rW.Is → IsHeckeChar D ν → IsIdemSum e S → I ≠ ⊥ → IsVacO ψ θ (neg A) WW (fun τ => -rA.s τ) rW.s rA.Λ rW.Λ vac → ∃ f, IsThetaAt ψ (symplO (neg A) WW) (heisO ψ (neg A) WW) e (latO (neg A) WW rA.Λ rW.Λ fun _ => True) 1 vac (stdFst ν e I A WW rA.β rW.β) f ∧ IsThetaFunO ψ (neg A) WW f := by
-  first | exact @StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.exists_theta | exact StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.exists_theta | (intros; apply StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.exists_theta <;> assumption)
+alias _root_.GlobalTheory.Adopt.first_standard_pair_member_has_theta_function := _root_.StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.exists_theta
 
 end

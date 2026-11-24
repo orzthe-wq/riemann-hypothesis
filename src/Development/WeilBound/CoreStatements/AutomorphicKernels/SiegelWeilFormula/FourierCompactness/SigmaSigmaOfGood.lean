@@ -402,23 +402,6 @@ theorem aesm_of_continuous {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) 
   obtain ⟨-, hsc, -, hbo⟩ := nA_top hσ hb
   exact hu.aestronglyMeasurable
 
-theorem sigma_sigma_of_good {B : Base F E} (hB : B.IsGood σ) (a : E) : σ (σ a) = a := by
-  obtain ⟨-, -, -, h⟩ := hB.cm
-  let τ : E →+* ℂ := Classical.arbitrary _
-  apply τ.injective
-  rw [h, h, star_star]
-
-theorem coefData_exists {B : Base F E} (hB : B.IsGood σ) {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
-    ∃ nb lam 𝓖, CoefData (σ := σ) (Y := Y) b nb lam 𝓖 := by
-  have hσ := sigma_sigma_of_good hB
-  obtain ⟨hlc, hsc, ht2, hbo⟩ := nA_top hσ hb
-  obtain ⟨K, hK, hc⟩ := nF_cocompact hσ hb
-  obtain ⟨lam, 𝓖, hlam, h𝓖, h1⟩ :=
-    (GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (nA σ Y b) (nF σ Y b) K hK hc).1
-  exact ⟨nbE σ Y b, lam, 𝓖, isNMap_nbE hσ hb, hlam, h𝓖, h1⟩
-
-theorem coefEx : CoefEx := fun _F _E _ _ _ _ _ _σ d => coefData_exists d.ok.good d.ok.frame
-
 end PositivityTheory.SiegelWeilFormula.kfour
 
 end

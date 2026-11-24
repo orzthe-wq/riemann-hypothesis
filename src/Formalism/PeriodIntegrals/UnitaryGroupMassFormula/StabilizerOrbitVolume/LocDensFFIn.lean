@@ -1,6 +1,6 @@
 module
 
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensFF
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocDensFF
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensFFHS
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -63,6 +63,7 @@ public import Mathlib.FieldTheory.Minpoly.Finite
 noncomputable section
 
 namespace PI.VolStabSW.FFHS
+open PI.VolStabS (ffH)
 
 open Module Polynomial
 

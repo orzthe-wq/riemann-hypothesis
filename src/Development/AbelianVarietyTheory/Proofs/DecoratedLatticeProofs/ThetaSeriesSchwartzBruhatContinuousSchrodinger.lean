@@ -51,22 +51,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.RealSizeNonneg
-
-namespace I195MixedCoordinates_b252ee61f962e28100fad012
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-end I195MixedCoordinates_b252ee61f962e28100fad012
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -125,13 +110,9 @@ theorem integral_char_eq_zero {m n : ℕ} {μ : Measure (Mx D m n)} {𝓕 : Set 
 
 variable {ψ : AddChar (AF D.host.F) ℂ}
 
-theorem symplO_add_left (S T : HSp D) (x x' y : WO S T) :
-    symplO S T (x + x') y = symplO S T x y + symplO S T x' y := by
-  simp only [symplO_eq_add, GlobalTheory.OrientedHeis.symplOH_add_left]; ring
+alias symplO_add_left := _root_.GlobalTheory.LatVac.symplO_add_left
 
-theorem symplO_add_right (S T : HSp D) (x y y' : WO S T) :
-    symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
-  simp only [symplO_eq_add, GlobalTheory.OrientedHeis.symplOH_add_right]; ring
+alias symplO_add_right := _root_.GlobalTheory.LatVac.symplO_add_right
 
 theorem continuous_symplO {S T : HSp D} {X : Type} [TopologicalSpace X] {x y : X → WO S T} (hx : Continuous x)
     (hy : Continuous y) : Continuous fun t => symplO S T (x t) (y t) := by
@@ -166,7 +147,7 @@ theorem theta_series (hψ : IsStdChar D ψ (-1)) (d : HypDec S S₀ ρ) (T : HSp
     (hf : ∀ w : WO S T, f w = ψ (-(symplOH S T (d.extX T (w ⬝ d.jX)) (d.extY T (w ⬝ d.jY)))) *
       ∑' ξ : Matrix (Fin T.rank) (Fin ρ) D.host.E,
         ψ (symplO S T (d.extX T (w ⬝ d.jX + rat ξ)) (d.extY T (w ⬝ d.jY))) * φ (w ⬝ d.jX + rat ξ)) :
-    Continuous f ∧ ∀ x, (_root_.I195MixedCoordinates_b252ee61f962e28100fad012.source d) T ψ μ 𝓕 f x 0 = φ x := by
+    Continuous f ∧ ∀ x, (_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 f x 0 = φ x := by
   obtain ⟨hc, hb⟩ := bound_translates hψ hφ
   have hψc : Continuous ψ := hψ.1.1
   have hn : ∀ t, ‖ψ t‖ = 1 := hψ.1.2.1
@@ -213,7 +194,7 @@ theorem theta_series (hψ : IsStdChar D ψ (-1)) (d : HypDec S S₀ ρ) (T : HSp
     have hF := hasSum_integral_of_summable_integral_norm (μ := μ.restrict 𝓕)
       (F := fun (ξ : Matrix (Fin T.rank) (Fin ρ) D.host.E) a =>
         ψ (symplO S T (d.extX T (rat ξ)) (d.extY T a)) * φ (x + rat ξ)) (fun ξ => ?_) ?_
-    · rw [_root_.I195MixedCoordinates_b252ee61f962e28100fad012.source]
+    · rw [_root_.I195MixedCoordinates.source]
       simp only [HypDec.extX_apply, HypDec.extY_apply, map_zero, Matrix.zero_mul] at key ⊢
       simp only [key]
       refine hF.unique ?_

@@ -60,7 +60,7 @@ private theorem prj_diag (c : Fin 4 → R) (i : Fin 4) :
   show Matrix.diagonal _ = _
   congr 1
   funext a
-  simp [map_prod, Finset.prod_apply, Pi.algebraMap_apply]
+  simp [map_prod]
 
 private theorem prj_zero (c : Fin 4 → R) {i a : Fin 4} (h : a ≠ i) :
     ∏ j ∈ Finset.univ.erase i, (c a - c j) = 0 :=

@@ -188,7 +188,7 @@ theorem _root_.GlobalTheory.CongruenceDet.det_mul_conj {E : Type} [Field E] [Num
     have := h (Pi.single i 1) (Pi.single j 1)
     have hcs : c ∘ (Pi.single j (1 : E)) = Pi.single j 1 := by
       funext k
-      by_cases hk : k = j <;> simp [Pi.single_apply, hk]
+      by_cases hk : k = j <;> simp [hk]
     have hgs : c ∘ (g *ᵥ Pi.single j 1) = g.map c *ᵥ (c ∘ Pi.single j 1) := by
       funext k
       exact RingHom.map_mulVec _ _ _ k

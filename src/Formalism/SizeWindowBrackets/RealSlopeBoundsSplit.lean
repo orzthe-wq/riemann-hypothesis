@@ -2,8 +2,6 @@ module
 
 public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
 public import Mathlib.Basic.Real.Basic
-import Mathlib.Algebra.Order.BigOperators.Ring.Finset
-import Mathlib.Tactic.TypeStar
 
 @[expose] public section
 

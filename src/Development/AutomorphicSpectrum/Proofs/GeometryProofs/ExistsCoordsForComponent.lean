@@ -4,24 +4,38 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodge
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.BlowupProjections.BlowupProjStatement
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDomainAndIsIntegrallyClosedAtPrimeOfSmoothOfCo
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoherentLatticeClosureStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexCoordsReindexedStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentGenericIsGenericPointStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeConstantRankStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsCoordsOfGenericPointStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagModelCommonRefinementStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoherentLatticeClosure
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import Mathlib.Basic.Complex.Basic
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexCoordsReindexed
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentGenericIsGenericPoint
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.EigenLatticeConstantRank
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsCoordsOfGenericPoint
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsGenOfIsVBOne
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FlagModelCommonRefinement
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericCoordsDescendSubfield
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointFactorsOpenStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LabelEmbeddingInjectiveStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorBundleStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenericPointFactorsOpen
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncModelReindexedCoords
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsRegularSectionGenerator
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LabelEmbeddingInjective
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import Mathlib.NumberTheory.NumberField.Discriminant.Defs
+import Mathlib.Order.CompletePartialOrder
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LatticeEigenVectorBundle
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueAct
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundleStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundle
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIsLocalRingIsFractionRingStalk
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreRefineLineBundlesStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SncModelReindexedCoordsStatement
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreRefineLineBundles
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -63,8 +77,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
-public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsRegularSectionGenerator
 
 @[expose] public section
 
@@ -186,14 +198,14 @@ theorem inter_isVBOn_char0 {E : Type} [Field E] [NumberField E] [IsCMField E] {H
       (Module.finrank Ω (eigSp ρ (cst.comp (labelEmb c s)))) (eigSp ρ (cst.comp (labelEmb c s))) := by
   classical
   haveI : Fintype (CMType H ⊕ CMType H) := Fintype.ofFinite _
-  have hl := GlobalTheory.T.label_embedding_injective E H l c
+  have hl := _root_.GlobalTheory.CompanionTheory.Ar.labels_all_once E H l c
   have hinj : Function.Injective fun s : CMType H ⊕ CMType H => cst.comp (labelEmb c s) := by
     intro s s' h
     exact hl.1 (RingHom.ext fun a => cst.injective (congrArg (fun φ : 𝓞 E →+* Ω => φ a) h))
   have hcard : Fintype.card (CMType H ⊕ CMType H) = Module.finrank ℚ E := by
     rw [← Nat.card_eq_fintype_card]; exact hl.2
-  have hvb := (GlobalTheory.T.lie_omega_lattice_vector_bundle X Ω ξ t.G Li M hg t.semi.smooth).1
-  have := (GlobalTheory.T.lattice_eigen_vector_bundle X Ω ξ Li E ρ M.lat {q | ∀ r : ℕ, r.Prime → ¬ InFibre ξ r q} (Module.finrank Ω Li) _
+  have hvb := (_root_.GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth X Ω ξ t.G Li M hg t.semi.smooth).1
+  have := (_root_.GlobalTheory.CompanionTheory.Ar.EigSplit.isVBOn_eigSp X Ω ξ Li E ρ M.lat {q | ∀ r : ℕ, r.Prime → ¬ InFibre ξ r q} (Module.finrank Ω Li) _
     (fun s : CMType H ⊕ CMType H => cst.comp (labelEmb c s)) hg hinj hcard ?_ ?_ ?_ ?_).1
   · exact this s
   · intro p _
@@ -313,7 +325,7 @@ theorem isIntegrallyClosed_of_snc {K : Type} [Fintype K] {J : K → Type} [∀ k
   haveI : IsLocalization.AtPrime (regAt ξ q) P :=
     { map_units := fun s => (hP s).1 s.2
       surj := fun z => by
-        obtain ⟨s, hs, hsu, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ _ _ htie c q ⟨hc0, hc⟩ z.1).1 z.2
+        obtain ⟨s, hs, hsu, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ _ _ htie c q ⟨hc0, hc⟩ z.1).1 z.2
         have hsu' : IsUnit (algebraMap S (regAt ξ q) ⟨s, hZ s hs⟩) := by
           refine IsUnit.of_mul_eq_one (⟨s⁻¹, hsu.2.2⟩ : regAt ξ q) (Subtype.ext ?_)
           exact mul_inv_cancel₀ hsu.1
@@ -334,9 +346,9 @@ theorem exists_eigBase : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
   classical
   intro hRes E _ _ _ H D l Xo c Y Ω₀ _ _ ξ₀ hgen
   obtain ⟨K₀, _, J₀, _, y₀, X₀, ξ, f₀, bd₀, -, hall, htie, hξ, hsnc, hbd⟩ :=
-    GlobalTheory.T.exists_coords_of_generic_point hRes E H D l Xo c Y Ω₀ ξ₀ hgen
+    _root_.GlobalTheory.CompanionTheory.Ar.SncBase.exists_sncBase hRes E H D l Xo c Y Ω₀ ξ₀ hgen
   have hg : IsCptGen ξ := htie.gen
-  obtain ⟨yp, hyp⟩ := GlobalTheory.T.generic_point_factors_open E H D l Xo c Y Ω₀ ξ₀ (GlobalTheory.T.component_generic_is_generic_point E H D l Xo c Y Ω₀ ξ₀ hgen)
+  obtain ⟨yp, hyp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ChangeGeo.exists_factor_XF_of_genericPoint E H D l Xo c Y Ω₀ ξ₀ (_root_.GlobalTheory.CompanionTheory.Ar.GenPtModel.genPt_mem_genericPoints E H D l Xo c Y Ω₀ ξ₀ hgen)
   obtain ⟨cst, hcst⟩ := exists_cst Y yp
   obtain ⟨t, ⟨m⟩⟩ : ∃ t : SAB H X₀, Nonempty (SABMap t Y.t f₀) := by
     obtain ⟨_, _, _, _, _, m, -⟩ := sabPull Out.CubePf.cubePull f₀ Y.t
@@ -346,10 +358,10 @@ theorem exists_eigBase : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
     t.act.one t.act.mul t.act.add
   have hcst₁ : ξ ≫ f₀ ≫ Y.s = spMap (cst.comp (algebraMap (𝓞 c.F) c.F)) := by
     rw [← Category.assoc, hξ, hyp, Category.assoc, hcst]
-  obtain ⟨hfd, hrk⟩ := GlobalTheory.T.eigen_lattice_constant_rank E H D l Xo c Y X₀ Ω₀ ξ f₀ yp t m Li M ρ cst (hξ.trans hyp) hcst₁ hact
+  obtain ⟨hfd, hrk⟩ := _root_.GlobalTheory.CompanionTheory.Ar.EigRank.eig_finrank_label E H D l Xo c Y X₀ Ω₀ ξ f₀ yp t m Li M ρ cst (hξ.trans hyp) hcst₁ hact
   have hint : ∀ q : Cpt ξ, (∀ r : ℕ, r.Prime → ¬ InFibre ξ r q) → IsIntegrallyClosed (regAt ξ q) :=
     fun q hq => isIntegrallyClosed_of_snc htie hsnc q hq
-  have hvb := (GlobalTheory.T.lie_omega_lattice_vector_bundle X₀ Ω₀ ξ t.G Li M hg t.semi.smooth).1
+  have hvb := (_root_.GlobalTheory.CompanionTheory.Ar.lieLat_isVB_of_smooth X₀ Ω₀ ξ t.G Li M hg t.semi.smooth).1
   let V : CMType H ⊕ CMType H → Submodule Ω₀ Li := fun s => eigSp ρ (cst.comp (labelEmb c s))
   obtain ⟨hind, hsum⟩ := SatModel.lat_eq_iSup_of_char0 c t ξ hg cst M ρ hact hint
   have hspanTop : ∀ p, Submodule.span Ω₀ (M.lat p : Set Li) = ⊤ := by
@@ -371,8 +383,8 @@ theorem exists_eigBase : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
   obtain ⟨π, hπ₁, hπ₂, hπ₃⟩ := exists_proj V hind htop
   let L : CMType H ⊕ CMType H → Lat ξ Li := fun s => M.lat.map (π s)
   have hcoh : ∀ s, (L s).IsCohOn Set.univ := fun s =>
-    (GlobalTheory.T.coherent_lattice_closure X₀ Ω₀ ξ Li Li M.lat M.lat Set.univ).2.1 (π s)
-      ((GlobalTheory.T.coherent_lattice_closure X₀ Ω₀ ξ Li Li M.lat M.lat Set.univ).1 _ _ hvb)
+    (_root_.GlobalTheory.CompanionTheory.Ar.coh_vb_images_sums_multiples X₀ Ω₀ ξ Li Li M.lat M.lat Set.univ).2.1 (π s)
+      ((_root_.GlobalTheory.CompanionTheory.Ar.coh_vb_images_sums_multiples X₀ Ω₀ ξ Li Li M.lat M.lat Set.univ).1 _ _ hvb)
   have hspan : ∀ s p, Submodule.span Ω₀ (L s p : Set Li) = V s := fun s p => by
     rw [span_map_eq_range (hspanTop p), hπ₃]
   have hLeq : ∀ s (p : Cpt ξ), (∀ r : ℕ, r.Prime → ¬ InFibre ξ r p) → L s p = M.lat.inter (V s) p :=
@@ -384,7 +396,7 @@ theorem exists_eigBase : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
   have hw : ∃ l, x l ≠ 0 := by
     obtain ⟨l, hl⟩ := htie.cover (Flat.ZLat.gp ξ)
     exact ⟨l, hl.1⟩
-  obtain ⟨κ', _, y0, M', g, hd, hN, hch, hflat, hnorm⟩ := GlobalTheory.T.flag_model_common_refinement ℤ Ω₀ ((k : K₀) → J₀ k) x
+  obtain ⟨κ', _, y0, M', g, hd, hN, hch, hflat, hnorm⟩ := _root_.GlobalTheory.CompanionTheory.Relay.flag_model_common_refinement ℤ Ω₀ ((k : K₀) → J₀ k) x
     (PModel.mk X₀ ξ (specZIsTerminal.from X₀) hover hall htie) Unit (fun _ => (k : K₀) → J₀ k) (fun _ => x)
     (CMType H ⊕ CMType H) (fun _ => Li) L V (fun _ => hw) hcoh hspan
   have hd' : GlobalTheory.CompanionTheory.Ar.Dominates M'.ξ ξ g (RingHom.id Ω₀) := hd
@@ -393,7 +405,7 @@ theorem exists_eigBase : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
     rw [this]
     simp
   have hg' : IsCptGen M'.ξ := M'.tie.gen
-  obtain ⟨K₁, _, J₁, _, y₁, bk, bx, -, hbk, hy₁, tie₁, -⟩ := GlobalTheory.T.segre_refine_line_bundles ℤ Ω₀ κ' y0 M' K₀ J₀ y₀ Empty Empty.elim
+  obtain ⟨K₁, _, J₁, _, y₁, bk, bx, -, hbk, hy₁, tie₁, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.ExtraBlocks.exists_blocks_of_lines ℤ Ω₀ κ' y0 M' K₀ J₀ y₀ Empty Empty.elim
     (hch ()) (fun a => a.elim)
   obtain ⟨t', ⟨m₁⟩⟩ : ∃ t' : SAB H M'.X, Nonempty (SABMap t' t g) := by
     obtain ⟨_, _, _, _, _, m₁, -⟩ := sabPull Out.CubePf.cubePull g t
@@ -439,9 +451,9 @@ theorem exists_eigBase : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKState
     show e ∈ (L s).pull M'.ξ g (AddMonoidHom.id Li) q ↔ e ∈ Ml.lat q ∧ e ∈ eigSp ρ (cst.comp (labelEmb c s))
     rw [hlat, mem_pull_iff _ q h hr, mem_pull_iff _ q h hr, hLeq s _ hp]
     exact Iff.rfl
-  · exact GlobalTheory.T.snc_model_reindexed_coords X₀ M'.X Ω₀ ξ M'.ξ g K₀ J₀ y₀ K₁ J₁ y₁ bk bx D.dim bd₀ hall M'.all htie tie₁ hξ' hy₁ hreg huniq hsnc
+  · exact _root_.GlobalTheory.CompanionTheory.Ar.SncRefine.isSncModel_refine X₀ M'.X Ω₀ ξ M'.ξ g K₀ J₀ y₀ K₁ J₁ y₁ bk bx D.dim bd₀ hall M'.all htie tie₁ hξ' hy₁ hreg huniq hsnc
   · intro z w hw
-    have hw₁ := GlobalTheory.T.complex_coords_reindexed X₀ M'.X Ω₀ ξ M'.ξ g K₀ J₀ y₀ K₁ J₁ y₁ bk bx z w hall M'.all hg' hξ' hy₁ hreg hw
+    have hw₁ := _root_.GlobalTheory.CompanionTheory.Ar.CoordsDown.coordsAt_down X₀ M'.X Ω₀ ξ M'.ξ g K₀ J₀ y₀ K₁ J₁ y₁ bk bx z w hall M'.all hg' hξ' hy₁ hreg hw
     have hne : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0 := fun k => (hw.1 k).imp fun _ h => h.ne_zero
     have hne' : ∀ k, ∃ i, w (v ⟨k, i⟩) ≠ 0 := fun k => (hw₁.1 k).imp fun _ h => h.ne_zero
     rw [mem_mcPts_rename v bd₀ w hne hne']

@@ -4,7 +4,10 @@ public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsInvDer
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsHomOfDerivation
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsIsConstKOfIsPullback
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoOfIdModEpsThickeningStatement
+public import Mathlib.Algebra.DualNumber
+public import Mathlib.AlgebraicGeometry.Morphisms.Flat
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsIsoOfIdModEpsThickening
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -94,7 +97,7 @@ theorem exists_isConstK_of_locDerK :
     · rw [Category.assoc, heψ, hΦj]
     · rw [Category.assoc, heh, hj₀π, hj.1.w]
 
-  have : IsIso e := GlobalTheory.T.isIso_of_id_mod_eps_thickening K A₀.left _ A'.left A₀.hom (pullback.snd _ _) A'.hom j₀ j e hj₀ hj.1
+  have : IsIso e := _root_.GlobalTheory.isIso_of_id_mod_eps K A₀.left _ A'.left A₀.hom (pullback.snd _ _) A'.hom j₀ j e hj₀ hj.1
     inferInstance heh hje
   refine exists_isConstK_of_isPullback hL K A₀ A' (inv e ≫ pullback.fst _ _) j hA₀ hA' hj ?_ ?_
   · have h1 : IsPullback (inv e) A'.hom (pullback.snd A₀.hom (spMap (algebraMap K (DualNumber K)))) (𝟙 _) :=

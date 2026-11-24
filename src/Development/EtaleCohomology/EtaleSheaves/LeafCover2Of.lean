@@ -61,7 +61,7 @@ theorem gen_eq {P Q : PSh} (G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)
     a.app (op Y) (ModuleCat.freeMk (ULift.up (φ.app _ y))) = b.app (op Y) (ModuleCat.freeMk (ULift.up (φ.app _ y))) := by
   have e : ((freeP R).map φ).app (op Y) (ModuleCat.freeMk (ULift.up y)) =
       ModuleCat.freeMk (ULift.up (φ.app _ y)) := by
-    first | rfl | exact ModuleCat.free_map_apply (R := ULift R) _ _
+    first | exact ModuleCat.free_map_apply (R := ULift R) _ _
   have h3 := congrArg (fun w => w (ModuleCat.freeMk (ULift.up y)))
     (congrArg (fun t => ConcreteCategory.hom t) (NatTrans.congr_app h (op Y)))
   simp only [NatTrans.comp_app] at h3
@@ -80,7 +80,7 @@ theorem loc_eq {P : PSh} (G : Shv R) (a b : (freeP R).obj P ⟶ G.obj) (X : Sche
     erw [ConcreteCategory.comp_apply, ConcreteCategory.comp_apply] at n1
     rw [← n1]
     congr 1
-    first | rfl | exact ModuleCat.free_map_apply (R := ULift R) _ _
+    first | exact ModuleCat.free_map_apply (R := ULift R) _ _
   have hE := Presheaf.IsSheaf.hom_ext G.2 ⟨S, hS⟩
     (ModuleCat.ofHom (LinearMap.toSpanSingleton (ULift R) _ (a.app (op X) (ModuleCat.freeMk (ULift.up x)))))
     (ModuleCat.ofHom (LinearMap.toSpanSingleton (ULift R) _ (b.app (op X) (ModuleCat.freeMk (ULift.up x))))) (by

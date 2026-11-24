@@ -5,54 +5,12 @@ public import Formalism.SharpRestriction.CuspSpanNormBounds.LocalGroupInFamilyNo
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsMoreMore
 import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Mathlib.Algebra.Module.StablyFree.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.PicardGroup
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.Valuation.Extension
 import Mathlib.RingTheory.Valuation.Integral
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Monotonicity.Lemmas
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -136,9 +94,8 @@ theorem repr_th (y : (D.s.atP p).Ep) : ∃ a b : (D.s.atP p).Fp,
 theorem eq_zero_th (a b : (D.s.atP p).Fp)
     (h : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep a + algebraMap (D.s.atP p).Fp (D.s.atP p).Ep b * th p = 0) :
     a = 0 ∧ b = 0 := by
-  have := (LinearIndependent.pair_iff.1 (indep_th p)) a b
-  apply this
-  rw [Algebra.smul_def, Algebra.smul_def, mul_one]; exact h
+  exact (LinearIndependent.pair_iff.1 (indep_th p) a b) (by
+    simpa only [Algebra.smul_def, mul_one] using h)
 
 theorem cj_alg' (z : (D.s.atP p).Fp) :
     (D.s.atP p).cj (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep z) = algebraMap _ _ z :=
@@ -181,9 +138,7 @@ theorem sq_eq_zero (y : (D.s.atP p).Ep) (h : y * y = 0) : y = 0 := by
   obtain ⟨h1, h2⟩ := eq_zero_th p _ _ h
   have hab : a = 0 ∨ b = 0 := by
     rcases mul_eq_zero.1 h2 with h | h
-    · rcases mul_eq_zero.1 h with h | h
-      · exact absurd h two_ne_zero
-      · exact Or.inl h
+    · exact Or.inl ((mul_eq_zero.1 h).resolve_left two_ne_zero)
     · exact Or.inr h
   rcases hab with ha | hb
   · subst ha
@@ -274,8 +229,7 @@ theorem psiE_tr_zero (z : (D.s.atP p).Ep) (hz : trQ p z = 0) : (D.s.atP p).psiE 
 theorem psiE_cj (y : (D.s.atP p).Ep) : (D.s.atP p).psiE ((D.s.atP p).cj y) = (D.s.atP p).psiE y := by
   have h : (D.s.atP p).psiE ((D.s.atP p).cj y - y) = 1 :=
     psiE_tr_zero p _ (by rw [trQ_sub, trQ_cj, sub_self])
-  calc (D.s.atP p).psiE ((D.s.atP p).cj y) = (D.s.atP p).psiE (((D.s.atP p).cj y - y) + y) := by rw [sub_add_cancel]
-    _ = _ := by rw [AddChar.map_add_eq_mul, h, one_mul]
+  rw [← sub_add_cancel ((D.s.atP p).cj y) y, AddChar.map_add_eq_mul, h, one_mul]
 
 end Formalism.L2.SG.Pf.LocCP
 
@@ -409,15 +363,11 @@ theorem mem_O_inl (y : (D.s.atP p).Fp) (hy : y ∈ 𝒪[(D.s.atP p).Fp]) : sg.e.
   · refine ⟨Polynomial.X ^ 2 - Polynomial.X, Polynomial.monic_X_pow_sub (by rw [Polynomial.degree_X]; norm_num), ?_⟩
     have h : sg.e.symm (1, 0) * sg.e.symm (1, 0) = sg.e.symm ((1 : (D.s.atP p).Fp), (0 : (D.s.atP p).Fp)) := by
       rw [← map_mul]; congr 1; ext <;> simp
-    simp [Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, pow_two, h]
+    simp [Polynomial.eval₂_sub, pow_two, h]
 
 theorem comp_mem (z : (D.s.atP p).Ep) (hz : z ∈ (D.s.atP p).O) :
     (sg.e z).1 ∈ 𝒪[(D.s.atP p).Fp] ∧ (sg.e z).2 ∈ 𝒪[(D.s.atP p).Fp] := by
   rw [(D.s.atP p).O_def] at hz
-  have f1 := ((AlgHom.fst (D.s.atP p).Fp (D.s.atP p).Fp (D.s.atP p).Fp).comp sg.e.toAlgHom).restrictScalars
-    𝒪[(D.s.atP p).Fp]
-  have f2 := ((AlgHom.snd (D.s.atP p).Fp (D.s.atP p).Fp (D.s.atP p).Fp).comp sg.e.toAlgHom).restrictScalars
-    𝒪[(D.s.atP p).Fp]
   have h1 : IsIntegral 𝒪[(D.s.atP p).Fp] (sg.e z).1 :=
     hz.map (((AlgHom.fst (D.s.atP p).Fp (D.s.atP p).Fp (D.s.atP p).Fp).comp sg.e.toAlgHom).restrictScalars
       𝒪[(D.s.atP p).Fp])
@@ -443,9 +393,7 @@ section Model
 variable (p : PlF D) (δ : (D.s.atP p).Fp)
 
 theorem local_additive_char_integers (hd : DualAt p δ) (z : (D.s.atP p).Ep) (hz : z ∈ (D.s.atP p).O) : psi0 p δ z = 1 := by
-  rw [local_additive_char_apply]
-  have := (hd 1).2 (D.s.atP p).O.one_mem z hz
-  simpa using this
+  simpa [local_additive_char_apply] using (hd 1).2 (D.s.atP p).O.one_mem z hz
 
 variable (sg : Loc.SplitAt (D.s.atP p).Fp (D.s.atP p).Ep (D.s.atP p).cj (Loc.resChar p))
 
@@ -573,9 +521,7 @@ def PinHostC : Prop :=
       ∃ u : 𝒪[(D.s.atP p).Fp], IsUnit u ∧ (u : (D.s.atP p).Fp) =
         (D.s.atP p).ιF (((D.host.g 0 : ℕ) : D.host.F) * ((D.host.g 1 : ℕ) : D.host.F) / ((D.host.g i : ℕ) : D.host.F))
 
-theorem not_both (D : D7) (p : PlF D) (h0 : ((D.host.g 0 : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal)
-    (h1 : ((D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal) : False := by
-  first | exact UpperTheory.Reformulated.B.Qf52.not_both .. | (apply UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qf52.not_both <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf52.not_both <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qf52.not_both D p h0 h1 | exact @UpperTheory.Reformulated.B.Qf52.not_both D p h0 | exact @UpperTheory.Reformulated.B.Qf52.not_both D p | exact @UpperTheory.Reformulated.B.Qf52.not_both D
+alias not_both := _root_.UpperTheory.Reformulated.B.Qf52.not_both
 
 theorem locDualC_of (hG : LocDualGenC) (hU : LocUnramC) (hP : PinHostC) : LocDualC := by
   intro D hT p
@@ -676,9 +622,7 @@ theorem psiE_cont : Continuous (D.s.atP p).psiE := by
     exact (hU.preimage hc).mem_nhds (by simp [sub_self, trQ_sub])
   refine (continuousAt_const (y := (D.s.atP p).psiE y)).congr ?_
   filter_upwards [hmem] with w hw
-  have hw' : (D.s.atP p).psiE (w - y) = 1 := psiE_of_norm p _ hw
-  calc (D.s.atP p).psiE y = (D.s.atP p).psiE (w - y) * (D.s.atP p).psiE y := by rw [hw', one_mul]
-    _ = (D.s.atP p).psiE w := by rw [← AddChar.map_add_eq_mul, sub_add_cancel]
+  rw [← sub_add_cancel w y, AddChar.map_add_eq_mul, psiE_of_norm p _ hw, one_mul]
 
 theorem locPsiContC : LocPsiContC := fun _ _ p => psiE_cont p
 

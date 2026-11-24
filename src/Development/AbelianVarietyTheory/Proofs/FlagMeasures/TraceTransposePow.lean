@@ -77,7 +77,7 @@ private lemma matrix_of_pow_succ_apply_sub_nsmul_add_trace {n : ℕ} {V : Type} 
   have h1 : ∀ c, E c a * Formalism.REAL.epow E j b c = Formalism.REAL.epow E j b c * E c a +
       ((if a = b then Formalism.REAL.epow E j c c else 0) - Formalism.REAL.epow E j b a) := by
     intro c
-    have := Formalism.REAL.epowCov (Module.End ℂ V) n E hE j b c c a
+    have := _root_.Formalism.REAL.generatorPowCovariance_holds (Module.End ℂ V) n E hE j b c c a
     rw [if_pos rfl] at this
     rw [← this]
     abel
@@ -155,7 +155,7 @@ theorem trace_transpose_pow {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
       · by_cases hab : a = b
         · subst hab
           simp
-        · simp [Matrix.one_apply, hab, Ne.symm hab]
+        · simp [hab, Ne.symm hab]
       · simp
     | succ m ih =>
       obtain ⟨α, h1, h2⟩ := ih
@@ -178,7 +178,7 @@ theorem trace_transpose_pow {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
         · by_cases hab : a = b
           · subst hab
             simp [hφ, Finset.sum_smul, smul_smul]
-          · simp [hab, Ne.symm hab, Matrix.one_apply_ne (Ne.symm hab)]
+          · simp [hab, Matrix.one_apply_ne (Ne.symm hab)]
       · rw [sum_range_shift_smul_eq_sub_add α m (n : ℂ) φ (fun j => Am ^ j), pow_succ', ← Matrix.mulVec_mulVec, ← h2,
           Matrix.mulVec_mulVec]
         have hP : ∑ j ∈ Finset.range (m + 1), α j • Am ^ (j + 1) = Am * ∑ j ∈ Finset.range (m + 1), α j • Am ^ j := by
@@ -262,7 +262,7 @@ private lemma matrix_of_pow_succ_apply_eq_sum_prod {A : Type} [Ring A] (E : Fin 
 
 lemma sum_cycWord {A : Type} [Ring A] (E : Fin n → Fin n → A) (m : ℕ) :
     ∑ a : Fin (m + 1) → Fin n, ((cycWord a).map fun p => E p.1 p.2).prod = ∑ c, (Matrix.of E ^ (m + 1)) c c := by
-  apply GlobalTheory.PhiEigenfun.sum_cycWord <;> assumption
+  apply GlobalTheory.PhiEigenfun.sum_cycWord
 
 
 open GlobalTheory.CapelliCentral in
@@ -488,8 +488,8 @@ theorem wordConj : ∀ (n : ℕ) (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin 
 theorem eigConj : ∀ (n : ℕ) (ε : Fin n → Bool) (χ : Fin n → ℂ) (f : Matrix (Fin n) (Fin n) ℂ → ℂ), SmoothOnG ε f → IsZEigen ε χ f → SmoothOnG ε (fun x => f (x.map star)) ∧ IsZEigen ε (fun a => -χ a) (fun x => f (x.map star)) := by
   intro n ε χ f hf hz
   have hsm : SmoothOnG ε (fun x => f (x.map star)) := by
-    letI : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ) := Matrix.normedAddCommGroup
-    letI : NormedSpace ℝ (Matrix (Fin n) (Fin n) ℂ) := Matrix.normedSpace
+    let : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ) := Matrix.normedAddCommGroup
+    let : NormedSpace ℝ (Matrix (Fin n) (Fin n) ℂ) := Matrix.normedSpace
     intro g₀ hg₀
     obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf (g₀.map star) (UJ_star hg₀)
     have hc : ∀ {k : WithTop ℕ∞}, ContDiff ℝ k (fun x : Matrix (Fin n) (Fin n) ℂ => x.map star) :=

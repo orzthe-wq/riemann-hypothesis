@@ -43,4 +43,4 @@ import Mathlib.Topology.Sheaves.Init
 open Formalism.BasicNotions
 
 theorem _root_.GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique : ∀ D : D7, GlobalTheory.FinPl.OverBasic D := by
-  first | exact @GlobalTheory.FinPl.overBasic | exact GlobalTheory.FinPl.overBasic | (intros; apply GlobalTheory.FinPl.overBasic <;> assumption)
+  first | exact @GlobalTheory.FinPl.overBasic

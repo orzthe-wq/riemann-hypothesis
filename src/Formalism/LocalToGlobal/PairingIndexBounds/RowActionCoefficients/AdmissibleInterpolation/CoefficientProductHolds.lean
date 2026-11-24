@@ -124,8 +124,8 @@ end disjointProducts
 theorem fock_product_holds : FockProd := by
   intro K B σ τ _ _ em hem F G
   classical
-  rw [rename_prod_expand em F, rename_prod_expand em G, fockR_sum_left]
-  simp_rw [fockR_sum_right, fockR_expand (F _) (G _)]
+  simp_rw [rename_prod_expand em F, rename_prod_expand em G, FockPairing.pair_sum_left]
+  simp_rw [FockPairing.pair_sum_right, fockR_expand (F _) (G _)]
   rw [Finset.prod_univ_sum]
   refine Finset.sum_congr rfl fun p _ => ?_
   rw [Finset.prod_univ_sum]

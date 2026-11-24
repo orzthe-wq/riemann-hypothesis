@@ -144,7 +144,7 @@ private theorem periodic_qs_comp_ofComplex_one (a : ℕ → ℂ) :
     congr 1
     rw [show 2 * π * Complex.I * n * (w + 1) = 2 * π * Complex.I * n * w + n * (2 * π * Complex.I) by ring,
       Complex.exp_add, Complex.exp_nat_mul_two_pi_mul_I, mul_one]
-  · push_neg at hw
+  · push Not at hw
     have hw1 : (w + 1).im ≤ 0 := by simpa using hw
     simp only [Function.comp_apply, ofComplex_apply_of_im_nonpos hw1, ofComplex_apply_of_im_nonpos hw]
 

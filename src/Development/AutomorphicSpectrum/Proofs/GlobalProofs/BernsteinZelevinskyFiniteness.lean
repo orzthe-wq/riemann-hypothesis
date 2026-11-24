@@ -2,9 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IrreducibleSmoothAdmissibleGLStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.JacquetModuleFiniteLengthStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionContragredientStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionFiniteLengthStatement
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.JacquetModuleFiniteLength
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionContragredient
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionFiniteLength
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,6 +50,6 @@ import Mathlib.Topology.Sheaves.Init
 namespace GlobalTheory.CompanionTheory.Published
 
 theorem bernsteinZelevinskyFiniteness : GlobalTheory.Published.BernsteinZelevinskyFiniteness :=
-  fun k _ _ _ _ => ⟨GlobalTheory.T.irreducible_smooth_admissible_GL k, GlobalTheory.T.jacquet_module_finite_length k, GlobalTheory.T.parabolic_induction_finite_length k, GlobalTheory.T.parabolic_induction_contragredient k⟩
+  fun k _ _ _ _ => ⟨GlobalTheory.T.irreducible_smooth_admissible_GL k, _root_.GlobalTheory.CompanionTheory.JacquetBridge.jacquetFiniteLength k, _root_.GlobalTheory.CompanionTheory.BZInd.inductionFiniteLength k, _root_.GlobalTheory.CompanionTheory.Glob.inductionContragredient k⟩
 
 end GlobalTheory.CompanionTheory.Published

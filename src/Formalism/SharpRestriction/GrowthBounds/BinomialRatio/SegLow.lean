@@ -150,9 +150,7 @@ theorem symDim_nat (m g : ℕ) : symDim (m + 1) (g : ℤ) = sd m g := by
   rw [if_neg h1]
   first
     | rw [Int.toNat_natCast]
-    | rw [Int.toNat_coe_nat]
-    | simp only [Int.toNat_ofNat]
-  congr 1 <;> omega
+  congr 1
 
 private theorem sum_prod_sd_digits_eq_prod_sd (m s : ℕ) (P bTop aTop : Fin s → ℕ) (hP : ∀ i, 0 < P i) :
     ∑ d ∈ (Fintype.piFinset fun i => dset m (P i) (bTop i)) ×ˢ (Fintype.piFinset fun i => dset m (P i) (aTop i)),

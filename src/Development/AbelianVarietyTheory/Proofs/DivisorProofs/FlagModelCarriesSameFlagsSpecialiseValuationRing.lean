@@ -55,9 +55,7 @@ open GlobalTheory.ShFam (EigFrame FlagCpt stalkPt genericPt constF)
 open GlobalTheory.VarFlag
 open ReciprocityTheory.ChartRestriction.G.PullbackSections (tv TanM)
 
-theorem sp_comp_sp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (ψ : S →+* T) (φ : R →+* S) :
-    spMap ψ ≫ spMap φ = spMap (ψ.comp φ) := by
-  rw [← Spec.map_comp]; rfl
+alias sp_comp_sp := _root_.Formalism.L2.Pj.spMap_comp_ring
 
 theorem eq_spMap_of_comp {R R' S : Type} [CommRing R] [CommRing R'] [CommRing S] {ι : R →+* R'}
     (hι : Function.Injective ι) {h : Sp R ⟶ Sp S} {φ : S →+* R} (e : spMap ι ≫ h = spMap (ι.comp φ)) :
@@ -68,8 +66,6 @@ theorem eq_spMap_of_comp {R R' S : Type} [CommRing R] [CommRing R'] [CommRing S]
     rw [← e, ← sp_comp_sp]; rfl
   have hp : p.hom = φ := RingHom.ext fun a => hι (RingHom.congr_fun h1 a)
   rw [← hp]; rfl
-
-theorem spMap_id' (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 _ := Spec.map_id _
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
@@ -88,7 +84,7 @@ theorem flagSpaceComponent_stalkPoint_over_coefficientField {Y : Model Xo c (Rin
     stalkPt C.Y y ≫ C.π ≫ GlobalTheory.Toroidal.genι Y ≫ Y.s = spMap φ := by
   have hg : GlobalTheory.Toroidal.genι Y ≫ Y.s = GlobalTheory.Toroidal.genStr Y := by
     rw [GlobalTheory.Toroidal.genι, GlobalTheory.Toroidal.genStr, pullback.condition]
-    exact (congrArg (pullback.snd Y.s (spMap (RingHom.id c.F)) ≫ ·) (spMap_id' _)).trans (Category.comp_id _)
+    exact (congrArg (pullback.snd Y.s (spMap (RingHom.id c.F)) ≫ ·) (_root_.GlobalTheory.LevelFibre.spMap_id' _)).trans (Category.comp_id _)
   refine eq_spMap_of_comp (IsFractionRing.injective (C.Y.X.presheaf.stalk y) C.Y.X.functionField) ?_
   rw [← h.2.1, ← genericPt_genStr C, ← hg]
   have h1 := congrArg (· ≫ Y.s) h.1

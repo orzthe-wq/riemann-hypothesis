@@ -3,9 +3,12 @@ module
 public import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 public import Mathlib.Algebra.AffineMonoid.Basic
-public import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicLogIdealMaxElementStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicIntegralIffDenominatorStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UltrametricDetNormLeStatement
+public import Development.AutomorphicSpectrum.Proofs.AdelicProofs.PadicLogIdealMaxElement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PadicIntegralIffDenominator
+public import Mathlib.Analysis.Normed.Field.Basic
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.Topology.MetricSpace.Ultra.Basic
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UltrametricDetNormLe
 public import Development.WeilBound.CoreStatements.SesquilinearFractions.SesqSesquilinearSkewHermitian
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -93,7 +96,7 @@ theorem padic_norm_sesq_le (D : Datum H) (ℓ : Nat.Primes) (j : E →+* ℂ_[�
   have hinj : Function.Injective (j.comp (algebraMap (𝓞 E) E)) :=
     j.injective.comp (FaithfulSMul.algebraMap_injective (𝓞 E) E)
   have hne : differentIdeal ℤ (𝓞 E) ≠ ⊥ := differentIdeal_ne_bot
-  obtain ⟨a, ha, ha0, -, hL⟩ := GlobalTheory.T.padic_logIdeal_max_element E ℓ (j.comp (algebraMap (𝓞 E) E)) _ hinj hne
+  obtain ⟨a, ha, ha0, -, hL⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.exists_logIdeal_attained E ℓ (j.comp (algebraMap (𝓞 E) E)) _ hinj hne
   have hca : (j.comp (algebraMap (𝓞 E) E)) a = j (a : E) := rfl
   have hja : 0 < ‖j (a : E)‖ := by
     rw [← hca]
@@ -101,7 +104,7 @@ theorem padic_norm_sesq_le (D : Datum H) (ℓ : Nat.Primes) (j : E →+* ℂ_[�
   rw [hL, hca, Real.exp_neg, Real.exp_log hja]
   obtain ⟨b, hb⟩ := (sesq_sesquilinear_properties D).2.2.2.2.2.2 a ha y y'
   have hb1 : ‖j (b : E)‖ ≤ 1 :=
-    (GlobalTheory.T.padic_integral_iff_denominator E ℓ (b : E)).mpr ⟨1, b, Nat.Prime.not_dvd_one ℓ.prop, by simp⟩ j
+    (_root_.GlobalTheory.CompanionTheory.Relay.padic_integral_iff_denominator E ℓ (b : E)).mpr ⟨1, b, Nat.Prime.not_dvd_one ℓ.prop, by simp⟩ j
   have hm : ‖j (a : E)‖ * ‖j (sesq D y y')‖ ≤ 1 := by
     rw [← norm_mul, ← map_mul, hb]
     exact hb1
@@ -133,7 +136,7 @@ theorem padic_norm_projectionCoeffs_le (D : Datum H) {p : ℕ} (x' : Fin p → D
       ← Matrix.cramer_eq_adjugate_mulVec, Pi.smul_apply, smul_eq_mul, Matrix.cramer_apply]
   have hb : ‖j ((gramE D x').updateCol a (pairingVector D x' y)).det‖ ≤ R ^ p := by
     rw [RingHom.map_det]
-    have := GlobalTheory.T.ultrametric_det_norm_le ℂ_[ℓ] (Fin p) (j.mapMatrix ((gramE D x').updateCol a (pairingVector D x' y)))
+    have := _root_.GlobalTheory.CompanionTheory.Ar.Fl.norm_det_le_pow_card_of_ultrametric ℂ_[ℓ] (Fin p) (j.mapMatrix ((gramE D x').updateCol a (pairingVector D x' y)))
       R hR0.le (fun b c => by
         simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.updateCol_apply]
         split_ifs

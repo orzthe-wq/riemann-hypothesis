@@ -58,4 +58,4 @@ theorem _root_.GlobalTheory.T.thetaGrid_lastRow_column_characters_differ : ∀ {
         G.chrS (.mu t D.R.m j) = G.chrS (.top t j) ∧ G.chrT (.mu t D.R.m j) = G.chrT (.top t j) * χz) ∧
       (∀ j, j < D.R.m → (D.R.m - 1 - j) % 2 = 1 →
         G.chrS (.mu t D.R.m j) = G.chrS (.top t j) * χz ∧ G.chrT (.mu t D.R.m j) = G.chrT (.top t j)) := by
-  first | exact @GlobalTheory.RowChars.rowChars | exact GlobalTheory.RowChars.rowChars | (intros; apply GlobalTheory.RowChars.rowChars <;> assumption)
+  first | exact @GlobalTheory.RowChars.rowChars

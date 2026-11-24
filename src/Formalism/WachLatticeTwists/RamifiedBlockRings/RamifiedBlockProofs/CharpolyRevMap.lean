@@ -64,7 +64,7 @@ theorem charpolyRev_map {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) 
   rw [← Polynomial.coe_mapRingHom, RingHom.map_det]
   congr 1
   ext i j
-  by_cases h : i = j <;> simp [h, Matrix.one_apply]
+  by_cases h : i = j <;> simp [h]
 
 theorem tailProd {M : Type*} [CommMonoid M] (f : ℕ → M) (t : ℕ) :
     ((List.range t).tail.map f).prod = ∏ i ∈ Finset.Ioo 0 t, f i := by

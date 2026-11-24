@@ -1,49 +1,8 @@
 module
 
 public import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.ExampleSatisfiesConditionsAtFive
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 public import Mathlib.Analysis.Real.Pi.Bounds
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -162,13 +121,12 @@ theorem cube_le_two_exp (y : ℝ) (hy : 0 ≤ y) : y ^ 3 ≤ 2 * Real.exp y := b
   have h := Real.sum_le_exp_of_nonneg hy 5
   simp only [Finset.sum_range_succ, Finset.sum_range_zero, Nat.factorial] at h
   norm_num at h
-  nlinarith [sq_nonneg (y ^ 2 - 6 * y), sq_nonneg (y - 4), mul_nonneg hy (sq_nonneg (y - 4)), sq_nonneg y]
+  have hsq : 2 * (1 + y + y ^ 2 / 2 + y ^ 3 / 6 + y ^ 4 / 24) - y ^ 3 =
+      ((y ^ 2 - 4 * y - 2) ^ 2 + 8 * y + 20) / 12 := by ring
+  linarith [sq_nonneg (y ^ 2 - 4 * y - 2)]
 
-theorem le_of_sq_le_sq' (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a ^ 2 ≤ b ^ 2) : a ≤ b := by
-  by_contra hc
-  push_neg at hc
-  have h1 : b * b < a * a := mul_self_lt_mul_self hb hc
-  nlinarith
+theorem le_of_sq_le_sq' (a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (h : a ^ 2 ≤ b ^ 2) : a ≤ b :=
+  le_of_pow_le_pow_left₀ two_ne_zero hb h
 
 theorem bad_b (w fSe T fkb lq f m b C1 : ℝ) (hw : w ≤ 2 * f * b) (hfS : fSe ≤ f * b) (hT : T ≤ b)
     (hfk : fkb ≤ f * b) (hlq0 : 0 ≤ lq) (hlq : lq ≤ m) (hf : 8 ≤ f) (hm : 44 ≤ m) (hb : 1 ≤ b)
@@ -199,26 +157,28 @@ theorem bad_c (C m v w fSe T f b s L C2 : ℝ) (hC : 0 ≤ C) (hv0 : 0 ≤ v) (h
   have hfb : 0 ≤ f * b := mul_nonneg (by linarith) (by linarith)
   have hm0 : 0 ≤ m := by linarith
   have hsv : 0 ≤ s * v := mul_nonneg hs hv0
-  have hL : 0 ≤ L := by nlinarith
-  have hs2 : 2 * s ≤ 11 * L := by nlinarith
+  have hL : 0 ≤ L := by linarith
+  have hs2 : 2 * s ≤ 11 * L := by linarith
   have hwS : w + fSe ≤ 3 * (f * b) := by linarith
   have hA : s * (2 + v) * (w + fSe) ≤ 11 * L * (3 * (f * b)) :=
     mul_le_mul hv1 hwS hw0 (by linarith)
   have hB : C * m * (s * (2 + v) * (w + fSe)) ≤ C * m * (11 * L * (3 * (f * b))) :=
     mul_le_mul_of_nonneg_left hA (mul_nonneg hC hm0)
-  have hfm : 352 ≤ f * m := by nlinarith
+  have hfm : 352 ≤ f * m := by
+    have := mul_le_mul hf hm (by norm_num) (by linarith)
+    linarith
   have hbL : 0 ≤ b * L := mul_nonneg (by linarith) hL
   have h1 : s * (2 * T + 2) ≤ s * (4 * b) := mul_le_mul_of_nonneg_left (by linarith) hs
   have h2 : 2 * s * b ≤ 11 * L * b := mul_le_mul_of_nonneg_right hs2 (by linarith)
   have h3 : 352 * (b * L) ≤ f * m * (b * L) := mul_le_mul_of_nonneg_right hfm hbL
-  have hU : 0 ≤ f * m * b * L := by nlinarith
+  have hU : 0 ≤ f * m * b * L := mul_nonneg (mul_nonneg (by linarith) (by linarith)) hL
   have h4 : (66 * C + 4) * (f * m * b * L) ≤ C2 * (f * m * b * L) := mul_le_mul_of_nonneg_right hC2 hU
-  nlinarith
+  linarith
 
 theorem bad_d (T f r L b lg : ℝ) (hT0 : 0 ≤ T) (hT2 : T ^ 2 ≤ b) (hf : 8 ≤ f) (hr : 9 ≤ r) (hL : 10 ≤ L)
     (hZ : (f * r * L) ^ 12 ≤ b) (hlg0 : 0 ≤ lg) (hlg1 : lg ≤ 18 * L) : (4 * T + 4 * f * r ^ 2) * lg ≤ 4 * b := by
   have hb0 : 0 ≤ b := le_trans (sq_nonneg T) hT2
-  have hfr : 1 ≤ f * r := by nlinarith
+  have hfr : 1 ≤ f * r := one_le_mul_of_one_le_of_one_le (by linarith) (by linarith)
   have hL0 : 0 ≤ L := by linarith
   have hLZ : L ≤ f * r * L := by
     calc L = 1 * L := by ring
@@ -238,11 +198,14 @@ theorem bad_d (T f r L b lg : ℝ) (hT0 : 0 ≤ T) (hT2 : T ^ 2 ≤ b) (hf : 8 �
       exact mul_le_mul hT2 hL2 (by positivity) hb0
     exact le_of_sq_le_sq' _ _ (by positivity) hb0 hsq
   have hZ0 : 720 ≤ f * r * L := by
-    have h72 : 72 ≤ f * r := by nlinarith
-    nlinarith
+    have h72 : 72 ≤ f * r := by
+      have := mul_le_mul hf hr (by norm_num) (by linarith)
+      linarith
+    have := mul_le_mul h72 hL (by norm_num) (by linarith)
+    linarith
   have hZsq : f * r ^ 2 * L ≤ (f * r * L) ^ 2 := by
     have e : (f * r * L) ^ 2 = (f * r ^ 2 * L) * (f * L) := by ring
-    have h1' : 1 ≤ f * L := by nlinarith
+    have h1' : 1 ≤ f * L := one_le_mul_of_one_le_of_one_le (by linarith) (by linarith)
     have h0' : 0 ≤ f * r ^ 2 * L := mul_nonneg (mul_nonneg (by linarith) (sq_nonneg r)) hL0
     rw [e]
     calc f * r ^ 2 * L = (f * r ^ 2 * L) * 1 := by ring
@@ -289,7 +252,7 @@ theorem leafBad_of_page (O : OnObj S P c)
     · exact bad_c c.C O.m O.vd (O.wt j) (O.f * O.Se) O.T O.f O.b _ O.L c.Cb2 hC tVd.1
         (Finset.sum_nonneg fun p _ => Real.log_natCast_nonneg p) tVd.2.1 hS0 hw1 hfS h1.2 hf hm hb hCb2
     · have h0 := bad_c c.C O.m O.vd 0 0 O.T O.f O.b _ O.L c.Cb2 hC tVd.1
-        (Finset.sum_nonneg fun p _ => Real.log_natCast_nonneg p) tVd.2.1 (by norm_num) (by nlinarith) (by nlinarith) h1.2 hf hm hb hCb2
+        (Finset.sum_nonneg fun p _ => Real.log_natCast_nonneg p) tVd.2.1 (by norm_num) (by positivity) (by positivity) h1.2 hf hm hb hCb2
       refine le_trans (mul_le_mul_of_nonneg_left ?_ (Finset.sum_nonneg fun p _ => Real.log_natCast_nonneg p)) h0
       have hcm : 0 ≤ c.C * O.m * (2 + O.vd) := mul_nonneg (mul_nonneg hC (by linarith)) (by linarith [tVd.1])
       have := mul_nonpos_of_nonneg_of_nonpos hcm (le_of_lt (not_le.1 hS0))
@@ -390,14 +353,18 @@ theorem leafSizes_of_page (O : OnObj S P c) (C2 : ℝ) (hC2 : 0 ≤ C2) (hC : 1 
   obtain ⟨hDF0, nW, hnW, hDF2⟩ := h13
   have hDF1 : 1 < O.DF := by
     have hpi := Real.pi_gt_three
-    have h80 : 1 < O.DF ^ 2 := by nlinarith
+    have h80 : 1 < O.DF ^ 2 := by
+      have := mul_le_mul (by linarith : (6 : ℝ) ≤ 2 * Real.pi) hnW (by norm_num) (by linarith)
+      linarith
     by_contra hc
     push_neg at hc
-    have : O.DF ^ 2 ≤ 1 := by nlinarith
+    have : O.DF ^ 2 ≤ 1 := by
+      have := mul_le_mul hc hc hDF0 zero_le_one
+      linarith [show O.DF ^ 2 = O.DF * O.DF by ring]
     linarith
   have hY1 : 1 < O.Y := by
     show 1 < c.C * O.DF
-    nlinarith
+    exact lt_of_lt_of_le hDF1 (le_mul_of_one_le_left (by linarith) hC)
   obtain ⟨PP, D, hPP, hD, hT⟩ := h231
   obtain ⟨hde0', Lw, hLw, hde1'⟩ := h44
   have hde0 : 0 ≤ dl2 O := le_trans (Real.rpow_nonneg hx0 _) hde0'
@@ -438,8 +405,11 @@ theorem leafSizes_of_page (O : OnObj S P c) (C2 : ℝ) (hC2 : 0 ≤ C2) (hC : 1 
       rw [← Real.exp_mul, hy]
     rw [hb45]
     have hyy : O.x ^ (O.eps / 3) ≤ (O.x ^ (O.eps / 3)) ^ 3 * (4 / 5) := by
-      have h4 : (0 : ℝ) ≤ (O.x ^ (O.eps / 3)) ^ 2 * (4 / 5) - 1 := by nlinarith
-      nlinarith [mul_nonneg hy0 h4]
+      have h4 : (4 : ℝ) ≤ (O.x ^ (O.eps / 3)) ^ 2 := by
+        have := mul_le_mul hy2 hy2 (by norm_num) hy0
+        linarith [show (O.x ^ (O.eps / 3)) ^ 2 = O.x ^ (O.eps / 3) * O.x ^ (O.eps / 3) by ring]
+      have h5 := mul_le_mul_of_nonneg_left (show (1 : ℝ) ≤ (O.x ^ (O.eps / 3)) ^ 2 * (4 / 5) by linarith) hy0
+      linarith [show O.x ^ (O.eps / 3) * ((O.x ^ (O.eps / 3)) ^ 2 * (4 / 5)) = (O.x ^ (O.eps / 3)) ^ 3 * (4 / 5) by ring]
     calc O.k ≤ Xp O := hkX
       _ = Real.exp (O.x ^ (O.eps / 3)) := rfl
       _ ≤ Real.exp ((O.x ^ (O.eps / 3)) ^ 3 * (4 / 5)) := Real.exp_le_exp.mpr hyy
@@ -477,7 +447,7 @@ theorem leafSizes_of_page (O : OnObj S P c) (C2 : ℝ) (hC2 : 0 ≤ C2) (hC : 1 
     have e : O.x * O.b / (O.b / (Xp O * nH O)) = (O.x * nH O) * Xp O := by
       field_simp
     rw [e]
-    have hxn : 1 ≤ O.x * nH O := by nlinarith
+    have hxn : 1 ≤ O.x * nH O := one_le_mul_of_one_le_of_one_le (by linarith) (by linarith)
     calc O.k ≤ Xp O := hkX
       _ = 1 * Xp O := by ring
       _ ≤ (O.x * nH O) * Xp O := mul_le_mul_of_nonneg_right hxn (le_trans zero_le_one hXp)

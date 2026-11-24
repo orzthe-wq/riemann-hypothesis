@@ -45,4 +45,4 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.term_row_double_coset_eq_iff_isometries : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ t t' : TauC Y u u', key t = key t' ↔ t.lam = t'.lam ∧ t.lam' = t'.lam' ∧ KeyEq (lf D (X.Fu u)) (lf D (X.Fu u')) t.lam t.lin t'.lin := by
-  first | exact @GlobalTheory.Unfold.KeyIff.key_eq_iff | exact GlobalTheory.Unfold.KeyIff.key_eq_iff | (intros; apply GlobalTheory.Unfold.KeyIff.key_eq_iff <;> assumption)
+  first | exact @GlobalTheory.Unfold.KeyIff.key_eq_iff

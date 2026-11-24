@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -105,7 +106,7 @@ theorem stdJ_single {L : Type} [Field L] (σ : L →+* ℂ) (n : ℕ) (i : Fin n
   ext k
   by_cases h : k = i
   · subst h; simp [stdJ]
-  · simp [stdJ, h, Pi.single_eq_of_ne h]
+  · simp [stdJ, h]
 
 theorem stdJ_basis {L : Type} [Field L] (σ : L →+* ℂ) (n : ℕ) {κ : Type} (b : Module.Basis κ L (Fin n → L)) :
     LinearIndependent ℂ (fun i => stdJ σ n (b i)) ∧

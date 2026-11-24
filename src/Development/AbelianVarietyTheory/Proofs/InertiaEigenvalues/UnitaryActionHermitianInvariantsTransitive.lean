@@ -156,7 +156,7 @@ theorem Bm_sec (a : Inv r K) : Bm (sec a) = 1 := by
   ext i j
   simp only [Bm, of_apply, sec_snd]
   rw [show (sec a).1 = companion a.1 from rfl, comp_pow_ev a.1 j j.2]
-  simp [ev, Matrix.one_apply, Fin.ext_iff, eq_comm]
+  simp [ev, Matrix.one_apply, Fin.ext_iff]
 
 theorem sec_rec (a : Inv r K) (k : ℕ) :
     mom (sec a) (k + r) = -((fun j : Fin r => mom (sec a) (k + j)) ⬝ᵥ a.1) :=
@@ -498,7 +498,7 @@ theorem part4 [Unram F E] (a : Inv r F) (hΔ : Delta a ≠ 0) :
       exact (congrFun e3 i).symm
     · intro i
       have e4 := congrFun (congrFun G ⟨0, i.pos⟩) i
-      simp only [map_apply, of_apply, hankel, Fin.val_mk, zero_add] at e4
+      simp only [map_apply, of_apply, hankel, zero_add] at e4
       rw [← e4, mom_sec_lt]
 end Four
 

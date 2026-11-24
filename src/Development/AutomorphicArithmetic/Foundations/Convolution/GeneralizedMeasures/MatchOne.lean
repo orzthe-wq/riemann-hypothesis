@@ -125,7 +125,7 @@ private theorem unitSet_top {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   have hO : (O : Set (CompletionsOver E v)) =
       Set.pi Set.univ fun w : PlacesOver E v => (𝒪[w.1.adicCompletion E] : Set (w.1.adicCompletion E)) := by
     ext x
-    simp [O, Subring.mem_iInf]
+    simp [O]
   have hc : IsCompact (O : Set (CompletionsOver E v)) := by
     rw [hO]
     exact isCompact_univ_pi fun w => isCompact_iff_compactSpace.mpr (inferInstanceAs (CompactSpace 𝒪[w.1.adicCompletion E]))

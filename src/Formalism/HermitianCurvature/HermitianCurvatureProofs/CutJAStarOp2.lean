@@ -43,6 +43,8 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutRegFF
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.IsAdmissibleSplittingCharPairMulTwist
 
 @[expose] public section
 
@@ -132,12 +134,6 @@ theorem ipA_smul_right (c : ℂ) (u U : M.Ty P → MA.SmQ P.r P.TT) :
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun π _ => inner_smul_right_alt c (u π) (U π)
 
-theorem ipA_conj (u U : M.Ty P → MA.SmQ P.r P.TT) : MA.ipA P u U = conj (MA.ipA P U u) := by
-  unfold MA.ipA
-
-  rw [map_sum]
-  exact Finset.sum_congr rfl fun π _ => inner_conj_symm_alt _ _
-
 theorem sumAdj (u Ku : M.Ty P → MA.SmQ P.r P.TT) (hKu : ∀ π, Ku π ∈ MA.Test P.r P.TT) {α : Type*} (l : List α)
     (c : α → ℂ) (X Y : α → M.Ty P → MA.SmQ P.r P.TT)
     (h : ∀ x ∈ l, (∀ π, X x π ∈ MA.Test P.r P.TT) ∧ MA.ipA P (X x) u = MA.ipA P Ku (Y x)) :
@@ -154,7 +150,7 @@ theorem sumAdj (u Ku : M.Ty P → MA.SmQ P.r P.TT) (hKu : ∀ π, Ku π ∈ MA.T
     simp only [List.map_cons, List.sum_cons]
     refine ⟨fun π => test_add (test_smul _ (hX π)) (ihT π), ?_⟩
     rw [ipA_add_right u (c x • X x) _ (fun π => test_smul (c x) (hX π)) ihT, ipA_add_left (conj (c x) • Y x) _ Ku hKu, ipA_smul_right,
-      ipA_smul_left, ihE, ipA_conj u (X x), hXe, ← ipA_conj]
+      ipA_smul_left, ihE, _root_.Formalism.FourierDecayAlt.P.MAx3.AB.ipA_conj u (X x), hXe, ← _root_.Formalism.FourierDecayAlt.P.MAx3.AB.ipA_conj]
 
 end lin
 
@@ -163,8 +159,8 @@ theorem jAStarOp_of_parts (hM : SAModelAdj) (hS : SASection) (hP : SAPairL) (hF 
   obtain ⟨C2, hP'⟩ := hP
   refine ⟨max C1 C2, ?_⟩
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L he _ hL a ha ts hts hrep J hJ
-  have hB1 : BuiltOW C1 S T f χ ν' m₀ top A₀ := ⟨isBuiltPlace_mono (le_max_left _ _) hB.1, hB.2⟩
-  have hB2 : BuiltOW C2 S T f χ ν' m₀ top A₀ := ⟨isBuiltPlace_mono (le_max_right _ _) hB.1, hB.2⟩
+  have hB1 : BuiltOW C1 S T f χ ν' m₀ top A₀ := ⟨_root_.Formalism.FourierDecayAlt.P.CutMP.isBuiltPlace_mono3 (le_max_left _ _) hB.1, hB.2⟩
+  have hB2 : BuiltOW C2 S T f χ ν' m₀ top A₀ := ⟨_root_.Formalism.FourierDecayAlt.P.CutMP.isBuiltPlace_mono3 (le_max_right _ _) hB.1, hB.2⟩
   have hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' :=
     (hB.1.2.2.2.1.2 v).2.2.2.1
   have hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z' := by

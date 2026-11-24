@@ -85,7 +85,7 @@ theorem inV_evPt (τ : L →+* ℂ) (g : GL (Fin n) ℂ) : InV (evPt τ g) := by
     · subst h2
       refine ⟨tInv g, fun i j => ⟨?_, ?_⟩⟩
       · simp [evPt, conj_ne τ, tInv]
-      · simp [evPt, conj_conj, tInv]
+      · simp [evPt, tInv]
     · have h3 : ComplexEmbedding.conjugate σ ≠ τ := fun h => h2 (by rw [← h, conj_conj])
       have h4 : ComplexEmbedding.conjugate σ ≠ ComplexEmbedding.conjugate τ := fun h => h1 (by
         rw [← conj_conj σ, h, conj_conj])
@@ -119,7 +119,7 @@ theorem inV_trivAt (τ : L →+* ℂ) (y : Vars L n → ℂ) (hy : InV y) : InV 
   intro σ
   by_cases h : σ = τ ∨ σ = ComplexEmbedding.conjugate τ
   · have h' : ComplexEmbedding.conjugate σ = τ ∨ ComplexEmbedding.conjugate σ = ComplexEmbedding.conjugate τ := by
-      rcases h with h | h <;> subst h <;> simp [conj_conj]
+      rcases h with h | h <;> subst h <;> simp
     refine ⟨1, fun i j => ⟨?_, ?_⟩⟩
     · simp only [trivAt, if_pos h]; simp [Matrix.one_apply]
     · simp only [trivAt, if_pos h']; simp [Matrix.one_apply, eq_comm]

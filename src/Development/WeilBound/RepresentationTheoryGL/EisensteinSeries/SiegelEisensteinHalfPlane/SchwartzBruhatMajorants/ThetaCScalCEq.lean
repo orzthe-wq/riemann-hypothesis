@@ -68,7 +68,7 @@ theorem thetaC_scalC_eq {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruha
     thetaC F (scalC a) =
       ((((ideleModule k a : ℝ) ^ Fintype.card ι)⁻¹ : ℝ) : ℂ) *
         thetaC (adelicFourierPi k F) (scalC a⁻¹) := by
-  have hA := GlobalTheory.T.linearChange_mem_schwartzBruhatPi hF (scalC a : GL ι 𝔸[k])
+  have hA := _root_.GlobalTheory.CompanionTheory.LinearChangeSchwartzBruhat.ltr_mem hF (scalC a : GL ι 𝔸[k])
   have h := tsum_algebraMap_eq_tsum_adelicFourierPi hA
   rw [GlobalTheory.CompanionTheory.LtrFourier.Hd.adelicFourierPi_ltr, tInv_scalC, det_scalC] at h
   have e1 : thetaC F (scalC a) =

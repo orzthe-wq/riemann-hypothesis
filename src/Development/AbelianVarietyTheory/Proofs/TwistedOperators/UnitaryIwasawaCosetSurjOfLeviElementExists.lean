@@ -59,13 +59,13 @@ open Formalism.UG Matrix GlobalTheory.SatakeWeyl
 
 namespace GlobalTheory.InertZeta
 
-theorem rev_zero_eq_last {N : ℕ} : (0 : Fin (N + 2)).rev = Fin.last (N + 1) := by ext; simp [Fin.val_rev]
+theorem rev_zero_eq_last {N : ℕ} : (0 : Fin (N + 2)).rev = Fin.last (N + 1) := by ext; simp
 
-theorem rev_last_eq_zero {N : ℕ} : (Fin.last (N + 1)).rev = (0 : Fin (N + 2)) := by ext; simp [Fin.val_rev]
+theorem rev_last_eq_zero {N : ℕ} : (Fin.last (N + 1)).rev = (0 : Fin (N + 2)) := by ext; simp
 
 theorem blk_rev_of_eq {N : ℕ} (a b : Fin (N + 2)) (h : blk N a = blk N b) : blk N a.rev = blk N b.rev := by
   rcases idx_cases a with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases b with rfl | ⟨j, rfl⟩ | rfl <;>
-    simp [rev_zero_eq_last, rev_last_eq_zero, ← mid_rev] at h ⊢
+    simp [← mid_rev] at h ⊢
 
 theorem lt_of_blk_lt {N : ℕ} {a b : Fin (N + 2)} (h : blk N a < blk N b) : a < b := by
   rcases idx_cases a with rfl | ⟨i, rfl⟩ | rfl <;> rcases idx_cases b with rfl | ⟨j, rfl⟩ | rfl <;>

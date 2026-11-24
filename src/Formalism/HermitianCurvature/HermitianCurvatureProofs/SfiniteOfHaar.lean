@@ -88,6 +88,4 @@ end Formalism.FourierDecayAlt.P.PTieJ
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem jacquet_scaling : Formalism.FourierDecayAlt.P.PTie.JFScale := PTieJ.jfScale
-
 end Formalism.FourierDecayAlt.P

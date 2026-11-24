@@ -73,16 +73,16 @@ theorem blockL_apply (E : Type) [Field E] (r s : ℕ) (i j : Fin (r + s)) (w : I
         simp [this]
       · intro b _ hb
         have : Fin.castAdd s b ≠ i := fun h => hb (Fin.ext (show (b : ℕ) = i from congrArg Fin.val h))
-        simp [Matrix.single_apply, this]
+        simp [this]
       · simp
     · rw [if_neg hi]
       refine Finset.sum_eq_zero fun k _ => ?_
       have : Fin.castAdd s k ≠ i := fun h => hi (by rw [← h]; exact k.2)
-      simp [Matrix.single_apply, this]
+      simp [this]
   · rw [if_neg hij]
     refine Finset.sum_eq_zero fun k _ => ?_
     have : ¬ (Fin.castAdd s k = i ∧ Fin.castAdd s k = j) := fun h => hij (h.1.symm.trans h.2)
-    simp [Matrix.single_apply, this]
+    simp [this]
 
 theorem hasDerivAt_entries {ι : Type} [Fintype ι] {a : ℕ} (f : ℝ → Fin a → Fin a → ι → ℂ) (X : Fin a → Fin a → ι → ℂ)
     (h : ∀ i j w, HasDerivAt (fun t => f t i j w) (X i j w) 0) : HasDerivAt f X 0 :=

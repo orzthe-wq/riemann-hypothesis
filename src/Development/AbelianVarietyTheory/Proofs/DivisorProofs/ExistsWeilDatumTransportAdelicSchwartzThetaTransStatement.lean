@@ -63,4 +63,4 @@ theorem _root_.GlobalTheory.T.exists_weilDatum_transport_adelicSchwartz_thetaTra
  ∃ om : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F JA) ×
       GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F JB) →* Module.End ℂ ((κ → AF D.host.F) → ℂ),
                        GlobalTheory.WeilSchrodinger.IsTransport ψ co ω om := by
-  first | exact @GlobalTheory.ThetaTransform.exists_isTransport | exact GlobalTheory.ThetaTransform.exists_isTransport | (intros; apply GlobalTheory.ThetaTransform.exists_isTransport <;> assumption)
+  first | exact @GlobalTheory.ThetaTransform.exists_isTransport

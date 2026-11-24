@@ -83,7 +83,7 @@ theorem entries_mem_of_mem_stabGL (h : GL n A)
     intro k
     by_cases hk : k = j
     · subst hk; exact ⟨1, by simp⟩
-    · exact ⟨0, by simp [Pi.single_apply, hk]⟩
+    · exact ⟨0, by simp [hk]⟩
   have h2 := ((hh (Pi.single j 1)).1 hmem)
   rw [mem_stdLat_iff'] at h2
   have h3 := h2 i

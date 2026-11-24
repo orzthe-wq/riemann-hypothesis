@@ -3,13 +3,17 @@ module
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DecompositionInvariantsCondition
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.OneSubPhiOntoOfFilZero
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.CuspidalGaloisUnramified
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionLocalAboveStatement
+public import Formalism.SharpRestriction.LevelLetterCocycles.AdmissibleParameterJ
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DecompositionLocalAbove
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankLeOfSubsetClosureRange
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HostCompletionLeMaxUnramifiedPadicStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PointConditionsOfPointGaloisRepFamiliesStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorsionExponentLeOfJumpsAtEmbeddingsUnramifiedStatement
-import Development.AutomorphicArithmetic.CyclotomicBounds.SmallFacts
+public import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypes
+public import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.SemisimpleDecompositionOf
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsRhoPtOfSplitting
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PointConditionsOfPointGaloisRepFamilies
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TorsionExponentLeOfJumpsAtEmbeddingsUnramified
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.ThirdPlaceSeries.MainAltAltBisStatement
+import Development.AutomorphicArithmetic.CyclotomicBounds.SmallFacts
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,7 +68,7 @@ theorem jointCondH0all_canon_alt : GlobalTheory.Published.FontaineBcris → ∀ 
   have hg0 : D.nd.l i ≠ D.host.g 0 := fun h => hg (by simp [TwistedPlaces.gset, h])
   have hg1 : D.nd.l i ≠ D.host.g 1 := fun h => hg (by simp [TwistedPlaces.gset, h])
   have hπZ : π ∈ D.nd.Z i := LargeLevelLemmas.zgoodSubsetZ i hπ
-  obtain ⟨-, -, -, hdec⟩ := GlobalTheory.T.pointConditions_of_pointGaloisRepFamilies D X.r X.ρ hC.fam i π hπZ
+  obtain ⟨-, -, -, hdec⟩ := _root_.GlobalTheory.PointConditions.main D X.r X.ρ hC.fam i π hπZ
   have hgood := hC.fam.good i
   have hcont := hC.fam.cont i π
   have hr1 : 1 ≤ D.R.r := by
@@ -78,9 +82,9 @@ theorem jointCondH0all_canon_alt : GlobalTheory.Published.FontaineBcris → ∀ 
   refine ⟨GlobalTheory.HubLoc.le_Ks_one_of_Kur _ hur, ?_⟩
   intro C hs hc L2
   have hcrys := (_root_.GlobalTheory.T.decomposition_fontaine_at_places_over_l D i (X.r i) (X.ρ i) π h41 (hAdm i) hgood hcont hdec hg0 hg1 w hw C).2.2.2
-  have hjump := fun τ => GlobalTheory.T.decomposition_local_above D L ep hep hJb hJc hJe hJf i (X.r i) (X.ρ i) π hgood hπZ hdec w hw C τ
+  have hjump := fun τ => _root_.GlobalTheory.jumps_WpO_T2O_window D L ep hep hJb hJc hJe hJf i (X.r i) (X.ρ i) π hgood hπZ hdec w hw C τ
     (T2O D.nd i (X.ρ i) π) (Or.inr rfl)
-  have key := GlobalTheory.T.torsionExponent_le_of_jumps_at_embeddings_unramified D.loc HW D.locA (D.nd.l i) (D.nbr i w hw).Kw C.LL hs (hOf L) D.R.r (4 * D.R.n)
+  have key := _root_.GlobalTheory.HubX.cH0all_le_of_jumps_at_embeddings D.loc HW D.locA (D.nd.l i) (D.nbr i w hw).Kw C.LL hs (hOf L) D.R.r (4 * D.R.n)
     (tTwoLocalLattice D i (X.ρ i) π C hc L2) hur (GlobalTheory.bridge_finrank_le D i w hw) hr1 (fun τ => (hjump τ).1)
   refine ⟨hcrys, key.1, fun τ => (hjump τ).2, ?_⟩
   rw [hC.c0]

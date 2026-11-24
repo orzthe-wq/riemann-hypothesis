@@ -151,7 +151,7 @@ theorem decomp_pair (hh : ∀ x y, star (h x y) = h y x) {e f : Fin r → V} (he
   have he : ∀ b, h (e b) (∑ a, s' a • e a + ∑ a, t' a • f a + w') = t' b := by
     intro b; simp only [map_add (f := _), pair_sum_zero (hee b), pair_sum_e hd, (hw' b).1, zero_add, add_zero]
   have hf : ∀ b, h (f b) (∑ a, s' a • e a + ∑ a, t' a • f a + w') = s' b := by
-    intro b; simp only [map_add (f := _), pair_sum_zero (hff b), pair_sum_e hd', (hw' b).2, zero_add, add_zero]
+    intro b; simp only [map_add (f := _), pair_sum_zero (hff b), pair_sum_e hd', (hw' b).2, add_zero]
   have hwe : ∀ a, h w (e a) = 0 := fun a => star_pair hh (hw a).1
   have hwf : ∀ a, h w (f a) = 0 := fun a => star_pair hh (hw a).2
   have hww : h w (∑ a, s' a • e a + ∑ a, t' a • f a + w') = h w w' := by

@@ -61,11 +61,9 @@ theorem isSplit_of_norm {F E : Type} [Field F] [NumberField F] [Field E] [Number
   haveI hfin : Module.Finite (𝓞 F) (𝓞 E) := by
     first
     | infer_instance
-    | exact Module.Finite.of_restrictScalars_finite ℤ (𝓞 F) (𝓞 E)
   haveI hint : Algebra.IsIntegral (𝓞 F) (𝓞 E) := by
     first
     | infer_instance
-    | exact Algebra.IsIntegral.of_finite (𝓞 F) (𝓞 E)
 
   have hdeg : Module.finrank (𝓞 F) (𝓞 E) = 2 := by
     rw [← IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E]

@@ -2,44 +2,6 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.Smooth
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SquareIntegrableInnerProduct
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.InfChar
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.NormSubOneLeOfHsdA
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.RregRep
@@ -95,9 +57,7 @@ theorem wdCoef_eword (w : L2 ε) (x : smD ε (rreg ε)) :
 
 theorem wdCoef_cont (w : L2 ε) (x : L2 ε) :
     Continuous (fun g : Formalism.REAL.UJ ε => inner ℂ w (rreg ε (Formalism.MainNotions.S.umat g) x)) := by
-  have h : Continuous (fun g : Formalism.REAL.UJ ε => rreg ε (Formalism.MainNotions.S.umat g) x) :=
-    ((rreg_isURepOn ε).2.2 x).comp_continuous (continuous_umatA ε) (fun g => g.2)
-  exact continuous_const.inner h
+  exact continuous_const.inner (((rreg_isURepOn ε).2.2 x).comp_continuous (continuous_umatA ε) (fun g => g.2))
 
 theorem wd_hs_cont : Continuous (fun g : Matrix (Fin n) (Fin n) ℂ => S7.hs g) := by
   unfold S7.hs
@@ -108,15 +68,13 @@ def wdF (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) : Formali
 
 theorem wd_norm_sq (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (g : Formalism.REAL.UJ ε) :
     ‖wdF ε f g‖ ^ 2 = S7.hs (Formalism.MainNotions.S.umat g) * ‖f (Formalism.MainNotions.S.umat g)‖ ^ 2 := by
-  have h0 : 0 ≤ S7.hs (Formalism.MainNotions.S.umat g) := by unfold S7.hs; positivity
   rw [wdF, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), mul_pow,
-    Real.sq_sqrt h0]
+    Real.sq_sqrt (by unfold S7.hs; positivity)]
 
 theorem wd_exp_hh (i : Fin n) (g : Formalism.REAL.UJ ε) :
     Real.exp (2 * (1 / 2 : ℝ) * Formalism.REAL.hh (Formalism.REAL.toM g)) = S7.hs (Formalism.MainNotions.S.umat g) := by
-  have h1 : 1 ≤ S7.hs (Formalism.MainNotions.S.umat g) := sigZeroDecay_one_le_hs g.2 i
   rw [show 2 * (1 / 2 : ℝ) = 1 by norm_num, one_mul]
-  exact Real.exp_log (show 0 < Formalism.REAL.hs (Formalism.REAL.toM g) from lt_of_lt_of_le one_pos h1)
+  exact Real.exp_log (lt_of_lt_of_le one_pos (sigZeroDecay_one_le_hs g.2 i))
 
 theorem wd_memLp_iff (i : Fin n) {f : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hc : Continuous (fun g : Formalism.REAL.UJ ε => f (Formalism.MainNotions.S.umat g))) :

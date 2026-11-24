@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerTowerQqPowLevelEqQ
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingCyclotomicTowerLevel
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRootsStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TowerLevelEmbeddingInjectiveRangeAdjoinRoots
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -83,7 +83,7 @@ theorem lev_closed : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebr
       IsInt (p := p) (a / b) → a / b ∈ Lev T m := by
   intro p _ Ω _ _ hΩ T m hm a ha b hb hb0 hint
   obtain ⟨ι, hι⟩ := GlobalTheory.K5.Basic.exists_isEmb T m
-  obtain ⟨-, hrange⟩ := GlobalTheory.T.towerLevelEmbedding_injective_range_adjoinRoots p Ω hΩ T m hm ι hι
+  obtain ⟨-, hrange⟩ := _root_.GlobalTheory.K5.LevEmb.emb_inj_range p Ω hΩ T m hm ι hι
   obtain ⟨hdom, hdvr, -⟩ := GlobalTheory.K5.OnDVR.isDVR_On p m hm
   rw [← hrange] at ha hb ⊢
   obtain ⟨a', rfl⟩ := (AlgHom.mem_range ι).1 ha

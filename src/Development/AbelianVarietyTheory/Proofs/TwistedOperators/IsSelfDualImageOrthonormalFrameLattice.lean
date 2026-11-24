@@ -84,7 +84,7 @@ theorem isSelfDualC_inV : ∀ {D : D7} (S : HSp D) (fr : GL (Fin S.rank) D.host.
     · rintro ⟨x, hx, rfl⟩
       simpa [f, Matrix.toLin'_apply, hinv'] using hx
     · intro h
-      exact ⟨_, h, by simp [f, Matrix.toLin'_apply, hinv]⟩
+      exact ⟨_, h, by simp [f, Matrix.toLin'_apply]⟩
   have hform : ∀ x y : Fin S.rank → D.host.E, ∑ i, ∑ j, star (x i) * S.gram i j * y j =
       ∑ i, star (((fr⁻¹).1 *ᵥ x) i) * ((fr⁻¹).1 *ᵥ y) i := by
     intro x y

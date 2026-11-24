@@ -3,10 +3,15 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsTransition
 public import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
 public import Mathlib.Algebra.AffineMonoid.Basic
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IdealPadicGeneratorLogNormStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitianStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqUnimodularDualStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UltrametricDetNormLeStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IdealPadicGeneratorLogNorm
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqSesquilinearSkewHermitian
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SesqUnimodularDual
+public import Mathlib.Analysis.Normed.Field.Basic
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.Topology.MetricSpace.Ultra.Basic
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.UltrametricDetNormLe
+public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.NormLeOneOfIntegralInt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -51,7 +56,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.NormLeOneOfIntegralInt
 
 @[expose] public section
 
@@ -80,7 +84,7 @@ theorem norm_det_le_one {E : Type} [Field E] [NumberField E] {ℓ : Nat.Primes} 
     {I : Type} [Fintype I] [DecidableEq I] (M : Matrix I I E) (h : ∀ a b, ∃ t : 𝓞 E, M a b = t) :
     ‖j M.det‖ ≤ 1 := by
   rw [RingHom.map_det]
-  have := GlobalTheory.T.ultrametric_det_norm_le ℂ_[ℓ] I (j.mapMatrix M) 1 zero_le_one (fun a b => by
+  have := _root_.GlobalTheory.CompanionTheory.Ar.Fl.norm_det_le_pow_card_of_ultrametric ℂ_[ℓ] I (j.mapMatrix M) 1 zero_le_one (fun a b => by
     obtain ⟨t, ht⟩ := h a b
     simpa [ht] using norm_coe_le_one j t)
   simpa using this
@@ -92,8 +96,8 @@ theorem exists_inverse {E : Type} [Field E] [NumberField E] [IsCMField E] (H : H
     ∃ (C : Matrix I I E) (N : ℕ), (∀ a b, ∃ t : 𝓞 E, C a b = t) ∧
       ((δ : E) • gramE D x) * C = (N : E) • (1 : Matrix I I E) ∧ ∃ n₀ : ℕ, ¬ ℓ ∣ n₀ ∧ N = n₀ * n₀ * n₁ := by
   obtain ⟨hli, n₀, hn₀, hspan⟩ := hx
-  obtain ⟨-, hadd1, hadd2, hsm1, hsm2, -, -⟩ := GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D
-  obtain ⟨-, hdual⟩ := GlobalTheory.T.sesq_unimodular_dual E H D
+  obtain ⟨-, hadd1, hadd2, hsm1, hsm2, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D
+  obtain ⟨-, hdual⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.unimodularity_sesq E H D
   have hδE : (δ : E) ≠ 0 := by simpa using hδ0
   let S := Submodule.span (𝓞 E) (Set.range x)
   let b : Module.Basis I (𝓞 E) S := Module.Basis.span hli
@@ -153,9 +157,9 @@ theorem exists_inverse {E : Type} [Field E] [NumberField E] [IsCMField E] (H : H
 theorem log_norm_det_gramE : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (I : Type) [Fintype I] [DecidableEq I] (x : I → D.La) (ℓ : Nat.Primes), IsLocBasis (𝓞 E) ℓ x → ∀ j : E →+* ℂ_[ℓ], Real.log ‖j (gramE D x).det‖ = -(Fintype.card I : ℝ) * logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) := by
   intro E _ _ _ H D I _ _ x ℓ hx j
   obtain ⟨δ, hδ, hδ0, ⟨n₁, hn₁, hgen⟩, hnorm⟩ :=
-    GlobalTheory.T.ideal_padic_generator_log_norm E (differentIdeal ℤ (𝓞 E)) ℓ differentIdeal_ne_bot
+    _root_.GlobalTheory.CompanionTheory.Ar.Fl.ideal_local_generator E (differentIdeal ℤ (𝓞 E)) ℓ differentIdeal_ne_bot
   obtain ⟨C, N, hC, hmul, n₀, hn₀, rfl⟩ := exists_inverse H D x ℓ hx δ hδ0 n₁ hgen
-  obtain ⟨-, -, -, -, -, -, hint⟩ := GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D
+  obtain ⟨-, -, -, -, -, -, hint⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Fl.Sesq.form_of_datum E H D
   have hM : ‖j ((δ : E) • gramE D x).det‖ ≤ 1 := norm_det_le_one j _ fun a b => by
     obtain ⟨t, ht⟩ := hint δ hδ (x a) (x b)
     exact ⟨t, by simpa [gramE] using ht⟩

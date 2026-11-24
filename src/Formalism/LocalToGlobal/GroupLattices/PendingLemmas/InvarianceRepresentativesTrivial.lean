@@ -2,46 +2,6 @@ module
 
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.DelEquiv
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.WittFractionAlgebraCp
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -61,21 +21,7 @@ theorem ordP_mul [IsDomain W] [IsDiscreteValuationRing W] [IsFractionRing W Qq] 
   have hu : algebraMap W Qq (u : W) ≠ 0 := (u.isUnit.map (algebraMap W Qq)).ne_zero
   rw [← mul_assoc, ordP_mul_zpow hp (mul_ne_zero hx hu), ordP_mul_unit hp hx, ordP_eq hp]
 
-theorem colSpan_mul {k : ℕ} (A g : Matrix (Fin k) (Fin k) Qq) :
-    (colSpan W g).map ((Matrix.mulVecLin A).restrictScalars W) = colSpan W (A * g) := by
-  unfold colSpan
-  rw [Submodule.map_span]
-  congr 1
-  ext x
-  constructor
-  · rintro ⟨_, ⟨c, rfl⟩, rfl⟩
-    refine ⟨c, ?_⟩
-    ext i
-    simp [Matrix.mulVec, Matrix.mul_apply, dotProduct]
-  · rintro ⟨c, rfl⟩
-    refine ⟨_, ⟨c, rfl⟩, ?_⟩
-    ext i
-    simp [Matrix.mulVec, Matrix.mul_apply, dotProduct]
+alias colSpan_mul := _root_.Formalism.MainNotions.G.LatticeSystems.je_colSpan_mul
 
 theorem gl_det_ne {k : ℕ} (A : GL (Fin k) Qq) : (A : Matrix (Fin k) (Fin k) Qq).det ≠ 0 :=
   ((Matrix.isUnit_iff_isUnit_det _).1 A.isUnit).ne_zero
@@ -185,11 +131,6 @@ theorem kapG_mul (j : ℕ) (c : X.Lv.comp j) (γ γ' : (X.Lv.lev j c).Γ) :
 theorem kapG_ne_zero (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) : kapG X Kc j c γ ≠ 0 := by
   rw [kapG_eq]
   exact mul_ne_zero (mul_ne_zero (chiC_ne_zero X Kc j c γ) (cA_ne_zero X Kc j _)) (pPart_ne_zero X hp0 j _)
-
-theorem kapG_one (j : ℕ) (c : X.Lv.comp j) : kapG X Kc j c 1 = 1 := by
-  have h := kapG_mul X Kc hp0 j c 1 1
-  rw [mul_one] at h
-  exact (mul_eq_left₀ (kapG_ne_zero X Kc hp0 j c 1)).1 h.symm
 
 omit hp0
 

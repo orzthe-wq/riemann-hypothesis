@@ -58,7 +58,6 @@ theorem continuous_gpProj : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologic
         ((h : GlobalTheory.BZMir.Mir k (m + j)) : GL (Fin (m + j + 1)) k)) := by
       first
         | exact continuous_subtype_val.comp continuous_subtype_val
-        | fun_prop
     exact hv
   have hlevi := (GlobalTheory.SmGL.LeviInt.levi_integral_facts k _ _ _
     (GlobalTheory.BZMir.Leib.eGP m j)).2.2.2.2.2.1

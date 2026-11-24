@@ -1,16 +1,16 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisFrobeniusFontaineTEqMul
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 public import Development.AbelianVarietyTheory.CrystallinePeriods.CrisIncl
 public import Development.AbelianVarietyTheory.CrystallinePeriods.CrisLoc
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisFrobeniusEigenFilEqQlMulTPowStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdRStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnitStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTeichmullerTiltMinusOnePowDivEnvelopeStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineTIsUnitBcrisAndUniformizerBdRPlusStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisFrobeniusEigenFilEqQlMulTPow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisFrobeniusFontaineTEqMul
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisLogTeichmullerUniqueGaloisFrobeniusBdR
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnit
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTeichmullerTiltMinusOnePowDivEnvelope
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineTIsUnitBcrisAndUniformizerBdRPlus
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPrimitiveTiltedRootOfUnityLocalPeriodRingsData
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OneAddMulDerivativeTrunc
 import Mathlib.Algebra.Order.Floor.Extended
@@ -86,16 +86,16 @@ theorem isLog_pow (j : Per.Acris l →+* Per.BdRp l) (hj : IsCrisP j) (e : Per.F
 theorem phi_log (j : Per.Acris l →+* Per.BdRp l) (hj : IsCrisP j) (e : Per.Fl l) (he : e.untilt = 1)
     (t : Per.Acris l) (ht : IsLogA e t) : phiA l t = (l : Per.Acris l) ^ 1 * t := by
   have hl : (e ^ l).untilt = 1 := by rw [map_pow, he, one_pow]
-  obtain ⟨-, -, h2, h3⟩ := GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l e t he ht
-  have h4 := (GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l (e ^ l) _ hl h2).2.2.2 j hj
-  apply GlobalTheory.T.acrisToBdRPlus_injective l j hj
+  obtain ⟨-, -, h2, h3⟩ := _root_.GlobalTheory.MemLoc.LogFun.log_fun l e t he ht
+  have h4 := (_root_.GlobalTheory.MemLoc.LogFun.log_fun l (e ^ l) _ hl h2).2.2.2 j hj
+  apply _root_.GlobalTheory.MemLoc.crisP_injective l j hj
   rw [isLog_pow j hj e he _ (h3 j hj) l _ h4, pow_one, map_mul, map_natCast]
 
 theorem l_dvd (C : Core l) : (l : Per.Acris l) ∣ C.t ^ (l - 1) := by
   have he : C.ε.untilt = 1 := (core_isEps l C).1
-  obtain ⟨t, u, ht, -, htu⟩ := GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l C.ε he
-  have e1 : t = C.t := (GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l C.ε C.t he C.t_log).1 t ht
-  obtain ⟨w, hw, -⟩ := GlobalTheory.T.exists_teichmullerTiltMinusOne_pow_div_envelope l C.ε he
+  obtain ⟨t, u, ht, -, htu⟩ := _root_.GlobalTheory.MemLoc.exists_isLogA l C.ε he
+  have e1 : t = C.t := (_root_.GlobalTheory.MemLoc.LogFun.log_fun l C.ε C.t he C.t_log).1 t ht
+  obtain ⟨w, hw, -⟩ := _root_.GlobalTheory.MemLoc.exists_mu_pow_div l C.ε he
   have hw0 : (l : Per.Acris0 l) * w = algebraMap (Per.Ainf l) (Per.Acris0 l) (mu C.ε) ^ (l - 1) := by
     apply Subtype.ext
     simpa using hw
@@ -110,9 +110,9 @@ theorem l_dvd (C : Core l) : (l : Per.Acris l) ∣ C.t ^ (l - 1) := by
 theorem mu_dvd_pt (C : Core l) [Nontrivial (Per.Bcris l)] (e : Per.Fl l) (he : e.untilt = 1) (hne : e ≠ 1) :
     ∃ r : ℕ, algebraMap (Per.Ainf l) (Per.Acris l) (Per.tm e - 1) ∣ C.t ^ r := by
   have hyu := GlobalTheory.CrisLoc.unit_of_root l e he hne
-  obtain ⟨t, u, ht, hu, htu⟩ := GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l e he
-  have hlog := (GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l e t he ht).2.2.2 C.j C.j_cris
-  obtain ⟨z, k, hz⟩ := GlobalTheory.T.acris_frobenius_eigen_fil_eq_qlMul_tPow l C 1 t (phi_log C.j C.j_cris e he t ht) (isLog_mem_fil e he _ hlog)
+  obtain ⟨t, u, ht, hu, htu⟩ := _root_.GlobalTheory.MemLoc.exists_isLogA l e he
+  have hlog := (_root_.GlobalTheory.MemLoc.LogFun.log_fun l e t he ht).2.2.2 C.j C.j_cris
+  obtain ⟨z, k, hz⟩ := _root_.GlobalTheory.MemLoc.fix_pow l C 1 t (phi_log C.j C.j_cris e he t ht) (isLog_mem_fil e he _ hlog)
   have hz0 : z ≠ 0 := by
     rintro rfl
     rw [map_zero, map_zero, zero_mul, htu] at hz
@@ -120,7 +120,7 @@ theorem mu_dvd_pt (C : Core l) [Nontrivial (Per.Bcris l)] (e : Per.Fl l) (he : e
     rw [map_zero, map_mul, map_mul, map_pow, map_natCast] at h
     have hU : IsUnit (0 : Per.Bcris l) := by
       rw [← h]
-      exact ((GlobalTheory.T.fontaine_t_isUnit_bcris_and_uniformizer_bdRPlus l C).2.2.2.pow k).mul (hyu.mul (hu.map _))
+      exact ((_root_.GlobalTheory.MemLoc.core_t_unit_fil l C).2.2.2.pow k).mul (hyu.mul (hu.map _))
     exact not_isUnit_zero hU
   have hs := congrArg ((algebraMap (Per.Ainf l) (Per.Acris l)).comp (Per.zA l)) (PadicInt.unitCoeff_spec hz0)
   rw [map_mul, map_pow, map_natCast] at hs

@@ -1,0 +1,2 @@
+# Wrapper modules that scripts/collapse_wrappers.py must keep, because deleting them breaks a caller
+# (e.g. the wrapper and its target differ in binder explicitness or argument order).

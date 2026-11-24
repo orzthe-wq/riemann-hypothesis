@@ -2,51 +2,8 @@ module
 
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 public import Mathlib.Analysis.Calculus.ContDiff.Bounds
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 public import Mathlib.Analysis.InnerProductSpace.Calculus
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 
 @[expose] public section
@@ -62,15 +19,16 @@ theorem one_add_pow_mul_exp_neg_pi_mul_sq_le {r : ℝ} (hr : 0 ≤ r) (N : ℕ) 
     (1 + r) ^ N * Real.exp (-π * r ^ 2) ≤ Real.exp (N ^ 2 / (4 * π)) := by
   have h1 : (1 + r) ^ N ≤ Real.exp (N * r) := by
     calc (1 + r) ^ N ≤ Real.exp r ^ N :=
-          pow_le_pow_left₀ (by linarith) (by linarith [Real.add_one_le_exp r]) N
-      _ = Real.exp (N * r) := by rw [← Real.exp_nat_mul]
-  calc (1 + r) ^ N * Real.exp (-π * r ^ 2) ≤ Real.exp (N * r) * Real.exp (-π * r ^ 2) := by
-        gcongr
-    _ = Real.exp (N * r - π * r ^ 2) := by rw [← Real.exp_add]; ring_nf
+          pow_le_pow_left₀ (add_nonneg zero_le_one hr)
+            ((add_comm 1 r).le.trans (Real.add_one_le_exp r)) N
+      _ = Real.exp (N * r) := by rw [← Real.exp_natCast_mul]
+  calc (1 + r) ^ N * Real.exp (-π * r ^ 2) ≤ Real.exp (N * r) * Real.exp (-π * r ^ 2) :=
+        mul_le_mul_of_nonneg_right h1 (Real.exp_pos _).le
+    _ = Real.exp (N * r - π * r ^ 2) := by rw [← Real.exp_add, neg_mul, ← sub_eq_add_neg]
     _ ≤ Real.exp (N ^ 2 / (4 * π)) := by
       apply Real.exp_le_exp.2
       rw [le_div_iff₀ (by positivity)]
-      nlinarith [sq_nonneg ((N : ℝ) - 2 * π * r), Real.pi_pos]
+      linear_combination sq_nonneg ((N : ℝ) - 2 * π * r)
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
@@ -93,7 +51,7 @@ theorem norm_iteratedFDeriv_gaussian_le (n : ℕ) :
   have hqs : ContDiff ℝ ∞ q := contDiff_const.mul (contDiff_norm_sq ℝ)
   obtain ⟨k, C, hC, hb⟩ := hq.norm_iteratedFDeriv_le_uniform n
   refine ⟨n ! * max C 1 ^ n, k * n, by positivity, fun x ↦ ?_⟩
-  have hx1 : 1 ≤ (1 + ‖x‖) ^ k := one_le_pow₀ (by linarith [norm_nonneg x])
+  have hx1 : 1 ≤ (1 + ‖x‖) ^ k := one_le_pow₀ (le_add_of_nonneg_right (norm_nonneg x))
   set D := max C 1 * (1 + ‖x‖) ^ k
   have hD1 : 1 ≤ D := one_le_mul_of_one_le_of_one_le (le_max_right _ _) hx1
   have hcomp : ‖iteratedFDeriv ℝ n (Real.exp ∘ q) x‖ ≤ n ! * Real.exp (q x) * D ^ n := by
@@ -101,7 +59,7 @@ theorem norm_iteratedFDeriv_gaussian_le (n : ℕ) :
       (fun i _ ↦ (norm_iteratedFDeriv_exp i (q x)).le) fun i hi1 hin ↦ ?_
     calc ‖iteratedFDeriv ℝ i q x‖ ≤ C * (1 + ‖x‖) ^ k := hb i hin x
       _ ≤ D := mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)
-      _ ≤ D ^ i := le_self_pow₀ hD1 (by omega)
+      _ ≤ D ^ i := le_self_pow₀ hD1 (Nat.ne_of_gt hi1)
   have hG : gaussianFun (E := E) = (Complex.ofRealLI : ℝ →ₗᵢ[ℝ] ℂ) ∘ (Real.exp ∘ q) := rfl
   rw [hG, LinearIsometry.norm_iteratedFDeriv_comp_left _
     (Real.contDiff_exp.comp hqs).contDiffAt (by exact_mod_cast le_top)]
@@ -115,7 +73,7 @@ def gaussianSchwartz (E : Type*) [NormedAddCommGroup E] [InnerProductSpace ℝ E
   decay' k n := by
     obtain ⟨C, j, hC, hb⟩ := norm_iteratedFDeriv_gaussian_le (E := E) n
     refine ⟨C * Real.exp ((k + j : ℕ) ^ 2 / (4 * π)), fun x ↦ ?_⟩
-    have hk : ‖x‖ ^ k ≤ (1 + ‖x‖) ^ k := pow_le_pow_left₀ (norm_nonneg x) (by linarith) k
+    have hk : ‖x‖ ^ k ≤ (1 + ‖x‖) ^ k := pow_le_pow_left₀ (norm_nonneg x) (le_add_of_nonneg_left zero_le_one) k
     calc ‖x‖ ^ k * ‖iteratedFDeriv ℝ n gaussianFun x‖
         ≤ (1 + ‖x‖) ^ k * (C * (1 + ‖x‖) ^ j * Real.exp (-π * ‖x‖ ^ 2)) :=
           mul_le_mul hk (hb x) (norm_nonneg _) (by positivity)

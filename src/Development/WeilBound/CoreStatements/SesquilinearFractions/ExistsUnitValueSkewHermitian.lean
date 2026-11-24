@@ -88,7 +88,7 @@ theorem hf_smul_left (G : Matrix I I R) (a : R) (x y : I → R) : hf G (a • x)
 
 theorem star_smul_vec (a : R) (y : I → R) : star (a • y) = star a • star y := by
   funext i
-  simp only [Pi.star_apply, Pi.smul_apply, smul_eq_mul, star_mul', mul_comm]
+  simp only [Pi.star_apply, Pi.smul_apply, smul_eq_mul, star_mul']
 
 theorem hf_add_right (G : Matrix I I R) (x y y' : I → R) : hf G x (y + y') = hf G x y + hf G x y' := by
   simp only [hf, star_add, mulVec_add, dotProduct_add]
@@ -110,7 +110,7 @@ theorem local_exists [Nonempty I] (G : Matrix I I R) (hG : Gᴴ = -G) (hdet : Is
     by_cases h : i = k
     · subst h
       simp
-    · simp [Pi.single_apply, h]
+    · simp [h]
   have hvG : v ᵥ* G = e := by
     rw [hv, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hdet, Matrix.vecMul_one]
   have hve : hf G v e = 1 := by
@@ -382,7 +382,7 @@ theorem step {n : ℕ} (G : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (hG : Gᴴ = -
         rintro rfl
         exact absurd hki (Fin.not_lt_zero _)
       have hne : k ≠ i := ne_of_lt hki
-      simp [P, hi, Pi.single_apply, hne]
+      simp [P, hi, hne]
   have hr0 : (L * P) 0 = x := by
     ext k
     rw [Matrix.mul_apply, Fin.sum_univ_succ]
@@ -475,11 +475,11 @@ theorem PositivityTheory.Xgf.skew_hermitian_diagonalizable : ∀ (R : Type) [Com
     have hcons : ∀ u v : Fin n → R, hf G2 (Fin.cons 0 u) (Fin.cons 0 v) = hf G3 u v := by
       intro u v
       simp only [hf_expand, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, star_zero, zero_mul,
-        mul_zero, Finset.sum_const_zero, zero_add, add_zero, hG3, Matrix.submatrix_apply]
+        mul_zero, Finset.sum_const_zero, zero_add, hG3, Matrix.submatrix_apply]
     have hleft : ∀ v : Fin n → R, hf G2 (Pi.single 0 1) (Fin.cons 0 v) = 0 := by
       intro v
       have : ∀ j : Fin n, G2 0 j.succ = 0 := hT1b
-      simp [hf_expand, Fin.sum_univ_succ, Pi.single_apply, Fin.succ_ne_zero, this]
+      simp [hf_expand, Fin.sum_univ_succ, Pi.single_apply, this]
     have hright : ∀ u : Fin n → R, hf G2 (Fin.cons 0 u) (Pi.single 0 1) = 0 := by
       intro u
       have : ∀ j : Fin n, G2 j.succ 0 = 0 := hT1a

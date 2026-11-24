@@ -108,7 +108,7 @@ theorem _root_.GlobalTheory.coeff_at2_single_X_inl_inr (R : Type) [CommRing R] (
       (Pi.single m (X (Sum.inr m))) = fun s =>
         if (s = Sum.inl m ∨ s = Sum.inr m) then (X s : MvPowerSeries (Fin d ⊕ Fin d) R) else 0 := by
     funext s
-    rcases s with i | i <;> by_cases h : i = m <;> simp [h, Pi.single_apply]
+    rcases s with i | i <;> by_cases h : i = m <;> simp [h]
   have hiff : (∀ s, ¬ (s = Sum.inl m ∨ s = Sum.inr m) → γ s = 0) ↔
       γ = Finsupp.single (Sum.inl m) (γ (Sum.inl m)) +
         Finsupp.single (Sum.inr m) (γ (Sum.inr m)) := by
@@ -116,14 +116,14 @@ theorem _root_.GlobalTheory.coeff_at2_single_X_inl_inr (R : Type) [CommRing R] (
     · intro h
       ext s
       by_cases hs : s = Sum.inl m ∨ s = Sum.inr m
-      · rcases hs with rfl | rfl <;> simp [Finsupp.single_apply]
+      · rcases hs with rfl | rfl <;> simp
       · push_neg at hs
         rw [h s (not_or.mpr hs)]
-        simp [Finsupp.single_apply, Ne.symm hs.1, Ne.symm hs.2]
+        simp [Ne.symm hs.1, Ne.symm hs.2]
     · intro h s hs
       push_neg at hs
       rw [h]
-      simp [Finsupp.single_apply, Ne.symm hs.1, Ne.symm hs.2]
+      simp [Ne.symm hs.1, Ne.symm hs.2]
   unfold _root_.GlobalTheory.Katz.at2
   rw [hfun, _root_.GlobalTheory.OnePair.coeff_subst_kill]
   by_cases hγ : γ = Finsupp.single (Sum.inl m) (γ (Sum.inl m)) +

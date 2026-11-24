@@ -236,8 +236,7 @@ def gram_det_kernel_dual_lattice (D : D7) : Prop :=
 
 theorem mass_ratio_of_general (D : D7) (h : SiegelMassRatioCM) : MassRatio₂ D := by
   let _ := D.host.cmStar
-  intro M hM
-  exact h D.host.E D.sp.cm.cmUnram M hM
+  exact fun M hM => h D.host.E D.sp.cm.cmUnram M hM
 
 theorem prod_gap_eq_facProd (n : ℕ) :
     (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))) = facProd n := by
@@ -260,8 +259,7 @@ theorem dimV_eq_fdegHC {n : ℕ} (lam : Fin n → ℝ) (h : StrictAnti lam) :
   rw [prod_gap_eq_facProd]
   congr 1
   refine Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b hb => ?_
-  have hab : a < b := (Finset.mem_filter.1 hb).2
-  rw [abs_of_pos (sub_pos.2 (h hab))]
+  rw [abs_of_pos (sub_pos.2 (h (Finset.mem_filter.1 hb).2))]
 
 section DS
 

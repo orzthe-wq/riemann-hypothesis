@@ -1,11 +1,9 @@
 module
 
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.NilpotentLevelLowering.LevelModule
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.NilpotentLevelLowering.ActUVariableEqPow
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwDomMul
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHeckePairIwC
-import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkApply
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwMonoidExt
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FixPiIff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -40,8 +38,58 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHeckePairIwC
+import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkApply
 import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FixPiIff, Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.NilpotentLevelLowering.ThetaQ
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FixPiIff =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FixPiIff", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.NilpotentLevelLowering.LevelModule\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace UpperTheory.Reformulated.B.Gr34
+
+open ValuativeRel IsLocalRing UpperTheory.V.W UpperTheory.V.Hi UpperTheory.V.AlgebraTools
+  UpperTheory.V.Pa UpperTheory.V.Pa.Lev
+
+attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+
+private theorem fix_pi_iff {ι : Type} [Finite ι] [DecidableEq ι] {G : ι → Type} [∀ i, Group (G i)]
+    {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (∀ i, G i) M)
+    (K : ∀ i, Subgroup (G i)) (m : M) :
+    (∀ k ∈ Subgroup.pi Set.univ K, ρ k m = m) ↔
+      ∀ j, ∀ k ∈ K j, ρ (Pi.mulSingle j k) m = m := by
+  refine ⟨fun h j k hk => h _ fun i _ => ?_, fun h k hk => ?_⟩
+  · rcases eq_or_ne i j with rfl | hij
+    · simpa using hk
+    · simp [Pi.mulSingle_eq_of_ne hij]
+  · let H : Subgroup (∀ i, G i) :=
+      { carrier := {g | ρ g m = m}
+        one_mem' := by simp
+        mul_mem' := fun {a b} (ha : ρ a m = m) (hb : ρ b m = m) =>
+          show ρ (a * b) m = m by simp [ha, hb]
+        inv_mem' := fun {a} (ha : ρ a m = m) => show ρ a⁻¹ m = m by
+          conv_lhs => rw [← ha, Representation.inv_self_apply] }
+    exact Subgroup.pi_mem_of_mulSingle_mem (H := H) k fun i => h i _ (hk i trivial)
+
+theorem mem_UC {L : Type} [Field L] [NumberField L] {n q : ℕ} {w : Fin q → Plc L}
+    {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
+    (ρ : Representation A (GV n w) M)
+    (C : ∀ j : Fin q, Subgroup 𝓀[(w j).adicCompletion L]ˣ) (m : M) :
+    m ∈ fixd ρ (UC n w C) ↔ ∀ j, m ∈ fixd (ρ.comp (atJ n w j)) (iwC _ n (C j)) :=
+  fix_pi_iff (G := fun j => GLw n (w j)) ρ _ m
+
+end UpperTheory.Reformulated.B.Gr34
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FixPiIff =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.NilpotentLevelLowering.ThetaQ =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.NilpotentLevelLowering.ThetaQ", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.NilpotentLevelLowering.ActUVariableEqPow\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwDomMul\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHeckePairIwC\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkApply\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwMonoidExt\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FixPiIff\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N ValuativeRel IsLocalRing
@@ -96,10 +144,6 @@ private theorem comm_at {j j' : Fin q} (h : j ≠ j') (g : GLw n (w j)) (g' : GL
     Commute (ρ (atJ n w j g)) (ρ (atJ n w j' g')) :=
   (Pi.mulSingle_commute (f := fun j => GLw n (w j)) h g g').map ρ
 
-private theorem mem_UC (m : M) :
-    m ∈ fixd ρ (UC n w C) ↔ ∀ j, m ∈ fixd (ρ.comp (atJ n w j)) (iwC _ n (C j)) :=
-  by apply _root_.UpperTheory.Reformulated.B.Gr34.mem_UC <;> assumption
-
 private theorem one_place (j : Fin q) (hq : IsUnit (qj w j : A)) :
     ∃ θ : (Fin n → ((w j).adicCompletion L)ˣ) →* (Module.End A (fixd ρ (UC n w C)))ˣ, ∀ t, Dom t →
       ∀ m : fixd ρ (UC n w C), ((θ t : Module.End A (fixd ρ (UC n w C))) m : M) =
@@ -115,7 +159,7 @@ private theorem one_place (j : Fin q) (hq : IsUnit (qj w j : A)) :
   have hpres : ∀ x, ∀ m ∈ fixd ρ (UC n w C),
       dc (ρ.comp (atJ n w j)) (iwC _ n (C j)) (iwC _ n (C j)) x m ∈ fixd ρ (UC n w C) := by
     intro x m hm
-    rw [mem_UC] at hm ⊢
+    rw [_root_.UpperTheory.Reformulated.B.Gr34.mem_UC] at hm ⊢
     intro j'
     by_cases e : j' = j
     · subst e
@@ -131,21 +175,21 @@ private theorem one_place (j : Fin q) (hq : IsUnit (qj w j : A)) :
   have fmul : ∀ a b, Dom a → Dom b → f (a * b) = f a * f b := by
     intro a b ha hb
     ext m
-    have h1 := congrArg Subtype.val (LinearMap.congr_fun (hmul a b ha hb) ⟨m, (mem_UC ρ C _).1 m.2 j⟩)
+    have h1 := congrArg Subtype.val (LinearMap.congr_fun (hmul a b ha hb) ⟨m, (_root_.UpperTheory.Reformulated.B.Gr34.mem_UC ρ C _).1 m.2 j⟩)
     rw [Module.End.mul_apply, happ, happ, happ] at h1
     exact h1.symm
   have funit : ∀ a, Dom a → IsUnit (f a) := by
     intro a ha
     obtain ⟨hi, hs⟩ := (Module.End.isUnit_iff _).1 (hunit hq a ha)
     refine (Module.End.isUnit_iff _).2 ⟨fun m m' h => ?_, fun m => ?_⟩
-    · have := @hi ⟨m, (mem_UC ρ C _).1 m.2 j⟩ ⟨m', (mem_UC ρ C _).1 m'.2 j⟩ (Subtype.ext (by
+    · have := @hi ⟨m, (_root_.UpperTheory.Reformulated.B.Gr34.mem_UC ρ C _).1 m.2 j⟩ ⟨m', (_root_.UpperTheory.Reformulated.B.Gr34.mem_UC ρ C _).1 m'.2 j⟩ (Subtype.ext (by
         rw [happ, happ]; exact congrArg Subtype.val h))
       have h2 := congrArg Subtype.val this
       exact Subtype.ext h2
-    · obtain ⟨v, hv⟩ := hs ⟨m, (mem_UC ρ C _).1 m.2 j⟩
+    · obtain ⟨v, hv⟩ := hs ⟨m, (_root_.UpperTheory.Reformulated.B.Gr34.mem_UC ρ C _).1 m.2 j⟩
       have hv' := congrArg Subtype.val hv
       rw [happ] at hv'
-      refine ⟨⟨v, (mem_UC ρ C _).2 fun j' => ?_⟩, Subtype.ext hv'⟩
+      refine ⟨⟨v, (_root_.UpperTheory.Reformulated.B.Gr34.mem_UC ρ C _).2 fun j' => ?_⟩, Subtype.ext hv'⟩
       by_cases e : j' = j
       · subst e
         exact v.2
@@ -160,7 +204,7 @@ private theorem one_place (j : Fin q) (hq : IsUnit (qj w j : A)) :
           have h1 := LinearMap.congr_fun (hcomm j' e u (diagT _ (Fin n) a)).eq v
           rw [Module.End.mul_apply, Module.End.mul_apply, hv'] at h1
           rw [hv']
-          exact h1.symm.trans ((mem_UC ρ C _).1 m.2 j' u hu)))
+          exact h1.symm.trans ((_root_.UpperTheory.Reformulated.B.Gr34.mem_UC ρ C _).1 m.2 j' u hu)))
         exact congrArg Subtype.val this
   let P : Submonoid (Fin n → ((w j).adicCompletion L)ˣ) :=
     { carrier := {t | Dom t}
@@ -200,3 +244,6 @@ theorem UpperTheory.V.Pa.Lev.thetaQ :
   rw [map_mul, map_mul, map_inv, map_inv]
   exact ((hd a c ha hc).mul_right (hd a d ha hd').inv_right).mul_left
     ((hd b c hb hc).mul_right (hd b d hb hd').inv_right).inv_left
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.NilpotentLevelLowering.ThetaQ =====

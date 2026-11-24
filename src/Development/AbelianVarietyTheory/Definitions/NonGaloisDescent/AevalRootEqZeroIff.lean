@@ -68,14 +68,6 @@ theorem _root_.GlobalTheory.UTr.IsCsr.conj_mul_coeff_zero {P : B[X]}
     coeff_natDegree, h.1.leadingCoeff, map_one] at h0
   exact h0
 
-theorem isCsr_X_sub_C [Nontrivial B] {u : B} : IsCsr s (X - C u) ↔ s u * u = 1 := by
-  refine ⟨fun h => by simpa using h.conj_mul_coeff_zero, fun h => ⟨monic_X_sub_C u, ?_⟩⟩
-  have e : reflect 1 (X : B[X]) = 1 := by simpa using reflect_monomial (R := B) 1 1
-  have e' : C (s u) * C u = (1 : B[X]) := by rw [← C_mul, h, C_1]
-  rw [natDegree_X_sub_C, Polynomial.map_sub, map_X, map_C, reflect_sub, e, reflect_C]
-  simp only [coeff_sub, coeff_X_zero, coeff_C_zero, zero_sub, map_neg]
-  linear_combination e'
-
 theorem IsCsr.mul {P Q : B[X]} (hP : IsCsr s P) (hQ : IsCsr s Q) : IsCsr s (P * Q) := by
   refine ⟨hP.1.mul hQ.1, ?_⟩
   rw [hP.1.natDegree_mul hQ.1, Polynomial.map_mul, reflect_mul _ _ natDegree_map_le natDegree_map_le, ← hP.2, ← hQ.2,

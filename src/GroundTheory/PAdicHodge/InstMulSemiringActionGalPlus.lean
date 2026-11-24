@@ -1,8 +1,14 @@
 module
 
-public import Mathlib
 public import GroundTheory.PAdicHodge.ACrisPhi
 public import GroundTheory.PAdicHodge.ACrisGalois
+
+/-!
+# Construction of `B^+_{cris}` and `B_{cris}`
+
+This file defines the Fontaine period rings `B^+_{cris}` and `B^+_{cris}`, with their
+Frobenius maps and Galois actions.
+-/
 
 @[expose] public section
 
@@ -21,13 +27,86 @@ section Defs
 variable (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
 variable (p : ℕ) [hp : Fact p.Prime] [IsPerfectoidField K p]
 
+/-- Fontaine's period ring `B⁺_{cris} = A_{cris}[1/p]`.
+
+See [Fontaine, *Le corps des périodes p-adiques* (§2.3.1, p. 78)][fontaine1994].
+In the notation of [Bhatt–Morrow–Scholze, *Integral p-adic Hodge theory*
+(§1.2, p. 223)][bhattMorrowScholze2018], this is `A_{crys}[1/p]`.
+
+TODO: Unify this with `Reformulated.AutPerF.BcrisPlus`. -/
 abbrev BCrisPlus : Type _ := Localization.Away (p : ACris (K := K) (p := p))
+
+-- Provide named, `rfl`-defeq instances for `BCrisPlus` so downstream terms and kernel
+-- definitional-equality checks share compact atomic constants instead of repeatedly unfolding
+-- nested `OreLocalization` / `AdicCompletion` / `WittVector` instance stacks.
+variable {K p} in
+instance (priority := high) instCommRingBCrisPlus : CommRing (BCrisPlus K p) :=
+  OreLocalization.instCommRing
+
+variable {K p} in
+instance (priority := high) instRingBCrisPlus : Ring (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toRing
+
+variable {K p} in
+instance (priority := high) instCommSemiringBCrisPlus : CommSemiring (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toCommSemiring
+
+variable {K p} in
+instance (priority := high) instSemiringBCrisPlus : Semiring (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toSemiring
+
+variable {K p} in
+instance (priority := high) instNonAssocSemiringBCrisPlus : NonAssocSemiring (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toNonAssocSemiring
+
+variable {K p} in
+instance (priority := high) instAddCommGroupBCrisPlus : AddCommGroup (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toAddCommGroup
+
+variable {K p} in
+instance (priority := high) instAddGroupBCrisPlus : AddGroup (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toAddGroup
+
+variable {K p} in
+instance (priority := high) instAddCommMonoidBCrisPlus : AddCommMonoid (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toAddCommMonoid
+
+variable {K p} in
+instance (priority := high) instAddMonoidBCrisPlus : AddMonoid (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toAddMonoid
+
+variable {K p} in
+instance (priority := high) instCommMonoidWithZeroBCrisPlus : CommMonoidWithZero (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toCommSemiring.toCommMonoidWithZero
+
+variable {K p} in
+instance (priority := high) instMonoidWithZeroBCrisPlus : MonoidWithZero (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toMonoidWithZero
+
+variable {K p} in
+instance (priority := high) instCommMonoidBCrisPlus : CommMonoid (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toCommMonoid
+
+variable {K p} in
+instance (priority := high) instMonoidBCrisPlus : Monoid (BCrisPlus K p) :=
+  (instCommRingBCrisPlus (K := K) (p := p)).toMonoid
+
+variable {K p} in
+instance (priority := high) instAlgebraACrisBCrisPlus : Algebra (ACris K p) (BCrisPlus K p) :=
+  OreLocalization.instAlgebra
+
+variable {K p} in
+instance (priority := high) instIsLocalizationBCrisPlus :
+    IsLocalization.Away (p : ACris (K := K) (p := p)) (BCrisPlus K p) :=
+  Localization.isLocalization
 
 theorem phi_natCast_p : phi (K := K) (p := p) (p : ACris (K := K) (p := p)) = (p : ACris (K := K) (p := p)) :=
   map_natCast (phi (K := K) (p := p)) p
 
 def phiPlus : BCrisPlus K p →+* BCrisPlus K p :=
-  Localization.awayLift ((algebraMap (ACris (K := K) (p := p)) (BCrisPlus K p)).comp (phi (K := K) (p := p))) (p : ACris (K := K) (p := p))
+  IsLocalization.Away.lift (S := BCrisPlus K p)
+    (g := (algebraMap (ACris (K := K) (p := p)) (BCrisPlus K p)).comp (phi (K := K) (p := p)))
+    (p : ACris (K := K) (p := p))
     (by
       rw [RingHom.comp_apply, phi_natCast_p]
       exact IsLocalization.Away.algebraMap_isUnit (p : ACris (K := K) (p := p)))
@@ -42,8 +121,79 @@ theorem phiPlus_algebraMap (x : ACris (K := K) (p := p)) :
 
 variable {ε : PreTilt (normInteger K) p}
 
+/-- The localization `B⁺_{cris}[1/t]`, where `t = periodT hε = log [ε]`.
+
+When `ε` comes from a compatible system of primitive `p`-power roots of unity,
+this is Fontaine's period ring `B_{cris}`; see
+[Fontaine, *Le corps des périodes p-adiques* (§2.3.4, pp. 78–79)][fontaine1994].
+
+[Bhatt–Morrow–Scholze, *Integral p-adic Hodge theory* (§1.2, p. 223)][bhattMorrowScholze2018]
+denote this ring by `B_{crys}` and construct it by inverting `μ = [ε] - 1` in `A_{crys}`.
+Their Lemma 12.2(iii), pp. 358–359, identifies `t` with `μ` times a unit in `A_{crys}`.
+
+TODO: Unify this with `Reformulated.AutPerF.Bcris`. -/
 abbrev BCris (hε : PreTilt.untilt ε = 1) : Type _ :=
   Localization.Away (algebraMap (ACris (K := K) (p := p)) (BCrisPlus K p) (periodT hε))
+
+-- Same named `rfl`-defeq instances for `BCris` to prevent exponential blowup across the
+-- two nested `Localization.Away` layers.
+instance (priority := high) instCommRingBCris (hε : PreTilt.untilt ε = 1) : CommRing (BCris hε) :=
+  OreLocalization.instCommRing
+
+instance (priority := high) instRingBCris (hε : PreTilt.untilt ε = 1) : Ring (BCris hε) :=
+  (instCommRingBCris hε).toRing
+
+instance (priority := high) instCommSemiringBCris (hε : PreTilt.untilt ε = 1) :
+    CommSemiring (BCris hε) :=
+  (instCommRingBCris hε).toCommSemiring
+
+instance (priority := high) instSemiringBCris (hε : PreTilt.untilt ε = 1) : Semiring (BCris hε) :=
+  (instCommRingBCris hε).toSemiring
+
+instance (priority := high) instNonAssocSemiringBCris (hε : PreTilt.untilt ε = 1) :
+    NonAssocSemiring (BCris hε) :=
+  (instCommRingBCris hε).toNonAssocSemiring
+
+instance (priority := high) instAddCommGroupBCris (hε : PreTilt.untilt ε = 1) :
+    AddCommGroup (BCris hε) :=
+  (instCommRingBCris hε).toAddCommGroup
+
+instance (priority := high) instAddGroupBCris (hε : PreTilt.untilt ε = 1) :
+    AddGroup (BCris hε) :=
+  (instCommRingBCris hε).toAddGroup
+
+instance (priority := high) instAddCommMonoidBCris (hε : PreTilt.untilt ε = 1) :
+    AddCommMonoid (BCris hε) :=
+  (instCommRingBCris hε).toAddCommMonoid
+
+instance (priority := high) instAddMonoidBCris (hε : PreTilt.untilt ε = 1) :
+    AddMonoid (BCris hε) :=
+  (instCommRingBCris hε).toAddMonoid
+
+instance (priority := high) instCommMonoidWithZeroBCris (hε : PreTilt.untilt ε = 1) :
+    CommMonoidWithZero (BCris hε) :=
+  (instCommRingBCris hε).toCommSemiring.toCommMonoidWithZero
+
+instance (priority := high) instMonoidWithZeroBCris (hε : PreTilt.untilt ε = 1) :
+    MonoidWithZero (BCris hε) :=
+  (instCommRingBCris hε).toMonoidWithZero
+
+instance (priority := high) instCommMonoidBCris (hε : PreTilt.untilt ε = 1) :
+    CommMonoid (BCris hε) :=
+  (instCommRingBCris hε).toCommMonoid
+
+instance (priority := high) instMonoidBCris (hε : PreTilt.untilt ε = 1) :
+    Monoid (BCris hε) :=
+  (instCommRingBCris hε).toMonoid
+
+instance (priority := high) instAlgebraBCrisPlusBCris (hε : PreTilt.untilt ε = 1) :
+    Algebra (BCrisPlus K p) (BCris hε) :=
+  OreLocalization.instAlgebra
+
+instance (priority := high) instIsLocalizationBCris (hε : PreTilt.untilt ε = 1) :
+    IsLocalization.Away
+      (algebraMap (ACris (K := K) (p := p)) (BCrisPlus K p) (periodT hε)) (BCris hε) :=
+  Localization.isLocalization
 
 theorem isUnit_algebraMap_p_plus :
     IsUnit (algebraMap (ACris (K := K) (p := p)) (BCrisPlus K p)
@@ -60,7 +210,8 @@ theorem isUnit_phiPlus_periodT (hε : PreTilt.untilt ε = 1) :
         (algebraMap (ACris (K := K) (p := p)) (BCrisPlus K p) (periodT hε)))
 
 def phiB (hε : PreTilt.untilt ε = 1) : BCris hε →+* BCris hε :=
-  Localization.awayLift ((algebraMap (BCrisPlus K p) (BCris hε)).comp (phiPlus K p))
+  IsLocalization.Away.lift (S := BCris hε)
+    (g := (algebraMap (BCrisPlus K p) (BCris hε)).comp (phiPlus K p))
     (algebraMap (ACris (K := K) (p := p)) (BCrisPlus K p) (periodT hε)) (isUnit_phiPlus_periodT hε)
 
 theorem phiB_algebraMap (hε : PreTilt.untilt ε = 1) (x : BCrisPlus K p) :
@@ -79,7 +230,8 @@ theorem galCris_natCast_p (σ : Gal(PadicAlgCl p/K)) : galCris σ (p : ACris (K 
   map_natCast (galCris σ) p
 
 def galPlus (σ : Gal(PadicAlgCl p/K)) : BCrisPlus ℂ_[p] p →+* BCrisPlus ℂ_[p] p :=
-  Localization.awayLift ((algebraMap (ACris (K := ℂ_[p]) (p := p)) (BCrisPlus ℂ_[p] p)).comp (galCris σ))
+  IsLocalization.Away.lift (S := BCrisPlus ℂ_[p] p)
+    (g := (algebraMap (ACris (K := ℂ_[p]) (p := p)) (BCrisPlus ℂ_[p] p)).comp (galCris σ))
     (p : ACris (K := ℂ_[p]) (p := p))
     (by
       rw [RingHom.comp_apply, galCris_natCast_p]
@@ -121,6 +273,12 @@ instance instMulSemiringActionGalPlus :
   smul_add σ := map_add (galPlus σ)
   smul_one σ := map_one (galPlus σ)
   smul_mul σ := map_mul (galPlus σ)
+
+-- Direct `SMul` shortcut avoids expensive failed `SeminormedRing`/`OreLocalization` searches
+-- before falling back to `instMulSemiringActionGalPlus`.
+instance (priority := high) instSMulGalPlus :
+    SMul Gal(PadicAlgCl p/K) (BCrisPlus ℂ_[p] p) :=
+  instMulSemiringActionGalPlus.toSMul
 
 theorem gal_smul_plus_def (σ : Gal(PadicAlgCl p/K)) (x : BCrisPlus ℂ_[p] p) :
     σ • x = galPlus σ x :=

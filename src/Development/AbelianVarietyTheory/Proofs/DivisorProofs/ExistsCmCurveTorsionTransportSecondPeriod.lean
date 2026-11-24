@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.TorsTransport
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsEqOfNatCastMulMem
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LatticeDeterminedByInvariants
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsConjLattice
+import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TendstoCoeffZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -102,7 +103,7 @@ theorem exists_curve_torsTransport : ∀ {K : Type} [Field K] [NumberField K] [_
   obtain ⟨ξ, hξ, hξz⟩ := exists_isAnalyticIso (X := latticeCurve M) (C := 1) (one_smul _ _) hΩ₀ hsub
   refine ⟨latticeCurve M, inferInstance, ξ, hξ, fun σ t ht => ?_⟩
   obtain ⟨η, ⟨hη, hηx⟩, -⟩ := ht
-  obtain ⟨L', g2, g3⟩ := GlobalTheory.CMRam.exists_conj_lattice σ.toRingEquiv M
+  obtain ⟨L', g2, g3⟩ := _root_.GlobalTheory.DiscUniformisation.main σ.toRingEquiv M
   have h' : (1 : VariableChange ℂ) • (latticeCurve M).map (σ : ℂ →+* ℂ) = latticeCurve L' := by
     rw [one_smul]
     simp [latticeCurve, WeierstrassCurve.map, g2, g3, map_ofNat]

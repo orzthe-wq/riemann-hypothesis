@@ -231,7 +231,7 @@ theorem lin_F {d : ℕ} (G : FGLaw R d) (v w : Fin d → R) (k : Fin d) :
     ∑ p : Fin 2 × Fin d, (![v, w] : Fin 2 → Fin d → R) p.1 p.2 *
       MvPowerSeries.coeff (Finsupp.single p 1) (G.F k) = v k + w k := by
   rw [Fintype.sum_prod_type, Fin.sum_univ_two]
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
   rw [lin_comm G v k, lin_unit G w k]
 
 end Formalism.MainNotions.ModuliIntegralCharts.H1.ExpChartJetA

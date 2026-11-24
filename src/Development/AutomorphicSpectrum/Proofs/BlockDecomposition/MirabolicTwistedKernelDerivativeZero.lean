@@ -65,7 +65,7 @@ theorem mem_MirUin_iff_mem_derUnipM (k : Type) [Field k] (n : ℕ) (g : Mir k n)
     · have hj : j ≠ Fin.last n := fun h => by
         subst h; exact absurd hji (not_lt.2 (Fin.le_last i))
       have hij : i ≠ j := (ne_of_lt hji).symm
-      simp [unip, colMat, Matrix.one_apply, hj, hij]
+      simp [unip, colMat, hj, hij]
     · by_cases hi : i = Fin.last n
       · subst hi; simp [unip, colMat]
       · simp [unip, colMat, hi]
@@ -80,7 +80,7 @@ theorem mem_MirUin_iff_mem_derUnipM (k : Type) [Field k] (n : ℕ) (g : Mir k n)
     | last =>
       induction i using Fin.lastCases with
       | last => simp [colMat, ((mem_unipB k).1 hB).2]
-      | cast i => simp [colMat, Matrix.one_apply, Fin.castSucc_ne_last]
+      | cast i => simp [colMat, Fin.castSucc_ne_last]
     | cast j =>
       have h := congrFun (hC (Fin.castSucc j) (by simp)) i
       rw [mulVec_single_one] at h

@@ -61,7 +61,7 @@ theorem hb_conjTranspose (p : Fin n × Fin n) : (hb p)ᴴ = hb p := by
   unfold hb
   split_ifs with h1 h2
   · simp
-  · simp [conjTranspose_smul, conjTranspose_add, add_comm]
+  · simp [conjTranspose_add, add_comm]
   · have e : star (((Real.sqrt 2 : ℂ))⁻¹ * Complex.I) = -(((Real.sqrt 2 : ℂ))⁻¹ * Complex.I) := by
       simp
     rw [conjTranspose_smul, conjTranspose_sub, e]

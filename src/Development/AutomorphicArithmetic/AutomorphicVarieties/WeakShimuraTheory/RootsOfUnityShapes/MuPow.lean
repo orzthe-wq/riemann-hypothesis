@@ -122,8 +122,8 @@ theorem UpperTheory.V.Ws.Rq.muPs :
   have hal : D.al (resQ T.F s) = 1 := by
     simp only [Raw.al, MonoidHom.mul_apply, MonoidHom.inv_apply, hchi, hom, hξ, inv_one, mul_one]
   have hPsi : D.Psi (resQ T.F s) = 1 := by
-    simp only [Raw.Psi, UpperTheory.V.Chr.Psi, MonoidHom.mul_apply, MonoidHom.pow_apply, MonoidHom.zpow_apply,
-      hψ, hchi, one_pow, one_zpow, mul_one]
+    simp only [Raw.Psi, UpperTheory.V.Chr.Psi, MonoidHom.mul_apply, MonoidHom.zpow_apply,
+      hψ, hchi, one_zpow, mul_one]
   have hth : D.th (resQ T.F s) = 1 := by
     simp only [Raw.th, Raw.al, MonoidHom.mul_apply, MonoidHom.inv_apply, hchi, hom, hξ, hPsi, inv_one, mul_one]
   fin_cases i

@@ -72,7 +72,6 @@ theorem lehw_dom {r n : ℕ} (ν : Fin n → ℕ) (hnr : n ≤ r) (hν : Antiton
     simp only [u, map_sum, map_monomial, smul_monomial]
     refine Finset.sum_congr rfl fun d hd => ?_
     congr 1
-    push_cast
     have hN : (N : ℚ) = (∏ d' ∈ f.support.erase d, ((AddMonoidAlgebra.coeff f d').den : ℚ)) * (AddMonoidAlgebra.coeff f d).den := by
       simp only [N]
       push_cast
@@ -181,7 +180,7 @@ theorem lehwShift_gen {R : Type*} [CommRing R] {r n : ℕ} (w : Fin r × Fin n �
       ring
     · have e : (Polynomial.C (X (c, s)) + Polynomial.X * Polynomial.C (X (a, s)) :
           Polynomial (MvPolynomial (Fin r × Fin n) R)).coeff (k + 1 + 1) = 0 := by
-        simp [Polynomial.coeff_C]
+        simp
       rw [e]
       intro d hd
       exact (hd (by simp)).elim
@@ -241,7 +240,7 @@ theorem lehw_weight_rowW {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (a : Fin r)
   rw [Finset.sum_eq_single a]
   · simp [rowDeg]
   · intro b _ hb
-    simp [hb, Ne.symm hb]
+    simp [Ne.symm hb]
   · simp
 
 theorem lehw_kill {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν)

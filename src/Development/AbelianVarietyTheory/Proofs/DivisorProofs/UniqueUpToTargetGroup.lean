@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsArchOne
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.PerpBasisExistence
 
 @[expose] public section
 
@@ -60,28 +61,6 @@ open scoped Matrix
 section Unitary
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
-
-theorem herm_sub_left' (G : Matrix (Fin r) (Fin r) E) (x y z : Fin r → E) :
-    herm G (x - y) z = herm G x z - herm G y z := by
-  simp only [herm, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
-
-theorem herm_sub_right' (G : Matrix (Fin r) (Fin r) E) (x y z : Fin r → E) :
-    herm G x (y - z) = herm G x y - herm G x z := by
-  simp only [herm, Pi.sub_apply, cc, map_sub, mul_sub, Finset.sum_sub_distrib]
-
-theorem herm_add_right' (G : Matrix (Fin r) (Fin r) E) (x y z : Fin r → E) :
-    herm G x (y + z) = herm G x y + herm G x z := by
-  simp only [herm, Pi.add_apply, cc, map_add (f := _), mul_add, Finset.sum_add_distrib]
-
-theorem herm_smul_left' (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
-    herm G (c • x) y = c * herm G x y := by
-  simp only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
-
-theorem herm_smul_right' (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
-    herm G x (c • y) = cc c * herm G x y := by
-  simp only [herm, Pi.smul_apply, smul_eq_mul, cc, map_mul, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 def intOf (x : E) (hx : IsIntegral ℤ x) : 𝓞 E := ⟨x, hx⟩
 
@@ -104,14 +83,14 @@ theorem sub_mem_natSMul_of_unitary (G : Matrix (Fin r) (Fin r) E) (L' : Submodul
     intro z hz u hu
     refine Submodule.smul_induction_on hu (fun m hm n hn => ?_) (fun u₁ u₂ h₁ h₂ => ?_)
     · refine ⟨bar m * intOf (herm G z n) (hint z hz n hn), J.mul_mem_right _ (Ideal.mem_map_of_mem _ hm), ?_⟩
-      rw [← algebraMap_smul E m n, herm_smul_right']
+      rw [← algebraMap_smul E m n, _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_right]
       show _ = ((bar m : 𝓞 E) : E) * ((intOf (herm G z n) (hint z hz n hn) : 𝓞 E) : E)
       rw [hbar, coe_intOf]
       rfl
     · obtain ⟨c₁, hc₁, e₁⟩ := h₁
       obtain ⟨c₂, hc₂, e₂⟩ := h₂
       refine ⟨c₁ + c₂, J.add_mem hc₁ hc₂, ?_⟩
-      rw [herm_add_right', e₁, e₂]
+      rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.PerpBasisExistence.herm_add_right', e₁, e₂]
       push_cast
       rfl
   set ε' : Matrix (Fin r) (Fin r) E := (ε : Matrix (Fin r) (Fin r) E) with hε'
@@ -129,8 +108,8 @@ theorem sub_mem_natSMul_of_unitary (G : Matrix (Fin r) (Fin r) E) (L' : Submodul
     have hz'L : z' ∈ L' := (hlat z').2 (ez ▸ hz)
     obtain ⟨c, hcJ, ec⟩ := hA w hw _ (hc z' hz'L)
     refine ⟨-c, J.neg_mem hcJ, ?_⟩
-    rw [herm_sub_right'] at ec
-    rw [← ez, hv, herm_sub_left', hiso]
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_sub_right] at ec
+    rw [← ez, hv, _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_sub_left, hiso]
     push_cast
     linear_combination -ec
   have hMO' : (M : E) ≠ 0 := Nat.cast_ne_zero.2 hM
@@ -141,7 +120,7 @@ theorem sub_mem_natSMul_of_unitary (G : Matrix (Fin r) (Fin r) E) (L' : Submodul
     · obtain ⟨c, hcJ, ec⟩ := hB z hz
       have hmc : m * c ∈ Ideal.span {(M : 𝓞 E)} := hprod ▸ Ideal.mul_mem_mul hm hcJ
       obtain ⟨d, hd⟩ := Ideal.mem_span_singleton'.1 hmc
-      rw [herm_smul_left', ec]
+      rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_smul_left, ec]
       have : (M : E)⁻¹ * (m : E) * (c : E) = (d : E) := by
         have e2 : ((d * (M : 𝓞 E) : 𝓞 E) : E) = ((m * c : 𝓞 E) : E) := by rw [hd]
         push_cast at e2

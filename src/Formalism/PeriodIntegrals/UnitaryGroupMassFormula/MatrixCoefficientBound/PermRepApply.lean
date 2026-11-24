@@ -41,31 +41,20 @@ import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
-open Finset Matrix
-
+open Matrix Classical Formalism.L2.SG.GGMirabolic
 open scoped ComplexConjugate ComplexOrder
 
 noncomputable section
 
-open Classical
-
 namespace PI.GGMatBoundW
 
-open Formalism.L2.SG.GGMirabolic
-
-section Defs
-
 variable {ι : Type} [Fintype ι] {Fq : ι → Type} [∀ v, Field (Fq v)] [∀ v, Fintype (Fq v)] {k : ℕ}
+  (ψ : ∀ v, AddChar (Fq v) ℂ) {V : Type} [AddCommGroup V] [Module ℂ V]
+  (π : Representation ℂ (∀ v, GL (Fin k) (Fq v)) V)
 
-def placeOp (ψ : ∀ v, AddChar (Fq v) ℂ) {V : Type} [AddCommGroup V] [Module ℂ V]
-    (π : Representation ℂ (∀ v, GL (Fin k) (Fq v)) V) (v : ι) : V →ₗ[ℂ] V :=
-  ∑ y : GL (Fin k) (Fq v), gam (ψ v) y • π (Pi.mulSingle v y)
+def placeOp (v : ι) : V →ₗ[ℂ] V := ∑ y : GL (Fin k) (Fq v), gam (ψ v) y • π (Pi.mulSingle v y)
 
-def totOp (ψ : ∀ v, AddChar (Fq v) ℂ) {V : Type} [AddCommGroup V] [Module ℂ V]
-    (π : Representation ℂ (∀ v, GL (Fin k) (Fq v)) V) : V →ₗ[ℂ] V :=
-  ∑ x : (∀ v, GL (Fin k) (Fq v)), gamProd ψ x • π x
-
-end Defs
+def totOp : V →ₗ[ℂ] V := ∑ x : (∀ v, GL (Fin k) (Fq v)), gamProd ψ x • π x
 
 def permRep (G : Type) [Monoid G] (X : Type) [MulAction Gᵐᵒᵖ X] : Representation ℂ G (X → ℂ) where
   toFun g := LinearMap.funLeft ℂ ℂ (fun i => MulOpposite.op g • i)

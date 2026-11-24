@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.UnipVal
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslateInCellStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTranslateInCell
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,7 +66,7 @@ theorem sieg_weyl_generate : ∀ (F : Type) [Field F] [CharZero F] (E : Type) [F
   intro F _ _ E _ _ c δ hE ν _ _ U hP hw
   classical
   refine eq_top_iff.mpr fun g _ => ?_
-  obtain ⟨u, hu⟩ := GlobalTheory.T.exists_translate_inCell' F E c δ hE ν {1, g}
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.KSp.exists_translate_inCell F E c δ hE ν {1, g}
   have h1 : u ∈ U := by
     simpa using mem_of_inCell c U hP hw (hu 1 (by simp))
   have h2 : g * u ∈ U := mem_of_inCell c U hP hw (hu g (by simp))

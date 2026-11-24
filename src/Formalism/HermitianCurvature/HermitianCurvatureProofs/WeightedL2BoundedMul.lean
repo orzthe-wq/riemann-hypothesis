@@ -50,6 +50,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.WeightedL2ConstMul
 
 @[expose] public section
 
@@ -108,8 +109,7 @@ open MeasureTheory Filter Topology Finset
 open scoped ComplexConjugate
 
 theorem weighted_L2_zero (B : Base) (wt : B.Ω → ℝ) : WeightedL2 B wt (fun _ => 0) := by
-  refine ⟨aestronglyMeasurable_const, ?_⟩
-  simp
+  exact ⟨aestronglyMeasurable_const, by simp⟩
 
 theorem weighted_L2_const_mul (B : Base) (wt : B.Ω → ℝ) (a : ℂ) (f : B.Ω → ℂ) (hf : WeightedL2 B wt f) :
     WeightedL2 B wt (fun ω => a * f ω) := by
@@ -240,8 +240,7 @@ theorem dS_poly (B : Base) {A A' : Type} (T : Fn B A → Fn B A') (u : Fn B A) (
   simp [Nat.descFactorial_self]
 
 theorem meas_th (B : Base) (ε σ : ℝ) : Measurable fun ω => th ε σ (B.G ω) := by
-  unfold th
-  exact ((B.G_meas).div (B.G_meas.add_const ε)).pow_const σ
+  simpa [th] using ((B.G_meas).div (B.G_meas.add_const ε)).pow_const σ
 
 theorem coefIntegrable : CoefIntegrable := by
   intro B S σ _ hM hW h4 h4' ε hε Y hY p
@@ -384,15 +383,11 @@ open Formalism.FourierDecayAlt.LE
 open MeasureTheory Filter Topology Finset
 open scoped ComplexConjugate
 
-theorem meas_th' (B : Base) (ε σ : ℝ) : Measurable fun ω => th ε σ (B.G ω) := by
-  unfold th
-  exact ((B.G_meas).div (B.G_meas.add_const ε)).pow_const σ
-
 theorem L1 (hTR : ThetaRange) (hTL : ThetaLimit) (B : Base) (σ : ℝ) (hσ : 0 ≤ σ) (f : B.Ω → ℝ)
     (hf : Integrable f B.μ) :
     Tendsto (fun ε : ℝ => ∫ ω, th ε σ (B.G ω) * f ω ∂B.μ) (𝓝[>] 0) (𝓝 (∫ ω, f ω ∂B.μ)) := by
   refine tendsto_integral_filter_of_dominated_convergence (fun ω => ‖f ω‖) ?_ ?_ hf.norm ?_
-  · exact Eventually.of_forall fun ε => ((meas_th' B ε σ).aestronglyMeasurable.mul hf.1)
+  · exact Eventually.of_forall fun ε => ((_root_.Formalism.FourierDecayAlt.P.LEx2.meas_th B ε σ).aestronglyMeasurable.mul hf.1)
   · filter_upwards [self_mem_nhdsWithin] with ε hε
     refine Eventually.of_forall fun ω => ?_
     have h := hTR ε σ (B.G ω) hε hσ (B.G_pos ω)
@@ -479,34 +474,7 @@ open MeasureTheory Filter Topology Finset
 open scoped ComplexConjugate
 
 theorem cutTheta : CutTheta := by
-  intro hC c σ ε h4 hε p
-  choose Cc hCc using fun i => cutBound c 1 i le_rfl
-  have hexp : ∀ ε₂ x : ℝ, ld p (fun y => c.sc ε₂ 1 y * th ε σ y) x =
-      ∑ i ∈ range (p + 1), (p.choose i : ℝ) * ld i (c.sc ε₂ 1) x * ld (p - i) (th ε σ) x := by
-    intro ε₂ x
-    unfold ld
-    have hf : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun u => c.sc ε₂ 1 (Real.exp u)) := smoothLog_sc c ε₂ 1
-    have hg : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun u => th ε σ (Real.exp u)) := thetaSmooth ε σ hε
-    exact iteratedDeriv_fun_mul (hf.contDiffAt.of_le (by exact_mod_cast le_top))
-      (hg.contDiffAt.of_le (by exact_mod_cast le_top))
-  refine ⟨∑ i ∈ range (p + 1), (p.choose i : ℝ) * Cc i *
-      (Real.exp 1 * (p - i).factorial * (4 * σ) ^ (p - i)), fun ε₂ x h2 hx => ⟨?_, ?_⟩⟩
-  · rw [hexp, Finset.sum_mul]
-    refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i _ => ?_)
-    rw [abs_mul, abs_mul, Nat.abs_cast]
-    have a := (hCc i ε₂ x h2 hx).1
-    have b := thetaBound hC σ ε h4 hε (p - i) x hx
-    calc (p.choose i : ℝ) * |ld i (c.sc ε₂ 1) x| * |ld (p - i) (th ε σ) x|
-        ≤ ((p.choose i : ℝ) * Cc i) * (Real.exp 1 * (p - i).factorial * (4 * σ) ^ (p - i) * th ε σ x) :=
-          mul_le_mul (mul_le_mul_of_nonneg_left a (Nat.cast_nonneg _)) b (abs_nonneg _)
-            (mul_nonneg (Nat.cast_nonneg _) ((abs_nonneg _).trans a))
-      _ = _ := by ring
-  · intro hlt
-    rw [hexp, Finset.sum_eq_single 0]
-    · rw [(hCc 0 ε₂ x h2 hx).2.2 hlt]; simp
-    · intro i _ hi
-      rw [(hCc i ε₂ x h2 hx).2.2 hlt, if_neg hi]; simp
-    · simp
+  exact Formalism.FourierDecayAlt.P.LEx1.cutTheta
 
 end Formalism.FourierDecayAlt.P.LEx2
 
@@ -653,10 +621,8 @@ open MeasureTheory Filter Topology Finset
 open scoped ComplexConjugate
 
 theorem conjS_zero (B : Base) {A A' : Type} (T : Fn B A → Fn B A') (u : Fn B A) : conjS B T u 0 = T u := by
-  have h0 := dS_zero B T u
   funext ω a
-  have h := congrFun (congrFun h0 ω) a
-  simpa [dS] using h
+  simpa [dS] using congrFun (congrFun (dS_zero B T u) ω) a
 
 theorem weighted_L2_bounded_mul (B : Base) (wt : B.Ω → ℝ) (hw : ∀ ω, 0 ≤ wt ω) (hwm : Measurable wt) (β f : B.Ω → ℂ) (C : ℝ)
     (hβm : Measurable β) (hβ : ∀ ω, ‖β ω‖ ≤ C) (hf : WeightedL2 B wt f) : WeightedL2 B wt (fun ω => β ω * f ω) := by
@@ -670,9 +636,7 @@ theorem weighted_L2_bounded_mul (B : Base) (wt : B.Ω → ℝ) (hw : ∀ ω, 0 �
 
 theorem sum3 {K K' : Type} [Fintype K] [Fintype K'] (n : ℕ) (f : K → K' → ℕ → ℂ) :
     ∑ k, ∑ κ, ∑ q ∈ range n, f k κ q = ∑ q ∈ range n, ∑ k, ∑ κ, f k κ q := by
-  calc _ = ∑ k, ∑ q ∈ range n, ∑ κ, f k κ q := by
-        apply Finset.sum_congr rfl; intro k _; exact Finset.sum_comm
-    _ = _ := Finset.sum_comm
+  exact (Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm
 
 open Polynomial in
 theorem limitA : LimitA := by

@@ -67,14 +67,11 @@ theorem single_tmul (l : Fin M) (a : Af F) (t : E) :
   by_cases h : i = l
   · subst h
     simp
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 theorem nsmul_tmul_F (N : ℕ) (a : Af F) (e : E) : N • (a ⊗ₜ[F] e) = a ⊗ₜ[F] ((N : F) • e) := by
   first
   | (rw [Nat.cast_smul_eq_nsmul, TensorProduct.tmul_smul])
-  | (induction N with
-      | zero => simp
-      | succ n ih => simp [succ_nsmul, ih, add_smul, TensorProduct.tmul_add])
 
 theorem mulVec_single' (g : Matrix (Fin M) (Fin M) (Af F ⊗[F] E)) (j : Fin M) (x : Af F ⊗[F] E) :
     g.mulVec (Pi.single j x) = fun l => g l j * x := by

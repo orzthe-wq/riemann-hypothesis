@@ -67,7 +67,7 @@ attribute [local instance] PositivityTheory.Rg.BcB.E.borelH
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
-private theorem borelSp : BorelSpace (H E n 0) := ⟨rfl⟩
+private alias borelSp := _root_.DiscreteGroups.T1.G.borelSpace_H
 
 attribute [local instance] borelSp
 

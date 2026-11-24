@@ -46,22 +46,7 @@ import Mathlib.Topology.Sheaves.Init
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.AdjointIsotropicDecomposition
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.ConjugateAdjointDagger
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsThetaFam
-
-namespace I195MixedCoordinates_052755a8a20ae3f544412ebb
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-end I195MixedCoordinates_052755a8a20ae3f544412ebb
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -76,13 +61,13 @@ namespace GlobalTheory.MixValues
 theorem mixS_theta (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S S₀ T : HSp D) (ρ : ℕ)
     (d : HypDec S S₀ ρ) (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ))
     (hμ : IsCovolOne (ratMx D T.rank ρ) μ 𝓕) (f : WO S T → ℂ) (hf : IsThetaFunO ψ S T f) (x : Mx D T.rank ρ) :
-    IsThetaFunO ψ S₀ T ((_root_.I195MixedCoordinates_052755a8a20ae3f544412ebb.source d) T ψ μ 𝓕 f x) := by
+    IsThetaFunO ψ S₀ T ((_root_.I195MixedCoordinates.source d) T ψ μ 𝓕 f x) := by
   rcases Nat.eq_zero_or_pos ρ with rfl | hρ
-  · change IsThetaFunO ψ S₀ T (I195MixedCoordinates_00549d7c7323d43c39912169.source d T ψ μ 𝓕 f x)
+  · change IsThetaFunO ψ S₀ T (I195MixedCoordinates.source d T ψ μ 𝓕 f x)
     rw [(GlobalTheory.T.wittDecomposition_mixedCoords_rank_zero D ψ).1 S S₀ T d μ 𝓕 hμ f x]
     exact ((GlobalTheory.T.weil_datum_transport_source_rational_isometry D ψ S S₀ T d hψ).2.2.1 f).2 hf
   · obtain ⟨hiso, hrat, -, -, -, hres, -⟩ := GlobalTheory.T.wittSourceMixedCoord_heisenbergRestriction D ψ S S₀ T ρ d
-    change IsThetaFunO ψ S₀ T (I195MixedCoordinates_61fbc522a99e851221ffe16d.source d T ψ μ 𝓕 f x)
+    change IsThetaFunO ψ S₀ T (I195MixedCoordinates.source d T ψ μ 𝓕 f x)
     rw [hres]
     have hμ' : IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D T.rank ρ) μ 𝓕 := by rw [hrat]; exact hμ
     have hg := (GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 (d.extX T x) f hf
@@ -98,6 +83,6 @@ theorem GlobalTheory.MixValues.mixed_values : ∀ D : D7, GlobalTheory.Indefinit
   have hcd := GlobalTheory.T.hermitianAdjoint_symplectic_action_theta_heisenberg D ψ hψ
   have h1 : IsThetaFunO ψ T S (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger T S) f) := ((hcd S T).2.2.1 f).2 hf
   have h2 := GlobalTheory.MixValues.mixS_theta D ψ hψ T T₀ S ρ d μ' 𝓕' hμ' _ h1 (incA D D.host.xi0⁻¹ • y)
-  change IsThetaFunO ψ T₀ S (I195MixedCoordinates_79cab7195843a34bfe21655d.source d S ψ μ' 𝓕' _ (incA D D.host.xi0⁻¹ • y)) at h2
+  change IsThetaFunO ψ T₀ S (I195MixedCoordinates.source d S ψ μ' 𝓕' _ (incA D D.host.xi0⁻¹ • y)) at h2
   rw [hsw] at h2
   exact ((hcd S T₀).2.2.1 _).1 h2

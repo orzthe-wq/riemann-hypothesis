@@ -48,4 +48,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.thetaTensorRule_targetOrthogonalSum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (T A B : HSp D) (d : OrthDec T A B) (S : HSp D), GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.TensorTarget ψ d S := by
-  first | exact @GlobalTheory.TensorTargetRule.tensorTarget | exact GlobalTheory.TensorTargetRule.tensorTarget | (intros; apply GlobalTheory.TensorTargetRule.tensorTarget <;> assumption)
+  first | exact @GlobalTheory.TensorTargetRule.tensorTarget

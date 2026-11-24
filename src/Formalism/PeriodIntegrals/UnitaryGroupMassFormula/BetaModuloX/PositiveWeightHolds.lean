@@ -141,7 +141,7 @@ theorem positive_weight_holds : PosW := by
         intro c; rw [mul_comm]; exact Complex.mul_conj c
       rw [h1, h1, map_neg, map_natCast]
       simp only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.neg_re,
-        Complex.neg_im, Complex.natCast_re, Complex.natCast_im, zero_mul, sub_zero, mul_zero]
+        Complex.neg_im, Complex.natCast_re, Complex.natCast_im, zero_mul, sub_zero]
       have := Complex.normSq_nonneg (x (Fin.castSucc (Fin.last D.R.rS)))
       have := Complex.normSq_nonneg (x (Fin.last (D.R.rS + 1)))
       have : (0 : ℝ) ≤ (T' : ℝ) := Nat.cast_nonneg _

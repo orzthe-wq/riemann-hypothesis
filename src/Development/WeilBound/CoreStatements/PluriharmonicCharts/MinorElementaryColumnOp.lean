@@ -3,11 +3,13 @@ module
 public import Development.WeilBound.CoreStatements.PluriharmonicCharts.MCoordIdealLeOfHomog
 public import Mathlib.FieldTheory.RatFunc.AsPolynomial
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.GenericFibreKerTarget
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorCommutation
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.StepRowsInverseNonzeroEntryStatement
 public import Development.WeilBound.CoreStatements.PluriharmonicCharts.IsBlockMapInitialVertex
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverTransferIdealEq
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
+import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GenericBlockMatrixIsBlockDiag
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.StepRowsInverseNonzeroEntry
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,7 +58,6 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverTransferIdealEq
 
 @[expose] public section
 
@@ -118,7 +119,7 @@ theorem minor_elementary_column_op (h : Matrix (Fin N) (Fin N) R) (S I : Finset 
       rw [hi₀, Matrix.mul_single_apply_same]
       simp [mul_comm]
     · have hne : f x ≠ ca := fun h' => ex (f.injective (h'.trans hi₀.symm))
-      rw [show (h * single cb ca t) (g r) (f x) = 0 by simp [Matrix.mul_apply, Matrix.single_apply, hne.symm], add_zero]
+      rw [show (h * single cb ca t) (g r) (f x) = 0 by simp [Matrix.mul_apply, hne.symm], add_zero]
       rfl
   rw [e1, Matrix.det_updateCol_add, Matrix.det_updateCol_smul]
   congr 2
@@ -241,7 +242,7 @@ theorem blocks_of_model (M : FlagModel y Ψ N j) (k : K) : ∃ i, y ⟨k, i⟩ �
     have hH : (F.T p.1).map am * H = M.g p.1 := CPts.map_mul_inv_map am (hF.1 p.1).2 _
     have hHb : IsBlockDiag j H := (((hF.1 p.1).1.inv (hF.1 p.1).2.isUnit).map am).mul (M.g_block p.1)
     have hHd : H.det ≠ 0 := fun h0 => (M.isUnit_det_g p.1).ne_zero (by rw [← hH, det_mul, h0, mul_zero])
-    obtain ⟨m, hm, -⟩ := GlobalTheory.T.step_rows_inverse_nonzero_entry Φ ⊤ N j p.2 H (ι k) (fun m I => am (F.u ⟨k, m⟩ I))
+    obtain ⟨m, hm, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.UnitComb.unit_comb Φ ⊤ N j p.2 H (ι k) (fun m I => am (F.u ⟨k, m⟩ I))
       (fun I m => am (F.u' I ⟨k, m⟩)) M.j_le hHb (fun _ _ => ValuationSubring.mem_top _) hHd
       (ValuationSubring.mem_top _) (fun _ _ => ValuationSubring.mem_top _) (fun _ _ => ValuationSubring.mem_top _)
       (fun I I' hI hI' => by

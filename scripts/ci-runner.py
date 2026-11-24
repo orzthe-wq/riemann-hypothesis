@@ -35,6 +35,12 @@ DEFAULT_DIRECTORY = Path.home() / ".local/share/riemann-build-runner"
 # Lean maps every imported .olean; Main imports all 175,186 other modules. The Linux default
 # of 65530 fails with "failed to read file" on modules high in the import graph (issue #29).
 MINIMUM_MAX_MAP_COUNT = 1048576
+# A limit raised with `sysctl -w` alone is lost at reboot; this drop-in keeps it (issue #73).
+MAX_MAP_COUNT_CONF = "/etc/sysctl.d/60-rh-ci-max-map-count.conf"
+# Jobs keep the caches and build work here unless RH_CI_STATE_DIR is set (build-pr.yml, ci-build.py).
+DEFAULT_STATE_DIRECTORY = "~/.local/share/riemann-build-state"
+# Exit status of doctor's offline probe when a connection attempt was not refused as unreachable.
+PROBE_NOT_OFFLINE = 2
 IDENTITY_FILES = (".runner", ".credentials", ".credentials_rsaparams")
 
 
@@ -80,7 +86,7 @@ def runner_directory(path):
     if path.exists():
         info = path.stat()
         if info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) & 0o077:
-            raise ValueError("runner directory must be owned by you, mode0700")
+            raise ValueError("runner directory must be owned by you, mode 0700")
     return path
 
 
@@ -89,6 +95,26 @@ def max_map_count(path=Path("/proc/sys/vm/max_map_count")):
         return int(path.read_text())
     except (OSError, ValueError):
         return None
+
+
+def report_max_map_count(minimum=MINIMUM_MAX_MAP_COUNT):
+    """Job-start report for the build workflow. Read only, and it never stops the job."""
+    count = max_map_count()
+    if count is None:
+        # No such file off Linux. Unknown is not known-low: doctor is the check that requires a value.
+        if sys.platform == "linux":
+            print("vm.max_map_count is unreadable; skipping the job-start report", flush=True)
+        return
+    # Printed on every job: the logs then show each runner's value before this becomes a requirement.
+    print(f"vm.max_map_count is {count} on this runner host (runner minimum {minimum})", flush=True)
+    if count < minimum:
+        # One line, as a GitHub Actions annotation: it shows on the run summary as well as in the log.
+        print("::warning title=vm.max_map_count is below the runner minimum::"
+              f"vm.max_map_count is {count} on this runner host, need at least {minimum}. Lean maps every "
+              "imported .olean, so modules high in the import graph can fail hours in with a misleading "
+              f"\"failed to read file\". On the host, as root: write \"vm.max_map_count = {minimum}\" to "
+              f"{MAX_MAP_COUNT_CONF} and run \"sysctl --system\". A value set only with \"sysctl -w\" is lost "
+              "at reboot. This check read the value and changed nothing; the job continues.", flush=True)
 
 
 def required_commands():
@@ -107,9 +133,21 @@ def failed_checks(report, minimum_disk_gib, minimum_max_map_count):
     failed += [f"command not found: {name}" for name, path in report["commands"].items() if not path]
     # A missing bwrap is already named above; report the probe only when it actually ran.
     if report["commands"].get("bwrap") and not report["offline_bwrap"]:
-        failed.append("offline_bwrap probe failed: see bwrap_error")
+        if report.get("bwrap_exit") == PROBE_NOT_OFFLINE:
+            # bwrap ran, and the probe's connection succeeded or failed with some other error. The
+            # sandbox may have a route out; a local firewall's EPERM or EACCES also ends up here.
+            failed.append("offline_bwrap probe failed: the bwrap sandbox may not be offline "
+                          "(a connection attempt inside it was not refused as unreachable)")
+        else:
+            failed.append("offline_bwrap probe failed: see bwrap_error")
     if report["free_disk_gib"] < minimum_disk_gib:
-        failed.append(f"free_disk_gib is {report['free_disk_gib']}, need at least {minimum_disk_gib}")
+        # doctor measures one filesystem, but jobs write to the build state directory, wherever that is.
+        # A volunteer with a small /home and a large /data has to move that directory, not just rerun doctor.
+        measured = report.get("free_disk_path")
+        where = f" on the filesystem holding {measured}" if measured else ""
+        failed.append(f"free_disk_gib is {report['free_disk_gib']}{where}, need at least {minimum_disk_gib} "
+                      f"for the build state directory (to move it from {DEFAULT_STATE_DIRECTORY}, set "
+                      "RH_CI_STATE_DIR in the runner's environment and pass the same directory as --work-directory)")
     count = report["max_map_count"]
     if (count or 0) < minimum_max_map_count:
         failed.append(f"max_map_count is {'unreadable' if count is None else count}, need at least "
@@ -127,11 +165,15 @@ def doctor(args):
         "architecture": architecture(),
         "uid": os.getuid(),
         "free_disk_gib": round(shutil.disk_usage(existing).free / 2**30, 1),
+        "free_disk_path": str(existing),
         "commands": required_commands(),
         "systemd_user": subprocess.run(
             ["systemctl", "--user", "show-environment"], stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL).returncode == 0 if shutil.which("systemctl") else False,
         "cgroup_v2": Path("/sys/fs/cgroup/cgroup.controllers").is_file(),
+        "python": platform.python_version(),
+        # Informational: install needs this (filter="data", Python 3.11.4+); quick checks do not.
+        "tarfile_data_filter": hasattr(tarfile, "data_filter"),
     }
     memory = Path("/proc/meminfo").read_text()
     report["physical_ram_gib"] = round(int(re.search(r"MemTotal:\s+(\d+)", memory)[1]) / 2**20, 1)
@@ -142,7 +184,7 @@ def doctor(args):
         probe = (
             "import errno,socket,sys; s=socket.socket(); s.settimeout(1); "
             "r=s.connect_ex(('1.1.1.1',9)); "
-            "sys.exit(0 if r in (errno.ENETUNREACH,errno.EHOSTUNREACH,errno.EADDRNOTAVAIL) else 2)"
+            f"sys.exit(0 if r in (errno.ENETUNREACH,errno.EHOSTUNREACH,errno.EADDRNOTAVAIL) else {PROBE_NOT_OFFLINE})"
         )
         command = [report["commands"]["bwrap"], "--die-with-parent", "--new-session",
                    "--unshare-user", "--unshare-pid", "--unshare-ipc", "--unshare-net",
@@ -152,7 +194,10 @@ def doctor(args):
         result = subprocess.run(command, capture_output=True, text=True, timeout=15)
         report["offline_bwrap"] = result.returncode == 0
         if result.returncode:
-            report["bwrap_error"] = result.stderr.strip()[-2000:]
+            report["bwrap_exit"] = result.returncode
+            # The probe itself prints nothing, so say that rather than leave an empty string to point at.
+            report["bwrap_error"] = (result.stderr.strip()[-2000:]
+                                     or f"exit status {result.returncode} with no error output")
     else:
         report["offline_bwrap"] = False
     report["failed"] = failed_checks(report, args.minimum_disk_gib, args.minimum_max_map_count)
@@ -160,12 +205,15 @@ def doctor(args):
     print(json.dumps(report, indent=2))
     if not report["ready"]:
         reasons = "; ".join(report["failed"])
-        raise ValueError(f"runner prerequisites failed ({reasons}); no host security settings were changed")
+        raise ValueError(f"runner prerequisites failed: {reasons}. No host security settings were changed.")
 
 
 def install(args):
     if sys.platform != "linux" or os.getuid() == 0:
         raise ValueError("install as the dedicated unprivileged Linux runner account")
+    if not hasattr(tarfile, "data_filter"):
+        raise ValueError(f"python3 {platform.python_version()} lacks tarfile extraction filters: "
+                         "need Python 3.11+ with them (upstream CPython 3.11.4 or newer)")
     directory = runner_directory(args.directory)
     if directory.exists() and any(directory.iterdir()):
         raise ValueError("installation directory must be absent or empty")
@@ -405,8 +453,8 @@ def run_jit(args):
 
 
 def aws_user_data(args):
-    print("""#cloud-config
-# Debian 12/13 or another compatible apt-based image. No registration credential here.
+    print(f"""#cloud-config
+# Debian 13 or another apt-based image (Debian 12's own python3 lacks tarfile filters). No registration credential here.
 package_update: true
 packages:
   - ca-certificates
@@ -425,11 +473,18 @@ users:
     gecos: Riemann hypothesis build runner
     lock_passwd: true
     shell: /bin/bash
+write_files:
+  # doctor requires this limit; an image that keeps the kernel default of 65530 (Debian 12) fails it.
+  - path: {MAX_MAP_COUNT_CONF}
+    content: |
+      vm.max_map_count = {MINIMUM_MAX_MAP_COUNT}
 runcmd:
   - [install, -d, -m, '0700', -o, rh-ci, -g, rh-ci, /var/lib/rh-ci]
   - [loginctl, enable-linger, rh-ci]
+  - [sysctl, -p, {MAX_MAP_COUNT_CONF}]
 # Use a 1 TiB encrypted root volume. Install/register after trusted operator access.
-# No AWS instance profile, inbound listener, public registration token, or sysctl changes.
+# No AWS instance profile, inbound listener, or public registration token. The only sysctl
+# change is vm.max_map_count above, kept in /etc/sysctl.d so that a reboot does not lose it.
 """)
 
 
@@ -447,8 +502,8 @@ def main():
     configure = commands.add_parser("register", help="register with an operator-issued one-hour token")
     configure.add_argument("--directory", type=Path, default=DEFAULT_DIRECTORY)
     configure.add_argument("--name", default=platform.node().split(".")[0])
-    configure.add_argument("--token-file", type=Path, help="private mode0600 file; otherwise stdin/prompt")
-    configure.add_argument("--policy-file", type=Path, help="required mode0600 fresh GitHub runner-group API receipt")
+    configure.add_argument("--token-file", type=Path, help="private mode 0600 file; otherwise stdin/prompt")
+    configure.add_argument("--policy-file", type=Path, help="required mode 0600 fresh GitHub runner-group API receipt")
     configure.add_argument("--maintenance", action="store_true", help="also accept the exact trusted infrastructure/byo-build-ci branch during operator acceptance")
     configure.add_argument("--ephemeral", action="store_true", help="one job only; requires new enrollment afterward")
     configure.add_argument("--remove", action="store_true", help="use a fresh removal token; stop service first")

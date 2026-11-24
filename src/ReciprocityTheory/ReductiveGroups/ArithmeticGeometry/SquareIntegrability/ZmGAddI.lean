@@ -1,47 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.IKDiscrete
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -82,22 +42,6 @@ def gaugeExp (I : Submodule ℤ (Vsp X.dim)) (γ v : Vsp X.dim) : ℂ :=
     Real.pi * Complex.I * ∑ k, z (IR I) k γ * ((z (IR I) k γ).im : ℂ) +
     Real.pi * Hf (p2 (IR I) v) (p2 (IR I) γ) + Real.pi * Hf (p2 (IR I) γ) (p2 (IR I) γ) / 2
 
-private theorem Hf_add_left_euclidean {ι : Type} [Fintype ι] (x x' y : EuclideanSpace ℂ ι) :
-    Hf (x + x') y = Hf x y + Hf x' y := by
-  simp [Hf, add_mul, Finset.sum_add_distrib]
-
-private theorem Hf_real_smul_left {ι : Type} [Fintype ι] (t : ℝ) (x y : EuclideanSpace ℂ ι) :
-    Hf (t • x) y = t * Hf x y := by
-  simp [Hf, Finset.mul_sum, mul_assoc]
-
-private theorem Hf_add_right_euclidean {ι : Type} [Fintype ι] (x y y' : EuclideanSpace ℂ ι) :
-    Hf x (y + y') = Hf x y + Hf x y' := by
-  simp [Hf, mul_add, Finset.sum_add_distrib]
-
-private theorem Hf_real_smul_right' {ι : Type} [Fintype ι] (t : ℝ) (x y : EuclideanSpace ℂ ι) :
-    Hf x (t • y) = t * Hf x y := by
-  simp [Hf, Finset.mul_sum, mul_left_comm]
-
 private theorem Hf_im_eq_zero_on_IR_of_isSplit (hI : IsSplit P I) :
     ∀ a ∈ IR I, ∀ b ∈ IR I, (Hf a b).im = 0 := by
   intro a ha b hb
@@ -108,11 +52,11 @@ private theorem Hf_im_eq_zero_on_IR_of_isSplit (hI : IsSplit P I) :
     induction ha using Submodule.span_induction with
     | mem x hx => exact hI.iso x hx y hy
     | zero => simp [Hf]
-    | add x x' _ _ h1 h2 => rw [Hf_add_left_euclidean, Complex.add_im, h1, h2, add_zero]
-    | smul t x _ h => rw [Hf_real_smul_left, Complex.im_ofReal_mul, h, mul_zero]
+    | add x x' _ _ h1 h2 => rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.Col.Hf_add_l, Complex.add_im, h1, h2, add_zero]
+    | smul t x _ h => rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.Col.Hf_rsmul_l, Complex.im_ofReal_mul, h, mul_zero]
   | zero => simp [Hf]
-  | add y y' _ _ h1 h2 => rw [Hf_add_right_euclidean, Complex.add_im, h1, h2, add_zero]
-  | smul t y _ h => rw [Hf_real_smul_right', Complex.im_ofReal_mul, h, mul_zero]
+  | add y y' _ _ h1 h2 => rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.Col.Hf_add_r, Complex.add_im, h1, h2, add_zero]
+  | smul t y _ h => rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.Col.Hf_rsmul_r, Complex.im_ofReal_mul, h, mul_zero]
 
 theorem zmG_add (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     {γ : Vsp X.dim} (hγ : γ ∈ X.L) (v : Vsp X.dim) :
@@ -152,7 +96,6 @@ theorem zmG_add (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s �
   simp only [HC, Fin.sum_univ_one, Nat.cast_one, one_mul]
   rw [e3, Col.Hf_decomp (K := IR I) (Hf_im_eq_zero_on_IR_of_isSplit hI) v γ, Col.Hf_decomp (K := IR I) (Hf_im_eq_zero_on_IR_of_isSplit hI) γ γ, e1, e2]
   unfold gaugeExp
-  push_cast
   ring
 
 end ZM

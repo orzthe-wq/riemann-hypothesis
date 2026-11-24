@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FinPartConjMem
 
 @[expose] public section
 
@@ -103,17 +104,6 @@ variable {D : D7}
 theorem conj_int (x : 𝓞 D.host.E) : ∃ y : 𝓞 D.host.E, (y : D.host.E) = D.sp.cm.sig (x : D.host.E) :=
   ⟨⟨_, (RingOfIntegers.isIntegral_coe x).map (D.sp.cm.sig : D.host.E →+* D.host.E).toIntAlgHom⟩, rfl⟩
 
-theorem sigR_mem {y : Af D.host.F ⊗[D.host.F] D.host.E} (hy : y ∈ intAE D) :
-    sigR (Af D.host.F) D.sp.cm.sig y ∈ intAE D := by
-  induction hy using AddSubgroup.closure_induction with
-  | mem y h =>
-    obtain ⟨a, ha, x, rfl⟩ := h
-    obtain ⟨y, hy⟩ := conj_int x
-    exact AddSubgroup.subset_closure ⟨a, ha, y, by rw [hy]; rfl⟩
-  | zero => rw [map_zero]; exact zero_mem _
-  | add a b _ _ ha hb => rw [map_add]; exact add_mem ha hb
-  | neg a _ ha => rw [map_neg]; exact neg_mem ha
-
 theorem finPart_cA (z : AE D) :
     finPart D (cA D z) = sigR (Af D.host.F) D.sp.cm.sig (finPart D z) := by
   induction z using TensorProduct.inductionOn with
@@ -126,18 +116,11 @@ theorem infPart_cA (z : AE D) :
   | tmul a x => rfl
   | add a b ha hb => rw [RingHom.map_add (f := _), RingHom.map_add (f := _), RingHom.map_add (f := _), RingHom.map_add (f := _), ha, hb]
 
-theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
-  induction z using TensorProduct.inductionOn with
-  | tmul a x => exact congrArg (fun y : D.host.E => a ⊗ₜ[D.host.F] y) (star_star x)
-  | add a b ha hb => rw [RingHom.map_add (f := _), RingHom.map_add (f := _), ha, hb]
+alias cA_cA := _root_.Formalism.L2.Theta.cA_cA
 
-theorem cA_alg (a : AF D.host.F) :
-    cA D (algebraMap (AF D.host.F) (AE D) a) = algebraMap (AF D.host.F) (AE D) a :=
-  congrArg (fun y : D.host.E => a ⊗ₜ[D.host.F] y) (map_one D.sp.cm.sig)
+alias cA_alg := _root_.GlobalTheory.IdemSupport.cA_algebraMap
 
-theorem parts_ext {x y : AE D} (h1 : infPart D x = infPart D y) (h2 : finPart D x = finPart D y) : x = y := by
-  obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
-  exact e.injective (Prod.ext ((he _).1.trans (h1.trans (he _).1.symm)) ((he _).2.trans (h2.trans (he _).2.symm)))
+alias parts_ext := _root_.GlobalTheory.SplitScalar.adele_ext
 
 theorem exists_lift (y : Af D.host.F ⊗[D.host.F] D.host.E) : ∃ x : AE D, infPart D x = 0 ∧ finPart D x = y := by
   obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
@@ -229,7 +212,7 @@ theorem normOne_int {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (
   have hcc : cA D e * cA D e = cA D e := by rw [← RingHom.map_mul, hee]
   have hec : e * cA D e = 0 := key _ hcc (by
     rw [← map_mul, ← RingHom.map_mul] at h2
-    have := sigR_mem ((hι _).2 h2)
+    have := _root_.GlobalTheory.MovedIdem.sigR_mem_intAE ((hι _).2 h2)
     rwa [← finPart_cA, RingHom.map_mul, cA_cA] at this)
   have hεε' : algebraMap (AF D.host.F) (AE D) ε * algebraMap (AF D.host.F) (AE D) ε =
       algebraMap (AF D.host.F) (AE D) ε := by rw [← RingHom.map_mul, hεε]

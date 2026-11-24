@@ -49,4 +49,4 @@ open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 
 theorem _root_.GlobalTheory.T.thetaClosureOpenFamily_qproj_flat_reduced_ext : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g n N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (C : TObj g (N' ^ 2) J b (spMap em) → Prop) Mat κ (F : WFam n em C Mat κ), Odd N' → (IsQProjOver (F.U.ι ≫ F.Y.s) ∨ ¬ IsNoetherianRing o) ∧ Flat (F.U.ι ≫ F.Y.s) ∧ IsReduced F.U.toScheme ∧ ∀ (R : Type) [CommRing R] [IsLocalRing R] (x y : Sp R ⟶ F.U.toScheme) (s' : Sp R ⟶ Sp o) (t : TObj g (N' ^ 2) J b s'), x ≫ F.U.ι ≫ F.Y.s = y ≫ F.U.ι ≫ F.Y.s → TMap t F.univ x → TMap t F.univ y → x = y := by
-  first | exact @GlobalTheory.ZM.WFam.qproj_flat_reduced_ext | exact GlobalTheory.ZM.WFam.qproj_flat_reduced_ext | (intros; apply GlobalTheory.ZM.WFam.qproj_flat_reduced_ext <;> assumption)
+  first | exact @GlobalTheory.ZM.WFam.qproj_flat_reduced_ext

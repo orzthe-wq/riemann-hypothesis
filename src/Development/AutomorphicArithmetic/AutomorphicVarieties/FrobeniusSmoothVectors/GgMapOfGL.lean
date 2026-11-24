@@ -58,10 +58,6 @@ import Mathlib.Topology.Sheaves.Init
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
-private theorem lc_of_ker {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
-    (f : G →* H) (h : IsOpen (f.ker : Set G)) : IsLocallyConstant f :=
-  _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker f h
-
 private theorem res_dual (O : Type) [CommRing O] [IsLocalRing O] [IsCO O (DualNumber (ResidueField O))]
     (x : DualNumber (ResidueField O)) : res O (DualNumber (ResidueField O)) x = x.fst := by
   obtain ⟨a, ha⟩ := residue_surjective x.fst
@@ -188,7 +184,7 @@ theorem UpperTheory.V.Fr.pr_tor :
       ← Matrix.sub_apply, h2]
     simp
   have hcont : B'.Cont (maximalIdeal C) := fun i j N => by
-    have h1 := lc_of_ker _ (pr_open hF O R B hC).1
+    have h1 := _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker _ (pr_open hF O R B hC).1
     exact h1.comp fun x => Ideal.Quotient.mk _ ((GG.ofGL h * GG.map ι x * (GG.ofGL h)⁻¹).mat i j)
   obtain ⟨ρ', hρ', hc'⟩ := pr_ofbox hF C _ B' hc hd hcont
   have hh : GeneralLinearGroup.map (res O C : C →+* K) h = 1 := by

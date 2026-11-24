@@ -133,8 +133,8 @@ theorem exists_equiv (hL : Out.Laws) (hU : ThetaUnifAV) (P : Out.PolAV (Sp ℂ))
   obtain ⟨u₀, Hm, χ, Ef, hAH, -, hv, hw, -, hθ, hE, -, hW₀⟩ := hU P rig hrig
   obtain ⟨F, hF, -⟩ := GlobalTheory.existsUnique_linear_lift_of_isHolTo P.A P.isAb P.L P.g g u₀ hv hw u.ex u.ex_add
     (fun U f => by simpa only [Set.mem_univ, true_and] using u.hol U f)
-  haveI := u.discrete
-  haveI := u₀.discrete
+  have := u.discrete
+  have := u₀.discrete
   have hinj := AnyUnif.injective_of_ker_le_discrete u.Λ F fun z hz => by
     rw [← u.ker, ← hF, hz]
     exact (u₀.ker 0).2 u₀.Λ.zero_mem
@@ -197,14 +197,14 @@ theorem exists_iso_of_perLev : Out.Laws → ThetaUnifAV → ∀ (g k : ℕ) (τ 
   rintro hL hU g k τ P P' lev lev' ⟨-, -, -, u, hΛ, hW, hlev⟩ ⟨-, -, -, u', hΛ', hW', hlev'⟩
   obtain ⟨f, hf, hfe⟩ := exists_hom hL hU P' P τ u' hΛ' hW' u hΛ hW
   obtain ⟨f', -, hfe'⟩ := exists_hom hL hU P P' τ u hΛ hW u' hΛ' hW'
-  haveI := P.isAb.smooth
-  haveI := P'.isAb.smooth
-  haveI := P.isAb.proper
-  haveI := P'.isAb.proper
-  haveI := P.isAb.comm
-  haveI := P'.isAb.comm
-  haveI := isReduced_of_smooth_complex _ P.A.hom inferInstance
-  haveI := isReduced_of_smooth_complex _ P'.A.hom inferInstance
+  have := P.isAb.smooth
+  have := P'.isAb.smooth
+  have := P.isAb.proper
+  have := P'.isAb.proper
+  have := P.isAb.comm
+  have := P'.isAb.comm
+  have := isReduced_of_smooth_complex _ P.A.hom inferInstance
+  have := isReduced_of_smooth_complex _ P'.A.hom inferInstance
   let e : P'.A ≅ P.A :=
     { hom := f
       inv := f'

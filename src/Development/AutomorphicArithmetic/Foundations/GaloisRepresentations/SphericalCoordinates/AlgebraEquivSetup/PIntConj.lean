@@ -55,7 +55,7 @@ private theorem rel_at {E : Type} [Field E] [NumberField E] [IsCMField E] {n : �
   refine Eq.trans ?_ (h.trans ?_)
   · rfl
   · ext i j
-    by_cases hij : i = j <;> simp [hij, Matrix.one_apply, sim]
+    by_cases hij : i = j <;> simp [hij, sim]
 
 private theorem val_le_one {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (hn : 0 < n) (k : GUf E n)
     (hk : ∀ u : Plc E, comp u k ∈ GlobalTheory.LFun.KGL u (n := n)) (u : Plc E) :

@@ -1,51 +1,421 @@
 module
 
-public import GroundTheory.AutomorphicForms.Induction
+public import GroundTheory.AutomorphicForms.SmoothRep
+public import GroundTheory.AutomorphicForms.InductionParabolicGroups
+public import GroundTheory.AutomorphicForms.MeasuresParabolic
 public import GroundTheory.AutomorphicForms.InductionJacquet
-public import GroundTheory.AutomorphicForms.InductionParabolicLocal
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import GroundTheory.AutomorphicForms.GLnLattice
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.RingTheory.Henselian
+import Mathlib.MeasureTheory.Measure.HasOuterApproxClosedProd
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.AutomorphicForms.Induction, GroundTheory.AutomorphicForms.InductionParabolicLocal, GroundTheory.AutomorphicForms.InductionParabolic
+
+-- ===== clump member: GroundTheory.AutomorphicForms.Induction =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.Induction", "h": "module\n\npublic import GroundTheory.AutomorphicForms.SmoothRep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GroundTheory.Automorphic
+
+open Set Filter Topology Pointwise
+
+section RightTranslation
+
+variable {G : Type*} [Group G] {W : Type*} [AddCommGroup W] [Module ℂ W]
+
+def rightTranslation : Representation ℂ G (G → W) where
+  toFun g := LinearMap.funLeft ℂ W (· * g)
+  map_one' := by
+    ext f x
+    simp [LinearMap.funLeft_apply]
+  map_mul' g h := by
+    ext f x
+    simp [LinearMap.funLeft_apply, mul_assoc]
+
+@[simp]
+theorem rightTranslation_apply (g : G) (f : G → W) (x : G) :
+    rightTranslation g f x = f (x * g) := rfl
+
+end RightTranslation
+
+section Induced
+
+variable {G : Type*} [Group G] [TopologicalSpace G] (H : Subgroup G)
+  {W : Type*} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ H W)
+
+def indSpace : Submodule ℂ (G → W) where
+  carrier := {f | (∀ h : H, ∀ g : G, f ((h : G) * g) = σ h (f g)) ∧
+    ∃ K : Subgroup G, IsOpen (K : Set G) ∧ ∀ k ∈ K, ∀ g : G, f (g * k) = f g}
+  add_mem' := by
+    rintro f₁ f₂ ⟨h₁, K₁, hK₁, hf₁⟩ ⟨h₂, K₂, hK₂, hf₂⟩
+    refine ⟨fun h g => by simp [h₁ h g, h₂ h g], K₁ ⊓ K₂, ?_, fun k hk g => ?_⟩
+    · rw [Subgroup.coe_inf]
+      exact hK₁.inter hK₂
+    · simp [hf₁ k (Subgroup.mem_inf.1 hk).1 g, hf₂ k (Subgroup.mem_inf.1 hk).2 g]
+  zero_mem' := ⟨fun h g => by simp, ⊤, by simp, fun k _ g => rfl⟩
+  smul_mem' := by
+    rintro c f ⟨h₁, K, hK, hf⟩
+    exact ⟨fun h g => by simp [h₁ h g], K, hK, fun k hk g => by simp [hf k hk g]⟩
+
+variable {H σ} in
+theorem mem_indSpace {f : G → W} :
+    f ∈ indSpace H σ ↔ (∀ h : H, ∀ g : G, f ((h : G) * g) = σ h (f g)) ∧
+      ∃ K : Subgroup G, IsOpen (K : Set G) ∧ ∀ k ∈ K, ∀ g : G, f (g * k) = f g :=
+  Iff.rfl
+
+
+variable [IsTopologicalGroup G]
+
+
+variable {H σ} in
+theorem rightTranslation_mem_indSpace {f : G → W} (hf : f ∈ indSpace H σ) (g : G) :
+    rightTranslation g f ∈ indSpace H σ := by
+  obtain ⟨h₁, K, hK, hfK⟩ := hf
+  refine ⟨fun h x => ?_, K.comap (MulAut.conj g⁻¹).toMonoidHom, ?_, fun k hk x => ?_⟩
+  · show f ((h : G) * x * g) = σ h (f (x * g))
+    rw [mul_assoc, h₁]
+  · rw [Subgroup.coe_comap]
+    have : ⇑(MulAut.conj g⁻¹).toMonoidHom = fun x : G => g⁻¹ * x * g⁻¹⁻¹ := by
+      ext x
+      simp
+    rw [this]
+    exact hK.preimage (by fun_prop)
+  · have := hfK _ hk (x * g)
+    simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv] at this
+    simp only [rightTranslation_apply]
+    rw [← this]
+    congr 1
+    group
+
+
+def indRep : Representation ℂ G (indSpace H σ) :=
+  (rightTranslation (W := W)).subrepresentation (indSpace H σ) fun g f hf =>
+    rightTranslation_mem_indSpace (H := H) (σ := σ) (f := f) hf g
+
+@[simp]
+theorem coe_indRep_apply (g : G) (f : indSpace H σ) (x : G) :
+    (indRep H σ g f : G → W) x = (f : G → W) (x * g) := rfl
+
+theorem isSmooth_indRep : IsSmooth (indRep H σ) := by
+  intro f
+  obtain ⟨-, K, hK, hfK⟩ := f.2
+  refine Subgroup.isOpen_mono (fun k hk => ?_) hK
+  rw [mem_stabilizerOf]
+  exact Subtype.ext (funext fun x => hfK k hk x)
+
+section Frobenius
+
+variable {V : Type*} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V)
+
+def evalOne : indSpace H σ →ₗ[ℂ] W :=
+  LinearMap.proj (R := ℂ) (φ := fun _ : G => W) 1 ∘ₗ (indSpace H σ).subtype
+
+omit [IsTopologicalGroup G] in
+@[simp]
+theorem evalOne_apply (f : indSpace H σ) : evalOne H σ f = (f : G → W) 1 := rfl
+
+theorem evalOne_indRep (h : H) (f : indSpace H σ) :
+    evalOne H σ (indRep H σ h f) = σ h (evalOne H σ f) := by
+  simpa using f.2.1 h 1
+
+def frobeniusFun (Φ : Representation.IntertwiningMap π (indRep H σ)) :
+    Representation.IntertwiningMap (π.comp H.subtype) σ where
+  toLinearMap := evalOne H σ ∘ₗ Φ.toLinearMap
+  isIntertwining' h := by
+    refine LinearMap.ext fun v => ?_
+    simp only [LinearMap.coe_comp, Function.comp_apply, MonoidHom.coe_comp,
+      Subgroup.coe_subtype, Representation.IntertwiningMap.toLinearMap_apply]
+    rw [Representation.IntertwiningMap.isIntertwining _ _ Φ, evalOne_indRep]
+
+variable {π}
+
+def frobeniusInv (hπ : IsSmooth π) (φ : Representation.IntertwiningMap (π.comp H.subtype) σ) :
+    Representation.IntertwiningMap π (indRep H σ) where
+  toFun v := ⟨fun g => φ (π g v), fun h g => by
+      simp only [map_mul, Module.End.mul_apply]
+      exact Representation.IntertwiningMap.isIntertwining _ _ φ h (π g v),
+    stabilizerOf π v, hπ v, fun k hk g => by
+      simp [map_mul, mem_stabilizerOf.1 hk]⟩
+  map_add' v w := Subtype.ext (funext fun g => by simp)
+  map_smul' c v := Subtype.ext (funext fun g => by simp)
+  isIntertwining' g := LinearMap.ext fun v => Subtype.ext (funext fun x => by
+    simp [map_mul, Module.End.mul_apply])
+
+@[simp]
+theorem frobeniusInv_apply (hπ : IsSmooth π)
+    (φ : Representation.IntertwiningMap (π.comp H.subtype) σ) (v : V) (g : G) :
+    (frobeniusInv H σ hπ φ v : G → W) g = φ (π g v) := rfl
+
+def frobenius (hπ : IsSmooth π) :
+    Representation.IntertwiningMap π (indRep H σ) ≃ₗ[ℂ]
+      Representation.IntertwiningMap (π.comp H.subtype) σ where
+  toFun := frobeniusFun H σ π
+  map_add' Φ Ψ := Representation.IntertwiningMap.ext (LinearMap.ext fun v => by
+    simp [frobeniusFun])
+  map_smul' c Φ := Representation.IntertwiningMap.ext (LinearMap.ext fun v => by
+    simp [frobeniusFun])
+  invFun := frobeniusInv H σ hπ
+  left_inv Φ := Representation.IntertwiningMap.ext (LinearMap.ext fun v =>
+    Subtype.ext (funext fun x => by
+      simp only [Representation.IntertwiningMap.toLinearMap_apply, frobeniusInv_apply]
+      show (evalOne H σ) (Φ (π x v)) = _
+      rw [Representation.IntertwiningMap.isIntertwining _ _ Φ, evalOne_apply, coe_indRep_apply, one_mul]))
+  right_inv φ := Representation.IntertwiningMap.ext (LinearMap.ext fun v => by
+    show (evalOne H σ) (frobeniusInv H σ hπ φ v) = φ v
+    simp)
+
+end Frobenius
+
+end Induced
+
+end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.Induction =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.InductionParabolicLocal =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.InductionParabolicLocal", "h": "module\n\npublic import GroundTheory.AutomorphicForms.InductionParabolicGroups\npublic import GroundTheory.AutomorphicForms.MeasuresParabolic\nimport GroundTheory.AutomorphicForms.GLnLattice\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Mathlib.MeasureTheory.Measure.HasOuterApproxClosedProd\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GroundTheory.Automorphic
+
+namespace Parabolic
+
+open Matrix Iwasawa GLnLocal ValuativeRel Topology Filter Set
+
+variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
+
+theorem uniformizer_ne_zero : (GLnLocal.uniformizer F : F) ≠ 0 :=
+  coe_uniformizerUnit F ▸ (uniformizerUnit F).ne_zero
+
+theorem zpow_mul_mem {x : F} {k : ℕ} (hx : (GLnLocal.uniformizer F : F) ^ k * x ∈ 𝒪[F]) {z : ℤ}
+    (hz : (k : ℤ) ≤ z) : (GLnLocal.uniformizer F : F) ^ z * x ∈ 𝒪[F] := by
+  obtain ⟨d, hd⟩ : ∃ d : ℕ, z = ((d + k : ℕ) : ℤ) := ⟨(z - k).toNat, by omega⟩
+  rw [hd, zpow_natCast, pow_add, mul_assoc]
+  exact mul_mem (pow_mem (GLnLocal.uniformizer F).2 d) hx
+
+theorem valuation_zpow_mul_le {x : F} {k t : ℕ} (hx : (GLnLocal.uniformizer F : F) ^ k * x ∈ 𝒪[F])
+    {z : ℤ} (hz : ((k + t : ℕ) : ℤ) ≤ z) :
+    valuation F ((GLnLocal.uniformizer F : F) ^ z * x) ≤ valuation F (GLnLocal.uniformizer F : F) ^ t := by
+  obtain ⟨d, hd⟩ : ∃ d : ℤ, z = t + d ∧ (k : ℤ) ≤ d := ⟨z - t, by omega, by omega⟩
+  rw [hd.1, zpow_add₀ uniformizer_ne_zero, mul_assoc, map_mul, zpow_natCast, map_pow]
+  exact mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 (zpow_mul_mem hx hd.2))
+
+variable (F) (n : ℕ) {α : Type*} [LinearOrder α] (β : Fin n → α)
+
+def rankTorus (e : ℕ) : GL (Fin n) F :=
+  torusPow F n fun i => -((e * blockRank β i : ℕ) : ℤ)
+
+variable {F n β}
+
+theorem rankTorus_mem_levi (e : ℕ) : rankTorus F n β e ∈ levi F n β :=
+  diagGL_mem_levi _
+
+theorem rankTorus_mem_blockUpper (e : ℕ) : rankTorus F n β e ∈ blockUpper F n β :=
+  levi_le_blockUpper (rankTorus_mem_levi e)
+
+theorem rankTorus_pow (e m : ℕ) : rankTorus F n β e ^ m = rankTorus F n β (e * m) := by
+  rw [rankTorus, rankTorus, torusPow, torusPow, ← map_pow]
+  congr 1
+  funext i
+  rw [Pi.pow_apply, ← zpow_natCast, ← _root_.zpow_mul]
+  congr 1
+  push_cast
+  ring
+
+theorem rankTorus_conj_apply (e : ℕ) (g : GL (Fin n) F) (i j : Fin n) :
+    (rankTorus F n β e * g * (rankTorus F n β e)⁻¹ : GL (Fin n) F) i j =
+      (GLnLocal.uniformizer F : F) ^ (((e * blockRank β j : ℕ) : ℤ) - ((e * blockRank β i : ℕ) : ℤ)) *
+        g i j := by
+  rw [rankTorus, torusPow, diagGL_conj_apply]
+  simp only [Units.val_zpow_eq_zpow_val, coe_uniformizerUnit, Units.val_inv_eq_inv_val]
+  rw [zpow_sub₀ uniformizer_ne_zero, _root_.zpow_neg, _root_.zpow_neg, inv_inv]
+  ring
+
+theorem rankTorus_inv_conj_apply (e : ℕ) (g : GL (Fin n) F) (i j : Fin n) :
+    ((rankTorus F n β e)⁻¹ * g * rankTorus F n β e : GL (Fin n) F) i j =
+      (GLnLocal.uniformizer F : F) ^ (((e * blockRank β i : ℕ) : ℤ) - ((e * blockRank β j : ℕ) : ℤ)) *
+        g i j := by
+  rw [rankTorus, torusPow, diagGL_inv_conj_apply]
+  simp only [Units.val_zpow_eq_zpow_val, coe_uniformizerUnit, Units.val_inv_eq_inv_val]
+  rw [zpow_sub₀ uniformizer_ne_zero, _root_.zpow_neg, _root_.zpow_neg, inv_inv]
+  ring
+
+theorem isClosed_unipotentRadical :
+    IsClosed (unipotentRadical F n β : Set (GL (Fin n) F)) := by
+  have : (unipotentRadical F n β : Set (GL (Fin n) F)) =
+      (⋂ i, ⋂ j, ⋂ (_ : β j < β i), (fun g : GL (Fin n) F => g i j) ⁻¹' {0}) ∩
+      ⋂ i, ⋂ j, ⋂ (_ : β i = β j),
+        (fun g : GL (Fin n) F => g i j) ⁻¹' {(1 : Matrix (Fin n) (Fin n) F) i j} := by
+    ext g
+    simp only [SetLike.mem_coe, mem_unipotentRadical, mem_blockUpper, Set.mem_inter_iff,
+      Set.mem_iInter, Set.mem_preimage, Set.mem_singleton_iff]
+    exact ⟨fun ⟨h1, h2⟩ => ⟨fun i j hij => h1 hij, h2⟩,
+      fun ⟨h1, h2⟩ => ⟨fun i j hij => h1 i j hij, h2⟩⟩
+  rw [this]
+  refine IsClosed.inter ?_ ?_ <;>
+  exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ =>
+    isClosed_singleton.preimage (continuous_entry F n i j)
+
+theorem rankTorus_conj_apply_mem {e : ℕ} {u : GL (Fin n) F} (hu : u ∈ unipotentRadical F n β)
+    (hb : ∀ i j, (GLnLocal.uniformizer F : F) ^ e * u i j ∈ 𝒪[F]) (i j : Fin n) :
+    (rankTorus F n β e * u * (rankTorus F n β e)⁻¹ : GL (Fin n) F) i j ∈ 𝒪[F] := by
+  obtain ⟨hP, h1⟩ := mem_unipotentRadical.1 hu
+  rw [rankTorus_conj_apply]
+  rcases lt_trichotomy (β i) (β j) with h | h | h
+  · refine zpow_mul_mem (hb i j) ?_
+    have := blockRank_lt h
+    have : e * blockRank β i + e ≤ e * blockRank β j := by nlinarith
+    push_cast
+    omega
+  · rw [h1 i j h, blockRank_eq h, sub_self, zpow_zero, one_mul]
+    by_cases hij : i = j
+    · rw [hij, one_apply_eq]
+      exact one_mem _
+    · rw [one_apply_ne hij]
+      exact zero_mem _
+  · rw [hP h, mul_zero]
+    exact zero_mem _
+
+variable (F n β) in
+def unipotentCompact (e : ℕ) : Subgroup (unipotentRadical F n β) :=
+  ((integralGL F n).comap (MulAut.conj (rankTorus F n β e)).toMonoidHom).subgroupOf
+    (unipotentRadical F n β)
+
+theorem mem_unipotentCompact {e : ℕ} {u : unipotentRadical F n β} :
+    u ∈ unipotentCompact F n β e ↔
+      rankTorus F n β e * u * (rankTorus F n β e)⁻¹ ∈ integralGL F n := by
+  rw [unipotentCompact, Subgroup.mem_subgroupOf, Subgroup.mem_comap]
+  rfl
+
+def conjHomeomorph (t : GL (Fin n) F) : GL (Fin n) F ≃ₜ GL (Fin n) F :=
+  (Homeomorph.mulLeft t).trans (Homeomorph.mulRight t⁻¹)
+
+theorem coe_unipotentCompact (e : ℕ) :
+    (unipotentCompact F n β e : Set (unipotentRadical F n β)) =
+      Subtype.val ⁻¹' (conjHomeomorph (rankTorus F n β e) ⁻¹' (integralGL F n : Set _)) := by
+  ext u
+  simp only [SetLike.mem_coe, mem_unipotentCompact, Set.mem_preimage]
+  rfl
+
+theorem isOpen_unipotentCompact (e : ℕ) :
+    IsOpen (unipotentCompact F n β e : Set (unipotentRadical F n β)) := by
+  rw [coe_unipotentCompact]
+  exact ((isOpen_integralGL F n).preimage (conjHomeomorph _).continuous).preimage
+    continuous_subtype_val
+
+theorem isCompact_unipotentCompact (e : ℕ) :
+    IsCompact (unipotentCompact F n β e : Set (unipotentRadical F n β)) := by
+  rw [coe_unipotentCompact]
+  exact isClosed_unipotentRadical.isClosedEmbedding_subtypeVal.isCompact_preimage
+    ((conjHomeomorph _).isCompact_preimage.2 (isCompact_integralGL F n))
+
+theorem mem_unipotentCompact_of_bound {e : ℕ} {u : unipotentRadical F n β}
+    (hb : ∀ i j, (GLnLocal.uniformizer F : F) ^ e * (u : GL (Fin n) F) i j ∈ 𝒪[F])
+    (hb' : ∀ i j, (GLnLocal.uniformizer F : F) ^ e * ((u : GL (Fin n) F)⁻¹ : GL (Fin n) F) i j ∈ 𝒪[F]) :
+    u ∈ unipotentCompact F n β e := by
+  rw [mem_unipotentCompact, mem_integralGL_iff]
+  refine ⟨rankTorus_conj_apply_mem u.2 hb, fun i j => ?_⟩
+  have : (rankTorus F n β e * u * (rankTorus F n β e)⁻¹)⁻¹ =
+      rankTorus F n β e * (u : GL (Fin n) F)⁻¹ * (rankTorus F n β e)⁻¹ := by group
+  rw [this]
+  exact rankTorus_conj_apply_mem ((unipotentRadical F n β).inv_mem u.2) hb' i j
+
+theorem exists_compactOpen_unipotentRadical (s : Finset (unipotentRadical F n β)) :
+    ∃ K : Subgroup (unipotentRadical F n β), IsCompact (K : Set (unipotentRadical F n β)) ∧
+      IsOpen (K : Set (unipotentRadical F n β)) ∧ ∀ x ∈ s, x ∈ K := by
+  classical
+  let C : Set (GL (Fin n) F) :=
+    (fun x : unipotentRadical F n β => (x : GL (Fin n) F)) '' (s : Set _) ∪
+      (fun x : unipotentRadical F n β => (x : GL (Fin n) F)⁻¹) '' (s : Set _)
+  have hC : IsCompact C :=
+    ((s.finite_toSet.image _).union (s.finite_toSet.image _)).isCompact
+  obtain ⟨e, he⟩ := exists_pow_mul_mem_of_isCompact F n hC
+  refine ⟨unipotentCompact F n β e, isCompact_unipotentCompact e, isOpen_unipotentCompact e,
+    fun x hx => mem_unipotentCompact_of_bound (he _ ?_) (he _ ?_)⟩
+  · exact Or.inl ⟨x, hx, rfl⟩
+  · exact Or.inr ⟨x, hx, rfl⟩
+
+open MeasureTheory Measure in
+theorem modularCharacter_eq_one_of_mem (p : blockUpper F n β)
+    (hp : (p : GL (Fin n) F) ∈ unipotentRadical F n β) : modularCharacter p = 1 := by
+  classical
+  let u : unipotentRadical F n β := ⟨p, hp⟩
+  obtain ⟨e, he⟩ := exists_pow_mul_mem_of_isCompact F n
+    (Set.toFinite ({(p : GL (Fin n) F), (p : GL (Fin n) F)⁻¹} : Set _)).isCompact
+  have hmem := mem_integralGL_iff F n |>.1 <| (mem_unipotentCompact (u := u)).1
+    (mem_unipotentCompact_of_bound (fun i j => he _ (by simp [u]) i j)
+      (fun i j => he _ (by simp [u]) i j))
+  let t : blockUpper F n β := ⟨rankTorus F n β e, rankTorus_mem_blockUpper e⟩
+  have h1 : modularCharacter (t * p * t⁻¹) = 1 :=
+    Measures.modularCharacter_eq_one_of_mem_integralGL (t * p * t⁻¹)
+      ((mem_integralGL_iff F n).2 hmem)
+  rw [map_mul, map_mul, mul_comm (modularCharacter t), mul_assoc, ← map_mul, mul_inv_cancel,
+    map_one, mul_one] at h1
+  exact h1
+
+theorem rankTorus_inv_conj_apply_facts {k t m : ℕ} (hm : k + t ≤ m) {z : GL (Fin n) F}
+    (hz : z ∈ oppositeUnipotentRadical F n β)
+    (hb : ∀ i j, (GLnLocal.uniformizer F : F) ^ k * z i j ∈ 𝒪[F]) (i j : Fin n) :
+    ((rankTorus F n β m)⁻¹ * z * rankTorus F n β m : GL (Fin n) F) i j ∈ 𝒪[F] ∧
+      valuation F (((rankTorus F n β m)⁻¹ * z * rankTorus F n β m : GL (Fin n) F) i j -
+        (1 : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F (GLnLocal.uniformizer F : F) ^ t := by
+  obtain ⟨hlow, h1⟩ := mem_oppositeUnipotentRadical.1 hz
+  rw [rankTorus_inv_conj_apply]
+  rcases lt_trichotomy (β i) (β j) with h | h | h
+  · rw [hlow i j h, mul_zero, one_apply_ne (fun e => h.ne (by rw [e])), sub_zero, map_zero]
+    exact ⟨zero_mem _, zero_le'⟩
+  · rw [h1 i j h, blockRank_eq h, sub_self, zpow_zero, one_mul, sub_self, map_zero]
+    refine ⟨?_, zero_le'⟩
+    by_cases hij : i = j
+    · rw [hij, one_apply_eq]
+      exact one_mem _
+    · rw [one_apply_ne hij]
+      exact zero_mem _
+  · have hr := blockRank_lt h
+    have hexp : ((k + t : ℕ) : ℤ) ≤
+        ((m * blockRank β i : ℕ) : ℤ) - ((m * blockRank β j : ℕ) : ℤ) := by
+      have : m * blockRank β j + m ≤ m * blockRank β i := by nlinarith
+      push_cast
+      omega
+    rw [one_apply_ne (fun e => h.ne' (by rw [e])), sub_zero]
+    exact ⟨zpow_mul_mem (hb i j) (by omega), valuation_zpow_mul_le (hb i j) hexp⟩
+
+theorem exists_conj_mem_congruenceSubgroup {C : Set (GL (Fin n) F)} (hC : IsCompact C) (t : ℕ) :
+    ∃ m₀ : ℕ, ∀ m ≥ m₀, ∀ z ∈ C, z ∈ oppositeUnipotentRadical F n β → z⁻¹ ∈ C →
+      (rankTorus F n β m)⁻¹ * z * rankTorus F n β m ∈ congruenceSubgroup F n t := by
+  obtain ⟨k, hk⟩ := exists_pow_mul_mem_of_isCompact F n hC
+  refine ⟨k + t, fun m hm z hzC hz hz' => ?_⟩
+  have hfz := rankTorus_inv_conj_apply_facts hm hz (hk z hzC)
+  have hfz' := rankTorus_inv_conj_apply_facts hm
+    ((oppositeUnipotentRadical F n β).inv_mem hz) (hk _ hz')
+  rw [mem_congruenceSubgroup_iff, mem_integralGL_iff]
+  refine ⟨⟨fun i j => (hfz i j).1, fun i j => ?_⟩, fun i j => (hfz i j).2⟩
+  have : ((rankTorus F n β m)⁻¹ * z * rankTorus F n β m)⁻¹ =
+      (rankTorus F n β m)⁻¹ * z⁻¹ * rankTorus F n β m := by group
+  rw [this]
+  exact (hfz' i j).1
+
+end Parabolic
+
+end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.InductionParabolicLocal =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.InductionParabolic =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.InductionParabolic", "h": "module\n\npublic import GroundTheory.AutomorphicForms.Induction\npublic import GroundTheory.AutomorphicForms.InductionJacquet\npublic import GroundTheory.AutomorphicForms.InductionParabolicLocal\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -355,3 +725,7 @@ end Jacquet
 end Parabolic
 
 end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.InductionParabolic =====

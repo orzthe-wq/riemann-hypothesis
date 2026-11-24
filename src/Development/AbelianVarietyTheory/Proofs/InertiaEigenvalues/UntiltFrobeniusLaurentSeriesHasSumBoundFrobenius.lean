@@ -83,7 +83,7 @@ theorem l_pos : (0 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).pos
 theorem two_le_l : (2 : ℝ) ≤ l := by exact_mod_cast (Fact.out : l.Prime).two_le
 
 theorem norm_sh_pw (k : ℤ) (x : Fl l) : ‖sh (pw k x)‖ = ‖sh x‖ ^ ((l : ℝ) ^ k) := by
-  apply GlobalTheory.PSer.PwLaws.norm_sh_pw <;> assumption
+  apply GlobalTheory.PSer.PwLaws.norm_sh_pw
 
 theorem norm_l : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   rw [GlobalTheory.RingBasics.norm_eq_val, PadicComplex.valuation_p]; simp

@@ -123,13 +123,10 @@ theorem idxRules_add (p : Ideal R) [p.IsPrime] (W : Submodule K V) (A B C : Subm
 
 theorem idxRules_lidx_of_le (p : Ideal R) [p.IsPrime] {A B : Submodule R V} (h : B ≤ A) :
     lidx p A B = locLen p A B := by
-  unfold lidx
-  rw [inf_eq_right.mpr h, indexBasic_locLen_self]
-  simp
+  simp [lidx, inf_eq_right.mpr h, indexBasic_locLen_self]
 
 theorem idxRules_lidx_self (p : Ideal R) [p.IsPrime] (A : Submodule R V) : lidx p A A = 0 := by
-  unfold lidx
-  exact sub_self _
+  simp [lidx]
 
 theorem localization_map₄ (p : Ideal R) [p.IsPrime] (φ : V →ₗ[K] V') (A : Submodule R V) :
     localization₂ p (A.map (φ.restrictScalars R)) = (localization₂ p A).map (φ.restrictScalars R) := by
@@ -167,11 +164,9 @@ theorem idxRules_lidx_map (p : Ideal R) [p.IsPrime] (φ : V →ₗ[K] V') (hφ :
     (A B : Submodule R V) :
     lidx p (A.map (φ.restrictScalars R)) (B.map (φ.restrictScalars R)) = lidx p A B := by
   have hφ' : Function.Injective (φ.restrictScalars R) := hφ
-  have hinf : A.map (φ.restrictScalars R) ⊓ B.map (φ.restrictScalars R) =
-      (A ⊓ B).map (φ.restrictScalars R) := (Submodule.map_inf _ hφ').symm
   unfold lidx locLen
-  rw [hinf, localization_map₄, localization_map₄, localization_map₄, idxRules_len_map _ hφ',
-    idxRules_len_map _ hφ']
+  rw [← Submodule.map_inf (φ.restrictScalars R) hφ', localization_map₄, localization_map₄,
+    localization_map₄, idxRules_len_map _ hφ', idxRules_len_map _ hφ']
 
 theorem idxRules_span_map (φ : V →ₗ[K] V') (A : Submodule R V) :
     Submodule.span K ((A.map (φ.restrictScalars R) : Submodule R V') : Set V') =
@@ -191,8 +186,7 @@ theorem idxRules_scG_lat {a : K} (ha : a ≠ 0) {W : Submodule K V} {A : Submodu
 
 theorem idxRules_smul_inj {a : K} (ha : a ≠ 0) :
     Function.Injective (a • (LinearMap.id : V →ₗ[K] V)) := by
-  intro x y h
-  exact smul_right_injective V ha h
+  exact smul_right_injective V ha
 
 theorem idxRules_scG_map (a : K) (φ : V →ₗ[K] V') (A : Submodule R V) :
     scG a (A.map (φ.restrictScalars R)) = (scG a A).map (φ.restrictScalars R) := by
@@ -241,17 +235,14 @@ theorem idxRules_scale [FiniteDimensional K V] (v : HeightOneSpectrum R) (W : Su
     (idxRules_scG_lat ha hB)
   have h5 := idxRules_add v.asIdeal W B F B hB hFl hB
   rw [idxRules_lidx_self] at h5
-  rw [h3, h4, h1, h2]
-  linarith
+  linarith [h3, h4, h1, h2, h5]
 
 theorem idxRules_cut_lat {W W' : Submodule K V} (hW : W' ≤ W) {A : Submodule R V}
     (hA : A.FG ∧ Submodule.span K (A : Set V) = W) :
     (A ⊓ W'.restrictScalars R).FG ∧
       Submodule.span K ((A ⊓ W'.restrictScalars R : Submodule R V) : Set V) = W' := by
   refine ⟨hA.1.of_le inf_le_left, le_antisymm ?_ ?_⟩
-  · rw [Submodule.span_le]
-    intro x hx
-    exact hx.2
+  · exact Submodule.span_le.mpr (fun x hx => hx.2)
   · intro x hx
     obtain ⟨d, hd, hdx⟩ := idxRules_denom A (x := x) (by rw [hA.2]; exact hW hx)
     have hd0 : algebraMap R K d ≠ 0 := idxRules_alg_ne (nonZeroDivisors.ne_zero hd)

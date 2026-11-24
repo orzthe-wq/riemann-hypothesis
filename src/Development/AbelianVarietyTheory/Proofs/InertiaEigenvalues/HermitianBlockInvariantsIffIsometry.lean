@@ -2,8 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 public import Mathlib.RingTheory.TensorProduct.IsBaseChangeFree
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFactsStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisInvKRegularIffIsUnitStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFacts
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisInvKRegularIffIsUnit
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -206,7 +206,7 @@ theorem isom_to_herm (hG : A.IsGen τ p) (lam : F) (x : A.K) (j : A.L ≃ₗ[E] 
       algebraMap F E (Algebra.trace F A.K (τ ^ (i : ℕ) * (x * A.NL y)))
     rw [mat_pow_mulVec, hj, ← trace_map A hG]
     congr 1
-    rw [map_mul, map_mul, (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).1 y]
+    rw [map_mul, map_mul, (_root_.GlobalTheory.JR.EtFacts.main F E A).1 y]
     ring
 
 end GlobalTheory.EtIsom
@@ -294,7 +294,7 @@ theorem mom_all (hG : A.IsGen τ p) {lam : F} {a : A.K} {X : Hn r F E} (hX : Has
 
 theorem detH (hG : A.IsGen τ p) {a : A.K} (ha : IsUnit a) :
     (Matrix.of fun i k : Fin r => Algebra.trace F A.K (τ ^ ((i : ℕ) + (k : ℕ)) * a)).det ≠ 0 := by
-  have hinj := (GlobalTheory.T.jacquetRallis_invK_regular_iff_isUnit F E A r τ p 0 hG).1.1
+  have hinj := (_root_.GlobalTheory.JR.EtInv.invK_regular_iff_isUnit F E A r τ p 0 hG).1.1
   rw [← isUnit_iff_ne_zero, ← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]
   have key : ∀ e : Fin r → F, (Matrix.of fun i k : Fin r => Algebra.trace F A.K (τ ^ ((i : ℕ) + (k : ℕ)) * a)) *ᵥ e =
       (fun i : Fin r => Algebra.trace F A.K (τ ^ (i : ℕ) * (a * ∑ k, e k • τ ^ (k : ℕ)))) := by
@@ -382,7 +382,7 @@ theorem herm_to_isom (hG : A.IsGen τ p) {lam : F} {a : A.K} (ha : IsUnit a) {X 
   · rw [hj, hj]
     refine (form_eq A hG a X.1.1 hAh X.2.1 (mom_all A hG hX) φ.toLinearMap hφb _ _).trans ?_
     congr 1
-    rw [hxa, map_mul, (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).1 y, star_mul']
+    rw [hxa, map_mul, (_root_.GlobalTheory.JR.EtFacts.main F E A).1 y, star_mul']
     linear_combination (algebraMap A.K A.L x * star z * z') * (star y * star ((u⁻¹ : A.Lˣ) : A.L)) * h1 +
       (algebraMap A.K A.L x * star z * z') * h2
   · rw [hj, hj, mul_assoc, hτ]

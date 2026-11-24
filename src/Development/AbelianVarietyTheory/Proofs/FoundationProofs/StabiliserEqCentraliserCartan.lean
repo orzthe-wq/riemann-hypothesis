@@ -196,7 +196,6 @@ theorem frame_local_iff (h : IsCMExt F E σ) (τ : EmbOver E w) (J : Matrix (Fin
       (c.map (infEmb τ))ᴴ * J.map τ.1 * c.map (infEmb τ) = Matrix.diagonal fun i => if ε i then 1 else -1 := by
   have h2 : (JR w.Completion J).map (infEmb τ) = J.map τ.1 := by ext r s; simp [JR, inclR]
   rw [← (Matrix.map_injective (infEmb_bijective h τ).1).eq_iff]
-  beta_reduce
   rw [Matrix.map_mul, Matrix.map_mul, Frames.map_cT_sigR h, h2, Matrix.diagonal_map (map_zero _)]
   refine iff_of_eq (congrArg₂ _ rfl (congrArg _ (funext fun i => ?_)))
   split_ifs <;> simp
@@ -222,7 +221,6 @@ theorem mem_stabArch_iff_unitary (h : IsCMExt F E σ) (τ : EmbOver E w) (J : Ma
   generalize (bc (compInf F E w) a)⁻¹ * AdelicU.matHom _ σ J (projArch σ J w g) * bc (compInf F E w) a = x
   change cT _ x.1 * 1 * x.1 = 1 ↔ _
   rw [← (Matrix.map_injective (infEmb_bijective h τ).1).eq_iff]
-  beta_reduce
   rw [mul_one, Matrix.map_mul, Frames.map_cT_sigR h, Matrix.map_one _ (map_zero _) (map_one _)]
 
 end Place

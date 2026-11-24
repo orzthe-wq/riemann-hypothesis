@@ -65,9 +65,6 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
 
 theorem nzsd_R' : NoZeroSMulDivisors (D.nd.O i) Dd.R' := by
   first
-  | exact inferInstance
-  | (haveI : NoZeroSMulDivisors (D.nd.O i) (FractionRing (D.nd.O i)) :=
-        NoZeroSMulDivisors.of_algebraMap_injective (IsFractionRing.injective _ _); exact inferInstance)
   | exact ⟨fun {c x} h => by
       by_cases hc : c = 0
       · exact Or.inl hc
@@ -84,7 +81,6 @@ theorem heS {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.hos
     algebraMap ↥(OL (TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL) ↥(TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL.1 (selfO i hw a) =
       eS i hw (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) a) := by
   first
-  | rfl
   | (have e1 : ∀ y, eS i hw y = Formalism.MainNotions.N.Br.toLLK (D.nbr i w hw) y := fun _ => rfl
      rw [e1, Formalism.MainNotions.N.Br.toLLK, IsFractionRing.lift_algebraMap]
      rfl)
@@ -97,7 +93,6 @@ theorem fd_yt {w : HeightOneSpectrum (𝓞 D.host.E)} {hw : w ∈ placesOver D.h
   obtain ⟨m, xs, φ, hφ, -⟩ := hemb
   first
   | exact FiniteDimensional.of_injective φ hφ
-  | exact Module.Finite.of_injective φ hφ
 
 private theorem continuous_of_injective_linearMap_comp {K V W G : Type*} [Field K] [TopologicalSpace K]
     {_a : AddCommMonoid V} {_m : Module K V} [TopologicalSpace V] [ContinuousAdd V] [IsModuleTopology K V]
@@ -109,7 +104,6 @@ private theorem continuous_of_injective_linearMap_comp {K V W G : Type*} [Field 
   haveI : ContinuousSMul K V := by
     first
     | exact inferInstance
-    | exact IsModuleTopology.toContinuousSMul K V
   obtain ⟨ψ, hψ⟩ := LinearMap.exists_leftInverse_of_injective φ (LinearMap.ker_eq_bot.mpr hφ)
   have hψc : Continuous ψ := IsModuleTopology.continuous_of_linearMap ψ
   have e1 : f = fun g => ψ (φ (f g)) := funext fun g => (LinearMap.congr_fun hψ (f g)).symm
@@ -126,7 +120,6 @@ theorem cont_yt {w : HeightOneSpectrum (𝓞 D.host.E)} {hw : w ∈ placesOver D
   refine continuous_pi fun a => ?_
   first
   | exact (hc' (xs a)).matrix_mulVec continuous_const
-  | fun_prop
 
 def ytY (hfin : Module.Finite (D.nd.O i) Dd.R') {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (hemb : YtEmbW i dc r Dd hw) (hc : MsContW i r hw) :
@@ -140,9 +133,6 @@ theorem msW_eq {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.
     MsW i r hw x = twistM (TruncatedSeriesCountingIdentities.locC (TruncatedSeriesCountingIdentities.CoefExt.self i w hw) (rO D.nd i r x)) (TruncatedSeriesCountingIdentities.chi1C (TruncatedSeriesCountingIdentities.CoefExt.self i w hw))⁻¹ := by
   ext g a b
   first
-  | exact ((TruncatedSeriesCountingIdentities.CoefExt.self i w hw).inc.comp
-      ((algebraMap ↥(OL (TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL) ↥(TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL.1).comp
-        (selfO i hw).toRingHom)).map_mul _ _
   | (simp only [MsW, TruncatedSeriesCountingIdentities.locC, TruncatedSeriesCountingIdentities.chi1C, rTwO, twistM, mapM, Formalism.MainNotions.N.Br.loc, Formalism.MainNotions.N.Br.locChi,
       Formalism.MainNotions.N.Br.locM, Formalism.MainNotions.N.Br.locO, Formalism.MainNotions.N.Br.chiG, MonoidHom.coe_comp, Function.comp_apply,
       MonoidHom.coe_mk, OneHom.coe_mk, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe,
@@ -166,7 +156,6 @@ theorem ytPsi_rec (hfin : Module.Finite (D.nd.O i) Dd.R') {w : HeightOneSpectrum
   haveI := nzsd_R' i Dd
   first
   | apply ytG_psi
-  | (unfold ytY; apply ytG_psi)
 
 theorem jump_pi (hF : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i r ρ π) {w : HeightOneSpectrum (𝓞 D.host.E)}
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (hc : MsContW i r hw) (x : D.nd.X i) (τ) (a : ℤ)

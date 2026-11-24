@@ -114,9 +114,7 @@ theorem prod_signs {n t : ℕ} (ε : Fin n → ℤˣ) (a b : Fin t → Fin n) (�
 theorem arg_rev {t : ℕ} (w : ℂ) (j : Fin t) :
     star (w - (((Fin.rev j : Fin t) : ℕ) : ℂ)) = star w - (t : ℂ) + 1 + ((j : ℕ) : ℂ) := by
   have hj := j.isLt
-  rw [star_sub, Fin.val_rev]
-  have e : star (((t - (↑j + 1) : ℕ)) : ℂ) = ((t - (↑j + 1) : ℕ) : ℂ) := by simp
-  rw [e, Nat.cast_sub (by omega)]
+  rw [star_sub, Fin.val_rev, star_natCast, Nat.cast_sub (by omega)]
   push_cast
   ring
 

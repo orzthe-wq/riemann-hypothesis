@@ -4,58 +4,8 @@ public import GroundTheory.GlobalFields.CompletionAtPlace
 public import GroundTheory.LocalFields.Interface
 public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 public import Mathlib.RingTheory.RamificationInertia.Basic
 public import Mathlib.RingTheory.Valuation.Integral
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Connected.Separation
-import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -213,25 +163,15 @@ theorem mem_maximalIdeal_iff_valued_lt_one (y : 𝒪[u.adicCompletion F]) :
 
 theorem valued_of_irreducible_integer {ϖ : 𝒪[u.adicCompletion F]} (hϖ : Irreducible ϖ) :
     Valued.v (ϖ : u.adicCompletion F) = WithZero.exp (-1) := by
-  apply le_antisymm
-  · have h := (mem_maximalIdeal_iff_valued_lt_one u ϖ).1 hϖ.not_isUnit
-    have h' : Valued.v (ϖ : u.adicCompletion F) < WithZero.exp (-1) * WithZero.exp 1 := by
-      rwa [← WithZero.exp_add, neg_add_cancel, WithZero.exp_zero]
-    exact (WithZero.lt_mul_exp_iff_le (by simp)).1 h'
-  · have hlt : WithZero.exp (-1 : ℤ) < 1 := by
-      rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; norm_num
-    obtain ⟨y, hy⟩ := valuedAdicCompletion_surjective F u (WithZero.exp (-1))
-    have hy1 : Valued.v y ≤ 1 := by rw [hy]; exact hlt.le
-    let y' : 𝒪[u.adicCompletion F] := ⟨y, (mem_valuationInteger_iff u y).2 hy1⟩
-    have hy' : y' ∈ 𝓂[u.adicCompletion F] := by
-      rw [mem_maximalIdeal_iff_valued_lt_one]
-      change Valued.v y < 1
-      rw [hy]; exact hlt
-    rw [hϖ.maximalIdeal_eq, Ideal.mem_span_singleton'] at hy'
-    obtain ⟨c, hc⟩ := hy'
-    rw [← hy, show y = ((c * ϖ : 𝒪[u.adicCompletion F]) : u.adicCompletion F) by rw [hc],
-      Subring.coe_mul, map_mul]
-    exact mul_le_of_le_one_left zero_le ((integers_valued u).map_le_one c)
+  have h : (ValuativeRel.valuation (u.adicCompletion F)).integer =
+      (u.adicCompletionIntegers F).toSubring := by
+    ext x
+    exact mem_valuationInteger_iff u x
+  let e := RingEquiv.subringCongr h
+  have hϖ' : Irreducible (e ϖ) := (MulEquiv.irreducible_iff e).2 hϖ
+  have hval := valued_of_irreducible u
+    (ϖ := ⟨(e ϖ : u.adicCompletion F), (e ϖ).2⟩) (by exact hϖ')
+  simpa [e] using hval
 
 theorem mem_maximalIdeal_pow_iff (y : 𝒪[u.adicCompletion F]) (n : ℕ) :
     y ∈ 𝓂[u.adicCompletion F] ^ n ↔ Valued.v (y : u.adicCompletion F) ≤ WithZero.exp (-(n : ℤ)) := by

@@ -42,30 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-
-namespace I195MixedCoordinates_ea4eb4ab36e967232c52358e
-
-open Formalism.BasicNotions Formalism.BasicNotions.TH
-open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
-open Formalism.L2.Theta Formalism.IndefR.Datum GlobalTheory.MixModel MeasureTheory
-attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-public noncomputable abbrev source
-    {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D T.rank ρ))
-    (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) : WO S₀ T → ℂ :=
-  fun w₀ => ∫ a in 𝓕, heisO ψ S T (a * d.pY)
-    (heisO ψ S T (x * d.pX) (heisO ψ S T (w₀ * d.p0) f)) 0 ∂μ
-
-public noncomputable abbrev target
-    {D : D7} {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D)
-    (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D ρ S.rank))
-    (𝓕 : Set (Mx D ρ S.rank)) (f : WO S T → ℂ) (y : Mx D S.rank ρ) : WO S T₀ → ℂ :=
-  fun w₀ => ∫ ξ in 𝓕, heisO ψ S T (d.jX * ξ)
-    (heisO ψ S T (d.jY * (incA D (-D.host.xi0⁻¹) • (adj y * gA S)))
-      (heisO ψ S T (d.j0 * w₀) f)) 0 ∂μ
-
-end I195MixedCoordinates_ea4eb4ab36e967232c52358e
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -126,7 +103,7 @@ theorem mixed_coords_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) 
     (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (vS : VolM D W.rank ρ) (vT : VolM D σ V₀.rank) (χV χW : (AE D)ˣ →* Circle)
     (om : Om V W), IsWeilDatumO ψ V W χV χW om → ∀ Φ, IsThetaFunO ψ V W Φ →
     (Continuous fun q : (GA D V × GA D W) × Mx D W.rank ρ × WO V₀ W =>
-      (_root_.I195MixedCoordinates_ea4eb4ab36e967232c52358e.source dV) W ψ vS.μ vS.𝓕 (om q.1 Φ) q.2.1 q.2.2) ∧
+      (_root_.I195MixedCoordinates.source dV) W ψ vS.μ vS.𝓕 (om q.1 Φ) q.2.1 q.2.2) ∧
     (Continuous fun q : (GA D V × GA D W) × Mx D W.rank ρ × Mx D V₀.rank σ × WO V₀ W₀ =>
       evalAt ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (om q.1 Φ) q.2.1 q.2.2.1 q.2.2.2) := by
   intro D ψ V V₀ W W₀ ρ σ dV dW vS vT χV χW om hw Φ hΦ
@@ -137,7 +114,7 @@ theorem mixed_coords_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) 
   have cY : Continuous (dV.extY W) := continuous_id.matrix_mul continuous_const
   have c0 : Continuous (dV.ext0 W) := continuous_id.matrix_mul continuous_const
   have h1 : Continuous fun q : (GA D V × GA D W) × Mx D W.rank ρ × WO V₀ W =>
-      (_root_.I195MixedCoordinates_ea4eb4ab36e967232c52358e.source dV) W ψ vS.μ vS.𝓕 (om q.1 Φ) q.2.1 q.2.2 := by
+      (_root_.I195MixedCoordinates.source dV) W ψ vS.μ vS.𝓕 (om q.1 Φ) q.2.1 q.2.2 := by
     refine continuous_covolOne_integral vS.covol
       (fun (q : (GA D V × GA D W) × Mx D W.rank ρ × WO V₀ W) a => heisO ψ V W (dV.extY W a)
         (heisO ψ V W (dV.extX W q.2.1) (heisO ψ V W (dV.ext0 W q.2.2) (om q.1 Φ))) 0) ?_ ?_
@@ -165,7 +142,7 @@ theorem mixed_coords_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) 
       h3.const_smul (incA D (-D.host.xi0⁻¹))
     exact continuous_const.matrix_mul h4
   have cI : Continuous (dW.inc0 V₀) := continuous_const.matrix_mul continuous_id
-  let G : (GA D V × GA D W) × Mx D W.rank ρ × WO V₀ W → ℂ := fun q => (_root_.I195MixedCoordinates_ea4eb4ab36e967232c52358e.source dV) W ψ vS.μ vS.𝓕 (om q.1 Φ) q.2.1 q.2.2
+  let G : (GA D V × GA D W) × Mx D W.rank ρ × WO V₀ W → ℂ := fun q => (_root_.I195MixedCoordinates.source dV) W ψ vS.μ vS.𝓕 (om q.1 Φ) q.2.1 q.2.2
   have h2 : Continuous fun (q : (GA D V × GA D W) × Mx D W.rank ρ × Mx D V₀.rank σ × WO V₀ W₀) =>
       ∫ ξ in vT.𝓕, ψ (symplOH V₀ W (dW.incX V₀ ξ) (dW.incAdj V₀ q.2.2.1)) *
         G (q.1, q.2.1, dW.incX V₀ ξ + dW.incAdj V₀ q.2.2.1 + dW.inc0 V₀ q.2.2.2) ∂vT.μ := by
@@ -183,7 +160,7 @@ theorem mixed_coords_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) 
       rw [HypDec.integrandT_eq, HypDec.integrandT_eq] at this
       exact this
   refine h2.congr fun q => ?_
-  simp only [evalAt, _root_.I195MixedCoordinates_14b5fd3aa93c7f4842f1a892.target, G]
+  simp only [evalAt, _root_.I195MixedCoordinates.target, G]
   congr 1
   funext ξ
   exact (dW.integrandT_eq _ _ _ _).symm

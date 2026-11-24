@@ -66,7 +66,7 @@ private theorem chi_diag {n : ℕ} {k G : Type} [CommRing k] [Group G] (χ : Fin
   rw [← Matrix.det_diagonal]
   congr 1
   ext i j : 2
-  by_cases h : i = j <;> simp [GDet.repAlg, diagRep, Matrix.one_apply, Matrix.diagonal_apply, h]
+  by_cases h : i = j <;> simp [GDet.repAlg, diagRep, h]
 
 theorem UpperTheory.V.Pa.Core.chiRes :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (r : Resid F O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (g : F.G₀) (ut : Fin n → O), (∀ i, residue O (ut i) = r.chib i g) → (u.D.chi (MonoidAlgebra.single g 1)).Monic ∧ (u.D.chi (MonoidAlgebra.single g 1)).natDegree = n ∧ (u.D.chi (MonoidAlgebra.single g 1)).map (residue B) = ∏ i, (Polynomial.X - Polynomial.C (residue B (algebraMap O B (ut i)))) := by

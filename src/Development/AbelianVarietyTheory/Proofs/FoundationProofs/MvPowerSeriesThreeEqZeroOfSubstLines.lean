@@ -57,7 +57,7 @@ theorem mvPowerSeries_three_eq_zero_of_subst_lines :
       Φ = 0 := by
   intro K _ _ Φ h
   ext d
-  set n := ∑ i, d i with hn
+  set n := ∑ i, d i
   let S : Finset (Fin 3 →₀ ℕ) :=
     (Finset.Iic (Finsupp.equivFunOnFinite.symm fun _ => n)).filter (fun e => ∑ i, e i = n)
   have hS : ∀ e, e ∈ S ↔ ∑ i, e i = n := by
@@ -86,26 +86,19 @@ theorem mvPowerSeries_three_eq_zero_of_subst_lines :
         ∑ᶠ e : Fin 3 →₀ ℕ, MvPowerSeries.coeff e Φ • PowerSeries.coeff n
           (e.prod fun s k => (PowerSeries.C (t s) * PowerSeries.X : PowerSeries K) ^ k) :=
       MvPowerSeries.coeff_subst ha Φ (Finsupp.single () n)
-    have hsupp : Function.support (fun e : Fin 3 →₀ ℕ =>
-        MvPowerSeries.coeff e Φ • PowerSeries.coeff n
-          (e.prod fun s k => (PowerSeries.C (t s) * PowerSeries.X : PowerSeries K) ^ k)) ⊆ S := by
-      intro e he
+    rw [h1]
+    simp only [hprod, PowerSeries.coeff_C_mul_X_pow, smul_eq_mul]
+    rw [finsum_eq_sum_of_support_subset _ (s := S) ?_]
+    · simp only [P, map_sum, MvPolynomial.eval_monomial]
+      refine Finset.sum_congr rfl (fun e he => ?_)
+      simp [((hS e).1 he).symm]
+    · intro e he
       rw [Function.mem_support] at he
-      rw [hprod, PowerSeries.coeff_C_mul_X_pow, smul_eq_mul] at he
       rw [Finset.mem_coe, hS]
       by_contra hne
       exact he (by simp [Ne.symm hne])
-    rw [h1]
-    rw [finsum_eq_sum_of_support_subset _ (s := S) hsupp]
-    simp only [hprod, PowerSeries.coeff_C_mul_X_pow, smul_eq_mul]
-
-    · simp only [P, map_sum, MvPolynomial.eval_monomial]
-      refine Finset.sum_congr rfl (fun e he => ?_)
-      rw [if_pos ((hS e).1 he).symm, Finsupp.prod_fintype _ _ (fun s => pow_zero _)]
-  have hP : P = 0 := MvPolynomial.funext (fun t => by rw [← hcoef, h t, map_zero, map_zero])
-  have hd := congrArg (AddMonoidAlgebra.coeff · d) hP
-  simp only [P, MvPolynomial.coeff_zero, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial,
-    Finset.sum_ite_eq', Finset.sum_ite_eq, if_pos ((hS d).2 rfl)] at hd
-  simpa using hd
+  have hP : P = 0 := MvPolynomial.funext (fun t => by simp [← hcoef, h t])
+  have hd := congrArg (fun p : MvPolynomial (Fin 3) K => p.coeff d) hP
+  simpa [P, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, (hS d).2 rfl] using hd
 
 end GlobalTheory

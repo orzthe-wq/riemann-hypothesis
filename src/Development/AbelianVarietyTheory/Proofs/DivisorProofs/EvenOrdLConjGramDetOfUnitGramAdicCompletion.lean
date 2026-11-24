@@ -48,35 +48,18 @@ namespace GlobalTheory.GramParity
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
-theorem ordL_spec {x : L} (hx : x ≠ 0) :
-    Valued.v x = ((Multiplicative.ofAdd (-ordL x) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
-  have h : Valued.v x ≠ 0 := (Valuation.ne_zero_iff _).mpr hx
-  unfold ordL
-  rw [dite_eq_right h]
-  simp
-
 theorem ordL_eq_of {x : L} (hx : x ≠ 0) {a : ℤ}
     (h : Valued.v x = ((Multiplicative.ofAdd (-a) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))) :
     ordL x = a := by
-  have h2 := (ordL_spec hx).symm.trans h
+  have h2 := (_root_.Formalism.UG.P.fSatake_v_eq hx).symm.trans h
   have h3 := WithZero.coe_injective h2
   simpa using h3
-
-theorem ordL_mul {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x + ordL y := by
-  apply ordL_eq_of (mul_ne_zero hx hy)
-  rw [Valuation.map_mul, ordL_spec hx, ordL_spec hy, ← WithZero.coe_mul, ← ofAdd_add]
-  congr 2
-  ring
 
 theorem ordL_eq_zero_of_v_one {x : L} (h : Valued.v x = 1) : ordL x = 0 := by
   have hx : x ≠ 0 := by
     intro h0; rw [h0, Valuation.map_zero] at h; exact zero_ne_one h
   apply ordL_eq_of hx
   rw [h]; rfl
-
-theorem ordL_congr {x y : L} (h : Valued.v x = Valued.v y) : ordL x = ordL y := by
-  unfold ordL
-  simp only [h]
 
 end GlobalTheory.GramParity
 
@@ -141,8 +124,8 @@ theorem gram_parity_gen {L : Type} [Field L] [Valued L (WithZero (Multiplicative
     have := c'.invertibleToMatrix b
     exact (Matrix.isUnit_det_of_invertible _).ne_zero
   have hσd : σ (c'.toMatrix b).det ≠ 0 := (map_ne_zero σ).mpr hd
-  rw [det_gram_change σ V b c', ordL_mul (mul_ne_zero hσd hg0) hd, ordL_mul hσd hg0,
-    ordL_eq_zero_of_v_one hg1, ordL_congr (hσ _)]
+  rw [det_gram_change σ V b c', _root_.Formalism.UG.P.fSatake_ord_mul (mul_ne_zero hσd hg0) hd, _root_.Formalism.UG.P.fSatake_ord_mul hσd hg0,
+    ordL_eq_zero_of_v_one hg1, _root_.Formalism.UG.P.fSatake_ord_of_v (hσ _)]
   have : ordL (c'.toMatrix b).det + 0 + ordL (c'.toMatrix b).det = 2 * ordL (c'.toMatrix b).det := by ring
   rw [this, _root_.zpow_mul]
   norm_num

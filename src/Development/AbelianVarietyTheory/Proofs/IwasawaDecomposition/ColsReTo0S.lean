@@ -85,7 +85,12 @@ def gS {Gt : GatTies D} {c : LatCmp D} (g : Formalism.L2.G.GroupCompatibilityAll
   herm := herm0S N h g.herm
   forms := fun u => forms0S N h (g.forms u)
   cmp := { g.cmp with }
-  ring := g.ring
+  ring := fun u w hg v => by
+    have h0 := g.ring u w hg v
+    dsimp +instances only [Formalism.L2.G.RingCompatibleAt, Formalism.L2.G.ORec,
+      Formalism.L2.G.KfRec, Formalism.L2.G.extRec, Formalism.L2.G.tauRec,
+      Formalism.BasicNotions.factResChar, setDiv] at h0 ⊢
+    exact h0
   gat := g.gat
 
 end Gen
@@ -97,19 +102,12 @@ variable (w : ColW B f T) (Z : w.Lt) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.
 
 def fullSZ (X : Formalism.L2.Herm.FullTiedS (w.D Z)) :
     Formalism.L2.Herm.FullTiedS (w.D (setDivZ Z N h)) :=
-  { X with
-    base := { X.base with }
-    atT := fun u => { X.atT u with }
-    ad := { X.ad with } }
+  fullS (D := w.D Z) N h X
 
 
 def forms0SZ {u : B.Word} (F : Forms0 (w.D Z) u) :
     Forms0 (w.D (setDivZ Z N h)) u :=
-  { F with
-    atT := atTTRe (setDivZ Z N h) F.atT
-    cls0 := clsRe (setDivZ Z N h) F.cls0
-    val0 := valRe (setDivZ Z N h) F.val0
-    lv0 := lvRe (setDivZ Z N h) F.lv0 }
+  forms0S (D := w.D Z) N h F
 
 
 theorem fullS_cols (X : Formalism.L2.Herm.FullTiedS (w.D Z)) :
@@ -134,17 +132,10 @@ def colTTr (t : ColT w Z) : ColT w (setDivZ Z N h) where
   full := ⟨fullSZ w Z N h t.full.1,
     (fullS_cols w Z N h t.full.1).trans (congrArg (hermRe (setDivZ Z N h)) t.full.2)⟩
   stdDt := t.stdDt
-  Gt := { t.Gt with }
-  cmp := { t.cmp with }
-  g :=
-    { herm := { t.g.herm with }
-      forms := fun u => forms0SZ w Z N h (t.g.forms u)
-      cmp := { t.g.cmp with }
-      ring := t.g.ring
-      gat := t.g.gat }
-  herm_eq := congrArg
-    (fun H : Formalism.L2.Herm.Herm0 (w.D Z) =>
-      ({ H with } : Formalism.L2.Herm.Herm0 (w.D (setDivZ Z N h)))) t.herm_eq
+  Gt := gatTr (D := w.D Z) N h t.Gt
+  cmp := cmpTr (D := w.D Z) N h t.cmp
+  g := gS (D := w.D Z) N h t.g
+  herm_eq := congrArg (herm0S (D := w.D Z) N h) t.herm_eq
   forms_eq := funext fun u =>
     (congrArg (forms0SZ w Z N h) (congrFun t.forms_eq u)).trans (colsRe_to0S w Z N h t.C u).symm
   gpl := t.gpl

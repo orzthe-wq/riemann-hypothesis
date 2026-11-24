@@ -47,13 +47,6 @@ import Mathlib.Tactic.ReduceModChar
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L
 
-private theorem gal_mul' {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (s t : Ω ≃ₐ[ℚ] Ω) (f : X.K) :
-    X.gal (s * t) f = X.gal s (X.gal t f) := by
-  apply X.exp.toRingHom.injective
-  show X.exp _ = X.exp _
-  ext r
-  simp [X.gal_exp]
-
 private theorem kmap_comp' {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
     (φ ψ χ : X.K ≃+* X.K) (h : ∀ f, χ f = φ (ψ f)) (a : X.Khat l) : X.kmap l χ a = X.kmap l φ (X.kmap l ψ a) := by
   unfold Tower.kmap
@@ -110,4 +103,4 @@ theorem UpperTheory.Kd.L.witalg :
       X.kmap l (X.gal s) (X.kmap l (X.gal t) (b ![u 0, (cyclotomicCharacter Ω l t.toRingEquiv : ℤ_[l]) *
         ((cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * u 1)]))
     have hm : (s * t).toRingEquiv = s.toRingEquiv * t.toRingEquiv := rfl
-    rw [kmap_comp' X l _ _ _ (gal_mul' X s t), hm, map_mul, Units.val_mul, mul_left_comm, mul_assoc]
+    rw [kmap_comp' X l _ _ _ (_root_.GlobalTheory.K4.gal_mul_apply X s t), hm, map_mul, Units.val_mul, mul_left_comm, mul_assoc]

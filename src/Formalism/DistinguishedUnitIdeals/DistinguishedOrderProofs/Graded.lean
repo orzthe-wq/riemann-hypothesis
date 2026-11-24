@@ -75,7 +75,6 @@ lemma tD_smul (τ : Ks ≃ₐ[LL] Ks) (k : Ks) (v : Ks ⊗[LL] D) :
   | tmul x d =>
     first
       | simp [tD, TensorProduct.smul_tmul']
-      | simp only [tD, TensorProduct.smul_tmul', LinearMap.rTensor_tmul, AlgEquiv.toLinearMap_apply, smul_eq_mul, map_mul]
   | add x y hx hy => simp only [smul_add, map_add (f := _), hx, hy]
 
 lemma tD_mem (τ : Ks ≃ₐ[LL] Ks) (X : Submodule LL D) {v : Ks ⊗[LL] D}
@@ -83,13 +82,11 @@ lemma tD_mem (τ : Ks ≃ₐ[LL] Ks) (X : Submodule LL D) {v : Ks ⊗[LL] D}
   have hv' := hv
   first
     | rw [Submodule.baseChange_eq_span] at hv'
-    | unfold Submodule.baseChange at hv'
   refine Submodule.span_induction (p := fun w _ => tD D τ w ∈ X.baseChange Ks) ?_ ?_ ?_ ?_ hv'
   · rintro x ⟨y, hy, rfl⟩
     simp only [TensorProduct.mk_apply, tD_tmul, map_one]
     first
       | exact Submodule.tmul_mem_baseChange_of_mem _ hy
-      | exact Submodule.subset_span ⟨y, hy, rfl⟩
   · simp only [map_zero]
     exact Submodule.zero_mem _
   · intro x y _ _ hx hy
@@ -103,7 +100,6 @@ lemma mem_bc_iff (X : Submodule LL D) (v : Ks ⊗[LL] D) :
     v ∈ X.baseChange Ks ↔ (X.mkQ).lTensor Ks v = 0 := by
   first
     | have hex := lTensor_exact Ks (LinearMap.exact_subtype_mkQ X) (Submodule.mkQ_surjective X)
-    | have hex := lTensor_exact (Q := Ks) (LinearMap.exact_subtype_mkQ X) (Submodule.mkQ_surjective X)
   rw [hex v]
   have hsm : ∀ (k : Ks) (y : Ks ⊗[LL] X),
       (X.subtype.lTensor Ks) (k • y) = k • (X.subtype.lTensor Ks) y := by
@@ -117,7 +113,6 @@ lemma mem_bc_iff (X : Submodule LL D) (v : Ks ⊗[LL] D) :
     have hv' := hv
     first
       | rw [Submodule.baseChange_eq_span] at hv'
-      | unfold Submodule.baseChange at hv'
     refine Submodule.span_induction (p := fun w _ => w ∈ Set.range (X.subtype.lTensor Ks))
       ?_ ?_ ?_ ?_ hv'
     · rintro x ⟨y, hy, rfl⟩
@@ -136,9 +131,6 @@ lemma mem_bc_iff (X : Submodule LL D) (v : Ks ⊗[LL] D) :
       rw [LinearMap.lTensor_tmul, Submodule.subtype_apply]
       first
         | exact Submodule.tmul_mem_baseChange_of_mem a b.2
-        | (rw [show a ⊗ₜ[LL] (b : D) = a • ((1 : Ks) ⊗ₜ[LL] (b : D)) by
-              rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]]
-           exact Submodule.smul_mem _ a (Submodule.subset_span ⟨b, b.2, rfl⟩))
     | add a b ha hb =>
       rw [map_add (f := _)]
       exact Submodule.add_mem _ ha hb
@@ -158,7 +150,6 @@ lemma coord_tD {ι : Type*} (b : Module.Basis ι LL D) (τ : Ks ≃ₐ[LL] Ks) (
   | tmul x d =>
     first
       | simp [tD, Algebra.TensorProduct.basis_repr_tmul]
-      | simp [tD]
   | add y z hy hz => simp only [map_add (f := _), Finsupp.add_apply, hy, hz]
 
 lemma fixed_const (T : Set (Ks ≃ₐ[LL] Ks))
@@ -175,21 +166,11 @@ lemma fixed_const (T : Set (Ks ≃ₐ[LL] Ks))
 
   rw [Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply, map_sum]
   first
-    | (simp only [map_smul, Module.Basis.repr_self, Finsupp.coe_finset_sum, Finset.sum_apply,
-        Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero,
-        Finset.sum_ite_eq, Finset.sum_ite_eq', Finsupp.mem_support_iff]
-       split_ifs with hj
-       · exact ha j
-       · rw [map_zero]
-         exact (not_not.mp hj).symm)
     | (simp [Finsupp.single_apply]
        split_ifs with hj
        all_goals first
-         | exact ha j
          | exact (ha j).symm
-         | (rw [map_zero]; simpa using hj)
-         | (rw [map_zero]; exact (not_not.mp hj).symm)
-         | simp_all)
+         | (rw [map_zero]; simpa using hj))
 
 lemma one_tmul_eq_zero [Nontrivial Ks] (w : D) (h : (1 : Ks) ⊗ₜ[LL] w = 0) : w = 0 := by
   classical
@@ -202,10 +183,6 @@ lemma one_tmul_eq_zero [Nontrivial Ks] (w : D) (h : (1 : Ks) ⊗ₜ[LL] w = 0) :
         Finsupp.zero_apply] at h2
        rw [map_zero, Finsupp.zero_apply]
        exact (algebraMap LL Ks).injective (h2.trans (map_zero _).symm))
-    | (simp at h2
-       simpa using h2)
-    | (simp at h2 ⊢
-       exact (algebraMap LL Ks).injective (by simpa using h2))
 
 lemma one_tmul_mem [Nontrivial Ks] (X : Submodule LL D) (d : D)
     (h : (1 : Ks) ⊗ₜ[LL] d ∈ X.baseChange Ks) : d ∈ X := by
@@ -312,7 +289,6 @@ lemma aeval_projectionPoly_of_pow_eq_one (T : Module.End LL W) (u : LLˣ) (ℓ E
   first
     | (rw [LinearMap.sum_apply]
        simp only [Polynomial.aeval_X_pow])
-    | simp [Polynomial.aeval_X_pow]
 
 lemma sum_pow_fix (T : Module.End LL W) (N : ℕ) (hT : T ^ N = 1) (v : W) :
     T (∑ k ∈ Finset.range N, (T ^ k) v) = ∑ k ∈ Finset.range N, (T ^ k) v := by
@@ -350,7 +326,7 @@ def cfH (i : ℤ) : Amb LL Ks D →+ Ks ⊗[LL] D where
 lemma cf_add (f g : Amb LL Ks D) (i : ℤ) : cf (f + g) i = cf f i + cf g i := rfl
 lemma cf_sub (f g : Amb LL Ks D) (i : ℤ) : cf (f - g) i = cf f i - cf g i := rfl
 lemma cf_sum {ι : Type*} (s : Finset ι) (F : ι → Amb LL Ks D) (i : ℤ) :
-    cf (∑ k ∈ s, F k) i = ∑ k ∈ s, cf (F k) i := by first | exact map_sum (cfH i) F s | simp [cf]
+    cf (∑ k ∈ s, F k) i = ∑ k ∈ s, cf (F k) i := by first | exact map_sum (cfH i) F s
 lemma cf_smul (k : Ks) (f : Amb LL Ks D) (i : ℤ) : cf (k • f) i = k • cf f i := rfl
 
 lemma cf_grd (τ : Ks ≃ₐ[LL] Ks) (a : LLˣ) (f : Amb LL Ks D) (i : ℤ) :
@@ -369,31 +345,8 @@ lemma cf_cst_ne (d : D) {i : ℤ} (h : i ≠ 0) : cf (cstD (LL := LL) Ks d) i = 
 lemma cf_tp (g : ℤ) (f : Amb LL Ks D) (i : ℤ) : cf (tp Ks g • f) i = cf f (i - g) := by
   first
     | (have h := HahnModule.coeff_single_smul_vadd (r := (1 : Ks)) (x := f) (a := i - g) (b := g)
-       simp only [vadd_eq_add, one_smul, sub_add_cancel, add_sub_cancel] at h
+       simp only [vadd_eq_add, one_smul, add_sub_cancel] at h
        exact h)
-    | (have h := HahnModule.coeff_single_smul_vadd (r := (1 : Ks)) (x := f) (a := i - g) (b := g)
-       simp only [vadd_eq_add, one_smul, sub_add_cancel, add_sub_cancel, add_comm] at h
-       simpa [cf, tp] using h)
-    | (have h := HahnModule.coeff_single_smul_add (r := (1 : Ks)) (x := f) (a := i - g) (b := g)
-       simp only [vadd_eq_add, one_smul, sub_add_cancel, add_sub_cancel] at h
-       exact h)
-    | (have h := HahnModule.coeff_single_smul_add (r := (1 : Ks)) (x := f) (a := i - g) (b := g)
-       simp only [vadd_eq_add, one_smul, sub_add_cancel, add_sub_cancel, add_comm] at h
-       simpa [cf, tp] using h)
-    | (have h := HahnModule.single_smul_coeff_add (r := (1 : Ks)) (x := f) (a := i - g) (b := g)
-       simp only [vadd_eq_add, one_smul, sub_add_cancel, add_sub_cancel] at h
-       exact h)
-    | (have h := HahnModule.single_smul_coeff_add (r := (1 : Ks)) (x := f) (a := i - g) (b := g)
-       simp only [vadd_eq_add, one_smul, sub_add_cancel, add_sub_cancel, add_comm] at h
-       simpa [cf, tp] using h)
-    | (have h := HahnModule.coeff_single_smul (r := (1 : Ks)) (x := f) (a := i - g) (b := g)
-       simp only [vadd_eq_add, one_smul, sub_add_cancel, add_sub_cancel] at h
-       exact h)
-    | (have h := HahnModule.coeff_single_smul (r := (1 : Ks)) (x := f) (a := i - g) (b := g)
-       simp only [vadd_eq_add, one_smul, sub_add_cancel, add_sub_cancel, add_comm] at h
-       simpa [cf, tp] using h)
-    | simp [cf, tp, HahnModule.coeff_single_smul_vadd]
-    | simp [cf, tp]
 
 lemma mem_Xi {X : ℤ → Submodule LL D} {f : Amb LL Ks D} :
     f ∈ Xi Ks X ↔ ∀ i, cf f i ∈ (X i).baseChange Ks := Iff.rfl
@@ -408,7 +361,7 @@ lemma cf_gam (Lev : Level LL Ks Δ) (f : Amb LL Ks D) (i : ℤ) :
 lemma cf_iter (Lev : Level LL Ks Δ) (k : ℕ) (f : Amb LL Ks D) (i : ℤ) :
     cf ((⇑(Lev.γ (D := D)))^[k] f) i = (Ti Lev D i ^ k) (cf f i) := by
   induction k with
-  | zero => first | rfl | simp
+  | zero => first | rfl
   | succ k ih =>
     rw [Function.iterate_succ_apply', cf_gam, ih, pow_succ']
     try rfl
@@ -423,8 +376,6 @@ lemma cf_pAct (Lev : Level LL Ks Δ) (P : Polynomial LL) (f : Amb LL Ks D) (i : 
   first
     | (rw [cf_smul, cf_iter, algebraMap_smul]
        try rfl)
-    | (rw [cf_smul, cf_iter, algebraMap_smul, Module.End.mul_apply, Module.algebraMap_end_apply])
-    | simp [cf_smul, cf_iter, Module.algebraMap_end_apply]
 
 lemma Ti_mem (Lev : Level LL Ks Δ) (i : ℤ) (X : Submodule LL D) {v : Ks ⊗[LL] D}
     (hv : v ∈ X.baseChange Ks) : Ti Lev D i v ∈ X.baseChange Ks := by
@@ -527,8 +478,6 @@ lemma aeval_fix {W : Type} [AddCommGroup W] [Module LL W] (T : Module.End LL W) 
     first
       | (show a • (T ^ n) v = a • v
          rw [pow_fix T v h n])
-      | (rw [Module.End.mul_apply, Module.algebraMap_end_apply, pow_fix T v h n])
-      | simp [Module.algebraMap_end_apply, pow_fix T v h n]
 
 lemma pAct_cst (Lev : Level LL Ks Δ) (P : Polynomial LL) (d : D) :
     Lev.pAct P (cstD Ks d) = cstD Ks (P.eval 1 • d) := by
@@ -710,7 +659,7 @@ lemma nbK_win (kind : Kind) (g b : ℤ) (hg : 0 ≤ g) (hb : kind ≠ Kind.thin 
     (U : Submodule LL D) (i : ℤ) (h : NbK kind b U (i + g) ≠ NbK kind b U i) : Win2 kind g b i := by
   cases kind <;> simp only [NbK, NbThin, NbUp, NbDown] at h <;> simp only [Win2] <;>
     (try split_ifs at h) <;>
-    first | exact absurd rfl h | omega | (have := hb (by decide); omega)
+    first | exact absurd rfl h | omega
 
 end
 end SlopeTestRemainingChoices
@@ -901,9 +850,6 @@ lemma pr_dv (R : LevelModel S LL Ks Δ D) (hb : R.K1b) (s : ℕ) (hs : s < ell) 
   have hX' : HahnSeries.ofPowerSeries ℤ (Ks s) (PowerSeries.X ^ g) = tp (Ks s) (g : ℤ) := by
     first
       | exact HahnSeries.ofPowerSeries_X_pow g
-      | simp [tp, HahnSeries.ofPowerSeries_X_pow]
-      | (rw [map_pow, HahnSeries.ofPowerSeries_X, HahnSeries.single_pow]
-         simp [tp])
   have key : R.pr s (B.p s ^ g • e) = HahnSeries.ofPowerSeries ℤ (Ks s) ((ε : PowerSeries (Ks s)) ^ g) •
       (tp (Ks s) (g : ℤ) • R.pr s e) := by
     rw [R.pr_smul, map_pow, hε, mul_pow, map_mul, mul_smul, hX']
@@ -966,13 +912,11 @@ theorem reduction_degree_holds : RDOf := by
   · intro e he
     first
       | show B.p s ^ g • e ∈ S.Nl s
-      | simp only [Formalism.ExponentWindows.E.dv, Submodule.mem_comap, LinearMap.lsmul_apply]
     rw [R.mem_Nl s hs, pr_dv R hb s hs g (fun i => R.Fil s (-i)) (fil_mono hA)]
     exact hrd.1 _ ((R.mem_Nb s hs e).mp he)
   · intro e he
     first
       | show B.p s ^ g • e ∈ S.Nb s
-      | simp only [Formalism.ExponentWindows.E.dv, Submodule.mem_comap, LinearMap.lsmul_apply]
     rw [R.mem_Nb s hs, pr_dv R hb s hs g
       (NbK (R.kind s) (R.b s) (UOf (R.kind s) (R.b s) R.η (R.Fil s)))
       (nbK_mono (R.kind s) (R.b s) (by positivity) _)]
@@ -1004,8 +948,6 @@ theorem constant_term_second_form : KillingPolynomialValuationBound := by
   have h1 : B.p s ^ g • (e - d) ∈ S.Nb s := by
     first
       | exact hd
-      | (simp only [Formalism.ExponentWindows.E.dv, Submodule.mem_comap, LinearMap.lsmul_apply] at hd
-         exact hd)
   rw [R.mem_Nb s hs, pr_dv R hb s hs g
     (NbK (R.kind s) (R.b s) (UOf (R.kind s) (R.b s) R.η (R.Fil s)))
     (nbK_mono (R.kind s) (R.b s) (by positivity) _), map_sub, hd0 s hs] at h1
@@ -1025,8 +967,6 @@ theorem constant_term_fourth_form : KillingPolynomialLeadingUnit := by
   have h1 : B.p s ^ g • (e - d) ∈ S.Nl s := by
     first
       | exact hd
-      | (simp only [Formalism.ExponentWindows.E.dv, Submodule.mem_comap, LinearMap.lsmul_apply] at hd
-         exact hd)
   rw [R.mem_Nl s hs, pr_dv R hb s hs g (fun i => R.Fil s (-i)) (fil_mono (hA s hs)),
     map_sub, hd0 s hs] at h1
   obtain ⟨d', hd'⟩ := graded_fourth_estimate LL (Ks s) Δ D (R.lev s) ℓ s E (hK s hs).1 (hK s hs).2 hsE

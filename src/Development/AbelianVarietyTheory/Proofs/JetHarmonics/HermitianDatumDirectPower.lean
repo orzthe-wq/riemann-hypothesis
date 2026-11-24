@@ -139,7 +139,7 @@ theorem powForm_baseChange {L : Type} [AddCommGroup L] (B : LinearMap.BilinForm 
     induction y using TensorProduct.induction_on with
     | zero => simp
     | add a b ha hb => simp only [map_add (f := _), Pi.add_apply, ha, hb, Finset.sum_add_distrib]
-    | tmul s v => simp [powForm_apply, Finset.sum_smul, Finset.sum_mul]
+    | tmul s v => simp [powForm_apply, Finset.sum_smul]
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 

@@ -78,8 +78,8 @@ theorem frame_facts (g : ℕ) (hg : 0 < g) (ν : ℤ) (s : ℕ) :
     Submodule.span ℝ (S6.frameLat E (S6.perLat E g ν s) 1 : Set (mixedEmbedding.mixedSpace E)) = ⊤ := by
   have hA : S6.idl E g 1 ν ≠ 0 := Cx2.idl_ne_zero g hg 1 ν
   have hB : S6.idl E g 2 ν ≠ 0 := Cx2.idl_ne_zero g hg 2 ν
-  obtain ⟨hBL, hLA⟩ := twistedLatticeBetween E (S6.idl E g 1 ν) (S6.idl E g 2 ν) s (Cx2.idl_two_le_one g ν)
-    (different_power_conj_stable E g 2 ν)
+  obtain ⟨hBL, hLA⟩ := _root_.Formalism.FourierDecayAlt.P.S6x2.between E (S6.idl E g 1 ν) (S6.idl E g 2 ν) s (Cx2.idl_two_le_one g ν)
+    (_root_.Formalism.FourierDecayAlt.P.S6x2.powConjStable E g 2 ν)
   have hmem : ∀ x, x ∈ S6.frameLat E (S6.perLat E g ν s) 1 ↔
       ∃ t ∈ S6.perLat E g ν s, mixedEmbedding E t = x := by
     intro x
@@ -110,7 +110,7 @@ theorem frame_facts (g : ℕ) (hg : 0 < g) (ν : ℤ) (s : ℕ) :
 theorem eLat_facts (g : ℕ) (hg : 0 < g) (ν : ℤ) (s : ℕ) :
     ∃ _ : DiscreteTopology (J.eLat E (S6.perLat E g ν s) 1), IsZLattice ℝ (J.eLat E (S6.perLat E g ν s) 1) := by
   obtain ⟨hd, hs⟩ := frame_facts (E := E) g hg ν s
-  obtain ⟨hd', hs', -⟩ := Formalism.FourierDecayAlt.P.euclidean_frame E _ 1 hd hs
+  obtain ⟨hd', hs', -⟩ := _root_.Formalism.FourierDecayAlt.P.Jx2.t_EuclidFrame E _ 1 hd hs
   exact ⟨hd', ⟨hs'⟩⟩
 
 variable {Wp Wq : InfinitePlace E → Type} [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
@@ -203,7 +203,7 @@ theorem f_eq_deg (S : C.HidaSetting E Wp Wq) : S.f = S6.deg E := by
 theorem prod_dlB_eq_covolume (S : C.HidaSetting E Wp Wq) (hg : 0 < S.g) (hU : S6.Unram E) (b s : ℕ) :
     ∏ _v : Fin S.f, KB.dlB S b s =
       ZLattice.covolume (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r b s) s) 1) := by
-  rw [Formalism.FourierDecayAlt.P.unipotent_dual_lattice_covolume E hU S.g _ s hg]
+  rw [_root_.Formalism.FourierDecayAlt.P.Dx2.NH.nhat E hU S.g _ s hg]
   rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, f_eq_deg S]
   unfold KB.dlB D.deG
   have hrd := Formalism.FourierDecayAlt.P.Jx4.rd_pos E
@@ -297,7 +297,7 @@ theorem dual_to_E (S : C.HidaSetting E Wp Wq) (hg : 0 < S.g) (L : Submodule ℤ 
     refine ⟨n, ?_⟩
     rw [innerₗ_apply_apply, hinner, hpair]
     simp
-  obtain ⟨l, hl, hlμ⟩ := (Formalism.FourierDecayAlt.P.trace_dual_alt E L S.g 1 hg one_ne_zero hL μ).1 hμ
+  obtain ⟨l, hl, hlμ⟩ := (_root_.Formalism.FourierDecayAlt.P.Jx3.t_TraceDual E L S.g 1 hg one_ne_zero hL μ).1 hμ
   refine ⟨l, hl, fun v => ?_⟩
   have hcoord := congrArg (fun c : J.CV E => c (S.pl v)) hlμ
   simp only [J.dm, hμv v] at hcoord
@@ -404,9 +404,9 @@ theorem sum_le (S : C.HidaSetting E Wp Wq) (hg : 0 < S.g) (hU : S6.Unram E) (b s
   have hB : S6.idl E S.g 2 ν ≠ 0 := Cx2.idl_ne_zero S.g hg 2 ν
   have hL : ∀ t : E, ∃ n : ℕ, 0 < n ∧ (n : E) * t ∈ L :=
     (twistedIsRealOrderLattice E (S6.idl E S.g 1 ν) (S6.idl E S.g 2 ν) s hB (Cx2.idl_two_le_one S.g ν)
-      (different_power_conj_stable E S.g 2 ν)).2
+      (_root_.Formalism.FourierDecayAlt.P.S6x2.powConjStable E S.g 2 ν)).2
   have hLaB : J.LaB E S.g S.G.r b s = L.toAddSubgroup := rfl
-  have hBL := block_lattices lattice_facts_general dualIdealEqLiftIdeal scaledIdealNorm E hU
+  have hBL := _root_.Formalism.FourierDecayAlt.P.Jx2.t_BlockLattices lattice_facts_general dualIdealEqLiftIdeal scaledIdealNorm E hU
     S.g S.G.r b s hg
   have hdual : ∀ σ : crystallineComparison.dualSet (PBC.latV S (J.LaB E S.g S.G.r b s)),
       ∃ l ∈ S6.dualLat E S.g L, ∀ v, ((S.g : ℝ) : ℂ) * (σ : crystallineComparison.V S.f) v = S.σ v l := by
@@ -507,7 +507,7 @@ namespace Formalism.FourierDecayAlt.P.PBC
 open Formalism.FourierDecayAlt Finset NumberField
 
 theorem pbc_blockLatV : PBC.BlockLatV := by
-  obtain ⟨C0, hC0, hbox⟩ := Formalism.FourierDecayAlt.P.box_sum_lattice Formalism.SA.P.smoothedSumBound
+  obtain ⟨C0, hC0, hbox⟩ := _root_.Formalism.FourierDecayAlt.P.Jx1.t_BoxSumLattice Formalism.SA.P.smoothedSumBound
   refine ⟨2 * 3 ^ C.Kst * C0, by
     have : (1 : ℝ) ≤ 3 ^ C.Kst := one_le_pow₀ (by norm_num)
     nlinarith, ?_⟩

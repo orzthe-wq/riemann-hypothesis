@@ -123,7 +123,6 @@ theorem Bridge_tf_surjective : Function.Surjective (tf I hb) := by
   change swapE I (φ _) = _
   first
     | exact (swapE I).apply_symm_apply _
-    | simp [φ]
 
 theorem Bridge_mem_Kf_iff (x : I.Gf) :
     tf I hb x ∈ Kf I.cm.sig I.J (I.L : Set (Fin I.n → I.E)) ↔ x ∈ I.Kset := by

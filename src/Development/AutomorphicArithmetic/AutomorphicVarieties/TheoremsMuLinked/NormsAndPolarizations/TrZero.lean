@@ -73,14 +73,14 @@ private theorem UpperTheory.V.Th.Nm.trZero_inner {K : Type} [Field K] {n : ℕ}
     by_cases hb : o = b
     · subst hb
       simp [Matrix.sum_apply, Matrix.single_apply]
-    · simp [Matrix.sum_apply, Matrix.single_apply, hb, Matrix.mul_apply]
+    · simp [Matrix.sum_apply, hb, Matrix.mul_apply]
   have h2 : ∀ j, single o j (1 : K) * A = ∑ i, A j i • single o i (1 : K) := by
     intro j
     ext a b
     by_cases ha : o = a
     · subst ha
       simp [Matrix.sum_apply, Matrix.single_apply]
-    · simp [Matrix.sum_apply, Matrix.single_apply, ha, Matrix.mul_apply]
+    · simp [Matrix.sum_apply, ha, Matrix.mul_apply]
   have h3 : ∑ i, single i o (1 : K) * single o i (1 : K) = (1 : Matrix (Fin n) (Fin n) K) := by
     simp only [Matrix.single_mul_single_same, mul_one]
     exact Matrix.sum_single_one

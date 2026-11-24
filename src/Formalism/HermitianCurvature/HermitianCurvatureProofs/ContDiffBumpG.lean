@@ -293,13 +293,13 @@ theorem slice_bound (hp : 1 ≤ p) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ)
   · rw [h0, norm_zero]
     exact mul_nonneg (mul_nonneg (le_max_right _ _) (Set.indicator_nonneg (fun _ _ => zero_le_one) _))
       (bumpG_nonneg _ _)
-  have hG := Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation σ d hd ξ Z
+  have hG := Formalism.FourierDecayAlt.P.Ux10.gaXi_mem _root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam σ d hd ξ Z
     (by rw [hZ1]; exact one_ne_zero) hγ
   have hgR := hR _ hG h0
   have hgN0 : 0 ≤ B.gN (U.gaXi k ρ σ d ξ Z γ) := Real.sqrt_nonneg _
   have hgR0 : B.gN (U.gaXi k ρ σ d ξ Z γ) ≤ R0 := hgR.trans (le_max_left _ _)
   have hD : U.DjU k (p + 0) ρ (U.gaXi k ρ σ d ξ Z γ) = δ0 := by
-    rw [Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice, hZ1, mul_one]
+    rw [Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi _root_.Formalism.FourierDecayAlt.P.Ux3.zhSlice, hZ1, mul_one]
   have hMb : ‖H (U.gaXi k ρ σ d ξ Z γ)‖ ≤ max M 0 := (hM _ ⟨⟨hG, hgR⟩, hD⟩).trans (le_max_left _ _)
 
   have hdetZ : (U.ZjH σ d ξ.2 Z).det ≠ 0 := by

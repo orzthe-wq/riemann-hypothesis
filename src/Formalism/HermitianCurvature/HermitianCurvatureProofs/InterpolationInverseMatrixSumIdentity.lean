@@ -52,6 +52,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.ConnectionRaisingConstantEq
 
 @[expose] public section
 
@@ -459,7 +460,7 @@ theorem smul_mkPair {V : Type*} [AddCommGroup V] [Module ℂ V] (s : ℂ) (a b :
     rw [smul_mul_assoc, one_mul]
   · show (starRingEnd ℂ) s • (1 : (Module.End ℂ V)ᵐᵒᵖ) * MulOpposite.op b = (starRingEnd ℂ) s • MulOpposite.op b
     apply MulOpposite.unop_injective
-    simp [mul_smul_comm]
+    simp
 
 theorem sum_mkPair {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*} (t : Finset ι) (a b : ι → Module.End ℂ V) :
     ∑ i ∈ t, Q.mkP (a i) (b i) = Q.mkP (∑ i ∈ t, a i) (∑ i ∈ t, b i) := by
@@ -501,7 +502,7 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 theorem sum_mul_sum (Pj : ι → Module.End ℂ V) (ho : ∀ i j, Pj i * Pj j = if i = j then Pj i else 0) (a b : ι → ℂ) :
     (∑ i, a i • Pj i) * (∑ j, b j • Pj j) = ∑ i, (a i * b i) • Pj i := by
   simp only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, ho, smul_ite, smul_zero,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 def kapOf (Pj : ι → Module.End ℂ V) (hs : ∑ i, Pj i = 1) (ho : ∀ i j, Pj i * Pj j = if i = j then Pj i else 0) :
     (ι → ℂ) →ₐ[ℂ] Q.Pr V where
@@ -823,8 +824,6 @@ end Formalism.FourierDecayAlt.P.NFx3
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem theorem_S_of_steps : Formalism.FourierDecayAlt.NF.ThmSOfSteps := by
-  exact NFx3.thmSOfSteps
 theorem normal_form_from_module : Formalism.FourierDecayAlt.NF.NormalFormFromModuleOfParts := by
   exact NFx3.normalFormFromModuleOfParts
 

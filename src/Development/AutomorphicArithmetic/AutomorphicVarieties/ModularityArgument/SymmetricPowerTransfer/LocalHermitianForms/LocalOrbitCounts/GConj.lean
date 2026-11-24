@@ -63,7 +63,7 @@ private theorem cyc {K : Type} [Field K] {τ : K} (hτ : τ ^ 2 - 4 ≠ 0) (j : 
       (by simpa [Matrix.det_fin_two] using hc), ?_⟩
     rw [Matrix.GeneralLinearGroup.val_mkOfDetNeZero]
     ext i k
-    fin_cases i <;> fin_cases k <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | ring1 | linear_combination (j ω 0 0) * hj - hd | linear_combination (j ω 1 0) * hj | linear_combination (j ω 0 1) * hj | linear_combination (j ω 1 1) * hj - hd
+    fin_cases i <;> fin_cases k <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | ring1 | linear_combination (j ω 0 0) * hj - hd | linear_combination (j ω 1 0) * hj
   · push_neg at hc
     by_cases hb : j ω 0 1 ≠ 0
     · simp only [hc, mul_zero, sub_zero] at hd
@@ -99,7 +99,7 @@ theorem UpperTheory.V.Z.Sym.Loc.gConj : UpperTheory.V.Z.Sym.Loc.GConj := by
     intro z; ext1
     simp only [jU, Units.coe_map, Units.val_mul, MonoidHom.coe_coe]
     rw [j_apply j', j_apply j, ← hM]
-    simp [mul_add, add_mul, smul_mul_assoc, mul_smul_comm, mul_assoc]
+    simp [mul_add, add_mul, mul_assoc]
   refine ⟨⟨g, hconj⟩, fun χ hχ z => ?_⟩
   unfold gOrb
   refine orb_congr _ _ _ _ _ _ _ _ _ _ _ (Equiv.mulLeft g⁻¹) ?_ ?_ ?_ ?_ ?_

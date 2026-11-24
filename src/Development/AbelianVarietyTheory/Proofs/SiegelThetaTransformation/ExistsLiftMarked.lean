@@ -5,18 +5,20 @@ public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSt
 public import Formalism.LocalToGlobal.ProjectiveLattices.LiftLaSpec
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointsLiftToLevelCover
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomLieEquivScalarTmul
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.VerticalDerivativeInCoordinates
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AnFibLift
+public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrMoveTransfer
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitive
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjPull
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SabMapEqOfLevelEq
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.VerticalDerivativeInCoordinates
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AnFibLift
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitiveOfLaws
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsLiftOfProjective
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianFormAtFrameLaws
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
-public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrMoveTransfer
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsDerivAt0OfIsPullback
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsHolToFibPtAndCompFibre
 import Mathlib.Algebra.Order.Floor.Extended
@@ -256,7 +258,7 @@ theorem move_fibre {r : Xo₂.X ⟶ Xo.X} {m : SABMap Xo₂.univ.t Xo.univ.t r} 
   have e : (x ≫ ρ) ≫ r = z := (Xo.rep (Sp ℂ) (z ≫ Xo.s) inferInstance o).unique ⟨hs, ⟨q⟩⟩ ⟨rfl, ⟨p⟩⟩
   refine ⟨e, fun a => ?_⟩
   obtain ⟨q', hq'⟩ := LevelFibre.sab_cast e q.toSABMap
-  have e₂ : q'.φ = p.toSABMap.φ := sabMap_eq_of_level_eq firstFiveLaws.1 obj_isAbelianScheme_dim_rigidified_sym E H D l
+  have e₂ : q'.φ = p.toSABMap.φ := _root_.GlobalTheory.obj_rigid_of_laws firstFiveLaws.1 obj_isAbelianScheme_dim_rigidified_sym E H D l
     _ _ _ _ _ _ _ _ Xo.univ o _ (Or.inl inferInstance) q' p.toSABMap fun a =>
       ⟨_, by rw [hq']; exact (q.eta a).trans (by rw [e]), p.eta a⟩
   rw [hq', hq, hn₂', ← hn] at e₂

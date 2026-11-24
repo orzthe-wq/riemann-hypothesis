@@ -64,15 +64,11 @@ def SmithData {r s t : ℕ} (form : SegVs O r s t → SegVs O r s t → KK O) (L
     (∀ i l, i ≠ l → form (al i) (be l) = 0) ∧ LinearIndependent O al ∧
     Submodule.span O (Set.range al) = L ∧ Submodule.span O (Set.range be) = L
 
-theorem vK_zero (p : ℕ) : vK p (0 : KK O) = ⊤ := by
-  unfold vK ordW
-  simp
-
 theorem vLE_ne_zero {p : ℕ} {κ : KK O} {D : ℝ} (h : vLE p κ D) : κ ≠ 0 := by
   intro hκ
   subst hκ
   obtain ⟨q, hq, -⟩ := h
-  rw [vK_zero] at hq
+  rw [_root_.Formalism.MainNotions.G.GLWeightTheory.valuation_zero_alt] at hq
   exact WithTop.top_ne_coe hq
 
 theorem scale_to_O {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O)) {κ : KK O} {D : ℝ} (hD : 0 ≤ D)

@@ -50,7 +50,7 @@ open ReciprocityTheory.ChartRestriction.G NumberField
 
 def OrbitFiniteSum.Statement : Prop :=
   ∀ (ι : Type) [Fintype ι] [DecidableEq ι] [Nonempty ι] (n : ι → ℕ)
-    (A : HermLine n) (x : Cone n (AlgebraicClosure ℚ)) (s : MvPolynomial (Coord n) ℤ),
+    (A : Heights.HermLine n) (x : Cone n (AlgebraicClosure ℚ)) (s : MvPolynomial (Coord n) ℤ),
     BlockNonzero x → Geo.IsSectionOn (orbitIdeal x) A.toGeo s →
     ∑ᶠ V ∈ Geo.divSupp (orbitIdeal x) s,
         (Geo.multAt (orbitIdeal x ⊔ Ideal.span {s}) V : ℝ) *

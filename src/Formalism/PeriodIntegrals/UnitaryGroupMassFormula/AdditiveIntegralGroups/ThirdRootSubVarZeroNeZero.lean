@@ -66,14 +66,10 @@ variable {σ : Type*}
 theorem rt_two_le_mul_left (f g : MvPowerSeries σ ℂ_[p]) (hg : 2 ≤ g.order) : 2 ≤ (f * g).order := by
   first
     | exact (hg.trans le_add_self).trans (MvPowerSeries.le_order_mul ..)
-    | exact (hg.trans le_add_self).trans (MvPowerSeries.order_mul_ge ..)
-    | exact (hg.trans le_add_self).trans (MvPowerSeries.add_order_le_order_mul ..)
 
 theorem rt_two_le_mul_right (f g : MvPowerSeries σ ℂ_[p]) (hf : 2 ≤ f.order) : 2 ≤ (f * g).order := by
   first
     | exact (hf.trans le_self_add).trans (MvPowerSeries.le_order_mul ..)
-    | exact (hf.trans le_self_add).trans (MvPowerSeries.order_mul_ge ..)
-    | exact (hf.trans le_self_add).trans (MvPowerSeries.add_order_le_order_mul ..)
 
 theorem rt_two_le_add {f g : MvPowerSeries σ ℂ_[p]} (hf : 2 ≤ f.order) (hg : 2 ≤ g.order) :
     2 ≤ (f + g).order := by
@@ -103,8 +99,6 @@ theorem rt_two_le_mul_X {f : MvPowerSeries σ ℂ_[p]} (hf : 1 ≤ f.order) (i :
       _ ≤ _ := add_le_add hf (rt_one_le_X i)
   first
     | exact h2.trans (MvPowerSeries.le_order_mul ..)
-    | exact h2.trans (MvPowerSeries.order_mul_ge ..)
-    | exact h2.trans (MvPowerSeries.add_order_le_order_mul ..)
 
 end order
 
@@ -121,9 +115,6 @@ private theorem rt_constantCoeff_lam_lemma {f : MvPowerSeries (Fin 2) ℂ_[p]} (
   apply MvPowerSeries.coeff_of_lt_order
   refine lt_of_lt_of_le ?_ hf
   simp
-
-theorem rt_constantCoeff_lam (wq : PowerSeries ℂ_[p]) : MvPowerSeries.constantCoeff (lam wq) = 0 := by
-  exact rt_constantCoeff_lam_lemma (rt_order_lam wq)
 
 theorem rt_wv (wq : PowerSeries ℂ_[p]) (i : Fin 2) :
     wv wq i = (Xv i) ^ 3 * PowerSeries.subst (Xv i : MvPowerSeries (Fin 2) ℂ_[p]) wq := by
@@ -158,7 +149,7 @@ theorem rt_order_Bcf (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
 
 theorem constantCoeff_Acf (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     MvPowerSeries.constantCoeff (Acf W wq) = 1 := by
-  simp [Acf, rt_constantCoeff_lam]
+  simp [Acf, _root_.PI.AddIntG.Wk.constantCoeff_lam]
 
 theorem rt_Acf_ne (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     MvPowerSeries.constantCoeff (Acf W wq) ≠ 0 := by
@@ -256,7 +247,7 @@ theorem subst_thirdRoot_wSeries {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries
     rw [hw', map_mul, map_pow, hz0]
     simp
   have hv0 : MvPowerSeries.constantCoeff v = 0 := by
-    simp [hv, hz0, rt_constantCoeff_lam, rt_constantCoeff_nu]
+    simp [hv, hz0, _root_.PI.AddIntG.Wk.constantCoeff_lam, rt_constantCoeff_nu]
   have hfac : G W z v - G W z w = (v - w) *
       (algebraMap ℂ_[p] (MvPowerSeries (Fin 2) ℂ_[p]) W.a₁ * z +
         algebraMap ℂ_[p] (MvPowerSeries (Fin 2) ℂ_[p]) W.a₂ * z ^ 2 +
@@ -288,7 +279,7 @@ theorem thirdRoot_sub_var_zero_ne_zero (W : WeierstrassCurve ℂ_[p]) (wq : Powe
     decide
   intro h0
   have h1 := congrArg (MvPowerSeries.coeff (Finsupp.single (1 : Fin 2) 1)) h0
-  simp [Z3, rt_coeff_BA, MvPowerSeries.coeff_X, hs, hs.symm] at h1
+  simp [Z3, rt_coeff_BA, MvPowerSeries.coeff_X, hs.symm] at h1
 
 theorem thirdRoot_sub_var_one_ne_zero (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) : Z3 W wq - Xv 1 ≠ 0 := by
   have hs : Finsupp.single (0 : Fin 2) 1 ≠ Finsupp.single 1 1 := by
@@ -296,7 +287,7 @@ theorem thirdRoot_sub_var_one_ne_zero (W : WeierstrassCurve ℂ_[p]) (wq : Power
     decide
   intro h0
   have h1 := congrArg (MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1)) h0
-  simp [Z3, rt_coeff_BA, MvPowerSeries.coeff_X, hs, hs.symm] at h1
+  simp [Z3, rt_coeff_BA, MvPowerSeries.coeff_X, hs] at h1
 
 theorem thirdRoot_mem_coeffSubring {S : Subring ℂ_[p]} {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
     (h1 : W.a₁ ∈ S) (h2 : W.a₂ ∈ S) (h3 : W.a₃ ∈ S) (h4 : W.a₄ ∈ S) (h6 : W.a₆ ∈ S) (h : IsWq W wq) :

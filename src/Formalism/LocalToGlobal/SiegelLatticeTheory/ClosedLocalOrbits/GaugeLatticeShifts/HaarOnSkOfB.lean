@@ -6,47 +6,7 @@ public import Formalism.HermitianCurvature.HermitianCurvatureProofs.OppositeWeyl
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentHeisenbergDecomposition
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.BigCellDiagIff
 import Formalism.RealPlaceAnalysis.FinalF
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -60,15 +20,10 @@ namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 
 open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting
 
-theorem jm_mul_jm {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1; funext i; split_ifs <;> norm_num
-
 theorem ujOf_left {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) :
     Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε * g = 1 := by
   have h : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε := hg
-  rw [Matrix.mul_assoc (Formalism.REAL.Jm ε * gᴴ), Matrix.mul_assoc (Formalism.REAL.Jm ε), ← Matrix.mul_assoc gᴴ, h, jm_mul_jm]
+  rw [Matrix.mul_assoc (Formalism.REAL.Jm ε * gᴴ), Matrix.mul_assoc (Formalism.REAL.Jm ε), ← Matrix.mul_assoc gᴴ, h, _root_.Formalism.REAL.Jm_mul_self]
 
 def ujOf {n : ℕ} {ε : Fin n → Bool} (g : Matrix (Fin n) (Fin n) ℂ) (hg : Formalism.REAL.inUJ ε g) : Formalism.REAL.UJ ε :=
   ⟨⟨g, Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε, mul_eq_one_comm.mp (ujOf_left hg), ujOf_left hg⟩, hg⟩
@@ -159,7 +114,7 @@ theorem psiP_mul_B {r k : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (
   exact congrFun (congrFun key i) j
 
 theorem jacExGoodN_of_hpkEx_of_pFrame_of_haarCorr (hH : HpkEx) (hP : PFrame) (hHC : HaarCorr) (hZB : ZBig) (hBM : BigMem) (hW : CoordW)
-    (hSec : SecWb) : JacExGoodN := by
+    (hSec : _root_.Formalism.QuantumDeterminants.SectionExists) : JacExGoodN := by
   intro r k ε e z z' T T' sc hF hG hsc
   obtain ⟨P, hPJ, hPdet, hPe, zH, zH', hzH, hzH', hPz, hPz', hTz, hTz'⟩ := hP r k ε e z z' T T' hF hG
   have hT : 0 < Formalism.QuantumDeterminants.Tz k r zH := by rw [hTz]; exact hF.T_pos

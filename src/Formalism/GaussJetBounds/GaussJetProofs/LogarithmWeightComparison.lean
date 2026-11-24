@@ -1,14 +1,14 @@
 module
 
+public import Formalism.IncomingBounds.IncomingBound
 public import Formalism.FormalGroupWitt.FormalGroupWittProofs.SolveV
 public import Formalism.GaussJetBounds.GenLogInverse
 public import Formalism.FormalGroupWitt.FormalGroupWittProofs.EqSingleOfDegreeEqOne
 public import Formalism.GaussJetBounds.GaussJetProofs.SubstitutionWeightBound
-public import Formalism.IncomingBounds.FlowDegreeBounds.PadicValFactorialRatioProd
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -17,6 +17,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -24,6 +25,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -31,8 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,7 +47,59 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.IncomingBounds.FlowDegreeBounds.PadicValFactorialRatioProd, Formalism.GaussJetBounds.GaussJetProofs.LogarithmWeightComparison
+
+-- ===== clump member: Formalism.IncomingBounds.FlowDegreeBounds.PadicValFactorialRatioProd =====
+-- clump-header: {"m": "Formalism.IncomingBounds.FlowDegreeBounds.PadicValFactorialRatioProd", "h": "module\n\npublic import Formalism.IncomingBounds.IncomingBound\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+open scoped BigOperators
+
+namespace Formalism.IncomingBounds
+
+private theorem one_add_mul_le_one_add_pow (x : ℝ) (hx : 0 ≤ x) (k : ℕ) : 1 + k * x ≤ (1 + x) ^ k := by
+  simpa using one_add_mul_le_pow (a := x) (n := k) (by linarith)
+
+theorem padicValuationGain : ValGain := by
+  intro l hl
+  have hlR : (2 : ℝ) ≤ l := by exact_mod_cast hl.two_le
+  have hB : 0 < (l : ℝ) - 1 := by linarith
+  refine ⟨?_, ?_⟩
+  · intro n hn
+    have hle : l ^ padicValNat l n ≤ n := Nat.le_of_dvd (by omega) (_root_.Dvd.intro_left _ (_root_.Nat.divMaxPow_mul_pow_padicValNat _ _))
+    have hleR : (l : ℝ) ^ padicValNat l n ≤ n := by exact_mod_cast hle
+    have hb := one_add_mul_le_one_add_pow ((l : ℝ) - 1) hB.le (padicValNat l n)
+    rw [show (1 : ℝ) + ((l : ℝ) - 1) = l by ring] at hb
+    rw [le_sub_iff_add_le, div_add' _ _ _ hB.ne', div_le_div_iff_of_pos_right hB]
+    linarith
+  · intro e
+    unfold rho
+    have hA : 0 < (l : ℝ) ^ 2 - 1 := by nlinarith
+    have hq : ((l : ℝ) ^ 2 - 1) * (1 / ((l : ℝ) ^ 2 - 1)) = 1 := mul_one_div_cancel hA.ne'
+    have hb := one_add_mul_le_one_add_pow ((l : ℝ) ^ 2 - 1) hA.le e
+    rw [show (1 : ℝ) + ((l : ℝ) ^ 2 - 1) = (l : ℝ) ^ 2 by ring] at hb
+    have hm := mul_le_mul_of_nonneg_right hb (one_div_pos.2 hA).le
+    have he : (1 + (e : ℝ) * ((l : ℝ) ^ 2 - 1)) * (1 / ((l : ℝ) ^ 2 - 1)) =
+        1 / ((l : ℝ) ^ 2 - 1) + e := by
+      linear_combination (e : ℝ) * hq
+    linarith
+
+end Formalism.IncomingBounds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.IncomingBounds.FlowDegreeBounds.PadicValFactorialRatioProd =====
+
+-- ===== clump member: Formalism.GaussJetBounds.GaussJetProofs.LogarithmWeightComparison =====
+-- clump-header: {"m": "Formalism.GaussJetBounds.GaussJetProofs.LogarithmWeightComparison", "h": "module\n\npublic import Formalism.FormalGroupWitt.FormalGroupWittProofs.SolveV\npublic import Formalism.GaussJetBounds.GenLogInverse\npublic import Formalism.FormalGroupWitt.FormalGroupWittProofs.EqSingleOfDegreeEqOne\npublic import Formalism.GaussJetBounds.GaussJetProofs.SubstitutionWeightBound\npublic import Formalism.IncomingBounds.FlowDegreeBounds.PadicValFactorialRatioProd\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -136,7 +188,6 @@ theorem coeff_X_eq_sum [Finite τ] {l : ℕ} (hl : 2 ≤ l) (p : τ → τ) {g :
   have hs : HasSubst g := by
     first
       | exact hasSubst_of_constantCoeff_zero hg0
-      | exact HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hg0 s]; exact IsNilpotent.zero)
   have hcoef := congrArg (coeff n) hx
   rw [coeff_subst hs] at hcoef
   rw [← hcoef]
@@ -260,13 +311,9 @@ theorem generalized_log_inverse : GenLogInverse.{u, v} := by
   have hsg : HasSubst g := by
     first
       | exact hasSubst_of_constantCoeff_zero hg0
-      | exact HasSubst.of_constantCoeff_zero' hg0
-      | exact HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hg0 s]; exact IsNilpotent.zero)
   have hsf : HasSubst (genLog (K := K) l p) := by
     first
       | exact hasSubst_of_constantCoeff_zero hf.1
-      | exact HasSubst.of_constantCoeff_zero' hf.1
-      | exact HasSubst.of_constantCoeff_nilpotent (fun s => by rw [hf.1 s]; exact IsNilpotent.zero)
 
   have key := Formalism.FG.subst_injective_vector K τ τ (genLog (K := K) l p)
     (fun x => subst (genLog (K := K) l p) (g x)) X hf
@@ -356,3 +403,7 @@ theorem generalized_log_weight : GenLogWeight.{u, v} := by
           linarith
 
 end Formalism.DworkPowerSeriesWeights
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GaussJetBounds.GaussJetProofs.LogarithmWeightComparison =====

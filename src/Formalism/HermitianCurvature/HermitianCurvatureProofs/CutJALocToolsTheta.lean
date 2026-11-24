@@ -160,7 +160,7 @@ theorem adjComm_at (hAC : Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AdjComm) (D :
   set y := B.sgs p g with hy
   have hyG : y ∈ B.GV k r := Formalism.FourierDecayAlt.P.PositiveOrbitOpen.sgs_GV D hp hg.1
   have hyP : 0 < Gf k r D.z D.z' y := by
-    rw [hy, Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AC.gf_sgs D hp g]; exact hg.2
+    rw [hy, _root_.Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs D hp g]; exact hg.2
   have hWo : IsOpen {x : B.Mat k r | 0 < Gf k r D.z D.z' x} := isOpen_lt continuous_const (Formalism.FourierDecayAlt.P.BetaSesquilinearity.Gf_cont _ _)
   obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.1 hWo y hyP
   have hbx : ∃ b : ContDiffBump y, b.rIn = ε / 4 ∧ b.rOut = ε / 2 := ⟨⟨ε / 4, ε / 2, by positivity, by linarith⟩, rfl, rfl⟩
@@ -234,11 +234,11 @@ theorem thetaJ_of_adjComm (hAC : Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AdjCom
   intro g hgU
   have hg : g ∈ JF.Om k r Bs.z Bs.z' := hUU hgU
   have hSCo : B.SmoothCoef (JF.Om k r Bs.z Bs.z') Θ := fun T hT' =>
-    ⟨Formalism.FourierDecayAlt.P.JFxI.ckOn_sub hOmG (hSC T hT').1, Formalism.FourierDecayAlt.P.JFxI.ckOn_sub hOmG (hSC T hT').2⟩
+    ⟨_root_.Formalism.FourierDecayAlt.P.CutMP.jdc_ckOn_mono hOmG (hSC T hT').1, _root_.Formalism.FourierDecayAlt.P.CutMP.jdc_ckOn_mono hOmG (hSC T hT').2⟩
   obtain ⟨Θ', hord, hrep⟩ := Formalism.FourierDecayAlt.P.adjoint_leibniz_expansion k r Wp Wq Bs Θ hSCo
   have hsub := Formalism.FourierDecayAlt.P.JFxI.om_sub_gv (k := k) (r := r) Bs.z Bs.z'
   have hFm : B.CkOn (B.opOrder Θ : ℕ∞) (JF.Om k r Bs.z Bs.z') F :=
-    Formalism.FourierDecayAlt.P.JFxI.ckOn_sub hsub (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hF)
+    _root_.Formalism.FourierDecayAlt.P.CutMP.jdc_ckOn_mono hsub (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hF)
   have e1 : B.JF Bs (B.opAdj Θ F) g = B.JF Bs (B.opApply Θ' F) g := by
     change ∫ p, JF.xiP Bs p • B.rho Bs p (B.opAdj Θ F) g ∂Bs.μSS = ∫ p, JF.xiP Bs p • B.rho Bs p (B.opApply Θ' F) g ∂Bs.μSS
     apply integral_congr_ae
@@ -250,7 +250,7 @@ theorem thetaJ_of_adjComm (hAC : Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AdjCom
       B.opApply Θ' (B.rho Bs p F) x = B.rho Bs p (B.opApply Θ' F) x := by
     intro p hp x hx
     have hρ : B.CkOn (B.opOrder Θ : ℕ∞) (JF.Om k r Bs.z Bs.z') (B.rho Bs p F) :=
-      Formalism.FourierDecayAlt.P.JFxI.ckOn_sub hsub (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top (Formalism.FourierDecayAlt.P.B5.ckOn_rho Bs hp hF))
+      _root_.Formalism.FourierDecayAlt.P.CutMP.jdc_ckOn_mono hsub (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top (Formalism.FourierDecayAlt.P.B5.ckOn_rho Bs hp hF))
     rw [hrep _ hρ x hx, adjComm_at hAC Bs Θ hSC hC F hF p hp x (hOmG hx)]
     have hx' := Formalism.FourierDecayAlt.P.PositiveOrbitOpen.sgs_Om Bs hp hx
     unfold B.rho

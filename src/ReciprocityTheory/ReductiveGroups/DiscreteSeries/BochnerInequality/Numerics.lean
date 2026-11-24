@@ -1,52 +1,9 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.CasValK
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.NumRho
 
 @[expose] public section
@@ -77,8 +34,7 @@ private theorem dot_neg_r (u v : Fin n → ℝ) : dot u (-v) = - dot u v := by
 
 private theorem dot_sum_r {k : ℕ} (u : Fin n → ℝ) (f : Fin k → Fin n → ℝ) :
     dot u (∑ i, f i) = ∑ i, dot u (f i) := by
-  simp only [dot, Finset.sum_apply, mul_sum]
-  exact Finset.sum_comm
+  simpa only [dot, Finset.sum_apply, mul_sum] using Finset.sum_comm
 
 private theorem dot_root_r (u : Fin n → ℝ) (a b : Fin n) : dot u (root a b) = u a - u b := by
   simp [dot, root, Pi.single_apply, mul_sub, sum_sub_distrib]
@@ -87,8 +43,7 @@ private theorem root_swap (a b : Fin n) : root b a = - root a b := by
   simp [root]
 
 private theorem nsq_nonneg'' (u : Fin n → ℝ) : 0 ≤ nsq u := by
-  unfold nsq dot
-  exact sum_nonneg fun i _ => mul_self_nonneg (u i)
+  simpa [nsq, dot] using sum_nonneg (fun i _ => mul_self_nonneg (u i))
 
 private theorem nsq_add'' (u v : Fin n → ℝ) : nsq (u + v) = nsq u + 2 * dot u v + nsq v := by
   simp only [nsq, dot_add_l, dot_add_r, dot_comm' v u]; ring
@@ -119,10 +74,8 @@ private theorem sqrt_nsq_sum_le {ι : Type*} (s : Finset ι) (f : ι → Fin n �
 private theorem pq_facts {a b : Fin n} (hε : ε a ≠ ε b) :
     1 ≤ (pOf ε : ℝ) ∧ 1 ≤ (qOf ε : ℝ) ∧ (pOf ε : ℝ) + (qOf ε : ℝ) = n := by
   have hsum : pOf ε + qOf ε = n := by
-    unfold pOf qOf
-    have := Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin n)))
-      (fun a => ε a = true)
-    simpa using this
+    simpa [pOf, qOf] using Finset.card_filter_add_card_filter_not
+      (s := (univ : Finset (Fin n))) (fun a => ε a = true)
   have hp : ∃ c, ε c = true := by
     cases ha : ε a
     · exact ⟨b, by cases hb : ε b <;> simp_all⟩
@@ -141,10 +94,9 @@ theorem gap_gt {a b : Fin n} (hε : ε a ≠ ε b) {h : ℝ}
     (hbig : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h) :
     2 * (n : ℝ) - 3 < h ∧ (n : ℝ) - 1 < h := by
   obtain ⟨hp, hq, hn⟩ := pq_facts hε
-  have hn0 : (0 : ℝ) ≤ n := Nat.cast_nonneg n
   have hm := mul_nonneg (sub_nonneg.2 hp) (sub_nonneg.2 hq)
   have key : (n : ℝ) * ((n : ℝ) - 1) ≤ (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) := by
-    nlinarith [mul_nonneg hn0 hm]
+    nlinarith [mul_nonneg (Nat.cast_nonneg n : (0 : ℝ) ≤ n) hm]
   constructor
   · nlinarith [sq_nonneg ((n : ℝ) - 2)]
   · nlinarith [sq_nonneg ((n : ℝ) - 1)]
@@ -165,8 +117,7 @@ theorem crossVal_pos {lam : Fin n → ℝ} (hmono : StrictAnti lam) {h : ℝ}
   rw [casValK_add, lowK_add_rhoC, nsq_root (ne_of_lt hab), dot_add_l, dot_root_r lam]
   have h1 := hh a b hε
   rw [abs_of_pos (sub_pos.2 (hmono hab))] at h1
-  have h2 := dot_rhoN_root_ge hab hε
-  linarith
+  linarith [dot_rhoN_root_ge hab hε]
 
 theorem crossVal_neg {lam : Fin n → ℝ} (hmono : StrictAnti lam) {h : ℝ}
     (hh : GapAtLeast ε lam h) {a b : Fin n} (hab : a < b) (hε : ε a ≠ ε b) :
@@ -175,8 +126,7 @@ theorem crossVal_neg {lam : Fin n → ℝ} (hmono : StrictAnti lam) {h : ℝ}
     root_swap a b, dot_neg_r]
   have h1 := hh a b hε
   rw [abs_of_pos (sub_pos.2 (hmono hab))] at h1
-  have h2 := dot_rhoN_root_ge hab hε
-  linarith
+  linarith [dot_rhoN_root_ge hab hε]
 
 theorem isNCSum_zero {ν : Fin n → ℝ} : IsNCSum ε 0 ν ↔ ν = 0 := by
   constructor

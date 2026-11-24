@@ -53,6 +53,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Formalism.LocalToGlobal.ProjectiveLattices.IntAllProof
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -407,13 +408,6 @@ theorem polyT_mem_FFV {T : CDVR} {io : c.F →+* T.Fr} {p n : ℕ} {a : (E →+*
     subst h3
     exact hcc _ h.symm
   · convert sum_gap_row (Dw := Dw) ha τ i
-
-theorem nuLocC_le_nuLocOf [StarRing (𝓞 E)] {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io}
-    (Ch : IntegralChartA3 Xo c T io y) (e k : ℕ) {p n : ℕ} {a : (E →+* ℂ) × ℕ → ℕ}
-    (ha : ∀ τ, Antitone fun i => a (τ, i)) {B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T.V}
-    (hB : IsCols c T io p (gap Dw a) B) : nuLocC Ch e k a n ≤ nuLocOf Ch e k (polyT B (gap Dw a)) := by
-  rw [nuLocC_eq_iInf]
-  exact iInf₂_le _ (polyT_mem_FFV ha hB)
 
 end Columns
 

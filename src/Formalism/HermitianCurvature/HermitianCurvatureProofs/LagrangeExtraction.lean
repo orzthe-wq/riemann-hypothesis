@@ -96,6 +96,4 @@ end Formalism.FourierDecayAlt.P.LagrangeExtraction
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem extract_K_bound : Formalism.FourierDecayAlt.F7.ExtractK := LagrangeExtraction.extractK
-
 end Formalism.FourierDecayAlt.P

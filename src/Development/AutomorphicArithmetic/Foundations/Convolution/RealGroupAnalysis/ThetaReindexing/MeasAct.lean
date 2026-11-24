@@ -1,13 +1,13 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaLiftTrivialOrbitTermsVanish
+public import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.UnitaryActions.ContinuousAdelicGL2OfContinuousEntries
+public import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.WeilRepresentation.ImportsTer
 public import CompanionTheory.AutomorphicTheory.UnitriangularMeasure.AdeleCoordinateMeasure.GJGlobalModulus
 public import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.ActMat
-public import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.DetAE
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Positive.Field
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -19,8 +19,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,8 +40,70 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Algebra.Order.Positive.Field
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.DetAE, Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.MeasAct
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.DetAE =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.DetAE", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaLiftTrivialOrbitTermsVanish\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.UnitaryActions.ContinuousAdelicGL2OfContinuousEntries\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.WeilRepresentation.ImportsTer\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter
+open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published GroundTheory.Global GroundTheory.Automorphic.GJMatrix
+open UpperTheory.ConvolutionTheory.R2
+open scoped Classical
+
+private theorem det_aE {F : Type} [Field F] [NumberField F] (a : (A F)ˣ) :
+    Matrix.GeneralLinearGroup.det (aE (E := F) a) = a := by
+  ext
+  simp [aE, Matrix.GeneralLinearGroup.det, Matrix.det_fin_two]
+
+theorem UpperTheory.ConvolutionTheory.R2.D.genE :
+    ∀ (F : Type) [Field F] [NumberField F], Subgroup.closure (Set.range (fun b => gl (nU (F := F) b)) ∪ {gl (wW F)} ∪ Set.range (aE (E := F))) = ⊤ := by
+  intro F _ _
+  rw [eq_top_iff]
+  intro h _
+  set C := Subgroup.closure (Set.range (fun b => gl (nU (F := F) b)) ∪ {gl (wW F)} ∪ Set.range (aE (E := F))) with hC
+  have hSL : ∀ s : G1 F, gl s ∈ C := by
+    intro s
+    have hs : s ∈ Subgroup.closure (Set.range (nU (F := F)) ∪ {wW F}) := by
+      rw [(UpperTheory.ConvolutionTheory.R2.gen F).1]
+      trivial
+    induction hs using Subgroup.closure_induction with
+    | mem x hx =>
+      apply Subgroup.subset_closure
+      rcases hx with ⟨b, rfl⟩ | hx
+      · exact Or.inl (Or.inl ⟨b, rfl⟩)
+      · rw [Set.mem_singleton_iff] at hx
+        subst hx
+        exact Or.inl (Or.inr rfl)
+    | one => simpa using C.one_mem
+    | mul x y _ _ hx hy => simpa using C.mul_mem hx hy
+    | inv x _ hx => simpa using C.inv_mem hx
+  have hA : ∀ a, aE (E := F) a ∈ C := fun a => Subgroup.subset_closure (Or.inr ⟨a, rfl⟩)
+  set d := Matrix.GeneralLinearGroup.det h with hd
+  have hdet : Matrix.det (h * (aE (E := F) d)⁻¹).val = 1 := by
+    have : Matrix.GeneralLinearGroup.det (h * (aE (E := F) d)⁻¹) = 1 := by
+      rw [map_mul, map_inv, det_aE, ← hd, mul_inv_cancel]
+    exact congrArg Units.val this
+  have hs : gl (⟨(h * (aE (E := F) d)⁻¹).val, hdet⟩ : G1 F) = h * (aE (E := F) d)⁻¹ := by
+    ext i j
+    rfl
+  have h1 : h * (aE (E := F) d)⁻¹ ∈ C := hs ▸ hSL _
+  have := C.mul_mem h1 (hA d)
+  simpa using this
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.DetAE =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.MeasAct =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.MeasAct", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaLiftTrivialOrbitTermsVanish\npublic import CompanionTheory.AutomorphicTheory.UnitriangularMeasure.AdeleCoordinateMeasure.GJGlobalModulus\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.ActMat\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.DetAE\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Positive.Field\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter
@@ -59,23 +119,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 attribute [local instance] AdeleBaseChange.algebraAdeleRing
 
-private theorem aE_mul_nU {K : Type} [Field K] [NumberField K] (a : (A K)ˣ) (b : A K) :
-    aE a * gl (nU b) = gl (nU ((a : A K) * b)) * aE a := by
-  apply Units.ext
-  change !![(a : A K), 0; 0, 1] * !![1, b; 0, 1] = !![1, (a : A K) * b; 0, 1] * !![(a : A K), 0; 0, 1]
-  simp [Matrix.mul_fin_two]
-
-private theorem nU_add {K : Type} [Field K] [NumberField K] (b c : A K) :
-    nU (b + c) = nU b * nU c := by
-  apply Subtype.ext
-  change !![1, b + c; 0, 1] = !![1, b; 0, 1] * !![1, c; 0, 1]
-  simp [Matrix.mul_fin_two, add_comm]
-
 private theorem w_rel (K : Type) [Field K] [NumberField K] :
     nU 1 * wW K * nU 1 = wW K * nU (-1) * wW K := by
   apply Subtype.ext
   change !![1, 1; 0, 1] * !![0, 1; -1, 0] * !![1, 1; 0, 1] = !![0, 1; -1, 0] * !![1, -1; 0, 1] * !![0, 1; -1, 0]
-  simp [Matrix.mul_fin_two]
+  simp
 
 private def twoU (K : Type) [Field K] [NumberField K] : (A K)ˣ :=
   Units.map (algebraMap K (A K) : K →* A K) (Units.mk0 2 two_ne_zero)
@@ -83,20 +131,19 @@ private def twoU (K : Type) [Field K] [NumberField K] : (A K)ˣ :=
 private theorem coe_twoU (K : Type) [Field K] [NumberField K] : ((twoU K : (A K)ˣ) : A K) = 2 := by
   simp [twoU, map_ofNat]
 
-private theorem gl_mul {K : Type} [Field K] [NumberField K] (x y : G1 K) : gl (x * y) = gl x * gl y :=
-  map_mul _ _ _
+private alias gl_mul := _root_.UpperTheory.ConvolutionTheory.R2.gl_mul
 
 private theorem hom_nU {K G : Type} [Field K] [NumberField K] [CommGroup G] (f : GL (Fin 2) (A K) →* G) (b : A K) :
     f (gl (nU b)) = 1 := by
-  have h1 := congrArg f (aE_mul_nU (twoU K) b)
-  rw [map_mul, map_mul, mul_comm, coe_twoU, two_mul, nU_add, gl_mul, map_mul] at h1
+  have h1 := congrArg f (_root_.UpperTheory.ConvolutionTheory.R2.aE_mul_nU (twoU K) b)
+  rw [map_mul, map_mul, mul_comm, coe_twoU, two_mul, _root_.UpperTheory.ConvolutionTheory.R2.nU_add, gl_mul, map_mul] at h1
   have h2 := mul_right_cancel h1
   exact (mul_eq_left.mp h2.symm)
 
 private theorem hom_w {K G : Type} [Field K] [NumberField K] [CommGroup G] (f : GL (Fin 2) (A K) →* G) :
     f (gl (wW K)) = 1 := by
   have h1 := congrArg (fun g => f (gl g)) (w_rel K)
-  simp only [gl_mul, map_mul, hom_nU, mul_one, one_mul] at h1
+  simp only [map_mul, hom_nU, mul_one, one_mul] at h1
   exact (mul_eq_left.mp h1.symm)
 
 variable (D : Dat F E)
@@ -184,7 +231,7 @@ private theorem det_aE (ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A F)) (hρ : ∀ 
   apply Units.ext
   have h1 : ((Matrix.GeneralLinearGroup.det (ρ (aE α)) : (A F)ˣ) : A F) = (ρ (aE α)).val.det := rfl
   rw [h1, rho_aE D ρ hρ, c_eq D ρ hq, Units.val_pow_eq_pow_val, coe_ideleNorm, norm_eq D]
-  simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_three]
+  simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ]
   ring
 
 private theorem key (ρ : GL (Fin 2) (A E) →* GL (Fin 4) (A F)) (hρ : ∀ h v, D.act h v = (ρ h).val *ᵥ v)
@@ -225,3 +272,7 @@ theorem UpperTheory.ConvolutionTheory.R2.D.measAct :
   congr 1
   congr 1
   simp [ab, inv_pow]
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.ThetaReindexing.MeasAct =====

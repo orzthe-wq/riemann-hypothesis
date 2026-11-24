@@ -224,7 +224,7 @@ theorem integral_of_pullAl (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (N :
         have a₉ : x ≫ g = g := Category.id_comp _
         have a₀ : 𝟙 D.toPre.P.A.left = x.left := rfl
         rw [Fin.prod_univ_four]
-        simp only [Sum.elim_inl, Sum.elim_inr, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one]
+        simp only [Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one]
         rw [a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈, a₉, a₀]
         apply Additive.ofMul.injective
         simp only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, DegPre.famε, Matrix.cons_val]

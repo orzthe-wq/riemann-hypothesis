@@ -5,10 +5,10 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Development.AbelianVarietyTheory.CrystallinePeriods.CrisIncl
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPowStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsFieldStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemDeRhamFiltrationIffXiPowStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariantStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusFiltrationEqFontaineXiPow
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRPlusIsDomainBdRIsField
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MemDeRhamFiltrationIffXiPow
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -99,7 +99,7 @@ theorem mem_filD_nat (n : ℕ) (x : Per.BdR l) :
 theorem alg_inj {e : Per.Fl l} (he : IsEps e) :
     Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l)) := by
   have _ := he
-  exact (GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.1
+  exact (_root_.GlobalTheory.MemLoc.BdRField.bdR_isField l).2.1
 
 theorem actC_eq {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (x : ℂ_[l]) :
     AI.actC g x = Per.σC g x := by
@@ -159,8 +159,8 @@ theorem th_eq {x : P.R.BdR} {z : Per.BdRp l}
 
 include T in
 theorem exists_inverse_fontaineElement_mem_fil_neg_one : ∃ s ∈ (P.PD (botExt l)).Fil (-1), P.ιB P.tB * s = 1 := by
-  obtain ⟨h1, -, -, -⟩ := GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l _ (isEps AI)
-  obtain ⟨-, hk, hun, -, -⟩ := GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l
+  obtain ⟨h1, -, -, -⟩ := _root_.GlobalTheory.MemLoc.filtration_eq_xi_pow l _ (isEps AI)
+  obtain ⟨-, hk, hun, -, -⟩ := _root_.GlobalTheory.MemLoc.thetaD_props l
   have hu := (P.PD (botExt l)).t_unit
   have t1 := (P.PD (botExt l)).mem_filtration_one
   have t2 := (P.PD (botExt l)).not_mem_filtration_two
@@ -174,7 +174,7 @@ theorem exists_inverse_fontaineElement_mem_fil_neg_one : ∃ s ∈ (P.PD (botExt
     obtain ⟨w, rfl⟩ := (h1 1 u).1 ((hk u).1 h0)
     exact t2 ((fil_nat T 2 _).2 ⟨_, (h1 2 _).2 ⟨w, by ring⟩, ez⟩)
   obtain ⟨v, hv⟩ := huu.exists_right_inv
-  rw [T.fil, GlobalTheory.T.mem_deRhamFiltration_iff_xi_pow l _ (isEps AI)]
+  rw [T.fil, _root_.GlobalTheory.MemLoc.mem_FilD_iff_xi_pow l _ (isEps AI)]
   refine ⟨v, ?_⟩
   have e1 : T.eD (P.ιB P.tB) * T.eD s = 1 := by rw [← map_mul, hs, map_one]
   have e2 := congrArg (algebraMap (Per.BdRp l) (Per.BdR l)) hv
@@ -198,13 +198,13 @@ def thetaL : ThetaL P AI where
     obtain ⟨b, hb⟩ := (fil_zero T y).1 hy
     rw [th_eq T ha, th_eq T hb, th_eq T (z := a * b) (by rw [map_mul, map_mul, ha, hb]), map_mul]
   θ_onto c := by
-    obtain ⟨z, hz⟩ := (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).1 c
+    obtain ⟨z, hz⟩ := (_root_.GlobalTheory.MemLoc.thetaD_props l).1 c
     have e : algebraMap (Per.BdRp l) (Per.BdR l) z =
         T.eD (T.eD.symm (algebraMap (Per.BdRp l) (Per.BdR l) z)) := (T.eD.apply_symm_apply _).symm
     exact ⟨_, (fil_zero T _).2 ⟨z, e⟩, (th_eq T e).trans hz⟩
   θ_ker x hx := by
     obtain ⟨a, ha⟩ := (fil_zero T x).1 hx
-    rw [th_eq T ha, (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.1]
+    rw [th_eq T ha, (_root_.GlobalTheory.MemLoc.thetaD_props l).2.1]
     refine ⟨fun h => (fil_nat T 1 x).2 ⟨a, h, ha⟩, fun h => ?_⟩
     obtain ⟨z, hz, e⟩ := (fil_nat T 1 x).1 h
     rwa [← alg_inj (isEps AI) (e.trans ha.symm)]
@@ -213,15 +213,15 @@ def thetaL : ThetaL P AI where
     have e : algebraMap (Per.BdRp l) (Per.BdR l) (Per.σDp g a) = T.eD (P.actQdR g x) := by
       rw [T.actD, ← ha]
       exact (GlobalTheory.RingIface.sigD_alg l g a).symm
-    rw [th_eq T ha, th_eq T e, actC_eq, (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.2.2]
+    rw [th_eq T ha, th_eq T e, actC_eq, (_root_.GlobalTheory.MemLoc.thetaD_props l).2.2.2.2]
   θ_Om x := by
     obtain ⟨y, h1, h2⟩ := T.om x
     rw [th_eq T h1.symm, h2]
   θ_int a := by
-    rw [th_eq T (eD_ιA T a).symm, (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.2.1]
+    rw [th_eq T (eD_ιA T a).symm, (_root_.GlobalTheory.MemLoc.thetaD_props l).2.2.2.1]
     exact (GlobalTheory.RingBasics.mem_OC _).1 (Per.θ l a).2
   θ_teich x y h := by
-    rw [th_eq T (eD_ιA T _).symm, (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.2.1, WittVector.fontaineTheta_teichmuller]
+    rw [th_eq T (eD_ιA T _).symm, (_root_.GlobalTheory.MemLoc.thetaD_props l).2.2.2.1, WittVector.fontaineTheta_teichmuller]
     have h1 := Ideal.Quotient.eq.1 ((PreTilt.mk_untilt_eq_coeff_zero x).trans h)
     have h2 := (GlobalTheory.RingBasics.mem_span_pow_OC 1 (x.untilt - y)).1 (by rwa [pow_one])
     simpa using h2

@@ -88,8 +88,6 @@ theorem commute_of_trivOutside (v : HeightOneSpectrum (𝓞 (maximalRealSubfield
     (hx : TrivOutside {v} x) (hy : TrivOutside {v}ᶜ y) : Commute x y := by
   show x * y = y * x
   apply Subtype.ext; apply Units.ext
-  change (((x * y : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) =
-    (((y * x : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))
   apply GlobalTheory.SplitAdelic.mat_ext
   intro u
   rw [GlobalTheory.SplitAdelic.mul_coe, GlobalTheory.SplitAdelic.mul_coe, Matrix.map_mul, Matrix.map_mul]

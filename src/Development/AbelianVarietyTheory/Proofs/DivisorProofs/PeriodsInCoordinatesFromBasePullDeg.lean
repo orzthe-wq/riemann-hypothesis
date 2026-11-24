@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SepAtBIff
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -95,13 +96,8 @@ namespace GlobalTheory.USep.TauPullB
 
 variable {V V₁ : Type} [CommRing V] [IsDomain V] [CommRing V₁] [IsDomain V₁] {ρ : V →+* V₁} {Q : DegPre V} {D : DegPre V₁}
 
-theorem c_zero (D : DegPre V₁) : D.c 0 = 1 := by
-  have h := D.c_add 0 0
-  rw [add_zero] at h
-  exact left_eq_mul.1 h
-
 theorem xK_zero (D : DegPre V₁) : (1 : TK V₁ ⟶ D.P.A).left = (toUnit (TK V₁)).left ≫ (D.c 0).left := by
-  rw [c_zero, ← Over.comp_left, MonObj.comp_one]
+  rw [_root_.GlobalTheory.IndivisibleSection.c_zero_eq_one, ← Over.comp_left, MonObj.comp_one]
 
 end GlobalTheory.USep.TauPullB
 

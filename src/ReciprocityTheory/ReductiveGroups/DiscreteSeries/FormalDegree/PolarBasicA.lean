@@ -1,47 +1,9 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PmatIsHermitian
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 public import Mathlib.Topology.ContinuousMap.Weierstrass
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -70,7 +32,6 @@ theorem pb_trace_pow_herm {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) 
     | (rw [Unitary.conjStarAlgAut_apply, Matrix.trace_mul_cycle, Unitary.coe_star_mul_self, one_mul,
         Matrix.diagonal_pow, Matrix.trace_diagonal]
        simp)
-    | simp [Unitary.conjStarAlgAut_apply, Matrix.trace_mul_cycle, Matrix.diagonal_pow, Matrix.trace_diagonal]
 
 theorem psum_continuous (ε : Fin n → Bool) (j : ℕ) :
     Continuous (fun z : PCoord ε → ℂ => ∑ a, pev z a ^ j) := by
@@ -169,7 +130,7 @@ theorem pairfun_continuous (ε : Fin n → Bool) (h : ℝ → ℝ) (hc : Continu
     have hq : (n : ℝ) * n / (n * n + 1) < 1 := (div_lt_one (by positivity)).2 (by linarith)
     have heq : (n : ℝ) * n * η = e / 3 * ((n * n) / (n * n + 1)) := by
       rw [hη]
-      first | (field_simp; ring) | field_simp | ring
+      first | (field_simp; ring) | field_simp
     rw [heq]
     exact mul_lt_of_lt_one_right (by positivity) hq
   rw [Real.dist_eq]

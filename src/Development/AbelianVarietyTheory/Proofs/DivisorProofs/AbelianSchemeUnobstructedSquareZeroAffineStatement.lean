@@ -49,4 +49,4 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.abelianScheme_unobstructed_squareZero_affine : GlobalTheory.Published.AbelianUnobstructed := by
-  first | exact @GlobalTheory.UnobTop.abelianUnobstructed | exact GlobalTheory.UnobTop.abelianUnobstructed | (intros; apply GlobalTheory.UnobTop.abelianUnobstructed <;> assumption)
+  first | exact @GlobalTheory.UnobTop.abelianUnobstructed

@@ -123,12 +123,11 @@ end GlobalTheory.StarCover
 namespace GlobalTheory.StarCover
 open GlobalTheory.MinkWeylReal
 
-theorem toReal_apply' {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X) (x y : X) :
-    toReal β x y = (β x y : ℝ) := by simp [toReal]
+alias toReal_apply' := _root_.GlobalTheory.PolFan.toReal_apply
 
 theorem comb_apply {X : Type} [AddCommGroup X] {m : ℕ} (r : Fin m → ℝ) (γ : Fin m → LinearMap.BilinForm ℤ X)
     (x y : X) : (∑ j, r j • toReal (γ j)) x y = ∑ j, r j * (γ j x y : ℝ) := by
-  simp [LinearMap.sum_apply, toReal_apply']
+  simp [LinearMap.sum_apply]
 
 theorem castR_mem_rcone {n m : ℕ} (u : Fin m → Fin n → ℚ) (j : Fin m) :
     castR (u j) ∈ rcone (Finset.univ.image u) := by

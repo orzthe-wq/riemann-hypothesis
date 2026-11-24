@@ -2,38 +2,6 @@ module
 
 public import PositivityTheory.AutomorphicForms.PublishedInputs.NonzeroTypes.CJDefs
 public import PositivityTheory.AutomorphicForms.PublishedInputs.NonzeroTypes.ScalarOnInertiaProp
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 
 @[expose] public section
 
@@ -80,11 +48,6 @@ def SpecialLiftProp : Prop :=
     (σ : Representation ℂ (Levi k fun a : Fin G.s => Fin (G.d a)) X),
     IsSmooth ρ → IsSubquotient σ ρ → G.HasEtaVec σ → G.HasEtaVec ρ
 
-def SpecialCountProp : Prop :=
-  GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ c : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (c i)) → (∀ i, res (c i) = res (G.chi i)) →
-    FiniteDimensional ℂ ↥(G.etaSp (jacU G.e (prinSeries c))) ∧
-      Module.finrank ℂ ↥(G.etaSp (jacU G.e (prinSeries c))) ≤ 1
-
 def twD {Y : Fin G.s → Type} [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)]
     (τ : ∀ a, Representation ℂ (GL (Fin (G.d a)) k) (Y a)) (a : Fin G.s) :
     Representation ℂ (GL (Fin (G.d a)) k) (Y a) :=
@@ -106,34 +69,6 @@ def SpecialRepresentationEtaProp : Prop :=
   ∀ (Y : Fin G.s → Type) [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)] (τ : ∀ a, Representation ℂ (GL (Fin (G.d a)) k) (Y a)),
     (∀ a, IsSmooth (τ a)) → (∀ a, HasDetVec (τ a) (G.μ a)) →
     G.HasEtaVec (jacU G.e (multiProd G.e (G.twD τ)))
-
-def SpecialOrderProp : Prop :=
-  GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V),
-    IsSmooth π → π.IsIrreducible → ∀ c : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (c i)) →
-    ∀ σ : Equiv.Perm (Fin n), IsSubquotient π (prinSeries (fun i => c (σ i))) → IsSubquotient π (prinSeries c)
-
-def SpecialRepresentationSubProp : Prop :=
-  SpecialOrderProp (k := k) (n := n) → GlobalTheory.Mem.LiteralAutomorphy.LitN →
-  ∀ (Y : Fin G.s → Type) [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)] (τ : ∀ a, Representation ℂ (GL (Fin (G.d a)) k) (Y a)),
-    (∀ a, IsSmooth (τ a)) → (∀ a, (τ a).IsIrreducible) →
-    ∀ ν : ∀ a, Fin (G.d a) → kˣ →* ℂˣ, (∀ a j, IsSmoothChar (ν a j)) →
-    (∀ a, IsCuspSupport (τ a) (fun _ : Fin (G.d a) => 1) (fun j => detRep (Fin 1) (ν a j))) →
-    (multiProd G.e (G.twD τ)).IsIrreducible →
-    IsSubquotient (multiProd G.e (G.twD τ)) (prinSeries (G.cOf ν))
-
-def SpecialSupportProp : Prop :=
-  SpecialOrderProp (k := k) (n := n) → GlobalTheory.Mem.LiteralAutomorphy.LitN →
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), IsSmooth π → π.IsIrreducible →
-    ∀ (Y : Fin G.s → Type) [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)] (τ : ∀ a, Representation ℂ (GL (Fin (G.d a)) k) (Y a)),
-      (∀ a, IsSmooth (τ a)) → (∀ a, (τ a).IsIrreducible) →
-      ∀ ν : ∀ a, Fin (G.d a) → kˣ →* ℂˣ, (∀ a j, IsSmoothChar (ν a j)) →
-      (∀ a, IsCuspSupport (τ a) (fun _ : Fin (G.d a) => 1) (fun j => detRep (Fin 1) (ν a j))) →
-      IsSubquotient (piTensor τ) (jacU G.e π) → IsSubquotient π (prinSeries (G.cOf ν))
-
-def NonzeroTopOfSpecialForm : Prop :=
-  SpecialLatticeProp → G.SphericalVectorUniqueness → G.SpecialCountProp → G.SpecialLiftProp → G.NonzeroBasicTwistOfSpecialForm → G.SpecialRestrictionProp → G.SpecialRepresentationEtaProp →
-    SpecialOrderProp (k := k) (n := n) → G.SpecialRepresentationSubProp → G.SpecialSupportProp → CuspidalSupportProp → ProductIrreducibleProp → TensorProductVectors →
-    G.SupportOfProductProp
 
 end Grp
 

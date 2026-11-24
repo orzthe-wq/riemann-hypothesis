@@ -130,7 +130,7 @@ private def blk (q f : ℕ) (L : List (ℕ × ℕ)) : Multiset (ℕ × ZMod (q ^
 private theorem map_snd_cons (q f : ℕ) (p : ℕ × ℕ) (L : List (ℕ × ℕ)) :
     (blk q f (p :: L)).map Prod.snd =
       (Multiset.range p.1).map (cl q f p.1 p.2) + (blk q f L).map Prod.snd := by
-  simp [blk, Multiset.map_map, Function.comp_def]
+  simp [blk, Multiset.map_map]
 
 private theorem mem_blk {q f : ℕ} {L : List (ℕ × ℕ)} {e : ZMod (q ^ f - 1)}
     (h : e ∈ (blk q f L).map Prod.snd) : ∃ p ∈ L, ∃ j < p.1, e = cl q f p.1 p.2 j := by

@@ -202,7 +202,7 @@ theorem eq_one_of_conj_mem (hH : IsHerm (hc.sig : E →+* E) J) (hd : IsUnit J.d
     (h : g⁻¹ * bc ιA γ * g ∈ congLev hc J Λ 𝔪) : γ = 1 := by
   have hL := P.csGlob_lattice Λ (Module.Finite.iff_fg.2 hΛ.fg)
     (Submodule.IsFullLattice.span_eq_top (self := hΛ)) g
-  have hfin := Formalism.UG.Final.StabFinite F E (Fin n) hc.sig J (Formalism.L2.G.sig_conj hc) hH hd hdef _
+  have hfin := _root_.Formalism.UG.P.UG_stabilizer_finite F E (Fin n) hc.sig J (Formalism.L2.G.sig_conj hc) hH hd hdef _
     (Module.Finite.iff_fg.2 hL.fg) (Submodule.IsFullLattice.span_eq_top (self := hL))
   obtain ⟨N, hN, h1⟩ := isOfFinOrder_iff_pow_eq_one.1 (isOfFinOrder_of_finite
     (⟨γ, hγ, (cong_of_conj_mem hΛ h𝔪 h).1⟩ : level (hc.sig : E →+* E) J (CS.globLat g Λ)))

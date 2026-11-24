@@ -7,7 +7,8 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDesc
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitive
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjPull
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SabMapEqOfLevelEq
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitiveOfLaws
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsoEqOfMapsAlongSection
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -238,7 +239,7 @@ theorem fib_move (hL : Laws) (hd : l.Dvd l₂) {k : Type} [Field k] {s : Sp k �
       rw [← sub_add_cancel (g.f l₂.M a) a, Xo.univ.eta_add,
         Xo.univ.eta_ker _ (LevelFibre.sub_mem_of_inGam hd hg a), _root_.one_mul]
     · rw [LevelFibre.sec_w, LevelFibre.sec_w]
-  have e : q'.φ = q.φ := sabMap_eq_of_level_eq hL obj_isAbelianScheme_dim_rigidified_sym E H D l _ _ _ _ _ _ _ _
+  have e : q'.φ = q.φ := _root_.GlobalTheory.obj_rigid_of_laws hL obj_isAbelianScheme_dim_rigidified_sym E H D l _ _ _ _ _ _ _ _
     Xo.univ o _ (Or.inl inferInstance) q' q fun a => ⟨_, rfl, by
       rw [hq, hq', hn₂, ← Category.assoc, ← Category.assoc, ← Category.assoc, hn.1, hn'.1, ← hfix,
         Category.assoc x, pow_left_comp ν (hν a), hfix, Category.assoc x, Category.assoc x ρ, Category.assoc x]⟩

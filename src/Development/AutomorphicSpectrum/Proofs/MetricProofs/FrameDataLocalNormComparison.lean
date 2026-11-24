@@ -1,10 +1,10 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.UpVApply
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestrictionStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestriction
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartSeventh
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsValueAtOfTorus
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PMatStepColsEntry
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsValueAtOfTorus
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -92,7 +92,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε ctx z hz z' hz' ho
   obtain ⟨hbm, hrange, -, -, hr, -, -⟩ := ctx
   obtain ⟨hzP, hs, hV, hm⟩ := hz
-  have hI := GlobalTheory.T.blockMap_frame_restriction K ι Φ y Ψ N j M keep Kk ιk κ v hbm hrange
+  have hI := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main K ι Φ y Ψ N j M keep Kk ιk κ v hbm hrange
   have hb := hI.1 z hzP
   have hb' := hI.1 z' hz'
   have hob : SameOrbit (pBase M v z') (pBase M v z) := hI.2 z' z ho

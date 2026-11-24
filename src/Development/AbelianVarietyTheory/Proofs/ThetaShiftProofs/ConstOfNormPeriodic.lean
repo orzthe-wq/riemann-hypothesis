@@ -386,7 +386,7 @@ theorem genVal_cube_of_face (hL : L.IsLB) (h : u.IsAH Hm χ) (t : LB.Gen (LB.Lin
     simp [p, pt3, comp_lift, Subsingleton.elim (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _)]
   have hd : Differentiable ℂ fun w => genVal u hL t (pt3 u ![w, b, c]).left (cubeLift ![w, b, c]) := by
     have := differentiable_genVal hL ht p.left (q := id) differentiable_id (z := fun w => cubeLift ![w, b, c])
-      (fun I => Differentiable.fun_sum fun k _ => by fin_cases k <;> simp <;> fun_prop)
+      (fun I => Differentiable.fun_sum fun k _ => by fin_cases k <;> simp)
       (fun w => by rw [id, hp]; exact isLift_cube u _)
     simpa only [id, hp] using this
   have hper : ∀ w, ∀ l ∈ (u.Λ : Set (Fin g → ℂ)), genVal u hL t (pt3 u ![w + l, b, c]).left (cubeLift ![w + l, b, c]) =

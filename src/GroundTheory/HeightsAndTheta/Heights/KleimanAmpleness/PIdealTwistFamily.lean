@@ -77,12 +77,6 @@ theorem mem_span_forms_of_mem_ideal {G : Set (Poly R N)} (deg : Poly R N → ℕ
       d' + deg g = e ∧ z = h * g} := by
   apply GroundTheory.Heights₂.Heights.Kleiman.mem_span_forms_of_mem_ideal <;> assumption
 
-theorem isHomogeneous_totalDegree {g : Poly R N} {d : ℕ} (hg : g.IsHomogeneous d) :
-    g.IsHomogeneous g.totalDegree := by
-  by_cases h0 : g = 0
-  · rw [h0]; exact isHomogeneous_zero _ _ _
-  · rwa [hg.totalDegree h0]
-
 theorem exists_finset_forms [IsNoetherianRing R] (J : Ideal (Poly R N))
     (hJ : ∀ p ∈ J, ∀ d : ℕ, homogeneousComponent d p ∈ J) :
     ∃ H : Finset (Poly R N), (↑H : Set (Poly R N)) ⊆ J ∧ Ideal.span (↑H : Set (Poly R N)) = J ∧

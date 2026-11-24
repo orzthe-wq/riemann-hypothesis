@@ -60,16 +60,9 @@ noncomputable section
 
 namespace GlobalTheory.PoinAut
 
-theorem hsn_mul_le {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) : hsn (A * B) ≤ hsn A * hsn B := by
-  have := Matrix.frobenius_norm_mul A B
-  rw [Matrix.frobenius_norm_def, Matrix.frobenius_norm_def, Matrix.frobenius_norm_def] at this
-  unfold hsn
-  simp only [Real.sqrt_eq_rpow]
-  simpa only [Real.rpow_two] using this
-
 theorem one_add_hsn_mul_le {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) :
     1 + hsn (A * B) ≤ (1 + hsn A) * (1 + hsn B) := by
-  have h1 := hsn_mul_le A B
+  have h1 := _root_.GlobalTheory.PoinCount.hsn_mul_le A B
   have h2 : 0 ≤ hsn A := Real.sqrt_nonneg _
   have h3 : 0 ≤ hsn B := Real.sqrt_nonneg _
   nlinarith
@@ -163,8 +156,6 @@ end GlobalTheory.PoinAut
 
 namespace GlobalTheory.PoinAut
 
-theorem hsn_nonneg {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hsn X := Real.sqrt_nonneg _
-
 theorem continuous_hsn {n : ℕ} : Continuous (hsn : Matrix (Fin n) (Fin n) ℂ → ℝ) :=
   Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
     (continuous_id.matrix_elem i j).norm.pow 2)
@@ -190,7 +181,7 @@ theorem GlobalTheory.PoinAut.poin_aut : ∀ (D : D7) (θ : InfFam D), IsInfFam �
       ∏ τ, ((1 + hsn (cmp θ τ (c * (γ : GA D V) * g))) ^ N)⁻¹ else 0 := fun _ _ => rfl
   have ht0 : ∀ g γ, 0 ≤ t g γ := fun g γ => by
     rw [htdef]; split_ifs
-    · exact Finset.prod_nonneg fun τ _ => inv_nonneg.2 (pow_nonneg (add_nonneg zero_le_one (hsn_nonneg _)) _)
+    · exact Finset.prod_nonneg fun τ _ => inv_nonneg.2 (pow_nonneg (add_nonneg zero_le_one (_root_.GlobalTheory.SepSum.hsn_nonneg _)) _)
     · exact le_rfl
   have hts : ∀ g (s : Finset (GQ V)), ∑ γ ∈ s, t g γ ≤ C₀ * height V g ^ A₀ := fun g s => by
     have := hI g (s.filter fun γ => Lev.finE V (c * (γ : GA D V) * g) ∈ congLev D.sp.cm V.gram Λ ⊤)
@@ -202,7 +193,7 @@ theorem GlobalTheory.PoinAut.poin_aut : ∀ (D : D7) (θ : InfFam D), IsInfFam �
   have httsum : ∀ g, ∑' γ, t g γ ≤ C₀ * height V g ^ A₀ := fun g =>
     tsum_le_of_sum_le' (by simpa using hts g ∅) (hts g)
   have hP0 : ∀ u : GA D V, 0 ≤ ∏ τ, (1 + hsn (cmp θ τ u⁻¹)) ^ N := fun u =>
-    Finset.prod_nonneg fun τ _ => pow_nonneg (add_nonneg zero_le_one (hsn_nonneg _)) _
+    Finset.prod_nonneg fun τ _ => pow_nonneg (add_nonneg zero_le_one (_root_.GlobalTheory.SepSum.hsn_nonneg _)) _
 
   have hbd : ∀ b : ∀ τ, M.H τ, (∀ τ, DecayAt M τ (v τ) (b τ) N) → ∃ C : ℝ, 0 ≤ C ∧
       ∀ g u (γ : GQ V), Lev.finE V u ∈ K → ‖coef θ M K v b (c * (γ : GA D V) * (g * u))‖ ≤

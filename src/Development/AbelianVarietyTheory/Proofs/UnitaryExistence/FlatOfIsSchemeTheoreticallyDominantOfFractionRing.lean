@@ -137,12 +137,12 @@ theorem exists_flat_closure : ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDisc
     MorphismProperty.pullbackMap (P := @IsClosedImmersion.{0}) inferInstance inferInstance rfl (by simp)
   have htm : t ≫ m = i' := by
     apply pullback.hom_ext
-    · simp [t, m, f, pullback.lift_fst, pullback.lift_fst_assoc]
-    · simp [t, m, hw, pullback.lift_snd]
+    · simp [t, m, f]
+    · simp [t, m, hw]
   have : IsClosedImmersion (t ≫ m) := htm ▸ hi'
   have ht : IsClosedImmersion t := IsClosedImmersion.of_comp_isClosedImmersion t m
   have hpb : IsPullback (𝟙 Z.left) t f.toImage (pullback.fst (f.imageι ≫ X.hom) j) :=
-    IsPullback.of_horiz_isIso_mono ⟨by simp [t, pullback.lift_fst]⟩
+    IsPullback.of_horiz_isIso_mono ⟨by simp [t]⟩
   have htd : IsSchemeTheoreticallyDominant t := .of_isPullback hpb
   have : IsIso t := IsClosedImmersion.isIso_iff_ker_eq_bot.mpr t.ker_eq_bot
   refine ⟨Ga, io, (Over.isoMk (f := Z) (g := (Over.pullback j).obj Ga) (asIso t) ?_).symm,

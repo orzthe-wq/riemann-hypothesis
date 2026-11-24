@@ -1,6 +1,7 @@
 module
 
-public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.NoThreeConsecutiveThickPlaces
+public import Formalism.SharpRestriction.GlobalSchurBounds.CMFieldLemmas
+public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.SecondPropositionEveryLocalisation
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.Algebra.Order.Floor.Extended
@@ -57,10 +58,6 @@ namespace SlopeTestRemainingChoices
 
 theorem span_prime {p : ℕ} (hp : p.Prime) : (span {(p : ℤ)}).IsPrime := by
   exact (Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)
-
-theorem span_ne_bot {p : ℕ} (hp : p.Prime) : span {(p : ℤ)} ≠ ⊥ := by
-  rw [Ne, Ideal.span_singleton_eq_bot]
-  exact_mod_cast hp.ne_zero
 
 private theorem ram_of_unit (D : D7) (p : ℕ) (hp : p.Prime) (hN : p ∣ D.host.condN)
     (P : Ideal (𝓞 D.host.E)) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})]
@@ -151,102 +148,7 @@ theorem ram_iff (D : D7) (p : ℕ) (hp : p.Prime) :
   · rintro ⟨σ, hσ1, hσ⟩
     exact ⟨⟨⟨σ, AddSubgroup.mem_inertia.2 hσ⟩, 1, fun h1 => hσ1 (congrArg Subtype.val h1)⟩⟩
 
-theorem inert_iff_mem_zpowers (D : D7) (p : ℕ) (hp : p.Prime)
-    (hram : (span {(p : ℤ)}).ramificationIdxIn (𝓞 D.host.E) = 1)
-    (𝔭 : Ideal (𝓞 D.host.F)) (h𝔭 : 𝔭.IsPrime) (hlies : 𝔭.LiesOver (span {(p : ℤ)})) :
-    Inert D 𝔭 ↔ D.R.cc ∈ Subgroup.zpowers (frob D p) := by
-  haveI hpf : Fact p.Prime := ⟨hp⟩
-  have hgal : ∀ σ, D.host.galE σ = D.host.gal σ := fun σ => rfl
-  have hbot : 𝔭 ≠ ⊥ := by
-    rintro rfl
-    apply span_ne_bot hp
-    rw [hlies.over]
-    exact Ideal.comap_bot_of_injective _ (RingHom.injective_int _)
-  have heta := D.host.der.eta.1 𝔭 h𝔭 hbot
-  have hInert : Inert D 𝔭 ↔ (primesOver 𝔭 (𝓞 D.host.E)).ncard ≠ 2 := by
-    unfold Inert
-    rcases heta with h2 | ⟨h1, hf⟩
-    · rw [h2]
-      simp
-    · rw [h1]
-      simp [hf]
-  have hne : (primesOver 𝔭 (𝓞 D.host.E)).Nonempty := by
-    apply Set.nonempty_of_ncard_ne_zero
-    rcases heta with h2 | ⟨h1, _⟩
-    · rw [h2]; norm_num
-    · rw [h1]; norm_num
-  obtain ⟨P, hP⟩ := hne
-  obtain ⟨hPp, hPl⟩ := hP
-  haveI := hPp
-  haveI := hPl
-  haveI := h𝔭
-  haveI := hlies
-  haveI hPq : P.LiesOver (span {(p : ℤ)}) := Ideal.LiesOver.trans P 𝔭 (span {(p : ℤ)})
-  have hcomap : P.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = 𝔭 := hPl.over.symm
-  have hcc1 : D.R.cc ≠ 1 := by
-    intro h
-    have h' := congrArg (fun g : D.R.GG => g.1.1) h
-    change (-1 : ℤˣ) = 1 at h'
-    exact absurd h' (by decide)
-  by_cases hN : p ∣ D.host.condN
-  · have hsplit := D.host.der.eta.2.2 p hN P
-    rw [hcomap] at hsplit
-    rw [hInert]
-    have hc : (primesOver 𝔭 (𝓞 D.host.E)).ncard = 2 := by
-      unfold Formalism.HC.HostRaw.etaF at hsplit
-      split_ifs at hsplit with hc
-      exact hc
-    constructor
-    · intro h
-      exact absurd hc h
-    · intro hmem
-      exfalso
-      unfold frob at hmem
-      split_ifs at hmem with hex
-      · obtain ⟨hP', hl', hfr⟩ := hex.choose_spec.choose_spec
-        haveI := hP'
-        haveI := hl'
-        obtain ⟨u, hu, hgu⟩ := (D.host.der.frob_any p _ _).1 hfr
-        have hst : hex.choose ∈ MulAction.stabilizer _ hex.choose_spec.choose :=
-          (D.host.der.decomp p _ _).2 ⟨u, 1, by simpa using hu, hgu⟩
-        apply D.host.der.decompConj p hp hN hex.choose_spec.choose
-        obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.1 hmem
-        have hconj : D.host.conj = hex.choose ^ k := by
-          unfold Formalism.HC.HostRaw.conj
-          rw [← hk, hgal, ← map_zpow, MulEquiv.symm_apply_apply]
-        rw [hconj]
-        exact Subgroup.zpow_mem _ hst k
-      · rw [Subgroup.zpowers_one_eq_bot, Subgroup.mem_bot] at hmem
-        exact hcc1 hmem
-  · obtain ⟨σ, hσ⟩ := (D.host.der.frob p hN P).1
-    have hcop : Nat.Coprime p D.host.condN := (Nat.Prime.coprime_iff_not_dvd hp).2 hN
-    have hu : ((ZMod.unitOfCoprime p hcop : (ZMod D.host.condN)ˣ) : ZMod D.host.condN) = (p : ZMod _) :=
-      ZMod.coe_unitOfCoprime p hcop
-    have hgs : D.host.gal σ = D.host.art (ZMod.unitOfCoprime p hcop) :=
-      ((D.host.der.frob p hN P).2.1 σ _ hu).1 hσ
-    have hfrob : frob D p = D.host.gal σ := by
-      unfold frob
-      split_ifs with hex
-      · obtain ⟨hP', hl', hfr⟩ := hex.choose_spec.choose_spec
-        haveI := hP'
-        haveI := hl'
-        rw [hgal, hgs]
-        exact ((D.host.der.frob p hN _).2.1 _ _ hu).1 hfr
-      · exact absurd ⟨σ, P, hPp, hPq, hσ⟩ hex
-    rw [hInert, hfrob, ← D.host.der.eta.2.1 p hN P σ hσ, hcomap]
-    unfold Formalism.HC.HostRaw.etaF
-    split_ifs with hc
-    · simp [hc]
-    · simp [hc]
-
 end SlopeTestRemainingChoices
-
-theorem inertPart_holds (D : D7) : InertPart D := by
-  intro φ₀ _ h p hp hram hfr 𝔭 h𝔭 hlies
-  rw [SlopeTestRemainingChoices.inert_iff_mem_zpowers D p hp hram 𝔭 h𝔭 hlies, hfr]
-  exact cc_mem_zpowers_gOf D φ₀ h
-
-theorem points_property_of_d7 (D : D7) : PointsLemma D := lemma_one_three_of_inert D (inertPart_holds D)
 
 end Formalism.MainNotions.UnusedSlot33
 

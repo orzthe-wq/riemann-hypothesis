@@ -5,48 +5,8 @@ public import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 public import Mathlib.GroupTheory.Nilpotent
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.AllRowsOf
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AllRowsTr
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Fourier.FiniteAbelian.PontryaginDuality
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -219,7 +179,7 @@ theorem eJ_coeff (ψ : AddChar (ZMod g) ℂ) (v : GL (Fin N) (ZMod g)) :
   unfold eJ eDat
   simp only [MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single] at *
   simp
-  simp only [Finsupp.single_apply, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ,
+  simp only [Finsupp.single_apply, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ,
     true_and]
   unfold PJ
   split_ifs <;> simp [div_eq_inv_mul]
@@ -229,7 +189,7 @@ private theorem PJ_mul_of_PJ_of_PJ (u v : GL (Fin N) (ZMod g)) (hu : PJ kk s (u 
     (hv : PJ kk s (v : Matrix (Fin N) (Fin N) (ZMod g))) :
     PJ kk s ((u * v : GL (Fin N) (ZMod g)) : Matrix (Fin N) (Fin N) (ZMod g)) := by
   rw [Units.val_mul]
-  refine ⟨AllRowsOf.isUniUp_mul hu.1 hv.1, fun a ha hb => ?_⟩
+  refine ⟨_root_.GlobalTheory.UnipotentUpperMul.isUniUp_mul hu.1 hv.1, fun a ha hb => ?_⟩
   rw [AllRowsOf.entN_mul_add hu.1 hv.1 hb (fun j hj1 hj2 => hv.2 j (by omega) hj2), hu.2 a ha hb,
     hv.2 a ha hb, add_zero]
 

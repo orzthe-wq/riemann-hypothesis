@@ -109,7 +109,7 @@ def datW (D : D7) {Lev : Type} (κ : Lev) (j : ℕ) : Dat D Lev :=
       · simp only; omega }
 
 theorem datW_N (D : D7) {Lev : Type} (κ : Lev) (j : ℕ) : (datW D κ j).N = D.R.r := by
-  letI := D.host.cmStar
+  let := D.host.cmStar
   exact D.sp.W_rank _ (one_le_jcl D j) (jcl_le D j)
 
 theorem datW_j (D : D7) {Lev : Type} (κ : Lev) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
@@ -155,7 +155,7 @@ theorem wtL_eq (D : D7) (p : ℕ) (v : PlL D p) :
   field_simp
 
 theorem wtL_sum (D : D7) (p : ℕ) [hp : Fact p.Prime] : (letI := finPl D p; ∑ la, wtL D p la) = 1 := by
-  letI := finPl D p
+  let := finPl D p
   have hS := (finite_places_over (K := D.what₂.LL) p hp.out).choose_spec
   have h := sum_lw_e (K := D.what₂.LL) p hp.out _ hS
   have hlog : Real.log (p : ℝ) ≠ 0 := (Real.log_pos (by exact_mod_cast hp.out.one_lt)).ne'

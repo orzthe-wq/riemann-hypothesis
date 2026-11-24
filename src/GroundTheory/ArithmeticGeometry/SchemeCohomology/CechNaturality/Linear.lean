@@ -1,50 +1,14 @@
 module
 
 public import GroundTheory.ArithmeticGeometry.SchemeCohomology.CechSeparated
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
 
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
+
+-- Use `sheafIsAbelian`, the instance Mathlib's `Sheaf.H` API is stated for, instead of the
+-- definitionally equal `TopCat.Sheaf.instAbelian`: the kernel is slow to identify the two.
+attribute [-instance] TopCat.Sheaf.instAbelian
 
 namespace GroundTheory.Arith.SchemeCoh
 
@@ -58,23 +22,13 @@ variable {C : Type u} [Category.{v} C] {J : GrothendieckTopology C}
   [HasSheafify J AddCommGrpCat.{w}] [HasExt.{w'} (Sheaf J AddCommGrpCat.{w})]
 
 noncomputable def H.endRingHom (G : Sheaf J AddCommGrpCat.{w}) (n : ℕ) :
-    End G →+* AddMonoid.End (Sheaf.H.{w'} G n) where
-  toFun f := Sheaf.H.map f.asHom n
-  map_one' := by
-    ext x
-    exact Sheaf.H.map_id_apply x
-  map_mul' f g := by
-    ext x
-    exact Sheaf.H.map_comp_apply g.asHom f.asHom x
-  map_zero' := by
-    ext x
-    change Sheaf.H.map 0 n x = 0
-    rw [Sheaf.H.map_apply, Abelian.Ext.mk₀_zero, Abelian.Ext.comp_zero]
-  map_add' f g := by
-    ext x
-    change Sheaf.H.map (f.asHom + g.asHom) n x =
-      Sheaf.H.map f.asHom n x + Sheaf.H.map g.asHom n x
-    exact Sheaf.H.map_add_apply f.asHom g.asHom x
+    End G →+* AddMonoid.End (Sheaf.H.{w'} G n) :=
+  let T := Sheaf.functorH.{w'} J n
+  { toFun := fun f => (T.map f.asHom).hom
+    map_one' := congrArg AddCommGrpCat.Hom.hom (T.map_id G)
+    map_mul' := fun f g => congrArg AddCommGrpCat.Hom.hom (T.map_comp g.asHom f.asHom)
+    map_zero' := congrArg AddCommGrpCat.Hom.hom (T.map_zero G G)
+    map_add' := fun f g => congrArg AddCommGrpCat.Hom.hom (T.map_add (f := f.asHom) (g := g.asHom)) }
 
 end EndAction
 
@@ -146,30 +100,13 @@ lemma smulRingHom_apply (F : X.Modules) (r : Γ(X, ⊤)) :
 noncomputable abbrev modulesAbMap {F G : X.Modules} (φ : F ⟶ G) : modulesAb F ⟶ modulesAb G :=
   (SheafOfModules.toSheaf X.ringCatSheaf).map φ
 
-noncomputable def smulAbRingHom (F : X.Modules) : Γ(X, ⊤) →+* End (modulesAb F) where
-  toFun r := End.of (modulesAbMap (smulHom F r))
-  map_one' := by
-    apply End.ext
-    change modulesAbMap (smulHom F 1) = 𝟙 _
-    rw [← smulRingHom_apply, map_one, End.one_asHom]
-    exact (SheafOfModules.toSheaf X.ringCatSheaf).map_id F
-  map_mul' r s := by
-    apply End.ext
-    change modulesAbMap (smulHom F (r * s)) =
-      modulesAbMap (smulHom F s) ≫ modulesAbMap (smulHom F r)
-    rw [← smulRingHom_apply, map_mul, End.mul_asHom, smulRingHom_apply, smulRingHom_apply]
-    exact (SheafOfModules.toSheaf X.ringCatSheaf).map_comp _ _
-  map_zero' := by
-    apply End.ext
-    change modulesAbMap (smulHom F 0) = 0
-    rw [← smulRingHom_apply, map_zero]
-    exact (SheafOfModules.toSheaf X.ringCatSheaf).map_zero F F
-  map_add' r s := by
-    apply End.ext
-    change modulesAbMap (smulHom F (r + s)) =
-      modulesAbMap (smulHom F r) + modulesAbMap (smulHom F s)
-    rw [← smulRingHom_apply, map_add]
-    exact (SheafOfModules.toSheaf X.ringCatSheaf).map_add
+noncomputable def smulAbRingHom (F : X.Modules) : Γ(X, ⊤) →+* End (modulesAb F) :=
+  let T := SheafOfModules.toSheaf X.ringCatSheaf
+  let onEnds : End F →+* End (modulesAb F) :=
+    { T.mapEnd F with
+      map_zero' := End.ext (T.map_zero F F)
+      map_add' := fun f g => End.ext (T.map_add (f := f.asHom) (g := g.asHom)) }
+  onEnds.comp (smulRingHom F)
 
 lemma modulesAbMap_id (F : X.Modules) : modulesAbMap (𝟙 F) = 𝟙 (modulesAb F) :=
   (SheafOfModules.toSheaf X.ringCatSheaf).map_id F

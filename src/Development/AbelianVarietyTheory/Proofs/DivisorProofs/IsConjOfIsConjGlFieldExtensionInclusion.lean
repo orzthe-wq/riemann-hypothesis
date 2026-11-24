@@ -159,7 +159,7 @@ theorem isConj_of_isConj_incl : ∀ (F F' : Type) [Field F] [Field F'] [Algebra 
     rw [h3, hcore, Module.AEval'.X_smul_of]
   haveI : Finite (Module.AEval' f) := Finite.of_equiv _ (Module.AEval'.of f).toEquiv
   haveI : Finite (Module.AEval' g) := Finite.of_equiv _ (Module.AEval'.of g).toEquiv
-  obtain ⟨ψ⟩ := GlobalTheory.T.nonempty_linearEquiv_of_pi_fin_pow_finite F[X] (Module.AEval' f) (Module.AEval' g) (Module.finrank F F') hl
+  obtain ⟨ψ⟩ := _root_.GlobalTheory.PowCancel.cancel_pow F[X] (Module.AEval' f) (Module.AEval' g) (Module.finrank F F') hl
     ⟨equivOfX Θ hΘ⟩
   let e : (Fin n → F) ≃ₗ[F] (Fin n → F) :=
     (Module.AEval'.of f).trans ((ψ.restrictScalars F).trans (Module.AEval'.of g).symm)

@@ -55,4 +55,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CharKer
 
 theorem _root_.GlobalTheory.T.kernelAction_isPullback_prodMap_torsor : ∀ (S : Scheme.{0}) (A A' N T : Over S) [GrpObj A] [GrpObj A'] [GrpObj N] (i : N ⟶ A) (q : A ⟶ A'), IsMonHom i → IsMonHom q → IsPullback i (toUnit N) q η[A'] → IsPullback (prMap A N T) (actMap i T) (pmap q T) (pmap q T) := by
-  first | exact @GlobalTheory.CharKer.pmap_isPullback_actMap | exact GlobalTheory.CharKer.pmap_isPullback_actMap | (intros; apply GlobalTheory.CharKer.pmap_isPullback_actMap <;> assumption)
+  first | exact @GlobalTheory.CharKer.pmap_isPullback_actMap

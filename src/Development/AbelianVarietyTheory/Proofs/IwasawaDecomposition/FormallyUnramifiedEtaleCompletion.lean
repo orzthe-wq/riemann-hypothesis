@@ -57,6 +57,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalMod
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AuxiliaryInertOddPrime
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
 import ReciprocityTheory.AnalyticForms.RegularLocalRings.JacChartA
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -181,21 +182,7 @@ theorem lieMult_unif_loc {E : Type} [Field E] [NumberField E] [IsCMField E] (H :
   rw [Lie.lieMult_iff_finrank (isLinearPullback_pullback _ (spMap f)), he]
   exact ⟨inferInstance, rfl⟩
 
-theorem bar_rt_neg {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) : H.bar H.rt = -H.rt := by
-  have h1 : (H.bar H.rt) ^ 2 = H.rt ^ 2 := by rw [← map_pow, H.rt_sq]; simp
-  refine (sq_eq_sq_iff_eq_or_eq_neg.mp h1).resolve_left fun h => ?_
-  obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  have h2 : starRingEnd ℂ (φ (H.rt : E)) = φ (H.rt : E) := by
-    rw [← IsCMField.complexEmbedding_complexConj, ← H.bar_eq, h]
-  obtain ⟨r, hr⟩ := Complex.conj_eq_iff_real.1 h2
-  have h3 : φ (H.rt : E) ^ 2 = -(H.d : ℂ) := by
-    have := congrArg (φ.comp (algebraMap (𝓞 E) E)) H.rt_sq
-    rw [map_pow, map_neg, map_natCast] at this
-    exact this
-  rw [hr] at h3
-  have h4 : r ^ 2 = -(H.d : ℝ) := by exact_mod_cast h3
-  have h5 : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
-  nlinarith [sq_nonneg r]
+alias bar_rt_neg := _root_.GlobalTheory.HostModel.bar_rt
 
 theorem exists_chars {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     [IsAlgClosed K] [CharZero K] (δ : K) (hδ : δ ^ 2 = -(H.d : K)) :

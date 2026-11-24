@@ -79,11 +79,6 @@ theorem mul_det_sub_one {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] (b
 
 variable {D : D7}
 
-theorem cA_alg (a : AF D.host.F) :
-    cA D (algebraMap (AF D.host.F) (AE D) a) = algebraMap (AF D.host.F) (AE D) a := by
-  rw [Algebra.TensorProduct.algebraMap_apply]
-  simp [cA, sigR]
-
 theorem detAt_val (e : AE D) (he : e * e = e) (V : HSp D) (g : GA D V) :
     ((detAt e he V g : (AE D)ˣ) : AE D) = e * (Formalism.L2.Theta.mt V g).det + (1 - e) := rfl
 
@@ -114,14 +109,6 @@ theorem finPart_detAt {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {g : GA D V
   rw [detAt_val, map_add (f := _), map_mul, map_sub, map_one]
   exact add_mem (GlobalTheory.IdemPrime.mul_mem_int hfe hd) (sub_mem GlobalTheory.VacInert.one_int hfe)
 
-theorem infPart_place {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) :
-    infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0 := by
-  obtain ⟨α, rfl, -, -⟩ := h
-  rw [Algebra.TensorProduct.algebraMap_apply]
-  simp only [infPart, pairA, fstA]
-  erw [Algebra.TensorProduct.map_tmul]
-  exact TensorProduct.zero_tmul _ _
-
 theorem mul_eq_self_of_orthogonal_supported_sub_one {R : Type} [CommRing R] {a b x : R} (h : b * a = 0) (hx : b * (x - 1) = x - 1) : a * x = a := by
   linear_combination (x - 1) * h - a * hx
 
@@ -130,7 +117,7 @@ theorem unramAt_of_unrOff {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.hos
   intro x hx hfin hfin'
   refine hχ x ?_ hfin hfin' (mul_eq_self_of_orthogonal_supported_sub_one ha hx)
   have h0 : infPart D ((x : AE D) - 1) = 0 := by
-    rw [← hx, map_mul, infPart_place h, zero_mul]
+    rw [← hx, map_mul, _root_.GlobalTheory.WeilProduct.infPart_placeIdem h, zero_mul]
   rw [map_sub, map_one, sub_eq_zero] at h0
   exact h0
 
@@ -174,7 +161,7 @@ theorem place_cases {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P)
     rw [he']
     linear_combination (ι ε * ι ε) * hee + e * hιε
   have h2 : e' * cA D e' = 0 := by
-    rw [he', map_mul, cA_alg]
+    rw [he', map_mul, _root_.GlobalTheory.IdemSupport.cA_algebraMap]
     linear_combination (ι ε * ι ε) * hec
   have h3 : cA D e' * cA D e' = cA D e' := by rw [← map_mul, h1]
 
@@ -188,7 +175,7 @@ theorem place_cases {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P)
     linear_combination e * hιε
   have h5 : ι ε * cA D e' = cA D e' := by
     have := congrArg (cA D) h4
-    rwa [map_mul, cA_alg] at this
+    rwa [map_mul, _root_.GlobalTheory.IdemSupport.cA_algebraMap] at this
   have hεt : ε * t = t := by
     apply GlobalTheory.VacInert.alg_inj
     rw [map_mul, ht]
@@ -247,7 +234,7 @@ theorem stab_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D
       isClosed_eq (hW.om_cont f hf w) ((continuous_subtype_val.comp hcont).mul continuous_const)
 
   have key : (g, h) ∈ eigSub om c f := by
-    refine GlobalTheory.T.mem_closedSubgroup_of_localStabilizerPairs D S T βS βT (eigSub om c f) hclosed ?_ g h hg hh
+    refine _root_.GlobalTheory.StabDense.mem_of_local D S T βS βT (eigSub om c f) hclosed ?_ g h hg hh
     intro v ε hε g' h' hg' hh' hsg hsh
     show om (g', h') f = ((c (g', h') : Circle) : ℂ) • f
     rw [hcv]
@@ -290,7 +277,7 @@ theorem stab_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D
       have horth' : algebraMap (AF D.host.F) (AE D) ε * (e + cA D e) = 0 := by
         have h2 : algebraMap (AF D.host.F) (AE D) ε * cA D e = 0 := by
           have := congrArg (cA D) horth
-          rwa [map_mul, cA_alg, map_zero] at this
+          rwa [map_mul, _root_.GlobalTheory.IdemSupport.cA_algebraMap, map_zero] at this
         rw [mul_add, horth, h2, add_zero]
       have huS : UnramAt ε χS := unramAt_of_unrOff hε horth' hχS
       have huT : UnramAt ε χT := unramAt_of_unrOff hε horth' hχT

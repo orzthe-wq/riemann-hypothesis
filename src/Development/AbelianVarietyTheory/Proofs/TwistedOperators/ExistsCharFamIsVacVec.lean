@@ -51,21 +51,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
-private theorem Jm_mul_Jm_eq_oneFormalDegree {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  by_cases h : ε a <;> simp [h]
-
-private theorem conjTranspose_Jm_eq_Jm {n : ℕ} (ε : Fin n → Bool) :
-    Matrix.conjTranspose (Formalism.REAL.Jm ε) = Formalism.REAL.Jm ε := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_conjTranspose]
-  congr 1
-  funext a
-  by_cases h : ε a <;> simp [h]
-
 private theorem conj_cartan_involution_props {n : ℕ} (F J : Matrix (Fin n) (Fin n) ℂ) (hF : IsUnit F) (hJ : J * J = 1)
     (hJh : Matrix.conjTranspose J = J) :
     F⁻¹ * J * F * (F⁻¹ * J * F) = 1 ∧
@@ -90,7 +75,7 @@ theorem cart_isCartanInv {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V
     IsCartanInv (gramAt D V τ) (cart M τ) := by
   unfold IsCartanInv cart
   rw [← M.fr_gram τ]
-  obtain ⟨h1, h2, h3⟩ := conj_cartan_involution_props _ _ (M.fr_unit τ) (Jm_mul_Jm_eq_oneFormalDegree (M.ε τ)) (conjTranspose_Jm_eq_Jm (M.ε τ))
+  obtain ⟨h1, h2, h3⟩ := conj_cartan_involution_props _ _ (M.fr_unit τ) (_root_.Formalism.REAL.Jm_mul_self (M.ε τ)) (_root_.Formalism.REAL.Jm_conjTranspose (M.ε τ))
   refine ⟨h1, h2, ?_⟩
   rw [h3]
   have hinj : Function.Injective (M.fr τ).mulVec := Matrix.mulVec_injective_iff_isUnit.mpr (M.fr_unit τ)

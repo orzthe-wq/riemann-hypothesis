@@ -151,7 +151,7 @@ theorem _root_.GlobalTheory.FitSquare.relations_mem {M : Type} [AddCommGroup M] 
     ext r c
     exact (congrFun (hw c) r).symm
   have hdetN : N.det = T.det := by simp [N, det_fromBlocks_zero₁₂]
-  have hdetUD : (U * D).det = Φ.det := by simp [U, D, det_fromBlocks_zero₂₁, det_mul]
+  have hdetUD : (U * D).det = Φ.det := by simp [U, D, det_mul]
   refine ⟨?_, ?_⟩
   · rw [← hdetN, hN, det_mul, hdetUD]
     exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
@@ -265,7 +265,7 @@ theorem _root_.GlobalTheory.FitSquare.fitting_exact : ∀ (R : Type) [CommRing R
         simp [T, col, neg_smul, Finset.sum_neg_distrib, hCj]
     exact fun y => LinearMap.congr_fun h0 y
   obtain ⟨h₁, h₂⟩ := _root_.GlobalTheory.FitSquare.relations_mem π hπ Φ hΦ q hq T hT
-  have hdetT : T.det = x ^ k * Ψ.det := by simp [T, det_fromBlocks_zero₂₁, det_smul]
+  have hdetT : T.det = x ^ k * Ψ.det := by simp [T, det_fromBlocks_zero₂₁]
   rw [hdetT] at h₁
   refine ⟨h₁, ?_⟩
   rcases Nat.eq_zero_or_pos a with ha | ha

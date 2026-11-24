@@ -1,8 +1,9 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaEquivariantFrobeniusStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairingStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaEquivariantFrobenius
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalHermitianActionPairing
+public import Mathlib.LinearAlgebra.Matrix.DotProduct
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -41,7 +42,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.LinearAlgebra.Matrix.DotProduct
 
 @[expose] public section
 
@@ -56,9 +56,9 @@ theorem beta_rhoH_eq : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [Cha
     beta B p (rhoH B a y) = ((rho B (star a)).transpose.map (· ^ p)).mulVec (beta B p y) := by
   intro R _ p _ _ d O _ _ B a y
   refine dotProduct_eq _ _ fun u => ?_
-  have hadj := (GlobalTheory.T.formal_hermitian_action_pairing R d O B).2.2 (star a) (alpha B p u) y
+  have hadj := (_root_.GlobalTheory.CompanionTheory.Ar.Conj.rhoH_hom_adjoint R d O B).2.2 (star a) (alpha B p u) y
   rw [star_star] at hadj
-  have htw := GlobalTheory.T.alpha_equivariant_frobenius R p d O B (star a) u
+  have htw := _root_.GlobalTheory.CompanionTheory.Ar.Conj.AlphaAct.alpha_comm_act R p d O B (star a) u
   rw [dotProduct_comm, dotProduct_beta, ← hadj, ← htw, ← dotProduct_beta, dotProduct_comm _ (beta B p y),
     Matrix.dotProduct_mulVec, Matrix.transpose_map, Matrix.mulVec_transpose]
 

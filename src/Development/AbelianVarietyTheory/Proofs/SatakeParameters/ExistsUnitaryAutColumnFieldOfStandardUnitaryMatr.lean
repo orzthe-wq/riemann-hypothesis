@@ -70,7 +70,7 @@ theorem exists_uf_seamGL_eq : ∀ {D : D7} {X : Fields} (s : Seam D X), s.Ok →
     rw [h]
     by_cases hij : i = j
     · subst hij; simp
-    · simp [Matrix.one_apply, hij]
+    · simp [hij]
   let g : Sp X.E n ≃ₗ[X.E] Sp X.E n :=
     LinearMap.GeneralLinearGroup.generalLinearEquiv X.E (Fin n → X.E) (Matrix.GeneralLinearGroup.toLin Gx)
   have hg : ∀ x, g x = M *ᵥ x := by

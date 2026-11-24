@@ -60,7 +60,7 @@ private theorem UpperTheory.V.AlgebraTools.card_finite_length_module {A : Type} 
   | @of_subsingleton M _ _ _ =>
     refine ⟨Finite.of_subsingleton, ?_⟩
     rw [Module.length_eq_zero]
-    simp [Nat.card_eq_one_iff_unique]
+    simp
   | @of_simple_quotient M _ _ N _ hN ih =>
     obtain ⟨hfin, hcard⟩ := ih
     obtain ⟨e⟩ := UpperTheory.V.AlgebraTools.simple_module_equiv_residue_field (A := A) (X := M ⧸ N)

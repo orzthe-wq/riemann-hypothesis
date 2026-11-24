@@ -66,10 +66,10 @@ theorem fill_add_single {k : Type} [Field k] {m m' : Type} [Fintype m] [Decidabl
   · rw [dif_pos h, dif_pos h]
     by_cases hrq : (r, q) = e
     · subst hrq
-      simp [Pi.single_apply]
+      simp
     · have h1 : ¬ (e.1 = r ∧ e.2 = q) := fun ⟨h1, h2⟩ => hrq (by rw [← h1, ← h2])
       have h2 : (⟨(r, q), h⟩ : {e : m × m' // e ∈ it}) ≠ ⟨e, he⟩ := fun h' => hrq (congrArg Subtype.val h')
-      simp [h1, Pi.single_apply, h2]
+      simp [h1, h2]
   · rw [dif_neg h, dif_neg h]
     have h1 : ¬ (e.1 = r ∧ e.2 = q) := fun ⟨h1, h2⟩ => h (by rw [← h1, ← h2]; exact he)
     simp [h1]

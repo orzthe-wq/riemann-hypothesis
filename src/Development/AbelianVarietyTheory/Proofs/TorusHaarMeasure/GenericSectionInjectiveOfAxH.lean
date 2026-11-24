@@ -69,7 +69,7 @@ theorem genericSection_field {k F : Type} [Field k] [CharZero k] [Field F] [Alge
       FiniteDimensional (IntermediateField.adjoin k (Set.range (sImg (D := D) j₀ x))) (OmS F D N) ∧
       Algebra.IsSeparable (IntermediateField.adjoin k (Set.range (sImg (D := D) j₀ x)))
         (OmS F D N) := by
-  obtain ⟨hind, hfin⟩ := ReciprocityTheory.MultiplicativeHeights.Closed.fieldOfS k F D N x hfg htr hJ
+  obtain ⟨hind, hfin⟩ := _root_.ReciprocityTheory.MultiplicativeHeights.genericImageFinite k F D N x hfg htr hJ
   rw [genericSection_reindex j₀ x] at hind hfin
   rw [(Equiv.surjective _).range_comp] at hfin
   refine ⟨(algebraicIndependent_equiv _).1 hind, hfin, ?_⟩

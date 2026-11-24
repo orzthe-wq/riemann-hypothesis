@@ -57,16 +57,10 @@ namespace GlobalTheory.CompanionTheory.TransS.InfChar
 
 open CompanionTheory.D.DSIC
 
-theorem hLowSpan : LowSpan := GlobalTheory.CompanionTheory.KLowSpan.lowSpan_holds
-theorem hHWMap : HWMap := GlobalTheory.CompanionTheory.DSICHWMap.hwMap_of_lowSpan hLowSpan
-theorem hSmLin : SmLin := GlobalTheory.CompanionTheory.DSSmLin.smLin
-theorem hSmBracket : SmBracket := GlobalTheory.CompanionTheory.SmBracket.smBracket_of hSmLin
-theorem hSmMod : SmMod := GlobalTheory.CompanionTheory.SmoothModule.smMod hSmLin hSmBracket
-theorem hKFinStab : KFinStab := GlobalTheory.CompanionTheory.KFinStab.kFinStab
-theorem hKExp : KExp := GlobalTheory.CompanionTheory.DSICKExp.kExp
-theorem hStabLink : StabLink := GlobalTheory.CompanionTheory.DSStabLink.stabLink hKExp
-theorem hWtLink : WtLink := GlobalTheory.CompanionTheory.WtLinkPf.wtLink
-theorem hHWofType : HWofType := GlobalTheory.CompanionTheory.DSHighestOfKType.hwOfType hStabLink hWtLink
-theorem hTypeOfHW : TypeOfHW := GlobalTheory.CompanionTheory.DSKType.typeOfHW hLowSpan hStabLink hWtLink
+theorem hHWMap : HWMap := GlobalTheory.CompanionTheory.DSICHWMap.hwMap_of_lowSpan _root_.GlobalTheory.CompanionTheory.KLowSpan.lowSpan_holds
+theorem hSmMod : SmMod := GlobalTheory.CompanionTheory.SmoothModule.smMod _root_.GlobalTheory.CompanionTheory.DSSmLin.smLin _root_.GlobalTheory.CompanionTheory.SmBracket.smBracket
+theorem hStabLink : StabLink := GlobalTheory.CompanionTheory.DSStabLink.stabLink _root_.GlobalTheory.CompanionTheory.DSICKExp.kExp
+theorem hHWofType : HWofType := GlobalTheory.CompanionTheory.DSHighestOfKType.hwOfType hStabLink _root_.GlobalTheory.CompanionTheory.WtLinkPf.wtLink
+theorem hTypeOfHW : TypeOfHW := GlobalTheory.CompanionTheory.DSKType.typeOfHW _root_.GlobalTheory.CompanionTheory.KLowSpan.lowSpan_holds hStabLink _root_.GlobalTheory.CompanionTheory.WtLinkPf.wtLink
 
 end GlobalTheory.CompanionTheory.TransS.InfChar

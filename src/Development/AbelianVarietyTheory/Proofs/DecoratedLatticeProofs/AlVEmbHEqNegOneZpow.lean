@@ -128,14 +128,14 @@ theorem alV_embH_eq_neg_one_zpow : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ)
     intro τ
 
     simp only [GlobalTheory.LatVac.hRat, hP.gS, hP.gT, inv_one, Matrix.one_apply, ite_mul, one_mul, zero_mul, mul_ite, mul_one, mul_zero,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, map_sum, map_mul, tauE_star, hs]
-    simp only [apply_ite (⇑(tauE D τ)), map_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, map_mul, tauE_star]
+    Finset.sum_ite_eq, Finset.mem_univ, if_true, map_sum, hs]
+    simp only [apply_ite (⇑(tauE D τ)), map_zero, map_mul, tauE_star]
     push_cast
     rw [Finset.sum_comm]
     calc _ = ∑ j, ∑ i, ((Complex.normSq (tauE D τ (M i j)) : ℝ) : ℂ) := by
           refine Finset.sum_congr rfl fun j _ => ?_
           rw [Finset.sum_comm]
-          simp only [Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+          simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true]
           refine Finset.sum_congr rfl fun i _ => ?_
           rw [Complex.normSq_eq_conj_mul_self]
       _ = _ := Finset.sum_comm

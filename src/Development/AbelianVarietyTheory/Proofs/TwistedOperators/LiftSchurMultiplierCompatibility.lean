@@ -80,12 +80,6 @@ theorem eq_of_natCast_mem {K : Type} [Field K] [NumberField K] (P : HeightOneSpe
   obtain ⟨a, b, hab⟩ := hc
   exact P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))
 
-theorem natCast_mem_of_isConjPl {P P' : Pl D.host.E} (h : Lev.IsConjPl P P') {n : ℕ} (hn : (n : 𝓞 D.host.E) ∈ P.asIdeal) :
-    (n : 𝓞 D.host.E) ∈ P'.asIdeal := by
-  obtain ⟨c, hc, e⟩ := h _ hn
-  have : c = (n : 𝓞 D.host.E) := RingOfIntegers.ext (by rw [e]; simp)
-  exact this ▸ hc
-
 theorem conj_smul_of_isConjPl {P P' : Pl D.host.E} (h : Lev.IsConjPl P P') :
     GlobalTheory.Mem.Chr.ConjPl D.host.conj.toRingEquiv P P' := by
   obtain ⟨Q, hQ, -⟩ := GlobalTheory.Mem.Chr.existsUnique_conjPl D.host.conj.toRingEquiv P
@@ -115,7 +109,7 @@ theorem places_sep {T : Type} (L : LevCh D T) (μ0 : T) (h : L.Is μ0) (t : T) :
   refine ⟨fun PP hP PP' hP' hc => ?_, Finset.disjoint_left.2 fun PP hP hP' => ?_⟩
   · obtain ⟨k, hk⟩ := (h.Pg PP).1 hP
     have h1 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := L.C.P.overP hk
-    have h2 := natCast_mem_of_isConjPl hc h1
+    have h2 := _root_.GlobalTheory.StepLaw.natCast_mem_of_isConjPl hc h1
     rcases hP' with hP' | hP'
     · obtain ⟨k', hk'⟩ := (h.Pg PP').1 hP'
       have h3 := eq_of_natCast_mem PP' (D.host.g_prime k) (D.host.g_prime k') h2 (L.C.P.overP hk')

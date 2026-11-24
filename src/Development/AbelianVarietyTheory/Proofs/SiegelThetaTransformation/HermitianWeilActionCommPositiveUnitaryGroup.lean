@@ -2,8 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible
 public import Mathlib.Analysis.CStarAlgebra.CStarMatrix
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctionsStatement
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatInvariantIntegralMatrixMulStatement
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HermitianWeilActionUnitaryGroupTestFunctions
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SchwartzBruhatInvariantIntegralMatrixMul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -76,9 +77,6 @@ theorem sum_rows_unitary' {n N : ℕ} (P Q : Matrix (Fin n) (Fin n) ℂ) (hPQ : 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ}
 
-theorem emb_cc (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) :=
-  IsCMField.complexEmbedding_complexConj E τ x
-
 theorem unit_map {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1) (τ : E →+* ℂ) :
     ((h.map τ).map conj)ᵀ * h.map τ = 1 := by
   have h1 := congrArg (fun M : Matrix (Fin n) (Fin n) E => M.map τ) hh
@@ -87,7 +85,7 @@ theorem unit_map {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1) (τ : E →
   rw [← h1]
   congr 1
   ext i j
-  simp [ccT, emb_cc]
+  simp [ccT, _root_.GlobalTheory.SW.Base.map_cc]
 
 def mv (h : Matrix (Fin n) (Fin n) E) (z : CM Ψ n N) : CM Ψ n N :=
   fun τ => (h.map τ.1).map conj * z τ
@@ -171,11 +169,11 @@ theorem GlobalTheory.SW.weil_comp_unitary : ∀ (E : Type) [Field E] [NumberFiel
     exact right_ne_zero_of_mul_eq_one h1
   have hSB : ∀ ψ : Matrix (Fin n) (Fin N) E → ℂ, IsSB ψ →
       IsSB (fun x : Matrix (Fin n) (Fin N) E => ψ (h * x)) :=
-    fun ψ hψ => ((GlobalTheory.T.schwartzBruhatInvariantIntegral_matrix_mul E (Fin n) (Fin N) ψ hψ).2 h hdet).1
+    fun ψ hψ => ((_root_.GlobalTheory.SW.LinChange.haar_mul E (Fin n) (Fin N) ψ hψ).2 h hdet).1
   have hw : ∀ γ ∈ UU E N, weil Ψ γ (fun x => φ (h * x)) = fun x => weil Ψ γ φ (h * x) := by
     intro γ hγ
-    obtain ⟨h1, h2, -⟩ := GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ φ hφ
-    exact ((GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ _ (hSB φ hφ)).2.2.1 _ (hSB _ h1)
+    obtain ⟨h1, h2, -⟩ := _root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ φ hφ
+    exact ((_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ _ (hSB φ hφ)).2.2.1 _ (hSB _ h1)
       (transH_mul Ψ hh γ h2)).symm
   refine ⟨hSB φ hφ, hw, fun Z _ => ⟨?_, ?_⟩⟩
   · refine (thH_mul Ψ hh φ Z 0 0).trans ?_

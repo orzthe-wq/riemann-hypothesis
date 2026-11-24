@@ -99,7 +99,7 @@ theorem pOf_le_of_conj {n : ℕ} (ε ε' : Fin n → Bool) (Q : Matrix (Fin n) (
     (hQ : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.REAL.Jm ε') : pOf ε' ≤ pOf ε := by
   classical
   by_contra hlt
-  push_neg at hlt
+  push Not at hlt
   let f1 : ({i // ε' i = true} → ℂ) →ₗ[ℂ] (Fin n → ℂ) :=
     Q.mulVecLin ∘ₗ extL (fun i => ε' i = true)
   let f2 := extL (fun i : Fin n => ε i = false)

@@ -78,7 +78,7 @@ theorem cong_adele_nat_denom (a : ReciprocityTheory.Aut.AFplus L) :
   exact hm
 
 theorem cong_nat_denom (x : ReciprocityTheory.Aut.AL L) : ∃ d : ℕ, 0 < d ∧ (d : ReciprocityTheory.Aut.AL L) * x ∈ ReciprocityTheory.Aut.ALint L := by
-  apply GlobalTheory.FinTypCount.exists_denom <;> assumption
+  apply GlobalTheory.FinTypCount.exists_denom
 
 theorem cong_dvd_mem {x : ReciprocityTheory.Aut.AL L} {d e : ℕ} (hx : (d : ReciprocityTheory.Aut.AL L) * x ∈ ReciprocityTheory.Aut.ALint L) (hde : d ∣ e) :
     (e : ReciprocityTheory.Aut.AL L) * x ∈ ReciprocityTheory.Aut.ALint L := by

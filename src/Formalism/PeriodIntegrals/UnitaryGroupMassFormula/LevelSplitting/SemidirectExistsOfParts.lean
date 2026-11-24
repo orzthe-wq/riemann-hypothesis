@@ -111,14 +111,10 @@ theorem existS_of [FiniteDimensional F E] (hJ : IsHermND σ J) (hinv : ∀ x, σ
     refine ⟨?_, ?_, ?_, inferInstance⟩
     · first
         | exact hK.isClosedEmbedding_subtypeVal.locallyCompactSpace
-        | exact hK.locallyCompactSpace
-        | exact hK.closedEmbedding_subtypeVal.locallyCompactSpace
     · first
         | exact Topology.IsInducing.subtypeVal.secondCountableTopology
-        | exact @Topology.IsInducing.secondCountableTopology _ _ _ _ hSC _ Topology.IsInducing.subtypeVal
     · first
         | exact inferInstance
-        | exact Topology.IsEmbedding.subtypeVal.t2Space
   obtain ⟨μS, hμS, hprod⟩ := hPr (HA (Af F) σ J) _ _ _ (hS hJ hinv r P T hP) (hsub _ hSc)
     (hsub _ hNc) (hsub _ hHc) (hCo hJ hinv r P T hP) μN hN μH hH
   exact ⟨μS, hμS, hprod⟩

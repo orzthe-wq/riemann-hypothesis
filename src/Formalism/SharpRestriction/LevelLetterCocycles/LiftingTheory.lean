@@ -200,16 +200,14 @@ def coreLiftB (W : LocWach PD LL O v n) : Prop :=
     Sur W F → JumpsLet W T₁ Mi hi →
       F.LiftF PD (ePB PD.p W.s (Mmax n Mi) (Hmax n Mi hi) (jumpSet W T₁ (Mmax n Mi) (Mmax n hi)))
 
-def uγ (W : LocWach PD LL O v n) : Oˣ := W.χΓ W.gam
-
 def coreLiftR (W : LocWach PD LL O v n) : Prop :=
   ∀ (T₁ : LocLat G Qp LL O) (Mi hi : ZMod n → ℕ), IsCrys PD T₁.ρ → JumpsLet W T₁ Mi hi →
     (CaseB W → ∃ k : ℕ, Associated
       (∏ j ∈ JSet (jumpSet W T₁ (Mmax n Mi) (Mmax n hi)) (Mmax n Mi),
-        (1 - (((uγ W) ^ (-j) : Oˣ) : O))) (((PD.p : ℕ) : O) ^ k)) ∧
+        (1 - (((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU W) ^ (-j) : Oˣ) : O))) (((PD.p : ℕ) : O) ^ k)) ∧
     (CaseA W → ∃ (w : Oˣ) (k : ℤ),
       (∏ j ∈ JSet (jumpSet W T₁ (Mmax n Mi) (Mmax n hi)) (Mmax n Mi),
-        (-(algebraMap O LL (1 - (((uγ W) ^ (-j) : Oˣ) : O)) / (PD.p : LL)))) =
+        (-(algebraMap O LL (1 - (((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU W) ^ (-j) : Oˣ) : O)) / (PD.p : LL)))) =
         algebraMap O LL (w : O) * (PD.p : LL) ^ k)
 
 def coreLiftO (W : LocWach PD LL O v n) (CA CB CK : ℝ) : Prop :=
@@ -251,7 +249,7 @@ def coreL (_W : LocWach PD LL O v n) : Prop :=
         Ideal.span ({∏ b ∈ S₁, (Polynomial.X - Polynomial.C (c b)),
           ∏ b ∈ S₂, (Polynomial.X - Polynomial.C (c b))} : Set (Polynomial O))
 
-def u₁ (W : LocWach PD LL O v n) : O := ((uγ W : Oˣ) : O) ^ (PD.p - 1)
+def u₁ (W : LocWach PD LL O v n) : O := ((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU W : Oˣ) : O) ^ (PD.p - 1)
 
 def InNΔi (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (x : W.DD T) : Prop :=
   x ∈ W.NΔ T ∧ x ∈ W.Nl T i

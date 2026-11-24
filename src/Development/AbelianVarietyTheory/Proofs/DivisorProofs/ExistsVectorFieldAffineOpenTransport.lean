@@ -70,7 +70,7 @@ theorem exists_isField_transport : ∀ (Z : Scheme.{0}) (W : Z.Opens) (hW : IsAf
     have hO' : O' ≤ W := h.trans hO
     simp only [dif_pos hO, dif_pos hO']
     apply (e O' hO').injective
-    simp only [RingEquiv.apply_symm_apply, he O' hO', hres]
+    simp only [he O' hO', hres]
     rw [← he O hO, ← he O hO, RingEquiv.apply_symm_apply, hd.2.2 _ _ _ le_top]
     exact (e O' hO').apply_symm_apply _
   · intro a

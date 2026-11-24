@@ -185,7 +185,7 @@ theorem _root_.GlobalTheory.KZ.PolAct.subst_mem {A : Submodule R M} {w : â„•} (Ï
   convert hsum using 1
   funext u
 
-  simp [hbu, map_sum, map_smul, Matrix.mulVec, dotProduct, Fin.sum_univ_two, Finset.sum_apply]
+  simp [hbu, map_sum, map_smul, Finset.sum_apply]
 
 
 open scoped MatrixGroups TensorProduct in

@@ -421,11 +421,6 @@ theorem cPos : CPos := by
     · exact pos_div (qw_pos q0 w _ (by simp [hl]) q2 dm) (xs_pos x0 w e _ (by simp [hl]) x3 dm)
     · exact xs_pos x0 w e _ hl x1 d0
 
-section
-variable {S : Type} [Fintype S] [DecidableEq S]
-
-end
-
 lemma q_core' (k : ℕ) (u u' ρ : ℕ → ℝ) (l : ℕ) (Y : ℝ) (hl1 : 1 ≤ l) (hlk : l ≤ k)
     (h : Interlaces k u u' ρ) (hA : u l + 2 ≤ -Y ∧ -Y ≤ u' l - 2) :
     ∏ i ∈ Icc 1 k, ((Y - 1 + 1/2 + u i) * (Y - 1 + 1/2 + u' i)) < 0 := by
@@ -501,17 +496,5 @@ end Formalism.FourierDecayAlt.P.Fr2
 namespace Formalism.FourierDecayAlt.P
 
 theorem frame_of_steps : Formalism.FourierDecayAlt.Fr.FrameAssemble := Fr2.frameAssemble
-
-theorem c_diagonal : Formalism.FourierDecayAlt.Fr.CDiag := Fr2.cDiag
-
-theorem cPos_true : Formalism.FourierDecayAlt.Fr.CPos := Fr2.cPos
-
-theorem q_positive_shift : Formalism.FourierDecayAlt.Fr.QPositiveShift := Fr2.qPositiveShift
-
-theorem c_pos_truncated : Formalism.FourierDecayAlt.Fr.CPosCut := Fr2.cPosCut
-
-theorem admissible_rec_of_admissible : Formalism.FourierDecayAlt.Fr.AdmRecOfAdm := Fr2.admissible_rec_of_admissible_word
-
-theorem frame_rec_of_steps : Formalism.FourierDecayAlt.Fr.FrameRecAssemble := Fr2.frameRecAssemble
 
 end Formalism.FourierDecayAlt.P

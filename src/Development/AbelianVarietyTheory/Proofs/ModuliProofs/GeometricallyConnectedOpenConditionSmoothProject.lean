@@ -70,7 +70,7 @@ theorem preconnectedSpace_of_functions (Y : Scheme.{0})
 theorem surjective_appTop {k : Type} [Field k] [IsAlgClosed k] {X : Scheme.{0}}
     (p : X ⟶ Spec (.of k)) [IsIntegral X] [UniversallyClosed p] :
     Function.Surjective p.appTop.hom := by
-  apply _root_.GlobalTheory.AlgGroup.surjective_appTop <;> assumption
+  apply _root_.GlobalTheory.AlgGroup.surjective_appTop
 
 variable {X X' : Scheme.{0}}
 

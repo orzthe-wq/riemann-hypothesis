@@ -54,14 +54,14 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem host_star_conj : Formalism.BasicNotions.bridge_star := by
-  apply Formalism.L2.SG.Pf.NcVal.OmVSt.OmW.host_star_conj <;> assumption
+  apply Formalism.L2.SG.Pf.NcVal.OmVSt.OmW.host_star_conj
 
 theorem sig_apply {D : D7} (X : HidaSetting D) (a : X.B.I.E) : X.B.I.cm.sig a = star a := rfl
 
 theorem hE_crdOf {D : D7} (X : HidaSetting D) (x y : (VS D).V) :
     hE X.B.I.cm.sig X.B.I.J (crdOf X.B.I X.ιE X.bas x) (crdOf X.B.I X.ιE X.bas y) =
       X.ιE.symm ((VS D).hT x y) := by
-  apply Formalism.L2.SG.Pf.NcVal.OmVSt.OmW.hE_crdOf <;> assumption
+  apply Formalism.L2.SG.Pf.NcVal.OmVSt.OmW.hE_crdOf
 
 theorem frameOf_isStd {D : D7} (X : HidaSetting D) (u : D.what₂.Word) :
     (frameOf X u).IsStd X.B.I.cm.sig X.B.I.J (((D.mem u).A.T : ℕ) : X.B.I.F) := by

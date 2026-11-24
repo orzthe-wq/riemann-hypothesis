@@ -140,7 +140,7 @@ theorem central_transport (i : k ≃+* k') {x : IrrGL (k := k)} {x' : IrrGL (k :
   have hz : GeneralLinearGroup.scalar (Fin x.1) z = GeneralLinearGroup.map i.toRingHom
       (GeneralLinearGroup.scalar (Fin x.1) (Units.map i.symm.toRingHom.toMonoidHom z)) := by
     ext a b
-    by_cases hab : a = b <;> simp [GeneralLinearGroup.scalar, Matrix.diagonal_apply, hab]
+    by_cases hab : a = b <;> simp [GeneralLinearGroup.scalar, hab]
   show π'.cl.rep.ρ (GeneralLinearGroup.scalar (Fin x.1) z) (φ.toLinearEquiv (e v)) = _
   rw [← h2, hz, ← he, hω, map_smul, map_smul]
   rfl

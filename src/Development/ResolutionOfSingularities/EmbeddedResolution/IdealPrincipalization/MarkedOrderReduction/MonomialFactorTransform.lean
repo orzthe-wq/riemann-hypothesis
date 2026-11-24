@@ -723,17 +723,6 @@ private theorem orderAt_comap_opens_ι {Y : Scheme.{u}} (U : Y.Opens) (I : Y.Ide
   have h := orderAt_comap_of_isOpenImmersion U.ι I ⟨x, hx⟩
   simpa using h
 
-private theorem comap_list_prod {A B : Scheme.{u}} (f : A ⟶ B) :
-    ∀ L : List B.IdealSheafData,
-      (L.prod).comap f = (L.map (fun D : B.IdealSheafData => D.comap f)).prod := by
-  intro L
-  induction L with
-  | nil =>
-      rw [List.prod_nil, List.map_nil, List.prod_nil]
-      exact comap_one f
-  | cons D L ih =>
-      rw [List.prod_cons, Scheme.IdealSheafData.comap_mul, ih, List.map_cons, List.prod_cons]
-
 private theorem exists_list_prod_eq_of_mem_closure {A B : Scheme.{u}} (f : A ⟶ B)
     (E : List B.IdealSheafData) {y : A.IdealSheafData}
     (hy : y ∈ Submonoid.closure ((fun D : B.IdealSheafData => D.comap f) '' {D | D ∈ E})) :
@@ -1031,7 +1020,7 @@ theorem isMonomialIn_of_exceptionalIdeal_pow_mul_eq_comap (hG : Principalization
       (isMonomialIn_iff_forall_exists_mem_closure T.boundary Mon).1 hMon (π.base x')
     obtain ⟨L, hLsub, hLeq⟩ := exists_list_prod_eq_of_mem_closure W.ι T.boundary hWmem
     have hWeq : Mon.comap W.ι = (L.prod).comap W.ι := by
-      rw [comap_list_prod W.ι L]
+      rw [_root_.AlgebraicGeometry.Scheme.IdealSheafData.comap_listProd W.ι L]
       exact hLeq
     have hyS₀ : π.base x' ∈ ((↑Z.support : Set ↥T.scheme) ∩ (↑V₀ : Set ↥T.scheme))
         ∩ (↑W : Set ↥T.scheme) := ⟨⟨hyZ, hyV₀⟩, hyW⟩

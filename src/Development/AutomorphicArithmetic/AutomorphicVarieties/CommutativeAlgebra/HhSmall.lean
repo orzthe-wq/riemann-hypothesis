@@ -90,6 +90,94 @@ private theorem expand_small {O : Type} [CommRing O] [IsLocalRing O] {ι : Type}
     simp only [map_apply] at this
     rw [map_apply, Matrix.add_apply, map_add (f := _), z2, add_zero, this]
 
+open Matrix Classical in
+/-- Correct a block-diagonal lift across a small extension so that it preserves the form. -/
+theorem UpperTheory.V.Alg.FormData.hh_corrected_lift {O : Type} [CommRing O] [IsLocalRing O] {ι X : Type} [Fintype ι] [DecidableEq ι]
+    [AddCommGroup X] {w : ι → X} (Φ : FormData O w)
+    {R : Type} [CommRing R] [Algebra O R] [IsCO O R] {R' : Type} [CommRing R'] [Algebra O R'] [IsCO O R']
+    (p : R →ₐ[O] R') (hs : maximalIdeal R * RingHom.ker p = ⊥) (K : Matrix ι ι R) (hK : Φ.JR R * K = 1)
+    (u : R) (hu : 2 * u = 1) (h' : Matrix ι ι R') (hh : Φ.HH h') (h0 : Matrix ι ι R) (b1 : h0.map p = h')
+    (b2 : ∀ a b, Φ.blk a ≠ Φ.blk b → h0 a b = 0) :
+    let Z : Matrix ι ι R := Matrix.of fun a b => if Φ.blk a = Φ.blk b then
+      (K * ((-u) • (h0ᵀ * Φ.JR R * h0 - Φ.JR R))) a b else 0
+    Φ.HH (h0 + Z) ∧ (h0 + Z).map p = h' := by
+  obtain ⟨a1, a2, a3⟩ := hh
+  have b3 : h0.map (res O R) = 1 := by
+    rw [← a3, ← b1]
+    ext a b
+    simp [res_map]
+  have jp : (Φ.JR R).map p = Φ.JR R' := by
+    ext a b
+    simp [FormData.JR]
+  have jb : ∀ a b, Φ.JR R a b ≠ 0 → Φ.blk b = Φ.σ (Φ.blk a) := fun a b e =>
+    Φ.hblk a b fun n => e (by simp [FormData.JR, n])
+  obtain ⟨ε, hε, hε2⟩ : ∃ ε : R, (Φ.JR R)ᵀ = ε • Φ.JR R ∧ ε * ε = 1 := by
+    rcases Φ.sym with e | e
+    · refine ⟨1, ?_, by simp⟩
+      ext a b
+      have := congrFun (congrFun e a) b
+      simp only [transpose_apply] at this
+      simp [FormData.JR, this]
+    · refine ⟨-1, ?_, by simp⟩
+      ext a b
+      have := congrFun (congrFun e a) b
+      simp only [transpose_apply] at this
+      simp [FormData.JR, this]
+  set E := h0ᵀ * Φ.JR R * h0 - Φ.JR R with hE
+  have E1 : E.map p = 0 := by
+    rw [hE, Matrix.map_sub _ (map_sub p), Matrix.map_mul, Matrix.map_mul, transpose_map, b1, jp, a1, sub_self]
+  have E2 : Eᵀ = ε • E := by
+    rw [hE, transpose_sub, transpose_mul, transpose_mul, transpose_transpose, hε, smul_sub]
+    simp [mul_assoc]
+  have E3 : ∀ a b, Φ.blk b ≠ Φ.σ (Φ.blk a) → E a b = 0 := fun a b e => by
+    have : Φ.JR R a b = 0 := by_contra fun n => e (jb a b n)
+    rw [hE, Matrix.sub_apply, this, sub_zero]
+    simp only [Matrix.mul_apply, transpose_apply, Finset.sum_mul]
+    refine Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_
+    by_cases e1 : Φ.blk d = Φ.blk a
+    · by_cases e2 : Φ.blk c = Φ.blk b
+      · have : Φ.JR R d c = 0 := by_contra fun n => e (by rw [← e2, ← e1]; exact jb d c n)
+        simp [this]
+      · simp [b2 _ _ e2]
+    · simp [b2 _ _ e1]
+  set Z0 : Matrix ι ι R := K * ((-u) • E) with hZ0
+  have Z1 : Φ.JR R * Z0 = (-u) • E := by rw [hZ0, ← mul_assoc, hK, one_mul]
+  have Z2 : ∀ a b, p (Z0 a b) = 0 := fun a b => by
+    rw [hZ0, Matrix.mul_apply, map_sum]
+    refine Finset.sum_eq_zero fun c _ => ?_
+    have : p (E c b) = 0 := congrFun (congrFun E1 c) b
+    simp [this]
+  let Z : Matrix ι ι R := Matrix.of fun a b => if Φ.blk a = Φ.blk b then Z0 a b else 0
+  have Z3 : Z.map p = 0 := by
+    ext a b
+    by_cases e : Φ.blk a = Φ.blk b <;> simp [Z, e, Z2]
+  have Z4 : Φ.JR R * Z = (-u) • E := by
+    ext a b
+    by_cases e : Φ.blk b = Φ.σ (Φ.blk a)
+    · rw [← Z1, Matrix.mul_apply, Matrix.mul_apply]
+      refine Finset.sum_congr rfl fun c _ => ?_
+      by_cases n : Φ.JR R a c = 0
+      · simp [n]
+      · have : Φ.blk c = Φ.blk b := by rw [e]; exact jb a c n
+        simp [Z, this]
+    · rw [Matrix.smul_apply, E3 a b e, smul_zero, Matrix.mul_apply]
+      refine Finset.sum_eq_zero fun c _ => ?_
+      by_cases n : Φ.JR R a c = 0
+      · simp [n]
+      · have : ¬ Φ.blk c = Φ.blk b := fun m => e (by rw [← m]; exact jb a c n)
+        simp [Z, this]
+  have Z5 : Zᵀ * Φ.JR R = (-u) • E := by
+    have := congrArg (fun M => ε • Mᵀ) Z4
+    simp only [transpose_mul, transpose_smul, hε, E2, Matrix.mul_smul, smul_smul] at this
+    rw [hε2, one_smul, mul_left_comm, hε2, mul_one] at this
+    exact this
+  obtain ⟨c1, c2⟩ := expand_small p hs (Φ.JR R) h0 Z b3 Z3
+  change Φ.HH (h0 + Z) ∧ (h0 + Z).map p = h'
+  refine ⟨⟨?_, fun a b e => by simp [Z, e, b2 a b e], c2⟩, ?_⟩
+  · rw [c1, Z4, Z5, ← add_smul, show -u + -u = -1 by rw [← hu]; ring, neg_one_smul, hE]
+    abel
+  · rw [Matrix.map_add _ (map_add p), b1, Z3, add_zero]
+
 open Matrix in
 theorem UpperTheory.V.Alg.hh_small :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (ι X : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup X] (w : ι → X) (Φ : FormData O w), IsUnit (2 : O) → ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (p : R →ₐ[O] R'), Function.Surjective p → maximalIdeal R * RingHom.ker p = ⊥ →
@@ -99,94 +187,20 @@ theorem UpperTheory.V.Alg.hh_small :
   intro O _ _ _ _ ι X _ _ _ w Φ h2 R _ _ _ R' _ _ _ p hp hs
   refine ⟨?_, ?_, ?_⟩
   · classical
-    rintro h' ⟨a1, a2, a3⟩
+    intro h' hh
     choose s hs' using hp
     obtain ⟨h0, b1, b2⟩ : ∃ h0 : Matrix ι ι R, h0.map p = h' ∧ ∀ a b, Φ.blk a ≠ Φ.blk b → h0 a b = 0 := by
       refine ⟨Matrix.of fun a b => if Φ.blk a = Φ.blk b then s (h' a b) else 0, ?_, fun a b e => by simp [e]⟩
       ext a b
       by_cases e : Φ.blk a = Φ.blk b
       · simp [e, hs']
-      · simp [e, a2 a b e]
-    have b3 : h0.map (res O R) = 1 := by
-      rw [← a3, ← b1]
-      ext a b
-      simp [res_map]
-    have jp : (Φ.JR R).map p = Φ.JR R' := by
-      ext a b
-      simp [FormData.JR]
-    have jb : ∀ a b, Φ.JR R a b ≠ 0 → Φ.blk b = Φ.σ (Φ.blk a) := fun a b e =>
-      Φ.hblk a b fun n => e (by simp [FormData.JR, n])
+      · simp [e, hh.2.1 a b e]
     obtain ⟨K, hK⟩ : ∃ K : Matrix ι ι R, Φ.JR R * K = 1 :=
       (Φ.unit.map (algebraMap O R).mapMatrix).exists_right_inv
     obtain ⟨u, hu⟩ : ∃ u : R, 2 * u = 1 := by
       have := (h2.map (algebraMap O R)).exists_right_inv
       rwa [map_ofNat] at this
-    obtain ⟨ε, hε, hε2⟩ : ∃ ε : R, (Φ.JR R)ᵀ = ε • Φ.JR R ∧ ε * ε = 1 := by
-      rcases Φ.sym with e | e
-      · refine ⟨1, ?_, by simp⟩
-        ext a b
-        have := congrFun (congrFun e a) b
-        simp only [transpose_apply] at this
-        simp [FormData.JR, this]
-      · refine ⟨-1, ?_, by simp⟩
-        ext a b
-        have := congrFun (congrFun e a) b
-        simp only [transpose_apply] at this
-        simp [FormData.JR, this]
-    set E := h0ᵀ * Φ.JR R * h0 - Φ.JR R with hE
-    have E1 : E.map p = 0 := by
-      rw [hE, Matrix.map_sub _ (map_sub p), Matrix.map_mul, Matrix.map_mul, transpose_map, b1, jp, a1, sub_self]
-    have E2 : Eᵀ = ε • E := by
-      rw [hE, transpose_sub, transpose_mul, transpose_mul, transpose_transpose, hε, smul_sub]
-      simp [mul_assoc]
-    have E3 : ∀ a b, Φ.blk b ≠ Φ.σ (Φ.blk a) → E a b = 0 := fun a b e => by
-      have : Φ.JR R a b = 0 := by_contra fun n => e (jb a b n)
-      rw [hE, Matrix.sub_apply, this, sub_zero]
-      simp only [Matrix.mul_apply, transpose_apply, Finset.sum_mul]
-      refine Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_
-      by_cases e1 : Φ.blk d = Φ.blk a
-      · by_cases e2 : Φ.blk c = Φ.blk b
-        · have : Φ.JR R d c = 0 := by_contra fun n => e (by rw [← e2, ← e1]; exact jb d c n)
-          simp [this]
-        · simp [b2 _ _ e2]
-      · simp [b2 _ _ e1]
-    set Z0 : Matrix ι ι R := K * ((-u) • E) with hZ0
-    have Z1 : Φ.JR R * Z0 = (-u) • E := by rw [hZ0, ← mul_assoc, hK, one_mul]
-    have Z2 : ∀ a b, p (Z0 a b) = 0 := fun a b => by
-
-      rw [hZ0, Matrix.mul_apply, map_sum]
-      refine Finset.sum_eq_zero fun c _ => ?_
-      have : p (E c b) = 0 := congrFun (congrFun E1 c) b
-      simp [this]
-    let Z : Matrix ι ι R := Matrix.of fun a b => if Φ.blk a = Φ.blk b then Z0 a b else 0
-    have Z3 : Z.map p = 0 := by
-      ext a b
-      by_cases e : Φ.blk a = Φ.blk b <;> simp [Z, e, Z2]
-    have Z4 : Φ.JR R * Z = (-u) • E := by
-      ext a b
-      by_cases e : Φ.blk b = Φ.σ (Φ.blk a)
-      · rw [← Z1, Matrix.mul_apply, Matrix.mul_apply]
-        refine Finset.sum_congr rfl fun c _ => ?_
-        by_cases n : Φ.JR R a c = 0
-        · simp [n]
-        · have : Φ.blk c = Φ.blk b := by rw [e]; exact jb a c n
-          simp [Z, this]
-      · rw [Matrix.smul_apply, E3 a b e, smul_zero, Matrix.mul_apply]
-        refine Finset.sum_eq_zero fun c _ => ?_
-        by_cases n : Φ.JR R a c = 0
-        · simp [n]
-        · have : ¬ Φ.blk c = Φ.blk b := fun m => e (by rw [← m]; exact jb a c n)
-          simp [Z, this]
-    have Z5 : Zᵀ * Φ.JR R = (-u) • E := by
-      have := congrArg (fun M => ε • Mᵀ) Z4
-      simp only [transpose_mul, transpose_smul, hε, E2, Matrix.mul_smul, smul_smul] at this
-      rw [hε2, one_smul, mul_left_comm, hε2, mul_one] at this
-      exact this
-    obtain ⟨c1, c2⟩ := expand_small p hs (Φ.JR R) h0 Z b3 Z3
-    refine ⟨h0 + Z, ⟨?_, fun a b e => by simp [Z, e, b2 a b e], c2⟩, ?_⟩
-    · rw [c1, Z4, Z5, ← add_smul, show -u + -u = -1 by rw [← hu]; ring, neg_one_smul, hE]
-      abel
-    · rw [Matrix.map_add _ (map_add p), b1, Z3, add_zero]
+    exact ⟨_, Φ.hh_corrected_lift p hs K hK u hu h' hh h0 b1 b2⟩
   · rintro h₁ h₂ ⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩ e
     have hZ : (h₂ - h₁).map p = 0 := by rw [Matrix.map_sub _ (map_sub p), e, sub_self]
     obtain ⟨c1, -⟩ := expand_small p hs (Φ.JR R) h₁ (h₂ - h₁) a3 hZ

@@ -44,7 +44,4 @@ import Mathlib.Topology.Sheaves.Init
 
 namespace GlobalTheory
 
-theorem genericUnlinkedGL_outright : GlobalTheory.Published.GenericUnlinkedGL :=
-  GlobalTheory.RgGu.Holds.genericUnlinkedGL_holds
-
 end GlobalTheory

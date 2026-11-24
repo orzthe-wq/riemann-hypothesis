@@ -142,8 +142,7 @@ theorem isPC_Eab {m n : ℕ} {a b : Ix m n} (h : ¬ sameBlock a b) : IsPC (Eab a
     exact absurd hxy h
   · rfl
 
-theorem sb_iff {m n : ℕ} (a b : Ix m n) : sameBlock a b ↔ a.isLeft = b.isLeft :=
-  PI.FockOneDegW.Core.side_sb a b
+alias sb_iff := _root_.PI.FockOneDegW.Core.side_sb
 
 theorem isPC_brk {m n : ℕ} {a b : Ix m n} (h : sameBlock a b) {Z : Mat m n} (hZ : IsPC Z) :
     IsPC (Eab a b * Z - Z * Eab a b) := by
@@ -191,11 +190,11 @@ theorem minusPart_second_action_Eab {c d : Ix r s} (h : ¬ sameBlock c d) (g : P
   rw [Finset.sum_eq_single c, Finset.sum_eq_single d]
   · simp [Eab]
   · intro y _ hy
-    simp [Eab, Matrix.single_apply, Ne.symm hy]
+    simp [Eab, Ne.symm hy]
   · simp
   · intro x _ hx
     refine Finset.sum_eq_zero (fun y _ => ?_)
-    simp [Eab, Matrix.single_apply, Ne.symm hx]
+    simp [Eab, Ne.symm hx]
   · simp
 
 def low1 (a b : Ix p q) : Module.End ℂ (Pol p q r s) :=
@@ -417,27 +416,18 @@ theorem low_homog_small (c d : Ix r s) {e : ℕ} (he : e < 2) {g : Pol p q r s}
   refine hc_ext fun n => ?_
   rw [PI.FockOneDegW.RedOps.hc_lowOp, homogeneousComponent_of_mem hg, if_neg (by omega), map_zero, map_zero]
 
-private theorem fockAct2_Eab_eq_sum_omE (c d : Ix r s) (P : Pol p q r s) :
-    fockAct2 p q r s (Eab c d) P = ∑ a : Ix p q, omE (a, c) (a, d) P := by
-  apply PI.FockOneDegW.Swap.rename_sw_injective p q r s
-
-  rw [PI.FockOneDegW.Swap.rename_fockAct2, PI.FockOneDegW.fockAct1_Eab_apply, map_sum]
-  refine Finset.sum_congr rfl (fun a _ => ?_)
-  rw [PI.FockOneDegW.Swap.rename_omE]
-  rfl
-
 private theorem omE_add_pderiv_pderiv_eq_X_mul_X_of_not_sameBlock {c d : Ix r s} (hcd : ¬ sameBlock c d) (a : Ix p q) (P : Pol p q r s) :
     omE (a, c) (a, d) P +
         (if linePos ((a, d) : Ln p q r s) = true then pderiv (a, c) (pderiv (a, d) P) else 0) =
       if linePos ((a, c) : Ln p q r s) = true then X (a, c) * (X (a, d) * P) else 0 := by
   rcases a with a | a <;> rcases c with c | c <;> rcases d with d | d <;>
-    simp_all [omE, raiB, lowB, linePos, sameBlock, Module.End.mul_apply]
+    simp_all [omE, raiB, lowB, linePos, sameBlock]
 
 theorem second_action_add_lowering {c d : Ix r s} (hcd : ¬ sameBlock c d) {e : ℕ} {g : Pol p q r s}
     (hg : g ∈ homog (Ix p q × Ix r s) e) :
     fockAct2 p q r s (Eab c d) g + PI.FockOneDegW.lowOp (p := p) (q := q) c d g ∈
       homog (Ix p q × Ix r s) (e + 2) := by
-  rw [fockAct2_Eab_eq_sum_omE, PI.FockOneDegW.RedOps.lowOp_apply, ← Finset.sum_add_distrib]
+  rw [_root_.PositivityTheory.KReal.fockAct2_unit, PI.FockOneDegW.RedOps.lowOp_apply, ← Finset.sum_add_distrib]
   simp_rw [omE_add_pderiv_pderiv_eq_X_mul_X_of_not_sameBlock hcd]
   refine Submodule.sum_mem _ (fun a _ => ?_)
   split_ifs

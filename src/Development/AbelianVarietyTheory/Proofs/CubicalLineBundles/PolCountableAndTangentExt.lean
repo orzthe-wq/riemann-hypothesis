@@ -109,10 +109,7 @@ theorem pol_countable_and_tangent_ext (hT : ThetaUnifAV) (Q Q' : Out.PolAV (Sp �
     rw [← h v hv] at b
     rw [← hF, (h1' _ a.1).unique a.2 b.2]
 
-theorem isTangent_comp {R : Type} [CommRing R] {G H : Over (Sp R)} [GrpObj G] [GrpObj H] (f : G ⟶ H)
-    [IsMonHom f] {v : epsR R ⟶ G} (hv : IsTangent v) : IsTangent (v ≫ f) := by
-  unfold IsTangent at hv ⊢
-  rw [Over.comp_left, ← Category.assoc, hv, ← Over.comp_left, IsMonHom.one_hom]
+alias isTangent_comp := _root_.GlobalTheory.HomLinear.isTangent_comp
 
 theorem exists_pol_iso (hB : Out.PolBaseChangeSt) {S S' : Scheme.{0}} (t : S' ⟶ S) (P : Out.PolAV S) :
     ∃ (Q : Out.PolAV S') (e : Q.A ≅ (Over.pullback t).obj P.A), IsMonHom e.hom := by
@@ -156,7 +153,7 @@ theorem basis_repr_map {J : Type} (b : Module.Basis J k B) (ρ : R →ₐ[k] S) 
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul a m =>
-    simp [Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def]
+    simp [Algebra.TensorProduct.basis_repr_tmul]
   | add x y hx hy => simp [hx, hy]
 
 end Algebra

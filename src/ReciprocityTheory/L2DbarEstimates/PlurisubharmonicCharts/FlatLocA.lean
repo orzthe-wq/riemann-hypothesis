@@ -65,8 +65,6 @@ noncomputable section
 
 variable {n : ℕ}
 
-theorem I_pow_three_eq_neg_I : I ^ 3 = -I := by rw [pow_succ, I_sq]; ring
-
 theorem flA_expand (w : V n) : w = ∑ j, w j • bas n j := by
   conv_lhs => rw [← (EuclideanSpace.basisFun (Fin n) ℂ).sum_repr w]
   simp [bas]
@@ -107,7 +105,7 @@ theorem flA_wdb_comp {U : V n → ℂ} {G : V n → V n} {y : V n}
   simp only [PiLp.smul_apply, smul_eq_mul, map_mul, Complex.conj_I]
   rw [Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_div]
   refine Finset.sum_congr rfl fun b _ => ?_
-  ring_nf; simp only [I_sq, I_pow_three_eq_neg_I]; ring_nf
+  ring_nf; simp only [I_sq, Complex.I_pow_three]; ring_nf
 
 theorem flA_wd_comp {U : V n → ℂ} {G : V n → V n} {y : V n}
     (hU : DifferentiableAt ℝ U (G y)) (hG : DifferentiableAt ℂ G y) (k : Fin n) :
@@ -119,7 +117,7 @@ theorem flA_wd_comp {U : V n → ℂ} {G : V n → V n} {y : V n}
   simp only [PiLp.smul_apply, smul_eq_mul, map_mul, Complex.conj_I]
   rw [Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]
   refine Finset.sum_congr rfl fun b _ => ?_
-  ring_nf; simp only [I_sq, I_pow_three_eq_neg_I]; ring_nf
+  ring_nf; simp only [I_sq, Complex.I_pow_three]; ring_nf
 
 theorem sum_four_comm_bis (T : Fin n → Fin n → Fin n → Fin n → ℂ) :
     ∑ a, ∑ b, ∑ j, ∑ k, T a b j k = ∑ j, ∑ k, ∑ b, ∑ a, T a b j k := by

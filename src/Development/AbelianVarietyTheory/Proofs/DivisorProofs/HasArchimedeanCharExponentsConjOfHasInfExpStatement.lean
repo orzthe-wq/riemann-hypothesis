@@ -60,4 +60,4 @@ theorem _root_.GlobalTheory.T.hasArchimedeanCharExponents_conj_of_hasInfExp : �
     (hτf : ∀ w, ((starRingEnd ℂ).comp (tauE D (τf w))).comp (algebraMap D.host.F D.host.E) = w.embedding),
     ∃ m : InfinitePlace D.host.F → ℤ,
       HasExp (fun w => ⟨(starRingEnd ℂ).comp (tauE D (τf w)), hτf w⟩) c m ∧ ∀ w, (m w : ℚ) = -2 * a (τf w) := by
-  first | exact @GlobalTheory.ConjInfExp.hasExp_conj_of_hasInfExp | exact GlobalTheory.ConjInfExp.hasExp_conj_of_hasInfExp | (intros; apply GlobalTheory.ConjInfExp.hasExp_conj_of_hasInfExp <;> assumption)
+  first | exact @GlobalTheory.ConjInfExp.hasExp_conj_of_hasInfExp

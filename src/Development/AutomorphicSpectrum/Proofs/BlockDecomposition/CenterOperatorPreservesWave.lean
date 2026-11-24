@@ -1,15 +1,16 @@
 module
 
-public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RdEqFderiv
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.IsMultZero
 public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EventuallyEqOfAgreeGLs
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZOpSmooth
+public import Mathlib.Analysis.Calculus.Deriv.Prod
+public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+public import Mathlib.Geometry.Manifold.IsManifold.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.Calculus.Deriv.Prod
-public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -17,7 +18,6 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.Geometry.Manifold.IsManifold.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
@@ -33,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,7 +47,130 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsMultOfFintype
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RdEqFderiv, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterOperatorPreservesWave
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RdEqFderiv =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RdEqFderiv", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.IsMultZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsMultOfFintype\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix Finset
+open scoped ContDiff ComplexConjugate InnerProductSpace
+
+open PositivityTheory.RgTw (Mat G)
+open PositivityTheory.RgBcC
+open GlobalTheory.CompanionTheory.WaveMult
+
+attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
+
+namespace GlobalTheory.CompanionTheory.WaveMult.ZJoint
+
+variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
+
+theorem isOpen_GLs (n : ℕ) : IsOpen (GLs n) := by
+  have hc : Continuous (fun g : Mat n => g.det) := Continuous.matrix_det continuous_id
+  exact isOpen_ne.preimage hc
+
+theorem isOpen_dom (n : ℕ) : IsOpen ((Set.univ : Set ℝ) ×ˢ GLs n) :=
+  isOpen_univ.prod (isOpen_GLs n)
+
+def Pres (Φ : (Mat n → V) → (Mat n → V)) : Prop :=
+  ∀ U : ℝ → Mat n → V, ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ GLs n) →
+    ContDiffOn ℝ ∞ (Function.uncurry fun t => Φ (U t)) (Set.univ ×ˢ GLs n)
+
+theorem rd_eq_fderiv (U : ℝ → Mat n → V)
+    (hU : ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ GLs n)) {t : ℝ} {g : Mat n}
+    (hg : g ∈ GLs n) (X : Mat n) :
+    Rd X (U t) g = fderiv ℝ (Function.uncurry U) (t, g) ((0 : ℝ), g * X) := by
+  have hd : DifferentiableAt ℝ (Function.uncurry U) (t, g) :=
+    (hU.contDiffAt ((isOpen_dom n).mem_nhds ⟨Set.mem_univ _, hg⟩)).differentiableAt (by simp)
+  have hi : HasFDerivAt (fun x : Mat n => (t, x)) (ContinuousLinearMap.inr ℝ ℝ (Mat n)) g :=
+    hasFDerivAt_prodMk_right t g
+  have h2 : HasFDerivAt (U t)
+      ((fderiv ℝ (Function.uncurry U) (t, g)).comp (ContinuousLinearMap.inr ℝ ℝ (Mat n))) g :=
+    HasFDerivAt.comp g (f := fun x : Mat n => (t, x)) (g := Function.uncurry U) hd.hasFDerivAt hi
+  simp [Rd, h2.fderiv]
+
+theorem pres_Rd (X : Mat n) : Pres (V := V) (Rd X) := by
+  intro U hU
+  have h1 := hU.fderiv_of_isOpen (m := ∞) (isOpen_dom n) (by simp)
+  let L : Mat n →ₗ[ℝ] Mat n := LinearMap.mulRight ℝ X
+  have hL : ContDiff ℝ ∞ (fun x : Mat n => x * X) := (L.toContinuousLinearMap).contDiff
+  have hl : ContDiff ℝ ∞ (fun p : ℝ × Mat n => ((0 : ℝ), p.2 * X)) :=
+    contDiff_const.prodMk (hL.comp contDiff_snd)
+  refine (h1.clm_apply hl.contDiffOn).congr ?_
+  rintro ⟨t, g⟩ ⟨-, hg⟩
+  exact rd_eq_fderiv U hU hg X
+
+theorem Pres.add {Φ Ψ : (Mat n → V) → (Mat n → V)} (h : Pres Φ) (k : Pres Ψ) :
+    Pres (fun f => Φ f + Ψ f) :=
+  fun U hU => (h U hU).add (k U hU)
+
+theorem Pres.smul {Φ : (Mat n → V) → (Mat n → V)} (c : ℂ) (h : Pres Φ) :
+    Pres (fun f => c • Φ f) :=
+  fun U hU => (h U hU).const_smul c
+
+theorem Pres.comp {Φ Ψ : (Mat n → V) → (Mat n → V)} (h : Pres Φ) (k : Pres Ψ) :
+    Pres (fun f => Φ (Ψ f)) :=
+  fun U hU => h (fun t => Ψ (U t)) (k U hU)
+
+theorem pres_sum {ι : Type} (s : Finset ι) (Φ : ι → (Mat n → V) → (Mat n → V))
+    (h : ∀ i, Pres (Φ i)) : Pres (fun f => ∑ i ∈ s, Φ i f) := by
+  intro U hU
+  have e : (Function.uncurry fun t => ∑ i ∈ s, Φ i (U t)) =
+      fun p => ∑ i ∈ s, (Function.uncurry fun t => Φ i (U t)) p := by
+    funext p
+    simp [Function.uncurry, Finset.sum_apply]
+  rw [e]
+  exact ContDiffOn.sum fun i _ => h i U hU
+
+theorem pres_Eu (s : Bool) (a b : Fin n) : Pres (V := V) (Eu s a b) :=
+  Pres.smul (1 / 2 : ℂ) ((pres_Rd _).add (Pres.smul _ (pres_Rd _)))
+
+theorem pres_Epow (s : Bool) (m : ℕ) :
+    ∀ a b : Fin n, Pres (V := V) (Epow s m a b) := by
+  induction m with
+  | zero =>
+    intro a b U hU
+    by_cases hab : a = b
+    · simpa [Epow, hab] using hU
+    · have e : (Function.uncurry fun t => Epow (V := V) s 0 a b (U t)) = fun _ => 0 := by
+        funext p
+        simp [Epow, hab, Function.uncurry]
+      rw [e]
+      exact contDiffOn_const
+  | succ m ih =>
+    intro a b
+    exact pres_sum Finset.univ (fun c f => Eu s a c (Epow s m c b f))
+      fun c => (pres_Eu s a c).comp (ih c b)
+
+theorem pres_gel (s : Bool) (m : ℕ) : Pres (V := V) (gel (n := n) s m) :=
+  pres_sum Finset.univ (fun a f => Epow s m a a f) fun a => pres_Epow s m a a
+
+theorem pres_zOp (w : List (Bool × ℕ)) : Pres (V := V) (zOp (n := n) w) := by
+  induction w with
+  | nil => exact fun U hU => hU
+  | cons p w ih => exact (pres_gel p.1 p.2).comp ih
+
+theorem zOp_joint (n : ℕ) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (U : ℝ → Mat n → V)
+    (w : List (Bool × ℕ)) (h : ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ GLs n)) :
+    ContDiffOn ℝ ∞ (Function.uncurry fun t => zOp w (U t)) (Set.univ ×ˢ GLs n) :=
+  pres_zOp w U h
+
+end GlobalTheory.CompanionTheory.WaveMult.ZJoint
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RdEqFderiv =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterOperatorPreservesWave =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterOperatorPreservesWave", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RdEqFderiv\npublic import Mathlib.Analysis.LocallyConvex.AbsConvexOpen\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EventuallyEqOfAgreeGLs\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ZOpSmooth\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.Deriv.Prod\npublic import Mathlib.Analysis.Calculus.FDeriv.Symmetric\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.Geometry.Manifold.IsManifold.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsMultOfFintype\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -81,7 +203,7 @@ theorem dt_eq_fderiv {U : ℝ → Mat n → V}
     (hU : ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ GLs n)) {t : ℝ} {g : Mat n} (hg : g ∈ GLs n) :
     Dt U t g = fderiv ℝ (Function.uncurry U) (t, g) ((1 : ℝ), (0 : Mat n)) := by
   have hd : DifferentiableAt ℝ (Function.uncurry U) (t, g) :=
-    (GlobalTheory.CompanionTheory.WaveMult.WaveZ.joint_contDiffAt hU t hg).differentiableAt (by first | simp | exact WithTop.coe_ne_zero.2 ENat.top_ne_zero | decide)
+    (GlobalTheory.CompanionTheory.WaveMult.WaveZ.joint_contDiffAt hU t hg).differentiableAt (by first | simp)
   exact (hd.hasFDerivAt.comp_hasDerivAt t (GlobalTheory.CompanionTheory.WaveMult.WaveZ.hasDerivAt_line t g)).deriv
 
 theorem dt_joint {U : ℝ → Mat n → V}
@@ -98,7 +220,7 @@ theorem time_differentiableAt {U : ℝ → Mat n → V}
     (hU : ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ GLs n)) (t : ℝ) {g : Mat n} (hg : g ∈ GLs n) :
     DifferentiableAt ℝ (fun s => U s g) t := by
   have hd : DifferentiableAt ℝ (Function.uncurry U) (t, g) :=
-    (GlobalTheory.CompanionTheory.WaveMult.WaveZ.joint_contDiffAt hU t hg).differentiableAt (by first | simp | exact WithTop.coe_ne_zero.2 ENat.top_ne_zero | decide)
+    (GlobalTheory.CompanionTheory.WaveMult.WaveZ.joint_contDiffAt hU t hg).differentiableAt (by first | simp)
   exact (hd.hasFDerivAt.comp_hasDerivAt t (GlobalTheory.CompanionTheory.WaveMult.WaveZ.hasDerivAt_line t g)).differentiableAt
 
 theorem symm_mixed {M W : Type} [NormedAddCommGroup M] [NormedSpace ℝ M] [NormedAddCommGroup W] [NormedSpace ℝ W]
@@ -106,13 +228,13 @@ theorem symm_mixed {M W : Type} [NormedAddCommGroup M] [NormedSpace ℝ M] [Norm
     HasDerivAt (fun s => fderiv ℝ Φ (s, g) ((0 : ℝ), y))
       (fderiv ℝ (fun x => fderiv ℝ Φ (t, x) ((1 : ℝ), (0 : M))) g y) t := by
   have h2 : ContDiffAt ℝ 2 Φ (t, g) :=
-    hc.of_le (by first | exact ENat.LEInfty.out | exact_mod_cast le_top | simp)
+    hc.of_le (by first | exact ENat.LEInfty.out)
   have hD1 : ContDiffAt ℝ 1 (fderiv ℝ Φ) (t, g) :=
-    h2.fderiv_right (by first | exact le_of_eq one_add_one_eq_two | norm_num)
+    h2.fderiv_right (by first | exact le_of_eq one_add_one_eq_two)
   have hDd : HasFDerivAt (fderiv ℝ Φ) (fderiv ℝ (fderiv ℝ Φ) (t, g)) (t, g) :=
     (hD1.differentiableAt one_ne_zero).hasFDerivAt
   have hsymm : IsSymmSndFDerivAt ℝ Φ (t, g) :=
-    h2.isSymmSndFDerivAt (by first | exact minSmoothness_of_isRCLikeNormedField.le | simp)
+    h2.isSymmSndFDerivAt (by first | exact minSmoothness_of_isRCLikeNormedField.le)
   have hpath : HasDerivAt (fun s : ℝ => (s, g)) ((1 : ℝ), (0 : M)) t :=
     (hasDerivAt_id t).prodMk (hasDerivAt_const t g)
   have hL : HasDerivAt (fun s => fderiv ℝ Φ (s, g) ((0 : ℝ), y))
@@ -366,3 +488,7 @@ theorem isWave_zOp : RCalc → ∀ (n : ℕ) (E : KMod n) (u : ℝ → Mat n →
     exact GlobalTheory.CompanionTheory.WaveMult.WaveZ.zOp_zero hR w hg
 
 end GlobalTheory.CompanionTheory.WaveMult.WaveZ
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CenterOperatorPreservesWave =====

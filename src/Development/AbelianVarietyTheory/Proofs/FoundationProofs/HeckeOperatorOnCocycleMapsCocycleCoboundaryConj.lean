@@ -281,6 +281,6 @@ theorem hk_cocycle_coboundary_conj : ∀ (Γ : Subgroup SL(2, ℤ)) (w : ℕ) (�
     split_ifs with h
 
     · simp only [LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, Polynomial.map_sum, polySlash_map, cj]
-    · simp [cj]
+    · simp
 
 end GlobalTheory.HeckeFamilyMatrices.HkC

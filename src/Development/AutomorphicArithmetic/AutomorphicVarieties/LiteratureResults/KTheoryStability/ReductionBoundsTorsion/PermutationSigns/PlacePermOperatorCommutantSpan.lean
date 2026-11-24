@@ -187,7 +187,7 @@ theorem herm_of_unit (φ : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ →�
       ← diagonal_one]
     congr 1
     funext a
-    simp only [Pi.star_apply, Pi.one_apply]
+    simp only [Pi.star_apply]
     rw [Complex.star_def, Complex.mul_conj', hc (w, a)]
     simp
   have hq : 0 < q + 1 := Nat.succ_pos q
@@ -235,7 +235,7 @@ theorem all_of_herm (φ : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ →�
     funext w
     ext i j
     simp only [Pi.add_apply, Pi.smul_apply, H, K, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply,
-      smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+      smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one]
     linear_combination (2 : ℂ)⁻¹ * (d w i j - (d w)ᴴ i j) * Complex.I_sq
   rw [e]
   exact this

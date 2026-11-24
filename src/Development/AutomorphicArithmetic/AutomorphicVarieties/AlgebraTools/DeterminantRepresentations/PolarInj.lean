@@ -80,7 +80,7 @@ theorem UpperTheory.V.AlgebraTools.Det.polarInj :
     exact y.sum_single
   have hevO : (ev : MvPolynomial F.G₀ R →+* B).comp (algebraMap O (MvPolynomial F.G₀ R)) = algebraMap O B := by
     ext o
-    simp [ev, MvPolynomial.algebraMap_eq, IsScalarTower.algebraMap_apply O R B]
+    simp [ev, IsScalarTower.algebraMap_apply O R B]
   have key : D.D _ (F.star O _ n u) = D.D _ u := by
     rw [← sub_eq_zero]
     ext m

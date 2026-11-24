@@ -1,49 +1,49 @@
 module
 
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.LemmaKOfSteps
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.ConjStableShaFam
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.Mk0IdMapCongr
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.RestrMem
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.XdualExt
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.FnCycMap
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.GalOfCyc
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.QzBasic
+public import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.TotallyRealRoots.PrincTop
+public import Mathlib.NumberTheory.NumberField.CMField
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.LemmaKOfSteps
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.GaloisCohomologyLength.ShaLenEqShaInv
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ClMapBasic
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ClProd
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ClSubUniv
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.CycZConjGal
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.FnCycMap
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.LenOfCard
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.MinusLenLeOfCl
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.PullEq
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.PullMem
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.QzBasic
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ResInfInj
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ResInfMem
-import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.RestrMem
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ZmodToQZ
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.GalQuot
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.CycMemPrincIff
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.CycRange
 public import Formalism.GaloisCohomology.GaloisCohomologyProofs.LdataNonempty
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ClPullApply
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Cyclotomic.Gal
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.RingTheory.ZMod.UnitsCyclic
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -65,10 +65,362 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.TotallyRealRoots.UnitsMapSurjOfZmod
+import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.PullMem
+import Mathlib.NumberTheory.Cyclotomic.Gal
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.RingTheory.ZMod.UnitsCyclic
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ClPullApply
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.LevCompact, Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.CycZConjGal, Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.MinusLenLeOfCl, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.RingEquivalences.OrderOfOneAddPrimePowZmodPrimePow
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.LevCompact =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.LevCompact", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.ConjStableShaFam\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.FieldTheory.Galois.Profinite\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.Mk0IdMapCongr\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
+
+private theorem mem_princ_iff_norm_sub_one_le (l : ℕ) [Fact l.Prime] (a : ℕ) (x : ℤ_[l]ˣ) :
+    x ∈ KStar.TotallyRealRoots.princ l a ↔ ‖(x : ℤ_[l]) - 1‖ ≤ (l : ℝ) ^ (-(a : ℤ)) := by
+  have h : x ∈ KStar.TotallyRealRoots.princ l a ↔ PadicInt.toZModPow a (x : ℤ_[l]) = 1 := by
+    simp [KStar.TotallyRealRoots.princ, KStar.TotallyRealRoots.redPow, MonoidHom.mem_ker, Units.ext_iff]
+  rw [h, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker,
+    map_sub, map_one, sub_eq_zero]
+
+private theorem princ_isClosed (l : ℕ) [Fact l.Prime] (a : ℕ) :
+    IsClosed ((KStar.TotallyRealRoots.princ l a : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ) := by
+  have e : ((KStar.TotallyRealRoots.princ l a : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ) =
+      {x : ℤ_[l]ˣ | ‖(x : ℤ_[l]) - 1‖ ≤ (l : ℝ) ^ (-(a : ℤ))} := by
+    ext x
+    exact mem_princ_iff_norm_sub_one_le l a x
+  rw [e]
+  exact isClosed_le (continuous_norm.comp (Units.continuous_val.sub continuous_const)) continuous_const
+
+private theorem princ_antitone (l : ℕ) [Fact l.Prime] {a b : ℕ} (hab : a ≤ b) (x : ℤ_[l]ˣ)
+    (hx : x ∈ KStar.TotallyRealRoots.princ l b) : x ∈ KStar.TotallyRealRoots.princ l a := by
+  rw [mem_princ_iff_norm_sub_one_le] at hx ⊢
+  refine hx.trans (zpow_le_zpow_right₀ ?_ (by omega))
+  exact_mod_cast (Fact.out : l.Prime).one_lt.le
+
+private theorem eq_one_of_mem_all_princ (l : ℕ) [Fact l.Prime] (x : ℤ_[l]ˣ)
+    (hx : ∀ a, x ∈ KStar.TotallyRealRoots.princ l a) : x = 1 := by
+  apply Units.ext
+  refine (PadicInt.ext_of_toZModPow (x := (x : ℤ_[l])) (y := 1)).mp fun a => ?_
+  have h := hx a
+  simp only [KStar.TotallyRealRoots.princ, KStar.TotallyRealRoots.redPow, MonoidHom.mem_ker, Units.ext_iff] at h
+  simpa using h
+
+theorem UpperTheory.V.Kum.levCompact :
+    ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (U : Subgroup (G F Ω)) (n : ℕ) (T : Type) [TopologicalSpace T] [CompactSpace T] (M : Type) [Zero M] (ψ : T × levU l U n → M), IsClosed (U : Set (G F Ω)) → IsLocallyConstant ψ →
+    (∀ t (u : levU l U n), u.1 ∈ cycU l U → ψ (t, u) = 0) → ∃ m, n ≤ m ∧ ∀ t (u : levU l U n), u.1 ∈ levU l U m → ψ (t, u) = 0 := by
+  intro F Ω _ _ _ _ _ l _ U n T _ _ M _ ψ hU hψ h0
+  have memL : ∀ (m : ℕ) (x : G F Ω), x ∈ levU l U m ↔ x ∈ U ∧ cycZ F Ω l x ∈ KStar.TotallyRealRoots.princ l m := by
+    intro m x
+    simp [UpperTheory.V.Base.levU, Subgroup.mem_inf, Subgroup.mem_comap]
+  have memC : ∀ x : G F Ω, x ∈ cycU l U ↔ x ∈ U ∧ cycZ F Ω l x = 1 := by
+    intro x
+    simp [UpperTheory.V.Base.cycU, Subgroup.mem_inf, MonoidHom.mem_ker]
+  have closedL : ∀ m : ℕ, IsClosed ((levU l U m : Subgroup (G F Ω)) : Set (G F Ω)) := by
+    intro m
+    have e : ((levU l U m : Subgroup (G F Ω)) : Set (G F Ω)) =
+        (U : Set (G F Ω)) ∩ (cycZ F Ω l) ⁻¹' ((KStar.TotallyRealRoots.princ l m : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ) := by
+      ext x
+      exact memL m x
+    rw [e]
+    exact hU.inter ((princ_isClosed l m).preimage (continuous_cycZ F Ω l))
+  haveI : CompactSpace (levU l U n) := isCompact_iff_compactSpace.mp (closedL n).isCompact
+  let K : Set (T × levU l U n) := {p | ψ p ≠ 0}
+  have hKc : IsClosed K := by
+    have ho : IsOpen (ψ ⁻¹' {0}) := hψ.isOpen_fiber 0
+    exact ho.isClosed_compl
+  let t : ℕ → Set (T × levU l U n) := fun m => {p | (p.2 : G F Ω) ∈ levU l U m}
+  have htc : ∀ m, IsClosed (t m) := fun m =>
+    (closedL m).preimage (continuous_subtype_val.comp continuous_snd)
+  have hst : K ∩ ⋂ m, t m = ∅ := by
+    ext p
+    simp only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_empty_iff_false, iff_false, not_and]
+    intro hp hall
+    apply hp
+    obtain ⟨s, u⟩ := p
+    apply h0 s u
+    rw [memC]
+    refine ⟨((memL n u.1).1 u.2).1, eq_one_of_mem_all_princ l _ fun a => ((memL a u.1).1 (hall a)).2⟩
+  obtain ⟨v, hv⟩ := hKc.isCompact.elim_finite_subfamily_closed t htc (Set.disjoint_iff_inter_eq_empty.mpr hst)
+  refine ⟨max n (v.sup id), le_max_left _ _, ?_⟩
+  intro s u hu
+  by_contra hne
+  have hmem : (s, u) ∈ K ∩ ⋂ i ∈ v, t i := by
+    refine ⟨hne, ?_⟩
+    simp only [Set.mem_iInter]
+    intro i hi
+    show (u : G F Ω) ∈ levU l U i
+    rw [memL] at hu ⊢
+    refine ⟨hu.1, princ_antitone l ?_ _ hu.2⟩
+    exact (Finset.le_sup (f := id) hi).trans (le_max_right _ _)
+  exact Set.disjoint_left.mp hv hmem.1 hmem.2
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.LevCompact =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.CycZConjGal =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.CycZConjGal", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.Mk0IdMapCongr\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.LevCompact\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.RestrMem\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.XdualExt\nimport Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.TotallyRealRoots.UnitsMapSurjOfZmod\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.FieldTheory.Galois.Profinite\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
+
+namespace UpperTheory.V.Kum
+
+section
+
+variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime]
+
+variable [IsAlgClosure F Ω] {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
+
+end
+
+end UpperTheory.V.Kum
+
+private theorem cycZ_eq_of_intertwined {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime]
+    (σ : Ω ≃+* Ω) (u v : G F Ω) (h : ∀ x, v (σ x) = σ (u x)) : cycZ F Ω l v = cycZ F Ω l u := by
+  have key : MulSemiringAction.toRingAut (G F Ω) Ω v * σ = σ * MulSemiringAction.toRingAut (G F Ω) Ω u := by
+    ext x
+    exact h x
+  have e := congrArg (cyclotomicCharacter Ω l) key
+  rw [map_mul, map_mul, mul_comm (cyclotomicCharacter Ω l σ)] at e
+  exact mul_right_cancel e
+
+private theorem mem_levU_of_intertwined {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime]
+    (U : Subgroup (G F Ω)) (n : ℕ) (σ : Ω ≃+* Ω) (u v : G F Ω) (hu : u ∈ levU l U n) (hv : v ∈ U)
+    (h : ∀ x, v (σ x) = σ (u x)) : v ∈ levU l U n := by
+  refine Subgroup.mem_inf.mpr ⟨hv, ?_⟩
+  have hu2 := (Subgroup.mem_inf.mp hu).2
+  rw [Subgroup.mem_comap] at hu2 ⊢
+  rw [cycZ_eq_of_intertwined l σ u v h]
+  exact hu2
+
+private theorem mem_cycU_of_intertwined {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime]
+    (U : Subgroup (G F Ω)) (σ : Ω ≃+* Ω) (u v : G F Ω) (hu : u ∈ cycU l U) (hv : v ∈ U)
+    (h : ∀ x, v (σ x) = σ (u x)) : v ∈ cycU l U := by
+  refine Subgroup.mem_inf.mpr ⟨hv, ?_⟩
+  have hu2 := (Subgroup.mem_inf.mp hu).2
+  rw [MonoidHom.mem_ker] at hu2 ⊢
+  rw [cycZ_eq_of_intertwined l σ u v h]
+  exact hu2
+
+private theorem levU_antitone {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (l : ℕ) [Fact l.Prime]
+    (U : Subgroup (G F Ω)) {n m : ℕ} (h : n ≤ m) : levU l U m ≤ levU l U n :=
+  inf_le_inf_left _ (Subgroup.comap_mono (KStar.TotallyRealRoots.princ_anti h))
+
+private theorem fix_lemma_5 (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
+    (l : ℕ) [Fact l.Prime] (U : Subgroup (G F Ω)) (hU : IsClosed (U : Set (G F Ω))) (n : ℕ)
+    (T : Type) [TopologicalSpace T] [CompactSpace T] (M : Type) [AddCommGroup M]
+    (ψ₀ : levU l U n → M) (hψ₀ : IsLocallyConstant ψ₀) (c : T → G F Ω → G F Ω)
+    (hc : Continuous fun p : T × G F Ω => c p.1 p.2)
+    (hcU : ∀ t u, u ∈ levU l U n → c t u ∈ levU l U n) (A : T → M → M)
+    (hA : ∀ x, IsLocallyConstant fun t => A t x)
+    (h0 : ∀ t (u : levU l U n), (u : G F Ω) ∈ cycU l U → ψ₀ ⟨c t u, hcU t u u.2⟩ = A t (ψ₀ u)) :
+    ∃ m, n ≤ m ∧ ∀ t (u : levU l U n), (u : G F Ω) ∈ levU l U m →
+      ψ₀ ⟨c t u, hcU t u u.2⟩ = A t (ψ₀ u) := by
+  have h1 : IsLocallyConstant fun p : T × levU l U n => ψ₀ ⟨c p.1 p.2, hcU p.1 p.2 p.2.2⟩ :=
+    hψ₀.comp_continuous (Continuous.subtype_mk
+      (hc.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))) _)
+  have h2 : IsLocallyConstant fun p : T × levU l U n => ψ₀ p.2 := hψ₀.comp_continuous continuous_snd
+  have hloc : IsLocallyConstant fun p : T × levU l U n =>
+      ψ₀ ⟨c p.1 p.2, hcU p.1 p.2 p.2.2⟩ - A p.1 (ψ₀ p.2) := by
+    rw [IsLocallyConstant.iff_eventually_eq]
+    rintro ⟨t₀, u₀⟩
+    have h3 : IsLocallyConstant fun p : T × levU l U n => A p.1 (ψ₀ u₀) :=
+      (hA (ψ₀ u₀)).comp_continuous continuous_fst
+    filter_upwards [(IsLocallyConstant.iff_eventually_eq _).mp h1 (t₀, u₀),
+      (IsLocallyConstant.iff_eventually_eq _).mp h2 (t₀, u₀),
+      (IsLocallyConstant.iff_eventually_eq _).mp h3 (t₀, u₀)] with p e1 e2 e3
+    rw [e1, e2, e3]
+  obtain ⟨m, hnm, hm⟩ := levCompact F Ω l U n T M _ hU hloc
+    (fun t u hu => sub_eq_zero.mpr (h0 t u hu))
+  exact ⟨m, hnm, fun t u hu => sub_eq_zero.mp (hm t u hu)⟩
+
+private theorem restr_restr {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (R M : Type) [CommRing R]
+    [AddCommGroup M] [Module R M] {A B C : Subgroup (G F Ω)} (h1 : A ≤ B) (h2 : B ≤ C) (h3 : A ≤ C)
+    (ψ : C → M) : restr R M h1 (restr R M h2 ψ) = restr R M h3 ψ := by
+  funext x
+  rfl
+
+private theorem eqHom_cycU_exists_lift_levU (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
+    [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (N : ℕ) (U : Subgroup (G F Ω)) [hUn : U.Normal]
+    (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (ρ : Representation R (G F Ω) M)
+    (hN : N ≠ 0) (hU : IsClosed (U : Set (G F Ω))) (hρ : ∀ m, IsLocallyConstant fun g => ρ g m) :
+    ∀ φ ∈ EqHom N (cycU l U) ρ, ∃ n, ∃ ψ ∈ EqHom N (levU l U n) ρ,
+      restr R M (cycU_le_levU l U n) ψ = φ := by
+  intro φ hφ
+  obtain ⟨hφX, hφC⟩ := Submodule.mem_inf.mp hφ
+  obtain ⟨n, ψ₀, hψ₀X, hres⟩ := xdualExt F Ω l N U R M hN hU φ hφX
+  have hloc : IsLocallyConstant ψ₀ := hψ₀X.1
+  have hcU : ∀ g u, u ∈ levU l U n → g * u * g⁻¹ ∈ levU l U n := fun g u hu =>
+    mem_levU_of_intertwined l U n g.toRingEquiv u _ hu (hUn.conj_mem u (levU_le l U n hu) g)
+      (fun x => by simp [AlgEquiv.mul_apply])
+  have h0 : ∀ g (u : levU l U n), (u : G F Ω) ∈ cycU l U →
+      ψ₀ ⟨g * u * g⁻¹, hcU g u u.2⟩ = ρ g (ψ₀ u) := by
+    intro g u hu
+    have hw' : g * (u : G F Ω) * g⁻¹ ∈ cycU l U :=
+      mem_cycU_of_intertwined l U g.toRingEquiv u _ hu (hUn.conj_mem u (levU_le l U n u.2) g)
+        (fun x => by simp [AlgEquiv.mul_apply])
+    have e1 : ψ₀ ⟨g * u * g⁻¹, hcU g u u.2⟩ = φ ⟨g * u * g⁻¹, hw'⟩ := by
+      rw [← hres]
+      rfl
+    have e2 : ψ₀ u = φ ⟨u, hu⟩ := by
+      rw [← hres]
+      rfl
+    rw [e1, e2]
+    exact (Submodule.mem_iInf _).mp hφC g ⟨u, hu⟩ ⟨g * u * g⁻¹, hw'⟩
+      (fun x => by simp [AlgEquiv.mul_apply])
+  obtain ⟨m, hnm, hm⟩ := fix_lemma_5 F Ω l U hU n (G F Ω) M ψ₀ hloc (fun g u => g * u * g⁻¹)
+    ((continuous_fst.mul continuous_snd).mul continuous_fst.inv) hcU (fun g x => ρ g x) hρ h0
+  refine ⟨m, restr R M (levU_antitone l U hnm) ψ₀, Submodule.mem_inf.mpr ⟨?_, ?_⟩, ?_⟩
+  · exact (restrMem F Ω N _ _ (levU_antitone l U hnm) R M ρ).1 (Submodule.mem_map_of_mem hψ₀X)
+  · refine (Submodule.mem_iInf _).mpr fun g => ?_
+    intro u u' hrel
+    have hu' : (u' : G F Ω) = g * u * g⁻¹ := by
+      ext x
+      have e := hrel (g⁻¹ x)
+      simp only [AlgEquiv.coe_ringEquiv] at e
+      simp only [AlgEquiv.mul_apply, ← e]
+      simp
+    have e := hm g (Subgroup.inclusion (levU_antitone l U hnm) u) u.2
+    show ψ₀ (Subgroup.inclusion _ u') = ρ g (ψ₀ (Subgroup.inclusion _ u))
+    rw [← e]
+    congr 1
+    exact Subtype.ext hu'
+  · exact (restr_restr R M _ _ (cycU_le_levU l U n) ψ₀).trans hres
+
+theorem UpperTheory.V.Kum.eqExt :
+    ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (N : ℕ) (U : Subgroup (G F Ω)) [U.Normal] (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (ρ : Representation R (G F Ω) M), N ≠ 0 → IsClosed (U : Set (G F Ω)) → (∀ m, IsLocallyConstant fun g => ρ g m) →
+    (∀ φ ∈ EqHom N (cycU l U) ρ, ∃ n, ∃ ψ ∈ EqHom N (levU l U n) ρ, restr R M (cycU_le_levU l U n) ψ = φ) ∧
+    ∀ (τ : F ≃+* F) (σ : Ω ≃+* Ω) (h : IsLift τ σ) (s : R), (∀ u ∈ U, conjGal h.symm u ∈ U) → ∀ φ ∈ EqEig N (cycU l U) ρ σ s, ∃ n, ∃ ψ ∈ EqEig N (levU l U n) ρ σ s, restr R M (cycU_le_levU l U n) ψ = φ := by
+  intro F Ω _ _ _ _ _ l _ N U hUn R M _ _ _ ρ hN hU hρ
+  refine ⟨eqHom_cycU_exists_lift_levU F Ω l N U R M ρ hN hU hρ, ?_⟩
+  intro τ σ h s hUσ φ hφ
+  obtain ⟨hφH, hφS⟩ := Submodule.mem_inf.mp hφ
+  obtain ⟨n, ψ, hψ, hres⟩ := eqHom_cycU_exists_lift_levU F Ω l N U R M ρ hN hU hρ φ hφH
+  have hloc : IsLocallyConstant ψ := (Submodule.mem_inf.mp hψ).1.1
+  have hrelc : ∀ (u : G F Ω) x, conjGal h.symm u (σ x) = σ (u x) := by
+    intro u x
+    simp [conjGal_apply]
+  have hcU : ∀ (t : Unit) u, u ∈ levU l U n → conjGal h.symm u ∈ levU l U n := fun _ u hu =>
+    mem_levU_of_intertwined l U n σ u _ hu (hUσ u (levU_le l U n hu)) (hrelc u)
+  have h0 : ∀ (t : Unit) (u : levU l U n), (u : G F Ω) ∈ cycU l U →
+      ψ ⟨conjGal h.symm u, hcU t u u.2⟩ = s • ψ u := by
+    intro t u hu
+    have hw' : conjGal h.symm (u : G F Ω) ∈ cycU l U :=
+      mem_cycU_of_intertwined l U σ u _ hu (hUσ u (levU_le l U n u.2)) (hrelc u)
+    have e1 : ψ ⟨conjGal h.symm u, hcU t u u.2⟩ = φ ⟨conjGal h.symm u, hw'⟩ := by
+      rw [← hres]
+      rfl
+    have e2 : ψ u = φ ⟨u, hu⟩ := by
+      rw [← hres]
+      rfl
+    rw [e1, e2]
+    exact hφS ⟨u, hu⟩ ⟨conjGal h.symm u, hw'⟩ (hrelc u)
+  obtain ⟨m, hnm, hm⟩ := fix_lemma_5 F Ω l U hU n Unit M ψ hloc (fun _ u => conjGal h.symm u)
+    ((continuous_conjGal h.symm).comp continuous_snd) hcU (fun _ x => s • x)
+    (fun _ => IsLocallyConstant.const _) h0
+  refine ⟨m, restr R M (levU_antitone l U hnm) ψ, Submodule.mem_inf.mpr ⟨?_, ?_⟩, ?_⟩
+  · exact (restrMem F Ω N _ _ (levU_antitone l U hnm) R M ρ).2.1 (Submodule.mem_map_of_mem hψ)
+  · intro u u' hrel
+    have hu' : (u' : G F Ω) = conjGal h.symm u := by
+      ext x
+      have e := hrel (σ.symm x)
+      simp only [RingEquiv.apply_symm_apply] at e
+      rw [e]
+      simp [conjGal_apply]
+    have e := hm () (Subgroup.inclusion (levU_antitone l U hnm) u) u.2
+    show ψ (Subgroup.inclusion _ u') = s • ψ (Subgroup.inclusion _ u)
+    rw [← e]
+    congr 1
+    exact Subtype.ext hu'
+  · exact (restr_restr R M _ _ (cycU_le_levU l U n) ψ).trans hres
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.CycZConjGal =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.MinusLenLeOfCl =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.MinusLenLeOfCl", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.Mk0IdMapCongr\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.FnCycMap\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.GalOfCyc\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.QzBasic\npublic import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.TotallyRealRoots.PrincTop\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import Mathlib.NumberTheory.NumberField.CMField\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base
+
+namespace UpperTheory.V.Kum
+
+section Lim
+
+variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
+  {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
+
+omit [IsAlgClosure F Ω] in
+theorem levU_anti (U : Subgroup (G F Ω)) {m n : ℕ} (h : m ≤ n) : levU l U n ≤ levU l U m := by
+  intro g hg
+  simp only [levU, Subgroup.mem_inf, Subgroup.mem_comap, KStar.TotallyRealRoots.mem_princ] at hg ⊢
+  exact ⟨hg.1, (pow_dvd_pow _ h).trans hg.2⟩
+
+
+theorem galOf_Fn (n : ℕ) : galOf F (Fn F Ω l n) Ω = Un F Ω l n := by
+  have := (fnCyc F Ω l n).1
+  rw [galOfCyc F Ω l n F (Fn F Ω l n), galOf_self]
+
+
+private theorem princ_smul_eq_self_of_pow_smul_eq_zero {k : ℕ} {x : QZ l} (hx : l ^ k • x = 0) {w : ℤ_[l]ˣ}
+    (hw : w ∈ KStar.TotallyRealRoots.princ l k) : (w : ℤ_[l]) • x = x := by
+  rw [KStar.TotallyRealRoots.mem_princ] at hw
+  obtain ⟨c, hc⟩ := hw
+  have h1 : ((w : ℤ_[l]) - 1) • x = 0 := by
+    rw [hc, mul_comm ((l : ℤ_[l]) ^ k) c, mul_smul, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, hx, smul_zero]
+  rw [sub_smul, one_smul, sub_eq_zero] at h1
+  exact h1
+
+theorem locConst_qzG (e : ℤ) (m : QZ l) : IsLocallyConstant fun g => qzG F Ω l e g m := by
+  rw [IsLocallyConstant.iff_eventually_eq]
+  intro g0
+  obtain ⟨k, hk⟩ := (qzBasic l).2.1 m
+  have hc : Continuous fun g => cycZ F Ω l g * (cycZ F Ω l g0)⁻¹ :=
+    (continuous_cycZ F Ω l).mul continuous_const
+  have hmem : ∀ᶠ g in nhds g0, cycZ F Ω l g * (cycZ F Ω l g0)⁻¹ ∈ KStar.TotallyRealRoots.princ l k := by
+    apply hc.continuousAt.preimage_mem_nhds
+    apply (KStar.TotallyRealRoots.isOpen_princ k).mem_nhds
+    simp only [mul_inv_cancel]
+    exact (KStar.TotallyRealRoots.princ l k).one_mem
+  filter_upwards [hmem] with g hg
+  show ((cycZ F Ω l g ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) • m = ((cycZ F Ω l g0 ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) • m
+  have hw : (cycZ F Ω l g * (cycZ F Ω l g0)⁻¹) ^ (-e) ∈ KStar.TotallyRealRoots.princ l k := zpow_mem hg _
+  have hx : l ^ k • (((cycZ F Ω l g0 ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) • m) = 0 := by
+    rw [smul_comm, hk, smul_zero]
+  have key : cycZ F Ω l g ^ (-e) =
+      (cycZ F Ω l g * (cycZ F Ω l g0)⁻¹) ^ (-e) * cycZ F Ω l g0 ^ (-e) := by
+    rw [← mul_zpow, inv_mul_cancel_right]
+  rw [key, Units.val_mul, mul_smul, princ_smul_eq_self_of_pow_smul_eq_zero hx hw]
+
+variable [IsCMField F]
+
+end Lim
+
+end UpperTheory.V.Kum
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.MinusLenLeOfCl =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.RingEquivalences.OrderOfOneAddPrimePowZmodPrimePow =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.RingEquivalences.OrderOfOneAddPrimePowZmodPrimePow", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.LemmaKOfSteps\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.Mk0IdMapCongr\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.GaloisCohomologyLength.ShaLenEqShaInv\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ClMapBasic\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ClProd\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ClSubUniv\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.CycZConjGal\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.FnCycMap\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.LenOfCard\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.MinusLenLeOfCl\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.PullEq\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.PullMem\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.QzBasic\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ResInfInj\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ResInfMem\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.RestrMem\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ZmodToQZ\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.GalQuot\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.CycMemPrincIff\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.CycRange\npublic import Formalism.GaloisCohomology.GaloisCohomologyProofs.LdataNonempty\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Cyclotomic.Gal\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.RingTheory.ZMod.UnitsCyclic\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.KummerTheory.ClPullApply\n\n"}
+section -- clump:auto
 @[expose] public section
 
 section
@@ -524,3 +876,8 @@ theorem PositivityTheory.QuaternionShaBounds.ShaAsm_holds : PositivityTheory.Qua
 end
 
 theorem PositivityTheory.QuaternionShaBounds.sSha : UpperTheory.V.ZK.SSha := PositivityTheory.QuaternionShaBounds.ShaAsm_holds PositivityTheory.QuaternionShaBounds.LayEx_holds PositivityTheory.QuaternionShaBounds.ClInj_holds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.RingEquivalences.OrderOfOneAddPrimePowZmodPrimePow =====

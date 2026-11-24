@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
-public import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.DivisorCenterProperLift
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivisorCenterProperLift
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,7 +57,7 @@ theorem DivOver.isAt_lift : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsInteg
     IsProper s → ∀ (E' : DivOver (s ≫ p)) (E : DivOver p), DivOver.Over s E' E →
     ∀ z : X, E.IsAt z → ∃ w : Y, s w = z ∧ E'.IsAt w := by
   intro k _ X Y _ _ p s _ hbij hprop E' E hOver z hz
-  obtain ⟨w, hw, hwt⟩ := GlobalTheory.T.divisor_center_proper_lift k X Y p s hbij hprop E' E hOver z
+  obtain ⟨w, hw, hwt⟩ := _root_.GlobalTheory.Discrepancy.DivOver.exists_through_of_isProper k X Y p s hbij hprop E' E hOver z
     (hz.through specializes_rfl)
   subst hw
   refine ⟨w, rfl, fun f => ⟨fun hf => ?_, hwt f⟩⟩

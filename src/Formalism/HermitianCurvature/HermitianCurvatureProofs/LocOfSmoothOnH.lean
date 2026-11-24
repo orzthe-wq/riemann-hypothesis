@@ -52,6 +52,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Calculus.BumpFunction.Basic
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving
 
 @[expose] public section
 
@@ -203,9 +204,6 @@ theorem smooth_vLet (z z' : Fin (2 * r + k + 1) → ℂ) (i : ℕ) (hi : i ≤ r
   obtain ⟨U, F, hU, hgU, hF, hFe⟩ := hL2
   exact ⟨U, F, hU, hgU, hF, fun g hg hgl => hFe g hg hgl.1⟩
 
-theorem one_mem_S (z : Fin (2 * r + k + 1) → ℂ) {n : Mat k r} (hn : n ∈ Nset k r) : n ∈ Sset k r z :=
-  ⟨1, BigCellZetaMinors.one_uw z, n, hn, (Matrix.one_mul n).symm⟩
-
 theorem rulesOn_vLet (k r j : ℕ) (hj : j + 1 ≤ r) (z z' : Fin (2 * r + k + 1) → ℂ) (E : Type)
     [NormedAddCommGroup E] [NormedSpace ℂ E] (Dm : Set (Q.Mx k r)) (Φ : Q.Mx k r → E) (hz : inWb k r z)
     (hz' : inWb k r z') (hDm : IsOpen Dm) (hDJ : Dm ⊆ LevelPointCoordinates.domJ k r j hj z z')
@@ -233,7 +231,7 @@ theorem rulesOn_vLet (k r j : ℕ) (hj : j + 1 ≤ r) (z z' : Fin (2 * r + k + 1
           rw [Matrix.one_mul]
           exact vLet_congr z z' i _ l e hVa (fun y hy hyG => (hfae y hy hyG).symm) _ hpa hgnG
       _ = D.vLet k r z z' i _ l e (fun x => fa (1 * x * n)) g :=
-          vLet_transl z z' hz hz' i _ l e hfa (one_mem_S z WeylGroupFacts.mem_n_one) (one_mem_S z' hn) hgG
+          vLet_transl z z' hz hz' i _ l e hfa (_root_.Formalism.FourierDecayAlt.P.Dx2.Rad.N_sub_S z WeylGroupFacts.mem_n_one) (_root_.Formalism.FourierDecayAlt.P.Dx2.Rad.N_sub_S z' hn) hgG
       _ = D.vLet k r z z' i _ l e (fun x => psi k r z' cStd n • fb x) g := by
           refine vLet_congr z z' i _ l e hW (fun y hy hyG => ?_) g ⟨hpb, hpa⟩ hgG
           rw [Matrix.one_mul, hfae (y * n) hy.2 (AAInvW.inUH_mul hyG hn.1),
@@ -256,7 +254,7 @@ theorem rulesOn_vLet (k r j : ℕ) (hj : j + 1 ≤ r) (z z' : Fin (2 * r + k + 1
           rw [Matrix.mul_one]
           exact vLet_congr z z' i _ l e hVa (fun y hy hyG => (hfae y hy hyG).symm) _ hpa hsgG
       _ = D.vLet k r z z' i _ l e (fun x => fa (s * x * 1)) g :=
-          vLet_transl z z' hz hz' i _ l e hfa (one_mem_S z hsN) (one_mem_S z' WeylGroupFacts.mem_n_one) hgG
+          vLet_transl z z' hz hz' i _ l e hfa (_root_.Formalism.FourierDecayAlt.P.Dx2.Rad.N_sub_S z hsN) (_root_.Formalism.FourierDecayAlt.P.Dx2.Rad.N_sub_S z' WeylGroupFacts.mem_n_one) hgG
       _ = D.vLet k r z z' i _ l e (fun x => psi k r z cStd s • fb x) g := by
           refine vLet_congr z z' i _ l e hW (fun y hy hyG => ?_) g ⟨hpb, hpa⟩ hgG
           rw [Matrix.mul_one, hfae (s * y) hy.2 (AAInvW.inUH_mul hsN.1 hyG),

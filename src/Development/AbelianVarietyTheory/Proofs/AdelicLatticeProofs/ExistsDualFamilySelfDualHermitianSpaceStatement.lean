@@ -45,4 +45,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.exists_dual_family_selfDual_hermitianSpace : ∀ (D : D7) (S : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)), IsSelfDualC S Λ → ∃ (n : ℕ) (s s' : Fin n → Fin S.rank → D.host.E), (∀ i, s i ∈ Λ ∧ s' i ∈ Λ) ∧ ∀ a j, ∑ i, s i a * ∑ k, star (s' i k) * S.gram k j = if a = j then 1 else 0 := by
-  first | exact @GlobalTheory.LatVacDual.dualFamily | exact GlobalTheory.LatVacDual.dualFamily | (intros; apply GlobalTheory.LatVacDual.dualFamily <;> assumption)
+  first | exact @GlobalTheory.LatVacDual.dualFamily

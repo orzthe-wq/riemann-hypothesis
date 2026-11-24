@@ -2,7 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ThetaValues.LeCovCoeff
 public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.RuleBaseChangeSectionValuesSemilinearStatement
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.RuleBaseChangeSectionValuesSemilinear
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ColumnDataLaws
+public import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -38,10 +40,8 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
-public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ColumnDataLaws
 import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector
 import Formalism.LocalToGlobal.IndefiniteReal.IndefiniteWeightData
-public import Formalism.LocalToGlobal.IndefiniteReal.OneMapT
 
 @[expose] public section
 
@@ -66,7 +66,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 theorem isBC_rulBC {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) :
     IsBC hle (rulBC hle f) (fun _ : Fin 1 => (1 : c'.F)) (fun _ => f) := by
   intro S _ _ _ h y
-  rw [((GlobalTheory.T.ruleBaseChange_section_values_semilinear E H Dw l Xo c c' hle).1 a n f hf).2 S h y]
+  rw [((_root_.GlobalTheory.FieldBC.rulBC_sec_val_linear E H Dw l Xo c c' hle).1 a n f hf).2 S h y]
   simp
 
 end Field

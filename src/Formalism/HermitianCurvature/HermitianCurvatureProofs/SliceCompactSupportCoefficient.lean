@@ -175,9 +175,9 @@ theorem slice_pos_cpt (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerP
       set g := U.gaXi (p := ph + (n + 1)) (s := 0) k ρ (Formalism.FourierDecayAlt.P.Dx2.SL.sigP (D.ptPerm h)) (Formalism.FourierDecayAlt.P.Dx2.SL.dP (D.ptDiag h) t) ξ
           (fun a => a.elim0) γ with hg
       have hgG : g ∈ B.GV k (ph + (n + 1) + 0 + ρ) :=
-        Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation _ _ hdP ξ _ hZ0 hγ
+        Formalism.FourierDecayAlt.P.Ux10.gaXi_mem _root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam _ _ hdP ξ _ hZ0 hγ
       have hDj : U.DjU k (ph + (n + 1) + 0) ρ g = dh * G.detM (fun a => a.elim0 : G.Mat 0) :=
-        Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice _ _ ξ _ γ
+        Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi _root_.Formalism.FourierDecayAlt.P.Ux3.zhSlice _ _ ξ _ γ
       have hdetZ : (U.ZjH (p := ph + (n + 1)) (s := 0) (Formalism.FourierDecayAlt.P.Dx2.SL.sigP (D.ptPerm h)) (Formalism.FourierDecayAlt.P.Dx2.SL.dP (D.ptDiag h) t) ξ.2
           (fun a => a.elim0 : G.Mat 0)).det = dh * G.detM (fun a => a.elim0 : G.Mat 0) :=
         Formalism.FourierDecayAlt.P.level_determinant_z _ _ _ _ _ _

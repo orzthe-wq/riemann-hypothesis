@@ -761,7 +761,7 @@ theorem wPt_val {r : ℕ} (γ : Point ℂ (r + 1)) (x : Fin (r + 1)) :
     (wPt γ x).val = Formalism.FourierDecayAlt.D.ptPartner (γ.1.map Prod.swap) x.val := by
   unfold wPt
   rw [cast_perm_val]
-  exact (Formalism.FourierDecayAlt.P.ptPerm_spec _ (r + 1) (isLocPt_swap γ)).1 _
+  exact (_root_.Formalism.FourierDecayAlt.P.Dx1.d_ptPermSpec _ (r + 1) (isLocPt_swap γ)).1 _
 
 theorem wPt_invol {r : ℕ} (γ : Point ℂ (r + 1)) (x : Fin (r + 1)) : wPt γ (wPt γ x) = x := by
   apply Fin.ext
@@ -813,9 +813,9 @@ theorem herm_esI (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) v (bvec (esI k r a)) = v (eI k r a) := by
   unfold herm bvec
   simp only [dotProduct, Pi.star_apply, Pi.single_apply, apply_ite star, star_one, star_zero, ite_mul, one_mul,
-    zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   simp only [Matrix.mulVec, dotProduct, hpk_esI, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq',
-    Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    Finset.mem_univ, if_true]
 
 theorem flag_eq_uMap (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (a b : Fin (r + 1)) (ha : a.val < r) : flagMat k r z ρ a b = Formalism.FourierDecayAlt.C2.uMap k r z ρ a b := by
@@ -861,27 +861,6 @@ theorem good_of {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProduct
   · have hpos := Formalism.FourierDecayAlt.P.Dx2.Rad.pos_of_w D hd hZ hB
     exact ⟨Formalism.FourierDecayAlt.P.Dx2.Rad.exists_rho D hγ hpos hd hZ, Formalism.FourierDecayAlt.P.Dx2.Rad.u_inj D hγ hpos hd hZ,
       fun ρ hρ => Formalism.FourierDecayAlt.P.Dx2.Rad.u_lstg D hγ hpos hd hZ hρ⟩
-
-theorem isHaarOn_smul {k r : ℕ} {U : Set (Formalism.FourierDecayAlt.B.Mat k r)} {μ : Measure (Mt k r)} (h : Formalism.FourierDecayAlt.B.IsHaarOn U μ)
-    {c : ENNReal} (h0 : c ≠ 0) (h1 : c ≠ ⊤) : Formalism.FourierDecayAlt.B.IsHaarOn U (c • μ) := by
-  refine ⟨?_, ?_, ?_, ?_, ?_⟩
-  · rw [Measure.smul_apply, h.conc, smul_zero]
-  · intro a ha
-    have hm := Formalism.FourierDecayAlt.P.B2x1.lmulM_cont (k := k) (r := r) a
-    rw [Measure.map_smul c hm.measurable.aemeasurable, h.left a ha]
-  · intro a ha
-    have hm := Formalism.FourierDecayAlt.P.B2x1.rmulF_cont a
-    rw [Measure.map_smul c hm.measurable.aemeasurable, h.right a ha]
-  · intro K hK
-    rw [Measure.smul_apply, smul_eq_mul]
-    exact ENNReal.mul_lt_top h1.lt_top (h.finite_compact K hK)
-  ·
-    intro h'
-    apply h.ne_zero
-    rw [← Measure.measure_univ_eq_zero]
-    have := congrArg (fun ν : Measure (Mt k r) => ν Set.univ) h'
-    simp only [Measure.smul_apply, smul_eq_mul, Measure.coe_zero, Pi.zero_apply] at this
-    exact (mul_eq_zero.1 this).resolve_left h0
 
 theorem meas_rootCoords {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (γ : Point ℂ (r + 1)) :
     Measurable (rootCoords k r z γ) := by
@@ -950,7 +929,7 @@ theorem muR_conc : Formalism.FourierDecayAlt.D.muR Ds g (wPt γ) {x | Matrix.of 
   have hG := good_of Ds hg (dPt_ne γ) hZ
   have hm := Formalism.FourierDecayAlt.P.Dx2.Rad.rhoF_meas Ds hg (dPt_ne γ) hG
   have hcl : IsClosed {x : Mt (k0 + 1) r | Matrix.of x ∈ Formalism.FourierDecayAlt.C6.Rset g} :=
-    (Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (Formalism.FourierDecayAlt.P.Dx2.Rad.isUnit_G hg)).closed
+    (Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (_root_.PI.StabPairsW.isUnit_det_of_mem_GV hg)).closed
   show (volume.map fun x => Matrix.of.symm (Formalism.FourierDecayAlt.P.Dx2.Rad.rhoF Ds g (wPt γ) x)) _ = 0
   rw [show {x : Mt (k0 + 1) r | Matrix.of x ∉ RStab (k0 + 1) r g} = {x | Matrix.of x ∈ Formalism.FourierDecayAlt.C6.Rset g}ᶜ from rfl,
     Measure.map_apply hm hcl.measurableSet.compl]
@@ -1055,7 +1034,7 @@ theorem rootHaar_gen {k0 r : ℕ} (L : LocBessel (k0 + 1) r) (γ : Point ℂ (r 
     rw [hz, hz', hrep.2, ← ptMatN_swap, ptMatN_mono]
   have hG := good_of Ds hrep.1 (dPt_ne γ) hZ
   rw [rootMeas_unique L Ds hz γ hrep.1 hZ hc μR hroot]
-  refine ⟨isHaarOn_smul (Formalism.FourierDecayAlt.P.Dx2.Rad.haar_good Ds hrep.1 (dPt_ne γ) hG)
+  refine ⟨_root_.Formalism.MainNotions.BridgeLemma₃.hu_smul (Formalism.FourierDecayAlt.P.Dx2.Rad.haar_good Ds hrep.1 (dPt_ne γ) hG)
     (ENNReal.ofReal_pos.2 (by positivity)).ne' ENNReal.ofReal_ne_top, fun M hM => ?_⟩
   exact (Formalism.FourierDecayAlt.P.Dx3.intR Ds hrep.1 (dPt_ne γ) hG hM).smul_measure ENNReal.ofReal_ne_top
 
@@ -1286,12 +1265,6 @@ theorem K_finite_decay : CutKFin := by
 
 
 
-section jc12
-open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
-
-end jc12
-
-
 section HSadj
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
@@ -1325,12 +1298,6 @@ theorem adjHS_spec (T : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) (A B : Wq
 
 end HSadj
 
-section HSadj2
-variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
-  [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
-
-end HSadj2
-
 section cellOp
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
@@ -1351,18 +1318,6 @@ def cellOp {N : ℕ} (ws : Fin N → List (Formalism.MainNotions.BridgeLemma₃.
   (List.finRange N).flatMap fun n => cellTerms (ws n) (a n)
 
 end cellOp
-
-section cellOp2
-variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
-  [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
-
-end cellOp2
-
-section cellOp3
-variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
-  [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
-
-end cellOp3
 
 section zeroOp
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]

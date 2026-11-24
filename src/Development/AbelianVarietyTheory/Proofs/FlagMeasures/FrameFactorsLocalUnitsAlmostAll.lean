@@ -102,13 +102,6 @@ private theorem exists_nat_mul_mem_ringOfIntegers_of_fractionalIdeal {E : Type} 
       _ = (c : E) * (z : E) := by rw [hz']
       _ = ((c * z : 𝓞 E) : E) := by push_cast; ring
 
-private theorem ιE_ringOfIntegers_mem_O (D : D7) (p : PlF D) (z : 𝓞 D.host.E) :
-    (D.s.atP p).ιE (z : D.host.E) ∈ (D.s.atP p).O := by
-  rw [(D.s.atP p).O_def]
-  have h : IsIntegral ℤ ((D.s.atP p).ιE (z : D.host.E)) :=
-    (RingOfIntegers.isIntegral_coe z).map ((D.s.atP p).ιE.toIntAlgHom)
-  exact h.tower_top
-
 private theorem finite_setOf_not_isUnit_natCast_atP (D : D7) (N : ℕ) (hN : N ≠ 0) :
     {p : PlF D | ¬ ∃ w ∈ (D.s.atP p).O, (D.s.atP p).ιE (N : D.host.E) * w = 1}.Finite := by
   have hI : Ideal.span {(N : 𝓞 D.host.F)} ≠ 0 := by
@@ -177,7 +170,7 @@ theorem GlobalTheory.FrameFactorUnit.frFac_isUnitO_finite : ∀ (D : D7) (Z : Lo
       have hy' : (D.s.atP p).ιE y = w * (D.s.atP p).ιE (z : D.host.E) := by
         rw [← hz, map_mul, ← mul_assoc, mul_comm w, hw1, one_mul]
       rw [hy']
-      exact mul_mem hwO (ιE_ringOfIntegers_mem_O D p z)
+      exact mul_mem hwO (_root_.PI.CntNotIntW.iE_mem_O D p z)
     | zero => exact zero_mem _
     | add x y _ _ hx hy => exact add_mem hx hy
     | smul r x _ hx =>

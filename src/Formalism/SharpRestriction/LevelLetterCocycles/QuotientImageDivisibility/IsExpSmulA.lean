@@ -127,7 +127,7 @@ theorem expCritN_of [NeZero n] (hA : Formalism.MainNotions.LiftingTheory.CaseA W
     exact (h4 T hT i 0 ζ (by rwa [zero_add, pow_one])).1 ⟨x, hx⟩ j
   · intro hcoef
     obtain ⟨w, hw⟩ := hR.2.2.2.2.1
-    rw [eat_qp] at hw
+    rw [_root_.Formalism.MainNotions.LiftingTheory.eisenstein_at_uniformizer] at hw
     have hQ : W.Q = (w : LetA O n) * Formalism.MainNotions.LiftingTheory.qp W := by rw [MC.Q_eq_q W hs, hw]
     have hQk : W.Q ^ k • x ∈ W.N T := by
       rw [hQ, mul_pow, mul_smul]; exact (W.N T).smul_mem _ hk

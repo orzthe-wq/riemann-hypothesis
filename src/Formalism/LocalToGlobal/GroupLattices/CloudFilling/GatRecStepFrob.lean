@@ -3,43 +3,6 @@ module
 public import Formalism.LocalToGlobal.GroupLattices.CloudFilling.ExistsPowOrbRep
 public import Formalism.LocalToGlobal.GroupLattices.LevelGatherings.LevelGatherings
 public import Formalism.LocalRingCardinality.SpanPowerMembership.GatTies
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -87,8 +50,6 @@ theorem gatRec_n_frob (v : Fin (gatRec D u (D.R.iota (hP D p)) hS r L I ψ y e).
   first
   | (rw [show (((zPsi D.R.toFrame (D.R.iota (hP D p))) : D.R.Psi) : D.R.GG) = MonoidHom.inr _ _ (D.R.iota (hP D p)) from rfl]
      exact orderOf_injective _ (fun a b h => congrArg Prod.snd h) _)
-  | simp [zPsi, Prod.orderOf]
-  | simp [zPsi, Prod.orderOf_mk]
 
 
 include hg in
@@ -105,15 +66,11 @@ theorem gatRec_step_frob (v : Fin (gatRec D u (D.R.iota (hP D p)) hS r L I ψ y 
     · show ((1, 1) : G0) = c0 * c0
       first
       | rfl
-      | decide
-      | simp [c0]
     · show D.R.iota (hP D p) = D.R.iota (hP D p) * 1
       rw [mul_one]
   rw [mul_assoc, ← hz]
   simp only [gatRec_pos, Equiv.trans_apply, Equiv.apply_symm_apply]
   first
   | exact congrArg Subtype.val (posG_step (zPsi D.R.toFrame (D.R.iota (hP D p))) v s)
-  | exact congrArg Subtype.val (posG_step v s)
-  | exact congrArg Subtype.val (posG_step (z := (zPsi D.R.toFrame (D.R.iota (hP D p)))) v s)
 
 end Formalism.L2.G

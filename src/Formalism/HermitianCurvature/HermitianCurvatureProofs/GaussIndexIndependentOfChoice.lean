@@ -64,8 +64,7 @@ variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R :
   {ψ : AddChar K ℂ}
 
 theorem psi_R (hD : LocalDatum K R ψ) {a : K} (ha : a ∈ R) : ψ a = 1 := by
-  have := (hD.selfDual a).2 ha 1 R.one_mem
-  simpa using this
+  simpa using (hD.selfDual a).2 ha 1 R.one_mem
 
 theorem tube {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace Z]
     (F : X × Y → Z) (hF : Continuous F) (x0 : X) (C : Set Y) (hC : IsCompact C) (U : Set Z)
@@ -84,24 +83,20 @@ theorem eq_zero_of_ideal (hD : LocalDatum K R ψ) (h0 : ∀ n : ℕ, n ≠ 0 →
     obtain ⟨c, -, hc⟩ := hD.isCompact.exists_mapClusterPt (f := atTop)
       (u := fun n : ℕ => (n : K) * x) (by
         rw [Filter.le_principal_iff, Filter.mem_map]; exact Filter.univ_mem' hseq)
-    have ht : Tendsto (fun p : K × K => p.1 - p.2) (𝓝 c ×ˢ 𝓝 c) (𝓝 0) := by
-      have : Continuous (fun p : K × K => p.1 - p.2) := continuous_fst.sub continuous_snd
-      have h2 := this.tendsto (c, c)
-      rwa [nhds_prod_eq, sub_self] at h2
+    have ht : Tendsto (Prod.fst - Prod.snd : K × K → K) (𝓝 c ×ˢ 𝓝 c) (𝓝 0) := by
+      simpa [nhds_prod_eq, sub_self] using
+        (continuous_fst.sub continuous_snd : Continuous (Prod.fst - Prod.snd : K × K → K)).tendsto (c, c)
     obtain ⟨U, hU, hUW⟩ := Filter.mem_prod_self_iff.1 (ht hW)
     have hfr := mapClusterPt_iff_frequently.1 hc U hU
     rw [Filter.frequently_atTop] at hfr
     obtain ⟨n, -, hn⟩ := hfr 0
     obtain ⟨m, hm, hm'⟩ := hfr (n + 1)
     refine ⟨m - n, by omega, ?_⟩
-    have : ((m - n : ℕ) : K) * x = (m : K) * x - (n : K) * x := by
-      rw [Nat.cast_sub (by omega)]; ring
-    rw [this]
+    rw [Nat.cast_sub (by omega), sub_mul]
     exact hUW (Set.mk_mem_prod hm' hn)
   by_contra hne
-  have hxx : x * x ≠ 0 := by
-    intro h
-    exact hne (IsReduced.eq_zero x ⟨2, by rw [sq]; exact h⟩)
+  have hxx : x * x ≠ 0 := fun h =>
+    hne (IsReduced.eq_zero x ⟨2, by simpa [sq] using h⟩)
   obtain ⟨V, hV, hVR⟩ := tube (fun p : K × K => p.1 * p.2) (continuous_fst.mul continuous_snd) 0
     (R : Set K) hD.isCompact {y | y ≠ x * x} isOpen_ne (by
       intro y _; simp only [zero_mul, Set.mem_ofPred_eq]; exact fun h => hxx h.symm)
@@ -124,10 +119,7 @@ theorem big (hD : LocalDatum K R ψ) {ϖ : Kˣ}
   obtain ⟨n, hn⟩ := hC.elim_directed_cover
     (fun n : ℕ => (fun y => (ϖ : K) ^ n * y) ⁻¹' (R : Set K))
     (fun n => hD.isOpen.preimage (continuous_const.mul continuous_id))
-    (by
-      intro y _
-      rw [Set.mem_iUnion]
-      exact hϖ' y)
+    (fun y _ => by simpa using hϖ' y)
     (by
       apply directed_of_isDirected_le
       intro a b hab y hy
@@ -135,7 +127,7 @@ theorem big (hD : LocalDatum K R ψ) {ϖ : Kˣ}
       show (ϖ : K) ^ (a + k) * y ∈ R
       have e : (ϖ : K) ^ (a + k) * y = (ϖ : K) ^ k * ((ϖ : K) ^ a * y) := by rw [pow_add]; ring
       rw [e]; exact R.mul_mem (R.pow_mem hϖ k) hy)
-  exact ⟨n, fun y hy => hn hy⟩
+  exact ⟨n, hn⟩
 
 theorem compact_big (hD : LocalDatum K R ψ) (ϖ : Kˣ) (n : ℕ) :
     IsCompact {y : K | (ϖ : K) ^ n * y ∈ R} := by
@@ -198,8 +190,7 @@ theorem kernel_as_coset_sum : Formalism.FourierDecayAlt.A6.KpFromBB := by
       · simp only [pairTerm, Equiv.prodComm_apply, Prod.swap_prod_mk, h, h2, false_and, if_false,
           zero_mul]
     · simp [pairTerm, h]
-  · have := hfin.preimage ((Equiv.prodComm (Cos R w') (Cos R w)).injective.injOn)
-    exact this
+  · exact hfin.preimage ((Equiv.prodComm (Cos R w') (Cos R w)).injective.injOn)
 
 end Formalism.FourierDecayAlt.P
 
@@ -215,11 +206,8 @@ theorem mem_mulLat (b : Kˣ) (L : AddSubgroup K) (x : K) :
   unfold mulLat
   constructor
   · rintro ⟨y, hy, h⟩
-    have h' : (b : K) * y = (b : K) * x := h
-    have : y = x := b.isUnit.mul_left_cancel h'
-    exact this ▸ hy
-  · intro h
-    exact ⟨x, h, rfl⟩
+    exact (b.isUnit.mul_left_cancel h) ▸ hy
+  · exact fun h => ⟨x, h, rfl⟩
 
 theorem mem_mulLat' (b : Kˣ) (L : AddSubgroup K) (x : K) :
     x ∈ mulLat (b : K) L ↔ ((b⁻¹ : Kˣ) : K) * x ∈ L := by
@@ -326,9 +314,7 @@ theorem real_rpow_mul_sq_half (B C : ℝ) (hB : 0 < B) (hC : 0 < C) (m : ℕ) :
 theorem hessM_symm (m : ℕ) (a : Kˣ) : (hessM m a).IsSymm := by
   unfold hessM
   apply Matrix.IsSymm.smul
-  apply Matrix.IsSymm.add Matrix.isSymm_one
-  ext i j
-  rfl
+  exact Matrix.IsSymm.add Matrix.isSymm_one (by ext i j; rfl)
 
 theorem gaussAdm_scale (ψ : AddChar K ℂ) (L : AddSubgroup K) (m : ℕ) (a b : Kˣ)
     (hdet : IsUnit (hessM m a).det) (h : GaussAdm ψ L (hessM m a)) :
@@ -556,7 +542,7 @@ end Formalism.FourierDecayAlt.P.A6x7.Osc
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem oscillatory_integral_invariant : Formalism.FourierDecayAlt.A6.OscInvariant := A6x7.Osc.main
+alias oscillatory_integral_invariant := _root_.Formalism.FourierDecayAlt.P.A6x7.Osc.main
 
 end Formalism.FourierDecayAlt.P
 
@@ -660,8 +646,7 @@ theorem main : GaussAdmSmall := by
   obtain ⟨V, hV, hVF⟩ := tube F hF 0 (C₂ ×ˢ {y : Fin m → K | ∀ k, y k ∈ C₁})
     (hC₂.prod (Osc.compact_box _ hC₁)) (R : Set K) hD.isOpen (by
       intro y _
-      have : F (0, y) = 0 := by simp [F]
-      rw [this]; exact R.zero_mem)
+      simp [F])
   refine ⟨V, hV, fun t z ht hz y hy => ?_⟩
   rw [Matrix.inv_eq_right_inv (hess_inv m (z * t) _ hc), quad, Units.val_mul]
   exact psi_R hD (hVF _ ht (_, y) ⟨hroot _ hz, fun k => hperp _ (hy k)⟩)
@@ -670,7 +655,7 @@ end Formalism.FourierDecayAlt.P.A6x7.admitted
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem admissible_gauss_sum_small : Formalism.FourierDecayAlt.A6.GaussAdmSmall := A6x7.admitted.main
+alias admissible_gauss_sum_small := _root_.Formalism.FourierDecayAlt.P.A6x7.admitted.main
 
 end Formalism.FourierDecayAlt.P
 
@@ -703,9 +688,7 @@ theorem finsum_zero_of_shift {X : Type} (σ : X ≃ X) (h : X → ℂ) (ω : ℂ
     exact finsum_congr hs
   have h2 : (1 - ω) * ∑ᶠ x, h x = 0 := by
     rw [sub_mul, one_mul, ← h1, sub_self]
-  rcases mul_eq_zero.1 h2 with h | h
-  · exact absurd (sub_eq_zero.1 h).symm hω
-  · exact h
+  exact (mul_eq_zero.1 h2).resolve_left (fun h => hω (sub_eq_zero.1 h).symm)
 
 section Alg
 
@@ -779,11 +762,7 @@ theorem inv_sup (h2 : IsUnit (2 : K)) {M : Matrix (Fin m) (Fin m) K} (hM : M.IsS
       rw [hxx, add_dotProduct, AddChar.map_add_eq_mul, hx1 x₁ h₁, hx2 x₂ h₂, one_mul]
     rw [this, mul_one]
   · rw [gaussF_neg hx, gaussF_neg]
-    intro h
-    apply hx
-    intro i
-    have := (L ⊔ L').sub_mem (h i) (hlS i)
-    simpa using this
+    exact fun h => hx (fun i => by simpa using (L ⊔ L').sub_mem (h i) (hlS i))
 
 theorem inv_mem (h2 : IsUnit (2 : K)) {M : Matrix (Fin m) (Fin m) K} (hM : M.IsSymm)
     {L : AddSubgroup K} (hperp : perp ψ (perp ψ L) = L) (hA : GaussAdm ψ L M) (y : Fin m → K)
@@ -812,11 +791,7 @@ theorem shiftF (h2 : IsUnit (2 : K)) {M : Matrix (Fin m) (Fin m) K} (hM : M.IsSy
       unfold qf; rw [hMy, dotProduct_comm]; exact hq
     rw [this, mul_one, mul_comm]
   · rw [gaussF_neg hx, gaussF_neg, mul_zero]
-    intro h
-    apply hx
-    intro i
-    have := L.sub_mem (h i) (hmem i)
-    simpa using this
+    exact fun h => hx (fun i => by simpa using L.sub_mem (h i) (hmem i))
 
 end Alg
 
@@ -831,14 +806,11 @@ theorem fin_supp {Λ₀ L : AddSubgroup K} (hΛ₀ : IsLat Λ₀) (hL : IsLat L)
     have : DiscreteTopology (K ⧸ Λ₀) := QuotientAddGroup.discreteTopology hΛ₀.1
     have hc : IsCompact ((QuotientAddGroup.mk : K → K ⧸ Λ₀) '' (L : Set K)) :=
       hL.2.image QuotientAddGroup.continuous_mk
-    refine hc.finite_of_discrete.subset ?_
-    intro q hq
-    exact ⟨_, hq, QuotientAddGroup.out_eq' q⟩
+    exact hc.finite_of_discrete.subset fun q hq => ⟨_, hq, QuotientAddGroup.out_eq' q⟩
   refine (Set.Finite.pi' (fun _ => hq)).subset ?_
   intro y hy i
   by_contra hcon
-  apply hy
-  exact gaussF_neg (fun h => hcon (h i))
+  exact hy (gaussF_neg (fun h => hcon (h i)))
 
 theorem key (h2 : IsUnit (2 : K)) {M : Matrix (Fin m) (Fin m) K} (hM : M.IsSymm)
     (hdet : IsUnit M.det) {L L₂ Λ₀ : AddSubgroup K} (hL : IsLat L) (hL₂ : IsLat L₂)
@@ -931,15 +903,11 @@ theorem isLat_inf [T2Space K] {Λ Λ' : AddSubgroup K} (h : IsLat Λ) (h' : IsLa
 
 theorem isLat_sup {L L' : AddSubgroup K} (h : IsLat L) (h' : IsLat L') : IsLat (L ⊔ L') := by
   refine ⟨AddSubgroup.isOpen_mono (le_sup_left : L ≤ L ⊔ L') h.1, ?_⟩
-  have : ((L ⊔ L' : AddSubgroup K) : Set K) = (fun p : K × K => p.1 + p.2) '' ((L : Set K) ×ˢ (L' : Set K)) := by
+  have hcoe : ((L ⊔ L' : AddSubgroup K) : Set K) =
+      (fun p : K × K => p.1 + p.2) '' ((L : Set K) ×ˢ (L' : Set K)) := by
     ext x
-    constructor
-    · intro hx
-      obtain ⟨a, ha, b, hb, rfl⟩ := AddSubgroup.mem_sup.1 hx
-      exact ⟨(a, b), ⟨ha, hb⟩, rfl⟩
-    · rintro ⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩
-      exact AddSubgroup.mem_sup.2 ⟨a, ha, b, hb, rfl⟩
-  rw [this]
+    simp [AddSubgroup.mem_sup, Set.mem_add]
+  rw [hcoe]
   exact (h.2.prod h'.2).image (continuous_fst.add continuous_snd)
 
 theorem main : GaussIndep := by
@@ -957,8 +925,7 @@ theorem main : GaussIndep := by
   have hL₂ : IsLat (L ⊔ L') := isLat_sup hL hL'
   have hle : ∀ {L Λ : AddSubgroup K}, LatInvN Λ (gaussF ψ L M) → Λ ≤ L := by
     intro L Λ hI x hx
-    have := (inv_cons h2 hM hI (Pi.single ⟨0, hm⟩ x) (single_mem hx _)).1 ⟨0, hm⟩
-    simpa using this
+    simpa using (inv_cons h2 hM hI (Pi.single ⟨0, hm⟩ x) (single_mem hx _)).1 ⟨0, hm⟩
   have hsupp : ∀ L : AddSubgroup K, ∀ x, gaussF ψ L M x ≠ 0 → ∀ i, x i ∈ L := by
     intro L x hx
     by_contra hcon
@@ -980,4 +947,4 @@ theorem main : GaussIndep := by
 
 end Formalism.FourierDecayAlt.P.A6x7.Ind
 
-theorem Formalism.FourierDecayAlt.P.gauss_index_independent_of_choice : Formalism.FourierDecayAlt.A6.GaussIndep := Formalism.FourierDecayAlt.P.A6x7.Ind.main
+alias Formalism.FourierDecayAlt.P.gauss_index_independent_of_choice := _root_.Formalism.FourierDecayAlt.P.A6x7.Ind.main

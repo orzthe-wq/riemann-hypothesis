@@ -128,7 +128,7 @@ theorem isLat_intVec (m : ℕ) : IsLat (intVec K m) := by
     by_cases h : j = i
     · subst h
       exact ⟨1, by simp⟩
-    · exact ⟨0, by simp [Pi.single_apply, h]⟩
+    · exact ⟨0, by simp [h]⟩
 
 end Lat
 

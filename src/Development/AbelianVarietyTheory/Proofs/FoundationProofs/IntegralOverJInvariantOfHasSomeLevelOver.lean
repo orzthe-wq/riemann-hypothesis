@@ -3,9 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ZetaActRefl
 public import Development.AbelianVarietyTheory.Definitions.Foundations.MemRingOfInR
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEqDiscriminantPowMulEvalJInvariant
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSlTwoPermutedModularFamilyOfLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularDiscriminantPowMulSlashTwelveMulStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PermutedModularFamilyMonicPolyCoeffInvariantStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsSlTwoPermutedModularFamilyOfLevel
+public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDefs
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularDiscriminantPowMulSlashTwelveMul
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HasQIff
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PermutedModularFamilyMonicPolyCoeffInvariant
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -83,11 +85,11 @@ theorem integral_over_jT : ∀ (E : Subring ℂ) (f : ℍ → ℂ), InR E f → 
   intro E f ⟨N, w, hN, hinv, hq⟩
   haveI : NeZero N := ⟨hN.ne'⟩
   have hslash : ∀ γ : SL(2, ℤ), (fun τ => DD τ ^ w * f τ) ∣[((12 * w : ℕ) : ℤ)] γ = fun τ => DD τ ^ w * f (γ • τ) :=
-    fun γ => GlobalTheory.T.modularDiscriminant_pow_mul_slash_twelve_mul w f γ
+    fun γ => _root_.GlobalTheory.disc_pow_mul_slash w f γ
   have hΓ : ∀ γ ∈ CongruenceSubgroup.Gamma N, (fun τ => DD τ ^ w * f τ) ∣[((12 * w : ℕ) : ℤ)] γ = (fun τ => DD τ ^ w * f τ) := by
     intro γ hγ
     rw [hslash]; funext τ; rw [hinv γ hγ τ]
-  obtain ⟨F, hFam, hFγ, hF0⟩ := GlobalTheory.T.exists_slTwoPermutedModularFamily_of_level N ((12 * w : ℕ) : ℤ) _ hΓ
+  obtain ⟨F, hFam, hFγ, hF0⟩ := _root_.GlobalTheory.FamOfLevel.exists_family N ((12 * w : ℕ) : ℤ) _ hΓ
   have hQ : ∀ α, QAll (· ∈ E) N (F α) := by
     intro α
     rcases hF0 α with ⟨γ, rfl⟩ | h0
@@ -97,7 +99,7 @@ theorem integral_over_jT : ∀ (E : Subring ℂ) (f : ℍ → ℂ), InR E f → 
       simpa using (hasSum_zero : HasSum (fun _ : ℕ => (0 : ℂ)) 0)
   have h1 : F 1 = fun τ => DD τ ^ w * f τ := by
     rw [← redGL_one N, hFγ]; exact SlashAction.slash_one _ _
-  obtain ⟨s, hs, hpoly⟩ := GlobalTheory.T.permutedModularFamily_monic_poly_coeff_invariant (GL (Fin 2) (ZMod N)) (gact N 1) (12 * w) N F E hN
+  obtain ⟨s, hs, hpoly⟩ := _root_.GlobalTheory.QFam.minpoly_coeff_invariant (GL (Fin 2) (ZMod N)) (gact N 1) (12 * w) N F E hN
     (gact_one_bij N) hFam hQ
   have key := hpoly 1
   rw [h1] at key

@@ -99,7 +99,7 @@ def cls (S : Set (Etau K τ)) : Set (Set (Etau K τ)) := {S' | ∃ s : Kˣ, S' =
   mul_smul a b X := by
     change (fun S => (((a * b : (Etau K τ)ˣ) : Etau K τ) * ·) '' S) '' X =
       (fun S => ((a : Etau K τ) * ·) '' S) '' ((fun S => ((b : Etau K τ) * ·) '' S) '' X)
-    simp [← Set.image_comp, Function.comp_def, mul_assoc]
+    simp [← Set.image_comp, mul_assoc]
 
 
 open Classical in

@@ -273,7 +273,7 @@ theorem UpperTheory.V.GC.cl :
       apply j.injective
       simp only [AlgEquiv.mul_apply, AlgEquiv.one_apply]
       have := hj (σ x)
-      simp only [AlgEquiv.coe_toRingEquiv, RingEquiv.coe_toEquiv, AlgEquiv.coe_ringEquiv] at this hj
+      simp only [AlgEquiv.coe_toRingEquiv] at this hj
       rw [this, hj, Complex.conj_conj]
     have : ψ σ = χ (f (σ * σ)) := by
       simp [ψ, pow_two]

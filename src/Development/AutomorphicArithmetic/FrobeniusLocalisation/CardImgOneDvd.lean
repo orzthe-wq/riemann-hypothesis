@@ -68,7 +68,7 @@ private theorem index_unitsOne {φ : Frame} (H : HostRaw φ) {f : ℕ} (hf : f �
     rintro rfl
     exact hN (zero_dvd_iff.1 hf)
   have hg : Nat.gcd f H.condN = f := Nat.gcd_eq_left hf
-  haveI : NeZero (Nat.gcd f H.condN) := ⟨by rw [hg]; exact hf0⟩
+  have : NeZero (Nat.gcd f H.condN) := ⟨by rw [hg]; exact hf0⟩
   unfold HostRaw.unitsOne
   rw [Subgroup.index_ker, MonoidHom.range_eq_top.2 (ZMod.unitsMap_surjective _), Subgroup.card_top,
     Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, hg]

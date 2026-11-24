@@ -52,6 +52,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
+import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KoszulSectionsExactAlgClosedPolarisedAVStatement
 
 @[expose] public section
 
@@ -98,11 +99,6 @@ theorem eff_add_nsmul {X : Scheme.{0}} [IsIntegral X] {a b : Pic X} (ha : Eff a)
   | zero => simpa using ha
   | succ k ih => rw [succ_nsmul, ← add_assoc]; exact eff_add _ _ ih hb
 
-theorem exists_ge_cast_ne_zero (K : Type) [Field K] (t : ℕ) : ∃ n : ℕ, t ≤ n ∧ (n : K) ≠ 0 := by
-  by_cases h : (t : K) = 0
-  · exact ⟨t + 1, by omega, by simp [h]⟩
-  · exact ⟨t, le_rfl, h⟩
-
 theorem finiteOrder_of_const_of_cube :
     GlobalTheory.AmpleRigid.ConstSt → GlobalTheory.AmpleRigid.CubeSt → GlobalTheory.AmpleRigid.FiniteOrderSt := by
   intro hConst hCube K _ _ A _ _ hA L hL hAmp σ hσ hfix
@@ -121,7 +117,7 @@ theorem finiteOrder_of_const_of_cube :
     rwa [cls_pw hL, map_zsmul] at h
   obtain ⟨t₀, ht₀⟩ := hConst K A hA L hL hAmp
     ((2 * d : ℤ) • (q (𝟙 A) + q (𝟙 A) + q (𝟙 A) + q (𝟙 A)⁻¹))
-  obtain ⟨n, hn, hnK⟩ := exists_ge_cast_ne_zero K t₀
+  obtain ⟨n, hn, hnK⟩ := _root_.GlobalTheory.PolVanishing.exists_le_natCast_ne_zero K t₀
   obtain ⟨k, rfl⟩ : ∃ k, n = k + 1 := Nat.exists_eq_succ_of_ne_zero (by rintro rfl; simp at hnK)
   obtain ⟨hfin, hdiv⟩ := GlobalTheory.TorsionDivisible.finite_torsion_and_divisible K A hA (k + 1) hnK
   obtain ⟨m, hm0, hm⟩ := GlobalTheory.SerreField.exists_iter_fix σ (𝟙_ (Over (Sp K))) (k + 1)

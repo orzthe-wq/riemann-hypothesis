@@ -2,54 +2,10 @@ module
 
 public import Mathlib.Analysis.InnerProductSpace.Projection.Basic
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DefsRep
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 public import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.PolarJmConjTranspose
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Calculus.Deriv.Slope
 
 @[expose] public section
@@ -64,17 +20,7 @@ namespace UnitaryGroupOfForm
 
 variable {n : ℕ}
 
-lemma jj (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  rw [Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  by_cases h : ε a <;> simp [h]
-
-lemma jH (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
-  rw [Jm, Matrix.diagonal_conjTranspose]
-  congr 1
-  funext a
-  by_cases h : ε a <;> simp [h]
+alias jj := _root_.ReciprocityTheory.ChartRestriction.DS.PolarDecomposition.polar_Jm_mul_self
 
 lemma jj_mul (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) : Jm ε * (Jm ε * A) = A := by
   rw [← Matrix.mul_assoc, jj, Matrix.one_mul]
@@ -91,7 +37,7 @@ lemma inv_mem_UJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g 
   have hgJ : g * Jm ε * gᴴ = Jm ε := by rw [← e1, hgg, Matrix.one_mul]
   refine ⟨Jm ε * gᴴ * Jm ε, ?_, hgg⟩
   show (Jm ε * gᴴ * Jm ε)ᴴ * Jm ε * (Jm ε * gᴴ * Jm ε) = Jm ε
-  rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, jH, Matrix.conjTranspose_conjTranspose]
+  rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, _root_.ReciprocityTheory.ChartRestriction.DS.PolarDecomposition.polar_Jm_conjTranspose, Matrix.conjTranspose_conjTranspose]
   have h2 : g * (Jm ε * (gᴴ * Jm ε)) = 1 := by rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hgJ, jj]
   simp only [Matrix.mul_assoc, jj_mul, h2, Matrix.mul_one]
 
@@ -108,15 +54,14 @@ lemma K_inv {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ K
   refine ⟨⟨?_, ?_⟩, Matrix.mem_unitaryGroup_iff.mp hu⟩
   · first
     | exact Unitary.star_mem hu
-    | exact unitary.star_mem hu
   · have h := congrArg Matrix.conjTranspose hc
-    rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, jH] at h
+    rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, _root_.ReciprocityTheory.ChartRestriction.DS.PolarDecomposition.polar_Jm_conjTranspose] at h
     exact h.symm
 
 lemma inG_sub (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) :
     inG ε (M - Jm ε * Mᴴ * Jm ε) := by
   unfold inG
-  rw [Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, jH,
+  rw [Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, _root_.ReciprocityTheory.ChartRestriction.DS.PolarDecomposition.polar_Jm_conjTranspose,
     Matrix.conjTranspose_conjTranspose]
   simp only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, jj, jj_mul, Matrix.mul_one]
   abel
@@ -125,7 +70,7 @@ lemma inG_add (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) :
     inG ε (Complex.I • (M + Jm ε * Mᴴ * Jm ε)) := by
   unfold inG
   have hY : (M + Jm ε * Mᴴ * Jm ε)ᴴ * Jm ε = Jm ε * (M + Jm ε * Mᴴ * Jm ε) := by
-    rw [Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, jH,
+    rw [Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, _root_.ReciprocityTheory.ChartRestriction.DS.PolarDecomposition.polar_Jm_conjTranspose,
       Matrix.conjTranspose_conjTranspose]
     simp only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, jj, jj_mul, Matrix.mul_one]
     abel

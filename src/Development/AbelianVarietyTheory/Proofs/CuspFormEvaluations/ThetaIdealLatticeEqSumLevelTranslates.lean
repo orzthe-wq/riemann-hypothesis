@@ -133,7 +133,7 @@ theorem mem_span_prod {Z J : Type} (φ : J → Z → ℂ) (Y : Set J) (hY : Y.Fi
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨default, fun b => b.elim0, rfl⟩)
   | succ n ih =>
     intro F hF
-    obtain ⟨m, h, k, hhk, hF'⟩ := ThetaAddition.exists_sum_mul (Submodule.span ℂ (φ '' Y)) _
+    obtain ⟨m, h, k, hhk, hF'⟩ := _root_.GlobalTheory.EvaluationSpanTopToricGeometry.exists_sum_mul (Submodule.span ℂ (φ '' Y)) _
       (fun t (z : Fin n → Z) => F (Fin.cons t z))
       (fun z => by
         rcases isEmpty_or_nonempty Z with hZ | ⟨⟨t⟩⟩
@@ -375,7 +375,7 @@ theorem theta_eq_sum_translates : ∀ (E : Type) [Field E] [NumberField E] [IsCM
       funext b'
       rcases eq_or_ne b' b with rfl | hb
       · simp
-      · simp [Pi.single_eq_of_ne hb, pv_zero, hb]
+      · simp [pv_zero, hb]
     · intro b' _ hb
       simp [Pi.single_eq_of_ne hb, pv_zero, fock_hx_zero_right]
     · simp

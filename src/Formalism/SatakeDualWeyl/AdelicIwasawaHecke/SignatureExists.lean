@@ -53,7 +53,6 @@ open Matrix
 theorem sigex_cT_conj_eq {m p : Type} (M : Matrix m p ℂ) : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   first
     | rfl
-    | (ext i j; simp [Formalism.UG.cT, Matrix.conjTranspose_apply])
 
 noncomputable def scal {n : Type} (ev : n → ℝ) : n → ℂ := fun i => (((Real.sqrt |ev i|)⁻¹ : ℝ) : ℂ)
 
@@ -89,7 +88,6 @@ theorem herm_diag {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ}
       (hJ.eigenvectorUnitary : Matrix n n ℂ)) hJ.spectral_theorem
     first
       | simp only [Unitary.conjStarAlgAut_apply, Matrix.star_eq_conjTranspose] at h1
-      | simp only [Unitary.conjStarAlgAut, Matrix.star_eq_conjTranspose] at h1
     rw [h1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hU, Matrix.one_mul, Matrix.mul_assoc, hU, Matrix.mul_one]
   calc _ = diagonal (scal hJ.eigenvalues) * (((hJ.eigenvectorUnitary : Matrix n n ℂ))ᴴ * J *
           (hJ.eigenvectorUnitary : Matrix n n ℂ)) * diagonal (scal hJ.eigenvalues) := by
@@ -136,12 +134,12 @@ theorem signature_exists : Formalism.UG.SigExists := by
       ((Fintype.equivFin {i // 0 < hH.eigenvalues i}).symm a : n) := by
     intro a
     rw [he]
-    first | rfl | simp
+    first | rfl
   have hinr : ∀ a, e.symm (Sum.inr a) =
       ((Fintype.equivFin {i // ¬ 0 < hH.eigenvalues i}).symm a : n) := by
     intro a
     rw [he]
-    first | rfl | simp
+    first | rfl
   have hdetQ : IsUnit (reindex e e Q).det := by
     rw [Matrix.det_reindex_self, hQdef, Matrix.det_mul, Matrix.det_diagonal]
     refine IsUnit.mul (Matrix.isUnit_det_of_left_inverse hU) ?_
@@ -161,8 +159,8 @@ theorem signature_exists : Formalism.UG.SigExists := by
     split_ifs
     · rw [sign_pos ((Fintype.equivFin {i // 0 < hH.eigenvalues i}).symm a).2, Complex.ofReal_one]
     · rfl
-  · simp [Matrix.diagonal_apply]
-  · simp [Matrix.diagonal_apply]
+  · simp
+  · simp
   · simp only [Matrix.fromBlocks_apply₂₂, Matrix.diagonal_apply, Function.comp_apply, hinr,
       Sum.inr.injEq, Matrix.neg_apply, Matrix.one_apply]
     split_ifs

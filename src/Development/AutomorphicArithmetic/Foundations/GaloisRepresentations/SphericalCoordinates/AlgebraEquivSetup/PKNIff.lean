@@ -68,7 +68,7 @@ theorem UpperTheory.Gal.W2.Seed.pKNIff :
   have hactM : ∀ v, ν (S.L.actG (T.j g) v) = (Y.val.map T.Φ) *ᵥ ν v := fun v => by rw [hact, hM]
   have hcol : ∀ k i, ((Y.val.map T.Φ) *ᵥ (Pi.single k 1 : Fin n → AfP p ⊗[ℚ] E)) i = T.Φ (Y.val i k) := by
     intro k i
-    simp [Matrix.mulVec_single_one]
+    simp
   have hsingle : ∀ k, ν.symm (Pi.single k 1) ∈ LaHat S.D := by
     intro k
     rw [hlat]
@@ -112,7 +112,7 @@ theorem UpperTheory.Gal.W2.Seed.pKNIff :
       have e3 : T.Φ (Y.val i k - (1 : Matrix (Fin n) (Fin n) (Af E)) i k - (N : Af E) * x) = 0 := by
         rw [map_sub, map_sub, map_mul, hΦ1, hx, map_natCast, e2, Pi.add_apply, Pi.smul_apply, nsmul_eq_mul,
           Matrix.one_apply, Pi.single_apply]
-        simp [eq_comm]
+        simp
       have e4 := (T.Φ_ker _).1 e3 w hw
       rw [map_sub, map_sub, map_mul, hw1, map_natCast, sub_eq_zero, sub_eq_iff_eq_add'] at e4
       have e5 : ((GeneralLinearGroup.map (pLoc E w) Y).val - 1) i k = (N : w.adicCompletion E) * pLoc E w x := by

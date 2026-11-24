@@ -161,8 +161,7 @@ theorem frBor_baseChange {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] 
 theorem exists_frMap {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     (φ : S →ₐ[c.F] T) (y : FrPt Xo c S) : ∃ z, FrMap φ y z := (evLaws_genFr_atlas E H Dw l Xo c).1.bc S T φ y
 
-theorem frMap_refl {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) : FrMap (AlgHom.id c.F S) y y :=
-  (GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c S S (AlgHom.id c.F S) y).2.1
+alias frMap_refl := _root_.GlobalTheory.FramedBaseChange.refl
 
 theorem frMap_unique {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z z' : FrPt Xo c T} (h : FrMap φ y z) (h' : FrMap φ y z') : z = z' :=

@@ -279,13 +279,9 @@ theorem mem_lowW_iff {K : Type} [CommRing K] (s : List ℕ) (t : ℕ → Kˣ)
     (g : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t = pt s t * h) ↔ _
   constructor
   · rintro ⟨hg, h, hh, he⟩
-    refine ⟨hg, ?_⟩
-    have hw : wi * (g : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t = h := by
-      rw [Matrix.mul_assoc, he, ← Matrix.mul_assoc, h1, Matrix.one_mul]
-    rw [hw]; exact hh
+    exact ⟨hg, by rwa [Matrix.mul_assoc, he, ← Matrix.mul_assoc, h1, Matrix.one_mul]⟩
   · rintro ⟨hg, hh⟩
-    refine ⟨hg, _, hh, ?_⟩
-    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]
+    exact ⟨hg, _, hh, by rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]⟩
 
 theorem isClosed_lowW {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
     [T2Space K] (s : List ℕ) (t : ℕ → Kˣ) (wi : Matrix (Fin s.sum) (Fin s.sum) K)
@@ -302,10 +298,6 @@ theorem isClosed_lowW {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologica
 
 theorem isClosed_upUniG {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
     [T2Space K] (n : ℕ) : IsClosed (upUniG K n : Set (GL (Fin n) K)) := by
-  have hset : (upUniG K n : Set (GL (Fin n) K)) =
-      (fun g : GL (Fin n) K => (g : Matrix (Fin n) (Fin n) K)) ⁻¹' {x | IsUpUni x} := by
-    ext g; exact Iff.rfl
-  rw [hset]
   exact isClosed_upUni.preimage Units.continuous_val
 
 theorem coe_inv_of_det {K : Type} [CommRing K] {n : ℕ} (g : GL (Fin n) K)

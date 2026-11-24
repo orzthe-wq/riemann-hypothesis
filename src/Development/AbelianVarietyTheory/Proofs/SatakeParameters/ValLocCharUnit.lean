@@ -60,10 +60,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.CharacterValuation (StdOver IsFrame
 
 variable {X : Fields} {Pr : Primes X}
 
-theorem g_mem_of_vG (hPr : Pr.Ok) {i : Fin 2} {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vG i) :
-    ((Pr.g i : ℕ) : 𝓞 X.E) ∈ P.asIdeal := by
-  rw [← hPr.piG_norm i]
-  exact P.asIdeal.mul_mem_left _ (GlobalTheory.ColPeriod.mem_divs h)
+alias g_mem_of_vG := _root_.Formalism.L2.Col.Primes.Ok.g_mem
 
 theorem g_notMem_of_vGs (hPr : Pr.Ok) {i : Fin 2} {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vGs) (h' : P ∉ Pr.vG i) :
     ((Pr.g i : ℕ) : 𝓞 X.E) ∉ P.asIdeal := by

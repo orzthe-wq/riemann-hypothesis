@@ -58,22 +58,6 @@ theorem sig_add_of_pins {D : D7} (Q : Par D) (h : Q.Pins) {j : ℕ} (hj : InR D 
   simp only [Formalism.BasicNotions.Ranks.sigW, Formalism.BasicNotions.Ranks.r]
   omega
 
-private theorem dom_wtA_of_wt {D : D7} {j : ℕ} (ka : WeightFamilies.Wt D j) : Dom (wtA ka) ka.n := by
-  unfold Dom wtA
-  refine ⟨fun τ => ?_, ka.n_even⟩
-  intro a b hab
-  apply Finset.sum_le_sum
-  intro t _
-  apply add_le_add
-  · split_ifs with h
-    · unfold Formalism.L2.Pj.ext0
-      split_ifs with h1 h2 <;> first | omega | exact Nat.zero_le _ | exact le_refl _ | exact ka.aPlus_antitone t (Fin.mk_le_mk.2 hab)
-    · exact le_refl _
-  · split_ifs with h
-    · unfold Formalism.L2.Pj.ext0
-      split_ifs with h1 h2 <;> first | omega | exact Nat.zero_le _ | exact le_refl _ | exact ka.aM_anti t (Fin.mk_le_mk.2 hab)
-    · exact le_refl _
-
 private theorem par_l_A_eq_one_of_pins {D : D7} (Q : Par D) (h : Q.Pins) : Q.l.A = 1 := by
   obtain ⟨-, hL, -⟩ := h
   unfold Par.PinLevel at hL
@@ -88,7 +72,7 @@ theorem holSub0_le_span_short_rec : Formalism.MainNotions.ModuliIntegralCharts.H
     have := D.R.m_add_three_le_k
     simp only [Formalism.BasicNotions.Ranks.r]
     omega
-  have hDom : Dom (wtA ka) ka.n := dom_wtA_of_wt ka
+  have hDom : Dom (wtA ka) ka.n := _root_.Formalism.L2.Pj.dom_wtA ka
   have hl : T.Q.l.A = 1 := par_l_A_eq_one_of_pins T.Q hM.pins
   have hn' : 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ ka.n := by
     rw [hostSize_finrank D]

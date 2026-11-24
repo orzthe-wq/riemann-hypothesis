@@ -117,8 +117,6 @@ lemma det_relMap_eq (g : Type) [Fintype g] [DecidableEq g] (Θ : Matrix g g R') 
   rw [Finset.sum_congr rfl (fun j _ => hev j), Matrix.mulVec]
   first
     | (rw [dotProduct, Fintype.sum_prod_type]; rfl)
-    | (rw [Matrix.dotProduct, Fintype.sum_prod_type]; rfl)
-    | (simp only [dotProduct, Fintype.sum_prod_type]; rfl)
 
 end GlobalDeterminantRelations
 

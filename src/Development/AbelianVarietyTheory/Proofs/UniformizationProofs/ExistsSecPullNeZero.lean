@@ -100,8 +100,7 @@ theorem injective_stalkMap (π : X' ⟶ X) [Flat π] (z : X') : Function.Injecti
     (A := X.presheaf.stalk (π z)) (B := X'.presheaf.stalk z)
   exact FaithfulSMul.algebraMap_injective _ _
 
-theorem gs_zero' (π : X' ⟶ X) (z : X') (U : X.Opens) (h : π z ∈ U) : gs π z U 0 = 0 := by
-  rw [gs_eq π z U h, map_zero, map_zero]
+alias gs_zero' := _root_.GlobalTheory.LBGerm.gs_zero
 
 theorem exists_sec_pull_ne_zero (π : X' ⟶ X) [Flat π] [Surjective π] {M : LB X} (hM : M.IsLB)
     (s : LB.Sec M) (hs : ∃ j, s.f j ≠ 0) : ∃ s' : LB.Sec (M.pull π), ∃ j, s'.f j ≠ 0 := by

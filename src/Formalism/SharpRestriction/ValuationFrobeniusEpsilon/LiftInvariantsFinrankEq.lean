@@ -162,7 +162,7 @@ def adAct {G k : Type} [Group G] [Field k] {n : ℕ} (GF : Subgroup G)
   map_add' X Y := by
     split_ifs <;> simp [Matrix.mul_add, Matrix.add_mul, Matrix.transpose_add, add_comm]
   map_smul' c X := by
-    split_ifs <;> simp [Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_smul]
+    split_ifs <;> simp [Matrix.transpose_smul]
 
 def invSub {G k : Type} [Field k] {n : ℕ} (act : G → Matrix (Fin n) (Fin n) k →ₗ[k] Matrix (Fin n) (Fin n) k)
     (N : Submodule k (Matrix (Fin n) (Fin n) k)) : Submodule k (Matrix (Fin n) (Fin n) k) :=

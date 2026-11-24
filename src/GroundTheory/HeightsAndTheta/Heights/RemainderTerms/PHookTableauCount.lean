@@ -1,53 +1,120 @@
 module
 
+public import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Statements
+public import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.IsFlagIntegralOne
 public import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsTop
-public import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.NumStandardTableEqCardMonotone
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.HeightsAndTheta.Heights.RemainderTerms.NumStandardTableEqCardMonotone, GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PHookTableauCount
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.RemainderTerms.NumStandardTableEqCardMonotone =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.RemainderTerms.NumStandardTableEqCardMonotone", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.Statements\npublic import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.IsFlagIntegralOne\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.RestTerms.YoungDiagramCombinatorics
+
+open MvPolynomial Finset
+
+theorem card_monotone_equiv_congr {α β : Type*} [Preorder α] [Preorder β] (e : α ≃o β)
+    {n n' : ℕ} (h : n = n') :
+    Nat.card {T : α ≃ Fin n // Monotone T} = Nat.card {T : β ≃ Fin n' // Monotone T} := by
+  subst h
+  exact Nat.card_congr
+    { toFun := fun T => ⟨e.symm.toEquiv.trans T.1, fun a b hab => T.2 (e.symm.monotone hab)⟩
+      invFun := fun T => ⟨e.toEquiv.trans T.1, fun a b hab => T.2 (e.monotone hab)⟩
+      left_inv := fun T => by ext x; simp
+      right_inv := fun T => by ext x; simp }
+
+theorem mem_youngCells {m : ℕ} (lam : Fin m → ℕ) (x : Fin m × ℕ) :
+    x ∈ RestTerms.youngCells lam ↔ x.2 < lam x.1 := by
+  unfold RestTerms.youngCells
+  simp only [mem_filter, mem_product, mem_univ, mem_range, true_and]
+  constructor
+  · rintro ⟨_, h⟩
+    exact h
+  · intro h
+    exact ⟨lt_of_lt_of_le h (Finset.single_le_sum (fun i _ => Nat.zero_le (lam i))
+      (mem_univ x.1)), h⟩
+
+theorem mem_shapeCells {r : ℕ} (la : Fin r → ℕ) (x : ℕ × ℕ) :
+    x ∈ IndefiniteRowSideFullHecke.RestTerms.shapeCells la ↔ ∃ h : x.1 < r, x.2 < la ⟨x.1, h⟩ := by
+  unfold IndefiniteRowSideFullHecke.RestTerms.shapeCells
+  simp only [mem_biUnion, mem_univ, true_and, mem_image, mem_range]
+  constructor
+  · rintro ⟨a, b, hb, rfl⟩
+    exact ⟨a.2, hb⟩
+  · rintro ⟨h, hx⟩
+    exact ⟨⟨x.1, h⟩, x.2, hx, rfl⟩
+
+def cellIso {r : ℕ} (la : Fin r → ℕ) :
+    RestTerms.youngCells la ≃o IndefiniteRowSideFullHecke.RestTerms.shapeCells la where
+  toFun p := ⟨((p.1.1 : ℕ), p.1.2),
+    (mem_shapeCells la _).2 ⟨p.1.1.2, (mem_youngCells la _).1 p.2⟩⟩
+  invFun q := ⟨(⟨q.1.1, ((mem_shapeCells la _).1 q.2).1⟩, q.1.2),
+    (mem_youngCells la _).2 ((mem_shapeCells la _).1 q.2).2⟩
+  left_inv p := rfl
+  right_inv q := rfl
+  map_rel_iff' := by
+    rintro ⟨⟨a, b⟩, hp⟩ ⟨⟨c, d⟩, hq⟩
+    simp only [Equiv.coe_fn_mk, Subtype.mk_le_mk, Prod.mk_le_mk, Fin.le_def]
+
+theorem numStandardTable_eq_card_monotone {m : ℕ} (lam : Fin m → ℕ) :
+    RestTerms.numStandardTable lam =
+      Nat.card {T : RestTerms.youngCells lam ≃ Fin (RestTerms.youngCells lam).card //
+        Monotone T} := by
+  unfold RestTerms.numStandardTable
+  refine Nat.card_congr (Equiv.subtypeEquivRight fun T => ?_)
+  constructor
+  · intro h p q hpq
+    have h' := Prod.le_def.1 (Subtype.coe_le_coe.2 hpq)
+    exact h p q h'.1 h'.2
+  · intro h p q h1 h2
+    exact h (Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨h1, h2⟩))
+
+theorem numSYT_eq {r : ℕ} (la : Fin r → ℕ) :
+    IndefiniteRowSideFullHecke.RestTerms.numSYT la = RestTerms.numStandardTable la := by
+  rw [numStandardTable_eq_card_monotone]
+  unfold IndefiniteRowSideFullHecke.RestTerms.numSYT
+  refine (card_monotone_equiv_congr (cellIso la) ?_).symm
+  rw [← Fintype.card_coe, ← Fintype.card_coe]
+  exact Fintype.card_congr (cellIso la).toEquiv
+
+theorem shapeCells_hookShape (r k b : ℕ) (hb : b < r) :
+    IndefiniteRowSideFullHecke.RestTerms.shapeCells (IndefiniteRowSideFullHecke.RestTerms.hookShape k b) =
+      IndefiniteRowSideFullHecke.RestTerms.shapeCells (RestTerms.hookShape r k b) := by
+  ext x
+  rw [mem_shapeCells, mem_shapeCells]
+  simp only [RestTerms.hookShape, IndefiniteRowSideFullHecke.RestTerms.hookShape]
+  constructor
+  · rintro ⟨h, hx⟩
+    refine ⟨by omega, ?_⟩
+    split_ifs at hx ⊢ <;> omega
+  · rintro ⟨h, hx⟩
+    have h' : x.1 < b + 1 := by
+      by_contra hc
+      split_ifs at hx <;> omega
+    refine ⟨h', ?_⟩
+    split_ifs at hx ⊢ <;> omega
+
+theorem numSYT_hookShape (r k b : ℕ) (hb : b < r) :
+    IndefiniteRowSideFullHecke.RestTerms.numSYT (IndefiniteRowSideFullHecke.RestTerms.hookShape k b) =
+      RestTerms.numStandardTable (RestTerms.hookShape r k b) := by
+  rw [← numSYT_eq]
+  unfold IndefiniteRowSideFullHecke.RestTerms.numSYT
+  rw [shapeCells_hookShape r k b hb]
+
+end GroundTheory.Heights₂.Heights.RestTerms.YoungDiagramCombinatorics
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.RemainderTerms.NumStandardTableEqCardMonotone =====
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PHookTableauCount =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PHookTableauCount", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.StatementsTop\npublic import GroundTheory.HeightsAndTheta.Heights.RemainderTerms.NumStandardTableEqCardMonotone\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -193,3 +260,6 @@ theorem HookTableauCount.proof (h : FrobeniusDimensionFormula.Statement) :
   exact numStandardTable_hookShape_succ h hlk
 
 end GroundTheory.Heights₂.Heights.RestTerms
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.RemainderTerms.PHookTableauCount =====

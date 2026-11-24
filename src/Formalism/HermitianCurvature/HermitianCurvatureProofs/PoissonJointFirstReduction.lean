@@ -56,7 +56,6 @@ theorem rd_pos (E : Type) [Field E] [NumberField E] [IsCMField E] : 0 < S6.rd E 
   unfold S6.rd
   first
     | exact Real.rpow_pos_of_pos h _
-    | exact Real.rpow_pos h _
 
 end Jx4
 

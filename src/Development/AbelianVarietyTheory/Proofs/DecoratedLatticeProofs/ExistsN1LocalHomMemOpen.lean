@@ -135,7 +135,7 @@ theorem locHom_autOf {k : Type} [Field k] (ι : E →+* k) (e : A ⊕ Fin c ≃ 
     (locHom ι e (autOf e g)).val = g.val.map ι := by
   rw [locHom_val]
   ext i j
-  simp [GlobalTheory.SymBridge.toLoc, autOf_apply, Matrix.mulVec_single_one]
+  simp [GlobalTheory.SymBridge.toLoc, autOf_apply]
 
 end GlobalTheory.VolBridge.NormOneIdeleAutomorphisms
 

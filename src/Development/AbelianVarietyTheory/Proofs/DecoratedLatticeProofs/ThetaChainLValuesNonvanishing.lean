@@ -101,7 +101,7 @@ theorem chainLW_holds : ∀ D : D7, ChainLW D := by
     by_cases hi : i ∈ Finset.Icc 1 k
     · have h1 := (Finset.mem_Icc.1 hi).1
       have h2 := (Finset.mem_Icc.1 hi).2
-      obtain ⟨Λ, h⟩ := GlobalTheory.T.thetaChain_char_quotient_LFunction_entire_ne_zero D c hc i (k + 1) h1 (by omega) (by omega)
+      obtain ⟨Λ, h⟩ := _root_.GlobalTheory.ChainOnto.QuotL.quotL_entire_ne_zero D c hc i (k + 1) h1 (by omega) (by omega)
       exact ⟨Λ, fun _ => h⟩
     · exact ⟨0, fun h => absurd h hi⟩
   choose Λ hΛ using hΛ
@@ -124,7 +124,7 @@ theorem chainLW_holds : ∀ D : D7, ChainLW D := by
       linarith
     show _ = GlobalTheory.LFun.eulerProd T (GlobalTheory.LFun.twist (chainPar c B k)
       (GlobalTheory.LFun.val (F := D.host.F) (c.chT (k + 1)))⁻¹) (x + 1 / 2)
-    rw [GlobalTheory.T.thetaLiftChainHeckeParameter_twist_next_target_char D c B k, ← hA, eulerProd_add_segFam T A (Finset.Icc 1 k) z D.R.t (x + 1 / 2)
+    rw [_root_.GlobalTheory.ChainOnto.chainPar_twist_chT D c B k, ← hA, eulerProd_add_segFam T A (Finset.Icc 1 k) z D.R.t (x + 1 / 2)
       (hAb.converges (by have hr0 : (0 : ℝ) ≤ D.R.r := Nat.cast_nonneg _; simp; linarith))
       (fun i _ l hl => hzc i _ (hre l hl))]
     refine congrArg (GlobalTheory.LFun.eulerProd T A (x + 1 / 2) * ·) (Finset.prod_congr rfl fun i hi => Finset.prod_congr rfl fun l hl => ?_)

@@ -70,7 +70,6 @@ theorem crd_osmul (c : p.1.adicCompletionIntegers X.B.I.F) (v : Fin X.B.I.n → 
   have hcv : c • v = (c : FpX X p) • v := by
     first
       | rfl
-      | exact (algebraMap_smul (FpX X p) c v).symm
   rw [hcv]
   unfold crd
   rw [map_smul]

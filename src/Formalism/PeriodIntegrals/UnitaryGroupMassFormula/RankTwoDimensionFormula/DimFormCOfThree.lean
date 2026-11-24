@@ -94,7 +94,6 @@ theorem orbitCount : OrbitCount := by
       (Finset.univ.image fun i => DoubleCoset.mk Γ K (t i)).card := by
     first
       | rw [Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card', Set.toFinset_range]
-      | simp [Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card']
   rw [e]
   simpa using hcard
 

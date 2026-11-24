@@ -100,7 +100,7 @@ private theorem isPrecomplete_of_module_finite {R M : Type*} [CommRing R] [AddCo
 
 theorem complete_max {l : ℕ} [Fact l.Prime] (LL : FinExt l) :
     IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL) := by
-  apply Formalism.MainNotions.N.Ln17.isAdicComplete_integers_local <;> assumption
+  apply Formalism.MainNotions.N.Ln17.isAdicComplete_integers_local
 
 theorem lemmaDN0_L (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (h1 : Formalism.MainNotions.RamifiedCoefficientChains.adm1 D HW F Cm) (h11 : Formalism.MainNotions.RamifiedCoefficientChains.adm11 D) :

@@ -1,17 +1,20 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+public import Mathlib.RingTheory.DedekindDomain.FiniteAdeleRing
+public import GroundTheory.AutomorphicForms.CuspidalDiscreteness.Counting
+public import Mathlib.Analysis.Complex.Exponential
 public import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.L2DecayOfCountEscape
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNcardEntrywiseBoxLe
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentMemFinset
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdEntrywiseLe
 public import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SiegelCount
-import GroundTheory.AutomorphicForms.NormDetDiagUnitsPosRealToUnits
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -23,9 +26,10 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -45,10 +49,205 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import GroundTheory.AutomorphicForms.NormDetDiagUnitsPosRealToUnits
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNcardEntrywiseBoxLe, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdEntrywiseLe, Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.UnipotentVanishing.InfAtUnipInvEqZero
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNcardEntrywiseBoxLe =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNcardEntrywiseBoxLe", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic\npublic import Mathlib.RingTheory.DedekindDomain.FiniteAdeleRing\npublic import GroundTheory.AutomorphicForms.CuspidalDiscreteness.Counting\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain
+
+namespace GlobalTheory.CompanionTheory.Counting
+
+
+open GroundTheory.Automorphic.CuspidalSpectrum in
+theorem exists_ncard_entrywiseBox_le (K : Type) [Field K] [NumberField K] (n : ℕ)
+    (𝒦 : Set (FiniteAdeleRing (𝓞 K) K)) (h𝒦 : IsCompact 𝒦) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ T : Fin n → Fin n → ℝ, (∀ i j, 0 ≤ T i j) →
+      (setOf fun γ : GL (Fin n) K => (∀ i j,
+        algebraMap K (FiniteAdeleRing (𝓞 K) K) ((γ : Matrix (Fin n) (Fin n) K) i j) ∈ 𝒦 ∧
+        ∀ w : InfinitePlace K, w ((γ : Matrix (Fin n) (Fin n) K) i j) ≤ T i j)).Finite ∧
+      ((Set.ncard (setOf fun γ : GL (Fin n) K => (∀ i j,
+        algebraMap K (FiniteAdeleRing (𝓞 K) K) ((γ : Matrix (Fin n) (Fin n) K) i j) ∈ 𝒦 ∧
+        ∀ w : InfinitePlace K, w ((γ : Matrix (Fin n) (Fin n) K) i j) ≤ T i j)) : ℕ) : ℝ) ≤
+        ∏ i, ∏ j, C * (1 + T i j) ^ Module.finrank ℚ K := by
+  obtain ⟨m, hm, hint⟩ := GroundTheory.Automorphic.CuspidalSpectrum.exists_natCast_mul_integral_of_isCompact K h𝒦
+  obtain ⟨C₀, hC₀, hcount⟩ := GroundTheory.Automorphic.CuspidalSpectrum.exists_ncard_integers_le K
+  have hw : ∀ (w : InfinitePlace K) (x : K), w ((m : K) * x) = (m : ℝ) * w x := by
+    intro w x
+    rw [← w.norm_embedding_eq, map_mul, norm_mul, w.norm_embedding_eq, w.norm_embedding_eq, w.map_natCast]
+  have hm1 : (1 : ℝ) ≤ m := by exact_mod_cast hm
+  have hmK : (m : K) ≠ 0 := by exact_mod_cast hm.ne'
+  refine ⟨C₀ * (m : ℝ) ^ Module.finrank ℚ K, mul_nonneg hC₀ (by positivity), ?_⟩
+  intro T hT
+  have hA : ∀ p : Fin n × Fin n,
+      (((↑) : 𝓞 K → K) '' {z | ∀ w : InfinitePlace K, w (z : K) ≤ (m : ℝ) * T p.1 p.2}).Finite ∧
+      ((((↑) : 𝓞 K → K) '' {z | ∀ w : InfinitePlace K, w (z : K) ≤ (m : ℝ) * T p.1 p.2}).ncard : ℝ) ≤
+        C₀ * (1 + (m : ℝ) * T p.1 p.2) ^ Module.finrank ℚ K := by
+    intro p
+    obtain ⟨hf, hc⟩ := hcount ((m : ℝ) * T p.1 p.2) (mul_nonneg (by positivity) (hT p.1 p.2))
+    exact ⟨hf.image _, le_trans (by exact_mod_cast Set.ncard_image_le hf) hc⟩
+  let F : GL (Fin n) K → (Fin n × Fin n → K) := fun γ p => (m : K) * (γ : Matrix (Fin n) (Fin n) K) p.1 p.2
+  obtain ⟨t, ht⟩ : ∃ t : Finset (Fin n × Fin n → K), t = Fintype.piFinset fun p => (hA p).1.toFinset := ⟨_, rfl⟩
+  have key : ∀ γ : GL (Fin n) K, (∀ i j, algebraMap K (FiniteAdeleRing (𝓞 K) K) ((γ : Matrix (Fin n) (Fin n) K) i j) ∈ 𝒦 ∧
+      ∀ w : InfinitePlace K, w ((γ : Matrix (Fin n) (Fin n) K) i j) ≤ T i j) → F γ ∈ (t : Set (Fin n × Fin n → K)) := by
+    intro γ hγ
+    rw [Finset.mem_coe, ht, Fintype.mem_piFinset]
+    intro p
+    rw [Set.Finite.mem_toFinset]
+    obtain ⟨z, hz⟩ := hint _ (hγ p.1 p.2).1
+    refine ⟨z, fun w => ?_, hz⟩
+    rw [hz, hw]
+    exact mul_le_mul_of_nonneg_left ((hγ p.1 p.2).2 w) (by positivity)
+  have inj : ∀ γ γ' : GL (Fin n) K, F γ = F γ' → γ = γ' := by
+    intro γ γ' h
+    ext i j
+    exact mul_left_cancel₀ hmK (congrFun h (i, j))
+  refine ⟨?_, ?_⟩
+  · exact Set.Finite.of_finite_image ((t.finite_toSet).subset (Set.image_subset_iff.mpr fun γ hγ => key γ hγ))
+      (fun γ _ γ' _ h => inj γ γ' h)
+  · refine le_trans (Nat.cast_le.mpr (Set.ncard_le_ncard_of_injOn F (fun γ hγ => key γ hγ)
+      (fun γ _ γ' _ h => inj γ γ' h) t.finite_toSet)) ?_
+    rw [Set.ncard_coe_finset, ht, Fintype.card_piFinset, Nat.cast_prod, Fintype.prod_prod_type]
+    apply Finset.prod_le_prod₀ (fun _ _ => Finset.prod_nonneg fun _ _ => by positivity)
+    intro i _
+    apply Finset.prod_le_prod₀ (fun _ _ => by positivity)
+    intro j _
+    rw [← Set.ncard_eq_toFinset_card _ (hA (i, j)).1]
+    refine le_trans (hA (i, j)).2 ?_
+    rw [mul_assoc, ← mul_pow]
+    apply mul_le_mul_of_nonneg_left _ hC₀
+    apply pow_le_pow_left₀ (by nlinarith [hT i j])
+    nlinarith [hT i j]
+
+end GlobalTheory.CompanionTheory.Counting
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNcardEntrywiseBoxLe =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdEntrywiseLe =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdEntrywiseLe", "h": "module\n\npublic import Mathlib.Analysis.Complex.Exponential\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Finset
+
+namespace GlobalTheory.CompanionTheory.EntrywiseCount
+
+theorem card_lt (n r : ℕ) (hr : r ≤ n) :
+    (univ.filter (fun i : Fin n => (i : ℕ) < r)).card = r := by
+  have h : (univ.filter (fun i : Fin n => (i : ℕ) < r)).card
+      = ((range n).filter (fun i => i < r)).card := by
+    rw [Finset.card_filter, Finset.card_filter]
+    exact Fin.sum_univ_eq_sum_range (fun i => if i < r then 1 else 0) n
+  rw [h]
+  have : (range n).filter (fun i => i < r) = range r := by
+    ext x
+    simp only [mem_filter, mem_range]
+    omega
+  rw [this, card_range]
+
+theorem card_ge (n r : ℕ) (hr : r ≤ n) :
+    (univ.filter (fun j : Fin n => r ≤ (j : ℕ))).card = n - r := by
+  have h := Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin n)))
+    (fun i : Fin n => (i : ℕ) < r)
+  rw [card_lt n r hr, Finset.card_univ, Fintype.card_fin] at h
+  simp only [not_lt] at h
+  omega
+
+theorem prod_indicator (n r : ℕ) (hr : r ≤ n) (E : ℝ) :
+    ∏ i : Fin n, ∏ j : Fin n, (if (i : ℕ) < r ∧ r ≤ (j : ℕ) then E else 1)
+      = E ^ (r * (n - r)) := by
+  have inner : ∀ i : Fin n, ∏ j : Fin n, (if (i : ℕ) < r ∧ r ≤ (j : ℕ) then E else 1)
+      = if (i : ℕ) < r then E ^ (n - r) else 1 := by
+    intro i
+    by_cases hi : (i : ℕ) < r
+    · simp only [hi, true_and, if_true]
+      rw [Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one, card_ge n r hr]
+    · simp [hi]
+  simp only [inner]
+  rw [Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one, card_lt n r hr,
+    ← pow_mul, mul_comm]
+
+theorem factor_le (d : ℕ) (C β t : ℝ) (p : Prop) [Decidable p]
+    (hC : 0 ≤ C) (hβ : 0 ≤ β) (ht : 0 ≤ t) :
+    C * (1 + β * (if p then Real.exp t else 1)) ^ d
+      ≤ (C * (1 + β) ^ d) * (if p then Real.exp ((d : ℝ) * t) else 1) := by
+  have hE : 1 ≤ Real.exp t := Real.one_le_exp ht
+  have hbase : 1 + β * (if p then Real.exp t else 1)
+      ≤ (1 + β) * (if p then Real.exp t else 1) := by
+    split_ifs
+    · nlinarith
+    · linarith
+  have hnn : 0 ≤ 1 + β * (if p then Real.exp t else 1) := by
+    split_ifs <;> positivity
+  have hpow := pow_le_pow_left₀ hnn hbase d
+  rw [mul_pow] at hpow
+  have hE' : (if p then Real.exp t else 1) ^ d = (if p then Real.exp ((d : ℝ) * t) else 1) := by
+    split_ifs
+    · rw [← Real.exp_nat_mul]
+    · simp
+  rw [hE'] at hpow
+  calc C * (1 + β * (if p then Real.exp t else 1)) ^ d
+      ≤ C * ((1 + β) ^ d * (if p then Real.exp ((d : ℝ) * t) else 1)) :=
+        mul_le_mul_of_nonneg_left hpow hC
+    _ = _ := by ring
+
+theorem prod_entrywise_le : ∀ (n r d : ℕ), r ≤ n → ∀ (C β t : ℝ), 0 ≤ C → 0 ≤ β → 0 ≤ t →
+    ∏ i : Fin n, ∏ j : Fin n,
+        C * (1 + β * (if (i : ℕ) < r ∧ r ≤ (j : ℕ) then Real.exp t else 1)) ^ d
+      ≤ C ^ (n * n) * (1 + β) ^ (d * (n * n))
+        * Real.exp ((d : ℝ) * ((r : ℝ) * ((n : ℝ) - r)) * t) := by
+  intro n r d hr C β t hC hβ ht
+  have hnn : ∀ (i j : Fin n), 0 ≤
+      C * (1 + β * (if (i : ℕ) < r ∧ r ≤ (j : ℕ) then Real.exp t else 1)) ^ d := by
+    intro i j
+    have : 0 ≤ (if (i : ℕ) < r ∧ r ≤ (j : ℕ) then Real.exp t else 1) := by
+      split_ifs <;> positivity
+    positivity
+  have step : ∏ i : Fin n, ∏ j : Fin n,
+        C * (1 + β * (if (i : ℕ) < r ∧ r ≤ (j : ℕ) then Real.exp t else 1)) ^ d
+      ≤ ∏ i : Fin n, ∏ j : Fin n, ((C * (1 + β) ^ d) *
+          (if (i : ℕ) < r ∧ r ≤ (j : ℕ) then Real.exp ((d : ℝ) * t) else 1)) := by
+    apply Finset.prod_le_prod₀
+    · intro i _
+      exact Finset.prod_nonneg (fun j _ => hnn i j)
+    · intro i _
+      apply Finset.prod_le_prod₀
+      · intro j _
+        exact hnn i j
+      · intro j _
+        exact factor_le d C β t _ hC hβ ht
+  refine step.trans (le_of_eq ?_)
+  simp only [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+  rw [prod_indicator n r hr, ← Real.exp_nat_mul, ← pow_mul]
+  have hp : (((1 + β) ^ d) ^ n) ^ n = (1 + β) ^ (d * (n * n)) := by
+    rw [← pow_mul, ← pow_mul]
+  have : (((r * (n - r) : ℕ) : ℝ)) * ((d : ℝ) * t) = (d : ℝ) * ((r : ℝ) * ((n : ℝ) - r)) * t := by
+    rw [Nat.cast_mul, Nat.cast_sub hr]
+    ring
+  rw [this]
+  rw [hp]
+
+end GlobalTheory.CompanionTheory.EntrywiseCount
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdEntrywiseLe =====
+
+-- ===== clump member: Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.UnipotentVanishing.InfAtUnipInvEqZero =====
+-- clump-header: {"m": "Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.UnipotentVanishing.InfAtUnipInvEqZero", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.L2DecayOfCountEscape\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsNcardEntrywiseBoxLe\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExponentMemFinset\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProdEntrywiseLe\npublic import GroundTheory.AutomorphicForms.CuspidalDiscreteness.SiegelCount\nimport GroundTheory.AutomorphicForms.NormDetDiagUnitsPosRealToUnits\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -72,11 +271,6 @@ theorem exists_ncard_box_le (K : Type) [Field K] [NumberField K] (n : ℕ)
     ∃ C : ℝ, 0 ≤ C ∧ ∀ T : Fin n → Fin n → ℝ, (∀ i j, 0 ≤ T i j) →
       (box K n 𝒦 T).Finite ∧ ((box K n 𝒦 T).ncard : ℝ) ≤ ∏ i, ∏ j, C * (1 + T i j) ^ Module.finrank ℚ K :=
   GlobalTheory.CompanionTheory.Counting.exists_ncard_entrywiseBox_le K n 𝒦 h𝒦
-
-theorem prod_bound (n r d : ℕ) (hr : r ≤ n) (C β t : ℝ) (hC : 0 ≤ C) (hβ : 0 ≤ β) (ht : 0 ≤ t) :
-    ∏ i : Fin n, ∏ j : Fin n, C * (1 + β * (if (i : ℕ) < r ∧ r ≤ (j : ℕ) then Real.exp t else 1)) ^ d ≤
-      C ^ (n * n) * (1 + β) ^ (d * (n * n)) * Real.exp ((d : ℝ) * ((r : ℝ) * ((n : ℝ) - r)) * t) :=
-  GlobalTheory.CompanionTheory.EntrywiseCount.prod_entrywise_le n r d hr C β t hC hβ ht
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
@@ -296,7 +490,7 @@ theorem count_holds : An.Count := by
     exact ⟨(m, γ₀), Finset.mem_coe.2 (Finset.mem_product.2 ⟨hm, hB⟩), hγm.symm⟩
   have hB : (B.card : ℝ) ≤ C ^ (n * n) * (1 + β) ^ (d * (n * n)) * Real.exp (2 * An.rho K n r * t) := by
     rw [← Set.ncard_eq_toFinset_card _ hfin]
-    refine hcard.trans ((count.prod_bound n r d hrn.le C β t hC hβ ht).trans (le_of_eq ?_))
+    refine hcard.trans ((_root_.GlobalTheory.CompanionTheory.EntrywiseCount.prod_entrywise_le n r d hrn.le C β t hC hβ ht).trans (le_of_eq ?_))
     congr 2
     simp only [An.rho, d]
     ring
@@ -316,3 +510,7 @@ theorem count_holds : An.Count := by
       exact_mod_cast h2
 
 end PositivityTheory.Rg.Rs
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.ExponentialNegativity.UnipotentVanishing.InfAtUnipInvEqZero =====

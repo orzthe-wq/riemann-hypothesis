@@ -49,11 +49,7 @@ namespace GlobalTheory.CM.ActRight
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
-theorem bar_bar (H : Host E) (s : 𝓞 E) : H.bar (H.bar s) = s := by
-  apply Subtype.ext
-  show ((H.bar (H.bar s) : 𝓞 E) : E) = (s : E)
-  rw [H.bar_eq, H.bar_eq]
-  simp
+alias bar_bar := _root_.GlobalTheory.HostModel.bar_bar
 
 theorem weilEq_act_adj (H : Host E) (K : Type) [Field K] [NumberField K] (σ₁ : K →+* ℂ)
     (A : PAT H (Sp (𝓞 K))) (a : 𝓞 E) :

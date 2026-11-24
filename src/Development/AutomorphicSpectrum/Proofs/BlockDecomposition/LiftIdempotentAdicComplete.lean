@@ -62,10 +62,6 @@ theorem sub_pow_three_eq {R : Type*} [CommRing R] {a b : R}
   have hb' : b * b = b := hb
   linear_combination (a + 1 - 3 * b) * ha' + (3 * a - b - 1) * hb'
 
-theorem eq_of_isNilpotent_sub {R : Type*} [CommRing R] {a b : R}
-    (ha : IsIdempotentElem a) (hb : IsIdempotentElem b) (h : IsNilpotent (a - b)) : a = b :=
-  eq_of_isNilpotent_sub_of_isIdempotentElem ha hb h
-
 theorem eq_of_sub_mem_jacobson {R : Type*} [CommRing R] {a b : R}
     (ha : IsIdempotentElem a) (hb : IsIdempotentElem b)
     (h : a - b ∈ Ideal.jacobson (⊥ : Ideal R)) : a = b := by
@@ -118,7 +114,7 @@ theorem existsUnique_idempotent_lift {S : Type} [CommRing S] (ϖ : S)
     have h2 : y * y - y = 0 := by rw [← sq]; exact this
     exact sub_eq_zero.1 h2
   have hlift : Ideal.Quotient.mk (Ideal.span {ϖ ^ k}) y = Ideal.Quotient.mk _ a := by
-    apply eq_of_isNilpotent_sub (hyid.map (Ideal.Quotient.mk _)) he
+    apply eq_of_isNilpotent_sub_of_isIdempotentElem (hyid.map (Ideal.Quotient.mk _)) he
     refine ⟨k, ?_⟩
     rw [← map_sub, ← map_pow]
     apply Ideal.Quotient.eq_zero_iff_mem.2

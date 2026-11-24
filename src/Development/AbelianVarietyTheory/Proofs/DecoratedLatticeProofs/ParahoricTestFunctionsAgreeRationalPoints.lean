@@ -297,7 +297,7 @@ theorem phi_top (hA : AtTwist (R := R) sel mu cst σ₀ P ι s W)
     rw [← ha1, ← hb1, EntryBases.eN_val, EntryBases.atN_val]
   have hr : R.r = R.k + (s + 1) := by simp only [Ranks.r]; omega
   have hb : R.N R.m - 1 + 0 = R.k + (s + 1) + (s + 2) * R.t := by
-    simp only [Ranks.N, hm, add_mul, mul_add, one_mul, mul_one]; omega
+    simp only [Ranks.N, hm, add_mul, mul_add, mul_one]; omega
   have ha : R.N (s + 1) + cOf R (s + 1) = R.k + (s + 1) + (s + 1) * R.t := by
     simp only [Ranks.N, cOf, mul_add, mul_one]; omega
   have hcore := core P.1 (qOf P.1) ι W.ϖ σ₀ (resChar (mu : Chr X.F X.E X.K) P.1) W.δ hA.compl W.unif hA.del hr hb ha

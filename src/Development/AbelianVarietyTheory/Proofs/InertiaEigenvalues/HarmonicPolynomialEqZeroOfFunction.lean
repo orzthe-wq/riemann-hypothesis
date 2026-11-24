@@ -77,7 +77,7 @@ theorem fockSubst_eq_fsub {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (u : 
 
 theorem one_mem_KC {m : ℕ} (ε : Fin m → Bool) : (1 : Matrix (Fin m) (Fin m) ℂ) ∈ GlobalTheory.Dec.KC ε := by
   refine ⟨?_, by simp⟩
-  simp [Matrix.mem_unitaryGroup_iff]
+  simp
 
 theorem fockL_fockSubst_adj : ∀ (D : D7) (m n : ℕ) (p : D.what₂.Tau → ℕ) (u u' : GLR D n), (∀ τ, (u' τ).val = (u τ).valᴴ) → ∀ F G : PolF D m n, fockL (fockSubst p u F) G = fockL F (fockSubst p u' G) := by
   intro D m n p u u' h F G
@@ -395,7 +395,7 @@ theorem continuousAt_lsub {σ : Type} [Fintype σ] (M : ℂ → Matrix σ σ ℂ
   induction P using MvPolynomial.induction_on with
   | C a =>
     intro ξ
-    simp only [AlgHom.commutes, MvPolynomial.algebraMap_eq, MvPolynomial.algHom_C]
+    simp only [MvPolynomial.algebraMap_eq, MvPolynomial.algHom_C]
     exact continuousAt_const
   | add p q hp hq =>
     intro ξ

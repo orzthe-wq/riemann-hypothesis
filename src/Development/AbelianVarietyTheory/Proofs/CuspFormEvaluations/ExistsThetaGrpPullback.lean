@@ -55,19 +55,6 @@ namespace GlobalTheory.ThetaPullback
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
-private theorem gm_res_eq_gm {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) {U V : X.Opens} (hle : V ≤ U) (hz : r z ∈ V)
-    (a : Γ(X, U)ˣ) : gm r z V (res hle a) = gm r z U a := by
-  have key : X.presheaf.map (homOfLE hle).op ≫ r.app V ≫ Z.presheaf.germ (r ⁻¹ᵁ V) z hz =
-      r.app U ≫ Z.presheaf.germ (r ⁻¹ᵁ U) z (hle hz) := by
-    rw [Scheme.Hom.naturality_assoc]
-    congr 1
-    exact TopCat.Presheaf.germ_res _ _ _ _
-  unfold gm res pullU
-  rw [dite_eq_left hz, dite_eq_left (hle hz)]
-  ext
-  simp only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe]
-  exact congrArg (fun φ => φ.hom (a : Γ(X, U))) key
-
 private theorem exists_isGen_linComb_val_eq_of_eq {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ φ' : K → (Y ⟶ X)}
     {ε : K → ℤ} (hφ : φ = φ') (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) :
     ∃ t' : LB.Gen (LB.LinComb L φ' ε), t'.IsGen ∧
@@ -102,7 +89,7 @@ theorem val_powGen {L : LB A.left} {k : ℤ} {T : Over S} (θ : ThetaGrp A L k T
   dsimp only
   erw [map_prod]
   refine Finset.prod_congr rfl fun j _ => ?_
-  exact gm_res_eq_gm _ _ _ (hJ.mem _ r) _
+  exact _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm_res _ _ _ (hJ.mem _ r) _
 
 theorem val_symGen {L : LB A.left} {k : ℤ} {T : Over S} (θ : ThetaGrp A L k T) (ν : LB.Gen (negLB A L k T))
     {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) {z : Z} {J} (hJ : Good L z J) :

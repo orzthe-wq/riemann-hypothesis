@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
 public import Mathlib.RingTheory.MvPowerSeries.Derivative
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupExpTwoSidedInverseUniqueStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupExpTwoSidedInverseUnique
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.TangentEqLcZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,7 +51,6 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Presheaf
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.TangentEqLcZero
 
 @[expose] public section
 
@@ -127,7 +127,7 @@ theorem subst_substSecondBlockZero_secondBlock (G : LogFGL v d) (g : MvPowerSeri
   rw [this, subst_zero_eq]
 
 theorem formalGroupLaw_subst_secondBlock_zero (G : LogFGL v d) (l : Fin d) : subst (substSecondBlockZero (C := C) d) (G.F l) = (X l : MvPowerSeries (Fin d) C) := by
-  obtain ⟨⟨hE0, hlgE⟩, hElg, -⟩ := GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v d G
+  obtain ⟨⟨hE0, hlgE⟩, hElg, -⟩ := _root_.GlobalTheory.FGDepth.expOf_twoSided_unique C v d G
   have hF0c : ∀ l, constantCoeff (subst (substSecondBlockZero (C := C) d) (G.F l)) = 0 := fun l =>
     constantCoeff_subst_eq_zero (hasSubst_substSecondBlockZero d) (constantCoeff_substSecondBlockZero d) (G.F_const l)
   have hF0 : HasSubst (fun l => subst (substSecondBlockZero (C := C) d) (G.F l)) := hasSubst_of_constantCoeff_zero hF0c
@@ -210,7 +210,7 @@ theorem pderiv_expOf (G : LogFGL v d) (l k : Fin d) :
     pderiv k (expOf G l) = subst (expOf G) (jacEntry G k l) := by
   classical
   have_subst_chain_rule hchain
-  obtain ⟨⟨hE0, hlgE⟩, -, -⟩ := GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v d G
+  obtain ⟨⟨hE0, hlgE⟩, -, -⟩ := _root_.GlobalTheory.FGDepth.expOf_twoSided_unique C v d G
   have hE : HasSubst (expOf G) := hasSubst_of_constantCoeff_zero hE0
   let J : Matrix (Fin d) (Fin d) (MvPowerSeries (Fin d) C) :=
     Matrix.of fun a l => subst (expOf G) (pderiv l (G.lg a))
@@ -244,7 +244,7 @@ theorem exists_integral_invariant_derivation : ∀ (C : Type) [Field C] [CharZer
   intro C _ _ v d G
   have_subst_chain_rule hchain
   refine ⟨jacEntry G, jacEntry_int G, fun f k α => ?_⟩
-  obtain ⟨⟨hE0, -⟩, -, -⟩ := GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v d G
+  obtain ⟨⟨hE0, -⟩, -, -⟩ := _root_.GlobalTheory.FGDepth.expOf_twoSided_unique C v d G
   have hE : HasSubst (expOf G) := hasSubst_of_constantCoeff_zero hE0
   have hP : ∀ l, (show MvPowerSeries (Fin d) C from
       fun β => ((β l : C) + 1) * coeff (β + Finsupp.single l 1) f) = pderiv l f := by

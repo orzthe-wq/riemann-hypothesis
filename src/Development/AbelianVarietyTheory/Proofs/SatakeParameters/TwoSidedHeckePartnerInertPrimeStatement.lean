@@ -49,4 +49,4 @@ open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.twoSidedHeckePartner_inertPrime : HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Chain.LiftInteg D → Core R F → SchurAll R → ∀ t P, Good R t P → conjPl P = P → FixAll R t P → TwoSided R t P := by
-  first | exact @GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert | exact GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert | (intros; apply GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert <;> assumption)
+  first | exact @GlobalTheory.Hk3.TwoSidedInert.twoSided_of_inert

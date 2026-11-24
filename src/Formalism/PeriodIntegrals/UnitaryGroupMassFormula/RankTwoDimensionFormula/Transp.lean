@@ -104,9 +104,7 @@ theorem tr_af_nontrivial (F : Type) [Field F] [NumberField F] : Nontrivial (IsDe
   let v : IsDedekindDomain.HeightOneSpectrum (𝓞 F) := ⟨p, hp, hp0⟩
   haveI : Nonempty (IsDedekindDomain.HeightOneSpectrum (𝓞 F)) := ⟨v⟩
   first
-    | infer_instance
     | exact (RestrictedProduct.evalRingHom _ v).domain_nontrivial
-    | exact ⟨⟨0, 1, fun h => zero_ne_one (congrArg (fun x => x.1 v) h)⟩⟩
 
 attribute [local instance] tr_af_nontrivial
 

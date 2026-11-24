@@ -2,23 +2,27 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslateMomentsAll
 public import Formalism.LocalToGlobal.KernelLattices.DeterminantCokernelCount.CokernelIndexFactors.StatementB
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AlgebraicDirectionScaledEmbeddingStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AlgebraicJetsOfAlgebraicTaylorStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CmBaseFieldIntegersAndCurveIdealFactsStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CoefInWeilOperatorTranslateAlgebraicStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DiscOneScaleRatioIdealRingAlgebraicUnitStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EqOnPadicIntOfEqOnNaturalsMomentStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsAnalyticSetupPeriodLatticePairStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.GoodLiftEqIdempotentLiftStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.GoodLiftsLatticeMapMemSetupGoodLiftsStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IteratedFDerivAlgebraicDirectionsJetTransportStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeJetsAreBoundedMomentsPullbackStatement
+public import Formalism.LocalToGlobal.KernelLattices.LateralTheory
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AlgebraicDirectionScaledEmbedding
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AlgebraicJetsOfAlgebraicTaylor
+public import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommutatorPairingPowEqOneOfGoodLift
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CmBaseFieldIntegersAndCurveIdealFacts
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CoefInWeilOperatorTranslateAlgebraic
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.DiscOneScaleRatioIdealRingAlgebraicUnit
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EqOnPadicIntOfEqOnNaturalsMoment
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsAnalyticSetupPeriodLatticePair
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.GoodLiftEqIdempotentLift
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.GoodLiftsLatticeMapMemSetupGoodLifts
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IteratedFDerivAlgebraicDirectionsJetTransport
+public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LatIntZero
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LatticeJetsAreBoundedMomentsPullback
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LawsAndChart
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MomentMeasureNormLeOneIffLatticeIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalizedThetaVectorIsometryIsThetaStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalizedVectorTranslatesPrimeOrderIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PairingScaledDirectionsEqPeriodPairingStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PrimePowSmulGoodLiftMemSetupLatticeStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MomentMeasureNormLeOneIffLatticeIntegral
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalizedThetaVectorIsometryIsTheta
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NormalizedVectorTranslatesPrimeOrderIntegral
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PairingScaledDirectionsEqPeriodPairing
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PrimePowSmulGoodLiftMemSetupLattice
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmLatticeTranslationOperatorEqPhaseMulNegComp
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MkLeContinuumOfDenseRange
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.OpUConstMul
@@ -60,7 +64,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommutatorPairingPowEqOneOfGoodLift
 
 @[expose] public section
 
@@ -133,12 +136,12 @@ theorem kap_transport (D : D7) (T : Tor D) {N N' g : ℕ} (Hm : Matrix (Fin g) (
 
 theorem moments_fin : (∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : IdE D → ℂ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IsChi D χ → B.EqP χ) → (∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : IdE D → ℂ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IsChi D χ → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), admitted D N N' L L' → ∀ t : VC D N N', (∃ a : ℕ, 0 < a ∧ a • t ∈ La D B.tor L L') → ∀ α, taylor D (U D B.tor t (B.eNat χ N N' L L')) α ∈ Qbar) → (∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : IdE D → ℂ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IsChi D χ → ∀ (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), p ≠ 2 → jacobiSym (-(D.host.d : ℤ)) p = 1 → Nat.Coprime (Ideal.absNorm cc) p → ∃ Ω : ℂ_[p], ‖Ω‖ = 1 ∧ GlobalTheory.MomT.MomentsAt D cc δ (B.eNat χ) lam Ω) := by
   intro hMv hAlg D cc δ B χ hcc hδ hχ p _ lam hp2 hjac hcop
-  obtain ⟨hdp, hd16, -, -, -⟩ := GlobalTheory.T.cmBaseField_integers_and_curveIdeal_facts D
+  obtain ⟨hdp, hd16, -, -, -⟩ := _root_.GlobalTheory.MomDict.main D
   have hSplit : GlobalTheory.MomOne.Split D.host.d p := Or.inr ⟨hp2, hjac⟩
   obtain ⟨ι, hι⟩ := GlobalTheory.PadicComplexIso.exists_ringEquiv_extending p lam
   obtain ⟨δ₀, θ, Ω, hPer⟩ := GlobalTheory.MomN.exists_per D.host.d p ι hdp hd16 hSplit
   obtain ⟨hTh, h12, hδ₀, hAll, hΩ, hLaws, hPerM⟩ := hPer
-  obtain ⟨hQ, hUn⟩ := GlobalTheory.T.discOneScale_ratio_ideal_ring_algebraic_unit D cc δ δ₀ hcc hδ h12 p hp2 hcop
+  obtain ⟨hQ, hUn⟩ := _root_.GlobalTheory.MomDelta.delta_ratio D cc δ δ₀ hcc hδ h12 p hp2 hcop
   have hne : δ / δ₀ ≠ 0 := by
     intro h; have := hUn ι; rw [h, map_zero, norm_zero] at this; exact zero_ne_one this
   have hδ0 : δ ≠ 0 := by intro h; apply hne; rw [h, zero_div]
@@ -147,7 +150,7 @@ theorem moments_fin : (∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B :
   · rw [norm_mul, norm_mul, hΩ, hlam, hUn ι, GlobalTheory.MomOne.Basic.norm_nat_eq_one (Nat.Coprime.symm hcop)]
     norm_num
   intro N N' L L' hA t ht
-  obtain ⟨g, S, e, hSd, hSok, hLa, hhf, hbeta, hLaRep, hNN⟩ := GlobalTheory.T.exists_analyticSetup_periodLatticePair D cc δ B hcc hδ N N' L L' hA
+  obtain ⟨g, S, e, hSd, hSok, hLa, hhf, hbeta, hLaRep, hNN⟩ := _root_.GlobalTheory.MomSetup.periodSetup D cc δ B hcc hδ N N' L L' hA
   obtain ⟨N₀, hN₀, hN₀p, hN₀t⟩ := ht
   have hHm : S.Hm.IsHermitian := hSok.2.2.1.1
   have hd0 : 0 < S.d := hSd ▸ hdp.pos
@@ -155,14 +158,14 @@ theorem moments_fin : (∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B :
   refine ⟨N₀, hN₀p, fun r b hb => ?_⟩
   set F := B.eNat χ N N' L L' with hFdef
   set e' : (Fin g → ℂ) → ℂ := fun z => F (e.symm z) with he'
-  have hTheta : S.IsTheta e' := GlobalTheory.T.normalizedThetaVector_isometry_isTheta D cc δ B χ hcc hδ hχ hδ0 N N' L L' hA g S e hSd hLa hhf
+  have hTheta : S.IsTheta e' := _root_.GlobalTheory.IsomTheta.isTheta_eNat_comp D cc δ B χ hcc hδ hχ hδ0 N N' L L' hA g S e hSd hLa hhf
   have hF : ContDiff ℂ ⊤ F := by
     have : F = fun x => e' (e x) := by funext x; simp [e']
     rw [this]; exact hTheta.1.comp e.contDiff
   have hAlg0 : ∀ α, taylor D F α ∈ Qbar := by
     have := hAlg D cc δ B χ hcc hδ hχ N N' L L' hA 0 ⟨1, one_pos, by simp⟩
     simpa [U_zero] using this
-  have hAJ : S.AlgJets δ₀ e' := GlobalTheory.T.algebraicJets_of_algebraic_taylor D cc δ δ₀ B N N' L L' F hQ hδ₀ hF hAlg0 g S e hLa hLaRep
+  have hAJ : S.AlgJets δ₀ e' := _root_.GlobalTheory.algJets_of_taylor D cc δ δ₀ B N N' L L' F hQ hδ₀ hF hAlg0 g S e hLa hLaRep
   set bS : Fin r → Fin g → ℂ := fun i => e (δ • embV D B.tor (b i)) with hbSdef
   have hbS : S.NNBasis p bS := hNN p r b hcop hb
   have hN₀S : (N₀ : ℂ) • e t ∈ S.La := by
@@ -177,18 +180,18 @@ theorem moments_fin : (∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B :
     rw [this]; exact ((hH.2.2.1 (e t) e' hTheta.1).1).comp e.contDiff
   have hnorm : ‖μ‖ ≤ 1 := by
     have hG : ContDiff ℂ ⊤ (JMB.opU S.Hm (e t) e') := (hH.2.2.1 (e t) e' hTheta.1).1
-    refine (GlobalTheory.T.momentMeasure_norm_le_one_iff_latticeIntegral p ι lam δ₀ Ω g S r bS (e t) _ μ hι hδ₀ hΩ hSok (hSd ▸ hSplit) hbS ht' hG hM1).2 ?_
+    refine (_root_.GlobalTheory.MomN.norm_le_one_iff_latInt p ι lam δ₀ Ω g S r bS (e t) _ μ hι hδ₀ hΩ hSok (hSd ▸ hSplit) hbS ht' hG hM1).2 ?_
     rw [hUt]
-    have hE := GlobalTheory.T.normalizedVector_translates_prime_order_integral hMv D cc δ B hcc hδ p hp2 hjac hcop ι δ₀ θ Ω ⟨hTh, h12, hδ₀, hAll, hΩ, hLaws, hPerM⟩ χ hχ
+    have hE := _root_.GlobalTheory.MomN.transPrime_int hMv D cc δ B hcc hδ p hp2 hjac hcop ι δ₀ θ Ω ⟨hTh, h12, hδ₀, hAll, hΩ, hLaws, hPerM⟩ χ hχ
       N N' L L' hA t ⟨N₀, hN₀, hN₀p, hN₀t⟩
-    exact GlobalTheory.T.latticeJetsAreBoundedMoments_pullback p ι (VC D N N') (Fin g → ℂ) _ (La D B.tor L L') S.La.toAddSubgroup
+    exact _root_.GlobalTheory.MomN.latInt_pull p ι (VC D N N') (Fin g → ℂ) _ (La D B.tor L L') S.La.toAddSubgroup
       (e.symm : (Fin g → ℂ) →L[ℂ] VC D N N') (U D B.tor t F) hUF
       (fun x hx => ⟨1, Nat.coprime_one_left _, by
         rw [one_smul, ← hLa]; simpa using hx⟩) hE
   refine ⟨μ, hnorm, fun n y hy => ?_⟩
-  have hyS := GlobalTheory.T.goodLiftsLattice_map_mem_setup_goodLifts D cc δ N N' L L' g S e p lam N₀ n hSd hLa y hy
+  have hyS := _root_.GlobalTheory.MomGood.main D cc δ N N' L L' g S e p lam N₀ n hSd hLa y hy
   obtain ⟨hqy, m, eps, yt, hId, hm, hIm, hW, hK⟩ :=
-    GlobalTheory.T.goodLift_eq_idempotent_lift p lam g S r bS e' (e t) hSok (hSd ▸ hSplit) hbS hTheta N₀ hN₀ hN₀p hN₀S n (e y) hyS
+    _root_.GlobalTheory.MomN.goodLift_eq p lam g S r bS e' (e t) hSok (hSd ▸ hSplit) hbS hTheta N₀ hN₀ hN₀p hN₀S n (e y) hyS
   set G := Wop D B.tor p y (U D B.tor t F) with hGdef
   have hWt : JMB.opW S.d S.Hm (e y) (JMB.opU S.Hm (e t) e') = fun z => G (e.symm z) :=
     wop_transport D B.tor S e hhf hSd p y t F hqy
@@ -203,33 +206,33 @@ theorem moments_fin : (∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B :
     refine ⟨p ^ n, pow_pos (Fact.out : p.Prime).pos n, ?_⟩
     rw [← hLa, map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ]
     push_cast
-    exact GlobalTheory.T.prime_pow_smul_goodLift_mem_setupLattice g S p lam N₀ n hSok (e y) hyS
+    exact _root_.GlobalTheory.goodLift_pow_smul_mem g S p lam N₀ n hSok (e y) hyS
   have hqH : ∃ m : ℤ, qH D B.tor y = m := by
     obtain ⟨z, hz⟩ := hqy
     refine ⟨z, ?_⟩
     rw [qH, ← hz, JMB.beta, hhf, hSd, Complex.re_ofReal_mul]
-  have hCoef : CoefIn D G Qbar := GlobalTheory.T.coefIn_weilOperator_translate_algebraic D B.tor N N' F (La D B.tor L L') p y t hF
+  have hCoef : CoefIn D G Qbar := _root_.GlobalTheory.coefIn_Wop_U_translate D B.tor N N' F (La D B.tor L L') p y t hF
     (fun s hs α => hAlg D cc δ B χ hcc hδ hχ N N' L L' hA s hs α) ⟨N₀, hN₀, hN₀t⟩ hyT hImLa hqH
   refine ⟨hCoef, fun k y' gf hg => ?_⟩
   set ys : Fin k → Fin g → ℂ := fun j => (δ₀ / δ) • e (δ • embV D B.tor (y' j)) with hysdef
-  have hys : ∀ j, S.AlgDir (ys j) := fun j => GlobalTheory.T.algebraicDirection_scaled_embedding D cc δ δ₀ B N N' L L' hcc hA hQ hne g S e hLa (y' j)
+  have hys : ∀ j, S.AlgDir (ys j) := fun j => _root_.GlobalTheory.AlgDirMom.algDir_smul_embV D cc δ δ₀ B N N' L L' hcc hA hQ hne g S e hLa (y' j)
   have hdir : ∀ j, δ₀⁻¹ • ys j = e (embV D B.tor (y' j)) := by
     intro j
     simp only [ys, map_smul, smul_smul]
     rw [show δ₀⁻¹ * (δ₀ / δ * δ) = 1 by field_simp, one_smul]
-  have hf := GlobalTheory.T.eq_on_padicInt_of_eq_on_naturals_moment p lam Ω g S r n k bS (JMB.liftY p n eps bS yt) ys gf (fun a => by
+  have hf := _root_.GlobalTheory.MomentPinned.eq_of_natCast p lam Ω g S r n k bS (JMB.liftY p n eps bS yt) ys gf (fun a => by
     rw [hg a, ← hK a, kap_transport D B.tor S.Hm e hhf, embV_sum]
     have hs : e (δ • ∑ i, ((a i : ℕ) : ℂ) • embV D (tor0 D cc δ) (b i)) = ∑ i, ((a i : ℕ) : ℂ) • bS i := by
 
       simp only [bS, Finset.smul_sum, map_sum, map_smul, smul_comm δ]
     rw [hs]
     congr 1
-    exact Finset.prod_congr rfl fun j _ => (GlobalTheory.T.pairing_scaledDirections_eq_period_pairing D cc δ δ₀ B N N' g S e p lam Ω r b (y' j) _ hQ hne hcop hbeta).symm)
+    exact Finset.prod_congr rfl fun j _ => (_root_.GlobalTheory.MomFin.pairing_scaled D cc δ δ₀ B N N' g S e p lam Ω r b (y' j) _ hQ hne hcop hbeta).symm)
   obtain ⟨-, hμf⟩ := hM1 n m eps hId hm (fun _ i => hIm i) yt k ys hys gf hf
   rw [← hW, hWt] at hμf
   simp only [hdir] at hμf
   rw [jet_transport D e G hGc k] at hμf
-  obtain ⟨-, hjet⟩ := GlobalTheory.T.iteratedFDeriv_algebraic_directions_jet_transport D cc δ p lam N N' G hGc hCoef k y'
+  obtain ⟨-, hjet⟩ := _root_.GlobalTheory.JetTransport.jet_pSer D cc δ p lam N N' G hGc hCoef k y'
   rw [hjet, ← hμf]
   rfl
 

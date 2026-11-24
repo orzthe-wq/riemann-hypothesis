@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.RingTheory.DedekindDomain.Factorization
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SquarePairLocal.IntAtOfDivAtZero
 
 @[expose] public section
 
@@ -94,13 +95,11 @@ theorem pres_mul {e f : Matrix (Fin N) (Fin N) E} (he : Pres L e) (hf : Pres L f
 private lemma integers_smul_eq_coe_smul (r : 𝓞 E) (v : Fin N → E) : r • v = (r : E) • v := by
   first
     | exact (algebraMap_smul E r v).symm
-    | (ext i; simp [Algebra.smul_def])
 
 private lemma smul_mulVec_eq_smul (a : E) (A : Matrix (Fin N) (Fin N) E) (b : Fin N → E) :
     (a • A) *ᵥ b = a • (A *ᵥ b) := by
   first
     | exact Matrix.smul_mulVec a A b
-    | (ext i; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc])
 
 theorem pres_smul (r : 𝓞 E) {e : Matrix (Fin N) (Fin N) E} (he : Pres L e) :
     Pres L ((r : E) • e) := by
@@ -113,8 +112,6 @@ theorem stdHG_conj (e : Matrix (Fin N) (Fin N) E) (x y : Fin N → E) :
   first
     | simp only [stdHG, Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, Finset.mul_sum,
         Finset.sum_mul, star_sum, star_mul']
-    | simp only [stdHG, Matrix.mulVec, Matrix.dotProduct, Matrix.conjTranspose_apply,
-        Finset.mul_sum, Finset.sum_mul, star_sum, star_mul']
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
@@ -124,7 +121,6 @@ theorem pres_conj (hL : IsSDG E N L) {e : Matrix (Fin N) (Fin N) E} (he : Pres L
   have hmem : ∀ y, y ∈ L ↔ ∀ x ∈ L, stdHG E N x y ∈ (algebraMap (𝓞 E) E).range := by
     first
       | exact hL.2.2
-      | (unfold IsSDG at hL; exact hL.2.2)
   intro y hy
   refine (hmem _).2 fun x hx => ?_
   rw [stdHG_conj]
@@ -133,8 +129,6 @@ theorem pres_conj (hL : IsSDG E N L) {e : Matrix (Fin N) (Fin N) E} (he : Pres L
 end Pres
 
 section Cj
-
-theorem coe_cj (x : 𝓞 E) : ((cj E x : 𝓞 E) : E) = star (x : E) := rfl
 
 theorem cj_cj (x : 𝓞 E) : cj E (cj E x) = x := by
   have h : ((cj E (cj E x) : 𝓞 E) : E) = (x : E) := by rw [coe_cj, coe_cj, star_star]
@@ -186,21 +180,6 @@ theorem smallAt_smul {ρ : 𝓞 E} {X : Matrix (Fin N) (Fin N) E} (hρ : Dv Q c 
   simp only [integers_smul_eq_coe_smul]
   rw [smul_mulVec_eq_smul, smul_smul, smul_smul, hw']
 
-private lemma smallAt_add' {A B : Matrix (Fin N) (Fin N) E} (hA : SmallAt Q c L A)
-    (hB : SmallAt Q c L B) : SmallAt Q c L (A + B) := by
-  intro y hy
-  obtain ⟨s, hs, m, hm, e1⟩ := hA y hy
-  obtain ⟨t, ht, n, hn, e2⟩ := hB y hy
-  refine ⟨s * t, fun h => ?_, t • m + s • n, L.add_mem (L.smul_mem t hm) (L.smul_mem s hn), ?_⟩
-  · rcases Ideal.IsPrime.mem_or_mem ‹Q.IsPrime› h with h | h
-    · exact hs h
-    · exact ht h
-  · have f1 : (s * t) • (A *ᵥ y) = c • (t • m) := by
-      rw [mul_comm, mul_smul, e1, smul_comm]
-    have f2 : (s * t) • (B *ᵥ y) = c • (s • n) := by
-      rw [mul_smul, e2, smul_comm]
-    rw [Matrix.add_mulVec, smul_add, smul_add, f1, f2]
-
 theorem small_pert (hL : IsSDG E N L) {e₀ D : Matrix (Fin N) (Fin N) E} {ρ : 𝓞 E}
     (h₀ : Pres L e₀) (hD : Pres L D) (hρ : Dv Q c ρ) (hρc : Dv Q c (cj E ρ))
     (g1 : SmallAt Q c L (e₀ * e₀ - e₀)) (g2 : SmallAt Q c L (e₀ + e₀ᴴ - 1)) :
@@ -219,9 +198,9 @@ theorem small_pert (hL : IsSDG E N L) {e₀ D : Matrix (Fin N) (Fin N) E} {ρ : 
       (pres_smul ρ (pres_mul hD hD))
   refine ⟨?_, ?_⟩
   · rw [k1]
-    exact smallAt_add' g1 (smallAt_smul hρ pD)
+    exact _root_.PI.SqPairLocal.smallAt_add g1 (smallAt_smul hρ pD)
   · rw [k2]
-    exact smallAt_add' (smallAt_add' g2 (smallAt_smul hρ hD))
+    exact _root_.PI.SqPairLocal.smallAt_add (_root_.PI.SqPairLocal.smallAt_add g2 (smallAt_smul hρ hD))
       (smallAt_smul hρc (pres_conj hL hD))
 
 theorem good_pert {L' L'' : Submodule (𝓞 E) (Fin N → E)} (h' : IsSDG E N L') (h'' : IsSDG E N L'')
@@ -233,7 +212,6 @@ theorem good_pert {L' L'' : Submodule (𝓞 E) (Fin N → E)} (h' : IsSDG E N L'
   obtain ⟨y1, y2⟩ := small_pert h'' h₀'' hD'' hρ hρc b d
   first
     | exact ⟨x1, y1, x2, y2⟩
-    | (unfold Good; exact ⟨x1, y1, x2, y2⟩)
 
 end Small
 
@@ -357,10 +335,6 @@ theorem glue_of (hP : PowLoc) : Glue := by
   have hp0 : (p : 𝓞 E) ≠ 0 := by
     first
       | exact_mod_cast hp.ne_zero
-      | (intro h0
-         have h1 := congrArg (fun t : 𝓞 E => (t : E)) h0
-         simp only [map_natCast, Nat.cast_eq_zero] at h1
-         exact hp.ne_zero (by exact_mod_cast h1))
   have hc : ((p : 𝓞 E) ^ a) ≠ 0 := pow_ne_zero a hp0
   have hI : Ideal.span {(p : 𝓞 E)} ≠ 0 := by
     rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]

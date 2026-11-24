@@ -222,51 +222,5 @@ lemma exists_kfin {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 *
       _ = g := by rw [hPP]; simp
   simpa only [e] using this
 
-theorem param_eq_of_equiv : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (mu' : Fin (2 * r + k + 1) → ℝ) (R R' : Rep k r), R.IsDS ε mu → R'.IsDS ε mu' → ∀ U : R.H ≃ₗᵢ[ℂ] R'.H, (∀ g ∈ GG k r, ∀ x, U (R.σ g x) = R'.σ g (U x)) → mu = mu' := by
-  intro hy k r ε mu mu' R R' hR hR' U hU
-  obtain ⟨hm, P, hP, h⟩ := hR
-  obtain ⟨hm', Q, hQ, h'⟩ := hR'
-  obtain ⟨v, hv, hv0⟩ := exists_kfin R hP h
-  have hs := hy.1.2.2.1 k r ε mu R.H R.σ hm ⟨P, hP, h⟩ v hv
-  have hs' := smooth_conj (A := Formalism.REAL.Jm ε) hP.1.1 hP.1.2 hs
-  have hdP := (Matrix.isUnit_iff_isUnit_det P).mp hP.1.1
-  have hdQ := (Matrix.isUnit_iff_isUnit_det Q).mp hQ.1.1
-  have p1 := Matrix.mul_nonsing_inv _ hdP
-  have q1 := Matrix.mul_nonsing_inv _ hdQ
-  have p2 := Matrix.nonsing_inv_mul _ hdP
-  have q2 := Matrix.nonsing_inv_mul _ hdQ
-  have p3 : ∀ B : Mx k r, P⁻¹ * (P * B) = B := fun B => by rw [← Matrix.mul_assoc, p2, Matrix.one_mul]
-  have q3 : ∀ B : Mx k r, Q⁻¹ * (Q * B) = B := fun B => by rw [← Matrix.mul_assoc, q2, Matrix.one_mul]
-  have p4 : ∀ B : Mx k r, P * (P⁻¹ * B) = B := fun B => by rw [← Matrix.mul_assoc, p1, Matrix.one_mul]
-  have ha := cayley_quot hQ.1.1 hP.1.2 hQ.1.2
-  have hb := cayley_quot hP.1.1 hQ.1.2 hP.1.2
-  obtain ⟨⟨hone, hmul⟩, -⟩ := h'.2.2.1
-  set τ' : Mx k r → (R'.H →L[ℂ] R'.H) := fun g => R'.σ (Q⁻¹ * g * Q) with hτ'
-  have hmul' : ∀ a ∈ PI.UpqRep.UJset ε, ∀ b ∈ PI.UpqRep.UJset ε, ∀ x, τ' a (τ' b x) = τ' (a * b) x := by
-    intro a ha b hb x
-    rw [hmul a ha b hb]; rfl
-  have hab : (P * Q⁻¹) * (Q * P⁻¹) = 1 := by simp only [Matrix.mul_assoc, q3, p1]
-  have hba : (Q * P⁻¹) * (P * Q⁻¹) = 1 := by simp only [Matrix.mul_assoc, p3, q1]
-  let A : R'.H ≃L[ℂ] R'.H := ContinuousLinearEquiv.equivOfInverse (τ' (P * Q⁻¹)) (τ' (Q * P⁻¹))
-    (fun x => by rw [hmul' _ hb _ ha, hba, hone]; rfl) (fun x => by rw [hmul' _ ha _ hb, hab, hone]; rfl)
-  refine eq_of_equiv hy.2.2.1 hm hm' h h' (U.toContinuousLinearEquiv.trans A) ?_ hs' hv0
-  intro g hg x
-  have hg' : g ∈ PI.UpqRep.UJset ε := hg
-  have hG : P⁻¹ * g * P ∈ GG k r := by
-    show (P⁻¹ * g * P)ᴴ * PI.UpqRep.Hpk k r * (P⁻¹ * g * P) = PI.UpqRep.Hpk k r
-    have hgg : gᴴ * PI.UpqRep.Jm ε * g = PI.UpqRep.Jm ε := hg
-    have hc := hP.1.2
-    calc _ = (P * (P⁻¹ * g * P))ᴴ * PI.UpqRep.Jm ε * (P * (P⁻¹ * g * P)) := by
-          rw [← hc, conjTranspose_mul P]; simp only [Matrix.mul_assoc]
-      _ = Pᴴ * (gᴴ * PI.UpqRep.Jm ε * g) * P := by
-          simp only [Matrix.mul_assoc, p4, conjTranspose_mul g]
-      _ = _ := by rw [hgg, hc]
-  show τ' (P * Q⁻¹) (U (R.σ (P⁻¹ * g * P) x)) = τ' g (τ' (P * Q⁻¹) (U x))
-  have e : R'.σ (P⁻¹ * g * P) = τ' (Q * P⁻¹ * g * (P * Q⁻¹)) := by
-    simp only [hτ', Matrix.mul_assoc, q3, q2, Matrix.mul_one]
-  rw [hU _ hG, e, hmul' _ ha _ (inUJ_mul (inUJ_mul hb hg') ha), hmul' _ hg' _ ha]
-  congr 2
-  simp only [Matrix.mul_assoc, q3, p4]
-
 end DSInequiv
 end GlobalTheory

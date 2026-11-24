@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.DifferentiableOnDetHMat
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeisenbergOperatorRationalPointLawsStatement
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HeisenbergOperatorRationalPointLaws
 import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsIntMulIntegral
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -183,11 +184,11 @@ theorem heis_exponent {ι : Type} [Fintype ι] [DecidableEq ι] (τ W : Matrix �
 theorem heisG_laws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → (∀ v, vecQ X bas (crd X bas v) = v) ∧ (∀ u v, crd X bas (u + v) = crd X bas u + crd X bas v) ∧ (∀ u v, EF X u v = -∑ i, (crd X bas u (Sum.inl i) * crd X bas v (Sum.inr i) - crd X bas u (Sum.inr i) * crd X bas v (Sum.inl i))) ∧ ∀ (y : Matrix (Fin n) (Fin r) E) (φ : TF n g), IsSB φ → IsSB (heisG X bas y φ) ∧ heisG X bas 0 φ = φ ∧ (∀ y', heisG X bas y (heisG X bas y' φ) = cexp (-(π * I * ((∑ k, EF X (y k) (y' k) : ℚ) : ℂ))) • heisG X bas (y + y') φ) ∧ (∀ ψ, IsSB ψ → ip (heisG X bas y φ) (heisG X bas y ψ) = ip φ ψ) ∧ ∀ x ∈ X.dom, ∀ z : Fin n → Fin g → ℂ, thA X bas idx (heisG X bas y φ) x z = cexp (-(π * ∑ k, (hMat X bas idx x *ᵥ (z k + (1 / 2 : ℂ) • (per X x (y k) ∘ idx))) ⬝ᵥ imInv X bas idx x *ᵥ star (hMat X bas idx x *ᵥ (per X x (y k) ∘ idx)))) * thA X bas idx φ x (fun k => z k + per X x (y k) ∘ idx) := by
   intro E _ _ _ r X g bas idx n hs _
   refine ⟨vecQ_crd X bas, crd_add hs, EF_crd hs, fun y φ hφ => ?_⟩
-  obtain ⟨h1, h2, h3, h4, h5⟩ := GlobalTheory.T.heisenbergOperatorRationalPoint_laws _ _
+  obtain ⟨h1, h2, h3, h4, h5⟩ := _root_.GlobalTheory.SW.heisS_laws _ _
     (Matrix.of fun k i => crd X bas (y k) (Sum.inl i))
     (Matrix.of fun k i => crd X bas (y k) (Sum.inr i)) φ hφ
   refine ⟨h1, ?_, fun y' => ?_, h5, fun x hx z => ?_⟩
-  · simp only [heisG, Matrix.zero_apply, crd_zero hs, show ∀ k, (0 : Matrix (Fin n) (Fin r) E) k = 0
+  · simp only [heisG, crd_zero hs, show ∀ k, (0 : Matrix (Fin n) (Fin r) E) k = 0
       from fun _ => rfl]
     exact h4
   · rw [heisG, heisG, h3, heisG]

@@ -64,7 +64,7 @@ open scoped Pointwise
 theorem UpperTheory.HF.mem_ram :
     ∀ {φ : Frame} (H : HostAx φ) {l : ℕ}, l.Prime → (l ∈ H.ram ↔ H.el l ≠ 1) ∧ (l ∈ H.ram ↔ l ∣ H.condE) ∧ (l ∈ H.ram ↔ H.vdH l ≠ 0) ∧ (l ∈ H.ram → 1 / 2 ≤ H.vdH l) ∧ (l ∈ H.ram → 1 - 1 / (H.el l : ℝ) ≤ H.vdH l) := by
   intro φ H l hl
-  haveI : Fact l.Prime := ⟨hl⟩
+  have : Fact l.Prime := ⟨hl⟩
   have hN : H.condN ≠ 0 := H.condN_ne_zero
   obtain ⟨hE, hEpos, _⟩ := condE_spec H.toHostRaw
   set v := H.condN.factorization l with hv

@@ -83,7 +83,7 @@ theorem weil_exists : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.hos
   have hr1 : ResEta D 1 (dblSp A).rank := by
     have := GlobalTheory.Eis.SimplePoleModel.resEta_one_two_mul D A.rank
     convert this using 2
-    simp [GlobalTheory.Doubling.dblSp]
+    simp
     omega
   obtain ⟨omh, homh⟩ := GlobalTheory.weilRepresentationUnitaryPair D ψ (dblSp A) V 1 χ⁻¹ hψ
     ⟨continuous_const, fun _ => rfl⟩ hχi hr1 hri

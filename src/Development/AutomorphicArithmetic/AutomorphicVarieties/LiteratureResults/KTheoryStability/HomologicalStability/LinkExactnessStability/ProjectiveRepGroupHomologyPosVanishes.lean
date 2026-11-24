@@ -81,9 +81,3 @@ theorem isZero_groupHomology_succ_of_projective : ∀ (k G : Type) [CommRing k] 
 
 end GlobalTheory.HomStab
 
-section
-open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
-theorem _root_.GlobalTheory.T.projective_rep_groupHomology_pos_vanishes : ∀ (k G : Type) [CommRing k] [Group G] (P : Rep k G), Projective P → ∀ n : ℕ, IsZero (groupHomology P (n + 1)) := by
-  first
-  | exact @GlobalTheory.HomStab.isZero_groupHomology_succ_of_projective
-end

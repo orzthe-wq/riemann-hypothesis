@@ -1,5 +1,6 @@
 module
 
+import Formalism.LocalToGlobal.IndefiniteReal.SelfDualFullLattice
 public import Development.AbelianVarietyTheory.Definitions.Foundations.HermitianSpaceBaseLatticeEqFrameLattice
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.InLatticeStabilizerAtPlaceOfSupportedStabilizer
@@ -123,9 +124,9 @@ theorem exists_latticeCompletion_cut_to_places_finiteReal (S : HSp D) (L : Lat S
       obtain ⟨a, ha, x, hx, rfl⟩ := hz
       refine ⟨fun i => pairA D.host.F 0 (indP D P * a) ⊗ₜ[D.host.F] (1 * x i),
         AddSubgroup.subset_closure ⟨_, GlobalTheory.KStabBridge.intAf_mul (indicatorAdele_integral P) ha, fun w hw => ?_, 1, rfl, x, hx, rfl⟩,
-        fun i => GlobalTheory.KStabBridge.infPart_pair _ _, fun i => ?_⟩
+        fun i => _root_.GlobalTheory.LatVac.infPart_pair _ _, fun i => ?_⟩
       · rw [map_mul, evalV_indP, if_neg hw, zero_mul]
-      · rw [GlobalTheory.KStabBridge.finPart_pair, one_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]
+      · rw [_root_.GlobalTheory.LatVac.finPart_pair, one_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]
     | zero =>
       refine ⟨0, zero_mem (latV S L P), fun i => (infPart D).map_zero, fun i => ?_⟩
       show finPart D 0 = (indP D P ⊗ₜ[D.host.F] (1 : D.host.E)) * 0
@@ -160,7 +161,7 @@ theorem mem_latV_iff (S : HSp D) (L : Lat S) (P : Pl D → Prop) (y : Fin S.rank
     y ∈ latV S L P ↔ (finPart D ∘ y) ∈ latHat D.host.F D.host.E (L : Set (Fin S.rank → D.host.E)) := by
   refine ⟨fun h => GlobalTheory.KStabBridge.fin_mem_latHat S L P h, fun h => ?_⟩
   obtain ⟨y', hy', h1, h2⟩ := exists_lift_latV S L P h
-  have : y' = y := funext fun i => GlobalTheory.VacStabFixed.parts_ext
+  have : y' = y := funext fun i => _root_.GlobalTheory.SplitScalar.adele_ext
     (by rw [((mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere D P _).1 (h1 i)).1, ((mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere D P _).1 (hy i)).1])
     (by rw [h2]; exact e_mul_fin (hy i))
   rwa [← this]
@@ -217,7 +218,7 @@ theorem levelOpen_of_inK (S : HSp D) (L : Lat S) (hL : L.FG) (P : Pl D → Prop)
   · have := GlobalTheory.KStabBridge.latHat_smul _ (one_sub_indP_int P) hz
     rwa [TensorProduct.sub_tmul, ← Algebra.TensorProduct.one_def] at this
   · rw [← fin_sub_one]; exact e_mul_fin (hI i j)
-  · choose lift hl1 hl2 using GlobalTheory.KStabBridge.exists_fin_lift (D := D)
+  · choose lift hl1 hl2 using _root_.GlobalTheory.VacInert.exists_lift (D := D)
     let y : Fin S.rank → AE D := fun i => lift ((indP D P ⊗ₜ[D.host.F] (1 : D.host.E)) * z i)
     have hy : ∀ i, y i ∈ idAt D P := fun i => mem_idAt_of_fin P (hl1 _) (hl2 _)
     have hfy : finPart D ∘ y = (indP D P ⊗ₜ[D.host.F] (1 : D.host.E)) • z := funext fun i => hl2 _
@@ -266,64 +267,8 @@ theorem isClosed_grpAt (S : HSp D) (P : Pl D → Prop) : IsClosed (grpAt S P : S
   exact (GlobalTheory.AdelicU.isClosed_finPts _ _).inter (isClosed_iInter fun v => GlobalTheory.AdelicU.isClosed_awayPts _ _ _)
 
 private theorem selfDual_isFullLattice {D : D7} : ∀ (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)),
-    IsSelfDualC V Λ → Submodule.IsFullLattice D.host.E Λ := by
-  intro V Λ hΛ
-  haveI : Submodule.IsLattice D.host.E Λ := hΛ.1
-  refine ⟨?_⟩
-  obtain ⟨s, hs⟩ := hΛ.1.fg
-  apply eq_top_iff.mpr
-  intro y _
-  let f : (Fin V.rank → D.host.E) → D.host.E := fun x =>
-    ∑ i, ∑ j, star (x i) * V.gram i j * y j
-  obtain ⟨a, ha⟩ := IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 D.host.E)) s f
-  have ha0 : (algebraMap (𝓞 D.host.E) D.host.E a) ≠ 0 := by
-    exact (FaithfulSMul.algebraMap_injective _ _).ne (mem_nonZeroDivisors_iff_ne_zero.mp a.2)
-  let P : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E) := {
-    carrier := {x | ∃ b : 𝓞 D.host.E, (b : D.host.E) = (algebraMap (𝓞 D.host.E) D.host.E a) * f x}
-    zero_mem' := by refine ⟨0, ?_⟩; simp [f]
-    add_mem' := by
-      rintro x z ⟨b, hb⟩ ⟨c, hc⟩
-      refine ⟨b + c, ?_⟩
-      change (b : D.host.E) + c = _
-      rw [hb, hc]
-      simp [f, map_add, add_mul, Finset.sum_add_distrib, mul_add]
-    smul_mem' := by
-      rintro c x ⟨b, hb⟩
-      refine ⟨RingOfIntegers.mapRingHom (starRingEnd D.host.E) c * b, ?_⟩
-      simp only [map_mul, hb, f, Pi.smul_apply, Algebra.smul_def, map_mul, RingOfIntegers.mapRingHom_apply, star_mul]
-      simp only [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro i _
-      apply Finset.sum_congr rfl
-      intro j _
-      change star (c : D.host.E) * _ = _
-      ring }
-  have hsP : (s : Set (Fin V.rank → D.host.E)) ⊆ P := by
-    intro x hx
-    obtain ⟨b, hb⟩ := ha x hx
-    exact ⟨b, by simpa [Algebra.smul_def] using hb⟩
-  have hy : (algebraMap (𝓞 D.host.E) D.host.E a) • y ∈ Λ := by
-    apply (hΛ.2 _).2
-    intro x hx
-    have hxP : x ∈ P := (hs ▸ Submodule.span_le.mpr hsP) hx
-    obtain ⟨b, hb⟩ := hxP
-    refine ⟨b, ?_⟩
-    rw [hb]
-    dsimp only [f, Pi.smul_apply]
-    simp only [smul_eq_mul, Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro i _
-    apply Finset.sum_congr rfl
-    intro j _
-    ring
-  have hy' : (algebraMap (𝓞 D.host.E) D.host.E a) • y ∈ Submodule.span D.host.E (Λ : Set (Fin V.rank → D.host.E)) :=
-    Submodule.subset_span hy
-  have := (Submodule.span D.host.E (Λ : Set (Fin V.rank → D.host.E))).smul_mem
-    (algebraMap (𝓞 D.host.E) D.host.E a)⁻¹ hy' 
-  change (algebraMap (𝓞 D.host.E) D.host.E a)⁻¹ •
-    ((algebraMap (𝓞 D.host.E) D.host.E a) • y) ∈ _ at this
-  rw [← smul_assoc, smul_eq_mul, inv_mul_cancel₀ ha0, one_smul] at this
-  exact this
+    IsSelfDualC V Λ → Submodule.IsFullLattice D.host.E Λ :=
+  Formalism.IndefR.Datum.IsSelfDualC.isFullLattice (D := D)
 
 
 theorem exists_compact_open : ∀ (D : D7) (V : HSp D) (L : Lat V), IsSelfDualC V L → ∀ P : Pl D → Prop, ∃ K : Subgroup (GA D V), (∀ g, g ∈ K ↔ InK V L P g) ∧ IsCompact (K : Set (GA D V)) ∧ IsOpen ((K.subgroupOf (grpAt V P) : Subgroup _) : Set (grpAt V P)) := by

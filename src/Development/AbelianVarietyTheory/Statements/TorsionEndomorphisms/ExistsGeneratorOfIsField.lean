@@ -206,7 +206,7 @@ theorem exists_isThetaPt (hLaw : Laws) (K : Type) [Field K] [IsAlgClosed K]
     hs₁, hU, hs₂, hw, fun i => ?_⟩⟩
   have q := congrArg (fun q => q.left.appTop.hom (w i)) hi
   simp only [Over.comp_left, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, Over.id_left,
-    Scheme.Hom.id_appTop, CommRingCat.hom_id, RingHom.id_apply] at q
+    Scheme.Hom.id_appTop] at q
   exact q.trans (_root_.one_mul _).symm
 
 end GlobalTheory.ThetaPtExist

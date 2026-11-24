@@ -93,13 +93,12 @@ theorem unfold_tsum_along_subgroup : ∀ (G H : Type) [Group G] [Group H] [Measu
     simp
   let eq := Equiv.ofBijective e ⟨he_inj, he_surj⟩
   let F : Γ → H → ℂ := fun γ h => f ((γ : G) * ι h) * φ h
-  let g : Γ ⧸ ι.range.subgroupOf Γ → H → ℂ := fun q h => f (((q.out : Γ) : G) * ι h) * φ h
+  let g : Γ ⧸ ι.range.subgroupOf Γ → H → ℂ := fun q => F (Quotient.out q)
   have hkey : ∀ q (δ : Γ.comap ι) h, F (e (q, δ)) h = g q (δ • h) := by
     intro q δ h
     show f ((((q.out : Γ) : G) * ι δ) * ι h) * φ h = f (((q.out : Γ) : G) * ι ((δ : H) * h)) * φ ((δ : H) * h)
     rw [map_mul, mul_assoc, hφinv δ δ.2 h]
   have hFm : ∀ γ, Measurable (F γ) := fun γ => (hf γ).mul hφ
-  have hgm : ∀ q, Measurable (g q) := fun q => (hf _).mul hφ
   have hA : ∀ q, ∫⁻ h, ‖g q h‖ₑ ∂ν = ∑' δ : Γ.comap ι, ∫⁻ h in 𝓕, ‖F (e (q, δ)) h‖ₑ ∂ν := by
     intro q
     rw [h𝓕.lintegral_eq_tsum'' (fun h => ‖g q h‖ₑ)]
@@ -129,7 +128,7 @@ theorem unfold_tsum_along_subgroup : ∀ (G H : Type) [Group G] [Group H] [Measu
   have hI : ∫ h in 𝓕, (∑' γ : Γ, F γ h) ∂ν = ∑' γ : Γ, ∫ h in 𝓕, F γ h ∂ν :=
     integral_tsum (fun γ => (hFm γ).aestronglyMeasurable) hT'
   have hgint : ∀ q, Integrable (g q) ν := fun q =>
-    ⟨(hgm q).aestronglyMeasurable,
+    ⟨(hFm (Quotient.out q)).aestronglyMeasurable,
       lt_of_le_of_lt (ENNReal.le_tsum (f := fun q => ∫⁻ h, ‖g q h‖ₑ ∂ν) q) (lt_top_iff_ne_top.2 hT)⟩
   have hs : Summable (fun p : (Γ ⧸ ι.range.subgroupOf Γ) × Γ.comap ι => ∫ h in 𝓕, F (eq p) h ∂ν) :=
     (eq.summable_iff).2 hsumm

@@ -70,27 +70,6 @@ def repStabilizer (ρ : Representation k G V) (v : V) : Subgroup G where
 
 end Rep
 
-section Cont
-
-variable {𝕜 G E : Type*} [NontriviallyNormedField 𝕜] [Group G] [SeminormedAddCommGroup E]
-  [NormedSpace 𝕜 E]
-
-def clmStabilizer (π : G →* (E →L[𝕜] E)) (v : E) : Subgroup G where
-  carrier := {g | π g v = v}
-  one_mem' := by simp
-  mul_mem' := by
-    intro a b ha hb
-    simp only [Set.mem_setOf_eq] at ha hb ⊢
-    rw [map_mul, ContinuousLinearMap.mul_apply, hb, ha]
-  inv_mem' := by
-    intro a ha
-    simp only [Set.mem_setOf_eq] at ha ⊢
-    calc π a⁻¹ v = π a⁻¹ (π a v) := by rw [ha]
-      _ = v := by rw [← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one,
-        ContinuousLinearMap.one_apply]
-
-end Cont
-
 section DoubleCoset
 
 variable {G : Type*} [Group G]

@@ -69,17 +69,6 @@ open scoped BigOperators Real
 
 namespace GlobalTheory
 
-theorem apply_add_intCast_vec_of_unit_periods {ι R E : Type*} [Fintype ι] [DecidableEq ι]
-    [Ring R] {F : (ι → R) → E} (hF : ∀ (i : ι) x, F (x + Pi.single i 1) = F x)
-    (n : ι → ℤ) (x : ι → R) : F (x + fun i => (n i : R)) = F x := by
-  first
-  | exact @_root_.GlobalTheory.IntegerShiftSingle.main
-  | exact _root_.GlobalTheory.IntegerShiftSingle.main
-  | (apply _root_.GlobalTheory.IntegerShiftSingle.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.IntegerShiftSingle.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.IntegerShiftSingle.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.IntegerShiftSingle.main ..)
-
 theorem setIntegral_unitCube_add_right_of_periodic {ι E : Type*} [Fintype ι] [DecidableEq ι]
     [NormedAddCommGroup E] [NormedSpace ℝ E] {F : (ι → ℝ) → E}
     (hF : ∀ (i : ι) x, F (x + Pi.single i 1) = F x) (t : ι → ℝ) :
@@ -102,7 +91,7 @@ theorem setIntegral_unitCube_add_right_of_periodic {ι E : Type*} [Fintype ι] [
       rw [zsmul_eq_mul, mul_one] at hk
       linarith
     choose n hn using h
-    have := apply_add_intCast_vec_of_unit_periods hF n x
+    have := _root_.GlobalTheory.IntegerShiftSingle.main hF n x
     rw [← this]
     simp only [G, hn]
     rfl

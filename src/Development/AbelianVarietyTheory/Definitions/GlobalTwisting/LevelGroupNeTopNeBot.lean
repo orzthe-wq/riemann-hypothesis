@@ -304,12 +304,12 @@ theorem repY_intQ {j : ℕ} (p : ChPt (R := R) sel mu u j) {Y : Set (Sp X.E (R.N
     IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * (frsF sel mu p P).symm (repY Y) i) := by
   obtain ⟨y, hy, hYe⟩ := hY
   have hyY : y ∈ Y := by
-    rw [hYe, Set.mem_setOf_eq, sub_self]
+    rw [hYe, Set.mem_ofPred_eq, sub_self]
     exact zero_mem _
   have hv : repY Y ∈ Y := Classical.epsilon_spec (p := fun z => z ∈ Y) ⟨y, hyY⟩
   generalize hr : repY Y = v at hv
   have hv' := hv
-  rw [hYe, Set.mem_setOf_eq] at hv'
+  rw [hYe, Set.mem_ofPred_eq] at hv'
   have h1 := (Submodule.mem_iInf _).1 hy P
   have h2 := (Submodule.mem_iInf _).1 hv' P
   rw [Submodule.mem_comap] at h1 h2

@@ -1,9 +1,9 @@
 module
 
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.RingTheory.Finiteness.Defs
 public import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelaf
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisExtra
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InclEIntMem
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Adelstab
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AdelstabL
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureConjugationInvariant
@@ -13,6 +13,8 @@ import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -25,9 +27,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,8 +34,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,11 +46,145 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisExtra, Development.AbelianVarietyTheory.Proofs.FlagMeasures.InclEIntMem, Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameOfHasSignature
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisExtra =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisExtra", "h": "module\n\npublic import Mathlib.Data.Matrix.Mul\npublic import Mathlib.RingTheory.Finiteness.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.SublatticeFacts
+
+open Matrix
+
+theorem finiteRing_sq_sub_mul_sq_eq_of_card {A : Type} [CommRing A] {S : Subring A} {n : Type} [Fintype n] [DecidableEq n]
+    (Λ : Submodule (↥S) (n → A)) (hfg : Submodule.FG Λ)
+    (hden : ∀ (v : n → A), ∃ (N : ℕ), (1 : ℕ) ≤ N ∧ (↑N : A) • v ∈ Λ) (X : Matrix n n A) :
+    ∃ (N : ℕ), (1 : ℕ) ≤ N ∧ ∀ y ∈ Λ, (↑N : A) • Matrix.mulVec X y ∈ Λ := by
+  classical
+  obtain ⟨t, rfl⟩ := hfg
+  choose f hf1 hf using fun v : n → A => hden (X *ᵥ v)
+  refine ⟨∏ v ∈ t, f v, ?_, ?_⟩
+  · exact Nat.one_le_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun v _ => by have := hf1 v; omega)
+  · intro y hy
+    rw [Nat.cast_smul_eq_nsmul A]
+    induction hy using Submodule.span_induction with
+    | mem x hx =>
+      rw [← Finset.mul_prod_erase t f hx, mul_nsmul, ← Nat.cast_smul_eq_nsmul A (f x)]
+      exact Submodule.smul_of_tower_mem _ (∏ v ∈ t.erase x, f v) (hf x)
+    | zero => simp
+    | add x y _ _ hx hy =>
+      rw [Matrix.mulVec_add, smul_add]
+      exact Submodule.add_mem _ hx hy
+    | smul a x _ hx =>
+      have : X *ᵥ (a • x) = a • (X *ᵥ x) := by
+        ext i
+        simp [Matrix.mulVec, dotProduct, Finset.mul_sum, Subring.smul_def, mul_left_comm]
+      rw [this, smul_comm]
+      exact Submodule.smul_mem _ a hx
+
+alias main := _root_.GlobalTheory.SublatticeFacts.finiteRing_sq_sub_mul_sq_eq_of_card
+
+end GlobalTheory.SublatticeFacts
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisExtra =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.InclEIntMem =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.InclEIntMem", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField
+open scoped TensorProduct
+
+noncomputable section
+open Classical
+
+namespace GlobalTheory.VectorInclusion
+
+variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
+
+def vecIncl (x : Fin n → E) : Fin n → E ⊗[F] Formalism.MainNotions.S.Af F :=
+  fun i => Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) (x i)
+
+theorem inclE_int_mem (c : 𝓞 E) :
+    Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) (c : E) ∈ Formalism.MainNotions.S.IntAf F E := by
+  unfold Formalism.MainNotions.S.IntAf Formalism.UG.tensInt
+  apply Subring.subset_closure
+  left
+  refine ⟨⟨(c : E), ⟨c, rfl⟩⟩, ?_⟩
+  rfl
+
+theorem vecIncl_add (x y : Fin n → E) :
+    vecIncl (F := F) (x + y) = vecIncl (F := F) x + vecIncl (F := F) y := by
+  funext i; simp [vecIncl, map_add (f := _)]
+
+theorem vecIncl_zero : vecIncl (F := F) (0 : Fin n → E) = 0 := by
+  funext i; simp [vecIncl]
+
+theorem vecIncl_smul (c : 𝓞 E) (x : Fin n → E) :
+    vecIncl (F := F) (c • x) =
+      (⟨Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) (c : E), inclE_int_mem c⟩ : Formalism.MainNotions.S.IntAf F E) •
+        vecIncl (F := F) x := by
+  funext i
+  simp only [vecIncl, Pi.smul_apply]
+  rw [Algebra.smul_def, map_mul]
+  rfl
+
+theorem lamAf_fg (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) :
+    Submodule.FG (R := ↥(Formalism.MainNotions.S.IntAf F E)) (Formalism.MainNotions.S.lamAf L) := by
+  obtain ⟨s, hs⟩ := hL
+  refine ⟨s.image (vecIncl (F := F)), ?_⟩
+  apply le_antisymm
+  · rw [Submodule.span_le]
+    intro y hy
+    simp only [Finset.coe_image, Set.mem_image] at hy
+    obtain ⟨x, hx, rfl⟩ := hy
+    apply Submodule.subset_span
+    have hxL : x ∈ L := hs ▸ Submodule.subset_span hx
+    exact ⟨⟨x, hxL⟩, rfl⟩
+  · unfold Formalism.MainNotions.S.lamAf
+    rw [Submodule.span_le]
+    rintro y ⟨⟨x, hx⟩, rfl⟩
+    have key : ∀ z ∈ Submodule.span (𝓞 E) (s : Set (Fin n → E)),
+        vecIncl (F := F) z ∈ Submodule.span (Formalism.MainNotions.S.IntAf F E)
+          ((s.image (vecIncl (F := F)) : Finset _) : Set (Fin n → E ⊗[F] Formalism.MainNotions.S.Af F)) := by
+      intro z hz
+      induction hz using Submodule.span_induction with
+      | mem z hz =>
+        apply Submodule.subset_span
+        simp only [Finset.coe_image]
+        exact ⟨z, hz, rfl⟩
+      | zero => rw [vecIncl_zero]; exact Submodule.zero_mem _
+      | add a b _ _ ha hb => rw [vecIncl_add]; exact Submodule.add_mem _ ha hb
+      | smul c a _ ha => rw [vecIncl_smul]; exact Submodule.smul_mem _ _ ha
+    rw [← hs] at hx
+    exact key x hx
+
+alias main := _root_.GlobalTheory.VectorInclusion.lamAf_fg
+
+end GlobalTheory.VectorInclusion
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.InclEIntMem =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameOfHasSignature =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameOfHasSignature", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Levelaf\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisExtra\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InclEIntMem\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Adelstab\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AdelstabL\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureConjugationInvariant\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.SignatureExists\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -122,16 +253,7 @@ theorem conj_mem_congSub (Λ : Submodule S (n → A)) (x : GL n A) {M N : ℕ} (
   rwa [Matrix.mulVec_mulVec, ← Units.val_mul, show x * k⁻¹ * x⁻¹ * (x * k * x⁻¹) = 1 by group,
     Units.val_one, Matrix.one_mulVec] at this
 
-theorem exists_denom (Λ : Submodule S (n → A)) (hfg : Λ.FG)
-    (habs : ∀ v : n → A, ∃ N : ℕ, 1 ≤ N ∧ (N : A) • v ∈ Λ) (X : Matrix n n A) :
-    ∃ N : ℕ, 1 ≤ N ∧ ∀ y ∈ Λ, (N : A) • X *ᵥ y ∈ Λ := by
-  first
-  | exact @_root_.GlobalTheory.SublatticeFacts.main
-  | exact _root_.GlobalTheory.SublatticeFacts.main
-  | (apply _root_.GlobalTheory.SublatticeFacts.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.SublatticeFacts.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.SublatticeFacts.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.SublatticeFacts.main ..)
+alias exists_denom := _root_.GlobalTheory.SublatticeFacts.finiteRing_sq_sub_mul_sq_eq_of_card
 
 @[reducible] def congBasis (Λ : Submodule S (n → A)) (hfg : Λ.FG)
     (habs : ∀ v : n → A, ∃ N : ℕ, 1 ≤ N ∧ (N : A) • v ∈ Λ) (hu : ∀ N : ℕ, 1 ≤ N → IsUnit (N : A))
@@ -171,15 +293,6 @@ theorem isUnit_natCast (N : ℕ) (hN : 1 ≤ N) : IsUnit (N : E ⊗[F] Af F) := 
   have : IsUnit (N : E) := IsUnit.mk0 _ (Nat.cast_ne_zero.2 (by omega))
   simpa using this.map (inclE (F := F) (Af F))
 
-theorem lamAf_fg (L : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG) : (lamAf (F := F) L).FG := by
-  first
-  | exact @_root_.GlobalTheory.VectorInclusion.main
-  | exact _root_.GlobalTheory.VectorInclusion.main
-  | (apply _root_.GlobalTheory.VectorInclusion.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.VectorInclusion.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.VectorInclusion.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.VectorInclusion.main ..)
-
 theorem exists_nat_multiple (d : 𝓞 F) (hd : d ≠ 0) : ∃ N : ℕ, 1 ≤ N ∧ ∃ d' : 𝓞 F, d' * d = N := by
   have h := Ideal.absNorm_mem (Ideal.span {d})
   obtain ⟨d', hd'⟩ := Ideal.mem_span_singleton'.1 h
@@ -217,7 +330,7 @@ theorem lamAf_absorbs (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.spa
 @[reducible] def adelicBasis (L : Submodule (𝓞 E) (Fin n → E))
     (hs : Submodule.span E (L : Set (Fin n → E)) = ⊤) (hL : L.FG)
     (H : Subgroup (GL (Fin n) (E ⊗[F] Af F))) : GroupFilterBasis H :=
-  congBasis (lamAf (F := F) L) (lamAf_fg L hL) (lamAf_absorbs L hs) isUnit_natCast H
+  congBasis (lamAf (F := F) L) (_root_.GlobalTheory.VectorInclusion.lamAf_fg L hL) (lamAf_absorbs L hs) isUnit_natCast H
 
 end Adelic
 
@@ -413,3 +526,7 @@ def ofSigns (cm : Formalism.BasicNotions.CMData F E) {n : ℕ} (ε : Fin n → B
 end Inst
 
 end GlobalTheory.AutInhab
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsFrameOfHasSignature =====

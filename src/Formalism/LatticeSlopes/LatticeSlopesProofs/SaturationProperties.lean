@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LatticeSlopes.LatticeSlopesProofs.SlopeInequality
 
 @[expose] public section
 
@@ -100,18 +101,6 @@ theorem saturation_properties : SaturProps := by
     haveI : DiscreteTopology N := DiscreteTopology.of_subset (s := (L : Set E)) hL hNL
     rw [rank_eq_finrank_span, rank_eq_finrank_span, hspan]
 
-private theorem linearIndependent_coe_basis_of_discrete {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
-    [FiniteDimensional ℝ E] (L : Submodule ℤ E) [DiscreteTopology L] {ι : Type*} [Fintype ι]
-    (e : Basis ι ℤ L) : LinearIndependent ℝ (fun i => (e i : E)) := by
-  have hspanZ : span ℤ (Set.range fun i => (e i : E)) = L := by
-    have : (Set.range fun i => (e i : E)) = L.subtype '' Set.range e := Set.range_comp _ _
-    rw [this, ← Submodule.map_span, e.span_eq, Submodule.map_subtype_top]
-  have hspanR : span ℝ (Set.range fun i => (e i : E)) = span ℝ (L : Set E) := by
-    rw [← Submodule.span_span_of_tower ℤ ℝ (Set.range fun i => (e i : E)), hspanZ]
-  rw [linearIndependent_iff_card_eq_finrank_span, Set.finrank, hspanR,
-    ← rank_eq_finrank_span L]
-  exact (Module.finrank_eq_card_basis e).symm
-
 theorem covol_anti_same_rank : CovolAntiSameRank := by
   intro E _ _ _ N N' hN' hle hrk
   haveI := hN'
@@ -143,9 +132,9 @@ theorem covol_anti_same_rank : CovolAntiSameRank := by
     rw [hgram, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hdetM]
     ring
   have hfpos : 0 < (Matrix.gram ℝ (fun j => (f j : E))).det :=
-    (Matrix.posDef_gram_of_linearIndependent (linearIndependent_coe_basis_of_discrete N f)).det_pos
+    (Matrix.posDef_gram_of_linearIndependent (_root_.Formalism.F.linearIndependent_coe_basis'' N f)).det_pos
   have hepos : 0 < (Matrix.gram ℝ (fun i => (e i : E))).det :=
-    (Matrix.posDef_gram_of_linearIndependent (linearIndependent_coe_basis_of_discrete N' e)).det_pos
+    (Matrix.posDef_gram_of_linearIndependent (_root_.Formalism.F.linearIndependent_coe_basis'' N' e)).det_pos
   have hM0 : M.det ≠ 0 := by
     intro h0
     rw [hdet, h0] at hfpos

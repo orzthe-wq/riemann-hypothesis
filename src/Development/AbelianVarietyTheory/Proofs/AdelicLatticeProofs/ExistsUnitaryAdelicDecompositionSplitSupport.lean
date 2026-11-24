@@ -71,14 +71,14 @@ def mix {R : Type} [CommRing R] {n : ℕ} (ε : R) (hε : ε * ε = ε) (κ : GL
     have h1 : ε * (1 - ε) = 0 := by rw [mul_sub, hε]; ring
     have h2 : (1 - ε) * ε = 0 := by rw [mul_comm, h1]
     have h3 : (1 - ε) * (1 - ε) = 1 - ε := by rw [mul_sub, h2]; ring
-    simp only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, hε, h1, h2, h3,
+    simp only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hε, h1, h2, h3,
       Units.mul_inv, zero_smul, add_zero, zero_add, mul_one]
     rw [← add_smul]; simp
   inv_val := by
     have h1 : ε * (1 - ε) = 0 := by rw [mul_sub, hε]; ring
     have h2 : (1 - ε) * ε = 0 := by rw [mul_comm, h1]
     have h3 : (1 - ε) * (1 - ε) = 1 - ε := by rw [mul_sub, h2]; ring
-    simp only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, hε, h1, h2, h3,
+    simp only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hε, h1, h2, h3,
       Units.inv_mul, zero_smul, add_zero, zero_add, mul_one]
     rw [← add_smul]; simp
 
@@ -179,8 +179,7 @@ theorem _root_.GlobalTheory.UnRep.SplitRep.exists_div (m : 𝓞 F) (hm : m ≠ 0
     · rw [h1 v hv, sub_self, mul_zero]
       exact zero_mem _
     · rw [h0 v hv, sub_zero, mul_one, HeightOneSpectrum.mem_adicCompletionIntegers]
-      simp [HeightOneSpectrum.valuedAdicCompletion_eq_valuation',
-        HeightOneSpectrum.valuation_of_algebraMap]
+      simp [HeightOneSpectrum.valuation_of_algebraMap]
       rw [(HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl v m).mpr hv, inv_one]
   · rw [smul_smul, mul_inv_cancel₀ hmF, one_smul]
 

@@ -2,13 +2,13 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsBaryStageStart
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SysExOfPol
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CarrierDimLeOfAddCellGeneratorsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CarrierDimLeOfAddCellGenerators
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntLinearFormCuttingSubcell
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSubdivisionInvariantPolyhedralFan
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MarkedFormIndicatorZeroOneBarycentresPolyFan
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolyFanFaceCutByIntLinearFormIsCell
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionBarycentreCellNextStage
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfToRealRel
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntLinearFormCuttingSubcellStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsStarSubdivisionInvariantPolyhedralFanStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MarkedFormIndicatorZeroOneBarycentresPolyFanStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolyFanFaceCutByIntLinearFormIsCellStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarSubdivisionBarycentreCellNextStageStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -115,7 +115,7 @@ theorem reduce_of_not_mem {m n : ℕ} {G : Fin m → LinearMap.BilinForm ℤ X} 
     (hb : β₀ ∈ balForms bar X) (hp : ∀ y, 0 ≤ β₀ y y) (hin : InRCone G β₀) (hnin : ¬ InRCone γ β₀) :
     ∃ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut G s h ∧ 0 < h β₀ ∧
       ∀ k, InRCone (fun l => G (s l)) (γ k) := by
-  obtain ⟨h, hh1, hh2, hh3⟩ := GlobalTheory.T.exists_intLinearForm_cutting_subcell O bar φ X m n G γ hG hγ hcov
+  obtain ⟨h, hh1, hh2, hh3⟩ := _root_.GlobalTheory.PolFan.exists_cut_of_cell_le O bar φ X m n G γ hG hγ hcov
   obtain ⟨m', s, hs⟩ := exists_faceCut G h hh1
   refine ⟨m', s, h, hs, ?_, fun k => ?_⟩
   · rcases (hin.apply_nonneg h hh1).eq_or_lt with e | e
@@ -131,7 +131,7 @@ theorem reduce_of_mem {m n n' : ℕ} {G : Fin m → LinearMap.BilinForm ℤ X} {
     (hpos : 0 < h β₀) :
     ∃ (m' : ℕ) (s' : Fin m' ↪ Fin m) (h' : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut G s' h' ∧ 0 < h' β₀ ∧
       ∀ k, InRCone (fun l => G (s' l)) (δ (s k)) := by
-  obtain ⟨h₁, hh1, hh2, hh3⟩ := GlobalTheory.T.exists_intLinearForm_cutting_subcell O bar φ X m n G δ hG hδ hcov
+  obtain ⟨h₁, hh1, hh2, hh3⟩ := _root_.GlobalTheory.PolFan.exists_cut_of_cell_le O bar φ X m n G δ hG hδ hcov
   set K : ℤ := 1 + ∑ j, |h (G j)| with hK
   have hKj : ∀ j, |h (G j)| < K := fun j => by
     have := Finset.single_le_sum (f := fun j => |h (G j)|) (fun j _ => abs_nonneg _) (Finset.mem_univ j)
@@ -166,7 +166,7 @@ end Reduce
 
 theorem baryStep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ lab φ : InvFun (𝓞 E)) (i : ℕ), (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) → IsPolyFan H.bar q ψ → IsTwInv H ψ → IsTwInv H lab → IsCarrierDim H.bar q ψ lab → IsTwInv H φ → IsBaryStage H.bar q ψ lab φ (i + 1) → ∃ φ' : InvFun (𝓞 E), IsTwInv H φ' ∧ IsBaryStage H.bar q ψ lab φ' i := by
   intro E _ _ _ H q ψ lab φ i hdom hψ hψt hlt hcar hφt hst
-  obtain ⟨w, hwt, hw⟩ := GlobalTheory.T.markedFormIndicator_zeroOne_barycentres_polyFan E H q ψ lab i hdom hψ hψt hlt hcar
+  obtain ⟨w, hwt, hw⟩ := _root_.GlobalTheory.PolFan.Mark.exists_markFun_props E H q ψ lab i hdom hψ hψt hlt hcar
   obtain ⟨hφp, hφs, hφc⟩ := hst
   have hcen : IsCentreSet H.bar q φ w := by
     intro X _ _ _ _ hX
@@ -180,7 +180,7 @@ theorem baryStep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : H
       rw [h3 β hβ hp hw1] at this
       exact lt_irrefl _ this
     exact h4 b v hv hvl β hβ hp β' hβ' hp' hw1 hw2 (inv β hβ hp hw1 hc) (inv β' hβ' hp' hw2 hc')
-  obtain ⟨φ', hp', ht', hsub, hs1, hs2, hs3⟩ := GlobalTheory.T.exists_starSubdivision_invariant_polyhedral_fan E H q φ w hdom hφp hφt hwt hcen
+  obtain ⟨φ', hp', ht', hsub, hs1, hs2, hs3⟩ := _root_.GlobalTheory.PolFan.exists_starSubdivision E H q φ w hdom hφp hφt hwt hcen
   refine ⟨φ', ht', hp', hsub.trans hφs, fun X _ _ _ _ hX n γ' hγ' => ?_⟩
   obtain ⟨h1, h2, h3, h4, h5⟩ := hw X hX
   have hnat : ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → ∃ n : ℕ, lab.evalZ β = n :=
@@ -204,11 +204,11 @@ theorem baryStep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : H
           (i : ℝ) < lab.evalZ β) ∧
         ∀ (d : Fin b' → ℤ) (c : Fin a' → ℤ), ∑ j, c j • u' j = ∑ k, d k • v' k → c = 0 := by
     intro b a v u hγ hv hinj hlu hvl hoff hind β₀ hb0 hp0 hw0 hin0
-    exact GlobalTheory.T.starSubdivision_barycentre_cell_next_stage (𝓞 E) H.bar ψ lab φ' w i X b a v u hv hinj hlu hvl hoff hind hnat
-      (fun m' s h hh => GlobalTheory.T.polyFan_face_cut_by_intLinearForm_isCell E H q ψ hψ X hX (hdom X) b v hv m' s h hh) h5
+    exact _root_.GlobalTheory.PolFan.star_cell_bary_step (𝓞 E) H.bar ψ lab φ' w i X b a v u hv hinj hlu hvl hoff hind hnat
+      (fun m' s h hh => _root_.GlobalTheory.PolFan.isCell_face_of_isFaceCut E H q ψ hψ X hX (hdom X) b v hv m' s h hh) h5
       (fun β hβ hp β' hβ' hp' hw1 hw2 hc hc' => (hcen X hX).2.2 _ _ hγ β hβ hp β' hβ' hp' hw1 hw2 hc hc')
       (fun β₀ hb0 hp0 β hβ hp hin c₀ c hc₀ hc e =>
-        GlobalTheory.T.carrierDim_le_of_add_cell_generators (𝓞 E) H.bar q ψ lab hcar X hX b v hv β₀ hb0 hp0 β hβ hp hin c₀ c hc₀ hc e)
+        _root_.GlobalTheory.PolFan.carrierDim_le_of_add_cell (𝓞 E) H.bar q ψ lab hcar X hX b v hv β₀ hb0 hp0 β hβ hp hin c₀ c hc₀ hc e)
       β₀ hb0 hp0 hw0 (h3 β₀ hb0 hp0 hw0) hin0
       (fun m' s h hh hpos => hs2 X hX _ _ hγ β₀ hb0 hp0 hw0 hin0 m' s h hh hpos)
   rcases hs3 X hX n γ' hγ' with ⟨m, γ, hγ, hno, hcov'⟩ | ⟨m, δ, β₀, m', s, h, hδ, hb0, hp0, hw0, hin0, hcut, hpos, hcov'⟩

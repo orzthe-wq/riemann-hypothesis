@@ -64,15 +64,6 @@ namespace GlobalTheory.SeesawSumTarget
 
 variable {D : D7}
 
-theorem isHeckeChar_mul {χ η : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hη : IsHeckeChar D η) :
-    IsHeckeChar D (χ * η) := by
-  refine ⟨?_, fun x => ?_⟩
-  · have : ((χ * η : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => χ x * η x := by
-      funext x; simp
-    rw [this]
-    exact hχ.1.mul hη.1
-  · simp only [MonoidHom.mul_apply, hχ.2 x, hη.2 x, mul_one]
-
 theorem exists_scalar {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT χS' χT' : (AE D)ˣ →* Circle}
     {om om' : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (H : IsWeilDatumO ψ S T χS χT om) (H' : IsWeilDatumO ψ S T χS' χT' om') (p : GA D S × GA D T) :
@@ -170,7 +161,7 @@ theorem seesaw_sum : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D 
   have hη := GlobalTheory.WeilParts.exists_isEtaTilde_unramified D
   obtain ⟨ω₂', H₂'⟩ := GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ S B χ₁ χ₂' hη H₁.hecS H₂.hecT H₁.resS H₂.resT
   obtain ⟨ω, H⟩ := GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ S (GlobalTheory.Doubling.hsum A B) χ₁ (χ₁' * χ₂') hη H₁.hecS
-    (isHeckeChar_mul H₁.hecT H₂.hecT) H₁.resS (resEta_mul H₁.resT H₂.resT)
+    (_root_.GlobalTheory.WeilChange.hecke_mul H₁.hecT H₂.hecT) H₁.resS (resEta_mul H₁.resT H₂.resT)
   choose c hc using fun p => exists_scalar H₂' H₂ p
   refine ⟨ω, χ₁, χ₁' * χ₂', fun u _ g₁ => (c (u, g₁) : ℂ), H, fun u _ g₁ => Circle.norm_coe _,
     fun φ φ' hφ hφ' => ⟨?_, fun u g g₁ => ?_⟩⟩

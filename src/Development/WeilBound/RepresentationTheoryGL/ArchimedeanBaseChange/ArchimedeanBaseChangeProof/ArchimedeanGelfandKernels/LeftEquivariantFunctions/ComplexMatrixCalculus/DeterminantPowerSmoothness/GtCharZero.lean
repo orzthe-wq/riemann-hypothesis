@@ -120,8 +120,4 @@ end PositivityTheory.RgBcC.Cxc
 
 namespace PositivityTheory.RgBcC
 
-theorem rmLaws : RmLaws := Cxc.rmLaws'
-
-theorem rmChar : RmChar := Cxc.rmChar'
-
 end PositivityTheory.RgBcC

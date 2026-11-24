@@ -217,7 +217,7 @@ theorem io_star (a : A) : star (io a : SlopeTestRemainingChoices S A) = io (star
   by_cases hij : i = j
   · subst hij
     simp [Matrix.star_apply, Matrix.scalar_apply]
-  · simp [Matrix.star_apply, Matrix.scalar_apply, Matrix.diagonal_apply, hij, Ne.symm hij]
+  · simp [Matrix.star_apply, Matrix.scalar_apply, hij, Ne.symm hij]
 
 theorem io_comm {a : A} {M : SlopeTestRemainingChoices S A} (h : ∀ i j, Commute a (M i j)) : Commute (io a) M := by
   unfold io Commute SemiconjBy
@@ -275,7 +275,8 @@ theorem fp3 (L : LevelData A r) {a b c : A} (ha : a ∈ L.fns) (hb : b ∈ L.fns
 
 theorem nabs_wt (L : LevelData A r) :
     L.nabs * (L.ζ * L.ζb * L.GGi) = L.ζ * L.ζb * L.GGi * L.nabs + L.TT • (L.ζ * L.GGi * L.GGi) := by
-  have hz : L.ζb * L.ζ = L.ζ * L.ζb := L.fns_comm _ (by simp) _ (by simp)
+  have hz : L.ζb * L.ζ = L.ζ * L.ζb :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inl rfl)))) _ (Or.inr (Or.inl rfl))
   have hone : L.GG * L.GGi * L.GGi = L.GGi := by rw [L.GG_GGi, one_mul]
   calc L.nabs * (L.ζ * L.ζb * L.GGi) = L.nabs * L.ζ * L.ζb * L.GGi := by simp only [mul_assoc]
     _ = L.ζ * (L.nabs * L.ζb) * L.GGi := by rw [L.nabs_ζ]; simp only [mul_assoc]
@@ -290,7 +291,8 @@ theorem nabs_wt (L : LevelData A r) :
           rw [← Algebra.commutes, ← Algebra.smul_def, smul_mul_assoc, smul_mul_assoc]
 
 theorem wti_wt (L : LevelData A r) : L.GG * L.ζi * L.ζbi * (L.ζ * L.ζb * L.GGi) = 1 := by
-  have h : L.ζbi * L.ζ = L.ζ * L.ζbi := L.fns_comm _ (by simp) _ (by simp)
+  have h : L.ζbi * L.ζ = L.ζ * L.ζbi :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))) _ (Or.inr (Or.inl rfl))
   calc L.GG * L.ζi * L.ζbi * (L.ζ * L.ζb * L.GGi) = L.GG * L.ζi * (L.ζbi * L.ζ) * L.ζb * L.GGi := by
         simp only [mul_assoc]
     _ = L.GG * L.ζi * (L.ζ * L.ζbi) * L.ζb * L.GGi := by rw [h]
@@ -298,8 +300,10 @@ theorem wti_wt (L : LevelData A r) : L.GG * L.ζi * L.ζbi * (L.ζ * L.ζb * L.G
     _ = 1 := by rw [L.ζi_ζ, L.ζbi_ζb, mul_one, mul_one, L.GG_GGi]
 
 theorem weight_inverse_identity (L : LevelData A r) : L.GG * L.ζi * L.ζbi * (L.ζ * L.GGi * L.GGi) = L.ζbi * L.GGi := by
-  have h : L.ζbi * L.ζ = L.ζ * L.ζbi := L.fns_comm _ (by simp) _ (by simp)
-  have h2 : L.GG * L.ζbi = L.ζbi * L.GG := L.fns_comm _ (by simp) _ (by simp)
+  have h : L.ζbi * L.ζ = L.ζ * L.ζbi :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))) _ (Or.inr (Or.inl rfl))
+  have h2 : L.GG * L.ζbi = L.ζbi * L.GG :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))) _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
   calc L.GG * L.ζi * L.ζbi * (L.ζ * L.GGi * L.GGi) = L.GG * L.ζi * (L.ζbi * L.ζ) * L.GGi * L.GGi := by
         simp only [mul_assoc]
     _ = L.GG * L.ζi * (L.ζ * L.ζbi) * L.GGi * L.GGi := by rw [h]
@@ -309,8 +313,10 @@ theorem weight_inverse_identity (L : LevelData A r) : L.GG * L.ζi * L.ζbi * (L
     _ = L.ζbi * L.GGi := by rw [L.GG_GGi, mul_one]
 
 theorem phi_tau (L : LevelData A r) : L.ζ * L.ζbi * L.GGi * (L.TT • L.ζi) = L.TT • (L.ζbi * L.GGi) := by
-  have h1 : L.GGi * L.ζi = L.ζi * L.GGi := L.fns_comm _ (by simp) _ (by simp)
-  have h2 : L.ζbi * L.ζi = L.ζi * L.ζbi := L.fns_comm _ (by simp) _ (by simp)
+  have h1 : L.GGi * L.ζi = L.ζi * L.GGi :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))) _ (Or.inr (Or.inr (Or.inl rfl)))
+  have h2 : L.ζbi * L.ζi = L.ζi * L.ζbi :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))) _ (Or.inr (Or.inr (Or.inl rfl)))
   rw [mul_smul_comm]
   congr 1
   calc L.ζ * L.ζbi * L.GGi * L.ζi = L.ζ * L.ζbi * (L.GGi * L.ζi) := by simp only [mul_assoc]
@@ -375,9 +381,12 @@ theorem g3 {st : Start A} {X φ τ γ : SlopeTestRemainingChoices S A} (hγ : kM
 theorem star_kapL (L : LevelData A r) (hL : IsStarLevel L) :
     star (kapL L : SlopeTestRemainingChoices S A) = io (L.ζ * L.ζbi * L.GGi) := by
   obtain ⟨-, h2, h3, -, -, h6⟩ := star_fns L hL
-  have hc1 : L.ζbi * L.ζ = L.ζ * L.ζbi := L.fns_comm _ (by simp) _ (by simp)
-  have hc2 : L.GGi * L.ζ = L.ζ * L.GGi := L.fns_comm _ (by simp) _ (by simp)
-  have hc3 : L.GGi * L.ζbi = L.ζbi * L.GGi := L.fns_comm _ (by simp) _ (by simp)
+  have hc1 : L.ζbi * L.ζ = L.ζ * L.ζbi :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))) _ (Or.inr (Or.inl rfl))
+  have hc2 : L.GGi * L.ζ = L.ζ * L.GGi :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))) _ (Or.inr (Or.inl rfl))
+  have hc3 : L.GGi * L.ζbi = L.ζbi * L.GGi :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))) _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
   unfold kapL
   rw [io_star]
   congr 1
@@ -405,9 +414,12 @@ theorem cz_tau {L : LevelData A r} {st : Start A} (h : IsLevelStart L st) : Cz s
 
 theorem comm_phi_tau (L : LevelData A r) :
     Commute (io (L.ζ * L.ζbi * L.GGi) : SlopeTestRemainingChoices S A) (io (L.TT • L.ζi)) := by
-  have c1 : Commute L.ζ L.ζi := L.fns_comm _ (by simp) _ (by simp)
-  have c2 : Commute L.ζbi L.ζi := L.fns_comm _ (by simp) _ (by simp)
-  have c3 : Commute L.GGi L.ζi := L.fns_comm _ (by simp) _ (by simp)
+  have c1 : Commute L.ζ L.ζi :=
+    L.fns_comm _ (Or.inr (Or.inl rfl)) _ (Or.inr (Or.inr (Or.inl rfl)))
+  have c2 : Commute L.ζbi L.ζi :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))) _ (Or.inr (Or.inr (Or.inl rfl)))
+  have c3 : Commute L.GGi L.ζi :=
+    L.fns_comm _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))) _ (Or.inr (Or.inr (Or.inl rfl)))
   exact io_comm_io (((c1.mul_left c2).mul_left c3).smul_right L.TT)
 
 theorem star_dSpan {L : LevelData A r} {st : Start A} (hL : IsStarLevel L) (h : IsLevelStart L st)
@@ -557,12 +569,15 @@ theorem star_start_conjugation_identity (L : LevelData A r) (st : Start A) (hL :
     intro g hg
     rw [hQdef]
     refine Commute.add_left (Commute.neg_left ?_) ?_
-    · exact (Algebra.commute_algebraMap_left _ _).mul_left ((mz hg _ (by simp)).mul_left (mz hg _ (by simp)))
-    · exact (((mz hg _ (by simp)).mul_left (mz hg _ (by simp))).mul_left (mz hg _ (by simp))).mul_left
+    · exact (Algebra.commute_algebraMap_left _ _).mul_left
+        ((mz hg _ (Or.inr (Or.inr (Or.inl rfl)))).mul_left (mz hg _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))))
+    · exact (((mz hg _ (Or.inr (Or.inr (Or.inl rfl)))).mul_left (mz hg _ (Or.inr (Or.inl rfl)))).mul_left
+        (mz hg _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl))))))).mul_left
         (h.ee_fn Y g hg)
   have hsQ := star_comm_zfns L hL hQ
   have hcw : Commute (star Q) (L.ζ * L.ζb * L.GGi) :=
-    ((hsQ _ (by unfold zfns; simp)).mul_right (hsQ _ (by unfold zfns; simp))).mul_right (hsQ _ (by unfold zfns; simp))
+    ((hsQ _ (Or.inl rfl)).mul_right (hsQ _ (Or.inr (Or.inr (Or.inl rfl))))).mul_right
+      (hsQ _ (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl))))))
   have e : L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y = -L.nab + Q := by
     rw [hQdef]
     unfold LevelData.l0
@@ -632,9 +647,9 @@ theorem mShape_of (hLS : LShape) : MShape := by
     exact map_one (Matrix.scalar (Ix S))
   have hk : ∀ M : SlopeTestRemainingChoices S A, kMat st M → Commute (wt L) M ∧ Commute (wti L) M ∧
       Commute (io (L.TT • (L.ζbi * L.GGi))) M := fun M hM =>
-    ⟨io_comm_kMat hM (cz3 h (by simp [zfns]) (by simp [zfns]) (by simp [zfns])),
-      io_comm_kMat hM (cz3 h (by simp [zfns]) (by simp [zfns]) (by simp [zfns])),
-      io_comm_kMat hM (cz_smul _ (cz_mul (cz_zfns h (by simp [zfns])) (cz_zfns h (by simp [zfns]))))⟩
+    ⟨io_comm_kMat hM (cz3 h (Or.inl rfl) (Or.inr (Or.inr (Or.inl rfl))) (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))),
+      io_comm_kMat hM (cz3 h (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))) (Or.inr (Or.inl rfl)) (Or.inr (Or.inr (Or.inr (Or.inl rfl))))),
+      io_comm_kMat hM (cz_smul _ (cz_mul (cz_zfns h (Or.inr (Or.inr (Or.inr (Or.inl rfl))))) (cz_zfns h (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl))))))))⟩
   have hφ : Commute (wti L : SlopeTestRemainingChoices S A) (io (L.ζ * L.ζbi * L.GGi)) :=
     io_comm_io (fp3 L (m_ζ L) (m_ζbi L) (m_GGi L) _ (fc3 L (m_GG L) (m_ζi L) (m_ζbi L)))
   have hτ : Commute (wti L : SlopeTestRemainingChoices S A) (io (L.TT • L.ζi)) :=

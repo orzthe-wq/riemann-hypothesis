@@ -74,7 +74,7 @@ theorem _root_.GlobalTheory.Mass.GenusOrb.trace_pos_of_PD (h : V →ₗ⋆[K] V 
   have hpos : (0 : ℝ) < (Algebra.trace ℚ K (h x x) : ℝ) := by
     rw [← hre, hsum, Complex.re_sum]
     obtain ⟨φ⟩ := (inferInstance : Nonempty (K →+* ℂ))
-    haveI : Nonempty (K →ₐ[ℚ] ℂ) := ⟨φ.toRatAlgHom⟩
+    have : Nonempty (K →ₐ[ℚ] ℂ) := ⟨φ.toRatAlgHom⟩
     exact Finset.sum_pos (fun σ _ => hp' σ.toRingHom x hx) Finset.univ_nonempty
   exact_mod_cast hpos
 
@@ -110,7 +110,6 @@ theorem _root_.GlobalTheory.Mass.GenusOrb.main : ∀ (K V : Type) [Field K] [Num
   have hmass := by
     first
     | exact _root_.Formalism.HermitianLatticesTheory.final_massBasic K V h hsymm htr L hL
-    | exact _root_.Formalism.HermitianLatticesTheory.final_massBasic K V h hsymm htr L hL.toIsLattice
   obtain ⟨hmass_ex, hmass_eq, hmass_pos⟩ := hmass
   have hgen : ∀ g ∈ _root_.Formalism.HermitianLatticesTheory.isom h, ∀ M ∈ _root_.Formalism.HermitianLatticesTheory.genus h L, _root_.Formalism.HermitianLatticesTheory.gmap g M ∈ _root_.Formalism.HermitianLatticesTheory.genus h L := by
     intro g hg M hM
@@ -132,7 +131,7 @@ theorem _root_.GlobalTheory.Mass.GenusOrb.main : ∀ (K V : Type) [Field K] [Num
       Finite (MulAction.stabilizer (_root_.Formalism.HermitianLatticesTheory.isom h) M) := by
     intro M hM
     have hS := _root_.Formalism.HermitianLatticesTheory.final_autFinite K V h hsymm htr M hM
-    haveI := hS.to_subtype
+    have := hS.to_subtype
     refine Finite.of_injective (fun g : MulAction.stabilizer (_root_.Formalism.HermitianLatticesTheory.isom h) M =>
       (⟨g.1.1, g.1.2, g.2⟩ : {g | g ∈ _root_.Formalism.HermitianLatticesTheory.isom h ∧ _root_.Formalism.HermitianLatticesTheory.gmap g M = M})) ?_
     intro a b hab
@@ -148,10 +147,10 @@ theorem _root_.GlobalTheory.Mass.GenusOrb.main : ∀ (K V : Type) [Field K] [Num
     · refine Finset.sum_congr rfl fun M hM => ?_
       congr 1
       obtain ⟨hMlat, -⟩ := hsub M hM
-      haveI := hfin M hMlat
-      haveI : Finite (_root_.Formalism.ThetaLiftIndependence.autL h M) :=
+      have := hfin M hMlat
+      have : Finite (_root_.Formalism.ThetaLiftIndependence.autL h M) :=
         Finite.of_equiv _ (_root_.GlobalTheory.Mass.GenusOrb.autEquiv h M).symm
-      haveI : Nonempty (_root_.Formalism.ThetaLiftIndependence.autL h M) := ⟨(_root_.GlobalTheory.Mass.GenusOrb.autEquiv h M).symm 1⟩
+      have : Nonempty (_root_.Formalism.ThetaLiftIndependence.autL h M) := ⟨(_root_.GlobalTheory.Mass.GenusOrb.autEquiv h M).symm 1⟩
       have hpos : (0 : ℝ) < (Nat.card (_root_.Formalism.ThetaLiftIndependence.autL h M) : ℝ) := by exact_mod_cast Nat.card_pos
       rw [← ENat.card_congr (_root_.GlobalTheory.Mass.GenusOrb.autEquiv h M), ENat.card_eq_coe_natCard,
         ENNReal.ofReal_inv_of_pos hpos, ENNReal.ofReal_natCast]

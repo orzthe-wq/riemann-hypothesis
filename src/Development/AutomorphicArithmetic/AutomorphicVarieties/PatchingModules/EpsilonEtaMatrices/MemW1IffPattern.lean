@@ -134,8 +134,8 @@ private theorem pat_add {s : Fin n → Bool} (M : Fin g → Matrix (Fin n) (Fin 
     (h : ∀ m i j, s i = s j → M m i j = 0) : Pat s s (1 + DD.epM M) := by
   intro i j
   refine ⟨funext fun m => ?_, ?_, fun e => funext fun m => ?_, fun e => ?_⟩
-  · by_cases c : i = j <;> simp [DD.epM, Matrix.one_apply, c]
-  · by_cases c : i = j <;> simp [DD.epM, Matrix.one_apply, c]
+  · by_cases c : i = j <;> simp [DD.epM, c]
+  · by_cases c : i = j <;> simp [DD.epM, c]
   · have := h m i j e
     by_cases c : i = j
     · subst c; simp [DD.epM, this]

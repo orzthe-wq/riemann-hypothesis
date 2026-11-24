@@ -1,12 +1,13 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.EndValuedForm11Coeffs
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtTransgressionTopCoeffComplexStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtTransgressionTopCoeffComplex
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsBoundFamilyOfIsCompact
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnOffCoordinateHyperplanesOfPoincareBoStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPolarisedTopChernCoeffLeOfWeightedBoundStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareCoordinateLengthMemIccAndPosStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransgressionTopCoeffComplexEqZeroOfCutoffZeroStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NormPolarisedTopChernCoeffLeOfWeightedBound
+public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.InterPolyProdSum
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PoincareCoordinateLengthMemIccAndPos
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransgressionTopCoeffComplexEqZeroOfCutoffZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,7 +62,7 @@ theorem integrableOn_corrC : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r
         (poinWt S v a * poinWt S v b) ≤ c' := by
     intro v hv hvK j i a b p q
     obtain ⟨-, hdb, hcn, hcv⟩ := hCb v hvK
-    have hw01 := (GlobalTheory.T.poincareCoordinateLength_mem_Icc_and_pos S v (hsmall v hv.1)).1
+    have hw01 := (_root_.GlobalTheory.GoodTop.poinWt_mem_Icc_and_pos S v (hsmall v hv.1)).1
     have hwa := hw01 a
     have hwb := hw01 b
     have hab : poinWt S v a * poinWt S v b ≤ 1 := mul_le_one₀ hwa.2 hwb.1 hwb.2
@@ -105,20 +106,20 @@ theorem integrableOn_corrC : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r
     have hvU := hv.1
     have hρv : ContDiffAt ℝ 1 ρ v :=
       (hρ.contDiffAt (hU.mem_nhds hvU)).of_le (WithTop.coe_le_coe.2 le_top)
-    exact (GlobalTheory.T.continuousAt_transgressionTopCoeffComplex hρv ((hG₀ v hvU).1.of_le (WithTop.coe_le_coe.2 le_top)) (hG₀ v hvU).2
+    exact (_root_.GlobalTheory.GoodTop.continuousAt_corrC hρv ((hG₀ v hvU).1.of_le (WithTop.coe_le_coe.2 le_top)) (hG₀ v hvU).2
       ((hG₁ v hv).1.of_le (WithTop.coe_le_coe.2 le_top)) (hG₁ v hv).2).continuousWithinAt
   · intro v hv hvK
-    apply GlobalTheory.T.transgressionTopCoeffComplex_eq_zero_of_cutoff_zero
+    apply _root_.GlobalTheory.GoodTop.corrC_eq_zero_of_eventuallyEq_zero
     have : U \ K ∈ 𝓝 v := (hU.sdiff hK.isClosed).mem_nhds ⟨hv.1, hvK⟩
     filter_upwards [this] with x hx
     exact hρK x hx.1 hx.2
   · intro v hv hvK
-    have hwpos : ∀ a, 0 < poinWt S v a := (GlobalTheory.T.poincareCoordinateLength_mem_Icc_and_pos S v (hsmall v hv.1)).2 hv.2
+    have hwpos : ∀ a, 0 < poinWt S v a := (_root_.GlobalTheory.GoodTop.poinWt_mem_Icc_and_pos S v (hsmall v hv.1)).2 hv.2
     calc ‖corrC ρ G₀ G₁ v‖
         ≤ ∑ j : Fin n, ‖mixTop (intersection_update_fsHerm_neg_one (curvAt G₁ v) (cutForm ρ G₀ G₁ v) (curvAt G₀ v) j)‖ := norm_sum_le _ _
       _ ≤ ∑ _j : Fin n, (Fintype.card r : ℝ) ^ n * (n.factorial : ℝ) ^ 2 * |c'| ^ n *
             ∏ a, (poinWt S v a)⁻¹ ^ 2 :=
-          Finset.sum_le_sum fun j _ => GlobalTheory.T.norm_polarisedTopChernCoeff_le_of_weighted_bound _ _ c' hwpos (hposition v hv hvK j)
+          Finset.sum_le_sum fun j _ => _root_.GlobalTheory.GoodTop.norm_mixTop_le_of_weighted _ _ c' hwpos (hposition v hv hvK j)
       _ = _ := by simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; ring
 
 end GlobalTheory.GoodTop

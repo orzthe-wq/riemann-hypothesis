@@ -94,7 +94,6 @@ theorem UpperTheory.V.Z.Sym.Loc.wCard :
     obtain ⟨t, ht⟩ := hPF _ hmem
     simp only [Finset.coe_image, Set.Finite.coe_toFinset, Set.mem_image]
     refine ⟨t • Quotient.out o, ht, ?_⟩
-    change q (t • Quotient.out o) = o
     conv_rhs => rw [← Quotient.out_eq o]
     exact (hq _ _).2 ⟨t, rfl⟩
   unfold wcount

@@ -1,45 +1,44 @@
 module
 
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharacterExtendScalarsRep
+public import Mathlib.Basic.Complex.Basic
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.AsAlgebraHomSurjectiveOfFinrankIntertwiningMapEq
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingCharacterEqFinrankInte
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharactersMulComapConjIndLinear
+public import Mathlib.LinearAlgebra.Trace
+public import Mathlib.RepresentationTheory.Coinduced
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DimPartsAtIffBadAndOff
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockTriangularPrimitiveCharacters
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CuspidalProductMultiplicity
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsCuspidalIffCompositions
 public import Formalism.LocalToGlobal.IndefiniteReal.LinksChar
 public import Formalism.UnipotentAdelicQuotients.CuspidalCharExists
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.AsAlgebraHomSurjectiveOfFinrankIntertwiningMapEq
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingCharacterEqFinrankInte
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingSelfIrreducibleAlgClos
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentation
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharactersMulComapConjIndLinear
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabelsSemisimpleParameterGLFiniteField
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusOrbitRootPolynomialFactorizationStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodCharsGoodFamilyOfProductIrreducible
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GreenCuspidalCharIsCuspidalOfMinpolyOfParam
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCuspIndProdCharOfIsProdCuspChar
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCuspProdCharTransport
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeToPartFrob
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumCoeffChiIdemMul
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceCompLeftFunLeft
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspidalCharExistsOfGreen
-import Formalism.LocalToGlobal.Divisibility.ProjLemmas
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.Finsupp.Pointwise
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RepresentationTheory.FinGroupCharZero
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -57,14 +56,220 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.BlockEmbeddingFactors
+import Development.AbelianVarietyTheory.Definitions.Divisors.SplitDoublingNBlock
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusOrbitDegreeOverPrimeFieldFbar
+import Formalism.CyclotomicNorms.StatementI
+import Formalism.LocalToGlobal.Divisibility.ClassSum
+import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingSelfIrreducibleAlgClos
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentation
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabelsSemisimpleParameterGLFiniteField
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabelsCharOne
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusOrbitRootPolynomialFactorization
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GreenCuspidalCharIsCuspidalOfMinpolyOfParam
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeToPartFrob
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspidalCharExistsOfGreen
+import Formalism.LocalToGlobal.Divisibility.ProjLemmas
+import Mathlib.Data.Finsupp.Pointwise
+import Mathlib.RepresentationTheory.FinGroupCharZero
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharacterExtendScalarsRep
+import Mathlib.RingTheory.PicardGroup
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodCharsGoodFamilyOfProductIrreducible, Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceCompLeftFunLeft, Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiIdemMulLvlIdemBaseNeZero
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodCharsGoodFamilyOfProductIrreducible =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodCharsGoodFamilyOfProductIrreducible", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharacterExtendScalarsRep\npublic import Mathlib.Basic.Complex.Basic\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.AsAlgebraHomSurjectiveOfFinrankIntertwiningMapEq\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingCharacterEqFinrankInte\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharactersMulComapConjIndLinear\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.BlockTheory.DivisorBase.BlockEmbeddingFactors\nimport Development.AbelianVarietyTheory.Definitions.Divisors.SplitDoublingNBlock\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusOrbitDegreeOverPrimeFieldFbar\nimport Formalism.CyclotomicNorms.StatementI\nimport Formalism.LocalToGlobal.Divisibility.ClassSum\nimport Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GlobalTheory.GoodFamily
+
+open Polynomial NumberField Formalism.CyclotomicNorms Formalism.L2.DIV GlobalTheory.FinGL GlobalTheory.BI GlobalTheory.GoodCharsCompare Formalism.MainNotions.PrimeDegreeVariant
+open scoped MonoidAlgebra
+
+section Characters
+
+theorem irreducible_of_surjective {k G V : Type} [Field k] [Group G] [AddCommGroup V] [Module k V] [Nontrivial V]
+    (ρ : Representation k G V) (h : Function.Surjective ρ.asAlgebraHom) : ρ.IsIrreducible := by
+  have hnt : Nontrivial (Subrepresentation ρ) :=
+    ⟨⊥, ⊤, fun h => bot_ne_top (congrArg Subrepresentation.toSubmodule h)⟩
+  refine ⟨fun S => ?_⟩
+  by_cases hS : S.toSubmodule = ⊥
+  · exact Or.inl (Subrepresentation.toSubmodule_injective hS)
+  · refine Or.inr (Subrepresentation.toSubmodule_injective (eq_top_iff.2 fun w _ => ?_))
+    obtain ⟨v, hv, hv0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hS
+    obtain ⟨φ, hφ⟩ := Module.Projective.exists_dual_eq_one k hv0
+    obtain ⟨a, ha⟩ := h (LinearMap.smulRight φ w)
+    have hw : ρ.asAlgebraHom a v = w := by rw [ha]; simp [hφ]
+    rw [← hw]
+    clear hw ha
+    induction a using MonoidAlgebra.induction_linear with
+    | zero => simp
+    | add x y hx hy => rw [map_add (f := _), LinearMap.add_apply]; exact S.toSubmodule.add_mem hx hy
+    | single t c =>
+      rw [Representation.asAlgebraHom_single, LinearMap.smul_apply]
+      exact S.toSubmodule.smul_mem _ (S.apply_mem_toSubmodule t hv)
+
+theorem irreducible_extend (K L : Type) [Field K] [Field L] [Algebra K L] [CharZero K] [CharZero L] {G : Type} [Group G]
+    [Finite G] {n : ℕ} (ρ : Representation K G (Fin n → K))
+    (h : Module.finrank K (Representation.IntertwiningMap ρ ρ) = 1) : (extendScalarsRep K L ρ).IsIrreducible := by
+  have h1 := pair_character_eq_finrank K L G _ _ ρ ρ
+  have h2 := pair_character_eq_finrank L L G _ _ (extendScalarsRep K L ρ) (extendScalarsRep K L ρ)
+  simp only [character_extendScalarsRep, Algebra.algebraMap_self, RingHom.id_apply] at h2
+  rw [h1, h] at h2
+  obtain ⟨h3, h4⟩ := GlobalTheory.asAlgebraHom_surjective_of_finrank_intertwiningMap_eq_one L G _ (extendScalarsRep K L ρ)
+    (by exact_mod_cast h2.symm)
+  exact irreducible_of_surjective _ h4
+
+theorem norm_one_prod {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, Finite (G i)] {χ : ∀ i, G i → ℂ}
+    (h : ∀ i, IsChar ℂ ℂ (χ i) ∧ pair (χ i) (χ i) = 1) :
+    IsChar ℂ ℂ (fun t : ∀ i, G i => ∏ i, χ i (t i)) ∧
+      pair (fun t : ∀ i, G i => ∏ i, χ i (t i)) (fun t => ∏ i, χ i (t i)) = 1 := by
+  classical
+  constructor
+  · have : ∀ s : Finset ι, IsChar ℂ ℂ (fun t : ∀ i, G i => ∏ i ∈ s, χ i (t i)) := by
+      intro s
+      induction s using Finset.induction with
+      | empty => simpa using isChar_one ℂ ℂ (∀ i, G i)
+      | insert a s ha ih =>
+        obtain ⟨n, ρ, hρ⟩ := (h a).1
+        have h1 : IsChar ℂ ℂ (fun t : ∀ i, G i => χ a (t a)) := ⟨n, ρ.comp (Pi.evalMonoidHom G a), fun t => hρ (t a)⟩
+        have := isChar_mul_complex h1 ih
+        convert this using 1
+        funext t
+        rw [Finset.prod_insert ha]; rfl
+    exact this _
+  · letI : ∀ i, Fintype (G i) := fun i => Fintype.ofFinite _
+    have h2 : ∏ i, pair (χ i) (χ i) = 1 := Finset.prod_eq_one fun i _ => (h i).2
+    rw [← h2]
+    simp only [pair, finsum_eq_sum_of_fintype, Finset.prod_mul_distrib, Finset.prod_inv_distrib]
+    rw [Nat.card_pi, Nat.cast_prod, Fintype.prod_sum]
+    simp only [Finset.prod_mul_distrib, Pi.inv_apply]
+
+end Characters
+
+section Local
+
+open GlobalTheory.IndefiniteRowSideFullHecke.BlockEmbeddingFactors GlobalTheory.IndefiniteRowSideFullHecke.CuspValueComparison
+
+variable {g : ℕ} [Fact g.Prime] {r : ℕ}
+
+end Local
+
+section Global
+
+open GlobalTheory.IndefiniteRowSideFullHecke.BlockEmbeddingFactors
+
+end Global
+
+end GlobalTheory.GoodFamily
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodCharsGoodFamilyOfProductIrreducible =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceCompLeftFunLeft =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceCompLeftFunLeft", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.LinearAlgebra.Trace\npublic import Mathlib.RepresentationTheory.Coinduced\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial Classical GlobalTheory.BadShare
+
+noncomputable section
+namespace GlobalTheory.BadShare
+
+theorem trace_compLeft_funLeft {G W : Type} [Fintype G] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
+    (A : W →ₗ[ℂ] W) (f : G → G) :
+    LinearMap.trace ℂ (G → W) (A.compLeft G ∘ₗ LinearMap.funLeft ℂ W f) =
+      ∑ x, if f x = x then LinearMap.trace ℂ W A else 0 := by
+  have h : A.compLeft G ∘ₗ LinearMap.funLeft ℂ W f =
+      ∑ x, LinearMap.single ℂ (fun _ : G => W) x ∘ₗ (A ∘ₗ LinearMap.proj (f x)) := by
+    refine LinearMap.ext fun φ => funext fun y => ?_
+    simp [LinearMap.sum_apply, Finset.sum_apply, Pi.single_apply, LinearMap.funLeft_apply]
+
+  rw [h, map_sum]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  rw [LinearMap.trace_comp_comm']
+  split_ifs with hx
+  · congr 1
+    ext w
+    simp [hx]
+  · have : (A ∘ₗ LinearMap.proj (f x)) ∘ₗ LinearMap.single ℂ (fun _ : G => W) x = 0 := by
+      ext w
+      simp [hx]
+    rw [this, map_zero]
+
+section
+variable {G : Type} [Group G] [Fintype G] {Γ : Type} [Group Γ] [Fintype Γ] (r : Γ →* G)
+  {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (σ : Representation ℂ Γ W)
+
+def coindSum : (G → W) →ₗ[ℂ] Representation.coindV r σ :=
+  LinearMap.codRestrict _
+    (∑ γ : Γ, (σ γ⁻¹ : W →ₗ[ℂ] W).compLeft G ∘ₗ LinearMap.funLeft ℂ W fun x => r γ * x) (by
+      intro φ δ x
+
+      simp only [LinearMap.sum_apply, Finset.sum_apply, LinearMap.comp_apply, LinearMap.compLeft_apply,
+      Function.comp_apply, LinearMap.funLeft_apply, map_sum]
+      refine Fintype.sum_equiv (Equiv.mulRight δ) _ _ fun γ => ?_
+      simp only [Equiv.coe_mulRight, map_mul r, mul_assoc, mul_inv_rev]
+      rw [← Module.End.mul_apply, ← map_mul σ, mul_inv_cancel_left])
+
+omit [Fintype G] [FiniteDimensional ℂ W] in
+theorem coindSum_apply (φ : G → W) (x : G) :
+    (coindSum r σ φ).1 x = ∑ γ : Γ, σ γ⁻¹ (φ (r γ * x)) := by
+  change (∑ γ : Γ, (σ γ⁻¹ : W →ₗ[ℂ] W).compLeft G ∘ₗ LinearMap.funLeft ℂ W fun x => r γ * x) φ x = _
+  simp [LinearMap.sum_apply, Finset.sum_apply, LinearMap.funLeft_apply]
+
+theorem trace_coind_mul_card (g : G) :
+    LinearMap.trace ℂ _ (Representation.coind r σ g) * (Fintype.card Γ : ℂ) =
+      ∑ γ : Γ, ∑ x : G, if r γ * (x * g) = x then LinearMap.trace ℂ W (σ γ⁻¹) else 0 := by
+  have h1 : (Fintype.card Γ : ℂ) • (Representation.coind r σ g : _ →ₗ[ℂ] _) =
+      coindSum r σ ∘ₗ (LinearMap.funLeft ℂ W (fun x => x * g) ∘ₗ (Representation.coindV r σ).subtype) := by
+    refine LinearMap.ext fun φ => Subtype.ext (funext fun x => ?_)
+    rw [LinearMap.comp_apply, coindSum_apply]
+    have : ∀ γ : Γ, σ γ⁻¹ ((LinearMap.funLeft ℂ W (fun x => x * g) ∘ₗ (Representation.coindV r σ).subtype) φ (r γ * x))
+        = φ.1 (x * g) := by
+      intro γ
+      change σ γ⁻¹ (φ.1 (r γ * x * g)) = _
+      rw [mul_assoc, φ.2 γ, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
+    rw [Finset.sum_congr rfl fun γ _ => this γ, Finset.sum_const, Finset.card_univ]
+    change (Fintype.card Γ : ℂ) • φ.1 (x * g) = _
+    rw [Nat.cast_smul_eq_nsmul]
+  have h2 : (LinearMap.funLeft ℂ W (fun x => x * g) ∘ₗ (Representation.coindV r σ).subtype) ∘ₗ coindSum r σ =
+      ∑ γ : Γ, (σ γ⁻¹ : W →ₗ[ℂ] W).compLeft G ∘ₗ LinearMap.funLeft ℂ W fun x => r γ * (x * g) := by
+    refine LinearMap.ext fun φ => funext fun x => ?_
+    change (coindSum r σ φ).1 (x * g) = _
+    rw [coindSum_apply]
+    simp [LinearMap.sum_apply, Finset.sum_apply, LinearMap.funLeft_apply]
+
+  rw [mul_comm, ← smul_eq_mul, ← map_smul, h1, LinearMap.trace_comp_comm', h2, map_sum]
+  exact Finset.sum_congr rfl fun γ _ => trace_compLeft_funLeft _ _
+
+end
+
+end GlobalTheory.BadShare
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceCompLeftFunLeft =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiIdemMulLvlIdemBaseNeZero =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiIdemMulLvlIdemBaseNeZero", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DimPartsAtIffBadAndOff\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BlockTriangularPrimitiveCharacters\npublic import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CuspidalProductMultiplicity\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsCuspidalIffCompositions\npublic import Formalism.LocalToGlobal.IndefiniteReal.LinksChar\npublic import Formalism.UnipotentAdelicQuotients.CuspidalCharExists\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.AsAlgebraHomSurjectiveOfFinrankIntertwiningMapEq\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingCharacterEqFinrankInte\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GoodCharsGoodFamilyOfProductIrreducible\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCuspIndProdCharOfIsProdCuspChar\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCuspProdCharTransport\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumCoeffChiIdemMul\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TraceCompLeftFunLeft\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharacterExtendScalarsRep\nimport Development.AbelianVarietyTheory.Proofs.CharacterTheory.FiniteGroupFunctionPairingSelfIrreducibleAlgClos\nimport Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentation\nimport Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharactersMulComapConjIndLinear\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabelsSemisimpleParameterGLFiniteField\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.LabelsCharOne\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobeniusOrbitRootPolynomialFactorization\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.GreenCuspidalCharIsCuspidalOfMinpolyOfParam\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrimeToPartFrob\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CuspidalCharExistsOfGreen\nimport Formalism.LocalToGlobal.Divisibility.ProjLemmas\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.Finsupp.Pointwise\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RepresentationTheory.FinGroupCharZero\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Mathlib.RingTheory.PicardGroup\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -83,7 +288,7 @@ theorem sum_character_eq_zero_iff {G V : Type} [Group G] [Fintype G] [AddCommGro
   have h := ρ.card_inv_mul_sum_char_eq_finrank
   have e : ∑ g, ρ.character g = 0 ↔ ρ.invariants = ⊥ := by
     rw [← Submodule.finrank_eq_zero, ← Nat.cast_eq_zero (R := ℂ), ← h]
-    simp [hc]
+    simp
   rw [e, Submodule.eq_bot_iff]
   simp only [Representation.mem_invariants]
 
@@ -365,7 +570,7 @@ theorem isCusp_cuspOn {s : SSParam p ℂ r} (hs : IsRegularParam s) (c : Cyc s.1
   obtain ⟨L⟩ := GlobalTheory.GLq.LabelModel.inhab p
   obtain ⟨x, f, h⟩ := exists_labels p L r s
   exact (isCuspOf_cuspOn L (s.2 c) (x c) (cycLen_pos _ c) (h.1 c)
-    (((GlobalTheory.T.frobeniusOrbitRootPolynomial_factorization p r _ x f h.2).2.2.2 (h.regular_iff.1 hs)).1 c)).2.1
+    (((_root_.GlobalTheory.ParamLabel.RootPolyFactor.rootPoly_factor p r _ x f h.2).2.2.2 (h.regular_iff.1 hs)).1 c)).2.1
 
 def cycEquiv (b : Fin r → Fin r) : (Σ c : Cyc b, Fin (cycLen b c)) ≃ Fin r :=
   Equiv.ofBijective (fun x => ((Fintype.equivFin {a : Fin r // b a = x.1.1}).symm x.2).1) (by
@@ -507,3 +712,6 @@ theorem chiIdem_mul_lvlIdem_base_ne_zero : ∀ {D : D7} {G : Type} [Group G] [Fi
 end GlobalTheory.GoodTypeGeneric
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChiIdemMulLvlIdemBaseNeZero =====

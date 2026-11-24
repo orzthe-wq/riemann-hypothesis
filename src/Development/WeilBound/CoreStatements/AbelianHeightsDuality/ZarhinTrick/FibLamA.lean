@@ -95,7 +95,7 @@ theorem toBase_inv (G : Over S) [GrpObj G] {T : Over (Sp Ω)} (x : T ⟶ (Over.p
 theorem toBase_map {G G' : Over S} (f : G ⟶ G') {T : Over (Sp Ω)} (x : T ⟶ (Over.pullback s).obj G) :
     toBase G' s (x ≫ (Over.pullback s).map f) = toBase G s x ≫ f := by
   ext
-  simp [toBase, Over.pullback, pullback.lift_fst]
+  simp [toBase, Over.pullback]
 
 theorem toBase_comp (G : Over S) {T T' : Over (Sp Ω)} (v : T' ⟶ T) (x : T ⟶ (Over.pullback s).obj G) :
     toBase G s (v ≫ x) = (Over.homMk v.left (by dsimp; rw [← Category.assoc, Over.w v]) : Over.mk (T'.hom ≫ s) ⟶ Over.mk (T.hom ≫ s)) ≫

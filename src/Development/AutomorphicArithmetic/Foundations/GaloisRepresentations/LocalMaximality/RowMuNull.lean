@@ -175,7 +175,7 @@ private lemma detC_top : detC T.rowMu (uni {0} (img (dj 0))) =
     induction i using Fin.cases with
     | zero =>
       rw [hf0, rowMu_inl]
-      simp [Pi.single_apply, (Fin.pos_iff_ne_zero.1 hij')]
+      simp [(Fin.pos_iff_ne_zero.1 hij')]
     | succ l =>
       rw [hrow]
       have h1 : j ≠ l.succ := ne_of_gt hij'

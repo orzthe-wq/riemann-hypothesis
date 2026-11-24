@@ -60,9 +60,7 @@ namespace Formalism.FourierDecayAlt.P.Jx3
 
 
 open InfinitePlace in
-theorem trace_places (E : Type) [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] (x : E) :
-    ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ w : InfinitePlace E, 2 * (w.embedding x).re := by
-  first | exact Bl.FiberEquations.goal1 .. | (apply Bl.FiberEquations.goal1 <;> assumption) | (intros; apply Bl.FiberEquations.goal1 <;> assumption)
+alias trace_places := _root_.Bl.FiberEquations.goal1
 
 theorem t_TracePairing : TracePairing := by
   intro E _ _ _ g c l t hg hc
@@ -299,10 +297,6 @@ end Formalism.FourierDecayAlt.P.Jx3
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem trace_dual_alt : Formalism.FourierDecayAlt.J.TraceDual := Jx3.t_TraceDual
-
 theorem block_frame : Formalism.FourierDecayAlt.J.BlockFrame := Jx3.t_BlockFrame
-
-theorem poisson_joint : Formalism.FourierDecayAlt.J.PoissonJoint := Jx3.t_PoissonJoint
 
 end Formalism.FourierDecayAlt.P

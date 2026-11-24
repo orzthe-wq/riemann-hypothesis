@@ -109,7 +109,7 @@ private theorem merge (q e t : ℕ) (ht : t < e + 1) (j : Fin (e + 1) → ZMod q
       · rw [if_neg h1, if_neg h1]
 
 theorem sZc : SZc := by
-  apply LateralTheory.Q.SZcT.SZc_of <;> assumption
+  apply LateralTheory.Q.SZcT.SZc_of
 
 end UpperTheory.V.ZK
 

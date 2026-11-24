@@ -3,7 +3,7 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LevelSectionsExactKernelLocusOpen
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsGenericFlag
 public import Mathlib.AlgebraicGeometry.Morphisms.Proper
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularEverywhereIsIntegralStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegularEverywhereIsIntegral
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -80,7 +80,7 @@ theorem mem_lat_genFibre_iff_const_mul : ∀ (X : Scheme.{0}) (Ω : Type) [Field
       replace hc : (c : Ω) * t = u := hc
       rw [← hc, mul_div_cancel_right₀ _ ht0]
       exact c.2
-    obtain ⟨x, y, hy, e⟩ := hc _ ((GlobalTheory.T.regular_everywhere_isIntegral X Ω ξ O s hs hi hξ (u / t)).2 hreg)
+    obtain ⟨x, y, hy, e⟩ := hc _ ((_root_.GlobalTheory.CompanionTheory.Ar.Flat.isIntegral_and_isAlgebraic_of_regular X Ω ξ O s hs hi hξ (u / t)).2 hreg)
     refine ⟨x, y, hy, ?_⟩
     rw [← e]
     field_simp

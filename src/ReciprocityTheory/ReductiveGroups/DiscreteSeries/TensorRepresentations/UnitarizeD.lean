@@ -1,47 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.UnitarizeC
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -56,26 +16,11 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
-theorem Jm_mul_Jm' (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  rw [Jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  exact sg_mul_self ε a
-
-theorem Jm_conjT (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
-  rw [Jm_eq, Matrix.diagonal_conjTranspose]
-  congr 1
-  funext a
-  exact star_sg ε a
-
-theorem Jm_Jm_mul (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : Jm ε * (Jm ε * X) = X := by
-  rw [← Matrix.mul_assoc, Jm_mul_Jm', Matrix.one_mul]
-
 theorem inG_sub (Y : Matrix (Fin n) (Fin n) ℂ) : inG ε (Y - Jm ε * Yᴴ * Jm ε) := by
   unfold inG
-  rw [Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Jm_conjT,
+  rw [Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_conjTranspose,
     Matrix.conjTranspose_conjTranspose]
-  simp only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, Jm_mul_Jm', Jm_Jm_mul, Matrix.mul_one]
+  simp only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self, _root_.ReciprocityTheory.ChartRestriction.DS.Jm_mul_Jm_mul, Matrix.mul_one]
   abel
 
 theorem inG_add (Y : Matrix (Fin n) (Fin n) ℂ) : inG ε (Complex.I • (Y + Jm ε * Yᴴ * Jm ε)) := by
@@ -94,7 +39,7 @@ theorem mx_smul (c : ℂ) (X : Matrix (Fin n) (Fin n) ℂ) : mx T (c • X) = c 
   simp [mx, smul_smul, Finset.smul_sum]
 
 theorem mx_single (a b : Fin n) : mx T (Matrix.single a b 1) = T a b := by
-  simp [mx, Matrix.single_apply, ite_smul, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']
+  simp [mx, Matrix.single_apply, ite_smul, ite_and, Finset.sum_ite_eq]
 
 theorem mat_decomp (Y Z : Matrix (Fin n) (Fin n) ℂ) :
     Y = (1 / 2 : ℂ) • (Y - Z) + (-(Complex.I / 2)) • (Complex.I • (Y + Z)) := by

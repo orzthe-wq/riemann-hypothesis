@@ -4,8 +4,9 @@ public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Adapt
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CommonUnipotentStabiliserPreservesTermsAndDatum
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairCommonUnipotentStabiliserSummary
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairInnerLatticesUnimodularPrimitive
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormGeometrySummaryStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RelIndexNeZero
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NormalFormDualOrthogonalLast
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermFramePairNormalFormGeometrySummary
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -78,7 +79,7 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
     have hrefFull : Submodule.IsFullLattice K (N.Ref (latL N.F N.F' Λ)) := by
       refine { toIsLattice := href, span_eq_top := ?_ }
       obtain ⟨-, -, hC, -, hWn, hUp, -, -, -, -, -, hPi⟩ :=
-        GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N
+        _root_.GlobalTheory.DegCnt.NF.geometry K V H hK r N
       have hP : N.Pi ≤ Submodule.span K (N.Ref (latL N.F N.F' Λ) : Set V) := by
         rw [hPi, ← GlobalTheory.DegCnt.InnerLat.span_hermFramePair_lattice_eq_sup N]
         exact Submodule.span_mono (show (N.P0 : Set V) ⊆ N.Ref (latL N.F N.F' Λ) from

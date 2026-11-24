@@ -131,8 +131,7 @@ theorem exists_scalar {P : Ideal (MRing (dualBlocks T))} {a : T → ℤ} (ha : �
       z ⟨Sum.inr (), t⟩ * ((a s : ℂ) * z ⟨Sum.inl (), s⟩) := by
     intro s t
     have h := hz.2 _ (minor_mem P a s t)
-    simp only [graphFirst, graphSecond, map_sub, map_mul, map_X, map_C, map_intCast, eval_X, eval_C,
-      eq_intCast] at h
+    simp only [graphFirst, graphSecond, map_sub, map_mul, map_X, map_intCast, eval_X, eq_intCast] at h
     exact sub_eq_zero.mp h
   obtain ⟨t₁, ht₁⟩ := hz.1 (Sum.inl ())
   obtain ⟨t₂, ht₂⟩ := hz.1 (Sum.inr ())
@@ -184,7 +183,7 @@ theorem isMultiHomog_X_int {K' : Type} [Fintype K'] [DecidableEq K'] {ι : K' �
   · subst h
     simp [Finsupp.single_apply]
   · have : ∀ j' : ι k', (⟨k, j⟩ : Σ k, ι k) ≠ ⟨k', j'⟩ := fun j' e => h (congrArg Sigma.fst e).symm
-    simp [Finsupp.single_apply, this, h, Pi.single_apply]
+    simp [h]
 
 theorem isMultiHomog_C_mul {K' : Type} [Fintype K'] {ι : K' → Type} [∀ k, Fintype (ι k)] {f : MRing ι}
     {d : K' → ℕ} (hf : IsMultiHomog f d) (c : ℤ) : IsMultiHomog (C c * f) d := by
@@ -234,7 +233,7 @@ theorem logNorm_eq {F F' : HermLattice K i} {b : Module.Basis T ℤ (dualLattice
     simp [dualLine]
   unfold logNorm
   rw [hN]
-  simp only [graphSecond, graphFirst, map_X, map_mul, map_C, map_intCast, eval_X, eval_mul, eval_C, eq_intCast]
+  simp only [graphSecond, graphFirst, map_X, map_mul, map_intCast, eval_X, eq_intCast]
   rw [hcz t, norm_mul, mul_div_mul_left _ _ (norm_ne_zero_iff.mpr hc)]
 
 
@@ -503,7 +502,7 @@ theorem DualTopSimpleStacked.proof (hAI3 : Inter.PushforwardArithIntersection.St
       have hkn : (k : ℕ) < n := Fin.val_lt_last hk
       refine ⟨⟨k, hkn⟩, ?_⟩
       have hcs : Fin.castSucc (⟨k, hkn⟩ : Fin n) = k := Fin.ext rfl
-      simp only [rest, hcs, Equiv.swap_apply_left, mix, Fin.val_last, lt_irrefl, if_false]
+      simp only [rest, hcs, Equiv.swap_apply_left, mix, Fin.val_last]
       have : ¬ (n < (k : ℕ)) := by omega
       rw [if_neg this]
       rfl

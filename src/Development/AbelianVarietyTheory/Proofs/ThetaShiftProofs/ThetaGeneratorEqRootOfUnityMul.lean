@@ -209,9 +209,6 @@ def Acts (θ : A ⟶ A) (ζ : S) : Prop :=
 
 variable {p e rig σ}
 
-theorem cst_mul {Z : Scheme.{0}} (q : Z ⟶ Sp S) (z : Z) (a b : S) : cst q z (a * b) = cst q z a * cst q z b := by
-  simp only [cst, gs_eq q z ⊤ trivial, map_mul]
-
 theorem Acts.comp (hL : L.IsLB) {θ θ' : A ⟶ A} {ζ ζ' : S} (hp : θ' ≫ p = p) (he : e ≫ θ' = e)
     (h : Acts p e rig σ θ ζ) (h' : Acts p e rig σ θ' ζ') : Acts p e rig σ (θ' ≫ θ) (ζ * ζ') := by
   obtain ⟨v, g, m, a⟩ := h
@@ -222,7 +219,7 @@ theorem Acts.comp (hL : L.IsLB) {θ θ' : A ⟶ A} {ζ ζ' : S} (hp : θ' ≫ p 
   refine ⟨u, T.pgen_comp hL g g', M, fun Z r z j k hj hk => ?_⟩
   obtain ⟨i, hi⟩ := exists_chart hL (θ' (r z))
   rw [← Category.assoc, a Z (r ≫ θ') z j i hj hi, a' Z r z i k hi hk, T Z r z j i k hj hi hk, Category.assoc, hp,
-    cst_mul, Units.val_mul]
+    _root_.ReciprocityTheory.ChartRestriction.G.H1.cst_mul, Units.val_mul]
   ring
 
 theorem Acts.unique (hL : L.IsLB) (hep : e ≫ p = 𝟙 _) (hp : Function.Surjective p.appTop.hom) {θ : A ⟶ A} {ζ ζ' : S}

@@ -140,7 +140,7 @@ def hilbPoly (D : ℕ) : Polynomial ℚ :=
 theorem hilbPoly_eval (D n : ℕ) : (hilbPoly D).eval (n : ℚ) = ((2 * n + D).choose D : ℚ) := by
   rw [hilbPoly, Polynomial.eval_comp]
   simp only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_X]
-  have := Polynomial.preHilbertPoly_eq_choose_sub_add ℚ D (k := 0) (n := 2 * n) (Nat.zero_le _)
+  have := Polynomial.preHilbertPoly_eq_choose_add_sub ℚ D (k := 0) (n := 2 * n) (Nat.zero_le _)
   push_cast at this
   rw [this, Nat.sub_zero]
 

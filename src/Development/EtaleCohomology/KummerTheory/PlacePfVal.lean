@@ -72,7 +72,7 @@ theorem aic : AIC T := by
 theorem prod_lt (s : Multiset K) (hs : ∀ r ∈ s, T.valuation r ≤ 1) (h : T.valuation s.prod < 1) :
     ∃ r ∈ s, T.valuation r < 1 := by
   by_contra hc
-  push_neg at hc
+  push Not at hc
   have : T.valuation s.prod = 1 := by
     rw [map_multiset_prod]
     apply Multiset.prod_eq_one

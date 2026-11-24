@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 import Development.AbelianVarietyTheory.Definitions.Divisors.SharpOverIff
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -68,10 +69,6 @@ theorem alg_eq {R F : Type} [CommRing R] [IsDomain R] [Field F] (i₁ i₂ : Alg
   have e := IsLocalization.ringHom_ext (M := nonZeroDivisors R) (S := FractionRing R)
     (j := @algebraMap _ _ _ _ i₁) (k := @algebraMap _ _ _ _ i₂) (RingHom.ext h)
   exact RingHom.congr_fun e x
-
-theorem qk_eq {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
-    {k : ℕ} {q q' : QkPt D F k} (hy : q.y = q'.y) (hg : q.g = q'.g) : q = q' := by
-  cases q; cases q'; cases hy; cases hg; rfl
 
 theorem tor_eq {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     {τ : Multiplicative D.X →* Fˣ} {g : GtPtF D F} (h : GlobalTheory.UT.IsTor τ g) :
@@ -119,7 +116,7 @@ theorem torMatch_id (hR : GlobalTheory.Mum.Base R) {G : Over (Sp R)} [GrpObj G] 
   obtain ⟨f, h1, -, -⟩ := tors_fun hR hG U F hk
   have e : τ = τ' := MonoidHom.ext fun x => hρ (Multiplicative.toAdd x)
   subst e
-  have hqq : q = q' := qk_eq (hy.trans hy'.symm) ((tor_eq hτ).trans (tor_eq hτ').symm)
+  have hqq : q = q' := _root_.GlobalTheory.TorusExt.qk_ext (hy.trans hy'.symm) ((tor_eq hτ).trans (tor_eq hτ').symm)
   subst hqq
   rw [(h1 q a).1 hq, (h1 q a').1 hq', Category.comp_id]
 

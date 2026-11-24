@@ -54,24 +54,17 @@ namespace GlobalTheory.LevelCompact
 
 variable {D : D7}
 
-theorem mt_mul' (V : HSp D) (g h : GA D V) :
-    Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := by
-  unfold Formalism.L2.Theta.mt; rw [map_mul]; rfl
-
-theorem mt_one' (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by
-  unfold Formalism.L2.Theta.mt; rw [map_one]; rfl
-
 theorem actO_actO' (S T : HSp D) (g g' : GA D S) (h h' : GA D T) (x : WO S T) :
     actO S T g h (actO S T g' h' x) = actO S T (g * g') (h * h') x := by
   unfold actO
-  rw [_root_.mul_inv_rev, mt_mul', mt_mul']
+  rw [_root_.mul_inv_rev, _root_.GlobalTheory.BesselCompare.mt_mul, _root_.GlobalTheory.BesselCompare.mt_mul]
   simp only [Matrix.mul_assoc]
 
 theorem actO_inv_actO' (S T : HSp D) (g : GA D S) (h : GA D T) (x : WO S T) :
     actO S T g h (actO S T g⁻¹ h⁻¹ x) = x := by
   rw [actO_actO', mul_inv_cancel, mul_inv_cancel]
   unfold actO
-  rw [inv_one, mt_one', mt_one']
+  rw [inv_one, _root_.GlobalTheory.BesselCompare.mt_one, _root_.GlobalTheory.BesselCompare.mt_one]
   simp
 
 theorem actO_add' (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T) :

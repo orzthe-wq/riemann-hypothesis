@@ -70,7 +70,7 @@ theorem shift_single_int {ι : Type u_1} {R : Type u_2} {E : Type u_3} [Decidabl
       rw [add_assoc, ← Pi.single_add]
       congr 2
       push_cast
-      first | rfl | ring | abel | simp
+      first | abel
     rw [← ih x, this, h]
 
 theorem main {ι : Type u_1} {R : Type u_2} {E : Type u_3} [Fintype ι] [inst : DecidableEq ι] [inst_1 : Ring R]

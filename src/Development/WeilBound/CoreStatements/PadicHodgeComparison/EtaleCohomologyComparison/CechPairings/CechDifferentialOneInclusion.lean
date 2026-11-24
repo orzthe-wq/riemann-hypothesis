@@ -409,7 +409,7 @@ theorem sstep (I : Ideal R) {A : C} (P : Powers j A) (hG : P.Good j F I) (n : �
     ExactUpTo (a ^ (n + 4)) ((cx (elF (pts j A) (j ⋙ F))).d n) ((cx (elF (pts j A) (j ⋙ F))).d (n + 1)) := by
   obtain ⟨hsurj, hex, t0, g, hg, halm⟩ := hG
   have hbφ : ∀ m q, Function.Bijective ((elMor (uK j P m) (j ⋙ F)).hom.f q) :=
-    fun m => CrystallineSemistableComparison.P.el_iso (uK j P m) (j ⋙ F) (uK_bij j P m)
+    fun m => _root_.GlobalTheory.CompanionTheory.Cech.elMor_bijective_of_bijective (uK j P m) (j ⋙ F) (uK_bij j P m)
   have hcol : ∀ p q, p + q + 1 = n + 1 → ExactUpTo a ((cechCos (pmap j P) (j ⋙ F)).dcx.dv p q)
       ((cechCos (pmap j P) (j ⋙ F)).dcx.dv p (q + 1)) := by
     intro p q hpq

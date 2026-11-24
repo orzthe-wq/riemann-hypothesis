@@ -1,12 +1,11 @@
 module
 
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicBoxesCompactExhaust
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalarStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductLocalDensitiesConverges
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductMultipliable
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalRankOneDensityUniformizerPowerStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensityAlmostAllStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.LocalMassSeries.HermitianRankOneLocalVolumeStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalRankOneDensityUniformizerPower
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensityAlmostAll
 public import Mathlib.Algebra.FiniteSupport.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -26,13 +25,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -40,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -53,10 +45,45 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicBoxesCompactExhaust
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: CompanionTheory.SpectralGeometry.LocalGlobalProofs.LocalMassSeries.HermitianRankOneLocalVolume, CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensitiesProductConverges
+
+-- ===== clump member: CompanionTheory.SpectralGeometry.LocalGlobalProofs.LocalMassSeries.HermitianRankOneLocalVolume =====
+-- clump-header: {"m": "CompanionTheory.SpectralGeometry.LocalGlobalProofs.LocalMassSeries.HermitianRankOneLocalVolume", "h": "module\n\npublic import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductLocalDensitiesConverges\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
+open scoped TensorProduct ENNReal NNReal Matrix
+
+namespace GlobalTheory.CompanionTheory.SW.OneVector
+
+theorem mass_fibre_summable_one :
+    ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ), n = 1 → n + 2 ≤ M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), (∀ v, IsStdV v (lam v)) → ∀ (m : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ n → Measure (Fin n → Fin M → Fv F v ⊗[F] E)), (∀ v, IsGramFib (Fv F v) σ J n (coordW (Fv F v) b (lam v) n M) (coordHerm (Fv F v) σ b (lam v) n) (m v)) → (∀ v, m v (hermOf (Fv F v) σ T hT) (latV b v) < ⊤) ∧ Summable fun v => |(m v (hermOf (Fv F v) σ T hT) (latV b v)).toReal - 1| := by
+  intro F E _ _ _ _ _ σ hCM M J hJ n _ hM T hT hdet d b lam hlam m hm
+  exact _root_.GlobalTheory.CompanionTheory.SW.mass_fibre_summable F E σ hCM M J hJ n (Or.inr hM) T hT hdet d b lam hlam m hm
+
+end GlobalTheory.CompanionTheory.SW.OneVector
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.SpectralGeometry.LocalGlobalProofs.LocalMassSeries.HermitianRankOneLocalVolume =====
+
+-- ===== clump member: CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensitiesProductConverges =====
+-- clump-header: {"m": "CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensitiesProductConverges", "h": "module\n\npublic import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductMultipliable\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LocalRankOneDensityUniformizerPower\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensityAlmostAll\npublic import CompanionTheory.SpectralGeometry.LocalGlobalProofs.LocalMassSeries.HermitianRankOneLocalVolume\npublic import Mathlib.Algebra.FiniteSupport.Basic\nimport CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicBoxesCompactExhaust\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Presheaf\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
@@ -68,24 +95,20 @@ namespace GlobalTheory.CompanionTheory.SW.Growth
 section Place
 variable {F : Type} [Field F] [NumberField F]
 
-theorem val_alg (v : HeightOneSpectrum (𝓞 F)) (x : F) :
-    Valued.v (algebraMap F (Fv F v) x) = v.valuation F x :=
-  HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
-
 theorem val_lt_one_of_mem (v : HeightOneSpectrum (𝓞 F)) {r : 𝓞 F} (h : r ∈ v.asIdeal) :
     Valued.v ((algebraMap F (Fv F v)) (algebraMap (𝓞 F) F r)) < 1 := by
-  rw [val_alg]
+  rw [_root_.GlobalTheory.CompanionTheory.SW.GoodInt.valued_algebraMap]
   exact (v.valuation_lt_one_iff_mem r).2 h
 
 theorem val_le_one (v : HeightOneSpectrum (𝓞 F)) (r : 𝓞 F) :
     Valued.v ((algebraMap F (Fv F v)) (algebraMap (𝓞 F) F r)) ≤ 1 := by
-  rw [val_alg]
+  rw [_root_.GlobalTheory.CompanionTheory.SW.GoodInt.valued_algebraMap]
   exact v.valuation_le_one r
 
 theorem val_eq_one (v : HeightOneSpectrum (𝓞 F)) {r : 𝓞 F} (h : r ∉ v.asIdeal) :
     Valued.v ((algebraMap F (Fv F v)) (algebraMap (𝓞 F) F r)) = 1 := by
   refine le_antisymm (val_le_one v r) (not_lt.1 fun h' => h ?_)
-  rw [val_alg] at h'
+  rw [_root_.GlobalTheory.CompanionTheory.SW.GoodInt.valued_algebraMap] at h'
   exact (v.valuation_lt_one_iff_mem r).1 h'
 
 theorem two_le_norm (v : HeightOneSpectrum (𝓞 F)) : 2 ≤ Ideal.absNorm v.asIdeal := by
@@ -97,7 +120,7 @@ theorem two_le_norm (v : HeightOneSpectrum (𝓞 F)) : 2 ≤ Ideal.absNorm v.asI
 
 theorem exists_nat_mul_mem (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v) :
     ∃ n : ℕ, 0 < n ∧ (n : Fv F v) * x ∈ v.adicCompletionIntegers F := by
-  apply GlobalTheory.CompanionTheory.SW.BoxF.exists_nat_v <;> assumption
+  apply GlobalTheory.CompanionTheory.SW.BoxF.exists_nat_v
 
 theorem exists_exponents (a : ℕ) (ha : 0 < a) :
     ∃ e : HeightOneSpectrum (𝓞 F) → ℕ,
@@ -170,7 +193,7 @@ theorem repr_natCast_mul (a : ℕ) (y : Fv F v ⊗[F] E) (k : Fin d) :
 theorem mem_dilSet {a : ℕ} {X : Fin 1 → Fin M → Fv F v ⊗[F] E} :
     X ∈ dilSet b v a ↔ ∀ p i k, (a : Fv F v) * (Algebra.TensorProduct.basis (Fv F v) b).repr (X p i) k ∈
       v.adicCompletionIntegers F := by
-  simp only [dilSet, latV, Set.mem_setOf_eq, repr_natCast_mul]
+  simp only [dilSet, latV, Set.mem_ofPred_eq, repr_natCast_mul]
 
 theorem dilSet_mono (a t : ℕ) : (dilSet b v a : Set (Fin 1 → Fin M → Fv F v ⊗[F] E)) ⊆ dilSet b v (a * t) := by
   intro X hX
@@ -203,10 +226,10 @@ theorem dilSet_unit {a : ℕ} (h : (a : 𝓞 F) ∉ v.asIdeal) :
     simpa using this
   ext X
   rw [mem_dilSet]
-  simp only [latV, Set.mem_setOf_eq, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, hv, one_mul]
+  simp only [latV, Set.mem_ofPred_eq, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, hv, one_mul]
 
 theorem measurable_latV : MeasurableSet (latV b v : Set (Fin 1 → Fin M → Fv F v ⊗[F] E)) := by
-  haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
+  have : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
   haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
   have hc : ∀ k : Fin d, Continuous fun y : Fv F v ⊗[F] E => (Algebra.TensorProduct.basis (Fv F v) b).repr y k := by
@@ -250,7 +273,7 @@ theorem eventually_half (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hM : 3 ≤ 
     (hm : ∀ v, IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 M) (coordHerm (Fv F v) σ b (lam v) 1) (m v)) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ s : Fv F v, s ∈ v.adicCompletionIntegers F → s ≠ 0 →
       1 / 2 ≤ (m v (hermScal (Fv F v) σ s) (latV b v)).toReal := by
-  filter_upwards [GlobalTheory.T.rank_one_local_density_almost_all F E σ hσ M J hJ hM d b] with v hv s hs hs0
+  filter_upwards [_root_.GlobalTheory.CompanionTheory.SW.LocGood.density_standard_lattice F E σ hσ M J hJ hM d b] with v hv s hs hs0
   have h := hv (lam v) (hlam v) (m v) (hm v) s hs hs0
   have hq : (2 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) := by exact_mod_cast two_le_norm v
   have hpow : (4 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1) := by
@@ -272,12 +295,12 @@ theorem scal_fin (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hM : 3 ≤ M) (hla
   have hdet : T.det ≠ 0 := by
     rw [Matrix.det_unique]
     exact (map_ne_zero (algebraMap F E)).2 hs
-  obtain ⟨s', hs', -, hh⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hσ T hT
+  obtain ⟨s', hs', -, hh⟩ := _root_.GlobalTheory.CompanionTheory.SW.hermOne_eq_scal F E σ hσ T hT
   have e : s' = s := by
     have := congrFun (congrFun hs' 0) 0
     exact ((algebraMap F E).injective this).symm
   subst e
-  have h := GlobalTheory.T.hermitian_rank_one_local_volume F E σ hσ M J hJ 1 rfl (by omega) T hT hdet d b lam hlam m hm
+  have h := _root_.GlobalTheory.CompanionTheory.SW.OneVector.mass_fibre_summable_one F E σ hσ M J hJ 1 rfl (by omega) T hT hdet d b lam hlam m hm
   simp only [hh] at h
   exact h
 
@@ -287,7 +310,7 @@ theorem dil_eq (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hM : 3 ≤ M) (hlam 
     (h1 : Ideal.span {(a : 𝓞 F)} ≤ v.asIdeal ^ e) (h2 : ¬ Ideal.span {(a : 𝓞 F)} ≤ v.asIdeal ^ (e + 1)) :
     m v (hermScal (Fv F v) σ (algebraMap F _ t)) (dilSet b v a) =
       (Ideal.absNorm v.asIdeal : ℝ≥0∞) ^ (e * (2 * M - 2)) * mL σ b m ((a : F) ^ 2 * t) v := by
-  have h := GlobalTheory.T.local_rank_one_density_uniformizer_power F E σ hσ M J hJ d b v (lam v) (hlam v) (m v) (hm v) (by omega) a e ha h1 h2
+  have h := _root_.GlobalTheory.CompanionTheory.SW.Dil.dilation F E σ hσ M J hJ d b v (lam v) (hlam v) (m v) (hm v) (by omega) a e ha h1 h2
     (algebraMap F _ t) (latV b v) (measurable_latV b v)
   rw [show ((a : Fv F v) ^ 2 * algebraMap F _ t) = algebraMap F _ ((a : F) ^ 2 * t) by simp] at h
   exact h
@@ -421,3 +444,7 @@ theorem growth : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFie
   exact growth_main hσ hJ hM hlam hm β hβ hne
 
 end GlobalTheory.CompanionTheory.SW.Growth
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.RankOneLocalDensitiesProductConverges =====

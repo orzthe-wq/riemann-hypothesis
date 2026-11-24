@@ -50,6 +50,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Positi
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.RowsRestWordColumnUnitBaseTupleAlt
 import Formalism.LocalToGlobal.HilbertRowConditions.CenterIdempotentAction
 import Formalism.LocalToGlobal.IndefiniteReal.RecTie
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -149,7 +150,7 @@ theorem isBC_range (f : (Fin n → K) →ₗ[K] (Fin n → K)) (f' : (Fin n → 
       funext j
       by_cases hij : i = j
       · subst hij; simp [cw]
-      · simp [cw, hij, Pi.single_apply, Ne.symm hij]
+      · simp [cw, hij, Ne.symm hij]
 
     rw [hx, map_sum]
     refine Submodule.sum_mem _ fun i _ => ?_

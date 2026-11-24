@@ -95,20 +95,6 @@ private theorem unitAt_of_ord_eq_zero_coheight_one {X : Scheme.{0}} [IsIntegral 
     obtain ⟨a, ha, rfl⟩ := hmem
     exact ⟨a, ha, rfl⟩
 
-private theorem Scheme_ord_one {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (v : X) :
-    Scheme.ord (1 : X.functionField) v = 0 := by
-  have h := Scheme.ord_mul (x := v) (one_ne_zero : (1 : X.functionField) ≠ 0) one_ne_zero
-  rw [mul_one] at h
-  omega
-
-private theorem Scheme_ord_units_inv {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
-    (g : (X.functionField)ˣ) (v : X) :
-    Scheme.ord ((g⁻¹ : (X.functionField)ˣ) : X.functionField) v =
-      - Scheme.ord (g : X.functionField) v := by
-  have h := Scheme.ord_mul (x := v) g.ne_zero (g⁻¹).ne_zero
-  rw [Units.mul_inv, Scheme_ord_one] at h
-  omega
-
 private theorem unitAt_of_ord_eq_zero_on_open {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (hufd : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) {y : X} (U : X.Opens)
     (hy : y ∈ U) (h : (X.functionField)ˣ)
@@ -122,7 +108,7 @@ private theorem unitAt_of_ord_eq_zero_on_open {X : Scheme.{0}} [IsIntegral X] [I
     intro z hz hz1
     exact (unitAt_of_ord_eq_zero_coheight_one hufd hz1 g.ne_zero (hg z (hz.mem_open U.isOpen hy))).regAt
   obtain ⟨a, ha⟩ := key h hord
-  obtain ⟨b, hb⟩ := key h⁻¹ (fun v hv => by rw [Scheme_ord_units_inv, hord v hv, neg_zero])
+  obtain ⟨b, hb⟩ := key h⁻¹ (fun v hv => by rw [_root_.GlobalTheory.Cartier.MultEff.ord_inv, hord v hv, neg_zero])
   refine ⟨a, ?_, ha⟩
   have hab : algebraMap (X.presheaf.stalk y) X.functionField (a * b) =
       algebraMap (X.presheaf.stalk y) X.functionField 1 := by
@@ -154,7 +140,7 @@ theorem exists_cartierDiv_mult_ediv : ∀ (k : Type) [Field k] [CharZero k] (Y :
   obtain ⟨V, hxV, hV⟩ := hg.exists_nhds
   have hunit : UnitAt x (g : Y.functionField) :=
     unitAt_of_ord_eq_zero_on_open hufd (W ⊓ V) ⟨hxW, hxV⟩ g (fun v hv => by
-      rw [← (hV v hv.2).mult_eq, hF v, (hW v hv.1).mult_eq, Units.val_one, Scheme_ord_one,
+      rw [← (hV v hv.2).mult_eq, hF v, (hW v hv.1).mult_eq, Units.val_one, _root_.GlobalTheory.Cartier.MultEff.ord_one,
         Int.zero_ediv])
   exact (hg.mem_supp_iff.mp hx) hunit
 

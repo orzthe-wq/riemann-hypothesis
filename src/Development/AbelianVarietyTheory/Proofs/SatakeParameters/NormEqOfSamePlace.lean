@@ -239,10 +239,6 @@ namespace GlobalTheory.GalFirstClause
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.Pst
 
-theorem existsIsInduced : ∀ (l : ℕ) [Fact l.Prime] (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
-    (τ : E →+* Om l), ∃ w ∈ placesOver E l, ∀ (A : ValuationSubring Ω), IsPlaceOver A w →
-      ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O),
-        Induces Bw → ∃ τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥Bw.LL.1, IsInduced Bw τ τ' :=
-  Emb.exists_isInduced
+alias existsIsInduced := _root_.GlobalTheory.GalFirstClause.Emb.exists_isInduced
 
 end GlobalTheory.GalFirstClause

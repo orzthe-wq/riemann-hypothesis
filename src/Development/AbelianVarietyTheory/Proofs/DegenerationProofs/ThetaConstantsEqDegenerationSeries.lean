@@ -4,11 +4,14 @@ public import Development.AbelianVarietyTheory.Definitions.Degenerations.Admissi
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UnivIdentity
 public import Development.AbelianVarietyTheory.Definitions.Uniformization.AllDV
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsFrameRatio
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormalisingFactorStatement
+public import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormalisingFactor
 public import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsThetaPtOverOfSubsingleton
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExpansionBijectiveOverFields
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniqueThetaConst
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ThetaConstantEqSumThetaTermsOddMultiple
+public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.WeilIsIffCommIsOfAndLiftSubsingleton
+public import Mathlib.Analysis.Normed.Group.Ultra
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ValueAtOrigin
 import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.ExistsGeneratorOfIsField
 import Mathlib.Algebra.Order.Floor.Extended
@@ -59,8 +62,6 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ExistsZeroGt
-public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.WeilIsIffCommIsOfAndLiftSubsingleton
-public import Mathlib.Analysis.Normed.Group.Ultra
 
 @[expose] public section
 
@@ -78,7 +79,7 @@ open GlobalTheory.UT GlobalTheory.UT.SymFrame ReciprocityTheory.ChartRestriction
 theorem hasSum_of_sumF {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] {I : Ideal R} {C : Type} [NormedField C]
     [IsUltrametricDist C] [Algebra (FractionRing R) C] (hC : CExt R I C) {Ix : Type} {x : Ix → C} {s : C}
     (h : SumF I C x s) : HasSum x s := by
-  letI : Module R C := Module.compHom C (algebraMap R (FractionRing R))
+  let : Module R C := Module.compHom C (algebraMap R (FractionRing R))
   let φ : R →+* C := (algebraMap (FractionRing R) C).comp (algebraMap R _)
   have hφ : ∀ (a : R) (y : C), a • y = φ a * y := fun a y => Algebra.smul_def (algebraMap R (FractionRing R) a) y
   have bd : ∀ {E : Type} [AddCommGroup E] [Module R E] (f : E →+ C), (∀ (a : R) y, f (a • y) = φ a * f y) →
@@ -189,7 +190,6 @@ theorem val_nu (hG : GlobalFnsSt) {n : ℕ} {ν : LB.Gen (nuLB D n)} (hν : Norm
       simp only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, ofMul_one]
       module)
     (fun y J hJ => by
-      beta_reduce
       rw [Category.comp_id, normd_one hν hJ, step_one n hJ, inv_one, _root_.mul_one]) T b z J hJ
   beta_reduce at key
   rw [Category.comp_id] at key
@@ -203,7 +203,6 @@ theorem val_kap (hG : GlobalFnsSt) {n : ℕ} {κ : LB.Gen (kapLB D (𝟙 D.P.A ^
       simp only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, ofMul_one]
       module)
     (fun y J hJ => by
-      beta_reduce
       rw [Category.comp_id, normd_one hκ hJ, _root_.one_mul]
       exact Finset.prod_eq_one fun i _ => step_one i hJ) T b z J hJ
   beta_reduce at key
@@ -290,7 +289,7 @@ theorem val_frame [IsNoetherianRing R] (hL : Laws) {k : ℕ} (hk : Odd k) {p : Q
   rw [c₂, hu, eq_inv_of_mul_eq_one_left b₂] at a₂
   rw [hb, cubN_map _ (sU y) (cubV_eq ν y), dbl_map _ (sU y) (cubV_eq ν y) (sym_eq ν y)] at a₁
   rw [hb, mulq_map _ (sU y) (cubV_eq ν y) (sym_eq ν y)] at a₂
-  rw [hu, ((GlobalTheory.T.wQ_characterization_and_mul_relation F N k hk q q).1 u).2 ⟨sU_inj y ?_, sU_inj y ?_⟩]
+  rw [hu, ((_root_.GlobalTheory.Ex.SymLift.normalising_factor F N k hk q q).1 u).2 ⟨sU_inj y ?_, sU_inj y ?_⟩]
   · rw [NumD.tk, map_mul, map_mul, map_pow, map_pow, a₁, _root_.mul_assoc, div_mul_cancel]
   · rw [map_mul, map_pow, ← a₂, inv_mul_cancel_right]
 
@@ -329,7 +328,6 @@ theorem exists_frame {m : ℕ} (p : QkPt D F (m ^ 2)) {w : Frm D F (m ^ 2) p.g.b
       simp only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]
       module)
   refine ⟨w', hw', fun z J hJ => Eq.trans ?_ (v _ (𝟙 _) z J hJ).symm⟩
-  beta_reduce
   rw [Category.id_comp]
   rfl
 
@@ -368,7 +366,7 @@ theorem isThetaPt_of_data (P : PolAV S) [Subsingleton T.left] {k : ℕ} {I : Typ
   refine ⟨ho, hu, fun p => ⟨⊤, trivial, ?_⟩⟩
   obtain ⟨h, hh⟩ := GlobalLift.exists_section (T := T) (V := ⊤) (p := p) trivial
   have hi : overResι (T := T) ⊤ ≫ h = 𝟙 _ := by
-    haveI : Mono (overResι (T := T) ⊤) := Over.mono_of_mono_left _ (hk := inferInstanceAs (Mono (⊤ : T.left.Opens).ι))
+    have : Mono (overResι (T := T) ⊤) := Over.mono_of_mono_left _ (hk := inferInstanceAs (Mono (⊤ : T.left.Opens).ι))
     rw [← cancel_mono (overResι (T := T) ⊤), Category.assoc, hh, Category.comp_id, Category.id_comp]
   exact ThetaCoord.isThetaPtOver_pull P ⟨th, s₁, α, τ, U, s₂, w, u, H⟩ _ h hi
 

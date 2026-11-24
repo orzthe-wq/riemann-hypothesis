@@ -3,14 +3,14 @@ module
 public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ModelsAt
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.IsotropicCoefficientSplitting
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmLettersIsLieBasisAlongArcStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsCmArcDataAtSplitIsotropicPointStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsCoeffNeZeroOfFourierJacobiArcDatumStatement
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CmLettersIsLieBasisAlongArc
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsCmArcDataAtSplitIsotropicPoint
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsCoeffNeZeroOfFourierJacobiArcDatum
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsFjNeZeroAtSplitPoint
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FreqRealNonnegIntegral
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyUnifWitnessDataOfIsUnf
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.SecEqOfSecBCIdOne
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.SumReCmTypeEqHalfTrace
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FreqRealNonnegIntegral
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.NonemptyUnifWitnessDataOfIsUnf
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TransvInOfHasPrinc
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -102,13 +102,6 @@ theorem sum_cm {r : ℕ} (X : Data E r) (g : (E →+* ℂ) → ℕ) :
     ← Finset.sum_add_distrib]
   exact Finset.sum_coe_sort X.Ψ (fun τ => g τ + g (ComplexEmbedding.conjugate τ))
 
-theorem card_cm {r : ℕ} (X : Data E r) : Fintype.card X.Ψ = fdeg E := by
-  have h := sum_cm X (fun _ => (1 : ℕ))
-  simp only [Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one] at h
-  unfold fdeg
-  rw [← NumberField.Embeddings.card E ℂ]
-  omega
-
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 theorem laU_dominant {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (h : Dom a n)
@@ -174,7 +167,7 @@ theorem sum_spread_le {r : ℕ} (hr : 0 < r) (U : Unf Xo c c.F.val.toRingHom r) 
     · exact_mod_cast (key i).1
     · rw [Nat.cast_add]; linarith
   refine (Finset.sum_le_sum fun τ _ => h1 τ).trans ?_
-  rw [Finset.sum_add_distrib, ← Nat.cast_sum, sum_cm (U.X k) B, Finset.sum_const, Finset.card_univ, card_cm,
+  rw [Finset.sum_add_distrib, ← Nat.cast_sum, sum_cm (U.X k) B, Finset.sum_const, Finset.card_univ, _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticCoefficientForms.card_Psi,
     nsmul_eq_mul]
   rfl
 
@@ -215,7 +208,7 @@ theorem detect_of_tie (hK : Known) {E : Type} [Field E] [NumberField E] [IsCMFie
     (U.X k).fj (laU U a' n k) ξ' (fun τ => (τ.1 s.ν₀).re) (rdU U F k) x ≠ 0 →
     ∃ mo : ArcLt Dw →₀ ℕ, cfOf d.yF mo d.jj F ≠ 0 := by
   subst hσ
-  exact GlobalTheory.T.exists_coeff_ne_zero_of_fourierJacobi_arcDatum hK E H Dw l Xo c K₁ d n' La c₁ s em r U Uw k ξ' x a' n
+  exact _root_.GlobalTheory.DerivativeDetermination.exists_cfOf_ne_zero hK E H Dw l Xo c K₁ d n' La c₁ s em r U Uw k ξ' x a' n
 
 theorem exists_fam_cfOf_ne_zero : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : Unf Xo c c.F.val.toRingHom r) (k : U.Comp) (Xx : DataX E r) (hX : Xx.toData = U.X k) (𝔄 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (c₁ w : ℝ), ModelsAt Xo c → IsUnf U → l.A = 1 → 3 ≤ r → GlobalTheory.FrameNorm.HasPrinc U l.M → Dom a' n → (∀ k, ∀ gm ∈ (U.X k).Γ, (U.X k).χ (laU U a' n k) gm = 1) → 𝔄 ≠ 0 → Xx.Λ = Submodule.span (𝓞 E) {v | ∃ a ∈ 𝔄, ∃ u ∈ Xx.L', v = a • u} → Xx.g = l.M → 0 < c₁ → ((absA Dw a' : ℝ) + (fdeg E : ℝ) * n + r ≤ w) → ∀ F ∈ sec Xo c a' n, (∀ k', rdU U F k' ∈ (U.X k').SS (laU U a' n k')) → rdU U F k ∉ (U.X k).SSgt (laU U a' n k) c₁ → ∃ (K₁ : Type) (_ : Field K₁) (_ : NumberField K₁) (_ : Algebra c.F K₁) (d : ArcDatum Xo c K₁), Fam (nQ E r l.M Xx.NA Xx.NC c₁ w) (LaQ E r Dw.q l.M Xx.NA Xx.NC c₁ w) c₁ d ∧ cfOf d.yF d.μ d.jj F ≠ 0 := by
   intro hK E _ _ _ H Dw l Xo c r U k Xx hX 𝔄 a' n c₁ w hM hU hA hr hP hD hχ h𝔄 hΛ hg hc hw F hF hS hS'
@@ -231,14 +224,14 @@ theorem exists_fam_cfOf_ne_zero : Known → ∀ (E : Type) [Field E] [NumberFiel
   rw [GlobalTheory.sum_re_cmType_eq_half_trace] at hν
   obtain ⟨Uw⟩ := GlobalTheory.ArcQ.nonempty_unfWit_of_isUnf E H Dw l Xo c _ r U hU
   have htv := GlobalTheory.TransvPrinc.transvIn_of_hasPrinc E H Dw l Xo c _ r U a' n hP hχ k
-  obtain ⟨K₁, _, _, _, em, a, e, th, jj, s, hem, hs, htie⟩ := GlobalTheory.T.exists_cmArcData_at_splitIsotropicPoint hK E H Dw l Xo c r U Uw k ξ x Xx hX 𝔄
+  obtain ⟨K₁, _, _, _, em, a, e, th, jj, s, hem, hs, htie⟩ := _root_.GlobalTheory.ArcCM.Exist.exists_cmIn_tie hK E H Dw l Xo c r U Uw k ξ x Xx hX 𝔄
     _ _ c₁ lam (nQ E r l.M Xx.NA Xx.NC c₁ w) ν₀ hU hA hr hξ hx h𝔄 hΛ hsp le_rfl (Nat.succ_pos _) htor hν1 hν3
     (fun s h1 h2 => hν4 s h1 (htv ξ hξ s h1 h2)) hν
   obtain ⟨Wp, hWp⟩ := exists_place 2 Nat.prime_two
   obtain ⟨Y, hY, hYp⟩ := hM 2 Wp Nat.prime_two hWp
   obtain ⟨χ, W, -, hd⟩ := GlobalTheory.ArcDatumExists.exists_arcDatum hK.laws hK.laws2 E H Dw l Xo c K₁ Wp Y hY a
   obtain ⟨d, d1, d2, d3, d4, d5, -, d7, d8, d9⟩ := hd e
-    (GlobalTheory.T.cmLetters_isLieBasis_along_arc hK E H Dw l Xo c K₁ a e th jj _ _ c₁ s _ _ Y χ W) th s.th_nz.ne_zero 0 jj
+    (_root_.GlobalTheory.LetterBasis.main hK E H Dw l Xo c K₁ a e th jj _ _ c₁ s _ _ Y χ W) th s.th_nz.ne_zero 0 jj
   obtain ⟨Wp', Y', a₁, χ', W', e', yF, th', i12, i3, mu, jj'⟩ := d
   dsimp only at d1 d2 d3 d4 d5 d7
   subst d1 d3 d7

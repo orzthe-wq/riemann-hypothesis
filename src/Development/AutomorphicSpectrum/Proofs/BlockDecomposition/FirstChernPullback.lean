@@ -1,8 +1,10 @@
 module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.DividedPowerReduction.IsFirstChernThickening
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechRefinementCohomologyBijectiveStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCrystallineLiftStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.InclStd
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechRefinementCohomologyBijective
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.ZariskiEtaleLifting.IsFirstChernClassOfLineBundle
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCrystallineLift
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.MapHComp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -85,7 +87,7 @@ theorem GlobalTheory.CompanionTheory.FirstChernPullback.firstChern_pullback : �
   have hc : ∀ W ∈ ({⊤} : Set X'.Opens), W ≤ sSup 𝒱 := by
     rintro W rfl
     exact (sSup_preimage _ m.u hD).ge
-  apply (GlobalTheory.T.cech_refinement_cohomology_bijective Q₀ hQ 𝒱 {⊤} h1 hc 2).2.2.1
+  apply (_root_.GlobalTheory.CompanionTheory.NlZar.zariski_descent Q₀ hQ 𝒱 {⊤} h1 hc 2).2.2.1
   let G' : (St Q₀ 𝒱).FullSubcategory ⥤ (St Q₀ {⊤}).FullSubcategory := ObjectProperty.ιOfLE h1
   let sm := m.smor Q (St Q₀ {⊤}) h
   let G'' : (St Q₀ 𝒱).FullSubcategory ⥤ Q.FullSubcategory := G' ⋙ sm.G
@@ -95,7 +97,7 @@ theorem GlobalTheory.CompanionTheory.FirstChernPullback.firstChern_pullback : �
   have hV : ∀ T, ∃ V ∈ 𝒱D D, InU V (G''.obj T).obj := by
     rintro ⟨T, -, -, ⟨V, hV, rfl⟩, hT⟩
     exact ⟨V, hV, hT⟩
-  obtain ⟨Λ'⟩ := GlobalTheory.T.exists_crystalline_lift (q := q') (b := nlBase R' I' γ' p) (ht := rfl) (κ := κ') (G' ⋙ (St Q₀ {⊤}).ι) (D.pb m.u) (fun T => by
+  obtain ⟨Λ'⟩ := _root_.GlobalTheory.CompanionTheory.CLiftEx.nonempty_cLift (q := q') (b := nlBase R' I' γ' p) (ht := rfl) (κ := κ') (G' ⋙ (St Q₀ {⊤}).ι) (D.pb m.u) (fun T => by
     obtain ⟨V, ⟨s, hs⟩, hT⟩ := hV' T
     have hr : Set.range (pt (G'.obj T).obj) ⊆ Set.range V.ι := by
       rw [Scheme.Opens.range_ι]

@@ -79,25 +79,4 @@ theorem ThZA_mul (K' : Type) [Field K'] [Algebra (K0 p) K'] (j : ℕ) (f g : MvP
     X.ThZA K' j (f * g) = X.ThZA K' j f * X.ThZA K' j g :=
   MvPowerSeries.subst_mul (MvPowerSeries.hasSubst_of_constantCoeff_zero (coordZA_const X K' j)) f g
 
-theorem all_places_of_restrictions (D : Formalism.BasicNotions.D7) (Y : Pend X) (hA : admitted D X Y)
-    (hE : RestSExpA X) (hI : RestSIntA X) : ExpansionsMultiply D X Y := by
-  intro j hj La La' h1 h2 φ K' _ _ _ _ R' vp hvp hRp hR1
-  obtain ⟨Ph, U, hTh, hU, _, hbe, hPh⟩ := hA.2.2.1 j hj La La' h1 h2 φ
-  obtain ⟨u, hu, V, hV, hEq⟩ := hE (hA.1 p) Y.be hbe j Ph hPh Y.Kc K' vp hvp
-  refine ⟨u, fun v s => hRp (hu v s), fun h' hh' => ?_⟩
-  choose h0' G hG hGE using hh'
-  have hW := hI j Y.Kc Y.Oc U hU K' R' vp hvp hRp hR1
-  have hc : ∀ k : ℕ, (vp ^ (p + 1)) ^ k * ((k.factorial : K'))⁻¹ ∈ R' := fun k => hRp (piFact p K' vp hvp k)
-  have e1 : atPi vp (MvPowerSeries.map (algebraMap Y.Kc K') (X.ThZA Y.Kc j (Y.ThA j La La' φ))) =
-      (∏ v, expK (-(MvPowerSeries.C (vp ^ (p + 1) / (p : K')) * h' v))) *
-        ((∏ v, expK (MvPowerSeries.C (vp ^ (p + 1)) * G v)) * V *
-          atPi vp (MvPowerSeries.map (algebraMap Y.Kc K') (X.ThZA Y.Kc j U))) := by
-    rw [hTh, ThZA_mul, map_mul, atPi_mul, hEq,
-      Finset.prod_congr rfl fun v _ => exp_change K' (vp ^ (p + 1)) (X.hhA K' j v (u v)) (h' v) (G v)
-        (hhA_const X K' j v (u v)) (h0' v) (hGE v), Finset.prod_mul_distrib]
-    ring
-  rw [e1]
-  exact inProd_of_exp (pK'_ne p K') hc h' h0'
-    (IntR_mul (IntR_mul (IntR_prod _ _ fun v _ => IntR_expK hc (hG v)) (IntR_mono hRp hV)) hW)
-
 end Formalism.MainNotions.FormalGroupSystem.Pf

@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsMirClass
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BernsteinZelevinskyDerivativeGLnEqTwistedSumStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BlockParabolicUnitriangularSubgroupsGLnPrimeFielStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BernsteinZelevinskyDerivativeGLnEqTwistedSum
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BlockParabolicUnitriangularSubgroupsGLnPrimeFiel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -127,7 +128,7 @@ theorem der_tail : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) (i m
     i < m → m ≤ n → der ψ i (tail ψ m F) = der ψ i F := by
   intro g _ ψ i m n F him hmn
   funext h
-  rw [GlobalTheory.T.bernsteinZelevinskyDerivativeGLn_eq_twisted_sum g ψ i m _ h him.le, GlobalTheory.T.bernsteinZelevinskyDerivativeGLn_eq_twisted_sum g ψ i n _ h (by omega)]
+  rw [_root_.GlobalTheory.GLm.der_eq_sum g ψ i m _ h him.le, _root_.GlobalTheory.GLm.der_eq_sum g ψ i n _ h (by omega)]
   have he : i * (n - i) + (n - i) * (n - i - 1) / 2 =
       (i * (m - i) + (m - i) * (m - i - 1) / 2) + (m * (n - m) + (n - m) * (n - m - 1) / 2) := by
     obtain ⟨a, rfl⟩ := Nat.exists_eq_add_of_le him.le
@@ -176,7 +177,7 @@ theorem der_tail : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) (i m
   refine Finset.sum_congr rfl fun x _ => ?_
   by_cases hx : InR i (x : Mt g n) ∧ tl i (x : Mt g n) = (h : Mt g i)
   · have hu : IsUnit (tl m (x : Mt g n)) :=
-      ((GlobalTheory.T.blockParabolic_unitriangular_subgroups_GLnPrimeField g m (n - m) n (by omega)).2.2.1 x ((inR_split him.le hmn _).1 hx.1).1.1).1
+      ((_root_.GlobalTheory.GLm.ParBasic.par_basic g m (n - m) n (by omega)).2.2.1 x ((inR_split him.le hmn _).1 hx.1).1.1).1
     obtain ⟨p, hp⟩ := hu
     rw [Finset.sum_eq_single p]
     · rw [if_pos hp.symm]

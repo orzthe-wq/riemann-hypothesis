@@ -122,7 +122,7 @@ theorem lrep_repU_of_dvd (M l : ℕ) (hl : l.Prime) (hlM : l ∣ M) :
     subst this
     rfl
   · rintro δ ⟨hdet, hc, ha⟩
-    haveI : Fact l.Prime := ⟨hl⟩
+    have : Fact l.Prime := ⟨hl⟩
     have hlc : (l : ℤ) ∣ δ 1 0 := hlM'.trans hc
     rw [Matrix.det_fin_two] at hdet
     have hld : (l : ℤ) ∣ δ 1 1 := by
@@ -160,7 +160,7 @@ theorem lrep_repU_of_dvd (M l : ℕ) (hl : l.Prime) (hlM : l ∣ M) :
     · simp only [Fin.zero_eta, Fin.isValue, Fin.mk_one] at e3 ⊢
       rw [e3]; simp [γ]; linarith
     · simpa [γ] using e2
-    · simp only [Fin.zero_eta, Fin.isValue, Fin.mk_one] at e4 ⊢
+    · simp only [Fin.isValue, Fin.mk_one] at e4 ⊢
       rw [e4]; simp [γ]; linarith
 
 theorem lrep_repU (L l : ℕ) (hl : l.Prime) :
@@ -170,7 +170,7 @@ theorem lrep_repU (L l : ℕ) (hl : l.Prime) :
   have hs : {δ | δ ∈ DU L l ∧ ((L * l : ℕ) : ℤ) ∣ δ 1 0} =
       {δ : M2 | δ.det = l ∧ ((L * l : ℕ) : ℤ) ∣ δ 1 0 ∧ ¬ (l : ℤ) ∣ δ 0 0} := by
     ext δ
-    simp only [DU, Set.mem_setOf_eq]
+    simp only [DU, Set.mem_ofPred_eq]
     constructor
     · rintro ⟨⟨h1, -, h3⟩, h4⟩; exact ⟨h1, h4, h3⟩
     · rintro ⟨h1, h4, h3⟩

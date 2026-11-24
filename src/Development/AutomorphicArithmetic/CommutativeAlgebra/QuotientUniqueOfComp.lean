@@ -1,8 +1,9 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.IntegralStructures.GeometricFlagBases.FinModel
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorModuliObjectPullbackStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorPullbackAbelianMapUniqueStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHarrisTaylorModuliObjectPullback
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HarrisTaylorPullbackAbelianMapUnique
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -46,7 +47,7 @@ open CategoryTheory UpperTheory.Gal.Int.Geo
 theorem UpperTheory.quotient_unique_of_comp :
     QComp → QUniq := by
   intro hQ q _ D R R' _ _ _ b gb N N₀ c h3 hc X X₁ s s₁ o u f n n'
-  obtain ⟨u', ⟨m⟩⟩ := GlobalTheory.T.exists_harrisTaylorModuliObject_pullback q D R b N₀ X₁ X s₁ (f ≫ s₁) f rfl u
+  obtain ⟨u', ⟨m⟩⟩ := _root_.GlobalTheory.HTPullEvery.exists_objMap q D R b N₀ X₁ X s₁ (f ≫ s₁) f rfl u
 
   have down : ∀ k : QMap o u f c, ∃ k₁ : QMap o u' (𝟙 X) c, k.φ = k₁.φ ≫ m.φ := by
     intro k
@@ -69,5 +70,5 @@ theorem UpperTheory.quotient_unique_of_comp :
     exact ⟨a₀, hk ▸ ha₀⟩
   obtain ⟨a, ha⟩ := self n₁
   obtain ⟨a', ha'⟩ := self n₂
-  have hr : a.φ = a'.φ := GlobalTheory.T.harrisTaylor_pullback_abelian_map_unique q D R b N₀ h3 hc X X (f ≫ s₁) (f ≫ s₁) u' u' (𝟙 X) a a'
+  have hr : a.φ = a'.φ := _root_.GlobalTheory.UPel.HT.MapUniq.objMap_φ_unique q D R b N₀ h3 hc X X (f ≫ s₁) (f ≫ s₁) u' u' (𝟙 X) a a'
   rw [h₁, h₂, ha', ← hr, ← ha]

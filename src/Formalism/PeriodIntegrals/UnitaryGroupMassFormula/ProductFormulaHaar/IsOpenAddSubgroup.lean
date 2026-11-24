@@ -79,8 +79,6 @@ theorem isOpen_O (L : Formalism.MainNotions.S.Loc.LocE F E) : IsOpen (L.O : Set 
   haveI : ContinuousAdd E := by
     first
       | exact IsModuleTopology.toContinuousAdd F E
-      | exact inferInstance
-      | (rw [IsModuleTopology.eq_moduleTopology F E]; exact ModuleTopology.continuousAdd F E)
   set b := Module.finBasis F E
   have hint : ∀ i, ∃ d : 𝒪[F], d ≠ 0 ∧ IsIntegral 𝒪[F] (algebraMap 𝒪[F] E d * b i) := by
     intro i
@@ -102,7 +100,7 @@ theorem isOpen_O (L : Formalism.MainNotions.S.Loc.LocE F E) : IsOpen (L.O : Set 
     (isOpen_set_pi Set.finite_univ fun _ _ => hcont.isOpen_preimage _ isOpen_integer)
   refine isOpen_addSubgroup L.O.toAddSubgroup U hUo ?_ ?_
   · intro i _
-    simp [U, f]
+    simp [f]
   · intro x hx
     have hx' : ∀ i, b.repr x i * ((D : 𝒪[F]) : F)⁻¹ ∈ 𝒪[F] := fun i => hx i (Set.mem_univ i)
     show x ∈ L.O
@@ -126,7 +124,6 @@ theorem isOpen_R [MeasurableSpace E] (M : Formalism.MainNotions.S.Loc.Model F E)
   haveI : ContinuousAdd E := by
     first
       | exact IsModuleTopology.toContinuousAdd F E
-      | exact inferInstance
   rcases hs : M.split with _ | g
   · have hR : M.R = M.L.O := by
       simp only [Formalism.MainNotions.S.Loc.Model.R, hs]

@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffOnCoefficientsComplexFormMulStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffOnCoefficientsComplexFormMul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -79,7 +79,7 @@ theorem isForm_algebra : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolA
       rw [loc_add, map_add (f := _), Finsupp.add_apply]
   · change α x + β x = pull _ (α x' + β x')
     rw [map_add (f := _), ← hα.compat x x' h, ← hβ.compat x x' h]
-  · exact ((GlobalTheory.T.contDiffOn_coefficients_complexForm_mul n n (A.loc α i) (A.loc β i)).1 _ (hα.smooth i) (hβ.smooth i) S).congr fun v _ => by
+  · exact ((_root_.GlobalTheory.CxForm.contDiff_coeff_mul n n (A.loc α i) (A.loc β i)).1 _ (hα.smooth i) (hβ.smooth i) S).congr fun v _ => by
       rw [loc_mul]
   · change α x * β x = pull _ (α x' * β x')
     rw [map_mul, ← hα.compat x x' h, ← hβ.compat x x' h]

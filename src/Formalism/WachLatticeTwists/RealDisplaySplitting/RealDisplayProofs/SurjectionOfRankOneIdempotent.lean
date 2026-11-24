@@ -108,7 +108,7 @@ theorem rank_one_factor (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuatio
         LinearMap.range (e.map (algebraMap O (FractionRing O))).mulVecLin := fun j =>
       ⟨Pi.single j 1, by
         ext i
-        simp [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Pi.single_apply]⟩
+        simp [Matrix.mulVec, dotProduct, Pi.single_apply]⟩
     have hnz : (⟨_, hcol j0⟩ : LinearMap.range (e.map (algebraMap O (FractionRing O))).mulVecLin) ≠ 0 := by
       intro h
       have := congrFun (congrArg Subtype.val h) i0

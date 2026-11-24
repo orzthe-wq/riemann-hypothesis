@@ -1,16 +1,15 @@
 module
 
-public import Formalism.HermitianCurvature.PrimeToDifferent
 public import Formalism.HermitianCurvature.StatementL
+public import Formalism.HermitianCurvature.PrimeToDifferent
 public import Mathlib.RingTheory.SimpleRing.Principal
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.DualIdealInclusion
-import Mathlib.Algebra.AffineMonoid.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -22,11 +21,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PicardGroup
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -36,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,10 +43,70 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.HermitianCurvature.HermitianCurvatureProofs.DualIdealInclusion, Formalism.HermitianCurvature.HermitianCurvatureProofs.LocalisationScaledIdealMemIff
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.DualIdealInclusion =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.DualIdealInclusion", "h": "module\n\npublic import Formalism.HermitianCurvature.StatementL\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.FourierDecayAlt.P.Dual
+
+open NumberField FractionalIdeal
+
+theorem alg {E : Type} [Field E] [NumberField E] (dd : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
+    (hdd : dd ≠ 0) (ν g : ℤ) (hg : g ≠ 0) :
+    spanSingleton _ (g : E) * (dd⁻¹ * (dd ^ ν * spanSingleton _ ((g : E) ^ 2))⁻¹) =
+      dd ^ (-(ν + 1)) * spanSingleton _ ((g : E)⁻¹) := by
+  have hgE : (g : E) ≠ 0 := by exact_mod_cast hg
+  rw [mul_inv (dd ^ ν), spanSingleton_inv]
+  have h1 : spanSingleton (nonZeroDivisors (𝓞 E)) (g : E) * spanSingleton _ (((g : E) ^ 2)⁻¹) =
+      spanSingleton _ ((g : E)⁻¹) := by
+    rw [spanSingleton_mul_spanSingleton]; congr 1; field_simp
+  rw [show dd ^ (-(ν + 1)) = dd⁻¹ * (dd ^ ν)⁻¹ by
+    rw [neg_add, zpow_add₀ hdd, _root_.zpow_neg, zpow_neg_one, mul_comm]]
+  rw [← h1]; ring
+
+theorem dual_third_group_integral : Formalism.FourierDecayAlt.L.DualLatticeInclusion := by
+  intro E _ _ dd h1 ν g hg La hLa x hx
+  have hdd : dd ≠ 0 := by
+    intro h0; rw [h0, _root_.inv_zero] at h1; exact dual_ne_zero ℤ ℚ (one_ne_zero (α := FractionalIdeal (nonZeroDivisors (𝓞 E)) E)) h1
+  have hgE : (g : E) ≠ 0 := by exact_mod_cast hg
+  have hJ : dd ^ ν * spanSingleton (nonZeroDivisors (𝓞 E)) ((g : E) ^ 2) ≠ 0 :=
+    mul_ne_zero (zpow_ne_zero _ hdd) (by simp [spanSingleton_eq_zero_iff, hgE])
+  have hy : x * (g : E)⁻¹ ∈ dual ℤ ℚ (dd ^ ν * spanSingleton _ ((g : E) ^ 2)) := by
+    rw [mem_dual hJ]
+    intro a ha
+    have := hx a (hLa a ha)
+    rw [Algebra.traceForm_apply]
+    convert this using 2
+    field_simp
+  rw [dual_eq_mul_inv ℤ ℚ, h1] at hy
+  rw [← alg dd hdd ν g hg]
+  have := mul_mem_mul (mem_spanSingleton_self (nonZeroDivisors (𝓞 E)) (g : E)) hy
+  convert this using 1
+  field_simp
+
+end Formalism.FourierDecayAlt.P.Dual
+
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.DualIdealInclusion =====
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.LocalisationScaledIdealMemIff =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.LocalisationScaledIdealMemIff", "h": "module\n\npublic import Formalism.HermitianCurvature.PrimeToDifferent\npublic import Formalism.HermitianCurvature.StatementL\npublic import Mathlib.RingTheory.SimpleRing.Principal\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.DualIdealInclusion\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PicardGroup\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace Formalism.FourierDecayAlt.P.S6x2
@@ -85,8 +139,7 @@ theorem conjStable_inv (A : FI E) (hA0 : A ≠ 0) (hA : ConjStable E A) : ConjSt
   intro x hx
   rw [FractionalIdeal.mem_inv_iff hA0] at hx ⊢
   intro y hy
-  have := conjStable_one E _ (hx _ (hA y hy))
-  rwa [map_mul, complexConj_apply_apply] at this
+  simpa [map_mul, complexConj_apply_apply] using conjStable_one E _ (hx _ (hA y hy))
 
 theorem conjStable_pow (A : FI E) (hA : ConjStable E A) (n : ℕ) : ConjStable E (A ^ n) := by
   induction n with
@@ -102,13 +155,10 @@ theorem conjStable_zpow (A : FI E) (hA0 : A ≠ 0) (hA : ConjStable E A) (n : �
     exact conjStable_inv E _ (pow_ne_zero _ hA0) (conjStable_pow E A hA _)
 
 theorem dd_ne_zero : dd E ≠ 0 := by
-  unfold dd
-  rw [Ne, FractionalIdeal.coeIdeal_eq_zero]
-  exact differentIdeal_ne_bot
+  simpa [dd, FractionalIdeal.coeIdeal_eq_zero] using differentIdeal_ne_bot
 
 theorem dual_one : FractionalIdeal.dual ℤ ℚ (1 : FI E) = (dd E)⁻¹ := by
-  unfold dd
-  rw [coeIdeal_differentIdeal ℤ ℚ, inv_inv]
+  simp [dd, coeIdeal_differentIdeal ℤ ℚ]
 
 theorem conjStable_dd : ConjStable E (dd E) := by
   have h : ConjStable E (dd E)⁻¹ := by
@@ -118,10 +168,8 @@ theorem conjStable_dd : ConjStable E (dd E) := by
     intro a ha
     have := hx _ (conjStable_one E a ha)
     rw [Algebra.traceForm_apply] at this ⊢
-    rw [← trace_conj, map_mul, complexConj_apply_apply] at this
-    exact this
-  have := conjStable_inv E _ (inv_ne_zero (dd_ne_zero E)) h
-  rwa [inv_inv] at this
+    rwa [← trace_conj, map_mul, complexConj_apply_apply] at this
+  simpa [inv_inv] using conjStable_inv E _ (inv_ne_zero (dd_ne_zero E)) h
 
 theorem conjStable_span (x : E) (hx : complexConj E x = x) :
     ConjStable E (FractionalIdeal.spanSingleton _ x) := by
@@ -129,8 +177,7 @@ theorem conjStable_span (x : E) (hx : complexConj E x = x) :
   rw [FractionalIdeal.mem_spanSingleton] at hy ⊢
   obtain ⟨z, rfl⟩ := hy
   refine ⟨ringOfIntegersComplexConj E z, ?_⟩
-  rw [Algebra.smul_def, Algebra.smul_def, map_mul, hx]
-  rfl
+  simp [Algebra.smul_def, map_mul, hx]
 
 theorem powConjStable : PowConjStable := by
   intro E _ _ _ g k ν
@@ -159,11 +206,10 @@ theorem between : Between := by
   refine ⟨fun t ht => ?_, fun t ht => ((mem_twLat E A B s t).1 ht).1⟩
   rw [mem_twLat]
   refine ⟨hBA ht, ?_⟩
-  have h1 : complexConj E t ∈ B := hB t ht
   have h2 : (-1 : E) ^ s * complexConj E t ∈ B := by
     rcases neg_one_pow_eq_or E s with h | h <;> rw [h]
-    · simpa using h1
-    · rw [neg_one_mul]; exact B.coeToSubmodule.neg_mem h1
+    · simpa using hB t ht
+    · rw [neg_one_mul]; exact B.coeToSubmodule.neg_mem (hB t ht)
   exact B.coeToSubmodule.sub_mem ht h2
 
 theorem degreeFacts : DegreeFacts := by
@@ -181,9 +227,7 @@ theorem degreeFacts : DegreeFacts := by
 
 theorem rd_pos : 0 < rd E := by
   unfold rd
-  apply Real.rpow_pos_of_pos
-  have : (0 : ℤ) < |discr E| := abs_pos.2 (discr_ne_zero E)
-  exact_mod_cast this
+  exact Real.rpow_pos_of_pos (by exact_mod_cast abs_pos.2 (discr_ne_zero E)) _
 
 theorem idl_le (g : ℕ) (ν : ℤ) : idl E g 2 ν ≤ idl E g 1 ν := by
   unfold idl
@@ -205,16 +249,14 @@ theorem idl_le (g : ℕ) (ν : ℤ) : idl E g 2 ν ≤ idl E g 1 ν := by
 
 theorem idl_ne_zero (g : ℕ) (k ν : ℤ) (hg : 0 < g) : idl E g k ν ≠ 0 := by
   unfold idl
-  apply mul_ne_zero
-  · exact zpow_ne_zero _ (dd_ne_zero E)
-  · rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]
-    exact zpow_ne_zero _ (by exact_mod_cast hg.ne')
+  refine mul_ne_zero (zpow_ne_zero _ (dd_ne_zero E)) ?_
+  rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]
+  exact zpow_ne_zero _ (by exact_mod_cast hg.ne')
 
 theorem idl_mul (g : ℕ) (k ν : ℤ) (hg : 0 < g) :
     idl E g k ν * FractionalIdeal.spanSingleton _ (g : E) = idl E g (k + 1) ν := by
-  have hgE : (g : E) ≠ 0 := by exact_mod_cast hg.ne'
   unfold idl
-  rw [mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton, ← zpow_add_one₀ hgE]
+  rw [mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton, ← zpow_add_one₀ (by exact_mod_cast hg.ne')]
 
 theorem dual_le (h1 : Formalism.FourierDecayAlt.L.DualLatticeInclusion) (h2 : PowConjStable) (h3 : Between)
     (g : ℕ) (ν : ℤ) (s : ℕ) (hg : 0 < g) :
@@ -342,11 +384,10 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt.S6 Formalism.FourierDecayAlt.P.S6x2
 
-theorem different_power_conj_stable : Formalism.FourierDecayAlt.S6.PowConjStable := powConjStable
-
 theorem dual_lattice_subset : Formalism.FourierDecayAlt.S6.DualSubset :=
-  dualSubset dual_third_group_holds powConjStable between
-
-theorem assemble_lattice_facts : Formalism.FourierDecayAlt.S6.AssembleLattices := assembleLattices
+  dualSubset _root_.Formalism.FourierDecayAlt.P.Dual.dual_third_group_integral powConjStable between
 
 end Formalism.FourierDecayAlt.P
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.LocalisationScaledIdealMemIff =====

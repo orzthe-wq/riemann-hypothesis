@@ -68,7 +68,6 @@ theorem blk_mono {i j : Fin (N + 2)} (h : j ≤ i) : blk N j ≤ blk N i := by
   all_goals first
     | (rw [Fin.le_iff_val_le_val] at h; have := i'.2; simp at h; omega)
     | (rw [Fin.le_iff_val_le_val] at h; simp at h; done)
-    | (rw [Fin.le_iff_val_le_val] at h; simp at h; omega)
 
 theorem levi_ext {ϖ : L} {a : ℤ} {g₀ : GU σ N} {m m' : GU σ (N + 2)} (h : IsLeviElt ϖ a g₀ m)
     (h' : IsLeviElt ϖ a g₀ m') : m = m' := by

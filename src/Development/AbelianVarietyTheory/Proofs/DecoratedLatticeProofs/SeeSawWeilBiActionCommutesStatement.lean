@@ -46,4 +46,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.seeSawWeilBiAction_commutes : ∀ D : D7, BiAct D := by
-  first | exact @GlobalTheory.SeeSaw.biAct_all | exact GlobalTheory.SeeSaw.biAct_all | (intros; apply GlobalTheory.SeeSaw.biAct_all <;> assumption)
+  first | exact @GlobalTheory.SeeSaw.biAct_all

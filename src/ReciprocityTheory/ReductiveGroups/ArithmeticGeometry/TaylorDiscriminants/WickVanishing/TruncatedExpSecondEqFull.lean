@@ -3,49 +3,7 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.SecondColumnOperator
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.GaugeExp
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -131,14 +89,12 @@ theorem colM_glue (g : Fin n → (ι →₀ ℕ)) (b : Fin n) : colM (glue g) b 
   ext l
   first
   | simp [colM, glue_apply]
-  | exact glue_apply g l b
 
 theorem glue_colM (mo : (ι × Fin n) →₀ ℕ) : glue (fun b => colM mo b) = mo := by
   ext ⟨l, b⟩
   rw [glue_apply]
   first
   | simp [colM]
-  | rfl
 
 theorem prodQ_monomial (g : Fin n → (ι →₀ ℕ)) :
     prodQ (fun b => (monomial (g b) (1 : k) : MvPolynomial ι k)) = monomial (glue g) 1 := by
@@ -195,10 +151,6 @@ private lemma totalDegree_pderiv_le_of_le_succ {σ : Type} (l : σ) (q : MvPolyn
   · refine le_trans (b := (s - Finsupp.single l 1).sum fun _ e => e) ?_ ?_
     · first
       | exact MvPolynomial.totalDegree_monomial_le _ _
-      | (by_cases hc : AddMonoidAlgebra.coeff q s * (s l : k) = 0
-         · rw [hc, MvPolynomial.monomial_zero, MvPolynomial.totalDegree_zero]
-           exact Nat.zero_le _
-         · rw [MvPolynomial.totalDegree_monomial _ hc])
     · have hs' : (s.sum fun _ e => e) ≤ D + 1 := (MvPolynomial.le_totalDegree hs).trans hq
       have hsplit : s = (s - Finsupp.single l 1) + Finsupp.single l 1 := by
         ext x
@@ -228,7 +180,7 @@ private lemma secondOrder_eq_zero_of_totalDegree_eq_zero {σ : Type} [Fintype σ
   rw [MvPolynomial.totalDegree_eq_zero_iff_eq_C] at hq
   rw [hq]
   unfold secondOrder
-  simp [MvPolynomial.pderiv_C]
+  simp
 
 private lemma iterate_secondOrder_eq_zero_of_totalDegree_lt {σ : Type} [Fintype σ] (c : σ → σ → k) (i : ℕ) :
     ∀ q : MvPolynomial σ k, q.totalDegree + 1 ≤ i → (secondOrder k c)^[i] q = 0 := by
@@ -271,9 +223,6 @@ theorem TL_apply {σ : Type} [Fintype σ] (c : σ → σ → k) (t : k) (N : ℕ
   congr 1
   first
   | exact Module.End.pow_apply _ _ _
-  | exact LinearMap.pow_apply _ _ _
-  | (rw [Module.End.coe_pow]; rfl)
-  | (rw [LinearMap.coe_pow]; rfl)
 
 end Trunc
 

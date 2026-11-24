@@ -72,6 +72,6 @@ theorem isClopen_basicOpen_specProdSelfFirstIdempotent (O : Type) [CommRing O] :
     IsClopen (((Spec (.of (O × O))).basicOpen (fst1 O) : (Spec (.of (O × O))).Opens) :
       Set (Spec (.of (O × O)))) := by
   rw [basicOpen_eq_of_affine]
-  exact PrimeSpectrum.isClopen_iff.2 ⟨((1, 0) : O × O), by ext <;> simp [IsIdempotentElem], rfl⟩
+  exact PrimeSpectrum.isClopen_iff.2 ⟨((1, 0) : O × O), by ext <;> simp, rfl⟩
 
 end GlobalTheory.AlgConn

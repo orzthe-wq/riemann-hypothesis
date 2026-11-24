@@ -86,6 +86,3 @@ theorem pullLoc_eq_span_centre : ∀ (o : Type) [CommRing o] (Ω : Type) [Field 
 end PositivityTheory.HtPt.Mb.LPulllocCentre
 
 
-open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField in
-theorem PositivityTheory.HtPt.Mb.pullloc_centre : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat M.ξ E) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (F : Type) [AddCommGroup F] [Module Ω' F] (j : E →+ F) (p₀ : Cpt M.ξ) (p' : Cpt ξ'), L.IsCohOn Set.univ → ((∀ a ∈ regAt M.ξ p₀, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ p₀, unitAt ξ' p' (i a) → unitAt M.ξ p₀ a) → L.pullLoc ξ' i j p' = Submodule.span (regAt ξ' p') (j '' (L p₀ : Set E)) :=
-  @PositivityTheory.HtPt.Mb.LPulllocCentre.pullLoc_eq_span_centre

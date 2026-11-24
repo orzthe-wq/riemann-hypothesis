@@ -144,9 +144,7 @@ theorem gram (U U' : Matrix (Fin r) (Fin r) E) (hUU : ∀ a b, ∑ c, star (U c 
   simp only [map_add (f := _), LinearMap.add_apply]
   simp only [pairL]
   simp only [pairR]
-  simp only [hwe, hwf, e_w e f hee hef, f_w e f hff hef, hee, hff, hef, hfe', mul_zero, zero_mul,
-    Finset.sum_const_zero, add_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq, Finset.sum_ite_eq',
-    Finset.mem_univ, if_true]
+  simp only [hwe, hwf, e_w e f hee hef, f_w e f hff hef, hee, hff, hef, hfe', mul_zero, Finset.sum_const_zero, add_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true]
   linear_combination k1 + k2
 
 include hee hff hef in
@@ -171,7 +169,7 @@ include hef in
 theorem psiF_e (U U' : Matrix (Fin r) (Fin r) E) (hee : ∀ a b, S.hT (e a) (e b) = 0) (j : Fin r) :
     psiF e f U U' (e j) = ∑ c, U c j • e c := by
   rw [psiF_apply]
-  simp [hfe e f hef, hee] <;> abel
+  simp [hfe e f hef, hee]
 
 theorem psiF_fix (U U' : Matrix (Fin r) (Fin r) E) (v : S.V) (h1 : ∀ a, S.hT (f a) v = 0)
     (h2 : ∀ a, S.hT (e a) v = 0) : psiF e f U U' v = v := by

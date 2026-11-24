@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
+public import Development.EtaleCohomology.CohomologicalPurity.LeafIndExcPf
 
 @[expose] public section
 
@@ -78,7 +79,7 @@ theorem cokPO_transfer {A' B' Q' A B Q : C} (f' : A' ⟶ B') (l' r' : B' ⟶ Q')
   have e : cokernel.map f' r' f' l' h'.w.symm ≫ cokernel.map r' r b m wr.symm =
       cokernel.map f' f a b w.symm ≫ cokernel.map f r f l h.w.symm := by
     ext
-    simp [Category.assoc, wl]
+    simp [Category.assoc]
     simpa only [Category.assoc] using congrArg (fun k => k ≫ cokernel.π r) wl
   have : cokernel.map r' r b m wr.symm = inv (cokernel.map f' r' f' l' h'.w.symm) ≫
       (cokernel.map f' f a b w.symm ≫ cokernel.map f r f l h.w.symm) := by rw [← e]; simp
@@ -94,16 +95,15 @@ end Gen
 section Spec
 variable (R : Type) [CommRing R]
 
-theorem emb_f (p : ℕ) : ComplexShape.embeddingDownNat.f p = -(p : ℤ) := rfl
-
 theorem extKey (p : ℕ) {K L : ChainComplex (Shv R) ℕ} (φ : K ⟶ L) :
     (HomologicalComplex.eval _ _ (-(p:ℤ))).map ((ComplexShape.embeddingDownNat.extendFunctor (Shv R)).map φ) =
-      (K.extendXIso _ (emb_f p)).hom ≫ φ.f p ≫ (L.extendXIso _ (emb_f p)).inv :=
-  HomologicalComplex.extendMap_f φ _ (emb_f p)
+      (K.extendXIso _ (ComplexShape.embeddingDownNat_f p)).hom ≫ φ.f p ≫ (L.extendXIso _
+          (ComplexShape.embeddingDownNat_f p)).inv :=
+  HomologicalComplex.extendMap_f φ _ (ComplexShape.embeddingDownNat_f p)
 
 def chIso (p : ℕ) : chains R ⋙ HomologicalComplex.eval _ _ (-(p : ℤ)) ≅
     (evaluation SimplexCategoryᵒᵖ PSh).obj (op (SimplexCategory.mk p)) ⋙ free R :=
-  NatIso.ofComponents (fun K => ((chainsN R).obj K).extendXIso ComplexShape.embeddingDownNat (emb_f p)) (by
+  NatIso.ofComponents (fun K => ((chainsN R).obj K).extendXIso ComplexShape.embeddingDownNat (ComplexShape.embeddingDownNat_f p)) (by
     intro K L g
     change (HomologicalComplex.eval _ _ _).map ((ComplexShape.embeddingDownNat.extendFunctor (Shv R)).map
       ((chainsN R).map g)) ≫ _ = _ ≫ (free R).map (g.app _)
@@ -152,9 +152,6 @@ end Gen2
 
 section Main
 variable (R : Type) [CommRing R]
-
-theorem dbl.inl_map' {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P :=
-  pushout.inl_desc (f := P'.hom) (g := P'.hom) _ _ _
 
 theorem hPO (P : Arrow Spc) (p : SimplexCategoryᵒᵖ) :
     IsPushout ((free R).map (P.hom.app p)) ((free R).map (P.hom.app p)) ((free R).map ((dbl.inl P).app p))

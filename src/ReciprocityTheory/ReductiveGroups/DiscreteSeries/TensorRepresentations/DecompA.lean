@@ -2,7 +2,6 @@ module
 
 public import Mathlib.Basic.Complex.Basic
 public import Mathlib.LinearAlgebra.Lagrange
-public import Lemmata.PowerApplication.PowApp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,7 +73,7 @@ theorem dc_mem_cplxPts {B : Finset ℝ} {z : ℂ} : z ∈ dc_cplxPts B ↔ ∃ b
 
 theorem dc_aeval_eigen {T : Module.End ℂ Y} {z : ℂ} {f : Y} (hf : T f = z • f) (p : ℂ[X]) :
     aeval T p f = p.eval z • f := by
-  first | exact Bl.PowerApplication.goal1 .. | (apply Bl.PowerApplication.goal1 <;> assumption) | (intros; apply Bl.PowerApplication.goal1 <;> assumption)
+  exact Module.End.aeval_apply_of_mem_apply_eq_smul hf
 
 theorem dc_X_sub_mul_basis {s : Finset ℂ} {z : ℂ} (hz : z ∈ s) :
     (X - C z) * Lagrange.basis s id z = C (Lagrange.nodalWeight s id z) * Lagrange.nodal s id := by
@@ -85,15 +84,8 @@ theorem dc_X_sub_mul_basis {s : Finset ℂ} {z : ℂ} (hz : z ∈ s) :
 variable {T : Module.End ℂ Y} {S : Submodule ℂ Y} {B : Finset ℝ}
 
 theorem dc_aeval_mem (hT : ∀ f ∈ S, T f ∈ S) (p : ℂ[X]) : ∀ f ∈ S, aeval T p f ∈ S := by
-  induction p using Polynomial.induction_on' with
-  | add p q hp hq => intro f hf; simpa using S.add_mem (hp f hf) (hq f hf)
-  | monomial k a =>
-    intro f hf
-    simp only [aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]
-    refine S.smul_mem _ ?_
-    induction k with
-    | zero => simpa using hf
-    | succ k ih => rw [pow_succ', Module.End.mul_apply]; exact hT _ ih
+  intro f hf
+  exact Polynomial.aeval_apply_smul_mem_of_le_comap hf p T (fun _ hx => hT _ hx)
 
 theorem dc_basis_eigen (hP : ∀ f ∈ S, aeval T (Lagrange.nodal (dc_cplxPts B) id) f = 0) {z : ℂ}
     (hz : z ∈ dc_cplxPts B) : ∀ f ∈ S, T (aeval T (Lagrange.basis (dc_cplxPts B) id z) f) =

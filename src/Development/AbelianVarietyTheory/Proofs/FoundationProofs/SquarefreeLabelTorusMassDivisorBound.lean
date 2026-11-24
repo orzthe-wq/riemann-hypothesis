@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MassDegTypeLeCycleTypeStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MassDegTypeLeCycleType
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -48,7 +48,7 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 theorem mass_true_le_one (g : ℕ) [Fact g.Prime] (N : ℕ) : (mass g N fun _ => True) ≤ 1 := by
-  refine (GlobalTheory.T.mass_degType_le_card_cycleType_div g N (fun _ => True)).trans (le_of_eq ?_)
+  refine (_root_.GlobalTheory.BadShare.mass_degType_le_cycleType g N (fun _ => True)).trans (le_of_eq ?_)
   rw [Finset.filter_true, Finset.card_univ, Fintype.card_perm, Fintype.card_fin]
   have hN : (N.factorial : ℝ) ≠ 0 := by positivity
   exact div_self hN

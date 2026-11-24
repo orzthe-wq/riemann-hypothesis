@@ -1,10 +1,16 @@
 module
 
-public import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GluingMassOfFibreStructure
-import Formalism.HermitianLattices.FinalNeighbourConstruct
-import Formalism.HermitianLattices.HermitianLatticesProofs.IsomAct
-public import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.CardOrbitMulCardStabilizer
-import Formalism.ThetaLiftIndependence.ThetaOrbitSums.LatLiftIndep
+public import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.ForPrimeFlagLattice
+public import Formalism.HermitianLattices.HermitianLatticesProofs.MassBasic
+public import Mathlib.Algebra.Group.Subgroup.Actions
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.Data.Set.Card
+public import Mathlib.GroupTheory.GroupAction.Defs
+public import Mathlib.Algebra.BigOperators.Field
+public import Mathlib.GroupTheory.Coset.Card
+public import Mathlib.GroupTheory.GroupAction.Basic
+public import Mathlib.GroupTheory.GroupAction.Quotient
+import Formalism.ThetaLiftIndependence.ThetaOrbitSums.ClassRepsDefinite
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -40,9 +46,232 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Formalism.HermitianLattices.FinalNeighbourConstruct
+import Formalism.HermitianLattices.HermitianLatticesProofs.IsomAct
+import Formalism.ThetaLiftIndependence.ThetaOrbitSums.LatLiftIndep
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GluingMassOfFibreStructure, Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.CardOrbitMulCardStabilizer, Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GluingMassOfGluingFacts
+
+-- ===== clump member: Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GluingMassOfFibreStructure =====
+-- clump-header: {"m": "Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GluingMassOfFibreStructure", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.ForPrimeFlagLattice\npublic import Formalism.HermitianLattices.HermitianLatticesProofs.MassBasic\nimport Formalism.ThetaLiftIndependence.ThetaOrbitSums.ClassRepsDefinite\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.BridgeLemma₂
+
+open NumberField Module Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.Cnt
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+section Orbit
+
+open MulAction
+
+end Orbit
+
+theorem trace_inner_self_pos {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
+    [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hp : IsPosDef h) (x : V) (hx : x ≠ 0) :
+    0 < Algebra.trace ℚ K (h x x) := by
+  have key : ((Algebra.trace ℚ K (h x x) : ℚ) : ℂ) = ∑ σ : K →ₐ[ℚ] ℂ, σ (h x x) := by
+    rw [← eq_ratCast (algebraMap ℚ ℂ), trace_eq_sum_embeddings (E := ℂ)]
+  have key' : ((Algebra.trace ℚ K (h x x) : ℚ) : ℝ) = ∑ σ : K →ₐ[ℚ] ℂ, (σ (h x x)).re := by
+    have := congrArg Complex.re key
+    rw [Complex.re_sum] at this
+    rw [← this]
+    simp
+  have hpos : 0 < ∑ σ : K →ₐ[ℚ] ℂ, (σ (h x x)).re := by
+    let σ0 : K →ₐ[ℚ] ℂ := (by
+      refine @_root_.IsAlgClosed.lift _ _ _ _ _ _ _ _ _ _ _ ?_ ?_ ?_
+      solve_by_elim* (maxDepth := 2) only [*,
+        @_root_.DivisionSemiring.to_moduleIsTorsionFree,
+        @_root_.Algebra.IsIntegral.isAlgebraic, @_root_.inferInstance])
+    exact Finset.sum_pos (fun σ _ => hp σ.toRingHom x hx) ⟨σ0, Finset.mem_univ _⟩
+  exact_mod_cast key' ▸ hpos
+
+section Rows
+
+open Classical
+
+def FibresOrthLatticeOneGenus (D : D7) (u : D.what₂.Word) : Prop :=
+  ForPrimeFlagLattice D u fun F0 Λ => ∀ s : Finset (LatV D), IsRowReps D F0 s →
+    (∀ Λ' ∈ s, L0X D Λ' (lf D F0) ∈ Formalism.HermitianLatticesTheory.genus (D.sp.X 0).hT (L0X D Λ (lf D F0))) ∧
+    ∀ M ∈ Formalism.HermitianLatticesTheory.genus (D.sp.X 0).hT (L0X D Λ (lf D F0)),
+      ∑ Λ' ∈ s.filter (fun Λ' => ∃ g ∈ Formalism.HermitianLatticesTheory.isom (D.sp.X 0).hT, Formalism.HermitianLatticesTheory.gmap g M = L0X D Λ' (lf D F0)),
+          wRow D F0 Λ' =
+        ((Tu D u : ℝ) - 1) ^ D.R.f * ((Nat.card (Formalism.ThetaLiftIndependence.autL (D.sp.X 0).hT M) : ℕ) : ℝ)⁻¹
+
+theorem sum_eq_sum_over_class_reps {K V α : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
+    [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V)
+    (reps : Finset (Submodule (𝓞 K) V)) (hreps : Formalism.ThetaLiftIndependence.IsClassReps h L reps) (s : Finset α)
+    (c : α → Submodule (𝓞 K) V) (hc : ∀ a ∈ s, c a ∈ Formalism.HermitianLatticesTheory.genus h L) (w : α → ℝ) :
+    ∑ a ∈ s, w a = ∑ M ∈ reps, ∑ a ∈ s.filter (fun a => ∃ g ∈ Formalism.HermitianLatticesTheory.isom h, Formalism.HermitianLatticesTheory.gmap g M = c a), w a := by
+  rw [← Finset.sum_biUnion]
+  · refine Finset.sum_congr ?_ fun _ _ => rfl
+    ext a
+    simp only [Finset.mem_biUnion, Finset.mem_filter]
+    constructor
+    · intro ha
+      obtain ⟨N, ⟨hN, hg⟩, _⟩ := hreps.2 (c a) (hc a ha)
+      exact ⟨N, hN, ha, hg⟩
+    · rintro ⟨N, _, ha, _⟩
+      exact ha
+  · intro M hM M' hM' hne
+    rw [Function.onFun, Finset.disjoint_left]
+    intro a ha ha'
+    rw [Finset.mem_filter] at ha ha'
+    obtain ⟨N, _, huniq⟩ := hreps.2 (c a) (hc a ha.1)
+    exact hne ((huniq M ⟨hM, ha.2⟩).trans (huniq M' ⟨hM', ha'.2⟩).symm)
+
+theorem gluing_mass_of_fibre_structure (D : D7) (u : D.what₂.Word) (hpos : IsPosDef (D.sp.X 0).hT)
+    (hlat : ForPrimeFlagLattice D u fun F0 Λ => Submodule.IsLattice D.host.E (L0X D Λ (lf D F0)))
+    (hR : FibresOrthLatticeOneGenus D u) : WordRowsGluing D u := by
+  intro hT h3 hsp F0 he hz Λ hΛ s hs
+  obtain ⟨hgen, hfib⟩ := hR hT h3 hsp F0 he hz Λ hΛ s hs
+  let h := (D.sp.X 0).hT
+  let L := L0X D Λ (lf D F0)
+  have hex : ∃ reps, Formalism.ThetaLiftIndependence.IsClassReps h L reps :=
+    (Formalism.ThetaLiftIndependence.classRepsDefinite D.host.E (D.sp.X 0).V
+      h (D.sp.X 0).herm (trace_inner_self_pos h hpos) L (hlat hT h3 hsp F0 he hz Λ hΛ)).1
+  have hreps := hex.choose_spec
+  rw [Formalism.HermitianLatticesTheory.massBasic_mass_eq h L hex]
+  unfold massRows
+  rw [sum_eq_sum_over_class_reps h L hex.choose hreps s (fun Λ' => L0X D Λ' (lf D F0)) hgen,
+    Finset.sum_congr rfl fun M hM => hfib M (hreps.1 M hM), ← Finset.mul_sum, mul_comm]
+
+end Rows
+
+end Formalism.MainNotions.BridgeLemma₂
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GluingMassOfFibreStructure =====
+
+-- ===== clump member: Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.CardOrbitMulCardStabilizer =====
+-- clump-header: {"m": "Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.CardOrbitMulCardStabilizer", "h": "module\n\npublic import Mathlib.Algebra.Group.Subgroup.Actions\npublic import Mathlib.Basic.Real.Basic\npublic import Mathlib.Data.Set.Card\npublic import Mathlib.GroupTheory.GroupAction.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.BigOperators.Field\npublic import Mathlib.GroupTheory.Coset.Card\npublic import Mathlib.GroupTheory.GroupAction.Basic\npublic import Mathlib.GroupTheory.GroupAction.Quotient\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.BridgeLemma₂
+
+section Abstract
+
+open MulAction
+
+variable {Γ 𝒳 𝒴 : Type} [Group Γ] [MulAction Γ 𝒳] [MulAction Γ 𝒴]
+
+theorem card_orbit_mul_card_stabilizer (A : Subgroup Γ) (x : 𝒳) (hle : stabilizer Γ x ≤ A) :
+    Nat.card (orbit A x) * Nat.card (stabilizer Γ x) = Nat.card A := by
+  have h1 : Nat.card (orbit A x) = Nat.card (A ⧸ stabilizer A x) :=
+    Nat.card_congr (orbitEquivQuotientStabilizer A x)
+  have h2 : stabilizer A x = (stabilizer Γ x).subgroupOf A := by
+    ext a
+    simp [mem_stabilizer_iff, Subgroup.smul_def]
+  have h3 : Nat.card (stabilizer A x) = Nat.card (stabilizer Γ x) := by
+    rw [h2]
+    exact Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv
+  rw [h1, ← h3, ← Subgroup.card_eq_card_quotient_mul_card_subgroup]
+
+theorem card_stabilizer_smul_eq (g : Γ) (y : 𝒳) :
+    Nat.card (stabilizer Γ (g • y)) = Nat.card (stabilizer Γ y) :=
+  Nat.card_congr (stabilizerEquivStabilizerOfOrbitRel (G := Γ) (a := g • y) (b := y) ⟨g, rfl⟩).toEquiv
+
+theorem sum_fibre_inv_card_stabilizer (m : 𝒳 → 𝒴) (hm : ∀ (γ : Γ) x, m (γ • x) = γ • m x) (R : Set 𝒳)
+    (hR : ∀ (γ : Γ), ∀ x ∈ R, γ • x ∈ R) (s : Finset 𝒳) (hsR : ∀ x ∈ s, x ∈ R)
+    (hs : ∀ x ∈ R, ∃! y, y ∈ s ∧ ∃ γ : Γ, γ • y = x) (M : 𝒴) (hA : Finite (stabilizer Γ M))
+    (hfin : {x | x ∈ R ∧ m x = M}.Finite) [DecidablePred fun y : 𝒳 => ∃ γ : Γ, γ • M = m y] :
+    ∑ y ∈ s.filter (fun y => ∃ γ : Γ, γ • M = m y), ((Nat.card (stabilizer Γ y) : ℕ) : ℝ)⁻¹ =
+      ({x | x ∈ R ∧ m x = M}.ncard : ℝ) / (Nat.card (stabilizer Γ M) : ℝ) := by
+  classical
+  let O : 𝒳 → Set 𝒳 := fun y => {x | (x ∈ R ∧ m x = M) ∧ ∃ γ : Γ, γ • y = x}
+  have hOfin : ∀ y, (O y).Finite := fun y => hfin.subset fun x hx => hx.1
+  have hApos : (0 : ℝ) < (Nat.card (stabilizer Γ M) : ℝ) := by exact_mod_cast Nat.card_pos
+  have hcard : ∀ y ∈ s.filter (fun y => ∃ γ : Γ, γ • M = m y),
+      (O y).ncard * Nat.card (stabilizer Γ y) = Nat.card (stabilizer Γ M) := by
+    intro y hy
+    obtain ⟨hys, γ0, hγ0⟩ := Finset.mem_filter.1 hy
+    have hmx : m (γ0⁻¹ • y) = M := by rw [hm, ← hγ0, inv_smul_smul]
+    have hle : stabilizer Γ (γ0⁻¹ • y) ≤ stabilizer Γ M := by
+      intro γ hγ
+      rw [mem_stabilizer_iff] at hγ ⊢
+      rw [← hmx, ← hm, hγ]
+    have hO : O y = orbit (stabilizer Γ M) (γ0⁻¹ • y) := by
+      ext x
+      constructor
+      · rintro ⟨⟨_, hxM⟩, γ, rfl⟩
+        refine ⟨⟨γ * γ0, ?_⟩, ?_⟩
+        · rw [mem_stabilizer_iff, mul_smul, hγ0, ← hm, hxM]
+        · change (γ * γ0) • γ0⁻¹ • y = γ • y
+          rw [mul_smul, smul_inv_smul]
+      · rintro ⟨⟨a, ha⟩, rfl⟩
+        rw [mem_stabilizer_iff] at ha
+        refine ⟨⟨hR a _ (hR _ _ (hsR y hys)), ?_⟩, a * γ0⁻¹, ?_⟩
+        · change m (a • γ0⁻¹ • y) = M
+          rw [hm, hmx, ha]
+        · change (a * γ0⁻¹) • y = a • γ0⁻¹ • y
+          rw [mul_smul]
+    rw [hO, ← card_stabilizer_smul_eq γ0⁻¹ y, ← Nat.card_coe_set_eq]
+    exact card_orbit_mul_card_stabilizer _ _ hle
+  have hpart : {x | x ∈ R ∧ m x = M}.ncard = ∑ y ∈ s.filter (fun y => ∃ γ : Γ, γ • M = m y), (O y).ncard := by
+    rw [Set.ncard_eq_toFinset_card _ hfin]
+    have hU : hfin.toFinset = (s.filter (fun y => ∃ γ : Γ, γ • M = m y)).biUnion fun y => (hOfin y).toFinset := by
+      ext x
+      simp only [Set.Finite.mem_toFinset, Finset.mem_biUnion, Finset.mem_filter]
+      constructor
+      · intro hx
+        obtain ⟨y, ⟨hy, γ, hγ⟩, _⟩ := hs x hx.1
+        refine ⟨y, ⟨hy, γ⁻¹, ?_⟩, hx, γ, hγ⟩
+        rw [← hx.2, ← hγ, hm, inv_smul_smul]
+      · rintro ⟨y, _, hx, _⟩
+        exact hx
+    rw [hU, Finset.card_biUnion]
+    · exact Finset.sum_congr rfl fun y _ => (Set.ncard_eq_toFinset_card _ (hOfin y)).symm
+    · intro y hy y' hy' hne
+      rw [Function.onFun, Finset.disjoint_left]
+      rw [Finset.mem_coe] at hy hy'
+      intro x hx hx'
+      rw [Set.Finite.mem_toFinset] at hx hx'
+      obtain ⟨y0, _, huniq⟩ := hs x hx.1.1
+      exact hne ((huniq y ⟨(Finset.mem_filter.1 hy).1, hx.2⟩).trans
+        (huniq y' ⟨(Finset.mem_filter.1 hy').1, hx'.2⟩).symm)
+  rw [hpart, Nat.cast_sum, Finset.sum_div]
+  refine Finset.sum_congr rfl fun y hy => ?_
+  have h := hcard y hy
+  have h' : ((O y).ncard : ℝ) * (Nat.card (stabilizer Γ y) : ℝ) = (Nat.card (stabilizer Γ M) : ℝ) := by
+    exact_mod_cast h
+  have hs0 : (Nat.card (stabilizer Γ y) : ℝ) ≠ 0 := by
+    intro h0
+    rw [h0, mul_zero] at h'
+    exact hApos.ne h'
+  rw [← h']
+  have hO0 : ((O y).ncard : ℝ) ≠ 0 := by
+    intro h0
+    rw [h0, zero_mul] at h'
+    exact hApos.ne h'
+  field_simp
+
+end Abstract
+
+end Formalism.MainNotions.BridgeLemma₂
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.CardOrbitMulCardStabilizer =====
+
+-- ===== clump member: Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GluingMassOfGluingFacts =====
+-- clump-header: {"m": "Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GluingMassOfGluingFacts", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GluingMassOfFibreStructure\nimport Formalism.HermitianLattices.FinalNeighbourConstruct\nimport Formalism.HermitianLattices.HermitianLatticesProofs.IsomAct\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.CardOrbitMulCardStabilizer\nimport Formalism.ThetaLiftIndependence.ThetaOrbitSums.LatLiftIndep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -100,15 +329,13 @@ theorem partInW_gmap_extendByOne (γ : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).
     intersectFirstSummand D (gmap (extendByOne D γ) 𝓛) = gmap γ (intersectFirstSummand D 𝓛) := by
   ext w
   rw [isomAct_mem_gmap]
-  unfold intersectFirstSummand
-  rw [Submodule.mem_comap, Submodule.mem_comap, isomAct_mem_gmap]
+  simp only [intersectFirstSummand, Submodule.mem_comap, isomAct_mem_gmap]
   rfl
 
 theorem z_orth_embedding (u : D.what₂.Word) (w : (D.sp.X 0).V) : (VS D).hT (D.zmOf u) (D.sp.iXY 0 w) = 0 := by
-  have h1 : (VS D).hT D.sp.zm (D.sp.iXY 0 w) = 0 := by
-    rw [← (VS D).herm.eq (D.sp.iXY 0 w) D.sp.zm, D.sp.zm_orth w, map_zero]
   unfold D7.zmOf
-  rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, h1, smul_zero]
+  rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply,
+    ← (VS D).herm.eq (D.sp.iXY 0 w) D.sp.zm, D.sp.zm_orth w, map_zero, smul_zero]
 
 theorem partInW_latticeWithZ (u : D.what₂.Word) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (hz : F0.z = D.zmOf u) (Λ : LatV D) :
     intersectFirstSummand D (latticeWithZ D F0 Λ) = L0X D Λ (lf D F0) := by
@@ -120,10 +347,7 @@ theorem partInW_latticeWithZ (u : D.what₂.Word) {T : D.host.E} (F0 : FlagG (VS
   rw [e]
   constructor
   · intro h
-    refine ⟨h, ?_⟩
-    change (VS D).hT F0.z (D.sp.iXY 0 w) = 0
-    rw [hz]
-    exact z_orth_embedding D u w
+    exact ⟨h, by simpa [hz] using z_orth_embedding D u w⟩
   · exact fun h => h.1
 
 end Dat
@@ -252,3 +476,6 @@ end Glue
 end Formalism.MainNotions.BridgeLemma₂
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.CuspSpanNormBounds.CayleyDegreeNondegeneracy.GluingMassOfGluingFacts =====

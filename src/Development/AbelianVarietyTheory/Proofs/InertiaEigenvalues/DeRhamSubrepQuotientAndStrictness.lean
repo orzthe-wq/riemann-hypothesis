@@ -170,7 +170,7 @@ theorem strict_of_surjective (hF : IsField F) (hs : Function.Surjective f) (h : 
   let φ : F →+* Module.End LL (V' ⊗[Qp] F) :=
     { toFun := fun b => mulR Qp F LL V' b
       map_one' := by ext; simp
-      map_mul' := fun x y => by ext; simp [mul_assoc]
+      map_mul' := fun x y => by ext; simp
       map_zero' := by ext; simp
       map_add' := fun x y => by ext; simp [add_mul, tmul_add] }
   letI : Module F (V' ⊗[Qp] F) := Module.compHom _ φ

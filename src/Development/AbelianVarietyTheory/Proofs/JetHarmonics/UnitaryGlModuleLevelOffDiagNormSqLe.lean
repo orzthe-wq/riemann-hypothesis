@@ -67,7 +67,7 @@ open scoped InnerProductSpace in
 private lemma re_inner_double_sum_apply {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
     {n : ℕ} (F : Fin n → Fin n → Module.End ℂ M) (w : M) :
     (⟪w, (∑ a, ∑ b, F a b) w⟫_ℂ).re = ∑ a, ∑ b, (⟪w, F a b w⟫_ℂ).re := by
-  simp [LinearMap.sum_apply, inner_sum, Complex.re_sum]
+  simp [LinearMap.sum_apply, Complex.re_sum]
 
 open Finset in
 open scoped InnerProductSpace in

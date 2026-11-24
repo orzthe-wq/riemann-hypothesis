@@ -143,14 +143,14 @@ theorem dsigW_mem (hK : PI.KFinSmooth) (hR : R.IsDS ε mu) (W : List (Mx k r))
   induction W with
   | nil => exact hv
   | cons X W ih =>
-    exact ((GlobalTheory.T.derivedAction_discreteSeries_properties hK k r ε mu R hR X (hW X List.mem_cons_self)).1 _
+    exact ((_root_.GlobalTheory.DerivedAction.derived_action hK k r ε mu R hR X (hW X List.mem_cons_self)).1 _
       (ih (fun Y hY => hW Y (List.mem_cons_of_mem _ hY)))).1
 
 theorem dsig_lin (hK : PI.KFinSmooth) (hR : R.IsDS ε mu) {X : Mx k r} (hX : InLieHpk k r X) (a : ℂ)
     {v w : R.H} (hv : v ∈ R.sm) (hw : w ∈ R.sm) :
     dsig (k := k) (r := r) R.σ X (a • v + w) =
       a • dsig (k := k) (r := r) R.σ X v + dsig (k := k) (r := r) R.σ X w := by
-  have h := (GlobalTheory.T.derivedAction_discreteSeries_properties hK k r ε mu R hR X hX).1
+  have h := (_root_.GlobalTheory.DerivedAction.derived_action hK k r ε mu R hR X hX).1
   have h1 := ((h v hv).2.const_smul a).add (h w hw).2
   refine HasDerivAt.deriv ?_
   convert h1 using 1
@@ -222,7 +222,7 @@ theorem dsigW_sigma (hK : PI.KFinSmooth) (hR : R.IsDS ε mu) {g : Mx k r} (hg : 
     have e : g * (g⁻¹ * X * g) * g⁻¹ = X := by
       calc g * (g⁻¹ * X * g) * g⁻¹ = (g * g⁻¹) * X * (g * g⁻¹) := by simp only [Matrix.mul_assoc]
         _ = X := by rw [h1, Matrix.one_mul, Matrix.mul_one]
-    have h := (GlobalTheory.T.derivedAction_discreteSeries_properties hK k r ε mu R hR _ (inLie_conj hg (hW X List.mem_cons_self))).2.1 _
+    have h := (_root_.GlobalTheory.DerivedAction.derived_action hK k r ε mu R hR _ (inLie_conj hg (hW X List.mem_cons_self))).2.1 _
       (dsigW_mem hK hR _ hW'' hv) g hg
     rw [e] at h
     show dsig R.σ X (dsigW R.σ W (R.σ g v)) = R.σ g (dsig R.σ (g⁻¹ * X * g) _)

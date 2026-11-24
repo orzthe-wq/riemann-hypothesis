@@ -115,7 +115,7 @@ theorem cechTripleRestrictComposite_injective_cohomology_forms (s'' : X'' ⟶ Sp
   have hdir := exists_triple_below_two ψ φ s''
   have hs := _root_.GlobalTheory.sep_of_factoring_cover (OAff s'') _ H hcov
   have hg := _root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s'') _ H hcov hdir
-  have hv := _root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s'') _ H hcov hdir
+  have hv := _root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_coboundary_comma_localBasis (OAff s'') _ H hcov hdir
   have hs1 := _root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s'' _ hcov
   have hg1 := _root_.GlobalTheory.CechDR.FormExt.glue_one_forms s'' _ hcov hdir
   have i1 := _root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg

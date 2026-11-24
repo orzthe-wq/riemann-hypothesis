@@ -1,7 +1,8 @@
 module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.FrobeniusWittActions.MuMor
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WittToAcrisIsDPMorphismStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.FrobeniusWittActions.TeichmullerCongruence
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WittToAcrisIsDPMorphism
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.ZariskiEtaleLifting.SchFnPtTw
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -123,7 +124,7 @@ def pullM (r : Res l K) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.
     Mid.HM r N n j →ₗ[Acris l] Mid.HM r M n j := (pullT' r u hu n).pull j
 
 def bWMor (r : Res l K) (M : Model l K) (n : ℕ) : CH.Mor (Wc.OM l (B.schFn M.p) r.ρ n) (OT r M n) r.w := by
-  have hdp := GlobalTheory.T.witt_to_acris_isDPMorphism r n
+  have hdp := _root_.GlobalTheory.CompanionTheory.CrisDP.wn_isDPMorphism r n
   exact
     B.omMor (B.crMor (F := B.schFn M.p) (F' := B.schFn M.p) (b := Wc.bs l r.k n) (b' := B.bs l true n) (ht := rfl) (ht' := rfl)
       (Mid.wn r n) rfl hdp (B.basePt _ (Ideal.quotientMap _ (Mid.wn r n) (Mid.im_le r n)) rfl) fun _ _ _ => rfl)

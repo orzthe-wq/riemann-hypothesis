@@ -167,10 +167,6 @@ theorem valAt'_units_zpow (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹�
   rw [Units.val_zpow_eq_zpow_val] at this
   exact this
 
-theorem valAt'_zpow (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) (n : ℤ) :
-    valAt' x U (u ^ n).val = valAt' x U u.val ^ n :=
-  valAt'_units_zpow x h u n
-
 theorem valAt'_units_inv (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) :
     valAt' x U (u⁻¹).val = (valAt' x U u.val)⁻¹ := by
   simpa using valAt'_units_zpow x h u (-1)

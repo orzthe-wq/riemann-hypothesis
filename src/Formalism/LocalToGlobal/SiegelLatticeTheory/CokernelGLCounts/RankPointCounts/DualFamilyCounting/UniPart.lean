@@ -1,53 +1,130 @@
 module
 
+public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsIsomScale
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.SplitAtOf
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.SdBasisBot
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
+public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsOrthTransfer
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.MemSpanSSelf
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
-public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsIsomScale
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.SdBasisBot, Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.UniPart
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.SdBasisBot =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.SdBasisBot", "h": "module\n\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsIsomScale\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.SplitAtOf\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsOrthTransfer\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.MemSpanSSelf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Module
+
+noncomputable section
+
+namespace Formalism.L2.SG.Pf.G3
+
+open Formalism.HermitianLattices.Ext.L3 Formalism.HermitianLattices.Ext.L3.U0 Formalism.HermitianLattices.Ext.L3.WA
+
+section
+
+variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
+variable {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K}
+
+theorem sd_basis_bot {W : Submodule K V} {M : AddSubgroup V} (hM : IsSD S h W M) (hW : W = ⊥) :
+    ∃ (k : ℕ) (f : Fin k → V), (∀ i j, i ≠ j → h (f i) (f j) = 0) ∧
+      (∀ i, IsUnitIn S (h (f i) (f i))) ∧ (∀ v, v ∈ spanS S f ↔ v ∈ M) ∧
+      Submodule.span K (Set.range f) = W := by
+  refine ⟨0, Fin.elim0, fun i => Fin.elim0 i, fun i => Fin.elim0 i, fun v => ?_, ?_⟩
+  · rw [spanS_empty]
+    constructor
+    · rintro rfl
+      exact M.zero_mem
+    · intro hv
+      have := hM.le v hv
+      rwa [hW, Submodule.mem_bot] at this
+  · rw [hW, Set.range_eq_empty, Submodule.span_empty]
+
+theorem sup_cutW {W : Submodule K V} {x : V} (hx : x ∈ W) (hxx : h x x ≠ 0) :
+    K ∙ x ⊔ cutW h W x = W := by
+  apply le_antisymm
+  · exact sup_le ((Submodule.span_singleton_le_iff_mem _ _).mpr hx) inf_le_left
+  · intro w hw
+    have e : w = (h x w * (h x x)⁻¹) • x + (w - (h x w * (h x x)⁻¹) • x) := by abel
+    rw [e]
+    refine Submodule.add_mem_sup (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)) ?_
+    refine mem_cutW.mpr ⟨W.sub_mem hw (W.smul_mem _ hx), ?_⟩
+    rw [map_sub, map_smul, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hxx, mul_one, sub_self]
+
+theorem sd_basis (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs : h.IsSymm)
+    (hd : ∀ x, h x x = 0 → x = 0) : ∀ (n : ℕ) (W : Submodule K V) (M : AddSubgroup V),
+    finrank K W ≤ n → IsSD S h W M →
+    ∃ (k : ℕ) (f : Fin k → V), (∀ i j, i ≠ j → h (f i) (f j) = 0) ∧
+      (∀ i, IsUnitIn S (h (f i) (f i))) ∧ (∀ v, v ∈ spanS S f ↔ v ∈ M) ∧
+      Submodule.span K (Set.range f) = W := by
+  intro n
+  induction n with
+  | zero =>
+    intro W M hn hM
+    exact sd_basis_bot hM (Submodule.finrank_eq_zero.mp (Nat.le_zero.mp hn))
+  | succ n ih =>
+    intro W M hn hM
+    by_cases hbot : W = ⊥
+    · exact sd_basis_bot hM hbot
+    obtain ⟨ξ, hξ, hξ0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hbot
+    obtain ⟨x, hx, hu⟩ := hM.exists_unit_norm hS hπ hs hd hξ hξ0
+    have hxW := hM.le x hx
+    obtain ⟨k, f, hfo, hfu, hfM, hfW⟩ := ih _ _
+      (by have := finrank_cutW_lt (h := h) hxW hu.1; omega) (hM.cut hx hu)
+    have hfc : ∀ i, f i ∈ cutW h W x := fun i => by
+      rw [← hfW]
+      exact Submodule.subset_span ⟨i, rfl⟩
+    have hfm : ∀ i, f i ∈ M := fun i =>
+      (mem_cutM.mp ((hfM (f i)).mp (mem_spanS_self f i))).1
+    refine ⟨k + 1, Fin.cons x f, ?_, ?_, fun v => ?_, ?_⟩
+    · intro i j hij
+      cases i using Fin.cases with
+      | zero =>
+        cases j using Fin.cases with
+        | zero => exact absurd rfl hij
+        | succ j => simpa using (mem_cutW.mp (hfc j)).2
+      | succ i =>
+        cases j using Fin.cases with
+        | zero => simpa using symm_zero hs (mem_cutW.mp (hfc i)).2
+        | succ j =>
+          simpa using hfo i j (fun h' => hij (by rw [h']))
+    · intro i
+      cases i using Fin.cases with
+      | zero => simpa using hu
+      | succ i => simpa using hfu i
+    · constructor
+      · rintro ⟨c, hc, rfl⟩
+        refine M.sum_mem fun i _ => hM.smul_mem _ (hc i) _ ?_
+        cases i using Fin.cases with
+        | zero => simpa using hx
+        | succ i => simpa using hfm i
+      · intro hv
+        obtain ⟨d, hd', hdv⟩ := (hfM _).mpr (proj_mem hM.toIsLatIn hx hu hv)
+        refine ⟨Fin.cons (h x v * (h x x)⁻¹) d, fun i => ?_, ?_⟩
+        · cases i using Fin.cases with
+          | zero => simpa using S.mul_mem (hM.int _ hx _ hv) hu.2.2
+          | succ i => simpa using hd' i
+        · rw [Fin.sum_univ_succ]
+          simp only [Fin.cons_zero, Fin.cons_succ]
+          rw [← hdv]
+          abel
+    · rw [Fin.range_cons, Submodule.span_insert, hfW]
+      exact sup_cutW hxW hu.1
+
+end
+
+end Formalism.L2.SG.Pf.G3
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.SdBasisBot =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.UniPart =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.UniPart", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.SplitAtOf\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.SdBasisBot\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsIsomScale\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Module
@@ -122,15 +199,6 @@ private theorem form_sum_lemma_7 {K V : Type} [Field K] [StarRing K] [AddCommGro
   · intro h'
     exact absurd (Finset.mem_univ i) h'
 
-private theorem mem_self_lemma_9 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {S : Subring K} {ι : Type} [Fintype ι] [DecidableEq ι] (b : ι → V) (i : ι) :
-    b i ∈ spanS S b := by
-  refine (mem_iff_lemma b (b i)).2 ⟨fun j => if j = i then 1 else 0, fun j => ?_, ?_⟩
-  · dsimp only
-    split_ifs
-    · exact S.one_mem
-    · exact S.zero_mem
-  · simp [ite_smul]
-
 private theorem isSD_lemma_8 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     {S : Subring K} (hS : IsHermSemilocal S) {h : V →ₗ⋆[K] V →ₗ[K] K} {ι : Type} [Fintype ι]
     [DecidableEq ι] {b : ι → V} (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0)
@@ -159,7 +227,7 @@ private theorem isSD_lemma_8 {K V : Type} [Field K] [StarRing K] [AddCommGroup V
     obtain ⟨g, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun K).1 hx
     rw [mem_iff_lemma]
     refine ⟨g, fun i => ?_, rfl⟩
-    have h1 := hdual (b i) (mem_self_lemma_9 b i)
+    have h1 := hdual (b i) (_root_.Formalism.L2.SG.Pf.G3.mem_spanS_self b i)
 
     rw [map_sum, Finset.sum_eq_single i] at h1
     · rw [map_smul, smul_eq_mul] at h1
@@ -266,7 +334,7 @@ theorem uni_part {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K 
       · rw [show gP p = f (σ ⟨p, hp⟩) from hgq ⟨p, hp⟩,
           show gP p' = f (σ ⟨p', hp'⟩) from hgq ⟨p', hp'⟩]
         exact hz _ _ (hof _ _ (fun hq => hpp (congrArg Subtype.val (σ.injective hq))))
-  have hfL : ∀ j, f j ∈ spanS S bP := fun j => (mem_cutM.1 ((hspf _).1 (mem_self_lemma_9 f j))).1
+  have hfL : ∀ j, f j ∈ spanS S bP := fun j => (mem_cutM.1 ((hspf _).1 (_root_.Formalism.L2.SG.Pf.G3.mem_spanS_self f j))).1
   have hgL : ∀ p, gP p ∈ spanS S bP := fun p => by
     by_cases hp : p = p₀
     · rw [hp, hg0]
@@ -316,18 +384,18 @@ theorem uni_part {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K 
     intro i
     by_cases hi : e i = e i₀
     · rw [show c i = gP ⟨i, hi⟩ from hcP ⟨i, hi⟩]
-      exact spanS_le_lemma_3 (fun p => by rw [hbP]; exact mem_self_lemma_9 b p) (hgL _)
+      exact spanS_le_lemma_3 (fun p => by rw [hbP]; exact _root_.Formalism.L2.SG.Pf.G3.mem_spanS_self b p) (hgL _)
     · rw [hcn i hi]
-      exact mem_self_lemma_9 b i
+      exact _root_.Formalism.L2.SG.Pf.G3.mem_spanS_self b i
   have hfc : ∀ j, f j ∈ spanS S c := fun j => by
     have hfj : f j = c (σ.symm j).1.1 := by rw [hcP, hgq, Equiv.apply_symm_apply]
     rw [hfj]
-    exact mem_self_lemma_9 c _
+    exact _root_.Formalism.L2.SG.Pf.G3.mem_spanS_self c _
   have h2 : ∀ i, b i ∈ spanS S c := by
     intro i
     by_cases hi : e i = e i₀
     · have hbi : b i ∈ spanS S bP := by
-        have hm := mem_self_lemma_9 (S := S) bP ⟨i, hi⟩
+        have hm := _root_.Formalism.L2.SG.Pf.G3.mem_spanS_self (S := S) bP ⟨i, hi⟩
         rwa [hbP] at hm
       have hr := (hspf _).2 (proj_mem hSD.toIsLatIn hXL hXu' hbi)
       have ha : h' Xs (b i) * (h' Xs Xs)⁻¹ ∈ S := S.mul_mem (hSD.int _ hXL _ hbi) hXu'.2.2
@@ -336,10 +404,14 @@ theorem uni_part {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K 
       rw [key]
       refine add_mem (smul_mem_lemma_2 ha ?_) (spanS_le_lemma_3 hfc hr)
       rw [← hc0]
-      exact mem_self_lemma_9 c i₀
+      exact _root_.Formalism.L2.SG.Pf.G3.mem_spanS_self c i₀
     · rw [← hcn i hi]
-      exact mem_self_lemma_9 c i
+      exact _root_.Formalism.L2.SG.Pf.G3.mem_spanS_self c i
   obtain ⟨hspc, hiffc⟩ := spans_eq_lemma_5 h1 h2
   exact ⟨c, hoc, huc, hc0, hcn, hspc, hiffc⟩
 
 end Formalism.L2.SG.Pf.G3
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.UniPart =====

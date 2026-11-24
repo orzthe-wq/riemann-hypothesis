@@ -189,7 +189,7 @@ theorem gramOf_maj (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     by_cases hj : j = i
     · subst hj
       simp
-    · simp [Finsupp.single_apply, Pi.single_apply, hj, Ne.symm hj]
+    · simp [hj]
   have hf : ∀ i k, fcoord b X v (b i) k = (X v)⁻¹ k i := by
     intro i k
     simp [fcoord, hv, Matrix.mulVec, dotProduct, Pi.single_apply]
@@ -360,7 +360,6 @@ theorem exists_frame {ι : Type} [Fintype ι] [DecidableEq ι] {G : Matrix ι ι
     ∃ B : Matrix ι ι ℂ, IsUnit B.det ∧ B.conjTranspose * B = G := by
   have hex : ∃ B : Matrix ι ι ℂ, G = B.conjTranspose * B := by
     first
-    | exact Matrix.posSemidef_iff_eq_conjTranspose_mul_self.1 hG.posSemidef
     | (obtain ⟨B, hB⟩ := Matrix.posSemidef_iff_eq_conjTranspose_mul_self.1 hG.posSemidef
        exact ⟨B, hB⟩)
     | (have h0 : (0 : Matrix ι ι ℂ) ≤ G := Matrix.nonneg_iff_posSemidef.2 hG.posSemidef
@@ -591,7 +590,7 @@ theorem vecAt_basis {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [De
   by_cases hj : j = i
   · subst hj
     simp
-  · simp [Finsupp.single_apply, Pi.single_apply, hj, Ne.symm hj]
+  · simp [hj]
 
 theorem fcoord_basis {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
     (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K) (i : ι) :

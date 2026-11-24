@@ -381,7 +381,7 @@ theorem diagEntries_val {b : n → α} (hb : Function.Injective b) (q : blockQ k
 theorem diagHom_diagEntries {b : n → α} (hb : Function.Injective b) (q : blockQ k b) :
     diagHom k n (diagEntries hb q) = blockProj b q := by
   ext i j
-  by_cases h : i = j <;> simp [diagHom_val, diagEntries_val, blockProj_val, blockPart, diagonal_apply, h, hb.eq_iff]
+  by_cases h : i = j <;> simp [diagHom_val, diagEntries_val, blockProj_val, blockPart, h, hb.eq_iff]
 
 variable [TopologicalSpace k] [IsTopologicalRing k] [T2Space k]
 
@@ -917,7 +917,7 @@ theorem stringParam_add_two (q : ℂˣ) {t : ℤ} (h : 0 ≤ t) :
   have r : Multiset.range (m + 1) = 0 ::ₘ (Multiset.range m).map (· + 1) := by
     simp only [Multiset.range, List.range_succ_eq_map, Multiset.map_coe, Multiset.cons_coe]
   rw [stringParam, stringParam, e, Multiset.range_succ, r, Int.toNat_natCast]
-  simp only [Multiset.map_cons, Multiset.map_map, Function.comp_def, Multiset.insert_eq_cons, ← Multiset.singleton_add,
+  simp only [Multiset.map_map, Function.comp_def, Multiset.insert_eq_cons, ← Multiset.singleton_add,
     Multiset.map_add, Multiset.map_singleton]
   have h1 : 2 * (((m + 1 : ℕ) : ℕ) : ℤ) + 1 - (m + 2) = m + 1 := by push_cast; ring
   have h2 : 2 * ((0 : ℕ) : ℤ) + 1 - (m + 2) = -(m + 1) := by push_cast; ring

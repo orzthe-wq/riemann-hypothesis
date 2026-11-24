@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.EvalAtOneExtremalMul
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockSubstitutionIdentitiesStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeylDeterminantTwistTensorFiniteDimensionalStablStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FockSubstitutionIdentities
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeylDeterminantTwistTensorFiniteDimensionalStabl
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -70,9 +70,9 @@ theorem exists_evalAt_span (ι : Type) [Fintype ι] (a : ℕ) (lam : ι → DomW
       (∀ j, IsInv (y j)) ∧ ∀ F ∈ Vn lam n, T F = ∑ j, evalAt (y j) F • P j := by
   classical
   set V := Vn lam n with hV
-  haveI : FiniteDimensional ℂ V := (GlobalTheory.T.weylDeterminantTwistTensor_finiteDimensional_stable ι a lam n).1
+  haveI : FiniteDimensional ℂ V := (_root_.GlobalTheory.KJInf.vn_finiteDimensional_and_lft_mem ι a lam n).1
   have hsep : ∀ F : PY ι a, (∀ y, IsInv y → evalAt y F = 0) → F = 0 :=
-    (GlobalTheory.T.fockSubstitution_identities ι a a le_rfl).2.2.2.2.2.2.1
+    (_root_.GlobalTheory.KJInf.substIdentities ι a a le_rfl).2.2.2.2.2.2.1
   let S : Set (Module.Dual ℂ V) :=
     {φ | ∃ y : ι → Matrix (Fin a) (Fin a) ℂ, IsInv y ∧ φ = (evalLin y).comp V.subtype}
   obtain ⟨f, hfS, hspan, -⟩ := Submodule.exists_fun_fin_finrank_span_eq ℂ S
@@ -113,6 +113,6 @@ theorem exists_evalAt_span (ι : Type) [Fintype ι] (a : ℕ) (lam : ι → DomW
     _ = ∑ j, evalAt (y j) F • T (L (Pi.single j 1) : PY ι a) := by
 
       rw [hΦ, map_sum]
-      simp [map_smul, Submodule.coe_sum, Submodule.coe_smul]
+      simp [map_smul]
 
 end GlobalTheory.KJInf

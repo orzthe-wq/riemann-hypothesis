@@ -81,7 +81,7 @@ def urM (n : ℕ) : EuclideanSpace ℝ (Fin n × Fin n × Bool) →ₗ[ℝ] Matr
     ext i j
     apply Complex.ext <;> simp [unrealify]
 
-theorem ur_rl (X : Matrix (Fin n) (Fin n) ℂ) : urM n (rlM n X) = X := unr_re X
+theorem ur_rl (X : Matrix (Fin n) (Fin n) ℂ) : urM n (rlM n X) = X := _root_.Formalism.MainNotions.S.Gauge.unrealify_realify X
 
 theorem rl_ur (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) : rlM n (urM n x) = x := by
   ext ⟨i, j, b⟩

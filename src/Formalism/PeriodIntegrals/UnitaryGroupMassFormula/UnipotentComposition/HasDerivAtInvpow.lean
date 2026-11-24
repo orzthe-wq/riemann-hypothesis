@@ -87,8 +87,7 @@ theorem hasDerivAt_eval {σ : Type*} [Fintype σ] (v : ℝ → σ → ℂ) (v' :
         fun a b c d h1 h2 => by rw [h1, h2, add_comm]]
       · rw [Finset.sum_mul]
         exact Finset.sum_congr rfl fun j _ => by ring
-      · simp [Pi.single_apply, apply_ite (eval (v 0)), mul_ite, ite_mul, Finset.sum_ite_eq,
-          Finset.sum_ite_eq']
+      · simp [Pi.single_apply, apply_ite (eval (v 0)), mul_ite, ite_mul, Finset.sum_ite_eq]
 
 theorem crv_var {k r : ℕ} (X g : Mat k r) (i : Vr (2 * r + k + 1)) :
     HasDerivAt (fun t => vars (crv (false, X) g t) i) (eval (vars g) (lin X i)) 0 := by

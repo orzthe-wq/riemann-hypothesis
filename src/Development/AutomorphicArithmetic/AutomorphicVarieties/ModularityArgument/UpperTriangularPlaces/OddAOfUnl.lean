@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.AbsCentral
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.WeakOfAtt
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.AutP

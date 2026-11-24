@@ -58,7 +58,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 private theorem scal_eq (z : kˣ) : GeneralLinearGroup.scalar (Fin 2) z = dg (fun _ : Fin 2 => z) := by
   ext i j
-  simp [dg, val_diagT, Matrix.diagonal_apply, Matrix.one_apply, GeneralLinearGroup.scalar]
+  simp [dg, val_diagT, Matrix.diagonal_apply, GeneralLinearGroup.scalar]
 
 private theorem scal_comm (z : kˣ) (g : GL (Fin 2) k) :
     GeneralLinearGroup.scalar (Fin 2) z * g = g * GeneralLinearGroup.scalar (Fin 2) z := by

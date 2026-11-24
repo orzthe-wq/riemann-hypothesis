@@ -1,12 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsPosHermFormV
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralCharImEqZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummableExpNegHermStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummableExpNegHerm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -19,6 +17,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -27,6 +26,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -39,10 +39,73 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralCharImEqZero, Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralHeisKerSumDiag
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralCharImEqZero =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralCharImEqZero", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsPosHermFormV\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Complex MeasureTheory GlobalTheory.UnitaryTheta
+open scoped BigOperators ComplexConjugate Real Classical Pointwise
+
+namespace GlobalTheory.UnitaryTheta
+
+theorem setIntegral_mul_char_eq_zero {V : Type} [NormedAddCommGroup V] [MeasurableSpace V] [BorelSpace V]
+    [SecondCountableTopology V]
+    (μ : Measure V) [μ.IsAddHaarMeasure] (Λ : AddSubgroup V) [Countable Λ] (Fd : Set V)
+    (hF : IsAddFundamentalDomain Λ Fd μ) (f : V → ℂ) (hf : ∀ x y, f (x + y) = f x * f y)
+    (hΛ : ∀ y ∈ Λ, f y = 1) (t : V) (ht : f t = -1) : ∫ z in Fd, f z ∂μ = 0 := by
+  have hq : MeasurePreserving (fun x => t + x) μ μ := measurePreserving_add_left μ t
+  have hF' : IsAddFundamentalDomain Λ ((fun x => t + x) ⁻¹' Fd) μ :=
+    hF.preimage_of_equiv hq.quasiMeasurePreserving (e := id) Function.bijective_id
+      (fun g x => by simp [AddSubgroup.vadd_def, add_left_comm])
+  have h1 : ∫ z in (fun x => t + x) ⁻¹' Fd, f z ∂μ = ∫ z in Fd, f z ∂μ :=
+    hF'.setIntegral_eq hF (fun g x => by simp [AddSubgroup.vadd_def, hf, hΛ g g.2])
+  have h2 : ∫ z in (fun x => t + x) ⁻¹' Fd, f (t + z) ∂μ = ∫ z in Fd, f z ∂μ :=
+    hq.setIntegral_preimage_emb (measurableEmbedding_addLeft t) f Fd
+  have h3 : ∫ z in (fun x => t + x) ⁻¹' Fd, f (t + z) ∂μ = - ∫ z in Fd, f z ∂μ := by
+    simp only [hf, ht, neg_one_mul, integral_neg, h1]
+  linear_combination (h3 - h2) / 2
+
+theorem setIntegral_char_im_eq_zero :
+    ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (H : Sesq V), IsPosHerm H → ∀ (Λ : AddSubgroup V) [Countable Λ] (Fd : Set V), IsAddFundamentalDomain Λ Fd μ → ∀ v : V, v ≠ 0 → (∀ y ∈ Λ, ∃ m : ℤ, (H v y).im = m) → ∫ z in Fd, cexp (2 * π * I * ((H v z).im : ℂ)) ∂μ = 0 := by
+  intro V _ _ _ _ _ μ _ H hH Λ _ Fd hF v hv hint
+  haveI : ProperSpace V := FiniteDimensional.proper ℂ V
+  have hpos := hH.2 v hv
+  set r : ℝ := (H v v).re with hr
+  refine setIntegral_mul_char_eq_zero μ Λ Fd hF (fun z => cexp (2 * π * I * ((H v z).im : ℂ)))
+    (fun x y => ?_) (fun y hy => ?_) (((-(1 / (2 * r)) : ℝ) * I : ℂ) • v) ?_
+  · simp only [map_add (f := _), add_im, ofReal_add, mul_add, Complex.exp_add]
+  · obtain ⟨m, hm⟩ := hint y hy
+    simp only [hm, ofReal_intCast]
+    rw [mul_comm]
+    exact Complex.exp_int_mul_two_pi_mul_I m
+  · have e : (H v (((-(1 / (2 * r)) : ℝ) * I : ℂ) • v)).im = 1 / 2 := by
+      rw [LinearMap.map_smulₛₗ, smul_eq_mul, map_mul, conj_ofReal, conj_I]
+      simp only [mul_im, mul_re, ofReal_re, ofReal_im, neg_re, neg_im, I_re, I_im, ← hr]
+      field_simp
+      ring
+    simp only [e]
+    rw [← Complex.exp_pi_mul_I]
+    congr 1
+    push_cast
+    ring
+
+end GlobalTheory.UnitaryTheta
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralCharImEqZero =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralHeisKerSumDiag =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralHeisKerSumDiag", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsPosHermFormV\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SetIntegralCharImEqZero\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SummableExpNegHerm\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Complex MeasureTheory GlobalTheory.UnitaryTheta
@@ -121,7 +184,7 @@ theorem integral_heis_kerSum_diag : ∀ (V : Type) [NormedAddCommGroup V] [Norme
     nlinarith
   have hcsum : Summable fun x : Λ => ‖c x‖ :=
     Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hcle
-      ((GlobalTheory.T.summable_exp_neg_herm_add_norm V H hH Λ (π * K)).mul_right _)
+      ((_root_.GlobalTheory.UnitaryTheta.GaussSumm.summable_exp_neg_herm V H hH Λ (π * K)).mul_right _)
   have hFnorm : ∀ x z, ‖F x z‖ = ‖c x‖ := by
     intro x z
     rw [hF, norm_mul, he1, mul_one]
@@ -170,7 +233,7 @@ theorem integral_heis_kerSum_diag : ∀ (V : Type) [NormedAddCommGroup V] [Norme
           apply hx
           rw [eq_neg_iff_add_eq_zero, add_comm]
           exact h
-        rw [GlobalTheory.T.setIntegral_cexp_im_herm_eq_zero V μ H hH Λ' Fd hFd (r + x) hne ?_, mul_zero]
+        rw [_root_.GlobalTheory.UnitaryTheta.setIntegral_char_im_eq_zero V μ H hH Λ' Fd hFd (r + x) hne ?_, mul_zero]
         intro y hy
         obtain ⟨m1, hm1⟩ := hr y hy
         obtain ⟨m2, hm2⟩ := hα.2.1 x x.2 y (hle hy)
@@ -206,3 +269,6 @@ theorem integral_heis_kerSum_diag : ∀ (V : Type) [NormedAddCommGroup V] [Norme
       simp [hno]
 
 end GlobalTheory.UnitaryTheta
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralHeisKerSumDiag =====

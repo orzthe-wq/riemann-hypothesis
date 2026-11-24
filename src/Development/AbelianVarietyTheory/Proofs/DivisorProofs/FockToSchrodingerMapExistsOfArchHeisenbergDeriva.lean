@@ -1,12 +1,13 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativeAdditiveCommutatorStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanTraceSymplecticFormOrthonormalFramesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFockMapOfCanonicalCommutationRelationsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFockVacuumGaussianFramesStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueArchimedeanMatrixAdeleExtensionOfComStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealScalarArchimedeanAdeleSmulMatrixRealPlaceStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchHeisenbergDerivativeAdditiveCommutator
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArchimedeanTraceSymplecticFormOrthonormalFrames
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFockMapOfCanonicalCommutationRelations
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFockVacuumGaussianFrames
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUniqueArchimedeanMatrixAdeleExtensionOfCom
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealScalarArchimedeanAdeleSmulMatrixRealPlace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,8 +60,8 @@ theorem fockEx_of_derEx : DerEx → FockEx := by
       fderiv ℝ f x (fun i => evI F ((d.e u).1 i)) - 2 * Real.pi * Complex.I *
         (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * evI F ((d.e u).2 i)) : ℝ) * f x :=
     fun u hu f x => (hD u hu f).2 x
-  obtain ⟨hadd, hsm, hcom⟩ := GlobalTheory.T.archHeisenbergDerivative_additive_commutator σ JA JB d D hDf
-  have hex := fun c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ => GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hCM (fun w => A w * c w * (C w)ᵀ)
+  obtain ⟨hadd, hsm, hcom⟩ := _root_.GlobalTheory.HeisDerivLaws.heis_deriv_laws σ JA JB d D hDf
+  have hex := fun c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ => _root_.GlobalTheory.ArchMatCoords.existsUnique_at_map_piInf σ τ hCM (fun w => A w * c w * (C w)ᵀ)
   choose uOf huOf using fun c => (hex c).exists
   have huniq : ∀ c u, At (evI F) u → (∀ w, u.map (piInf (τ w)) = A w * c w * (C w)ᵀ) → u = uOf c :=
     fun c u hu hw => (hex c).unique ⟨hu, hw⟩ (huOf c)
@@ -85,7 +86,7 @@ theorem fockEx_of_derEx : DerEx → FockEx := by
     have e : uOf ((r : ℂ) • c) = realAd F r • uOf c := by
       symm
       refine huniq _ _ (hAt_smul r _ (huOf c).1) fun w => ?_
-      rw [GlobalTheory.T.realScalarArchimedeanAdele_smul_matrix_realPlace σ τ hCM, (huOf c).2 w]
+      rw [_root_.GlobalTheory.RealScalar.realAd_smul_map σ τ hCM, (huOf c).2 w]
       simp [Matrix.mul_smul, Matrix.smul_mul]
     ext1 f
     simp only [H, e, hsm _ r (huOf c).1]
@@ -95,18 +96,18 @@ theorem fockEx_of_derEx : DerEx → FockEx := by
     intro c c'
     ext1 f
     have h1 := hcom _ _ (huOf c).1 (huOf c').1 f
-    rw [GlobalTheory.T.archimedeanTrace_symplecticForm_orthonormalFrames σ τ JA JB a b A C hCM hFr _ _ c c' (huOf c).1 (huOf c').1 (huOf c).2 (huOf c').2] at h1
+    rw [_root_.GlobalTheory.SympFrames.symp_frames σ τ JA JB a b A C hCM hFr _ _ c c' (huOf c).1 (huOf c').1 (huOf c).2 (huOf c').2] at h1
     simp only [H, LinearMap.sub_apply, Module.End.mul_apply, ContinuousLinearMap.coe_coe, LinearMap.smul_apply,
       Module.End.one_apply]
     rw [h1]
     congr 1
     push_cast
     ring
-  obtain ⟨f₀, hf₀, hv⟩ := GlobalTheory.T.exists_fock_vacuum_gaussian_frames σ τ JA JB d a b A C D hCM hFr hDf
+  obtain ⟨f₀, hf₀, hv⟩ := _root_.GlobalTheory.FockVacuum.exists_vacuum σ τ JA JB d a b A C D hCM hFr hDf
   have hHvac : ∀ w a b, H (Pi.single w (Matrix.single a b 1)) f₀ +
       (lineSign a b * Complex.I) • H (Pi.single w (Matrix.single a b Complex.I)) f₀ = 0 := fun w a b =>
     hv w a b _ _ (huOf _).1 (huOf _).1 (huOf _).2 (huOf _).2
-  obtain ⟨Φ, hinj, hint⟩ := GlobalTheory.T.exists_fockMap_of_canonicalCommutationRelations H hHadd hHsmul hHcomm f₀ hf₀ hHvac
+  obtain ⟨Φ, hinj, hint⟩ := _root_.GlobalTheory.CCRFock.fock_map_of_ccr H hHadd hHsmul hHcomm f₀ hf₀ hHvac
   refine ⟨Φ, hinj, fun u hu c hc T => ?_⟩
   rw [hint, huniq c u hu hc]
   exact (hD _ (huOf c).1 (Φ T)).1

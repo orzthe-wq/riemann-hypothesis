@@ -93,7 +93,7 @@ theorem prod_lam {S : Scheme.{0}} {G T : Over S} [GrpObj G] [IsCommMonObj G] (x 
     (h : (T.left ⟶ G.left) → U) :
     ∏ I : ULift.{0} (Finset (Fin 2)), h (psum G ![x, y] I.down).left ^ ((-1 : ℤ) ^ (2 - I.down.card)) =
       h (x * y).left * (h x.left)⁻¹ * (h y.left)⁻¹ * h (1 : T ⟶ G).left := by
-  apply GlobalTheory.NormRos.prod_square <;> assumption
+  apply GlobalTheory.NormRos.prod_square
 
 theorem prod_prim {S : Scheme.{0}} {G T : Over S} [GrpObj G] (w : G ⟶ G) (x : T ⟶ G) {U : Type} [CommGroup U]
     (h : (T.left ⟶ G.left) → U) :

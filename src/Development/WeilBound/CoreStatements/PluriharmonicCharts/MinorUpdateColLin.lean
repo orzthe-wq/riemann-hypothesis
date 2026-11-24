@@ -1,7 +1,7 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GenericBlockMatrixIsBlockDiag
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagValuationNormalizationStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagValuationNormalization
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
 import Mathlib.Algebra.Order.Floor.Extended
@@ -266,7 +266,7 @@ theorem exists_local_frame {L : Type} [Field L] (O : Subring L) [IsLocalRing O] 
     have ht' : s * (t : L) = 1 := congrArg Subtype.val ht
     rw [inv_eq_of_mul_eq_one_right ht']
     exact t.2
-  obtain ⟨b₀, hb₀, hb₀t, hb₀d, hmem, hdet, hinv⟩ := GlobalTheory.T.block_diag_valuation_normalization L V N j h hb hd
+  obtain ⟨b₀, hb₀, hb₀t, hb₀d, hmem, hdet, hinv⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.IwBlock.main L V N j h hb hd
   let Hv : Matrix (Fin N) (Fin N) V := Matrix.of fun a c => ⟨(h * b₀) a c, hmem a c⟩
   have hHv : Hv.map V.subtype = h * b₀ := by ext a c; rfl
   have hHvb : IsBlockDiag j Hv := fun a c e => Subtype.ext ((hb.mul hb₀) a c e)

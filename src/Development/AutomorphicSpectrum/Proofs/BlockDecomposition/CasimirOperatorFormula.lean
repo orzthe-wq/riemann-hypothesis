@@ -108,7 +108,7 @@ theorem comb_identity (P B C Q : V) :
           (-Complex.I) • ((1 / 2 : ℂ) • (C + (-Complex.I) • Q))) +
         (1 / 2 : ℂ) • ((1 / 2 : ℂ) • (P + Complex.I • B) +
           Complex.I • ((1 / 2 : ℂ) • (C + Complex.I • Q)))) = P - Q := by
-  match_scalars <;> ring_nf <;> simp [Complex.I_sq] <;> ring
+  match_scalars <;> ring_nf <;> simp [Complex.I_sq]
 
 theorem Eu_Eu {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (a c : Fin n) {g : Mat n}
     (hg : g ∈ GLs n) :

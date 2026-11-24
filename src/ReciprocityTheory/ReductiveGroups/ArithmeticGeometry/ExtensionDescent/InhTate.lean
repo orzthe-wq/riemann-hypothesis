@@ -97,7 +97,7 @@ theorem app_res {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Γ(X, ⊤)) (V : X.Opens) 
     (h : W ≤ f ⁻¹ᵁ V) :
     (Y.presheaf.map (homOfLE h).op).hom ((f.app V).hom ((X.presheaf.map (homOfLE le_top).op).hom y)) =
       (Y.presheaf.map (homOfLE le_top).op).hom (f.appTop.hom y) := by
-  rw [app_res_lemma_2 f y V, map_map_lemma] <;> rfl
+  rw [app_res_lemma_2 f y V, map_map_lemma]
 
 theorem map_map {Y : Scheme.{0}} {U V W : Y.Opens} (h : W ≤ V) (h' : V ≤ U) (y : Γ(Y, U)) :
     (Y.presheaf.map (homOfLE h).op).hom ((Y.presheaf.map (homOfLE h').op).hom y) =
@@ -287,6 +287,6 @@ theorem psiIn (n : ℤ) (m : ℕ) (hm : m ≤ n.natAbs ^ 2) : tatePre.PsiIn n (I
       rfl
     have hv : ((tatePre.psi n).s j).val = ((TK R).left.presheaf.map (homOfLE le_top).op).hom
         ((pi0 ^ (n ^ 2) : Γ((TK R).left, ⊤)ˣ) : Γ((TK R).left, ⊤)) := rfl
-    rw [jK_toOpen, hv, map_map_lemma, ← e2] <;> rfl
+    rw [jK_toOpen, hv, map_map_lemma, ← e2]
 
 end ReciprocityTheory.ChartRestriction.G.Out.InhTate

@@ -134,7 +134,7 @@ theorem kS_ord (X : Loc) [Fact X.p.Prime] (O : Type) [CommRing O] [IsDomain O] [
     rw [liftSubst_X_vec X.p X.n' O S.w (hhLetters X.TT) 1 g hg xs a rfl,
       liftSubst_X_cov X.p X.n' O S.w (hhLetters X.TT) 1 g y a rfl]
 
-    simp only [u, v, M, N, map_sum, map_mul, map_C, map_X, sigMat_apply]
+    simp only [u, v, M, N, map_mul, map_C, map_X, sigMat_apply]
     rfl
 
   have hMN : ∀ b a, ∃ T, M b a ^ (X.p ^ d) = N' b a + X.p * T := by

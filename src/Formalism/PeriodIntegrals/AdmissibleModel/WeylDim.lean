@@ -66,19 +66,13 @@ theorem sum_le_castSucc {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
     (∑ b : Fin (k + 1) with b ≤ a.castSucc, F b) = ∑ b : Fin k with b ≤ a, F b.castSucc := by
   have h : ¬ (Fin.last k ≤ a.castSucc) := not_le.mpr (Fin.castSucc_lt_last a)
   rw [Finset.sum_filter, Finset.sum_filter, Fin.sum_univ_castSucc, if_neg h, add_zero]
-  refine Finset.sum_congr rfl (fun i _ => ?_)
-  by_cases hi : i ≤ a
-  · rw [if_pos hi, if_pos (Fin.castSucc_le_castSucc_iff.mpr hi)]
-  · rw [if_neg hi, if_neg (fun h' => hi (Fin.castSucc_le_castSucc_iff.mp h'))]
+  simp [Fin.castSucc_le_castSucc_iff]
 
 theorem sum_lt_castSucc {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
     (∑ b : Fin (k + 1) with b < a.castSucc, F b) = ∑ b : Fin k with b < a, F b.castSucc := by
   have h : ¬ (Fin.last k < a.castSucc) := not_lt.mpr (Fin.castSucc_lt_last a).le
   rw [Finset.sum_filter, Finset.sum_filter, Fin.sum_univ_castSucc, if_neg h, add_zero]
-  refine Finset.sum_congr rfl (fun i _ => ?_)
-  by_cases hi : i < a
-  · rw [if_pos hi, if_pos (Fin.castSucc_lt_castSucc_iff.mpr hi)]
-  · rw [if_neg hi, if_neg (fun h' => hi (Fin.castSucc_lt_castSucc_iff.mp h'))]
+  simp [Fin.castSucc_lt_castSucc_iff]
 
 theorem sum_le_last {k : ℕ} (F : Fin (k + 1) → ℕ) :
     (∑ b : Fin (k + 1) with b ≤ Fin.last k, F b) = ∑ b, F b := by
@@ -87,8 +81,7 @@ theorem sum_le_last {k : ℕ} (F : Fin (k + 1) → ℕ) :
 theorem sum_lt_last {k : ℕ} (F : Fin (k + 1) → ℕ) :
     (∑ b : Fin (k + 1) with b < Fin.last k, F b) = ∑ b : Fin k, F b.castSucc := by
   rw [Finset.sum_filter, Fin.sum_univ_castSucc, if_neg (lt_irrefl _), add_zero]
-  refine Finset.sum_congr rfl (fun i _ => ?_)
-  rw [if_pos (Fin.castSucc_lt_last i)]
+  simp [Fin.castSucc_lt_last]
 
 theorem intl_zero {K N : ℕ} (f : Fin K → Fin N → ℕ) (hf : Intl f) :
     ∀ (tv : ℕ) (t : Fin N), t.val = tv → ∀ a : Fin K, a.val < tv → f a t = 0 := by
@@ -100,8 +93,7 @@ theorem intl_zero {K N : ℕ} (f : Fin K → Fin N → ℕ) (hf : Intl f) :
     have hm : m < N := by have := t.isLt; omega
     have key := hf ⟨m, hm⟩ t (by exact ht) a
     have h0 : (∑ b : Fin K with b < a, f b ⟨m, hm⟩) = 0 := by
-      apply Finset.sum_eq_zero
-      intro b hb
+      refine Finset.sum_eq_zero (fun b hb => ?_)
       rw [Finset.mem_filter] at hb
       exact ih ⟨m, hm⟩ rfl b (by have := hb.2; rw [Fin.lt_def] at this; omega)
     rw [h0, Nat.le_zero, Finset.sum_eq_zero_iff] at key
@@ -112,20 +104,13 @@ def restr {k : ℕ} (f : Fin (k + 1) → Fin (k + 1) → ℕ) : Fin k → Fin k 
 def UU (k : ℕ) (μ : Fin (k + 1) → ℤ) : Type :=
   {g : Fin k → Fin k → ℕ // Intl g ∧ (fun t => ((∑ a, g a t : ℕ) : ℤ)) ∈ gtBox μ}
 
-theorem mem_gtBox' {n : ℕ} (μ : Fin (n + 1) → ℤ) (κ : Fin n → ℤ) :
-    κ ∈ gtBox μ ↔ ∀ i, μ i.succ ≤ κ i ∧ κ i ≤ μ i.castSucc := by
-  rw [show gtBox μ = Fintype.piFinset fun i => Finset.Icc (μ i.succ) (μ i.castSucc) from rfl,
-    Fintype.mem_piFinset]
-  simp only [Finset.mem_Icc]
-
 theorem restr_mem {k : ℕ} (μ : Fin (k + 1) → ℤ) (f : SSZ (k + 1) μ) :
     Intl (restr f.1) ∧ (fun t => ((∑ a, restr f.1 a t : ℕ) : ℤ)) ∈ gtBox μ := by
   constructor
   · intro l j hlj a
-    have := f.2.1 l.castSucc j.castSucc (by simpa using hlj) a.castSucc
-    rw [sum_le_castSucc, sum_lt_castSucc] at this
-    exact this
-  · rw [mem_gtBox']
+    simpa only [restr, sum_le_castSucc, sum_lt_castSucc] using
+      f.2.1 l.castSucc j.castSucc (by simpa using hlj) a.castSucc
+  · rw [_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Pieri.mem_gtBox]
     intro i
     have hs1 := f.2.2 i.castSucc
     have hs2 := f.2.2 i.succ
@@ -172,7 +157,7 @@ def ext {k : ℕ} (μ : Fin (k + 1) → ℤ) (g : Fin k → Fin k → ℕ) : Fin
 
 theorem ext_cc {k : ℕ} (μ : Fin (k + 1) → ℤ) (g : Fin k → Fin k → ℕ) (a t : Fin k) :
     ext μ g a.castSucc t.castSucc = g a t := by
-  simp only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc, Fin.lastCases_last]
+  simp only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc]
 
 theorem ext_cl {k : ℕ} (μ : Fin (k + 1) → ℤ) (g : Fin k → Fin k → ℕ) (a : Fin k) :
     ext μ g a.castSucc (Fin.last k) = 0 := by
@@ -184,35 +169,31 @@ theorem ext_lc {k : ℕ} (μ : Fin (k + 1) → ℤ) (g : Fin k → Fin k → ℕ
 
 theorem ext_ll {k : ℕ} (μ : Fin (k + 1) → ℤ) (g : Fin k → Fin k → ℕ) :
     ext μ g (Fin.last k) (Fin.last k) = (μ (Fin.last k)).toNat := by
-  simp only [Formalism.L2.G.Model.ext, Fin.lastCases_castSucc, Fin.lastCases_last]
+  simp only [Formalism.L2.G.Model.ext, Fin.lastCases_last]
 
 theorem ext_sum {k : ℕ} (μ : Fin (k + 1) → ℤ) (hμ : 0 ≤ μ (Fin.last k)) (g : UU k μ) (t : Fin (k + 1)) :
     ((∑ a, ext μ g.1 a t : ℕ) : ℤ) = μ t := by
   induction t using Fin.lastCases with
   | last =>
     rw [Fin.sum_univ_castSucc]
-    simp only [ext_cl, ext_ll, Finset.sum_const_zero, zero_add]
-    exact Int.toNat_of_nonneg hμ
+    simpa [ext_cl, ext_ll] using Int.toNat_of_nonneg hμ
   | cast t =>
     rw [Fin.sum_univ_castSucc]
     simp only [ext_cc, ext_lc]
-    have hb : ((∑ b, g.1 b t : ℕ) : ℤ) ≤ μ t.castSucc := ((mem_gtBox' μ _).1 g.2.2 t).2
-    have hnn : 0 ≤ μ t.castSucc - ((∑ b, g.1 b t : ℕ) : ℤ) := by linarith
-    rw [Nat.cast_add, Int.toNat_of_nonneg hnn]
+    rw [Nat.cast_add, Int.toNat_of_nonneg (by
+      have hb : ((∑ b, g.1 b t : ℕ) : ℤ) ≤ μ t.castSucc := ((_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Pieri.mem_gtBox μ _).1 g.2.2 t).2
+      linarith)]
     ring
 
 theorem ext_intl {k : ℕ} (μ : Fin (k + 1) → ℤ) (hμ : 0 ≤ μ (Fin.last k)) (g : UU k μ) : Intl (ext μ g.1) := by
   intro l j hlj a
-  have hl : l.val < k := by have := j.isLt; omega
-  obtain ⟨l', rfl⟩ : ∃ l' : Fin k, l'.castSucc = l := ⟨⟨l.val, hl⟩, rfl⟩
+  obtain ⟨l', rfl⟩ : ∃ l' : Fin k, l'.castSucc = l := ⟨⟨l.val, by have := j.isLt; omega⟩, rfl⟩
   induction a using Fin.lastCases with
   | last =>
+    obtain rfl : j = l'.succ := Fin.ext (by rw [Fin.val_succ, hlj, Fin.val_castSucc])
     rw [sum_le_last, sum_lt_last]
     simp only [ext_cc]
-    have hj : j = l'.succ := Fin.ext (by rw [Fin.val_succ, hlj, Fin.coe_castSucc])
-    have h1 := ext_sum μ hμ g j
-    have h2 : μ j ≤ ((∑ b, g.1 b l' : ℕ) : ℤ) := by rw [hj]; exact ((mem_gtBox' μ _).1 g.2.2 l').1
-    have h3 : ((∑ b, ext μ g.1 b j : ℕ) : ℤ) ≤ ((∑ b, g.1 b l' : ℕ) : ℤ) := by rw [h1]; exact h2
+    have h3 := (ext_sum μ hμ g (l'.succ)).trans_le ((_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Pieri.mem_gtBox μ _).1 g.2.2 l').1
     exact_mod_cast h3
   | cast a =>
     rw [sum_le_castSucc, sum_lt_castSucc]
@@ -234,10 +215,9 @@ theorem SSZ_finite (k : ℕ) (κ : Fin k → ℤ) : Finite (SSZ k κ) := by
     intro g a t
     have h1 : g.1 a t ≤ ∑ a', g.1 a' t :=
       Finset.single_le_sum (f := fun a' => g.1 a' t) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)
-    have e := g.2.2 t
-    have hnn : 0 ≤ κ t := by rw [← e]; positivity
-    have e2 : (((κ t).toNat : ℕ) : ℤ) = κ t := Int.toNat_of_nonneg hnn
-    have h2 : (∑ a', g.1 a' t) = (κ t).toNat := by exact_mod_cast e.trans e2.symm
+    have hnn : 0 ≤ κ t := by rw [← g.2.2 t]; positivity
+    have h2 : (∑ a', g.1 a' t) = (κ t).toNat := by
+      exact_mod_cast (g.2.2 t).trans (Int.toNat_of_nonneg hnn).symm
     have h3 : (κ t).toNat ≤ ∑ t', (κ t').toNat :=
       Finset.single_le_sum (f := fun t' => (κ t').toNat) (fun _ _ => Nat.zero_le _) (Finset.mem_univ t)
     omega
@@ -276,9 +256,7 @@ theorem card_SSZ : ∀ (k : ℕ) (κ : Fin k → ℤ), (∀ t, 0 ≤ κ t) → N
     simp only [dGT]
     rw [← Finset.sum_coe_sort (gtBox μ)]
     refine Finset.sum_congr rfl (fun κ _ => ih κ.1 (fun t => ?_))
-    have h1 := ((mem_gtBox' μ κ.1).1 κ.2 t).1
-    have h2 := hμ t.succ
-    linarith
+    linarith [((_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Pieri.mem_gtBox μ κ.1).1 κ.2 t).1, hμ t.succ]
 
 def ssEquiv (k : ℕ) (ν : Fin k → ℕ) : ↥(ssIdx k k ν) ≃ SSZ k (fun t => (ν t : ℤ)) :=
   Equiv.subtypeEquiv (Finsupp.equivFunOnFinite.trans (Equiv.curry (Fin k) (Fin k) ℕ)) (by
@@ -297,8 +275,7 @@ def ssEquiv (k : ℕ) (ν : Fin k → ℕ) : ↥(ssIdx k k ν) ≃ SSZ k (fun t 
       · exact Nat.cast_injective (R := ℤ) (h2 t))
 
 theorem card_ssIdx (k : ℕ) (ν : Fin k → ℕ) : Nat.card ↥(ssIdx k k ν) = dGT k (fun t => (ν t : ℤ)) := by
-  rw [Nat.card_congr (ssEquiv k ν)]
-  exact card_SSZ k _ (fun t => by simp)
+  rw [Nat.card_congr (ssEquiv k ν), card_SSZ k (fun t => (ν t : ℤ)) (fun t => by simp)]
 
 theorem finrank_dualWeyl (K : Type) [Field K] (k : ℕ) (ν : Fin k → ℕ) :
     Module.finrank K (dualWeyl K k k ν) = dGT k (fun t => (ν t : ℤ)) := by
@@ -311,11 +288,10 @@ theorem prodConv (n : ℕ) (F : ℕ → ℕ → ℝ) :
   conv_rhs => rw [Finset.prod_comm]
   rw [← Fin.prod_univ_eq_prod_range (fun j => ∏ i ∈ range j, F i j)]
   refine Finset.prod_congr rfl (fun j _ => ?_)
-  have key : ∀ i : Fin n, (if i < j then F ↑i ↑j else 1) = (if (i : ℕ) < (j : ℕ) then F ↑i ↑j else 1) := by
+  have key : ∀ i : Fin n,
+      (if i < j then F ↑i ↑j else 1) = (if (i : ℕ) < (j : ℕ) then F ↑i ↑j else 1) := by
     intro i
-    by_cases h : i < j
-    · rw [if_pos h, if_pos (Fin.lt_iff_val_lt_val.mp h)]
-    · rw [if_neg h, if_neg (fun h' => h (Fin.lt_iff_val_lt_val.mpr h'))]
+    simp only [Fin.lt_iff_val_lt_val]
   rw [Finset.prod_congr rfl (fun i _ => key i),
     Fin.prod_univ_eq_prod_range (fun m => if m < (j : ℕ) then F m ↑j else 1) n, ← Finset.prod_filter]
   congr 1
@@ -377,9 +353,7 @@ theorem lamAt_antitone' {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd
   unfold lamAt
   split_ifs with h
   · exact hdom s hab
-  · have := hdom s (Fin.rev_le_rev.mpr hab)
-    show -lam0 s b.rev ≤ -lam0 s a.rev
-    linarith
+  · linarith [hdom s (Fin.rev_le_rev.mpr hab)]
 
 theorem weylV_proved : Formalism.MainNotions.flipOneThree.WeylV := by
   intro Kf _ n' m lam0 hdom
@@ -392,9 +366,8 @@ theorem weylV_proved : Formalism.MainNotions.flipOneThree.WeylV := by
   show ((Module.finrank Kf (Vsp Kf lam0) : ℕ) : ℚ) = _
   rw [hV, finrank_tensor', Nat.cast_prod]
   refine Finset.prod_congr rfl (fun s _ => ?_)
-  have hmono : Antitone (nuOf (lamAt lam0 s)) := fun a b hab =>
-    Int.toNat_le_toNat (by linarith [hA s hab])
-  rw [weyl_dualWeyl Kf (m + 1) (nuOf (lamAt lam0 s)) hmono]
+  rw [weyl_dualWeyl Kf (m + 1) (nuOf (lamAt lam0 s))
+    (fun a b hab => Int.toNat_le_toNat (by linarith [hA s hab]))]
   have hnu : ∀ t, ((nuOf (lamAt lam0 s) t : ℕ) : ℚ) =
       ((lamAt lam0 s t : ℤ) : ℚ) - ((lamAt lam0 s (Fin.last m) : ℤ) : ℚ) := by
     intro t
@@ -419,11 +392,11 @@ theorem gl_branching_dimension (D : Formalism.BasicNotions.D7) : Formalism.MainN
   refine Finset.sum_nbij' (fun mu t => ((mu t : ℕ) : ℤ)) (fun κ t => (κ t).toNat) ?_ ?_ ?_ ?_ ?_
   · intro mu hmu
     rw [Finset.mem_filter] at hmu
-    rw [mem_gtBox']
+    rw [_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Pieri.mem_gtBox]
     intro i
     exact ⟨Nat.cast_le.mpr (hmu.2 i).1, Nat.cast_le.mpr (hmu.2 i).2⟩
   · intro κ hκ
-    rw [mem_gtBox'] at hκ
+    rw [_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Pieri.mem_gtBox] at hκ
     rw [Finset.mem_filter, Fintype.mem_piFinset]
     refine ⟨fun i => ?_, fun i => ?_⟩
     · have h1 := hκ i
@@ -438,7 +411,7 @@ theorem gl_branching_dimension (D : Formalism.BasicNotions.D7) : Formalism.MainN
     funext t
     simp
   · intro κ hκ
-    rw [mem_gtBox'] at hκ
+    rw [_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Pieri.mem_gtBox] at hκ
     funext t
     have h1 := (hκ t).1
     try dsimp only at h1 ⊢

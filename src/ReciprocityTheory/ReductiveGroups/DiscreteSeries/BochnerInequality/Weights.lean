@@ -2,48 +2,8 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.CasValK
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.Permute
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.BigRep
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.KhwWeightEqOfIrr
 
@@ -92,7 +52,7 @@ private theorem w_sum_update (φ : Fin n × Fin n → ℤ) {k : ℕ} (κ : Fin k
     funext j
     by_cases h : j = i
     · subst h; simp
-    · simp [Function.update_apply, h]
+    · simp [h]
   have h1 : ∑ j, φ (Function.update κ i p j) = φ p + ∑ j ∈ Finset.univ \ {i}, φ (κ j) := by
     rw [show (∑ j, φ (Function.update κ i p j)) = ∑ j, Function.update (fun j => φ (κ j)) i (φ p) j
       from congrArg (fun f => ∑ j, f j) hfun, Finset.sum_update_of_mem (Finset.mem_univ i)]
@@ -155,6 +115,10 @@ theorem khw_big_weight (hE : IsGlRep E) (hV : IsKIrrHW ε E Λ V) {k : ℕ} {F :
     by_contra h'
     exact absurd (hκmax κ' (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h'⟩)) (not_le.mpr h)
 
+  have hupd : ∀ (i : Fin k) (p : Fin n × Fin n), φ (κ i) < φ p →
+      F (Function.update κ i p) = 0 := fun i p hp =>
+    hzero (Function.update κ i p) (by linarith [w_sum_update φ κ i p])
+
   have hK : IsKHWVec ε E (ν - ∑ j, root (κ j).1 (κ j).2) (F κ) := by
     refine ⟨fun a => hwt κ a, fun a b hab hεab => ?_⟩
     have hab' : ((a : ℕ) : ℤ) < ((b : ℕ) : ℤ) := by
@@ -166,21 +130,12 @@ theorem khw_big_weight (hE : IsGlRep E) (hV : IsKIrrHW ε E Λ V) {k : ℕ} {F :
     have hterm : ∀ i, ((if (κ i).1 = a then F (Function.update κ i (b, (κ i).2)) else 0) -
         (if (κ i).2 = b then F (Function.update κ i ((κ i).1, a)) else 0)) = 0 := by
       intro i
-      have u1 : (κ i).1 = a → F (Function.update κ i (b, (κ i).2)) = 0 := fun h => by
-        apply hzero
-        have hs := w_sum_update φ κ i (b, (κ i).2)
-        have hp : φ (b, (κ i).2) - φ (κ i) = ((b : ℕ) : ℤ) - ((a : ℕ) : ℤ) := by
-          simp only [hφ, h]; ring
-        linarith
-      have u2 : (κ i).2 = b → F (Function.update κ i ((κ i).1, a)) = 0 := fun h => by
-        apply hzero
-        have hs := w_sum_update φ κ i ((κ i).1, a)
-        have hp : φ ((κ i).1, a) - φ (κ i) = ((b : ℕ) : ℤ) - ((a : ℕ) : ℤ) := by
-          simp only [hφ, h]; ring
-        linarith
+      have u1 : (κ i).1 = a → F (Function.update κ i (b, (κ i).2)) = 0 := fun h =>
+        hupd i (b, (κ i).2) (by simp only [hφ, h]; linarith)
+      have u2 : (κ i).2 = b → F (Function.update κ i ((κ i).1, a)) = 0 := fun h =>
+        hupd i ((κ i).1, a) (by simp only [hφ, h]; linarith)
       by_cases h1 : (κ i).1 = a <;> by_cases h2 : (κ i).2 = b <;> simp [h1, h2, u1, u2]
-    rw [Finset.sum_congr rfl (fun i _ => hterm i), Finset.sum_const_zero, add_zero] at h0
-    simpa using h0
+    simpa [hterm, Finset.sum_const_zero, add_zero] using h0
   have hΛ := khw_weight_eq_of_irr hE hV (ncV_mem hF κ) hκ0 hK
   refine ⟨κ, fun i h => hκ0 (ncV_eq_zero hF i h), ?_⟩
   rw [← hΛ, sub_sub_cancel]

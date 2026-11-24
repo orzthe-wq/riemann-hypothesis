@@ -48,6 +48,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSeqOfStep
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HtArith
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -77,16 +78,6 @@ theorem pow_comp' {S : Scheme.{0}} {G G' Z : Over S} [MonObj G] [MonObj G'] (φ 
   induction n with
   | zero => rw [pow_zero, pow_zero, MonObj.one_comp]
   | succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]
-
-theorem isMonHom_id_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (n : ℕ) :
-    IsMonHom (𝟙 A ^ n) := by
-  induction n with
-  | zero =>
-    rw [pow_zero]
-    exact inferInstanceAs (IsMonHom (toUnit A ≫ η[A]))
-  | succ n ih =>
-    rw [pow_succ]
-    exact inferInstanceAs (IsMonHom (lift (𝟙 A ^ n) (𝟙 A) ≫ μ[A]))
 
 variable {G : HTGroup p} (L : Link D G)
 

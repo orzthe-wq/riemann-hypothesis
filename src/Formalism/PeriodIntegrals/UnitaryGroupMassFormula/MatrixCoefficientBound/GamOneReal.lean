@@ -42,57 +42,30 @@ import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
-open Finset
-
-noncomputable section
-
-open Classical
+open Classical Formalism.L2.SG.GGMirabolic
 
 namespace PI.GGMatBoundW
-
-open Formalism.L2.SG.GGMirabolic
-
-theorem gam_one_real {F : Type} [Field F] [Fintype F] (k : ℕ) (ψ₀ : AddChar F ℂ) :
-    gam ψ₀ (1 : GL (Fin k) F) = (((Fintype.card (GL (Fin k) F) : ℝ) / (cardU F k : ℝ) : ℝ) : ℂ) := by
-  rw [gam_one]; push_cast; rfl
 
 theorem eigBound_of (hP : PlaceBound) (hJ : JointEig) (hF : ProdFormula) : EigBound := by
   intro hC hR ι _ Fq _ _ k ψ hψ hq V _ _ _ π w μ hw he
   obtain ⟨W, hW0, hWinv, hWeig, hv⟩ := hJ ι Fq k ψ V π w μ hw he
   choose μv hμv using hv
+  choose c hc hc0 hc1 using fun v => hP hC hR (Fq v) k (ψ v) (hψ v) (hq v) V
+    (π.comp (MonoidHom.mulSingle (fun v => GL (Fin k) (Fq v)) v)) W (μv v) hW0
+    (fun _ y hy => hWinv _ y hy) fun y hy => by
+      rw [← hμv v y hy]; simp [repGam, placeOp, LinearMap.sum_apply]
   obtain ⟨x, hxW, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hW0
-  have hpl : ∀ v, ∃ c : ℝ, μv v = gam (ψ v) (1 : GL (Fin k) (Fq v)) * (c : ℂ) ∧ 0 ≤ c ∧
-      c ≤ 1 + 3 / (Fintype.card (Fq v) : ℝ) := by
-    intro v
-    refine hP hC hR (Fq v) k (ψ v) (hψ v) (hq v) V
-      (π.comp (MonoidHom.mulSingle (fun v => GL (Fin k) (Fq v)) v)) W (μv v) hW0 ?_ ?_
-    · intro g y hy; exact hWinv _ y hy
-    · intro y hy
-      rw [← hμv v y hy]
-      simp [repGam, placeOp, LinearMap.sum_apply]
-  choose c hc using hpl
-  have h1 : totOp ψ π x = (∏ v, μv v) • x := hF ι Fq k ψ V π μv x (fun v => hμv v x hxW)
-  have h2 : μ = ∏ v, μv v := by
-    have h3 := hWeig x hxW
-    rw [h1] at h3
-    exact (smul_left_injective ℂ hx0 h3).symm
-  set g : ι → ℝ := fun v => (Fintype.card (GL (Fin k) (Fq v)) : ℝ) / (cardU (Fq v) k : ℝ) with hg
-  have hg0 : ∀ v, 0 ≤ g v := fun v => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
-  have hG1 : gamProd ψ (1 : ∀ v, GL (Fin k) (Fq v)) = ((∏ v, g v : ℝ) : ℂ) := by
-    unfold gamProd
-    push_cast
-    refine Finset.prod_congr rfl fun v _ => ?_
-    rw [Pi.one_apply, gam_one_real]
+  have hμ := hWeig x hxW
+  rw [hF ι Fq k ψ V π μv x fun v => hμv v x hxW] at hμ
+  have hG0 : 0 ≤ ∏ v, (Fintype.card (GL (Fin k) (Fq v)) : ℝ) / cardU (Fq v) k := by positivity
+  set g : ι → ℝ := fun v => (Fintype.card (GL (Fin k) (Fq v)) : ℝ) / cardU (Fq v) k
+  have hg v : gam (ψ v) (1 : GL (Fin k) (Fq v)) = g v := by simp [g, gam_one]
+  have hG : gamProd ψ (1 : ∀ v, GL (Fin k) (Fq v)) = ↑(∏ v, g v) := by simp [gamProd, hg]
   refine ⟨(∏ v, g v) * ∏ v, c v, ?_, ?_, ?_⟩
-  · rw [h2]
-    push_cast
-    rw [← Finset.prod_mul_distrib]
-    refine Finset.prod_congr rfl fun v _ => ?_
-    rw [(hc v).1, gam_one_real]
-  · exact mul_nonneg (Finset.prod_nonneg fun v _ => hg0 v) (Finset.prod_nonneg fun v _ => (hc v).2.1)
-  · rw [hG1, Complex.ofReal_re, mul_comm (∏ v, (1 + 3 / (Fintype.card (Fq v) : ℝ)))]
-    exact mul_le_mul_of_nonneg_left
-      (Finset.prod_le_prod₀ (fun v _ => (hc v).2.1) (fun v _ => (hc v).2.2))
-      (Finset.prod_nonneg fun v _ => hg0 v)
+  · rw [← smul_left_injective ℂ hx0 hμ]
+    simp [hc, hg, Finset.prod_mul_distrib]
+  · exact mul_nonneg hG0 (Finset.prod_nonneg fun v _ => hc0 v)
+  · rw [hG, Complex.ofReal_re, mul_comm (∏ v, (1 + _))]
+    exact mul_le_mul_of_nonneg_left (Finset.prod_le_prod₀ (fun v _ => hc0 v) fun v _ => hc1 v) hG0
 
 end PI.GGMatBoundW

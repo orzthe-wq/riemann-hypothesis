@@ -188,6 +188,6 @@ theorem leafFreeCokInj : LeafFreeCokInj := by
   rw [map_sub, map_zero, sub_eq_zero] at hg'
   exact hg'
 
-theorem LeafFreeCokInj_of : LeafFreeCokInj := leafFreeCokInj
+alias LeafFreeCokInj_of := _root_.LateralTheory.CohomologicalPurity.leafFreeCokInj
 
 end LateralTheory.CohomologicalPurity

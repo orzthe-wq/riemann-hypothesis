@@ -180,25 +180,6 @@ theorem orbFun_eval_eq_zero_or_one (w0 : O) (v : LinearMap.BilinForm ℤ X₀) {
   · exact Or.inr rfl
   · exact Or.inl rfl
 
-theorem eq_zero_of_isOrbForm_const {v : LinearMap.BilinForm ℤ X₀} {σ : O ≃+* O} {n : ℕ}
-    (h : IsOrbForm v σ n fun _ _ => 0) : v = 0 := by
-  obtain ⟨s, hs, H⟩ := h
-  refine LinearMap.ext₂ fun x y => ?_
-  obtain ⟨a, ha⟩ := hs (Submodule.Quotient.mk x)
-  obtain ⟨b, hb⟩ := hs (Submodule.Quotient.mk y)
-  have := H a b x y ha.symm hb.symm
-  simp only [LinearMap.zero_apply]
-  have h0 : ((v x y : ℤ) : ℝ) = 0 := this.symm
-  exact_mod_cast h0
-
-theorem orbFun_evalZ_zero (w0 : O) {v : LinearMap.BilinForm ℤ X₀} (hv : v ≠ 0) {X : Type} [AddCommGroup X] [Module O X]
-    [Module.Finite O X] : (orbFun O w0 v).evalZ (0 : LinearMap.BilinForm ℤ X) = 0 := by
-  obtain ⟨n, r, hr⟩ := Module.Finite.exists_fin' O X
-  rw [InvFun.evalZ, (orbFun O w0 v).eval_eq hr, orbFun_toFun, if_neg]
-  rintro ⟨-, σ, -, h⟩
-  refine hv (eq_zero_of_isOrbForm_const (σ := σ) (n := n) ?_)
-  simpa using h
-
 theorem orbFun_evalZ_self (w0 : O) {v : LinearMap.BilinForm ℤ X₀} [Module.Finite O X₀] (hv : v ≠ 0)
     (hsym : ∀ y z, v y z = v z y) : (orbFun O w0 v).evalZ v = 1 := by
   obtain ⟨n, r, hr⟩ := Module.Finite.exists_fin' O X₀

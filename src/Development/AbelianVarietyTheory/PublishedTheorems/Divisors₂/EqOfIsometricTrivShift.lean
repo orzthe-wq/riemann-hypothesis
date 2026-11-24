@@ -56,13 +56,6 @@ def Isometric (L M : HermLB p) : Prop :=
   ∃ w : LB.Iso L.B M.B, w.IsGen ∧ ∀ (σ : k →+* ℂ) (a : M.B.ι) (b : L.B.ι) (y : CxPts p σ),
     y ∈ ptsIn p σ (M.B.U a) → y ∈ ptsIn p σ (L.B.U b) →
       (M.φ σ).φ a y = (L.φ σ).φ b y + Real.log (‖ev p σ _ (w.s (a, b)).val y‖ ^ 2)
-private theorem res_res_lemma {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)ˣ) :
-    res h' (res h a) = res (h'.trans h) a := by
-  ext
-  change (X.presheaf.map (homOfLE h').op).hom ((X.presheaf.map (homOfLE h).op).hom a.val) =
-    (X.presheaf.map (homOfLE (h'.trans h)).op).hom a.val
-  rw [← CommRingCat.comp_apply, ← Functor.map_comp]
-  rfl
 private theorem isGen_iso_self_of_isLB (B : LB X) (hB : B.IsLB) :
     (⟨fun c => B.g c.1 c.2⟩ : LB.Iso B B).IsGen := by
   obtain ⟨-, -, hc⟩ := hB
@@ -71,7 +64,7 @@ private theorem isGen_iso_self_of_isLB (B : LB X) (hB : B.IsLB) :
     (B.U a ⊓ B.U b) ⊓ (B.U a' ⊓ B.U b') ≤ _)) (hc a a' b')
   have e2 := congrArg (res (fun x hx => by simp only [Opens.mem_inf] at hx ⊢; tauto :
     (B.U a ⊓ B.U b) ⊓ (B.U a' ⊓ B.U b') ≤ _)) (hc a b b')
-  simp only [map_mul, res_res_lemma] at e1 e2
+  simp only [map_mul, _root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res'] at e1 e2
   dsimp only [LB.div]
   refine (eq_mul_inv_of_mul_eq e2).trans ?_
   rw [← e1]
@@ -142,16 +135,7 @@ def ArIso : Prop := ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] 
     ∀ (κ : Type) [Fintype κ] (M : κ → HermLB p) (A : κ → ι → ℤ), (∀ j, (comb L (A j)).Isometric (M j)) →
       IsArFun M D (Φ ∘ₗ (aeval fun j => lin fun i => (A j i : ℝ) : MvPolynomial κ ℝ →ₐ[ℝ] MvPolynomial ι ℝ).toLinearMap)
 
-def ArMetric : Prop := ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
-  ∀ (ι : Type) [Fintype ι] (M : HermLB p) (L : ι → HermLB p) (u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ)
-    (hu : ∀ σ y, CxPts.CInfAt (u σ) y) (hc : ∀ σ σ', (Weight.ofFun (u σ)).IsConj (Weight.ofFun (u σ')))
-    (Φ Φ' : MvPolynomial (Option ι) ℝ →ₗ[ℝ] ℝ), IsArFun (fun o : Option ι => o.elim M L) D Φ →
-    IsArFun (fun o : Option ι => o.elim (M.raise u hu hc) L) D Φ' → ∀ n : ι → ℤ,
-      (∀ σ, ((comb L n).φ σ).ChernIntegrableOn D Set.univ (u σ)) ∧
-      Φ' (MvPolynomial.X none * rename some (lin fun i => (n i : ℝ)) ^ D) =
-        Φ (MvPolynomial.X none * rename some (lin fun i => (n i : ℝ)) ^ D) + 1 / 2 * chInt (comb L n) D u
-
-def ArCalc : Prop := ArExists ∧ ArChange ∧ ArShift ∧ ArMix ∧ ArProj ∧ ArIso ∧ ArMetric
+def ArCalc : Prop := ArExists ∧ ArChange ∧ ArShift ∧ ArMix ∧ ArProj ∧ ArIso
 
 theorem ArCalc.arExists (h : ArCalc) : ArExists := h.1
 
@@ -163,7 +147,7 @@ theorem ArCalc.arMix (h : ArCalc) : ArMix := h.2.2.2.1
 
 theorem ArCalc.arProj (h : ArCalc) : ArProj := h.2.2.2.2.1
 
-theorem ArCalc.arIso (h : ArCalc) : ArIso := h.2.2.2.2.2.1
+theorem ArCalc.arIso (h : ArCalc) : ArIso := h.2.2.2.2.2
 
 section Consequences
 
@@ -189,7 +173,6 @@ theorem ArMix.fnB (H : ArMix) (HE : ArExists) (hX : IsArithVar p D) {L : ι → 
     rw [(hE z).mult_eq]
     first
       | exact UnitAt.ord_eq_zero (unitAt_one z)
-      | simpa using UnitAt.ord_eq_zero (unitAt_one z)
   have hoff : ∀ σ, offSupp p σ ((ArInt.fnB u hu hc).div hr1) = Set.univ := fun σ =>
     Set.eq_univ_of_forall fun y => mem_offSupp.2 fun hy => hy (hE _)
   have hlog : ∀ σ, logNorm ((ArInt.fnB u hu hc).φ σ) (fun _ : (LB.triv X).ι => 1) =

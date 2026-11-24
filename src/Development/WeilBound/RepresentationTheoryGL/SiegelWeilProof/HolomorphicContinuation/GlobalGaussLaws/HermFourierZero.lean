@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.NumFieldHosCountable
 
 @[expose] public section
 
@@ -86,7 +87,7 @@ theorem hermFourierZero (D : D7) (r : ℕ) (ψ : AddChar (AF D.host.F) ℂ) (hψ
   haveI : BorelSpace (Mx D r r) := ⟨rfl⟩
   haveI : LocallyCompactSpace (hermA D r) :=
     (GlobalTheory.CompanionTheory.HermVol.isClosed_hermA (D := D) (r := r)).locallyCompactSpace
-  haveI : Countable D.host.E := GlobalTheory.CompanionTheory.FourierComplete.countable_numberField D.host.E
+  haveI : Countable D.host.E := _root_.Formalism.IndefR.Eqv.G5.numField_countable D.host.E
   haveI : Countable (Matrix (Fin r) (Fin r) D.host.E) :=
     inferInstanceAs (Countable (Fin r → Fin r → D.host.E))
   have hmem : ∀ q : ratHerm D r, q.1.1 ∈ ratMx D r r := fun q => AddSubgroup.mem_comap.1 q.2

@@ -456,5 +456,3 @@ theorem btOrder_flat_baseChange : ∀ (R : Type) [CommRing R] [IsDomain R] (T : 
 
 end PositivityTheory.HtPt.Htat.ValuationInjectivePi
 
-theorem PositivityTheory.HtPt.Htat.bt_flat_bc : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ (algebraMap R R') F → Module.Flat R R' → Γ'.btOrder ⊤ = extOrder (algebraMap R R') (Γ.btOrder ⊤) :=
-  @PositivityTheory.HtPt.Htat.ValuationInjectivePi.btOrder_flat_baseChange

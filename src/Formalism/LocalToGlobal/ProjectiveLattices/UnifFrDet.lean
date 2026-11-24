@@ -35,6 +35,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+public import Formalism.LocalToGlobal.ProjectiveLattices.FnDefC
 
 @[expose] public section
 
@@ -66,10 +67,6 @@ theorem perFr_neg (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : Fr
   subst hρ
   unfold perFr
   rw [dite_eq_right hτ, dite_eq_left hρ1, dite_eq_left hi]
-
-theorem conjEmb_conjEmb (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ := by
-  ext x
-  simp [ReciprocityTheory.ChartRestriction.G.Geo.Tor.conjEmb]
 
 theorem conjEmb_eq (τ : E →+* ℂ) : conjEmb τ = ComplexEmbedding.conjugate τ := by
   ext x

@@ -67,7 +67,7 @@ private theorem zpow_w_ne {k : Type} [Field k] {n : ℕ} (hn : n = 2 ∨ n = 3) 
     simp
   rcases hn with rfl | rfl
   · fin_cases i <;> fin_cases j <;> simp [w] at hij ⊢
-    all_goals first | exact h1 | exact Ne.symm h1 | exact h2 | exact Ne.symm h2
+    all_goals first | exact h2 | exact Ne.symm h2
   · fin_cases i <;> fin_cases j <;> simp [w] at hij ⊢
     all_goals first | exact h1 | exact Ne.symm h1 | exact h2 | exact Ne.symm h2
 

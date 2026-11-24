@@ -2,51 +2,8 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.GermSC
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.DiscriminantEstimates.WickFormula
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Bool
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -65,7 +22,6 @@ theorem liftX_hasSubst :
     HasSubst (fun p : Fin 1 × Fin d => (X (Sum.inl p.2) : AA k d)) := by
   first
   | exact hasSubst_of_constantCoeff_zero (fun p => by simp)
-  | exact ⟨fun p => by simp, fun e => Set.toFinite _⟩
 
 theorem liftX_add (f g : PS k 1 d) : liftX k (f + g) = liftX k f + liftX k g := MvPowerSeries.subst_add liftX_hasSubst f g
 
@@ -80,12 +36,9 @@ theorem nabla_add (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u u' φ φ' : Fin d �
     nabla k B h m (u + u') (φ + φ') G = nabla k B h m u φ G + nabla k B h m u' φ' G := by
   first
   | (unfold nabla Dx
-     simp only [Pi.add_apply, Prod.fst_add, Prod.snd_add, map_add (f := _), add_mul, mul_add, Finset.sum_add_distrib, Dof_add,
-       liftX_add, smul_add, add_smul]
+     simp only [Pi.add_apply, map_add (f := _), add_mul, mul_add, Finset.sum_add_distrib, Dof_add,
+       liftX_add]
      ring)
-  | (unfold nabla
-     revert G u u' φ φ' m h B
-     done)
 
 def nablaL (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u φ : Fin d → k) : Module.End k (AA k d) where
   toFun := nabla k B h m u φ
@@ -112,12 +65,6 @@ theorem nablaL_bracket (hN2 : ConnectionCommutator) (B : FB R d O) (h : PS k 2 d
   intro G
   simp only [LinearMap.sub_apply, Module.End.mul_apply, nablaL_apply, Module.algebraMap_end_apply]
   first
-  | exact hN2 B h m ξ η G
-  | exact hN2 B h m ξ.1 ξ.2 η.1 η.2 G
-  | exact hN2 B h m G ξ η
-  | simpa using hN2 B h m ξ η G
-  | simpa using hN2 B h m ξ.1 ξ.2 η.1 η.2 G
-  | (apply hN2; done)
   | (simp only [Algebra.smul_def] at *; apply hN2; done)
 
 theorem nablaL_comm (hN2 : ConnectionCommutator) (B : FB R d O) (h : PS k 2 d) (m : ℕ) (ξ η : (Fin d → k) × (Fin d → k))
@@ -158,14 +105,13 @@ theorem foldr_eq_prod (f : ι → AA k d → AA k d) (F : ι → Module.End k (A
   | cons a L ih =>
     first
     | simp only [List.foldr_cons, List.map_cons, List.prod_cons, Module.End.mul_apply, Module.End.pow_apply, hF, ih]
-    | simp only [List.foldr_cons, List.map_cons, List.prod_cons, LinearMap.mul_apply, LinearMap.pow_apply, hF, ih]
 
 theorem perm_inl (s : ι → Bool) :
     ((Finset.univ : Finset ι).toList.filter (fun l => s l)).Perm
       (List.ofFn fun i => (sideE s).symm (Sum.inl i)) := by
   rw [List.perm_ext_iff_of_nodup ((Finset.nodup_toList _).filter _) ?_]
   · intro x
-    simp only [List.mem_filter, Finset.mem_toList, Finset.mem_univ, true_and, List.mem_ofFn, Set.mem_range]
+    simp only [List.mem_filter, Finset.mem_toList, Finset.mem_univ, true_and, List.mem_ofFn]
     constructor
     · intro hx
       exact ⟨Fintype.equivFin _ ⟨x, hx⟩, by rw [sideE_symm_inl]; simp⟩
@@ -180,8 +126,7 @@ theorem perm_inr (s : ι → Bool) :
       (List.ofFn fun j => (sideE s).symm (Sum.inr j)) := by
   rw [List.perm_ext_iff_of_nodup ((Finset.nodup_toList _).filter _) ?_]
   · intro x
-    simp only [List.mem_filter, Finset.mem_toList, Finset.mem_univ, true_and, List.mem_ofFn, Set.mem_range,
-      Bool.not_eq_true']
+    simp only [List.mem_filter, Finset.mem_toList, Finset.mem_univ, true_and, List.mem_ofFn, Bool.not_eq_true']
     constructor
     · intro hx
       exact ⟨Fintype.equivFin _ ⟨x, by simp [hx]⟩, by rw [sideE_symm_inr]; simp⟩

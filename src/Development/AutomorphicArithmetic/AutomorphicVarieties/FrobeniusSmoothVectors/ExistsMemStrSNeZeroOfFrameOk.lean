@@ -59,10 +59,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
-private theorem lc_of_ker {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H] (f : G →* H)
-    (hf : IsOpen (f.ker : Set G)) : IsLocallyConstant f :=
-  _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker f hf
-
 theorem UpperTheory.exists_mem_strS_ne_zero_of_frameOk :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}, F.Ok C₀ → ∃ b ∈ F.strS k, b ≠ 0 := by
   intro l _ k _ _ F C₀ h
@@ -86,7 +82,7 @@ theorem UpperTheory.exists_mem_strS_ne_zero_of_frameOk :
     simpa using this
   have hci : F.c⁻¹ = F.c := inv_eq_of_mul_eq_one_right h.c_sq
   refine ⟨fun g => x g * F.Ψ g, ⟨?_, fun g g' => ?_, fun g => ?_, fun v => ?_⟩, fun e => ?_⟩
-  · exact (x1.mul ((lc_of_ker F.Ψ h.Ψ_open).comp Units.val)).comp_continuous continuous_subtype_val
+  · exact (x1.mul ((_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker F.Ψ h.Ψ_open).comp Units.val)).comp_continuous continuous_subtype_val
   · have := (F.Ψ g).ne_zero
     simp only [Subgroup.coe_mul, x2, hχ, map_mul, Units.val_mul, smul_eq_mul, Units.val_inv_eq_inv_val]
     field_simp

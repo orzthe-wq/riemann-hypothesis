@@ -59,4 +59,4 @@ theorem _root_.GlobalTheory.T.exists_lift_shearMap_squareZero_abelianSchemes : �
     ∀ (f₀ : A₀ ⟶ B₀) [IsMonHom f₀],
     (∀ d ∈ schemeFil (divided₂ hI) A₀ X i h.w, push (divided₂ hI) (spMap π) f₀ d ∈ schemeFil (divided₂ hI) B₀ Y j k.w) →
     ∃ φ : X ⊗ Y ⟶ Y, l ≫ φ.left = ((fst A₀ B₀ ≫ f₀) * snd A₀ B₀).left ≫ j := by
-  first | exact @GlobalTheory.ShearLift.exists_lift_shear | exact GlobalTheory.ShearLift.exists_lift_shear | (intros; apply GlobalTheory.ShearLift.exists_lift_shear <;> assumption)
+  first | exact @GlobalTheory.ShearLift.exists_lift_shear

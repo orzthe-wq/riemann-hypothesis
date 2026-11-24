@@ -311,7 +311,7 @@ theorem colMap_equi {Γ : Type} [Group Γ] {a d : ℕ} {L₀ : FinExt l} {Cl : S
   show algebraMap ℚ_[l] (Om l) ((((ρ g).val.map (algebraMap ℤ_[l] ℚ_[l])) *ᵥ v) i) * _ = _
 
   simp only [Matrix.mulVec, dotProduct, map_sum, Finset.sum_mul,
-  RingHom.mapMatrix_apply, Matrix.map_apply, Units.coeHom_apply, map_mul, zOm, RingHom.comp_apply]
+  Matrix.map_apply, map_mul, zOm, RingHom.comp_apply]
   refine Finset.sum_congr rfl fun x _ => by ring
 
 end GlobalTheory.LayerJumps

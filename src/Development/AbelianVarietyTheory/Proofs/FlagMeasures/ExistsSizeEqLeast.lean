@@ -3,13 +3,13 @@ module
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LamXEquivariant
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointLatticeIntersectionSelfDualProperties
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointRationalEquivarianceStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizePropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointRationalEquivariance
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CanonicalLatticeFiltrationSizeProperties
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NearTrivialPointwise
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalCanonicalFiltrationStepsAutPointStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OrthogonalCanonicalFiltrationStepsAutPoint
+public import Formalism.LocalToGlobal.LatticeGeometry.OperatorNormFibers.PDescentCutA
 import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SlopeIneqMean
 import Formalism.HarderNarasimhan.ShiftInvariance
-public import Formalism.LocalToGlobal.LatticeGeometry.OperatorNormFibers.PDescentCutA
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -210,10 +210,10 @@ theorem lowers (I : AutInst) (x : I.GA) (de : ℝ) (hde : 0 < de) (γ : GL (Fin 
     (stepLe I x t).map ((Matrix.toLin' ((γ : Matrix (Fin I.n) (Fin I.n) I.E) - 1)).restrictScalars (𝓞 I.E)) ≤
       stepLe I x (de * t) := by
   have : IsTotallyComplex I.E := I.cm.cmUnram.1
-  obtain ⟨-, -, -, -, -, hK, hw⟩ := GlobalTheory.T.autPoint_rational_equivariance I x γ a h1 h2 h3
+  obtain ⟨-, -, -, -, -, hK, hw⟩ := _root_.GlobalTheory.PointEquivariance.equivariance I x γ a h1 h2 h3
   have hΛ := hK.1 ha.2.1
-  obtain ⟨hA, -, -, -, hAt, -⟩ := GlobalTheory.T.canonicalLatticeFiltration_size_properties I x t ht
-  obtain ⟨hS, -, -, -, -, -, hSt, -⟩ := GlobalTheory.T.canonicalLatticeFiltration_size_properties I x (de * t) (mul_pos hde ht)
+  obtain ⟨hA, -, -, -, hAt, -⟩ := _root_.GlobalTheory.CountSteps.steps I x t ht
+  obtain ⟨hS, -, -, -, -, -, hSt, -⟩ := _root_.GlobalTheory.CountSteps.steps I x (de * t) (mul_pos hde ht)
   refine map_le_of_sizes (bas I) (frm I x) (GlobalTheory.NearLowerCompare.frm_isUnit I x)
     (GlobalTheory.NearLowerCompare.lamX_isLattice I x).fg hS hA.1 _ ?_ hde ?_ hAt hSt
   · rintro _ ⟨y, hy, rfl⟩
@@ -237,7 +237,7 @@ theorem nearSet_eq (I : AutInst) (x : I.GA) (de : ℝ) (hde : 0 < de) (hde' : de
   obtain ⟨γ, h1, h2, h3⟩ := ha.1
   have hlow := lowers I x de hde γ a h1 h2 h3 ha 2 two_pos
   have hbot : stepLe I x (de * 2) = ⊥ :=
-    ((GlobalTheory.T.canonicalLatticeFiltration_size_properties I x (de * 2) (by positivity)).2.2.2.2.2.2.2.2 hn1).2.1.2 (by linarith)
+    ((_root_.GlobalTheory.CountSteps.steps I x (de * 2) (by positivity)).2.2.2.2.2.2.2.2 hn1).2.1.2 (by linarith)
   have hspan := (GlobalTheory.PointLattice.lamX_selfDual I x).2.2.1
   have h0 : lamX I x ≠ ⊥ := by
     intro h0
@@ -247,7 +247,7 @@ theorem nearSet_eq (I : AutInst) (x : I.GA) (de : ℝ) (hde : 0 < de) (hde' : de
     simp at h1
   have hle : lamX I x ≤ stepLe I x 2 := by
     refine le_sSup ⟨le_rfl, h0, ?_⟩
-    rw [(GlobalTheory.T.orthogonal_canonicalFiltration_steps_autPoint I x).2.1 hn1]
+    rw [(_root_.GlobalTheory.Count.PerpStep.main I x).2.1 hn1]
     exact inv_le_of_inv_le₀ two_pos (by linarith)
   have hz : Matrix.toLin' ((γ : Matrix (Fin I.n) (Fin I.n) I.E) - 1) = 0 := by
     refine LinearMap.ext_on hspan fun y hy => ?_

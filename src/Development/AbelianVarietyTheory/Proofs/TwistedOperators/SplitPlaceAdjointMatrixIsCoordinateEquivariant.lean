@@ -139,7 +139,6 @@ theorem map_mul_conj {A K : Type} [CommRing A] [CommRing K] (π : A →+* K) {a 
   subst h
   simp only [Matrix.map_mul, Matrix.mul_assoc, Units.mul_inv_cancel_left]
   first
-  | rw [Units.mul_inv_cancel_left]
   | rw [← Matrix.mul_assoc (P : Matrix (Fin a) (Fin a) K), Units.mul_inv, Matrix.one_mul]
 
 theorem mt_mul_mt_inv (V : HSp D) (g : GA D V) : Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V g⁻¹ = 1 := by
@@ -167,8 +166,6 @@ theorem adjCo_actO (φ : SplitProj D v) (S T : HSp D) (BS : GL (Fin S.rank) (Fv 
       Formalism.L2.Theta.mt T h⁻¹ * t * Formalism.L2.Theta.mt S g := by
     first
     | rfl
-    | (simp only [actO, _root_.inv_inv]; done)
-    | simp [actO]
   unfold adjCo
   rw [hact, key, map_mul_conj (rdA φ) BS BT (Formalism.L2.Theta.mt S g⁻¹) (Formalism.L2.Theta.mt T h) _ _ rfl, grpCo_inv,
     grpCo_val, grpCo_val]

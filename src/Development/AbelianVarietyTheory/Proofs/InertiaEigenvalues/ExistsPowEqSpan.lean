@@ -103,45 +103,6 @@ private theorem unitOff_one_lemma {q : ℕ} : UnitOff q 1 := by
   · rw [pow_zero, inv_one, mul_one]
     exact isIntegral_one
 
-private theorem unitOff_mul_lemma {q : ℕ} {u w : ℂ} (hu : UnitOff q u) (hw : UnitOff q w) :
-    UnitOff q (u * w) := by
-  unfold UnitOff at hu hw ⊢
-  obtain ⟨hu0, m, hu1, hu2⟩ := hu
-  obtain ⟨hw0, n, hw1, hw2⟩ := hw
-  refine ⟨mul_ne_zero hu0 hw0, m + n, ?_, ?_⟩
-  · have e : (q : ℂ) ^ (m + n) * (u * w) = ((q : ℂ) ^ m * u) * ((q : ℂ) ^ n * w) := by ring
-    rw [e]
-    exact hu1.mul hw1
-  · have e : (q : ℂ) ^ (m + n) * (u * w)⁻¹ = ((q : ℂ) ^ m * u⁻¹) * ((q : ℂ) ^ n * w⁻¹) := by
-      rw [mul_inv]
-      ring
-    rw [e]
-    exact hu2.mul hw2
-
-private theorem unitOff_inv_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) : UnitOff q u⁻¹ := by
-  unfold UnitOff at hu ⊢
-  obtain ⟨hu0, m, hu1, hu2⟩ := hu
-  exact ⟨inv_ne_zero hu0, m, hu2, by rwa [inv_inv]⟩
-
-private theorem unitOff_of_pow_lemma {q : ℕ} {u : ℂ} {N : ℕ} (hN : 0 < N) (hu : UnitOff q (u ^ N)) :
-    UnitOff q u := by
-  unfold UnitOff at hu ⊢
-  obtain ⟨hu0, m, hu1, hu2⟩ := hu
-  obtain ⟨N', rfl⟩ : ∃ N', N = N' + 1 := ⟨N - 1, by omega⟩
-  have hu0' : u ≠ 0 := fun h => hu0 (by rw [h, zero_pow (Nat.succ_ne_zero N')])
-  refine ⟨hu0', m, ?_, ?_⟩
-  · apply IsIntegral.of_pow (Nat.succ_pos N')
-    have e : ((q : ℂ) ^ m * u) ^ (N' + 1) = (q : ℂ) ^ (m * N') * ((q : ℂ) ^ m * u ^ (N' + 1)) := by ring
-    rw [e]
-    exact ((isIntegral_natCast_lemma q).pow _).mul hu1
-  · apply IsIntegral.of_pow (Nat.succ_pos N')
-    have e : ((q : ℂ) ^ m * u⁻¹) ^ (N' + 1) =
-        (q : ℂ) ^ (m * N') * ((q : ℂ) ^ m * (u ^ (N' + 1))⁻¹) := by
-      rw [← inv_pow]
-      ring
-    rw [e]
-    exact ((isIntegral_natCast_lemma q).pow _).mul hu2
-
 private theorem unitOff_conj_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) : UnitOff q (starRingEnd ℂ u) := by
   unfold UnitOff at hu ⊢
   obtain ⟨hu0, m, hu1, hu2⟩ := hu
@@ -158,26 +119,16 @@ private theorem unitOff_norm_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) : Unit
     ring
   have h2 : UnitOff q (((‖u‖ : ℝ) : ℂ) ^ 2) := by
     rw [hsq]
-    exact unitOff_mul_lemma hu (unitOff_conj_lemma hu)
-  exact unitOff_of_pow_lemma (by norm_num) h2
+    exact _root_.GlobalTheory.ChiUnit.unitOff_mul hu (unitOff_conj_lemma hu)
+  exact _root_.GlobalTheory.ChiUnit.unitOff_of_pow (by norm_num) h2
 
 theorem unitOff_div_norm {q : ℕ} {z : ℂ} (hz : UnitOff q z) : UnitOff q (z / (‖z‖ : ℂ)) := by
   rw [div_eq_mul_inv]
-  exact unitOff_mul_lemma hz (unitOff_inv_lemma (unitOff_norm_lemma hz))
-
-private theorem unitOff_zpow_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) (k : ℤ) : UnitOff q (u ^ k) := by
-  have hpow : ∀ n : ℕ, UnitOff q (u ^ n) := by
-    intro n
-    induction n with
-    | zero => rw [pow_zero]; exact unitOff_one_lemma
-    | succ n ih => rw [pow_succ]; exact unitOff_mul_lemma ih hu
-  cases k with
-  | ofNat n => rw [Int.ofNat_eq_natCast, zpow_natCast]; exact hpow n
-  | negSucc n => rw [zpow_negSucc]; exact unitOff_inv_lemma (hpow _)
+  exact _root_.GlobalTheory.ChiUnit.unitOff_mul hz (_root_.GlobalTheory.ChiUnit.unitOff_inv (unitOff_norm_lemma hz))
 
 private theorem unitOff_prod_lemma {q : ℕ} {I : Type} (s : Finset I) (f : I → ℂ)
     (hf : ∀ i ∈ s, UnitOff q (f i)) : UnitOff q (∏ i ∈ s, f i) :=
-  Finset.prod_induction f (UnitOff q) (fun _ _ => unitOff_mul_lemma) unitOff_one_lemma hf
+  Finset.prod_induction f (UnitOff q) (fun _ _ => _root_.GlobalTheory.ChiUnit.unitOff_mul) unitOff_one_lemma hf
 
 private theorem unitOff_val_lemma {L : Type} [Field L] [NumberField L] (φ : L →+* ℂ) (b c : 𝓞 L) (q N : ℕ)
     (hb : b ≠ 0) (hc : c * b = (q : 𝓞 L) ^ N) : UnitOff q (φ (algebraMap (𝓞 L) L b)) := by
@@ -278,10 +229,6 @@ theorem unitOff_val : ∀ (L : Type) [Field L] [NumberField L] (χ : Formalism.L
       (∏ᶠ (w : HeightOneSpectrum (𝓞 L)) (_ : w ∉ S), χ.val w ^ ordF w k) = 1 := by
     first
       | exact GlobalTheory.HeckeProduct.productRule χ S hS k
-      | exact hecke_product_rule L χ S hS k
-      | exact PI.HeckeProdW.productRule χ S hS k
-      | exact GlobalTheory.TypeValues.productRule χ S hS k
-      | exact GlobalTheory.HeckeProduct.hchar_productRule L χ S hS k
   rw [hfp, hloc, mul_one] at hPR
   obtain ⟨N, hN⟩ : ∃ N : ℕ, ordF v k = N := ⟨(ordF v k).toNat, (Int.toNat_of_nonneg hordv.le).symm⟩
   have hNpos : 0 < N := by omega
@@ -295,12 +242,12 @@ theorem unitOff_val : ∀ (L : Type) [Field L] [NumberField L] (χ : Formalism.L
     rw [e4]
     exact Ideal.pow_mem_pow hq _
   obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 hqb
-  apply unitOff_of_pow_lemma hNpos
+  apply _root_.GlobalTheory.ChiUnit.unitOff_of_pow hNpos
   rw [hValPow]
-  apply unitOff_inv_lemma
+  apply _root_.GlobalTheory.ChiUnit.unitOff_inv
   rw [hinf k]
   refine unitOff_prod_lemma Finset.univ _ (fun i _ => ?_)
-  apply unitOff_zpow_lemma
+  apply _root_.GlobalTheory.ChiUnit.unitOff_zpow
   apply unitOff_div_norm
   rw [hkL]
   exact unitOff_val_lemma (φ i) b c q (h * M) hb0 hc

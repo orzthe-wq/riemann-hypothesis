@@ -335,7 +335,7 @@ theorem invX_of (hR : RingA W) (C : Coord W I T) : (latOf C).Inv PowerSeries.X :
 
 theorem isUnit_add_of_mem_jacobson {R : Type} [CommRing R] {u z : R} (hu : IsUnit u)
     (hz : z ∈ (⊥ : Ideal R).jacobson) : IsUnit (u + z) := by
-  first | exact Bl.FirstBlockLemmaI.goal1 .. | (apply Bl.FirstBlockLemmaI.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaI.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaI.goal1 <;> assumption) | (intros; apply @Bl.FirstBlockLemmaI.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaI.goal1 <;> first | assumption | infer_instance) | exact @Bl.FirstBlockLemmaI.goal1 R ‹_› u z hu hz | exact @Bl.FirstBlockLemmaI.goal1 R ‹_› u z hu | exact @Bl.FirstBlockLemmaI.goal1 R ‹_› u z | exact @Bl.FirstBlockLemmaI.goal1 R ‹_› u | exact @Bl.FirstBlockLemmaI.goal1 R ‹_› | exact @Bl.FirstBlockLemmaI.goal1 R
+  first | (apply Bl.FirstBlockLemmaI.goal1 <;> assumption)
 
 theorem isUnit_pS (hR : RingA W) (hT : ToolsAlg W) (s : ℕ) :
     IsUnit (algebraMap (LetA O n) W.EE (pS W s)) := by
@@ -415,12 +415,6 @@ theorem ltors_of [IsDomain O] (hp0 : ((PD.p : ℕ) : O) ≠ 0) (C : Coord W I T)
 
 section Abstract
 
-theorem linIndep_of_mutual {R V : Type} [CommRing R] [IsDomain R] [AddCommGroup V] [Module R V]
-    {r : ℕ} (e w : Fin r → V) (he : LinearIndependent R e) {α β : R} (hα : α ≠ 0) (hβ : β ≠ 0)
-    (h1 : ∀ a, β • w a ∈ Submodule.span R (Set.range e))
-    (h2 : ∀ l, α • e l ∈ Submodule.span R (Set.range w)) : LinearIndependent R w := by
-  first | exact Bl.general_b_fact_right_form.goal1 .. | (apply Bl.general_b_fact_right_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_form.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_form.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› r e w he α β hα hβ h1 h2 | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› r e w he α β hα hβ h1 | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› r e w he α β hα hβ | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› r e w he α β hα | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› r e w he α β | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› r e w he α | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› r e w he | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› r e w | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› r e | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› r | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› ‹_› | exact @Bl.general_b_fact_right_form.goal1 R V ‹_› | exact @Bl.general_b_fact_right_form.goal1 R V | exact @Bl.general_b_fact_right_form.goal1 R
-
 variable {O' : Type} [CommRing O'] {B' : Formalism.ExponentWindows.E.Base O'} {n' : ℕ} {V : Type} [AddCommGroup V]
   [Module (PowerSeries O') V]
 
@@ -495,7 +489,7 @@ theorem pullback_free_of_comparison [IsDomain O'] (L : Formalism.ExponentWindows
   obtain ⟨e, -, he⟩ := hfree c
   obtain ⟨e', hli, he'⟩ := hfree (c + ((k : ℕ) : ZMod n'))
   obtain ⟨α, hα, β, hβ, h1, h2⟩ := pull_mutual L m h hM hh c e he k
-  refine ⟨r, e, he, linIndep_of_mutual e' _ hli (Pp_ne_zero hp hα) (Pp_ne_zero hp hβ)
+  refine ⟨r, e, he, _root_.Bl.general_b_fact_right_form.goal1 e' _ hli (Pp_ne_zero hp hα) (Pp_ne_zero hp hβ)
     (fun a => by rw [he']; exact h1 a)
     (fun l => h2 _ (by rw [← he']; exact Submodule.subset_span ⟨l, rfl⟩))⟩
 
@@ -710,13 +704,5 @@ theorem primUnit_of (hInj : I.Inj) (hFull : I.Full) {e : W.DD W.one} (he : UnitG
 
 theorem unram_of (h : Function.Bijective (algebraMap K₀ K)) : Module.finrank K₀ K = 1 := by
   rw [← (AlgEquiv.ofBijective (Algebra.ofId K₀ K) h).toLinearEquiv.finrank_eq, Module.finrank_self]
-
-theorem p_ne_zero_of (W : LocWach PD LL O v n) : ((PD.p : ℕ) : O) ≠ 0 := by
-  intro h
-  have h1 : ((PD.p : ℕ) : LL) = 0 := by
-    rw [← map_natCast (algebraMap O LL), h, map_zero]
-  have h2 := W.v_l
-  rw [h1, AddValuation.map_zero] at h2
-  exact WithTop.top_ne_one h2
 
 end Formalism.MainNotions.WachCoordinates.Br

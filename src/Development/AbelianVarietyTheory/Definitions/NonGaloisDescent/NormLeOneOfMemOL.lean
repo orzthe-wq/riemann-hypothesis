@@ -130,17 +130,7 @@ def ainfDelta : Delta l (Ainf l) :=
 
 
 variable (l) in
-theorem theta_onto : Function.Surjective (Per.θ l) := by
-  refine surjective_fontaineTheta fun x => ?_
-  obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective x
-  obtain ⟨y, hy⟩ := IsAlgClosed.exists_pow_nat_eq (x : ℂ_[l]) hl.out.pos
-  have hy1 : y ∈ 𝓞_ℂ_[l] := by
-    have := (GlobalTheory.RingBasics.mem_OC _).1 x.2
-    rw [← hy, norm_pow] at this
-    exact (GlobalTheory.RingBasics.mem_OC _).2 ((pow_le_one_iff_of_nonneg (norm_nonneg _) hl.out.ne_zero).1 this)
-  refine ⟨Ideal.Quotient.mk _ ⟨y, hy1⟩, ?_⟩
-  rw [frobenius_def, ← map_pow]
-  exact congrArg _ (Subtype.ext hy)
+alias theta_onto := _root_.GlobalTheory.MemLoc.ThetaD.θ_surj
 
 
 variable (l) in

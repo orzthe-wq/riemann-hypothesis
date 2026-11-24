@@ -1,16 +1,22 @@
 module
 
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.Trace
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.CuspidalMultiplicityOneTotallyComplex
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SfDefs
-public import Development.AutomorphicArithmetic.TwistedTraces.CommutingSmoothIrreducibleFixedVectors
+public import Development.AutomorphicArithmetic.TwistedTraces.ExistsAlgHomEndFixedVectorsToFixedSubspace
+public import Development.AutomorphicArithmetic.TwistedTraces.InfFixedLeSpanFixOfDenseSpanAll
+public import Development.AutomorphicArithmetic.TwistedTraces.TrOnRestrictAndEqOfMapsInto
 public import Development.AutomorphicArithmetic.TwistedTraces.ExistsCompactOpenFamilyInfFixedNeBot
-import Development.AutomorphicArithmetic.TwistedTraces.FixedProjectionApplyEquivariantEq
-import Development.AutomorphicArithmetic.TwistedTraces.FixedProjectionInvariantAndCommutingReps
-import Development.AutomorphicArithmetic.TwistedTraces.TrOnRestrictAndEqOfMapsInto
+import Development.AutomorphicArithmetic.TwistedTraces.LinearFormEqMulTraceOfTwistedInvariant
+import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -22,7 +28,12 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,6 +41,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -43,12 +55,203 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AutomorphicArithmetic.TwistedTraces.FixedProjectionInvariantAndCommutingReps
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.IwahoriDoubleCosets
 import Development.AutomorphicArithmetic.IntegralCasts.IsOpenStabOfMemNhds
 import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+import Development.AutomorphicArithmetic.TwistedTraces.FixedProjectionApplyEquivariantEq
+import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.TwistedTraces.TracePairingSeparatesEndomorphisms, Development.AutomorphicArithmetic.TwistedTraces.CommutingSmoothIrreducibleFixedVectors, Development.AutomorphicArithmetic.TwistedTraces.LeClosureSpanAllOfCommutingUnitaryReps
+
+-- ===== clump member: Development.AutomorphicArithmetic.TwistedTraces.TracePairingSeparatesEndomorphisms =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.TwistedTraces.TracePairingSeparatesEndomorphisms", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.LinearAlgebra.Trace\nimport Development.AutomorphicArithmetic.TwistedTraces.LinearFormEqMulTraceOfTwistedInvariant\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped BigOperators
+
+open TensorProduct in
+private lemma commuting_idempotent_trace {X : Type} [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X] :
+    ∀ (r : ℕ) (S : Fin r → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)]
+      [∀ i, FiniteDimensional ℂ (S i)] [∀ i, Nontrivial (S i)]
+      (c : ∀ i, Module.End ℂ (S i) →ₐ[ℂ] Module.End ℂ X),
+      (∀ i j, i ≠ j → ∀ s t, Commute (c i s) (c j t)) →
+      ∀ B : Module.End ℂ X, IsIdempotentElem B → (∀ i s, Commute B (c i s)) →
+      ∃ N : ℕ, ∀ t : ∀ i, Module.End ℂ (S i),
+        LinearMap.trace ℂ X (B * (List.ofFn fun i => c i (t i)).prod)
+          = N * ∏ i, LinearMap.trace ℂ (S i) (t i) := by
+  intro r
+  induction r with
+  | zero =>
+    intro S _ _ _ _ c hc B hB hcomm
+    refine ⟨Module.finrank ℂ (LinearMap.range B), fun t => ?_⟩
+    have := (LinearMap.IsIdempotentElem.isProj_range B hB).trace
+    simpa using this
+  | succ r ih =>
+    intro S _ _ _ _ c hc B hB hcomm
+    obtain ⟨e, he⟩ := exists_ne (0 : S 0)
+    obtain ⟨ξ, h1⟩ := Module.Projective.exists_dual_eq_one ℂ he
+    set E : Module.End ℂ (S 0) := dualTensorHom ℂ (S 0) (S 0) (ξ ⊗ₜ e) with hEdef
+    have hE : IsIdempotentElem E := by
+      show E * E = E
+      ext y
+      simp [hEdef, dualTensorHom_apply, h1]
+    have hB' : IsIdempotentElem (B * c 0 E) :=
+      IsIdempotentElem.mul_of_commute (hcomm 0 E) hB (hE.map (c 0))
+    have hcomm' : ∀ (i : Fin r) (s : Module.End ℂ (S i.succ)),
+        Commute (B * c 0 E) (c i.succ s) := fun i s =>
+      (hcomm i.succ s).mul_left (hc 0 i.succ (Fin.succ_ne_zero i).symm E s)
+    obtain ⟨N, hN⟩ := ih (fun i => S i.succ) (fun i => c i.succ)
+      (fun i j hij s t => hc i.succ j.succ (fun h => hij (Fin.succ_injective _ h)) s t)
+      (B * c 0 E) hB' hcomm'
+    refine ⟨N, fun t => ?_⟩
+    rw [List.ofFn_succ, List.prod_cons, Fin.prod_univ_succ]
+    set A : Module.End ℂ X := (List.ofFn fun i : Fin r => c i.succ (t i.succ)).prod with hA
+    have hAc : ∀ s, Commute (c 0 s) A := fun s => by
+      refine Commute.list_prod_right _ _ ?_
+      intro x hx
+      obtain ⟨i, rfl⟩ := (List.mem_ofFn' _ _).1 hx
+      exact hc 0 i.succ (Fin.succ_ne_zero i).symm s _
+    let τ : Module.End ℂ (S 0) →ₗ[ℂ] ℂ :=
+      (LinearMap.trace ℂ X) ∘ₗ (LinearMap.mulRight ℂ A) ∘ₗ (LinearMap.mulLeft ℂ B) ∘ₗ
+        (c 0).toLinearMap
+    have hτv : ∀ s, τ s = LinearMap.trace ℂ X (B * c 0 s * A) := fun s => rfl
+    have hτ : ∀ a b, τ (a * b) = τ (b * a) := by
+      intro a b
+      simp only [hτv, map_mul, mul_assoc]
+      rw [(hcomm 0 a).left_comm, LinearMap.trace_mul_comm]
+      simp only [mul_assoc]
+      rw [← (hAc a).eq]
+    have key := UpperTheory.linearForm_eq_mul_trace_of_twisted_invariant (S 0) 1 E τ
+      (by simpa [hEdef, LinearMap.trace_eq_contract_apply, contractLeft_apply] using h1)
+      (fun a a' b ha => by simp only [mul_one, one_mul] at ha; simpa [ha] using hτ b a) (t 0)
+    simp only [mul_one] at key
+    have hN' := hN (fun i => t i.succ)
+    rw [← mul_assoc, ← hτv, key, hτv, hN']
+    ring
+
+theorem UpperTheory.trace_pairing_separates_endomorphisms :
+    ∀ (r : ℕ) (X : Type) [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X] (S : Fin r → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)] [∀ i, FiniteDimensional ℂ (S i)] [∀ i, Nontrivial (S i)] (c : ∀ i, Module.End ℂ (S i) →ₐ[ℂ] Module.End ℂ X), (∀ i j, i ≠ j → ∀ s t, Commute (c i s) (c j t)) → ∃ N : ℕ, ∀ t : ∀ i, Module.End ℂ (S i), LinearMap.trace ℂ X (List.ofFn fun i => c i (t i)).prod = N * ∏ i, LinearMap.trace ℂ (S i) (t i) := by
+  intro r X _ _ _ S _ _ _ _ c hc
+  obtain ⟨N, hN⟩ := commuting_idempotent_trace r S c hc 1 IsIdempotentElem.one (fun _ _ => Commute.one_left _)
+  exact ⟨N, fun t => by simpa using hN t⟩
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.TwistedTraces.TracePairingSeparatesEndomorphisms =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.TwistedTraces.CommutingSmoothIrreducibleFixedVectors =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.TwistedTraces.CommutingSmoothIrreducibleFixedVectors", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.CuspidalMultiplicityOneTotallyComplex\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SfDefs\npublic import Development.AutomorphicArithmetic.TwistedTraces.ExistsAlgHomEndFixedVectorsToFixedSubspace\nimport Development.AutomorphicArithmetic.TwistedTraces.FixedProjectionInvariantAndCommutingReps\npublic import Development.AutomorphicArithmetic.TwistedTraces.InfFixedLeSpanFixOfDenseSpanAll\npublic import Development.AutomorphicArithmetic.TwistedTraces.TrOnRestrictAndEqOfMapsInto\npublic import Development.AutomorphicArithmetic.TwistedTraces.TracePairingSeparatesEndomorphisms\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.IwahoriDoubleCosets\nimport Development.AutomorphicArithmetic.IntegralCasts.IsOpenStabOfMemNhds\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
+open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
+
+private theorem prod_res {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (X : Submodule ℂ H) :
+    ∀ (r : ℕ) (T : Fin r → H →L[ℂ] H) (t : Fin r → Module.End ℂ X), (∀ i (v : X), ((t i v : X) : H) = T i v) →
+      ∀ v : X, (((List.ofFn t).prod v : X) : H) = (List.ofFn T).prod v := by
+  intro r
+  induction r with
+  | zero => intro T t _ v; simp
+  | succ r ih =>
+    intro T t h v
+    rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_apply, h,
+      ih (fun i => T i.succ) (fun i => t i.succ) (fun i => h _) v]
+    rfl
+
+private theorem comm_adj {A : Type} [Ring A] [Algebra ℂ A] {s t : Set A} (h : ∀ a ∈ s, ∀ b ∈ t, Commute a b) {a b : A}
+    (ha : a ∈ Algebra.adjoin ℂ s) (hb : b ∈ Algebra.adjoin ℂ t) : Commute a b :=
+  Algebra.commute_of_mem_adjoin_of_forall_mem_commute hb fun y hy =>
+    (Algebra.commute_of_mem_adjoin_of_forall_mem_commute ha fun x hx => (h x hx y hy).symm).symm
+
+
+theorem UpperTheory.commuting_smooth_irreducible_fixed_vectors :
+    ∀ (r : ℕ) (G : Fin r → Type) [∀ i, Group (G i)] [∀ i, TopologicalSpace (G i)] [∀ i, IsTopologicalGroup (G i)] [∀ i, LocallyCompactSpace (G i)] [∀ i, T2Space (G i)] [∀ i, TotallyDisconnectedSpace (G i)] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (S : Fin r → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)] (π : ∀ i, UnitaryRep (G i) H) (τ : ∀ i, Representation ℂ (G i) (S i)) (V Z : Submodule ℂ H), (∀ i, GroundTheory.Automorphic.IsSmooth (τ i)) → (∀ i, (τ i).IsIrreducible) → (∀ i j, i ≠ j → ∀ g h v, π i g (π j h v) = π j h (π i g v)) → IsClosed (Z : Set H) → Z ≤ V → (∀ i, (π i).IsInvariant Z) → (∀ i, V ≤ (spanAll (τ i) (π i) V).topologicalClosure) → ∀ U : ∀ i, Subgroup (G i), (∀ i, IsCompact (U i : Set (G i)) ∧ IsOpen (U i : Set (G i))) → FiniteDimensional ℂ ↥(Z ⊓ ⨅ i, fixU (π i) (U i)) → (Z ⊓ ⨅ i, fixU (π i) (U i)) ≠ ⊥ → (∀ i, FiniteDimensional ℂ (fixedVectors (τ i) (U i)) ∧ fixedVectors (τ i) (U i) ≠ ⊥) ∧ ∃ N : ℕ, ∀ (T : Fin r → H →L[ℂ] H) (B : ∀ i, Module.End ℂ (fixedVectors (τ i) (U i))), (∀ i, ∀ v ∈ (Z ⊓ ⨅ i, fixU (π i) (U i)), T i v ∈ (Z ⊓ ⨅ i, fixU (π i) (U i))) → (∀ i f, Eqv (τ i) (π i) ⊤ f → ∀ x : fixedVectors (τ i) (U i), T i (f x) = f (B i x)) → trOn (Z ⊓ ⨅ i, fixU (π i) (U i)) (List.ofFn T).prod = N * ∏ i, LinearMap.trace ℂ (fixedVectors (τ i) (U i)) (B i) := by
+  intro r G _ _ _ _ _ _ H _ _ _ S _ _ π τ V Z hsm hirr hcm hZc hZV hZi hV U hU hfd hne
+  set X := Z ⊓ ⨅ i, fixU (π i) (U i) with hX
+  let D : Fin r → Submodule ℂ H := fun i => Z ⊓ ⨅ j, ⨅ _ : j ≠ i, fixU (π j) (U j)
+  have hD : ∀ i v, v ∈ D i ↔ v ∈ Z ∧ ∀ j, j ≠ i → v ∈ fixU (π j) (U j) := fun i v => by
+    simp only [D, Submodule.mem_inf, Submodule.mem_iInf]
+  have hDc : ∀ i, IsClosed (D i : Set H) := fun i => by
+    have : (D i : Set H) = (Z : Set H) ∩ ⋂ j, ⋂ _ : j ≠ i, (fixU (π j) (U j) : Set H) := by
+      ext v; rw [SetLike.mem_coe, hD]; simp only [SetLike.mem_coe, Set.mem_inter_iff, Set.mem_iInter]
+    rw [this]
+    exact hZc.inter (isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_fixU _ _)
+  have hDi : ∀ i, (π i).IsInvariant (D i) := fun i g v hv => (hD i _).2 ⟨hZi i g v ((hD i v).1 hv).1, fun j hj u hu => by
+    rw [hcm j i hj, ((hD i v).1 hv).2 j hj u hu]⟩
+  have hXD : ∀ i, X = D i ⊓ fixU (π i) (U i) := fun i => by
+    ext v
+    simp only [hX, Submodule.mem_inf, Submodule.mem_iInf, hD]
+    refine ⟨fun h => ⟨⟨h.1, fun j _ => h.2 j⟩, h.2 i⟩, fun h => ⟨h.1.1, fun j => ?_⟩⟩
+    by_cases e : j = i
+    · exact e ▸ h.2
+    · exact h.1.2 j e
+  have hle : ∀ i, X ≤ spanFix (τ i) (π i) (D i) (U i) := fun i => (hXD i).le.trans
+    (UpperTheory.inf_fixed_le_spanFix_of_dense_spanAll (G i) H (S i) (τ i) (hsm i) (π i) (U i) (hU i).1 (hU i).2 V (D i) (hDc i) (hDi i) (inf_le_left.trans hZV) (hV i)
+      (hXD i ▸ hfd))
+  have hm : ∀ i f, Eqv (τ i) (π i) (D i) f → ∀ x : fixedVectors (τ i) (U i), f x ∈ X := fun i f hf x => by
+    rw [hXD i]
+    exact ⟨hf.mem _, fun u hu => by rw [← hf.map, mem_fixedVectors.1 x.2 u hu]⟩
+  have h1 : ∀ i, FiniteDimensional ℂ (fixedVectors (τ i) (U i)) ∧ fixedVectors (τ i) (U i) ≠ ⊥ := fun i => by
+    obtain ⟨f, hf, x, hx, h0⟩ : ∃ f, Eqv (τ i) (π i) (D i) f ∧ ∃ x ∈ fixedVectors (τ i) (U i), f x ≠ 0 := by
+      by_contra hno
+      push Not at hno
+      refine hne (le_bot_iff.1 ((hle i).trans (Submodule.span_le.2 ?_)))
+      rintro _ ⟨f, hf, x, hx, rfl⟩
+      exact hno f hf x hx
+    have := hirr i
+    have hinj : Function.Injective f := by
+      rcases eq_bot_or_eq_top (⟨LinearMap.ker f, fun g v hv => by
+        rw [LinearMap.mem_ker] at hv ⊢; rw [hf.map, hv, map_zero]⟩ : Subrepresentation (τ i)) with e | e
+      · exact LinearMap.ker_eq_bot.1 (congrArg Subrepresentation.toSubmodule e)
+      · exact (h0 (by rw [LinearMap.ker_eq_top.1 (congrArg Subrepresentation.toSubmodule e)]; rfl)).elim
+    refine ⟨Module.Finite.of_injective ((f ∘ₗ (fixedVectors (τ i) (U i)).subtype).codRestrict X (hm i f hf)) fun a b e =>
+      Subtype.ext (hinj (congrArg Subtype.val e)), fun e => h0 ?_⟩
+    rw [e] at hx
+    rw [(Submodule.mem_bot ℂ).1 hx, map_zero]
+  refine ⟨h1, ?_⟩
+  have := fun i => (h1 i).1
+  have := fun i => Submodule.nontrivial_iff_ne_bot.2 (h1 i).2
+  choose c hc1 hc2 using fun i => UpperTheory.exists_algHom_end_fixedVectors_to_fixed_subspace (G i) H (S i) (τ i) (hsm i) (hirr i) (π i) (U i) (hU i).1 (hU i).2 (D i) X
+    (hDc i) (hDi i) (hXD i) (hle i)
+  obtain ⟨N, hN⟩ := UpperTheory.trace_pairing_separates_endomorphisms r X (fun i => fixedVectors (τ i) (U i)) c fun i j hij s t => by
+    refine comm_adj ?_ (hc2 i s) (hc2 j t)
+    rintro a ⟨g, ha⟩ b ⟨h, hb⟩
+    obtain ⟨q1, q2⟩ := (UpperTheory.fixedProjection_invariant_and_commuting_reps (G i) (G j) H (π i) (π j) (U i) (U j)).2.2.2 (hcm i j hij)
+    obtain ⟨q3, -⟩ := (UpperTheory.fixedProjection_invariant_and_commuting_reps (G j) (G i) H (π j) (π i) (U j) (U i)).2.2.2 (hcm j i hij.symm)
+    refine LinearMap.ext fun v => Subtype.ext ?_
+    rw [Module.End.mul_apply, Module.End.mul_apply, ha, hb, hb, ha, ← q3, ← q1, q2, hcm i j hij]
+  refine ⟨N, fun T B hT hB => ?_⟩
+  rw [← hN B]
+  refine (UpperTheory.trOn_restrict_and_eq_of_maps_into H X X _).1 _ (prod_res X r T _ fun i v => ?_)
+  have key : ∀ y ∈ spanFix (τ i) (π i) (D i) (U i), ∃ h : y ∈ X, ((c i (B i) ⟨y, h⟩ : X) : H) = T i y := fun y hy => by
+    induction hy using Submodule.span_induction with
+    | mem y hy =>
+      obtain ⟨f, hf, x, hx, rfl⟩ := hy
+      exact ⟨hm i f hf ⟨x, hx⟩, (hc1 i (B i) f hf ⟨x, hx⟩ _ rfl).trans (hB i f ⟨fun _ => trivial, hf.map⟩ ⟨x, hx⟩).symm⟩
+    | zero => exact ⟨X.zero_mem, (congrArg Subtype.val (map_zero (c i (B i)))).trans (map_zero (T i)).symm⟩
+    | add u v _ _ h1 h2 =>
+      obtain ⟨a, ha⟩ := h1
+      obtain ⟨b, hb⟩ := h2
+      refine ⟨X.add_mem a b, (congrArg Subtype.val (map_add (c i (B i)) ⟨u, a⟩ ⟨v, b⟩)).trans ?_⟩
+      rw [map_add (f := _), ← ha, ← hb]; rfl
+    | smul k u _ h1 =>
+      obtain ⟨a, ha⟩ := h1
+      refine ⟨X.smul_mem k a, (congrArg Subtype.val (map_smul (c i (B i)) k ⟨u, a⟩)).trans ?_⟩
+      rw [map_smul, ← ha]; rfl
+  exact (key v (hle i v.2)).2
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.TwistedTraces.CommutingSmoothIrreducibleFixedVectors =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.TwistedTraces.LeClosureSpanAllOfCommutingUnitaryReps =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.TwistedTraces.LeClosureSpanAllOfCommutingUnitaryReps", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.CuspidalMultiplicityOneTotallyComplex\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SfDefs\npublic import Development.AutomorphicArithmetic.TwistedTraces.CommutingSmoothIrreducibleFixedVectors\npublic import Development.AutomorphicArithmetic.TwistedTraces.ExistsCompactOpenFamilyInfFixedNeBot\nimport Development.AutomorphicArithmetic.TwistedTraces.FixedProjectionApplyEquivariantEq\nimport Development.AutomorphicArithmetic.TwistedTraces.FixedProjectionInvariantAndCommutingReps\nimport Development.AutomorphicArithmetic.TwistedTraces.TrOnRestrictAndEqOfMapsInto\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.IwahoriDoubleCosets\nimport Development.AutomorphicArithmetic.IntegralCasts.IsOpenStabOfMemNhds\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
@@ -153,3 +356,6 @@ theorem UpperTheory.le_closure_spanAll_of_commuting_unitaryReps :
   obtain rfl : N' = N := Nat.eq_of_mul_eq_mul_right (Nat.pos_of_mul_pos_left hpos)
     ((key _ (fun _ => inf_le_right) N' hN').symm.trans k0)
   exact hN' U (fun _ => inf_le_left) hU
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.TwistedTraces.LeClosureSpanAllOfCommutingUnitaryReps =====

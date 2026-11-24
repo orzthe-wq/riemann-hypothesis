@@ -67,9 +67,7 @@ namespace TTyp
 end TTyp
 
 private theorem le_div_of_mul_le_of_pos' {x y z : ℝ} (hz : 0 < z) (h : x * z ≤ y) : x ≤ y / z := by
-  have hz' : z ≠ 0 := ne_of_gt hz
-  have e : y / z * z = y := by field_simp
-  nlinarith
+  exact (le_div_iff₀ hz).2 h
 
 namespace TTyp
 
@@ -99,14 +97,10 @@ lemma ent_sign (h20 : PathEntryBounds) {D : Letters} {mu : D.Stages} (hW : D.Wf)
   have H := (h20 D mu hW hP).2 i hi
   have hv : D.nVec i ≤ D.Ns := by
     unfold Formalism.InvariantFactorPaths.BranchingDimensions.Letters.nVec
-    calc _ ≤ (Icc 1 i).card := Finset.card_filter_le _ _
-      _ = i := by simp
-      _ ≤ D.Ns := hi
+    exact (Finset.card_filter_le _ _).trans (by simpa using hi)
   have hc : D.nCov i ≤ D.Ns := by
     unfold Formalism.InvariantFactorPaths.BranchingDimensions.Letters.nCov
-    calc _ ≤ (Icc 1 i).card := Finset.card_filter_le _ _
-      _ = i := by simp
-      _ ≤ D.Ns := hi
+    exact (Finset.card_filter_le _ _).trans (by simpa using hi)
   exact ⟨fun h1 => H.2 m (by omega), fun h1 => H.1 m (by omega) hm⟩
 
 end TTyp
@@ -185,8 +179,7 @@ lemma lat_split (q : ℕ → Bool) (B : ℕ → ℕ) (i : ℕ) : ∀ d, ∃ pre 
 
 lemma mem_lat {q : ℕ → Bool} {B : ℕ → ℕ} {j x : ℕ} (h : x ∈ lat q B j) :
     ∃ l, 1 ≤ l ∧ l ≤ j ∧ q l = true ∧ x = B l := by
-  unfold lat at h
-  simp only [List.mem_map, List.mem_reverse, List.mem_filter, List.mem_range'_1] at h
+  simp only [lat, List.mem_map, List.mem_reverse, List.mem_filter, List.mem_range'_1] at h
   obtain ⟨l, ⟨⟨h1, h2⟩, hq⟩, hx⟩ := h
   exact ⟨l, h1, by omega, hq, hx.symm⟩
 
@@ -196,16 +189,13 @@ lemma getD_mem {l : List ℕ} {t : ℕ} (h : t < l.length) : l.getD t 0 ∈ l :=
   | cons x l ih =>
     cases t with
     | zero => simp
-    | succ t =>
-      rw [List.getD_cons_succ]
-      exact List.mem_cons_of_mem _ (ih (by simpa using h))
+    | succ t => simpa only [List.getD_cons_succ] using List.mem_cons_of_mem _ (ih (by simpa using h))
 
 private theorem list_getD_append_add_length (pre R : List ℕ) (u : ℕ) : (pre ++ R).getD (u + pre.length) 0 = R.getD u 0 := by
   induction pre with
   | nil => simp
   | cons x pre ih =>
-    rw [List.length_cons, ← Nat.add_assoc, List.cons_append, List.getD_cons_succ]
-    exact ih
+    simpa [← Nat.add_assoc] using ih
 
 lemma lat_shift (q : ℕ → Bool) (B : ℕ → ℕ) {i n : ℕ} (h : i ≤ n) :
     (∀ u, (lat q B n).getD (u + ((Icc (i + 1) n).filter (fun l => q l = true)).card) 0 =
@@ -368,8 +358,6 @@ lemma tailPos_split (n : ℕ) (la : ℕ → ℤ) {u : ℕ} (hu : u < n) :
       omega
   rw [hs, Finset.sum_insert (by simp)]
 
-lemma drop_split (l : List ℕ) (u : ℕ) : (l.drop u).sum = l.getD u 0 + (l.drop (u + 1)).sum := list_sum_drop_eq_getD_add_sum_drop_succ l u
-
 lemma key (h31 : LogBinomialProperties) (h34 : LogBinomialDeficit) (k' K : ℕ) (la : ℕ → ℤ) (q : ℕ → Bool) (B : ℕ → ℕ) (n0 : ℕ)
     (hk : 1 ≤ k')
     (h1 : ∀ l, l < (lat q B n0).length → k' ≤ (lat q B n0).getD l 0)
@@ -407,8 +395,7 @@ end TTyp
 
 private theorem le_exp_mul_of_log_le_add_log {w T E : ℝ} (hw : 0 < w) (hT : 0 < T) (h : Real.log w ≤ E + Real.log T) :
     w ≤ Real.exp E * T := by
-  have h' := Real.exp_le_exp.mpr h
-  rwa [Real.exp_log hw, Real.exp_add, Real.exp_log hT] at h'
+  simpa [Real.exp_add, Real.exp_log hT] using (Real.log_le_iff_le_exp hw).mp h
 
 theorem pathWeightBound_of :
     PathEntryBounds → PathInterlacingCriterion → LogBinomialProperties → LogWeylDimensionEstimate → LogRankEstimate → PathTailBounds → LogBinomialDeficit → PathWeightBound := by
@@ -705,7 +692,7 @@ theorem pathWeightBound_of :
     have hds : D.SPos (D.r - 1 - (i - 1 - D.n0)) (i - 1) =
         D.Bo i + D.SPos (D.r - 1 - (i - 1 - D.n0) + 1) (i - 1) := by
       unfold Formalism.InvariantFactorPaths.BranchingDimensions.Letters.SPos Formalism.InvariantFactorPaths.BranchingDimensions.Letters.Bo
-      exact Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.drop_split _ _
+      exact _root_.Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.list_sum_drop_eq_getD_add_sum_drop_succ _ _
     have hmx : (((max (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu (i - 1) (D.r - 1)) 0 : ℤ)) : ℝ) ≤ (2 / 3) * (D.Bo i : ℝ) := by
       rw [max_eq_left hent0]
       exact hgt.le

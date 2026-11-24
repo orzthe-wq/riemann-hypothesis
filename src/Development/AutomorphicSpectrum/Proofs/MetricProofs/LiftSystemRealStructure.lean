@@ -1,14 +1,15 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SameOrbitRefl
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicConjugatePullbackStatement
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialOfFun
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HolomorphicConjugatePullback
+public import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
-public import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -161,7 +162,7 @@ theorem pot_conj_pluriharmonic : ∀ {K : Type} [Fintype K] {ι : K → Type} [�
     simpa using ha k
   have hbH : ∀ k, A.HoloOn W₁ (b k) := fun k =>
     pot_holoOn_div
-      (pot_holoOn_mono (GlobalTheory.T.holomorphic_conjugate_pullback c hcc hanti (hUh (c x) ⟨k, i k⟩)) fun y hy => hy.1.2)
+      (pot_holoOn_mono (_root_.GlobalTheory.CompanionTheory.Ar.PB.Cj.holoOn_conj_comp c hcc hanti (hUh (c x) ⟨k, i k⟩)) fun y hy => hy.1.2)
       (pot_holoOn_mono (hUh x ⟨k, i k⟩) fun y hy => hy.1.1) fun y hy => hden y hy k
   have hqH : ∀ k, A.HoloOn W₁ (fun y => b k y / b k x) := fun k =>
     pot_holoOn_div (hbH k) (fun j w _ => analyticAt_const) fun _ _ => hbne x hxW₁ k
@@ -184,7 +185,7 @@ theorem pot_conj_pluriharmonic : ∀ {K : Type} [Fintype K] {ι : K → Type} [�
     fun y => G₁ y - starRingEnd ℂ (G₂ (c y)) +
       ∑ k, (f.a k : ℂ) * (Complex.log (b k y / b k x) + ((Real.log ‖b k x‖ : ℝ) : ℂ)), ?_, ?_⟩
   · refine pot_holoOn_sub_add (pot_holoOn_mono hG₁ fun y hy => hy.1.2)
-      (pot_holoOn_mono (GlobalTheory.T.holomorphic_conjugate_pullback c hcc hanti hG₂) fun y hy => hy.2) ?_
+      (pot_holoOn_mono (_root_.GlobalTheory.CompanionTheory.Ar.PB.Cj.holoOn_conj_comp c hcc hanti hG₂) fun y hy => hy.2) ?_
     exact pot_holoOn_sum_log f.a _ (fun k => pot_holoOn_mono (hqH k) hVW) fun k => hslit k
   · intro y hy
     have hyW := hVW hy

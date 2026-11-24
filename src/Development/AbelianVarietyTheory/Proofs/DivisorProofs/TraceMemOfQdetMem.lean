@@ -87,7 +87,7 @@ theorem prod_affine (L : List (ℂ × A)) : ∃ c : ℕ → A, (∀ k, L.length 
       have hS2 : ∑ k ∈ Finset.range (L.length + 1 + 1), u ^ k • (p.2 * c k) =
           ∑ k ∈ Finset.range (L.length + 1), p.2 * (u ^ k • c k) := by
         rw [Finset.sum_range_succ, hc0 (L.length + 1) (by omega)]
-        simp [mul_smul_comm]
+        simp
       simp only [List.map_cons, List.prod_cons, hcu, List.length_cons, smul_add, Finset.sum_add_distrib, hS1, hS2,
         add_mul, Finset.mul_sum, smul_mul_assoc, one_mul]
     · simp only [List.length_cons, Nat.succ_ne_zero, if_false, Nat.add_sub_cancel, hctop,

@@ -142,10 +142,10 @@ theorem sx_div_p_iff {ι : Type} (f : MvPowerSeries ι (K0 p)) :
     choose g hg using fun n => (sx_norm_le_inv_iff p (MvPowerSeries.coeff n f)).mp (h n)
     refine ⟨fun n => g n, ?_⟩
     ext n
-    simp only [MvPowerSeries.coeff_smul, MvPowerSeries.coeff_map, smul_eq_mul]
+    simp only [MvPowerSeries.coeff_smul]
     exact hg n
   · rintro ⟨Q, rfl⟩ n
-    simp only [MvPowerSeries.coeff_smul, MvPowerSeries.coeff_map, smul_eq_mul]
+    simp only [MvPowerSeries.coeff_smul, MvPowerSeries.coeff_map]
     exact (sx_norm_le_inv_iff p _).mpr ⟨_, rfl⟩
 
 theorem sx_dwork : DworkLemma p := by

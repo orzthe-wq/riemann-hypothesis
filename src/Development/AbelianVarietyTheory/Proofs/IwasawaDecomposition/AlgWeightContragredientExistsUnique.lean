@@ -233,7 +233,7 @@ theorem isDual_dualWt (a : NG.AlgWt L n) : a.IsDual (dualWt a) := by
       push_neg at hc
       exact hx ((Module.forall_dual_apply_eq_zero_iff ℂ x).mp hc)
     have h1 := LinearMap.congr_fun (LinearMap.congr_fun h0 x) f
-    simp only [Module.Dual.eval_apply, LinearMap.zero_apply] at h1
+    simp only [Module.Dual.eval_apply] at h1
     exact hf h1
   · intro γ x (y : Module.Dual ℂ a.W)
     show y (a.ρ γ⁻¹ (a.ρ γ x)) = y x

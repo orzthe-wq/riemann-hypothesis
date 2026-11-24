@@ -164,10 +164,7 @@ theorem exists_sq_card_quot (hσ : ∀ x, σ (σ x) = x) {P : Ideal B} (hP : P.I
       exact a.2
   exact ⟨Nat.card (S ⧸ P.comap S.subtype), (card_quotient_comap_sq_eq_card_quotient_of_involution (ι := S.subtype) hσ hfix' hP hc hθ).symm⟩
 
-theorem card_quot_inert (hσ : ∀ x, σ (σ x) = x) (hfix : ∀ x, σ x = x ↔ x ∈ Set.range ι)
-    {P : Ideal B} (hP : P.IsMaximal) (hc : P.comap σ = P) {θ : B} (hθ : θ - σ θ ∉ P) :
-    Nat.card (A ⧸ P.comap ι) ^ 2 = Nat.card (B ⧸ P) := by
-  exact card_quotient_comap_sq_eq_card_quotient_of_involution hσ hfix hP hc hθ
+alias card_quot_inert := _root_.Formalism.HermitianLattices.Ext.L3.SplitPrimeIdeals.card_quotient_comap_sq_eq_card_quotient_of_involution
 
 theorem map_comap_of_inert (hσ : ∀ x, σ (σ x) = x) (hfix : ∀ x, σ x = x ↔ x ∈ Set.range ι)
     {P : Ideal B} (hP : P.IsMaximal) (hc : P.comap σ = P) {θ : B} (hθ : θ - σ θ ∉ P) :

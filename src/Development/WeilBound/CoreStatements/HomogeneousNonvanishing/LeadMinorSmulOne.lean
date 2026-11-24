@@ -8,19 +8,21 @@ public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.Law
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MetricChangeOfFrame
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RigidifiedSectionCorrespondenceExistsUniqueNonva
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UnifMetricScalar
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UniversalTripleFibreKeyDataNonemptyField
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularFrameChangeOfTriangularPeriod
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorFlag
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductMapIff
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UniversalTripleFibreKeyDataNonemptyField
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsValLineLogNormAtIffEmbedding
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CmTypeLetterFrameColumnDictionary
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FibreSectionNowhereZeroOfGenerates
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsCombAtIffIsDerivAt0
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TriangularFrameMovesPeriodBlockTriangular
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorFlag
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeHermitianFormExists
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductMapIff
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRingStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
+import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -277,7 +279,7 @@ theorem gram (hσ : GoodEmb c σ) (hU : IsUnf U) (hpq : 1 ≤ Dw.p + Dw.q) {k : 
         simp
       · rw [Pi.single_eq_of_ne (fun hh => hab (eq_of_heq (Sigma.mk.inj (W.e.symm.injective hh)).2))]
         simp
-    simp only [hf, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.smul_apply, Matrix.mul_apply,
+    simp only [hf, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_apply, Matrix.mul_apply,
       Matrix.conjTranspose_apply, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true,
       smul_eq_mul, Finset.mul_sum, hκ]
     refine Finset.sum_congr rfl fun j _ => ?_
@@ -301,7 +303,7 @@ theorem valAt_unique {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c 
     (𝔐 : GlobalTheory.CompanionTheory.Ar.HodgeCpt Y S y) (z : Sp ℂ ⟶ 𝔐.X) {e : 𝔐.Li} {v w : GlobalTheory.CompanionTheory.Ar.epsAt z ⟶ 𝔐.t.G}
     (hv : 𝔐.M.ValAt z e v) (hw : 𝔐.M.ValAt z e w) : v = w := by
   obtain ⟨Vz, _, _, ⟨MR⟩⟩ := GlobalTheory.CompanionTheory.Ar.lieModel_exists 𝔐.X 𝔐.t.G ℂ z
-  obtain ⟨ev, hev1, -⟩ := GlobalTheory.T.lie_lattice_eval_at_local_ring 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ℂ z (𝔐.all _) Vz MR 𝔐.tie.gen 𝔐.t.semi.smooth
+  obtain ⟨ev, hev1, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieLat_val 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ℂ z (𝔐.all _) Vz MR 𝔐.tie.gen 𝔐.t.semi.smooth
   obtain ⟨a, rfl⟩ := MR.onto v (GlobalTheory.CompanionTheory.Ar.GrNorm.tan_of_valAt hv)
   obtain ⟨b, rfl⟩ := MR.onto w (GlobalTheory.CompanionTheory.Ar.GrNorm.tan_of_valAt hw)
   obtain ⟨_, e1⟩ := (hev1 _ _).1 hv

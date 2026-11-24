@@ -225,7 +225,7 @@ theorem Hk_finv_emb {k : ℕ} (q : GK L N) {ω : Form (HS L N) k} (hω : ∀ γ,
     have eq : q * toK L N (σ c).out = toK L N t * ((q * toK L N c.out) * toK L N γ) := by
       have hsplit : (σ c).out = ((σ c).out * (c.out * γ)⁻¹) * (c.out * γ) := by group
       rw [hsplit, map_mul (toK L N) _ (c.out * γ), ← hx]
-      simp [MulAut.conj_apply, mul_assoc]
+      simp [mul_assoc]
     have ht : FInv ω (toP L N (toK L N t)) := hω t
     rw [eq, map_mul, map_mul, pb_mul_eq_pb_of_fInv_of_mem_Pos ht _ hh]
     rfl
@@ -269,27 +269,6 @@ private instance pointwiseGKAction (k : ℕ) : MulAction (GK L N) (Fin (k + 2) �
     funext j
     simp [mul_assoc]
 
-private theorem continuousOn_Hk_of_continuousOn {k : ℕ} (q : GK L N) {ω : Form (HS L N) k} (hc : ContinuousOn ω (Pos L N)) :
-    ContinuousOn (Hk q ω) (Pos L N) := by
-  have hpb : ∀ g : Gp L N, ContinuousOn (pb g ω) (Pos L N) := by
-    intro g
-    have ha : ContinuousOn (fun h => ω (actL g h)) (Pos L N) :=
-      hc.comp (actL g).continuous.continuousOn fun h hh => (g • (⟨h, hh⟩ : Pos L N)).2
-    unfold pb
-    exact (ContinuousAlternatingMap.compContinuousLinearMapCLM (actL g)).continuous.comp_continuousOn ha
-  unfold Hk mn
-  by_cases hfin : Finite (Quotient (QuotientGroup.rightRel (Sg q)))
-  · haveI := Fintype.ofFinite (Quotient (QuotientGroup.rightRel (Sg q)))
-    simp only [finsum_eq_sum_of_fintype]
-    exact ContinuousOn.const_smul (continuousOn_finsetSum _ fun c _ => hpb _) ((((Sg q).index : ℕ) : ℝ)⁻¹)
-  · have hinf : Infinite (Gm L N ⧸ Sg q) := by
-      rw [← not_finite_iff_infinite]
-      intro hf
-      exact hfin (Finite.of_equiv _ (QuotientGroup.quotientRightRelEquivQuotientLeftRel (Sg q)).symm)
-    have h0 : (Sg q).index = 0 := Subgroup.index_eq_zero_iff_infinite.2 hinf
-    simp only [h0, Nat.cast_zero, _root_.inv_zero, zero_smul]
-    exact continuousOn_const
-
 set_option synthInstance.maxHeartbeats 200000 in
 theorem hecke_iter {k : ℕ} (q : GK L N) {ω : Form (HS L N) (k + 1)} (hω : ContinuousOn ω (Pos L N)) (r : ℕ)
     (y : Fin (k + 2) → GK L N) :
@@ -318,7 +297,7 @@ theorem hecke_iter {k : ℕ} (q : GK L N) {ω : Form (HS L N) (k + 1)} (hω : Co
     | zero => exact hω
     | succ n ih =>
       rw [Function.iterate_succ_apply']
-      exact continuousOn_Hk_of_continuousOn q ih
+      exact _root_.PositivityTheory.KB.JoinReconstruction.Hk_contOn q ih
   have hall : ∀ n, (hecke (Y := Fin (k + 2) → GK L N) (E := ℝ)
         (toK L N) (MonoidHom.id (GK L N)) q)^[n]
         (fun y : Fin (k + 2) → GK L N => intP ω fun j => toP L N (y j) • one L N) =

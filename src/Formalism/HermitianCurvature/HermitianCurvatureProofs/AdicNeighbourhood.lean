@@ -65,17 +65,14 @@ theorem small_mul {C : Set K} (hC : IsCompact C) {W : Set K} (hW : W ∈ 𝓝 (0
   obtain ⟨u, v, hu, -, hsu, htv, huv⟩ :=
     generalized_tube_lemma (isCompact_singleton (x := (0 : K))) hC hn (by
       rintro ⟨a, b⟩ ⟨ha, -⟩
-      have ha' : a = 0 := ha
-      simp [ha', h0])
+      simpa [show a = 0 from ha] using h0)
   exact ⟨u, hu.mem_nhds (hsu rfl), fun a ha c hc => hW'W (huv (Set.mk_mem_prod ha (htv hc)))⟩
 
 def I (R : Subring K) (a : K) : Set K := {x | ∃ r ∈ R, x = a * r}
 
 theorem I_compact {R : Subring K} (hc : IsCompact (R : Set K)) (a : K) : IsCompact (I R a) := by
   have : I R a = (fun r => a * r) '' (R : Set K) := by
-    ext x; constructor
-    · rintro ⟨r, hr, rfl⟩; exact ⟨r, hr, rfl⟩
-    · rintro ⟨r, hr, rfl⟩; exact ⟨r, hr, rfl⟩
+    ext x; exact ⟨fun ⟨r, hr, h⟩ => ⟨r, hr, h.symm⟩, fun ⟨r, hr, h⟩ => ⟨r, hr, h.symm⟩⟩
   rw [this]
   exact hc.image (continuous_const.mul continuous_id)
 
@@ -83,13 +80,11 @@ theorem I_nhds {R : Subring K} (ho : IsOpen (R : Set K)) (a : Kˣ) : I R (a : K)
   have : I R (a : K) = (fun x => ((a⁻¹ : Kˣ) : K) * x) ⁻¹' (R : Set K) := by
     ext x; constructor
     · rintro ⟨r, hr, rfl⟩
-      show ((a⁻¹ : Kˣ) : K) * ((a : K) * r) ∈ R
       simpa using hr
     · intro hx
       exact ⟨_, hx, by simp⟩
   rw [this]
   refine (ho.preimage (continuous_const.mul continuous_id)).mem_nhds ?_
-  show ((a⁻¹ : Kˣ) : K) * 0 ∈ R
   simp
 
 theorem inter_zero {R : Subring K} [T2Space K] [IsReduced K] (hc : IsCompact (R : Set K))
@@ -177,9 +172,7 @@ theorem Adic.approx (h : Adic R ϖ) (f : K → K) (hf : Continuous f) (b : K)
     obtain ⟨n, hn⟩ := h.basis _ hW
     obtain ⟨r, hr, e, he, hre⟩ := ha n
     exact ⟨f r, by rw [hre]; exact hn e he, r, hr, rfl⟩
-  rw [hcl.closure_eq] at hb
-  obtain ⟨r, hr, e⟩ := hb
-  exact ⟨r, hr, e⟩
+  simpa [hcl.closure_eq] using hb
 
 theorem Adic.unit_one (h : Adic R ϖ) (j : K) (hj : j ∈ I R (ϖ : K)) : ∃ v ∈ R, (1 + j) * v = 1 := by
   obtain ⟨r, hr, rfl⟩ := hj
@@ -228,8 +221,7 @@ theorem pow_diff {c : K} (hc : c ∈ R) (s : ℕ) {x y : K} (hx : Near R ((s : K
   have ha : (s : K) * c ∈ R := R.mul_mem (natCast_mem R s) hc
   obtain ⟨q, hq, e⟩ := near_sum (R := R) s (fun i => x ^ i * y ^ (s - 1 - i))
     (fun i => (hx.pow ha i).mul ha (hy.pow ha _))
-  refine ⟨q, hq, ?_⟩
-  rw [← geom_sum₂_mul, e]; ring
+  exact ⟨q, hq, by rw [← geom_sum₂_mul, e]; ring⟩
 
 theorem Adic.root (h : Adic R ϖ) (s : ℕ) {c : K} (hc : c ∈ I R (ϖ : K)) {b : K}
     (hb : Near R ((s : K) ^ 2 * c) b) : ∃ κ, Near R ((s : K) * c) κ ∧ κ ^ s = b := by
@@ -262,9 +254,7 @@ theorem Adic.bounded (h : Adic R ϖ) {C : Set K} (hC : IsCompact C) :
     ∃ a : ℕ, ∀ x ∈ C, (ϖ : K) ^ a * x ∈ R := by
   obtain ⟨a, ha⟩ := hC.elim_directed_cover (fun a : ℕ => {x : K | (ϖ : K) ^ a * x ∈ R})
     (fun a => h.isOpen.preimage (continuous_const.mul continuous_id))
-    (fun x _ => by
-      obtain ⟨m, hm⟩ := h.absorb x
-      exact Set.mem_iUnion.2 ⟨m, hm⟩)
+    (fun x _ => Set.mem_iUnion.2 (h.absorb x))
     (Monotone.directed_le (by
       intro a b hab x hx
       obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hab
@@ -528,15 +518,12 @@ variable {K : Type} [CommRing K]
 theorem mem_mulR {R : Subring K} {ν x : K} : x ∈ mulR R ν ↔ ∃ r ∈ R, x = ν * r := by
   unfold mulR
   rw [AddSubgroup.mem_map]
-  constructor
-  · rintro ⟨r, hr, e⟩; exact ⟨r, hr, e.symm⟩
-  · rintro ⟨r, hr, e⟩; exact ⟨r, hr, e.symm⟩
+  exact ⟨fun ⟨r, hr, e⟩ => ⟨r, hr, e.symm⟩, fun ⟨r, hr, e⟩ => ⟨r, hr, e.symm⟩⟩
 
 theorem compact_mulR [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K}
     (hc : IsCompact (R : Set K)) (ν : K) : IsCompact ((mulR R ν : AddSubgroup K) : Set K) := by
-  have : ((mulR R ν : AddSubgroup K) : Set K) = I R ν := by
-    ext x; exact mem_mulR
-  rw [this]; exact I_compact hc ν
+  have h : ((mulR R ν : AddSubgroup K) : Set K) = I R ν := by ext x; exact mem_mulR
+  simpa [h] using I_compact hc ν
 
 open Classical in
 theorem nonStationary_main : NonStationary := by
@@ -677,6 +664,6 @@ end Formalism.FourierDecayAlt.P.AdicNeighbourhood
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem nonStationary : Formalism.FourierDecayAlt.A6.NonStationary := AdicNeighbourhood.nonStationary_main
+alias nonStationary := _root_.Formalism.FourierDecayAlt.P.AdicNeighbourhood.nonStationary_main
 
 end Formalism.FourierDecayAlt.P

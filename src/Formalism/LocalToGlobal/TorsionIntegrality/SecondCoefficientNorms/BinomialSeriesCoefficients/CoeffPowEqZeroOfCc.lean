@@ -1,51 +1,7 @@
 module
 
 public import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.IntBinomScalar
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -63,8 +19,6 @@ theorem hasSubst_of_cc {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoef
 private theorem finsupp_degree_add (a b : σ →₀ ℕ) : (a + b).degree = a.degree + b.degree := by
   first
   | exact map_add Finsupp.degree a b
-  | exact Finsupp.degree_add a b
-  | simp [Finsupp.degree_add]
 
 private theorem coeff_mul_eq_zero_of_degree_lt_add' {A B : MvPowerSeries σ K} {a b : ℕ}
     (hA : ∀ m : σ →₀ ℕ, m.degree < a → MvPowerSeries.coeff m A = 0)
@@ -75,8 +29,6 @@ private theorem coeff_mul_eq_zero_of_degree_lt_add' {A B : MvPowerSeries σ K} {
   refine Finset.sum_eq_zero fun p hp => ?_
   first
   | rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp
-  | simp only [Finset.mem_antidiagonal] at hp
-  | simp at hp
   have hd : p.1.degree + p.2.degree = n.degree := by rw [← finsupp_degree_add, hp]
   by_cases h1 : p.1.degree < a
   · rw [hA _ h1, zero_mul]
@@ -148,8 +100,6 @@ private theorem coeff_mul_congr_of_degree_lt {A A' B B' : MvPowerSeries σ K} {N
   refine Finset.sum_congr rfl fun p hp => ?_
   first
   | rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp
-  | simp only [Finset.mem_antidiagonal] at hp
-  | simp at hp
   have hd : p.1.degree + p.2.degree = n.degree := by rw [← finsupp_degree_add, hp]
   rw [hA _ (by omega), hB _ (by omega)]
 
@@ -191,7 +141,6 @@ private theorem inv_factorial_mul_choose_eq {k m : ℕ} (h : m ≤ k) :
   push_cast
   first
   | (field_simp; done)
-  | (field_simp; ring)
 
 private theorem mvExp_add_binomial_series_coefficients {f g : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
     (hg : MvPowerSeries.constantCoeff g = 0) : mvExp (f + g) = mvExp f * mvExp g := by
@@ -243,8 +192,7 @@ theorem mvExp_mul_neg {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff
 theorem isUnit_mvExp {f : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0) :
     IsUnit (mvExp f) := isUnit_iff_exists_inv.2 ⟨_, mvExp_mul_neg hf⟩
 
-theorem mvExp_add {f g : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
-    (hg : MvPowerSeries.constantCoeff g = 0) : mvExp (f + g) = mvExp f * mvExp g := mvExp_add_binomial_series_coefficients hf hg
+alias mvExp_add := _root_.Formalism.L2.Th1.C.mvExp_add_binomial_series_coefficients
 
 theorem mvExp_sub_mul {f g : MvPowerSeries σ K} (hf : MvPowerSeries.constantCoeff f = 0)
     (hg : MvPowerSeries.constantCoeff g = 0) : mvExp (f - g) * mvExp g = mvExp f := by
@@ -338,12 +286,9 @@ theorem mvSubst_mvExp {τ : Type} {f : MvPowerSeries σ K} {a : σ → MvPowerSe
   unfold mvExp
   have hs : MvPowerSeries.HasSubst (fun _ : Unit => f) := by
     first
-    | exact hasSubst_of_cc hf
     | exact (hasSubst_of_cc hf).const
-    | exact PowerSeries.HasSubst.const (hasSubst_of_cc hf)
   first
   | exact MvPowerSeries.subst_comp_subst_apply hs ha _
-  | (rw [PowerSeries.subst, PowerSeries.subst, MvPowerSeries.subst_comp_subst_apply hs ha])
 
 theorem rescale_mvExp {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) (c : K) :
     PowerSeries.rescale c (mvExp f : PowerSeries K) = mvExp (PowerSeries.rescale c f) := by
@@ -352,7 +297,6 @@ theorem rescale_mvExp {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0)
     hasSubst_of_cc (by
       first
       | (simp; done)
-      | (simp only [map_smul, smul_eq_zero]; right; exact PowerSeries.constantCoeff_X)
       | (simp [PowerSeries.X]; done))
   rw [PowerSeries.rescale_eq_subst, PowerSeries.rescale_eq_subst,
     PowerSeries.subst_comp_subst_apply (hasSubst_of_cc hf) hX]

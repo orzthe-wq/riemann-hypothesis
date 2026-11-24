@@ -55,11 +55,6 @@ namespace CrystallineSemistableComparison
 
 variable {l : ℕ} [Fact l.Prime]
 
-theorem fc_inv_mem {R F : Type*} [CommRing R] [Field F] (f : R →+* F) {u : R} (hu : IsUnit u) :
-    (f u)⁻¹ ∈ f.range := by
-  obtain ⟨v, rfl⟩ := hu
-  exact ⟨↑v⁻¹, map_units_inv (f : R →* F) v⟩
-
 theorem fc_isUnit_sub {F : Type*} [Field F] (S : Subring F) {x : F} (hx : x ∈ S) (hx' : x⁻¹ ∈ S) (h0 : x ≠ 0) :
     IsUnit (⟨x, hx⟩ : S) :=
   ⟨⟨⟨x, hx⟩, ⟨x⁻¹, hx'⟩, Subtype.ext (mul_inv_cancel₀ h0), Subtype.ext (inv_mul_cancel₀ h0)⟩, rfl⟩
@@ -95,10 +90,10 @@ theorem fc_bcr_le : Bcr l ≤ (period_ring_base.ι l).range := by
   · exact RingHom.mem_range.2 ⟨cB l a, fc_ι_c (l := l) a⟩
   · change ((l : BdR l))⁻¹ ∈ (period_ring_base.ι l).range
     simpa only [map_natCast (period_ring_base.ι l)] using
-      fc_inv_mem (period_ring_base.ι l) (period_ring_base.isUnit_l l)
+      _root_.CrystallineSemistableComparison.inv_mem_range (period_ring_base.ι l) (period_ring_base.isUnit_l l)
   · change (tQ l)⁻¹ ∈ (period_ring_base.ι l).range
     simpa only [period_ring_base.period_image_eq l] using
-      fc_inv_mem (period_ring_base.ι l) (period_ring_base.base_t_unit l)
+      _root_.CrystallineSemistableComparison.inv_mem_range (period_ring_base.ι l) (period_ring_base.base_t_unit l)
 
 theorem fc_range : (period_ring_base.ι l).range = Bcr l :=
   le_antisymm (fc_range_le (l := l)) (fc_bcr_le (l := l))

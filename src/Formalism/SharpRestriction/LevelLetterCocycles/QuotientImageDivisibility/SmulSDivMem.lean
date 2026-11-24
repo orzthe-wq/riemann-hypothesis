@@ -206,11 +206,11 @@ theorem expRules_of (h4 : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFil
   ·
     rintro T' F hT' x d ⟨⟨m, hm⟩, a, ha, hla, hd⟩
     have hmem : a • W.map F x ∈ W.N T' := by
-      rw [← RL.map_smulA]; exact W.map_N F hT hT' _ ha
+      rw [← _root_.Formalism.MainNotions.LiftingTheory.wmap_map_smul]; exact W.map_N F hT hT' _ ha
     refine ⟨⟨m, fun k hk => by simp [hm k hk]⟩, a, hmem, hla, fun k => ?_⟩
     have e1 : (⟨a • W.map F x, hmem⟩ : ↥(W.N T')) =
-        ⟨W.map F ((⟨a • x, ha⟩ : ↥(W.N T)) : W.DD T), by rw [← RL.map_smulA] at hmem; exact hmem⟩ :=
-      Subtype.ext (RL.map_smulA W F a x).symm
+        ⟨W.map F ((⟨a • x, ha⟩ : ↥(W.N T)) : W.DD T), by rw [← _root_.Formalism.MainNotions.LiftingTheory.wmap_map_smul] at hmem; exact hmem⟩ :=
+      Subtype.ext (_root_.Formalism.MainNotions.LiftingTheory.wmap_map_smul W F a x).symm
     rw [e1, W.levN_map F hT hT' i ζ, hd]
     exact smulS_linMap _ hm _ k
 

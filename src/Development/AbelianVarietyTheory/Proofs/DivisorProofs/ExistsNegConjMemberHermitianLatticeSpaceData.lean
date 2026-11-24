@@ -127,7 +127,7 @@ theorem form_neg_eq {D : D7} (V : HSp D) (y x : Fin V.rank → D.host.E) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form D.sp.cm.sig ((-1 : D.host.E) • V.gram) y x =
       -star (∑ i, ∑ j, star ((star x) i) * V.gram i j * (star y) j) := by
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, dotProduct, Matrix.mulVec, Matrix.smul_apply, star_sum, Pi.star_apply,
-    star_star, star_mul', star_gram, Finset.mul_sum, smul_eq_mul]
+    star_star, star_mul', _root_.GlobalTheory.DualPairCheck.gram_star, Finset.mul_sum, smul_eq_mul]
   rw [Finset.sum_comm, ← Finset.sum_neg_distrib]
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [← Finset.sum_neg_distrib]
@@ -188,7 +188,7 @@ theorem negConj_isHerm : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {
     fun v => if h : v ∈ B.P then (hb ⟨v, h⟩).choose else 1, ⟨?_, ?_, hlat, ?_, ?_, ?_⟩⟩
   · intro a b
     show star (((-1 : D.host.E) • (spW₁ G i j).gram) b a) = ((-1 : D.host.E) • (spW₁ G i j).gram) a b
-    simp only [Matrix.smul_apply, smul_eq_mul, star_mul', star_neg, star_one, star_gram]
+    simp only [Matrix.smul_apply, smul_eq_mul, star_mul', star_neg, star_one, _root_.GlobalTheory.DualPairCheck.gram_star]
   · intro w
     have hs := hV.sigOK (B.emb w).1
     rw [hV.sig, ← hV.rank] at hs

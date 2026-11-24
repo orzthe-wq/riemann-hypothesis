@@ -80,9 +80,7 @@ theorem fill_top (X : Inst D L) (b : HH D → ℤ) (j : ℕ) (s : HH D) (hs : s 
 theorem fill_top_ge (X : Inst D L) (b : HH D → ℤ) (hb : ∀ t ∈ D.host.TT, L.sc.b' ≤ (b t : ℝ)) (j : ℕ) (s : HH D)
     (hs : s ∈ D.host.TT) : L.sc.b' + L.sc.b' / L.sc.x ≤ fill X b j (false, s) := by
   rw [fill_top X b j s hs]
-  have h1 := hb s hs
-  have h2 := (X.off_top j (false, s) ⟨rfl, hs⟩).1
-  linarith
+  exact add_le_add (hb s hs) (X.off_top j (false, s) ⟨rfl, hs⟩).1
 
 theorem fill_ge_one (P : ParameterChoice' D L) (X : Inst D L) (b : HH D → ℤ) (hb : ∀ t ∈ D.host.TT, L.sc.b' ≤ (b t : ℝ))
     (j : ℕ) (z : Bool × HH D) : 1 ≤ fill X b j z := by
@@ -94,7 +92,6 @@ theorem fill_ge_one (P : ParameterChoice' D L) (X : Inst D L) (b : HH D → ℤ)
     simp only at hz1 hz2
     subst hz1
     have h1 := fill_top_ge X b hb j s hz2
-    have h2 : 0 ≤ L.sc.b' / L.sc.x := by linarith
     linarith
   · have hf : fill X b j z = X.off j z := by
       unfold fill
@@ -118,7 +115,6 @@ theorem fill_ge_one (P : ParameterChoice' D L) (X : Inst D L) (b : HH D → ℤ)
 theorem kaJ_nonneg (j : ℕ) (hj : j ∈ SizeData₂.lifts D) : 0 ≤ kaJ D j := by
   have hj1 : 1 ≤ j := (Finset.mem_Icc.mp hj).1
   have hjr : (1 : ℝ) ≤ (j : ℝ) := by exact_mod_cast hj1
-  have hk : (0 : ℝ) ≤ (D.R.k : ℝ) := by positivity
   have ht : (0 : ℝ) ≤ (D.R.t : ℝ) := by positivity
   unfold kaJ
   apply div_nonneg _ (by norm_num)
@@ -321,10 +317,7 @@ theorem card_reps_mul_nP_le (X : Inst D L) (p : ℕ) : ((reps X p).card : ℝ) *
     exact_mod_cast this
 
 theorem sum_Nv (X : Inst D L) (p : ℕ) : ∑ t0 ∈ reps X p, (Nv X p t0 : ℝ) = (D.host.TT.card : ℝ) := by
-  have h := sum_reps X p (fun _ => (1 : ℝ))
-  simp only [Finset.sum_const, nsmul_eq_mul, mul_one] at h
-  unfold Nv
-  exact h
+  simpa [Nv] using sum_reps X p (fun _ => (1 : ℝ))
 
 theorem card_TT_le_f (D : D7) : (D.host.TT.card : ℝ) ≤ (D.R.f : ℝ) := by
   have h1 : D.host.TT.card ≤ Fintype.card (HH D) := Finset.card_le_univ _
@@ -396,11 +389,9 @@ theorem sum_dl_add_ep_le (X : Inst D L) (K : Consts) (hK : K.Nonneg) (Ce C bo : 
   nlinarith
 
 theorem La_nonneg (K : Consts) (hK : K.Nonneg) (s : Scale) : 0 ≤ La K s := by
-  have h0 := hK.1
-  have ha := two_le_a s
   unfold La
-  have hl : 0 ≤ Real.log s.a := Real.log_nonneg (by linarith)
-  exact mul_nonneg (mul_nonneg h0 (sq_nonneg _)) hl
+  have hl : 0 ≤ Real.log s.a := Real.log_nonneg (by linarith [two_le_a s])
+  exact mul_nonneg (mul_nonneg hK.1 (sq_nonneg _)) hl
 
 theorem lo_ge_cp (P : ParameterChoice' D L) (K : Consts) (hK : K.Nonneg) (Ce C bo : ℝ) (hN : GainBoundConstants K Ce C bo) (p : ℕ)
     (hp : p.Prime) : 3 * cG L * Real.logb p (2 * L.sc.a) ≤ lo K L C bo p := by
@@ -582,9 +573,7 @@ theorem top_small (a b : HH D → ℤ) (hW : InWin L a b) (p : ℕ) (hp : p.Prim
       _ = (p : ℝ) ^ 1 := (pow_one _).symm
       _ ≤ (p : ℝ) ^ e := pow_le_pow_right₀ (by linarith) he
   have has : 0 ≤ (a s : ℝ) := by linarith
-  have hb'0 : 0 ≤ L.sc.b' := by
-    unfold Scale.b'
-    exact div_nonneg (by linarith) hX0.le
+  have hb'0 : 0 ≤ L.sc.b' := sc_b'_nonneg L.sc
   set Q : ℝ := (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2) with hQ
   have hQx : L.sc.b' / Q ≤ L.sc.b' / L.sc.x := by
     rcases Nat.eq_zero_or_pos D.R.k with hk | hk
@@ -630,17 +619,14 @@ theorem hypothesis₂ (X : Inst D L) (a b : HH D → ℤ) (hW : InWin L a b) (p 
     askP X a b p j s = 0 := by
   unfold askP
   have hns : ¬ IsSg D p := not_singular_of_central p hc0
-  have hb : ∀ t ∈ D.host.TT, L.sc.b' ≤ (b t : ℝ) := fun t ht => (hW t ht).2.2
   have hterm : ∀ e : ℕ, (if Odd e then max 0 ((a s : ℝ) / (p : ℝ) ^ e - fill X b j (partner D p s e)) else 0)
       = 0 := by
     intro e
     split_ifs with he
-    · have hpart : partner D p s e = (false, s) := by
-        unfold partner
-        simp [hns, hh]
+    · have hpart : partner D p s e = (false, s) := by simp [partner, hns, hh]
       rw [hpart]
       have h1 := top_small a b hW p hp hpX s hs e he.pos
-      have h2 := fill_top_ge X b hb j s hs
+      have h2 := fill_top_ge X b (fun t ht => (hW t ht).2.2) j s hs
       exact max_eq_left (by linarith)
     · rfl
   simp only [hterm, tsum_zero]

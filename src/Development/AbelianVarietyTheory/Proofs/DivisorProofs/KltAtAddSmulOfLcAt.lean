@@ -1,9 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.CentreAtOfIsAt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalEquationEffectiveQCartierDivisorStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalLocalEquationAddSmulDivisorStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogCanonicalAtIffOfIsLogCanonicalLocalEquationStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLocalEquationEffectiveQCartierDivisor
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsLogCanonicalMultipleCanonical
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsLogCanonicalLocalEquationAddSmulDivisor
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogCanonicalAtIffOfIsLogCanonicalLocalEquation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,11 +63,11 @@ theorem kltAt_add_smul_of_lcAt : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyN
       δ ≤ 1 → KltAt p n (Δ + (1 - δ) • D) x := by
   intro X _ _ _ p n hp hn Δ D δ x hD hk hl hδ hδ1
   obtain ⟨η, m, g, hη, hm, hg, hkl⟩ := hk
-  obtain ⟨m', f, hm', -, hf⟩ := GlobalTheory.T.exists_localEquation_effectiveQCartierDivisor X p D hD x
-  obtain ⟨m₁, g₁, hm₁, h₁, e₁⟩ := GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n Δ D η x m m' g f 1 hm hm' hg hf
-  obtain ⟨m₂, g₂, hm₂, h₂, e₂⟩ := GlobalTheory.T.isLogCanonicalLocalEquation_add_smul_divisor X p n Δ D η x m m' g f (1 - δ) hm hm' hg hf
+  obtain ⟨m', f, hm', -, hf⟩ := _root_.GlobalTheory.PairStep.exists_localEqn_of_isQCart X p D hD x
+  obtain ⟨m₁, g₁, hm₁, h₁, e₁⟩ := _root_.GlobalTheory.PairStep.isLogEqn_add_smul X p n Δ D η x m m' g f 1 hm hm' hg hf
+  obtain ⟨m₂, g₂, hm₂, h₂, e₂⟩ := _root_.GlobalTheory.PairStep.isLogEqn_add_smul X p n Δ D η x m m' g f (1 - δ) hm hm' hg hf
   rw [one_smul] at h₁
-  have hlc := (GlobalTheory.T.logCanonicalAt_iff_of_isLogCanonicalLocalEquation X p n hp hn (Δ + D) η x m₁ g₁ hη hm₁ h₁).1 hl
+  have hlc := (_root_.GlobalTheory.PairStep.lcAt_iff_of_isLogEqn X p n hp hn (Δ + D) η x m₁ g₁ hη hm₁ h₁).1 hl
   refine ⟨η, m₂, g₂, hη, hm₂, h₂, fun E hE => ?_⟩
   have a := hkl E hE
   have b := hlc E hE

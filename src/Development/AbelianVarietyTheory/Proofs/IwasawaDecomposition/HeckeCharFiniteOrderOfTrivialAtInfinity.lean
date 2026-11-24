@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsRationalUnitaryDeterminantMapRationalUnitaryTo
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousInfIdele
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteIndexUnitIdlSup
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterUnramifiedAeAndExistsLevelStatement
+public import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeCharacterUnramifiedAeAndExistsLevel
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IdeleCharacterTrivialOnLocalUnits
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.GlintPrincRelIndexNeZero
 import Mathlib.Algebra.Order.Floor.Extended
@@ -132,7 +133,7 @@ open Classical in
 theorem finite_order_of_inf_eq_one : ∀ (L : Type) [Field L] [NumberField L] (χ : HChar L),
     (∀ k, χ.inf k = 1) → ∃ n : ℕ, 0 < n ∧ χ.OrderDvd n := by
   intro L _ _ χ h
-  obtain ⟨hfin, hlev⟩ := GlobalTheory.T.heckeCharacter_unramified_ae_and_exists_level L χ
+  obtain ⟨hfin, hlev⟩ := _root_.GlobalTheory.Mem.UnrAe.unr_ae_and_level L χ
   have hm : ∀ v, ∃ m : ℕ, 0 < m ∧ ∀ x, IsUnitAt v x → χ.loc v x ^ m = 1 := by
     intro v
     obtain ⟨n, hn⟩ := hlev v

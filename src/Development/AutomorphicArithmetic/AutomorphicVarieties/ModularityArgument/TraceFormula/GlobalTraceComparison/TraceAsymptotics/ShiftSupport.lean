@@ -80,7 +80,7 @@ private theorem shift_eval (ρ : Representation ℂ G V) (K : Subgroup G) (g : G
   have := GlobalTheory.TwTrLevel.out_eq_of_inv K (fun y => g (a⁻¹ * y) • ρ y x) hinv (a * r.out)
   rw [smul_mk]
   refine this.trans ?_
-  simp [map_mul, Module.End.mul_apply]
+  simp [map_mul]
 
 private theorem shift_support (ρ : Representation ℂ G V) (K : Subgroup G) (g : G → ℂ)
     (hg : ∀ k ∈ K, ∀ x, g (x * k) = g x) (hs : {q : G ⧸ K | g q.out ≠ 0}.Finite) (x : V)

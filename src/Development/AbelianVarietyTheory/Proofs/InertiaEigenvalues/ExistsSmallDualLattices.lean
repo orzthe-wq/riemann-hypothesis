@@ -148,7 +148,7 @@ theorem box_dual [IsUltrametricDist F] {ψ : AddChar F ℂ} (hψ : IsStdChar ψ)
       rw [hB, Finset.sum_eq_single i] at this
       · simpa [mul_assoc] using this
       · intro j _ hj
-        simp [Finsupp.single_apply, hj.symm]
+        simp [hj.symm]
       · simp
     rw [norm_mul] at h1
     rw [norm_inv, ← one_div, le_div_iff₀ htp, mul_comm]

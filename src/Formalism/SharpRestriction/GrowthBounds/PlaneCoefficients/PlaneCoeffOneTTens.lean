@@ -59,8 +59,7 @@ theorem coeff_sumSupp {σ R S : Type*} [CommSemiring R] [CommSemiring S] (F : Mv
   rw [Finset.sum_ite_eq']
   split_ifs with h
   · rfl
-  · have h0 : F.coeff mo = 0 := by simpa [MvPolynomial.mem_support_iff] using h
-    rw [h0, hg]
+  · rw [(show F.coeff mo = 0 by simpa [MvPolynomial.mem_support_iff] using h), hg]
 
 def tens {σ τ Kf : Type} [Field Kf] (A : MvPolynomial σ Kf) (G : MvPolynomial τ Kf) :
     MvPolynomial σ (MvPolynomial τ Kf) :=
@@ -73,14 +72,12 @@ theorem planeCoeff_oneT_tens {σ τ Kf : Type} [Field Kf] (e : Module.End Kf (Mv
   have h1 : (tens A G).coeff mo = A.coeff mo • G := by
     unfold tens
     exact coeff_sumSupp A (fun a => a • G) (by simp) mo
-  have h2 : ∀ T : MvPolynomial σ (MvPolynomial τ Kf), (oneT e T).coeff mo = e (T.coeff mo) := by
-    intro T
+  have h2 : (oneT e (tens A G)).coeff mo = e ((tens A G).coeff mo) := by
     unfold oneT
-    exact coeff_sumSupp T e (by simp) mo
-  have h3 : ∀ X : MvPolynomial σ (MvPolynomial τ Kf), (planeCoeff nu X).coeff mo = (X.coeff mo).coeff nu := by
-    intro X
+    exact coeff_sumSupp (tens A G) e (by simp) mo
+  have h3 : (planeCoeff nu (oneT e (tens A G))).coeff mo = ((oneT e (tens A G)).coeff mo).coeff nu := by
     unfold planeCoeff
-    exact coeff_sumSupp X (fun q => q.coeff nu) (by simp) mo
+    exact coeff_sumSupp (oneT e (tens A G)) (fun q => q.coeff nu) (by simp) mo
   rw [h3, h2, h1, LinearMap.map_smul]
   simp only [MvPolynomial.coeff_smul, smul_eq_mul]
   ring
@@ -97,9 +94,7 @@ theorem compD_mem_Pol {ι : Type} {s : ℕ} {Kf : Type} [Field Kf] (d : ι → �
   unfold Pol
   rw [MvPolynomial.mem_restrictSupport_iff]
   intro x hx
-  have hx' := MvPolynomial.support_monomial_subset hx
-  rw [Finset.mem_singleton] at hx'
-  subst hx'
+  rw [(show x = mo by simpa using MvPolynomial.support_monomial_subset hx)]
   exact hmo.2
 
 section Lev

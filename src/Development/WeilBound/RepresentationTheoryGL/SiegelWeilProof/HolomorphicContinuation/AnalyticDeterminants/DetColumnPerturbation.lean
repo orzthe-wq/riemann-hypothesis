@@ -96,7 +96,7 @@ theorem phiF_single (k : Fin N) (j : Fin (N + 1)) :
     phiF (Matrix.single k j (1 : ℂ)) = Matrix.single k.succ j 1 := by
   ext i l
   refine Fin.cases ?_ (fun m => ?_) i
-  · simp [Matrix.single_apply, (Fin.succ_ne_zero k).symm]
+  · simp
   · simp [Matrix.single_apply, Fin.succ_inj]
 
 theorem piF_single_succ (k : Fin N) (j : Fin N) :
@@ -118,13 +118,13 @@ theorem det_corner_perturbation (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ)
     (1 + phiF X + s • Matrix.single 0 0 1).det = (1 + s) * (1 + piF X).det := by
   have hsub : (1 + phiF X + s • Matrix.single 0 0 1).submatrix Fin.succ Fin.succ = 1 + piF X := by
     ext k l
-    simp [piF, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj, Fin.succ_ne_zero]
+    simp [piF, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj]
     intro h; exact absurd h.symm (Fin.succ_ne_zero k)
   rw [det_first_row_expansion _ (1 + s), hsub]
   intro j
   refine Fin.cases ?_ (fun m => ?_) j
-  · simp [Matrix.one_apply, Matrix.single_apply]
-  · simp [Matrix.one_apply, Matrix.single_apply, Fin.succ_ne_zero, (Fin.succ_ne_zero m).symm]
+  · simp
+  · simp [Fin.succ_ne_zero, (Fin.succ_ne_zero m).symm]
 
 theorem det_column_perturbation (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ) (c : Fin N) :
     (1 + phiF X + s • Matrix.single 0 c.succ 1).det = (1 + piF X - s • colQ X c).det := by
@@ -139,20 +139,20 @@ theorem det_column_perturbation (X : Matrix (Fin N) (Fin (N + 1)) ℂ) (s : ℂ)
     ext k l
     by_cases hl : l = c
     · subst hl
-      simp [A, Matrix.updateCol_apply, piF, colQ, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj,
+      simp [A, piF, colQ, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj,
         Fin.succ_ne_zero, hz]
       ring
     · have hl' : l.succ ≠ c.succ := fun h => hl (Fin.succ_inj.mp h)
-      simp [A, Matrix.updateCol_apply, piF, colQ, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj,
+      simp [A, piF, colQ, Matrix.one_apply, Matrix.single_apply, Fin.succ_inj,
         hl, hl', Fin.succ_ne_zero, hz]
   · intro j
     by_cases hj : j = c.succ
     · subst hj
-      simp [A, Matrix.updateCol_apply, Matrix.one_apply, Matrix.single_apply, Fin.succ_ne_zero, hz]
+      simp [A, Matrix.one_apply, Matrix.single_apply, Fin.succ_ne_zero, hz]
     · rcases Fin.eq_zero_or_eq_succ j with rfl | ⟨m, rfl⟩
-      · simp [A, Matrix.updateCol_apply, Matrix.one_apply, Matrix.single_apply, hne.symm, hz]
+      · simp [A, Matrix.one_apply, Matrix.single_apply, hne.symm]
       · have hm : m ≠ c := fun h => hj (by rw [h])
-        simp [A, Matrix.updateCol_apply, Matrix.one_apply, Matrix.single_apply, hm, Fin.succ_ne_zero, hz,
+        simp [A, Matrix.one_apply, Matrix.single_apply, hm, Fin.succ_ne_zero, hz,
           Fin.succ_inj, Ne.symm hm]
 
 end PositivityTheory.Rg.Sw.LVs.CK

@@ -85,7 +85,7 @@ theorem slopeMax_sq_le_of_no_short : ∀ (K V : Type) [Field K] [NumberField K] 
   have hf : (0 : ℝ) < (Formalism.HN.nPl K : ℝ) := by
     have : 0 < Formalism.HN.nPl K := Fintype.card_pos
     exact_mod_cast this
-  have hmink := Formalism.ExtensionFiltration.muMaxMinkowski K V (Fin n) b X hXu L La hfg h0 (by
+  have hmink := _root_.Formalism.ExtensionFiltration.max_slope_minkowski K V (Fin n) b X hXu L La hfg h0 (by
     intro x hx hx0
     have h1 := hshort x hx hx0
     rw [sum_embeddings_eq_two_mul (fun σ => Real.log (N σ x)) (fun σ => by simp only [hconj])] at h1

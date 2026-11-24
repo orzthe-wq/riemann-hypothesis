@@ -1,48 +1,6 @@
 module
 
 public import ReciprocityTheory.DualLattices.VEqZeroOfPowEqOne
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Presheaf
 
@@ -162,7 +120,7 @@ theorem pt_degree_eq_one {σ : Type*} {α : σ →₀ ℕ} (h : α.degree = 1) :
       Finset.single_le_sum (f := fun i => α i) (fun _ _ => Nat.zero_le _) hs
     omega
   · have hst : s ≠ t := Ne.symm hts
-    simp only [Finsupp.single_apply, hst, hts, if_false]
+    simp only [Finsupp.single_apply, hst, if_false]
     by_contra hne
     have ht : t ∈ α.support := Finsupp.mem_support_iff.mpr hne
     have hsub : ({s, t} : Finset _) ⊆ α.support := by
@@ -183,7 +141,6 @@ private theorem vmul_lemma {ρ K : Type*} [CommRing K] {P Q : MvPowerSeries ρ K
   have hx' : x.1 + x.2 = e := Finset.HasAntidiagonal.mem_antidiagonal.mp hx
   have hdeg : (x.1 + x.2).degree = x.1.degree + x.2.degree := by
     first
-    | exact Finsupp.degree_add _ _
     | exact map_add _ _ _
   rw [hx'] at hdeg
   by_cases h1 : x.1.degree < m
@@ -193,7 +150,6 @@ private theorem vmul_lemma {ρ K : Type*} [CommRing K] {P Q : MvPowerSeries ρ K
 private theorem vzero_lemma_2 {ρ : Type*} {e : ρ →₀ ℕ} (h : e.degree = 0) : e = 0 := by
   first
   | exact (Finsupp.degree_eq_zero_iff _).mp h
-  | exact Finsupp.degree_eq_zero_iff.mp h
 
 private theorem vpow_lemma_3 {ρ K : Type*} [CommRing K] {A : MvPowerSeries ρ K}
     (hA : constantCoeff A = 0) (k : ℕ) :
@@ -225,7 +181,6 @@ theorem pt_coeff_single_subst {σ τ : Type*} [Fintype σ]
   have hi1 : (Finsupp.single i 1 : τ →₀ ℕ).degree = 1 := by
     first
     | exact Finsupp.degree_single i 1
-    | simp [Finsupp.degree]
   have hsupp : (Function.support fun d : σ →₀ ℕ =>
       coeff d f • coeff (Finsupp.single i 1) (d.prod fun s e => A s ^ e)) ⊆
       ↑(Finset.univ.image fun s : σ => Finsupp.single s 1) := by
@@ -283,20 +238,18 @@ theorem pt_F_lin (G : LogFGL v d) (a : Fin d) (i : Fin d ⊕ Fin d) :
       (if i = Sum.inl a then 1 else 0) + (if i = Sum.inr a then 1 else 0) := by
   have hF : HasSubst G.F := by
     first
-    | exact HasSubst.of_constantCoeff_zero G.F_const
     | exact hasSubst_of_constantCoeff_zero G.F_const
   have hX : ∀ e : Fin d → Fin d ⊕ Fin d,
       HasSubst (fun b => (X (e b) : MvPowerSeries (Fin d ⊕ Fin d) C)) := by
     intro e
     first
-    | exact HasSubst.of_constantCoeff_zero fun b => constantCoeff_X _
     | exact hasSubst_of_constantCoeff_zero fun b => constantCoeff_X _
   have key := congrArg (coeff (Finsupp.single i 1)) (G.lg_F a)
   rw [map_add (f := _), pt_coeff_single_subst hF G.F_const (G.lg_const a),
     pt_coeff_single_subst (hX Sum.inl) (fun b => constantCoeff_X _) (G.lg_const a),
     pt_coeff_single_subst (hX Sum.inr) (fun b => constantCoeff_X _) (G.lg_const a)] at key
   simp only [G.lg_lin, pt_coeff_single_X, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq,
-    Finset.sum_ite_eq', Finset.mem_univ, if_true] at key
+    Finset.mem_univ, if_true] at key
   convert key
 
 end Law

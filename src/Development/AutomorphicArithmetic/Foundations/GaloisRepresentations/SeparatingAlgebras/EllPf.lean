@@ -113,12 +113,10 @@ theorem UpperTheory.Gal.Gen.ell_pf :
     have hm : Wn ∈ nhds (g⁻¹ * g) := by
       rw [inv_mul_cancel]; exact hWo.mem_nhds hW1
     filter_upwards [hc.continuousAt.preimage_mem_nhds hm] with y hy
-    change φ (ℓ g) = φ (ℓ y)
     have := hWinv g _ hy
     rw [mul_inv_cancel_left] at this
     rw [this]
   · intro γ hγ g
-    change φ (ℓ (γ * g)) = φ (ℓ g)
     rw [h1 γ hγ g]
   · let S : Subgroup (finU (E := E) (n := n)) :=
       { carrier := {k | RU E n k (fun g => φ (ℓ g)) = fun g => φ (ℓ g)}
@@ -133,7 +131,6 @@ theorem UpperTheory.Gal.Gen.ell_pf :
         inv_mem' := fun {a} ha => by
           change RU E n ((a : UA E n)⁻¹) _ = _
           conv_lhs => rw [← ha]
-          change RU E n ((a : UA E n)⁻¹) (RU E n a _) = _
           rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]; rfl }
     change IsOpen (S : Set (finU (E := E) (n := n)))
     refine Subgroup.isOpen_of_mem_nhds S (g := 1) ?_

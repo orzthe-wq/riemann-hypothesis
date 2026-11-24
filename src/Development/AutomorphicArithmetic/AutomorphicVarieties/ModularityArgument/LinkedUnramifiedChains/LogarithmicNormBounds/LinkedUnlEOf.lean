@@ -41,8 +41,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.O
 
 noncomputable section
 
-attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
-
 namespace UpperTheory.V.Z.J
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.HV GlobalTheory.GalOfCusp UpperTheory.V.U3 UpperTheory.V.Base

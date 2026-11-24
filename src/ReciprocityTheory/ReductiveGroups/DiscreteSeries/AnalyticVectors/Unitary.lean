@@ -2,53 +2,9 @@ module
 
 public import Mathlib.Analysis.InnerProductSpace.Subspace
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DefsRep
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 public import Mathlib.Analysis.InnerProductSpace.Calculus
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.ConjTransposeEqOfInG
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -99,7 +55,6 @@ theorem inner_actM_add_inner_actM (hσ : IsURepOn (UJset ε) σ) (hD : IsDerived
   simp [hσ'.1.1] at h0
   first
     | (rw [Submodule.coe_inner, Submodule.coe_inner]; linear_combination h0)
-    | (simpa [add_comm] using h0)
 
 theorem actM_single' {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (a b : Fin n) : actM E (Matrix.single a b 1) = E a b := by
@@ -148,13 +103,11 @@ theorem inner_actM_eq (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E
     rw [smul_smul, hc]
     first
       | module
-      | (ext i j; simp; ring)
   have hT : Jm ε * Mᴴ * Jm ε = (-(1 / 2) : ℂ) • (M - Jm ε * Mᴴ * Jm ε) +
       (Complex.I / 2) • ((-Complex.I) • (M + Jm ε * Mᴴ * Jm ε)) := by
     rw [smul_smul, hc]
     first
       | module
-      | (ext i j; simp; ring)
   rw [hT]
   conv_lhs => rw [hM]
   rw [actM_add', actM_add', actM_smul' E (1 / 2 : ℂ), actM_smul' E (-(1 / 2) : ℂ),
@@ -167,7 +120,7 @@ theorem theta_single (ε : Fin n → Bool) (a b : Fin n) :
     Jm ε * (Matrix.single a b (1 : ℂ))ᴴ * Jm ε = adjSign ε a b • Matrix.single b a 1 := by
   ext i j
   simp [Jm, adjSign, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.single_apply,
-    Matrix.conjTranspose_apply, Matrix.smul_apply] <;> split_ifs <;> simp_all
+    Matrix.smul_apply] <;> split_ifs <;> simp_all
 
 theorem isInfUnitary_of_isDerivedOn (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) :
     IsInfUnitary ε E := by

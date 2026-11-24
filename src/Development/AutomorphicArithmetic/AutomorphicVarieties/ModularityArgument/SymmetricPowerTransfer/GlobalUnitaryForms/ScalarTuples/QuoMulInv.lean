@@ -76,11 +76,6 @@ section Alg
 
 variable {K : Type} [Field K] {Δ τ : K}
 
-private theorem ofE_mul (x y : Etau K τ) : ofE Δ (x * y) = ofE Δ x * ofE Δ y := by ext <;> simp [ofE]
-
-private theorem ofE_one : ofE Δ (1 : Etau K τ) = 1 := by
-  ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
-
 private theorem quo_mul_inv (z : (Etau K τ)ˣ) : quo z * quo z⁻¹ = 1 := by
   have e : ∀ a b : (Etau K τ)ˣ, quo (a * b) = quo a * quo b := fun a b => by
     simp only [quo, _root_.mul_inv_rev, Units.val_mul, star_mul]; ring
@@ -90,7 +85,7 @@ private theorem quo_mul_inv (z : (Etau K τ)ˣ) : quo z * quo z⁻¹ = 1 := by
 private theorem tor_inv (z : (Etau K τ)ˣ) (x : Sp Δ τ) : tor Δ z (tor Δ z⁻¹ x) = x := by
   refine Prod.ext rfl ?_
   simp only [tor]
-  rw [← mul_assoc, ← ofE_mul, quo_mul_inv, ofE_one, one_mul]
+  rw [← mul_assoc, ← _root_.UpperTheory.V.Z.Sym.Loc.ofE_mul, quo_mul_inv, _root_.UpperTheory.V.Z.Sym.Loc.ofE_one, one_mul]
 
 end Alg
 
@@ -214,7 +209,7 @@ private theorem lat_fix (hl : IsLoc O Δ) (hτ : τ ∈ (algebraMap O K).range) 
       exact k d hd x hx
     · intro hx
       refine ⟨_, k _ (hd'.sig hl) x hx, Prod.ext (star_star _) ?_⟩
-      have e2 : sigL (sigL d' * sigL x.2) = d' * x.2 := by ext <;> simp [sigL] <;> ring
+      have e2 : sigL (sigL d' * sigL x.2) = d' * x.2 := by ext <;> simp [sigL]
       change d * sigL (sigL d' * sigL x.2) = x.2
       rw [e2]
       linear_combination x.2 * hdd
@@ -302,7 +297,7 @@ private theorem lmap_alg (f : K →+* K') (Δ x : K) :
 
 private theorem elmap_mul (f : K →+* K') {Δ τ : K} (x y : EL Δ τ) : elmap f (x * y) = elmap f x * elmap f y := by
   ext1
-  · simp only [elmap, re_mul, map_add (f := _), map_mul, map_neg, map_one, lmap_alg]
+  · simp only [elmap, re_mul, map_add (f := _), map_mul, map_neg, map_one]
   · simp only [elmap, im_mul, map_add (f := _), map_mul, lmap_alg]
 
 private theorem elmap_one (f : K →+* K') {Δ τ : K} : elmap f (1 : EL Δ τ) = 1 := by

@@ -66,15 +66,6 @@ theorem subsingleton_of_etale {K : Type} [Field K] {X : Scheme.{0}} (f : X ⟶ S
   have : DiscreteTopology X := isDiscrete_univ_iff.mp (hu ▸ hd)
   exact hZ.isPreirreducible.subsingleton
 
-theorem isOpenImmersion_of_section {X Y : Scheme.{0}} (f : X ⟶ Y) [Etale f] (s : Y ⟶ X) (hs : s ≫ f = 𝟙 _) :
-    IsOpenImmersion s := by
-  haveI : MorphismProperty.HasOfPostcompProperty @IsOpenImmersion
-      (MorphismProperty.diagonal @IsOpenImmersion) :=
-    MorphismProperty.hasOfPostcompProperty_iff_le_diagonal.2 le_rfl
-  exact MorphismProperty.of_postcomp (W := @IsOpenImmersion)
-    (W' := MorphismProperty.diagonal @IsOpenImmersion) s f
-    (inferInstanceAs (IsOpenImmersion (Limits.pullback.diagonal f))) (by rw [hs]; infer_instance)
-
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
@@ -122,7 +113,7 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Recip
   have hpt : ∀ s, g₀ s = genPt Z := fun s => by
     rw [Scheme.Hom.comp_apply]
     exact Scheme.fromSpecResidueField_apply _ _
-  have := isOpenImmersion_of_section strK g₀ (hg₀.trans hid)
+  have := _root_.GlobalTheory.isOpenImmersion_of_section_of_etale strK g₀ (hg₀.trans hid)
   obtain ⟨y₀, hy₀⟩ := exists_frPt_local (c := c) GlobalTheory.abelianSchemeLaws_all.2.secTwist _ (prX_over hg₀)
   refine ⟨y₀, fun s => ?_, fun S _ _ y hy => ?_⟩
   · rw [ptF_eq hg₀ hy₀, hpt]

@@ -94,8 +94,7 @@ theorem familyClass_points_satisfy_objectProperty (QO : ∀ D : D7, Obj D → Pr
 theorem TwAllAt.twAt {D : D7} {C : NChoice D} {T : ThData D} (h : TwAllAt D C T) : LocalQuadraticParts.TWAt D C T := by
   obtain ⟨hc, N0, S, hS⟩ := h
   refine ⟨hc, N0, S, fun w hw => ⟨(hS w hw).1, ?_⟩⟩
-  have := (hS w hw).2 1 (by simp)
-  rwa [zpow_one] at this
+  simpa only [zpow_one] using (hS w hw).2 1 (by simp)
 
 end GlobalTheory.EX.DQ
 

@@ -1,9 +1,10 @@
 module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.ConstantCoeffSurjective
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CrystallineFiltrationMultiplicativeStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExpansionSurjectiveAdditiveLinearStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFiltrationGeneratedByDividedXiStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CrystallineFiltrationMultiplicative
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExpansionSurjectiveAdditiveLinear
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.AcrisKummerUnits.MapUgAlgebraMap
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GradedFiltrationGeneratedByDividedXi
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SharpSurjectiveKerSpan
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -60,13 +61,13 @@ variable {l : ℕ} [Fact l.Prime] (A : PAlg l)
 
 theorem dxi_mul (i j : ℕ) :
     A.dxi 1 i * A.dxi 1 j = ((i + j).choose i : A.Acr 1) * A.dxi 1 (i + j) := by
-  obtain ⟨-, hmul, -⟩ := GlobalTheory.T.crystalline_filtration_multiplicative A
+  obtain ⟨-, hmul, -⟩ := _root_.GlobalTheory.CompanionTheory.FilMul.main A
   change A.mkAcr 1 (A.dxi0 i) * A.mkAcr 1 (A.dxi0 j)
     = ((i + j).choose i : A.Acr 1) * A.mkAcr 1 (A.dxi0 (i + j))
   rw [← map_mul, hmul, map_mul, map_natCast]
 
 theorem aTo1_pi : A.aTo1 A.pi = -A.dxi 1 1 := by
-  obtain ⟨-, -, hfac, -⟩ := GlobalTheory.T.crystalline_filtration_multiplicative A
+  obtain ⟨-, -, hfac, -⟩ := _root_.GlobalTheory.CompanionTheory.FilMul.main A
   have h1 : A.dxi0 1 = algebraMap A.W A.Acr0 A.xi := by
     simpa using hfac 1
   have h2 : A.dxi 1 1 = A.toAcr 1 A.xi := by
@@ -92,7 +93,7 @@ theorem exists_coprime {m : ℕ} (hm : l ∣ m) {j : ℕ} (hj : j < l) :
       have := Nat.le_of_dvd (Nat.succ_pos j) h2
       omega
     refine ⟨c * (m + j + 1), Nat.Coprime.mul_left hc ((Nat.Prime.coprime_iff_not_dvd hp).mpr hnd).symm, ?_⟩
-    rw [pow_succ', mul_assoc, hcj, mul_left_comm, dxi_mul A 1 (m + j), Nat.choose_one_right]
+    rw [pow_succ', mul_assoc, hcj, mul_left_comm, _root_.GlobalTheory.CompanionTheory.PerfFil.Expand.dxi_mul A 1 (m + j), Nat.choose_one_right]
     have e : 1 + (m + j) = m + (j + 1) := by omega
     rw [e]
     push_cast
@@ -126,7 +127,7 @@ theorem inner_step (k : ℕ) {j : ℕ} (hj : j < l) (b : A.A)
   have hx : A.aTo1 b * A.dxi 1 (l * k + j) ∈ A.Fil 1 (l * k + j + 1) := by
     have e : A.aTo1 (A.pi ^ j * b) * A.dxi 1 (l * k)
         = (c : A.Acr 1) * ((-1) ^ j * (A.aTo1 b * A.dxi 1 (l * k + j))) := by
-      rw [map_mul, map_pow, aTo1_pi A]
+      rw [map_mul, map_pow, _root_.GlobalTheory.CompanionTheory.PerfFil.Expand.aTo1_pi A]
       calc (-A.dxi 1 1) ^ j * A.aTo1 b * A.dxi 1 (l * k)
           = (-1) ^ j * A.aTo1 b * (A.dxi 1 1 ^ j * A.dxi 1 (l * k)) := by ring
         _ = _ := by rw [hcj]; ring
@@ -140,7 +141,7 @@ theorem inner_step (k : ℕ) {j : ℕ} (hj : j < l) (b : A.A)
       simp
     rwa [h4] at h3
   rw [← toAcr_teichmuller A b] at hx
-  have hth := ((GlobalTheory.T.graded_filtration_generated_by_dividedXi A 1 (l * k + j)).2 (WittVector.teichmuller l b)).mp hx
+  have hth := ((_root_.GlobalTheory.CompanionTheory.PerfFil.graded_mod_pow A 1 (l * k + j)).2 (WittVector.teichmuller l b)).mp hx
   have hz : A.aToU1 b = 0 := by
     have e := A.sharpMap_coeff (WittVector.teichmuller l b)
     rw [WittVector.teichmuller_coeff_zero] at e
@@ -153,14 +154,14 @@ theorem inner_step (k : ℕ) {j : ℕ} (hj : j < l) (b : A.A)
 theorem term_eq_zero {a : A.A} (h : a ∈ Ideal.span {A.pi ^ l}) (m : ℕ) :
     A.aTo1 a * A.dxi 1 m = 0 := by
   obtain ⟨t, rfl⟩ := Ideal.mem_span_singleton'.mp h
-  obtain ⟨-, -, -, h4⟩ := GlobalTheory.T.expansion_surjective_additive_linear A
+  obtain ⟨-, -, -, h4⟩ := _root_.GlobalTheory.CompanionTheory.PerfFil.Expand.main A
   rw [map_mul, mul_assoc, h4, mul_zero]
 
 theorem term_mem (c : ℕ →₀ A.A) (h0 : A.expand c = 0) (k : ℕ)
     (hk : ∀ i < k, c i ∈ Ideal.span {A.pi ^ l}) :
     A.aTo1 (c k) * A.dxi 1 (l * k) ∈ A.Fil 1 (l * k + l) := by
-  obtain ⟨-, hadd, -, -⟩ := GlobalTheory.T.expansion_surjective_additive_linear A
-  obtain ⟨-, -, -, -, hmap, -⟩ := GlobalTheory.T.crystalline_filtration_multiplicative A
+  obtain ⟨-, hadd, -, -⟩ := _root_.GlobalTheory.CompanionTheory.PerfFil.Expand.main A
+  obtain ⟨-, -, -, -, hmap, -⟩ := _root_.GlobalTheory.CompanionTheory.FilMul.main A
   have hdx : ∀ m, A.dxi 1 m ∈ A.Fil 1 m := fun m => by
     rw [hmap]
     change A.mkAcr 1 (A.dxi0 m) ∈ _
@@ -204,7 +205,7 @@ theorem term_mem (c : ℕ →₀ A.A) (h0 : A.expand c = 0) (k : ℕ)
   exact (Ideal.neg_mem_iff _).mpr herase
 
 theorem fil_anti {r s : ℕ} (h : r ≤ s) : A.Fil 1 s ≤ A.Fil 1 r := by
-  obtain ⟨-, -, -, -, hmap, -⟩ := GlobalTheory.T.crystalline_filtration_multiplicative A
+  obtain ⟨-, -, -, -, hmap, -⟩ := _root_.GlobalTheory.CompanionTheory.FilMul.main A
   rw [hmap, hmap]
   apply Ideal.map_mono
   unfold CrystallineSemistableComparison.PAlg.Fil0

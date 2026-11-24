@@ -76,7 +76,6 @@ theorem intCapP : IntCapP := by
       rw [hcomm, map_rename, h2 l j hlj]
   · first
       | rfl
-      | simp [MvPolynomial.mapAlgHom]
 
 theorem qa_nuNext_add {n : ℕ} (ν ν' : Fin n → ℕ) (s : Fin n) : nuNext (ν + ν') s = nuNext ν s + nuNext ν' s := by
   unfold nuNext

@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 
 @[expose] public section
 
@@ -124,7 +125,7 @@ theorem hE_crdOf (x y : (VS D).V) :
   simp only [hE, Formalism.UG.hform, crdOf, map_sum, map_mul, RingHom.coe_coe, sig_apply, X.ιE_conj,
   RingEquiv.apply_symm_apply, X.J_eq]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  rw [← host_star_conj D.R D.host]
+  rw [← _root_.Formalism.BasicNotions.bridge_star_holds D.R D.host]
 
 def hv : Fin (D.R.rS + 1 + D.R.rS) → (VS D).V := Fin.append (Fin.snoc X.eX (X.zu u')) X.fY
 

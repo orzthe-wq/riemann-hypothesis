@@ -58,17 +58,6 @@ namespace GlobalTheory.AbelianLetters
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory NumberField in
 open CategoryTheory.MonObj in
-theorem _root_.GlobalTheory.AbelianLetters.mul_comp_of_isGrpPullback_id {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [GrpObj G] (f : G' ⟶ G)
-    (h : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback G' G (𝟙 S) f.left) {T : Over S} (x y : T ⟶ G') : (x * y) ≫ f = (x ≫ f) * (y ≫ f) := by
-  let e : Over.mk (T.hom ≫ 𝟙 S) ⟶ T := Over.homMk (𝟙 T.left) (by simp)
-  have key := h.2 T x y (e ≫ x ≫ f) (e ≫ y ≫ f) (by simp [e]) (by simp [e])
-  rw [← MonObj.comp_mul] at key
-  ext1
-  simpa [e] using key.symm
-
-
-open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory NumberField in
-open CategoryTheory.MonObj in
 theorem _root_.GlobalTheory.AbelianLetters.exists_linear_lift_of_isGrpPullback :
     ∀ (P P' : _root_.ReciprocityTheory.ChartRestriction.G.Out.PolAV (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)) (φ : P'.A.left ⟶ P.A.left), _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback P'.A P.A (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (RingHom.id ℂ)) φ →
     ∀ (u : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.HolUnif P'.A P'.L P'.g) (g : ℕ) (T : Over (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)) (i : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ T.left), i ≫ T.hom = 𝟙 _ →

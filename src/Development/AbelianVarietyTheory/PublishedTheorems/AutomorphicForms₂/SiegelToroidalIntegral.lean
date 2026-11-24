@@ -100,46 +100,10 @@ def IsUnifOf {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (ξ : Sp R ⟶ S
       y ≫ j = jK R ≫ ξ ∧ IsGrpPullback A.A F.univ.A y α ∧ IsSquare α α₂ ∧ LBIso (abelian₂ A.A A.L) (F.univ.P.pull α₂) ∧
         U.gen.hom.left ≫ α ≫ e = pullback.fst G'.hom (jK R) ≫ π
 
-def HasChart [IsOpenImmersion j] (φ : InvFun ℤ) (BD : EffCartierData S) (d : ℕ) (x : S) : Prop :=
-  ∃ (R : Type) (_ : CommRing R) (_ : IsRegularLocalRing R) (b : o →+* R) (ξ : Sp R ⟶ S) (m : ℕ) (t : Fin m → R)
-    (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R') (r : Fin m → R')
-    (G' : Over (Sp R')) (_ : GrpObj G') (_ : IsCommMonObj G') (π : G'.left ⟶ G.left) (D : DegData R' (maximalIdeal R'))
-    (A : PolAV (Sp (FractionRing R'))) (U : Unif (maximalIdeal R') D A G') (γ : Fin m → LinearMap.BilinForm ℤ D.toPre.X)
-    (a : Fin m → ℕ),
-    (IsAdicComplete (maximalIdeal R) R ∧ ξ ≫ s = spMap b ∧ ξ (closedPoint R) = x ∧
-      IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom ∧
-      ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified) ∧
-    (IsRelParam b t ∧ idlAlong (Scheme.IdealSheafData.vanishingIdeal j.opensRange.compl) ξ = Ideal.span {∏ i, t i} ∧
-      ∀ p : Sp R, ξ p ∈ Set.range j ↔ ∏ i, t i ∉ p.asIdeal) ∧
-    (AdmBase R' (maximalIdeal R') ∧ CharZero R' ∧ Function.Injective ρ ∧ ρ.Finite ∧ IsLocalHom ρ ∧ ∀ i, r i ^ 2 = ρ (t i)) ∧
-    (IsUnifOf F j e (spMap ρ ≫ ξ) π U ∧ Module.finrank ℤ D.toPre.X ≤ g ∧ IsCone id φ γ ∧
-      IsMonomial D.toPre r fun i => (2 * n : ℤ) • γ i) ∧
-    (∀ i, (a i : ℝ) = d * φ.evalZ ((n : ℤ) • γ i)) ∧ idlAlong BD.idealSheaf ξ = Ideal.span {∏ i, t i ^ a i}
-
 variable {F s j e}
 
 end Charts
 
 abbrev hodge {S : Scheme.{0}} (G : Over S) [GrpObj G] (g : ℕ) : LB S := GlobalTheory.VB.det (GlobalTheory.LieVB.omega G) g
 
-theorem isLB_hodge {S : Scheme.{0}} (G : Over S) [GrpObj G] (g : ℕ) [QuasiSeparated G.hom]
-    [SmoothOfRelativeDimension g G.hom] : (hodge G g).IsLB := (GlobalTheory.LieVB.isVB_omega G g).isLB_det
-
 end GlobalTheory.SiegelTor
-
-namespace GlobalTheory.Published
-
-open GlobalTheory.SiegelTor
-
-def SiegelToroidalIntegral : Prop :=
-  ∀ g : ℕ, 1 ≤ g → ∃ φ : InvFun ℤ, IsPolFan id g φ ∧ ∀ n : ℕ, 3 ≤ n → Odd n →
-    ∃ (F : SFam g n (zetaAway n)) (S : Scheme.{0}) (s : S ⟶ Sp (cycAway n)) (j : F.X ⟶ S) (_ : IsOpenImmersion j)
-      (G : Over S) (_ : GrpObj G) (e : F.univ.A.left ⟶ G.left) (BD : EffCartierData S) (d N : ℕ),
-      IsProjOver s ∧ SmoothOfRelativeDimension (g * (g + 1) / 2) s ∧ j ≫ s = F.s ∧
-      (∀ x : S, x ∈ closure (Set.range j ∩ s ⁻¹' {s x})) ∧
-      IsSemiAbelian G ∧ SmoothOfRelativeDimension g G.hom ∧ IsGrpPullback F.univ.A G j e ∧ abLocus G = Set.range j ∧
-      1 ≤ d ∧ (∀ x : S, HasChart F s j e φ BD d x) ∧
-      1 ≤ N ∧ IsGenerated (lbPow (hodge G g) N) ∧
-      ∃ k₀ : ℕ, ∀ k, k₀ ≤ k → IsAmpleLB (CechPic.tens (lbPow (hodge G g) (N * k)) (CechPic.dual BD.lb))
-
-end GlobalTheory.Published

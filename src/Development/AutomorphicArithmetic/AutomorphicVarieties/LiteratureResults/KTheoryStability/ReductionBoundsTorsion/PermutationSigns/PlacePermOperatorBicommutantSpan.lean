@@ -194,7 +194,7 @@ theorem perm'_star (σ : Equiv.Perm (Fin q)) (w : Fin q → W) :
 theorem one_eq_sum_perm' : (1 : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ) = ∑ w, perm' 1 w := by
   ext I J
   rw [Matrix.sum_apply, Finset.sum_eq_single (fun i => (I i).1)]
-  · simp only [perm', of_apply, Equiv.Perm.coe_one, Function.comp_id, one_apply]
+  · simp only [perm', of_apply, Equiv.Perm.coe_one, Function.comp_id]
     by_cases h : I = J
     · subst h; simp
     · simp [h, Ne.symm h]

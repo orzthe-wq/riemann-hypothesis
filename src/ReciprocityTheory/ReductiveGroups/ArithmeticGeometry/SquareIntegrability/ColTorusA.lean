@@ -128,7 +128,7 @@ theorem ct_iter_cexp {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
           ((ContinuousMultilinearMap.mkPiAlgebraFin ℂ n ℂ).compContinuousLinearMap (fun _ => ℓ))) v :=
       (ℓ.hasFDerivAt.cexp).smul_const _
     rw [hd.fderiv]
-    simp [ContinuousMultilinearMap.mkPiAlgebraFin_apply, List.prod_ofFn, Fin.prod_univ_succ, Fin.tail]
+    simp [ContinuousMultilinearMap.mkPiAlgebraFin_apply, List.prod_ofFn, Fin.tail]
     all_goals ring
 
 theorem ct_iter_cexp_apply {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
@@ -222,7 +222,6 @@ theorem ct_itD_perm {f : W → ℂ} (hf : ContDiff ℂ (⊤ : ℕ∞) f) {l₁ l
       try simp only [minSmoothness_of_isRCLikeNormedField]
       first
         | exact WithTop.coe_le_coe.2 le_top
-        | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤)
     exact hs y x
   | @trans l₁ l₂ l₃ _ _ ih1 ih2 => rw [ih1, ih2]
 

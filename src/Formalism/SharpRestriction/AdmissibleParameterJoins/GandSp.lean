@@ -110,7 +110,6 @@ theorem hs2 {τ R : Type} [CommRing R] {a b : MvPowerSeries τ R} (ha : constant
     HasSubst (![a, b] : Fin 2 → MvPowerSeries τ R) :=  by
   first
   | exact MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simp [ha, hb]
-  | exact ⟨fun i => by fin_cases i <;> simp [ha, hb], fun d => Set.toFinite _⟩
 
 variable {p}
 
@@ -149,7 +148,6 @@ theorem K1core {ι : Type} (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] (Oc : Subr
   have hlgK0 : PowerSeries.constantCoeff (PowerSeries.subst th' lg) = 0 := by
     have hs : HasSubst (fun _ : Unit => th') := by
       first
-      | exact PowerSeries.HasSubst.of_constantCoeff_zero' hth'0
       | exact ⟨fun _ => by rw [show MvPowerSeries.constantCoeff th' = 0 from hth'0]; exact IsNilpotent.zero,
           fun d => Set.toFinite _⟩
     exact MvPowerSeries.constantCoeff_subst_eq_zero hs (fun _ => hth'0) hlg0

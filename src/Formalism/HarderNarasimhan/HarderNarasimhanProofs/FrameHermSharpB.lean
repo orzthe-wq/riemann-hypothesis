@@ -156,10 +156,8 @@ theorem frameB_sum_sl {R V E : Type} [Ring R] [AddCommGroup V] [Module R V]
     ∑ j, (2 * slopeList ρ L j + a) = (rk ρ L : ℝ) * (2 * slope ρ L + a) := by
   rw [Finset.sum_add_distrib, ← Finset.mul_sum, (polygon_slopes_characterization R V E ρ L hL).2.2.1,
     Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
-  have hs : slope ρ L = deg ρ L / rk ρ L := rfl
-  have hr' : (rk ρ L : ℝ) ≠ 0 := by exact_mod_cast hr
-  rw [hs]
-  field_simp
+  rw [show slope ρ L = deg ρ L / rk ρ L from rfl]
+  field_simp [show (rk ρ L : ℝ) ≠ 0 by exact_mod_cast hr]
 
 theorem frameB_integral (u HH : ℝ) (hu : 0 < u) (hH : 0 ≤ HH) :
     ∫ τ in (0:ℝ)..HH, 4 * (u / (u + τ)) = 4 * u * Real.log (1 + HH / u) := by
@@ -167,8 +165,7 @@ theorem frameB_integral (u HH : ℝ) (hu : 0 < u) (hH : 0 ≤ HH) :
     have := intervalIntegral.integral_comp_add_left (fun x : ℝ => x⁻¹) (a := 0) (b := HH) u
     rw [this, integral_inv_of_pos (by linarith) (by linarith)]
     simp
-  have h2 : (1 + HH / u) = (u + HH) / u := by field_simp
-  rw [h2, ← h1, ← intervalIntegral.integral_const_mul]
+  rw [show 1 + HH / u = (u + HH) / u by field_simp, ← h1, ← intervalIntegral.integral_const_mul]
   congr 1; ext τ; ring
 
 end Formalism.HN

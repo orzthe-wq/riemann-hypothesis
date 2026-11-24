@@ -93,7 +93,7 @@ theorem UpperTheory.Gal.InertialTypesAlt.artRead :
     ⟨⟨_, (A.valuation_le_one_iff _).1 hz.le⟩, rfl⟩
   obtain ⟨x, hx⟩ := DiscreteGroups.sglob.DzType.exists_int_approx_compl v
     (a (ineIncl h t) : HeightOneSpectrum.adicCompletion E v) hα.le
-  have hx2 := UpperTheory.Zero.LLC.tameRecAll E Ω g A v h hg1 hg2 a ha ϖ hϖ t x hx
+  have hx2 := _root_.UpperTheory.localArtin_inertia_valuation_of_uniformizer_prime E Ω g A v h hg1 hg2 a ha ϖ hϖ t x hx
   refine ⟨z, u, hzdef, hu, ?_, ?_⟩
   · have hxA : algebraMap E Ω x ∈ A := by
       have h1 : ((t : G E Ω) ϖ / ϖ - algebraMap E Ω x) ∈ A := (A.valuation_le_one_iff _).1 hx2.le

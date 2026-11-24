@@ -106,8 +106,7 @@ theorem core_map (c : K) :
 theorem J_map : YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A) = (YangianSpanCharacter.T.J A).map (Matrix.scalar (Ix S)) := by
   ext i j : 1
   fin_cases i <;> fin_cases j <;> simp [YangianSpanCharacter.T.J] <;>
-    (try (ext x y; simp only [Matrix.neg_apply, Matrix.one_apply, Matrix.diagonal_apply,
-      Matrix.smul_apply]; split_ifs <;> simp))
+    (try (ext x y; simp only [Matrix.neg_apply, Matrix.one_apply, Matrix.diagonal_apply]; split_ifs <;> simp))
 
 theorem smulJ_map (c : K) :
     algebraMap K (SlopeTestRemainingChoices S A) c • YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A) =

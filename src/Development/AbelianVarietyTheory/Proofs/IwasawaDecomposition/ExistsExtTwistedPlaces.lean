@@ -1,17 +1,17 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TiedColumnData
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGIs
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CoefAEqOfHeq
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AuxiliaryPlacesEqUnionThreeParts
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsDivStage
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemLevelOfLocalDepth
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NontrivialReferenceForms
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PlacesOverConjPrimes
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGIsStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPrimeBelow
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSStageTrue
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MapMemSpanImage
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonzeroForcedContentPlacesAgreeOverEnlargement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroColumnsClassSumFormPosDef
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -33,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,7 +44,29 @@ import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroColumnsClassSumFormPosDef
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGIsStatement, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtTwistedPlaces
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGIsStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGIsStatement", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.TiedColumnData\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGIs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl NumberField IsDedekindDomain
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem _root_.GlobalTheory.T.exists_GJStage_GIs2_pinned : StepW Pinned fun K B f T w => ∃ G : GJStage B w.C, GIs2 K w G := by
+  first | exact @GlobalTheory.Mem.Top.Bl.TrueLocal.exists_trueVolumeStage_columnChoiceStep
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGIsStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtTwistedPlaces =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtTwistedPlaces", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.CoefAEqOfHeq\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AuxiliaryPlacesEqUnionThreeParts\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsDivStage\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.MemLevelOfLocalDepth\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NontrivialReferenceForms\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PlacesOverConjPrimes\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsGIsStatement\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPrimeBelow\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSStageTrue\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MapMemSpanImage\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonzeroForcedContentPlacesAgreeOverEnlargement\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StepZeroColumnsClassSumFormPosDef\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.MainNotions.S MeasureTheory IsDedekindDomain NumberField
@@ -81,21 +102,9 @@ theorem exists_lt_of_stage (hG : GlobalTheory.Published.GreenCuspidal) {K : Ctx}
   exact ⟨⟨W', V, S, N, G⟩, rfl, hN, GlobalTheory.Mem.R3.Model.grpAt_of_grpTrue (w.st ⟨W', V, S, N, G⟩) w.I w.ok
     (by show GrpTrue N w.I.C; rw [w.C_eq]; exact hN), hk w.C W' rfl rfl V S N G⟩
 
-theorem exists_below_of_range (D D' : D7) (h : Set.range D.what₂.embLL ⊆ Set.range D'.what₂.embLL) (v' : D'.what₂.places.Pl) :
-    ∃ v : D.what₂.places.Pl, Below D D' v v' := by
-  first
-  | (run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll])); exact @_root_.GlobalTheory.PrimeBelow.exists_below
-  | (run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll])); exact _root_.GlobalTheory.PrimeBelow.exists_below
-  | exact @_root_.GlobalTheory.PrimeBelow.exists_below
-  | exact _root_.GlobalTheory.PrimeBelow.exists_below
-  | (apply _root_.GlobalTheory.PrimeBelow.exists_below <;> assumption)
-  | (intros; apply _root_.GlobalTheory.PrimeBelow.exists_below <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.PrimeBelow.exists_below <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.PrimeBelow.exists_below ..)
-
 theorem resChar_of_below {D D' : D7} {v : D.what₂.places.Pl} {v' : D'.what₂.places.Pl} (hB : Below D D' v v') :
     D'.what₂.places.resChar v' = D.what₂.places.resChar v := by
-  refine GlobalTheory.LvT.Inh.resChar_eq_of_mem_plEq D' v' (D.what₂.places.resChar_prime v) ((hB _ _ ?_).1 (GlobalTheory.LvT.Inh.resChar_mem_plEq D v))
+  refine GlobalTheory.LvT.Inh.resChar_eq_of_mem_plEq D' v' (D.what₂.places.resChar_prime v) ((hB _ _ ?_).1 (_root_.Formalism.BasicNotions.resChar_mem D v))
   simp only [map_natCast]
 
 theorem not_mem_W1F_zero (D : D7) (v : D.what₂.places.Pl) : v ∉ placesWithNonzeroContentOrConj D (fun _ _ => 0) := by
@@ -130,7 +139,7 @@ theorem exists_ext_twisted_places : GlobalTheory.Published.GreenCuspidal → Dat
     exact c.trans ((or_congr i0 e).trans d.symm)
   refine ⟨Z', pin'.hX, z', hG2, hGT', hGA', hKap', hFine', ?_, ?_, hExt, key⟩
   · intro v' hv'
-    obtain ⟨v, hB⟩ := exists_below_of_range (w.D Z) (w'.D Z') hE.2.2.2 v'
+    obtain ⟨v, hB⟩ := _root_.GlobalTheory.PrimeBelow.exists_below (w.D Z) (w'.D Z') hE.2.2.2 v'
     have hv := (key v v' hB).2 hv'
     have hr := resChar_of_below hB
     rw [hpl]
@@ -139,3 +148,7 @@ theorem exists_ext_twisted_places : GlobalTheory.Published.GreenCuspidal → Dat
     exact hpsi Z' v' fun v hB hv => hv' ((key v v' hB).1 hv)
 
 end GlobalTheory.Mem.R3.Rw.Second
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsExtTwistedPlaces =====

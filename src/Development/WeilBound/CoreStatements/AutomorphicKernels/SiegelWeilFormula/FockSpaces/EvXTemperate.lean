@@ -77,7 +77,7 @@ private theorem hasTemperateGrowth_evX' {m n : ℕ} (k : Fin m × Fin n × Bool)
 
 theorem evX_temperate {m n : ℕ} (P : PX m n) :
     Function.HasTemperateGrowth (fun x : Fin m → Fin n → ℂ => evX P x) := by
-  apply PositivityTheory.SiegelWeilFormula.KMain.evX_temperate <;> assumption
+  apply PositivityTheory.SiegelWeilFormula.KMain.evX_temperate
 
 def eucl (m n : ℕ) (s : ℝ) (hs : s ≠ 0) : (Fin m → Fin n → ℂ) ≃L[ℝ] EuclideanSpace ℂ (Fin m × Fin n) :=
   ((LinearEquiv.smulOfNeZero ℝ (Fin m → Fin n → ℂ) s hs).trans
@@ -89,7 +89,7 @@ theorem eucl_norm_sq (m n : ℕ) (s : ℝ) (hs : s ≠ 0) (x : Fin m → Fin n �
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
-  simp [eucl, norm_smul, mul_pow]
+  simp [eucl, mul_pow]
 
 theorem gsSch (m n : ℕ) {c : ℝ} (hc : 0 < c) : ∃ G : 𝓢(Fin m → Fin n → ℂ, ℂ), ∀ x, G x = gs c x := by
   have hpi : 0 < Real.pi := Real.pi_pos

@@ -1,24 +1,33 @@
 module
 
+public import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.IsMulRightInvariantOfLattice
+public import Formalism.LocalRingCardinality.DataRows
+public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.HidaSetting
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.Vanish
+public import Mathlib.MeasureTheory.Group.FundamentalDomain
+public import Mathlib.Analysis.LocallyConvex.SeparatingDual
+public import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CovariantRepresentation
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SubOneMulVecFix
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RowsConc
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CplxNF
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.HaarPushforward
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.KppOffCOfSteps
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LeviTens
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MapConjOfBounded
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.NinfConjIff
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ShiftCore
-import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.HermitianETransportInvariant
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -26,8 +35,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,7 +43,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,11 +55,609 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalRingCardinality.SpanPowerMembership.HasStrictFDerivAtExpZero
+import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermOp
+import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.PoincareConstantEq
+import Formalism.SharpRestriction.CuspSpanNormBounds.IsPrimitiveSub
+import Formalism.SharpRestriction.CuspSpanNormBounds.Point
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.KappaOffDiagonal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CovariantRepresentation
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.HermitianETransportInvariant
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.HaarPushforward, Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MapConjOfBounded, Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CountableConjSub, Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ShiftCore, Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FixedDecomposition
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.HaarPushforward =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.HaarPushforward", "h": "module\n\npublic import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.IsMulRightInvariantOfLattice\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.LocalRingCardinality.DataRows\npublic import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow\nimport Formalism.LocalRingCardinality.SpanPowerMembership.HasStrictFDerivAtExpZero\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermOp\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.PoincareConstantEq\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.HidaSetting\nimport Formalism.SharpRestriction.CuspSpanNormBounds.IsPrimitiveSub\nimport Formalism.SharpRestriction.CuspSpanNormBounds.Point\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.Vanish\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.KappaOffDiagonal\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Topology NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full
+  Formalism.L2.SG.KappaOffDiagonal Formalism.L2.SG.TermOp.Vanish Formalism.L2.SG.CovariantRepresentation
+
+namespace Formalism.L2.SG.HaarPushforward
+
+section Core
+
+variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
+  [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G]
+
+theorem pushHaar_inv (R Γ : Subgroup G) [Countable Γ] [DiscreteTopology Γ] (hR : IsClosed (R : Set G)) (hΓ : Γ ≤ R)
+    (hcov : ∃ K : Set G, IsCompact K ∧ ∀ r ∈ R, ∃ s ∈ Γ, s * r ∈ K) :
+    ∃ ν : Measure G, SigmaFinite ν ∧ ν ≠ 0 ∧ ν (R : Set G)ᶜ = 0 ∧ (∀ K : Set G, IsCompact K → ν K < ⊤) ∧
+      (∀ r ∈ R, ν.map (fun x => r * x) = ν) ∧ ν.map (fun x => x⁻¹) = ν := by
+  have hce : IsClosedEmbedding (Subtype.val : R → G) := hR.isClosedEmbedding_subtypeVal
+  haveI : LocallyCompactSpace R := hce.locallyCompactSpace
+  haveI : BorelSpace R := Subtype.borelSpace _
+  haveI : SecondCountableTopology R := TopologicalSpace.Subtype.secondCountableTopology (R : Set G)
+  let μ : Measure R := Measure.haar
+  haveI : SigmaFinite μ := sigmaFinite_of_locallyFinite
+  have hemb : MeasurableEmbedding (Subtype.val : R → G) := MeasurableEmbedding.subtype_coe hR.measurableSet
+  let Γ' : Subgroup R := Γ.subgroupOf R
+  let ι : Γ' → Γ := fun x => ⟨x.1.1, Subgroup.mem_subgroupOf.1 x.2⟩
+  have hι : Function.Injective ι := by
+    intro a b e
+    simp only [ι, Subtype.mk.injEq] at e
+    exact Subtype.ext (Subtype.ext e)
+  haveI : Countable Γ' := hι.countable
+  haveI : DiscreteTopology Γ' :=
+    DiscreteTopology.of_continuous_injective
+      ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) hι
+  obtain ⟨K, hK, hKc⟩ := hcov
+  have hinv : μ.map (fun x => x⁻¹) = μ :=
+    haar_map_inv_of_lattice μ Γ' (hce.isCompact_preimage hK) (fun x => by
+      obtain ⟨s, hs, hsK⟩ := hKc x.1 x.2
+      exact ⟨⟨s, hΓ hs⟩, Subgroup.mem_subgroupOf.2 hs, hsK⟩)
+  refine ⟨μ.map Subtype.val, hemb.sigmaFinite_map, ?_, ?_, ?_, ?_, ?_⟩
+  · intro h
+    rw [Measure.map_eq_zero_iff hemb.measurable.aemeasurable] at h
+    exact (NeZero.ne μ) h
+  · rw [hemb.map_apply]
+    have e : (Subtype.val ⁻¹' ((R : Set G)ᶜ) : Set R) = ∅ := by
+      ext x
+      exact ⟨fun hx => (hx x.2).elim, fun h => h.elim⟩
+    rw [e, measure_empty]
+  · intro K hK
+    rw [hemb.map_apply]
+    exact (hce.isCompact_preimage hK).measure_lt_top
+  · intro r hr
+    have hm : Measurable (fun x : G => r * x) := (continuous_const.mul continuous_id).measurable
+    have hm' : Measurable (fun y : R => (⟨r, hr⟩ : R) * y) := (continuous_const.mul continuous_id).measurable
+    rw [Measure.map_map hm hemb.measurable]
+    have e : (fun x : G => r * x) ∘ Subtype.val = Subtype.val ∘ (fun y : R => (⟨r, hr⟩ : R) * y) := rfl
+    rw [e, ← Measure.map_map hemb.measurable hm', map_mul_left_eq_self]
+  · rw [Measure.map_map continuous_inv.measurable hemb.measurable]
+    have e : (fun x : G => x⁻¹) ∘ Subtype.val = Subtype.val ∘ (fun y : R => y⁻¹) := rfl
+    rw [e, ← Measure.map_map hemb.measurable continuous_inv.measurable, hinv]
+
+end Core
+
+variable {D : D7} {X : HidaSetting D} {u u' : D.what₂.Word}
+
+end Formalism.L2.SG.HaarPushforward
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.HaarPushforward =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MapConjOfBounded =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MapConjOfBounded", "h": "module\n\npublic import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.IsMulRightInvariantOfLattice\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Measure Set Filter Topology
+open scoped ENNReal NNReal Pointwise
+
+namespace Formalism.L2.SG.CovariantRepresentation
+
+section Conj
+
+variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
+  [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
+
+theorem map_conj_of_mem (R : Subgroup G) (ν : Measure G) (hl : ∀ r ∈ R, ν.map (fun x => r * x) = ν)
+    (hi : ν.map (fun x => x⁻¹) = ν) {n : G} (hn : n ∈ R) : ν.map (fun x => n⁻¹ * x * n) = ν := by
+  have hinv : Measurable (fun x : G => x⁻¹) := measurable_inv
+  have hr : ν.map (fun x => x * n) = ν := by
+    have e : (fun x : G => x * n) = (fun x => x⁻¹) ∘ ((fun x => n⁻¹ * x) ∘ (fun x => x⁻¹)) := by
+      funext x; simp [mul_inv_rev]
+    rw [e, ← map_map hinv ((measurable_const_mul _).comp hinv), ← map_map (measurable_const_mul _) hinv, hi,
+      hl _ (R.inv_mem hn), hi]
+  have e : (fun x : G => n⁻¹ * x * n) = (fun x => x * n) ∘ (fun x => n⁻¹ * x) := rfl
+  rw [e, ← map_map (measurable_mul_const n) (measurable_const_mul _), hl _ (R.inv_mem hn), hr]
+
+theorem map_conj_of_bounded (R : Subgroup G) (hR : IsClosed (R : Set G)) (ν : Measure G) (h0 : ν ≠ 0)
+    (hc : ν (R : Set G)ᶜ = 0) (hK : ∀ K : Set G, IsCompact K → ν K < ⊤)
+    (hl : ∀ r ∈ R, ν.map (fun x => r * x) = ν) (k : G) (hk : ∀ r, r ∈ R ↔ k⁻¹ * r * k ∈ R)
+    (hC : ∃ C : Set G, IsCompact C ∧ ∀ m : ℤ, k ^ m ∈ C) : ν.map (fun x => k⁻¹ * x * k) = ν := by
+  obtain ⟨C, hCc, hCm⟩ := hC
+  have hce : IsClosedEmbedding (Subtype.val : R → G) := hR.isClosedEmbedding_subtypeVal
+  haveI : LocallyCompactSpace R := hce.locallyCompactSpace
+  haveI : BorelSpace R := Subtype.borelSpace _
+  haveI : SecondCountableTopology R := TopologicalSpace.Subtype.secondCountableTopology _
+  have hemb : MeasurableEmbedding (Subtype.val : R → G) := MeasurableEmbedding.subtype_coe hR.measurableSet
+  set μ : Measure R := ν.comap Subtype.val with hμ
+  have hν : μ.map Subtype.val = ν := by
+    rw [hemb.map_comap, Subtype.range_coe]
+    refine Measure.restrict_eq_self_of_ae_mem ?_
+    rw [ae_iff]
+    exact hc
+  have hcm : ∀ μ' : Measure R, (μ'.map Subtype.val).comap Subtype.val = μ' := fun μ' => hemb.comap_map μ'
+  haveI : μ.IsMulLeftInvariant := ⟨fun r => by
+    have h1 : (μ.map (r * ·)).map Subtype.val = μ.map Subtype.val := by
+      rw [map_map hemb.measurable (measurable_const_mul r)]
+      have e : (Subtype.val ∘ (r * ·) : R → G) = (fun x : G => (r : G) * x) ∘ Subtype.val := rfl
+      rw [e, ← map_map (measurable_const_mul (r : G)) hemb.measurable, hν, hl _ r.2]
+    rw [← hcm (μ.map (r * ·)), h1, hcm]⟩
+  haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hKc => by
+    rw [hμ, hemb.comap_apply]
+    exact hK _ (hKc.image continuous_subtype_val)⟩
+  haveI : NeZero μ := ⟨fun h => h0 (by rw [← hν, h, Measure.map_zero])⟩
+  haveI : IsOpenPosMeasure μ := by
+    obtain ⟨n, hn⟩ : ∃ n, μ (compactCovering R n) ≠ 0 := by
+      by_contra hall
+      push Not at hall
+      apply NeZero.ne μ
+      rw [← Measure.measure_univ_eq_zero, ← iUnion_compactCovering]
+      exact measure_iUnion_null hall
+    exact isOpenPosMeasure_of_mulLeftInvariant_of_compact _ (isCompact_compactCovering R n) hn
+  haveI : IsHaarMeasure μ :=
+    { toIsFiniteMeasureOnCompacts := inferInstance, toIsMulLeftInvariant := inferInstance,
+      toIsOpenPosMeasure := inferInstance }
+  let α : R ≃ₜ* R :=
+    { toFun := fun r => ⟨k⁻¹ * r * k, (hk r).1 r.2⟩
+      invFun := fun r => ⟨k * r * k⁻¹, (hk _).2 (by simpa [mul_assoc] using r.2)⟩
+      left_inv := fun r => Subtype.ext (by simp [mul_assoc])
+      right_inv := fun r => Subtype.ext (by simp [mul_assoc])
+      map_mul' := fun a b => Subtype.ext (by simp [mul_assoc])
+      continuous_toFun := ((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _
+      continuous_invFun := ((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _ }
+  have hit : ∀ (n : ℕ) (x : R), (((⇑α)^[n] x : R) : G) = k ^ (-(n : ℤ)) * x * k ^ (n : ℤ) := by
+    intro n
+    induction n with
+    | zero => intro x; simp
+    | succ n ih =>
+      intro x
+      rw [Function.iterate_succ_apply']
+      change k⁻¹ * (((⇑α)^[n] x : R) : G) * k = _
+      rw [ih]
+      push_cast
+      group
+  have hit' : ∀ (n : ℕ) (x : R), (((⇑α.symm)^[n] x : R) : G) = k ^ (n : ℤ) * x * k ^ (-(n : ℤ)) := by
+    intro n
+    induction n with
+    | zero => intro x; simp
+    | succ n ih =>
+      intro x
+      rw [Function.iterate_succ_apply']
+      change k * (((⇑α.symm)^[n] x : R) : G) * k⁻¹ = _
+      rw [ih]
+      push_cast
+      group
+  obtain ⟨V, hV, hV1⟩ := exists_compact_mem_nhds (1 : R)
+  have hL : IsCompact (Subtype.val ⁻¹' (C * (Subtype.val '' V) * C) : Set R) :=
+    hce.isCompact_preimage ((hCc.mul (hV.image continuous_subtype_val)).mul hCc)
+  have hb : ∀ n : ℕ, (⇑α)^[n] '' V ⊆ Subtype.val ⁻¹' (C * (Subtype.val '' V) * C) ∧
+      (⇑α.symm)^[n] '' V ⊆ Subtype.val ⁻¹' (C * (Subtype.val '' V) * C) := by
+    intro n
+    constructor
+    · rintro _ ⟨x, hx, rfl⟩
+      show (((⇑α)^[n] x : R) : G) ∈ C * (Subtype.val '' V) * C
+      rw [hit n x]
+      exact Set.mul_mem_mul (Set.mul_mem_mul (hCm _) ⟨x, hx, rfl⟩) (hCm _)
+    · rintro _ ⟨x, hx, rfl⟩
+      show (((⇑α.symm)^[n] x : R) : G) ∈ C * (Subtype.val '' V) * C
+      rw [hit' n x]
+      exact Set.mul_mem_mul (Set.mul_mem_mul (hCm _) ⟨x, hx, rfl⟩) (hCm _)
+  have hμα : μ.map α = μ := haar_map_equiv_of_bounded μ α hV hV1 hL hb
+  have hmc : Measurable (fun x : G => k⁻¹ * x * k) := (measurable_const_mul _).mul_const _
+  have hma : Measurable (⇑α) := α.continuous.measurable
+  calc ν.map (fun x => k⁻¹ * x * k) = (μ.map Subtype.val).map (fun x => k⁻¹ * x * k) := by rw [hν]
+    _ = (μ.map α).map Subtype.val := by
+        rw [map_map hmc hemb.measurable, map_map hemb.measurable hma]
+        rfl
+    _ = ν := by rw [hμα, hν]
+
+theorem conj_of_decomp (R : Subgroup G) (hR : IsClosed (R : Set G)) (ν : Measure G) (_hs : SigmaFinite ν)
+    (h0 : ν ≠ 0) (hc : ν (R : Set G)ᶜ = 0) (hK : ∀ K : Set G, IsCompact K → ν K < ⊤)
+    (hl : ∀ r ∈ R, ν.map (fun x => r * x) = ν) (hi : ν.map (fun x => x⁻¹) = ν) (k n : G)
+    (hk : ∀ r, r ∈ R ↔ k⁻¹ * r * k ∈ R) (hn : n ∈ R) (hC : ∃ C : Set G, IsCompact C ∧ ∀ m : ℤ, k ^ m ∈ C) :
+    ν.map (fun x => (k * n)⁻¹ * x * (k * n)) = ν := by
+  have e : (fun x : G => (k * n)⁻¹ * x * (k * n)) = (fun x => n⁻¹ * x * n) ∘ (fun x => k⁻¹ * x * k) := by
+    funext x
+    simp only [Function.comp]
+    group
+  rw [e, ← map_map ((measurable_const_mul _).mul_const _) ((measurable_const_mul _).mul_const _),
+    map_conj_of_bounded R hR ν h0 hc hK hl k hk hC, map_conj_of_mem R ν hl hi hn]
+
+end Conj
+
+end Formalism.L2.SG.CovariantRepresentation
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MapConjOfBounded =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CountableConjSub =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CountableConjSub", "h": "module\n\npublic import Mathlib.MeasureTheory.Group.FundamentalDomain\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.LocallyConvex.SeparatingDual\npublic import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory
+open scoped ENNReal Pointwise
+
+namespace Formalism.L2.SG.MeasureShiftInvariance
+
+section SF
+
+variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
+
+def SF (S : Set G) (Ω : Set G) : Prop :=
+  MeasurableSet Ω ∧ (∀ x, ∃ s ∈ S, s * x ∈ Ω) ∧ ∀ x ∈ Ω, ∀ s ∈ S, s * x ∈ Ω → s = 1
+
+theorem isFD_of_SF (Γ : Subgroup G) [Countable Γ] {Ω : Set G} (hΩ : SF (Γ : Set G) Ω) (μ : Measure G) :
+    IsFundamentalDomain Γ Ω μ := by
+  have key : ∀ x : G, ∃! g : Γ, g • x ∈ Ω := by
+    intro x
+    obtain ⟨s, hs, hsx⟩ := hΩ.2.1 x
+    refine ⟨⟨s, hs⟩, hsx, ?_⟩
+    rintro ⟨t, ht⟩ htx
+    have htx' : t * x ∈ Ω := htx
+    have h1 : (t * s⁻¹) * (s * x) ∈ Ω := by simpa [mul_assoc] using htx'
+    have h2 : t * s⁻¹ = 1 := hΩ.2.2 (s * x) hsx (t * s⁻¹) (Γ.mul_mem ht (Γ.inv_mem hs)) h1
+    exact Subtype.ext (mul_inv_eq_one.1 h2)
+  first
+  | exact IsFundamentalDomain.mk' hΩ.1.nullMeasurableSet key
+
+private theorem measurableSMul_and_smulInvariantMeasure_subgroup (Γ : Subgroup G) (ν : Measure G)
+    (hν : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν) :
+    MeasurableSMul Γ G ∧ SMulInvariantMeasure Γ G ν := by
+  refine ⟨?_, ?_⟩
+  · first
+    | infer_instance
+  · constructor
+    intro c s hs
+    have hc := hν (c : G) c.2
+    calc ν ((fun x => c • x) ⁻¹' s) = (ν.map (fun x => (c : G) * x)) s :=
+          (Measure.map_apply (measurable_const_mul (c : G)) hs).symm
+      _ = ν s := by rw [hc]
+
+theorem measure_SF_eq (Γ : Subgroup G) [Countable Γ] (ν : Measure G)
+    (hν : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν) {Ω Ω' : Set G} (h1 : SF (Γ : Set G) Ω)
+    (h2 : SF (Γ : Set G) Ω') : ν Ω = ν Ω' := by
+  obtain ⟨i1, i2⟩ := measurableSMul_and_smulInvariantMeasure_subgroup Γ ν hν
+  exact (isFD_of_SF Γ h1 ν).measure_eq
+    (isFD_of_SF Γ h2 ν)
+
+theorem SF_mul_right {S : Set G} {Ω : Set G} (h : SF S Ω) (y : G) : SF S {r | r * y ∈ Ω} := by
+  refine ⟨h.1.preimage (measurable_mul_const y), fun x => ?_, fun x hx s hs hsx => ?_⟩
+  · obtain ⟨s, hs, hsx⟩ := h.2.1 (x * y)
+    exact ⟨s, hs, by simpa [Set.mem_setOf_eq, mul_assoc] using hsx⟩
+  · exact h.2.2 (x * y) hx s hs (by simpa [Set.mem_setOf_eq, mul_assoc] using hsx)
+
+variable (h : G)
+
+end SF
+
+section Unfold
+
+variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
+  {μ : Measure G} [SFinite μ] [μ.IsMulLeftInvariant] (ν : Measure G) [SFinite ν]
+
+theorem ind_mul_right {M : Type*} [Zero M] [One M] {B : Set G} (x : G) :
+    (fun r => B.indicator (1 : G → M) (r * x)) = {r | r * x ∈ B}.indicator 1 := by
+  funext r
+  first
+  | rfl
+
+theorem ind_inv_mul {M : Type*} [Zero M] [One M] {A : Set G} (y : G) :
+    (fun r => A.indicator (1 : G → M) (r⁻¹ * y)) = {r | r⁻¹ * y ∈ A}.indicator 1 := by
+  funext r
+  first
+  | rfl
+
+private theorem measurable_one_ennreal : Measurable (1 : G → ℝ≥0∞) := by
+  first
+  | exact measurable_one
+
+theorem lint_eq {A B : Set G} (hA : MeasurableSet A) (hB : MeasurableSet B) (c : ℝ≥0∞)
+    (hcB : ∀ x, ν {r | r * x ∈ B} = c) (hcA : ∀ y, ν {r | r⁻¹ * y ∈ A} = c)
+    (g : G → ℝ≥0∞) (hg : AEMeasurable g μ) (hinv : ∀ᵐ r ∂ν, ∀ x, g (r⁻¹ * x) = g x) :
+    c * ∫⁻ x in A, g x ∂μ = c * ∫⁻ x in B, g x ∂μ := by
+  have h1m := (measurable_one_ennreal (G := G))
+  have hL : c * ∫⁻ x in A, g x ∂μ = ∫⁻ x, ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) x * B.indicator (1 : G → ℝ≥0∞) (r * x) * g x ∂ν ∂μ := by
+    first
+    | rw [← lintegral_indicator hA]
+    rw [← lintegral_const_mul'' c (hg.indicator hA)]
+    refine lintegral_congr fun x => ?_
+    have hm : Measurable fun r : G => B.indicator (1 : G → ℝ≥0∞) (r * x) :=
+      (h1m.indicator hB).comp (measurable_mul_const x)
+    have h2 : ∫⁻ r, B.indicator (1 : G → ℝ≥0∞) (r * x) ∂ν = c := by
+      rw [← hcB x]
+      first
+      | exact lintegral_indicator_one (hB.preimage (measurable_mul_const x))
+    calc c * A.indicator g x
+        = (A.indicator (1 : G → ℝ≥0∞) x * g x) * ∫⁻ r, B.indicator (1 : G → ℝ≥0∞) (r * x) ∂ν := by
+          rw [h2]
+          by_cases hx : x ∈ A <;> simp [hx] <;> ring
+      _ = ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) x * B.indicator (1 : G → ℝ≥0∞) (r * x) * g x ∂ν := by
+          rw [← lintegral_const_mul _ hm]
+          refine lintegral_congr fun r => ?_
+          ring
+  have hR : c * ∫⁻ y in B, g y ∂μ = ∫⁻ y, ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y) * B.indicator (1 : G → ℝ≥0∞) y * g y ∂ν ∂μ := by
+    first
+    | rw [← lintegral_indicator hB]
+    rw [← lintegral_const_mul'' c (hg.indicator hB)]
+    refine lintegral_congr fun y => ?_
+    have hm : Measurable fun r : G => A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y) :=
+      (h1m.indicator hA).comp (measurable_inv.mul_const y)
+    have h2 : ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y) ∂ν = c := by
+      rw [← hcA y]
+      first
+      | exact lintegral_indicator_one (hA.preimage (measurable_inv.mul_const y))
+    calc c * B.indicator g y
+        = (B.indicator (1 : G → ℝ≥0∞) y * g y) * ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y) ∂ν := by
+          rw [h2]
+          by_cases hy : y ∈ B <;> simp [hy] <;> ring
+      _ = ∫⁻ r, A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y) * B.indicator (1 : G → ℝ≥0∞) y * g y ∂ν := by
+          rw [← lintegral_const_mul _ hm]
+          refine lintegral_congr fun r => ?_
+          ring
+  have h3 : AEMeasurable (fun p : G × G => g p.1) (μ.prod ν) := by
+    first
+    | exact hg.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_fst
+  have hF : AEMeasurable (Function.uncurry fun (x r : G) =>
+      A.indicator (1 : G → ℝ≥0∞) x * B.indicator (1 : G → ℝ≥0∞) (r * x) * g x) (μ.prod ν) := by
+    have k1 : Measurable fun p : G × G => A.indicator (1 : G → ℝ≥0∞) p.1 :=
+      (h1m.indicator hA).comp measurable_fst
+    have k2 : Measurable fun p : G × G => B.indicator (1 : G → ℝ≥0∞) (p.2 * p.1) :=
+      (h1m.indicator hB).comp (measurable_snd.mul measurable_fst)
+    exact (k1.aemeasurable.mul k2.aemeasurable).mul h3
+  have hG : AEMeasurable (Function.uncurry fun (y r : G) =>
+      A.indicator (1 : G → ℝ≥0∞) (r⁻¹ * y) * B.indicator (1 : G → ℝ≥0∞) y * g y) (μ.prod ν) := by
+    have k1 : Measurable fun p : G × G => A.indicator (1 : G → ℝ≥0∞) (p.2⁻¹ * p.1) :=
+      (h1m.indicator hA).comp (measurable_snd.inv.mul measurable_fst)
+    have k2 : Measurable fun p : G × G => B.indicator (1 : G → ℝ≥0∞) p.1 :=
+      (h1m.indicator hB).comp measurable_fst
+    exact (k1.aemeasurable.mul k2.aemeasurable).mul h3
+  rw [hL, hR, lintegral_lintegral_swap hF, lintegral_lintegral_swap hG]
+  refine lintegral_congr_ae ?_
+  filter_upwards [hinv] with r hr
+  try dsimp only
+  rw [← lintegral_mul_left_eq_self
+    (fun x => A.indicator (1 : G → ℝ≥0∞) x * B.indicator (1 : G → ℝ≥0∞) (r * x) * g x) r⁻¹]
+  refine lintegral_congr fun y => ?_
+  first
+  | simp only [mul_inv_cancel_left, hr]
+
+end Unfold
+
+section Boch
+
+variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
+  {μ : Measure G} [SFinite μ] [μ.IsMulLeftInvariant] (ν : Measure G) [SFinite ν]
+
+private theorem ennreal_eq_of_mul_left_eq {c a b : ℝ≥0∞} (h0 : c ≠ 0) (ht : c ≠ ⊤) (h : c * a = c * b) : a = b := by
+  first
+  | exact (ENNReal.mul_right_inj h0 ht).1 h
+
+private theorem setIntegral_eq_of_fiber_measure_eq {A B : Set G} (hA : MeasurableSet A) (hB : MeasurableSet B)
+    (c : ℝ≥0∞) (hc0 : c ≠ 0) (hct : c ≠ ⊤)
+    (hcB : ∀ x, ν {r | r * x ∈ B} = c) (hcA : ∀ y, ν {r | r⁻¹ * y ∈ A} = c)
+    (f : G → ℝ) (hf : AEStronglyMeasurable f μ) (hinv : ∀ᵐ r ∂ν, ∀ x, f (r⁻¹ * x) = f x)
+    (hfA : IntegrableOn f A μ) (hfB : IntegrableOn f B μ) :
+    ∫ x in A, f x ∂μ = ∫ x in B, f x ∂μ := by
+  have e1 := lint_eq (μ := μ) ν hA hB c hcB hcA
+    (fun x => ENNReal.ofReal (f x)) hf.aemeasurable.ennreal_ofReal
+    (by filter_upwards [hinv] with r hr x; simp only [hr])
+  have e2 := lint_eq (μ := μ) ν hA hB c hcB hcA
+    (fun x => ENNReal.ofReal (-f x)) hf.aemeasurable.neg.ennreal_ofReal
+    (by filter_upwards [hinv] with r hr x; simp only [hr])
+  rw [integral_eq_lintegral_pos_part_sub_lintegral_neg_part hfA,
+    integral_eq_lintegral_pos_part_sub_lintegral_neg_part hfB,
+    ennreal_eq_of_mul_left_eq hc0 hct e1, ennreal_eq_of_mul_left_eq hc0 hct e2]
+
+theorem int_eq {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E] {A B : Set G}
+    (hA : MeasurableSet A) (hB : MeasurableSet B) (c : ℝ≥0∞) (hc0 : c ≠ 0) (hct : c ≠ ⊤)
+    (hcB : ∀ x, ν {r | r * x ∈ B} = c) (hcA : ∀ y, ν {r | r⁻¹ * y ∈ A} = c)
+    (f : G → E) (hf : AEStronglyMeasurable f μ) (hinv : ∀ᵐ r ∂ν, ∀ x, f (r⁻¹ * x) = f x)
+    (hfA : IntegrableOn f A μ) : ∫ x in A, f x ∂μ = ∫ x in B, f x ∂μ := by
+  have hfB : IntegrableOn f B μ := by
+    have hg : AEMeasurable (fun x => ‖f x‖ₑ) μ := by
+      first
+      | exact hf.enorm
+    have e := lint_eq (μ := μ) ν hA hB c hcB hcA
+      (fun x => ‖f x‖ₑ) hg (by filter_upwards [hinv] with r hr x; simp only [hr])
+    have e' := ennreal_eq_of_mul_left_eq hc0 hct e
+    have hA' : ∫⁻ x in A, ‖f x‖ₑ ∂μ < ⊤ := by
+      first
+      | exact hfA.2
+    refine ⟨hf.restrict, ?_⟩
+    first
+    | (show ∫⁻ x in B, ‖f x‖ₑ ∂μ < ⊤; rw [← e']; exact hA')
+  have key : ∀ L : E →L[ℝ] ℝ, L (∫ x in A, f x ∂μ) = L (∫ x in B, f x ∂μ) := by
+    intro L
+    rw [← L.integral_comp_comm hfA, ← L.integral_comp_comm hfB]
+    exact setIntegral_eq_of_fiber_measure_eq (μ := μ) ν hA hB c hc0 hct hcB hcA (fun x => L (f x))
+      (L.continuous.comp_aestronglyMeasurable hf)
+      (by filter_upwards [hinv] with r hr x; simp only [hr])
+      (L.integrable_comp hfA) (L.integrable_comp hfB)
+  by_contra hne
+  first
+  | (obtain ⟨L, hL⟩ : ∃ L : E →L[ℝ] ℝ, L (∫ x in A, f x ∂μ) ≠ L (∫ x in B, f x ∂μ) :=
+        SeparatingDual.exists_separating_of_ne hne
+     exact hL (key L))
+
+end Boch
+
+section Shift
+
+variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
+
+theorem SF_measure_univ (Γ : Subgroup G) [Countable Γ] (ν : Measure G)
+    (hν : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν) {Ω : Set G} (hΩ : SF (Γ : Set G) Ω) :
+    ν Set.univ = ∑' _g : Γ, ν Ω := by
+  obtain ⟨i1, i2⟩ := _root_.Formalism.L2.SG.MeasureShiftInvariance.measurableSMul_and_smulInvariantMeasure_subgroup Γ ν hν
+  have hfd := isFD_of_SF Γ hΩ ν
+  first
+  | (rw [hfd.measure_eq_tsum Set.univ]; simp [Set.smul_set_univ])
+
+theorem SF_measure_cover (Γ : Subgroup G) [Countable Γ] (ν : Measure G)
+    (hν : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν) {Ω T K : Set G} (hΩ : SF (Γ : Set G) Ω)
+    (hT : ∀ x ∈ T, ∃ s ∈ Γ, s * x ∈ K) : ν (Ω ∩ T) ≤ ν K := by
+  obtain ⟨i1, i2⟩ := _root_.Formalism.L2.SG.MeasureShiftInvariance.measurableSMul_and_smulInvariantMeasure_subgroup Γ ν hν
+  have hfd := isFD_of_SF Γ hΩ ν
+  calc ν (Ω ∩ T) ≤ ν (⋃ g : Γ, g⁻¹ • (K ∩ g • Ω)) := by
+        refine measure_mono ?_
+        rintro x ⟨hxΩ, hxT⟩
+        obtain ⟨s, hs, hsx⟩ := hT x hxT
+        refine Set.mem_iUnion.2 ⟨⟨s, hs⟩, ?_⟩
+        rw [Set.mem_smul_set_iff_inv_smul_mem, inv_inv]
+        exact ⟨hsx, Set.smul_mem_smul_set hxΩ⟩
+    _ ≤ ∑' g : Γ, ν (g⁻¹ • (K ∩ g • Ω)) := measure_iUnion_le _
+    _ = ∑' g : Γ, ν (K ∩ g • Ω) := by
+        first
+        | simp only [measure_smul]
+    _ = ν K := (hfd.measure_eq_tsum' K).symm
+
+end Shift
+
+section ShiftG
+
+variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
+  [MeasurableSpace G] [BorelSpace G]
+
+theorem shift_general (μ : Measure G) [SigmaFinite μ] [μ.IsMulLeftInvariant]
+    (R Γ : Subgroup G) [Countable Γ] {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    (f : G → E) (Ω : Set G) (h : G) (ν : Measure G)
+    (hΓR : Γ ≤ R) (hK : ∃ K : Set G, IsCompact K ∧ ∀ r ∈ R, ∃ s ∈ Γ, s * r ∈ K)
+    (hn : ∀ r, r ∈ R ↔ h⁻¹ * r * h ∈ R) (hσ : SigmaFinite ν) (hne : ν ≠ 0) (hcon : ν (R : Set G)ᶜ = 0)
+    (hfin : ∀ K : Set G, IsCompact K → ν K < ⊤) (hleft : ∀ r ∈ R, ν.map (fun x => r * x) = ν)
+    (hinvν : ν.map (fun x => x⁻¹) = ν) (hconj : ν.map (fun x => h⁻¹ * x * h) = ν)
+    (hf : ∀ r ∈ R, ∀ x, f (r * x) = f x) (hΩ : SF (Γ : Set G) Ω) (hfi : IntegrableOn f Ω μ) :
+    ∫ x in Ω, f x ∂μ = ∫ x in (fun x => h⁻¹ * x) '' Ω, f x ∂μ := by
+  have hνΓ : ∀ s ∈ Γ, ν.map (fun x => s * x) = ν := fun s hs => hleft s (hΓR hs)
+  obtain ⟨K, hKc, hKR⟩ := hK
+  have hlt : ν Ω < ⊤ := by
+    have h1 : ν Ω ≤ ν (Ω ∩ (R : Set G)) + ν (R : Set G)ᶜ := by
+      calc ν Ω ≤ ν ((Ω ∩ (R : Set G)) ∪ (R : Set G)ᶜ) := by
+            refine measure_mono fun x hx => ?_
+            by_cases hxR : x ∈ (R : Set G)
+            · exact Or.inl ⟨hx, hxR⟩
+            · exact Or.inr hxR
+        _ ≤ ν (Ω ∩ (R : Set G)) + ν (R : Set G)ᶜ := measure_union_le _ _
+    have h2 : ν (Ω ∩ (R : Set G)) ≤ ν K :=
+      SF_measure_cover Γ ν hνΓ hΩ (fun x hx => hKR x hx)
+    calc ν Ω ≤ ν (Ω ∩ (R : Set G)) + ν (R : Set G)ᶜ := h1
+      _ ≤ ν K + ν (R : Set G)ᶜ := by gcongr
+      _ = ν K := by rw [hcon, add_zero]
+      _ < ⊤ := hfin K hKc
+  have hne0 : ν Ω ≠ 0 := by
+    intro h0
+    apply hne
+    have hu := SF_measure_univ Γ ν hνΓ hΩ
+    first
+    | (rw [h0, tsum_zero] at hu; exact Measure.measure_univ_eq_zero.1 hu)
+  have hcB : ∀ x, ν {r | r * x ∈ {y | h * y ∈ Ω}} = ν Ω := by
+    intro x
+    have hm : Measurable fun y : G => h⁻¹ * y * h := (measurable_const_mul h⁻¹).mul_const h
+    have hS : MeasurableSet {r | r * x ∈ {y | h * y ∈ Ω}} :=
+      hΩ.1.preimage ((measurable_mul_const x).const_mul h)
+    calc ν {r | r * x ∈ {y | h * y ∈ Ω}}
+        = (ν.map (fun x => h⁻¹ * x * h)) {r | r * x ∈ {y | h * y ∈ Ω}} := by rw [hconj]
+      _ = ν ((fun y : G => h⁻¹ * y * h) ⁻¹' {r | r * x ∈ {y | h * y ∈ Ω}}) := Measure.map_apply hm hS
+      _ = ν {r | r * (h * x) ∈ Ω} := by
+          congr 1
+          ext r
+          simp [mul_assoc]
+      _ = ν Ω := measure_SF_eq Γ ν hνΓ (SF_mul_right hΩ (h * x)) hΩ
+  have hcA : ∀ y, ν {r | r⁻¹ * y ∈ Ω} = ν Ω := by
+    intro y
+    have hS : MeasurableSet {r | r⁻¹ * y ∈ Ω} := hΩ.1.preimage (measurable_inv.mul_const y)
+    calc ν {r | r⁻¹ * y ∈ Ω} = (ν.map (fun x => x⁻¹)) {r | r⁻¹ * y ∈ Ω} := by rw [hinvν]
+      _ = ν ((fun x : G => x⁻¹) ⁻¹' {r | r⁻¹ * y ∈ Ω}) := Measure.map_apply measurable_inv hS
+      _ = ν {r | r * y ∈ Ω} := by
+          congr 1
+          ext r
+          simp
+      _ = ν Ω := measure_SF_eq Γ ν hνΓ (SF_mul_right hΩ y) hΩ
+  have hinvf : ∀ᵐ r ∂ν, ∀ x, f (r⁻¹ * x) = f x := by
+    have hR : ∀ᵐ r ∂ν, r ∈ (R : Set G) := ae_iff.2 (by first | exact hcon)
+    filter_upwards [hR] with r hr x
+    exact hf r⁻¹ (R.inv_mem hr) x
+  have hfm : AEStronglyMeasurable f μ := by
+    have hcov : (⋃ g : Γ, (fun x => (g : G) * x) ⁻¹' Ω) = Set.univ := by
+      refine Set.eq_univ_of_forall fun x => ?_
+      obtain ⟨s, hs, hsx⟩ := hΩ.2.1 x
+      exact Set.mem_iUnion.2 ⟨⟨s, hs⟩, hsx⟩
+    have H : AEStronglyMeasurable f (μ.restrict (⋃ g : Γ, (fun x => (g : G) * x) ⁻¹' Ω)) := by
+      refine aestronglyMeasurable_iUnion_iff.2 fun g => ?_
+      have hmp := (measurePreserving_mul_left μ (g : G)).restrict_preimage hΩ.1
+      have k1 : AEStronglyMeasurable (fun x => f ((g : G) * x))
+          (μ.restrict ((fun x => (g : G) * x) ⁻¹' Ω)) :=
+        hfi.aestronglyMeasurable.comp_measurePreserving hmp
+      exact k1.congr (ae_of_all _ fun x => hf (g : G) (hΓR g.2) x)
+    rwa [hcov, Measure.restrict_univ] at H
+  have hBset : (fun x => h⁻¹ * x) '' Ω = {x | h * x ∈ Ω} := by
+    ext x
+    constructor
+    · rintro ⟨y, hy, rfl⟩
+      show h * (h⁻¹ * y) ∈ Ω
+      simpa using hy
+    · intro hx
+      exact ⟨h * x, hx, by simp⟩
+  rw [hBset]
+  exact int_eq ν hΩ.1 (hΩ.1.preimage (measurable_const_mul h)) (ν Ω) hne0
+    hlt.ne hcB hcA f hfm hinvf hfi
+
+end ShiftG
+
+end Formalism.L2.SG.MeasureShiftInvariance
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CountableConjSub =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ShiftCore =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ShiftCore", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CovariantRepresentation\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CountableConjSub\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory
+
+namespace Formalism.L2.SG.CovariantRepresentation
+
+theorem shiftCore : ShiftCore := by
+  intro G _ _ _ _ _ _ μ _ _ R Γ _ V _ _ f Ω h ν _ hΓR hK hn hσ hne hcon hfin hleft hinv hconj hf hΩ hfi
+  by_cases hV : CompleteSpace V
+  · exact Formalism.L2.SG.MeasureShiftInvariance.shift_general μ R Γ f Ω h ν hΓR hK hn hσ hne hcon hfin hleft hinv hconj
+      hf hΩ hfi
+  · rw [integral_of_not_completeSpace hV, integral_of_not_completeSpace hV]
+
+end Formalism.L2.SG.CovariantRepresentation
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ShiftCore =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FixedDecomposition =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FixedDecomposition", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.Vanish\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SubOneMulVecFix\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RowsConc\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CplxNF\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.HaarPushforward\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.KppOffCOfSteps\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LeviTens\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.MapConjOfBounded\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.NinfConjIff\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ShiftCore\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.HermitianETransportInvariant\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.CovariantRepresentation\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -84,9 +688,8 @@ theorem coef_smat (G : Matrix (Fin k) (Fin k) ℂ) (y : Fin n → ℂ) :
     (fun d => hJ ε (wf d) (smat (Formalism.REAL.Jm ε) wf G *ᵥ y)) = G *ᵥ fun d => hJ ε (wf d) y := by
   funext d
   rw [smat_apply, hJ_add_right, hJ_sum_right]
-  simp only [hJ_smul_right, hon, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
-  rw [sub_mulVec, one_mulVec]
-  simp only [Pi.sub_apply]
+  simp only [hJ_smul_right, hon, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true,
+    sub_mulVec, one_mulVec, Pi.sub_apply]
   ring
 
 include hon in
@@ -113,10 +716,7 @@ def sU (M : {G : Matrix (Fin k) (Fin k) ℂ // Gᴴ * G = 1}) : Formalism.REAL.U
 
 theorem sU_mul (M M' : {G : Matrix (Fin k) (Fin k) ℂ // Gᴴ * G = 1}) (hMM : (M.1 * M'.1)ᴴ * (M.1 * M'.1) = 1) :
     sU ε wf hon M * sU ε wf hon M' = sU ε wf hon ⟨M.1 * M'.1, hMM⟩ := by
-  apply Subtype.ext
-  apply Units.ext
-  show smat (Formalism.REAL.Jm ε) wf M.1 * smat (Formalism.REAL.Jm ε) wf M'.1 = smat (Formalism.REAL.Jm ε) wf (M.1 * M'.1)
-  exact smat_mul ε wf hon M.1 M'.1
+  exact Subtype.ext (Units.ext (smat_mul ε wf hon M.1 M'.1))
 
 theorem unit_mul {G G' : Matrix (Fin k) (Fin k) ℂ} (h : Gᴴ * G = 1) (h' : G'ᴴ * G' = 1) :
     (G * G')ᴴ * (G * G') = 1 := by
@@ -194,20 +794,14 @@ theorem continuous_Phi : Continuous (Phi ε wt hon) := by
 theorem Phi_mul (M M' : UPi ι k) :
     Phi ε wt hon M * Phi ε wt hon M' =
       Phi ε wt hon ⟨fun v => M.1 v * M'.1 v, fun v => unit_mul (M.2 v) (M'.2 v)⟩ := by
-  funext v
-  exact sU_mul (ε v) (wt v) (hon v) ⟨M.1 v, M.2 v⟩ ⟨M'.1 v, M'.2 v⟩ _
+  exact funext fun v => sU_mul (ε v) (wt v) (hon v) ⟨M.1 v, M.2 v⟩ ⟨M'.1 v, M'.2 v⟩ _
 
 theorem Phi_inv (M : UPi ι k) :
     (Phi ε wt hon M)⁻¹ = Phi ε wt hon ⟨fun v => (M.1 v)ᴴ, fun v => unit_inv (M.2 v)⟩ := by
-  funext v
-  exact sU_inv (ε v) (wt v) (hon v) ⟨M.1 v, M.2 v⟩
+  exact funext fun v => sU_inv (ε v) (wt v) (hon v) ⟨M.1 v, M.2 v⟩
 
 theorem Phi_one : Phi ε wt hon ⟨fun _ => 1, fun _ => by simp⟩ = 1 := by
-  funext v
-  apply Subtype.ext
-  apply Units.ext
-  show smat (Formalism.REAL.Jm (ε v)) (wt v) 1 = 1
-  exact smat_one _ _
+  exact funext fun v => Subtype.ext (Units.ext (smat_one (ε v) (wt v)))
 
 theorem Phi_zpow_mem (M : UPi ι k) (m : ℤ) : (Phi ε wt hon M) ^ m ∈ Set.range (Phi ε wt hon) := by
   induction m using Int.induction_on with
@@ -261,8 +855,7 @@ theorem Xs_iso : ∀ s ∈ spanAt X v (lf D (X.Fu u)).fl.X, ∀ s' ∈ spanAt X 
   hJ_Xs_w X v (fun a => hJ_E_Xs X v a s' hs') s hs
 
 theorem E_mem_Xs (a : Fin D.R.rS) : rvc X v (X.eX a) ∈ spanAt X v (lf D (X.Fu u)).fl.X := by
-  refine rvc_mem X v ?_
-  rw [X_span]; exact Submodule.subset_span ⟨a, rfl⟩
+  exact rvc_mem X v (by rw [X_span]; exact Submodule.subset_span ⟨a, rfl⟩)
 
 theorem Xs_le_E : spanAt X v (lf D (X.Fu u)).fl.X ≤
     Submodule.span ℂ (Set.range fun a => rv X.B.I v (X.eR a)) := by
@@ -446,7 +1039,7 @@ theorem smat_wt {n k : ℕ} (ε : Fin n → Bool) (wf : Fin k → Fin n → ℂ)
   rw [smat_apply, hcoef, mulVec_single_one]
   show wf b + ∑ c, (G - 1) c b • wf c = ∑ c, G c b • wf c
   have e : ∑ c, (G - 1) c b • wf c = ∑ c, G c b • wf c - wf b := by
-    simp only [Matrix.transpose_apply, Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib, Matrix.one_apply,
+    simp only [Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib, Matrix.one_apply,
       ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   rw [e]; abel
 
@@ -799,9 +1392,8 @@ theorem OOt_eq_zero0 (hCov : CovariantRepresentationZero) (hSch : SchurNFC) (Y :
     (t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) (hr : t.relevant) (hG : t.G = 0) :
     OOt t = 0 := by
   obtain ⟨hrel, hG0⟩ := relRepC D X Y u u' t hr hG
-  have hΩ := fundOf_spec hF t
-  have hcov := hCov D X Y u u' t hr hG (FundOf t) hΩ (hI t)
-  exact hSch D X u u' t.lam t.lam' t.rep hw hrel hG0 _ hcov
+  exact hSch D X u u' t.lam t.lam' t.rep hw hrel hG0 _
+    (hCov D X Y u u' t hr hG (FundOf t) (fundOf_spec hF t) (hI t))
 
 theorem kppOffC_of_steps0 (hFold : FoldOKC) (hFE : FundExistsC) (hOI : OOIntAllC) (hV : LemmaVC)
     (hCov : CovariantRepresentationZero) (hSch : SchurNFC) : Formalism.L2.SG.RowsConc.KppOffC := by
@@ -828,3 +1420,7 @@ theorem kppOffC_of_steps0 (hFold : FoldOKC) (hFE : FundExistsC) (hOI : OOIntAllC
 end Asm
 
 end Formalism.L2.SG.FixedDecomposition
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.FixedDecomposition =====

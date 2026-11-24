@@ -111,7 +111,7 @@ lemma coeff_pow {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (lam : ι �
           ((Nat.multinomial Finset.univ k : ℝ) * ∏ x, (-lam x.1 x.2) ^ k x) := by
     intro k
     rw [monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), C_mul, map_prod]
-    simp only [smul_pow, smul_eq_C_mul, mul_pow, Finset.prod_mul_distrib, map_pow, map_natCast,
+    simp only [smul_eq_C_mul, mul_pow, Finset.prod_mul_distrib, map_pow, map_natCast,
       Finsupp.coe_equivFunOnFinite_symm]
     ring
   have hsum : ∑ x : ι × Fin N, (N - 1 - ((σ x.1 x.2 : Fin N) : ℕ)) = dimFl ι N := by

@@ -285,34 +285,21 @@ theorem linearIndependent_uniformizer_pow_mul [Finite ι] (ω : ι → 𝓞 L)
     intro i
     rw [map_mul, hvP, hs_def, valued_sum_eq v w ω hω _ (J i) (hJ i)]
   have hM : ∀ i, M i = 0 := by
-    by_contra hne
-    obtain ⟨i1, hi1⟩ := not_forall.1 hne
-    have : Nonempty (Fin e) := ⟨i1⟩
-    obtain ⟨i0, hi0⟩ := Finite.exists_max (fun i : Fin e ↦ Valued.v (P ^ (i : ℕ) * s i))
-    have hnz : ∀ i : Fin e, Valued.v (P ^ (i : ℕ) * s i) ≠ 0 → M i ≠ 0 := by
-      intro i hi hMi
-      rw [hterm, hMi, zero_pow he0, mul_zero] at hi
-      exact hi rfl
-    have htop : Valued.v (P ^ (i0 : ℕ) * s i0) ≠ 0 := by
-      intro h
-      have := hi0 i1
-      rw [h, hterm] at this
-      have h' : exp (-((i1 : ℕ) : ℤ)) * M i1 ^ e = 0 := le_antisymm this zero_le
-      rw [mul_eq_zero] at h'
-      rcases h' with h' | h'
-      · exact exp_ne_zero h'
-      · exact hi1 (pow_eq_zero_iff he0 |>.1 h')
-    have hlt : ∀ i ∈ Finset.univ \ {i0},
-        Valued.v (P ^ (i : ℕ) * s i) < Valued.v (P ^ (i0 : ℕ) * s i0) := by
-      intro i hi
-      have hne : i ≠ i0 := by simpa using hi
-      refine lt_of_le_of_ne (hi0 i) fun heq ↦ hne (Fin.ext ?_)
-      have hi_nz : Valued.v (P ^ (i : ℕ) * s i) ≠ 0 := heq ▸ htop
-      rw [hterm, hterm] at heq
-      exact eq_of_exp_mul_pow_eq i.2 i0.2 (hnz i hi_nz) (hnz i0 htop) heq
-    have := Valuation.map_sum_eq_of_lt _ (Finset.mem_univ i0) hlt
-    rw [hsum, map_zero] at this
-    exact htop this.symm
+    intro i1
+    by_contra hi1
+    have hi1v : Valued.v (P ^ (i1 : ℕ) * s i1) ≠ 0 := by
+      rw [hterm]
+      exact mul_ne_zero exp_ne_zero (pow_ne_zero e hi1)
+    have hzero : Valued.v (∑ i : Fin e, P ^ (i : ℕ) * s i) = 0 := by
+      rw [hsum, map_zero]
+    obtain ⟨i, _, j, _, hij, hi, hj, heq⟩ :=
+      Valuation.exists_map_eq_of_map_sum_eq_zero _ (Finset.mem_univ i1) hi1v hzero
+    have hnz (k : Fin e) (hk : Valued.v (P ^ (k : ℕ) * s k) ≠ 0) : M k ≠ 0 := by
+      intro hk0
+      rw [hterm, hk0, zero_pow he0, mul_zero] at hk
+      exact hk rfl
+    rw [hterm, hterm] at heq
+    exact hij (Fin.ext (eq_of_exp_mul_pow_eq i.2 j.2 (hnz i hi) (hnz j hj) heq))
   rintro ⟨i, j⟩
   have := hJ i j
   rw [show Valued.v (g (i, J i)) = M i from rfl, hM i] at this

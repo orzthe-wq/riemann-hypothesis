@@ -117,7 +117,7 @@ theorem arc_single_type_bound [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O
     (hone : ∀ s < (arcOf b w S η up size).len c, up (c - (s : ZMod n)) = up c) :
     ∃ e₁ : ℕ, (e₁ : ℝ) ≤ 6 * Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size + 1 ∧
       LiftsAt W (arcOf b w S η up size) F c bb sol k₀ f e₁ := by
-  have hbas := arcBasic W F hB
+  have hbas := _root_.Formalism.MainNotions.N.FrobeniusPowerSeries.SetupA.arcBasic_core W F hB
   dsimp only at hbas
   obtain ⟨hOK, -, -, -, hσ⟩ := hbas
   have hl : 5 ≤ PD.p := by have := hB.1; omega
@@ -149,7 +149,7 @@ theorem arc_single_type_bound [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O
     obtain ⟨a, ⟨-, hxa⟩, -⟩ := hb₁.1.2 x₁ hx₁
     have hb₁N : ∀ m, b₁ m ∈ W.N T₁ := fun m => (hb₁.1.1 m).1.1
     have hb₁l : ∀ m, (letE (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n)) : LetA O n) • b₁ m = b₁ m :=
-      fun m => Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T₁ _ (hb₁.1.1 m).2
+      fun m => _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T₁ _ (hb₁.1.1 m).2
     have hcmp : cmpD W T₁ x₁ = ∑ m, algebraMap O LL (PowerSeries.constantCoeff
         (a m (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n)))) • cmpD W T₁ (b₁ m) := by
       rw [hxa, A1.cmpD_sum' W T₁ _ _ (fun m _ => (W.N T₁).smul_mem _ (hb₁N m))]

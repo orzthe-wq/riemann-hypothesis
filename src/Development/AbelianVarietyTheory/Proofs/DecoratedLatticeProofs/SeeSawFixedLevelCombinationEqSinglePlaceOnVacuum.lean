@@ -67,7 +67,7 @@ theorem foldr_extract {ι X : Type} [DecidableEq ι] (g : ι → X → X) (i : �
         · exact absurd h.symm ha
         · exact h
       have he : (a :: t).erase i = a :: t.erase i := by
-        simp [List.erase_cons, ha]
+        simp [ha]
       rw [he, List.foldr_cons, List.foldr_cons, ih hit, hc a ha]
 
 variable {D : D7}

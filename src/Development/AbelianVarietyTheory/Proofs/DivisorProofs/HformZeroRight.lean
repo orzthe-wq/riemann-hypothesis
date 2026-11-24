@@ -50,6 +50,7 @@ public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Normal
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Formalism.LocalToGlobal.IndefiniteForms.IndefSide
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsScale
 
 @[expose] public section
 
@@ -65,19 +66,6 @@ attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 noncomputable section
 
 namespace GlobalTheory.GramFrame
-
-theorem hform_add_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A →+* A)
-    (J : Matrix n n A) (x u v : n → A) : Formalism.UG.hform τ J x (u + v) = Formalism.UG.hform τ J x u + Formalism.UG.hform τ J x v := by
-  simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
-
-theorem hform_smul_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A →+* A)
-    (J : Matrix n n A) (a : A) (x y : n → A) : Formalism.UG.hform τ J x (a • y) = a * Formalism.UG.hform τ J x y := by
-  simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
-  exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
-
-theorem hform_zero_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A →+* A)
-    (J : Matrix n n A) (x : n → A) : Formalism.UG.hform τ J x 0 = 0 := by
-  simp [Formalism.UG.hform]
 
 variable {D : D7}
 
@@ -117,9 +105,9 @@ theorem pair_hatL {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (Λ : Submodul
       obtain ⟨b, hb⟩ := h x0 hx0 y0 hy0
       rw [← hb]
       exact inclE_int b
-    | zero => rw [hform_zero_right]; exact zero_mem _
-    | add a b _ _ ha hb => rw [hform_add_right]; exact add_mem ha hb
-    | smul s a _ ha => rw [Subring.smul_def, hform_smul_right]; exact mul_mem s.2 ha
+    | zero => rw [_root_.Formalism.UG.P.csScale_hform_zero_right]; exact zero_mem _
+    | add a b _ _ ha hb => rw [_root_.Formalism.UG.P.csScale_hform_add_right]; exact add_mem ha hb
+    | smul s a _ ha => rw [Subring.smul_def, _root_.Formalism.UG.P.csScale_hform_smul_right]; exact mul_mem s.2 ha
   | zero => rw [Formalism.UG.P.csDual_hform_zero_left]; exact zero_mem _
   | add a b _ _ ha hb => rw [Formalism.UG.P.csDual_hform_add_left]; exact add_mem ha hb
   | smul s a _ ha =>

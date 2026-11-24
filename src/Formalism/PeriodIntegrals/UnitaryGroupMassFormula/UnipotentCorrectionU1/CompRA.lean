@@ -68,8 +68,6 @@ lemma dif {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCom
     {f : E → F} (hf : ContDiff ℝ ∞ f) : Differentiable ℝ f := by
   first
   | exact hf.differentiable (by simp)
-  | exact hf.differentiable le_top
-  | exact hf.differentiable (by norm_num)
 
 lemma hd_Dx (x : Bool × Mat k r) {f : Mat k r → ℂ} (hf : Differentiable ℝ f) (g : Mat k r) :
     HasDerivAt (fun t : ℝ => f (crv x g t)) (Dx x f g) 0 := by
@@ -88,8 +86,6 @@ lemma cd_Dx (x : Bool × Mat k r) {f : Mat k r → ℂ} (hf : ContDiff ℝ ∞ f
   rw [Dx_fd x (dif hf)]
   first
   | exact (hf.fderiv_right (m := ∞) le_rfl).clm_apply (dirL x).contDiff
-  | exact (hf.fderiv_right (m := ∞) (by simp)).clm_apply (dirL x).contDiff
-  | exact (hf.fderiv_right (m := ∞) (by norm_num)).clm_apply (dirL x).contDiff
 
 lemma cd_Dw (w : List (Bool × Mat k r)) {f : Mat k r → ℂ} (hf : ContDiff ℝ ∞ f) :
     ContDiff ℝ ∞ (Dw w f) := by

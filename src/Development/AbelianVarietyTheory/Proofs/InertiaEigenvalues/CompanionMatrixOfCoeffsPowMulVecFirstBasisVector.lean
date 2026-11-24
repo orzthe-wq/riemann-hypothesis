@@ -156,7 +156,7 @@ theorem mom_mkX (hh : hᴴ * h = (hankel a).map (algebraMap F E)) (hd : IsUnit h
   have he : star (e1 : Fin r → E) = Pi.single (⟨0, h0⟩ : Fin r) 1 := by
     ext i; by_cases hi : (i : ℕ) = 0 <;> simp [e1, hi, Pi.single_apply, Fin.ext_iff]
   rw [he, Matrix.mulVec_single_one, single_one_dotProduct]
-  simp only [Matrix.col_apply, Matrix.transpose_apply, Matrix.map_apply]
+  simp only [Matrix.col_apply, Matrix.map_apply]
   rw [hankel_apply']
   simp
 end Herm

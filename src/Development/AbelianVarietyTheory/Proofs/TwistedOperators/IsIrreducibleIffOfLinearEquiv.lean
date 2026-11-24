@@ -491,7 +491,7 @@ def tensorCons (X : Fin (s + 1) → Type) [∀ i, AddCommGroup (X i)] [∀ i, Mo
     (TensorProduct.lift (PiTensorProduct.lift.toLinearMap ∘ₗ (PiTensorProduct.tprod ℂ).curryLeft))
     (PiTensorProduct.lift (LinearMap.uncurryLeft
       { toFun := fun x => (TensorProduct.mk ℂ _ _ x).compMultilinearMap (PiTensorProduct.tprod ℂ)
-        map_add' := fun x y => by ext; simp [TensorProduct.add_tmul]
+        map_add' := fun x y => by ext; simp
         map_smul' := fun c x => by ext; simp [TensorProduct.smul_tmul'] }))
     (by ext x; simp) (by ext x y; simp)
 

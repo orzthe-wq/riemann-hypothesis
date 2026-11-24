@@ -167,7 +167,7 @@ theorem leviEmb_omegaLevi {N : ℕ} (d : Fin 2 → ℕ) (hd : ∑ a, d a = N) :
         · simp
       simp [omegaLevi, Zls.omegaVec, this, Matrix.GeneralLinearGroup.scalar]
     · have : (stdBlocks d hd ⟨a, i⟩) ≠ (stdBlocks d hd ⟨a, j⟩) := by simpa using hij
-      simp [omegaLevi, Matrix.GeneralLinearGroup.scalar, Matrix.diagonal_apply_ne _ this, hij]
+      simp [omegaLevi, Matrix.GeneralLinearGroup.scalar, hij]
   · have : (stdBlocks d hd ⟨a, i⟩) ≠ (stdBlocks d hd ⟨b, j⟩) := fun h =>
       hab (congrArg Sigma.fst ((stdBlocks d hd).injective h))
     rw [leviEmb_apply_ne k _ _ hab, Matrix.diagonal_apply_ne _ this]

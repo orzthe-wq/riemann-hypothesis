@@ -1,48 +1,9 @@
 module
 
 public import Formalism.LocalToGlobal.ProjectiveLattices.CompHt
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 
 @[expose] public section
 
@@ -78,7 +39,6 @@ theorem fnFG_of (h : KapFG Xo c) : FnFG Xo c := by
       by
         first
           | exact ⟨a, ha, rfl⟩
-          | (rw [← SetLike.mem_coe, IntermediateField.coe_map]; exact Set.mem_image_of_mem _ ha)
     rw [IntermediateField.adjoin_map] at h1
     refine IntermediateField.adjoin.mono _ _ _ ?_ h1
     rintro _ ⟨b, hb, rfl⟩
@@ -115,7 +75,6 @@ private lemma isAlgebraic_frac_lemma {A K : Type} [CommRing A] [IsDomain A] [Fie
   · intro h0
     have h1 := congrArg (fun f : Polynomial A => f.coeff 1) h0
     simp at h1
-    try exact nonZeroDivisors.ne_zero q.2 h1
   · rw [IsFractionRing.mk'_eq_div]
     simp only [map_sub, map_mul, Polynomial.aeval_C, Polynomial.aeval_X]
     rw [mul_div_cancel₀ _ hq, sub_self]
@@ -135,11 +94,6 @@ theorem fnTrdeg_of (d : ℕ) (h : KapTrdeg Xo c d) : FnTrdeg Xo c (d + Nat.card 
   have e1 : Algebra.trdeg (kap Z) (MvPolynomial (FlagVar Dw) (kap Z)) = Cardinal.mk (FlagVar Dw) := by
     first
       | (rw [MvPolynomial.trdeg_of_isDomain, Cardinal.lift_id])
-      | (rw [Algebra.trdeg_mvPolynomial, Cardinal.lift_id])
-      | (rw [MvPolynomial.trdeg_eq, Cardinal.lift_id])
-      | (rw [MvPolynomial.lift_trdeg, Cardinal.lift_id])
-      | (rw [Algebra.trdeg_MvPolynomial, Cardinal.lift_id])
-      | (rw [MvPolynomial.trdeg_eq_cardinalMk, Cardinal.lift_id])
   have e2 : Algebra.trdeg (MvPolynomial (FlagVar Dw) (kap Z)) (Om Z) = 0 := by
     unfold Algebra.trdeg
     refine le_antisymm (ciSup_le' fun s => ?_) zero_le
@@ -148,7 +102,6 @@ theorem fnTrdeg_of (d : ℕ) (h : KapTrdeg Xo c d) : FnTrdeg Xo c (d + Nat.card 
   have hcard : Cardinal.mk (FlagVar Dw) = ((Nat.card (FlagVar Dw) : ℕ) : Cardinal) := by
     first
       | exact Nat.cast_card.symm
-      | simp [Cardinal.mk_fintype, Nat.card_eq_fintype_card]
   have T1 := lift_trdeg_add_eq (kap Z) (MvPolynomial (FlagVar Dw) (kap Z)) (Om Z)
   have T2 := lift_trdeg_add_eq c.F (kap Z) (Om Z)
   simp only [Cardinal.lift_id] at T1 T2

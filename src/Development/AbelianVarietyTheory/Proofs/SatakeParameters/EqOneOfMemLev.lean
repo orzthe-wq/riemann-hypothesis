@@ -45,6 +45,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilRepresentationVacuumCosetVectorsGrid
 
 @[expose] public section
 
@@ -179,20 +180,6 @@ theorem kap_of_fst {K : Type} [Field K] [NumberField K] (a : ℤ) (x : Ideles K)
   rw [InfiniteAdeleRing.algebraMap_apply]
   simpa using InfinitePlace.Completion.extensionEmbedding_coe w (WithAbs.toAbs _ k)
 
-theorem dense_inf (F : Type) [Field F] [NumberField F] :
-    DenseRange (Units.map (algebraMap F (InfiniteAdeleRing F)).toMonoidHom) := by
-  have hg : Topology.IsOpenEmbedding (Units.val : (InfiniteAdeleRing F)ˣ → InfiniteAdeleRing F) :=
-    Units.isOpenEmbedding_val (R := ∀ v : InfinitePlace F, v.Completion)
-  rw [DenseRange, dense_iff_inter_open]
-  rintro U hU ⟨u, hu⟩
-  obtain ⟨k, v, hv, hk⟩ :=
-    (InfiniteAdeleRing.denseRange_algebraMap F).exists_mem_open (hg.isOpenMap U hU) ⟨_, u, hu, rfl⟩
-  have hk0 : k ≠ 0 := by
-    rintro rfl
-    rw [map_zero] at hk
-    exact v.ne_zero hk
-  exact ⟨v, hv, Units.mk0 k hk0, Units.ext hk.symm⟩
-
 theorem bij_emb (E : Type) [Field E] [NumberField E] [IsCMField E] :
     Function.Bijective fun w : InfinitePlace E => w.embedding.comp (algebraMap (maximalRealSubfield E) E) := by
   constructor
@@ -215,7 +202,7 @@ theorem psi_eq_kap (E : Type) [Field E] [NumberField E] [IsCMField E] (ψ : HCha
   have c2 : Continuous (Units.map (MonoidHom.inl (InfiniteAdeleRing (maximalRealSubfield E))
       (FiniteAdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)))) :=
     Continuous.units_map _ (continuous_id.prodMk continuous_const)
-  refine (dense_inf _).induction_on z (isClosed_eq (ψ.2.1.comp c2)
+  refine (_root_.GlobalTheory.GridWeil.denseRange_units_inf _).induction_on z (isClosed_eq (ψ.2.1.comp c2)
     ((continuous_kap E a).comp ((GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.continuous_ideleMap _ E).comp c2))) fun k => ?_
   apply Units.ext
   rw [kap_of_fst a _ (algebraMap _ E (k : maximalRealSubfield E))

@@ -114,7 +114,7 @@ private theorem comm_fix (hK : IsCommensurated K) {e a b x : H → ℂ} (he : e 
 
 private theorem conv_supp {a f : H → ℂ} {g : H} (h : conv K a f g ≠ 0) : ∃ x : H, a x ≠ 0 ∧ f (x⁻¹ * g) ≠ 0 := by
   by_contra hc
-  push_neg at hc
+  push Not at hc
   apply h
   unfold Formalism.UG.conv
   apply finsum_eq_zero_of_forall_eq_zero

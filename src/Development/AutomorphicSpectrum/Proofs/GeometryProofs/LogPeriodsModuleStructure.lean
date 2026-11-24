@@ -60,7 +60,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.I
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.QuadTie
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
-public import Mathlib
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Mathlib.Tactic
 
 @[expose] public section
 
@@ -163,7 +164,7 @@ theorem real_indep {J : Type*} [Fintype J] (b : Module.Basis J ℤ Λ) {w : Fin 
     simp [Module.Basis.coord_apply, Finsupp.single_apply]
   have h2 := congrArg ψ h
 
-  simp only [map_sum, map_smul, h1, map_zero, smul_eq_mul, mul_ite, mul_one, mul_zero,
+  simp only [map_sum, map_smul, h1, map_zero, smul_eq_mul, mul_ite, mul_zero,
   Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2
   simpa using h2
 

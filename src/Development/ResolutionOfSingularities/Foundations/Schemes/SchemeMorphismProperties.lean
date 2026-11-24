@@ -113,7 +113,7 @@ theorem comap_map_of_isClosedImmersion {S X : Scheme.{u}} (ι : S ⟶ X)
 
 theorem isOpen_connectedComponent_of_noetherianSpace (T : Type v) [TopologicalSpace T]
     [TopologicalSpace.NoetherianSpace T] (x : T) : IsOpen (connectedComponent x) := by
-  apply CrystallineSemistableComparison.isOpen_connectedComponent_of_noetherianSpace <;> assumption
+  apply CrystallineSemistableComparison.isOpen_connectedComponent_of_noetherianSpace
 
 end FunctorialResolution.Blowup
 

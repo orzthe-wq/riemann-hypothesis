@@ -80,7 +80,7 @@ private lemma dIn_univ_of_forall_pderiv_integral {B Q : Type} [CommRing B] [Comm
   by_cases hα : α i = 0
   · exact ⟨0, Submodule.mem_top, by simp [hα]⟩
   · obtain ⟨m, rfl⟩ : ∃ m, α = m + Finsupp.single i 1 := ⟨α - Finsupp.single i 1, by
-      ext j; by_cases hj : j = i <;> simp [Finsupp.single_apply, hj] <;> omega⟩
+      ext j; by_cases hj : j = i <;> simp [hj] <;> omega⟩
     refine ⟨coeff m s, Submodule.mem_top, ?_⟩
     have := congrArg (coeff m) hs
     rw [coeff_map, coeff_pderiv] at this
@@ -108,14 +108,14 @@ private lemma subst_pderiv_inr_cob1_eq_sum_sub_C {R : Type} [CommRing R] {d : �
   rw [map_sub, map_sub, _root_.GlobalTheory.PSChain.pderiv_subst_chain μ hμ, _root_.GlobalTheory.PSChain.pderiv_subst_chain _ (by simp),
     _root_.GlobalTheory.PSChain.pderiv_subst_chain _ (by simp)]
   have hs1 : ∀ x : Fin d, ((Pi.single (Sum.inr j) (1 : MvPowerSeries (Fin d ⊕ Fin d) R) :
-      Fin d ⊕ Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (Sum.inl x)) = 0 := fun x => by simp [Pi.single_apply]
+      Fin d ⊕ Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (Sum.inl x)) = 0 := fun x => by simp
   have hs2 : ∀ x : Fin d, ((Pi.single (Sum.inr j) (1 : MvPowerSeries (Fin d ⊕ Fin d) R) :
       Fin d ⊕ Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (Sum.inr x)) = if x = j then 1 else 0 := fun x => by simp [Pi.single_apply]
   simp only [pderiv_X, hs1, hs2]
   rw [← coe_substAlgHom hE]
 
-  simp only [map_sub, map_sum, map_mul, map_zero, mul_zero, Finset.sum_const_zero, sub_zero,
-  apply_ite, map_one, mul_ite, mul_one, Finset.sum_ite_eq, Finset.sum_ite_eq',
+  simp only [map_sub, map_sum, map_mul, mul_zero, Finset.sum_const_zero, sub_zero,
+  apply_ite, mul_one, Finset.sum_ite_eq',
   Finset.mem_univ, if_true]
   simp only [coe_substAlgHom]
   have h1 : (fun s => subst (Sum.elim (X : Fin d → MvPowerSeries (Fin d) R) (0 : Fin d → MvPowerSeries (Fin d) R)) (μ s)) = X :=

@@ -1,60 +1,125 @@
 module
 
+public import Mathlib.Analysis.Complex.Norm
+public import Mathlib.LinearAlgebra.Matrix.Block
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfE
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ProdCastLESucc
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfH
-import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.DetSubUpper
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalFlagTranslateHolds
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Lemma
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.TypeStar
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.DetSubUpper
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.ArakelovInstances.IsStrictDom
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientDomain
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthogonalFrameDomain
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfH, ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfI
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfH =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfH", "h": "module\n\npublic import Mathlib.Analysis.Complex.Norm\npublic import Mathlib.LinearAlgebra.Matrix.Block\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace ReciprocityTheory.ChartRestriction.G.AR.Up.MI
+
+open Matrix
+open scoped ComplexConjugate
+
+noncomputable section
+
+variable {n : ℕ}
+
+private lemma blockTriangular_inv_of_det_ne_zero {M : Matrix (Fin n) (Fin n) ℂ} (hM : M.BlockTriangular id)
+    (hd : M.det ≠ 0) : M⁻¹.BlockTriangular id := by
+  letI := Matrix.invertibleOfIsUnitDet M (isUnit_iff_ne_zero.mpr hd)
+  exact Matrix.blockTriangular_inv_of_blockTriangular hM
+
+private lemma eq_of_mul_mul_eq_of_det_ne_zero {P Q X Y : Matrix (Fin n) (Fin n) ℂ} (hP : P.det ≠ 0) (hQ : Q.det ≠ 0)
+    (h : P * X * Q = P * Y * Q) : X = Y := by
+  have hP' := isUnit_iff_ne_zero.mpr hP
+  have hQ' := isUnit_iff_ne_zero.mpr hQ
+  have e : ∀ Z : Matrix (Fin n) (Fin n) ℂ, Z = P⁻¹ * (P * Z * Q) * Q⁻¹ := by
+    intro Z
+    simp only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hP', Matrix.one_mul]
+    rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hQ', Matrix.mul_one]
+  calc X = P⁻¹ * (P * X * Q) * Q⁻¹ := e X
+    _ = P⁻¹ * (P * Y * Q) * Q⁻¹ := by rw [h]
+    _ = Y := (e Y).symm
+
+theorem gram_upper_unique {ε : Fin n → ℂ} (hε : ∀ a, ε a * ε a = 1)
+    {β β' : Matrix (Fin n) (Fin n) ℂ} (hβ : β.BlockTriangular id) (hβ' : β'.BlockTriangular id)
+    (hd : β.det ≠ 0) (hd' : β'.det ≠ 0)
+    (h : β'ᵀ * diagonal ε * β'.map (starRingEnd ℂ) = βᵀ * diagonal ε * β.map (starRingEnd ℂ)) :
+    ∃ D : Fin n → ℂ, (∀ a, ‖D a‖ = 1) ∧ β' = diagonal D * β := by
+  classical
+  have hε0 : ∀ a, ε a ≠ 0 := fun a h0 => by
+    have := hε a
+    rw [h0, zero_mul] at this
+    exact zero_ne_one this
+  have hu := isUnit_iff_ne_zero.mpr hd
+  obtain ⟨γ, hγdef⟩ : ∃ γ : Matrix (Fin n) (Fin n) ℂ, γ = β' * β⁻¹ := ⟨_, rfl⟩
+  have hγ : γ.BlockTriangular id := hγdef ▸ hβ'.mul (blockTriangular_inv_of_det_ne_zero hβ hd)
+  have hγβ : β' = γ * β := by
+    rw [hγdef, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]
+  have hγd : γ.det ≠ 0 := by
+    intro h0
+    apply hd'
+    rw [hγβ, Matrix.det_mul, h0, zero_mul]
+  have hbar : ∀ M : Matrix (Fin n) (Fin n) ℂ,
+      (M.map (starRingEnd ℂ)).det = starRingEnd ℂ M.det := fun M => by
+    rw [RingHom.map_det]; rfl
+
+  have key : γᵀ * diagonal ε * γ.map (starRingEnd ℂ) = diagonal ε := by
+    apply eq_of_mul_mul_eq_of_det_ne_zero (P := βᵀ) (Q := β.map (starRingEnd ℂ))
+    · rwa [Matrix.det_transpose]
+    · rw [hbar]; exact (map_ne_zero _).mpr hd
+    · rw [← h, hγβ, Matrix.transpose_mul, Matrix.map_mul]
+      simp only [Matrix.mul_assoc]
+  have hγinv := blockTriangular_inv_of_det_ne_zero hγ hγd
+  have hγtu : IsUnit γᵀ.det := by rw [Matrix.det_transpose]; exact isUnit_iff_ne_zero.mpr hγd
+
+  have key2 : diagonal ε * γ.map (starRingEnd ℂ) = (γ⁻¹)ᵀ * diagonal ε := by
+    rw [Matrix.transpose_nonsing_inv]
+    conv_rhs => rw [← key]
+    simp only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hγtu, Matrix.one_mul]
+  have hoff : ∀ i j, i ≠ j → γ i j = 0 := by
+    intro i j hij
+    rcases lt_or_gt_of_ne hij with hlt | hlt
+    · have e := congrFun (congrFun key2 i) j
+      rw [Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.transpose_apply, hγinv hlt, zero_mul,
+        Matrix.map_apply] at e
+      exact (map_eq_zero _).mp ((mul_eq_zero.mp e).resolve_left (hε0 i))
+    · exact hγ hlt
+  have hγdiag : γ = diagonal (fun a => γ a a) := by
+    ext i j
+    by_cases hij : i = j
+    · subst hij; simp
+    · rw [Matrix.diagonal_apply_ne _ hij, hoff i j hij]
+  refine ⟨fun a => γ a a, fun a => ?_, by rw [← hγdiag]; exact hγβ⟩
+  have e := congrFun (congrFun key a) a
+  rw [hγdiag] at e
+  simp only [Matrix.diagonal_transpose, Matrix.diagonal_map (map_zero _),
+    Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_eq] at e
+  have h2 : γ a a * starRingEnd ℂ (γ a a) = 1 := by
+    have : ε a * (γ a a * starRingEnd ℂ (γ a a)) = ε a * 1 := by linear_combination e
+    exact mul_left_cancel₀ (hε0 a) this
+  rw [Complex.mul_conj, Complex.normSq_eq_norm_sq] at h2
+  have h3 : ‖γ a a‖ ^ 2 = 1 := by exact_mod_cast h2
+  exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h3
+
+end
+
+end ReciprocityTheory.ChartRestriction.G.AR.Up.MI
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfH =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfI =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfI", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfE\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ProdCastLESucc\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfH\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.DetSubUpper\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthonormalFlagTranslateHolds\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.ArakelovInstances.IsStrictDom\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientDomain\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.OrthogonalFrameDomain\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace ReciprocityTheory.ChartRestriction.G.AR.Up.MI
@@ -184,39 +249,10 @@ lemma UF_mem {y : UpI X.Ψ r → ℂ} (hy : ∀ τ b, y (dI τ b) ≠ 0) : UF X 
   rw [e]
   exact hy τ a
 
-private lemma mem_dom_rmul {y b : Frame X.Ψ r} (hy : y ∈ X.dom) (hb : b ∈ Bor X.Ψ r) :
-    rmul y b ∈ X.dom := by
-  simp only [Data.dom, GG, Set.mem_setOf_eq] at hy ⊢
-  simp only [Bor, Set.mem_setOf_eq] at hb
-  intro τ
-  obtain ⟨hdet, hpos⟩ := hy τ
-  obtain ⟨hbdet, hbup⟩ := hb τ
-  have hup : (mat b τ).BlockTriangular id := fun a c h => hbup a c h
-  have hdiag : ∀ a, mat b τ a a ≠ 0 := by
-    have h := hbdet
-    rw [Matrix.det_of_upperTriangular hup] at h
-    exact fun a => Finset.prod_ne_zero_iff.1 h a (Finset.mem_univ a)
-  refine ⟨?_, fun i => ?_⟩
-  · show (mat y τ * mat b τ).det ≠ 0
-    rw [Matrix.det_mul]
-    exact mul_ne_zero hdet hbdet
-  · have hb2 : b ∈ Bor X.Ψ r := fun τ' => hb τ'
-    rw [dmin_rmul (X := X) y hb2 τ i]
-    set p := ∏ j : Fin i, mat b τ (Fin.castLE (Nat.le_of_lt_succ i.isLt) j)
-      (Fin.castLE (Nat.le_of_lt_succ i.isLt) j) with hp
-    have hp0 : p ≠ 0 := Finset.prod_ne_zero_iff.2 fun j _ => hdiag _
-    have e : p * dmin X.Gm y τ i * conj p = (Complex.normSq p : ℂ) * dmin X.Gm y τ i := by
-      rw [← Complex.mul_conj]
-      ring
-    rw [e, Complex.re_ofReal_mul]
-    have hn : 0 < Complex.normSq p := Complex.normSq_pos.2 hp0
-    have h3 := hpos i
-    nlinarith
-
 theorem Wf_rmul_UF {y : Frame X.Ψ r} (hy : y ∈ X.dom) {y' : UpI X.Ψ r → ℂ} (hy' : ∀ τ b, y' (dI τ b) ≠ 0) :
     Wf X (rmul y (UF X y')) = (Cy X.Ψ r).indicator 1 (Lβ (β0 X y) y') := by
   have hb := UF_mem X hy'
-  have hdom : rmul y (UF X y') ∈ X.dom := mem_dom_rmul X hy hb
+  have hdom : rmul y (UF X y') ∈ X.dom := _root_.ReciprocityTheory.ChartRestriction.G.FD.OrthogonalFrameDomain.rmul_mem_dom X hy hb
   have hb' := hb
   simp only [Bor, Set.mem_setOf_eq] at hb'
   have hβu : ∀ τ, (β0 X y τ).BlockTriangular id := fun τ => β0_upper X hy τ
@@ -250,9 +286,9 @@ theorem Wf_rmul_UF {y : Frame X.Ψ r} (hy : y ∈ X.dom) {y' : UpI X.Ψ r → �
   unfold Wf
   by_cases h : Lβ (β0 X y) y' ∈ Cy X.Ψ r
   · have h2 := key.2 h
-    simp [Set.indicator_apply, h, h2]
+    simp [h, h2]
   · have h2 : rmul y (UF X y') ∉ SW X := fun h' => h (key.1 h')
-    simp [Set.indicator_apply, h, h2]
+    simp [h, h2]
 
 def invF (b : Frame X.Ψ r) : Frame X.Ψ r := fun τ => ((mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)
 
@@ -285,9 +321,9 @@ theorem Wf_rmul_not_dom {y b : Frame X.Ψ r} (hy : y ∉ X.dom) (hb : b ∈ Bor 
   have h : rmul y b ∉ SW X := by
     rintro ⟨h1, -⟩
     apply hy
-    have h2 := mem_dom_rmul X h1 (invF_mem' X hb)
+    have h2 := _root_.ReciprocityTheory.ChartRestriction.G.FD.OrthogonalFrameDomain.rmul_mem_dom X h1 (invF_mem' X hb)
     rwa [rmul_invF X hb] at h2
-  simp [Set.indicator_apply, h]
+  simp [h]
 
 lemma isClosed_imp {P : Prop} {S : Set ℂ} (hS : IsClosed S) : IsClosed {z : ℂ | P → z ∈ S} := by
   by_cases h : P
@@ -343,22 +379,6 @@ lemma continuous_gramTF : Continuous (gramTF X) := by
     (continuous_finsetSum _ fun k _ => (continuous_coord X τ k a).mul continuous_const).mul
       (Complex.continuous_conj.comp (continuous_coord X τ l b))
 
-private lemma isOpen_X_dom : IsOpen X.dom := by
-  have e : X.dom = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩
-      ⋂ i : Fin (r + 1), {x : Frame X.Ψ r | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re}) := by
-    ext x
-    simp [Data.dom, GG]
-  rw [e]
-  refine isOpen_iInter_of_finite fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite fun i => ?_)
-  · have hm : Continuous fun x : Frame X.Ψ r => mat x τ := continuous_apply τ
-    exact isOpen_ne_fun hm.matrix_det continuous_const
-  · have hg : Continuous fun x : Frame X.Ψ r => gram τ.1 X.Gm (mat x τ) :=
-      (continuous_apply τ).comp (continuous_gramF X)
-    have hc : Continuous fun x : Frame X.Ψ r => (dmin X.Gm x τ i).re := by
-      unfold dmin lminor
-      exact Complex.continuous_re.comp (hg.matrix_submatrix _ _).matrix_det
-    exact isOpen_lt continuous_const (continuous_const.mul hc)
-
 lemma measurableSet_SW : MeasurableSet (SW X) := by
   have e : SW X = X.dom ∩ gramF X ⁻¹' (gramTF X '' CmatSet X) := by
     ext y
@@ -369,7 +389,7 @@ lemma measurableSet_SW : MeasurableSet (SW X) := by
     · rintro ⟨h1, β, hβ, hg⟩
       exact ⟨h1, β, hβ, fun τ => (congrFun hg τ).symm⟩
   rw [e]
-  have h1 : MeasurableSet X.dom := (isOpen_X_dom X).measurableSet
+  have h1 : MeasurableSet X.dom := (_root_.ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom X).measurableSet
   have h2 : IsClosed (gramF X ⁻¹' (gramTF X '' CmatSet X)) :=
     ((isCompact_CmatSet X).image (continuous_gramTF X)).isClosed.preimage (continuous_gramF X)
   exact h1.inter h2.measurableSet
@@ -379,3 +399,6 @@ lemma measurable_Wf : Measurable (Wf X) := measurable_one.indicator (measurableS
 end
 
 end ReciprocityTheory.ChartRestriction.G.AR.Up.MI
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPfI =====

@@ -131,7 +131,7 @@ theorem exists_kFactor_of_thetaIntegral (hP : _root_.GlobalTheory.FunPr.ThetaLoc
     (hM : IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p') :
     ∃ J₀ : Pi →ₗ[ℂ] (GA D X → ℂ), ∀ Φ ∈ algF ψ θ true A B, thetaInt ωA ν 𝓕 Φ = J₀ (p Φ) := by
   obtain ⟨ν₁, 𝓕₁, hν₁⟩ := exists_haar_fundamental_domain W₁
-  obtain ⟨c, -, hc⟩ := _root_.GlobalTheory.T.twisted_square_theta_integrals_eq hP hK hL D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁
+  obtain ⟨c, -, hc⟩ := _root_.GlobalTheory.SquareAgree.twisted_theta_integrals_agree hP hK hL D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁
     ωA ωB Pi rf rl p p' hM
   obtain ⟨Φ₀, -, hrel, -, hI⟩ := hc 0 (Submodule.zero_mem _)
   have hrelker : finRel ωB (algF ψ θ false A₁ B) ≤ LinearMap.ker p' := by
@@ -304,7 +304,7 @@ theorem _root_.GlobalTheory.T.thetaIntegral_factors_through_kType : _root_.Globa
         ∃ (Pf : ModuleCat.{0} ℂ) (y : Pf) (J : Pr ⊗[ℂ] Pf →ₗ[ℂ] (GA D X → ℂ)), (J = 0 ∨ Function.Injective J) ∧
           ∀ P, GlobalTheory.SquareComm.thetaInt ωA ν 𝓕 (GlobalTheory.SquareComm.fockF ψ θ true A B f P) = J (q P ⊗ₜ y) := by
   intro hP hK hL D ψ θ hψ hθ W W₁ X A A₁ B a b
-  obtain ⟨Pr, q, q', -, -, hq⟩ := _root_.GlobalTheory.T.twisted_local_factors_match hP.howeDualityReal hP hK hL D ψ θ hψ hθ W W₁ X A A₁ B a b
+  obtain ⟨Pr, q, q', -, -, hq⟩ := _root_.GlobalTheory.SquareLM.twisted_square_local_matching hP.howeDualityReal hP hK hL D ψ θ hψ hθ W W₁ X A A₁ B a b
   refine ⟨Pr, q, fun α β hT hab ν 𝓕 hν ωA hωA f hf => ?_⟩
   obtain ⟨hex, hsplit⟩ := hq α β hT hab
   obtain ⟨ωA₀, ωB, Pi₀, rf₀, rl₀, p₀, p₀', hM₀⟩ := id hex

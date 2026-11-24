@@ -179,6 +179,6 @@ theorem mem_glueFil_iff {d : ℕ} (f : Fin d → (HdR A₀ →ₗ[k] HdR A₀))
     rw [eval_eq]
     congr 2
     funext j
-    simp [sndC_apply]
+    simp
 
 end GlobalTheory.HTGlueLie

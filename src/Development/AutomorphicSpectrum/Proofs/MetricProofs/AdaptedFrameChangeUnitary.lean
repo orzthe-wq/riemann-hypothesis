@@ -208,11 +208,11 @@ theorem inl_eq_zero {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : C.IsA
 
 theorem mulVec_inl (u : Matrix (Sg j j') (Sg j j') ℂ) (k : Fin j) (x : Sg j j') :
     (u *ᵥ Sum.elim (Pi.single k 1) (0 : Fin j' → ℂ)) x = u x (Sum.inl k) := by
-  simp [mulVec, dotProduct, Fintype.sum_sum_type, Pi.single_apply]
+  simp [mulVec, dotProduct, Pi.single_apply]
 
 theorem mulVec_inr (u : Matrix (Sg j j') (Sg j j') ℂ) (k : Fin j') (x : Sg j j') :
     (u *ᵥ Sum.elim (0 : Fin j → ℂ) (Pi.single k 1)) x = u x (Sum.inr k) := by
-  simp [mulVec, dotProduct, Fintype.sum_sum_type, Pi.single_apply]
+  simp [mulVec, dotProduct, Pi.single_apply]
 
 theorem mulVec_diag_inl (u : Matrix (Sg j j') (Sg j j') ℂ) (h : u.toBlocks₂₁ = 0) (v : Fin j → ℂ) :
     u *ᵥ Sum.elim v (0 : Fin j' → ℂ) = Sum.elim (u.toBlocks₁₁ *ᵥ v) (0 : Fin j' → ℂ) := by

@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MemIdealOfOfDense
 
 @[expose] public section
 
@@ -59,13 +60,10 @@ theorem exists_spMap_affPt {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ S
   rw [Spec.map_comp, Category.assoc, this, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id,
     Category.id_comp]
 
-theorem eq_of_spMap_eq {A C : Type} [CommRing A] [CommRing C] {g g' : A →+* C} (h : spMap g = spMap g') : g = g' :=
-  congrArg CommRingCat.Hom.hom (Spec.map_injective h)
-
 theorem eq_of_spMap_affPt {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (U : X.affineOpens)
     {C : Type} [CommRing C] {g g' : Sec s U.1 →+* C} (h : spMap g ≫ affPt s U = spMap g' ≫ affPt s U) : g = g' := by
   have : Mono (affPt s U) := @IsOpenImmersion.mono _ _ _ (IsAffineOpen.isOpenImmersion_fromSpec U.2)
-  exact eq_of_spMap_eq ((cancel_mono _).1 h)
+  exact _root_.GlobalTheory.ZM.DenseFib.spMap_inj ((cancel_mono _).1 h)
 
 theorem red_over (D : Data) : D.i ≫ D.s = D.t := by
   obtain ⟨s₀, hpb, ht⟩ := D.red
@@ -113,7 +111,7 @@ theorem Lift.hom_spec : ∀ (D : Data) (Λ : Lift D), (∀ (U : AffOp D.X) (T : 
     refine ⟨g, hg, fun r ↦ ?_⟩
     have : spMap (g.comp (algebraMap D.R (Sec D.s U.unop.1))) = spMap (T.π.comp (algebraMap D.R T.B)) := by
       rw [Cris.spMap_comp, ← affPt_w, ← Category.assoc, hg, Category.assoc, red_over, T.w]
-    exact RingHom.congr_fun (eq_of_spMap_eq this) r
+    exact RingHom.congr_fun (_root_.GlobalTheory.ZM.DenseFib.spMap_inj this) r
   · obtain ⟨N₀, h⟩ := (isDPNilpotent_iff_exists_isLevel D.κ).1 D.nil
     refine ⟨N₀, fun N hN U ↦ ?_⟩
     have h' : fil D.κ N = ⊥ := eq_bot_iff.2 (le_of_le_of_eq (ExpBij.dpFil_anti D.κ hN) h)

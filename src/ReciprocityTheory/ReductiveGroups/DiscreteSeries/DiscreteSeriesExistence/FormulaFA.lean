@@ -3,48 +3,9 @@ module
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.ExpInPPosDef
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DatumEmbeddingMemHlam
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PmatIsHermitian
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.MeasureTheory.Function.AEEqOfIntegral
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DatumInj
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.RregRep
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.KSchur
@@ -96,7 +57,6 @@ theorem ffa_UJ_lift {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     exact hJ h.symm
   first
   | exact ⟨⟨Matrix.nonsingInvUnit g hdet, hg'⟩, rfl⟩
-  | exact ⟨⟨((Matrix.isUnit_iff_isUnit_det g).2 hdet).unit, hg'⟩, rfl⟩
 
 theorem ffa_toMK_mem (k : S7.KG ε) : S7.toMK k ∈ UJset ε := by
   unfold S7.toMK
@@ -105,20 +65,10 @@ theorem ffa_toMK_mem (k : S7.KG ε) : S7.toMK k ∈ UJset ε := by
 theorem ffa_cont_toMK : Continuous fun k : S7.KG ε => S7.toMK k := by
   first
   | fun_prop
-  | exact Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)
-  | (unfold S7.toMK S7.toM; fun_prop)
-  | (unfold S7.toMK; exact Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val))
 
 private theorem isURepOn_rreg' : IsURepOn (UJset ε) (rreg ε) := by
   first
   | exact rreg_isURepOn ε
-  | exact rreg_isURepOn
-  | exact isURepOn_rreg ε
-  | exact isURepOn_rreg
-  | exact rreg_isURep ε
-  | exact rreg_urep ε
-  | exact rreg_rep ε
-  | exact rregRep ε
 
 theorem ffa_rreg_mul (k₁ k₂ : S7.KG ε) (x : L2 ε) :
     rreg ε (S7.toMK (k₁ * k₂)) x = rreg ε (S7.toMK k₁) (rreg ε (S7.toMK k₂) x) := by
@@ -216,10 +166,8 @@ theorem ffa_eval {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : ContinuousOn F (
     rw [integral_integral_swap hint]
     first
     | (simp_rw [integral_const_mul]; exact h1')
-    | (simp_rw [integral_mul_left]; exact h1')
   have hae : Φ =ᵐ[Formalism.REAL.muG ε] 0 := by
     first
-    | exact ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero hΦc.locallyIntegrable hS
     | exact ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero' hΦc.locallyIntegrable hS
   have hzero : Φ = 0 := (hΦc.ae_eq_iff_eq (μ := Formalism.REAL.muG ε) continuous_const).1 hae
   have h1 : Φ 1 = 0 := congrFun hzero 1
@@ -234,25 +182,19 @@ section KMap
 
 variable {Λ : Fin n → ℝ}
 
-theorem ffa_op_mul (T : S7.KType ε Λ) (k₁ k₂ : S7.KG ε) : T.op (k₁ * k₂) = T.op k₁ * T.op k₂ := by
-  exact congrArg Subtype.val (map_mul T.τ k₁ k₂)
-
-theorem ffa_op_one (T : S7.KType ε Λ) : T.op 1 = 1 := by
-  exact congrArg Subtype.val (map_one T.τ)
+alias ffa_op_one := _root_.ReciprocityTheory.ChartRestriction.DS.pdA_op_one
 
 theorem ffa_op_inner (T : S7.KType ε Λ) (k : S7.KG ε) (x y : T.V) :
     inner ℂ (T.op k x) (T.op k y) = inner ℂ x y := by
   have h1 : ContinuousLinearMap.adjoint (T.op k) * T.op k = 1 := by
     rw [← ContinuousLinearMap.star_eq_adjoint]
     first
-    | exact unitary.star_mul_self_of_mem (T.τ k).2
     | exact Unitary.star_mul_self_of_mem (T.τ k).2
-    | exact (unitary.mem_iff.1 (T.τ k).2).1
   rw [← ContinuousLinearMap.adjoint_inner_right, ← ContinuousLinearMap.mul_apply, h1,
     ContinuousLinearMap.one_apply]
 
 theorem ffa_op_inv_apply (T : S7.KType ε Λ) (k : S7.KG ε) (y : T.V) : T.op k (T.op k⁻¹ y) = y := by
-  rw [← ContinuousLinearMap.mul_apply, ← ffa_op_mul]
+  rw [← ContinuousLinearMap.mul_apply, ← _root_.ReciprocityTheory.ChartRestriction.DS.CompactHaarProbability.op_mul]
   simp [ffa_op_one]
 
 theorem ffa_op_adj' (T : S7.KType ε Λ) (k : S7.KG ε) (x y : T.V) :
@@ -281,7 +223,7 @@ theorem ffaB_equiv (T : S7.KType ε Λ) (a : T.V) (x : L2 ε) (k₀ : S7.KG ε) 
     ffaB T a x (T.op k₀ v) = rreg ε (S7.toMK k₀) (ffaB T a x v) := by
   rw [ffaB_apply, ffaB_apply]
   have h1 : ∀ k : S7.KG ε, inner ℂ (T.op k a) (T.op k₀ v) = inner ℂ (T.op (k₀⁻¹ * k) a) v := fun k => by
-    rw [ffa_op_adj', ffa_op_mul, ContinuousLinearMap.mul_apply]
+    rw [ffa_op_adj', _root_.ReciprocityTheory.ChartRestriction.DS.CompactHaarProbability.op_mul, ContinuousLinearMap.mul_apply]
   simp_rw [h1]
   have h2 := integral_mul_left_eq_self (μ := dk ε)
     (fun k => inner ℂ (T.op (k₀⁻¹ * k) a) v • rreg ε (S7.toMK k) x) k₀
@@ -314,25 +256,14 @@ section Psi
 variable {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
   {v₀ : T.V}
 
-theorem ffa_memLp (hP : IsPsiFor ε lam T Ψ) (u v : T.V) :
-    MemLp (fun y : Formalism.REAL.UJ ε => jfun Ψ u v (Formalism.MainNotions.S.umat y)) 2 (Formalism.REAL.muG ε) := by
-  have hH : (Formalism.REAL.muG ε).IsHaarMeasure := by
-    unfold Formalism.REAL.muG
-    infer_instance
-  have h := hP.2.2.2.2 (Formalism.REAL.muG ε) hH
-  have h2 := ((innerSL ℂ u).comp (ContinuousLinearMap.apply ℂ T.V v)).comp_memLp' h
-  refine MemLp.ae_eq (ae_of_all _ fun y => ?_) h2
-  simp [jfun]
-  try rfl
-
 theorem uniformisationL2_ae_eq_jfun (hP : IsPsiFor ε lam T Ψ) (u v : T.V) :
     (uniformisationL2 ε Ψ u v : Formalism.REAL.UJ ε → ℂ) =ᵐ[Formalism.REAL.muG ε] fun y => jfun Ψ u v (Formalism.MainNotions.S.umat y) := by
   unfold uniformisationL2 toL2
-  rw [dite_eq_left (ffa_memLp hP u v)]
-  exact (ffa_memLp hP u v).coeFn_toLp
+  rw [dite_eq_left (_root_.ReciprocityTheory.ChartRestriction.DS.dt_memLp hP u v)]
+  exact (_root_.ReciprocityTheory.ChartRestriction.DS.dt_memLp hP u v).coeFn_toLp
 
 theorem ffa_jfun_cont (hP : IsPsiFor ε lam T Ψ) (u v : T.V) : ContinuousOn (jfun Ψ u v) (UJset ε) := by
-  have hΨ : ContinuousOn Ψ (UJset ε) := ffa_continuousOn hP.2.2.1
+  have hΨ : ContinuousOn Ψ (UJset ε) := _root_.ReciprocityTheory.ChartRestriction.DS.dinj_continuousOn_of_smoothOnGV hP.2.2.1
   unfold jfun
   exact continuousOn_const.inner (hΨ.clm_apply continuousOn_const)
 
@@ -379,8 +310,6 @@ private theorem inner_uniformisationL2_eq_norm_sq_mul_inner (hP : IsPsiFor ε la
     rw [inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, T.w_norm] at h1
     first
     | (push_cast at h1 ⊢; linear_combination -h1)
-    | (simp only [one_pow, mul_one, map_one] at h1; push_cast; exact h1.symm.trans (by push_cast; ring))
-    | (simp at h1 ⊢; linear_combination -h1)
   rw [hform, hc']
 
 theorem ffa_kmap_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
@@ -441,8 +370,6 @@ theorem ffa_kmap_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ 
     obtain ⟨k, hk⟩ : ∃ k : S7.KG ε, S7.toMK k = g := by
       first
       | exact ffa_Kset hg
-      | exact ffa_Kset (by rw [← mir_Kset_eq]; exact hg)
-      | exact ffa_Kset (by simpa [Kset, Formalism.REAL.Kset] using hg)
     apply Subtype.ext
     simp only [Submodule.coe_subtype] at h1 h2
     rw [h2, hφ, hφ, h1, ← hk, hJdk, hB, map_add (f := _)]
@@ -470,7 +397,6 @@ theorem ffa_kmap_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ 
     rintro _ ⟨u, rfl⟩
     first
     | exact horth u v
-    | exact LinearMap.mem_ker.2 (by simpa using horth u v)
   refine LinearMap.ext fun v => ?_
   have hmem : φ ⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_Hlam hP v⟩ ∈ lowKSubLam ε Ψ v₀ := by
     rw [← heq]
@@ -487,15 +413,12 @@ theorem ffa_kmap_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ 
   have h6 : inner ℂ (B v) (c • B v) = 0 := by
     first
     | exact hspan v h3
-    | simpa using LinearMap.mem_ker.1 (hspan v h3)
   rw [inner_smul_right] at h6
   have h7 : inner ℂ (B v) (B v) = 0 := (mul_eq_zero.1 h6).resolve_left hc0
   rw [LinearMap.zero_apply]
   exact inner_self_eq_zero.1 h7
 
-theorem ffa_form (hP : IsPsiFor ε lam T Ψ) (v' u : T.V) :
-    inner ℂ (uniformisationL2 ε Ψ v₀ v') (uniformisationL2 ε Ψ v₀ u) = ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) * inner ℂ v' u := by
-  exact inner_uniformisationL2_eq_norm_sq_mul_inner hP v' u
+alias ffa_form := _root_.ReciprocityTheory.ChartRestriction.DS.inner_uniformisationL2_eq_norm_sq_mul_inner
 
 end Psi
 

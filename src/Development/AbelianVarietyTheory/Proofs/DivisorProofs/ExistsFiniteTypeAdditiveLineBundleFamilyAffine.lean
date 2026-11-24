@@ -195,8 +195,7 @@ theorem exists_fam_stage (A : Over (Sp R)) [GrpObj A] [QuasiCompact A.hom] [Quas
     have e := congrArg (CechPic.pull (lift (lift a a') y).left) ht
     simp only [D, map_sub, map_zero, pull_evc, MonObj.comp_mul, ← Category.assoc, whiskerLeft_fst,
       whiskerLeft_snd] at e
-    simp only [Category.assoc, lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd, whiskerLeft_fst_assoc,
-      whiskerLeft_snd_assoc] at e
+    simp only [lift_fst, lift_snd] at e
     rw [sub_sub, sub_eq_zero] at e
     exact e
   · rw [same_iff hN hN₀, H2, Category.assoc, toStage_stageMap, ← H1, Category.comp_id]

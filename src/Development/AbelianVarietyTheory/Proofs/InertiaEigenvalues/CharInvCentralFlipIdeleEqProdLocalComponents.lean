@@ -92,8 +92,6 @@ theorem fa_sum {α : Type*} (s : Finset α) (g : α → FiniteAdeleRing (𝓞 D.
   | empty => simp only [Finset.sum_empty]; rfl
   | insert a s ha ih => rw [Finset.sum_insert ha, fa_add, ih, Finset.sum_insert ha]
 
-theorem finPart_incA (k : D.host.E) : finPart D (incA D k) = 1 ⊗ₜ k := rfl
-
 theorem comp_of_isIdemAt (ι : Af ↥D.host.F ⊗[↥D.host.F] D.host.E ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E)
     (h1 : ∀ (x : D.host.E), ι (1 ⊗ₜ[↥D.host.F] x) = (algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E)) x)
     (h2 : ∀ (y : Af ↥D.host.F ⊗[↥D.host.F] D.host.E),
@@ -110,7 +108,7 @@ theorem comp_of_isIdemAt (ι : Af ↥D.host.F ⊗[↥D.host.F] D.host.E ≃+* Fi
   have key : ∀ x : 𝓞 D.host.E, x ≠ 0 →
       (x ∈ PP.asIdeal ↔ ∃ Q, ι (finPart D e) Q = 1 ∧ x ∈ Q.asIdeal) := by
     intro x hx
-    rw [hP x hx, h2, map_mul, finPart_incA, map_mul, h1]
+    rw [hP x hx, h2, map_mul, _root_.GlobalTheory.LatVac.finPart_incA, map_mul, h1]
     have hQ : ∀ Q, (Valued.v ((ι (finPart D e) * algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E)
         ((x : D.host.E))⁻¹) Q) ≤ 1 ↔ ¬ (ι (finPart D e) Q = 1 ∧ x ∈ Q.asIdeal)) := by
       intro Q

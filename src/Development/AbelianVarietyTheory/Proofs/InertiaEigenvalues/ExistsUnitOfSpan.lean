@@ -162,7 +162,7 @@ theorem exists_unit [Infinite Qp] [FiniteDimensional Qp LL] (hB : IsField BdR) (
   have h2 : LinearIndependent BdR fun i => (v i : BdR ⊗[Qp] LL) := by
     rw [linearIndependent_iff_finset_linearIndependent]
     intro s
-    refine GlobalTheory.RegularRing.linearIndepOn_of_invariant (fun g b => PD.actdR g b)
+    refine _root_.GlobalTheory.LinearIndependentFixed.linearIndepOn_of_fixed (fun g b => PD.actdR g b)
       (fun g => (tw PD χ g).toAddMonoidHom) (tw_smul PD χ) ?_ _ (fun g i => (v i).2 g) s
       (h1.linearIndepOn _)
     intro b b' hb hg

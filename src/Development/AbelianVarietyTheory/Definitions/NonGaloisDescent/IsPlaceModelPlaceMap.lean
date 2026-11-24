@@ -306,9 +306,6 @@ theorem PlacesOK.mono {Pg Q Q' : Finset (Pl D.host.E)} (h : PlacesOK Pg Q) (hQ :
   ⟨h.split.imp fun _ hP => ⟨hP.1, hQ.trans hP.2.1, hP.2.2⟩, h.disj.mono_right hQ,
     fun PP hPP => h.prime PP (hPP.imp_right fun h' => hQ h')⟩
 
-theorem placesOK_empty : PlacesOK (∅ : Finset (Pl D.host.E)) ∅ :=
-  ⟨⟨∅, le_rfl, le_rfl, splitSet_empty⟩, Finset.disjoint_empty_left _, fun _ h => by simp at h⟩
-
 def halfIdem (Pg Q : Finset (Pl D.host.E)) : AE D := cA D (idem Pg) + idem Q
 
 abbrev Reds (D : D7) (r n : ℕ) : Type := ∀ PP : Pl D.host.E, Matrix (Fin r) (Fin n) (kP PP)

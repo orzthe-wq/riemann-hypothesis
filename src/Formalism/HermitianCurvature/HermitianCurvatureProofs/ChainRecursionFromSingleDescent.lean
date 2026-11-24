@@ -192,7 +192,7 @@ theorem bE_succAbove_succ {m : ℕ} (e : Fin n) (v : Fin (m + 1) → Fin n) (w :
     bE e v ∘ w.succ.succAbove = bE e (v ∘ w.succAbove) := by
   funext j
   induction j using Fin.cases with
-  | zero => simp [bE, Fin.succ_succAbove_zero]
+  | zero => simp [bE]
   | succ k => simp [bE, Fin.succ_succAbove_succ]
 
 theorem bS_succAbove_castSucc {m : ℕ} (e : Fin n) (v : Fin (m + 1) → Fin n) (w : Fin (m + 1)) :
@@ -324,7 +324,7 @@ theorem Tm_comm {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fi
     {a c d : Fin n} (h1 : a ≠ c) (h2 : d ≠ a) : Tm E u a a * E c d = E c d * Tm E u a a := by
   have h := hE a a c d
   rw [if_neg h1, if_neg h2, sub_zero, sub_eq_zero] at h
-  simp only [Tm, eq_self_iff_true, if_true]
+  simp only [Tm, if_true]
   rw [add_mul, mul_add, h, Algebra.commutes]
 
 theorem sum_ne_succAbove {M : Type*} [AddCommMonoid M] {t : ℕ} (p : Fin (t + 1)) (f : Fin (t + 1) → M) :
@@ -1121,8 +1121,6 @@ theorem near_update {Dc : (Fin r → ℂ) → Set (Mx k r)} (ho : IsOpen (UU Dc)
   have hcont : Continuous (fun s : ℂ => Function.update c l s) := by
     first
       | exact continuous_const.update l continuous_id
-      | fun_prop
-      | exact (continuous_update l).comp (continuous_const.prodMk continuous_id)
   have ht : Filter.Tendsto (fun s : ℂ => Function.update c l s) (𝓝 (c l)) (𝓝 c) := by
     simpa using hcont.tendsto (c l)
   exact ht.eventually h1

@@ -64,11 +64,10 @@ def oEOs : 𝓞 D.host.E →+* D.what₂.O where
 
 theorem oEOs_injective : Function.Injective (oEOs D hinj) := by
   intro x y hxy
-  have h : D.what₂.OtoLL (oEOsFun D x) = D.what₂.OtoLL (oEOsFun D y) := by
-    change D.what₂.OtoLL (oEOs D hinj x) = D.what₂.OtoLL (oEOs D hinj y)
-    rw [hxy]
-  rw [oEOsFun_spec, oEOsFun_spec, RingHom.comp_apply, RingHom.comp_apply] at h
-  exact FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E (D.embE.injective h)
+  change oEOsFun D x = oEOsFun D y at hxy
+  apply FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E
+  apply D.embE.injective
+  simpa only [oEOsFun_spec, RingHom.comp_apply] using congrArg D.what₂.OtoLL hxy
 
 def iE (B : WeightFamilies.Prov D) : 𝓞 D.host.E →+* 𝓞 B.KO := B.eO.symm.toRingHom.comp (oEOs D hinj)
 
@@ -124,10 +123,10 @@ variable {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L}
 def kaR (T : ParamsT D L P) (hK : DV.KapDef D) (j : ℕ) : WeightFamilies.Wt D j := kaWt D hK (even_nV T) j
 
 def lR (T : ParamsT D L P) (hK : DV.KapDef D) (j : ℕ) : WeightFamilies.Wt D j :=
-  lWt D (kaR T hK j) T.TO T.nWn (even_nW T)
+  lWt D (kaR T hK j) T.TO T.nWn (_root_.Formalism.BasicNotions.ParamsT.nW_even T)
 
 def fR (T : ParamsT D L P) (hK : DV.KapDef D) (j : ℕ) : WeightFamilies.Wt D j :=
-  fWt D (kaR T hK j) (lR T hK j) T.TO T.nP (even_nP T)
+  fWt D (kaR T hK j) (lR T hK j) T.TO T.nP (_root_.Formalism.BasicNotions.ParamsT.even_nP₂ T)
 
 
 open Classical in

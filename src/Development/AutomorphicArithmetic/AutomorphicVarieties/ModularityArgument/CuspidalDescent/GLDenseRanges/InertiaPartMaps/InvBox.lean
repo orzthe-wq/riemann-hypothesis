@@ -144,7 +144,7 @@ private theorem mem_box_inr_eigenspace_iff_lTensor_opE_sub_eq_zero {G H W W' : T
       LinearMap.lTensor W (opE κ a - (N : Module.End ℂ W')) := by
     apply TensorProduct.ext'
     intro w v
-    simp [opE_box_comp_inr_tmul, TensorProduct.tmul_sub, Module.End.natCast_apply, TensorProduct.tmul_smul]
+    simp [opE_box_comp_inr_tmul, TensorProduct.tmul_smul]
   unfold ePart
   rw [LinearMap.mem_ker, e]
 

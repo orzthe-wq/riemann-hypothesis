@@ -63,7 +63,7 @@ theorem evalCone_map {ι : Type} {n : ι → ℕ} {F F' : Type*} [CommRing F] [C
   congr 1
   exact RingHom.ext_int _ _
 
-theorem finite_support_height {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ} (A : HermLine n)
+theorem finite_support_height {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ} (A : Heights.HermLine n)
     (x : Cone n (AlgebraicClosure ℚ)) (hx : BlockNonzero x) :
     (Function.support fun v : FinitePlace (coordField x) ↦
       ∑ k, (A.deg k : ℝ) * Real.log (⨆ i, v (coordVec x k i))).Finite := by

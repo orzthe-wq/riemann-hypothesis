@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsChartOfIsLocalRing
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasFibrewiseNonvanishingThetaSectionOfSmoothModeStatement
+public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AuxiliaryInertOddPrime
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasFibrewiseNonvanishingThetaSectionOfSmoothMode
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PushInvertibleOfHasTheta
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -41,7 +42,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FnAlgClosedOfFixedPoints
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMulEqZeroOfSumToReal
-public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AuxiliaryInertOddPrime
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
 
 @[expose] public section
@@ -66,7 +66,7 @@ theorem isLB_detOm_of_smooth {E : Type} [Field E] [NumberField E] [IsCMField E] 
     have := (inferInstance :
       SmoothOfRelativeDimension (0 + (D.dim + 0)) (inv (genι Y) ≫ genStr Y ≫ spMap (RingHom.id c.F)))
     simpa using this
-  have hθ : GlobalTheory.Models.HasTheta Y.t.G Y.t.PP.L := GlobalTheory.T.hasFibrewiseNonvanishingThetaSection_of_smooth_model E H D hpq l Xo c Y hs
+  have hθ : GlobalTheory.Models.HasTheta Y.t.G Y.t.PP.L := _root_.GlobalTheory.ThetaNormal.hasTheta_of_smooth E H D hpq l Xo c Y hs
   exact GlobalTheory.FlagMod.isLB_detOm (GlobalTheory.CompHS.TorFlagEx.pushInvertible_of_hasTheta Y hθ)
 
 end GlobalTheory.FanTheta

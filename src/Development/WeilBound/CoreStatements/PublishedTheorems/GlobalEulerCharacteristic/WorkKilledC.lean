@@ -199,23 +199,12 @@ theorem exists_card_eq_pow' {ℓ : ℕ} [Fact ℓ.Prime] {X : Type*} [AddCommGro
   obtain ⟨n, hn⟩ := hp.exists_card_eq
   exact ⟨n, by rw [← hn]; rfl⟩
 
-theorem ratio_shortExact_l' (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
-    (hS : S.Finite) (hSl : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
-    (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal},
-        AlgebraicClosure ℚ →ₐ[K.1] AlgebraicClosure v.1.Completion)
-    (T : ShortComplex (Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 (AlgebraicClosure ℚ) S)))
-    (hT : T.ShortExact) [IsDiscreteRep T.X₁] [IsDiscreteRep T.X₂] [IsDiscreteRep T.X₃] [Finite T.X₂]
-    (hl : ∃ r : ℕ, ∀ m : T.X₂, (ℓ ^ r) • m = 0) :
-    haveI : Finite S := hS
-    gsEulerRatio S T.X₂ ιr = gsEulerRatio S T.X₁ ιr * gsEulerRatio S T.X₃ ιr :=
-  PositivityTheory.Lit1.GEN.ratio_shortExact_l ℓ K S hS hSl ιr T hT hl
-
 theorem gs_multKilled (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (hS : S.Finite) (hSl : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion) :
     MultKilled ℓ (fun A [IsDiscreteRep A] => gsEulerRatio S A ιr) := by
   intro T _ _ _ _ hT hl
-  exact ratio_shortExact_l' ℓ K S hS hSl ιr T hT ⟨1, by simpa using hl⟩
+  exact _root_.PositivityTheory.Lit1.GEN.W_multl.ratio_shortExact_l ℓ K S hS hSl ιr T hT ⟨1, by simpa using hl⟩
 
 theorem gs_posKilled (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (hS : S.Finite) (hSl : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

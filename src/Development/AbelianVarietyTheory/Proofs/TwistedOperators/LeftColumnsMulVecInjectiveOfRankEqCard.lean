@@ -74,15 +74,14 @@ theorem _root_.GlobalTheory.mulVec_firstCols_eq_zero_of_rank_eq_card :
     ext i j
     rw [Matrix.mul_apply]
     simp only [x', Q, Matrix.of_apply, Matrix.submatrix_apply, id, mul_ite, mul_one, mul_zero,
-      Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+      Finset.sum_ite_eq', Finset.mem_univ, if_true]
   have hP : x = x' * P := by
     ext i l
     obtain ⟨t, rfl⟩ := e.surjective l
     rcases t with t | t
     · rw [Matrix.mul_apply]
       simp only [x', P, Matrix.of_apply, Matrix.submatrix_apply, id, mul_ite, mul_one, mul_zero,
-        EmbeddingLike.apply_eq_iff_eq, Sum.inl.injEq, Finset.sum_ite_eq, Finset.sum_ite_eq',
-        Finset.mem_univ, if_true]
+        EmbeddingLike.apply_eq_iff_eq, Sum.inl.injEq, Finset.sum_ite_eq, Finset.mem_univ, if_true]
     · rw [Matrix.mul_apply]
       simp [x', P, hz]
   have hr : x'.rank = Fintype.card a := by

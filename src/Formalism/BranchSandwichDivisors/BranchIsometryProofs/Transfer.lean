@@ -141,9 +141,7 @@ theorem passageLat_of (hLC : LevelCompare) : PassageLat := by
       rw [← hrk0]
       have : muDef b X latticeAtBaseLevel * (rkK latticeAtBaseLevel : ℝ) = degD b X latticeAtBaseLevel := by unfold degD; ring
       rw [this]; exact hdeg0)).2
-  have e1 : (2 * (1 : ℝ) + 2) = 4 := by norm_num
-  have e2 : (2 * (1 : ℝ) + 21 / 2) = 25 / 2 := by norm_num
-  rw [e1, e2] at key
+  norm_num at key
   exact key
 
 namespace PrismTransfer
@@ -154,10 +152,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 theorem sigma_norm_sq {n : ℕ} (z : EuclideanSpace ℂ (Σ _ : Fin n, ι)) :
     ‖z‖ ^ 2 = ∑ i, ‖(WithLp.toLp 2 (fun j => z ⟨i, j⟩) : EuclideanSpace ℂ ι)‖ ^ 2 := by
-  rw [EuclideanSpace.norm_sq_eq, Fintype.sum_sigma]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [EuclideanSpace.norm_sq_eq]
-  try rfl
+  simp [EuclideanSpace.norm_sq_eq, Fintype.sum_sigma]
 
 theorem apply_le_of_norm_le (M : Matrix ι ι ℂ)
     (hM : ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin M)‖ ≤ 1)
@@ -233,10 +228,7 @@ theorem col_norm_le {n : ℕ} (M : Fin n → Matrix ι ι ℂ) (c : ℝ) (hc : 0
 theorem blockDiag_mul_inv {n : ℕ} (Y : Matrix ι ι ℂ) (hY : IsUnit Y.det) :
     Matrix.blockDiagonal' (fun _ : Fin n => Y) * Matrix.blockDiagonal' (fun _ : Fin n => Y⁻¹) = 1 := by
   rw [← Matrix.blockDiagonal'_mul]
-  have h : (fun _ : Fin n => Y * Y⁻¹) = fun _ : Fin n => (1 : Matrix ι ι ℂ) := by
-    funext _
-    exact Matrix.mul_nonsing_inv Y hY
-  rw [h]
+  simp only [Matrix.mul_nonsing_inv Y hY]
   exact Matrix.blockDiagonal'_one
 
 theorem blockDiag_det {n : ℕ} (Y : Matrix ι ι ℂ) (hY : IsUnit Y.det) :
@@ -248,12 +240,10 @@ theorem blockDiag_inv {n : ℕ} (Y : Matrix ι ι ℂ) (hY : IsUnit Y.det) :
 theorem mul_blockDiag_apply {n : ℕ} {κ : Type} (N : Matrix κ (Σ _ : Fin n, ι) ℂ) (Y : Matrix ι ι ℂ)
     (k : κ) (i : Fin n) (j : ι) :
     (N * Matrix.blockDiagonal' (fun _ : Fin n => Y)) k ⟨i, j⟩ = ∑ l, N k ⟨i, l⟩ * Y l j := by
-  rw [Matrix.mul_apply, Fintype.sum_sigma, Finset.sum_eq_single i]
+  rw [Matrix.mul_apply, Fintype.sum_sigma, Finset.sum_eq_single_of_mem i (Finset.mem_univ i)]
   · exact Finset.sum_congr rfl fun l _ => by rw [Matrix.blockDiagonal'_apply_eq]
   · intro b _ hb
     exact Finset.sum_eq_zero fun l _ => by rw [Matrix.blockDiagonal'_apply_ne _ _ _ hb, mul_zero]
-  · intro h
-    exact absurd (Finset.mem_univ i) h
 
 theorem blockDiag_mul_apply {n : ℕ} {κ : Type} (N : Matrix (Σ _ : Fin n, ι) κ ℂ) (Y : Matrix ι ι ℂ)
     (k : κ) (i : Fin n) (j : ι) :
@@ -262,8 +252,7 @@ theorem blockDiag_mul_apply {n : ℕ} {κ : Type} (N : Matrix (Σ _ : Fin n, ι)
   · exact Finset.sum_congr rfl fun l _ => by rw [Matrix.blockDiagonal'_apply_eq]
   · intro b _ hb
     exact Finset.sum_eq_zero fun l _ => by rw [Matrix.blockDiagonal'_apply_ne _ _ _ hb.symm, zero_mul]
-  · intro h
-    exact absurd (Finset.mem_univ i) h
+  · exact fun h => absurd (Finset.mem_univ i) h
 
 end Mat
 
@@ -383,12 +372,11 @@ theorem log_bound (G n : ℕ) (hG : 0 < G) (hn : 0 < n) :
       2 * Real.log ((G : ℝ) ^ 3 * Real.sqrt n) = 6 * Real.log G + Real.log n := by
   have hG1 : (1 : ℝ) ≤ G := by exact_mod_cast hG
   have hn1 : (1 : ℝ) ≤ n := by exact_mod_cast hn
-  have hG0 : (0 : ℝ) < G := by linarith
-  have hn0 : (0 : ℝ) < n := by linarith
+  have hG0 : (0 : ℝ) < G := by exact_mod_cast hG
+  have hn0 : (0 : ℝ) < n := by exact_mod_cast hn
   have h1 : (1 : ℝ) ≤ (G : ℝ) ^ 3 := one_le_pow₀ hG1
   have h2 : (1 : ℝ) ≤ Real.sqrt n := by
-    rw [show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]
-    exact Real.sqrt_le_sqrt hn1
+    simpa using Real.sqrt_le_sqrt hn1
   refine ⟨one_le_mul_of_one_le_of_one_le h1 h2, ?_⟩
   rw [Real.log_mul (pow_pos hG0 3).ne' (Real.sqrt_pos.mpr hn0).ne', Real.log_pow,
     Real.log_sqrt hn0.le]
@@ -419,7 +407,7 @@ theorem pi_ne_bot {n : ℕ} (hn : 0 < n) (A : Submodule (𝓞 K) V) (hA : A ≠ 
     by_cases hi : i = ⟨0, hn⟩
     · subst hi
       simpa using hxA
-    · simp [Pi.single_apply, hi]
+    · simp [hi]
   rw [h, Submodule.mem_bot] at hmem
   exact hx0 (by simpa using congrFun hmem ⟨0, hn⟩)
 
@@ -437,13 +425,10 @@ theorem colMap_map_le {n : ℕ} (G : ℕ) (xs : Fin n → V →ₗ[K] V) (A B : 
     (h : ∀ i, ∀ c ∈ B, ((G : 𝓞 K) ^ 3) • xs i c ∈ A) :
     B.map ((colMap ((G : K) ^ 3) xs).restrictScalars (𝓞 K)) ≤
       Submodule.pi Set.univ fun _ : Fin n => A := by
-  intro y hy
-  obtain ⟨c, hc, rfl⟩ := Submodule.mem_map.mp hy
+  rintro y ⟨c, hc, rfl⟩
   rw [Submodule.mem_pi]
   intro i _
-  change colMap ((G : K) ^ 3) xs c i ∈ A
-  rw [colMap_apply, ← PrismTransfer.pow_smul_eq]
-  exact h i c hc
+  simpa [colMap_apply, PrismTransfer.pow_smul_eq] using h i c hc
 
 theorem rowMap_injOn {n : ℕ} (G : ℕ) (hG : 0 < G) (x : Fin n → V →ₗ[K] V) (A : Submodule (𝓞 K) V)
     (h : ∀ a : Fin n → V, (∀ i, a i ∈ A) → ∑ i, x i (a i) = 0 → a = 0) :

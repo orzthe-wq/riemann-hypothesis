@@ -91,7 +91,7 @@ theorem mCoordIdeal_smul (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (z : (Σ k, ι 
     simp [mConeMap, φ, C_mul]
     ring
   ext f
-  simp only [mCoordIdeal, RingHom.mem_ker, AlgHom.coe_toRingHom, hcomp]
+  simp only [mCoordIdeal, RingHom.mem_ker, hcomp]
   constructor
   · intro h
     have h' := congrArg ψ h

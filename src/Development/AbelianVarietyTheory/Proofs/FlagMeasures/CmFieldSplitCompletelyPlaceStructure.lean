@@ -252,8 +252,6 @@ private theorem val_lemma_7 (K : Type) [Field K] [NumberField K] (p : ℕ) (hp :
   have hc : ((p : ℕ) : v.adicCompletion K) = (((p : ℕ) : K) : v.adicCompletion K) := by
     first
       | exact (map_natCast (algebraMap K (v.adicCompletion K)) p).symm
-      | norm_cast
-      | rfl
   rw [hc, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← map_natCast (algebraMap (𝓞 K) K) p,
     HeightOneSpectrum.valuation_of_algebraMap]
   have h0 : v.intValuation (p : 𝓞 K) ≠ 0 := v.intValuation_ne_zero _ (by exact_mod_cast hp.ne_zero)

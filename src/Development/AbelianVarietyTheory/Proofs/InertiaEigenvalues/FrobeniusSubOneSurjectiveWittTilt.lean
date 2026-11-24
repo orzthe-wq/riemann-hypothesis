@@ -137,7 +137,7 @@ open Ideal
 variable {p : ℕ} [Fact p.Prime]
 
 theorem isAdicComplete_OC : IsAdicComplete (span {(p : OC p)}) (OC p) := by
-  first | infer_instance | exact Formalism.Per.instIsAdicCompleteOCSpanSingletonSetCast _
+  first | infer_instance
 
 end Complete
 

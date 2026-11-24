@@ -237,7 +237,7 @@ theorem herm_one (n : ℕ) : IsHermND (sig L) (Jn L n) := by
   refine ⟨fun i j => ?_, by simp⟩
   by_cases h : i = j
   · subst h; simp
-  · simp [Matrix.one_apply, h, Ne.symm h]
+  · simp [h, Ne.symm h]
 
 theorem exists_finset_double_cosets_Umax (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) :
     ∃ T : Finset (Formalism.AUTREP.GAf L n), ∀ g : Formalism.AUTREP.GAf L n,

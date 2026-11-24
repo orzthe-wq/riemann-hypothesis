@@ -63,7 +63,7 @@ private lemma exists_int_multiple (x : Matrix (Fin n) (Fin n) E) :
     intro i j
     have h1 := hs (x i j) (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩)
     have h2 : m • x i j = (m : ℚ) • x i j := by
-      simp [zsmul_eq_mul, Algebra.smul_def]
+      simp [Algebra.smul_def]
     rw [h2] at h1
     exact ⟨IsIntegralClosure.mk' (𝓞 E) _ h1, IsIntegralClosure.algebraMap_mk' _ _ _⟩
   choose y hy using h

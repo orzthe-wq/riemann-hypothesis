@@ -2,8 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.TwistEmptyOfChartsEx
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralAtOfAdelicIntegralAtStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralAtOfComponentZeroUnderPrimeStatement
+public import Formalism.LocalToGlobal.Columns.Adelic
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralAtOfAdelicIntegralAt
+public import Formalism.LocalToGlobal.Columns.RecLevel
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IntegralAtOfComponentZeroUnderPrime
 public import Formalism.LocalToGlobal.Columns.QthExistsBound
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -60,13 +62,6 @@ open scoped TensorProduct
 section Core
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
-
-theorem intAtA_of_prV (P : HeightOneSpectrum (𝓞 E)) (z : E ⊗[F] FiniteAdeleRing (𝓞 F) F)
-    (h : ∀ v : HeightOneSpectrum (𝓞 F), IsOver v P → prV (E := E) v z = 0) : IntAtA (F := F) P z :=
-  GlobalTheory.T.integralAt_of_component_zero_under_prime P z h
-
-theorem intAt_of_intAtA (P : HeightOneSpectrum (𝓞 E)) (x : E) (h : IntAtA (F := F) P (iA F E x)) : IntAt P x :=
-  GlobalTheory.T.integralAt_of_adelic_integralAt P x h
 
 theorem intAtA_of_intAt (P : HeightOneSpectrum (𝓞 E)) (x : E) (h : IntAt P x) : IntAtA (F := F) P (iA F E x) := by
   obtain ⟨r, s, hs, e⟩ := h
@@ -142,7 +137,7 @@ theorem frame_core [StarRing E] (Q : HeightOneSpectrum (𝓞 E)) (n : ℕ) (hn :
       ring
     rw [e2]
     refine intAtA_add (intAtA_add (intAtA_add ?_ (intAtA_mul (intAtA_pow Q hd m) (hB i j))) (intAtA_neg Q (intAtA_mul (intAtA_pow Q hd m) (hA i j)))) (intAtA_neg Q (intAtA_sum _ _ fun l _ => intAtA_mul (hA i l) (hm l j)))
-    refine intAtA_of_prV Q _ fun v hvv => ?_
+    refine _root_.GlobalTheory.VanishAwayInt.intAtA_of_prV_eq_zero Q _ fun v hvv => ?_
 
     rw [map_mul, map_mul, Matrix.mul_apply, map_sum]
     simp [hC v hvv]
@@ -176,7 +171,7 @@ theorem frame_core [StarRing E] (Q : HeightOneSpectrum (𝓞 E)) (n : ℕ) (hn :
           linarith
   have hfin := desc (J + 1) hbig a b
   show IntAt Q ((((qOf Q : ℕ) : E) ^ n)⁻¹ * Mm a b)
-  refine intAt_of_intAtA (F := F) Q _ ?_
+  refine _root_.GlobalTheory.RatInt.intAt_of_intAtA (F := F) Q _ ?_
   have e3 : iA F E ((((qOf Q : ℕ) : E) ^ n)⁻¹ * Mm a b) = qi * Mh a b := by rw [map_mul, hMh, Matrix.map_apply]
   rw [e3]
   exact hfin

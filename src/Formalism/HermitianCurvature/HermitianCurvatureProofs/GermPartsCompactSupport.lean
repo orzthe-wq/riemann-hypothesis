@@ -331,6 +331,3 @@ end
 
 end Formalism.FourierDecayAlt.P.GermFibreKernels
 
-theorem Formalism.FourierDecayAlt.P.germ_parts_compact_support :
-    Formalism.FourierDecayAlt.P.GermFibreKernels.KerContB → Formalism.FourierDecayAlt.P.GermFibreKernels.GermRateB → Formalism.FourierDecayAlt.P5.ThmPActualCpt → Formalism.FourierDecayAlt.P.PBASM.GermPartsC :=
-  Formalism.FourierDecayAlt.P.GermFibreKernels.germPartsC_of

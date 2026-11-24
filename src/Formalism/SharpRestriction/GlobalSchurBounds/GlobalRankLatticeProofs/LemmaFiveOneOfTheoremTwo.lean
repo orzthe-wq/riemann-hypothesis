@@ -110,9 +110,7 @@ theorem piN_eq_range (n g : ℕ) : piN n g = ∏ i ∈ range n, (1 - ((g : ℝ)�
   induction n with
   | zero => simp [piN]
   | succ n ih =>
-    rw [piN_succ, ih, Finset.prod_range_succ]
-    congr 1
-    rw [inv_pow]
+    rw [piN_succ, ih, Finset.prod_range_succ, inv_pow]
 
 theorem piN_split (k n g : ℕ) : piN (k + n) g = piN k g * ∏ j ∈ Ioc k (k + n), (1 - ((g : ℝ) ^ j)⁻¹) := by
   induction n with
@@ -122,12 +120,9 @@ theorem piN_split (k n g : ℕ) : piN (k + n) g = piN k g * ∏ j ∈ Ioc k (k +
 
 theorem one_sub_inv_pow_pos (g : ℕ) (hg : 2 ≤ g) (j : ℕ) (hj : 1 ≤ j) : 0 < 1 - ((g : ℝ) ^ j)⁻¹ := by
   have hg1 : (1 : ℝ) < (g : ℝ) := by exact_mod_cast (show 1 < g by omega)
-  have h1 : (1 : ℝ) < (g : ℝ) ^ j := one_lt_pow₀ hg1 (by omega)
-  have h2 : ((g : ℝ) ^ j)⁻¹ < 1 := inv_lt_one_of_one_lt₀ h1
-  linarith
+  exact sub_pos.mpr (inv_lt_one_of_one_lt₀ (one_lt_pow₀ hg1 (by omega)))
 
 theorem piN_pos (n g : ℕ) (hg : 2 ≤ g) : 0 < piN n g := by
-  unfold piN
   exact Finset.prod_pos fun i hi => one_sub_inv_pow_pos g hg i (Finset.mem_Icc.mp hi).1
 
 theorem partial_product_bounds (y : ℝ) (hy0 : 0 ≤ y) (hy : y ≤ 1 / 2) (k n : ℕ) :
@@ -246,9 +241,8 @@ theorem local_index_formulas_and_bounds (D : D7) : LocalIndexFormulasAndBounds D
       rw [card_GL_subtype_eq_card_matrix _ det_eq_one_of_unitriangular]
       have := Formalism.LogVandermondeBounds.StandardLattice.cardUnitriangular (ZMod (D.host.g i)) D.R.k
       rw [hc] at this
-      have h3 : Nat.card {A : Matrix (Fin D.R.k) (Fin D.R.k) (ZMod (D.host.g i)) // IsUnitri A} =
-          D.host.g i ^ (D.R.k * (D.R.k - 1) / 2) := this
-      rw [h3, Nat.card_eq_fintype_card]
+      rw [show Nat.card {A : Matrix (Fin D.R.k) (Fin D.R.k) (ZMod (D.host.g i)) // IsUnitri A} =
+          D.host.g i ^ (D.R.k * (D.R.k - 1) / 2) from this, Nat.card_eq_fintype_card]
       push_cast
       rfl
     have e2 : idxRowLoc (D.host.g i) D.R.k D.R.m =
@@ -293,7 +287,7 @@ theorem indices_four_three_of_indices_four_two (D : D7) (h : LocalIndexFormulasA
   refine ⟨hPi, hSig, ?_⟩
   obtain ⟨t, ht⟩ := D.R.m_even
   have hm2 := D.R.two_le_m
-  obtain ⟨A, hA1, hA2, hA3⟩ := triangular_number_identities D.R.k
+  obtain ⟨A, -, hA2, hA3⟩ := triangular_number_identities D.R.k
   have hE : (D.R.r ^ 2 + 3 * D.R.k + 1 + 2 * D.R.rS) / 2 =
       D.R.k * (D.R.k + 1) / 2 + D.R.m * (2 * D.R.k + D.R.m - 1) / 2 := by
     obtain ⟨s, rfl⟩ : ∃ s, t = s + 1 := ⟨t - 1, by omega⟩
@@ -306,12 +300,10 @@ theorem indices_four_three_of_indices_four_two (D : D7) (h : LocalIndexFormulasA
     have e3 : D.R.m * (2 * D.R.k + D.R.m - 1) / 2 =
         2 * (s * D.R.k) + 2 * (s * s) + 3 * s + 2 * D.R.k + 1 := by
       rw [ht]
-      have h4 : (s + 1 + (s + 1)) * (2 * D.R.k + (s + 1 + (s + 1)) - 1) =
-          2 * (2 * (s * D.R.k) + 2 * (s * s) + 3 * s + 2 * D.R.k + 1) := by
-        have h5 : 2 * D.R.k + (s + 1 + (s + 1)) - 1 = 2 * D.R.k + 2 * s + 1 := by omega
-        rw [h5]
-        ring
-      rw [h4]
+      have h5 : 2 * D.R.k + (s + 1 + (s + 1)) - 1 = 2 * D.R.k + 2 * s + 1 := by omega
+      rw [h5]
+      rw [show (s + 1 + (s + 1)) * (2 * D.R.k + 2 * s + 1) =
+          2 * (2 * (s * D.R.k) + 2 * (s * s) + 3 * s + 2 * D.R.k + 1) by ring]
       omega
     rw [e1, e2, (index_exponent_identities D.R.k s A hA3).2, e3, hA2]
     omega

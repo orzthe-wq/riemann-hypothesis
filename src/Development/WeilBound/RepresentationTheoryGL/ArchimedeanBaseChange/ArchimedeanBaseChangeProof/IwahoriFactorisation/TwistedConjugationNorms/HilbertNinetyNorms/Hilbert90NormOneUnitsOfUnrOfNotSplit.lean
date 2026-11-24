@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmFieldStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormOneUnitHilbertNinetyStatement
 import GroundTheory.GlobalFields.CompletionAtPlace.Integers
 import Mathlib.Algebra.Order.Floor.Extended
@@ -59,7 +59,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 theorem norm_one_eq_unit_div_conj (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) (u : w.adicCompletion E) (hu : u * cj w u = 1) :
     ∃ z, Valued.v z = 1 ∧ u * cj w z = z := by
-  obtain ⟨-, hcc, hv, hns, -⟩ := GlobalTheory.T.placeConjugation_properties_cmField E hU w
+  obtain ⟨-, hcc, hv, hns, -⟩ := _root_.GlobalTheory.ConjAtPlace.main E hU w
   obtain ⟨-, ⟨ϖ, q, hUI, -⟩, -⟩ := hns hw
   obtain ⟨-, -, hϖc, hϖv, ⟨x, -, hx⟩, -⟩ := hUI
   have key : ∀ y, u * cj w (y + u * cj w y) = y + u * cj w y := by

@@ -4,51 +4,9 @@ public import Formalism.SharpRestriction.GrowthBounds.LatticeSystems
 public import Formalism.SharpRestriction.GrowthBounds.ObjBridge
 import Formalism.GradedWeylDivisibility.FinalD
 public import Formalism.LocalToGlobal.GroupLattices.FockModels.MkP
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -148,9 +106,8 @@ theorem comap_span_coe {O Kf X : Type} [CommRing O] [Field Kf] [Algebra O Kf] [A
     [Module O X] [IsScalarTower O Kf X] {I : Type} (Vs : Submodule Kf X) (f : I → Vs) :
     (Submodule.span O (Set.range fun i => (f i : X))).comap (Vs.subtype.restrictScalars O) =
       Submodule.span O (Set.range f) := by
-  have h : (Set.range fun i => (f i : X)) = (Vs.subtype.restrictScalars O) '' Set.range f := by
-    ext y
-    simp
+  have h : (Set.range fun i => (f i : X)) = (Vs.subtype.restrictScalars O) '' Set.range f :=
+    Set.range_comp (Vs.subtype.restrictScalars O) f
   rw [h, ← Submodule.map_span, Submodule.comap_map_eq_of_injective]
   exact Subtype.val_injective
 
@@ -200,7 +157,7 @@ theorem dualLat_span {O Kf V : Type} [CommRing O] [Field Kf] [Algebra O Kf] [Add
           Finsupp.single_eq_same, map_one, smul_eq_mul, smul_eq_mul, mul_one, inv_mul_cancel₀ (ha k)]
       · refine ⟨0, ?_⟩
         rw [LinearMap.smul_apply, map_smul, Module.Basis.coord_apply, Module.Basis.repr_self,
-          Finsupp.single_eq_of_ne (by first | exact hik | exact Ne.symm hik), map_zero, smul_zero, smul_zero]
+          Finsupp.single_eq_of_ne (by first | exact Ne.symm hik), map_zero, smul_zero, smul_zero]
     | zero => exact ⟨0, by simp⟩
     | add u v _ _ hu hv =>
       obtain ⟨a1, h1⟩ := hu
@@ -283,12 +240,9 @@ theorem w_ne (h : HidaSetting p n' W Qq O Kf ι σ j w) : algebraMap O Kf w ≠ 
   have hpK : (p : Kf) = algebraMap O Kf w ^ 2 := by rw [← map_pow, h.w_sq, map_natCast]
   have hpW : (p : W) ≠ 0 := h.p_unif.ne_zero
   haveI := h.frac_alt
-  have hpQ : (p : Qq) ≠ 0 := by
-    rw [← map_natCast (algebraMap W Qq)]
-    exact (map_ne_zero_iff _ (IsFractionRing.injective W Qq)).2 hpW
   have hpK' : (p : Kf) ≠ 0 := by
-    rw [← map_natCast ι]
-    exact (map_ne_zero ι).2 hpQ
+    rw [← map_natCast ι, ← map_natCast (algebraMap W Qq)]
+    exact (map_ne_zero ι).2 ((map_ne_zero_iff _ (IsFractionRing.injective W Qq)).2 hpW)
   exact hpK' (by rw [hpK, h0]; simp)
 
 theorem p_eq (h : HidaSetting p n' W Qq O Kf ι σ j w) : (p : Kf) = algebraMap O Kf w ^ 2 := by
@@ -304,15 +258,14 @@ theorem edgeLat (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (e : Edge
   lb_edgeLat_of_basis (mkG h m r (fun _ _ => 0) (fun _ _ _ _ => le_rfl)) (0 : Fin 1) (restEdgeBasis _ _) e he
 
 theorem lb_D_one {K : Type} [Field K] (k r : ℕ) : lb_D k r (1 : K) = 1 := by
-  unfold lb_D
-  simp
+  simp [lb_D]
 
 theorem lb_D_sq {K : Type} [Field K] (k r : ℕ) (c : K) : lb_D k r c * lb_D k r c = lb_D k r (c ^ 2) := by
   unfold lb_D
   rw [Matrix.diagonal_mul_diagonal]
   congr 1
   funext a
-  split_ifs <;> simp [sq, mul_inv]
+  split_ifs <;> simp [sq]
 
 theorem elementary_divisor_basis (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (lam0 : Fin n' → Fin (m + 1) → ℤ)
     (hd : IsDominant lam0) (e : Edge W Qq (m + 1)) (he : IsEdge p n' r e) :

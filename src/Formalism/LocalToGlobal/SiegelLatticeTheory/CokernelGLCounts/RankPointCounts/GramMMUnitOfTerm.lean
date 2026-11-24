@@ -6,44 +6,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankP
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LsDatumAGram
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LsDatumATools
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.XLeSpanRight
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -61,9 +23,6 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
 
-theorem hR_add (x y z : V) : H.h x (y + z) = H.h x y + H.h x z := by
-  rw [H.h_herm (y + z) x, H.h_add_left, map_add (f := _), ← H.h_herm y x, ← H.h_herm z x]
-
 theorem hR_smul (c : E) (x y : V) : H.h x (c • y) = M.L.cj c * H.h x y := by
   rw [H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm y x]
 
@@ -72,10 +31,6 @@ theorem hR_zero (x : V) : H.h x 0 = 0 := by
     have h1 := H.h_smul_left 0 0 x
     rwa [zero_smul, zero_mul] at h1
   rw [H.h_herm 0 x, h0, map_zero]
-
-theorem hR_sub (x y z : V) : H.h x (y - z) = H.h x y - H.h x z := by
-  rw [sub_eq_add_neg, ← neg_one_smul E z, hR_add, hR_smul, map_neg, map_one]
-  ring
 
 theorem q_ne (g : SplitG M.L) : (g.q : F) ≠ 0 := fun h => g.q_irr.ne_zero (Subtype.ext h)
 
@@ -158,7 +113,7 @@ theorem mem_MMsharp_of (t : Term V M r) {u : V} (hu : u ∈ Submodule.span E (Se
     rw [hR_zero]
     exact M.L.O.zero_mem
   | add a b _ _ ha hb =>
-    rw [hR_add]
+    rw [_root_.PI.LocHerm.Glue.h_add_right]
     exact M.L.O.add_mem ha hb
   | smul c x _ hx =>
     rw [Subring.smul_def, hR_smul]
@@ -208,7 +163,7 @@ theorem iota_fst_of (hM : M.OK) (g : SplitG M.L) (hs : M.split = some g) (t : Te
       simp only [d, Sum.elim_inl] at this
       rw [← this, MMfam_G H g hs, Sum.elim_inl]
     have hu2 : H.h u (H.MMfam t (Sum.inr j.castSucc)) = 0 := hud (Sum.inr j.castSucc)
-    rw [f'_eq_G H g hs t, h_sub_left, H.h_smul_left, hR_add, hR_add, hR_smul, hR_smul, H.h_add_left,
+    rw [f'_eq_G H g hs t, h_sub_left, H.h_smul_left, _root_.PI.LocHerm.Glue.h_add_right, _root_.PI.LocHerm.Glue.h_add_right, hR_smul, hR_smul, H.h_add_left,
       H.h_add_left, hxf, hwf, hwy, hu1, hu2, cj_q]
     ring
   · rw [sub_sub_cancel]
@@ -245,7 +200,7 @@ theorem iota_snd_of (hM : M.OK) (g : SplitG M.L) (hs : M.split = some g) (t : Te
     have hxf2 : H.h x' (t.f j.castSucc) = - (c * H.h x' (H.MMfam t (Sum.inr j.castSucc))) := by
       have e := f'_eq_G H g hs t j.castSucc
       have : t.f j.castSucc = t.f' j.castSucc - c • H.MMfam t (Sum.inr j.castSucc) := by rw [e]; abel
-      rw [this, hR_sub, hR_smul, hxf, cj_q]
+      rw [this, _root_.PI.LocHerm.Glue.h_sub_right, hR_smul, hxf, cj_q]
       ring
     rw [H.h_add_left, H.h_smul_left, H.h_add_left, hxf2, hwf, hu1]
     ring

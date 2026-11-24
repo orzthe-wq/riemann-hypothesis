@@ -55,10 +55,6 @@ open Classical
 
 namespace GlobalTheory.UTraitPt
 
-theorem spMap_comp_eq {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (g : B →+* D) :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp only [spMap, ← Spec.map_comp]; rfl
-
 theorem exists_embed_padicAlgCl (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] K] (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     (f : integralClosure ℤ_[p] K →+* W) (fK : FractionRing (integralClosure ℤ_[p] K) →+* FractionRing W)
@@ -166,7 +162,7 @@ theorem exists_lift_i {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   let ψ : c.F →+* F := IsFractionRing.lift hφi
   have hψ : ψ.comp C.b = φ := RingHom.ext fun a => IsFractionRing.lift_algebraMap hφi a
   have hsq : g ≫ C.z = spMap ψ ≫ spMap C.b := by
-    rw [← hφ, ← hψ]; exact spMap_comp_eq _ _
+    rw [← hφ, ← hψ]; exact _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp _ _
   let g₁ : Sp F ⟶ pullback C.z (spMap C.b) := pullback.lift g (spMap ψ) hsq
   have hr : Set.range g₁ ⊆ Set.range C.iF := by
     rintro _ ⟨w, rfl⟩
@@ -214,7 +210,7 @@ theorem exists_uTrait_of_classicalPoint : ∀ (E : Type) [Field E] [NumberField 
     rw [← hy₀, ← Category.assoc, ← Category.assoc]
     congr 1
     show spMap (OO p).subtype ≫ spMap j₀ = spMap e₀ ≫ spMap (algebraMap V₀ (FractionRing V₀))
-    rw [← spMap_comp_eq, ← spMap_comp_eq, he₀]
+    rw [← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, he₀]
   let gen₀ : Sp (FractionRing V₀) ⟶ C.Z := jK V₀ ≫ y₀ ≫ πY ≫ X₁.π
   have hgen : Set.range gen₀ ⊆ Set.range C.i := by
     rintro _ ⟨w, rfl⟩
@@ -232,10 +228,10 @@ theorem exists_uTrait_of_classicalPoint : ∀ (E : Type) [Field E] [NumberField 
   obtain ⟨ι, j, hball, hj, hloc, hjf⟩ := exists_embed_padicAlgCl p K T.V f fK hfin hfK
   refine ⟨T, ι, j, spMap f ≫ y₀, hball, hj, hloc, ?_, ?_⟩
   · have hjf' : j.comp f = j₀ := RingHom.ext fun a => Subtype.ext ((hjf a).trans (hj₀ a).symm)
-    rw [← Category.assoc, ← spMap_comp_eq, hjf', hy₀]
+    rw [← Category.assoc, ← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, hjf', hy₀]
   · have hc : jK T.V ≫ spMap f = spMap fK ≫ jK V₀ := by
       show spMap (algebraMap T.V (FractionRing T.V)) ≫ spMap f = spMap fK ≫ spMap (algebraMap V₀ (FractionRing V₀))
-      rw [← spMap_comp_eq, ← spMap_comp_eq]
+      rw [← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]
       congr 1
       exact RingHom.ext fun a => (hfK a).symm
     rw [hTy, Category.assoc (spMap fK), hyK]

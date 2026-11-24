@@ -213,7 +213,7 @@ theorem secFn_mem (h : u.IsAH Hm χ) (hc : u.ex c = D.c α) (s : SecSpace D j α
     secFn D u j α c s ∈ thetaShift u Hm χ j c := by
   refine ⟨?_, fun l z => ?_⟩
   · have := differentiable_secVal D.P.isLB s (𝟙 _) (q := id) differentiable_id (z := fun z => ![z, z + c, c, 0])
-      (fun k => by fin_cases k <;> simp <;> fun_prop) (fun w => by rw [id, Category.comp_id]; exact isLift_fam hc w)
+      (fun k => by fin_cases k <;> simp) (fun w => by rw [id, Category.comp_id]; exact isLift_fam hc w)
     simp only [id, Category.comp_id] at this
     exact this
   · have e : ![z + l, z + l + c, c, 0] = fun k => ![z, z + c, c, 0] k + ((![l, l, 0, 0] : Fin 4 → u.Λ) k : Fin g → ℂ) := by
@@ -273,7 +273,7 @@ theorem exists_secFn_eq (h : u.IsAH Hm χ) (hj : j ≠ 0) (hθ : ∀ θ, u.IsThe
       (z := fun z => Sum.elim ![z, z + j • b, j • b, 0] fun _ => z + b)
       (by
         rintro (k | k)
-        · fin_cases k <;> simp <;> fun_prop
+        · fin_cases k <;> simp
         · simp)
       (fun w => by rw [id, Category.comp_id]; exact hz w)
     simpa only [id, Category.comp_id, ← hV] using this
@@ -292,7 +292,7 @@ theorem exists_secFn_eq (h : u.IsAH Hm χ) (hj : j ≠ 0) (hθ : ∀ θ, u.IsThe
     have n := ahFactor_ne_zero h ⟨l, hl⟩ w
     simp only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, Fin.prod_univ_four,
       Out.DegPre.famε, Matrix.cons_val, ahFactor_zero hL h, ahFactor_translate, exp_nsmul,
-      zpow_one, one_zpow, _root_.mul_one, zpow_sub₀ n, zpow_neg, zpow_natCast, mul_pow]
+      zpow_one, _root_.mul_one, zpow_sub₀ n, zpow_neg, zpow_natCast, mul_pow]
     field_simp) z 0
   have hne : V 0 ≠ 0 := (hV 0).symm ▸ genVal_ne_zero hL t (hz 0)
   obtain ⟨s, hs⟩ := hθ _ (isThetaFn_sub ((thetaShift u Hm χ j (j • b)).smul_mem (V 0)⁻¹ hm))

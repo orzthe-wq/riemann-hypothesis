@@ -70,4 +70,4 @@ theorem _root_.GlobalTheory.T.exists_rational_darboux_orientedPair_transport : �
         ∀ (Φ : (Fin S.rank × Fin d → AF D.host.F) → ℂ) (f : WO S X → ℂ),
           IsDatum M ψ cS Φ f ↔
             Φ ∈ GlobalTheory.WeilM.schA D.host.F (Fin S.rank × Fin d) ∧ GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ = f := by
-  first | exact @GlobalTheory.SquareAgree.exists_darboux_transport | exact GlobalTheory.SquareAgree.exists_darboux_transport | (intros; apply GlobalTheory.SquareAgree.exists_darboux_transport <;> assumption)
+  first | exact @GlobalTheory.SquareAgree.exists_darboux_transport

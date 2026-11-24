@@ -422,7 +422,7 @@ theorem partR_ne_bot (Y : Read (A3 := A3) R F X0) {i : Fin D.R.m} {σ : D.what�
 abbrev levTriv (R : RealDat D A3.A Ks) (i : Fin D.R.m) : Subgroup (GA D (Wc D i)) :=
   levG (Wc D i) (R.βW i) (R.datWp i R.triv)
 
-theorem rank_Wc (i : Fin D.R.m) : (Wc D i).rank = D.R.r := D.sp.W_rank _ (Nat.le_add_left _ _) i.2
+alias rank_Wc := _root_.Formalism.IndefR.FWT.rank_Wc
 
 theorem exists_local (hL : R.toLevCh.Is A3.A.μ0) (i : Fin D.R.m) {P : HeightOneSpectrum (𝓞 D.host.E)}
     (hP : ∀ PP ∈ R.Pg, PP ≠ P ∧ ¬ Lev.IsConjPl PP P) {k : ℕ} (hk : k ≤ D.R.r) {α : GA D (Wc D i)}

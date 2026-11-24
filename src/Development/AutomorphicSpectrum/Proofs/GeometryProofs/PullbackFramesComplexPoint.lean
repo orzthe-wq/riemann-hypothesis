@@ -1,13 +1,15 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsValFam
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentSpecializationTangentCombStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComponentSpecializationTangentComb
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CoordDegreeBoundOfFlag
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenMapStalkMap
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiChangeOfBasisDetStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiNeZeroOfLinIndepStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombIdentityMatrixStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombMatrixMulStatement
+public import Mathlib.LinearAlgebra.ExteriorPower.Basic
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiChangeOfBasisDet
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IotaMultiNeZeroOfLinIndep
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombIdentityMatrix
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsCombMatrixMul
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -103,8 +105,8 @@ theorem frame_det {P : Type} [CommRing P] {act : OAct P G} {σ : P →+* F} {n :
   have : ∀ i, ∃ cf, IsComb cf v' (v i) := fun i => (hv'.2 _ (hv.1 i)).exists
   choose C hC using this
   have ht : ∀ i, IsTanAt G x (v i) := fun i => (hv.1 i).1
-  have h1 := GlobalTheory.T.is_comb_matrix_mul S G F x n n n v v' v (Matrix.of C) A ht hA hC
-  have h2 := GlobalTheory.T.is_comb_identity_matrix S G F x n v ht
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.CombMul.isComb_mul S G F x n n n v v' v (Matrix.of C) A ht hA hC
+  have h2 := _root_.GlobalTheory.CompanionTheory.Ar.Flat.isComb_unit_row S G F x n v ht
   have h3 : Matrix.of C * A = 1 := by
     ext i j
     have := (hv.2 _ (hv.1 i)).unique (h1 i) (h2 i)
@@ -145,14 +147,14 @@ theorem expand (Z : CptOver Y U) {F : Type} [Field F] {y : Sp F ⟶ Xo.XF c}
     rw [← hP i]
     rfl
   have hdet : t = Pm.det := by
-    have h1 := GlobalTheory.T.iota_multi_change_of_basis_det Z.Ω Z.V n c₀ Pm
+    have h1 := _root_.GlobalTheory.CompanionTheory.Ar.Lat.wedge_matrix_mul_family Z.Ω Z.V n c₀ Pm
     rw [← hb', hw] at h1
     have h2 : (t - Pm.det) • exteriorPower.ιMulti Z.Ω n c₀ = 0 := by
       rw [sub_smul, h1, sub_self]
-    exact sub_eq_zero.1 ((smul_eq_zero.1 h2).resolve_right (GlobalTheory.T.iota_multi_ne_zero_of_lin_indep Z.Ω Z.V n c₀ hc.1))
+    exact sub_eq_zero.1 ((smul_eq_zero.1 h2).resolve_right (_root_.GlobalTheory.CompanionTheory.Exterior.ιMulti_ne_zero_of_linearIndependent Z.Ω Z.V n c₀ hc.1))
   have hcomb : ∀ i, IsComb (Matrix.of A i) v₀ (v i) := fun i => by
     obtain ⟨w, hw'⟩ := exists_comb (Matrix.of A i) v₀
-    obtain ⟨w', hw₁, hw₂⟩ := GlobalTheory.T.component_specialization_tangent_comb E H D l Xo c O β Y U Z F y n c₀ v₀ (Pm i) (Matrix.of A i) w h h₀ (hA i) hw'
+    obtain ⟨w', hw₁, hw₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.Rep.valFam_sum_comb E H D l Xo c O β Y U Z F y n c₀ v₀ (Pm i) (Matrix.of A i) w h h₀ (hA i) hw'
     obtain ⟨v', hv₁, hv₂⟩ := h₁ i
     have e : ∑ j, Pm i j • c₀ j = b₁ i := by rw [hb']
     rw [e] at hw₁

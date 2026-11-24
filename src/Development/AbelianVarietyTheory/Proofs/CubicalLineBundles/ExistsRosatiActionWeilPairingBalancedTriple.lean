@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.CMLattices.LamLetters
 public import Development.AbelianVarietyTheory.Definitions.CMLattices.IsDiffOf
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CommutatorPairingsEqOfCubeLBPairingIsoStatement
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CommutatorPairingsEqOfCubeLBPairingIso
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RingActIffOAct
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RosatiAdjIffLamEq
 import Mathlib.Algebra.Order.Floor.Extended
@@ -68,7 +68,7 @@ theorem exists_oAct_rosatiConj : Out.Laws → ∀ (E : Type) [Field E] [NumberFi
     | succ n ih => rw [pow_succ, ← ih]; rfl
   have hu : toUnit Tb ≫ η[T.pol.A] = (1 : Tb ⟶ T.pol.A) := rfl
   rw [hp, hu] at hx hz
-  have := GlobalTheory.T.commutatorPairings_eq_of_cubeLBPairingIso hL (𝓞 K) T.pol T.pol T.pol T.pol (ra.act a) (𝟙 _) (𝟙 _) (ra.act (star a)) (ra.hom a)
+  have := _root_.GlobalTheory.PairingScheme.weilIs_iff_of_lamEq hL (𝓞 K) T.pol T.pol T.pol T.pol (ra.act a) (𝟙 _) (𝟙 _) (ra.act (star a)) (ra.hom a)
     inferInstance inferInstance (ra.hom _) (hlam a) Tb k x z c hk hx hz
   simpa using this
 

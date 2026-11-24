@@ -4,11 +4,13 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Exi
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PoincareDeRhamDuality
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianHodgeDeRham
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamPoincareDualityOfCubeDualStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineDeRhamAbelianStructureOfStatementsStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDeRhamPoincareDualityOfCubeDual
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianDeRhamStructure
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.BijectiveCechDeRhamComparisonDegreeOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineDeRhamAbelianStructureOfStatements
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineSmoothLiftOfRelations
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullOverOneEqZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigidOfFreeOfCrystallineDeRham
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PullOverOneEqZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,12 +58,12 @@ theorem abelianDeRham_of_hodge_cube_dual_poincare :
   by
     intro hH hC hD hP
     obtain ⟨⟨hfree, hhodge, hbc⟩, hcrys⟩ :=
-      GlobalTheory.T.crystallineDeRham_abelianStructure_of_statements
+      _root_.GlobalTheory.Published.abelianDeRhamStructure_crystallineDeRham_of_hypotheses
         GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations hH
     have hF : GlobalTheory.Published.AbelianDeRham.Free :=
       GlobalTheory.AbelianPrim.abelianDeRham_free hfree
     exact ⟨hF, hhodge, hbc,
       GlobalTheory.Published.AbelianDeRham.rigid_of_free_of_crystallineDeRham hF hcrys,
-      GlobalTheory.T.abelianDeRham_poincareDuality_of_cube_dual hC hD hP hF⟩
+      _root_.GlobalTheory.CubeDual.abelianDeRham_duality hC hD hP hF⟩
 
 end GlobalTheory

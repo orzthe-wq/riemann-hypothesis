@@ -73,19 +73,13 @@ theorem hermS_facts : ∀ (D : D7) (p : ℕ) (e : AE D), LocallyCompactSpace (he
     show SecondCountableTopology (Fin p → Fin p → AE D) from inferInstance
   haveI : BorelSpace (Formalism.IndefR.Datum.Mx D p p) := by
     first
-    | exact show BorelSpace (Fin p → Fin p → AE D) from inferInstance
     | exact ⟨rfl⟩
-    | exact Matrix.borelSpace
   haveI : SecondCountableTopology (hermA D p) := by
     first
     | exact Topology.IsInducing.subtypeVal.secondCountableTopology
-    | exact Topology.IsEmbedding.subtypeVal.secondCountableTopology
-    | exact show SecondCountableTopology ((hermA D p : Set (Formalism.IndefR.Datum.Mx D p p))) from inferInstance
   haveI : SecondCountableTopology (hermS D p e) := by
     first
     | exact Topology.IsInducing.subtypeVal.secondCountableTopology
-    | exact Topology.IsEmbedding.subtypeVal.secondCountableTopology
-    | exact show SecondCountableTopology ((hermS D p e : Set (hermA D p))) from inferInstance
   haveI : LocallyCompactSpace (hermA D p) := hA.isClosedEmbedding_subtypeVal.locallyCompactSpace
   exact ⟨hS.isClosedEmbedding_subtypeVal.locallyCompactSpace, inferInstance, inferInstance, inferInstance,
     inferInstance⟩

@@ -152,7 +152,7 @@ theorem summable_wt : Summable wt := by
   refine Summable.of_nonneg_of_le wt_nonneg (fun m => ?_) (hA.add hB)
   by_cases hm : m = 0
   · subst hm
-    simp [wt, Real.zero_rpow]
+    simp [wt]
   · simp only [hm, if_false, add_zero]
     have hm1 : (1 : ℝ) ≤ |(m : ℝ)| := by
       have : (1 : ℤ) ≤ |m| := Int.one_le_abs hm

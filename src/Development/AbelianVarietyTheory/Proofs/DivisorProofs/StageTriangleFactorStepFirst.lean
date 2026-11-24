@@ -148,15 +148,6 @@ theorem isGood_reG {B : Base F E} {a a' : ℕ} {Γ : Geo σ a a'} (g : Γ.IsGood
   ⟨g.lt, g.even, g.kappa, g.eBig, g.aBig, hV, hV', hZ, ⟨g.hM.rat, g.hM.vac, g.hM.std, g.hM.haar, g.hM.dom⟩,
     ⟨g.hM'.rat, g.hM'.vac, g.hM'.std, g.hM'.haar, g.hM'.dom⟩⟩
 
-theorem resEtaPow_quot {R K' : Type} [CommRing R] [CommRing K'] [Algebra R K'] {K : Subgroup Rˣ}
-    {χ χ' : K'ˣ →* Circle} {n m : ℕ} (h : GlobalTheory.WeilM.ResEtaPow K χ n) (h' : GlobalTheory.WeilM.ResEtaPow K χ' m) :
-    GlobalTheory.WeilM.ResEtaPow K (χ / χ') (n + m) := by
-  intro a
-  rw [MonoidHom.div_apply, Circle.coe_div, h a, h' a]
-  split_ifs
-  · simp
-  · rw [div_eq_mul_inv, ← inv_pow, inv_neg, inv_one, ← pow_add]
-
 theorem stepAlpha_cast {e₁ e₂ s : ℤˣ} (h : StepAlpha σ e₁ e₂ s) (B : Base F E) {a b a' e : ℕ} (hab : a = b + 2)
     (he : a = a' + 2 * e) (Γ : Geo σ a a') (Γ₁ : Geo σ b a') (H : Plane E a b) (H' : Plane E (a + a') (b + a'))
     (R : RealMaps F a a') (R₁ : RealMaps F b a') (h1 : Γ₁.V' = Γ.V') (h2 : Γ.q = 0) (h3 : Γ₁.q = 0) (h4 : Γ₁.p + 1 = Γ.p)
@@ -177,12 +168,7 @@ end GlobalTheory.SqStepBig
 
 end
 
-noncomputable section
-
 namespace GlobalTheory.SqStepBig
-
-open GlobalTheory.Square
 
 end GlobalTheory.SqStepBig
 
-end

@@ -183,7 +183,7 @@ theorem continuous_traceMap {A : ValuationSubring Ω} {v : HeightOneSpectrum (�
   intro s hs
   obtain ⟨γ, hγ⟩ := Valued.mem_nhds_zero.1 hs
   have hc0 : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0 := (_root_.map_ne_zero _).2 γ.ne_zero
-  obtain ⟨n, hn⟩ := GlobalTheory.Idele.exists_exp_neg_lt hc0
+  obtain ⟨n, hn⟩ := WithZero.exists_exp_neg_natCast_lt hc0
   obtain ⟨π, hπ, hπ0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot
   have hp0 : algebraMap (𝓞 K) K (π ^ n) ≠ 0 :=
     (_root_.map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).2 (pow_ne_zero n hπ0)

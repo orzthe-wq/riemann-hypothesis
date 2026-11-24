@@ -65,23 +65,13 @@ section Abstract
 
 variable {k A : Type} [CommRing k] [CommRing A] [Algebra k A]
 
-theorem deriv_mem_pow (D : Derivation k A A) (I : Ideal A) (n : ℕ) (x : A) (hx : x ∈ I ^ (n + 1)) :
-    D x ∈ I ^ n := by
-  first
-  | exact @_root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ
-  | exact _root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ
-  | (apply _root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ <;> assumption)
-  | (intros; apply _root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ ..)
-
 variable {ι : Type}
 
 theorem word_mem (D : ι → Derivation k A A) (I : Ideal A) (w : List ι) (x : A)
     (hx : x ∈ I ^ (w.length + 1)) : w.foldl (fun g l => D l g) x ∈ I := by
   induction w generalizing x with
   | nil => simpa using hx
-  | cons l w ih => exact ih _ (deriv_mem_pow _ _ _ _ hx)
+  | cons l w ih => exact ih _ (_root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ _ _ _ _ hx)
 
 theorem word_add (D : ι → Derivation k A A) (w : List ι) (x y : A) :
     w.foldl (fun g l => D l g) (x + y) = w.foldl (fun g l => D l g) x + w.foldl (fun g l => D l g) y := by

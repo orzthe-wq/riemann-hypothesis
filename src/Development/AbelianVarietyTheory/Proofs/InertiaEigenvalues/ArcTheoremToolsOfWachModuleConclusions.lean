@@ -2,7 +2,8 @@ module
 
 public import Formalism.SharpRestriction.LevelLetterCocycles.FiltrationSaturationKiller
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HerrPartAEveryRecord
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeLaterClausesHoldStatement
+public import Formalism.SharpRestriction.LevelLetterCocycles.UsedLocalConclusion
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeLaterClausesHold
 public import Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorGeneralOfRingCondition
 public import Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsUnramifiedStatement
 public import Formalism.SharpRestriction.LevelLetterCocycles.BaseChangeEveryTheory
@@ -61,7 +62,7 @@ theorem arc_tools_from_clauses :
       UnusedSlot80.FirstFiltrationArcLifting D HW F ∧ UnusedSlot80.FirstFiltrationEtale D HW F ∧ UnusedSlot80.SecondFiltrationArcLifting D HW F ∧ UnusedSlot80.SecondFiltrationEtale D HW F ∧
       UnusedSlot80.FiltrationPropertiesEtale D HW F Cm ∧ UnusedSlot80.H1fBaseChangeFree D := by
   intro D HW F Cm
-  obtain ⟨p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, c2, a, b, c, d, l3, pE⟩ := GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm
+  obtain ⟨p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, c2, a, b, c, d, l3, pE⟩ := _root_.GlobalTheory.NL.wach_used_clauses D HW F Cm
   have hNat : HerrComplexNaturality.HerrNaturality D HW F :=
     HerrComplexNaturality.herr_naturality_theorem_holds D HW F (GlobalTheory.HerrFull.herr_part_a_every_record D HW F)
   have sA : UnusedSlot80.SaturationArcLifting D HW F := UnusedSlot80.saturation_general_statement D HW F ⟨p1, p9⟩

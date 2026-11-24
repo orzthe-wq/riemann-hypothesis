@@ -51,4 +51,4 @@ theorem _root_.GlobalTheory.T.movedVector_definitePair_theta_fockVacuum : ∀ {D
     (S : GridChoice W U) (t : T) (p : Pair T), DefPair D.R.m p → ∀ d : FinDatum G t p, S.Z.HasVec d →
     IsThetaFunO W.ψ (G.pS p) (G.pT p) (movedVec t S d) ∧
       ∀ ρ, IsFockVacAt (heisO W.ψ (G.pS p) (G.pT p)) W.θ ρ (cplxO (G.cartS W.cart p ρ) (G.onT W.cart p ρ)) (movedVec t S d) := by
-  first | exact @GlobalTheory.RowReal.movedVec_theta_fockVac | exact GlobalTheory.RowReal.movedVec_theta_fockVac | (intros; apply GlobalTheory.RowReal.movedVec_theta_fockVac <;> assumption)
+  first | exact @GlobalTheory.RowReal.movedVec_theta_fockVac

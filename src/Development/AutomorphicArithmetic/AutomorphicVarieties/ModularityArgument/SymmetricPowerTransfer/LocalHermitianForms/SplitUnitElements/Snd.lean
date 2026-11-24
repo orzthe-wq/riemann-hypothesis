@@ -94,7 +94,7 @@ theorem UpperTheory.V.Z.Sym.Loc.One.snd :
     rw [hr, star_mul', alg, this]
     linear_combination (algebraMap K (Lsq K Δ) (algebraMap O K (n⁻¹ : Oˣ)) ^ 2 * algebraMap K (Lsq K Δ) (2 + τ)) * hll +
       (algebraMap K (Lsq K Δ) (algebraMap O K (n⁻¹ : Oˣ)) * algebraMap K (Lsq K Δ) (2 + τ) + 1) * hn'
-  have sg : ∀ (a : Lsq K Δ) (x : EL Δ τ), sigL (a • x) = star a • sigL x := fun a x => by ext <;> simp [sigL] <;> ring
+  have sg : ∀ (a : Lsq K Δ) (x : EL Δ τ), sigL (a • x) = star a • sigL x := fun a x => by ext <;> simp [sigL]
   set d' : EL Δ τ := r • (ofE Δ ⟨1 + τ, -1⟩ * d) with hd'
   have hdd : sigL d' * sigL (sigL d') = 1 := by
     have e : ofE Δ (⟨1 + τ, -1⟩ : Etau K τ) * ofE Δ ⟨1 + τ, -1⟩ * ofE Δ ω = algebraMap K (Lsq K Δ) (2 + τ) • (1 : EL Δ τ) := by

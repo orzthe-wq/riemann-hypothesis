@@ -134,7 +134,7 @@ theorem exists_selfDual (B : LinearMap.BilinForm ℝ V) (hB : B.Nondegenerate) (
     have e5 : B w w = 0 := hA w
     have e6 : B (D.subtype (x₁ + a • ⟨w, hwD⟩)) (D.subtype (y₁ + c • ⟨w, hwD⟩)) =
         B (D.subtype x₁) (D.subtype y₁) + a • B w (D.subtype y₁) - c • B w (D.subtype x₁) := by
-      simp only [Submodule.subtype_apply, Submodule.coe_add, Submodule.coe_smul, map_add (f := _), map_zsmul,
+      simp only [Submodule.subtype_apply, map_add (f := _), map_zsmul,
         LinearMap.add_apply, LinearMap.smul_apply, e4, e5, smul_zero, smul_neg, add_zero]
       ring
     rw [e6]
@@ -235,7 +235,6 @@ theorem imForm_nondegenerate {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm
     linarith
   first
     | exact ⟨hL, hR⟩
-    | exact hL
 
 theorem exists_unimodular_overlattice :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ),

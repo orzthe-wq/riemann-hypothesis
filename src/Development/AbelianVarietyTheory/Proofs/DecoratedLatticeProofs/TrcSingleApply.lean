@@ -76,8 +76,7 @@ theorem ellTop_apply (eW : (I.per l u a).Wrow ≃ₗ[ℂ] ((I.fm l u a).clsP →
     (G' : CXP R P t → (I.per l u a).Mt) (c : (I.fm l u a).clsP) (f : CXP R P t) (φ : FrN (I.rec7 l Z) (B.R.N B.R.m - 1) → ℂ) :
     ellTop R P eW ε G' c f φ = ε * (Nat.card ((I.fm l u a).stabilizer₂ c) : ℂ) *
       (I.per l u a).period (eW.symm (Pi.single c (fun y : FrP (I.rec7 l Z) => φ ⟨y.1, y.2⟩))) (G' f) := by
-  simp only [ellT, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.funLeft_apply, LinearMap.flip_apply,
-    LinearEquiv.coe_coe, LinearMap.coe_single, smul_eq_mul]
+  simp only
   rfl
 
 @[reducible] def clsTop (s : ℕ → ℂ)

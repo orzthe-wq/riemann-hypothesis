@@ -49,4 +49,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.AbLaw
 
 theorem _root_.GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)), Smooth f → IsProjBy f → ∀ M : LB X, M.IsLB → Nonempty (Perf f M) := by
-  first | exact @GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy | exact GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy | (intros; apply GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy <;> assumption)
+  first | exact @GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy

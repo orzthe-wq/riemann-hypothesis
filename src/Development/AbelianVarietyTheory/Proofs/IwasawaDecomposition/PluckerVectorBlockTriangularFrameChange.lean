@@ -91,7 +91,7 @@ private theorem wedgeForm_eq_prod_mul_of_triangular_change {T : Type} {m : T →
         by_cases hl : l = a
         · subst hl
           simp [w, ha]
-        · simp [w, hl, Function.update_of_ne hl]
+        · simp [w, hl]
       have hzero : F (Function.update (w s) a (c' (e a) - d (e a) • c (e a))) = 0 := by
         refine wedgeForm_update_eq_zero_of_mem_span_others F (w s) a ?_
         refine Submodule.span_mono ?_ (ht (e a))

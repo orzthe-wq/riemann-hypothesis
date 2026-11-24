@@ -62,8 +62,7 @@ instance countable_field : Countable F := Finsupp.Countable.of_moduleFinite (R :
 instance countable_ringOfIntegers : Countable (𝓞 F) := Finsupp.Countable.of_moduleFinite (R := ℤ)
 
 theorem countable_ideal : Countable (Ideal (𝓞 F)) := by
-  have hs : Function.Surjective (fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F))) := by
-    intro I
+  have hs : Function.Surjective (fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F))) := fun I => by
     obtain ⟨s, hs⟩ := (IsNoetherian.noetherian I : I.FG)
     exact ⟨s, hs⟩
   exact hs.countable

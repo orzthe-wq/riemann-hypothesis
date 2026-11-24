@@ -1,17 +1,18 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ValueDoubleUnif
-import GroundTheory.LocalFields.Uniqueness
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.CaRepApply
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.LengthCommensurableSpanSpanOfDetNeZero
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleThetaUnfoldingEquivariantUnitaryGroups
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsBilinearEquivariantOrthogonalSummandLift
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.GluedLatticeFiniteExpansionsLocalFieldStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LinearModelSplitPlaceCharacterEquivarianceStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LinearModelSplitPlaceCharacterEquivariance
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatTensorIndicatorCharacterFactsStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SourceLiftAtGluedPlaceProof
+import GroundTheory.LocalFields.Uniqueness
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLinearModelLatticeVacuumBaseStatement
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLinearModelLatticeVacuumBase
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnramifiedCharacterDetLatticeStabilizerEqOneStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClopenIsCompactQLat
 import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
@@ -229,7 +230,7 @@ theorem exists_theta_exact {D : D7} (hLin : LinExact D) (k : Type) [Field k] [Va
             θ (caRep α g v) (fun x => Φ (x * (blk g).val)) =
               ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ)⁻¹ • θ v Φ := by
   obtain ⟨lS, lT, hlS, -, hq, -, hEq⟩ := hLin k p q ψ S T χS χT om hW
-  obtain ⟨_, _, -, -, hlin⟩ := GlobalTheory.T.splitPlace_linearModel_latticeVacuum_base D k p ψ S T χS χT om hW
+  obtain ⟨_, _, -, -, hlin⟩ := _root_.GlobalTheory.SplitLinAt.linModelAt D k p ψ S T χS χT om hW
   refine ⟨lS, hlS, hq, fun LS LT f₀ hLS hLT hvac => ?_⟩
   obtain ⟨hex, hth, -⟩ := GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n (n' ⊕ Fin 1) ψ hW.std S T α₀ β LS LT hLS hLT f₀ hvac
   obtain ⟨G, hG, hGP⟩ := exists_linear_of_rel (SB (Matrix n (n' ⊕ Fin 1) k)) (Over ψ α₀ β LS LT f₀) hex
@@ -278,7 +279,7 @@ theorem GlobalTheory.FinPl.sourceExact : ∀ D : D7, GlobalTheory.FinPl.SourceEx
   have : Λ.IsFullLattice k := isFullLattice_of_gluedIndicator q P Λ hΞ.2.2.2.1.1
   set χ := resChar χ₀ hχ q with hχχ
   obtain ⟨lS, hlS, hq, hθ⟩ :=
-    exists_theta_exact (GlobalTheory.T.linearModel_splitPlace_characterEquivariance D) k p n n' q ψ S A L T o hA vA χS χT om hW α α₀ β hsum
+    exists_theta_exact (_root_.GlobalTheory.LinExactAt.linExact D) k p n n' q ψ S A L T o hA vA χS χT om hW α α₀ β hsum
   have hdet : ∀ L' : Submodule 𝒪[k] (n' → k), L'.IsFullLattice k → ∀ g ∈ latStab L',
       ((lS (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) = 1 := fun L' hL' g hg => by
     rw [GlobalTheory.T.unramifiedCharacter_det_latticeStabilizer_eq_one k n' L' hL' g hg lS (hlS hT), Units.val_one]

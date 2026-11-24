@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DifferentiableSqTh
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvenThetaEqProdSigmaStarSquareQuotientStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvenThetaTwoTorsionBasicPropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvenThetaEqProdSigmaStarSquareQuotient
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EvenThetaTwoTorsionBasicProperties
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -131,8 +131,8 @@ theorem isogeny_fibres : ∀ Λ : AddSubgroup ℂ, IsLat Λ → ∀ (β t₀ : �
       convert hβ' _ hx using 1
       push_cast
       linear_combination (-2 * x) * hN'⟩
-  obtain ⟨hd, h0, hev, -, hz, hU⟩ := GlobalTheory.T.th0_zero_even_sq_zeros_and_periodicity Λ h t₀ ht₀ h2
-  obtain ⟨Q, hQ, hQe⟩ := GlobalTheory.T.evenTheta_eq_prod_sigmaStarSquareQuotient Λ h k (fun z => GL3Theta.th0 Λ t₀ (β * z))
+  obtain ⟨hd, h0, hev, -, hz, hU⟩ := _root_.GlobalTheory.EvenTheta.evenThetaTwoTorsion_basic_properties Λ h t₀ ht₀ h2
+  obtain ⟨Q, hQ, hQe⟩ := _root_.GlobalTheory.EvenTheta.exists_eq_prod_sqTh Λ h k (fun z => GL3Theta.th0 Λ t₀ (β * z))
     (hd.comp (by fun_prop)) (fun z => by rw [mul_neg, hev]) (by rw [mul_zero, h0])
     (fun ω hω z => law_of_fac h (F := fun z => GL3Theta.th0 Λ t₀ (β * z)) hω z (by
       have hn : β * ω / 2 + t₀ ∉ Λ := fun hh => h1' (by
@@ -141,7 +141,7 @@ theorem isogeny_fibres : ∀ Λ : AddSubgroup ℂ, IsLat Λ → ∀ (β t₀ : �
       have := hU _ (hβ ω hω) hn (β * z)
       rw [thetaTranslationOperator_apply, trFac_mul hN] at this
       simpa only [mul_add] using this))
-  obtain ⟨Q', hQ', hQe'⟩ := GlobalTheory.T.evenTheta_eq_prod_sigmaStarSquareQuotient Λ h (2 * k) (fun z => sqTh Λ (β * t₀) (β * z))
+  obtain ⟨Q', hQ', hQe'⟩ := _root_.GlobalTheory.EvenTheta.exists_eq_prod_sqTh Λ h (2 * k) (fun z => sqTh Λ (β * t₀) (β * z))
     ((h.differentiable_sqTh _).comp (by fun_prop)) (fun z => by rw [mul_neg, sqTh_neg])
     (by rw [mul_zero, h.sqTh_zero h1])
     (fun ω hω z => law_of_fac h (F := fun z => sqTh Λ (β * t₀) (β * z)) hω z (by

@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 public import Mathlib.LinearAlgebra.SymplecticGroup
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticSiegelActionMemUpperHalfSpaceAndCocyclStatement
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SymplecticSiegelActionMemUpperHalfSpaceAndCocycl
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -55,14 +55,9 @@ open scoped ComplexConjugate Real
 
 namespace GlobalTheory.SW.TransComp
 
-theorem qm_mul {α β γ : Type} [Fintype β] (A : Matrix α β ℚ) (B : Matrix β γ ℚ) :
-    qm (A * B) = qm A * qm B := by
-  ext i j
-  simp [qm, Matrix.mul_apply]
+alias qm_mul := _root_.GlobalTheory.SiegelAction.qm_mul
 
-theorem qm_add {α β : Type} (A B : Matrix α β ℚ) : qm (A + B) = qm A + qm B := by
-  ext i j
-  simp [qm]
+alias qm_add := _root_.GlobalTheory.SiegelAction.qm_add
 
 theorem qm_sub {α β : Type} (A B : Matrix α β ℚ) : qm (A - B) = qm A - qm B := by
   ext i j
@@ -134,9 +129,9 @@ end GlobalTheory.SW.TransComp
 open GlobalTheory.SW.TransComp in
 theorem GlobalTheory.SW.transS_comp : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι] (σ σ' : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ), σ ∈ Matrix.symplecticGroup ι ℚ → σ' ∈ Matrix.symplecticGroup ι ℚ → ∀ φ ψ χ : Matrix κ ι ℚ → ℂ, TransS σ φ ψ → TransS σ' ψ χ → TransS (σ' * σ) φ χ := by
   intro κ ι _ _ _ σ σ' hσ hσ' φ ψ χ h1 h2 τ hτ ζ
-  obtain ⟨hd, hmem, -, -, hcomp⟩ := GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle ι σ hσ τ hτ
+  obtain ⟨hd, hmem, -, -, hcomp⟩ := _root_.GlobalTheory.SiegelAction.symplectic_action ι σ hσ τ hτ
   obtain ⟨hden, hact⟩ := hcomp σ' hσ'
-  have hd' := (GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle ι σ' hσ' _ hmem).1
+  have hd' := (_root_.GlobalTheory.SiegelAction.symplectic_action ι σ' hσ' _ hmem).1
   rw [hden, hact]
 
   have hk := key hσ hτ.1 hd hmem.1

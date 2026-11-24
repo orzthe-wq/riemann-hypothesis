@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionPolyGrowthSummableContinuousStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QExpansionPolyGrowthSummableContinuous
+public import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -45,7 +46,6 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
-public import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 @[expose] public section
 
@@ -128,7 +128,7 @@ theorem qs_line (a : ℕ → ℂ) (ha : PolyB a) (y : ℝ) (hy : 0 < y) (x : ℝ
     congr 2
     push_cast
     linear_combination (2 * π * n * y : ℂ) * Complex.I_mul_I
-  have hs := ((GlobalTheory.T.qExpansion_polyGrowth_summable_continuous a ha).1 (ofComplex ((x : ℂ) + y * Complex.I))).of_norm
+  have hs := ((_root_.GlobalTheory.EisM.qs_summable_continuous a ha).1 (ofComplex ((x : ℂ) + y * Complex.I))).of_norm
   have := hs.hasSum
   simp only [qs]
   simpa only [hterm] using this

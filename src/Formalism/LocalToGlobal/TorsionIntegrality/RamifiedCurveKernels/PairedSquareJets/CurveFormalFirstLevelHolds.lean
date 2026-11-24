@@ -81,7 +81,6 @@ theorem inv_mem_unitBall {K : Type} [NormedField K] [IsUltrametricDist K] {x : K
   have h1 : ‖x⁻¹‖ ≤ 1 := by rw [norm_inv, h, inv_one]
   first
     | exact h1
-    | simpa [Formalism.G.unitBall] using h1
 
 theorem endInt_int {K : Type} [Field K] (R : Subring K) (l linv : PowerSeries K)
     (hl : IsLogPair l linv) (hF : FGInt R l linv) (n : ℤ) : EndInt R l linv (n : K) := by

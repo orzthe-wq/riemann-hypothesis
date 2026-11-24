@@ -95,7 +95,7 @@ theorem integral_pow_mul_cexp_neg (n : ℕ) {r : ℂ} (hr : 0 < r.re) :
     have h := integral_exp_mul_complex_Ioi (a := -r) (by simpa using hr) 0
     simp only [pow_zero, one_mul, Nat.factorial_zero, Nat.cast_one, zero_add, pow_one]
     simp_rw [← neg_mul]
-    rw [h]; simp [hr0]
+    rw [h]; simp
   | succ n ih =>
     have h1 : ∀ t : ℝ, HasDerivAt (fun t : ℝ => (t : ℂ)) 1 t := fun t => (hasDerivAt_id t).ofReal_comp
     have hv : ∀ t ∈ Ioi (0 : ℝ), HasDerivAt (fun t : ℝ => Complex.exp (-(r * t)) / (-r))

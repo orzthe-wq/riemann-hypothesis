@@ -83,8 +83,8 @@ private theorem det_kth_eq_one (θ : Fin n → ℝ) : (kth θ).det = 1 := by
           (-diagonal fun j => (Real.sin (θ j) : ℂ))
           (diagonal fun j => (Real.cos (θ j) : ℂ) + I * Real.sin (θ j)) := by
     simp only [kth, fromBlocks_multiply, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero,
-      add_zero, zero_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg, Matrix.neg_mul]
-    congr 1 <;> ext i j <;> by_cases h : i = j <;> simp [h, diagonal_apply] <;>
+      add_zero, zero_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_neg]
+    congr 1 <;> ext i j <;> by_cases h : i = j <;> simp [h] <;>
       first
       | ring1
       | linear_combination Complex.sin ((θ j : ℝ) : ℂ) * I_sq
@@ -121,7 +121,7 @@ theorem jF_kak (e : ℤ) (p q : ℕ) (k : GR n) (u u' : Matrix (Fin n) (Fin n) �
       rw [show -(I * (θ a : ℂ)) = (-(θ a : ℂ)) * I by ring, Complex.exp_mul_I, Complex.cos_neg, Complex.sin_neg,
         ← Complex.ofReal_cos, ← Complex.ofReal_sin]
       ring
-    · simp [dR, diagonal_apply, h]
+    · simp [dR, h]
   have hdp : diagonal (fun j => cexp (I * (θ j : ℂ))) =
       (dR fun j => Real.cos (θ j)) + I • (dR fun j => Real.sin (θ j)) := by
     ext a b
@@ -130,7 +130,7 @@ theorem jF_kak (e : ℤ) (p q : ℕ) (k : GR n) (u u' : Matrix (Fin n) (Fin n) �
       simp only [dR, diagonal_apply_eq, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
       rw [show I * (θ a : ℂ) = (θ a : ℂ) * I by ring, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin]
       ring
-    · simp [dR, diagonal_apply, h]
+    · simp [dR, h]
   have hA : toBlocks₂₁ (mR k) * (I • (1 : Matrix (Fin n) (Fin n) ℂ)) + toBlocks₂₂ (mR k) =
       u * diagonal (fun j => cexp (-(I * (θ j : ℂ)))) * u' := by
     rw [hk2, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, hdm]

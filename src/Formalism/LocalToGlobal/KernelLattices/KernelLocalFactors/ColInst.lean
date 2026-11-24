@@ -8,49 +8,13 @@ import Formalism.LocalToGlobal.Columns.BaseLemmas
 public import Formalism.LocalToGlobal.GlobalTheory.GL3.PSelfDual
 public import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.PeriodLatticeFinitelyGenerated
 import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Rat
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
 public import Formalism.LocalRingCardinality.SpanPowerMembership.ExampleRanksRankComplement
 public import Formalism.LocalToGlobal.Columns.CyclotomicIsCyclotomicExtension
@@ -414,15 +378,6 @@ theorem coupling_index_set_finite (u : Pr.Word) (m2 : ℕ) (b : L.β (m2 + 1)) :
 
 end Yb2
 
-section Inst
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
-  (A : Amb X) (u : Pr.Word) (m2 : ℕ)
-
-end Inst
-
 section SeamLat
 
 open Formalism.MainNotions
@@ -641,16 +596,6 @@ theorem cBof_pos (hT : 0 < Pr.T u) : 0 < cBof sel mu cst u := Nat.mul_pos hT (po
 
 end Ne
 
-section Zero
-
-variable {X : Fields} (A : Amb X) {a b : ℕ}
-
-variable {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (u : Pr.Word) (m2 : ℕ)
-
-end Zero
-
 section Scal
 
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ)
@@ -748,20 +693,6 @@ theorem exists_isUnit_div (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : 
 variable [StarRing E] {K : Type} [Field K]
 
 end Scal
-
-section Scal2
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
-
-end Scal2
-
-section JetNe
-
-variable {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ}
-
-end JetNe
 
 section Wt
 
@@ -867,15 +798,6 @@ theorem jet_in_weight_space_chain (u : Pr.Word) {i : ℕ} (hi : i < R.m) : JetIn
 
 end InVV
 
-section Crit
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
-  (A : Amb X) (u : Pr.Word) (m2 : ℕ)
-
-end Crit
-
 section Unram
 
 variable {X : Fields} {Pr : Primes X}
@@ -919,38 +841,6 @@ theorem xqMem_stdAt {n : ℕ} (x : Sp E n) : x ∈ stdAt E n P ↔ ∀ i, IntAt 
 
 end Scl
 
-section Cst
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-
-variable {Ch}
-
-end Cst
-
-section Grp
-
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
-
-end Grp
-
-section Lift
-
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
-
-end Lift
-
-section Mem
-
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
-
-end Mem
-
-section Mem2
-
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
-
-end Mem2
-
 section Of
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
@@ -962,47 +852,7 @@ theorem xqRedV_single {n : ℕ} (l : Fin n) : redV P (Pi.single l (1 : E)) = Pi.
   · rw [h, Pi.single_eq_same, Pi.single_eq_same, reduction_one₃]
   · rw [Pi.single_eq_of_ne h, Pi.single_eq_of_ne h, reduction_zero₂]
 
-theorem xqSingle_mem {n : ℕ} (l : Fin n) : (Pi.single l (1 : E) : Sp E n) ∈ stdAt E n P := by
-  rw [xqMem_stdAt]
-  intro i
-  by_cases h : i = l
-  · rw [h, Pi.single_eq_same]; exact xqIntAt_one
-  · rw [Pi.single_eq_of_ne h]; exact xqIntAt_zero
-
 end Of
-
-section Lev
-
-variable {X : Fields} {Pr : Primes X} (Ch : Chars X Pr Examples₂.R0.m)
-
-end Lev
-
-section Chr
-
-variable {X : Fields} {Pr : Primes X} (Ch : Chars X Pr Examples₂.R0.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ)
-
-end Chr
-
-section Chr1
-
-variable {X : Fields} {Pr : Primes X} (Ch : Chars X Pr Examples₂.R0.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ)
-
-end Chr1
-
-section Phi
-
-variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
-
-
-end Phi
-
-section XiLoc
-
-variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
-
-end XiLoc
 
 section XiFr
 
@@ -1011,17 +861,9 @@ variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : Heig
 def Cong1 {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (f : Sp E n ≃ₗ[E] Sp E n) : Prop :=
   (∀ x, f x ∈ stdAt E n P ↔ x ∈ stdAt E n P) ∧ ∀ x ∈ stdAt E n P, redV P (f x) = redV P x
 
-theorem redV_single {n : ℕ} (i : Fin n) : redV P (Pi.single i (1 : E) : Sp E n) = Pi.single i 1 := xqRedV_single i
+alias redV_single := _root_.Formalism.L2.Ker.xqRedV_single
 
 end XiFr
-
-section XiGlob
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
-
-end XiGlob
 
 section XiNum
 
@@ -1036,14 +878,6 @@ theorem notMem_of_coprime {q q' : ℕ} (h : Nat.Coprime q q') (hq : ((q : ℕ) :
   exact P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ hq) (P.asIdeal.mul_mem_left _ hq')
 
 end XiNum
-
-section XiOk
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
-
-end XiOk
 
 section Ref
 
@@ -1062,67 +896,5 @@ variable (cst : LocCst X (rowSG Pr sel (mu0 X.F X.E X.K S)))
   (L : ChIdx X Pr R (QE sel ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K))) (A : Amb X) (u : Pr.Word)
 
 end Ref
-
-section Closed
-
-variable (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL] (hLL : cycQ nd2N ≤ LL) (Ch : Chars (nd2X LL hLL) (toyPrimes LL hLL) Examples₂.R0.m)
-  (sel : HeightOneSpectrum (𝓞 (nd2X LL hLL).F) → HeightOneSpectrum (𝓞 (nd2X LL hLL).E)) (S : Set ℕ)
-  (cst : LocCst (nd2X LL hLL) (rowSG (toyPrimes LL hLL) sel (mu0 (nd2X LL hLL).F (nd2X LL hLL).E (nd2X LL hLL).K S)))
-  (L : ChIdx (nd2X LL hLL) (toyPrimes LL hLL) Examples₂.R0
-    (QE sel ((mu0 (nd2X LL hLL).F (nd2X LL hLL).E (nd2X LL hLL).K S : Tup (nd2X LL hLL).F (nd2X LL hLL).E (nd2X LL hLL).K S) : Chr (nd2X LL hLL).F (nd2X LL hLL).E (nd2X LL hLL).K)))
-  (A : Amb (nd2X LL hLL)) (u : (toyPrimes LL hLL).Word)
-
-end Closed
-
-section NeCons
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
-  (A : Amb X) (u : Pr.Word) (m2 : ℕ)
-
-end NeCons
-
-section TabSpec
-
-variable {X : Fields} (A : Amb X) {a b : ℕ} (Sall : Finset (HeightOneSpectrum (𝓞 X.E)))
-
-end TabSpec
-
-section Xi2Loc
-
-variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
-
-end Xi2Loc
-
-section Xi2Glob
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
-
-end Xi2Glob
-
-section Xi2T
-
-variable {E : Type} [Field E] [NumberField E] [StarRing E]
-
-end Xi2T
-
-section Xi2Ok
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
-
-end Xi2Ok
-
-section Joint
-
-variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
-  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
-  (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
-
-end Joint
 
 end Formalism.L2.Ker

@@ -83,7 +83,6 @@ theorem eventually_int_of_compact {C : Set (Af F)} (hC : IsCompact C) :
   have h2 := hv i hi
   have he : x v = (x - (i : Af F)) v + (i : Af F) v := by
     first
-    | (rw [RestrictedProduct.sub_apply]; ring)
     | (show x v = (x v - (i : Af F) v) + (i : Af F) v; ring)
   rw [he]
   exact add_mem h1 h2
@@ -217,8 +216,6 @@ theorem nuFin_holds : NuFin := by
   haveI : FiniteDimensional F E := by
     first
     | infer_instance
-    | exact Module.Finite.of_restrictScalars_finite ℚ F E
-    | exact FiniteDimensional.right ℚ F E
   exact nuFin_gen σ J (gramE σ J X0) hT ψ νX hν K hK
 
 end PI.VolStabS

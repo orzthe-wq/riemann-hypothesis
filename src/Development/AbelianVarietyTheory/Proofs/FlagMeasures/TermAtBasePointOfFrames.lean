@@ -124,7 +124,7 @@ theorem term_at_base_point : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u'
   have hrel : t.toTerm.relevant := Formalism.L2.SG.Pf.FinXP.atPtRelevant_holds D u u' _ _ t.toTerm w hat
   have hsp := Formalism.L2.SG.PairVal.ptOf_spec t.toTerm ⟨w, hat, hrel⟩
   have heq := Formalism.L2.SG.Pf.cellPtUnique_of Formalism.L2.SG.Pf.cell_point_uniqueness
-    (Formalism.L2.SG.Closed.TermFun_holds D u u') (Y.rowsOK u) t.toTerm _ _ hsp hat
+    (_root_.term_function_const D u u') (Y.rowsOK u) t.toTerm _ _ hsp hat
   exact ⟨hGt, by show toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm) = toPts w; rw [heq]⟩
 
 end GlobalTheory.Unfold.BasePt

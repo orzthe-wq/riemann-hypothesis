@@ -7,48 +7,7 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.Unita
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.BigCellMulVecWb
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.ProductExactness
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.NcRealXKS
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.CategoryTheory.Countable
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -302,7 +261,7 @@ theorem skew_conj (F Δ : Matrix (Fin r) (Fin r) ℂ) (hΔ : ∀ i j, star (Δ j
     rw [conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hD]
     simp only [Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg]
   have h2 := congrArg (fun M => M b a) hM
-  simp only [conjTranspose_apply, neg_apply] at h2
+  simp only [conjTranspose_apply] at h2
   exact h2
 
 end Tri
@@ -402,7 +361,7 @@ theorem bk_tri {T : ℝ} (hT : 0 < T) (p : CBlk r) (x x' y y' : ∀ q : CBlk r, 
       WlocSk.NB.shG (ph0 (chAt T x' v)) (chAt T y' v).1 (Sum.inl ⟨(b, a), hba⟩) - x' (Sum.inl (Sum.inl ⟨(b, a), hba⟩)) v
     simp only [WlocSk.NB.shG, ph0, WlocSk.NB.phi0, WlocSk.NB.bA_mk]
     rw [sub_eq_sub_iff_sub_eq_sub, ← Finset.sum_sub_distrib, Finset.sum_eq_single a]
-    · simp only [if_pos hba, WlocSk.NB.cA, dif_pos hba, dif_neg (lt_irrefl a), if_pos rfl, ite_true, mul_one]
+    · simp only [if_pos hba, WlocSk.NB.cA, dif_pos hba, dif_neg (lt_irrefl a), ite_true, mul_one]
       rfl
     · intro c _ hca
       by_cases hbc : b < c

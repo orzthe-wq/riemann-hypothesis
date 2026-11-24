@@ -44,6 +44,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

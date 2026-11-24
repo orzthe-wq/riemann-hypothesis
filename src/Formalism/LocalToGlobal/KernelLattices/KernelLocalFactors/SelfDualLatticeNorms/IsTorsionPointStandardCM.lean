@@ -5,42 +5,6 @@ public import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.BaseEx
 public import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.SelfDualLatticeNorms.HalfPeriodStandardCM
 public import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.QuasiPeriodConstUnique
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -59,7 +23,7 @@ variable {L L' : PeriodPair} {ω₀ ω₀' : ℂ}
 
 theorem thetaNull_congr_lattice (h : L.lattice = L'.lattice) (hω : (ω₀ - ω₀') / 2 ∈ L'.lattice) (hn : ω₀' / 2 ∉ L'.lattice) :
     Formalism.L2.Th1.F.th0 L (ω₀ / 2) = Formalism.L2.Th1.F.th0 L' (ω₀' / 2) := by
-  obtain ⟨-, -, -, hA, -, hs, -⟩ := Formalism.L2.Th1.F.latticeOnly L L' h
+  obtain ⟨-, -, -, hA, -, hs, -⟩ := _root_.Formalism.L2.Th1.F.lattice_only L L' h
   have e1 : Formalism.L2.Th1.F.th0 L (ω₀ / 2) = Formalism.L2.Th1.F.th0 L' (ω₀ / 2) := by
     funext z
     simp only [Formalism.L2.Th1.F.th0, Formalism.L2.Th1.F.opU, Formalism.L2.Th1.F.herm, hA, hs]
@@ -73,11 +37,11 @@ theorem thetaNull_congr_lattice (h : L.lattice = L'.lattice) (hω : (ω₀ - ω�
 theorem stdH_congr (h : L.lattice = L'.lattice) (n : Type) [Fintype n] [DecidableEq n] :
     Formalism.L2.Th1.H.stdH L n = Formalism.L2.Th1.H.stdH L' n := by
   unfold Formalism.L2.Th1.H.stdH
-  rw [(Formalism.L2.Th1.F.latticeOnly L L' h).2.2.2.1]
+  rw [(_root_.Formalism.L2.Th1.F.lattice_only L L' h).2.2.2.1]
 
 theorem hOne_congr (h : L.lattice = L'.lattice) (n : Type) [Fintype n] [DecidableEq n] : hOne L n = hOne L' n := by
   unfold hOne
-  rw [(Formalism.L2.Th1.F.latticeOnly L L' h).2.2.2.1]
+  rw [(_root_.Formalism.L2.Th1.F.lattice_only L L' h).2.2.2.1]
 
 theorem thM_congr (h : L.lattice = L'.lattice) (hω : (ω₀ - ω₀') / 2 ∈ L'.lattice) (hn : ω₀' / 2 ∉ L'.lattice) (c : ℝ)
     {n : Type} [Fintype n] [DecidableEq n] (ΛM : AddSubgroup (n → ℂ)) (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) (κ : ℂ) :

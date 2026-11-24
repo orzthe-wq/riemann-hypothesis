@@ -87,7 +87,7 @@ theorem transvEquiv_isom {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (u :
   rw [transvEquiv_apply, transvEquiv_apply]
   have h1 : star (h u v) = h v u := by rw [← starRingEnd_apply]; exact hs.eq u v
   simp only [map_sub, LinearMap.map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, map_smul, smul_eq_mul,
-    map_mul, starRingEnd_apply, star_mul', h1]
+    map_mul, starRingEnd_apply, h1]
   linear_combination (-(h v u * h u w)) * hξ
 
 end WittTransvections
@@ -124,7 +124,6 @@ theorem exists_isom_map_of_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram 
     have hs'' : starRingEnd K (h (x - y) x) ≠ 0 := by rwa [starRingEnd_apply]
     rw [huu, ← starRingEnd_apply, map_inv₀]
     field_simp
-    try ring
   refine ⟨WittTransvections.transvEquiv h (x - y) hξ, fun v w => WittTransvections.transvEquiv_isom hs _ hξ v w, ?_⟩
   rw [WittTransvections.transvEquiv_apply, inv_mul_cancel₀ hux, one_smul, sub_sub_cancel]
 

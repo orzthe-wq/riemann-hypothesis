@@ -2,7 +2,9 @@ module
 
 public import Development.AutomorphicArithmetic.CommutativeAlgebra.BconeDefs
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BigEtaleModuleSheafMonoEpiIffSectionsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafPropertiesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
+public import Mathlib.Algebra.Homology.HomotopyCategory.KInjective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafProperties
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafSectionsExactStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -59,10 +61,10 @@ private lemma exists_lift {M F : Shv ℤ} (g : M ⟶ (res ℤ F).X 0) (hg : g �
     ∃ f : M ⟶ F, f ≫ resι ℤ F = g := by
   classical
   have hinj : ∀ U : Scheme, Function.Injective (Sec.map (resι ℤ F) (U := U)) :=
-    fun U => (GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness ℤ F U).2.1
+    fun U => (_root_.GlobalTheory.EtC.resSec ℤ F U).2.1
   have hex : ∀ (U : Scheme) (x : Sec M U), ∃ a : Sec F U, Sec.map (resι ℤ F) a = Sec.map g x := by
     intro U x
-    refine ((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness ℤ F U).1 _).1 ?_
+    refine ((_root_.GlobalTheory.EtC.resSec ℤ F U).1 _).1 ?_
     rw [← sec_comp, hg]
     rfl
   let φ : ∀ U : Scheme, Sec M U → Sec F U := fun U x => (hex U x).choose
@@ -93,28 +95,31 @@ private lemma exists_lift {M F : Shv ℤ} (g : M ⟶ (res ℤ F).X 0) (hg : g �
         refine n1.trans ?_
         refine Eq.trans ?_ n2.symm
         exact congrArg _ (hφ _ x).symm }
-  refine ⟨⟨η⟩, (GlobalTheory.T.bigEtaleModuleSheaf_mono_epi_iff_sections ℤ (⟨η⟩ ≫ resι ℤ F)).2.2.2 g (fun U a => ?_)⟩
+  refine ⟨⟨η⟩, (_root_.GlobalTheory.EtC.mono_epi_sections ℤ (⟨η⟩ ≫ resι ℤ F)).2.2.2 g (fun U a => ?_)⟩
   rw [sec_comp]
   exact hφ U a
 
-set_option backward.isDefEq.respectTransparency false in
-private lemma sgl_f {M F : Shv ℤ} (f : M ⟶ F) :
-    sglι M ≫ ((CochainComplex.singleFunctor (Shv ℤ) 0).map f ≫ resAug F).f 0 = f ≫ resι ℤ F := by
-  rw [HomologicalComplex.comp_f, ← Category.assoc]
-  have h : sglι M ≫ ((CochainComplex.singleFunctor (Shv ℤ) 0).map f).f 0 = f ≫ sglι F := by
-    simp [sglι, CochainComplex.singleFunctor, CochainComplex.singleFunctors, HomologicalComplex.single_map_f_self]
-  rw [h, Category.assoc, (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties ℤ F).2.2.2.2.1]
-
-set_option backward.isDefEq.respectTransparency false in
-theorem UpperTheory.bijective_cl_hypercohomology_singleton_zero :
-    ∀ (M F : Shv ℤ), Function.Bijective (cl : (M ⟶ F) → HK ℤ (sgl M) F 0) := by
-  intro M F
-  have hz : ∀ p : ℤ, p ≠ 0 → IsZero ((sgl M).X p) := fun p hp =>
+private lemma bijective_cl_abs {C : Type*} [Category C] [Preadditive C] [HasZeroObject C]
+    {M F : C} {I : CochainComplex C ℤ} [I.IsStrictlyGE 0]
+    (ι : F ⟶ I.X 0) [Mono ι] (aug : (CochainComplex.singleFunctor C 0).obj F ⟶ I)
+    (haug : (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 F).inv ≫ aug.f 0 = ι)
+    (hlift : ∀ (g : M ⟶ I.X 0), g ≫ I.d 0 1 = 0 → ∃ f : M ⟶ F, f ≫ ι = g) :
+    Function.Bijective (fun f : M ⟶ F =>
+      CohomologyClass.mk (Cocycle.ofHom ((CochainComplex.singleFunctor C 0).map f ≫ aug))) := by
+  let sM := (CochainComplex.singleFunctor C 0).obj M
+  let eM := HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 M
+  have sgl_f : ∀ f : M ⟶ F,
+      eM.inv ≫ ((CochainComplex.singleFunctor C 0).map f ≫ aug).f 0 = f ≫ ι := fun f => by
+    rw [HomologicalComplex.comp_f, ← Category.assoc]
+    have h : eM.inv ≫ ((CochainComplex.singleFunctor C 0).map f).f 0 =
+        f ≫ (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 F).inv := by
+      simp [eM, CochainComplex.singleFunctor, HomologicalComplex.single_map_f_self]
+    rw [h, Category.assoc, haug]
+  have hz : ∀ p : ℤ, p ≠ 0 → IsZero (sM.X p) := fun p hp =>
     HomologicalComplex.isZero_single_obj_X _ _ _ _ hp
-  have hL : IsZero ((res ℤ F).X (-1)) := by
-    haveI := (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties ℤ F).2.2.1
-    exact CochainComplex.isZero_of_isStrictlyGE _ 0 (-1) (by norm_num)
-  have hβ0 : ∀ β : Cochain (sgl M) (res ℤ F) (-1), β = 0 := by
+  have hL : IsZero (I.X (-1)) :=
+    CochainComplex.isZero_of_isStrictlyGE _ 0 (-1) (by norm_num)
+  have hβ0 : ∀ β : Cochain sM I (-1), β = 0 := by
     intro β
     refine Cochain.ext _ _ (fun p q hpq => ?_)
     by_cases hp : p = 0
@@ -122,36 +127,32 @@ theorem UpperTheory.bijective_cl_hypercohomology_singleton_zero :
       obtain rfl : q = -1 := by omega
       exact hL.eq_of_tgt _ _
     · exact (hz p hp).eq_of_src _ _
-  have hcob : ∀ x : Cocycle (sgl M) (res ℤ F) 0, x ∈ coboundaries (sgl M) (res ℤ F) 0 → x = 0 := by
+  have hcob : ∀ x : Cocycle sM I 0, x ∈ coboundaries sM I 0 → x = 0 := by
     intro x hx
     obtain ⟨β, hβ⟩ := (mem_coboundaries_iff x (-1) (by norm_num)).1 hx
     apply Cocycle.ext
     rw [← hβ, hβ0 β, δ_zero]
     rfl
-  have hmono : Mono (resι ℤ F) := (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties ℤ F).2.2.2.2.2.1
-  have hsg : IsIso (sglι M) := by
-    dsimp [sglι]
-    infer_instance
   constructor
   · intro f f' h
-    have h1 : Cocycle.ofHom ((CochainComplex.singleFunctor (Shv ℤ) 0).map f ≫ resAug F)
-        = Cocycle.ofHom ((CochainComplex.singleFunctor (Shv ℤ) 0).map f' ≫ resAug F) := by
+    have h1 : Cocycle.ofHom ((CochainComplex.singleFunctor C 0).map f ≫ aug)
+        = Cocycle.ofHom ((CochainComplex.singleFunctor C 0).map f' ≫ aug) := by
       have := hcob _ ((CohomologyClass.mk_eq_zero_iff _).1
         (by rw [CohomologyClass.mk_sub]; exact sub_eq_zero.2 h))
       exact sub_eq_zero.1 this
-    have h2 := congrArg (fun x : Cocycle (sgl M) (res ℤ F) 0 =>
-      (x : Cochain (sgl M) (res ℤ F) 0).v 0 0 (add_zero 0)) h1
+    have h2 := congrArg (fun x : Cocycle sM I 0 =>
+      (x : Cochain sM I 0).v 0 0 (add_zero 0)) h1
     simp only [Cocycle.ofHom_coe, Cochain.ofHom_v] at h2
-    apply (cancel_mono (resι ℤ F)).1
+    apply (cancel_mono ι).1
     rw [← sgl_f, ← sgl_f, h2]
   · intro c
     obtain ⟨z, rfl⟩ := CohomologyClass.mk_surjective c
-    have hz1 : (z : Cochain (sgl M) (res ℤ F) 0).v 0 0 (add_zero 0) ≫ (res ℤ F).d 0 1 = 0 := by
-      have e := congrArg (fun w : Cochain (sgl M) (res ℤ F) 1 => w.v 0 1 (zero_add 1))
+    have hz1 : (z : Cochain sM I 0).v 0 0 (add_zero 0) ≫ I.d 0 1 = 0 := by
+      have e := congrArg (fun w : Cochain sM I 1 => w.v 0 1 (zero_add 1))
         ((Cocycle.mem_iff 0 1 (zero_add 1) _).1 z.2)
       simp only [δ_zero_cochain_v, Cochain.zero_v] at e
-      rwa [(hz 1 one_ne_zero).eq_of_tgt ((sgl M).d 0 1) 0, zero_comp, sub_zero] at e
-    obtain ⟨f, hf⟩ := exists_lift (sglι M ≫ (z : Cochain (sgl M) (res ℤ F) 0).v 0 0 (add_zero 0))
+      rwa [(hz 1 one_ne_zero).eq_of_tgt (sM.d 0 1) 0, zero_comp, sub_zero] at e
+    obtain ⟨f, hf⟩ := hlift (eM.inv ≫ (z : Cochain sM I 0).v 0 0 (add_zero 0))
       (by rw [Category.assoc, hz1, comp_zero])
     refine ⟨f, ?_⟩
     show CohomologyClass.mk _ = CohomologyClass.mk z
@@ -162,5 +163,12 @@ theorem UpperTheory.bijective_cl_hypercohomology_singleton_zero :
     subst hpq
     by_cases hp : p = 0
     · subst hp
-      rw [Cocycle.ofHom_coe, Cochain.ofHom_v, ← cancel_epi (sglι M), sgl_f, hf]
+      rw [Cocycle.ofHom_coe, Cochain.ofHom_v, ← cancel_epi eM.inv, sgl_f, hf]
     · exact (hz p hp).eq_of_src _ _
+
+set_option backward.isDefEq.respectTransparency false in
+theorem UpperTheory.bijective_cl_hypercohomology_singleton_zero :
+    ∀ (M F : Shv ℤ), Function.Bijective (cl : (M ⟶ F) → HK ℤ (sgl M) F 0) := fun _ F =>
+  haveI := (_root_.GlobalTheory.EtC.ResBasic.res_basic ℤ F).2.2.1
+  haveI : Mono (resι ℤ F) := (_root_.GlobalTheory.EtC.ResBasic.res_basic ℤ F).2.2.2.2.2.1
+  bijective_cl_abs (resι ℤ F) (resAug F) (_root_.GlobalTheory.EtC.ResBasic.res_basic ℤ F).2.2.2.2.1 exists_lift

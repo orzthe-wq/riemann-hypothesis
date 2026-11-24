@@ -100,7 +100,7 @@ theorem th_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ 
     show star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) (J.d.nC c * n) y 0) * star (psiFlag ψ J.d (J.d.nC c * n)) =
       _ * (star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n))
     rw [(hmul _ hc n hn).2.2, psiFlag_mul J.d ψ hc hn, psiFlag_nC, jacS_nC]
-    simp only [Pi.smul_apply, smul_eq_mul, star_mul', one_mul, star_one]
+    simp only [Pi.smul_apply, smul_eq_mul, star_mul', one_mul]
     ring
   · intro n hn u hu
     have hl : J.d.levi u ∈ flagN J.d := J.d.levi_mem_NFlag hu

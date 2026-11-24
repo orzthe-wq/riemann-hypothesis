@@ -51,4 +51,4 @@ open GlobalTheory.KeyKa
 
 
 theorem _root_.GlobalTheory.T.exists_keyInvariant_algClosed_transversal : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (n l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ) (d : ℕ) (s : Fin x.P.g → RR x n) (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι), admitted x.P.g n l l' al → ((degProd x.P.g n l l' : ℕ) : K) ≠ 0 → EtZ x s z ch → ∃ κ, KaVal x n l l' al s κ := by
-  first | exact @GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed | exact GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed | (intros; apply GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed <;> assumption)
+  first | exact @GlobalTheory.KeyKa.exists_kaVal_of_isAlgClosed

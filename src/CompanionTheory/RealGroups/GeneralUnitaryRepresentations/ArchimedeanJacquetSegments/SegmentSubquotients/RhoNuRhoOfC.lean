@@ -98,7 +98,7 @@ theorem redCl_ofC (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
       congr 1
       push_cast
       ring
-    · simp only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.head_cons]
+    · simp only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one]
       rw [IrrGL.nu_nu, IrrGL.nu_nu, hs2, ht]
       congr 1
       push_cast

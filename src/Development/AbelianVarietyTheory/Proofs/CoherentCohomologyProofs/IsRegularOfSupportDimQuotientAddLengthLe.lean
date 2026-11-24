@@ -1,13 +1,21 @@
 module
 
+public import Mathlib.RingTheory.Regular.RegularSequence
+public import Mathlib.RingTheory.Depth.Rees
+public import Mathlib.RingTheory.Regular.Category
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic
+public import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences
 public import ReciprocityTheory.CommutativeAlgebra.ChainConnInDim
 public import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.IsQuasiRegularSeqSelfIffLocalizationMaximal
 public import Mathlib.RingTheory.Ideal.Height
 public import Mathlib.RingTheory.KrullDimension.Module
 public import Mathlib.RingTheory.QuasiFinite.Basic
 public import Mathlib.RingTheory.RegularLocalRing.Defs
-public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsIsRegularQuotSMulTop
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsWeaklyRegularIffIsQuasiRegularSeqOfIsLocalRing
+public import Mathlib.RingTheory.KrullDimension.Regular
+public import Mathlib.RingTheory.Flat.Tensor
+public import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -28,13 +36,8 @@ import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.HopfAlgebra.Basic
-public import Mathlib.RingTheory.KrullDimension.Regular
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,7 +45,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -55,13 +57,112 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Mathlib.RingTheory.Flat.Tensor
-public import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsIsRegularQuotSMulTop, Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegularOfSupportDimQuotientAddLengthLe
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsIsRegularQuotSMulTop =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsIsRegularQuotSMulTop", "h": "module\n\npublic import Mathlib.RingTheory.Regular.RegularSequence\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\npublic import Mathlib.RingTheory.Depth.Rees\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\npublic import Mathlib.RingTheory.Regular.Category\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Category.ModuleCat.Basic\npublic import Mathlib.Algebra.Homology.DerivedCategory.Ext.Basic\npublic import Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u_1 u_2
+
+open CategoryTheory Abelian Limits RingTheory.Sequence Pointwise
+
+namespace GlobalTheory.RegularElementQuotient
+
+theorem maximalIdeal_smul_top_lt_top {R : Type u_1} [CommRing R] [IsLocalRing R]
+    (M : Type u_2) [AddCommGroup M] [Module R M] [Module.Finite R M] [Nontrivial M] :
+    IsLocalRing.maximalIdeal R • (⊤ : Submodule R M) < ⊤ := by
+  rw [lt_top_iff_ne_top]
+  intro h
+
+  have hbot : (⊤ : Submodule R M) = ⊥ :=
+    Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal R) ⊤
+      Module.Finite.fg_top h.ge (IsLocalRing.maximalIdeal_le_jacobson ⊥)
+  exact top_ne_bot hbot
+
+theorem exists_isRegular_quotSMulTop {R : Type u_1} [CommRing R] [IsNoetherianRing R]
+    [IsLocalRing R] [Small.{u_2, u_1} R] {M : Type u_2} [AddCommGroup M] [Module R M]
+    [Module.Finite R M] {xs : List R} (hxs : IsRegular M xs) {n : ℕ}
+    (hn : n + 1 ≤ xs.length) {y : R} (hy : y ∈ IsLocalRing.maximalIdeal R)
+    (hreg : IsSMulRegular M y) :
+    ∃ zs : List R, zs.length = n ∧ IsRegular (QuotSMulTop y M) zs := by
+  set 𝔪 := IsLocalRing.maximalIdeal R
+
+  have : Nontrivial M :=
+    (Submodule.nontrivial_iff R).mp (nontrivial_of_ne _ _ hxs.top_ne_smul)
+
+  have hmem : ∀ x ∈ xs, x ∈ 𝔪 := by
+    intro x hx
+    by_contra hx𝔪
+    have hu : IsUnit x := by
+      by_contra hnu
+      exact hx𝔪 ((IsLocalRing.mem_maximalIdeal x).mpr hnu)
+    have htop : Ideal.ofList xs = ⊤ :=
+      Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span hx) hu
+    apply hxs.top_ne_smul
+    rw [htop, Submodule.top_smul]
+
+  have : Nontrivial (QuotSMulTop y M) := by
+    apply Submodule.Quotient.nontrivial_iff.mpr
+    refine ne_top_of_le_ne_top (maximalIdeal_smul_top_lt_top (R := R) M).ne ?_
+    rw [← Submodule.ideal_span_singleton_smul]
+    exact Submodule.smul_mono_left ((Ideal.span_singleton_le_iff_mem _).mpr hy)
+  have hltM : 𝔪 • (⊤ : Submodule R M) < ⊤ := maximalIdeal_smul_top_lt_top M
+  have hltQ : 𝔪 • (⊤ : Submodule R (QuotSMulTop y M)) < ⊤ :=
+    maximalIdeal_smul_top_lt_top (QuotSMulTop y M)
+
+  have hM := (ModuleCat.exists_isRegular_tfae 𝔪 xs.length (ModuleCat.of R M) hltM).out 4 1
+  have hExtM := hM.mp ⟨xs, rfl, hmem, hxs⟩
+
+  have hS := IsSMulRegular.smulShortComplex_shortExact (M := ModuleCat.of R M) hreg
+  have supp𝔪 : Module.support R (Shrink.{u_2} (R ⧸ 𝔪)) =
+      PrimeSpectrum.zeroLocus 𝔪 := by
+    rw [(Shrink.linearEquiv R _).support_eq, Module.support_eq_zeroLocus,
+      Ideal.annihilator_quotient]
+  have hExtQ : ∀ i < n, Subsingleton (Abelian.Ext
+      (ModuleCat.of R (Shrink.{u_2} (R ⧸ 𝔪))) (ModuleCat.of R (QuotSMulTop y M)) i) := by
+    intro i hi
+    have hE := Abelian.Ext.covariant_sequence_exact₃'
+      (ModuleCat.of R (Shrink.{u_2} (R ⧸ 𝔪))) hS i (i + 1) rfl
+    rw [ShortComplex.ab_exact_iff_function_exact] at hE
+    have h0 := hExtM (ModuleCat.of R (Shrink.{u_2} (R ⧸ 𝔪))) inferInstance inferInstance
+      (by rw [supp𝔪]) i (by omega)
+    have h1 := hExtM (ModuleCat.of R (Shrink.{u_2} (R ⧸ 𝔪))) inferInstance inferInstance
+      (by rw [supp𝔪]) (i + 1) (by omega)
+    have key : ∀ x : Abelian.Ext (ModuleCat.of R (Shrink.{u_2} (R ⧸ 𝔪)))
+        (ModuleCat.of R (QuotSMulTop y M)) i, x = 0 := by
+      intro x
+      obtain ⟨w, hw⟩ := (hE x).mp (h1.elim _ _)
+      rw [← hw, h0.elim w 0]
+      exact map_zero _
+    exact ⟨fun a b => by rw [key a, key b]⟩
+
+  have hQ := (ModuleCat.exists_isRegular_tfae 𝔪 n
+    (ModuleCat.of R (QuotSMulTop y M)) hltQ).out 2 4
+  obtain ⟨zs, hlen, -, hzs⟩ := hQ.mp hExtQ
+  exact ⟨zs, hlen, hzs⟩
+
+end GlobalTheory.RegularElementQuotient
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsIsRegularQuotSMulTop =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegularOfSupportDimQuotientAddLengthLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegularOfSupportDimQuotientAddLengthLe", "h": "module\n\npublic import ReciprocityTheory.CommutativeAlgebra.ChainConnInDim\npublic import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.IsQuasiRegularSeqSelfIffLocalizationMaximal\npublic import Mathlib.RingTheory.Ideal.Height\npublic import Mathlib.RingTheory.KrullDimension.Module\npublic import Mathlib.RingTheory.QuasiFinite.Basic\npublic import Mathlib.RingTheory.RegularLocalRing.Defs\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsIsRegularQuotSMulTop\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsWeaklyRegularIffIsQuasiRegularSeqOfIsLocalRing\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.HopfAlgebra.Basic\npublic import Mathlib.RingTheory.KrullDimension.Regular\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Presheaf\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.RingTheory.Flat.Tensor\npublic import Mathlib.RingTheory.Ideal.KrullsHeightTheorem\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open RingTheory.Sequence IsLocalRing TensorProduct
@@ -458,12 +559,7 @@ theorem exists_isRegular_quotSMulTop [Small.{v} R] {M : Type v} [AddCommGroup M]
     (hn : n + 1 ≤ xs.length) {y : R} (hy : y ∈ maximalIdeal R) (hreg : IsSMulRegular M y) :
     ∃ zs : List R, zs.length = n ∧ RingTheory.Sequence.IsRegular (QuotSMulTop y M) zs := by
   first
-  | exact @_root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop
-  | exact _root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop
   | (apply _root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop <;> assumption)
-  | (intros; apply _root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.RegularElementQuotient.exists_isRegular_quotSMulTop ..)
 
 theorem supportDim_le_supportDim_quotient_add_length {M : Type*} [AddCommGroup M] [Module R M]
     [Module.Finite R M] {ys : List R} (hm : ∀ y ∈ ys, y ∈ maximalIdeal R) :
@@ -627,3 +723,6 @@ theorem flat_of_isRegularRing_of_isRegularRing [IsRegularRing A] [IsRegularRing 
 end Miracle
 
 end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegularOfSupportDimQuotientAddLengthLe =====

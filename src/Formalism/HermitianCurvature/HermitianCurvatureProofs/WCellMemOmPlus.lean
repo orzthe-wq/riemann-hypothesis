@@ -89,10 +89,7 @@ lemma μE_one (i j : ℕ) : PI.QnWCellW.μE (1 : Matrix (Fin (k + 1)) (Fin (k + 
   unfold PI.QnWCellW.μE
   by_cases h : i < k + 1 ∧ j < k + 1
   · rw [dif_pos h, Matrix.one_apply]
-    by_cases hij : i = j
-    · subst hij
-      simp [h]
-    · rw [if_neg (by simpa [Fin.ext_iff] using hij), if_neg (by tauto)]
+    by_cases hij : i = j <;> simp [h, hij, Fin.ext_iff]
   · rw [dif_neg h, if_neg (by tauto)]
 
 theorem wCell_last_eq (c : Fin r → ℂ) : wCell k r (Fin.last r) c = bigCell k r c 1 := by
@@ -194,9 +191,7 @@ theorem domR_uw {z z' : Fin (2 * r + k + 1) → ℂ} {x : (Fin r → ℂ) × Mx 
   refine ⟨h1, ?_, ?_⟩
   · exact Formalism.FourierDecayAlt.P.Qx5.Glev_mul (Formalism.FourierDecayAlt.P.Qx5.Glev_mul (Formalism.FourierDecayAlt.P.Qx5.UW_Glev hh _) h2)
       (Formalism.FourierDecayAlt.P.Qx5.UW_Glev hh' _)
-  · show 0 < GGl k r z z' (h * x.2 * h')
-    rw [GGl_uw hh hh']
-    exact h3
+  · simpa only [GGl_uw hh hh'] using h3
 
 theorem sf_resG {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Set (Mx k r)} {J : Mx k r → E}
     (hJ : SmoothLev k r 0 D J) :

@@ -141,15 +141,15 @@ theorem reflection_mul_weyl_cell (k r : ℕ) (S : Finset ℕ) (c : Fin r → ℂ
   have vS : (esI k r a).val = 2 * r + k - a.val := rfl
   simp only [Wm, Finset.mem_insert]
   by_cases h1 : q.val = a.val
-  · simp only [h1, ha, eq_self_iff_true, true_or, or_false, if_true, if_false]
-    split_ifs <;> (try simp only [Fin.ext_iff, vE, vS] at *) <;> first | rfl | (exfalso; omega) | (simp; done) | (simp_all; done)
+  · simp only [h1, ha, or_false, if_true, if_false]
+    split_ifs <;> (try simp only [Fin.ext_iff, vE, vS] at *) <;> first | rfl | (exfalso; omega) | (simp; done)
   · by_cases h2 : q.val = 2 * r + k - a.val
     · have e2 : 2 * r + k - (2 * r + k - a.val) = a.val := by omega
-      simp only [h2, e2, ha, eq_self_iff_true, true_or, or_false, if_true, if_false]
-      split_ifs <;> (try simp only [Fin.ext_iff, vE, vS] at *) <;> first | rfl | (exfalso; omega) | (simp; done) | (simp_all; done)
+      simp only [h2, e2, ha, or_false, if_true, if_false]
+      split_ifs <;> (try simp only [Fin.ext_iff, vE, vS] at *) <;> first | rfl | (exfalso; omega) | (simp; done)
     · have h3 : 2 * r + k - q.val ≠ a.val := by omega
       simp only [h1, h3, false_or]
-      split_ifs <;> (try simp only [Fin.ext_iff, vE, vS] at *) <;> first | rfl | (exfalso; omega) | (simp; done) | (simp_all; done)
+      split_ifs <;> (try simp only [Fin.ext_iff, vE, vS] at *) <;> first | rfl | (exfalso; omega) | (simp; done)
 
 theorem prod_eq_Wm (k r : ℕ) (c : Fin r → ℂ) : ∀ L : List (Fin r), L.Nodup →
     (L.map fun a => w1 k r a (c a)).prod = Wm k r (L.map Fin.val).toFinset c
@@ -181,7 +181,7 @@ theorem Wm_range_apply (k r : ℕ) (c : Fin r → ℂ) (p x : Fin (2 * r + k + 1
   have hp := p.isLt
   have hx := x.isLt
   simp only [Wm, Finset.mem_range, cf, Fin.ext_iff, swp_val]
-  split_ifs <;> first | rfl | (exfalso; omega) | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> congr 1 <;> omega) | (simp only [star_one, inv_one, mul_one, one_mul, mul_zero, zero_mul, star_zero, _root_.inv_zero] <;> first | rfl | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> congr 1 <;> omega))
+  split_ifs <;> first | rfl | (exfalso; omega) | (congr 1 <;> omega) | (congr 1 <;> congr 1 <;> congr 1 <;> omega)
 
 theorem Wm_mul_apply (k r : ℕ) (c : Fin r → ℂ) (M : Mx k r) (p q : Fin (2 * r + k + 1)) :
     (Wm k r (Finset.range r) c * M) p q = cf k r c p * M (swp k r p) q := by

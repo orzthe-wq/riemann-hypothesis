@@ -1,48 +1,9 @@
 module
 
 public import Formalism.LocalToGlobal.IndefiniteReal.Bridge
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.NoncompactArrFiniteDimensional
 
 @[expose] public section
 
@@ -92,9 +53,6 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 variable {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ}
   (P : ClassPres ι S σ ρ J χ)
 
-private theorem eq_decG_mul_y_decC_mul_decK (h : G) : h = ι (P.decG h) * P.y (P.decC h) * (P.decK h : G) :=
-  (P.reps h).exists.choose_spec.choose_spec.choose_spec
-
 theorem decC_eq (γ : Γ) (c : S.Cl) (k : J) : P.decC (ι γ * P.y c * k) = c := by
   exact (P.reps (ι γ * P.y c * k)).unique (P.reps (ι γ * P.y c * k)).exists.choose_spec ⟨γ, k, rfl⟩
 
@@ -138,7 +96,7 @@ private theorem coef_smul_eq_of_double_coset_eq (f : S.Forms) (γ γ' : Γ) (c :
 theorem ext_eq (f : S.Forms) (γ : Γ) (c : S.Cl) (k : J) :
     P.ext f (ι γ * P.y c * k) = (χ k : ℂ) • ρ γ (P.coef ((f : S.Cl → S.V) c)) := by
   have hc := P.decC_eq γ c k
-  have hs := eq_decG_mul_y_decC_mul_decK P (ι γ * P.y c * k)
+  have hs := _root_.Formalism.IndefR.Bridge.ClassPres.dec_spec P (ι γ * P.y c * k)
   unfold ClassPres.ext
   rw [hc] at hs ⊢
   exact coef_smul_eq_of_double_coset_eq P f γ _ c k _ hs
@@ -192,14 +150,11 @@ theorem coef_inj {x : S.V} (hx : P.coef x = 0) : x = 0 := by
 private theorem re_natCast_inv_mul' (n : ℕ) (z : ℂ) : (((n : ℂ))⁻¹ * z).re = ((n : ℝ))⁻¹ * z.re := by
   rw [← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.re_ofReal_mul]
 
-private theorem inner_self_re_eq_norm_sq (x : W) : (inner ℂ x x).re = ‖x‖ ^ 2 :=
-  inner_self_eq_norm_sq (𝕜 := ℂ) x
-
 theorem eq_zero_of_wsum {w : S.Cl → W}
     (h : ∑ c, ((S.wt c : ℂ))⁻¹ * inner ℂ (w c) (w c) = 0) (c : S.Cl) : w c = 0 := by
   have hr := congrArg Complex.re h
   rw [Complex.re_sum, Complex.zero_re] at hr
-  simp only [re_natCast_inv_mul', inner_self_re_eq_norm_sq] at hr
+  simp only [re_natCast_inv_mul', _root_.Formalism.REAL.re_inner_self_eq_norm_sq] at hr
   have hnn : ∀ c ∈ Finset.univ, 0 ≤ ((S.wt c : ℝ))⁻¹ * ‖w c‖ ^ 2 := fun c _ => by positivity
   have h0 := (Finset.sum_eq_zero_iff_of_nonneg hnn).1 hr c (Finset.mem_univ c)
   have hw : (S.wt c : ℝ) ≠ 0 := by
@@ -293,7 +248,7 @@ theorem adForms_fixed {F : G → W} (hF : F ∈ AdForms ι ρ J χ) (c : S.Cl) (
 theorem adForms_val {F : G → W} (hF : F ∈ AdForms ι ρ J χ) (h : G) :
     F h = (χ (P.decK h) : ℂ) • ρ (P.decG h) (F (P.y (P.decC h))) := by
   have hm : ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h) := hF
-  conv_lhs => rw [eq_decG_mul_y_decC_mul_decK P h]
+  conv_lhs => rw [_root_.Formalism.IndefR.Bridge.ClassPres.dec_spec P h]
   exact hm _ _ _
 
 theorem adForms_ext {F F' : G → W} (hF : F ∈ AdForms ι ρ J χ) (hF' : F' ∈ AdForms ι ρ J χ)
@@ -331,7 +286,7 @@ theorem span_eq (P : ClassPres ι S σ ρ J χ) : Submodule.span ℂ (Set.range 
       intro c' hc l
       rw [hL, P.ext_rep]
       classical
-      simp [clsSingle, Pi.single_apply, hc, Ne.symm hc]
+      simp [clsSingle, Ne.symm hc]
     have hs : ∀ l, P.extL (clsSingle S c (S.bV l)) (P.y c) = P.coef (clsAvg S c (S.bV l)) := by
       intro l
       rw [hL, P.ext_rep]
@@ -447,7 +402,6 @@ theorem lift_independent_action_holds (ι : Γ →* G) (ρ : Γ →* Module.End 
     simp [mul_assoc]
   have e2 : χ ⟨((κ⁻¹ * κ' : Q) : G), hk⟩ = (ch κ)⁻¹ * ch κ' := by
     rw [← hch, ← map_inv, ← map_mul]
-    try rfl
   rw [e1, hm, e2, map_one]
   change _ = (((ch κ')⁻¹ : ℂˣ) : ℂ) • (((ch κ)⁻¹ * ch κ' : ℂˣ) : ℂ) • F (h * (κ : G))
   rw [smul_smul, ← Units.val_mul, mul_comm ((ch κ')⁻¹), mul_inv_cancel_right]

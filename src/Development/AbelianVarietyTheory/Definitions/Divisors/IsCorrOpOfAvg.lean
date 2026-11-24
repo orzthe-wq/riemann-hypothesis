@@ -69,34 +69,15 @@ def galTot {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Schem
     (Ω ≃ₐ[k] Ω) → Htot l (sch.obj (GlobalTheory.Et.geom Ω p)) →ₗ[ℚ_[l]] Htot l (sch.obj (GlobalTheory.Et.geom Ω p)) :=
   fun σ => pullTot l (sch.map (GlobalTheory.Et.galMap Ω p σ))
 
-private theorem galMap_one' {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
-    (p : X ⟶ Spec (CommRingCat.of k)) : GlobalTheory.Et.galMap Ω p (1 : Ω ≃ₐ[k] Ω) = 𝟙 _ := by
-  apply pullback.hom_ext
-  · rw [GlobalTheory.Et.galMap_fst, Category.id_comp]
-  · rw [GlobalTheory.Et.galMap_snd, Category.id_comp]
-    have h1 : CommRingCat.ofHom ((1 : Ω ≃ₐ[k] Ω) : Ω →+* Ω) = 𝟙 _ := by
-      ext x; rfl
-    rw [h1, Spec.map_id, Category.comp_id]
-
 theorem galTot_one {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) :
     galTot l Ω p 1 = LinearMap.id := by
   simp only [galTot]
-  rw [galMap_one', CategoryTheory.Functor.map_id, pullTot_id]
-
-private theorem galMap_mul' {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
-    (p : X ⟶ Spec (CommRingCat.of k)) (σ τ : Ω ≃ₐ[k] Ω) :
-    GlobalTheory.Et.galMap Ω p (σ * τ) = GlobalTheory.Et.galMap Ω p σ ≫ GlobalTheory.Et.galMap Ω p τ := by
-  apply pullback.hom_ext
-  · rw [GlobalTheory.Et.galMap_fst, Category.assoc, GlobalTheory.Et.galMap_fst, GlobalTheory.Et.galMap_fst]
-  · have h2 : CommRingCat.ofHom ((σ * τ : Ω ≃ₐ[k] Ω) : Ω →+* Ω) =
-        CommRingCat.ofHom (τ : Ω →+* Ω) ≫ CommRingCat.ofHom (σ : Ω →+* Ω) := by
-      ext x; rfl
-    rw [GlobalTheory.Et.galMap_snd, Category.assoc, GlobalTheory.Et.galMap_snd, GlobalTheory.Et.galMap_snd_assoc, h2, Spec.map_comp]
+  rw [_root_.GlobalTheory.EtC.galMap_one, CategoryTheory.Functor.map_id, pullTot_id]
 
 theorem galTot_mul {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k))
     (σ τ : Ω ≃ₐ[k] Ω) : galTot l Ω p (σ * τ) = galTot l Ω p σ ∘ₗ galTot l Ω p τ := by
   simp only [galTot]
-  rw [galMap_mul', CategoryTheory.Functor.map_comp, pullTot_comp]
+  rw [_root_.GlobalTheory.EtC.galMap_mul, CategoryTheory.Functor.map_comp, pullTot_comp]
 
 def galTotRep {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) :
     Representation ℚ_[l] (Ω ≃ₐ[k] Ω) (Htot l (sch.obj (GlobalTheory.Et.geom Ω p))) where

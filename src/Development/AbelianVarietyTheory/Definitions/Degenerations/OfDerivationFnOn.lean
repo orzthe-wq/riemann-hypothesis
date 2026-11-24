@@ -130,7 +130,7 @@ def transl (a : 𝟙_ (Over (Sp K)) ⟶ A) : A ≅ A where
   hom := (toUnit A ≫ a) * 𝟙 A
   inv := (toUnit A ≫ a)⁻¹ * 𝟙 A
   hom_inv_id := by simp [MonObj.comp_mul, GrpObj.comp_inv, toUnit_unique (_ ≫ toUnit A) (toUnit A), ← Category.assoc]
-  inv_hom_id := by simp [MonObj.comp_mul, GrpObj.comp_inv, toUnit_unique (_ ≫ toUnit A) (toUnit A), ← Category.assoc]
+  inv_hom_id := by simp [MonObj.comp_mul, toUnit_unique (_ ≫ toUnit A) (toUnit A), ← Category.assoc]
 
 def shear (A : Over (Sp K)) [GrpObj A] : Bool → (A ⊗ A ⟶ A ⊗ A)
   | true => lift (fst A A) (fst A A * snd A A)

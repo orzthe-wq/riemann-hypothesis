@@ -71,10 +71,6 @@ theorem matHom_projArch_val (w : InfinitePlace D.host.F) (g : G D n) :
       (mat g).map (compInf D.host.F D.host.E w) := by
   rw [GlobalTheory.AdelicU.matHom_projArch]; rfl
 
-theorem block_matrix_diagonal_one_eq_one {R : Type} [CommRing R] : blk4 (1 : Matrix (Fin n) (Fin n) R) 0 0 1 = 1 := by
-  unfold blk4
-  rw [Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
-
 theorem block_matrix_entry_property {R : Type} [CommRing R] (S : Subring R) {a b c d : Matrix (Fin n) (Fin n) R}
     (ha : ∀ i j, a i j ∈ S) (hb : ∀ i j, b i j ∈ S) (hc : ∀ i j, c i j ∈ S) (hd : ∀ i j, d i j ∈ S) (i j : Fin (n + n)) :
     blk4 a b c d i j ∈ S := by
@@ -93,14 +89,14 @@ theorem proj_nb_eq_one {nb : hermA D n → G D n} (hnb : IsNMap nb) (v : Pl D) {
   refine GlobalTheory.AdelicU.matHom_injective _ _ _ (Units.ext ?_)
   rw [map_one, Units.val_one, matHom_proj_val, map_mat_nb hnb]
   have : x.1.map (cv D v) = 0 := Matrix.ext fun i j => hx i j
-  rw [this, block_matrix_diagonal_one_eq_one]
+  rw [this, _root_.GlobalTheory.StdUnn.Model.block_matrix_one]
 
 theorem projArch_nb_eq_one {nb : hermA D n → G D n} (hnb : IsNMap nb) (w : InfinitePlace D.host.F) {x : hermA D n}
     (hx : ∀ i j, compInf D.host.F D.host.E w (x.1 i j) = 0) : projArch D.sp.cm.sig (Jst D n) w (nb x) = 1 := by
   refine GlobalTheory.AdelicU.matHom_injective _ _ _ (Units.ext ?_)
   rw [map_one, Units.val_one, matHom_projArch_val, map_mat_nb hnb]
   have : x.1.map (compInf D.host.F D.host.E w) = 0 := Matrix.ext fun i j => hx i j
-  rw [this, block_matrix_diagonal_one_eq_one]
+  rw [this, _root_.GlobalTheory.StdUnn.Model.block_matrix_one]
 
 theorem nb_mem_atPts {nb : hermA D n → G D n} (hnb : IsNMap nb) (v : Pl D) {x : hermA D n}
     (hinf : ∀ w i j, compInf D.host.F D.host.E w (x.1 i j) = 0) (hoff : ∀ v' ≠ v, ∀ i j, cv D v' (x.1 i j) = 0) :

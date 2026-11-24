@@ -68,7 +68,7 @@ theorem height_pos' (g : GA E k) {ξ : Fin k → E} (hξ : ξ ≠ 0) : 0 < heigh
 
 theorem invT_mul (g h : GA E k) : invT (g * h) = invT g * invT h := by
   ext i j
-  simp [invT, Matrix.mul_inv_rev, Matrix.transpose_mul]
+  simp [invT, Matrix.transpose_mul]
 
 theorem invT_invT (g : GA E k) : invT (invT g) = g := by
   ext i j
@@ -93,7 +93,7 @@ theorem dt_scalar (c : GroundTheory.Global.IdeleGroup E) :
     Dt (GeneralLinearGroup.scalar (Fin k) c : GA E k) = (GroundTheory.Global.IdeleGroup.ideleModule E c : ℝ) ^ k := by
   have e : GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin k) c : GA E k) = c ^ k := by
     ext
-    simp [Matrix.det_diagonal]
+    simp
   unfold Dt
   rw [e, map_pow, Positive.val_pow]
 

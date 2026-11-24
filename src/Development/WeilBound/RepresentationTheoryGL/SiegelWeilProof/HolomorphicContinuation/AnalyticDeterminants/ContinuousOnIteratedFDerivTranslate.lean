@@ -88,12 +88,9 @@ theorem WD_mul_WD_B_A (j : ℕ) (T : Matrix (blkA (n := n) j) (blkA j) ℂ) (S :
   rw [WD_prod, h1, h2]
   simp
 
-theorem contDiffOn_scalar_section (p q : ℤ) : ContDiffOn ℂ ∞ (f0 (n := n) p q) {x | (u1 x).det ≠ 0 ∧ (u2 x).det ≠ 0} :=
-  contDiffOn_scalar_section_of_units p q
+alias contDiffOn_hF := _root_.PositivityTheory.Rg.Sw.LVs.contDiffOn_hF'
 
-theorem contDiffOn_hF (j : ℕ) (p q : ℤ) : ContDiffOn ℂ ∞ (hF (n := n) j p q) (Dom n) := contDiffOn_hF' j p q
-
-theorem contDiffOn_fV (p q : ℤ) : ContDiffOn ℂ ∞ (fV (n := n) p q) (Dom n) := contDiffOn_fV' p q
+alias contDiffOn_fV := _root_.PositivityTheory.Rg.Sw.LVs.contDiffOn_fV'
 
 private theorem contDiffOn_iteratedFDeriv_apply {E G : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup G] [NormedSpace ℂ G] (F : E → G) (U : Set E) (hU : IsOpen U)
@@ -255,55 +252,12 @@ theorem iteratedFDeriv_right {N : ℕ} (F : M2 n → ℂ) (U : Set (M2 n)) (hU :
       iteratedFDeriv ℂ (N + 1) F x (fun i => x * W i) :=
   iterated_fderiv_right_translation F U hU hF W hW x hx
 
-private theorem isOpen_dom_analytic_determinants : IsOpen (Dom n) := by
-  have hdet : Continuous (fun x : M2 n => x.det) := continuous_id.matrix_det
-  have hS0 : IsOpen {x : M2 n | x.det ≠ 0} := isOpen_ne_fun hdet continuous_const
-  have hc1 : Continuous (fun x : M2 n => (u1 x).det) := by
-    apply Continuous.matrix_det
-    refine continuous_pi fun i => continuous_pi fun j => ?_
-    simp only [u1, Matrix.add_apply, Matrix.smul_apply, toBlocks₂₁, toBlocks₂₂, Matrix.of_apply, smul_eq_mul]
-    fun_prop
-  have hc2 : Continuous (fun x : M2 n => (u2 x).det) := by
-    apply Continuous.matrix_det
-    refine continuous_pi fun i => continuous_pi fun j => ?_
-    simp only [u2, Matrix.add_apply, Matrix.neg_apply, Matrix.smul_apply, toBlocks₂₁, toBlocks₂₂, Matrix.of_apply,
-      smul_eq_mul]
-    fun_prop
-  have h4 : IsOpen ({x : M2 n | x.det ≠ 0} ∩ (fun x => ub1 x) ⁻¹' {m | m.det ≠ 0}) :=
-    continuousOn_inverse_first_block.isOpen_inter_preimage hS0 (isOpen_ne_fun continuous_id.matrix_det continuous_const)
-  have he : Dom n = {x : M2 n | (u1 x).det ≠ 0} ∩ {x : M2 n | (u2 x).det ≠ 0} ∩
-      ({x : M2 n | x.det ≠ 0} ∩ (fun x => ub1 x) ⁻¹' {m | m.det ≠ 0}) := by
-    ext x
-    simp only [Dom, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_preimage, isUnit_iff_ne_zero]
-    tauto
-  rw [he]
-  exact ((isOpen_ne_fun hc1 continuous_const).inter (isOpen_ne_fun hc2 continuous_const)).inter h4
+private alias isOpen_dom_analytic_determinants := _root_.PositivityTheory.Rg.Sw.LVs.isOpen_dom
 
 private theorem mem_dom_of_inG {x : M2 n} (hx : InG x) : x ∈ Dom n := by
   refine ⟨isUnit_det_of_inG' hx, det_first_cayley_block_ne_zero hx, det_second_cayley_block_ne_zero hx, ?_⟩
   rw [inverse_first_block_eq_of_group hx, det_conjTranspose]
   exact star_ne_zero.mpr (det_first_cayley_block_ne_zero hx)
-
-private theorem mul_mem_dom_of_inP {P x : M2 n} (hP : InP P) (hx : x ∈ Dom n) : P * x ∈ Dom n := by
-  obtain ⟨hG, h21⟩ := hP
-  obtain ⟨hx0, hx1, hx2, hx3⟩ := hx
-  have hPu := isUnit_det_of_inG' hG
-  have hrel := congrArg Matrix.det (par_rel hG h21)
-  rw [det_mul, det_one, det_conjTranspose] at hrel
-  have h22 : (toBlocks₂₂ P).det ≠ 0 := right_ne_zero_of_mul_eq_one hrel
-  have h11 : (toBlocks₁₁ P).det ≠ 0 := by
-    have := left_ne_zero_of_mul_eq_one hrel
-    exact fun h => this (by rw [h, star_zero])
-  refine ⟨?_, ?_, ?_, ?_⟩
-  · rw [det_mul]
-    exact hPu.mul hx0
-  · rw [automorphy_first_mul_parabolic x h21, det_mul]
-    exact mul_ne_zero h22 hx1
-  · rw [automorphy_second_mul_parabolic x h21, det_mul]
-    exact mul_ne_zero h22 hx2
-  · rw [inverse_first_block_mul_parabolic h21 hPu, det_mul]
-    refine mul_ne_zero hx3 ?_
-    exact (Matrix.isUnit_nonsing_inv_det _ (isUnit_iff_ne_zero.mpr h11)).ne_zero
 
 private theorem contDiffOn_fderiv_apply_mul_right {G : M2 n → ℂ} (hG : ContDiffOn ℂ ∞ G (Dom n)) (Z : M2 n) :
     ContDiffOn ℂ ∞ (fun x => fderiv ℂ G x (x * Z)) (Dom n) := by
@@ -325,7 +279,7 @@ private theorem fderiv_apply_mul_equivariant_of_equivariant {G : M2 n → ℂ} (
     ∀ x ∈ Dom n, fderiv ℂ G (P * x) (P * x * Z) = c * fderiv ℂ G x (x * Z) := by
   intro x hx
   let L : M2 n →L[ℂ] M2 n := (LinearMap.mulLeft ℂ P).toContinuousLinearMap
-  have hPx : P * x ∈ Dom n := mul_mem_dom_of_inP hP hx
+  have hPx : P * x ∈ Dom n := _root_.PositivityTheory.Rg.Sw.LVs.mul_mem_dom hP hx
   have hd1 : DifferentiableAt ℂ G (L x) :=
     (hG.contDiffAt (isOpen_dom_analytic_determinants.mem_nhds hPx)).differentiableAt (by simp)
   have hd2 : DifferentiableAt ℂ G x := (hG.contDiffAt (isOpen_dom_analytic_determinants.mem_nhds hx)).differentiableAt (by simp)
@@ -527,15 +481,8 @@ theorem transpose (hI : InfInv) (F1 F2 : M2 n → ℂ) (χ1 χ2 : M2 n → ℂ) 
   rw [List.length_ofFn] at key
   exact key
 
-theorem iteratedFDeriv_left_mul (F : M2 n → ℂ) (U : Set (M2 n)) (hU : IsOpen U) (hF : ContDiffOn ℂ ∞ F U) (M x : M2 n)
-    (hx : M * x ∈ U) (N : ℕ) (v : Fin N → M2 n) :
-    iteratedFDeriv ℂ N (fun y => F (M * y)) x v = iteratedFDeriv ℂ N F (M * x) (fun i => M * v i) := by
-  apply PositivityTheory.Rg.Sw.LVs.left_mul' <;> assumption
+alias iteratedFDeriv_left_mul := _root_.PositivityTheory.Rg.Sw.LVs.left_mul'
 
-theorem continuousOn_iteratedFDeriv_translate (F : M2 n → ℂ) (U : Set (M2 n)) (hU : IsOpen U) (hF : ContDiffOn ℂ ∞ F U)
-    (Kg : Type) [TopologicalSpace Kg] (ι : Kg → M2 n) (hι : Continuous ι) (c : Kg → ℂ) (hc : Continuous c) (N : ℕ) :
-    ContinuousOn (fun y : Kg × M2 n => iteratedFDeriv ℂ N (fun x => F (ι y.1 * x) * c y.1) y.2)
-      (Set.univ ×ˢ {x | ∀ k, ι k * x ∈ U}) := by
-  apply PositivityTheory.Rg.Sw.LVs.cont_translate' <;> assumption
+alias continuousOn_iteratedFDeriv_translate := _root_.PositivityTheory.Rg.Sw.LVs.cont_translate'
 
 end PositivityTheory.Rg.Sw.LVs

@@ -75,7 +75,7 @@ theorem absoluteGaloisAbelianization_t2Space (E Ω : Type) [Field E] [NumberFiel
 
 theorem continuous_localIdele' (E : Type) [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) :
     Continuous (Neutral.B1.localIdele E v) := by
-  apply GlobalTheory.CompanionTheory.InertOpen.continuous_localIdele' <;> assumption
+  apply GlobalTheory.CompanionTheory.InertOpen.continuous_localIdele'
 
 theorem isCompact_valOne (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     IsCompact {x : (w.adicCompletion E)ˣ | Valued.v (x : w.adicCompletion E) = 1} := by

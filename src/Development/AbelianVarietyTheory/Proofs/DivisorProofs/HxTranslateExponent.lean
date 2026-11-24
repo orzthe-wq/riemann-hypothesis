@@ -93,7 +93,6 @@ theorem reads_heisO_finOf : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : 
       ((∑ b, (hx X bas idx x (zOf θ V W hr X idx x v b) (zOf θ V W hr X idx x w b)).im : ℝ) : ℂ)) := by
     first
       | exact GlobalTheory.AdThSympl.psi_symplOH_eq D ψ θ V W r g hr X bas idx hψ hθ hV he hM hs x hd
-      | exact GlobalTheory.AdThSympl.psi_symplOH_eq D ψ θ V W r g hr X bas idx hψ hθ hV he hM hs x hx0
   obtain ⟨v, hv⟩ : ∃ v : WO V W, ratW W V γ = v + u := ⟨ratW W V γ - u, (sub_add_cancel _ _).symm⟩
   have hfadd (a b : WO V W) : (a + b).map (finPart D) = a.map (finPart D) + b.map (finPart D) := by
     ext i j

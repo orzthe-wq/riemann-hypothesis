@@ -78,7 +78,7 @@ variable {R : Type} [CommRing R] {α β n : Type} {m : α → Type} {m' : β →
 
 theorem mem_unipRad_iff_entries {e : (Σ a, m a) ≃ n} {g : GL n R} :
     g ∈ unipRad R e ↔ ∀ i j, ¬ blk e i < blk e j → (g : Matrix n n R) i j = (1 : Matrix n n R) i j := by
-  apply GlobalTheory.JacStagesProof.mem_unipRad_iff_entries' <;> assumption
+  apply GlobalTheory.JacStagesProof.mem_unipRad_iff_entries'
 
 theorem unipRad_ne_bot_iff [Nontrivial R] {e : (Σ a, m a) ≃ n} :
     unipRad R e ≠ ⊥ ↔ ∃ i j, blk e i < blk e j := by

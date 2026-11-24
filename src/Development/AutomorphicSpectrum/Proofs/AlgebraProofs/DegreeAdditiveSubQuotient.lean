@@ -1,9 +1,9 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BundleDegreeEqSumValuationsStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeBasisAdaptedToSubspaceStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundlesStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.BundleDegreeEqSumValuations
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeBasisAdaptedToSubspace
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.SubAndQuotientBundles
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -79,8 +79,7 @@ theorem det_adapted {K V : Type} [Field K] [AddCommGroup V] [Module K V] (W : Su
           simp at this
           omega
         simp only [LinearMap.comp_apply, Module.Basis.coord_apply, h0, map_zero,
-          Module.Basis.repr_self, Finsupp.single_apply, hne, if_false, Finsupp.coe_zero,
-          Pi.zero_apply]
+          Module.Basis.repr_self, Finsupp.single_apply, hne, if_false]
       · simp only [LinearMap.comp_apply, Module.Basis.coord_apply, hb2,
           Module.Basis.repr_self, Finsupp.single_apply, Fin.natAdd_inj]
     exact LinearMap.congr_fun this x
@@ -106,12 +105,12 @@ theorem deg_eq_subDeg_add_deg_quot : ∀ (K : Type) [Field K] (C : ACurve K) (V 
   intro K _ C V _ _ _ L W hL
   rcases isEmpty_or_nonempty C.I with hI | ⟨⟨i₀⟩⟩
   · simp [subDeg, deg, finsum_of_isEmpty]
-  have hex := fun i => (hL.1 i).elim fun b hb => GlobalTheory.T.lattice_basis_adapted_to_subspace K C V i _ b (L i) W hb
+  have hex := fun i => (hL.1 i).elim fun b hb => _root_.GlobalTheory.CompanionTheory.Ar.Crv.LatAdapted.exists_adapted K C V i _ b (L i) W hb
   choose bW bQ b hb hbW hbQ h1 h2 using hex
-  obtain ⟨hS, hQ⟩ := GlobalTheory.T.sub_and_quotient_bundles K C V L W hL
-  obtain ⟨-, eL⟩ := GlobalTheory.T.bundle_degree_eq_sum_valuations K C V L _ (b i₀) b hL hb
-  obtain ⟨fS, eS⟩ := GlobalTheory.T.bundle_degree_eq_sum_valuations K C W (sub C L W) _ (bW i₀) bW hS hbW
-  obtain ⟨fQ, eQ⟩ := GlobalTheory.T.bundle_degree_eq_sum_valuations K C (V ⧸ W) (quot C L W) _ (bQ i₀) bQ hQ hbQ
+  obtain ⟨hS, hQ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.SubQuot.isBun_sub_quot K C V L W hL
+  obtain ⟨-, eL⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.DegFormula.deg_formula K C V L _ (b i₀) b hL hb
+  obtain ⟨fS, eS⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.DegFormula.deg_formula K C W (sub C L W) _ (bW i₀) bW hS hbW
+  obtain ⟨fQ, eQ⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.DegFormula.deg_formula K C (V ⧸ W) (quot C L W) _ (bQ i₀) bQ hQ hbQ
   rw [subDeg, eL, eS, eQ, ← finsum_add_distrib]
   · refine finsum_congr fun i => ?_
     rw [det_adapted W (bW i₀) (bW i) (bQ i₀) (bQ i) (b i₀) (b i) (h1 i₀) (h2 i₀) (h1 i) (h2 i),

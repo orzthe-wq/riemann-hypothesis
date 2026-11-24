@@ -117,9 +117,8 @@ def tjcosets_parMon (n j : ℕ) : Submonoid (GL (Fin n) 𝔽) where
 theorem tjcosets_inv_mem_of_finite {G : Type} [Group G] [Finite G] (S : Submonoid G) {x : G}
     (hx : x ∈ S) : x⁻¹ ∈ S := by
   have hpos := (isOfFinOrder_of_finite x).orderOf_pos
-  have e : x ^ (orderOf x - 1) = x⁻¹ :=
-    eq_inv_of_mul_eq_one_left (by rw [← pow_succ, Nat.sub_add_cancel hpos, pow_orderOf_eq_one])
-  rw [← e]
+  rw [← show x ^ (orderOf x - 1) = x⁻¹ from
+    eq_inv_of_mul_eq_one_left (by rw [← pow_succ, Nat.sub_add_cancel hpos, pow_orderOf_eq_one])]
   exact S.pow_mem hx _
 
 def tjcosets_par [Finite 𝔽] (n j : ℕ) : Subgroup (GL (Fin n) 𝔽) :=
@@ -136,7 +135,6 @@ private theorem exists_linearIndependent_extension_fin (N : ℕ) (d k : ℕ) (hd
   induction d with
   | zero =>
     refine ⟨fun i => v (Fin.cast (Nat.zero_add k) i), hv.comp _ (Fin.cast_injective _), fun i => ?_⟩
-    congr 1
     ext
     simp
   | succ d ih =>
@@ -164,8 +162,7 @@ theorem tjcosets_extend [Finite 𝔽] (n j : ℕ) (w : Fin (n - j) → Fin n →
     show j + (i : ℕ) = n - (n - j) + i
     have := i.isLt
     omega
-  show s (Fin.cast hc.symm (tjcosets_idx n j i)) = w i
-  rw [e, hsw]
+  simpa [e] using hsw i
 
 theorem GL_columns_linearIndependent [Finite 𝔽] (n j : ℕ) (g : GL (Fin n) 𝔽) :
     LinearIndependent 𝔽 (fun i => (g : Matrix (Fin n) (Fin n) 𝔽).col (tjcosets_idx n j i)) := by
@@ -208,13 +205,9 @@ theorem tjcosets_stab_le_par [Finite 𝔽] (n j : ℕ) :
   rw [MulAction.mem_stabilizer_iff, GL_smul_standard_tuple] at hg
   rw [tjcosets_mem_par]
   intro a b ha hb
-  have h1 : (g : Matrix (Fin n) (Fin n) 𝔽).col (tjcosets_idx n j ⟨b - j, by omega⟩) a
-      = standardBasisTuple n j ⟨b - j, by omega⟩ a := congrFun (congrFun hg _) a
-  simp only [standardBasisTuple] at h1
-  rw [tjcosets_idx_sub n j b hb] at h1
-  have hab : a ≠ b := by intro h; subst h; omega
-  rw [Pi.single_eq_of_ne hab] at h1
-  simpa [Matrix.col] using h1
+  have hab : a ≠ b := by rintro rfl; omega
+  simpa [Matrix.col, standardBasisTuple, tjcosets_idx_sub n j b hb, Pi.single_eq_of_ne hab]
+    using congrFun (congrFun hg ⟨b - j, by omega⟩) a
 
 theorem tjcosets_orbit_par [Finite 𝔽] (n j : ℕ) :
     MulAction.orbit (tjcosets_par (𝔽 := 𝔽) n j) (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽) =
@@ -223,10 +216,8 @@ theorem tjcosets_orbit_par [Finite 𝔽] (n j : ℕ) :
   ext w
   simp only [MulAction.mem_orbit_iff, Set.mem_setOf_eq]
   constructor
-  · rintro ⟨p, hp⟩
-    have hp' : (p : GL (Fin n) 𝔽) • (standardBasisTuple n j : TjcosetsFr (n - j) n 𝔽) = w := hp
-    rw [GL_smul_standard_tuple] at hp'
-    subst hp'
+  · rintro ⟨p, rfl⟩
+    rw [Subgroup.smul_def, GL_smul_standard_tuple]
     refine ⟨GL_columns_linearIndependent n j (p : GL (Fin n) 𝔽), fun i a ha => ?_⟩
     have h0 := (tjcosets_mem_par n j (p : GL (Fin n) 𝔽)).1 p.2 a (tjcosets_idx n j i) ha
       (by simp [tjcosets_idx])
@@ -238,11 +229,9 @@ theorem tjcosets_orbit_par [Finite 𝔽] (n j : ℕ) :
     have hgP : g ∈ tjcosets_par n j := by
       rw [tjcosets_mem_par]
       intro a b ha hb
-      have h1 : (g : Matrix (Fin n) (Fin n) 𝔽).col (tjcosets_idx n j ⟨b - j, by omega⟩) a
-          = w ⟨b - j, by omega⟩ a := congrFun (congrFun hg' _) a
+      have h1 := congrFun (congrFun hg' ⟨b - j, by omega⟩) a
       rw [tjcosets_idx_sub n j b hb] at h1
-      have h2 := h1.trans (hz _ a ha)
-      simpa [Matrix.col] using h2
+      simpa [Matrix.col] using h1.trans (hz ⟨b - j, by omega⟩ a ha)
     refine ⟨⟨g, hgP⟩, ?_⟩
     rw [Subgroup.smul_def]
     exact hg

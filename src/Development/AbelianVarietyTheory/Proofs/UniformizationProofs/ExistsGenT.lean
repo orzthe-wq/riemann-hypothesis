@@ -176,7 +176,7 @@ theorem multK_frac (k : ℕ) (α mu : D.X)
       simp only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, a₁, a₂]
       rw [add_comm mu α, cPoint_add]
       apply Additive.ofMul.injective
-      simp only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]
+      simp only [ofMul_mul, ofMul_inv, ofMul_zpow]
       module)
     (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _
       (powGen_isGen _ _ _ _ (D.psi_gen mu) k) (tau_isGen D mu α))

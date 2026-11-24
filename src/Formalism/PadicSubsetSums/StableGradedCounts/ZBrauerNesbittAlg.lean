@@ -82,10 +82,6 @@ theorem cp_prod [FiniteDimensional k V] [FiniteDimensional k W] (a : A) :
   rw [← LinearMap.charpoly_prodMap]
   congr 1
 
-theorem exists_ne_zero_hom [FiniteDimensional k W] [IsSemisimpleModule A W] [IsSimpleModule A S]
-    (h : ∀ a : A, (∀ w : W, a • w = 0) → ∀ s : S, a • s = 0) : ∃ f : W →ₗ[A] S, f ≠ 0 := by
-  exact Bl.general_b_fact_second_version.goal1 (k := k) h
-
 instance (N : Submodule A V) [FiniteDimensional k V] : FiniteDimensional k N :=
   Module.Finite.of_injective (N.subtype.restrictScalars k) N.subtype_injective
 
@@ -145,7 +141,7 @@ theorem mul_eq_one_of_covolume_identity {k A : Type} [Field k] [Ring A] [Algebra
       apply hne
       have : s = 0 := by exact_mod_cast hs0
       rw [this, smul_zero]
-    obtain ⟨f, hf⟩ := exists_ne_zero_hom (k := k) key
+    obtain ⟨f, hf⟩ := _root_.Bl.general_b_fact_second_version.goal1 (k := k) key
     have hsurj : Function.Surjective f := LinearMap.surjective_of_ne_zero hf
     obtain ⟨V', hV'⟩ := exists_isCompl S
     obtain ⟨C, hC⟩ := exists_isCompl (LinearMap.ker f)

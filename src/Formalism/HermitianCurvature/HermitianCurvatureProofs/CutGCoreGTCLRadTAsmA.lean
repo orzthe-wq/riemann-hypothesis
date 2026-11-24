@@ -201,7 +201,7 @@ theorem radR_PhiP (hG : Gd z z' μs π π' Pr) {p : ℂ → (Wq →L[ℂ] Wp)} (
 theorem eq_of_radR (hG : Gd z z' μs π π' Pr) {Φ Ψ : Q.RadSp k r z z' π π'}
     (h : NF.radR k r z z' μs (Φ : Q.Fn k r (Wq →L[ℂ] Wp)) = NF.radR k r z z' μs (Ψ : Q.Fn k r (Wq →L[ℂ] Wp))) :
     Φ = Ψ :=
-  Subtype.ext (Formalism.FourierDecayAlt.P.radical_reduction_injective Wp Wq k r z z' μs π π' hG.1 Φ Φ.2 Ψ Ψ.2 h)
+  Subtype.ext (_root_.Formalism.FourierDecayAlt.P.NFRadRedA.radRedInj Wp Wq k r z z' μs π π' hG.1 Φ Φ.2 Ψ Ψ.2 h)
 
 theorem PhiP_add (hG : Gd z z' μs π π' Pr) {p p' : ℂ → (Wq →L[ℂ] Wp)} (hp : ContDiff ℝ ∞ p)
     (hp' : ContDiff ℝ ∞ p') :
@@ -266,7 +266,7 @@ theorem VV_sum (hG : Gd z z' μs π π' Pr) {ι : Type} (s : Finset ι) (p : ι 
 
 theorem VV_smooth (hG : Gd z z' μs π π' Pr) {p : ℂ → (Wq →L[ℂ] Wp)} (hc0 : c0 ∈ OmX r) :
     ContDiffOn ℝ ∞ (VV z z' μs π π' Pr T c0 p) (Ann z z') := by
-  have hm := Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq k r z z' μs π π' hG.1
+  have hm := _root_.Formalism.FourierDecayAlt.P.NFRadRedA.radRedMem Wp Wq k r z z' μs π π' hG.1
     ((T (PhiP z z' μs π π' Pr p) : Q.RadSp k r z z' π π') : Q.Fn k r (Wq →L[ℂ] Wp))
     (T (PhiP z z' μs π π' Pr p)).2
   exact hm.1.comp (contDiff_const.prodMk contDiff_id).contDiffOn fun ζ hζ => ⟨hc0, hζ⟩

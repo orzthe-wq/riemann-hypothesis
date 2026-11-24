@@ -145,7 +145,7 @@ variable {K : Type} [Field K] [NumberField K]
 
 theorem exists_prime_mem (w : HeightOneSpectrum (𝓞 K)) :
     ∃ p : ℕ, p.Prime ∧ ((p : 𝓞 K) ∈ w.asIdeal) := by
-  apply GlobalTheory.Mem.FewPrimes.exists_prime_mem <;> assumption
+  apply GlobalTheory.Mem.FewPrimes.exists_prime_mem
 
 
 open Classical in

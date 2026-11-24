@@ -58,7 +58,6 @@ theorem idxDSig : IdxDSig := by
   rw [← unitaryCongruence.J_conj (I := I) j i]
   first
   | rfl
-  | simp
 
 theorem idxDInt : IdxDInt := fun I =>
   ⟨fun _ hx _ hy => unitaryCongruence.hA_int I hx hy, fun _ hc => unitaryCongruence.sigA_mem I hc⟩

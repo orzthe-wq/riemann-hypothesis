@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GgNone
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportInnerLatticesStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameCoordinatesTransportInnerLatticesStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportInnerLattices
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameCoordinatesTransportInnerLattices
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemPerpSpan
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToZero
 import Mathlib.Algebra.Order.Floor.Extended
@@ -64,16 +64,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r k : ℕ}
 variable {P : LocNG.FPair H r} {S : Frames M.L r k} (c : Coord P S)
 
-lemma mem_lat (Λ : Submodule M.L.O V) (x : V) : c.e x ∈ c.lat Λ ↔ x ∈ Λ := by
-  unfold Coord.lat
-  constructor
-  · rintro ⟨y, hy, h⟩
-    have : y = x := c.e.injective h
-    exact this ▸ hy
-  · intro h; exact ⟨x, h, rfl⟩
+alias mem_lat := _root_.GlobalTheory.HL.CoordInnerSnd.mem_lat
 
-lemma grp_e (g : V ≃ₗ[E] V) (x : V) : c.grp g (c.e x) = c.e (g x) := by
-  simp [Coord.grp]
+alias grp_e := _root_.GlobalTheory.HL.CoordUnip.grp_apply
 
 lemma lat_inj {Λ Λ' : Submodule M.L.O V} : c.lat Λ = c.lat Λ' ↔ Λ = Λ' := by
   constructor
@@ -121,20 +114,7 @@ lemma inTh_iff (Λ : Submodule M.L.O V) (x : V) :
   · rintro ⟨z, hz, rfl⟩
     exact ⟨c.e z, (mem_lat c _ _).2 hz, by rw [map_smul]⟩
 
-lemma X_le_perp (Fr : LocNG.FrameD H r) : H.X Fr.f ≤ H.perp (H.X Fr.f) := by
-  unfold HermSp.X
-  rw [Submodule.span_le]
-  rintro _ ⟨a, rfl⟩ x hx
-  rw [H.h_herm x]
-  have : H.h x (Fr.f a.castSucc) = 0 := by
-    induction hx using Submodule.span_induction with
-    | mem x hx =>
-      obtain ⟨b, rfl⟩ := hx
-      exact Fr.h_iso _ _ (Or.inl (Fin.castSucc_lt_last b).ne)
-    | zero => exact H.h_zero_left _
-    | add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]
-    | smul s x _ hx => rw [H.h_smul_left, hx, mul_zero]
-  rw [this, map_zero]
+alias X_le_perp := _root_.GlobalTheory.HL.CoordInnerSnd.X_le_perp
 
 lemma mkW_eq (f : Fin (r + 1) → V) (x y : ↥(H.perp (H.X f))) :
     H.mkW f x = H.mkW f y ↔ (x : V) - y ∈ H.X f := by
@@ -227,8 +207,8 @@ theorem isTermW_iff : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpac
   letI := hM.loc
   haveI := hM.char0
   obtain ⟨hth, hN, hN', -⟩ := GlobalTheory.HL.CoordUnip.transport M hM H r k P S c
-  obtain ⟨-, iA, -, sA⟩ := GlobalTheory.T.hermitianFrameCoordinates_transport_innerLattices M hM H r k P S c
-  obtain ⟨-, iB, -, sB⟩ := GlobalTheory.T.framePairCoordinates_transport_innerLattices M hM H r k P S c
+  obtain ⟨-, iA, -, sA⟩ := _root_.GlobalTheory.HL.CoordInnerFst.transport M hM H r k P S c
+  obtain ⟨-, iB, -, sB⟩ := _root_.GlobalTheory.HL.CoordInnerSnd.transport M hM H r k P S c
   have hA := (iA d.L).1 d.hL
   have hB := (iB d.L').1 d.hL'
   have eA : Λ = LocNG.img n (P.A.LamStd d.L) ↔

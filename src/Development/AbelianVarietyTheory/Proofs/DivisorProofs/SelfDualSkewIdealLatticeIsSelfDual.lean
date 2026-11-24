@@ -43,6 +43,9 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConjSmulConjSmul
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.Hilbert90IntegralIdelesOfMovedPrimes
+import Formalism.LocalToGlobal.GlobalTheory.GL3.PLinkThIndep
 
 @[expose] public section
 
@@ -58,20 +61,8 @@ namespace GlobalTheory.SkewLatSD
 
 variable (D : D7)
 
-theorem star_eq_conj' (x : D.host.E) : (letI := D.host.cmStar; star x) = D.host.conj x := by
-  have := D.host.isCMField_hostE
-  exact D.host.φ₀.injective ((NumberField.IsCMField.complexEmbedding_complexConj _ D.host.φ₀ x).trans
-    (D.host.conjE_apply D.host.φ₀ x).symm)
-
-theorem conj_conj' (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
-  letI := D.host.cmStar
-  rw [← star_eq_conj', ← star_eq_conj', star_star]
-
-theorem conj_mul_conj : D.host.conj * D.host.conj = 1 :=
-  AlgEquiv.ext fun x => conj_conj' D x
-
 theorem conj_smul_conj_smul (I : Ideal (𝓞 D.host.E)) : D.host.conj • D.host.conj • I = I := by
-  rw [smul_smul, conj_mul_conj, one_smul]
+  rw [smul_smul, _root_.GlobalTheory.NormSum.VacInt.conj_mul_self, one_smul]
 
 variable {D}
 
@@ -106,11 +97,6 @@ namespace GlobalTheory.SkewLatSD
 
 variable {D : D7}
 
-theorem mem_skewLat_iff {𝔪 : Ideal (𝓞 D.host.E)} {N : ℕ} (y : Fin N → D.host.E) :
-    y ∈ GlobalTheory.FunObj.SqNum.skewLat D 𝔪 N ↔ ∀ i, y i ∈ (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) / ((D.host.conj • 𝔪 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) := by
-  simp only [GlobalTheory.FunObj.SqNum.skewLat, Submodule.mem_pi, Set.mem_univ, true_implies]
-  rfl
-
 theorem skewLat_sd : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ), 𝔪 ≠ ⊥ → SD D (GlobalTheory.FunObj.SqNum.skewLat D 𝔪 N) := by
   intro D 𝔪 N h𝔪
   letI := D.host.cmStar
@@ -127,7 +113,7 @@ theorem skewLat_sd : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ), 𝔪
     simpa only [← h𝔫, hσ𝔫] using (map_mem_div σ h𝔫0 hx)
   have toA : ∀ x ∈ (𝔫 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) / (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E), σ x ∈ (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) / (𝔫 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) := fun x hx => by
     simpa only [← h𝔫, hσ𝔫] using (map_mem_div σ h𝔪 hx)
-  have hmem := fun y => mem_skewLat_iff (D := D) (𝔪 := 𝔪) (N := N) y
+  have hmem := fun y => _root_.GlobalTheory.SkewLatSelfDual.mem_skewLat (D := D) (𝔪 := 𝔪) (N := N) y
   refine ⟨?_, ?_, ?_⟩
   · unfold GlobalTheory.FunObj.SqNum.skewLat
     rw [← Submodule.iSup_map_single]
@@ -154,7 +140,7 @@ theorem skewLat_sd : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ), 𝔪
       rw [hmem] at hx hy
       unfold Formalism.BasicNotions.stdH
       refine Subring.sum_mem _ fun i _ => ?_
-      rw [star_eq_conj']
+      rw [_root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj]
       have := FractionalIdeal.mul_mem_mul (toB _ (hx i)) (hy i)
       rw [hBA, FractionalIdeal.mem_one_iff] at this
       obtain ⟨r, hr⟩ := this
@@ -175,7 +161,7 @@ theorem skewLat_sd : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (N : ℕ), 𝔪
       unfold Formalism.BasicNotions.stdH at this
       rw [Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj])
         (fun hi => absurd (Finset.mem_univ i) hi)] at this
-      rw [Pi.single_eq_same, star_eq_conj', conj_conj'] at this
+      rw [Pi.single_eq_same, _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj, _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conj_conj] at this
       obtain ⟨r, hr⟩ := this
       rw [FractionalIdeal.mem_one_iff]
       exact ⟨r, by rw [hr, mul_comm]⟩

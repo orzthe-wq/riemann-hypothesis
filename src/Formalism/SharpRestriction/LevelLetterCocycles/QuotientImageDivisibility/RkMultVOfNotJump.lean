@@ -115,12 +115,6 @@ theorem rk_filV_sep (x : V ⊗[Qp] BdR) (hx : ∀ a, x ∈ FilV PD (LL := LL) (V
     first
     | exact ⟨TensorProduct.equivFinsuppOfBasisLeft (Module.Free.chooseBasis Qp V), fun v y i =>
         TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply _ _ _ _⟩
-    | exact ⟨TensorProduct.equivFinsuppOfBasisLeft (Module.Free.chooseBasis Qp V), fun v y i => by
-        simp [TensorProduct.equivFinsuppOfBasisLeft]⟩
-    | exact ⟨(TensorProduct.congr (Module.Free.chooseBasis Qp V).repr (LinearEquiv.refl Qp BdR)).trans
-        (TensorProduct.finsuppScalarLeft _ _ _), fun v y i => by simp⟩
-    | exact ⟨(TensorProduct.congr (Module.Free.chooseBasis Qp V).repr (LinearEquiv.refl Qp BdR)).trans
-        TensorProduct.finsuppScalarLeft, fun v y i => by simp⟩
   have hmem : ∀ a, ∀ z ∈ FilV PD (LL := LL) (V := V) a, ∀ i, e z i ∈ PD.Fil a := by
     intro a z hz i
     obtain ⟨y, rfl⟩ := hz
@@ -161,7 +155,6 @@ theorem rk_fildR_hi (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ 
   have hle : ∀ a, a0 ≤ a → finrank LL ↥(FildR PD ρ τ a) ≤ finrank LL ↥(FildR PD ρ τ a0) := by
     intro a ha
     first
-    | exact Submodule.finrank_le_finrank_of_le (rk_fildR_anti PD ρ τ ha)
     | exact Submodule.finrank_mono (rk_fildR_anti PD ρ τ ha)
   have heq : ∀ a, a0 ≤ a → FildR PD ρ τ a = FildR PD ρ τ a0 := fun a ha =>
     Submodule.eq_of_le_of_finrank_eq (rk_fildR_anti PD ρ τ ha) (le_antisymm (hle a ha) (ha0 a))

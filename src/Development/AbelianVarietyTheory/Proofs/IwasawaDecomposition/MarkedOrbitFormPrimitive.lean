@@ -2,8 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NotIsPrimZero
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntBilinFormDescendAlongSurjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemilinearPullbackOfMarkedOrbitIndicatorStatement
+public import Mathlib.LinearAlgebra.BilinearMap
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntBilinFormDescendAlongSurjective
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsSemilinearPullbackOfMarkedOrbitIndicator
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,7 +60,7 @@ theorem eq_one_of_smul_eq_of_orbFun_evalZ_eq_one :
         (OrbMark.orbFun O w0 v).evalZ β = 1 →
         ∀ (k : ℕ) (β' : LinearMap.BilinForm ℤ X), (k : ℤ) • β' = β → k = 1 := by
   intro O _ bar w0 X₀ _ _ v hv hp X _ _ _ β hβ k β' hk
-  obtain ⟨τ, f, -, hf, -, H⟩ := GlobalTheory.T.exists_semilinear_pullback_of_markedOrbitIndicator w0 v β hβ
+  obtain ⟨τ, f, -, hf, -, H⟩ := _root_.GlobalTheory.PolFan.OrbMark.exists_semilinear_pull_of_evalZ_eq_one w0 v β hβ
   have hval : ∀ (x₀ y₀ : X₀), ∃ x y, v x₀ y₀ = β x y := by
     intro x₀ y₀
     obtain ⟨x, hx⟩ := hf (Submodule.Quotient.mk x₀)
@@ -89,7 +90,7 @@ theorem eq_one_of_smul_eq_of_orbFun_evalZ_eq_one :
       apply hcan
       rw [hβ', e]
       simp
-    obtain ⟨ζ₁, hζ₁⟩ := GlobalTheory.T.exists_intBilinForm_descend_along_surjective f hf β' hl hr
+    obtain ⟨ζ₁, hζ₁⟩ := _root_.GlobalTheory.exists_bilinForm_descend_of_surjective f hf β' hl hr
     let m : X₀ →ₗ[ℤ] X₀ ⧸ (CarDim.orad v : Submodule O X₀) :=
       (CarDim.orad v : Submodule O X₀).mkQ.toAddMonoidHom.toIntLinearMap
     let ζ : LinearMap.BilinForm ℤ X₀ := ζ₁.compl₁₂ m m

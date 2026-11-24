@@ -56,16 +56,11 @@ variable {L : Type} [Field L] [NumberField L]
 
 theorem prod_inf_mul_finPart (a : Ideles L) :
     ∃ y : ∀ w : InfinitePlace L, (w.Completion)ˣ, (∏ w, infIdele L w (y w)) * finPartI L a = a := by
-  apply _root_.GlobalTheory.Mem.Chr.Determ.exists_prod_inf_mul_finPart <;> assumption
+  apply _root_.GlobalTheory.Mem.Chr.Determ.exists_prod_inf_mul_finPart
 
 theorem isFin_finPart (a : Ideles L) : IsFinIdele (finPartI L a) := fun _ => rfl
 
-theorem isUnitary_of_orderDvd {χ : HChar L} {n : ℕ} (hn : 0 < n) (h : χ.OrderDvd n) : χ.IsUnitary := fun x => by
-  have h1 : (χ ^ n).1 x = 1 := by rw [show χ ^ n = 1 from h]; rfl
-  have h2 : χ.1 x ^ n = 1 := by simpa using h1
-  have h3 : ‖((χ.1 x : ℂˣ) : ℂ)‖ ^ n = 1 := by
-    rw [← norm_pow, ← Units.val_pow_eq_pow_val, h2]; simp
-  exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h3
+alias isUnitary_of_orderDvd := _root_.Formalism.L2.Host.HChar.isUnitary_of_order
 
 end General
 

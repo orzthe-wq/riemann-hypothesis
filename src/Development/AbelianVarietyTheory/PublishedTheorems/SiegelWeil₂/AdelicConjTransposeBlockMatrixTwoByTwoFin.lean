@@ -82,7 +82,7 @@ theorem JR_Jst : (JR (AF D.host.F) (Jst D n) : Mx D (n + n) (n + n)) = blk4 0 1 
   ext i j
   simp only [JR, Jst, blk4, Matrix.map_apply, Matrix.submatrix_apply]
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;>
-    by_cases h : i = j <;> simp [Matrix.one_apply, h]
+    by_cases h : i = j <;> simp [h]
 
 theorem exists_mat (M N : Mx D (n + n) (n + n)) (h1 : M * N = 1) (h2 : N * M = 1)
     (h : adj M * blk4 0 1 (-1) 0 * M = blk4 0 1 (-1) 0) : ∃ g : G D n, mat g = M :=

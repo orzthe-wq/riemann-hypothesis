@@ -55,6 +55,7 @@ public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries
 public import Development.AbelianVarietyTheory.Definitions.Foundations.EqPlaceIdemOfIsPrimeIdem
 public import Development.AutomorphicArithmetic.LocalEmbeddings.ComplEquivEvW
 import Development.AutomorphicArithmetic.LocalEmbeddings.StageGeoDefs
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SplitIdempotentBaseFunctionIdentity
 
 @[expose] public section
 
@@ -194,8 +195,7 @@ private theorem isHalf_iff_ptO {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.host.
     ⟨fun h => Matrix.ext h, fun h i j => congrFun (congrFun h i) j⟩
   rw [h, h, ← ptO_smul, (ptO_bij G hG e).1.eq_iff]
 
-private theorem sb_zero {m n : ℕ} (a : AE D) (Λ : AddSubgroup (Mx D m n)) : IsSBHalf a Λ 0 :=
-  ⟨fun _ h => absurd rfl h, 1, one_pos, fun _ _ _ _ => rfl, fun _ h => absurd rfl h⟩
+private alias sb_zero := _root_.GlobalTheory.SymmetricBilinearHalf.sb_zero
 
 private theorem sb_smul {m n : ℕ} {a : AE D} {Λ : AddSubgroup (Mx D m n)} {φ : Mx D m n → ℂ} (h : IsSBHalf a Λ φ) (c : ℂ) :
     IsSBHalf a Λ (c • φ) := by
@@ -203,19 +203,7 @@ private theorem sb_smul {m n : ℕ} {a : AE D} {Λ : AddSubgroup (Mx D m n)} {φ
   exact ⟨fun t ht => h1 t (right_ne_zero_of_mul ht), k, hk, fun u hu hu' t => congrArg (c * ·) (h2 u hu hu' t),
     fun t ht => h3 t (right_ne_zero_of_mul ht)⟩
 
-private theorem sb_add {m n : ℕ} {a : AE D} {Λ : AddSubgroup (Mx D m n)} {φ φ' : Mx D m n → ℂ} (h : IsSBHalf a Λ φ)
-    (h' : IsSBHalf a Λ φ') : IsSBHalf a Λ (φ + φ') := by
-  obtain ⟨h1, k, hk, h2, h3⟩ := h
-  obtain ⟨h1', k', hk', h2', h3'⟩ := h'
-  have hor : ∀ t, (φ + φ') t ≠ 0 → φ t ≠ 0 ∨ φ' t ≠ 0 := fun t ht => by
-    by_contra! hc
-    exact ht (by rw [Pi.add_apply, hc.1, hc.2, add_zero])
-  refine ⟨fun t ht => (hor t ht).elim (h1 t) (h1' t), k * k', Nat.mul_pos hk hk', fun u hu hu' t => ?_, fun t ht => ?_⟩
-  · rw [Pi.add_apply, Pi.add_apply, mul_smul, h2 _ (nsmul_mem hu k') (GlobalTheory.BigDat.GraphHeis.isHalf_nsmul' hu' k'),
-      smul_comm k k' u, h2' _ (nsmul_mem hu k) (GlobalTheory.BigDat.GraphHeis.isHalf_nsmul' hu' k)]
-  · rcases hor t ht with h | h
-    · rw [mul_comm, mul_smul]; exact nsmul_mem (h3 t h) k'
-    · rw [mul_smul]; exact nsmul_mem (h3' t h) k
+private alias sb_add := _root_.GlobalTheory.SymmetricBilinearHalf.sb_add
 
 end Host
 
@@ -315,7 +303,7 @@ theorem UpperTheory.exists_isSBHalf_theta_of_selfDual_lattices :
     · rw [if_neg hx, if_neg fun h => hx h.2, mul_zero]
   have hmm : ∀ (v : P) (t : D.host.E →ₐ[D.host.F] Fv D.host.F v) (w : AE D) (u : Matrix (Fin S.rank) (Fin d) (AE D)),
       (w • u).map (piW t) = piW t w • u.map (piW t) := fun v t w u => Matrix.ext fun i j => map_mul (piW t) w (u i j)
-  have hR := GlobalTheory.T.heisenbergStableRelation_of_vacua M Bs.ψ hstd hM (Finset.univ : Finset P) Subtype.val Subtype.val_injective.injOn
+  have hR := _root_.GlobalTheory.InductLagr.rel_of_vac M Bs.ψ hstd hM (Finset.univ : Finset P) Subtype.val Subtype.val_injective.injOn
     (fun v => Matrix (Fin S.rank) (Fin d) (Fv D.host.F v))
     (fun v => {u | At (evFin D.host.F v.1) u ∧ u.map (piW (t₀ v)) = 0})
     (fun v => {u | At (evFin D.host.F v.1) u ∧ u.map (piW (t₁ v)) = 0})

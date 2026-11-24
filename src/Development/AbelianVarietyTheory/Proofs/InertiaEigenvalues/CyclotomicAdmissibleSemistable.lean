@@ -67,7 +67,7 @@ theorem fixed_frob (c : ↥(MaximalUnramifiedExtension l)) (hc : frobUr (l := l)
     rw [e3, e, e2]
     exact Submodule.smul_mem _ _ (P.PD K).one_mem
   obtain ⟨q, hq⟩ := (P.PD K).fund _ h1 h2
-  haveI := nontrivial_B P
+  have := nontrivial_B P
   refine ⟨q, (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B).injective ?_⟩
   rw [← hq, ← IsScalarTower.algebraMap_apply]
 

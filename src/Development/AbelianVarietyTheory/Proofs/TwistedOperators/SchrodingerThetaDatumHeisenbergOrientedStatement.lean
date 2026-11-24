@@ -61,4 +61,4 @@ theorem _root_.GlobalTheory.T.schrodingerThetaDatum_heisenberg_oriented : ∀ (D
       (∀ u, cS u = (HMul.hMul (uᵀ.submatrix e id) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram)) : Matrix (Fin X.rank) (Fin S.rank) (AE D))) →
       ∀ (Φ : (Fin S.rank × Fin d → AF D.host.F) → ℂ) (f : WO S X → ℂ), IsDatum M ψ cS Φ f →
         ∀ w : Matrix (Fin S.rank) (Fin d) (AE D), IsDatum M ψ cS (M.co.rho ψ w Φ) (heisO ψ (sgn ε S) X (cS w) f) := by
-  first | exact @GlobalTheory.SquareAgree.HeisCov.isDatum_rho | exact GlobalTheory.SquareAgree.HeisCov.isDatum_rho | (intros; apply GlobalTheory.SquareAgree.HeisCov.isDatum_rho <;> assumption)
+  first | exact @GlobalTheory.SquareAgree.HeisCov.isDatum_rho

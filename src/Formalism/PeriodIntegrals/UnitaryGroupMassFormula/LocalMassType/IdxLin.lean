@@ -69,10 +69,6 @@ theorem oev_add {a b : Fv F v ⊗[F] E} (ha : a ∈ OEv (E := E) v) (hb : b ∈ 
 theorem oev_neg {a : Fv F v ⊗[F] E} (ha : a ∈ OEv (E := E) v) : -a ∈ OEv (E := E) v := by
   rw [mem_oev_iff] at *; exact Submodule.neg_mem _ ha
 
-theorem oev_mul {a b : Fv F v ⊗[F] E} (ha : a ∈ OEv (E := E) v) (hb : b ∈ OEv (E := E) v) :
-    a * b ∈ OEv (E := E) v := by
-  first | exact GlobalTheory.SpanMulInertiaEigenvalues.main .. | (apply GlobalTheory.SpanMulInertiaEigenvalues.main <;> assumption) | (intros; apply GlobalTheory.SpanMulInertiaEigenvalues.main <;> assumption) | (apply @GlobalTheory.SpanMulInertiaEigenvalues.main <;> assumption) | (intros; apply @GlobalTheory.SpanMulInertiaEigenvalues.main <;> assumption) | (apply @GlobalTheory.SpanMulInertiaEigenvalues.main <;> first | assumption | infer_instance) | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F E ‹_› ‹_› ‹_› ‹_› v a b ha hb | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F E ‹_› ‹_› ‹_› ‹_› v a b ha | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F E ‹_› ‹_› ‹_› ‹_› v a b | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F E ‹_› ‹_› ‹_› ‹_› v a | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F E ‹_› ‹_› ‹_› ‹_› v | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F E ‹_› ‹_› ‹_› ‹_› | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F E ‹_› ‹_› ‹_› | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F E ‹_› ‹_› | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F E ‹_› | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F E | exact @GlobalTheory.SpanMulInertiaEigenvalues.main F
-
 theorem sc_mul' (a b : Fv F v) : sc (E := E) v a * sc (E := E) v b = sc (E := E) v (a * b) := by
   simp [sc, Algebra.TensorProduct.tmul_mul_tmul]
 

@@ -85,7 +85,7 @@ theorem act_eq_sum_of_kernel : LgFacts → ∀ (n : ℕ) [MeasurableSpace (G n)]
       = fun y : G n => ∑ i, c i • ks i y.val (f (x * y.val)) := by
     funext y
     rw [hk y.val (hval y)]
-    simp [ContinuousLinearMap.sum_apply]
+    simp
   have hi : ∀ i ∈ (Finset.univ : Finset ι),
       Integrable (fun y : G n => c i • ks i y.val (f (x * y.val))) μ :=
     fun i _ => (hint i).smul (c i)

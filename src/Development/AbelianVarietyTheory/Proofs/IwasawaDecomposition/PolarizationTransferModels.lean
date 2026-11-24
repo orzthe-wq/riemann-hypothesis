@@ -83,9 +83,7 @@ theorem map_injective {R S : Type} [CommRing R] [IsDomain R] [IsDiscreteValuatio
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
-theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
-  obtain ⟨_, _, _, _, _, m, -⟩ := sabPull CubePf.cubePull f t
-  exact ⟨_, ⟨m⟩⟩
+alias exists_pull := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_sab
 
 theorem comp {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     {h : S'' ⟶ S} (e : g ≫ f = h) (m : SABMap t' t f) (m' : SABMap t'' t' g) : Nonempty (SABMap t'' t h) :=

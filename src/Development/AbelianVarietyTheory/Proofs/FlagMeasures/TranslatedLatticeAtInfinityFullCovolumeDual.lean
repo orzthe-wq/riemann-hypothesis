@@ -118,8 +118,8 @@ theorem toMatrix_form : LinearMap.BilinForm.toMatrix (stdB E j) (form E j) =
       by_cases ha : a = a'
       · subst ha
         fin_cases s <;> fin_cases s' <;> simp
-      · simp [ha, Pi.single_eq_of_ne ha]
-    · simp [hw, Pi.single_eq_of_ne hw]
+      · simp [ha]
+    · simp [hw]
   · intro w'' _ h
     simp [Pi.single_eq_of_ne h]
   · simp
@@ -173,7 +173,6 @@ theorem covAt_dual (b : Basis (Idx E j) ℝ (VecInf E j)) :
     map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]
     first
       | exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-      | (rw [Finset.sum_comm]; exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)
   have h2 := congrArg (fun M => |Matrix.det M|) h
   simp only [Matrix.det_mul, Matrix.det_transpose, abs_mul, abs_det_form, Matrix.det_one, abs_one, mul_one] at h2
   rw [Basis.det_apply, Basis.det_apply]

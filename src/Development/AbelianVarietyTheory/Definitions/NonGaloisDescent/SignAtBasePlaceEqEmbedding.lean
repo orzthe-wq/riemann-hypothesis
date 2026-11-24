@@ -66,7 +66,7 @@ def tensMap (r : R →+* R') (κ : K →+ K') (φ : M →+ M') (hκ : ∀ c a, �
   TensorProduct.liftAddHom
     { toFun := fun a => (TensorProduct.mk R' K' M' (κ a)).toAddMonoidHom.comp φ
       map_zero' := by ext; simp
-      map_add' := fun _ _ => by ext; simp [TensorProduct.add_tmul] }
+      map_add' := fun _ _ => by ext; simp }
     fun c a x => by
       change κ (c • a) ⊗ₜ[R'] φ x = κ a ⊗ₜ[R'] φ (c • x)
       rw [hκ, hφ, TensorProduct.smul_tmul]

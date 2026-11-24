@@ -6,12 +6,12 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDesc
 public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.SqrtNegDiscMemCoeffField
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfUnifOfSubsingleton
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ConstantArcEigenbasisFlatBaseChange
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ConstantEigenbasisIndependentOfWitnessStatement
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ConstantEigenbasisIndependentOfWitness
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.DegenerationDataBaseChangesExistPidStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsConstantLieBasisArcGroupStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArcStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieCombStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TangentVectorsThetaSectionArcWitnessBaseChangeStatement
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.TangentVectorsThetaSectionArcWitnessBaseChange
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsConstantLieBasisArcGroup
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieComb
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationDegenerationDataUnique
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -171,16 +171,16 @@ theorem exists_matrix (hG : Out.GlobalFnsSt) {A : Type} [CommRing A] [IsDomain A
     (h₁ : ArcBasis W ρ e₁) (h₂ : ArcBasis W ρ e₂) :
     ∃ g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) A,
       (∀ τ, (g τ).det ≠ 0) ∧ ∀ τ k, GtComb (g τ k) (e₁ τ) (e₂ τ k) := by
-  have key := (GlobalTheory.T.constantEigenbasis_independent_of_witness hG E H Dw l Xo c O β Y A b a χ W ρ e₁ h₁).2.2
+  have key := (_root_.GlobalTheory.ArcBasisIndep.arcBasis_indep hG E H Dw l Xo c O β Y A b a χ W ρ e₁ h₁).2.2
   obtain ⟨v₁, i₁, b₁⟩ := h₁
   obtain ⟨v₂, i₂, b₂⟩ := h₂
   choose g hg using fun τ k => (key τ (e₂ τ k) (v₂ τ k)
-    (((GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W (e₂ τ k)).2 _ (i₂ τ k)).2 ((b₂ τ).1 k).1) (i₂ τ k)
+    (((_root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W (e₂ τ k)).2 _ (i₂ τ k)).2 ((b₂ τ).1 k).1) (i₂ τ k)
     ((b₂ τ).1 k).2).exists
   refine ⟨fun τ => Matrix.of (g τ), fun τ => ?_, hg⟩
   have := W.t.semi.smooth
   have hU : ∀ k, IsLieComb (fun i => PowerSeries.C (R := A) (g τ k i)) (v₁ τ) (v₂ τ k) := fun k =>
-    (GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y A b a χ W _ (g τ k) (e₁ τ) (e₂ τ k) (v₁ τ) (v₂ τ k) (i₁ τ) (hg τ k)).1 (i₂ τ k)
+    (_root_.GlobalTheory.ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y A b a χ W _ (g τ k) (e₁ τ) (e₂ τ k) (v₁ τ) (v₂ τ k) (i₁ τ) (hg τ k)).1 (i₂ τ k)
   choose h hh using fun j => ((b₂ τ).2 (v₁ τ j) ((b₁ τ).1 j).1 ((b₁ τ).1 j).2).exists
   have hm : Matrix.of h * (PowerSeries.C (R := A)).mapMatrix (Matrix.of (g τ)) = 1 := by
     ext1 j k
@@ -206,7 +206,7 @@ theorem exists_arcBasis_baseChange (hL : Out.Laws) (hL₂ : Out.Laws2) (hU : Out
   obtain ⟨hW, hν, -⟩ := (GlobalTheory.T.degenerationData_baseChanges_exist_pid hL hL₂ hU hL₅ E H Dw l Xo c O β Y A A' b a f hf b' hp.1).2 a' p hp
   obtain ⟨W', hW'⟩ := hW χ W
   choose e' he' using fun τ k => (hν (e τ k)).exists
-  obtain ⟨m, -, hm, -⟩ := GlobalTheory.T.tangentVectors_thetaSection_arcWitness_baseChange hL hL₂ E H Dw l Xo c O β Y A b a χ W A' b' a' f p W' hp hW'
+  obtain ⟨m, -, hm, -⟩ := _root_.GlobalTheory.ArcBaseChange.main hL hL₂ E H Dw l Xo c O β Y A b a χ W A' b' a' f p W' hp hW'
   have hfl : ((PowerSeries.map f).comp (PowerSeries.C (R := A))).Flat := by
     refine flat_of_injective _ fun x y hxy => hf (PowerSeries.C_injective ?_)
     simpa using hxy
@@ -214,7 +214,7 @@ theorem exists_arcBasis_baseChange (hL : Out.Laws) (hL₂ : Out.Laws2) (hU : Out
   have arcBasis_baseChange : Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) (ρ : (E →+* ℂ) → (𝓞 E →+* A)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR A)), ArcBasis W ρ e → ∀ (S : Type) [CommRing S] (ι : PowerSeries A →+* S), (ι.comp (PowerSeries.C (R := A))).Flat → ∀ (t' : SAB H (Sp S)) (m2 : SABMap t' W.t (spMap ι)), ∃ u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (epsR S ⟶ t'.G), (∀ τ k, ∃ v, LieImg W (e τ k) v ∧ (u τ k).left ≫ m2.φ = spMap (Formalism.L2.Pj.dualMap ι) ≫ v.left) ∧ ∀ τ, (∀ k, IsTangent (u τ k) ∧ ∀ x : 𝓞 E, (u τ k ≫ t'.act.act x).left = spMap (epsScaleR (ι (PowerSeries.C (R := A) (ρ τ x)))) ≫ (u τ k).left) ∧ ∀ w : epsR S ⟶ t'.G, IsTangent w → (∀ x : 𝓞 E, (w ≫ t'.act.act x).left = spMap (epsScaleR (ι (PowerSeries.C (R := A) (ρ τ x)))) ≫ w.left) → ∃! cf : Fin (Dw.mult τ) → S, IsLieComb cf (u τ) w := by
     intro hG E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W ρ e hB S _ ι hflat t' m2
     obtain ⟨v₀, hv₀, hB⟩ := hB
-    obtain ⟨g, e₁, v, M, hev, hv, hcomb, hM⟩ := GlobalTheory.T.exists_constantLieBasis_arcGroup hG E H Dw l Xo c O β Y A b a χ W
+    obtain ⟨g, e₁, v, M, hev, hv, hcomb, hM⟩ := _root_.GlobalTheory.ConstLie.exists_const_basis hG E H Dw l Xo c O β Y A b a χ W
     have hsm : Smooth W.t.G.hom := W.t.semi.smooth
     have hmon : ∀ x, IsMonHom (W.t.act.act x) := W.t.act.hom
     have hmon' : ∀ x, IsMonHom (t'.act.act x) := t'.act.hom
@@ -223,9 +223,9 @@ theorem exists_arcBasis_baseChange (hL : Out.Laws) (hL₂ : Out.Laws2) (hU : Out
   
     have hU : ∀ τ k, ∃ U : Fin g → A, IsLieComb (fun j => PowerSeries.C (R := A) (U j)) v (v₀ τ k) := fun τ k => by
       have ht : GtTanR (e τ k) :=
-        ((GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W (e τ k)).2 _ (hv₀ τ k)).2 ((hB τ).1 k).1
+        ((_root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W (e τ k)).2 _ (hv₀ τ k)).2 ((hB τ).1 k).1
       obtain ⟨U, hU, -⟩ := hcomb _ ht
-      exact ⟨U, (GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y A b a χ W g U e₁ (e τ k) v _ (fun i => (hev i).2) hU).1 (hv₀ τ k)⟩
+      exact ⟨U, (_root_.GlobalTheory.ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y A b a χ W g U e₁ (e τ k) v _ (fun i => (hev i).2) hU).1 (hv₀ τ k)⟩
     choose U hU using hU
     choose u hu using fun τ k => exists_lift ι m2.cart (v₀ τ k)
     choose v' hv' using fun j => exists_lift ι m2.cart (v j)

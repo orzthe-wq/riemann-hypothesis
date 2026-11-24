@@ -2,10 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IrreducibleAdmissibleDecomposableCompEquiv
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryLocalPointsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryLocalPoints
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocCompSplit
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleRepIsotypicOfCentraliserFactor
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceUnitaryLocalPointsEquivGLStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceUnitaryLocalPointsEquivGL
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -41,7 +42,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalPrimeGaloisActionPeriodT
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsWeight
@@ -65,8 +65,8 @@ theorem exists_comp_and_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   refine ⟨?_, fun σ σ' hσ hσ' => ?_⟩
   · obtain ⟨σ, -, h, -⟩ := GlobalTheory.DefU.exists_locComp_split E a π w hw
     exact ⟨σ, h⟩
-  · obtain ⟨e, he⟩ := GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL E a w hw
-    obtain ⟨r, -, -, hr2⟩ := GlobalTheory.T.exists_continuous_retraction_onto_unitaryLocalPoints E a w
+  · obtain ⟨e, he⟩ := _root_.GlobalTheory.locU_equiv_GL E a w hw
+    obtain ⟨r, -, -, hr2⟩ := _root_.GlobalTheory.DefU.LocRet.exists_ret E a w
     set p : locU a w →* GL (Fin a) (w.adicCompletion E) := (cLoc w).comp (locU a w).subtype with hpdef
     have hp : p = e.toMulEquiv.toMonoidHom := MonoidHom.ext fun x => (he x).symm
     have hsurj : ∀ g, p (e.symm g) = g := fun g => by

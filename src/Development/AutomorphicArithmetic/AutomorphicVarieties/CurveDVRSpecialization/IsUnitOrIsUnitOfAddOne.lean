@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.Tactic
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.BaseRepGL3NormalisedOfPsiEqOne
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
 public import Mathlib.FieldTheory.IsAlgClosed.Basic
@@ -145,12 +145,13 @@ def ConstOfChar : Prop :=
     (∀ g ∈ U, η g = 1 → (r g).mat.charpoly = (((r0 η Ψ g).mat).map (algebraMap k A)).charpoly) →
     (Upper η r ∨ Lower η r) ∧ ∀ g a, (r g).mat a a = algebraMap k A ((r0 η Ψ g).mat a a)
 
-class IsCD (O A : Type) [CommRing O] [CommRing A] [Algebra O A] : Prop extends IsDomain A, IsDiscreteValuationRing A where
+class IsCD (O A : Type) [CommRing O] [CommRing A] [Algebra O A] : Prop extends IsDomain A where
+  [toIsDiscreteValuationRing : IsDiscreteValuationRing A]
   complete : IsAdicComplete (maximalIdeal A) A
   isLocalHom : IsLocalHom (algebraMap O A)
   fin : Finite (ResidueField A)
 
-attribute [instance] IsCD.complete IsCD.isLocalHom IsCD.fin
+attribute [instance] IsCD.toIsDiscreteValuationRing IsCD.complete IsCD.isLocalHom IsCD.fin
 
 def FinCrit : Prop :=
   ∀ (O R : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O]

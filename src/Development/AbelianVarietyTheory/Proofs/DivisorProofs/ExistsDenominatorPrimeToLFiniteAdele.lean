@@ -71,10 +71,6 @@ theorem val_nat {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (�
   rw [map_natCast]
   exact (map_natCast (algebraMap E (w.adicCompletion E)) n).symm
 
-theorem val_nat_le {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
-    Valued.v ((n : w.adicCompletion E)) ≤ 1 := by
-  rw [val_nat]; exact w.valuation_le_one _
-
 theorem exists_nat_mem {E : Type} [Field E] [NumberField E] {l : ℕ} (hl : l.Prime)
     (w : HeightOneSpectrum (𝓞 E)) (hw : (l : 𝓞 E) ∉ w.asIdeal) :
     ∃ m : ℕ, ¬ l ∣ m ∧ (m : 𝓞 E) ∈ w.asIdeal := by
@@ -132,9 +128,9 @@ theorem exists_den_prime_to : ∀ (E : Type) [Field E] [NumberField E] (l : ℕ)
     rw [e]
     by_cases hw : w ∈ hfin.toFinset
     · rw [← Finset.prod_erase_mul _ _ hw, Nat.cast_mul, mul_assoc, map_mul]
-      exact mul_le_one' (val_nat_le _ _) (hmz w)
+      exact mul_le_one' (_root_.GlobalTheory.AdLat.valued_natCast_le_one _ _) (hmz w)
     · have : z w ∈ w.adicCompletionIntegers E := by simpa using hw
       rw [map_mul]
-      exact mul_le_one' (val_nat_le _ _) this
+      exact mul_le_one' (_root_.GlobalTheory.AdLat.valued_natCast_le_one _ _) this
 
 end GlobalTheory.HilbFam.AdeleDen

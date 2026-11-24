@@ -121,7 +121,7 @@ private theorem JR_eq : (form O).JR R = J4 R := by
 
 private theorem J_adj (X : M4 R) : J4 R * adj X = Xᵀ * J4 R := by
   ext i j
-  fin_cases i <;> fin_cases j <;> simp [J4, adj, sgn, Matrix.mul_apply, Fin.sum_univ_four, Fin.rev] <;> ring
+  fin_cases i <;> fin_cases j <;> simp [J4, adj, sgn, Matrix.mul_apply, Fin.sum_univ_four, Fin.rev]
 
 private theorem J_sq : -J4 R * J4 R = 1 := by
   ext i j

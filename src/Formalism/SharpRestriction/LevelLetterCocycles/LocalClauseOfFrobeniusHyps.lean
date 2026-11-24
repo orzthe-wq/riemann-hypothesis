@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.LevelLetterCocycles.QuotientImageDivisibility.RkMultVOfNotJump
 
 @[expose] public section
 
@@ -68,18 +69,8 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
-theorem filV_succ_le (a : ℤ) : FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (LL := LL) (V := V) a := by
-  have hle : (PD.Fil (a + 1)).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp := PD.Fil_anti a
-  have hcomp : AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) ((PD.Fil (a + 1)).restrictScalars Qp).subtype =
-      (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) ((PD.Fil a).restrictScalars Qp).subtype).comp
-        (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (Submodule.inclusion hle)) := by
-    rw [← AlgebraTensorModule.map_comp, LinearMap.id_comp, Submodule.subtype_comp_inclusion]
-  unfold FilV
-  rw [hcomp]
-  exact LinearMap.range_comp_le_range _ _
-
 theorem fildR_succ_le (τ : K →ₐ[Qp] LL) (a : ℤ) : FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a :=
-  inf_le_inf_left _ (filV_succ_le PD a)
+  inf_le_inf_left _ (_root_.Formalism.MainNotions.N.Pv.LocalLengthBound.rk_filV_succ PD a)
 
 theorem jumps_bdd (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ τ)] :
     ∃ h : ℕ, ∀ a : ℤ, IsJumpV PD ρ τ a → a ≤ h := by
@@ -417,7 +408,7 @@ theorem key_id {T : LocLat G Qp LL O} (σ J K : ℕ) (e : ℕ → ℕ) (he : ∀
           ring
 
   rw [lO_smul, map_sub, map_sum, φ_lA]
-  simp only [φ_lA, φD_smulA, map_pow, map_natCast]
+  simp only [φD_smulA, map_pow, map_natCast]
   rw [smul_sub, smul_sub, Finset.smul_sum, Finset.smul_sum, smul_smul, smul_smul,
     mul_comm (((PD.p : ℕ) : LetA O n) ^ J), sub_add, sub_right_inj, ← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl fun y hy => ?_

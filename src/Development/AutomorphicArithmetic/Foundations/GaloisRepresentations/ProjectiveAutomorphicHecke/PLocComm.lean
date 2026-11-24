@@ -58,7 +58,7 @@ private theorem rel (k : GUf E n) (u : Plc E) :
   rw [map_mul] at h2
   refine h2.trans ?_
   ext i j
-  by_cases hij : i = j <;> simp [hij, Matrix.one_apply, sim]
+  by_cases hij : i = j <;> simp [hij, sim]
 
 private theorem gu_ext {a b : GUf E n} (hs : sim a = sim b) (hc : ∀ u, comp u a = comp u b) : a = b := by
   refine Subtype.ext (Prod.ext (Units.ext (GlobalTheory.SplitPts.matAf_ext fun u => ?_)) hs)

@@ -67,7 +67,6 @@ private lemma exp_smul_mem_Kset_of_skew_of_commute_Jm (X : Matrix (Fin n) (Fin n
     rw [Matrix.conjTranspose_smul, hX, smul_neg]
     first
     | simp
-    | (congr 2; exact Complex.conj_ofReal t)
   show NormedSpace.exp ((t : ℂ) • X) ∈ Matrix.unitaryGroup (Fin n) ℂ ∧
     NormedSpace.exp ((t : ℂ) • X) * Jm ε = Jm ε * NormedSpace.exp ((t : ℂ) • X)
   refine ⟨?_, ?_⟩
@@ -119,8 +118,6 @@ private lemma exp_smul_diagonal_I (φ : Fin n → ℝ) (t : ℝ) :
   congr 1
   funext b
   first
-  | (rw [Pi.exp_apply, ← Complex.exp_eq_exp_ℂ])
-  | (simp only [Pi.exp_apply]; exact (congrFun Complex.exp_eq_exp_ℂ _).symm)
   | simp [Complex.exp_eq_exp_ℂ]
 
 private lemma diagonal_I_conjTranspose_eq_neg (φ : Fin n → ℝ) :
@@ -181,8 +178,6 @@ private lemma sigma_exp_smul_eq_exp_smul_of_actM_eigen (hσ : IsURepOn (UJset ε
       first
       | exact ((σ (NormedSpace.exp ((t : ℂ) • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt
           (0 : ℝ) hd
-      | simpa using ((σ (NormedSpace.exp ((t : ℂ) • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt
-          (0 : ℝ) hd
     have h0 : HasDerivAt (fun s : ℝ => σ (NormedSpace.exp ((t : ℂ) • X))
         (σ (NormedSpace.exp ((s : ℂ) • X)) (w : H)))
         (σ (NormedSpace.exp ((t : ℂ) • X)) (c • (w : H))) (t - t) := by
@@ -217,7 +212,7 @@ private lemma actM_diagonal_I_single {M : Type*} [AddCommGroup M] [Module ℂ M]
   rw [actM_diagonal, Finset.sum_eq_single a]
   · simp
   · intro b _ hb
-    simp [Pi.single_apply, hb]
+    simp [hb]
   · intro h
     exact absurd (Finset.mem_univ a) h
 
@@ -233,7 +228,6 @@ private lemma antisymmetric_unit_conjTranspose_eq_neg (a b : Fin n) :
   split_ifs
   all_goals first
     | simp
-    | (simp; exact Complex.conj_I)
 
 private lemma antisymmetric_unit_commute_Jm_of_same_sign {a b : Fin n} (hab : ε a = ε b) :
     (Matrix.of fun i j : Fin n => (if j = b ∧ i = a then (1 : ℂ) else 0) -
@@ -265,7 +259,6 @@ private lemma symmetric_I_unit_conjTranspose_eq_neg (a b : Fin n) :
   split_ifs
   all_goals first
     | simp
-    | (simp; exact Complex.conj_I)
 
 private lemma symmetric_I_unit_commute_Jm_of_same_sign {a b : Fin n} (hab : ε a = ε b) :
     (Matrix.of fun i j : Fin n => (if j = b ∧ i = a then Complex.I else 0) +

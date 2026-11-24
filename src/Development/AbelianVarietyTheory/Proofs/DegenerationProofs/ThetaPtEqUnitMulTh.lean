@@ -330,7 +330,7 @@ theorem exists_unit_stalk (hG : GlobalFnsSt) (P : PolAV S) {T : Over S} {m : ℕ
         rw [← Over.comp_left, SymLiftOdd.comp_pow', pt_snd, one_pow]
       have e₂ : T.hom ≫ eSec P.A = (1 : T ⟶ P.A).left := rfl
       refine (Fintype.prod_sum_type _).trans ?_
-      simp only [Fin.prod_univ_two, Fin.prod_univ_one, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero,
+      simp only [Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero,
         Matrix.cons_val_one, e₀, e₁, Finset.univ_unique, Finset.prod_singleton]
       rw [e₂, zpow_neg, inv_mul_cancel_right])
     (𝟙 T.left) (𝟙 _) (Category.id_comp _) (fun a => ⟨a, by simp⟩)

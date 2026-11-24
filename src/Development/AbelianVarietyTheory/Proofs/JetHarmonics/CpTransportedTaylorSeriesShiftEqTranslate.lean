@@ -4,15 +4,15 @@ public import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommuta
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffShiftS
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpSeriesCoeffNormBoundedRingLaws
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesInChartRingHomLaws
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsEllipticFunctionMulProdEqXyStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralWeierstrassChartXyUnitSeriesStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MultiplicativeShiftEqTranslateBySmallPointStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsEllipticFunctionMulProdEqXy
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralWeierstrassChartXyUnitSeries
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MultiplicativeShiftEqTranslateBySmallPoint
+public import Mathlib.Analysis.Meromorphic.RCLike
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UwEllipticFlow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.Meromorphic.RCLike
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -70,16 +70,6 @@ def Tr (ι : ℂ ≃+* ℂ_[q]) (ℓ : ℂ_[q]⟦X⟧) (ζ : ℂ_[q]) (p : ℂ) 
   AnalyticAt ℂ F 0 ∧ AnalyticAt ℂ (fun z => F (z + p)) 0 ∧ Bdd (hat ι ℓ F) ∧
     hat ι ℓ (fun z => F (z + p)) = shiftS ζ (hat ι ℓ F)
 
-lemma bdd_add {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f + g) := by
-  obtain ⟨A, hf⟩ := hf
-  obtain ⟨B, hg⟩ := hg
-  exact ⟨_, ((sup_norm_laws q).1 f g A B hf hg).1⟩
-
-lemma bdd_mul {f g : ℂ_[q]⟦X⟧} (hf : Bdd f) (hg : Bdd g) : Bdd (f * g) := by
-  obtain ⟨A, hf⟩ := hf
-  obtain ⟨B, hg⟩ := hg
-  exact ⟨_, ((sup_norm_laws q).1 f g A B hf hg).2⟩
-
 section
 variable {ι : ℂ ≃+* ℂ_[q]} {ℓ : ℂ_[q]⟦X⟧} {ζ : ℂ_[q]} {p : ℂ}
 
@@ -96,7 +86,7 @@ lemma Tr.add (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {F G : ℂ �
   obtain ⟨f1, f2, f3, f4⟩ := hF
   obtain ⟨g1, g2, g3, g4⟩ := hG
   refine ⟨f1.add g1, f2.add g2, ?_, ?_⟩
-  · rw [(h _ _ f1 g1).1]; exact bdd_add f3 g3
+  · rw [(h _ _ f1 g1).1]; exact _root_.GlobalTheory.MomOne.SmallTranslate.bdd_add f3 g3
   · rw [(h _ _ f1 g1).1, (h _ _ f2 g2).1, f4, g4, Shift.shiftS_add hζ f3 g3]
 
 lemma Tr.mul (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {F G : ℂ → ℂ} (hF : Tr ι ℓ ζ p F)
@@ -105,7 +95,7 @@ lemma Tr.mul (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {F G : ℂ �
   obtain ⟨f1, f2, f3, f4⟩ := hF
   obtain ⟨g1, g2, g3, g4⟩ := hG
   refine ⟨f1.mul g1, f2.mul g2, ?_, ?_⟩
-  · rw [(h _ _ f1 g1).2.1]; exact bdd_mul f3 g3
+  · rw [(h _ _ f1 g1).2.1]; exact _root_.GlobalTheory.MomOne.SmallTranslate.bdd_mul f3 g3
   · rw [(h _ _ f1 g1).2.1, (h _ _ f2 g2).2.1, f4, g4, Shift.shiftS_mul hζ f3 g3]
 
 lemma Tr.pow (h0 : constantCoeff ℓ = 0) (hζ : ‖ζ - 1‖ < 1) {F : ℂ → ℂ} (hF : Tr ι ℓ ζ p F) (n : ℕ) :
@@ -227,9 +217,9 @@ theorem shift_eq_hat_translate : ∀ (q : ℕ) [Fact q.Prime] (M : Mdl q) (ω ζ
   have hM : M.Ok := hch.1
   have h0 : constantCoeff (C ω * logS : ℂ_[q]⟦X⟧) = 0 := hch.2.1
   have hζ : ‖ζ - 1‖ < 1 := hat'.2.1
-  obtain ⟨h1, v, xs, ys, -, -, bys, -, -, cys, -, hwy, -⟩ := GlobalTheory.T.integral_weierstrass_chart_xy_unit_series q M _ hch
-  obtain ⟨tu, tw⟩ := GlobalTheory.T.multiplicativeShift_eq_translate_by_small_point q M ω ζ p hch hat'
-  obtain ⟨m, P, A, B, -, hAB⟩ := GlobalTheory.T.exists_ellipticFunction_mul_prod_eq_xy q M φ hM hφ
+  obtain ⟨h1, v, xs, ys, -, -, bys, -, -, cys, -, hwy, -⟩ := _root_.GlobalTheory.MomOne.ChartXY.chart_xy q M _ hch
+  obtain ⟨tu, tw⟩ := _root_.GlobalTheory.MomOne.SmallTranslate.shift_eq_translate q M ω ζ p hch hat'
+  obtain ⟨m, P, A, B, -, hAB⟩ := _root_.GlobalTheory.EllipticModel.exists_mul_prod_eq_xy q M φ hM hφ
   obtain ⟨-, -, -, -, -, -, -, -, hs⟩ := uw_elliptic_flow q M hM
   obtain ⟨au0, aw0, -, -, e0, -⟩ := hs 0 (Or.inl M.L.lattice.zero_mem)
   obtain ⟨aup, awp, -, -, ep, -⟩ := hs p hat'.1

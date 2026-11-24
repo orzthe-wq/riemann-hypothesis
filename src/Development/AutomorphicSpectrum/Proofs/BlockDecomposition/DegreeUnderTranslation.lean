@@ -82,7 +82,7 @@ theorem finsum_bound {α : Type} {f g s : α → ℝ} {c : ℝ} (hf : (Function.
 
 theorem sz_sq_le {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : sz g ^ 2 ≤ ⨆ p : Fin n × Fin n, ‖g p.1 p.2‖ ^ 2 := by
   rcases isEmpty_or_nonempty (Fin n × Fin n) with he | hne
-  · simp [sz, Real.iSup_of_isEmpty]
+  · simp [sz]
   · obtain ⟨p, hp⟩ := exists_eq_ciSup_of_finite (f := fun p : Fin n × Fin n => ‖g p.1 p.2‖)
     rw [sz, ← hp]
     exact le_ciSup (f := fun p : Fin n × Fin n => ‖g p.1 p.2‖ ^ 2) (Set.finite_range _).bddAbove p

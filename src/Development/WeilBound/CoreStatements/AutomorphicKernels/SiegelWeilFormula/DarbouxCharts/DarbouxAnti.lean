@@ -1,9 +1,7 @@
 module
 
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.THeis
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaParabolic.InvMulSelfMatrixDoubled
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaParabolic.LRhoOm
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaParabolic.TThetaSum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -90,33 +88,6 @@ theorem trace_gram {m n : ℕ} (Z X : Matrix (Fin m) (Fin n) (AE F E)) (J : Matr
   simp only [Matrix.mul_assoc]
   rw [Matrix.trace_mul_comm]
   simp only [Matrix.mul_assoc]
-
-theorem tHeis : THeis := by
-  intro F E _ _ _ _ _ σ d Φ hΦ Z X
-  have h := d.ok.dbl
-  have hψ : IsStd d.B.ψ := d.ok.good.std
-  obtain ⟨t0, -, hBx, hf, -⟩ := frameData d
-  constructor
-  · simp only [SD.T]
-    erw [(congrArg d.l (Tpar.rho_rho (σ := σ) (A := d.A) (Y := d.Y) (dd := d.dd) (ψ := d.B.ψ) (X * (incM F d.b.1.toCols₂)ᵀ) (Z * (incM F d.b.1.toCols₂)ᵀ) Φ))]
-    rw [map_smul, smul_eq_mul]
-    erw [symp_cols]
-    erw [frame_yy_A d.ok.frame]
-    rw [Matrix.mul_zero, Matrix.zero_mul,
-      Matrix.zero_mul, Matrix.trace_zero, neg_zero, map_zero, mul_zero, AddChar.map_zero_eq_one, one_mul, ← Matrix.add_mul]
-    rfl
-  · simp only [SD.T, SD.tt, SD.gram]
-    rw [hBx, Matrix.transpose_mul, ← Matrix.mul_assoc]
-    erw [(congrArg d.l (Tpar.rho_rho (σ := σ) (A := d.A) (Y := d.Y) (dd := d.dd) (ψ := d.B.ψ) (X * (incM F d.b.1.toCols₂)ᵀ) (Z * (incM F t0.1)ᵀ * (diagCols (Fin d.n))ᵀ) Φ))]
-    rw [map_smul, smul_eq_mul, add_comm,
-      l_shift h hψ _ _ hΦ, ← mul_assoc, ← AddChar.map_add_eq_mul]
-    congr 2
-    change ⅟(2 : AF F) * symp (cA σ) (-1) (incM F d.A.J) (dbl (incM F d.Y.J)) (X * (incM F d.b.1.toCols₂)ᵀ) (Z * (incM F t0.1)ᵀ * (diagCols (Fin d.n))ᵀ) + -(⅟(2 : AF F) * symp (cA σ) (-1) (incM F d.A.J) (dbl (incM F d.Y.J)) (Z * (incM F t0.1)ᵀ * (diagCols (Fin d.n))ᵀ) (X * (incM F d.b.1.toCols₂)ᵀ)) = _
-    rw [darboux_anti d.dd]
-    rw [Matrix.mul_assoc Z, ← Matrix.transpose_mul, symp_cols, hf, Matrix.mul_one, trace_gram,
-      map_neg]
-    linear_combination (Algebra.trace (AF F) (AE F E) (Matrix.trace (Z * (X.map (cA σ))ᵀ * (incM F d.A.J)ᵀ))) *
-      (invOf_two_add_invOf_two : (⅟(2 : AF F) + ⅟2 = 1))
 
 end PositivityTheory.SiegelWeilFormula.Tunit
 

@@ -83,7 +83,7 @@ theorem eval_appLE {U : Z.Opens} {V : Y.Opens} (e : V ≤ i ⁻¹ᵁ U) (y : Y) 
     (Y.evaluation V y hy).hom ((i.appLE U V e).hom a) =
       (i.residueFieldMap y).hom ((Z.evaluation U (i y) (e hy)).hom a) := by
   refine Eq.trans ?_ (Scheme.evaluation_naturality_apply i y (e hy) a).symm
-  simp only [Scheme.Hom.appLE, Scheme.evaluation, LocallyRingedSpace.evaluation, CommRingCat.comp_apply]
+  simp only [Scheme.Hom.appLE, Scheme.evaluation, CommRingCat.comp_apply]
   rw [TopCat.Presheaf.germ_res_apply]
 
 end PullbackComparison

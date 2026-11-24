@@ -135,7 +135,6 @@ theorem jointSm_der (H : IsLieData σ j s) (Y : L) {Ψ : ℝ → G → ℂ} (hΨ
       Ψ q.1.1 (g * s (c q.1.2 * NormedSpace.exp (j (q.2 • Y)))) :=
     hF.comp ((contDiff_fst.comp contDiff_fst).prodMk ((contDiff_snd.comp contDiff_fst).prodMk contDiff_snd))
   convert contDiff_deriv_param hK using 1
-  congr 1
   funext r
   change deriv (fun t => Ψ r.1 ((g * s (c r.2)) * expMap j s (t • Y))) 0 = _
   congr 1

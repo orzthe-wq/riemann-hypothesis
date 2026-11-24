@@ -132,7 +132,7 @@ theorem _root_.GlobalTheory.unf_group_contains_congruence_upto_rootsOfUnity : �
         refine ⟨?_, fun p q hpq => ?_⟩
         · rw [hβ, Matrix.det_smul, Matrix.det_one, mul_one]
           exact pow_ne_zero _ ((map_ne_zero _).2 (pow_ne_zero _ hu0))
-        · simp [β, Matrix.one_apply, (ne_of_gt hpq)]
+        · simp [β, (ne_of_gt hpq)]
       · unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.lact _root_.ReciprocityTheory.ChartRestriction.G.FD.rmul
         funext τ
         rw [hβ, hcm]

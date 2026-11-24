@@ -1,61 +1,229 @@
 name: batch queue
 
-# A maintainer queues a pull request for a later batch build by commenting `batch` on it. This
-# adds the `batch queue` label, which is what the people assembling a batch look for.
+# A maintainer or reviewer queues a pull request for a batch build by commenting `batch`, or just
+# `b`, on it.
+# This records the commit that was the pull request's head when the comment was posted, adds the
+# `batch queue` label, and merges that commit into the batch being assembled: a branch `batch/...`
+# with its own pull request, which the workflow opens and keeps described. `batch <commit>`, with
+# the full id of the head commit, names the commit outright. A batch takes only recorded commits.
+# The label on its own queues nothing, and commits pushed later wait for another `batch`.
 #
-# Only a comment whose whole text is `batch` counts, letter case and surrounding blank space
-# aside, and only from someone with write access to this repository. Every other comment is
-# ignored. GitHub runs comment-triggered workflows from the default branch, so a pull request
-# cannot change what this does, and nothing from the pull request is checked out or run.
+# The batch being assembled takes every queued commit for as long as its pull request is open.
+# When it is merged, its branch is removed, and what landed with it leaves the queue. When it is
+# closed without being merged, its pull requests stay queued, and the next run starts a new
+# batch with them.
+#
+# Queued pull requests go in by number, except that those labelled `priority` go first, so that
+# a large pull request is not the one left out when it conflicts with smaller ones. The order
+# counts when a batch is started or rebuilt. After that, a newly queued pull request goes on top
+# of what is already there, and one that was left out stays out, `priority` or not. To start
+# again in order, close the batch's pull request. Commenting `p`, or `p <commit>`, queues a pull
+# request the way `batch` does and labels it `priority` as well.
+#
+# Commenting `-batch` takes a pull request out of the queue again: it withdraws the recorded
+# commit and removes the `batch queue` label, and nothing else. Commits already merged into a
+# batch stay there, and no batch is rebuilt, so a build that is under way is never disturbed.
+#
+# Commenting `aa` hands a pull request back to its author: it adds the `awaiting-author` label and
+# nothing else. The inbox workflow takes a pull request with that label out of the inbox.
+#
+# Commenting `ready` hands it back to the maintainers: it takes `awaiting-author` off and nothing
+# else. The pull request's author can do this as well as maintainers. The inbox workflow counts
+# the label coming off as the pull request entering review again, and this workflow starts it for
+# that pull request, so it goes back in the inbox within a minute or so. Without the label there
+# is nothing to take off, and `ready` does nothing.
+#
+# A pull request that is closed, merged or not, loses `batch queue` and `building`. Reopened, it
+# gets `batch queue` back if this workflow took the label off and nobody commented `-batch` on
+# it meanwhile. A label a person took off stays off.
+#
+# The batches are the branches this workflow starts, named after the time they were started:
+# `batch/2026-11-23-041230`, with `-2` and so on after it if that name was taken. A `batch/...`
+# branch under another name, such as one a maintainer assembled by hand, is never added to and
+# its text is not rewritten. While its pull request is open, the sync job labels `building` each
+# open pull request whose head commit is in that branch, queued or not, and records them in a
+# comment there. The batch's own pull request gets `building` too. When it is merged, they lose
+# `building`. When it is closed without being merged, they lose it too, and the ones that were
+# queued go back to `batch queue`. The sync job runs when that pull request is opened, pushed to,
+# closed or reopened. A pull request labelled `batch queue` that holds a batch like this waits in
+# the queue like any other.
+#
+# Only a comment whose whole text is one of these counts, letter case and surrounding blank space
+# aside: `batch` or `b`, `batch <commit>` or `b <commit>`, `p` and `p <commit>`, `-batch` or
+# `-b`, `aa` and `ready`.
+# Each of them needs triage access to this repository or more, except that the pull request's
+# author can comment `ready` too. Reviewers are the people given the Triage role: it lets them
+# queue pull requests and hand them back without write access. Every other comment is ignored.
+# GitHub runs this workflow from the default branch for every event below, so a pull request
+# cannot change what it does. Nothing from a pull request is checked out or run:
+# GitHub performs the merges, and comparisons read git objects only.
+#
+# Queuing also compares the pull request with the others labelled `building` or `batch queue`
+# and comments if git cannot merge it with one of them, or if one deletes a Lean file the other
+# starts to import. That job only reports.
+#
+# The workflow can be started by hand to assemble the queue again, with a pull request number
+# to repeat the comparison for that pull request.
 
 on:
   issue_comment:
     types: [created]
+  pull_request_target:
+    types: [opened, synchronize, closed, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request to compare with the rest of the batch queue (optional)
+        type: number
+        required: false
 
 permissions: {}
 
 jobs:
   label:
-    name: Add `batch queue` when a maintainer comments `batch`
+    name: Act on a `batch`, `p`, `-batch`, `aa` or `ready` comment
     # A first filter, so that most comments start no runner: pull requests only, and the comment
-    # has to contain the word. The step below makes the exact comparison.
-    if: ${{ github.event.issue.pull_request && contains(github.event.comment.body, 'batch') }}
+    # has to contain one of the words. `b`, `p`, `-b` and `aa` are too short to look for anywhere
+    # in a comment, and `ready` too common, so they are only noticed at its very start. startsWith
+    # ignores letter case. The step below makes the exact comparison.
+    if: >-
+      ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request &&
+          (contains(github.event.comment.body, 'batch') ||
+           startsWith(github.event.comment.body, 'b') || startsWith(github.event.comment.body, '-b') ||
+           startsWith(github.event.comment.body, 'p') ||
+           startsWith(github.event.comment.body, 'aa') || startsWith(github.event.comment.body, 'ready')) }}
     runs-on: ubuntu-latest
+    # `contents: read` is for the log of pushes to a branch of this repository, and
+    # `actions: write` for starting the inbox workflow after `ready`.
     permissions:
+      actions: write
+      contents: read
       issues: write
       pull-requests: write
+    outputs:
+      queued: ${{ steps.label.outputs.queued }}
+      unqueued: ${{ steps.label.outputs.unqueued }}
     steps:
       - name: Check the comment and its author, then add the label
+        id: label
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
           PR: ${{ github.event.issue.number }}
           AUTHOR: ${{ github.event.comment.user.login }}
+          OPENER: ${{ github.event.issue.user.login }}
           BODY: ${{ github.event.comment.body }}
+          WHEN: ${{ github.event.comment.created_at }}
           LABEL: batch queue
+          PRIORITY: priority
+          WAITING: awaiting-author
         run: |
           # The comment text arrives in an environment variable. It is compared and never run.
           text=$(printf '%s' "$BODY" | tr -d '\r' | tr '[:upper:]' '[:lower:]')
           # Drop blank space, line breaks included, from both ends.
           text="${text#"${text%%[![:space:]]*}"}"
           text="${text%"${text##*[![:space:]]}"}"
-          if [ "$text" != "batch" ]; then
-            echo "The comment is not just 'batch': nothing to do."
-            exit 0
+          # `batch <commit>` names the commit to queue. `p` queues like `batch` and also adds the
+          # `priority` label. `again` is the word to repeat in a help comment.
+          named=''
+          with_commit='^(batch|b|p)[[:space:]]+([0-9a-f]{7,40})$'
+          if [[ "$text" =~ $with_commit ]]; then
+            named=${BASH_REMATCH[2]}
+            text=${BASH_REMATCH[1]}
           fi
-
-          # Write access or higher. The API reports the maintain role as write and triage as read.
-          if ! permission=$(gh api "repos/$REPO/collaborators/$AUTHOR/permission" --jq .permission); then
-            echo "::error::Could not read the access $AUTHOR has to $REPO."
-            exit 1
-          fi
-          case "$permission" in
-            admin | write) ;;
+          priority=''
+          again=batch
+          case "$text" in
+            b) text=batch ;;
+            p) text=batch priority=yes again=p ;;
+            -b) text=-batch ;;
+          esac
+          case "$text" in
+            batch | -batch | aa | ready) ;;
             *)
-              echo "$AUTHOR has '$permission' access. Queuing a pull request needs write access."
+              echo "The comment is not just 'batch', 'p', '-batch', 'aa' or 'ready', or 'b' or '-b': nothing to do."
               exit 0
               ;;
           esac
+
+          # Triage access or higher. The API reports the maintain role as write and triage as read
+          # under `permission`, so triage is told apart by `role_name`. The pull request's author
+          # may comment `ready` whatever their access.
+          if [ "$text" = ready ] && [ "$AUTHOR" = "$OPENER" ]; then
+            permission=author
+            role=''
+          else
+            if ! access=$(gh api "repos/$REPO/collaborators/$AUTHOR/permission" --jq '.permission + " " + (.role_name // "")'); then
+              echo "::error::Could not read the access $AUTHOR has to $REPO."
+              exit 1
+            fi
+            read -r permission role <<< "$access"
+          fi
+          case "$permission" in
+            admin | write | author) ;;
+            *)
+              if [ "$role" = triage ]; then
+                :
+              elif [ "$text" = aa ]; then
+                echo "$AUTHOR has '${role:-$permission}' access. Labelling a pull request '$WAITING' needs triage access."
+                exit 0
+              elif [ "$text" = ready ]; then
+                echo "$AUTHOR did not open pull request $PR and has '${role:-$permission}' access. Taking '$WAITING' off someone else's pull request needs triage access."
+                exit 0
+              else
+                echo "$AUTHOR has '${role:-$permission}' access. Queuing or unqueuing needs triage access."
+                exit 0
+              fi
+              ;;
+          esac
+
+          say() {
+            gh api -X POST "repos/$REPO/issues/$PR/comments" -f "body=$1" --silent
+          }
+
+          if [ "$text" = aa ]; then
+            # Back to the author. The label is all this does. Adding a label that does not exist
+            # creates it, so a renamed `awaiting-author` should fail here instead.
+            if ! gh api "repos/$REPO/labels/$(jq -rn --arg label "$WAITING" '$label | @uri')" --silent; then
+              echo "::error::There is no '$WAITING' label in $REPO. Was it renamed?"
+              exit 1
+            fi
+            gh api -X POST "repos/$REPO/issues/$PR/labels" -f "labels[]=$WAITING" --silent
+            echo "Added '$WAITING' to pull request $PR, as $AUTHOR asked."
+            exit 0
+          fi
+
+          if [ "$text" = ready ]; then
+            # Back to the maintainers. The inbox workflow counts the label coming off as the pull
+            # request entering review again. A label change made with this job's token starts no
+            # run of it, so this asks for one.
+            if gh api "repos/$REPO/issues/$PR/labels" --jq '.[].name' | grep -qxF -- "$WAITING"; then
+              gh api -X DELETE "repos/$REPO/issues/$PR/labels/$(jq -rn --arg label "$WAITING" '$label | @uri')" --silent
+              echo "Removed '$WAITING' from pull request $PR, as $AUTHOR asked."
+              if ! gh workflow run inbox.yml --repo "$REPO" -f "pr=$PR"; then
+                echo "::warning::Could not start the inbox workflow for pull request $PR."
+              fi
+            else
+              echo "Pull request $PR does not carry '$WAITING': nothing to do."
+            fi
+            exit 0
+          fi
+
+          if [ "$text" = -batch ]; then
+            # Out of the queue: the queued commit is withdrawn and the label goes. Commits already
+            # merged into a batch stay there, so no batch is rebuilt and no build is disturbed.
+            # The withdrawal is recorded first, and whether or not the label is still there, so
+            # that putting the label back by hand queues nothing.
+            say "$(printf '<!-- batch-queue-withdrawn -->\nTaken out of the batch queue by `%s`.' "$AUTHOR")"
+            if gh api "repos/$REPO/issues/$PR/labels" --jq '.[].name' | grep -qxF -- "$LABEL"; then
+              gh api -X DELETE "repos/$REPO/issues/$PR/labels/$(jq -rn --arg label "$LABEL" '$label | @uri')" --silent
+              echo "Removed '$LABEL' from pull request $PR, as $AUTHOR asked."
+            else
+              echo "Pull request $PR does not carry '$LABEL'. The withdrawal is recorded all the same."
+            fi
+            echo "unqueued=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           # Adding a label that does not exist creates it. If `batch queue` is ever renamed, this
           # should fail and be noticed, not start a second label.
@@ -63,6 +231,177 @@ jobs:
             echo "::error::There is no '$LABEL' label in $REPO. Was it renamed?"
             exit 1
           fi
+          if [ -n "$priority" ] && ! gh api "repos/$REPO/labels/$(jq -rn --arg label "$PRIORITY" '$label | @uri')" --silent; then
+            echo "::error::There is no '$PRIORITY' label in $REPO. Was it renamed?"
+            exit 1
+          fi
 
-          gh api -X POST "repos/$REPO/issues/$PR/labels" -f "labels[]=$LABEL" --silent
-          echo "Added '$LABEL' to pull request $PR, as $AUTHOR asked."
+          # The pull request's head now, and the repository and branch it comes from.
+          {
+            read -r head
+            read -r home
+            read -r branch
+          } < <(gh api "repos/$REPO/pulls/$PR" --jq '.head.sha, (.head.repo.full_name // ""), .head.ref')
+          if ! [[ "$head" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "::error::Could not read the head commit of pull request $PR."
+            exit 1
+          fi
+
+          # The commit to queue is the one the maintainer was looking at, not the head as this job
+          # finds it. The job starts some time after the comment, and the author is told about the
+          # comment, so a push made in between would otherwise pass as approved.
+          if [ -n "$named" ]; then
+            if [ "${#named}" -lt 40 ]; then
+              say "$(printf '<!-- batch-queue-help -->\nNothing was queued. `%s <commit>` needs the full 40-character commit id, because another commit can be made to share a shorter one. The head of this pull request is now:\n\n```\n%s %s\n```' "$again" "$again" "$head")"
+              echo "A short commit id was given: nothing queued."
+              exit 0
+            fi
+            if [ "$named" != "$head" ]; then
+              say "$(printf '<!-- batch-queue-help -->\nNothing was queued. `%s` is not the head of this pull request, which is now `%s`.' "$named" "$head")"
+              echo "$named is not the head of pull request $PR: nothing queued."
+              exit 0
+            fi
+            commit=$named
+            why=$(printf 'the commit `%s` named' "$AUTHOR")
+          else
+            # The head as it was when the comment was posted, read from GitHub's log of pushes to
+            # the branch: the newest push before the comment. The times in that log are GitHub's
+            # own. Commit dates would not do, because the author sets them. A push in the same
+            # second as the comment counts as after it.
+            commit=''
+            if [ -n "$home" ]; then
+              pushes="repos/$home/activity?per_page=100&ref=$(jq -rn --arg ref "refs/heads/$branch" '$ref | @uri')"
+              commit=$(gh api "$pushes" | jq -r --arg when "$WHEN" 'map(select(.timestamp < $when)) | first | .after // empty') || commit=''
+            fi
+            why=$(printf 'the head of this pull request when `%s` commented' "$AUTHOR")
+            if ! [[ "$commit" =~ ^[0-9a-f]{40}$ ]]; then
+              say "$(printf '<!-- batch-queue-help -->\nNothing was queued. GitHub'"'"'s log of pushes to this branch did not show which commit was the head when you commented. Name the commit to queue. The head is now:\n\n```\n%s %s\n```' "$again" "$head")"
+              echo "Could not tell which commit was the head of pull request $PR at $WHEN: nothing queued."
+              exit 0
+            fi
+          fi
+
+          # The record first and the label second, so that a run which sees the label also sees
+          # the record. The sync job trusts the record only at the start of a comment written by
+          # this workflow.
+          say "$(printf '<!-- batch-queue-approved %s -->\nQueued at `%s`, %s. A batch takes this commit and no other.' "$commit" "$commit" "$why")"
+          echo "Recorded $commit as the queued commit."
+          # Both labels in one request, so the sync job never sees the pull request queued
+          # without its `priority`.
+          labels=(-f "labels[]=$LABEL")
+          if [ -n "$priority" ]; then
+            labels+=(-f "labels[]=$PRIORITY")
+          fi
+          gh api -X POST "repos/$REPO/issues/$PR/labels" "${labels[@]}" --silent
+          echo "Added '$LABEL'${priority:+ and '$PRIORITY'} to pull request $PR, as $AUTHOR asked."
+          echo "queued=true" >> "$GITHUB_OUTPUT"
+
+  conflicts:
+    name: Compare with the other queued pull requests
+    needs: label
+    # After the label job has just queued the pull request, or when started by hand with a pull
+    # request number. `always()` is needed for the second case, where the label job is skipped.
+    if: >-
+      ${{ always() && (needs.label.outputs.queued == 'true' ||
+          (github.event_name == 'workflow_dispatch' && inputs.pr_number)) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Check out this workflow's own copy of the scripts
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+          sparse-checkout: scripts
+      # Pull request commits are fetched as git objects and compared with `git merge-tree`.
+      # No pull request file is checked out or run.
+      - name: Report conflicts with the rest of the queue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.issue.number || inputs.pr_number }}
+        run: python3 scripts/batch-queue-conflicts.py --repo "$REPO" --pr "$PR" --comment --summary "$GITHUB_STEP_SUMMARY"
+
+  reopened:
+    name: Put `batch queue` back on a reopened pull request
+    # The label comes back only if this workflow took it off when the pull request was closed,
+    # and nobody commented `-batch` meanwhile. The script decides; this only starts it.
+    if: ${{ github.event_name == 'pull_request_target' && github.event.action == 'reopened' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    outputs:
+      restored: ${{ steps.reopened.outputs.restored }}
+    steps:
+      - name: Check out this workflow's own copy of the scripts
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+          sparse-checkout: scripts
+      # Reads the pull request's labels, events and comments through the API. Nothing from the
+      # pull request is checked out or run.
+      - name: Put the label back if this workflow took it off
+        id: reopened
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          said=$(python3 scripts/batch-queue-sync.py --repo "$REPO" --reopened "$PR" --summary "$GITHUB_STEP_SUMMARY")
+          printf '%s\n' "$said"
+          if printf '%s\n' "$said" | grep -qF "#$PR was reopened:"; then
+            echo "restored=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  sync:
+    name: Assemble the batch and keep the labels in step
+    needs: [label, reopened]
+    # After a pull request was queued, unqueued or given its label back, after a batch was
+    # opened, pushed to, merged or closed, after a labelled pull request was closed, or when
+    # started by hand. Tidying up does not depend on the `pull_request_target` event: every run
+    # does it, so it only happens sooner with the event. The workflow's own merges into its
+    # batches start no event, since GitHub starts no workflow for a push made with the workflow's
+    # token.
+    if: >-
+      ${{ always() && (
+          github.event_name == 'workflow_dispatch' ||
+          needs.label.outputs.queued == 'true' || needs.label.outputs.unqueued == 'true' ||
+          needs.reopened.outputs.restored == 'true' ||
+          (github.event_name == 'pull_request_target' &&
+           ((startsWith(github.event.pull_request.head.ref, 'batch/') &&
+             github.event.pull_request.head.repo.full_name == github.repository) ||
+            (github.event.action == 'closed' &&
+             (contains(github.event.pull_request.labels.*.name, 'batch queue') ||
+              contains(github.event.pull_request.labels.*.name, 'building')))))) }}
+    runs-on: ubuntu-latest
+    # One run at a time. A run still waiting when a newer one arrives can be dropped, and that
+    # loses nothing: each run works from what GitHub shows now, not from what started it.
+    concurrency:
+      group: batch-queue-sync
+      cancel-in-progress: false
+    # `contents: write` to create batch branches and merge into them.
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Check out this workflow's own copy of the scripts
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        # No `ref`: the default is the commit GitHub runs this workflow from. When a pull request
+        # from a fork is merged, that commit is also its merge commit, and checkout refuses it
+        # when it is passed as `ref`.
+        with:
+          persist-credentials: false
+          sparse-checkout: scripts
+      # GitHub performs each merge through its API. No pull request file is checked out or run.
+      - name: Merge queued commits into the batch and tidy up after batches that are finished with
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: python3 scripts/batch-queue-sync.py --repo "$REPO" --summary "$GITHUB_STEP_SUMMARY"

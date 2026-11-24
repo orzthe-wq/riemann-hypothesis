@@ -56,13 +56,8 @@ theorem diffIdeal_ne_bot (D : D7) :
   have h0 : differentIdeal ℤ (𝓞 D.host.F) ≠ ⊥ := by
     first
       | exact differentIdeal_ne_bot
-      | exact differentIdeal_ne_bot (A := ℤ)
   first
     | exact Ideal.map_ne_bot_of_ne_bot h0
-    | exact fun h => h0 ((Ideal.map_eq_bot_iff_of_injective
-        (NoZeroSMulDivisors.algebraMap_injective (𝓞 D.host.F) (𝓞 D.host.E))).mp h)
-    | exact fun h => h0 ((Ideal.map_eq_bot_iff_of_injective
-        (FaithfulSMul.algebraMap_injective (𝓞 D.host.F) (𝓞 D.host.E))).mp h)
 
 theorem one_mem_ddS_neg (D : D7) (m : ℕ) :
     (1 : D.host.E) ∈ (ddS D ^ (-(m : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) := by

@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.Concret
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfForallMemFilV
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEqOfExhaustive
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinExtEmbeddingSplitting
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankPeriodFunctorCoeffBaseChangeStatement
+public import Formalism.WeaklyAdmissibleFiltrations.Statement
+public import Mathlib.RingTheory.IsTensorProduct
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankPeriodFunctorCoeffBaseChange
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FinrankSplit
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaloisRepresentationHomFiniteDimensional
 import Mathlib.Algebra.Order.Floor.Extended
@@ -188,9 +190,9 @@ theorem descend (L : Type) [Field L] [Algebra Qp L] [Algebra LL L] [IsScalarTowe
     rw [← hm.2.2.2]
     exact Subspace.dual_finrank_eq.symm
   obtain ⟨m', hm', hm''⟩ := exists_ext_pairing L m hbij
-  obtain ⟨a1, -, -, ⟨a2, -⟩, a3, -⟩ := GlobalTheory.T.finrank_periodFunctor_coeff_baseChange PD LL L V (L ⊗[LL] V) ρ (extRep L ρ)
+  obtain ⟨a1, -, -, ⟨a2, -⟩, a3, -⟩ := _root_.GlobalTheory.CoeffBC.finrank_baseChange PD LL L V (L ⊗[LL] V) ρ (extRep L ρ)
     (TensorProduct.mk LL L V 1) (TensorProduct.isBaseChange LL V L) (fun g x => rfl)
-  obtain ⟨b1, -, -, ⟨b2, -⟩, b3, -⟩ := GlobalTheory.T.finrank_periodFunctor_coeff_baseChange PD LL L V' (L ⊗[LL] V') ρ' (extRep L ρ')
+  obtain ⟨b1, -, -, ⟨b2, -⟩, b3, -⟩ := _root_.GlobalTheory.CoeffBC.finrank_baseChange PD LL L V' (L ⊗[LL] V') ρ' (extRep L ρ')
     (TensorProduct.mk LL L V' 1) (TensorProduct.isBaseChange LL V' L) (fun g x => rfl)
   have hχ : ∀ g, ((cycLL PD L g : Lˣ) : L) = algebraMap LL L ((cycLL PD LL g : LLˣ) : LL) := fun g =>
     IsScalarTower.algebraMap_apply Qp LL L _

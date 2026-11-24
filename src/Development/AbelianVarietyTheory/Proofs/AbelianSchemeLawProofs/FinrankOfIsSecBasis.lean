@@ -64,11 +64,6 @@ namespace GlobalTheory.SecTwist
 
 variable {X X' Y Z : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R']
 
-theorem gs_finsum (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) {n : ℕ} (a : Fin n → Γ(X, U)) :
-    gs r z U (∑ i, a i) = ∑ i, gs r z U (a i) := by
-
-  simp only [gs_eq r z U h, map_sum]
-
 theorem gs_cst (p : X ⟶ Spec (CommRingCat.of R)) (W : X.Opens) (r : Z ⟶ X) (z : Z) (hz : r z ∈ W) (a : R) :
     gs r z W (GlobalTheory.AbLaw.cst p W a) = Tor.cst (r ≫ p) z a :=
   (gs_res r z le_top hz _).trans (gs_pull r p z ⊤ trivial _)
@@ -183,7 +178,7 @@ theorem perf_sec {f : X ⟶ Spec (CommRingCat.of R)} {M : LB X} (Q : Perf f M) (
   refine ⟨E, fun v i Z r z hz => ?_⟩
   have hz' : r z ∈ π ⁻¹ᵁ Q.W i := hz
   refine (gs_res r z (le_pull M π (Q.le i)) hz' _).symm.trans ((congrArg (gs r z _) (hE v i)).trans ?_)
-  rw [gs_finsum r z _ hz']
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.DVR.SectionScalarValuation.gs_sum r z _ hz']
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [gs_mul r z _ hz', gs_cst f' _ r z hz', gs_pull r π z _ hz]
 
@@ -272,7 +267,7 @@ theorem cmb_iff {p : Y ⟶ Spec (CommRingCat.of R)} {N : LB Y} {n : ℕ} (b : Fi
   have e : ∀ j, ∀ y ∈ N.U j, gs (𝟙 Y) y (N.U j) (∑ i, (Y.presheaf.map (homOfLE le_top).op).hom
       (p.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (r i))) * (b i).f j) =
       ∑ i, Tor.cst p y (r i) * gs (𝟙 Y) y (N.U j) ((b i).f j) := fun j y hy => by
-    rw [gs_finsum _ y _ hy]
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.DVR.SectionScalarValuation.gs_sum _ y _ hy]
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [gs_mul _ y _ hy]
     exact congrArg (· * _) ((gs_cst p _ (𝟙 Y) y hy (r i)).trans (by rw [Category.id_comp]))

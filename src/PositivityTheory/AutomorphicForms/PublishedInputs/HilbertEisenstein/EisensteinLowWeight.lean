@@ -1,13 +1,18 @@
 module
 
+public import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.PolyVHasTemperateGrowth
+public import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.RightBilinearApply
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
+public import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ContDiffOnOfContDiffAtOne
+public import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.LibSmoothDec
 public import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.SSmooth
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUniqueIdeleOfLinearEquivQuotientLocal
+public import Mathlib.Analysis.Calculus.Deriv.Prod
+public import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.CentralCharacterHolds
+public import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.LibFresh
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.Calculus.Deriv.Prod
-public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
@@ -40,17 +45,211 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.CentralCharacterHolds
-public import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ChartEisIntDifferentiableAt
-public import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.LibFresh
-import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.LibSmoothDec
-import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.TypeStar
+import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ExistsDecayBoundTwo
+import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.FiniteSupportOfHyp
+import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.HasFDerivAtIntegralSchwartzBilin
+import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.IsFiniteMeasureRestrictFd
+import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.PFinInfGLMulVec
+import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.PFinModuleSectionInv
+import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.SigmaFinitePosRealMeasure
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.RestrictionMemInvariantH1
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUniqueIdeleOfLinearEquivQuotientLocal
+import Mathlib.Tactic.Polynomial.Basic
+import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ChartEisIntDifferentiableAt, PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.EisensteinLowWeight
+
+-- ===== clump member: PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ChartEisIntDifferentiableAt =====
+-- clump-header: {"m": "PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ChartEisIntDifferentiableAt", "h": "module\n\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.PolyVHasTemperateGrowth\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.RightBilinearApply\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ContDiffOnOfContDiffAtOne\nimport PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ExistsDecayBoundTwo\nimport PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.FiniteSupportOfHyp\nimport PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.HasFDerivAtIntegralSchwartzBilin\nimport PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.IsFiniteMeasureRestrictFd\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.LibSmoothDec\nimport PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.PFinInfGLMulVec\nimport PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.PFinModuleSectionInv\nimport PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.SigmaFinitePosRealMeasure\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.RestrictionMemInvariantH1\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial
+open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Base
+open scoped Matrix SchwartzMap ContDiff Topology
+open MeasureTheory GroundTheory.Global GroundTheory.Global.IdeleGroup UpperTheory.V.Sd UpperTheory.V.Published
+
+set_option linter.unusedSectionVars false
+
+namespace UpperTheory.HilbertEisensteinWeightOne.SLowLib
+
+open UpperTheory.HilbertEisensteinWeightOne.EisensteinSmoothness
+
+variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
+
+theorem summable_row (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Ideles F) :
+    ∃ k : ℕ, Summable (fun ξ : Xi F => ‖finRow c (rowv g a ξ.1)‖ * ((1 + ‖vInf (rowv g a ξ.1)‖) ^ k)⁻¹) := by
+  classical
+  obtain ⟨d, hd0, hd⟩ := exists_den_row c g (isCompact_singleton (x := a))
+  obtain ⟨k, U, hU, hdec⟩ := exists_decay_bound_two F (isCompact_singleton (x := a)) d hd0 0
+  set G' := ((g⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)).map (UpperTheory.V.TR.pInf F) with hG'
+  set K := ∑ i, ∑ j, ‖G' i j‖ with hKdef
+  have hK : 0 ≤ K := by positivity
+  refine ⟨k, ?_⟩
+  have hUs : Summable (fun ξ : Xi F => (K + 1) ^ k * |U ξ.1|) := by
+    have hi : Function.Injective (fun x : Xi F => x.1) := fun x y h => Subtype.ext h
+    exact (hU.abs.comp_injective hi).mul_left _
+  refine Summable.of_nonneg_of_le (fun ξ => by positivity) (fun ξ => ?_) hUs
+  obtain ⟨ξ, hξ⟩ := ξ
+  by_cases hf : finRow c (rowv g a ξ) = 0
+  · simp only [hf, norm_zero, zero_mul]
+    positivity
+  have hcond : ∀ w, Valued.v (pLoc F w (pFin F ((rowA ξ ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2)
+      a * g : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) 0))) ≤ WithZero.exp (-(c w : ℤ)) ∧
+      Valued.v (pLoc F w (pFin F ((rowA ξ ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * g :
+        GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) 1)) - 1) ≤ WithZero.exp (-(c w : ℤ)) := by
+    unfold finRow at hf
+    split_ifs at hf with hc
+    · exact hc
+    · exact absurd rfl hf
+  have hden := hd a (Set.mem_singleton a) ξ hcond
+  have hdecay := hdec a (Set.mem_singleton a) 1 le_rfl ξ hξ hden
+  rw [map_one, one_mul] at hdecay
+  simp only [pow_zero, inv_one, one_mul] at hdecay
+  set P : Vr F := fun i => UpperTheory.V.TR.pInf F ((a : Ad F) * algebraMap F (Ad F) (ξ i)) with hPdef
+  have hw1 : vInf (rowv g a ξ) = P ᵥ* (g : Matrix (Fin 2) (Fin 2) (Ad F)).map (UpperTheory.V.TR.pInf F) :=
+    vInf_rowv g a ξ
+  have hPw : ‖P‖ ≤ K * ‖vInf (rowv g a ξ)‖ := by
+    have e : P = vInf (rowv g a ξ) ᵥ* G' := by
+      rw [hw1, Matrix.vecMul_vecMul, hG', map_pInf_mul_inv, Matrix.vecMul_one]
+    calc ‖P‖ = ‖vInf (rowv g a ξ) ᵥ* G'‖ := by rw [← e]
+      _ ≤ ‖vInf (rowv g a ξ)‖ * K := norm_vecMul_le' _ _
+      _ = K * ‖vInf (rowv g a ξ)‖ := mul_comm _ _
+  have hw' := inv_pow_le_of_le (norm_nonneg P) (norm_nonneg _) hK hPw k
+  calc ‖finRow c (rowv g a ξ)‖ * ((1 + ‖vInf (rowv g a ξ)‖) ^ k)⁻¹
+      ≤ 1 * ((K + 1) ^ k * ((1 + ‖P‖) ^ k)⁻¹) :=
+        mul_le_mul (norm_finRow_le c _) hw' (by positivity) zero_le_one
+    _ ≤ (K + 1) ^ k * |U ξ| := by
+        rw [one_mul]
+        gcongr
+        exact hdecay.trans (le_abs_self _)
+
+def Srow (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Ideles F) (x : UpperTheory.V.TR.Lie F 2) : ℂ :=
+  ∫ ξ, finRow c (rowv g a ξ.1) * archS F (B1 (vInf (rowv g a ξ.1)) x) ∂(Measure.count : Measure (Xi F))
+
+theorem aesm_count {β : Type*} [TopologicalSpace β] [TopologicalSpace.PseudoMetrizableSpace β]
+    [MeasurableSpace β] [BorelSpace β] [SecondCountableTopology β] (f : Xi F → β) :
+    AEStronglyMeasurable f (Measure.count : Measure (Xi F)) :=
+  (measurable_of_countable f).aestronglyMeasurable
+
+theorem integrable_row_weight (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Ideles F) :
+    ∃ k : ℕ, Integrable (fun ξ : Xi F => ‖finRow c (rowv g a ξ.1)‖ * ((1 + ‖vInf (rowv g a ξ.1)‖) ^ k)⁻¹)
+      (Measure.count : Measure (Xi F)) := by
+  obtain ⟨k, hk⟩ := summable_row c g a
+  refine ⟨k, (integrable_count_iff).2 ?_⟩
+  simpa [Real.norm_eq_abs] using hk.abs
+
+theorem hasFDerivAt_Srow (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Ideles F) {x : UpperTheory.V.TR.Lie F 2}
+    (hx : x ∈ Metric.ball (UpperTheory.V.TR.oneL F 2) (1 / 4)) :
+    HasFDerivAt (Srow c g a)
+      (∫ ξ, finRow c (rowv g a ξ.1) • fderiv ℝ (fun x => archS F (B1 (vInf (rowv g a ξ.1)) x)) x
+        ∂(Measure.count : Measure (Xi F))) x := by
+  obtain ⟨k, hk⟩ := integrable_row_weight c g a
+  exact hasFDerivAt_integral_schwartz_bilin (archS F) B1 Metric.isOpen_ball (by norm_num : (0 : ℝ) < 1 / 2)
+    (fun x hx v => half_norm_le_norm_left_bilinear hx v) (aesm_count _) (aesm_count _) hk hx
+
+theorem integrable_fderiv_row (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Ideles F) {x : UpperTheory.V.TR.Lie F 2}
+    (hx : x ∈ Metric.ball (UpperTheory.V.TR.oneL F 2) (1 / 4)) :
+    Integrable (fun ξ : Xi F => finRow c (rowv g a ξ.1) • fderiv ℝ (fun x => archS F (B1 (vInf (rowv g a ξ.1)) x)) x)
+      (Measure.count : Measure (Xi F)) := by
+  obtain ⟨k, hk⟩ := integrable_row_weight c g a
+  obtain ⟨C, -, hC⟩ := exists_bound_bilD (archS F) B1 (by norm_num : (0 : ℝ) < 1 / 2)
+    (fun x hx v => half_norm_le_norm_left_bilinear hx v) 1 k
+  refine (hk.const_mul C).mono' (aesm_count _) (ae_of_all _ fun ξ => ?_)
+  have h := hC x hx (vInf (rowv g a ξ.1))
+  rw [bilD, ← norm_iteratedFDeriv_fderiv, norm_iteratedFDeriv_zero] at h
+  rw [norm_smul]
+  calc ‖finRow c (rowv g a ξ.1)‖ * ‖fderiv ℝ (fun x => archS F (B1 (vInf (rowv g a ξ.1)) x)) x‖
+      ≤ ‖finRow c (rowv g a ξ.1)‖ * (C * ((1 + ‖vInf (rowv g a ξ.1)‖) ^ k)⁻¹) :=
+        mul_le_mul_of_nonneg_left h (norm_nonneg _)
+    _ = C * (‖finRow c (rowv g a ξ.1)‖ * ((1 + ‖vInf (rowv g a ξ.1)‖) ^ k)⁻¹) := by ring
+
+theorem thetaS_eq_Srow (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Ideles F)
+    (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
+    thetaS (Phi c) (Matrix.GeneralLinearGroup.scalar (Fin 2) a * g * UpperTheory.V.TR.infGL F 2 y) =
+      Srow c g a (UpperTheory.V.TR.toL y.val) := by
+  unfold thetaS Srow
+  rw [integral_count_Xi]
+  refine tsum_congr fun ξ => ?_
+  rw [mul_assoc, row_term, mul_comm]
+
+theorem thetaS_curve (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Ideles F)
+    (k : ℝ → GL (Fin 2) (UpperTheory.V.TR.Rinf F)) (X : UpperTheory.V.TR.Lie F 2) (hk0 : k 0 = 1)
+    (hk : HasDerivAt (fun s => UpperTheory.V.TR.toL (k s).val) X 0) :
+    ∃ D : {ξ : Fin 2 → F // ξ ≠ 0} → ℂ,
+      (∀ ξ, HasDerivAt (fun s => Phi c (rowA ξ.1 ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * g *
+        UpperTheory.V.TR.infGL F 2 (k s) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)))) (D ξ) 0) ∧ Summable D ∧
+      HasDerivAt (fun s => thetaS (Phi c) (Matrix.GeneralLinearGroup.scalar (Fin 2) a * g *
+        UpperTheory.V.TR.infGL F 2 (k s))) (∑' ξ, D ξ) 0 := by
+  have h1 : UpperTheory.V.TR.toL (k 0).val = UpperTheory.V.TR.oneL F 2 := by rw [hk0]; rfl
+  have hball : UpperTheory.V.TR.toL (k 0).val ∈ Metric.ball (UpperTheory.V.TR.oneL F 2) (1 / 4) := by
+    rw [h1]; exact Metric.mem_ball_self (by norm_num)
+  have hI := integrable_fderiv_row c g a hball
+  set D : {ξ : Fin 2 → F // ξ ≠ 0} → ℂ := fun ξ => finRow c (rowv g a ξ.1) *
+    fderiv ℝ (fun x => archS F (B1 (vInf (rowv g a ξ.1)) x)) (UpperTheory.V.TR.toL (k 0).val) X with hD
+  refine ⟨D, fun ξ => ?_, ?_, ?_⟩
+  · have e : (fun s => Phi c (rowA ξ.1 ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * g *
+        UpperTheory.V.TR.infGL F 2 (k s) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)))) =
+        fun s => archS F (B1 (vInf (rowv g a ξ.1)) (UpperTheory.V.TR.toL (k s).val)) * finRow c (rowv g a ξ.1) :=
+      funext fun s => by rw [mul_assoc, row_term]
+    rw [e]
+    have hd : HasFDerivAt (fun x => archS F (B1 (vInf (rowv g a ξ.1)) x))
+        (fderiv ℝ (fun x => archS F (B1 (vInf (rowv g a ξ.1)) x)) (UpperTheory.V.TR.toL (k 0).val))
+        (UpperTheory.V.TR.toL (k 0).val) :=
+      (((contDiff_bil (archS F) B1 (vInf (rowv g a ξ.1))).differentiable infty_ne_zero) _).hasFDerivAt
+    refine ((hd.comp_hasDerivAt 0 hk).mul_const (finRow c (rowv g a ξ.1))).congr_deriv ?_
+    simp only [hD]
+    ring
+  · have h2 := (integrable_count_iff).1 (hI.apply_continuousLinearMap X)
+    refine Summable.of_norm (h2.congr fun ξ => ?_)
+    simp only [hD, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  · have e : (fun s => thetaS (Phi c) (Matrix.GeneralLinearGroup.scalar (Fin 2) a * g *
+        UpperTheory.V.TR.infGL F 2 (k s))) = fun s => Srow c g a (UpperTheory.V.TR.toL (k s).val) :=
+      funext fun s => thetaS_eq_Srow c g a (k s)
+    rw [e]
+    refine ((hasFDerivAt_Srow c g a hball).comp_hasDerivAt 0 hk).congr_deriv ?_
+    rw [ContinuousLinearMap.integral_apply hI X, integral_count_Xi]
+    rfl
+
+theorem chart_eisInt_differentiableAt (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2)
+    (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) :
+    DifferentiableAt ℝ (UpperTheory.V.TR.chart (fun g' => eisInt χ (Phi c) g' t u) g) (UpperTheory.V.TR.oneL F 2) := by
+  have hS : DifferentiableAt ℝ (Srow c g (av (t, u))) (UpperTheory.V.TR.oneL F 2) :=
+    (hasFDerivAt_Srow c g _ (Metric.mem_ball_self (by norm_num))).differentiableAt
+  have h0 : dl g (UpperTheory.V.TR.oneL F 2) ≠ 0 := by rw [dl_one]; exact (absD_pos g).ne'
+  have h1 : DifferentiableAt ℝ (fun x => dl g x ^ ((1 : ℝ) / 2)) (UpperTheory.V.TR.oneL F 2) :=
+    (((contDiff_dl g).differentiable infty_ne_zero) _).rpow_const (Or.inl h0)
+  have hD : DifferentiableAt ℝ (Dc g) (UpperTheory.V.TR.oneL F 2) := by
+    show DifferentiableAt ℝ (fun x => ((dl g x ^ ((1 : ℝ) / 2) : ℝ) : ℂ)) _
+    exact Complex.ofRealCLM.differentiableAt.comp _ h1
+  have e : Sr χ c g (t, u) = fun x => (((χ.1 (av (t, u)) : ℂˣ) : ℂ)⁻¹ * ((t : ℝ) : ℂ)) * Srow c g (av (t, u)) x := by
+    funext x
+    unfold Sr Srow kap1 w1
+    rw [← integral_const_mul]
+    refine integral_congr_ae (ae_of_all _ fun ξ => ?_)
+    simp only
+    ring
+  have hd : DifferentiableAt ℝ (fun x => Dc g x * Sr χ c g (t, u) x) (UpperTheory.V.TR.oneL F 2) := by
+    rw [e]
+    exact hD.mul (hS.const_mul _)
+  exact hd.congr_of_eventuallyEq (chart_eisInt_row χ c g (t, u))
+
+end UpperTheory.HilbertEisensteinWeightOne.SLowLib
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ChartEisIntDifferentiableAt =====
+
+-- ===== clump member: PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.EisensteinLowWeight =====
+-- clump-header: {"m": "PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.EisensteinLowWeight", "h": "module\n\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.SSmooth\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle\nimport Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUniqueIdeleOfLinearEquivQuotientLocal\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.Deriv.Prod\npublic import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.CentralCharacterHolds\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.ChartEisIntDifferentiableAt\npublic import PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.LibFresh\nimport PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.LibSmoothDec\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.RestrictionMemInvariantH1\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -144,11 +343,11 @@ def eps (v : InfinitePlace F) : GL (Fin 2) (UpperTheory.V.TR.Rinf F) where
   val_inv := by
     rw [Matrix.mul_fin_two, Matrix.one_fin_two]
     ext i j w
-    fin_cases i <;> fin_cases j <;> simp [atv] <;> split_ifs <;> simp
+    fin_cases i <;> fin_cases j <;> simp [atv]; split_ifs <;> simp
   inv_val := by
     rw [Matrix.mul_fin_two, Matrix.one_fin_two]
     ext i j w
-    fin_cases i <;> fin_cases j <;> simp [atv] <;> split_ifs <;> simp
+    fin_cases i <;> fin_cases j <;> simp [atv]; split_ifs <;> simp
 
 def XA (v : InfinitePlace F) : UpperTheory.V.TR.Lie F 2 :=
   UpperTheory.V.TR.toL (Matrix.single 0 0 (Pi.single v 1)) - UpperTheory.V.TR.toL (Matrix.single 1 1 (Pi.single v 1))
@@ -274,7 +473,6 @@ def DZ (x y : ℝ) : ℂ := (x : ℂ) * facX x (-y) + (-(y : ℂ)) * facY x (-y)
 theorem low_identity' (x y : ℝ) : DA x y - Complex.I * DB x y = DZ x y + fac x (-y) := by
   have h := low_identity x y
   unfold DA DB DZ
-  push_cast
   linear_combination h
 
 theorem hyA (v : InfinitePlace F) (s : ℝ) : ∀ w, w ≠ v → ∀ i j,
@@ -345,7 +543,6 @@ theorem term_B (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (�
   have h := (hasDerivAt_fac hX hY).mul_const (Rt c v η)
   refine h.congr_deriv ?_
   simp only [Real.cosh_zero, Real.sinh_zero, mul_one, mul_zero, add_zero, zero_add, DB]
-  all_goals (push_cast; ring)
 
 theorem term_Z (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (η : Fin 2 → Ad F) :
     HasDerivAt (fun s => Phi c (η ᵥ* ((UpperTheory.V.TR.infGL F 2 (eps v * kZ v s) : GA F 2) :
@@ -389,27 +586,10 @@ theorem norm_infEq (w : InfinitePlace F) (r : ℝ) :
   rw [← dist_zero_right, ← Real.norm_eq_abs, ← dist_zero_right, ← h0]
   exact h
 
-theorem ideleModule_infId (u : (UpperTheory.V.TR.Rinf F)ˣ) :
-    (IdeleGroup.ideleModule F (UpperTheory.V.TR.infId F u) : ℝ) = ∏ w, |u.val w| := by
-  rw [ideleModule_eq]
-  have h1 : ((UpperTheory.V.TR.infId F u : Ideles F) : Ad F).1 = UpperTheory.V.TR.infEq F u.val := by
-    show (1 : InfiniteAdeleRing F) - UpperTheory.V.TR.infEq F 1 + UpperTheory.V.TR.infEq F u.val = _
-    simp
-  have h2 : ((UpperTheory.V.TR.infId F u : Ideles F) : Ad F).2 = 1 := by
-    show (1 : Af F) - 0 + 0 = 1
-    simp
-  rw [h1, h2]
-  have h3 : ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(1 : Af F) v‖ = 1 :=
-    finprod_eq_one_of_forall_eq_one fun v => by simp
-  rw [h3, mul_one]
-  refine Finset.prod_congr rfl fun w _ => ?_
-  rw [(IsTotallyReal.isReal w).mult_eq_one, pow_one]
-  exact norm_infEq w (u.val w)
-
 theorem absD_mul_infGL (g : GA F 2) (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     absD (g * UpperTheory.V.TR.infGL F 2 y) = absD g * ∏ w, |(Matrix.GeneralLinearGroup.det y).val w| := by
   unfold absD
-  rw [map_mul, UpperTheory.V.TR.det_infGL, map_mul, Positive.val_mul, ideleModule_infId]
+  rw [map_mul, UpperTheory.V.TR.det_infGL, map_mul, Positive.val_mul, _root_.UpperTheory.HilbertEisensteinWeightOne.EisensteinSmoothness.ideleModule_infId]
 
 theorem det_kA (v : InfinitePlace F) (s : ℝ) : ∏ w, |(Matrix.GeneralLinearGroup.det (kA v s)).val w| = 1 := by
   refine Finset.prod_eq_one fun w _ => ?_
@@ -639,3 +819,7 @@ theorem UpperTheory.HilbertEisensteinWeightOne.low_weight_holds : SPois → SInt
     funext fun p => pointwise c ω v g p.1 p.2 hsum
   rw [hpt, ← eZ, hZ0, ← eA, ← eB] at hint
   linear_combination -hint
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: PositivityTheory.AutomorphicForms.PublishedInputs.HilbertEisenstein.EisensteinLowWeight =====

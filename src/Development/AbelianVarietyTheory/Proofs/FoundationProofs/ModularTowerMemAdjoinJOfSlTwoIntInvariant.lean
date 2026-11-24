@@ -8,14 +8,14 @@ public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Mathlib.RingTheory.SimpleRing.Principal
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlTwoInvariantHolomorphicMemAdjoinJInvariantStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlTwoInvariantHolomorphicMemAdjoinJInvariant
+public import Mathlib.Analysis.Meromorphic.NormalForm
 import Mathlib.Algebra.AffineMonoid.UniqueSums
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.Convex
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.Meromorphic.NormalForm
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -69,7 +69,7 @@ namespace GlobalTheory.KZ.LevelOneFrac
 
 open Filter Topology Polynomial
 
-theorem isOpen_Hs' : IsOpen Hs := isOpen_lt continuous_const Complex.continuous_im
+alias isOpen_Hs' := _root_.GlobalTheory.KZ.SiegelModel.isOpen_Hs
 
 theorem isConnected_Hs' : IsConnected Hs :=
   ⟨⟨Complex.I, by simp [Hs]⟩, (convex_halfSpace_im_gt (0 : ℝ)).isPreconnected⟩
@@ -290,7 +290,7 @@ theorem mem_adjoin_of_sl_inv : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAl
     (p.map (X.an.comp (algebraMap (Algebra.adjoin Ω {X.jK}) X.K))) (hpm.map _)
     (fun i => by rw [coeff_map]; exact holRep X hj (p.coeff i).2)
     (by rw [eval_map, ← Polynomial.hom_eval₂, hpe, map_zero])
-  have hgR : g ∈ Algebra.adjoin Ω {X.jK} := GlobalTheory.T.slTwo_invariant_holomorphic_mem_adjoin_jInvariant ε X ε.injective hj g hginv ⟨φ, hφ, hgφ⟩
+  have hgR : g ∈ Algebra.adjoin Ω {X.jK} := _root_.GlobalTheory.KZ.LevelOne.mem_adjoin_j ε X ε.injective hj g hginv ⟨φ, hφ, hgφ⟩
   have hle := IntermediateField.algebra_adjoin_le_adjoin Ω ({X.jK} : Set X.K)
   have hyL : (y : X.K) ∈ IntermediateField.adjoin Ω {X.jK} := hle y.2
   have hgL : g ∈ IntermediateField.adjoin Ω {X.jK} := hle hgR

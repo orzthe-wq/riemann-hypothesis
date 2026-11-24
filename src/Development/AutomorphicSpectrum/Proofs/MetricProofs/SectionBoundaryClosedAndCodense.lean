@@ -1,8 +1,9 @@
 module
 
 public import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.DenseCoordinateTorusStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncBoundaryCoordinateChartStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.DenseCoordinateTorus
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SncBoundaryCoordinateChart
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -55,7 +56,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Bdry
 theorem bdry_isClosed_dense_compl (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (L : LocPot X)
     (s : X → X → ℂ) (nb : ℕ) (m : Fin nb → ℕ) (W : Fin nb → Set X)
     (hs : IsSection A L s) (hn : IsSNC A L s m W) : IsClosed (bdry s) ∧ Dense (bdry s)ᶜ := by
-  have key := GlobalTheory.T.snc_boundary_coordinate_chart e X A L s nb m W hs hn
+  have key := _root_.GlobalTheory.CompanionTheory.Metric.bdry_snc_chart e X A L s nb m W hs hn
   constructor
   · rw [← isOpen_compl_iff, isOpen_iff_mem_nhds]
     intro y hy
@@ -80,7 +81,7 @@ theorem bdry_isClosed_dense_compl (e : ℕ) (X : Type) [TopologicalSpace X] (A :
     have himg : IsOpen (ψ '' (V ∩ ψ.source)) :=
       ψ.isOpen_image_of_subset_source (hV.inter ψ.open_source) hsub
     have hne : (ψ '' (V ∩ ψ.source)).Nonempty := ⟨ψ x, x, ⟨hx, hxψ⟩, rfl⟩
-    obtain ⟨z, hz, hz0⟩ := (GlobalTheory.T.dense_coordinate_torus e).inter_open_nonempty _ himg hne
+    obtain ⟨z, hz, hz0⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.PB.Flat.dense_forall_coord_ne_zero e).inter_open_nonempty _ himg hne
     obtain ⟨y, ⟨hyV, hyψ⟩, rfl⟩ := hz
     refine ⟨y, hyV, fun hb => ?_⟩
     obtain ⟨i, -, h0⟩ := (hS y hyψ).1 hb

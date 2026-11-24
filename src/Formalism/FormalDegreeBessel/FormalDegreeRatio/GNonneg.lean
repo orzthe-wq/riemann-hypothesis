@@ -93,7 +93,7 @@ lemma gnExt_mulVec {ι : Type*} [Fintype ι] [DecidableEq ι] (p : ι → Prop) 
 lemma gn_re_star_mul_self (w : ℂ) : (star w * w).re = Complex.normSq w := by
   have h1 : star w * w = (Complex.normSq w : ℂ) := by
     rw [Complex.normSq_eq_conj_mul_self]
-    first | rfl | skip
+    first | rfl
   rw [h1, Complex.ofReal_re]
 
 lemma gn_quad_eig {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Matrix ι ι ℂ} (hA : A.IsHermitian)
@@ -115,7 +115,7 @@ lemma gn_quad_eig {ι : Type*} [Fintype ι] [DecidableEq ι] {A : Matrix ι ι �
   refine Finset.sum_congr rfl fun i _ => ?_
   have h1 : star (d i) * d i = (Complex.normSq (d i) : ℂ) := by
     rw [Complex.normSq_eq_conj_mul_self]
-    first | rfl | skip
+    first | rfl
   have h2 : (RCLike.ofReal (hA.eigenvalues i) : ℂ) = ((hA.eigenvalues i : ℝ) : ℂ) := rfl
   rw [Complex.ofReal_mul, ← h1, h2]
   ring
@@ -128,28 +128,28 @@ lemma gn_Hpk_mulVec (k r : ℕ) (y : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * 
   by_cases h : i.val < r ∨ r + k < i.val
   · rw [dite_eq_left h, Finset.sum_eq_single (⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1))]
     · have e : Hpk k r i ⟨2 * r + k - i.val, by omega⟩ = 1 := by
-        simp only [Hpk, and_true]
-        split_ifs <;> first | (simp; done) | omega | (simp only [Fin.ext_iff, Fin.val_mk, and_true, true_and, and_self] at *; omega)
+        simp only [Hpk]
+        split_ifs <;> first | (simp; done) | omega
       rw [e, one_mul]
     · intro b _ hb
       have hb' : b.val ≠ 2 * r + k - i.val := fun e => hb (Fin.ext e)
       have e : Hpk k r i b = 0 := by
-        simp only [Hpk, and_true]
-        split_ifs <;> first | (simp; done) | omega | (simp only [Fin.ext_iff, Fin.val_mk, and_true, true_and, and_self] at *; omega)
+        simp only [Hpk]
+        split_ifs <;> first | (simp; done) | omega
       rw [e, zero_mul]
     · intro hb
       exact absurd (Finset.mem_univ _) hb
   · rw [dite_eq_right h, Finset.sum_eq_single i]
     · have e : Hpk k r i i = if i.val = r + k then -1 else 1 := by
         simp only [Hpk, and_true]
-        split_ifs <;> first | (simp; done) | omega | (simp only [Fin.ext_iff, Fin.val_mk, and_true, true_and, and_self] at *; omega)
+        split_ifs <;> first | (simp; done) | omega
       rw [e]
       split_ifs <;> simp
     · intro b _ hb
       have hb' : b.val ≠ i.val := fun e => hb (Fin.ext e)
       have e : Hpk k r i b = 0 := by
-        simp only [Hpk, and_true]
-        split_ifs <;> first | (simp; done) | omega | (simp only [Fin.ext_iff, Fin.val_mk, and_true, true_and, and_self] at *; omega)
+        simp only [Hpk]
+        split_ifs <;> first | (simp; done) | omega
       rw [e, zero_mul]
     · intro hb
       exact absurd (Finset.mem_univ _) hb
@@ -208,8 +208,8 @@ lemma gn_gramM_eq (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
 
 lemma gn_Hpk_herm (k r : ℕ) : (Hpk k r).IsHermitian := by
   refine Matrix.IsHermitian.ext fun i j => ?_
-  simp only [Hpk, and_true]
-  split_ifs <;> first | (simp; done) | omega | (simp only [Fin.ext_iff, Fin.val_mk, and_true, true_and, and_self] at *; omega)
+  simp only [Hpk]
+  split_ifs <;> first | (simp; done) | omega
 
 lemma gn_gramM_herm (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : (gramM k r z z' g).IsHermitian := by
@@ -233,7 +233,7 @@ lemma gn_herm_bvec_right {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (v : Fin m �
   rw [Finset.sum_eq_single j]
   · simp
   · intro b _ hb
-    simp [Pi.single_apply, hb]
+    simp [hb]
   · intro h
     exact absurd (Finset.mem_univ _) h
 
@@ -249,7 +249,7 @@ lemma gn_gram_ff (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
     · simp only [bvec, Pi.single_apply, eI]
       rw [if_neg]
       intro e
-      first | omega | (simp only [Fin.mk.injEq] at e; omega) | (have e' := Fin.val_eq_of_eq e; simp at e'; omega)
+      first | (have e' := Fin.val_eq_of_eq e; simp at e'; omega)
     · exact hz _ (Or.inr (by simp only [eI]; omega))
   have hA := a.isLt
   have hB := b.isLt
@@ -293,7 +293,7 @@ lemma gn_quad_inl (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
   have h1 : star (c (Sum.inl (Fin.last r))) * c (Sum.inl (Fin.last r)) =
       (Complex.normSq (c (Sum.inl (Fin.last r))) : ℂ) := by
     rw [Complex.normSq_eq_conj_mul_self]
-    first | rfl | skip
+    first | rfl
   rw [key, show star (c (Sum.inl (Fin.last r))) * (herm (Hpk k r) z z * c (Sum.inl (Fin.last r))) =
       herm (Hpk k r) z z * (star (c (Sum.inl (Fin.last r))) * c (Sum.inl (Fin.last r))) by ring, h1,
     Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, mul_zero, sub_zero]

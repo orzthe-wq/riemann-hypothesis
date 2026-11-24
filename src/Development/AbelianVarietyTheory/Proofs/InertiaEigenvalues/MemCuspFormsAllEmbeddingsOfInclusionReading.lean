@@ -88,20 +88,6 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
-theorem isSec_mul {la la' : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) (hQ : X.IsSec la' Q) :
-    X.IsSec (la + la') (P * Q) := by
-  refine ⟨hP.1.mul hQ.1, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩
-  · have hne : ∀ τ i, b τ i i ≠ 0 := fun τ i => by
-      have hdet := (hb τ).1
-      rw [Matrix.det_of_upperTriangular (M := mat b τ) (fun a c hac => (hb τ).2 a c hac)] at hdet
-      exact Finset.prod_ne_zero_iff.1 hdet i (Finset.mem_univ _)
-    have e : bchar (la + la') b = bchar la b * bchar la' b := by
-      simp only [bchar, Pi.add_apply, zpow_add₀ (hne _ _), Finset.prod_mul_distrib]
-    rw [Pi.mul_apply, Pi.mul_apply, hP.2.1 x hx b hb, hQ.2.1 x hx b hb, e]
-    ring
-  · rw [Pi.mul_apply, Pi.mul_apply, hP.2.2 γ hγ x hx, hQ.2.2 γ hγ x hx, X.χ_add _ _ γ hγ]
-    ring
-
 theorem fj_mul (hf : 1 < Module.finrank ℚ E / 2) {la la' : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : X.IsSec la P)
     (hQ : X.IsSec la' Q) {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     X.fj (la + la') ξ 0 (P * Q) x = X.fj la ξ 0 P x * X.fj la' ξ 0 Q x := by
@@ -127,7 +113,7 @@ theorem fj_mul (hf : 1 < Module.finrank ℚ E / 2) {la la' : Wt X.Ψ r} {P Q : F
 
 theorem ss_mul (hf : 1 < Module.finrank ℚ E / 2) {la la' : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : P ∈ X.SS la)
     (hQ : X.IsSec la' Q) : P * Q ∈ X.SS (la + la') := by
-  have hs : X.IsSec (la + la') (P * Q) := isSec_mul X hP.1.1 hQ
+  have hs : X.IsSec (la + la') (P * Q) := _root_.ReciprocityTheory.ChartRestriction.G.FD.PeriodLatticeMembership.sec_mul X hP.1.1 hQ
   refine GlobalTheory.FJZero.mem_SS_of_isModerate X _ _ hs (GlobalTheory.CuspFrom.isModerate X hf hs) fun ξ hξ x hx => ?_
   rw [fj_mul X hf hP.1.1 hQ hξ hx, hP.2 ξ hξ x hx, zero_mul]
 
@@ -135,7 +121,7 @@ theorem isSec_pow {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P
     X.IsSec ((n + 1) • la) (P ^ (n + 1)) := by
   induction n with
   | zero => simpa using hP
-  | succ n ih => rw [succ_nsmul, pow_succ]; exact isSec_mul X ih hP
+  | succ n ih => rw [succ_nsmul, pow_succ]; exact _root_.ReciprocityTheory.ChartRestriction.G.FD.PeriodLatticeMembership.sec_mul X ih hP
 
 theorem ss_of_pow (hf : 1 < Module.finrank ℚ E / 2) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) (n : ℕ)
     (h : P ^ (n + 1) ∈ X.SS ((n + 1) • la)) : P ∈ X.SS la := by
@@ -365,13 +351,10 @@ theorem exists_sec_ne_zero (Xo : Moduli Dw l) (c : Coeff l) : ∃ m : ℕ, ∀ (
   rw [e1]
   exact h0
 
-theorem rd_mul {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (f g : Rul Xo c) : rdU U (f * g) = rdU U f * rdU U g :=
-  GlobalTheory.CuspProduct.rdU_mul (Formalism.L2.PjFree.Unf.ofPj U) f g
-
 theorem rd_pow {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (f : Rul Xo c) (n : ℕ) : rdU U (f ^ (n + 1)) = rdU U f ^ (n + 1) := by
   induction n with
   | zero => simp
-  | succ n ih => rw [pow_succ, rd_mul, ih, ← pow_succ]
+  | succ n ih => rw [pow_succ, _root_.GlobalTheory.AllWt.rdU_mul, ih, ← pow_succ]
 
 theorem la_add {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (a a' : (E →+* ℂ) × ℕ → ℕ) {n n' : ℕ} (hn : Even n)
     (hn' : Even n') (k : U.Comp) : laU U (a + a') (n + n') k = laU U a n k + laU U a' n' k :=
@@ -536,14 +519,14 @@ theorem mem_cusp_of_span (hf : 1 < Module.finrank ℚ E / 2) (U : ∀ σ : c.F �
   have R1 : ∀ i i', ∑ j, α (D i j) • rdU (U σ) (b i' * s j) = ∑ j, α (D i' j) • rdU (U σ) (b i * s j) := fun i i' => by
     refine tr _ _ (dom_add (dA _ eW) (dS _ eW)) _ _ (fun j => sec_mul Xo c _ _ _ _ (cs (hb i')) (cs (hs j)))
       (fun j => sec_mul Xo c _ _ _ _ (cs (hb i)) (cs (hs j))) _ _ ?_
-    simp only [rd_mul, ← mul_smul_comm, ← Finset.mul_sum, ← hD]
+    simp only [_root_.GlobalTheory.AllWt.rdU_mul, ← mul_smul_comm, ← Finset.mul_sum, ← hD]
     ring
   have R2 : ∀ i, ∑ j, α (D i j) • rdU (U σ) (F * s j) = ∑ j, α (cg j) • rdU (U σ) (b i * g j) := fun i => by
     refine tr _ _ (dom_add (dA _ eA) (dS _ eW)) _ _ (fun j => sec_mul Xo c _ _ _ _ hFs (cs (hs j)))
       (fun j => ?_) _ _ ?_
     · have := sec_mul Xo c _ _ _ _ (cs (hb i)) (cs (hg j))
       rwa [show nW + (nA + 2 * k) = nA + (nW + 2 * k) by ring] at this
-    · simp only [rd_mul, ← mul_smul_comm, ← Finset.mul_sum, ← hD, ← hcg]
+    · simp only [_root_.GlobalTheory.AllWt.rdU_mul, ← mul_smul_comm, ← Finset.mul_sum, ← hD, ← hcg]
       ring
   have R3 : ∀ j, ∑ _u : Unit, α 1 • rdU (U σ) (s j) =
       ∑ p : Fin mb × Fin ms, α (D' j p.1 * D p.1 p.2) • rdU (U σ) (s p.2) := fun j => by
@@ -575,7 +558,7 @@ theorem mem_cusp_of_span (hf : 1 < Module.finrank ℚ E / 2) (U : ∀ σ : c.F �
     have := ss_mul _ hf ((mem_holSub _ _ _).1 hF0.1 j)
       ((hU σ₀ g₀).2.2.2.2.1 0 _ ⟨fun _ _ _ _ => le_rfl, ev⟩ _ hηL j)
     rw [← la_add _ _ _ eA ev, add_zero] at this
-    rw [rd_mul]
+    rw [_root_.GlobalTheory.AllWt.rdU_mul]
     exact this
   obtain ⟨et, het⟩ := sb σ₀ g₀ _ ht0
   have R4 : ∑ _u : Unit, α 1 • rdU (U σ) (F * η ^ (L + 1)) = ∑ i, α (et i) • rdU (U σ) (b i) :=
@@ -586,7 +569,7 @@ theorem mem_cusp_of_span (hf : 1 < Module.finrank ℚ E / 2) (U : ∀ σ : c.F �
     simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
   have hβ : (fun i => rdU (U σ) (b i) k₀ x) ≠ 0 := fun h0 => by
     have := congrFun (congrFun R4 k₀) x
-    rw [ev, ev, Fintype.sum_unique, map_one, one_mul, rd_mul, rd_pow (U σ) η,
+    rw [ev, ev, Fintype.sum_unique, map_one, one_mul, _root_.GlobalTheory.AllWt.rdU_mul, rd_pow (U σ) η,
       Finset.sum_eq_zero fun i _ => by rw [show rdU (U σ) (b i) k₀ x = 0 from congrFun h0 i, mul_zero]] at this
     rcases mul_eq_zero.1 this with h | h
     · exact hne (hFx ▸ h)
@@ -597,11 +580,11 @@ theorem mem_cusp_of_span (hf : 1 < Module.finrank ℚ E / 2) (U : ∀ σ : c.F �
     (fun i i' => by
       have := congrFun (congrFun (R1 i i') k₀) x
       rw [ev, ev] at this
-      simpa only [rd_mul, Pi.mul_apply] using this)
+      simpa only [_root_.GlobalTheory.AllWt.rdU_mul, Pi.mul_apply] using this)
     (fun i => by
       have := congrFun (congrFun (R2 i) k₀) x
       rw [ev, ev] at this
-      simp only [rd_mul, Pi.mul_apply] at this
+      simp only [_root_.GlobalTheory.AllWt.rdU_mul, Pi.mul_apply] at this
       rw [this, hG, ev, Finset.sum_mul]
       exact Finset.sum_congr rfl fun j _ => by ring)
     (fun j => by

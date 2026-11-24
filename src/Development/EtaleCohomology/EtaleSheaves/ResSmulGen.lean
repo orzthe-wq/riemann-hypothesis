@@ -94,7 +94,7 @@ theorem field_ann {q : ℕ} (j : ℤ) {K : Type} [Field K] (ζ : Prim q K) (c : 
       rw [Units.val_mul, field_pow, ← hlg η, hξ])
     show φ _ = 0
     rw [map_sub]
-    simp only [φ, Finsupp.linearCombination_single, ← e, one_smul, smul_eq_mul]
+    simp only [φ, Finsupp.linearCombination_single, ← e, smul_eq_mul]
     rw [sub_eq_zero, mul_zpow]
     apply ULift.ext
     simp only [ULift.mul_down, Units.val_mul, ULift.one_down]

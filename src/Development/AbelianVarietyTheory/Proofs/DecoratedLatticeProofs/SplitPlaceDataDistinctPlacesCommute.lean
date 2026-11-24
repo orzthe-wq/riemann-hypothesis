@@ -5,7 +5,8 @@ public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SingleM
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisOFinsetSum
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergOperatorDisjointSupportSmulAdd
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceBaseVacuumDatumExistsUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceChangeBaseVacuumHeisenbergCombinationStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceChangeBaseVacuumHeisenbergCombination
+public import Development.AbelianVarietyTheory.Definitions.Foundations.EqPlaceIdemOfIsPrimeIdem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -40,7 +41,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.AbelianVarietyTheory.Definitions.Foundations.EqPlaceIdemOfIsPrimeIdem
 
 @[expose] public section
 
@@ -102,8 +102,8 @@ theorem overSwap : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topologic
   intro D k _ _ _ _ p p' n n' m m' _ _ _ _ _ _ _ _ ψ hψ hp hp' hne S T α β α' β' LS LT f₀ g h Ψ Ψ' hv' hO1 hO2
   obtain ⟨hLS, hLT, hf₀, hΨ, -⟩ := id hO1
   obtain ⟨-, -, hg, hΨ', -⟩ := id hO2
-  obtain ⟨c, hc, hcO⟩ := (GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D k p n n' ψ hψ hp S T α β LS LS LT LT hLS hLT hLS hLT).2 Ψ hΨ
-  obtain ⟨c', hc', hcO'⟩ := (GlobalTheory.T.splitPlace_changeBaseVacuum_heisenbergCombination D k p' m m' ψ hψ hp' S T α' β' LS LS LT LT hLS hLT hLS hLT).2 Ψ' hΨ'
+  obtain ⟨c, hc, hcO⟩ := (_root_.GlobalTheory.FinPl.Rebase.rebase D k p n n' ψ hψ hp S T α β LS LS LT LT hLS hLT hLS hLT).2 Ψ hΨ
+  obtain ⟨c', hc', hcO'⟩ := (_root_.GlobalTheory.FinPl.Rebase.rebase D k p' m m' ψ hψ hp' S T α' β' LS LS LT LT hLS hLT hLS hLT).2 Ψ' hΨ'
   have eg : g = GlobalTheory.SeeSaw.comb ψ S T c f₀ :=
     ((GlobalTheory.T.splitPlace_baseVacuum_datum_exists_unique D k p n n' ψ hψ S T α β LS LT hLS hLT f₀ hf₀).1 Ψ hΨ).unique hO1 (hcO f₀ hf₀)
   have eh : h = GlobalTheory.SeeSaw.comb ψ S T c' g :=

@@ -165,9 +165,9 @@ theorem gs_gF_comp {h : (DegPre.BF D.toPre F).left ⟶ (DegPre.BF D.toPre F).lef
     _ = gs (𝟙 _) y ⊤ (gF D.toPre F ζ) :=
         (gs_pull (𝟙 _) (fst (TF (R := V) F) D.toPre.P.A).left y ⊤ (by simp) _).symm
 
-theorem vge_move {k : ℕ} {α χ : D.toPre.X}
-    {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k))}
-    {s' : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k))}
+theorem vge_move₂ {k₁ k₂ : ℕ} {α χ : D.toPre.X}
+    {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k₁))}
+    {s' : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k₂))}
     {h : (DegPre.BF D.toPre F).left ⟶ (DegPre.BF D.toPre F).left}
     (hfst : h ≫ (fst (TF (R := V) F) D.toPre.P.A).left = (fst (TF (R := V) F) D.toPre.P.A).left)
     {TB : D.toPre.P.A.left ⟶ D.toPre.P.A.left}
@@ -175,29 +175,29 @@ theorem vge_move {k : ℕ} {α χ : D.toPre.X}
     {K₃ K₄ : Type} [Fintype K₃] [Fintype K₄]
     {φ₃ : K₃ → ((DegPre.BF D.toPre F).left ⟶ D.toPre.P.A.left)} {ε₃ : K₃ → ℤ}
     (u : LB.Gen (LB.LinComb D.toPre.P.L φ₃ ε₃))
-    (hrel : GeneratorPullback.SecRel D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k) s'
-      (DegPre.famφ D.toPre F α) (DegPre.famε k) s h φ₃ ε₃ u)
+    (hrel : GeneratorPullback.SecRel D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k₂) s'
+      (DegPre.famφ D.toPre F α) (DegPre.famε k₁) s h φ₃ ε₃ u)
     {ψ : K₄ → (D.toPre.P.A.left ⟶ D.toPre.P.A.left)} {δ : K₄ → ℤ}
     (eB : LB.Gen (LB.LinComb D.toPre.P.L ψ δ)) (heB : eB.IsGen)
-    (hform : FormEq (Sum.elim (fun i => TB ≫ D.toPre.famφB α i) ψ) (Sum.elim (DegPre.famε k) δ)
-      (D.toPre.famφB χ) (DegPre.famε k))
+    (hform : FormEq (Sum.elim (fun i => TB ≫ D.toPre.famφB α i) ψ) (Sum.elim (DegPre.famε k₁) δ)
+      (D.toPre.famφB χ) (DegPre.famε k₂))
     (c : F)
     (hc : ∀ (y : (DegPre.BF D.toPre F).left) (J : ((DegPre.BF D.toPre F).left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι),
       Good D.toPre.P.L y J →
       (val u (𝟙 _) y J).val = gs (𝟙 _) y ⊤ (gF D.toPre F c) * (val eB (DegPre.prB D.toPre F).left y J).val)
-    {r q : ℚ} (hq : ((q : ℚ) : WithTop ℚ) ≤ v c) (hs : VGe D F v k α s r) : VGe D F v k χ s' (r + q) := by
+    {r q : ℚ} (hq : ((q : ℚ) : WithTop ℚ) ≤ v c) (hs : VGe D F v k₁ α s r) : VGe D F v k₂ χ s' (r + q) := by
   classical
   have hL := D.toPre.P.isLB
   obtain ⟨n, a, σ, σF, hscal, hva, hsum⟩ := hs
-  have e1 : ∀ i, ∃ t : D.toPre.SecB k χ, ∀ (Z : Scheme.{0}) (ρ : Z ⟶ D.toPre.P.A.left) (z : Z) (J),
+  have e1 : ∀ i, ∃ t : D.toPre.SecB k₂ χ, ∀ (Z : Scheme.{0}) (ρ : Z ⟶ D.toPre.P.A.left) (z : Z) (J),
       Good D.toPre.P.L z J → sval t ρ z J = sval (σ i) (ρ ≫ TB) z J * (val eB ρ z J).val := fun i => by
     obtain ⟨t, ht⟩ := exists_sec hL hform (pullMulSec (σ i) TB eB heB)
     exact ⟨t, fun Z ρ z J hJ => (ht Z ρ z J hJ).trans (sval_pullMulSec _ _ _ heB ρ z hJ)⟩
   choose σ' hσ' using e1
-  have hformF : FormEq (fun i => (DegPre.prB D.toPre F).left ≫ D.toPre.famφB χ i) (DegPre.famε k)
-      (DegPre.famφ D.toPre F χ) (DegPre.famε k) := fun U _ g =>
+  have hformF : FormEq (fun i => (DegPre.prB D.toPre F).left ≫ D.toPre.famφB χ i) (DegPre.famε k₂)
+      (DegPre.famφ D.toPre F χ) (DegPre.famε k₂) := fun U _ g =>
     Finset.prod_congr rfl fun i _ => by rw [GC.famφ_eq]
-  have e2 : ∀ i, ∃ t : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k)),
+  have e2 : ∀ i, ∃ t : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k₂)),
       ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (J), Good D.toPre.P.L z J →
         sval t ρ z J = sval (σ' i) (ρ ≫ (DegPre.prB D.toPre F).left) z J := fun i => by
     obtain ⟨t, ht⟩ := exists_sec hL hformF (pullSec D.toPre.P.L _ _ (σ' i) (DegPre.prB D.toPre F).left)
@@ -215,7 +215,7 @@ theorem vge_move {k : ℕ} {α χ : D.toPre.X}
     have m := hIy.mem (DegPre.famφ D.toPre F χ) (𝟙 _)
     have hy' : y ∈ LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j := hy
     have T0 := sec_trans s' (𝟙 _) y hy' m
-    set τ := (Geo.Tor.trF (DegPre.famφ D.toPre F χ) (DegPre.famε k) (𝟙 _) y j
+    set τ := (Geo.Tor.trF (DegPre.famφ D.toPre F χ) (DegPre.famε k₂) (𝟙 _) y j
       (fun k => I (𝟙 _ ≫ DegPre.famφ D.toPre F χ k))).val with hτ
     have Ti : ∀ i, gs (𝟙 _) y (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j)
         (resTop (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (gF D.toPre F (c * a i)) *
@@ -247,6 +247,29 @@ theorem vge_move {k : ℕ} {α χ : D.toPre.X}
       rw [A1, A2, A3, map_mul, gs_mul _ y ⊤ (by trivial)]
       ring
     exact T0.trans ((congrArg (fun x => τ * x) CORE).trans RHS.symm)
+
+theorem vge_move {k : ℕ} {α χ : D.toPre.X}
+    {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k))}
+    {s' : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k))}
+    {h : (DegPre.BF D.toPre F).left ⟶ (DegPre.BF D.toPre F).left}
+    (hfst : h ≫ (fst (TF (R := V) F) D.toPre.P.A).left = (fst (TF (R := V) F) D.toPre.P.A).left)
+    {TB : D.toPre.P.A.left ⟶ D.toPre.P.A.left}
+    (hh : h ≫ (DegPre.prB D.toPre F).left = (DegPre.prB D.toPre F).left ≫ TB)
+    {K₃ K₄ : Type} [Fintype K₃] [Fintype K₄]
+    {φ₃ : K₃ → ((DegPre.BF D.toPre F).left ⟶ D.toPre.P.A.left)} {ε₃ : K₃ → ℤ}
+    (u : LB.Gen (LB.LinComb D.toPre.P.L φ₃ ε₃))
+    (hrel : GeneratorPullback.SecRel D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k) s'
+      (DegPre.famφ D.toPre F α) (DegPre.famε k) s h φ₃ ε₃ u)
+    {ψ : K₄ → (D.toPre.P.A.left ⟶ D.toPre.P.A.left)} {δ : K₄ → ℤ}
+    (eB : LB.Gen (LB.LinComb D.toPre.P.L ψ δ)) (heB : eB.IsGen)
+    (hform : FormEq (Sum.elim (fun i => TB ≫ D.toPre.famφB α i) ψ) (Sum.elim (DegPre.famε k) δ)
+      (D.toPre.famφB χ) (DegPre.famε k))
+    (c : F)
+    (hc : ∀ (y : (DegPre.BF D.toPre F).left) (J : ((DegPre.BF D.toPre F).left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι),
+      Good D.toPre.P.L y J →
+      (val u (𝟙 _) y J).val = gs (𝟙 _) y ⊤ (gF D.toPre F c) * (val eB (DegPre.prB D.toPre F).left y J).val)
+    {r q : ℚ} (hq : ((q : ℚ) : WithTop ℚ) ≤ v c) (hs : VGe D F v k α s r) : VGe D F v k χ s' (r + q) :=
+  vge_move₂ hfst hh u hrel eB heB hform c hc hq hs
 
 end Move
 

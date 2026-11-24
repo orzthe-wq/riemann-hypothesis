@@ -442,7 +442,7 @@ theorem finite_quadratic_zeros {K : Type} [Field K] {a : K} (ha : a ≠ 0) (c d 
       + Polynomial.C d : Polynomial K) ≠ 0 := by
     intro h0
     have := congrArg (fun p => _root_.AddMonoidAlgebra.coeff (M := ℕ) p 2) h0
-    simp [Polynomial.coeff_X, Polynomial.coeff_C] at this
+    simp at this
     exact ha this
   refine (Polynomial.finite_setOf_isRoot hne).subset fun t ht => ?_
   simpa [Polynomial.IsRoot] using ht

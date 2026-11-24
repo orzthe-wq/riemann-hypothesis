@@ -92,7 +92,7 @@ theorem proj_clause (i : Fin D.R.m) (ph : ℂ) (t : T0) (hG : R.thP_thG)
   generalize (R.HW i (sg0 D A)).e ((R.FW i).j (sg0 D A) y) = Φ
   ext v h
   simp [RealDat.eWf, gaL, actW, postOn, LinearMap.sum_apply, Finset.sum_apply]
-  first | rfl | exact Finset.sum_congr rfl fun _ _ => rfl
+  first | rfl
 
 end Tuple
 

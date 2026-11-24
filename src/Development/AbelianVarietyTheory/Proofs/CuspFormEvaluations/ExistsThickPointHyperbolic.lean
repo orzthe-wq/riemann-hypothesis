@@ -233,7 +233,7 @@ theorem _root_.GlobalTheory.ThickPoint.traceFormOf_nondegenerate {G : Matrix (Fi
     funext b
     have hs : ∀ j, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc ((Pi.single b (1 : E) : Fin r → E) j) =
         (Pi.single b (1 : E) : Fin r → E) j := fun j => by
-      by_cases hj : j = b <;> simp [hj, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc, Pi.single_apply]
+      by_cases hj : j = b <;> simp [hj, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc]
     have h := h1 (Pi.single b 1)
     simp only [_root_.ReciprocityTheory.ChartRestriction.G.FD.herm, hs] at h
     simpa [Matrix.vecMul, dotProduct, Pi.single_apply] using h

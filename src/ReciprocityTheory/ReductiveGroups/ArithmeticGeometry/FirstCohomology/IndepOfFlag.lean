@@ -1,56 +1,10 @@
 module
 
 public import ReciprocityTheory.ReducedBases.GsInnerBOfLt
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -70,7 +24,6 @@ lemma V_mono {d : ℕ} (u : Fin d → E) {m n : ℕ} (h : m ≤ n) : V u m ≤ V
 lemma V_eq {d : ℕ} (u : Fin d → E) (k : Fin d) : span ℝ (u '' Set.Iio k) = V u k.val := by
   first
   | rfl
-  | (simp only [V]; congr 1; congr 1; ext l; exact Iff.rfl)
 
 lemma mem_V_of_lt {d : ℕ} (u : Fin d → E) {l : Fin d} {n : ℕ} (h : l.val < n) : u l ∈ V u n := Submodule.subset_span ⟨l, h, rfl⟩
 
@@ -81,8 +34,6 @@ lemma finite_ball [FiniteDimensional ℝ E] (X : Submodule ℤ E) [DiscreteTopol
   have hdisc : IsDiscrete (X : Set E) := by
     first
     | exact ⟨‹DiscreteTopology X›⟩
-    | exact isDiscrete_iff_discreteTopology.2 ‹DiscreteTopology X›
-    | exact ‹DiscreteTopology X›
   exact Metric.finite_isBounded_inter_isClosed hdisc Metric.isBounded_closedBall hc
 
 lemma indep_of_flag [FiniteDimensional ℝ E] {d : ℕ} (hd : d = finrank ℝ E) (f : Fin d → E)
@@ -164,15 +115,11 @@ private lemma sub_gs_mem_V : u k - gs u k ∈ V u k.val := by
   apply hsub
   first
   | exact Submodule.starProjection_apply_mem _ _
-  | (rw [Submodule.starProjection_apply]; exact Submodule.coe_mem _)
-  | simp
 
 lemma phi_self (hu : LinearIndependent ℝ u) : phi u k (u k) = 1 := by
   have hne : gs u k ≠ 0 := by
     first
-    | exact gramSchmidt_ne_zero ℝ k hu
     | exact gramSchmidt_ne_zero k hu
-    | exact gramSchmidt_ne_zero (𝕜 := ℝ) (n := k) hu
   have h1 : phi u k (u k) = phi u k (gs u k) + phi u k (u k - gs u k) := by
     rw [← phi_add]; congr 1; abel
   rw [h1, phi_V u k (sub_gs_mem_V u k), add_zero, phi, real_inner_self_eq_norm_sq,
@@ -216,8 +163,7 @@ lemma decomp (hu : LinearIndependent ℝ u) {x : E} (hx : x ∈ V u (k.val + 1))
 
 end phi
 
-lemma exists_coeffs {d : ℕ} (u : Fin d → E) {n : ℕ} {x : E} (hx : x ∈ V u n) :
-    ∃ c : Fin d → ℝ, (∀ l : Fin d, n ≤ l.val → c l = 0) ∧ x = ∑ l, c l • u l := exists_coeffs_of_mem_V u hx
+alias exists_coeffs := _root_.ReciprocityTheory.ChartRestriction.G.H1.RB.exists_coeffs_of_mem_V
 
 private lemma norm_add_smul_sq_of_real_inner_eq_zero (a g : E) (t : ℝ) (h : ⟪g, a⟫_ℝ = 0) :
     ‖a + t • g‖ ^ 2 = ‖a‖ ^ 2 + t ^ 2 * ‖g‖ ^ 2 := by

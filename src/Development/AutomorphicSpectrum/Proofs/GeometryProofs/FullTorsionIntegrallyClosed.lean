@@ -7,14 +7,18 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GenWeil
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.MemEigSpOfMemHtDual
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThickTransComp
 public import Development.AbelianVarietyTheory.Counterexamples.AbelianLawCounterexamples.ExistsTwoTorsionWeilDegenerate
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGenericWeilPairing
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsStalkFractionOfGeneric
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsTorsionQuasiFiniteGroup
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NatCastSmulMemHtLat
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingPullbackIff
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsWithoutCohomology
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.WeilIsAlternatingSkewNatural
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsGenericWeilPairingStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsStalkFractionOfGenericStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsTorsionQuasiFiniteGroupStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NatCastSmulMemHtLat
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.WeilPairingPullbackIffStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -60,6 +64,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Statements.HyperbolicHypotheses.HypothesesInhabitedHyperbolic
 
 @[expose] public section
 
@@ -111,14 +116,6 @@ theorem exists_EF_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   obtain ⟨a, ha⟩ := D.unimod.2 (bs.coord j)
   exact ⟨a, bs j, by rw [ha]; simp⟩
 
-theorem subsingleton_La {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
-    (hpq : D.p + D.q = 0) : Subsingleton D.La := by
-  haveI := D.fin
-  haveI := D.proj
-  have h := D.rank
-  rw [hpq] at h
-  exact Module.finrank_zero_iff.1 h
-
 theorem fullTorsion_of_equiv {X : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {G : Over X} [GrpObj G]
     (κ : Ω' ≃+* Ω) {ξ' : Sp Ω' ⟶ X} {ξ : Sp Ω ⟶ X} (h : spMap κ.toRingHom ≫ ξ' = ξ) {n : ℕ}
     (hf : FullTorsion G ξ n) : FullTorsion G ξ' n := by
@@ -148,7 +145,7 @@ theorem fullTorsion_of_equiv {X : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field 
     rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
   refine ⟨Over.homMk (spMap κ.symm.toRingHom ≫ x.left) ?_, ?_⟩
   · have := Over.w x
-    simp only [Over.mk_left, Over.mk_hom, Functor.id_obj, Functor.const_obj_obj, Functor.id_map] at this ⊢
+    simp only [Over.mk_left, Over.mk_hom] at this ⊢
     simp only [Category.assoc, this]
     rw [← Category.assoc, h1, Category.id_comp]
   · simp only [Over.homMk_left]
@@ -288,7 +285,7 @@ theorem push_one {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [Gr
 
 theorem tors_trivial (o : Obj D l b s) (t : SAB H X) (m : SABMap o.t t ξ) {n : ℕ} (hn : 0 < n)
     (hpq : D.p + D.q = 0) (g : Over.mk ξ ⟶ t.G) (hg : g ^ n = 1) : g = 1 := by
-  haveI := subsingleton_La D hpq
+  haveI := _root_.GlobalTheory.AllClasses.subsingleton_of_rank_zero D hpq
   let i := algebraMap Ω (AlgebraicClosure Ω)
   obtain ⟨I⟩ := exists_tate o i
   have hp := m.cart
@@ -334,7 +331,7 @@ theorem genWeil_trivial (o : Obj D l b s) (t : SAB H X) (m : SABMap o.t t ξ) {n
       have h2 := congrArg (fun w => w.left) (push_one m.cart (Over.mk (spMap i)))
       rw [hz]
       exact h2.trans (congrArg (fun w => w.left) h1).symm
-    rw [← GlobalTheory.T.weil_pairing_pullback_iff E H X (Sp Ω) t o.t ξ m k (spMap i) 1 1 xk gk n c (e1 xk hxk) (e1 gk hgk)]
+    rw [← _root_.GlobalTheory.CompanionTheory.Ar.WeilPull.main E H X (Sp Ω) t o.t ξ m k (spMap i) 1 1 xk gk n c (e1 xk hxk) (e1 gk hgk)]
     have hx1 := hW _ (GlobalTheory.Obj.toPolAV o) n (Over.mk (spMap i))
     have h1 : WeilIs o.t.G o.t.PP.L n (1 : Over.mk (spMap i) ⟶ o.t.G) 1 (unitOn (1 : kˣ)) := by
       rw [GenWeilModel.unitOn_one]
@@ -357,7 +354,7 @@ theorem fullTorsion_frac {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶
   let κ₀ : FractionRing (X.presheaf.stalk q.1) →+* Ω := IsFractionRing.lift (hξ.inj q)
   have hκ : ∀ r, κ₀ (algebraMap _ _ r) = genMap ξ q r := fun r => IsFractionRing.lift_algebraMap (hξ.inj q) r
   have hb : Function.Bijective κ₀ := ⟨κ₀.injective, fun a => by
-    obtain ⟨b, c, hc, h⟩ := GlobalTheory.T.exists_stalk_fraction_of_generic ξ hξ q a
+    obtain ⟨b, c, hc, h⟩ := _root_.GlobalTheory.CompanionTheory.Ar.exists_frac_genMap ξ hξ q a
     refine ⟨algebraMap _ _ b / algebraMap _ _ c, ?_⟩
     rw [map_div₀, hκ, hκ, ← h]
     field_simp⟩
@@ -381,12 +378,12 @@ theorem htOm_eq_htLat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   haveI hc : CharZero (X.presheaf.stalk q.1) := ⟨fun a b h => Nat.cast_injective (R := Ω) (by
     rw [← map_natCast (genMap ξ q), h, map_natCast])⟩
   have hft := fullTorsion_frac hξ q hfull
-  obtain ⟨T, _, _, Γ', i, htor⟩ := @GlobalTheory.T.exists_torsion_quasi_finite_group (X.presheaf.stalk q.1) _ hd _ hc X t.G _ (X.fromSpecStalk q.1) n t.semi hn hft
+  obtain ⟨T, _, _, Γ', i, htor⟩ := @_root_.GlobalTheory.CompanionTheory.Ar.TorsQF.torsion_qfGroup (X.presheaf.stalk q.1) _ hd _ hc X t.G _ (X.fromSpecStalk q.1) n t.semi hn hft
   have hroot : 0 < D.p + D.q → ∃ ζ : Ω, IsPrimitiveRoot ζ n := fun h => root o t m hfull hn h
   have hw : ∃ e, GenWeil t.G t.PP.L ξ n e := by
     rcases Nat.eq_zero_or_pos (D.p + D.q) with h | h
     · exact ⟨_, genWeil_trivial o t m hn h⟩
-    · have := GlobalTheory.T.exists_generic_weil_pairing GlobalTheory.PairingLawZeroCounterexample.laws.1 E H D l B b (Sp Ω) X s o t ξ m Ω (𝟙 _) n hn
+    · have := _root_.GlobalTheory.CompanionTheory.Ar.WeilObj.genWeil_of_obj GlobalTheory.PairingLawZeroCounterexample.laws.1 E H D l B b (Sp Ω) X s o t ξ m Ω (𝟙 _) n hn
         (by rwa [Category.id_comp]) (by simpa using hroot h)
       rwa [Category.id_comp] at this
   obtain ⟨e, hw⟩ := hw

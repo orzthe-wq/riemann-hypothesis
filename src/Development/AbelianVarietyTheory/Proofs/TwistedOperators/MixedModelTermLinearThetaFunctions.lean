@@ -95,7 +95,6 @@ theorem term_linear : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fi
   · simp only [term, res, heisO_smul_fun, Pi.smul_apply, smul_eq_mul]
     first
       | exact integral_const_mul c _
-      | exact integral_mul_left c _
 
 end GlobalTheory.MixedTerm
 

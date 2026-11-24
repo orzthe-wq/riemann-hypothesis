@@ -497,10 +497,6 @@ theorem logRescale : LogRescale := by
 
 end LogarithmEquivalence
 
-theorem equivalence_rules : SimeqRules := LogarithmEquivalence.simeqRules
-
-theorem log_rescale_alt : LogRescale := LogarithmEquivalence.logRescale
-
-theorem log_rescale_unique : LogRescaleUnique := LogarithmEquivalence.logRescaleUnique
+alias equivalence_rules := _root_.Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.simeqRules
 
 end Formalism.InvariantFactorPaths.G7

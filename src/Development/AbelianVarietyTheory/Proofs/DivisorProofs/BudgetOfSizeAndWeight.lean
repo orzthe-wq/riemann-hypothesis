@@ -1,30 +1,35 @@
 module
 
+public import Mathlib.Analysis.SpecialFunctions.Log.Basic
+public import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightEntriesSignsSizes
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightGapsBlockAndBarStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightDivisionL1Bound
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightNodesFarAndSpread
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumPrimeLogDivPredLeLogAdd
+public import Formalism.LocalRingCardinality.DataHost
+public import Development.AutomorphicArithmetic.PrimeDiscriminants.BadPrimes
 public import Development.AbelianVarietyTheory.Definitions.Divisors.BudgetAt
 public import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDivPredMemOfPrime
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PosDividedSlopeWeightsBaseHeight
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpreadLeAt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumLogDivPredLeReal
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumPadicValNatMulLogLeLog
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightDivisionL1Bound
-public import Development.AutomorphicArithmetic.PrimeDiscriminants.BadCount
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,7 +37,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,10 +46,349 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalRingCardinality.DataAmbForm
+import Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.IndefiniteTreeX
+import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDivPredMemOfPrime, Development.AbelianVarietyTheory.Proofs.DivisorProofs.PosDividedSlopeWeightsBaseHeight, Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpreadLeAt, Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumLogDivPredLeReal, Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumPadicValNatMulLogLeLog, Development.AutomorphicArithmetic.PrimeDiscriminants.BadCount, Development.AbelianVarietyTheory.Proofs.DivisorProofs.BudgetOfSizeAndWeight
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDivPredMemOfPrime =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDivPredMemOfPrime", "h": "module\n\npublic import Mathlib.Analysis.SpecialFunctions.Log.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique\nimport Formalism.LocalRingCardinality.DataAmbForm\nimport Formalism.LocalToGlobal.IndefiniteForms.IndefiniteTree.IndefiniteTreeX\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.L2.Indef.Tree NumberField GlobalTheory.MeanTop
+
+namespace GlobalTheory.MeanTop
+
+theorem log_div_pred_mem_of_prime {p : ℕ} (hp : p.Prime) :
+    0 ≤ Real.log p / ((p : ℝ) - 1) ∧ Real.log p / ((p : ℝ) - 1) ≤ 1 := by
+  have h2 : (2 : ℝ) ≤ p := by exact_mod_cast hp.two_le
+  have hpos : (0 : ℝ) < (p : ℝ) - 1 := by linarith
+  refine ⟨div_nonneg (Real.log_nonneg (by linarith)) hpos.le, ?_⟩
+  rw [div_le_one hpos]
+  exact Real.log_le_sub_one_of_pos (by linarith)
+
+end GlobalTheory.MeanTop
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDivPredMemOfPrime =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.PosDividedSlopeWeightsBaseHeight =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.PosDividedSlopeWeightsBaseHeight", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightEntriesSignsSizes\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightGapsBlockAndBarStatement\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightDivisionL1Bound\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.L2.Indef.Tree NumberField GlobalTheory.MeanTop
+
+namespace GlobalTheory.MeanTop.DividedSlope
+
+theorem strictAnti_of_adj {N : ℕ} (v : Fin N → ℝ)
+    (h : ∀ a b : Fin N, (b : ℕ) = a + 1 → v b < v a) : ∀ a b : Fin N, a < b → v b < v a := by
+  intro a b hab
+  obtain ⟨b, hb⟩ := b
+  have hab' : (a : ℕ) < b := hab
+  induction b, hab' using Nat.le_induction with
+  | base => exact h a _ rfl
+  | succ n hn ih =>
+    have h1 := ih (by omega) (show (a : ℕ) < n from hn)
+    have h2 := h ⟨n, by omega⟩ ⟨n + 1, hb⟩ rfl
+    linarith
+
+variable {ι : Type} [Fintype ι] {N : ℕ} (W : Wts ι N)
+
+omit [Fintype ι] in
+theorem T_pos (hW : W.Hyp) : (0 : ℝ) < W.T := by
+  have := hW.h1
+  have : 0 < W.T := by omega
+  exact_mod_cast this
+
+omit [Fintype ι] in
+theorem pos_dividedSlopeWeights_baseHeight (hW : W.Hyp) : (0 : ℝ) < W.h0 := by
+  have h1 := hW.h2.1
+  have h2 := hW.weightConst_nonneg
+  have : 0 < W.h0 := by omega
+  exact_mod_cast this
+
+omit [Fintype ι] in
+theorem g_pos (hW : W.Hyp) : 0 < W.g := by
+  have := T_pos W hW
+  have := pos_dividedSlopeWeights_baseHeight W hW
+  unfold Wts.g
+  positivity
+
+omit [Fintype ι] in
+theorem g_le_of (hW : W.Hyp) {x : ℤ} (hx : W.h0 ≤ 4 * W.T * x) : W.g ≤ (x : ℝ) := by
+  have hT := T_pos W hW
+  have hx' : (W.h0 : ℝ) ≤ 4 * W.T * x := by exact_mod_cast hx
+  unfold Wts.g
+  rw [div_le_iff₀ (by positivity)]
+  linarith
+
+theorem adj_ge (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : (b : ℕ) = a + 1) (hb : W.p ≤ (b : ℕ)) :
+    W.g ≤ reWt W.u' τ a - reWt W.u' τ b := by
+  obtain ⟨-, h2, h3⟩ := GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hW hD τ a b hab
+  have hk := hW.kc_lt
+  by_cases hp : (b : ℕ) = W.p
+  · have := g_le_of W hW (h2 hp).2
+    have ha : (a : ℕ) < W.p := by omega
+    have hb' : ¬ (b : ℕ) < W.p := by omega
+    simp only [reWt, Wts.u', ha, hb', if_true, if_false]
+    push_cast at this ⊢
+    linarith
+  · have := g_le_of W hW (h3 hp (by omega))
+    have ha : ¬ (a : ℕ) < W.p := by omega
+    have hb' : ¬ (b : ℕ) < W.p := by omega
+    simp only [reWt, Wts.u', ha, hb', if_false]
+    push_cast at this ⊢
+    linarith
+
+theorem adj_lt (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : (b : ℕ) = a + 1) :
+    reWt W.u' τ b < reWt W.u' τ a := by
+  by_cases hb : W.p ≤ (b : ℕ)
+  · have := adj_ge W hW hD τ a b hab hb
+    have := g_pos W hW
+    linarith
+  · obtain ⟨h1, -, -⟩ := GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hW hD τ a b hab
+    have h := h1 (by omega)
+    have h' : W.u1 τ b < W.u1 τ a := by omega
+    have ha : (a : ℕ) < W.p := by omega
+    have hb' : (b : ℕ) < W.p := by omega
+    simp only [reWt, Wts.u', ha, hb', if_true]
+    exact_mod_cast h'
+
+theorem regular (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : a < b) :
+    reWt W.u' τ b < reWt W.u' τ a :=
+  strictAnti_of_adj _ (adj_lt W hW hD τ) a b hab
+
+theorem anti (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : a ≤ b) :
+    reWt W.u' τ b ≤ reWt W.u' τ a := by
+  rcases hab.eq_or_lt with h | h
+  · rw [h]
+  · exact (regular W hW hD τ a b h).le
+
+theorem far (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (ha : W.p ≤ (a : ℕ)) (hab : a ≠ b) :
+    W.g ≤ |reWt W.u' τ a - reWt W.u' τ b| := by
+  have hk := hW.kc_lt
+  rcases lt_or_gt_of_ne hab with h | h
+  · have h' : (a : ℕ) < b := h
+    have hb := b.2
+    have h1 := adj_ge W hW hD τ a ⟨a + 1, by omega⟩ rfl (by simp only; omega)
+    have h2 := anti W hW hD τ ⟨a + 1, by omega⟩ b (show (a : ℕ) + 1 ≤ b from h')
+    exact le_trans (by linarith) (le_abs_self _)
+  · have h' : (b : ℕ) < a := h
+    have hb := a.2
+    have h1 := adj_ge W hW hD τ ⟨a - 1, by omega⟩ a (by simp only; omega) ha
+    have h2 := anti W hW hD τ b ⟨a - 1, by omega⟩ (show (b : ℕ) ≤ a - 1 by omega)
+    exact le_trans (by linarith) (neg_le_abs _)
+
+theorem entry_le (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (i : Fin N) :
+    |reWt W.u' τ i| ≤ 2 * W.b / W.T := by
+  have hT := T_pos W hW
+  have h1 := (GlobalTheory.MeanTop.divided_entries ι N W hW hD τ i).1
+  have h2 := (_root_.GlobalTheory.MeanTop.divided_weight_size ι N W hW hD).2.2 τ i
+  have h3 := hW.h5 τ i
+  have h1' : ((W.T : ℝ) + W.Dd + 1) * |(W.u1 τ i : ℝ)| ≤ |(W.u τ i : ℝ)| + W.c0 + 4 * N := by exact_mod_cast h1
+  have h2' : |(W.u' τ i : ℝ)| ≤ |(W.u1 τ i : ℝ)| := by exact_mod_cast h2
+  have h4 : (0 : ℝ) ≤ W.Dd := Nat.cast_nonneg _
+  have h5 := abs_nonneg (W.u1 τ i : ℝ)
+  rw [le_div_iff₀ hT]
+  show |(W.u' τ i : ℝ)| * W.T ≤ 2 * W.b
+  nlinarith [mul_le_mul_of_nonneg_right h2' hT.le, mul_nonneg h4 h5]
+
+end GlobalTheory.MeanTop.DividedSlope
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.PosDividedSlopeWeightsBaseHeight =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpreadLeAt =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpreadLeAt", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedWeightNodesFarAndSpread\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.L2.Indef.Tree NumberField GlobalTheory.MeanTop
+
+namespace GlobalTheory.MeanTop
+
+theorem spread_le_at {ι : Type} [Fintype ι] {N : ℕ} (W : Wts ι N) (hW : W.Hyp) (hD : W.IsDiv) (τ : ι)
+    (j : ℕ) (hj : j ≤ N - W.kc) :
+    (j : ℝ) * ((⨆ i, reWt W.u' τ i) - ⨅ i, reWt W.u' τ i) ≤ 6 * ∑ i, |(W.u' τ i : ℝ)| := by
+  classical
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.MeanTop.nodes_far_and_spread ι N W hW hD τ
+  have hN : 0 < N := lt_of_le_of_lt (Nat.zero_le _) hW.p_lt
+  haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩
+  obtain ⟨a, ha⟩ := exists_eq_ciSup_of_finite (f := reWt W.u' τ)
+  obtain ⟨b, hb⟩ := exists_eq_ciInf_of_finite (f := reWt W.u' τ)
+  have hsp : (⨆ i, reWt W.u' τ i) - ⨅ i, reWt W.u' τ i ≤ 3 / 2 * W.w τ / W.T := by
+    rw [← ha, ← hb]; exact h2 a b
+  have h0 : 0 ≤ 3 / 2 * W.w τ / W.T := by simpa using h2 a a
+  have hkN : W.kc < N := hW.kc_lt.trans hW.p_lt
+  set s : Finset (Fin N) := Finset.Ici (⟨W.kc, hkN⟩ : Fin N) with hs
+  have hcard : s.card = N - W.kc := by simp [hs]
+  have hsum : (s.card : ℝ) * (W.w τ / (4 * W.T)) ≤ ∑ i ∈ s, |(W.u' τ i : ℝ)| := by
+    have := Finset.card_nsmul_le_sum s (fun i => |(W.u' τ i : ℝ)|) (W.w τ / (4 * W.T))
+      (fun i hi => (h1 i (by simpa [hs, Fin.le_def] using hi)).2)
+    simpa [nsmul_eq_mul] using this
+  have hsub : ∑ i ∈ s, |(W.u' τ i : ℝ)| ≤ ∑ i, |(W.u' τ i : ℝ)| :=
+    Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun _ _ _ => abs_nonneg _)
+  have hjc : (j : ℝ) ≤ s.card := by rw [hcard]; exact_mod_cast hj
+  have he : 3 / 2 * W.w τ / W.T = 6 * (W.w τ / (4 * W.T)) := by ring
+  calc (j : ℝ) * ((⨆ i, reWt W.u' τ i) - ⨅ i, reWt W.u' τ i) ≤ j * (3 / 2 * W.w τ / W.T) :=
+        mul_le_mul_of_nonneg_left hsp (Nat.cast_nonneg _)
+    _ ≤ s.card * (3 / 2 * W.w τ / W.T) := mul_le_mul_of_nonneg_right hjc h0
+    _ = 6 * (s.card * (W.w τ / (4 * W.T))) := by rw [he]; ring
+    _ ≤ _ := by linarith
+
+end GlobalTheory.MeanTop
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpreadLeAt =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumLogDivPredLeReal =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumLogDivPredLeReal", "h": "module\n\npublic import Mathlib.Analysis.SpecialFunctions.Log.Basic\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumPrimeLogDivPredLeLogAdd\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped BigOperators Matrix
+open Polynomial
+
+namespace GlobalTheory.PrimeLogSum
+
+
+open scoped BigOperators Matrix in
+open Polynomial in
+theorem _root_.GlobalTheory.PrimeLogSum.sum_log_div_pred_le_real : ∀ (B : ℝ), 1 ≤ B →
+    ∑ p ∈ (Finset.range (⌊B⌋₊ + 1)).filter Nat.Prime, Real.log p / ((p : ℝ) - 1)
+      ≤ Real.log B + 3 := by
+  intro B hB
+  have h := _root_.GlobalTheory.PrimeLogSum.sum_log_div_pred_le ⌊B⌋₊
+  have hN : (1 : ℝ) ≤ (⌊B⌋₊ : ℝ) := by
+    have : 1 ≤ ⌊B⌋₊ := Nat.le_floor (by exact_mod_cast hB)
+    exact_mod_cast this
+  have hle : ((⌊B⌋₊ : ℕ) : ℝ) ≤ B := Nat.floor_le (by linarith)
+  have hlog : Real.log (⌊B⌋₊ : ℝ) ≤ Real.log B :=
+    Real.log_le_log (by linarith) hle
+  linarith
+
+end GlobalTheory.PrimeLogSum
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumLogDivPredLeReal =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumPadicValNatMulLogLeLog =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumPadicValNatMulLogLeLog", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.DividedWeightUnique\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Formalism.L2.Indef.Tree NumberField GlobalTheory.MeanTop
+
+namespace GlobalTheory.MeanTop
+
+theorem sum_padicValNat_mul_log_le_log (n : ℕ) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
+    ∑ p ∈ S, (padicValNat p n : ℝ) * Real.log p ≤ Real.log n := by
+  classical
+  rw [Real.log_nat_eq_sum_factorization, Finsupp.sum]
+  have h1 : ∑ p ∈ S, (padicValNat p n : ℝ) * Real.log p
+      = ∑ p ∈ S, (n.factorization p : ℝ) * Real.log p :=
+    Finset.sum_congr rfl fun p hp => by rw [Nat.factorization_def n (hS p hp), Nat.padicValNat_def]
+  rw [h1]
+  have h2 : ∑ p ∈ S ∪ n.factorization.support, (n.factorization p : ℝ) * Real.log p
+      = ∑ p ∈ n.factorization.support, (n.factorization p : ℝ) * Real.log p := by
+    symm
+    refine Finset.sum_subset Finset.subset_union_right fun p _ hp => ?_
+    rw [Finsupp.notMem_support_iff.1 hp]; simp
+  rw [← h2]
+  exact Finset.sum_le_sum_of_subset_of_nonneg Finset.subset_union_left
+    fun p _ _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg p)
+
+theorem sum_vDiff_mul_log_le :
+    ∀ (D : D7) (S : Finset ℕ), (∀ p ∈ S, p.Prime) → (∀ p, 0 ≤ vDiff D p) ∧ ∑ p ∈ S, vDiff D p * Real.log p ≤ Real.log D.host.rdE := by
+  intro D S hS
+  refine ⟨fun p => div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _), ?_⟩
+  have hn : (0 : ℝ) < (Module.finrank ℚ D.host.E : ℝ) := by exact_mod_cast Module.finrank_pos
+  have hd : (0 : ℝ) < |(discr D.host.E : ℝ)| := by
+    rw [abs_pos]; exact_mod_cast discr_ne_zero D.host.E
+  have hc : ((WeightThresholdDefs.dE D : ℕ) : ℝ) = |(discr D.host.E : ℝ)| := by
+    rw [WeightThresholdDefs.dE, Nat.cast_natAbs, Int.cast_abs]
+  have hr : Real.log D.host.rdE = Real.log (WeightThresholdDefs.dE D : ℕ) / (Module.finrank ℚ D.host.E : ℝ) := by
+    rw [hc]
+    unfold Host.rdE
+    rw [Real.log_rpow hd]; ring
+  rw [hr]
+  refine le_trans (le_of_eq ?_) (div_le_div_of_nonneg_right (sum_padicValNat_mul_log_le_log (WeightThresholdDefs.dE D) S hS) hn.le)
+  rw [Finset.sum_div]
+  refine Finset.sum_congr rfl fun p _ => ?_
+  rw [vDiff]; ring
+
+end GlobalTheory.MeanTop
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumPadicValNatMulLogLeLog =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.PrimeDiscriminants.BadCount =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.PrimeDiscriminants.BadCount", "h": "module\n\npublic import Formalism.LocalRingCardinality.DataHost\npublic import Development.AutomorphicArithmetic.PrimeDiscriminants.BadPrimes\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField
+
+namespace Formalism.BasicNotions.Host
+
+variable {R : Ranks} (H : Host R)
+
+theorem sum_bad_log_div_le (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
+    ∑ p ∈ Nat.primeFactors (2 * (discr H.E).natAbs) ∪ S, Real.log p / ((p : ℝ) - 1) ≤
+      S.card + 2 + 4 * Real.log H.rdE := by
+  set U := Nat.primeFactors (2 * (discr H.E).natAbs) ∪ S with hU
+  have hprime : ∀ p ∈ U, p.Prime := by
+    intro p hp
+    rcases Finset.mem_union.mp hp with h | h
+    · exact Nat.prime_of_mem_primeFactors h
+    · exact hS p h
+  have hterm1 : ∀ p ∈ U, Real.log p / ((p:ℝ) - 1) ≤ 1 := by
+    intro p hp
+    have h2 : (2:ℝ) ≤ p := by exact_mod_cast (hprime p hp).two_le
+    rw [div_le_one (by linarith)]
+    exact Real.log_le_sub_one_of_pos (by linarith)
+  have hterm2 : ∀ p ∈ U, Real.log p / ((p:ℝ) - 1) ≤ Real.log p := by
+    intro p hp
+    have h2 : (2:ℝ) ≤ p := by exact_mod_cast (hprime p hp).two_le
+    exact div_le_self (Real.log_natCast_nonneg p) (by linarith)
+  rw [← Finset.sum_filter_add_sum_filter_not U (· ∈ H.small)]
+  have hA : ∑ p ∈ U.filter (· ∈ H.small), Real.log p / ((p:ℝ) - 1) ≤ 4 * Real.log H.rdE := by
+    calc _ ≤ ∑ p ∈ U.filter (· ∈ H.small), Real.log (p:ℝ) :=
+          Finset.sum_le_sum fun p hp => hterm2 p (Finset.mem_filter.mp hp).1
+      _ ≤ ∑ p ∈ H.small, Real.log (p:ℝ) :=
+          Finset.sum_le_sum_of_subset_of_nonneg (fun p hp => (Finset.mem_filter.mp hp).2)
+            (fun p _ _ => Real.log_natCast_nonneg p)
+      _ ≤ _ := sum_small_log_le H
+  have hB : ∑ p ∈ U.filter (· ∉ H.small), Real.log p / ((p:ℝ) - 1) ≤ S.card + 2 := by
+    calc _ ≤ ∑ p ∈ U.filter (· ∉ H.small), (1:ℝ) :=
+          Finset.sum_le_sum fun p hp => hterm1 p (Finset.mem_filter.mp hp).1
+      _ = ((U \ H.small).card : ℝ) := by rw [Finset.sum_const, nsmul_one, Finset.sdiff_eq_filter]
+      _ ≤ _ := by exact_mod_cast card_bad_sdiff_le H S
+  linarith
+
+end Formalism.BasicNotions.Host
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.PrimeDiscriminants.BadCount =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.BudgetOfSizeAndWeight =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.BudgetOfSizeAndWeight", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.BudgetAt\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.QuoIff\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LogDivPredMemOfPrime\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PosDividedSlopeWeightsBaseHeight\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SpreadLeAt\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumLogDivPredLeReal\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumPadicValNatMulLogLeLog\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightDivisionL1Bound\npublic import Development.AutomorphicArithmetic.PrimeDiscriminants.BadCount\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 
@@ -352,3 +695,6 @@ theorem budgetAt {PP A : ℝ} (h : HostNum D L PP A 1) (hw : WtNum p i PP) (hi :
 end Point
 
 end GlobalTheory.CovHt.BudgetPf
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.BudgetOfSizeAndWeight =====

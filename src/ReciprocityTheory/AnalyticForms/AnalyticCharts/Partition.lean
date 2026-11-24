@@ -3,49 +3,9 @@ module
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.Calculus.ContDiff.Defs
 public import Mathlib.Analysis.InnerProductSpace.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 public import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -125,26 +85,19 @@ theorem exists_chart_partition {X : Type*} [TopologicalSpace X] [T2Space X] [Com
   have hO : ∀ x, IsOpen (O x) := fun x =>
     (e (κ x)).continuousOn.isOpen_inter_preimage (e (κ x)).open_source
       (isOpen_lt continuous_const (hgs x).continuous)
-  have hxO : ∀ x, x ∈ O x := by
-    intro x
-    refine ⟨hxs x, ?_⟩
+  have hxO : ∀ x, x ∈ O x := fun x => ⟨hxs x, by
     show (1 : ℝ) / 2 < g x (e (κ x) x)
     rw [hg1 x]
-    norm_num
+    norm_num⟩
   obtain ⟨t, ht⟩ := isCompact_univ.elim_finite_subcover O hO
     (fun p _ => Set.mem_iUnion.mpr ⟨p, hxO p⟩)
-  have hOψ : ∀ x p, p ∈ O x → 1 / 2 < ψ x p := by
-    intro x p hp
-    simp only [ψ, if_pos hp.1]
-    exact hp.2
+  have hOψ : ∀ x p, p ∈ O x → 1 / 2 < ψ x p := fun x p hp =>
+    by simpa only [ψ, ite_eq_left hp.1, Set.mem_preimage, Set.mem_ofPred_eq] using hp.2
   have hS : ∀ p, 0 < ∑ x ∈ t, ψ x p := by
     intro p
-    have hp := ht (Set.mem_univ p)
-    simp only [Set.mem_iUnion] at hp
-    obtain ⟨x, hx, hpx⟩ := hp
-    have h1 := hOψ x p hpx
-    have h2 := Finset.single_le_sum (fun y _ => hψ0 y p) hx
-    linarith
+    obtain ⟨x, hx, hpx⟩ := by simpa only [Set.mem_iUnion] using ht (Set.mem_univ p)
+    exact lt_of_lt_of_le (by norm_num : (0 : ℝ) < 1 / 2)
+      (le_trans (hOψ x p hpx).le (Finset.single_le_sum (fun y _ => hψ0 y p) hx))
   refine ⟨fun k p => (∑ x ∈ t.filter (fun x => κ x = k), ψ x p) / ∑ x ∈ t, ψ x p, ?_, ?_, ?_, ?_⟩
   · intro k p
     exact div_nonneg (Finset.sum_nonneg fun x _ => hψ0 x p) (hS p).le
@@ -168,10 +121,9 @@ theorem exists_chart_partition {X : Type*} [TopologicalSpace X] [T2Space X] [Com
       rw [hk] at hsrc
       exact hsrc
   · intro k j
-    have hnum : ContDiffOn ℝ ∞ (fun y => ∑ x ∈ t.filter (fun x => κ x = k), ψ x ((e j).symm y))
-        (e j).target := ContDiffOn.sum fun x _ => (hψext x).2 j
-    have hden : ContDiffOn ℝ ∞ (fun y => ∑ x ∈ t, ψ x ((e j).symm y)) (e j).target :=
-      ContDiffOn.sum fun x _ => (hψext x).2 j
-    exact hnum.div hden fun y _ => (hS _).ne'
+    have hsum : ∀ s : Finset X, ContDiffOn ℝ ∞
+        (fun y => ∑ x ∈ s, ψ x ((e j).symm y)) (e j).target :=
+      fun _ => ContDiffOn.sum fun i _ => (hψext i).2 j
+    exact (hsum _).div (hsum _) fun y _ => (hS _).ne'
 
 end ReciprocityTheory.AnForm

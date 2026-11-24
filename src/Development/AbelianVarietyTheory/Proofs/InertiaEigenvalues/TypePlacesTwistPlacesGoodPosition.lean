@@ -148,7 +148,7 @@ theorem placesOK : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T : 
     have hmem : ∀ n : ℕ, ((n : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal → ((n : ℕ) : 𝓞 D.host.E) ∈ PP'.asIdeal := fun n hn => by
       rcases hPP' with rfl | hc
       · exact hn
-      · exact GlobalTheory.ChainEquiv.natCast_mem_of_isConjPl hc hn
+      · exact _root_.GlobalTheory.StepLaw.natCast_mem_of_isConjPl hc hn
     rcases hPP with hPP | hPP
     · obtain ⟨k, hk, -⟩ := hPg PP hPP
       exact count_AA_eq_zero (GlobalTheory.CoverHalf.g_coprime D k).symm (hmem _ hk)

@@ -1,11 +1,12 @@
 module
 
+public import Development.EtaleCohomology.EtaleSheaves.BuildCut
 public import Development.EtaleCohomology.EtaleSheaves.SysFMPf
-public import Development.EtaleCohomology.EtaleSheaves.SysFMPfAlg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.AlgebraicGeometry.Morphisms.Immersion
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -29,8 +30,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,7 +42,106 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.EtaleCohomology.EtaleSheaves.SysFMPfAlg, Development.EtaleCohomology.EtaleSheaves.SysFMPfSys
+
+-- ===== clump member: Development.EtaleCohomology.EtaleSheaves.SysFMPfAlg =====
+-- clump-header: {"m": "Development.EtaleCohomology.EtaleSheaves.SysFMPfAlg", "h": "module\n\npublic import Development.EtaleCohomology.EtaleSheaves.BuildCut\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.AlgebraicGeometry.Morphisms.Immersion\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace LateralTheory.E.SysFMPfAlg
+
+open LateralTheory.E.BuildCut
+
+theorem prime_of_filter {W : Type} [CommRing W] (hW : ProdACF W) (F : Set W) (hF : ∀ e ∈ F, IsIdempotentElem e)
+    (h0 : (0 : W) ∉ F) (hu : ∀ e, IsIdempotentElem e → e ∈ F ∨ 1 - e ∈ F) (hm : ∀ e ∈ F, ∀ f ∈ F, e * f ∈ F) :
+    ∃ q : PrimeSpectrum W, ∀ e, IsIdempotentElem e → (e ∉ q.asIdeal ↔ e ∈ F) := by
+  have h1 : (1 : W) ∈ F := by
+    rcases hu 0 IsIdempotentElem.zero with h | h
+    · exact absurd h h0
+    · simpa using h
+  let I : Ideal W :=
+    { carrier := {a | ∃ f ∈ F, a * f = 0}
+      add_mem' := by
+        rintro a b ⟨f, hf, ha⟩ ⟨g, hg, hb⟩
+        exact ⟨f * g, hm f hf g hg, by linear_combination g * ha + f * hb⟩
+      zero_mem' := ⟨1, h1, by simp⟩
+      smul_mem' := by
+        rintro c a ⟨f, hf, ha⟩
+        exact ⟨f, hf, by simp only [smul_eq_mul]; linear_combination c * ha⟩ }
+  have key : ∀ e, IsIdempotentElem e → (e ∈ I ↔ e ∉ F) := by
+    intro e he
+    constructor
+    · rintro ⟨f, hf, hef⟩ heF
+      exact h0 (hef ▸ hm e heF f hf)
+    · intro heF
+      rcases hu e he with h | h
+      · exact absurd h heF
+      · exact ⟨1 - e, h, by rw [mul_sub, mul_one, he.eq, sub_self]⟩
+  have hI : I.IsPrime := by
+    refine ⟨?_, ?_⟩
+    · rw [Ne, Ideal.eq_top_iff_one]
+      rintro ⟨f, hf, h⟩
+      rw [one_mul] at h
+      exact h0 (h ▸ hf)
+    · intro a b hab
+      obtain ⟨e, u, he, hu', rfl⟩ := hW.2 a
+      obtain ⟨e', u', he', hu'', rfl⟩ := hW.2 b
+      by_contra hn
+      push Not at hn
+      have ha : e ∈ F := by
+        by_contra h
+        exact hn.1 ⟨1 - e, (hu e he).resolve_left h, by
+          rw [mul_assoc, mul_comm u, ← mul_assoc, mul_sub, mul_one, he.eq, sub_self, zero_mul]⟩
+      have hb : e' ∈ F := by
+        by_contra h
+        exact hn.2 ⟨1 - e', (hu e' he').resolve_left h, by
+          rw [mul_assoc, mul_comm u', ← mul_assoc, mul_sub, mul_one, he'.eq, sub_self, zero_mul]⟩
+      obtain ⟨f, hf, h⟩ := hab
+      have hz : e * e' * f = 0 := by
+        obtain ⟨v, hv⟩ := hu'.exists_left_inv
+        obtain ⟨v', hv'⟩ := hu''.exists_left_inv
+        linear_combination (v * v') * h - (e * e' * f) * hv - (e * e' * f * v * u) * hv'
+      exact h0 (hz ▸ hm _ (hm e ha e' hb) f hf)
+  refine ⟨⟨I, hI⟩, fun e he => ?_⟩
+  rw [show (⟨I, hI⟩ : PrimeSpectrum W).asIdeal = I from rfl, key e he, not_not]
+
+
+open AlgebraicGeometry in
+theorem isClosed_basicOpen_idem {X : Scheme.{0}} {s : Γ(X, ⊤)} (hs : IsIdempotentElem s) :
+    IsClosed (X.basicOpen s : Set X) := by
+  have : (X.basicOpen s : Set X)ᶜ = (X.basicOpen (1 - s) : Set X) := by
+    ext x
+    simp only [Set.mem_compl_iff, SetLike.mem_coe, Scheme.mem_basicOpen_top, map_sub, map_one]
+    have he : IsIdempotentElem (X.presheaf.germ ⊤ x trivial s) := hs.map _
+    constructor
+    · intro h
+      exact (IsLocalRing.isUnit_or_isUnit_one_sub_self _).resolve_left h
+    · intro h h'
+      have hz : X.presheaf.germ ⊤ x trivial s * (1 - X.presheaf.germ ⊤ x trivial s) = 0 := by
+        rw [mul_sub, mul_one, he.eq, sub_self]
+      exact not_isUnit_zero (hz ▸ h'.mul h)
+  rw [← isOpen_compl_iff, this]
+  exact (X.basicOpen (1 - s)).isOpen
+
+open AlgebraicGeometry in
+theorem isClosedImmersion_basicOpen_idem {X : Scheme.{0}} {s : Γ(X, ⊤)} (hs : IsIdempotentElem s) :
+    IsClosedImmersion (X.basicOpen s).ι :=
+  IsClosedImmersion.of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact isClosed_basicOpen_idem hs)
+
+end LateralTheory.E.SysFMPfAlg
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.EtaleCohomology.EtaleSheaves.SysFMPfAlg =====
+
+-- ===== clump member: Development.EtaleCohomology.EtaleSheaves.SysFMPfSys =====
+-- clump-header: {"m": "Development.EtaleCohomology.EtaleSheaves.SysFMPfSys", "h": "module\n\npublic import Development.EtaleCohomology.EtaleSheaves.SysFMPf\npublic import Development.EtaleCohomology.EtaleSheaves.SysFMPfAlg\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -124,3 +222,7 @@ theorem SysFM_of (hI : IdemSec) (hE : FMex) (hR : FMrange) : LateralTheory.E.NbI
   LateralTheory.E.SysFMPf.SysFM_of (Sys_of hI) hE hR
 
 end LateralTheory.E.SysFMPfSys
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.EtaleCohomology.EtaleSheaves.SysFMPfSys =====

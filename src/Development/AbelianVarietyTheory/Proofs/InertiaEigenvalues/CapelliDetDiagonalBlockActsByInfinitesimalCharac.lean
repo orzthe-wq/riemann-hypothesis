@@ -243,7 +243,7 @@ theorem blockLin_single (e : (Σ j, Fin (n j)) ≃ Fin N) (i : Fin c) (p q : Fin
       change Matrix.single p q x p' q' = _
       rw [Matrix.single_apply]
       simp
-    · simp [blockLin, blockDiagonal'_apply_eq, Pi.single_eq_of_ne hj, Matrix.single_apply, Ne.symm hj]
+    · simp [blockLin, blockDiagonal'_apply_eq, Ne.symm hj]
   · simp only [blockLin, LinearMap.coe_mk, AddHom.coe_mk]
     change (blockDiagonal' _).submatrix e.symm e.symm (e ⟨j, p'⟩) (e ⟨k, q'⟩) =
       Matrix.single (e ⟨i, p⟩) (e ⟨i, q⟩) x (e ⟨j, p'⟩) (e ⟨k, q'⟩)

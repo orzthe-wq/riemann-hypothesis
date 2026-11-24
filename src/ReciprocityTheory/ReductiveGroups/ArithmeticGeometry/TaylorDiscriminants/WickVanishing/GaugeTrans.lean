@@ -65,7 +65,6 @@ theorem gt_coeff_X_pow (i : Fin 2) (n : ℕ) (e : Fin 2 →₀ ℕ) :
     coeff e ((X i : MvPowerSeries (Fin 2) A) ^ n) = if e = single i n then 1 else 0 := by
   first
     | exact MvPowerSeries.coeff_X_pow e i n
-    | (classical exact MvPowerSeries.coeff_X_pow e i n)
 
 theorem gt_coeff_expX (i : Fin 2) (e : Fin 2 →₀ ℕ) :
     coeff e (PowerSeries.subst (X i : MvPowerSeries (Fin 2) A) (PowerSeries.exp A)) =
@@ -83,7 +82,7 @@ theorem gt_coeff_expX (i : Fin 2) (e : Fin 2 →₀ ℕ) :
 
 theorem gt_single_add (e : Fin 2 →₀ ℕ) : e = single 0 (e 0) + single 1 (e 1) := by
   ext j
-  fin_cases j <;> simp [Finsupp.single_apply]
+  fin_cases j <;> simp
 
 theorem gt_coeff_sum_pow (n : ℕ) (e : Fin 2 →₀ ℕ) :
     coeff e (((X 0 : MvPowerSeries (Fin 2) A) + X 1) ^ n) =
@@ -136,7 +135,7 @@ theorem exp_subst_add_two_vars :
   rw [finsum_eq_single _ (e 0 + e 1)]
   · rw [if_pos rfl]
     rw [Finset.sum_eq_single (single 0 (e 0), single 1 (e 1))]
-    · simp only [Finsupp.single_eq_same, eq_self_iff_true, if_true, ite_true]
+    · simp only [Finsupp.single_eq_same, if_true]
       rw [smul_eq_mul, ← map_natCast (algebraMap ℚ A), ← map_mul, ← map_mul]
       congr 1
       have f0 : ((e 0 + e 1).factorial : ℚ) ≠ 0 := by positivity
@@ -144,7 +143,6 @@ theorem exp_subst_add_two_vars :
       have f2 : ((e 1).factorial : ℚ) ≠ 0 := by positivity
       rw [Nat.cast_choose ℚ (Nat.le_add_right (e 0) (e 1)), Nat.add_sub_cancel_left]
       field_simp
-      all_goals ring
     · intro p hp hne
       have hp' : p.1 + p.2 = e := by simpa using hp
       by_cases h1 : p.1 = single 0 (p.1 0)
@@ -258,14 +256,14 @@ theorem gp_comp1 {n : ℕ} (φ : Pt k 1 d) (a : Pt k n d) (hφ : GP φ) (ha : GP
   show ∀ i, _
   intro i
   exact gt_const_ev ![a]
-    (fun j => by first | (rw [Matrix.cons_val_fin_one]; exact ha) | (fin_cases j; exact ha)) (φ i) (hφ i)
+    (fun j => by first | (rw [Matrix.cons_val_fin_one]; exact ha)) (φ i) (hφ i)
 
 theorem gp_addOf {n : ℕ} (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (F i) = 0) (a b : Pt k n d)
     (ha : GP a) (hb : GP b) : GP (addOf F a b) := by
   show ∀ i, _
   intro i
   exact gt_const_ev ![a, b]
-    (fun j => by fin_cases j <;> first | assumption | simpa using ha | simpa using hb) (F i) (hF i)
+    (fun j => by fin_cases j <;> first | assumption) (F i) (hF i)
 
 theorem gt_ev_expS [Algebra ℚ k] {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (f : PS k m d)
     (hf : constantCoeff f = 0) : ev a (FB.expS k f) = FB.expS k (ev a f) := by
@@ -302,16 +300,14 @@ theorem single_point_zero_constant {n : ℕ} {a : Pt k n d} (ha : GP a) : ∀ j,
   intro j
   first
     | (rw [Matrix.cons_val_fin_one]; exact ha)
-    | (fin_cases j; exact ha)
-    | (fin_cases j; simpa using ha)
 
 theorem pair_points_zero_constant {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : GP b) : ∀ j, GP (![a, b] j) := by
   intro j
-  fin_cases j <;> first | assumption | simpa using ha | simpa using hb
+  fin_cases j <;> first | assumption
 
 theorem triple_points_zero_constant {n : ℕ} {a b c : Pt k n d} (ha : GP a) (hb : GP b) (hc : GP c) : ∀ j, GP (![a, b, c] j) := by
   intro j
-  fin_cases j <;> first | assumption | simpa using ha | simpa using hb | simpa using hc
+  fin_cases j <;> first | assumption
 
 theorem gp_evP {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (a : Pt k m d) (ha : GP a) :
     GP (evP V a) := by

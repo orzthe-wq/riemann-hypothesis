@@ -51,7 +51,7 @@ namespace UpperTheory.V.Z.Sym.Sig
 private theorem exists_conj_diag {k : Type} [Field k] (N : GL (Fin 3) k) (μ : Fin 3 → kˣ)
     (hμ : Function.Injective μ) (hroot : ∀ i, ((N : Matrix (Fin 3) (Fin 3) k).charpoly).IsRoot (μ i : k)) :
     ∃ g : GL (Fin 3) k, N = g * diagT k (Fin 3) μ * g⁻¹ :=
-  UpperTheory.V.Lib.Small.conj_of_roots (fun i => (μ i : k)) (fun _ _ e => hμ (Units.ext e)) N _ (GlobalTheory.SmGL.val_diagT k μ) hroot
+  _root_.UpperTheory.Reformulated.B.ConjugateOfRoots.conj_of_roots (fun i => (μ i : k)) (fun _ _ e => hμ (Units.ext e)) N _ (GlobalTheory.SmGL.val_diagT k μ) hroot
 
 private theorem diag_of_comm {k : Type} [Field k] (μ : Fin 3 → kˣ) (hμ : Function.Injective μ)
     (e : GL (Fin 3) k) (h : e * diagT k (Fin 3) μ = diagT k (Fin 3) μ * e) :
@@ -93,7 +93,7 @@ theorem UpperTheory.V.Z.Sym.Sig.normalG :
     rw [hd, ← map_mul]
     congr 1
     funext i
-    fin_cases i <;> simp [div_eq_mul_inv, mul_comm]
+    fin_cases i <;> simp [div_eq_mul_inv]
   refine ⟨fun g₀ x y z => ?_, fun δ a ha hch => ?_⟩
   · rw [← hprod x y z, ht]
     simp only [map_mul, map_inv, hθ, hΦ]

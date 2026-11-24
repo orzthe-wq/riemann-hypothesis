@@ -163,11 +163,7 @@ theorem isOpen_isCompact_map {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.
     rw [RingHom.map_mul, map_natCast] at h4
     exact h4
 
-theorem infPart_split (he : IsSplitIdem D e) : infPart D e = 0 := by
-  obtain ⟨a1, a2, v, ε, ⟨β, rfl, -⟩, a3⟩ := he
-  have h0 : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β)) = 0 := TensorProduct.zero_tmul _ _
-  have hi' : e * (e + cA D e) = e := by rw [mul_add, a1, a2, add_zero]
-  rw [← hi', a3, RingHom.map_mul, h0, mul_zero]
+alias infPart_split := _root_.GlobalTheory.PlaceModelSum.infPart_split
 
 theorem isCoord_mapCo : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → ∀ (BS : GL (Fin S.rank) (Fv D.host.F v)) (BT : GL (Fin T.rank) (Fv D.host.F v)), IsCoord e (latO S T ΛS ΛT fun _ => True) (mapCo φ S T BS BT) ∧ ∀ (g : GA D S) (h : GA D T) (t : WO S T), mapCo φ S T BS BT (actO S T g⁻¹ h⁻¹ t) = ((grpCo φ T BT h)⁻¹).val * mapCo φ S T BS BT t * (grpCo φ S BS g).val := by
   intro D S T ΛS ΛT hS hT v φ e he BS BT

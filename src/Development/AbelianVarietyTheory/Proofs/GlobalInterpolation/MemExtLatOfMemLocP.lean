@@ -138,7 +138,6 @@ theorem _root_.GlobalTheory.ExtLatMatrix.extLat_matrix_integral : ∀ (K : Type)
         convert hr using 1
         · refine Finset.sum_congr rfl fun k _ => ?_
           rw [Algebra.smul_def, mul_comm]
-          try rfl
       have hBm : ((B⁻¹ : GL (Fin a) K) : Matrix (Fin a) (Fin a) K) *ᵥ m =
           (t : K)⁻¹ • fun k => (c k : K) := by
         have e : m = (t : K)⁻¹ • ((B : Matrix (Fin a) (Fin a) K) *ᵥ (fun k => (c k : K))) := by

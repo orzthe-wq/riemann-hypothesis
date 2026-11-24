@@ -298,10 +298,6 @@ theorem locallyCompact_unipRad : LocallyCompactSpace (unipRad σ J C) :=
 theorem cocompact_unipRad : Cocompact (ratPts σ J) (unipRad σ J C) :=
   unipFlag_const (σ := σ) (J := J) C 0 ▸ cocompact_unipFlag hJ (sigma_sigma h) hC _
 
-theorem existsUnique_isConstTerm (hφ : LeftInv (ratPts σ J) φ) : ∃! c, IsConstTerm σ J C φ c := by
-  simp only [isConstTerm_iff_unipFlag]
-  exact existsUnique_isConstTermOn h hJ hC _ fun γ hγ => hφ γ hγ.1
-
 theorem IsConstTermOn.eq_constTermOn_par {d : Fin r → ℕ} (hc : IsConstTermOn σ J (unipFlag σ J C d) φ c)
     (hφ : LeftInv (ratPts σ J ⊓ parFlag σ J C d) φ) [LocallyCompactSpace (unipFlag σ J C d)] :
     Cocompact (ratPts σ J ⊓ parFlag σ J C d) (unipFlag σ J C d) ∧

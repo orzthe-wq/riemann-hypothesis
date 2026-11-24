@@ -72,7 +72,7 @@ theorem fIwasawa_antiJ (i j : Fin n) : antiJ L n i j = if j = Fin.rev i then 1 e
   · rw [if_neg h, if_neg (fun h' => h (hiff.mp h'))]
 
 private theorem cT_apply' (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) : cT σ M i j = σ (M j i) := by
-  first | rfl | simp [cT] | (unfold cT; simp)
+  first | rfl
 
 private theorem cT_mul_adelic_iwasawa_hecke (A B : Matrix (Fin n) (Fin n) L) : cT σ (A * B) = cT σ B * cT σ A := by
   ext i j
@@ -99,7 +99,7 @@ theorem fIwasawa_H_single_left (p : Fin n) (w : Fin n → L) :
   · simp
   · intro j _ hj
     have : Fin.rev j ≠ p := fun h => hj (by rw [← h, Fin.rev_rev])
-    simp [Pi.single_apply, this]
+    simp [this]
   · intro h; exact absurd (Finset.mem_univ _) h
 
 theorem fIwasawa_un_of_isometry (M : Matrix (Fin n) (Fin n) L)
@@ -111,7 +111,7 @@ theorem fIwasawa_un_of_isometry (M : Matrix (Fin n) (Fin n) L)
   rw [fIwasawa_gram, hc a, hc b, h, fIwasawa_H_single_left, fIwasawa_antiJ]
   by_cases hb : b = Fin.rev a
   · subst hb; simp
-  · simp [Pi.single_apply, hb, Ne.symm hb]
+  · simp [hb, Ne.symm hb]
 
 theorem fIwasawa_un_mul (A B : Matrix (Fin n) (Fin n) L) (hA : fIwasawaUn σ A) (hB : fIwasawaUn σ B) :
     fIwasawaUn σ (A * B) := by
@@ -125,7 +125,7 @@ theorem fIwasawa_antiJ_mul_antiJ : antiJ L n * antiJ L n = 1 := by
   · rw [fIwasawa_antiJ, fIwasawa_antiJ, Fin.rev_rev]
     by_cases h : i = j
     · subst h; simp
-    · simp [Matrix.one_apply, h, Ne.symm h]
+    · simp [h, Ne.symm h]
   · intro k _ hk
     simp [fIwasawa_antiJ, hk]
   · intro h; exact absurd (Finset.mem_univ _) h
@@ -145,7 +145,6 @@ theorem fIwasawa_mul_inv (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) :
   have h := fIwasawa_inv_mul σ M hM
   first
   | exact mul_eq_one_comm.mp h
-  | (rw [← Matrix.inv_eq_left_inv h]; exact Matrix.mul_nonsing_inv _ (Matrix.isUnit_det_of_left_inverse h))
 
 def fIwasawaMk (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) : GU σ n :=
   ⟨⟨M, fIwasawaInv σ M, fIwasawa_mul_inv σ M hM, fIwasawa_inv_mul σ M hM⟩, hM⟩

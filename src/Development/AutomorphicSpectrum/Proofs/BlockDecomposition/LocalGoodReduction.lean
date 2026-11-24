@@ -1,9 +1,11 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ThetaNormCommutation.LocalComparisonSplitting.EulerFactorLevels.EulerFinOf
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedOfIsIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactGLBoundedEntriesCompletionFinitePlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralOfIsCompactClosureZpowersStatement
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedOfIsIntegral
+public import Mathlib.Topology.Instances.Matrix
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCompactGLBoundedEntriesCompletionFinitePlace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIntegralOfIsCompactClosureZpowers
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalTwistContinuousInvolutionIntegralProperties
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularTwistedOrbitLocalFiniteness
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedCentralizerLocalUnitaryCommOfSeparable
@@ -185,16 +187,16 @@ theorem cptPart_le_compact (hU : Unr E) (n : ℕ) (w : Pl E) (y : GLw n w) (hs :
         show IsCompact (closure (Subgroup.zpowers g⁻¹ : Set (GLw n w)))
         rw [Subgroup.zpowers_inv]
         exact hg.2 }
-  obtain ⟨c, hc⟩ := GlobalTheory.T.exists_valuation_bound_of_isIntegral_mem_adjoin E w n N hs
-  have hB := GlobalTheory.T.isCompact_GL_bounded_entries_completion_finitePlace E w n c
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.LocBounded.bounded_of_isIntegral E w n N hs
+  have hB := _root_.GlobalTheory.BoundedGL.isCompact_bounded E w n c
   have hSB : (H0 : Set (GLw n w)) ⊆ {g : GL (Fin n) (w.adicCompletion E) | ∀ i j,
       Valued.v ((g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤ c ∧
       Valued.v (((g⁻¹ : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤ c} := by
     intro g hg
     have hg' : g⁻¹ ∈ H0 := H0.inv_mem hg
     intro i j
-    exact ⟨hc _ (hadj g hg.1) (GlobalTheory.T.isIntegral_adicCompletionIntegers_of_isCompact_zpowers E w n g hg.2) i j,
-      hc _ (hadj g⁻¹ hg'.1) (GlobalTheory.T.isIntegral_adicCompletionIntegers_of_isCompact_zpowers E w n g⁻¹ hg'.2) i j⟩
+    exact ⟨hc _ (hadj g hg.1) (_root_.GlobalTheory.isIntegral_of_isCompact_closure_zpowers E w n g hg.2) i j,
+      hc _ (hadj g⁻¹ hg'.1) (_root_.GlobalTheory.isIntegral_of_isCompact_closure_zpowers E w n g⁻¹ hg'.2) i j⟩
   refine ⟨H0.topologicalClosure, ?_, ?_⟩
   · rw [Subgroup.topologicalClosure_coe]
     exact hB.of_isClosed_subset isClosed_closure (closure_minimal hSB hB.isClosed)

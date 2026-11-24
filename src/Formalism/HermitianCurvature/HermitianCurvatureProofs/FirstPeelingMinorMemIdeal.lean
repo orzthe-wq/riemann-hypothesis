@@ -109,7 +109,7 @@ theorem hT_of (I : Ideal A) {ι : Type} [Fintype ι] (η : ι → ℂ) (X : ι �
   have e : (∑ w, η w • X w) - algebraMap ℂ A c = ∑ w, η w • (X w - algebraMap ℂ A (d w)) := by
     rw [← hc]
 
-    simp only [smul_sub, Finset.sum_sub_distrib, map_sum, map_mul, Algebra.smul_def, mul_sub]
+    simp only [Finset.sum_sub_distrib, map_sum, map_mul, Algebra.smul_def, mul_sub]
   rw [e]
   exact Submodule.sum_mem _ fun w _ => smul_mem' I _ (hX w)
 

@@ -1,26 +1,26 @@
 module
 
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HAdaptGen
+public import Formalism.HermitianCurvature.MemParahoricTimesPrincipalCongruenceIff
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HModelAllOf
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -28,7 +28,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -41,10 +40,55 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HAdaptGen, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HAdaptRed
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HAdaptGen =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HAdaptGen", "h": "module\n\npublic import Formalism.HermitianCurvature.MemParahoricTimesPrincipalCongruenceIff\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PIW.MassDataColumns
+
+open Matrix Formalism.FourierDecayAlt.S3
+open scoped Matrix
+
+variable {K : Type} [Field K] (O : Subring K) {r k : ℕ}
+
+def colv (c : Idx r k → Idx r k → K) (y : Fin k → Idx r k → K) : Idx r k → Idx r k → K
+  | Sum.inr (Sum.inl (Sum.inl i)) => y i
+  | Sum.inl a => c (Sum.inl a)
+  | Sum.inr (Sum.inl (Sum.inr u)) => c (Sum.inr (Sum.inl (Sum.inr u)))
+  | Sum.inr (Sum.inr b) => c (Sum.inr (Sum.inr b))
+
+def ofCols (v : Idx r k → Idx r k → K) : Matrix (Idx r k) (Idx r k) K := fun i j => v j i
+
+section Gen
+
+
+def IntO (M : Matrix (Idx r k) (Idx r k) K) : Prop := ∀ i j, M i j ∈ O
+
+end Gen
+
+end PIW.MassDataColumns
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HAdaptGen =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HAdaptRed =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HAdaptRed", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HAdaptGen\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HModelAllOf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -110,19 +154,6 @@ private theorem colv_apply_of_not_isW {r k : ℕ} {K : Type} [Field K] (c : Idx 
   · rfl
   · rfl
 
-private theorem dlH_dlH_lattice_columns {r k : ℕ} (s : Idx r k) : dlH (dlH s) = s := by
-  rcases s with a | ((i | u) | b) <;> simp [dlH]
-
-private theorem not_isW_dlH_of_not_isW {r k : ℕ} (s : Idx r k) (hs : ¬ IsW s) : ¬ IsW (dlH s) := by
-  rcases s with a | ((i | u) | b)
-  · rintro ⟨j, hj⟩
-    simp [dlH] at hj
-  · exact absurd ⟨i, rfl⟩ hs
-  · rintro ⟨j, hj⟩
-    simp [dlH] at hj
-  · rintro ⟨j, hj⟩
-    simp [dlH] at hj
-
 private theorem ofCols_mulVec_single_one {r k : ℕ} {K : Type} [Field K] (v : Idx r k → Idx r k → K)
     (s : Idx r k) : ofCols v *ᵥ Pi.single s 1 = v s := by
   funext i
@@ -133,7 +164,6 @@ private theorem ofCols_transpose_mulVec_apply {r k : ℕ} {K : Type} [Field K] (
     (w : Idx r k → K) (t : Idx r k) : ((ofCols v)ᵀ *ᵥ w) t = v t ⬝ᵥ w := by
   first
   | rfl
-  | simp [mulVec_apply_eq_sum_lattice_columns, dotProduct_eq_sum_mul, ofCols, Matrix.transpose_apply]
 
 private theorem ofCols_mulVec_eq_sum_smul {r k : ℕ} {K : Type} [Field K] (v : Idx r k → Idx r k → K)
     (w : Idx r k → K) : ofCols v *ᵥ w = ∑ j, w j • v j := by
@@ -238,7 +268,7 @@ theorem hAdaptQ_of_in (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what�
     · rw [hccW i t ht]
       exact zero_mem _
     · simp only [cc, if_neg ht]
-      exact mul_mem (neg_mem (h5 _ _)) (h4 _ (not_isW_dlH_of_not_isW t ht))
+      exact mul_mem (neg_mem (h5 _ _)) (h4 _ (_root_.PIW.MassDataColumns.dlH_frame t ht))
   have hgO : ((gOf p : ℕ) : FpX X p) ∈ p.1.adicCompletionIntegers X.B.I.F := natCast_mem _ _
   obtain ⟨A, hA⟩ : ∃ A : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p),
       A = ofCols (colv (cV X u p θ) (yV X hb u p θ)) := ⟨_, rfl⟩
@@ -251,11 +281,9 @@ theorem hAdaptQ_of_in (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what�
   have hE1 : (1 + Nn) * (1 - Nn) = 1 := by
     first
     | simp [add_mul, mul_sub, hsq]
-    | rw [add_mul, one_mul, mul_sub, mul_one, hsq, sub_zero, sub_add_cancel]
   have hE2 : (1 - Nn) * (1 + Nn) = 1 := by
     first
     | simp [sub_mul, mul_add, hsq]
-    | rw [sub_mul, one_mul, mul_add, mul_one, hsq, add_zero, sub_sub_cancel_left, add_neg_cancel]
   have hAdet : IsUnit A.det := by
     rw [isUnit_iff_ne_zero]
     intro h0
@@ -347,7 +375,7 @@ theorem hAdaptQ_of_in (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what�
       fun v t => by
         rw [hNn]
         exact ofCols_transpose_mulVec_apply _ _ t
-    have hdn := not_isW_dlH_of_not_isW s hs
+    have hdn := _root_.PIW.MassDataColumns.dlH_frame s hs
     rw [hQ, Matrix.transpose_mul, ← Matrix.mulVec_mulVec]
     funext t
     rw [Matrix.transpose_add, Matrix.transpose_one, Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply, hNT]
@@ -358,7 +386,7 @@ theorem hAdaptQ_of_in (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what�
       change _ + z i ⬝ᵥ _ = _
       rw [dotProduct_eq_sum_mul, Finset.sum_eq_single (dlH s)]
       · rw [hwn _ hdn, if_pos rfl]
-        simp only [z, cc, if_neg hdn, dlH_dlH_lattice_columns, Pi.smul_apply, Pi.single_apply, if_neg hne,
+        simp only [z, cc, if_neg hdn, _root_.PIW.MassDataColumns.dlH_dlH, Pi.smul_apply, Pi.single_apply, if_neg hne,
           smul_eq_mul, mul_zero]
         linear_combination (-(((gOf p : ℕ) : FpX X p) * o s i)) * mul_inv_cancel₀ (h3 s hs)
       · intro j _ hj
@@ -371,7 +399,7 @@ theorem hAdaptQ_of_in (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what�
       by_cases hts : t = dlH s
       · subst hts
         simp
-      · simp [Pi.single_apply, hts]
+      · simp [hts]
   · have hQP : Q = P * (P⁻¹ * Q) := (mul_inv_cancel_left P Q).symm
     rw [hQP]
     have hmap : reindex₂ X p (P * (P⁻¹ * Q)) = reindex₂ X p P * reindex₂ X p (P⁻¹ * Q) := by
@@ -382,13 +410,11 @@ theorem hAdaptQ_of_in (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what�
     · intro i j
       first
       | exact hR0 _ _
-      | (unfold reindex₂; simp only [Units.coe_map]; exact hR0 _ _)
     · intro i j
       unfold reindex₂
       rw [← map_inv]
       first
       | exact hR0' _ _
-      | (simp only [Units.coe_map]; exact hR0' _ _)
   · intro i
     refine ⟨fun t => ⟨cc i t, hcc i t⟩, ?_⟩
     change (Q : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) *ᵥ Pi.single (wI i) 1 -
@@ -409,3 +435,7 @@ theorem hAdaptAll_of (h : AdaptInAll) : HAdaptAll := by
   exact hAdaptQ_of_in X hb u p (h X hb hK u hM hL p)
 
 end PIW.MassDataColumns
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeColumns.HAdaptRed =====

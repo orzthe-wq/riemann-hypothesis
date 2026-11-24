@@ -59,9 +59,7 @@ section Copied
 variable {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Module E V]
   [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
 
-theorem exists_smul_mem (Λ : Submodule (𝓞 E) V) (hsp : Submodule.span E (Λ : Set V) = ⊤) (x : V) :
-    ∃ d : 𝓞 E, d ≠ 0 ∧ d • x ∈ Λ := by
-  first | exact Bl.general_b_fact_third'''''.goal1 .. | (apply Bl.general_b_fact_third'''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third'''''.goal1 <;> assumption)
+alias exists_smul_mem := _root_.Bl.general_b_fact_third'''''.goal1
 
 variable [StarRing E]
 
@@ -194,8 +192,7 @@ theorem unitri_mem {M : Type} [AddCommGroup M] [Module (𝓞 E) M] (Q : Submodul
       · have hlt' : a.val < k := by rw [← hbk]; exact Fin.lt_def.mp hlt
         exact Q.smul_mem _ (ih a.val hlt' a rfl (fun b' hb' => hb b' (le_trans hb' hlt.le)))
       · rw [h1 a b hgt, zero_smul]; exact Q.zero_mem
-    have := Q.sub_mem hs hrest
-    simpa using this
+    simpa using Q.sub_mem hs hrest
 
 end Loc
 
@@ -212,8 +209,7 @@ theorem mem_orth'' {U : Submodule E S.V} {v : S.V} : v ∈ orth S U ↔ ∀ x �
 theorem int_val {Λ : Submodule (𝓞 E) S.V} (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) {x y : S.V} (hx : x ∈ Λ)
     (hy : y ∈ Λ) : ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = S.hT x y := by
   have hU' : Formalism.HermitianLatticesTheory.dual S.hT Λ = Λ := hU
-  have hy' : y ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ := by rw [hU']; exact hy
-  exact Submodule.mem_one.1 ((Formalism.HermitianLatticesTheory.dualBasic_mem_dual S.hT Λ y).1 hy' x hx)
+  exact Submodule.mem_one.1 ((Formalism.HermitianLatticesTheory.dualBasic_mem_dual S.hT Λ y).1 (hU'.symm ▸ hy) x hx)
 
 theorem loc_div (Λ : Submodule (𝓞 E) S.V) (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (g : ℕ) {T T' : E}
     (F : LFlag S r T) (F' : LFlag S r T') (hadm : IsAdmissible Λ g F F') (w : S.V) (hwΛ : w ∈ Λ)
@@ -264,8 +260,7 @@ theorem glob_div (Λ : Submodule (𝓞 E) S.V) (hU : Formalism.HermitianLattices
   apply mem_of_local _ _ (g : 𝓞 E) hg'
   · obtain ⟨o, ho⟩ := int_val hU hwΛ heΛ
     rw [Submodule.mem_span_singleton]
-    refine ⟨o, ?_⟩
-    rw [← ho, Algebra.smul_def, Algebra.smul_def, mul_comm]
+    exact ⟨o, by rw [← ho, Algebra.smul_def, Algebra.smul_def, mul_comm]⟩
   intro P hgP
   have := P.isPrime
   obtain ⟨c, _, hc1, hloc⟩ := hfix.1 P

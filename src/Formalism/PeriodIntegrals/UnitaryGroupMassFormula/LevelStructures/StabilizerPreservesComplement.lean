@@ -89,7 +89,6 @@ theorem rational_vector_mem_span {r : ℕ} (Y : Fin r → Fin n → E) (x : Fin 
       funext fun i => by
         first
           | (simp only [ratV, Pi.smul_apply, smul_eq_mul]; exact map_mul _ _ _)
-          | (simp [ratV, map_mul]; rfl)
     rw [e0]
     exact Submodule.smul_mem _ _ hu
 

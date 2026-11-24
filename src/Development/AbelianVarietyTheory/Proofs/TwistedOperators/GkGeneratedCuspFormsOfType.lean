@@ -55,11 +55,11 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.BlockTheory.HeightDefect.FinitePartTypes
-public import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsMatchOver
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSumOfMemMultSpan
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RangeSndRel
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormal
 
 @[expose] public section
 
@@ -123,19 +123,19 @@ theorem isTypeAt_rTr_same (hθ : IsInfFam θ) {τ : D.what₂.Tau} {S : SPar} {�
     calc (k⁻¹)ᴴ * gramAt D V τ * k⁻¹ = (k⁻¹)ᴴ * (kᴴ * gramAt D V τ * k) * k⁻¹ := by rw [hk']
       _ = (k * k⁻¹)ᴴ * gramAt D V τ * (k * k⁻¹) := by simp only [conjTranspose_mul, Matrix.mul_assoc]
       _ = _ := by rw [a1]; simp
-  have hm := GlobalTheory.TypeAtCompare.conj_mem hP hJ hk
+  have hm := _root_.GlobalTheory.HolDict.ModelRep.conj_mem hP hJ hk
   have t0 : HasTypeAll (lieOf (gramAt D V τ)) (Formalism.QuantumDeterminants.UH (gramAt D V τ)) (fun g => σ (P * g * P⁻¹))
       fun g => φ (x * atTau θ V τ k * atTau θ V τ g) := hasTypeAll_iff.2 (h (x * atTau θ V τ k))
   have t1 := hasTypeAll_transport _ H H (fun g => σ (P * g * P⁻¹)) (fun g => σ (P * g * P⁻¹)) _ _ k hG hku hk'
     (opEquiv hσ hm) (fun g hg v => by
-      have m1 := GlobalTheory.TypeAtCompare.conj_mem hP hJ hg
-      have m2 := GlobalTheory.TypeAtCompare.conj_mem hP hJ (mul_mem_UH (mul_mem_UH hk hg) hki)
+      have m1 := _root_.GlobalTheory.HolDict.ModelRep.conj_mem hP hJ hg
+      have m2 := _root_.GlobalTheory.HolDict.ModelRep.conj_mem hP hJ (mul_mem_UH (mul_mem_UH hk hg) hki)
       show σ (P * k * P⁻¹) (σ (P * g * P⁻¹) v) = σ (P * (k * g * k⁻¹) * P⁻¹) (σ (P * k * P⁻¹) v)
       rw [← sigma_mul hσ hm m1, ← sigma_mul hσ m2 hm]
       congr 2
       calc P * k * P⁻¹ * (P * g * P⁻¹) = P * k * (P⁻¹ * P) * g * (k⁻¹ * k) * P⁻¹ := by
             rw [a2, Matrix.mul_one]; simp only [Matrix.mul_assoc]
-        _ = P * k * g * k⁻¹ * (P⁻¹ * P) * k * P⁻¹ := by rw [b2]; simp only [Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul]
+        _ = P * k * g * k⁻¹ * (P⁻¹ * P) * k * P⁻¹ := by rw [b2]; simp only [Matrix.mul_assoc, Matrix.mul_one]
         _ = _ := by simp only [Matrix.mul_assoc]) _ t0
   obtain ⟨v, h1, ℓ, h2, h3, h4⟩ := hasTypeAll_iff.1 t1
   refine ⟨v, h1, ℓ, h2, h3, fun g hg => ?_⟩
@@ -197,13 +197,6 @@ theorem exists_quotient_near (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matri
   rw [e, norm_mul, norm_neg, norm_inv, Complex.norm_real, Real.norm_of_nonneg hp.le, inv_mul_lt_iff₀ hp]
   refine key.trans_lt ?_
   nlinarith
-
-section Sig
-
-variable (hPr : GlobalTheory.FunPr.Hypotheses₂) (hθ : IsInfFam θ) {τ τ' : D.what₂.Tau} {S : SPar} {φ ψ : GA D V → ℂ}
-include hPr hθ
-
-end Sig
 
 variable {S : D.what₂.Tau → SPar}
 

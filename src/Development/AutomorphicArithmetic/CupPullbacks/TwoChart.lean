@@ -1,10 +1,9 @@
 module
 
-public import Development.AutomorphicArithmetic.CupPullbacks.TwoDefs
-public import Development.AutomorphicArithmetic.CommutativeAlgebra.AffineLineHomExistsUniqueOfGlobalSection
-public import Development.AutomorphicArithmetic.CommutativeAlgebra.EpiFreeBiprodDescOfZariskiLocallySurjective
-public import Development.AutomorphicArithmetic.CommutativeAlgebra.LocallyIsUnitOrIsUnitOfSpanPairEqTop
-public import Development.AutomorphicArithmetic.CommutativeAlgebra.MultiplicativeGroupHomExistsUniqueOfUnit
+public import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeEtaleModuleSheafMapMonoEpiIsoStatement
+public import Mathlib.Algebra.Polynomial.Laurent
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -44,7 +43,593 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeHomSectionsStatement
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.CategoryTheory.EffectiveEpi.Comp
+import Mathlib.CategoryTheory.ExtremalEpi
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.CupPullbacks.TwoDefs, Development.AutomorphicArithmetic.CommutativeAlgebra.AffineLineHomExistsUniqueOfGlobalSection, Development.AutomorphicArithmetic.CommutativeAlgebra.EpiFreeBiprodDescOfZariskiLocallySurjective, Development.AutomorphicArithmetic.CommutativeAlgebra.LocallyIsUnitOrIsUnitOfSpanPairEqTop, Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LocalQuotientHomExt, Development.AutomorphicArithmetic.CommutativeAlgebra.MultiplicativeGroupHomExistsUniqueOfUnit, Development.AutomorphicArithmetic.CupPullbacks.TwoChart
+
+-- ===== clump member: Development.AutomorphicArithmetic.CupPullbacks.TwoDefs =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.CupPullbacks.TwoDefs", "h": "module\n\npublic import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC UpperTheory.Pbf
+
+noncomputable section
+namespace UpperTheory.P2
+
+def TU (N : ℕ) (A : Type) [CommRing A] : Type := Um N A
+
+instance (N : ℕ) (A : Type) [CommRing A] : SmallCategory (TU N A) where
+  Hom v w := {u : Aˣ // v.1 = (u : A) • w.1}
+  id v := ⟨1, by simp⟩
+  comp f g := ⟨g.1 * f.1, by rw [Units.val_mul, mul_comm, ← smul_smul, ← g.2, ← f.2]⟩
+  id_comp f := Subtype.ext (mul_one _)
+  comp_id f := Subtype.ext (one_mul _)
+  assoc f g h := Subtype.ext (mul_assoc _ _ _).symm
+
+theorem TU.hom_subsingleton {N : ℕ} {A : Type} [CommRing A] (v w : TU N A) : Subsingleton (v ⟶ w) := by
+  refine ⟨fun f g => Subtype.ext (Units.ext ?_)⟩
+  have hf := f.2
+  have hg := g.2
+  have h0 : ∀ i, (((f.1 : Aˣ) : A) - ((g.1 : Aˣ) : A)) * w.1 i = 0 := by
+    intro i
+    have := congrFun (hf.symm.trans hg) i
+    simp only [Pi.smul_apply, smul_eq_mul] at this
+    rw [sub_mul, this, sub_self]
+  have h1 : (1 : A) ∈ Ideal.span (Set.range w.1) := by rw [w.2]; trivial
+  have h2 : ∀ x ∈ Ideal.span (Set.range w.1), (((f.1 : Aˣ) : A) - ((g.1 : Aˣ) : A)) * x = 0 := by
+    intro x hx
+    induction hx using Submodule.span_induction with
+    | mem x h => obtain ⟨i, rfl⟩ := h; exact h0 i
+    | zero => simp
+    | add x y _ _ hx hy => rw [mul_add, hx, hy, add_zero]
+    | smul a x _ hx => rw [smul_eq_mul, mul_left_comm, hx, mul_zero]
+  have := h2 1 h1
+  rw [mul_one] at this
+  exact sub_eq_zero.1 this
+
+def TU.map (N : ℕ) {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) : TU N A ⥤ TU N B where
+  obj v := (Um.map N f).obj v
+  map {v w} p := ⟨Units.map (f : A →* B) p.1, by
+    funext i
+    have h := congrArg f (congrFun p.2 i)
+    change f (v.1 i) = f p.1 * f (w.1 i)
+    simpa using h⟩
+  map_id v := (TU.hom_subsingleton _ _).elim _ _
+  map_comp p q := (TU.hom_subsingleton _ _).elim _ _
+
+def tuCat (N : ℕ) : CommRingCat.{0} ⥤ Cat.{0,0} where
+  obj A := Cat.of (TU N A)
+  map f := (TU.map N f.hom).toCatHom
+  map_id A := rfl
+  map_comp f g := rfl
+
+def TU.toUm (N : ℕ) (A : Type) [CommRing A] : TU N A ⥤ Um N A where
+  obj v := v
+  map {v w} p := ⟨(1, p.1), by simpa using p.2⟩
+  map_id v := Subtype.ext (Prod.ext rfl rfl)
+  map_comp p q := Subtype.ext (Prod.ext (one_mul _).symm rfl)
+
+def tuι (N : ℕ) : tuCat N ⟶ pglCat N where
+  app A := (TU.toUm N A).toCatHom
+  naturality A B f := by
+    apply Cat.Hom.ext
+    refine CategoryTheory.Functor.hext (fun _ => rfl) (fun v w p => heq_of_eq ?_)
+    exact Subtype.ext (Prod.ext (map_one (Matrix.GeneralLinearGroup.map f.hom)).symm rfl)
+
+def Dv (N : ℕ) : Spc := ofCat (tuCat N)
+
+def Dv.toPGL (N : ℕ) : Dv N ⟶ PGL N := ofCatMap (tuι N)
+
+def Dv.line (N : ℕ) : Dv N ⟶ ofCat (glCat 1) := Dv.toPGL N ≫ PGL.line N
+
+def vx {N p : ℕ} {T : Scheme.{0}} (x : Sx (Dv N) p T) (k : Fin (p + 1)) : Um N Γ(T, ⊤) :=
+  (show ComposableArrows (TU N Γ(T, ⊤)) p from x).obj k
+
+theorem vx_ext {N p : ℕ} {T : Scheme.{0}} {x y : Sx (Dv N) p T} (h : ∀ k, vx x k = vx y k) : x = y :=
+  CategoryTheory.Functor.ext (F := (show ComposableArrows (TU N Γ(T, ⊤)) p from x))
+    (G := (show ComposableArrows (TU N Γ(T, ⊤)) p from y)) h (fun _ _ _ => (TU.hom_subsingleton _ _).elim _ _)
+
+def Dv.mk {N p : ℕ} {T : Scheme.{0}} (v : Fin (p + 1) → Um N Γ(T, ⊤))
+    (h : ∀ i j, ∃ u : Γ(T, ⊤)ˣ, (v i).1 = (u : Γ(T, ⊤)) • (v j).1) : Sx (Dv N) p T :=
+  (show ComposableArrows (TU N Γ(T, ⊤)) p from
+    { obj := v
+      map := fun {i j} _ => (⟨(h i j).choose, (h i j).choose_spec⟩ : (show TU N Γ(T, ⊤) from v i) ⟶ (show TU N Γ(T, ⊤) from v j))
+      map_id := fun _ => (TU.hom_subsingleton _ _).elim _ _
+      map_comp := fun _ _ => (TU.hom_subsingleton _ _).elim _ _ })
+
+theorem vx_prop {N p : ℕ} {T : Scheme.{0}} (x : Sx (Dv N) p T) {i j : Fin (p + 1)} (hij : i ≤ j) :
+    ∃ u : Γ(T, ⊤)ˣ, (vx x i).1 = (u : Γ(T, ⊤)) • (vx x j).1 :=
+  let c : ComposableArrows (TU N Γ(T, ⊤)) p := x
+  ⟨(c.map (homOfLE hij)).1, (c.map (homOfLE hij)).2⟩
+
+section Api
+variable {E E' : Spc} {p r : ℕ} {T V : Scheme.{0}}
+
+theorem vx_res {N : ℕ} (g : V ⟶ T) (x : Sx (Dv N) p T) (k) :
+    vx (x.res g) k = (Um.map N g.appTop.hom).obj (vx x k) := rfl
+
+theorem vx_along {N : ℕ} (x : Sx (Dv N) r T) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk r) (k) :
+    vx (x.along θ) k = vx x (θ.toOrderHom k) := rfl
+
+theorem along_along {s : ℕ} (x : Sx E r T) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk s)
+    (η : SimplexCategory.mk s ⟶ SimplexCategory.mk r) : (x.along η).along θ = x.along (θ ≫ η) := by
+  simp only [Sx.along, op_comp, Functor.map_comp]
+  rfl
+
+theorem along_res (g : V ⟶ T) (x : Sx E r T) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk r) :
+    (x.res g).along θ = (x.along θ).res g :=
+  (ConcreteCategory.congr_hom ((E.map θ.op).naturality g.op) x)
+
+theorem map_along (f : E ⟶ E') (x : Sx E r T) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk r) :
+    (x.along θ).map f = (x.map f).along θ :=
+  (ConcreteCategory.congr_hom (NatTrans.congr_app (f.naturality θ.op) (op T)) x)
+
+theorem map_res (f : E ⟶ E') (g : V ⟶ T) (x : Sx E p T) : (x.res g).map f = (x.map f).res g :=
+  (ConcreteCategory.congr_hom ((f.app _).naturality g.op) x)
+
+theorem map_comp {E'' : Spc} (f : E ⟶ E') (f' : E' ⟶ E'') (x : Sx E p T) : x.map (f ≫ f') = (x.map f).map f' := rfl
+
+def vtx (y : Sx E p T) (k : Fin (p + 1)) : Sx E 0 T := y.along (SimplexCategory.const _ _ k)
+
+theorem vtx_along (y : Sx E r T) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk r) (k : Fin (p + 1)) :
+    vtx (y.along θ) k = vtx y (θ.toOrderHom k) := by
+  unfold vtx
+  rw [along_along, SimplexCategory.const_comp]
+
+theorem vtx_res (g : V ⟶ T) (y : Sx E p T) (k) : vtx (y.res g) k = (vtx y k).res g := along_res g y _
+
+theorem face_along {N : ℕ} (y : Sx E (N + 1) T) (i) : y.face i = y.along (SimplexCategory.δ i) := rfl
+
+end Api
+
+theorem d1mk {p : ℕ} (i j : Fin (p + 1)) (h : i ≤ j) :
+    SimplexCategory.δ (n := 0) 1 ≫ SimplexCategory.mkOfLe i j h = SimplexCategory.const _ _ i := by
+  refine SimplexCategory.Hom.ext _ _ (OrderHom.ext _ _ (funext fun k => ?_))
+  obtain rfl : k = 0 := Subsingleton.elim (α := Fin 1) _ _
+  rfl
+
+theorem d0mk {p : ℕ} (i j : Fin (p + 1)) (h : i ≤ j) :
+    SimplexCategory.δ (n := 0) 0 ≫ SimplexCategory.mkOfLe i j h = SimplexCategory.const _ _ j := by
+  refine SimplexCategory.Hom.ext _ _ (OrderHom.ext _ _ (funext fun k => ?_))
+  obtain rfl : k = 0 := Subsingleton.elim (α := Fin 1) _ _
+  rfl
+
+theorem prop_of_edges {Y : Spc} {M : ℕ} (φ : ∀ T : Scheme.{0}, Sx Y 0 T → Um M Γ(T, ⊤))
+    (hrel : ∀ (T : Scheme.{0}) (y : Sx Y 1 T), ∃ u : Γ(T, ⊤)ˣ, (φ T (y.face 1)).1 = (u : Γ(T, ⊤)) • (φ T (y.face 0)).1)
+    {p : ℕ} {T : Scheme.{0}} (y : Sx Y p T) (i j : Fin (p + 1)) :
+    ∃ u : Γ(T, ⊤)ˣ, (φ T (vtx y i)).1 = (u : Γ(T, ⊤)) • (φ T (vtx y j)).1 := by
+  have key : ∀ i j : Fin (p + 1), i ≤ j → ∃ u : Γ(T, ⊤)ˣ, (φ T (vtx y i)).1 = (u : Γ(T, ⊤)) • (φ T (vtx y j)).1 := by
+    intro i j h
+    obtain ⟨u, hu⟩ := hrel T (y.along (SimplexCategory.mkOfLe i j h))
+    rw [face_along, face_along, along_along, along_along, d1mk, d0mk] at hu
+    exact ⟨u, hu⟩
+  rcases le_total i j with h | h
+  · exact key i j h
+  · obtain ⟨u, hu⟩ := key j i h
+    refine ⟨u⁻¹, ?_⟩
+    rw [hu, smul_smul, Units.inv_mul, one_smul]
+
+def Dv.lift {Y : Spc} {M : ℕ} (φ : ∀ T : Scheme.{0}, Sx Y 0 T → Um M Γ(T, ⊤))
+    (hnat : ∀ {V T : Scheme.{0}} (g : V ⟶ T) (y : Sx Y 0 T), φ V (y.res g) = (Um.map M g.appTop.hom).obj (φ T y))
+    (hrel : ∀ (T : Scheme.{0}) (y : Sx Y 1 T), ∃ u : Γ(T, ⊤)ˣ, (φ T (y.face 1)).1 = (u : Γ(T, ⊤)) • (φ T (y.face 0)).1) :
+    Y ⟶ Dv M where
+  app n :=
+    { app := fun T => TypeCat.ofHom fun y =>
+        Dv.mk (p := n.unop.len) (T := T.unop) (fun k => φ T.unop (vtx (p := n.unop.len) (T := T.unop) y k)) (prop_of_edges φ hrel y)
+      naturality := fun T T' f => by
+        ext y
+        refine vx_ext (p := n.unop.len) (T := T'.unop) fun k => ?_
+        exact ((congrArg (φ T'.unop) (vtx_res (p := n.unop.len) f.unop y k)).trans (hnat f.unop _)) }
+  naturality n m f := by
+    ext T y
+    refine vx_ext (p := m.unop.len) (T := T.unop) fun k => ?_
+    exact congrArg (φ T.unop) (vtx_along (p := m.unop.len) (r := n.unop.len) (T := T.unop) y f.unop k)
+
+section Limits
+
+theorem isPullback_of_sx {P A B C : Spc} {a : P ⟶ A} {b : P ⟶ B} {f : A ⟶ C} {g : B ⟶ C} (w : a ≫ f = b ≫ g)
+    (hinj : ∀ (p : ℕ) (T : Scheme.{0}) (x y : Sx P p T), x.map a = y.map a → x.map b = y.map b → x = y)
+    (hex : ∀ (p : ℕ) (T : Scheme.{0}) (s : Sx A p T) (t : Sx B p T), s.map f = t.map g →
+      ∃ x : Sx P p T, x.map a = s ∧ x.map b = t) : IsPullback a b f g := by
+  refine IsPullback.of_forall_isPullback_app fun n => IsPullback.of_forall_isPullback_app fun T => ?_
+  rw [Types.isPullback_iff]
+  refine ⟨?_, ?_, ?_⟩
+  · exact NatTrans.congr_app (NatTrans.congr_app w n) T
+  · rintro x y ⟨h1, h2⟩
+    exact hinj n.unop.len T.unop x y h1 h2
+  · intro s t h
+    exact hex n.unop.len T.unop s t h
+
+theorem prod_sx_ext {A B : Spc} {p : ℕ} {T : Scheme.{0}} {x y : Sx (A ⨯ B) p T}
+    (h1 : x.map prod.fst = y.map prod.fst) (h2 : x.map prod.snd = y.map prod.snd) : x = y := by
+  let G : Spc ⥤ Type := (evaluation _ _).obj (op (SimplexCategory.mk p)) ⋙ (evaluation _ _).obj (op T)
+  have l := mapIsLimitOfPreservesOfIsLimit G _ _ (prodIsProd A B)
+  have := BinaryFan.IsLimit.hom_ext l (W := PUnit) (f := TypeCat.ofHom fun _ => x) (g := TypeCat.ofHom fun _ => y)
+    (by ext; exact h1) (by ext; exact h2)
+  exact ConcreteCategory.congr_hom this PUnit.unit
+
+theorem prod_sx_mk {A B : Spc} {p : ℕ} {T : Scheme.{0}} (a : Sx A p T) (b : Sx B p T) :
+    ∃ x : Sx (A ⨯ B) p T, x.map prod.fst = a ∧ x.map prod.snd = b := by
+  let G : Spc ⥤ Type := (evaluation _ _).obj (op (SimplexCategory.mk p)) ⋙ (evaluation _ _).obj (op T)
+  have l := mapIsLimitOfPreservesOfIsLimit G _ _ (prodIsProd A B)
+  obtain ⟨m, h1, h2⟩ := BinaryFan.IsLimit.lift' l (W := PUnit) (TypeCat.ofHom fun _ => a) (TypeCat.ofHom fun _ => b)
+  exact ⟨m PUnit.unit, ConcreteCategory.congr_hom h1 PUnit.unit, ConcreteCategory.congr_hom h2 PUnit.unit⟩
+
+theorem spc_mono {A B : Spc} (f : A ⟶ B)
+    (h : ∀ (p : ℕ) (T : Scheme.{0}) (x y : Sx A p T), x.map f = y.map f → x = y) : Mono f := by
+  have : ∀ n, Mono (f.app n) := fun n => by
+    have : ∀ T, Mono ((f.app n).app T) := fun T => by
+      rw [mono_iff_injective]
+      intro x y e
+      exact h n.unop.len T.unop x y e
+    exact NatTrans.mono_of_mono_app _
+  exact NatTrans.mono_of_mono_app _
+
+end Limits
+
+section Triv
+variable {N p : ℕ} {T : Scheme.{0}}
+
+theorem spc_hom_ext {A B : Spc} {f g : A ⟶ B} (h : ∀ (p : ℕ) (T : Scheme.{0}) (x : Sx A p T), x.map f = x.map g) : f = g := by
+  ext n T x
+  exact h n.unop.len T.unop x
+
+def vxP (x : Sx (PGL N) p T) (k : Fin (p + 1)) : Um N Γ(T, ⊤) := (show ComposableArrows (Um N Γ(T, ⊤)) p from x).obj k
+
+theorem triv_arrow {E : Spc} (s : Sx E p T) (t : Sx (PGL N) p T) (h : s.map (triv E N) = t.map (PGL.pr N))
+    {i j : Fin (p + 1)} (f : i ⟶ j) : ((show ComposableArrows (Um N Γ(T, ⊤)) p from t).map f).1.1 = 1 := by
+  have := CategoryTheory.Functor.congr_hom (F := (Functor.const _).obj (SingleObj.star (GL (Fin N) Γ(T, ⊤))))
+    (G := (show ComposableArrows (Um N Γ(T, ⊤)) p from t) ⋙ Um.toGL N _) h f
+  have h2 := this.symm
+  simp at h2
+  exact h2
+
+theorem um_arrow_eq {A : Type} [CommRing A] {X Y X' Y' : Um N A} (hx : X = X') (hy : Y = Y') (a : X ⟶ Y) (a' : X' ⟶ Y')
+    (h : a.1.1 = 1) (h' : a'.1.1 = 1) : a = eqToHom hx ≫ a' ≫ eqToHom hy.symm := by
+  subst hx hy
+  simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
+  refine Subtype.ext (Prod.ext (h.trans h'.symm) ?_)
+  have e1 := a.2
+  have e2 := a'.2
+  rw [h] at e1
+  rw [h'] at e2
+  have := (TU.hom_subsingleton (N := N) (A := A) X Y).elim ⟨a.1.2, by simpa using e1⟩ ⟨a'.1.2, by simpa using e2⟩
+  exact congrArg Subtype.val this
+
+theorem single_ext {G J : Type} [Monoid G] [Category J] (F F' : J ⥤ SingleObj G)
+    (h : ∀ (i j : J) (f : i ⟶ j), F.map f = F'.map f) : F = F' := by
+  refine CategoryTheory.Functor.ext (fun _ => rfl) (fun i j f => ?_)
+  rw [h]
+  simp
+
+theorem tri_w (E : Spc) (N : ℕ) : (prod.fst : E ⨯ Dv N ⟶ E) ≫ triv E N = (prod.snd ≫ Dv.toPGL N) ≫ PGL.pr N := by
+  refine spc_hom_ext fun p T x => ?_
+  refine single_ext _ _ (fun i j f => ?_)
+  rfl
+
+theorem tri_pullback (E : Spc) (N : ℕ) :
+    IsPullback (prod.fst : E ⨯ Dv N ⟶ E) (prod.snd ≫ Dv.toPGL N) (triv E N) (PGL.pr N) := by
+  refine isPullback_of_sx (tri_w E N) ?_ ?_
+  · intro p T x y h1 h2
+    refine prod_sx_ext h1 (vx_ext fun k => ?_)
+    exact congrArg (fun z => vxP z k) h2
+  · intro p T s t h
+    have hp : ∀ i j : Fin (p + 1), ∃ u : Γ(T, ⊤)ˣ, (vxP t i).1 = (u : Γ(T, ⊤)) • (vxP t j).1 := by
+      have key : ∀ i j : Fin (p + 1), i ≤ j → ∃ u : Γ(T, ⊤)ˣ, (vxP t i).1 = (u : Γ(T, ⊤)) • (vxP t j).1 := by
+        intro i j hij
+        let a := (show ComposableArrows (Um N Γ(T, ⊤)) p from t).map (homOfLE hij)
+        refine ⟨a.1.2, ?_⟩
+        have := a.2
+        rw [triv_arrow s t h (homOfLE hij)] at this
+        have h3 : ((show ComposableArrows (Um N Γ(T, ⊤)) p from t).obj i).1 = ((a.1.2 : Γ(T, ⊤)ˣ) : Γ(T, ⊤)) • ((show ComposableArrows (Um N Γ(T, ⊤)) p from t).obj j).1 := by simpa using this
+        exact h3
+      intro i j
+      rcases le_total i j with hij | hij
+      · exact key i j hij
+      · obtain ⟨u, hu⟩ := key j i hij
+        refine ⟨u⁻¹, ?_⟩
+        rw [hu, smul_smul, Units.inv_mul, one_smul]
+    obtain ⟨x, h1, h2⟩ := prod_sx_mk s (Dv.mk (vxP t) hp)
+    refine ⟨x, h1, ?_⟩
+    rw [map_comp, h2]
+    refine CategoryTheory.Functor.ext (fun _ => rfl) (fun i j f => ?_)
+    exact um_arrow_eq rfl rfl _ _ rfl (triv_arrow s t h f)
+
+end Triv
+
+end UpperTheory.P2
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.CupPullbacks.TwoDefs =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.AffineLineHomExistsUniqueOfGlobalSection =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.CommutativeAlgebra.AffineLineHomExistsUniqueOfGlobalSection", "h": "module\n\npublic import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC UpperTheory.Pbf
+
+private theorem comp_gamma {T : Scheme.{0}} (φ : Polynomial ℤ →+* Γ(T, ⊤)) :
+    (Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv ≫
+      (T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)).appTop = CommRingCat.ofHom φ := by
+  rw [Scheme.Hom.comp_appTop, Scheme.toSpecΓ_appTop]
+  erw [Scheme.ΓSpecIso_naturality]
+  exact Iso.inv_hom_id_assoc _ _
+
+theorem UpperTheory.affineLine_hom_existsUnique_of_globalSection :
+    ∀ (T : Scheme.{0}) (a : Γ(T, ⊤)), ∃! s : T ⟶ A1, s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv.hom Polynomial.X) = a := by
+  intro T a
+  have key : ∀ s : T ⟶ A1, s = T.toSpecΓ ≫
+      Spec.map ((Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv ≫ s.appTop) := by
+    intro s
+    rw [Spec.map_comp, ← Category.assoc, ← Scheme.toSpecΓ_naturality, Category.assoc,
+      toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]
+  let φ : Polynomial ℤ →+* Γ(T, ⊤) := Polynomial.eval₂RingHom (Int.castRingHom _) a
+  refine ⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ), ?_, ?_⟩
+  · have h : ((Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv ≫
+        (T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)).appTop).hom Polynomial.X = a := by
+      rw [comp_gamma]
+      simp [φ]
+    rw [CommRingCat.hom_comp, RingHom.comp_apply] at h
+    exact h
+  · intro s hs
+    suffices e : (Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv ≫ s.appTop =
+        CommRingCat.ofHom φ by
+      rw [key s, e]
+    apply CommRingCat.hom_ext
+    apply Polynomial.ringHom_ext'
+    · exact RingHom.ext_int _ _
+    · rw [CommRingCat.hom_comp, RingHom.comp_apply, hs]
+      simp [φ]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.AffineLineHomExistsUniqueOfGlobalSection =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.EpiFreeBiprodDescOfZariskiLocallySurjective =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.CommutativeAlgebra.EpiFreeBiprodDescOfZariskiLocallySurjective", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeEtaleModuleSheafMapMonoEpiIsoStatement\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.FreeHomSectionsStatement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC UpperTheory.Pbf
+
+private def sumP (P₁ P₂ : PSh) : PSh where
+  obj U := P₁.obj U ⊕ P₂.obj U
+  map h := TypeCat.ofHom (Sum.map (P₁.map h) (P₂.map h))
+  map_id U := by
+    ext x
+    rcases x with x | x <;> simp
+  map_comp a b := by
+    ext x
+    rcases x with x | x <;> simp
+
+private def sumD {P₁ P₂ Q : PSh} (f : P₁ ⟶ Q) (g : P₂ ⟶ Q) : sumP P₁ P₂ ⟶ Q where
+  app U := TypeCat.ofHom (Sum.elim (f.app U) (g.app U))
+  naturality U V k := by
+    ext x
+    rcases x with x | x
+    · exact congrFun (congrArg (fun t => t.hom) (f.naturality k)) x
+    · exact congrFun (congrArg (fun t => t.hom) (g.naturality k)) x
+
+theorem UpperTheory.epi_freeBiprodDesc_of_zariskiLocally_surjective :
+    ∀ (R : Type) [CommRing R] {P₁ P₂ Q : PSh} (f : P₁ ⟶ Q) (g : P₂ ⟶ Q), (∀ (U : Scheme.{0}) (y : Q.obj (op U)), Loc U fun V h => (∃ x, f.app (op V) x = Q.map h.op y) ∨ ∃ x, g.app (op V) x = Q.map h.op y) → Epi (biprod.desc ((free R).map f) ((free R).map g)) := by
+  intro R _ P₁ P₂ Q f g h
+  have mc : ∀ {P : PSh} (c : P ⟶ Q) {M : Shv R} (p : (free R).obj Q ⟶ M) (T : Scheme.{0})
+      (x : P.obj (op T)),
+      Sec.map ((free R).map c ≫ p) (freeGen R P T x) = Sec.map p (freeGen R Q T (c.app (op T) x)) := by
+    intro P c M p T x
+    have h4 := (_root_.GlobalTheory.EtC.free_hom_sections R P M).2.2.2 Q c T x
+    show Sec.map p (Sec.map ((free R).map c) (freeGen R P T x)) = _
+    rw [h4]
+  have hE : Epi ((free R).map (sumD f g)) := by
+    apply (_root_.GlobalTheory.EtC.free_map_mono_epi_iso R (sumD f g)).2.1
+    intro T y
+    obtain ⟨S, hS, hP⟩ := h T y
+    refine ⟨S, hS, fun W k hk => ?_⟩
+    rcases hP W k hk with ⟨x, hx⟩ | ⟨x, hx⟩
+    · exact ⟨Sum.inl x, hx⟩
+    · exact ⟨Sum.inr x, hx⟩
+  constructor
+  intro Z u v huv
+  have ha : (free R).map f ≫ u = (free R).map f ≫ v := by
+    simpa using congrArg (biprod.inl ≫ ·) huv
+  have hb : (free R).map g ≫ u = (free R).map g ≫ v := by
+    simpa using congrArg (biprod.inr ≫ ·) huv
+  rw [← cancel_epi ((free R).map (sumD f g))]
+  apply (_root_.GlobalTheory.EtC.free_hom_sections R (sumP P₁ P₂) Z).2.1
+  intro T z
+  rw [mc, mc]
+  cases z with
+  | inl x =>
+    have e := mc f u T x
+    have e' := mc f v T x
+    rw [ha] at e
+    exact e.symm.trans e'
+  | inr x =>
+    have e := mc g u T x
+    have e' := mc g v T x
+    rw [hb] at e
+    exact e.symm.trans e'
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.EpiFreeBiprodDescOfZariskiLocallySurjective =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.LocallyIsUnitOrIsUnitOfSpanPairEqTop =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.CommutativeAlgebra.LocallyIsUnitOrIsUnitOfSpanPairEqTop", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC UpperTheory.Pbf
+
+private theorem unit_on_basicOpen (T : Scheme.{0}) (a : Γ(T, ⊤)) :
+    IsUnit ((T.basicOpen a).ι.appTop.hom a) := by
+  have hb := Scheme.Opens.ι_preimage_self (T.basicOpen a)
+  rw [Scheme.preimage_basicOpen] at hb
+  apply RingedSpace.isUnit_of_isUnit_germ _ ⊤
+  intro x hx
+  have hx' : x ∈ (T.basicOpen a).toScheme.basicOpen
+      ((ConcreteCategory.hom ((T.basicOpen a).ι.app ⊤)) a) := by
+    rw [hb]
+    trivial
+  exact (Scheme.mem_basicOpen _ _ x hx).mp hx'
+
+private theorem mem_basicOpen_or (T : Scheme.{0}) (a b : Γ(T, ⊤)) (h : Ideal.span {a, b} = ⊤) (u : T) :
+    u ∈ T.basicOpen a ∨ u ∈ T.basicOpen b := by
+  have h1 : (1 : Γ(T, ⊤)) ∈ Ideal.span {a, b} := h ▸ Submodule.mem_top
+  obtain ⟨x, y, hxy⟩ := Ideal.mem_span_pair.mp h1
+  have hu : IsUnit (ConcreteCategory.hom (T.presheaf.germ ⊤ u trivial) (x * a) +
+      ConcreteCategory.hom (T.presheaf.germ ⊤ u trivial) (y * b)) := by
+    rw [← map_add (f := _), hxy, map_one]
+    exact isUnit_one
+  rcases IsLocalRing.isUnit_or_isUnit_of_isUnit_add hu with hx | hy
+  · left
+    rw [Scheme.mem_basicOpen_top]
+    rw [map_mul] at hx
+    exact isUnit_of_mul_isUnit_right hx
+  · right
+    rw [Scheme.mem_basicOpen_top]
+    rw [map_mul] at hy
+    exact isUnit_of_mul_isUnit_right hy
+
+theorem UpperTheory.locally_isUnit_or_isUnit_of_span_pair_eq_top :
+    ∀ (T : Scheme.{0}) (a b : Γ(T, ⊤)), Ideal.span {a, b} = ⊤ → Loc T fun V g => IsUnit (g.appTop.hom a) ∨ IsUnit (g.appTop.hom b) := by
+  intro T a b h
+  let U : Bool → T.Opens := fun i => bif i then T.basicOpen a else T.basicOpen b
+  have hU : TopologicalSpace.IsOpenCover U := by
+    apply eq_top_iff.mpr
+    intro u _
+    rcases mem_basicOpen_or T a b h u with hu | hu
+    · exact TopologicalSpace.Opens.mem_iSup.mpr ⟨true, hu⟩
+    · exact TopologicalSpace.Opens.mem_iSup.mpr ⟨false, hu⟩
+  let C := T.openCoverOfIsOpenCover U hU
+  refine ⟨Sieve.ofArrows C.X C.f,
+    Scheme.zariskiTopology_le_etaleTopology _ (Scheme.Cover.mem_grothendieckTopology C), ?_⟩
+  intro V g hg
+  obtain ⟨i, c, rfl⟩ := (Sieve.mem_ofArrows_iff _ _ g).mp hg
+  cases i
+  · right
+    rw [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]
+    exact (unit_on_basicOpen T b).map c.appTop.hom
+  · left
+    rw [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply]
+    exact (unit_on_basicOpen T a).map c.appTop.hom
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.LocallyIsUnitOrIsUnitOfSpanPairEqTop =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LocalQuotientHomExt =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LocalQuotientHomExt", "h": "module\n\npublic import Mathlib.Algebra.Polynomial.Laurent\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+@[reducible] noncomputable def UpperTheory.Reformulated.B.LocalQuotientHomExt.LqR :
+    ℕ → Type :=
+    fun (q : ℕ) ↦ LaurentPolynomial (Localization.Away (↑q : ℤ))
+
+theorem UpperTheory.Reformulated.B.LocalQuotientHomExt.hom_ext :
+    ∀ (q : ℕ) {R : Type} [inst : CommRing R] {f g : UpperTheory.Reformulated.B.LocalQuotientHomExt.LqR q →+* R},
+      (f : UpperTheory.Reformulated.B.LocalQuotientHomExt.LqR q → R) (LaurentPolynomial.T (1 : ℤ)) =
+          (g : UpperTheory.Reformulated.B.LocalQuotientHomExt.LqR q → R) (LaurentPolynomial.T (1 : ℤ)) →
+        f = g := by
+  intro q R _ f g h
+  have hC : f.comp LaurentPolynomial.C = g.comp LaurentPolynomial.C := by
+    apply IsLocalization.ringHom_ext (Submonoid.powers (q : ℤ))
+    exact RingHom.ext_int _ _
+  have hCa : ∀ a, f (LaurentPolynomial.C a) = g (LaurentPolynomial.C a) :=
+    fun a => RingHom.congr_fun hC a
+  have hmul : ∀ m n : ℤ, (LaurentPolynomial.T m : UpperTheory.Reformulated.B.LocalQuotientHomExt.LqR q) * LaurentPolynomial.T n
+      = LaurentPolynomial.T (m + n) := fun m n => (LaurentPolynomial.T_add m n).symm
+  have h1 : f (LaurentPolynomial.T 1) * f (LaurentPolynomial.T (-1)) = 1 := by
+    rw [← map_mul, hmul]; simp
+  have h2 : g (LaurentPolynomial.T 1) * g (LaurentPolynomial.T (-1)) = 1 := by
+    rw [← map_mul, hmul]; simp
+  have hinv : f (LaurentPolynomial.T (-1)) = g (LaurentPolynomial.T (-1)) := by
+    calc f (LaurentPolynomial.T (-1))
+        = f (LaurentPolynomial.T (-1)) * (g (LaurentPolynomial.T 1) * g (LaurentPolynomial.T (-1))) := by
+          rw [h2, mul_one]
+      _ = (f (LaurentPolynomial.T 1) * f (LaurentPolynomial.T (-1))) * g (LaurentPolynomial.T (-1)) := by
+          rw [← h]; ring
+      _ = g (LaurentPolynomial.T (-1)) := by rw [h1, one_mul]
+  have hT : ∀ n : ℤ, f (LaurentPolynomial.T n) = g (LaurentPolynomial.T n) := by
+    intro n
+    induction n using Int.induction_on with
+    | zero => simp
+    | succ i ih => rw [← hmul, map_mul, map_mul, ih, h]
+    | pred i ih => rw [sub_eq_add_neg, ← hmul, map_mul, map_mul, ih, hinv]
+  apply RingHom.ext
+  intro p
+  induction p using LaurentPolynomial.induction_on' with
+  | add p r hp hr => rw [map_add (f := _), map_add (f := _), hp, hr]
+  | C_mul_T n a =>
+    rw [map_mul, map_mul, hCa, hT]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LocalQuotientHomExt =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.MultiplicativeGroupHomExistsUniqueOfUnit =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.CommutativeAlgebra.MultiplicativeGroupHomExistsUniqueOfUnit", "h": "module\n\npublic import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.LocalQuotientHomExt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.CategoryTheory.EffectiveEpi.Comp\nimport Mathlib.CategoryTheory.ExtremalEpi\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC UpperTheory.Pbf
+
+namespace UpperTheory.GqPt
+
+private theorem hom_ext (q : ℕ) {R : Type} [CommRing R] {f g : LqR q →+* R}
+    (h : f (LaurentPolynomial.T 1) = g (LaurentPolynomial.T 1)) : f = g :=
+  _root_.UpperTheory.Reformulated.B.LocalQuotientHomExt.hom_ext q h
+
+private noncomputable def sec {X : Scheme.{0}} {R : CommRingCat.{0}} (f : X ⟶ Spec R) : R ⟶ Γ(X, ⊤) :=
+  (Scheme.ΓSpecIso R).inv ≫ f.appTop
+
+private theorem sec_inj {X : Scheme.{0}} {R : CommRingCat.{0}} {f g : X ⟶ Spec R} (h : sec f = sec g) : f = g :=
+  ext_of_isAffine ((cancel_epi (Scheme.ΓSpecIso R).inv).1 h)
+
+private theorem sec_to {X : Scheme.{0}} {R : CommRingCat.{0}} (φ : R ⟶ Γ(X, ⊤)) :
+    sec (X.toSpecΓ ≫ Spec.map φ) = φ := by
+  simp only [sec, Scheme.Hom.comp_appTop]
+  rw [← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality, Category.assoc,
+    Scheme.toSpecΓ_appTop, Iso.inv_hom_id, Category.comp_id]
+
+private theorem val_map_tq (q : ℕ) {T : Scheme.{0}} (s : T ⟶ Gq q) :
+    ((Units.map s.appTop.hom.toMonoidHom (tq q) : (Γ(T, ⊤))ˣ) : Γ(T, ⊤)) =
+      (sec s).hom (LaurentPolynomial.T 1) := rfl
+
+end UpperTheory.GqPt
+
+open UpperTheory.GqPt in
+theorem UpperTheory.multiplicativeGroup_hom_existsUnique_of_unit :
+    ∀ (q : ℕ) [NeZero q] (T : Scheme.{0}), IsUnit ((q : ℕ) : Γ(T, ⊤)) → ∀ t : (Γ(T, ⊤))ˣ, ∃! s : T ⟶ Gq q, Units.map s.appTop.hom.toMonoidHom (tq q) = t := by
+  intro q _ T hq t
+  let lam : Localization.Away (q : ℤ) →+* Γ(T, ⊤) :=
+    IsLocalization.Away.lift (q : ℤ) (g := Int.castRingHom Γ(T, ⊤)) (by simpa using hq)
+  let φ : LqR q →+* Γ(T, ⊤) := LaurentPolynomial.eval₂ lam t
+  have hφ : φ (LaurentPolynomial.T 1) = t := by
+    simp only [φ, LaurentPolynomial.eval₂_T, zpow_one]
+  refine ⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ), ?_, ?_⟩
+  · refine Units.ext ?_
+    rw [val_map_tq, sec_to]
+    exact hφ
+  · intro s hs
+    refine sec_inj ?_
+    rw [sec_to]
+    refine CommRingCat.hom_ext (hom_ext q ?_)
+    have h1 := val_map_tq q s
+    rw [hs] at h1
+    exact h1.symm.trans hφ.symm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.CommutativeAlgebra.MultiplicativeGroupHomExistsUniqueOfUnit =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.CupPullbacks.TwoChart =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.CupPullbacks.TwoChart", "h": "module\n\npublic import Development.AutomorphicArithmetic.CupPullbacks.TwoDefs\npublic import Development.AutomorphicArithmetic.CommutativeAlgebra.AffineLineHomExistsUniqueOfGlobalSection\npublic import Development.AutomorphicArithmetic.CommutativeAlgebra.EpiFreeBiprodDescOfZariskiLocallySurjective\npublic import Development.AutomorphicArithmetic.CommutativeAlgebra.LocallyIsUnitOrIsUnitOfSpanPairEqTop\npublic import Development.AutomorphicArithmetic.CommutativeAlgebra.MultiplicativeGroupHomExistsUniqueOfUnit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC UpperTheory.Pbf
@@ -68,7 +653,7 @@ theorem span_unit_mul {A B : Type} [CommRing A] [CommRing B] {M : ℕ} (f : A �
   rw [eq_top_iff, ← h1, Ideal.span_le]
   rintro _ ⟨i, rfl⟩
   have : (f ∘ ℓ) i = ((↑u⁻¹ : B)) * (f (ℓ i) * u) := by
-    simp [mul_comm, mul_assoc]
+    simp [mul_comm]
   rw [this]
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
@@ -450,3 +1035,6 @@ end Chart
 
 end UpperTheory.P2
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.CupPullbacks.TwoChart =====

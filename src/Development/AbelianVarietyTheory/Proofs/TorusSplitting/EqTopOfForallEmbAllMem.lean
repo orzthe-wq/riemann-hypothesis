@@ -159,7 +159,7 @@ lemma embAll_mem_of_span (Ψ : Finset (E →+* ℂ)) (r : ℕ) (Λ : Submodule (
           embAll Ψ r ((RingOfIntegers.basis E i) • x) := by
         ext τ a
         conv_lhs => rw [← (integralBasis E).sum_repr e]
-        simp [Finset.sum_apply, Finset.sum_mul, integralBasis_apply, Rat.smul_def, mul_assoc,
+        simp [Finset.sum_apply, Finset.sum_mul, integralBasis_apply, mul_assoc,
           Algebra.smul_def]
       rw [this]
       exact S.sum_mem fun i _ => S.smul_mem _ (hS _ (Λ.smul_mem _ hx))

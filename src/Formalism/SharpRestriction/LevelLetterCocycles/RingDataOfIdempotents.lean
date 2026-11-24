@@ -82,7 +82,7 @@ theorem absIrr_block {k G : Type} [Field k] {r t : ℕ} (M : G → Matrix (Fin (
     ext x y
     obtain ⟨x', rfl⟩ := (blockZeroEquiv r t).surjective x
     obtain ⟨y', rfl⟩ := (blockZeroEquiv r t).surjective y
-    simp only [L, Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply,
+    simp only [L, Matrix.coe_reindexLinearEquiv, Matrix.reindex_apply, Matrix.submatrix_apply,
       Equiv.symm_apply_apply]
     exact (h g x' y').symm
   have h1 : L.symm (Matrix.single a b (1 : k)) ∈ Submodule.span k (Set.range ρb) := by

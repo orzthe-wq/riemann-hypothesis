@@ -145,8 +145,6 @@ end System
 
 section Inhabitants
 
-open ReciprocityTheory.AnForm.M (p1 fsPot projLine_isSmoothPotential projLine_isPlurisubharmonic)
-open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (projLineChartData projLine_fubiniStudy_isPosPot)
 
 theorem levi_const {ι : Type*} [Fintype ι] (c : ℝ) (z w : ι → ℂ) :
     levi (fun _ : ι → ℂ => c) z w = 0 := by

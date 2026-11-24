@@ -90,7 +90,7 @@ theorem isOpen_connectedComponent_of_noetherianSpace {X : Type u} [TopologicalSp
 theorem geometricallyConnected_of_isAlgClosed {k : Type u} [Field k] [IsAlgClosed k]
     {X : Scheme.{u}} (f : X ⟶ Spec (.of k)) [LocallyOfFiniteType f] [ConnectedSpace X] :
     GeometricallyConnected f := by
-  apply GlobalTheory.RatPointConn.of_isAlgClosed <;> assumption
+  apply GlobalTheory.RatPointConn.of_isAlgClosed
 
 section Sub
 

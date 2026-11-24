@@ -6,49 +6,8 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Term
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.ConcreteLevelAdelicSubset
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHAlg
 public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.PoincareSeriesInner
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 set_option backward.isDefEq.respectTransparency false
 
@@ -94,17 +53,14 @@ theorem blkOpLin_apply (B : ι → ι' → (V' →L[ℂ] V)) : blkOpLin B = blkO
 
 theorem hasSum_blkOp {τ : Type*} (f : τ → ι → ι' → (V' →L[ℂ] V)) (B : ι → ι' → (V' →L[ℂ] V))
     (h : ∀ ρ ρ', HasSum (fun t => f t ρ ρ') (B ρ ρ')) : HasSum (fun t => blkOp (f t)) (blkOp B) := by
-  have hB : HasSum f B := Pi.hasSum.2 fun ρ => Pi.hasSum.2 fun ρ' => h ρ ρ'
-  have hc : Continuous (blkOpLin (ι := ι) (ι' := ι') (V := V) (V' := V')) :=
-    LinearMap.continuous_of_finiteDimensional _
-  exact hB.map (blkOpLin (ι := ι) (ι' := ι') (V := V) (V' := V')) hc
+  exact (Pi.hasSum.2 fun ρ => Pi.hasSum.2 fun ρ' => h ρ ρ').map blkOpLin
+    (LinearMap.continuous_of_finiteDimensional _)
 
 theorem inner_blkOp (B : ι → ι' → (V' →L[ℂ] V)) (x : PiLp 2 (fun _ : ι' => V')) (y : PiLp 2 (fun _ : ι => V)) :
     inner ℂ (blkOp B x) y = ∑ ρ, ∑ ρ', inner ℂ (B ρ ρ' (x ρ')) (y ρ) := by
   simp only [PiLp.inner_apply]
   refine Finset.sum_congr rfl fun ρ _ => ?_
-  change inner ℂ (∑ ρ', B ρ ρ' (x ρ')) (y ρ) = _
-  rw [sum_inner]
+  rw [show blkOp B x ρ = ∑ ρ', B ρ ρ' (x ρ') by rfl, sum_inner]
 
 theorem exists_norm_blkOp_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ B : ι → ι' → (V' →L[ℂ] V), ‖blkOp B‖ ≤ C * ‖B‖ := by
   refine ⟨‖LinearMap.toContinuousLinearMap (blkOpLin (ι := ι) (ι' := ι') (V := V) (V' := V'))‖,
@@ -206,29 +162,12 @@ section PsiTorsion
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum
 
-theorem adic_torsion {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
-    (a : v.adicCompletion F) :
-    ∃ n : ℕ, 0 < n ∧ (n : v.adicCompletion F) * a ∈ v.adicCompletionIntegers F := by
-  obtain ⟨b, hb, hab⟩ := adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v a
-  have hb0 : b ≠ 0 := nonZeroDivisors.ne_zero hb
-  obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {b}))
-  have hn0 : Ideal.absNorm (Ideal.span {b}) ≠ 0 := by
-    rw [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
-    exact hb0
-  refine ⟨Ideal.absNorm (Ideal.span {b}), Nat.pos_of_ne_zero hn0, ?_⟩
-  have e1 : ((Ideal.absNorm (Ideal.span {b}) : ℕ) : v.adicCompletion F) =
-      algebraMap (𝓞 F) (v.adicCompletion F) c * algebraMap (𝓞 F) (v.adicCompletion F) b := by
-    rw [← map_mul, hc, map_natCast]
-  rw [e1, mul_assoc, mul_comm (algebraMap _ _ b) a]
-  refine mul_mem ?_ hab
-  exact coe_mem_adicCompletionIntegers (K := F) v c
-
 theorem fa_torsion {F : Type} [Field F] [NumberField F] (a : FiniteAdeleRing (𝓞 F) F) :
     ∃ n : ℕ, 0 < n ∧ (n : FiniteAdeleRing (𝓞 F) F) * a ∈ Formalism.UG.intAd F := by
   classical
   have hfin : {v : HeightOneSpectrum (𝓞 F) | a v ∉ v.adicCompletionIntegers F}.Finite :=
     Filter.eventually_cofinite.1 a.2
-  choose m hm0 hm using fun v => adic_torsion v (a v)
+  choose m hm0 hm using fun v => _root_.PI.WAU.B.exists_nat_local v (a v)
   refine ⟨∏ v ∈ hfin.toFinset, m v, Finset.prod_pos fun v _ => hm0 v, fun w => ?_⟩
   show ((∏ v ∈ hfin.toFinset, m v : ℕ) : w.adicCompletion F) * a w ∈ _
   by_cases hw : w ∈ hfin.toFinset
@@ -286,12 +225,7 @@ theorem psi_unit_of {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   have hpow : ∀ m : ℕ, ψ (m • x) = ψ x ^ m := by
     intro m
     induction m with
-    | zero =>
-      have h0 : ψ 0 = 1 := by
-        have := hadd (n • x) 0
-        rw [add_zero, hint _ hx, one_mul] at this
-        exact this.symm
-      simp [h0]
+    | zero => simpa using hint 0 (zero_mem _)
     | succ m ih => rw [succ_nsmul, hadd, ih, pow_succ]
   have h1 : ‖ψ x‖ ^ n = 1 := by rw [← norm_pow, ← hpow, hint _ hx, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h1
@@ -350,7 +284,6 @@ theorem absConvT_of (hK : X.LevelSubgroupCharacter) (hψ : PsiUnit X) (hO : OOAb
   obtain ⟨C1, hC1, hb1⟩ := exists_bound_lin' (Formalism.L2.SG.PackageTie.hsEmb (Wq := CM cs') (Wp := CM cs))
   obtain ⟨C2, hC2, hb2⟩ := exists_norm_blkOp_le (ι := cs.Cl) (ι' := cs'.Cl) (V := X.Vpi u) (V' := X.Vpi u')
   obtain ⟨C3, hC3, hb3⟩ := exists_bound_lin' (Formalism.L2.SG.PackageTie.hsEmb (Wq := X.Vpi u') (Wp := X.Vpi u))
-  have hc : 0 ≤ |scl FdN FdN' (X := X) (u := u) (u' := u') * X.volK2| := abs_nonneg _
   unfold AbsConvT Formalism.FourierDecayAlt.PB.Terms.AbsConv
   refine ⟨?_, ?_, gamma_one_pos TR⟩
   · refine Summable.of_nonneg_of_le (fun t => norm_nonneg _) (fun t => ?_)
@@ -398,8 +331,7 @@ theorem ooIntAll_of (h : OOLint F0 F0' what₂ rows' (X := X) (u := u) (u' := u'
   have h1 : Continuous fun x : X.B.I.Ginf => innerSL ℂ (X.Wu u' (t.pt.1⁻¹ * x)) :=
     (innerSL ℂ).continuous.comp (hW'.comp (continuous_const.mul continuous_id))
   have hcont : Continuous fun x : X.B.I.Ginf => rk1 (X.Wu u x) (X.Wu u' (t.pt.1⁻¹ * x)) := by
-    have h2 := ((StrongDual.smulRightL ℂ (X.Vpi u') (X.Vpi u)).continuous.comp h1).clm_apply hW
-    simpa [rk1] using h2
+    simpa [rk1] using ((StrongDual.smulRightL ℂ (X.Vpi u') (X.Vpi u)).continuous.comp h1).clm_apply hW
   refine ⟨hcont.aestronglyMeasurable, ?_⟩
   unfold HasFiniteIntegral
   refine lt_of_le_of_lt (le_of_eq (lintegral_congr fun x => ?_)) (h t)
@@ -426,12 +358,8 @@ theorem norm_le_blkOp (B : ι → ι' → (V' →L[ℂ] V)) (ρ : ι) (ρ' : ι'
   let x : PiLp 2 (fun _ : ι' => V') := WithLp.toLp 2 (fun σ => if σ = ρ' then v else 0)
   have hx0 : ∀ σ, σ ≠ ρ' → x σ = 0 := fun σ hσ => by simp [x, hσ]
   have hx : ‖x‖ = ‖v‖ := by
-    have h := PiLp.norm_sq_eq_of_L2 (fun _ : ι' => V') x
-    rw [Finset.sum_eq_single ρ' (fun σ _ hσ => by simp [hx0 σ hσ]) (fun h => absurd (Finset.mem_univ ρ') h)] at h
-    have h' : x ρ' = v := by simp [x]
-    rw [h'] at h
-    have := congrArg Real.sqrt h
-    simpa [Real.sqrt_sq (norm_nonneg _)] using this
+    rw [piLp_two_norm_eq_norm_apply_of_single_support x ρ' hx0]
+    simp [x]
   have h1 : (blkOp B x) ρ = B ρ ρ' v := by
     change ∑ σ, B ρ σ (x σ) = _
     rw [Finset.sum_eq_single ρ' (fun σ _ hσ => by simp [hx0 σ hσ]) (fun h => absurd (Finset.mem_univ ρ') h)]
@@ -443,19 +371,15 @@ theorem norm_le_blkOp (B : ι → ι' → (V' →L[ℂ] V)) (ρ : ι) (ρ' : ι'
 
 theorem hsEmb_injective : Function.Injective (Formalism.L2.SG.PackageTie.hsEmb (Wq := V') (Wp := V)) := by
   intro A B h
-  have h' : ∀ i, A (stdOrthonormalBasis ℂ V' i) = B (stdOrthonormalBasis ℂ V' i) := fun i => by
-    have := congrArg (fun x : Formalism.L2.SG.PackageTie.HS V' V => x i) h
-    simpa [Formalism.L2.SG.PackageTie.hsEmb] using this
   apply ContinuousLinearMap.coe_injective
   refine (stdOrthonormalBasis ℂ V').toBasis.ext fun i => ?_
-  simpa using h' i
+  simpa [Formalism.L2.SG.PackageTie.hsEmb] using congrArg (fun x : Formalism.L2.SG.PackageTie.HS V' V => x i) h
 
 theorem exists_norm_le_hs : ∃ C : ℝ, 0 ≤ C ∧ ∀ A : V' →L[ℂ] V, ‖A‖ ≤ C * ‖Formalism.L2.SG.PackageTie.hsEmb A‖ := by
   let e := (LinearEquiv.ofInjective _ (hsEmb_injective (V := V) (V' := V'))).toContinuousLinearEquiv
-  let L := e.symm.toContinuousLinearMap
-  refine ⟨‖L‖, norm_nonneg _, fun A => ?_⟩
-  calc ‖A‖ = ‖L (e A)‖ := by simp [L]
-    _ ≤ ‖L‖ * ‖e A‖ := L.le_opNorm _
+  refine ⟨‖e.symm.toContinuousLinearMap‖, norm_nonneg _, fun A => ?_⟩
+  calc ‖A‖ = ‖e.symm.toContinuousLinearMap (e A)‖ := by simp
+    _ ≤ ‖e.symm.toContinuousLinearMap‖ * ‖e A‖ := e.symm.toContinuousLinearMap.le_opNorm _
     _ = _ := rfl
 
 end FromAbs
@@ -548,10 +472,7 @@ variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u u' : D.what
 
 theorem integral_conj_mul {α : Type*} [MeasurableSpace α] (μ : Measure α) (f g : α → ℂ) :
     ∫ x, conj (f x) * g x ∂μ = conj (∫ x, f x * conj (g x) ∂μ) := by
-  rw [← integral_conj]
-  congr 1
-  funext x
-  simp
+  simpa using integral_conj (μ := μ) (f := fun x => f x * conj (g x))
 
 
 variable (F0 F0') in

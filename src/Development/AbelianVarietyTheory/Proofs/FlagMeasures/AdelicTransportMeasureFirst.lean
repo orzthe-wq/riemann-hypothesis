@@ -3,12 +3,12 @@ module
 public import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnipotentQuotientInvariantProbability
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GaussianRapidDecay
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitaryPointsDiscreteFundamentalDomainStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproximationUnitaryUnipotentRadicalStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmDataIsCMExtAndGramIsHermND
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsArchAdeleTensorEquivComplexCmType
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitaryPointsDiscreteFundamentalDomain
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StrongApproximationUnitaryUnipotentRadical
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -525,10 +525,10 @@ theorem constTerm_iff_inst (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure
   have : BorelSpace I.GA := inferInstance
   have : (Measure.pi fun v => Formalism.REAL.muG (I.ε v)).IsHaarMeasure := Measure.pi.isHaarMeasure _
   have : (I.muA μf).IsHaarMeasure := Measure.prod.instIsHaarMeasure _ _
-  obtain ⟨Γ, hΓ, hΓc, hfin, -⟩ := GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain I
+  obtain ⟨Γ, hΓ, hΓc, hfin, -⟩ := _root_.GlobalTheory.RatDiscrete.rational_points I
   let T' : G' ≃ₜ I.GA := ⟨T.toEquiv, hT.1, hT.2⟩
   have : IsTopologicalGroup G' := T'.isInducing.topologicalGroup T
-  obtain ⟨-, hcl, -, -, K, hK, -, hcov⟩ := GlobalTheory.T.strong_approximation_unitaryUnipotentRadical I W hW
+  obtain ⟨-, hcl, -, -, K, hK, -, hcov⟩ := _root_.GlobalTheory.UnipApprox.strong_approximation I W hW
   have hcl' : IsClosed (N : Set G') := by
     have e : (N : Set G') = T ⁻¹' I.NA W := Set.ext hm
     rw [e]

@@ -61,6 +61,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.FinO
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FirstCohomology.PhiPow
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.Jets.ExistsSecTieFOfTies
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

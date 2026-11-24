@@ -84,7 +84,7 @@ theorem stalk_fromSpecStalk_equiv (X : Scheme.{0}) (x : X) (p : Ideal (X.preshea
   rw [← CommRingCat.comp_apply (Scheme.ΓSpecIso (X.presheaf.stalk x)).inv (Scheme.ΓSpecIso (X.presheaf.stalk x)).hom,
     Iso.inv_hom_id, CommRingCat.id_apply] at h2
   rw [← h2]
-  simp only [← CommRingCat.comp_apply, Category.assoc, TopCat.Presheaf.germ_res]
+  simp only [← CommRingCat.comp_apply, Category.assoc]
   erw [TopCat.Presheaf.germ_res]
 
 end GlobalTheory.LocalRingGeneralisation

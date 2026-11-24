@@ -1,48 +1,6 @@
 module
 
 public import Formalism.TruncatedSeriesCounting.RamifiedValuationInequality
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -57,38 +15,38 @@ private lemma sum_erase_union_le (f : ℤ → ℕ) (A B : Finset ℤ) :
   classical
   rw [Finset.erase_union_distrib]
   have h := Finset.sum_union_inter (s₁ := A.erase 0) (s₂ := B.erase 0) (f := f)
-  first
-  | omega
-  | (rw [← h]; exact Nat.le_add_right _ _)
+  omega
 
 private lemma sum_Icc_padicValNat_add_factorial_eq (ℓ : ℕ) [Fact ℓ.Prime] (m L : ℕ) :
     (∑ n ∈ Finset.Icc (m + 1) (m + L), padicValNat ℓ n) + padicValNat ℓ m.factorial =
       padicValNat ℓ (m + L).factorial := by
+  simp only [Nat.padicValNat_def]
   induction L with
   | zero =>
     simp only [add_zero]
     rw [Finset.Icc_eq_empty (by omega)]
     simp
   | succ L ih =>
-    rw [show m + (L + 1) = m + L + 1 by omega, Finset.sum_Icc_succ_top (by omega), Nat.factorial_succ,
-      (show ∀ {p a b : ℕ} [_root_.Fact (_root_.Nat.Prime p)], a ≠ 0 → b ≠ 0 → _root_.padicValNat p (a * b) = _root_.padicValNat p a + _root_.padicValNat p b from by simpa only [← _root_.Nat.padicValNat_def] using @_root_.Nat.multiplicity_mul) (by omega) (Nat.factorial_ne_zero _), ← ih]
+    rw [← Nat.add_assoc, Finset.sum_Icc_succ_top (by omega), Nat.factorial_succ,
+      Nat.multiplicity_mul (by omega) (Nat.factorial_ne_zero _), ← ih]
     omega
 
 private lemma sub_one_mul_padicValNat_factorial_le' (ℓ : ℕ) [Fact ℓ.Prime] (N : ℕ) :
     (ℓ - 1) * padicValNat ℓ N.factorial ≤ N := by
   rw [Nat.padicValNat_def, (Fact.out : ℓ.Prime).sub_one_mul_multiplicity_factorial]
-  omega
+  exact Nat.sub_le _ _
 
 private lemma padicValNat_factorial_add_le_add_log (ℓ : ℕ) [Fact ℓ.Prime] (m L : ℕ) :
     padicValNat ℓ (m + L).factorial ≤
       padicValNat ℓ m.factorial + padicValNat ℓ L.factorial + Nat.log ℓ (m + L) := by
   have h := Nat.add_choose_mul_factorial_mul_factorial m L
   have hc : (m + L).choose L ≠ 0 := (Nat.choose_pos (by omega)).ne'
-  have hlog : padicValNat ℓ ((m + L).choose L) ≤ Nat.log ℓ (m + L) := by
-    rw [Nat.padicValNat_def, ← Nat.factorization_def _ (Fact.out : ℓ.Prime)]
+  have hlog : multiplicity ℓ ((m + L).choose L) ≤ Nat.log ℓ (m + L) := by
+    rw [← Nat.factorization_def _ (Fact.out : ℓ.Prime)]
     exact Nat.factorization_choose_le_log
-  rw [← h, (show ∀ {p a b : ℕ} [_root_.Fact (_root_.Nat.Prime p)], a ≠ 0 → b ≠ 0 → _root_.padicValNat p (a * b) = _root_.padicValNat p a + _root_.padicValNat p b from by simpa only [← _root_.Nat.padicValNat_def] using @_root_.Nat.multiplicity_mul) (by positivity) (Nat.factorial_ne_zero _),
-    (show ∀ {p a b : ℕ} [_root_.Fact (_root_.Nat.Prime p)], a ≠ 0 → b ≠ 0 → _root_.padicValNat p (a * b) = _root_.padicValNat p a + _root_.padicValNat p b from by simpa only [← _root_.Nat.padicValNat_def] using @_root_.Nat.multiplicity_mul) hc (Nat.factorial_ne_zero _)]
+  simp only [Nat.padicValNat_def]
+  rw [← h, Nat.multiplicity_mul (by positivity) (Nat.factorial_ne_zero _),
+    Nat.multiplicity_mul hc (Nat.factorial_ne_zero _)]
   omega
 
 private lemma sum_Icc_one_padicValNat_eq_factorial (ℓ : ℕ) [Fact ℓ.Prime] (L : ℕ) :
@@ -96,10 +54,30 @@ private lemma sum_Icc_one_padicValNat_eq_factorial (ℓ : ℕ) [Fact ℓ.Prime] 
   have h := sum_Icc_padicValNat_add_factorial_eq ℓ 0 L
   simpa [Nat.padicValNat_def] using h
 
+private lemma sum_padicValInt_Icc_neg (ℓ : ℕ) (a b : ℤ) (hb : b < 0) :
+    (∑ j ∈ Finset.Icc a b, padicValInt ℓ j) =
+      ∑ n ∈ Finset.Icc (-b).toNat (-a).toNat, padicValNat ℓ n := by
+  apply Finset.sum_nbij' (fun j : ℤ => (-j).toNat) (fun n : ℕ => -(n : ℤ))
+  · intro j hj
+    simp only [Finset.mem_Icc] at hj ⊢
+    omega
+  · intro n hn
+    simp only [Finset.mem_Icc] at hn ⊢
+    omega
+  · intro j hj
+    simp only [Finset.mem_Icc] at hj
+    omega
+  · intro n _
+    simp
+  · intro j hj
+    simp only [Finset.mem_Icc] at hj
+    rw [padicValInt, Nat.padicValNat_def]
+    congr 1
+    omega
+
 theorem first_sigma_valuation_bound : TwoIntervalValuationSumBound := by
   intro ℓ _ h η S b a hab hbS
   have hℓ : ℓ.Prime := Fact.out
-  have hℓ2 : 2 ≤ ℓ := hℓ.two_le
   have step1 := sum_erase_union_le (padicValInt ℓ) (Finset.Icc (1 - (η : ℤ)) ((η : ℤ) + a))
     (Finset.Icc (1 - ((b + S : ℕ) : ℤ)) ((a : ℤ) - b))
   have hI1 : (∑ j ∈ (Finset.Icc (1 - (η : ℤ)) ((η : ℤ) + a)).erase 0, padicValInt ℓ j) ≤
@@ -116,26 +94,9 @@ theorem first_sigma_valuation_bound : TwoIntervalValuationSumBound := by
       omega
     have hneg : (∑ j ∈ Finset.Icc (1 - (η : ℤ)) (-1), padicValInt ℓ j) =
         ∑ n ∈ Finset.Icc 1 (η - 1), padicValNat ℓ n := by
-      apply Finset.sum_nbij' (fun j : ℤ => ((-j).toNat : ℕ)) (fun n : ℕ => -(n : ℤ))
-      · intro j hj
-        simp only [Finset.mem_Icc] at hj ⊢
-        omega
-      · intro n hn
-        simp only [Finset.mem_Icc] at hn ⊢
-        omega
-      · intro j hj
-        simp only [Finset.mem_Icc] at hj
-        try dsimp only
-        omega
-      · intro n hn
-        try dsimp only
-        omega
-      · intro j hj
-        simp only [Finset.mem_Icc] at hj
-        try dsimp only
-        rw [padicValInt, Nat.padicValNat_def]
-        congr 1
-        omega
+      rw [sum_padicValInt_Icc_neg ℓ _ _ (by decide)]
+      congr 2
+      omega
     have hpos : (∑ j ∈ Finset.Icc 1 ((η : ℤ) + a), padicValInt ℓ j) =
         ∑ n ∈ Finset.Icc 1 (η + a), padicValNat ℓ n := by
       apply Finset.sum_nbij' (fun j : ℤ => (j.toNat : ℕ)) (fun n : ℕ => (n : ℤ))
@@ -147,14 +108,11 @@ theorem first_sigma_valuation_bound : TwoIntervalValuationSumBound := by
         omega
       · intro j hj
         simp only [Finset.mem_Icc] at hj
-        try dsimp only
         omega
       · intro n hn
-        try dsimp only
         omega
       · intro j hj
         simp only [Finset.mem_Icc] at hj
-        try dsimp only
         rw [padicValInt, Nat.padicValNat_def]
         congr 1
         omega
@@ -165,26 +123,8 @@ theorem first_sigma_valuation_bound : TwoIntervalValuationSumBound := by
       padicValNat ℓ (a + S).factorial + Nat.log ℓ (b - a - 1 + (a + S)) := by
     have heq : (∑ j ∈ Finset.Icc (1 - ((b + S : ℕ) : ℤ)) ((a : ℤ) - b), padicValInt ℓ j) =
         ∑ n ∈ Finset.Icc (b - a - 1 + 1) (b - a - 1 + (a + S)), padicValNat ℓ n := by
-      apply Finset.sum_nbij' (fun j : ℤ => ((-j).toNat : ℕ)) (fun n : ℕ => -(n : ℤ))
-      · intro j hj
-        simp only [Finset.mem_Icc] at hj ⊢
-        omega
-      · intro n hn
-        simp only [Finset.mem_Icc] at hn ⊢
-        omega
-      · intro j hj
-        simp only [Finset.mem_Icc] at hj
-        try dsimp only
-        omega
-      · intro n hn
-        try dsimp only
-        omega
-      · intro j hj
-        simp only [Finset.mem_Icc] at hj
-        try dsimp only
-        rw [padicValInt, Nat.padicValNat_def]
-        congr 1
-        omega
+      rw [sum_padicValInt_Icc_neg ℓ _ _ (by omega)]
+      congr 2 <;> omega
     have h1 := sum_Icc_padicValNat_add_factorial_eq ℓ (b - a - 1) (a + S)
     have h2 := padicValNat_factorial_add_le_add_log ℓ (b - a - 1) (a + S)
     calc _ ≤ ∑ j ∈ Finset.Icc (1 - ((b + S : ℕ) : ℤ)) ((a : ℤ) - b), padicValInt ℓ j :=
@@ -196,10 +136,10 @@ theorem first_sigma_valuation_bound : TwoIntervalValuationSumBound := by
       padicValNat ℓ (η - 1).factorial + padicValNat ℓ (η + a).factorial +
         padicValNat ℓ (a + S).factorial + Nat.log ℓ (b - a - 1 + (a + S)) := by
     omega
-  have hℓR : (1 : ℝ) < ℓ := by exact_mod_cast (show 1 < ℓ by omega)
-  have hpos : (0 : ℝ) < (ℓ : ℝ) - 1 := by linarith
+  have hℓR : (1 : ℝ) < ℓ := by exact_mod_cast hℓ.one_lt
+  have hpos : (0 : ℝ) < (ℓ : ℝ) - 1 := sub_pos.mpr hℓR
   have hsubℓ : ((ℓ - 1 : ℕ) : ℝ) = (ℓ : ℝ) - 1 := by
-    rw [Nat.cast_sub (by omega)]
+    rw [Nat.cast_sub hℓ.one_lt.le]
     simp
   have r : ∀ N : ℕ, ((ℓ : ℝ) - 1) * (padicValNat ℓ N.factorial : ℝ) ≤ (N : ℝ) := by
     intro N
@@ -214,35 +154,16 @@ theorem first_sigma_valuation_bound : TwoIntervalValuationSumBound := by
     have e3 := r (a + S)
     have e4 : ((η - 1 : ℕ) : ℝ) ≤ (η : ℝ) := by exact_mod_cast Nat.sub_le η 1
     push_cast at e2 e3
-    nlinarith [e1, e2, e3, e4]
-  have hlam0 : 0 ≤ lam ℓ (h + η) := by
-    unfold lam
-    by_cases h0 : h + η = 0
-    · rw [h0]
-      simp
-    · have h1 : (1 : ℝ) ≤ ((h + η : ℕ) : ℝ) := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr h0
-      have h2 : (1 : ℝ) ≤ 2 * ((h + η : ℕ) : ℝ) := by linarith
-      have := Real.logb_nonneg hℓR h2
-      linarith
+    linarith only [e1, e2, e3, e4]
   have hk : ((Nat.log ℓ (b - a - 1 + (a + S)) : ℕ) : ℝ) ≤ lam ℓ (h + η) := by
-    by_cases hN : b - a - 1 + (a + S) = 0
-    · rw [hN, Nat.log_zero_right]
-      simpa using hlam0
-    · have hpow : ℓ ^ Nat.log ℓ (b - a - 1 + (a + S)) ≤ b - a - 1 + (a + S) :=
-        Nat.pow_log_le_self ℓ hN
-      have hNh : b - a - 1 + (a + S) ≤ 2 * (h + η) := by omega
-      have hNpos : (0 : ℝ) < ((b - a - 1 + (a + S) : ℕ) : ℝ) := by
-        exact_mod_cast Nat.pos_of_ne_zero hN
-      have h1 : ((Nat.log ℓ (b - a - 1 + (a + S)) : ℕ) : ℝ) ≤
-          Real.logb ℓ ((b - a - 1 + (a + S) : ℕ) : ℝ) := by
-        rw [Real.le_logb_iff_rpow_le hℓR hNpos, Real.rpow_natCast]
-        exact_mod_cast hpow
-      have h2 : Real.logb ℓ ((b - a - 1 + (a + S) : ℕ) : ℝ) ≤
-          Real.logb ℓ (2 * ((h + η : ℕ) : ℝ)) := by
-        apply Real.logb_le_logb_of_le hℓR hNpos
-        exact_mod_cast hNh
-      unfold lam
-      linarith
+    have hN : b - a - 1 + (a + S) ≤ 2 * (h + η) := by omega
+    calc
+      _ ≤ (Nat.log ℓ (2 * (h + η)) : ℝ) := by exact_mod_cast Nat.log_mono_right hN
+      _ ≤ Real.logb ℓ ((2 * (h + η) : ℕ) : ℝ) := Real.natLog_le_logb _ _
+      _ ≤ _ := by
+        unfold lam
+        push_cast
+        exact le_add_of_nonneg_right zero_le_one
   refine le_trans (Nat.cast_le.mpr tot) ?_
   push_cast
   linarith

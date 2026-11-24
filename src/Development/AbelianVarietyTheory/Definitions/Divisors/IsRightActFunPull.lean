@@ -191,7 +191,7 @@ theorem endRed_qProj (h : I ≤ J) (γ : QMod N I →ₗ[O] QMod N I) (q : QMod 
   rfl
 
 def autRed (h : I ≤ J) : QAut N I →* QAut N J where
-  toFun γ := LinearEquiv.ofLinear (endRed h γ) (endRed h γ.symm)
+  toFun γ := LinearEquiv.ofLinearMap (endRed h γ) (endRed h γ.symm)
     (LinearMap.ext fun q => by
       obtain ⟨q, rfl⟩ := qProj_surjective h q
       simp [endRed_qProj])
@@ -279,7 +279,7 @@ def crt : QMod N I ≃ₗ[O] ∀ i, QMod N (Js i) :=
 theorem crt_apply (q : QMod N I) (i : ι) : crt hle hc hI q i = qProj (hle i) q := rfl
 
 def crtAut : QAut N I ≃* ∀ i, QAut N (Js i) :=
-  MulEquiv.ofBijective (Pi.monoidHom fun i => autRed (hle i)) ⟨by
+  MulEquiv.ofBijective (MonoidHom.pi fun i => autRed (hle i)) ⟨by
     intro γ δ e
     refine LinearEquiv.ext fun q => (crt hle hc hI).injective (funext fun i => ?_)
     have e' : autRed (hle i) γ = autRed (hle i) δ := congrFun e i

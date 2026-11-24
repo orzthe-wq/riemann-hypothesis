@@ -89,7 +89,7 @@ theorem prime_facts (h : IsCptGen ξ) {U : X.Opens} (hU : IsAffineOpen U) (θ : 
     (q : Cpt ξ) (hq : q.1 ∈ U) :
     (∀ r, r ∈ (hU.primeIdealOf ⟨q.1, hq⟩).asIdeal ↔ ¬ unitAt ξ q (θ r)) ∧
     ∀ g ∈ regAt ξ q, ∃ u v, v ∉ (hU.primeIdealOf ⟨q.1, hq⟩).asIdeal ∧ g * θ v = θ u := by
-  letI := X.presheaf.algebra_section_stalk (⟨q.1, hq⟩ : U)
+  let := X.presheaf.algebra_section_stalk (⟨q.1, hq⟩ : U)
   have hl := hU.isLocalization_stalk ⟨q.1, hq⟩
   constructor
   · intro r
@@ -166,7 +166,7 @@ theorem chart_prime (h : CoordTie ℤ ξ x) {c : κ} (hc : x c ≠ 0) (Q : Ideal
   obtain ⟨U, hU, θ, hq, hθ, hr, hs⟩ := chart_data h hc
   let θ' : Γ(X, U) →+* chartR x c := θ.codRestrict (chartR x c) hr
   have hθ' : ∀ r, ((θ' r : chartR x c) : Ω) = θ r := fun r => rfl
-  haveI : (Q.comap θ').IsPrime := Ideal.comap_isPrime θ' Q
+  have : (Q.comap θ').IsPrime := Ideal.comap_isPrime θ' Q
   obtain ⟨y, hy, e⟩ := prime_point hU ⟨Q.comap θ', inferInstance⟩
   obtain ⟨h', hcq⟩ := (hq y).1 hy
   obtain ⟨f1, f2⟩ := prime_facts h.gen hU θ hθ ⟨y, h'⟩ hy
@@ -284,7 +284,7 @@ theorem frame_cover (h : CoordTie ℤ ξ x) {L : Lat ξ E} {r : ℕ} {V : Submod
   refine ⟨S, fun q hqc => ?_, fun s hs => hSG hs⟩
   obtain ⟨Q, hQ, f⟩ := chart_point h hc q hqc
   by_contra hn
-  push_neg at hn
+  push Not at hn
   have : Ideal.span (S : Set (chartR x c)) ≤ Q := Ideal.span_le.2 fun s hs => (f s).2 (hn s hs)
   rw [hS] at this
   exact hQ.ne_top (top_le_iff.1 this)
@@ -507,7 +507,7 @@ theorem exists_twistGen : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec
   have hcov := fun c : C => frame_cover hT hL c.2
   choose S hS1 hS2 using hcov
   let I := Σ c : C, {s // s ∈ S c}
-  letI : Fintype I := Fintype.ofFinite I
+  let : Fintype I := Fintype.ofFinite I
   let ci : I → κ := fun i => i.1.1
   have hci : ∀ i, x (ci i) ≠ 0 := fun i => i.1.2
   let σ : ∀ i : I, chartR x (ci i) := fun i => i.2.1

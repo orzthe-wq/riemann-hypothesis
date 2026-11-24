@@ -60,9 +60,6 @@ namespace BX
 
 variable (B : BX R₀)
 
-lemma lhom_ext {R S : LAlg R₀} {f g : LHom R S} (h : ∀ x, f.1 x = g.1 x) : f = g :=
-  Subtype.ext (AlgHom.ext h)
-
 lemma isHeight_map (hB1 : PairingPropertiesStatement B) {R S : LAlg R₀} (Dp : DualPair R) (Dq : DualPair S)
     (g : LHom R S) (f : LHom Dp.D Dq.D) (hfπ : ∀ x, Dq.π.1 (f.1 x) = g.1 (Dp.π.1 x))
     (hfσ : ∀ x, f.1 (Dp.σ.1 x) = Dq.σ.1 (g.1 x)) (hfη : f.1 Dp.η = Dq.η) (N : ℕ) (y : B.G R)
@@ -83,7 +80,7 @@ lemma isHeight_map (hB1 : PairingPropertiesStatement B) {R S : LAlg R₀} (Dp : 
       congr 2
       exact Subtype.ext hfη
     have e2 : B.map f (B.map Dp.σ y) = B.map Dq.σ (B.map g y) := by
-      have hc : f.comp Dp.σ = Dq.σ.comp g := lhom_ext fun x => hfσ x
+      have hc : f.comp Dp.σ = Dq.σ.comp g := ReciprocityTheory.PGsh.LHom.ext' fun x => hfσ x
       rw [← B.map_comp, ← B.map_comp, hc]
     rw [e1, e2] at h1
     exact h1

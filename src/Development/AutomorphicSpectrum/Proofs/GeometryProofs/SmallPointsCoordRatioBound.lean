@@ -2,7 +2,9 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EmbedsGeneric
 public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplier
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUniqueStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUnique
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -86,12 +88,12 @@ theorem isFormQuot_of_mem [CharZero Ω] {x : σ → Ω} {i : σ} (hi : x i ≠ 0
   | mem b hb =>
     obtain ⟨j, rfl⟩ := hb
     refine ⟨1, 1, MvPolynomial.X j, one_ne_zero, MvPolynomial.isHomogeneous_X _ _, ?_⟩
-    simp only [MvPolynomial.aeval_X, Nat.cast_one, one_mul, pow_one]
+    simp only [MvPolynomial.aeval_X, Nat.cast_one, pow_one]
     field_simp
   | algebraMap r =>
     refine ⟨r.den, 0, MvPolynomial.C r.num, r.den_nz, MvPolynomial.isHomogeneous_C _ _, ?_⟩
     have hd : (r.den : Ω) ≠ 0 := Nat.cast_ne_zero.2 r.den_nz
-    simp only [MvPolynomial.aeval_C, pow_zero, mul_one, eq_ratCast, eq_intCast, Rat.cast_def, map_intCast]
+    simp only [pow_zero, eq_ratCast, eq_intCast, Rat.cast_def, map_intCast]
     field_simp
   | add a b _ _ ha hb =>
     obtain ⟨N, n, G, hN, hG, he⟩ := ha
@@ -105,8 +107,7 @@ theorem isFormQuot_of_mem [CharZero Ω] {x : σ → Ω} {i : σ} (hi : x i ≠ 0
       · convert ((MvPolynomial.isHomogeneous_C _ _).mul
           ((MvPolynomial.isHomogeneous_X _ i).pow n)).mul hG' using 1
         omega
-    · simp only [map_add (f := _), map_mul, map_pow, MvPolynomial.aeval_C, MvPolynomial.aeval_X, he, he', eq_intCast,
-        Int.cast_natCast, Nat.cast_mul, map_natCast]
+    · simp only [map_add (f := _), map_mul, map_pow, MvPolynomial.aeval_X, he, he', Nat.cast_mul, map_natCast]
       ring
   | mul a b _ _ ha hb =>
     obtain ⟨N, n, G, hN, hG, he⟩ := ha
@@ -131,8 +132,7 @@ theorem common_denominator {κ : Type} [Fintype κ] {x : σ → Ω} {i : σ} {b 
       rw [← pow_add, Nat.sub_add_cancel hle]
     have hq : ((∏ l, N l : ℕ) : Ω) = (N j : Ω) * ((∏ l ∈ Finset.univ.erase j, N l : ℕ) : Ω) := by
       rw [← Nat.cast_mul, Finset.mul_prod_erase Finset.univ N (Finset.mem_univ j)]
-    simp only [map_mul, map_pow, MvPolynomial.aeval_C, MvPolynomial.aeval_X, he, eq_intCast, Int.cast_natCast,
-      map_natCast]
+    simp only [map_mul, map_pow, MvPolynomial.aeval_X, he, map_natCast]
     rw [hp, hq]
     ring
 
@@ -186,7 +186,7 @@ theorem ratios_quotients_of_forms : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] 
   intro X Ω _ _ ξ K _ J _ y k₀ hT hE L _ _ z hz i k c hzi hzc
   classical
   obtain ⟨hblk, hvan⟩ := hz
-  obtain ⟨zz, ⟨hsp, hco⟩, -⟩ := (GlobalTheory.T.local_ring_points_existsUnique X Ω ξ K J y hT L).1 z
+  obtain ⟨zz, ⟨hsp, hco⟩, -⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.tie_points X Ω ξ K J y hT L).1 z
     (fun k' => (hblk k').imp fun _ h => IsUnit.mk0 _ h) hvan
   let p : Cpt ξ := ⟨centre zz, hsp⟩
   have hinj : Function.Injective (genMap ξ p) := hT.gen.inj p

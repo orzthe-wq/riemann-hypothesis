@@ -71,9 +71,8 @@ theorem fjMoment (b : ℝ) (hb : 0 < b) (n : ℕ) :
     ring
   refine ⟨Integrable.of_integral_ne_zero ?_, hval⟩
   rw [hval]
-  have h1 : 0 < b ^ (-((n : ℝ) + 2) / 2) := Real.rpow_pos_of_pos hb _
-  have h2 : 0 < Real.Gamma (((n : ℝ) + 2) / 2) := Real.Gamma_pos_of_pos (by positivity)
-  exact (mul_pos (mul_pos Real.pi_pos h1) h2).ne'
+  exact (mul_pos (mul_pos Real.pi_pos (Real.rpow_pos_of_pos hb _))
+    (Real.Gamma_pos_of_pos (by positivity))).ne'
 
 def fjChi (N : ℕ) (z : ℂ) : ℂ := if ‖z‖ ≤ N then 1 else 0
 
@@ -153,20 +152,17 @@ theorem fjOrth (N a b : ℕ) (hab : a ≠ b) : ∫ z : ℂ, fjChi N z * fjW a b 
     rw [hn, hc, mul_pow, mul_pow]
     linear_combination ((if ‖z‖ ≤ (N : ℝ) then (1 : ℂ) else 0) *
       (z ^ a * conj z ^ b * (Real.exp (-‖z‖ ^ 2) : ℂ))) * hwab
-  have h := integral_comp_mul_of_norm_eq_one
-    (fun z => fjChi N z * fjW a b z) w hw1
-  have h2 : ∫ z : ℂ, fjChi N (w * z) * fjW a b (w * z) =
+  have h3 : (∫ z : ℂ, fjChi N z * fjW a b z) =
       -∫ z : ℂ, fjChi N z * fjW a b z := by
+    nth_rewrite 1 [← integral_comp_mul_of_norm_eq_one
+      (fun z => fjChi N z * fjW a b z) w hw1]
     simp_rw [hpt]
     exact integral_neg _
-  have h3 : (∫ z : ℂ, fjChi N z * fjW a b z) =
-      -∫ z : ℂ, fjChi N z * fjW a b z := h.symm.trans h2
   linear_combination h3 / 2
 
 def fjChiP {κ : Type} [Fintype κ] (N : ℕ) (u : κ → ℂ) : ℂ := ∏ x, fjChi N (u x)
 
 theorem measurable_productCutoff {κ : Type} [Fintype κ] (N : ℕ) : Measurable (fjChiP (κ := κ) N) := by
-  show Measurable fun u : κ → ℂ => ∏ x, fjChi N (u x)
   exact Finset.measurable_prod _ fun x _ =>
     (fjChi_measurable N).comp (measurable_pi_apply x)
 
@@ -180,11 +176,9 @@ theorem productCutoff_eventually_eq_one {κ : Type} [Fintype κ] (u : κ → ℂ
   filter_upwards [Filter.eventually_ge_atTop M] with N hN
   unfold fjChiP
   refine Finset.prod_eq_one fun x _ => ?_
-  have hx : ‖u x‖ ≤ (N : ℝ) := by
-    calc ‖u x‖ ≤ ∑ y, ‖u y‖ :=
-          Finset.single_le_sum (fun y _ => norm_nonneg (u y)) (Finset.mem_univ x)
-      _ ≤ M := hM
-      _ ≤ N := by exact_mod_cast hN
+  have hx : ‖u x‖ ≤ (N : ℝ) :=
+    (Finset.single_le_sum (fun y _ => norm_nonneg (u y)) (Finset.mem_univ x)).trans
+      (hM.trans (by exact_mod_cast hN))
   simp [fjChi, hx]
 
 theorem fjCut {κ : Type} [Fintype κ] (G : (κ → ℂ) → ℂ) (hG : Integrable G) :
@@ -215,9 +209,8 @@ theorem fjProd_diag {κ : Type} [Fintype κ] (e : κ → ℕ) :
     ∫ u : κ → ℂ, mono u e * mono (cj u) e * (Real.exp (-(nsq u)) : ℂ) =
       (π : ℂ) ^ Fintype.card κ * (mfact e : ℂ) := by
   simp_rw [fjProd]
-  rw [show (∫ u : κ → ℂ, ∏ x, fjW (e x) (e x) (u x)) =
-      ∏ x, ∫ z : ℂ, fjW (e x) (e x) z from
-    integral_fintype_prod_volume_eq_prod (fun x (z : ℂ) => fjW (e x) (e x) z)]
+  rw [integral_fintype_prod_volume_eq_prod
+    (fun x (z : ℂ) => fjW (e x) (e x) z)]
   simp_rw [fjW_diag]
   rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, mfact,
     Nat.cast_prod]
@@ -230,10 +223,8 @@ theorem fjProd_orth {κ : Type} [Fintype κ] (N : ℕ) (a b : κ → ℕ) (hab :
     intro u
     rw [fjProd, fjChiP, ← Finset.prod_mul_distrib]
   simp_rw [h]
-  rw [show (∫ u : κ → ℂ, ∏ x, (fjChi N (u x) * fjW (a x) (b x) (u x))) =
-      ∏ x, ∫ z : ℂ, fjChi N z * fjW (a x) (b x) z from
-    integral_fintype_prod_volume_eq_prod
-      (fun x (z : ℂ) => fjChi N z * fjW (a x) (b x) z)]
+  rw [integral_fintype_prod_volume_eq_prod
+    (fun x (z : ℂ) => fjChi N z * fjW (a x) (b x) z)]
   obtain ⟨x, hx⟩ := Function.ne_iff.mp hab
   exact Finset.prod_eq_zero (Finset.mem_univ x)
     (fjOrth N _ _ hx)
@@ -370,11 +361,9 @@ theorem gaussianCoeffIntegral : FockJet := by
   intro κ _ F c S hF hs hg e
   have hint_r := fjIntegrable F S hF hg e
   refine ⟨hint_r, ?_⟩
-  have h1 := fjCut _ hint_r
-  have h2 := ((fjCut _
-    (fjProd_integrable e e)).const_mul (c e)).congr
-    fun N => (fjPolydisc F c hs e N).symm
-  rw [tendsto_nhds_unique h1 h2, fjProd_diag]
+  rw [tendsto_nhds_unique (fjCut _ hint_r)
+    (((fjCut _ (fjProd_integrable e e)).const_mul (c e)).congr
+      fun N => (fjPolydisc F c hs e N).symm), fjProd_diag]
   ring
 
 end Formalism.DimensionVariation

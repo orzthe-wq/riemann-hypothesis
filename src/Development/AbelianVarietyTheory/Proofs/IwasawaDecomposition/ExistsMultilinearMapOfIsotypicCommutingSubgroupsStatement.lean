@@ -4,8 +4,9 @@ public import Mathlib.Basic.Complex.Basic
 public import Mathlib.Order.CompletePartialOrder
 public import Mathlib.RepresentationTheory.Irreducible
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsIrreducibleIff
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CommutingEndAlgebrasCommonFixedVectorStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAlgHomEndomorphismOfSpanIntertwinersStatement
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CommutingEndAlgebrasCommonFixedVector
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsAlgHomEndomorphismOfSpanIntertwiners
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMultilinearMapOfCommutingEndAlgHom
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
@@ -62,7 +63,7 @@ theorem _root_.GlobalTheory.T.exists_multilinearMap_of_isotypic_commuting_subgro
   have hfac : ∀ v, ∃ Φ : Module.End ℂ (Wv v) →ₐ[ℂ] Module.End ℂ V,
       (∀ h, Φ (σ v h) = ρ (s v h)) ∧
         ∀ T : Module.End ℂ V, (∀ h, Commute T (ρ (s v h))) → ∀ A, Commute T (Φ A) :=
-    fun v => GlobalTheory.T.exists_algHom_endomorphism_of_span_intertwiners
+    fun v => _root_.GlobalTheory.FinPart.exists_algHom_end_of_span_intertwiners
       (H v) (Wv v) V (σ v) (ρ.comp (s v)) (hirr v) (hspan v)
   choose Φ hΦσ hΦc using hfac
   have hΦcomm : ∀ u v, u ≠ v → ∀ A B, Commute (Φ u A) (Φ v B) := by
@@ -81,7 +82,7 @@ theorem _root_.GlobalTheory.T.exists_multilinearMap_of_isotypic_commuting_subgro
     obtain ⟨f, hf, -⟩ := Submodule.exists_dual_map_eq_bot_of_notMem hn inferInstance
     exact ⟨(f (w v))⁻¹ • f, by simp [hf]⟩
   choose ℓ hℓ using hl
-  obtain ⟨y, hy0, hy⟩ := GlobalTheory.T.exists_ne_zero_fixed_by_commuting_rankOne_images
+  obtain ⟨y, hy0, hy⟩ := _root_.GlobalTheory.commuting_endAlgebras_common_fixed_vector
     ι Wv V Φ w ℓ hV hℓ hΦcomm
   obtain ⟨F, hFw, hF⟩ := GlobalTheory.exists_multilinear_of_commuting_endAlgHom
     ι Wv V Φ w ℓ y hΦcomm hy

@@ -49,4 +49,4 @@ open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.Conju
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 theorem _root_.GlobalTheory.T.epsilon_factor_rec_compatible : LanglandsExhaustionGL → LanglandsMultisegments → StandardCosocleGL → ZelevinskyPolynomialRing → GeometricLemma → BernsteinZelevinskyFiniteness → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ) (rc : IrrGL (k := w.adicCompletion E) → WD h), LawsLit a ha e rc → ∀ (x : IrrGL (k := w.adicCompletion E)) (α : Fin x.1 → ℂˣ), HasSatake x.rep α → rc x = WD.mk (WDRep.diag h fun i => (α i)⁻¹) := by
-  first | exact @GlobalTheory.LocLanglands.SatakeLaw.sat_of_lawsLit | exact GlobalTheory.LocLanglands.SatakeLaw.sat_of_lawsLit | (intros; apply GlobalTheory.LocLanglands.SatakeLaw.sat_of_lawsLit <;> assumption)
+  first | exact @GlobalTheory.LocLanglands.SatakeLaw.sat_of_lawsLit

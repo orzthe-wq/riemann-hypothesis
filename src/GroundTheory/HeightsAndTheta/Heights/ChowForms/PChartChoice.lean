@@ -98,7 +98,7 @@ theorem specFirst_rename_shiftVar (q : MvPolynomial (Fin e × Fin n) F) :
   rfl
 
 theorem specFirst_zero_of_isMultiHomog {δ : ℕ} (hδ : 1 ≤ δ) {f : MvPolynomial (Fin (e + 1) × Fin n) F}
-    (hf : IsMultiHomog δ f) : specFirst f 0 = 0 := by
+    (hf : Heights.IsMultiHomog δ f) : specFirst f 0 = 0 := by
   classical
   unfold specFirst
   conv_lhs => rw [f.as_sum]

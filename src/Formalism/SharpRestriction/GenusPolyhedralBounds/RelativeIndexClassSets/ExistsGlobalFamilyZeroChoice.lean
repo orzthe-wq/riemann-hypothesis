@@ -68,8 +68,8 @@ theorem exists_minor_of_li {F : Type} [Field F] {ρ d : ℕ} (u : Fin ρ → Fin
     rw [Module.finrank_fin_fun]
     exact h1.symm.trans (h2.trans h3)
   obtain ⟨κ, a, ha, hsp, hli⟩ := exists_linearIndependent' (K := F) (fun l : Fin d => fun k : Fin ρ => u k l)
-  haveI : Finite κ := Finite.of_injective a ha
-  haveI := Fintype.ofFinite κ
+  have : Finite κ := Finite.of_injective a ha
+  have := Fintype.ofFinite κ
   have hcard : Fintype.card κ = ρ := by
     have h := finrank_span_eq_card hli
     rw [hsp, hspan, finrank_top, Module.finrank_fin_fun] at h
@@ -86,11 +86,11 @@ theorem exists_max_indep {A F : Type} [CommRing A] [Field F] [Algebra A F] {I : 
     ∃ (ρ : ℕ) (e : Fin ρ → I) (J : Fin ρ → Fin d), (Matrix.of fun i k => c (e k) (J i)).det ≠ 0 ∧
       ∀ i0, ∃ a : Fin ρ → F, ∀ l, algebraMap A F (c i0 l) = ∑ k, a k * algebraMap A F (c (e k) l) := by
   classical
-  haveI := Fintype.ofFinite I
+  have := Fintype.ofFinite I
   set v : I → Fin d → F := fun i l => algebraMap A F (c i l) with hv
   obtain ⟨κ, a, ha, hsp, hli⟩ := exists_linearIndependent' (K := F) v
-  haveI : Finite κ := Finite.of_injective a ha
-  haveI := Fintype.ofFinite κ
+  have : Finite κ := Finite.of_injective a ha
+  have := Fintype.ofFinite κ
   let e0 : Fin (Fintype.card κ) ≃ κ := (Fintype.equivFin κ).symm
   have hli' : LinearIndependent F (v ∘ (a ∘ e0)) := hli.comp e0 e0.injective
   obtain ⟨J, hJ⟩ := exists_minor_of_li (v ∘ (a ∘ e0)) hli'

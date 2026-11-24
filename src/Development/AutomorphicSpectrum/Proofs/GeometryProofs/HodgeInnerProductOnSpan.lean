@@ -1,13 +1,12 @@
 module
 
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUnique
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUnique
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HodgeIPIffHodgeFormConj
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.EqZeroOfSumEmbeddingSmul
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsLinearOfIsMonHom
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueLinearLiftOfHolomorphicAbelianVariet
 public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SubsingletonPrimeSpectrum
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniqueLinearLiftOfHolomorphicAbelianVariet
 import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TangentBijectionOfValues
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeInnerProductPullbackUniqueStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,104 +73,13 @@ section Unif
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
 
-theorem isTangent_one' : IsTangent (1 : epsR ℂ ⟶ A) := by
-  apply GlobalTheory.CompanionTheory.Ar.HodgeUnique.isTangent_one' <;> assumption
-
-theorem isDiff_one_of_fderiv (u : HolUnif A L g) {U : A.left.Opens} (hU : IsAffineOpen U)
-    (h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U) {w : Fin g → ℂ}
-    (hw : ∀ s : Γ(A.left, U), fderiv ℂ (fun z => valAt' (u.ex z).left U s) 0 w = 0) :
-    u.IsDiff w (1 : epsR ℂ ⟶ A) := by
-  have hv : IsTangent (1 : epsR ℂ ⟶ A) := isTangent_one'
-  have hvU := (tangent_mem_iff (u := u) hv U).2 h0
-  refine (isDiff_iff hv hU hvU h0 w).2 ?_
-  rw [(isDiff_iff hv hU hvU h0 0).1 (GlobalTheory.UnifDifferential.isDiff_one u)]
-  refine RingHom.ext fun s => TrivSqZeroExt.ext rfl ?_
-  rw [jet_snd, jet_snd, map_zero]
-  exact (hw s).symm
-
 def transl (u : HolUnif A L g) (z : Fin g → ℂ) : A ⟶ A := (toUnit A ≫ u.ex z) * 𝟙 A
 
 theorem ex_comp_transl (u : HolUnif A L g) (z y : Fin g → ℂ) : u.ex y ≫ transl u z = u.ex (z + y) := by
   rw [transl, MonObj.comp_mul, u.ex_add, Category.comp_id, ← Category.assoc, toUnit_unique (u.ex y ≫ toUnit A) (𝟙 _),
     Category.id_comp]
 
-theorem fderiv_eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsDiff w (1 : epsR ℂ ⟶ A))
-    (z : Fin g → ℂ) {W : A.left.Opens} (hz : ⊤ ≤ (u.ex z).left ⁻¹ᵁ W) (s : Γ(A.left, W)) :
-    fderiv ℂ (fun y => valAt' (u.ex y).left W s) z w = 0 := by
-  apply GlobalTheory.CompanionTheory.Ar.HodgeUnique.fderiv_eq_zero_of_isDiff_one <;> assumption
-
-theorem eq_zero_of_isDiff_one (u : HolUnif A L g) {w : Fin g → ℂ} (h : u.IsDiff w (1 : epsR ℂ ⟶ A)) : w = 0 := by
-  let pt : (𝟙_ (Over (Sp ℂ))).left := (default : PrimeSpectrum ℂ)
-  have hsub : ∀ q : (𝟙_ (Over (Sp ℂ))).left, q = pt := fun q =>
-    Subsingleton.elim (α := PrimeSpectrum ℂ) q pt
-  obtain ⟨U, hU, hpU, -⟩ := exists_isAffineOpen_mem_and_subset (x := (u.ex 0).left pt) (U := ⊤)
-    (Set.mem_univ _)
-  have h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U := by
-    intro q _
-    rw [hsub q]
-    exact hpU
-  have hcont : Continuous fun t : ℂ => t • w := continuous_id.smul continuous_const
-  have hopen : IsOpen ((fun t : ℂ => t • w) ⁻¹' {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ U}) := (u.hol U 0).1.preimage hcont
-  obtain ⟨ρ, hρ, hball⟩ := Metric.isOpen_iff.1 hopen 0 (by simpa using h0)
-  have hconst : ∀ (s : Γ(A.left, U)) (t : ℂ), t ∈ Metric.ball (0 : ℂ) ρ →
-      valAt' (u.ex (t • w)).left U s = valAt' (u.ex ((0 : ℂ) • w)).left U s := by
-    intro s t ht
-    have hder : ∀ t ∈ Metric.ball (0 : ℂ) ρ, HasDerivAt (fun t : ℂ => valAt' (u.ex (t • w)).left U s) 0 t := by
-      intro t ht
-      have hm : ⊤ ≤ (u.ex (t • w)).left ⁻¹ᵁ U := hball ht
-      have hd : DifferentiableAt ℂ (fun y => valAt' (u.ex y).left U s) (t • w) :=
-        (u.hol U s).2.differentiableAt ((u.hol U s).1.mem_nhds hm)
-      have hl : HasDerivAt (fun t : ℂ => t • w) w t := by
-        simpa using (hasDerivAt_id t).smul_const w
-      have := hd.hasFDerivAt.comp_hasDerivAt t hl
-      rw [fderiv_eq_zero_of_isDiff_one u h _ hm s] at this
-      exact this
-    exact Metric.isOpen_ball.is_const_of_deriv_eq_zero (convex_ball _ _).isPreconnected
-      (fun t ht => (hder t ht).differentiableAt.differentiableWithinAt)
-      (fun t ht => (hder t ht).deriv) ht (Metric.mem_ball_self hρ)
-  have hmem : ∀ t ∈ Metric.ball (0 : ℂ) ρ, t • w ∈ u.Λ := by
-    intro t ht
-    have hm : ⊤ ≤ (u.ex (t • w)).left ⁻¹ᵁ U := hball ht
-    have hm0 : ⊤ ≤ (u.ex ((0 : ℂ) • w)).left ⁻¹ᵁ U := by simpa using h0
-    have e : (u.ex (t • w)).left = (u.ex ((0 : ℂ) • w)).left := ext_evalPt hU hm hm0 (RingHom.ext fun s => by
-      rw [← valAt'_eq_evalPt _ _ hm, ← valAt'_eq_evalPt _ _ hm0]
-      exact hconst s t ht)
-    have e' : u.ex (t • w) = u.ex ((0 : ℂ) • w) := Over.OverMorphism.ext e
-    rw [← u.ker, e', zero_smul, ex_zero]
-  by_contra hw
-  have := u.discrete
-  obtain ⟨O, hO, hO0⟩ := isDiscrete_iff_forall_mem_exists_isOpen.1
-    (isDiscrete_iff_discreteTopology.2 this) 0 u.Λ.zero_mem
-  have hev : ∀ᶠ t in 𝓝[≠] (0 : ℂ), t • w ∈ O ∧ t ∈ Metric.ball (0 : ℂ) ρ := by
-    refine Filter.Eventually.filter_mono nhdsWithin_le_nhds ?_
-    refine ((hcont.tendsto 0).eventually (hO.mem_nhds ?_)).and (Metric.ball_mem_nhds _ hρ)
-    simpa using (hO0.ge rfl).1
-  obtain ⟨t, ⟨h1, h2⟩, ht⟩ := (hev.and self_mem_nhdsWithin).exists
-  have h3 : t • w = 0 := hO0.le ⟨h1, hmem t h2⟩
-  exact hw ((smul_eq_zero.1 h3).resolve_left ht)
-
-theorem exists_affine (u : HolUnif A L g) : ∃ U : A.left.Opens, IsAffineOpen U ∧ ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U := by
-  let pt : (𝟙_ (Over (Sp ℂ))).left := (default : PrimeSpectrum ℂ)
-  have hsub : ∀ q : (𝟙_ (Over (Sp ℂ))).left, q = pt := fun q =>
-    Subsingleton.elim (α := PrimeSpectrum ℂ) q pt
-  obtain ⟨U, hU, hpU, -⟩ := exists_isAffineOpen_mem_and_subset (x := (u.ex 0).left pt) (U := ⊤)
-    (Set.mem_univ _)
-  refine ⟨U, hU, ?_⟩
-  intro q _
-  rw [hsub q]
-  exact hpU
-
-theorem eq_of_isDiff (u : HolUnif A L g) {v : epsR ℂ ⟶ A} (hv : IsTangent v) {d d' : Fin g → ℂ}
-    (h : u.IsDiff d v) (h' : u.IsDiff d' v) : d = d' := by
-  obtain ⟨U, hU, h0⟩ := exists_affine u
-  have hvU := (tangent_mem_iff (u := u) hv U).2 h0
-  exact sub_eq_zero.1 (eq_zero_of_isDiff_one u (isDiff_one_of_fderiv u hU h0 fun s => by
-    rw [map_sub, ← h U hvU s, ← h' U hvU s, sub_self]))
-
-theorem exists_linear_compare {A' : Over (Sp ℂ)} [GrpObj A'] {L' : LB A'.left} {g' : ℕ} (u : HolUnif A L g)
-    (u' : HolUnif A' L' g') (f : A' ⟶ A) [IsMonHom f] :
-    ∃ F : (Fin g' → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ z, u.ex (F z) = u'.ex z ≫ f := by
-  apply GlobalTheory.CompanionTheory.Ar.HodgeUnique.exists_linear_compare <;> assumption
+alias eq_of_isDiff := _root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.eq_of_isDiff
 
 end Unif
 
@@ -184,17 +92,6 @@ def push (h : IsGrpPullback A G z φ) {T : Over (Sp ℂ)} (x : T ⟶ A) : Over.m
   Over.homMk (x.left ≫ φ) (by
     rw [Category.assoc, h.1.w, ← Category.assoc, Over.w x]
     rfl)
-
-theorem one_left_comp (h : IsGrpPullback A G z φ) (T : Over (Sp ℂ)) :
-    (1 : T ⟶ A).left ≫ φ = (1 : Over.mk (T.hom ≫ z) ⟶ G).left := by
-  have e := h.2 T 1 1 (push h 1) (push h 1) rfl rfl
-  rw [_root_.mul_one] at e
-  have e' : push h 1 * push h 1 = push h (1 : T ⟶ A) := Over.OverMorphism.ext e
-  exact congrArg (·.left) (mul_eq_left.1 e')
-
-theorem one_left {Y : Scheme.{0}} (y : Y ⟶ X) : (1 : Over.mk y ⟶ G).left = y ≫ η[G].left := by
-  rw [Hom.one_def, Over.comp_left]
-  congr 1
 
 def lft (h : IsGrpPullback A G z φ) (v : epsAt z ⟶ G) : epsR ℂ ⟶ A :=
   Over.homMk (h.1.lift v.left (spMap (algebraMap ℂ (DualNumber ℂ))) (Over.w v)) (h.1.lift_snd _ _ _)
@@ -212,25 +109,14 @@ theorem lft_mul (h : IsGrpPullback A G z φ) (v w : epsAt z ⟶ G) : lft h (v * 
 theorem isTangent_lft (h : IsGrpPullback A G z φ) {v : epsAt z ⟶ G} (hv : IsTanAt G z v) : IsTangent (lft h v) := by
   apply GlobalTheory.CompanionTheory.Ar.HodgeUnique.isTangent_lft <;> assumption
 
-theorem exists_map (h : IsGrpPullback A G z φ) {A' : Over (Sp ℂ)} [GrpObj A'] {φ' : A'.left ⟶ G.left}
-    (h' : IsGrpPullback A' G z φ') : ∃ f : A' ⟶ A, IsMonHom f ∧ f.left ≫ φ = φ' := by
-  let f : A' ⟶ A := Over.homMk (h.1.lift φ' A'.hom h'.1.w) (h.1.lift_snd _ _ _)
-  have hf : f.left ≫ φ = φ' := h.1.lift_fst _ _ _
-  refine ⟨f, isMonHom_of_mul _ fun T x y => ?_, hf⟩
-  refine Over.OverMorphism.ext (h.1.hom_ext ?_ (by rw [Over.w, Over.w]))
-  have e1 := h'.2 T x y (push h' x) (push h' y) rfl rfl
-  have e2 := h.2 T (x ≫ f) (y ≫ f) (push h' x) (push h' y)
-    (by simp [push, hf]) (by simp [push, hf])
-  rw [Over.comp_left, Category.assoc, hf, ← e1, e2]
-
 variable {L₀ : LB A.left} {g : ℕ}
 
 theorem exists_coords (h : IsGrpPullback A G z φ) (u₀ : HolUnif A L₀ g) {v : epsAt z ⟶ G} (hv : IsTanAt G z v)
     {A' : Over (Sp ℂ)} [GrpObj A'] {φ' : A'.left ⟶ G.left} (h' : IsGrpPullback A' G z φ') {L' : LB A'.left}
     {g' : ℕ} (u : HolUnif A' L' g') {v' : epsR ℂ ⟶ A'} (e : v'.left ≫ φ' = v.left) {α : Fin g' → ℂ}
     (d : u.IsDiff α v') : ∃ a, u₀.IsDiff a (lft h v) := by
-  obtain ⟨f, _, hf⟩ := exists_map h h'
-  obtain ⟨F, hF⟩ := exists_linear_compare u₀ u f
+  obtain ⟨f, _, hf⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.exists_map h h'
+  obtain ⟨F, hF⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.exists_linear_compare u₀ u f
   have ht : IsTangent v' := by
     rw [lft_unique h' e]
     exact isTangent_lft h' hv
@@ -294,7 +180,7 @@ theorem hodgeInnerProduct_of_span : ∀ (E : Type) [Field E] [NumberField E] [Is
   have hWW : ∀ a ∈ W, ∀ b ∈ W, T a b = core.inner a b := fun a ha b hb => by
     obtain ⟨a', ea⟩ := hlift (Mz.pt a)
     obtain ⟨b', eb⟩ := hlift (Mz.pt b)
-    exact (GlobalTheory.T.hodge_inner_product_pullback_unique E H S' S t₀ t f m z₀ a' b' _ _ ea eb).2 _ _ (hT a b) (hW a ha b hb)
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.HodgeUnique.main E H S' S t₀ t f m z₀ a' b' _ _ ea eb).2 _ _ (hT a b) (hW a ha b hb)
   have hr : ∀ x y y', core.inner x (y + y') = core.inner x y + core.inner x y' := fun x y y' => by
     rw [← core.conj_inner_symm, core.add_left, map_add (f := _), core.conj_inner_symm, core.conj_inner_symm]
   have hs : ∀ (c : ℂ) x y, core.inner x (c • y) = c * core.inner x y := fun c x y => by
@@ -311,12 +197,10 @@ theorem hodgeInnerProduct_of_span : ∀ (E : Type) [Field E] [NumberField E] [Is
   have h2 : ∀ a b, T a b = core.inner a b := fun a b =>
     forall_of_span hspan (p := fun a => T a b = core.inner a b) (h1 0 h0 b) (fun a ha => h1 a ha b)
       (fun a a' e e' => by
-        change _ = core.inner (a + a') b
         rw [core.add_left]
         rw [← e, ← e']
         simp only [T, map_add (f := _), star_add, mulVec_add, dotProduct_add, mul_add])
       (fun c a e => by
-        change _ = core.inner (c • a) b
         rw [core.smul_left]
         rw [← e]
         simp only [T, map_smul, star_smul, mulVec_smul, dotProduct_smul, smul_eq_mul]

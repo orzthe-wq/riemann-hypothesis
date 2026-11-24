@@ -343,9 +343,7 @@ theorem finPres : StatFinPres := by
   obtain ⟨m, s, hs⟩ :=
     Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian (LinearMap.ker f))
   refine ⟨m, Matrix.of s, ⟨?_⟩⟩
-  have hrel : relSpan (Matrix.of s) = LinearMap.ker f := by
-    rw [relSpan, ← hs]
-    rfl
-  exact ((Submodule.quotEquivOfEq _ _ hrel).trans (f.quotKerEquivOfSurjective hsurj)).symm
+  exact ((Submodule.quotEquivOfEq _ _
+    (by rw [relSpan, ← hs]; rfl)).trans (f.quotKerEquivOfSurjective hsurj)).symm
 
 end Formalism.NG

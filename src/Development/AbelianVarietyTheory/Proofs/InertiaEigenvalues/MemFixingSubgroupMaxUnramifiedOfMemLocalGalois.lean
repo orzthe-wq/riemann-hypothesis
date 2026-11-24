@@ -414,7 +414,7 @@ theorem norm_le_of_v_le (P : LocPrime l) (LL : FinExt l) (a b : ℚ_[l])
 
 theorem algebraMap_RW_injective (LL : FinExt l) :
     Function.Injective (algebraMap ↥(OL LL) (RW LL)) := by
-  apply GlobalTheory.HerrNatural.ol_rw_injective <;> assumption
+  apply GlobalTheory.HerrNatural.ol_rw_injective
 
 end Cyc
 

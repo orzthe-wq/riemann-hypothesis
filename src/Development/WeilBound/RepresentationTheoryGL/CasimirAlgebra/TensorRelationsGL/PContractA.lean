@@ -148,7 +148,7 @@ theorem cur_anti {m : ℕ} (h : n ≤ m) (η : TV n M (Fin m))
   congr 1
   funext x
   simp only [Function.comp_apply, τ, Equiv.trans_apply, Equiv.apply_symm_apply, S,
-    Equiv.sumCongr_apply, Equiv.refl_apply]
+    Equiv.sumCongr_apply]
   cases e x <;> rfl
 
 end PositivityTheory.Rg.Cz.CtrX

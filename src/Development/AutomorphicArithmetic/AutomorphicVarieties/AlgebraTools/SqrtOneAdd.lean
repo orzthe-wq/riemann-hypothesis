@@ -56,13 +56,13 @@ theorem UpperTheory.V.AlgebraTools.sqrt_one_add :
     norm_num
   obtain ⟨α, hroot, hα⟩ := HenselianRing.is_henselian (X ^ 2 - C a) hmon 1
     (by
-      have : (X ^ 2 - C a : B[X]).eval 1 = -(a - 1) := by simp <;> ring
+      have : (X ^ 2 - C a : B[X]).eval 1 = -(a - 1) := by simp
       rw [this]
       exact I.neg_mem ha)
     (by
       have : (derivative (X ^ 2 - C a : B[X])).eval 1 = 2 := by
         simp only [derivative_sub, derivative_X_pow, derivative_C, eval_sub, eval_mul, eval_C,
-          eval_pow, eval_one, eval_zero]
+          eval_pow, eval_zero]
         norm_num
       rw [this]
       exact h2.map _)

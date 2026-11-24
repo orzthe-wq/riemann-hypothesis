@@ -67,7 +67,7 @@ private theorem sum_mul_perm_le_and_eq_one_of_antitone {n : ℕ} (x y : Fin n �
   have hmono : StrictMono w := by
     intro i j hij
     by_contra hc
-    push_neg at hc
+    push Not at hc
     rcases hc.lt_or_eq with hlt | heq
     · exact absurd (h2 (show y (w i) < y (w j) from sy hlt)) (not_le.2 (sx hij))
     · exact absurd (w.injective heq) (ne_of_gt hij)

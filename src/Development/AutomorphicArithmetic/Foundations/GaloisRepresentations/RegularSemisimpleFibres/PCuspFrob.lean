@@ -1,12 +1,13 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.SuppBCOfMix
+public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyLinearEqui
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvertibleEndInnerProductRootPowerSumMobius
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.PrimitiveClassFunctionExpansionRootSums
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvariantSubspaceMobiusInverseCharpolyLinearEquiStatement
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvertibleEndInnerProductRootPowerSumMobiusStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveEndClassFunctionInvariantSubspaceMobiStatement
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.PrimitiveClassFunctionExpansionRootSumsStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePowStatement
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveEndClassFunctionInvariantSubspaceMobi
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.RootPowerSumCharacterAdditiveAndXSubOnePow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -42,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.PowerMatchingTraces.MatchCut
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -105,11 +107,11 @@ private theorem psi_eq (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup 
     psi (rootSum θ c') V g = psi (rootSum θ c) V g := by
   have hcl : ∀ s : F[X] → ℂ, IsAdditive s →
       IsClassFn (psi s V) ∧ GlobalTheory.CuspGL.IsPrimitive (psi s V) := fun s hs =>
-    ⟨fun e x => GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_linearEquiv_conj F s V V e x, GlobalTheory.T.isPrimitiveEndClassFunction_invariantSubspaceMobiusInverse F V s hs⟩
-  have hc := hcl _ (GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow F θ c).1
-  have hc' := hcl _ (GlobalTheory.T.rootPowerSumCharacter_additive_and_X_sub_one_pow F θ c').1
-  have e1 := GlobalTheory.T.primitiveClassFunction_expansion_rootSums F V θ hθ _ hc'.1 hc'.2 hn g hg
-  have e2 := GlobalTheory.T.primitiveClassFunction_expansion_rootSums F V θ hθ _ hc.1 hc.2 hn g hg
+    ⟨fun e x => _root_.GlobalTheory.CuspGL.psi_conj F s V V e x, _root_.GlobalTheory.CuspGL.isPrimitive_psi F V s hs⟩
+  have hc := hcl _ (_root_.GlobalTheory.CuspGL.rootSum_isAdditive_and_pow_X_sub_one F θ c).1
+  have hc' := hcl _ (_root_.GlobalTheory.CuspGL.rootSum_isAdditive_and_pow_X_sub_one F θ c').1
+  have e1 := _root_.GlobalTheory.CuspGL.expand_primitive F V θ hθ _ hc'.1 hc'.2 hn g hg
+  have e2 := _root_.GlobalTheory.CuspGL.expand_primitive F V θ hθ _ hc.1 hc.2 hn g hg
   have hsum : (∑ k ∈ Finset.range (Nat.card F ^ Module.finrank F V - 1),
       (ipGL (psi (rootSum θ c') V) fun x ↦ rootSum θ k (LinearMap.charpoly x)) *
         psi (rootSum θ k) V g) =
@@ -117,7 +119,7 @@ private theorem psi_eq (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup 
       (ipGL (psi (rootSum θ c) V) fun x ↦ rootSum θ k (LinearMap.charpoly x)) *
         psi (rootSum θ k) V g := by
     refine Finset.sum_congr rfl fun k _ => ?_
-    rw [GlobalTheory.T.invertibleEndInnerProduct_rootPowerSum_mobius F V θ hθ hn, GlobalTheory.T.invertibleEndInnerProduct_rootPowerSum_mobius F V θ hθ hn,
+    rw [_root_.GlobalTheory.CuspGL.ipGL_psi_rootSum F V θ hθ hn, _root_.GlobalTheory.CuspGL.ipGL_psi_rootSum F V θ hθ hn,
       count_eq (Nat.card F) (Module.finrank F V) c c' i k Nat.card_pos hn h]
   have hne : glCard F (Module.finrank F V) * (Module.finrank F V : ℂ) ≠ 0 := by
     refine mul_ne_zero ?_ (Nat.cast_ne_zero.mpr hn.ne')

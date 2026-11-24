@@ -42,19 +42,21 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.RingTheory.Ideal.Operations
+import Mathlib.RingTheory.Finiteness.Ideal
 
 @[expose] public section
 
 namespace UpperTheory.Reformulated.B.FinitelyGeneratedModPow
 
-theorem fg_mod_pow {O A : Type} [CommRing O] [CommRing A] [Algebra O A] [IsNoetherianRing A]
-    (m : Ideal A) (hres : ∀ x : A, ∃ a : O, x - algebraMap O A a ∈ m) (n : ℕ) :
+/-- Finite generation modulo powers only requires the ideal to be finitely generated. -/
+theorem fg_mod_pow_of_fg {O A : Type} [CommRing O] [CommRing A] [Algebra O A]
+    (m : Ideal A) (hm : m.FG) (hres : ∀ x : A, ∃ a : O, x - algebraMap O A a ∈ m) (n : ℕ) :
     ∃ N : Submodule O A, N.FG ∧ ∀ x : A, ∃ y ∈ N, x - y ∈ m ^ n := by
   induction n with
   | zero => exact ⟨⊥, Submodule.fg_bot, fun x => ⟨0, Submodule.zero_mem _, by simp⟩⟩
   | succ n ih =>
     obtain ⟨N, hN, hx⟩ := ih
-    obtain ⟨s, hs⟩ : (m ^ n).FG := IsNoetherian.noetherian (m ^ n)
+    obtain ⟨s, hs⟩ : (m ^ n).FG := Ideal.FG.pow hm
     have key : ∀ z ∈ Ideal.span (s : Set A),
         ∃ w ∈ Submodule.span O (s : Set A), z - w ∈ m ^ (n + 1) := by
       intro z hz
@@ -85,5 +87,10 @@ theorem fg_mod_pow {O A : Type} [CommRing O] [CommRing A] [Algebra O A] [IsNoeth
     obtain ⟨w, hw, e⟩ := key _ hxy
     refine ⟨y + w, Submodule.add_mem_sup hy hw, ?_⟩
     rwa [← sub_sub]
+
+theorem fg_mod_pow {O A : Type} [CommRing O] [CommRing A] [Algebra O A] [IsNoetherianRing A]
+    (m : Ideal A) (hres : ∀ x : A, ∃ a : O, x - algebraMap O A a ∈ m) (n : ℕ) :
+    ∃ N : Submodule O A, N.FG ∧ ∀ x : A, ∃ y ∈ N, x - y ∈ m ^ n :=
+  fg_mod_pow_of_fg m (IsNoetherian.noetherian m) hres n
 
 end UpperTheory.Reformulated.B.FinitelyGeneratedModPow

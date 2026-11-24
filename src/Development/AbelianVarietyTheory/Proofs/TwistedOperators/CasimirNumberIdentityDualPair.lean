@@ -131,14 +131,14 @@ theorem normSq_lamA (al be ga de : List ℚ) :
 theorem normSq_lamA' (t : ℕ) (al be ga de : List ℚ) :
     normSq (lamA' t al be ga de) = sqSum al + sqSum be + sqSum ga + sqSum de + rhoSq t := by
   unfold lamA'
-  rw [normSq_ofBlocks _ _ (by simp [length_block] <;> omega) (by simp <;> omega)]
+  rw [normSq_ofBlocks _ _ (by simp [length_block] <;> omega) (by simp)]
   simp only [sqSum_append, sqSum_block]
   ring
 
 theorem normSq_lamM' (t : ℕ) (al be ga de : List ℚ) :
     normSq (lamM' t al be ga de) = sqSum al + sqSum be + sqSum ga + sqSum de + rhoSq t := by
   unfold lamM'
-  rw [normSq_ofBlocks _ _ (by simp <;> omega) (by simp [length_block] <;> omega)]
+  rw [normSq_ofBlocks _ _ (by simp) (by simp [length_block] <;> omega)]
   simp only [sqSum_append, sqSum_block]
   ring
 

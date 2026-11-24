@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.GlueApplyOfNotInFibre
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ZarhinBundleKernelFirstCoordEquations
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinCoordsCoordTieStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinCoordsCoordTie
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -225,7 +225,7 @@ theorem coordTie_join {κ κ' : Type} [Finite κ] [Finite κ'] {x : κ → Ω} {
       hover := spec_int_hom_ext _ _
       all := hall
       tie := coordTie_of_push hR h }
-  refine coordTie_push hR (GlobalTheory.T.join_coords_coordTie ℤ Ω κ x M κ' w fun p => ?_)
+  refine coordTie_push hR (_root_.GlobalTheory.CompanionTheory.Ar.Retie.coordTie_join_of_charts ℤ Ω κ x M κ' w fun p => ?_)
   obtain ⟨l, hl⟩ := hw (push ζ f p)
   exact ⟨l, (inChart_push ζ f w l p).1 hl⟩
 

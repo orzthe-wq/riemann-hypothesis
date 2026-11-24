@@ -1,7 +1,8 @@
 module
 
+public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Defs
+public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GlobalUnitaryForms.HodgeTateFromSandwich
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsIntConj
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -20,14 +21,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,8 +29,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,10 +41,51 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsIntConj, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GlobalUnitaryForms.ScalarTuples.StabLe
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsIntConj =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsIntConj", "h": "module\n\npublic import Mathlib.RingTheory.IntegralClosure.IsIntegral.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.Reformulated.B.Qf45.isInt_conj :
+    ∀ {O : Type} [inst : CommRing O]
+    {B : Type} [inst_1 : Ring B] [inst_2 : Algebra O B] (a b k : B),
+    a * b = (1 : B) → b * a = (1 : B) → IsIntegral O k → IsIntegral O (a * k * b) := by
+  intro O _ B _ _ a b k hab hba hk
+  let f : B →ₐ[O] B :=
+    { toFun := fun x => a * x * b
+      map_one' := by rw [mul_one, hab]
+      map_mul' := fun x y => by
+        calc a * (x * y) * b = a * x * (b * a) * y * b := by
+              rw [hba, mul_one, mul_assoc a x y]
+          _ = a * x * b * (a * y * b) := by simp only [mul_assoc]
+      map_zero' := by rw [mul_zero, zero_mul]
+      map_add' := fun x y => by rw [mul_add, add_mul]
+      commutes' := fun r => by
+        rw [← Algebra.commutes r a, mul_assoc, hab, mul_one] }
+  exact hk.map f
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsIntConj =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GlobalUnitaryForms.ScalarTuples.StabLe =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GlobalUnitaryForms.ScalarTuples.StabLe", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GlobalUnitaryForms.HodgeTateFromSandwich\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.IsIntConj\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -64,10 +97,6 @@ open Matrix Loc Polynomial
 section Abs
 
 variable {O : Type} [CommRing O]
-
-private theorem isInt_conj {B : Type} [Ring B] [Algebra O B] (a b k : B) (h1 : a * b = 1) (h2 : b * a = 1)
-    (h : IsIntegral O k) : IsIntegral O (a * k * b) :=
-  _root_.UpperTheory.Reformulated.B.Qf45.isInt_conj a b k h1 h2 h
 
 private theorem isInt_mat {L : Type} [CommRing L] [Algebra O L] {n : Type} [Fintype n] [DecidableEq n]
     (N : Matrix n n L) (h : ∀ i j, IsIntegral O (N i j)) : IsIntegral O N := by
@@ -218,7 +247,7 @@ private theorem conj_sq {L : Type} [CommRing L] (Y Y' G T S S' : Matrix (Fin 2) 
     linear_combination this - n0 * hdY
   have hdS : S.det * S'.det = 1 := by rw [← Matrix.det_mul, hS, Matrix.det_one]
   have e : n0 • (Y' * T * Y) = (a ^ 2) • (S * S) := by
-    calc n0 • (Y' * T * Y) = Y' * (n0 • T) * Y := by simp [Matrix.mul_smul, Matrix.smul_mul]
+    calc n0 • (Y' * T * Y) = Y' * (n0 • T) * Y := by simp
       _ = Y' * (G * G) * Y := by rw [hT]
       _ = (Y' * G * Y) * (Y' * G * Y) := by
         have : (Y' * G * Y) * (Y' * G * Y) = Y' * G * (Y * Y') * G * Y := by simp only [Matrix.mul_assoc]
@@ -226,7 +255,7 @@ private theorem conj_sq {L : Type} [CommRing L] (Y Y' G T S S' : Matrix (Fin 2) 
         simp [Matrix.mul_assoc]
       _ = (a ^ 2) • (S * S) := by
         rw [hG]
-        simp [Matrix.mul_smul, Matrix.smul_mul, smul_smul, pow_two]
+        simp [smul_smul, pow_two]
   calc Y' * T * Y = (b ^ 2 * S'.det) • (n0 • (Y' * T * Y)) := by
         rw [smul_smul]
         have : b ^ 2 * S'.det * n0 = 1 := by
@@ -290,7 +319,7 @@ private theorem int_D (O : Type) [CommRing O] [Algebra O K] (hr : τ ^ 2 - 4 ≠
     refine isInt_mat _ fun i j' => ?_
     rw [Matrix.smul_apply, Matrix.mul_apply, Fin.sum_univ_two, smul_eq_mul]
     exact hdI.mul (((hent _ _ _).mul (hent _ _ _)).add ((hent _ _ _).mul (hent _ _ _)))
-  have hTI := isInt_conj _ _ _ h2 h1 hXI
+  have hTI := _root_.UpperTheory.Reformulated.B.Qf45.isInt_conj _ _ _ h2 h1 hXI
   have eT : mt y * (mt y⁻¹ * jA γ hγ (quo s) * mt y) * mt y⁻¹ = jA γ hγ (quo s) := by
     calc _ = (mt y * mt y⁻¹) * jA γ hγ (quo s) * (mt y * mt y⁻¹) := by simp only [Matrix.mul_assoc]
       _ = _ := by rw [h2, Matrix.one_mul, Matrix.mul_one]
@@ -325,7 +354,7 @@ private theorem int_U (O : Type) [CommRing O] [Algebra O K] {c : K} {d m : EL Δ
     congrArg Subtype.val (mul_inv_cancel y)
   have h2 : ((y⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * (y : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = 1 :=
     congrArg Subtype.val (inv_mul_cancel y)
-  have hI := isInt_conj _ _ _ h1 h2 hk
+  have hI := _root_.UpperTheory.Reformulated.B.Qf45.isInt_conj _ _ _ h1 h2 hk
   have e : (y : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * ((y⁻¹ * ι s * y : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *
       ((y⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = (ι s : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) :=
     congrArg Subtype.val (show y * (y⁻¹ * ι s * y) * y⁻¹ = ι s by group)
@@ -363,3 +392,7 @@ theorem UpperTheory.V.Z.Sym.Glob.stabLe :
     simpa [mul_assoc] using this
   · have := inv_mem h
     simpa [mul_assoc] using this
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GlobalUnitaryForms.ScalarTuples.StabLe =====

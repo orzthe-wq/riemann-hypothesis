@@ -425,7 +425,6 @@ theorem eventually_absFin_le_one (z : AF F ⊗[F] E) :
   | tmul a x =>
     have hxa : IsAlgebraic ℤ x := by
       first
-        | exact Algebra.IsAlgebraic.isAlgebraic x
         | exact (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)
     obtain ⟨m, hm, hint⟩ := hxa.exists_integral_multiple
     have hmF : (m : F) ≠ 0 := Int.cast_ne_zero.2 hm

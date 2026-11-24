@@ -137,7 +137,7 @@ theorem exists_left_inv {B : Type} [CommRing B] {n : ℕ} (φ : ZMod n →+* B) 
     · subst hj
       simp only [Pi.single_eq_same, hc, Basis.repr_self, Finsupp.single_apply]
       simp
-    · simp [Pi.single_apply, hj]
+    · simp [hj]
   refine ⟨Matrix.of fun j₀ i => ∑ l, u l * s (x (j₀, l) i), ?_⟩
   intro j₀ j
   have hΓ : ∀ i, (∑ k, cc k * φ (e (Pi.single i (b k)) (Pi.single j 1))) = Λ (Pi.single i 1) (Pi.single j 1) := by

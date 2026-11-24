@@ -142,7 +142,7 @@ theorem det_sub_det_mem (I : Ideal R) (x : n → R)
         ext r j
         by_cases hr : r = i
         · subst hr; simp
-        · simp [hM, hr, updateRow_ne hr]
+        · simp [hM, hr]
       have e2 : ∀ r, (M *ᵥ x) r = (c *ᵥ x) r := by
         intro r
         by_cases hr : r ∈ S

@@ -163,7 +163,7 @@ theorem UpperTheory.Gal.W2.Seed.pDomSt :
     have hx' : Θ x ≠ 0 := by simpa using hx
     obtain ⟨k1, hk1⟩ : ∃ k, Θ x k ≠ 0 := by
       by_contra h
-      push_neg at h
+      push Not at h
       exact hx' (funext h)
     have hterm : ∀ k : Phi A × Fin n,
         2 * (k.1.1 A.δ * k.1.1 (A.hd n k.2 : E) * Θ (J x) k * (starRingEnd ℂ) (Θ x k)).re
@@ -208,5 +208,5 @@ theorem UpperTheory.Gal.W2.Seed.pDomSt :
     · rw [htrM]
       simp [ComplexEmbedding.conjugate_coe_eq, Fintype.sum_prod_type, Complex.re_sum, Finset.mul_sum]
     · rw [htrJM, hre, pDomSt_sum k0 (fun k => (k.1.1 (c : E)).im)]
-      simp [k0, ComplexEmbedding.conjugate_coe_eq, Fintype.sum_prod_type, Complex.im_sum, Finset.mul_sum]
+      simp [k0, ComplexEmbedding.conjugate_coe_eq, Fintype.sum_prod_type, Complex.im_sum]
       ring

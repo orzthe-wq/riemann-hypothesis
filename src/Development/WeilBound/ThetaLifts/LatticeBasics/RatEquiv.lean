@@ -161,7 +161,7 @@ theorem dbl_box (hψ : IsStd ψ) (hJ : JB.det ≠ 0) (h : IsDblCoord (cA σ) (-1
   have rb : ∀ w ϕ ϕ', dd.rho ψ (Matrix.fromCols w 0) (boxFun ϕ ϕ') = boxFun (d.rho ψ w ϕ) ϕ' := fun w ϕ ϕ' => by
     funext x
     rw [Darboux.rho, h, ← Sum.elim_comp_inl_inr x]
-    simp [schr, boxFun, Darboux.rho, elim_dot, mul_assoc, Function.comp_def, Pi.add_def]
+    simp [schr, boxFun, Darboux.rho, mul_assoc, Function.comp_def, Pi.add_def]
   refine sub_eq_zero.1 (lD_inj hψ (sub_mem m1 (Submodule.smul_mem _ _ m2)) fun x y => ?_)
   obtain ⟨w, hw'⟩ := d.e.surjective (x, y)
   obtain ⟨w, rfl⟩ : ∃ w', w = actB (cA σ) g w' := ⟨actB (cA σ) g⁻¹ w, by rw [← actB_mul]; simp [actB]⟩

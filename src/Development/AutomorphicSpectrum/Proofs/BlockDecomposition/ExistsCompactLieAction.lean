@@ -97,7 +97,7 @@ theorem skw_real (s : ℝ) (Z : (Mn n)) : skw (s • Z) = (s : ℂ) • skw Z :=
   module
 
 theorem skw_I {X : (Mn n)} (hX : Xᴴ = -X) : skw (Complex.I • X) = 0 := by
-  simp [skw, conjTranspose_smul, hX, Complex.star_def, Complex.conj_I]
+  simp [skw, conjTranspose_smul, hX, Complex.conj_I]
 
 theorem real_skew {X : (Mn n)} (hX : Xᴴ = -X) (s : ℝ) : ((s : ℂ) • X)ᴴ = -((s : ℂ) • X) := by
   rw [conjTranspose_smul, hX, Complex.star_def, Complex.conj_ofReal, smul_neg]
@@ -336,7 +336,7 @@ theorem expand {R : Type} [Ring R] [Algebra ℂ R] (P Q P' Q' : R) :
     (P + Complex.I • Q) * (P' + Complex.I • Q') - (P' + Complex.I • Q') * (P + Complex.I • Q) =
       (P * P' - P' * P) + Complex.I • (P * Q' - Q' * P) + Complex.I • (Q * P' - P' * Q) +
         (-1 : ℂ) • (Q * Q' - Q' * Q) := by
-  simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I]
+  simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm]
   match_scalars <;> ring_nf <;> simp only [Complex.I_sq] <;> ring
 
 theorem gL_bracket (hρ : Continuous ρ) (Z W : (Mn n)) :
@@ -433,7 +433,7 @@ theorem derivative_of_rep : ∀ {n : ℕ} (H : Type) [NormedAddCommGroup H] [Inn
       rw [← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]
     have e : (∑ a, ∑ b, X a b • R (gL hρ (Matrix.single a b 1)) w) = dA ρ X hX w := by
       rw [← gL_skew hρ hX, hs]
-      simp [R, ContinuousLinearMap.sum_apply]
+      simp [R]
     simp only [e]
     exact hasDeriv_apply hρ X hX w
 

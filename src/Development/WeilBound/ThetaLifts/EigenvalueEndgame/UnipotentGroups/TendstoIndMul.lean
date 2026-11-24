@@ -79,9 +79,6 @@ def ind (S : Finset (Pl F)) : Af F :=
 open Classical in
 theorem ev_ind (S : Finset (Pl F)) (u : Pl F) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u (ind S) = if u ∈ S then 1 else 0 := rfl
 
-theorem fin_ext {a b : Af F} (h : ∀ u, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u a = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u b) : a = b :=
-  Subtype.ext (funext h)
-
 theorem tendsto_ind_mul (α : Af F) : Tendsto (fun S : Finset (Pl F) => ind S * α) atTop (𝓝 α) := by
   classical
   let T : Set (Pl F) := {u | α u ∈ (u.adicCompletionIntegers F : Set (u.adicCompletion F))}
@@ -101,7 +98,7 @@ theorem tendsto_ind_mul (α : Af F) : Tendsto (fun S : Finset (Pl F) => ind S * 
     filter_upwards [eventually_ge_atTop ({u} : Finset _)] with S hS
     exact (if_pos (hS (Finset.mem_singleton_self u))).symm
   have h2 := ((RestrictedProduct.continuous_inclusion hT).tendsto a).comp hf
-  refine Tendsto.congr (fun S => fin_ext fun u => ?_) h2
+  refine Tendsto.congr (fun S => _root_.GlobalTheory.AdelicU.af_ext fun u => ?_) h2
   rw [map_mul, ev_ind]
   change (if u ∈ S then α u else 0) = _
   split_ifs
@@ -112,14 +109,14 @@ def eps (S : Finset (Pl F)) : AF F := ((1, ind S) : Ainf F × Af F)
 
 def idm (v : Pl F) : AF F := ((0, ind {v}) : Ainf F × Af F)
 
-theorem ind_sq (S : Finset (Pl F)) : ind S * ind S = ind S := fin_ext fun u => by rw [map_mul, ev_ind]; split_ifs <;> simp
+theorem ind_sq (S : Finset (Pl F)) : ind S * ind S = ind S := _root_.GlobalTheory.AdelicU.af_ext fun u => by rw [map_mul, ev_ind]; split_ifs <;> simp
 
 theorem eps_sq (S : Finset (Pl F)) : eps S * eps S = eps S := Prod.ext (one_mul _) (ind_sq S)
 
 theorem idm_sq (v : Pl F) : idm v * idm v = idm v := Prod.ext (mul_zero _) (ind_sq _)
 
 theorem eps_cons (S : Finset (Pl F)) (v : Pl F) (hv : v ∉ S) : eps (S.cons v hv) = eps S + idm v ∧ eps S * idm v = 0 := by
-  refine ⟨Prod.ext (add_zero _).symm (fin_ext fun u => ?_), Prod.ext (mul_zero _) (fin_ext fun u => ?_)⟩
+  refine ⟨Prod.ext (add_zero _).symm (_root_.GlobalTheory.AdelicU.af_ext fun u => ?_), Prod.ext (mul_zero _) (_root_.GlobalTheory.AdelicU.af_ext fun u => ?_)⟩
   · change Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u (ind _) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u (ind S + ind {v})
     rw [map_add (f := _), ev_ind, ev_ind, ev_ind]
     by_cases h : u = v
@@ -208,7 +205,7 @@ theorem piece_prod {W : Spc F E d} (g : UA σ W.J) (S : Finset (Pl F)) : ∃ l :
     · rcases List.mem_append.1 hh with k | k
       · exact h1 h k
       · refine ⟨v, fun u hu => ?_⟩
-        have : u * idm v = 0 := Prod.ext (mul_zero u.1) (fin_ext fun x => by
+        have : u * idm v = 0 := Prod.ext (mul_zero u.1) (_root_.GlobalTheory.AdelicU.af_ext fun x => by
           change Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F x (u.2 * ind {v}) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F x 0
           rw [map_mul, ev_ind, map_zero]
           split_ifs with e
@@ -219,7 +216,7 @@ theorem piece_prod {W : Spc F E d} (g : UA σ W.J) (S : Finset (Pl F)) : ∃ l :
         mul_assoc]
 
 theorem piece_inf {W : Spc F E d} (g : UA σ W.J) : piece (eps ∅) (eps_sq ∅) g ∈ UAt σ W (evI F) := fun u hu => by
-  have : u * eps ∅ = 0 := Prod.ext ((mul_one u.1).trans ((map_eq_zero_iff _ (RingEquiv.injective _)).1 hu)) (fin_ext fun x => by
+  have : u * eps ∅ = 0 := Prod.ext ((mul_one u.1).trans ((map_eq_zero_iff _ (RingEquiv.injective _)).1 hu)) (_root_.GlobalTheory.AdelicU.af_ext fun x => by
     change Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F x (u.2 * ind ∅) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F x 0
     rw [map_mul, ev_ind, map_zero, if_neg (Finset.notMem_empty x), mul_zero])
   rw [mat_piece, add_sub_cancel_left, smul_smul, this, zero_smul]

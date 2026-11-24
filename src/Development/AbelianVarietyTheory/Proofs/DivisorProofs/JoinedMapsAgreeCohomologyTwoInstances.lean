@@ -72,7 +72,7 @@ theorem main : JoinedTwo.{a, b} := by
     rw [← m.G.map_comp] at e1
     rw [← m'.G.map_comp] at e3
     simp only [map_add (f := _), j.e0, m'.compDegreeZero_natural] at e1 e2 e3
-    simp only [map_sub, m'.compDegreeZero_natural]
+    simp only [map_sub]
     linear_combination (norm := abel1) e1 - e2 + e3
   · change m'.a1 T' (w _ _ (θ.app T')) - K'.M1.map φ (m'.a1 T (w _ _ (θ.app T))) -
         K'.d0 T' (m'.a0 T' (z _ _ _ (θ.app T) (m'.G.map φ) - z _ _ _ (m.G.map φ) (θ.app T'))) =

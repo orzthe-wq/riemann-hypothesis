@@ -1,24 +1,22 @@
 module
 
+public import Mathlib.Order.Interval.Finset.Nat
 public import Formalism.SharpRestriction.LevelLetterCocycles.DeltaInvariantUniformizer
-public import Formalism.EisensteinCokernelLengths.FactorialValuationBounds.FactorialValuationBoundsProofFact
-import Formalism.PadicSubsetSums.StableGradedCounts.ARCReuse
-import Formalism.SharpRestriction.LevelLetterCocycles.BaseChangePreservesUnitaryOf
 public import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.FrobPiNPf
 public import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfA
 public import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfB
-import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfC
-import Formalism.SharpRestriction.LevelLetterCocycles.MapCompZero
-import Formalism.WindowSums.PowerSeriesRelationList
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -33,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,11 +43,42 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.PadicSubsetSums.StableGradedCounts.ARCReuse
+import Formalism.SharpRestriction.LevelLetterCocycles.BaseChangePreservesUnitaryOf
+import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfC
+import Formalism.SharpRestriction.LevelLetterCocycles.MapCompZero
+import Formalism.WindowSums.PowerSeriesRelationList
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.EisensteinCokernelLengths.FactorialValuationBounds.FactorialValuationBoundsProofFact, Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.WLocal
+
+-- ===== clump member: Formalism.EisensteinCokernelLengths.FactorialValuationBounds.FactorialValuationBoundsProofFact =====
+-- clump-header: {"m": "Formalism.EisensteinCokernelLengths.FactorialValuationBounds.FactorialValuationBoundsProofFact", "h": "module\n\npublic import Mathlib.Order.Interval.Finset.Nat\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.ZetaNonvanishing.ARCV
+
+open Polynomial
+
+theorem range_sdiff_range (H : ℕ) : Finset.range (2 * H) \ Finset.range H = Finset.Ico H (2 * H) := by
+  ext x
+  simp only [Finset.mem_sdiff, Finset.mem_range, Finset.mem_Ico]
+  omega
+
+end Formalism.ZetaNonvanishing.ARCV
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.EisensteinCokernelLengths.FactorialValuationBounds.FactorialValuationBoundsProofFact =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.WLocal =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.WLocal", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DeltaInvariantUniformizer\npublic import Formalism.EisensteinCokernelLengths.FactorialValuationBounds.FactorialValuationBoundsProofFact\nimport Formalism.PadicSubsetSums.StableGradedCounts.ARCReuse\nimport Formalism.SharpRestriction.LevelLetterCocycles.BaseChangePreservesUnitaryOf\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.FrobPiNPf\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfA\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfB\nimport Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfC\nimport Formalism.SharpRestriction.LevelLetterCocycles.MapCompZero\nimport Formalism.WindowSums.PowerSeriesRelationList\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -175,7 +203,7 @@ theorem w_coker {R V : Type} [CommRing R] [IsDomain R] [AddCommGroup V] [Module 
         (by rw [hkm', sub_self])
     rw [hz, zero_dvd_iff] at hdk
     exact hd0 hdk
-  have hL := Formalism.WindowSums.arc_Lagrange R (V ⧸ W) (W.mapQ W γ hW) (Finset.range (2 * a)) (Finset.range a)
+  have hL := _root_.Formalism.WindowSums.lagrange_annihilation R (V ⧸ W) (W.mapQ W γ hW) (Finset.range (2 * a)) (Finset.range a)
     (fun k => c ^ k) d (W.mkQ ((ϖ ^ a) x)) (by intro k hk; simp only [Finset.mem_range] at hk ⊢; omega) hinjOn
     (by rw [Formalism.IrreducibleCountingLemmas.WindowSums.aeval_mapQ]; exact (Submodule.Quotient.mk_eq_zero W).mpr h1)
     (by
@@ -218,7 +246,7 @@ theorem w_grad (T : LocLat G Qp LL O) (π' f : LetA O n) (c₀ : O) (hf : W.γA 
   have hγz : W.γD T W.gam z = z + π' • z' := by rw [← hzz]; abel
   have hc : c₀ ^ i • (π' ^ i • z) = (algebraMap O (LetA O n) c₀ ^ i) • (π' ^ i • z) := by
     rw [← map_pow, algebraMap_smul]
-  rw [hc, gradNPf_γD_smul, map_pow, hf, mul_pow, hfi, hγz]
+  rw [hc, _root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, map_pow, hf, mul_pow, hfi, hγz]
   exact w_lin π' _ ti i z z'
 
 theorem w_local [IsDomain O] (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L) (π' f t : LetA O n)
@@ -260,7 +288,7 @@ theorem w_local [IsDomain O] (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T
     intro T b hb z hz
     obtain ⟨hzN, hzΔ, hzl⟩ := (mem_NcS W T c z).1 hz
     exact (mem_NcS W T c _).2 ⟨(W.N T).smul_mem b hzN,
-      fun δ hδ => by rw [gradNPf_γD_smul, hb δ hδ, hzΔ δ hδ], by rw [smul_comm, hzl]⟩
+      fun δ hδ => by rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hb δ hδ, hzΔ δ hδ], by rw [smul_comm, hzl]⟩
   have hNc1 : ∀ (T : LocLat G Qp LL O),
       (∀ y ∈ W.NΔ T, ∃ e ∈ W.N T, W.γD T W.gam y - y = π' • e) →
       ∀ z ∈ NcS W T c, ∃ z' ∈ NcS W T c, W.γD T W.gam z - z = π' • z' := by
@@ -270,7 +298,7 @@ theorem w_local [IsDomain O] (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T
     refine ⟨e, (mem_NcS W T c e).2 ⟨he, fun δ hδ => ?_, ?_⟩, hee⟩
     · rw [← sub_eq_zero]
       apply gradNPf_tf W T π' hEE
-      have h1 : W.γD T δ (π' • e) = π' • W.γD T δ e := by rw [gradNPf_γD_smul, hπΔ δ hδ]
+      have h1 : W.γD T δ (π' • e) = π' • W.γD T δ e := by rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hπΔ δ hδ]
       have h2 : W.γD T δ (W.γD T W.gam z - z) = W.γD T W.gam z - z := by
         rw [map_sub, ← W.γD_mul, mul_comm, W.γD_mul, hzΔ δ hδ]
       rw [smul_sub, ← h1, ← hee, h2, sub_self]
@@ -345,13 +373,13 @@ theorem w_avg (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L) (π' : L
   have hzN : z ∈ W.N T₁ := by rw [hzz]; exact Submodule.smul_mem _ _ hz₀
   have hzl : (letE c : LetA O n) • z = z := by rw [hzz, smul_smul, hidem]
   have hze' : W.map F z = π' ^ a • y := hze
-  have hlet : (letE c : LetA O n) ∈ W.AΔ := fun δ _ => Formalism.MainNotions.LiftingTheory.wmap_γA_letE W δ c
+  have hlet : (letE c : LetA O n) ∈ W.AΔ := fun δ _ => _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent W δ c
   refine ⟨Formalism.MainNotions.LiftingTheory.lifta_avg W T₁ d₀ z, (mem_NcS W T₁ c _).2
     ⟨(Formalism.MainNotions.LiftingTheory.lifta_avg_N W T₁ d₀ z hzN).1, Formalism.MainNotions.LiftingTheory.lifta_avg_inv W T₁ d₀ z, ?_⟩, ?_⟩
   · rw [← Formalism.MainNotions.LiftingTheory.lifta_avg_smul W T₁ d₀ _ hlet z, hzl]
   · have hΔ' : ∀ δ ∈ W.DelF, W.γD T₂ δ (π' ^ a • y) = π' ^ a • y := by
       intro δ hδ
-      rw [gradNPf_γD_smul, map_pow, hπΔ δ hδ, hyΔ δ hδ]
+      rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, map_pow, hπΔ δ hδ, hyΔ δ hδ]
     rw [Formalism.MainNotions.LiftingTheory.lifta_avg_map, hze', Formalism.MainNotions.LiftingTheory.lifta_avg_fix W T₂ d₀ hd₀ _ hΔ']
 
 end WLocal
@@ -432,3 +460,7 @@ theorem w_pf : Formalism.MainNotions.N.Ln34.WStep := by
     hπΔ hEE hf ht hγ₁ hγ₂ a' hW1 hd (pow_ne_zero _ hl0) c y hy
 
 end Formalism.MainNotions.N.Ln34
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.WLocal =====

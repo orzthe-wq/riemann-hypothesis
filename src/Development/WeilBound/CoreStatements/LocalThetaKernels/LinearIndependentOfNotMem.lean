@@ -1,10 +1,12 @@
 module
 
+public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.Analysis.CStarAlgebra.Classes
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideBis
+public import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -20,12 +22,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -33,6 +31,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,9 +45,73 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Mathlib.Analysis.Normed.Module.FiniteDimension
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideBis, Development.WeilBound.CoreStatements.LocalThetaKernels.LinearIndependentOfNotMem
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideBis =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideBis", "h": "module\n\npublic import Mathlib.Analysis.Complex.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace EqOneOfPowersNearOne
+
+private lemma key {R : Type} [NormedRing R] [NormedAlgebra ℂ R] {a : R}
+    (h : ∀ (p : ℕ), ‖a ^ p - (1 : R)‖ < (1 / 2 : ℝ)) (N : ℕ) :
+    (N : ℝ) * ‖a - 1‖ < ‖a - 1‖ * (N / 2) + 1 / 2 := by
+  set S : R := ∑ k ∈ Finset.range N, a ^ k with hS
+  have hgeom : S * (a - 1) = a ^ N - 1 := geom_sum_mul a N
+  have hdiff : (N : R) - S = ∑ k ∈ Finset.range N, ((1 : R) - a ^ k) := by
+    rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
+  have hbound : ‖(N : R) - S‖ ≤ N / 2 := by
+    rw [hdiff]
+    calc ‖∑ k ∈ Finset.range N, ((1 : R) - a ^ k)‖
+        ≤ ∑ k ∈ Finset.range N, ‖(1 : R) - a ^ k‖ := norm_sum_le _ _
+      _ ≤ ∑ _k ∈ Finset.range N, (1 / 2 : ℝ) := by
+          apply Finset.sum_le_sum
+          intro k _
+          rw [norm_sub_rev]; exact (h k).le
+      _ = N / 2 := by simp; ring
+  have hnorm : ‖(N : R) * (a - 1)‖ = (N : ℝ) * ‖a - 1‖ := by
+    have : (N : R) * (a - 1) = (N : ℂ) • (a - 1) := by
+      rw [Algebra.smul_def]; simp
+    rw [this, norm_smul]; simp
+  have hsplit : (N : R) * (a - 1) = ((N : R) - S) * (a - 1) + S * (a - 1) := by
+    rw [sub_mul]; abel
+  calc (N : ℝ) * ‖a - 1‖ = ‖(N : R) * (a - 1)‖ := hnorm.symm
+    _ ≤ ‖((N : R) - S) * (a - 1)‖ + ‖S * (a - 1)‖ := by rw [hsplit]; exact norm_add_le _ _
+    _ ≤ ‖(N : R) - S‖ * ‖a - 1‖ + ‖a ^ N - 1‖ := by
+        rw [hgeom]; gcongr; exact norm_mul_le _ _
+    _ < ‖a - 1‖ * (N / 2) + 1 / 2 := by
+        have := h N
+        nlinarith [norm_nonneg (a - 1)]
+
+end EqOneOfPowersNearOne
+
+theorem UpperTheory.Reformulated.B.Yhd7.main :
+    ∀ {R : Type} [inst : NormedRing R] [NormedAlgebra ℂ R] {a : R},
+      (∀ (p : ℕ), ‖a ^ p - (1 : R)‖ < (1 / 2 : ℝ)) → a = (1 : R) := by
+  intro R _ _ a h
+  by_contra hne
+  have hpos : 0 < ‖a - 1‖ := norm_pos_iff.mpr (sub_ne_zero.mpr hne)
+  obtain ⟨N, hN⟩ := exists_nat_gt (1 / ‖a - 1‖)
+  have hk := EqOneOfPowersNearOne.key h N
+  have h1 : 1 < (N : ℝ) * ‖a - 1‖ := by
+    rw [div_lt_iff₀ hpos] at hN; linarith
+  nlinarith
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideBis =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.LocalThetaKernels.LinearIndependentOfNotMem =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.LocalThetaKernels.LinearIndependentOfNotMem", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsSideBis\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Analysis.Normed.Module.FiniteDimension\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -56,10 +119,6 @@ noncomputable section
 namespace PositivityTheory.ThKH.Locrep
 
 open Filter Topology
-
-theorem eq_one_of_pow_near {R : Type} [NormedRing R] [NormedAlgebra ℂ R] {a : R} (h : ∀ p : ℕ, ‖a ^ p - 1‖ < 1 / 2) :
-    a = 1 :=
-  _root_.UpperTheory.Reformulated.B.Yhd7.main h
 
 theorem linearIndependent_of_notMem {V : Type} [AddCommGroup V] [Module ℂ V] (u : ℕ → V) (T : ℕ → Set V)
     (h1 : ∀ m n, m < n → u m ∈ T n) (h2 : ∀ n, u n ∉ Submodule.span ℂ (T n)) : LinearIndependent ℂ u := by
@@ -97,7 +156,6 @@ theorem exists_finite_orbit {G V : Type} [Group G] [TopologicalSpace G] [AddComm
   have hli : LinearIndependent ℂ fun n => f (c n (T n)) := by
     refine linearIndependent_of_notMem (fun n => f (c n (T n))) (fun n => (T n : Set V)) (fun m n hmn => ?_)
       fun n => hc' n (T n)
-    beta_reduce
     induction n, hmn using Nat.le_induction with
     | base => rw [Nat.succ_eq_add_one, hT]; exact Finset.mem_coe.2 (Finset.mem_insert_self _ _)
     | succ n _ ih => rw [hT]; exact Finset.mem_coe.2 (Finset.mem_insert_of_mem ih)
@@ -172,7 +230,7 @@ theorem smooth_of_weak {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup
   refine ⟨max n m, fun k hk => ?_⟩
   have hkn : k ∈ K n := hanti (le_max_left n m) hk
   have hkm : k ∈ K m := hanti (le_max_right n m) hk
-  have hk1 : A k = 1 := eq_one_of_pow_near fun p => by
+  have hk1 : A k = 1 := _root_.UpperTheory.Reformulated.B.Yhd7.main fun p => by
     rw [← hAp k hkn]
     exact hm ((K m).pow_mem hkm p)
   have := hA k (π φ)
@@ -180,3 +238,7 @@ theorem smooth_of_weak {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup
   rw [← hjπ _ (hinv k hkn φ hφ₀), ← this, hjπ φ hφ₀]
 
 end PositivityTheory.ThKH.Locrep
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.LocalThetaKernels.LinearIndependentOfNotMem =====

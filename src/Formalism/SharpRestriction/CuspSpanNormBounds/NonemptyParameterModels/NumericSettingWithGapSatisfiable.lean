@@ -146,9 +146,7 @@ lemma obj_PP_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
 
 lemma obj_PU_cayley (k r : ℕ) : IsCayleyU k r (epsK k r) (obj_PU k r) := by
   have h1 : (obj_PU k r)ᴴ * obj_PU k r = 1 := by ext i j; exact obj_PP_apply k r i j
-  have hu : obj_PU k r ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ := by
-    rw [Matrix.mem_unitaryGroup_iff']; exact h1
-  refine ⟨⟨?_, by ext i j; exact obj_PJP_apply k r i j⟩, hu⟩
+  refine ⟨⟨?_, by ext i j; exact obj_PJP_apply k r i j⟩, (Matrix.mem_unitaryGroup_iff').2 h1⟩
   exact ⟨⟨obj_PU k r, (obj_PU k r)ᴴ, mul_eq_one_comm.1 h1, h1⟩, rfl⟩
 
 theorem obj_cayleyU_of_card (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool)

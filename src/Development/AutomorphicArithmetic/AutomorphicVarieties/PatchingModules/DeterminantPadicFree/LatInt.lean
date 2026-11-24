@@ -123,8 +123,7 @@ theorem UpperTheory.V.Pa.Det.latInt :
     intro g
     ext i j
     have e := congrArg (fun x : L => (x : Fin m → F) i) (bL.sum_repr ⟨_, hst g _ (bL j).2⟩)
-    simp only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply,
-      Algebra.smul_def] at e
+    simp only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Algebra.smul_def] at e
     simp only [Matrix.mul_apply, hQa, Matrix.map_apply]
     refine Eq.trans e.symm ?_
     exact Finset.sum_congr rfl fun k _ => mul_comm _ _

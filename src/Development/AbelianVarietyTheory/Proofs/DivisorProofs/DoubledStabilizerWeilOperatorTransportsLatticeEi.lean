@@ -107,7 +107,7 @@ theorem cols_mem {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : Pl (F := F))
       cases j with
       | inl j =>
         simp only [A₁, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.fromCols_apply_inl, Matrix.transpose_apply,
-          Matrix.smul_apply, incM, Matrix.map_apply, Matrix.vecMulVec_apply, Sum.elim_inl, Pi.smul_apply, map_mul,
+          Matrix.smul_apply, incM, Matrix.map_apply, Matrix.vecMulVec_apply, Sum.elim_inl, map_mul,
           Algebra.smul_def, Pi.mul_apply, Pi.algebraMap_apply]
         ring
       | inr j => simp [A₁, Matrix.vecMulVec_apply]
@@ -126,7 +126,7 @@ theorem cols_mem {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : Pl (F := F))
       | inl j => simp [A₂, Matrix.vecMulVec_apply]
       | inr j =>
         simp only [A₂, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.fromCols_apply_inr, Matrix.transpose_apply,
-          Matrix.smul_apply, incM, Matrix.map_apply, Matrix.vecMulVec_apply, Sum.elim_inr, Pi.smul_apply, map_mul,
+          Matrix.smul_apply, incM, Matrix.map_apply, Matrix.vecMulVec_apply, Sum.elim_inr, map_mul,
           Algebra.smul_def, Pi.mul_apply, Pi.algebraMap_apply]
         ring
     show A₂ _ ∈ S

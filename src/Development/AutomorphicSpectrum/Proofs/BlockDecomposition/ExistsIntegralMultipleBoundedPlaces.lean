@@ -86,7 +86,6 @@ theorem exists_pow_mul_le_one (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v)
           gcongr
           first
             | exact pow_le_one₀ zero_le ha.le
-            | exact pow_le_one₀ zero_le' ha.le
       _ = Valued.v (a ^ m * s) := one_mul _
       _ < 1 := hs
   obtain ⟨m, hm⟩ := hK.elim_directed_cover (fun m : ℕ => {s : Fv F v | Valued.v (a ^ m * s) < 1}) hUo
@@ -116,8 +115,6 @@ theorem GlobalTheory.CompanionTheory.Mass.MeanV.exists_common_denominator :
     show Valued.v ((x : v.adicCompletion F)) = v.valuation F x
     first
       | exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
-      | exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' x
-      | exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := v) x
   have h4 : ∀ x : F, (∀ v : HeightOneSpectrum (𝓞 F), v.valuation F x ≤ 1) → ∃ y : 𝓞 F, (y : F) = x := by
     intro x hx
     obtain ⟨y, hy⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) (K := F) (x := x) (h := hx)

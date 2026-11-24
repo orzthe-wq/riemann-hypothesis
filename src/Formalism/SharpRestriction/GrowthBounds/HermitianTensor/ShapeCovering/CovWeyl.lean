@@ -108,13 +108,10 @@ private lemma cw_span_le {σ : Type} (y : σ → MvPolynomial (Fin r × Fin n) K
     (F : MvPolynomial (Fin r × Fin n) K) (hF : F ∈ dualWeyl K r n ν) :
     ∃ f : MvPolynomial σ K, f.IsHomogeneous Q ∧ aeval y f = F := by
   rw [standardMonomialSpanDomain K r n ν] at hF
-  have key := (Submodule.span_le
+  exact (Submodule.span_le
     (p := Submodule.map (aeval y).toLinearMap (homogeneousSubmodule σ K Q))).mpr (by
       rintro _ ⟨k, sz, hsz, I, hs, rfl⟩
-      obtain ⟨f, hf, hfe⟩ := h k sz hsz I hs
-      exact ⟨f, hf, hfe⟩) hF
-  obtain ⟨f, hf, hfe⟩ := key
-  exact ⟨f, hf, hfe⟩
+      exact h k sz hsz I hs) hF
 
 private lemma cw_single_mem (s : ℕ) (hs : s ≤ n) (J : Fin s → Fin r) :
     initMinor K J hs ∈ dualWeyl K r n (fun t => if t.val < s then 1 else 0) := by

@@ -47,6 +47,8 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.ResultantValuation.ResultantAdjugateProofs.Window
+import Formalism.WachLatticeTwists.LagrangeExtensionCocycles.ExtensionCocycleProofs.MemSpanOfFrobeniusMemSpan
 
 @[expose] public section
 
@@ -68,30 +70,6 @@ theorem val_zero_of_not_dvd {ℓ : ℕ} [Fact ℓ.Prime] {x : ℤ_[ℓ]} (h : ¬
   rw [PadicInt.unitCoeff_spec hx0, hw, pow_succ]
   exact Dvd.intro_left ((PadicInt.unitCoeff hx0 : ℤ_[ℓ]) * (ℓ : ℤ_[ℓ]) ^ w) (by ring)
 
-private theorem w3_lemma {ℓ : ℕ} [Fact ℓ.Prime] {z : ℤ_[ℓ]} (hz : z ≠ 0) :
-    emultiplicity (ℓ : ℤ_[ℓ]) z = (z.valuation : ℕ∞) := by
-  obtain ⟨u, hu⟩ : ∃ u : ℤ_[ℓ]ˣ, z = (u : ℤ_[ℓ]) * (ℓ : ℤ_[ℓ]) ^ z.valuation :=
-    ⟨_, PadicInt.unitCoeff_spec hz⟩
-  generalize z.valuation = v at hu ⊢
-  rw [emultiplicity_eq_coe]
-  constructor
-  · rw [hu]
-    exact dvd_mul_left _ _
-  · rintro ⟨c, hc⟩
-    have hne : (ℓ : ℤ_[ℓ]) ^ v ≠ 0 :=
-      pow_ne_zero _ (by exact_mod_cast (Fact.out : ℓ.Prime).ne_zero)
-    have hcu : (u : ℤ_[ℓ]) = ℓ * c := by
-      have h' : (u : ℤ_[ℓ]) * (ℓ : ℤ_[ℓ]) ^ v = ((ℓ : ℤ_[ℓ]) * c) * (ℓ : ℤ_[ℓ]) ^ v := by
-        rw [← hu, hc]
-        ring
-      exact mul_right_cancel₀ hne h'
-    have hU := u.isUnit
-    rw [hcu] at hU
-    have h1 := PadicInt.isUnit_iff.mp (isUnit_of_mul_isUnit_left hU)
-    rw [PadicInt.norm_p] at h1
-    have h2 : (ℓ : ℝ) = 1 := inv_eq_one.mp h1
-    exact (Fact.out : ℓ.Prime).one_lt.ne' (by exact_mod_cast h2)
-
 theorem character_value_formula_holds : StatChiVal := by
   intro ℓ _ hℓ χ hχ k hk
   by_cases hdk : (ℓ - 1) ∣ k
@@ -109,7 +87,7 @@ theorem character_value_formula_holds : StatChiVal := by
       rw [h0, PadicInt.valuation_zero] at hv1
       exact zero_ne_one hv1
     have hem1 : emultiplicity (ℓ : ℤ_[ℓ]) ((χ : ℤ_[ℓ]) ^ (ℓ - 1) - 1) = 1 := by
-      rw [w3_lemma hw0, hv1]
+      rw [_root_.Formalism.ResultantValuation.emultiplicity_eq_valuation hw0, hv1]
       rfl
     have hdiv : (ℓ : ℤ_[ℓ]) ∣ (χ : ℤ_[ℓ]) ^ (ℓ - 1) - 1 := by
       have := (emultiplicity_eq_coe.mp (by rw [hem1]; rfl : emultiplicity (ℓ : ℤ_[ℓ]) ((χ : ℤ_[ℓ]) ^ (ℓ - 1) - 1) = ((1 : ℕ) : ℕ∞))).1
@@ -136,7 +114,7 @@ theorem character_value_formula_holds : StatChiVal := by
       rw [h0, emultiplicity_zero] at key
       exact ENat.top_ne_natCast _ key
     refine ⟨hne, ?_⟩
-    have hv := w3_lemma hne
+    have hv := _root_.Formalism.ResultantValuation.emultiplicity_eq_valuation hne
     rw [key] at hv
     have hv' : PadicInt.valuation ((χ : ℤ_[ℓ]) ^ ((ℓ - 1) * (ℓ ^ a * t')) - 1) = 1 + a := by
       exact_mod_cast hv.symm
@@ -153,13 +131,6 @@ theorem character_value_formula_holds : StatChiVal := by
       Nat.add_zero, Nat.zero_add]
   · rw [if_neg hdk]
     exact val_zero_of_not_dvd (fun h => hdk (hχ.1 k h))
-
-private theorem w3_lemma_2 {ℓ : ℕ} [Fact ℓ.Prime] {A : Type} [CommRing A] [Algebra ℤ_[ℓ] A] {G : GBase ℓ A}
-    {D : Type} [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D] [IsScalarTower ℤ_[ℓ] A D]
-    (P : GPair G D) {a : A} (b : A) (h : P.Kills a) : P.Kills (b * a) := by
-  intro n hn
-  rw [mul_smul]
-  exact P.N'.smul_mem b (h n hn)
 
 private theorem w3_lemma_3 {ℓ : ℕ} [Fact ℓ.Prime] {A : Type} [CommRing A] [Algebra ℤ_[ℓ] A] (G : GBase ℓ A)
     {D : Type} [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D] [IsScalarTower ℤ_[ℓ] A D]
@@ -253,7 +224,7 @@ theorem cost_bound_kills_obstruction : StatCostKills := by
     Finset.prod_ne_zero_iff.mpr (fun k hk => (hfac k hk).1)
   have hval : (∏ k ∈ Finset.Ioc j s, ((G.u : ℤ_[ℓ]) ^ k - 1)).valuation = cost ℓ j s := by
     have e := Finset.emultiplicity_prod PadicInt.prime_p (Finset.Ioc j s) (fun k => (G.u : ℤ_[ℓ]) ^ k - 1)
-    rw [w3_lemma hPr0, Finset.sum_congr rfl (fun k hk => by rw [w3_lemma (hfac k hk).1, (hfac k hk).2])] at e
+    rw [_root_.Formalism.ResultantValuation.emultiplicity_eq_valuation hPr0, Finset.sum_congr rfl (fun k hk => by rw [_root_.Formalism.ResultantValuation.emultiplicity_eq_valuation (hfac k hk).1, (hfac k hk).2])] at e
     unfold cost
     exact_mod_cast e
   obtain ⟨u, hu⟩ : ∃ u : ℤ_[ℓ]ˣ, ∏ k ∈ Finset.Ioc j s, ((G.u : ℤ_[ℓ]) ^ k - 1) =
@@ -263,7 +234,7 @@ theorem cost_bound_kills_obstruction : StatCostKills := by
       (algebraMap ℤ_[ℓ] A (∏ k ∈ Finset.Ioc j s, ((G.u : ℤ_[ℓ]) ^ k - 1)) * G.X ^ j) := by
     rw [hu, ← mul_assoc, ← map_mul, ← mul_assoc, Units.inv_mul, one_mul, map_pow, map_natCast]
   rw [heq]
-  exact w3_lemma_2 P _ hd
+  exact _root_.Formalism.RepresentationBoundsCohomology.N2.GPair.kills_mul P _ hd
 
 theorem first_descent_of_cost_bound (hB : StatCostBound) : Stat1 := by
   intro ℓ _ hℓ A _ _ G D _ _ _ _ P s H a j hgen hsH hk ha
@@ -277,11 +248,11 @@ theorem first_descent_of_cost_bound (hB : StatCostBound) : Stat1 := by
     have hle : cost ℓ j s ≤ a := by exact_mod_cast hlt.le
     obtain ⟨e, rfl⟩ := Nat.exists_eq_add_of_le hle
     rw [show (ℓ : A) ^ (cost ℓ j s + e) * G.X ^ j = (ℓ : A) ^ e * ((ℓ : A) ^ cost ℓ j s * G.X ^ j) by ring]
-    exact w3_lemma_2 P _ hc
+    exact _root_.Formalism.RepresentationBoundsCohomology.N2.GPair.kills_mul P _ hc
   · push Not at hjs
     obtain ⟨e, rfl⟩ := Nat.exists_eq_add_of_lt hjs
     rw [show (ℓ : A) ^ a * G.X ^ (s + e + 1) = ((ℓ : A) ^ a * G.X ^ (e + 1)) * G.X ^ s by ring]
-    exact w3_lemma_2 P _ hk
+    exact _root_.Formalism.RepresentationBoundsCohomology.N2.GPair.kills_mul P _ hk
 
 theorem wA_of (h1 : Stat1) : StatWA := by
   intro ℓ _ hℓ A _ _ G D _ _ _ _ P H hgen hk

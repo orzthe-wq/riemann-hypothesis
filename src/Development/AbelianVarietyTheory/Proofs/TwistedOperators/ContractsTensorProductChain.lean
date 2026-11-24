@@ -175,7 +175,6 @@ theorem contracts_chain : ∀ (m : ℕ) (G : Fin (m + 1) → Type) [∀ j, Monoi
       induction y using TensorProduct.induction_on with
       | zero =>
         simp only [map_zero, TensorProduct.zero_tmul]
-        all_goals exact (map_zero _).symm
       | tmul t a =>
         rw [he, hψ, hψ, LinearMap.lTensor_tmul, LinearMap.lTensor_tmul]
         have h0 : π₀ (φ 0 (g (Fin.castSucc 0), g (Fin.succ 0)) a ⊗ₜ σ 0 (g 0) v) =

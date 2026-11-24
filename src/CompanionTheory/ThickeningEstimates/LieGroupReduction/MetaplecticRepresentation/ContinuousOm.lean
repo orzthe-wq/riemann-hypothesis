@@ -107,9 +107,9 @@ def sub : Subgroup (Amb l) where
       exact h1.trans h2⟩
   inv_mem' {x} hx := by
     have e1 : ∀ f, x.2.2.1 (x.2.2⁻¹.1 f) = f := fun f => by
-      rw [← ContinuousLinearMap.mul_apply, Units.mul_inv, ContinuousLinearMap.one_apply]
+      rw [← mul_apply_eq_comp, Units.mul_inv, one_apply_eq_self]
     have e2 : ∀ f, x.2.2⁻¹.1 (x.2.2.1 f) = f := fun f => by
-      rw [← ContinuousLinearMap.mul_apply, Units.inv_mul, ContinuousLinearMap.one_apply]
+      rw [← mul_apply_eq_comp, Units.inv_mul, one_apply_eq_self]
     have e3 : x.1.1 * x.1⁻¹.1 = 1 := congrArg Subtype.val (mul_inv_cancel x.1)
     have hd : ∀ w f, x.2.2⁻¹.1 (dRho w f) = dRho (x.1⁻¹.1 *ᵥ w) (x.2.2⁻¹.1 f) := fun w f => by
       have := hx.dRho (x.1⁻¹.1 *ᵥ w) (x.2.2⁻¹.1 f)

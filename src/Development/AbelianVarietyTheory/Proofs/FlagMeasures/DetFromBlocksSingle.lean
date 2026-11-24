@@ -97,7 +97,7 @@ theorem det_fromBlocks_single {n : Type} [Fintype n] [DecidableEq n] (l : n) (X 
       (fromBlocks (X.updateRow l (Pi.single l 1)) 0 0 (Y.updateRow l (Pi.single l 1))).submatrix
         (Equiv.swap (Sum.inl l) (Sum.inr l)) id := by
     ext (a | a) (b | b) <;> by_cases ha : a = l <;> by_cases hb : b = l <;>
-      simp [updateRow_apply, diagonal_apply, Pi.single_apply, Equiv.swap_apply_def, ha, hb, @eq_comm _ l b]
+      simp [updateRow_apply, diagonal_apply, Equiv.swap_apply_def, ha, hb, @eq_comm _ l b]
   have e4 : (X.updateRow l 0).det = 0 := det_eq_zero_of_row_eq_zero l fun j => by simp
   rw [e1, det_updateRow_add, det_updateRow_smul, updateRow_eq_self, det_fromBlocks_zero₁₂, e2,
     det_updateRow_add, det_updateRow_smul, updateRow_eq_self, det_fromBlocks_zero₂₁, e3, det_permute,

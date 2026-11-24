@@ -152,7 +152,7 @@ section Gen
 variable {r : ℕ} {E : Type} [NontriviallyNormedField E] [StarRing E]
 
 theorem star_single_one (k : Fin r) : star (Pi.single k (1 : E) : Fin r → E) = Pi.single k 1 := by
-  ext j; by_cases h : j = k <;> simp [Pi.single_apply, h]
+  ext j; by_cases h : j = k <;> simp [h]
 
 theorem bddPow_one : BddPow (1 : unitaryGroup (Fin r) E) := by
   refine ⟨1, fun n i j => ?_⟩
@@ -178,7 +178,7 @@ theorem exists_sign [IsUltrametricDist E] (hstar : ∀ y : E, ‖star y‖ = ‖
       rw [MulMemClass.coe_mul]
       change col _ k k ≠ 1
       rw [h]
-      simp only [col, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.single_eq_same, hk, inv_inv, one_mul, mul_one]
+      simp only [col, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.single_eq_same, hk, inv_inv, mul_one]
       intro h'
       apply h2
       linear_combination -h'

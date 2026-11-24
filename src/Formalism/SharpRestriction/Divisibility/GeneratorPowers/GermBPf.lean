@@ -102,8 +102,7 @@ theorem subst_psIn (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') (g : Fin d → 
       MvPolynomial.rename fun p : Fin n × Fin d => (r p.1, p.2) := MvPolynomial.algHom_ext fun q => by simp
   apply jet_hom_ext
   intro p
-  simp only [jetSubstP, jetRen, AlgHom.comp_apply, jetMap_mk, MvPolynomial.aeval_X, map_sub, MvPolynomial.aeval_C,
-    MvPolynomial.algebraMap_eq, psIn, MvPolynomial.constantCoeff_rename, hr, MvPolynomial.rename_C]
+  simp only [jetSubstP, jetRen, AlgHom.comp_apply, jetMap_mk, MvPolynomial.aeval_X, map_sub, psIn, MvPolynomial.constantCoeff_rename, hr, MvPolynomial.rename_C]
 
 end Pts
 
@@ -311,7 +310,7 @@ theorem exists_first_face_unit (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.P
       (ReciprocityTheory.ChartRestriction.G.DVR.invGen_isGen _ _ _ _ (hpe m _)) (ReciprocityTheory.ChartRestriction.G.DVR.invGen_isGen _ _ _ _ (hpe m _))))
     (fun m U _ h => by
       simp only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, th_pt, pe_pt, pt_sub, Matrix.cons_val_zero,
-        Matrix.cons_val_one, Matrix.head_cons, pt_X, pt_law hch, zpow_neg, Finset.prod_inv_distrib]
+        Matrix.cons_val_one, pt_X, pt_law hch, zpow_neg, Finset.prod_inv_distrib]
       erw [prod_cube3 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left)]
       rw [prod_cube2 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left),
         prod_cube2 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left), prod_cube2 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left)]
@@ -320,6 +319,7 @@ theorem exists_first_face_unit (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.P
       apply ofMul_eq
       simp only [ofMul_mul, ofMul_inv, _root_.mul_one]
       erw [ha]
+      generalize jptG t x0 d x m (0 : Fin 3) = p0, jptG t x0 d x m (1 : Fin 3) = p1, jptG t x0 d x m (2 : Fin 3) = p2
       abel!)
     (fun m y J hJ => (val_pull hJ _ _ _).trans ((congrArg (fun r => val t.cub.t r y J) (triple_point_truncation hch m 0 1 2)).trans
       (val_pull hJ _ _ _).symm))
@@ -377,7 +377,7 @@ theorem exists_second_face_unit (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.
       (ReciprocityTheory.ChartRestriction.G.DVR.invGen_isGen _ _ _ _ (hpe m _)) (ReciprocityTheory.ChartRestriction.G.DVR.invGen_isGen _ _ _ _ (hpe m _))))
     (fun m U _ h => by
       simp only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, th_pt, pe_pt, pt_sub, Matrix.cons_val_zero,
-        Matrix.cons_val_one, Matrix.head_cons, pt_X, pt_law hch, zpow_neg, Finset.prod_inv_distrib]
+        Matrix.cons_val_one, pt_X, pt_law hch, zpow_neg, Finset.prod_inv_distrib]
       erw [prod_cube3 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left)]
       rw [prod_cube2_swap (fun p : jOG x0 d m 3 ⟶ t.G => h p.left),
         prod_cube2_swap (fun p : jOG x0 d m 3 ⟶ t.G => h p.left), prod_cube2_swap (fun p : jOG x0 d m 3 ⟶ t.G => h p.left)]
@@ -386,6 +386,7 @@ theorem exists_second_face_unit (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.
       apply ofMul_eq
       simp only [ofMul_mul, ofMul_inv, _root_.mul_one]
       erw [ha2]
+      generalize jptG t x0 d x m (0 : Fin 3) = p0, jptG t x0 d x m (1 : Fin 3) = p1, jptG t x0 d x m (2 : Fin 3) = p2
       abel!)
     (fun m y J hJ => (val_pull hJ _ _ _).trans ((congrArg (fun r => val t.cub.t r y J) (triple_point_truncation hch m 1 2 0)).trans
       (val_pull hJ _ _ _).symm))
@@ -422,7 +423,7 @@ theorem ex_sy (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e
       simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
       apply ofMul_eq
       simp only [ofMul_mul, ofMul_inv, _root_.mul_one]
-      abel!)
+      abel)
     (fun m y J hJ => pe_trunc t x0 d htr
       (fun _ => ![fun j => MvPolynomial.X ((1 : Fin 2), j), fun j => MvPolynomial.X ((0 : Fin 2), j)])
       (fun m i j => by fin_cases i <;> exact hXX m _ j) m y J hJ)
@@ -473,7 +474,7 @@ theorem ex_ad (hch : IsChartG t x0 d F act tg uvec x) (i0 : t.PP.L.ι) (hi0 : (e
     (fun m => hpe m _)
     (fun m U _ h => by
       simp only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, wl_pt, wl_pt', pe_pt, pt_sub, Matrix.cons_val_zero,
-        Matrix.cons_val_one, Matrix.head_cons, pt_X, pt_act hch, zpow_neg, Finset.prod_inv_distrib]
+        Matrix.cons_val_one, pt_X, pt_act hch, zpow_neg, Finset.prod_inv_distrib]
       simp only [inv_mul_cancel_right])
     (fun m y J hJ => (val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·)
       ((val_pull hJ _ _ _).trans ((congrArg (fun r => val wL r y J) (pair_point_truncation hch m)).trans (val_pull hJ _ _ _).symm))

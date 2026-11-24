@@ -166,7 +166,7 @@ theorem perpSet_baseChange : ∀ (E A : Type) [Field E] [CommRing A] (σ : E →
     intro w y
 
     simp only [formRight_apply, Formalism.UG.hform, Matrix.map_apply, hs, Pi.single_apply, mul_ite, mul_one,
-    mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, map_sum, map_mul,
+    mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, map_sum, map_mul,
     Finset.sum_mul]
     rw [Finset.sum_comm]
   have hset : {z : Fin n → E | ∀ φ ∈ formRight σ J '' (W : Set (Fin n → E)), φ z = 0} = perpSet σ J W := by

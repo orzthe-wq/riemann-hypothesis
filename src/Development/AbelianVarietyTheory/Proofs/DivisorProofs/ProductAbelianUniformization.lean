@@ -100,26 +100,22 @@ def appendL (g : ℕ) : (Fin g → ℂ) →ₗ[ℝ] (Fin (g + g) → ℂ) where
   map_add' x y := by
     funext q
     refine Fin.addCases (fun k => ?_) (fun k => ?_) q <;>
-      simp only [Fin.append_left, Fin.append_right, Pi.add_apply, Pi.smul_apply, Pi.zero_apply, add_zero,
-        smul_zero, RingHom.id_apply]
+      simp only [Fin.append_left, Fin.append_right, Pi.add_apply, Pi.zero_apply, add_zero]
   map_smul' c x := by
     funext q
     refine Fin.addCases (fun k => ?_) (fun k => ?_) q <;>
-      simp only [Fin.append_left, Fin.append_right, Pi.add_apply, Pi.smul_apply, Pi.zero_apply, add_zero,
-        smul_zero, RingHom.id_apply]
+      simp only [Fin.append_left, Fin.append_right, Pi.smul_apply, Pi.zero_apply, smul_zero, RingHom.id_apply]
 
 def appendR (g : ℕ) : (Fin g → ℂ) →ₗ[ℝ] (Fin (g + g) → ℂ) where
   toFun y := Fin.append 0 y
   map_add' x y := by
     funext q
     refine Fin.addCases (fun k => ?_) (fun k => ?_) q <;>
-      simp only [Fin.append_left, Fin.append_right, Pi.add_apply, Pi.smul_apply, Pi.zero_apply, add_zero,
-        smul_zero, RingHom.id_apply]
+      simp only [Fin.append_left, Fin.append_right, Pi.add_apply, Pi.zero_apply, add_zero]
   map_smul' c x := by
     funext q
     refine Fin.addCases (fun k => ?_) (fun k => ?_) q <;>
-      simp only [Fin.append_left, Fin.append_right, Pi.add_apply, Pi.smul_apply, Pi.zero_apply, add_zero,
-        smul_zero, RingHom.id_apply]
+      simp only [Fin.append_left, Fin.append_right, Pi.smul_apply, Pi.zero_apply, smul_zero, RingHom.id_apply]
 
 theorem sqLat_full (Λ : Submodule ℤ (Fin g → ℂ)) (h : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) :
     Submodule.span ℝ (sqLat Λ : Set (Fin (g + g) → ℂ)) = ⊤ := by

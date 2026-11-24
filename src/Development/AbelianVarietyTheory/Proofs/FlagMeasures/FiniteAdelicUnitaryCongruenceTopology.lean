@@ -100,7 +100,7 @@ theorem conj_mem_cong {Λ : Submodule S (n → A)} {a : A} {k x : GL n A}
   refine ⟨(k : Matrix n n A) *ᵥ z, (hk z).1 hz, ?_⟩
   rw [← Matrix.mulVec_smul, ← e]
   simp only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_sub,
-    Units.val_mul, Units.mul_inv, mul_assoc, sub_mul, one_mul, mul_sub]
+    Units.val_mul, Units.mul_inv, mul_assoc, sub_mul, one_mul]
 
 variable [TopologicalSpace A] [IsTopologicalRing A]
 
@@ -265,11 +265,11 @@ theorem properties [T2Space A] [SecondCountableTopology A]
     exact isClosed_eq (((hv.matrix_map hσ).matrix_transpose.matrix_mul
       continuous_const).matrix_mul hv) continuous_const
   have hemb : IsClosedEmbedding (Subtype.val : Formalism.UG.UJ σ J → GL n A) := hcl.isClosedEmbedding_subtypeVal
-  haveI : SecondCountableTopology (Matrix n n A) := inferInstanceAs (SecondCountableTopology (n → n → A))
-  haveI : SecondCountableTopology (Matrix n n A)ᵐᵒᵖ :=
+  have : SecondCountableTopology (Matrix n n A) := inferInstanceAs (SecondCountableTopology (n → n → A))
+  have : SecondCountableTopology (Matrix n n A)ᵐᵒᵖ :=
     MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology
-  haveI : SecondCountableTopology (GL n A) := Units.isEmbedding_embedProduct.secondCountableTopology
-  haveI : T2Space (GL n A) := Units.isEmbedding_embedProduct.t2Space
+  have : SecondCountableTopology (GL n A) := Units.isEmbedding_embedProduct.secondCountableTopology
+  have : T2Space (GL n A) := Units.isEmbedding_embedProduct.t2Space
   have hKc := hemb.isCompact_preimage (isCompact_stab hΛo hΛc u hsing)
   have hKo := (isOpen_stab hΛo hΛc).preimage hemb.continuous
   exact ⟨hemb.isEmbedding.t2Space,
@@ -285,7 +285,7 @@ open Formalism.UG Formalism.UG.P
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 theorem exists_nat_mem_nhds (W : Set (Af F)) (hW : W ∈ 𝓝 (0 : Af F)) : ∃ g : ℕ, 1 ≤ g ∧ (g : Af F) ∈ W := by
-  haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
+  have := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
   have hC := GlobalTheory.AdeleCocompact.isCompact_integral F
   obtain ⟨V, hVW, hV, h0⟩ := mem_nhds_iff.1 hW
   let T : ℕ → Set (Af F) := fun k => (fun a => k.factorial • a) ''
@@ -312,17 +312,17 @@ theorem exists_topology (σ : E →ₐ[F] E) : ∃ t : TopologicalSpace (E ⊗[F
     IsOpen (IntAf F E : Set (E ⊗[F] Af F)) ∧ IsCompact (IntAf F E : Set (E ⊗[F] Af F)) ∧
     Continuous (sigR σ (Af F)) ∧
     ∀ W ∈ 𝓝 (0 : E ⊗[F] Af F), ∃ g : ℕ, 1 ≤ g ∧ (g : E ⊗[F] Af F) ∈ W := by
-  haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
-  haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
-  haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F
-  letI : Algebra (Af F) (E ⊗[F] Af F) := Algebra.TensorProduct.rightAlgebra
+  have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
+  have := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
+  have := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F
+  let : Algebra (Af F) (E ⊗[F] Af F) := Algebra.TensorProduct.rightAlgebra
   let e : (Fin (Module.finrank F E) → Af F) ≃ₗ[Af F] E ⊗[F] Af F :=
     (Algebra.TensorProduct.basis (Af F) (Module.finBasis F E)).equivFun.symm.trans
       (Algebra.TensorProduct.commRight F (Af F) E).toLinearEquiv
-  haveI : Module.Finite (Af F) (E ⊗[F] Af F) := Module.Finite.equiv e
-  letI t : TopologicalSpace (E ⊗[F] Af F) := moduleTopology (Af F) (E ⊗[F] Af F)
-  haveI : IsModuleTopology (Af F) (E ⊗[F] Af F) := ⟨rfl⟩
-  haveI : IsTopologicalRing (E ⊗[F] Af F) := IsModuleTopology.isTopologicalRing (Af F) _
+  have : Module.Finite (Af F) (E ⊗[F] Af F) := Module.Finite.equiv e
+  let t : TopologicalSpace (E ⊗[F] Af F) := moduleTopology (Af F) (E ⊗[F] Af F)
+  have : IsModuleTopology (Af F) (E ⊗[F] Af F) := ⟨rfl⟩
+  have : IsTopologicalRing (E ⊗[F] Af F) := IsModuleTopology.isTopologicalRing (Af F) _
   let h : (E ⊗[F] Af F) ≃ₜ (Fin (Module.finrank F E) → Af F) :=
     { e.symm.toEquiv with
       continuous_toFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap

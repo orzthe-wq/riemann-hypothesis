@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import GroundTheory.AutomorphicForms.HilbertSchmidt
 
 @[expose] public section
 
@@ -64,9 +65,6 @@ theorem exp_posLog {x : ℝ} (hx : 0 ≤ x) : Real.exp (Real.posLog x) = max 1 x
       rw [Real.posLog_def]; simp only [Pi.sup_apply, Pi.zero_apply]
       exact max_eq_right (Real.log_nonneg h.le)
     rw [this, Real.exp_log (by linarith), max_eq_right h.le]
-
-theorem posLog_nonneg' (x : ℝ) : 0 ≤ Real.posLog x := by
-  rw [Real.posLog_def]; simp only [Pi.sup_apply, Pi.zero_apply]; exact le_max_left _ _
 
 theorem le_one_of_posLog_eq_zero {x : ℝ} (hx : 0 ≤ x) (h : Real.posLog x = 0) : x ≤ 1 := by
   have := exp_posLog hx
@@ -203,7 +201,7 @@ theorem supp_fin {n : ℕ} (A : Matrix (Fin n) (Fin n) (Ad E)) :
     (Real.iSup_le h zero_le_one))
 
 theorem logSizeM_nonneg {n : ℕ} (A : Matrix (Fin n) (Fin n) (Ad E)) : 0 ≤ logSizeM A :=
-  add_nonneg (Finset.sum_nonneg fun _ _ => posLog_nonneg' _) (finsum_nonneg fun _ => posLog_nonneg' _)
+  add_nonneg (Finset.sum_nonneg fun _ _ => Real.posLog_nonneg) (finsum_nonneg fun _ => Real.posLog_nonneg)
 
 def Bx (E : Type) [Field E] [NumberField E] (R : ℝ) : Set E :=
   {α | (∀ v : InfinitePlace E, v α ≤ Real.exp R) ∧
@@ -217,13 +215,13 @@ theorem entry_mem {n : ℕ} {R : ℝ} (hR : 0 ≤ R) (γ : GL (Fin n) E) (h : lo
   have hA : A i j = algebraMap E (Ad E) α := rfl
   have hM : logSizeM A ≤ R := le_trans (le_add_of_nonneg_right (logSizeM_nonneg _)) h
   set F : HeightOneSpectrum (𝓞 E) → ℝ := fun w => Real.posLog (⨆ p : Fin n × Fin n, ‖cW w (A p.1 p.2)‖)
-  have hF0 : ∀ w, 0 ≤ F w := fun w => posLog_nonneg' _
+  have hF0 : ∀ w, 0 ≤ F w := fun w => Real.posLog_nonneg
   have hinf0 : ∀ v, Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (A p.1 p.2)‖ ^ 2) ≤ R := by
     intro v
     refine le_trans ?_ hM
     refine le_trans ?_ (le_add_of_nonneg_right (finsum_nonneg fun w => hF0 w))
     exact Finset.single_le_sum (f := fun v => Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (A p.1 p.2)‖ ^ 2))
-      (fun _ _ => posLog_nonneg' _) (Finset.mem_univ v)
+      (fun _ _ => Real.posLog_nonneg) (Finset.mem_univ v)
   refine ⟨fun v => ?_, ?_⟩
   · have h1 : ‖cV v (A i j)‖ ^ 2 ≤ ⨆ p : Fin n × Fin n, ‖cV v (A p.1 p.2)‖ ^ 2 :=
       le_ciSup (f := fun p : Fin n × Fin n => ‖cV v (A p.1 p.2)‖ ^ 2) (Set.finite_range _).bddAbove (i, j)
@@ -241,7 +239,7 @@ theorem entry_mem {n : ℕ} {R : ℝ} (hR : 0 ≤ R) (γ : GL (Fin n) E) (h : lo
     have hS : ∀ w ∉ S, NumberField.HeightOneSpectrum.adicAbv E w α ≤ 1 := by
       intro w hw
       rw [Set.Finite.mem_toFinset, Function.mem_support, not_not] at hw
-      refine le_one_of_posLog_eq_zero (AbsoluteValue.nonneg _ _) (le_antisymm ?_ (posLog_nonneg' _))
+      refine le_one_of_posLog_eq_zero (AbsoluteValue.nonneg _ _) (le_antisymm ?_ Real.posLog_nonneg)
       exact (hG w).trans hw.le
     obtain ⟨m, hm, hmle, z, hz⟩ := exists_den α S hS
     refine ⟨m, hm, hmle.trans ?_, z, hz⟩
@@ -254,7 +252,7 @@ theorem entry_mem {n : ℕ} {R : ℝ} (hR : 0 ≤ R) (γ : GL (Fin n) E) (h : lo
     calc ∑ w ∈ S, Real.posLog (NumberField.HeightOneSpectrum.adicAbv E w α) ≤ ∑ w ∈ S, F w :=
           Finset.sum_le_sum fun w _ => hG w
       _ = ∑ᶠ w, F w := e2.symm
-      _ ≤ logSizeM A := le_add_of_nonneg_left (Finset.sum_nonneg fun _ _ => posLog_nonneg' _)
+      _ ≤ logSizeM A := le_add_of_nonneg_left (Finset.sum_nonneg fun _ _ => Real.posLog_nonneg)
       _ ≤ R := hM
 
 theorem bx_count : ∃ C : ℝ, 0 ≤ C ∧ ∀ R : ℝ, 0 ≤ R → (Bx E R).Finite ∧
@@ -502,15 +500,6 @@ open scoped ENNReal Pointwise
 
 attribute [local instance] PositivityTheory.Rg.BcB.E.borelH
 
-theorem amgm (p q : ℝ≥0∞) : p * q ≤ p ^ 2 + q ^ 2 := by
-  rcases le_total p q with h | h
-  · calc p * q ≤ q * q := mul_le_mul_left h q
-      _ = q ^ 2 := (sq q).symm
-      _ ≤ _ := le_add_self
-  · calc p * q ≤ p * p := mul_le_mul_right h p
-      _ = p ^ 2 := (sq p).symm
-      _ ≤ _ := le_self_add
-
 theorem inv_pow_sq (w : ℝ) (M : ℕ) : ((w ^ M)⁻¹) ^ 2 = w ^ (-(2 * M : ℤ)) := by
   rw [_root_.zpow_neg, show (2 * (M : ℤ)) = ((M * 2 : ℕ) : ℤ) by push_cast; ring, zpow_natCast, pow_mul, inv_pow]
 
@@ -671,7 +660,7 @@ theorem growth_main (hS : SizeBasic) (a b : ℕ) (D : Dom E a b) (ι : Type) [Fi
       have hPu : P y * u ^ 2 ≤ Nb * Ub := mul_le_mul' (hPN.trans (hN x)) hu2
       calc P y * ‖f j y‖ₑ = (P y * u) * (‖f j y‖ₑ * v) := by
             rw [mul_mul_mul_comm, huv, mul_one]
-        _ ≤ (P y * u) ^ 2 + (‖f j y‖ₑ * v) ^ 2 := amgm _ _
+        _ ≤ (P y * u) ^ 2 + (‖f j y‖ₑ * v) ^ 2 := _root_.GroundTheory.Automorphic.ennreal_mul_le_sq_add_sq _ _
         _ = P y * (P y * u ^ 2) + v ^ 2 * ‖f j y‖ₑ ^ 2 := by ring
         _ ≤ P y * (Nb * Ub) + ENNReal.ofReal (wt y ^ (-(2 * M : ℤ))) * ‖f j y‖ₑ ^ 2 := by
             rw [hv2]

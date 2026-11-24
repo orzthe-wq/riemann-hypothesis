@@ -1055,7 +1055,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
     (T : LocLat G Qp LL O) {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL)
 
-theorem lA_mem : lA W ∈ W.AΔ := W.AΔ.natCast_mem _
+alias lA_mem := _root_.Formalism.MainNotions.UnusedSlot80.Relay2.lA_mem
 
 omit [TopologicalSpace G] in
 theorem lin_sub_id {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (u Λ : R)
@@ -1198,10 +1198,10 @@ theorem repVV_γ {c' : ZMod n} {e M : ℕ} {Λ : LetA O n}
       rw [Relay2.γ_lsmul, map_sub, Relay2.γ_lsmul, map_sum]
       show lA W ^ κ' • (lA W ^ κ • W.γD T W.gam (Λ • x) -
         ∑ k, W.γD T W.gam (a k • ((W.φD T) ^ e) (Hh k))) = _
-      rw [Formalism.MainNotions.LiftingTheory.frame_γD_smul, hΛ]
+      rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hΛ]
       congr 2
       refine Finset.sum_congr rfl fun k _ => ?_
-      rw [Formalism.MainNotions.LiftingTheory.frame_γD_smul, Relay2.γ_φpow]
+      rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, Relay2.γ_φpow]
       rfl
     set P := (w * Λ) • W.γ T x with hP
     have hPΛ : Λ • W.γ T x = w' • P := by
@@ -1348,7 +1348,7 @@ theorem univLift_of [IsDomain O] (hinj : Function.Injective (algebraMap O LL))
     intro δ hδ
     refine lam_cancel W hR A c (A.len c) T₂ ?_
     have h1 : W.γD T₂ δ (Λ • u) = Λ • W.γD T₂ δ u := by
-      rw [Formalism.MainNotions.LiftingTheory.frame_γD_smul, hΛmem δ hδ]
+      rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hΛmem δ hδ]
     rw [← h1, hup0, Relay2.Pp_Δ W T₂ c' (A.len c) p0 hp0 δ hδ]
 
   obtain ⟨w, hw, w', hw', hww, hγΛ⟩ := lam_γ W hS A c (A.len c)
@@ -1377,7 +1377,7 @@ theorem univLift_of [IsDomain O] (hinj : Function.Injective (algebraMap O LL))
   have hγΛu : InFP W T₂ c' (A.len c) 1 (Λ • W.γ T₂ u) := by
     have h1 : Λ • W.γ T₂ u = w' • W.γ T₂ (Λ • u) := by
       show _ = w' • W.γD T₂ W.gam (Λ • u)
-      rw [Formalism.MainNotions.LiftingTheory.frame_γD_smul, hγΛ, smul_smul, ← mul_assoc, hww, one_mul]
+      rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hγΛ, smul_smul, ← mul_assoc, hww, one_mul]
       rfl
     refine ⟨w' • W.γ T₂ p0, Relay2.Pp_smul W T₂ c' _ hw' _ (Relay2.Pp_γ W T₂ c' _ p0 hp0), ?_⟩
     rw [one_smul, h1, hup0]
@@ -1431,7 +1431,7 @@ theorem frame_inv_poly2 {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] (p 
     have h1 : (PowerSeries.constantCoeff : PowerSeries LL →+* LL).mapMatrix Hps = 1 := by
       ext i j
       simp only [RingHom.mapMatrix_apply, Matrix.map_apply, hHps, Matrix.of_apply,
-        PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.constantCoeff_mk, hsol0,
+        PowerSeries.constantCoeff_mk, hsol0,
         Matrix.one_apply, Pi.single_apply]
     rw [h1, Matrix.det_one]
     exact isUnit_one
@@ -1490,8 +1490,7 @@ theorem frame_inv_poly2 {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] (p 
   refine ⟨ρ, ?_⟩
   have h := congrArg (Polynomial.aeval Y) hρ
 
-  simp only [hQdef, map_sub, map_sum, map_mul, Polynomial.aeval_C, Polynomial.aeval_X_pow, GP, HP,
-  Polynomial.aeval_X] at h
+  simp only [hQdef, map_sub, map_sum, map_mul, Polynomial.aeval_C, Polynomial.aeval_X_pow, GP, HP] at h
   rw [← h]
   ring
 
@@ -1728,7 +1727,7 @@ theorem sec_zero [IsDomain O] (hinj : Function.Injective (algebraMap O LL))
       simp only [hρ', mul_add, Finset.sum_add_distrib]
       congr 1
       · rw [Finset.sum_eq_single k0 (fun k _ hk => by simp [Ne.symm hk]) (by simp)]
-        simp only [map_mul, map_pow, map_natCast, ite_true, map_one, mul_one]
+        simp only [map_pow, map_natCast, ite_true, mul_one]
         ring
       · rw [Finset.mul_sum]
         exact Finset.sum_congr rfl fun k _ => by ring
@@ -1977,7 +1976,7 @@ theorem univSec_of [IsDomain O] [Fintype (K →ₐ[Qp] LL)] (hinj : Function.Inj
       rw [map_mul, W.γE_ext] at this
       rw [← this]
       congr 2
-      exact (Formalism.MainNotions.LiftingTheory.frame_γA_letE W W.gam c).symm
+      exact (_root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent W W.gam c).symm
     have hk := hzt k
     simp only [Pi.sub_apply] at hk
     have hLh : algebraMap (LetA O n) W.EE (letE c) *
@@ -2031,13 +2030,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
-theorem dv_single' (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (j : Fin d) :
-    dv W T e b (Pi.single j 1) = ((φVB PD (LL := LL) (V := T.V)) ^ e) (cmpD W T (b j)) := by
-  simp [dv, Pi.single_apply]
-
 theorem dvO_eq (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (c₀ : Fin d → O) :
     dvO W T e b c₀ = ∑ j, algebraMap O LL (c₀ j) • dv W T e b (Pi.single j 1) := by
-  simp only [dvO, dv_single']
+  simp only [dvO, _root_.Formalism.MainNotions.UnusedSlot80.ArcF.dv_single]
   rfl
 
 theorem coord_zero (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T)

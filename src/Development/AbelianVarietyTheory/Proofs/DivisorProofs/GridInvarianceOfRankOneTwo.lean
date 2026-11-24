@@ -1,12 +1,14 @@
 module
 
+public import Mathlib.Algebra.Algebra.Defs
+public import Mathlib.Algebra.Ring.Rat
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NablaSchur
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPowOfCommutatorEqSmul
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -22,7 +24,6 @@ import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,8 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,8 +46,44 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.Style
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPowOfCommutatorEqSmul, Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridInvarianceOfRankOneTwo
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPowOfCommutatorEqSmul =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPowOfCommutatorEqSmul", "h": "module\n\npublic import Mathlib.Algebra.Algebra.Defs\npublic import Mathlib.Algebra.Ring.Rat\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.CommutatorPowerFormula
+
+theorem commutator_pow_of_commutator_eq_smul {A : Type} [Ring A] [Algebra ℚ A] {H X : A} {s : ℚ}
+    (h : H * X - X * H = s • X) (k : ℕ) :
+    H * X ^ k - X ^ k * H = ((k : ℚ) * s) • X ^ k := by
+  induction k with
+  | zero => simp
+  | succ n ih =>
+    have e : H * X ^ (n + 1) - X ^ (n + 1) * H
+        = (H * X ^ n - X ^ n * H) * X + X ^ n * (H * X - X * H) := by
+      rw [pow_succ]
+      noncomm_ring
+    rw [e, ih, h, smul_mul_assoc, mul_smul_comm, ← pow_succ, ← add_smul]
+    congr 1
+    push_cast
+    ring
+
+end GlobalTheory.CommutatorPowerFormula
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPowOfCommutatorEqSmul =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridInvarianceOfRankOneTwo =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridInvarianceOfRankOneTwo", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NablaSchur\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutatorPowOfCommutatorEqSmul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open GlobalTheory.LeviCut
@@ -93,20 +128,10 @@ lemma proj_neg {A : Type} [Ring A] [Algebra ℚ A] (K j : ℕ) (X Y : A) : proj 
   · rw [h.neg_pow, h.neg_pow]
   · rw [h.neg_pow, h.neg_pow, neg_mul_neg]
 
-lemma comm_pow_of {A : Type} [Ring A] [Algebra ℚ A] {H X : A} {s : ℚ} (h : H * X - X * H = s • X) (k : ℕ) :
-    H * X ^ k - X ^ k * H = ((k : ℚ) * s) • X ^ k := by
-  first
-  | exact @_root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul
-  | exact _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul
-  | (apply _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul <;> assumption)
-  | (intros; apply _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul ..)
-
 lemma commute_pair_pow {A : Type} [Ring A] [Algebra ℚ A] {H X Y : A} {s : ℚ} (hX : H * X - X * H = s • X)
     (hY : H * Y - Y * H = (-s) • Y) (k : ℕ) : Commute H (Y ^ k * X ^ k) := by
-  have h1 := comm_pow_of hX k
-  have h2 := comm_pow_of hY k
+  have h1 := _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul hX k
+  have h2 := _root_.GlobalTheory.CommutatorPowerFormula.commutator_pow_of_commutator_eq_smul hY k
   have e : H * (Y ^ k * X ^ k) = (H * Y ^ k - Y ^ k * H) * X ^ k + Y ^ k * (H * X ^ k - X ^ k * H)
       + Y ^ k * X ^ k * H := by noncomm_ring
   show H * (Y ^ k * X ^ k) = Y ^ k * X ^ k * H
@@ -378,3 +403,7 @@ theorem GlobalTheory.LeviCut.gridInv_of_rankOne_rankTwo (h1 : RankOne) (h2 : Ran
   have hdown : ∀ k, k + 1 < a + b → D (k + 1) k (gridP D K a b a T) = 0 := fun k hk =>
     (h1 W (a + b) K D hD hB k (k + 1) (by omega) hk (by omega) _ (hZ k (by omega)) (hZ (k + 1) hk)).2 (hup k hk)
   exact fill hD _ hZ hup hdown
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.GridInvarianceOfRankOneTwo =====

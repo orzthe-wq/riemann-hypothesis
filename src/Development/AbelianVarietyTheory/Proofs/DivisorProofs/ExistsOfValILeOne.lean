@@ -118,7 +118,7 @@ theorem exists_clear_col {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) F) (h
       simp [P, Matrix.mul_apply, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply]
     simp only [hPA, Matrix.map_apply, E, Matrix.of_apply]
     rw [if_neg (Fin.succ_ne_zero i)]
-    simp only [if_true, Fin.succ_ne_zero, map_neg, map_one, map_zero, zero_mul]
+    simp only [if_true, Fin.succ_ne_zero, map_neg]
     rw [Finset.sum_eq_single i]
     · simp only [if_true, map_one, one_mul]
       rw [hc]

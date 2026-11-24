@@ -93,9 +93,7 @@ theorem map_haar {nS nT N : ℕ} (α : WOF F E nS nT ≃ₗ[AF F] (Fin N → AF 
   have hc : 0 < c := Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _
   have heq : Measure.map α ν = c • μN := by
     first
-    | exact Measure.isAddHaarMeasure_eq_smul _ _
     | exact Measure.isAddLeftInvariant_eq_smul _ _
-    | exact Measure.isAddLeftInvariant_eq_smul_of_regular _ _
   have heq' : Measure.map α ν = (c : ENNReal) • μN := by
     rw [heq]
     rfl

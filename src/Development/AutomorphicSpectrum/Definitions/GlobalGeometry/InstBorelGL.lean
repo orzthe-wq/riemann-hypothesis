@@ -141,7 +141,7 @@ def pEl {r c : ℕ} (m₁ : GL (Fin r) F) (B : Matrix (Fin r) (Fin c) F) (m₂ :
   inv_val := by
     simp only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.neg_mul,
       Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add,
-      add_neg_cancel, neg_zero, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
+      add_neg_cancel, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
 
 def UnrChar (nrm : AbsoluteValue F ℝ) (q : ℕ) {c : ℕ} (χ : Fin c → F → ℂ) (α : Fin c → ℂ) : Prop :=
   (∀ i, α i ≠ 0) ∧ ∀ i (x : F) (e : ℤ), nrm x = (q : ℝ) ^ (-e) → χ i x = α i ^ e

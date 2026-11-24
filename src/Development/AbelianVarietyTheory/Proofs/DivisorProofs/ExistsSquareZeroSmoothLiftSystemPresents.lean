@@ -55,13 +55,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LiftSys.OfLift
 
-theorem sec_smooth {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [Smooth s] (U : X.affineOpens) :
-    Algebra.Smooth R (Sec s U.1) := by
-  have h := HasRingHomProperty.appLE @Smooth s ‹_› ⟨⊤, isAffineOpen_top _⟩ U le_top
-  have h' : RingHom.Smooth ((s.appLE ⊤ U.1 le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom) :=
-    RingHom.Smooth.comp (RingHom.Smooth.of_bijective
-      (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.bijective) h
-  exact RingHom.smooth_algebraMap.mp h'
+alias sec_smooth := _root_.GlobalTheory.LiftSys.smooth_sec_affine
 
 variable {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} {π : R →+* R₀}
   {X₀ X : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀} {s : X ⟶ Sp R} {i : X₀ ⟶ X}

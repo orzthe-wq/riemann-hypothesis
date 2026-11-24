@@ -92,9 +92,6 @@ theorem primeOrderFinrank : PrimeOrderFinrank := by
     have h1 : minpoly ℚ f ∣ Polynomial.X - 1 := by
       first
         | exact hcop.dvd_of_dvd_mul_left hdvd
-        | exact hcop.dvd_of_dvd_mul_right hdvd
-        | exact hcop.dvd_of_dvd_mul_left (by rwa [mul_comm] at hdvd)
-        | exact hcop.dvd_of_dvd_mul_right (by rwa [mul_comm] at hdvd)
     have h2 : Polynomial.aeval f (Polynomial.X - 1 : Polynomial ℚ) = 0 := by
       obtain ⟨q, hq⟩ := h1
       rw [hq, map_mul, minpoly.aeval, zero_mul]

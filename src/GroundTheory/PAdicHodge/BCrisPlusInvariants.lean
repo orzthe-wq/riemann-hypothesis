@@ -168,10 +168,16 @@ private theorem map_natCast_pow {R S : Type*} [Semiring R] [Semiring S]
     (f : R →+* S) (n k : ℕ) : f ((n : R) ^ k) = (n : S) ^ k :=
   (map_pow f (n : R) k).trans (congrArg (fun z : S => z ^ k) (map_natCast f n))
 
+/-- General-field version of `padicIntToBCrisPlus`, so that instantiating at `ℂ_[p]` avoids
+abstracting `IsPerfectoidField.fact_not_isUnit` into a `_proof_n` auxiliary constant. -/
+def padicIntToBCrisPlusOf (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
+    [IsPerfectoidField K p] : ℤ_[p] →+* BCrisPlus K p :=
+  (algebraMap (ACris K p) (BCrisPlus K p)).comp
+    ((algebraMap (AInf K p) (ACris K p)).comp
+      (IsPerfectoidField.padicIntToWitt (K := K) p))
+
 def padicIntToBCrisPlus : ℤ_[p] →+* BCrisPlus ℂ_[p] p :=
-  (algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p)).comp
-    ((algebraMap (AInf ℂ_[p] p) (ACris ℂ_[p] p)).comp
-      (IsPerfectoidField.padicIntToWitt (K := ℂ_[p]) p))
+  padicIntToBCrisPlusOf ℂ_[p]
 
 theorem isUnit_p_bCrisPlus : IsUnit ((p : ℕ) : BCrisPlus ℂ_[p] p) := by
   let j := algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p)
@@ -187,16 +193,41 @@ theorem isUnit_padicIntToBCrisPlus {x : ℤ_[p]} (hx : x ≠ 0) : IsUnit (padicI
     _ = _ := congrArg (fun z => f u * z) (map_natCast_pow f p x.valuation)
   exact h.symm ▸ ((PadicInt.unitCoeff hx).isUnit.map f).mul ((isUnit_p_bCrisPlus (p := p)).pow _)
 
-def padicToBCrisPlus : ℚ_[p] →+* BCrisPlus ℂ_[p] p :=
-  IsLocalization.lift (M := nonZeroDivisors ℤ_[p]) (S := ℚ_[p]) (g := padicIntToBCrisPlus)
-    fun y => isUnit_padicIntToBCrisPlus (nonZeroDivisors.coe_ne_zero y)
+theorem isUnit_padicIntToBCrisPlus_nzd (y : nonZeroDivisors ℤ_[p]) :
+    IsUnit (padicIntToBCrisPlusOf (p := p) ℂ_[p] y) :=
+  isUnit_padicIntToBCrisPlus (nonZeroDivisors.coe_ne_zero y)
 
-instance algebraPadicBCrisPlus : Algebra ℚ_[p] (BCrisPlus ℂ_[p] p) := padicToBCrisPlus.toAlgebra
+/-- General-field version of `padicToBCrisPlus` to avoid kernel unfolding of `BCrisPlus ℂ_[p] p`. -/
+def padicToBCrisPlusOf (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
+    [IsPerfectoidField K p]
+    (h : ∀ y : nonZeroDivisors ℤ_[p], IsUnit (padicIntToBCrisPlusOf (p := p) K y)) :
+    ℚ_[p] →+* BCrisPlus K p :=
+  IsLocalization.lift (M := nonZeroDivisors ℤ_[p]) (S := ℚ_[p])
+    (g := padicIntToBCrisPlusOf (p := p) K) h
+
+def padicToBCrisPlus : ℚ_[p] →+* BCrisPlus ℂ_[p] p :=
+  padicToBCrisPlusOf ℂ_[p] isUnit_padicIntToBCrisPlus_nzd
+
+/-- General-field version of `algebraPadicBCrisPlus` to avoid kernel unfolding of `BCrisPlus ℂ_[p] p`. -/
+@[instance_reducible]
+def algebraPadicBCrisPlusOf (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
+    [IsPerfectoidField K p] (f : ℚ_[p] →+* BCrisPlus K p) : Algebra ℚ_[p] (BCrisPlus K p) :=
+  f.toAlgebra
+
+instance algebraPadicBCrisPlus : Algebra ℚ_[p] (BCrisPlus ℂ_[p] p) :=
+  algebraPadicBCrisPlusOf ℂ_[p] padicToBCrisPlus
+
+private theorem padicToBCrisPlusOf_apply_int (K : Type*) [NontriviallyNormedField K]
+    [IsUltrametricDist K] [IsPerfectoidField K p]
+    (h : ∀ y : nonZeroDivisors ℤ_[p], IsUnit (padicIntToBCrisPlusOf (p := p) K y)) (x : ℤ_[p]) :
+    padicToBCrisPlusOf (p := p) K h (algebraMap ℤ_[p] ℚ_[p] x) =
+      padicIntToBCrisPlusOf (p := p) K x := by
+  delta padicToBCrisPlusOf
+  apply @IsLocalization.lift_eq
 
 private theorem padicToBCrisPlus_apply_int (x : ℤ_[p]) :
-    padicToBCrisPlus (p := p) (algebraMap ℤ_[p] ℚ_[p] x) = padicIntToBCrisPlus (p := p) x := by
-  delta padicToBCrisPlus
-  apply @IsLocalization.lift_eq
+    padicToBCrisPlus (p := p) (algebraMap ℤ_[p] ℚ_[p] x) = padicIntToBCrisPlus (p := p) x :=
+  padicToBCrisPlusOf_apply_int ℂ_[p] isUnit_padicIntToBCrisPlus_nzd x
 
 private theorem localization_hom_apply_eq {R S T : Type*} [CommSemiring R] [CommSemiring S]
     [Semiring T] [Algebra R S] (M : Submonoid R) [IsLocalization M S]
@@ -217,8 +248,17 @@ theorem iotaPlus_algebraMap_padic (q : ℚ_[p]) :
   exact (congrArg j (padicToBCrisPlus_apply_int x)).trans
     ((iotaPlus_algebraMap (K := ℂ_[p]) (p := p) b).trans (iota_padicInt x))
 
+/-- General-field version of `iotaPlusAlg` to avoid kernel unfolding of `BCrisPlus ℂ_[p] p`. -/
+def iotaPlusAlgOf (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
+    [IsPerfectoidField K p] [CharZero K] [Algebra ℚ_[p] (BCrisPlus K p)]
+    [Algebra ℚ_[p] (BDeRhamPlus (normInteger K) p)]
+    (hc : ∀ q : ℚ_[p], iotaPlus K p (algebraMap ℚ_[p] (BCrisPlus K p) q) =
+      algebraMap ℚ_[p] (BDeRhamPlus (normInteger K) p) q) :
+    BCrisPlus K p →ₐ[ℚ_[p]] BDeRhamPlus (normInteger K) p :=
+  { iotaPlus K p with commutes' := hc }
+
 def iotaPlusAlg : BCrisPlus ℂ_[p] p →ₐ[ℚ_[p]] 𝔹 :=
-  { iotaPlus ℂ_[p] p with commutes' := iotaPlus_algebraMap_padic }
+  iotaPlusAlgOf ℂ_[p] iotaPlus_algebraMap_padic
 
 theorem iotaPlusAlg_apply (x : BCrisPlus ℂ_[p] p) : iotaPlusAlg x = iotaPlus ℂ_[p] p x :=
   rfl
@@ -250,8 +290,16 @@ theorem phiPlus_algebraMap_padic (q : ℚ_[p]) :
     _ = k (j a) := congrArg (fun w => k (j w)) (frobenius_padicIntToWitt x)
     _ = _ := hx.symm
 
+/-- General-field version of `phiPlusAlg` to avoid kernel unfolding of `BCrisPlus ℂ_[p] p`. -/
+def phiPlusAlgOf (K : Type*) [NontriviallyNormedField K] [IsUltrametricDist K]
+    [IsPerfectoidField K p] [Algebra ℚ_[p] (BCrisPlus K p)]
+    (hc : ∀ q : ℚ_[p], phiPlus K p (algebraMap ℚ_[p] (BCrisPlus K p) q) =
+      algebraMap ℚ_[p] (BCrisPlus K p) q) :
+    BCrisPlus K p →ₐ[ℚ_[p]] BCrisPlus K p :=
+  { phiPlus K p with commutes' := hc }
+
 def phiPlusAlg : BCrisPlus ℂ_[p] p →ₐ[ℚ_[p]] BCrisPlus ℂ_[p] p :=
-  { phiPlus ℂ_[p] p with commutes' := phiPlus_algebraMap_padic }
+  phiPlusAlgOf ℂ_[p] phiPlus_algebraMap_padic
 
 theorem phiPlusAlg_apply (x : BCrisPlus ℂ_[p] p) : phiPlusAlg x = phiPlus ℂ_[p] p x :=
   rfl

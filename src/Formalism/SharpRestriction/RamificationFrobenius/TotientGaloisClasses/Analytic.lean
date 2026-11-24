@@ -182,10 +182,6 @@ def Bounded (S : Finset PChar) : Set φ.Char := {θ | (θ ∈ φ.Xp ∧ ¬ H.Kep
 
 def KeptInXp (S : Finset PChar) : Prop := ∀ ψ ∈ S, ∃ θ ∈ φ.Xp, H.IsPrimOf θ ψ.χ
 
-def ChebyshevCharacterBound (x eps c : ℝ) : Prop :=
-  ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), H.IsCharE χ →
-    ∀ y : ℝ, Real.exp (x ^ (eps / 3)) / 3 ≤ y → ‖An.gChi χ y‖ ≤ y * Real.exp (-(c * x ^ (eps / 8)))
-
 def BoundedCharsPointwise (S : Finset PChar) (x eps : ℝ) : Prop :=
   ∀ θ ∈ H.Bounded S, ∀ (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N), H.IsPrimOf θ χ →
     ‖An.gChi χ x‖ ≤ x ^ ((1 : ℝ) / 2 + eps)

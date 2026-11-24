@@ -89,7 +89,7 @@ theorem alg_fst : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebr
   rw [← spMap_comp]
   have : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R := by
     ext r
-    simp [TrivSqZeroExt.algebraMap_eq_inl]
+    simp
   rw [this]
   exact Spec.map_id _
 

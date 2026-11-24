@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthToFunNonneg
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentreDepthLeStarDepthOfCellStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentreDepthLeStarDepthOfCell
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalRStarDepthLeOfCentreBound
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsFinRepsProjectiveFinrankLeNumberField
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntBilinFormToRealMemBalancedPsdCone
@@ -52,35 +52,17 @@ section Cone
 
 variable {X : Type} [AddCommGroup X] {m m' : ℕ}
 
-theorem rcone_add {γ : Fin m → LinearMap.BilinForm ℤ X} {B B' : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (h : B ∈ rcone γ)
-    (h' : B' ∈ rcone γ) : B + B' ∈ rcone γ := by
-  obtain ⟨t, ht, rfl⟩ := h
-  obtain ⟨t', ht', rfl⟩ := h'
-  exact ⟨t + t', fun i => add_nonneg (ht i) (ht' i), by simp [add_smul, Finset.sum_add_distrib]⟩
-
-theorem rcone_smul {γ : Fin m → LinearMap.BilinForm ℤ X} {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (h : B ∈ rcone γ) {a : ℝ}
-    (ha : 0 ≤ a) : a • B ∈ rcone γ := by
-  obtain ⟨t, ht, rfl⟩ := h
-  exact ⟨a • t, fun i => mul_nonneg ha (ht i), by simp [Finset.smul_sum, smul_smul]⟩
-
-theorem rcone_zero (γ : Fin m → LinearMap.BilinForm ℤ X) : (0 : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) ∈ rcone γ :=
-  ⟨0, fun _ => le_rfl, by simp⟩
-
 theorem rcone_gen (γ : Fin m → LinearMap.BilinForm ℤ X) (j : Fin m) : toReal (γ j) ∈ rcone γ := by
   obtain ⟨c, hc, e⟩ := inRCone_self γ j
   exact ⟨c, hc, e⟩
 
-theorem rcone_sum {γ : Fin m → LinearMap.BilinForm ℤ X} {ι : Type} (S : Finset ι) (f : ι → X →ₗ[ℤ] X →ₗ[ℤ] ℝ)
-    (hf : ∀ i ∈ S, f i ∈ rcone γ) : ∑ i ∈ S, f i ∈ rcone γ :=
-  Finset.sum_induction _ (· ∈ rcone γ) (fun _ _ => rcone_add) (rcone_zero γ) hf
-
 theorem rcone_mono {γ : Fin m → LinearMap.BilinForm ℤ X} {γ' : Fin m' → LinearMap.BilinForm ℤ X}
     (h : ∀ i, ∃ j, γ i = γ' j) {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (hB : B ∈ rcone γ) : B ∈ rcone γ' := by
   obtain ⟨t, ht, rfl⟩ := hB
-  refine rcone_sum _ _ fun i _ => ?_
+  refine _root_.GlobalTheory.PolFan.DepthBdd.finsum_mem_rcone _ _ fun i _ => ?_
   obtain ⟨j, hj⟩ := h i
   rw [hj]
-  exact rcone_smul (rcone_gen γ' j) (ht i)
+  exact _root_.GlobalTheory.PolFan.DepthBdd.smul_mem_rcone (rcone_gen γ' j) (ht i)
 
 theorem lin_cons (u : LinearMap.BilinForm ℤ X) (γ : Fin m → LinearMap.BilinForm ℤ X)
     (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) (β : LinearMap.BilinForm ℤ X) (a : ℝ) (c : Fin m → ℝ)
@@ -118,14 +100,14 @@ theorem depth_eq_of_star {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCel
     simp [hs0]
   have hvR : (0 : ℝ) < h v := by exact_mod_cast hhv
   have hface : ∑ j, t j.succ • toReal (γ (s j)) ∈ rcone γ :=
-    rcone_sum _ _ fun j _ => rcone_smul (rcone_gen γ (s j)) (ht j.succ)
+    _root_.GlobalTheory.PolFan.DepthBdd.finsum_mem_rcone _ _ fun j _ => _root_.GlobalTheory.PolFan.DepthBdd.smul_mem_rcone (rcone_gen γ (s j)) (ht j.succ)
   have hvR' : toReal v ∈ rcone γ := by
     obtain ⟨c, hc, e⟩ := hvc
     exact ⟨c, hc, e⟩
   have hBγ : toReal β ∈ rcone γ := by
-    rw [hβt]; exact rcone_add (rcone_smul hvR' (ht 0)) hface
+    rw [hβt]; exact _root_.GlobalTheory.PolFan.DepthBdd.add_mem_rcone (_root_.GlobalTheory.PolFan.DepthBdd.smul_mem_rcone hvR' (ht 0)) hface
   have hlow : t 0 ≤ evalR (starDepth bar ψ w) (toReal β) :=
-    GlobalTheory.T.centreDepth_le_starDepth_of_cell O bar ψ w X m γ (toReal β) v (t 0) hγ hBγ hvb hvp hvw hvc hv0 huniq (ht 0)
+    _root_.GlobalTheory.PolFan.depth_le_starDepth O bar ψ w X m γ (toReal β) v (t 0) hγ hBγ hvb hvp hvw hvc hv0 huniq (ht 0)
       (by rw [hβt, add_sub_cancel_left]; exact hface)
   have hup : evalR (starDepth bar ψ w) (toReal β) ≤ t 0 := by
     refine GlobalTheory.PolFan.evalR_starDepth_le O bar ψ w X m γ (toReal β) (t 0) hγ hBγ (ht 0) ?_

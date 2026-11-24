@@ -1,12 +1,15 @@
 module
 
-public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.FamOfApply
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
+public import Formalism.LocalToGlobal.Divisibility.CoefModLemmas
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.CuspFormLimitTwoPlaces
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SeparatingAlgebras.StGlob
+import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -18,6 +21,8 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -37,7 +42,121 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalPrimeGaloisActionPeriodT
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsWeight
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivOfRangeEq
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.TrivialOnInertiaOfUnr
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.FamOfApply, Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.DeltaNear
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.FamOfApply =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.FamOfApply", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin\nimport Formalism.GradedWeylDivisibility.DualWeylDominanceOf\npublic import Formalism.LocalToGlobal.Divisibility.CoefModLemmas\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalPrimeGaloisActionPeriodT\nimport Development.AbelianVarietyTheory.Definitions.GaloisGeometry.IsWeight\nimport Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivOfRangeEq\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff\nimport Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.TrivialOnInertiaOfUnr\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N
+open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp
+open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.DefU GlobalTheory.Branching
+
+namespace UpperTheory.Gal.Wt
+
+def ExpLe (s : ℤ) : Submodule ℂ (Circle → ℂ) := Submodule.span ℂ {f | ∃ m : ℤ, m ≤ s ∧ f = fun z : Circle => (z : ℂ) ^ m}
+
+def ExpGe (s : ℤ) : Submodule ℂ (Circle → ℂ) := Submodule.span ℂ {f | ∃ m : ℤ, s ≤ m ∧ f = fun z : Circle => (z : ℂ) ^ m}
+
+def dg {a : ℕ} (d : Fin a → ℂˣ) : GL (Fin a) ℂ where
+  val := Matrix.diagonal fun i => (d i : ℂ)
+  inv := Matrix.diagonal fun i => (((d i)⁻¹ : ℂˣ) : ℂ)
+  val_inv := by rw [Matrix.diagonal_mul_diagonal]; simp
+  inv_val := by rw [Matrix.diagonal_mul_diagonal]; simp
+
+def tor (a k : ℕ) (z : Circle) : GL (Fin a) ℂ := dg fun i => if i.val < k then Circle.toUnits z else 1
+
+theorem tor_coe (a k : ℕ) (z : Circle) : ((tor a k z : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) =
+    Matrix.diagonal fun i => if i.val < k then (z : ℂ) else 1 := by
+  change Matrix.diagonal _ = _
+  congr 1
+  funext i
+  by_cases h : i.val < k <;> simp [h]
+
+def psum {a : ℕ} (κ : DomWeight a) (k : ℕ) : ℤ := ∑ i : Fin a with i.val < k, κ.w i
+
+def IsUp {a : ℕ} (b : GL (Fin a) ℂ) : Prop := ∀ i j : Fin a, j < i → (b : Matrix (Fin a) (Fin a) ℂ) i j = 0
+
+def chi {a : ℕ} (κ : DomWeight a) (b : GL (Fin a) ℂ) : ℂ := ∏ i, (b : Matrix (Fin a) (Fin a) ℂ) i i ^ κ.w i
+
+def top {a : ℕ} (κ : DomWeight a) : nablaSq ℂ a κ :=
+  ⟨extremal ℂ a κ, Formalism.GradedWeylDivisibility.hwMem ℂ a a le_rfl _ (Formalism.L2.DIV.natW_antitone κ)⟩
+
+def ev1 {a : ℕ} (κ : DomWeight a) : nablaSq ℂ a κ →ₗ[ℂ] ℂ :=
+  (MvPolynomial.aeval fun p : Fin a × Fin a => (1 : Matrix (Fin a) (Fin a) ℂ) p.1 p.2).toLinearMap.comp (nablaSq ℂ a κ).subtype
+
+def delta {a : ℕ} (κ : DomWeight a) (h : GL (Fin a) ℂ) : ℂ := ev1 κ (sqRep ℂ a κ h (top κ))
+
+def pev {a : ℕ} (P : MvPolynomial (Fin a × Fin a) ℂ) (h : GL (Fin a) ℂ) : ℂ :=
+  MvPolynomial.eval (fun p => (h : Matrix (Fin a) (Fin a) ℂ) p.1 p.2) P
+
+def RFin {a : ℕ} (p : GL (Fin a) ℂ → ℂ) : Prop :=
+  Continuous p ∧ ∃ A : Submodule ℂ (GL (Fin a) ℂ → ℂ), FiniteDimensional ℂ A ∧ ∀ y, (fun n => p (n * y)) ∈ A
+
+variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
+
+def IsCirc (τ : E →+* ℂ) (k : ℕ) (x : Circle → infU E a) : Prop :=
+  ∀ z, (x z).1 ∈ embU a τ ∧ cEmb τ (x z).1 = tor a k z
+
+structure Fam (τ : E →+* ℂ) (W : Wt E a) (K : Subgroup (UA E a)) (ν : DomWeight a) (d : ℕ)
+    (B : GL (Fin a) ℂ → GL (Fin a) ℂ → W.Sp →ₗ[ℂ] (UA E a → ℂ)) : Prop where
+  aut : ∀ y₁ y₂ v, IsAutFormU (B y₁ y₂ v)
+  fix : ∀ k ∈ K, ∀ y₁ y₂ v, RU E a k (B y₁ y₂ v) = B y₁ y₂ v
+  inf : ∀ (x : infU E a) y₁ y₂ v, RU E a x (B y₁ y₂ v) = B (cEmb τ x.1 * y₁) (cEmb τ x.1 * y₂) (W.rep x v)
+  up : ∀ b, IsUp b → ∀ y₁ y₂ v, B (y₁ * b) y₂ v = chi ν b • B y₁ y₂ v
+  le : ∀ k x, IsCirc τ k x → ∀ y₁ y₂ v g,
+    (fun z => B (tor a k z * y₁) (tor a k z * y₂) (W.rep (x z) v) g) ∈ ExpLe (psum ν k + d)
+  ge : ∀ k x, IsCirc τ k x → ∀ y₂ v g, (fun z => B 1 (tor a k z * y₂) (W.rep (x z) v) g) ∈ ExpGe (-d)
+  fin : ∃ S : Submodule ℂ (UA E a → ℂ), FiniteDimensional ℂ S ∧ ∀ y₁ y₂ v, B y₁ y₂ v ∈ S
+
+structure IsNrm (τ : E →+* ℂ) (C : Subgroup (UA E a)) (n : UA E a → GL (Fin a) ℂ) : Prop where
+  left : ∀ γ ∈ ratU E a, ∀ g, n (γ * g) = n g
+  lev : ∀ c ∈ C, ∀ g, n (g * c) = n g
+  inf : ∀ x ∈ infU E a, ∀ g, n (g * x) = n g * cEmb τ x
+
+structure IsEll (C : Subgroup (UA E a)) (ℓ : UA E a → C) : Prop where
+  left : ∀ γ ∈ ratU E a, ∀ g, ℓ (γ * g) = ℓ g
+  lev : ∀ (c : C) g, ℓ (g * c) = ℓ g * c
+  inf : ∀ x ∈ infU E a, ∀ g, ℓ (g * x) = ℓ g
+
+def famOf {W : Wt E a} (n : UA E a → GL (Fin a) ℂ) (ν : DomWeight a) {Q : Type} [Fintype Q] (f : Q → algForms W)
+    (P : Q → MvPolynomial (Fin a × Fin a) ℂ) (X : Q → GL (Fin a) ℂ) (y₁ y₂ : GL (Fin a) ℂ) : W.Sp →ₗ[ℂ] (UA E a → ℂ) :=
+  ∑ q, (LinearMap.mulLeft ℂ fun g => pev (P q) (n g * y₂) * delta ν (X q * (n g * y₁))) ∘ₗ (f q).1
+
+theorem famOf_apply {W : Wt E a} (n : UA E a → GL (Fin a) ℂ) (ν : DomWeight a) {Q : Type} [Fintype Q] (f : Q → algForms W)
+    (P : Q → MvPolynomial (Fin a × Fin a) ℂ) (X : Q → GL (Fin a) ℂ) (y₁ y₂ : GL (Fin a) ℂ) (v : W.Sp) (g : UA E a) :
+    famOf n ν f P X y₁ y₂ v g = ∑ q, pev (P q) (n g * y₂) * delta ν (X q * (n g * y₁)) * (f q).1 v g := by
+  simp [famOf, LinearMap.sum_apply, Finset.sum_apply]
+
+def IntGL {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (h : GL (Fin a) ℂ) : Prop :=
+  ∀ i j, ‖ι.symm ((h : Matrix (Fin a) (Fin a) ℂ) i j)‖ ≤ 1 ∧ ‖ι.symm (((h⁻¹ : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) i j)‖ ≤ 1
+
+def NearOne {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (ε : ℝ) (h : GL (Fin a) ℂ) : Prop :=
+  ∀ i j, ‖ι.symm ((h : Matrix (Fin a) (Fin a) ℂ) i j - (1 : Matrix (Fin a) (Fin a) ℂ) i j)‖ ≤ ε
+
+end UpperTheory.Gal.Wt
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.FamOfApply =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.DeltaNear =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.DeltaNear", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.FamOfApply\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.CuspFormLimitTwoPlaces\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SeparatingAlgebras.StGlob\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -227,3 +346,6 @@ def FamEx : Prop :=
 end UpperTheory.Gal.Wt
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.WeightCharacters.DeltaNear =====

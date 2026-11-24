@@ -47,6 +47,7 @@ public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsChartOfIsLocalRing
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasDefect
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsInvDer
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -74,7 +75,7 @@ theorem isKS_unique_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
   have hx : spMap (GlobalTheory.FlagMod.ev x0 U.1 hUx) ≫ chart U = x0 := by rw [hev]
   have hv' := fun i => GlobalTheory.LieMet.isTan_map (GlobalTheory.FlagMod.ev x0 U.1 hUx) hx (hv i)
   have hb' := GlobalTheory.GradedPieces.basis_map (GlobalTheory.FlagMod.ev x0 U.1 hUx) hx hv hb
-  obtain ⟨u, hu, hu'⟩ := GlobalTheory.LiePull.lieBasis_of_tanBasis t x0 P₀.A m hpb _ hv' hb'
+  obtain ⟨u, hu, hu'⟩ := _root_.GlobalTheory.LiePull.exists_lieBasis_of_tanBasis t x0 P₀.A m hpb _ hv' hb'
   choose dd hdd using fun a => (GlobalTheory.KS.InvField.main K P₀.A (u a) (hu.1 a)).1
   obtain ⟨⟨φc, hφc⟩, -⟩ := GlobalTheory.KS.DlogPol.dlog_independent K P₀ n u dd hu hdd _ m t.PP.L t.PP.isLB hiso
   obtain ⟨J, W, j, d, hcov, hWj, hf, hl, hdiff⟩ := hK

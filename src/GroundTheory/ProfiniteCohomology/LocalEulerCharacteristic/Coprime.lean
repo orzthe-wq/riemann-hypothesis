@@ -1,21 +1,25 @@
 module
 
+public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.SubsingletonCohomologyOneGalUnitsSubgroupOf
+public import GroundTheory.ProfiniteCohomology.LocalClassFormation.FiniteVanishing.KummerOpen
+public import GroundTheory.ProfiniteCohomology.PoincareDuality.Torsion
+public import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom
+public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyKummer
+public import GroundTheory.ProfiniteCohomology.LocalClassFormationAlt
 public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Scalars
-public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Cohomology
 public import GroundTheory.ProfiniteCohomology.ClassFormations.CorestrictionDefs
 public import GroundTheory.ProfiniteCohomology.EulerCharDefs
-public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyGal
 public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.ConjAction
 public import Mathlib.FieldTheory.Galois.Profinite
-import GroundTheory.ProfiniteCohomology.EulerChar
 public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.AdditiveInvariants
 public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CoprimeRegular
 public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CoprimeTwist
 public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.ModNEquivOfSurjectiveApplyModNRep
+public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyMapTensorRightMorCompCohomologyConj
+import GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -26,17 +30,12 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.GroupTheory.Nilpotent
-import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -56,9 +55,217 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import GroundTheory.ProfiniteCohomology.EulerChar
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.TypeStar
-public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyMapTensorRightMorCompCohomologyConj
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Cohomology, GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyGal, GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Coprime
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Cohomology =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Cohomology", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.SubsingletonCohomologyOneGalUnitsSubgroupOf\npublic import GroundTheory.ProfiniteCohomology.LocalClassFormation.FiniteVanishing.KummerOpen\npublic import GroundTheory.ProfiniteCohomology.PoincareDuality.Torsion\npublic import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom\nimport GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+open CategoryTheory
+
+variable {K Ksep : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
+  [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep] {l : ℕ} (hl : (l : K) ≠ 0)
+
+section Open
+
+noncomputable def rootsOfUnityTwoInv (l : ℕ) (V : OpenSubgroup Gal(Ksep/K)) :
+    cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l)) 2 →+ QZ :=
+  ((localClassFormationOfIsSepClosure K Ksep).inv V).comp
+    (cohomologyMap (kummerSequenceRes (K := K) (Ksep := Ksep) l (V : Subgroup Gal(Ksep/K))).f 2).hom.toAddMonoidHom
+
+theorem rootsOfUnityTwoInv_apply (V : OpenSubgroup Gal(Ksep/K))
+    (x : cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l)) 2) :
+    rootsOfUnityTwoInv l V x = (localClassFormationOfIsSepClosure K Ksep).inv V
+      ((cohomologyMap (kummerSequenceRes (K := K) (Ksep := Ksep) l (V : Subgroup Gal(Ksep/K))).f 2).hom x) :=
+  AddMonoidHom.comp_apply _ _ x
+
+
+include hl in
+theorem rootsOfUnityTwoInv_injective (V : OpenSubgroup Gal(Ksep/K)) :
+    Function.Injective (rootsOfUnityTwoInv (K := K) (Ksep := Ksep) l V) :=
+  ((localClassFormationOfIsSepClosure K Ksep).inv_bijective V).1.comp
+    (cohomologyMap_f_injective_of_subsingleton
+      (kummerSequenceRes_shortExact (Ksep := Ksep) l (V : Subgroup Gal(Ksep/K)) hl) 1
+      (subsingleton_cohomology_one_galUnits_open K Ksep V))
+
+
+include hl in
+theorem range_rootsOfUnityTwoInv (V : OpenSubgroup Gal(Ksep/K)) :
+    (rootsOfUnityTwoInv (K := K) (Ksep := Ksep) l V).range = (zmodToQZ l).range := by
+  have : NeZero l := ⟨by rintro rfl; exact hl Nat.cast_zero⟩
+  set F := localClassFormationOfIsSepClosure K Ksep
+  set S := kummerSequenceRes (K := K) (Ksep := Ksep) l (V : Subgroup Gal(Ksep/K))
+  have hS : S.ShortExact := kummerSequenceRes_shortExact l _ hl
+  ext q
+  simp only [AddMonoidHom.mem_range]
+  constructor
+  · rintro ⟨x, rfl⟩
+    refine exists_zmodToQZ_eq ?_
+    have e : l • (cohomologyMap S.f 2).hom x = 0 :=
+      (cohomologyMap_kummerSequenceRes_g_apply l (V : Subgroup Gal(Ksep/K)) 2 _).symm.trans
+        (cohomologyMap_g_cohomologyMap_f_apply (S := S) 2 x)
+    rw [rootsOfUnityTwoInv_apply]
+    exact (map_nsmul (F.inv V) l _).symm.trans ((congrArg (F.inv V) e).trans (map_zero _))
+  · rintro ⟨a, rfl⟩
+    obtain ⟨y, hy⟩ := (F.inv_bijective V).2 (zmodToQZ l a)
+    have hny : l • y = 0 := by
+      apply (F.inv_bijective V).1
+      rw [map_nsmul, hy, ← map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul, map_zero, map_zero]
+    obtain ⟨x, hx⟩ := exists_cohomologyMap_f_eq hS 2 y
+      ((cohomologyMap_kummerSequenceRes_g_apply l (V : Subgroup Gal(Ksep/K)) 2 y).trans hny)
+    exact ⟨x, (rootsOfUnityTwoInv_apply V x).trans ((congrArg (F.inv V) hx).trans hy)⟩
+
+noncomputable def rootsOfUnityTwoEquivOpen (V : OpenSubgroup Gal(Ksep/K)) :
+    cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l)) 2 ≃+ ZMod l :=
+  haveI : NeZero l := ⟨by rintro rfl; exact hl Nat.cast_zero⟩
+  (AddMonoidHom.ofInjective (rootsOfUnityTwoInv_injective hl V)).trans
+    ((AddEquiv.addSubgroupCongr (range_rootsOfUnityTwoInv hl V)).trans
+      (AddMonoidHom.ofInjective (zmodToQZ_injective (n := l))).symm)
+
+end Open
+
+variable {U V : OpenSubgroup Gal(Ksep/K)} (h : V ≤ U)
+
+noncomputable def cohomologyTwoRootsEquiv :
+    cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
+        (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))) 2 ≃+ ZMod l :=
+  (asIso (cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe
+      (show (V : Subgroup Gal(Ksep/K)) ≤ U from h)).symm.toMonoidHom
+    (continuous_subgroupOfEquivOfLe_symm _) (resSubgroupOfHom _ (galRootsOfUnity.{0} K Ksep l)) 2)).toLinearEquiv.toAddEquiv.trans
+    (rootsOfUnityTwoEquivOpen hl V)
+
+variable [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
+
+theorem cohomologyTwoRootsEquiv_cohomologyConj (g : (U : Subgroup Gal(Ksep/K)))
+    (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
+        (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))) 2) :
+    cohomologyTwoRootsEquiv hl h ((cohomologyConj (Rep.res (U : Subgroup Gal(Ksep/K)).subtype
+        (galRootsOfUnity.{0} K Ksep l)) ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))) 2 g).hom x) =
+      cohomologyTwoRootsEquiv hl h x := by
+  rw [cohomologyConj_two_galRootsOfUnity_eq_id hl h g]
+  rfl
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Cohomology =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyGal =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyGal", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyKummer\npublic import GroundTheory.ProfiniteCohomology.LocalClassFormationAlt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+open IntermediateField
+
+variable {K Ksep : Type} [Field K] [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep]
+  {U V : OpenSubgroup Gal(Ksep/K)} (h : V ≤ U)
+  [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
+
+noncomputable def fixedFieldGalHom :
+    letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
+    (U : Subgroup Gal(Ksep/K)) →* (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField (U : Subgroup Gal(Ksep/K))]
+      fixedField (V : Subgroup Gal(Ksep/K))) :=
+  letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
+  { toFun := fun g => AlgEquiv.ofRingEquiv (f := (fixedFieldConj h g).toRingEquiv) fun e =>
+      Subtype.ext ((mem_fixedField_iff _ _).1 e.2 g g.2)
+    map_one' := AlgEquiv.ext fun _ => Subtype.ext rfl
+    map_mul' := fun _ _ => AlgEquiv.ext fun _ => Subtype.ext rfl }
+
+theorem fixedFieldGalHom_surjective : Function.Surjective (fixedFieldGalHom h) := by
+  let := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
+  have : IsScalarTower (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K))) Ksep :=
+    IsScalarTower.of_algebraMap_eq' rfl
+  have : IsGalois (fixedField (U : Subgroup Gal(Ksep/K))) Ksep :=
+    IsGalois.tower_top_of_isGalois K (fixedField (U : Subgroup Gal(Ksep/K))) Ksep
+  intro σ
+  set τ := σ.liftNormal Ksep
+  have hτU : τ.restrictScalars K ∈ (U : Subgroup Gal(Ksep/K)) :=
+    (fixingSubgroup_fixedField_openSubgroup U).le
+      ((mem_fixingSubgroup_iff _ _).2 fun x hx => τ.commutes ⟨x, hx⟩)
+  exact ⟨⟨τ.restrictScalars K, hτU⟩, AlgEquiv.ext fun x => Subtype.ext (σ.liftNormal_commutes Ksep x)⟩
+
+theorem fixedFieldGalHom_ker :
+    (fixedFieldGalHom h).ker = (V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)) := by
+  let := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
+  ext g
+  rw [MonoidHom.mem_ker, Subgroup.mem_subgroupOf]
+  constructor
+  · intro hg
+    exact (fixingSubgroup_fixedField_openSubgroup V).le ((mem_fixingSubgroup_iff _ _).2 fun x hx =>
+      congrArg Subtype.val (AlgEquiv.ext_iff.1 hg ⟨x, hx⟩))
+  · intro hg
+    exact AlgEquiv.ext fun x => Subtype.ext ((mem_fixedField_iff _ _).1 x.2 _ hg)
+
+noncomputable def quotientFixedFieldGalEquiv :
+    letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
+    (U : Subgroup Gal(Ksep/K)) ⧸ (V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K)) ≃*
+      (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField (U : Subgroup Gal(Ksep/K))]
+        fixedField (V : Subgroup Gal(Ksep/K))) :=
+  letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
+  (QuotientGroup.quotientMulEquivOfEq (fixedFieldGalHom_ker h).symm).trans
+    (QuotientGroup.quotientKerEquivOfSurjective _ (fixedFieldGalHom_surjective h))
+
+theorem quotientFixedFieldGalEquiv_mk (g : (U : Subgroup Gal(Ksep/K))) :
+    letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
+    quotientFixedFieldGalEquiv h (g : (U : Subgroup Gal(Ksep/K)) ⧸
+      (V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))) = fixedFieldGalHom h g :=
+  rfl
+
+theorem cohomologyZeroRootsEquiv_cohomologyConj_gal (l : ℕ) (g : (U : Subgroup Gal(Ksep/K)))
+    (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
+        (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))) 0) :
+    letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
+    cohomologyZeroRootsEquiv h l ((cohomologyConj (Rep.res (U : Subgroup Gal(Ksep/K)).subtype
+        (galRootsOfUnity.{0} K Ksep l)) ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))) 0 g).hom x) =
+      torsNRep (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField (U : Subgroup Gal(Ksep/K))]
+          fixedField (V : Subgroup Gal(Ksep/K)))
+        (Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) l (fixedFieldGalHom h g)
+        (cohomologyZeroRootsEquiv h l x) :=
+  cohomologyZeroRootsEquiv_cohomologyConj h l g x
+
+theorem cohomologyOneRootsEquiv_cohomologyConj_gal {l : ℕ} (hl : (l : K) ≠ 0) (g : (U : Subgroup Gal(Ksep/K)))
+    (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
+        (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))) 1) :
+    letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
+    cohomologyOneRootsEquiv h hl ((cohomologyConj (Rep.res (U : Subgroup Gal(Ksep/K)).subtype
+        (galRootsOfUnity.{0} K Ksep l)) ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))) 1 g).hom x) =
+      modNRep (fixedField (V : Subgroup Gal(Ksep/K)) ≃ₐ[fixedField (U : Subgroup Gal(Ksep/K))]
+          fixedField (V : Subgroup Gal(Ksep/K)))
+        (Additive (fixedField (V : Subgroup Gal(Ksep/K)))ˣ) l (fixedFieldGalHom h g)
+        (cohomologyOneRootsEquiv h hl x) := by
+  let := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
+  rw [cohomologyOneRootsEquiv_cohomologyConj]
+  obtain ⟨u, hu⟩ := Submodule.mkQ_surjective _ (cohomologyOneRootsEquiv h hl x)
+  rw [← hu]
+  rfl
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyGal =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Coprime =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Coprime", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Scalars\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Cohomology\npublic import GroundTheory.ProfiniteCohomology.ClassFormations.CorestrictionDefs\npublic import GroundTheory.ProfiniteCohomology.EulerCharDefs\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyGal\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.ConjAction\npublic import Mathlib.FieldTheory.Galois.Profinite\nimport GroundTheory.ProfiniteCohomology.EulerChar\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.AdditiveInvariants\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CoprimeRegular\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CoprimeTwist\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.ModNEquivOfSurjectiveApplyModNRep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.GroupTheory.Nilpotent\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyMapTensorRightMorCompCohomologyConj\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -491,3 +698,6 @@ theorem eulerChar_coprime (hl : (l : K) ≠ 0) (h : V ≤ U)
 end Main
 
 end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Coprime =====

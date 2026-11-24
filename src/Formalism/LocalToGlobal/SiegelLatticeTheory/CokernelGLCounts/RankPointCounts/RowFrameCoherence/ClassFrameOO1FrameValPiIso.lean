@@ -2,45 +2,6 @@ module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ClassFrameCut
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.InfCut
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -222,22 +183,12 @@ theorem classFrameOO1_liftFrame (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hVL :
   exact ClassFrameUnitaryProducts.frame_alg X u u' (Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hD.1)
     (Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hD.2.1) _ _ _ hEq
 
-theorem classFrameOO1_piIso_coe (w : D.what₂.Word) (g : X.B.I.Ginf) (hg : g ∈ X.SinfU w) :
-    ((Formalism.L2.SG.RealObj.InfCut.piIso X w g hg : X.Vpi w ≃ₗᵢ[ℂ] X.Vpi w) : X.Vpi w →L[ℂ] X.Vpi w) = X.piU w g := by
-  ext x
-  rfl
-
-theorem classFrameOO1_piIso_symm (w : D.what₂.Word) (g : X.B.I.Ginf) (hg : g ∈ X.SinfU w) :
-    (((Formalism.L2.SG.RealObj.InfCut.piIso X w g hg).symm : X.Vpi w ≃ₗᵢ[ℂ] X.Vpi w) : X.Vpi w →L[ℂ] X.Vpi w) =
-      X.piU w g⁻¹ := by
-  rw [← Formalism.L2.SG.RealObj.InfCut.piIso_symm X w g hg]
-
 theorem classFrameOO1_frameVal_piIso (h h' : X.B.I.Ginf) (hh : h ∈ X.SinfU u) (hh' : h' ∈ X.SinfU u')
     (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) :
     frameVal X Y u u' vR i0 i0' νq (Formalism.L2.SG.RealObj.InfCut.piIso X u h hh)
       (Formalism.L2.SG.RealObj.InfCut.piIso X u' h' hh') s = dVal X Y u u' vR i0 i0' νq h h' s := by
   unfold frameVal dVal
-  rw [classFrameOO1_piIso_coe, classFrameOO1_piIso_symm]
+  rw [_root_.Formalism.L2.SG.RealObj.InfCut.piIso_coe, _root_.Formalism.L2.SG.RealObj.InfCut.piIso_symm]
 
 theorem commonFrameC_of (hP : PtValueC X Y u u' vR i0 i0' νq κ) (hVL : VIndepLiftC X Y u u' i0 i0' κ)
     (hCD : CommonDFrameC X Y u u' vR i0 i0' νq κ) (hZ : IrrelZeroC X Y u u' vR i0 i0' νq κ) :

@@ -298,7 +298,7 @@ theorem frame_const {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix
     rw [h0] at h1
     rw [herm_conj x (Bs a), ← h1, star_zero]
   refine ⟨hBw, hon, fun a v hv => ?_⟩
-  simp only [List.mem_cons, List.mem_singleton, List.not_mem_nil, or_false] at hv
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hv
   rcases hv with rfl | rfl
   · exact hxB a
   · exact hz'0 a
@@ -429,8 +429,7 @@ theorem gauge_kappa_pointwise_holds : GTKPt := by
     have hx1 : fstAlg _ (d.x (Y₀ : ℂ)) = X.fn 5 * X.t (Y₀ : ℂ) 1 1 := by
       have h : d.x (Y₀ : ℂ) = d.L.GGi * X.QQ (Y₀ : ℂ) 1 1 := by
         rw [hQ]
-        simp only [NFData.QQ, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_one, Matrix.head_cons,
-          Matrix.cons_val_fin_one, Matrix.empty_val', Matrix.cons_val_zero]
+        simp only [NFData.QQ, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.empty_val']
         rw [← mul_assoc, d.L.GGi_GG, one_mul]
       rw [h, hL.2.2.2.2.2.2.2.2.2.2.2.1]
       rfl

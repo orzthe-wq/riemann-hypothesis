@@ -81,7 +81,7 @@ theorem norm_oc_le_one (K : FinExt l) (c : ↥(OL K)) : ‖oc K c‖ ≤ 1 := by
   exact h
 
 @[simp] theorem sh_zero : sh (0 : Tl l) = 0 := by
-  simp [sh, GroundTheory.PAdicHodge.untilt_zero]
+  simp [sh]
 
 @[simp] theorem sh_one : sh (1 : Tl l) = 1 := by
   simp [sh]

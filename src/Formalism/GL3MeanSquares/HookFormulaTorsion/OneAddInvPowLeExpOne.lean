@@ -83,7 +83,7 @@ theorem mass_corollary : PowerProductTwoSidedBounds := by
   have hB : (T ^ k - 1) ^ f ≤ Y ^ (f * k) * Real.exp 1 := by
     calc (T ^ k - 1) ^ f ≤ (T ^ k) ^ f := by gcongr <;> linarith
       _ = T ^ (f * k) := by rw [← pow_mul, mul_comm]
-      _ ≤ (Y * (1 + 1 / ((f:ℝ) * k))) ^ (f * k) := by gcongr <;> linarith
+      _ ≤ (Y * (1 + 1 / ((f:ℝ) * k))) ^ (f * k) := by gcongr
       _ = Y ^ (f * k) * (1 + 1 / ((f * k : ℕ) : ℝ)) ^ (f * k) := by rw [mul_pow, Nat.cast_mul]
       _ ≤ Y ^ (f * k) * Real.exp 1 :=
           mul_le_mul_of_nonneg_left (one_add_inv_pow_le_exp_one _ hN1) (pow_nonneg hYpos.le _)

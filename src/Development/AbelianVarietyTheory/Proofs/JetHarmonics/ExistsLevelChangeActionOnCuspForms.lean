@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Jets.EmbShortThLeThetaPlain
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevelActionMemCuspFormsStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LevelActionMemCuspForms
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,6 +50,6 @@ theorem exists_isLevAct : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj :
   intro D T h j hj w P ℓ
   have e : cutR T.C j w = T.cuspA j (wtA w) w.n := cutR_eq T.C hj w
   refine ⟨fun g F => (⟨actLev (Xo := T.Q.Xo j) T.Q.c (levFull (T.Q.Dw j) T.Q.l) (ℓ g) F.1, ?_⟩ : cutR T.C j w), fun g F => rfl⟩
-  exact e.ge (GlobalTheory.T.levelAction_mem_cuspForms D T h j hj w (ℓ g) F.1 (e.le F.2))
+  exact e.ge (_root_.GlobalTheory.LevelCusp.actLev_mem_cuspA D T h j hj w (ℓ g) F.1 (e.le F.2))
 
 end GlobalTheory.FormTies

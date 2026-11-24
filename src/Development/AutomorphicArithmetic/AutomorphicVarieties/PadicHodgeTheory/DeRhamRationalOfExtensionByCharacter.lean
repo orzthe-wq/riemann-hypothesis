@@ -96,8 +96,8 @@ private theorem wdAt_of_model {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om
   have h₁ : L₁.1 ≤ (supExt L₁ L₂).1 := le_sup_left
   have h₂ : L₂.1 ≤ (supExt L₁ L₂).1 := le_sup_right
   have e := IsModel.unique B r (hm₁.enlarge h₁) (hm₂.enlarge h₂)
-  have a₁ := GlobalTheory.T.potSemistableParameter_coefficientField_enlarge P ι B h hj h₁ r₁ hV₁
-  have a₂ := GlobalTheory.T.potSemistableParameter_coefficientField_enlarge P ι B h hj h₂ r₂ hV₂
+  have a₁ := _root_.GlobalTheory.Pst.EnlargeParam.wdPst_enlarge P ι B h hj h₁ r₁ hV₁
+  have a₂ := _root_.GlobalTheory.Pst.EnlargeParam.wdPst_enlarge P ι B h hj h₂ r₂ hV₂
   rw [e] at a₁
   exact e₁.trans (a₁.symm.trans a₂)
 

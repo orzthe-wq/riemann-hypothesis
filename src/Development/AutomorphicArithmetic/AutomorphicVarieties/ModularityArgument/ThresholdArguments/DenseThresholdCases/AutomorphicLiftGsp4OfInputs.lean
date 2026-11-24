@@ -1,20 +1,18 @@
 module
 
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.TwistIne
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AfDesc
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PrimeIndexConstruction.RankFourAutomorphyOfTensor
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.InductionEstimates.SplitUnramifiedInduction.SplitOfDecAlt
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.AttTwist
-import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.GaloisRepIrreducibilityCriterion
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.SolvablePolarizedRestriction
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.HolomorphicIrreducibility.ResFacts
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PrimeIndexConstruction.ValAbsPowNegOne
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PGoodJ
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PTenInd
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.BirthAwChain
-import GroundTheory.GlobalFields.ExistenceTheorem.ExistsIsAbelianGaloisRangeIdeleClassNormEqOfFini
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -26,7 +24,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -45,12 +42,355 @@ import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
+import Formalism.GaloisIrreducibility.GaloisIrreducibilityProofs.OneNonUnit
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.GaloisRepIrreducibilityCriterion
+import GroundTheory.GlobalFields.ExistenceTheorem.ExistsIsAbelianGaloisRangeIdeleClassNormEqOfFini
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PrimeIndexConstruction.LocTrans
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.SphericalOfHasSat
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PGoodJ, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PTenInd, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AutomorphicLiftGsp4OfInputs
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PGoodJ =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PGoodJ", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.TwistIne\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N IsLocalRing Polynomial
+open UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S3
+open UpperTheory.V.Cu
+open scoped Matrix
+
+namespace UpperTheory.V.Cu2
+
+namespace GoodJ
+
+theorem isAlg_of_pos {K : Type} [Field K] [NumberField K] [_root_.NumberField.IsTotallyComplex K] {κ : HChar K}
+    {m : (K →+* ℂ) → ℤ} (hκ : IsAlgPos κ m) : κ.IsAlg m := fun k => hκ k fun φ => by
+  have h := IsTotallyComplex.complexEmbedding_not_isReal (Complex.ofRealHom.comp φ)
+  refine absurd ?_ h
+  rw [ComplexEmbedding.isReal_iff]
+  ext x
+  simp
+
+theorem infChar_twist {K : Type} [Field K] [NumberField K] [_root_.NumberField.IsTotallyComplex K] {n : ℕ} (P : CuspSub K n)
+    {κ : HChar K} {m : (K →+* ℂ) → ℤ} (hκ : IsAlgPos κ m) (τ : K →+* ℂ) :
+    (CG.mk (P.twist κ)).infChar τ = ((CG.mk P).infChar τ).map (· + ((m τ : ℤ) : ℂ)) := by
+  have e := ((ParLaws.hasInfChar_infChar (CG.mk P) τ).twist κ).infChar_eq
+  rw [CG.twist_mk] at e
+  rw [e]
+  refine Multiset.map_congr rfl fun z _ => ?_
+  simp only [(InfType.expo_of_infType K κ).1 m (isAlg_of_pos hκ) τ]
+
+end GoodJ
+
+theorem goodJ : GoodJ := by
+  intro K _ _ _ hK π hreg m hm
+  classical
+  let S : Finset ℂ := Finset.univ.biUnion fun τ : K →+* ℂ =>
+    (((CG.mk π).infChar τ).toFinset ×ˢ ((CG.mk π).infChar (ComplexEmbedding.conjugate τ)).toFinset).image
+      fun p => p.1 - p.2
+  have h2 : ∀ τ : K →+* ℂ, ((CG.mk π).infChar τ).toFinset.card ≤ 2 := fun τ =>
+    (Multiset.toFinset_card_le _).trans (CG.card_infChar _ τ).le
+  have hS : S.card ≤ 8 := by
+    refine (Finset.card_biUnion_le_card_mul _ _ 4 fun τ _ => ?_).trans ?_
+    · refine Finset.card_image_le.trans ?_
+      rw [Finset.card_product]
+      have a1 := h2 τ
+      have a2 := h2 (ComplexEmbedding.conjugate τ)
+      nlinarith
+    · rw [Finset.card_univ, NumberField.Embeddings.card K ℂ, hK]
+  have hinj : Function.Injective fun j : ℕ => ((2 * m * j : ℕ) : ℂ) := by
+    intro a b h
+    have h' : 2 * m * a = 2 * m * b := Nat.cast_injective h
+    exact Nat.eq_of_mul_eq_mul_left (by omega) h'
+  have hcard : S.card < ((Finset.Icc 1 9).image fun j : ℕ => ((2 * m * j : ℕ) : ℂ)).card := by
+    rw [Finset.card_image_of_injective _ hinj, Nat.card_Icc]
+    omega
+  obtain ⟨_, hz, hzS⟩ := Finset.exists_mem_notMem_of_card_lt_card hcard
+  obtain ⟨j, hj, rfl⟩ := Finset.mem_image.1 hz
+  rw [Finset.mem_Icc] at hj
+  refine ⟨j, hj.1, hj.2, fun Y a e hY ha ha' => ?_⟩
+  have eM := GoodJ.infChar_twist π hY e
+  have eM' := GoodJ.infChar_twist π hY (ComplexEmbedding.conjugate e)
+  rw [ha] at eM
+  rw [ha'] at eM'
+  refine ⟨(CG.mk (π.twist Y)).infChar e, (CG.mk (π.twist Y)).infChar (ComplexEmbedding.conjugate e),
+    ParLaws.hasInfChar_infChar (CG.mk (π.twist Y)) e,
+    ParLaws.hasInfChar_infChar (CG.mk (π.twist Y)) (ComplexEmbedding.conjugate e), ?_, ?_, ?_⟩
+  · intro h0
+    have h1 := CG.card_infChar (CG.mk (π.twist Y)) e
+    rw [h0] at h1
+    simp at h1
+  · rw [Multiset.nodup_add, eM, eM']
+    refine ⟨(hreg e).1.map (add_left_injective _), (hreg _).1.map (add_left_injective _),
+      Multiset.disjoint_left.2 fun {z} hz hz' => ?_⟩
+    obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.1 hz
+    obtain ⟨x', hx', hxx⟩ := Multiset.mem_map.1 hz'
+    refine hzS (Finset.mem_biUnion.2 ⟨e, Finset.mem_univ _, Finset.mem_image.2
+      ⟨(x, x'), Finset.mem_product.2 ⟨Multiset.mem_toFinset.2 hx, Multiset.mem_toFinset.2 hx'⟩, ?_⟩⟩)
+    push_cast at hxx ⊢
+    linear_combination -hxx
+  · intro z hz
+    rcases Multiset.mem_add.1 hz with hz | hz
+    · rw [eM] at hz
+      obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.1 hz
+      obtain ⟨k, rfl⟩ := (hreg e).2 x hx
+      exact ⟨k - ((m * j : ℕ) : ℤ) - 1, by push_cast; ring⟩
+    · rw [eM'] at hz
+      obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.1 hz
+      obtain ⟨k, rfl⟩ := (hreg _).2 x hx
+      exact ⟨k + ((m * j : ℕ) : ℤ) - 1, by push_cast; ring⟩
+
+end UpperTheory.V.Cu2
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PGoodJ =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PTenInd =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PTenInd", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.TwistIne\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle\nimport Formalism.GaloisIrreducibility.GaloisIrreducibilityProofs.OneNonUnit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N IsLocalRing Polynomial
+open UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S3
+open UpperTheory.V.Cu
+open scoped Matrix
+
+namespace UpperTheory.V.Cu2
+
+namespace TenInd
+
+section Mat
+
+variable {k : Type} [Field k]
+
+theorem ti_cp_on (g : Matrix (Fin 2) (Fin 2) k) (a b : k) :
+    (tn g !![a, b; b, a]).charpoly = ((a + b) • g).charpoly * ((a - b) • g).charpoly := by
+  rw [Matrix.charpoly_fin_two, Matrix.charpoly_fin_two, Matrix.charpoly, Matrix.det_succ_row_zero]
+  simp (config := {decide := true}) [Fin.succAbove, Fin.sum_univ_succ, Matrix.det_succ_row_zero, Matrix.submatrix_apply, Matrix.charmatrix_apply,
+    Matrix.diagonal_apply, tn, Matrix.trace_fin_two]
+  ring1
+
+theorem ti_cp_off (g : Matrix (Fin 2) (Fin 2) k) (p q : k) (h : p ^ 2 - q ^ 2 = 1) :
+    (tn g !![p, q; -q, -p]).charpoly = (g * g).charpoly.comp (X ^ 2) := by
+  have h' : (C p : k[X]) ^ 2 - C q ^ 2 = 1 := by rw [← map_pow, ← map_pow, ← map_sub, h, map_one]
+  rw [Matrix.charpoly_fin_two, Matrix.charpoly, Matrix.det_succ_row_zero]
+  simp (config := {decide := true}) [Fin.succAbove, Fin.sum_univ_succ, Matrix.det_succ_row_zero, Matrix.submatrix_apply, Matrix.charmatrix_apply,
+    Matrix.diagonal_apply, tn, Matrix.trace_fin_two, Matrix.mul_apply,
+    Polynomial.sub_comp, Polynomial.add_comp, Polynomial.mul_comp, Polynomial.pow_comp]
+  linear_combination (-((C (g 0 0) + C (g 1 1)) ^ 2 - 2 * (C (g 0 0) * C (g 1 1) - C (g 0 1) * C (g 1 0))) * X ^ 2 +
+    (C p ^ 2 - C q ^ 2 + 1) * (C (g 0 0) * C (g 1 1) - C (g 0 1) * C (g 1 0)) ^ 2) * h'
+
+theorem ti_tn_ker (c a : k) (h : c * a = 1) : tn (c • (1 : Matrix (Fin 2) (Fin 2) k)) !![a, 0; 0, a] = 1 := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [tn] <;> first | linear_combination h
+
+theorem ti_sq_mat (p q : k) (h : p ^ 2 - q ^ 2 = 1) :
+    !![p, q; -q, -p] * !![p, q; -q, -p] = (1 : Matrix (Fin 2) (Fin 2) k) := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | linear_combination h | ring1
+
+theorem ti_conj_mat (a b p q : k) (h : p ^ 2 - q ^ 2 = 1) :
+    (!![p, q; -q, -p] * !![a, b; b, a] * !![p, q; -q, -p]) 0 0 +
+      (!![p, q; -q, -p] * !![a, b; b, a] * !![p, q; -q, -p]) 0 1 = a - b := by
+  first
+  | (simp; linear_combination (a - b) * h)
+
+theorem ti_cp_conj {n : ℕ} (c : k) (M : GL (Fin n) k) (N : Matrix (Fin n) (Fin n) k) :
+    (c • ((M : Matrix (Fin n) (Fin n) k) * N * ((M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))).charpoly =
+      (c • N).charpoly := by
+  rw [← Matrix.charpoly_units_conj M (c • N), mul_smul_comm, smul_mul_assoc, Matrix.coe_units_inv]
+
+theorem ti_cp_conj' {n : ℕ} (c : k) (M : GL (Fin n) k) (N : Matrix (Fin n) (Fin n) k) :
+    (c • (((M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * N * (M : Matrix (Fin n) (Fin n) k))).charpoly =
+      (c • N).charpoly := by
+  have := ti_cp_conj c M⁻¹ N
+  rwa [inv_inv] at this
+
+end Mat
+
+section Gen
+
+variable {k : Type} [Field k] {Γ Δ : Type} [Group Γ] [Group Δ]
+
+structure TIHyp (H : Subgroup Γ) (res : Δ →* Γ) (ρ : Γ →* GL (Fin 2) k) (κ : Δ →* kˣ)
+    (Gm T : Γ →* Matrix (Fin 2) (Fin 2) k) (R : Γ →* GL (Fin 4) k) (P : GL (Fin 2) k) : Prop where
+  hres : ∀ h, res h ∈ H
+  hgm : ∀ x, Gm x = (P : Matrix (Fin 2) (Fin 2) k) * (ρ x : Matrix (Fin 2) (Fin 2) k) *
+    ((P⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k)
+  hrr : ∀ x, (R x : Matrix (Fin 4) (Fin 4) k) = tn (Gm x) (T x)
+  hon : ∀ x ∈ H, T x 1 1 = T x 0 0 ∧ T x 1 0 = T x 0 1
+  hoff : ∀ x ∉ H, T x 1 1 = -T x 0 0 ∧ T x 1 0 = -T x 0 1
+  hform : ∀ x, T x 0 0 ^ 2 - T x 1 0 ^ 2 = 1
+  hkap : ∀ h, (κ h : k) = T (res h) 0 0 + T (res h) 0 1
+
+variable {H : Subgroup Γ} {res : Δ →* Γ} {ρ : Γ →* GL (Fin 2) k} {κ : Δ →* kˣ}
+  {Gm T : Γ →* Matrix (Fin 2) (Fin 2) k} {R : Γ →* GL (Fin 4) k} {P : GL (Fin 2) k}
+
+theorem ti_shape_on (hy : TIHyp H res ρ κ Gm T R P) {x : Γ} (hx : x ∈ H) :
+    T x = !![T x 0 0, T x 0 1; T x 0 1, T x 0 0] := by
+  conv_lhs => rw [Matrix.eta_fin_two (T x)]
+  rw [(hy.hon x hx).1, (hy.hon x hx).2]
+
+theorem ti_shape_off (hy : TIHyp H res ρ κ Gm T R P) {x : Γ} (hx : x ∉ H) :
+    T x = !![T x 0 0, T x 0 1; -T x 0 1, -T x 0 0] := by
+  conv_lhs => rw [Matrix.eta_fin_two (T x)]
+  rw [(hy.hoff x hx).1, (hy.hoff x hx).2]
+
+theorem ti_form_off (hy : TIHyp H res ρ κ Gm T R P) {x : Γ} (hx : x ∉ H) :
+    T x 0 0 ^ 2 - T x 0 1 ^ 2 = 1 := by
+  have h := hy.hform x
+  rw [(hy.hoff x hx).2] at h
+  linear_combination h
+
+theorem ti_sq (hy : TIHyp H res ρ κ Gm T R P) {t : Γ} (ht : t ∉ H) : T t * T t = 1 := by
+  rw [ti_shape_off hy ht]
+  exact ti_sq_mat _ _ (ti_form_off hy ht)
+
+theorem ti_inv (hy : TIHyp H res ρ κ Gm T R P) {t : Γ} (ht : t ∉ H) : T t⁻¹ = T t := by
+  calc T t⁻¹ = T t⁻¹ * (T t * T t) := by rw [ti_sq hy ht, mul_one]
+    _ = T (t⁻¹ * t) * T t := by rw [map_mul, mul_assoc]
+    _ = T t := by rw [inv_mul_cancel, map_one, one_mul]
+
+theorem ti_kap_conj (hy : TIHyp H res ρ κ Gm T R P) {t : Γ} (ht : t ∉ H) {g g' : Δ}
+    (hg' : res g' = t⁻¹ * res g * t) : (κ g' : k) = T (res g) 0 0 - T (res g) 0 1 := by
+  have hx := hy.hres g
+  obtain ⟨a, ha⟩ : ∃ a, T (res g) 0 0 = a := ⟨_, rfl⟩
+  obtain ⟨b, hb⟩ : ∃ b, T (res g) 0 1 = b := ⟨_, rfl⟩
+  obtain ⟨p, hp⟩ : ∃ p, T t 0 0 = p := ⟨_, rfl⟩
+  obtain ⟨q, hq⟩ : ∃ q, T t 0 1 = q := ⟨_, rfl⟩
+  have hTx : T (res g) = !![a, b; b, a] := by rw [ti_shape_on hy hx, ha, hb]
+  have hTt : T t = !![p, q; -q, -p] := by rw [ti_shape_off hy ht, hp, hq]
+  have hpq : p ^ 2 - q ^ 2 = 1 := by rw [← hp, ← hq]; exact ti_form_off hy ht
+  rw [hy.hkap g', ha, hb, hg', map_mul, map_mul, ti_inv hy ht, hTt, hTx]
+  exact ti_conj_mat a b p q hpq
+
+theorem ti_on (hy : TIHyp H res ρ κ Gm T R P) (t : Γ) (ht : t ∉ H) (g g' : Δ) (hg' : res g' = t⁻¹ * res g * t) :
+    (R (res g) : Matrix (Fin 4) (Fin 4) k).charpoly =
+      (UpperTheory.V.Af.tw (ρ.comp res) κ g : Matrix (Fin 2) (Fin 2) k).charpoly *
+        (UpperTheory.V.Af.tw (ρ.comp res) κ g' : Matrix (Fin 2) (Fin 2) k).charpoly := by
+  have hx := hy.hres g
+  have hk' := ti_kap_conj hy ht hg'
+  obtain ⟨a, ha⟩ : ∃ a, T (res g) 0 0 = a := ⟨_, rfl⟩
+  obtain ⟨b, hb⟩ : ∃ b, T (res g) 0 1 = b := ⟨_, rfl⟩
+  have hTx : T (res g) = !![a, b; b, a] := by rw [ti_shape_on hy hx, ha, hb]
+  have hρ' : (ρ (res g') : Matrix (Fin 2) (Fin 2) k) = (((ρ t)⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) *
+      (ρ (res g) : Matrix (Fin 2) (Fin 2) k) * (ρ t : Matrix (Fin 2) (Fin 2) k) := by
+    rw [hg', map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul]
+  rw [UpperTheory.V.Af.tw_val, UpperTheory.V.Af.tw_val, MonoidHom.comp_apply, MonoidHom.comp_apply, hρ', hk', hy.hkap g,
+    ha, hb, hy.hrr, hTx, ti_cp_on, hy.hgm]
+  simp only [ti_cp_conj, ti_cp_conj']
+
+theorem ti_off (hy : TIHyp H res ρ κ Gm T R P) (t : Γ) (ht : t ∉ H) (g : Δ) (hg : res g = t * t) :
+    (R t : Matrix (Fin 4) (Fin 4) k).charpoly =
+      (UpperTheory.V.Af.tw (ρ.comp res) κ g : Matrix (Fin 2) (Fin 2) k).charpoly.comp (X ^ 2) := by
+  obtain ⟨p, hp⟩ : ∃ p, T t 0 0 = p := ⟨_, rfl⟩
+  obtain ⟨q, hq⟩ : ∃ q, T t 0 1 = q := ⟨_, rfl⟩
+  have hTt : T t = !![p, q; -q, -p] := by rw [ti_shape_off hy ht, hp, hq]
+  have hpq : p ^ 2 - q ^ 2 = 1 := by rw [← hp, ← hq]; exact ti_form_off hy ht
+  have hk : (κ g : k) = 1 := by
+    rw [hy.hkap g, hg, map_mul, hTt, ti_sq_mat p q hpq]
+    simp
+  rw [UpperTheory.V.Af.tw_val, MonoidHom.comp_apply, hk, one_smul, hg, hy.hrr, hTt, ti_cp_off _ _ _ hpq,
+    ← map_mul Gm, hy.hgm, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
+
+theorem ti_ker [CharZero k] (hy : TIHyp H res ρ κ Gm T R P) (t : Γ) (ht : t ∉ H) (g g' : Δ)
+    (hg' : res g' = t⁻¹ * res g * t) (h1 : UpperTheory.V.Af.tw (ρ.comp res) κ g = 1)
+    (h1' : UpperTheory.V.Af.tw (ρ.comp res) κ g' = 1) : R (res g) = 1 := by
+  have hx := hy.hres g
+  have e1 : (κ g : k) • (ρ (res g) : Matrix (Fin 2) (Fin 2) k) = 1 := by
+    have e := congrArg Units.val h1
+    rwa [UpperTheory.V.Af.tw_val, MonoidHom.comp_apply, Units.val_one] at e
+  have e2 : (κ g' : k) • (ρ (res g') : Matrix (Fin 2) (Fin 2) k) = 1 := by
+    have e := congrArg Units.val h1'
+    rwa [UpperTheory.V.Af.tw_val, MonoidHom.comp_apply, Units.val_one] at e
+  have hne : (κ g : k) ≠ 0 := Units.ne_zero _
+  have hρx : (ρ (res g) : Matrix (Fin 2) (Fin 2) k) = (κ g : k)⁻¹ • 1 := by
+    rw [← e1, smul_smul, inv_mul_cancel₀ hne, one_smul]
+  have hρx' : (ρ (res g') : Matrix (Fin 2) (Fin 2) k) = (κ g : k)⁻¹ • 1 := by
+    rw [hg', map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, hρx, mul_smul_comm, mul_one,
+      smul_mul_assoc, Units.inv_mul]
+  have e3 : (κ g' : k) * (κ g : k)⁻¹ = 1 := by
+    have e := congrFun (congrFun e2 0) 0
+    rw [hρx', smul_smul] at e
+    simpa using e
+  have hkk : (κ g' : k) = κ g := (mul_inv_eq_one₀ hne).1 e3
+  rw [ti_kap_conj hy ht hg', hy.hkap g] at hkk
+  have hb : T (res g) 0 1 = 0 := by
+    have h2 : (2 : k) * T (res g) 0 1 = 0 := by linear_combination -hkk
+    rcases mul_eq_zero.1 h2 with h | h
+    · exact absurd h two_ne_zero
+    · exact h
+  have ha0 : T (res g) 0 0 ≠ 0 := by
+    have h := hne
+    rwa [hy.hkap g, hb, add_zero] at h
+  apply Units.ext
+  rw [hy.hrr, Units.val_one, hy.hgm, hρx, mul_smul_comm, mul_one, smul_mul_assoc, Units.mul_inv,
+    ti_shape_on hy hx, hy.hkap g, hb, add_zero]
+  exact ti_tn_ker _ _ (inv_mul_cancel₀ ha0)
+
+end Gen
+
+theorem ti_tenB_val {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
+    (ρ₁ τ : G ℚ Ω →* M2 c.O) (x : G ℚ Ω) :
+    ((tenB ρ₁ τ x : GL (Fin 4) (Qbar l)) : Matrix (Fin 4) (Fin 4) (Qbar l)) =
+      tn (mapRep (algebraMap c.O (PadicAlgCl l)) ρ₁ x) (mapRep (algebraMap c.O (PadicAlgCl l)) τ x) := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [tenB, rep4, tn, MonoidHom.coe_toHomUnits]
+
+end TenInd
+
+theorem tenInd : TenInd := by
+  intro Ω _ _ _ l _ ι K' _ _ ρ g0 m c₁ κ ρ₁ τ s hiso hτ
+  obtain ⟨P, hP⟩ := hiso
+  have hy : TenInd.TIHyp K'.fixingSubgroup (resQ K') ρ κ (mapRep (algebraMap c₁.O (PadicAlgCl l)) ρ₁)
+      (mapRep (algebraMap c₁.O (PadicAlgCl l)) τ) (tenB ρ₁ τ) P := by
+    refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+    · intro h
+      first
+      | exact (mem_fixingSubgroup_iff _).2 fun y hy => h.commutes ⟨y, hy⟩
+    · intro x
+      have e := congrArg Units.val (hP x)
+      rwa [MonoidHom.coe_toHomUnits, Units.val_mul, Units.val_mul] at e
+    · exact fun x => TenInd.ti_tenB_val ρ₁ τ x
+    · intro x hx
+      simp [mapRep_apply, hτ.on x hx]
+    · intro x hx
+      simp [mapRep_apply, hτ.off x hx]
+    · intro x
+      have h := congrFun (congrFun (hτ.form x) 0) 0
+      simp [Matrix.mul_apply, Fin.sum_univ_two] at h
+      rw [mapRep_apply, mapRep_apply, ← map_pow, ← map_pow, ← map_sub,
+        show τ x 0 0 ^ 2 - τ x 1 0 ^ 2 = 1 by linear_combination h, map_one]
+    · intro h
+      rw [hτ.val h, mapRep_apply, mapRep_apply, ← map_add (f := _)]
+      first | rfl
+  exact ⟨fun t ht g g' hg' => TenInd.ti_on hy t ht g g' hg', fun t ht g hg => TenInd.ti_off hy t ht g hg,
+    fun t ht g g' hg' h1 h1' => TenInd.ti_ker hy t ht g g' hg' h1 h1'⟩
+
+end UpperTheory.V.Cu2
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PTenInd =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AutomorphicLiftGsp4OfInputs =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AutomorphicLiftGsp4OfInputs", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AfDesc\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PrimeIndexConstruction.RankFourAutomorphyOfTensor\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.InductionEstimates.SplitUnramifiedInduction.SplitOfDecAlt\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.AttTwist\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.GaloisRepIrreducibilityCriterion\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.SolvablePolarizedRestriction\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.HolomorphicIrreducibility.ResFacts\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PrimeIndexConstruction.ValAbsPowNegOne\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PGoodJ\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CuspidalTwists.FiniteOrderCongruences.PTenInd\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.BirthAwChain\nimport GroundTheory.GlobalFields.ExistenceTheorem.ExistsIsAbelianGaloisRangeIdeleClassNormEqOfFini\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PrimeIndexConstruction.LocTrans\nimport Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AdmissibleResidues.SphericalOfHasSat\n\n"}
+section -- clump:auto
 @[expose] public section
 
 
@@ -229,3 +569,6 @@ theorem UpperTheory.V.Cu.rank_four_automorphy_of_tensor_of_base_change_of_induct
       rw [map_mul] at this
       exact this
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ThresholdArguments.DenseThresholdCases.AutomorphicLiftGsp4OfInputs =====

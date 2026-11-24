@@ -147,18 +147,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
-theorem frobpin_φD_smul (a : LetA O n) (x : W.DD T) :
-    W.φD T (a • x) = W.φA a • W.φD T x := by
-  have := W.φD_smul T (algebraMap (LetA O n) W.EE a) x
-  rw [algebraMap_smul, W.φE_ext, algebraMap_smul] at this
-  exact this
-
-theorem frobpin_γD_smul (g : W.Gam) (a : LetA O n) (x : W.DD T) :
-    W.γD T g (a • x) = W.γA g a • W.γD T g x := by
-  have := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
-  rw [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
-  exact this
-
 theorem frobpin_φA_pow (I : Ideal (LetA O n)) (hφI : ∀ a ∈ I, W.φA a ∈ I) (k : ℕ) :
     ∀ a ∈ I ^ k, W.φA a ∈ I ^ k := by
   intro a ha
@@ -176,7 +164,7 @@ theorem frobpin_local (I : Ideal (LetA O n)) (hI : IsAdicComplete I ↥(W.N T))
   obtain ⟨c, hcdef⟩ : ∃ c : LetA O n, c = (u : LetA O n) ^ M * Ep ^ (s' * M) := ⟨_, rfl⟩
   have hφx : ∀ y : W.DD T, W.φD T (π' ^ M • y) = π' ^ M • (c • W.φD T y) := by
     intro y
-    rw [frobpin_φD_smul, map_pow, hφπ, smul_smul, hcdef, mul_pow, mul_pow, ← pow_mul]
+    rw [_root_.Formalism.MainNotions.LiftingTheory.wmap_φD_smul, map_pow, hφπ, smul_smul, hcdef, mul_pow, mul_pow, ← pow_mul]
     congr 1
     ring
   obtain ⟨r, hr⟩ : ∃ r, s' * M = r + 1 + h' := ⟨s' * M - (h' + 1), by omega⟩
@@ -193,7 +181,7 @@ theorem frobpin_local (I : Ideal (LetA O n)) (hI : IsAdicComplete I ↥(W.N T))
       c • W.φD T y ∈ (I ^ (k + 1) • W.N T : Submodule (LetA O n) (W.DD T)) := by
     intro k y hy
     refine Submodule.smul_induction_on hy (fun a ha z hz => ?_) (fun x y hx hy => ?_)
-    · rw [frobpin_φD_smul, smul_comm c (W.φA a), pow_succ, Submodule.mul_smul]
+    · rw [_root_.Formalism.MainNotions.LiftingTheory.wmap_φD_smul, smul_comm c (W.φA a), pow_succ, Submodule.mul_smul]
       exact Submodule.smul_mem_smul (frobpin_φA_pow W I hφI k a ha) (hcI z hz)
     · rw [map_add (f := _), smul_add]
       exact Submodule.add_mem _ hx hy
@@ -242,7 +230,7 @@ theorem frobpin_local (I : Ideal (LetA O n)) (hI : IsAdicComplete I ↥(W.N T))
       rw [hφx, ← smul_sub, hyv]
     refine ⟨π' ^ M • (y : W.DD T), ⟨(mem_PiNS W T π' M _).2 ⟨⟨y, y.2, rfl⟩, fun δ hδ => ?_⟩, hsol⟩, ?_⟩
     · exact huniq2 _ _
-        ⟨W.γD T δ y, W.N_Γ T δ y y.2, by rw [frobpin_γD_smul, map_pow, hπΔ δ hδ]⟩ ⟨y, y.2, rfl⟩
+        ⟨W.γD T δ y, W.N_Γ T δ y y.2, by rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, map_pow, hπΔ δ hδ]⟩ ⟨y, y.2, rfl⟩
         (by rw [W.φγ_comm, ← map_sub, hsol, hbΔ δ hδ])
     · rintro x' ⟨hx', hx'sol⟩
       exact huniq2 _ _ ((mem_PiNS W T π' M x').1 hx').1 ⟨y, y.2, rfl⟩ (by rw [hx'sol, hsol])

@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMulEqZeroOfSumToReal
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPosRatMultipleOfPosRealMultipleIntFormStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPosRatMultipleOfPosRealMultipleIntForm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -55,7 +55,7 @@ theorem eq_of_toReal_eq_smul : ∀ {X : Type} [AddCommGroup X] (x y : LinearMap.
   have hy0 : y ≠ 0 := fun h0 => by
     have := hy 0 0 (by simp [h0])
     simp at this
-  obtain ⟨a, b, ha, hb, hab⟩ := GlobalTheory.T.exists_pos_rat_multiple_of_pos_real_multiple_intForm x y d hd hy0 h
+  obtain ⟨a, b, ha, hb, hab⟩ := _root_.GlobalTheory.posReal_multiple_rat x y d hd hy0 h
   have hg : 0 < Nat.gcd a b := Nat.gcd_pos_of_pos_left b ha
   have hcop0 := Nat.coprime_div_gcd_div_gcd (m := a) (n := b) hg
   obtain ⟨a', ha'⟩ := Nat.gcd_dvd_left a b

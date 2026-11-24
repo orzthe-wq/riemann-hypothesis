@@ -98,7 +98,6 @@ theorem qdet_polyMap_monic (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (E : Fi
     split_ifs
     · rw [← add_assoc, ← Algebra.algebraMap_eq_smul_one, ← map_add (f := _)]
       congr 2
-      all_goals ring
     · simp
   choose c hct hc using h
   have htop : ∀ σ : Equiv.Perm (Fin n), σ ≠ 1 → c σ n = 0 := by

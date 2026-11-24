@@ -85,7 +85,7 @@ theorem det_twoSided {a b : ℕ} (A : Matrix (Fin a) (Fin a) ℂ) (B : Matrix (F
       intro M
       simp [Matrix.stdBasis]
     rw [hr]
-    simp [Matrix.mul_apply, Matrix.single, Finset.sum_mul, ite_and]
+    simp [Matrix.mul_apply, Matrix.single, ite_and]
   rw [h, Matrix.det_kronecker, Matrix.det_transpose]
   simp
 

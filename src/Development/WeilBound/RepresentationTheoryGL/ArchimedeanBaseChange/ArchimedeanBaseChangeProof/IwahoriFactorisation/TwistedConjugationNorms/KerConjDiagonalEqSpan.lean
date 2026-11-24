@@ -1,8 +1,11 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnifAt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramDetChangeOfBasesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmFieldStatement
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GramDetChangeOfBases
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
+public import Mathlib.LinearAlgebra.Matrix.Permutation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -12,7 +15,6 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.Matrix.Permutation
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
@@ -46,6 +48,8 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.RingTheory.PicardGroup
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CongruenceFiniteIndex
 
 @[expose] public section
 
@@ -103,10 +107,6 @@ theorem aeval_diagonal' (u : Fin n → K) (Q : K[X]) :
   rw [h, Matrix.diagonalAlgHom_apply, aeval_pi_apply]
   congr 1
 
-theorem mulVec_inv_mulVec (P : GL (Fin n) K) (x : Fin n → K) :
-    (P : Matrix (Fin n) (Fin n) K) *ᵥ (((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) = x := by
-  rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
-
 theorem inv_mulVec_mulVec (P : GL (Fin n) K) (x : Fin n → K) :
     ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ ((P : Matrix (Fin n) (Fin n) K) *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
@@ -144,7 +144,7 @@ theorem ker_conj_diagonal_eq_span (P : GL (Fin n) K) (d : Fin n → K) (S : Fins
       · exact h
     have hx' : x = ∑ j ∈ S, ((((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) *ᵥ x) j •
         (fun k => (P : Matrix (Fin n) (Fin n) K) k j) := by
-      conv_lhs => rw [← mulVec_inv_mulVec P x]
+      conv_lhs => rw [← _root_.GlobalTheory.CongruenceIndex.mulVec_inv_mulVec P x]
       funext k
       rw [Finset.sum_apply]
       simp only [Pi.smul_apply, smul_eq_mul]
@@ -271,34 +271,7 @@ section Ord
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
-theorem ordL_eq_of_v {x y : L} (h : Valued.v x = Valued.v y) : ordL x = ordL y := by
-  unfold ordL
-  by_cases hx : Valued.v x = 0
-  · have hy : Valued.v y = 0 := by rw [← h]; exact hx
-    rw [dite_eq_left hx, dite_eq_left hy]
-  · have hy : Valued.v y ≠ 0 := by rw [← h]; exact hx
-    rw [dite_eq_right hx, dite_eq_right hy]
-    have e : WithZero.unzero hx = WithZero.unzero hy := by
-      apply WithZero.coe_injective
-      rw [WithZero.coe_unzero, WithZero.coe_unzero, h]
-    rw [e]
-
-theorem ordL_mul' {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x + ordL y := by
-  have h0 : Valued.v x ≠ 0 := by simpa using hx
-  have h0' : Valued.v y ≠ 0 := by simpa using hy
-  have h1 : Valued.v (x * y) ≠ 0 := by rw [map_mul]; exact mul_ne_zero h0 h0'
-  unfold ordL
-  rw [dite_eq_right h1, dite_eq_right h0, dite_eq_right h0']
-  have e : WithZero.unzero h1 = WithZero.unzero h0 * WithZero.unzero h0' := by
-    apply WithZero.coe_injective
-    rw [WithZero.coe_mul, WithZero.coe_unzero, WithZero.coe_unzero, WithZero.coe_unzero, map_mul]
-  rw [e, toAdd_mul]
-  ring
-
-theorem ordL_one' : ordL (1 : L) = 0 := by
-  have h := ordL_mul' (one_ne_zero : (1 : L) ≠ 0) (one_ne_zero : (1 : L) ≠ 0)
-  rw [one_mul] at h
-  omega
+alias ordL_mul' := _root_.Formalism.UG.P.fSatake_ord_mul
 
 theorem ordL_zero' : ordL (0 : L) = 0 := by
   unfold ordL
@@ -307,7 +280,7 @@ theorem ordL_zero' : ordL (0 : L) = 0 := by
 theorem ordL_prod' {ι : Type} (T : Finset ι) (g : ι → L) (hg : ∀ j ∈ T, g j ≠ 0) :
     ordL (∏ j ∈ T, g j) = ∑ j ∈ T, ordL (g j) := by
   induction T using Finset.induction_on with
-  | empty => simp [ordL_one']
+  | empty => simp [_root_.Formalism.UG.P.fSatake_ord_one]
   | @insert a T ha ih =>
     rw [Finset.prod_insert ha, Finset.sum_insert ha,
       ordL_mul' (hg a (Finset.mem_insert_self a T))
@@ -317,7 +290,7 @@ theorem ordL_prod' {ι : Type} (T : Finset ι) (g : ι → L) (hg : ∀ j ∈ T,
 theorem ordL_sign_mul (s : ℤˣ) (x : L) : ordL (((s : ℤ) : L) * x) = ordL x := by
   rcases Int.units_eq_one_or s with h | h <;> subst h
   · simp
-  · apply ordL_eq_of_v
+  · apply _root_.Formalism.UG.P.fSatake_ord_of_v
     simp
 
 end Ord
@@ -329,7 +302,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 theorem kapSign_eq_one_of_vals (hU : Unr E) (w : Pl E) (n : ℕ) (γ : GLw n w) (hγ : γ ∈ UL n w)
     (v : Fin n → ℤ) (hv : Function.Injective v) (hrev : ∀ i j, v j = -v i → j = Fin.rev i)
     (hV : HasVals γ.val.charpoly v) (Q : (w.adicCompletion E)[X]) : kapSign n w Q γ = 1 := by
-  obtain ⟨-, hinv, hcj, -⟩ := GlobalTheory.T.placeConjugation_properties_cmField E hU w
+  obtain ⟨-, hinv, hcj, -⟩ := _root_.GlobalTheory.ConjAtPlace.main E hU w
   unfold kapSign
   split_ifs with hs
   · rfl
@@ -405,7 +378,7 @@ theorem kapSign_eq_one_of_vals (hU : Unr E) (w : Pl E) (n : ℕ) (γ : GLw n w) 
     apply hj
     apply hrev
     have h2 := ordL_mul' ((map_ne_zero (cj w)).2 (hu i).1) (hu j).1
-    rw [h1, ordL_one', ordL_eq_of_v (hcj (u i)), (hu i).2, (hu j).2] at h2
+    rw [h1, _root_.Formalism.UG.P.fSatake_ord_one, _root_.Formalism.UG.P.fSatake_ord_of_v (hcj (u i)), (hu i).2, (hu j).2] at h2
     omega
 
   have hg0 : ∀ j, H (Fin.rev j) j ≠ 0 := by
@@ -420,7 +393,7 @@ theorem kapSign_eq_one_of_vals (hU : Unr E) (w : Pl E) (n : ℕ) (γ : GLw n w) 
     intro j
     simp only [hfdef, Fin.rev_rev]
     rw [← hherm]
-    exact ordL_eq_of_v (hcj _)
+    exact _root_.Formalism.UG.P.fSatake_ord_of_v (hcj _)
   have hordS : ∀ (S : Finset (Fin n)) (hS : ∀ i ∈ S, Fin.rev i ∈ S),
       ordL (H.submatrix (fun i : S => i.1) (fun i : S => i.1)).det = ∑ j ∈ S, f j := by
     intro S hS
@@ -430,7 +403,7 @@ theorem kapSign_eq_one_of_vals (hU : Unr E) (w : Pl E) (n : ℕ) (γ : GLw n w) 
   have htot : Even (∑ j ∈ (Finset.univ : Finset (Fin n)), f j) := by
     have e : ordL H.det = ∑ j, f j := by
       rw [det_rev H hsupp, ordL_sign_mul, ordL_prod' _ _ (fun j _ => hg0 j)]
-    rw [hHdet, ordL_mul' ((map_ne_zero (cj w)).2 hPdet) hPdet, ordL_eq_of_v (hcj _)] at e
+    rw [hHdet, ordL_mul' ((map_ne_zero (cj w)).2 hPdet) hPdet, _root_.Formalism.UG.P.fSatake_ord_of_v (hcj _)] at e
     exact ⟨ordL (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)).det, by rw [← e]⟩
   have hevenS : ∀ (S : Finset (Fin n)) (hS : ∀ i ∈ S, Fin.rev i ∈ S), Even (∑ j ∈ S, f j) := by
     intro S hS
@@ -470,7 +443,7 @@ theorem kapSign_eq_one_of_vals (hU : Unr E) (w : Pl E) (n : ℕ) (γ : GLw n w) 
     have e : (Set.range fun i => ((B i : V₁) : Fin n → w.adicCompletion E)) = V₁.subtype '' Set.range B := by
       ext x; simp
     rw [e, Submodule.span_image, B.span_eq, Submodule.map_top, Submodule.range_subtype]
-  obtain ⟨d, hd0, hdet⟩ := GlobalTheory.T.gram_det_change_of_basis' (cj w) V₁
+  obtain ⟨d, hd0, hdet⟩ := _root_.GlobalTheory.gram_det_change_of_bases (cj w) V₁
     (fun i : S => fun k => (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)) k i.1)
     (fun i => ((B i : V₁) : Fin n → w.adicCompletion E)) hli hVspan.symm hBli hBspan
   have hG : (Matrix.of fun i j : S => ∑ k, cj w ((P : Matrix (Fin n) (Fin n) (w.adicCompletion E)) k i.1) *
@@ -488,7 +461,7 @@ theorem kapSign_eq_one_of_vals (hU : Unr E) (w : Pl E) (n : ℕ) (γ : GLw n w) 
       exact mul_ne_zero (by rcases Int.units_eq_one_or (Equiv.Perm.sign (revOn S hS)) with h | h <;> simp [h])
         (Finset.prod_ne_zero_iff.2 fun j _ => hg0 j.1)
     rw [ordL_mul' (mul_ne_zero ((map_ne_zero (cj w)).2 hd0) hd0) hne,
-      ordL_mul' ((map_ne_zero (cj w)).2 hd0) hd0, ordL_eq_of_v (hcj d), hordS S hS]
+      ordL_mul' ((map_ne_zero (cj w)).2 hd0) hd0, _root_.Formalism.UG.P.fSatake_ord_of_v (hcj d), hordS S hS]
     obtain ⟨r, hr⟩ := hevenS S hS
     exact Even.neg_one_zpow ⟨ordL d + r, by rw [hr]; ring⟩
   · push_neg at hS

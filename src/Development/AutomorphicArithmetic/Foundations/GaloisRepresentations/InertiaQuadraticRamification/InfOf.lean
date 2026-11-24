@@ -54,7 +54,7 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.infOf :
     exact IntermediateField.fixingSubgroup_isOpen Q.K
   have hS : (⋃ Q ∈ {Q | P Q}, {u : HeightOneSpectrum (𝓞 F) | ∃ A : ValuationSubring Ω,
       IsPlaceOver A u ∧ ¬ Ine (F := F) A ≤ Q.K.fixingSubgroup}).Finite :=
-    Set.Finite.biUnion hfin fun Q _ => GlobalTheory.T.finite_places_inertia_not_le_openSubgroup Ω F Q.K.fixingSubgroup (hopen Q)
+    Set.Finite.biUnion hfin fun Q _ => _root_.GlobalTheory.DelGlob.finite_not_ine_le_of_isOpen Ω F Q.K.fixingSubgroup (hopen Q)
   obtain ⟨Q, hQ, u, hu, A, hA, τ, hτ, hfix⟩ := hP _ hS
   refine hu (Set.mem_biUnion (show Q ∈ {Q | P Q} from hQ) ⟨A, hA, fun hle => hfix ?_⟩)
   intro x

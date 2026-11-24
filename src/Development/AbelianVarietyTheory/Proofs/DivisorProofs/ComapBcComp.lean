@@ -119,7 +119,7 @@ theorem comap_bc_comp {T T' T'' : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)
   congr 1
   apply pullback.hom_ext <;>
     simp only [bc, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd,
-      pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id]
+      pullback.lift_snd_assoc, Category.comp_id]
 
 def functor (r : ℕ) : Scheme.{0}ᵒᵖ ⥤ Type where
   obj T := Σ g : T.unop ⟶ Spec (CommRingCat.of A),

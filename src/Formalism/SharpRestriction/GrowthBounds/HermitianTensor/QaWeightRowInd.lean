@@ -55,31 +55,24 @@ variable {A : Type} [CommRing A] {r : ℕ}
 
 theorem qa_subY_X_some (v : Fin (r + 1 + 1) × Fin (r + 1 + 1)) (j : Fin r) (h : midOf v.2 = some j) :
     subY A r (X v) = ∑ i : Fin r, C (X (i, j)) * X (v.1, midI r i) := by
-  unfold subY
-  rw [aeval_X]
-  simp only [h]
+  simp [subY, h]
 
 theorem qa_subY_X_none (v : Fin (r + 1 + 1) × Fin (r + 1 + 1)) (h : midOf v.2 = none) :
     subY A r (X v) = X v := by
-  unfold subY
-  rw [aeval_X]
-  simp only [h]
+  simp [subY, h]
 
 theorem qa_subY_C (a : A) : subY A r (C a) = C (C a) := by
-  unfold subY
-  exact aeval_C _ a
+  simp [subY]
 
 end Basic
 
 theorem qa_rowAct_X {R : Type} [CommRing R] {k n : ℕ} (g : Matrix (Fin k) (Fin k) R) (x : Fin k × Fin n) :
     rowAct R g (X x) = ∑ b : Fin k, C (g x.1 b) * X (b, x.2) := by
-  unfold rowAct
-  exact aeval_X _ x
+  simp [rowAct]
 
 theorem qa_rowAct_C {R : Type} [CommRing R] {k n : ℕ} (g : Matrix (Fin k) (Fin k) R) (c : R) :
     rowAct R (n := n) g (C c) = C c := by
-  unfold rowAct
-  exact aeval_C _ c
+  simp [rowAct]
 
 theorem subMapP : SubMapP := by
   intro A B _ _ φ r v
@@ -117,12 +110,8 @@ theorem qa_weight_rowInd {k n : ℕ} (a : Fin k) (u : Fin k × Fin n →₀ ℕ)
 theorem qa_iwh_pow {σ R M : Type} [CommSemiring R] [AddCommMonoid M] {w : σ → M} {φ : MvPolynomial σ R} {n : M}
     (h : IsWeightedHomogeneous w φ n) (k : ℕ) : IsWeightedHomogeneous w (φ ^ k) (k • n) := by
   induction k with
-  | zero =>
-    rw [pow_zero, zero_smul]
-    exact isWeightedHomogeneous_one R w
-  | succ k ih =>
-    rw [pow_succ, succ_nsmul]
-    exact ih.mul h
+  | zero => simpa using isWeightedHomogeneous_one R w
+  | succ k ih => simpa [pow_succ, succ_nsmul] using ih.mul h
 
 theorem subRowP : SubRowP := by
   classical

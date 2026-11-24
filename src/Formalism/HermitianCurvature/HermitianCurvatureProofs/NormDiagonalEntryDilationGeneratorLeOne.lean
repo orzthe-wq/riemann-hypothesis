@@ -2605,9 +2605,6 @@ theorem error_term_integrable (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ
   intro h
   exact ht ⟨Set.Ioo_subset_Icc_self h.1, Set.Ioo_subset_Icc_self h.2⟩
 
-theorem norm_exp_I_mul_real_eq_one (x : ℝ) : ‖Complex.exp (Complex.I * (x : ℂ))‖ = 1 := by
-  rw [mul_comm]; exact Complex.norm_exp_ofReal_mul_I x
-
 theorem integrable_pairing_times_phase_exp (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ}
     (hF : AdmW α c 2 2 F) (hF' : AdmW α c' 2 2 F') (τ : ℝ × ℝ) (p : SS k r) :
     Integrable (fun t : ℝ × ℝ => Et D F F' (p, t) * Complex.exp (Complex.I * (phase D τ p t : ℂ))) := by
@@ -2618,7 +2615,7 @@ theorem integrable_pairing_times_phase_exp (H : Hyp D Ξ α) {F F' : Mat k r →
     fun_prop
   refine (error_term_integrable H hF hF' p).norm.mono' hcont.aestronglyMeasurable ?_
   refine Filter.Eventually.of_forall fun t => ?_
-  rw [norm_mul, norm_exp_I_mul_real_eq_one, mul_one]
+  rw [norm_mul, Complex.norm_exp_I_mul_ofReal, mul_one]
 
 theorem continuous_beta_integrand_in_tau (H : Hyp D Ξ α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') (p : SS k r) : Continuous (fun τ : ℝ × ℝ => Gt D F F' τ p) := by
@@ -2631,7 +2628,7 @@ theorem continuous_beta_integrand_in_tau (H : Hyp D Ξ α) {F F' : Mat k r → (
     exact (integrable_pairing_times_phase_exp H hF hF' τ p).aestronglyMeasurable
   · intro τ
     refine Filter.Eventually.of_forall fun t => ?_
-    rw [norm_mul, norm_exp_I_mul_real_eq_one, mul_one]
+    rw [norm_mul, Complex.norm_exp_I_mul_ofReal, mul_one]
   · exact (error_term_integrable H hF hF' p).norm
   · refine Filter.Eventually.of_forall fun t => ?_
     have hph : Continuous (fun τ : ℝ × ℝ => phase D τ p t) :=
@@ -2943,9 +2940,6 @@ end avg1
 
 section avg2pre
 
-theorem norm_exp_I_mul_ofReal_eq_one (x : ℝ) : ‖Complex.exp (Complex.I * (x : ℂ))‖ = 1 := by
-  rw [mul_comm]; exact Complex.norm_exp_ofReal_mul_I x
-
 theorem test_function_integrable {w : ℝ → ℝ} (hw : IsTest w) : Integrable w :=
   hw.1.continuous.integrable_of_hasCompactSupport hw.2.1
 
@@ -2959,7 +2953,7 @@ theorem test_function_fourier_continuous {w : ℝ → ℝ} (hw : IsTest w) : Con
     exact hc.aestronglyMeasurable
   · intro x
     refine Filter.Eventually.of_forall fun τ => ?_
-    rw [norm_mul, norm_exp_I_mul_ofReal_eq_one, mul_one, Complex.norm_real]
+    rw [norm_mul, Complex.norm_exp_I_mul_ofReal, mul_one, Complex.norm_real]
   · refine Filter.Eventually.of_forall fun τ => ?_
     fun_prop
 

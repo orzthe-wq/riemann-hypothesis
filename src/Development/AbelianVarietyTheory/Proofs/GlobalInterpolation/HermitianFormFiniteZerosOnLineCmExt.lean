@@ -184,7 +184,7 @@ theorem _root_.GlobalTheory.HermLineZeros.exists_anisotropic (h : _root_.Formali
   rw [_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE, _root_.GlobalTheory.HermLineZeros.hform_expand, _root_.GlobalTheory.HermLineZeros.hform_single,
     _root_.GlobalTheory.HermLineZeros.hform_single, _root_.GlobalTheory.HermLineZeros.hform_single,
     _root_.GlobalTheory.HermLineZeros.hform_single, hd, hd, hji]
-  simp only [AlgHom.coe_toRingHom, RingHom.coe_coe]
+  simp only [RingHom.coe_coe]
   rw [inv_mul_cancel₀ hj, ← map_mul, inv_mul_cancel₀ hj, map_one]
   norm_num
 
@@ -227,7 +227,7 @@ theorem _root_.GlobalTheory.HermLineZeros.finite_zeros_on_line : ∀ (F E : Type
   have hp : p ≠ 0 := by
     intro hp
     have := congrArg (fun q : Polynomial K => q.coeff 2) hp
-    simp [p, Polynomial.coeff_X, Polynomial.coeff_C] at this
+    simp [p] at this
     exact hα0 this
   refine (Polynomial.finite_setOf_isRoot hp).subset fun t ht => ?_
   simp only [Set.mem_setOf_eq] at ht ⊢

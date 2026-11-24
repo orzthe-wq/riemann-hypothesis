@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.CechHOneVanishesOnOpenOfIsAffineOpen
 
 @[expose] public section
 
@@ -89,13 +90,6 @@ private theorem wd_pair' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module
   simp only [wd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply,
     LinearMap.proj_apply]
   rw [Finset.sum_pair hne, s1, s2, e1, e2, one_smul, neg_one_smul, sub_eq_add_neg]
-
-private theorem pair_lt' {ι : Type} [LinearOrder ι] {s : Finset ι} (h : s.card = 2) :
-    ∃ x y, x < y ∧ s = {x, y} := by
-  obtain ⟨x, y, hne, rfl⟩ := Finset.card_eq_two.1 h
-  rcases lt_or_gt_of_ne hne with h' | h'
-  · exact ⟨x, y, h', rfl⟩
-  · exact ⟨y, x, h', Finset.pair_comm _ _⟩
 
 theorem UpperTheory.Gal.productCup_of_system.coordinateSystem_degree_two_of_universalDerivation :
     L2 → SysOk → WdUni → CechKoszulSystemCocycleGluing := by
@@ -190,7 +184,7 @@ theorem UpperTheory.Gal.productCup_of_system.coordinateSystem_degree_two_of_univ
       exact zero_mem _
     · obtain ⟨i, rfl⟩ := Finset.card_eq_one.mp hI
       have hJ2 : J.card = 2 := by simp at hIJ; omega
-      obtain ⟨j, j', hjj, rfl⟩ := pair_lt' hJ2
+      obtain ⟨j, j', hjj, rfl⟩ := _root_.GlobalTheory.AbLaw.CechOne.exists_pair hJ2
       have hf : (fun L => (wd fun _ : Two d => (1 : Module.End ℂ E)) (fun b' => c0' b' L) (uni {i} {j, j'})) =
           c0 i j - c0 i j' := by
         funext L
@@ -198,7 +192,7 @@ theorem UpperTheory.Gal.productCup_of_system.coordinateSystem_degree_two_of_univ
         simp [cv, pk1]
       rw [hf, hcol _ _ (Finset.singleton_nonempty i) (Finset.insert_nonempty _ _)]
       exact hB2 i j j'
-    · obtain ⟨i, i', hii, rfl⟩ := pair_lt' hI
+    · obtain ⟨i, i', hii, rfl⟩ := _root_.GlobalTheory.AbLaw.CechOne.exists_pair hI
       have hJ1 : J.card = 1 := by omega
       obtain ⟨j, rfl⟩ := Finset.card_eq_one.mp hJ1
       have hf : (fun L => (wd fun _ : Two d => (1 : Module.End ℂ E)) (fun b' => c0' b' L) (uni {i, i'} {j})) =

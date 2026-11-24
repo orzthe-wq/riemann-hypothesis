@@ -70,12 +70,11 @@ theorem sum_single_ite (a b : Fin n) (g : Fin n → Fin n → ℂ) :
 
 theorem sum_co_smul (M : Mat n) : ∑ q : Idx n, co q M • bs q = M := by
   ext a b
-  simp only [Fintype.sum_prod_type, Fintype.sum_bool, co, bs, Matrix.sum_apply, Matrix.add_apply,
-    Matrix.smul_apply, Matrix.single_apply, if_true, Bool.false_eq_true, if_false, smul_ite,
+  simp only [Fintype.sum_prod_type, Fintype.sum_bool, co, bs, Matrix.sum_apply, Matrix.smul_apply, Matrix.single_apply, if_true, Bool.false_eq_true, if_false, smul_ite,
     smul_zero]
   rw [sum_single_ite a b (fun x i => (M x i).re • (1 : ℂ)),
     sum_single_ite a b (fun x i => (M x i).im • Complex.I)]
-  simp [Complex.ext_iff]
+  simp
 
 theorem contDiff_entry (i j : Fin n) : ContDiff ℝ ∞ (fun y : Mat n => y i j) :=
   contDiff_apply_apply ℝ i j

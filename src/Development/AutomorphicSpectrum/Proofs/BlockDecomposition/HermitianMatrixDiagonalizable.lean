@@ -108,9 +108,9 @@ theorem diagble_smul {h : Matrix ι ι R} {c : R} (hc : σ c = c) (hd : Diagble 
   refine ⟨g, g', fun i => c * d i, hg, hg', fun i => by simp [hc, hfix], ?_⟩
   have : Matrix.diagonal (fun i => c * d i) = c • Matrix.diagonal d := by
     ext i j
-    by_cases hij : i = j <;> simp [Matrix.diagonal_apply, hij]
+    by_cases hij : i = j <;> simp [hij]
   rw [this, ← hdiag]
-  simp [Matrix.mul_smul, Matrix.smul_mul]
+  simp
 
 theorem diagble_reindex (e : κ ≃ ι) {h : Matrix ι ι R} (hd : Diagble σ (h.submatrix e e)) :
     Diagble σ h := by
@@ -137,7 +137,7 @@ theorem diagble_block {a : R} (ha : σ a = a) {D : Matrix ι ι R} (hd : Diagble
     · simpa using hfix i
   · have hct : ct σ (Matrix.fromBlocks (1 : Matrix Unit Unit R) 0 0 g) =
         Matrix.fromBlocks 1 0 0 (ct σ g) := by
-      ext (i | i) (j | j) <;> simp [ct_apply, Matrix.one_apply]
+      ext (i | i) (j | j) <;> simp [ct_apply]
     rw [hct, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_diagonal]
     simp [hdiag]
 
@@ -183,12 +183,12 @@ theorem diagble_schur (hinv : ∀ a, σ (σ a) = a) (ih : ∀ h : Matrix ι ι R
     ring
   have hct : ct σ p = Matrix.fromBlocks 1 0 (-(v • C)) 1 := by
     ext (i | i) (j | j)
-    · simp [p, ct_apply, Matrix.one_apply]
+    · simp [p, ct_apply]
     · simp [p, ct_apply]
     · cases j; simp [p, ct_apply, hfv, hCB]
     · by_cases hij : i = j
       · subst hij; simp [p, ct_apply]
-      · simp [p, ct_apply, Matrix.one_apply, hij, Ne.symm hij]
+      · simp [p, ct_apply, hij, Ne.symm hij]
   have hcongr : ct σ p * h * p = Matrix.fromBlocks (Matrix.diagonal fun _ : Unit => a) 0 0 E := by
     have hav : ∀ {c : Type} (X : Matrix Unit c R), (Matrix.diagonal fun _ : Unit => a) * (v • X) = X := by
       intro c X
@@ -254,7 +254,7 @@ theorem ct_transvection (i j : ι) (s : R) :
   · have hba : ¬ b = a := fun h => hab h.symm
     by_cases h1 : j = b ∧ i = a
     · have h2 : i = a ∧ j = b := ⟨h1.2, h1.1⟩
-      simp [hab, hba, h1, h2]
+      simp [hab, hba, h1]
     · have h2 : ¬ (i = a ∧ j = b) := fun h => h1 ⟨h.2, h.1⟩
       simp [hab, hba, h1, h2]
 

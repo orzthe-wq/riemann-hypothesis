@@ -1,6 +1,6 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.Divisors.DiscreteSeriesHermitianUnique
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.WeilRepresentationExists
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsSplitChartOne
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RamificationIdxEqOneOfIsSquare
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsOpenKerOfContinuous
@@ -68,15 +68,5 @@ theorem isUnitaryChar_chrW (χ : Chr F E) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     GlobalTheory.SmGL.IsUnitaryChar (chrW χ t) := fun g => by
   show ‖((Circle.toUnits _ : ℂˣ) : ℂ)‖ = 1
   exact Circle.norm_coe _
-
-theorem chrW_nu_smooth_unitary : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
-    (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
-    ∀ v, X.Good v →
-    ∀ t : E →ₐ[F] Fv F v, GlobalTheory.SmGL.IsSmoothChar (chrW X.ν t) ∧ GlobalTheory.SmGL.IsUnitaryChar (chrW X.ν t) := by
-  intro _ F E _ _ _ _ _ σ B a a' G X om om' hT v _ t
-  have hν : Continuous X.ν := by
-    show Continuous fun x => X.α x / X.β x
-    exact hT.chars.heckeα.1.div' hT.chars.heckeβ.1
-  exact ⟨GlobalTheory.RootEx.UniformLattices.isOpen_ker_of_continuous _ (continuous_chrW hν t), isUnitaryChar_chrW _ t⟩
 
 end GlobalTheory.ChrWSmooth

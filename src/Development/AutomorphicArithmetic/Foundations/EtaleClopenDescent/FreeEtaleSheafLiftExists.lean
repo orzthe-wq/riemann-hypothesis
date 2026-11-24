@@ -183,6 +183,13 @@ private theorem lift_local {Z H : SShv B q} (π : Z ⟶ H) [Epi π] (U : B.Etale
   rw [ev_comp, ev_map, Equiv.apply_symm_apply]
   exact hz
 
+private theorem diagram_chase_abs {C : Type*} [Category C]
+    {A B A' B' Z H : C} (f : A ⟶ B) (g : A' ⟶ B') (eA : A ≅ A') (eB : B ≅ B')
+    (n : f ≫ eB.hom = eA.hom ≫ g) (s : B ⟶ H) (c : A' ⟶ Z) (π : Z ⟶ H)
+    (hc : c ≫ π = g ≫ eB.inv ≫ s) {x : A ⟶ H} (hx : x = eA.hom ≫ c ≫ π) :
+    f ≫ s = x := by
+  rw [hx, hc, ← Category.assoc, ← n, Category.assoc, eB.hom_inv_id_assoc]
+
 end UpperTheory.Cb.HomologyEvaluation
 
 open UpperTheory.Cb.HomologyEvaluation LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafShMapZeroPf.Gen in
@@ -193,25 +200,6 @@ theorem UpperTheory.Cb.free_etale_sheaf_lift_exists :
   refine (lift_local π U ((e0 B q).inv.app U ≫ s)).mono fun U' a hc => ?_
   obtain ⟨c, hc⟩ := hc
   obtain ⟨x, hx⟩ := hlift _ c
-  refine ⟨x, ?_⟩
-  have he : (e0 B q).hom.app U' =
-      (DerivedCategory.singleFunctorCompHomologyFunctorIso (SShv B q) 0).hom.app ((F0 B q).obj U') :=
-    Category.comp_id _
-  have n : (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫ (e0 B q).hom.app U =
-      (e0 B q).hom.app U' ≫ (F0 B q).map a := (e0 B q).hom.naturality a
-  have s1 : s = (e0 B q).hom.app U ≫ (e0 B q).inv.app U ≫ s := by
-    rw [Iso.hom_inv_id_app_assoc]
-  have h1 : (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫ s =
-      (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫
-        (e0 B q).hom.app U ≫ (e0 B q).inv.app U ≫ s := by rw [← s1]
-  have h2 : (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫
-      (e0 B q).hom.app U ≫ (e0 B q).inv.app U ≫ s =
-      (e0 B q).hom.app U' ≫ (F0 B q).map a ≫ (e0 B q).inv.app U ≫ s := by
-    rw [reassoc_of% n]
-    rfl
-  have h3 : (e0 B q).hom.app U' ≫ (F0 B q).map a ≫ (e0 B q).inv.app U ≫ s =
-      (e0 B q).hom.app U' ≫ c ≫ π := by rw [hc]
-  have h4 : (e0 B q).hom.app U' ≫ c ≫ π =
-      (DerivedCategory.homologyFunctor (SShv B q) 0).map x := by
-    rw [he]; exact hx.symm
-  exact h1.trans (h2.trans (h3.trans h4))
+  exact ⟨x, diagram_chase_abs ((DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a))
+    ((F0 B q).map a) ((e0 B q).app U') ((e0 B q).app U) ((e0 B q).hom.naturality a) s c π hc
+    (hx.trans (congrArg (· ≫ c ≫ π) (Category.comp_id _).symm))⟩

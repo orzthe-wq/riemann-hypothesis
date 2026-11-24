@@ -119,7 +119,7 @@ theorem dnIncInt0_of (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T) (hL : D
       else atInf (embT D) (B⁻¹ : GL (Fin (D.R.N 0)) D.host.E).1 τ)
     (fun τ => if τ = (D.fm u).tauOf w v then atInf (embT D) (B' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ
       else atInf (embT D) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ)
-    (fun τ => by split_ifs <;> exact S0.at_infinity_mul_inv (embT D) _ τ)
+    (fun τ => by split_ifs <;> exact Formalism.L2.Forms.atInf_mul_inv (embT D) _ τ)
     (hL w hw hseen v c g hg γ η κ hη hrel hloc B B' B₂ hB hB' hB₂)
   obtain ⟨r, hr, hre⟩ := chi_inv_int T hC w κ
   refine ⟨D.what₂.embLL r • Q, embLL_smul_mem_intSpan_of_mem_intW w _ r hr hQ, fun z => ?_⟩
@@ -129,7 +129,7 @@ theorem dnIncInt0_of (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T) (hL : D
   intro τ
   rw [Equiv.apply_symm_apply]
   show _ = _ * (_ * _)
-  rw [← Matrix.mul_assoc, at_infinity_mul_inv, Matrix.one_mul]
+  rw [← Matrix.mul_assoc, Formalism.L2.Forms.atInf_mul_inv, Matrix.one_mul]
 
 end PI.UnitaryGroupMassFormula.IAT
 

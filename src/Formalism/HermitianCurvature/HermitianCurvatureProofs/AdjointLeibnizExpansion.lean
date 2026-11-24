@@ -97,12 +97,8 @@ theorem hsVec_surjective :
   refine ⟨∑ i, (innerSL ℂ (stdOrthonormalBasis ℂ Wq i)).smulRight (WithLp.ofLp v i), ?_⟩
   first
   | (ext j
-     simp [hsVec, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply, OrthonormalBasis.inner_eq_ite,
-       ite_smul, Finset.sum_ite_eq, Finset.sum_ite_eq'])
-  | (apply WithLp.ofLp_injective
-     funext j
-     simp [hsVec, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply, OrthonormalBasis.inner_eq_ite,
-       ite_smul, Finset.sum_ite_eq, Finset.sum_ite_eq'])
+     simp [hsVec, ContinuousLinearMap.smulRight_apply, OrthonormalBasis.inner_eq_ite,
+       ite_smul, Finset.sum_ite_eq'])
 
 def hsE : (Wq →L[ℂ] Wp) ≃ₗ[ℂ] PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp) :=
   LinearEquiv.ofBijective hsVecL ⟨hsVec_injective, hsVec_surjective⟩

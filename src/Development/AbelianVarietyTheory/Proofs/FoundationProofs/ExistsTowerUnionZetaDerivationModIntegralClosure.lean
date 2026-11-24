@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NotIsTrDataGaussianIntOne
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDerivationOnISupOfCompatible
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDerivationTowerLevelAlgebraPrescribedStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDerivationTowerLevelAlgebraPrescribed
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -154,7 +154,7 @@ theorem cyc_relation (hc : CharZero Ω) (T : Tower p Ω) (m : ℕ) :
     exact (T.prim (m + 1)).isRoot_cyclotomic hpos
   have hid := congrArg (fun f => Polynomial.aeval ζ (Polynomial.derivative f))
     (cyclotomic_prime_pow_mul_X_pow_sub_one (O0 p) p m)
-  simp only [derivative_mul, derivative_sub, derivative_X_pow, derivative_one, map_add (f := _), map_mul,
+  simp only [derivative_mul, derivative_X_pow, derivative_one, map_add (f := _), map_mul,
     map_sub, hroot, zero_mul, add_zero, sub_zero] at hid
   have hzval : (Polynomial.aeval z (Polynomial.derivative (Polynomial.cyclotomic (p ^ (m + 1)) (O0 p))) : Ω)
       = Polynomial.aeval ζ (Polynomial.derivative (Polynomial.cyclotomic (p ^ (m + 1)) (O0 p))) := by
@@ -201,7 +201,7 @@ theorem zeta_derivation : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [A
       IsDerOn (levelAlg T (m + 1)) D ∧
         D (zS T (m + 1)) = Submodule.Quotient.mk (T.ζ (m + 1) * p / (p : Ω) ^ (m + 1)) ∧
         D (qS T (m + 1)) = 0 := fun m =>
-    GlobalTheory.T.exists_derivation_towerLevelAlgebra_prescribed p Ω hc T (m + 1) (Nat.succ_pos m) (Frac p Ω) _ 0
+    _root_.GlobalTheory.AlmostEt.LevDer.exists_derOn_levelAlg p Ω hc T (m + 1) (Nat.succ_pos m) (Frac p Ω) _ 0
       (cyc_relation inferInstance T m) (smul_zero _)
   choose D hD hDz hDq using hlev
   have hval : ∀ m, D m (zS T m) = Submodule.Quotient.mk (T.ζ m * p / (p : Ω) ^ m) ∧

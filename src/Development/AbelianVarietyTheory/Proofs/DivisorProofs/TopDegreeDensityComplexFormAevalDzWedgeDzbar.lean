@@ -123,7 +123,7 @@ theorem dens_prod {m : ℕ} (x : Fin m → Fin n × Fin n) :
         simp at hS
         omega
       rw [e]
-      simp [dens, Finsupp.single_apply, hne]
+      simp [dens, hne]
     · rw [prod_sym_not_inj x, Subalgebra.coe_zero, dens_zero']
       intro hi
       have := Fintype.card_le_of_injective _ hi

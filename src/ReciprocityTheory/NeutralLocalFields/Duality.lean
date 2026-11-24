@@ -1,6 +1,7 @@
 module
 
 public import ReciprocityTheory.NeutralLocalFields.Reciprocity
+public import Formalism.ConjugateSelfDual.Statement
 public import Mathlib.NumberTheory.Cyclotomic.CyclotomicCharacter
 public import Mathlib.NumberTheory.Padics.Complex
 public import Mathlib.Order.CompletePartialOrder
@@ -450,20 +451,9 @@ def LocalInvariantIsomorphism : Prop := ∀ (p : ℕ) [Fact p.Prime] (K : Interm
 
 section Global
 
-abbrev G (F Ω : Type*) [Field F] [Field Ω] [Algebra F Ω] := Ω ≃ₐ[F] Ω
+open Formalism.ConjugateSelfDual (G IsPlaceOver Inertia)
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
-
-def IsPlaceOver (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) : Prop :=
-  ∀ x : 𝓞 F, A.valuation (algebraMap F Ω (x : F)) < 1 ↔ x ∈ v.asIdeal
-
-
-variable (F) in
-abbrev Dec (A : ValuationSubring Ω) : Subgroup (G F Ω) := A.decompositionSubgroup F
-
-def Inertia (A : ValuationSubring Ω) : Set (G F Ω) :=
-  {σ | σ ∈ Dec F A ∧ ∀ x, A.valuation x ≤ 1 → A.valuation (σ x - x) < 1}
-
 
 variable (F) in
 def DecInf (j : Ω →+* ℂ) : Subgroup (G F Ω) where
@@ -555,7 +545,7 @@ structure GData [IsAlgClosure F Ω] (S : Finset (HeightOneSpectrum (𝓞 F))) (n
 variable [IsAlgClosure F Ω] {S : Finset (HeightOneSpectrum (𝓞 F))} {n : ℕ} [NeZero n]
 
 def locGrp (D : GData F Ω S n) : S ⊕ InfinitePlace F → Subgroup (G F Ω) :=
-  Sum.elim (fun v => Dec F (D.A v)) (fun w => DecInf F (D.J w))
+  Sum.elim (fun v => (D.A v).decompositionSubgroup F) (fun w => DecInf F (D.J w))
 
 def locHom (D : GData F Ω S n) (i : S ⊕ InfinitePlace F) :
     locGrp D i →* GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) :=

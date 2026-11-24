@@ -1,16 +1,20 @@
 module
 
+public import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.NormAlmostAll
+public import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.NmCent
+public import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.SeparableOfMap
 public import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.SelmerRankBounds.EllipticityFromProductFormula
 public import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.GalExt
 public import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.GalField
-public import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.NmCent
-public import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.PowComp
-import GroundTheory.GlobalFields.CompletionAtPlace.Integers
 public import GroundTheory.GlobalFields.SemilocalAlgebras.Galois
+import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.NmPoly
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -24,6 +28,7 @@ import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -31,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,8 +48,102 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import GroundTheory.GlobalFields.CompletionAtPlace.Integers
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.PowComp, Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.FirstCohomologyBoundOfBoundaryBound
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.PowComp =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.PowComp", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.NormAlmostAll\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.NmCent\nimport Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.NmPoly\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.SeparableOfMap\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix Polynomial NumberField IsDedekindDomain
+open scoped TensorProduct
+
+namespace UpperTheory.ConvolutionTheory.D
+
+private theorem cp_map {S R : Type} [CommRing S] [CommRing R] {n : ℕ} (j : S →+* R) (g : GL (Fin n) S) :
+    cp (Matrix.GeneralLinearGroup.map j g) = (cp g).map j := by
+  unfold cp
+  rw [← Matrix.charpoly_map]
+  rfl
+
+private theorem cp_conj {R : Type} [CommRing R] {n : ℕ} (x g : GL (Fin n) R) :
+    cp (x⁻¹ * g * x) = cp g := by
+  unfold cp
+  rw [Units.val_mul, Matrix.charpoly_mul_comm, ← Units.val_mul, ← mul_assoc, mul_inv_cancel, one_mul]
+
+section
+variable {O S k R : Type} [CommRing O] [CommRing S] [Algebra O S] [CommRing k] [CommRing R] [Algebra k R] {n : ℕ}
+
+private theorem map_sg (j : S →+* R) (s : S ≃ₐ[O] S) (σ : R ≃ₐ[k] R) (h : ∀ x, j (s x) = σ (j x))
+    (g : GL (Fin n) S) :
+    Matrix.GeneralLinearGroup.map j (sg s g) = sg σ (Matrix.GeneralLinearGroup.map j g) := by
+  ext a b
+  exact h _
+
+private theorem pow_comp (j : S →+* R) (s : S ≃ₐ[O] S) (σ : R ≃ₐ[k] R) (h : ∀ x, j (s x) = σ (j x))
+    (m : ℕ) : ∀ x, j ((s ^ m) x) = (σ ^ m) (j x) := by
+  induction m with
+  | zero => intro x; rfl
+  | succ m ih => intro x; rw [pow_succ, pow_succ, AlgEquiv.mul_apply, AlgEquiv.mul_apply, ih, h]
+
+private theorem map_nm (j : S →+* R) (s : S ≃ₐ[O] S) (σ : R ≃ₐ[k] R) (h : ∀ x, j (s x) = σ (j x))
+    (q : ℕ) (g : GL (Fin n) S) :
+    Matrix.GeneralLinearGroup.map j (nm s q g) = nm σ q (Matrix.GeneralLinearGroup.map j g) := by
+  unfold nm
+  rw [map_list_prod, List.map_map]
+  congr 1
+  refine List.map_congr_left fun m _ => ?_
+  exact map_sg j (s ^ m) (σ ^ m) (pow_comp j s σ h m) g
+
+private theorem map_up (i : O →+* k) (j : S →+* R) (h : ∀ x, j (algebraMap O S x) = algebraMap k R (i x))
+    (g : GL (Fin n) O) :
+    Matrix.GeneralLinearGroup.map j (up S g) = up R (Matrix.GeneralLinearGroup.map i g) := by
+  ext a b
+  exact h _
+
+end
+
+end UpperTheory.ConvolutionTheory.D
+
+theorem UpperTheory.ConvolutionTheory.D.nmInt :
+    UpperTheory.ConvolutionTheory.D.NmInt := by
+  intro O S k R _ _ _ _ _ _ _ i j s σ q hs hσ hj hjs hji n a a' γ hγ ha x hx
+  have h1 : cp (nm s q a') = cp (nm s q a) := by
+    apply Polynomial.map_injective j hj
+    rw [← cp_map, ← cp_map, map_nm j s σ hjs, map_nm j s σ hjs, ← hx,
+      (nmPoly k R σ q hσ n _).2, cp_conj]
+  have h2 : (cp (nm s q a)).Separable := by
+    rw [ha, up, cp_map]
+    exact hγ.map
+  obtain ⟨u, hu⟩ := nmInj O S s q hs n a a' h2 h1
+  have h3 : (cp (Matrix.GeneralLinearGroup.map i γ)).Separable := by
+    rw [cp_map]
+    exact hγ.map
+  have h4 : nm σ q (Matrix.GeneralLinearGroup.map j a) = up R (Matrix.GeneralLinearGroup.map i γ) := by
+    rw [← map_nm j s σ hjs, ha, map_up i j hji]
+  have h5 : sgConj σ (x * (Matrix.GeneralLinearGroup.map j u)⁻¹) (Matrix.GeneralLinearGroup.map j a) =
+      Matrix.GeneralLinearGroup.map j a := by
+    rw [hu, sgConj, sgConj, map_mul, map_mul, map_inv, map_sg j s σ hjs] at hx
+    rw [sgConj, map_mul, map_inv]
+    calc _ = Matrix.GeneralLinearGroup.map j u * (x⁻¹ * Matrix.GeneralLinearGroup.map j a * sg σ x) *
+          (sg σ (Matrix.GeneralLinearGroup.map j u))⁻¹ := by group
+      _ = _ := by rw [hx]; group
+  obtain ⟨t, ht, hxt⟩ := (nmCent k R σ q hσ n _ _ h3 h4 _).1 h5
+  exact ⟨t, u, ht, by rw [← hxt]; group⟩
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.PowComp =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.FirstCohomologyBoundOfBoundaryBound =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.FirstCohomologyBoundOfBoundaryBound", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.SelmerRankBounds.EllipticityFromProductFormula\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.GalExt\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.GalField\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.NmCent\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescent.PowComp\nimport GroundTheory.GlobalFields.CompletionAtPlace.Integers\npublic import GroundTheory.GlobalFields.SemilocalAlgebras.Galois\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open PositivityTheory.Rg.Tf.Geo
@@ -388,3 +486,6 @@ theorem UpperTheory.ConvolutionTheory.G.firstCohomologyBound_of_boundaryBound :
   rw [e1, e2, e3, e4]
   simp only [mem_unitSet]
   exact key
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnalysis.FirstCohomologyBoundOfBoundaryBound =====

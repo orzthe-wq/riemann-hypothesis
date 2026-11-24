@@ -2,7 +2,8 @@ module
 
 public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsJumpVIffOfExactCrystallineLatticesStatement
+public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsJumpVIffOfExactCrystallineLattices
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OfShortExact
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
@@ -65,12 +66,6 @@ theorem fil_anti {a b : ℤ} (h : a ≤ b) : PD.Fil b ≤ PD.Fil a := by
   | base => exact le_rfl
   | succ n _ ih => exact (PD.Fil_anti n).trans ih
 
-theorem one_not_mem_fil_one : (1 : BdR) ∉ PD.Fil 1 := by
-  intro h
-  have := PD.Fil_mul 1 1 _ _ PD.mem_filtration_one h
-  rw [mul_one] at this
-  exact PD.not_mem_filtration_two this
-
 theorem ddR_of_trivial {V : Type} [AddCommGroup V] [Module Qp V] [Module LL V]
     [IsScalarTower Qp LL V] [FiniteDimensional Qp V] (ρ : Representation LL G V)
     (hρ : ∀ g x, ρ g x = x) (x : V ⊗[Qp] BdR) (hx : x ∈ DdR PD ρ) :
@@ -129,7 +124,7 @@ theorem ddR_of_trivial {V : Type} [AddCommGroup V] [Module Qp V] [Module LL V]
     by_cases h0 : k = 0
     · rw [← hk, h0]; simp
     · exfalso
-      apply one_not_mem_fil_one PD
+      apply _root_.GlobalTheory.DRFil.one_notMem_fil_one PD
       have h1 := Submodule.smul_mem _ k⁻¹ (fil_anti PD ha (hF' i x hF))
       rwa [← hk, Algebra.algebraMap_eq_smul_one, smul_smul, inv_mul_cancel₀ h0, one_smul] at h1
 
@@ -158,7 +153,7 @@ theorem jumps_ses_and_one : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc
     have h2 : IsCrys ((D.loc l).PD K) T₂.ρ :=
       ((GlobalTheory.Per.CrysSubQuot.crys_sub_quot l _ _ (D.locT l) K LL T₁.V T₁.ρ T₂.V T₂.ρ π.f π.equiv).2
         hS.2.1 hc).1
-    exact GlobalTheory.T.isJumpV_iff_of_exact_crystalline_lattices l _ _ (D.locT l) K LL T₀ T₁ T₂ ι π hS h0 hc h2 τ a
+    exact _root_.GlobalTheory.Per.SESJumps.isJumpV_iff_of_isSESLat l _ _ (D.locT l) K LL T₀ T₁ T₂ ι π hS h0 hc h2 τ a
   · haveI := LL.2
     haveI : FiniteDimensional ℚ_[l] W.one.V := Module.Finite.trans ↥LL.1 W.one.V
     exact jumps_of_trivial _ W.one.ρ W.one_triv τ a ha

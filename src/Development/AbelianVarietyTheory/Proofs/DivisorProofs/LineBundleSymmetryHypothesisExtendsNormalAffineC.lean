@@ -60,6 +60,8 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMul
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -76,11 +78,6 @@ noncomputable section
 namespace GlobalTheory.Poinc.HypSExt
 
 open GlobalTheory.CechPic
-
-theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {f : A →+* B} {g : B →+* C} {h : A →+* C}
-    (e : g.comp f = h) : spMap g ≫ spMap f = spMap h := by
-  subst e
-  simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 theorem exists_model {R : Type} [CommRing R] (P : PolAV (Sp R)) :
     ∃ (S : Subring R) (B : Over (Sp S)) (_ : GrpObj B) (φ : P.A.left ⟶ B.left) (L : LB B.left),
@@ -138,7 +135,7 @@ theorem exists_hom_descend {S Ω : Type} [CommRing S] [CommRing Ω] (q : S →+*
   obtain ⟨F, hF⟩ := GlobalTheory.morphism_descends_to_subring Ω q.range X X₀ X₀ f (f₀ ≫ spMap e.toRingHom)
     (f₀ ≫ spMap e.toRingHom) π φ (by
       have s : IsPullback (spMap q) (𝟙 _) (spMap e.toRingHom) (spMap q.range.subtype) :=
-        IsPullback.of_vert_isIso ⟨by rw [spMap_comp_eq he, Category.id_comp]⟩
+        IsPullback.of_vert_isIso ⟨by rw [_root_.GlobalTheory.ModelDescent.spMap_comp_eq he, Category.id_comp]⟩
       have s' := H.paste_vert s
       rwa [Category.comp_id] at s') (by rw [reassoc_of% hφ])
   refine ⟨F, fun K _ κ i hi hc hK X₁ f₁ π₁ j H₁ hj hj' => ?_⟩
@@ -151,14 +148,14 @@ theorem exists_hom_descend {S Ω : Type} [CommRing S] [CommRing Ω] (q : S →+*
     rintro _ ⟨x, rfl⟩
     exact ⟨κ x, by rw [← hc]; rfl⟩
   have hsq : spMap κ ≫ spMap e.toRingHom = spMap e'.toRingHom ≫ spMap (Subring.inclusion hle) := by
-    rw [spMap_comp_eq rfl, spMap_comp_eq rfl]
+    rw [_root_.GlobalTheory.ModelDescent.spMap_comp_eq rfl, _root_.GlobalTheory.ModelDescent.spMap_comp_eq rfl]
     congr 1
     refine RingHom.ext fun x => hi ?_
     exact ((RingHom.congr_fun hc _).trans (RingHom.congr_fun he x)).trans
       (RingHom.congr_fun he' (Subring.inclusion hle x)).symm
   obtain ⟨ψ, h₁, h₂⟩ := hF i.range hle hK X₁ (f₁ ≫ spMap e'.toRingHom) π₁ j
     (H₁.paste_vert (IsPullback.of_vert_isIso ⟨hsq⟩)) hj
-    (by rw [reassoc_of% hj', spMap_comp_eq he'])
+    (by rw [reassoc_of% hj', _root_.GlobalTheory.ModelDescent.spMap_comp_eq he'])
   exact ⟨ψ, h₁, (cancel_mono (spMap e.toRingHom)).1 (by simpa only [Category.assoc] using h₂)⟩
 
 theorem exists_normal_noetherian {R Ω : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field Ω] [Algebra R Ω]
@@ -227,7 +224,7 @@ theorem hypS_normal {R Ω : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed 
   have := ab.comm
   let q : S →+* Ω := (algebraMap R Ω).comp S.subtype
   have hq : Function.Injective q := (IsFractionRing.injective R Ω).comp S.subtype_injective
-  have HQ : IsGrpPullback Q.A B (spMap q) (a ≫ φ) := (ha.comp H).congr (spMap_comp_eq rfl) rfl
+  have HQ : IsGrpPullback Q.A B (spMap q) (a ≫ φ) := (ha.comp H).congr (_root_.GlobalTheory.ModelDescent.spMap_comp_eq rfl) rfl
   have hv : ∀ v : Q.A ⟶ Q.A, (v.left ≫ a ≫ φ) ≫ B.hom = (a ≫ φ) ≫ B.hom := fun v => by
     rw [Category.assoc, HQ.1.w, Over.w_assoc]
   obtain ⟨F₁, hF₁⟩ := exists_hom_descend q hq Q.A.hom B.hom (a ≫ φ) _ HQ.1 (hv w)
@@ -258,13 +255,13 @@ theorem hypS_normal {R Ω : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed 
   have hκ : i.comp κ = q := by
     rw [← RingHom.comp_assoc, hi, RingHom.comp_assoc, hσ]
   let π : A.left ⟶ B.left := pullback.fst G.hom (spMap (algebraMap D K)) ≫ pullback.fst B.hom (spMap σ)
-  have HAB : IsGrpPullback A B (spMap κ) π := (HA.comp HG).congr (spMap_comp_eq rfl) rfl
+  have HAB : IsGrpPullback A B (spMap κ) π := (HA.comp HG).congr (_root_.GlobalTheory.ModelDescent.spMap_comp_eq rfl) rfl
   have w₁ : (a ≫ φ) ≫ B.hom = (Q.A.hom ≫ spMap i) ≫ spMap κ := by
-    rw [Category.assoc Q.A.hom, spMap_comp_eq hκ, HQ.1.w]
+    rw [Category.assoc Q.A.hom, _root_.GlobalTheory.ModelDescent.spMap_comp_eq hκ, HQ.1.w]
   let j : Q.A.left ⟶ A.left := HAB.1.lift _ _ w₁
   have j₁ : j ≫ π = a ≫ φ := HAB.1.lift_fst _ _ w₁
   have j₂ : j ≫ A.hom = Q.A.hom ≫ spMap i := HAB.1.lift_snd _ _ w₁
-  have HQA : IsGrpPullback Q.A A (spMap i) j := HAB.cancel (HQ.congr (spMap_comp_eq hκ).symm j₁.symm) j₂
+  have HQA : IsGrpPullback Q.A A (spMap i) j := HAB.cancel (HQ.congr (_root_.GlobalTheory.ModelDescent.spMap_comp_eq hκ).symm j₁.symm) j₂
   have endo : ∀ v : Q.A ⟶ Q.A, (∃ ψ : A.left ⟶ B.left, j ≫ ψ = v.left ≫ a ≫ φ ∧ ψ ≫ B.hom = π ≫ B.hom) →
       ∃ v₀ : A ⟶ A, j ≫ v₀.left = v.left ≫ j := by
     rintro v ⟨ψ, h₁, h₂⟩
@@ -283,10 +280,10 @@ theorem hypS_normal {R Ω : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed 
       rfl)) e₁ e₂ hw hwd hs hp ‹_›
   have hG : HypS G _ := hypS_noetherian G abG _ hLG (PolBaseChange.rigidified_pull HG hr) hA
   have w₂ : φ ≫ B.hom = (P.A.hom ≫ spMap τ) ≫ spMap σ := by
-    rw [Category.assoc, spMap_comp_eq hσ, H.1.w]
+    rw [Category.assoc, _root_.GlobalTheory.ModelDescent.spMap_comp_eq hσ, H.1.w]
   have k₁ := HG.1.lift_fst _ _ w₂
   refine SymBaseChange.hypS_baseChange _ _ G P.A (spMap τ) (HG.1.lift _ _ w₂) _ _ hLG P.isLB
-    (HG.cancel (H.congr (spMap_comp_eq hσ).symm k₁.symm) (HG.1.lift_snd _ _ w₂)) ?_ hG
+    (HG.cancel (H.congr (_root_.GlobalTheory.ModelDescent.spMap_comp_eq hσ).symm k₁.symm) (HG.1.lift_snd _ _ w₂)) ?_ hG
   exact GlobalTheory.KeyTf.lbIso_pull_pull_of_comp P.isLB hL k₁ iso
 
 end GlobalTheory.Poinc.HypSExt

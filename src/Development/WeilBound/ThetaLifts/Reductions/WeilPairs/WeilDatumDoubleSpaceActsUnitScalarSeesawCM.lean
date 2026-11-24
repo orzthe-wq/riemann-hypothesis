@@ -2,16 +2,18 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReindexDblIncM
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DeltaTApply
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSymplecticTraceFormAlternatingSwapStatement
+public import Formalism.LocalToGlobal.IndefiniteReal.DatumF
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSymplecticTraceFormAlternatingSwap
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfPartFPlaceIdem
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalMatricesDiscreteCocompactAdelicMatrixSpaStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalPointsSelfAnnihilatorSymplecticStandardCStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalMatricesDiscreteCocompactAdelicMatrixSpa
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RationalPointsSelfAnnihilatorSymplecticStandardC
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchurLemmaHeisenbergCommutingThetaOperator
+public import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.SymplOHFNegNeg
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAddCharIsStandardCharOfAdmissibleCM
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaFunctionHeisenbergInvariant
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.MeanSquareAddFundamentalDomainOfCocompact
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfCoefficientsSeparatingCharactersEqZero
-public import Development.WeilBound.ThetaLifts.Reductions.WeilPairs.SymplOHFNegNeg
 import Formalism.LocalToGlobal.IndefiniteReal.PHeisFC
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -133,8 +135,8 @@ theorem exists_prod_domain : ∃ (μ : Measure (WOF F E nS nT)) (𝓕 : Set (WOF
     μ.IsAddHaarMeasure ∧ IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 μ ∧
     μ₂.IsAddHaarMeasure ∧ IsAddFundamentalDomain (ratLF F E nS (nT + nT)) 𝓕₂ μ₂ ∧
     ∀ φ χ : WOF F E nS nT → ℂ, ∫ x in 𝓕₂, φ (topR x) * χ (botR x) ∂μ₂ = (∫ x in 𝓕, φ x ∂μ) * ∫ x in 𝓕, χ x ∂μ := by
-  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT
-  obtain ⟨j1, j2, j3, j4, j5, -⟩ := GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS (nT + nT)
+  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := _root_.GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT
+  obtain ⟨j1, j2, j3, j4, j5, -⟩ := _root_.GlobalTheory.AdelicMatrixLatticeF.lattice F E nS (nT + nT)
   have : BorelSpace (WOF F E nS nT) := ⟨rfl⟩
   have : BorelSpace (WOF F E nS (nT + nT)) := ⟨rfl⟩
   obtain ⟨μ, 𝓕, hμ, h𝓕, -⟩ :=
@@ -213,7 +215,7 @@ theorem abstract {n m : ℕ} {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin m)
     (h𝓕 : IsAddFundamentalDomain (ratLF F E n m) 𝓕 μ)
     (hs : ∀ i i', ∫ x in 𝓕, A i x * star (A i' x) ∂μ = ∫ x in 𝓕, B i x * star (B i' x) ∂μ) :
     ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ i, A i = c • B i := by
-  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E n m
+  obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := _root_.GlobalTheory.AdelicMatrixLatticeF.lattice F E n m
   have : BorelSpace (WOF F E n m) := ⟨rfl⟩
   have : Countable (ratLF F E n m) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance
   have : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by
@@ -274,64 +276,5 @@ theorem abstract {n m : ℕ} {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin m)
     rw [one_smul, h0, eq_comm, ← norm_eq_zero, ← hn, h0, norm_zero]
 
 end PositivityTheory.ThKW.DblSchur
-
-open PositivityTheory.ThKW.DblSchur PositivityTheory.ThKW.Dbl Formalism.IndefR.DatumF MeasureTheory GlobalTheory.DblTargetDelta in
-theorem PositivityTheory.ThKW.weil_rep_unitary_pair_equivariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
-    B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
-      IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
-      ∀ (χS χT : (AF F ⊗[F] E)ˣ →* Circle)
-        (ω : Formalism.IndefR.DatumF.GAF σ JS × Formalism.IndefR.DatumF.GAF σ JT →* Module.End ℂ (Formalism.IndefR.DatumF.WOF F E nS nT → ℂ)),
-        Formalism.IndefR.DatumF.IsWeilDatumOF σ JS JT (fun w : InfinitePlace F => (B.emb w).1) ξ₀ B.ψ χS χT ω →
-      ∀ ωd : Formalism.IndefR.DatumF.GAF σ JS × Formalism.IndefR.DatumF.GAF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) →*
-          Module.End ℂ (Formalism.IndefR.DatumF.WOF F E nS (nT + nT) → ℂ),
-        Formalism.IndefR.DatumF.IsWeilDatumOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT)
-          (fun w : InfinitePlace F => (B.emb w).1) ξ₀ B.ψ χS 1 ωd →
-      ∀ (h : Formalism.IndefR.DatumF.GAF σ JT) (hd : Formalism.IndefR.DatumF.GAF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT)),
-        Formalism.IndefR.DatumF.mtF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) hd =
-          Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (Formalism.IndefR.DatumF.mtF σ JT h) 0 0 1) →
-      ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ f₁ f₂ : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ,
-        Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f₁ → Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f₂ →
-        ωd (1, hd) (GlobalTheory.DblTargetDelta.deltaT f₁ f₂) = c • GlobalTheory.DblTargetDelta.deltaT (ω (1, h) f₁) f₂ := by
-  intro F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ χS χT ω hω ωd hωd h hd e
-  have hψ : IsCharAF F B.ψ := (GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB).1
-  have hinv : ∀ e, σ (σ e) = e := fun e => by
-    obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-    apply τ.injective
-    rw [hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]
-  have hT' := GlobalTheory.WeilSchrodinger.DblTargetF.isHermND_dblG hT
-  have hth := fun w f hf => GlobalTheory.HeisThetaF.isThetaFunOF_heisOF F E σ B hB nS nT JS JT ξ₀ w f hf
-  obtain ⟨μ, 𝓕, μ₂, 𝓕₂, hμ, h𝓕, hμ₂, h𝓕₂, hprod⟩ := exists_prod_domain F E nS nT
-  let T := {f // IsThetaFunOF σ JS JT ξ₀ B.ψ f}
-  have hδ : ∀ f₁ f₂ g₁ g₂ : WOF F E nS nT → ℂ, ∫ x in 𝓕₂, deltaT f₁ f₂ x * star (deltaT g₁ g₂ x) ∂μ₂ =
-      (∫ x in 𝓕, f₁ x * star (g₁ x) ∂μ) * ∫ x in 𝓕, conj (f₂ (-x)) * star (conj (g₂ (-x))) ∂μ := fun f₁ f₂ g₁ g₂ => by
-    rw [← hprod]
-    congr 1
-    ext x
-    simp only [deltaT, star_mul]
-    ring
-  obtain ⟨c, hc, H⟩ := abstract hψ (GlobalTheory.T.adelicSymplecticTraceForm_alternating_swap F E σ hinv _ _ JS _ hS hT' ξ₀ hσξ)
-    (GlobalTheory.T.rational_points_self_annihilator_symplectic_standardChar F E σ B hB _ _ JS _ hS hT' ξ₀ hξ)
-    (fun p : T × T => ωd (1, hd) (deltaT p.1.1 p.2.1)) (fun p => deltaT (ω (1, h) p.1.1) p.2.1)
-    (fun p => hωd.om_pres _ _ (theta_delta hψ.2.1 p.1.2 p.2.2))
-    (fun p => theta_delta hψ.2.1 (hω.om_pres _ _ p.1.2) p.2.2)
-    (fun w p => by
-      have e1 : actOF σ JS JT 1 h (actOF σ JS JT 1 h⁻¹ (topR w)) = topR w := by
-        rw [← GlobalTheory.WeilPartsF.actOF_mul, mul_one, mul_inv_cancel, act_one_left, show mtF σ JT 1 = 1 from rfl, Matrix.one_mul]
-      have e2 : actOF σ JS _ 1 hd (glue (actOF σ JS JT 1 h⁻¹ (topR w)) (botR w)) = w := by
-        rw [act_glue h hd e, e1]
-        exact tb_ext (top_glue _ _) (bot_glue _ _)
-      refine ⟨(⟨_, hth (actOF σ JS JT 1 h⁻¹ (topR w)) _ p.1.2⟩, ⟨_, hth (-botR w) _ p.2.2⟩), ?_, ?_⟩
-      · have := hωd.om_heis 1 hd (glue (actOF σ JS JT 1 h⁻¹ (topR w)) (botR w)) _ (theta_delta hψ.2.1 p.1.2 p.2.2)
-        rw [e2, heis_delta hψ.2.1, top_glue, bot_glue] at this
-        exact this.symm
-      · have := hω.om_heis 1 h (actOF σ JS JT 1 h⁻¹ (topR w)) _ p.1.2
-        rw [e1] at this
-        show _ = deltaT (ω (1, h) _) _
-        rw [this, heis_delta hψ.2.1])
-    μ₂ 𝓕₂ hμ₂ h𝓕₂ (fun p q => by
-      rw [GlobalTheory.ThetaSchurF.scalar_eq hψ.2.1 μ₂ 𝓕₂ hμ₂ h𝓕₂ (ωd (1, hd)) (hωd.om_pres _) (hωd.om_unit μ₂ 𝓕₂ hμ₂ h𝓕₂ _) _ _
-        (theta_delta hψ.2.1 p.1.2 p.2.2) (theta_delta hψ.2.1 q.1.2 q.2.2), hδ, hδ,
-        GlobalTheory.ThetaSchurF.scalar_eq hψ.2.1 μ 𝓕 hμ h𝓕 (ω (1, h)) (hω.om_pres _) (hω.om_unit μ 𝓕 hμ h𝓕 _) _ _ p.1.2 q.1.2])
-  exact ⟨c, hc, fun f₁ f₂ h₁ h₂ => H (⟨f₁, h₁⟩, ⟨f₂, h₂⟩)⟩
 
 end

@@ -83,14 +83,10 @@ private theorem exists_eq_prime_pow_mul_not_dvd {n p : ℕ} (hn : n ≠ 0) (hp :
     ∃ v M : ℕ, ¬ p ∣ M ∧ n = p ^ v * M := by
   first
   | exact Nat.exists_eq_pow_mul_and_not_dvd hn p hp.one_lt.ne'
-  | exact ⟨n.factorization p, n / p ^ n.factorization p, Nat.not_dvd_ordCompl hp hn,
-      (Nat.ordProj_mul_ordCompl_eq_self n p).symm⟩
 
 private theorem prime_pow_dvd_prime_pow_iff_le {p a b : ℕ} (hp : p.Prime) : p ^ a ∣ p ^ b ↔ a ≤ b := by
   first
   | exact Nat.pow_dvd_pow_iff_le_right hp.one_lt
-  | exact ⟨fun h => (Nat.pow_le_pow_iff_right hp.one_lt).mp (Nat.le_of_dvd (pow_pos hp.pos _) h),
-      fun h => pow_dvd_pow p h⟩
 
 theorem weight_sum {N m : ℕ} (hN : N ≠ 0) (hm : m ∣ N) (hm1 : m ≠ 1) :
     ∑ m' ∈ N.divisors.filter (fun m' => m ∣ m'), vonMangoldt m' * ((N / m').totient : ℝ) =
@@ -172,7 +168,6 @@ theorem weight_sum {N m : ℕ} (hN : N ≠ 0) (hm : m ∣ N) (hm1 : m ≠ 1) :
   have e : ((p ^ j).totient : ℝ) * (Real.log p / ((p ^ j).totient : ℝ)) = Real.log p := by
     first
     | rw [mul_div_assoc', mul_comm, mul_div_assoc, div_self hpj, mul_one]
-    | field_simp
   push_cast
   linear_combination (-((p : ℝ) ^ (v - j) * (M.totient : ℝ))) * e
 
@@ -299,8 +294,6 @@ theorem rho_eq (U : Subgroup (ZMod N)ˣ) {f : ℕ} (hf : f ∣ N) :
         ((KK N f).filter fun u => u ∈ U).card = (KK N f).card := by
     rw [add_comm]
     first
-    | exact Finset.filter_card_add_filter_neg_card_eq_card _
-    | convert Finset.filter_card_add_filter_neg_card_eq_card (s := KK N f) (fun u => u ∈ U)
     | convert Finset.card_filter_add_card_filter_not (s := KK N f) (fun u => u ∈ U)
   have kernelOutsideFraction_eq_div_lemma_13 {N : ℕ} [NeZero N] (U : Subgroup (ZMod N)ˣ) {f : ℕ} (hf : f ∣ N) :
       rho U f =
@@ -356,8 +349,6 @@ theorem half_le_rho (U : Subgroup (ZMod N)ˣ) {f : ℕ} (hf : f ∣ N) (h : ∃ 
         ((KK N f).filter fun u => u ∈ U).card = (KK N f).card := by
     rw [add_comm]
     first
-    | exact Finset.filter_card_add_filter_neg_card_eq_card _
-    | convert Finset.filter_card_add_filter_neg_card_eq_card (s := KK N f) (fun u => u ∈ U)
     | convert Finset.card_filter_add_card_filter_not (s := KK N f) (fun u => u ∈ U)
   open Classical in
   have kernelOutsideFraction_eq_div_lemma_13 {N : ℕ} [NeZero N] (U : Subgroup (ZMod N)ˣ) {f : ℕ} (hf : f ∣ N) :
@@ -379,7 +370,7 @@ theorem half_le_rho (U : Subgroup (ZMod N)ˣ) {f : ℕ} (hf : f ∣ N) (h : ∃ 
         ((KK N f).filter fun u => u ∉ U).card := by
     apply Finset.card_le_card_of_injOn (fun v => u0 * v)
     · intro v hv
-      simp only [Finset.coe_filter, Finset.mem_coe, Finset.mem_filter, Set.mem_setOf_eq] at hv ⊢
+      simp only [Finset.coe_filter, Set.mem_setOf_eq] at hv ⊢
       refine ⟨mul_mem_KK hf hu0 hv.1, fun h => hu0' ?_⟩
       have h' := mul_mem h (inv_mem hv.2)
       rwa [mul_inv_cancel_right] at h'
@@ -403,8 +394,6 @@ theorem rho_le_half (U : Subgroup (ZMod N)ˣ) {f : ℕ} (hf : f ∣ N)
         ((KK N f).filter fun u => u ∈ U).card = (KK N f).card := by
     rw [add_comm]
     first
-    | exact Finset.filter_card_add_filter_neg_card_eq_card _
-    | convert Finset.filter_card_add_filter_neg_card_eq_card (s := KK N f) (fun u => u ∈ U)
     | convert Finset.card_filter_add_card_filter_not (s := KK N f) (fun u => u ∈ U)
   open Classical in
   have kernelOutsideFraction_eq_div_lemma_13 {N : ℕ} [NeZero N] (U : Subgroup (ZMod N)ˣ) {f : ℕ} (hf : f ∣ N) :
@@ -430,7 +419,7 @@ theorem rho_le_half (U : Subgroup (ZMod N)ˣ) {f : ℕ} (hf : f ∣ N)
     · rw [Finset.mem_filter] at hu0
       apply Finset.card_le_card_of_injOn (fun v => u0 * v)
       · intro v hv
-        simp only [Finset.coe_filter, Finset.mem_coe, Finset.mem_filter, Set.mem_setOf_eq] at hv ⊢
+        simp only [Finset.coe_filter, Set.mem_setOf_eq] at hv ⊢
         exact ⟨mul_mem_KK hf hu0.1 hv.1, h u0 hu0.1 v hv.1 hu0.2 hv.2⟩
       · intro a _ b _ hab
         exact mul_left_cancel hab

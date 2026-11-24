@@ -53,19 +53,12 @@ variable (k : Type) [Field k]
 
 theorem algebraMap_eq (c : k) : algebraMap k k⸨X⸩ c = HahnSeries.C c := by rw [HahnSeries.algebraMap_apply', ← HahnSeries.ofPowerSeries_C]; rfl
 
-theorem smul_eq (c : k) (x : k⸨X⸩) : c • x = algebraMap k k⸨X⸩ c * x := by rw [algebraMap_eq, HahnSeries.C_mul_eq_smul]
-
 instance towerA : IsScalarTower k k⸨X⸩ k⸨X⸩ := ⟨fun c x y => by
-  rw [smul_eq, smul_eq k c, smul_eq_mul, smul_eq_mul, mul_assoc]⟩
+  rw [_root_.GlobalTheory.PhiGam.const_smul_eq, _root_.GlobalTheory.PhiGam.const_smul_eq k c, smul_eq_mul, smul_eq_mul, mul_assoc]⟩
 
 instance towerB : IsScalarTower k k⟦X⟧ k⸨X⸩ := ⟨fun c a y => by
-  rw [smul_eq k c, Algebra.smul_def (c • a), Algebra.smul_def a, Algebra.smul_def c, map_mul, mul_assoc]
+  rw [_root_.GlobalTheory.PhiGam.const_smul_eq k c, Algebra.smul_def (c • a), Algebra.smul_def a, Algebra.smul_def c, map_mul, mul_assoc]
   rfl⟩
-
-end
-
-section
-variable {k : Type} [Field k]
 
 end
 

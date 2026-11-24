@@ -66,10 +66,7 @@ private theorem valV_unit_lemma (u : Vˣ) :
   have hu : (u : V) ∉ (IsDiscreteValuationRing.maximalIdeal V).asIdeal := fun h =>
     (IsLocalRing.mem_maximalIdeal _).mp h u.isUnit
   first
-  | exact (IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff _).mpr hu
   | exact IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff.mpr hu
-  | exact le_antisymm (IsDedekindDomain.HeightOneSpectrum.intValuation_le_one _ _)
-      (not_lt.mp fun h => hu ((IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_mem _ _).mp h))
 
 private theorem valV_unif_lemma_2 {ϖ : V} (hϖ : Irreducible ϖ) :
     IsDedekindDomain.HeightOneSpectrum.valuation F (IsDiscreteValuationRing.maximalIdeal V)
@@ -119,14 +116,11 @@ theorem isLocalization_unif (h : IsUnif A ϖ) :
   constructor
   · first
     | (rintro ⟨_, n, rfl⟩; rw [map_pow]; exact h.isUnit.pow n)
-    | (rintro _ ⟨n, rfl⟩; rw [map_pow]; exact h.isUnit.pow n)
   · intro x
     obtain ⟨n, hn⟩ := h.denom x
     refine ⟨⟨⟨ϖ ^ n • x, hn⟩, ⟨_, n, rfl⟩⟩, ?_⟩
     first
     | simp [Algebra.smul_def, mul_comm]
-    | (show x * (algebraMap O A ϖ) ^ n = ϖ ^ n • x
-       rw [Algebra.smul_def, map_pow, mul_comm])
   · intro a b hab
     refine ⟨1, ?_⟩
     rw [Subtype.ext hab]

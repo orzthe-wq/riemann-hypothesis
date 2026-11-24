@@ -93,7 +93,7 @@ theorem _root_.GlobalTheory.SubstMem.rename_mem_dualWeyl {a b : ℕ} (hab : a �
       refine Finset.sum_eq_zero fun v _ => ?_
       have hne : Fin.castLE hab v.2 ≠ k := by
         intro h; apply hk; rw [← h]; simp
-      simp [_root_.Formalism.GradedWeylDivisibility.colW, Pi.single_apply, Ne.symm hne]
+      simp [_root_.Formalism.GradedWeylDivisibility.colW, Ne.symm hne]
   · intro l j hlj
     by_cases hj : (j : ℕ) < a
     · have hl : (l : ℕ) < a := lt_trans hlj hj
@@ -107,9 +107,8 @@ theorem _root_.GlobalTheory.SubstMem.rename_mem_dualWeyl {a b : ℕ} (hab : a �
         rintro ⟨v1, v2⟩
         by_cases hv : v2 = j'
         · subst hv
-          simp only [AlgHom.comp_apply, rename_X, _root_.Formalism.GradedWeylDivisibility.colAddGen, aeval_X, Prod.map_snd, Prod.map_fst,
-            if_pos rfl]
-          simp only [ite_true, if_true, map_add (f := _), map_mul, rename_X]
+          simp only [AlgHom.comp_apply, rename_X, _root_.Formalism.GradedWeylDivisibility.colAddGen, aeval_X, Prod.map_snd, Prod.map_fst]
+          simp only [ite_true, map_add (f := _), map_mul, rename_X]
           rfl
         · have hv' : Fin.castLE hab v2 ≠ Fin.castLE hab j' :=
             fun h => hv (Fin.castLE_injective hab h)

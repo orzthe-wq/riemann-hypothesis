@@ -63,15 +63,12 @@ private theorem smulHom_eq {X : Scheme.{0}} (F : X.Modules) (r : Γ(X, ⊤)) :
   ext U x
   rfl
 
-private def cohEquiv {X : Scheme.{0}} (R : Type) [CommRing R] [Algebra R Γ(X, ⊤)] (F : X.Modules)
-    (n : ℕ) : coh F n ≃ₗ[R] Sheaf.H.{0} (GroundTheory.Arith.SchemeCoh.modulesAb F) n :=
-  { (coh.toH F n) with
-    map_smul' := fun r x => by
-      have h := coh.toH_map R (smulHom F (algebraMap R Γ(X, ⊤) r)) n x
-      rw [← cohOn.smul_eq_map] at h
-      refine h.trans ?_
-      rw [smulHom_eq]
-      rfl }
+/-- `Module.Finite` passes from `N` to `M` along an additive equivalence that commutes with scalars.
+Used below in place of a linear equivalence onto `Sheaf.H`, which is slow for the kernel to check. -/
+private theorem finite_of_addEquiv {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M]
+    [AddCommMonoid N] [Module R N] (h : Module.Finite R N) (e : M ≃+ N)
+    (he : ∀ (r : R) (x : M), e (r • x) = r • e x) : Module.Finite R M :=
+  Module.Finite.equiv (e.toLinearEquiv he).symm
 
 private theorem finiteType_sec {Z : Scheme.{0}} (s : Z ⟶ Sp ℂ) [LocallyOfFiniteType s]
     {U : Z.Opens} (hU : IsAffineOpen U) : Algebra.FiniteType ℂ (CechDR.Sec s U) := by
@@ -104,9 +101,11 @@ theorem UpperTheory.finiteDimensional_hodgeCohomology_of_smooth_proj :
   have hc : GroundTheory.Arith.SchemeCoh.IsCoherent (Omega s a) := isCoherent_Omega s a
   have h := @GroundTheory.Arith.SchemeCoh.finite_H_of_isProper ℂ _ _ Z _ _ (Omega s a) hc b
   letI := algΓ s
-  have h' : Module.Finite ℂ (coh (Omega s a) b) := by
-    haveI : Module.Finite ℂ (Sheaf.H.{0} (GroundTheory.Arith.SchemeCoh.modulesAb (Omega s a)) b) := h
-    exact Module.Finite.equiv (cohEquiv ℂ (Omega s a) b).symm
+  have h' : Module.Finite ℂ (coh (Omega s a) b) :=
+    finite_of_addEquiv h (coh.toH (Omega s a) b) fun r x => by
+      have hx := coh.toH_map ℂ (smulHom (Omega s a) (algebraMap ℂ Γ(Z, ⊤) r)) b x
+      rw [smulHom_eq] at hx
+      exact hx.trans (GroundTheory.Arith.SchemeCoh.H.smul_def ℂ (Omega s a) b r _).symm
   exact h'
 
 end

@@ -1,52 +1,20 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.IsClosedKset
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.KFacts
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.PhiFacts
@@ -106,12 +74,7 @@ lemma contDiffAt_phiP (μ : Fin n → ℤ) {z : 𝕄} (hz : z ∈ OmegaSet n) :
   show ContDiffAt ℂ 1 (fun y : 𝕄 => ∏ i : Fin n, lead ((i : ℕ) + 1) y ^ (-(μ i - muNext μ i))) z
   exact contDiffAt_prod fun i _ => contDiffAt_zpow (contDiff_lead _).contDiffAt (hz i) _
 
-lemma isOpen_omega' : IsOpen (OmegaSet n) := by
-  have e : OmegaSet n = ⋂ i : Fin n, {z | lead ((i : ℕ) + 1) z ≠ 0} := by
-    ext z
-    simp [OmegaSet]
-  rw [e]
-  exact isOpen_iInter_of_finite fun i => isOpen_ne_fun (contDiff_lead _).continuous continuous_const
+alias isOpen_omega' := _root_.ReciprocityTheory.ChartRestriction.DS.S7.isOpen_omega
 
 lemma continuousOn_fderiv_phiP (μ : Fin n → ℤ) :
     ContinuousOn (fderiv ℂ (PhiP μ)) (OmegaSet n : Set 𝕄) :=
@@ -180,8 +143,7 @@ lemma posSet_subset_Uset : posSet n ⊆ Uset ε := by
   refine Matrix.PosDef.conjTranspose_mul_mul_same hx ?_
   intro v w hvw
   have h1 : (toMK k)ᴴ * toMK k = 1 := by
-    rw [← Matrix.star_eq_conjTranspose]
-    exact Unitary.star_mul_self_of_mem k.2.1
+    simpa [Matrix.star_eq_conjTranspose] using Unitary.star_mul_self_of_mem k.2.1
   have := congrArg (fun u => (toMK k)ᴴ *ᵥ u) hvw
   simpa only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] using this
 
@@ -294,9 +256,8 @@ lemma hasFDerivAt_psM [CompactSpace (KG ε)] (T : KType ε Λ) (μ : Fin n → �
     HasFDerivAt (fun x : 𝕄 => psM T μ x)
       (((Module.finrank ℂ T.V : ℂ) / ((muK ε Set.univ).toReal : ℂ)) •
         ∫ k, GintD T μ z k ∂(muK ε)) z := by
-  have h := (hasFDerivAt_intG T μ hz).const_smul
+  exact (hasFDerivAt_intG T μ hz).const_smul
     ((Module.finrank ℂ T.V : ℂ) / ((muK ε Set.univ).toReal : ℂ))
-  exact h
 
 end Ps1
 
@@ -311,8 +272,7 @@ theorem psM_holo {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (�
   have := compactSpace_KG ε
   refine ⟨Ps1.Uset ε, Ps1.isOpen_Uset, Ps1.posSet_subset_Uset, fun z hz k => hz k,
     fun z hz => ?_, fun z hz H => ?_⟩
-  · have h : DifferentiableAt ℂ (psM T μ) z := (Ps1.hasFDerivAt_psM T μ hz).differentiableAt
-    exact h.differentiableWithinAt
+  · exact (Ps1.hasFDerivAt_psM T μ hz).differentiableAt.differentiableWithinAt
   · rw [show fderiv ℂ (psM T μ) z H =
         fderiv ℂ (fun x : Fin n → Fin n → ℂ => psM T μ x) z (Matrix.of.symm H) from rfl,
       (Ps1.hasFDerivAt_psM T μ hz).fderiv, ContinuousLinearMap.smul_apply,

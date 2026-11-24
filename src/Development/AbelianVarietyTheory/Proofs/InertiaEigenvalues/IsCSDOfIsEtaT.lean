@@ -57,16 +57,6 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N F
 
 namespace GlobalTheory.EtaSelfDual
 
-theorem ordF_unif {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) : ordF w (unif w) = 1 := by
-  have h := unif_spec w
-  have h1 : Valued.v ((atFin w (unif w) : (w.adicCompletion K)ˣ) : w.adicCompletion K) = w.valuation K (unif w : K) :=
-    HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w (unif w : K)
-  have h0 : w.valuation K (unif w : K) ≠ 0 := (Valuation.ne_zero_iff _).2 (unif w).ne_zero
-  unfold IsUnifAt at h
-  rw [h1, ← WithZero.exp_log h0, WithZero.exp_inj] at h
-  unfold ordF
-  omega
-
 theorem ordF_conj {R : Ranks} (H : Formalism.BasicNotions.Host R) {w w' : HeightOneSpectrum (𝓞 H.E)} (h : IsConjPl H w w') (k : H.Eˣ) :
     ordF w' (Units.map (MonoidHomClass.toMonoidHom H.conj) k) = ordF w k := by
   have hc := (GlobalTheory.Mem.Chr.conjPl_main.2.1 R H w w').1 h (k : H.E)
@@ -99,7 +89,7 @@ theorem val_mul_val {R : Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar 
     have hPv : P.under (𝓞 H.F) = v := by
       rw [aboveF, Set.Finite.mem_toFinset] at hP
       exact hP
-    rw [GlobalTheory.HeckeProduct.locK_unr χ (hχ.unr P), ho, hPv, ordF_unif, zpow_one]
+    rw [GlobalTheory.HeckeProduct.locK_unr χ (hχ.unr P), ho, hPv, _root_.GlobalTheory.Mem.Chr.ordF_unif_self, zpow_one]
   have hwm : w ∈ aboveF (L := H.E) H.F v := (hmem w).2 (Or.inl rfl)
   have hwm' : w' ∈ aboveF (L := H.E) H.F v := (hmem w').2 (Or.inr rfl)
   have hr := hχ.res.1 v (unif v)
@@ -107,7 +97,7 @@ theorem val_mul_val {R : Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar 
   by_cases hw : w = w'
   · subst hw
     rw [hab, Finset.insert_eq_of_mem (Finset.mem_singleton_self _), Finset.prod_singleton, etaFin, hab,
-      Finset.insert_eq_of_mem (Finset.mem_singleton_self _), if_pos (Finset.card_singleton _), ordF_unif, zpow_one] at hr
+      Finset.insert_eq_of_mem (Finset.mem_singleton_self _), if_pos (Finset.card_singleton _), _root_.GlobalTheory.Mem.Chr.ordF_unif_self, zpow_one] at hr
     change χ.locK w (upF H.F (unif v)) = -1 at hr
     rw [hloc w hwm] at hr
     rw [hr]

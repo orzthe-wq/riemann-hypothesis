@@ -116,8 +116,7 @@ theorem beO_bal (c c' : 𝓞 D.host.E) (h : (c' : D.host.E) = D.host.conj (c : D
 theorem beO_self (a : 𝓞 D.host.E) : beO D a a = ∑ σ : D.host.E →ₐ[ℚ] ℂ, Complex.normSq (σ (a : D.host.E)) := by
   apply Complex.ofReal_injective
   rw [beO_eq, Complex.ofReal_sum]
-  refine Finset.sum_congr rfl fun σ _ => ?_
-  rw [Complex.mul_conj]
+  simp only [Complex.mul_conj]
 
 theorem beO_nonneg (a : 𝓞 D.host.E) : 0 ≤ beO D a a := by
   rw [beO_self]
@@ -201,7 +200,7 @@ theorem beK_posDef (k : ℕ) (c : (Σ _ : Fin k, Module.Free.ChooseBasisIndex �
         refine Finset.sum_congr rfl fun t _ => ?_
         simp [B, bK, Pi.basis_apply, NumberField.integralBasis_apply]
       · refine Finset.sum_eq_zero fun t _ => ?_
-        simp [bK, Pi.basis_apply, Pi.single_apply, Ne.symm hm']
+        simp [bK, Pi.basis_apply, Ne.symm hm']
     have hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E)) =
         Fintype.card (D.host.E →ₐ[ℚ] ℂ) := by
       rw [AlgHom.card, Module.finrank_eq_card_basis B]
@@ -214,8 +213,7 @@ theorem beK_posDef (k : ℕ) (c : (Σ _ : Fin k, Module.Free.ChooseBasisIndex �
     have hv := Matrix.eq_zero_of_vecMul_eq_zero hdet (v := fun t => (c ⟨m0, t⟩ : ℂ)) (by
       funext j
       simp only [Matrix.vecMul, dotProduct, Algebra.embeddingsMatrixReindex,
-        Algebra.embeddingsMatrix, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_apply,
-        Equiv.symm_symm, Matrix.of_apply, Pi.zero_apply]
+        Algebra.embeddingsMatrix, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm, Matrix.of_apply, Pi.zero_apply]
       exact hred (e j))
     have h1 := congrFun hv t0
     simp only [Pi.zero_apply, Complex.ofReal_eq_zero] at h1
@@ -248,9 +246,8 @@ theorem subsingleton_rank_indicator_iff (P : Prop) : Subsingleton (Fin (rk01 P) 
     exact ⟨fun _ => h, fun _ => inferInstance⟩
   · rw [if_neg h]
     refine ⟨fun hs => ?_, fun hp => absurd hp h⟩
-    exfalso
     have h1 := congrFun (hs.elim (fun _ => (0 : 𝓞 D.host.E)) (fun _ => 1)) 0
-    exact zero_ne_one h1
+    exact absurd h1 zero_ne_one
 
 def pmM (dg : PsiT D → ℕ → ℤ) (n : ℕ) : ℤ := ∑ t : D.what₂.Tau, ∑ k ∈ Finset.Icc 1 n, |dg (D.eTau t) k|
 
@@ -287,8 +284,7 @@ theorem atM_tors (k n : ℕ) (x : AtM k n) : n • x = 0 := by
     rw [this, zero_mul]
 
 theorem atM_card (k n : ℕ) (h : 0 < n) : Fintype.card (AtM k n) = n ^ k := by
-  have hn : nn n = n := if_neg (by omega)
-  rw [Fintype.card_fun, ZMod.card, Fintype.card_fin, hn]
+  rw [Fintype.card_fun, ZMod.card, Fintype.card_fin, (show nn n = n from if_neg (by omega))]
 
 structure MP (D : D7) (p : ℕ) where
   K : CF p

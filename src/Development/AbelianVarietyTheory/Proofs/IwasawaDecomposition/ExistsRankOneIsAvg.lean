@@ -1,9 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormDwLeSobNorm
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompactAverageKFiniteFiniteRankStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InnerKAvgNeZero
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CompactAverageKFiniteFiniteRank
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsAvgClosure
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InnerKAvgNeZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,7 +72,7 @@ theorem exists_rank_one_isAvg : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [
   obtain ⟨A1, A2, A3, A4, A5⟩ := isAvg_closure n ε H σ hσ
   obtain ⟨B1, B2, -, -⟩ := kCoef_kAvg n ε H σ hσ
   have he := B1 b hb
-  obtain ⟨m, a, c, ha, haK, hcK, hQ⟩ := GlobalTheory.T.compactAverage_kFinite_finiteRank n ε H σ h _ he
+  obtain ⟨m, a, c, ha, haK, hcK, hQ⟩ := _root_.GlobalTheory.TypeSum.kAvg_finite_rank n ε H σ h _ he
   have hQavg := A4 _ (by obtain ⟨F, -, h1, h2, -⟩ := he; exact h2 _ h1)
   have hc : ∃ k, c k ≠ 0 := by
     by_contra hc
@@ -103,7 +103,7 @@ theorem exists_rank_one_isAvg : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [
     have e : ∀ z : Fin m → H, φ (fun p => ⟪c p.1, z p.2⟫_ℂ) =
         ∑ j, ⟪∑ i, star (φ fun q => if (i, j) = q then 1 else 0) • c i, z j⟫_ℂ := fun z => by
       rw [LinearMap.pi_apply_eq_sum_univ, Fintype.sum_prod_type, Finset.sum_comm]
-      simp [sum_inner, inner_smul_left, mul_comm]
+      simp
     have hy := eq_zero_of_sum_coef hd ha (y := fun j => ∑ i, star (φ fun q => if (i, j) = q then 1 else 0) • c i)
       (fun g hg => by rw [← e fun j => σ g (a j)]; exact hφ _ (Submodule.subset_span ⟨g, hg, rfl⟩))
     have := e fun j => if j = k then c k else 0

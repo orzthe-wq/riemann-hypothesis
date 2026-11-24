@@ -1,10 +1,11 @@
 module
 
 public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalStarComplexMultiplicationPointsStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatumStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutesStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionaryStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalStarComplexMultiplicationPoints
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
+public import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary
 public import Formalism.LocalRingCardinality.ConjSqrtMinusD
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -277,8 +278,8 @@ theorem exists_crv (D : D7) (Λ : AddSubgroup ℂ) (w₁ w₂ : ℂ)
 
 theorem galCurve_holds : ∀ D : D7, galCurve D := by
   intro D cc δ hc M ρ hK h2 h3 n hn
-  obtain ⟨⟨w₁, w₂, hli, hcl⟩, -, hdisc, -, hO⟩ := GlobalTheory.T.idealPeriodLattice_of_curveDatum D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc
-  have hstar := (GlobalTheory.T.galStar_complexMultiplication_points D cc δ hc M ρ hK h2 h3).2.2.2.2.1
+  obtain ⟨⟨w₁, w₂, hli, hcl⟩, -, hdisc, -, hO⟩ := _root_.GlobalTheory.CurveLattice.lattice_of_curve D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hc
+  have hstar := (_root_.GlobalTheory.ConjPoint.galStar_holds D cc δ hc M ρ hK h2 h3).2.2.2.2.1
   set Λ := lamOf D cc δ with hΛ
   let L : PeriodPair := ⟨w₁, w₂, hli⟩
   have hL : ∀ z, z ∈ Λ ↔ z ∈ L.lattice := by
@@ -293,8 +294,8 @@ theorem galCurve_holds : ∀ D : D7, galCurve D := by
       exact hdisc
     have h := congrArg ρ this
     simpa [map_ofNat] using h
-  obtain ⟨L', hL2, hL3⟩ := (GlobalTheory.T.latticeInvariants_periodPair_dictionary L Λ hL).2.2.2.2.2.2 _ _ (by rw [hρ]; exact one_ne_zero)
-  have hP := GlobalTheory.T.latticeInvariants_periodPair_dictionary L' L'.lattice.toAddSubgroup (fun z => Iff.rfl)
+  obtain ⟨L', hL2, hL3⟩ := (_root_.GlobalTheory.LatticeInvariants.invariants_dictionary L Λ hL).2.2.2.2.2.2 _ _ (by rw [hρ]; exact one_ne_zero)
+  have hP := _root_.GlobalTheory.LatticeInvariants.invariants_dictionary L' L'.lattice.toAddSubgroup (fun z => Iff.rfl)
   have hspec : g2 (lamConj M ρ Λ) = ρ (TaylorLogMetric.liftM M (g2 Λ)) ∧ g3 (lamConj M ρ Λ) = ρ (TaylorLogMetric.liftM M (g3 Λ)) :=
     Classical.epsilon_spec (p := fun Λ' : AddSubgroup ℂ =>
       g2 Λ' = ρ (TaylorLogMetric.liftM M (g2 Λ)) ∧ g3 Λ' = ρ (TaylorLogMetric.liftM M (g3 Λ)))

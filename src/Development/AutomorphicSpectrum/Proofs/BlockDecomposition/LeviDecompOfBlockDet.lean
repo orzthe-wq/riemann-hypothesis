@@ -126,7 +126,7 @@ theorem jG_mem_uSub (A : Ad E R) (ε : ℤˣ) (h : ∀ x, A.σ (A.σ x) = x) (m 
   have h3 : (((m⁻¹ : GL ι R) : Matrix ι ι R)ᵀ.map A.σ)ᵀ = ((m⁻¹ : GL ι R) : Matrix ι ι R).map A.σ := by
     ext r c; simp
   rw [jG_val, Ad.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, hmm, h3]
-  simp [-Matrix.coe_units_inv, h1, h2, Matrix.mul_assoc]
+  simp [-Matrix.coe_units_inv, h1, h2]
 
 section Alg
 

@@ -439,7 +439,7 @@ theorem tate_pairing_nondegenerate : Formalism.GaloisCohomology.LocalTateDuality
     rw [hs, ← hχL]
     rfl
   obtain ⟨n, hn⟩ := exists_pow_smul_mem hO ((algebraMap O LL ϖ)⁻¹ ^ r)
-  have hfin := (GlobalTheory.GoodCoeff.good_coeff_integers l LL O hO).2.2.1 n
+  have hfin := (_root_.GlobalTheory.PowerImageOpen.main l LL O hO).2.2.1 n
   obtain ⟨⟨hDom, hDVR, hFr⟩, -, -, htr, hopen⟩ := hO
   have hinj := IsFractionRing.injective O LL
   have hπ : algebraMap O LL ϖ ≠ 0 := (map_ne_zero_iff _ hinj).2 hϖ.ne_zero

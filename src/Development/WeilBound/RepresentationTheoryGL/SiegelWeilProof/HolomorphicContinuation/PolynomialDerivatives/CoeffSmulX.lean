@@ -89,7 +89,7 @@ theorem wt_step (c : ℝ) (s : Fin m × Fin n × Bool →₀ ℕ) (k : Fin m × 
         ∏ j ∈ Finset.univ.erase k, ((s j).factorial : ℝ) * (2 * c) ^ (s j) := by
       refine Finset.prod_congr rfl fun j hj => ?_
       have hjk : j ≠ k := Finset.ne_of_mem_erase hj
-      simp [Finsupp.single_apply, Ne.symm hjk]
+      simp [Ne.symm hjk]
     rw [hrest]
     simp only [Finsupp.add_apply, Finsupp.single_eq_same]
     rw [add_comm 1 (s k), Nat.factorial_succ, pow_succ]
@@ -115,7 +115,7 @@ theorem rdeg_single (ε : Fin m → Bool) (k : Fin m × Fin n × Bool) (hk : inF
   · subst ha
     rw [if_pos rfl, Finset.sum_eq_single i0]
     · simp
-    · intro i _ hi; simp [Finsupp.single_apply, Ne.symm hi]
+    · intro i _ hi; simp [Ne.symm hi]
     · simp
   · rw [if_neg ha]
     refine Finset.sum_eq_zero fun i _ => ?_
@@ -178,7 +178,7 @@ theorem symW_step (u : (Fin m × Fin n × Bool) ⊕ (Fin m × Fin n × Bool) →
       ∏ j ∈ Finset.univ.erase k, ((u j).factorial : ℂ) := by
     refine Finset.prod_congr rfl fun j hj => ?_
     have hjk : j ≠ k := Finset.ne_of_mem_erase hj
-    simp [Finsupp.single_apply, Ne.symm hjk]
+    simp [Ne.symm hjk]
   rw [hrest]
   simp only [Finsupp.add_apply, Finsupp.single_eq_same]
   rw [add_comm 1 (u k), Nat.factorial_succ]
@@ -214,7 +214,7 @@ theorem symK_tr (ε : Fin m → Bool) (i j : Fin n) (v u) :
     (symK ε j i (X u : Sym m n)).coeff (Finsupp.single v 1) = star ((symK ε i j (X v : Sym m n)).coeff (Finsupp.single u 1)) := by
   rcases v with ⟨a, i', b⟩ | ⟨a, i', b⟩ <;> rcases u with ⟨a', i'', b'⟩ | ⟨a', i'', b'⟩ <;>
     simp only [symK, mkDerivation_X, Sum.elim_inl, Sum.elim_inr] <;>
-    split_ifs <;> simp_all [coeff_X', Finsupp.single_left_inj, MvPolynomial.coeff_neg] <;> aesop
+    split_ifs <;> simp_all [coeff_X', Finsupp.single_left_inj] <;> aesop
 
 end CoreC
 

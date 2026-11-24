@@ -398,7 +398,6 @@ theorem EmbedsBy.affine_and_surjective {f : X ⟶ Y} [IsAffine Y] [UniversallyCl
       have hy' : resG X hV x₀ * resG X hV' (σ j) ^ m = resG X hV' (MvPolynomial.eval₂Hom
           (f.appLE ⊤ (nonzeroLocus (s j)) le_top).hom (rs j) p) := hy
       have z : resG X hV (ψ (lam j) ^ n * x₀ - ψ (lam j ^ m * a)) = 0 := by
-        change (resG X hV) (_ - _) = 0
         rw [map_sub, map_mul, map_pow]
         change θ (lam j) ^ n * _ - θ (lam j ^ m * a) = 0
         rw [map_mul, map_pow, ← ha, ← hy']

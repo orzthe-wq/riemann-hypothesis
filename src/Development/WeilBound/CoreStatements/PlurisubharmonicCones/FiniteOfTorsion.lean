@@ -250,21 +250,6 @@ theorem relIndex_matrix {r : ℕ} {v w : Fin r → M} (hv : LinearIndependent (�
     rw [hrange, Submodule.map_subtype_top] at hm
     rw [hm, Submodule.top_toAddSubgroup, AddSubgroup.relIndex_top_right, index_range f hinj, hdet]
 
-private theorem ringOfIntegers_ringHom_complex_injective {E : Type} [Field E] [NumberField E] (s : 𝓞 E →+* ℂ) :
-    Function.Injective s := by
-  set_option backward.isDefEq.respectTransparency.instanceSearchTypes false in rw [injective_iff_map_eq_zero]
-  intro a ha
-  have hker : RingHom.ker s = ⊥ := by
-    apply Ideal.eq_bot_of_comap_eq_bot (R := ℤ)
-    rw [eq_bot_iff]
-    intro n hn
-    rw [Ideal.mem_comap, RingHom.mem_ker, algebraMap_int_eq, eq_intCast, map_intCast] at hn
-    rw [Ideal.mem_bot]
-    exact_mod_cast hn
-  have : a ∈ RingHom.ker s := ha
-  rw [hker] at this
-  exact this
-
 private theorem bijective_algHom_comp_algebraMap {E : Type} [Field E] [NumberField E] :
     Function.Bijective fun σ : E →ₐ[ℚ] ℂ => (σ : E →+* ℂ).comp (algebraMap (𝓞 E) E) := by
   constructor
@@ -272,11 +257,11 @@ private theorem bijective_algHom_comp_algebraMap {E : Type} [Field E] [NumberFie
     apply AlgHom.coe_ringHom_injective
     exact IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h
   · intro s
-    refine ⟨(IsFractionRing.lift (ringOfIntegers_ringHom_complex_injective s)).toRatAlgHom, ?_⟩
+    refine ⟨(IsFractionRing.lift (_root_.LevelTowerAlt.emb_inj s)).toRatAlgHom, ?_⟩
     apply RingHom.ext
     intro a
     rw [RingHom.comp_apply]
-    exact IsFractionRing.lift_algebraMap (ringOfIntegers_ringHom_complex_injective s) a
+    exact IsFractionRing.lift_algebraMap (_root_.LevelTowerAlt.emb_inj s) a
 
 theorem norm_eq_prod (d : 𝓞 E) : ((Algebra.norm ℤ d : ℤ) : ℂ) = ∏ s : 𝓞 E →+* ℂ, s d := by
   have h1 : ((Algebra.norm ℤ d : ℤ) : ℂ) = algebraMap ℚ ℂ (Algebra.norm ℚ (d : E)) := by

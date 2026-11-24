@@ -86,7 +86,6 @@ lemma partial_le (M : ℕ) (hM : 3 ≤ M) (n : ℕ) :
     rw [sum_range_succ]
     have h := term_le M (n + 1) hM (by omega)
     push_cast at h ⊢
-    have e1 : (n : ℝ) + 1 + 1 + 1 = n + 1 + 2 := by ring
     have e2 : (n : ℝ) + 1 + 1 = n + 2 := by ring
     rw [e2] at h ⊢
     have e3 : (n : ℝ) + 1 + 2 = n + 2 + 1 := by ring
@@ -419,7 +418,6 @@ theorem corA_of_propA (hPA : PropA) : CorA := by
 
 theorem bracketBound : BracketBound := by
   intro k r m ka rd g VV Vu hm hk hrd hka hg hVV hVu om
-  have hpi : 0 < Real.pi := Real.pi_pos
   have h2pi : (1 : ℝ) ≤ 2 * Real.pi := by linarith [Real.pi_gt_three]
   have hrd0 : 0 < rd := by linarith
   have hka0 : 0 < ka := by rw [hka]; positivity
@@ -428,10 +426,7 @@ theorem bracketBound : BracketBound := by
   obtain ⟨e, he⟩ : ∃ e : ℕ, e = m * (m - 1) / 2 := ⟨_, rfl⟩
   have he2 : e = (r + 1) * (2 * r + 1) := by
     rw [he, hm]
-    have : (2 * r + 2) * (2 * r + 2 - 1) = 2 * ((r + 1) * (2 * r + 1)) := by
-      have : 2 * r + 2 - 1 = 2 * r + 1 := by omega
-      rw [this]; ring
-    rw [this]; simp
+    exact Formalism.FourierDecayAlt.P.Sz1.half_eq r
   have hmR : (m : ℝ) = 2 * r + 2 := by rw [hm]; push_cast; ring
   have heR : (e : ℝ) = ((r : ℝ) + 1) * (2 * r + 1) := by rw [he2]; push_cast; ring
   have hr0 : (0 : ℝ) ≤ r := Nat.cast_nonneg _
@@ -492,10 +487,6 @@ end Formalism.FourierDecayAlt.P.Sz2
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem exponent_sizes : Formalism.FourierDecayAlt.Sz.EaSize := Sz2.eaSize
-
 theorem corollary_a_of_proposition_a : Formalism.FourierDecayAlt.Sz.CorA := Sz2.corA_of_propA massRatioFormula
-
-theorem bracket_bound_alt : Formalism.FourierDecayAlt.Sz.BracketBound := Sz2.bracketBound
 
 end Formalism.FourierDecayAlt.P

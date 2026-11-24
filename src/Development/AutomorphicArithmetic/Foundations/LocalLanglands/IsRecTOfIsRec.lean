@@ -56,10 +56,18 @@ section Classes
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/-- A representation `y` of `GL_n(k)` is `GoodCusp` if `n = 1`, or if `k ≃ ℚ_[g]` for a prime `g` and `y`
+is the twist by a smooth character of a representation with a nonzero vector fixed by
+`GlobalTheory.SplitWeil.KOne`, the kernel of reduction to the residue field (a depth-zero
+representation). `Good` applies it to the cuspidal support of a representation. -/
 def GoodCusp (y : IrrGL (k := k)) : Prop :=
   y.1 = 1 ∨ ((∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* k), Continuous i) ∧
     ∃ (y₀ : IrrGL (k := k)) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ), GlobalTheory.PRep.fixed y₀.rep (GlobalTheory.SplitWeil.KOne k (Fin y₀.1)) ≠ ⊥ ∧ y = y₀.tw χ hχ)
 
+/-- `x` is `Good` if every member of its cuspidal support is `GoodCusp`: a character of `kˣ`, or, over a
+field isomorphic to some `ℚ_[g]`, a twist of a depth-zero representation. The laws `twist`,
+`central`, `dual`, `inj` and `depth` of `LawsT` constrain the correspondence only on these
+representations. -/
 def Good (x : IrrGL (k := k)) : Prop := ∃ s, HasSupport x.rep s ∧ ∀ y ∈ s, GoodCusp y
 
 def Toral (x : IrrGL (k := k)) : Prop := ∃ s, HasSupport x.rep s ∧ ∀ y ∈ s, y.1 = 1
@@ -71,6 +79,15 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 
 variable (h) in
+/-- The law of `LawsT` for depth-zero cuspidal representations when `w.adicCompletion E ≃ ℚ_[g]`.
+
+Let `E'` be a number field with a place `w'` over `g` of ramification index one and residue field
+`K` of order `g ^ n`, and let `τ` be a cuspidal representation of `GL_n(ZMod g)` whose character, at
+an element whose characteristic polynomial is irreducible with root `z`, is
+`(-1) ^ (n - 1) * ∑ j < n, θ (z ^ g ^ j)` for a regular character `θ` of `Kˣ`. If `σ` is inflated
+from `τ`, then `rc σ` has zero monodromy, and an inertia element `t` acts on it with characteristic
+polynomial `∏ j < n, (X - θ (z ^ g ^ j))`, where `z ∈ Kˣ` is the reduction of the image of `t` under
+the local Artin map of `E'` at `w'`. -/
 def TypeLaw (rc : IrrGL (k := w.adicCompletion E) → WD h) : Prop :=
   ∀ (E' : Type) [Field E'] [NumberField E'] [Algebra E E'] [Algebra E' Ω] [IsScalarTower E E' Ω] [IsAlgClosure E' Ω]
     (g : ℕ) [Fact g.Prime] (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A w'),
@@ -91,6 +108,18 @@ def TypeLaw (rc : IrrGL (k := w.adicCompletion E) → WD h) : Prop :=
         (rc (cls σ)).inePol (AlgEquiv.restrictScalars E (t : G E' Ω)) =
           ∏ j ∈ Finset.range n, (X - C ((θ (z ^ g ^ j) : ℂˣ) : ℂ))
 
+/-- The laws satisfied by the local correspondence `rc` that the proof uses, relative to a local
+Artin map `a`.
+
+Compare `GlobalTheory.LocLanglands.LawsLit`, the characterization of the full local Langlands
+correspondence. Here `rc` is not required to be a bijection, there is no condition on ε-factors of
+pairs, cuspidal representations are only required to go to irreducible Weil–Deligne
+representations (not conversely), and the conditions on twists, contragredients and injectivity
+are only imposed on `Good` representations. The central character condition is imposed on `Good`
+representations, and only up to absolute value (`absCentral`) on the others. `LawsT` also has
+`depth` and `type`,
+which `LawsLit` does not: depth-zero `Good` representations go to tamely ramified ones, and
+depth-zero cuspidal representations are described explicitly by `TypeLaw`. -/
 structure LawsT (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a)
     (rc : IrrGL (k := w.adicCompletion E) → WD h) : Prop where
   dim : ∀ x, (rc x).lpDim = x.1
@@ -112,12 +141,24 @@ structure LawsT (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a)
 
 
 variable (h) in
+/-- `rc` satisfies `LawsT` for some local Artin map. -/
 def IsRecT (rc : IrrGL (k := w.adicCompletion E) → WD h) : Prop := ∃ a ha, LawsT (h := h) a ha rc
 
+/-- For every finite place `w` of a number field `E`, there is a map `rc` from the irreducible smooth
+representations of the groups `GL_n(E_w)` to Weil–Deligne representations satisfying `IsRecT`.
+
+This is the form of the local Langlands correspondence for `GL_n` that the proof of the main
+theorems uses, and it is proved in this repository as `UpperTheory.Zero.LLC.recTExists`. The full
+correspondence, characterized by `GlobalTheory.LocLanglands.IsRecLit`, exists by
+[Harris and Taylor, *The geometry and cohomology of some simple Shimura varieties*][harris2001]
+and [Henniart, *Une preuve simple des conjectures de Langlands pour GL(n) sur un corps
+p-adique*][henniart2000]; the proof does not use it. -/
 def RecTExists : Prop :=
   ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)
     (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w), ∃ rc, IsRecT h rc
 
+/-- Two maps satisfying `IsRecT` agree on `Good` representations, so the laws in `LawsT` determine the
+correspondence there. It is proved as `UpperTheory.Zero.LLC.recTUnique`. -/
 def RecTUnique : Prop :=
   ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)
     (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (rc rc' : IrrGL (k := w.adicCompletion E) → WD h),

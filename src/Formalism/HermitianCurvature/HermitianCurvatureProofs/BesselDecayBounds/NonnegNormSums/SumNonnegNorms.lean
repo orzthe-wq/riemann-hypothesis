@@ -174,14 +174,10 @@ theorem ptB_nonneg {σ : Mx k r → (H →L[ℂ] H)} {a : ℝ} {v : H} (h : PtB 
   exact this
 
 theorem isClosed_UH : IsClosed (UH (Hpk k r) : Set (Mx k r)) := by
-  have hc : Continuous (fun g : Mx k r => gᴴ * Hpk k r * g) :=
-    ((continuous_id.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_id
-  exact isClosed_eq hc continuous_const
+  exact isClosed_eq (((continuous_id.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_id) continuous_const
 
 theorem continuous_matrix_mul : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 * Matrix.of p.2 : Mx k r)) := by
-  have h1 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mx k r)) := continuous_fst
-  have h2 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.2 : Mx k r)) := continuous_snd
-  exact h1.matrix_mul h2
+  exact (continuous_fst : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mx k r))).matrix_mul (continuous_snd : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.2 : Mx k r)))
 
 theorem decayOn_of_pt (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ) {V : H → Prop}

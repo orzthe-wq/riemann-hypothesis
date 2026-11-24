@@ -2,56 +2,11 @@ module
 
 public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Defs
 public import Mathlib.RingTheory.MvPolynomial.Homogeneous
-public import Lemmata.FirstBlockLemmaA.Imports
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Algebra.MvPolynomial.Funext
 
 @[expose] public section
@@ -120,7 +75,6 @@ theorem subst_monomial {r : ℕ} (lam : Fin r → k) (m : Fin (r + 1) →₀ ℕ
 
 theorem subst_natDegree_le {r : ℕ} (lam : Fin r → k) (F : MvPolynomial (Fin (r + 1)) k) :
     (subst lam F).natDegree ≤ F.totalDegree := by
-
   conv_lhs => rw [F.as_sum, map_sum]
   refine Polynomial.natDegree_sum_le_of_forall_le _ _ fun m hm => ?_
   exact (subst_monomial lam m _).1.trans (le_totalDegree hm)
@@ -129,12 +83,10 @@ theorem subst_coeff_totalDegree {r : ℕ} (lam : Fin r → k) (F : MvPolynomial 
     (subst lam F).coeff F.totalDegree =
       C (eval (Fin.cons (1 : k) lam) (homogeneousComponent F.totalDegree F)) := by
   classical
-
   rw [show subst lam F = ∑ v ∈ F.support, subst lam (monomial v (AddMonoidAlgebra.coeff F v)) by
-  rw [← map_sum, ← F.as_sum]]
-
+    rw [← map_sum, ← F.as_sum]]
   rw [homogeneousComponent_apply, map_sum, map_sum, Polynomial.finsetSum_coeff,
-  Finset.sum_filter]
+    Finset.sum_filter]
   refine Finset.sum_congr rfl fun m hm => ?_
   have hle : Finsupp.degree m ≤ F.totalDegree := le_totalDegree hm
   split_ifs with hd
@@ -148,13 +100,15 @@ theorem homogeneousComponent_totalDegree_ne_zero {σ : Type*} {F : MvPolynomial 
     (fun s => s.sum fun _ e => e)
   intro h0
   have hcoeff := congrArg (AddMonoidAlgebra.coeff · m) h0
-  rw [coeff_homogeneousComponent, if_pos (by rw [totalDegree, hmax]; rfl)] at hcoeff
+  rw [coeff_homogeneousComponent, ite_eq_left (by rw [totalDegree, hmax]; rfl)] at hcoeff
   exact (mem_support_iff.mp hm) (hcoeff.trans rfl)
 
 theorem eval_smul_of_degree {σ : Type*} [Fintype σ] (H : MvPolynomial σ k) (d : ℕ)
     (hH : ∀ m ∈ H.support, Finsupp.degree m = d) (c : k) (v : σ → k) :
     eval (c • v) H = c ^ d * eval v H := by
-  first | exact Bl.FirstBlockLemmaA.goal1 .. | (apply Bl.FirstBlockLemmaA.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaA.goal1 <;> assumption)
+  apply IsHomogeneous.eval_smul
+  intro m hm
+  simpa only [Finsupp.degree_eq_weight_one, Pi.one_def] using hH m (mem_support_iff.mpr hm)
 
 theorem exists_eval_cons_one_ne_zero [Infinite k] {r : ℕ} (H : MvPolynomial (Fin (r + 1)) k)
     (d : ℕ) (hH : ∀ m ∈ H.support, Finsupp.degree m = d) (h0 : H ≠ 0) :
@@ -206,9 +160,8 @@ theorem exists_isIntegralElem_linear [Infinite k] {R : Type*} [CommRing R] [Alge
   set d := F.totalDegree
   have hsupp : ∀ m ∈ (homogeneousComponent d F).support, Finsupp.degree m = d := by
     intro m hm
-    rw [mem_support_iff, coeff_homogeneousComponent] at hm
-    by_contra hne
-    exact hm (if_neg hne)
+    rw [support_homogeneousComponent] at hm
+    exact (Finset.mem_filter.mp hm).2
   obtain ⟨lam, hlam⟩ := exists_eval_cons_one_ne_zero _ d hsupp
     (homogeneousComponent_totalDegree_ne_zero hF)
   set c := eval (Fin.cons (1 : k) lam) (homogeneousComponent d F)

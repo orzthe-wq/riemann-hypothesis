@@ -2,7 +2,8 @@ module
 
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.NormCharSplit
 public import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.EigBasic
-public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursBasics
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SummandFactor
+public import Development.WeilBound.CuspidalAdmissibility.OccursIff
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.AbsLast
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.CoreDescOf
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.FdFixed
@@ -10,10 +11,10 @@ public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSpl
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.OneTerm
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.PickInf
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.PickS
-import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.PullBack
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.SideSum
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.TyEx
+import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Places
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.UnitTrace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -56,4 +57,4 @@ import Mathlib.Topology.Sheaves.Init
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.T in
 theorem UpperTheory.ConvolutionTheory.T.coreDesc :
     UpperTheory.ConvolutionTheory.CI → UpperTheory.ConvolutionTheory.GM.GM → UpperTheory.ConvolutionTheory.T.CoreDesc :=
-  coreDesc_of absLast pullBack unitTrace oneTerm sideSum pickS pickInf tyEx termE goodEx places C.occursBasics L1.eigBasic
+  coreDesc_of absLast pullBack unitTrace oneTerm sideSum pickS pickInf tyEx termE goodEx places _root_.PositivityTheory.TfC.OccursBasics_holds L1.eigBasic

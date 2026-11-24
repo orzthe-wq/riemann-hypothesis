@@ -161,7 +161,6 @@ theorem map_qminor {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B
   rw [map_mul, map_intCast, map_list_prod, List.map_ofFn]
   congr 2
   congr 1
-  congr 1
   funext k
   simp only [Function.comp_apply, Tm, map_add]
   split_ifs <;> simp
@@ -172,7 +171,6 @@ theorem qminor_reindex {A : Type} [Ring A] [Algebra ℂ A] {n n' t : ℕ} (E : F
   unfold qminor
   refine Finset.sum_congr rfl fun σ _ => ?_
   congr 2
-  congr 1
   congr 1
   funext l
   simp only [Tm, Function.comp_apply]

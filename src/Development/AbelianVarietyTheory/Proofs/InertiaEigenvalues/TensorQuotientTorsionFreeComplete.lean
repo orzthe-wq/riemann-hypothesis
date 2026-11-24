@@ -85,9 +85,9 @@ theorem isAdicComplete_iff {M : Type} [AddCommGroup M] [Module R M] :
       obtain ⟨L, hL⟩ := h.toIsPrecomplete.prec hc
       exact ⟨L, fun n => (smodEq_iff π n _ _).1 (hL n)⟩
   · rintro ⟨h1, h2⟩
-    haveI : IsHausdorff (Ideal.span {π}) M := ⟨fun x hx => h1 x fun n => by
+    have : IsHausdorff (Ideal.span {π}) M := ⟨fun x hx => h1 x fun n => by
       simpa using (smodEq_iff π n _ _).1 (hx n)⟩
-    haveI : IsPrecomplete (Ideal.span {π}) M := ⟨fun u hu => by
+    have : IsPrecomplete (Ideal.span {π}) M := ⟨fun u hu => by
       obtain ⟨L, hL⟩ := h2 u fun n => (smodEq_iff π n _ _).1 (hu (Nat.le_succ n))
       exact ⟨L, fun n => (smodEq_iff π n _ _).2 (hL n)⟩⟩
     exact ⟨⟩

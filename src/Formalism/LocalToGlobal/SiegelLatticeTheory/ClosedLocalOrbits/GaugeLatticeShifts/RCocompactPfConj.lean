@@ -1,46 +1,7 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.UnipTool
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -52,11 +13,8 @@ namespace Formalism.L2.SG.Pf.Unip
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {K : Type*} [CommRing K] [StarRing K]
 
-private theorem mul_eq_one_comm_of_mul_eq_one {G G' : Matrix ι ι K} (h : G * G' = 1) : G' * G = 1 :=
-  mul_eq_one_comm.mp h
-
 theorem conj_pow {G G' Z : Matrix ι ι K} (h : G * G' = 1) (j : ℕ) : G' * Z ^ j * G = (G' * Z * G) ^ j := by
-  have hG : G' * G = 1 := mul_eq_one_comm_of_mul_eq_one h
+  have hG : G' * G = 1 := _root_.Formalism.L2.SG.Pf.Unip.mul_comm_one h
   induction j with
   | zero => rw [pow_zero, pow_zero, Matrix.mul_one, hG]
   | succ n ih =>
@@ -71,7 +29,7 @@ theorem conj_geo {G G' Z : Matrix ι ι K} (h : G * G' = 1) (N : ℕ) : G' * geo
 
 theorem conj_cay [Invertible (2 : K)] {G G' Z : Matrix ι ι K} (h : G * G' = 1) (N : ℕ) :
     G' * cay N Z * G = cay N (G' * Z * G) := by
-  have hG : G' * G = 1 := mul_eq_one_comm_of_mul_eq_one h
+  have hG : G' * G = 1 := _root_.Formalism.L2.SG.Pf.Unip.mul_comm_one h
   have e1 : G' * ((⅟2 : K) • Z) * G = (⅟2 : K) • (G' * Z * G) := by
     rw [Matrix.mul_smul, Matrix.smul_mul]
   unfold cay

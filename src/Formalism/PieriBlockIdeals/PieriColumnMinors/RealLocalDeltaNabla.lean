@@ -87,7 +87,7 @@ theorem nabla_rep_tensor_product : NablaRepTprod := by
 
 theorem delta_lattice_stable_holds : DeltaInStable := by
   intro O _ r n hn ν g x hx
-  exact Formalism.UG.P.weyl_module_GL_stable O r n hn ν g _ hx
+  exact _root_.Formalism.UG.P.wlocal_global O r n hn ν g _ hx
 
 theorem nablaRep_mem_delta (O : Type) [CommRing O] (ι : Type) (r n : ι → ℕ) (hn : ∀ i, n i ≤ r i)
     (ν : ∀ i, Fin (n i) → ℕ) (g : ∀ i, Matrix.GeneralLinearGroup (Fin (r i)) O)

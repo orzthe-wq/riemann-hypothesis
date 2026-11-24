@@ -61,7 +61,7 @@ lemma incM_vecMulVec {n d : ℕ} (x : Fin n → E) (y : Fin d → E) :
 lemma smul_vecMulVec {n d : ℕ} (a : AF F) (p : Fin n → AE F E) (q : Fin d → AE F E) :
     a • Matrix.vecMulVec p q = Matrix.vecMulVec p (a • q) := by
   ext i j
-  simp [Matrix.vecMulVec_apply, mul_smul_comm]
+  simp [Matrix.vecMulVec_apply]
 
 lemma vecMulVec_mul_transpose {n d : ℕ} (p : Fin n → AE F E) (q : Fin d → AE F E)
     (M : Matrix (Fin d) (Fin d) (AE F E)) :

@@ -69,12 +69,8 @@ def NSub (E : GLOps n (KK O) V) (x0 : V) : Submodule O (Module.Dual (KK O) V) wh
     exact Oval.mul ⟨c, rfl⟩ (hψ u' hu)
 
 theorem NSub_stable (E : GLOps n (KK O) V) (x0 : V) : UZStable (O := O) (dualOps E) (NSub (O := O) E x0) := by
-  intro u hu ψ hψ
-  have hψ' : ∀ u' ∈ UZmon (dualOps E), Oval O (u' ψ x0) := hψ
-  show ∀ u' ∈ UZmon (dualOps E), Oval O (u' (u ψ) x0)
-  intro u' hu'
-  have hu2 : u ∈ UZmon (dualOps E) := Submonoid.subset_closure hu
-  exact hψ' (u' * u) (Submonoid.mul_mem _ hu' hu2)
+  intro u hu ψ hψ u' hu'
+  exact hψ (u' * u) (Submonoid.mul_mem _ hu' (Submonoid.subset_closure hu))
 
 end
 
@@ -164,10 +160,8 @@ theorem rationalMonoid_le_integralMonoid {n : ℕ} {K V : Type*} [Field K] [AddC
   simp only [Formalism.MainNotions.G.UZgens, Set.mem_setOf_eq]
   by_cases hab : a = b
   · subst hab
-    refine Or.inr ⟨a, 1, ?_⟩
-    simp [Formalism.MainNotions.G.binomE]
-  · refine Or.inl ⟨a, b, 1, hab, ?_⟩
-    simp [Formalism.MainNotions.G.divPowE]
+    exact Or.inr ⟨a, 1, by simp [Formalism.MainNotions.G.binomE]⟩
+  · exact Or.inl ⟨a, b, 1, hab, by simp [Formalism.MainNotions.G.divPowE]⟩
 
 theorem weylDualityLattice_of_nabla_fg_bidual (D : Formalism.BasicNotions.D7) (hNab : NablaContragredientEqDualLatticeDelta) (hFG : DeltaFinitelyGenerated) (hBid : LatticeBiduality) : WeylDualityLattice D := by
   unfold Formalism.MainNotions.CovariantDegrees.WeylDualityLattice
@@ -177,7 +171,6 @@ theorem weylDualityLattice_of_nabla_fg_bidual (D : Formalism.BasicNotions.D7) (h
     refine Submodule.span_le.2 ?_
     rintro x ⟨u, hu, rfl⟩
     apply Submodule.subset_span
-    show u v ∈ Delta (O := O) E v
     exact Submodule.subset_span ⟨u, rationalMonoid_le_integralMonoid E hu, rfl⟩
   have hB := hBid O V (Delta (O := O) E v) (hFG p O S n V E mu v v' hI hH himg) hspan
   rw [hNab p O S n V E mu v v' hI hH himg]

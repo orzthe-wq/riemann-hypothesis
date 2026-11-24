@@ -63,8 +63,7 @@ theorem combMat_comb {g r r' : ℕ} (w : Fin r' → Fin g → ℂ) (l : Fin r �
     (α : Matrix (Fin g) (Fin r') ℚ) (hw : ∀ i, w i = ∑ j, c i j • l j) :
     combMat w α = combMat l (α * c.map (Int.cast : ℤ → ℚ)) := by
   ext k i
-  simp only [combMat, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, hw, Finset.sum_apply, Pi.smul_apply,
-    zsmul_eq_mul]
+  simp only [combMat, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, hw, Finset.sum_apply, zsmul_eq_mul]
   push_cast
   simp only [Finset.mul_sum, Finset.sum_mul]
   rw [Finset.sum_comm]
@@ -104,14 +103,14 @@ theorem shift_mem {n a : ℕ} (ha : a ≤ n) (k : Fin a) {s : Fin n → ℂ} (hs
     have h := hs j
     by_cases hj : j = Fin.castLE ha k
     · subst hj
-      have hk : ((Fin.castLE ha k : Fin n) : ℕ) < a := by simp [Fin.coe_castLE, k.isLt]
+      have hk : ((Fin.castLE ha k : Fin n) : ℕ) < a := by simp [k.isLt]
       simp only [hk, if_true] at h ⊢
       simpa [Pi.add_apply] using h
     · simpa [Pi.add_apply, Pi.single_eq_of_ne hj] using h
   · funext j
     by_cases hj : j = Fin.castLE ha k
     · subst hj
-      have hk : ((Fin.castLE ha k : Fin n) : ℕ) < a := by simp [Fin.coe_castLE, k.isLt]
+      have hk : ((Fin.castLE ha k : Fin n) : ℕ) < a := by simp [k.isLt]
       simp only [logExp, hk, if_true, Pi.add_apply, Pi.single_eq_same]
       rw [Complex.exp_add, Complex.exp_two_pi_mul_I, _root_.mul_one]
     · simp [logExp, Pi.single_eq_of_ne hj]

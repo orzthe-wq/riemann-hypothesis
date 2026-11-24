@@ -167,7 +167,7 @@ theorem psiP_mul {r k : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fi
   funext i j
   exact congrFun (congrFun key i) j
 
-theorem rightInvS_of (hSC : SetCorr) (hHC : HaarCorr) : RightInvS := by
+theorem rightInvS_of (hSC : SetCorr) (hHC : HaarCorr) : _root_.Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.UnimodLoc := by
   intro n r k ε e z z' T T' hF μ hμ s hs
   have hn : n = 2 * r + k + 1 := by have := hF.dim; omega
   subst hn
@@ -197,6 +197,6 @@ end Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.RI
 
 namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 
-theorem rightInvS_of (hSC : SetCorr) (hHC : HaarCorr) : RightInvS := RI.rightInvS_of hSC hHC
+alias rightInvS_of := _root_.Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.RI.rightInvS_of
 
 end Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL

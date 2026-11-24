@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenRegularCharacters
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GreenCuspidalCharsByRegularCharsProofStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GreenCuspidalCharsByRegularCharsProof
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -44,6 +44,6 @@ import Mathlib.Topology.Sheaves.Init
 namespace PositivityTheory.Stage1.PM
 
 theorem greenRegularCharacters : GlobalTheory.Published.GreenRegularCharacters :=
-  GlobalTheory.T.greenCuspidalCharsByRegularChars_proof
+  _root_.GlobalTheory.greenRegularCharacters_holds
 
 end PositivityTheory.Stage1.PM

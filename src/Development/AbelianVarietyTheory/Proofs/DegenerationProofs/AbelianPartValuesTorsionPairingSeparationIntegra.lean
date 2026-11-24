@@ -280,7 +280,7 @@ theorem tors_of_integral : Laws → Laws2 → BrUthSt → ∀ (R : Type) [CommRi
     have := hW (n ^ j) (Nat.pos_of_ne_zero (pow_ne_zero j hp.ne_zero)) b b' hb hb'
     rwa [h b' hb', show unitOn (1 : Cˣ) = 1 from map_one (Units.map _)] at this
   · obtain ⟨-, hc⟩ := hU (n ^ j) ho.pow (hj j) {b : N.A // b ^ (n ^ j) ^ 2 = 1} Subtype.val Subtype.property
-    obtain ⟨-, hs, -, hsep⟩ := GlobalTheory.T.thetaCoordinates_exist_unique_separate_points hL C _ D.P (jFK (R := R) C ≫ jK R) (n ^ j) ho.pow (hj j)
+    obtain ⟨-, hs, -, hsep⟩ := _root_.GlobalTheory.CoordSep.coord_exists_unique_separate hL C _ D.P (jFK (R := R) C ≫ jK R) (n ^ j) ho.pow (hj j)
       {b : N.A // b ^ (n ^ j) ^ 2 = 1} (fun i => ν.eA i.1) fun i => (tor _ _).2 i.2
     have h3 : 3 ≤ n ^ j := by
       have : 3 ≤ n := by

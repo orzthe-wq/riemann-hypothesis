@@ -50,6 +50,7 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsAd
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsBaseFrame
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.FlatBCSec
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

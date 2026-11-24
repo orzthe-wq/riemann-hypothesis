@@ -1,24 +1,28 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMeans.MeanVal
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountableStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureZeroStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuityStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramMatrixLocalGlobalStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalarStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyRealStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductRenormalizationStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlacesStatement
+public import Formalism.UnipotentAdelicQuotients.SWXSDefs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelesLocallyCompactSecondCountable
+public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureZero
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuity
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramMatrixLocalGlobal
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
+public import Mathlib.Topology.Algebra.InfiniteSum.Defs
+public import Mathlib.Topology.MetricSpace.Pseudo.Defs
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteProductRenormalization
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IntegralAlmostAllPlaces
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilFormulaRange
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilOrbitalMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SummableOneDivAbsNormSq
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-public import Development.WeilBound.CoreStatements.ThetaDilations.ThetaLint
+public import CompanionTheory.AutomorphicTheory.ThetaDilations.ThetaLint
 public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.TnsIsTopologicalAddGroup
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelWeilOrbitalMeasure
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SummableOneDivAbsNormSq
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -82,8 +86,8 @@ open PositivityTheory.Rg.Mass
 theorem finite_rat_compact {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (n M : ℕ) (K : Set (Fin n → Fin M → AF F ⊗[F] E)) (hK : IsCompact K) :
     {X : Fin n → Fin M → E | ratTup (AF F) X ∈ K}.Finite := by
-  obtain ⟨⟨_, _, _⟩, -⟩ := GlobalTheory.T.adeles_locally_compact_second_countable F
-  obtain ⟨_, _, _, _, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)
+  obtain ⟨⟨_, _, _⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.AdeleTop.adele_top F
+  obtain ⟨_, _, _, _, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (AF F)
   have hinj : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
     Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective _ _)
   have hri : Function.Injective (ratTup (F := F) (AF F) : (Fin n → Fin M → E) → _) := fun X Y h =>
@@ -102,10 +106,10 @@ theorem theta_locFin {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     (C : Set (HA (AF F) σ J)) (hC : IsCompact C) (hcov : ∀ h, ∃ γ : HFinIn (AF F) σ J, ∃ c ∈ C, h = γ • c)
     (hμ0 : μ 𝓕 ≠ 0) (hμt : μ 𝓕 ≠ ⊤) (n : ℕ) (S : Set (Fin n → Fin M → E)) :
     IsLocallyFiniteMeasure (thetaMeas σ J μ 𝓕 S) := by
-  obtain ⟨⟨_, _, _⟩, -⟩ := GlobalTheory.T.adeles_locally_compact_second_countable F
-  obtain ⟨_, _, _, _, -, -, -, hB, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)
+  obtain ⟨⟨_, _, _⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.AdeleTop.adele_top F
+  obtain ⟨_, _, _, _, -, -, -, hB, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (AF F)
   have := hB n M
-  obtain ⟨_, _, _, _, _, hact⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm M J hJ (AF F)
+  obtain ⟨_, _, _, _, _, hact⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hcm M J hJ (AF F)
   obtain ⟨ac, a1, a2, -⟩ := hact n
   have hinj : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
     Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective _ _)
@@ -125,7 +129,7 @@ theorem theta_locFin {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   have hbound : ∀ h : HA (AF F) σ J, ∑' X : S, K.indicator (1 : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞)
       (actW (AF F) σ J h⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))) ≤ (P.encard : ℝ≥0∞) := fun h => by
     obtain ⟨γ, c, hc, rfl⟩ := hcov' h
-    choose t ht using fun X : Fin n → Fin M → E => PositivityTheory.PlacePermOperatorBicommutantSpan.act_rat (n := n) γ⁻¹ X
+    choose t ht using fun X : Fin n → Fin M → E => CompanionTheory.PlacePermOperatorBicommutantSpan.act_rat (n := n) γ⁻¹ X
     have ht' : ∀ X, actW (AF F) σ J (γ : HA (AF F) σ J)⁻¹ (ratTup (AF F) X) = ratTup (AF F) (t X) := ht
     have hti : Function.Injective t := fun X Y e => by
       have h1 := congrArg (actW (AF F) σ J (γ : HA (AF F) σ J)) ((ht' X).trans ((congrArg (ratTup (AF F)) e).trans (ht' Y).symm))
@@ -150,7 +154,7 @@ theorem theta_locFin {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   refine ⟨K, hX, ?_⟩
   have hm : Measurable (K.indicator (1 : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞)) :=
     measurable_one.indicator hK.measurableSet
-  rw [← lintegral_indicator_one hK.measurableSet, PositivityTheory.PlacePermOperatorBicommutantSpan.theta_lint F E σ hcm M J hJ μ 𝓕 hμ h𝓕 _ _ _ hm]
+  rw [← lintegral_indicator_one hK.measurableSet, CompanionTheory.PlacePermOperatorBicommutantSpan.theta_lint F E σ hcm M J hJ μ 𝓕 hμ h𝓕 _ _ _ hm]
   have hle : ∫⁻ h in 𝓕, ∑' X : S, K.indicator (1 : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞)
       (actW (AF F) σ J h⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))) ∂μ ≤ (P.encard : ℝ≥0∞) * μ 𝓕 := by
     refine (lintegral_mono hbound).trans ?_
@@ -176,8 +180,8 @@ theorem euler_of_summable {F E : Type} [Field F] [NumberField F] [Field E] [Numb
     (hIsupp : I {X | gramR (AF F) σ J X = T.map (inclR (AF F))}ᶜ = 0) :
     ∃ c : ℝ≥0, IsEulerProd b I c (minf (hermOf (Ainf F) σ T hT)) (fun v => m v (hermOf (Fv F v) σ T hT)) := by
   classical
-  have hLi : IsLocR (Ainf F) := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1
-  have hLv : ∀ v, IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F
+  have hLi : IsLocR (Ainf F) := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1
+  have hLv : ∀ v, IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F
   haveI hBi : BorelSpace (Ainf F) := ⟨rfl⟩
   have hFi := GlobalTheory.CompanionTheory.SW.Fact.fib_facts σ hCM J hJ (Ainf F) hLi T hT hdet b laminf hinf.1 minf hminf
   have hFv : ∀ v, SigmaFinite (m v (hermOf (Fv F v) σ T hT)) ∧
@@ -190,16 +194,16 @@ theorem euler_of_summable {F E : Type} [Field F] [NumberField F] [Field E] [Numb
       ext X
       simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
       intro hX
-      have hloc := (GlobalTheory.T.gram_matrix_local_global F E σ hCM M J hJ n X T).1.1 hX
+      have hloc := (_root_.GlobalTheory.CompanionTheory.SW.GramLocal.gram_local F E σ hCM M J hJ n X T).1.1 hX
       rcases h0 with h | ⟨v, h⟩
       · exact hFi.2 h _ hloc.1
       · exact (hFv v).2 h _ (hloc.2 v)
     rw [hempty, Set.compl_empty] at hIsupp
     rw [Measure.measure_univ_eq_zero.mp hIsupp]
-    exact ⟨0, (GlobalTheory.T.euler_product_measure_zero F E σ hCM d b n M 0 0 _ _).2.2 hfin hsum h0⟩
+    exact ⟨0, (_root_.GlobalTheory.CompanionTheory.SW.EulerZero.euler_zero F E σ hCM d b n M 0 0 _ _).2.2 hfin hsum h0⟩
   · push Not at h0
     obtain ⟨hinf0, hv0⟩ := h0
-    choose c hc using GlobalTheory.T.siegel_weil_orbital_measure F E σ hCM M J hJ n T hT hdet d b laminf lam hinf hlam minf hminf m hm
+    choose c hc using _root_.GlobalTheory.CompanionTheory.SW.FactS.fact_S F E σ hCM M J hJ n T hT hdet d b laminf lam hinf hlam minf hminf m hm
       I hIf hIinv hIsupp
     obtain ⟨A, hAm, hA0, hAt⟩ := @GlobalTheory.CompanionTheory.SW.Fact.exists_test_set _ _ (minf (hermOf (Ainf F) σ T hT)) hFi.1 hinf0
     choose B hBm hB0 hBt using fun v =>
@@ -209,7 +213,7 @@ theorem euler_of_summable {F E : Type} [Field F] [NumberField F] [Field E] [Numb
       intro S _ v hv
       have hlatm : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
         haveI := GlobalTheory.CompanionTheory.SW.Fact.borel_tup σ hCM (Fv F v) (hLv v) n M
-        exact ((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2.measurableSet
+        exact ((_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hCM d b n M).2.2.2.1 v).2.measurableSet
       let φ0 : ∀ w : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F w ⊗[F] E) → ℝ≥0∞ :=
         fun w => (B w).indicator 1
       let φ1 := Function.update φ0 v ((latV b v).indicator 1)
@@ -254,7 +258,7 @@ theorem euler_of_summable {F E : Type} [Field F] [NumberField F] [Field E] [Numb
       have e5 := (ENNReal.mul_left_inj hP0 hPt).mp e4
       have e6 := congrArg ENNReal.toReal e5
       simpa [ENNReal.toReal_mul] using e6
-    obtain ⟨c₀, S₀, -, hS₀⟩ := GlobalTheory.T.infinite_product_renormalization _ (fun v => (m v (hermOf (Fv F v) σ T hT) (latV b v)).toReal) c ∅
+    obtain ⟨c₀, S₀, -, hS₀⟩ := _root_.GlobalTheory.CompanionTheory.SW.TailConst.exists_const_mul_tail _ (fun v => (m v (hermOf (Fv F v) σ T hT) (latV b v)).toReal) c ∅
       (fun _ => ENNReal.toReal_nonneg) hsum hstep
     refine ⟨c₀, hfin, hsum, S₀, fun S hS φinf φ hφi hφ => ?_⟩
     rw [hc S φinf φ hφi hφ]
@@ -275,31 +279,31 @@ theorem vector_length_formula_up_to_constant : CoCpt → LocMass → Prop1 := by
   have hd : T.det ≠ 0 := by
     rw [Matrix.det_unique]
     exact hE
-  obtain ⟨β', e, -, hh⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm T hT
+  obtain ⟨β', e, -, hh⟩ := _root_.GlobalTheory.CompanionTheory.SW.hermOne_eq_scal F E σ hcm T hT
   have hββ : β' = β := (algebraMap F E).injective (congrFun (congrFun e 0) 0).symm
   rw [hββ] at hh
-  obtain ⟨t1, t2⟩ := PositivityTheory.PlacePermOperatorBicommutantSpan.theta_inv F E σ hcm 2 J hJ μ 𝓕 hμ h𝓕 1 T
+  obtain ⟨t1, t2⟩ := CompanionTheory.PlacePermOperatorBicommutantSpan.theta_inv F E σ hcm 2 J hJ μ 𝓕 hμ h𝓕 1 T
   have hlf : IsLocallyFiniteMeasure (thetaMeas σ J μ 𝓕 {X : Fin 1 → Fin 2 → E | gramE σ J X = T}) :=
     theta_locFin σ hcm 2 J hJ μ 𝓕 hμ h𝓕 C hC hcov hμ0 hμt 1 _
   have hfin : ∀ v, m v (hermOf (Fv F v) σ T hT) (latV b v) < ⊤ := fun v => by
-    have hloc : IsLocR (Fv F v) := GlobalTheory.T.completion_is_local_ring F v
+    have hloc : IsLocR (Fv F v) := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
     obtain ⟨hTR, hLC, hSC, hT2, -⟩ := id hloc
     haveI := hTR
     haveI := hLC
     haveI := hSC
     haveI := hT2
     haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-    have hh' := GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F v) d b (lam v) (hlam v).1
+    have hh' := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm (Fv F v) d b (lam v) (hlam v).1
     haveI hW := hh'.2.1 1 2
     haveI hH := hh'.2.2 1
-    have hl := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm 2 J hJ (Fv F v) hloc 1 _ _ (m v) hW hH (hm v)
+    have hl := (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hcm 2 J hJ (Fv F v) hloc 1 _ _ (m v) hW hH (hm v)
       (hermOf (Fv F v) σ T hT)).1
-    exact ((GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 2).2.2.2.1 v).1.measure_lt_top
+    exact ((_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d b 1 2).2.2.2.1 v).1.measure_lt_top
   have hsum : Summable fun v => |(m v (hermOf (Fv F v) σ T hT) (latV b v)).toReal - 1| := by
     refine Summable.of_norm_bounded_eventually
       (g := fun v : HeightOneSpectrum (𝓞 F) => C₁ * (1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2))
       ((GlobalTheory.CompanionTheory.SW.Primes.summable_one_div_absNorm_sq F).mul_left C₁) ?_
-    filter_upwards [hC₁, (GlobalTheory.T.integral_almost_all_places F E σ hcm d b).2 β hβ] with v h1 h2
+    filter_upwards [hC₁, (_root_.GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hcm d b).2 β hβ] with v h1 h2
     have h3 := h1.2.2 _ h2
     rw [Real.norm_eq_abs, abs_abs, hh]
     simpa [div_eq_mul_inv] using h3

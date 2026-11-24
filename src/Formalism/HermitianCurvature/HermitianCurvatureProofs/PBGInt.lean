@@ -175,14 +175,14 @@ theorem sliceAt_lincomb (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [Inne
     set g := U.gaXi (p := ph + (n + 1)) (s := 0) k ρ (Formalism.FourierDecayAlt.P.Dx2.SL.sigP (D.ptPerm h))
       (Formalism.FourierDecayAlt.P.Dx2.SL.dP (D.ptDiag h) t) ξ (fun a => a.elim0) γ with hg
     have hgG : g ∈ B.GV k (ph + (n + 1) + 0 + ρ) :=
-      Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation _ _ hdP ξ _ hZ0 hγ
+      Formalism.FourierDecayAlt.P.Ux10.gaXi_mem _root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam _ _ hdP ξ _ hZ0 hγ
     have hDj : U.DjU k (ph + (n + 1) + 0) ρ g = _ :=
-      Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice _ _ ξ _ γ
+      Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi _root_.Formalism.FourierDecayAlt.P.Ux3.zhSlice _ _ ξ _ γ
     have hD : Dmin k r T.base.z T.base.z' (D.castM e2 g) ⟨D.ptSize (h ++ [(n + 1, t)]), by omega⟩ ≠ 0 := by
       rw [Dmin_castM e2 _ _ g _ _ (by omega)]
       have e3 : (⟨D.ptSize (h ++ [(n + 1, t)]), by omega⟩ : Fin (ph + (n + 1) + ρ + 2)) = ⟨ph + (n + 1), by omega⟩ :=
         Fin.ext hP
-      rw [e3, Formalism.FourierDecayAlt.P.hat_z_minimum_degree k (ph + (n + 1)) ρ]
+      rw [e3, _root_.Formalism.FourierDecayAlt.P.Ux3.zhDmin k (ph + (n + 1)) ρ]
       show U.DjU k (ph + (n + 1) + 0) ρ g ≠ 0
       rw [hDj]
       exact mul_ne_zero hdh0 hZ0

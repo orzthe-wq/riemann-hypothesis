@@ -66,7 +66,7 @@ theorem isExpType_one : IsExpType (1 : PowerSeries B) := by
   · simp
   · have h1 : m ≠ 0 := hm.ne'
     have h2 : m + n ≠ 0 := by omega
-    simp [coeff_one, h1, h2]
+    simp [coeff_one, h1]
 
 theorem isExpType_mul {f g : PowerSeries B} (hf : IsExpType f) (hg : IsExpType g) :
     IsExpType (f * g) := by

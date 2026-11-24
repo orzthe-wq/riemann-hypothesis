@@ -1,51 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.TransferStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.PhiCas
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.TransferB
 public import Mathlib.Analysis.Calculus.ContDiff.Basic
@@ -112,14 +69,6 @@ private theorem contDiff_lead_k_type {k : WithTop ℕ∞} (i : ℕ) :
   · simp only [lead, dif_neg h]
     exact contDiff_const
 
-private theorem isOpen_omegaSet' : IsOpen (OmegaSet n) := by
-  have h : OmegaSet n = ⋂ i : Fin n, {z : Matrix (Fin n) (Fin n) ℂ | lead ((i : ℕ) + 1) z ≠ 0} := by
-    ext z
-    simp [OmegaSet]
-  rw [h]
-  exact isOpen_iInter_of_finite fun i =>
-    isOpen_ne_fun (contDiff_lead_k_type (k := 0) _).continuous continuous_const
-
 private theorem det_ne_zero_of_mem_omegaP {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaP n) : z.det ≠ 0 := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · simp
@@ -136,11 +85,11 @@ private theorem isOpen_omegaP : IsOpen (OmegaP n) := by
     exact ⟨fun hz => ⟨det_ne_zero_of_mem_omegaP hz, hz⟩, fun hz => hz.2⟩
   rw [h]
   exact (contDiffOn_inv_det_ne_zero' (k := 0)).continuousOn.isOpen_inter_preimage
-    (isOpen_ne_fun (contDiff_det_k_type (k := 0)).continuous continuous_const) isOpen_omegaSet'
+    (isOpen_ne_fun (contDiff_det_k_type (k := 0)).continuous continuous_const) _root_.ReciprocityTheory.ChartRestriction.DS.S7.isOpen_omega
 
 theorem positiveOmega_mem_nhds {x : Matrix (Fin n) (Fin n) ℂ} (hx : x ∈ OmegaP n) : OmegaP n ∈ nhds x := isOpen_omegaP.mem_nhds hx
 
-theorem isOpen_positiveOmega : IsOpen (OmegaP n) := isOpen_omegaP
+alias isOpen_positiveOmega := _root_.ReciprocityTheory.ChartRestriction.DS.Lap.LemK.isOpen_omegaP
 
 theorem rightHol_congr_on_omega {X : Matrix (Fin n) (Fin n) ℂ} {G H : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (h : Set.EqOn G H (OmegaP n)) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ OmegaP n) :
@@ -176,7 +125,7 @@ theorem rightHol_commutator {F : Matrix (Fin n) (Fin n) ℂ → ℂ} {z : Matrix
     (hF : ContDiffAt ℂ 2 F z) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     Rhol X (Rhol Y F) z - Rhol Y (Rhol X F) z = Rhol (X * Y - Y * X) F z := by
   have hs : IsSymmSndFDerivAt ℂ F z := hF.isSymmSndFDerivAt
-    (by first | simp [minSmoothness_of_isRCLikeNormedField] | simp | exact le_rfl)
+    (by first | simp [minSmoothness_of_isRCLikeNormedField])
   have h2 : fderiv ℂ (fderiv ℂ F) z (z * X) (z * Y) = fderiv ℂ (fderiv ℂ F) z (z * Y) (z * X) :=
     hs _ _
   rw [rightHol_rightHol_eq hF, rightHol_rightHol_eq hF, h2]

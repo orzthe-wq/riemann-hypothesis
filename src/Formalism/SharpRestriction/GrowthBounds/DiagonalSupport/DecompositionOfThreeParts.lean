@@ -65,8 +65,6 @@ theorem leQ_mono {x : WithTop ℚ} {s t : ℝ} (h : s ≤ t) (hx : leQ x s) : le
   obtain ⟨q, hq, h1⟩ := hx
   exact ⟨q, hq, le_trans h1 h⟩
 
-theorem geQ_top (t : ℝ) : geQ ⊤ t := fun q hq => absurd hq (by simp)
-
 theorem geQ_of_le {x y : WithTop ℚ} {t : ℝ} (h : x ≤ y) (hx : geQ x t) : geQ y t := by
   intro q hq
   rw [hq] at h
@@ -106,7 +104,7 @@ theorem leQ_mul (x y : KK O) {s t : ℝ} (hx : leQ (vK p x) s) (hy : leQ (vK p y
   · push_cast; linarith
 
 theorem geQ_zero (t : ℝ) : geQ (vK p (0 : KK O)) t := by
-  rw [valuation_zero_alt]; exact geQ_top t
+  rw [valuation_zero_alt]; exact _root_.Formalism.MainNotions.G.Joints.geQ_top t
 
 theorem geQ_sum {ι : Type*} (s : Finset ι) (f : ι → KK O) {t : ℝ} (h : ∀ i ∈ s, geQ (vK p (f i)) t) :
     geQ (vK p (∑ i ∈ s, f i)) t := by

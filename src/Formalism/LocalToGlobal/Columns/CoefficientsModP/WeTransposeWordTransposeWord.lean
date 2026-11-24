@@ -12,48 +12,8 @@ public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LClosedeqLemmas
 public import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
 public import Formalism.PieriBlockIdeals.PieriColumnMinors.LowerTriangularIntegral
 public import Formalism.PieriBlockIdeals.PieriColumnMinors.LrfcApplyWordAppendSingle
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.GradedWeylDivisibility.FockSpaceTableaux.ClosedEqNabla
 
 @[expose] public section
 
@@ -65,8 +25,7 @@ namespace Formalism.L2.DIV
 
 open Formalism.GradedWeylDivisibility
 
-theorem we_intQ_apply (r n : ℕ) (P : MvPolynomial (Fin r × Fin n) ℤ) :
-    intQ r n P = MvPolynomial.map (Int.castRingHom ℚ) P := rfl
+alias we_intQ_apply := _root_.Formalism.CohomologicalDescent.LR.lre_intQ_apply
 
 theorem we_applyWord_mem (R : Type) [CommRing R] (r n : ℕ) (ν : Fin n → ℕ) (w : List (Fin r × Fin r × ℕ))
     (f : MvPolynomial (Fin r × Fin n) R) (hf : f ∈ dualWeyl R r n ν) : applyWord R w f ∈ dualWeyl R r n ν := by
@@ -89,8 +48,7 @@ theorem we_fock_smul_right {σ : Type} (c : ℚ) (f g : MvPolynomial σ ℚ) : f
   rw [we_fock_symm, we_fock_smul_left, we_fock_symm g]
 
 theorem we_fock_zero_right {σ : Type} (f : MvPolynomial σ ℚ) : fockQ f 0 = 0 := by
-  have := we_fock_smul_right 0 f 0
-  simpa using this
+  simpa using we_fock_smul_right (0 : ℚ) f 0
 
 theorem we_hw_norm_ne {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) : fockQ (hw ℚ hn ν) (hw ℚ hn ν) ≠ 0 :=
   ne_of_gt ((fockQPos _ (hw ℚ hn ν) (hw ℚ hn ν)).2 (hwNe ℚ r n hn ν))
@@ -117,9 +75,7 @@ theorem we_fock_word {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Anti
 
 theorem we_transposeWord_transposeWord {r : ℕ} (w : List (Fin r × Fin r × ℕ)) :
     transposeWord (transposeWord w) = w := by
-  unfold transposeWord
-  rw [List.map_reverse, List.reverse_reverse, List.map_map]
-  simp [Function.comp_def]
+  simp [transposeWord, List.map_map, Function.comp_def]
 
 theorem nabla_eq_dual_weyl_holds : NablaEqDualWeyl := by
   intro r n hn ν hν
@@ -186,24 +142,16 @@ theorem weForm_apply (x y : dualWeyl ℚ r n ν) :
 
 theorem we_form_symm : (weForm hn ν).IsSymm := by
   rw [LinearMap.isSymm_def]
-  intro x y
-  rw [weForm_apply, weForm_apply, starRingEnd_apply, star_trivial, we_fock_symm]
+  simp [weForm_apply, we_fock_symm]
 
 theorem we_form_self_eq_zero (x : dualWeyl ℚ r n ν) (h : weForm hn ν x x = 0) : x = 0 := by
   rw [weForm_apply, div_eq_zero_iff] at h
   have h1 := h.resolve_right (we_hw_norm_ne hn ν)
   by_contra hx
-  have hx' : x.1 ≠ 0 := fun h0 => hx (Subtype.ext h0)
-  exact ne_of_gt ((fockQPos _ x.1 x.1).2 hx') h1
+  exact ne_of_gt ((fockQPos _ x.1 x.1).2 (fun h0 => hx (Subtype.ext h0))) h1
 
 theorem we_form_nondeg : (weForm hn ν).Nondegenerate :=
   ⟨fun x hx => we_form_self_eq_zero hn ν x (hx x), fun x hx => we_form_self_eq_zero hn ν x (hx x)⟩
-
-theorem we_finiteDimensional (r n : ℕ) (ν : Fin n → ℕ) : FiniteDimensional ℚ (dualWeyl ℚ r n ν) := by
-  obtain ⟨b, hb, -⟩ := sSBasis ℚ r n ν
-  have : Finite (ssIdx r n ν) := (sSIdxFinite r n ν).to_subtype
-  rw [← hb.2.1]
-  exact FiniteDimensional.span_of_finite ℚ (Set.finite_range b)
 
 def weCut (r n : ℕ) (ν : Fin n → ℕ) (S : Submodule ℤ (MvPolynomial (Fin r × Fin n) ℚ)) :
     Submodule ℤ (dualWeyl ℚ r n ν) :=
@@ -294,7 +242,7 @@ end Double
 
 theorem weyl_eq_dual_nabla_holds : WeylEqDualNabla := by
   intro r n hn ν hν
-  have hfd := we_finiteDimensional r n ν
+  have hfd := _root_.Formalism.GradedWeylDivisibility.lclosedeq_fd r n ν
   have hdd := (Formalism.HermitianLatticesTheory.dualLattice ℤ ℚ (dualWeyl ℚ r n ν) (weForm hn ν) (we_form_symm hn ν) (we_form_nondeg hn ν)
     (fun z => ⟨z, by simp⟩) _ (we_weyl_lattice hn ν hν)).2.1
   refine we_cut_inj (ν := ν) (we_weyl_le hn ν hν) (fun x hx => hx.1) ?_

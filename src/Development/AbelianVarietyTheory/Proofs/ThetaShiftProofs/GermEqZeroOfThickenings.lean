@@ -634,7 +634,7 @@ theorem exists_isZero (P : DegPre R) (T : Over (Sp R)) : ∃ g : GtPt P T, g.IsZ
     rw [val_one] at H
     refine Eq.trans ?_ H
     refine Eq.trans ?_ (val_cub P.cub (lift (P.cT T χ) (P.cT T χ')) hJ (x2 P.P.A 0) (x2 P.P.A 1) (pzero P.P.A _)).symm
-    congr 1 <;> simp [x2, pzero, Hom.one_def, DegPre.zeroT]
+    congr 1 <;> simp [x2, pzero, DegPre.zeroT]
   exact congrArg₂ (· * ·) ((v _ y J hJ).trans (v _ y J hJ).symm)
     (c.trans (face.trans (v _ y J hJ).symm))
 

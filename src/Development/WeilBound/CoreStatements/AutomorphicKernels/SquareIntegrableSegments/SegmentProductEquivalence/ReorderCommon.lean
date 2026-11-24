@@ -2,7 +2,8 @@ module
 
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.ZelevinskyJacquet.ZelevinskyCosocles.LUnlinkedComm
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivProdIrrTw
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductIrreducibleAppendEquivStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ProductIrreducibleAppendEquiv
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -104,7 +105,7 @@ theorem stage2 {p q n rA rR : ℕ} (A : Fin p → IrrGL (k := k)) (R : Fin q →
   subst e
   have hw' : w = Fin.append A R := funext fun m => hw m
   subst hw'
-  exact GlobalTheory.T.product_irreducible_append_equiv k p q rA rR A R hA hR hN
+  exact _root_.GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append k p q rA rR A R hA hR hN
 
 
 
@@ -115,8 +116,8 @@ theorem head_swap {c rQ rC : ℕ} (Q Q' : Fin 2 → IrrGL (k := k)) (C : Fin c �
     (E : Nonempty ((prodIrr Q hQ).Equiv (prodIrr Q' hQ'))) :
     Nonempty ((prodIrr (Fin.append Q C) hR).Equiv (prodIrr (Fin.append Q' C) hR')) := by
   obtain ⟨E⟩ := E
-  obtain ⟨o1⟩ := GlobalTheory.T.product_irreducible_append_equiv k 2 c rQ rC Q C hQ hC hR
-  obtain ⟨o2⟩ := GlobalTheory.T.product_irreducible_append_equiv k 2 c rQ rC Q' C hQ' hC hR'
+  obtain ⟨o1⟩ := _root_.GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append k 2 c rQ rC Q C hQ hC hR
+  obtain ⟨o2⟩ := _root_.GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append k 2 c rQ rC Q' C hQ' hC hR'
   exact ⟨o1.symm.trans ((prod₂Equiv E (Representation.Equiv.refl _)).trans o2)⟩
 
 

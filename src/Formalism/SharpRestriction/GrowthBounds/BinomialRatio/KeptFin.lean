@@ -89,7 +89,7 @@ theorem kf_kept_finite (p r : ℕ) {s : ℕ} (S : SegData s) (aTop : Fin s → �
     (Set.Finite.prod (Set.Finite.pi fun i => Set.finite_Iic (aTop i)) (Set.finite_Iic ⌈R⌉₊)))))
   refine (hT.preimage kfTuple_inj.injOn).subset ?_
   rintro b ⟨⟨hdig, -, -⟩, hge, hlt, hop⟩
-  simp only [Set.mem_preimage, kfTuple, Set.mem_prod, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Iic,
+  simp only [Set.mem_preimage, kfTuple, Set.mem_prod, Set.mem_pi, Set.mem_univ, Set.mem_Iic,
     forall_const]
   refine ⟨fun i c => (hdig i c).1.le, fun i c => (hdig i c).2.le, fun i => ?_, fun i => ?_, fun i => ?_, ?_⟩
   · by_cases h : S.sigma ≤ (i : ℕ)

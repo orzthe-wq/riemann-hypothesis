@@ -48,9 +48,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
-theorem definite_unitary_cocompact :
-    ∀ {D : D7} (V : HSp D), (∀ τ, (gramAt D V τ).PosDef) →
-      ∃ C : Set (GA D V), IsCompact C ∧ ∀ h : GA D V, ∃ γ ∈ GQ V, ∃ c ∈ C, h = γ * c :=
-  GlobalTheory.DefiniteQuotient.exists_compact
-
 end GlobalTheory

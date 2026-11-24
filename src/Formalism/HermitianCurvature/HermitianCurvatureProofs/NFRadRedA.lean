@@ -180,8 +180,4 @@ end Formalism.FourierDecayAlt.P.NFRadRedA
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem radical_reduction_mem : Formalism.FourierDecayAlt.NF.RadRedMem := NFRadRedA.radRedMem
-
-theorem radical_reduction_injective : Formalism.FourierDecayAlt.NF.RadRedInj := NFRadRedA.radRedInj
-
 end Formalism.FourierDecayAlt.P

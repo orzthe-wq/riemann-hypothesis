@@ -47,6 +47,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.ThetaLogCoordinates.JacobiPathWeights.JacobiMinorProofs.LeIffLtColHeight
 
 @[expose] public section
 
@@ -194,8 +195,7 @@ theorem extd_restr {n : ℕ} (A : Finset (Fin (n + 1))) (b : Prop) (h : b ↔ Fi
     extd (restr A) b = A := by
   ext x
   refine Fin.lastCases ?_ (fun m => ?_) x
-  · rw [last_mem_extd]
-    exact h
+  · simpa [last_mem_extd] using h
   · rw [castSucc_mem_extd, mem_restr]
 
 theorem cnt_restr {n : ℕ} (A : Finset (Fin (n + 1))) {x : ℕ} (hx : x ≤ n) : cnt (restr A) x = cnt A x := by
@@ -221,15 +221,12 @@ private theorem card_extd_eq {n : ℕ} (A : Finset (Fin n)) (b : Prop) [Decidabl
   · simp [hb]
 
 theorem card_restr {n : ℕ} (A : Finset (Fin (n + 1))) : (restr A).card = cnt A n := by
-  rw [← cnt_restr A le_rfl]
-  exact (cnt_of_le _ le_rfl).symm
+  rw [← cnt_of_le (restr A) le_rfl, cnt_restr A le_rfl]
 
 open Classical in
 theorem card_eq_restr {n : ℕ} (A : Finset (Fin (n + 1))) :
     A.card = (restr A).card + if Fin.last n ∈ A then 1 else 0 := by
-  have h := card_extd_eq (restr A) (Fin.last n ∈ A)
-  rw [extd_restr A _ Iff.rfl] at h
-  exact h
+  rw [← card_extd_eq (restr A) (Fin.last n ∈ A), extd_restr A _ Iff.rfl]
 
 open Classical in
 theorem card_extd {n : ℕ} (A : Finset (Fin n)) (b : Prop) :
@@ -238,10 +235,9 @@ theorem card_extd {n : ℕ} (A : Finset (Fin n)) (b : Prop) :
 
 theorem colHeight_anti {n : ℕ} (μ : Fin n → ℤ) {c c' : ℤ} (h : c ≤ c') : colHeight μ c' ≤ colHeight μ c := by
   unfold colHeight
-  apply Finset.card_le_card
-  intro m hm
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hm ⊢
-  exact le_trans h hm
+  exact Finset.card_le_card fun m hm => by
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hm ⊢
+    exact le_trans h hm
 
 theorem mem_gtBox {n : ℕ} (μ : Fin (n + 1) → ℤ) (κ : Fin n → ℤ) :
     κ ∈ gtBox μ ↔ ∀ i, μ i.succ ≤ κ i ∧ κ i ≤ μ i.castSucc := by
@@ -286,51 +282,21 @@ theorem heights_of_gtBox {n : ℕ} {μ : Fin (n + 1) → ℤ} {κ : Fin n → �
     rw [Finset.card_map] at h2
     omega
 
-private theorem le_iff_lt_colHeight_of_antitone {n : ℕ} {κ : Fin n → ℤ} (h : Antitone κ) (c : ℤ) (i : Fin n) :
-    c ≤ κ i ↔ i.val < colHeight κ c := by
-  unfold colHeight
-  constructor
-  · intro hc
-    have hsub : Finset.Iic i ⊆ univ.filter fun m => c ≤ κ m := by
-      intro m hm
-      rw [Finset.mem_Iic] at hm
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-      exact le_trans hc (h hm)
-    have h1 := Finset.card_le_card hsub
-    rw [Fin.card_Iic] at h1
-    omega
-  · intro hi
-    by_contra hc
-    have hsub : (univ.filter fun m => c ≤ κ m) ⊆ Finset.Iio i := by
-      intro m hm
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hm
-      rw [Finset.mem_Iio]
-      by_contra hmi
-      push_neg at hmi
-      exact hc (le_trans hm (h hmi))
-    have h1 := Finset.card_le_card hsub
-    rw [Fin.card_Iio] at h1
-    omega
-
 theorem shape_unique {n : ℕ} {κ κ' : Fin n → ℤ} (h : Antitone κ) (h' : Antitone κ')
     (he : ∀ c, colHeight κ c = colHeight κ' c) : κ = κ' := by
   funext i
   apply le_antisymm
-  · rw [le_iff_lt_colHeight_of_antitone h' (κ i) i, ← he, ← le_iff_lt_colHeight_of_antitone h]
-  · rw [le_iff_lt_colHeight_of_antitone h (κ' i) i, he, ← le_iff_lt_colHeight_of_antitone h']
+  · rw [_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.le_iff_lt_colHeight h' (κ i) i, ← he, ← _root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.le_iff_lt_colHeight h]
+  · rw [_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.le_iff_lt_colHeight h (κ' i) i, he, ← _root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.le_iff_lt_colHeight h']
 
 private theorem card_filter_val_lt_eq {n k : ℕ} (hk : k ≤ n) : (univ.filter fun m : Fin n => m.val < k).card = k := by
-  have e : (univ.filter fun m : Fin n => m.val < k).map Fin.valEmbedding = Finset.range k := by
-    ext j
-    simp only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_range]
-    constructor
-    · rintro ⟨m, hm, rfl⟩
-      exact hm
-    · intro hj
-      exact ⟨⟨j, by omega⟩, hj, rfl⟩
-  have h1 := congrArg Finset.card e
-  rw [Finset.card_map, Finset.card_range] at h1
-  exact h1
+  rcases lt_or_eq_of_le hk with hklt | hkeq
+  · have h : (univ.filter fun m : Fin n => m.val < k) = Finset.Iio (⟨k, hklt⟩ : Fin n) := by
+      ext m
+      simp [Finset.mem_Iio, Fin.lt_def]
+    rw [h, Fin.card_Iio]
+  · subst k
+    rw [Finset.filter_true_of_mem (fun m _ => m.isLt), Finset.card_univ, Fintype.card_fin]
 
 theorem exists_shape {n : ℕ} {μ : Fin (n + 1) → ℤ} (hμ : Antitone μ) (h : ℤ → ℕ)
     (hanti : ∀ c, h (c + 1) ≤ h c) (h1 : ∀ c, h c ≤ colHeight μ c) (h2 : ∀ c, colHeight μ c ≤ h c + 1)
@@ -338,14 +304,14 @@ theorem exists_shape {n : ℕ} {μ : Fin (n + 1) → ℤ} (hμ : Antitone μ) (h
   have hA : Antitone h := antitone_int_of_succ_le hanti
   have hlo : ∀ i : Fin n, i.val < h (μ i.succ) := by
     intro i
-    have h4 := (le_iff_lt_colHeight_of_antitone hμ (μ i.succ) i.succ).1 le_rfl
+    have h4 := (_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.le_iff_lt_colHeight hμ (μ i.succ) i.succ).1 le_rfl
     have h5 := h2 (μ i.succ)
     rw [Fin.val_succ] at h4
     omega
   have hhi : ∀ (i : Fin n) (c : ℤ), i.val < h c → c ≤ μ i.castSucc := by
     intro i c hic
     by_contra hc
-    have h4 : ¬ (i.castSucc).val < colHeight μ c := fun h' => hc ((le_iff_lt_colHeight_of_antitone hμ c i.castSucc).2 h')
+    have h4 : ¬ (i.castSucc).val < colHeight μ c := fun h' => hc ((_root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.Paths.le_iff_lt_colHeight hμ c i.castSucc).2 h')
     rw [Fin.coe_castSucc] at h4
     have h5 := h1 c
     omega
@@ -381,9 +347,7 @@ theorem exists_shape {n : ℕ} {μ : Fin (n + 1) → ℤ} (hμ : Antitone μ) (h
 theorem tab_restr {n : ℕ} {μ : Fin (n + 1) → ℤ} {κ : Fin n → ℤ} {T : ℤ → Finset (Fin (n + 1))}
     (hT : TabP μ T) (hc : ∀ c, (restr (T c)).card = colHeight κ c) : TabP κ fun c => restr (T c) := by
   unfold TabP
-  refine ⟨hc, fun c => ?_⟩
-  intro x
-  show cnt (restr (T (c + 1))) x ≤ cnt (restr (T c)) x
+  refine ⟨hc, fun c x => ?_⟩
   rcases le_total x n with hx | hx
   · rw [cnt_restr _ hx, cnt_restr _ hx]
     exact hT.2 c x
@@ -399,14 +363,11 @@ theorem tab_extd {n : ℕ} {μ : Fin (n + 1) → ℤ} {κ : Fin n → ℤ} (hμ 
     TabP μ fun c => extd (T' c) (colHeight κ c < colHeight μ c) := by
   have hcard : ∀ c, (extd (T' c) (colHeight κ c < colHeight μ c)).card = colHeight μ c := by
     intro c
-    have h1 := card_extd (T' c) (colHeight κ c < colHeight μ c)
-    have h2 := hT.1 c
     have h3 := heights_of_gtBox hμ hκ c
-    rw [h1, h2]
+    rw [card_extd, hT.1 c]
     split_ifs <;> omega
   unfold TabP
-  refine ⟨hcard, fun c => ?_⟩
-  intro x
+  refine ⟨hcard, fun c x => ?_⟩
   show cnt (extd (T' (c + 1)) (colHeight κ (c + 1) < colHeight μ (c + 1))) x ≤
     cnt (extd (T' c) (colHeight κ c < colHeight μ c)) x
   by_cases hx : x ≤ n

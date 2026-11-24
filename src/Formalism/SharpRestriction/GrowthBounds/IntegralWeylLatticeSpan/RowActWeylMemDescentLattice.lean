@@ -69,11 +69,7 @@ theorem lamAt_even {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (s : Fin
     lamAt lam0 s = lam0 s := by
   unfold lamAt; rw [ite_eq_left hs]
 
-theorem lamAt_anti {n' m : ℕ} (lam0 : Fin n' → Fin (m + 1) → ℤ) (hd : IsDominant lam0) (s : Fin n') :
-    Antitone (lamAt lam0 s) := by
-  by_cases hs : Even s.val
-  · rw [lamAt_even lam0 s hs]; exact hd s
-  · rw [lamAt_odd lam0 s hs]; exact lamStar_anti _ (hd s)
+alias lamAt_anti := _root_.Formalism.MainNotions.G.LatticeSystems.kp_lamAt_antitone
 
 theorem rowAct_weyl_mem_span_integral {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] (m : ℕ) (ν : Fin (m + 1) → ℕ)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (a : Kf) (f : MvPolynomial (Fin (m + 1) × Fin (m + 1)) O)
@@ -177,7 +173,7 @@ theorem map_bl {R : Type} [Field R] (φ : LL →+* R) (v : Fin P.nV) (s : Fin (P
     map φ (bl P h pos N v s f) = (((nAt P h pos N v s).map φ).det ^ (-(eAt P v s))) •
       rowAct R ((nAt P h pos N v s).map φ)⁻¹ (map (Int.castRingHom R) f) := by
   unfold bl
-  rw [Cmp.map_smul', map_rowAct, MvPolynomial.map_map, int_comp, map_zpow₀, nAt_map_inv, RingHom.map_det]
+  rw [Cmp.map_smul', _root_.Formalism.UG.P.wlocal_map_rowAct, MvPolynomial.map_map, int_comp, map_zpow₀, nAt_map_inv, RingHom.map_det]
   rfl
 
 def gen (f : ∀ v, Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ) : XR P LL :=

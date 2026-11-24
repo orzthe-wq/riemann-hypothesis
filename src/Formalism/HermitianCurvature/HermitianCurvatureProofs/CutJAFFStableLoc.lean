@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralIdentities
 
 @[expose] public section
 
@@ -63,9 +64,6 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 section loc
 
 variable {k r : ℕ} {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ E']
-
-theorem mem_level_zero_of_mem_group {g : B.Mat k r} (hg : g ∈ B.GV k r) : g ∈ Q.Glev k r 0 :=
-  ⟨hg, fun a ha => by simp at ha⟩
 
 def LocSm (g₀ : B.Mat k r) (h : B.Mat k r → E') : Prop :=
   ∃ (U : Set (B.Mat k r)) (F : B.Mat k r → E'), IsOpen U ∧ g₀ ∈ U ∧
@@ -129,7 +127,7 @@ end loc
 
 theorem extension_locality_holds : ExtLoc := by
   intro k r E' _ _ O J hO hJ g₀ hg₀ hg₀O
-  obtain ⟨U₀, F, hU₀, hgU₀, hF, hFJ⟩ := hJ g₀ ⟨mem_level_zero_of_mem_group hg₀, hg₀O⟩
+  obtain ⟨U₀, F, hU₀, hgU₀, hF, hFJ⟩ := hJ g₀ ⟨_root_.Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hg₀, hg₀O⟩
   have hV : U₀ ∩ O ∈ nhds g₀ := (hU₀.inter hO).mem_nhds ⟨hgU₀, hg₀O⟩
   obtain ⟨ε, hε, hball⟩ := Metric.mem_nhds_iff.1 hV
   let b : ContDiffBump g₀ := ⟨ε / 3, 2 * ε / 3, by positivity, by linarith⟩
@@ -154,7 +152,7 @@ theorem extension_locality_holds : ExtLoc := by
     have hb : b x = 1 := b.one_of_mem_closedBall (Metric.ball_subset_closedBall hx)
     have hxU : x ∈ U₀ := (hball (Metric.ball_subset_ball (by linarith) hx)).1
     simp only [hb, one_smul]
-    exact (hFJ x hxU (mem_level_zero_of_mem_group hxG)).symm
+    exact (hFJ x hxU (_root_.Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hxG)).symm
 
 theorem smooth_operators_holds : SmoothOps := by
   intro k r Wp Wq _ _ _ _ _ D Θ O hO hOP hΘ f hf hs

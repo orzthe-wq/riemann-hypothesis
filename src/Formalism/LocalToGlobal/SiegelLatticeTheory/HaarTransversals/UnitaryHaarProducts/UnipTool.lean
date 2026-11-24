@@ -3,51 +3,9 @@ module
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.CategoryTheory.Category.Basic
 public import Mathlib.Topology.Instances.Matrix
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -178,9 +136,6 @@ theorem sharp_one (h : J' * J = 1) : sharp J J' (1 : Matrix ι ι K) = 1 := by
 theorem mul_comm_one {M N : Matrix ι ι K} (h : M * N = 1) : N * M = 1 := by
   first
   | exact mul_eq_one_comm.mp h
-  | exact (by
-      rw [← Matrix.inv_eq_right_inv h]
-      exact Matrix.nonsing_inv_mul M (Matrix.isUnit_det_of_right_inverse h))
 
 theorem sharp_mul_self (h : J' * J = 1) {M : Matrix ι ι K} (hM : Mᴴ * J * M = J) : sharp J J' M * M = 1 := by
   unfold sharp
@@ -304,8 +259,6 @@ theorem cay_continuous (N : ℕ) {ι' : Type*} [Fintype ι'] [DecidableEq ι'] :
   unfold cay geo
   first
   | fun_prop
-  | exact continuous_const.add (continuous_id.mul
-      (continuous_finset_sum _ fun j _ => (continuous_const.smul continuous_id).pow j))
 
 variable [StarRing K]
 

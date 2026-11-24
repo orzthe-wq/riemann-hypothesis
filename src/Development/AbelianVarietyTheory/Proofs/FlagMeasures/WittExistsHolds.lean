@@ -174,8 +174,6 @@ theorem wittExists_holds (D : D7) : WittExists D := by
 
 end Witt
 
-theorem wittExists : ∀ D : D7, WittExists D := wittExists_holds
-
 end GlobalTheory.St.WittT
 
 end

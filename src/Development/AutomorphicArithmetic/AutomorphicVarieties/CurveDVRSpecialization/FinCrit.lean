@@ -58,9 +58,6 @@ import Mathlib.Tactic.ReduceModChar
 
 open IsLocalRing UpperTheory.V.Alg
 
-attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing UpperTheory.V.Pr.IsCD.complete
-  UpperTheory.V.Pr.IsCD.fin UpperTheory.V.Pr.IsCD.isLocalHom
-
 private theorem fc_abs (D V : Type) [CommRing D] [IsDomain D] [IsNoetherianRing D] [IsLocalRing D]
     [IsAdicComplete (maximalIdeal D) D] [Finite (ResidueField D)] [Ring.DimensionLEOne D]
     [CommRing V] [IsDomain V] [ValuationRing V] [Algebra D V] [FaithfulSMul D V] [IsLocalHom (algebraMap D V)]

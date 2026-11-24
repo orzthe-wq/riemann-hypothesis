@@ -58,13 +58,6 @@ theorem coord_ne (y : (Af E)ˣ) (v : HeightOneSpectrum (𝓞 E)) : Valued.v ((y 
   have := (FiniteAdeleRing.isUnit_iff.1 y.isUnit).1 v
   simpa using this
 
-theorem modF_finite (y : (Af E)ˣ) : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 E) =>
-    ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (WithZero.log (Valued.v ((y : Af E) v)))).Finite := by
-  have := (FiniteAdeleRing.isUnit_iff.1 y.isUnit).2
-  rw [Filter.eventually_cofinite] at this
-  refine this.subset fun v hv h1 => hv ?_
-  simp [h1]
-
 theorem absNorm_pos (v : HeightOneSpectrum (𝓞 E)) : (0 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) := by
   have : Ideal.absNorm v.asIdeal ≠ 0 := by
     rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot
@@ -72,7 +65,7 @@ theorem absNorm_pos (v : HeightOneSpectrum (𝓞 E)) : (0 : ℝ) < ((Ideal.absNo
 
 theorem modF_mul (y y' : (Af E)ˣ) : modF (y * y') = modF y * modF y' := by
   unfold modF
-  rw [← finprod_mul_distrib (modF_finite y) (modF_finite y')]
+  rw [← finprod_mul_distrib (GlobalTheory.CMVal.IdeleModule.modF_finite y) (GlobalTheory.CMVal.IdeleModule.modF_finite y')]
   refine finprod_congr fun v => ?_
   have : ((y * y' : (Af E)ˣ) : Af E) v = (y : Af E) v * (y' : Af E) v := rfl
   rw [this, map_mul, WithZero.log_mul (coord_ne y v) (coord_ne y' v), zpow_add₀ (absNorm_pos v).ne']
@@ -82,7 +75,7 @@ theorem modF_pos (y : (Af E)ˣ) : 0 < modF y :=
 
 theorem modF_princ (k : Eˣ) :
     modF (Units.map (algebraMap E (Af E)).toMonoidHom k) = (|((Algebra.norm ℚ (k : E) : ℚ) : ℝ)|)⁻¹ := by
-  apply _root_.GlobalTheory.CMVal.IdeleModule.modF_princ <;> assumption
+  apply _root_.GlobalTheory.CMVal.IdeleModule.modF_princ
 
 theorem hatO_integral {c : Ideal (OF E)} {y : Af E} (hy : y ∈ hatO c) (v : HeightOneSpectrum (𝓞 E)) :
     Valued.v (y v) ≤ 1 := by

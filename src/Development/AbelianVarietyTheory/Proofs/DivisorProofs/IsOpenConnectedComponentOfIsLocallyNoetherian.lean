@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -55,7 +56,7 @@ namespace GlobalTheory.ConnOpen
 
 theorem isOpen_connectedComponent_noetherian {Y : Type*} [TopologicalSpace Y] [NoetherianSpace Y] (y : Y) :
     IsOpen (connectedComponent y) := by
-  apply CrystallineSemistableComparison.isOpen_connectedComponent_of_noetherianSpace <;> assumption
+  apply CrystallineSemistableComparison.isOpen_connectedComponent_of_noetherianSpace
 
 end GlobalTheory.ConnOpen
 

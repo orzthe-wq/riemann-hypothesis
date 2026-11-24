@@ -348,8 +348,8 @@ theorem closed_on_chart {S W P X : Scheme.{0}} (f : W ⟶ S) (s : P ⟶ S) [IsSe
         AffineSpace.homOfVector_appTop_coord]
       exact (hr Z a b hab i).symm
   · apply pullback.hom_ext
-    · simp [h₁, pullback.lift_fst, pullback.lift_fst_assoc]
-    · simp [h₂, hab, pullback.lift_snd, pullback.lift_snd_assoc]
+    · simp [h₁]
+    · simp [h₂, hab]
 
 theorem isIso_on_open {S W P X : Scheme.{0}} (f : W ⟶ S) (s : P ⟶ S) [IsSeparated s]
     (U : W.Opens) (ι : X ⟶ pullback f s)

@@ -3,9 +3,10 @@ module
 public import Mathlib.Analysis.Analytic.Order
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.NumberTheory.LSeries.DirichletContinuation
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LogDerivDirichletLFunctionLocalZeroSumStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NegReLogDerivPrincipalLFunctionLeStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LogDerivDirichletLFunctionLocalZeroSum
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NegReLogDerivPrincipalLFunctionLe
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NegSumLogDerivNonneg
+public import Mathlib.NumberTheory.LSeries.Nonvanishing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -21,7 +22,6 @@ import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
-public import Mathlib.NumberTheory.LSeries.Nonvanishing
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
@@ -85,59 +85,30 @@ theorem exists_bound : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ : Dir
     (∀ β ∈ T, 2 / 3 ≤ β ∧ LFunction χ β = 0) →
     -(deriv (LFunction χ) σ / LFunction χ σ).re ≤ C * Real.log (2 * q)
       - ∑ β ∈ T, (analyticOrderNatAt (LFunction χ) β : ℝ) / (σ - β) := by
-  obtain ⟨C, hC, hb⟩ := GlobalTheory.T.logDeriv_dirichletLFunction_local_zero_sum
+  obtain ⟨C, hC, hb⟩ := GlobalTheory.LLocal.neg_re_logDeriv_le_sum
   refine ⟨C, hC, fun q _ χ hχ σ hσ hσ2 T hT => ?_⟩
-  have hs : ‖(σ : ℂ) - (3 / 2 + ((0 : ℝ) : ℂ) * I)‖ ≤ 2 / 3 := by
-    have e : (σ : ℂ) - (3 / 2 + ((0 : ℝ) : ℂ) * I) = ((σ - 3 / 2 : ℝ) : ℂ) := by push_cast; ring
-    rw [e, Complex.norm_real, Real.norm_eq_abs, abs_le]
-    constructor <;> linarith
-  have hLσ : LFunction χ σ ≠ 0 :=
-    LFunction_ne_zero_of_one_le_re χ (.inl hχ) (by rw [Complex.ofReal_re]; linarith)
-  obtain ⟨hfin, hbd⟩ := hb q χ hχ 0 σ hs hLσ
-  set f : ℂ → ℂ := fun w => (analyticOrderNatAt (LFunction χ) w : ℂ) / (σ - w) with hf
-  set D := deriv (LFunction χ) σ / LFunction χ σ with hD
-  have hlog : Real.log (q * (|(0 : ℝ)| + 2)) = Real.log (2 * q) := by
-    congr 1; rw [abs_zero, zero_add, mul_comm]
-  rw [hlog] at hbd
-  have hre := (Complex.abs_re_le_norm _).trans hbd
-  rw [Complex.sub_re] at hre
-  have hsub : T.map ⟨((↑) : ℝ → ℂ), Complex.ofReal_injective⟩ ⊆ hfin.toFinset := by
+  let e : ℝ ↪ ℂ := ⟨((↑) : ℝ → ℂ), Complex.ofReal_injective⟩
+  have hT' : ∀ w ∈ T.map e,
+      ‖w - (3 / 2 + ((0 : ℝ) : ℂ) * I)‖ ≤ 5 / 6 ∧ LFunction χ w = 0 := by
     intro w hw
-    rw [Finset.mem_map] at hw
-    obtain ⟨β, hβ, rfl⟩ := hw
+    obtain ⟨β, hβ, rfl⟩ := Finset.mem_map.mp hw
     obtain ⟨hβ1, hβ2⟩ := hT β hβ
-    have hβlt : β < 1 := by simpa using re_lt_one hχ hβ2
-    rw [Set.Finite.mem_toFinset]
     refine ⟨?_, hβ2⟩
-    have e : (β : ℂ) - (3 / 2 + ((0 : ℝ) : ℂ) * I) = ((β - 3 / 2 : ℝ) : ℂ) := by push_cast; ring
-    simp only [Function.Embedding.coeFn_mk]
-    rw [e, Complex.norm_real, Real.norm_eq_abs, abs_le]
+    have hβlt : β < 1 := by simpa using re_lt_one hχ hβ2
+    change ‖(β : ℂ) - (3 / 2 + ((0 : ℝ) : ℂ) * I)‖ ≤ 5 / 6
+    rw [show (β : ℂ) - (3 / 2 + ((0 : ℝ) : ℂ) * I) =
+      ((β - 3 / 2 : ℝ) : ℂ) by push_cast; ring,
+      Complex.norm_real, Real.norm_eq_abs, abs_le]
     constructor <;> linarith
-  have hST : ∑ β ∈ T, (analyticOrderNatAt (LFunction χ) β : ℝ) / (σ - β) ≤
-      (∑ᶠ w ∈ {w : ℂ | ‖w - (3 / 2 + ((0 : ℝ) : ℂ) * I)‖ ≤ 5 / 6 ∧ LFunction χ w = 0}, f w).re := by
-    rw [finsum_mem_eq_finite_toFinset_sum _ hfin, Complex.re_sum]
-    calc ∑ β ∈ T, (analyticOrderNatAt (LFunction χ) β : ℝ) / (σ - β)
-        = ∑ w ∈ T.map ⟨((↑) : ℝ → ℂ), Complex.ofReal_injective⟩, (f w).re := by
-          rw [Finset.sum_map]
-          refine Finset.sum_congr rfl fun β _ => ?_
-          simp only [Function.Embedding.coeFn_mk, hf]
-          rw [← Complex.ofReal_natCast, ← Complex.ofReal_sub, ← Complex.ofReal_div,
-            Complex.ofReal_re]
-      _ ≤ ∑ w ∈ hfin.toFinset, (f w).re := by
-          refine Finset.sum_le_sum_of_subset_of_nonneg hsub fun w hw _ => ?_
-          rw [Set.Finite.mem_toFinset] at hw
-          have hwre : w.re < 1 := re_lt_one hχ hw.2
-          simp only [hf]
-          rw [div_eq_mul_inv, ← Complex.ofReal_natCast, Complex.re_ofReal_mul, Complex.inv_re]
-          refine mul_nonneg (Nat.cast_nonneg _) (div_nonneg ?_ (Complex.normSq_nonneg _))
-          rw [Complex.sub_re, Complex.ofReal_re]
-          linarith
-  have := neg_abs_le (D.re - (∑ᶠ w ∈ {w : ℂ | ‖w - (3 / 2 + ((0 : ℝ) : ℂ) * I)‖ ≤ 5 / 6 ∧
-    LFunction χ w = 0}, f w).re)
-  linarith
+  have h := hb q χ hχ σ 0 hσ hσ2 (T.map e) hT'
+  simp only [Complex.ofReal_zero, zero_mul, add_zero, abs_zero, zero_add,
+    Finset.sum_map, e, Function.Embedding.coeFn_mk] at h
+  have hre (β : ℝ) : (1 / ((σ : ℂ) - β)).re = 1 / (σ - β) := by
+    rw [← Complex.ofReal_sub, ← Complex.ofReal_one, ← Complex.ofReal_div, Complex.ofReal_re]
+  simpa only [hre, ← div_eq_mul_one_div, mul_comm (q : ℝ) 2] using h
 
 theorem main : ∃ c : ℝ, 0 < c ∧ ∀ (q : ℕ) [NeZero q] (χ ψ : DirichletCharacter ℂ q) (β β' : ℝ), χ ≠ 1 → ψ ≠ 1 → χ ^ 2 = 1 → ψ ^ 2 = 1 → 1 - c / Real.log (2 * q) ≤ β → 1 - c / Real.log (2 * q) ≤ β' → LFunction χ β = 0 → LFunction ψ β' = 0 → χ = ψ ∧ β = β' ∧ deriv (LFunction χ) β ≠ 0 := by
-  obtain ⟨C1, hC1, h1⟩ := GlobalTheory.T.neg_re_logDeriv_principalLFunction_le
+  obtain ⟨C1, hC1, h1⟩ := _root_.GlobalTheory.PrincipalLogDeriv.neg_re_logDeriv_le
   obtain ⟨C2, hC2, h2⟩ := exists_bound
   set K := C1 + 3 * C2 with hKdef
   have hK : 0 < K := by positivity

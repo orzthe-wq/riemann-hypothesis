@@ -83,7 +83,7 @@ theorem multiFact_add_single {ι : Type} (k : ι →₀ ℕ) (v : ι) :
   · simp [Nat.factorial_succ]
   · refine Finset.prod_congr rfl fun i hi => ?_
     have hne : i ≠ v := Finset.ne_of_mem_erase hi
-    simp [Finsupp.single_apply, Ne.symm hne]
+    simp [Ne.symm hne]
 
 theorem multiIndex_induction {ι : Type} {p : (ι →₀ ℕ) → Prop} (h0 : p 0)
     (h1 : ∀ k v, p k → p (k + Finsupp.single v 1)) (k : ι →₀ ℕ) : p k := by
@@ -183,7 +183,7 @@ theorem fock_of_ccr {ι X : Type} (M : Submodule ℂ (X → ℂ)) (A : ι → (X
         push_cast
         ring
       · rw [if_neg hvw, zero_smul, add_zero]
-        have e : (k + Finsupp.single w 1 : ι →₀ ℕ) v = k v := by simp [Finsupp.single_apply, Ne.symm hvw]
+        have e : (k + Finsupp.single w 1 : ι →₀ ℕ) v = k v := by simp [Ne.symm hvw]
         rw [e]
   have hmono : ∀ u c, pureTensorL A (f : X → ℂ) (MvPolynomial.monomial u c) = c • (P u : X → ℂ) := by
     intro u c
@@ -236,7 +236,7 @@ theorem fock_of_ccr {ι X : Type} (M : Submodule ℂ (X → ℂ)) (A : ι → (X
           · subst hw
             simp
             omega
-          · simp [Finsupp.single_apply, Ne.symm hw]
+          · simp [Ne.symm hw]
         rw [hb1, Submodule.coe_smul, hsmul, ih α', multiFact_add_single]
         by_cases he : α' = β
         · subst he

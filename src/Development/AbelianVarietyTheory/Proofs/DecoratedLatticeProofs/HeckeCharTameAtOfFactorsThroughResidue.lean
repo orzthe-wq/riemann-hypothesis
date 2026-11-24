@@ -60,10 +60,6 @@ theorem isOpen_ltOne (P : HeightOneSpectrum (𝓞 E)) :
   have h := Valued.isOpen_ball (P.adicCompletion E) 1
   simpa only [Valuation.restrict_lt_iff_lt_embedding, map_one] using h
 
-theorem val_alg (P : HeightOneSpectrum (𝓞 E)) (k : E) :
-    Valued.v (algebraMap E (P.adicCompletion E) k) = P.valuation E k :=
-  HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P k
-
 theorem valuation_eq_one_of_not_mem (P : HeightOneSpectrum (𝓞 E)) (s : 𝓞 E) (hs : s ∉ P.asIdeal) :
     P.valuation E (algebraMap (𝓞 E) E s) = 1 :=
   le_antisymm (P.valuation_le_one s) (not_lt.mp fun h => hs ((P.valuation_lt_one_iff_mem s).mp h))
@@ -76,10 +72,7 @@ theorem locK_eq_one (D : D7) (H : Formalism.L2.Host.HChar D.host.E) (PP : Pl D.h
     have h1 : PP.valuation D.host.E ((k : D.host.E) - 1) < PP.valuation D.host.E 1 := by rwa [map_one]
     rw [e]
     first
-      | rw [Valuation.map_add_eq_of_lt_right _ h1, map_one]
       | rw [Valuation.map_add_eq_of_lt_left _ h1, map_one]
-      | rw [add_comm, Valuation.map_add_eq_of_lt_right _ h1, map_one]
-      | rw [add_comm, Valuation.map_add_eq_of_lt_left _ h1, map_one]
   obtain ⟨a, s, h⟩ := PP.exists_primeCompl_mul_eq_of_integer (k : D.host.E) hv1.le
   have hs : (s : 𝓞 D.host.E) ∉ PP.asIdeal := s.2
   have hsv := valuation_eq_one_of_not_mem PP _ hs
@@ -133,7 +126,7 @@ theorem tameAt_of_isRes : ∀ (D : D7) (H : Formalism.L2.Host.HChar D.host.E) (P
     hT.inter ((isOpen_ltOne PP).preimage (continuous_sub_right 1))
   obtain ⟨k, hk⟩ := (HeightOneSpectrum.denseRange_algebraMap D.host.E PP).exists_mem_open hU ⟨_, hxT⟩
   have hk1 : PP.valuation D.host.E (k - 1) < 1 := by
-    rw [← val_alg, map_sub, map_one]; exact hk.2
+    rw [← _root_.Formalism.UG.P.levelaf_valued_algebraMap, map_sub, map_one]; exact hk.2
   have hk0 : k ≠ 0 := by
     rintro rfl
     simp at hk1

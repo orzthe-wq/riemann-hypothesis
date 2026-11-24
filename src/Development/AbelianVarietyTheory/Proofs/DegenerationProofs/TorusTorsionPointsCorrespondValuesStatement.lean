@@ -49,4 +49,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 
 theorem _root_.GlobalTheory.T.torus_torsion_points_correspond_values : BrGtSt := by
-  first | exact @GlobalTheory.Ex.GtValues.points_correspond | exact GlobalTheory.Ex.GtValues.points_correspond | (intros; apply GlobalTheory.Ex.GtValues.points_correspond <;> assumption)
+  first | exact @GlobalTheory.Ex.GtValues.points_correspond

@@ -392,7 +392,7 @@ theorem isCuspidal_of_isSupercuspidal : ∀ (k : Type) [Field k] [ValuativeRel k
     obtain ⟨j, rfl⟩ := e.surjective j
     rcases i with i | i <;> rcases j with j | j
     · simpa [mul_comm, mul_left_comm] using hEntry
-    · simp [(mem_parabLower_two k).1 hc' i j, Matrix.one_apply]
+    · simp [(mem_parabLower_two k).1 hc' i j]
     · simp only [Matrix.one_apply, EmbeddingLike.apply_eq_iff_eq, reduceCtorEq, if_false, sub_zero] at hEntry ⊢
       simpa using (mul_le_of_le_one_right' hz1).trans_lt hEntry
     · simpa using hEntry

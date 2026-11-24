@@ -1784,19 +1784,12 @@ theorem bs_top_yg (g : Matrix (Fin k) (Fin k) (WF p n')) (a : ℤ) (ha : posOf n
     yg p n' O n' g a b ∈ supported (KK O) {v : TV n' k | v.1 ∈ Fr.TT} :=
   sum_mem fun c _ => mul_mem (X_mem_supported.2 ha) (Subalgebra.algebraMap_mem _ _)
 
-theorem bs_posOf_self (s : Fin n') : posOf n' (s.val : ℤ) = s := by
-  apply Fin.ext
-  have h := posOf_val n' (s.val : ℤ)
-  have h2 : ((s.val : ℤ)) % (n' : ℤ) = s.val := Int.emod_eq_of_lt (by positivity) (by exact_mod_cast s.2)
-  rw [h2] at h
-  exact_mod_cast h
-
 theorem bs_top_newCoord (g : Matrix (Fin k) (Fin k) (WF p n')) (v : TV n' k) (hv : v.1 ∈ Fr.TT) :
     newCoord p n' O n' g v ∈ supported (KK O) {v : TV n' k | v.1 ∈ Fr.TT} := by
   unfold newCoord
   split_ifs
-  · exact bs_top_xg Fr g _ (by rw [bs_posOf_self]; exact hv) _
-  · exact bs_top_yg Fr g _ (by rw [bs_posOf_self]; exact hv) _
+  · exact bs_top_xg Fr g _ (by rw [_root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.posOf_natCast_self]; exact hv) _
+  · exact bs_top_yg Fr g _ (by rw [_root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.posOf_natCast_self]; exact hv) _
 
 theorem bs_top_hTrue (g : Matrix (Fin k) (Fin k) (WF p n')) (h : MvPolynomial (TV n' k) O) (hh : OnTops Fr h) :
     hTrue p n' O n' g h ∈ supported (KK O) {v : TV n' k | v.1 ∈ Fr.TT} := by
@@ -1821,7 +1814,7 @@ theorem bs_top_Arow (s : Fin n') (hs : s ∈ Fr.TT) (l : ℕ) : posOf n' (Arow F
     unfold evensBefore at hm
     rw [List.mem_reverse, Finset.mem_sort, Finset.mem_filter] at hm
     exact hm.2.1
-  · rw [List.getD_eq_default _ _ (not_lt.1 h), bs_posOf_self]
+  · rw [List.getD_eq_default _ _ (not_lt.1 h), _root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.posOf_natCast_self]
     exact hs
 
 theorem bs_top_DtopProd (hrk : r ≤ k) (g : Matrix (Fin k) (Fin k) (WF p n')) (mu : ℕ) :
@@ -1955,7 +1948,7 @@ theorem bd_orbit_next {n' : ℕ} [NeZero n'] (TT : Finset (Fin n')) (L₂ K r : 
     (hno : ∀ t : ℤ, y < t → t < z → ¬ (posOf n' t ∈ TT ∧ Even t)) :
     z - y ≤ goodG' r de h x ∧ ((Finset.Ioo y z).filter fun t => posOf n' t ∈ TT).card ≤ orbitWindowCount r de h x := by
   obtain ⟨c1, c2, c3⟩ := bd_core_hyps TT r de h x h3
-  obtain ⟨Dd, hD, hT, hE⟩ := Formalism.GrowthSums.Top.nextEvenTop n' (TT.map Fin.valEmbedding) L₂ K r (goodU de) (orbitSmallMultiplicity r h x)
+  obtain ⟨Dd, hD, hT, hE⟩ := _root_.Formalism.GrowthSums.next_even_top_holds n' (TT.map Fin.valEmbedding) L₂ K r (goodU de) (orbitSmallMultiplicity r h x)
     (goodG' r de h x) (orbitWindowCount r de h x) hr (bd_goodU_pos hde) c1 c2 c3 hg (posOf n' y).val (posOf n' y).isLt
   obtain ⟨hD1, hD2⟩ := Finset.mem_Icc.mp hD
   have hval : (posOf n' (y + Dd)).val = ((posOf n' y).val + Dd) % n' := by
@@ -2051,7 +2044,7 @@ theorem bd_orbit_count {n' : ℕ} [NeZero n'] (TT : Finset (Fin n')) (L₂ K r :
     (h3 : 3 * goodG' r de h x ≤ n') (hg : IsGoodOrbit n' TT L₂ K r de h x) :
     (n' : ℝ) * de / (bd_Ce r h * Real.log x) ≤ TT.card ∧ (TT.card : ℝ) ≤ 40 * n' * de := by
   obtain ⟨c1, c2, c3⟩ := bd_core_hyps TT r de h x h3
-  obtain ⟨t1, t2⟩ := Formalism.GrowthSums.Top.topCount n' (TT.map Fin.valEmbedding) L₂ K r (goodU de) (orbitSmallMultiplicity r h x)
+  obtain ⟨t1, t2⟩ := _root_.Formalism.GrowthSums.top_count_holds n' (TT.map Fin.valEmbedding) L₂ K r (goodU de) (orbitSmallMultiplicity r h x)
     (goodG' r de h x) (orbitWindowCount r de h x) (by omega) (bd_goodU_pos hde) c1 c2 c3 hg
   rw [Finset.card_map] at t1 t2
   have hlx : 1 ≤ Real.log x := by
@@ -2124,7 +2117,7 @@ theorem good_orbits_of_frames (D : Formalism.BasicNotions.D7) (hR : bd_RestOrbit
   have hL2n : L₂ ≤ n' := by have := bd_U_le_G' r de h x; omega
   have hcnt := bd_orbit_count TT L₂ (r - 1) r de h x hr hh hde hde1 hx h3 hg
   intro u G' N₁ T ell
-  exact ⟨fun s _ hm => Formalism.G0.Top.markedRun _ r _ s (bd_goodU_pos hde) hm,
+  exact ⟨fun s _ hm => _root_.Formalism.G0.marked_run _ r _ s (bd_goodU_pos hde) hm,
     hR r h hr hh n' TT L₁ L₂ de x hn hL1 hL12 hde hde1 hx hLu h3 hg,
     fun y z hyz a b c d e => bd_orbit_next TT L₂ (r - 1) r de h x hn (by omega) hde h3 hg y z hyz a b c d e,
     hcnt.1, hcnt.2, fun y => bd_orbit_interval TT L₂ (r - 1) r de h x hL2n hg y⟩
@@ -2940,10 +2933,7 @@ open Formalism.MainNotions.G Formalism.MainNotions.SourceCleaning
 
 section B3gen
 
-theorem det_mem_subalgebra_alt {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (S : Subalgebra R A) {n : ℕ}
-    (M : Matrix (Fin n) (Fin n) A) (h : ∀ i j, M i j ∈ S) : M.det ∈ S := by
-  rw [Matrix.det_apply']
-  exact S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.prod_mem fun i _ => h _ _)
+alias det_mem_subalgebra_alt := _root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.bs_det_mem
 
 theorem adjugate_mem_subalgebra {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (S : Subalgebra R A) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) A) (h : ∀ i j, M i j ∈ S) (i j : Fin n) : M.adjugate i j ∈ S := by
@@ -2997,12 +2987,6 @@ theorem residue_position_val (a : ℤ) : ((posOf n' a).val : ℤ) = a % (n' : �
   have h2 : (a % (n':ℤ)).toNat < n' := (Int.toNat_lt h0).mpr h1
   show (((a % (n' : ℤ)).toNat % n' : ℕ) : ℤ) = _
   rw [Nat.mod_eq_of_lt h2, Int.toNat_of_nonneg h0]
-
-theorem residue_position_of_nat (s : Fin n') : posOf n' (s.val : ℤ) = s := by
-  apply Fin.ext
-  have h := residue_position_val (n' := n') (s.val : ℤ)
-  rw [Int.emod_eq_of_lt (by positivity) (by exact_mod_cast s.isLt)] at h
-  exact_mod_cast h
 
 end B3pos
 
@@ -3418,7 +3402,7 @@ theorem pairing_order_of_planes_and_rows (D : Formalism.BasicNotions.D7) (h1 : R
     exact S.w_irr.ne_zero ((IsFractionRing.injective O (KK O)) (by rw [h, map_zero]))
   have hab : (C (wInv S.w) * C (algebraMap O (KK O) S.w) : MvPolynomial (TV n' k) (KK O)) = 1 := by
     rw [← C_mul, wInv, inv_mul_cancel₀ hw, C_1]
-  have hsT : posOf n' (s.val : ℤ) ∈ Fr.TT := by rw [residue_position_of_nat]; exact hs
+  have hsT : posOf n' (s.val : ℤ) ∈ Fr.TT := by rw [_root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.posOf_natCast_self]; exact hs
   by_cases hE : Even s.val
   · have hc : r ≤ b.val := (normal_variable_iff_even_index hE b).mp hb
     have hEz : Even (s.val : ℤ) := (Int.even_coe_nat _).mpr hE
@@ -3431,7 +3415,7 @@ theorem pairing_order_of_planes_and_rows (D : Formalism.BasicNotions.D7) (h1 : R
         onTops_of_supported Fr (Subalgebra.pow_mem _ (Subalgebra.neg_mem _ (Subalgebra.one_mem _)) _)⟩, ?_⟩
     rw [subst_top_determinant S.w Fr hrk hg hn _ hA, Fin.sum_univ_one]
     unfold firstKeyLeading
-    rw [residue_position_of_nat, map_mul, map_mul, MvPolynomial.map_X]
+    rw [_root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.posOf_natCast_self, map_mul, map_mul, MvPolynomial.map_X]
     refine unit_conjugation_identity _ _ _ _ _ hab ?_
     rw [← map_mul, ← mul_pow]
     simp
@@ -3455,7 +3439,7 @@ theorem pairing_order_of_planes_and_rows (D : Formalism.BasicNotions.D7) (h1 : R
       rw [map_mul, map_sum, MvPolynomial.map_X] at e
       have hX : (X (s, b) : MvPolynomial (TV n' k) (KK O)) =
           X (posOf n' (s.val : ℤ), Fin.castLE hrk ⟨b.val, hc⟩) := by
-        rw [residue_position_of_nat]; rfl
+        rw [_root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.posOf_natCast_self]; rfl
       rw [subst_top_determinant S.w Fr hrk hg hn _ hA, hX, mul_comm]
       refine e.trans (Finset.sum_congr rfl fun l _ => ?_)
       rw [map_mul]
@@ -5137,7 +5121,7 @@ theorem slope_bounds_alt : ∃ C : ℝ, 1 ≤ C ∧
       ∀ j x : ℤ, (a : ℝ) / (p : ℝ) ^ G' ≤ Bo p Fr deg j x →
         (mStar p Fr k N₁ (p ^ G') (cPrime n' r Fr.TT.card c0 c'' cStar) : ℝ) ≤ (sl p Fr deg Y k j x : ℝ) ∧
           (sl p Fr deg Y k j x : ℝ) ≤ Bo p Fr deg j x / 100 := by
-  obtain ⟨C, hC, H⟩ := Formalism.CountingSumsFrames.Top.paramsII0 1 1 le_rfl le_rfl
+  obtain ⟨C, hC, H⟩ := _root_.Formalism.CountingSumsFrames.secondParameterSizeBounds_holds 1 1 le_rfl le_rfl
   refine ⟨C, hC, ?_⟩
   intro n' r _ p Fr k L₁ N₁ G' deg a Y c0 c'' cStar Dd hp hr hII hT hX h1 h2 h3 h6 h7 j x hB
   have hcore := hypothesis_numeric_bounds C hC p Fr k L₁ N₁ G' deg a Y c0 c'' cStar Dd 0 hp hr hII hX h1 h2 h3
@@ -5390,19 +5374,9 @@ theorem segment_length_bounds_real : ∃ C : ℝ, 1 ≤ C ∧
   exact H n' r p Fr k L₁ N₁ G' deg a Y c0 c'' cStar Dd hp hr hV hII hT hX
     (rank_le_segment_length Fr L₁ N₁ hV (by omega)) hL1 hLG h7 j x hx hW
 
-theorem posOf_val_eq_emod (n' : ℕ) [NeZero n'] (a : ℤ) : ((posOf n' a).val : ℤ) = a % (n' : ℤ) := by
-  have hn : (0 : ℤ) < n' := by exact_mod_cast NeZero.pos n'
-  have h0 : 0 ≤ a % (n' : ℤ) := Int.emod_nonneg _ hn.ne'
-  have h1 : a % (n' : ℤ) < n' := Int.emod_lt_of_pos _ hn
-  unfold posOf
-  simp only
-  have : (a % (n' : ℤ)).toNat < n' := by omega
-  rw [Nat.mod_eq_of_lt this]
-  omega
-
 theorem residue_position_injective_window (n' : ℕ) [NeZero n'] (c x y : ℤ) (hx : c ≤ x ∧ x < c + n') (hy : c ≤ y ∧ y < c + n')
     (h : posOf n' x = posOf n' y) : x = y := by
-  have h1 : x % (n' : ℤ) = y % (n' : ℤ) := by rw [← posOf_val_eq_emod, ← posOf_val_eq_emod, h]
+  have h1 : x % (n' : ℤ) = y % (n' : ℤ) := by rw [← _root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.posOf_val, ← _root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.posOf_val, h]
   have h2 : (n' : ℤ) ∣ x - y := Int.dvd_of_emod_eq_zero (Int.emod_eq_emod_iff_emod_sub_eq_zero.1 h1)
   have h3 : |x - y| < (n' : ℤ) := abs_lt.2 ⟨by omega, by omega⟩
   have h4 := Int.eq_zero_of_abs_lt_dvd h2 h3
@@ -5677,11 +5651,11 @@ namespace Formalism.MainNotions.G.WittFrameLocaliserOrders
 
 open Formalism.MainNotions.G Formalism.MainNotions.SourceCleaning
 
-theorem theta_kernel_expansion (D : Formalism.BasicNotions.D7) : Conclusion1 D := localiser_vanishing_off_plane D
+alias theta_kernel_expansion := _root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.localiser_vanishing_off_plane
 
-theorem splitting_package_holds (D : Formalism.BasicNotions.D7) : Conclusion2 D := localiser_expansion_lemma D
+alias splitting_package_holds := _root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.localiser_expansion_lemma
 
-theorem segment_statement_holds (D : Formalism.BasicNotions.D7) : PointsLemma D := keys_vanish_modulo_uniformiser D
+alias segment_statement_holds := _root_.Formalism.MainNotions.G.WittFrameLocaliserOrders.keys_vanish_modulo_uniformiser
 
 theorem order_lemma_holds (D : Formalism.BasicNotions.D7) : Conclusion4 D :=
   order_lemma_of_plane_coordinates D (localiser_vanishing_off_plane D) (bs_restRawTops D) (bc_claim' D)

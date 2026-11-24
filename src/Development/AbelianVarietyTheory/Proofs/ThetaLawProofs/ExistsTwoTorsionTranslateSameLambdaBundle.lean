@@ -141,7 +141,7 @@ theorem exists_two_torsion_translate : Out.Laws → ∀ (K : Type) [Field K] [Is
     rw [Over.comp_left, pull_comp, ← hd, ← pull_comp, ← Over.comp_left, e.hom_inv_id, Over.id_left,
       pull_id]
   refine ⟨y, ?_, (cls_eq_iff P'.isLB (pull_isLB P.isLB _)).1 (by rw [cls_pull P.isLB]; exact hc')⟩
-  have hTh : ∃ t : LB.Gen (Theta P.A P.L), t.IsGen := GlobalTheory.Moduli.cube_of_isLB _ P P.L P.isLB
+  have hTh : ∃ t : LB.Gen (Theta P.A P.L), t.IsGen := _root_.GlobalTheory.AbLaw.CubeAssembly.cube_gen _ P P.L P.isLB
   have hsymA := pull_inv_cls P.isLB P.sym
   have hsymA' := pull_inv_cls P'.isLB P'.sym
   have hdι : pull (GrpObj.inv : P.A ⟶ P.A).left (pull e.inv.left (cls P'.L P'.isLB)) =

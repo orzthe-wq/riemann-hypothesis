@@ -68,7 +68,7 @@ theorem mul_transv_apply {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (t : ℂ) (c
   by_cases hc : c = ca
   · subst hc
     simp [Matrix.mul_apply, Matrix.single_apply, mul_comm]
-  · simp [Matrix.mul_apply, Matrix.single_apply, hc, Ne.symm hc]
+  · simp [Matrix.mul_apply, hc, Ne.symm hc]
 
 private lemma det_submatrix_mul_transvection_eq {N k : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (t : ℂ) (ca cb : Fin N)
     (hne : ca ≠ cb) (f g : Fin k → Fin N) (hg : Function.Injective g)

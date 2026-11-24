@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.PairRowIffQdRows
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScaleStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ScalePolynomialQuantitiesComparisonStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExplicitRanksBasicBoundsLargeScale
+public import Formalism.LocalRingCardinality.DataParams₂
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ScalePolynomialQuantitiesComparison
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -85,8 +86,8 @@ theorem szRow_lStar : SzRow (fun _ D L => (L.sc.b' + L.Sc + L.etaSz + L.sc.b / l
     (2 * L.etaSz + D.R.t + 8 * L.sc.b / lStar L + 7 < lStar L)) := by
   intro eps he0 he1 C _
   refine ⟨0, fun cD hcD => ⟨0, fun ch hch => ?_⟩⟩
-  obtain ⟨x1, h1⟩ := GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he0 he1
-  obtain ⟨x2, h2⟩ := GlobalTheory.T.scale_polynomial_quantities_comparison eps ((cD + ch + 402) * 14) 1 he0 one_pos
+  obtain ⟨x1, h1⟩ := _root_.GlobalTheory.EX.rank_basic_bounds eps he0 he1
+  obtain ⟨x2, h2⟩ := _root_.GlobalTheory.scale_poly_comparison eps ((cD + ch + 402) * 14) 1 he0 one_pos
   refine ⟨max 100 (max x1 x2), fun D L hL hx hV => ?_⟩
   have hx0 : 100 ≤ L.sc.x := (le_max_left _ _).trans hx
   have hx1 : x1 ≤ L.sc.x := ((le_max_left _ _).trans (le_max_right _ _)).trans hx

@@ -41,6 +41,8 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDimEqOne
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SimilitudeActionAdelicLattice
 
 @[expose] public section
 
@@ -126,12 +128,6 @@ theorem exists_simSys_all {N : ℕ} (hN : 0 < N) (hK : N.Coprime p) {k : Type} [
       linear_combination hcc - 2 * D.EF x y * ha
   · rw [← ev_eq_iff I₁ hN hK, hg N hN hK, hI]
 
-theorem isIntAf_mul {a c : AfP p} (ha : IsIntAf a) (hc : IsIntAf c) : IsIntAf (a * c) := fun v => by
-  rw [map_mul]; exact mul_mem (ha v) (hc v)
-
-theorem isIntAf_intCast (c : ℤ) : IsIntAf (c : AfP p) := fun v => by
-  rw [map_intCast]; exact intCast_mem _ c
-
 theorem inAf_mem (x : D.La) : inAf D x ∈ LaHat D :=
   AddSubgroup.subset_closure ⟨1, x, fun v => by rw [map_one]; exact one_mem _, rfl⟩
 
@@ -139,7 +135,7 @@ theorem smul_mem {a : AfP p} (ha : IsIntAf a) {z : AfP p ⊗[ℚ] VQ D} (hz : z 
   induction hz using AddSubgroup.closure_induction with
   | mem z hz =>
     obtain ⟨c, x, hc, rfl⟩ := hz
-    exact AddSubgroup.subset_closure ⟨a * c, x, isIntAf_mul ha hc, by rw [TensorProduct.smul_tmul', smul_eq_mul]⟩
+    exact AddSubgroup.subset_closure ⟨a * c, x, _root_.GlobalTheory.AdelicSim.isInt_mul ha hc, by rw [TensorProduct.smul_tmul', smul_eq_mul]⟩
   | zero => rw [smul_zero]; exact zero_mem _
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
@@ -204,8 +200,8 @@ theorem isIntAf_repr {J : Type} (b : Module.Basis J ℤ D.La) (i : J) {z : AfP p
     have e : (basAf b).repr (c ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] x : VQ D)) i = ((b.repr x i : ℤ) : AfP p) * c := by
       simp [basAf, Algebra.smul_def]
     rw [e]
-    exact isIntAf_mul (isIntAf_intCast _) hc
-  | zero => simpa using isIntAf_intCast (p := p) 0
+    exact _root_.GlobalTheory.AdelicSim.isInt_mul (_root_.GlobalTheory.AdelicSim.isInt_intCast _) hc
+  | zero => simpa using _root_.GlobalTheory.AdelicSim.isInt_intCast (p := p) 0
   | add x y _ _ hx hy =>
     intro v
     rw [map_add (f := _), Finsupp.add_apply, map_add (f := _)]
@@ -229,36 +225,12 @@ theorem end_ext {A B : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)} (h : ∀ x, A (
   have := D.freeLa
   exact (basAf (Module.Free.chooseBasis ℤ D.La)).ext fun i => by rw [basAf_apply, h]
 
-theorem actOn_injective {C V : Type} [Ring C] [Algebra ℚ C] [AddCommGroup V] [Module ℚ V] [Module.Finite ℚ V]
-    (rep : C →ₐ[ℚ] Module.End ℚ V) (hr : Function.Injective rep) (R : Type) [CommRing R] [Algebra ℚ R] :
-    Function.Injective (actOn rep R) := by
-  have h₁ : Function.Injective (rep.toLinearMap.lTensor R) :=
-    Module.Flat.lTensor_preserves_injective_linearMap _ hr
-  have j := (TensorProduct.isBaseChange ℚ V R).end
-  have e : ∀ x, actOn rep R x = j.equiv (rep.toLinearMap.lTensor R x) := by
-    intro x
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | tmul r c =>
-      rw [LinearMap.lTensor_tmul, IsBaseChange.equiv_tmul]
-      ext v
-      have := (TensorProduct.isBaseChange ℚ V R).endHom_comp_apply (rep c) v
-      have e₁ : actOn rep R (r ⊗ₜ c) = r • (rep c).baseChange R := by
-        rw [Algebra.smul_def]; rfl
-      rw [e₁]
-      simp at this ⊢
-      simp [this, TensorProduct.smul_tmul']
-    | add x y hx hy => simp only [map_add (f := _), hx, hy]
-  intro x y h
-  rw [e, e] at h
-  exact h₁ (j.equiv.injective h)
-
 variable {G : HTGroup p} (L : Link D G)
 
 theorem actG_injective : Function.Injective L.actG := by
   intro g h e
   have := D.finLa
-  have h₁ : (g.1.1 : AfP p ⊗[ℚ] G.C) = h.1.1 := actOn_injective L.rep L.rep_inj (AfP p) e
+  have h₁ : (g.1.1 : AfP p ⊗[ℚ] G.C) = h.1.1 := _root_.GlobalTheory.LKGeo.baseChangeAlgebraRepresentationAction_injective L.rep L.rep_inj (AfP p) e
   have h₁' : g.1.1 = h.1.1 := Units.ext h₁
   refine Subtype.ext (Prod.ext h₁' (Units.ext ?_))
   have hg := mem_uGroup.1 g.2

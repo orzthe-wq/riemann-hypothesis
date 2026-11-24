@@ -82,9 +82,7 @@ theorem free_of_isCompl [IsLocalRing O] (p q : Submodule O (r → O)) (h : IsCom
       (LinearMap.ext fun x => Submodule.linearProjOfIsCompl_apply_left h x)
   haveI : Module.FinitePresentation O p := by
     first
-    | infer_instance
     | exact Module.finitePresentation_of_projective _ _
-    | exact Module.finitePresentation_of_projective
   exact ⟨Module.free_of_flat_of_isLocalRing, hfin⟩
 
 theorem idem_normal_form [IsLocalRing O] (e : Matrix r r O) (he : IsIdempotentElem e) :

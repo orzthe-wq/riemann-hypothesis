@@ -218,7 +218,6 @@ theorem exists_vanishing (lam : Qbar →+* ℂ_[l]) (h2 : l ∉ D.host.small) (h
   induction S using Finset.induction_on with
   | empty =>
     refine ⟨_, Submodule.subset_span ⟨1, Formalism.L2.Pj.one_mem_inverse_halfDifferent D, rfl⟩, by simp, ?_⟩
-    beta_reduce
     rw [liftM_eq D M hM]
     simp
   | insert τ' S _ ih =>

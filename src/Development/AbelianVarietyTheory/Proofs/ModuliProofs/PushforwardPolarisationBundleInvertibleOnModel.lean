@@ -68,12 +68,12 @@ theorem pushInvertible_of_model : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (
   have hIso : LBIso o.t.PP.L (C.t.PP.L.pull C.m.φ) := ⟨w, hw⟩
   have hSm : Smooth C.t.G.hom := by
     have sa := C.t.semi
-    first | infer_instance | exact sa.1 | (cases sa; assumption)
+    first | (cases sa; assumption)
   have hGI : GeometricallyIntegral C.t.G.hom := by
     have sa := C.t.semi
     have _ := hSm
     have _ : GeometricallyConnected C.t.G.hom := by
-      first | infer_instance | (cases sa; assumption)
+      first | (cases sa; assumption)
     exact GlobalTheory.grpObj_geometricallyIntegral_of_smooth C.X C.t.G
   exact @GlobalTheory.PushInv.pushInvertible_of_densePart C.X U hN (C.jQ ≫ pullback.fst C.s (spMap β)) C.normal hPre hFl hDo hQC
     C.t.G o.t.G C.m.φ C.t.PP.L o.t.PP.L hSm hGI hPB C.t.PP.isLB o.t.PP.isLB hIso

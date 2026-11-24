@@ -78,11 +78,6 @@ theorem inner_sig {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {�
         rw [hv]
     _ = ⟪u, σ a⁻¹ v⟫_ℂ := T.inner_map_map _ _
 
-theorem norm_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mx k r) : ‖psi k r z c g‖ = 1 := by
-  unfold psi
-  rw [mul_comm]
-  exact Complex.norm_exp_ofReal_mul_I _
-
 theorem measurePreserving_invM_of_isHaarOn {z : Fin (2 * r + k + 1) → ℂ} {μ : Measure (Mt k r)} (h : B.IsHaarOn (UWset k r z) μ) :
     MeasurePreserving (B7.invM (k := k) (r := r)) μ μ :=
   ⟨B7.measurable_invM, Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μ (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) h⟩

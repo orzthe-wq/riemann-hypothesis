@@ -157,7 +157,6 @@ private theorem th_tw {K : Type} [Field K] [NumberField K] (e : G1 K (2 + 2) ≃
   rw [QuotientGroup.rightRel_apply, ← hm] at h2
   have h3 := (hP (e.symm _)).1 (by rw [e.apply_symm_apply]; exact h2)
   rw [← hF _ h3 (_ * e.symm g)]
-  congr 1
   simp [hε, mul_assoc]
 
 private theorem sec_tw {K : Type} [Field K] [NumberField K] [_root_.NumberField.IsTotallyComplex K] {μ : Measure (G1 K (2 + 2))} [μ.IsHaarMeasure]

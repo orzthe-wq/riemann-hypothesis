@@ -1,12 +1,18 @@
 module
 
+public import Mathlib.LinearAlgebra.Matrix.Block
+public import Formalism.PieriBlockIdeals.Statement
+public import Mathlib.Algebra.Polynomial.Roots
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Mathlib.Data.ZMod.Basic
+public import Formalism.PieriBlockIdeals.LemmaWAssembled
+public import Mathlib.RingTheory.PowerSeries.NoZeroDivisors
+public import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
 public import Formalism.PieriBlockIdeals.LemmaWFromLattice
 public import Formalism.PieriBlockIdeals.PieriColumnMinors.HeightDescentMinors
-public import Formalism.PieriBlockIdeals.PieriColumnMinors.RegularCuspidalTrace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -15,20 +21,14 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.LocalProperties.Reduced
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,8 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -50,11 +48,627 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.Style
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.Lemma
+import Mathlib.RingTheory.LocalProperties.Reduced
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PieriBlockIdeals.PieriColumnMinors.MinorValuationBoundHolds, Formalism.PieriBlockIdeals.WEChain, Formalism.PieriBlockIdeals.PieriColumnMinors.ContentLinkageHolds, Formalism.PieriBlockIdeals.PieriColumnMinors.WeightExchangeBoundHolds, Formalism.PieriBlockIdeals.PieriColumnMinors.WeightExchangeChainHolds, Formalism.PieriBlockIdeals.PieriColumnMinors.RegularCuspidalTrace, Formalism.PieriBlockIdeals.PieriColumnMinors.HeckeLFunctionIdealEulerProduct
+
+-- ===== clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.MinorValuationBoundHolds =====
+-- clump-header: {"m": "Formalism.PieriBlockIdeals.PieriColumnMinors.MinorValuationBoundHolds", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.Block\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset Polynomial
+
+namespace Formalism.CohomologicalDescent
+
+theorem lw_det_block {R m : Type*} [CommRing R] [DecidableEq m] [Fintype m]
+    (M : Matrix m m R) (b : m → ℕ) (s : m) (hs : ∀ j, b j = b s → j = s) :
+    (M.toSquareBlock b (b s)).det = M s s := by
+  let _ : Unique {a // b a = b s} :=
+    { default := ⟨s, rfl⟩
+      uniq := fun j => Subtype.ext (hs j.1 j.2) }
+  rw [Matrix.det_unique]
+  rfl
+
+theorem lw_det_inj {R m : Type*} [CommRing R] [DecidableEq m] [Fintype m]
+    (M : Matrix m m R) (b : m → ℕ) (hM : M.BlockTriangular b) (hb : Function.Injective b) :
+    M.det = ∏ i, M i i := by
+  rw [Matrix.BlockTriangular.det hM, Finset.prod_image]
+  · exact Finset.prod_congr rfl (fun i _ => lw_det_block M b i (fun j hj => hb hj))
+  · intro x _ y _ hxy
+    exact hb hxy
+
+end Formalism.CohomologicalDescent
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.MinorValuationBoundHolds =====
+
+-- ===== clump member: Formalism.PieriBlockIdeals.WEChain =====
+-- clump-header: {"m": "Formalism.PieriBlockIdeals.WEChain", "h": "module\n\npublic import Formalism.PieriBlockIdeals.Statement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset Polynomial
+
+namespace Formalism.CohomologicalDescent
+
+def WEChain : Prop :=
+  ∀ (k j t q l h κ : ℕ) (K : Type) [Field K] [CharP K l]
+    (U U' V V' : Fin (k + j + t + q) → ℤ) (b b' c c' : ℤ) (kc kp : Fin t → ℤ),
+    l.Prime → t + 2 * κ < l →
+    StrictAnti U → StrictAnti U' → StrictAnti V → StrictAnti V' →
+    (∀ a, 0 ≤ U a) → (∀ a, U' a ≤ (h : ℤ)) → ∑ a, U a = ∑ a, U' a →
+    (∀ a : Fin (k + j + t + q), k + j ≤ (a : ℕ) → (a : ℕ) < k + j + t →
+      U a = b + ((k + j + t - 1 - (a : ℕ) : ℕ) : ℤ)) →
+    (∀ s : Fin t, ∃ a, V a = b' + ((s : ℕ) : ℤ)) →
+    (∏ a, (X + C (((U a + c : ℤ)) : K))) = ∏ a, (X + C (((U' a + c : ℤ)) : K)) →
+    (∏ a, (X + C (((V a + c' : ℤ)) : K))) = ∏ a, (X + C (((V' a + c' : ℤ)) : K)) →
+    (∀ s, |kc s| ≤ (κ : ℤ)) → (∀ s, |kp s| ≤ (κ : ℤ)) →
+    Multiset.map (fun s : Fin t => ((b + ((s : ℕ) : ℤ) - kc s : ℤ) : ZMod l)) Finset.univ.val ≤
+      Multiset.map (fun a => ((U' a : ℤ) : ZMod l)) Finset.univ.val →
+    Multiset.map (fun s : Fin t => ((b' + ((s : ℕ) : ℤ) - kp s : ℤ) : ZMod l)) Finset.univ.val ≤
+      Multiset.map (fun a => ((V' a : ℤ) : ZMod l)) Finset.univ.val →
+    ∑ a ∈ Finset.univ.filter (fun a : Fin (k + j + t + q) => k + j + q ≤ (a : ℕ)), U' a ≤
+      ∑ s : Fin t, (b + ((s : ℕ) : ℤ) + (l : ℤ) * kp s - kc s) →
+    ∑ a ∈ Finset.univ.filter (fun a : Fin (k + j + t + q) => (a : ℕ) < k + j), (U a - U' a) ≤
+      (q : ℤ) * h +
+        ((l : ℤ) * (mwCount l b' t κ (Finset.univ.image V) : ℤ) +
+          (mwCount l b t κ (Finset.univ.image U) : ℤ)) * ((t : ℤ) + 2 * κ)
+
+end Formalism.CohomologicalDescent
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PieriBlockIdeals.WEChain =====
+
+-- ===== clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.ContentLinkageHolds =====
+-- clump-header: {"m": "Formalism.PieriBlockIdeals.PieriColumnMinors.ContentLinkageHolds", "h": "module\n\npublic import Formalism.PieriBlockIdeals.Statement\npublic import Mathlib.Algebra.Polynomial.Roots\npublic import Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.GroupTheory.Nilpotent\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Data.ZMod.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset Polynomial
+
+namespace Formalism.CohomologicalDescent
+
+open Classical
+
+theorem comb_roots_prod {K : Type} [Field K] {N : ℕ} (f : Fin N → K) :
+    (∏ a, (X + C (f a))).roots = Multiset.map (fun a => -f a) Finset.univ.val := by
+  have h : (∏ a, (X + C (f a))) =
+      ((Multiset.map (fun a => -f a) Finset.univ.val).map fun x => X - C x).prod := by
+    rw [Multiset.map_map, Finset.prod_eq_multiset_prod]
+    congr 1
+    apply Multiset.map_congr rfl
+    intro a _
+    simp [sub_eq_add_neg]
+  rw [h, Polynomial.roots_multiset_prod_X_sub_C]
+
+theorem contentLinkage_holds : Linkage := by
+  intro l K _ _ N U U' c hl hprod
+  haveI : Fact l.Prime := ⟨hl⟩
+  have hr := congrArg Polynomial.roots hprod
+  have hU := comb_roots_prod (fun a => (((U a + c : ℤ)) : K))
+  have hU' := comb_roots_prod (fun a => (((U' a + c : ℤ)) : K))
+  rw [hU, hU'] at hr
+  let ψ : ZMod l →+* K := ZMod.castHom (dvd_refl l) K
+  have hψ : Function.Injective ψ := ψ.injective
+  have key : ∀ V : Fin N → ℤ, Multiset.map (fun a => -(((V a + c : ℤ)) : K)) Finset.univ.val =
+      Multiset.map ψ (Multiset.map (fun a => -(((V a + c : ℤ)) : ZMod l)) Finset.univ.val) := by
+    intro V
+    rw [Multiset.map_map]
+    apply Multiset.map_congr rfl
+    intro a _
+    simp [ψ]
+  rw [key U, key U'] at hr
+  have h2 := Multiset.map_injective hψ hr
+  have h3 := congrArg (Multiset.map fun z : ZMod l => -z - (c : ZMod l)) h2
+  simp only [Multiset.map_map] at h3
+  convert h3 using 2 <;> (try simp only [Function.comp_apply]; push_cast; ring)
+
+end Formalism.CohomologicalDescent
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.ContentLinkageHolds =====
+
+-- ===== clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.WeightExchangeBoundHolds =====
+-- clump-header: {"m": "Formalism.PieriBlockIdeals.PieriColumnMinors.WeightExchangeBoundHolds", "h": "module\n\npublic import Formalism.PieriBlockIdeals.Statement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Data.ZMod.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset
+
+namespace Formalism.CohomologicalDescent
+
+open Classical
+
+theorem we_msum (Y A Bm X : Multiset ℤ) (lo hi : ℤ) (hYA : Y ≤ A) (hA : A = Bm + X)
+    (hc : Multiset.card Y = Multiset.card Bm) (hin : ∀ a ∈ A, lo ≤ a ∧ a ≤ hi) :
+    |Bm.sum - Y.sum| ≤ (Multiset.card X : ℤ) * (hi - lo) := by
+  subst hA
+  have noMem : hi < lo → ∀ S : Multiset ℤ, (∀ a ∈ S, lo ≤ a ∧ a ≤ hi) → Multiset.card S = 0 := by
+    intro hlt S hS
+    by_contra hne
+    obtain ⟨a, ha⟩ := Multiset.card_pos_iff_exists_mem.1 (Nat.pos_of_ne_zero hne)
+    have := hS a ha
+    omega
+  have hP : Y - Bm ≤ X := Multiset.sub_le_iff_le_add.2 (by rw [add_comm]; exact hYA)
+  have hYs : Y.sum = (Y - Bm).sum + (Y ∩ Bm).sum := by
+    conv_lhs => rw [← Multiset.sub_add_inter Y Bm]
+    rw [Multiset.sum_add]
+  have hBs : Bm.sum = (Bm - Y).sum + (Y ∩ Bm).sum := by
+    conv_lhs => rw [← Multiset.sub_add_inter Bm Y]
+    rw [Multiset.sum_add, Multiset.inter_comm]
+  have hYc : Multiset.card Y = Multiset.card (Y - Bm) + Multiset.card (Y ∩ Bm) := by
+    conv_lhs => rw [← Multiset.sub_add_inter Y Bm]
+    rw [Multiset.card_add]
+  have hBc : Multiset.card Bm = Multiset.card (Bm - Y) + Multiset.card (Y ∩ Bm) := by
+    conv_lhs => rw [← Multiset.sub_add_inter Bm Y]
+    rw [Multiset.card_add, Multiset.inter_comm]
+  have hPQ : Multiset.card (Y - Bm) = Multiset.card (Bm - Y) := by omega
+  have memP : ∀ a ∈ Y - Bm, lo ≤ a ∧ a ≤ hi := fun a ha =>
+    hin a (Multiset.mem_of_le hYA (Multiset.mem_of_le (Multiset.sub_le_self _ _) ha))
+  have memQ : ∀ a ∈ Bm - Y, lo ≤ a ∧ a ≤ hi := fun a ha =>
+    hin a (Multiset.mem_add.2 (Or.inl (Multiset.mem_of_le (Multiset.sub_le_self _ _) ha)))
+  have memX : ∀ a ∈ X, lo ≤ a ∧ a ≤ hi := fun a ha => hin a (Multiset.mem_add.2 (Or.inr ha))
+  have P1 := Multiset.sum_le_card_nsmul (Y - Bm) hi (fun a ha => (memP a ha).2)
+  have P2 : Multiset.card (Y - Bm) • lo ≤ (Y - Bm).sum :=
+    Multiset.card_nsmul_le_sum (fun a ha => (memP a ha).1)
+  have Q1 := Multiset.sum_le_card_nsmul (Bm - Y) hi (fun a ha => (memQ a ha).2)
+  have Q2 : Multiset.card (Bm - Y) • lo ≤ (Bm - Y).sum :=
+    Multiset.card_nsmul_le_sum (fun a ha => (memQ a ha).1)
+  rw [hPQ] at P1 P2
+  simp only [nsmul_eq_mul] at P1 P2 Q1 Q2
+  have hm : (Multiset.card (Bm - Y) : ℤ) * (hi - lo) ≤ (Multiset.card X : ℤ) * (hi - lo) := by
+    by_cases h : lo ≤ hi
+    · apply mul_le_mul_of_nonneg_right _ (by linarith)
+      have := Multiset.card_le_card hP
+      rw [hPQ] at this
+      exact_mod_cast this
+    · push_neg at h
+      rw [noMem h _ memQ, noMem h X memX]
+  rw [hYs, hBs, abs_le]
+  constructor <;> linarith
+
+theorem shiftSumBound_holds : KapSum := by
+  intro l b t κ U kap hl htl hU hkap hle
+  have : NeZero l := ⟨by omega⟩
+  have hlpos : (0 : ℤ) < (l : ℤ) := by exact_mod_cast hl
+  obtain ⟨lo, hlo⟩ : ∃ lo : ℤ, lo = b - (κ : ℤ) := ⟨_, rfl⟩
+  obtain ⟨hi, hhi⟩ : ∃ hi : ℤ, hi = b + (t : ℤ) - 1 + (κ : ℤ) := ⟨_, rfl⟩
+  have hwin : hi < lo + l := by omega
+  obtain ⟨g, hg⟩ : ∃ g : ℤ → ℤ, ∀ u, g u = lo + (u - lo) % (l : ℤ) := ⟨_, fun _ => rfl⟩
+  have g_ge : ∀ u, lo ≤ g u := fun u => by
+    rw [hg]
+    have := Int.emod_nonneg (u - lo) hlpos.ne'
+    linarith
+  have g_fix : ∀ v, lo ≤ v → v ≤ hi → g v = v := fun v h1 h2 => by
+    rw [hg, Int.emod_eq_of_lt (by linarith) (by linarith)]
+    ring
+  have g_mod : ∀ u, g u ≡ u [ZMOD (l : ℤ)] := fun u => by
+    have h := (Int.mod_modEq (u - lo) (l : ℤ)).add_left lo
+    rw [hg]
+    rwa [show lo + (u - lo) = u by ring] at h
+  have g_cong : ∀ u v, u ≡ v [ZMOD (l : ℤ)] → g u = g v := fun u v h => by
+    have e : (u - lo) % (l : ℤ) = (v - lo) % (l : ℤ) := Int.ModEq.sub_right lo h
+    rw [hg, hg, e]
+  obtain ⟨ρ, hρ⟩ : ∃ ρ : ZMod l → ℤ, ∀ u : ℤ, ρ (u : ZMod l) = g u :=
+    ⟨fun z => lo + ((z - (lo : ZMod l)).val : ℤ), fun u => by
+      show lo + ((((u : ZMod l) - (lo : ZMod l))).val : ℤ) = g u
+      rw [← Int.cast_sub, ZMod.val_intCast, hg]⟩
+  have hvW : ∀ s : Fin t, lo ≤ b + ((s : ℕ) : ℤ) - kap s ∧ b + ((s : ℕ) : ℤ) - kap s ≤ hi :=
+    fun s => by
+      have h1 := s.isLt
+      have h2 := abs_le.1 (hkap s)
+      omega
+  have hY : Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ) - kap s) Finset.univ.val ≤
+      Multiset.map g U.val := by
+    have h1 := Multiset.map_le_map (f := ρ) hle
+    rw [Multiset.map_map, Multiset.map_map] at h1
+    refine Eq.trans_le (Multiset.map_congr rfl fun s _ => ?_)
+      (h1.trans_eq (Multiset.map_congr rfl fun u _ => ?_))
+    · simp only [Function.comp_apply]
+      rw [hρ, g_fix _ (hvW s).1 (hvW s).2]
+    · simp only [Function.comp_apply]
+      rw [hρ]
+  have hYA : Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ) - kap s) Finset.univ.val ≤
+      Multiset.filter (fun x => x ≤ hi) (Multiset.map g U.val) := by
+    have hself : Multiset.filter (fun x => x ≤ hi)
+        (Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ) - kap s) Finset.univ.val) =
+        Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ) - kap s) Finset.univ.val :=
+      Multiset.filter_eq_self.2 (fun a ha => by
+        rw [Multiset.mem_map] at ha
+        obtain ⟨s, -, rfl⟩ := ha
+        exact (hvW s).2)
+    rw [← hself]
+    exact Multiset.filter_le_filter (p := fun x => x ≤ hi) hY
+  have hin : ∀ a ∈ Multiset.filter (fun x => x ≤ hi) (Multiset.map g U.val), lo ≤ a ∧ a ≤ hi := by
+    intro a ha
+    rw [Multiset.mem_filter, Multiset.mem_map] at ha
+    obtain ⟨⟨u, -, rfl⟩, h⟩ := ha
+    exact ⟨g_ge u, h⟩
+  have hF : Multiset.filter (fun x => x ≤ hi) (Multiset.map g U.val) =
+      Multiset.map g (Multiset.filter (fun u => g u ≤ hi) U.val) := by
+    rw [Multiset.filter_map]
+    exact congrArg (Multiset.map g) (Multiset.filter_congr fun _ _ => Iff.rfl)
+  have hfirst : Multiset.filter (fun u => u ∈ Finset.Icc b (b + (t : ℤ) - 1))
+      (Multiset.filter (fun u => g u ≤ hi) U.val) =
+      Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ)) Finset.univ.val := by
+    have hinj : Function.Injective (fun s : Fin t => b + ((s : ℕ) : ℤ)) := by
+      intro s1 s2 h
+      have h' : b + ((s1 : ℕ) : ℤ) = b + ((s2 : ℕ) : ℤ) := h
+      exact Fin.ext (by omega)
+    have hnd1 : (Multiset.filter (fun u => u ∈ Finset.Icc b (b + (t : ℤ) - 1))
+        (Multiset.filter (fun u => g u ≤ hi) U.val)).Nodup := by
+      apply Multiset.Nodup.filter
+      apply Multiset.Nodup.filter
+      exact U.nodup
+    rw [Multiset.Nodup.ext hnd1 (Multiset.Nodup.map hinj (Finset.nodup _))]
+    intro a
+    simp only [Multiset.mem_filter, Finset.mem_val, Finset.mem_Icc, Multiset.mem_map,
+      Finset.mem_univ, true_and]
+    constructor
+    · rintro ⟨⟨-, -⟩, h1, h2⟩
+      have hn := Int.toNat_of_nonneg (show 0 ≤ a - b by omega)
+      refine ⟨⟨(a - b).toNat, by omega⟩, ?_⟩
+      show b + (((a - b).toNat : ℕ) : ℤ) = a
+      omega
+    · rintro ⟨s, rfl⟩
+      have hs := s.isLt
+      refine ⟨⟨hU s, ?_⟩, by omega, by omega⟩
+      rw [g_fix _ (by omega) (by omega)]
+      omega
+  have hA : Multiset.filter (fun x => x ≤ hi) (Multiset.map g U.val) =
+      Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ)) Finset.univ.val +
+      Multiset.map g (Multiset.filter (fun u => u ∉ Finset.Icc b (b + (t : ℤ) - 1))
+        (Multiset.filter (fun u => g u ≤ hi) U.val)) := by
+    rw [hF]
+    conv_lhs => rw [← Multiset.filter_add_not (p := fun u => u ∈ Finset.Icc b (b + (t : ℤ) - 1))
+      (s := Multiset.filter (fun u => g u ≤ hi) U.val)]
+    rw [Multiset.map_add (f := _), hfirst, Multiset.map_map]
+    congr 1
+    exact Multiset.map_congr rfl fun s _ => by
+      have hs := s.isLt
+      simp only [Function.comp_apply]
+      exact g_fix _ (by omega) (by omega)
+  have hR : ∀ u, (∃ x ∈ Finset.Icc (b - (κ : ℤ)) (b + (t : ℤ) - 1 + (κ : ℤ)),
+      x ≡ u [ZMOD (l : ℤ)]) ↔ g u ≤ hi := by
+    intro u
+    constructor
+    · rintro ⟨x, hx, hxu⟩
+      rw [Finset.mem_Icc] at hx
+      rw [← g_cong x u hxu, g_fix x (by omega) (by omega)]
+      omega
+    · intro hu
+      exact ⟨g u, Finset.mem_Icc.2 ⟨by have := g_ge u; omega, by omega⟩, g_mod u⟩
+  have hcard : Multiset.card (Multiset.filter (fun u => u ∉ Finset.Icc b (b + (t : ℤ) - 1))
+      (Multiset.filter (fun u => g u ≤ hi) U.val)) = mwCount l b t κ U := by
+    unfold mwCount
+    rw [← Finset.card_val, Finset.filter_val, Finset.filter_val,
+      Multiset.filter_filter, Multiset.filter_filter]
+    congr 1
+    have e : Multiset.filter (fun a => a ∉ Finset.Icc b (b + (t : ℤ) - 1) ∧ g a ≤ hi) U.val =
+        Multiset.filter (fun a => (∃ x ∈ Finset.Icc (b - (κ : ℤ)) (b + (t : ℤ) - 1 + (κ : ℤ)),
+          x ≡ a [ZMOD (l : ℤ)]) ∧ a ∉ Finset.Icc b (b + (t : ℤ) - 1)) U.val :=
+      Multiset.filter_congr (fun u _ => by rw [hR u]; exact and_comm)
+    convert e using 2
+  have key := we_msum _ _ _ _ lo hi hYA hA
+    (by rw [Multiset.card_map, Multiset.card_map]) hin
+  rw [Multiset.card_map, hcard] at key
+  have hBs : (Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ)) Finset.univ.val).sum =
+      ∑ s : Fin t, (b + ((s : ℕ) : ℤ)) := (Finset.sum_eq_multiset_sum _ _).symm
+  have hYs : (Multiset.map (fun s : Fin t => b + ((s : ℕ) : ℤ) - kap s) Finset.univ.val).sum =
+      ∑ s : Fin t, (b + ((s : ℕ) : ℤ) - kap s) := (Finset.sum_eq_multiset_sum _ _).symm
+  rw [hBs, hYs, Finset.sum_sub_distrib, sub_sub_cancel] at key
+  refine key.trans (mul_le_mul_of_nonneg_left ?_ (by positivity))
+  omega
+
+theorem weightExchangeBound_holds : WEArith := by
+  intro k j t q l h κ mw mwp U U' kc kp _ _ hU0 hU'h hsum htop hkc hkp
+  have hlkp : (l : ℤ) * kp ≤ (l : ℤ) * ((mwp : ℤ) * ((t : ℤ) + 2 * κ)) :=
+    mul_le_mul_of_nonneg_left ((le_abs_self kp).trans hkp) (by positivity)
+  have hkc' : -kc ≤ (mw : ℤ) * ((t : ℤ) + 2 * κ) := (neg_le_abs kc).trans hkc
+  have hq : ∑ a ∈ Finset.univ.filter
+      (fun a : Fin (k + j + t + q) => k + j ≤ (a : ℕ) ∧ (a : ℕ) < k + j + q), (h : ℤ) ≤
+      (q : ℤ) * h := by
+    rw [Finset.sum_const, nsmul_eq_mul]
+    apply mul_le_mul_of_nonneg_right _ (by positivity)
+    have hc : (Finset.univ.filter
+        (fun a : Fin (k + j + t + q) => k + j ≤ (a : ℕ) ∧ (a : ℕ) < k + j + q)).card ≤ q := by
+      refine le_trans (Finset.card_le_card_of_injOn (fun a => (a : ℕ) - (k + j)) ?_ ?_)
+        (Finset.card_range q).le
+      · intro a ha
+        simp at ha ⊢
+        omega
+      · intro a ha a' ha' hab
+        simp at ha ha'
+        have hab' : (a : ℕ) - (k + j) = (a' : ℕ) - (k + j) := hab
+        exact Fin.ext (by omega)
+    exact_mod_cast hc
+  rw [Finset.sum_filter] at hq
+  have hpt : ∀ a ∈ (Finset.univ : Finset (Fin (k + j + t + q))),
+      (if (a : ℕ) < k + j then U a - U' a else 0) +
+        (if k + j ≤ (a : ℕ) ∧ (a : ℕ) < k + j + t then U a else 0) ≤
+      (if k + j ≤ (a : ℕ) ∧ (a : ℕ) < k + j + q then (h : ℤ) else 0) +
+        (if k + j + q ≤ (a : ℕ) then U' a else 0) + (U a - U' a) := by
+    intro a _
+    have h1 := hU0 a
+    have h2 := hU'h a
+    split_ifs <;> omega
+  have hsumle := Finset.sum_le_sum hpt
+  simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib] at hsumle
+  simp only [Finset.sum_filter] at htop ⊢
+  nlinarith
+
+end Formalism.CohomologicalDescent
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.WeightExchangeBoundHolds =====
+
+-- ===== clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.WeightExchangeChainHolds =====
+-- clump-header: {"m": "Formalism.PieriBlockIdeals.PieriColumnMinors.WeightExchangeChainHolds", "h": "module\n\npublic import Formalism.PieriBlockIdeals.WEChain\npublic import Formalism.PieriBlockIdeals.PieriColumnMinors.ContentLinkageHolds\npublic import Formalism.PieriBlockIdeals.PieriColumnMinors.WeightExchangeBoundHolds\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset Polynomial
+
+namespace Formalism.CohomologicalDescent
+
+theorem map_cast_image_val_eq (l N : ℕ) (W : Fin N → ℤ) (hW : StrictAnti W) :
+    Multiset.map (fun u : ℤ => (u : ZMod l)) (Finset.univ.image W).val =
+      Multiset.map (fun a => ((W a : ℤ) : ZMod l)) Finset.univ.val := by
+  rw [Finset.image_val_of_injOn hW.injective.injOn, Multiset.map_map]
+  rfl
+
+theorem sum_filter_block_eq (k j t q : ℕ) (U : Fin (k + j + t + q) → ℤ) (b : ℤ)
+    (hblock : ∀ a : Fin (k + j + t + q), k + j ≤ (a : ℕ) → (a : ℕ) < k + j + t →
+      U a = b + ((k + j + t - 1 - (a : ℕ) : ℕ) : ℤ)) :
+    ∑ a ∈ Finset.univ.filter
+        (fun a : Fin (k + j + t + q) => k + j ≤ (a : ℕ) ∧ (a : ℕ) < k + j + t), U a =
+      ∑ s : Fin t, (b + ((s : ℕ) : ℤ)) := by
+  refine Finset.sum_bij'
+    (fun a ha => (⟨k + j + t - 1 - (a : ℕ), by
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha
+      omega⟩ : Fin t))
+    (fun s _ => (⟨k + j + t - 1 - (s : ℕ), by
+      have := s.isLt
+      omega⟩ : Fin (k + j + t + q))) ?_ ?_ ?_ ?_ ?_
+  · intro a _
+    exact Finset.mem_univ _
+  · intro s _
+    have := s.isLt
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    omega
+  · intro a ha
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha
+    ext
+    simp only
+    omega
+  · intro s _
+    have := s.isLt
+    ext
+    simp only
+    omega
+  · intro a ha
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha
+    rw [hblock a ha.1 ha.2]
+
+theorem weightExchangeChain_holds : WEChain := by
+  intro k j t q l h κ K _ _ U U' V V' b b' c c' kc kp hl htl hU hU' hV hV' hU0 hU'h hsum hblock hVb
+    hprodU hprodV hkc hkp hmU hmV hfilt
+  have hlink := contentLinkage_holds l K _ U U' c hl hprodU
+  have hlinkV := contentLinkage_holds l K _ V V' c' hl hprodV
+  have hmemU : ∀ s : Fin t, b + ((s : ℕ) : ℤ) ∈ Finset.univ.image U := by
+    intro s
+    have hs := s.isLt
+    refine Finset.mem_image.mpr ⟨⟨k + j + t - 1 - (s : ℕ), by omega⟩, Finset.mem_univ _, ?_⟩
+    have h1 : k + j + t - 1 - (k + j + t - 1 - (s : ℕ)) = (s : ℕ) := by omega
+    rw [hblock _ (by simp only; omega) (by simp only; omega)]
+    simp only [h1]
+  have hmemV : ∀ s : Fin t, b' + ((s : ℕ) : ℤ) ∈ Finset.univ.image V := by
+    intro s
+    obtain ⟨a, ha⟩ := hVb s
+    exact Finset.mem_image.mpr ⟨a, Finset.mem_univ _, ha⟩
+  have hKU : |∑ s, kc s| ≤ (mwCount l b t κ (Finset.univ.image U) : ℤ) * ((t : ℤ) + 2 * κ) := by
+    refine shiftSumBound_holds l b t κ (Finset.univ.image U) kc hl.pos htl hmemU hkc ?_
+    rw [map_cast_image_val_eq l _ U hU, hlink]
+    exact hmU
+  have hKV : |∑ s, kp s| ≤ (mwCount l b' t κ (Finset.univ.image V) : ℤ) * ((t : ℤ) + 2 * κ) := by
+    refine shiftSumBound_holds l b' t κ (Finset.univ.image V) kp hl.pos htl hmemV hkp ?_
+    rw [map_cast_image_val_eq l _ V hV, hlinkV]
+    exact hmV
+  have hfilt' : ∑ a ∈ Finset.univ.filter (fun a : Fin (k + j + t + q) => k + j + q ≤ (a : ℕ)), U' a ≤
+      (∑ a ∈ Finset.univ.filter
+        (fun a : Fin (k + j + t + q) => k + j ≤ (a : ℕ) ∧ (a : ℕ) < k + j + t), U a) +
+        (l : ℤ) * (∑ s, kp s) - ∑ s, kc s := by
+    rw [sum_filter_block_eq k j t q U b hblock]
+    refine hfilt.trans (le_of_eq ?_)
+    rw [Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum]
+  exact weightExchangeBound_holds k j t q l h κ _ _ U U' (∑ s, kc s) (∑ s, kp s) hU hU' hU0 hU'h hsum hfilt'
+    hKU hKV
+
+end Formalism.CohomologicalDescent
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.WeightExchangeChainHolds =====
+
+-- ===== clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.RegularCuspidalTrace =====
+-- clump-header: {"m": "Formalism.PieriBlockIdeals.PieriColumnMinors.RegularCuspidalTrace", "h": "module\n\npublic import Formalism.PieriBlockIdeals.LemmaWAssembled\npublic import Formalism.PieriBlockIdeals.PieriColumnMinors.MinorValuationBoundHolds\npublic import Formalism.PieriBlockIdeals.PieriColumnMinors.WeightExchangeChainHolds\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\npublic import Mathlib.RingTheory.PowerSeries.NoZeroDivisors\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset
+
+namespace Formalism.CohomologicalDescent
+
+theorem le_sum_of_dvd_det_submatrix {R : Type*} [CommRing R] [IsDomain R] (π : R) (hπ : Prime π) {t n : ℕ}
+    (Φ : Matrix (Fin n) (Fin n) R) (b : Fin n → ℕ) (pos : Fin t → Fin n)
+    (hinj : Function.Injective pos) (hpos : ∀ s j, b j = b (pos s) → j = pos s)
+    (hΦ : Φ.BlockTriangular b) (al : Fin t → ℕ)
+    (hdiag : ∀ s, ∃ u : Rˣ, Φ (pos s) (pos s) = (u : R) * π ^ al s) (c : ℕ)
+    (hdvd : π ^ c ∣ (Φ.submatrix pos pos).det) : c ≤ ∑ s, al s := by
+  have hbp : Function.Injective (b ∘ pos) := fun s s' hs => hinj (hpos s' (pos s) hs)
+  have hdet := lw_det_inj (Φ.submatrix pos pos) (b ∘ pos) hΦ.submatrix hbp
+  simp only [Matrix.submatrix_apply] at hdet
+  choose u hu using hdiag
+  rw [hdet, Finset.prod_congr rfl (fun s _ => hu s), Finset.prod_mul_distrib,
+    Finset.prod_pow_eq_pow_sum, ← Units.coe_prod, Units.dvd_mul_left] at hdvd
+  exact (pow_dvd_pow_iff hπ.ne_zero hπ.not_unit).1 hdvd
+
+theorem map_cast_le_of_map_neg_mul_le (l : ℕ) (hl : l.Prime) (F : Type) [Field F] [CharP F l] (a : F) (ha : a ≠ 0)
+    {α β : Type} (A : Multiset α) (B : Multiset β) (f : α → ℤ) (g : β → ℤ)
+    (h : Multiset.map (fun x => -a * ((f x : ℤ) : F)) A ≤
+      Multiset.map (fun y => -a * ((g y : ℤ) : F)) B) :
+    Multiset.map (fun x => ((f x : ℤ) : ZMod l)) A ≤ Multiset.map (fun y => ((g y : ℤ) : ZMod l)) B := by
+  haveI := Fact.mk hl
+  let φ : ZMod l →+* F := ZMod.castHom (dvd_refl l) F
+  have hφ : Function.Injective φ := φ.injective
+  have hψ : Function.Injective (fun z : ZMod l => -a * φ z) := fun z w hzw =>
+    hφ (mul_left_cancel₀ (neg_ne_zero.2 ha) hzw)
+  rw [← Multiset.map_le_map_iff hψ, Multiset.map_map, Multiset.map_map]
+  simpa [Function.comp_def, φ, map_intCast] using h
+
+private lemma sub_one_mul_abs_kap_le {ι : Type} [Fintype ι] (σ : Equiv.Perm ι) (l h : ℕ) (hl : 2 ≤ l)
+    (w kap : ι → ℤ) (hw : ∀ i, 0 ≤ w i ∧ w i ≤ (h : ℤ))
+    (hd : ∀ i, 0 ≤ (l : ℤ) * kap (σ i) + w i - kap i ∧ (l : ℤ) * kap (σ i) + w i - kap i ≤ (h : ℤ))
+    (i : ι) : ((l : ℤ) - 1) * |kap i| ≤ (h : ℤ) := by
+  haveI : Nonempty ι := ⟨i⟩
+  obtain ⟨i₀, hi₀⟩ := Finite.exists_max (fun i => |kap i|)
+  have hσ : σ (σ.symm i₀) = i₀ := σ.apply_symm_apply i₀
+  have h1 := hd (σ.symm i₀)
+  rw [hσ] at h1
+  have h2 := hw (σ.symm i₀)
+  have hm : |kap (σ.symm i₀)| ≤ |kap i₀| := hi₀ (σ.symm i₀)
+  have hl2 : (2 : ℤ) ≤ l := by exact_mod_cast hl
+  have hl' : (0 : ℤ) ≤ (l : ℤ) - 1 := by linarith
+  have key : (l : ℤ) * |kap i₀| ≤ |kap (σ.symm i₀)| + h := by
+    rcases abs_cases (kap i₀) with ⟨e0, _⟩ | ⟨e0, _⟩ <;>
+      rcases abs_cases (kap (σ.symm i₀)) with ⟨e1, _⟩ | ⟨e1, _⟩ <;> rw [e0, e1] <;> nlinarith
+  have h3 : ((l : ℤ) - 1) * |kap i₀| ≤ h := by nlinarith
+  calc ((l : ℤ) - 1) * |kap i| ≤ ((l : ℤ) - 1) * |kap i₀| := mul_le_mul_of_nonneg_left (hi₀ i) hl'
+    _ ≤ h := h3
+
+theorem twisted_block_bounds : LemmaWAssembled := by
+  intro ι _ σ l h t n F _ _ W U' bot kap c hl hW hb hd
+  obtain ⟨ha, hinj, hpos, hΘ, hchar, hdiag, hΦ, hΦd, hc⟩ := hW
+  have hbp : Function.Injective (W.b ∘ W.pos) := fun s s' hs => hinj (hpos s' (W.pos s) hs)
+  refine ⟨?_, ?_, ?_⟩
+  · intro i s
+    exact sub_one_mul_abs_kap_le σ l h hl.two_le (fun i => bot i + ((s : ℕ) : ℤ)) (fun i => kap i s)
+      (fun i => hb i s) (fun i => hd i s) i
+  · intro i
+    have hdvd : ∏ s, (Polynomial.X - Polynomial.C (W.Θ i (W.pos s) (W.pos s))) ∣
+        (W.Θ i).charpoly := by
+      show _ ∣ (Matrix.charmatrix (W.Θ i)).det
+      rw [(hΘ i).charmatrix.det]
+      have e : ∏ s, (Polynomial.X - Polynomial.C (W.Θ i (W.pos s) (W.pos s))) =
+          ∏ k ∈ Finset.univ.image (W.b ∘ W.pos),
+            ((Matrix.charmatrix (W.Θ i)).toSquareBlock W.b k).det := by
+        rw [Finset.prod_image (fun s _ s' _ hs => hbp hs)]
+        refine Finset.prod_congr rfl fun s _ => ?_
+        simp only [Function.comp_apply]
+        rw [lw_det_block _ W.b (W.pos s) (hpos s), Matrix.charmatrix_apply_eq]
+      rw [e]
+      apply Finset.prod_dvd_prod_of_subset
+      intro k hk
+      simp only [Finset.mem_image, Finset.mem_univ, true_and, Function.comp_apply] at hk ⊢
+      obtain ⟨s, rfl⟩ := hk
+      exact ⟨W.pos s, rfl⟩
+    have hne : (W.Θ i).charpoly ≠ 0 := (Matrix.charpoly_monic _).ne_zero
+    have hr := Polynomial.roots.le_of_dvd hne hdvd
+    rw [hchar i] at hr
+    have r1 : (∏ s, (Polynomial.X - Polynomial.C (W.Θ i (W.pos s) (W.pos s)))).roots =
+        Multiset.map (fun s => W.Θ i (W.pos s) (W.pos s)) Finset.univ.val := by
+      rw [Finset.prod_eq_multiset_prod]
+      rw [show Multiset.map (fun s => Polynomial.X - Polynomial.C (W.Θ i (W.pos s) (W.pos s)))
+          Finset.univ.val = Multiset.map (fun a => Polynomial.X - Polynomial.C a)
+            (Multiset.map (fun s => W.Θ i (W.pos s) (W.pos s)) Finset.univ.val) by
+        rw [Multiset.map_map]; rfl]
+      exact Polynomial.roots_multiset_prod_X_sub_C _
+    have r2 : (∏ u, (Polynomial.X - Polynomial.C (-W.a * ((U' i u : ℤ) : F)))).roots =
+        Multiset.map (fun u => -W.a * ((U' i u : ℤ) : F)) Finset.univ.val := by
+      rw [Finset.prod_eq_multiset_prod]
+      rw [show Multiset.map (fun u => Polynomial.X - Polynomial.C (-W.a * ((U' i u : ℤ) : F)))
+          Finset.univ.val = Multiset.map (fun a => Polynomial.X - Polynomial.C a)
+            (Multiset.map (fun u => -W.a * ((U' i u : ℤ) : F)) Finset.univ.val) by
+        rw [Multiset.map_map]; rfl]
+      exact Polynomial.roots_multiset_prod_X_sub_C _
+    rw [r1, r2] at hr
+    have e2 : Multiset.map (fun s => W.Θ i (W.pos s) (W.pos s)) Finset.univ.val =
+        Multiset.map (fun s : Fin t => -W.a * (((bot i + ((s : ℕ) : ℤ) - kap i s : ℤ)) : F))
+          Finset.univ.val := Multiset.map_congr rfl (fun s _ => hdiag i s)
+    rw [e2] at hr
+    exact map_cast_le_of_map_neg_mul_le l hl F W.a ha Finset.univ.val Finset.univ.val
+      (fun s : Fin t => bot i + ((s : ℕ) : ℤ) - kap i s) (U' i) hr
+  · intro i
+    have hm := le_sum_of_dvd_det_submatrix (PowerSeries.X : PowerSeries F) PowerSeries.X_prime (W.Φ i) W.b W.pos hinj
+      hpos (hΦ i) (fun s => ((l : ℤ) * kap (σ i) s + (bot i + ((s : ℕ) : ℤ)) - kap i s).toNat)
+      (hΦd i) (c i) (hc i)
+    have hm' : ((c i : ℕ) : ℤ) ≤ ∑ s : Fin t,
+        ((((l : ℤ) * kap (σ i) s + (bot i + ((s : ℕ) : ℤ)) - kap i s).toNat : ℕ) : ℤ) := by
+      exact_mod_cast hm
+    calc (c i : ℤ) ≤ _ := hm'
+      _ = ∑ s : Fin t, (bot i + ((s : ℕ) : ℤ) + (l : ℤ) * kap (σ i) s - kap i s) := by
+        refine Finset.sum_congr rfl fun s _ => ?_
+        rw [Int.toNat_of_nonneg (hd i s).1]
+        ring
+
+theorem weightExchangeFull_holds : WEFull := by
+  intro ι _ σ k j t q l h F _ _ W U U' bot cst kap c τ hl hlt hW hb hd hU hU' hUb hprod hU0 hU'h
+    hsum hblock hcτ
+  obtain ⟨h1, h2, h3⟩ := twisted_block_bounds ι σ l h t (k + j + t + q) F W U' bot kap c hl hW hb hd
+  have hκ : ∀ i s, |kap i s| ≤ ((h / (l - 1) : ℕ) : ℤ) := by
+    intro i s
+    have hl2 := hl.two_le
+    have hpos : (0 : ℤ) < ((l - 1 : ℕ) : ℤ) := by omega
+    have e : ((l - 1 : ℕ) : ℤ) = (l : ℤ) - 1 := by omega
+    rw [Int.natCast_div, Int.le_ediv_iff_mul_le hpos, e, mul_comm]
+    exact h1 i s
+  exact weightExchangeChain_holds k j t q l h (h / (l - 1)) F (U τ) (U' τ) (U (σ τ)) (U' (σ τ)) (bot τ)
+    (bot (σ τ)) (cst τ) (cst (σ τ)) (kap τ) (kap (σ τ)) hl hlt (hU τ) (hU' τ) (hU (σ τ))
+    (hU' (σ τ)) hU0 (fun a => (hU'h a).2) hsum hblock (hUb (σ τ)) (hprod τ) (hprod (σ τ))
+    (hκ τ) (hκ (σ τ)) (h2 τ) (h2 (σ τ)) (by rw [← hcτ]; exact h3 τ)
+
+end Formalism.CohomologicalDescent
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.RegularCuspidalTrace =====
+
+-- ===== clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.HeckeLFunctionIdealEulerProduct =====
+-- clump-header: {"m": "Formalism.PieriBlockIdeals.PieriColumnMinors.HeckeLFunctionIdealEulerProduct", "h": "module\n\npublic import Formalism.PieriBlockIdeals.LemmaWFromLattice\npublic import Formalism.PieriBlockIdeals.PieriColumnMinors.HeightDescentMinors\npublic import Formalism.PieriBlockIdeals.PieriColumnMinors.RegularCuspidalTrace\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.LocalProperties.Reduced\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -79,8 +693,6 @@ theorem constantCoeff_subst_of_constantCoeff_zero_alt {a : R⟦X⟧} (ha : const
   have hs : HasSubst a := by
     first
     | exact HasSubst.of_constantCoeff_zero ha
-    | exact PowerSeries.HasSubst.of_constantCoeff_zero ha
-    | exact HasSubst.of_constantCoeff_zero' ha
   obtain ⟨g, hg⟩ : X ∣ f - C (constantCoeff f) := by
     rw [X_dvd_iff, map_sub, constantCoeff_C, sub_self]
   have e : f = C (constantCoeff f) + X * g := by
@@ -95,8 +707,6 @@ theorem constantCoeff_gammaSeries (lam : R) (un : R⟦X⟧) : constantCoeff (gam
 theorem hasSubst_gammaSeries (lam : R) (un : R⟦X⟧) : HasSubst (gamSer lam un) := by
   first
   | exact HasSubst.of_constantCoeff_zero (constantCoeff_gammaSeries lam un)
-  | exact PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_gammaSeries lam un)
-  | exact HasSubst.of_constantCoeff_zero' (constantCoeff_gammaSeries lam un)
 
 end General
 
@@ -273,8 +883,6 @@ theorem frobenius_laws_hold : FrobLaws := by
   have hs : HasSubst (X ^ l : R⟦X⟧) := by
     first
     | exact HasSubst.of_constantCoeff_zero hc
-    | exact PowerSeries.HasSubst.of_constantCoeff_zero hc
-    | exact HasSubst.of_constantCoeff_zero' hc
   refine ⟨fun f g => ?_, fun f g => ?_, fun a => ?_, ?_⟩
   · exact subst_add hs f g
   · exact subst_mul hs f g
@@ -290,7 +898,7 @@ theorem blockTriangular_of_mul_eq_pow_smul_one {R : Type} [CommRing R] [IsDomain
   have hm' : Φ.map φ * Φ'.map φ = (φ π ^ h) • (1 : Matrix (Fin n) (Fin n) (FractionRing R)) := by
     rw [← Matrix.map_mul, hm]
     ext a c
-    by_cases hac : a = c <;> simp [hac, Matrix.one_apply]
+    by_cases hac : a = c <;> simp [hac]
   have hc : (φ π) ^ h ≠ 0 := pow_ne_zero _ ((map_ne_zero_iff φ hinj).2 hπ)
   have hr : Φ.map φ * (((φ π) ^ h)⁻¹ • Φ'.map φ) = 1 := by
     rw [Matrix.mul_smul, hm', smul_smul, inv_mul_cancel₀ hc, one_smul]
@@ -298,8 +906,6 @@ theorem blockTriangular_of_mul_eq_pow_smul_one {R : Type} [CommRing R] [IsDomain
   letI : Invertible (Φ.map φ) := by
     first
     | exact ⟨_, mul_eq_one_comm.mp hr, hr⟩
-    | exact Matrix.invertibleOfIsUnitDet _ (Matrix.isUnit_det_of_right_inverse hr)
-    | exact Matrix.invertibleOfRightInverse _ _ hr
   have hΦK : (Φ.map φ).BlockTriangular b := fun a c hac => by simp [hΦ hac]
   have h4 := Matrix.blockTriangular_inv_of_blockTriangular hΦK hij
   rw [hinv, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, mul_eq_zero] at h4
@@ -381,15 +987,9 @@ theorem theta_diagonal_holds : ThetaDiag := by
     intro f q
     first
     | (rw [coeff_mul, Finset.Nat.antidiagonal_succ]; simp [coeff_zero_eq_constantCoeff_apply]; ring)
-    | (rw [coeff_mul, Finset.Nat.antidiagonal_succ]; simp [coeff_zero_eq_constantCoeff_apply])
-    | (rw [show (1 : ℕ) = 0 + 1 from rfl, coeff_mul, Finset.Nat.antidiagonal_succ];
-        simp [coeff_zero_eq_constantCoeff_apply]; ring)
-    | (simp [coeff_mul, Finset.Nat.sum_antidiagonal_succ, coeff_zero_eq_constantCoeff_apply]; ring)
-    | (simp [coeff_mul, Finset.Nat.sum_antidiagonal_succ, coeff_zero_eq_constantCoeff_apply])
   have hV : IsUnit (1 + un * X : k⟦X⟧) := by
     first
     | (rw [isUnit_iff_constantCoeff]; simp)
-    | exact isUnit_iff_constantCoeff.2 (by simp)
   set V := hV.unit with hVdef
   have hV0 : constantCoeff (V : k⟦X⟧) = 1 := by rw [IsUnit.unit_spec]; simp
   have hV1' : coeff 1 (V : k⟦X⟧) = constantCoeff un := by
@@ -479,11 +1079,6 @@ theorem theta_base_change_holds : ThetaBaseChange := by
     intro f q
     first
     | (rw [coeff_mul, Finset.Nat.antidiagonal_succ]; simp [coeff_zero_eq_constantCoeff_apply]; ring)
-    | (rw [coeff_mul, Finset.Nat.antidiagonal_succ]; simp [coeff_zero_eq_constantCoeff_apply])
-    | (rw [show (1 : ℕ) = 0 + 1 from rfl, coeff_mul, Finset.Nat.antidiagonal_succ];
-        simp [coeff_zero_eq_constantCoeff_apply]; ring)
-    | (simp [coeff_mul, Finset.Nat.sum_antidiagonal_succ, coeff_zero_eq_constantCoeff_apply]; ring)
-    | (simp [coeff_mul, Finset.Nat.sum_antidiagonal_succ, coeff_zero_eq_constantCoeff_apply])
   have hcoef : ∀ M N : Matrix (Fin n) (Fin n) k⟦X⟧, (M * N).map (coeff 1) =
       M.map (coeff 1) * N.map constantCoeff + M.map constantCoeff * N.map (coeff 1) := by
     intro M N
@@ -504,13 +1099,13 @@ theorem theta_base_change_holds : ThetaBaseChange := by
   have hAG1 : A.map (coeff 1) * G.map constantCoeff + A.map constantCoeff * G.map (coeff 1) = 0 := by
     rw [← hcoef, hAG]
     ext i j
-    by_cases hij : i = j <;> simp [hij, Matrix.one_apply]
+    by_cases hij : i = j <;> simp [hij]
   have hB0 : (1 + (X : k⟦X⟧) • D).map constantCoeff = 1 := by
     ext i j
     by_cases hij : i = j <;> simp [hij, Matrix.one_apply]
   have hB1 : (1 + (X : k⟦X⟧) • D).map (coeff 1) = D.map constantCoeff := by
     ext i j
-    by_cases hij : i = j <;> simp [hij, Matrix.one_apply, e1]
+    by_cases hij : i = j <;> simp [hij, e1]
   have hC0 : (G.map (gam0 0 un)).map constantCoeff = G.map constantCoeff := by
     ext i j
     simp only [Matrix.map_apply, hcc0]
@@ -565,7 +1160,6 @@ theorem reduction_natCast_prime_eq_zero (l : ℕ) [CharP F l] (red : O →+* F) 
 theorem constantCoeff_map_eq (red : O →+* F) (y : O⟦X⟧) :
     constantCoeff (PowerSeries.map red y) = red (constantCoeff y) := by
   first
-  | exact constantCoeff_map red y
   | rw [← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply, coeff_map]
 
 theorem map_X_sub_C_prime_pow_eq_X_pow (l : ℕ) [CharP F l] (red : O →+* F) (m : ℕ) :
@@ -745,7 +1339,6 @@ theorem alpha_bounds_hold : AlphaBounds := by
   have hle : e.toNat ≤ h := by
     first
     | exact (pow_dvd_pow_iff X_ne_zero X_prime.not_unit).1 hdvd
-    | exact (pow_dvd_pow_iff_le X_ne_zero X_prime.not_unit).1 hdvd
   have h2 : ((e.toNat : ℕ) : ℤ) ≤ (h : ℤ) := by exact_mod_cast hle
   linarith [Int.toNat_of_nonneg h1]
 
@@ -794,7 +1387,6 @@ theorem sum_tail_le_sum_of_antitone {N : ℕ} (f : Fin N → ℤ) (hf : Antitone
     have split : ∀ S U : Finset (Fin N), ∑ x ∈ S \ U, f x + ∑ x ∈ S ∩ U, f x = ∑ x ∈ S, f x := by
       intro S U
       first
-      | exact Finset.sum_sdiff_add_sum_inter S U f
       | (rw [add_comm]; exact Finset.sum_inter_add_sum_diff S U f)
       | (rw [← Finset.sum_union (Finset.disjoint_sdiff_inter S U), Finset.sdiff_union_inter])
     have e3 := split T J
@@ -880,7 +1472,6 @@ def pi0SubstHom (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l
 theorem pi0SubstHom_apply (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O]
     (f : O⟦X⟧) : pi0SubstHom l O f = inc l O f := by
   first
-  | rfl
   | exact congrFun (coe_substAlgHom (hasSubst_pi0_alt l O)) f
 
 theorem pi0Subst_C (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O] (a : O) :
@@ -1129,3 +1720,7 @@ theorem weight_exponents_from_lattice : WEFromLattice := by
       (fun i s => bot i + ((s : ℕ) : ℤ)) kap ζ em jj hl2 hN)
 
 end Formalism.CohomologicalDescent.FrobeniusPeriodChange
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PieriBlockIdeals.PieriColumnMinors.HeckeLFunctionIdealEulerProduct =====

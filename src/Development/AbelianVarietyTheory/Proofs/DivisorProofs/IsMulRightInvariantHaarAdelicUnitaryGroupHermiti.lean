@@ -130,7 +130,7 @@ section Adeles
 variable (F : Type) [Field F] [NumberField F]
 
 theorem isCompact_intAd : IsCompact (intAd F : Set (Af F)) := by
-  haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F
+  have := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F
   have h := isCompact_range (RestrictedProduct.isEmbedding_structureMap
     (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
     (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (𝓕 := cofinite)).continuous
@@ -156,7 +156,7 @@ theorem exists_split_adele {κ : Type} [Finite κ] (a : κ → AF F) :
   classical
   let S := ⋃ k, {v : HeightOneSpectrum (𝓞 F) | (a k).2 v ∉ v.adicCompletionIntegers F}
   have hS : S.Finite := Set.finite_iUnion fun k => Filter.eventually_cofinite.1 (a k).2.2
-  haveI : Finite S := hS.to_subtype
+  have : Finite S := hS.to_subtype
   let p : AF F →ₐ[F] (Ainf F × ∀ v : S, v.1.adicCompletion F) :=
     { toFun := fun x => (x.1, fun v => x.2 v.1)
       map_one' := rfl
@@ -173,7 +173,7 @@ theorem exists_split_adele {κ : Type} [Finite κ] (a : κ → AF F) :
   have hs1 : ∀ v, s 1 v = if v ∈ S then 1 else 0 := fun v => by
     show dite _ _ _ = _
     split_ifs <;> rfl
-  haveI : IsArtinianRing (Ainf F) := inferInstanceAs (IsArtinianRing (∀ v : InfinitePlace F, v.Completion))
+  have : IsArtinianRing (Ainf F) := inferInstanceAs (IsArtinianRing (∀ v : InfinitePlace F, v.Completion))
   refine ⟨_, inferInstance, inferInstance, p, ((1, s 1) : Ainf F × Af F), inferInstance, fun y => ⟨_, hs y.1 y.2⟩,
     hs 1 1, fun x hx => Prod.ext ?_ ?_, fun k => ⟨?_, fun v => ?_⟩⟩
   · show 1 * x.1 = 0
@@ -220,9 +220,9 @@ theorem exists_sum_tmul (x : R ⊗[F] E) :
 theorem exists_compact_subring [TopologicalSpace R] [IsTopologicalRing R] (R₀ : NonUnitalSubring R)
     (hc : IsCompact (R₀ : Set R)) : ∃ C : NonUnitalSubring (R ⊗[F] E), IsCompact (C : Set (R ⊗[F] E)) ∧
       ∀ r ∈ R₀, ∀ β : 𝓞 E, r ⊗ₜ[F] (β : E) ∈ C := by
-  haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
-  haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
-  haveI : IsTopologicalRing (R ⊗[F] E) := IsModuleTopology.isTopologicalRing R _
+  have : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
+  have : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
+  have : IsTopologicalRing (R ⊗[F] E) := IsModuleTopology.isTopologicalRing R _
   let f : (Module.Free.ChooseBasisIndex ℤ (𝓞 E) → R) →ₗ[R] R ⊗[F] E :=
     Fintype.linearCombination R fun i => (1 : R) ⊗ₜ[F] (RingOfIntegers.basis E i : E)
   have hf : ∀ a, f a = ∑ i, a i ⊗ₜ[F] (RingOfIntegers.basis E i : E) := fun a => by
@@ -261,9 +261,9 @@ theorem exists_split_tensor (σ : E →ₐ[F] E) {δ : E} (hδ : δ ≠ 0) (hσ�
   choose a ha using fun k => exists_sum_tmul (x k)
   obtain ⟨R, _, _, p, e, hR, hp, hpe, hker, hint⟩ :=
     exists_split_adele (κ := κ × _) fun q => a q.1 q.2
-  haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
-  haveI : IsArtinianRing (R ⊗[F] E) := IsArtinianRing.of_finite R _
-  letI : Algebra ℚ (R ⊗[F] E) := ((inclR (F := F) R).comp (algebraMap ℚ E)).toAlgebra
+  have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
+  have : IsArtinianRing (R ⊗[F] E) := IsArtinianRing.of_finite R _
+  let : Algebra ℚ (R ⊗[F] E) := ((inclR (F := F) R).comp (algebraMap ℚ E)).toAlgebra
   refine ⟨R ⊗[F] E, inferInstance, sigR R σ, (Algebra.TensorProduct.map p (AlgHom.id F E)).toRingHom,
     e ⊗ₜ 1, fun y => ?_, Algebra.TensorProduct.map_surjective _ _ hp Function.surjective_id, ?_, fun y hy => ?_, ?_,
     generic_of_semilocal (δ := inclR R δ) (hδ.isUnit.map _) ?_, fun k => ?_⟩
@@ -292,15 +292,15 @@ theorem exists_split_tensor (σ : E →ₐ[F] E) {δ : E} (hδ : δ ≠ 0) (hσ�
 theorem isMulRightInvariant_adelic (σ : E →ₐ[F] E) (hss : ∀ x, σ (σ x) = x) {δ : E} (hδ : δ ≠ 0) (hσδ : σ δ = -δ)
     {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) (μ : Measure (HA (AF F) σ J)) [μ.IsHaarMeasure] :
     μ.IsMulRightInvariant := by
-  haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
-  haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
-  haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _
-  haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
+  have : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
+  have : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
+  have : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _
+  have := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
   obtain ⟨h⟩ := GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)
-  haveI : T2Space (AF F ⊗[F] E) := h.isEmbedding.t2Space
+  have : T2Space (AF F ⊗[F] E) := h.isEmbedding.t2Space
   obtain ⟨_, _, _⟩ := GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary F E σ n J
-  haveI : BorelSpace (HA (AF F) σ J) := ⟨rfl⟩
-  haveI : IsTopologicalGroup (HA (AF F) σ J) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ J))
+  have : BorelSpace (HA (AF F) σ J) := ⟨rfl⟩
+  have : IsTopologicalGroup (HA (AF F) σ J) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ J))
   have hσ := GlobalTheory.AdelicUnitaryTop.continuous_sigR (AF F) σ
   obtain ⟨C, hCc, hC⟩ := exists_compact_subring (F := F) (E := E) (intFin F) (isCompact_intFin F)
   obtain ⟨M, hM⟩ := exists_framed (σ := (σ : E →+* E)) hss (J := J) (by ext i j; exact hJ.1 i j) hJ.2

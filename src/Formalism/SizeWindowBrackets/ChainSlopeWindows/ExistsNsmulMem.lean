@@ -506,7 +506,7 @@ theorem locLen_quot_ne (w m : Ideal R) [hw : w.IsMaximal] [hm : m.IsMaximal] (h 
   exact m.mul_mem_right _ hsm
 
 theorem locLen_quot_self (m : Ideal R) [hm : m.IsMaximal] : locLen m (R ⧸ m) = 1 := by
-  apply GlobalTheory.CardLength.lenAt_quot_self <;> assumption
+  apply GlobalTheory.CardLength.lenAt_quot_self
 
 theorem card_eq_prod_locLen : ∀ (n : ℕ) (Q : Type) [AddCommGroup Q] [Module R Q] [Finite Q],
     Nat.card Q = n → ∃ k : {p : Ideal R // p.IsMaximal} →₀ ℕ,

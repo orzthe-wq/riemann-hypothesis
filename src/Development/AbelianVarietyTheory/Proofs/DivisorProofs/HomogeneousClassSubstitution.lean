@@ -54,7 +54,7 @@ theorem fc_succ_eq_delta (n : ℕ) (i : Fin (n + 2)) : fc (n + 1) n i = SimplexC
   change min (n + 1) (if (j : ℕ) < i then (j : ℕ) else j + 1) = ((Fin.succAbove i j : Fin (n+2)) : ℕ)
   rcases lt_or_ge (j : ℕ) i with h | h
   · rw [Fin.succAbove_of_castSucc_lt _ _ (by simpa [Fin.lt_def] using h)]
-    simp [h] <;> omega
+    simp [h]
   · rw [Fin.succAbove_of_le_castSucc _ _ (by simpa [Fin.le_def] using h)]
     simp [show ¬ (j : ℕ) < i by omega] <;> omega
 

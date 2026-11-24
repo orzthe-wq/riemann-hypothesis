@@ -3,47 +3,6 @@ module
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.BesselLevi
 public import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.SCompact
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -101,7 +60,6 @@ theorem isFrameJ_of (e f : Fin r → Fin (2 * r + k + 1) → ℂ) (z : Fin (2 * 
     (hww : ∀ a b, hJ ε (wf a) (wf b) = if a = b then 1 else 0)
     (hew : ∀ c a, hJ ε (e c) (wf a) = 0) (hfw : ∀ c a, hJ ε (f c) (wf a) = 0) (hzw : ∀ a, hJ ε z (wf a) = 0) :
     IsFrameJ ε e f wf (z0v T z) := by
-  have hs : Real.sqrt T ≠ 0 := (Real.sqrt_pos.mpr hT).ne'
   refine ⟨hee, hff, hef, fun a => ?_, fun a => ?_, ?_, hww, hew, hfw, fun a => ?_⟩
   · rw [z0v, hJ_smul_right, hez, mul_zero]
   · rw [z0v, hJ_smul_right, hfz, mul_zero]
@@ -164,8 +122,7 @@ theorem HNset_eq_NH (hHN : LocHNProps) {T : ℝ} (hT : 0 < T) {z : Fin (2 * r + 
     refine ⟨h * n * h⁻¹, hnorm h ⟨he, hf, hzz⟩ n hn, h, ⟨he, hf, hzz⟩, by group⟩
   · rintro ⟨m, hm, h, hh, rfl⟩
     refine ⟨h, h⁻¹ * m * h, by group, hh.1, hh.2.1, hh.2.2, ?_⟩
-    have := hnorm h⁻¹ (fix_inv hh) m hm
-    simpa using this
+    simpa using hnorm h⁻¹ (fix_inv hh) m hm
 
 end QuotRaw
 

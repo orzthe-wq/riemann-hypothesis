@@ -56,23 +56,16 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem spMap_id' (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := by
   first
-  | exact spMap_id R
-  | exact spMap_id
   | simp [spMap]
-  | unfold spMap
 
 theorem spMap_alg_self (R : Type) [CommRing R] : spMap (algebraMap R R) = 𝟙 (Sp R) := by
   first
   | exact spMap_id' R
-  | (rw [Algebra.algebraMap_self]; exact spMap_id' R)
 
 theorem spMap_algHom_alg {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
     (φ : A →ₐ[R] B) : spMap (φ : A →+* B) ≫ spMap (algebraMap R A) = spMap (algebraMap R B) := by
   first
-  | (rw [← spMap_comp]; congr 1; exact φ.comp_algebraMap)
-  | (rw [spMap_comp]; congr 1; exact φ.comp_algebraMap)
   | (simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, AlgHom.comp_algebraMap])
-  | unfold spMap
 
 theorem jetCoef_substP {V K : Type} [CommRing V] [CommRing K] (f : V →+* K) {κ κ' : Type} (m : ℕ)
     (φ : κ → MvPolynomial κ' V) :

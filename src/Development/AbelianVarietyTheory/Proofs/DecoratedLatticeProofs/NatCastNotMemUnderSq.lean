@@ -114,7 +114,6 @@ theorem psiE_sec_pr_eq_exp : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] 
   have key := GlobalTheory.StdCharDegOne.stdChar_placeIdem_div D ψ hψ p hp q.v hnorm hsqv ε hε (b : 𝓞 D.host.F) b
     (by rw [sub_self]; exact zero_mem _)
   rw [← key, hcdef]
-  push_cast
   rfl
 
 end GlobalTheory.SplitDegOneChar

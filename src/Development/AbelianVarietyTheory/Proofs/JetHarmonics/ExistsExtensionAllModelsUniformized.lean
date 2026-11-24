@@ -49,6 +49,7 @@ import Development.AbelianVarietyTheory.Definitions.Jets.ExistsSecTieFOfTies
 import Development.AbelianVarietyTheory.Definitions.Jets.JetsOnCopiesCompatibleFrames
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ExpBijectiveUniformisation
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.LemmaBStatement
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

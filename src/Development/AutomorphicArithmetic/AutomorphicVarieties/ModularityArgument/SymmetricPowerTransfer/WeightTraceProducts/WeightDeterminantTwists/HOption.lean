@@ -63,7 +63,7 @@ private theorem h_option {σ : Type} [Fintype σ] [DecidableEq σ] (x : Option �
     simp only [symOptionSuccEquiv, Equiv.coe_fn_symm_mk, SymOptionSuccEquiv.decode_inl]
     rw [Sym.coe_cons, Multiset.map_cons, Multiset.prod_cons]
   · refine Finset.sum_congr rfl fun s _ => ?_
-    simp [symOptionSuccEquiv, Multiset.map_map, Function.comp_def]
+    simp [symOptionSuccEquiv, Multiset.map_map]
 
 private theorem h_equiv {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ] (e : σ ≃ τ)
     (x : τ → ℂ) (n : ℕ) :

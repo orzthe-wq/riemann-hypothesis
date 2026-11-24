@@ -1,51 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Data.Finset.MulAntidiagonal
 
 @[expose] public section
@@ -74,14 +30,11 @@ theorem ordGE_mul {σ : Type} {a b : ℕ} {f g : MvPowerSeries σ k} (hf : OrdGE
   refine Finset.sum_eq_zero fun p hp => ?_
   replace hp : p.1 + p.2 = e := by
     first
-    | exact Finset.mem_antidiagonal.mp hp
     | exact Finset.HasAntidiagonal.mem_antidiagonal.mp hp
-    | simpa using hp
   have hd : p.1.degree + p.2.degree = e.degree := by
     rw [← hp]
     first
     | exact (map_add _ _ _).symm
-    | simp
   by_cases h1 : p.1.degree < a
   · rw [hf _ h1, zero_mul]
   · rw [hg _ (by omega), mul_zero]
@@ -91,25 +44,20 @@ theorem ordGE_pderiv {σ : Type} {r : ℕ} (i : σ) {g : MvPowerSeries σ k} (h 
   intro e he
   have key : coeff (e + Finsupp.single i 1) g = 0 := h _ (by
     first
-    | (rw [map_add (f := _), Finsupp.degree_single]; omega)
-    | (simp; omega)
-    | (simp [map_add (f := _)]; omega))
+    | (rw [map_add (f := _), Finsupp.degree_single]; omega))
   have key' : coeff (Finsupp.single i 1 + e) g = 0 := by rw [add_comm]; exact key
   first
   | (rw [MvPowerSeries.coeff_pderiv, key, mul_zero])
   | (rw [MvPowerSeries.coeff_pderiv, key, zero_mul])
-  | simp [MvPowerSeries.coeff_pderiv, key, key']
 
 theorem ordGE_one_of_const {σ : Type} {A : MvPowerSeries σ k} (h : constantCoeff A = 0) : OrdGE 1 A := by
   intro e he
   have he0 : e = 0 := by
     first
     | exact (Finsupp.degree_eq_zero_iff e).mp (by omega)
-    | exact Finsupp.degree_eq_zero_iff.mp (by omega)
   subst he0
   first
   | (rw [MvPowerSeries.coeff_zero_eq_constantCoeff_apply]; exact h)
-  | simpa using h
 
 theorem ordGE_pow {σ : Type} {A : MvPowerSeries σ k} (hA : OrdGE 1 A) (n : ℕ) : OrdGE n (A ^ n) := by
   induction n with
@@ -129,15 +77,12 @@ theorem ordGE_finsuppProd {σ τ : Type} (A : τ → MvPowerSeries σ k) (hA : �
       exact ordGE_mul (ordGE_pow (hA a) _) ih
   first
   | exact key dd.support
-  | (unfold Finsupp.prod Finsupp.degree; exact key _)
-  | (rw [Finsupp.prod, Finsupp.degree]; exact key _)
 
 theorem ordGE_subst {σ τ : Type} [Finite σ] (a : σ → MvPowerSeries τ k) (ha : ∀ s, constantCoeff (a s) = 0)
     {r : ℕ} {g : MvPowerSeries σ k} (hg : OrdGE r g) : OrdGE r (subst a g) := by
   intro e he
   have hsub : MvPowerSeries.HasSubst a := (by first
-      | exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha
-      | exact MvPowerSeries.HasSubst.of_constantCoeff_zero ha)
+      | exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha)
   rw [MvPowerSeries.coeff_subst hsub]
   refine finsum_eq_zero_of_forall_eq_zero fun dd => ?_
   by_cases hd : dd.degree < r
@@ -161,48 +106,38 @@ theorem pderiv_subst_coe {σ τ : Type} [Fintype σ] [DecidableEq σ] {a : σ �
     have hc : ((MvPolynomial.C c : MvPolynomial σ k) : MvPowerSeries σ k) = c • (1 : MvPowerSeries σ k) := by
       first
       | rw [MvPolynomial.coe_C, MvPowerSeries.smul_eq_C_mul, mul_one]
-      | simp [MvPowerSeries.smul_eq_C_mul]
     rw [hc]
-    simp [map_smul, Derivation.map_one_eq_zero, h1, h0, MvPowerSeries.subst_smul hs]
+    simp [Derivation.map_one_eq_zero, h1, h0, MvPowerSeries.subst_smul hs]
   next p q hp hq =>
     simp only [MvPolynomial.coe_add, map_add (f := _), MvPowerSeries.subst_add hs, hp, hq, add_mul, Finset.sum_add_distrib]
   next p s hp =>
     have hpX : ((p * MvPolynomial.X s : MvPolynomial σ k) : MvPowerSeries σ k) = (p : MvPowerSeries σ k) * X s := by
       first
       | rw [MvPolynomial.coe_mul, MvPolynomial.coe_X]
-      | simp
     have hδ : ∑ s', subst a (p : MvPowerSeries σ k) * subst a (pderiv s' (X s : MvPowerSeries σ k)) *
         pderiv i (a s') = subst a (p : MvPowerSeries σ k) * pderiv i (a s) := by
       rw [Finset.sum_eq_single s]
-      · simp [MvPowerSeries.pderiv_X, Pi.single_apply, h1]
+      · simp [h1]
       · intro b _ hb
-        simp [MvPowerSeries.pderiv_X, Pi.single_apply, hb, Ne.symm hb, h0]
+        simp [Ne.symm hb, h0]
       · simp
     rw [hpX, MvPowerSeries.subst_mul hs, MvPowerSeries.subst_X hs, Derivation.leibniz, hp]
     simp only [Derivation.leibniz, smul_eq_mul, MvPowerSeries.subst_add hs, MvPowerSeries.subst_mul hs,
       MvPowerSeries.subst_X hs, add_mul, Finset.sum_add_distrib, hδ]
     first
     | (simp only [Finset.mul_sum, mul_assoc])
-    | (rw [Finset.mul_sum]; congr 1; exact Finset.sum_congr rfl fun _ _ => by ring)
-    | ring
 
 theorem pderiv_subst {σ τ : Type} [Fintype σ] [DecidableEq σ] (a : σ → MvPowerSeries τ k)
     (ha : ∀ s, constantCoeff (a s) = 0) (i : τ) (f : MvPowerSeries σ k) :
     pderiv i (subst a f) = ∑ s, subst a (pderiv s f) * pderiv i (a s) := by
   classical
   have hs : HasSubst a := (by first
-      | exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha
-      | exact MvPowerSeries.HasSubst.of_constantCoeff_zero ha)
+      | exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha)
   have hle : ∀ (m : σ →₀ ℕ) (s : σ), m s ≤ m.degree := by
     intro m s
     have h := congrArg Finsupp.degree (Finsupp.single_add_erase s m)
     first
     | (rw [map_add (f := _), Finsupp.degree_single] at h; omega)
-    | (rw [map_add (f := _)] at h
-       have h3 : Finsupp.degree (Finsupp.single s (m s)) = m s := by simp
-       omega)
-    | exact Finsupp.le_degree s m
-    | exact Finsupp.le_degree m s
   ext e
   obtain ⟨q, hq⟩ : ∃ q : MvPolynomial σ k, OrdGE (e.degree + 1 + 1) (f - (q : MvPowerSeries σ k)) := by
     refine ⟨∑ m ∈ Finset.Iic (Finsupp.equivFunOnFinite.symm (fun _ : σ => e.degree + 1 + 1)),
@@ -214,8 +149,6 @@ theorem pderiv_subst {σ τ : Type} [Fintype σ] [DecidableEq σ] (a : σ → Mv
       intro s
       have := hle m s
       first
-      | (rw [Finsupp.equivFunOnFinite_symm_apply]; omega)
-      | (simp only [Finsupp.equivFunOnFinite_symm_apply]; omega)
       | (show m s ≤ e.degree + 1 + 1; omega)
     rw [map_sub, MvPolynomial.coeff_coe, MvPolynomial.coeff_sum]
     simp [MvPolynomial.coeff_monomial, hmn]
@@ -239,14 +172,12 @@ theorem hasSubst_ev {m n : ℕ} {a : Fin m → Pt k n d} (ha : ∀ p q, constant
     HasSubst (fun p : Fin m × Fin d => a p.1 p.2) := by
   first
   | exact MvPowerSeries.hasSubst_of_constantCoeff_zero fun p => ha p.1 p.2
-  | exact MvPowerSeries.HasSubst.of_constantCoeff_zero fun p => ha p.1 p.2
 
 theorem ev_ev {m n r : ℕ} (a : Fin m → Pt k n d) (b : Fin n → Pt k r d) (ha : ∀ p q, constantCoeff (a p q) = 0)
     (hb : ∀ p q, constantCoeff (b p q) = 0) (f : PS k m d) :
     ev b (ev a f) = ev (fun p q => ev b (a p q)) f := by
   first
   | exact MvPowerSeries.subst_comp_subst_apply (ChartChgPfTP.hasSubst_ev ha) (ChartChgPfTP.hasSubst_ev hb) f
-  | (unfold ev; rw [MvPowerSeries.subst_comp_subst_apply (ChartChgPfTP.hasSubst_ev ha) (ChartChgPfTP.hasSubst_ev hb)])
 
 theorem pderiv_ev {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ p q, constantCoeff (a p q) = 0) (t : Fin n × Fin d)
     (f : PS k m d) :
@@ -258,9 +189,7 @@ theorem ev_zero' {m n : ℕ} {a : Fin m → Pt k n d} (ha : ∀ p q, constantCoe
   have hs := ChartChgPfTP.hasSubst_ev ha
   have e : ∀ f : PS k m d, ev a f = MvPowerSeries.substAlgHom hs f := fun f => by
     first
-    | rfl
     | (rw [MvPowerSeries.coe_substAlgHom]; rfl)
-    | simp [MvPowerSeries.coe_substAlgHom, ev]
   rw [e, map_zero]
 
 section Trans

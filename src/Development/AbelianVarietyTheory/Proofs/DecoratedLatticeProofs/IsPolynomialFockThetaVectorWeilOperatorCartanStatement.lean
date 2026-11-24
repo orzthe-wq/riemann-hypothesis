@@ -57,4 +57,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 
 theorem _root_.GlobalTheory.T.isPolynomialFockThetaVector_weilOperator_cartan : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ θ : InfFam D, IsInfFam θ → ∀ (sS sS' : RealMat S) (sT : RealMat T) (g : GA D S), (∀ τ, sS' τ * compAt θ τ (mt S g) = compAt θ τ (mt S g) * sS τ) → ∀ f, IsFockVec ψ θ S T sS sT f → IsFockVec ψ θ S T sS' sT (om (g, 1) f) := by
-  first | exact @GlobalTheory.FockMove.isFockVec_om | exact GlobalTheory.FockMove.isFockVec_om | (intros; apply GlobalTheory.FockMove.isFockVec_om <;> assumption)
+  first | exact @GlobalTheory.FockMove.isFockVec_om

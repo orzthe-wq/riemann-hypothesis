@@ -168,7 +168,7 @@ theorem tsb_dM_inG {n : ℕ} (X : Fin n → ℝ) (t : ℝ) : InG (dM X t) := by
   have h := exp_diagonal_mul_inverse X t
   rw [fromBlocks_multiply, fromBlocks_multiply]
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul,
-    Matrix.one_mul, h.1, h.2, neg_zero]
+    h.1, h.2, neg_zero]
 
 theorem tsb_dil_exists (n : ℕ) (X : Fin n → ℝ) (t : ℝ) : ∃ a : GR n, IsDil X t a := by
   have h1 := tsb_dM_mul X t

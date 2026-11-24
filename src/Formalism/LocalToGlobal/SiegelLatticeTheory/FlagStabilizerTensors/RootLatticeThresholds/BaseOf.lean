@@ -8,46 +8,6 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLat
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryQuotientCompactness.UnitaryWeylCompact
 import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeLemma3
 import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.TopsChoicePartA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -92,7 +52,6 @@ theorem transpC (v : InfinitePlace X.B.I.F) : IsTranspC X v (cfS D) D.R.k D.R.rS
     rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
     congr 1
     funext i
-    beta_reduce
     split_ifs
     · rw [← mul_pow, inv_mul_cancel₀ hμ, one_pow]
     · rw [← mul_inv, ← star_mul', ← mul_pow, inv_mul_cancel₀ hμ, one_pow, star_one, inv_one]
@@ -102,7 +61,6 @@ theorem transpC (v : InfinitePlace X.B.I.F) : IsTranspC X v (cfS D) D.R.k D.R.rS
     rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
     congr 1
     funext i
-    beta_reduce
     split_ifs
     · rw [← mul_pow, mul_inv_cancel₀ hμ, one_pow]
     · rw [← mul_inv, ← star_mul', ← mul_pow, mul_inv_cancel₀ hμ, one_pow, star_one, inv_one]
@@ -121,7 +79,7 @@ theorem transpC (v : InfinitePlace X.B.I.F) : IsTranspC X v (cfS D) D.R.k D.R.rS
          rw [e, mul_one, mul_inv_cancel₀ (star_ne_zero.mpr (hμm _))])
       | (have e : 2 * D.R.rS + D.R.k - (i : ℕ) = j := by omega
          rw [e, mul_one]
-         first | rw [star_inv₀] | rw [star_inv']
+         first | rw [star_inv₀]
          rw [star_star, inv_mul_cancel₀ (hμm _)])
       | (have e : 2 * D.R.rS + D.R.k - (j : ℕ) = i := by omega
          rw [e]; simp [hμm, hsm]; done)
@@ -271,7 +229,7 @@ def towersOf (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.T
 
 theorem towersOf_base (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (j : Fin (nfE D)) :
     (towersOf X C u u' e j).base = baseOf X C u u' (tauE X e j) :=
-  (Formalism.FourierDecayAlt.P.exists_level_tower _ _ _ _ (baseOf X C u u' (tauE X e j)) (baseOf_μW1 X C u u' _)
+  (_root_.Formalism.FourierDecayAlt.P.Dx2.Tower.towerExists _ _ _ _ (baseOf X C u u' (tauE X e j)) (baseOf_μW1 X C u u' _)
     (baseOf_μW'1 X C u u' _) rfl).choose_spec.1
 
 theorem Tz_towersOf_base_eq_T (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (j : Fin (nfE D)) :

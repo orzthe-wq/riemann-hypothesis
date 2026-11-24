@@ -7,49 +7,7 @@ import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.GenericRatioOfBoundHolds
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.LevelSubgroupProperties
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.ConcreteLevelAdelicSubset
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -80,44 +38,9 @@ theorem phVal_smul (c : ℂ) (T : Cu X u hK) (yinf : X.B.I.Ginf) (n : X.B.I.Gf) 
   simp only [Submodule.coe_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]
   ring
 
-theorem Ph_add (T T' : Cu X u hK) (y : X.B.I.GA) :
-    Ph X u hK (T + T') y = Ph X u hK T y + Ph X u hK T' y := by
-  unfold Ph
-  split_ifs with hd
-  · exact phVal_add X u hK T T' _ _ _ _
-  · simp
-
-theorem Ph_smul (c : ℂ) (T : Cu X u hK) (y : X.B.I.GA) : Ph X u hK (c • T) y = c * Ph X u hK T y := by
-  unfold Ph
-  split_ifs with hd
-  · exact phVal_smul X u hK c T _ _ _ _
-  · simp
-
-theorem puLinear (Dt : Set X.B.I.GA) : PuLinear X u hK Dt := by
-  intro hD hin
-  have hS : ∀ (T : Cu X u hK) (x : X.B.I.GA), Summable fun δ : Dt => Ph X u hK T ((δ : X.B.I.GA) * x) :=
-    fun T x => ((hin T Dt hD).1 x).of_norm
-  have hM : ∀ T : Cu X u hK, MemLp (Pser X u hK Dt T) 2 ((X.B.I.muA X.B.μf).restrict X.B.fund) :=
-    fun T => (hin T Dt hD).2.2.1
-  refine ⟨fun T T' => ?_, fun c T => ?_⟩
-  · have he : Pser X u hK Dt (T + T') = Pser X u hK Dt T + Pser X u hK Dt T' := by
-      funext x
-      simp only [Pser, Formalism.L2.SG.PoincareSeriesSquareIntegrable.poinc, Pi.add_apply, Ph_add]
-      exact (hS T x).tsum_add (hS T' x)
-    unfold PuFun
-    rw [dif_pos (hM _), dif_pos (hM T), dif_pos (hM T'), ← MemLp.toLp_add]
-    exact MemLp.toLp_congr _ _ (Filter.Eventually.of_forall fun x => congrFun he x)
-  · have he : Pser X u hK Dt (c • T) = c • Pser X u hK Dt T := by
-      funext x
-      simp only [Pser, Formalism.L2.SG.PoincareSeriesSquareIntegrable.poinc, Pi.smul_apply, smul_eq_mul, Ph_smul]
-      exact tsum_mul_left
-    unfold PuFun
-    rw [dif_pos (hM _), dif_pos (hM T), ← MemLp.toLp_const_smul]
-    exact MemLp.toLp_congr _ _ (Filter.Eventually.of_forall fun x => congrFun he x)
-
 end Lin
 
-theorem puLinearC : PuLinearC := fun _ X Y u => puLinear X u Y.hK (Y.Dt u)
+theorem puLinearC : PuLinearC := fun _ X Y u => _root_.Formalism.L2.SG.PoincareInHH.Cut.puLinear_holds X u Y.hK (Y.Dt u)
 
 section Vol
 
@@ -220,38 +143,8 @@ def HFiniteC : Prop := ∀ (D : D7) (X : HidaSetting D) u, HFinite X u
 theorem volPosC_of (h1 : NOSubC) (h2 : NOCountC) (h3 : NOCofiniteC) (h4 : HFiniteC) : VolPosC :=
   fun D X Y u hL => volPos_of X u (h1 D X Y.hK u) (h2 D X u) (h3 D X u) (h4 D X u) Y hL
 
-theorem exists_rightTransversal' {G : Type*} [Group G] (Γ S : Subgroup G) (hS : S ≤ Γ) :
-    ∃ Dt : Set G, Formalism.L2.SG.FoldBound.IsRightTransversal Γ S Dt := by
-  let r : Setoid G := QuotientGroup.rightRel S
-  let o : G → G := fun g => (Quotient.mk r g).out
-  have ho : ∀ g, g * (o g)⁻¹ ∈ S := fun g => by
-    have h := Quotient.mk_out (s := r) g
-    exact QuotientGroup.rightRel_apply.1 h
-  have hoeq : ∀ g g', g' * g⁻¹ ∈ S → o g = o g' := fun g g' h => by
-    have h' : Quotient.mk r g = Quotient.mk r g' := Quotient.sound (QuotientGroup.rightRel_apply.2 h)
-    simp only [o, h']
-  refine ⟨{d | d ∈ Γ ∧ o d = d}, fun d hd => hd.1, fun γ hγ => ?_⟩
-  have hsm : γ * (o γ)⁻¹ ∈ S := ho γ
-  have hoo : o (o γ) = o γ := hoeq _ _ hsm
-  have hdΓ : o γ ∈ Γ := by
-    have e : o γ = (γ * (o γ)⁻¹)⁻¹ * γ := by group
-    rw [e]
-    exact Γ.mul_mem (Γ.inv_mem (hS hsm)) hγ
-  refine ⟨(⟨γ * (o γ)⁻¹, hsm⟩, ⟨o γ, hdΓ, hoo⟩), by simp, ?_⟩
-  rintro ⟨⟨s, hs⟩, ⟨d, hdΓ', hdo⟩⟩ hsd
-  simp only at hsd
-  have hs' : γ * d⁻¹ = s := by rw [← hsd]; group
-  have hd : d = o γ := by
-    rw [← hdo]
-    exact hoeq _ _ (hs' ▸ hs)
-  subst hd
-  ext
-  · simp only
-    rw [← hs']
-  · rfl
-
 theorem repsExist {D : D7} (X : HidaSetting D) (u : D.what₂.Word) : ∃ Dt : Set X.B.I.GA, IsReps X u Dt :=
-  exists_rightTransversal' _ _ inf_le_left
+  _root_.Formalism.L2.SG.Pf.exists_rightTransversal _ _ inf_le_left
 
 section Rows
 
@@ -749,7 +642,7 @@ theorem inclInj_holds {D : D7} (X : HidaSetting D) : InclInj X := by
   exact Algebra.TensorProduct.includeLeft_injective (S := X.B.I.F) (algebraMap X.B.I.F (Af X.B.I.F)).injective
 
 theorem noCount {D : D7} (X : HidaSetting D) (u : D.what₂.Word) : NOCount X u := by
-  have hK := Formalism.L2.SG.Closed.level_subgroup_is_group X
+  have hK := _root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X
   haveI := NOsub_discrete X u hK
   have hc : Countable (NOsub X u hK) := countable_of_discrete (NOsub X u hK)
   rw [NOCount, ← NOsub_coe X u hK]

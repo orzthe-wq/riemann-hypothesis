@@ -2,13 +2,19 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
 public import Development.WeilBound.CoreStatements.VolumeEquality.RootBranches
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConstantsValueOverPointStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPointStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsOver
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ConstantsValueOverPoint
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPoint
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LocalRingPointsExistsUnique
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.MemAbLocusIff
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalSchemeCoordsInjectiveStatement
+public import Mathlib.Basic.Complex.Basic
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NormalSchemeCoordsInjective
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RingOfIntegersHomInjective
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MultiprojectivePointsNonemptyStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MultiprojectivePointsNonempty
 public import Development.WeilBound.CoreStatements.VolumeEquality.RootBr
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -117,7 +123,7 @@ theorem sat_of_coords {z : Sp ℂ ⟶ 𝔐.X} {w w' : (Σ k, J k) → ℂ} (h : 
   exact ⟨_, rfl, fun k => a k, fun k => (a k).ne_zero, rfl⟩
 
 theorem pt_unique {z z' : Sp ℂ ⟶ 𝔐.X} {w : (Σ k, J k) → ℂ} (h : CoordsAt 𝔐.ξ y z w) (h' : CoordsAt 𝔐.ξ y z' w) : z = z' :=
-  GlobalTheory.T.normal_scheme_coords_injective _ _ 𝔐.ξ K J y 𝔐.tie 𝔐.normal 𝔐.all z z' w h h'
+  _root_.GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.point_eq_of_coordsAt _ _ 𝔐.ξ K J y 𝔐.tie 𝔐.normal 𝔐.all z z' w h h'
 
 theorem mem_mcPts {z : Sp ℂ ⟶ 𝔐.X} {w : (Σ k, J k) → ℂ} (h : CoordsAt 𝔐.ξ y z w) : w ∈ mcPts (mCoordIdeal y) :=
   ⟨fun k => (h.1 k).imp fun _ h => h.ne_zero, fun g hg => by
@@ -144,7 +150,7 @@ theorem labVal_of_over {z : Sp ℂ ⟶ 𝔐.X} (hz : 𝔐.Interior z) {κ : c.F 
       ← Category.assoc, h3, ← Chg.spMap_comp'] at h
     exact IsFractionRing.ringHom_ext (A := 𝓞 c.F) fun a =>
       RingHom.congr_fun (congrArg CommRingCat.Hom.hom (Spec.map_injective h)) a
-  exact fun τ a => GlobalTheory.T.constants_value_over_point E H D l Xo c Y S Ω K J y 𝔐 z _ p hp _
+  exact fun τ a => _root_.GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.val_cst E H D l Xo c Y S Ω K J y 𝔐 z _ p hp _
 
 end Pts
 
@@ -210,7 +216,7 @@ theorem exists_sheets (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 :
     fun k m i t => by
       by_cases ht : t ∈ Wk k m
       · exact ((hc _ (hWs k m ht).2).2.1 _ (((hθ k m t ht).2 _).2 ⟨i, rfl⟩)).imp fun _ h _ => h
-      · obtain ⟨w₀, hw₀⟩ := GlobalTheory.T.multiprojective_points_nonempty K J Ω Dc.y fun k => by
+      · obtain ⟨w₀, hw₀⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.mcPts_mCoordIdeal_nonempty K J Ω Dc.y fun k => by
           obtain ⟨c', hc'⟩ := Or.𝔐.tie.cover ⟨genPt Or.𝔐.ξ, specializes_rfl⟩
           exact ⟨c' k, Finset.prod_ne_zero_iff.1 hc'.1 k (Finset.mem_univ k)⟩
         exact (exists_pt Or.𝔐 hw₀).imp fun _ _ h => absurd h ht
@@ -236,7 +242,7 @@ theorem exists_sheets (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 :
       exact (congrArg (fun x => Or.𝔐.ξ₀ x ∈ U) (Subsingleton.elim (α := PrimeSpectrum Or.𝔐.Ω₀) _ _)).mpr hU
     obtain ⟨t₁, ht₁, z₁, c₁, u₁⟩ := h2 _ Ω Or.𝔐.ξ K J Dc.y _ _ (Dc.chart b) _ Or.𝔐.tie Or.𝔐.all Dc.arith hg
     have n1 := h1 _ _ _ ζ (Or.𝔐.f ⁻¹ᵁ U) Metric.isOpen_ball (convex_ball _ _).isPreconnected
-      (GlobalTheory.T.holomorphic_coords_of_generic_point _ Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie Or.𝔐.all _ _ _ ζ Metric.isOpen_ball (Dc.chart b).analytic.differentiableOn hζ)
+      (_root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family _ Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie Or.𝔐.all _ _ _ ζ Metric.isOpen_ball (Dc.chart b).analytic.differentiableOn hζ)
       ⟨t₁, ht₁, pt_unique Or.𝔐 c₁ (hζ t₁ ht₁) ▸ u₁⟩
     have n2 : ∀ᵐ t : Fin Dc.n → ℂ, ∀ i, t i ≠ 0 := ae_all_iff.2 fun i => by
       rw [volume_pi]
@@ -254,7 +260,7 @@ theorem exists_sheets (h1 : HolNull) (h2 : ChartMeets) (h3 : RootBranches) (h4 :
     obtain ⟨i, rfl⟩ := ((hθ k m t₃ (disjointed_subset _ _ hm)).2 x).1 hx
     exact ⟨k, m, i, t₃, ⟨ht₃, hm⟩, sat_of_coords Or.𝔐 cx (hζ t ht)⟩
   obtain ⟨k₀, m₀, i₀, t₀, ht₀⟩ : ∃ k m, ∃ _ : Fin Or.deg, ∃ t, t ∈ FF k ∩ disjointed (Wk k) m := by
-    obtain ⟨w₀, hw₀⟩ := GlobalTheory.T.multiprojective_points_nonempty K J Ω Dc.y fun k => by
+    obtain ⟨w₀, hw₀⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovGraph.mcPts_mCoordIdeal_nonempty K J Ω Dc.y fun k => by
       obtain ⟨c', hc'⟩ := Or.𝔐.tie.cover ⟨genPt Or.𝔐.ξ, specializes_rfl⟩
       exact ⟨c' k, Finset.prod_ne_zero_iff.1 hc'.1 k (Finset.mem_univ k)⟩
     obtain ⟨b, -⟩ := Dc.chart_cover w₀ hw₀

@@ -112,7 +112,7 @@ theorem cell_mem_blockEnds (D : D7) {z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ
   by_contra hcon
   apply h2
   rw [e]
-  apply Formalism.HermitianLatticeCounting.Final.ExpansionTerms.e4aVanish ℂ _ _ _ l hl
+  apply _root_.Formalism.HermitianLatticeCounting.P.leading_minor_vanishes_off_block_ends ℂ _ _ _ l hl
   intro q hq
   exact hcon (mem_blockEnds_of_take p q l h1 hq)
 
@@ -154,7 +154,7 @@ theorem leadMinor_blockEnd_ne {i : ℕ} (p : Point ℂ i) (l : ℕ) (h : l ∈ p
         ((Formalism.MainNotions.BesselShellMomentBounds.toComp p).sizeUpTo q) := by
     rw [← Formalism.MainNotions.BesselShellMomentBounds.ptMat_eq]
     exact Formalism.MainNotions.BesselShellMomentBounds.leadMinorK_eq _ _ _
-  rw [e, Formalism.HermitianLatticeCounting.Final.ExpansionTerms.e4aValue]
+  rw [e, _root_.Formalism.HermitianLatticeCounting.P.leading_minor_at_block_end]
   refine Finset.prod_ne_zero_iff.2 (fun a _ => mul_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ ?_))
   exact Formalism.MainNotions.BesselShellMomentBounds.toT_ne p a
 

@@ -153,7 +153,7 @@ theorem UpperTheory.V.Z.Sym.So.uFBox :
       simp only [smulMk]
       rw [hc, QuotientGroup.eq]
       convert (hB _).1 c.2 v.1 using 1
-      simp only [map_mul, Subgroup.coe_mk]
+      simp only [map_mul]
       group
     · rintro _ ⟨u1, rfl⟩ _ ⟨u2, rfl⟩ h12
       refine (quotientGroup_coe_out_eq_self _ _).symm.trans ((QuotientGroup.eq.2 ?_).trans (quotientGroup_coe_out_eq_self _ _))

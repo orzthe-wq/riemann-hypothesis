@@ -344,17 +344,6 @@ def ptHom {l : Λ} {k : K.K} (T : K.Obj) (h : K.le l T.k k) : K.triv k ⟶ T :=
 
 end Charts
 
-theorem Fam.allCharts_based (F : Fam I g Λ) : F.allCharts.Based := by
-  exact ⟨F.totChart, fun z hz ↦ hz⟩
-
-theorem Fam.allCharts_rich (F : Fam I g Λ) : F.allCharts.Rich := by
-  refine ⟨fun p hp ↦ ⟨F.totChart, hp⟩, fun l k₁ k₂ p h₁ h₂ ↦ ?_⟩
-  have hopen : IsOpen ((k₁.1 : Set (Tot I g)) ∩ F.shift l ⁻¹' (k₂.1 : Set (Tot I g))) :=
-    (F.shift_analytic l k₁.2).continuousOn.isOpen_inter_preimage k₁.1.isOpen k₂.1.isOpen
-  refine ⟨⟨⟨_, hopen⟩, fun q hq ↦ k₁.2 q hq.1⟩, ⟨h₁, h₂⟩, fun q hq ↦ ?_, fun q hq ↦ hq.2⟩
-  rw [F.shift_zero]
-  exact hq.1
-
 def Fam.transl (F : Fam I g Λ) (l : Λ) : F.allCharts.triv F.totChart ⟶ F.allCharts.triv F.totChart :=
   Charts.ptHom (l := l) (F.allCharts.triv F.totChart) (fun _ h ↦ h)
 

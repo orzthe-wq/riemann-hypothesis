@@ -2,46 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.YvRatOfValRat
 public import Formalism.LocalToGlobal.GroupLattices.ComparisonMaps.CmpLApply
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -122,25 +83,6 @@ theorem cmpC_inj (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (he
   simp only [Pi.zero_apply]
   exact (mul_eq_zero.mp h2.symm).resolve_left (by simp)
 
-private theorem isVal_add {x y : V} {i : G.comp} {L : G.P.Tup} {Q Q' : XR G.P LL}
-    (h : IsVal S emb embLL G A pos embV yc x i L Q) (h' : IsVal S emb embLL G A pos embV yc y i L Q') :
-    IsVal S emb embLL G A pos embV yc (x + y) i L (Q + Q') := by
-  unfold IsVal at *
-  refine ⟨Submodule.add_mem _ h.1 h'.1, fun g hg c γ hγ κ hpt z z' hz => ?_⟩
-  simp only [map_add (f := _), Pi.add_apply, mul_add]
-  rw [h.2 g hg c γ hγ κ hpt z z' hz, h'.2 g hg c γ hγ κ hpt z z' hz]
-
-private theorem isVal_smul {x : V} {i : G.comp} {L : G.P.Tup} {Q : XR G.P LL} (a : LL)
-    (h : IsVal S emb embLL G A pos embV yc x i L Q) :
-    IsVal S emb embLL G A pos embV yc (a • x) i L (a • Q) := by
-  unfold IsVal at *
-  refine ⟨Submodule.smul_mem _ a h.1, fun g hg c γ hγ κ hpt z z' hz => ?_⟩
-  have hm : MvPolynomial.map embLL (a • Q) = (embLL a) • MvPolynomial.map embLL Q := by
-    rw [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, MvPolynomial.smul_eq_C_mul]
-  rw [hm, map_smul, Pi.smul_apply, h.2 g hg c γ hγ κ hpt z z' hz, map_smulₛₗ]
-  simp only [Pi.smul_apply, smul_eq_mul]
-  ring
-
 private theorem isVal_valC_of_isLatTup (hex : ValEx S emb embLL G A pos embV yc) (x : V) (i : G.comp) {L : G.P.Tup}
     (hL : G.P.IsLatTup L) : IsVal S emb embLL G A pos embV yc x i L (valC S emb embLL G A pos embV yc x i L) := by
   have h' := hex x i L hL
@@ -157,11 +99,11 @@ theorem cmpC_li (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hex
       map_add' := fun x y => by
         funext i L
         exact hu (x + y) i L.1 _ _ L.2 (isVal_valC_of_isLatTup hex (x + y) i L.2)
-          (isVal_add (isVal_valC_of_isLatTup hex x i L.2) (isVal_valC_of_isLatTup hex y i L.2))
+          (_root_.Formalism.L2.G.Cmp.IsVal.add (isVal_valC_of_isLatTup hex x i L.2) (isVal_valC_of_isLatTup hex y i L.2))
       map_smul' := fun a x => by
         funext i L
         exact hu (a • x) i L.1 _ _ L.2 (isVal_valC_of_isLatTup hex (a • x) i L.2)
-          (isVal_smul a (isVal_valC_of_isLatTup hex x i L.2)) }
+          (_root_.Formalism.L2.G.Cmp.IsVal.smul a (isVal_valC_of_isLatTup hex x i L.2)) }
   have hΦ : LinearMap.ker Φ = ⊥ := by
     rw [LinearMap.ker_eq_bot']
     intro x hx
@@ -189,7 +131,7 @@ theorem cmpC_li (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hex
       smul_eq_mul, Pi.zero_apply, MvPolynomial.coeff_zero, cmpC, if_pos L.2, MvPolynomial.coeff_map] at h1
     have h2 := congrArg (fun y => β.repr y k) h1
 
-    simp only [map_sum, map_zero, Finset.sum_apply', Finset.sum_apply, Finsupp.coe_zero, Pi.zero_apply,
+    simp only [map_sum, map_zero, Finset.sum_apply', Finsupp.coe_zero, Pi.zero_apply,
     hsm, map_smul, Finsupp.smul_apply, smul_eq_mul] at h2
     simp only [Finset.sum_apply, Pi.smul_apply, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul,
       smul_eq_mul, Pi.zero_apply, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply]

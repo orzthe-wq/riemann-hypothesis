@@ -129,8 +129,7 @@ private theorem conductor_inv_dvd_conductor {M : ℕ} [NeZero M] (χ : Dirichlet
 
 private theorem conductor_inv_eq_conductor {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) :
     χ⁻¹.conductor = χ.conductor := by
-  apply Nat.dvd_antisymm (conductor_inv_dvd_conductor χ)
-  simpa using conductor_inv_dvd_conductor χ⁻¹
+  exact Nat.dvd_antisymm (conductor_inv_dvd_conductor χ) (by simpa using conductor_inv_dvd_conductor χ⁻¹)
 
 theorem PChar.of_inv {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) : PChar.of χ⁻¹ = (PChar.of χ).inv := by
   haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩

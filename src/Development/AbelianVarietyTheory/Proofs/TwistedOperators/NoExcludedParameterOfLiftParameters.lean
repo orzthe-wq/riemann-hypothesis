@@ -47,6 +47,7 @@ import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.IteratedLiftChains
 public import Development.AbelianVarietyTheory.Definitions.Foundations.AestronglyMeasurableQuotMeasureIffLift
 public import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

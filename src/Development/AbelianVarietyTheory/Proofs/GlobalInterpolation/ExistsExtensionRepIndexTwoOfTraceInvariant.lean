@@ -70,10 +70,10 @@ theorem _root_.GlobalTheory.IndexTwoExt.isSSRep_of_ker [CharZero k] (η : Γ →
   have hp1 : ∀ v, p v ∈ W := fun v => by simp [hpdef]
   have hpW : ∀ v ∈ W, p v = v := fun v hv => by
     simp only [hpdef, LinearMap.comp_apply, Submodule.subtype_apply]
-    exact congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc ⟨v, hv⟩)
+    exact congrArg Subtype.val (Submodule.projectionOnto_apply_left hc ⟨v, hv⟩)
   have hpW' : ∀ v ∈ W', p v = 0 := fun v hv => by
     simp only [hpdef, LinearMap.comp_apply, Submodule.subtype_apply]
-    exact congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_right hc ⟨v, hv⟩)
+    exact congrArg Subtype.val (Submodule.projectionOnto_apply_right hc ⟨v, hv⟩)
   have hpc : ∀ g, η g = 1 → Commute (σ g) p := by
     intro g hg
     refine LinearMap.ext fun v => ?_
@@ -247,7 +247,7 @@ theorem _root_.GlobalTheory.IndexTwoExt.main : ∀ (Γ k : Type) [Group Γ] [Top
     refine ⟨r.comp φ, ?_, isSSRep_comp_of_surjective r φ (fun h => ⟨h, rfl⟩) hrss, fun h => rfl⟩
     change Continuous (fun g => r (φ g))
     exact hr.comp (continuous_id.subtype_mk fun g => MonoidHom.mem_ker.2 (hall g))
-  push_neg at hall
+  push Not at hall
   obtain ⟨t, ht1⟩ := hall
   have ht : η t = -1 := (hη t).resolve_left ht1
   have hmem : ∀ x, η x = 1 → η (t * x * t⁻¹) = 1 := fun x hx => by
@@ -368,7 +368,7 @@ theorem _root_.GlobalTheory.IndexTwoExt.main : ∀ (Γ k : Type) [Group Γ] [Top
     show F h = r h
     rw [hF1 _ (MonoidHom.mem_ker.1 h.2), hf _ (MonoidHom.mem_ker.1 h.2)]
   have hfc : ContinuousOn f (η.ker : Set Γ) := by
-    rw [continuousOn_iff_continuous_restrict]
+    rw [continuousOn_iff_continuous_domRestrict]
     exact hr.congr fun x => (dif_pos x.2 : f (x : Γ) = r ⟨x, x.2⟩).symm
   have hcont : Continuous ρ := by
     refine continuous_of_continuousAt_one ρ ?_

@@ -48,4 +48,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.exists_torus_of_period_hermitian : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Pm : D.La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ), IsTypeFn H D.p D.q ty → IsPeriod D ty Pm → Hm.IsHermitian → (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) → (∀ a b, (hermForm Hm (Pm a) (Pm b)).im = D.EF a b) → ∃ (T : I2.PT E) (ψ : (Fin g → ℂ) ≃ₗ[ℂ] I2.Vsp T.dim), IsTorusOf D ty Pm Hm T ψ := by
-  first | exact @GlobalTheory.PeriodTorus.exists_torusOf | exact GlobalTheory.PeriodTorus.exists_torusOf | (intros; apply GlobalTheory.PeriodTorus.exists_torusOf <;> assumption)
+  first | exact @GlobalTheory.PeriodTorus.exists_torusOf

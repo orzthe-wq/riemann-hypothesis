@@ -137,8 +137,8 @@ theorem det_blocks {E : Type} [CommRing E] {r : ℕ} (Z Z' : Matrix (Fin (r + 1)
       · subst hi
         by_cases hj : j = Fin.last r
         · subst hj; simp [sub_eq_add_neg]
-        · simp [hj, Matrix.single_apply, Ne.symm hj]
-      · simp [hi, Matrix.single_apply, Ne.symm hi]
+        · simp [hj, Ne.symm hj]
+      · simp [hi, Ne.symm hi]
     rw [this, Matrix.det_updateRow_add, Matrix.det_updateRow_smul, Matrix.updateRow_eq_self,
       ← Matrix.adjugate_apply, hadj]
     ring
@@ -351,12 +351,12 @@ theorem encard_overlattices_le : ∀ {F : Type} [Field F] [ValuativeRel F] [Topo
     Matrix.fromBlocks U (-(t • U)) 0 (t • U')
   have hg : ∀ i, g i = ∑ l, B l i • Sum.elim S.f' S.f l := by
     rintro (i | i)
-    · simp [g, B, h1, h2, smul_sub, Finset.smul_sum, smul_smul, sub_eq_add_neg, add_comm]
+    · simp [g, B, h1, h2, Finset.smul_sum, smul_smul, sub_eq_add_neg, add_comm]
     · simp [g, B, h1]
   have hg' : ∀ i, g' i = ∑ l, B' l i • Sum.elim S.f S.f' l := by
     rintro (i | i)
     · simp [g', B', h1]
-    · simp [g', B', h1, h2, smul_sub, Finset.smul_sum, smul_smul, sub_eq_add_neg, add_comm]
+    · simp [g', B', h1, h2, Finset.smul_sum, smul_smul, sub_eq_add_neg, add_comm]
   have hB : B.det = t ^ (r + 1) := by
     simp [B, Matrix.det_fromBlocks_zero₁₂, hU, hU']
   have hB' : B'.det = t ^ (r + 1) := by

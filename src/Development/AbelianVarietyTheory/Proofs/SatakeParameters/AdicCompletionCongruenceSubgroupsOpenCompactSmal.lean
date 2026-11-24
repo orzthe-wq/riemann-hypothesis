@@ -65,9 +65,6 @@ abbrev cong (t : w.adicCompletionIntegers E) : Subgroup (GL (Fin a) (w.adicCompl
   (Matrix.GeneralLinearGroup.map (n := Fin a) (Ideal.Quotient.mk (Ideal.span {t}))).ker.map
     (Matrix.GeneralLinearGroup.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)))
 
-theorem isCompact_integers : IsCompact (w.adicCompletionIntegers E : Set (w.adicCompletion E)) :=
-  ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers w
-
 variable {w a}
 
 theorem le_one_of_sub_le {x y : w.adicCompletion E} {c : WithZero (Multiplicative ℤ)} (hc : c ≤ 1)
@@ -197,7 +194,7 @@ theorem isCompact_cong (t : w.adicCompletionIntegers E) (ht : (t : w.adicComplet
     IsCompact (cong w a t : Set (GL (Fin a) (w.adicCompletion E))) := by
   have hB : IsCompact (Set.univ.pi fun _ : Fin a => Set.univ.pi fun _ : Fin a =>
       (w.adicCompletionIntegers E : Set (w.adicCompletion E)) : Set (Matrix (Fin a) (Fin a) (w.adicCompletion E))) :=
-    isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_integers w
+    isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => _root_.ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers w
   have hS : IsCompact (Units.embedProduct (Matrix (Fin a) (Fin a) (w.adicCompletion E)) ⁻¹'
       ((Set.univ.pi fun _ : Fin a => Set.univ.pi fun _ : Fin a =>
         (w.adicCompletionIntegers E : Set (w.adicCompletion E)) : Set (Matrix (Fin a) (Fin a) (w.adicCompletion E))) ×ˢ

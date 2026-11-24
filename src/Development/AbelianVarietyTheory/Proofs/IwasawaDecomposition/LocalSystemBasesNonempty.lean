@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.LeftEqIffLieVecSmul
 
 @[expose] public section
 
@@ -72,14 +73,6 @@ theorem epsMul_comp (c : S) :
   conv_rhs => rw [← e]
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
-theorem fst_comp :
-    spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _ := by
-  have e : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S := by
-    ext s; simp
-  simp only [spMap]
-  rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, e]
-  simp
-
 theorem one_push : (1 : Over.mk x' ⟶ t'.G).left ≫ m.φ = (1 : Over.mk (x' ≫ f) ⟶ t.G).left :=
   congrArg (fun q => q.left) (map_one (pushHom m.cart (Over.mk x')))
 
@@ -103,7 +96,7 @@ theorem tan_push {v : Sp (DualNumber S) ⟶ t'.G.left}
     refine ⟨hv, m.cart.1.hom_ext ?_ ?_⟩
     · rw [Category.assoc]
       exact h.2.trans (one_push m).symm
-    · rw [Category.assoc, hv, ← Category.assoc, fst_comp, Category.id_comp]
+    · rw [Category.assoc, hv, ← Category.assoc, _root_.GlobalTheory.Diag.fstHom_base, Category.id_comp]
       exact (Over.w (1 : Over.mk x' ⟶ t'.G)).symm
 
 theorem exists_lift {w : Sp (DualNumber S) ⟶ t.G.left}

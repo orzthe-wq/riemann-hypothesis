@@ -126,7 +126,7 @@ theorem _root_.GlobalTheory.UnramOrder.card_coker_eq_pow_addVal_det {R : Type*} 
       by_cases hij : i = j
       · subst hij
         simp
-      · simp [hij, Finsupp.single_apply, Ne.symm hij]
+      · simp [hij]
     rw [hmat, Matrix.det_diagonal]
   let h : M →ₗ[R] M := e.symm.toLinearMap ∘ₗ f.rangeRestrict
   have hfgh : f = g ∘ₗ h := by

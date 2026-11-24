@@ -184,16 +184,11 @@ theorem apply_eq_sum (S : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (v : Fin 
 
   simp [map_sum, Finset.sum_apply, mul_comm]
 
-private theorem valAt'_zero_toric_geometry {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) :
-    valAt' x U 0 = 0 := by
-  unfold valAt'
-  split_ifs <;> simp [valAt]
-
 private theorem valAt'_finset_sum' {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens) {J : Type} (s : Finset J)
     (F : J → Γ(X, U)) : valAt' x U (∑ j ∈ s, F j) = ∑ j ∈ s, valAt' x U (F j) := by
   classical
   refine Finset.induction_on s ?_ ?_
-  · rw [Finset.sum_empty, Finset.sum_empty, valAt'_zero_toric_geometry]
+  · rw [Finset.sum_empty, Finset.sum_empty, _root_.GlobalTheory.valAt'_zero]
   · intro j s hj ih
     rw [Finset.sum_insert hj, Finset.sum_insert hj, valAt'_add, ih]
 

@@ -2,24 +2,31 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVectorAutomorphicDerivatives
 public import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
-import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.ConjAtFixedIff
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BoundedHolomorphicFormEqMultiplicitySpaceValue
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariant
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AestronglyMeasurableCompRep
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvariantExtensionIntegrableOnCompact
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuous
+import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.ConjAtFixedIff
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormalStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSumIntegralCubeDerivativesStatement
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqSumIntegralCubeDerivatives
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EquivariantMultilinearMapsSmoothVectorsIntertwinStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsArchimedeanLiftUnitaryGroupProduct
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeMulSetIntegralImage2OfForallLeStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeMulSetIntegralImage2OfForallLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalSobolevInequalityAdelicUnitary
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocallyIntegrableRep
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralLeOfExpandingStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothAlongCurveProductsStableStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SetIntegralLeOfExpanding
+import Mathlib.Analysis.Calculus.ContDiff.Defs
+import Mathlib.Analysis.InnerProductSpace.Basic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothAlongCurveProductsStable
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVectorsSubspaceStableSobolevFormDerivStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdelicUnitaryHaarBiInvariantStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AestronglyMeasurableCompRep
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopologyStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvariantExtensionIntegrableOnCompact
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitaryPointsDiscreteFundamentalDomainStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuous
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RationalUnitaryPointsDiscreteFundamentalDomain
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SobolevIteratedOneParameterSubgroups
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
@@ -95,13 +102,13 @@ theorem exists_rep_bound [μ.IsMulRightInvariant]
       (∀ v, Sm ρ A e v → (∀ k ∈ H, ρ k v = v) → Continuous (R v) ∧ ι v =ᵐ[μ] R v) ∧
       ∀ x, ∃ c : ℝ, ∀ v,
         ‖R v x‖ ≤ c * (L.map fun l => ‖l.foldr (fun p w => deriv (fun r : ℝ => ρ (e p r) w) 0) v‖).sum := by
-  obtain ⟨J, _, κ, l, hκ, hT⟩ := GlobalTheory.T.eq_sum_integral_cube_derivatives_alt G K ρ hiso hρ s hs N (fun i => e (qs i)) fun i => he _ (hq i)
+  obtain ⟨J, _, κ, l, hκ, hT⟩ := _root_.GlobalTheory.CubeTaylor.eq_sum_integral_cube_derivatives G K ρ hiso hρ s hs N (fun i => e (qs i)) fun i => he _ (hq i)
   choose Λ hΛ using fun j => exists_eval hloc hlin hiso hρ htr hU hH hΘ
     (isCompact_univ_pi fun _ => isCompact_Icc) hΩ hC hM (hκ j)
   let d : P → K → K := fun p w => deriv (fun r : ℝ => ρ (e p r) w) 0
   let S : Set K := {v | Sm ρ A e v ∧ ∀ k ∈ H, ρ k v = v}
   have hS : ∀ v ∈ S, ∀ p ∈ A, d p v ∈ S := fun v hv p hp => by
-    refine ⟨(GlobalTheory.T.smooth_along_curve_products_stable_alt G K ρ P A e v hv.1).1 p hp, fun k hk => ?_⟩
+    refine ⟨(_root_.GlobalTheory.smooth_along_curve_products_stable G K ρ P A e v hv.1).1 p hp, fun k hk => ?_⟩
     have h1 := hv.1.hasDerivAt hp
     have h2 := ((ρ k).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 h1
     refine HasDerivAt.unique (f := fun r : ℝ => ρ (e p r) v) (x := 0) ?_ h1
@@ -157,9 +164,9 @@ theorem exists_transport (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] 
       (∀ g v, (fun x => I.ext (ρ g v) (T x)) =ᵐ[μ] fun x => I.ext v (T (x * g))) ∧
       (∀ γ, T γ ∈ I.GFset → ∀ v : I.L2 μf fund, (fun x => I.ext v (T (γ * x))) =ᵐ[μ] fun x => I.ext v (T x)) ∧
       ∀ g : ℕ, 1 ≤ g → ∃ U : Subgroup G, IsOpen (U : Set G) ∧ ∀ k ∈ U, (T k).2 ∈ I.Kg g := by
-  obtain ⟨hT2, hL, hS, -, -, -, hK⟩ := GlobalTheory.T.finiteAdelicUnitary_congruenceTopology I
-  obtain ⟨Γ, hΓ, hc, hfin, hfd⟩ := GlobalTheory.T.rationalUnitaryPoints_discrete_fundamentalDomain I
-  obtain ⟨hl, hrt, -⟩ := GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf
+  obtain ⟨hT2, hL, hS, -, -, -, hK⟩ := _root_.GlobalTheory.CongTop.adelic_topology I
+  obtain ⟨Γ, hΓ, hc, hfin, hfd⟩ := _root_.GlobalTheory.RatDiscrete.rational_points I
+  obtain ⟨hl, hrt, -⟩ := _root_.GlobalTheory.AdelicUnimod.adelic_unimodular I μf
   obtain ⟨r1, r2, r3, r4, r5⟩ := isRightReg_props I μf fund hfund R hR
   have hD := hfd μf fund hfund
   have : BorelSpace I.GA := inferInstance
@@ -262,7 +269,7 @@ theorem exists_adelic_rep {D : D7} {θ : InfFam D} {V : HSp D} (hθ : IsInfFam �
   obtain ⟨B, hB, hBW, hBc⟩ := local_compact_nhds hW
   have hc := fun i => GlobalTheory.SobLoc.oneP_spec hθ V (hH (τs i)).2 (hX i)
   have hΘ := GlobalTheory.continuous_prod_ofFn_curves N (fun i => oneP θ V (τs i) (Xs i)) fun i => (hc i).1
-  obtain ⟨C₁, hC₁, h₁⟩ := GlobalTheory.T.le_mul_setIntegral_image2_of_forall_le_alt (GA D V) μ N _ (Metric.closedBall 0 S) B (K ^ N) hΘ
+  obtain ⟨C₁, hC₁, h₁⟩ := _root_.GlobalTheory.le_mul_setIntegral_image2_of_forall_le (GA D V) μ N _ (Metric.closedBall 0 S) B (K ^ N) hΘ
     (isCompact_closedBall _ _) hBc hB (pow_nonneg hK _)
   have hΩ : IsCompact (Set.image2 (fun (t : Fin N → ℝ) b => (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * b)
       (Metric.closedBall 0 S) B) := by
@@ -279,7 +286,7 @@ theorem exists_adelic_rep {D : D7} {θ : InfFam D} {V : HSp D} (hθ : IsInfFam �
     hX hs hΘ hΩ hC₁
     (fun f hf hf0 hfk => h₁ f _ hf hf0 fun x hx => by
       obtain ⟨φ, a, haU, ha, hφ, hφ'⟩ := h x (hBW hx)
-      refine GlobalTheory.T.setIntegral_le_pow_mul_setIntegral_of_expanding N _ _ K φ (fun t => f (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)
+      refine _root_.GlobalTheory.setIntegral_le_of_expanding N _ _ K φ (fun t => f (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)
         (fun t => f ((List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * x))
         (isCompact_univ_pi fun _ => isCompact_Icc) (isCompact_closedBall _ _) hK
         (hf.comp hΘ) (hf.comp (hΘ.mul continuous_const)) (fun g => hf0 _) (fun g => hf0 _)

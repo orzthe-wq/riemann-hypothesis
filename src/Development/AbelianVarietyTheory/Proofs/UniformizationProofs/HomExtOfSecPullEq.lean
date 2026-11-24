@@ -108,13 +108,6 @@ theorem exists_sec_extend_pos {X : Scheme.{0}} [CompactSpace X] [QuasiSeparatedS
     rw [ht']
     ring
 
-private theorem gs_eq_stalkMap_gs_id_uniformization {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (hz : r z ∈ U) (b : Γ(X, U)) :
-    gs r z U b = (r.stalkMap z).hom (gs (𝟙 X) (r z) U b) := by
-  rw [gs_eq r z U hz, gs_eq (𝟙 X) (r z) U hz]
-  have e := congrArg (fun φ => φ.hom b) (r.germ_stalkMap U z hz)
-  simp only [CommRingCat.hom_comp, RingHom.comp_apply] at e
-  exact e.symm
-
 theorem gs_pull_extend {X Z : Scheme.{0}} {L : LB X} {N n m : ℕ} (s : H0 L N) (t : H0 L n) (a : Γ(X, nonzeroLocus s))
     (h : ∀ (x : X) (i : L.ι), x ∈ nonzeroLocus s → x ∈ L.U i →
       gs (𝟙 X) x _ (t.f fun _ => i) = gs (𝟙 X) x _ (s.f fun _ => i) ^ m * gs (𝟙 X) x _ a)
@@ -123,17 +116,17 @@ theorem gs_pull_extend {X Z : Scheme.{0}} {L : LB X} {N n m : ℕ} (s : H0 L N) 
   have hw : r z ∈ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => i) := (mem_wchart_oneTerm (0 : Fin 1)).2 hi
   have hwn : r z ∈ (L.LinComb (fun _ : Fin 1 => 𝟙 X) fun _ => (n : ℤ)).U (fun _ => i) := hw
   have hwN : r z ∈ (L.LinComb (fun _ : Fin 1 => 𝟙 X) fun _ => (N : ℤ)).U (fun _ => i) := hw
-  rw [gs_eq_stalkMap_gs_id_uniformization r z _ hwn, gs_eq_stalkMap_gs_id_uniformization r z _ hwN, gs_eq_stalkMap_gs_id_uniformization r z _ hz, h (r z) i hz hi, map_mul, map_pow]
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs_stalkMap r z _ hwn, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs_stalkMap r z _ hwN, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs_stalkMap r z _ hz, h (r z) i hz hi, map_mul, map_pow]
 
 private theorem isUnit_gs_of_mem_basicOpen' {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) {U : X.Opens} (b : Γ(X, U))
     (hb : r z ∈ X.basicOpen b) : IsUnit (gs r z U b) := by
   have hU : r z ∈ U := X.basicOpen_le b hb
-  rw [gs_eq_stalkMap_gs_id_uniformization r z U hU, gs_eq (𝟙 X) (r z) U hU]
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs_stalkMap r z U hU, gs_eq (𝟙 X) (r z) U hU]
   exact ((X.mem_basicOpen b (r z) hU).1 hb).map (r.stalkMap z).hom
 
 private theorem mem_basicOpen_of_isUnit_gs {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) {U : X.Opens} (b : Γ(X, U))
     (hU : r z ∈ U) (hb : IsUnit (gs r z U b)) : r z ∈ X.basicOpen b := by
-  rw [gs_eq_stalkMap_gs_id_uniformization r z U hU, gs_eq (𝟙 X) (r z) U hU] at hb
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs_stalkMap r z U hU, gs_eq (𝟙 X) (r z) U hU] at hb
   rw [X.mem_basicOpen b (r z) hU]
   exact (isUnit_map_iff (r.stalkMap z).hom _).1 hb
 
@@ -149,19 +142,13 @@ private theorem mem_nonzeroLocus_of_mem_basicOpen {X : Scheme.{0}} {L : LB X} {n
   unfold nonzeroLocus
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => j, hx⟩
 
-private theorem exists_mem_chart' {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (x : X) : ∃ j, x ∈ L.U j := by
-  have hx : x ∈ ⨆ i, L.U i := by
-    rw [hL.cover]
-    trivial
-  exact TopologicalSpace.Opens.mem_iSup.1 hx
-
 theorem hom_ext_of_sec_pull_eq : ∀ (X Z : Scheme.{0}) [CompactSpace X] [QuasiSeparatedSpace X] (L : LB X), L.IsLB → (∃ (N : ℕ) (_ : 1 ≤ N) (κ : Type) (s : κ → H0 L N), (⨆ i, nonzeroLocus (s i) = ⊤) ∧ ∀ i, IsAffineOpen (nonzeroLocus (s i))) → ∀ (f g : Z ⟶ X) (v : LB.Iso (L.pull f) (L.pull g)), v.IsGen → (∀ (n : ℕ), 1 ≤ n → ∀ (a : H0 L n) (z : Z) (j j' : L.ι), g z ∈ L.U j → f z ∈ L.U j' → Geo.Tor.gs g z _ (a.f (fun _ => j)) = (Geo.Tor.gw v (𝟙 Z) z j (fun _ => j') ^ n).val * Geo.Tor.gs f z _ (a.f (fun _ => j'))) → f = g := by
   intro X Z _ _ L hL hcov f g v _ hrel
   obtain ⟨N, hN, κ, s, hD, haff⟩ := hcov
   have fg : ∀ (n : ℕ), 1 ≤ n → ∀ (a : H0 L n) (z : Z), f z ∈ nonzeroLocus a → g z ∈ nonzeroLocus a := by
     intro n hn a z hz
     obtain ⟨j', hj'⟩ := exists_mem_basicOpen_of_mem_nonzeroLocus a hz
-    obtain ⟨j, hj⟩ := exists_mem_chart' hL (g z)
+    obtain ⟨j, hj⟩ := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hL (g z)
     have hf' : f z ∈ L.U j' := (mem_wchart_oneTerm (0 : Fin 1)).1 (X.basicOpen_le _ hj')
     have hgw : g z ∈ (L.LinComb (fun _ : Fin 1 => 𝟙 X) fun _ => (n : ℤ)).U (fun _ => j) :=
       (mem_wchart_oneTerm (0 : Fin 1)).2 hj
@@ -183,7 +170,7 @@ theorem hom_ext_of_sec_pull_eq : ∀ (X Z : Scheme.{0}) [CompactSpace X] [QuasiS
   have hgD : g z ∈ nonzeroLocus (s i) := fg N hN (s i) z hz
   obtain ⟨j, hb⟩ := exists_mem_basicOpen_of_mem_nonzeroLocus (s i) hgD
   have hgj : g z ∈ L.U j := (mem_wchart_oneTerm (0 : Fin 1)).1 (X.basicOpen_le _ hb)
-  obtain ⟨j', hfj'⟩ := exists_mem_chart' hL (f z)
+  obtain ⟨j', hfj'⟩ := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hL (f z)
   obtain ⟨m, t, hm, ht⟩ := exists_sec_extend_pos hL (s i) a
   have step_before_last_eq_s_succ := hrel N hN (s i) z j j' hgj hfj'
   have eq_t := hrel (N * m) (Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))) t z j j' hgj hfj'

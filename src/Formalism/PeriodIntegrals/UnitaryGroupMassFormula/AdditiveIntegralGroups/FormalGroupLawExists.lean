@@ -76,12 +76,6 @@ theorem subst_psubst {a : MvPowerSeries (Fin 2) ℂ_[p]} (ha : PowerSeries.HasSu
     MvPowerSeries.subst b (PowerSeries.subst a f) = PowerSeries.subst (MvPowerSeries.subst b a) f := by
   rw [PowerSeries.subst_def, PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply ha.const hb]
 
-theorem constantCoeff_flog' (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
-    PowerSeries.constantCoeff (flog W wq) = 0 := by
-  rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
-  unfold PI.AddIntG.flog
-  rw [PowerSeries.coeff_mk, if_pos rfl]
-
 theorem constantCoeff_Fch (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     MvPowerSeries.constantCoeff (Fch W wq) = 0 := by
   rw [Fch_eq]
@@ -115,7 +109,7 @@ theorem flog_Fch {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : 
     ← Fch_eq] at hB
   have h0 : bZ W wq 0 = 0 := by simp [bZ]
   have h1' : bZ W wq 1 = Z3 W wq := by simp [bZ]
-  rw [h0, h1', PowerSeries.subst_zero_of_constantCoeff_zero (constantCoeff_flog' W wq)] at hB
+  rw [h0, h1', PowerSeries.subst_zero_of_constantCoeff_zero (_root_.PI.AddIntG.Wk.abel_cc_flog W wq)] at hB
   linear_combination hB - hA
 
 theorem formalGroupLawExists : KeyF := by

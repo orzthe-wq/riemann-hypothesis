@@ -3,11 +3,19 @@ module
 public import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.SiegelFixedPoints.IsThBIff
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
 public import Mathlib.RingTheory.AdicCompletion.Noetherian
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisActionSiegelUnitInTowerStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SgC
+public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.RegularLocalRing.Defs
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisActionSiegelUnitInTower
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLogDerivQExpansionModPrimePowRescale
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerNeZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerSlActionRowVectorStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitIndexAddIntVectorStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerNeZero
+public import Development.AbelianVarietyTheory.Definitions.Foundations.Imports
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerSlActionRowVector
+import Development.AbelianVarietyTheory.Definitions.Foundations.CthFac
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitIndexAddIntVector
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -48,7 +56,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import Development.AbelianVarietyTheory.Definitions.Foundations.Imports
 
 @[expose] public section
 
@@ -117,7 +124,7 @@ private theorem siegel_per {ε : Ω →+* ℂ} (X : Tower Ω ε) {c : ℕ} {x y 
   have e : sgC c y = sgC c x := by
     funext z
     rw [hy]
-    exact GlobalTheory.T.smoothedSiegelUnit_index_add_intVector c x _ _ hx
+    exact _root_.GlobalTheory.Sieg.Per.sg_add_int c x _ _ hx
   unfold siegel
   rw [e]
 
@@ -127,30 +134,15 @@ private theorem isAdmissibleSmoothingFactor_add_intVector {c : ℕ} {x y : Fin 2
   · push_cast; rw [hu, h0]; ring
   · push_cast; rw [hv, h1]; ring
 
-private theorem admissible_act_SL2 {c : ℕ} {x : Fin 2 → ℚ} (hx : GlobalTheory.Sieg.admitted c x) (γ : SL(2, ℤ)) : GlobalTheory.Sieg.admitted c (act x γ) := by
-  have hd : en γ 0 0 * en γ 1 1 - en γ 0 1 * en γ 1 0 = 1 := by
-    have h := γ.det_coe
-    rwa [Matrix.det_fin_two] at h
-  have hq : (en γ 0 0 : ℚ) * en γ 1 1 - en γ 0 1 * en γ 1 0 = 1 := by exact_mod_cast hd
-  refine ⟨hx.1, hx.2.1, fun ⟨⟨u, hu⟩, ⟨v, hv⟩⟩ =>
-    hx.2.2 ⟨⟨u * en γ 1 1 - v * en γ 1 0, ?_⟩, ⟨v * en γ 0 0 - u * en γ 0 1, ?_⟩⟩⟩
-  all_goals
-    simp only [act, Fin.sum_univ_two] at hu hv
-    simp only [en] at hq ⊢
-    push_cast
-    rw [hu, hv]
-  · linear_combination (c * x 0) * hq
-  · linear_combination (c * x 1) * hq
-
 private theorem sl_dg_siegel [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) {c N : ℕ} (hN : 0 < N) {x y : Fin 2 → ℚ}
     (hx : GlobalTheory.Sieg.admitted c x) (γ : SL(2, ℤ)) (k : ℤ) (hk : en γ 1 0 = N * k) (p q : ℤ)
     (h0 : y 0 = x 0 * en γ 0 0 + x 1 * k + p) (h1 : y 1 = x 0 * (N * en γ 0 1) + x 1 * en γ 1 1 + q) :
     X.sl (ofSL γ) (X.sl (toGQ !![(N : ℤ), 0; 0, 1]) (siegel X c x)) = X.sl (toGQ !![(N : ℤ), 0; 0, 1]) (siegel X c y) := by
   obtain ⟨δ, h00, h01, h10, h11, e⟩ := exists_conj hN γ k hk
-  rw [← X.sl_mul, e, X.sl_mul, GlobalTheory.T.siegelUnitInTower_sl_action_rowVector Ω ε X c x δ hx]
+  rw [← X.sl_mul, e, X.sl_mul, _root_.GlobalTheory.KZ.SiegelSL.sl_siegel Ω ε X c x δ hx]
   congr 1
   simp only [en] at h00 h01 h10 h11 h0 h1
-  refine (siegel_per X (admissible_act_SL2 hx δ) p q ?_ ?_).symm
+  refine (siegel_per X (_root_.GlobalTheory.KZ.SiegelMem.admissible_act_SL2 hx δ) p q ?_ ?_).symm
   · simp only [act, Fin.sum_univ_two]; rw [h0, h00, h10]
   · simp only [act, Fin.sum_univ_two]; rw [h1, h01, h11]; push_cast; ring
 
@@ -181,7 +173,7 @@ private theorem gal_siegel_fix [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : To
     rw [Int.cast_neg]; field_simp; linear_combination -eb
   have hy := isAdmissibleSmoothingFactor_add_intVector hx _ _ f0 f1
   rw [← siegel_per X hx _ _ f0 f1]
-  have := GlobalTheory.T.galois_action_siegelUnitInTower Ω ε X c D a' b' 1 s hD hlt
+  have := _root_.GlobalTheory.KZ.gal_siegel Ω ε X c D a' b' 1 s hD hlt
     (by rw [Nat.cast_one]; exact hs _ (isPrimitiveRoot_eOm ε hD.ne').pow_eq_one) hy (by rwa [one_mul])
   rwa [one_mul] at this
 
@@ -215,7 +207,7 @@ private theorem sgN_mem [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω 
   · refine gal_dg X hN s (gal_siegel_fix X hD hx s fun z hz => (mem_fixMu_iff s).1 hs z ?_)
     obtain ⟨e, rfl⟩ := (Dvd.intro_left N rfl : D ∣ N * D).trans hM
     rw [pow_mul, hz, one_pow]
-  · exact (map_ne_zero _).2 (GlobalTheory.T.siegelUnitInTower_ne_zero Ω ε X c _ hx)
+  · exact (map_ne_zero _).2 (_root_.GlobalTheory.KZ.siegel_ne_zero Ω ε X c _ hx)
 
 end UpperTheory.Kd.L.AdmissibleUnits
 

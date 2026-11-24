@@ -61,11 +61,7 @@ private lemma resG_resG_divisors {Y : Scheme.{0}} {A B C : Y.Opens} (h₁ : A �
   rw [Functor.map_comp]
   rfl
 
-private lemma resG_self_moduli {Y : Scheme.{0}} {A : Y.Opens} (h : A ≤ A) (s : Γ(Y, A)) :
-    resG Y h s = s := by
-  change (Y.presheaf.map (𝟙 _)).hom s = s
-  rw [CategoryTheory.Functor.map_id]
-  rfl
+private alias resG_self_moduli := _root_.GlobalTheory.LB.resG_self
 
 private lemma rsT_eq_resG {Y : Scheme.{0}} {A B : Y.Opens} (s : Γ(Y, A)) (h : B ≤ A) :
     rsT s B = resG Y h s := by

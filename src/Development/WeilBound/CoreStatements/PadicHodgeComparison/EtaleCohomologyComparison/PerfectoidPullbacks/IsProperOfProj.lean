@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 
 @[expose] public section
 
@@ -57,28 +58,9 @@ namespace CrystallineSemistableComparison.Pb
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
-theorem isProper_str (R : Type) [CommRing R] (N : ℕ) : IsProper (PSpace.str R N) := by
-  have hb : Function.Bijective (algebraMap R ↥(MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 0)) := by
-    constructor
-    · intro a b h
-      exact MvPolynomial.C_injective (Fin (N + 1)) R (congrArg Subtype.val h)
-    · rintro ⟨x, hx⟩
-      exact ⟨AddMonoidAlgebra.coeff x 0, Subtype.ext
-        (MvPolynomial.totalDegree_eq_zero_iff_eq_C.1 ((MvPolynomial.totalDegree_zero_iff_isHomogeneous _).2 hx)).symm⟩
-  have : IsIso (spMap (algebraMap R ↥(MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 0))) := by
-    have : IsIso (CommRingCat.ofHom (algebraMap R ↥(MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 0))) :=
-      (ConcreteCategory.isIso_iff_bijective _).2 hb
-    infer_instance
-  have : IsScalarTower R ↥(MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 0) (MvPolynomial (Fin (N + 1)) R) :=
-    IsScalarTower.of_algebraMap_eq fun _ => rfl
-  have : Algebra.FiniteType ↥(MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 0) (MvPolynomial (Fin (N + 1)) R) :=
-    Algebra.FiniteType.of_restrictScalars_finiteType R _ _
-  unfold PSpace.str
-  infer_instance
-
 theorem isProper_of_proj {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R} (h : IsProjOver f) : IsProper f := by
   obtain ⟨N, i, hi, rfl⟩ := h
-  have := isProper_str R N
+  have := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R N
   infer_instance
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
@@ -93,22 +75,22 @@ theorem sm_smooth_q {M : Model l K} (h : M.Sm) : Smooth M.q :=
   have := h.2
   inferInstance
 
-def cupR (M : Model l K) (i j : ℕ) : HdR M.q i →ₗ[K] HdR M.q j →ₗ[K] HdR M.q (i + j) := (k_cup M.q i j).1.choose
+def cupR (M : Model l K) (i j : ℕ) : HdR M.q i →ₗ[K] HdR M.q j →ₗ[K] HdR M.q (i + j) := (_root_.GlobalTheory.CompanionTheory.CupdR.cup_bilinear_filtered M.q i j).1.choose
 
 theorem cupR_eq (M : Model l K) (i j : ℕ) (x : HdR M.q i) (y : HdR M.q j) : cupR M i j x y = cupK M.q rfl x y :=
-  (k_cup M.q i j).1.choose_spec x y
+  (_root_.GlobalTheory.CompanionTheory.CupdR.cup_bilinear_filtered M.q i j).1.choose_spec x y
 
 theorem cupR_fil (M : Model l K) (i j r s : ℕ) : ∀ x ∈ FilR M.q i r, ∀ y ∈ FilR M.q j s, cupR M i j x y ∈ FilR M.q (i + j) (r + s) :=
-  fun x hx y hy => cupR_eq M i j x y ▸ (k_cup M.q i j).2 r s x hx y hy
+  fun x hx y hy => cupR_eq M i j x y ▸ (_root_.GlobalTheory.CompanionTheory.CupdR.cup_bilinear_filtered M.q i j).2 r s x hx y hy
 
 theorem m_fin (M : Model l K) (h : M.Sm) (j : ℕ) : FiniteDimensional K (HdR M.q j) ∧ ∀ x ∈ FilR M.q j (j + 1), x = 0 :=
   have := sm_proper_q h
   have := sm_smooth_q h
-  k_fin M.q j
+  _root_.CrystallineSemistableComparison.Pb.k_fin_pf M.q j
 
 theorem m_top (M : Model l K) (h : M.Sm) (d : ℕ) (hd : M.Conn d) (j : ℕ) : ∀ x ∈ FilR M.q j (d + 1), x = 0 :=
   have := sm_proper_q h
   have := hd.2
-  k_top M.q d j
+  _root_.CrystallineSemistableComparison.Pb.k_top_pf M.q d j
 
 end CrystallineSemistableComparison.Pb

@@ -78,9 +78,9 @@ theorem dn_one_apply (f : (Fin 1 → G) → M) (v : Fin 2 → G) :
   have hs : (fun i : Fin 1 => v i.succ) = ![v 1] := by
     funext k; fin_cases k; rfl
   have h0 : (Fin.contractNth 0 (· * ·) v : Fin 1 → G) = ![v 0 * v 1] := by
-    funext k; fin_cases k; first | rfl | simp [Fin.contractNth]
+    funext k; fin_cases k; first | rfl
   have h1 : (Fin.contractNth 1 (· * ·) v : Fin 1 → G) = ![v 0] := by
-    funext k; fin_cases k; first | rfl | simp [Fin.contractNth]
+    funext k; fin_cases k; first | rfl
   show rho (v 0) (f fun i => v i.succ) + ∑ j : Fin 2, (-1 : R) ^ ((j : ℕ) + 1) •
     f (Fin.contractNth j (· * ·) v) = _
   rw [Fin.sum_univ_two, hs, h0, h1]
@@ -92,11 +92,11 @@ theorem dn_two_apply (f : (Fin 2 → G) → M) (v : Fin 3 → G) :
   have hs : (fun i : Fin 2 => v i.succ) = ![v 1, v 2] := by
     funext k; fin_cases k <;> rfl
   have h0 : (Fin.contractNth 0 (· * ·) v : Fin 2 → G) = ![v 0 * v 1, v 2] := by
-    funext k; fin_cases k <;> first | rfl | simp [Fin.contractNth]
+    funext k; fin_cases k <;> first | rfl
   have h1 : (Fin.contractNth 1 (· * ·) v : Fin 2 → G) = ![v 0, v 1 * v 2] := by
-    funext k; fin_cases k <;> first | rfl | simp [Fin.contractNth]
+    funext k; fin_cases k <;> first | rfl
   have h2 : (Fin.contractNth 2 (· * ·) v : Fin 2 → G) = ![v 0, v 1] := by
-    funext k; fin_cases k <;> first | rfl | simp [Fin.contractNth]
+    funext k; fin_cases k <;> first | rfl
   show rho (v 0) (f fun i => v i.succ) + ∑ j : Fin 3, (-1 : R) ^ ((j : ℕ) + 1) •
     f (Fin.contractNth j (· * ·) v) = _
   rw [Fin.sum_univ_three, hs, h0, h1, h2]
@@ -125,43 +125,26 @@ def zEquiv (n : ℕ) : M.coch.Z n ≃ₗ[R] Zn M.rho n where
 theorem map_zEquiv (n : ℕ) :
     ((M.coch.B n).comap (M.coch.Z n).subtype).map (zEquiv M n : M.coch.Z n →ₗ[R] Zn M.rho n) =
       (Bn M.rho n).comap (Zn M.rho n).subtype := by
-  ext z
-  constructor
-  · intro hz
-    obtain ⟨y, hy, rfl⟩ := Submodule.mem_map.1 hz
-    have hy' : ((y : M.coch.X n)) ∈ M.coch.B n := Submodule.mem_comap.1 hy
-    refine Submodule.mem_comap.2 ?_
-    show (y : M.coch.X n).1 ∈ Bn M.rho n
+  let inc (m : ℕ) : M.coch.X m →ₗ[R] ((Fin m → G) → M.V) := (Cn M.rho m).subtype
+  have hB : (M.coch.B n).map (inc n) = Bn M.rho n := by
     cases n with
     | zero =>
-      have h0 : (y : M.coch.X 0) = 0 :=
-        (Submodule.mem_bot R).1 (show (y : M.coch.X 0) ∈ (⊥ : Submodule R (M.coch.X 0)) from hy')
-      show (y : M.coch.X 0).1 ∈ (⊥ : Submodule R ((Fin 0 → G) → M.V))
-      rw [h0]
-      first | exact Submodule.zero_mem _ | simp
+      change (⊥ : Submodule R (M.coch.X 0)).map (inc 0) = ⊥
+      exact Submodule.map_bot _
     | succ k =>
-      obtain ⟨w, hw⟩ := LinearMap.mem_range.1
-        (show (y : M.coch.X (k + 1)) ∈ LinearMap.range (M.coch.d k) from hy')
-      show (y : M.coch.X (k + 1)).1 ∈ (Cn M.rho k).map (dn M.rho k)
-      refine Submodule.mem_map.2 ⟨w.1, w.2, ?_⟩
-      rw [← coch_d_val, hw]
-  · intro hz
-    have hz' : ((z : (Fin n → G) → M.V)) ∈ Bn M.rho n := Submodule.mem_comap.1 hz
-    refine Submodule.mem_map.2
-      ⟨(zEquiv M n).symm z, Submodule.mem_comap.2 ?_, (zEquiv M n).apply_symm_apply z⟩
-    show (((zEquiv M n).symm z : M.coch.Z n) : M.coch.X n) ∈ M.coch.B n
-    cases n with
-    | zero =>
-      have h0 : ((z : (Fin 0 → G) → M.V)) = 0 := (Submodule.mem_bot R).1
-        (show ((z : (Fin 0 → G) → M.V)) ∈ (⊥ : Submodule R ((Fin 0 → G) → M.V)) from hz')
-      show (((zEquiv M 0).symm z : M.coch.Z 0) : M.coch.X 0) ∈ (⊥ : Submodule R (M.coch.X 0))
-      exact (Submodule.mem_bot R).2 (Subtype.ext h0)
-    | succ k =>
-      obtain ⟨w, hw, e⟩ := Submodule.mem_map.1
-        (show ((z : (Fin (k + 1) → G) → M.V)) ∈ (Cn M.rho k).map (dn M.rho k) from hz')
-      show (((zEquiv M (k + 1)).symm z : M.coch.Z (k + 1)) : M.coch.X (k + 1)) ∈
-        LinearMap.range (M.coch.d k)
-      exact LinearMap.mem_range.2 ⟨⟨w, hw⟩, Subtype.ext ((coch_d_val M k ⟨w, hw⟩).trans e)⟩
+      have hd : (inc (k + 1)).comp (M.coch.d k) = (dn M.rho k).comp (inc k) := by
+        apply LinearMap.ext
+        intro x
+        exact coch_d_val M k x
+      change (LinearMap.range (M.coch.d k)).map (inc (k + 1)) =
+        (Cn M.rho k).map (dn M.rho k)
+      have hr : LinearMap.range (inc k) = Cn M.rho k := Submodule.range_subtype _
+      rw [← LinearMap.range_comp, hd, LinearMap.range_comp, hr]
+  have hc : M.coch.B n = (Bn M.rho n).comap (inc n) := by
+    have hi : Function.Injective (inc n) := Submodule.subtype_injective _
+    rw [← hB, Submodule.comap_map_eq_of_injective hi]
+  rw [Submodule.map_equiv_eq_comap_symm, hc]
+  rfl
 
 def hEquiv (n : ℕ) : M.H n ≃ₗ[R] Hn M.rho n :=
   Submodule.Quotient.equiv _ _ (zEquiv M n) (map_zEquiv M n)

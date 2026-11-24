@@ -49,4 +49,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 
 theorem _root_.GlobalTheory.T.uniformisation_endomorphism_character_map_constant : LL → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (aG : G ⟶ G), IsMonHom aG → ∃ h : D.toPre.X →+ D.toPre.X, ∀ e, ∃ t : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X ⟶ splitTorus _ D.toPre.X, TorusEndOf D.toPre.X h t ∧ (U.gt e).i ≫ (Over.pullback (thick R I e)).map aG = t ≫ (U.gt e).i := by
-  first | exact @GlobalTheory.unifPre_end_character_const | exact GlobalTheory.unifPre_end_character_const | (intros; apply GlobalTheory.unifPre_end_character_const <;> assumption)
+  first | exact @GlobalTheory.unifPre_end_character_const

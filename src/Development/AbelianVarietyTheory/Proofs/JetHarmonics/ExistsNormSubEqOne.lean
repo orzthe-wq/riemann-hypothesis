@@ -71,8 +71,7 @@ theorem _root_.GlobalTheory.SplitEmbSep.norm_le_one_of_isIntegral {C : Type*} [N
   push_neg at h
   rw [← Polynomial.aeval_def, hm.as_sum] at hp
 
-  simp only [map_add (f := _), map_pow, Polynomial.aeval_X, map_sum, map_mul, Polynomial.aeval_C,
-  algebraMap_int_eq, eq_intCast, map_intCast] at hp
+  simp only [map_add (f := _), map_pow, Polynomial.aeval_X, map_sum, map_mul, eq_intCast, map_intCast] at hp
   set n := p.natDegree
   rcases Nat.eq_zero_or_pos n with hn | hn
   · rw [hn] at hp

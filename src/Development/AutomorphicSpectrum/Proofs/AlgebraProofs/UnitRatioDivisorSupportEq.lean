@@ -95,7 +95,7 @@ theorem exists_monic_rel (y : (Σ k, ι k) → Ω) {f g : MRing ι} {d : K → �
     convert h1 using 1
     have hj' : j ≤ n := (Finset.mem_range.mp hj).le
     funext k
-    simp only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul, zero_add]
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, zero_add]
     rw [← add_mul, Nat.add_sub_cancel' hj']
   · have hsum : ∀ j ∈ Finset.range n,
         aeval y (C (p.coeff j) * f ^ j * g ^ (n - j)) =

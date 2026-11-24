@@ -86,7 +86,6 @@ theorem stImA_of (p : TypX X) (h : LevelReductionImage X hb p) : StImA X hb p :=
     have hr : A.map f = (f.comp A.subtype).range := by
       first
       | rw [MonoidHom.range_comp, Subgroup.range_subtype]
-      | rw [MonoidHom.range_comp, Subgroup.subtype_range]
     rw [hr]
     exact Nat.card_congr (QuotientGroup.quotientKerEquivRange (f.comp A.subtype)).toEquiv.symm
   have hk2 : (ρ.comp A.subtype).ker = (ρ₀.comp A.subtype).ker := by
@@ -96,8 +95,6 @@ theorem stImA_of (p : TypX X) (h : LevelReductionImage X hb p) : StImA X hb p :=
   haveI : Fact (gOf p).Prime := ⟨gOf_prime X p⟩
   first
   | exact card_nuG (ZMod (gOf p)) D.R.rS D.R.k
-  | (rw [card_nuG]; unfold nnC ukC; rfl)
-  | (rw [card_nuG]; unfold nnC ukC)
 
 theorem stImB_of (u : D.what₂.Word) (p : TypX X) (h : ParabolicReductionImage X u p) : StImB X u p := by
   obtain ⟨K₀, hK₀, ρ₀, hρ₀, hker₀, A, hA, hkA, c, hc⟩ := h
@@ -115,7 +112,6 @@ theorem stImB_of (u : D.what₂.Word) (p : TypX X) (h : ParabolicReductionImage 
     have hr : A.map f = (f.comp A.subtype).range := by
       first
       | rw [MonoidHom.range_comp, Subgroup.range_subtype]
-      | rw [MonoidHom.range_comp, Subgroup.subtype_range]
     rw [hr]
     exact Nat.card_congr (QuotientGroup.quotientKerEquivRange (f.comp A.subtype)).toEquiv.symm
   have hk2 : (ρ.comp A.subtype).ker = (ρ₀.comp A.subtype).ker := by
@@ -125,7 +121,5 @@ theorem stImB_of (u : D.what₂.Word) (p : TypX X) (h : ParabolicReductionImage 
   haveI : Fact (gOf p).Prime := ⟨gOf_prime X p⟩
   first
   | exact card_sG (ZMod (gOf p)) D.R.rS D.R.k
-  | (rw [card_sG]; unfold glkC nnC; rfl)
-  | (rw [card_sG]; unfold glkC nnC)
 
 end MassDataIdxSteps

@@ -146,7 +146,7 @@ theorem local_cong (ϖ : v.adicCompletion F) (k N : ℕ) (hϖ : Valued.v ϖ ≤ 
   · apply smul_right_injective _ hϖ0
     simp only
     rw [Units.val_mul, ← Matrix.smul_mul, hgi, hg', ha, hb]
-    simp only [add_mul, mul_add, Matrix.mul_smul, Matrix.smul_mul, smul_add, mul_assoc, haa', hDD', hbb, hbb']
+    simp only [add_mul, mul_add, Matrix.mul_smul, Matrix.smul_mul, smul_add, mul_assoc, haa', hDD', hbb]
     module
 end Loc
 
@@ -172,12 +172,6 @@ local notation3 "L⁺" => maximalRealSubfield L
 theorem proj_tmul_one (s : SplitPlace L) (c : L) : s.proj (c ⊗ₜ[L⁺] (1 : AFplus L)) = s.i c := by
   simp [SplitPlace.proj, Algebra.TensorProduct.lift_tmul]
 
-theorem mem_Umax_of_loc (s : SplitPlace L) (x : GA L n) (hx : TrivOutside {s.v} x)
-    (h1 : ∀ i j, Valued.v (((s.loc n x : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j) ≤ 1)
-    (h2 : ∀ i j, Valued.v (((s.loc n x⁻¹ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j) ≤ 1) :
-    x ∈ Umax L n := by
-  apply GlobalTheory.TSetFin.mem_Umax_of_loc <;> assumption
-
 theorem cong_of_loc (s : SplitPlace L) (N : ℕ) (hN : 0 < N) (κ : GAf L n) (hκ : TrivOutside {s.v} κ)
     (h1 : ∃ X : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺), IntM X ∧
       ((s.loc n κ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) = 1 + (N : s.v.adicCompletion L⁺) • X)
@@ -191,7 +185,7 @@ theorem cong_of_loc (s : SplitPlace L) (N : ℕ) (hN : 0 < N) (κ : GAf L n) (h�
     rw [eX]; exact IntM.one.add (hX.smul hNv)
   have iY : IntM ((s.loc n κ⁻¹ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) := by
     rw [eY]; exact IntM.one.add (hY.smul hNv)
-  refine ⟨mem_Umax_of_loc s κ hκ iX iY, fun i j => ?_⟩
+  refine ⟨_root_.GlobalTheory.TSetFin.mem_Umax_of_loc s κ hκ iX iY, fun i j => ?_⟩
   obtain ⟨e, he, he'⟩ := GlobalTheory.SplitSep.exists_sep L s
   have hN0 : (N : L) ≠ 0 := Nat.cast_ne_zero.2 hN.ne'
   have hconj : conjAL L ((κ.1 : Matrix (Fin n) (Fin n) (AL L)) i j) =

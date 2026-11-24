@@ -73,7 +73,7 @@ theorem classes_die_on_etale_cover : A5 := by
   swap
   · rintro V W g k ⟨y, hy⟩
     refine ⟨Sec.res k y, ?_⟩
-    rw [secMap_secRes_comm, hy, secRes_secRes]
+    rw [_root_.GlobalTheory.EtC.exactIff_map_res, hy, _root_.GlobalTheory.EtC.SchCls.res_comp]
   choose V g _ hg hmem y hy using hloc
   let f : (∐ V) ⟶ X := Sigma.desc g
   have hιf : ∀ i, Sigma.ι V i ≫ f = g i := fun i => Sigma.ι_desc g i

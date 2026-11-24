@@ -147,7 +147,7 @@ theorem dS_sum_pureA : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 :
           = arch1 F (t • (∑ k, X k * h.2 k) + t ^ 2 • (c * ∑ k, h.1 k * h.2 k)) := by
         rw [e0, mul_arch1', archPair, dotProduct_arch, ← adeleOfMixedSpaceComponent_add]
         congr 1
-        simp only [Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, mul_smul_comm, smul_mul_assoc, Finset.smul_sum,
+        simp only [Prod.smul_snd, Pi.smul_apply, mul_smul_comm, smul_mul_assoc, Finset.smul_sum,
           Finset.mul_sum, smul_smul, pow_two]
         rfl
       rw [e1, hℓ, map_add (f := _), map_smul, map_smul, smul_eq_mul, smul_eq_mul]
@@ -174,7 +174,7 @@ theorem dS_sum_pureA : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 :
   simp only [hL, ← hA]
   simp only [← hX, ← hY, ← hA, id, zero_smul, add_zero, one_smul, mul_zero, zero_mul, Complex.ofReal_zero, Complex.exp_zero,
     one_mul, Function.comp, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Complex.ofReal_add,
-    Complex.ofReal_mul, Complex.ofReal_one]
+    Complex.ofReal_mul]
   rw [Finset.mul_sum, ← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun i _ => ?_
   simp only [show ((0:ℝ) ^ (2 - 1)) = 0 by norm_num, Complex.ofReal_zero, mul_zero, zero_mul, add_zero]

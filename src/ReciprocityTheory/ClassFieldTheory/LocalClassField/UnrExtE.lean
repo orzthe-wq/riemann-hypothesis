@@ -1,46 +1,7 @@
 module
 
 public import ReciprocityTheory.ClassFieldTheory.LocalClassField.UnrDefs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.Padics.LocalField
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ClassFieldTheory.LocalClassField.NormSubEqOneOfPowEqOne
 public import ReciprocityTheory.ClassFieldTheory.LocalClassField.UnrExtB
 public import ReciprocityTheory.ClassFieldTheory.LocalClassField.UnrExtC
@@ -60,7 +21,7 @@ theorem exists_closest {M : IntermediateField ℚ_[p] (PadicAlgCl p)}
   have : ProperSpace M := FiniteDimensional.proper ℚ_[p] M
   have hc : IsCompact (Metric.closedBall (0 : M) ‖x‖) := isCompact_closedBall 0 ‖x‖
   have hcont : Continuous (fun m : M => ‖x - (m : PadicAlgCl p)‖) :=
-    (continuous_const.sub continuous_subtype_val).norm
+    (continuous_const.sub continuous_subtypeVal).norm
   have hne : (Metric.closedBall (0 : M) ‖x‖).Nonempty :=
     ⟨0, Metric.mem_closedBall_self (norm_nonneg x)⟩
   obtain ⟨m0, hm0, hmin⟩ := hc.exists_isMinOn hne hcont.continuousOn
@@ -79,7 +40,8 @@ theorem exists_closest {M : IntermediateField ℚ_[p] (PadicAlgCl p)}
     have e : m = x - (x - m) := by ring
     have h3 : ‖m‖ ≤ max ‖x‖ ‖x - m‖ := by
       conv_lhs => rw [e]
-      exact UnramifiedExtensions.norm_sub_le_max' _ _
+      rw [sub_eq_add_neg, ← norm_neg (x - m)]
+      exact IsUltrametricDist.norm_add_le_max _ _
     exact absurd (h3.trans (max_le le_rfl hlt.le)) (not_le.2 hmx)
 
 theorem le_of_resK_le_of_norm {M L : IntermediateField ℚ_[p] (PadicAlgCl p)}

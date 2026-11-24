@@ -165,7 +165,7 @@ theorem Jm_mul_Jm (R S : ℕ) : Jm R S * Jm R S = 1 := by
 
 theorem Jm_map_star (R S : ℕ) : (Jm R S).map star = Jm R S := by
   ext a b; rcases a with i | i <;> rcases b with j | j <;>
-    simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks, Matrix.one_apply] <;> split_ifs <;> simp
+    simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks, Matrix.one_apply]
 
 theorem Jm_conjTranspose (R S : ℕ) : (Jm R S)ᴴ = Jm R S := by
   ext a b; rcases a with i | i <;> rcases b with j | j <;>

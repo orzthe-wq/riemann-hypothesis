@@ -39,4 +39,4 @@ import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
-theorem GlobalTheory.Triple.IsGaloisTripleWithReduction.charpoly_frob : type_of% (@GlobalTheory.Triple.IsGaloisTripleWithReduction.charpoly_frob_of_isTriple) := @GlobalTheory.Triple.IsGaloisTripleWithReduction.charpoly_frob_of_isTriple
+alias GlobalTheory.Triple.IsGaloisTripleWithReduction.charpoly_frob := _root_.GlobalTheory.Triple.IsGaloisTripleWithReduction.charpoly_frob_of_isTriple

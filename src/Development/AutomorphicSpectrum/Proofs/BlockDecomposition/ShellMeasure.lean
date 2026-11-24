@@ -1,16 +1,14 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.LeviEmbMemNormalizerLower
+public import Formalism.SatakeDualWeyl.StatementF
+public import Development.AbelianVarietyTheory.Definitions.Divisors.LineOppositeParabolicUnitaryLeviSectionEq
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
-import Development.AbelianVarietyTheory.Definitions.Divisors.LineOppositeParabolicUnitaryLeviSectionEq
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCellUAbsorbUnip
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocCompactSecondCountable
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemWeylCellUnitaryGroupLongSimpleReflectionIff
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalWeylCellTranslate
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapLtSwapIffOfAddTwo
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusConjugationWeylCell
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasure
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasureTwo
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPoints
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -29,13 +27,9 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -43,7 +37,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -60,11 +53,412 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-import Mathlib.Topology.UniformSpace.Uniformizable
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasBoundedSumsOne
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GindikinKarpelevich
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Linter.HaveILetI
+import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
+import Mathlib.Tactic.ENatToNat
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPoints
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.Topology.UniformSpace.Uniformizable
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCellUAbsorbUnip, Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasure, Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasureTwo, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShellMeasure
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCellUAbsorbUnip =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCellUAbsorbUnip", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.LeviEmbMemNormalizerLower\npublic import Formalism.SatakeDualWeyl.StatementF\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.LineOppositeParabolicUnitaryLeviSectionEq\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasBoundedSumsOne\nimport Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GindikinKarpelevich\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell Formalism.UG GlobalTheory.WeylCell.WeylUnipotentShell
+
+noncomputable section
+
+namespace GlobalTheory.WeylCell.WeylUnipotentShell
+
+section BlockKeep
+
+variable {R : Type} [CommRing R] {n : ℕ}
+
+def blockKeep (a b : Fin n) (A : Matrix (Fin n) (Fin n) R) : Matrix (Fin n) (Fin n) R :=
+  fun i j => if (a ≤ i ∧ i ≤ b) ∧ (a ≤ j ∧ j ≤ b) then A i j else (1 : Matrix (Fin n) (Fin n) R) i j
+
+theorem blockKeep_one (a b : Fin n) : blockKeep a b (1 : Matrix (Fin n) (Fin n) R) = 1 := by
+  ext i j; unfold blockKeep; split_ifs <;> rfl
+
+theorem blockKeep_mul (a b : Fin n) (A B : Matrix (Fin n) (Fin n) R) (hA : ∀ i j, j < i → A i j = 0)
+    (hB : ∀ i j, j < i → B i j = 0) : blockKeep a b (A * B) = blockKeep a b A * blockKeep a b B := by
+  ext i j
+  by_cases hi : a ≤ i ∧ i ≤ b
+  · by_cases hj : a ≤ j ∧ j ≤ b
+    · simp only [blockKeep, Matrix.mul_apply, if_pos (And.intro hi hj)]
+      refine Finset.sum_congr rfl fun k _ => ?_
+      by_cases hk : a ≤ k ∧ k ≤ b
+      · rw [if_pos ⟨hi, hk⟩, if_pos ⟨hk, hj⟩]
+      · rw [if_neg (fun h => hk h.2), Matrix.one_apply_ne (by rintro rfl; exact hk hi), zero_mul]
+        rcases not_and_or.1 hk with h | h
+        · rw [hA i k (lt_of_lt_of_le (not_le.1 h) hi.1), zero_mul]
+        · rw [hB k j (lt_of_le_of_lt hj.2 (not_le.1 h)), mul_zero]
+    · have hcol : ∀ k, blockKeep a b B k j = (1 : Matrix (Fin n) (Fin n) R) k j := fun k => if_neg (fun h => hj h.2)
+      rw [Matrix.mul_apply]
+      simp only [hcol, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+      simp only [blockKeep, hi, hj, and_false, if_false, true_and, Matrix.one_apply]
+  · have hrow : ∀ k, blockKeep a b A i k = (1 : Matrix (Fin n) (Fin n) R) i k := fun k => if_neg (fun h => hi h.1)
+    rw [Matrix.mul_apply]
+    simp only [hrow, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    simp only [blockKeep, hi, false_and, if_false, Matrix.one_apply]
+
+end BlockKeep
+
+section Keep
+
+variable {L : Type} [Field L] {n : ℕ}
+
+def blockKeepGL (a b : Fin n) (g : GL (Fin n) L) (hg : g ∈ unipB L (Fin n)) : GL (Fin n) L where
+  val := blockKeep a b (g : Matrix (Fin n) (Fin n) L)
+  inv := blockKeep a b ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)
+  val_inv := by
+    rw [← blockKeep_mul a b _ _ ((mem_unipB L).1 hg).1 ((mem_unipB L).1 (inv_mem hg)).1, ← Units.val_mul,
+      mul_inv_cancel, Units.val_one, blockKeep_one]
+  inv_val := by
+    rw [← blockKeep_mul a b _ _ ((mem_unipB L).1 (inv_mem hg)).1 ((mem_unipB L).1 hg).1, ← Units.val_mul,
+      inv_mul_cancel, Units.val_one, blockKeep_one]
+
+theorem blockKeepGL_mem_GU [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} (a : Fin n) (g : GL (Fin n) L)
+    (hg : g ∈ unipB L (Fin n)) (hG : g ∈ GU σ n) : blockKeepGL a a.rev g hg ∈ GU σ n := by
+  rw [LGrp.mem_GU_iff] at hG ⊢
+  intro i j
+  show blockKeep a a.rev ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j =
+    σ (blockKeep a a.rev (g : Matrix (Fin n) (Fin n) L) j.rev i.rev)
+  have key : ∀ i : Fin n, (a ≤ i.rev ∧ i.rev ≤ a.rev) ↔ (a ≤ i ∧ i ≤ a.rev) := by
+    intro i
+    have := i.isLt
+    have := a.isLt
+    simp only [Fin.le_iff_val_le_val, Fin.val_rev]
+    omega
+  unfold blockKeep
+  simp only [key]
+  by_cases h : (a ≤ i ∧ i ≤ a.rev) ∧ (a ≤ j ∧ j ≤ a.rev)
+  · rw [if_pos h, if_pos h.symm, hG]
+  · rw [if_neg h, if_neg (fun h' => h h'.symm), Matrix.one_apply, Matrix.one_apply, apply_ite σ, map_one, map_zero]
+    simp only [Fin.rev_inj, eq_comm (a := j)]
+
+theorem blockKeep_eq_self (a b : Fin n) (A : Matrix (Fin n) (Fin n) L) (h1 : ∀ i j, j < i → A i j = 0)
+    (h2 : ∀ i, A i i = 1) (h3 : ∀ i j, i < j → (i < a ∨ b < j) → A i j = 0) : blockKeep a b A = A := by
+  ext i j
+  unfold blockKeep
+  split_ifs with h
+  · rfl
+  · rcases lt_trichotomy i j with hij | rfl | hij
+    · rw [Matrix.one_apply_ne hij.ne, h3 i j hij]
+      by_contra hc
+      rw [not_or, not_lt, not_lt] at hc
+      exact h ⟨⟨hc.1, hij.le.trans hc.2⟩, hc.1.trans hij.le, hc.2⟩
+    · rw [Matrix.one_apply_eq, h2]
+    · rw [Matrix.one_apply_ne hij.ne', h1 i j hij]
+
+end Keep
+
+end GlobalTheory.WeylCell.WeylUnipotentShell
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCellUAbsorbUnip =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasure =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasure", "h": "module\n\npublic import Formalism.SatakeDualWeyl.StatementF\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace\nimport Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.LeviEmbMemNormalizerLower\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasBoundedSumsOne\nimport Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GindikinKarpelevich\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell Formalism.UG
+
+noncomputable section
+
+namespace GlobalTheory.ShellU
+
+section Balls
+
+variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
+
+def ball (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (j : ℤ) : AddSubgroup L where
+  carrier := {b | Valued.v b ≤ WithZero.exp j}
+  zero_mem' := by simp
+  add_mem' := fun {a b} ha hb => by
+    show Valued.v (a + b) ≤ _
+    exact (Valuation.map_add _ a b).trans (max_le ha hb)
+  neg_mem' := fun {a} ha => by
+    show Valued.v (-a) ≤ _
+    rwa [Valuation.map_neg]
+
+def antiBall (σ : L →+* L) (j : ℤ) : AddSubgroup L where
+  carrier := {b | σ b = -b ∧ Valued.v b ≤ WithZero.exp j}
+  zero_mem' := ⟨by simp, by simp⟩
+  add_mem' := by
+    rintro a b ⟨ha, ha'⟩ ⟨hb, hb'⟩
+    refine ⟨by rw [map_add (f := _), ha, hb, neg_add], (Valuation.map_add _ a b).trans (max_le ha' hb')⟩
+  neg_mem' := by
+    rintro a ⟨ha, ha'⟩
+    exact ⟨by rw [map_neg, ha], by rwa [Valuation.map_neg]⟩
+
+def fixBall (σ : L →+* L) (j : ℤ) : AddSubgroup L where
+  carrier := {f | σ f = f ∧ Valued.v f ≤ WithZero.exp j}
+  zero_mem' := ⟨by simp, by simp⟩
+  add_mem' := by
+    rintro a b ⟨ha, ha'⟩ ⟨hb, hb'⟩
+    refine ⟨by rw [map_add (f := _), ha, hb], (Valuation.map_add _ a b).trans (max_le ha' hb')⟩
+  neg_mem' := by
+    rintro a ⟨ha, ha'⟩
+    exact ⟨by rw [map_neg, ha], by rwa [Valuation.map_neg]⟩
+
+theorem mem_ball {j : ℤ} {b : L} : b ∈ ball L j ↔ Valued.v b ≤ WithZero.exp j := Iff.rfl
+
+theorem mem_antiBall {σ : L →+* L} {j : ℤ} {b : L} :
+    b ∈ antiBall σ j ↔ σ b = -b ∧ Valued.v b ≤ WithZero.exp j := Iff.rfl
+
+theorem mem_fixBall {σ : L →+* L} {j : ℤ} {f : L} :
+    f ∈ fixBall σ j ↔ σ f = f ∧ Valued.v f ≤ WithZero.exp j := Iff.rfl
+
+
+omit [Valued L (WithZero (Multiplicative ℤ))] in
+theorem relIndex_eq_of_mul {c : L} (hc : c ≠ 0) {A B A' B' : AddSubgroup L}
+    (hA : ∀ x, x ∈ A ↔ c * x ∈ A') (hB : ∀ x, x ∈ B ↔ c * x ∈ B') : A.relIndex B = A'.relIndex B' := by
+  have e1 : A = A'.comap (AddMonoidHom.mulLeft c) := AddSubgroup.ext hA
+  have e2 : B = B'.comap (AddMonoidHom.mulLeft c) := AddSubgroup.ext hB
+  rw [e1, AddSubgroup.relIndex_comap, e2, AddSubgroup.map_comap_eq_self_of_surjective]
+  intro y
+  exact ⟨c⁻¹ * y, mul_inv_cancel_left₀ hc y⟩
+
+theorem le_exp_neg_one_of_lt_one {y : WithZero (Multiplicative ℤ)} (h : y < 1) : y ≤ WithZero.exp (-1 : ℤ) := by
+  induction y using WithZero.recZeroCoe with
+  | zero => exact zero_le'
+  | coe a =>
+    rw [← WithZero.coe_one, WithZero.coe_lt_coe] at h
+    show (a : WithZero (Multiplicative ℤ)) ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))
+    rw [WithZero.coe_le_coe]
+    have h' : Multiplicative.toAdd a < 0 := h
+    show Multiplicative.toAdd a ≤ -1
+    omega
+
+theorem relIndex_ball {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) :
+    (ball L (-1)).relIndex (ball L 0) = q ^ 2 := by
+  obtain ⟨-, -, -, -, -, -, hcard⟩ := hU
+  set v := (Valued.v : Valuation L (WithZero (Multiplicative ℤ))) with hv
+  let f : v.valuationSubring →+ L := v.valuationSubring.subtype.toAddMonoidHom
+  have e1 : (IsLocalRing.maximalIdeal v.valuationSubring).toAddSubgroup = (ball L (-1)).comap f := by
+    ext x
+    show x ∈ IsLocalRing.maximalIdeal v.valuationSubring ↔ v (x : L) ≤ WithZero.exp (-1 : ℤ)
+    rw [Valuation.mem_maximalIdeal_iff]
+    refine ⟨le_exp_neg_one_of_lt_one, fun h => h.trans_lt ?_⟩
+    rw [← WithZero.exp_zero, WithZero.exp_lt_exp]
+    norm_num
+  have e2 : (⊤ : AddSubgroup v.valuationSubring).map f = ball L 0 := by
+    ext x
+    rw [mem_ball, WithZero.exp_zero]
+    constructor
+    · rintro ⟨y, -, rfl⟩
+      exact (Valuation.mem_valuationSubring_iff _ _).1 y.2
+    · intro h
+      exact ⟨⟨x, (Valuation.mem_valuationSubring_iff _ _).2 h⟩, trivial, rfl⟩
+  rw [← e2, ← AddSubgroup.relIndex_comap, ← e1, AddSubgroup.relIndex_top_right, AddSubgroup.index_eq_card]
+  exact hcard
+
+theorem relIndex_anti_eq_fix {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (j : ℤ) :
+    (antiBall σ j).relIndex (antiBall σ (j + 1)) = (fixBall σ (-1)).relIndex (fixBall σ 0) := by
+  obtain ⟨hσ, -, hϖ, hv, ⟨x, -, hx⟩, -, -⟩ := hU
+  have hv' : Valued.v ϖ = WithZero.exp (-1 : ℤ) := hv
+  set δ := σ x - x with hδ
+  have hσδ : σ δ = -δ := by rw [hδ, map_sub, hσ]; ring
+  have hδ0 : δ ≠ 0 := fun h => by rw [h, map_zero] at hx; exact zero_ne_one hx
+  have hϖ0 : ϖ ≠ 0 := fun h => by rw [h, map_zero] at hv'; exact WithZero.exp_ne_zero hv'.symm
+  have hc : δ * ϖ ^ (j + 1) ≠ 0 := mul_ne_zero hδ0 (zpow_ne_zero _ hϖ0)
+  have key : ∀ (i : ℤ) (z : L), z ∈ antiBall σ (i + (j + 1)) ↔ δ * ϖ ^ (j + 1) * z ∈ fixBall σ i := by
+    intro i z
+    rw [mem_antiBall, mem_fixBall]
+    refine and_congr ?_ ?_
+    · rw [map_mul, map_mul, map_zpow₀, hϖ, hσδ]
+      constructor
+      · intro h; rw [h]; ring
+      · intro h
+        apply mul_left_cancel₀ hc
+        linear_combination -h
+    · rw [map_mul, map_mul, map_zpow₀, hx, hv', one_mul, ← WithZero.exp_zsmul, WithZero.exp_add,
+        smul_eq_mul, mul_neg, mul_one, WithZero.exp_neg, inv_mul_le_iff₀ WithZero.exp_pos, mul_comm]
+  refine relIndex_eq_of_mul hc (fun z => ?_) (fun z => ?_)
+  · rw [← key]; congr! 2; ring
+  · rw [← key]; congr! 2; ring
+
+theorem relIndex_antiBall {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q) (j : ℤ) :
+    (antiBall σ j).relIndex (antiBall σ (j + 1)) = q := by
+  have h0 := relIndex_ball hU
+  have h1 := relIndex_anti_eq_fix hU (-1)
+  rw [relIndex_anti_eq_fix hU j]
+  obtain ⟨hσ, hvσ, -, -, ⟨x, hxO, hx⟩, -, -⟩ := hU
+  set δ := σ x - x with hδ
+  have hσδ : σ δ = -δ := by rw [hδ, map_sub, hσ]; ring
+  have hδ0 : δ ≠ 0 := fun h => by rw [h, map_zero] at hx; exact zero_ne_one hx
+  set e := -x / δ with he
+  have he1 : e + σ e = 1 := by
+    rw [he, map_div₀, map_neg, hσδ]; field_simp; rw [hδ]; ring
+  have hve : Valued.v e ≤ 1 := by
+    rw [he, map_div₀, hx, div_one, Valuation.map_neg]
+    exact (Valuation.mem_integer_iff _ _).1 hxO
+  let t : L →+ L := AddMonoidHom.id L - σ.toAddMonoidHom
+  have ht : ∀ z, t z = z - σ z := fun z => rfl
+  have hte : ∀ b, σ b = -b → t (e * b) = b := fun b hb => by
+    rw [ht, map_mul, hb]; linear_combination b * he1
+  have hσt : ∀ z, σ (t z) = -t z := fun z => by rw [ht, map_sub, hσ]; ring
+  have hvt : ∀ z i, Valued.v z ≤ WithZero.exp i → Valued.v (t z) ≤ WithZero.exp (i : ℤ) := fun z i h =>
+    (Valuation.map_sub _ _ _).trans (max_le h ((hvσ z).le.trans h))
+  have hve' : ∀ z i, Valued.v z ≤ WithZero.exp i → Valued.v (e * z) ≤ WithZero.exp (i : ℤ) := fun z i h => by
+    rw [map_mul]; exact (mul_le_mul' hve h).trans (one_mul _).le
+  have hle : WithZero.exp (-1 : ℤ) ≤ WithZero.exp (0 : ℤ) := WithZero.exp_le_exp.2 (by norm_num)
+  have a1 : (ball L 0).map t = antiBall σ 0 := by
+    ext b
+    constructor
+    · rintro ⟨z, hz, rfl⟩
+      exact ⟨hσt z, hvt z 0 hz⟩
+    · rintro ⟨hb, hb'⟩
+      exact ⟨e * b, hve' b 0 hb', hte b hb⟩
+  have a2 : (antiBall σ (-1)).comap t ⊓ ball L 0 = fixBall σ 0 ⊔ ball L (-1) := by
+    apply le_antisymm
+    · rintro z ⟨⟨-, hz⟩, hz'⟩
+      refine AddSubgroup.mem_sup.2 ⟨z - e * t z, ⟨?_, ?_⟩, e * t z, hve' _ _ hz, by ring⟩
+      · have : t (z - e * t z) = 0 := by rw [map_sub, hte _ (hσt z), sub_self]
+        rw [ht] at this
+        exact (sub_eq_zero.1 this).symm
+      · exact (Valuation.map_sub _ _ _).trans (max_le hz' ((hve' _ _ hz).trans hle))
+    · refine sup_le (fun z hz => ⟨⟨hσt z, ?_⟩, hz.2⟩) (fun z hz => ⟨⟨hσt z, hvt z _ hz⟩, le_trans hz hle⟩)
+      rw [ht, hz.1, sub_self, map_zero]; exact zero_le'
+  have a3 : ball L (-1) ⊓ fixBall σ 0 = fixBall σ (-1) :=
+    le_antisymm (fun z hz => ⟨hz.2.1, hz.1⟩) (fun z hz => ⟨hz.2, hz.1, hz.2.trans hle⟩)
+  have b1 : (fixBall σ 0 ⊔ ball L (-1)).relIndex (ball L 0) = (fixBall σ (-1)).relIndex (fixBall σ 0) := by
+    rw [← a2, AddSubgroup.inf_relIndex_right, AddSubgroup.relIndex_comap, a1, ← h1]; norm_num
+  have b2 : (ball L (-1)).relIndex (fixBall σ 0 ⊔ ball L (-1)) = (fixBall σ (-1)).relIndex (fixBall σ 0) := by
+    rw [AddSubgroup.relIndex_sup_right, ← a3, AddSubgroup.inf_relIndex_right]
+  have b3 := AddSubgroup.relIndex_mul_relIndex (ball L (-1)) (fixBall σ 0 ⊔ ball L (-1)) (ball L 0) le_sup_right
+    (by rw [← a2]; exact inf_le_right)
+  rw [b1, b2, h0, ← sq] at b3
+  exact Nat.pow_left_injective two_ne_zero b3
+
+end Balls
+
+theorem measure_eq_relIndex_mul {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+    [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant]
+    (H K : Subgroup G) (hH : MeasurableSet (H : Set G)) (hK : MeasurableSet (K : Set G)) (hle : H ≤ K)
+    (hi : H.relIndex K ≠ 0) : μ K = (H.relIndex K : ENNReal) * μ H := by
+  have hemb : MeasurableEmbedding (K.subtype : K → G) := MeasurableEmbedding.subtype_coe hK
+  haveI : (μ.comap (K.subtype : K → G)).IsMulLeftInvariant := Measure.IsMulLeftInvariant.comap μ hemb
+  haveI : (H.subgroupOf K).FiniteIndex := ⟨hi⟩
+  have key := (H.subgroupOf K).index_mul_measure (hemb.measurable hH) (μ.comap (K.subtype : K → G))
+  rw [hemb.comap_apply, hemb.comap_apply] at key
+  have e1 : (K.subtype : K → G) '' Set.univ = (K : Set G) := by
+    ext x; simp
+  have e2 : (K.subtype : K → G) '' ((H.subgroupOf K : Subgroup K) : Set K) = (H : Set G) := by
+    ext x
+    constructor
+    · rintro ⟨y, hy, rfl⟩
+      exact hy
+    · intro hx
+      exact ⟨⟨x, hle hx⟩, hx, rfl⟩
+  rw [e1, e2] at key
+  exact key.symm
+
+theorem measure_chain {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
+    [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] (H : ℤ → Subgroup G) {q : ℕ} (hq : q ≠ 0)
+    (hm : ∀ j, MeasurableSet (H j : Set G)) (hle : ∀ j, H j ≤ H (j + 1))
+    (hi : ∀ j, (H j).relIndex (H (j + 1)) = q) (h0 : μ (H 0) = 1) (j : ℤ) : μ (H j) = (q : ENNReal) ^ j := by
+  have hq0 : (q : ENNReal) ≠ 0 := Nat.cast_ne_zero.2 hq
+  have hqt : (q : ENNReal) ≠ ⊤ := ENNReal.natCast_ne_top q
+  have step : ∀ j, μ (H (j + 1)) = q * μ (H j) := fun j => by
+    rw [measure_eq_relIndex_mul μ (H j) (H (j + 1)) (hm _) (hm _) (hle j) (by rw [hi]; exact hq), hi]
+  induction j using Int.induction_on with
+  | zero => rw [h0, zpow_zero]
+  | succ i ih => rw [step, ih, ENNReal.zpow_add hq0 hqt, zpow_one, mul_comm]
+  | pred i ih =>
+    have h := step (-(i : ℤ) - 1)
+    rw [sub_add_cancel, ih] at h
+    apply (ENNReal.mul_right_inj hq0 hqt).1
+    rw [← h]
+    conv_lhs => rw [show -(i : ℤ) = 1 + (-(i : ℤ) - 1) by ring, ENNReal.zpow_add hq0 hqt, zpow_one]
+
+theorem isOpen_ball {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {ϖ : L}
+    (hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (j : ℤ) : IsOpen {x : L | Valued.v x ≤ WithZero.exp j} := by
+  have e : {x : L | Valued.v x ≤ WithZero.exp j} = (fun x => ϖ ^ j * x) ⁻¹' (intL L : Set L) := by
+    ext x
+    show _ ↔ Valued.v (ϖ ^ j * x) ≤ 1
+    rw [map_mul, map_zpow₀, hv, ← WithZero.exp_zsmul, smul_eq_mul, mul_neg, mul_one, WithZero.exp_neg,
+      inv_mul_le_iff₀ WithZero.exp_pos, mul_one]
+    rfl
+  rw [e]
+  exact (Valued.isOpen_integer L).preimage (continuous_const.mul continuous_id)
+
+end GlobalTheory.ShellU
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasure =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasureTwo =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasureTwo", "h": "module\n\npublic import Formalism.SatakeDualWeyl.StatementF\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.LineOppositeParabolicUnitaryLeviSectionEq\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasBoundedSumsOne\nimport Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.GindikinKarpelevich\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell Formalism.UG
+open scoped NNReal ENNReal
+
+noncomputable section
+
+namespace GlobalTheory
+
+namespace GKConjScale
+
+variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
+
+theorem v_eq_ofAdd_ordL {x : L} (hx : x ≠ 0) :
+    Valued.v x = ((Multiplicative.ofAdd (-ordL x) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
+  have h : Valued.v x ≠ 0 := by simpa using hx
+  unfold ordL
+  rw [dite_eq_right h, neg_neg, ofAdd_toAdd, WithZero.coe_unzero]
+
+theorem coe_mul_le_iff (g h : Multiplicative ℤ) (x : WithZero (Multiplicative ℤ)) :
+    (g : WithZero (Multiplicative ℤ)) * x ≤ h ↔ x ≤ ((g⁻¹ * h : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
+  constructor
+  · intro H
+    calc x = ((g⁻¹ : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) * (g * x) := by
+          rw [← mul_assoc, ← WithZero.coe_mul, inv_mul_cancel, WithZero.coe_one, one_mul]
+      _ ≤ ((g⁻¹ : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) * h := by gcongr
+      _ = _ := by rw [WithZero.coe_mul]
+  · intro H
+    calc (g : WithZero (Multiplicative ℤ)) * x ≤ g * ((g⁻¹ * h : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) :=
+          by gcongr
+      _ = h := by rw [WithZero.coe_mul, ← mul_assoc, ← WithZero.coe_mul, mul_inv_cancel, WithZero.coe_one, one_mul]
+
+variable {n : ℕ}
+
+theorem inv_offdiag {σ : L →+* L} (t : GU σ n)
+    (ht : ∀ i j, i ≠ j → ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0) (i j : Fin n) (hij : i ≠ j) :
+    (((t⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0 := by
+  rw [Subgroup.coe_inv, (GlobalTheory.LGrp.mem_GU_iff σ n _).1 t.2 i j,
+    ht _ _ (fun h => hij (Fin.rev_injective h).symm), map_zero]
+
+
+end GKConjScale
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasureTwo =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShellMeasure =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShellMeasure", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU\nimport Development.AbelianVarietyTheory.Definitions.Divisors.LineOppositeParabolicUnitaryLeviSectionEq\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCellUAbsorbUnip\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocCompactSecondCountable\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemWeylCellUnitaryGroupLongSimpleReflectionIff\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SphericalWeylCellTranslate\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapLtSwapIffOfAddTwo\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusConjugationWeylCell\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasure\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeylCellStabilizerMeasureTwo\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPoints\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Mathlib.Topology.UniformSpace.Uniformizable\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemShellUIffDepth\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasBoundedSumsOne\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell Formalism.UG GlobalTheory.WeylCell.WeylUnipotentShell
@@ -556,3 +950,6 @@ theorem shiftOdd : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative 
 end GlobalTheory.CompanionTheory.InvStep
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ShellMeasure =====

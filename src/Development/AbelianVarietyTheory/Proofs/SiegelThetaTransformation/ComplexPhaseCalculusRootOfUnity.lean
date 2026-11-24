@@ -51,24 +51,12 @@ open scoped ComplexConjugate Real
 
 namespace GlobalTheory.Phase.Calc
 
-theorem ph_mul {a b : ℂ} (ha : Ph a) (hb : Ph b) : Ph (a * b) := by
-  obtain ⟨m, hm, ha⟩ := ha
-  obtain ⟨n, hn, hb⟩ := hb
-  refine ⟨m * n, Nat.mul_pos hm hn, ?_⟩
-  rw [norm_mul, Complex.ofReal_mul, mul_pow, mul_pow, pow_mul a, ha, ← pow_mul, mul_comm m n,
-    pow_mul b, hb, ← pow_mul]
-
-theorem ph_inv {a : ℂ} (ha : Ph a) : Ph a⁻¹ := by
-  obtain ⟨m, hm, ha⟩ := ha
-  refine ⟨m, hm, ?_⟩
-  rw [inv_pow, ha, norm_inv, Complex.ofReal_inv, inv_pow]
-
 theorem isMu_of_ph {a : ℂ} (ha : Ph a) (h : ‖a‖ = 1) : IsMu a := by
   obtain ⟨m, hm, ha⟩ := ha
   exact ⟨m, hm, by rw [ha, h]; simp⟩
 
 theorem ph_cancel {a b : ℂ} (hb0 : b ≠ 0) (hb : Ph b) (hab : Ph (a * b)) : Ph a := by
-  have h := ph_mul hab (ph_inv hb)
+  have h := _root_.GlobalTheory.Phase.Ph.mul hab (_root_.GlobalTheory.Phase.Ph.inv hb)
   rwa [mul_assoc, mul_inv_cancel₀ hb0, mul_one] at h
 
 

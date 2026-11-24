@@ -58,4 +58,4 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 theorem _root_.GlobalTheory.T.standardAdelicAddChar_nontrivial_finitePlace : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →
     ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl (F := F), ∃ t, GlobalTheory.LatVac.psiAt ψ w t ≠ 1 := by
-  first | exact @GlobalTheory.PsiNontrivAt.exists_psiAt_ne_one | exact GlobalTheory.PsiNontrivAt.exists_psiAt_ne_one | (intros; apply GlobalTheory.PsiNontrivAt.exists_psiAt_ne_one <;> assumption)
+  first | exact @GlobalTheory.PsiNontrivAt.exists_psiAt_ne_one

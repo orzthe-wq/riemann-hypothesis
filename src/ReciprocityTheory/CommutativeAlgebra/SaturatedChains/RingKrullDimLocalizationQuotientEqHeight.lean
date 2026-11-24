@@ -2,49 +2,8 @@ module
 
 public import Mathlib.RingTheory.Ideal.Height
 public import ReciprocityTheory.CommutativeAlgebra.ChainConnInDim
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.CommutativeAlgebra.CohenMacaulay.LocDim
 
 @[expose] public section
@@ -63,14 +22,12 @@ private theorem comap_map_mk_lemma_4 {R : Type*} [CommRing R] (I J : Ideal R) (h
   rw [Ideal.mem_comap]
   first
   | exact Ideal.mem_quotient_iff_mem h
-  | exact Ideal.mem_quotient_iff_mem_sup.trans (by rw [sup_eq_left.mpr h])
 
 private theorem height_le_height_Iic_lemma_2 {α β : Type*} [PartialOrder α] [Preorder β] (a : α)
     (f : Set.Iic a → β) (hf : StrictMono f) : Order.height a ≤ Order.height (f ⟨a, le_rfl⟩) := by
   have hmono : ∀ s : LTSeries α, Monotone s := fun s => by
     first
     | exact s.monotone
-    | exact s.strictMono.monotone
   have H : ∀ s : LTSeries α, s.last ≤ a → (s.length : ℕ∞) ≤ Order.height (f ⟨a, le_rfl⟩) := by
     intro s hs
     let t : LTSeries β :=
@@ -82,9 +39,7 @@ private theorem height_le_height_Iic_lemma_2 {α β : Type*} [PartialOrder α] [
       exact hf.monotone (show s (Fin.last s.length) ≤ a from hs)
     exact Order.length_le_height ht
   first
-  | exact Order.height_le_iff.mpr fun s hs => H s hs.le
   | exact Order.height_le fun s hs => H s hs.le
-  | (unfold Order.height; exact iSup₂_le fun s hs => H s hs)
 
 private theorem krullDim_le_height_lemma_3 {α β : Type*} [Preorder α] [Preorder β] (f : α → β)
     (hf : StrictMono f) (b : β) (hb : ∀ x, f x ≤ b) :
@@ -247,21 +202,6 @@ theorem IsCM.height_eq_height_add_height_map_quotient {P : Type*} [CommRing P] [
   have e2 : ringKrullDim (Localization.AtPrime q) = q.height := by
     first
     | exact IsLocalization.AtPrime.ringKrullDim_eq_height q (Localization.AtPrime q)
-    | (haveI hqL : (q.map (algebraMap P (Localization.AtPrime q))).IsPrime :=
-         IsLocalization.isPrime_of_isPrime_disjoint q.primeCompl _ q ‹_›
-           (Set.disjoint_left.mpr fun x hx hxq => hx hxq)
-       rw [← height_map_atPrime_lemma_5 q q le_rfl,
-         height_eq_order_height_lemma (q.map (algebraMap P (Localization.AtPrime q)))]
-       apply le_antisymm
-       · refine krullDim_le_height_lemma_3 id strictMono_id _ fun x => ?_
-         show x.asIdeal ≤ q.map (algebraMap P (Localization.AtPrime q))
-         rw [← IsLocalization.map_comap (M := q.primeCompl) (S := Localization.AtPrime q)
-           x.asIdeal]
-         refine Ideal.map_mono fun z hz => ?_
-         by_contra hzq
-         exact x.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_comap.mp hz)
-           (IsLocalization.map_units (Localization.AtPrime q) (⟨z, hzq⟩ : q.primeCompl)))
-       · exact height_le_krullDim_lemma_6 _)
   rw [ringKrullDim_localization_quotient_eq_height p q hpq, e1, e2] at e
   exact_mod_cast e.symm
 

@@ -1,25 +1,36 @@
 module
 
-public import GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityGalois
+public import GroundTheory.GlobalFields.ComplexMultiplication.BaseChangeGalois
+public import GroundTheory.GlobalFields.ComplexMultiplication.DifferentialConstantField
+public import Mathlib.Basic.Complex.Basic
+public import GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityHom
+public import GroundTheory.GlobalFields.ComplexMultiplication.AutCFixed
+public import GroundTheory.GlobalFields.ComplexMultiplication.BaseChangeDegree
+public import GroundTheory.GlobalFields.ComplexMultiplication.BaseChangeField
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 public import GroundTheory.GlobalFields.ComplexMultiplication.DualDescent
 public import GroundTheory.GlobalFields.ComplexMultiplication.InseparableFrobenius
-public import GroundTheory.GlobalFields.ComplexMultiplication.PrimeLocalization
 public import GroundTheory.GlobalFields.ComplexMultiplication.ReductionIsogenyMap
+public import GroundTheory.GlobalFields.ComplexMultiplication.GoodReductionAlmostAll
+public import GroundTheory.GlobalFields.ComplexMultiplication.InseparableFrobeniusFactor
+public import GroundTheory.GlobalFields.ComplexMultiplication.IsogenyDegreeOne
+public import GroundTheory.GlobalFields.ComplexMultiplication.ReductionDegree
+public import GroundTheory.GlobalFields.ComplexMultiplication.ReductionDifferential
+public import GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityGalois
+public import GroundTheory.GlobalFields.ComplexMultiplication.PrimeLocalization
 public import GroundTheory.GlobalFields.SemilocalAlgebras.Galois
 public import GroundTheory.GlobalFields.TateThesis.DegreeOnePrimes
 public import Mathlib.RingTheory.Frobenius
-public import GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityDescent
 public import GroundTheory.GlobalFields.ComplexMultiplication.BadPrimesFinite
-import GroundTheory.GlobalFields.ComplexMultiplication.BaseChangeDescent
 public import GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimesIsogeny
-public import GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimesLocal
-import GroundTheory.GlobalFields.ComplexMultiplication.GoodReductionAlmostAll
-import GroundTheory.GlobalFields.ComplexMultiplication.JInvariantSurjective
-import GroundTheory.GlobalFields.ComplexMultiplication.ReductionDifferential
+import GroundTheory.GlobalFields.ComplexMultiplication.BaseChangeDescent
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -31,8 +42,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -40,7 +49,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -50,11 +58,199 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import GroundTheory.GlobalFields.ComplexMultiplication.JInvariantSurjective
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityDescent, GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimesLocal, GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimes
+
+-- ===== clump member: GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityDescent =====
+-- clump-header: {"m": "GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityDescent", "h": "module\n\npublic import GroundTheory.GlobalFields.ComplexMultiplication.BaseChangeGalois\npublic import GroundTheory.GlobalFields.ComplexMultiplication.DifferentialConstantField\npublic import Mathlib.Basic.Complex.Basic\npublic import GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityHom\npublic import GroundTheory.GlobalFields.ComplexMultiplication.AutCFixed\npublic import GroundTheory.GlobalFields.ComplexMultiplication.BaseChangeDegree\nimport GroundTheory.GlobalFields.ComplexMultiplication.BaseChangeDescent\npublic import GroundTheory.GlobalFields.ComplexMultiplication.BaseChangeField\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Module WeierstrassCurve GroundTheory.Arith.Abelian IntermediateField Polynomial
+
+noncomputable section
+
+namespace GroundTheory.Global
+
+section Descent
+
+variable {L : Type} [Field L] [CharZero L] [Algebra L ℂ] {W W' : WeierstrassCurve L} [W.IsElliptic]
+  [W'.IsElliptic]
+
+theorem _root_.GroundTheory.Arith.Abelian.Isogeny.exists_map_eq_of_forall_conj_eq
+    (ψ : Isogeny (W.baseChange ℂ) (W'.baseChange ℂ)) (h : ∀ g : ℂ ≃ₐ[L] ℂ, ψ.conj g = ψ) :
+    ∃ φ : Isogeny W W', φ.map (algebraMap L ℂ) = ψ := by
+  classical
+  have hxfix : ∀ g : ℂ ≃ₐ[L] ℂ, galFF W g ψ.x = ψ.x := fun g ↦ by rw [← Isogeny.conj_alt_bis, h g]
+  have hyfix : ∀ g : ℂ ≃ₐ[L] ℂ, galFF W g ψ.y = ψ.y := fun g ↦ by rw [← Isogeny.conj_y, h g]
+  obtain ⟨r, hr⟩ := ψ.exists_ratEmb_eq_x
+  obtain ⟨a, b, ha, hb, hab⟩ := exists_eq_add_mul_genY (W.baseChange ℂ) ψ.y
+  have ha' := ha
+  have hb' := hb
+  rw [← fieldRange_ratEmb] at ha' hb'
+  obtain ⟨r₂, hr₂⟩ := ha'
+  obtain ⟨r₃, hr₃⟩ := hb'
+  change ratEmb (W.baseChange ℂ) r₂ = a at hr₂
+  change ratEmb (W.baseChange ℂ) r₃ = b at hr₃
+  have hab_fix : ∀ g : ℂ ≃ₐ[L] ℂ, galFF W g a = a ∧ galFF W g b = b := by
+    intro g
+    have e := hyfix g
+    rw [hab, map_add (f := _), map_mul, galFF_genY] at e
+    exact eq_of_add_mul_genY_eq (galFF_mem_adjoin_genX W _ ha) (galFF_mem_adjoin_genX W _ hb)
+      ha hb e
+  have hlift : ∀ s : RatFunc ℂ, (∀ g : ℂ ≃ₐ[L] ℂ,
+      galFF W g (ratEmb (W.baseChange ℂ) s) = ratEmb (W.baseChange ℂ) s) →
+      (∃ p : L[X], p.map (algebraMap L ℂ) = s.num) ∧
+        ∃ q : L[X], q.map (algebraMap L ℂ) = s.denom := by
+    intro s hs
+    have hc : ∀ c ∈ s.num.coeffs ∪ s.denom.coeffs, c ∈ Set.range (algebraMap L ℂ) := by
+      intro c hc
+      have hbot : c ∈ (⊥ : IntermediateField L ℂ) := by
+        refine (mem_bot_iff_forall_algEquiv_apply_eq (F := L)).2 fun g ↦ ?_
+        obtain ⟨h1, h2⟩ := map_eq_of_galFF_ratEmb W g (hs g)
+        rcases Finset.mem_union.mp hc with hc | hc
+        · obtain ⟨n, -, rfl⟩ := Polynomial.mem_coeffs_iff.mp hc
+          have := congrArg (fun p : ℂ[X] ↦ p.coeff n) h1
+          simpa using this
+        · obtain ⟨n, -, rfl⟩ := Polynomial.mem_coeffs_iff.mp hc
+          have := congrArg (fun p : ℂ[X] ↦ p.coeff n) h2
+          simpa using this
+      exact IntermediateField.mem_bot.1 hbot
+    constructor
+    · rw [← Polynomial.mem_lifts, Polynomial.lifts_iff_coeff_lifts]
+      intro n
+      by_cases hn : s.num.coeff n = 0
+      · exact ⟨0, by rw [hn, map_zero]⟩
+      · exact hc _ (Finset.mem_union_left _ (coeff_mem_coeffs hn))
+    · rw [← Polynomial.mem_lifts, Polynomial.lifts_iff_coeff_lifts]
+      intro n
+      by_cases hn : s.denom.coeff n = 0
+      · exact ⟨0, by rw [hn, map_zero]⟩
+      · exact hc _ (Finset.mem_union_right _ (coeff_mem_coeffs hn))
+  obtain ⟨⟨n₁, hn₁⟩, ⟨d₁, hd₁⟩⟩ := hlift r (fun g ↦ by rw [hr]; exact hxfix g)
+  obtain ⟨⟨n₂, hn₂⟩, ⟨d₂, hd₂⟩⟩ := hlift r₂ (fun g ↦ by rw [hr₂]; exact (hab_fix g).1)
+  obtain ⟨⟨n₃, hn₃⟩, ⟨d₃, hd₃⟩⟩ := hlift r₃ (fun g ↦ by rw [hr₃]; exact (hab_fix g).2)
+  set X₁ := genX W
+  set x₁ : W.toAffine.FunctionField := aeval X₁ n₁ / aeval X₁ d₁
+  set y₁ : W.toAffine.FunctionField :=
+    aeval X₁ n₂ / aeval X₁ d₂ + aeval X₁ n₃ / aeval X₁ d₃ * genY W
+  have hrat : ∀ (s : RatFunc ℂ) (p q : L[X]), p.map (algebraMap L ℂ) = s.num →
+      q.map (algebraMap L ℂ) = s.denom →
+      ffMap (algebraMap L ℂ) W (aeval X₁ p / aeval X₁ q) = ratEmb (W.baseChange ℂ) s := by
+    intro s p q hp hq
+    conv_rhs => rw [← RatFunc.num_div_denom s]
+    rw [ratEmb_div, map_div₀, ffMap_aeval, ffMap_aeval, ffMap_genX, hp, hq]
+    rfl
+  have hx₁ : ffMap (algebraMap L ℂ) W x₁ = ψ.x := by
+    rw [← hr]
+    exact hrat r n₁ d₁ hn₁ hd₁
+  have hy₁ : ffMap (algebraMap L ℂ) W y₁ = ψ.y := by
+    rw [hab, map_add (f := _), map_mul, ← hr₂, ← hr₃, hrat r₂ n₂ d₂ hn₂ hd₂, hrat r₃ n₃ d₃ hn₃ hd₃,
+      ffMap_genY]
+    rfl
+  exact ⟨Isogeny.ofMap (algebraMap L ℂ) ψ x₁ y₁ hx₁ hy₁,
+    Isogeny.map_ofMap (algebraMap L ℂ) ψ x₁ y₁ hx₁ hy₁⟩
+
+omit [CharZero L] [W.IsElliptic] [W'.IsElliptic] in
+theorem _root_.GroundTheory.Arith.Abelian.Isogeny.invConst_congr {F : Type} [Field F]
+    {C D C' D' : WeierstrassCurve F} [C.IsElliptic] [D.IsElliptic] [C'.IsElliptic]
+    [D'.IsElliptic] (hC : C = D) (hC' : C' = D') (φ : Isogeny C C') :
+    invConst (φ.congr hC hC') = invConst φ := by
+  subst hC hC'
+  rw [Isogeny.congr_rfl]
+
+
+omit [CharZero L] in
+theorem _root_.GroundTheory.Arith.Abelian.Isogeny.invConst_conj (g : ℂ ≃ₐ[L] ℂ)
+    (ψ : Isogeny (W.baseChange ℂ) (W'.baseChange ℂ)) : invConst (ψ.conj g) = g (invConst ψ) := by
+  rw [Isogeny.conj, Isogeny.mapOf, Isogeny.invConst_congr, invConst_map]
+  rfl
+
+end Descent
+
+namespace Elliptic
+
+variable {K : Type} [Field K] [NumberField K] [Algebra K ℂ] (hK : finrank ℚ K = 2)
+  [_root_.NumberField.IsTotallyComplex K]
+include hK
+
+end Elliptic
+
+end GroundTheory.Global
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityDescent =====
+
+-- ===== clump member: GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimesLocal =====
+-- clump-header: {"m": "GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimesLocal", "h": "module\n\npublic import GroundTheory.GlobalFields.ComplexMultiplication.DifferentialConstantField\npublic import GroundTheory.GlobalFields.ComplexMultiplication.DualDescent\npublic import GroundTheory.GlobalFields.ComplexMultiplication.InseparableFrobenius\npublic import GroundTheory.GlobalFields.ComplexMultiplication.ReductionIsogenyMap\npublic import GroundTheory.GlobalFields.ComplexMultiplication.GoodReductionAlmostAll\npublic import GroundTheory.GlobalFields.ComplexMultiplication.InseparableFrobeniusFactor\npublic import GroundTheory.GlobalFields.ComplexMultiplication.IsogenyDegreeOne\npublic import GroundTheory.GlobalFields.ComplexMultiplication.ReductionDegree\npublic import GroundTheory.GlobalFields.ComplexMultiplication.ReductionDifferential\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Global
+
+noncomputable section
+
+open IsLocalRing GroundTheory.Arith.Abelian
+
+universe u
+
+variable {𝒪 : Type u} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪]
+  (F : Type u) [Field F] [Algebra 𝒪 F] [IsFractionRing 𝒪 F] {W W' : WeierstrassCurve 𝒪}
+  [W.IsElliptic] [W'.IsElliptic]
+
+theorem invConst_reduceIsogeny_eq_zero (φ : Isogeny (W.baseChange F) (W'.baseChange F)) {c : 𝒪}
+    (hc : c ∈ maximalIdeal 𝒪) (hφ : algebraMap 𝒪 F c = invConst φ) :
+    invConst (reduceIsogeny F W W' φ) = 0 := by
+  obtain ⟨c', h1, h2⟩ := exists_invConst_reduceIsogeny F W W' φ
+  have e : c' = c := IsFractionRing.injective 𝒪 F (h1.trans hφ.symm)
+  rw [← h2, e]
+  exact (residue_eq_zero_iff c).2 hc
+
+theorem isogenyPullback_reduceIsogeny_eq_zero (φ : Isogeny (W.baseChange F) (W'.baseChange F))
+    {c : 𝒪} (hc : c ∈ maximalIdeal 𝒪) (hφ : algebraMap 𝒪 F c = invConst φ) :
+    isogenyPullback (reduceIsogeny F W W' φ) (invariantDifferential (W'.map (residue 𝒪))) = 0 := by
+  rw [isogenyPullback_eq_invConst_smul, invConst_reduceIsogeny_eq_zero F φ hc hφ, zero_smul]
+
+variable (p : ℕ) [Fact p.Prime] [CharP (ResidueField 𝒪) p] [PerfectRing (ResidueField 𝒪) p]
+
+theorem reduceIsogeny_eq_comp_frobeniusIsogeny (φ : Isogeny (W.baseChange F) (W'.baseChange F))
+    (hdeg : φ.degree = p) {c : 𝒪} (hc : c ∈ maximalIdeal 𝒪) (hφ : algebraMap 𝒪 F c = invConst φ) :
+    ∃ ψ : Isogeny (frobeniusTwist (W.map (residue 𝒪)) p) (W'.map (residue 𝒪)),
+      reduceIsogeny F W W' φ = ψ.comp (frobeniusIsogeny (W.map (residue 𝒪)) p) ∧
+      ψ.degree = 1 ∧ Function.Bijective ψ.comap ∧
+      (dualOver ψ).comp ψ = mulIsogeny _ 1 one_ne_zero ∧
+      ψ.comp (dualOver ψ) = mulIsogeny _ 1 one_ne_zero :=
+  exists_isomorphism_of_degree_eq p _ (isogenyPullback_reduceIsogeny_eq_zero F φ hc hφ)
+    (by rw [degree_reduceIsogeny, hdeg])
+
+theorem residue_j_eq_pow (φ : Isogeny (W.baseChange F) (W'.baseChange F)) (hdeg : φ.degree = p)
+    {c : 𝒪} (hc : c ∈ maximalIdeal 𝒪) (hφ : algebraMap 𝒪 F c = invConst φ) :
+    residue 𝒪 W'.j = residue 𝒪 W.j ^ p := by
+  rw [← j_map_residue, ← j_map_residue]
+  exact j_eq_pow_of_isogenyPullback_eq_zero p _ (isogenyPullback_reduceIsogeny_eq_zero F φ hc hφ)
+    (by rw [degree_reduceIsogeny, hdeg])
+
+end
+
+end GroundTheory.Global
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimesLocal =====
+
+-- ===== clump member: GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimes =====
+-- clump-header: {"m": "GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimes", "h": "module\n\npublic import GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityGalois\npublic import GroundTheory.GlobalFields.ComplexMultiplication.DualDescent\npublic import GroundTheory.GlobalFields.ComplexMultiplication.InseparableFrobenius\npublic import GroundTheory.GlobalFields.ComplexMultiplication.PrimeLocalization\npublic import GroundTheory.GlobalFields.ComplexMultiplication.ReductionIsogenyMap\npublic import GroundTheory.GlobalFields.SemilocalAlgebras.Galois\npublic import GroundTheory.GlobalFields.TateThesis.DegreeOnePrimes\npublic import Mathlib.RingTheory.Frobenius\npublic import GroundTheory.GlobalFields.ComplexMultiplication.AlgebraicityDescent\npublic import GroundTheory.GlobalFields.ComplexMultiplication.BadPrimesFinite\nimport GroundTheory.GlobalFields.ComplexMultiplication.BaseChangeDescent\npublic import GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimesIsogeny\npublic import GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimesLocal\nimport GroundTheory.GlobalFields.ComplexMultiplication.GoodReductionAlmostAll\nimport GroundTheory.GlobalFields.ComplexMultiplication.JInvariantSurjective\nimport GroundTheory.GlobalFields.ComplexMultiplication.ReductionDifferential\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace GroundTheory.Global
@@ -612,3 +808,6 @@ end
 
 end Elliptic
 end GroundTheory.Global
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.GlobalFields.ComplexMultiplication.FrobeniusAtPrimes =====

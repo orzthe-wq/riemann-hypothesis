@@ -1,7 +1,7 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GenericBlockMatrixIsBlockDiag
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishingStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -135,7 +135,7 @@ theorem detFac_ne_zero {Ω : Type} [Field Ω] {N j : ℕ} (hj : j ≤ N) (i : Fi
     (hT : IsBlockDiag j T) (hd : T.det ≠ 0) : detFac j i T ≠ 0 := by
   intro h0
   have hu : IsUnit T.det := hd.isUnit
-  have h := ((GlobalTheory.T.block_diagonal_minor_vanishing Ω N j i hj).2.2.2 T T⁻¹ hT (hT.inv hu)).2
+  have h := ((_root_.GlobalTheory.CompanionTheory.Ar.PB.MinorCalc.minors_main Ω N j i hj).2.2.2 T T⁻¹ hT (hT.inv hu)).2
   rw [Matrix.mul_nonsing_inv _ hu, detFac_one, h0, zero_mul] at h
   exact one_ne_zero h
 
@@ -168,7 +168,7 @@ theorem plucker_change_of_frame : ∀ (K : Type) [Fintype K] (ι : K → Type) [
   rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu₁] at e1
   have hm : ∀ I, minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1 * unitCols I' (stepCols N j p.2) hI'.1) I (stepCols N j p.2) =
       minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I' := fun I => by
-    rw [(GlobalTheory.T.block_diagonal_minor_vanishing M.Ω N j p.2 hj).1]
+    rw [(_root_.GlobalTheory.CompanionTheory.Ar.PB.MinorCalc.minors_main M.Ω N j p.2 hj).1]
     simp only [minor_unitCols, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   have hr : ∑ I, F₂.u ⟨k, m⟩ I * minorIJ (unitCols I' (stepCols N j p.2) hI'.1) I (stepCols N j p.2) =
       F₂.u ⟨k, m⟩ I' := by

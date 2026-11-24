@@ -80,7 +80,7 @@ theorem exists_pelUnif_pull (hC : CubePullSt) (hP : PolBaseChangeSt) (hU : UnifB
       m₀.φ = bc.hom.left ≫ pullback.fst t.G.hom (specOf g) ∧ (∀ (x : 𝓞 E) y, hD.xe (x • y) = x • hD.xe y) ∧
       (letI := H.starRing; ∀ x, P'.oD.onB.act x ≫ hD.e.hom =
         hD.e.hom ≫ (Over.pullback (specOf g)).map (P.oD.onB.act x)) := by
-  letI := H.starRing
+  let := H.starRing
   have hO := polOActPull
   have hsemi : IsSemiAbelian ((Over.pullback (spMap g)).obj t.G) := by
     refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
@@ -363,7 +363,7 @@ theorem exists_match (hL : Laws) (h2 : Laws2) (hR : AdmBase R I) (hV : AdmBase V
           (∀ z, GenRel w (q.g.s (e z)) (q₀.g.s z) (uF ^ (a.be q₀.y z / l.M))) →
           x.left ≫ P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK R) ≫ m.φ = yF ≫ (Y.oF.eta v).left ≫ Y.m.φ →
           P.ToA F l.M p x := by
-  letI := H.starRing
+  let := H.starRing
   obtain ⟨s1, s2, s3, s4, s5, s6⟩ := W.spec
   have gD := pull_grp hD
   have gN := pull_grp hN
@@ -385,7 +385,7 @@ theorem exists_match (hL : Laws) (h2 : Laws2) (hR : AdmBase R I) (hV : AdmBase V
     ((isGen_iff hN.w).1 hN.w_gen)
   have g0 := (isGen_iff W.w).1 s2
   obtain ⟨w, T⟩ := exists_comp W.P.D.toPre.P.isLB W.w v g0 gv a.D₀.P.isLB N.P.isLB
-  have hs' : spMap (h.comp f) = spMap i ≫ spMap (g.comp f) := by rw [hig, ← spMap_comp]; try rfl
+  have hs' : spMap (h.comp f) = spMap i ≫ spMap (g.comp f) := by rw [hig, ← spMap_comp]
   have he : eSec N.P.A ≫ r ≫ W.φ = spMap (h.comp f) ≫ eSec a.D₀.P.A := by
     rw [reassoc_of% er, W.he, hs', Category.assoc]
   have cr : ∀ y, (N.c (e y)).left ≫ r = spMap i ≫ (W.P.D.toPre.c (W.e y)).left := fun y => by
@@ -413,7 +413,7 @@ theorem exists_match (hL : Laws) (h2 : Laws2) (hR : AdmBase R I) (hV : AdmBase V
       · rw [Category.assoc, r₂, Category.assoc, Over.w, r₂, ← Category.assoc, Over.w]
     rw [reassoc_of% k, s4 x, Category.assoc]
   · rw [reassoc_of% (cr y), s5 y, hs', Category.assoc]
-  · letI : Algebra (FractionRing V) F := ((algebraMap (FractionRing S) F).comp gam).toAlgebra
+  · let : Algebra (FractionRing V) F := ((algebraMap (FractionRing S) F).comp gam).toAlgebra
     have hF : ∀ x : V, algebraMap (FractionRing V) F (algebraMap V (FractionRing V) x) =
         algebraMap (FractionRing S) F (algebraMap S (FractionRing S) (i x)) := fun x =>
       congrArg (algebraMap (FractionRing S) F) (hgam x)
@@ -429,14 +429,14 @@ theorem exists_match (hL : Laws) (h2 : Laws2) (hR : AdmBase R I) (hV : AdmBase V
       let ga : FractionRing R →+* F := IsFractionRing.lift
         (g := (algebraMap (FractionRing V) F).comp ((algebraMap V (FractionRing V)).comp g))
         ((algebraMap (FractionRing V) F).injective.comp ((IsFractionRing.injective V _).comp hginj))
-      letI := ga.toAlgebra
+      let := ga.toAlgebra
       have k₁ : ∀ x : R, algebraMap (FractionRing R) F (algebraMap R (FractionRing R) x) =
           algebraMap (FractionRing V) F (algebraMap V (FractionRing V) (g x)) := fun x =>
         IsFractionRing.lift_algebraMap _ x
       exact ⟨ga.toAlgebra, trivial, jFK_comm k₁, jFK_comm fun x => (k₁ x).trans (by rw [hF, hig]; rfl)⟩
     exact (genRel_transfer T W.P.D.toPre.P.isLB N.P.isLB (fun _ => hc) (hv (Category.id_comp _).symm (fun _ => hc)
       (pmaps_psi' hD G₁ rfl).2 (pmaps_psi' hN G₂ (hxe y)).2) _ _).1 k
-  · letI : Algebra (FractionRing V) F := ((algebraMap (FractionRing S) F).comp gam).toAlgebra
+  · let : Algebra (FractionRing V) F := ((algebraMap (FractionRing S) F).comp gam).toAlgebra
     have hF₁ : ∀ x : V, algebraMap (FractionRing V) F (algebraMap V (FractionRing V) x) =
         algebraMap (FractionRing S) F (algebraMap S (FractionRing S) (i x)) := fun x =>
       congrArg (algebraMap (FractionRing S) F) (hgam x)
@@ -489,7 +489,7 @@ theorem agree (hL : Laws) (h2 : Laws2) (h5 : Laws5) (hR : AdmBase R I) (hV : Adm
     (hx₂ : x₂ ≫ W.P.D.toPre.P.A.hom = spMap i₂)
     (hx : x₁ ≫ hD.e.hom.left ≫ pullback.fst P.D.toPre.P.A.hom (specOf g) =
       x₂ ≫ hD.e.hom.left ≫ pullback.fst P.D.toPre.P.A.hom (specOf g)) : x₁ ≫ W.φ = x₂ ≫ W.φ := by
-  letI := H.starRing
+  let := H.starRing
   have gD := pull_grp hD
   have k₀ : ∀ (x : Sp S ⟶ W.P.D.toPre.P.A.left) (i : V →+* S), x ≫ W.P.D.toPre.P.A.hom = spMap i →
       (x ≫ hD.e.hom.left ≫ pullback.fst P.D.toPre.P.A.hom (specOf g)) ≫ P.D.toPre.P.A.hom = spMap (i.comp g) :=
@@ -518,7 +518,7 @@ theorem agree (hL : Laws) (h2 : Laws2) (h5 : Laws5) (hR : AdmBase R I) (hV : Adm
       let ga : FractionRing R →+* F := IsFractionRing.lift
         (g := (algebraMap (FractionRing S) F).comp ((algebraMap S (FractionRing S)).comp h))
         ((algebraMap (FractionRing S) F).injective.comp ((IsFractionRing.injective S _).comp hh))
-      letI := ga.toAlgebra
+      let := ga.toAlgebra
       have hF : ∀ x : R, algebraMap (FractionRing R) F (algebraMap R (FractionRing R) x) =
           algebraMap (FractionRing S) F (algebraMap S (FractionRing S) (h x)) := fun x =>
         IsFractionRing.lift_algebraMap _ x

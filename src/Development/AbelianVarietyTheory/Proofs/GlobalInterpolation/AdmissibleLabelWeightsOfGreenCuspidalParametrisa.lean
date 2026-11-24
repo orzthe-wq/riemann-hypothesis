@@ -2,18 +2,20 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 public import Formalism.LocalToGlobal.NormalizedHeckeFactors.GlobalDatumRegularityOfTypesCompatibility
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesLabelExistsUniqueGLnStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesWeightLeSquarefreeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesWeightLowerComparisonStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesLabelExistsUniqueGLn
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesWeightLeSquarefree
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesWeightLowerComparison
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesWeightNonnegOfIdempotentGlnPrStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesWeightSquarefreeLabelGelfandGStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesWeightSquarefreeLabelGelfandG
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LemmaLSeriesWeightsOfGreenCuspidalParametrisatio
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerJacquetIdempotentsPropertiesPrimeFieldStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBlocksOfCuspidalCharacterListStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinsumCentralIdempotentOfIrrCharacterEqSimpleStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsConstituentHarishChandraRepIffPairingNeZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCuspidalCharacterIffIsCuspidalGLnFiniteFieldStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TraceHarishChandraInducedEqProductCharactersStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonListLength
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsBlocksOfCuspidalCharacterList
+public import Formalism.PadicSubsetSums.CentralIdempotents.IsConstituent
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinsumCentralIdempotentOfIrrCharacterEqSimple
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsConstituentHarishChandraRepIffPairingNeZero
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsCuspidalCharacterIffIsCuspidalGLnFiniteField
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TraceHarishChandraInducedEqProductCharacters
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WhittakerJacquetIdempotentsPropertiesPrimeField
 import Formalism.LocalToGlobal.Divisibility.PsiWeilOfAbsNorm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -55,7 +57,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonListLength
 
 @[expose] public section
 
@@ -106,7 +107,7 @@ theorem exists_perm_deg (hG : Green) (L : LabelDatum g) {C : LabelConv (ZMod g)}
     have hc := (h1 P.1 P.2).1.2.1
     obtain ⟨V, hs, hx⟩ := hc.2.1
     have e : (fun x => V.character x) = τ P.1 := funext hx
-    exact ⟨V, hs, (GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).1 (e ▸ hc), hx⟩
+    exact ⟨V, hs, (_root_.GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal g d V hd hs).1 (e ▸ hc), hx⟩
   choose W hWs hWc hWx using hV
   let p : {P : (ZMod g)[X] // IsPrimeLab d P} → {P : (ZMod g)[X] // IsPrimeLab d P} :=
     fun P => ⟨O.lab d (W P), primeLab_lab O _ hd (hWs P) (hWc P)⟩
@@ -122,7 +123,7 @@ theorem exists_perm_deg (hG : Green) (L : LabelDatum g) {C : LabelConv (ZMod g)}
     refine ⟨(e.symm ⟨P, hP⟩).2, ?_⟩
     rw [dif_pos (e.symm ⟨P, hP⟩).2]
     simp
-  · obtain ⟨P, hP, hχ⟩ := h3 _ ((GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).2 hc)
+  · obtain ⟨P, hP, hχ⟩ := h3 _ ((_root_.GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal g d V hd hs).2 hc)
     haveI := hs
     haveI := hWs ⟨P, hP⟩
     have hi := iso_of_char V (W ⟨P, hP⟩) fun x => by rw [hWx]; exact congrFun hχ x
@@ -248,8 +249,8 @@ theorem hasLabel_of {r : ℕ} (τ : FDRep ℂ (GL (Fin r) (ZMod g))) (f : (ZMod 
     rfl
   · rw [hQ]
     have ht : (fun x => LinearMap.trace ℂ (hcSpace (ZMod g) b lam) (hcRep (ZMod g) b lam x)) =
-        hcL (canonList b lam) r := funext (GlobalTheory.T.trace_harishChandra_induced_eq_product_characters g r s b lam hb)
-    have := (GlobalTheory.T.isConstituent_harishChandraRep_iff_pairing_ne_zero g r s b lam τ hτ).1 hcon
+        hcL (canonList b lam) r := funext (_root_.GlobalTheory.HCChar.trace_hcRep_eq_hcL g r s b lam hb)
+    have := (_root_.GlobalTheory.GLq.ConstIff.constituent_hcRep_iff g r s b lam τ hτ).1 hcon
     rw [ht] at this
     exact this
 
@@ -258,21 +259,21 @@ theorem exists_labelO {r : ℕ} (τ : FDRep ℂ (GL (Fin r) (ZMod g))) (f : (ZMo
     (hl : HasLabel L (fun x => τ.character x) f) : ∃ f', f'.Monic ∧ f'.coeff 0 ≠ 0 ∧ HasLabelO O τ f' := by
   obtain ⟨Q', hQ, hdeg, hf, hip⟩ := hl
   subst hdeg
-  obtain ⟨b, lam, hb, hlam, hcan⟩ := GlobalTheory.T.exists_blocks_of_cuspidal_character_list g (Q'.map Prod.snd) (by
+  obtain ⟨b, lam, hb, hlam, hcan⟩ := _root_.GlobalTheory.SerCmp.canonList_of_cuspidal_list g (Q'.map Prod.snd) (by
     intro p hp
     obtain ⟨p', hp', rfl⟩ := List.mem_map.1 hp
     have hχ := (hQ p' hp').2.1
     obtain ⟨V, hV, hVχ⟩ := hχ.2.1
     have hχV : (fun x => V.character x) = p'.2.2 := funext hVχ
-    exact ⟨hχ.1, V, hV, (GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g _ V hχ.1 hV).1 (hχV ▸ hχ), hVχ⟩)
+    exact ⟨hχ.1, V, hV, (_root_.GlobalTheory.CuspCharRep.isCusp_character_iff_isCuspidal g _ V hχ.1 hV).1 (hχV ▸ hχ), hVχ⟩)
   have hp : ∀ c, IsPrimeLab _ (labO O (lam c)) := fun c =>
     primeLab_lab O _ (by obtain ⟨i, hi⟩ := hb c; exact Fintype.card_pos_iff.mpr ⟨⟨i, hi⟩⟩)
       (Formalism.L2.PT.simple_transp _ (hlam c).1) (Formalism.L2.PT.isCuspidal_transp _ (hlam c).2)
   refine ⟨∏ c, labO O (lam c), monic_prod_of_monic _ _ fun c _ => (hp c).1, ?_, _, b, lam, hb, hlam, ?_, rfl⟩
   · rw [coeff_zero_prod]
     exact Finset.prod_ne_zero_iff.2 fun c _ => (hp c).2.2.1
-  · refine (GlobalTheory.T.isConstituent_harishChandraRep_iff_pairing_ne_zero g _ _ b lam τ hτ).2 ?_
-    have e := funext (GlobalTheory.T.trace_harishChandra_induced_eq_product_characters g _ _ b lam hb)
+  · refine (_root_.GlobalTheory.GLq.ConstIff.constituent_hcRep_iff g _ _ b lam τ hτ).2 ?_
+    have e := funext (_root_.GlobalTheory.HCChar.trace_hcRep_eq_hcL g _ _ b lam hb)
     rw [e, hcan]
     exact hip
 
@@ -283,11 +284,11 @@ theorem eSer_eq (h5 : 5 ≤ g) (hG : Green) (r : ℕ) {f : (ZMod g)[X]} (hm : f.
       (HasLabel L (fun x => τ.character x) (ext σ f) ↔ HasLabelO O τ f) := fun τ hτ => by
     refine ⟨fun h => ?_, hasLabel_of L O h1 τ f hτ⟩
     obtain ⟨f', a, b, c⟩ := exists_labelO L O τ _ hτ h
-    have e := ((GlobalTheory.T.harishChandraSeriesLabel_exists_unique_GLn g L h5 hG r).1 _ ⟨τ, hτ, fun _ => rfl⟩).unique h (hasLabel_of L O h1 τ f' hτ c)
+    have e := ((_root_.GlobalTheory.GLq.Label.label_main g L h5 hG r).1 _ ⟨τ, hτ, fun _ => rfl⟩).unique h (hasLabel_of L O h1 τ f' hτ c)
     have e' : f = f' := by rw [← ext_back hσ hm h0, e, ext_back hσ a b]
     exact e' ▸ c
   unfold eSerC Formalism.L2.NT.eSerO
-  rw [GlobalTheory.T.finsum_centralIdempotentOfIrrCharacter_eq_simple]
+  rw [_root_.GlobalTheory.SerCmp.finsum_zOf_eq_finsum_zIdem]
   refine finsum_congr fun z => finsum_congr_Prop (propext ?_) fun _ => rfl
   constructor
   · rintro ⟨τ, hτ, hz, hl⟩
@@ -317,7 +318,7 @@ theorem admissibleLabelWeights_of_greenCuspidalParametrisation : Green → ∀ (
     unfold wtOf
     rw [Formalism.L2.eSer_zero_of_tie T k f hf]
     simp
-  obtain ⟨hU, hU1, hJ, -⟩ := GlobalTheory.T.whittakerJacquetIdempotents_properties_primeField (D.host.g k) D.R.r D.R.k (D.R.m / 2 - 1) ψ
+  obtain ⟨hU, hU1, hJ, -⟩ := _root_.GlobalTheory.Adopt.whittakerJacquetIdempotents_properties_primeField (D.host.g k) D.R.r D.R.k (D.R.m / 2 - 1) ψ
   obtain ⟨hJ, hJ1⟩ := hJ hr
   refine ⟨fun f => ?_, fun f hf hs => ?_, fun f hf => ?_, fun f hf hs => ?_⟩
   · by_cases hf : IsLabel D k f
@@ -334,15 +335,15 @@ theorem admissibleLabelWeights_of_greenCuspidalParametrisation : Green → ∀ (
       exact ⟨le_rfl, le_rfl⟩
   · obtain ⟨a, b, c, e⟩ := ext_lab hσ hf.1 hf.2.2
     rw [hw _ _ hf]
-    refine (GlobalTheory.T.harishChandraSeriesWeight_squarefree_label_gelfandGraev _ L h5 hG ψ hψ _ _ a (b.trans hf.2.1) c (e hs)).trans ?_
+    refine (_root_.GlobalTheory.Adopt.harishChandraSeriesWeight_squarefree_label_gelfandGraev _ L h5 hG ψ hψ _ _ a (b.trans hf.2.1) c (e hs)).trans ?_
     rw [nf_ext hσ hf.1 hf.2.2, Multiset.map_map]
     congr 2
     exact Multiset.map_congr rfl fun P h => by
       simp only [Function.comp, (hσ _ _ ((nf_lab hf.1 hf.2.2).1 P h)).1.2.2.2]
   · rw [hw _ _ hf, hw _ _ hf]
-    exact GlobalTheory.T.harishChandraSeriesWeight_lower_comparison _ L ψ hψ _ _ _ hr hk _
+    exact _root_.GlobalTheory.GLq.lowerWtComparison _ L ψ hψ _ _ _ hr hk _
   · obtain ⟨a, b, c, e⟩ := ext_lab hσ hf.1 hf.2.2
     rw [hw _ _ hf, hw _ _ hf]
-    exact GlobalTheory.T.harishChandraSeriesWeight_le_squarefree _ L h5 hG ψ hψ _ _ _ hr hk _ a (b.trans hf.2.1) c (e hs)
+    exact _root_.GlobalTheory.GLq.UpperWeight.wtC_eJ_le _ L h5 hG ψ hψ _ _ _ hr hk _ a (b.trans hf.2.1) c (e hs)
 
 end GlobalTheory.Top.Lq

@@ -1,17 +1,17 @@
 module
 
+public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.JacobiThetaHalfCharacteristic
+public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.ThetaConstantWeber
+public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.DifferentiableAtDerivAtZero
 public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SignedLogMeans
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.EquidistributedConjugates
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.PeriodLatticeAgreement
-public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.JacobiThetaHalfCharacteristic
-public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.ThetaConstantWeber
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LatticeDeterminedByInvariants
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugate
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HalfPeriodWeierstrassValueMemConjStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaCharHalfPeriodEqZeroIffStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HalfPeriodWeierstrassValueMemConj
 public import Formalism.GL3MeanSquares.HookFormulaTorsion.FourFoldOrthogonalSum
+public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.HasSumLocallyUniformlyWeierstrassZetaExcept
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -36,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -50,10 +49,114 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.HasSumLocallyUniformlyWeierstrassZetaExcept
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary
+import Mathlib.Tactic.Lemma
+import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaCharHalfPeriodEqZeroIff, Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsIntegralPeriodElement
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaCharHalfPeriodEqZeroIff =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaCharHalfPeriodEqZeroIff", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.JacobiThetaHalfCharacteristic\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.ThetaConstantWeber\npublic import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.DifferentiableAtDerivAtZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric GlobalTheory.Glob.IntegralWittCoefficients GlobalTheory.IndefiniteRowSideFullHecke
+
+namespace GlobalTheory.Glob.ThetaParity
+
+open Complex
+
+theorem jacobiTheta₂_add_int (z τ : ℂ) (k : ℤ) :
+    jacobiTheta₂ (z + (k : ℂ)) τ = jacobiTheta₂ z τ := by
+  induction k using Int.induction_on with
+  | zero => simp
+  | succ k ih =>
+    have : z + ((k + 1 : ℤ) : ℂ) = (z + (k : ℂ)) + 1 := by push_cast; ring
+    rw [this, jacobiTheta₂_add_left]; exact_mod_cast ih
+  | pred k ih =>
+    have : z + ((-(k : ℤ) : ℤ) : ℂ) = (z + ((-(k : ℤ) - 1 : ℤ) : ℂ)) + 1 := by push_cast; ring
+    have ih' : jacobiTheta₂ (z + ((-(k : ℤ) : ℤ) : ℂ)) τ = jacobiTheta₂ z τ := by exact_mod_cast ih
+    rw [← ih', this, jacobiTheta₂_add_left]
+
+theorem jacobiTheta₂_add_int_mul_eq_zero_iff (z τ : ℂ) (l : ℤ) :
+    jacobiTheta₂ (z + (l : ℂ) * τ) τ = 0 ↔ jacobiTheta₂ z τ = 0 := by
+  induction l using Int.induction_on with
+  | zero => simp
+  | succ l ih =>
+    have : z + ((l + 1 : ℤ) : ℂ) * τ = (z + (l : ℂ) * τ) + τ := by push_cast; ring
+    have ih' : jacobiTheta₂ (z + ((l : ℤ) : ℂ) * τ) τ = 0 ↔ jacobiTheta₂ z τ = 0 := by exact_mod_cast ih
+    rw [this, jacobiTheta₂_add_left', mul_eq_zero, or_iff_right (Complex.exp_ne_zero _)]
+    exact_mod_cast ih'
+  | pred l ih =>
+    have : z + ((-(l : ℤ) : ℤ) : ℂ) * τ = (z + ((-(l : ℤ) - 1 : ℤ) : ℂ) * τ) + τ := by push_cast; ring
+    have ih' : jacobiTheta₂ (z + ((-(l : ℤ) : ℤ) : ℂ) * τ) τ = 0 ↔ jacobiTheta₂ z τ = 0 := by exact_mod_cast ih
+    rw [← ih', this, jacobiTheta₂_add_left', mul_eq_zero, or_iff_right (Complex.exp_ne_zero _)]
+
+theorem jacobiTheta₂_shift_eq_zero_iff (z τ : ℂ) (k l : ℤ) :
+    jacobiTheta₂ (z + (k : ℂ) + (l : ℂ) * τ) τ = 0 ↔ jacobiTheta₂ z τ = 0 := by
+  rw [jacobiTheta₂_add_int_mul_eq_zero_iff, jacobiTheta₂_add_int]
+
+theorem thetaChar_half_period_eq_zero_iff :
+    ∀ τ : UpperHalfPlane, ThetaConstantWeber.JacobiProduct τ → ∀ (m n : ℤ) (a b : Fin 2),
+    JacobiThetaHalfCharacteristic.IsEvenChar a b →
+    (JacobiThetaHalfCharacteristic.thetaChar a b (((m : ℂ) + (n : ℂ) * (τ : ℂ)) / 2) (τ : ℂ) = 0 ↔
+      Odd (m + ((b : ℕ) : ℤ)) ∧ Odd (n + ((a : ℕ) : ℤ))) := by
+  intro τ hJ m n a b _
+  set t : ℂ := (τ : ℂ)
+
+  have hprod : ThetaConstantWeber.thetaConst 0 0 τ * ThetaConstantWeber.thetaConst 0 1 τ * ThetaConstantWeber.thetaConst 1 0 τ ≠ 0 := by
+    rw [hJ]
+    exact mul_ne_zero two_ne_zero (pow_ne_zero _ (ModularForm.eta_ne_zero τ.2))
+  have h00 : jacobiTheta₂ 0 t ≠ 0 := by
+    have := left_ne_zero_of_mul (left_ne_zero_of_mul hprod)
+    simpa [ThetaConstantWeber.thetaConst, t] using this
+  have h01 : jacobiTheta₂ (1 / 2) t ≠ 0 := by
+    have := right_ne_zero_of_mul (left_ne_zero_of_mul hprod)
+    simpa [ThetaConstantWeber.thetaConst, t] using this
+  have h10 : jacobiTheta₂ (t / 2) t ≠ 0 := by
+    have := right_ne_zero_of_mul hprod
+    simp only [ThetaConstantWeber.thetaConst, mul_eq_zero, Complex.exp_ne_zero, false_or, ne_eq] at this
+    simpa [t] using this
+  have h11 : jacobiTheta₂ ((1 + t) / 2) t = 0 := by
+    rw [add_comm]; exact GlobalTheory.JacobiDeriv.jacobiTheta₂_half_period t
+
+  set p : ℤ := m + ((b : ℕ) : ℤ)
+  set q : ℤ := n + ((a : ℕ) : ℤ)
+  have hred : JacobiThetaHalfCharacteristic.thetaChar a b (((m : ℂ) + (n : ℂ) * t) / 2) t = 0 ↔
+      jacobiTheta₂ ((((p % 2 : ℤ) : ℂ) + ((q % 2 : ℤ) : ℂ) * t) / 2 + ((p / 2 : ℤ) : ℂ) +
+        ((q / 2 : ℤ) : ℂ) * t) t = 0 := by
+    unfold JacobiThetaHalfCharacteristic.thetaChar
+    rw [mul_eq_zero, or_iff_right (Complex.exp_ne_zero _)]
+    have hp := Int.emod_add_mul_ediv p 2
+    have hq := Int.emod_add_mul_ediv q 2
+    have hp' : ((p % 2 : ℤ) : ℂ) + 2 * ((p / 2 : ℤ) : ℂ) = (m : ℂ) + ((b : ℕ) : ℂ) := by
+      exact_mod_cast hp
+    have hq' : ((q % 2 : ℤ) : ℂ) + 2 * ((q / 2 : ℤ) : ℂ) = (n : ℂ) + ((a : ℕ) : ℂ) := by
+      exact_mod_cast hq
+    have : ((m : ℂ) + (n : ℂ) * t) / 2 + (((a : ℕ) : ℂ) * t + ((b : ℕ) : ℂ)) / 2 =
+        ((((p % 2 : ℤ) : ℂ) + ((q % 2 : ℤ) : ℂ) * t) / 2 + ((p / 2 : ℤ) : ℂ) +
+        ((q / 2 : ℤ) : ℂ) * t) := by
+      linear_combination (-(1:ℂ)/2) * hp' + (-(t:ℂ)/2) * hq'
+    rw [this]
+  rw [hred, jacobiTheta₂_shift_eq_zero_iff, Int.odd_iff, Int.odd_iff]
+  rcases Int.emod_two_eq_zero_or_one p with hp | hp <;>
+    rcases Int.emod_two_eq_zero_or_one q with hq | hq <;>
+    rw [hp, hq] <;> push_cast
+  · simpa using h00
+  · simpa using h10
+  · simpa using h01
+  · simpa [add_comm] using h11
+
+end GlobalTheory.Glob.ThetaParity
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaCharHalfPeriodEqZeroIff =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsIntegralPeriodElement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsIntegralPeriodElement", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.SignedLogMeans\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.EquidistributedConjugates\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.PeriodLatticeAgreement\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.JacobiThetaHalfCharacteristic\npublic import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.ThetaConstantWeber\npublic import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LatticeDeterminedByInvariants\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugate\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.HalfPeriodWeierstrassValueMemConj\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaCharHalfPeriodEqZeroIff\npublic import Formalism.GL3MeanSquares.HookFormulaTorsion.FourFoldOrthogonalSum\npublic import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.HasSumLocallyUniformlyWeierstrassZetaExcept\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric GlobalTheory.Glob.IntegralWittCoefficients GlobalTheory.IndefiniteRowSideFullHecke
@@ -220,7 +323,7 @@ theorem modulus (hL : PeriodLatticeAgreement.LatticePeriodEta) (hT : ThetaConsta
   obtain ⟨m, n, hmn⟩ := half_coords hω hΛ h2
   have hη : ModularForm.eta (τ : ℂ) ≠ 0 := ModularForm.eta_ne_zero τ.2
   have hD := discr_eta hL hω hΛ hd
-  have hpar := (GlobalTheory.T.thetaChar_half_period_eq_zero_iff_odd_add_odd_add τ hjac m n a b hab).1 (by rw [← hmn]; exact hz)
+  have hpar := (_root_.GlobalTheory.Glob.ThetaParity.thetaChar_half_period_eq_zero_iff τ hjac m n a b hab).1 (by rw [← hmn]; exact hz)
   rw [hg2, hwp t ht, hmn, thetaChar_zero]
   unfold ThetaConstantWeber.JacobiProduct at hjac
   have hY : ∀ e g : ℂ, (12 * (e / ω₁ ^ 2) ^ 2 - g / ω₁ ^ 4) / 4 = (12 * e ^ 2 - g) / 4 / ω₁ ^ 4 := by
@@ -331,11 +434,11 @@ theorem exists_char {Λ : AddSubgroup ℂ} {ω₁ : ℂ} {τ : UpperHalfPlane} {
     rw [this, hmn]
     push_cast
     ring
-  · exact ⟨0, 1, by simp [JacobiThetaHalfCharacteristic.IsEvenChar], (GlobalTheory.T.thetaChar_half_period_eq_zero_iff_odd_add_odd_add τ hj m n 0 1 (by simp [JacobiThetaHalfCharacteristic.IsEvenChar])).2
+  · exact ⟨0, 1, by simp [JacobiThetaHalfCharacteristic.IsEvenChar], (_root_.GlobalTheory.Glob.ThetaParity.thetaChar_half_period_eq_zero_iff τ hj m n 0 1 (by simp [JacobiThetaHalfCharacteristic.IsEvenChar])).2
       ⟨by simpa using hm.add_one, by simpa using hn⟩⟩
-  · exact ⟨1, 0, by simp [JacobiThetaHalfCharacteristic.IsEvenChar], (GlobalTheory.T.thetaChar_half_period_eq_zero_iff_odd_add_odd_add τ hj m n 1 0 (by simp [JacobiThetaHalfCharacteristic.IsEvenChar])).2
+  · exact ⟨1, 0, by simp [JacobiThetaHalfCharacteristic.IsEvenChar], (_root_.GlobalTheory.Glob.ThetaParity.thetaChar_half_period_eq_zero_iff τ hj m n 1 0 (by simp [JacobiThetaHalfCharacteristic.IsEvenChar])).2
       ⟨by simpa using hm, by simpa using hn.add_one⟩⟩
-  · exact ⟨0, 0, by simp [JacobiThetaHalfCharacteristic.IsEvenChar], (GlobalTheory.T.thetaChar_half_period_eq_zero_iff_odd_add_odd_add τ hj m n 0 0 (by simp [JacobiThetaHalfCharacteristic.IsEvenChar])).2
+  · exact ⟨0, 0, by simp [JacobiThetaHalfCharacteristic.IsEvenChar], (_root_.GlobalTheory.Glob.ThetaParity.thetaChar_half_period_eq_zero_iff τ hj m n 0 0 (by simp [JacobiThetaHalfCharacteristic.IsEvenChar])).2
       ⟨by simpa using hm, by simpa using hn⟩⟩
 
 theorem exists_integral_theta_ratio : EquidistributedConjugates.ConjugatesEquidistributed → PeriodLatticeAgreement.LatticePeriodEta → ThetaConstantWeber.ThetaWeberStatement →
@@ -346,7 +449,7 @@ theorem exists_integral_theta_ratio : EquidistributedConjugates.ConjugatesEquidi
         JacobiThetaHalfCharacteristic.thetaChar a b (t ρ / ω₁) τ = 0 →
         ‖ρ X‖ = (‖JacobiThetaHalfCharacteristic.thetaChar a b 0 τ‖ / ‖ModularForm.eta τ‖) ^ 12 := by
   intro _ hL hT D hJ cc δ M _ t hS
-  obtain ⟨e, g, hg, hval, hρ⟩ := GlobalTheory.T.halfPeriod_weierstrassValue_mem_conj D cc δ M t hS
+  obtain ⟨e, g, hg, hval, hρ⟩ := _root_.GlobalTheory.HalfPeriodValue.halfPeriod_value D cc δ M t hS
   have crv : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ := ⟨hS.1, hS.2.1⟩
   have hYρ : ∀ ρ : M →ₐ[ℚ] ℂ, ρ ((12 * e ^ 2 - g) / 4) =
       (12 * Formalism.MainNotions.StandardLatticesGL3.wpF (lamConj M ρ (lamOf D cc δ)) (t ρ) ^ 2 - g2 (lamConj M ρ (lamOf D cc δ))) / 4 := by
@@ -389,3 +492,7 @@ theorem exists_integral_theta_ratio : EquidistributedConjugates.ConjugatesEquidi
     rw [norm_mul, hs1, one_mul, norm_pow, norm_div]
 
 end GlobalTheory.IntegralX
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsIntegralPeriodElement =====

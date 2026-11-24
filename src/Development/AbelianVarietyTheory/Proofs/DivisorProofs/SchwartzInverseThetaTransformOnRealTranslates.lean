@@ -187,7 +187,6 @@ theorem fin_embR {N : ℕ} (t : Fin N → mixedEmbedding.mixedSpace F) : fin (em
   funext l
   first
   | rfl
-  | simp [fin, embR, pairA, sndA]
 
 def lineR {N : ℕ} (v : Fin N → mixedEmbedding.mixedSpace F) : ℝ →+ VA F N where
   toFun s := (embR (s • v), 0)
@@ -201,7 +200,6 @@ theorem isRealLine_lineR {N : ℕ} (v : Fin N → mixedEmbedding.mixedSpace F) :
   · funext l
     first
     | rfl
-    | simp [fin, sndA]
 
 end GlobalTheory.ThetaTransform.RealSchwartz
 

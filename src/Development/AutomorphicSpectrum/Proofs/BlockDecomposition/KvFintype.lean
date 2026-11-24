@@ -81,7 +81,7 @@ def hU (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F
     (Function.invFun (thU D n v τ) g)
 
 def nvL (D : D7) (v : Pl D) : (Fv D.host.F v)ˣ →* ℝ≥0 :=
-  (nnnormHom : Fv D.host.F v →*₀ ℝ≥0).toMonoidHom.comp (Units.coeHom _)
+  (nnNormHom : Fv D.host.F v →*₀ ℝ≥0).toMonoidHom.comp (Units.coeHom _)
 
 end GlobalTheory.CompanionTheory.Jp
 

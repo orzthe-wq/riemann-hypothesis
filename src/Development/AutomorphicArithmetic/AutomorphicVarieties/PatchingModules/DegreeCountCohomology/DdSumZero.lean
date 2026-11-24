@@ -100,8 +100,8 @@ theorem UpperTheory.V.Pa.rho1 :
       refine Matrix.ext fun i j => ?_
       by_cases h : i = j
       · subst h
-        simp [Matrix.one_apply]
-      · simp [Matrix.one_apply, h]
+        simp
+      · simp [h]
     unfold Kap.ρ1
     rw [hc, Matrix.transpose_mul, Matrix.transpose_add, Matrix.transpose_one]
     have h2 : (1 + (DD.epM fun j => (k.κ j g).map (algebraMap x.A X))ᵀ) *

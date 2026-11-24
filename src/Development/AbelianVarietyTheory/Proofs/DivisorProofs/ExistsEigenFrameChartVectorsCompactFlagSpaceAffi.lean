@@ -2,7 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FlagComponentFramedPointFrame
 public import Development.AbelianVarietyTheory.Definitions.Divisors.BarCompSubsetClosure
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpenRingInjectsToRingMappingToDenseStatement
+public import Mathlib.AlgebraicGeometry.Noetherian
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AffineOpenRingInjectsToRingMappingToDense
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
+public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLieEigenspaceFrameFlagCoverChartDomain
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -41,6 +45,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegersAlt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -69,7 +74,7 @@ theorem GlobalTheory.CompHS.exists_eigFrame_vecAt₀ : ∀ {E : Type} [Field E] 
   haveI : LocallyOfFiniteType TF.Y.s := inferInstance
   haveI : LocallyOfFiniteType (str₀ TF.X Z) := by unfold str₀ flagStr; infer_instance
   haveI : IsLocallyNoetherian (Y₀ TF.X Z) := LocallyOfFiniteType.isLocallyNoetherian (str₀ TF.X Z)
-  obtain ⟨K, _, ρ, hρ, hK⟩ := GlobalTheory.T.affineOpen_ring_injects_to_ring_mapping_to_dense (Y₀ TF.X Z) (U₀ TF.X Z) (dense_U₀ TF.X Z) W hW
+  obtain ⟨K, _, ρ, hρ, hK⟩ := _root_.GlobalTheory.affineOpen_injects_to_dense (Y₀ TF.X Z) (U₀ TF.X Z) (dense_U₀ TF.X Z) W hW
   letI : Algebra c.F K := (ρ.comp φ).toAlgebra
   have hz' : ⊤ ≤ (spMap ρ ≫ (hW.fromSpec ≫ inc₀ TF.X Z)) ⁻¹ᵁ TF.X.F.U k := FlagMod.le_preimage_comp _ hz
   have hr : Set.range ((spMap ρ ≫ (hW.fromSpec ≫ inc₀ TF.X Z)) ≫ TF.X.π) ⊆ Set.range TF.Y.j := by

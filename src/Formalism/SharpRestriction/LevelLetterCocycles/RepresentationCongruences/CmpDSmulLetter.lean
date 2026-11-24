@@ -144,7 +144,6 @@ theorem horTr_letter {T : LocLat G Qp LL O} {c' : ZMod n} {d : ℕ} {b : Fin d �
   refine Finset.sum_congr rfl (fun m _ => ?_)
   first
   | rw [smul_comm, hbm m]
-  | rw [← algebraMap_smul (LetA O n) (y r m) (b m), ← mul_smul, mul_comm, mul_smul, hbm m]
 
 end TypesD
 
@@ -177,12 +176,7 @@ namespace TypesD
 
 variable (W : LocWach PD LL O v n)
 
-theorem nl_letter {T : LocLat G Qp LL O} {i : ZMod n} {x : W.DD T} (hx : x ∈ W.Nl T i) :
-    (letE (O := O) i : LetA O n) • x = x := by
-  unfold LocWach.Nl at hx
-  obtain ⟨y, -, rfl⟩ := hx
-  simp only [LinearMap.smul_apply, LinearMap.id_apply]
-  rw [← mul_smul, letE_idem]
+alias nl_letter := _root_.Formalism.MainNotions.N.FrobeniusPowerSeries.TypesD.letE_smul_of_mem_Nl'
 
 theorem cmpD_sum {T : LocLat G Qp LL O} {d : ℕ} (y : Fin d → W.DD T) (hy : ∀ m, y m ∈ W.N T) :
     cmpD W T (∑ m, y m) = ∑ m, cmpD W T (y m) := by

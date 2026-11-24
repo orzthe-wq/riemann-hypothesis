@@ -1,9 +1,13 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsPeriodAtRestrict
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameDomainInSegreChartStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairLatticeSumComapStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundleStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.CoordinateIdeals
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.FrameDomainInSegreChart
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PairLatticeSumComap
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SegreChartBundle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -95,12 +99,12 @@ theorem frame_at : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : H
   have hrk : labelRk D (Or.bg τ) + labelRk D (Or.sm τ) = Dc.N := by
     rw [Or.rk_bg, Or.rk_sm]
     exact Nat.add_sub_cancel' Dc.j_le_N
-  have hsum := GlobalTheory.T.pair_lattice_sum_comap E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 (Or.bg τ) (Or.sm τ) (Or.bg_ne_sm τ τ)
+  have hsum := _root_.GlobalTheory.CompanionTheory.Ar.HodgeSum.isVB_sup E H D l Xo c Y S₀ Ω K J Dc.y Or.𝔐 (Or.bg τ) (Or.sm τ) (Or.bg_ne_sm τ τ)
   rw [hrk] at hsum
   have hvb : (Lat.comap (fun p => Or.𝔐.V (Or.bg τ) p ⊔ Or.𝔐.V (Or.sm τ) p) (Or.i τ)).IsVB Dc.N ⊤ :=
     isVB_comap_of_range _ _ (Or.i τ) (Or.i_inj τ) (Or.i_range τ) hsum
-  obtain ⟨c1, c2⟩ := GlobalTheory.T.frame_domain_in_segre_chart Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y hT z w cc f h hw hd
-  exact (GlobalTheory.T.segre_chart_bundle Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y (W τ) Dc.N (Dc.W τ) _ hT hvb (Or.lat τ) cc f b hfr.1 hfr.2.1
+  obtain ⟨c1, c2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeMetric.inChart_unitAt_of_inFrameDomain Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y hT z w cc f h hw hd
+  exact (_root_.GlobalTheory.CompanionTheory.Ar.isFrameOver_iff_forall_isFrameAt Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y (W τ) Dc.N (Dc.W τ) _ hT hvb (Or.lat τ) cc f b hfr.1 hfr.2.1
     hfr.2.2.1).1 hfr _ c1 c2
 
 end GlobalTheory.CompanionTheory.Ar.BlockSumFrame

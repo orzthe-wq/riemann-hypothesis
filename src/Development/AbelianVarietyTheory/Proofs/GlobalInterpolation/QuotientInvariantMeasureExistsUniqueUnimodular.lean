@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.InvariantRadonFibre
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeilCriterionInvariantMeasureHomogeneousSpaceStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeilCriterionInvariantMeasureHomogeneousSpace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,7 +66,7 @@ theorem modularCharacter_eq_one {G : Type} [Group G] [TopologicalSpace G] [IsTop
 theorem invariantMeasureClause : InvariantMeasureClause := by
   intro G _ _ _ _ _ _ _ _ H _ _ hH uG uH
   haveI : LocallyCompactSpace H := hH.isClosedEmbedding_subtypeVal.locallyCompactSpace
-  refine GlobalTheory.T.weil_criterion_invariant_measure_homogeneous_space G H hH fun h => ?_
+  refine _root_.GlobalTheory.WeilCriterion.modulusClause G H hH fun h => ?_
   rw [modularCharacter_eq_one uG, modularCharacter_eq_one uH]
 
 end GlobalTheory.Proof.quotientInvariantMeasure_exists_unique_unimodular

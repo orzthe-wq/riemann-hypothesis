@@ -96,7 +96,7 @@ theorem exists_point_norm_valF_eq {X : Scheme.{0}} {p : ℕ} [Fact p.Prime]
       valF (gPt p ≫ y') U φ = (((Scheme.ΓSpecIso (.of K)).hom
         ((Spec.map (CommRingCat.ofHom (algebraMap (integralClosure ℤ_[p] K) K)) ≫ y).appLE
           U ⊤ hy φ) : K) : PadicAlgCl p) := by
-  apply _root_.GlobalTheory.BoundedRegular.exists_point_norm_valF_eq <;> assumption
+  apply _root_.GlobalTheory.BoundedRegular.exists_point_norm_valF_eq
 
 theorem existsUnique_resG_eq {X : Scheme.{0}} [IsIntegral X] (π : X ⟶ Sp ℤ) [Flat π]
     [LocallyOfFiniteType π] (hX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) {U W : X.Opens}
@@ -136,7 +136,7 @@ theorem regular_of_bounded_at_padicAlgCl_points :
       (IsUnit φ → (∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ X), y (cPt p) ∈ W →
         Set.range (gPt p ≫ y) ⊆ U → ‖valF (gPt p ≫ y) U φ‖ = 1) →
           ∃ ψ : Γ(X, W), IsUnit ψ ∧ resG X h ψ = φ)) := by
-  apply _root_.GlobalTheory.regular_of_bounded_at_padicAlgCl_points <;> assumption
+  apply _root_.GlobalTheory.regular_of_bounded_at_padicAlgCl_points
 
 end RegularSupport
 

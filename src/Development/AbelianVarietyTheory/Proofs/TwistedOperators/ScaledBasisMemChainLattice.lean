@@ -166,8 +166,7 @@ theorem _root_.GlobalTheory.RootEx.UnfoldShape.mem_chainLat {ϖ : 𝒪[k]} {L : 
       Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩), ?_⟩
     funext r
     rcases r with r | i
-    · simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.inX, _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.aux, Finset.sum_apply,
-        Pi.single_apply]
+    · simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.inX, _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.aux, Finset.sum_apply]
     · simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.inX, _root_.GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms.aux, Finset.sum_apply,
         Pi.single_apply, Subring.smul_def, ha i]
 

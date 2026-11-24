@@ -55,15 +55,6 @@ namespace CrystallineSemistableComparison.Onto
 
 open Pb HT
 
-theorem bsum {K C V : Type*} [Field K] [CommRing C] [AddCommGroup V] [Module K V] (κ : K →+* C)
-    (f : Module.Dual K V →+ C) (hf : ∀ (k : K) φ, f (k • φ) = κ k * f φ) {m : ℕ} (b : Module.Basis (Fin m) K V)
-    (F : Module.Dual K V) : ∑ s, f (b.coord s) * κ (F (b s)) = f F := by
-  conv_rhs => rw [← b.sum_dual_apply_smul_coord F]
-
-  rw [map_sum]
-  refine Finset.sum_congr rfl fun s _ => ?_
-  rw [hf, mul_comm]
-
 theorem esum {K C V : Type*} [Field K] [CommRing C] [AddCommGroup V] [Module K V] (κ : K →+* C) {m : ℕ}
     (b : Module.Basis (Fin m) K V) (F : Module.Dual K V) (e : V) : ∑ s, κ (b.coord s e) * κ (F (b s)) = κ (F e) := by
   have : F e = ∑ s, b.coord s e * F (b s) := by

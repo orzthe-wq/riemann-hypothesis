@@ -45,6 +45,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowDict
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowLevelMatch
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RowsJoinPinned
+import Formalism.SharpRestriction.GlobalSchurBounds.ThickPlacesCorollaryOfAnyTranslate
 
 @[expose] public section
 
@@ -69,11 +70,6 @@ theorem conjPrime_conjPrime₂ {D : D7} (P : HeightOneSpectrum (𝓞 D.host.E)) 
   ext x
   rw [GlobalTheory.IdemSupport.mem_cP, GlobalTheory.IdemSupport.mem_cP, GlobalTheory.IdemSupport.cO_cO]
 
-theorem finrank_E' (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
-  have h1 : Module.finrank ℚ D.host.E = 4 * D.R.ord := D.host.finrank_cmField
-  have h5 : D.R.f = 2 * D.R.ord := rfl
-  rw [h1, h5]; ring
-
 theorem places_over_g_k : ∀ (D : D7) (k : Fin 2), Function.Injective (Sum.elim (D.naut.plGw k) (fun v => GlobalTheory.IdemSupport.cP (D := D) (D.naut.plGw k v))) ∧ (∀ W : HeightOneSpectrum (𝓞 D.host.E), ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ W.asIdeal ↔ ∃ i, Sum.elim (D.naut.plGw k) (fun v => GlobalTheory.IdemSupport.cP (D := D) (D.naut.plGw k v)) i = W) ∧ Fintype.card (D.nd.PlG k ⊕ D.nd.PlG k) = Module.finrank ℚ D.host.E := by
   intro D k
   set f := Sum.elim (D.naut.plGw k) (fun v => GlobalTheory.IdemSupport.cP (D := D) (D.naut.plGw k v)) with hf
@@ -95,7 +91,7 @@ theorem places_over_g_k : ∀ (D : D7) (k : Fin 2), Function.Injective (Sum.elim
       rw [GlobalTheory.IdemSupport.mem_cP, map_natCast]
       exact D.naut.plGw_over k v
   have hcard : Fintype.card (D.nd.PlG k ⊕ D.nd.PlG k) = Module.finrank ℚ D.host.E := by
-    rw [Fintype.card_sum, D.nd.card_PlG k, finrank_E', two_mul]
+    rw [Fintype.card_sum, D.nd.card_PlG k, _root_.Formalism.MainNotions.StandardLattice.finrank_host, two_mul]
   refine ⟨hinj, fun W => ⟨fun hW => ?_, ?_⟩, hcard⟩
   · have hfin : (Formalism.BasicNotions.placesOver D.host.E (D.host.g k)).Finite := by
       apply Set.finite_of_ncard_ne_zero

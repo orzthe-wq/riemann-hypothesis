@@ -80,7 +80,7 @@ theorem ptTop_lt (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) {n : ℕ} (h :
   simp only [ptTop, dif_pos h]
 
 theorem ptTop_m (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) : ptTop W g D.R.m = kappaTop W g := by
-  simp only [ptTop, lt_irrefl, dif_neg (lt_irrefl _), not_false_eq_true]
+  simp only [ptTop, lt_irrefl]
   rfl
 
 theorem ptGrid_le (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) {i : ℕ} (h : i < D.R.m + 1) :

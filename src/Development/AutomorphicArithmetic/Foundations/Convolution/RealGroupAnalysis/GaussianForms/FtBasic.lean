@@ -64,7 +64,7 @@ private lemma Gm_mul_Hm {δ : F} (hδ : δ ≠ 0) : Gm δ * Hm δ = 1 := by
   have h2 : (2 : F) ≠ 0 := two_ne_zero
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [Gm, Hm, Matrix.mul_apply, Fin.sum_univ_four, h2, hδ]
+    simp [Gm, Hm, Matrix.mul_apply, Fin.sum_univ_four, h2]
   field_simp
 
 private lemma Hm_mul_Gm {δ : F} (hδ : δ ≠ 0) : Hm δ * Gm δ = 1 :=

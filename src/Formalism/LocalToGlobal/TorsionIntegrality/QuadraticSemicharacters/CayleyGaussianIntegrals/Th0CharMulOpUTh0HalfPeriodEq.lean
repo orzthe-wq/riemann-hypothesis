@@ -55,6 +55,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.Th0TranslateProduct
 
 @[expose] public section
 
@@ -121,7 +122,7 @@ theorem mem_lattice_of_dual (L : PeriodPair) (u : ℂ)
   have hsw := Formalism.L2.Th1.F.OperatorUThetaLemmas.altE_swap L L.ω₁ L.ω₂
   rw [← hu, cayleyGaussianIntegrals_lin_fact, cayleyGaussianIntegrals_self_fact, hsw] at h1
   rw [← hu, cayleyGaussianIntegrals_lin_fact, cayleyGaussianIntegrals_self_fact] at h2
-  have hE := Formalism.L2.Th1.F.altEBasis L
+  have hE := _root_.Formalism.L2.Th1.F.alternating_form_basis L
   rw [← hu]
   split_ifs at hE
   · rw [hE] at h1 h2
@@ -165,7 +166,7 @@ theorem th0Char_add (L : PeriodPair) (ω₀ x y : ℂ) (hx : x ∈ L.lattice) (h
       = Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ x * Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ y
         * Complex.exp ((Real.pi : ℂ) * Complex.I * (Formalism.L2.Th1.F.altE L x y : ℂ)) := by
   simp only [Formalism.L2.Th1.F.thetaZeroCharacter]
-  rw [Formalism.L2.Th1.F.semiCharMul L x y hx hy, period_skew_form_add_left]
+  rw [_root_.Formalism.L2.Th1.F.semi_character_mul L x y hx hy, period_skew_form_add_left]
   push_cast
   rw [mul_add, Complex.exp_add]
   ring
@@ -279,7 +280,7 @@ theorem th_split (L : PeriodPair) (ω₀ : ℂ) (n : Type) [Fintype n] [Decidabl
     · simp only [Function.update_of_ne h]
       exact differentiable_const _
   have hGd : Differentiable ℂ G := fun z => (hGa z (Set.mem_univ z)).differentiableAt
-  have hline := Formalism.L2.Th1.F.th0Line L ω₀ (fun t => G (Function.update w i t)) h0 hh (hGd.comp hu) ?_
+  have hline := _root_.Formalism.L2.Th1.F.even_theta_line L ω₀ (fun t => G (Function.update w i t)) h0 hh (hGd.comp hu) ?_
     (w i)
   · simpa only [Function.update_eq_self] using hline
   · intro ω hω t
@@ -374,7 +375,7 @@ theorem cm_th0Char (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (h4
       ∈ (Formalism.L2.Th1.F.cmPair a b d ha hd).lattice := PeriodPair.mem_lattice.mpr ⟨m, k, rfl⟩
   obtain ⟨-, h1, -, -, hq⟩ := Formalism.L2.Th1.F.th0Basic (Formalism.L2.Th1.F.cmPair a b d ha hd) (a : ℂ) hmem0 hhalf
   have hA := hq _ hmem 0
-  have hB := Formalism.L2.Th1.F.cmTheta0 a b c d ha hd h4 hodd h8 m k 0
+  have hB := _root_.Formalism.L2.Th1.F.cm_even_theta a b c d ha hd h4 hodd h8 m k 0
   rw [hA, h1, mul_one, mul_one, ← Formalism.L2.Th1.F.thetaZeroCharacter] at hB
   rw [← neg_one_pow_natAbs]
   exact mul_right_cancel₀ (Complex.exp_ne_zero _) hB
@@ -389,7 +390,7 @@ theorem CmStdChar_proof : CmStdChar := by
   obtain ⟨m, k, hmk⟩ := PeriodPair.mem_lattice.mp (hx i)
   have hmk' : (m : ℂ) * (a : ℂ) + (k : ℂ) * Formalism.L2.Th1.F.cmTheta b d = x i := hmk
   rw [← hmk', cm_th0Char a b c d ha hd h4 hodd h8 m k,
-    (Formalism.L2.Th1.F.cmNorm a b c d ha hd h4 m k).2.1, Complex.ofReal_re, ← exp_pi_int]
+    (_root_.Formalism.L2.Th1.F.cm_norm a b c d ha hd h4 m k).2.1, Complex.ofReal_re, ← exp_pi_int]
   congr 3
   field_simp
 

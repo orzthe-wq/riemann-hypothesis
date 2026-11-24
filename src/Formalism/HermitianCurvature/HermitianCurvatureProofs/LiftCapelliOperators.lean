@@ -1,15 +1,17 @@
 module
 
 public import Formalism.HermitianCurvature.StatementTL
-import Formalism.FormalDegreeBessel.FormalDegreeRatio.BFCell
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CapelliDetAdInvariant
+public import Formalism.HermitianCurvature.StatementJF
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CapAdInv
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CapelliWordSumExpansion
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CompactSupportFacts
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.TendstoIntUv
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BetaSesquilinearity
+import Formalism.FormalDegreeBessel.FormalDegreeRatio.BFCell
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.LevelFormSesquilinearFiniteClass
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.QxChain
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularisedPairingViaPhase
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RestrictionIrrelevantDoubleLevelOperator
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.TendstoIntUv
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.WCellMemOmPlus
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -54,7 +56,6 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BetaSesquilinearity
 
 @[expose] public section
 
@@ -215,7 +216,7 @@ theorem lift_capelli_operators : TL.LiftCap := by
     have hgG : g ∈ B.GV P.k P.r := hg.1
     have hs' := Formalism.FourierDecayAlt.P.B7.sgs_mem Bs hp hgG
     rw [hApp _ (Formalism.FourierDecayAlt.P.B5.ckOn_rho Bs hp hf) g hgG,
-      Formalism.FourierDecayAlt.P.capelli_rho_commute P.k P.r Wp Wq Bs Y f p hp hf g hgG]
+      _root_.Formalism.FourierDecayAlt.P.JFxE.cVRho P.k P.r Wp Wq Bs Y f p hp hf g hgG]
     simp only [B.rho]
     rw [hApp f hf _ hs', ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]
   · intro T hT

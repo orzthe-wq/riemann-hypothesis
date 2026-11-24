@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValuesStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionEqZeroOfValues
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -205,7 +206,7 @@ theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra
     exact (congrArg (· ≫ c) hφ).trans hg
   choose e he using lift
   refine ⟨I, inferInstance, Subtype.val, e, he, fun b hb => ?_⟩
-  have hs := GlobalTheory.T.section_eq_zero_of_values R T Γ (c ''ᵁ ⊤)
+  have hs := _root_.GlobalTheory.CompanionTheory.Ar.BT.section_eq_zero_of_val_generic R T Γ (c ''ᵁ ⊤)
     ((c.appIso ⊤).inv ((Scheme.ΓSpecIso (CommRingCat.of B)).inv b)) (fun t h => by
       have hr : Set.range (Γ.pt t).left ⊆ Set.range c := by
         rintro _ ⟨x, rfl⟩

@@ -3,7 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 public import Development.AbelianVarietyTheory.Statements.SemistableTorsion.SemistableFin
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsIntegralOfSmoothFieldOfConnectedSpace
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfProperSpecialFibreUniversallyOpenDvrStatement
+public import Mathlib.AlgebraicGeometry.Geometrically.Irreducible
+public import Mathlib.AlgebraicGeometry.Morphisms.Proper
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsProperOfProperSpecialFibreUniversallyOpenDvr
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -60,6 +64,6 @@ theorem isProper_of_proper_fibres :
   intro W L _ _ _ _ _ _ G _ h _ h2
   obtain ⟨a, b, c, d, e⟩ := h
   have := GlobalTheory.grpObj_geometricallyIntegral_of_smooth _ G
-  exact GlobalTheory.T.isProper_of_properSpecialFibre_universallyOpen_dvr W G.left G.hom inferInstance inferInstance inferInstance inferInstance inferInstance h2
+  exact _root_.GlobalTheory.FibreProperDvr.isProper_of_specialFibre W G.left G.hom inferInstance inferInstance inferInstance inferInstance inferInstance h2
 
 end GlobalTheory.GoodRedProper

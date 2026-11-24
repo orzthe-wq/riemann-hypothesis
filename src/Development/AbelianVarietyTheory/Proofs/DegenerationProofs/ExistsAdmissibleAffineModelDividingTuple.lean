@@ -55,8 +55,8 @@ namespace GlobalTheory.ZH
 
 theorem finite_over_subfield_of_le {Ω : Type} [Field Ω] {K L : Subfield Ω} (h : K ≤ L)
     (hK : Module.Finite K Ω) : Module.Finite L Ω := by
-  letI : Algebra K L := (Subfield.inclusion h).toAlgebra
-  haveI : IsScalarTower K L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl
+  let : Algebra K L := (Subfield.inclusion h).toAlgebra
+  have : IsScalarTower K L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl
   exact Module.Finite.of_restrictScalars_finite K L Ω
 
 theorem exists_normal_proj_hasDiv_family (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω]
@@ -66,10 +66,10 @@ theorem exists_normal_proj_hasDiv_family (o Ω : Type) [CommRing o] [Field Ω] [
     (B : Type) [Finite B] (JJ : B → Type) [∀ b, Finite (JJ b)] (tt : ∀ b, JJ b → Ω)
     (htt : ∀ b, ∃ k, tt b k ≠ 0) :
     ∃ M : RatModel o Ω, IsNormalScheme M.Z ∧ IsProjOver M.s ∧ M.HasDiv t ∧ ∀ b, M.HasDiv (tt b) := by
-  haveI := ArithBase.ded (o := o) (Ω := Ω)
-  haveI := ArithBase.char (o := o) (Ω := Ω)
-  letI : Fintype B := Fintype.ofFinite B
-  letI : Fintype (∀ b, JJ b) := Fintype.ofFinite _
+  have := ArithBase.ded (o := o) (Ω := Ω)
+  have := ArithBase.char (o := o) (Ω := Ω)
+  let : Fintype B := Fintype.ofFinite B
+  let : Fintype (∀ b, JJ b) := Fintype.ofFinite _
   choose q₀ hq₀ using htt
   have hP : (∏ b, tt b (q₀ b)) ≠ 0 := Finset.prod_ne_zero_iff.2 fun b _ => hq₀ b
   obtain ⟨i₀, hi₀⟩ := ht
@@ -91,11 +91,11 @@ theorem exists_admissible_affine_model_dividing_tuple : ∀ (o Ω : Type) [CommR
   intro o Ω _ _ _ _ S J₀ _ t₀ ht₀ hfin
   have hN : S.N ≠ 0 := by have := S.N_ge; omega
   have hr : S.r ≠ 0 := by have := S.r_pos; omega
-  haveI : NeZero S.N := ⟨hN⟩
-  haveI : NeZero (S.r * S.N) := ⟨mul_ne_zero hr hN⟩
-  haveI : NeZero ((S.r * S.N) ^ 2) := ⟨pow_ne_zero _ (mul_ne_zero hr hN)⟩
-  haveI : Finite (AddSubgroup S.Gam) := Finite.of_injective _ SetLike.coe_injective
-  haveI : ∀ T : AddSubgroup S.Gam, Finite (T →+ ZMod S.N) := fun T =>
+  have : NeZero S.N := ⟨hN⟩
+  have : NeZero (S.r * S.N) := ⟨mul_ne_zero hr hN⟩
+  have : NeZero ((S.r * S.N) ^ 2) := ⟨pow_ne_zero _ (mul_ne_zero hr hN)⟩
+  have : Finite (AddSubgroup S.Gam) := Finite.of_injective _ SetLike.coe_injective
+  have : ∀ T : AddSubgroup S.Gam, Finite (T →+ ZMod S.N) := fun T =>
     Finite.of_injective _ DFunLike.coe_injective
   obtain ⟨x₀, hx₀⟩ := S.th_ne
   obtain ⟨i₀, hi₀⟩ := ht₀

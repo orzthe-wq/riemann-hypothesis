@@ -61,7 +61,7 @@ theorem zs_eq_mul_dep_eis : ∀ (k l j : ℕ) (u v A A' : ℤ → ℂ) (c c' : �
       rcases h with h | h <;> simp [dep, h]
     rw [hz]
     simp [h]
-  · push_neg at h
+  · push Not at h
     obtain ⟨h1, h2⟩ := h
     have p1 : p.1 ≠ 0 := fun e => h1 (e ▸ dvd_zero l)
     have p2 : p.2 ≠ 0 := fun e => h2 (e ▸ dvd_zero l)

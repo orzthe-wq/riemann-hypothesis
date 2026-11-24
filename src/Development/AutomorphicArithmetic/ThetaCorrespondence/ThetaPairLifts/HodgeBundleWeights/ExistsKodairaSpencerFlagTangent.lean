@@ -78,8 +78,8 @@ theorem exists_kodaira_spencer_map : _root_.GlobalTheory.CovTop.Hypotheses'' →
   have hA' := GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hU hπ'
   have gA' := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ'.1 hg
   have : IsCommMonObj A := hA.comm
-  obtain ⟨a', ha'⟩ := GlobalTheory.T.exists_ringAction_of_isGrpPullback Xo.univ.t.act hπ'
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_ringAction_of_isGrpPullback Xo.univ.t.act hπ
+  obtain ⟨a', ha'⟩ := _root_.GlobalTheory.OActPull.exists_oAct_of_isGrpPullback Xo.univ.t.act hπ'
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.OActPull.exists_oAct_of_isGrpPullback Xo.univ.t.act hπ
   have hc : ∀ z, (a.act z).left ≫ j = j ≫ (a'.act z).left := fun z => by
     apply hπ'.1.hom_ext
     · rw [Category.assoc, Category.assoc, ha' z, ← Category.assoc j π', ← ha z]
@@ -111,10 +111,3 @@ end GlobalTheory.KSExist
 end
 end
 
-section
-open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
-open AlgebraicGeometry CategoryTheory
-
-theorem _root_.GlobalTheory.T.exists_kodaira_spencer_flag_tangent : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (x' : Sp (DualNumber K) ⟶ Xo.X), 1 ≤ Dw.p + Dw.q → GlobalTheory.FlagTan.IsTanX y x' → ∃ M : GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K, GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x' M := by
-  first | exact @_root_.GlobalTheory.KSExist.exists_kodaira_spencer_map | exact _root_.GlobalTheory.KSExist.exists_kodaira_spencer_map | (intros; apply _root_.GlobalTheory.KSExist.exists_kodaira_spencer_map <;> assumption)
-end

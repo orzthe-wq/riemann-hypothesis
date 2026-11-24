@@ -1,12 +1,16 @@
 module
 
+public import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionOfSingularities
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.BlowupSequenceBasic
+public import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.BlowupSequenceFlatBaseChange
 public import Development.ResolutionOfSingularities.EmbeddedResolution.StrongResolution.EmbeddedBlowupSequence
 public import Development.ResolutionOfSingularities.EmbeddedResolution.AlgebraicPreliminaries.KernelFlatBaseChange
-import Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.BlowupSequenceBasic
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.StrictTransformOffCenter
-public import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceTransitions
 public import Development.ResolutionOfSingularities.EmbeddedResolution.StrictTransformCharts.StrictTransformFlatBaseChange
 public import Development.ResolutionOfSingularities.EmbeddedResolution.StrongResolution.DetachedLocus
+public import Mathlib.Order.Interval.Set.Monotone
+import Development.ResolutionOfSingularities.EmbeddedResolution.StrictTransformCharts.BlowupFlatBaseChange
+import Development.ResolutionOfSingularities.Foundations.Blowup.BlowupBasic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -33,6 +37,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,8 +50,212 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Mathlib.Order.Interval.Set.Monotone
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceTransitions, Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.ChartFlatBaseChange
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceTransitions =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceTransitions", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionOfSingularities\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.BlowupSequenceBasic\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.BlowupSequenceFlatBaseChange\nimport Development.ResolutionOfSingularities.EmbeddedResolution.StrictTransformCharts.BlowupFlatBaseChange\nimport Development.ResolutionOfSingularities.Foundations.Blowup.BlowupBasic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+open CategoryTheory AlgebraicGeometry CategoryTheory.Limits Opposite
+
+namespace FunctorialResolution.EmbeddedResolution
+
+namespace SequenceOfBlowups
+
+variable {X : Scheme.{u}}
+
+theorem pullbackTransitionMap_self_eq_id (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i : ℕ} (h : i ≤ i) :
+    s.pullbackTransitionMap φ h = 𝟙 (pullback φ (s.projectionToBase i)) := by
+  refine pullback.hom_ext ?_ ?_
+  · rw [s.pullbackTransitionMap_fst, Category.id_comp]
+  · rw [s.pullbackTransitionMap_snd, s.transitionMap_self_eq_id, Category.comp_id, Category.id_comp]
+
+theorem pullbackTransitionMap_trans (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i j l : ℕ}
+    (hij : i ≤ j) (hjl : j ≤ l) :
+    s.pullbackTransitionMap φ hjl ≫ s.pullbackTransitionMap φ hij = s.pullbackTransitionMap φ (hij.trans hjl) := by
+  refine pullback.hom_ext ?_ ?_
+  · rw [Category.assoc, s.pullbackTransitionMap_fst, s.pullbackTransitionMap_fst, s.pullbackTransitionMap_fst]
+  · rw [Category.assoc, s.pullbackTransitionMap_snd, ← Category.assoc, s.pullbackTransitionMap_snd, Category.assoc,
+      s.transitionMap_trans, s.pullbackTransitionMap_snd]
+
+private theorem isIso_pullbackTransitionMap_add (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) (n : ℕ) :
+    ∀ (k : ℕ) (h : n ≤ n + k),
+      (∀ m, n ≤ m → m < n + k → IsIso (s.pullbackTransitionMap φ (Nat.le_succ m))) →
+      IsIso (s.pullbackTransitionMap φ h) := by
+  intro k
+  induction k with
+  | zero =>
+      intro h _
+      have hid : s.pullbackTransitionMap φ h = 𝟙 (pullback φ (s.projectionToBase n)) := s.pullbackTransitionMap_self_eq_id φ h
+      rw [hid]
+      infer_instance
+  | succ k ih =>
+      intro h hstep
+      have h1 : IsIso (s.pullbackTransitionMap φ (Nat.le_add_right n k)) :=
+        ih (Nat.le_add_right n k) (fun m hm hmk => hstep m hm (by omega))
+      have h2 : IsIso (s.pullbackTransitionMap φ (Nat.le_succ (n + k))) :=
+        hstep (n + k) (Nat.le_add_right n k) (by omega)
+      have key : IsIso (s.pullbackTransitionMap φ (Nat.le_succ (n + k)) ≫
+          s.pullbackTransitionMap φ (Nat.le_add_right n k)) := inferInstance
+      rw [s.pullbackTransitionMap_trans φ (Nat.le_add_right n k) (Nat.le_succ (n + k))] at key
+      exact key
+
+theorem isIso_pullbackTransitionMap (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {n n' : ℕ}
+    (h : n ≤ n') (hstep : ∀ m, n ≤ m → m < n' → IsIso (s.pullbackTransitionMap φ (Nat.le_succ m))) :
+    IsIso (s.pullbackTransitionMap φ h) := by
+  obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h
+  exact isIso_pullbackTransitionMap_add s φ n k h hstep
+
+end SequenceOfBlowups
+
+private theorem idealSheafData_eq_top_of_support_empty {X : Scheme.{u}} (I : X.IdealSheafData)
+    (h : ∀ x : X, x ∉ I.support) : I = ⊤ := by
+  rw [← Scheme.IdealSheafData.support_eq_bot_iff]
+  ext x
+  simp [h x]
+
+private theorem isPullback_of_iso_pullback {P Z A A' : Scheme.{u}} (f : A' ⟶ A) (h : Z ⟶ A)
+    (ε : P ≅ pullback f h) {a : P ⟶ Z} {b : P ⟶ A'}
+    (ha : ε.hom ≫ pullback.snd f h = a) (hb : ε.hom ≫ pullback.fst f h = b) :
+    IsPullback a b h f := by
+  refine (IsPullback.of_iso_pullback ⟨?_⟩ ε hb ha).flip
+  rw [← ha, ← hb, Category.assoc, Category.assoc, pullback.condition]
+
+theorem IsPullbackBlowupSequence.exists_reindexing_of_flat {A A' : Scheme.{u}} (f : A' ⟶ A)
+    [AlgebraicGeometry.Flat f] {t' : SequenceOfBlowups A'} {t : SequenceOfBlowups A}
+    (hpb : IsPullbackBlowupSequence f t' t) :
+    ∃ (σ : ℕ → ℕ) (g : ∀ j, j ≤ t'.length → (t'.schemeAt j ⟶ t.schemeAt (σ j))),
+      (∀ j, j < t'.length → σ j < t.length) ∧
+      (∀ j, j < t'.length → σ j < σ (j + 1)) ∧
+      σ t'.length = t.length ∧
+      (∀ (j : ℕ) (hj : j ≤ t'.length),
+        IsPullback (g j hj) (t'.projectionToBase j) (t.projectionToBase (σ j)) f) ∧
+      (∀ (j : ℕ) (hj : j ≤ t'.length) (i : ℕ) (hi : i ≤ σ j),
+        (∀ m, i ≤ m → m < σ j → ∀ j', j' < t'.length → σ j' ≠ m) →
+        IsPullback (g j hj ≫ t.transitionMap hi) (t'.projectionToBase j) (t.projectionToBase i) f) ∧
+      (∀ (j : ℕ) (hj : j < t'.length) (hσ : σ j + 1 ≤ σ (j + 1)),
+        IsPullback (g (j + 1) (Nat.succ_le_of_lt hj) ≫ t.transitionMap hσ) (t'.transitionMapSucc j)
+          (t.transitionMapSucc (σ j)) (g j (Nat.le_of_lt hj))) ∧
+      (∀ (j : ℕ) (hj : j < t'.length),
+        t'.center j = (t.center (σ j)).comap (g j (Nat.le_of_lt hj))) ∧
+      (∀ i, i < t.length → (∀ j, j < t'.length → σ j ≠ i) →
+        ∀ (P : Scheme.{u}) (q : P ⟶ t.schemeAt i) (p : P ⟶ A'),
+          IsPullback q p (t.projectionToBase i) f → (t.center i).comap q = ⊤) := by
+  obtain ⟨r, e, hrlt, hrmono, hrlen, hsupp, hfst, hblow, hcen⟩ := hpb
+  have hmono : ∀ i j : ℕ, j ≤ t'.length → i ≤ j → r i ≤ r j := by
+    intro i j hj hij
+    rcases eq_or_lt_of_le hij with rfl | hlt
+    · exact le_rfl
+    · exact (hrmono i j hj hlt).le
+  have hrle : ∀ j : ℕ, j ≤ t'.length → r j ≤ t.length := by
+    intro j hj
+    rcases eq_or_lt_of_le hj with rfl | hlt
+    · exact le_of_eq hrlen
+    · exact (hrlt j hlt).le
+  have htop : ∀ m : ℕ, m < t.length → (∀ j', j' < t'.length → r j' ≠ m) →
+      (t.center m).comap (pullback.snd f (t.projectionToBase m)) = ⊤ := by
+    intro m hm hskip
+    refine idealSheafData_eq_top_of_support_empty _ ?_
+    intro x hx
+    obtain ⟨j', hj', hrj'⟩ := (hsupp m hm).mp ⟨x, hx⟩
+    exact hskip j' hj' hrj'
+  have hiso : ∀ m : ℕ, m < t.length → (∀ j', j' < t'.length → r j' ≠ m) →
+      IsIso (t.pullbackTransitionMap f (Nat.le_succ m)) := by
+    intro m hm hskip
+    have hsq : IsPullback (pullback.snd f (t.projectionToBase (m + 1)))
+        (t.pullbackTransitionMap f (Nat.le_succ m)) (t.transitionMapSucc m)
+        (pullback.snd f (t.projectionToBase m)) := by
+      have hbase : IsPullback (pullback.snd f (t.projectionToBase m))
+          (pullback.fst f (t.projectionToBase m)) (t.projectionToBase m) f :=
+        (IsPullback.of_hasPullback f (t.projectionToBase m)).flip
+      have hsnd : pullback.snd f (t.projectionToBase (m + 1)) ≫ t.transitionMapSucc m =
+          t.pullbackTransitionMap f (Nat.le_succ m) ≫ pullback.snd f (t.projectionToBase m) := by
+        rw [t.pullbackTransitionMap_snd, t.blowupMorphism_eq_transitionMap]
+      have hsquare : IsPullback (pullback.snd f (t.projectionToBase (m + 1)))
+          (t.pullbackTransitionMap f (Nat.le_succ m) ≫ pullback.fst f (t.projectionToBase m))
+          (t.transitionMapSucc m ≫ t.projectionToBase m) f := by
+        rw [t.pullbackTransitionMap_fst, t.blowupMorphism_eq_transitionMap,
+          t.transitionMap_comp_projectionToBase]
+        exact (IsPullback.of_hasPullback f (t.projectionToBase (m + 1))).flip
+      exact hsquare.of_bot hsnd hbase
+    have hb := (t.isBlowupAlongIdealSheaf_blowupMorphism m hm).of_isPullback_of_flat
+      (pullback.snd f (t.projectionToBase m)) hsq
+    rw [htop m hm hskip] at hb
+    exact hb.isIso_of_top
+  have hD : ∀ (j : ℕ) (hj : j ≤ t'.length),
+      IsPullback ((e j hj).hom ≫ pullback.snd f (t.projectionToBase (r j))) (t'.projectionToBase j)
+        (t.projectionToBase (r j)) f := fun j hj =>
+    isPullback_of_iso_pullback f (t.projectionToBase (r j)) (e j hj) rfl (hfst j hj)
+  have hE : ∀ (j : ℕ) (hj : j ≤ t'.length) (i : ℕ) (hi : i ≤ r j),
+      (∀ m, i ≤ m → m < r j → ∀ j', j' < t'.length → r j' ≠ m) →
+      IsPullback (((e j hj).hom ≫ pullback.snd f (t.projectionToBase (r j))) ≫ t.transitionMap hi)
+        (t'.projectionToBase j) (t.projectionToBase i) f := by
+    intro j hj i hi hskip
+    have hiso' : IsIso (t.pullbackTransitionMap f hi) := by
+      refine SequenceOfBlowups.isIso_pullbackTransitionMap t f hi ?_
+      intro m him hmrj
+      exact hiso m (lt_of_lt_of_le hmrj (hrle j hj)) (fun j' hj' => hskip m him hmrj j' hj')
+    refine isPullback_of_iso_pullback f (t.projectionToBase i) ((e j hj) ≪≫ asIso (t.pullbackTransitionMap f hi)) ?_ ?_
+    · show ((e j hj).hom ≫ t.pullbackTransitionMap f hi) ≫ pullback.snd f (t.projectionToBase i) = _
+      rw [Category.assoc, t.pullbackTransitionMap_snd, ← Category.assoc]
+    · show ((e j hj).hom ≫ t.pullbackTransitionMap f hi) ≫ pullback.fst f (t.projectionToBase i) = _
+      rw [Category.assoc, t.pullbackTransitionMap_fst]
+      exact hfst j hj
+  have hF : ∀ (j : ℕ) (hj : j < t'.length) (hsig : r j + 1 ≤ r (j + 1)),
+      IsPullback
+        (((e (j + 1) (Nat.succ_le_of_lt hj)).hom ≫ pullback.snd f (t.projectionToBase (r (j + 1))))
+          ≫ t.transitionMap hsig)
+        (t'.transitionMapSucc j) (t.transitionMapSucc (r j))
+        ((e j (Nat.le_of_lt hj)).hom ≫ pullback.snd f (t.projectionToBase (r j))) := by
+    intro j hj hsig
+    have hskip : ∀ m, r j + 1 ≤ m → m < r (j + 1) → ∀ j', j' < t'.length → r j' ≠ m := by
+      intro m hm1 hm2 j' hj' hrj'
+      rcases Nat.lt_or_ge j j' with hlt | hle
+      · have h1 := hmono (j + 1) j' (le_of_lt hj') (Nat.succ_le_of_lt hlt)
+        omega
+      · have h1 := hmono j' j (le_of_lt hj) hle
+        omega
+    have s0 := hE (j + 1) (Nat.succ_le_of_lt hj) (r j + 1) hsig hskip
+    rw [t'.projectionToBase_succ j, t.projectionToBase_succ (r j)] at s0
+    have hdown : t.transitionMap hsig ≫ t.transitionMapSucc (r j) = t.transitionMap ((Nat.le_succ (r j)).trans hsig) :=
+      t.transitionMap_trans (Nat.le_succ (r j)) hsig
+    have hp : (((e (j + 1) (Nat.succ_le_of_lt hj)).hom ≫
+          pullback.snd f (t.projectionToBase (r (j + 1)))) ≫ t.transitionMap hsig) ≫ t.transitionMapSucc (r j)
+        = t'.transitionMapSucc j ≫ ((e j (Nat.le_of_lt hj)).hom ≫
+          pullback.snd f (t.projectionToBase (r j))) := by
+      simp only [Category.assoc]
+      rw [hdown, ← Category.assoc (t'.transitionMapSucc j),
+        hblow j hj ((Nat.le_succ (r j)).trans hsig), Category.assoc, t.pullbackTransitionMap_snd]
+    exact IsPullback.of_bot s0 hp (hD j (Nat.le_of_lt hj))
+  have hH : ∀ i, i < t.length → (∀ j, j < t'.length → r j ≠ i) →
+      ∀ (P : Scheme.{u}) (q : P ⟶ t.schemeAt i) (p : P ⟶ A'),
+        IsPullback q p (t.projectionToBase i) f → (t.center i).comap q = ⊤ := by
+    intro i hi hskip P q p hsq
+    have hw : p ≫ f = q ≫ t.projectionToBase i := hsq.w.symm
+    let u : P ⟶ pullback f (t.projectionToBase i) := pullback.lift p q hw
+    have hu2 : u ≫ pullback.snd f (t.projectionToBase i) = q := pullback.lift_snd _ _ _
+    have hcomp : (t.center i).comap q
+        = ((t.center i).comap (pullback.snd f (t.projectionToBase i))).comap u := by
+      rw [← hu2]
+      simp [Scheme.IdealSheafData.comap_comp]
+    rw [hcomp, htop i hi hskip]
+    exact Scheme.IdealSheafData.comap_top u
+  exact ⟨r, fun j hj => (e j hj).hom ≫ pullback.snd f (t.projectionToBase (r j)),
+    hrlt, fun j hj => hrmono j (j + 1) hj (Nat.lt_succ_self j), hrlen, hD, hE, hF, hcen, hH⟩
+
+end FunctorialResolution.EmbeddedResolution
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceTransitions =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.ChartFlatBaseChange =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.ChartFlatBaseChange", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.StrongResolution.EmbeddedBlowupSequence\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.AlgebraicPreliminaries.KernelFlatBaseChange\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.BlowupSequenceBasic\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.StrictTransformOffCenter\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceTransitions\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.StrictTransformCharts.StrictTransformFlatBaseChange\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.StrongResolution.DetachedLocus\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import Mathlib.Order.Interval.Set.Monotone\n\n"}
+section -- clump:auto
 @[expose] public section
 
 universe u
@@ -355,3 +564,6 @@ def chartFlatBaseChangeOfIsPullbackSeq (S : EmbeddedBlowupSequence k Y pY) (S' :
 end FunctorialResolution.EmbeddedResolution
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.ChartFlatBaseChange =====

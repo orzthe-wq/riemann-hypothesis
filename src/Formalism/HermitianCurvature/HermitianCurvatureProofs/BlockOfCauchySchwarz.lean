@@ -88,52 +88,37 @@ theorem qf_block (a : α → α → ℂ) (w : α → β → ℂ) (b : β → β 
   simp only [Complex.add_re, Complex.conj_re]
   ring
 
+open scoped ComplexOrder Matrix in
 theorem psd_iff_qf {γ : Type} (Y : Finset γ) (k : γ → γ → ℂ) :
     TB.PSDOn Y k ↔ (∀ x ∈ Y, ∀ y ∈ Y, k y x = conj (k x y)) ∧ ∀ c, 0 ≤ (qf Y k c).re := by
   classical
-  have hqf : ∀ c : γ → ℂ, qf Y k c = ∑ i : Y, ∑ j : Y, conj (c i) * k i j * c j := by
-    intro c
-    unfold qf
+  let M : Matrix Y Y ℂ := Matrix.of fun i j : Y => k i j
+  have hqf (c : γ → ℂ) : qf Y k c =
+      star (fun i : Y => c i) ⬝ᵥ (M *ᵥ (fun i : Y => c i)) := by
+    simp only [qf, dotProduct, Matrix.mulVec, M, Matrix.of_apply, Pi.star_apply,
+      Complex.star_def, Finset.mul_sum, ← mul_assoc]
     rw [← Finset.sum_coe_sort Y]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [← Finset.sum_coe_sort Y]
-  have hsum : ∀ x : Y →₀ ℂ,
-      (x.sum fun i xi => x.sum fun j xj => star xi * Matrix.of (fun x y : Y => k x y) i j * xj) =
-        ∑ i : Y, ∑ j : Y, conj (x i) * k i j * x j := by
-    intro x
-    rw [Finsupp.sum_fintype _ _ (fun i => by simp)]
-    refine Finset.sum_congr rfl fun i _ => ?_
-    rw [Finsupp.sum_fintype _ _ (fun j => by simp)]
-    rfl
-  unfold TB.PSDOn Matrix.PosSemidef
+    exact Finset.sum_congr rfl fun _ _ => by rw [← Finset.sum_coe_sort Y]
+  change M.PosSemidef ↔ _
+  rw [Matrix.posSemidef_iff_dotProduct_mulVec]
   constructor
   · rintro ⟨hH, hpos⟩
-    refine ⟨fun x hx y hy => ?_, fun c => ?_⟩
-    · have h1 := hH.apply ⟨y, hy⟩ ⟨x, hx⟩
-      exact h1.symm
-    · have h2 := hpos (Finsupp.equivFunOnFinite.symm fun i : Y => c i)
-      rw [hsum] at h2
-      rw [hqf]
-      simpa using (Complex.le_def.mp h2).1
+    refine ⟨fun x hx y hy => (hH.apply ⟨y, hy⟩ ⟨x, hx⟩).symm, fun c => ?_⟩
+    rw [hqf]
+    exact (Complex.le_def.mp (hpos fun i => c i)).1
   · rintro ⟨hh, hq⟩
-    refine ⟨Matrix.IsHermitian.ext fun i j => ?_, fun x => ?_⟩
-    · simp only [Matrix.of_apply]
+    have hH : M.IsHermitian := Matrix.IsHermitian.ext fun i j => by
+      simp only [M, Matrix.of_apply]
       rw [hh j j.2 i i.2]
       rfl
-    · rw [hsum]
-      have hre := hq (fun g => if h : g ∈ Y then x ⟨g, h⟩ else 0)
-      rw [hqf] at hre
-      have hc : ∀ i : Y, (if h : (i : γ) ∈ Y then x ⟨i, h⟩ else 0) = x i := fun i => by simp
-      simp only [hc] at hre
-      have him : (∑ i : Y, ∑ j : Y, conj (x i) * k i j * x j).im = 0 := by
-        rw [← Complex.conj_eq_iff_im]
-
-        simp only [map_sum, map_mul, Complex.conj_conj]
-        rw [Finset.sum_comm]
-        refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-        rw [hh i i.2 j j.2, Complex.conj_conj]
-        ring
-      exact Complex.le_def.mpr ⟨by simpa using hre, by rw [Complex.zero_im, him]⟩
+    refine ⟨hH, fun x => ?_⟩
+    have hre := hq (fun g => if h : g ∈ Y then x ⟨g, h⟩ else 0)
+    rw [hqf] at hre
+    have hx : (fun g : Y => if h : (g : γ) ∈ Y then x ⟨g, h⟩ else 0) = x :=
+      funext fun g => dite_eq_left g.2
+    rw [hx] at hre
+    exact Complex.le_def.mpr ⟨by simpa using hre,
+      by simpa using (hH.im_star_dotProduct_mulVec_self x).symm⟩
 
 theorem block_quad {a : α → α → ℂ} {w : α → β → ℂ} {b : β → β → ℂ} (h : KB.BlockPSD Y₁ Y₂ a w b)
     (c : α → ℂ) (d : β → ℂ) :
@@ -199,84 +184,56 @@ theorem blockPSD_mul {α β : Type} {Y₁ : Finset α} {Y₂ : Finset β} {a a' 
 
 theorem blockPSD_ones {α β : Type} (Y₁ : Finset α) (Y₂ : Finset β) :
     KB.BlockPSD Y₁ Y₂ (fun _ _ => 1) (fun _ _ => 1) (fun _ _ => 1) := by
-  rw [blockPSD_iff, psd_iff_qf]
-  refine ⟨fun x _ y _ => ?_, fun c => ?_⟩
-  · cases x <;> cases y <;> simp [blockK]
-  · have hq : qf (Y₁.disjSum Y₂) (blockK (fun _ _ => (1 : ℂ)) (fun _ _ => 1) (fun _ _ => 1)) c =
-        conj (∑ x ∈ Y₁.disjSum Y₂, c x) * ∑ x ∈ Y₁.disjSum Y₂, c x := by
-      unfold qf
-
-      rw [map_sum, Finset.sum_mul_sum]
-      refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_
-      cases x <;> cases y <;> simp [blockK]
-    rw [hq, ← Complex.normSq_eq_conj_mul_self]
-    simp [Complex.normSq_nonneg]
+  rw [blockPSD_iff]
+  refine Jx7.psd_congr ?_ Jx7.psd_one
+  intro x _ y _
+  cases x <;> cases y <;> simp [blockK]
 
 theorem blockPSD_prod {α β ι : Type} {Y₁ : Finset α} {Y₂ : Finset β} (s : Finset ι) (a : ι → α → α → ℂ)
     (w : ι → α → β → ℂ) (b : ι → β → β → ℂ) (h : ∀ v ∈ s, KB.BlockPSD Y₁ Y₂ (a v) (w v) (b v)) :
     KB.BlockPSD Y₁ Y₂ (fun p q => ∏ v ∈ s, a v p q) (fun p q => ∏ v ∈ s, w v p q)
       (fun p q => ∏ v ∈ s, b v p q) := by
   classical
-  revert h
-  refine Finset.induction_on s ?_ ?_
-  · intro _
-    simpa using blockPSD_ones Y₁ Y₂
-  · intro v t hv ih h
-    simp only [Finset.prod_insert hv]
-    exact blockPSD_mul (h v (Finset.mem_insert_self v t)) (ih fun u hu => h u (Finset.mem_insert_of_mem hu))
+  rw [blockPSD_iff]
+  refine Jx7.psd_congr ?_ (Jx7.psd_prod s (fun v => blockK (a v) (w v) (b v))
+    (fun v hv => (blockPSD_iff Y₁ Y₂ _ _ _).1 (h v hv)))
+  intro x _ y _
+  cases x <;> cases y <;> simp [blockK, map_prod]
 
+open scoped ComplexOrder Matrix in
+private theorem matrixGramBound {n : Type*} [Fintype n] (M : Matrix n n ℂ)
+    (h : M.PosSemidef) (u v : n → ℂ) :
+    ‖(M *ᵥ v) ⬝ᵥ star u‖ ≤
+      (((M *ᵥ u) ⬝ᵥ star u).re + ((M *ᵥ v) ⬝ᵥ star v).re) / 2 := by
+  let instGroup : SeminormedAddCommGroup (n → ℂ) := M.toSeminormedAddCommGroup h
+  let instInner : InnerProductSpace ℂ (n → ℂ) := M.toInnerProductSpace h
+  let nu := @norm _ instGroup.toNorm u
+  let nv := @norm _ instGroup.toNorm v
+  have huv : ‖(M *ᵥ v) ⬝ᵥ star u‖ ≤ nu * nv := norm_inner_le_norm (𝕜 := ℂ) u v
+  have hu : nu ^ 2 = ((M *ᵥ u) ⬝ᵥ star u).re := norm_sq_eq_re_inner (𝕜 := ℂ) u
+  have hv : nv ^ 2 = ((M *ᵥ v) ⬝ᵥ star v).re := norm_sq_eq_re_inner (𝕜 := ℂ) v
+  rw [← hu, ← hv]
+  nlinarith [sq_nonneg (nu - nv)]
+
+open scoped ComplexOrder Matrix in
 theorem block_cross_le {α β : Type} {Y₁ : Finset α} {Y₂ : Finset β} {a : α → α → ℂ} {w : α → β → ℂ}
     {b : β → β → ℂ} (h : KB.BlockPSD Y₁ Y₂ a w b) :
     ‖∑ p ∈ Y₁, ∑ q ∈ Y₂, w p q‖ ≤ ((∑ p ∈ Y₁, ∑ p' ∈ Y₁, a p p').re + (∑ q ∈ Y₂, ∑ q' ∈ Y₂, b q q').re) / 2 := by
-  have key : ∀ u v : ℂ, 0 ≤ Complex.normSq u * (∑ p ∈ Y₁, ∑ p' ∈ Y₁, a p p').re +
-      Complex.normSq v * (∑ q ∈ Y₂, ∑ q' ∈ Y₂, b q q').re +
-      2 * (conj u * v * ∑ p ∈ Y₁, ∑ q ∈ Y₂, w p q).re := by
-    intro u v
-    have h1 := block_quad Y₁ Y₂ h (fun _ => u) (fun _ => v)
-    have e1 : qf Y₁ a (fun _ => u) = conj u * u * ∑ p ∈ Y₁, ∑ p' ∈ Y₁, a p p' := by
-      simp only [qf]
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl fun p _ => ?_
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl fun q _ => ?_
-      ring
-    have e2 : qf Y₂ b (fun _ => v) = conj v * v * ∑ q ∈ Y₂, ∑ q' ∈ Y₂, b q q' := by
-      simp only [qf]
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl fun p _ => ?_
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl fun q _ => ?_
-      ring
-    have e3 : (∑ p ∈ Y₁, ∑ q ∈ Y₂, conj u * w p q * v) = conj u * v * ∑ p ∈ Y₁, ∑ q ∈ Y₂, w p q := by
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl fun p _ => ?_
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl fun q _ => ?_
-      ring
-    rw [e1, e2, e3, ← Complex.normSq_eq_conj_mul_self, ← Complex.normSq_eq_conj_mul_self,
-      Complex.re_ofReal_mul, Complex.re_ofReal_mul] at h1
-    exact h1
-  set S := ∑ p ∈ Y₁, ∑ q ∈ Y₂, w p q with hS
-  by_cases h0 : S = 0
-  · have k1 := key 1 (-1)
-    rw [h0] at k1
-    simp at k1
-    rw [h0, norm_zero]
-    simp only [Complex.re_sum]
-    linarith
-  · have hn : 0 < ‖S‖ := norm_pos_iff.mpr h0
-    have k2 := key S (-(‖S‖ : ℂ))
-    have hns : Complex.normSq S = ‖S‖ ^ 2 := Complex.normSq_eq_norm_sq S
-    have hnr : Complex.normSq (-(‖S‖ : ℂ)) = ‖S‖ ^ 2 := by
-      rw [Complex.normSq_neg, Complex.normSq_ofReal]
-      ring
-    have hcr : (conj S * -(‖S‖ : ℂ) * S).re = -(‖S‖ ^ 3) := by
-      have e : conj S * -(‖S‖ : ℂ) * S = -((‖S‖ : ℂ) * (Complex.normSq S : ℂ)) := by
-        rw [Complex.normSq_eq_conj_mul_self]
-        ring
-      rw [e, hns, Complex.neg_re, Complex.re_ofReal_mul, Complex.ofReal_re]
-      ring
-    rw [hns, hnr, hcr] at k2
-    nlinarith [mul_pos hn hn, k2]
+  classical
+  let Y := Y₁.disjSum Y₂
+  let M : Matrix Y Y ℂ := Matrix.of fun i j : Y => blockK a w b i j
+  have hM : M.PosSemidef := (blockPSD_iff Y₁ Y₂ a w b).1 h
+  let u : α ⊕ β → ℂ := Sum.elim (fun _ => 1) (fun _ => 0)
+  let v : α ⊕ β → ℂ := Sum.elim (fun _ => 0) (fun _ => 1)
+  have hsum (c d : α ⊕ β → ℂ) :
+      (M *ᵥ (fun j : Y => d j)) ⬝ᵥ star (fun i : Y => c i) =
+        ∑ x ∈ Y, ∑ y ∈ Y, conj (c x) * blockK a w b x y * d y := by
+    rw [dotProduct_comm]
+    simp only [dotProduct, Matrix.mulVec, M, Matrix.of_apply, Pi.star_apply,
+      Complex.star_def, Finset.mul_sum, ← mul_assoc]
+    rw [← Finset.sum_coe_sort Y]
+    exact Finset.sum_congr rfl fun _ _ => by rw [← Finset.sum_coe_sort Y]
+  simpa [hsum, Y, u, v, Finset.sum_disjSum, blockK] using
+    matrixGramBound M hM (fun i : Y => u i) (fun i : Y => v i)
 
 end Formalism.FourierDecayAlt.P.PBA

@@ -10,54 +10,14 @@ import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.Cayley
 import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.SubstSingleVar
 import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharacterIdentityReformulated2
 import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharactersFactTer
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.Inertia
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussianEigenFrames.GramFrameComposition.MatrixFormDiagBlocksBlockEmbed
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnimodularLocalStandard.RepArith
 
 @[expose] public section
 
@@ -97,25 +57,16 @@ end General
 
 section Arith
 
-theorem conj_omega (d : ℕ) : conj (omegaK d) = 1 - omegaK d := by
-  rw [Formalism.L2.Th1.GD.GramFrameCompositionTwoFacts.conj_omegaK]
-  unfold omegaK
-  ring
-
-theorem sqrt_sq (d : ℕ) : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = d := by
-  rw [← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]
-  simp
-
 theorem trace_eq (d : ℕ) (m k : ℤ) :
     ((m : ℂ) + k * omegaK d) + conj ((m : ℂ) + k * omegaK d) = ((2 * m + k : ℤ) : ℂ) := by
-  rw [map_add (f := _), map_mul, map_intCast, map_intCast, conj_omega]
+  rw [map_add (f := _), map_mul, map_intCast, map_intCast, _root_.Formalism.L2.Th1.GD.GramFrameLatticeLemmas.conj_omega]
   push_cast
   ring
 
 theorem diff_sq (d : ℕ) (m k : ℤ) :
     (((m : ℂ) + k * omegaK d) - conj ((m : ℂ) + k * omegaK d)) ^ 2 = -((d * k ^ 2 : ℤ) : ℂ) := by
-  rw [map_add (f := _), map_mul, map_intCast, map_intCast, conj_omega]
-  have hs := sqrt_sq d
+  rw [map_add (f := _), map_mul, map_intCast, map_intCast, _root_.Formalism.L2.Th1.GD.GramFrameLatticeLemmas.conj_omega]
+  have hs := _root_.PI.UnitaryGroupMassFormula.UnimodLocStd.rep_sqrt_sq d
   unfold omegaK
   push_cast
   linear_combination (-(k : ℂ) ^ 2) * hs + ((k : ℂ) ^ 2 * ((Real.sqrt d : ℝ) : ℂ) ^ 2) * Complex.I_sq
@@ -123,7 +74,7 @@ theorem diff_sq (d : ℕ) (m k : ℤ) :
 theorem isQInt_conj {d : ℕ} {x : ℂ} (h : IsQInt d x) : IsQInt d (conj x) := by
   obtain ⟨m, k, rfl⟩ := h
   refine ⟨m + k, -k, ?_⟩
-  rw [map_add (f := _), map_mul, map_intCast, map_intCast, conj_omega]
+  rw [map_add (f := _), map_mul, map_intCast, map_intCast, _root_.Formalism.L2.Th1.GD.GramFrameLatticeLemmas.conj_omega]
   push_cast
   ring
 
@@ -214,7 +165,7 @@ variable {p : ℕ} [Fact p.Prime]
 
 theorem norm_omega_le (ι : ℂ ≃+* ℂ_[p]) {d : ℕ} (hd : d % 8 = 7) : ‖ι (omegaK d)‖ ≤ 1 := by
   obtain ⟨e, he⟩ : ∃ e : ℕ, d + 1 = 4 * e := ⟨(d + 1) / 4, by omega⟩
-  have hs := sqrt_sq d
+  have hs := _root_.PI.UnitaryGroupMassFormula.UnimodLocStd.rep_sqrt_sq d
   have hdC : (d : ℂ) + 1 = 4 * e := by exact_mod_cast he
   have hq : omegaK d ^ 2 = omegaK d - e := by
     unfold omegaK
@@ -255,13 +206,6 @@ theorem norm_phase (ι : ℂ ≃+* ℂ_[p]) (y : ℝ) (N : ℕ) (hN : 0 < N) (k 
 theorem norm_sign (ι : ℂ ≃+* ℂ_[p]) (x : ℂ) (hx : x = 1 ∨ x = -1) : ‖ι x‖ = 1 := by
   rcases hx with rfl | rfl <;> simp
 
-theorem norm_p_lt : ‖(p : ℂ_[p])‖ < 1 := by
-  have h1 := PadicComplex.norm_extends' p (p : ℚ_[p])
-  rw [Padic.norm_p] at h1
-  have h2 : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by simpa using h1
-  rw [h2]
-  exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)
-
 theorem dvd_of_norm_lt (T : ℤ) (h : ‖(T : ℂ_[p])‖ < 1) : (p : ℤ) ∣ T := by
   by_contra hT
   obtain ⟨a, b, hab⟩ :=
@@ -270,7 +214,7 @@ theorem dvd_of_norm_lt (T : ℤ) (h : ‖(T : ℂ_[p])‖ < 1) : (p : ℤ) ∣ T
   have h2 := IsUltrametricDist.norm_add_le_max ((a : ℂ_[p]) * (p : ℂ_[p])) ((b : ℂ_[p]) * (T : ℂ_[p]))
   rw [h1, norm_one, norm_mul, norm_mul] at h2
   have h3 : ‖(a : ℂ_[p])‖ * ‖(p : ℂ_[p])‖ < 1 :=
-    lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one _ a)) norm_p_lt
+    lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one _ a)) _root_.Formalism.L2.Th1.GD.norm_p_lt_one
   have h4 : ‖(b : ℂ_[p])‖ * ‖(T : ℂ_[p])‖ < 1 :=
     lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one _ b)) h
   exact absurd h2 (not_le.2 (max_lt h3 h4))
@@ -399,7 +343,7 @@ theorem xiConn_of (h1 : EtLoc) (h2 : ScalarConst) (h3 : XiSwap) : XiConn := by
   have hne := conj_ne hdK hp π hπ hππ
   have hbez := bezout Λ hp hp2 hpd π hπ hππ hπcΛ
   have hsemi : Formalism.L2.Th1.H.IsSemiChar (matH h) Λ (alphaQ (Real.sqrt dK / 2) (matH h)) :=
-    (Formalism.L2.Th1.H.alphaQSemi (n → ℂ) (matH h) hHerm b₀ dK hb Λ (le_of_eq hSD.symm) hSt).2.2
+    (_root_.Formalism.L2.Th1.H.quadMultiplierSemicharacter (n → ℂ) (matH h) hHerm b₀ dK hb Λ (le_of_eq hSD.symm) hSt).2.2
   have hline := atMostLine_of a₀ b₀ c₀ dK ha hdK lam hlam hcm n h Λ hSD hSt θ hθ hθ0 p ι hLN
   obtain ⟨hcard, c, hc8, hscal⟩ := h2 dK n h Λ hHerm hPos hLat hSD hsemi hline p hp π hππ hne hπΛ hπcΛ hbez
     Sa hSa θ hθ hθ0
@@ -468,7 +412,7 @@ theorem xiConn_of (h1 : EtLoc) (h2 : ScalarConst) (h3 : XiSwap) : XiConn := by
     ring
   have hser := ser_eq ι h θ hθ.1 _ r t co pt s hfun v A
   have hNp : ‖((N * p : ℕ) : ℂ_[p])‖ = ‖(p : ℂ_[p])‖ := by
-    push_cast; rw [norm_mul, LocalJetRescaling.norm_natCast p hpN, one_mul]
+    push_cast; rw [norm_mul, _root_.ReciprocityTheory.ChartRestriction.L1.norm_natCast_Cl_of_not_dvd p hpN, one_mul]
   have hπn : ‖ι π‖ = ‖(p : ℂ_[p])‖ := by
     have e := congrArg (fun x => ‖ι x‖) hππ
     simp only [map_mul, norm_mul, map_natCast, hπ1, mul_one] at e
@@ -506,7 +450,7 @@ theorem xiConn_of (h1 : EtLoc) (h2 : ScalarConst) (h3 : XiSwap) : XiConn := by
     rw [e]
     exact mul_le_one₀ (hr _) (norm_nonneg _) (hΨ _ kb.2.2)
   have hunit : ‖ι ((N : ℂ) * conj π)‖ = 1 := by
-    rw [map_mul, norm_mul, map_natCast, LocalJetRescaling.norm_natCast p hpN, hπ1, one_mul]
+    rw [map_mul, norm_mul, map_natCast, _root_.ReciprocityTheory.ChartRestriction.L1.norm_natCast_Cl_of_not_dvd p hpN, hπ1, one_mul]
   have hA' : ∀ j x, ‖ι s * A j x‖ ≤ ‖((N * p : ℕ) : ℂ_[p])‖ := fun j x => by
     rw [norm_mul, hsn, hNp]; exact mul_le_of_le_one_right (norm_nonneg _) (hA j x)
   have hE := h1 a₀ b₀ c₀ dK ha hdK lam hlam hcm n h Λ hSD hSt θ hθ p hp2 hpd ι hIC hLN (κx × Sb)

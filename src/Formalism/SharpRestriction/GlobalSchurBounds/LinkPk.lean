@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.GlobalSchurBounds.FrameCodeOfAdditive
 
 @[expose] public section
 
@@ -109,37 +110,6 @@ theorem locLe_zero {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup
   rw [pow_zero, Ideal.one_eq_top, Submodule.top_smul] at hsx
   exact ⟨s, hs, hsx⟩
 
-theorem place_over' (D : D7) (p : ℕ) (hp : p.Prime) : ∃ w : D.what₂.places.Pl, D.what₂.places.resChar w = p := by
-  have hpZ : Prime (p : ℤ) := Nat.prime_iff_prime_int.mp hp
-  have : (Ideal.span {(p : ℤ)}).IsPrime := (Ideal.span_singleton_prime hpZ.ne_zero).mpr hpZ
-  obtain ⟨P, hP, hlo⟩ :=
-    (inferInstance : Nonempty (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 D.what₂.LL)))
-  have hpP : ((p : ℕ) : 𝓞 D.what₂.LL) ∈ P := by
-    have h1 : (p : ℤ) ∈ Ideal.span {(p : ℤ)} := Ideal.mem_span_singleton_self _
-    rw [hlo.over, Ideal.mem_comap] at h1
-    simpa using h1
-  have hne : P ≠ ⊥ := by
-    intro h
-    rw [h, Ideal.mem_bot] at hpP
-    exact hp.ne_zero (by exact_mod_cast hpP)
-  refine ⟨D.plEq.symm ⟨P, hP, hne⟩, ?_⟩
-  set w := D.plEq.symm ⟨P, hP, hne⟩ with hw
-  have hr := J.resChar_mem D w
-  rw [hw, Equiv.apply_symm_apply] at hr
-  rw [← hw] at hr
-  by_contra hcon
-  have hco : Nat.Coprime (D.what₂.places.resChar w) p :=
-    (Nat.coprime_primes (D.what₂.places.resChar_prime w) hp).2 hcon
-  have hb := Nat.gcd_eq_gcd_ab (D.what₂.places.resChar w) p
-  rw [hco] at hb
-  have h1 : (1 : 𝓞 D.what₂.LL) = ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) *
-      ((Nat.gcdA (D.what₂.places.resChar w) p : ℤ) : 𝓞 D.what₂.LL) +
-      ((p : ℕ) : 𝓞 D.what₂.LL) * ((Nat.gcdB (D.what₂.places.resChar w) p : ℤ) : 𝓞 D.what₂.LL) := by
-    have := congrArg (fun z : ℤ => (z : 𝓞 D.what₂.LL)) hb
-    simpa using this
-  exact hP.ne_top ((Ideal.eq_top_iff_one P).2 (by
-    rw [h1]; exact P.add_mem (P.mul_mem_right _ hr) (P.mul_mem_right _ hpP)))
-
 def NuAtT (D : D7) (L : SizeData₂ D) : Prop :=
   ∀ u w, D.what₂.places.resChar w = (D.mem u).A.T → DV.LocLe (D.plEq w) 0 (L.NuLat u) (DV.MramL D u)
 
@@ -193,7 +163,7 @@ theorem nuCommens_of {D : D7} {L : SizeData₂ D} (hNu : DV.NuDef D L) (hT : NuA
     rw [Submodule.map_comap_subtype, inf_eq_right.2 hle] at h2
     exact h2
   · obtain ⟨p, hp, hpT, hin⟩ := exists_free_prime D u
-    obtain ⟨w, hw⟩ := place_over' D p hp
+    obtain ⟨w, hw⟩ := _root_.Formalism.MainNotions.Lnk.place_over D p hp
     have hEq := hNu.2.1 u w (by rw [hw]; exact hpT) (Or.inr (by rw [hw]; exact hin))
     refine exists_common_mul _ _ (D.MramL_fg u) (fun y hy => ?_)
     obtain ⟨s, hs, hsy⟩ := locLe_zero hEq.2 y hy
@@ -216,13 +186,7 @@ end
 
 end Commens
 
-noncomputable section
-
 namespace Formalism.MainNotions
-
-open Formalism.BasicNotions Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory
-
 
 end Formalism.MainNotions
 
-end

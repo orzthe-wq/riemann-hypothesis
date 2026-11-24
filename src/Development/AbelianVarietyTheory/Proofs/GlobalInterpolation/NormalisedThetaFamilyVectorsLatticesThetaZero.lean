@@ -52,9 +52,6 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNoti
 
 namespace GlobalTheory.NatFamily
 
-theorem U_zero (D : D7) (T : Tor D) {N N' : ℕ} (G : VC D N N' → ℂ) : U D T 0 G = G := by
-  funext z; simp [U, Hf]
-
 theorem exists_taylor_ne (D : D7) {N N' : ℕ} {F : VC D N N' → ℂ} (hF : Differentiable ℂ F) (h0 : F ≠ 0) :
     ∃ α, Formalism.MainNotions.TaylorLogMetric.taylor D F α ≠ 0 := by
   by_contra h
@@ -85,7 +82,7 @@ theorem coef {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Formalism.L2.
   have halg : Formalism.MainNotions.TaylorLogMetric.taylor D (B.eNat χ N N' L L') α₀ ∈ Qbar := by
     have h := (GlobalTheory.MomEq.eq_and_alg).2 D cc δ B χ hcc hδ hχ N N' L L' ⟨hN, hN', hL, hL'⟩ 0
       ⟨1, one_pos, by simp⟩ α₀
-    rwa [U_zero] at h
+    rwa [_root_.GlobalTheory.GalTheta.U_zero] at h
   have hM₀Q : ∀ x ∈ M₀, x ∈ Qbar := by
     intro x hx
     rw [mem_algebraicClosure_iff]

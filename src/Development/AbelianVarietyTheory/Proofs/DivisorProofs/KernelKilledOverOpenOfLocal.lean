@@ -45,6 +45,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.NonemptyHomFixRepTr
 import Development.AbelianVarietyTheory.Definitions.Divisors.NotCompactOfMEqOne
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.Biextensions.GenericFiberCubeInclusion
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -55,12 +56,6 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.KerKilledLocal
 
 open ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison
-
-theorem pullU_comp' {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Opens) (x : Γ(X, U)ˣ) :
-    pullU (f ≫ g) U x = pullU f (g ⁻¹ᵁ U) (pullU g U x) := by
-  apply Units.ext
-  simp only [pullU, Scheme.Hom.comp_app, Units.coe_map]
-  rfl
 
 theorem gen_pull3 {X Y Z Z' Y' : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (b : Z ⟶ Y) (h : Z' ⟶ Z)
     (c : Y' ⟶ X) (e : Z' ⟶ Y') (heq : h ≫ b ≫ a = e ≫ c)
@@ -94,7 +89,7 @@ theorem gen_pull3 {X Y Z Z' Y' : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (b : Z ⟶
   refine Eq.trans ?_ (germ_pull ((L.pull a).pull b) h (fun _ => i) (fun _ => j) y _ hm).symm
   have hy3 : y ∈ h ⁻¹ᵁ ((b ≫ a) ⁻¹ᵁ (L.U (i PUnit.unit PUnit.unit) ⊓ L.U (j PUnit.unit PUnit.unit))) := hy2
   rw [gU_pullU h _ y hm, germ_pull_pull L a b i j (h.base y) hm hy', ← gU_pullU h _ y hy3]
-  erw [pullU_comp']
+  erw [_root_.ReciprocityTheory.ChartRestriction.G.DVR.pullU_comp_eq_pullU_pullU]
   rfl
 
 end GlobalTheory.KerKilledLocal

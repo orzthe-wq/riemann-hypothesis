@@ -709,32 +709,11 @@ theorem exists_short_basis_dual (hT : PI.TransferenceMinima) (S : HSpace E)
 
 end LemT2
 
-section LemTi
-
-open Module NumberField Formalism.BasicNotions
-open scoped nonZeroDivisors
-
-variable {E : Type} [Field E] [NumberField E]
-
-variable [StarRing E]
-
-end LemTi
-
-section LemTiP
-
-open Module NumberField Formalism.BasicNotions
-
-end LemTiP
-
 section Rec
 
 open Module NumberField Formalism.BasicNotions
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
-
-theorem finrank_cmField_eq_two_mul (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
-  rw [D.host.finrank_cmField, Ranks.f, Ranks.n]
-  ring
 
 open scoped nonZeroDivisors in
 theorem shortDual_holds (D : D7) : ShortDual D := by
@@ -787,7 +766,7 @@ theorem shortDual_holds (D : D7) : ShortDual D := by
   refine ⟨y ∘ Fin.cast hr.symm, fun a => hy1 _, hy2.comp _ (Fin.cast_injective _), fun a => ?_⟩
   have h1 := hy3 (Fin.cast hr.symm a)
   have hf : (0 : ℝ) < 2 * (D.R.f : ℝ) := by
-    have := finrank_cmField_eq_two_mul D
+    have := _root_.Formalism.MainNotions.flipTwoThree.b_finrank_host D
     have h0 : 0 < Module.finrank ℚ D.host.E := Module.finrank_pos
     have : 0 < 2 * D.R.f := by omega
     exact_mod_cast this
@@ -795,7 +774,7 @@ theorem shortDual_holds (D : D7) : ShortDual D := by
     unfold Host.v Host.rdE
     ring
   have hrk : (((D.sp.X 0).rank : ℕ) : ℝ) = (D.R.k : ℝ) := by rw [hr, Ranks.N_zero]
-  rw [← hv, hrk, finrank_cmField_eq_two_mul] at h1
+  rw [← hv, hrk, _root_.Formalism.MainNotions.flipTwoThree.b_finrank_host] at h1
   push_cast at h1
   rw [div_le_iff₀ hf]
   calc _ ≤ _ := h1
@@ -839,18 +818,6 @@ structure ColHyp {LL : Type} [Field LL] [NumberField LL] (Pl : Rows.Places LL)
 
 end ColAbs
 
-section Polar
-
-open Module NumberField Formalism.BasicNotions IsDedekindDomain
-
-end Polar
-
-section F7
-
-open Module NumberField Formalism.BasicNotions IsDedekindDomain
-
-end F7
-
 section ColRec
 
 open Module NumberField Formalism.BasicNotions IsDedekindDomain
@@ -863,7 +830,7 @@ theorem columnHypotheses (D : D7) (u : D.what₂.Word) :
     tc := inferInstance
     tcE := D.sp.cm.cmUnram.1
     pl := ⟨D.plEq, D.val_eq⟩
-    deg := finrank_cmField_eq_two_mul D
+    deg := _root_.Formalism.MainNotions.flipTwoThree.b_finrank_host D
     rank := D.sp.X_rank 0 (Nat.zero_le _)
     npos := rank_zero_pos D
     Tpos := by exact_mod_cast b_Tu_pos D u
@@ -873,11 +840,5 @@ theorem columnHypotheses (D : D7) (u : D.what₂.Word) :
   }
 
 end ColRec
-
-section Fin23
-
-open Formalism.BasicNotions
-
-end Fin23
 
 end Formalism.MainNotions.flipTwoThree

@@ -69,7 +69,7 @@ theorem blkU_uMap (z : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) :
     blkU (C2.uMap k r z g) = Matrix.of fun a b => g (eI k r a) (eI k r b) := by
   ext a b
   simp only [blkU, Matrix.submatrix_apply, C2.uMap, Matrix.of_apply]
-  rw [dite_eq_left (by simp), fvec_low z b.castSucc (by simp), herm_bvec_esI', mulVec_bvec_apply]
+  rw [dite_eq_left (by simp), _root_.Formalism.FourierDecayAlt.P.Dx1.Rel.fvec_lt z b.castSucc (by simp), _root_.PI.StabPairsW.herm_es, mulVec_bvec_apply]
   rfl
 
 theorem muP_Rn_blk (W : Matrix (Fin r) (Fin r) ℂ) (y : U.RC k r 0) (a b : Fin r) :
@@ -145,11 +145,6 @@ theorem psiStar_zero (σ : Equiv.Perm (Fin r)) (z z' : Fin (2 * (r + 0 + 0) + k 
   simp only [Dx2.SL.cornerA_zero, Dx2.SL.cornerB_zero, add_zero]
   rfl
 
-theorem gv_unit {ρ : ℕ} {y : B.Mat k ρ} (hy : y ∈ B.GV k ρ) : IsUnit y.det := by
-  have := B2x5.normSq_det_GV hy
-  refine isUnit_iff_ne_zero.2 fun h0 => ?_
-  rw [h0, Complex.normSq_zero] at this; exact zero_ne_one this
-
 theorem sgs_formula (z0 z0' : Fin (2 * 0 + k + 1) → ℂ) (h h' : Mt k r)
     (hh : Matrix.of h ∈ UWset k (r + 0) (liftVec k r 0 z0)) (hh' : Matrix.of h' ∈ UWset k (r + 0) (liftVec k r 0 z0'))
     (V V' : G.UT r → ℂ) (y y' : U.RC k r 0) (Z : Matrix (Fin r) (Fin r) ℂ) (γ0 : B.Mat k 0) :
@@ -165,12 +160,12 @@ theorem sgs_formula (z0 z0' : Fin (2 * 0 + k + 1) → ℂ) (h h' : Mt k r)
     rw [← Dx2.Tower.lev_eq_embG, uw_block r 0 z0 _ hh]
   have hH' : (Matrix.of h' : B.Mat k (r + 0)) = U.embG k r 0 y1' := by
     rw [← Dx2.Tower.lev_eq_embG, uw_block r 0 z0' _ hh']
-  have u1 := gv_unit hy1.1
+  have u1 := _root_.PI.StabPairsW.isUnit_det_of_mem_GV hy1.1
   have uE : IsUnit (U.embG k r 0 y1).det := by
-    rw [← Dx2.Tower.lev_eq_embG]; exact gv_unit (Dx2.Tower.lev_GV r 0 y1 hy1.1)
+    rw [← Dx2.Tower.lev_eq_embG]; exact _root_.PI.StabPairsW.isUnit_det_of_mem_GV (Dx2.Tower.lev_GV r 0 y1 hy1.1)
   have uE' : IsUnit (U.embG k r 0 y1').det := by
-    rw [← Dx2.Tower.lev_eq_embG]; exact gv_unit (Dx2.Tower.lev_GV r 0 y1' hy1'.1)
-  have uV : IsUnit (G.upper V).det := Dx2.SL.isUnit_up V
+    rw [← Dx2.Tower.lev_eq_embG]; exact _root_.PI.StabPairsW.isUnit_det_of_mem_GV (Dx2.Tower.lev_GV r 0 y1' hy1'.1)
+  have uV : IsUnit (G.upper V).det := _root_.Formalism.FourierDecayAlt.P.Dx2.Split.upper_det V
   have uRn : IsUnit (U.Rn k r 0 y).det := by
     refine Matrix.isUnit_det_of_right_inverse (B := U.Rn k r 0 (-y)) ?_
     exact PBM.rn_mul_neg y

@@ -2,14 +2,15 @@ module
 
 public import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.QuasiIsoHypercohomologyBijectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupProductGradedCommStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupUnitAndPrimitiveRootClassesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.PullHlComp
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupProductGradedComm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupUnitAndPrimitiveRootClasses
 public import Mathlib.Algebra.Homology.Embedding.ExtendHomotopy
+public import Mathlib.AlgebraicTopology.SimplicialObject.ChainHomotopy
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-public import Mathlib.AlgebraicTopology.SimplicialObject.ChainHomotopy
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -72,13 +73,13 @@ private def Cn : Spc where
   map θ :=
     { app := fun T => TypeCat.ofHom fun v => v ∘ θ.unop.toOrderHom
       naturality := fun T T' g => by
-        ext v k
+        ext v
         rfl }
   map_id k := by
-    ext T v j
+    ext T v
     rfl
   map_comp f g := by
-    ext T v j
+    ext T v
     rfl
 
 private def hT {A : Type} [One A] {n : ℕ} (i : Fin (n + 1)) (v : Fin (n + 1) → A) : Fin (n + 2) → A :=
@@ -142,8 +143,7 @@ private theorem hT_c {A : Type} [One A] {n : ℕ} (i : Fin (n + 2)) (j : Fin (n 
     simp only [Function.comp_apply]
     congr 1
     apply Fin.ext
-    simp only [sa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢
-    all_goals (split_ifs at hx hy ⊢ <;> omega)
+    simp only [sa_val, Fin.coe_castSucc, Fin.val_succ] at hx hy ⊢
 
 private theorem hT_d {A : Type} [One A] {n : ℕ} (j : Fin (n + 1)) (v : Fin (n + 2) → A)
     (k : Fin (n + 2)) : hT j.succ v (j.castSucc.succ.succAbove k) = hT j.castSucc v (j.castSucc.succ.succAbove k) := by
@@ -161,7 +161,7 @@ private theorem hT_e {A : Type} [One A] {n : ℕ} (i : Fin (n + 2)) (j : Fin (n 
     simp only [Function.comp_apply]
     congr 1
     apply Fin.ext
-    simp only [sa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢
+    simp only [sa_val, Fin.coe_castSucc, Fin.val_succ] at hx hy ⊢
     split_ifs at hx hy ⊢ <;> omega
 
 private theorem hT_f {A : Type} [One A] {n : ℕ} (i j : Fin (n + 1)) (hij : i ≤ j) (v : Fin (n + 1) → A)
@@ -174,8 +174,7 @@ private theorem hT_f {A : Type} [One A] {n : ℕ} (i j : Fin (n + 1)) (hij : i �
     simp only [Function.comp_apply]
     congr 1
     apply Fin.ext
-    simp only [pa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢
-    all_goals (split_ifs at hx hy ⊢ <;> omega)
+    simp only [pa_val, Fin.coe_castSucc, Fin.val_succ] at hx hy ⊢
 
 private theorem hT_g {A : Type} [One A] {n : ℕ} (i j : Fin (n + 1)) (hji : j ≤ i) (v : Fin (n + 1) → A)
     (k : Fin (n + 3)) : hT j v (i.succ.predAbove k) = hT j.castSucc (v ∘ i.predAbove) k := by
@@ -187,7 +186,7 @@ private theorem hT_g {A : Type} [One A] {n : ℕ} (i j : Fin (n + 1)) (hji : j �
     simp only [Function.comp_apply]
     congr 1
     apply Fin.ext
-    simp only [pa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢
+    simp only [pa_val, Fin.coe_castSucc, Fin.val_succ] at hx hy ⊢
     split_ifs at hx hy ⊢ <;> omega
 
 private theorem hT_map {A B : Type} [One A] [One B] {n : ℕ} (f : A → B) (hf : f 1 = 1) (i : Fin (n + 1)) (v : Fin (n + 1) → A)
@@ -474,7 +473,7 @@ private theorem chains_qi (R : Type) [CommRing R] (E : Spc) : QuasiIso ((chains 
 
 private theorem eqv1 (R : Type) [CommRing R] (E : Spc) (F : Shv R) : Eqv R (fst1 E) F := by
   haveI := chains_qi R E
-  exact fun n => GlobalTheory.T.quasiIso_hypercohomology_bijective R ((chains R).map (fst1 E)) F n
+  exact fun n => _root_.GlobalTheory.EtC.quasiIso_hypercohomology_bijective' R ((chains R).map (fst1 E)) F n
 
 section
 variable {q : ℕ} {X : Spc}
@@ -491,7 +490,7 @@ private theorem cast_bij {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') :
 
 private theorem cup_one' [NeZero q] (hX : Inv q X) {n i : ℤ} (x : Ht q X n i) :
     cup q x (one q X) = x.cast (by ring) (by ring) := by
-  rw [GlobalTheory.T.tateTwistCupProduct_graded_comm q X x (one q X), (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 X hX x, mul_zero, Int.negOnePow_zero, one_smul,
+  rw [_root_.GlobalTheory.EtC.cup_comm q X x (one q X), (_root_.GlobalTheory.EtC.CupGen.main q).1 X hX x, mul_zero, Int.negOnePow_zero, one_smul,
     cast_cast]
 
 private theorem cup_one_cast [NeZero q] (hX : Inv q X) {n i m j : ℤ} (x : Ht q X n i) (hm : 0 = m) (hj : 0 = j) :

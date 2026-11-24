@@ -306,20 +306,17 @@ theorem val_cech_map_first_level (R : Type) [CommRing R] (F : Shv R) {B' : Type}
 theorem cechMap_aug {Y Y' X : Scheme.{0}} (f : Y ⟶ X) (f' : Y' ⟶ X) (g : Y' ⟶ Y) (hg : g ≫ f = f') :
     cechMap f f' g hg ≫ cechAug f = cechAug f' := by
   ext n : 1
-  exact (WidePullback.lift_base _ _ _ _).trans (by first | rfl | simp [cechAug, Arrow.augmentedCechNerve])
+  exact (WidePullback.lift_base _ _ _ _).trans (by first | rfl)
 
 theorem smooth_surj [Algebra.Etale A B] [Module.FaithfullyFlat A B] : Smooth (fB A B) ∧ Surjective (fB A B) := by
   have he : Etale (fB A B) := by
     rw [HasRingHomProperty.Spec_iff (P := @Etale)]
     first
     | exact RingHom.etale_algebraMap.2 inferInstance
-    | exact (RingHom.etale_algebraMap_iff).2 inferInstance
-    | exact inferInstance
   refine ⟨inferInstance, ?_⟩
   have := (flat_and_surjective_SpecMap_iff (CommRingCat.ofHom (algebraMap A B))).2 ?_
   · exact this.2
   · first
     | exact RingHom.faithfullyFlat_algebraMap_iff.2 inferInstance
-    | exact inferInstance
 
 end GlobalTheory.CechOne

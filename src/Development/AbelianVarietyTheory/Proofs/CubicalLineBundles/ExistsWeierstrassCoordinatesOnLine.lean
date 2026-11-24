@@ -231,7 +231,6 @@ theorem exists_coord_on_line : ∀ (R : Type) [CommRing R] (W : WeierstrassCurve
     have e : valAt' (u.ex z).left (φ ⁻¹ᵁ coordOpen W i) ((φ.app (coordOpen W i)).hom (c i j)) =
         valAt' (ptHom W f (P z) (hP z)) (coordOpen W i) (c i j) :=
       (valAt'_comp (u.ex z).left φ _ _).trans (congrArg (fun k => valAt' k _ _) (hPe z))
-    beta_reduce
     rw [e, valAt'_eq_valAt _ hz']
     exact hc i j ℂ f (P z) (hP z) hz'
   · simp only [u.ex_add, (u.ker l).2 hl, _root_.mul_one]

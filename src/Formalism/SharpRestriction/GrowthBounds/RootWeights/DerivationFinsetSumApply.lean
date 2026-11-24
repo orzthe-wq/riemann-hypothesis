@@ -95,9 +95,9 @@ theorem gl_derivation_variable (LL : Letters ι) (S : Set ι) (a b : Fin n) (l :
       else 0 := by
   unfold glDerivation
   rw [derivation_finset_sum_apply, Finset.sum_eq_single l]
-  · split_ifs <;> simp_all [pderiv_X, Pi.single_apply]
+  · split_ifs <;> simp_all [pderiv_X]
   · intro l' _ hl'
-    split_ifs <;> simp [pderiv_X, Pi.single_apply, Ne.symm hl']
+    split_ifs <;> simp [pderiv_X, Ne.symm hl']
   · simp
 
 theorem gl_derivation_lie_bracket (LL : Letters ι) (S : Set ι) (a b c d : Fin n) :

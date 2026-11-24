@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.AestronglyMeasurableQuotMeasureIffLift
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemLpLiftL2DiscreteQuotientOnCompactStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemLpLiftL2DiscreteQuotientOnCompact
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -69,7 +69,7 @@ theorem convR_eq_integral_kernelQ : ∀ (G : Type) [Group G] [TopologicalSpace G
   have hf' : Continuous fun y => f (x⁻¹ * y) := hf.comp (continuous_const_mul _)
   have hc' : HasCompactSupport fun y => f (x⁻¹ * y) := hc.comp_homeomorph (Homeomorph.mulLeft x⁻¹)
   have hloc : LocallyIntegrable (lift Γ F) μ :=
-    (locallyIntegrable_iff).2 fun C hC => (GlobalTheory.T.memLp_lift_L2DiscreteQuotient_on_compact G Γ μ F C hC).2
+    (locallyIntegrable_iff).2 fun C hC => (_root_.GlobalTheory.AutomorphicL2Local.memLp_restrict_compact G Γ μ F C hC).2
   have hi : Integrable (fun y => f (x⁻¹ * y) * lift Γ F y) μ :=
     hloc.integrable_smul_left_of_hasCompactSupport hf' hc'
   have key : descend Γ (orbitSum Γ fun y => f (x⁻¹ * y) * lift Γ F y) =

@@ -298,7 +298,7 @@ theorem objD_hom (F : C ⥤ ModuleCat.{0} R) (n : ℕ) (f : MCn F n) :
 theorem mdn_mdn (F : C ⥤ ModuleCat.{0} R) (n : ℕ) (f : MCn F n) : mdn F (n + 1) (mdn F n f) = 0 := by
   have h := AlgebraicTopology.AlternatingCofaceMapComplex.d_squared (cosim F) n
   have h2 := congrArg (fun φ ↦ φ.hom f) h
-  simp only [ModuleCat.hom_comp, LinearMap.comp_apply] at h2
+  simp only [ModuleCat.hom_comp] at h2
   rw [← objD_hom, ← objD_hom]
   exact h2
 
@@ -554,7 +554,7 @@ theorem CoD.exact (A : CoD H B) (n : ℕ) (φ : MCn H (n + 1)) (hφ : mdn H (n +
     rw [← pow_add, ← two_mul, pow_mul]; simp
   have := main c y f
   rw [add_eq_zero_iff_eq_neg] at this
-  simp only [Pi.sub_apply, Pi.smul_apply, map_sub, map_neg, map_smul, this, smul_neg, neg_smul, neg_neg, smul_smul, hs,
+  simp only [Pi.smul_apply, map_sub, map_neg, map_smul, this, smul_neg, neg_smul, neg_neg, smul_smul, hs,
     one_smul, sub_self]
 
 end Coind

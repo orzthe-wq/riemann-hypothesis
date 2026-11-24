@@ -90,9 +90,6 @@ theorem bddAbove_vF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {n : 𝓞 F
   have h8 : e < 2 ^ e := by
     first
     | exact Nat.lt_two_pow_self
-    | exact Nat.lt_two_pow e
-    | exact Nat.lt_pow_self (by norm_num) e
-    | exact Nat.lt_pow_self (by norm_num)
   calc e ≤ 2 ^ e := h8.le
     _ ≤ Ideal.absNorm 𝔭 ^ e := Nat.pow_le_pow_left h7 e
     _ ≤ _ := h4
@@ -120,7 +117,7 @@ theorem repr_coe {κ : Type} [Fintype κ] [DecidableEq κ] (b : Basis κ K V) (y
   rw [hy, map_sum]
   simp only [map_smul, Basis.repr_self, Finsupp.coe_finsetSum, Finset.sum_apply,
     Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 theorem exists_local_data (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V} (hL : Submodule.IsFullLattice K L)

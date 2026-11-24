@@ -56,7 +56,7 @@ namespace RestrictHalfModel
 
 variable {D : D7} {m n : ℕ}
 
-theorem isHalf_iff' (e : AE D) (u : Mx D m n) : IsHalf e u ↔ e • u = u := GlobalTheory.SplitScalar.isHalf_iff e u
+alias isHalf_iff' := _root_.GlobalTheory.SplitScalar.isHalf_iff
 
 theorem isHalf_smul {e : AE D} (he : e * e = e) (u : Mx D m n) : IsHalf e (e • u) := by
   rw [isHalf_iff', smul_smul, he]

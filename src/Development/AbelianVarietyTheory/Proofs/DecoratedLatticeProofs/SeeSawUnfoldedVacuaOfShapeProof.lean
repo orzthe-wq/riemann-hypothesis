@@ -1,9 +1,13 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.VacOfShape
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselThetaContractionExtendByZeroVacuumSmoothStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapPreservesVacuumProofStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LastSeeSawDatumOfVacuaIsVacuumBothStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CombAtSingleZero
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsBiSmooth
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsQuasiFam
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselThetaContractionExtendByZeroVacuumSmooth
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapPreservesVacuumProof
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LastSeeSawDatumOfVacuaIsVacuumBoth
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,8 +66,8 @@ theorem nonempty_pl (D : D7) : Nonempty (Pl D) := by
 theorem vacOfShape : ∀ D : D7, GlobalTheory.SeeSaw.VacOfShape D := by
   intro D c v k _ _ _ _ ι o hc hv hs t
   obtain ⟨x₀⟩ := nonempty_pl D
-  have hFV := GlobalTheory.T.flatMapPreservesVacuum_proof D c.ψ (· ∉ v.tP)
-  have hCC := GlobalTheory.T.besselThetaContraction_extendByZero_vacuum_smooth D c.ψ hc.std
+  have hFV := _root_.GlobalTheory.FinPl.FlatVacuum.flatVac D c.ψ (· ∉ v.tP)
+  have hCC := _root_.GlobalTheory.ContrComb.contr_comb_main D c.ψ hc.std
   refine ⟨?_, ?_⟩
   · intro j σ h Ψ₁ Ψ₂ h₁ h₂
     have f₁ := hFV.1 (σ + 1) (c.B j (σ + 1) h) (c.J j (σ + 1) h) (t.sBF j (σ + 1) h) (v.N j) (o.M j (σ + 1) h)
@@ -88,7 +92,7 @@ theorem vacOfShape : ∀ D : D7, GlobalTheory.SeeSaw.VacOfShape D := by
     have f₂ := hFV.2.2 (c.V (j + 1)) (c.X (j + 1)) c.T (c.jac j 0 h).d (v.N (j + 1)) (c.x (j + 1)).L v.NT
       (hv.sd (j + 1) (by omega)) (hc.x (j + 1) (by omega)).sd hv.sdT (fun x _ => ((hs.good x).bf j 0 h).monoW) Ψ₂ h₂
     have hg0 := (hs.good x₀).bf j 0 h
-    exact GlobalTheory.T.lastSeeSawDatum_of_vacua_is_vacuum_both D c.ψ hc.std _ (c.X j) _ (c.X (j + 1)) (c.X (j + 1 + 1)) c.T c.Lz (c.bes j 0 h).o
+    exact _root_.GlobalTheory.LastVacPf.lastVac D c.ψ hc.std _ (c.X j) _ (c.X (j + 1)) (c.X (j + 1 + 1)) c.T c.Lz (c.bes j 0 h).o
       (c.oT (j + 1 + 1) h) (v.τ j h) (c.bes j 0 h).line.1 hs.pre.line.1 (hs.pre.tau j h) (· ∉ v.tP) (o.M j 0 h)
       (c.x j).L (c.x (j + 1)).L (c.x (j + 1 + 1)).L v.NT hg0.sdV₀ (hc.x j (by omega)).sd (hc.x (j + 1) (by omega)).sd
       (hc.x (j + 1 + 1) (by omega)).sd hv.sdT (fun x hx => ⟨((hs.good x).bf j 0 h).tame, (hs.split x hx).top j h⟩)

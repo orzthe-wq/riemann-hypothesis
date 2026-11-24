@@ -64,10 +64,9 @@ variable {m : ℕ} {G : Set (Matrix (Fin m) (Fin m) ℂ)} {D : Matrix (Fin m) (F
 
 lemma modOne (hG : IsMatGroup G) (hD : ModProps G D) : D 1 = 1 := by
   have h1 : (1 : Matrix (Fin m) (Fin m) ℂ) ∈ G := hG.2.1
-  have hpos := hD.1 1 h1
   have hm := hD.2.1 1 h1 1 h1
   rw [mul_one] at hm
-  exact mul_left_cancel₀ hpos.ne' (hm.symm.trans (mul_one (D 1)).symm)
+  exact mul_left_cancel₀ (hD.1 1 h1).ne' (hm.symm.trans (mul_one (D 1)).symm)
 
 lemma pow_mem (hG : IsMatGroup G) {x : Matrix (Fin m) (Fin m) ℂ} (hx : x ∈ G) (n : ℕ) : x ^ n ∈ G := by
   induction n with
@@ -93,9 +92,8 @@ lemma modEqOne (hG : IsMatGroup G) (hD : ModProps G D) {x : Matrix (Fin m) (Fin 
   have hxx := (hG.2.2.2 x hx).2
   have hm := hD.2.1 x hx x⁻¹ hinv
   rw [hxx, modOne hG hD] at hm
-  have h0 := hD.1 x hx
   have hle : D x * D x⁻¹ ≤ D x := by
-    calc D x * D x⁻¹ ≤ D x * 1 := mul_le_mul_of_nonneg_left h2 h0.le
+    calc D x * D x⁻¹ ≤ D x * 1 := mul_le_mul_of_nonneg_left h2 (hD.1 x hx).le
       _ = D x := mul_one _
   linarith
 

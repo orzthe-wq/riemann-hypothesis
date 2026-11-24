@@ -76,7 +76,6 @@ private theorem uMat_eq {R : Type} [CommRing R] (Y : uM R) : uMat ![Y.1 1 0, Y.1
   fin_cases i <;> fin_cases j <;> simp [uMat] <;> first
     | exact (hA _ _ (by decide)).symm
     | (rw [h32]; ring)
-    | skip
 
 private theorem uMat_add {R : Type} [CommRing R] (v w : Fin 3 → R) : uMat (v + w) = uMat v + uMat w := by
   ext i j

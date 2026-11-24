@@ -122,7 +122,7 @@ theorem ann_gs : Ann (1 : Sp l).1 (gs l) := fun j => by
   have e1 : ((1 : Sp l) : Mat l) = 1 := rfl
   rw [e1, one_mulVec, one_mulVec]
   ext x
-  rw [SchwartzMap.smul_apply, dRho_single_inr, dRho_single_inl, lineDerivOp_apply_eq_fderiv, smul_eq_mul]
+  rw [_root_.smul_apply, dRho_single_inr, dRho_single_inl, lineDerivOp_apply_eq_fderiv, smul_eq_mul]
   linear_combination fderiv_gs j x - (2 * π * (x j : ℂ) * gs l x) * I_sq
 
 theorem gs_zero : gs l 0 = 1 := by simp
@@ -150,7 +150,7 @@ theorem eps_ne : (eps : G l) ≠ 1 := by
   intro h
   let φ : Sch l := gs l
   have h1 : omS (eps : G l) φ = omS (1 : G l) φ := by rw [h]
-  rw [omS_eps, map_one, ContinuousLinearMap.one_apply] at h1
+  rw [omS_eps, map_one, one_apply_eq_self] at h1
   have h2 : -φ 0 = φ 0 := by
     have := congrArg (fun u : Sch l => u 0) h1
     simpa using this
@@ -238,7 +238,7 @@ theorem ker : Ker l := by
     have hc' : ∀ f, omS g f = c • f := hc
     have hn := omS_nrm g 1 (gs l) ann_gs
     have e1 : ((1 : Sp l) : Mat l) = 1 := rfl
-    rw [hpg, e1, Matrix.one_mul, dd_one, hc', SchwartzMap.smul_apply, gs_zero] at hn
+    rw [hpg, e1, Matrix.one_mul, dd_one, hc', _root_.smul_apply, gs_zero] at hn
     have hc2 : (c - 1) * (c + 1) = 0 := by linear_combination hn
     rcases mul_eq_zero.1 hc2 with h | h
     · left

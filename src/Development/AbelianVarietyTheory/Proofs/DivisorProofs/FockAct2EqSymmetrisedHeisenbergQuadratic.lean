@@ -64,13 +64,13 @@ theorem heisOp_single (a : Ix P Q) (b : Ix R S) (z : ℂ) :
   · simp
   · rintro ⟨a', b'⟩ h
     have : ¬ (a = a' ∧ b = b') := fun ⟨h1, h2⟩ => h (by subst h1; subst h2; rfl)
-    simp [Matrix.single_apply, this]
+    simp [this]
 
 theorem single_mul_tr_apply (a : Ix P Q) (b : Ix R S) (z : ℂ) (Y : Mat R S) (a' : Ix P Q) (b' : Ix R S) :
     (Matrix.single a b z * Yᵀ) a' b' = if a' = a then z * Y b' b else 0 := by
   by_cases h : a' = a
   · subst h; simp [Matrix.mul_apply, Matrix.single_apply]
-  · simp [Matrix.mul_apply, Matrix.single_apply, Ne.symm h, h]
+  · simp [Matrix.mul_apply, Ne.symm h, h]
 
 theorem heisOp_single_mul (a : Ix P Q) (b : Ix R S) (z : ℂ) (Y : Mat R S) :
     heisOp (Matrix.single a b z * Yᵀ) = ((Real.sqrt (2 * Real.pi) : ℝ) : ℂ) •
@@ -78,9 +78,9 @@ theorem heisOp_single_mul (a : Ix P Q) (b : Ix R S) (z : ℂ) (Y : Mat R S) :
   unfold heisOp
   congr 1
   rw [Fintype.sum_prod_type, Finset.sum_eq_single a]
-  · simp [single_mul_tr_apply]
+  · simp
   · intro a' _ h
-    simp [single_mul_tr_apply, h]
+    simp [h]
   · simp
 
 end GlobalTheory.FockHeisQuad

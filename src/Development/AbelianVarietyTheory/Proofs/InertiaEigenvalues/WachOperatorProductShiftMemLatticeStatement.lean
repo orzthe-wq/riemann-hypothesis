@@ -1,9 +1,10 @@
 module
 
 public import Formalism.SharpRestriction.LevelLetterCocycles.CrystallineLiftingInputs
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExpansionRulesCriterionOddRootOfUnityCaseAStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapDcrisEqDdRCrystallineUnramified
+public import Formalism.SharpRestriction.LevelLetterCocycles.ExpRules
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExpansionRulesCriterionOddRootOfUnityCaseA
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachShiftMemOfExpansions
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MapDcrisEqDdRCrystallineUnramified
 import Formalism.SharpRestriction.LevelLetterCocycles.ExistsPrimOfGood
 import Formalism.SharpRestriction.LevelLetterCocycles.FrobeniusIterateUniformizerUnitProducts
 import Mathlib.Algebra.Order.Floor.Extended
@@ -53,7 +54,7 @@ theorem _root_.GlobalTheory.T.wachOperatorProduct_shift_mem_lattice : ∀ (D : F
   have h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K 1 LL hA.2.2) :=
     hN.2.2.2.2.2.2.2.2.1 l K 1 LL hA.2.2
   obtain ⟨hRg, hRu, hCr⟩ :=
-    GlobalTheory.T.expansion_rules_criterion_odd_root_of_unity_caseA D HW F Cm hN l K LL hA
+    _root_.GlobalTheory.ExpansionsOdd.main D HW F Cm hN l K LL hA
   have hD : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris ((D.loc l).PD K) ↥LL.1 :=
     fun hb V _ _ _ _ _ ρ hc =>
       GlobalTheory.Per.DdREqDcris.map_Dcris_eq_DdR l (D.loc l) (D.locA l) (D.locT l) K LL hb V ρ hc

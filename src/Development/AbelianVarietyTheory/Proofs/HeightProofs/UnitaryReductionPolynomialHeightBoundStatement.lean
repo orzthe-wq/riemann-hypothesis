@@ -48,4 +48,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 theorem _root_.GlobalTheory.T.unitary_reduction_polynomial_height_bound : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D), IsInfFam θ → OrthoSmall D.host.E → DenomBound θ V → ∃ (d : ℕ) (C : ℝ) (M : ℕ), 0 < d ∧ ∀ g : GA D V, ∃ γ ∈ GQ V, BddDen V d (γ * g) ∧ normInf θ V γ ≤ C * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g : ℝ) ^ M := by
-  first | exact @GlobalTheory.SmoothForms.Reduce.reduction | exact GlobalTheory.SmoothForms.Reduce.reduction | (intros; apply GlobalTheory.SmoothForms.Reduce.reduction <;> assumption)
+  first | exact @GlobalTheory.SmoothForms.Reduce.reduction

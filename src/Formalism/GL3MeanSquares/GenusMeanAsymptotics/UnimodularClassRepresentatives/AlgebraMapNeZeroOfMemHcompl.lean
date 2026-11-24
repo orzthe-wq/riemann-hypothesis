@@ -59,8 +59,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 theorem algebraMap_conjO (r : 𝓞 K) :
     algebraMap (𝓞 K) K (conjO K r) = star (algebraMap (𝓞 K) K r) := rfl
 
-theorem conjO_conjO (r : 𝓞 K) : conjO K (conjO K r) = r :=
-  _root_.Formalism.HermitianLattices.Ext.L3.conjO_conjO r
+alias conjO_conjO := _root_.Formalism.HermitianLattices.Ext.L3.conjO_conjO
 
 theorem mem_conjIdeal_iff (p : Ideal (𝓞 K)) (r : 𝓞 K) :
     r ∈ Formalism.HermitianLatticesTheory.conjIdeal (K := K) p ↔ conjO K r ∈ p := by

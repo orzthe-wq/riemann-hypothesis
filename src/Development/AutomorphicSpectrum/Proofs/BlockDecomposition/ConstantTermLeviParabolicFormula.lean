@@ -244,7 +244,6 @@ theorem map_lev (f : R →+* S) (g : GL (Fin r) R × GL (Fin s) R) :
   obtain ⟨u, rfl⟩ := (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i
   obtain ⟨v, rfl⟩ := (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j
   rcases u with u | u <;> rcases v with v | v <;> simp [Matrix.reindex_apply]
-  all_goals rfl
 
 end Levi
 

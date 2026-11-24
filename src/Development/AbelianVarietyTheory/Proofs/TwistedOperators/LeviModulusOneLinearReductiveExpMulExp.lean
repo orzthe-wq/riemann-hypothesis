@@ -1,20 +1,19 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDensityOfImmersion
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsAdmOnOfFiniteDimensional
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsStandardIndModule
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagLeviMaxCompactClosedSubgroups
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceConjTransposeStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceExpSmulStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PosDefConjTransposeMulSelfEqExpPolynomialStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryExistsSkewLogStatement
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Normed.Algebra.Exponential
+public import Mathlib.Topology.Instances.Matrix
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PosDefConjTransposeMulSelfEqExpPolynomial
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryExistsSkewLog
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Matrix.HermitianFunctionalCalculus
-import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -26,8 +25,11 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
 import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.TotallySplit
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,8 +37,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,10 +50,162 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.Tactic.Linter.Style
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagLeviMaxCompactClosedSubgroups
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower
+import Mathlib.Analysis.Matrix.HermitianFunctionalCalculus
+import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PicardGroup
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceConjTranspose, Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceExpSmul, Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviModulusOneLinearReductiveExpMulExp
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceConjTranspose =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceConjTranspose", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+open scoped ComplexOrder
+
+namespace GlobalTheory.FlagMeas.DetAdj
+
+lemma mul_basisMat_eq {n : ℕ} (V : Submodule ℂ (Fin n → ℂ)) {d : Type} [Fintype d] [DecidableEq d]
+    (b : Module.Basis d ℂ V) (g : Matrix (Fin n) (Fin n) ℂ) (f : V →ₗ[ℂ] V)
+    (hf : ∀ v : V, ((f v : V) : Fin n → ℂ) = g *ᵥ (v : Fin n → ℂ)) :
+    g * Matrix.of (fun i j => (b j : Fin n → ℂ) i) =
+      Matrix.of (fun i j => (b j : Fin n → ℂ) i) * LinearMap.toMatrix b b f := by
+  ext i j
+  have h1 : (g * Matrix.of (fun i j => (b j : Fin n → ℂ) i)) i j = (g *ᵥ (b j : Fin n → ℂ)) i := by
+    simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
+  rw [h1, ← hf]
+  have h2 : ((f (b j) : V) : Fin n → ℂ) = ∑ k, b.repr (f (b j)) k • (b k : Fin n → ℂ) := by
+    conv_lhs => rw [← b.sum_repr (f (b j))]
+    rw [Submodule.coe_sum]
+    simp only [Submodule.coe_smul]
+  rw [h2]
+  simp [Matrix.mul_apply, LinearMap.toMatrix_apply, Finset.sum_apply, mul_comm]
+
+theorem detOn_conjTranspose : ∀ (n : ℕ) (g : Matrix (Fin n) (Fin n) ℂ) (V : Submodule ℂ (Fin n → ℂ)),
+    (∀ y ∈ V, g *ᵥ y ∈ V) → (∀ y ∈ V, gᴴ *ᵥ y ∈ V) →
+      GlobalTheory.FlagMeas.detOn gᴴ V = GlobalTheory.FlagMeas.detOn g V := by
+  intro n g V hg hgh
+  have hg' : ∀ y ∈ V, Matrix.toLin' g y ∈ V := by simpa [Matrix.toLin'_apply] using hg
+  have hgh' : ∀ y ∈ V, Matrix.toLin' gᴴ y ∈ V := by simpa [Matrix.toLin'_apply] using hgh
+  unfold GlobalTheory.FlagMeas.detOn
+  rw [dite_eq_left hgh', dite_eq_left hg']
+  set f := (Matrix.toLin' g).restrict hg'
+  set f' := (Matrix.toLin' gᴴ).restrict hgh'
+  let b := Module.finBasis ℂ V
+  set B : Matrix (Fin n) (Fin (Module.finrank ℂ V)) ℂ := Matrix.of (fun i j => (b j : Fin n → ℂ) i) with hB
+  set A := LinearMap.toMatrix b b f
+  set A' := LinearMap.toMatrix b b f'
+  have h1 : g * B = B * A := mul_basisMat_eq V b g f (fun v => by simp [f, Matrix.toLin'_apply])
+  have h2 : gᴴ * B = B * A' := mul_basisMat_eq V b gᴴ f' (fun v => by simp [f', Matrix.toLin'_apply])
+  have hinj : Function.Injective B.mulVec := by
+    rw [Matrix.mulVec_injective_iff]
+    have : B.col = fun j => (b j : Fin n → ℂ) := by ext j i; rfl
+    rw [this]
+    exact b.linearIndependent.map' V.subtype (Submodule.ker_subtype V)
+  have hG : (Bᴴ * B).det ≠ 0 := (Matrix.PosDef.conjTranspose_mul_self B hinj).det_pos.ne'
+  have key : (Bᴴ * B) * A = A'ᴴ * (Bᴴ * B) := by
+    calc (Bᴴ * B) * A = Bᴴ * (g * B) := by rw [h1, Matrix.mul_assoc]
+      _ = (gᴴ * B)ᴴ * B := by
+        rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]
+      _ = A'ᴴ * (Bᴴ * B) := by rw [h2, Matrix.conjTranspose_mul, Matrix.mul_assoc]
+  have hdet : A.det = star A'.det := by
+    have := congrArg Matrix.det key
+    rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, mul_comm (star _)] at this
+    exact mul_left_cancel₀ hG this
+  rw [← LinearMap.det_toMatrix b f, ← LinearMap.det_toMatrix b f']
+  change ‖A'.det‖ = ‖A.det‖
+  rw [hdet, norm_star]
+
+end GlobalTheory.FlagMeas.DetAdj
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceConjTranspose =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceExpSmul =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceExpSmul", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDensityOfImmersion\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+
+namespace GlobalTheory.FlagMeas
+
+theorem detOn_exp_smul : ∀ (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) (V : Submodule ℂ (Fin n → ℂ)),
+    (∀ y ∈ V, A *ᵥ y ∈ V) → ∃ c : ℝ, ∀ t : ℝ,
+      GlobalTheory.FlagMeas.detOn (NormedSpace.exp (t • A)) V = Real.exp (t * c) := by
+  intro n A V hA
+  have hA' : ∀ y ∈ V, Matrix.toLin' A y ∈ V := fun y hy => by
+    rw [Matrix.toLin'_apply]; exact hA y hy
+  set f : V →ₗ[ℂ] V := (Matrix.toLin' A).restrict hA' with hf
+  set b := Module.finBasis ℂ V with hb
+  set B := LinearMap.toMatrixAlgEquiv b f with hB
+  refine ⟨(B.trace).re, fun t => ?_⟩
+  have hts : t • A = (t : ℂ) • A := by ext i j; simp [Complex.real_smul]
+  rw [hts]
+  set s : ℂ := (t : ℂ) with hs
+  have hpowA : ∀ (k : ℕ) (v : V), (s • A) ^ k *ᵥ (v : Fin n → ℂ) = (((s • f) ^ k) v : Fin n → ℂ) := by
+    intro k
+    induction k with
+    | zero => intro v; simp
+    | succ k ih =>
+      intro v
+      rw [pow_succ', pow_succ', ← Matrix.mulVec_mulVec, ih, Module.End.mul_apply]
+      simp [hf, LinearMap.restrict_apply, Matrix.toLin'_apply, Matrix.smul_mulVec]
+  have hpowB : ∀ k : ℕ, Matrix.toLinAlgEquiv b ((s • B) ^ k) = (s • f) ^ k := by
+    intro k
+    rw [map_pow, map_smul, hB, Matrix.toLinAlgEquiv_toMatrixAlgEquiv]
+  have key : ∀ v : V, NormedSpace.exp (s • A) *ᵥ (v : Fin n → ℂ) =
+      ((Matrix.toLinAlgEquiv b (NormedSpace.exp (s • B))) v : Fin n → ℂ) := by
+    intro v
+    open scoped Matrix.Norms.Operator in
+    have h1 := NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) (s • A)
+    open scoped Matrix.Norms.Operator in
+    have h2 := NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) (s • B)
+    let g1 : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] (Fin n → ℂ) :=
+      LinearMap.applyₗ (v : Fin n → ℂ) ∘ₗ Matrix.toLin'.toLinearMap
+    let g2 : Matrix (Fin (Module.finrank ℂ V)) (Fin (Module.finrank ℂ V)) ℂ →ₗ[ℂ] (Fin n → ℂ) :=
+      V.subtype ∘ₗ LinearMap.applyₗ v ∘ₗ (Matrix.toLinAlgEquiv b).toLinearMap
+    have h1' := h1.map g1 (LinearMap.continuous_of_finiteDimensional g1)
+    have h2' := h2.map g2 (LinearMap.continuous_of_finiteDimensional g2)
+    have heq : (g1 ∘ fun k : ℕ => ((k.factorial : ℂ)⁻¹) • (s • A) ^ k) =
+        (g2 ∘ fun k : ℕ => ((k.factorial : ℂ)⁻¹) • (s • B) ^ k) := by
+      funext k
+      simp only [Function.comp_apply, map_smul, g1, g2, LinearMap.comp_apply, LinearMap.applyₗ_apply_apply,
+        LinearEquiv.coe_coe, Matrix.toLin'_apply, AlgEquiv.toLinearMap_apply, Submodule.subtype_apply]
+      rw [hpowA, hpowB]
+    rw [heq] at h1'
+    exact h1'.unique h2'
+  have hstab : ∀ y ∈ V, Matrix.toLin' (NormedSpace.exp (s • A)) y ∈ V := fun y hy => by
+    rw [Matrix.toLin'_apply, key ⟨y, hy⟩]; exact Submodule.coe_mem _
+  have hres : (Matrix.toLin' (NormedSpace.exp (s • A))).restrict hstab =
+      Matrix.toLinAlgEquiv b (NormedSpace.exp (s • B)) := by
+    refine LinearMap.ext fun v => Subtype.ext ?_
+    simp only [LinearMap.restrict_coe_apply, Matrix.toLin'_apply]
+    exact key v
+  rw [detOn, dite_eq_left hstab, hres]
+  show ‖LinearMap.det (Matrix.toLin b b (NormedSpace.exp (s • B)))‖ = _
+  rw [LinearMap.det_toLin, GlobalTheory.SUVol.det_exp, Matrix.trace_smul, smul_eq_mul, Complex.norm_exp, hs,
+    Complex.re_ofReal_mul]
+
+end GlobalTheory.FlagMeas
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceExpSmul =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviModulusOneLinearReductiveExpMulExp =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviModulusOneLinearReductiveExpMulExp", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsAdmOnOfFiniteDimensional\npublic import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsStandardIndModule\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceConjTranspose\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.AbsDetOnStableSubspaceExpSmul\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Normed.Algebra.Exponential\npublic import Mathlib.Topology.Instances.Matrix\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PosDefConjTransposeMulSelfEqExpPolynomial\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryExistsSkewLog\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicFlagLeviMaxCompactClosedSubgroups\nimport Formalism.RealPlaceAnalysis.RealPlaceTaylor.KoszulLowersPower\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Matrix.HermitianFunctionalCalculus\nimport Mathlib.Analysis.Normed.Algebra.MatrixExponential\nimport Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Mathlib.RingTheory.PicardGroup\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix
@@ -65,253 +218,22 @@ open Formalism.REAL Formalism.MainNotions.S GlobalTheory.FlagMeas GlobalTheory.R
 
 theorem detOn_conjTranspose (n : ℕ) (g : Matrix (Fin n) (Fin n) ℂ) (V : Submodule ℂ (Fin n → ℂ)) :
     (∀ y ∈ V, g *ᵥ y ∈ V) → (∀ y ∈ V, gᴴ *ᵥ y ∈ V) → GlobalTheory.FlagMeas.detOn gᴴ V = GlobalTheory.FlagMeas.detOn g V :=
-  GlobalTheory.T.absDetOnStableSubspace_conjTranspose n g V
+  _root_.GlobalTheory.FlagMeas.DetAdj.detOn_conjTranspose n g V
 
 theorem detOn_exp_smul (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) (V : Submodule ℂ (Fin n → ℂ)) :
     (∀ y ∈ V, A *ᵥ y ∈ V) →
       ∃ c : ℝ, ∀ t : ℝ, GlobalTheory.FlagMeas.detOn (NormedSpace.exp (t • A)) V = Real.exp (t * c) :=
-  GlobalTheory.T.absDetOnStableSubspace_exp_smul n A V
+  _root_.GlobalTheory.FlagMeas.detOn_exp_smul n A V
 
 theorem exists_herm_log (n : ℕ) (g : Matrix (Fin n) (Fin n) ℂ) : IsUnit g →
     ∃ (L : Matrix (Fin n) (Fin n) ℂ) (p : Polynomial ℂ), Lᴴ = L ∧ NormedSpace.exp L = gᴴ * g ∧
       L = Polynomial.aeval (gᴴ * g) p :=
-  GlobalTheory.T.exists_hermitian_exp_eq_conjTranspose_mul_poly n g
-
-theorem exists_unitary_log (n : ℕ) (k : Matrix (Fin n) (Fin n) ℂ) : kᴴ * k = 1 →
-    ∃ (X : Matrix (Fin n) (Fin n) ℂ) (p : Polynomial ℂ), Xᴴ = -X ∧ NormedSpace.exp X = k ∧
-      X = Polynomial.aeval k p :=
-  GlobalTheory.T.exists_skewHermitian_log_of_unitary n k
-
-
-open scoped Matrix.Norms.L2Operator in
-theorem herm_exp_inj (n : ℕ) (A B : Matrix (Fin n) (Fin n) ℂ) (hA : Aᴴ = A) (hB : Bᴴ = B)
-    (h : NormedSpace.exp A = NormedSpace.exp B) : A = B := by
-  rw [← CFC.log_exp A hA, ← CFC.log_exp B hB, h]
+  _root_.GlobalTheory.posDef_conjTranspose_mul_self_eq_exp_polynomial n g
 
 variable {n a : ℕ} {ε : Fin n → Bool}
 
-def keepAlg (V : Submodule ℂ (Fin n → ℂ)) : Subalgebra ℂ (Matrix (Fin n) (Fin n) ℂ) where
-  carrier := {A | ∀ y ∈ V, A *ᵥ y ∈ V}
-  mul_mem' := fun {A B} hA hB y hy => by
-    rw [Set.mem_setOf_eq] at hA hB
-    rw [← Matrix.mulVec_mulVec]; exact hA _ (hB y hy)
-  add_mem' := fun {A B} hA hB y hy => by
-    rw [Matrix.add_mulVec]; exact V.add_mem (hA y hy) (hB y hy)
-  algebraMap_mem' := fun c y hy => by
-    rw [Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]; exact V.smul_mem c hy
-
-theorem aeval_keeps {A : Matrix (Fin n) (Fin n) ℂ} {V : Submodule ℂ (Fin n → ℂ)} (hA : ∀ y ∈ V, A *ᵥ y ∈ V)
-    (p : Polynomial ℂ) : ∀ y ∈ V, Polynomial.aeval A p *ᵥ y ∈ V := by
-  have e : Polynomial.aeval A p = ((Polynomial.aeval (⟨A, hA⟩ : keepAlg V) p : keepAlg V) : Matrix (Fin n) (Fin n) ℂ) :=
-    Polynomial.aeval_algHom_apply (keepAlg V).val (⟨A, hA⟩ : keepAlg V) p
-  rw [e]
-  exact (Polynomial.aeval (⟨A, hA⟩ : keepAlg V) p).2
-
-theorem aeval_commute {A B : Matrix (Fin n) (Fin n) ℂ} (h : Commute A B) (p : Polynomial ℂ) :
-    Commute (Polynomial.aeval A p) B := by
-  have hA : A ∈ Subalgebra.centralizer ℂ {B} := by
-    rw [Subalgebra.mem_centralizer_iff]; intro x hx; rw [Set.mem_singleton_iff.1 hx]; exact h.eq.symm
-  have e : Polynomial.aeval A p = ((Polynomial.aeval (⟨A, hA⟩ : Subalgebra.centralizer ℂ {B}) p :
-      Subalgebra.centralizer ℂ {B}) : Matrix (Fin n) (Fin n) ℂ) :=
-    Polynomial.aeval_algHom_apply (Subalgebra.centralizer ℂ {B}).val (⟨A, hA⟩ : Subalgebra.centralizer ℂ {B}) p
-  have hm := (Polynomial.aeval (⟨A, hA⟩ : Subalgebra.centralizer ℂ {B}) p).2
-  rw [Subalgebra.mem_centralizer_iff] at hm
-  rw [Commute, SemiconjBy, e]
-  exact (hm B rfl).symm
-
-theorem smul_keeps {A : Matrix (Fin n) (Fin n) ℂ} {V : Submodule ℂ (Fin n → ℂ)} (hA : ∀ y ∈ V, A *ᵥ y ∈ V)
-    (t : ℝ) : ∀ y ∈ V, (t • A) *ᵥ y ∈ V := fun y hy => by
-  rw [Matrix.smul_mulVec]; exact V.smul_of_tower_mem t (hA y hy)
-
-theorem isUnit_of_inUJ {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : IsUnit g := by
-  obtain ⟨u, rfl⟩ : g ∈ Set.range (coeMatrixAlt ε) := by rw [range_coeMatrix]; exact hg
-  exact (u : (Matrix (Fin n) (Fin n) ℂ)ˣ).isUnit
-
-theorem mem_mats_leviOne {W : Flag n a} {g : Matrix (Fin n) (Fin n) ℂ} :
-    g ∈ mats (leviOne ε W) ↔ inUJ ε g ∧ (∀ i, ∀ y ∈ W i, g *ᵥ y ∈ W i ∧ gᴴ *ᵥ y ∈ W i) ∧
-      ∀ i, detOn g (W i) = 1 := by
-  constructor
-  · rintro ⟨u, ⟨hM, hD⟩, rfl⟩
-    exact ⟨u.2, hM, hD⟩
-  · rintro ⟨hU, hM, hD⟩
-    obtain ⟨u, rfl⟩ : g ∈ Set.range (coeMatrixAlt ε) := by rw [range_coeMatrix]; exact hU
-    exact ⟨u, ⟨hM, hD⟩, rfl⟩
-
-theorem mats_mul {W : Flag n a} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ mats (leviOne ε W))
-    (hh : h ∈ mats (leviOne ε W)) : g * h ∈ mats (leviOne ε W) := by
-  obtain ⟨u, hu, rfl⟩ := hg
-  obtain ⟨v, hv, rfl⟩ := hh
-  exact ⟨u * v, (leviOne ε W).mul_mem hu hv, rfl⟩
-
-theorem detOn_nonneg (g : Matrix (Fin n) (Fin n) ℂ) (V : Submodule ℂ (Fin n → ℂ)) : 0 ≤ detOn g V := by
-  unfold detOn; split_ifs <;> positivity
-
-def jUnit (ε : Fin n → Bool) : (Matrix (Fin n) (Fin n) ℂ)ˣ := ⟨Jm ε, Jm ε, Jm_mul_self ε, Jm_mul_self ε⟩
-
-theorem exp_conj_J (A : Matrix (Fin n) (Fin n) ℂ) :
-    NormedSpace.exp (Jm ε * A * Jm ε) = Jm ε * NormedSpace.exp A * Jm ε := by
-  exact Matrix.exp_units_conj' (jUnit ε) A
-
-theorem isClosed_keepAlg (V : Submodule ℂ (Fin n → ℂ)) : IsClosed (keepAlg V : Set (Matrix (Fin n) (Fin n) ℂ)) := by
-  have : (keepAlg V : Set (Matrix (Fin n) (Fin n) ℂ)) = ⋂ z ∈ V, {M | M *ᵥ z ∈ V} := by
-    ext M; simp only [Set.mem_iInter, Set.mem_setOf_eq]; rfl
-  rw [this]
-  exact isClosed_biInter fun z _ =>
-    V.closed_of_finiteDimensional.preimage (continuous_id.matrix_mulVec continuous_const)
-
-theorem tsum_mem_keepAlg {V : Submodule ℂ (Fin n → ℂ)} (f : ℕ → Matrix (Fin n) (Fin n) ℂ)
-    (hf : ∀ k, f k ∈ keepAlg V) : ∑' k, f k ∈ keepAlg V := by
-  by_cases hs : Summable f
-  · exact (isClosed_keepAlg V).mem_of_tendsto hs.hasSum
-      (Filter.Eventually.of_forall fun s => Subalgebra.sum_mem _ fun k _ => hf k)
-  · rw [tsum_eq_zero_of_not_summable hs]; exact Subalgebra.zero_mem _
-
-theorem exp_keeps (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) (V : Submodule ℂ (Fin n → ℂ)) :
-    (∀ y ∈ V, A *ᵥ y ∈ V) → ∀ y ∈ V, NormedSpace.exp A *ᵥ y ∈ V := by
-  intro hA
-  show NormedSpace.exp A ∈ keepAlg V
-  rw [NormedSpace.exp_eq_tsum ℂ]
-  exact tsum_mem_keepAlg _ fun k => Subalgebra.smul_mem _ (Subalgebra.pow_mem _ (show A ∈ keepAlg V from hA) k) _
-
-theorem J_J_mul (x : Matrix (Fin n) (Fin n) ℂ) : Jm ε * (Jm ε * x) = x := by
-  rw [← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul]
-
-theorem mul_conj_J {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : g * (Jm ε * gᴴ * Jm ε) = 1 :=
-  mul_eq_one_comm.mp (coeMatrix_left_inv ε g hg)
-
-theorem inUJ_conjTranspose {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : inUJ ε gᴴ := by
-  unfold inUJ
-  rw [conjTranspose_conjTranspose]
-  calc g * Jm ε * gᴴ = (g * (Jm ε * gᴴ * Jm ε)) * Jm ε := by
-        simp only [Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one]
-    _ = Jm ε := by rw [mul_conj_J hg, Matrix.one_mul]
-
-theorem neg_keeps {A : Matrix (Fin n) (Fin n) ℂ} {V : Submodule ℂ (Fin n → ℂ)} (hA : ∀ y ∈ V, A *ᵥ y ∈ V) :
-    ∀ y ∈ V, (-A) *ᵥ y ∈ V := fun y hy => by
-  rw [Matrix.neg_mulVec]; exact V.neg_mem (hA y hy)
-
-open scoped Matrix.Norms.L2Operator in
-theorem continuous_exp_smul (X : Matrix (Fin n) (Fin n) ℂ) : Continuous (fun s : ℝ => NormedSpace.exp (s • X)) := by
-  letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := NormedAlgebra.restrictScalars ℚ ℂ _
-  exact NormedSpace.exp_continuous.comp (continuous_id.smul continuous_const)
-
-theorem exists_pos_part {W : Flag n a} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ mats (leviOne ε W)) :
-    ∃ Y : Matrix (Fin n) (Fin n) ℂ, (∀ t : ℝ, NormedSpace.exp (t • Y) ∈ mats (leviOne ε W)) ∧
-      (g * NormedSpace.exp (-Y))ᴴ * (g * NormedSpace.exp (-Y)) = 1 := by
-  obtain ⟨hU, hM, hD⟩ := mem_mats_leviOne.1 hg
-  obtain ⟨L, p, hLs, hLe, hLp⟩ := exists_herm_log n g (isUnit_of_inUJ hU)
-  have hhk : ∀ i, ∀ y ∈ W i, (gᴴ * g) *ᵥ y ∈ W i := fun i y hy => by
-    rw [← Matrix.mulVec_mulVec]; exact (hM i _ (hM i y hy).1).2
-  have hLk : ∀ i, ∀ y ∈ W i, L *ᵥ y ∈ W i := fun i => hLp ▸ aeval_keeps (hhk i) p
-  have hJL : Jm ε * L * Jm ε = -L := by
-    refine herm_exp_inj n _ _ ?_ ?_ ?_
-    · rw [conjTranspose_mul, conjTranspose_mul, Jm_conjTranspose, hLs, Matrix.mul_assoc]
-    · rw [conjTranspose_neg, hLs]
-    · rw [exp_conj_J, hLe, Matrix.exp_neg, hLe]
-      refine (Matrix.inv_eq_left_inv ?_).symm
-      calc Jm ε * (gᴴ * g) * Jm ε * (gᴴ * g) = (Jm ε * gᴴ) * (g * (Jm ε * gᴴ * Jm ε)) * (Jm ε * g) := by
-            simp only [Matrix.mul_assoc, J_J_mul]
-        _ = 1 := by rw [mul_conj_J hU, Matrix.mul_one, ← Matrix.mul_assoc]; exact coeMatrix_left_inv ε g hU
-  have hadd : ∀ s r : ℝ, NormedSpace.exp (s • L) * NormedSpace.exp (r • L) = NormedSpace.exp ((s + r) • L) :=
-    fun s r => by rw [add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl L).smul_left s).smul_right r)]
-  have hEs : ∀ s : ℝ, (NormedSpace.exp (s • L))ᴴ = NormedSpace.exp (s • L) := fun s => by
-    rw [← Matrix.exp_conjTranspose, conjTranspose_smul, hLs, star_trivial]
-  have hdet : ∀ i s, detOn (NormedSpace.exp (s • L)) (W i) = 1 := fun i s => by
-    obtain ⟨c, hc⟩ := detOn_exp_smul n L (W i) (hLk i)
-    have h1 := hc 1
-    rw [one_smul, hLe, detOn_mul (fun y hy => (hM i y hy).2) (fun y hy => (hM i y hy).1),
-      detOn_conjTranspose n g (W i) (fun y hy => (hM i y hy).1) (fun y hy => (hM i y hy).2), hD i, one_mul,
-      one_mul, eq_comm, Real.exp_eq_one_iff] at h1
-    rw [hc s, h1, mul_zero, Real.exp_zero]
-  have hmem : ∀ s : ℝ, NormedSpace.exp (s • L) ∈ mats (leviOne ε W) := fun s => by
-    have hk : ∀ i, ∀ y ∈ W i, NormedSpace.exp (s • L) *ᵥ y ∈ W i := fun i =>
-      exp_keeps n (s • L) (W i) (smul_keeps (hLk i) s)
-    refine mem_mats_leviOne.2 ⟨?_, fun i y hy => ⟨hk i y hy, by rw [hEs]; exact hk i y hy⟩, fun i => hdet i s⟩
-    unfold inUJ
-    have hJE : Jm ε * NormedSpace.exp (s • L) * Jm ε = NormedSpace.exp ((-s) • L) := by
-      rw [← exp_conj_J, Matrix.mul_smul, Matrix.smul_mul, hJL, smul_neg, neg_smul]
-    rw [hEs]
-    calc NormedSpace.exp (s • L) * Jm ε * NormedSpace.exp (s • L)
-        = Jm ε * (Jm ε * NormedSpace.exp (s • L) * Jm ε) * NormedSpace.exp (s • L) := by
-          simp only [Matrix.mul_assoc, J_J_mul]
-      _ = Jm ε := by rw [hJE, Matrix.mul_assoc, hadd, neg_add_cancel, zero_smul, NormedSpace.exp_zero, Matrix.mul_one]
-  refine ⟨(1 / 2 : ℝ) • L, fun t => ?_, ?_⟩
-  · rw [smul_smul]; exact hmem _
-  · rw [← neg_smul, conjTranspose_mul, hEs, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, ← hLe]
-    have : NormedSpace.exp L = NormedSpace.exp ((1 : ℝ) • L) := by rw [one_smul]
-    rw [this, hadd, hadd, show (-(1 / 2 : ℝ) + (1 + -(1 / 2))) = 0 by norm_num, zero_smul, NormedSpace.exp_zero]
-
-theorem exists_unit_part {W : Flag n a} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ mats (leviOne ε W))
-    (hu : kᴴ * k = 1) :
-    ∃ X : Matrix (Fin n) (Fin n) ℂ, (∀ t : ℝ, NormedSpace.exp (t • X) ∈ mats (leviOne ε W)) ∧
-      NormedSpace.exp X = k := by
-  obtain ⟨hU, hM, hD⟩ := mem_mats_leviOne.1 hk
-  obtain ⟨X, q, hXs, hXe, hXq⟩ := exists_unitary_log n k hu
-  have hkJ : Commute k (Jm ε) := by
-    have h1 : k * kᴴ = 1 := mul_eq_one_comm.mp hu
-    show k * Jm ε = Jm ε * k
-    calc k * Jm ε = k * (kᴴ * Jm ε * k) := by rw [hU]
-      _ = (k * kᴴ) * Jm ε * k := by simp only [Matrix.mul_assoc]
-      _ = Jm ε * k := by rw [h1, Matrix.one_mul]
-  have hXJ : Commute X (Jm ε) := hXq ▸ aeval_commute hkJ q
-  have hXk : ∀ i, ∀ y ∈ W i, X *ᵥ y ∈ W i := fun i => hXq ▸ aeval_keeps (fun y hy => (hM i y hy).1) q
-  refine ⟨X, fun t => ?_, hXe⟩
-  have hEs : (NormedSpace.exp (t • X))ᴴ = NormedSpace.exp (-(t • X)) := by
-    rw [← Matrix.exp_conjTranspose, conjTranspose_smul, hXs, star_trivial, smul_neg]
-  have hEE : (NormedSpace.exp (t • X))ᴴ * NormedSpace.exp (t • X) = 1 := by
-    rw [hEs, ← Matrix.exp_add_of_commute _ _ (Commute.refl (t • X)).neg_left, neg_add_cancel, NormedSpace.exp_zero]
-  have hJE : Jm ε * NormedSpace.exp (t • X) * Jm ε = NormedSpace.exp (t • X) := by
-    rw [← exp_conj_J, Matrix.mul_smul, Matrix.smul_mul, ← hXJ.eq, Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one]
-  have hk1 : ∀ i, ∀ y ∈ W i, NormedSpace.exp (t • X) *ᵥ y ∈ W i := fun i =>
-    exp_keeps n (t • X) (W i) (smul_keeps (hXk i) t)
-  have hk2 : ∀ i, ∀ y ∈ W i, (NormedSpace.exp (t • X))ᴴ *ᵥ y ∈ W i := fun i => by
-    rw [hEs]; exact exp_keeps n _ (W i) (neg_keeps (smul_keeps (hXk i) t))
-  refine mem_mats_leviOne.2 ⟨?_, fun i y hy => ⟨hk1 i y hy, hk2 i y hy⟩, fun i => ?_⟩
-  · unfold inUJ
-    calc (NormedSpace.exp (t • X))ᴴ * Jm ε * NormedSpace.exp (t • X)
-        = (NormedSpace.exp (t • X))ᴴ * (Jm ε * NormedSpace.exp (t • X) * Jm ε) * Jm ε := by
-          simp only [Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one]
-      _ = Jm ε := by rw [hJE, hEE, Matrix.one_mul]
-  · have h := detOn_mul (hk2 i) (hk1 i)
-    rw [hEE, detOn_one, detOn_conjTranspose n _ (W i) (hk1 i) (hk2 i)] at h
-    nlinarith [detOn_nonneg (NormedSpace.exp (t • X)) (W i)]
-
-theorem exists_exp_mul_exp {W : Flag n a} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ mats (leviOne ε W)) :
-    ∃ X Y : Matrix (Fin n) (Fin n) ℂ, (∀ t : ℝ, NormedSpace.exp (t • X) ∈ mats (leviOne ε W)) ∧
-      (∀ t : ℝ, NormedSpace.exp (t • Y) ∈ mats (leviOne ε W)) ∧ g = NormedSpace.exp X * NormedSpace.exp Y := by
-  obtain ⟨Y, hY, hu⟩ := exists_pos_part hg
-  have hY1 := hY (-1)
-  rw [neg_one_smul] at hY1
-  obtain ⟨X, hX, hXe⟩ := exists_unit_part (mats_mul hg hY1) hu
-  refine ⟨X, Y, hX, hY, ?_⟩
-  rw [hXe, Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.refl Y).neg_left, neg_add_cancel,
-    NormedSpace.exp_zero, Matrix.mul_one]
-
-theorem isLinRed_leviOne : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Flag n a), IsIsoFlag ε j W →
-    (∀ i, 1 ≤ j i) → GlobalTheory.LinRed.IsLinRed (mats (leviOne ε W)) ∧ ∀ g ∈ mats (leviOne ε W),
-      ∃ X Y : Matrix (Fin n) (Fin n) ℂ, (∀ t : ℝ, NormedSpace.exp (t • X) ∈ mats (leviOne ε W)) ∧
-        (∀ t : ℝ, NormedSpace.exp (t • Y) ∈ mats (leviOne ε W)) ∧ g = NormedSpace.exp X * NormedSpace.exp Y := by
-  intro n ε a j W hW hj
-  refine ⟨⟨⟨1, (leviOne ε W).one_mem, rfl⟩, fun g hg h hh => mats_mul hg hh,
-    fun g hg => isUnit_of_inUJ (mem_mats_leviOne.1 hg).1, ?_, ?_, ?_, ?_⟩, fun g hg => exists_exp_mul_exp hg⟩
-  · rintro _ ⟨u, hu, rfl⟩
-    exact ⟨u⁻¹, (leviOne ε W).inv_mem hu, (Matrix.inv_eq_right_inv (uMat_mul_inv u)).symm⟩
-  · intro g _ hg
-    have hc : IsClosed (mats (leviOne ε W)) :=
-      (isClosedEmbeddingMatrix n ε).1.isClosedMap _ (isClosed_leviOne hW hj)
-    rwa [hc.closure_eq] at hg
-  · refine isPreconnected_of_forall 1 fun g hg => ?_
-    obtain ⟨X, Y, hX, hY, rfl⟩ := exists_exp_mul_exp hg
-    refine ⟨(fun s : ℝ => NormedSpace.exp (s • X) * NormedSpace.exp (s • Y)) '' Set.Icc 0 1, ?_,
-      ⟨0, ⟨le_refl _, zero_le_one⟩, by simp⟩, ⟨1, ⟨zero_le_one, le_refl _⟩, by simp⟩,
-      isPreconnected_Icc.image _ ((continuous_exp_smul X).mul (continuous_exp_smul Y)).continuousOn⟩
-    rintro _ ⟨s, -, rfl⟩
-    exact mats_mul (hX s) (hY s)
-  · intro g hg
-    obtain ⟨hU, hM, hD⟩ := mem_mats_leviOne.1 hg
-    refine mem_mats_leviOne.2 ⟨inUJ_conjTranspose hU, fun i y hy => ⟨(hM i y hy).2, by
-      rw [conjTranspose_conjTranspose]; exact (hM i y hy).1⟩, fun i => ?_⟩
-    rw [detOn_conjTranspose n g (W i) (fun y hy => (hM i y hy).1) (fun y hy => (hM i y hy).2)]
-    exact hD i
-
 end GlobalTheory.LeviPolar
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviModulusOneLinearReductiveExpMulExp =====

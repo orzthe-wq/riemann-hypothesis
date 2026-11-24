@@ -172,22 +172,7 @@ theorem exists_colFun (p : SplitPt D k) {n : Type} [Fintype n] [DecidableEq n] {
       funext i
       have j : Fin L.rank := ⟨0, by have := hζ.1; omega⟩
       rw [Matrix.mulVec, dotProduct, line_sum hζ _ j, Matrix.of_apply, mul_assoc, inv_mul_cancel₀ (hz0 j), mul_one]
-    beta_reduce
     rw [this, Matrix.mulVec_mulVec, β.b'b, Matrix.one_mulVec]
-
-theorem isSBHalf_halfInd {m n : ℕ} (e : AE D) (Λ : AddSubgroup (Mx D m n)) : IsSBHalf e Λ (halfInd e Λ) := by
-  have h0 : ∀ t, halfInd e Λ t ≠ 0 → t ∈ Λ ∧ IsHalf e t := fun t ht => by
-    by_contra h
-    exact ht (by unfold halfInd; rw [if_neg h])
-  refine ⟨fun t ht => (h0 t ht).2, 1, one_pos, fun u hu hh t => ?_, fun t ht => by simpa using (h0 t ht).1⟩
-  have h1 : IsHalf e (t + u) ↔ IsHalf e t :=
-    forall_congr' fun i => forall_congr' fun j => by rw [Matrix.add_apply, mul_add, hh i j, add_left_inj]
-  have h2 : t + u ∈ Λ ↔ t ∈ Λ := ⟨fun h => by simpa using sub_mem h hu, fun h => add_mem h hu⟩
-  rw [one_smul]
-  unfold halfInd
-  by_cases h : t ∈ Λ ∧ IsHalf e t
-  · rw [if_pos h, if_pos ⟨h2.2 h.1, h1.2 h.2⟩]
-  · rw [if_neg h, if_neg fun h' => h ⟨h2.1 h'.1, h1.1 h'.2⟩]
 
 theorem heisO_resS_symm_right (ψ : AddChar (AF D.host.F) ℂ) {S A L T : HSp D} (o : OrthDec S A L) (a : WO L T)
     (F : WO S T → ℂ) (w : WO A T) (y : WO L T) :
@@ -274,7 +259,7 @@ theorem main : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     exact OverProof.isSBHalf_extFun D k p _ _ V₀ S α₀ β L₁ L₂ hL₁ hL₂ _ (Comm.tensCol_mem hΨSB hb)
   refine ⟨restrRight r h T u (halfInd p.e ΛL), restrRight r h T u, ?_, ⟨?_, ?_, ?_⟩, ?_⟩
   · exact GlobalTheory.BoxSlice.isThetaFunO_slice_right o
-      (isTheta_image p hψ hL₁ hL₂ hf₁.1 hT (hsb _ (isSBHalf_halfInd p.e ΛL))) u
+      (isTheta_image p hψ hL₁ hL₂ hf₁.1 hT (hsb _ (_root_.GlobalTheory.isSBHalf_halfInd p.e ΛL))) u
   · intro Φ hΦ x hx
     funext w
     rw [restrRight_apply]

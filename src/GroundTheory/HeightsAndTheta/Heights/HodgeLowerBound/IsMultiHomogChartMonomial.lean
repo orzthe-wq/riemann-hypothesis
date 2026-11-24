@@ -4,49 +4,6 @@ public import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.IsVerticalCar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
 public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ArithModel
 public import GroundTheory.HeightsAndTheta.Heights.WeightedHomogeneous.PConeTrdeg
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterBridgeB
 
 @[expose] public section
@@ -145,7 +102,7 @@ theorem IsValueAt.mul {a b : Ω} {v w : ℂ} (ha : IsValueAt y a z v) (hb : IsVa
     ring
   · rw [map_mul, eval_mul]
     exact mul_ne_zero hz hz'
-  · simp only [map_mul, eval_mul]
+  · simp only [map_mul]
     rw [hzg, hzg']
     ring
 
@@ -165,7 +122,7 @@ theorem IsValueAt.add {a b : Ω} {v w : ℂ} (ha : IsValueAt y a z v) (hb : IsVa
     ring
   · rw [map_mul, eval_mul]
     exact mul_ne_zero hz hz'
-  · simp only [map_add (f := _), map_mul, eval_add, eval_mul]
+  · simp only [map_add (f := _), map_mul]
     rw [hzg, hzg']
     ring
 
@@ -236,13 +193,13 @@ theorem regularAt_of_mem_chartRing (hz : z ∈ mcPts (mCoordIdeal y)) {c : ∀ k
     have hm := mem_mCoordIdeal_of_aeval (y := y) (isMultiHomog_chartMonomial c)
       (by simpa [NumbersDVR.segreVec] using h0)
     have := hz.2 _ hm
-    simp only [map_prod, map_X, eval_prod, eval_X] at this
+    simp only [map_prod, map_X, eval_X] at this
     exact Finset.prod_ne_zero_iff.2 (fun k _ => hc k) this
   induction ha using Algebra.adjoin_induction with
   | mem x hx =>
     obtain ⟨c', rfl⟩ := hx
     have hz0 : eval z (map (Int.castRingHom ℂ) (∏ k, (X ⟨k, c k⟩ : MRing ι))) ≠ 0 := by
-      simp only [map_prod, map_X, eval_prod, eval_X]
+      simp only [map_prod, map_X, eval_X]
       exact Finset.prod_ne_zero_iff.2 fun k _ => hc k
     refine ⟨eval z (map (Int.castRingHom ℂ) (∏ k, (X ⟨k, c' k⟩ : MRing ι))) /
       eval z (map (Int.castRingHom ℂ) (∏ k, (X ⟨k, c k⟩ : MRing ι))), fun _ => 1,

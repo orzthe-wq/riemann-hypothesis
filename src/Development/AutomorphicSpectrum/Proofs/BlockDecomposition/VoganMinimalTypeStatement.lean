@@ -135,7 +135,7 @@ theorem stepVogan : PositivityTheory.RgDs.Hilb.StepVogan := by
   apply nsq_le_nsq_add_of_dot_nonneg
   apply dot_nonneg_sum_root_of_antitone _ c hc
   intro a b hab
-  simp only [Formalism.QuantumDeterminants.lowK, two_nsmul, two_smul, Pi.add_apply, Pi.sub_apply]
+  simp only [Formalism.QuantumDeterminants.lowK, two_smul, Pi.add_apply, Pi.sub_apply]
   have h1 := rhoN_add_rhoC_le_of_lt ε hab
   have h2 := hlam.1 hab
   linarith

@@ -189,34 +189,20 @@ section Avg
 
 variable {T : LocLat G Qp LL O}
 
-theorem delF_mul {a b : W.Gam} (ha : a ∈ W.DelF) (hb : b ∈ W.DelF) : a * b ∈ W.DelF := by
-  obtain ⟨k, hk, hka⟩ := (W.DelF_def a).1 ha
-  obtain ⟨m, hm, hmb⟩ := (W.DelF_def b).1 hb
-  refine (W.DelF_def _).2 ⟨k * m, Nat.mul_pos hk hm, ?_⟩
-  rw [mul_pow, pow_mul, hka, one_pow, one_mul, mul_comm, pow_mul, hmb, one_pow]
-
-theorem delF_inv {a : W.Gam} (ha : a ∈ W.DelF) : a⁻¹ ∈ W.DelF := by
-  obtain ⟨k, hk, hka⟩ := (W.DelF_def a).1 ha
-  exact (W.DelF_def _).2 ⟨k, hk, by rw [inv_pow, hka, inv_one]⟩
-
 def avD (x : W.DD T) : W.DD T := ∑ δ ∈ W.DelF, W.γD T δ x
 
 def avA (a : LetA O n) : LetA O n := ∑ δ ∈ W.DelF, W.γA δ a
 
-theorem γA_mul (g h : W.Gam) (a : LetA O n) : W.γA (g * h) a = W.γA g (W.γA h a) := by
-  funext k
-  simp [LocWach.γA, letγ, map_mul]
-
 theorem sum_delF_shift {M : Type} [AddCommMonoid M] (f : W.Gam → M) {δ' : W.Gam} (hδ' : δ' ∈ W.DelF) :
     ∑ δ ∈ W.DelF, f (δ' * δ) = ∑ δ ∈ W.DelF, f δ := by
-  refine Finset.sum_nbij' (fun δ => δ' * δ) (fun δ => δ'⁻¹ * δ) (fun δ hδ => delF_mul W hδ' hδ)
-    (fun δ hδ => delF_mul W (delF_inv W hδ') hδ) (fun δ _ => by simp) (fun δ _ => by simp) (fun δ _ => rfl)
+  refine Finset.sum_nbij' (fun δ => δ' * δ) (fun δ => δ'⁻¹ * δ) (fun δ hδ => _root_.Formalism.MainNotions.LiftingTheory.delta_mul_mem W hδ' hδ)
+    (fun δ hδ => _root_.Formalism.MainNotions.LiftingTheory.delta_mul_mem W (_root_.Formalism.MainNotions.LiftingTheory.delta_inv_mem_alt W hδ') hδ) (fun δ _ => by simp) (fun δ _ => by simp) (fun δ _ => rfl)
 
 theorem avA_mem (a : LetA O n) : avA W a ∈ W.AΔ := by
   intro δ' hδ'
 
   simp only [avA, map_sum]
-  simp_rw [← γA_mul]
+  simp_rw [← _root_.Formalism.MainNotions.LiftingTheory.tr_γA_mul]
   exact sum_delF_shift W (fun δ => W.γA δ a) hδ'
 
 theorem avD_inv (x : W.DD T) : ∀ δ' ∈ W.DelF, W.γD T δ' (avD W x) = avD W x := by
@@ -352,11 +338,6 @@ structure R9 (T : LocLat G Qp LL O) : Prop where
   πinj : ∀ y : W.DD T, W.π₀ • y = 0 → y = 0
   γπ : ∀ x ∈ W.NΔ T, ∃ x' ∈ W.NΔ T, W.γ T x - x = W.π₀ • x'
 
-theorem eat_qp :
-    Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ = qp W := by
-  funext c
-  simp [Formalism.MainNotions.DeltaInvariantLattices.Eat, qp, LocWach.π₀]
-
 theorem ring_hypotheses_of_crystalline (hA : CaseA W) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) : R9 W T := by
   have hfin1 : finrank K₀ K = 1 := Formalism.MainNotions.LiftingTheory.gen_finrank_one hA.1
   obtain ⟨-, -, h9'⟩ := h9 T hT hA.2.1 hA.2.2
@@ -370,8 +351,8 @@ theorem ring_hypotheses_of_crystalline (hA : CaseA W) (h9 : Formalism.MainNotion
   have hπu : IsUnit (algebraMap (LetA O n) W.EE W.π₀) := by
     rw [hw, map_mul, map_pow]
     exact ((w.isUnit.map _)).mul (W.EE_π.pow _)
-  refine ⟨hz, hπΔ, fun a ha => (hsub a ha).exists, ⟨wq, by rw [hwq, eat_qp]⟩,
-    ⟨wφ, by rw [hwφ, eat_qp]⟩, fun y hy => ?_, hmod.2⟩
+  refine ⟨hz, hπΔ, fun a ha => (hsub a ha).exists, ⟨wq, by rw [hwq, _root_.Formalism.MainNotions.LiftingTheory.eisenstein_at_uniformizer]⟩,
+    ⟨wφ, by rw [hwφ, _root_.Formalism.MainNotions.LiftingTheory.eisenstein_at_uniformizer]⟩, fun y hy => ?_, hmod.2⟩
   rw [← algebraMap_smul W.EE W.π₀ y] at hy
   obtain ⟨u, hu⟩ := hπu
   have := congrArg (fun z => (↑u⁻¹ : W.EE) • z) hy
@@ -466,12 +447,6 @@ theorem dl_of_π₀ {i : ZMod n} {x' y : W.DD T} (hy : DL W T i y) (h : y = W.π
 
 end Trunc
 
-theorem p_ne_zero (W : LocWach PD LL O v n) : ((PD.p : ℕ) : O) ≠ 0 := by
-  intro h
-  have hv := W.v_l
-  rw [← map_natCast (algebraMap O LL), h, map_zero, AddValuation.map_zero] at hv
-  exact WithTop.top_ne_one hv
-
 section Const
 
 variable {W} {T : LocLat G Qp LL O}
@@ -512,7 +487,7 @@ theorem const_coord [IsDomain O] (hR9 : R9 W T) (hO : ∀ c : O, ((PD.p : ℕ) :
   intro m
   have hm := congrArg PowerSeries.constantCoeff (congrFun huq m)
   simp only [map_mul, map_sub, PowerSeries.constantCoeff_C, PowerSeries.constantCoeff_X, zero_mul] at hm
-  have hm2 := (mul_eq_zero.1 hm).resolve_left (pow_ne_zero _ (p_ne_zero W))
+  have hm2 := (mul_eq_zero.1 hm).resolve_left (pow_ne_zero _ (_root_.Formalism.MainNotions.LiftingTheory.tr_p_ne W))
   rw [sub_eq_zero] at hm2
   exact hm2.symm
 
@@ -728,7 +703,7 @@ theorem idempotent_mul_eq_eval_zero (hR9 : R9 W T) {a : LetA O n} (ha : a ∈ W.
   refine ⟨f c, funext fun c' => ?_⟩
   by_cases h : c' = c
   · subst h; simp [letE, hf, at0]
-  · simp [letE, Pi.single_apply, h]
+  · simp [letE, h]
 
 theorem inv_col [IsDomain O] (hR9 : R9 W T) (hΔ : IsUnit ((W.DelF.card : ℕ) : O)) {i : ZMod n} {j X σ r : ℕ}
     {e : Fin r → W.DD T} (z : Fin r → W.DD T) (Z : Matrix (Fin r) (Fin r) (PowerSeries O))
@@ -820,7 +795,7 @@ theorem zTool_of [NeZero n] [IsDomain O] (h9 : Formalism.MainNotions.DeltaInvari
     ZTool W := by
   intro hA hp11 j X σ hTC T hT i r e he
   have hR9 := ring_hypotheses_of_crystalline W hA h9 T hT
-  have hO : ∀ c : O, ((PD.p : ℕ) : O) * c = 0 → c = 0 := fun c h => (mul_eq_zero.1 h).resolve_left (p_ne_zero W)
+  have hO : ∀ c : O, ((PD.p : ℕ) : O) * c = 0 → c = 0 := fun c h => (mul_eq_zero.1 h).resolve_left (_root_.Formalism.MainNotions.LiftingTheory.tr_p_ne W)
   have T2 := (hT2 hA hp11 j 1 X σ hTC).1 T hT i
   have hI : ∀ k, InI W T i (e k) := fun k => inI_of hR9 (he.1 k).1 (he.1 k).2
   choose z hz using fun k => T2.1 (e k) (hI k)

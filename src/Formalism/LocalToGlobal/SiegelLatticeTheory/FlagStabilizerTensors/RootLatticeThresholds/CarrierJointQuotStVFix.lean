@@ -6,43 +6,6 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CarrierJointQuotStRel
 import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.HermitianETransportInvariant
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.UnipBasis
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -60,17 +23,13 @@ section FixLoc
 
 variable {n r : ℕ} (ε : Fin n → Bool)
 
-theorem hJ_sub_r' (x a b : Fin n → ℂ) :
-    Formalism.L2.SG.HidaSetting.hJ ε x (a - b) = Formalism.L2.SG.HidaSetting.hJ ε x a - Formalism.L2.SG.HidaSetting.hJ ε x b := by
-  simp only [Formalism.L2.SG.HidaSetting.hJ, Matrix.mulVec_sub, dotProduct_sub]
-
 theorem mem_spanLt_r (e : Fin r → Fin n → ℂ) (x : Fin n → ℂ) (hx : x ∈ Formalism.L2.SG.HidaSetting.spanLt e r) :
     ∃ α : Fin r → ℂ, ∑ a, α a • e a = x := by
   have hset : e '' {b : Fin r | b.1 < r} = Set.range e := by
     rw [← Set.image_univ]
     congr 1
     ext b
-    simp [b.isLt]
+    simp
   unfold Formalism.L2.SG.HidaSetting.spanLt at hx
   rw [hset] at hx
   exact (Submodule.mem_span_range_iff_exists_fun ℂ).mp hx
@@ -101,7 +60,7 @@ theorem fix_loc (e : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ) (G Gi Y T :
     | cast c => rw [fam_castSucc]; exact hee a c
   have hfe' : ∀ i a, Formalism.L2.SG.HidaSetting.hJ ε (fam e z i) (e a) = 0 := by
     intro i a
-    rw [hJ_cj', hef z hez a i, map_zero]
+    rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_conj, hef z hez a i, map_zero]
   have hGi : ∀ x, G *ᵥ (Gi *ᵥ x) = x := fun x => by rw [Matrix.mulVec_mulVec, hGGi, Matrix.one_mulVec]
 
   have hQ : ∀ q, (∀ a, Formalism.L2.SG.HidaSetting.hJ ε (e a) q = 0) → (∀ a, Formalism.L2.SG.HidaSetting.hJ ε (G *ᵥ e a) q = 0) →
@@ -146,7 +105,7 @@ theorem fix_loc (e : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ) (G Gi Y T :
       simp only [s2, Matrix.mulVec_sum, Matrix.mulVec_smul, hYF]
     have hq1 : ∀ d, Formalism.L2.SG.HidaSetting.hJ ε (e d) (x - s1 - s2) = 0 := by
       intro d
-      rw [hJ_sub_r', hJ_sub_r', hJ_sum_r', hJ_sum_r']
+      rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_sub_right, _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_sub_right, hJ_sum_r', hJ_sum_r']
       have hz2 : ∀ c : Fin r, Formalism.L2.SG.HidaSetting.hJ ε (e d) (fam e z (π c.castSucc)) = 0 :=
         fun c => hef z hez d _
       simp only [hz2, mul_zero, Finset.sum_const_zero, sub_zero]
@@ -160,11 +119,11 @@ theorem fix_loc (e : Fin r → Fin n → ℂ) (z z' : Fin n → ℂ) (G Gi Y T :
       · intro h'; exact absurd (Finset.mem_univ d) h'
     have hq2 : ∀ d, Formalism.L2.SG.HidaSetting.hJ ε (G *ᵥ e d) (x - s1 - s2) = 0 := by
       intro d
-      rw [hJ_sub_r', hJ_sub_r', hJ_sum_r', hJ_sum_r']
+      rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_sub_right, _root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_sub_right, hJ_sum_r', hJ_sum_r']
       have hz1 : ∀ a : Fin r, Formalism.L2.SG.HidaSetting.hJ ε (G *ᵥ e d) (G *ᵥ fam e z' (π a.castSucc)) = 0 :=
         fun a => by rw [hG]; exact hef z' hez' d _
       have hd2 : ∀ c : Fin r, Formalism.L2.SG.HidaSetting.hJ ε (G *ᵥ e d) (fam e z (π c.castSucc)) =
-          conj (Z (π c.castSucc) d.castSucc) := fun c => by rw [hJ_cj', hZe]
+          conj (Z (π c.castSucc) d.castSucc) := fun c => by rw [_root_.Formalism.L2.SG.PoincareInHH.Cut.hJ_conj, hZe]
       simp only [hz1, mul_zero, Finset.sum_const_zero, sub_zero, hd2]
       rw [Finset.sum_eq_single d, div_mul_cancel₀ _ ((map_ne_zero (starRingEnd ℂ)).2 (hZne _)), sub_self]
       · intro c _ hcd

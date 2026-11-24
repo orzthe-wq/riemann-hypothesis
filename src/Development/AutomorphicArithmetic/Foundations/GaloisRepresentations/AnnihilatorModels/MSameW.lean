@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusAbelianQuotientPDivisibleSmoothGroup
 
 @[expose] public section
 
@@ -48,16 +49,6 @@ open GlobalTheory.IwLevel (InSub IsIsogDeg)
 open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
-
-private theorem isMonHom_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (n : ℕ) :
-    IsMonHom ((𝟙 A) ^ n) := by
-  induction n with
-  | zero =>
-    rw [pow_zero]
-    exact inferInstanceAs (IsMonHom (toUnit A ≫ η[A]))
-  | succ n ih =>
-    rw [pow_succ]
-    exact inferInstanceAs (IsMonHom (lift ((𝟙 A) ^ n) (𝟙 A) ≫ μ[A]))
 
 private theorem pow_hom_comm {S : Scheme.{0}} {A : Over S} [GrpObj A] (h : A ⟶ A) [IsMonHom h] (n : ℕ) :
     h ≫ ((𝟙 A) ^ n) = ((𝟙 A) ^ n) ≫ h := by
@@ -78,7 +69,7 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.sameW_of :
   haveI := hψ₁'
   haveI := hχ'
   haveI := hψ₂
-  haveI hpow : IsMonHom ((𝟙 o.A) ^ p ^ (e + 1)) := isMonHom_pow o.A _
+  haveI hpow : IsMonHom ((𝟙 o.A) ^ p ^ (e + 1)) := _root_.GlobalTheory.SS.DivSemi.isMonHom_id_pow o.A _
   have hactP : ∀ a : D.O, o.act.act a ≫ ((𝟙 o.A) ^ p ^ (e + 1)) = ((𝟙 o.A) ^ p ^ (e + 1)) ≫ o.act.act a := by
     intro a
     haveI := o.act.hom a

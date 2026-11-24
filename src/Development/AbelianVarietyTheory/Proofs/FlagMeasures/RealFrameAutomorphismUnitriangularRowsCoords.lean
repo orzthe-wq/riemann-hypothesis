@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicStabilizerRadicalStructure
 
 @[expose] public section
 
@@ -75,23 +76,6 @@ private theorem mulVec_bvec_lemma_2 {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (
     (M *ᵥ bvec j) i = M i j := by
   simp [Matrix.mulVec, dotProduct, bvec, Pi.single_apply]
 
-private theorem eI_inj' {k r : ℕ} (a c : Fin r) : eI k r a = eI k r c ↔ a = c := by
-  constructor
-  · intro h
-    have h' := congrArg Fin.val h
-    exact Fin.ext h'
-  · rintro rfl
-    rfl
-
-private theorem wI_ne_esI' {k r : ℕ} (l : Fin (k + 1)) (b : Fin r) : wI k r l ≠ esI k r b := by
-  intro h
-  have h0 := congrArg Fin.val h
-  have h1 : (wI k r l).val = r + l.val := rfl
-  have h2 : (esI k r b).val = 2 * r + k - b.val := rfl
-  have := l.isLt
-  have := b.isLt
-  omega
-
 private theorem pTop_mulVec_eq_of_vanishing {k r j : ℕ} (q : PTop k r j) (w : Fin (2 * r + k + 1) → ℂ)
     (hw : ∀ m : Fin (2 * r + k + 1), r ≤ m.val → w m = 0) : pTop k r j q *ᵥ w = w := by
   funext i
@@ -113,7 +97,7 @@ private theorem pTop_wI_esI_eq {k r j : ℕ} (q : PTop k r j) (b : Fin r) (hb : 
   have := l.isLt
   have := b.isLt
   unfold pTop pOf pEl
-  rw [if_neg (wI_ne_esI' l b), dite_eq_right (by omega), dif_pos (by omega)]
+  rw [if_neg (_root_.GlobalTheory.Amp.Rad.wI_ne_esI l b), dite_eq_right (by omega), dif_pos (by omega)]
   have e1 : (⟨2 * r + k - (esI k r b).val, by omega⟩ : Fin r) = b := by
     apply Fin.ext
     show 2 * r + k - (2 * r + k - b.val) = b.val
@@ -160,7 +144,7 @@ theorem coords_top : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [Ad
     have key := congrFun (hq (N.F.e b.castSucc)) (eI k r a)
     rw [hsu, hadd, RealMat.phi_sum hR, hv b, Matrix.mulVec_smul, Pi.smul_apply, crd_mulVec_bvec_eI_eq_upperIn, hcol] at key
     simp only [hsmul, hv, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, bvec, Pi.single_apply,
-      eI_inj', hab.ne, if_false, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true,
+      _root_.GlobalTheory.Amp.Rad.eI_inj, hab.ne, if_false, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true,
       zero_add, Complex.ofReal_pow] at key
     have hne : (ρ : ℂ) ^ (r - b.val) ≠ 0 := pow_ne_zero _ hρc
     have hpow : (ρ : ℂ) ^ (r - a.val) = (ρ : ℂ) ^ (r - b.val) * (ρ : ℂ) ^ (b.val - a.val) := by
@@ -192,7 +176,7 @@ theorem coords_top : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [Ad
     have hsplit : s (N.ist b) = N.ist b + y + (s (N.ist b) - N.ist b - y) := by abel
     rw [hsplit, hadd, hadd, hI b hb, crd_of_zero β q h0, Matrix.mulVec_smul, Pi.smul_apply, mulVec_bvec_lemma_2,
       pTop_wI_esI_eq q.2 b hb l] at key
-    simp only [Pi.add_apply, hz, add_zero, Pi.smul_apply, bvec, Pi.single_apply, wI_ne_esI' l b, if_false,
+    simp only [Pi.add_apply, hz, add_zero, Pi.smul_apply, bvec, Pi.single_apply, _root_.GlobalTheory.Amp.Rad.wI_ne_esI l b, if_false,
       smul_eq_mul, mul_zero, zero_add, Complex.ofReal_inv, Complex.ofReal_pow] at key
     simp only [Pi.smul_apply, smul_eq_mul, Complex.ofReal_pow]
     have hne : (ρ : ℂ) ^ (r - b.val) ≠ 0 := pow_ne_zero _ hρc

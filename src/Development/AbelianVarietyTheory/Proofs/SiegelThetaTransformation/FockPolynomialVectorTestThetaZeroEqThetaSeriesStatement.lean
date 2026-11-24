@@ -48,4 +48,4 @@ open scoped TensorProduct ComplexConjugate Real Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.fockPolynomialVector_testTheta_zero_eq_thetaSeries : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), Function.Bijective C.toH ∧ ∀ B, C.IsB B → ∀ φ : TF S.rank C.g, SW.IsSB φ → C.IsFock B (C.Th (C.xB B) φ) ∧ ∀ Q : MvPolynomial (FVar D T.rank S.rank) ℂ, C.fvec B (C.Th (C.xB B) φ) Q 0 = thP C.X C.hr C.bas C.idx φ (C.toH Q) (C.xB B) := by
-  first | exact @GlobalTheory.Ker.fvec_Th_zero | exact GlobalTheory.Ker.fvec_Th_zero | (intros; apply GlobalTheory.Ker.fvec_Th_zero <;> assumption)
+  first | exact @GlobalTheory.Ker.fvec_Th_zero

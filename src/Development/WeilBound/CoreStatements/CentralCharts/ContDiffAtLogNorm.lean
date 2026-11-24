@@ -120,7 +120,6 @@ theorem add (hf : Tame a f) (hg : Tame a g) : Tame a fun t => f t + g t := by
   obtain ⟨ε₂, C₂, hε₂, -, hC₂, hg⟩ := hg
   apply tame_of (ε := min ε₁ ε₂) (C₁ := C₁ + C₂) (C₂ := C₁ + C₂) (e := C₁ + C₂) (lt_min hε₁ hε₂) (by linarith) (by linarith) (by linarith)
   intro t ht ht1 hoff
-  beta_reduce
   obtain ⟨hfc, hf1, hf2⟩ := hf t (lt_of_lt_of_le ht (min_le_left _ _)) hoff
   obtain ⟨hgc, hg1, hg2⟩ := hg t (lt_of_lt_of_le ht (min_le_right _ _)) hoff
   have hL := one_le_logR ht1 hoff

@@ -124,9 +124,6 @@ theorem unip_pow (I : Ideal R) (g : ℕ) (hg : g.Prime) (hgI : (g : R) ∈ I) (A
   have h2 := congrFun (congrFun this i) j
   exact Ideal.Quotient.eq_zero_iff_mem.1 h2
 
-theorem one_add_pow_of_sq {S : Type} [Ring S] (X : S) (h : X * X = 0) (N : ℕ) : (1 + X) ^ N = 1 + (N : S) * X := by
-  first | exact GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero .. | (apply GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> assumption) | (intros; apply GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> assumption) | (apply @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> assumption) | (intros; apply @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> assumption) | (apply @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero <;> first | assumption | infer_instance) | exact @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero S ‹_› X h N | exact @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero S ‹_› X h | exact @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero S ‹_› X | exact @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero S ‹_› | exact @GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero S
-
 theorem cong_coprime (I : Ideal R) (hinf : (⨅ m : ℕ, I ^ m) = ⊥) (B : Matrix (Fin k) (Fin k) R)
     (hB : ∀ i j, (B - 1) i j ∈ I) (N : ℕ) (hN : IsUnit (N : R)) (hBN : B ^ N = 1) : B = 1 := by
   obtain ⟨c, hc⟩ := hN.exists_left_inv
@@ -148,7 +145,7 @@ theorem cong_coprime (I : Ideal R) (hinf : (⨅ m : ℕ, I ^ m) = ⊥) (B : Matr
       have h2 : (1 + φ (B - 1)) ^ N = 1 := by
         have : 1 + φ (B - 1) = φ B := by rw [map_sub, map_one]; abel
         rw [this, ← map_pow, hBN, map_one]
-      rw [one_add_pow_of_sq _ hXX] at h2
+      rw [_root_.GlobalTheory.OneAddPowSquareZero.one_add_pow_of_mul_self_eq_zero _ hXX] at h2
       have h3 : ((N : ℕ) : Matrix (Fin k) (Fin k) (R ⧸ I ^ (m + 1 + 1))) * φ (B - 1) = 0 := by
         simpa using h2
       intro i j
@@ -185,7 +182,7 @@ theorem unip_coprime (I : Ideal R) (hinf : (⨅ m : ℕ, I ^ m) = ⊥) (g : ℕ)
 
 theorem closure_upperUni (A : Type) [CommRing A] (x : GL (Fin k) A) (hx : x ∈ Subgroup.closure (upperUni k A)) :
     x ∈ upperUni k A := by
-  first | exact UpperTheory.Reformulated.B.Qe27.closure_upperUni .. | (apply UpperTheory.Reformulated.B.Qe27.closure_upperUni <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qe27.closure_upperUni <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe27.closure_upperUni <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qe27.closure_upperUni <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe27.closure_upperUni <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qe27.closure_upperUni k A ‹_› x hx | exact @UpperTheory.Reformulated.B.Qe27.closure_upperUni k A ‹_› x | exact @UpperTheory.Reformulated.B.Qe27.closure_upperUni k A ‹_› | exact @UpperTheory.Reformulated.B.Qe27.closure_upperUni k A | exact @UpperTheory.Reformulated.B.Qe27.closure_upperUni k
+  first | (apply UpperTheory.Reformulated.B.Qe27.closure_upperUni <;> assumption)
 
 end Ring
 
@@ -239,8 +236,7 @@ theorem iwU_coprime (v : HeightOneSpectrum (𝓞 F)) (g : ℕ) (hg : g.Prime) (h
   have : a = 1 := Units.ext h1
   rw [this, map_one]
 
-theorem exists_place (g : ℕ) (hg : g.Prime) : ∃ v : HeightOneSpectrum (𝓞 F), (g : 𝓞 F) ∈ v.asIdeal := by
-  first | exact Bl.general_b_fact_left_tail.goal1 .. | (apply Bl.general_b_fact_left_tail.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_tail.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_tail.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_tail.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_tail.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› ‹_› g hg | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› ‹_› g | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› ‹_› | exact @Bl.general_b_fact_left_tail.goal1 F ‹_› | exact @Bl.general_b_fact_left_tail.goal1 F
+alias exists_place := _root_.Bl.general_b_fact_left_tail.goal1
 
 end Place
 

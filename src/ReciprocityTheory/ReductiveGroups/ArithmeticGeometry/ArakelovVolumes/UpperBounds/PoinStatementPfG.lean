@@ -1,48 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.PoinStatementPfF
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExtFStatementPfB
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.LUStatementPf
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.MeasInvStatementPf
@@ -51,7 +10,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.Uppe
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.PoinStatementPfA
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.SumBoundStatementPfC
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.ProdCastLESucc
-import Std.Tactic.BVDecide.Normalize.Prop
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustFStatementPfC
 
 @[expose] public section
 
@@ -87,19 +46,11 @@ private theorem gram_eq_lemma (X : Data E r) (τ : X.Ψ) (M : Matrix (Fin r) (Fi
     Finset.sum_mul]
   exact Finset.sum_comm
 
-private theorem det_mat_ne_zero_of_isOrth_data (X : Data E r) {y : Frame X.Ψ r} (hy : IsOrth X y) (τ : X.Ψ) :
-    (mat y τ).det ≠ 0 := by
-  intro h0
-  have h := congrArg Matrix.det (hy τ)
-  rw [gram_eq_lemma, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul,
-    Matrix.det_diagonal] at h
-  exact (Finset.prod_ne_zero_iff.mpr fun a _ => by unfold sgn; split_ifs <;> norm_num) h.symm
-
 theorem gM_lact_mul (X : Data E r) {x0 x : Frame X.Ψ r} (hx0 : IsOrth X x0) (hx : IsOrth X x)
     (γa γb : GL (Fin r) E) (τ : X.Ψ) :
     gM X x0 (lact γb x) τ * (gM X x0 (lact γa x) τ)⁻¹ = gM X x0 (lact (γb * γa⁻¹) x0) τ := by
-  have h0 : IsUnit (mat x0 τ).det := isUnit_iff_ne_zero.mpr (det_mat_ne_zero_of_isOrth_data X hx0 τ)
-  have h1 : IsUnit (mat x τ).det := isUnit_iff_ne_zero.mpr (det_mat_ne_zero_of_isOrth_data X hx τ)
+  have h0 : IsUnit (mat x0 τ).det := isUnit_iff_ne_zero.mpr (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExF.det_ne_of_orth X hx0 τ)
+  have h1 : IsUnit (mat x τ).det := isUnit_iff_ne_zero.mpr (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExF.det_ne_of_orth X hx τ)
   show (mat x0 τ)⁻¹ * ((↑γb : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) *
       ((mat x0 τ)⁻¹ * ((↑γa : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ))⁻¹ =
     (mat x0 τ)⁻¹ * ((↑(γb * γa⁻¹) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x0 τ)
@@ -174,7 +125,6 @@ theorem cs_tsum {ι : Type*} (u v : ι → ℝ≥0∞) :
       ≤ (∑ i ∈ s, u i ^ (2 : ℝ)) ^ (1 / 2 : ℝ) * (∑ i ∈ s, v i ^ (2 : ℝ)) ^ (1 / 2 : ℝ) := by
         first
           | exact ENNReal.inner_le_Lp_mul_Lq s u v .two_two
-          | exact ENNReal.inner_le_Lp_mul_Lq s u v Real.HolderConjugate.two_two
     _ ≤ _ := by
         gcongr
         · exact ENNReal.sum_le_tsum s
@@ -211,15 +161,6 @@ theorem cont_mat (X : Data E r) (τ : X.Ψ) : Continuous fun y : Frame X.Ψ r =>
   simp only [mat, Matrix.of_apply]
   fun_prop
 
-theorem cont_dmin (X : Data E r) (τ : X.Ψ) (i : Fin (r + 1)) :
-    Continuous fun y : Frame X.Ψ r => dmin X.Gm y τ i := by
-  unfold dmin lminor gram
-  refine Continuous.matrix_det (Continuous.matrix_submatrix ?_ _ _)
-  refine continuous_matrix fun a b => ?_
-  unfold hermC col mat
-  simp only [Matrix.of_apply, Matrix.mul_apply]
-  fun_prop
-
 theorem cont_lminor_gM (X : Data E r) (x0 : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun y : Frame X.Ψ r => lminor (gM X x0 y τ) i := by
   unfold lminor gM
@@ -228,7 +169,7 @@ theorem cont_lminor_gM (X : Data E r) (x0 : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (
 theorem meas_kaY (X : Data E r) (x0 : Frame X.Ψ r) (bb : ℝ) : Measurable (kaY X x0 bb) := by
   unfold kaY rhY
   refine Real.measurable_exp.comp (measurable_const.mul (Finset.measurable_sum _ fun τ _ => ?_).neg)
-  exact ((cont_dmin X τ _).measurable.norm.log).sub
+  exact ((_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.cont_dmin X τ _).measurable.norm.log).sub
     (measurable_const.mul (cont_lminor_gM X x0 τ _).measurable.norm.log)
 
 theorem ff_holds : FFStatement (E := E) := by

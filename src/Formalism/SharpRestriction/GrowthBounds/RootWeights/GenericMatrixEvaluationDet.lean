@@ -81,10 +81,9 @@ theorem mul_sp_alg (h : g0 * g0inv = 1) (a : MvPolynomial (Fin n × Fin n) R) :
 
 theorem mul_sp_inv (h : g0 * g0inv = 1) :
     g0.det * mul_sp j g0 g0inv h (IsLocalization.Away.invSelf (S := GLCoord R n) (genMat R n).det) = 1 := by
-  have h' := congrArg (mul_sp j g0 g0inv h)
-    (IsLocalization.Away.mul_invSelf (S := GLCoord R n) (genMat R n).det)
-  rw [map_mul, mul_sp_alg, generic_matrix_evaluation_det, map_one] at h'
-  exact h'
+  simpa only [map_mul, mul_sp_alg, generic_matrix_evaluation_det, map_one] using
+    congrArg (mul_sp j g0 g0inv h)
+      (IsLocalization.Away.mul_invSelf (S := GLCoord R n) (genMat R n).det)
 
 def mul_mL (h : g0 * g0inv = 1) : GLLaurent R n →+* LaurentPolynomial K :=
   AddMonoidAlgebra.mapRingHom ℤ (mul_sp j g0 g0inv h)
@@ -159,8 +158,7 @@ theorem prod_T_eq_T_sum {B : Type*} [CommRing B] {α : Type*} (s : Finset α) (f
 theorem mul_eWt_eq (m : ι × Fin r →₀ ℕ) : eWt LL S m = ∑ v ∈ m.support, (m v : ℤ) * mul_ew LL S v := by
   rw [eWt, Finsupp.sum]
   refine Finset.sum_congr rfl fun v _ => ?_
-  rw [mul_ew]
-  split_ifs <;> simp
+  simp [mul_ew]
 
 theorem mul_dl_monomial (m : ι × Fin r →₀ ℕ) (c : k1) :
     mul_dl LL S (monomial m c) = LaurentPolynomial.C (monomial m c) * LaurentPolynomial.T (eWt LL S m) := by
@@ -184,7 +182,7 @@ theorem mul_dl_coeff (H : MvPolynomial (ι × Fin r) k1) (m : ι × Fin r →₀
       by_cases hk : eWt LL S d = k <;> simp [hk]
     · by_cases hk : eWt LL S d = k <;> simp [hk, hdm]
   | add p q hp hq =>
-    simp only [map_add (f := _), AddMonoidAlgebra.coeff_add, Finsupp.add_apply, MvPolynomial.coeff_add, hp, hq]
+    simp only [map_add (f := _), AddMonoidAlgebra.coeff_add, Finsupp.add_apply, hp, hq]
     split_ifs <;> simp
 
 def mul_Dg (B : Type*) [CommRing B] (r : ℕ) [NeZero r] (k : ℤ) : Matrix (Fin r) (Fin r) (LaurentPolynomial B) :=

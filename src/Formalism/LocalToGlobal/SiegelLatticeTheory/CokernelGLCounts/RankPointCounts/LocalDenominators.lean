@@ -3,54 +3,10 @@ module
 public import Formalism.SharpRestriction.CuspSpanNormBounds.PsiEDef
 public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.ExistsLocalData
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.ExistsSubDivMemSP
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 public import Mathlib.RingTheory.Valuation.Integral
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -67,7 +23,6 @@ theorem val_iF_le (a b : F) :
     valuation A.Fp (A.ιF a) ≤ valuation A.Fp (A.ιF b) ↔ p.valuation F a ≤ p.valuation F b := by
   first
   | exact ((Valuation.Compatible.vle_iff_le (v := valuation A.Fp) _ _).symm).trans (A.val a b)
-  | exact ((Valuation.Compatible.vle_iff_le _ _).symm).trans (A.val a b)
 
 theorem iF_mem_iff (a : F) : A.ιF a ∈ 𝒪[A.Fp] ↔ p.valuation F a ≤ 1 := by
   have h := val_iF_le A a 1
@@ -75,7 +30,6 @@ theorem iF_mem_iff (a : F) : A.ιF a ∈ 𝒪[A.Fp] ↔ p.valuation F a ≤ 1 :=
   rw [Valuation.mem_integer_iff]
   first
   | exact h
-  | simpa using h
 
 theorem val_int_le (t : 𝓞 F) : p.valuation F (t : F) ≤ 1 := p.valuation_le_one t
 
@@ -83,7 +37,6 @@ theorem val_unit {t : 𝓞 F} (ht : t ∉ p.asIdeal) : p.valuation F (t : F) = 1
   refine le_antisymm (val_int_le t) (not_lt.mp fun h => ht ?_)
   first
   | exact (p.valuation_lt_one_iff_mem t).mp h
-  | exact (HeightOneSpectrum.valuation_lt_one_iff_mem (K := F) p t).mp h
 
 theorem iF_unit {t : 𝓞 F} (ht : t ∉ p.asIdeal) : valuation A.Fp (A.ιF (t : F)) = 1 := by
   have h1 := (val_iF_le A (t : F) 1).mpr (by rw [map_one, val_unit ht])
@@ -119,7 +72,6 @@ theorem iE_int {y : E} (hy : IsIntegral ℤ y) : A.ιE y ∈ A.O := by
   refine (A.O_def _).mpr ?_
   first
   | exact (map_isIntegral_int A.ιE hy).tower_top
-  | exact IsIntegral.tower_top (map_isIntegral_int A.ιE hy)
 
 theorem iE_alg (a : F) : A.ιE (algebraMap F E a) = algebraMap A.Fp A.Ep (A.ιF a) := A.compat a
 
@@ -136,7 +88,6 @@ theorem mem_of_alg_mem_O {z : A.Fp} (hz : algebraMap A.Fp A.Ep z ∈ A.O) : z �
       (algebraMap A.Fp A.Ep).injective).mp h1
   first
   | exact (Valuation.integer.integers _).mem_of_integral h2
-  | simpa using (Valuation.integer.integers _).mem_of_integral h2
 
 variable (hσ : ∀ e, sig (sig e) = e) (hfix : ∀ y : E, sig y = y → y ∈ (algebraMap F E).range)
 include hσ hfix

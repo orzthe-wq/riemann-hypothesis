@@ -79,9 +79,7 @@ theorem psd_sum {ι : Type} {F : Finset α} (s : Finset ι) (k : ι → α → �
   classical
   induction s using Finset.induction_on with
   | empty => simpa using psd_zero F
-  | insert i s hi ih =>
-    have := psd_add (h i (mem_insert_self i s)) (ih fun j hj => h j (mem_insert_of_mem hj))
-    exact psd_congr this fun x _ y _ => by rw [sum_insert hi]
+  | insert i s hi ih => simpa [sum_insert hi] using psd_add (h i (mem_insert_self i s)) (ih fun j hj => h j (mem_insert_of_mem hj))
 
 theorem pull [DecidableEq X] (η : α → X) (F : Finset α) (k : X → X → ℂ) (h : A5.IsPSD (F.image η) k) :
     A5.IsPSD F (fun x y => k (η x) (η y)) := by
@@ -169,9 +167,8 @@ theorem finClasses {X K : Type} [CommRing K] [TopologicalSpace K] [IsTopological
 theorem tb_congr {α : Type} {F : Finset α} {k k' : α → α → ℂ} (h : ∀ x ∈ F, ∀ y ∈ F, k x y = k' x y)
     (hk : TB.PSDOn F k) : TB.PSDOn F k' := by
   unfold TB.PSDOn at *
-  have : (Matrix.of fun x y : F => k' x y) = Matrix.of fun x y : F => k x y := by
-    ext x y; exact (h x x.2 y y.2).symm
-  rw [this]; exact hk
+  rwa [show Matrix.of (fun x y : F => k' x y) = Matrix.of (fun x y : F => k x y) by
+    ext x y; exact (h x x.2 y y.2).symm]
 
 theorem tb_zero {α : Type} {F : Finset α} : TB.PSDOn F (fun _ _ : α => (0 : ℂ)) := by
   unfold TB.PSDOn; exact Matrix.PosSemidef.zero

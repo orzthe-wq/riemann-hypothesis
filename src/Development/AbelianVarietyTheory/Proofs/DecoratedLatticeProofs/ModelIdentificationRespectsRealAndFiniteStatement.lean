@@ -45,4 +45,4 @@ open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.modelIdentification_respects_real_and_finite : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (θ : InfFam D), IsInfFam θ → IdE X → RealSplit X h θ := by
-  first | exact @GlobalTheory.Core.Mi.SeeReal.realSplit_of_idE | exact GlobalTheory.Core.Mi.SeeReal.realSplit_of_idE | (intros; apply GlobalTheory.Core.Mi.SeeReal.realSplit_of_idE <;> assumption)
+  first | exact @GlobalTheory.Core.Mi.SeeReal.realSplit_of_idE

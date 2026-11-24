@@ -262,9 +262,7 @@ private lemma propDisc_arithmetic_group_frames (r : ℕ) (X : _root_.Reciprocity
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
-theorem _root_.GlobalTheory.ClosedDiscontinuity.propDisc_closed :
-    ∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r), _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.PropDisc X :=
-  fun r X => propDisc_arithmetic_group_frames r X
+alias _root_.GlobalTheory.ClosedDiscontinuity.propDisc_closed := _root_.GlobalTheory.ClosedDiscontinuity.propDisc_arithmetic_group_frames
 
 open NumberField MeasureTheory Topology in
 open scoped ContDiff ENNReal Matrix in

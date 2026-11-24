@@ -81,16 +81,16 @@ section
 variable {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R] (Φ : Fr O Γ) (a : O →+* R)
 
 private theorem chi1 (g : Γ) : a (Φ.χ 1 g) = a (Φ.rt (-wAl) g) * a (Φ.χ 0 g) := by
-  simp only [Fr.rt, wAl, MonoidHom.coe_mk, OneHom.coe_mk, zpow_neg, zpow_one, zpow_zero, mul_one, mul_inv_rev, inv_inv]
+  simp only [Fr.rt, wAl, MonoidHom.coe_mk, OneHom.coe_mk]
   rw [← map_mul]
   congr 1
-  simp [Units.ext_iff]
+  simp
 
 private theorem chi2 (g : Γ) : a (Φ.χ 2 g) = a (Φ.rt (-wPs) g) * a (Φ.χ 0 g) := by
-  simp only [Fr.rt, wPs, MonoidHom.coe_mk, OneHom.coe_mk, zpow_neg, zpow_one, zpow_zero, one_mul, mul_inv_rev, inv_inv]
+  simp only [Fr.rt, wPs, MonoidHom.coe_mk, OneHom.coe_mk]
   rw [← map_mul]
   congr 1
-  simp [Units.ext_iff]
+  simp
 
 private theorem chi3 (h : ∀ i g, Φ.χ i g * Φ.χ i.rev g = Φ.ν g) (g : Γ) :
     a (Φ.χ 3 g) = a (Φ.rt (-wAl) g) * a (Φ.rt (-wPs) g) * a (Φ.χ 0 g) := by
@@ -142,17 +142,13 @@ private theorem exists_hom_M4_eq_uQ_mul_diagonal_of_cup {O Γ R : Type} [CommRin
       funext i
       simp [map_mul]
 
-private theorem adj_uQ_eq_uQ_neg {R : Type} [CommRing R] (p q u : R) : adj (uQ p q u) = uQ (-p) (-q) (-u) := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [adj, uQ, sgn, Fin.rev]
-
 private theorem adj_uQ_conj_uQ_mul_diagonal_eq_diagonal {O Γ R : Type} [CommRing O] [Group Γ] [CommRing R] (Φ : Fr O Γ) (a : O →+* R)
     (hmul : ∀ i g, Φ.χ i g * Φ.χ i.rev g = Φ.ν g) (s : Γ) (x y z p q u : R)
     (hx : x = p - a ↑(Φ.rt (-wAl) s) * p) (hy : y = q - a ↑(Φ.rt (-wPs) s) * q)
     (hz : z = u - a ↑(Φ.rt (-wAl + -wPs) s) * u - y * a ↑(Φ.rt (-wAl) s) * p) :
     adj (uQ p q (2 * u - p * q)) * (uQ x y (2 * z - x * y) * Matrix.diagonal (fun i => a ↑(Φ.χ i s))) *
       uQ p q (2 * u - p * q) = Matrix.diagonal (fun i => a ↑(Φ.χ i s)) := by
-  rw [adj_uQ_eq_uQ_neg, mul_assoc, mul_assoc,
+  rw [_root_.UpperTheory.V.Ws.adj_uQ, mul_assoc, mul_assoc,
     diag_mul_uQ (fun i => a ↑(Φ.χ i s)) _ _ (UpperTheory.V.Ws.Gys.chi1 Φ a s) (UpperTheory.V.Ws.Gys.chi2 Φ a s)
       (UpperTheory.V.Ws.Gys.chi3 Φ a hmul s),
     ← mul_assoc, ← mul_assoc, uQ_mul, uQ_mul]

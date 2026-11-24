@@ -96,8 +96,6 @@ theorem zOf_ker {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum 
     push_cast at hck
     first
       | rw [hck]
-      | (congr 1; exact hck)
-      | simpa using congrArg _ hck
   · rintro ⟨y, hy, hyeq⟩ ⟨i, k⟩
     obtain rfl : i = 0 := Subsingleton.elim _ _
     have hk := congrArg (fun x => (Algebra.TensorProduct.basis (Fv F v) b).repr x k) hyeq

@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionCharacterRestrictionDecompStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionExteriorProductAssocCommStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionCharacterRestrictionDecomp
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraInductionExteriorProductAssocComm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -55,12 +55,9 @@ namespace GlobalTheory.GLqPerm
 theorem isChar_one {G : Type} [Group G] : IsChar (fun _ : G => (1 : ℂ)) := by
   refine ⟨FDRep.of (Representation.trivial ℂ G ℂ), fun x => ?_⟩
   change LinearMap.trace ℂ ℂ ((Representation.trivial ℂ G ℂ) x) = 1
-  simp [Representation.trivial, LinearMap.trace_id]
+  simp [Representation.trivial]
 
-theorem isClass_of_isChar {G : Type} [Group G] {χ : G → ℂ} (h : IsChar χ) : IsClass χ := by
-  obtain ⟨V, hV⟩ := h
-  intro x y
-  rw [← hV, ← hV, FDRep.char_conj]
+alias isClass_of_isChar := _root_.GlobalTheory.CharDec.isClass_of_isChar
 
 variable {g : ℕ} [Fact g.Prime]
 
@@ -70,7 +67,7 @@ theorem isChar_hcL (L : List (Pc g)) (hL : ∀ p ∈ L, IsChar p.2) : IsChar (hc
   | cons p L ih =>
     have hdeg : degL (p :: L) = p.1 + degL L := by simp [degL]
     rw [hcL_cons]
-    exact ((GlobalTheory.T.harishChandra_induction_character_restriction_decomp g p.1 (degL L) (degL (p :: L)) hdeg).1 p.2 (hcL L (degL L))
+    exact ((_root_.GlobalTheory.GLq.HCChar.hc_isChar_and_res_decomp g p.1 (degL L) (degL (p :: L)) hdeg).1 p.2 (hcL L (degL L))
       (hL p (by simp)) (ih fun q hq => hL q (by simp [hq])))
 
 theorem degL_perm {L L' : List (Pc g)} (h : L.Perm L') : degL L = degL L' := by
@@ -105,9 +102,9 @@ theorem hcL_perm {L L' : List (Pc g)} (h : L.Perm L') :
     simp only [hcL_cons]
     rw [hc_congr_mid y.1 y.2 (fun m => hc x.1 (degL L₁) x.2 (hcL L₁ (degL L₁)) m) n _ _ e1,
       hc_congr_mid x.1 x.2 (fun m => hc y.1 (degL L₁) y.2 (hcL L₁ (degL L₁)) m) n _ _ e2]
-    rw [← (GlobalTheory.T.harishChandraInductionExteriorProduct_assoc_comm g y.1 x.1 (degL L₁) n y.2 x.2 _ hy hx hL).1 hn',
-      ← (GlobalTheory.T.harishChandraInductionExteriorProduct_assoc_comm g x.1 y.1 (degL L₁) n x.2 y.2 _ hx hy hL).1 hn'',
-      (GlobalTheory.T.harishChandraInductionExteriorProduct_assoc_comm g y.1 x.1 (degL L₁) (y.1 + x.1) y.2 x.2 _ hy hx hL).2.1 rfl]
+    rw [← (_root_.GlobalTheory.GLq.HcRing.main g y.1 x.1 (degL L₁) n y.2 x.2 _ hy hx hL).1 hn',
+      ← (_root_.GlobalTheory.GLq.HcRing.main g x.1 y.1 (degL L₁) n x.2 y.2 _ hx hy hL).1 hn'',
+      (_root_.GlobalTheory.GLq.HcRing.main g y.1 x.1 (degL L₁) (y.1 + x.1) y.2 x.2 _ hy hx hL).2.1 rfl]
     exact hc_congr_left (degL L₁) (hcL L₁ (degL L₁)) (fun m => hc x.1 y.1 x.2 y.2 m) n _ _ (Nat.add_comm _ _)
   | trans h₁ h₂ ih₁ ih₂ =>
     intro hc1 n hn

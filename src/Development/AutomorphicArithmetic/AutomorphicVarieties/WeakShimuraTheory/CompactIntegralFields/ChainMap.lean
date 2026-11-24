@@ -72,7 +72,7 @@ private theorem map_inj (hj : Function.Injective j) {X Y : M4 R} : X.map j = Y.m
 private theorem isGSp_iff (hj : Function.Injective j) (ν : R) (X : M4 R) : IsGSp (j ν) (X.map j) ↔ IsGSp ν X := by
   have h : (j ν) • (1 : M4 R') = (ν • (1 : M4 R)).map j := by
     ext i i'
-    by_cases h : i = i' <;> simp [Matrix.one_apply, h]
+    by_cases h : i = i' <;> simp [h]
   unfold IsGSp
   rw [adj_map, ← Matrix.map_mul, h, map_inj hj]
 

@@ -3,54 +3,11 @@ module
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.BasisOfLinearIndependentOfCardEqFinrank
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.EqZeroOfSecTraceMulEqZero
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.FibreStA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.PicardGroup
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.FibreStC
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.LemCone
 public import Mathlib.Algebra.MvPolynomial.Funext
@@ -73,9 +30,6 @@ theorem coord_ne_zero {ι : Type*} (y : ι → Ω) (h : coordIdeal ℤ y = ⊥) 
   rw [h, Ideal.mem_bot] at hmem
   exact MvPolynomial.X_ne_zero k hmem
 
-theorem div_mem_fnField (x : κ → Ω) (i j : κ) : x i / x j ∈ fnField x := by
-  exact IntermediateField.subset_adjoin ℚ {t | ∃ i j, t = x i / x j} ⟨i, j, rfl⟩
-
 theorem deh_mem_fnField {ι : Type*} (y : ι → Ω) (i₀ : ι) (m : MvPolynomial ι ℤ) :
     deh y i₀ m ∈ fnField y := by
   rw [deh_apply]
@@ -85,7 +39,7 @@ theorem deh_mem_fnField {ι : Type*} (y : ι → Ω) (i₀ : ι) (m : MvPolynomi
   · rw [MvPolynomial.eval₂_add]
     exact add_mem ‹_› ‹_›
   · rw [MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X]
-    exact mul_mem ‹_› (div_mem_fnField y _ i₀)
+    exact mul_mem ‹_› (_root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.TraceNormBounds.div_mem_fnField y _ i₀)
 
 def dehK (y : Fin (D + 1) → Ω) : MvPolynomial (Fin (D + 1)) ℤ →+* fnField y :=
   (deh y 0).codRestrict (fnField y).toSubfield.toSubring fun m => deh_mem_fnField y 0 m
@@ -94,7 +48,7 @@ def dehK (y : Fin (D + 1) → Ω) : MvPolynomial (Fin (D + 1)) ℤ →+* fnField
     ((dehK y m : fnField y) : Ω) = deh y 0 m := rfl
 
 def chartGen (y : Fin (D + 1) → Ω) (k : {k : Fin (D + 1) // k ≠ 0}) : fnField y :=
-  ⟨y k / y 0, div_mem_fnField y k 0⟩
+  ⟨y k / y 0, _root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.TraceNormBounds.div_mem_fnField y k 0⟩
 
 def chartRing (y : Fin (D + 1) → Ω) : Subalgebra ℤ (fnField y) :=
   Algebra.adjoin ℤ (Set.range (chartGen y))
@@ -103,7 +57,7 @@ theorem aeval_chartGen (y : Fin (D + 1) → Ω) (g : MvPolynomial {k : Fin (D + 
     ((MvPolynomial.aeval (chartGen y) g : fnField y) : Ω) =
       deh y 0 (MvPolynomial.rename Subtype.val g) := by
   induction g using MvPolynomial.induction_on with
-  | C a => simp [deh_apply]
+  | C a => simp
   | add p q hp hq => simp only [map_add (f := _), AddMemClass.coe_add, hp, hq]
   | mul_X p i hp =>
     simp only [map_mul, MvPolynomial.aeval_X, MvPolynomial.rename_X, MulMemClass.coe_mul, hp]
@@ -225,7 +179,7 @@ theorem Lx_eq (x : ι → Ω) (e : Fin (D + 1) → ι) (hx0 : x (e 0) ≠ 0) :
     exact key ht
   · rw [IntermediateField.adjoin_le_iff]
     rintro t ⟨i, rfl⟩
-    exact div_mem_fnField x i (e 0)
+    exact _root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.TraceNormBounds.div_mem_fnField x i (e 0)
 
 theorem Lx_finite (x : ι → Ω) (e : Fin (D + 1) → ι) (h : IsProjFrame x e) :
     FiniteDimensional (fnField (x ∘ e)) (Lx x e) := by
@@ -237,7 +191,7 @@ theorem Lx_finite (x : ι → Ω) (e : Fin (D + 1) → ι) (h : IsProjFrame x e)
   exact IntermediateField.finiteDimensional_adjoin hint
 
 def gL (x : ι → Ω) (e : Fin (D + 1) → ι) (i : ι) : Lx x e :=
-  ⟨x i / x (e 0), div_mem_fnField x i (e 0)⟩
+  ⟨x i / x (e 0), _root_.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.TraceNormBounds.div_mem_fnField x i (e 0)⟩
 
 theorem adjoin_gL (x : ι → Ω) (e : Fin (D + 1) → ι) (hx0 : x (e 0) ≠ 0) :
     adjoin (fnField (x ∘ e)) (Set.range (gL x e)) = ⊤ := by

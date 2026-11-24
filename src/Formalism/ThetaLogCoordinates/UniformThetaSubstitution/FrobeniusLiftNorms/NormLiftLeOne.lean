@@ -62,9 +62,7 @@ theorem divAB_of_suppOK {K : Type} [Field K] {p : ℕ} {G : MvPowerSeries (Fin 2
 theorem norm_lift_le_one {K : Type} [NormedField K] [IsUltrametricDist K] {p : ℕ} {σ : K →+* K}
     (hU : UnrOK K p σ) {a : K} (ha : ‖a‖ ≤ 1) : ‖σ a‖ ≤ 1 := by
   obtain ⟨hp, -, -, -, hσ⟩ := hU
-  have h1 : ‖a ^ p‖ ≤ 1 := by
-    rw [norm_pow]
-    exact pow_le_one₀ (norm_nonneg a) ha
+  have h1 : ‖a ^ p‖ ≤ 1 := by simpa [norm_pow] using pow_le_one₀ (norm_nonneg a) ha
   have h2 : ‖σ a - a ^ p‖ ≤ 1 :=
     (hσ a ha).trans (inv_le_one_of_one_le₀ (by exact_mod_cast hp.one_lt.le))
   calc ‖σ a‖ = ‖(σ a - a ^ p) + a ^ p‖ := by rw [sub_add_cancel]

@@ -46,4 +46,4 @@ open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.thetaLiftInfinityTypes_atRealPlace : ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 → ∀ (i : Fin D.R.m) (t : T) (τ : D.what₂.Tau), GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.InfTypesAt L i t τ := by
-  first | exact @GlobalTheory.PairInfTypes.infTypesAt | exact GlobalTheory.PairInfTypes.infTypesAt | (intros; apply GlobalTheory.PairInfTypes.infTypesAt <;> assumption)
+  first | exact @GlobalTheory.PairInfTypes.infTypesAt

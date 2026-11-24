@@ -72,7 +72,6 @@ lemma norm_l_eq : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   rw [← h1, PadicComplex.norm_extends, PadicAlgCl.norm_extends]
   first
     | exact Padic.norm_p
-    | simp [Padic.norm_p]
 
 lemma l_pos_real : (0 : ℝ) < (l : ℝ) := by
   exact_mod_cast hl.out.pos
@@ -352,8 +351,6 @@ lemma exists_ext (hB : ∀ x : ℂ_[l], x ∈ ringB l ↔ x ∈ MaximalUnramifie
       ψ ⟨x, hx⟩ := by
     first
       | exact IsLocalization.Away.lift_eq (S := MaximalUnramifiedExtension l) (l : ringB l) hu ⟨x, hx⟩
-      | exact IsLocalization.lift_eq _ _
-      | simp
   have hx' : algebraMap (ringB l) (MaximalUnramifiedExtension l) ⟨x, hx⟩ = x := Subtype.ext (jBK_coe hB _)
   rw [hx'] at key
   rw [key]

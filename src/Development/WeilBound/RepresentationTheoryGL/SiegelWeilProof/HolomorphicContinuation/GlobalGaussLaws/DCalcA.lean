@@ -138,7 +138,7 @@ theorem evX_dil (c : ℝ) (X : Fin n → ℝ) (P : PX m n) (v : Fin m → Fin n 
 
   simp only [dil, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.add_apply,
   LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.id_apply,
-  Derivation.coeFn_coe, evX_eq, map_sum, map_add, map_sub, map_mul, MvPolynomial.smul_eval, eval_X, smul_eq_mul]
+  Derivation.coeFn_coe, evX_eq, map_sum, map_add, map_sub, map_mul, MvPolynomial.smul_eval, eval_X]
   simp only [Fintype.sum_prod_type, Fintype.sum_bool, crd_false, crd_true, hnorm]
   set E := (eval (crd v)) P with hE
   rw [Finset.sum_comm (s := (Finset.univ : Finset (Fin m))) (t := (Finset.univ : Finset (Fin n)))

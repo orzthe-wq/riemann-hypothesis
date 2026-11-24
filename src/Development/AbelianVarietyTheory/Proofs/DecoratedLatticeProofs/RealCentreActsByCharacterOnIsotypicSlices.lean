@@ -189,13 +189,6 @@ theorem norm_unit {V : HSp D} {x : DefSp V} (hx : x.Is) (v : Fin V.rank → ℚ)
 
   simp only [dotProduct, vecMul, map_sum, map_mul, JR, map_apply]
 
-theorem sigR_inclR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
-    (e : E) : sigR R σ (inclR R e) = inclR R (σ e) := by
-  simp [sigR, inclR]
-
-theorem cA_incA (e : D.host.E) : cA D (incA D e) = incA D (star e) := by
-  exact sigR_inclR _ _ e
-
 theorem mt_central {V : HSp D} {x : DefSp V} (hx : x.Is) {b : GA D V} (hb : b ∈ Subgroup.center (GA D V))
     (i₀ : Fin V.rank) : Formalism.L2.Theta.mt V b = Formalism.L2.Theta.mt V b i₀ i₀ • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := by
   have key : ∀ v : Fin V.rank → ℚ, v ≠ 0 → ∃ c : AE D, Formalism.L2.Theta.mt V b *ᵥ (fun i => incA D (v i)) = c • fun i => incA D (v i) := by
@@ -203,12 +196,12 @@ theorem mt_central {V : HSp D} {x : DefSp V} (hx : x.Is) {b : GA D V} (hb : b �
     refine mulVec_eq_smul (cA D) (JR (AF D.host.F) V.gram) (fun i j => ?_) _ (fun g hg => ?_) ?_ _ (fun i => ?_)
       (norm_unit hx v hv)
     · show cA D (incA D (V.gram i j)) = incA D (V.gram j i)
-      rw [cA_incA]
+      rw [_root_.GlobalTheory.DualPairCheck.cA_incA]
       exact congrArg _ (V.herm.eq _ _)
     · exact congrArg (Formalism.L2.Theta.mt V) (Subgroup.mem_center_iff.1 hb (⟨g, hg⟩ : HR (AF D.host.F) D.sp.cm.sig V.gram))
     · have := (two_ne_zero : (2 : D.host.E) ≠ 0).isUnit.map (incA D)
       rwa [map_ofNat] at this
-    · rw [cA_incA, star_ratCast]
+    · rw [_root_.GlobalTheory.DualPairCheck.cA_incA, star_ratCast]
   refine eq_smul_one _ (fun i => ?_) (fun i j hij => ?_) i₀
   · have := key (Pi.single i 1) (by simp)
     have e : (fun k => incA D ((Pi.single i 1 : Fin V.rank → ℚ) k : ℚ)) = Pi.single i 1 := by
@@ -223,8 +216,7 @@ theorem mt_central {V : HSp D} {x : DefSp V} (hx : x.Is) {b : GA D V} (hb : b �
         Rat.cast_zero, apply_ite (incA D), map_one, map_zero]
     rwa [e] at this
 
-theorem mt_mul (V : HSp D) (g g' : GA D V) :
-    Formalism.L2.Theta.mt V (g * g') = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V g' := rfl
+alias mt_mul := _root_.GlobalTheory.BesselCompare.mt_mul
 
 theorem mt_inj (V : HSp D) {g g' : GA D V} (h : Formalism.L2.Theta.mt V g = Formalism.L2.Theta.mt V g') : g = g' :=
   Subtype.ext (Units.ext h)

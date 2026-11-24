@@ -175,7 +175,6 @@ def UniformIntegrability.Statement : Prop :=
 
 section Inhabitant
 
-open ReciprocityTheory.AnForm.M (p1 fsPot projectiveLinePairSection projLine_isSmoothPotential projLine_isPlurisubharmonic projLine_isHolomorphicSection projLine_isSimpleNormalCrossing ptAtlas)
 open OnePoint
 
 end Inhabitant

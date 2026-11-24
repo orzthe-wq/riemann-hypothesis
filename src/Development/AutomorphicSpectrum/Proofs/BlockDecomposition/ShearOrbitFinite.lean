@@ -130,7 +130,6 @@ theorem continuous_levi (m : ℕ) : Continuous (levi k m) := by
       first
         | exact continuous_const
         | exact continuous_id.matrix_elem _ _
-        | fun_prop
   have hGL : Continuous (GlobalTheory.BZMir.glEmb k m) := Continuous.units_map _ hmat
   exact continuous_induced_rng.2 hGL
 

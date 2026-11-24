@@ -56,6 +56,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ExistsRosatiGen
 import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.IsAbelianSchemeAndExtendOfGenericHoms
 
 @[expose] public section
 
@@ -178,8 +179,8 @@ theorem exists_iso_over_dvr : Laws → Laws2 → ∀ (V : Type) [CommRing V] [Is
     have : IsPreimmersion (jK V) := IsPreimmersion.of_isLocalization (nonZeroDivisors V)
     infer_instance
   obtain ⟨f, hf₁, hf⟩ := exists_iso_over (jFK (R := V) C) (jK V) P.A P'.A φ hφ h₁ κ g hg
-  have hm : IsMonHom f.hom := hl.rigidity _ _ _ (isAbelianScheme_pullback _ _ P.isAb)
-    (isAbelianScheme_pullback _ _ P'.isAb) f.hom hf₁
+  have hm : IsMonHom f.hom := hl.rigidity _ _ _ (_root_.GlobalTheory.isAbelianScheme_pullback_obj _ _ P.isAb)
+    (_root_.GlobalTheory.isAbelianScheme_pullback_obj _ _ P'.isAb) f.hom hf₁
   have hm' : IsMonHom f.inv := inferInstance
   have semi_of_ab {S : Scheme.{0}} (B : Over S) [GrpObj B] (h : IsAbelianScheme B) : IsSemiAbelian B := by
     have := h.proper

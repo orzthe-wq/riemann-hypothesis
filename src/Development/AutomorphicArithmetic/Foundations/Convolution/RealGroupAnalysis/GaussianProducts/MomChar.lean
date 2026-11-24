@@ -89,7 +89,7 @@ theorem UpperTheory.ConvolutionTheory.R2.G.momChar :
     refine (hint (∑ i, |t i|)).norm.mono'
       (((Real.measurable_exp.comp (continuous_abs.measurable.comp hym)).aestronglyMeasurable).mul hρ.norm.aestronglyMeasurable)
       (Eventually.of_forall fun ω => ?_)
-    simp only [norm_mul, norm_norm, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
+    simp only [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]
     rw [abs_norm]
     exact mul_le_mul_of_nonneg_right (Real.exp_le_exp.mpr (hbound ω)) (norm_nonneg (ρ ω))
   have hsum := hasSum_integral_of_dominated_convergence (μ := ν)

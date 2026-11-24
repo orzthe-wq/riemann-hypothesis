@@ -1,53 +1,9 @@
 module
 
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.UnitaryConstant
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 public import Mathlib.NumberTheory.SumFourSquares
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -257,21 +213,21 @@ theorem gaussSumEighthPower : GaussEighth := by
     intro v
     rw [Fin.prod_univ_four]
     change b (v 0) (-v 1) * b (v 1) (v 0) * b (v 2) (-v 3) * b (v 3) (v 2) = 1
-    simp only [h.b_neg_left, h.b_neg_right, inv_inv]
+    simp only [h.b_neg_right]
     rw [h.symm (v 1) (v 0), h.symm (v 3) (v 2)]
     exact eq_one_of_eq_inv_mul_self_mul_inv_mul_self (h.b_ne (v 0) (v 1)) (h.b_ne (v 2) (v 3)) (by ring)
   have pJ : ∀ v : Fin 4 → M, ∏ i, b (v i) (quatJ M v i) = 1 := by
     intro v
     rw [Fin.prod_univ_four]
     change b (v 0) (-v 2) * b (v 1) (v 3) * b (v 2) (v 0) * b (v 3) (-v 1) = 1
-    simp only [h.b_neg_left, h.b_neg_right, inv_inv]
+    simp only [h.b_neg_right]
     rw [h.symm (v 2) (v 0), h.symm (v 3) (v 1)]
     exact eq_one_of_eq_inv_mul_self_mul_inv_mul_self (h.b_ne (v 0) (v 2)) (h.b_ne (v 1) (v 3)) (by ring)
   have pK : ∀ v : Fin 4 → M, ∏ i, b (v i) (quatK M v i) = 1 := by
     intro v
     rw [Fin.prod_univ_four]
     change b (v 0) (-v 3) * b (v 1) (-v 2) * b (v 2) (v 1) * b (v 3) (v 0) = 1
-    simp only [h.b_neg_left, h.b_neg_right, inv_inv]
+    simp only [h.b_neg_right]
     rw [h.symm (v 2) (v 1), h.symm (v 3) (v 0)]
     exact eq_one_of_eq_inv_mul_self_mul_inv_mul_self (h.b_ne (v 0) (v 3)) (h.b_ne (v 1) (v 2)) (by ring)
   have pIJ : ∀ v : Fin 4 → M, ∏ i, b (quatI M v i) (quatJ M v i) = 1 := by

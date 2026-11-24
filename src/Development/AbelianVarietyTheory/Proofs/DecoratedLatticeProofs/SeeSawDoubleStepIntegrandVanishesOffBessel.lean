@@ -1,12 +1,13 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SeeSawDoubleStepFiniteIntegralCollapseTwistPlaceAlt
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapHandedFunctionVanishingPeriodInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatThetaMapsPreserveThetaFunctions
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapHandedFunctionVanishingPeriodInvariant
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HandBFSmul
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergCombinationDisjointPlacesCommuteVacua
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TrivialAtPlaceCommSeeSawCombinationKeepsVacuum
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.UnitaryFiniteAdelicGroupSplitFinitePlaceSetStatement
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatThetaMapsPreserveThetaFunctions
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,26 +60,9 @@ namespace GlobalTheory.DStepSuppSecond
 
 variable {D : D7}
 
-theorem mem_congGrp {V : HSp D} {I : Ideal (AE D)} {g : GA D V} :
-    g ∈ congGrp V I ↔ ∀ i j, mt V g i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j ∈ I := by
-  unfold congGrp
-  rw [MonoidHom.mem_ker]
-  constructor
-  · intro h i j
-    have := congrArg (fun x : GL (Fin V.rank) (AE D ⧸ I) => x.1 i j) h
-    rw [← Ideal.Quotient.eq]
-    simp [Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢
-    exact this
-  · intro h
-    ext i j
-    have := h i j
-    rw [← Ideal.Quotient.eq] at this
-    simp [Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢
-    exact this
-
 theorem grpAt_inter {V : HSp D} {P P' R : Pl D → Prop} (h : ∀ p, P p → P' p → R p) {g : GA D V}
     (hg : g ∈ grpAt V P) (hg' : g ∈ grpAt V P') : g ∈ grpAt V R := by
-  rw [grpAt, mem_congGrp] at hg hg' ⊢
+  rw [grpAt, GlobalTheory.FinPl.PlacesAdeles.mem_congGrp] at hg hg' ⊢
   intro i j
   have h1 := hg i j
   have h2 := hg' i j
@@ -93,8 +77,8 @@ theorem grpAt_mono {V : HSp D} {P R : Pl D → Prop} (h : ∀ p, P p → R p) {g
 
 theorem grpAt_off {V : HSp D} {P R : Pl D → Prop} (h : ∀ p, P p → ¬ R p) {g : GA D V}
     (hg : g ∈ grpAt V P) : g ∈ grpOff V R := by
-  rw [grpAt, mem_congGrp] at hg
-  rw [grpOff, mem_congGrp]
+  rw [grpAt, GlobalTheory.FinPl.PlacesAdeles.mem_congGrp] at hg
+  rw [grpOff, GlobalTheory.FinPl.PlacesAdeles.mem_congGrp]
   intro i j
   have h1 := hg i j
   simp only [idAt, idOff, Submodule.mem_inf, Submodule.mem_iInf] at h1 ⊢
@@ -201,7 +185,7 @@ theorem integ_support : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : 
     refine W₂.om_pres _ _ ?_
     rw [← E₂]
     exact (moved_data W₂ hF.disjG (hv.atG (j + 1)).1 (hF.atQ (j + 1)).1 h₂ hq₁ hyQ).1.1
-  have hR := (GlobalTheory.T.flatMap_handedFunction_vanishing_period_invariant D c.ψ (offP v w)).2 σ _ _ (t.sFB j σ h) (c.vL j σ h)
+  have hR := (_root_.GlobalTheory.FlatRInv.vanish_invariant D c.ψ (offP v w)).2 σ _ _ (t.sFB j σ h) (c.vL j σ h)
     (handBF (t.sBF j (σ + 1) h) (c.lnk j σ h) (φ α) (flatBF (t.sBF j (σ + 1) h) (comb c.ψ _ _ (v.eG j) Ψ₁'))) _ T₂ r hr hrP
   rw [e₂] at hR
   rw [hΦ, E₁] at hH

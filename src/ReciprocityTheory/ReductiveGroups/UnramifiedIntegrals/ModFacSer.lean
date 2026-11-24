@@ -1,46 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDefs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.CoeffRescaleExpandOfNotDvd
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModBasic
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ModDeltaInt
@@ -56,9 +17,6 @@ open scoped BigOperators Classical UpperHalfPlane MatrixGroups CongruenceSubgrou
 open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.Th1.CM
 
 namespace ReciprocityTheory.ChartRestriction.L1
-
-theorem zetaRoot_mem_cyclotomicSubring_self (m : ℕ) : zetaC m ∈ Rm m := by
-  exact Subring.subset_closure (Set.mem_singleton _)
 
 theorem zetaRoot_ne_zero (e : ℕ) : zetaC e ≠ 0 := by
   exact Complex.exp_ne_zero _
@@ -97,9 +55,9 @@ theorem zetaRoot_pow_mem_of_mem_hermiteTriples {m : ℕ} (hm : 0 < m) {t : ℕ �
     rw [← pow_succ', Nat.sub_add_cancel hm, hzm]
   rw [hz]
   constructor
-  · exact pow_mem (zetaRoot_mem_cyclotomicSubring_self m) _
+  · exact pow_mem (_root_.ReciprocityTheory.ChartRestriction.L1.zetaC_mem m) _
   · rw [← inv_pow, hinv, ← pow_mul]
-    exact pow_mem (zetaRoot_mem_cyclotomicSubring_self m) _
+    exact pow_mem (_root_.ReciprocityTheory.ChartRestriction.L1.zetaC_mem m) _
 
 theorem norm_zetaRoot_pow_of_mem_hermiteTriples {m : ℕ} (hm : 0 < m) {t : ℕ × ℕ × ℕ} (ht : t ∈ Tm m) :
     ‖zetaC t.2.2 ^ t.2.1‖ = 1 := by

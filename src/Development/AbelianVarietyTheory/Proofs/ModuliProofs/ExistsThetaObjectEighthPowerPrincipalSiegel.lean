@@ -5,13 +5,15 @@ public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.ExistsAr
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsUniqueWeilIs
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsCommVOfLe
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.WeilIsAlternatingSkewNatural
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.BiadditiveOfTrivAxesStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.BiadditiveOfTrivAxes
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenMovePow
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaOfTranslDiff
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LineBundleIsoLinCombSymmBiadditiveSubstitution
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleFormBundlePowerOfPosDefStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.RelAmpleFormBundlePowerOfPosDef
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -603,7 +605,7 @@ theorem exists_tObj_isSharp : Out.Laws → Out.Laws2 → ∀ (h g : ℕ) (W : Ma
   have hD : c.diag.IsLB := pull_isLB hP _
   have hB : ∀ (T : Over S) (x x' y : T ⟶ c.A), bi hP (x * x') y = bi hP x y + bi hP x' y := fun T x x' y => by
     have e := (cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2
-      (GlobalTheory.T.biadditive_of_trivial_on_axes hG S c.A c.diag c.ab hD hc.1 c.P hP c.rig₁ c.rig₂ T x x' y).1
+      (_root_.GlobalTheory.Biadditive.biadditive_of_triv_axes hG S c.A c.diag c.ab hD hc.1 c.P hP c.rig₁ c.rig₂ T x x' y).1
     rw [cls_linComb hP, Fin.sum_univ_three] at e
     simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at e
     rw [← sub_eq_zero, ← e]
@@ -615,7 +617,7 @@ theorem exists_tObj_isSharp : Out.Laws → Out.Laws2 → ∀ (h g : ℕ) (W : Ma
   have hLB : (sharp c.P pr W).IsLB := LB.isLB_linComb hP _ _
   have rigid := rigidified_sharp hP pr W hpr hB
   have sym := sym_sharp hP pr W hpr hB hs
-  have ample : Out.RelAmple G (sharp c.P pr W) := GlobalTheory.T.relAmple_formBundle_power_of_posDef hG h k 8 o b.ζ S s c G pr W hpr hu hc.1 hW.1
+  have ample : Out.RelAmple G (sharp c.P pr W) := _root_.GlobalTheory.PosDefAmple.relAmple_linComb_of_posDef hG h k 8 o b.ζ S s c G pr W hpr hu hc.1 hW.1
   have ktriv := kTriv_sharp hP pr W hpr hB hs hu hW.2 hc.2
   have ext : ∀ {T : Over S} {x y : T ⟶ G}, (∀ u, x ≫ pr u = y ≫ pr u) → x = y := fun {T x y} e =>
     (hu T fun u => y ≫ pr u).unique e fun _ => rfl

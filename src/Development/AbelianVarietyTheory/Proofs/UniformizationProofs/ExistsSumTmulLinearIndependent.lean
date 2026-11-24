@@ -107,7 +107,7 @@ theorem tensor_sections_eq_zero_iff : ∀ (F : Type) [Field F] (Z : Scheme.{0}) 
     have : IsSeparated (Over.mk p₁).hom := ‹IsSeparated p₁›
     have : QuasiCompact (Over.mk p₂).hom := ‹QuasiCompact p₂›
     have : IsSeparated (Over.mk p₂).hom := ‹IsSeparated p₂›
-    have hc := (GlobalTheory.T.section_lin_comb_fiber_product_separated F Z L hL (Over.mk p₁) (Over.mk p₂) K₁ K₂ φ₁ ε₁ φ₂ ε₂).2 m
+    have hc := (_root_.GlobalTheory.SectionsProduct.main F Z L hL (Over.mk p₁) (Over.mk p₂) K₁ K₂ φ₁ ε₁ φ₂ ε₂).2 m
       (fun k => (e k).sec) (fun k => (c k).sec) (fun d hd => by
         have h1 : ∑ k, d k • e k = 0 := DVR.SecOps.sec_ext fun j =>
           (map_sum (secCompAddHom p₁ _ j) _ _).trans (hd j)

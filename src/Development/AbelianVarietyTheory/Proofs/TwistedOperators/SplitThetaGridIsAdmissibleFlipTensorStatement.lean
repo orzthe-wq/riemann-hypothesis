@@ -52,4 +52,4 @@ theorem _root_.GlobalTheory.T.splitThetaGrid_isAdmissible_flipTensor : ∀ {k : 
     ∀ (St : Γ.PiLocalization₂) (x : ℕ × ℕ), CondLE ϖ e (Γ.nu x.1 x.2) → PassesThrough x.1 x.2 St.path →
     (∀ X, IsOpen (St.level X : Set (GL (Fin (Γ.rank X)) k)) ∧ St.level X ≤ KO k _) →
     St.IsAdmissible .one ϖ e → (St.flip .one ψ ϖ e x).IsAdmissible .one ϖ e := by
-  first | exact @GlobalTheory.FlipAdm.isAdmissible_flip | exact GlobalTheory.FlipAdm.isAdmissible_flip | (intros; apply GlobalTheory.FlipAdm.isAdmissible_flip <;> assumption)
+  first | exact @GlobalTheory.FlipAdm.isAdmissible_flip

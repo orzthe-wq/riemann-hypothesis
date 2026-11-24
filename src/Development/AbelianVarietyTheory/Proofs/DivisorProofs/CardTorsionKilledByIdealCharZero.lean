@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -226,7 +227,7 @@ theorem card_ker_elt_charZero (o : Obj b N s) (k : Type) [Field k] [IsAlgClosed 
   obtain ⟨ℓ, hℓ1, hℓ⟩ := Nat.exists_infinite_primes (p + 1)
   have hℓp : ℓ ≠ p := by omega
   have hℓk : (ℓ : k) ≠ 0 := Nat.cast_ne_zero.mpr hℓ.ne_zero
-  exact GlobalTheory.T.abelianScheme_card_kernel_eq_norm_pow S o.A o.ab D.F (o.act.toF D) k x (D.m * D.n) ℓ hℓ hℓk
+  exact _root_.GlobalTheory.AVCount.card_ker_eq_norm_pow S o.A o.ab D.F (o.act.toF D) k x (D.m * D.n) ℓ hℓ hℓk
     (GlobalTheory.QuotientCardinalityFinrank.torsion_points_free p D R b N S s o k x ℓ hℓ hℓp) c hc
     (fun v hv0 hv => tan_eq_one_charZero o k x c hc v hv0 hv)
 

@@ -169,15 +169,12 @@ theorem mem_span_translates_vacuum (X M : Type) [AddCommGroup X] [AddCommGroup M
       (QuotientAddGroup.mk x : Λ ⧸ H) = QuotientAddGroup.mk y → A x w = A y w := by
     intro w hw x y hxy
     obtain ⟨u, hu⟩ := QuotientAddGroup.eq.1 hxy
-    have h1 : y = x + K • u := by
-      have : K • u = -x + y := hu
-      rw [this]; abel
+    have h1 : y = x + K • u := by rw [show K • u = -x + y from hu]; abel
     have h3 : A (K • u) w = w := by
       simp only [A, AddSubgroup.coe_nsmul, hεK u u.2, hw u u.2, inv_one, one_smul]
     rw [h1, ← hA, h3]
   have hAsum : ∀ (u : Λ) (f : Λ ⧸ H → M), A u (∑ q, f q) = ∑ q, A u (f q) := by
     intro u f
-
     simp only [A, map_sum, Finset.smul_sum]
   have hP : ∀ w, (∀ u ∈ Λ, ρ (K • u) w = w) → ∃ c : ℂ, (∑ q : Λ ⧸ H, A q.out w) = c • e := by
     intro w hw
@@ -189,8 +186,7 @@ theorem mem_span_translates_vacuum (X M : Type) [AddCommGroup X] [AddCommGroup M
       refine Fintype.sum_equiv (Equiv.addLeft (QuotientAddGroup.mk ⟨u, hu⟩ : Λ ⧸ H)) _ _ ?_
       intro q
       rw [hA]
-      apply hwell w hw
-      simp
+      exact hwell w hw _ _ (by simp)
     conv_rhs => rw [← h1]
     simp only [A, smul_smul, mul_inv_cancel₀ (hεne u hu), one_smul]
   let Tg : AddSubgroup X := Λ.comap (nsmulAddMonoidHom K : X →+ X)
@@ -202,7 +198,6 @@ theorem mem_span_translates_vacuum (X M : Type) [AddCommGroup X] [AddCommGroup M
       intro u hu
       rw [hcomm, hvK u hu, hp1, ← hp2, (hΛ u).1 hu _ ((hTg _).1 (Tg.neg_mem ht)), one_smul])
     have h1 := congrArg (ρ t) hc
-
     rw [map_sum, map_smul] at h1
     have h3 : c • ρ t e ∈ S := S.smul_mem c (Submodule.subset_span ⟨t, rfl⟩)
     rw [← h1] at h3
@@ -237,14 +232,10 @@ theorem mem_span_translates_vacuum (X M : Type) [AddCommGroup X] [AddCommGroup M
   intro φ
   have h1 := Fintype.linearIndependent_iff.1 hli (fun q => φ (S.mkQ (A q.out v))) (by
     funext t
-    have h3 := (Submodule.Quotient.mk_eq_zero S).2 (hmem _ (t.toAdd).2)
-    have h4 := congrArg φ h3
-
+    have h4 := congrArg φ ((Submodule.Quotient.mk_eq_zero S).2 (hmem _ (t.toAdd).2))
     rw [← Submodule.mkQ_apply, map_sum, map_sum, map_zero] at h4
-    simp only [map_smul, smul_eq_mul] at h4
-    simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]
-    rw [← h4]
-    exact Finset.sum_congr rfl fun q _ => mul_comm _ _) 0
+    simp only [map_smul, smul_eq_mul, Finset.sum_apply, Pi.smul_apply, Pi.zero_apply] at h4 ⊢
+    exact (Finset.sum_congr rfl fun q _ => mul_comm _ _).trans h4) 0
   have h3 : A (0 : Λ ⧸ H).out v = v := by
     rw [hwell v hvK _ 0 (by simp), hA0]
   simpa [h3] using h1

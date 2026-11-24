@@ -97,7 +97,7 @@ theorem cmpb_det_nonneg {f : V n → ℝ} {x : V n} (hf : ContDiffAt ℝ 2 f x)
   set g : V n → ℂ := fun v => ((f v : ℝ) : ℂ) with hgeq
   have hg2 : ContDiffAt ℝ 2 g x := contDiffAt_ofReal_comp' hf
   have hD : DifferentiableAt ℝ (fderiv ℝ g) x :=
-    (hg2.fderiv_right (m := 1) (by first | exact one_add_one_eq_two.le | norm_num)).differentiableAt (by first | exact one_ne_zero | exact le_rfl)
+    (hg2.fderiv_right (m := 1) (by first | exact one_add_one_eq_two.le)).differentiableAt (by first | exact one_ne_zero)
   have hsym : ∀ u v : V n, fderiv ℝ (fderiv ℝ g) x u v = fderiv ℝ (fderiv ℝ g) x v u := by
     have hs : IsSymmSndFDerivAt ℝ g x := by
       first
@@ -171,8 +171,6 @@ theorem cmpb_det_nonneg {f : V n → ℝ} {x : V n} (hf : ContDiffAt ℝ 2 f x)
     exact Complex.le_def.2 ⟨by simpa using hre, by simpa using him.symm⟩
   have hPSD : (cHess n g x).PosSemidef := by
     first
-    | exact ⟨hHerm, hnn⟩
-    | exact ⟨hHerm, fun v => hnn v⟩
     | refine ⟨hHerm, fun v => ?_⟩
       have h := hnn ⇑v
       convert h using 1

@@ -182,7 +182,7 @@ theorem UpperTheory.Gal.productCup_of_system.yBig_of :
   have hstab := good.stab {0} {0} hne hne
   have htt : ∀ k, r' k = tt K' x k := by
     intro k
-    simp [r', T, Sys.r, Sys.u, n10, gT, sysY, tt, map_div₀, div_eq_mul_inv]
+    simp [r', T, Sys.r, Sys.u, n10, gT, sysY, tt, div_eq_mul_inv]
   have hKEt : KE (kos T.act (T.M {0} {0}) r') d := by
     intro m hm c hc
     have hRSi := fun c' => hRS K' (DR ℂ K') T.act (Fin d) (T.M {0} {0}) (T.u n10 0 0) r' (gT x j2)

@@ -106,7 +106,7 @@ theorem flag_YY {g : GA D S} (hg : g ∈ flagN d) {i j : Fin ρ} (hij : i ≤ j)
   have e1 : adj (mt S g⁻¹) ⬝ gA S = gA S ⬝ mt S g := by
     conv_rhs => rw [← inv_inv g, GlobalTheory.MixModel.mt_inv, gA_giA_cancel]
   have e2 : d.pY ⬝ ((mt S g - 1) ⬝ d.jY) = adj ((mt S g⁻¹ - 1) ⬝ d.jX) ⬝ (gA S ⬝ d.jY) := by
-    simp only [d.pY_eq, adj_mul, adj_sub, adj_one, Matrix.mul_assoc, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul,
+    simp only [d.pY_eq, adj_mul, adj_sub, Matrix.mul_assoc, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul,
       cancel₂ e1]
   rw [e2, h1, adj_mul, Matrix.mul_assoc, d.gram_XY, Matrix.mul_one]
   change cA D (T j i) = 0

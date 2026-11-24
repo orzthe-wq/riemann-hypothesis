@@ -119,7 +119,7 @@ theorem kap_herm_contDiff {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun u : Fin n → ℂ => herm H u u) := by
   have hconj : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (starRingEnd ℂ) := Complex.conjCLE.contDiff
   have e : (fun u : Fin n → ℂ => herm H u u) = fun u => ∑ i, starRingEnd ℂ (u i) * (H *ᵥ u) i := by
-    funext u; simp [herm, dotProduct, Complex.star_def]
+    funext u; simp [herm, dotProduct]
   rw [e]
   refine ContDiff.sum fun i _ => ?_
   exact (hconj.comp (contDiff_apply ℝ (fun _ => ℂ) i)).mul ((contDiff_apply ℝ (fun _ => ℂ) i).comp (kap_mulVec_contDiff H))

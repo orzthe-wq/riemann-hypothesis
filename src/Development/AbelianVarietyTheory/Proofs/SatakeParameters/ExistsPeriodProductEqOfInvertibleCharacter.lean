@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.Tactic
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ThetaMod
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.DeRhamPotSemistable
 public import Formalism.SharpRestriction.LevelLetterCocycles.SumRepresentations

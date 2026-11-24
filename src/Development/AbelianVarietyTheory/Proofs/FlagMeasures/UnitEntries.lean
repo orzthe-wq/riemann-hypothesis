@@ -429,11 +429,6 @@ theorem comb_mul {V ι : Type} [AddCommGroup V] [Module E V] [Fintype ι] (g : �
   rw [Finset.sum_comm]
   simp only [mul_comm]
 
-theorem int_mul {L : LocE F E} {n : ℕ} {A B : Matrix (Fin n) (Fin n) E} (hA : IsIntM L A)
-    (hB : IsIntM L B) : IsIntM L (A * B) := fun i j => by
-  rw [Matrix.mul_apply]
-  exact L.O.sum_mem fun c _ => L.O.mul_mem (hA i c) (hB c j)
-
 theorem up_cT (L : LocE F E) {n : ℕ} {A : Matrix (Fin n) (Fin n) E} (hA : UpU A.transpose) :
     UpU (cT L A) :=
   ⟨fun i j h => by have := hA.1 i j h; rw [Matrix.transpose_apply] at this; simp [cT, this],
@@ -505,7 +500,7 @@ theorem one_class {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   refine ⟨⟨⟨1, one_mem _, 1, one_mem _, rfl⟩, ?_⟩, ?_, ?_⟩
   · rintro p ⟨A, A', iA, iA', -, -, -, h1, h2⟩ a b
     rw [h1, h2, pair_comb]
-    exact int_mul (int_mul (icT iA) iZ) iA' a b
+    exact _root_.GlobalTheory.HL.FrameClass.intM_mul (_root_.GlobalTheory.HL.FrameClass.intM_mul (icT iA) iZ) iA' a b
   · have : S.St ⊓ MulAction.stabilizer S.GLV (S.frameCls S.f S.f') = S.K0 := by
       have key : ∀ h ∈ MulAction.stabilizer S.GLV (S.frameCls S.f S.f'),
           h • Submodule.span L.O (Set.range S.f) ≤ Submodule.span L.O (Set.range S.f) ∧

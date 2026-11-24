@@ -1,44 +1,6 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FgDefs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FgBasic
 
 @[expose] public section
@@ -57,13 +19,7 @@ theorem powerSeries_subst_subst_of_constantCoeff_zero {R : Type} [CommRing R] {�
   rw [PowerSeries.subst, PowerSeries.subst]
   first
   | exact MvPowerSeries.subst_comp_subst_apply
-      (MvPowerSeries.HasSubst.of_constantCoeff_zero (fun _ => hu)) hb φ
-  | exact MvPowerSeries.subst_comp_subst_apply
       (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hu)) hb φ
-  | exact MvPowerSeries.subst_comp_subst_apply
-      ((PowerSeries.HasSubst.of_constantCoeff_zero hu).hasSubst) hb φ
-  | exact MvPowerSeries.subst_comp_subst_apply
-      ⟨fun _ => by rw [hu]; exact IsNilpotent.zero, by simp⟩ hb φ
 
 theorem mulN_integral {lam : PowerSeries K} {Φ : MvPowerSeries (Fin 2) K} (h : LawD lam Φ) (n : ℕ) :
     ∃ e : PowerSeries K, constantCoeff e = 0 ∧ IntegralPS e ∧ lam.subst e = C (n : K) * lam := by
@@ -121,11 +77,10 @@ theorem mulN_integral {lam : PowerSeries K} {Φ : MvPowerSeries (Fin 2) K} (h : 
       unfold atX atY
       first
       | rw [MvPowerSeries.subst_add ha]
-      | rw [← MvPowerSeries.coe_substAlgHom ha, map_add (f := _), MvPowerSeries.coe_substAlgHom]
       rw [powerSeries_subst_subst_of_constantCoeff_zero lam (MvPowerSeries.constantCoeff_X 0) ha,
         powerSeries_subst_subst_of_constantCoeff_zero lam (MvPowerSeries.constantCoeff_X 1) ha,
         MvPowerSeries.subst_X ha, MvPowerSeries.subst_X ha]
-      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
       rw [hlog, hXs, Nat.cast_succ, map_add (f := _), map_one]
       ring
 

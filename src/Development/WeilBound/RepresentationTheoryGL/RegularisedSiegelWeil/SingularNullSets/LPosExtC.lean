@@ -2,14 +2,13 @@ module
 
 public import Mathlib.Analysis.Complex.Basic
 public import Mathlib.Topology.ContinuousMap.CompactlySupported
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.MeasureTheory.Integral.Bochner.Basic
+import Mathlib.Analysis.Normed.Group.Bounded
 
 @[expose] public section
 
 noncomputable section
 
-open Set MeasureTheory CompactlySupported
+open Set CompactlySupported
 
 namespace PositivityTheory.Rg.Rsw.L.LPosExt
 
@@ -59,11 +58,12 @@ theorem dom (A : Submodule ℂ (X → ℂ))
   refine ⟨b, hbA, hb0, max C 0, le_max_right _ _, fun x => ?_⟩
   by_cases hx : x ∈ tsupport y
   · rw [hb1 x hx, Complex.one_re, mul_one]
-    have := hC x
-    rw [Real.norm_eq_abs] at this
-    constructor <;> linarith [abs_le.mp this, le_max_left C 0]
-  · rw [image_eq_zero_of_notMem_tsupport hx]
-    have := mul_nonneg (le_max_right C 0) (hb0 x).1
-    constructor <;> linarith
+    have hxy := (hC x).trans (le_max_left C 0)
+    rw [Real.norm_eq_abs] at hxy
+    obtain ⟨hl, hu⟩ := abs_le.mp hxy
+    exact ⟨neg_le_iff_add_nonneg'.mp hl, sub_nonneg.mpr hu⟩
+  · rw [image_eq_zero_of_notMem_tsupport hx, add_zero, sub_zero]
+    have h := mul_nonneg (le_max_right C 0) (hb0 x).1
+    exact ⟨h, h⟩
 
 end PositivityTheory.Rg.Rsw.L.LPosExt

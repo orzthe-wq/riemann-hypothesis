@@ -1,11 +1,12 @@
 module
 
-public import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.DiscriminantNeZeroOfResidueNeZero
-public import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.GoodPathWeightOfParts
+public import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.AtypicalPathSmallWeight
+public import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.GoodPathWeight
+public import Formalism.SharpRestriction.GrowthBounds.ValuationLowestDegreeRename
 public import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.CardFinRange
+public import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.DiscriminantNeZeroOfResidueNeZero
 public import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.FourHundredSixteenLeA
 public import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.ReflectionMemGlevCastSucc
-public import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.SortGetDSpec
 public import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.TypicalPathOrdersSmall
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -22,8 +23,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -31,7 +30,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,11 +42,213 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.Style
+import Std.Tactic.BVDecide.Normalize.BitVec
+import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SharpRestriction.GrowthBounds.ValuationLowestDegreeMapFractionField
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.GrowthBounds.SegmentDegree.GoodPathWeightOfParts, Formalism.SharpRestriction.GrowthBounds.SegmentDegree.SortGetDSpec, Formalism.SharpRestriction.GrowthBounds.SegmentDegree.DistAddTwoLeOfSameVec
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.SegmentDegree.GoodPathWeightOfParts =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.SegmentDegree.GoodPathWeightOfParts", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.AtypicalPathSmallWeight\npublic import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.GoodPathWeight\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MvPolynomial
+
+namespace Formalism.MainNotions.SelectionLemmas.Pf
+
+open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.SelectionLemmas.Pf.T
+
+def LetterDictionaryBounds (C₀ : ℝ) : Prop :=
+  ∀ (p n' r K : ℕ) [NeZero n'] [NeZero r] [NeZero K] (X : Dat n' r),
+    X.Hyp p K → C₀ ≤ X.CLa → C₀ ≤ X.Ck →
+    ∀ (j : ℤ) (b : ℤ → ℕ), X.AdmLL p K j b →
+    ∃ (n0 : ℕ) (od : Fin (segN X.F j) → Fin (segN X.F j)),
+      HypT (segN X.F j) n0 r K (segLL X.F j) (fun i => X.Bdeg p K j (X.restr j b) (segE X.F j i)) od
+        (fun i => X.a / (p : ℝ) ^ (X.F.dist j (segE X.F j i) + X.Rj p K j)) X.a X.La p ∧
+      (∀ μ dd, X.IsPATH p K j (X.restr j b) μ dd ↔
+        IsPATHa (segLL X.F j) n0 (fun i => X.Bdeg p K j (X.restr j b) (segE X.F j i)) μ dd) ∧
+      (∀ μ : Fin (segN X.F j + 1) → Fin (r + K) → ℤ,
+        GoodA (segLL X.F j) (fun i => X.Bdeg p K j (X.restr j b) (segE X.F j i)) od
+          (fun i => X.a / (p : ℝ) ^ (X.F.dist j (segE X.F j i) + X.Rj p K j)) X.La p μ →
+        X.IsGood p K j (X.restr j b) μ) ∧
+      ((rkA r K n0 (fun i => X.Bdeg p K j (X.restr j b) (segE X.F j i)) : ℕ) : ℝ) =
+        (∏ x ∈ X.F.LLset j, ((Nat.choose (b x + (r + K) - 1) (r + K - 1) : ℕ) : ℝ)) *
+        (∏ i : Fin r, ((Nat.choose ((X.Bw p K j (X.F.fr (j - 1) i.val) - (X.m0 K : ℤ)).toNat + (r + K) - 1)
+          (r + K - 1) : ℕ) : ℝ)) ∧
+      Real.exp (11 * ((segN X.F j : ℕ) : ℝ) ^ 2 * ell0 (segN X.F j) X.a - min X.La ((r + K : ℕ) : ℝ) / 32) ≤
+        1 / X.a ^ (X.Ns ^ 2)
+
+theorem good_path_weight_of_parts (C₀ : ℝ) (ha : PathWeightEqRank) (hT : LemT) (he : LetterDictionaryBounds C₀) : GoodPathWeight C₀ := by
+  intro p n' r K _ _ _ X hX hCLa hCk j b hb
+  obtain ⟨n0, od, hH, hPATH, hGood, hrk, hexp⟩ := he p n' r K X hX hCLa hCk j b hb
+  obtain ⟨hfin, hcard⟩ := hT (segN X.F j) n0 r K (segLL X.F j) _ od _ X.a X.La p hH
+  obtain ⟨hfinA, -⟩ := ha (segN X.F j) n0 r K (segLL X.F j) _ od _ X.a X.La p hH
+  let S : Set ((Fin (segN X.F j + 1) → Fin (r + K) → ℤ) × (ℤ → Finset (Fin K))) :=
+    {q | ∃ dd, X.IsPATH p K j (X.restr j b) q.1 dd ∧ X.IsGood p K j (X.restr j b) q.1 ∧ IsSt (tanPart q.1) q.2}
+  have hSA : S ⊆ SAll (r := r) (K := K) (segLL X.F j) n0
+      (fun i => X.Bdeg p K j (X.restr j b) (segE X.F j i)) := by
+    rintro q ⟨dd, hp, -, hs⟩
+    exact ⟨⟨dd, (hPATH q.1 dd).mp hp⟩, hs⟩
+  have hGS : SGood (r := r) (K := K) (segLL X.F j) n0 (fun i => X.Bdeg p K j (X.restr j b) (segE X.F j i)) od
+      (fun i => X.a / (p : ℝ) ^ (X.F.dist j (segE X.F j i) + X.Rj p K j)) X.La p ⊆ S := by
+    rintro q ⟨⟨dd, hp⟩, hg, hs⟩
+    exact ⟨dd, (hPATH q.1 dd).mpr hp, hGood q.1 hg, hs⟩
+  have hSfin : S.Finite := hfinA.subset hSA
+  have hTS : Nat.card (X.Tset p K j (X.restr j b)) = S.ncard := Nat.card_coe_set_eq S
+  refine ⟨hSfin.to_subtype, ?_⟩
+  rw [hTS]
+  have h1 : ((SGood (r := r) (K := K) (segLL X.F j) n0 (fun i => X.Bdeg p K j (X.restr j b) (segE X.F j i)) od
+      (fun i => X.a / (p : ℝ) ^ (X.F.dist j (segE X.F j i) + X.Rj p K j)) X.La p).ncard : ℝ) ≤ S.ncard := by
+    exact_mod_cast Set.ncard_le_ncard hGS hSfin
+  rw [mul_assoc, ← hrk]
+  refine le_trans ?_ (le_trans hcard h1)
+  exact mul_le_mul_of_nonneg_right (by linarith) (Nat.cast_nonneg _)
+
+end Formalism.MainNotions.SelectionLemmas.Pf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.SegmentDegree.GoodPathWeightOfParts =====
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.SegmentDegree.SortGetDSpec =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.SegmentDegree.SortGetDSpec", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.ValuationLowestDegreeRename\npublic import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.CardFinRange\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.BitVec\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Formalism.SharpRestriction.GrowthBounds.ValuationLowestDegreeMapFractionField\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.SelectionLemmas.Pf.TE
+
+open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
+
+theorem sort_getD_spec (s : Finset ℤ) (r : ℕ) (hr : 0 < r) (hrs : r ≤ s.card) :
+    (s.sort (· ≤ ·)).getD ((s.sort (· ≤ ·)).length - r) 0 ∈ s ∧
+      (s.filter ((s.sort (· ≤ ·)).getD ((s.sort (· ≤ ·)).length - r) 0 ≤ ·)).card = r := by
+  classical
+  have hlen : (s.sort (· ≤ ·)).length = s.card := Finset.length_sort _
+  have hk : (s.sort (· ≤ ·)).length - r < s.card := by omega
+  set f := s.orderEmbOfFin rfl with hf
+  have hget : (s.sort (· ≤ ·)).getD ((s.sort (· ≤ ·)).length - r) 0 = f ⟨(s.sort (· ≤ ·)).length - r, hk⟩ := by
+    rw [hf, Finset.orderEmbOfFin_apply, List.getD_eq_getElem]
+    · simp [Fin.getElem_fin]
+    · omega
+  rw [hget]
+  refine ⟨Finset.orderEmbOfFin_mem s rfl _, ?_⟩
+  have hset : s.filter (f ⟨(s.sort (· ≤ ·)).length - r, hk⟩ ≤ ·) =
+      (Finset.univ.filter (fun i : Fin s.card => (s.sort (· ≤ ·)).length - r ≤ i.val ∧ i.val < s.card)).map f.toEmbedding := by
+    ext y
+    simp only [Finset.mem_filter, Finset.mem_map, Finset.mem_univ, true_and]
+    constructor
+    · rintro ⟨hy, hle⟩
+      have hr : y ∈ Set.range f := by rw [hf, Finset.range_orderEmbOfFin]; exact hy
+      obtain ⟨i, rfl⟩ := hr
+      exact ⟨i, ⟨f.le_iff_le.1 hle, i.isLt⟩, rfl⟩
+    · rintro ⟨i, hi, rfl⟩
+      exact ⟨Finset.orderEmbOfFin_mem s rfl i, f.le_iff_le.2 hi.1⟩
+  rw [hset, Finset.card_map, card_fin_range _ _ _ le_rfl]
+  omega
+
+variable {n' r : ℕ} [NeZero n'] [NeZero r] {F : Frames n' r} {L₁ N₁ : ℕ}
+
+theorem oldest_spec (hV : F.Valid L₁ N₁) (j : ℤ) (i : Fin (segN F j)) (hi : r ≤ i.val) :
+    F.oldest j (segE F j i) ∈ F.letters j ∧ Even (F.oldest j (segE F j i)) ∧ F.oldest j (segE F j i) < segE F j i ∧
+      ((F.letters j).filter fun z => F.oldest j (segE F j i) ≤ z ∧ z < segE F j i ∧ Even z).card = r := by
+  classical
+  set E := segE F j i with hE
+  have hmono : StrictMono (segE F j) := fun a b hab => by
+    simp only [segE]
+    exact Subtype.coe_lt_coe.2 (((F.letters j).orderIsoOfFin rfl).strictMono hab)
+  have hsurj : ∀ x ∈ F.letters j, ∃ k, segE F j k = x := fun x hx =>
+    ⟨((F.letters j).orderIsoOfFin rfl).symm ⟨x, hx⟩, by simp [segE]⟩
+  have hlow : ∀ i' < r, F.fr (j - 1) i' < E := by
+    intro i' hi'
+    obtain ⟨k, hk⟩ := hsurj _ (frp_mem hV j i' hi')
+    have hki := idx_w hV k i' hi' hk
+    rw [← hk]
+    apply hmono
+    show k.val < i.val
+    omega
+  have hcard : r ≤ ((F.letters j).filter fun z => Even z ∧ z < E).card := by
+    have hsub : (Finset.range r).image (F.fr (j - 1)) ⊆ (F.letters j).filter fun z => Even z ∧ z < E := by
+      intro x hx
+      simp only [Finset.mem_image, Finset.mem_range] at hx
+      obtain ⟨i', hi', rfl⟩ := hx
+      simp only [Finset.mem_filter]
+      exact ⟨frp_mem hV j i' hi', (hV.2.2.2.2.1 (j - 1) i' hi').2, hlow i' hi'⟩
+    have hinj : Set.InjOn (F.fr (j - 1)) (Finset.range r) := fun a ha b hb h =>
+      fr_inj hV _ a b (Finset.mem_range.1 ha) (Finset.mem_range.1 hb) h
+    calc r = ((Finset.range r).image (F.fr (j - 1))).card := by
+          rw [Finset.card_image_of_injOn hinj, Finset.card_range]
+      _ ≤ _ := Finset.card_le_card hsub
+  obtain ⟨hm, hc⟩ := sort_getD_spec ((F.letters j).filter fun z => Even z ∧ z < E) r
+    (Nat.pos_of_ne_zero (NeZero.ne r)) hcard
+  have hold : F.oldest j E = (((F.letters j).filter fun z => Even z ∧ z < E).sort (· ≤ ·)).getD
+      ((((F.letters j).filter fun z => Even z ∧ z < E).sort (· ≤ ·)).length - r) 0 := rfl
+  rw [hold]
+  simp only [Finset.mem_filter] at hm
+  refine ⟨hm.1, hm.2.1, hm.2.2, ?_⟩
+  rw [Finset.filter_filter] at hc
+  refine Eq.trans ?_ hc
+  exact congrArg Finset.card (Finset.filter_congr (fun z _ => by tauto))
+
+theorem exists_od (hV : F.Valid L₁ N₁) (j : ℤ) : ∃ od : Fin (segN F j) → Fin (segN F j), ∀ i, r ≤ i.val →
+    segE F j (od i) = F.oldest j (segE F j i) ∧ od i < i ∧ (segLL F j).vec (od i) = true ∧
+      (Finset.univ.filter fun l : Fin (segN F j) => od i ≤ l ∧ l < i ∧ (segLL F j).vec l = true).card = r := by
+  classical
+  have hmono : StrictMono (segE F j) := fun a b hab => by
+    simp only [segE]
+    exact Subtype.coe_lt_coe.2 (((F.letters j).orderIsoOfFin rfl).strictMono hab)
+  have hsurj : ∀ x ∈ F.letters j, ∃ k, segE F j k = x := fun x hx =>
+    ⟨((F.letters j).orderIsoOfFin rfl).symm ⟨x, hx⟩, by simp [segE]⟩
+  have hmem : ∀ l, segE F j l ∈ F.letters j := fun l => by
+    simp only [segE]
+    exact Subtype.mem _
+  have hex : ∀ i : Fin (segN F j), ∃ k, r ≤ i.val → segE F j k = F.oldest j (segE F j i) := by
+    intro i
+    by_cases h : r ≤ i.val
+    · obtain ⟨k, hk⟩ := hsurj _ (oldest_spec hV j i h).1
+      exact ⟨k, fun _ => hk⟩
+    · exact ⟨i, fun h' => absurd h' h⟩
+  choose g hg using hex
+  refine ⟨g, ?_⟩
+  intro i hi
+  have hk := hg i hi
+  obtain ⟨-, hev, hlt, hc⟩ := oldest_spec hV j i hi
+  refine ⟨hk, hmono.lt_iff_lt.1 (by rw [hk]; exact hlt), by simp [segLL, LZ, hk, hev], ?_⟩
+  rw [← hk] at hc
+  refine Eq.trans ?_ hc
+  have hset : (F.letters j).filter (fun z => segE F j (g i) ≤ z ∧ z < segE F j i ∧ Even z) =
+      (Finset.univ.filter fun l : Fin (segN F j) => g i ≤ l ∧ l < i ∧ (segLL F j).vec l = true).map
+        ⟨segE F j, hmono.injective⟩ := by
+    ext z
+    simp only [Finset.mem_filter, Finset.mem_map, Finset.mem_univ, true_and, Function.Embedding.coeFn_mk]
+    constructor
+    · rintro ⟨hz, h1, h2, h3⟩
+      obtain ⟨l, rfl⟩ := hsurj z hz
+      exact ⟨l, ⟨hmono.le_iff_le.1 h1, hmono.lt_iff_lt.1 h2, by simp [segLL, LZ, h3]⟩, rfl⟩
+    · rintro ⟨l, ⟨h1, h2, h3⟩, rfl⟩
+      exact ⟨hmem l, hmono.le_iff_le.2 h1, hmono.lt_iff_lt.2 h2, by simpa [segLL, LZ] using h3⟩
+  rw [hset, Finset.card_map]
+
+end Formalism.MainNotions.SelectionLemmas.Pf.TE
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.SegmentDegree.SortGetDSpec =====
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.SegmentDegree.DistAddTwoLeOfSameVec =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.SegmentDegree.DistAddTwoLeOfSameVec", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.DiscriminantNeZeroOfResidueNeZero\npublic import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.GoodPathWeightOfParts\npublic import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.CardFinRange\npublic import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.FourHundredSixteenLeA\npublic import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.ReflectionMemGlevCastSucc\npublic import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.SortGetDSpec\npublic import Formalism.SharpRestriction.GrowthBounds.SegmentDegree.TypicalPathOrdersSmall\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -77,37 +277,26 @@ theorem letters_eq_image (F : Frames n' r) (j : ℤ) : F.letters j = Finset.univ
 theorem dist_cast {F : Frames n' r} {j x : ℤ} (hx : x ∈ F.letters j) : (F.dist j x : ℤ) = F.fr j (r - 1) - x := by
   have hx' := (Finset.mem_filter.mp hx).1
   rw [Finset.mem_Icc] at hx'
-  show (((F.fr j (r - 1) - x).toNat : ℕ) : ℤ) = F.fr j (r - 1) - x
   exact Int.toNat_of_nonneg (by omega)
 
 theorem dist_lt {F : Frames n' r} {j : ℤ} {i i' : Fin (segN F j)} (h : i < i') :
     F.dist j (segE F j i') + 1 ≤ F.dist j (segE F j i) := by
-  have hm : segE F j i < segE F j i' := by
-    unfold segE
-    exact_mod_cast ((F.letters j).orderIsoOfFin rfl).strictMono h
-  have hmem : ∀ k : Fin (segN F j), segE F j k ∈ F.letters j := fun k => by
-    unfold segE
-    exact ((F.letters j).orderIsoOfFin rfl k).2
-  have h1 := dist_cast (hmem i)
-  have h2 := dist_cast (hmem i')
+  have h1 := dist_cast (segE_mem F j i)
+  have h2 := dist_cast (segE_mem F j i')
+  have hm := segE_strictMono F j h
   omega
 
 theorem dist_add_two_le_of_same_vec {F : Frames n' r} {j : ℤ} {i i' : Fin (segN F j)} (h : i < i')
     (hv : (segLL F j).vec i = (segLL F j).vec i') : F.dist j (segE F j i') + 2 ≤ F.dist j (segE F j i) := by
-  have hm : segE F j i < segE F j i' := by
-    unfold segE
-    exact_mod_cast ((F.letters j).orderIsoOfFin rfl).strictMono h
-  have hmem : ∀ k : Fin (segN F j), segE F j k ∈ F.letters j := fun k => by
-    unfold segE
-    exact ((F.letters j).orderIsoOfFin rfl k).2
-  have h1 := dist_cast (hmem i)
-  have h2 := dist_cast (hmem i')
+  have h1 := dist_cast (segE_mem F j i)
+  have h2 := dist_cast (segE_mem F j i')
   have hv' : decide (Even (segE F j i)) = decide (Even (segE F j i')) := hv
   rw [decide_eq_decide] at hv'
   have h3 : segE F j i + 1 ≠ segE F j i' := by
     intro he
     rw [← he, Int.even_add_one] at hv'
     tauto
+  have hd := dist_lt h
   omega
 
 theorem beS_eq (hV : X.F.Valid X.L₁ X.N₁) (j : ℤ) (b' : ℤ → ℕ) :
@@ -117,9 +306,7 @@ theorem beS_eq (hV : X.F.Valid X.L₁ X.N₁) (j : ℤ) (b' : ℤ → ℕ) :
   · apply Finset.sum_congr _ (fun _ _ => rfl)
     ext i
     simp [dict_early hV]
-  · intro a _ b _ hab
-    unfold segE at hab
-    exact ((X.F.letters j).orderIsoOfFin rfl).injective (Subtype.ext hab)
+  · exact fun a _ b _ hab => (segE_strictMono X.F j).injective hab
 
 omit [NeZero n'] [NeZero r] [NeZero K] in
 theorem prod_fin_lt (N r : ℕ) (hr : r ≤ N) (h : ℕ → ℝ) :
@@ -143,8 +330,7 @@ theorem final_num (hX : X.Hyp p K) (hLa : 1088 ≤ X.CLa) (hk : 1088 ≤ X.Ck) (
     nlinarith [mul_le_mul_of_nonneg_left hNs hapos.le, mul_le_mul_of_nonneg_left hab hapos.le,
       mul_le_mul ha ha (by norm_num) hapos.le]
   have hpos1 : 0 < 1 + 2 * X.a * (N : ℝ) := by
-    have := mul_nonneg hapos.le hN0
-    linarith
+    nlinarith [mul_nonneg hapos.le hN0]
   have hl0 : ell0 N X.a ≤ 2 * Real.log X.a := by
     unfold ell0
     have e : Real.log (X.a ^ 2) = 2 * Real.log X.a := by
@@ -154,9 +340,7 @@ theorem final_num (hX : X.Hyp p K) (hLa : 1088 ≤ X.CLa) (hk : 1088 ≤ X.Ck) (
     exact Real.log_le_log hpos1 h1
   have hl0nn : 0 ≤ ell0 N X.a := by
     unfold ell0
-    apply Real.log_nonneg
-    have := mul_nonneg hapos.le hN0
-    linarith
+    exact Real.log_nonneg (by nlinarith [mul_nonneg hapos.le hN0])
   have hS : 0 ≤ (X.Ns : ℝ) ^ 2 * Real.log X.a := mul_nonneg (sq_nonneg _) (by linarith)
   have hmin : 1088 * ((X.Ns : ℝ) ^ 2 * Real.log X.a) ≤ min X.La ((r + K : ℕ) : ℝ) := by
     apply le_min
@@ -406,3 +590,7 @@ theorem letter_dictionary_bounds (h41 : TopCountLowerBounds 1088) : LetterDictio
 end Asm
 
 end Formalism.MainNotions.SelectionLemmas.Pf.TE
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.SegmentDegree.DistAddTwoLeOfSameVec =====

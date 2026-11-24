@@ -119,7 +119,7 @@ theorem columns_iff (sp : A ≃+* K × K) (I : Subring A) (Λ : Submodule I (Fin
           intro h'
           subst h'
           exact absurd hba (not_le.2 hj)
-        simp [Pi.single_apply, this]
+        simp [this]
       | zero =>
         have : (φ ∘ (0 : Fin n → A)) = 0 := by funext; simp
         rw [this]

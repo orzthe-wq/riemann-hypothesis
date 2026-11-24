@@ -166,7 +166,7 @@ theorem eigenSub_baseChangeAction_of_flat (χ : O →+* R) :
   rw [baseChange_ker]
   congr 1
   ext x
-  simp [TensorProduct.tmul_sub]
+  simp
   rfl
 
 theorem isBaseChange_eigenMapAlgebra_of_flat (hf : ∀ a x, f (ρ a x) = ρ' a (f x))

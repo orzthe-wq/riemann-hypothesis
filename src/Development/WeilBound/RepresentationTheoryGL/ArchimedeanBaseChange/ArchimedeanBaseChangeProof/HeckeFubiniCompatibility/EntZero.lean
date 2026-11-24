@@ -61,6 +61,12 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b n : ℕ}
 
 def gInf (v : InfinitePlace E) : GA E n →* G n := GeneralLinearGroup.map (cV v)
 
+theorem continuous_gInf (n : ℕ) (v : InfinitePlace E) : Continuous (gInf (n := n) v : GA E n → G n) :=
+  Continuous.units_map _ (continuous_id.matrix_map ((continuous_apply v).comp
+    (continuous_pi fun w =>
+      (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
+        ((continuous_apply w).comp continuous_fst))))
+
 def gFin : GA E n →* GL (Fin n) (Af E) := GeneralLinearGroup.map (pFin E)
 
 def hFin (g : H E a b) : Hf E a b := (gFin g.1, gFin g.2)

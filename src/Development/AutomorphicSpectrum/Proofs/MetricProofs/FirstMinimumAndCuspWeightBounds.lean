@@ -3,9 +3,9 @@ module
 public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsEigFrames
 public import Mathlib.NumberTheory.NumberField.Discriminant.Defs
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.LinearIndependentRealOfIntOfDiscrete
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicEigencomponentConjugateFormStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicSublatticeCovolumePositiveStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicSublatticeGramDeterminantStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicEigencomponentConjugateForm
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicSublatticeCovolumePositive
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsotropicSublatticeGramDeterminant
 public import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.PCuspWeightBound
 public import GroundTheory.HeightsAndTheta.Heights.CountingLowerBound.PMinkowskiCovolumeBound
 import Mathlib.Algebra.Order.Archimedean.Real.Hom
@@ -241,7 +241,7 @@ theorem gram_re_posSemidef {n : ℕ} (u : Fin n → Fin g → ℂ) :
       rw [← reForm_apply_alt]
 
       simp only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, reForm_apply_alt]
-      simp [dotProduct, mulVec, Finset.mul_sum, mul_assoc]
+      simp [dotProduct, mulVec, Finset.mul_sum]
       rw [Finset.sum_comm]
       exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
     rwa [e] at h
@@ -255,7 +255,7 @@ theorem eigComp_mem_alt (ρ : 𝓞 E →+* Module.End ℂ (Fin g → ℂ)) (s : 
 
 theorem card_le_of_isNzFamily {σ : Ψ → (𝓞 E →+* ℂ)} {m : ℕ} (hm : R.HasRank σ m) (τ : Ψ)
     {I : Submodule (𝓞 E) Λ} (hI : IsIsoSub R.form I) {r : ℕ} {v : Fin r → Λ} (hv : IsNzFamily I r v) : r ≤ m := by
-  have hli := (GlobalTheory.T.isotropic_eigencomponent_conjugate_form E g Λ Ψ R I hI (σ τ)).2 r v hv.2.1 hv.2.2.1
+  have hli := (_root_.GlobalTheory.CompanionTheory.Relay.isotropic_eigencomponent_conjugate_form E g Λ Ψ R I hI (σ τ)).2 r v hv.2.1 hv.2.2.1
   let w : Fin r → eigSp R.B (σ τ) := fun a => ⟨eigComp R.B (σ τ) (R.P (v a)), eigComp_mem_alt _ _ _⟩
   have hw : LinearIndependent ℂ w := LinearIndependent.of_comp (eigSp R.B (σ τ)).subtype hli
   have := hw.fintype_card_le_finrank
@@ -277,7 +277,7 @@ theorem neg_log_covolume_le {σ : Ψ → (𝓞 E →+* ℂ)} {m : ℕ} (hσ : Is
     -Real.log (R.nz σ I) ≤ Fintype.card Ψ * m * (2 * max 0 (Real.log (1 / R.lam1)) +
         Real.log (2 * Fintype.card Ψ * m * (|(discr E : ℝ)| ^ (1 / (Module.finrank ℚ E : ℝ))))) ∧
       Module.finrank (𝓞 E) I ≤ m := by
-  obtain ⟨⟨r, v, hv⟩, hall⟩ := GlobalTheory.T.isotropic_sublattice_covolume_positive E g Λ Ψ R σ I hσ hI hI0
+  obtain ⟨⟨r, v, hv⟩, hall⟩ := _root_.GlobalTheory.CompanionTheory.Relay.isotropic_sublattice_covolume_positive E g Λ Ψ R σ I hσ hI hI0
   obtain ⟨-, hN, hr⟩ := hall r v hv
   have hrm : r ≤ m := R.card_le_of_isNzFamily hm τ hI hv
   refine ⟨?_, hr ▸ hrm⟩
@@ -289,7 +289,7 @@ theorem neg_log_covolume_le {σ : Ψ → (𝓞 E →+* ℂ)} {m : ℕ} (hσ : Is
     exact_mod_cast Int.one_le_abs (discr_ne_zero E)
   let b := Module.finBasis ℤ I
   set n := Module.finrank ℤ I with hndef
-  obtain ⟨hn, hdet⟩ := GlobalTheory.T.isotropic_sublattice_gram_determinant E g Λ Ψ R σ I hσ hI hI0 n b
+  obtain ⟨hn, hdet⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.IsoCovol.det_re_gram_eq E g Λ Ψ R σ I hσ hI hI0 n b
   set f := Fintype.card Ψ with hf
   have hf1 : 1 ≤ f := Fintype.card_pos_iff.2 ⟨τ⟩
   have hr1 : 1 ≤ r := hv.1

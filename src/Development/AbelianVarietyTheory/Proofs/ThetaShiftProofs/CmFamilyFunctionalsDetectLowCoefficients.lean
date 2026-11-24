@@ -4,8 +4,11 @@ public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValue
 public import Development.AbelianVarietyTheory.Definitions.ThetaValues.GamAt
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NumericalConsequencesOfPins
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.AbsNormHalfDifferentDvdDiscr
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsFamilyMemberFunctionalNeZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.MemFormsLowCoeffsVanishIffFourierJacobiStatement
+public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.ModelsAt
+public import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsFamilyMemberFunctionalNeZero
+public import Formalism.LocalToGlobal.ProjectiveLattices.XcLat
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.MemFormsLowCoeffsVanishIffFourierJacobi
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ModelsAtOfGoodLevel
 import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.FactPrincipalDatum
 import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
@@ -129,7 +132,7 @@ theorem absA_add_le_size {D : D7} (T : Core D) (hp : T.Q.Pins) {j : ℕ} (hj : I
 theorem detectQ_of_known : Known → ∀ (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (ka : WeightFamilies.Wt D j) (CR Tt cc : ℝ), GlobalTheory.RunIn.GamAt T → InR D j → j < D.R.m → 3 ≤ D.R.r → 0 < Tt → 0 < cc → DetectQ h j ka CR Tt cc := by
   intro hK D T h j ka CR Tt cc hG hj hjm hr hT hc F hF
   have hP : FactPrincipalDatum := Formalism.IndefR.Fin.factPrincipalDatum
-  obtain ⟨hS, hM⟩ := GlobalTheory.T.mem_forms_low_coeffs_vanish_iff_fourierJacobi D T h j ka CR Tt cc hj hjm F
+  obtain ⟨hS, hM⟩ := _root_.GlobalTheory.LowCoeff.mem_iff_low_coeff_vanish D T h j ka CR Tt cc hj hjm F
   rw [hM]
   intro k
   by_contra hk
@@ -140,7 +143,7 @@ theorem detectQ_of_known : Known → ∀ (D : D7) (T : Core D) (h : LawsCore T) 
     modelsAt_of_good_level hK _ _ (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c (by omega) hgood
   have hFC : F.1 ∈ T.C j ka := F.2.1
   have hw := absA_add_le_size T h.pins hj ka
-  obtain ⟨K₁, i1, i2, i3, d, hd, hne⟩ := GlobalTheory.T.exists_familyMember_functional_ne_zero hK D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r
+  obtain ⟨K₁, i1, i2, i3, d, hd, hne⟩ := _root_.GlobalTheory.ArcDetect.exists_fam_cfOf_ne_zero hK D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r
     (Formalism.L2.PjFree.Unf.ofPj (T.U j T.σ₀)) k Xx hX D.host.AA (wtA ka) ka.n (WeightFamilies.c1 D CR Tt cc j) (ka.size + D.R.r)
     hmod (h.unf j hj T.σ₀ T.good_σ₀) hA hr (hG j hj T.σ₀ T.good_σ₀) (dom_wtA ka)
     (h.chiTriv j hj T.σ₀ T.good_σ₀ _ _ (dom_wtA ka)) (AA_ne_zero hP D) hLa hg (lowExponentBound_pos_below_last_index D CR hjm hT hc)

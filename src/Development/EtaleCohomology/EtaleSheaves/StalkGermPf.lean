@@ -69,22 +69,22 @@ theorem toO_res (p : X ⟶ S) (s : S) {V U : S.Opens} (h : V ≤ U) (hV : s ∈ 
     toO p s V hV ≫ resO p h = toO p s U (h hV) := by
   have e : V.fromSpecStalkOfMem s hV ≫ S.homOfLE h = U.fromSpecStalkOfMem s (h hV) := by
     rw [← cancel_mono U.ι]; simp
-  simp only [toO, resO]; rw [pullback.map_comp]; congr 1 <;> simp [e]
+  simp only [toO, resO]; rw [pullback.map_comp]; congr 1
 
 theorem toO_f (f : Y ⟶ X) (p : X ⟶ S) (s : S) (U : S.Opens) (hs : s ∈ U) :
     pullback.map (f ≫ p) (S.fromSpecStalk s) p (S.fromSpecStalk s) f (𝟙 _) (𝟙 _) (by simp) (by simp) ≫ toO p s U hs =
       toO (f ≫ p) s U hs ≫ fO f p U := by
-  simp only [toO, resO, fO]; rw [pullback.map_comp]; try rw [pullback.map_comp]
-  all_goals (try congr 1) <;> simp
+  simp only [toO, fO]; rw [pullback.map_comp]; try rw [pullback.map_comp]
+  all_goals (try congr 1)
 
 theorem res_f (f : Y ⟶ X) (p : X ⟶ S) {V U : S.Opens} (h : V ≤ U) :
     resO (f ≫ p) h ≫ fO f p U = fO f p V ≫ resO p h := by
-  simp only [toO, resO, fO]; rw [pullback.map_comp]; try rw [pullback.map_comp]
-  all_goals (try congr 1) <;> simp
+  simp only [resO, fO]; rw [pullback.map_comp]; try rw [pullback.map_comp]
+  all_goals (try congr 1)
 
 theorem res_res (p : X ⟶ S) {W V U : S.Opens} (h1 : W ≤ V) (h2 : V ≤ U) :
     resO p h1 ≫ resO p h2 = resO p (h1.trans h2) := by
-  simp only [toO, resO, fO]; rw [pullback.map_comp]; try rw [pullback.map_comp]
+  simp only [resO]; rw [pullback.map_comp]; try rw [pullback.map_comp]
   all_goals (try congr 1) <;> simp
 
 theorem StalkGerm_of (hS : StalkCont) : StalkGerm := by

@@ -57,28 +57,7 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CompRat
 
-theorem isHolTo_subst {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup W]
-    [NormedSpace ℂ W] {X : Scheme.{0}} {B : Set W} {y : W → (Sp ℂ ⟶ X)} (hy : IsHolTo B y) {φ : V → W}
-    (hφ : Differentiable ℂ φ) (hB : ∀ z, φ z ∈ B) : IsHolTo Set.univ (fun z => y (φ z)) := by
-  intro U f
-  obtain ⟨h1, h2⟩ := hy U f
-  have e : {b ∈ (Set.univ : Set V) | ⊤ ≤ y (φ b) ⁻¹ᵁ U} = φ ⁻¹' {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U} :=
-    Set.ext fun z => ⟨fun h => ⟨hB z, h.2⟩, fun h => ⟨trivial, h.2⟩⟩
-  refine ⟨?_, ?_⟩
-  · beta_reduce
-    rw [e]
-    exact h1.preimage hφ.continuous
-  · beta_reduce
-    rw [e]
-    exact DifferentiableOn.comp (g := fun b => valAt' (y b) U f) (f := φ) h2 hφ.differentiableOn fun z hz => hz
-
-theorem isHolTo_ex_at_period {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
-    {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ ty)
-    (i : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (F.Di i) ty P) :
-    IsHolTo Set.univ (fun z => (F.ex i P z).left) :=
-  isHolTo_subst (φ := fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z))
-    (F.hol i 0 Set.univ (fun _ => P) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2
-    (by fun_prop) fun _ => ⟨trivial, trivial⟩
+alias isHolTo_ex_at_period := _root_.GlobalTheory.ExpUniqFamily.isHolTo_ex
 
 theorem conj_point_eq_of_isSplit {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ ty)

@@ -1,18 +1,16 @@
 module
 
+public import GroundTheory.ProfiniteCohomology.RestrictedRamification.MemMaxUnramifiedOutsideOfMemLevelOfField
+public import GroundTheory.GlobalFields.KummerTheory.Unramified
+public import GroundTheory.ProfiniteCohomology.RestrictedRamification.IsUnramifiedOutsideIffLeMaxUnramifiedOutside
+public import GroundTheory.ProfiniteCohomology.RestrictedRamification.SUnits
 public import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerOrd
 public import GroundTheory.ProfiniteCohomology.RestrictedRamification.DivisorModule
-public import GroundTheory.ProfiniteCohomology.RestrictedRamification.MemMaxUnramifiedOutsideOfMemLevelOfField
 public import GroundTheory.ProfiniteCohomology.RestrictedRamification.SInvariantToInvariantsEqZeroIff
-import GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer
-import GroundTheory.ProfiniteCohomology.GlobalClassFormation.Splitting
-import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDefs
-public import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisorKummer
+import GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleLimits.NormalFixingSubgroupGaloisClosure
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -27,8 +25,10 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,9 +48,108 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer
+import GroundTheory.ProfiniteCohomology.GlobalClassFormation.Splitting
+import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDefs
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisorKummer, GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisor
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisorKummer =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisorKummer", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.RestrictedRamification.MemMaxUnramifiedOutsideOfMemLevelOfField\npublic import GroundTheory.GlobalFields.KummerTheory.Unramified\nimport GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleLimits.NormalFixingSubgroupGaloisClosure\npublic import GroundTheory.ProfiniteCohomology.RestrictedRamification.IsUnramifiedOutsideIffLeMaxUnramifiedOutside\npublic import GroundTheory.ProfiniteCohomology.RestrictedRamification.SUnits\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+namespace PicInf
+
+open CategoryTheory NumberField IsDedekindDomain IntermediateField GroundTheory.Global FiniteSubfield
+
+local notation "ℚ̄" => AlgebraicClosure ℚ
+
+noncomputable section
+
+variable {K : FiniteSubfield} {S : Set (HeightOneSpectrum (𝓞 K.1))}
+
+variable (L : IntermediateField K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) [FiniteDimensional K.1 L]
+
+
+omit [FiniteDimensional K.1 L] in
+theorem exists_mem_pow_eq_of_dvd_log_valuation (Lq : IntermediateField K.1 ℚ̄) [FiniteDimensional K.1 Lq]
+    [NumberField Lq]
+    (hLqle : Lq ≤ maxUnramifiedOutside K.1 ℚ̄ S) (M : ℕ) (hM : M ≠ 0)
+    (hMS : ∀ v ∉ S, ((M : ℕ) : 𝓞 K.1) ∉ v.asIdeal) (π : Lqˣ)
+    (hπ : ∀ W : HeightOneSpectrum (𝓞 Lq), (M : ℤ) ∣ WithZero.log (W.valuation Lq (π : Lq))) :
+    ∃ α : ℚ̄, α ∈ maxUnramifiedOutside K.1 ℚ̄ S ∧ α ^ M = ((π : Lq) : ℚ̄) := by
+  have hLu : IsUnramifiedOutside S Lq := (isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hLqle
+  obtain ⟨α, hα⟩ := IsAlgClosed.exists_pow_nat_eq ((π : Lq) : ℚ̄) (Nat.pos_of_ne_zero hM)
+  have hαint : IsIntegral Lq α := by
+    refine IsIntegral.of_pow (Nat.pos_of_ne_zero hM) ?_
+    rw [hα]
+    exact isIntegral_algebraMap (x := (π : Lq))
+  let E : IntermediateField Lq ℚ̄ := IntermediateField.adjoin Lq {α}
+  have : FiniteDimensional Lq E := IntermediateField.adjoin.finiteDimensional hαint
+  have : NumberField E := NumberField.of_module_finite Lq E
+  have hβ : IntermediateField.AdjoinSimple.gen Lq α ^ M = algebraMap Lq E (π : Lq) := by
+    apply Subtype.ext
+    rw [SubmonoidClass.coe_pow, IntermediateField.AdjoinSimple.coe_gen, hα]
+    rfl
+  have hEu : IsUnramifiedOutside (placesOver S) E := by
+    intro w hw
+    refine Global.Kummer.isUnramifiedIn_of_pow_eq π hβ (adjoin_gen_eq_top Lq α) w ?_ (hπ w)
+    intro hmem
+    have hv : underPlace (F := K.1) w ∉ S := fun h => hw (mem_placesOver_iff.2 h)
+    apply hMS _ hv
+    change ((M : ℕ) : 𝓞 K.1) ∈ Ideal.comap (algebraMap (𝓞 K.1) (𝓞 Lq)) w.asIdeal
+    rw [Ideal.mem_comap, map_natCast]
+    exact hmem
+  have hEF := (isUnramifiedOutside_restrictScalars_iff S hLu E).2 hEu
+  have : FiniteDimensional K.1 (E.restrictScalars K.1) := FiniteDimensional.trans K.1 Lq E
+  exact ⟨α, le_maxUnramifiedOutside S hEF (IntermediateField.mem_adjoin_simple_self Lq α), hα⟩
+
+theorem exists_pow_eq_of_dvd_log_valuation (M : ℕ) (hM : M ≠ 0)
+    (hMS : ∀ v ∉ S, ((M : ℕ) : 𝓞 K.1) ∉ v.asIdeal) (π : (levelOfField L).1ˣ)
+    (hπ : ∀ W : HeightOneSpectrum (𝓞 (levelOfField L).1),
+      (M : ℤ) ∣ WithZero.log (W.valuation (levelOfField L).1 (π : (levelOfField L).1))) :
+    ∃ α : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ,
+      ((α : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) ^ M = ((π : (levelOfField L).1) : ℚ̄) := by
+  have hLqf : FiniteDimensional K.1 (L.map (maxUnramifiedOutside K.1 ℚ̄ S).val) :=
+    LinearEquiv.finiteDimensional (L.equivMap (maxUnramifiedOutside K.1 ℚ̄ S).val).toLinearEquiv
+  have hLqle : L.map (maxUnramifiedOutside K.1 ℚ̄ S).val ≤ maxUnramifiedOutside K.1 ℚ̄ S := by
+    rintro z ⟨w, -, rfl⟩
+    exact w.2
+  have : NumberField (L.map (maxUnramifiedOutside K.1 ℚ̄ S).val) := NumberField.of_module_finite K.1 _
+  obtain ⟨α, hαS, hα⟩ := exists_mem_pow_eq_of_dvd_log_valuation
+    (L.map (maxUnramifiedOutside K.1 ℚ̄ S).val) hLqle M hM hMS π hπ
+  have hα0 : (⟨α, hαS⟩ : maxUnramifiedOutside K.1 ℚ̄ S) ≠ 0 := by
+    intro h
+    have h' : α = 0 := congrArg Subtype.val h
+    rw [h', zero_pow hM] at hα
+    exact (π : (levelOfField L).1ˣ).ne_zero (Subtype.ext hα.symm)
+  exact ⟨Units.mk0 _ hα0, hα⟩
+
+end
+
+end PicInf
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisorKummer =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisor =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisor", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerOrd\npublic import GroundTheory.ProfiniteCohomology.RestrictedRamification.DivisorModule\npublic import GroundTheory.ProfiniteCohomology.RestrictedRamification.MemMaxUnramifiedOutsideOfMemLevelOfField\npublic import GroundTheory.ProfiniteCohomology.RestrictedRamification.SInvariantToInvariantsEqZeroIff\nimport GroundTheory.ProfiniteCohomology.GaloisCohomology.Kummer\nimport GroundTheory.ProfiniteCohomology.GlobalClassFormation.Splitting\nimport GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDefs\npublic import GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisorKummer\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -675,3 +773,6 @@ theorem exists_coprime_smul_picInfRep (ℓ : ℕ) (hℓ : ℓ.Prime)
 end
 
 end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.RestrictedRamification.BrauerDivisor =====

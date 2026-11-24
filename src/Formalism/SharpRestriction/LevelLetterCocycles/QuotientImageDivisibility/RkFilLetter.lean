@@ -127,7 +127,7 @@ private theorem mulVB_mul {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V
       mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) (d * c) x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
-  | tmul w b => simp [mulVB, map_mul, mul_assoc]
+  | tmul w b => simp [mulVB, map_mul]
   | add x y hx hy => rw [map_add (f := _), map_add (f := _), map_add (f := _), hx, hy]
 
 private theorem exists_linear_tensor_action_mulVB {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V]

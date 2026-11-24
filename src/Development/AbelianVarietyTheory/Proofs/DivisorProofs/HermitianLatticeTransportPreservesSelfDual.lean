@@ -1,10 +1,8 @@
 module
 
+public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 public import Formalism.LocalToGlobal.KernelLattices.ThDistC
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapMemSpanField
-import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
 public import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -20,11 +18,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,7 +26,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,12 +39,155 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
+import Mathlib.Algebra.Module.StablyFree.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TopPlaceLogTheta
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapMemSpanField, Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLatticeTransportPreservesSelfDual
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapMemSpanField =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapMemSpanField", "h": "module\n\npublic import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.StandardLatticeSpan
+
+open NumberField
+
+variable {E E' : Type} [Field E] [Field E'] (f : E ≃+* E') {n : ℕ}
+
+theorem mem_range_iff (a : E) :
+    f a ∈ (algebraMap (𝓞 E') E').range ↔ a ∈ (algebraMap (𝓞 E) E).range := by
+  constructor
+  · rintro ⟨c, hc⟩
+    have h1 : IsIntegral ℤ (f a) := hc ▸ c.isIntegral_coe
+    have h2 : IsIntegral ℤ (f.symm (f a)) :=
+      map_isIntegral_int (f.symm : E' →+* E) h1
+    rw [f.symm_apply_apply] at h2
+    exact ⟨⟨a, h2⟩, rfl⟩
+  · rintro ⟨c, rfl⟩
+    exact ⟨⟨f (algebraMap _ _ c), map_isIntegral_int (f : E →+* E') c.isIntegral_coe⟩, rfl⟩
+
+theorem mem_span_iff (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E') :
+    y ∈ Submodule.span (𝓞 E') ((fun (x : Fin n → E) (i : Fin n) ↦ f (x i)) '' (L : Set (Fin n → E)))
+      ↔ ∃ x ∈ L, (fun i ↦ f (x i)) = y := by
+  constructor
+  · intro hy
+    induction hy using Submodule.span_induction with
+    | mem y hy => exact hy
+    | zero => exact ⟨0, L.zero_mem, by ext i; simp⟩
+    | add y z _ _ hy hz =>
+      obtain ⟨a, ha, rfl⟩ := hy
+      obtain ⟨b, hb, rfl⟩ := hz
+      exact ⟨a + b, L.add_mem ha hb, by ext i; simp⟩
+    | smul c y _ hy =>
+      obtain ⟨a, ha, rfl⟩ := hy
+      obtain ⟨d, hd⟩ := (mem_range_iff f (f.symm (algebraMap (𝓞 E') E' c))).1
+        ⟨c, by rw [f.apply_symm_apply]⟩
+      refine ⟨d • a, L.smul_mem d ha, ?_⟩
+      ext i
+      simp only [Pi.smul_apply, Algebra.smul_def, map_mul, hd, RingEquiv.apply_symm_apply]
+  · rintro ⟨x, hx, rfl⟩
+    exact Submodule.subset_span ⟨x, hx, rfl⟩
+
+theorem map_mem_span_int (s : Set (Fin n → E)) {x : Fin n → E}
+    (hx : x ∈ Submodule.span (𝓞 E) s) :
+    (fun i ↦ f (x i)) ∈
+      Submodule.span (𝓞 E') ((fun (x : Fin n → E) (i : Fin n) ↦ f (x i)) '' s) := by
+  induction hx using Submodule.span_induction with
+  | mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩
+  | zero =>
+    have : (fun i ↦ f ((0 : Fin n → E) i)) = 0 := by ext i; simp
+    rw [this]; exact Submodule.zero_mem _
+  | add y z _ _ hy hz =>
+    have : (fun i ↦ f ((y + z) i)) = (fun i ↦ f (y i)) + (fun i ↦ f (z i)) := by ext i; simp
+    rw [this]; exact Submodule.add_mem _ hy hz
+  | smul c y _ hy =>
+    obtain ⟨d, hd⟩ := (mem_range_iff f (algebraMap (𝓞 E) E c)).2 ⟨c, rfl⟩
+    have : (fun i ↦ f ((c • y) i)) = d • (fun i ↦ f (y i)) := by
+      ext i
+      simp only [Pi.smul_apply, Algebra.smul_def, map_mul, hd]
+    rw [this]; exact Submodule.smul_mem _ _ hy
+
+theorem map_mem_span_field (s : Set (Fin n → E)) {x : Fin n → E}
+    (hx : x ∈ Submodule.span E s) :
+    (fun i ↦ f (x i)) ∈
+      Submodule.span E' ((fun (x : Fin n → E) (i : Fin n) ↦ f (x i)) '' s) := by
+  induction hx using Submodule.span_induction with
+  | mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩
+  | zero =>
+    have : (fun i ↦ f ((0 : Fin n → E) i)) = 0 := by ext i; simp
+    rw [this]; exact Submodule.zero_mem _
+  | add y z _ _ hy hz =>
+    have : (fun i ↦ f ((y + z) i)) = (fun i ↦ f (y i)) + (fun i ↦ f (z i)) := by ext i; simp
+    rw [this]; exact Submodule.add_mem _ hy hz
+  | smul c y _ hy =>
+    have : (fun i ↦ f ((c • y) i)) = f c • (fun i ↦ f (y i)) := by
+      ext i
+      simp only [Pi.smul_apply, smul_eq_mul, map_mul]
+    rw [this]; exact Submodule.smul_mem _ _ hy
+
+theorem stdH_map [StarRing E] [StarRing E'] (hf : ∀ x : E, f (star x) = star (f x))
+    (x y : Fin n → E) :
+    Formalism.BasicNotions.stdH E' n (fun i ↦ f (x i)) (fun i ↦ f (y i)) = f (Formalism.BasicNotions.stdH E n x y) := by
+  set_option synthInstance.maxHeartbeats 100000 in
+    simp only [Formalism.BasicNotions.stdH, map_sum, map_mul, hf]
+
+theorem isSDLat_map {E E' : Type} [Field E] [Field E'] (f : E ≃+* E') {n : ℕ}
+    [NumberField E] [NumberField E'] [StarRing E] [StarRing E']
+    (hf : ∀ x : E, f (star x) = star (f x)) (L : Submodule (𝓞 E) (Fin n → E))
+    (hL : Formalism.BasicNotions.IsSDLat E n L) :
+    Formalism.BasicNotions.IsSDLat E' n (Submodule.span (𝓞 E')
+      ((fun (x : Fin n → E) (i : Fin n) ↦ f (x i)) '' (L : Set (Fin n → E)))) := by
+  obtain ⟨⟨s, hs⟩, htop, hdual⟩ := hL
+  have surj : ∀ y : Fin n → E', ∃ x : Fin n → E, (fun i ↦ f (x i)) = y :=
+    fun y => ⟨fun i => f.symm (y i), by ext i; simp⟩
+  refine ⟨?_, ?_, ?_⟩
+  · rw [Submodule.fg_def]
+    refine ⟨(fun (x : Fin n → E) (i : Fin n) ↦ f (x i)) '' (s : Set (Fin n → E)),
+      s.finite_toSet.image _, le_antisymm ?_ ?_⟩
+    · apply Submodule.span_mono
+      apply Set.image_mono
+      rw [← hs]; exact Submodule.subset_span
+    · rw [Submodule.span_le]
+      rintro _ ⟨x, hx, rfl⟩
+      exact map_mem_span_int f _ (hs ▸ hx)
+  · rw [eq_top_iff]
+    intro y _
+    obtain ⟨x, rfl⟩ := surj y
+    have hx : x ∈ Submodule.span E (L : Set (Fin n → E)) := htop ▸ Submodule.mem_top
+    exact Submodule.span_mono Submodule.subset_span (map_mem_span_field f _ hx)
+  · intro y
+    obtain ⟨y, rfl⟩ := surj y
+    constructor
+    · intro hy x hx
+      obtain ⟨y', hy', e⟩ := (mem_span_iff f L _).1 hy
+      obtain ⟨x, hx', rfl⟩ := (mem_span_iff f L _).1 hx
+      rw [← e, stdH_map f hf, mem_range_iff]
+      exact (hdual y').1 hy' x hx'
+    · intro h
+      refine (mem_span_iff f L _).2 ⟨y, (hdual y).2 fun x hx => ?_, rfl⟩
+      rw [← mem_range_iff f, ← stdH_map f hf]
+      exact h _ ((mem_span_iff f L _).2 ⟨x, hx, rfl⟩)
+
+end GlobalTheory.StandardLatticeSpan
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapMemSpanField =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLatticeTransportPreservesSelfDual =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLatticeTransportPreservesSelfDual", "h": "module\n\npublic import Formalism.LocalToGlobal.KernelLattices.ThDistC\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MapMemSpanField\nimport Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic\npublic import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension\nimport Mathlib.Algebra.Module.StablyFree.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TopPlaceLogTheta\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.CosetRefinement\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColNorms
@@ -111,27 +247,9 @@ theorem isSDLat_pi (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) :
       rw [Finset.sum_eq_single i]
       · simp
       · intro j _ hj
-        simp [Pi.single_apply, hj]
+        simp [hj]
       · simp
     rwa [e] at this
-
-section Transport
-
-variable {E E' : Type} [Field E] [Field E'] (f : E ≃+* E') {n : ℕ}
-
-theorem isSDLat_image [NumberField E] [NumberField E'] [StarRing E] [StarRing E']
-    (hf : ∀ x, f (star x) = star (f x)) (L : Submodule (𝓞 E) (Fin n → E)) (hL : IsSDLat E n L) :
-    IsSDLat E' n (Submodule.span (𝓞 E')
-      ((fun (x : Fin n → E) (i : Fin n) => f (x i)) '' (L : Set (Fin n → E)))) := by
-  first
-  | exact @_root_.GlobalTheory.StandardLatticeSpan.isSDLat_map
-  | exact _root_.GlobalTheory.StandardLatticeSpan.isSDLat_map
-  | (apply _root_.GlobalTheory.StandardLatticeSpan.isSDLat_map <;> assumption)
-  | (intros; apply _root_.GlobalTheory.StandardLatticeSpan.isSDLat_map <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.StandardLatticeSpan.isSDLat_map <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.StandardLatticeSpan.isSDLat_map ..)
-
-end Transport
 
 theorem isSDLat_of_isSdLat {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
     (L : Submodule (𝓞 E) (Sp E n)) (hL : IsSdLat L) : IsSDLat E n L := by
@@ -185,7 +303,10 @@ theorem seam_selfDual : ∀ (D : D7) (X : Fields) (s : Seam D X), s.Ok → ∀ (
   intro D X s hs n
   letI := D.host.cmStar
   refine ⟨isSDLat_pi D.host.E n, fun L hL => ?_⟩
-  exact isSDLat_image s.iE (fun x => (hs.2 x).trans (bridge_star_holds D.R D.host _).symm) L
+  exact _root_.GlobalTheory.StandardLatticeSpan.isSDLat_map s.iE (fun x => (hs.2 x).trans (bridge_star_holds D.R D.host _).symm) L
     (isSDLat_of_isSdLat L hL)
 
 end GlobalTheory.SeamSelfDual
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermitianLatticeTransportPreservesSelfDual =====

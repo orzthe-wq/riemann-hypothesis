@@ -1,15 +1,14 @@
 module
 
+public import Mathlib.AlgebraicGeometry.Pullbacks
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
 public import Mathlib.AlgebraicGeometry.Morphisms.Flat
 public import Mathlib.CategoryTheory.Monoidal.Cartesian.Grp
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGrpObjOverOfPoints
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatOverArtinFibreProductIsPushoutStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OverTensorIsPullbackOfIsPullbackSquaresStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatOverArtinFibreProductIsPushout
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Morphisms.WeaklyEtale
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -33,6 +32,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,10 +45,155 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
 import Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff
 import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.StTransl
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Mathlib.AlgebraicGeometry.Morphisms.WeaklyEtale
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGrpObjOverOfPoints, Development.AbelianVarietyTheory.Proofs.DivisorProofs.OverTensorIsPullbackOfIsPullbackSquares, Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedCommGroupSchemeArtinFibreProduct
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGrpObjOverOfPoints =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGrpObjOverOfPoints", "h": "module\n\npublic import Mathlib.AlgebraicGeometry.Pullbacks\npublic import Mathlib.Combinatorics.Quiver.ReflQuiver\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
+
+namespace GlobalTheory
+
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj in
+theorem _root_.GlobalTheory.exists_grpObj_over_of_points : ∀ (S : Scheme.{0}) (X : Over S) (e : 𝟙_ _ ⟶ X) (m : X ⊗ X ⟶ X) (n : X ⟶ X), (∀ (T : Over S) (x : T ⟶ X), lift (toUnit T ≫ e) x ≫ m = x) → (∀ (T : Over S) (x : T ⟶ X), lift (x ≫ n) x ≫ m = toUnit T ≫ e) → (∀ (T : Over S) (x y : T ⟶ X), lift x y ≫ m = lift y x ≫ m) → (∀ (T : Over S) (x y z : T ⟶ X), lift (lift x y ≫ m) z ≫ m = lift x (lift y z ≫ m) ≫ m) → ∃ G : GrpObj X, η[X] = e ∧ μ[X] = m ∧ (GrpObj.inv : X ⟶ X) = n ∧ IsCommMonObj X := by
+  intro S X e m n hl hinv hcomm hassoc
+  have hr : ∀ (T : Over S) (x : T ⟶ X), lift x (toUnit T ≫ e) ≫ m = x := fun T x => by
+    rw [hcomm, hl]
+  let M : MonObj X :=
+    { one := e
+      mul := m
+      one_mul := by
+        have : e ▷ X = lift (toUnit _ ≫ e) (snd _ _) := by
+          apply hom_ext
+          · simp only [whiskerRight_fst, lift_fst]
+            rw [toUnit_unique (fst _ _) (toUnit _)]
+          · simp only [whiskerRight_snd, lift_snd]
+        rw [this, hl, leftUnitor_hom]
+      mul_one := by
+        have : X ◁ e = lift (fst _ _) (toUnit _ ≫ e) := by
+          apply hom_ext
+          · simp only [whiskerLeft_fst, lift_fst]
+          · simp only [whiskerLeft_snd, lift_snd]
+            rw [toUnit_unique (snd _ _) (toUnit _)]
+        rw [this, hr, rightUnitor_hom]
+      mul_assoc := by
+        have h1 : m ▷ X = lift (lift (fst _ _ ≫ fst _ _) (fst _ _ ≫ snd _ _) ≫ m) (snd _ _) := by
+          apply hom_ext
+          · simp only [whiskerRight_fst, lift_fst]
+            rw [← comp_lift, lift_fst_snd, Category.comp_id]
+          · simp only [whiskerRight_snd, lift_snd]
+        have h2 : (α_ X X X).hom ≫ X ◁ m =
+            lift (fst _ _ ≫ fst _ _) (lift (fst _ _ ≫ snd _ _) (snd _ _) ≫ m) := by
+          apply hom_ext
+          · simp only [Category.assoc, whiskerLeft_fst, associator_hom_fst, lift_fst]
+          · simp only [Category.assoc, whiskerLeft_snd, lift_snd]
+            have h3 : (α_ X X X).hom ≫ snd _ _ = lift (fst _ _ ≫ snd _ _) (snd _ _) := by
+              apply hom_ext <;>
+                simp only [lift_fst, lift_snd, Category.assoc, associator_hom_snd_fst,
+                  associator_hom_snd_snd]
+            rw [reassoc_of% h3]
+        rw [h1, reassoc_of% h2, hassoc] }
+  let G : GrpObj X :=
+    { inv := n
+      left_inv := by
+        show lift n (𝟙 X) ≫ m = toUnit X ≫ e
+        simpa using hinv X (𝟙 X)
+      right_inv := by
+        show lift (𝟙 X) n ≫ m = toUnit X ≫ e
+        rw [hcomm]
+        simpa using hinv X (𝟙 X) }
+  refine ⟨G, rfl, rfl, rfl, ⟨?_⟩⟩
+  have : (β_ X X).hom = lift (snd _ _) (fst _ _) := by
+    apply hom_ext <;> simp only [braiding_hom_fst, braiding_hom_snd, lift_fst, lift_snd]
+  rw [this]
+  show lift (snd X X) (fst X X) ≫ m = m
+  rw [hcomm, lift_fst_snd, Category.id_comp]
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGrpObjOverOfPoints =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.OverTensorIsPullbackOfIsPullbackSquares =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.OverTensorIsPullbackOfIsPullbackSquares", "h": "module\n\npublic import Mathlib.AlgebraicGeometry.Pullbacks\npublic import Mathlib.Combinatorics.Quiver.ReflQuiver\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff\nimport Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.StTransl\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
+open scoped CategoryTheory.Obj
+
+namespace GlobalTheory
+
+theorem over_tensor_isPullback_of_isPullback {S S' : Scheme.{0}} (s : S' ⟶ S) (A B : Over S')
+    (Y Z : Over S) (j : A.left ⟶ Y.left) (j' : B.left ⟶ Z.left)
+    (h₁ : IsPullback j A.hom Y.hom s) (h₂ : IsPullback j' B.hom Z.hom s) :
+    ∃ k : (A ⊗ B).left ⟶ (Y ⊗ Z).left, k ≫ (fst Y Z).left = (fst A B).left ≫ j ∧
+      k ≫ (snd Y Z).left = (snd A B).left ≫ j' ∧ IsPullback k (A ⊗ B).hom (Y ⊗ Z).hom s := by
+  let k : pullback A.hom B.hom ⟶ pullback Y.hom Z.hom :=
+    pullback.map A.hom B.hom Y.hom Z.hom j j' s h₁.w.symm h₂.w.symm
+  have kf : k ≫ pullback.fst Y.hom Z.hom = pullback.fst A.hom B.hom ≫ j := pullback.lift_fst _ _ _
+  have ks : k ≫ pullback.snd Y.hom Z.hom = pullback.snd A.hom B.hom ≫ j' :=
+    pullback.lift_snd _ _ _
+  refine ⟨k, kf, ks, ?_⟩
+  change IsPullback k (pullback.fst A.hom B.hom ≫ A.hom) (pullback.fst Y.hom Z.hom ≫ Y.hom) s
+  have w : k ≫ pullback.fst Y.hom Z.hom ≫ Y.hom = (pullback.fst A.hom B.hom ≫ A.hom) ≫ s := by
+    rw [← Category.assoc, kf, Category.assoc, h₁.w, Category.assoc]
+  refine IsPullback.of_isLimit' ⟨w⟩ (PullbackCone.IsLimit.mk w ?lift ?fl ?fr ?uniq)
+  case lift =>
+    intro c
+    have e₁ : (c.fst ≫ pullback.fst Y.hom Z.hom) ≫ Y.hom = c.snd ≫ s := by
+      simpa using c.condition
+    have e₂ : (c.fst ≫ pullback.snd Y.hom Z.hom) ≫ Z.hom = c.snd ≫ s := by
+      rw [Category.assoc, ← pullback.condition, ← Category.assoc]; exact e₁
+    exact pullback.lift (h₁.lift _ _ e₁) (h₂.lift _ _ e₂) (by simp)
+  case fl =>
+    intro c
+    apply pullback.hom_ext
+    · rw [Category.assoc, kf, pullback.lift_fst_assoc, h₁.lift_fst]
+    · rw [Category.assoc, ks, pullback.lift_snd_assoc, h₂.lift_fst]
+  case fr =>
+    intro c
+    rw [pullback.lift_fst_assoc, h₁.lift_snd]
+  case uniq =>
+    intro c m hm hm'
+    have hA : m ≫ pullback.fst A.hom B.hom ≫ A.hom = c.snd := hm'
+    have hB : m ≫ pullback.snd A.hom B.hom ≫ B.hom = c.snd := by
+      rw [← pullback.condition]; exact hA
+    apply pullback.hom_ext
+    · rw [pullback.lift_fst]
+      apply h₁.hom_ext
+      · rw [h₁.lift_fst, Category.assoc, ← kf, ← Category.assoc, hm]
+      · rw [h₁.lift_snd, Category.assoc, hA]
+    · rw [pullback.lift_snd]
+      apply h₂.hom_ext
+      · rw [h₂.lift_fst, Category.assoc, ← ks, ← Category.assoc, hm]
+      · rw [h₂.lift_snd, Category.assoc, hB]
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.OverTensorIsPullbackOfIsPullbackSquares =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedCommGroupSchemeArtinFibreProduct =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedCommGroupSchemeArtinFibreProduct", "h": "module\n\npublic import Mathlib.AlgebraicGeometry.Morphisms.Flat\npublic import Mathlib.CategoryTheory.Monoidal.Cartesian.Grp\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback\npublic import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsGrpObjOverOfPoints\npublic import Mathlib.Combinatorics.Quiver.ReflQuiver\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatOverArtinFibreProductIsPushout\npublic import Mathlib.AlgebraicGeometry.Pullbacks\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OverTensorIsPullbackOfIsPullbackSquares\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Morphisms.WeaklyEtale\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff\nimport Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
@@ -65,12 +210,6 @@ theorem left_ext {Y Z : Over S} {W : Scheme.{0}} {u v : W ⟶ (Y ⊗ Z).left}
   rw [Over.fst_left] at h₁
   rw [Over.snd_left] at h₂
   exact pullback.hom_ext h₁ h₂
-
-theorem lift_left_fst' {T X Y : Over S} (a : T ⟶ X) (b : T ⟶ Y) : (lift a b).left ≫ (fst X Y).left = a.left := by
-  rw [← Over.comp_left, lift_fst]
-
-theorem lift_left_snd' {T X Y : Over S} (a : T ⟶ X) (b : T ⟶ Y) : (lift a b).left ≫ (snd X Y).left = b.left := by
-  rw [← Over.comp_left, lift_snd]
 
 variable {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
 
@@ -100,7 +239,7 @@ theorem mul_compat (h : IsGrpPullback G' G f φ) (k : (G' ⊗ G').left ⟶ (G �
     rw [h.1.w, ← Category.assoc, Over.w])
   have e := h.2 (G' ⊗ G') (fst G' G') (snd G' G') x₀ y₀ rfl rfl
   rw [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp, Over.comp_left] at e
-  have hl : (lift x₀ y₀).left = k := left_ext (by rw [lift_left_fst', hk₁]; rfl) (by rw [lift_left_snd', hk₂]; rfl)
+  have hl : (lift x₀ y₀).left = k := left_ext (by rw [_root_.GlobalTheory.TripleDescent.lift_left_fst, hk₁]; rfl) (by rw [_root_.GlobalTheory.TripleDescent.lift_left_snd, hk₂]; rfl)
   rw [← e, hl]
 
 theorem inv_compat (h : IsGrpPullback G' G f φ) : φ ≫ ι[G].left = ι[G'].left ≫ φ := by
@@ -140,8 +279,8 @@ theorem push_mul (m : Y ⊗ Y ⟶ Y) (hj : j ≫ Y.hom = A.hom ≫ s) (k : (A �
     (hm : k ≫ m.left = μ[A].left ≫ j) {T : Over S'} (x y : T ⟶ A) :
     lift (push hj x) (push hj y) ≫ m = push hj (x * y) := by
   have hl : (lift (push hj x) (push hj y)).left = (lift x y).left ≫ k := left_ext
-    (by rw [lift_left_fst', Category.assoc, hk₁, ← Category.assoc, lift_left_fst', push_left])
-    (by rw [lift_left_snd', Category.assoc, hk₂, ← Category.assoc, lift_left_snd', push_left])
+    (by rw [_root_.GlobalTheory.TripleDescent.lift_left_fst, Category.assoc, hk₁, ← Category.assoc, _root_.GlobalTheory.TripleDescent.lift_left_fst, push_left])
+    (by rw [_root_.GlobalTheory.TripleDescent.lift_left_snd, Category.assoc, hk₂, ← Category.assoc, _root_.GlobalTheory.TripleDescent.lift_left_snd, push_left])
   apply Over.OverMorphism.ext
   rw [Over.comp_left, hl, Category.assoc, hm, push_left, Hom.mul_def, Over.comp_left, Category.assoc]
 
@@ -221,7 +360,7 @@ theorem side_assoc (m : Y ⊗ Y ⟶ Y) (hj : j ≫ Y.hom = A.hom ≫ s)
   have r : ∀ F : (Y ⊗ Y) ⊗ Y ⟶ Y, l ≫ F.left = (L ≫ F).left := fun F => rfl
   rw [r, r]
   congr 1
-  simp only [comp_lift_assoc, comp_lift, e₁, e₂, e₃]
+  simp only [comp_lift_assoc, e₁, e₂, e₃]
   rw [push_mul m hj k hk₁ hk₂ hm, push_mul m hj k hk₁ hk₂ hm, push_mul m hj k hk₁ hk₂ hm,
     push_mul m hj k hk₁ hk₂ hm, _root_.mul_assoc]
 
@@ -233,7 +372,7 @@ namespace GlobalTheory.GlueGrpLaw
 
 theorem exists_glued_grp : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → ∀ (A₁ : Over (Spec R₁)) [GrpObj A₁] (A₂ : Over (Spec R₂)) [GrpObj A₂] (A₀ : Over (Spec R₀)) [GrpObj A₀] (ψ₁ : A₀.left ⟶ A₁.left) (ψ₂ : A₀.left ⟶ A₂.left), IsCommMonObj A₁ → IsCommMonObj A₂ → IsGrpPullback A₀ A₁ (Spec.map g₁) ψ₁ → IsGrpPullback A₀ A₂ (Spec.map g₂) ψ₂ → ∀ (Y : Over (Spec P)) (j₁ : A₁.left ⟶ Y.left) (j₂ : A₂.left ⟶ Y.left), IsPullback j₁ A₁.hom Y.hom (Spec.map f₁) → IsPullback j₂ A₂.hom Y.hom (Spec.map f₂) → Flat Y.hom → IsPushout ψ₁ ψ₂ j₁ j₂ → ∃ _ : GrpObj Y, IsCommMonObj Y ∧ IsGrpPullback A₁ Y (Spec.map f₁) j₁ ∧ IsGrpPullback A₂ Y (Spec.map f₂) j₂ := by
   intro P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hg₁ hg₂ A₁ _ A₂ _ A₀ _ ψ₁ ψ₂ hc₁ hc₂ hψ₁ hψ₂ Y j₁ j₂ hj₁ hj₂ hfl hY
-  have pinch := GlobalTheory.T.flat_over_artinFibreProduct_isPushout P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hg₁ hg₂
+  have pinch := _root_.GlobalTheory.FlatPinch.main P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart hg₁ hg₂
   have hw : Spec.map g₁ ≫ Spec.map f₁ = Spec.map g₂ ≫ Spec.map f₂ := by
     rw [← Spec.map_comp, ← Spec.map_comp, hP.w]
 
@@ -242,20 +381,20 @@ theorem exists_glued_grp : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P �
       (Spec.map g₁) (Spec.map g₂) (by dsimp; infer_instance) (IsPullback.id_vert _) (IsPullback.id_vert _)
       (IsPullback.id_vert _) hw (by simp)
 
-  obtain ⟨k₁, hk₁f, hk₁s, hk₁⟩ := GlobalTheory.T.over_tensor_isPullback_of_isPullback_squares (Spec.map f₁) A₁ A₁ Y Y j₁ j₁ hj₁ hj₁
-  obtain ⟨k₂, hk₂f, hk₂s, hk₂⟩ := GlobalTheory.T.over_tensor_isPullback_of_isPullback_squares (Spec.map f₂) A₂ A₂ Y Y j₂ j₂ hj₂ hj₂
-  obtain ⟨i₁, hi₁f, hi₁s, hi₁⟩ := GlobalTheory.T.over_tensor_isPullback_of_isPullback_squares (Spec.map g₁) A₀ A₀ A₁ A₁ ψ₁ ψ₁ hψ₁.1 hψ₁.1
-  obtain ⟨i₂, hi₂f, hi₂s, hi₂⟩ := GlobalTheory.T.over_tensor_isPullback_of_isPullback_squares (Spec.map g₂) A₀ A₀ A₂ A₂ ψ₂ ψ₂ hψ₂.1 hψ₂.1
+  obtain ⟨k₁, hk₁f, hk₁s, hk₁⟩ := _root_.GlobalTheory.over_tensor_isPullback_of_isPullback (Spec.map f₁) A₁ A₁ Y Y j₁ j₁ hj₁ hj₁
+  obtain ⟨k₂, hk₂f, hk₂s, hk₂⟩ := _root_.GlobalTheory.over_tensor_isPullback_of_isPullback (Spec.map f₂) A₂ A₂ Y Y j₂ j₂ hj₂ hj₂
+  obtain ⟨i₁, hi₁f, hi₁s, hi₁⟩ := _root_.GlobalTheory.over_tensor_isPullback_of_isPullback (Spec.map g₁) A₀ A₀ A₁ A₁ ψ₁ ψ₁ hψ₁.1 hψ₁.1
+  obtain ⟨i₂, hi₂f, hi₂s, hi₂⟩ := _root_.GlobalTheory.over_tensor_isPullback_of_isPullback (Spec.map g₂) A₀ A₀ A₂ A₂ ψ₂ ψ₂ hψ₂.1 hψ₂.1
   have hfl2 : Flat (Y ⊗ Y).hom := by rw [Over.tensorObj_hom]; infer_instance
   have hik : i₁ ≫ k₁ = i₂ ≫ k₂ := left_ext
     (by rw [Category.assoc, Category.assoc, hk₁f, hk₂f, reassoc_of% hi₁f, reassoc_of% hi₂f, hY.w])
     (by rw [Category.assoc, Category.assoc, hk₁s, hk₂s, reassoc_of% hi₁s, reassoc_of% hi₂s, hY.w])
   have Q2 : IsPushout i₁ i₂ k₁ k₂ := pinch (Y ⊗ Y) (A₁ ⊗ A₁) (A₂ ⊗ A₂) (A₀ ⊗ A₀) k₁ k₂ i₁ i₂ hfl2 hk₁ hk₂ hi₁ hik hi₂.w
 
-  obtain ⟨l₁, hl₁f, hl₁s, hl₁⟩ := GlobalTheory.T.over_tensor_isPullback_of_isPullback_squares (Spec.map f₁) (A₁ ⊗ A₁) A₁ (Y ⊗ Y) Y k₁ j₁ hk₁ hj₁
-  obtain ⟨l₂, hl₂f, hl₂s, hl₂⟩ := GlobalTheory.T.over_tensor_isPullback_of_isPullback_squares (Spec.map f₂) (A₂ ⊗ A₂) A₂ (Y ⊗ Y) Y k₂ j₂ hk₂ hj₂
-  obtain ⟨h₁, hh₁f, hh₁s, hh₁⟩ := GlobalTheory.T.over_tensor_isPullback_of_isPullback_squares (Spec.map g₁) (A₀ ⊗ A₀) A₀ (A₁ ⊗ A₁) A₁ i₁ ψ₁ hi₁ hψ₁.1
-  obtain ⟨h₂, hh₂f, hh₂s, hh₂⟩ := GlobalTheory.T.over_tensor_isPullback_of_isPullback_squares (Spec.map g₂) (A₀ ⊗ A₀) A₀ (A₂ ⊗ A₂) A₂ i₂ ψ₂ hi₂ hψ₂.1
+  obtain ⟨l₁, hl₁f, hl₁s, hl₁⟩ := _root_.GlobalTheory.over_tensor_isPullback_of_isPullback (Spec.map f₁) (A₁ ⊗ A₁) A₁ (Y ⊗ Y) Y k₁ j₁ hk₁ hj₁
+  obtain ⟨l₂, hl₂f, hl₂s, hl₂⟩ := _root_.GlobalTheory.over_tensor_isPullback_of_isPullback (Spec.map f₂) (A₂ ⊗ A₂) A₂ (Y ⊗ Y) Y k₂ j₂ hk₂ hj₂
+  obtain ⟨h₁, hh₁f, hh₁s, hh₁⟩ := _root_.GlobalTheory.over_tensor_isPullback_of_isPullback (Spec.map g₁) (A₀ ⊗ A₀) A₀ (A₁ ⊗ A₁) A₁ i₁ ψ₁ hi₁ hψ₁.1
+  obtain ⟨h₂, hh₂f, hh₂s, hh₂⟩ := _root_.GlobalTheory.over_tensor_isPullback_of_isPullback (Spec.map g₂) (A₀ ⊗ A₀) A₀ (A₂ ⊗ A₂) A₂ i₂ ψ₂ hi₂ hψ₂.1
   have hfl3 : Flat ((Y ⊗ Y) ⊗ Y).hom := by rw [Over.tensorObj_hom]; infer_instance
   have hhl : h₁ ≫ l₁ = h₂ ≫ l₂ := left_ext
     (by rw [Category.assoc, Category.assoc, hl₁f, hl₂f, reassoc_of% hh₁f, reassoc_of% hh₂f, hik])
@@ -324,3 +463,6 @@ theorem exists_glued_grp : ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P �
     rw [ex, ey, Hom.mul_def, hGm, push_mul m hj₂.w k₂ hk₂f hk₂s hm₂, push_left]
 
 end GlobalTheory.GlueGrpLaw
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGluedCommGroupSchemeArtinFibreProduct =====

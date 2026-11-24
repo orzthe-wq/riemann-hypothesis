@@ -82,7 +82,7 @@ theorem UpperTheory.V.Z.Sym.So.extF :
       exact S.mul_mem (S.inv_mem (S.mul_mem hδ s.2)) s'.2
     have e1 : s' = ⟨ι (γ'⁻¹ * γ) * s, S.mul_mem hδ s.2⟩ * ⟨u * u'⁻¹, hvS⟩ := by
       apply Subtype.ext
-      simp only [Subgroup.coe_mul, Subgroup.coe_mk]
+      simp only [Subgroup.coe_mul]
       exact h1.symm
     rw [e1, hψU ⟨u * u'⁻¹, hvS⟩ hv,
       hψΓ (γ'⁻¹ * γ) s ⟨ι (γ'⁻¹ * γ) * s, S.mul_mem hδ s.2⟩ rfl, ← Module.End.mul_apply, ← map_mul,
@@ -186,7 +186,7 @@ theorem UpperTheory.V.Z.Sym.So.extF :
       refine (hP g).2 ⟨γ, s * ⟨u * (↑r)⁻¹ * u⁻¹, hSn.conj_mem _ (S.inv_mem r.2) u⟩, u, hu, ?_⟩
       have e6 : g = g * (1⁻¹ * ↑r * 1) * (↑r)⁻¹ := by group
       rw [e6, e]
-      simp only [Subgroup.coe_mul, Subgroup.coe_mk]
+      simp only [Subgroup.coe_mul]
       group
 
 end

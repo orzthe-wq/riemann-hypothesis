@@ -78,8 +78,6 @@ def LemmaETailLog.Statement : Prop :=
 section Inhabitants
 
 open OnePoint
-open ReciprocityTheory.AnForm.M (p1 fsPot projectiveLinePairSection projLine_isSmoothPotential projLine_isPlurisubharmonic projLine_isHolomorphicSection crd0 crd1 fsPot_φ_coe
-  projLineSection_infty projLineSection_coe)
 
 end Inhabitants
 

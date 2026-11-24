@@ -1,30 +1,35 @@
 module
 
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteDcOfCover
+public import Mathlib.GroupTheory.Index
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DoubleCosetMassEqRelIndexMulMass
+public import Formalism.AlgebraicWeights.IsAlgWeight
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinsetDoubleCosetsConjMaxCompact
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInertiaCyclotomicElement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteRationalConjMemBoundedCompact
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RelIndexNeZeroOfCover
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LocalisationCoefficientExtensionIsWildInertiaCyc
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumSmallerLevel
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIndexConj
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteRationalConjMemBoundedCompact
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxCompactUnitaryConjRelIndexEqStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDoubleCosetsDefiniteUnitaryMaximalLevel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,8 +37,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,11 +49,77 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.RowsExhaust
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDoubleCosetsDefiniteUnitaryMaximalLevel
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
+import Formalism.LocalToGlobal.IndefiniteReal.BridgeLemmas
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DoubleCosetMassEqRelIndexMulMassStatement, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxCompactUnitaryConjRelIndexEq, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumEqConstMulPetersson
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DoubleCosetMassEqRelIndexMulMassStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DoubleCosetMassEqRelIndexMulMassStatement", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteDcOfCover\npublic import Mathlib.GroupTheory.Index\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DoubleCosetMassEqRelIndexMulMass\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open GlobalTheory.UnimodMass
+
+theorem _root_.GlobalTheory.T.doubleCosetMass_eq_relIndex_mul_mass : ∀ (G : Type) [Group G] (Γ W K : Subgroup G), W ≤ K → Finite (GlobalTheory.UnimodMass.DC Γ W) → (∀ t : G, Finite {γ : Γ // t⁻¹ * (γ : G) * t ∈ K}) → W.relIndex K ≠ 0 ∧ GlobalTheory.UnimodMass.mass Γ W = (W.relIndex K : ℚ) * GlobalTheory.UnimodMass.mass Γ K := by
+  first | exact @GlobalTheory.UnimodMass.mass_eq_relIndex_mul
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DoubleCosetMassEqRelIndexMulMassStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxCompactUnitaryConjRelIndexEq =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxCompactUnitaryConjRelIndexEq", "h": "module\n\npublic import Formalism.AlgebraicWeights.IsAlgWeight\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DoubleCosetMassEqRelIndexMulMassStatement\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFinsetDoubleCosetsConjMaxCompact\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsWildInertiaCyclotomicElement\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteRationalConjMemBoundedCompact\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.RowsExhaust\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 NumberField IsDedekindDomain Polynomial GlobalTheory.EtaJoin GlobalTheory.CoefDuty
+
+open GlobalTheory.UnimodMass in
+theorem GlobalTheory.UnimodMass.umax_relIndex_conj : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (h : GAf L n), ((Umax L n).map (MulAut.conj h).toMonoidHom).relIndex (Umax L n) ≠ 0 ∧ ((Umax L n).map (MulAut.conj h).toMonoidHom).relIndex (Umax L n) = (Umax L n).relIndex ((Umax L n).map (MulAut.conj h).toMonoidHom) := by
+  intro L _ _ _ n h
+  set U := Umax L n with hUdef
+  set V := U.map (MulAut.conj h).toMonoidHom with hVdef
+  haveI hW : Finite (DC (GQ L n) (U ⊓ V)) := finite_dc_of_cover (_root_.GlobalTheory.ClassFinConj.exists_finset_double_cosets_conj L n h)
+  have hb : IsBounded U := ⟨{1}, fun κ hκ => ⟨1, by simp, by simpa using hκ⟩⟩
+  have hU : ∀ t : GAf L n, Finite {γ : GQ L n // t⁻¹ * (γ : GAf L n) * t ∈ U} := fun t => _root_.GlobalTheory.StabFin.finite_conj_mem L n U hb t
+  have hV : ∀ t : GAf L n, Finite {γ : GQ L n // t⁻¹ * (γ : GAf L n) * t ∈ V} := by
+    intro t
+    haveI := hU (t * h)
+    refine Finite.of_injective (fun x : {γ : GQ L n // t⁻¹ * (γ : GAf L n) * t ∈ V} =>
+      (⟨x.1, ?_⟩ : {γ : GQ L n // (t * h)⁻¹ * (γ : GAf L n) * (t * h) ∈ U})) ?_
+    · have hx : t⁻¹ * ((x.1 : GQ L n) : GAf L n) * t ∈ U.map (MulAut.conj h).toMonoidHom := x.2
+      rw [Subgroup.mem_map_equiv] at hx
+      simpa [MulAut.conj_symm_apply, mul_assoc] using hx
+    · intro a b hab
+      exact Subtype.ext (by simpa using congrArg Subtype.val hab)
+  obtain ⟨h1, e1⟩ := GlobalTheory.T.doubleCosetMass_eq_relIndex_mul_mass (GAf L n) (GQ L n) (U ⊓ V) U inf_le_left hW hU
+  obtain ⟨h2, e2⟩ := GlobalTheory.T.doubleCosetMass_eq_relIndex_mul_mass (GAf L n) (GQ L n) (U ⊓ V) V inf_le_right hW hV
+  have e3 : mass (GQ L n) V = mass (GQ L n) U := mass_conj (GQ L n) U h
+  haveI : Finite (DC (GQ L n) U) := finite_dc_of_le (Γ := GQ L n) (W := U ⊓ V) inf_le_left
+  have hpos := mass_pos (Γ := GQ L n) (K := U) hU
+  rw [Subgroup.inf_relIndex_left] at h1 e1
+  rw [Subgroup.inf_relIndex_right] at h2 e2
+  refine ⟨h1, ?_⟩
+  rw [e3] at e2
+  have : (V.relIndex U : ℚ) = (U.relIndex V : ℚ) := mul_right_cancel₀ hpos.ne' (e1.symm.trans e2)
+  exact_mod_cast this
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxCompactUnitaryConjRelIndexEq =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumEqConstMulPetersson =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumEqConstMulPetersson", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RelIndexNeZeroOfCover\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LocalisationCoefficientExtensionIsWildInertiaCyc\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumSmallerLevel\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIndexConj\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteRationalConjMemBoundedCompact\npublic import Formalism.AlgebraicWeights.IsAlgWeight\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MaxCompactUnitaryConjRelIndexEq\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDoubleCosetsDefiniteUnitaryMaximalLevel\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.RowsExhaust\nimport Formalism.LocalToGlobal.IndefiniteReal.BridgeLemmas\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 NumberField IsDedekindDomain Polynomial GlobalTheory.EtaJoin GlobalTheory.CoefDuty
@@ -61,8 +130,6 @@ namespace GlobalTheory.ClassPet
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
-theorem umax_bounded : IsBounded (Umax L n) := GlobalTheory.CoefDuty.Model.isBounded_umax
-
 theorem congSub_bounded (N : ℕ) : IsBounded (congSub L n N) :=
   ⟨{1}, fun κ hκ => ⟨1, by simp, by simpa using hκ.1⟩⟩
 
@@ -72,12 +139,12 @@ theorem congSub_relIndex_le {N : ℕ} (hN : 0 < N) {J : Subgroup (GAf L n)} (hJ 
   exact relIndex_ne_zero_of_cover F (fun κ hκ => hF κ hκ) hle
 
 theorem congSub_relIndex_ne_zero {N : ℕ} (hN : 0 < N) : (congSub L n N).relIndex (Umax L n) ≠ 0 :=
-  congSub_relIndex_le hN umax_bounded (congSub_le_umax N)
+  congSub_relIndex_le hN _root_.GlobalTheory.CoefDuty.Model.isBounded_umax (congSub_le_umax N)
 
 theorem exists_reps_cong {N : ℕ} (hN : 0 < N) : ∃ T, IsClassReps (congSub L n N) T := by
   classical
   obtain ⟨T, hT⟩ := GlobalTheory.DefiniteClassFinite.exists_finset_double_cosets_Umax L n
-  obtain ⟨-, ⟨F, hF⟩, -⟩ := GlobalTheory.CongIndex.finite_index_conj L n (Umax L n) umax_bounded 1 N hN
+  obtain ⟨-, ⟨F, hF⟩, -⟩ := GlobalTheory.CongIndex.finite_index_conj L n (Umax L n) _root_.GlobalTheory.CoefDuty.Model.isBounded_umax 1 N hN
   refine GlobalTheory.CoefDuty.Model.exists_isClassReps _ (Finset.image₂ (· * ·) T F) (fun g => ?_)
   obtain ⟨γ, t, u, ht, hu, rfl⟩ := hT g
   obtain ⟨f, hf, hfu⟩ := hF u hu
@@ -271,9 +338,6 @@ namespace GlobalTheory.ClassPet
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
-theorem re_natInv_mul (m : ℕ) (z : ℂ) : (((m : ℂ))⁻¹ * z).re = ((m : ℝ))⁻¹ * z.re := by
-  rw [← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.re_ofReal_mul]
-
 variable (a : NG.AlgWt L n) (β : a.W →ₗ⋆[ℂ] a.W →ₗ[ℂ] ℂ)
 
 theorem petN_conj (hβ : IsInvForm a β) (N : ℕ) (f f' : GAf L n → a.W) :
@@ -300,12 +364,12 @@ theorem petN_pos (hβ : IsInvForm a β) {N : ℕ} (hN : 0 < N) {f : GAf L n → 
     · simp [hs]
     · exact le_of_lt (hβ.2.1 _ hs)
   unfold petN classSum
-  rw [re_natInv_mul, Complex.re_sum]
+  rw [_root_.Formalism.IndefR.Bridge.re_natCast_inv_mul, Complex.re_sum]
   refine mul_pos (inv_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero (congSub_relIndex_ne_zero hN)))) ?_
   refine Finset.sum_pos' (fun s _ => ?_) ⟨t, ht, ?_⟩
-  · rw [re_natInv_mul]
+  · rw [_root_.Formalism.IndefR.Bridge.re_natCast_inv_mul]
     exact mul_nonneg (inv_nonneg.2 (Nat.cast_nonneg _)) (hterm s)
-  · rw [re_natInv_mul]
+  · rw [_root_.Formalism.IndefR.Bridge.re_natCast_inv_mul]
     exact mul_pos (inv_pos.2 (Nat.cast_pos.2 (hcard t))) (hβ.2.1 _ hft)
 
 theorem mem_conj_iff (K : Subgroup (GAf L n)) (h x : GAf L n) :
@@ -314,7 +378,7 @@ theorem mem_conj_iff (K : Subgroup (GAf L n)) (h x : GAf L n) :
   · rintro ⟨y, hy, rfl⟩
     simpa [MulAut.conj_apply, mul_assoc] using hy
   · intro hx
-    exact ⟨h * x * h⁻¹, hx, by simp [MulAut.conj_apply, mul_assoc]⟩
+    exact ⟨h * x * h⁻¹, hx, by simp [mul_assoc]⟩
 
 open Classical in
 theorem isClassReps_conj {K : Subgroup (GAf L n)} {T : Finset (GAf L n)} (hT : IsClassReps K T) (h : GAf L n) :
@@ -392,7 +456,7 @@ theorem petForm_rt (hβ : IsInvForm a β) {f f' : GAf L n → a.W} (hf : f ∈ N
   have hN : 0 < lev f * lev f' := Nat.mul_pos p1 p2
   have j1 : InvAt (lev f * lev f') f := i1.mul_right _
   have j2 : InvAt (lev f * lev f') f' := i2.mul_left _
-  obtain ⟨⟨N', hN', hc⟩, -, -⟩ := GlobalTheory.CongIndex.finite_index_conj L n (Umax L n) umax_bounded h (lev f * lev f') hN
+  obtain ⟨⟨N', hN', hc⟩, -, -⟩ := GlobalTheory.CongIndex.finite_index_conj L n (Umax L n) _root_.GlobalTheory.CoefDuty.Model.isBounded_umax h (lev f * lev f') hN
   obtain ⟨hr1, k1⟩ := rt_mem a hf hN' j1 hc
   obtain ⟨hr2, k2⟩ := rt_mem a hf' hN' j2 hc
   rw [petForm_apply a β hβ hr1 hr2 hN' k1 k2, petForm_apply a β hβ hf hf' hN j1 j2]
@@ -406,7 +470,7 @@ theorem petForm_rt (hβ : IsInvForm a β) {f f' : GAf L n → a.W} (hf : f ∈ N
     have e : h⁻¹ * (h * x * h⁻¹) * h = x := by group
     rwa [e] at hx'
   have hJU := hJle.trans (congSub_le_umax (L := L) (n := n) (lev f * lev f'))
-  have huni := (GlobalTheory.T.maxCompactUnitary_conj_relIndex_eq L n h⁻¹).2
+  have huni := (_root_.GlobalTheory.UnimodMass.umax_relIndex_conj L n h⁻¹).2
   have hidx := relIndex_conj h (congSub_le_umax N') hJU huni
   have hmul := Subgroup.relIndex_mul_relIndex _ _ _ hJle (congSub_le_umax (L := L) (n := n) (lev f * lev f'))
   have hKne := congSub_relIndex_ne_zero (L := L) (n := n) hN'
@@ -470,3 +534,7 @@ theorem GlobalTheory.ClassPet.classSum_eq_pet : ∀ (L : Type) [Field L] [Number
     have h2 : ((GlobalTheory.ClassPet.congSub L n N).relIndex (Umax L n) : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hU
     push_cast
     field_simp
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClassSumEqConstMulPetersson =====

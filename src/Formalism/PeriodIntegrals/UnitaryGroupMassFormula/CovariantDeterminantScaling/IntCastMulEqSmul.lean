@@ -131,14 +131,12 @@ theorem qminor_perm_perm {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin 
 theorem sum_sign_prod_left {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) :
     ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ k, P (σ k) k = P.det := by
   rw [Matrix.det_apply]
-  refine Finset.sum_congr rfl fun σ _ => ?_
-  simp only [Units.smul_def, zsmul_eq_mul]
+  exact Finset.sum_congr rfl fun σ _ => by simp only [Units.smul_def, zsmul_eq_mul]
 
 theorem sum_sign_prod_right {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) :
     ∑ τ : Equiv.Perm (Fin n), ((Equiv.Perm.sign τ : ℤ) : ℂ) * ∏ k, Q k (τ k) = Q.det := by
   rw [← Matrix.det_transpose, Matrix.det_apply]
-  refine Finset.sum_congr rfl fun σ _ => ?_
-  simp only [Units.smul_def, zsmul_eq_mul, Matrix.transpose_apply]
+  exact Finset.sum_congr rfl fun τ _ => by simp only [Units.smul_def, zsmul_eq_mul, Matrix.transpose_apply]
 
 theorem qnCovDet_of_lin (h : PI.QnCovLin) : PI.QnCovDet := by
   intro A _ _ n E P Q hE hQP hPQ u

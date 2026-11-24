@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PhiTopAgree
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralPeriodicCompactSupportEqFiniteSumStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ResiduesOfCompletionAtPrimeWithUniformizerStatement
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralPeriodicCompactSupportEqFiniteSum
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ResiduesOfCompletionAtPrimeWithUniformizer
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -99,7 +100,7 @@ theorem unfoldingAffineLinearMap_apply_single (x₀ : (Fin n' → E) →ₗ[E] (
     Loc.xx1 x₀ t (Pi.single j 1) i = if hf : Loc.IsFree n' n c i.1 j.1 then t ⟨(i, j), hf⟩
       else if hs : j.1 < n' then (if hl : i.1 < n then LinearMap.toMatrix' x₀ ⟨i.1, hl⟩ ⟨j.1, hs⟩ else 0)
       else if i.1 = n + (j.1 - n') then 1 else 0 := by
-  simp [Loc.xx1, Matrix.toLin'_apply, mulVec_single_one]
+  simp [Loc.xx1, Matrix.toLin'_apply]
 
 theorem affPt_eq (hc : 1 ≤ c) (he : IsOrd (yPos (fun a => (d a).val) n) e)
     (he' : IsOrd (yPos (fun a => (d' a).val) n') e') (x₀ : (Fin n' → E) →ₗ[E] (Fin n → E))
@@ -119,7 +120,7 @@ theorem affPt_eq (hc : 1 ≤ c) (he : IsOrd (yPos (fun a => (d a).val) n) e)
       · simp [basePt]
       · simp [Free] at h
       · simp only [Free] at h
-        simp [basePt, Fin.val_eq_val, h.ne]
+        simp [basePt, h.ne]
     rw [hb, zero_add]; rfl
   · have hf : ¬ Loc.IsFree n' n c (e r).val (e' s).val := fun h' => h (hF.2 h')
     rw [dif_neg hf]
@@ -143,7 +144,7 @@ theorem affPt_eq (hc : 1 ≤ c) (he : IsOrd (yPos (fun a => (d a).val) n) e)
     · have hs : ¬ (e' (.inr i)).val < n' := by rw [ord_inr' he']; omega
       rw [dif_neg hs]
       simp only [ord_inr he, ord_inr' he', basePt]
-      simp [Fin.val_eq_val]
+      simp
 end Coord2
 
 section Coord3
@@ -196,7 +197,7 @@ theorem typeFrame_bas_inv (ϖ : kˣ) :
 theorem coords_apply (ϖ : kˣ) (x : Matrix (V ⊕ Fin m) (V' ⊕ Fin m') k) (r : V ⊕ Fin m) (s : V' ⊕ Fin m') :
     (typeFrame ϖ (Equiv.refl (V ⊕ Fin m))).coords (typeFrame ϖ (Equiv.refl (V' ⊕ Fin m'))) x r s =
       (wt ϖ r)⁻¹ * x r s * wt ϖ s := by
-  simp only [LatFrame.coords, typeFrame_bas, typeFrame_bas_inv, submatrix_apply, Equiv.refl_apply]
+  simp only [LatFrame.coords, typeFrame_bas, typeFrame_bas_inv, submatrix_apply]
   rw [mul_diagonal, diagonal_mul]
   rfl
 
@@ -228,7 +229,7 @@ theorem basePt_free (x₀ : Matrix U U' k) (rs : (U ⊕ Fin c) × (U' ⊕ Fin (c
   · simp [basePt]
   · simp [Free] at h
   · simp only [Free] at h
-    simp [basePt, Fin.val_eq_val, h.ne]
+    simp [basePt, h.ne]
 
 theorem affPt_free (x₀ : Matrix U U' k) (u : {rs : (U ⊕ Fin c) × (U' ⊕ Fin (c + 1)) // Free 1 rs} → k)
     (rs : (U ⊕ Fin c) × (U' ⊕ Fin (c + 1))) (h : Free 1 rs) : affPt 1 x₀ u rs.1 rs.2 = u ⟨rs, h⟩ := by
@@ -311,7 +312,7 @@ theorem sumAgree : SumAgree := by
   classical
   have hq : ι (q : E) = (ϖ : k) := hC.unif.symm
   have hq0 : (q : E) ≠ 0 := fun h0 => ϖ.ne_zero (by rw [← hq, h0, map_zero])
-  obtain ⟨-, -, -, -, -, -, hres, hrep⟩ := GlobalTheory.T.residues_of_completionAtPrimeWithUniformizer E k P q ι ϖ hC hU
+  obtain ⟨-, -, -, -, -, -, hres, hrep⟩ := _root_.GlobalTheory.SymBridge.ComplRes.residues E k P q ι ϖ hC hU
   have hv : valuation k (ϖ : k) < 1 := (hU ϖ).2 le_rfl
   have hψ1 : ∀ b : k, valuation k b ≤ 1 → ψ b = 1 := fun b hb =>
     (hψ 1).2 le_rfl b (by simpa using hb)
@@ -370,7 +371,7 @@ theorem sumAgree : SumAgree := by
     rw [hper _ _ (free_small ϖ hv y hy)]
     congr 1
     rw [neg_add, AddChar.map_add_eq_mul, hψ1 (-ch (freeMat y)) (by rw [Valuation.map_neg]; exact ch_freeMat_int ϖ hv y hy), mul_one]
-  have key := GlobalTheory.T.integral_periodic_compactSupport_eq_finiteSum k ν hν ϖ hU A B T hT1 hT2 _ F hF1 hF2
+  have key := _root_.GlobalTheory.PeriodicIntegral.integral_eq_sum k ν hν ϖ hU A B T hT1 hT2 _ F hF1 hF2
   have hL : opE ψ ν 1 Φ X₀ = ∫ u, F u ∂(Measure.pi fun _ => ν) := rfl
   rw [hL, key]
 

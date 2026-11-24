@@ -249,7 +249,7 @@ theorem muAt_det_cong {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr 
     congr 1
     ext a b
     rw [LinearMap.toMatrix'_apply, Matrix.of_apply, mul_inv_cancel_left₀ hq]
-    simp [Pi.single_apply, eq_comm]
+    simp [Pi.single_apply]
   have hred : redP P.1 ((LinearEquiv.det κ : X.Eˣ) : X.E) = 1 := by
     rw [hdet, GlobalTheory.LastSteps.redP_det_add_q (fun a b => ?_) hZ]
     · have e2 : (Matrix.of fun a b : Fin N => if a = b then (1 : X.E) else 0) = 1 := by

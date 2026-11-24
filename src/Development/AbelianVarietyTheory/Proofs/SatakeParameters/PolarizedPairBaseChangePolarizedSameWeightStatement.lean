@@ -46,4 +46,4 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.GalCut GlobalTheory.Published
 
 theorem _root_.GlobalTheory.T.polarizedPair_baseChange_polarized_same_weight : AutomorphicFormsFiniteGL → JacquetShalikaRigidity → GelfandKazhdanDual → ∀ (E M : Type) [Field E] [NumberField E] [IsCMField E] [Field M] [NumberField M] [IsCMField M] [Algebra E M] (l a : ℕ), 1 ≤ a → ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)) (P : CuspSub M a), IsLift π P → InScope .all l π χ → (∃ χ' : HChar (maximalRealSubfield M), InScope .all l P χ') ∧ ∀ wt : ℤ, IsWeight π wt → IsWeight P wt := by
-  first | exact @GlobalTheory.LiftPolar.main | exact GlobalTheory.LiftPolar.main | (intros; apply GlobalTheory.LiftPolar.main <;> assumption)
+  first | exact @GlobalTheory.LiftPolar.main

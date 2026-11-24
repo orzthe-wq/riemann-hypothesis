@@ -61,4 +61,4 @@ theorem _root_.GlobalTheory.T.exists_adelicUnitary_prod_localPoints_mul_latticeS
     (∀ w ∈ S, ∀ u : AF F, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F w) u → u • (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat k - 1) = 0) ∧
     (∀ w ∉ S, ∀ γ, γ * (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat k)ᵀ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV G.V G.W w ↔ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV G.V G.W w) ∧
     (∀ w ∉ S, ∀ γ, γ * (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat k)ᵀ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV G.V' G.W w ↔ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV G.V' G.W w) := by
-  first | exact @GlobalTheory.FinDecomp.exists_prod_local_mul_latStab | exact GlobalTheory.FinDecomp.exists_prod_local_mul_latStab | (intros; apply GlobalTheory.FinDecomp.exists_prod_local_mul_latStab <;> assumption)
+  first | exact @GlobalTheory.FinDecomp.exists_prod_local_mul_latStab

@@ -74,7 +74,7 @@ theorem UpperTheory.Gal.W2.Seed.pLocComm :
         have e3 : RingHom.mapMatrix (pLoc E w) (finiteAdeleMap ℚ E (sim g : AfQˣ) • (1 : Matrix (Fin n) (Fin n) (Af E))) =
             pLoc E w (finiteAdeleMap ℚ E (sim g : AfQˣ)) • (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) := by
           ext i k
-          by_cases hik : i = k <;> simp [hik, Matrix.one_apply]
+          by_cases hik : i = k <;> simp [hik]
         rw [map_mul, e1, e2, mul_one, e3] at h2
         have hM : RingHom.mapMatrix (conjLoc (conjE E) w) (comp (conjSrc (conjE E) w) g).val =
             pLoc E w (finiteAdeleMap ℚ E (sim g : AfQˣ)) • (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) := by

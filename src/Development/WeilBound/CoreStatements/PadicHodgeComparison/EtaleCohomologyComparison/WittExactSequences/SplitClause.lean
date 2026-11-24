@@ -93,7 +93,7 @@ theorem test_clause (N : Type) [AddCommGroup N] [Module (Ob l) N] (M : ℕ) (hN 
   have hIsRt : IsRt l (fun k => algebraMap (Ob l) B (rt l k)) := fun k => by
     simp only; rw [← map_pow, hr.1 k]
   obtain ⟨T, _, g, hPf, hAIC, hVAL, hcompl, hnzd, hsurj, hinj, huniv⟩ :=
-    Leaf.test_of_pre l B (fun k => algebraMap (Ob l) B (rt l k)) hB hIsRt hA hV
+    _root_.CrystallineSemistableComparison.D.test_of_pre l B (fun k => algebraMap (Ob l) B (rt l k)) hB hIsRt hA hV
   let s : Ob l →+* T := g.comp (algebraMap (Ob l) B)
   have hs0 : s (pFlat l) = g (algebraMap (Ob l) B (rt l 0)) := by
     simp only [s, RingHom.comp_apply, hr.2]
@@ -132,7 +132,7 @@ theorem test_clause (N : Type) [AddCommGroup N] [Module (Ob l) N] (M : ℕ) (hN 
       have := congrArg (fun u => u.hom.hom b) hφ
       exact this
   · have key : ((tensF l (Ob l) N).map g').hom = gA.toLinearMap.lTensor N := rfl
-    obtain ⟨hsT, hkT⟩ := Leaf.tens_compl (Ob l) (rt l) M N B T gA (by rw [hr.2]; exact hN)
+    obtain ⟨hsT, hkT⟩ := _root_.GlobalTheory.CompanionTheory.TensCompl.main (Ob l) (rt l) M N B T gA (by rw [hr.2]; exact hN)
       (fun y => hsurj M y) (fun x hx k => by rw [Algebra.smul_def]; exact hinj M x hx k)
     rw [key]
     intro a ha

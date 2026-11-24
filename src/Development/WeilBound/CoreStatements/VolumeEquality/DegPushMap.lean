@@ -75,7 +75,7 @@ theorem pointIdeal_rat {Ω : Type} [Field Ω] [inst : Algebra ℚ Ω] (y : (Σ b
       obtain ⟨n', hn', F', hF'⟩ := hq
       refine ⟨n * n', Nat.mul_pos hn hn', C (n' : ℤ) * F + C (n : ℤ) * F', ?_⟩
       rw [map_add (f := _), map_mul, map_mul, hF, hF', map_C, map_C]
-      simp only [eq_intCast, Int.cast_natCast, map_natCast, Nat.cast_mul]
+      simp only [map_natCast, Nat.cast_mul]
       ring
     | mul_X p j hp =>
       obtain ⟨n, hn, F, hF⟩ := hp

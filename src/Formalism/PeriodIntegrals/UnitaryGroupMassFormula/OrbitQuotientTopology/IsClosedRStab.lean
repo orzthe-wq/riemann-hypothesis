@@ -88,7 +88,6 @@ theorem nset_iff (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
       rw [Matrix.one_apply]
       by_cases hj : j.val < r
       · have hv : i.val = j.val := by split_ifs at hij <;> omega
-        have hieq : i = j := Fin.ext hv
         have := h2 ⟨j.val, hj⟩ i (by show j.val ≤ i.val; omega)
         rw [hE j hj] at this
         exact this
@@ -106,22 +105,17 @@ theorem nset_iff (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
         rw [this, Matrix.one_apply_eq]
       · rw [if_neg hie]
         have hne : i.val ≠ b.val := fun h => hie (Fin.ext (by rw [h, hjv]))
-        apply hB
-        unfold nβ
-        split_ifs <;> omega
+        exact hB (by unfold nβ; split_ifs <;> omega)
     · intro i j hj1 hj2 hi
       by_cases hij : i = j
       · rw [if_pos hij, hij]
         have := hD j j rfl (by unfold nβ; split_ifs <;> omega)
         rw [this, Matrix.one_apply_eq]
       · rw [if_neg hij]
-        have hne : i.val ≠ j.val := fun h => hij (Fin.ext h)
         by_cases hik : i.val ≤ r + k
         · have := hD i j (by unfold nβ; split_ifs <;> omega) (by unfold nβ; split_ifs <;> omega)
           rw [this, Matrix.one_apply_ne hij]
-        · apply hB
-          unfold nβ
-          split_ifs <;> omega
+        · exact hB (by unfold nβ; split_ifs <;> omega)
 
 theorem uh_mul {a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (ha : a ∈ UH (Hpk k r))
     (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
@@ -214,12 +208,7 @@ theorem conj_mul (hg : g ∈ UH (Hpk k r)) (a b : Matrix (Fin (2 * r + k + 1)) (
 theorem conj_inv (hg : g ∈ UH (Hpk k r)) {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ UH (Hpk k r)) : (g⁻¹ * a * g)⁻¹ = g⁻¹ * a⁻¹ * g := by
   apply Matrix.inv_eq_right_inv
-  have h1 : g * g⁻¹ = 1 := uh_mul_inv hg
-  have h2 : g⁻¹ * g = 1 := uh_inv_mul hg
-  have h3 : a * a⁻¹ = 1 := uh_mul_inv ha
-  calc g⁻¹ * a * g * (g⁻¹ * a⁻¹ * g) = g⁻¹ * (a * (g * g⁻¹) * a⁻¹) * g := by
-        simp only [Matrix.mul_assoc]
-    _ = 1 := by rw [h1, Matrix.mul_one, h3, Matrix.mul_one, h2]
+  rw [← conj_mul hg a a⁻¹, uh_mul_inv ha, Matrix.mul_one, uh_inv_mul hg]
 
 theorem rstab_one (hg : g ∈ UH (Hpk k r)) :
     (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ RStab k r g := ⟨nset_one, by rw [Matrix.mul_one, uh_inv_mul hg]; exact nset_one⟩

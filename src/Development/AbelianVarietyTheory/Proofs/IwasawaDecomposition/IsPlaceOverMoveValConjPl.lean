@@ -127,7 +127,7 @@ theorem _root_.GlobalTheory.AntiLAdic.continuous_conjHom [Algebra.IsAlgebraic E 
       rw [hσ _ h, RingEquiv.apply_symm_apply]
     have hsum : x = ∑ i, algebraMap E Ω (b.repr ⟨x, hx⟩ i) * (b i : Ω) := by
       have h := congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)
-      simp only [IntermediateField.coe_sum, IntermediateField.coe_smul, Algebra.smul_def] at h
+      simp only [IntermediateField.coe_sum, Algebra.smul_def] at h
       exact h.symm
 
     rw [hsum, map_sum]

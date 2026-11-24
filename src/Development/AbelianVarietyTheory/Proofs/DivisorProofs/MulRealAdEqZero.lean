@@ -63,12 +63,12 @@ variable {F : Type} [Field F] [NumberField F]
 private theorem trace_pi_real_eq_sum' {ι : Type} [Fintype ι] (f : ι → ℝ) :
     Algebra.trace ℝ (ι → ℝ) f = ∑ i, f i := by
   rw [Algebra.trace_eq_matrix_trace (Pi.basisFun ℝ ι)]
-  simp [Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul, Pi.single_apply]
+  simp [Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul]
 
 private theorem trace_pi_complex_eq_sum_two_mul_re {ι : Type} [Fintype ι] (f : ι → ℂ) :
     Algebra.trace ℝ (ι → ℂ) f = ∑ i, 2 * (f i).re := by
   rw [Algebra.trace_eq_matrix_trace (Pi.basis fun _ : ι => Complex.basisOneI)]
-  simp [Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul, Fintype.sum_sigma, Pi.single_apply, Fin.sum_univ_two,
+  simp [Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul, Fintype.sum_sigma, Fin.sum_univ_two,
     Complex.coe_basisOneI, Complex.coe_basisOneI_repr]
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
@@ -267,7 +267,6 @@ variable {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 theorem incM_one' : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := by
   first
     | exact Matrix.map_one _ (map_zero _) (map_one _)
-    | (ext i j; simp [incM, Matrix.one_apply]; split_ifs <;> simp)
 
 theorem vecMulVec_eq_mul (y : Fin n → AE F E) (x : Fin d → E) :
     Matrix.vecMulVec y (incV F x) = Matrix.replicateCol Unit y * (incM F (Matrix.replicateCol Unit x))ᵀ := by

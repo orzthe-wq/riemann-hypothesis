@@ -251,7 +251,7 @@ theorem isThetaPt_iff [Subsingleton T.left] [Nonempty T.left] {k : ℕ} (hk : Od
     refine ⟨hk, hu, fun p => ⟨⊤, trivial, ?_⟩⟩
     obtain ⟨h, hh⟩ := exists_section (T := T) (V := ⊤) (p := p) trivial
     have hi : overResι (T := T) ⊤ ≫ h = 𝟙 _ := by
-      haveI : Mono (overResι (T := T) ⊤) :=
+      have : Mono (overResι (T := T) ⊤) :=
         Over.mono_of_mono_left _ (hk := inferInstanceAs (Mono (⊤ : T.left.Opens).ι))
       rw [← cancel_mono (overResι (T := T) ⊤), Category.assoc, hh, Category.comp_id, Category.id_comp]
     exact isThetaPtOver_pull P ⟨th, s1, α, τ, U, t, v, 1, h1, h2, h3, h4, h5, h6, h7,
@@ -285,7 +285,7 @@ theorem exists_isThetaFam {k : ℕ} (hk : Odd k) {I : Type} (x : I → (Over.mk 
   have hL := P.isLB
   let T : Over S := Over.mk s
   let e := (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm
-  haveI : Subsingleton T.left := inferInstanceAs (Subsingleton (PrimeSpectrum K))
+  have : Subsingleton T.left := inferInstanceAs (Subsingleton (PrimeSpectrum K))
   obtain ⟨p⟩ : Nonempty T.left := inferInstanceAs (Nonempty (PrimeSpectrum K))
   obtain ⟨t, -, ht⟩ : ∃ t : SecM P.A P.L 1 T, t ≠ 0 ∧ ∀ s, ∃ r : Γ(T.left, ⊤), r • t = s :=
     ThetaPtExist.exists_generator_of_isField (MulEquiv.isField (Field.toIsField K) e.symm.toMulEquiv)
@@ -321,7 +321,7 @@ theorem IsThetaFam.span_eq_top {k N : ℕ} (hk : 1 ≤ k) (hN : 4 ≤ N) (hK : (
   obtain ⟨th, s₁, α, U, hth, -, hs₁, hU, ht⟩ := H
   obtain ⟨ρ, k₁, -, k₃, k₄⟩ := thetaGrp_acts_linearly hLaw.globalFns S P N (Over.mk s)
   obtain ⟨h0, irr⟩ := secM_invariant_eq_bot_or_univ_at_geometric_point hLaw.polBaseChange
-  haveI : Nonempty I := let ⟨i, _⟩ := hx 1 (one_pow _); ⟨i⟩
+  have : Nonempty I := let ⟨i, _⟩ := hx 1 (one_pow _); ⟨i⟩
   have e : ∀ i, SecM.ofSec P.A (t i) = ρ (U i) (SecM.ofSec P.A s₁) := fun i => ((k₁ _ _ _).1 (ht i)).symm
   simp only [e]
   refine span_translates_eq_top P.A (irr hLaw.irred S P K s N (Or.inr hN) hK) ρ k₁ k₃ k₄ U (fun θ => ?_) _ fun hz => ?_
@@ -371,7 +371,7 @@ theorem eq_of_span {N : ℕ} (hN : 3 ≤ N) {I : Type} {t : I → LB.Sec (LPow P
     {z z' : Over.mk s ⟶ P.A} {τ : Frame P.L N z} {τ' : Frame P.L N z'} (hτ : τ.IsGen) (hτ' : τ'.IsGen)
     {v : I → Γ((Over.mk s).left, ⊤)} (hv : ∀ i, IsValueAt P.A P.L N (t i) z τ (v i))
     (hv' : ∀ i, IsValueAt P.A P.L N (t i) z' τ' (v i)) : z = z' := by
-  haveI : IsLocallyNoetherian (Over.mk s).left := inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of K)))
+  have : IsLocallyNoetherian (Over.mk s).left := inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of K)))
   refine SepPoints.eq_of_forall_value_eq forall_geometricallyIntegral_of_smooth_of_geometricallyConnected
     AbLaw.CubeAssembly.cube_gen hLaw.secBaseChange (fun S _ P n hn => let h := hLaw.mulN S P n hn;
       ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1⟩) S P N hN _ z z' τ τ' hτ hτ' fun T' _ h w a a' ha ha' => ?_
@@ -419,8 +419,8 @@ theorem coord_exists_unique_separate : Laws → ∀ (K : Type) [Field K] [IsAlgC
   intro hLaw K _ _ S _ P s m hm hK Ix x hx
   let e : Γ((Over.mk s).left, ⊤) ≃+* K := (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv
   have he : ∀ a : K, fnOf a = e.symm a := fun _ => rfl
-  haveI : Subsingleton (Over.mk s).left := inferInstanceAs (Subsingleton (PrimeSpectrum K))
-  haveI : Nonempty (Over.mk s).left := inferInstanceAs (Nonempty (PrimeSpectrum K))
+  have : Subsingleton (Over.mk s).left := inferInstanceAs (Subsingleton (PrimeSpectrum K))
+  have : Nonempty (Over.mk s).left := inferInstanceAs (Nonempty (PrimeSpectrum K))
   have hu : IsUnit (m : Γ((Over.mk s).left, ⊤)) := by
     rw [← map_natCast e.symm]
     exact (IsUnit.mk0 _ hK).map e.symm

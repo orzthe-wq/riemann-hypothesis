@@ -61,9 +61,6 @@ section form
 
 variable {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ)
 
-theorem form_add_left (u v w : Fin m → ℂ) : herm H (u + v) w = herm H u w + herm H v w := by
-  simp only [herm, mulVec_add, dotProduct_add]
-
 theorem form_add_right (u v w : Fin m → ℂ) : herm H w (u + v) = herm H w u + herm H w v := by
   simp only [herm, star_add, add_dotProduct]
 
@@ -132,7 +129,7 @@ theorem split_of_free {v : Fin (2 * r + k + 1) → ℂ} (hv : ∀ a : Fin r, v (
 theorem form_Wb_right {v w : Fin (2 * r + k + 1) → ℂ} (hv : ∀ a : Fin r, v (esI k r a) = 0) (hw : inWb k r w) :
     herm (Hpk k r) (Wb v) w = herm (Hpk k r) v w := by
   conv_rhs => rw [split_of_free hv]
-  rw [form_add_left, herm_sum_left]
+  rw [_root_.PI.StabSplit.UnipW.herm_add_left, herm_sum_left]
   simp only [form_smul_left, h_ee_w hw, mul_zero, Finset.sum_const_zero, zero_add]
 
 theorem form_Wb_self {v : Fin (2 * r + k + 1) → ℂ} (hv : ∀ a : Fin r, v (esI k r a) = 0) :
@@ -214,7 +211,7 @@ theorem omg_norm : ∀ (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ)) (g : M
     rw [form_Wb_self hfree, hv, herm_adjoint_mulVec_eq, mulVec_mulVec, mul_adj hg, one_mulVec, hu,
       Fin.sum_univ_castSucc]
     simp only [fvec_cs, hlast]
-    simp [herm_sum_left, herm_sum_right, form_add_left, form_add_right, form_smul_left, form_smul_right,
+    simp [herm_sum_left, herm_sum_right, _root_.PI.StabSplit.UnipW.herm_add_left, form_add_right, form_smul_left, form_smul_right,
       h_ee_w hz, h_w_ee hz]
     ring
   rw [homg, prW_eq]

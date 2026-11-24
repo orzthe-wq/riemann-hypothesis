@@ -63,7 +63,7 @@ private theorem norm_unif_lt (j : k →+* Qbar l) (hj : Continuous j) : ‖j (un
     intro γ _
     obtain ⟨N, hN⟩ := exists_pow_lt₀ (ValuativeRel.uniformizer_lt_one (R := k)) γ
     filter_upwards [eventually_ge_atTop N] with n hn
-    simp only [Set.mem_setOf_eq, map_pow, GlAx.unif_spec]
+    simp only [map_pow, GlAx.unif_spec]
     exact lt_of_le_of_lt (pow_le_pow_right_of_le_one' ValuativeRel.uniformizer_lt_one.le hn) hN
   have hj' : Tendsto (fun n : ℕ => (j (unif k : k)) ^ n) atTop (nhds 0) := by
     have := (hj.tendsto 0).comp hv

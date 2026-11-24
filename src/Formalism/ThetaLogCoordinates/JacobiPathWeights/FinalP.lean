@@ -50,22 +50,7 @@ namespace Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top
 
 open Formalism.InvariantFactorPaths.GelfandTsetlinBases
 
-theorem stripsMem : StripsMem := by
-  first
-  | exact stripsMem_proof
-  | exact P.stripsMem_proof
-  | exact strips_mem
-theorem gtPieri : GTPieri := by
-  first
-  | exact gtPieri_proof
-  | exact P.gtPieri_proof
-  | exact gelfand_tsetlin_pieri
-theorem stdCountGT : StdCountGT := by
-  first
-  | exact stdCountGT_proof
-  | exact P.stdCountGT_proof
-  | exact standard_count_gt
-theorem countCont : CountCont := countCont_of stripsMem gtPieri stdCountGT
+theorem countCont : CountCont := countCont_of _root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.strips_mem _root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.gelfand_tsetlin_pieri _root_.Formalism.InvariantFactorPaths.GelfandTsetlinBases.standard_count_gt
 theorem countPAll : CountPAll := countPAll_of countCont
 
 end Formalism.InvariantFactorPaths.GelfandTsetlinBases.Top

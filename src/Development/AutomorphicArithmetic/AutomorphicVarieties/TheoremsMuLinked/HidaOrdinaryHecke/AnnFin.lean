@@ -58,34 +58,21 @@ theorem UpperTheory.V.Th.AnnihilatorQuotientFinite.annFin :
   intro O A T M _ _ _ _ _ _ _ _ _ x μ hμ
   classical
   set N : Submodule A M := (RingHom.ker x • ⊤ : Submodule A M) with hN
-  have hmap : ∀ (f : Module.End A M) (y : M), y ∈ N → f y ∈ N := by
-    intro f y hy
-    have h : N.map f ≤ N := by
-      rw [hN, Submodule.map_smul'']
-      exact Submodule.smul_mono le_rfl le_top
-    exact h ⟨y, hy, rfl⟩
+  have hmap : ∀ f : Module.End A M, N.map f ≤ N := by
+    intro f
+    rw [hN, Submodule.map_smul'']
+    exact Submodule.smul_mono le_rfl le_top
   let I : Ideal T :=
     { carrier := {t | ∀ y : M, μ t y ∈ N}
-      add_mem' := by
-        intro a b ha hb
-        have ha' : ∀ y : M, μ a y ∈ N := ha
-        have hb' : ∀ y : M, μ b y ∈ N := hb
-        show ∀ y : M, μ (a + b) y ∈ N
-        intro y
-        rw [map_add (f := _), LinearMap.add_apply]
-        exact N.add_mem (ha' y) (hb' y)
-      zero_mem' := by
-        show ∀ y : M, μ 0 y ∈ N
-        intro y
+      add_mem' := fun ha hb y => by
+        rw [map_add, LinearMap.add_apply]
+        exact N.add_mem (ha y) (hb y)
+      zero_mem' := fun y => by
         rw [map_zero, LinearMap.zero_apply]
         exact N.zero_mem
-      smul_mem' := by
-        intro c t ht
-        have ht' : ∀ y : M, μ t y ∈ N := ht
-        show ∀ y : M, μ (c • t) y ∈ N
-        intro y
+      smul_mem' := fun c t ht y => by
         rw [smul_eq_mul, map_mul, Module.End.mul_apply]
-        exact hmap _ _ (ht' y) }
+        exact hmap (μ c) (Submodule.mem_map_of_mem (ht y)) }
   refine ⟨I, fun t => Iff.rfl, ?_⟩
   obtain ⟨n, s, hs⟩ := Module.Finite.exists_fin (R := A) (M := M)
   letI : Module O M := Module.compHom M (algebraMap O A)
@@ -105,7 +92,7 @@ theorem UpperTheory.V.Th.AnnihilatorQuotientFinite.annFin :
     · rw [map_zero]
       exact Submodule.zero_mem _
     · intro a b _ _ ha hb
-      rw [map_add (f := _)]
+      rw [map_add]
       exact Submodule.add_mem _ ha hb
     · intro a z _ hz
       have hd : a - algebraMap O A (x a) ∈ RingHom.ker x := by
@@ -123,7 +110,7 @@ theorem UpperTheory.V.Th.AnnihilatorQuotientFinite.annFin :
       map_add' := by
         intro a b
         funext i
-        simp [map_add (f := _)]
+        simp [map_add]
       map_smul' := by
         intro o t
         funext i
@@ -132,29 +119,20 @@ theorem UpperTheory.V.Th.AnnihilatorQuotientFinite.annFin :
         exact N'.mkQ.map_smul o (μ t (s i)) }
   have hker : LinearMap.ker φ ≤ LinearMap.ker (Ideal.Quotient.mkₐ O I).toLinearMap := by
     intro t ht
-    rw [LinearMap.mem_ker] at ht ⊢
     have hti : ∀ i, μ t (s i) ∈ N := by
       intro i
-      have h1 := congrFun ht i
+      have h1 := congrFun (LinearMap.mem_ker.1 ht) i
       change N'.mkQ (μ t (s i)) = 0 at h1
-      rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.restrictScalars_mem] at h1
-    have htI : t ∈ I := by
-      show ∀ y : M, μ t y ∈ N
-      intro y
-      refine Submodule.span_induction ?_ ?_ ?_ ?_ (hspanA y)
-      · rintro _ ⟨i, rfl⟩
-        exact hti i
-      · rw [map_zero]
-        exact N.zero_mem
-      · intro a b _ _ ha hb
-        rw [map_add (f := _)]
-        exact N.add_mem ha hb
-      · intro a z _ hz
-        rw [LinearMap.map_smul]
-        exact N.smul_mem a hz
+      rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero,
+        Submodule.restrictScalars_mem] at h1
+    have hle : Submodule.span A (Set.range s) ≤ N.comap (μ t) := by
+      rw [Submodule.span_le]
+      rintro _ ⟨i, rfl⟩
+      exact hti i
     show Ideal.Quotient.mkₐ O I t = 0
     rw [Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]
-    exact htI
+    show ∀ y : M, μ t y ∈ N
+    exact fun y => hle (hspanA y)
   haveI : Module.Finite O (LinearMap.range φ) := Module.IsNoetherian.finite O _
   haveI : Module.Finite O (T ⧸ LinearMap.ker φ) := Module.Finite.equiv (φ.quotKerEquivRange).symm
   exact Module.Finite.of_surjective ((LinearMap.ker φ).liftQ _ hker) (by

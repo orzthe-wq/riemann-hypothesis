@@ -166,7 +166,7 @@ theorem hasDerivAt_schr_pureA (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (ℓ : m
   refine hT.congr_deriv ?_
   simp only [id, Function.comp, zero_smul, add_zero, one_smul, zero_mul, mul_zero, Complex.ofReal_zero, Complex.exp_zero,
     one_mul, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Complex.ofReal_add, Complex.ofReal_mul,
-    Complex.ofReal_one, Complex.ofReal_pow]
+    Complex.ofReal_pow]
   ring
 
 omit [Invertible (2 : AdeleRing (𝓞 F) F)] in

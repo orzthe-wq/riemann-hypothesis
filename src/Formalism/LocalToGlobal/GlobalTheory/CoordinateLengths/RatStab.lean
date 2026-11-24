@@ -112,7 +112,7 @@ theorem rat_diag (e : Fin N → ℂ) (he : ∀ j, e j ∈ ratO D) (he0 : ∀ j, 
         by_cases hj : j = i
         · subst hj
           simp [hi]
-        · simp [hj, Function.update_of_ne hj]
+        · simp [hj]
       rw [h2, Formalism.UG.P.wact_rowAct_mul, AlgHom.comp_apply]
       exact ih _ (rat_diag_step D ν hν i (e i) (he i) (he0 i) q hq)
   have h3 : (Matrix.diagonal fun j : Fin N => if j ∈ (Finset.univ : Finset (Fin N)) then e j else 1) = Matrix.diagonal e := by

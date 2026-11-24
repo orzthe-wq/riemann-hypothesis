@@ -94,8 +94,8 @@ variable {ε : Fin (2 * r + k + 1) → Bool} {μ μ' : Fin (2 * r + k + 1) → �
 
 private theorem ckOn_GV_of_mem_Wsp (hK : PI.KFinSmooth) (hS : CoefSmooth) {F : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hF : F ∈ Wsp k r Wp Wq ε μ) : B.CkOn ⊤ (B.GV k r) F := by
-  letI : NormedAddCommGroup (B.Mat k r) := Matrix.normedAddCommGroup
-  letI : NormedSpace ℝ (B.Mat k r) := Matrix.normedSpace
+  let : NormedAddCommGroup (B.Mat k r) := Matrix.normedAddCommGroup
+  let : NormedSpace ℝ (B.Mat k r) := Matrix.normedSpace
   unfold Wsp at hF
   induction hF using Submodule.span_induction with
   | mem F hF =>
@@ -125,11 +125,7 @@ theorem wsp_smooth (hK : PI.KFinSmooth) (hS : CoefSmooth) {F : B.Mat k r → (Wq
   obtain ⟨U, F', hU, hgU, hF', hFe⟩ := ckOn_GV_of_mem_Wsp hK hS hF g₀ hg₀.1.1
   exact ⟨U, F', hU, hgU, hF', fun g hg hgl => hFe g hg hgl.1⟩
 
-theorem wsp_ckOn (hK : PI.KFinSmooth) (hS : CoefSmooth) {F : B.Mat k r → (Wq →L[ℂ] Wp)}
-    (hF : F ∈ Wsp k r Wp Wq ε μ) : B.CkOn ⊤ (B.GV k r) F := by
-  intro g₀ hg₀
-  obtain ⟨U, f', hU, hgU, hf', he⟩ := wsp_smooth hK hS hF g₀ (Dx1.LZ.glev0 hg₀)
-  exact ⟨U, f', hU, hgU, hf', fun g hg hgG => he g hg (Dx1.LZ.glev0 hgG).1⟩
+alias wsp_ckOn := _root_.CompanionTheory.LimBd.Main.ckOn_GV_of_mem_Wsp
 
 theorem wsp_inCC (hK : PI.KFinSmooth) (hC : CoefCC) {A h : ℝ} (hD : KDecay k r ε A h)
     (hg : PI.ZuckTensor.GapAtLeast ε μ h) {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : F ∈ Wsp k r Wp Wq ε μ) :
@@ -230,7 +226,7 @@ theorem op_expand (S : Wq →L[ℂ] Wp) :
     S = ∑ a, ∑ b, ⟪stdOrthonormalBasis ℂ Wp a, S (stdOrthonormalBasis ℂ Wq b)⟫_ℂ •
       (innerSL ℂ (stdOrthonormalBasis ℂ Wq b)).smulRight (stdOrthonormalBasis ℂ Wp a) := by
   ext v
-  simp only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply,
+  simp only [_root_.sum_apply, _root_.smul_apply, ContinuousLinearMap.smulRight_apply,
     innerSL_apply_apply]
   conv_lhs => rw [← (stdOrthonormalBasis ℂ Wq).sum_repr' v]
 

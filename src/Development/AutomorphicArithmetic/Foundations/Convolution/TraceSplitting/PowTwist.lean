@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DenseRangeUnits
 
 @[expose] public section
 
@@ -304,27 +305,13 @@ section Conj
 open scoped NumberField.AdeleRing
 open Formalism.L2.Host
 
-private theorem denseInf (u : InfinitePlace K) :
-    DenseRange (algebraMap K u.Completion) := by
-  have h1 := (AbsoluteValue.Completion.denseRange_coe u.1)
-  refine h1.mono ?_
-  rintro _ ⟨x, rfl⟩
-  refine ⟨x.ofAbs, ?_⟩
-  rw [InfinitePlace.Completion.algebraMap_apply]
-
-private theorem normAlg (w : InfinitePlace K) (x : K) :
-    ‖algebraMap K w.Completion x‖ = w x :=
-  by
-    rw [InfinitePlace.Completion.algebraMap_apply]
-    exact AbsoluteValue.Completion.norm_coe (WithAbs.toAbs w.1 x)
-
 private theorem norm_infEquiv (j : K ≃+* K) (u : InfinitePlace K)
     (y : (u.comap j.toRingHom).Completion) : ‖CT.infEquiv j u y‖ = ‖y‖ := by
-  have h := (denseInf (u.comap j.toRingHom)).equalizer
+  have h := (_root_.GlobalTheory.FrobDense.denseRange_inf (u.comap j.toRingHom)).equalizer
     (continuous_norm.comp (CT.continuous_infEquiv j u)) continuous_norm (funext fun x => ?_)
   · exact congrFun h y
   simp only [Function.comp_apply]
-  rw [CT.infEquiv_algebraMap, normAlg, normAlg]
+  rw [CT.infEquiv_algebraMap, _root_.GlobalTheory.FrobDense.norm_inf, _root_.GlobalTheory.FrobDense.norm_inf]
   rfl
 
 private theorem mult_comap_equiv (j : K ≃+* K) (u : InfinitePlace K) :

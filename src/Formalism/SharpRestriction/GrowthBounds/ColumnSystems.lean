@@ -303,13 +303,9 @@ theorem HI_iff {C0 CYb Cde Ck CD Cb : ℝ} {X : Loc} :
     HI C0 CYb Cde Ck CD Cb X ↔ WindowHypotheses C0 CYb Cde Ck CD Cb X ∧ InWin 0 0 X := by
   constructor
   · rintro ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20, h21, h22, h23, h24, h25, h26, h27⟩
-    exact ⟨⟨h1, h2, h3, h4, h5, h6, h7, h8, h10, h11, h12, h13, h14, h15, h16, h17, h19, h20, h21, h22, h23, h24,
-      h25, h26, h27⟩, fun s hs => ⟨(h9 s hs).1, by linarith [(h9 s hs).2]⟩,
-      fun s hs => ⟨(h18 s hs).1, by linarith [(h18 s hs).2]⟩⟩
+    exact ⟨⟨h1, h2, h3, h4, h5, h6, h7, h8, h10, h11, h12, h13, h14, h15, h16, h17, h19, h20, h21, h22, h23, h24, h25, h26, h27⟩, by simpa using h9, by simpa using h18⟩
   · rintro ⟨⟨g1, g2, g3, g4, g5, g6, g7, g8, g10, g11, g12, g13, g14, g15, g16, g17, g19, g20, g21, g22, g23, g24, g25, g26, g27⟩, g9, g18⟩
-    exact ⟨g1, g2, g3, g4, g5, g6, g7, g8, fun s hs => ⟨(g9 s hs).1, by linarith [(g9 s hs).2]⟩, g10, g11, g12,
-      g13, g14, g15, g16, g17, fun s hs => ⟨(g18 s hs).1, by linarith [(g18 s hs).2]⟩, g19, g20, g21, g22, g23,
-      g24, g25, g26, g27⟩
+    exact ⟨g1, g2, g3, g4, g5, g6, g7, g8, by simpa using g9, g10, g11, g12, g13, g14, g15, g16, g17, by simpa using g18, g19, g20, g21, g22, g23, g24, g25, g26, g27⟩
 
 theorem InWin.mono {xa xb xa' xb' : ℝ} {X : Loc} (ha : xa ≤ xa') (hb : xb ≤ xb') (h : InWin xa xb X) :
     InWin xa' xb' X :=
@@ -317,8 +313,7 @@ theorem InWin.mono {xa xb xa' xb' : ℝ} {X : Loc} (ha : xa ≤ xa') (hb : xb �
 
 theorem WindowHypotheses.cleaning_budget_nonneg {C0 CYb Cde Ck CD Cb : ℝ} {X : Loc} (h : WindowHypotheses C0 CYb Cde Ck CD Cb X) : 0 ≤ X.J0 C0 := by
   obtain ⟨g1, g2, g3, g4, g5, g6, g7, g8, g10, g11, g12, g13, g14, g15, g16, g17, g19, g20, g21, g22, g23, g24, g25, g26, g27⟩ := h
-  unfold Loc.J0
-  exact g23.trans g24
+  simpa [Loc.J0] using g23.trans g24
 
 theorem HIext.of_le {C0 CYb Cde Ck CD Cb xa xb : ℝ} {X : Loc} (h : WindowHypotheses C0 CYb Cde Ck CD Cb X)
     (ha : xa ≤ 2 * X.J0 C0) (hb : xb ≤ 2 * X.J0 C0) (hw : InWin xa xb X) : HIext C0 CYb Cde Ck CD Cb X :=
@@ -421,12 +416,10 @@ def FreeTopRankBound (_D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 C
 theorem RootMultiplicityTwo.toExtendedDigitRankBound {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     (h : RootMultiplicityTwo D C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : ExtendedDigitRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hE hC j rz ry hD
-  obtain ⟨⟨g1, -, -, -, -, -, -, -, g10, -⟩, -⟩ := id hE
   have hM : 0 ≤ X.b' / (X.k * X.Q * X.Y) := by
-    apply div_nonneg g10.le
-    apply mul_nonneg (mul_nonneg ?_ ?_) (by linarith)
-    · unfold Loc.k; positivity
-    · unfold Loc.Q; positivity
+    obtain ⟨⟨g1, -, -, -, -, -, -, -, g10, -⟩, -⟩ := hE
+    exact div_nonneg g10.le
+      (mul_nonneg (mul_nonneg (by unfold Loc.k; positivity) (by unfold Loc.Q; positivity)) (by linarith))
   exact (h X W Qq O Kf ι σ jO w hS hE hC j 0 le_rfl hM rz ry hD).2
 
 def ExtendedAllConclusions (D : Formalism.BasicNotions.D7) (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ckap Ct Cc Cs : ℝ) : Prop :=

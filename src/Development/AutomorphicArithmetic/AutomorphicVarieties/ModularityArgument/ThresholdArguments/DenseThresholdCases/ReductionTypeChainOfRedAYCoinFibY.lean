@@ -87,27 +87,15 @@ private theorem ent_of {Γ A R K : Type} [Group Γ] [CommRing A] [CommRing R] [F
 private theorem w1 : ∀ u ∈ yY, u ∉ ({wBe, -wBe, -wAl, -wTh, -wPs} : Finset (ℤ × ℤ)) → u = wTh := by
   first
   | decide
-  | (intro u hu hS
-     simp only [yY, Finset.mem_insert, Finset.mem_singleton] at hu
-     rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))
 private theorem w2 : ∀ u ∈ yY, u ∉ ({wBe, -wBe, wAl, wTh, wPs} : Finset (ℤ × ℤ)) → u = -wTh := by
   first
   | decide
-  | (intro u hu hS
-     simp only [yY, Finset.mem_insert, Finset.mem_singleton] at hu
-     rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))
 private theorem w3 : ∀ u ∈ yY, u ∉ ({wTh, -wTh, wPs, wBe, -wAl} : Finset (ℤ × ℤ)) → u = -wBe := by
   first
   | decide
-  | (intro u hu hS
-     simp only [yY, Finset.mem_insert, Finset.mem_singleton] at hu
-     rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))
 private theorem w4 : ∀ u ∈ yY, u ∉ ({wTh, -wTh, -wPs, -wBe, wAl} : Finset (ℤ × ℤ)) → u = wBe := by
   first
   | decide
-  | (intro u hu hS
-     simp only [yY, Finset.mem_insert, Finset.mem_singleton] at hu
-     rcases hu with rfl | rfl | rfl | rfl <;> first | rfl | (exfalso; exact hS (by simp)))
 private theorem t1 : ({wBe, -wBe, -wAl, -wTh, -wPs} : Finset (ℤ × ℤ)) ∈ redTypes ∧
     ({wBe, -wBe, -wAl, -wTh, -wPs} : Finset (ℤ × ℤ)) ≠ yY :=
   ⟨List.Mem.head _, by first | decide | (intro h; have := congrArg (fun s => -wAl ∈ s) h; simp [yY, wAl, wBe, wTh, wPs] at this)⟩

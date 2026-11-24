@@ -99,11 +99,7 @@ theorem FilC_top (τ : K →ₐ[Qp] LL) (hj : JumpsInV PD T.ρ τ (Set.Icc (-(h'
     rw [this]
 
 include W in
-theorem p_ne_zero : (PD.p : LL) ≠ 0 := by
-  intro h
-  have := W.v_l
-  rw [h, AddValuation.map_zero] at this
-  exact WithTop.top_ne_coe this
+alias p_ne_zero := _root_.Formalism.MainNotions.LiftingTheory.tr_pLL_ne
 
 theorem pow_vanish (g : PowerSeries LL) (hg : PowerSeries.constantCoeff g = 0) (m : ℕ)
     (a : PowerSeries LL) : ∀ j < m, PowerSeries.coeff j (g ^ m * a) = 0 := by

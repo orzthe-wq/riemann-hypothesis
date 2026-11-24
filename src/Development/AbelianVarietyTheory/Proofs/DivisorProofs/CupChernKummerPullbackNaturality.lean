@@ -54,7 +54,7 @@ theorem a6nat_holds : GlobalTheory.EtC.DivisorNaturality := by
   intro q _
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro E E' f n m i j a b
-    exact GlobalTheory.T.cup_hypercohomologyPullback (ZMod q) (twPair q i j) f rfl a b
+    exact _root_.GlobalTheory.EtC.Pair.cup_pull (ZMod q) (twPair q i j) f rfl a b
   · intro E E' f h
     exact (GlobalTheory.T.tateTwistUnitClass_rootClass_spec q).2.2.1 f h
   · intro E E' f L h

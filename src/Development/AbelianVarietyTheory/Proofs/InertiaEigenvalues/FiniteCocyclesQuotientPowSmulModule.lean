@@ -94,7 +94,7 @@ def toZModRep {R H Q : Type*} [CommRing R] [Group H] [AddCommGroup Q] [Module R 
     [Module (ZMod m) Q] (τ : Representation R H Q) : Representation (ZMod m) H Q where
   toFun h := (τ h).toAddMonoidHom.toZModLinearMap m
   map_one' := LinearMap.ext fun x => by simp
-  map_mul' g h := LinearMap.ext fun x => by simp [Module.End.mul_apply]
+  map_mul' g h := LinearMap.ext fun x => by simp
 
 section Transport
 

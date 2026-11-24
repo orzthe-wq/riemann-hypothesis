@@ -1,9 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentXStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NilpotentEvalCommutesSubstAndAlgebraMapStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalAtNilpotentXEqCoordinateStatement
+public import Mathlib.RingTheory.MvPowerSeries.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MvPowerSeriesAlgHomExtOfIsNilpotentX
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NilpotentEvalCommutesSubstAndAlgebraMap
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowerSeriesEvalAtNilpotentXEqCoordinate
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -103,7 +104,7 @@ theorem GlobalTheory.evA_tensor_presents : ∀ (k : Type) [CommRing k] (σ τ : 
   intro k _ σ τ _ _ A B _ _ _ _ x hx y hy hz hsx hsy
   have hX : ∀ t, evA k _ hz (X t) =
       Sum.elim (fun i => x i ⊗ₜ[k] (1 : B)) (fun j => (1 : A) ⊗ₜ[k] y j) t :=
-    fun t => GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k (σ ⊕ τ) (A ⊗[k] B) _ hz t
+    fun t => _root_.GlobalTheory.Katz.evA_X k (σ ⊕ τ) (A ⊗[k] B) _ hz t
   have hzX : ∀ t, IsNilpotent (evA k _ hz (X t)) := fun t => by rw [hX]; exact hz t
   have hxl : ∀ i, IsNilpotent (x i ⊗ₜ[k] (1 : B)) := fun i => hz (Sum.inl i)
   have hyr : ∀ j, IsNilpotent ((1 : A) ⊗ₜ[k] y j) := fun j => hz (Sum.inr j)
@@ -111,17 +112,17 @@ theorem GlobalTheory.evA_tensor_presents : ∀ (k : Type) [CommRing k] (σ τ : 
       evA k _ hz (subst (fun i => (X (Sum.inl i) : MvPowerSeries (σ ⊕ τ) k)) f) =
         evA k x hx f ⊗ₜ[k] (1 : B) := by
     intro f
-    rw [(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k σ (A ⊗[k] B)).1 (σ ⊕ τ) (evA k _ hz) hzX _
+    rw [(_root_.GlobalTheory.evA_subst_and_map k σ (A ⊗[k] B)).1 (σ ⊕ τ) (evA k _ hz) hzX _
       (fun i => constantCoeff_X _) _ hxl (fun i => by rw [hX]; rfl) f]
-    exact ((GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k σ A).2 (A ⊗[k] B) (Algebra.TensorProduct.includeLeft (S := k))
+    exact ((_root_.GlobalTheory.evA_subst_and_map k σ A).2 (A ⊗[k] B) (Algebra.TensorProduct.includeLeft (S := k))
       x hx _ hxl (fun i => rfl) f).symm
   have hR : ∀ g : MvPowerSeries τ k,
       evA k _ hz (subst (fun j => (X (Sum.inr j) : MvPowerSeries (σ ⊕ τ) k)) g) =
         (1 : A) ⊗ₜ[k] evA k y hy g := by
     intro g
-    rw [(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k τ (A ⊗[k] B)).1 (σ ⊕ τ) (evA k _ hz) hzX _
+    rw [(_root_.GlobalTheory.evA_subst_and_map k τ (A ⊗[k] B)).1 (σ ⊕ τ) (evA k _ hz) hzX _
       (fun j => constantCoeff_X _) _ hyr (fun j => by rw [hX]; rfl) g]
-    exact ((GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k τ B).2 (A ⊗[k] B) Algebra.TensorProduct.includeRight
+    exact ((_root_.GlobalTheory.evA_subst_and_map k τ B).2 (A ⊗[k] B) Algebra.TensorProduct.includeRight
       y hy _ hyr (fun j => rfl) g).symm
   refine ⟨?_, ?_⟩
   · intro w
@@ -188,17 +189,17 @@ theorem GlobalTheory.evA_tensor_presents : ∀ (k : Type) [CommRing k] (σ τ : 
       calc (N : ℕ∞) = N • (1 : ℕ∞) := by simp
         _ ≤ N • (X t : MvPowerSeries (σ ⊕ τ) k).order := by gcongr; exact one_le_order_X t
         _ ≤ _ := MvPowerSeries.le_order_pow _
-    have huniq := GlobalTheory.T.mvPowerSeries_algHom_ext_of_isNilpotent_X k (σ ⊕ τ) _ mk (Ψ.comp (evA k _ hz)) hnil (by
+    have huniq := _root_.GlobalTheory.mvPowerSeries_algHom_ext_of_isNilpotent k (σ ⊕ τ) _ mk (Ψ.comp (evA k _ hz)) hnil (by
       intro t
       rw [AlgHom.comp_apply, hX]
       cases t with
       | inl i =>
         simp only [Sum.elim_inl, Ψ, Algebra.TensorProduct.lift_tmul, map_one, mul_one]
-        rw [← GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k σ A x hx i, hΨA]
+        rw [← _root_.GlobalTheory.Katz.evA_X k σ A x hx i, hΨA]
         simp only [φA, AlgHom.comp_apply, coe_substAlgHom, subst_X haL]
       | inr j =>
         simp only [Sum.elim_inr, Ψ, Algebra.TensorProduct.lift_tmul, map_one, one_mul]
-        rw [← GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate k τ B y hy j, hΨB]
+        rw [← _root_.GlobalTheory.Katz.evA_X k τ B y hy j, hΨB]
         simp only [φB, AlgHom.comp_apply, coe_substAlgHom, subst_X haR])
     have hmk : mk f = 0 := by
       rw [huniq, AlgHom.comp_apply, hf, map_zero]

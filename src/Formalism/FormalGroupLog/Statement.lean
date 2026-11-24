@@ -1,6 +1,8 @@
 module
 
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CapelliComplements.FirstLemmaM
+public import Mathlib.Analysis.Normed.Field.Basic
+public import Mathlib.Topology.MetricSpace.Ultra.Basic
+public import Mathlib.Analysis.Normed.Group.Ultra
 public import Mathlib.NumberTheory.Padics.PadicNumbers
 public import Mathlib.RingTheory.FormalGroup.Basic
 public import Mathlib.RingTheory.MvPowerSeries.Expand
@@ -102,8 +104,17 @@ def IsFunEqTypeMv {ι : Type v} (p q : ℕ) (hq : q ≠ 0) (σ : K →+* K) (φ 
 
 end FunEq
 
-def unitBall (K : Type u) [NormedField K] [IsUltrametricDist K] : Subring K := by
-  first | exact @Bl.FirstLemmaM.goal1 K ‹_› ‹_› | exact @Bl.FirstLemmaM.goal1 K ‹_› | exact @Bl.FirstLemmaM.goal1 K | exact @Bl.FirstLemmaM.goal1
+/-- The closed unit ball in an ultrametric normed field, viewed as a subring. -/
+def unitBall (K : Type u) [NormedField K] [IsUltrametricDist K] : Subring K where
+  carrier := {x | ‖x‖ ≤ 1}
+  mul_mem' {a b} ha hb := by
+    show ‖a * b‖ ≤ 1
+    rw [norm_mul]
+    exact (mul_le_mul_of_nonneg_right ha (norm_nonneg _)).trans (by simpa using hb)
+  one_mem' := by simp
+  add_mem' {a b} ha hb := (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
+  zero_mem' := by simp
+  neg_mem' {a} ha := by simpa using ha
 
 def FunctionalEquationSetting (K : Type u) [NormedField K] (p q : ℕ) (σ : K →+* K) : Prop :=
   p.Prime ∧ (∃ h : ℕ, 0 < h ∧ q = p ^ h) ∧ ‖(p : K)‖ < 1 ∧ IsFrobLift p q σ

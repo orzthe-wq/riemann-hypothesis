@@ -65,7 +65,6 @@ theorem exists_complete_dvr_centre : ∀ (o Ω : Type) [CommRing o] [Field Ω] [
     have hc : IsAdicComplete (IsLocalRing.maximalIdeal (PowerSeries Ω)) (PowerSeries Ω) := by
       first
       | infer_instance
-      | (rw [PowerSeries.maximalIdeal_eq_span_X]; infer_instance)
     refine ⟨PowerSeries Ω, inferInstance, inferInstance, inferInstance, this,
       spMap (PowerSeries.C (R := Ω)) ≫ M.pt, hc, ?_, IsLocalRing.closedPoint _, ?_⟩
     · exact M.pt_apply _

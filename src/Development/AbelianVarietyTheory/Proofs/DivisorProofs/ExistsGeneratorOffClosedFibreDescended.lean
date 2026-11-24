@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -85,7 +86,7 @@ theorem exists_section (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing
       simp only [w, MonObj.comp_mul, GrpObj.comp_inv, lift_snd_assoc, lift_fst]
       group
     · refine nonempty_preimage O _ ((snd G X ≫ k i)⁻¹ * fst G X) ?_ z hz'
-      simp only [w, MonObj.comp_mul, GrpObj.comp_inv, lift_snd_assoc, lift_fst]
+      simp only [w, MonObj.comp_mul, lift_snd_assoc, lift_fst]
       group
   have hirr' : IrreducibleSpace (G ⊗ X).left := hirr
   let U : (G ⊗ X).left.Opens :=
@@ -201,7 +202,7 @@ theorem exists_gen_off_closed : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLoca
     · exact ⟨_, by simp [cubeTen], hb⟩
     · exact ⟨_, by simp [cubeTen], hc⟩
     · exact ⟨_, by simp [cubeTen], inv _ _ (mul _ _ _ _ hb hc)⟩
-  have := GlobalTheory.T.exists_generator_of_theoremOfCube_ten_points M.S G' P' θ G' (𝟙 G') a' b' c' (β ⁻¹ᵁ V) (by
+  have := _root_.GlobalTheory.Mum.exists_gen_of_cubeTen M.S G' P' θ G' (𝟙 G') a' b' c' (β ⁻¹ᵁ V) (by
     intro f' hf' g hg
     obtain ⟨f, hf, e⟩ := hten f' hf'
     have h2 : f.left (β g) ∈ farSet β θ := Set.mem_iInter₂.1 hg f hf

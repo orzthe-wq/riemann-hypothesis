@@ -52,4 +52,4 @@ theorem _root_.GlobalTheory.T.splitPoints_lie_over_distinct_places : ∀ {B : Ba
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))
     (Q : ∀ j, ι → Pair k (Fin ((I.rec7 l Z).sp.X j).rank)) (L : ∀ j, Lat ((I.rec7 l Z).sp.X j)),
     GlobalTheory.AdForm.StdT I l Z u p β Q L → Function.Injective fun i => (p i).v := by
-  first | exact @GlobalTheory.AdForm.StdT.places_injective | exact GlobalTheory.AdForm.StdT.places_injective | (intros; apply GlobalTheory.AdForm.StdT.places_injective <;> assumption)
+  first | exact @GlobalTheory.AdForm.StdT.places_injective

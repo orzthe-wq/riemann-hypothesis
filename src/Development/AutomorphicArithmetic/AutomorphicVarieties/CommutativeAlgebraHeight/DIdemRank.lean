@@ -72,7 +72,7 @@ private theorem coeff_aeval_C_mul_X' {A : Type} [CommRing A] (P : A[X]) (a : A[X
     rw [e1, Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_monomial]
     by_cases h : j = i
     · subst h; simp
-    · simp [h, Ne.symm h]
+    · simp [h]
 
 private theorem aeval_C_X_eq_C {A : Type} [CommRing A] (P : A[X]) :
     aeval (Polynomial.C (X : A[X]) : A[X][X]) P = Polynomial.C P := by
@@ -110,7 +110,7 @@ private theorem pow_aux {n : ℕ} {A E : Type} [CommRing A] [IsLocalRing A] [Rin
     exact this
   obtain ⟨j, hj⟩ : ∃ j, IsUnit (P.coeff j) := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     have hmem : P.eval 1 ∈ maximalIdeal A := by
       rw [Polynomial.eval_eq_sum_range]
       refine Ideal.sum_mem _ (fun i _ => Ideal.mul_mem_right _ _ ?_)

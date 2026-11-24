@@ -74,16 +74,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 
 section Main
 
-theorem exists_tate_push_comm
-    {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f) {k : Type} [Field k]
-    (x : Sp k ⟶ S') (z : Sp k ⟶ S) (hz : x ≫ f = z) (e : (Over.mk x ⟶ t'.G) ≃* (Over.mk z ⟶ t.G))
-    (he : ∀ p, (e p).left = p.left ≫ m.φ)
-    (I : TateIso D k (Over.mk x ⟶ t'.G) (fun a g => g ≫ t'.act.act a)
-      (fun n g g' c => Out.WeilIs t'.G t'.PP.L n g g' (unitOn c))) :
-    ∃ J : TateIso D k (Over.mk z ⟶ t.G) (fun a g => g ≫ t.act.act a)
-      (fun n g g' c => Out.WeilIs t.G t.PP.L n g g' (unitOn c)), J.ζ = I.ζ ∧ ∀ n a, J.ev n a = e (I.ev n a) := by
-  exact exists_tate_push m x z hz e he I
-
 variable {l l₂ : Level H} {Xo : Moduli D l} {Xo₂ : Moduli D l₂}
 
 theorem exists_sim_of_fibre_comm
@@ -103,8 +93,8 @@ theorem exists_sim_of_fibre_comm
   obtain ⟨-, I', hIζ', hIA', hI'⟩ := Xo₂.univ.geom k x' β (hs.symm.trans hβ)
   obtain ⟨e, he⟩ := exists_ptEquiv m.cart x _ rfl
   obtain ⟨e', he'⟩ := exists_ptEquiv m.cart x' _ hr.symm
-  obtain ⟨J, hJζ, hJ⟩ := exists_tate_push_comm m x _ rfl e he I
-  obtain ⟨J', hJζ', hJ'⟩ := exists_tate_push_comm m x' _ hr.symm e' he' I'
+  obtain ⟨J, hJζ, hJ⟩ := _root_.GlobalTheory.LevelFibre.exists_tate_push m x _ rfl e he I
+  obtain ⟨J', hJζ', hJ'⟩ := _root_.GlobalTheory.LevelFibre.exists_tate_push m x' _ hr.symm e' he' I'
   obtain ⟨g, hg⟩ := hDiff _ J J'
   have key : ∀ (σ : 𝟙_ (Over Xo₂.X) ⟶ Xo₂.univ.t.G) (τ : 𝟙_ (Over Xo.X) ⟶ Xo.univ.t.G) (d : ℕ),
       (σ ^ d).left ≫ m.φ = r ≫ τ.left → e (toUnit _ ≫ σ) ^ d = e' (toUnit _ ≫ σ) ^ d := fun σ τ d h => by

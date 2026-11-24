@@ -54,8 +54,8 @@ theorem nrm_exact : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), (∀ (r : ℕ)
   intro p _ G
   refine ⟨fun r γ δ z hr h => ?_, fun γ => ?_⟩
   · unfold IsNrm at h ⊢
-    have e := (GlobalTheory.T.twistedNormProductIterate_twistedConj (sigG G r) r δ z⁻¹).1
-    have hit := (GlobalTheory.T.hermitianTripleFrobeniusTwist_order_fixed_points p G r hr).1 z⁻¹
+    have e := (_root_.GlobalTheory.LKMid.nrmG_twConj (sigG G r) r δ z⁻¹).1
+    have hit := (_root_.GlobalTheory.LKMid.SigIter.main p G r hr).1 z⁻¹
     rw [inv_inv] at e
     rw [← map_inv, e, h, hit]
     group

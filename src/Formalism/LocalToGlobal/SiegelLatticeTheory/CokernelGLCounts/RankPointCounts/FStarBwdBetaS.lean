@@ -69,12 +69,6 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
-theorem hT_fvec_self {T : E} (A : FlagG S r T) (c a : Fin (r + 1)) :
-    S.hT (A.fvec c) (A.fvec a) = if c = Fin.last r ∧ a = Fin.last r then -T else 0 := by
-  split_ifs with h
-  · rw [h.1, h.2]; exact FsLA.gram_fvec_last A
-  · exact FsLA.gram_fvec_zero A c a (by tauto)
-
 theorem dec {TA TB : E} (A : FlagG S r TA) (B : FlagG S r TB) (hdet : (Zhat A B).det ≠ 0) {Ω : S.V}
     (hΩ : OmV A B Ω) {y : S.V} (hy : y ∈ Submodule.span E (Set.range (Sum.elim A.fvec B.fvec)))
     (h : ∀ a, S.hT (A.fvec a) y = 0) : ∃ x ∈ A.X, ∃ c : E, y = x + c • (A.z + TA • Ω) := by
@@ -87,7 +81,7 @@ theorem dec {TA TB : E} (A : FlagG S r TA) (B : FlagG S r TB) (hdet : (Zhat A B)
     intro c
 
     rw [hyA, map_sum]
-    simp only [map_smul, smul_eq_mul, hT_fvec_self]
+    simp only [map_smul, smul_eq_mul, _root_.PI.PairCorankPos.W.gram_fvec]
     rw [Finset.sum_eq_single (Fin.last r)]
     · split_ifs with h1 h2 h2 <;> simp_all [mul_comm]
     · intro b _ hb; simp [hb]

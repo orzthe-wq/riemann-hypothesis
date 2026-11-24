@@ -48,7 +48,7 @@ private theorem tform_star_mul_self_eq_sum_cmp {W : Type} [AddCommGroup W] [Modu
     tform H (star B * B) x x = ∑ k, H (∑ i, B k i • Bor.cmp i x) (∑ j, B k j • Bor.cmp j x) := by
   rw [tform_apply]
 
-  simp only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul,
+  simp only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
   Matrix.mul_apply, Matrix.star_apply, starRingEnd_apply, Finset.sum_mul, Finset.mul_sum,
   RingHom.id_apply]
   conv_lhs => arg 2; ext a; rw [Finset.sum_comm]
@@ -89,7 +89,7 @@ theorem UpperTheory.V.Lit.Bor.tformPos :
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
     rw [hH.herm, ← hG.isHermitian.apply j i]
-    simp [mul_comm]
+    simp
   · intro x hx
     rw [hB, tform_star_mul_self_eq_sum_cmp, Complex.re_sum]
     exact Finset.sum_nonneg fun k _ => hH.nonneg _ (hz x hx k)

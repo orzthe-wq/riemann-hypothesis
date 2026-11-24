@@ -2,7 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.KernelLattices.DeterminantCokernelCount.CokernelIndexFactors.StatementB
 public import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommutatorPairingPowEqOneOfGoodLift
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsDualBasisOfUnimodularLatticeAtPrimeStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsDualBasisOfUnimodularLatticeAtPrime
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CmThetaOperatorInvariantOfLiftCongrOne
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ImagQuadraticMaximalOrderArithmeticAtSplitPrime
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MkLeContinuumOfDenseRange
@@ -78,9 +78,7 @@ theorem hf_sub_right (Hm : Matrix (Fin g) (Fin g) ℂ) (x y y' : Fin g → ℂ) 
     hf Hm x (y - y') = hf Hm x y - hf Hm x y' := by
   rw [sub_eq_add_neg, hf_add_right, hf_neg_right, ← sub_eq_add_neg]
 
-theorem hf_sub_left (Hm : Matrix (Fin g) (Fin g) ℂ) (x x' y : Fin g → ℂ) :
-    hf Hm (x - x') y = hf Hm x y - hf Hm x' y := by
-  rw [sub_eq_add_neg, hf_add_left, ← neg_one_smul ℂ x', hf_smul_left]; ring
+alias hf_sub_left := _root_.GlobalTheory.MomDual.hf_sub_left
 
 theorem hf_sum_right (Hm : Matrix (Fin g) (Fin g) ℂ) {r : ℕ} (x : Fin g → ℂ) (y : Fin r → Fin g → ℂ) :
     hf Hm x (∑ i, y i) = ∑ i, hf Hm x (y i) := by
@@ -225,7 +223,7 @@ theorem goodLift_eq : ∀ (q : ℕ) [Fact q.Prime] (lam : Qbar →+* ℂ_[q]) (g
       rw [hf_smul_left, hf_smul_left, hf_smul_right, hN0r]; ring
     rw [this]; exact himI _ (GlobalTheory.MomOne.LiftChange.smul_mem S hS he0' (hb.1 i)) _ hNt
 
-  obtain ⟨s, c, hs, hc, hbc, hexp⟩ := GlobalTheory.T.exists_dualBasis_of_unimodular_lattice_at_prime q g S r b hS hb
+  obtain ⟨s, c, hs, hc, hbc, hexp⟩ := _root_.GlobalTheory.MomDual.dual_basis q g S r b hS hb
   choose a ha using fun j => (hZ _ (hbOK v hv (c j) (hc j))).1
   haveI : NeZero (q ^ n) := ⟨pow_ne_zero _ hqp.ne_zero⟩
   let A : Fin r → ZMod (q ^ n) := fun j =>

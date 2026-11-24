@@ -99,7 +99,7 @@ theorem exists_form (c : ∀ k, J k) (g : MRing J) :
       rw [Fintype.prod_eq_single p.1]
       · simp
       · intro k hk
-        simp [Pi.single_apply, hk]
+        simp [hk]
     have hadd : ∏ k, v ⟨k, c k⟩ ^ (m + Pi.single p.1 1 : K → ℕ) k =
         (∏ k, v ⟨k, c k⟩ ^ m k) * v ⟨p.1, c p.1⟩ := by
       rw [← h1]

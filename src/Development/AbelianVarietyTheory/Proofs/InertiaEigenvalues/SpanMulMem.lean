@@ -76,7 +76,6 @@ theorem span_mul_mem {a b : TensorProduct F (Formalism.MainNotions.GlobalTheoryT
   | add x z _ _ h1 h2 => rw [add_mul]; exact Submodule.add_mem _ h1 h2
   | smul c x _ h => rw [smul_mul_assoc]; exact Submodule.smul_mem _ c h
 
-theorem main : ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [inst_3 : Algebra F E] (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) {a b : TensorProduct F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) E}, a ∈ Formalism.L2.SG.LocVol.OEv v → b ∈ Formalism.L2.SG.LocVol.OEv v → a * b ∈ Formalism.L2.SG.LocVol.OEv v :=
-  fun v _ _ ha hb => span_mul_mem v ha hb
+alias main := _root_.GlobalTheory.SpanMulInertiaEigenvalues.span_mul_mem
 
 end GlobalTheory.SpanMulInertiaEigenvalues

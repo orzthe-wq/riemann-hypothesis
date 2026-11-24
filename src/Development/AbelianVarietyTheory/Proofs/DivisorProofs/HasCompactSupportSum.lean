@@ -89,7 +89,7 @@ theorem fin_cpt_comm (k : GL (Fin a) (Af E)) (c : Kinf E a) :
   rw [← map_mul, ← map_mul, infGL_comm]
 
 theorem height_mul_le (c : GL (Fin a) (Cinf E)) : ∃ B : ℝ, 1 ≤ B ∧ ∀ y, height (y * c) ≤ B * height y := by
-  apply _root_.GlobalTheory.CuspStabFin.height_mul_le_const <;> assumption
+  apply _root_.GlobalTheory.CuspStabFin.height_mul_le_const
 
 theorem growth_mul {f : GL (Fin a) (Cinf E) → ℂ} (c : GL (Fin a) (Cinf E))
     (h : ∃ (C : ℝ) (N : ℕ), ∀ y, ‖f y‖ ≤ C * height y ^ N) :

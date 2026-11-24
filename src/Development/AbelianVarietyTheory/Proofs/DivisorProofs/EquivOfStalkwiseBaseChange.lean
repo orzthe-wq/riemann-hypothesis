@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoveringsRefineOfCechConerveProperty
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyEquivalenceBasicProperties
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyEquivalenceOfStrictlyHenselianStaStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyEquivalenceOfStrictlyHenselianSta
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleSpaceDescentLocalEquivalenceStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmallEtaleCechNerveResolutionOfSurjectiveStatement
 import Mathlib.Algebra.Order.Floor.Extended
@@ -79,10 +79,10 @@ theorem main : ∀ (R : Type) [CommRing R] (F : Shv R) (S : Scheme.{0}) (E E' : 
   let Φ : (S.Etale)ᵒᵖ ⥤ Spcᵒᵖ := (Scheme.Etale.forget S ⋙ bc (α ≫ p)).op
   let Φ' : (S.Etale)ᵒᵖ ⥤ Spcᵒᵖ := (Scheme.Etale.forget S ⋙ bc p).op
   let β : Φ' ⟶ Φ := NatTrans.op (Functor.whiskerLeft (Scheme.Etale.forget S) (bcMap α p))
-  have hLG := GlobalTheory.T.etale_cohomology_equivalence_of_strictly_henselian_stalks R F S E E' α p hF hq hq' hst
-  have hD := GlobalTheory.T.etaleSpace_descent_local_equivalence R F (S.Etale)ᵒᵖ (covSurj S) Φ Φ' β
+  have hLG := _root_.GlobalTheory.EtC.loc_glob_classes R F S E E' α p hF hq hq' hst
+  have hD := _root_.GlobalTheory.EtC.Descent.main R F (S.Etale)ᵒᵖ (covSurj S) Φ Φ' β
     (GlobalTheory.refines_of_coAug _ (covSurj S) _ (fun U V g hg =>
-      ⟨GlobalTheory.T.smallEtale_cechNerve_resolution_of_surjective R S E (α ≫ p) U V g hg, GlobalTheory.T.smallEtale_cechNerve_resolution_of_surjective R S E' p U V g hg⟩))
+      ⟨_root_.GlobalTheory.EtC.SmallEtaleCech.hyp_coAug R S E (α ≫ p) U V g hg, _root_.GlobalTheory.EtC.SmallEtaleCech.hyp_coAug R S E' p U V g hg⟩))
     (by
       intro U n x
       obtain ⟨V, h, y, hV, hs, hy⟩ := (hLG ((Scheme.Etale.forget S).obj U.unop) U.unop.prop n).1 x

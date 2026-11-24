@@ -53,20 +53,20 @@ theorem isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB (s : X ⟶ Sp R
     IsQProjOver s ↔ LocallyOfFiniteType s ∧ ∃ L : LB X, IsAmpleLB L := by
   constructor
   · rintro ⟨N, i, hi, hq, rfl⟩
-    haveI := hi
-    haveI := hq
-    haveI : IsProper (PSpace.str R N) :=
+    have := hi
+    have := hq
+    have : IsProper (PSpace.str R N) :=
       ((isProjOver_iff_isProper_and_exists_isAmpleLB (PSpace.str R N)).1
         ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩).1
     exact ⟨inferInstance, _, IsAmpleLB.pull_of_isImmersion (isAmpleLB_basic.2.2.2.2.2.2.1 R N) i⟩
   · rintro ⟨hs, L, hL⟩
-    haveI := hs
+    have := hs
     exact hL.isQProjOver s
 
 theorem isQProjOver_comp_of_isAffineHom (f : Y ⟶ X) [IsAffineHom f] [LocallyOfFiniteType f] {s : X ⟶ Sp R}
     (h : IsQProjOver s) : IsQProjOver (f ≫ s) := by
   obtain ⟨hs, L, hL⟩ := (isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB s).1 h
-  haveI := hs
+  have := hs
   refine (isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB (f ≫ s)).2 ⟨inferInstance, L.pull f, ?_⟩
   exact isAmpleLB_basic.2.2.1 f inferInstance hL
 
@@ -86,7 +86,7 @@ theorem isQProjOver_finite_and_baseChange :
         ∀ (R' : Type) [CommRing R'] (b : R →+* R'), IsQProjOver (pullback.snd s (spMap b)) := by
   intro R _ _ X s h
   refine ⟨fun Y f hf => ?_, fun R' _ b => ?_⟩
-  · haveI := hf
+  · have := hf
     exact isQProjOver_comp_of_isFinite f h
   · exact isQProjOver_of_isPullback (IsPullback.of_hasPullback s (spMap b)) h
 

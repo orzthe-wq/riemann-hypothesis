@@ -141,7 +141,7 @@ theorem univOf_good : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R
     rw [Finset.mem_singleton] at hP
     subst hP
     exact (hadm.1 P (by simp)).2
-  have hg := GlobalTheory.T.artinPullback_isGoodTwist_of_anticyclotomic_tame D N X ρ.rc hρ.rc (Multiplicative (ZMod (X.l i ^ M))) φ (X.l i) (X.lPrime i).out hord hopen
+  have hg := _root_.GlobalTheory.TwistPull.good_pull D N X ρ.rc hρ.rc (Multiplicative (ZMod (X.l i ^ M))) φ (X.l i) (X.lPrime i).out hord hopen
     hanti {PP} (hsplit.mono (Finset.singleton_subset_iff.2 hPP)) hl hunr
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := hg
   refine ⟨h1, h2, h3, h4, h5, fun P hP => ?_⟩

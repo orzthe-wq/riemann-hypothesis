@@ -238,19 +238,19 @@ theorem partR_zpow {K : FinExt l} {s : ℕ} {LL : FinExt l} (h : Good K s LL) (z
     (hz : algebraMap ℤ_[l] ↥(OL LL) (z : ℤ_[l]) =
       (((H.W K s LL h).χΓ (H.W K s LL h).gam : (↥(OL LL))ˣ) : ↥(OL LL))) (j : ℤ) :
     algebraMap ℤ_[l] ↥(OL LL) ((z ^ j : ℤ_[l]ˣ) : ℤ_[l]) =
-      (((uγ (H.W K s LL h)) ^ j : (↥(OL LL))ˣ) : ↥(OL LL)) := by
-  have hU : Units.map (algebraMap ℤ_[l] ↥(OL LL)).toMonoidHom z = uγ (H.W K s LL h) :=
+      (((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU (H.W K s LL h)) ^ j : (↥(OL LL))ˣ) : ↥(OL LL)) := by
+  have hU : Units.map (algebraMap ℤ_[l] ↥(OL LL)).toMonoidHom z = _root_.Formalism.MainNotions.DeltaInvariantLattices.uU (H.W K s LL h) :=
     Units.ext hz
   rw [← hU, ← map_zpow]
   rfl
 
 theorem lifting_product_associated {K : FinExt l} {s : ℕ} {LL : FinExt l} (h : Good K s LL) (J : Finset ℤ)
     (hJ : (0 : ℤ) ∉ J) :
-    Associated (∏ j ∈ J, (1 - (((uγ (H.W K s LL h)) ^ (-j) : (↥(OL LL))ˣ) : ↥(OL LL))))
+    Associated (∏ j ∈ J, (1 - (((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU (H.W K s LL h)) ^ (-j) : (↥(OL LL))ˣ) : ↥(OL LL))))
       (((l : ℕ) : ↥(OL LL)) ^ (J.card * s + ∑ j ∈ J, padicValInt l j)) := by
   obtain ⟨z, hz, hv⟩ := gam_zl (P := P) (H := H) h
   obtain ⟨hne, hval⟩ := (Formalism.WindowSums.arc_ValProd l z s h.1 h.2.1 hv).2 J hJ
-  have hprod : (∏ j ∈ J, (1 - (((uγ (H.W K s LL h)) ^ (-j) : (↥(OL LL))ˣ) : ↥(OL LL)))) =
+  have hprod : (∏ j ∈ J, (1 - (((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU (H.W K s LL h)) ^ (-j) : (↥(OL LL))ˣ) : ↥(OL LL)))) =
       algebraMap ℤ_[l] ↥(OL LL) (∏ j ∈ J, (1 - ((z ^ (-j) : ℤ_[l]ˣ) : ℤ_[l]))) := by
     rw [map_prod]
     refine Finset.prod_congr rfl fun j _ => ?_
@@ -317,7 +317,7 @@ theorem partR_coreHval {K : FinExt l} {s : ℕ} {LL : FinExt l} (h : Good K s LL
   have hj : (((l - 1) * r : ℕ) : ℤ) ≠ 0 := by
     have : 0 < (l - 1) * r := Nat.mul_pos (by omega) (by omega)
     exact_mod_cast this.ne'
-  obtain ⟨hne, hval⟩ := Formalism.WindowSums.arc_ZpowVal l z s h.1 h.2.1 hv _ hj
+  obtain ⟨hne, hval⟩ := _root_.Formalism.WindowSums.valuation_zpow_sub_one l z s h.1 h.2.1 hv _ hj
   have hu : u₁ (H.W K s LL h) ^ r - 1 =
       algebraMap ℤ_[l] ↥(OL LL) (((z ^ (((l - 1) * r : ℕ) : ℤ) : ℤ_[l]ˣ) : ℤ_[l]) - 1) := by
     rw [map_sub, map_one, partR_zpow h z hz, zpow_natCast, Units.val_pow_eq_pow_val, pow_mul]
@@ -1246,32 +1246,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
-theorem frame_γD_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n)
-    (x : W.DD T) : W.γD T g (a • x) = W.γA g a • W.γD T g x := by
-  have := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
-  rw [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
-  exact this
-
-theorem frame_γA_letE (W : LocWach PD LL O v n) (g : W.Gam) (i : ZMod n) :
-    W.γA g (letE i) = letE i := by
-  funext j
-  by_cases h : j = i
-  · subst h
-    simp [LocWach.γA, letγ, letE]
-  · simp [LocWach.γA, letγ, letE, h]
-
-theorem frame_letE_idem (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
-  funext j
-  by_cases h : j = i
-  · subst h
-    simp [letE]
-  · simp [letE, h]
-
 theorem frame_smul_mem (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n)
     {a : LetA O n} (ha : a ∈ W.AΔ) {x : W.DD T} (hx : InNΔi W T i x) : InNΔi W T i (a • x) := by
   obtain ⟨⟨hN, hΔ⟩, hl⟩ := hx
   refine ⟨⟨(W.N T).smul_mem a hN, fun δ hδ => ?_⟩, (W.Nl T i).smul_mem a hl⟩
-  rw [frame_γD_smul, ha δ hδ, hΔ δ hδ]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, ha δ hδ, hΔ δ hδ]
 
 theorem frame_add_mem (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n)
     {x y : W.DD T} (hx : InNΔi W T i x) (hy : InNΔi W T i y) : InNΔi W T i (x + y) :=
@@ -1281,13 +1260,13 @@ theorem frame_letE_mem (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMo
     {x : W.DD T} (hx : x ∈ W.NΔ T) : InNΔi W T i ((letE i : LetA O n) • x) := by
   obtain ⟨hN, hΔ⟩ := hx
   refine ⟨⟨(W.N T).smul_mem _ hN, fun δ hδ => ?_⟩, ⟨x, hN, rfl⟩⟩
-  rw [frame_γD_smul, frame_γA_letE, hΔ δ hδ]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent, hΔ δ hδ]
 
 theorem frame_letE_fix (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n)
     {x : W.DD T} (hx : x ∈ W.Nl T i) : (letE i : LetA O n) • x = x := by
   obtain ⟨y, _, rfl⟩ := hx
   show (letE i : LetA O n) • ((letE i : LetA O n) • y) = (letE i : LetA O n) • y
-  rw [smul_smul, frame_letE_idem]
+  rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
 
 theorem frame_graded (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (hπ : W.π₀ ∈ W.AΔ)
     (hγ : ∃ t ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * (algebraMap O (LetA O n) (u₁ W) + W.π₀ * t))
@@ -1318,7 +1297,7 @@ theorem frame_graded (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (hπ : W.�
       congr 1
       conv_rhs => rw [this]
       show _ = W.γD T W.gam _
-      rw [frame_γD_smul, frame_γA_letE]
+      rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent]
       rfl
     rw [← h1, hx₂e, smul_comm]
   have hx₃ := frame_letE_mem W T i hx₂
@@ -1329,7 +1308,7 @@ theorem frame_graded (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (hπ : W.�
   · have hγx : W.γ T x = x + W.π₀ • x₃ := by rw [← he]; abel
     have h2 : W.γ T (W.π₀ ^ r • x) = (W.γA W.gam W.π₀) ^ r • W.γ T x := by
       show W.γD T W.gam _ = _
-      rw [frame_γD_smul, map_pow]
+      rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, map_pow]
       rfl
     rw [h2, hr, hγx, ← algebraMap_smul (LetA O n) (u₁ W ^ r - 1), map_sub, map_one, pow_succ]
     generalize algebraMap O (LetA O n) (u₁ W ^ r) = U
@@ -1375,15 +1354,6 @@ theorem frame_const (g₀ : PowerSeries O →ₐ[O] PowerSeries O)
   have hC : ∀ c : O, g₀ (PowerSeries.C c) = PowerSeries.C c := fun c => g₀.commutes c
   rw [map_add (f := _), map_mul, hC, map_add (f := _), map_mul, h, zero_mul, zero_add, PowerSeries.constantCoeff_C]
 
-theorem frame_γA_comm (W : LocWach PD LL O v n) (g h : W.Gam) (a : LetA O n) :
-    W.γA g (W.γA h a) = W.γA h (W.γA g a) := by
-  funext i
-  have h1 : W.γ₀ g (W.γ₀ h (a i)) = W.γ₀ h (W.γ₀ g (a i)) := by
-    have e1 : W.γ₀ (g * h) (a i) = W.γ₀ g (W.γ₀ h (a i)) := by rw [map_mul]; rfl
-    have e2 : W.γ₀ (h * g) (a i) = W.γ₀ h (W.γ₀ g (a i)) := by rw [map_mul]; rfl
-    rw [← e1, ← e2, mul_comm]
-  simpa [LocWach.γA, letγ] using h1
-
 theorem gamma_uniformizer_eq_mul_unit (W : LocWach PD LL O v n) (E : ZMod n → Polynomial O)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀ E) :
     ∃ t ∈ W.AΔ, W.γA W.gam W.π₀ = W.π₀ * (algebraMap O (LetA O n) (u₁ W) + W.π₀ * t) := by
@@ -1404,7 +1374,7 @@ theorem gamma_uniformizer_eq_mul_unit (W : LocWach PD LL O v n) (E : ZMod n → 
     intro δ hδ
     have : W.π₀ * (W.γA δ g - g) = 0 := by
       have e : W.γA δ (W.π₀ * g) = W.π₀ * g := by
-        rw [← hg, frame_γA_comm, hπΔ δ hδ]
+        rw [← hg, _root_.Formalism.MainNotions.LiftingTheory.gammaA_comm, hπΔ δ hδ]
       rw [map_mul, hπΔ δ hδ] at e
       rw [mul_sub, e, sub_self]
     exact sub_eq_zero.1 (hreg _ this)
@@ -1414,7 +1384,7 @@ theorem gamma_uniformizer_eq_mul_unit (W : LocWach PD LL O v n) (E : ZMod n → 
   have hX : W.γ₀ W.gam PowerSeries.X = PowerSeries.X * s₀ := by
     conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const (W.γ₀ W.gam PowerSeries.X)]
     rw [(W.γ₀_X W.gam).1, map_zero, add_zero]
-  have hs₀c : PowerSeries.constantCoeff s₀ = ((uγ W : Oˣ) : O) := by
+  have hs₀c : PowerSeries.constantCoeff s₀ = ((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU W : Oˣ) : O) := by
     rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, hs₀, PowerSeries.coeff_mk]
     exact (W.γ₀_X W.gam).2
   have hπS : W.γA W.gam letπ = letπ * (fun _ => s₀) := by
@@ -1497,16 +1467,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
-theorem frame_finrank_one (W : LocWach PD LL O v n) (hA : CaseA W) : Module.finrank K₀ K = 1 := by
-  have e := (AlgEquiv.ofBijective (Algebra.ofId K₀ K) hA.1).toLinearEquiv.finrank_eq
-  rw [Module.finrank_self] at e
-  exact e.symm
-
 theorem frame_p9A (W : LocWach PD LL O v n) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hA : CaseA W)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) :
     Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀ (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) ∧
       Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀ :=
-  (h9 T hT hA.2.1 hA.2.2).2.2 (frame_finrank_one W hA)
+  (h9 T hT hA.2.1 hA.2.2).2.2 (_root_.Formalism.MainNotions.LiftingTheory.finrank_eq_one_case_A W hA)
 
 theorem coreH_graded_of (W : LocWach PD LL O v n) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hA : CaseA W)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (i : ZMod n) (r : ℕ) (x : W.DD T)
@@ -1581,14 +1546,14 @@ theorem frame_red (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n)
   obtain ⟨a₁, ⟨ha₁, hxa₁⟩, _⟩ := hb.2 x₁ hx₁
   obtain ⟨a₂, ⟨ha₂, hxa₂⟩, _⟩ := hb.2 x₂ hx₂
   have hmem : InNΔi W T i (W.π₀ • x₂) := frame_smul_mem W T i hπΔ hx₂
-  have hE : (letE i : LetA O n) ∈ W.AΔ := fun δ _ => frame_γA_letE W δ i
+  have hE : (letE i : LetA O n) ∈ W.AΔ := fun δ _ => _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent W δ i
   have hbm : ∀ m, (letE i : LetA O n) • b m = b m := fun m => frame_letE_fix W T i (hb.1 m).2
   have huniq := (hb.2 _ hmem).unique
     (y₁ := fun m => letE i * algebraMap O (LetA O n) (c * y m) + algebraMap O (LetA O n) q * a₁ m)
     (y₂ := fun m => W.π₀ * a₂ m)
     ⟨fun m => ⟨W.AΔ.add_mem (W.AΔ.mul_mem hE (W.AΔ.algebraMap_mem _))
         (W.AΔ.mul_mem (W.AΔ.algebraMap_mem _) (ha₁ m).1), by
-        rw [mul_add, ← mul_assoc, frame_letE_idem, mul_left_comm, (ha₁ m).2]⟩, by
+        rw [mul_add, ← mul_assoc, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq, mul_left_comm, (ha₁ m).2]⟩, by
       calc W.π₀ • x₂ = c • vecB W T b y + q • x₁ := h.symm
         _ = c • (∑ m, y m • b m) + q • ∑ m, a₁ m • b m := by rw [← hxa₁]; rfl
         _ = _ := by
@@ -2273,11 +2238,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 def UniformizerRingClause (W : LocWach PD LL O v n) : Prop :=
   Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀ (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))
 
-theorem tr_Eat (W : LocWach PD LL O v n) :
-    Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ : ZMod n => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ = qp W := by
-  funext i
-  simp [Formalism.MainNotions.DeltaInvariantLattices.Eat, qp]
-
 theorem tr_γA_mul (W : LocWach PD LL O v n) (g h : W.Gam) (a : LetA O n) :
     W.γA (g * h) a = W.γA g (W.γA h a) := by
   funext i
@@ -2392,7 +2352,7 @@ theorem tr_exists_base [IsDomain O] (W : LocWach PD LL O v n) (h9 : UniformizerR
   have hπ : W.π₀ ∈ W.AΔ := h9.1
   obtain ⟨wφ, hwφ⟩ := h9.2.2.2.2.2.1
   obtain ⟨wγ, hwγ⟩ := h9.2.2.2.2.2.2.1
-  rw [tr_Eat] at hwφ hwγ
+  rw [_root_.Formalism.MainNotions.LiftingTheory.eisenstein_at_uniformizer] at hwφ hwγ
   have hq : qp W ∈ W.AΔ := W.AΔ.add_mem hπ (natCast_mem _ _)
   have hwφm : (wφ : LetA O n) ∈ W.AΔ :=
     tr_quot_mem W (x := W.π₀ * qp W ^ (PD.p - 1)) (y := W.φA W.π₀)
@@ -2875,7 +2835,7 @@ theorem gen_tors_one (hl : l ≠ 2) (z : ℤ_[l]ˣ) (k : ℕ) (hk : 0 < k) (hz :
   have hv : 1 ≤ PadicInt.valuation ((z : ℤ_[l]) - 1) := by
     rw [hy, PadicInt.valuation_mul hl0 hy0, PadicInt.valuation_p]
     omega
-  have := (Formalism.WindowSums.arc_ZpowVal l z _ hv (fun h => absurd h hl) rfl (k : ℤ)
+  have := (_root_.Formalism.WindowSums.valuation_zpow_sub_one l z _ hv (fun h => absurd h hl) rfl (k : ℤ)
     (by exact_mod_cast hk.ne')).1
   apply this
   rw [zpow_natCast, hz]
@@ -2911,7 +2871,7 @@ theorem gen_isGen (hl : l ≠ 2) (zd zg : ℤ_[l]ˣ) (k : ℕ) (hk : 0 < k) (hzd
     have hne : (((l - 1 : ℕ)) : ℤ) ≠ 0 := by
       have := hp.two_le
       omega
-    rw [h2, (Formalism.WindowSums.arc_ZpowVal l zg 1 le_rfl (fun h => absurd h hl) hzg _ hne).2]
+    rw [h2, (_root_.Formalism.WindowSums.valuation_zpow_sub_one l zg 1 le_rfl (fun h => absurd h hl) hzg _ hne).2]
     have : padicValInt l (((l - 1 : ℕ)) : ℤ) = 0 := by
       rw [padicValInt.of_nat]
       apply padicValNat.eq_zero_of_not_dvd
@@ -3213,28 +3173,10 @@ theorem liftb_φpow_γ (W : LocWach PD LL O v n) (g : W.Gam) (k : ℕ) (a : LetA
   | zero => simp
   | succ k ih => rw [pow_succ, AlgHom.mul_apply, AlgHom.mul_apply, W.φA_γA, ih]
 
-theorem liftb_γ₀_X (W : LocWach PD LL O v n) (g : W.Gam) :
-    ∃ t : PowerSeries O, W.γ₀ g PowerSeries.X =
-      PowerSeries.X * (PowerSeries.C ((W.χΓ g : Oˣ) : O) + PowerSeries.X * t) := by
-  obtain ⟨h0, h1⟩ := W.γ₀_X g
-  obtain ⟨f₁, hf₁⟩ := PowerSeries.X_dvd_iff.2 h0
-  have hc : PowerSeries.constantCoeff f₁ = ((W.χΓ g : Oˣ) : O) := by
-    rw [hf₁] at h1
-    have := PowerSeries.coeff_succ_X_mul 0 f₁
-    rw [zero_add] at this
-    rw [this] at h1
-    simpa using h1
-  have h2 : PowerSeries.constantCoeff (f₁ - PowerSeries.C ((W.χΓ g : Oˣ) : O)) = 0 := by
-    simp [hc]
-  obtain ⟨t, ht⟩ := PowerSeries.X_dvd_iff.2 h2
-  refine ⟨t, ?_⟩
-  rw [hf₁, ← ht]
-  ring
-
 theorem liftb_gammaXk (W : LocWach PD LL O v n) (g : W.Gam) (k : ℕ) :
     ∃ t : LetA O n, W.γA g ((W.φA ^ k) letπ) = (W.φA ^ k) letπ *
       (algebraMap O (LetA O n) ((W.χΓ g : Oˣ) : O) + (W.φA ^ k) letπ * t) := by
-  obtain ⟨t, ht⟩ := liftb_γ₀_X W g
+  obtain ⟨t, ht⟩ := _root_.Formalism.MainNotions.LiftingTheory.gamma_X_eq W g
   have h : W.γA g letπ =
       letπ * (algebraMap O (LetA O n) ((W.χΓ g : Oˣ) : O) + letπ * (fun _ => t)) := by
     funext i
@@ -3269,55 +3211,16 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
-theorem wmap_γ₀X (W : LocWach PD LL O v n) (g : W.Gam) : ∃ t : PowerSeries O,
-    W.γ₀ g PowerSeries.X = PowerSeries.X * (PowerSeries.C (W.χΓ g : O) + PowerSeries.X * t) := by
-  obtain ⟨h0, h1⟩ := W.γ₀_X g
-  obtain ⟨f₁, hf₁⟩ := PowerSeries.X_dvd_iff.mpr h0
-  have h2 : PowerSeries.constantCoeff (f₁ - PowerSeries.C (W.χΓ g : O)) = 0 := by
-    rw [hf₁, show (1 : ℕ) = 0 + 1 from rfl, PowerSeries.coeff_succ_X_mul] at h1
-    rw [map_sub, PowerSeries.constantCoeff_C, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, h1,
-      sub_self]
-  obtain ⟨t, ht⟩ := PowerSeries.X_dvd_iff.mpr h2
-  exact ⟨t, by rw [hf₁, ← ht]; ring⟩
-
 theorem wmap_φpow_γA (W : LocWach PD LL O v n) (g : W.Gam) (k : ℕ) (a : LetA O n) :
     W.γA g ((W.φA ^ k) a) = (W.φA ^ k) (W.γA g a) := by
   induction k generalizing a with
   | zero => simp
   | succ k ih => rw [pow_succ, AlgHom.mul_apply, AlgHom.mul_apply, ih, W.φA_γA]
 
-theorem wmap_γAX (W : LocWach PD LL O v n) (g : W.Gam) (k : ℕ) : ∃ t : LetA O n,
-    W.γA g ((W.φA ^ k) letπ) =
-      (W.φA ^ k) letπ * (algebraMap O (LetA O n) (W.χΓ g : O) + (W.φA ^ k) letπ * t) := by
-  obtain ⟨t, ht⟩ := wmap_γ₀X W g
-  have hπ : W.γA g letπ = letπ * (algebraMap O (LetA O n) (W.χΓ g : O) + letπ * fun _ => t) := by
-    funext i
-    simp only [LocWach.γA, letγ, letπ, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply,
-      Pi.mul_apply, Pi.add_apply, Pi.algebraMap_apply, ht]
-    rfl
-  refine ⟨(W.φA ^ k) fun _ => t, ?_⟩
-  rw [wmap_φpow_γA, hπ, map_mul, map_add (f := _), map_mul, AlgHom.commutes]
-
-theorem wmap_φE_pow (W : LocWach PD LL O v n) (k : ℕ) (a : LetA O n) :
-    algebraMap (LetA O n) W.EE ((W.φA ^ k) a) = (W.φE ^ k) (algebraMap (LetA O n) W.EE a) := by
-  induction k generalizing a with
-  | zero => simp
-  | succ k ih =>
-    rw [pow_succ, AlgHom.mul_apply, pow_succ, AlgHom.mul_apply, ih, W.φE_ext]
-    rfl
-
 theorem wmap_unit (W : LocWach PD LL O v n) (k : ℕ) :
     IsUnit (algebraMap (LetA O n) W.EE ((W.φA ^ k) letπ)) := by
-  rw [wmap_φE_pow]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.liftb_φE_pow]
   exact W.EE_π.map (W.φE ^ k)
-
-theorem wmap_γA_letE (W : LocWach PD LL O v n) (g : W.Gam) (i : ZMod n) :
-    W.γA g (letE i) = letE i := by
-  funext j
-  simp only [LocWach.γA, letγ, letE, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply]
-  by_cases h : j = i
-  · subst h; simp
-  · simp [Pi.single_eq_of_ne h]
 
 theorem wmap_φA_letE (W : LocWach PD LL O v n) (i : ZMod n) :
     W.φA (letE (i - 1)) = letE i := by
@@ -3327,18 +3230,6 @@ theorem wmap_φA_letE (W : LocWach PD LL O v n) (i : ZMod n) :
   · subst h; simp
   · have h' : j - 1 ≠ i - 1 := fun e => h (sub_left_injective e)
     simp [Pi.single_eq_of_ne h, Pi.single_eq_of_ne h']
-
-theorem wmap_letE_idem (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
-  funext j
-  by_cases h : j = i
-  · subst h; simp [letE]
-  · simp [letE, Pi.single_eq_of_ne h]
-
-theorem wmap_γD_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n)
-    (x : W.DD T) : W.γD T g (a • x) = W.γA g a • W.γD T g x := by
-  have := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
-  rw [algebraMap_smul, W.γE_ext, algebraMap_smul] at this
-  exact this
 
 theorem wmap_φD_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (a : LetA O n)
     (x : W.DD T) : W.φD T (a • x) = W.φA a • W.φD T x := by
@@ -3362,11 +3253,6 @@ theorem wmap_Nl_le (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n)
   obtain ⟨y, hy, rfl⟩ := (wmap_mem_Nl W T i x).1 hx
   exact (W.N T).smul_mem _ hy
 
-theorem wmap_Nl_fix (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (x : W.DD T)
-    (hx : x ∈ W.Nl T i) : (letE i : LetA O n) • x = x := by
-  obtain ⟨y, _, rfl⟩ := (wmap_mem_Nl W T i x).1 hx
-  rw [smul_smul, wmap_letE_idem]
-
 theorem wmap_mem_Nimg (W : LocWach PD LL O v n) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (i : ZMod n) (x : W.DD T₂) : x ∈ Nimg W F i ↔ ∃ y ∈ W.Nl T₁ i, W.map F y = x := by
   unfold Nimg
@@ -3388,7 +3274,7 @@ theorem wmap_Nl_γ (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (g : W.Gam) 
   obtain ⟨y, hy, rfl⟩ := (wmap_mem_Nl W T i x).1 hx
   obtain ⟨y', hy', e⟩ := h y hy
   refine ⟨(letE i : LetA O n) • y', (wmap_mem_Nl W T i _).2 ⟨y', hy', rfl⟩, ?_⟩
-  rw [wmap_γD_smul, wmap_γA_letE, ← smul_sub, e, smul_comm]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent, ← smul_sub, e, smul_comm]
 
 theorem wmap_Nimg_γ (W : LocWach PD LL O v n) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (g : W.Gam) (X : LetA O n) (i : ZMod n)
@@ -3433,7 +3319,7 @@ def gBase (W : LocWach PD LL O v n) (g : W.Gam) (z : ℤ_[ℓ]ˣ)
   X := (W.φA ^ k) letπ
   u := z
   γX := by
-    obtain ⟨t, ht⟩ := wmap_γAX W g k
+    obtain ⟨t, ht⟩ := _root_.Formalism.MainNotions.LiftingTheory.liftb_gammaXk W g k
     refine ⟨t, ?_⟩
     rw [IsScalarTower.algebraMap_apply ℤ_[ℓ] O (LetA O n), hz]
     exact ht
@@ -3451,7 +3337,7 @@ def gPair (W : LocWach PD LL O v n) (g : W.Gam) (z : ℤ_[ℓ]ˣ)
     { toFun := W.γD T g
       map_add' := map_add _
       map_smul' := fun c x => (W.γD T g).map_smul (algebraMap ℤ_[ℓ] O c) x }
-  γ_smul := fun a x => wmap_γD_smul W T g a x
+  γ_smul := fun a x => _root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear W T g a x
   X_inj := fun x hx => wmap_X_inj W k T x hx
   γ_N := hN
   γ_N' := hN'
@@ -3593,7 +3479,7 @@ theorem frobenius_q_pow_mem_letter (W : LocWach PD LL O v n) (hs : W.s = 1) (T :
   rw [wmap_Q_one W hs] at h
   refine (wmap_mem_Nl W T i _).2 ⟨_, h, ?_⟩
   have e : W.φD T x = (letE i : LetA O n) • W.φD T x := by
-    conv_lhs => rw [← wmap_Nl_fix W T (i - 1) x hx, wmap_φD_smul, wmap_φA_letE]
+    conv_lhs => rw [← _root_.Formalism.MainNotions.LiftingTheory.idempotent_smul_of_mem_letter' W T (i - 1) x hx, wmap_φD_smul, wmap_φA_letE]
   rw [smul_comm, ← e]
 
 theorem q_pow_smul_mem_frobenius_span (W : LocWach PD LL O v n) (hs : W.s = 1) {T₁ T₂ : LocLat G Qp LL O}
@@ -3796,14 +3682,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
-theorem gammaA_comm' (W : LocWach PD LL O v n) (g g' : W.Gam) (a : LetA O n) :
-    W.γA g (W.γA g' a) = W.γA g' (W.γA g a) := by
-  funext i
-  have h1 : W.γ₀ g (W.γ₀ g' (a i)) = (W.γ₀ (g * g')) (a i) := by rw [map_mul]; rfl
-  have h2 : W.γ₀ g' (W.γ₀ g (a i)) = (W.γ₀ (g' * g)) (a i) := by rw [map_mul]; rfl
-  change W.γ₀ g (W.γ₀ g' (a i)) = W.γ₀ g' (W.γ₀ g (a i))
-  rw [h1, h2, mul_comm]
-
 theorem delta_mul_mem (W : LocWach PD LL O v n) {δ δ' : W.Gam} (h : δ ∈ W.DelF) (h' : δ' ∈ W.DelF) :
     δ * δ' ∈ W.DelF := by
   obtain ⟨k, hk, e⟩ := (W.DelF_def δ).1 h
@@ -3848,7 +3726,7 @@ theorem trace_map_comm (W : LocWach PD LL O v n) {T₁ T₂ : LocLat G Qp LL O} 
 theorem gammaD_mem_letter (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (g : W.Gam) (i : ZMod n)
     (x : W.DD T) (hx : x ∈ W.Nl T i) : W.γD T g x ∈ W.Nl T i := by
   obtain ⟨y, hy, rfl⟩ := (wmap_mem_Nl W T i x).1 hx
-  rw [wmap_γD_smul, wmap_γA_letE]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent]
   exact (wmap_mem_Nl W T i _).2 ⟨_, W.N_Γ T g y hy, rfl⟩
 
 theorem trace_mem_letter (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (x : W.DD T)
@@ -3870,24 +3748,11 @@ theorem exists_invariant_gamma_sub (W : LocWach PD LL O v n) (T : LocLat G Qp LL
     ∃ x' ∈ W.Nl T i, (∀ δ ∈ W.DelF, W.γD T δ x' = x') ∧ W.γD T W.gam x - x = π' • x' := by
   obtain ⟨x₁, hx₁, e⟩ := hm x ⟨wmap_Nl_le W T i hx, hΔ⟩
   refine ⟨(letE i : LetA O n) • x₁, (wmap_mem_Nl W T i _).2 ⟨x₁, hx₁.1, rfl⟩,
-    fun δ hδ => by rw [wmap_γD_smul, wmap_γA_letE, hx₁.2 δ hδ], ?_⟩
+    fun δ hδ => by rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent, hx₁.2 δ hδ], ?_⟩
   have h1 : (letE i : LetA O n) • W.γ T x = W.γ T x :=
-    wmap_Nl_fix W T i _ (gammaD_mem_letter W T W.gam i x hx)
-  rw [smul_comm, ← e, smul_sub, h1, wmap_Nl_fix W T i x hx]
+    _root_.Formalism.MainNotions.LiftingTheory.idempotent_smul_of_mem_letter' W T i _ (gammaD_mem_letter W T W.gam i x hx)
+  rw [smul_comm, ← e, smul_sub, h1, _root_.Formalism.MainNotions.LiftingTheory.idempotent_smul_of_mem_letter' W T i x hx]
   rfl
-
-theorem unit_mul_pi_pow_left_cancel' (w : (LetA O n)ˣ) (k : ℕ) (a b : LetA O n)
-    (h : ((w : LetA O n) * letπ ^ k) * a = ((w : LetA O n) * letπ ^ k) * b) : a = b := by
-  have h' : (letπ : LetA O n) ^ k * a = letπ ^ k * b := by
-    have := congrArg (fun z => ((w⁻¹ : (LetA O n)ˣ) : LetA O n) * z) h
-    simpa [mul_assoc] using this
-  funext i
-  have hi := congrFun h' i
-  exact PowerSeries.X_pow_mul_cancel (k := k) hi
-
-theorem invariant_smul_mem_invariants (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (a : LetA O n)
-    (ha : a ∈ W.AΔ) (x : W.DD T) (hx : x ∈ W.NΔ T) : a • x ∈ W.NΔ T :=
-  ⟨(W.N T).smul_mem a hx.1, fun δ hδ => by rw [wmap_γD_smul, ha δ hδ, hx.2 δ hδ]⟩
 
 theorem exists_invariant_ratio (W : LocWach PD LL O v n) (k : ℕ) (π₁ π₂ : LetA O n) (h₁ : π₁ ∈ W.AΔ)
     (h₂ : π₂ ∈ W.AΔ) (w₁ w₂ : (LetA O n)ˣ) (e₁ : π₁ = (w₁ : LetA O n) * letπ ^ k)
@@ -3899,7 +3764,7 @@ theorem exists_invariant_ratio (W : LocWach PD LL O v n) (k : ℕ) (π₁ π₂ 
           rw [Units.mul_inv, one_mul]
       _ = _ := by ring
   refine ⟨_, fun δ hδ => ?_, e⟩
-  apply unit_mul_pi_pow_left_cancel' w₂ k
+  apply _root_.Formalism.MainNotions.LiftingTheory.unit_mul_pi_pow_left_cancel w₂ k
   rw [← e₂]
   have h := h₁ δ hδ
   rw [e, map_mul, h₂ δ hδ] at h
@@ -3911,27 +3776,16 @@ theorem gamma_sub_mod_change_unit (W : LocWach PD LL O v n) (T : LocLat G Qp LL 
     ∀ x ∈ W.NΔ T, ∃ x' ∈ W.NΔ T, W.γ T x - x = π₂ • x' := by
   intro x hx
   obtain ⟨x', hx', h⟩ := hm x hx
-  exact ⟨c • x', invariant_smul_mem_invariants W T c hc x' hx', by rw [h, e, mul_smul]⟩
-
-theorem constantCoeff_gamma_eq (W : LocWach PD LL O v n) (g : W.Gam) (a : PowerSeries O) :
-    PowerSeries.constantCoeff (W.γ₀ g a) = PowerSeries.constantCoeff a := by
-  have hC : ∀ c : O, W.γ₀ g (PowerSeries.C c) = PowerSeries.C c := by
-    intro c
-    have : PowerSeries.C c = algebraMap O (PowerSeries O) c := by
-      simp
-    rw [this, AlgHom.commutes]
-  conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const a]
-  rw [map_add (f := _), map_mul, hC, map_add (f := _), map_mul, (W.γ₀_X g).1, zero_mul, zero_add,
-    PowerSeries.constantCoeff_C]
+  exact ⟨c • x', _root_.Formalism.MainNotions.LiftingTheory.invariant_smul_mem_invariants' W T c hc x' hx', by rw [h, e, mul_smul]⟩
 
 theorem gamma_uniformizer_power_eq (W : LocWach PD LL O v n) (e s' : ℕ) (hk : s' ≠ 0) (π' : LetA O n)
     (E : ZMod n → Polynomial O) (h9 : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W e s' π' E) :
     ∃ t ∈ W.AΔ, W.γA W.gam π' =
-      π' * (algebraMap O (LetA O n) (((uγ W : Oˣ) : O) ^ s') + π' * t) := by
+      π' * (algebraMap O (LetA O n) (((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU W : Oˣ) : O) ^ s') + π' * t) := by
   obtain ⟨hπΔ, hsub, ⟨w, hw⟩, -, -, -, ⟨w', hw'⟩, -⟩ := h9
   have hreg : ∀ a b : LetA O n, π' * a = π' * b → a = b := fun a b hab => by
     rw [hw] at hab
-    exact unit_mul_pi_pow_left_cancel' w _ a b hab
+    exact _root_.Formalism.MainNotions.LiftingTheory.unit_mul_pi_pow_left_cancel w _ a b hab
   set c : LetA O n := 1 + (w' : LetA O n) * Formalism.MainNotions.DeltaInvariantLattices.Eat E π' with hc
   have hγ : W.γA W.gam π' = π' * c := by
     have : W.γA W.gam π' = π' + (w' : LetA O n) * π' * Formalism.MainNotions.DeltaInvariantLattices.Eat E π' := by rw [← hw']; ring
@@ -3940,16 +3794,16 @@ theorem gamma_uniformizer_power_eq (W : LocWach PD LL O v n) (e s' : ℕ) (hk : 
     intro δ hδ
     apply hreg
     have h1 : W.γA δ (π' * c) = π' * c := by
-      rw [← hγ, gammaA_comm', hπΔ δ hδ]
+      rw [← hγ, _root_.Formalism.MainNotions.LiftingTheory.gammaA_comm, hπΔ δ hδ]
     rw [map_mul, hπΔ δ hδ] at h1
     exact h1
   have hπi : ∀ i, π' i = (w : LetA O n) i * PowerSeries.X ^ s' := by
     intro i
     conv_lhs => rw [hw]
     rfl
-  have hcc : ∀ i, PowerSeries.constantCoeff (c i) = ((uγ W : Oˣ) : O) ^ s' := by
+  have hcc : ∀ i, PowerSeries.constantCoeff (c i) = ((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU W : Oˣ) : O) ^ s' := by
     intro i
-    obtain ⟨t, ht⟩ := wmap_γ₀X W W.gam
+    obtain ⟨t, ht⟩ := _root_.Formalism.MainNotions.LiftingTheory.gamma_X_eq W W.gam
     have e1 : (W.γA W.gam π') i = W.γ₀ W.gam ((w : LetA O n) i) *
         (PowerSeries.X * (PowerSeries.C ((W.χΓ W.gam : Oˣ) : O) + PowerSeries.X * t)) ^ s' := by
       change W.γ₀ W.gam (π' i) = _
@@ -3965,7 +3819,7 @@ theorem gamma_uniformizer_power_eq (W : LocWach PD LL O v n) (e s' : ℕ) (hk : 
       rw [mul_pow] at this
       linear_combination -this
     have e4 := congrArg PowerSeries.constantCoeff (PowerSeries.X_pow_mul_cancel e3)
-    rw [map_mul, map_mul, constantCoeff_gamma_eq, map_pow, map_add (f := _), map_mul, PowerSeries.constantCoeff_X, zero_mul,
+    rw [map_mul, map_mul, _root_.Formalism.MainNotions.LiftingTheory.constantCoeff_gamma, map_pow, map_add (f := _), map_mul, PowerSeries.constantCoeff_X, zero_mul,
       add_zero, PowerSeries.constantCoeff_C] at e4
     have hu : IsUnit (PowerSeries.constantCoeff ((w : LetA O n) i)) := by
       have h1 : IsUnit ((w : LetA O n) i) :=
@@ -3975,11 +3829,11 @@ theorem gamma_uniformizer_power_eq (W : LocWach PD LL O v n) (e s' : ℕ) (hk : 
   have hπ0 : ∀ i, PowerSeries.constantCoeff (π' i) = 0 := by
     intro i
     rw [hπi, map_mul, map_pow, PowerSeries.constantCoeff_X, zero_pow hk, mul_zero]
-  set a : LetA O n := c - algebraMap O (LetA O n) (((uγ W : Oˣ) : O) ^ s') with ha
+  set a : LetA O n := c - algebraMap O (LetA O n) (((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU W : Oˣ) : O) ^ s') with ha
   have haΔ : a ∈ W.AΔ := W.AΔ.sub_mem hcΔ (W.AΔ.algebraMap_mem _)
   have ha0 : ∀ i, PowerSeries.constantCoeff (a i) = 0 := by
     intro i
-    have : a i = c i - PowerSeries.C (((uγ W : Oˣ) : O) ^ s') := by
+    have : a i = c i - PowerSeries.C (((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU W : Oˣ) : O) ^ s') := by
       rw [ha]
       simp
     rw [this, map_sub, hcc, PowerSeries.constantCoeff_C, sub_self]
@@ -4015,7 +3869,7 @@ def wk1Sub (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (S : Submodule (LetA
     ⟨S.add_mem ha.1 hb.1, fun δ hδ => by rw [map_add (f := _), ha.2 δ hδ, hb.2 δ hδ]⟩
   smul_mem' := fun a x hx => ⟨S.smul_mem (a : LetA O n) hx.1, fun δ hδ => by
     change W.γD T δ ((a : LetA O n) • x) = (a : LetA O n) • x
-    rw [wmap_γD_smul, a.2 δ hδ, hx.2 δ hδ]⟩
+    rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, a.2 δ hδ, hx.2 δ hδ]⟩
 
 theorem unit_mul_pi_pow_smul_injective (W : LocWach PD LL O v n) (w : (LetA O n)ˣ) (k : ℕ) (T : LocLat G Qp LL O)
     (x : W.DD T) (h : ((w : LetA O n) * letπ ^ k) • x = 0) : x = 0 := by
@@ -4057,14 +3911,14 @@ theorem kills_of_kills_invariants (W : LocWach PD LL O v n) {T₁ T₂ : LocLat 
   intro j _
   rw [smul_comm (letE i : LetA O n) (a j), smul_comm a₀ (a j)]
   exact (Nimg W F i).smul_mem _ (h _ ((wmap_mem_Nl W T₂ i _).2 ⟨b j, (hb j).1, rfl⟩)
-    (fun δ hδ => by rw [wmap_γD_smul, wmap_γA_letE, (hb j).2 δ hδ]))
+    (fun δ hδ => by rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent, (hb j).2 δ hδ]))
 
 variable {ℓ : ℕ} [Fact ℓ.Prime] [Algebra ℤ_[ℓ] O]
 
 def wk1γ (W : LocWach PD LL O v n) : ↥W.AΔ →ₐ[O] ↥W.AΔ :=
   ((W.γA W.gam).comp W.AΔ.val).codRestrict W.AΔ (fun a δ hδ => by
     change W.γA δ (W.γA W.gam (a : LetA O n)) = W.γA W.gam (a : LetA O n)
-    rw [gammaA_comm', a.2 δ hδ])
+    rw [_root_.Formalism.MainNotions.LiftingTheory.gammaA_comm, a.2 δ hδ])
 
 instance DZ.towΔ (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) :
     IsScalarTower ℤ_[ℓ] ↥W.AΔ (DZ ℓ W T) :=
@@ -4098,7 +3952,7 @@ def wk1Pair (W : LocWach PD LL O v n) (π' t : LetA O n) (hπ : π' ∈ W.AΔ) (
     { toFun := W.γD T₂ W.gam
       map_add' := map_add _
       map_smul' := fun z x => (W.γD T₂ W.gam).map_smul (algebraMap ℤ_[ℓ] O z) x }
-  γ_smul := fun a x => wmap_γD_smul W T₂ W.gam (a : LetA O n) x
+  γ_smul := fun a x => _root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear W T₂ W.gam (a : LetA O n) x
   X_inj := fun x hx => unit_mul_pi_pow_smul_injective W w k T₂ x (by rw [← hw]; exact hx)
   γ_N := gamma_sub_mem_invariants_sub W π' T₂ i hm₂
   γ_N' := gamma_sub_mem_trace_image W π' c hc F i hm₁
@@ -4137,12 +3991,12 @@ theorem coreWK1b_of (W : LocWach PD LL O v n) (hp : PD.p = ℓ) (z : ℤ_[ℓ]ˣ
   have hm₂' := gamma_sub_mod_change_unit W T₂ π₂ π₁ c' hc' ec hm₂.2
   obtain ⟨t, ht, hγ⟩ := gamma_uniformizer_power_eq W e s' hpos.ne' π₁ E₁ hr₁
   have hu : algebraMap ℤ_[PD.p] O (((z ^ s' : ℤ_[PD.p]ˣ)) : ℤ_[PD.p]) =
-      ((uγ W : Oˣ) : O) ^ s' := by
+      ((_root_.Formalism.MainNotions.DeltaInvariantLattices.uU W : Oˣ) : O) ^ s' := by
     rw [Units.val_pow_eq_pow_val, map_pow, hz]
     rfl
   rw [← hu] at hγ
   have hval : PadicInt.valuation (((z ^ s' : ℤ_[PD.p]ˣ) : ℤ_[PD.p]) - 1) = 1 := by
-    have h := (Formalism.WindowSums.arc_ZpowVal PD.p z 1 le_rfl (fun h => absurd h h2) (by rw [hv, hs])
+    have h := (_root_.Formalism.WindowSums.valuation_zpow_sub_one PD.p z 1 le_rfl (fun h => absurd h h2) (by rw [hv, hs])
       (s' : ℤ) (by exact_mod_cast hpos.ne')).2
     rw [zpow_natCast] at h
     rw [h, padicValInt.of_nat, padicValNat.eq_zero_of_not_dvd (Nat.not_dvd_of_pos_of_lt hpos hlt)]
@@ -4762,7 +4616,5 @@ theorem wach_second_and_result_of_admitted (D : D7) (HW : HWOf D.loc) (F : FonOf
 end Formalism.MainNotions.LiftingTheory
 
 namespace Formalism.MainNotions.LiftingTheory
-
-open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
 end Formalism.MainNotions.LiftingTheory

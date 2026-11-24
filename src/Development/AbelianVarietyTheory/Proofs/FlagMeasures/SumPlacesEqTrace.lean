@@ -252,7 +252,7 @@ theorem exists_model (k r : ℕ) : ∃ (P Q : ℕ) (C : Matrix (Fin P ⊕ Fin Q)
     ∀ g, Measurable (lmulM (Matrix.of (φ g))) ∧ Function.Injective (lmulM (Matrix.of (φ g))) ∧
       ∀ u, lmulM (Matrix.of (φ g)) (φ u) = φ (g * u) := by
   obtain ⟨hH, hH2, -⟩ := hpkFacts k r
-  obtain ⟨P, Q, hs⟩ := Formalism.UG.Final.SigExists _ (Hpk k r) hH (Matrix.isUnit_det_of_left_inverse hH2)
+  obtain ⟨P, Q, hs⟩ := _root_.Formalism.UG.P.signature_exists _ (Hpk k r) hH (Matrix.isUnit_det_of_left_inverse hH2)
   obtain ⟨-, ⟨C, hC⟩, hinv⟩ := GlobalTheory.Mem.SignatureFactor.exists_factor _ _ _ _ hs
   obtain ⟨D, hCD, hDC⟩ := hinv C hC
   have hD : Dᴴ * Hpk k r * D = Formalism.UG.Jpq P Q := by

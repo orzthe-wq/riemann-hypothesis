@@ -79,7 +79,7 @@ theorem exists_pt_of_affine : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [
     (RingHom.pi fun p : W ↦ valHom (u.E p) U (hWU p p.2)).codRestrict (holSub W) fun f ↦
       ⟨fun p ↦ valAt' (u.E p) U f, han f, fun p ↦ valHom_apply _ _ _ f⟩
   refine ⟨spMap φ ≫ hU.fromSpec, ?_, fun p hp ↦ ?_⟩
-  · simp [Scheme.Hom.comp_preimage, hU.fromSpec_preimage_self]
+  · simp [hU.fromSpec_preimage_self]
   · have e : (Hol.ev p hp).toRingHom.comp φ = valHom (u.E p) U (hWU p hp) := RingHom.ext fun f ↦ rfl
     rw [← Category.assoc, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, e]
     exact specMap_valHom_fromSpec _ hU _

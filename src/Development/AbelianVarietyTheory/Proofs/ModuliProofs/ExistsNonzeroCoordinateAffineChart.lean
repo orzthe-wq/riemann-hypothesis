@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SecCoordBcScaleUnique
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocallyStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocally
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinatesPullIsoNonzeroLocus
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -171,7 +171,7 @@ theorem exists_chart : ∀ (R σ : Type) [CommRing R] (I : Ideal (MvPolynomial �
   have hloc : ∀ z ∈ (Out.nonzeroLocus (th i) : Set Z), ∃ (B : Type) (_ : CommRing B)
       (ψ : (MvPolynomial σ R ⧸ J) →+* B), IsOpenImmersion (spMap ψ ≫ x) ∧ z ∈ Set.range (spMap ψ ≫ x) := by
     intro z hz
-    obtain ⟨R', _, x', v', hx'o, ⟨p, rfl⟩, hx'c⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally Z M σ th hM).2.2 z
+    obtain ⟨R', _, x', v', hx'o, ⟨p, rfl⟩, hx'c⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local Z M σ th hM).2.2 z
     have hp : v' i ∉ p.asIdeal := (GlobalTheory.ZM.CoordMove.mem_nonzeroLocus_iff hM i p hx'c).1 hz
     have hunit : IsUnit (algebraMap R' (Localization.Away (v' i)) (v' i)) :=
       IsLocalization.Away.algebraMap_isUnit (v' i)

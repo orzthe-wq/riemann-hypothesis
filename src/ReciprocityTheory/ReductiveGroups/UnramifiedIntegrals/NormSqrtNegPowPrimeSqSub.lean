@@ -2,49 +2,7 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.KurDefs
 import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.ExistsTeichmullerRepModPrime
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.KurNewton
 import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.NormNatCastClOfNotDvd
@@ -60,13 +18,6 @@ open Formalism.L2.Th1.CM
 
 variable (l : ℕ) [Fact l.Prime]
 
-theorem kq_norm_l_lt : ‖(l : ℂ_[l])‖ < 1 := by
-  have e : (l : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (l : ℚ_[l]) := (map_natCast _ _).symm
-  rw [e, norm_algebraMap']
-  first
-  | exact Padic.norm_p_lt_one
-  | (rw [Padic.norm_p]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt))
-
 theorem kq_add_le (x y : ℂ_[l]) (r : ℝ) (hx : ‖x‖ ≤ r) (hy : ‖y‖ ≤ r) : ‖x + y‖ ≤ r := (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
 theorem kq_add_lt (x y : ℂ_[l]) (r : ℝ) (hx : ‖x‖ < r) (hy : ‖y‖ < r) : ‖x + y‖ < r := (IsUltrametricDist.norm_add_le_max x y).trans_lt (max_lt hx hy)
@@ -77,7 +28,6 @@ private theorem kq_intnorm_lemma (n : ℤ) : ‖(n : ℂ_[l])‖ = ‖(n : ℚ_[
 theorem kq_int_le (n : ℤ) : ‖(n : ℂ_[l])‖ ≤ 1 := by
   rw [kq_intnorm_lemma]
   first
-  | exact padicNormE.norm_int_le_one n
   | exact Padic.norm_int_le_one n
 
 theorem kq_int_dvd (n : ℤ) (h : (l : ℤ) ∣ n) : ‖(n : ℂ_[l])‖ ≤ ‖(l : ℂ_[l])‖ := by
@@ -92,14 +42,13 @@ theorem kq_int_unit (n : ℤ) (h : ¬ (l : ℤ) ∣ n) : ‖(n : ℂ_[l])‖ = 1
   have hc : IsCoprime (l : ℤ) n := by
     first
     | exact (Irreducible.coprime_iff_not_dvd hp.irreducible).mpr h
-    | exact (Prime.coprime_iff_not_dvd hp).mpr h
   obtain ⟨a, b, hab⟩ := hc
   have e : (a : ℂ_[l]) * (l : ℂ_[l]) + (b : ℂ_[l]) * (n : ℂ_[l]) = 1 := by exact_mod_cast hab
   have h1 := IsUltrametricDist.norm_add_le_max ((a : ℂ_[l]) * (l : ℂ_[l])) ((b : ℂ_[l]) * (n : ℂ_[l]))
   rw [e, norm_one, norm_mul, norm_mul] at h1
   rcases le_max_iff.mp h1 with h2 | h2
   · exact absurd (h2.trans (mul_le_of_le_one_left (norm_nonneg _) (kq_int_le l a)))
-      (not_le.mpr (kq_norm_l_lt l))
+      (not_le.mpr (_root_.ReciprocityTheory.ChartRestriction.L1.norm_prime_lt_one_complexPadic l))
   · exact h2.trans (mul_le_of_le_one_left (norm_nonneg _) (kq_int_le l b))
 
 theorem kq_zmod (n : ℤ) (h : (n : ZMod l) = 0) : ‖(n : ℂ_[l])‖ ≤ ‖(l : ℂ_[l])‖ := kq_int_dvd l n ((ZMod.intCast_zmod_eq_zero_iff_dvd n l).mp h)
@@ -166,9 +115,9 @@ theorem norm_sqrtNeg_pow_prime_sq_sub (d : ℕ) (hl : l ≠ 2) (hld : ¬ l ∣ d
 theorem kq_mem (d : ℕ) (hl : l ≠ 2) (hld : ¬ l ∣ d)
     (hin : ¬ ∃ a : ZMod l, a ^ 2 = -(d : ZMod l)) (δ : ℂ_[l]) (hδ : δ ^ 2 = -(d : ℂ_[l]))
     (hn : ‖δ‖ = 1) : δ ∈ MaximalUnramifiedExtension l := by
-  obtain ⟨ξ, hξ, hξδ⟩ := tch_near l δ hn.le 2 (by norm_num) ‖(l : ℂ_[l])‖ (kq_norm_l_lt l)
+  obtain ⟨ξ, hξ, hξδ⟩ := tch_near l δ hn.le 2 (by norm_num) ‖(l : ℂ_[l])‖ (_root_.ReciprocityTheory.ChartRestriction.L1.norm_prime_lt_one_complexPadic l)
     (norm_sqrtNeg_pow_prime_sq_sub d hl hld hin δ hδ hn)
-  have hlt : ‖δ - ξ‖ < 1 := hξδ.trans_lt (kq_norm_l_lt l)
+  have hlt : ‖δ - ξ‖ < 1 := hξδ.trans_lt (_root_.ReciprocityTheory.ChartRestriction.L1.norm_prime_lt_one_complexPadic l)
   have hξ1 : ‖ξ‖ = 1 := by
     refine le_antisymm (tch_norm_le l hξ) (not_lt.mp fun h => ?_)
     have : ‖(δ - ξ) + ξ‖ < 1 := kq_add_lt l _ _ 1 hlt h
@@ -282,16 +231,14 @@ theorem kur_quad (d : ℕ) (hd : d % 4 = 3) (hl : l ≠ 2) (hld : ¬ l ∣ d)
         exact h5
       have hsum : (2 : ℂ_[l]) * δ = (δ - δ ^ l) + (δ ^ l + δ) := by ring
       have h2d : ‖(2 : ℂ_[l]) * δ‖ = 1 := by rw [norm_mul, h2, hn, one_mul]
-      have hlt := kq_add_lt l _ _ 1 (hf'.trans_lt (kq_norm_l_lt l))
-        ((kq_pow_l d hl hld hin δ hδ hn).trans_lt (kq_norm_l_lt l))
+      have hlt := kq_add_lt l _ _ 1 (hf'.trans_lt (_root_.ReciprocityTheory.ChartRestriction.L1.norm_prime_lt_one_complexPadic l))
+        ((kq_pow_l d hl hld hin δ hδ hn).trans_lt (_root_.ReciprocityTheory.ChartRestriction.L1.norm_prime_lt_one_complexPadic l))
       rw [← hsum, h2d] at hlt
       exact lt_irrefl 1 hlt
     · exact h
   have e2 : ((2 : MaximalUnramifiedExtension l) : ℂ_[l]) = 2 := by
     first
     | rfl
-    | norm_cast
-    | simp
   have hA2 : (⟨a, haK⟩ : MaximalUnramifiedExtension l) * 2 = 1 - D := by
     apply Subtype.ext
     show a * ((2 : MaximalUnramifiedExtension l) : ℂ_[l]) = ((1 - D : MaximalUnramifiedExtension l) : ℂ_[l])

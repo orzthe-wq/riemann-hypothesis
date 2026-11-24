@@ -3,7 +3,9 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.GrpObjOfDenseOpen
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MorphismsDescendToLargeSubfieldStatement
+public import Mathlib.AlgebraicGeometry.Morphisms.FinitePresentation
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.MorphismsDescendToLargeSubfield
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -190,13 +192,13 @@ theorem grpObj_descends_to_large_subfield :
   have hs : QuasiSeparated (A₀ ⊗ A₀).hom := by
     rw [← Over.w (fst A₀ A₀)]
     exact (inferInstance : QuasiSeparated (pullback.fst A₀.hom A₀.hom ≫ A₀.hom))
-  obtain ⟨s₁, H₁⟩ := T.exists_descent_of_morphisms_to_subfield K K₀ _ _ (A₀ ⊗ A₀).hom (A ⊗ A).hom (sq hw) _ A₀.hom Unit
+  obtain ⟨s₁, H₁⟩ := _root_.GlobalTheory.morphisms_descend_to_large_subfield K K₀ _ _ (A₀ ⊗ A₀).hom (A ⊗ A).hom (sq hw) _ A₀.hom Unit
     (fun _ => (μ[A]).left ≫ φ) (isPullback_sq hφ) (fun _ => by
       rw [Category.assoc, hw, ← Category.assoc, Over.w, (isPullback_sq hφ).w])
-  obtain ⟨s₂, H₂⟩ := T.exists_descent_of_morphisms_to_subfield K K₀ _ _ A₀.hom A.hom φ _ A₀.hom Unit
+  obtain ⟨s₂, H₂⟩ := _root_.GlobalTheory.morphisms_descend_to_large_subfield K K₀ _ _ A₀.hom A.hom φ _ A₀.hom Unit
     (fun _ => (ι[A]).left ≫ φ) hφ (fun _ => by
       rw [Category.assoc, hw, ← Category.assoc, Over.w])
-  obtain ⟨s₃, H₃⟩ := T.exists_descent_of_morphisms_to_subfield K K₀ _ _ (𝟙 _) (𝟙 _) (spMap K₀.subtype) _ A₀.hom Unit
+  obtain ⟨s₃, H₃⟩ := _root_.GlobalTheory.morphisms_descend_to_large_subfield K K₀ _ _ (𝟙 _) (𝟙 _) (spMap K₀.subtype) _ A₀.hom Unit
     (fun _ => (η[A]).left ≫ φ) (IsPullback.of_vert_isIso ⟨by simp⟩) (fun _ => by
       rw [Category.assoc, hw, ← Category.assoc, Over.w]; simp)
   classical

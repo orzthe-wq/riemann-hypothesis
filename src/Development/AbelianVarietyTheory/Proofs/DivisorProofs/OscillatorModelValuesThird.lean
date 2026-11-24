@@ -3,14 +3,18 @@ module
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SupportedSubgroupSplitCommutePrimeIdempotents
 public import Formalism.LocalToGlobal.IndefiniteReal.ThPinsR
 public import Formalism.LocalToGlobal.ProjectiveLattices.ThClass
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumeratorIdealOfAntiInvariantDivisorStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsNumeratorIdealOfAntiInvariantDivisor
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IdelicCharacterEqProdUnramifiedValueZpowStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanDetSetIffAdelicLatticeValuationStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.ThShort
+public import Mathlib.RingTheory.DedekindDomain.FiniteAdeleRing
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSpanDetSetIffAdelicLatticeValuation
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceIdempotentComponentsConjValuationStatement
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBaseChangeFiniteAdeleRingEquiv
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFinitePlaceIdempotentBaseChangeAdeles
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeCharEqProdLocalComponentsApproximating
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdentityClassLatticeEqSelfDualFrameLattice
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeCharEqProdLocalComponentsApproximating
 import Formalism.LocalToGlobal.UnitaryNorms.CharUniq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -53,9 +57,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.PerCEmb
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.DatEqZero
-public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IMemSiegel
 import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
-public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.PolyDerivSmulLetter
 
 @[expose] public section
@@ -305,10 +307,10 @@ theorem exists_ideal (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hLat V 1 = stdLa
     by_contra hn
     rw [Finset.mem_coe, Finset.mem_union, not_or] at hn
     exact hQ (δ0 Q hn.1 fun h => hn.2 (Finset.mem_image.2 ⟨_, h, cP_cP Q⟩))
-  obtain ⟨cc, c0, c1, c2, c3, c4⟩ := GlobalTheory.T.exists_numeratorIdeal_of_antiInvariant_divisor D.host.E (cO D) cP cO_cO mem_cP δ hfin δ1
+  obtain ⟨cc, c0, c1, c2, c3, c4⟩ := _root_.GlobalTheory.NumeratorIdeal.exists_numerator D.host.E (cO D) cP cO_cO mem_cP δ hfin δ1
   refine ⟨cc, c0, c1, c3 _ fun Q hQ hm => ?_, c4 _ fun x => ?_, ?_⟩
   · exact hQ (δ0 Q (fun h' => hb Q h' hm) fun h' => hb _ h' ((hbc Q).2 hm))
-  · rw [GlobalTheory.T.mem_span_detSet_iff_adelicLattice_valuation D.host.E _ _ _ (mem_hLat ι h1 h2 V hL (FWT.fin V h)) x]
+  · rw [_root_.GlobalTheory.AdelicDetSpan.mem_span_detSet_iff D.host.E _ _ _ (mem_hLat ι h1 h2 V hL (FWT.fin V h)) x]
     refine forall_congr' fun Q => ?_
     rw [← hδ, hev, hd]
     have a : ι (finPart D (Formalism.L2.Theta.mt V h).det) =

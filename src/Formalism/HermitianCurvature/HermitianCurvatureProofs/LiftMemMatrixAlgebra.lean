@@ -173,10 +173,6 @@ theorem pr_fst_sum {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (s : F
     (∑ i ∈ s, g i).1 = ∑ i ∈ s, (g i).1 := by
   first
     | exact Prod.fst_sum (s := s) (f := g)
-    | (classical
-       induction s using Finset.induction_on with
-       | empty => simp only [Finset.sum_empty]; rfl
-       | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]; rfl)
 
 theorem pr_fst_mul {V : Type} [AddCommGroup V] [Module ℂ V] (m n : Pr V) : (m * n).1 = m.1 * n.1 := rfl
 
@@ -214,7 +210,6 @@ theorem hsInner_smul_left (a : ℂ) (U V : Wq →L[ℂ] Wp) : B.hsInner (a • U
     rw [← WithLp.toLp_smul]
     first
       | rfl
-      | (congr 1; funext i; simp)
   unfold Formalism.FourierDecayAlt.B.hsInner
   rw [e, inner_smul_right]
 

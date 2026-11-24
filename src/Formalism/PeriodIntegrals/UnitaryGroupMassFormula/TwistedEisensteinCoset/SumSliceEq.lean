@@ -73,13 +73,13 @@ theorem sum_slice (k : ι) (S : ι → Finset E) (u0 : E) (F : (ι → E) → K)
   rw [← Finset.sum_product' (f := fun t u => F (update t k u))]
   refine Finset.sum_nbij' (fun t => (update t k u0, t k)) (fun p => update p.1 k p.2) ?_ ?_ ?_ ?_ ?_
   · intro t ht
-    simp only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_product] at ht ⊢
+    simp only [Fintype.mem_piFinset, Finset.mem_product] at ht ⊢
     refine ⟨fun i => ?_, ht k⟩
     by_cases hi : i = k
     · subst hi; simp
     · simp [Function.update_of_ne hi, ht i]
   · intro p hp
-    simp only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_product] at hp ⊢
+    simp only [Fintype.mem_piFinset, Finset.mem_product] at hp ⊢
     intro i
     by_cases hi : i = k
     · subst hi; simpa using hp.2
@@ -87,7 +87,7 @@ theorem sum_slice (k : ι) (S : ι → Finset E) (u0 : E) (F : (ι → E) → K)
   · intro t _
     simp
   · intro p hp
-    simp only [Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_product] at hp
+    simp only [Fintype.mem_piFinset, Finset.mem_product] at hp
     have h1 : p.1 k = u0 := by simpa using hp.1 k
     refine Prod.ext ?_ ?_
     · show update (update p.1 k p.2) k u0 = p.1

@@ -68,7 +68,7 @@ theorem mul_adjugate_submatrix (M : Matrix ι (Fin n) K) (f₀ : Fin n → ι) (
   ext a b
   by_cases hab : a = j
   · subst hab; simp
-  · simp [updateRow_apply, hab, Function.update_apply]
+  · simp [updateRow_apply, hab]
 
 theorem eq_mul_of_minor_ratio (M M' : Matrix ι (Fin n) K) (f₀ f₀' : Fin n → ι)
     (h0 : mnr M f₀ ≠ 0) (h0' : mnr M' f₀' ≠ 0)

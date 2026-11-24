@@ -76,8 +76,6 @@ theorem expandsAt_sub : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (
     intro α
     first
       | exact gs_of_eq_sub _ _ _ (hf α _)
-      | (unfold sval; exact gs_of_eq_sub _ _ _ (hf α _))
-      | (simp only [sval]; exact gs_of_eq_sub _ _ _ (hf α _))
   refine ⟨fun α hα => ?_, fun jL hjL => ?_⟩
   · rw [hs α, z1 α (fun h => hα (Finset.mem_union_left _ h)),
       z2 α (fun h => hα (Finset.mem_union_right _ h)), sub_zero]

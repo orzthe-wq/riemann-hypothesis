@@ -74,7 +74,7 @@ theorem preservesFilteredColimits_modules_iff_elements :
       intro K
       exact preservesColimit_of_reflects_of_preserves N (forget₂ (ModuleCat.{1} Λ) AddCommGrpCat.{1})
   refine ⟨h1, ?_⟩
-  rw [h1, GlobalTheory.T.preservesFilteredColimits_addCommGrp_iff_elements]
+  rw [h1, _root_.GlobalTheory.EtC.FilteredElements.preservesFilteredColimits_iff_elements]
   rfl
 
 end GlobalTheory.EtC.FilteredElements

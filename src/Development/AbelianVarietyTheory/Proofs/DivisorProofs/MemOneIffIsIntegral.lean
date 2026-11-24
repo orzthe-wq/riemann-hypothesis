@@ -1,11 +1,16 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.Divisors.EntireEqOfHalfPlane
+public import Mathlib.NumberTheory.NumberField.CMField
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteRingClassGroupOfConductorNeZero
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCompletedOrderIffPlacewise
 public import Development.AbelianVarietyTheory.Definitions.Divisors.MemPass
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HasLevelStd
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDenominatorOfAdelicLattice
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteAdeleStrongApproximationModNat
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -19,7 +24,6 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PicardGroup
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
@@ -43,9 +47,119 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsTraceZeroAdjustmentOfHermitianLattice
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDenominatorOfAdelicLattice, Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOneIffIsIntegral
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDenominatorOfAdelicLattice =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDenominatorOfAdelicLattice", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.EntireEqOfHalfPlane\npublic import Mathlib.NumberTheory.NumberField.CMField\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteRingClassGroupOfConductorNeZero\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemCompletedOrderIffPlacewise\nimport Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteAdeleStrongApproximationModNat\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain GlobalTheory.CMVal
+
+namespace GlobalTheory.CMVal.LatBound
+
+variable {E : Type} [Field E] [NumberField E]
+
+theorem integral_of_int (b : 𝓞 E) (w : HeightOneSpectrum (𝓞 E)) :
+    (algebraMap E (Af E) (algebraMap (𝓞 E) E b)) w ∈ w.adicCompletionIntegers E :=
+  (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2
+    ((HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).trans_le (w.valuation_le_one b))
+
+theorem integral_natCast (n : ℕ) (w : HeightOneSpectrum (𝓞 E)) :
+    ((n : Af E)) w ∈ w.adicCompletionIntegers E := by
+  have := integral_of_int (E := E) (n : 𝓞 E) w
+  simpa using this
+
+theorem exists_nat_mul_integral (z : Af E) :
+    ∃ d : ℕ, 0 < d ∧ ∀ w : HeightOneSpectrum (𝓞 E), ((d : Af E) * z) w ∈ w.adicCompletionIntegers E := by
+  obtain ⟨x, a, ha, h⟩ := (GlobalTheory.AdLat.strong_approximation_mod_nat E 1 one_pos).1 z
+  obtain ⟨m, hm0, hm⟩ := IsAlgebraic.exists_integral_multiple
+    ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic x))
+  have hint : IsIntegral ℤ ((m.natAbs : E) * x) := by
+    rcases Int.natAbs_eq m with h1 | h1
+    · have : ((m.natAbs : E) * x) = m • x := by
+        rw [zsmul_eq_mul, ← Int.cast_natCast, ← h1]
+      rw [this]; exact hm
+    · have h1' : (m.natAbs : ℤ) = -m := by omega
+      have : ((m.natAbs : E) * x) = -(m • x) := by
+        rw [zsmul_eq_mul, ← Int.cast_natCast, h1', Int.cast_neg, neg_mul]
+      rw [this]; exact hm.neg
+  refine ⟨m.natAbs, Int.natAbs_pos.2 hm0, fun w => ?_⟩
+  have e : (m.natAbs : Af E) * z =
+      algebraMap E (Af E) (algebraMap (𝓞 E) E ⟨_, hint⟩) + (m.natAbs : Af E) * a := by
+    rw [h, one_smul, mul_add]
+    congr 1
+    show _ = algebraMap E (Af E) ((m.natAbs : E) * x)
+    rw [map_mul, map_natCast]
+  rw [e, _root_.GlobalTheory.CMVal.Euler.add_coord, _root_.GlobalTheory.CMVal.Euler.mul_coord]
+  exact add_mem (integral_of_int _ w) (mul_mem (integral_natCast _ w) (ha w))
+
+theorem integral_of_mem_hatO [IsCMField E] {c : Ideal (OF E)} (hc : c ≠ ⊥) {z : Af E} (hz : z ∈ hatO c)
+    (w : HeightOneSpectrum (𝓞 E)) : z w ∈ w.adicCompletionIntegers E := by
+  obtain ⟨a, -, ha, hza⟩ := (GlobalTheory.CMVal.HatPlace.mem_hatO_iff E c hc z).1 hz
+  rw [HeightOneSpectrum.mem_adicCompletionIntegers]
+  have h1 : Valued.v (z w - a w) ≤ 1 :=
+    (hza w).trans (by rw [← WithZero.exp_zero, WithZero.exp_le_exp]; omega)
+  have h2 : z w = (z w - a w) + a w := by ring
+  rw [h2]
+  exact Valuation.map_add_le _ h1 (ha w)
+
+theorem lattice_between : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ → ∀ y : (Af E)ˣ,
+    ∃ N : ℕ, 0 < N ∧ (∀ x : 𝓞 E, (N : E) * algebraMap (𝓞 E) E x ∈ lattice c y) ∧
+      ∀ x ∈ lattice c y, IsIntegral ℤ ((N : E) * x) := by
+  intro E _ _ _ c hc y
+  obtain ⟨d₁, hd₁, h₁⟩ := exists_nat_mul_integral (y : Af E)
+  obtain ⟨d₂, hd₂, h₂⟩ := exists_nat_mul_integral (↑y⁻¹ : Af E)
+  have hN₁ : 0 < Ideal.absNorm c := Nat.pos_of_ne_zero (by rwa [Ne, Ideal.absNorm_eq_zero_iff])
+  refine ⟨Ideal.absNorm c * d₁ * d₂, by positivity, fun x => ?_, fun x hx => ?_⟩
+  · rw [mem_lattice]
+    have hY : ∀ w : HeightOneSpectrum (𝓞 E),
+        (algebraMap E (Af E) (algebraMap (𝓞 E) E x) * (d₁ : Af E) * ((d₂ : Af E) * (↑y⁻¹ : Af E))) w ∈
+          w.adicCompletionIntegers E := fun w => by
+      rw [_root_.GlobalTheory.CMVal.Euler.mul_coord, _root_.GlobalTheory.CMVal.Euler.mul_coord]
+      exact mul_mem (mul_mem (integral_of_int x w) (integral_natCast d₁ w)) (h₂ w)
+    have key := GlobalTheory.CMVal.PicFin.mul_mem_hatO (Ideal.absNorm_mem c) hY
+    convert key using 1
+    rw [map_natCast, map_natCast, map_mul, map_natCast]
+    push_cast
+    ring
+  · rw [mem_lattice] at hx
+    have hz := integral_of_mem_hatO hc hx
+    have hint : ∀ w : HeightOneSpectrum (𝓞 E), w.valuation E ((d₁ : E) * x) ≤ 1 := fun w => by
+      have e : algebraMap E (Af E) ((d₁ : E) * x) =
+          (algebraMap E (Af E) x * (↑y⁻¹ : Af E)) * ((d₁ : Af E) * (y : Af E)) := by
+        rw [map_mul, map_natCast]
+        have : (↑y⁻¹ : Af E) * (y : Af E) = 1 := Units.inv_mul y
+        linear_combination (-(d₁ : Af E) * algebraMap E (Af E) x) * this
+      have h3 : (algebraMap E (Af E) ((d₁ : E) * x)) w ∈ w.adicCompletionIntegers E := by
+        rw [e, _root_.GlobalTheory.CMVal.Euler.mul_coord]; exact mul_mem (hz w) (h₁ w)
+      rw [HeightOneSpectrum.mem_adicCompletionIntegers, FiniteAdeleRing.algebraMap_apply,
+        HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at h3
+      exact h3
+    obtain ⟨b, hb⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E _ hint
+    have e2 : ((Ideal.absNorm c * d₁ * d₂ : ℕ) : E) * x =
+        algebraMap (𝓞 E) E (((Ideal.absNorm c * d₂ : ℕ) : 𝓞 E) * b) := by
+      rw [map_mul, hb, map_natCast]; push_cast; ring
+    rw [e2]
+    exact RingOfIntegers.isIntegral_coe _
+
+end GlobalTheory.CMVal.LatBound
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDenominatorOfAdelicLattice =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOneIffIsIntegral =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOneIffIsIntegral", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.MemPass\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.HasLevelStd\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDenominatorOfAdelicLattice\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PicardGroup\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsTraceZeroAdjustmentOfHermitianLattice\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -57,16 +171,6 @@ open NumberField GlobalTheory.CMVal
 namespace GlobalTheory.RoadE
 
 variable {E : Type} [Field E] [NumberField E]
-
-theorem exists_nat_mul_isIntegral (a : E) : ∃ k : ℕ, 0 < k ∧ IsIntegral ℤ ((k : E) * a) := by
-  have h : IsAlgebraic ℤ a := (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic a)
-  obtain ⟨k, hk, hi⟩ := h.exists_integral_multiple
-  refine ⟨k.natAbs, Int.natAbs_pos.2 hk, ?_⟩
-  rw [zsmul_eq_mul] at hi
-  rw [Nat.cast_natAbs]
-  rcases abs_choice k with h | h <;> rw [h]
-  · exact hi
-  · push_cast; rw [neg_mul]; exact hi.neg
 
 theorem mem_one_iff_isIntegral (a : maximalRealSubfield E) :
     a ∈ (1 : Submodule (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)) ↔ IsIntegral ℤ (a : E) := by
@@ -89,8 +193,8 @@ theorem exists_coord_integral [IsCMField E] {θ : E} (hθ : θ ∉ maximalRealSu
       IsIntegral ℤ (a : E) ∧ IsIntegral ℤ (b : E) := by
   set σ := IsCMField.complexConj E with hσ
   have hδ : θ - σ θ ≠ 0 := fun h => hθ ((IsCMField.complexConj_eq_self_iff E θ).1 (sub_eq_zero.1 h).symm)
-  obtain ⟨k₁, h₁, i₁⟩ := exists_nat_mul_isIntegral (θ - σ θ)⁻¹
-  obtain ⟨k₂, h₂, i₂⟩ := exists_nat_mul_isIntegral θ
+  obtain ⟨k₁, h₁, i₁⟩ := _root_.GlobalTheory.IntegralMultipleClearDenominators.exists_nat_mul_integral (θ - σ θ)⁻¹
+  obtain ⟨k₂, h₂, i₂⟩ := _root_.GlobalTheory.IntegralMultipleClearDenominators.exists_nat_mul_integral θ
   refine ⟨k₁ * k₂, Nat.mul_pos h₁ h₂, fun z a b hz e => ?_⟩
   have hσz : IsIntegral ℤ (σ z) := hz.map (σ : E →+* E).toIntAlgHom
   have ea : σ (a : E) = a := σ.commutes a
@@ -116,7 +220,7 @@ theorem exists_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (�
   intro E _ _ _ θ c y N₀ hc hθ hN₀
   obtain ⟨M, hM, hlo, hhi⟩ := GlobalTheory.CMVal.LatBound.lattice_between E c hc y
   obtain ⟨k, hk, hco⟩ := exists_coord_integral (θ := θ) fun h => hθ ⟨⟨θ, h⟩, rfl⟩
-  obtain ⟨D, hD, iD⟩ := exists_nat_mul_isIntegral θ
+  obtain ⟨D, hD, iD⟩ := _root_.GlobalTheory.IntegralMultipleClearDenominators.exists_nat_mul_integral θ
   have hn : ∀ m : ℕ, IsIntegral ℤ (m : E) := fun m => by exact_mod_cast (isIntegral_algebraMap (R := ℤ) (A := E) (x := (m : ℤ)))
   refine ⟨k * M, N₀ * (k * M * M * D), passMul θ c y (k * M), by positivity, by positivity, dvd_mul_right _ _,
     ⟨fun x hx => ?_, fun x hx => ?_⟩, fun x => Iff.rfl⟩
@@ -138,3 +242,7 @@ theorem exists_level : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (�
     · exact (mem_one_iff_isIntegral _).2 h1
 
 end GlobalTheory.RoadE
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemOneIffIsIntegral =====

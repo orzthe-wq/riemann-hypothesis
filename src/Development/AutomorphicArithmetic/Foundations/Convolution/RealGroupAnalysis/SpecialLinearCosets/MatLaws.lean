@@ -126,10 +126,10 @@ theorem UpperTheory.ConvolutionTheory.R2.I.matLaws :
     · funext i
       change (X i + _) - sg v (cp v (X i + _)) = X i - sg v (cp v (X i))
       rw [map_add (f := _), sg_add']
-      fin_cases i <;> simp [cp_sg] <;> ring
+      fin_cases i <;> simp [cp_sg]
   · intro X Y
     have hB : BM (mat v θ Y) (mat v θ X) = cp v (B4 δ Y X) := by
-      simp only [BM, mat, B4, map_sub, map_add (f := _), map_mul, cp_rt, ← hθ, map_ofNat]
+      simp only [BM, mat, B4, map_sub, map_mul, cp_rt, ← hθ, map_ofNat]
       simp
       ring
     rw [hB, sg_cp]

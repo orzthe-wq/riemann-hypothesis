@@ -156,7 +156,7 @@ theorem hpart_skew {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) (hsq : H * H = 1
 theorem hpart_lie (i : Fin (r + 1)) (a b : Fin (mdim k r i)) :
     inLieLev k r i (hpart1 (Hpk k r) (Matrix.single (posL k r i a) (posL k r i b) 1)) ∧
     inLieLev k r i (hpart2 (Hpk k r) (Matrix.single (posL k r i a) (posL k r i b) 1)) := by
-  apply Formalism.FourierDecayAlt.P.Qx8.hpart_lie <;> assumption
+  apply Formalism.FourierDecayAlt.P.Qx8.hpart_lie
 
 section Fam
 

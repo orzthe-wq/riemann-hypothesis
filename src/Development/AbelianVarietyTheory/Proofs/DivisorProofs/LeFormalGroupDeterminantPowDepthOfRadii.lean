@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixVariablesDeterminantPowMonomialShapeStatement
+public import Mathlib.RingTheory.MvPolynomial.Homogeneous
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixVariablesDeterminantPowMonomialShape
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.WeightSubstNonneg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -116,7 +117,7 @@ theorem depth_count : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C 
   unfold derivAt0
   apply v.map_le_sum
   intro α hα
-  have hrow := ((GlobalTheory.T.matrixVariablesDeterminantPow_monomial_shape C i c).2.2.2 α hα).1
+  have hrow := ((_root_.GlobalTheory.DetPowShape.detPow_shape C i c).2.2.2 α hα).1
   rw [v.map_mul]
   have e : B = (B + c * ∑ a, ρ a) + (0 - α.sum (fun y e => ρ y.2 * (e : ℝ))) := by
     rw [Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sigma, Finset.sum_comm]

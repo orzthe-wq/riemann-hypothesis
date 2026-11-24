@@ -148,12 +148,6 @@ theorem smul_mem_of_rep (l : Geo.Tor.Level H) (L : Lt E r) (mk : Dw.La →ₗ[�
   rw [h3]
   exact L.add_mem (L.smul_mem t hY) (hm b)
 
-theorem level_mem (l : Geo.Tor.Level H) : (l.M : 𝓞 E) ∈ l.Mb :=
-  by
-  have h := Ideal.mem_span_singleton_self (l.M : 𝓞 E)
-  rw [← l.prod] at h
-  exact Ideal.mul_le_left h
-
 theorem root_laws (l : Geo.Tor.Level H) (L : Lt E r) (Y : Fin r → E) (h1 : ∀ t ∈ l.Mb, t • Y ∈ L) (j : ℕ)
     (hj : ∀ s ∈ l.Mb ^ j, ∃ u ∈ L, s • Y = (2 * l.M) • u) :
     (∀ s ∈ l.Mb ^ 2, s • ((l.M : E)⁻¹ • Y) ∈ L) ∧
@@ -188,8 +182,8 @@ theorem root_laws (l : Geo.Tor.Level H) (L : Lt E r) (Y : Fin r → E) (h1 : ∀
     rw [Ideal.eq_top_iff_one]
     have e : (1 : 𝓞 E) = (l.M : 𝓞 E) + (-(k : 𝓞 E)) * ((2 : ℕ) : 𝓞 E) := by rw [hk]; push_cast; ring
     rw [e]
-    exact Submodule.add_mem_sup (level_mem l) (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))
-  have h3 := key 2 l.M (by norm_num) rfl _ h2 l.Mb le_rfl _ (level_mem l)
+    exact Submodule.add_mem_sup (_root_.GlobalTheory.LevelPoints.natCast_mem l) (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))
+  have h3 := key 2 l.M (by norm_num) rfl _ h2 l.Mb le_rfl _ (_root_.GlobalTheory.LevelPoints.natCast_mem l)
   refine ⟨_, h3, ?_⟩
   rw [Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E,
     smul_smul, smul_smul, smul_smul]

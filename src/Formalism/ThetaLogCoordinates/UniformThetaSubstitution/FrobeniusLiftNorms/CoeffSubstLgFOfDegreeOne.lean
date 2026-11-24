@@ -1,21 +1,17 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+public import Formalism.FormalGroupWitt.SubstInjectiveV
 public import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FirstDeriv
 public import Formalism.FormalGroupLog.Statement
 public import Formalism.FormalGroupLog.FormalGroupLogProofs.ConstantCoeffSubstOfZero
 public import Formalism.FormalGroupLog.LogDeterminesLaw
-public import Formalism.FormalGroupWitt.FormalGroupWittProofs.FrobSqV
 public import Formalism.TorsionNormIteration.InverseIntegralClasses.SolveExistsProof
 public import Formalism.TorsionNormIteration.LubinTateExample
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Rat
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.Normed.Ring.Ultra
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -23,15 +19,13 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
+import Mathlib.GroupTheory.Nilpotent
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -39,7 +33,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,9 +46,65 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.Analysis.Normed.Ring.Ultra
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.FormalGroupWitt.FormalGroupWittProofs.FrobSqV, Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.CoeffSubstLgFOfDegreeOne
+
+-- ===== clump member: Formalism.FormalGroupWitt.FormalGroupWittProofs.FrobSqV =====
+-- clump-header: {"m": "Formalism.FormalGroupWitt.FormalGroupWittProofs.FrobSqV", "h": "module\n\npublic import Formalism.FormalGroupWitt.SubstInjectiveV\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.GroupTheory.Nilpotent\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.FG
+
+open Formalism.G
+
+namespace PadicFrobeniusSquare
+
+theorem padicInt_norm_le_p {p : ℕ} [Fact p.Prime] (y : ℤ_[p]) (hy : PadicInt.toZMod y = 0) :
+    ‖y‖ ≤ ‖(p : ℤ_[p])‖ := by
+  have h1 : y ∈ RingHom.ker (PadicInt.toZMod (p := p)) := hy
+  rw [PadicInt.ker_toZMod] at h1
+  have h2 : ‖y‖ < 1 := PadicInt.mem_nonunits.1 ((IsLocalRing.mem_maximalIdeal _).1 h1)
+  obtain ⟨z, rfl⟩ := (PadicInt.norm_lt_one_iff_dvd _).1 h2
+  rw [norm_mul]
+  exact mul_le_of_le_one_right (norm_nonneg _) (PadicInt.norm_le_one z)
+
+end PadicFrobeniusSquare
+
+theorem frobenius_lift_padic_square : Formalism.FG.FrobLiftPadicSq := by
+  intro l _
+  refine ⟨Fact.out, ⟨2, two_pos, rfl⟩, Padic.norm_p_lt_one, ?_⟩
+  intro a ha
+  have hz : ∀ z : ZMod l, z ^ l ^ 2 = z := fun z => by
+    rw [pow_two, pow_mul, ZMod.pow_card, ZMod.pow_card]
+  let y : ℤ_[l] := ⟨a, ha⟩
+  have h := PadicFrobeniusSquare.padicInt_norm_le_p (y - y ^ l ^ 2) (by rw [map_sub, map_pow, hz, sub_self])
+  rw [PadicInt.norm_def, PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_pow, PadicInt.coe_natCast] at h
+  show ‖a - a ^ l ^ 2‖ ≤ ‖(l : ℚ_[l])‖
+  exact h
+
+end Formalism.FG
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.FormalGroupWitt.FormalGroupWittProofs.FrobSqV =====
+
+-- ===== clump member: Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.CoeffSubstLgFOfDegreeOne =====
+-- clump-header: {"m": "Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.CoeffSubstLgFOfDegreeOne", "h": "module\n\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic\npublic import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FirstDeriv\npublic import Formalism.FormalGroupLog.Statement\npublic import Formalism.FormalGroupLog.FormalGroupLogProofs.ConstantCoeffSubstOfZero\npublic import Formalism.FormalGroupLog.LogDeterminesLaw\npublic import Formalism.FormalGroupWitt.FormalGroupWittProofs.FrobSqV\npublic import Formalism.TorsionNormIteration.InverseIntegralClasses.SolveExistsProof\npublic import Formalism.TorsionNormIteration.LubinTateExample\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.Normed.Ring.Ultra\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -177,7 +227,7 @@ theorem lgF_funEq (p : ℕ) (hp : 2 ≤ p) (hpK : (p : K) ≠ 0) :
         rw [pow_succ, Nat.mul_div_cancel _ (by positivity)]
       have hne1 : (p ^ 2) ^ (j + 1) ≠ 1 := ne_of_gt (Nat.one_lt_pow (Nat.succ_ne_zero j) (by omega))
       rw [if_pos hd, hdiv, coeff_lgF_pow_sq_pow_eq_inv_pow p hp, coeff_lgF_pow_sq_pow_eq_inv_pow p hp, if_neg hne1]
-      simp [pow_succ, mul_inv, mul_comm]
+      simp [pow_succ, mul_comm]
   · push_neg at hn
     rw [coeff_lgF_eq_zero_of_ne_pow_sq_pow p n hn]
     have hn1 : n ≠ 1 := fun h => hn 0 (by simp [h])
@@ -308,6 +358,15 @@ theorem funEqType_lgF (p : ℕ) [hp : Fact p.Prime] :
   rw [PowerSeries.coeff_X]
   split_ifs <;> simp
 
+/-- Integrality of the addition law for the height-two logarithm
+`lgF(T) = ∑ n ≥ 0, T^(p^(2*n)) / p^n`.
+
+Over `ℚ_[p]`, the identity `lgF(T) - lgF(T^(p^2)) / p = T` gives `funEqType_lgF`, so
+`Formalism.LT.funEqGroup` applies with the identity Frobenius lift and `q = p^2`.
+Uniqueness identifies this integral law with the image of the rational law `FQ`.
+Its rational coefficients therefore have denominators prime to `p`; `norm_ratCast_le_one`
+transfers their integrality to `K`, and uniqueness identifies the resulting law with `F`.
+Only the `ℚ_[p]` step uses the identity endomorphism as a Frobenius lift. -/
 theorem law_integral {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] (p : ℕ)
     (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) (F : MvPowerSeries (Fin 2) K)
     (hF0 : MvPowerSeries.constantCoeff F = 0) (hF : cob F (lgF K p) = 0) : Integral F := by
@@ -369,7 +428,6 @@ theorem formal_law_symmetric : LawSymm := by
     · simp [hF0]
     · rw [← subst_subst hb (PowerSeries.HasSubst.of_constantCoeff_zero hF0), hFlA,
         MvPowerSeries.subst_add hb, subst_single_var hb, subst_single_var hb]
-      beta_reduce
       rw [lgF_subst_C_mul hζ hp2 (MvPowerSeries.X (0 : Fin 2)) (by simp),
         lgF_subst_C_mul hζ hp2 (MvPowerSeries.X (1 : Fin 2)) (by simp),
         lgF_subst_C_mul hζ hp2 F hF0, hFl, mul_add]
@@ -405,7 +463,11 @@ theorem formal_law_symmetric : LawSymm := by
     · simp
     · rw [← subst_subst hb (PowerSeries.HasSubst.of_constantCoeff_zero hF0), hFlA,
         MvPowerSeries.subst_add hb, subst_single_var hb, subst_single_var hb]
-      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
       rw [hz, add_zero]
 
 end Formalism.InvariantFactorPaths.G7
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.CoeffSubstLgFOfDegreeOne =====

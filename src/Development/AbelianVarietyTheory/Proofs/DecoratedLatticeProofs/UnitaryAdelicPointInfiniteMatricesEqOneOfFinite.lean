@@ -151,7 +151,7 @@ theorem RepM_cancel {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {wt
       X.B.I.fmat h *ᵥ (∑ l, ιA.symm (M l j) • Formalism.L2.SG.ColDict.qA X wt l) := by
     rw [Matrix.mulVec_mulVec, ← hmul, hAM j, Matrix.mulVec_sum]
 
-    simp only [Matrix.mulVec_smul, hA, Matrix.mul_apply, map_sum, map_mul, Finset.sum_smul, Finset.smul_sum, mul_smul]
+    simp only [Matrix.mulVec_smul, Matrix.mul_apply, map_sum, map_mul, Finset.sum_smul, mul_smul]
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun l _ => ?_
     rw [hA l, Finset.smul_sum]

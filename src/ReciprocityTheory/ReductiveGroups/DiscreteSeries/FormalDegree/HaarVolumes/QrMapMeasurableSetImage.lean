@@ -1,53 +1,12 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.HaarVolumes.TriDens
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.CategoryTheory.Countable
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Separation.CompletelyRegular
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.InnerProductSpace.GramSchmidtOrtho
 
 @[expose] public section
@@ -275,7 +234,7 @@ lemma qrA_exists (Z : Matrix (Fin N) (Fin N) ℂ) (hZ : Z.det ≠ 0) :
     intro j
     have ha : ‖InnerProductSpace.gramSchmidt ℂ f j‖ ≠ 0 := norm_ne_zero_iff.2 (hgs j)
     rw [hRdef, hb j, InnerProductSpace.gramSchmidtNormed, inner_smul_left, hself j]
-    simp only [map_inv₀, RCLike.conj_ofReal, Complex.conj_ofReal]
+    simp only [map_inv₀, RCLike.conj_ofReal]
     change (((‖InnerProductSpace.gramSchmidt ℂ f j‖ : ℝ) : ℂ))⁻¹ *
         ((‖InnerProductSpace.gramSchmidt ℂ f j‖ : ℝ) : ℂ) ^ 2 = ((‖InnerProductSpace.gramSchmidt ℂ f j‖ : ℝ) : ℂ)
     have hc : ((‖InnerProductSpace.gramSchmidt ℂ f j‖ : ℝ) : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 ha
@@ -309,7 +268,7 @@ lemma qrA_exists (Z : Matrix (Fin N) (Fin N) ℂ) (hZ : Z.det ≠ 0) :
     rw [Matrix.mul_apply]
     have e := congrArg (fun v : EuclideanSpace ℂ (Fin N) => v.ofLp a) (b.sum_repr' (f j))
     simp only [WithLp.ofLp_sum, WithLp.ofLp_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul,
-      f, PiLp.toLp_apply, Matrix.col_apply] at e
+      f, Matrix.col_apply] at e
     rw [← e]
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [hQdef, hRdef]

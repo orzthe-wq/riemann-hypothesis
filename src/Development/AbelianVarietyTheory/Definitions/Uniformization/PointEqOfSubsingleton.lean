@@ -1127,17 +1127,7 @@ theorem isWt_charUnit (χ : X) : IsWt (𝟙 (splitTorus S X)) ⊤ (charUnit S X 
 
 end Wt
 
-theorem isAbelianScheme_unit (S : Scheme.{0}) : IsAbelianScheme (𝟙_ (Over S)) := by
-  constructor
-  all_goals first
-    | infer_instance
-    | (show Smooth (𝟙 S); infer_instance)
-    | (show IsProper (𝟙 S); infer_instance)
-    | (show GeometricallyConnected (𝟙 S)
-       refine ⟨fun K _ y Z fst snd h => ?_⟩
-       have : IsIso snd := h.isIso_snd_of_isIso
-       exact ObjectProperty.prop_of_iso (fun Y : Scheme.{0} => ConnectedSpace Y) (asIso snd).symm
-         (inferInstance : ConnectedSpace (Spec (CommRingCat.of K))))
+alias isAbelianScheme_unit := _root_.GlobalTheory.Diag.isAbelianScheme_unit
 
 def TQ.torus (S : Scheme.{0}) (X : Type) [AddCommGroup X] : TQ (splitTorus S X) X where
   B := 𝟙_ (Over S)

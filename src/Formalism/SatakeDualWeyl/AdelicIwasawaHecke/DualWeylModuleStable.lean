@@ -61,7 +61,6 @@ theorem wact_rowAct_mul (R : Type) [CommRing R] (r n : ℕ) (A B : Matrix (Fin r
   Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]
   first
   | exact Finset.sum_comm
-  | (rw [Finset.sum_comm])
 
 theorem wact_rowAct_one (R : Type) [CommRing R] (r n : ℕ) :
     Formalism.GradedWeylDivisibility.rowAct R (n := n) (1 : Matrix (Fin r) (Fin r) R) = AlgHom.id R _ := by
@@ -84,7 +83,6 @@ private theorem isWeightedHomogeneous_pow' {σ R M : Type*} [CommRing R] [AddCom
   | zero =>
     first
     | simpa using isWeightedHomogeneous_C w (1 : R)
-    | simpa using isWeightedHomogeneous_one R w
   | succ k ih =>
     rw [pow_succ, succ_nsmul]
     exact ih.mul h

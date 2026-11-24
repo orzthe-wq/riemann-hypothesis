@@ -2,12 +2,13 @@ module
 
 public import Development.AbelianVarietyTheory.Statements.CuspidalUnitaryTwists.ExistsSmallSpherical
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DefiniteThetaPairNormPadicValuationBound
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DefiniteThetaPairTermsNormsIndependentRepresentaStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JetsTorsionTranslatesCmThetaProductStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KernelAtPrimeEqSumTorsionTranslatesStatement
+import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DefiniteThetaPairTermsNormsIndependentRepresenta
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizes
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.JetsTorsionTranslatesCmThetaProduct
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KernelAtPrimeEqSumTorsionTranslates
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicValuationThetaKernelJetBound
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryRationalConjIntersectionCardDvdInvariantStatement
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryRationalConjIntersectionCardDvdInvariant
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,7 +65,7 @@ theorem split_of_dvd {D : D7} {Q Q' p : ℕ} [hp : Fact p.Prime] (hQ : GoodLevel
 
 
 open GlobalTheory.NormSum.Term in
-theorem term_bound_of_jets (hJ : type_of% @GlobalTheory.T.jets_torsion_translates_cm_theta_product) (D : D7) (hI : Inp D) (S : Finset ℕ) (dl : ℕ → ℝ) (hL : Letters D S dl) (δ t0 : ℂ) (Q : ℕ)
+theorem term_bound_of_jets (hJ : type_of% @_root_.GlobalTheory.ProductJets.jets_translate_product) (D : D7) (hI : Inp D) (S : Finset ℕ) (dl : ℕ → ℝ) (hL : Letters D S dl) (δ t0 : ℂ) (Q : ℕ)
     (P : Pair D ⊤ δ t0 Q) (p : ℕ) [Fact p.Prime] (hQ : p ∣ Q → SplitIn D p) (lam : Qbar →+* ℂ_[p]) (g : GA D P.a)
     (g' k' : GA D P.d) (hk : k' ∈ intG D P.d) (hg : TrivAt D p (g : GL (Fin P.a) (AE D)))
     (hg' : TrivAt D p ((g' * k' : GA D P.d) : GL (Fin P.d) (AE D))) (T) :
@@ -72,7 +73,7 @@ theorem term_bound_of_jets (hJ : type_of% @GlobalTheory.T.jets_torsion_translate
       (dl p + (if p = D.host.d then 1 / 4 else 0) + (padicValNat p Q : ℝ)) + ((P.a * P.d : ℕ) : ℝ) * (padicValNat p Q : ℝ)) := by
   classical
   obtain ⟨b, k, M, r, s, hOnB, hLoc, hM0, hMp, hLa, hr, hOm⟩ :=
-    GlobalTheory.T.kernelAtPrime_eq_sum_torsionTranslates D hI δ t0 Q P.crv P.pt0 P.level_pos P p lam g g' k' hk hg hg'
+    _root_.GlobalTheory.NormSum.kernel_eq_sum_translates D hI δ t0 Q P.crv P.pt0 P.level_pos P p lam g g' k' hk hg hg'
   obtain ⟨-, -, -, -, hLk⟩ := hL
   have hpp : p.Prime := Fact.out
   have hp0 : (0 : ℝ) < p := by exact_mod_cast hpp.pos
@@ -136,7 +137,7 @@ private theorem bd_finsum {p : ℕ} [Fact p.Prime] {ι : Type*} {r : ℝ} (hr : 
 
 
 open GlobalTheory.NormVal in
-theorem coordInt_of_jets (hJ : type_of% @GlobalTheory.T.jets_torsion_translates_cm_theta_product) (D : D7) (hI : Inp D) (S : Finset ℕ) (dl : ℕ → ℝ) (hL : Letters D S dl) (Q N : ℕ) (B : ℝ)
+theorem coordInt_of_jets (hJ : type_of% @_root_.GlobalTheory.ProductJets.jets_translate_product) (D : D7) (hI : Inp D) (S : Finset ℕ) (dl : ℕ → ℝ) (hL : Letters D S dl) (Q N : ℕ) (B : ℝ)
     (hQ : GoodLevel D Q) (_hB : 0 ≤ B) :
     CoordInt D N B Q (fun p => (padicValNat p (8 ^ (4 * fF D * N) * (8 * fF D * N).factorial) : ℝ) +
       4 * fF D * N * B * (dl p + (if p = D.host.d then 1 / 4 else 0) + (padicValNat p Q : ℝ)) +
@@ -144,7 +145,7 @@ theorem coordInt_of_jets (hJ : type_of% @GlobalTheory.T.jets_torsion_translates_
   classical
   have hL' := hL
   obtain ⟨-, hdl0, -, -, -⟩ := hL'
-  have hcard : Fintype.card D.what₂.Tau = fF D := (GlobalTheory.T.derivationDenominators_and_hostField_sizes D hI.g1).2.2.2.2.1
+  have hcard : Fintype.card D.what₂.Tau = fF D := (_root_.GlobalTheory.NormSum.letters_and_sizes D hI.g1).2.2.2.2.1
   unfold CoordInt
   intro δ t0 p _ Q' hQ' P hP
   obtain ⟨hPd, hPn⟩ := hP
@@ -181,7 +182,7 @@ theorem coordInt_of_jets (hJ : type_of% @GlobalTheory.T.jets_torsion_translates_
       exact ((@DoubleCoset.eq _ _ (ratG D P.a) (intG D P.a) q.out (γA * q.out * k)).2
         ⟨γA, hγ', k, hk', rfl⟩).symm.trans hq
     choose s hs htr using hrep
-    rw [(GlobalTheory.T.definiteThetaPair_terms_norms_independent_representatives D hI ⊤ δ t0 Q' P.crv P.pt0 P P.level_pos).2.2.1 s hs h T]
+    rw [(_root_.GlobalTheory.NormSum.RepInv.rep_indep D hI ⊤ δ t0 Q' P.crv P.pt0 P P.level_pos).2.2.1 s hs h T]
     have hsp : p ∣ Q' → SplitIn D p := split_of_dvd hQ P.level_pos hQ'
     have hS : ∑ τ, (P.n τ : ℝ) ≤ fF D * (2 * B) := by
       calc ∑ τ, (P.n τ : ℝ) ≤ ∑ _τ : D.what₂.Tau, 2 * B := Finset.sum_le_sum fun τ _ => hPn τ
@@ -198,7 +199,7 @@ theorem coordInt_of_jets (hJ : type_of% @GlobalTheory.T.jets_torsion_translates_
       push_cast
       nlinarith [mul_le_mul ha hd (Nat.cast_nonneg _) (by positivity : (0 : ℝ) ≤ 2 * N)]
     refine bd_finsum (Real.rpow_nonneg hp0.le _) _ (fun q => ?_)
-    have hg1 := GlobalTheory.T.unitaryRationalConjIntersectionCard_dvd_invariant D P.a (intG D P.a) le_rfl (s q)
+    have hg1 := _root_.GlobalTheory.StabOrder.gam_ne_zero_dvd_invariant D P.a (intG D P.a) le_rfl (s q)
     have hdvd : gam D (intG D P.a) (s q) ∣ 8 ^ (4 * fF D * N) * (8 * fF D * N).factorial :=
       hg1.2.1.trans (GlobalTheory.NormVal.order_dvd (f := fF D) (le_trans P.a_le hPd))
     have hA := GlobalTheory.NormVal.Bd.inv_nat (p := p) hMN0 hdvd
@@ -219,6 +220,6 @@ theorem coordInt_of_jets (hJ : type_of% @GlobalTheory.T.jets_torsion_translates_
     linarith
 
 theorem coordInt : ∀ (D : D7), Inp D → ∀ (S : Finset ℕ) (dl : ℕ → ℝ), Letters D S dl → ∀ (Q N : ℕ) (B : ℝ), GoodLevel D Q → 0 ≤ B → CoordInt D N B Q (fun p => (padicValNat p (8 ^ (4 * fF D * N) * (8 * fF D * N).factorial) : ℝ) + 4 * fF D * N * B * (dl p + (if p = D.host.d then 1 / 4 else 0) + (padicValNat p Q : ℝ)) + 4 * (N : ℝ) ^ 2 * (padicValNat p Q : ℝ)) :=
-  fun D hI S dl hL Q N B hQ hB => coordInt_of_jets @GlobalTheory.T.jets_torsion_translates_cm_theta_product D hI S dl hL Q N B hQ hB
+  fun D hI S dl hL Q N B hQ hB => coordInt_of_jets @_root_.GlobalTheory.ProductJets.jets_translate_product D hI S dl hL Q N B hQ hB
 
 end GlobalTheory.NormSum.CoordBound

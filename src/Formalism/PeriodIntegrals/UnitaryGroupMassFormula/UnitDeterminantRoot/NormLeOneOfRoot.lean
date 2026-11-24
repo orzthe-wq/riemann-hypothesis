@@ -84,10 +84,6 @@ theorem conjLUnit : ConjLUnit := by
     change IsIntegral ℤ (conj ((k : ℂ) * x⁻¹)) at h
     rwa [map_mul, map_natCast, map_inv₀] at h
 
-lemma norm_le_one_of_root {F : Type*} [NormedField F] [IsUltrametricDist F] {y : F}
-    (p : Polynomial ℤ) (hp : p.Monic) (hpy : p.eval₂ (Int.castRingHom F) y = 0) : ‖y‖ ≤ 1 := by
-  first | exact Bl.general_b_fact_left_ter.goal1 .. | (apply Bl.general_b_fact_left_ter.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_ter.goal1 <;> assumption)
-
 lemma norm_iota_natCast (l : ℕ) [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) (k : ℕ) (hk : ¬ l ∣ k) :
     ‖ι (k : ℂ)‖ = 1 := by
   rw [map_natCast]
@@ -95,16 +91,19 @@ lemma norm_iota_natCast (l : ℕ) [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) (k : �
   rw [← e, PadicComplex.norm_extends', Padic.norm_natCast_eq_one_iff]
   exact (Nat.Prime.coprime_iff_not_dvd Fact.out).mpr hk
 
+/-- An integral complex number lies in the closed unit ball after a p-adic embedding. -/
+theorem norm_iota_le_one_of_isIntegral (l : ℕ) [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l])
+    {z : ℂ} (hz : IsIntegral ℤ z) : ‖ι z‖ ≤ 1 := by
+  obtain ⟨p, hp, hpz⟩ := hz
+  apply _root_.Bl.general_b_fact_left_ter.goal1 p hp
+  have h : (ι.toRingHom) (p.eval₂ (algebraMap ℤ ℂ) z) = 0 := by rw [hpz, map_zero]
+  rw [Polynomial.hom_eval₂, RingHom.ext_int (ι.toRingHom.comp (algebraMap ℤ ℂ)) (Int.castRingHom _)] at h
+  exact h
+
 theorem normOne : NormOne := by
   rintro l _ ι x ⟨hx0, k, hk, h1, h2⟩
-  have hI : ∀ z : ℂ, IsIntegral ℤ z → ‖ι z‖ ≤ 1 := by
-    rintro z ⟨p, hp, hpz⟩
-    apply norm_le_one_of_root p hp
-    have h : (ι.toRingHom) (p.eval₂ (algebraMap ℤ ℂ) z) = 0 := by rw [hpz, map_zero]
-    rw [Polynomial.hom_eval₂, RingHom.ext_int (ι.toRingHom.comp (algebraMap ℤ ℂ)) (Int.castRingHom _)] at h
-    exact h
-  have e1 := hI _ h1
-  have e2 := hI _ h2
+  have e1 := norm_iota_le_one_of_isIntegral l ι h1
+  have e2 := norm_iota_le_one_of_isIntegral l ι h2
   rw [map_mul, norm_mul, norm_iota_natCast l ι k hk, one_mul] at e1 e2
   have e3 : ‖ι x‖ * ‖ι x⁻¹‖ = 1 := by
     rw [← norm_mul, ← map_mul, mul_inv_cancel₀ hx0, map_one, norm_one]

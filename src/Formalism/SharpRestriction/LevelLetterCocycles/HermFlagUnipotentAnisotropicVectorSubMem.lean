@@ -72,7 +72,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 theorem letE_γ (T : LocLat G Qp LL O) (i : ZMod n) (x : W.DD T) :
     (letE i : LetA O n) • W.γ T x = W.γ T ((letE i : LetA O n) • x) := by
   show (letE i : LetA O n) • W.γD T W.gam x = W.γD T W.gam ((letE i : LetA O n) • x)
-  rw [Formalism.MainNotions.LiftingTheory.frame_γD_smul, Formalism.MainNotions.LiftingTheory.frame_γA_letE]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent]
 
 theorem z_of_InI (T : LocLat G Qp LL O) (i : ZMod n) {w : W.DD T} (hw : Formalism.MainNotions.CrystallineLiftingInputs.InI W T i w) :
     ∃ z', Formalism.MainNotions.LiftingTheory.InNΔi W T i z' ∧ W.γ T w - w = W.π₀ • z' := by
@@ -250,13 +250,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
-
-include W in
-theorem l_ne : ((PD.p : ℕ) : O) ≠ 0 := by
-  intro h
-  apply Formalism.MainNotions.LiftingTheory.tr_pLL_ne W
-  have := congrArg (algebraMap O LL) h
-  rwa [map_natCast, map_zero] at this
 
 theorem l_reg [IsDomain O] (hl : ((PD.p : ℕ) : O) ≠ 0) (k : ℕ) {x y : LetA O n}
     (h : ((PD.p : ℕ) : LetA O n) ^ k * x = ((PD.p : ℕ) : LetA O n) ^ k * y) : x = y := by
@@ -496,7 +489,7 @@ theorem S_mem [IsDomain O] (hR : Formalism.MainNotions.LiftingTheory.lifta_Ring 
       ((PD.p : ℕ) : LetA O n) ^ Formalism.MainNotions.CrystallineLiftingInputs.eY PD.p y * s y = ((PD.p : ℕ) : LetA O n) ^ σ * r y) :
     ∑ y ∈ Finset.range (max M X + 1), s y • ((W.φD T) ^ j) (c y) ∈ Formalism.MainNotions.ArcLiftingSetup.Pp W T i j :=
   (Formalism.MainNotions.ArcLiftingSetup.Pp W T i j).sum_mem fun y _ => Pp_gen W T i j
-    (s_mem W (l_ne W) (rem_mem W hR.πΔ (hrs y).1) (hrs y).2) (InNΔi_c W T i hc y)
+    (s_mem W (_root_.Formalism.MainNotions.LiftingTheory.tr_p_ne W) (rem_mem W hR.πΔ (hrs y).1) (hrs y).2) (InNΔi_c W T i hc y)
 
 theorem b1 (T : LocLat G Qp LL O) (i : ZMod n) {j M X σ : ℕ} {w z : W.DD T}
     (hz : Formalism.MainNotions.CrystallineLiftingInputs.IsTrunc W T i j M X σ w z) :
@@ -1260,7 +1253,5 @@ theorem tTool2_of [NeZero n] [IsDomain O] [IsLocalRing O] [IsAdicComplete (IsLoc
 end Formalism.MainNotions.CrystallineLiftingInputs.truncatedSeriesData
 
 namespace Formalism.MainNotions.CrystallineLiftingInputs.truncatedSeriesData
-
-open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
 end Formalism.MainNotions.CrystallineLiftingInputs.truncatedSeriesData

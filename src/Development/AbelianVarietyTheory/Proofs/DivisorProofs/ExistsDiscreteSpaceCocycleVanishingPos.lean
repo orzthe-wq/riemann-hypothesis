@@ -116,11 +116,11 @@ def htpC (F : PSh) : Homotopy (𝟙 (C R F)) (piC F) where
         have h2 : Even (k + 1 + 1) := h1 |> fun _ => (h.add_one).add_one
         have h3 : Odd (k + 1) := h.add_one
         have h4 : ¬ Odd k := Nat.not_odd_iff_even.mpr h
-        simp only [h1, h2, h3, h4, if_true, if_false, one_smul, zero_smul, comp_zero, zero_comp, zero_add, idX_comp]
+        simp only [h1, h2, h3, h4, if_true, if_false, one_smul, zero_smul, comp_zero, zero_add, idX_comp]
         rfl
       · have h1 : Even (k + 1) := h.add_one
         have h3 : ¬ Odd (k + 1) := Nat.not_odd_iff_even.mpr h1
-        simp only [h1, h, h3, if_true, if_false, one_smul, comp_zero, zero_comp, add_zero, idX_comp]
+        simp only [h1, h, h3, if_true, if_false, one_smul, zero_comp, add_zero, idX_comp]
         rfl
 
 def piZ (F : PSh) : (chains R).obj (disc.obj F) ⟶ (chains R).obj (disc.obj F) :=

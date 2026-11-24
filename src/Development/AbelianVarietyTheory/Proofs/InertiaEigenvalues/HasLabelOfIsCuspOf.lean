@@ -3,9 +3,10 @@ module
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrincipalCongruenceFixedVectorsLeSmoothVectors
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CharInOfIsCharLab
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MemRootsBarXSubC
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentralStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIrrCharactersAndFinsumCentralIdempotentsEqStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegreeStatement
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentral
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIrrCharactersAndFinsumCentralIdempotentsEq
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GroupAlgebraTraceIdempotentAndIrreducibleDegree
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLaws
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -59,13 +60,7 @@ open scoped Classical
 
 local instance factT (D : D7) (k : Fin 2) : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
 
-theorem trace_alg {G : Type} [Group G] [Fintype G] (τ : FDRep ℂ G) (a : MonoidAlgebra ℂ G) :
-    LinearMap.trace ℂ τ (Representation.asAlgebraHom τ.ρ a) = tr a τ.character := by
-  have e : Representation.asAlgebraHom τ.ρ a = ∑ x, a.coeff x • τ.ρ x :=
-    LinearMap.ext fun w => by rw [alg_apply, LinearMap.sum_apply]; rfl
-
-  rw [e, map_sum, tr]
-  exact Finset.sum_congr rfl fun x _ => map_smul _ _ _
+alias trace_alg := _root_.GlobalTheory.GLq.TrIdem.trace_asAlgebraHom
 
 section Finite
 
@@ -73,16 +68,16 @@ variable {g : ℕ} [Fact g.Prime]
 
 theorem tr_eSerC_eq (L : LabelDatum g) {n : ℕ} {χ : Gn g n → ℂ} {f : (ZMod g)[X]} (hχ : IsIrr χ)
     (hf : HasLabel L χ f) : tr (eSerC L n f) χ = χ 1 ∧ χ 1 ≠ 0 := by
-  have hfin := (GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one (Gn g n)).1
+  have hfin := (_root_.GlobalTheory.GLq.irr_finite_and_finsum_zOf_eq_one (Gn g n)).1
   have hz : eSerC L n f * zOf χ = 1 * zOf χ := by
     rw [eSerC_eq_sum L n hfin, Finset.sum_mul, Finset.sum_eq_single_of_mem χ (by simp [hχ, hf]), one_mul]
-    · simpa using (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ χ hχ hχ).1
+    · simpa using (_root_.GlobalTheory.GLq.ZOrth.zorth _ χ χ hχ hχ).1
     · intro b hb hne
       have hb' : IsIrr b := by simpa using (Finset.mem_filter.1 hb).1
-      rw [(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ b χ hb' hχ).1, if_neg hne]
+      rw [(_root_.GlobalTheory.GLq.ZOrth.zorth _ b χ hb' hχ).1, if_neg hne]
   have h := congrArg (fun a : MonoidAlgebra ℂ (Gn g n) => a.coeff 1) hz
-  simp only [(GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree _ _ χ).2.2] at h
-  obtain ⟨d, hd, e⟩ := (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree _ 1 χ).2.1 hχ
+  simp only [(_root_.GlobalTheory.GLq.trIdem _ _ χ).2.2] at h
+  obtain ⟨d, hd, e⟩ := (_root_.GlobalTheory.GLq.trIdem _ 1 χ).2.1 hχ
   have h1 : χ 1 ≠ 0 := e ▸ Nat.cast_ne_zero.2 hd.ne'
   rw [MonoidAlgebra.one_def, Opp.tr_single, one_mul] at h
   exact ⟨mul_left_cancel₀ (div_ne_zero h1 (Nat.cast_ne_zero.2 Fintype.card_ne_zero)) h, h1⟩
@@ -95,7 +90,7 @@ theorem hasLabel_of_isCuspOf (L : LabelDatum g) {d : ℕ} {P : (ZMod g)[X]} {χ 
     obtain ⟨V, -, hV⟩ := hχ
     rw [← hV, ← hV, FDRep.char_conj]
   have e : hcL ([(P, (⟨d, χ⟩ : Pc g))].map Prod.snd) d = χ := GLq.Model.hc_full χ hc
-  rw [e, (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ χ χ hχ hχ).2.2, if_pos rfl]
+  rw [e, (_root_.GlobalTheory.GLq.ZOrth.zorth _ χ χ hχ hχ).2.2, if_pos rfl]
   exact one_ne_zero
 
 theorem labelsCusp (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) :

@@ -1,8 +1,17 @@
 module
 
 public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.Matrix.Trace
+public import Mathlib.Algebra.Algebra.Subalgebra.Basic
+public import Mathlib.Algebra.Algebra.Subalgebra.Lattice
+public import Mathlib.Algebra.Central.Defs
+public import Mathlib.LinearAlgebra.Dual.Defs
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.LinearAlgebra.Trace
-public import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUniqueMatrix
+public import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
+public import Mathlib.LinearAlgebra.Eigenspace.Basic
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.Algebra.Central.Matrix
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -16,15 +25,16 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.RingTheory.TotallySplit
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,8 +42,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,8 +55,72 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.LinearAlgebra.Eigenspace.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUniqueMatrix, Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUnique
+
+-- ===== clump member: Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUniqueMatrix =====
+-- clump-header: {"m": "Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUniqueMatrix", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.LinearAlgebra.Matrix.Trace\nimport Mathlib.Algebra.Azumaya.Basic\nimport Mathlib.Algebra.Central.Matrix\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Algebra.Subalgebra.Basic\npublic import Mathlib.Algebra.Algebra.Subalgebra.Lattice\npublic import Mathlib.Algebra.Central.Defs\npublic import Mathlib.LinearAlgebra.Dual.Defs\npublic import Mathlib.LinearAlgebra.Dual.Lemmas\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace DiscreteGroups.T1.Desc.TraceUniqueU3
+
+open Matrix
+
+theorem trace_unique_matrix {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ)
+    (hg : ∀ A B, g (A * B) = g (B * A)) :
+    ∃ c : ℂ, ∀ A, g A = c * A.trace := by
+  classical
+  let Φ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.Dual ℂ (Matrix (Fin n) (Fin n) ℂ) :=
+    LinearMap.mk₂ ℂ (fun C A => (A * C).trace)
+      (fun C C' A => by simp only [Matrix.mul_add, Matrix.trace_add])
+      (fun c C A => by simp only [Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul])
+      (fun C A A' => by simp only [Matrix.add_mul, Matrix.trace_add])
+      (fun c C A => by simp only [Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul])
+  have hΦ : ∀ C A, Φ C A = (A * C).trace := fun _ _ => rfl
+  have hinj : Function.Injective Φ := by
+    intro C C' h
+    rw [Matrix.ext_iff_trace_mul_left]
+    intro X
+    have h1 := LinearMap.congr_fun h X
+    rw [hΦ, hΦ] at h1
+    exact h1
+  have hsurj : Function.Surjective Φ :=
+    (LinearMap.injective_iff_surjective_of_finrank_eq_finrank
+      Subspace.dual_finrank_eq.symm).1 hinj
+  obtain ⟨C, hC⟩ := hsurj g
+  have hgC : ∀ A, g A = (A * C).trace := fun A => by rw [← hC, hΦ]
+  have hcomm : ∀ B, B * C = C * B := by
+    intro B
+    rw [Matrix.ext_iff_trace_mul_left]
+    intro A
+    calc (A * (B * C)).trace = (A * B * C).trace := by rw [Matrix.mul_assoc]
+      _ = g (A * B) := (hgC _).symm
+      _ = g (B * A) := hg A B
+      _ = (B * A * C).trace := hgC _
+      _ = (A * C * B).trace := (Matrix.trace_mul_cycle A C B).symm
+      _ = (A * (C * B)).trace := by rw [Matrix.mul_assoc]
+  have hcen : C ∈ Subalgebra.center ℂ (Matrix (Fin n) (Fin n) ℂ) := by
+    rw [Subalgebra.mem_center_iff]
+    exact hcomm
+  obtain ⟨c, hc⟩ := Algebra.mem_bot.1 (Algebra.IsCentral.out hcen)
+  refine ⟨c, fun A => ?_⟩
+  rw [hgC, ← hc, Algebra.algebraMap_eq_smul_one, Matrix.mul_smul, Matrix.mul_one,
+    Matrix.trace_smul, smul_eq_mul]
+
+end DiscreteGroups.T1.Desc.TraceUniqueU3
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUniqueMatrix =====
+
+-- ===== clump member: Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUnique =====
+-- clump-header: {"m": "Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUnique", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.LinearAlgebra.Trace\npublic import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUniqueMatrix\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.LinearAlgebra.Eigenspace.Triangularizable\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.LinearAlgebra.Eigenspace.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option linter.unusedVariables false
@@ -159,3 +231,6 @@ theorem trace_unique {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimension
 end DiscreteGroups.T1.Desc.Swap3
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUnique =====

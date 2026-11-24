@@ -6,49 +6,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Gaug
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.AddedBlockKernelSupport
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.SupportLoc
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProductFormulaHaar.BasisEApply
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -144,7 +101,7 @@ theorem cok_sub_of_isGL (M : Loc.Model F E) {m : ℕ} (ZZ : M.Mat (m + 1)) (h : 
   rw [Submodule.Quotient.subsingleton_iff, eq_top_iff]
   intro x _
   refine ⟨Matrix.mulVec CR x, ?_⟩
-  simp [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hCR]
+  simp [Matrix.mulVec_mulVec, hCR]
 
 theorem clsOf_triv (M : Loc.Model F E) {m : ℕ} (A : Matrix (Fin (m + 1)) (Fin (m + 1)) E) (h : IsGL M.R A) :
     clsOf M A = some (LocModel.trivCls M m) := by
@@ -536,7 +493,7 @@ theorem loU_corner (p : PlF D) (c : (D.s.atP p).Ep) {L N : LsDatumB.MatP D p} (h
   ext a b
   rw [Matrix.mul_apply, Finset.sum_eq_single (Fin.last _)]
   · rw [Matrix.mul_apply, Finset.sum_eq_single (Fin.last _)]
-    · simp only [cornerM, Matrix.of_apply, true_and, and_true]
+    · simp only [cornerM, Matrix.of_apply, and_true]
       rw [hLl, hNl]
       by_cases ha : a = Fin.last _ <;> by_cases hb : b = Fin.last _ <;> simp [ha, hb]
     · intro k _ hk; simp [cornerM, hk]
@@ -844,24 +801,10 @@ theorem isGL_sgn (p : PlF D) : IsGL (M p).R (LsDatumB.sgnP p) := by
     · exact Subring.zero_mem _
   exact ⟨hint, LsDatumB.sgnP p, hint, permSign_mul_self₂ p⟩
 
-theorem one_intLow (p : PlF D) : TieN.IntLow (M p) (1 : LsDatumB.MatP D p) :=
-  ⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_lt h),
-    fun a b => by rw [Matrix.one_apply]; split_ifs; exacts [Subring.one_mem _, Subring.zero_mem _]⟩
-
-theorem one_intUp (p : PlF D) : TieN.IntUp (M p) (1 : LsDatumB.MatP D p) :=
-  ⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_gt h),
-    fun a b => by rw [Matrix.one_apply]; split_ifs; exacts [Subring.one_mem _, Subring.zero_mem _]⟩
-
 end Restr
 
 end Formalism.L2.SG.Pf.LocUnramB
 
 namespace Formalism.L2.SG.Pf
-
-theorem locUnram_holds {D : Formalism.BasicNotions.D7} {δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp}
-    {M : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
-    (hA : ∀ p, Formalism.MainNotions.S.LocalSplitGroups.Agree δ M p) (u u' : D.what₂.Word) :
-    Formalism.L2.SG.LsDatumB.LocUnram M δ u u' (LocModel.thTriv M) :=
-  LocUnramB.locUnram_triv hA u u'
 
 end Formalism.L2.SG.Pf

@@ -95,7 +95,7 @@ theorem coordsAt_blkV : ∀ (X X₀ : Scheme.{0}) (Ω Ω₀ : Type) [Field Ω] [
     have h2 := (hgen (GlobalTheory.CompanionTheory.Ar.centre z)).map h.continuous
     have e1 : h (GlobalTheory.CompanionTheory.Ar.genPt ξ) = GlobalTheory.CompanionTheory.Ar.genPt ξ₀ := by
       have hh := congrArg (fun f => f (IsLocalRing.closedPoint Ω)) hdom
-      simp only [Scheme.Hom.comp_apply] at hh
+      simp only at hh
       exact hh.trans (congrArg ξ₀ (hpt _ _))
     have e2 : h (GlobalTheory.CompanionTheory.Ar.centre z) = GlobalTheory.CompanionTheory.Ar.centre (z ≫ h) :=
       (Scheme.Hom.comp_apply z h _).symm

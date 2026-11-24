@@ -121,7 +121,7 @@ theorem equivariant (hE : ∀ v, c' (up φ lam v) = c₀ v) (T : W →ₗ[ℂ] W
     (v : VV K' lam) : c' (S' v) = T (c' v) := by
   obtain ⟨a, rfl⟩ := exists_coord φ lam v
 
-  simp only [map_sum, map_smul, map_smulₛₗ, ← hS, hE, hT, RingHom.id_apply]
+  simp only [map_sum, map_smul, map_smulₛₗ, ← hS, hE, hT]
 
 theorem span_top (hE : ∀ v, c' (up φ lam v) = c₀ v)
     (hs : Submodule.span ℂ (Set.range fun j => c₀ (bVV K lam j)) = ⊤) : Submodule.span ℂ (Set.range c') = ⊤ := by

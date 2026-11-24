@@ -177,7 +177,7 @@ theorem core_roomR {b' g A P Q k c de be eps N Y N1 ka : ℝ} (hb : 0 < b') (hAP
 
 variable {C0 Cde CE1 CE2 : ℝ} {X : Loc}
 
-theorem core_room (St : Std C0 Cde CE1 CE2 1 X) (hc : 1 ≤ X.c) (j : Fin (numSeg X.TT))
+theorem core_room (St : Formalism.MainNotions.ColumnSystems.Pf.Std C0 Cde CE1 CE2 1 X) (hc : 1 ≤ X.c) (j : Fin (numSeg X.TT))
     (b : SegBlock (segS X.TT j) X.m) (hdig : DigitsOK X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b)
     (i : Fin (segS X.TT j)) :
     (X.c : ℝ) * (ka1 X + 2 * X.Q + 3 * X.k) + 4 ≤
@@ -227,7 +227,7 @@ theorem core_termS {A A' w w' g g' K q : ℕ} (hA : A ≤ A' + K) (hw : w' ≤ w
 
 
 theorem numCore_std {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
-    (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 1 X) :
+    (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Formalism.MainNotions.ColumnSystems.Pf.Std C0 Cde CE1 CE2 1 X) :
     NumCoreAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X hD hH hcB mm _ n hn1 hnc e he1 hen j b hb
   have St := hstd X hD hH hcB
@@ -263,14 +263,14 @@ theorem numCore_std {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
   have hN0 : (0 : ℝ) ≤ X.N1 := by linarith
   have b1 : (X.N1 : ℝ) * e ≤ X.N1 * X.k * X.Q * e := by
     have := mul_le_mul_of_nonneg_left hkQ1 (mul_nonneg hN0 (by linarith : (0:ℝ) ≤ e))
-    nlinarith
+    nlinarith only [this]
   have b2 : (X.N1 : ℝ) * X.k ≤ X.N1 * X.k * X.Q * e := by
     have := mul_le_mul_of_nonneg_left hQe1 (mul_nonneg hN0 hk0.le)
-    nlinarith
+    nlinarith only [this]
   have b3 : (X.N1 : ℝ) * (X.Q * e) ≤ X.N1 * X.k * X.Q * e := by
     have h1k : (1 : ℝ) ≤ X.k := by linarith
     have := mul_le_mul_of_nonneg_left h1k (mul_nonneg hN0 (by linarith : (0:ℝ) ≤ X.Q * e))
-    nlinarith
+    nlinarith only [this]
   have b4 : X.k ≤ (X.N1 : ℝ) * X.k := le_mul_of_one_le_left hk0.le hN1pos
   have b5 : X.Q * e ≤ (X.N1 : ℝ) * (X.Q * e) := le_mul_of_one_le_left (by linarith) hN1pos
   have hnumA : 3 * X.k + 2 * (X.Q * e) ≤ e * ka1 X := by rw [hx]; linarith
@@ -317,7 +317,7 @@ theorem numCore_std {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
         linarith
       have hm : 0 ≤ 1 - X.de C0 Cde / 4 := by linarith
       have h5 := mul_le_mul_of_nonneg_right hAR hm
-      have h6 : X.k * (1 - X.de C0 Cde / 4) ≤ X.k := by nlinarith
+      have h6 : X.k * (1 - X.de C0 Cde / 4) ≤ X.k := by nlinarith only [hk0, hde0]
       rw [hE']
       have e1 : ((coarseA X.p (X.seg C0 CE1 CE2 j) b' i : ℝ) + X.k) * (1 - X.de C0 Cde / 4) =
           (coarseA X.p (X.seg C0 CE1 CE2 j) b' i : ℝ) * (1 - X.de C0 Cde / 4) + X.k * (1 - X.de C0 Cde / 4) := by ring
@@ -382,7 +382,7 @@ theorem numCore_thr : RestNumCore :=
 
 
 theorem keptPair_bounds {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
-    (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 1 X) :
+    (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Formalism.MainNotions.ColumnSystems.Pf.Std C0 Cde CE1 CE2 1 X) :
     PairSAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ hD hI hc j rz ry hd A hA1 hA2 mu lam hP hK i hi
   have hs := hstd X hD hI hc
@@ -398,7 +398,7 @@ theorem keptPair_bounds {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
   have hp2pos : (0 : ℝ) < (X.p : ℝ) ^ 2 := by positivity
   have hp25 : (25 : ℝ) ≤ (X.p : ℝ) ^ 2 := by
     have : (5 : ℝ) ≤ X.p := by exact_mod_cast hs.p5
-    nlinarith
+    nlinarith only [this]
   have hde0 : 0 ≤ X.de C0 Cde := le_trans (by positivity) hLK
   set A0 : ℝ := ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) with hA0
   set Aa : Fin (segS X.TT j) → ℝ := fun l => (clA C0 CE1 CE2 X j rz ry l : ℝ) with hAa
@@ -408,7 +408,7 @@ theorem keptPair_bounds {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     have h := (coarse_degree_alternative le_rfl hs j (digitBlock rz ry) hd l).1 (lt_of_le_of_lt hl hi)
     have h0 : (0 : ℝ) ≤ (clA C0 CE1 CE2 X j rz ry l : ℝ) := Nat.cast_nonneg _
     show (clA C0 CE1 CE2 X j rz ry l : ℝ) ≤ _
-    nlinarith
+    nlinarith only [h, h0, hde0]
   have hAnn : ∀ l : Fin (segS X.TT j), (0 : ℝ) ≤ Aa l := fun l => by
     show (0 : ℝ) ≤ (clA C0 CE1 CE2 X j rz ry l : ℝ); exact Nat.cast_nonneg _
   have hA00 : (0 : ℝ) ≤ A0 := le_trans (hAnn i) (hAl i le_rfl)
@@ -449,7 +449,7 @@ theorem keptPair_bounds {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     have hA : (A : ℝ) ≤ A0 := hA2
     have h3 : 4 * Aa l / (X.p : ℝ) ^ 2 ≤ Aa l := by
       have e : 4 * Aa l / (X.p : ℝ) ^ 2 = Aa l * (4 / (X.p : ℝ) ^ 2) := by ring
-      rw [e]; nlinarith [hAnn l]
+      rw [e]; nlinarith only [hAnn l, h4p]
     have := hsum l
     have := hAl l hl
     simp only [hAa] at *
@@ -494,10 +494,10 @@ theorem keptPair_bounds {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
           have e : 4 * Aa l / (X.p : ℝ) ^ 2 = Aa l * (4 / (X.p : ℝ) ^ 2) := by ring
           rw [e]
           have : (0 : ℝ) ≤ 4 / (X.p : ℝ) ^ 2 := by positivity
-          nlinarith
+          nlinarith only [this, hal, hA00]
         have e2 : X.La C0 * (2 * A0) / X.k ≤ 3 * A0 * (X.La C0 / X.k) := by
           have e : X.La C0 * (2 * A0) / X.k = 2 * A0 * (X.La C0 / X.k) := by ring
-          rw [e]; nlinarith
+          rw [e]; nlinarith only [mul_nonneg hA00 (div_nonneg hLa0 hk.le)]
         rw [hδ]; linarith
       rw [eC]
       push_cast
@@ -516,7 +516,7 @@ theorem keptPair_bounds {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
   have sq_level_le_degree : 2 * (X.N1 : ℝ) + 3 ≤ X.k := hs.N1k
   have hkp : X.k ^ 2 ≤ (X.p : ℝ) := by
     have hY2 : (1 : ℝ) ≤ X.Y ^ 2 := one_le_pow₀ hs.Y1
-    nlinarith [hs.pk, mul_le_mul_of_nonneg_left hY2 (sq_nonneg X.k)]
+    nlinarith only [hs.pk, mul_le_mul_of_nonneg_left hY2 (sq_nonneg X.k)]
   have hde40 : 40 * X.N1 * X.La C0 / X.k ≤ X.de C0 Cde := hLK
   have hq1 : 4 * X.N1 * X.La C0 / X.k ≤ X.de C0 Cde / 10 := by
     have e : 4 * X.N1 * X.La C0 / X.k = (40 * X.N1 * X.La C0 / X.k) / 10 := by ring
@@ -539,7 +539,7 @@ theorem keptPair_bounds {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
       have hk3 : (5 : ℝ) ^ 3 ≤ X.k ^ 3 := by
         have := pow_le_pow_left₀ (by norm_num : (0:ℝ) ≤ 5) hk5 3
         exact this
-      nlinarith [mul_le_mul_of_nonneg_left hk3 (by positivity : (0:ℝ) ≤ X.k ^ 2)]
+      nlinarith only [hk5, mul_le_mul_of_nonneg_left hk3 (by positivity : (0:ℝ) ≤ X.k ^ 2), mul_nonneg (show (0:ℝ) ≤ X.k by linarith only [hk5]) (sq_nonneg X.k)]
     have h3 : (40 / X.k) / 80 ≤ X.de C0 Cde / 80 := by linarith
     linarith
   have hci_ge : Aa i ≤ ((pairC mu i.val : ℤ) : ℝ) := by
@@ -556,12 +556,12 @@ theorem keptPair_bounds {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     have hε : (4 * X.N1 * X.La C0 / X.k + 12 * X.N1 / (X.p : ℝ) ^ 2) * (1 + X.de C0 Cde) ≤ X.de C0 Cde := by
       have hsum' : 4 * X.N1 * X.La C0 / X.k + 12 * X.N1 / (X.p : ℝ) ^ 2 ≤ X.de C0 Cde * (9 / 80) := by linarith
       have hε0 : 0 ≤ 4 * X.N1 * X.La C0 / X.k + 12 * X.N1 / (X.p : ℝ) ^ 2 := by positivity
-      nlinarith
+      nlinarith only [hsum', hε0, hde6, hde0]
 
     have key : Aa i * (1 + X.de C0 Cde) ≤ A0 := le_of_lt hdich
     set ε : ℝ := 4 * X.N1 * X.La C0 / X.k + 12 * X.N1 / (X.p : ℝ) ^ 2 with hεd
     have hε1 : 0 ≤ 1 - ε := by linarith
-    have hprod : 1 ≤ (1 + X.de C0 Cde) * (1 - ε) := by nlinarith
+    have hprod : 1 ≤ (1 + X.de C0 Cde) * (1 - ε) := by nlinarith only [hε, hεd]
     have g1 : Aa i ≤ Aa i * ((1 + X.de C0 Cde) * (1 - ε)) := le_mul_of_one_le_right (hAnn i) hprod
     have g2 : Aa i * ((1 + X.de C0 Cde) * (1 - ε)) ≤ A0 * (1 - ε) := by
       rw [← mul_assoc]; exact mul_le_mul_of_nonneg_right key hε1
@@ -589,7 +589,7 @@ theorem keptPair_bounds {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     have hc2 := hcup i le_rfl
     have hfin : X.La C0 * ((pairC mu i.val : ℤ) : ℝ) / X.k ≤ 2 * X.La C0 * A0 / X.k := by
       apply div_le_div_of_nonneg_right _ hk.le
-      nlinarith
+      nlinarith only [hc2, hLa0]
     linarith
 
 theorem keptPair_thr : RestPairS :=

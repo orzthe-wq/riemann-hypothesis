@@ -177,7 +177,7 @@ theorem shellSum_indicator {ϖ : kˣ} (hϖ : IsUnif ϖ) {a : ℕ} (ν : kˣ →*
     obtain ⟨x, hx, y, hy, e⟩ := mem_shellSet.1 hmem
     refine mem_shellSet.2 ⟨g * g₁ * x, mul_mem hg hx, y, hy, ?_⟩
     calc g = g * g₁ * g₁⁻¹ := by group
-      _ = _ := by rw [e]; simp only [mul_assoc]; try rfl
+      _ = _ := by rw [e]; simp only [mul_assoc]
   rw [shellSum, finsum_eq_single _ ⟨m₀, hm₀⟩]
   · rw [hshell, Set.inter_eq_right.2 hsub, hS1, one_smul]
   · intro m hm
@@ -187,7 +187,7 @@ theorem shellSum_indicator {ϖ : kˣ} (hϖ : IsUnif ϖ) {a : ℕ} (ν : kˣ →*
       obtain ⟨x, hx, y, hy, e⟩ := mem_shellSet.1 hg1
       refine mem_shellSet.2 ⟨(g * g₁)⁻¹ * x, mul_mem (inv_mem hg2) hx, y, hy, ?_⟩
       calc g₁⁻¹ = (g * g₁)⁻¹ * g := by group
-        _ = _ := by rw [e]; simp only [mul_assoc]; try rfl
+        _ = _ := by rw [e]; simp only [mul_assoc]
     simp [this]
 
 theorem integral_indicator_KO {a : ℕ} (f : GL (Fin a) k → ℂ) (C : ℂ) (g₁ : GL (Fin a) k)

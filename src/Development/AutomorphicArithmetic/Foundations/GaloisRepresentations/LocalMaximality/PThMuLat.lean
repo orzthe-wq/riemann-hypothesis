@@ -95,7 +95,7 @@ private lemma det_form {S : Type} [CommRing S] [Algebra ℂ S] (R : Subalgebra �
         rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, hD]
       rw [hprod]
       ring
-    · push_neg at hσ
+    · push Not at hσ
       obtain ⟨a, ha, hne⟩ := hσ
       have h0 : ∏ a ∈ P, A a (σ a) = 0 := Finset.prod_eq_zero ha (by rw [hP a ha, if_neg hne])
       rw [h0]
@@ -191,9 +191,9 @@ theorem UpperTheory.Gal.productCup_of_system.thMuLat_of :
         (by
           intro a m
           rcases hx : ofLex (e a) with i | l
-          · simp only [hx, Sum.elim_inl]
+          · simp only [Sum.elim_inl]
             exact zero_mem _
-          · simp only [hx, Sum.elim_inr, sub_mul, ite_mul, zero_mul]
+          · simp only [Sum.elim_inr, sub_mul, ite_mul, zero_mul]
             rw [← Units.val_mul, ← Units.val_mul]
             refine sub_mem ?_ ?_
             · split_ifs
@@ -202,7 +202,6 @@ theorem UpperTheory.Gal.productCup_of_system.thMuLat_of :
             · split_ifs
               · exact hT.memY I J hI j hj _
               · exact zero_mem _)
-      beta_reduce at hdet
       refine ⟨s, hs, ?_⟩
       rw [hdet, hcard]
     · rw [dite_eq_right h]

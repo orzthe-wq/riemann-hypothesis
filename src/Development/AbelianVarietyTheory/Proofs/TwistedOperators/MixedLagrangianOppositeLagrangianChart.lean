@@ -271,7 +271,8 @@ namespace GlobalTheory.FlipMatch
 
 open ChartOpp
 
-theorem chartOpp_isMixChart : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G) (e : Num G i j) (Bs : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)
+/-- The opposite chart satisfies the mixed chart identities and has explicit coordinates. -/
+theorem chartOpp_isMixChart_coordinates : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G) (e : Num G i j) (Bs : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)
     (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E), IsTripleOf W M t i j e Bs Γ X →
     ∀ (v : Bs.P) (w : Pl D.host.E), splitPrime (Bs.τ v) = w → ∀ jj : Fv D.host.F v ≃+* Kw w, IsPlaceIso (Bs.τ v) w jj →
     ∀ cc : GL (Fin ((spW G i j).rank + (spW₁ G i j).rank)) (Kw w), (Γ.W.bas v).val.map jj * cc.val = basCols B e w →
@@ -281,8 +282,15 @@ theorem chartOpp_isMixChart : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Cons
           (coY D.sp.cm.sig Γ.V' Γ.W (Bs.τ v) (Γ.V'.bas v) (Γ.W.bas v) u))
         (fun u => (xiAt w)⁻¹ • chart jj (finCongr (rankW₁ G t i j w)) (colsEq t e w) (invT g) (invT cc)
           (coX (Bs.τ v) (Γ.V'.bas v) (Γ.W.bas v) u))
-        (Assignment.one.block _ _) := by
-  intro D T L sc G μ₀ hL W B t i j M e Bs Γ X h v w hw jj hjj cc hcc
+        (Assignment.one.block _ _) ∧
+      ∀ u, chart jj (finCongr (rankW₁ G t i j w)) (colsEq t e w) g cc
+      (coY D.sp.cm.sig Γ.V' Γ.W (Bs.τ v) (Γ.V'.bas v) (Γ.W.bas v) u) =
+      reindex (finCongr (rankW₁ G t i j w)) (colsEq t e w) (((loc w (B.β i j))⁻¹).val *
+        u.map (fun a => cpt w (toEAf D (cA D a))) *
+        GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e
+          ((spV G i j).gram.map (algebraMap D.host.E (Kw w)) * (loc w (B.β i (j + 1))).val)
+          (-((spV₁ G i j).gram.map (algebraMap D.host.E (Kw w)) * (loc w (B.β (i + 1) j)).val))) := by
+  intro D T L sc G W B t i j M e Bs Γ X h v w hw jj hjj cc hcc
   classical
 
   have hε : atPl w 1 = GlobalTheory.EmbChart.idem (Bs.τ v) :=
@@ -325,7 +333,6 @@ theorem chartOpp_isMixChart : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Cons
     rw [hC]; exact hcc
   obtain ⟨g, hg⟩ := chart_algebra e Bp C cc _ hG₁ (loc w (B.β i j)) (loc w (B.β i (j + 1))) (loc w (B.β (i + 1) j))
     ((spV G i j).gram.map κ) ((spV₁ G i j).gram.map κ) (xiAt w) hξ hCc
-  refine ⟨g, ?_⟩
 
   have hκm : ∀ {a b : Type} (Z : Matrix a b D.host.E), (Z.map (Bs.τ v)).map jj = Z.map κ := fun Z =>
     Matrix.ext fun _ _ => by rw [hκ]; exact hE _
@@ -396,6 +403,7 @@ theorem chartOpp_isMixChart : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Cons
     rcases z with k | k
     · exact congrFun₂ k1 a k
     · exact congrFun₂ k2 a k
+  refine ⟨g, ?_, by simpa only [hκ] using htr⟩
   unfold IsMixChart
   simp only [htr, hmu]
   refine ⟨fun u hu => ?_, fun u hu => ?_⟩
@@ -417,5 +425,20 @@ theorem chartOpp_isMixChart : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Cons
     have hU : ((u.map fun a => cpt w (toEAf D a)).submatrix id fun k => e (.inl k)) = 0 :=
       Matrix.ext fun a k => z₂ _ (h1 a k)
     exact ⟨hat u _ _ hb₂ hb₁ h1 h2, zero_inr e _ _ _ hPl _ _ _ _ hZ, zero_inl e _ _ _ hPr _ _ _ _ hU⟩
+
+theorem chartOpp_isMixChart : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G) (e : Num G i j) (Bs : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)
+    (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E), IsTripleOf W M t i j e Bs Γ X →
+    ∀ (v : Bs.P) (w : Pl D.host.E), splitPrime (Bs.τ v) = w → ∀ jj : Fv D.host.F v ≃+* Kw w, IsPlaceIso (Bs.τ v) w jj →
+    ∀ cc : GL (Fin ((spW G i j).rank + (spW₁ G i j).rank)) (Kw w), (Γ.W.bas v).val.map jj * cc.val = basCols B e w →
+    ∃ g : GL (Fin (spW₁ G i j).rank) (Kw w),
+      IsMixChart v.1 (mixHalfS e (atPl w 1)) (mixHalfS e (cA D (atPl w 1))) (mixCoS B t e w)
+        (fun u => chart jj (finCongr (rankW₁ G t i j w)) (colsEq t e w) g cc
+          (coY D.sp.cm.sig Γ.V' Γ.W (Bs.τ v) (Γ.V'.bas v) (Γ.W.bas v) u))
+        (fun u => (xiAt w)⁻¹ • chart jj (finCongr (rankW₁ G t i j w)) (colsEq t e w) (invT g) (invT cc)
+          (coX (Bs.τ v) (Γ.V'.bas v) (Γ.W.bas v) u))
+        (Assignment.one.block _ _) := by
+  intro D T L sc G μ₀ hL W B t i j M e Bs Γ X h v w hw jj hjj cc hcc
+  obtain ⟨g, hg, _⟩ := chartOpp_isMixChart_coordinates W B t i j M e Bs Γ X h v w hw jj hjj cc hcc
+  exact ⟨g, hg⟩
 
 end GlobalTheory.FlipMatch

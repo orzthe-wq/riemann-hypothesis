@@ -69,7 +69,7 @@ theorem one_tmul_mem_intAf {c : Af F} (hc : c ∈ Ohat F) : ((1 : E) ⊗ₜ[F] c
 theorem exists_nat_smul_mem (L : Submodule (𝓞 E) (Fin n → E))
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (w : Fin n → E) :
     ∃ m : ℕ, 0 < m ∧ m • w ∈ L := by
-  first | exact Bl.general_b_fact_third'.goal1 .. | (apply Bl.general_b_fact_third'.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third'.goal1 <;> assumption)
+  first | (apply Bl.general_b_fact_third'.goal1 <;> assumption)
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
@@ -78,7 +78,7 @@ theorem exists_lower (b : Module.Basis ι F E) (L : Submodule (𝓞 E) (Fin n �
     ∃ d : ℕ, 0 < d ∧ ∀ y : Fin n → E ⊗[F] Af F,
       (∀ j k, coord b (y j) k ∈ Ohat F) → d • y ∈ lamAf (F := F) L := by
   classical
-  choose m hm hmL using fun p : Fin n × ι => exists_nat_smul_mem L hL (Pi.single p.1 (b p.2))
+  choose m hm hmL using fun p : Fin n × ι => _root_.Bl.general_b_fact_third'.goal1 L hL (Pi.single p.1 (b p.2))
   refine ⟨∏ p, m p, Finset.prod_pos fun p _ => hm p, fun y hy => ?_⟩
   have key : ∀ (j : Fin n) (k : ι) (c : Af F), c ∈ Ohat F →
       (∏ p, m p) • Pi.single j (b k ⊗ₜ[F] c) ∈ lamAf (F := F) L := by
@@ -92,13 +92,11 @@ theorem exists_lower (b : Module.Basis ι F E) (L : Submodule (𝓞 E) (Fin n �
       funext i
       by_cases hij : i = j
       · subst hij
-        simp only [Pi.smul_apply, Pi.single_eq_same, Subring.smul_def, smul_eq_mul, Formalism.UG.inclE,
-          Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul,
-          mul_one]
+        simp only [Pi.smul_apply, Pi.single_eq_same, Subring.smul_def, smul_eq_mul]
         rw [← Nat.cast_smul_eq_nsmul F, ← Nat.cast_smul_eq_nsmul F, TensorProduct.smul_tmul']
         simp only [inclV, Pi.smul_apply, Pi.single_eq_same, Formalism.UG.inclE,
           Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]
-      · simp [Pi.single_eq_of_ne hij, Subring.smul_def, Formalism.UG.inclE, inclV]
+      · simp [Pi.single_eq_of_ne hij, Formalism.UG.inclE, inclV]
     rw [heq]
     exact Submodule.smul_mem _ _ (inclV_mem hw)
   have hy' : y = ∑ j, ∑ k, (Pi.single j (b k ⊗ₜ[F] coord b (y j) k) : Fin n → E ⊗[F] Af F) := by

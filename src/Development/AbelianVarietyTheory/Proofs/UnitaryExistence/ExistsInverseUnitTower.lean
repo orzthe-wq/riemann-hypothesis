@@ -1,7 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCompatibleNormTowerProfiniteStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCompatibleNormTowerProfinite
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TateIsoExistsLiftOfTwoData
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -87,7 +88,7 @@ theorem familyUnif_lattice_genus : ∀ (E : Type) [Field E] [NumberField E] [IsC
   intro E _ _ _ H D l Xo σ g ty U i P hP
   obtain ⟨f, ν, h1, h2, h3, h4, h5, h6, -⟩ := familyUnif_lattice_similar E H D l Xo σ g ty U i P hP
   obtain ⟨κ, hκ1, hκ2, hκ3⟩ := exists_inverse_unit_tower ν h3 h4
-  obtain ⟨s, hs1, hs2, hs3⟩ := GlobalTheory.T.exists_compatible_norm_tower_profinite E H l κ hκ2 hκ3
+  obtain ⟨s, hs1, hs2, hs3⟩ := _root_.GlobalTheory.NormTower.exists_norm_tower E H l κ hκ2 hκ3
   have hinv : ∀ n : ℕ, 0 < n → ∃ r c : 𝓞 E, r * s n = 1 + n * c := by
     intro n hn
     obtain ⟨c, hc⟩ := hs1 n hn

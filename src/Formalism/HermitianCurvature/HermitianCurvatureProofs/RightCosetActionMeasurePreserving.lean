@@ -74,21 +74,10 @@ section embG
 
 variable {k p ρ : ℕ}
 
-theorem embG_mul (a b : B.Mat k ρ) : U.embG k p ρ (a * b) = U.embG k p ρ a * U.embG k p ρ b := by
-  simp only [U.embG, Ux5.block3_mul_blocks, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul]
-
-private theorem embG_one' : U.embG k p ρ (1 : B.Mat k ρ) = 1 := by
-  ext i j
-  obtain ⟨x, rfl⟩ := (U.eB k p ρ).surjective i
-  obtain ⟨y, rfl⟩ := (U.eB k p ρ).surjective j
-  simp only [Matrix.one_apply, (U.eB k p ρ).injective.eq_iff]
-  simp only [U.embG, U.blk3, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]
-  rcases x with (a | b) | c <;> rcases y with (a' | b') | c' <;> simp [Matrix.one_apply]
-
 theorem embG_inv {a : B.Mat k ρ} (ha : IsUnit a.det) : U.embG k p ρ a⁻¹ = (U.embG k p ρ a)⁻¹ := by
   symm
   apply Matrix.inv_eq_left_inv
-  rw [← embG_mul, Matrix.nonsing_inv_mul _ ha, embG_one']
+  rw [← _root_.Formalism.FourierDecayAlt.P.Dx2.Split.embG_mul, Matrix.nonsing_inv_mul _ ha, _root_.Formalism.FourierDecayAlt.P.PBM.embG_one]
 
 end embG
 

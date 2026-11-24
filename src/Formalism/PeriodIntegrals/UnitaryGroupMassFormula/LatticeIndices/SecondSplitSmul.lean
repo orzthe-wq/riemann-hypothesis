@@ -60,7 +60,7 @@ theorem firstSplit_smul (c : K) (t : T) : t1 θ (c • t) = c * t1 θ t := by
 
 theorem map_sub_one (M : Matrix n n T) (f : T →+* K) : (M - 1).map f = M.map f - 1 := by
   ext i j
-  by_cases h : i = j <;> simp [Matrix.one_apply, h]
+  by_cases h : i = j <;> simp [h]
 
 theorem ker_fwd (c : K) (g : GL n T)
     (hg : ∀ y ∈ Lat O θ J P, ∃ z ∈ Lat O θ J P, ((g : Matrix n n T) - 1) *ᵥ y = c • z) :
@@ -76,7 +76,7 @@ theorem ker_fwd (c : K) (g : GL n T)
     simp [y, t2]
   have hcol : (fun k => (P : Matrix n n K) k j) = (P : Matrix n n K) *ᵥ Pi.single j 1 := by
     funext k
-    simp [Matrix.mulVec_single_one]
+    simp
   have hPinv : ((P⁻¹ : GL n K) : Matrix n n K) * (P : Matrix n n K) = 1 := by
     rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
   have hyL : y ∈ Lat O θ J P := by
@@ -88,7 +88,7 @@ theorem ker_fwd (c : K) (g : GL n T)
       intro k
       by_cases hk : k = j
       · subst hk; simp
-      · simp [Pi.single_apply, hk]
+      · simp [hk]
     · rw [ht2, Matrix.mulVec_zero]
       unfold IntV
       intro k

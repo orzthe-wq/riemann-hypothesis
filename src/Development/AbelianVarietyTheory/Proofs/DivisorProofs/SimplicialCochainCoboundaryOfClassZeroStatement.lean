@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafBasicPropertiStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.GalMapMul
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafBasicProperti
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SimplicialCochainClassesBasicProperties
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -54,7 +55,7 @@ theorem _root_.GlobalTheory.T.simplicialCochain_coboundary_of_class_zero :
       IsCls (R := R) s (0 : H R E F ((1 : ℕ) : ℤ)) →
         ∃ t : (free R).obj (E.obj (op ⦋0⦌)) ⟶ F, s = cobd (R := R) (E := E) (n := 0) t := by
   intro R _ F E s hs
-  obtain ⟨-, hneg, hmono, ⟨w, hex⟩, -, hpos⟩ := GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_basic_properties R F
+  obtain ⟨-, hneg, hmono, ⟨w, hex⟩, -, hpos⟩ := _root_.GlobalTheory.EtC.res_basic R F
   obtain ⟨z, hz0, hz⟩ := hs
   rw [CohomologyClass.mk_eq_zero_iff] at hz0
   obtain ⟨m, hm, β, hβ⟩ := hz0

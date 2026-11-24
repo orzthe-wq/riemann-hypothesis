@@ -1,55 +1,130 @@
 module
 
+public import Mathlib.FieldTheory.Galois.NormalBasis
+public import Mathlib.RepresentationTheory.Coinduced
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+public import Mathlib.RingTheory.WittVector.IsPoly
+public import Mathlib.Tactic.Basify
+public import Mathlib.Tactic.ReduceModChar
+public import Std.Tactic.BVDecide.Normalize.Prop
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro
+public import Mathlib.Algebra.Order.Interval.Set.Instances
+public import Mathlib.NumberTheory.NumberField.Basic
 public import GroundTheory.ProfiniteCohomology.GaloisCohomology.UnitsInflationCochainsFHomApply
 public import GroundTheory.ProfiniteCohomology.GaloisModules.FixedField
-public import GroundTheory.ProfiniteCohomology.AdditiveHilbert
 public import GroundTheory.ProfiniteCohomology.Colimit
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
+public import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.Tactic.TypeStar
+import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
-public import Mathlib.FieldTheory.IsSepClosed
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.ProfiniteCohomology.AdditiveHilbert, GroundTheory.ProfiniteCohomology.GaloisCohomology.IsZeroGroupCohomologyQuotientToInvariantsGalAdd
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.AdditiveHilbert =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.AdditiveHilbert", "h": "module\n\npublic import Mathlib.FieldTheory.Galois.NormalBasis\npublic import Mathlib.RepresentationTheory.Coinduced\npublic import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic\npublic import Mathlib.RingTheory.WittVector.IsPoly\npublic import Mathlib.Tactic.Basify\npublic import Mathlib.Tactic.ReduceModChar\npublic import Std.Tactic.BVDecide.Normalize.Prop\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality\npublic import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Order.Interval.Set.Instances\npublic import Mathlib.NumberTheory.NumberField.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+open CategoryTheory CategoryTheory.Limits
+
+universe u
+
+section NormalBasis
+
+variable {K L : Type*} [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
+
+theorem normalBasis_repr_apply_smul (σ τ : Gal(L/K)) (y : L) :
+    (IsGalois.normalBasis K L).repr (σ y) τ = (IsGalois.normalBasis K L).repr y (σ⁻¹ * τ) := by
+  have hb (ρ : Gal(L/K)) :
+      σ (IsGalois.normalBasis K L ρ) = IsGalois.normalBasis K L (σ * ρ) := by
+    rw [IsGalois.normalBasis_apply (σ * ρ), IsGalois.normalBasis_apply ρ, AlgEquiv.mul_apply]
+  have key : (Finsupp.lapply τ ∘ₗ (IsGalois.normalBasis K L).repr.toLinearMap ∘ₗ σ.toLinearMap :
+      L →ₗ[K] K) = Finsupp.lapply (σ⁻¹ * τ) ∘ₗ (IsGalois.normalBasis K L).repr.toLinearMap := by
+    refine (IsGalois.normalBasis K L).ext fun ρ => ?_
+    change (IsGalois.normalBasis K L).repr (σ (IsGalois.normalBasis K L ρ)) τ =
+      (IsGalois.normalBasis K L).repr (IsGalois.normalBasis K L ρ) (σ⁻¹ * τ)
+    classical
+    rw [hb, Module.Basis.repr_self, Module.Basis.repr_self]
+    simp only [Finsupp.single_apply, eq_inv_mul_iff_mul_eq]
+  exact LinearMap.congr_fun key y
+
+end NormalBasis
+
+section Coinduced
+
+variable (k : Type u) (K L : Type u) [CommRing k] [Field K] [Field L] [Algebra K L]
+  [Algebra k K] [Algebra k L] [IsScalarTower k K L] [FiniteDimensional K L] [IsGalois K L]
+
+noncomputable def galoisCoindIso :
+    Rep.ofDistribMulAction k Gal(L/K) L ≅
+      Rep.coind (⊥ : Subgroup Gal(L/K)).subtype (Rep.trivial k (⊥ : Subgroup Gal(L/K)) K) := by
+  have htop : (Representation.trivial k (⊥ : Subgroup Gal(L/K)) K).coindV
+      (⊥ : Subgroup Gal(L/K)).subtype = ⊤ := by
+    ext f
+    simp only [Representation.mem_coindV, Submodule.mem_top, iff_true]
+    rintro ⟨g, hg⟩ h
+    rw [Subgroup.mem_bot] at hg
+    subst hg
+    simp
+  let e : L ≃ₗ[k] _ :=
+    ((IsGalois.normalBasis K L).equivFun.restrictScalars k).trans
+      ((LinearEquiv.funCongrLeft k K (Equiv.inv Gal(L/K))).trans (LinearEquiv.ofTop _ htop).symm)
+  refine Rep.mkIso (Representation.Equiv.mk e fun σ => ?_)
+  refine LinearMap.ext fun y => Subtype.ext (funext fun h => ?_)
+  change (IsGalois.normalBasis K L).repr (σ y) h⁻¹ =
+    (IsGalois.normalBasis K L).repr y (h * σ)⁻¹
+  rw [normalBasis_repr_apply_smul, mul_inv_rev]
+
+end Coinduced
+
+section Vanishing
+
+open groupCohomology
+
+variable (k : Type u) (K L : Type u) [CommRing k] [Field K] [Field L] [Algebra K L]
+  [Algebra k K] [Algebra k L] [IsScalarTower k K L] [FiniteDimensional K L] [IsGalois K L]
+
+theorem isZero_groupCohomology_succ (n : ℕ) :
+    IsZero (groupCohomology (Rep.ofDistribMulAction k Gal(L/K) L) (n + 1)) :=
+  (isZero_groupCohomology_succ_of_subsingleton
+      (Rep.trivial k (⊥ : Subgroup Gal(L/K)) K) n).of_iso
+    ((groupCohomology.functor k Gal(L/K) (n + 1)).mapIso (galoisCoindIso k K L) ≪≫
+      groupCohomology.coindIso _ (n + 1))
+
+theorem isZero_groupCohomology {n : ℕ} (hn : n ≠ 0) :
+    IsZero (groupCohomology (Rep.ofDistribMulAction k Gal(L/K) L) n) := by
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn
+  exact isZero_groupCohomology_succ k K L m
+
+theorem isZero_groupCohomology_galois {n : ℕ} (hn : n ≠ 0) :
+    IsZero (groupCohomology (Rep.ofDistribMulAction K Gal(L/K) L) n) :=
+  isZero_groupCohomology K K L hn
+
+end Vanishing
+
+section Integral
+
+variable (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
+
+end Integral
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.AdditiveHilbert =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.GaloisCohomology.IsZeroGroupCohomologyQuotientToInvariantsGalAdd =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.GaloisCohomology.IsZeroGroupCohomologyQuotientToInvariantsGalAdd", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.GaloisCohomology.UnitsInflationCochainsFHomApply\npublic import GroundTheory.ProfiniteCohomology.GaloisModules.FixedField\npublic import GroundTheory.ProfiniteCohomology.AdditiveHilbert\npublic import GroundTheory.ProfiniteCohomology.Colimit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.FieldTheory.Galois.Profinite\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\npublic import Mathlib.FieldTheory.IsSepClosed\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -202,3 +277,6 @@ variable (K) (Ksep : Type u) [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep]
 end SeparableClosure
 
 end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.GaloisCohomology.IsZeroGroupCohomologyQuotientToInvariantsGalAdd =====

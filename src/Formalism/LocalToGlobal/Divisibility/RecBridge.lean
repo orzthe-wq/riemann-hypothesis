@@ -1,28 +1,36 @@
 module
 
 public import Formalism.LocalToGlobal.Divisibility.ConstantGeTwentyEight
+public import Formalism.LocalToGlobal.Columns.HeckeInert
+public import Formalism.LocalToGlobal.Divisibility.Inputs
+public import Formalism.LocalRingCardinality.DataDIVDefs
+public import Formalism.SizeWindowBrackets.ChainSlopeWindows.ExistsNsmulMem
+public import Formalism.HarderNarasimhan.Statement
+public import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Rerealize
+public import Formalism.LocalRingCardinality.DataArith
+public import Formalism.HarderNarasimhan.HarderNarasimhanProofs.ExistsSmulMemOfFinrankEq
+public import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SlopeIneqMean
+public import Formalism.SharpRestriction.Divisibility.HookProducts.RBTieOp
+public import Formalism.SharpRestriction.Divisibility.HookProducts.RBTieFrame
 public import Formalism.LocalToGlobal.Divisibility.NumbersLink
 public import Formalism.SharpRestriction.GlobalTheoremInputs
 public import Formalism.LocalToGlobal.GroupLattices.ServJointF
 public import Formalism.LocalToGlobal.Divisibility.DivisionHeightBoundStatement
 public import Formalism.LocalToGlobal.Divisibility.NumbersLemmas
-import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
-public import Formalism.LocalToGlobal.Divisibility.LinkDIVL2R3Col
-public import Formalism.LocalToGlobal.GroupLattices.JointServices.ShiftIdealSgFl
-import Formalism.LocalToGlobal.GroupLattices.JointServices.ValIntNonneg
 public import Formalism.SharpRestriction.AdmissibleParameterJoins
 public import Formalism.SharpRestriction.Divisibility.ClosedSizeLink.DivisionAdmissibleFamilyOfData
-public import Formalism.SharpRestriction.Divisibility.HookProducts.RBTieMu
-import Formalism.SharpRestriction.Divisibility.HookProducts.RBTieOp
 public import Formalism.SharpRestriction.Divisibility.WeightDegreeSizes
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -30,8 +38,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -39,8 +45,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.Monotonicity.Lemmas
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -53,10 +57,368 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ReduceModChar
+import Formalism.LocalRingCardinality.DataAmbForm
+import Formalism.LocalToGlobal.Divisibility.ClassSum
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.TypeStar
+import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+import Formalism.LocalToGlobal.GroupLattices.JointServices.ValIntNonneg
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Monotonicity.Lemmas
 import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Formalism.SharpRestriction.Divisibility.HookProducts.RBTieFrame
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.Divisibility.LinkDIVL2R3Col, Formalism.LocalToGlobal.GroupLattices.JointServices.ShiftIdealSgFl, Formalism.SharpRestriction.Divisibility.HookProducts.RBTieSlope, Formalism.SharpRestriction.Divisibility.HookProducts.RBTieMu, Formalism.LocalToGlobal.Divisibility.RecBridge
+
+-- ===== clump member: Formalism.LocalToGlobal.Divisibility.LinkDIVL2R3Col =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.Divisibility.LinkDIVL2R3Col", "h": "module\n\npublic import Formalism.LocalToGlobal.Divisibility.ConstantGeTwentyEight\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.LocalToGlobal.Columns.HeckeInert\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Module NumberField IsDedekindDomain
+open scoped Matrix ComplexOrder
+
+noncomputable section
+
+namespace Formalism.L2.DIV
+
+open Formalism.BasicNotions Formalism.DivisionValues Formalism.L2.Indef
+
+section Face
+
+variable {K : Type} [Field K] [NumberField K] [StarRing K]
+
+theorem linkDIV_L2R_face [_root_.NumberField.IsTotallyComplex K] {Bs : DefBase K} {A : DefAmb Bs} {fc : DefSub A → DefFace Bs} {cf : ConvFace Bs} {C CH : ℝ}
+    (Pk : IndefPkgR A fc cf C CH) (wf0 : (fc Pk.Zs).Df0.WF) (wf1 : (fc Pk.Zs).Df1.WF)
+    {Pl : Type} [Fintype Pl] [DecidableEq Pl] (R : RecNums Bs.J Pl) (u : (fc Pk.Zs).Dc.Mem)
+    (Nu : Submodule (𝓞 K) (Fin ((fc Pk.Zs).Dc.a u) → K)) (sg : HeightOneSpectrum (𝓞 K) → ℝ)
+    (I : DivInputsR Pk.core R u Nu sg) : DivClausesR Pk.core R u Nu sg :=
+  divClausesR_of wf0 wf1 Pk.core R u Nu sg I
+
+
+end Face
+
+section Fam3
+
+variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
+
+end Fam3
+
+section Col3
+
+variable {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.Wts X Pr.Word R) (Ch : Col.Chars X Pr R.m)
+  (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (hX : X.Ok)
+  (v0 : InfinitePlace X.K) (TU : Finset (Tup X.F X.E X.K S))
+  (Xg : Finset (Col.G0 X.E Pr.vGs R.r → X.K)) (S0 : Set (HeightOneSpectrum (𝓞 X.E)))
+  (xiVal : Tup X.F X.E X.K S → HeightOneSpectrum (𝓞 X.E) → X.Kˣ)
+  (trIv : Fin R.m → (Col.LevOffI ∅ Pr.vGs S0 × List ℕ → X.K) → Col.LevOffI ∅ Pr.vGs S0 × List ℕ → X.K)
+
+end Col3
+
+end Formalism.L2.DIV
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.Divisibility.LinkDIVL2R3Col =====
+
+-- ===== clump member: Formalism.LocalToGlobal.GroupLattices.JointServices.ShiftIdealSgFl =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.GroupLattices.JointServices.ShiftIdealSgFl", "h": "module\n\npublic import Formalism.LocalToGlobal.Divisibility.Inputs\npublic import Formalism.LocalRingCardinality.DataDIVDefs\npublic import Formalism.SizeWindowBrackets.ChainSlopeWindows.ExistsNsmulMem\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalRingCardinality.DataAmbForm\nimport Formalism.LocalToGlobal.Divisibility.ClassSum\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Module NumberField IsDedekindDomain
+open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.L2.DIV Formalism.L2.Indef Formalism.HermitianLatticesTheory
+
+noncomputable section
+
+namespace Formalism.L2.G.ServJoint
+
+variable {D : D7}
+
+def sgFl (L : SizeData₂ D) (u : D.what₂.Word) (z : HeightOneSpectrum (𝓞 D.what₂.LL)) : ℝ :=
+  ((⌊ur D (D.plEq.symm z) (L.sg u (D.plEq.symm z))⌋ : ℤ) : ℝ)
+
+theorem sg_off (L : SizeData₂ D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hw : w ∉ L.supp) : L.sg u w = 0 := by
+  unfold SizeData₂.sg
+  refine Finset.sum_eq_zero fun j _ => ?_
+  have h1 : L.gain j w = 0 := L.gain_supp j w hw
+  have h2 := L.F_supp j w hw
+  have h3 := L.E_supp u j w hw
+  simp [SizeData₂.gainD, h1, h2, h3]
+
+theorem shiftZ_sgFl (L : SizeData₂ D) (u : D.what₂.Word) (z : HeightOneSpectrum (𝓞 D.what₂.LL)) :
+    shiftZ (sgFl L u) z = ⌊ur D (D.plEq.symm z) (L.sg u (D.plEq.symm z))⌋ := by
+  first
+  | (simp [shiftZ, sgFl])
+
+theorem shiftIdeal_sgFl (L : SizeData₂ D) (u : D.what₂.Word) : Formalism.DivisionValues.shiftIdeal (shiftZ (sgFl L u)) = Iu D L u := by
+  unfold Formalism.DivisionValues.shiftIdeal Iu
+  rw [finprod_eq_prod_of_mulSupport_subset (s := L.supp.map D.plEq.toEmbedding)]
+  · rw [Finset.prod_map]
+    refine Finset.prod_congr rfl fun w _ => ?_
+    simp [shiftZ_sgFl]
+  · intro z hz
+    rw [Function.mem_mulSupport] at hz
+    rw [Finset.coe_map, Set.mem_image]
+    refine ⟨D.plEq.symm z, ?_, by simp⟩
+    by_contra h
+    apply hz
+    rw [shiftZ_sgFl, sg_off L u _ h]
+    simp [ur]
+
+theorem Iu_ne_zero (L : SizeData₂ D) (u : D.what₂.Word) : Iu D L u ≠ 0 := by
+  unfold Iu
+  rw [Finset.prod_ne_zero_iff]
+  intro x _
+  apply zpow_ne_zero
+  first
+  | exact FractionalIdeal.coeIdeal_ne_zero.mpr (D.plEq x).ne_bot
+
+theorem nu_map_eq (L : SizeData₂ D) (hN : NprimeDef D L) (u : D.what₂.Word) {d : ℕ}
+    (e : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) (NuC Nu : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL))
+    (hlat : (D.div.Nu u).L = NuC.map ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL)))
+    (hshift : NuC = shiftLat Nu (sgFl L u)) :
+    Nu.map ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL)) = L.NuLat u := by
+  set f := ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL)) with hf
+
+  have hmap : ∀ (I : Submodule (𝓞 D.what₂.LL) D.what₂.LL) (N : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL)),
+      (Formalism.HermitianLatticesTheory.idealSmul I N).map f = Formalism.HermitianLatticesTheory.idealSmul I (N.map f) := by
+    intro I N
+    unfold Formalism.HermitianLatticesTheory.idealSmul
+    rw [Submodule.map_span]
+    congr 1
+    ext z
+    constructor
+    · rintro ⟨_, ⟨a, ha, x, hx, rfl⟩, rfl⟩
+      exact ⟨a, ha, f x, Submodule.mem_map_of_mem hx, by simp [hf]⟩
+    · rintro ⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩
+      exact ⟨a • x, ⟨a, ha, x, hx, rfl⟩, by simp [hf]⟩
+  have hN' : (D.div.Nu u).L = Formalism.HermitianLatticesTheory.idealSmul (Iu D L u : Submodule (𝓞 D.what₂.LL) D.what₂.LL) (L.NuLat u) := by
+    rw [hN u]
+    rfl
+  have h1 : Formalism.HermitianLatticesTheory.idealSmul (Iu D L u : Submodule (𝓞 D.what₂.LL) D.what₂.LL) (Nu.map f) =
+      Formalism.HermitianLatticesTheory.idealSmul (Iu D L u : Submodule (𝓞 D.what₂.LL) D.what₂.LL) (L.NuLat u) := by
+    rw [← hmap, ← hN', hlat, hshift, shiftLat, shiftIdeal_sgFl]
+  have hIu : Iu D L u ≠ 0 := Iu_ne_zero L u
+  have hone : ∀ X : Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V,
+      Formalism.HermitianLatticesTheory.idealSmul ((((Iu D L u)⁻¹ * Iu D L u : FractionalIdeal (nonZeroDivisors (𝓞 D.what₂.LL)) D.what₂.LL)) :
+        Submodule (𝓞 D.what₂.LL) D.what₂.LL) X = X := by
+    intro X
+    rw [inv_mul_cancel₀ hIu, FractionalIdeal.coe_one, Formalism.LFunctionChainParameters.slopeLatticeData.idealSmul_one]
+  rw [← hone (Nu.map f), ← hone (L.NuLat u), FractionalIdeal.coe_mul, Formalism.LFunctionChainParameters.slopeLatticeData.idealSmul_mul,
+    Formalism.LFunctionChainParameters.slopeLatticeData.idealSmul_mul, h1]
+
+theorem nu_into (L : SizeData₂ D) (hN : NprimeDef D L) (u : D.what₂.Word) {d : ℕ}
+    (e : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) (NuC Nu : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL))
+    (hlat : (D.div.Nu u).L = NuC.map ((e : (Fin d → D.what₂.LL) →ₗ[D.what₂.LL] (D.div.Nu u).V).restrictScalars (𝓞 D.what₂.LL)))
+    (hshift : NuC = shiftLat Nu (sgFl L u)) : ∀ x ∈ Nu, e x ∈ L.NuLat u := by
+  intro x hx
+  rw [← nu_map_eq L hN u e NuC Nu hlat hshift]
+  exact Submodule.mem_map_of_mem hx
+
+end Formalism.L2.G.ServJoint
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.GroupLattices.JointServices.ShiftIdealSgFl =====
+
+-- ===== clump member: Formalism.SharpRestriction.Divisibility.HookProducts.RBTieSlope =====
+-- clump-header: {"m": "Formalism.SharpRestriction.Divisibility.HookProducts.RBTieSlope", "h": "module\n\npublic import Formalism.HarderNarasimhan.Statement\npublic import Formalism.HarderNarasimhan.HarderNarasimhanProofs.Rerealize\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Module
+
+noncomputable section
+
+namespace Formalism.MainNotions.DIV.HookProducts.RBTie
+
+theorem slope_eq_of_norm_eq {R V E F : Type*} [Ring R] [AddCommGroup V] [Module R V]
+    [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
+    [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
+    (ρ : V →+ E) (ρ₂ : V →+ F) (hn : ∀ x, ‖ρ₂ x‖ = ‖ρ x‖) (N : Submodule R V) :
+    Formalism.HN.slope ρ₂ N = Formalism.HN.slope ρ N := by
+  classical
+  have memL : ∀ y : E, y ∈ Formalism.HN.zl ρ N ↔ ∃ x ∈ N.toAddSubgroup, ρ x = y := by
+    intro y
+    show y ∈ (N.toAddSubgroup.map ρ) ↔ _
+    exact AddSubgroup.mem_map
+  have memM : ∀ y : F, y ∈ Formalism.HN.zl ρ₂ N ↔ ∃ x ∈ N.toAddSubgroup, ρ₂ x = y := by
+    intro y
+    show y ∈ (N.toAddSubgroup.map ρ₂) ↔ _
+    exact AddSubgroup.mem_map
+  let pre : Formalism.HN.zl ρ N → V := fun y => Classical.choose ((memL y).1 y.2)
+  have pre_mem : ∀ y, pre y ∈ N.toAddSubgroup := fun y =>
+    (Classical.choose_spec ((memL y).1 y.2)).1
+  have pre_eq : ∀ y, ρ (pre y) = y := fun y => (Classical.choose_spec ((memL y).1 y.2)).2
+  let f0 : Formalism.HN.zl ρ N →+ Formalism.HN.zl ρ₂ N :=
+    AddMonoidHom.mk' (fun y => ⟨ρ₂ (pre y), (memM _).2 ⟨pre y, pre_mem y, rfl⟩⟩) (by
+      intro y z
+      apply Subtype.ext
+      show ρ₂ (pre (y + z)) = ρ₂ (pre y) + ρ₂ (pre z)
+      rw [← map_add (f := _)]
+      apply Formalism.HN.Rerealization.eq_of_eq ρ ρ₂ hn
+      rw [map_add (f := _), pre_eq, pre_eq, pre_eq]
+      rfl)
+  have f0_apply : ∀ y, ((f0 y : Formalism.HN.zl ρ₂ N) : F) = ρ₂ (pre y) := fun y => rfl
+  have f0_norm : ∀ y, ‖((f0 y : Formalism.HN.zl ρ₂ N) : F)‖ = ‖(y : E)‖ := by
+    intro y
+    rw [f0_apply, hn, pre_eq]
+  have hinj : Function.Injective f0 := by
+    set_option backward.isDefEq.respectTransparency.instanceSearchTypes false in rw [injective_iff_map_eq_zero]
+    intro y hy
+    have h0 : ‖(y : E)‖ = 0 := by
+      rw [← f0_norm, hy]
+      simp
+    exact Subtype.ext (norm_eq_zero.1 h0)
+  have hsurj : Function.Surjective f0 := by
+    rintro ⟨z, hz⟩
+    obtain ⟨x, hx, rfl⟩ := (memM z).1 hz
+    refine ⟨⟨ρ x, (memL _).2 ⟨x, hx, rfl⟩⟩, Subtype.ext ?_⟩
+    rw [f0_apply]
+    exact Formalism.HN.Rerealization.eq_of_eq ρ ρ₂ hn (pre_eq _)
+  let e : Formalism.HN.zl ρ N ≃+ Formalism.HN.zl ρ₂ N := AddEquiv.ofBijective f0 ⟨hinj, hsurj⟩
+  have e_norm : ∀ y, ‖e y‖ = ‖y‖ := fun y => f0_norm y
+  have e_symm_norm : ∀ z, ‖e.symm z‖ = ‖z‖ := by
+    intro z
+    rw [← e_norm (e.symm z), e.apply_symm_apply]
+  have iso : Isometry e := AddMonoidHomClass.isometry_of_norm e e_norm
+  have iso_symm : Isometry e.symm := AddMonoidHomClass.isometry_of_norm e.symm e_symm_norm
+  have hiff : DiscreteTopology (Formalism.HN.zl ρ N) ↔ DiscreteTopology (Formalism.HN.zl ρ₂ N) := by
+    constructor
+    · intro h
+      exact iso_symm.isEmbedding.discreteTopology
+    · intro h
+      exact iso.isEmbedding.discreteTopology
+  have hrk : Formalism.F.rk (Formalism.HN.zl ρ₂ N) = Formalism.F.rk (Formalism.HN.zl ρ N) := by
+    unfold Formalism.F.rk
+    exact e.toIntLinearEquiv.finrank_eq.symm
+  have hcov : Formalism.F.covol (Formalism.HN.zl ρ₂ N) = Formalism.F.covol (Formalism.HN.zl ρ N) := by
+    by_cases h : DiscreteTopology (Formalism.HN.zl ρ N)
+    · exact (Formalism.HN.Rerealization.covol_rk_eq ρ ρ₂ hn N.toAddSubgroup h (hiff.1 h)).1
+    · have h' : ¬ DiscreteTopology (Formalism.HN.zl ρ₂ N) := fun h' => h (hiff.2 h')
+      unfold Formalism.F.covol
+      rw [dite_eq_right h, dite_eq_right h']
+  unfold Formalism.HN.slope Formalism.F.slope Formalism.F.deg
+  rw [hcov, hrk]
+
+end Formalism.MainNotions.DIV.HookProducts.RBTie
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.Divisibility.HookProducts.RBTieSlope =====
+
+-- ===== clump member: Formalism.SharpRestriction.Divisibility.HookProducts.RBTieMu =====
+-- clump-header: {"m": "Formalism.SharpRestriction.Divisibility.HookProducts.RBTieMu", "h": "module\n\npublic import Formalism.LocalRingCardinality.DataArith\npublic import Formalism.HarderNarasimhan.HarderNarasimhanProofs.ExistsSmulMemOfFinrankEq\npublic import Formalism.HarderNarasimhan.HarderNarasimhanProofs.SlopeIneqMean\npublic import Formalism.SharpRestriction.Divisibility.HookProducts.RBTieOp\npublic import Formalism.SharpRestriction.Divisibility.HookProducts.RBTieSlope\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.SharpRestriction.Divisibility.HookProducts.RBTieFrame\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix NumberField Module
+
+noncomputable section
+
+namespace Formalism.MainNotions.DIV.HookProducts.RBTie
+
+section Mu
+
+variable {K : Type} [Field K] [NumberField K] [StarRing K]
+
+theorem mem_dualLat_iff {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
+    (A : Submodule (𝓞 K) V) (f : Module.Dual K V) :
+    f ∈ Formalism.HN.dualLat A ↔ ∀ x ∈ A, f x ∈ Set.range (algebraMap (𝓞 K) K) := Iff.rfl
+
+theorem cnorm_isom {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] (W : Matrix m n ℂ)
+    (hW : Wᴴ * W = 1) (c : n → ℂ) : Formalism.HermitianLatticesTheory.cnorm (W *ᵥ c) = Formalism.HermitianLatticesTheory.cnorm c := by
+  have key : ∀ {ι : Type} [Fintype ι] (u : ι → ℂ), ((∑ i, ‖u i‖ ^ 2 : ℝ) : ℂ) = star u ⬝ᵥ u := by
+    intro ι _ u
+    push_cast
+    simp only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul']
+  unfold Formalism.HermitianLatticesTheory.cnorm
+  congr 1
+  have h : ((∑ i, ‖(W *ᵥ c) i‖ ^ 2 : ℝ) : ℂ) = ((∑ i, ‖c i‖ ^ 2 : ℝ) : ℂ) := by
+    rw [key, key, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hW,
+      Matrix.one_mulVec]
+  exact_mod_cast h
+
+theorem muDual_tie (A : Formalism.BasicNotions.HLat K) {n : ℕ} (L : Submodule (𝓞 K) (Fin n → K))
+    (XE : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (e : (Fin n → K) ≃ₗ[K] A.V)
+    (hlat : A.L = L.map ((e : (Fin n → K) →ₗ[K] A.V).restrictScalars (𝓞 K)))
+    (hmet : ∀ v x y, Formalism.HermitianLatticesTheory.majAt A.b A.X v (e x) (e y) = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) XE v x y)
+    (hXA : ∀ v, IsUnit (A.X v).det) (hXE : ∀ v, IsUnit (XE v).det) :
+    Formalism.HN.muDef (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE) (Formalism.HN.dualLat L) = A.muDual := by
+  set ψ : Module.Dual K (Fin n → K) →ₗ[K] Module.Dual K A.V := Module.Dual.transpose e.symm.toLinearMap with hψ
+  have hψx : ∀ f x, ψ f x = f (e.symm x) := fun f x => by simp [hψ, Module.Dual.transpose_apply]
+
+  have hnA : ∀ v f, Formalism.HermitianLatticesTheory.normAt A.b.dualBasis (Formalism.HN.dualFrame A.X) v (ψ f) =
+      Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE) v f := by
+    intro v f
+    have hv := vecAt_map (Pi.basisFun K (Fin n)).dualBasis A.b.dualBasis v ψ f
+    have hT : LinearMap.toMatrix (Pi.basisFun K (Fin n)).dualBasis A.b.dualBasis ψ =
+        (LinearMap.toMatrix A.b (Pi.basisFun K (Fin n)) e.symm.toLinearMap)ᵀ := by
+      rw [hψ, LinearMap.toMatrix_transpose]
+    have hW : ((A.X v)ᵀ * (cQ A.b e v)ᵀ) = ((cU A.b A.X XE e v)ᴴ)ᵀ * (XE v)ᵀ := by
+      rw [← Matrix.transpose_mul, ← Matrix.transpose_mul, cQ_mul_XA A.b A.X XE e v hmet (hXA v) (hXE v)]
+    simp only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.fcoord]
+    rw [hv, hT, dualFrame_inv A.X v (hXA v), dualFrame_inv XE v (hXE v), Matrix.mulVec_mulVec]
+    have hQ : (LinearMap.toMatrix A.b (Pi.basisFun K (Fin n)) e.symm.toLinearMap)ᵀ.map v.embedding = (cQ A.b e v)ᵀ := rfl
+    rw [hQ, hW, ← Matrix.mulVec_mulVec, cnorm_isom]
+    rw [conjT_transpose_isom, cU_conj_mul A.b A.X XE e v hmet (hXE v), Matrix.transpose_one]
+  have hn : ∀ f, ‖((Formalism.HermitianLatticesTheory.realize A.b.dualBasis (Formalism.HN.dualFrame A.X)).comp ψ.toAddMonoidHom) f‖ =
+      ‖Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE) f‖ := by
+    intro f
+    have h2 : ‖((Formalism.HermitianLatticesTheory.realize A.b.dualBasis (Formalism.HN.dualFrame A.X)).comp ψ.toAddMonoidHom) f‖ ^ 2 =
+        ‖Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE) f‖ ^ 2 := by
+      rw [AddMonoidHom.comp_apply, Formalism.HN.PlaceOperatorNorms.norm_sq_realize, Formalism.HN.PlaceOperatorNorms.norm_sq_realize]
+      simp only [LinearMap.toAddMonoidHom_coe, hnA]
+    rw [← Real.sqrt_sq (norm_nonneg _), h2, Real.sqrt_sq (norm_nonneg _)]
+
+  have hzl : Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize A.b.dualBasis (Formalism.HN.dualFrame A.X)) (Formalism.HN.dualLat A.L) =
+      Formalism.HN.zl ((Formalism.HermitianLatticesTheory.realize A.b.dualBasis (Formalism.HN.dualFrame A.X)).comp ψ.toAddMonoidHom) (Formalism.HN.dualLat L) := by
+    ext y
+    rw [Formalism.HN.satR_mem_zl, Formalism.HN.satR_mem_zl]
+    simp only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe]
+    constructor
+    · rintro ⟨g, hg, rfl⟩
+      refine ⟨Module.Dual.transpose e.toLinearMap g, ?_, ?_⟩
+      · rw [mem_dualLat_iff] at hg ⊢
+        intro x hx
+        simp only [Module.Dual.transpose_apply, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]
+        exact hg (e x) (by rw [hlat]; exact ⟨x, hx, rfl⟩)
+      · congr 1
+        exact LinearMap.ext fun x => by simp [hψx, Module.Dual.transpose_apply]
+    · rintro ⟨f, hf, rfl⟩
+      refine ⟨ψ f, ?_, rfl⟩
+      rw [mem_dualLat_iff] at hf ⊢
+      intro z hz
+      rw [hlat] at hz
+      obtain ⟨x, hx, rfl⟩ := hz
+      rw [hψx]
+      simpa using hf x hx
+  have hs : Formalism.HN.slope (Formalism.HermitianLatticesTheory.realize A.b.dualBasis (Formalism.HN.dualFrame A.X)) (Formalism.HN.dualLat A.L) =
+      Formalism.HN.slope (Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE)) (Formalism.HN.dualLat L) := by
+    rw [← slope_eq_of_norm_eq _ _ hn (Formalism.HN.dualLat L)]
+    unfold Formalism.HN.slope
+    rw [hzl]
+  unfold Formalism.BasicNotions.HLat.muDual Formalism.BasicNotions.HLat.dualB Formalism.BasicNotions.HLat.dualX Formalism.BasicNotions.HLat.dualL Formalism.HN.muDef
+  rw [hs]
+
+end Mu
+
+end Formalism.MainNotions.DIV.HookProducts.RBTie
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.Divisibility.HookProducts.RBTieMu =====
+
+-- ===== clump member: Formalism.LocalToGlobal.Divisibility.RecBridge =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.Divisibility.RecBridge", "h": "module\n\npublic import Formalism.LocalToGlobal.Divisibility.ConstantGeTwentyEight\npublic import Formalism.LocalToGlobal.Divisibility.NumbersLink\npublic import Formalism.SharpRestriction.GlobalTheoremInputs\npublic import Formalism.LocalToGlobal.GroupLattices.ServJointF\npublic import Formalism.LocalToGlobal.Divisibility.DivisionHeightBoundStatement\npublic import Formalism.LocalToGlobal.Divisibility.NumbersLemmas\nimport Formalism.LocalRingCardinality.RankBoundMonotoneInDimension\npublic import Formalism.LocalToGlobal.Divisibility.LinkDIVL2R3Col\npublic import Formalism.LocalToGlobal.GroupLattices.JointServices.ShiftIdealSgFl\nimport Formalism.LocalToGlobal.GroupLattices.JointServices.ValIntNonneg\npublic import Formalism.SharpRestriction.AdmissibleParameterJoins\npublic import Formalism.SharpRestriction.Divisibility.ClosedSizeLink.DivisionAdmissibleFamilyOfData\npublic import Formalism.SharpRestriction.Divisibility.HookProducts.RBTieMu\nimport Formalism.SharpRestriction.Divisibility.HookProducts.RBTieOp\npublic import Formalism.SharpRestriction.Divisibility.WeightDegreeSizes\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.Monotonicity.Lemmas\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Presheaf\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Formalism.SharpRestriction.Divisibility.HookProducts.RBTieFrame\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Module NumberField IsDedekindDomain
@@ -87,12 +449,9 @@ theorem oneMap_of_coord (A Rr : Formalism.BasicNotions.HLat K) {d n : ℕ}
   rintro f ⟨a, ha, rfl⟩
   rw [hN] at ha
   obtain ⟨φ, hφ, rfl⟩ := ha
-  rw [mem_dualLat_iff']
-  intro r hr
-  rw [hR] at hr
-  obtain ⟨y, hy, rfl⟩ := hr
-  have h := (mem_dualLat_iff' Rc (B φ)).1 (h1 φ hφ) y hy
-  simpa [hB] using h
+  rw [mem_dualLat_iff', hR]
+  rintro r ⟨y, hy, rfl⟩
+  simpa [hB] using (mem_dualLat_iff' Rc (B φ)).1 (h1 φ hφ) y hy
 
 theorem ne_zero_of_coord {V W V' W' : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
     [AddCommGroup V'] [Module K V'] [AddCommGroup W'] [Module K W']
@@ -101,9 +460,7 @@ theorem ne_zero_of_coord {V W V' W' : Type} [AddCommGroup V] [Module K V] [AddCo
   intro h0
   apply hne
   ext a r
-  have h := hB (eN.symm a) (eR.symm r)
-  rw [h0] at h
-  simpa using h
+  simpa [h0] using hB (eN.symm a) (eR.symm r)
 
 end PartA
 
@@ -133,8 +490,7 @@ theorem opNormAt_pos_of {a n : ℕ} (Xc : InfinitePlace K → Matrix (Fin a) (Fi
     rw [e, h2, Matrix.mul_zero, Matrix.zero_mul]
   have h4 : M = 0 := by
     ext i j
-    have := congrFun (congrFun h3 i) j
-    simpa using this
+    simpa using congrFun (congrFun h3 i) j
   exact (LinearMap.toMatrix (Pi.basisFun K (Fin a)) (Pi.basisFun K (Fin n)).dualBasis).map_eq_zero_iff.mp h4
 
 end Pos
@@ -170,6 +526,10 @@ section Word
 
 open Formalism.BasicNotions
 
+/-- Per-word arithmetic interface of the divisibility bridge: lattice containment, an
+upper bound on the height of the nonzero bilinear map, and a slope/height inequality.
+The last two assertions require estimates in addition to any identification of the
+height function with its explicit formula. -/
 def WordFacts {D : D7} (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) : Prop :=
   (D.div.Nu u).L.map ((D.div.Bk u).restrictScalars (𝓞 D.what₂.LL)) ≤ D.div.cc ∧
   (D.div.Bk u ≠ 0 → Formalism.HN.htMap (D.div.Nu u).b (D.div.Nu u).X D.div.RR.dualB D.div.RR.dualX (D.div.Bk u) ≤
@@ -177,6 +537,9 @@ def WordFacts {D : D7} (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) :
   D.div.RR.muDual + D.div.h u - L.Fo ≤ L.MAIN u +
     C * (D.host.TT.card : ℝ) * L.sc.a * L.La + C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)
 
+/-- Transport the three arithmetic clauses from coordinate lattices to the intrinsic
+lattices. `tHt`, `tMu`, `tH`, and `tFo` identify quantities; the inequalities are supplied
+by `c2`, `c3`, and `tR`, not by those identifications. -/
 theorem wordFacts_of {D : D7} (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) {d n : ℕ}
     (Nc : Submodule (𝓞 D.what₂.LL) (Fin d → D.what₂.LL)) (Rc : Submodule (𝓞 D.what₂.LL) (Fin n → D.what₂.LL))
     (eN : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V) (eR : (Fin n → D.what₂.LL) ≃ₗ[D.what₂.LL] D.div.RR.V)
@@ -192,8 +555,7 @@ theorem wordFacts_of {D : D7} (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.
       C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) :
     WordFacts L C Cabs u := by
   refine ⟨oneMap_of_coord (D.div.Nu u) D.div.RR Nc Rc eN eR hN hR (D.div.Bk u) B hB c1, fun hne => ?_, ?_⟩
-  · rw [tHt, ← tH]
-    exact c2 (ne_zero_of_coord eN eR (D.div.Bk u) B hB hne)
+  · simpa [tHt, tH] using c2 (ne_zero_of_coord eN eR (D.div.Bk u) B hB hne)
   · rw [← tMu, ← tH, ← tFo]
     linarith
 
@@ -203,6 +565,8 @@ section Clauses
 
 open Formalism.BasicNotions
 
+/-- Average the logarithms of positive squared operator norms using the pointwise
+majorants. The prescribed mean of the majorants fixes the resulting upper bound. -/
 theorem htMap_le_of_bound {K : Type} [Field K] [NumberField K] {a n : ℕ} (Xc : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ)
     (XE : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (B : (Fin a → K) →ₗ[K] Module.Dual K (Fin n → K)) (h k : ℝ)
     (hb : ∃ cu : InfinitePlace K → ℝ, (∀ v, 0 < cu v ∧
@@ -212,8 +576,7 @@ theorem htMap_le_of_bound {K : Type} [Field K] [NumberField K] {a n : ℕ} (Xc :
     Formalism.HN.htMap (Pi.basisFun K (Fin a)) Xc (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE) B ≤ h - k := by
   obtain ⟨cu, hcu, hmean⟩ := hb
   rw [Formalism.HN.htMap, ← hmean]
-  refine mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun v _ => Real.log_le_log (pow_pos (hpos v) 2) (hcu v).2) ?_
-  positivity
+  exact mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun v _ => Real.log_le_log (pow_pos (hpos v) 2) (hcu v).2) (by positivity)
 
 variable {D : D7} {Bs : DefBase D.what₂.LL} {Df0 Df1 : DefSide Bs} {Dc : DefCols Df1} {Sp : SPer Dc} {Nn : IndefNum Bs}
 
@@ -221,6 +584,31 @@ def htLink (P : IndefCoreR Df0 Df1 Dc Sp Nn) (w : Dc.Mem) : ℝ :=
   Formalism.HN.htMap (Pi.basisFun D.what₂.LL (Fin (Dc.a w))) (Dc.Xc w) (Pi.basisFun D.what₂.LL (Fin P.cols.D)).dualBasis
     (Formalism.HN.dualFrame P.cols.XE) (P.cols.col.B w)
 
+theorem wordFacts_of_core_clauses (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) (P : IndefCoreR Df0 Df1 Dc Sp Nn)
+    (wU : D.what₂.Word → Dc.Mem) (NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a w) → D.what₂.LL))
+    (eNu : (Fin (Dc.a (wU u)) → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V)
+    (eRR : (Fin P.cols.D → D.what₂.LL) ≃ₗ[D.what₂.LL] D.div.RR.V)
+    (hNu : HLatTie (D.div.Nu u) (NuC (wU u)) (Dc.Xc (wU u)) eNu) (hRR : HLatTie D.div.RR P.cols.RR P.cols.XE eRR)
+    (hBk : ∀ x y, D.div.Bk u (eNu x) (eRR y) = P.cols.col.B (wU u) x y)
+    {Pl : Type} [Fintype Pl] [DecidableEq Pl] (R : RecNums Bs.J Pl)
+    (Nu : Submodule (𝓞 D.what₂.LL) (Fin (Dc.a (wU u)) → D.what₂.LL)) (sg : HeightOneSpectrum (𝓞 D.what₂.LL) → ℝ)
+    (hcl : DivCoreClausesR P R (wU u) Nu sg)
+    (hNs : NuC (wU u) = shiftLat Nu sg)
+    (hPos : P.cols.col.B (wU u) ≠ 0 → ∀ v, 0 < Formalism.HN.opNormAt (Pi.basisFun D.what₂.LL (Fin (Dc.a (wU u))))
+      (Dc.Xc (wU u)) (Pi.basisFun D.what₂.LL (Fin P.cols.D)).dualBasis (Formalism.HN.dualFrame P.cols.XE) v
+      (P.cols.col.B (wU u)))
+    (tHt : Formalism.HN.htMap (D.div.Nu u).b (D.div.Nu u).X D.div.RR.dualB D.div.RR.dualX (D.div.Bk u) = htLink P (wU u))
+    (tMu : P.cols.muCC = D.div.RR.muDual) (tH : R.hu - meanLog P.cols.κ = D.div.h u) (tFo : 2 * FoOfR P = L.Fo)
+    (tR : R.rhs ≤ L.MAIN u + C * (D.host.TT.card : ℝ) * L.sc.a * L.La +
+      C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) :
+    WordFacts L C Cabs u := by
+  refine wordFacts_of L C Cabs u (NuC (wU u)) P.cols.RR eNu eRR hNu.lat hRR.lat
+    (P.cols.col.B (wU u)) hBk (htLink P (wU u)) P.cols.muCC (meanLog P.cols.κ) R.hu (2 * FoOfR P) R.rhs
+    ?_ ?_ hcl.2.2 tHt tMu tH tFo tR
+  · rw [hNs]; exact hcl.1
+  · exact fun hne => htMap_le_of_bound _ _ _ _ _ hcl.2.1 (hPos hne)
+
+/-- Compatibility wrapper for the full four-clause output. -/
 theorem wordFacts_of_clauses (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) (P : IndefCoreR Df0 Df1 Dc Sp Nn)
     (wU : D.what₂.Word → Dc.Mem) (NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a w) → D.what₂.LL))
     (eNu : (Fin (Dc.a (wU u)) → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V)
@@ -238,14 +626,34 @@ theorem wordFacts_of_clauses (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.W
     (tMu : P.cols.muCC = D.div.RR.muDual) (tH : R.hu - meanLog P.cols.κ = D.div.h u) (tFo : 2 * FoOfR P = L.Fo)
     (tR : R.rhs ≤ L.MAIN u + C * (D.host.TT.card : ℝ) * L.sc.a * L.La +
       C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) :
-    WordFacts L C Cabs u := by
-  refine wordFacts_of L C Cabs u (NuC (wU u)) P.cols.RR eNu eRR hNu.lat hRR.lat
-    (P.cols.col.B (wU u)) hBk (htLink P (wU u)) P.cols.muCC (meanLog P.cols.κ) R.hu (2 * FoOfR P) R.rhs
-    ?_ ?_ hcl.2.2.1 tHt tMu tH tFo tR
-  · rw [hNs]; exact hcl.1
-  · intro hne
-    exact htMap_le_of_bound _ _ _ _ _ hcl.2.1 (hPos hne)
+    WordFacts L C Cabs u :=
+  wordFacts_of_core_clauses L C Cabs u P wU NuC eNu eRR hNu hRR hBk R Nu sg
+    ⟨hcl.1, hcl.2.1, hcl.2.2.1⟩ hNs hPos tHt tMu tH tFo tR
 
+theorem wordFacts_of_core_face (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) (P : IndefCoreR Df0 Df1 Dc Sp Nn)
+    (wU : D.what₂.Word → Dc.Mem) (NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a w) → D.what₂.LL))
+    (eNu : (Fin (Dc.a (wU u)) → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V)
+    (eRR : (Fin P.cols.D → D.what₂.LL) ≃ₗ[D.what₂.LL] D.div.RR.V)
+    (hNu : HLatTie (D.div.Nu u) (NuC (wU u)) (Dc.Xc (wU u)) eNu) (hRR : HLatTie D.div.RR P.cols.RR P.cols.XE eRR)
+    (hBk : ∀ x y, D.div.Bk u (eNu x) (eRR y) = P.cols.col.B (wU u) x y)
+    {Pl : Type} [Fintype Pl] [DecidableEq Pl] (R : RecNums Bs.J Pl)
+    (Nu : Submodule (𝓞 D.what₂.LL) (Fin (Dc.a (wU u)) → D.what₂.LL)) (sg : HeightOneSpectrum (𝓞 D.what₂.LL) → ℝ)
+    (hcl : DivCoreClausesR P R (wU u) Nu sg) (hNs : NuC (wU u) = shiftLat Nu sg)
+    (tH : R.hu - meanLog P.cols.κ = D.div.h u) (tFo : 2 * FoOfR P = L.Fo)
+    (tR : R.rhs ≤ L.MAIN u + C * (D.host.TT.card : ℝ) * L.sc.a * L.La +
+      C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) :
+    WordFacts L C Cabs u := by
+  have hXc : ∀ v, IsUnit ((Dc.Xc (wU u)) v).det := fun v =>
+    Formalism.MainNotions.DIV.HookProducts.RBTie.frame_unit_of_tie _ _ _ _ v hNu.metric (D.div_good.2 u v)
+  have hXE : ∀ v, IsUnit (P.cols.XE v).det := fun v =>
+    Formalism.MainNotions.DIV.HookProducts.RBTie.frame_unit_of_tie _ _ _ _ v hRR.metric (D.div_good.1 v)
+  exact wordFacts_of_core_clauses L C Cabs u P wU NuC eNu eRR hNu hRR hBk R Nu sg hcl hNs
+    (fun hne v => opNormAt_pos_of _ _ _ hXc hXE hne v)
+    (Formalism.MainNotions.DIV.HookProducts.RBTie.htMap_tie (D.div.Nu u).b (D.div.Nu u).X D.div.RR.b D.div.RR.X (Dc.Xc (wU u)) P.cols.XE eNu eRR
+      hNu.metric hRR.metric (D.div_good.2 u) D.div_good.1 hXc hXE (D.div.Bk u) (P.cols.col.B (wU u)) hBk)
+    (Formalism.MainNotions.DIV.HookProducts.RBTie.muDual_tie D.div.RR P.cols.RR P.cols.XE eRR hRR.lat hRR.metric D.div_good.1 hXE) tH tFo tR
+
+/-- Compatibility wrapper for the full four-clause output. -/
 theorem wordFacts_of_face (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word) (P : IndefCoreR Df0 Df1 Dc Sp Nn)
     (wU : D.what₂.Word → Dc.Mem) (NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin (Dc.a w) → D.what₂.LL))
     (eNu : (Fin (Dc.a (wU u)) → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V)
@@ -258,16 +666,9 @@ theorem wordFacts_of_face (L : SizeData₂ D) (C Cabs : ℝ) (u : D.what₂.Word
     (tH : R.hu - meanLog P.cols.κ = D.div.h u) (tFo : 2 * FoOfR P = L.Fo)
     (tR : R.rhs ≤ L.MAIN u + C * (D.host.TT.card : ℝ) * L.sc.a * L.La +
       C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) :
-    WordFacts L C Cabs u := by
-  have hXc : ∀ v, IsUnit ((Dc.Xc (wU u)) v).det := fun v =>
-    Formalism.MainNotions.DIV.HookProducts.RBTie.frame_unit_of_tie _ _ _ _ v hNu.metric (D.div_good.2 u v)
-  have hXE : ∀ v, IsUnit (P.cols.XE v).det := fun v =>
-    Formalism.MainNotions.DIV.HookProducts.RBTie.frame_unit_of_tie _ _ _ _ v hRR.metric (D.div_good.1 v)
-  exact wordFacts_of_clauses L C Cabs u P wU NuC eNu eRR hNu hRR hBk R Nu sg hcl hNs
-    (fun hne v => opNormAt_pos_of _ _ _ hXc hXE hne v)
-    (Formalism.MainNotions.DIV.HookProducts.RBTie.htMap_tie (D.div.Nu u).b (D.div.Nu u).X D.div.RR.b D.div.RR.X (Dc.Xc (wU u)) P.cols.XE eNu eRR
-      hNu.metric hRR.metric (D.div_good.2 u) D.div_good.1 hXc hXE (D.div.Bk u) (P.cols.col.B (wU u)) hBk)
-    (Formalism.MainNotions.DIV.HookProducts.RBTie.muDual_tie D.div.RR P.cols.RR P.cols.XE eRR hRR.lat hRR.metric D.div_good.1 hXE) tH tFo tR
+    WordFacts L C Cabs u :=
+  wordFacts_of_core_face L C Cabs u P wU NuC eNu eRR hNu hRR hBk R Nu sg
+    ⟨hcl.1, hcl.2.1, hcl.2.2.1⟩ hNs tH tFo tR
 
 end Clauses
 
@@ -302,19 +703,13 @@ theorem rhs_le_record (Nd : NumDatum) {J : Type} [Fintype J] (eJ : J ≃ Fin Nd.
   have hle : L.sc.x ^ L.sc.eps ≤ L.sc.x ^ (Cabs * L.sc.eps) :=
     Real.rpow_le_rpow_of_exponent_le L.sc.one_lt_alt.le (le_mul_of_one_le_left L.sc.eps_pos.le hCabs)
   have e1 : (50 * C0 + 10) * ((D.host.TT.card : ℝ) * L.sc.a * L.La) ≤ C * (D.host.TT.card : ℝ) * L.sc.a * L.La := by
-    have h0 : 0 ≤ (D.host.TT.card : ℝ) * L.sc.a * L.La := by positivity
-    calc (50 * C0 + 10) * ((D.host.TT.card : ℝ) * L.sc.a * L.La)
-        ≤ C * ((D.host.TT.card : ℝ) * L.sc.a * L.La) := mul_le_mul_of_nonneg_right hC1 h0
-      _ = C * (D.host.TT.card : ℝ) * L.sc.a * L.La := by ring
+    simpa [mul_assoc] using mul_le_mul_of_nonneg_right hC1 (by positivity)
   have e2 : 60 * ce * ((D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc))) ≤
       C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps) := by
-    have h0 : 0 ≤ (D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc)) := by positivity
-    calc 60 * ce * ((D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc)))
-        ≤ C * ((D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc))) := mul_le_mul_of_nonneg_right hC2 h0
-      _ ≤ C * ((D.R.m : ℝ) * (L.sc.x ^ (Cabs * L.sc.eps) * (L.B0 + L.Nc))) := by
-          apply mul_le_mul_of_nonneg_left _ hC0
-          apply mul_le_mul_of_nonneg_left _ hm
-          exact mul_le_mul_of_nonneg_right hle hBN
+    calc
+      60 * ce * ((D.R.m : ℝ) * (L.sc.x ^ L.sc.eps * (L.B0 + L.Nc)))
+          ≤ C * ((D.R.m : ℝ) * (L.sc.x ^ (Cabs * L.sc.eps) * (L.B0 + L.Nc))) :=
+        mul_le_mul hC2 (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hle hBN) hm) (by positivity) hC0
       _ = C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps) := by ring
   linarith
 
@@ -338,6 +733,12 @@ def Compl3 (L : SizeData₂ D) (Z : DivX D) (Csz C : ℝ) : Prop :=
     (hExpl6 D L Z Csz u' + (∑ t : D.host.TT, (L.aT t : ℝ)) * Real.log ((D.mem u').A.T : ℝ))| ≤
     C * ((D.host.TT.card : ℝ) * L.sc.a * L.La + (D.R.m : ℝ) * L.B0)
 
+/-- Assembles the per-scale divisibility link `LinkDIV_at L C Cabs CH` from the per-word bounds
+`WordFacts`, the frame-number bound `FrameNumberBound`, the `g`-place and off-`g` energy bounds
+`adm11` (rewriting `∏ g ∈ L.gTypes, g = g 0 * g 1` via `prod_gTypes`), the complement count bound
+`adm13`, rationality of `Bu`, fullness of the common lattice `RR`, and `ZeroAbove`.
+The equality `hh` transports `hH` and `h5` to the stored height. The two inequalities
+inside `WordFacts` are separate inputs and are not consequences of `hh`. -/
 theorem linkDIV_at_words (L : SizeData₂ D) (Z : DivX D) (Csz C Cabs CH : ℝ)
     (hh : ∀ u, D.div.h u = hExpl6 D L Z Csz u) (hW : ∀ u, WordFacts L C Cabs u) (h5 : Compl3 L Z Csz C)
     (hH : Formalism.MainNotions.LocalQuadraticParts.FrameNumberBound D L Z Csz CH) (h11 : Formalism.MainNotions.LocalQuadraticParts.adm11 D L C) (h13 : Formalism.MainNotions.LocalQuadraticParts.adm13 D)
@@ -492,19 +893,14 @@ theorem WordFacts.mono {D : D7} {L : SizeData₂ D} {C C' Cabs Cabs' : ℝ} {u :
   have hle : L.sc.x ^ (Cabs * L.sc.eps) ≤ L.sc.x ^ (Cabs' * L.sc.eps) :=
     Real.rpow_le_rpow_of_exponent_le hx1 (mul_le_mul_of_nonneg_right hA L.sc.eps_pos.le)
   have e1 : C * (D.host.TT.card : ℝ) * L.sc.a * L.La ≤ C' * (D.host.TT.card : ℝ) * L.sc.a * L.La := by
-    have h0 : 0 ≤ (D.host.TT.card : ℝ) * L.sc.a * L.La := by positivity
-    calc C * (D.host.TT.card : ℝ) * L.sc.a * L.La = C * ((D.host.TT.card : ℝ) * L.sc.a * L.La) := by ring
-      _ ≤ C' * ((D.host.TT.card : ℝ) * L.sc.a * L.La) := mul_le_mul_of_nonneg_right hC h0
-      _ = C' * (D.host.TT.card : ℝ) * L.sc.a * L.La := by ring
+    simpa [mul_assoc] using mul_le_mul_of_nonneg_right hC (by positivity)
   have e2 : C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps) ≤
       C' * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs' * L.sc.eps) := by
-    have h0 : 0 ≤ (D.R.m : ℝ) * (L.B0 + L.Nc) := by positivity
-    calc C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)
-        = C * ((D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) := by ring
-      _ ≤ C' * ((D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)) :=
-          mul_le_mul_of_nonneg_right hC (mul_nonneg h0 hp)
-      _ ≤ C' * ((D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs' * L.sc.eps)) :=
-          mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hle h0) hC0
+    calc
+      C * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps)
+          = C * ((D.R.m : ℝ) * ((L.B0 + L.Nc) * L.sc.x ^ (Cabs * L.sc.eps))) := by ring
+      _ ≤ C' * ((D.R.m : ℝ) * ((L.B0 + L.Nc) * L.sc.x ^ (Cabs' * L.sc.eps))) :=
+        mul_le_mul hC (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hle hBN) hm) (by positivity) hC0
       _ = C' * (D.R.m : ℝ) * (L.B0 + L.Nc) * L.sc.x ^ (Cabs' * L.sc.eps) := by ring
   linarith
 
@@ -575,8 +971,8 @@ attribute [instance] DivisionPackageFace.plF DivisionPackageFace.plD
 theorem DivisionPackageFace.wordFacts {D : D7} {L : SizeData₂ D} {Rw : DivisionRowsFace L} {C Cabs : ℝ} (P : DivisionPackageFace Rw C Cabs)
     (h2 : Formalism.MainNotions.LocalQuadraticParts.adm2 D L) (hcut : ∀ μ, Formalism.BasicNotions.DV.Used D μ → Formalism.L2.G.ServJoint.CutUp D μ)
     (hN : Formalism.BasicNotions.DV.NprimeDef D L) (u : D.what₂.Word) : WordFacts L C Cabs u :=
-  wordFacts_of_face L C Cabs u P.Pk.core P.wU P.NuC (P.eNu u) P.eRR (P.hNu u) P.hRR (P.hBk u) (P.R u) (P.Nu u) (sgRec L u)
-    (linkDIV_L2R_face P.Pk (P.hZs ▸ Rw.wf0) (P.hZs ▸ Rw.wf1) (P.R u) (P.wU u) (P.Nu u) (sgRec L u)
+  wordFacts_of_core_face L C Cabs u P.Pk.core P.wU P.NuC (P.eNu u) P.eRR (P.hNu u) P.hRR (P.hBk u) (P.R u) (P.Nu u) (sgRec L u)
+    (divCoreClausesR_of (P.hZs ▸ Rw.wf0) (P.hZs ▸ Rw.wf1) P.Pk.core (P.R u) (P.wU u) (P.Nu u) (sgRec L u)
       { toDivInputs0R := P.inp u,
         val2 := Formalism.L2.G.ServJointF.val2AllAtRF D L _ P.brTied hcut h2 u (P.Nu u)
           (Formalism.L2.G.ServJoint.nu_into L hN u (P.eNu u) (P.NuC (P.wU u)) (P.Nu u) (P.hNu u).lat (P.shift u)) })
@@ -595,6 +991,9 @@ structure BridgeRowsF {eps : ℝ} (Fm : FamP eps) (Rw : Σ' x0 : ℝ, ∀ x, Fm.
   rr : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, (Fm.D x i).RRFull
   la : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, 0 ≤ (Fm.L x i).La
 
+/-- Family-level divisibility bridge: combines the row-face package `BridgeRowsF` across all
+large scales `x` and indices `i : Fm.Ix x` to produce `LinkDIVt Fm Cabs CH`, taking the maximum
+of the component thresholds and applying `linkDIV_at_words` at each `(x, i)`. -/
 theorem linkDIVt_of_rowsF {eps : ℝ} (Fm : FamP eps)
     (Rw : Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsFace (Fm.L x i)) (Cabs CH : ℝ)
     (B : BridgeRowsF Fm Rw Cabs CH) : LinkDIVt Fm Cabs CH := by
@@ -641,3 +1040,6 @@ end PartE
 end Formalism.L2.DIV
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.Divisibility.RecBridge =====

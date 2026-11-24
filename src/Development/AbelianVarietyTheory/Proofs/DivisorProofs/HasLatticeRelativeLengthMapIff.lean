@@ -260,7 +260,7 @@ theorem relLen_map_iff : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop �
       simp [A, Matrix.toBlocks₁₁, hinl, Finsupp.single_apply, Matrix.one_apply, eq_comm]
     have h21 : A.toBlocks₂₁ = 0 := by
       ext i k
-      simp [A, Matrix.toBlocks₂₁, hinl, Finsupp.single_apply]
+      simp [A, Matrix.toBlocks₂₁, hinl]
     have hdet : A.det = B.det := by
       conv_lhs => rw [← Matrix.fromBlocks_toBlocks A, h11, h21]
       rw [Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul]

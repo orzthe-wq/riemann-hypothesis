@@ -137,7 +137,7 @@ theorem facProd_add_single (m : σ →₀ ℕ) (i : σ) :
       exact Finset.mem_insert_self _ _
     · apply Finset.mem_insert_of_mem
       rw [Finsupp.mem_support_iff] at hx ⊢
-      have h1 : (Finsupp.single i 1 : σ →₀ ℕ) x = 0 := by simp [Finsupp.single_apply, Ne.symm h]
+      have h1 : (Finsupp.single i 1 : σ →₀ ℕ) x = 0 := by simp [Ne.symm h]
       simpa [h1] using hx
   have hs2 : m.support ⊆ insert i m.support := Finset.subset_insert _ _
   rw [Finsupp.prod_of_support_subset _ hs1 _ (by simp),
@@ -148,7 +148,7 @@ theorem facProd_add_single (m : σ →₀ ℕ) (i : σ) :
   · simp [Nat.factorial_succ]
   · refine Finset.prod_congr rfl fun x hx => ?_
     have hx' : x ≠ i := Finset.ne_of_mem_erase hx
-    have h1 : (Finsupp.single i 1 : σ →₀ ℕ) x = 0 := by simp [Finsupp.single_apply, Ne.symm hx']
+    have h1 : (Finsupp.single i 1 : σ →₀ ℕ) x = 0 := by simp [Ne.symm hx']
     rw [Finsupp.add_apply, h1, add_zero]
 
 theorem fock_X_mul' (i : σ) (g h : MvPolynomial σ ℚ_[p]) :
@@ -189,7 +189,7 @@ theorem intPol_iff_norm (x : MvPolynomial σ ℚ_[p]) : x ∈ IntPol p σ ↔ �
   · intro h
     refine ⟨∑ m ∈ x.support, monomial m (⟨x.coeff m, h m⟩ : ℤ_[p]), ?_⟩
 
-    simp only [AlgHom.toLinearMap_apply, map_sum, mapAlgHom_apply, map_monomial]
+    simp only [AlgHom.toLinearMap_apply, map_sum, mapAlgHom_apply]
     conv_rhs => rw [x.as_sum]
     refine Finset.sum_congr rfl fun m _ => ?_
     erw [map_monomial]
@@ -268,18 +268,6 @@ private theorem glAct_eq_sum_X_mul_pderiv (LL : Letters N) (j : ℕ) (c d : Fin 
   refine Finset.sum_congr rfl fun i _ => ?_
   split_ifs <;> simp
 
-private theorem glAct_X_apply (LL : Letters N) (j : ℕ) (c d : Fin r) (i : Fin N) (e : Fin r) :
-    glAct p LL j c d (X (i, e)) = if (i : ℕ) < j then
-      (if LL.vec i = true then (if e = d then X (i, c) else 0)
-        else (if e = c then -X (i, d) else 0)) else 0 := by
-  classical
-  rw [glAct_eq_sum_X_mul_pderiv, Finset.sum_eq_single i]
-  · split_ifs <;> simp_all [pderiv_X, Pi.single_apply]
-  · intro k _ hk
-    split_ifs <;> simp [pderiv_X, Pi.single_apply, hk, Ne.symm hk]
-  · intro h
-    exact absurd (Finset.mem_univ i) h
-
 theorem glAct_C' (LL : Letters N) (j : ℕ) (c d : Fin r) (a : ℚ_[p]) : glAct p LL j c d (C a) = 0 := by
   rw [glAct_eq_sum_X_mul_pderiv]
   refine Finset.sum_eq_zero fun i _ => ?_
@@ -288,8 +276,8 @@ theorem glAct_C' (LL : Letters N) (j : ℕ) (c d : Fin r) (a : ℚ_[p]) : glAct 
 theorem glAct_glAct_X (LL : Letters N) (j : ℕ) (c d : Fin r) (hcd : c ≠ d) (v : Fin N × Fin r) :
     glAct p LL j c d (glAct p LL j c d (X v)) = 0 := by
   obtain ⟨i, e⟩ := v
-  rw [glAct_X_apply]
-  split_ifs <;> simp_all [glAct_X_apply, hcd, Ne.symm hcd]
+  rw [_root_.Formalism.GM.DimensionMonotonicity.glAct_X_gen]
+  split_ifs <;> simp_all [_root_.Formalism.GM.DimensionMonotonicity.glAct_X_gen, Ne.symm hcd]
 
 private theorem X_mem_intPol (w : Fin N × Fin r) :
     (X w : MvPolynomial (Fin N × Fin r) ℚ_[p]) ∈ IntPol p (Fin N × Fin r) :=
@@ -298,7 +286,7 @@ private theorem X_mem_intPol (w : Fin N × Fin r) :
 theorem glAct_X_int (LL : Letters N) (j : ℕ) (c d : Fin r) (v : Fin N × Fin r) :
     glAct p LL j c d (X v) ∈ IntPol p (Fin N × Fin r) := by
   obtain ⟨i, e⟩ := v
-  rw [glAct_X_apply]
+  rw [_root_.Formalism.GM.DimensionMonotonicity.glAct_X_gen]
   split_ifs <;> first
     | exact X_mem_intPol _
     | exact Submodule.zero_mem _

@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AutomorphicArithmetic.Foundations.Convolution.RealGroupAnalysis.UnitaryActions.ContinuousAdelicGL2OfContinuousEntries
 
 @[expose] public section
 
@@ -65,14 +66,7 @@ private theorem dt_gl (h : G1 E) : dt (gl h) = 1 :=
 private theorem continuous_dt : Continuous (dt : GL (Fin 2) (A E) → (A E)ˣ) :=
   GroundTheory.Automorphic.AdelicGLn.continuous_det E 2
 
-private theorem continuous_dM' : Continuous (dM : (A E)ˣ → GL (Fin 2) (A E)) := by
-  refine Units.continuous_iff.2 ⟨?_, ?_⟩
-  · refine continuous_matrix fun i j => ?_
-    fin_cases i <;> fin_cases j <;> simp [dM] <;> first | exact continuous_const | exact Units.continuous_val
-  · refine continuous_matrix fun i j => ?_
-    have e : ∀ t : (A E)ˣ, (((dM t)⁻¹ : GL (Fin 2) (A E)) : Matrix (Fin 2) (Fin 2) (A E)) = !![1, 0; 0, ((t⁻¹ : (A E)ˣ) : A E)] := fun t => rfl
-    simp only [e]
-    fin_cases i <;> fin_cases j <;> simp <;> first | exact continuous_const | exact Units.continuous_coe_inv
+private alias continuous_dM' := _root_.UpperTheory.ConvolutionTheory.R2.continuous_dM
 
 private def pr (g : GL (Fin 2) (A E)) : G1 E :=
   ⟨(g * (dM (dt g))⁻¹).val, by

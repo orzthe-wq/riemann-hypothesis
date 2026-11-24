@@ -57,4 +57,4 @@ theorem _root_.GlobalTheory.T.continuous_thetaTransform_adelicSchwartz : ∀ (D 
         (∀ x : Matrix (Fin T.rank) (Fin S.rank) D.host.E, ∃ y z : κ → D.host.F,
           co.e (incM D.host.F x) = (fun i => algebraMap D.host.F (AF D.host.F) (y i), fun i => algebraMap D.host.F (AF D.host.F) (z i))) →
         ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ, Continuous (GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ) := by
-  first | exact @GlobalTheory.ThetaTrCont.continuous_thetaTr | exact GlobalTheory.ThetaTrCont.continuous_thetaTr | (intros; apply GlobalTheory.ThetaTrCont.continuous_thetaTr <;> assumption)
+  first | exact @GlobalTheory.ThetaTrCont.continuous_thetaTr

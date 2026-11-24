@@ -64,7 +64,6 @@ theorem exists_sub_algebraMap_mem_maximalIdeal_pow_adicCompletion (A : Type) [Co
     LinearMap.mem_ker, map_sub, AdicCompletion.algebraMap_apply, AdicCompletion.eval_of]
   first
   | rw [Submodule.mkQ_apply, Algebra.algebraMap_self, RingHom.id_apply, ← ha, sub_self]
-  | simp [← ha]
 
 theorem exists_le_sup_maximalIdeal_pow_of_antitone :
     ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (K : ℕ → Ideal A) (J : Ideal A),

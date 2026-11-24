@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrismHomMapIdealEqStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.InvertibleSpanSingleton
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PrismHomMapIdealEq
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,7 +65,7 @@ theorem hf_E_span_and_regular : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk 
     (g : Hom bk.prism B), B.I = Ideal.span {BK.hf g bk.E} ∧ BK.hf g bk.E ∈ nonZeroDivisors B.A := by
   intro l _ K bk B g
   have h : B.I = Ideal.span {BK.hf g bk.E} := by
-    rw [← GlobalTheory.T.prism_hom_map_ideal_eq l _ _ _ g]
+    rw [← _root_.GlobalTheory.Prism.Rigid.map_I_eq l _ _ _ g]
     change Ideal.map (BK.hf g) (Ideal.span {bk.E}) = _
     rw [Ideal.map_span, Set.image_singleton]
   exact ⟨h, mem_nonZeroDivisors_of_invertible_eq_span B.inv h⟩

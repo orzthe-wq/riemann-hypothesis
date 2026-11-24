@@ -145,7 +145,8 @@ theorem herm_kap {L L'' S : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.ho
     ← mulVec_mulVec, dotProduct_mulVec]
   congr 2
   ext i
-  simp [Matrix.vecMul, Matrix.mulVec, dotProduct, adj, map_sum, map_mul, mul_comm]
+  simp only [Matrix.vecMul, Matrix.mulVec, dotProduct, adj, map_sum, map_mul, Matrix.transpose_apply, Matrix.map_apply]
+  exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 theorem kap_of {L L'' S : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) {ζ : Fin L.rank → D.host.E}
     {ζ₀ : Fin L''.rank → D.host.E} (hζ : IsLineVec L ζ) (hζ₀ : IsLineVec L'' ζ₀) {lam : D.host.E} (hlam : lam ≠ 0)
@@ -206,7 +207,6 @@ theorem isU_alpha (h : p.UnitAA) {L : HSp D} {ζ : Fin L.rank → D.host.E} (hζ
         incA D e⁻¹ * a ∈ intAt D (· = p.v) := by
     first
     | exact GlobalTheory.GoodPos.line_gen hζ (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat L) p.v
-    | exact GlobalTheory.GoodPos.line_gen hζ (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat L).1 p.v
   obtain ⟨e, he, hg⟩ := hgen
   refine IsU.inv (fun a ha => ?_) α.inv_mul
   have h1 := hα L (GlobalTheory.AdelicU.frameLat L) ((incA D e * a) • ratV ζ)

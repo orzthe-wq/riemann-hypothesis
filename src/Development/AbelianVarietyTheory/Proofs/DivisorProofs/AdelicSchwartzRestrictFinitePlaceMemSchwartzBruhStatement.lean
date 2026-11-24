@@ -58,4 +58,4 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 theorem _root_.GlobalTheory.T.adelicSchwartz_restrict_finitePlace_mem_schwartzBruhat : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl (F := F)),
     ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, (fun t : κ → Fv F v => Φ (fun i => GlobalTheory.LatVac.liftV v (t i))) ∈ GlobalTheory.WeilM.SB (κ → Fv F v) := by
-  first | exact @GlobalTheory.LatVac.restrict_liftV_mem_SB | exact GlobalTheory.LatVac.restrict_liftV_mem_SB | (intros; apply GlobalTheory.LatVac.restrict_liftV_mem_SB <;> assumption)
+  first | exact @GlobalTheory.LatVac.restrict_liftV_mem_SB

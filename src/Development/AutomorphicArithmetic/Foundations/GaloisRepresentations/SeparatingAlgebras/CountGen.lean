@@ -73,7 +73,7 @@ private theorem part_le_sup {E : Type} [Field E] [NumberField E] [IsCMField E] {
     part W C (fun U => ¬ ∀ w ∈ S, GenAt w (Φ w) U) ≤
       S.sup fun w => part W C fun U => ¬ GenAt w (Φ w) U := by
   refine iSup₂_le fun π hπ => ?_
-  push_neg at hπ
+  push Not at hπ
   obtain ⟨w, hw, hg⟩ := hπ
   refine le_trans ?_ (Finset.le_sup (f := fun w => part W C fun U => ¬ GenAt w (Φ w) U) hw)
   exact le_iSup₂_of_le (f := fun (π : AutSub E a) (_ : ¬ GenAt w (Φ w) π.V) => π.finPart W ⊓ fixedBy W C) π hg le_rfl

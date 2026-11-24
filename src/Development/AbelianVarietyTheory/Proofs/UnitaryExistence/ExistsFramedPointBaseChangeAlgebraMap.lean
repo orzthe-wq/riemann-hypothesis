@@ -2,10 +2,11 @@ module
 
 public import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueScaledBaseChangeFibreSectionStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FibreSectionGeneratesOfNowhereZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FibreSectionNowhereZeroOfGeneratesStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointEigenbasisBaseChangeStatement
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueScaledBaseChangeFibreSection
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FibreSectionGeneratesOfNowhereZero
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FibreSectionNowhereZeroOfGenerates
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointEigenbasisBaseChange
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ScaledBaseChangeFibreSectionNonvanishingIff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -47,7 +48,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
 
 @[expose] public section
 
@@ -59,59 +59,31 @@ namespace GlobalTheory.Frames.FramedBaseChange
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
-theorem spMap_comp_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'')
-    (g : R →+* R') : spMap f ≫ spMap g = spMap (f.comp g) := by
-  unfold spMap
-  rw [← Spec.map_comp]
-  rfl
+alias spMap_comp_spMap := _root_.GlobalTheory.Frames.EigenBaseChange.spMap_spMap
 
-theorem dualMap_comp_alg {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) :
-    (dualMap ψ).comp (algebraMap S (DualNumber S)) = (algebraMap T (DualNumber T)).comp ψ := by
-  ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
+alias dualMap_comp_alg := _root_.GlobalTheory.Frames.EigenBaseChange.dualMap_comp_alg
 
-theorem fst_comp_dualMap {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) :
-    (TrivSqZeroExt.fstHom T T T).toRingHom.comp (dualMap ψ) = ψ.comp (TrivSqZeroExt.fstHom S S S).toRingHom := by
-  ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
+alias fst_comp_dualMap := _root_.GlobalTheory.Frames.EigenBaseChange.fst_comp_dualMap
 
-theorem dualMap_comp_epsMul {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (a : S) :
-    (dualMap ψ).comp (epsMul a) = (epsMul (ψ a)).comp (dualMap ψ) := by
-  ext s <;> simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]
+alias dualMap_comp_epsMul := _root_.GlobalTheory.Frames.EigenBaseChange.dualMap_comp_epsMul
 
-theorem tan_bc {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x : Sp S ⟶ Xo.X}
-    {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAt x v) :
-    IsTanAt (spMap ψ ≫ x) (spMap (dualMap ψ) ≫ v) := by
-  obtain ⟨h1, h2⟩ := hv
-  refine ⟨?_, ?_⟩
-  · rw [Category.assoc, h1, ← Category.assoc, spMap_comp_spMap, dualMap_comp_alg, ← spMap_comp_spMap,
-      Category.assoc]
-  · rw [← Category.assoc, spMap_comp_spMap, fst_comp_dualMap, ← spMap_comp_spMap, Category.assoc, h2]
-    have e : (Over.homMk (spMap ψ) rfl : Over.mk (spMap ψ ≫ x) ⟶ Over.mk x) ≫ (1 : Over.mk x ⟶ Xo.univ.t.G) = 1 := by
-      simp [Hom.one_def]
-    rw [← e, Over.comp_left]
-    rfl
+alias tan_bc := _root_.GlobalTheory.Frames.EigenBaseChange.isTanAt_baseChange
 
-theorem eig_bc {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (ψ : S →ₐ[c.F] T)
-    (τ : E →+* ℂ) {v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsEigAt c τ v) :
-    IsEigAt c τ (spMap (dualMap ψ.toRingHom) ≫ v) := by
-  intro a
-  rw [Category.assoc, hv a, ← Category.assoc, spMap_comp_spMap, dualMap_comp_epsMul, ← spMap_comp_spMap,
-    Category.assoc]
-  congr 3
-  exact ψ.commutes _
+alias eig_bc := _root_.GlobalTheory.Frames.EigenBaseChange.isEigAt_baseChange
 
 theorem exists_frMap : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (T : Type) [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y : FrPt Xo c S), ∃ z : FrPt Xo c T, FrMap φ y z := by
   intro hB E _ _ _ H Dw l Xo c S _ _ T _ _ φ y
-  obtain ⟨s', hs', -⟩ := GlobalTheory.T.existsUnique_scaledBaseChange_fibreSection E H Dw l Xo S T φ.toRingHom 1 y.x (spMap φ.toRingHom ≫ y.x) rfl y.s
-  have hnz : SecNZ y.x y.s := GlobalTheory.T.fibreSectionNowhereZero_of_generates hB E H Dw l Xo S y.x y.s y.gen
+  obtain ⟨s', hs', -⟩ := _root_.GlobalTheory.Frames.SecPull.existsUnique_secBC E H Dw l Xo S T φ.toRingHom 1 y.x (spMap φ.toRingHom ≫ y.x) rfl y.s
+  have hnz : SecNZ y.x y.s := _root_.GlobalTheory.Frames.secNZ_of_secGen hB E H Dw l Xo S y.x y.s y.gen
   have hnz' : SecNZ (spMap φ.toRingHom ≫ y.x) s' := fun p' =>
     (GlobalTheory.Frames.secBC_nonvanishing_iff E H Dw l Xo S T φ.toRingHom y.x _ rfl y.s s' hs' p').2 (hnz _)
-  have hgen : SecGen (spMap φ.toRingHom ≫ y.x) s' := GlobalTheory.T.fibreSectionGenerates_of_nowhereZero hB E H Dw l Xo T _ s' hnz'
+  have hgen : SecGen (spMap φ.toRingHom ≫ y.x) s' := _root_.GlobalTheory.Frames.secGen_of_secNZ hB E H Dw l Xo T _ s' hnz'
   refine ⟨{ x := spMap φ.toRingHom ≫ y.x
             x_over := ?_
             u := fun τ i => spMap (dualMap φ.toRingHom) ≫ y.u τ i
             tan := fun τ i => tan_bc φ.toRingHom (y.tan τ i)
             eig := fun τ i => eig_bc φ τ (y.eig τ i)
-            basis := fun τ w hw he => GlobalTheory.T.framedPoint_eigenbasis_baseChange E H Dw l Xo c S T φ y τ w hw he
+            basis := fun τ w hw he => _root_.GlobalTheory.Frames.eigenbasis_baseChange E H Dw l Xo c S T φ y τ w hw he
             s := s'
             gen := hgen }, rfl, fun _ _ => rfl, ?_⟩
   · rw [Category.assoc, y.x_over]

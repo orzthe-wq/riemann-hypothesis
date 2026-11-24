@@ -73,7 +73,7 @@ theorem projHom {κ : Type} [Fintype κ] {G : Type} [Group G]
   · intro g k
     refine LinearMap.ext fun x => ?_
     simp only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.id_apply,
-      Module.End.mul_apply, map_add, hPP, hPid _ (hp k _ (hPS x)), add_zero, hm g k _ (hPS x), map_zero]
+      Module.End.mul_apply, map_add, hPP, hPid _ (hp k _ (hPS x)), hm g k _ (hPS x), map_zero]
     abel
   · intro g φ hφ
     simp only [MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sub_apply,

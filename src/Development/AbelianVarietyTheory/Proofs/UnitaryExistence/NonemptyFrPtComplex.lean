@@ -3,7 +3,8 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 public import Formalism.LocalToGlobal.ProjectiveLattices.IsCombAt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ModuliExistsNumberFieldPointStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.IntAllProofFree
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ModuliExistsNumberFieldPoint
 public import Formalism.LocalToGlobal.ProjectiveLattices.GenFrPf
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -54,7 +55,7 @@ namespace GlobalTheory
 theorem nonempty_frPt_complex : N1c → Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∀ σ : c.F →+* ℂ, Nonempty (FrPt Xo c (CAt σ)) := by
   intro hN hT E _ _ _ H Dw l Xo c h σ
   classical
-  obtain ⟨L, _, _, j, x, hx⟩ := GlobalTheory.T.xoNumPt_of_p_add_q_pos hN E H Dw l Xo c h
+  obtain ⟨L, _, _, j, x, hx⟩ := _root_.GlobalTheory.moduli_exists_numberField_point hN E H Dw l Xo c h
   let _ : Algebra c.F L := j.toAlgebra
   let _ : Algebra c.F ℂ := σ.toAlgebra
   have : Algebra.IsAlgebraic c.F L := by

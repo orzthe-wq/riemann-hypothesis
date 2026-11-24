@@ -89,7 +89,7 @@ lemma Jm_conjTranspose {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := b
   apply congrArg Matrix.diagonal
   funext a
   change star (if ε a then (1 : ℂ) else -1) = _
-  cases h : ε a <;> simp [h, star_neg, star_one]
+  cases h : ε a <;> simp [star_neg, star_one]
 
 def UJ {n : ℕ} (ε : Fin n → Bool) : Subgroup (Matrix (Fin n) (Fin n) ℂ)ˣ where
   carrier := {g | inUJ ε (g : Matrix (Fin n) (Fin n) ℂ)}

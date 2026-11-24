@@ -56,8 +56,8 @@ theorem linkIn_uniM_eq_of_form :
           linkIn (uniM R M) S τ = linkIn (uniM R M) S τ' := by
   intro R M _ _ _ φ S hS τ hτ v hv hφv
   classical
-  have hperm := (GlobalTheory.T.subClosed_and_perm_and_linearEquiv_invariant_uniM R M).2.1
-  have hmod := GlobalTheory.T.cons_mem_uniM_iff_map_sub_smul R M φ v hφv
+  have hperm := (_root_.GlobalTheory.UniSeqBasic.main R M).2.1
+  have hmod := _root_.GlobalTheory.UniModVec.cons_mem_uniM_iff_map_proj R M φ v hφv
   have hp : τ.Perm (v :: τ.erase v) := List.perm_cons_erase hv
   refine ⟨(τ.erase v).map (fun x => x - φ x • v), ?_, ?_, ?_⟩
   · exact (hmod _).1 (hperm _ _ hp hτ)
@@ -84,9 +84,3 @@ theorem linkIn_uniM_eq_of_form :
 
 end GlobalTheory.SeqCx
 
-section
-open GlobalTheory.SeqCx Matrix
-theorem _root_.GlobalTheory.T.linkIn_uniM_eq_shorter_of_form_eq_one : ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (φ : M →ₗ[R] R) (S : Set M), (∀ x ∈ S, φ x = 0) → ∀ τ ∈ uniM R M, ∀ v ∈ τ, φ v = 1 → ∃ τ' ∈ uniM R M, τ'.length + 1 = τ.length ∧ linkIn (uniM R M) S τ = linkIn (uniM R M) S τ' := by
-  first
-  | exact @GlobalTheory.SeqCx.linkIn_uniM_eq_of_form
-end

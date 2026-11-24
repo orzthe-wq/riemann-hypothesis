@@ -46,6 +46,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Upqcpt
 
 @[expose] public section
 
@@ -98,9 +99,6 @@ section Stab
 
 variable {P Q P' Q' : ℕ}
 
-theorem Jpq_mul_self (P Q : ℕ) : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1 := by
-  simp [Formalism.UG.Jpq, fromBlocks_multiply]
-
 theorem Jpq_conjTranspose (P Q : ℕ) : (Formalism.UG.Jpq P Q)ᴴ = Formalism.UG.Jpq P Q := by
   simp [Formalism.UG.Jpq, fromBlocks_conjTranspose]
 
@@ -134,7 +132,7 @@ theorem exists_frame_inv (hc : P' + Q' + 1 = P + Q) {x : Fin P ⊕ Fin Q → ℂ
   have hN : (fromBlocks (Formalism.UG.Jpq P' Q') 0 0 (b⁻¹ • (1 : Matrix Unit Unit ℂ)) *
       ((fromCols C (replicateCol Unit x))ᴴ * Formalism.UG.Jpq P Q)) * fromCols C (replicateCol Unit x) = 1 := by
     rw [Matrix.mul_assoc, hG, fromBlocks_multiply]
-    simp [Jpq_mul_self, smul_smul, hx]
+    simp [_root_.Formalism.UG.P.Jpq_mul_self, smul_smul, hx]
   have e : ((Fin P' ⊕ Fin Q') ⊕ Unit) ≃ (Fin P ⊕ Fin Q) := Fintype.equivOfCardEq (by simpa using hc)
   exact ⟨_, _, hN, (Matrix.mul_eq_one_comm_of_equiv e).1 hN, hG⟩
 

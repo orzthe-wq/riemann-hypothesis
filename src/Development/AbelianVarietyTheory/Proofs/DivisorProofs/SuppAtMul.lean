@@ -93,14 +93,4 @@ def flipPart (t : T0) (Q' : Finset (Pl D.host.E)) : Finset (Pl D.host.E) := (R.Q
 
 end Defs
 
-theorem suppAt_mul' {D : D7} {V : HSp D} {e : AE D} {a b : GA D V} (ha : SuppAt e V a) (hb : SuppAt e V b) :
-    SuppAt e V (a * b) := by
-  intro i j
-  have hm : mt V (a * b) = mt V a * mt V b := by first | rfl | simp [Formalism.L2.Theta.mt]
-  have key : mt V a * mt V b - 1 = (mt V a - 1) * mt V b + (mt V b - 1) := by noncomm_ring
-  rw [hm, key, Matrix.add_apply, Matrix.mul_apply, mul_add, Finset.mul_sum, hb i j]
-  congr 1
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [← mul_assoc, ha i k]
-
 end GlobalTheory.BigOn.Exp.TupLe.Swap

@@ -66,12 +66,6 @@ noncomputable section
 
 namespace GlobalTheory.RankOneLine
 
-theorem star_eq_hostConj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
-  apply D.host.φ₀.injective
-  letI := D.host.isCMField_hostE
-  show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _
-  rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]
-
 def negLine (D : D7) : HSp D :=
   Formalism.BasicNotions.Examples₂.stdSpace Formalism.BasicNotions.Examples₂.star_isIntegral 1 (fun _ => true) 0 1
 
@@ -94,7 +88,7 @@ theorem exists_line (D : D7) (X : HidaSetting D) (u : D.what₂.Word) :
   refine ⟨negLine D, ((π : 𝓞 D.host.E) : D.host.E)⁻¹, inv_ne_zero hπ0, ?_, ?_, fun i j => ?_⟩
   · simp [negLine, Formalism.BasicNotions.Examples₂.stdSpace]
   · rw [X.zu_norm]; exact neg_ne_zero.2 hT0
-  · rw [negLine_gram, X.zu_norm, star_inv₀, star_eq_hostConj, ← hπ]
-    field_simp <;> ring
+  · rw [negLine_gram, X.zu_norm, star_inv₀, _root_.Formalism.MainNotions.S.Inh.tie_star, ← hπ]
+    field_simp
 
 end GlobalTheory.RankOneLine

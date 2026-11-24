@@ -60,8 +60,8 @@ private theorem nuQD_unit (N M l : ℕ) [Fact l.Prime] (hN : N = M * l) (hM : M 
         ((u ^ 2 : ℤ_[l]ˣ) : ℤ_[l]) - ((((v ^ 2 : (ZMod N)ˣ) : ZMod N).val : ℕ) : ℤ_[l]) := by
   subst hN
   have hl : l.Prime := Fact.out
-  haveI : NeZero M := ⟨hM⟩
-  haveI : NeZero (M * l) := ⟨mul_ne_zero hM hl.ne_zero⟩
+  have : NeZero M := ⟨hM⟩
+  have : NeZero (M * l) := ⟨mul_ne_zero hM hl.ne_zero⟩
   let e := ZMod.chineseRemainder hc
   let w : (ZMod M × ZMod l)ˣ := MulEquiv.prodUnits.symm (1, Units.map (PadicInt.toZMod : ℤ_[l] →+* ZMod l).toMonoidHom u)
   let v : (ZMod (M * l))ˣ := Units.map e.symm.toRingHom.toMonoidHom w
@@ -116,8 +116,8 @@ theorem UpperTheory.Mu.nuQD :
   · obtain ⟨v, hv1, hv⟩ := nuQD_unit H.condN (H.QS * H.q) H.d hN
       (mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero) H.coprime_QSq_d u
     have ha : H.art (v ^ 2) = 1 := by
-      haveI : NeZero (H.QS * H.q) := ⟨mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero⟩
-      haveI : NeZero H.condN := ⟨H.condN_ne_zero⟩
+      have : NeZero (H.QS * H.q) := ⟨mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero⟩
+      have : NeZero H.condN := ⟨H.condN_ne_zero⟩
       have hdvd : H.QS * H.q ∣ H.condN := ⟨H.d, hN⟩
       have hv2 : ((v ^ 2 : (ZMod H.condN)ˣ) : ZMod H.condN).val ≡ 1 [MOD H.QS * H.q] := by
         have h1 := (ZMod.natCast_eq_natCast_iff _ _ _).mpr hv1

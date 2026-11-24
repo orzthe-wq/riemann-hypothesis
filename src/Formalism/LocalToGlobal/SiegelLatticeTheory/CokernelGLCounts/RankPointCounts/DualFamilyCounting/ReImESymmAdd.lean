@@ -100,8 +100,6 @@ theorem mem_inv_coeF {J : Ideal (𝓞 D.host.F)} (hJ : J ≠ ⊥) (x : D.host.F)
 
 theorem dF_ne (n : ℕ) : differentIdeal ℤ (𝓞 D.host.F) ^ n ≠ ⊥ := by
   first
-    | exact pow_ne_zero n (by simpa [← Ideal.zero_eq_bot] using
-        (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 D.host.F)))
     | (intro h
        apply dI_ne_bot (D := D) n
        show Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)) ^ n = ⊥
@@ -173,7 +171,6 @@ theorem omg_int : IsIntegral ℤ (omg D) := by
   refine ⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (((D.host.d + 1) / 4 : ℕ) : ℤ), ?_, ?_⟩
   · first
       | monicity!
-      | monicity
   · rw [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X,
       Polynomial.eval₂_C]
     show ((1 + D.host.sqrtMinusD) / 2) ^ 2 - (1 + D.host.sqrtMinusD) / 2 +
@@ -181,16 +178,9 @@ theorem omg_int : IsIntegral ℤ (omg D) := by
     rw [algebraMap_int_eq, eq_intCast]
     linear_combination (1 / 4 : D.host.E) * h2 + (1 / 4 : D.host.E) * hk'
 
-private theorem embS_conj' (τ : D.what₂.Tau) (x : D.host.E) :
-    embS D τ (D.host.conj x) = (starRingEnd ℂ) (embS D τ x) := by
-  haveI := D.host.isCMField_hostE
-  rw [← Formalism.MainNotions.S.Inh.tie_star]
-  first
-    | exact (NumberField.IsCMField.isConj_complexConj D.host.E (embS D τ)).eq x
-
 theorem embS_add_conj (τ : D.what₂.Tau) (x : D.host.E) :
     embS D τ (x + D.host.conj x) = ((2 * (embS D τ x).re : ℝ) : ℂ) := by
-  rw [map_add (f := _), embS_conj', Complex.add_conj]
+  rw [map_add (f := _), _root_.Formalism.L2.SG.Pf.NcReal.JX.CovB.embS_conj, Complex.add_conj]
 
 theorem sqrtMinusD_int : IsIntegral ℤ (D.host.sqrtMinusD) := by
   have h : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E) := D.host.sqd_sq
@@ -219,7 +209,7 @@ theorem IIm_mul_int (a : Fin D.R.rS) {t : D.host.E} (ht : t ∈ IIm a) (o : 𝓞
 theorem int_mem_IIm (a : Fin D.R.rS) (o : 𝓞 D.host.E) : (o : D.host.E) ∈ IIm a := by
   refine (mem_inv_coe (dI_ne_bot (D := D) (nIm a)) _).2 ?_
   intro y _
-  exact ⟨o * y, by first | rfl | push_cast; rfl | simp⟩
+  exact ⟨o * y, by first | rfl | simp⟩
 
 theorem conj_mem_IIm (a : Fin D.R.rS) {t : D.host.E} (ht : t ∈ IIm a) : D.host.conj t ∈ IIm a := by
   have h := star_mem_inv (D := D) (nIm a) ht
@@ -278,7 +268,6 @@ theorem re_half (t : D.host.E) (v : InfinitePlace X.B.I.F) :
     push_cast
     first
       | ring
-      | field_simp
   rw [h2, Complex.ofReal_re]
 
 private theorem embS_sqrtMinusD_re_eq_zero (τ : D.what₂.Tau) : (embS D τ D.host.sqrtMinusD).re = 0 := by
@@ -292,7 +281,6 @@ theorem embS_omg_re (τ : D.what₂.Tau) : (embS D τ (omg D)).re = 2⁻¹ := by
   rw [map_div₀, map_add (f := _), map_one, map_ofNat]
   first
     | (rw [Complex.div_ofNat_re, Complex.add_re, Complex.one_re, h]; norm_num)
-    | (simp [Complex.div_re, h]; norm_num)
 
 theorem hA1 (a : Fin D.R.rS) (x : InfinitePlace X.B.I.F → ℝ) :
     x ∈ reLat X (Ahalf a) ↔ ∃ y, (x, y) ∈ ΓIm X a := by
@@ -314,7 +302,6 @@ theorem hA1 (a : Fin D.R.rS) (x : InfinitePlace X.B.I.F → ℝ) :
       rw [map_mul, embS_coe_F_eq_ofReal_re (X.pl v) ((2 : D.host.F) * z), Complex.re_ofReal_mul, embS_omg_re,
         Subfield.coe_mul, coeF_two, map_mul, map_ofNat]
       first
-        | (rw [Complex.re_ofNat_mul]; ring)
         | (simp; ring)
   · rintro ⟨y, hy⟩
     rw [mem_ΓIm] at hy
@@ -407,7 +394,6 @@ def bbSub (a : Fin D.R.rS) : Submodule (𝓞 D.host.F) D.host.F where
 theorem coeF_nat (n : ℕ) : ((n : D.host.F) : D.host.E) = (n : D.host.E) := by
   first
     | simp
-    | norm_cast
 
 theorem bb_le (a : Fin D.R.rS) :
     bbSub a ≤ ((FractionalIdeal.spanSingleton _ ((D.host.d : D.host.F))⁻¹ * JF a : FIF) : Submodule (𝓞 D.host.F) D.host.F) := by
@@ -497,8 +483,6 @@ theorem fd_cLatIm (u : D.what₂.Word) (a : Fin D.R.rS) :
   · refine hF₀m.preimage ?_
     first
       | exact Measurable.of_eval fun v => (measurable_pi_apply v).div_const _
-      | measurability
-      | fun_prop
   · intro z
     obtain ⟨⟨x, hx⟩, hxF, huniq⟩ := hF₀ (fun v => z v / cIm X v)
     have hmem : (fun v => x v * cIm X v : InfinitePlace X.B.I.F → ℝ) ∈ cLat X u (Sum.inr (Sum.inr a)) :=
@@ -533,11 +517,6 @@ theorem reImE_mp : MeasurePreserving (reImE X) volume volume := by
   first
     | exact (MeasureTheory.volume_measurePreserving_arrowProdEquivProdArrow ℝ ℝ (InfinitePlace X.B.I.F)).comp
         (MeasureTheory.volume_preserving_pi (fun _ => Complex.volume_preserving_equiv_real_prod))
-    | exact (MeasureTheory.measurePreserving_arrowProdEquivProdArrow ℝ ℝ (InfinitePlace X.B.I.F)
-        (fun _ => volume) (fun _ => volume)).comp
-        (MeasureTheory.volume_preserving_pi (fun _ => Complex.volume_preserving_equiv_real_prod))
-    | exact (MeasureTheory.volume_measurePreserving_arrowProdEquivProdArrow ℝ ℝ (InfinitePlace X.B.I.F)).comp
-        (MeasureTheory.measurePreserving_piCongrRight _ (fun _ => Complex.volume_preserving_equiv_real_prod))
 
 theorem reImE_symm_add (p q : (InfinitePlace X.B.I.F → ℝ) × (InfinitePlace X.B.I.F → ℝ)) :
     (reImE X).symm (p + q) = (reImE X).symm p + (reImE X).symm q := by
@@ -552,8 +531,6 @@ theorem card_ι : Fintype.card (InfinitePlace X.B.I.F) = Module.finrank ℚ D.ho
        rw [NumberField.IsTotallyReal.nrComplexPlaces_eq_zero, mul_zero, add_zero] at h
        rw [← h, NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces,
          NumberField.IsTotallyReal.nrComplexPlaces_eq_zero, add_zero])
-    | simp [NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces,
-        ← NumberField.InfinitePlace.card_add_two_mul_card_eq_rank]
 
 theorem absNorm_Ahalf (a : Fin D.R.rS) :
     ((FractionalIdeal.absNorm (Ahalf a) : ℚ) : ℝ) = (2 : ℝ)⁻¹ ^ Fintype.card (InfinitePlace X.B.I.F) *
@@ -578,7 +555,6 @@ theorem absNorm_Ahalf (a : Fin D.R.rS) :
   push_cast
   first
     | done
-    | rfl
     | simp [Nat.cast_natAbs, Int.cast_abs]
 
 theorem realId {d : ℝ} (hd : 0 < d) (m c : ℝ) :

@@ -142,9 +142,7 @@ theorem finrank_integer : Module.finrank 𝒪[K] 𝒪[L] = Module.finrank K L :=
 theorem isIntegral_iff (x : L) : IsIntegral 𝒪[K] x ↔ valuation L x ≤ 1 := by
   constructor
   · intro hx
-    have h2 : IsIntegral 𝒪[L] x := hx.tower_top
-    obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.1 h2
-    exact y.2
+    exact (Valuation.integer.integers (valuation L)).isIntegral_iff_v_le_one.mp hx.tower_top
   · intro hx
     have : IsIntegral 𝒪[K] (⟨x, hx⟩ : 𝒪[L]) := Algebra.IsIntegral.isIntegral _
     exact this.map (IsScalarTower.toAlgHom 𝒪[K] 𝒪[L] L)

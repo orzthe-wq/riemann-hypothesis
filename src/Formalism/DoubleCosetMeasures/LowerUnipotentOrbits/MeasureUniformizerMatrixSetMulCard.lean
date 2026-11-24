@@ -70,8 +70,7 @@ def piece (O : Subring F) (ϖ : F) {n a : ℕ} (r : Matrix (Fin n) (Fin a) F) :
 
 theorem mem_piece {O : Subring F} {ϖ : F} {n a : ℕ} {r y : Matrix (Fin n) (Fin a) F} :
     y ∈ piece O ϖ r ↔ ∀ i j, ∃ o ∈ O, y i j - r i j = ϖ * o := by
-  simp only [piece, Set.mem_preimage, IIset, Set.mem_setOf_eq, Matrix.add_apply,
-    Matrix.neg_apply, neg_add_eq_sub, Matrix.sub_apply]
+  simp only [piece, Set.mem_preimage, IIset, Set.mem_setOf_eq, neg_add_eq_sub, Matrix.sub_apply]
 
 theorem iiset_eq (O : Subring F) (ϖ : F) (hϖ0 : ϖ ≠ 0) {n a : ℕ} :
     (IIset O ϖ : Set (Matrix (Fin n) (Fin a) F)) = {y | ∀ i j, ϖ⁻¹ * y i j ∈ O} := by
@@ -128,7 +127,7 @@ theorem one_add_mem_cong (O : Subring F) (ϖ : F) (hϖ : ϖ ∈ O) (hϖ0 : ϖ �
   have hqP : q P = 0 := Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.subset_span rfl)
   have hqA : q.mapMatrix A = 1 := by
     ext i j
-    by_cases h : i = j <;> simp [A, hqP, Matrix.one_apply, h, Matrix.smul_apply, Pi.smul_apply]
+    by_cases h : i = j <;> simp [A, hqP, Matrix.one_apply, h, Matrix.smul_apply]
   have hq : q A.det = q 1 := by rw [RingHom.map_det, hqA, Matrix.det_one, map_one]
   obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.mp (Ideal.Quotient.eq.mp hq)
   have hc' := congrArg Subtype.val hc

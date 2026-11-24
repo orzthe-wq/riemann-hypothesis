@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ToOneSucc
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsLinearIsQuotIntTIntStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsQuotientInvariantIntegralExchangeToPositionOneStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsLinearIsQuotIntTInt
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsQuotientInvariantIntegralExchangeToPositionOne
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralCompBlocks
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClosedEmbeddingAffPtUncurry
@@ -49,7 +50,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
 
 @[expose] public section
 
@@ -65,7 +65,7 @@ theorem exists_bilPos_mid : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologic
   haveI : ν.IsAddHaarMeasure := hsd.1
   have h1 : 1 ≤ ρ := by omega
   have h2 : ρ ≤ c := by omega
-  have hR := fun Ψ => GlobalTheory.T.exists_linear_isQuotInt_tInt_alt k n₂ n₁ c ρ h1 h2 ψ hψc hψ1 ν μ₂ hk₂ m₂ G₂ A σ hσ (T Ψ) (hT.1 Ψ) F ρ₁ hsrc
+  have hR := fun Ψ => _root_.GlobalTheory.PosOne.RrLin.exists_linear_isQuotInt_tInt k n₂ n₁ c ρ h1 h2 ψ hψc hψ1 ν μ₂ hk₂ m₂ G₂ A σ hσ (T Ψ) (hT.1 Ψ) F ρ₁ hsrc
   choose R hQ hN using hR
   have uniq : ∀ (f : GL (n₂ ⊕ Fin c) k → ℂ) (z z' : ℂ), IsQuotInt ν m₂ G₂ ρ f z → IsQuotInt ν m₂ G₂ ρ f z' → z = z' :=
     fun f z z' => (GlobalTheory.QuotInt.quotInt_unique_exists k n₂ c ρ h1 h2 ν m₂ G₂ f).1 z z'
@@ -97,7 +97,7 @@ theorem exists_bilPos_mid : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologic
         simp only [add_zero] at this
         simp [this, hz] }
   refine ⟨b, ⟨fun Ψ => hN Ψ, ?_⟩, fun Ψ Φ₂ => hQ Ψ Φ₂, fun Ψ Φ₂ =>
-    GlobalTheory.T.isQuotientInvariantIntegral_exchange_toPositionOne k n₂ n₁ c ρ h1 h2 ψ hψc hψ1 ν hsd μ₂ hk₂ m₂ G₂ A σ hσ (T Ψ) (hT.1 Ψ) F ρ₁ hsrc (R Ψ) (hQ Ψ) Φ₂⟩
+    _root_.GlobalTheory.PosOneIntegral.isQuotInt_toOne k n₂ n₁ c ρ h1 h2 ψ hψc hψ1 ν hsd μ₂ hk₂ m₂ G₂ A σ hσ (T Ψ) (hT.1 Ψ) F ρ₁ hsrc (R Ψ) (hQ Ψ) Φ₂⟩
   intro g Ψ Ψ₁ v hΨ
   show R Ψ₁ (ρ₁ (embX (c + 1) g) v) = _ * R Ψ v
   set s : ℂ := ((nabs k (Matrix.GeneralLinearGroup.det g) ^ (((c : ℝ) + 2) / 2 - ρ) : ℝ) : ℂ) with hs

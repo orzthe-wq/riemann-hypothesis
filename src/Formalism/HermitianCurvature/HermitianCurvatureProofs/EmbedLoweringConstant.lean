@@ -78,8 +78,7 @@ theorem core1 (D : ℂ) (F τY τa sY sa T Ta Tai la : B)
   have a3 : F * (τa * sY) = Ta * (F * sY) := by rw [← mul_assoc, h2, mul_assoc]
   have e : Ta * (D • (T * la * F - la * T * F)) = Ta * (T * la * F - F * sY) := by
     rw [mul_smul_comm, mul_sub, mul_sub, ← a1, ← a2, ← a3, ← mul_sub, ← mul_sub, ← mul_smul_comm, rtt]
-  have := congrArg (Tai * ·) e
-  simpa only [← mul_assoc, hi, one_mul] using this
+  simpa only [← mul_assoc, hi, one_mul] using congrArg (Tai * ·) e
 
 theorem tau_mat (D : ℂ) (hD1 : D - 1 ≠ 0) (zi zbi G la F τ s T : B)
     (hτ : F * τ = T * F) (hTzi : T * zi = zi * T) (hTw : T * (zbi * G) = zbi * G * T)
@@ -93,7 +92,7 @@ theorem tau_mat (D : ℂ) (hD1 : D - 1 ≠ 0) (zi zbi G la F τ s T : B)
   · linear_combination (norm := (
       simp only [mul_add, add_mul, mul_sub, sub_mul, mul_neg, neg_mul, smul_add, smul_sub,
         smul_mul_assoc, mul_smul_comm, mul_assoc, one_mul, mul_one, zero_mul, mul_zero, smul_zero];
-      match_scalars <;> first | ring1 | (field_simp [hD1] <;> ring)))
+      match_scalars <;> first | ring1))
       ((D - 1)⁻¹ * D) • (zi * hτ) - ((D - 1)⁻¹ * D) • (hTzi * F)
   · simp
   · linear_combination (norm := (
@@ -113,19 +112,15 @@ section Gen2
 variable {B : Type} [Ring B] [Algebra ℂ B]
 
 theorem smul_cancel {D : ℂ} (hD : D ≠ 0) {u v : B} (h : D • u = D • v) : u = v := by
-  have := congrArg (D⁻¹ • ·) h
-  simpa [smul_smul, inv_mul_cancel₀ hD] using this
+  simpa [smul_smul, inv_mul_cancel₀ hD] using congrArg (D⁻¹ • ·) h
 
 theorem lcancel {u ui p q : B} (h : ui * u = 1) (e : u * p = u * q) : p = q := by
-  have := congrArg (ui * ·) e
-  simpa only [← mul_assoc, h, one_mul] using this
+  simpa only [← mul_assoc, h, one_mul] using congrArg (ui * ·) e
 
 theorem core2 (D : ℂ) (F Fi T la l : B) (hF : F * Fi = 1)
     (h : D • (T * la * F - la * T * F) = T * la * F - T * l * F) :
     D • (T * la - la * T) = T * la - T * l := by
-  have := congrArg (· * Fi) h
-  simp only [sub_mul, smul_mul_assoc, mul_assoc, hF, mul_one] at this
-  simpa only [mul_assoc] using this
+  simpa only [sub_mul, smul_mul_assoc, mul_assoc, hF, mul_one] using congrArg (· * Fi) h
 
 theorem rel1 {D : ℂ} (hD : D ≠ 0) (T m m' η : B) (hm : m' = m + D • η)
     (r1 : D • (T * m - m * T) = T * m - T * m') : m * T = T * (m + η) := by
@@ -252,7 +247,7 @@ theorem L_mat (D : ℂ) (hD : D ≠ 0) (hD1 : D - 1 ≠ 0)
   · linear_combination (norm := (
       simp only [mul_add, add_mul, mul_sub, sub_mul, mul_neg, neg_mul, smul_add, smul_sub,
         smul_mul_assoc, mul_smul_comm, mul_assoc, one_mul, mul_one, zero_mul, mul_zero, smul_zero];
-      match_scalars <;> first | ring1 | (field_simp [hD, hD1] <;> ring)))
+      match_scalars <;> first | ring1))
       -(D - 1)⁻¹ • (zbi * G * la * hτ) + ((D - 1)⁻¹ * D) • (zbi * G * hs) + hC * F
 
 end Gen3
@@ -295,8 +290,7 @@ theorem fr2 {a : S} {p q r s : SlopeTestRemainingChoices S A} (hp : FreeOf a p) 
 
 theorem freeOf2_mul_of_free {a : S} {M N : M2 (SlopeTestRemainingChoices S A)} (hM : FreeOf2 a M) (hN : FreeOf2 a N) : FreeOf2 a (M * N) := by
   intro i j
-  rw [Matrix.mul_apply, Fin.sum_univ_two]
-  exact fr_add (fr_mul (hM _ _) (hN _ _)) (fr_mul (hM _ _) (hN _ _))
+  simpa only [Matrix.mul_apply, Fin.sum_univ_two] using fr_add (fr_mul (hM _ _) (hN _ _)) (fr_mul (hM _ _) (hN _ _))
 
 theorem ins_smul (a : S) (c : ℂ) (M : M2 (SlopeTestRemainingChoices S A)) : ins a (c • M) = c • ins a M := by
   simp [ins, Finset.smul_sum]
@@ -358,28 +352,28 @@ section Level
 variable {A : Type} [Ring A] [Algebra ℂ A] {r : ℕ} (L : LevelData A r)
 
 theorem zeta_GG_mul_inv : L.ζb * L.GGi * (L.ζbi * L.GG) = 1 := by
-  have h := L.fns_comm L.GGi (by simp) L.ζbi (by simp)
+  have h := L.fns_comm L.GGi (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))) L.ζbi (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
   linear_combination (norm := noncomm_ring) L.ζb * h * L.GG + L.ζb_ζbi * L.GGi * L.GG + L.GGi_GG
 
 theorem GG_zeta_mul_inv : L.ζbi * L.GG * (L.ζb * L.GGi) = 1 := by
-  have h := L.fns_comm L.GG (by simp) L.ζb (by simp)
+  have h := L.fns_comm L.GG (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))) L.ζb (Or.inr (Or.inr (Or.inr (Or.inl rfl))))
   linear_combination (norm := noncomm_ring) L.ζbi * h * L.GGi + L.ζbi_ζb * L.GG * L.GGi + L.GG_GGi
 
 theorem a_κw : L.ζb * L.ζi * L.GGi * (L.ζbi * L.GG) = L.ζi := by
-  have h1 := L.fns_comm L.GGi (by simp) L.ζbi (by simp)
-  have h2 := L.fns_comm L.ζi (by simp) L.ζbi (by simp)
+  have h1 := L.fns_comm L.GGi (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))) L.ζbi (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
+  have h2 := L.fns_comm L.ζi (Or.inr (Or.inr (Or.inl rfl))) L.ζbi (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
   linear_combination (norm := noncomm_ring) L.ζb * L.ζi * h1 * L.GG + L.ζb * L.ζi * L.ζbi * L.GGi_GG + L.ζb * h2
     + L.ζb_ζbi * L.ζi
 
 theorem a_κi : L.ζ * L.ζbi * L.GG * (L.ζb * L.ζi * L.GGi) = 1 := by
-  have h1 := L.fns_comm L.GG (by simp) L.ζb (by simp)
-  have h2 := L.fns_comm L.GG (by simp) L.ζi (by simp)
+  have h1 := L.fns_comm L.GG (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))) L.ζb (Or.inr (Or.inr (Or.inr (Or.inl rfl))))
+  have h2 := L.fns_comm L.GG (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))) L.ζi (Or.inr (Or.inr (Or.inl rfl)))
   linear_combination (norm := noncomm_ring) L.ζ * L.ζbi * h1 * L.ζi * L.GGi + L.ζ * L.ζbi_ζb * L.GG * L.ζi * L.GGi
     + L.ζ * h2 * L.GGi + L.ζ_ζi * L.GG * L.GGi + L.GG_GGi
 
 theorem zeta_GG_identity : L.ζi + L.ζb * L.ζi * L.GGi * (L.TT • L.ζbi) = L.ζb * L.GGi := by
-  have h1 := L.fns_comm L.GGi (by simp) L.ζbi (by simp)
-  have h2 := L.fns_comm L.ζi (by simp) L.ζbi (by simp)
+  have h1 := L.fns_comm L.GGi (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))) L.ζbi (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
+  have h2 := L.fns_comm L.ζi (Or.inr (Or.inr (Or.inl rfl))) L.ζbi (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))
   linear_combination (norm := (
     simp only [Algebra.algebraMap_eq_smul_one, mul_add, add_mul, mul_sub, sub_mul, mul_neg, neg_mul,
       smul_add, smul_sub,
@@ -389,8 +383,8 @@ theorem zeta_GG_identity : L.ζi + L.ζb * L.ζi * L.GGi * (L.TT • L.ζbi) = L
     - L.ζi * L.GG_GGi + L.ζi * L.GG_def * L.GGi + L.ζi_ζ * L.ζb * L.GGi
 
 theorem a_l0zi (Y : ℂ) : L.l0 Y * L.ζi = L.ζi * L.l0 Y + L.ζi * L.ζi := by
-  have h1 := L.fns_comm L.GGi (by simp) L.ζi (by simp)
-  have h2 := L.fns_comm L.ζb (by simp) L.ζi (by simp)
+  have h1 := L.fns_comm L.GGi (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl)))))) L.ζi (Or.inr (Or.inr (Or.inl rfl)))
+  have h2 := L.fns_comm L.ζb (Or.inr (Or.inr (Or.inr (Or.inl rfl)))) L.ζi (Or.inr (Or.inr (Or.inl rfl)))
   simp only [LevelData.l0, ← Algebra.smul_def]
   linear_combination (norm := (
     simp only [mul_add, add_mul, mul_sub, sub_mul, mul_neg, neg_mul, smul_add, smul_sub,
@@ -409,7 +403,7 @@ theorem l0_conj_zeta_GG (Y : ℂ) : L.l0 Y * (L.ζbi * L.GG) = L.ζbi * L.GG * (
     -L.nab_ζbi * L.GG - L.ζbi * L.nab_GG - (Y + 1 / 2) • (u1 - u2) + u2 - L.ζbi_ζb
 
 theorem a_l0G (Y : ℂ) : L.l0 Y * L.GG = L.GG * (L.l0 Y - L.ζb * L.GGi) := by
-  have h := L.fns_comm L.GG (by simp) L.ζb (by simp)
+  have h := L.fns_comm L.GG (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl)))))) L.ζb (Or.inr (Or.inr (Or.inr (Or.inl rfl))))
   have u3 : L.GG * L.ζb * L.GGi = L.ζb := by
     linear_combination (norm := noncomm_ring) h * L.GGi + L.ζb * L.GG_GGi
   have u4 : L.ζb * L.GGi * L.GG = L.ζb := by
@@ -436,11 +430,11 @@ theorem fn_comm (L : LevelData A r) {g h : A} (hg : g ∈ zfns L) (hh : h ∈ zf
     (io g : SlopeTestRemainingChoices S A) * io h = io h * io g := by
   rw [← io_mul, ← io_mul, L.fns_comm g (Or.inr hg) h (Or.inr hh)]
 
-theorem mζi (L : LevelData A r) : L.ζi ∈ zfns L := by simp [zfns]
-theorem mζb (L : LevelData A r) : L.ζb ∈ zfns L := by simp [zfns]
-theorem mζbi (L : LevelData A r) : L.ζbi ∈ zfns L := by simp [zfns]
-theorem mG (L : LevelData A r) : L.GG ∈ zfns L := by simp [zfns]
-theorem mGi (L : LevelData A r) : L.GGi ∈ zfns L := by simp [zfns]
+theorem mζi (L : LevelData A r) : L.ζi ∈ zfns L := Or.inr (Or.inl rfl)
+theorem mζb (L : LevelData A r) : L.ζb ∈ zfns L := Or.inr (Or.inr (Or.inl rfl))
+theorem mζbi (L : LevelData A r) : L.ζbi ∈ zfns L := Or.inr (Or.inr (Or.inr (Or.inl rfl)))
+theorem mG (L : LevelData A r) : L.GG ∈ zfns L := Or.inr (Or.inr (Or.inr (Or.inr (Or.inl rfl))))
+theorem mGi (L : LevelData A r) : L.GGi ∈ zfns L := Or.inr (Or.inr (Or.inr (Or.inr (Or.inr rfl))))
 
 theorem T_fn {L : LevelData A r} {f : FrameData S A} (hf : IsFrame L f) (Y : ℂ) {g : A} (hg : g ∈ zfns L) :
     io L.GG * f.x Y * io g = io g * (io L.GG * f.x Y) := by

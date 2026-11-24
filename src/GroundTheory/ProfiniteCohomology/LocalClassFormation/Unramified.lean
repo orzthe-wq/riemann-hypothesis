@@ -1,59 +1,94 @@
 module
 
-public import GroundTheory.ProfiniteCohomology.LocalClassFormation.IntegerUnitsToUnitsHomApply
+public import GroundTheory.ProfiniteCohomology.GaloisModules.CoeGalRootsOfUnityHomApply
+public import GroundTheory.LocalFields.HerbrandLocalBase
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import GroundTheory.TateCohomology.Characters
 public import GroundTheory.LocalFields.UnramifiedGalois
 public import GroundTheory.LocalFields.UnramifiedDefs
 public import GroundTheory.ProfiniteCohomology.TorsionDualDefs
-public import GroundTheory.TateCohomology.Characters
 public import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 public import GroundTheory.LocalFields.UnramifiedNorms
 public import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom
 public import GroundTheory.TateCohomology.Herbrand
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.CategoryTheory.EffectiveEpi.Comp
 import Mathlib.CategoryTheory.ExtremalEpi
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.ProfiniteCohomology.LocalClassFormation.IntegerUnitsToUnitsHomApply, GroundTheory.ProfiniteCohomology.LocalClassFormation.Unramified
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.LocalClassFormation.IntegerUnitsToUnitsHomApply =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.LocalClassFormation.IntegerUnitsToUnitsHomApply", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.GaloisModules.CoeGalRootsOfUnityHomApply\npublic import GroundTheory.LocalFields.HerbrandLocalBase\npublic import Mathlib.Combinatorics.Quiver.ReflQuiver\npublic import GroundTheory.TateCohomology.Characters\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+open CategoryTheory GroundTheory.LocalField ValuativeRel
+
+variable (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
+  [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
+  [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
+
+noncomputable abbrev galIntegerUnitsZ : Rep ℤ Gal(L/K) :=
+  Rep.ofMulDistribMulAction Gal(L/K) 𝒪[L]ˣ
+
+noncomputable def integerUnitsToUnits : galIntegerUnitsZ K L ⟶ galUnitsZ K L :=
+  Rep.ofHom ⟨(MonoidHom.toAdditive (unitsIncl L)).toIntLinearMap, fun σ => by
+    ext x
+    rfl⟩
+
+noncomputable def unitsValuation : galUnitsZ K L ⟶ Rep.trivial ℤ Gal(L/K) ℤ :=
+  Rep.ofHom ⟨(unitsOrd (L := L)).toIntLinearMap, fun σ => by
+    ext x
+    change ord (↑(σ • x.toMul) : L) = ord (x.toMul : L)
+    have hOrd : ord (σ (x.toMul : L)) = ord (x.toMul : L) := by
+      rw [ord, ord, normalizedValuation_apply, normalizedValuation_apply,
+        valuation_algEquiv_apply K L σ (x.toMul : L)]
+    rw [AlgEquiv.smul_units_def, Units.coe_map]
+    exact hOrd⟩
+
+@[simp]
+theorem unitsValuation_hom_apply (x : Additive Lˣ) :
+    (unitsValuation K L).hom x = ord ((x.toMul : Lˣ) : L) :=
+  rfl
+
+noncomputable def unitsValuationSES : ShortComplex (Rep ℤ Gal(L/K)) :=
+  ShortComplex.mk (integerUnitsToUnits K L) (unitsValuation K L) (by
+    ext x
+    exact ord_unit (K := L) x.toMul)
+
+theorem unitsValuationSES_shortExact : (unitsValuationSES K L).ShortExact := by
+  refine ShortComplex.ShortExact.mk' ?_ ?_ ?_
+  · refine GroundTheory.GroupCoh.shortComplex_exact_of_forall fun x hx => ?_
+    change Additive Lˣ at x
+    change ord ((x.toMul : Lˣ) : L) = 0 at hx
+    have hMem : x.toMul ∈ (unitsIncl L).range := by
+      rwa [ord_eq_zero_iff_mem, unitFiltrationUnits, unitFiltration_zero,
+        ← MonoidHom.range_eq_map] at hx
+    obtain ⟨u, hu⟩ := hMem
+    exact ⟨Additive.ofMul u, Additive.toMul.injective hu⟩
+  · exact (Rep.mono_iff_injective (integerUnitsToUnits K L)).2 fun _ _ h =>
+      Additive.toMul.injective (unitsIncl_injective (K := L) (congrArg Additive.toMul h))
+  · have hSurj : Function.Surjective (unitsOrd (L := L)) := by
+      obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[L]
+      intro n
+      refine ⟨n • Additive.ofMul (uniformizerUnit hϖ), ?_⟩
+      rw [map_zsmul]
+      change n • ord (uniformizerUnit hϖ : L) = n
+      rw [coe_uniformizerUnit, ord_uniformizer hϖ, smul_eq_mul, mul_one]
+    exact (Rep.epi_iff_surjective (unitsValuation K L)).2 hSurj
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.LocalClassFormation.IntegerUnitsToUnitsHomApply =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.LocalClassFormation.Unramified =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.LocalClassFormation.Unramified", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.LocalClassFormation.IntegerUnitsToUnitsHomApply\npublic import GroundTheory.LocalFields.UnramifiedGalois\npublic import GroundTheory.LocalFields.UnramifiedDefs\npublic import GroundTheory.ProfiniteCohomology.TorsionDualDefs\npublic import GroundTheory.TateCohomology.Characters\npublic import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic\npublic import GroundTheory.LocalFields.UnramifiedNorms\npublic import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom\npublic import GroundTheory.TateCohomology.Herbrand\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.CategoryTheory.EffectiveEpi.Comp\nimport Mathlib.CategoryTheory.ExtremalEpi\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -272,3 +307,6 @@ theorem mem_range_unramifiedInv_iff (x : QZ) :
 end Invariant
 
 end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.LocalClassFormation.Unramified =====

@@ -222,19 +222,6 @@ theorem minor_lemma {n m : ℕ} (hmn : m < n) (x w y : Matrix (Fin n) (Fin n) K)
     exact Finset.prod_eq_one (fun i _ => hyD (e i))
   rw [hsplit, Matrix.det_mul, hX, one_mul, hB, hTL, Matrix.det_mul, hYt, mul_one, mul_comm]
 
-private theorem revIn_lt_sum_of_lt_sum : ∀ (l : List ℕ) (j : ℕ), j < l.sum → revIn l j < l.sum := by
-  intro l
-  induction l with
-  | nil => intro j hj; simp at hj
-  | cons a l ih =>
-    intro j hj
-    rw [List.sum_cons] at hj ⊢
-    simp only [revIn]
-    split_ifs with h
-    · omega
-    · have := ih (j - a) (by omega)
-      omega
-
 theorem supp_one (h : Point K) (s : ℕ) (hs : 1 ≤ s) (t : Kˣ)
     (p : lowW K (addBlock h s t).1 (addBlock h s t).2 × upUniG K (addBlock h s t).1.sum)
     (hI : IsInt R (orbZ (addBlock h s t) p)) : (pt h.1 h.2).det * (t : K) ∈ R := by
@@ -247,7 +234,7 @@ theorem supp_one (h : Point K) (s : ℕ) (hs : 1 ≤ s) (t : Kˣ)
   refine minor_lemma R hmn _ (pt (addBlock h s t).1 (addBlock h s t).2) _ (pt h.1 h.2) (t : K)
     hv hu ?_ ?_ hI
   · intro a b ha
-    have hrev := revIn_lt_sum_of_lt_sum h.1 a.val ha
+    have hrev := _root_.Formalism.DoubleCosetMeasures.P.Phase.revIn_lt h.1 a.val ha
     show (if (b : ℕ) = revIn (h.1 ++ [s]) a then
         ((Function.update h.2 h.1.length t (blk (h.1 ++ [s]) a) : Kˣ) : K) else 0) = _
     rw [revIn_app_lt s h.1 a.val ha, blk_app_lt s h.1 a.val ha, Function.update_apply,
@@ -293,27 +280,6 @@ namespace Formalism.FourierDecayAlt.P.A5x7
 
 section Ones
 variable {K : Type} [CommRing K] (R : Subring K)
-
-private theorem isInt_mul_hermitian_curvature {n : ℕ} {A B : Matrix (Fin n) (Fin n) K} (hA : IsInt R A)
-    (hB : IsInt R B) : IsInt R (A * B) := by
-  intro a b
-  rw [Matrix.mul_apply]
-  exact Subring.sum_mem _ (fun k _ => R.mul_mem (hA a k) (hB k b))
-
-private theorem isInt_inv_of_det_eq_one {n : ℕ} {A : Matrix (Fin n) (Fin n) K} (hA : IsInt R A)
-    (hd : A.det = 1) : IsInt R A⁻¹ := by
-  intro a b
-  rw [Matrix.inv_def, hd, Ring.inverse_one, one_smul, Matrix.adjugate_apply]
-  have hM : IsInt R (A.updateRow b (Pi.single a 1)) := by
-    intro i j
-    rw [Matrix.updateRow_apply]
-    split_ifs
-    · rw [Pi.single_apply]
-      split_ifs
-      · exact R.one_mem
-      · exact R.zero_mem
-    · exact hA i j
-  simpa using det_sub_mem R hM id id
 
 theorem lu_int {n : ℕ} {h u : Matrix (Fin n) (Fin n) K} (hh : IsLowUni h) (hu : IsUpUni u)
     (hI : IsInt R (h * u)) : IsInt R h ∧ IsInt R u := by
@@ -390,23 +356,23 @@ theorem int_of_orb (w : Point K) (hw : InGLR R w) (p : lowW K w.1 w.2 × upUniG 
           pt w.1 w.2 * ((p.2 : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)) := by
       rw [he, pt_inv w, ← Matrix.mul_assoc, ← Matrix.mul_assoc, P.Phase.ptI_mul_pt, Matrix.one_mul]
     rw [e]
-    exact isInt_mul_hermitian_curvature R hw2 hZ'
+    exact _root_.Formalism.DoubleCosetMeasures.P.isInt_mul R hw2 hZ'
   obtain ⟨hH, hU⟩ := lu_int R hhl hu hHU
   have hV : IsInt R ((p.1 : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) := by
     have e : ((p.1 : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) =
         pt w.1 w.2 * hmat * (pt w.1 w.2)⁻¹ := by
       rw [← he, pt_inv w, Matrix.mul_assoc, P.Phase.pt_mul_ptI, Matrix.mul_one]
     rw [e]
-    exact isInt_mul_hermitian_curvature R (isInt_mul_hermitian_curvature R hw1 hH) hw2
+    exact _root_.Formalism.DoubleCosetMeasures.P.isInt_mul R (_root_.Formalism.DoubleCosetMeasures.P.isInt_mul R hw1 hH) hw2
   have hdV := ((Formalism.DoubleCosetMeasures.P.uniGroup K _ ((p.1 : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)
     ((p.1 : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)).2.2.1 hv).2
   have hdU := ((Formalism.DoubleCosetMeasures.P.uniGroup K _ ((p.2 : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)
     ((p.2 : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)).2.2.2 hu).2
   refine ⟨(mem_intSub R _ p.1).2 ⟨hV, ?_⟩, (mem_intSub R _ p.2).2 ⟨hU, ?_⟩⟩
   · rw [Matrix.coe_units_inv]
-    exact isInt_inv_of_det_eq_one R hV hdV
+    exact _root_.Formalism.DoubleCosetMeasures.P.isInt_inv R hV hdV
   · rw [Matrix.coe_units_inv]
-    exact isInt_inv_of_det_eq_one R hU hdU
+    exact _root_.Formalism.DoubleCosetMeasures.P.isInt_inv R hU hdU
 
 theorem orb_of_int (w : Point K) (hw : InGLR R w) (p : lowW K w.1 w.2 × upUniG K w.1.sum)
     (h1 : p.1 ∈ intSub R (lowW K w.1 w.2)) (h2 : p.2 ∈ intSub R (upUniG K w.1.sum)) :
@@ -433,9 +399,9 @@ theorem orb_of_int (w : Point K) (hw : InGLR R w) (p : lowW K w.1 w.2 × upUniG 
   have hinv := Matrix.inv_eq_right_inv hX
   refine ⟨?_, ?_, ?_⟩
   · rw [hO]
-    exact isInt_mul_hermitian_curvature R (isInt_mul_hermitian_curvature R hV hw1) hU
+    exact _root_.Formalism.DoubleCosetMeasures.P.isInt_mul R (_root_.Formalism.DoubleCosetMeasures.P.isInt_mul R hV hw1) hU
   · rw [hinv, ← pt_inv w]
-    exact isInt_mul_hermitian_curvature R (isInt_mul_hermitian_curvature R hU' hw2) hV'
+    exact _root_.Formalism.DoubleCosetMeasures.P.isInt_mul R (_root_.Formalism.DoubleCosetMeasures.P.isInt_mul R hU' hw2) hV'
   · rw [hinv]
     exact hX
 
@@ -560,8 +526,4 @@ theorem Formalism.FourierDecayAlt.P.zero_kernel_all_ones : Formalism.FourierDeca
 
 namespace Formalism.FourierDecayAlt.P.A5x7
 
-section Padic
-variable (p : ℕ) [hp : Fact p.Prime]
-
-end Padic
 end Formalism.FourierDecayAlt.P.A5x7

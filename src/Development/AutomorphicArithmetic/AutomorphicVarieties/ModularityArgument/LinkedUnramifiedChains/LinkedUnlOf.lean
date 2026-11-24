@@ -41,7 +41,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 
 noncomputable section
 
-attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 attribute [local instance 1100] Subalgebra.toCommRing Subalgebra.algebra
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Alg

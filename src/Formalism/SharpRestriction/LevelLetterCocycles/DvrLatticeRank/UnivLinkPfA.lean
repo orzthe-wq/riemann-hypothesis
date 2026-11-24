@@ -75,7 +75,7 @@ theorem univLinkPf_InvS_anti (T : LocLat G Qp LL O) (π' Eπ : LetA O n) (h' : �
 theorem univLinkPf_cocycle {T : LocLat G Qp LL O} {y z : W.DD T} (h : (y, z) ∈ W.wachCocyclesDelta T) :
     W.γD T W.gamK y - y = W.φD T z - z := by
   have h1 := ((Formalism.MainNotions.LiftingTheory.lifta_mem_Z1DΔ W T y z).mp h).1
-  try simp only [herrCocycles, Set.mem_setOf_eq, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply] at h1
+  try simp only [herrCocycles, LinearMap.mem_ker] at h1
   simp only [LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply] at h1
   rw [← sub_eq_zero, sub_eq_add_neg]
   exact h1
@@ -87,7 +87,7 @@ theorem univLinkPf_mem_Z1DΔ {T : LocLat G Qp LL O} (y z : W.DD T) (hy : ∀ δ 
     (hz : ∀ δ ∈ W.DelF, W.γD T δ z = z) (h : W.γD T W.gamK y - y = W.φD T z - z) :
     (y, z) ∈ W.wachCocyclesDelta T := by
   refine (Formalism.MainNotions.LiftingTheory.lifta_mem_Z1DΔ W T y z).mpr ⟨?_, fun δ hδ => ⟨hy δ hδ, hz δ hδ⟩⟩
-  try simp only [herrCocycles, Set.mem_setOf_eq, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply]
+  try simp only [herrCocycles, LinearMap.mem_ker]
   simp only [LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply]
   rw [← sub_eq_add_neg, sub_eq_zero]
   exact h

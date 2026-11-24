@@ -97,7 +97,7 @@ theorem _root_.GlobalTheory.ideal_map_colon_eq_of_flat : ∀ {A R : Type} [CommR
       refine LinearMap.ext fun v => ?_
 
       simp [f, x, Algebra.smul_def, Fintype.sum_prod_type, Fintype.linearCombination_apply,
-      LinearMap.pi_apply, map_sum, Finset.sum_mul]
+      LinearMap.pi_apply, map_sum]
       rw [← sub_eq_add_neg, sub_eq_zero]
       refine Finset.sum_congr rfl fun i _ => ?_
       have e : ∑ j, algebraMap A R (b j) * algebraMap A R (v i) * c i j

@@ -62,10 +62,6 @@ namespace UpperTheory.Zero.LLC
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-private theorem dualCl_fst' (x : IrrGL (k := k)) : (Zc.dualCl x).1 = x.1 := by
-  rw [GlobalTheory.CompanionTheory.ZcDual.dualCl_eq Pr.adm x]
-  rfl
-
 private theorem dualCl_iff (x y : IrrGL (k := k)) : DualCl x y ↔ y = Zc.dualCl x := by
   constructor
   · rintro ⟨n, π, π', rfl, rfl, ⟨e⟩⟩
@@ -84,17 +80,6 @@ private theorem dualCl_tw (x : IrrGL (k := k)) (χ : kˣ →* ℂˣ) (hχ : IsSm
   have φ := GlobalTheory.ContraRefl.contraEquiv (x.twEquiv χ hχ)
   rw [GlobalTheory.CompanionTheory.ZcDual.dualCl_eq Pr.adm x, GlobalTheory.CompanionTheory.ZcDual.dualCl_eq Pr.adm (x.tw χ hχ), IrrGL.tw_of]
   exact IrrGL.of_eq_of.2 ⟨φ.trans e.symm⟩
-
-private theorem fixed_ne_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
-    {π : Representation ℂ G V} {σ : Representation ℂ G W} (φ : π.Equiv σ) {K : Subgroup G}
-    (h : fixed π K ≠ ⊥) : fixed σ K ≠ ⊥ := by
-  obtain ⟨v, hv, hv0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot h
-  refine fun hb => hv0 (φ.toLinearEquiv.map_eq_zero_iff.1 ?_)
-  have hm : φ.toLinearEquiv v ∈ fixed σ K := GlobalTheory.Parabolic.mem_fixed.2 fun g hg => by
-    show σ g (φ.toIntertwiningMap v) = φ.toIntertwiningMap v
-    rw [← φ.toIntertwiningMap.isIntertwining, GlobalTheory.Parabolic.mem_fixed.1 hv g hg]
-  rw [hb] at hm
-  exact hm
 
 private theorem fixed_contra_ne {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) k) V) (hs : IsSmooth π) (h : fixed π (KOne k (Fin n)) ≠ ⊥) :
@@ -117,7 +102,7 @@ private theorem fixed_contra_ne {n : ℕ} {V : Type} [AddCommGroup V] [Module �
 private theorem dz_dualCl {x : IrrGL (k := k)} (h : DZ x) : DZ (Zc.dualCl x) := by
   unfold DZ
   rw [GlobalTheory.CompanionTheory.ZcDual.dualCl_eq Pr.adm x]
-  exact fixed_ne_of_equiv (IrrGL.equivOf _ _ _) (fixed_contra_ne x.rep x.2.rep.smooth h)
+  exact _root_.GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv (IrrGL.equivOf _ _ _) (fixed_contra_ne x.rep x.2.rep.smooth h)
 
 private theorem central_dualCl {x : IrrGL (k := k)} {ω : kˣ →* ℂˣ} (h : HasCentralChar x.rep ω) :
     HasCentralChar (Zc.dualCl x).rep ω⁻¹ := by
@@ -139,7 +124,7 @@ private theorem goodCusp_tw {y : IrrGL (k := k)} (h : GoodCusp y) (χ : kˣ →*
 
 private theorem goodCusp_dualCl {y : IrrGL (k := k)} (h : GoodCusp y) : GoodCusp (Zc.dualCl y) := by
   rcases h with h | ⟨hg, y₀, χ₀, h₀, hd, rfl⟩
-  · exact .inl ((dualCl_fst' y).trans h)
+  · exact .inl ((_root_.PositivityTheory.RgGu.NR.NuP.dualCl_fst y).trans h)
   · exact .inr ⟨hg, Zc.dualCl y₀, χ₀⁻¹, h₀.inv, dz_dualCl hd, dualCl_tw _ _ _ _⟩
 
 private theorem deg_one (c : IrrCl (GL (Fin 1) k)) :
@@ -195,10 +180,10 @@ theorem clBasic : ClBasic := by
     exact deg_one c
   · obtain rfl := (dualCl_iff y y').1 hy'
     have hdd := GlobalTheory.CompanionTheory.Zcore.dualCl_dualCl Pr.adm y
-    refine ⟨dualCl_fst' y, ⟨fun h => ?_, fun h => (GlobalTheory.T.dual_class_cuspidal Pr.adm y h).1⟩, ⟨fun h => ?_, dz_dualCl⟩,
+    refine ⟨_root_.PositivityTheory.RgGu.NR.NuP.dualCl_fst y, ⟨fun h => ?_, fun h => (_root_.GlobalTheory.CompanionTheory.DualCusp.dualCl_isCusp Pr.adm y h).1⟩, ⟨fun h => ?_, dz_dualCl⟩,
       ⟨fun h => ?_, goodCusp_dualCl⟩, fun y'' h => (dualCl_iff y y'').1 h,
       fun χ hχ hχ' => (dualCl_iff _ _).2 (dualCl_tw y χ hχ hχ').symm, fun ω hω => central_dualCl hω⟩
-    · exact hdd ▸ (GlobalTheory.T.dual_class_cuspidal Pr.adm _ h).1
+    · exact hdd ▸ (_root_.GlobalTheory.CompanionTheory.DualCusp.dualCl_isCusp Pr.adm _ h).1
     · exact hdd ▸ dz_dualCl h
     · exact hdd ▸ goodCusp_dualCl h
 

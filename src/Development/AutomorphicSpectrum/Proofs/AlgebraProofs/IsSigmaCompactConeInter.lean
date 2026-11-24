@@ -56,7 +56,7 @@ open scoped ENNReal
 
 theorem chowGroups_le {n e δ : ℕ} {W : Ideal (MvPolynomial (Fin n) ℂ)}
     {g : MvPolynomial (Fin (e + 1) × Fin n) ℂ} (hW : IsProjPrime W) (hg : IsChowForm W (e + 1) g)
-    (hδ : IsMultiHomog δ g) : e + 1 ≤ n := by
+    (hδ : GroundTheory.Heights₂.Heights.IsMultiHomog δ g) : e + 1 ≤ n := by
   by_contra hn
   have hfib := ConeFibreDegree.full n e δ (HermNorm.std n) W g hW hg hδ
   have hpos := ChowDegreePos.proof n (e + 1) δ W g (Nat.succ_pos e) hW hg hδ

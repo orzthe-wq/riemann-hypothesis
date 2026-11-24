@@ -99,7 +99,7 @@ theorem cols_X (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (a : Fin 
     by_cases hq : q = eI k r a
     · subst hq
       rw [P_colX k r j V p _ a.isLt, zero_mul]
-    · simp [bvec, Pi.single_apply, hq]
+    · simp [bvec, hq]
   rw [h, add_zero]
 
 theorem z_fix (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (z' : Fin (2 * r + k + 1) → ℂ)

@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfUnitBoundedTeichmullerFlatDenominatorsStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinMemIdealPowOfXPowMulMemStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfUnitBoundedTeichmullerFlatDenominators
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinMemIdealPowOfXPowMulMem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -79,10 +79,10 @@ theorem GlobalTheory.NullOverS.null_of_mul_null : ∀ (l : ℕ) [Fact l.Prime] (
     (∀ (n : ℕ) (a b : Fin d), {i | (Y * (σ i).map bk.ev) a b ∉ (bk.J ^ n).map bk.ev}.Finite) →
     ∀ (n : ℕ) (a b : Fin d), {i | σ i a b ∉ bk.J ^ n}.Finite := by
   intro l _ K bk ι TB d Y hY σ hσ N a b
-  obtain ⟨n, hn⟩ := GlobalTheory.T.breuilKisin_mem_ideal_pow_of_X_pow_mul_mem l K bk N
+  obtain ⟨n, hn⟩ := _root_.GlobalTheory.BSP.BK.mem_J_pow_of_X_pow_mul_mem l K bk N
   have hdet : IsUnit (inclW l Y.det) := by
     rw [RingHom.map_det]; exact (Matrix.isUnit_iff_isUnit_det _).1 hY
-  obtain ⟨m, t, q, hq⟩ := GlobalTheory.T.ainf_unit_bounded_teichmullerFlat_denominators l K bk Y.det hdet n
+  obtain ⟨m, t, q, hq⟩ := _root_.GlobalTheory.BSP.BddDen.main l K bk Y.det hdet n
   obtain ⟨n', hn'⟩ := hn m
   refine (Set.finite_iUnion fun c : Fin d => hσ n' c b).subset ?_
   intro i hi

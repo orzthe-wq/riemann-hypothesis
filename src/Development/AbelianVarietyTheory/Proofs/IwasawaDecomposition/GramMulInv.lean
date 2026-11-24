@@ -55,7 +55,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
-  apply GlobalTheory.SplitOnto.gram_det_ne <;> assumption
+  apply GlobalTheory.SplitOnto.gram_det_ne
 
 theorem gram_mul_inv (V : HSp D) : V.gram.map (incA D) * V.gram⁻¹.map (incA D) = 1 := by
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (gram_det_ne V))]

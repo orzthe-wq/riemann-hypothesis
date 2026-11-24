@@ -155,11 +155,6 @@ private theorem fockQ_smul_right' {σ : Type} (f g : MvPolynomial σ ℚ) (c : �
     fockQ f (c • g) = c * fockQ f g := by
   rw [← fockB_apply, map_smul, fockB_apply, smul_eq_mul]
 
-private theorem weight_colW_apply' {r n : ℕ} (e : Fin r × Fin n →₀ ℕ) (s : Fin n) :
-    Finsupp.weight (colW r n) e s = ∑ a : Fin r, e (a, s) := by
-  rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]
-  simp [colW, Pi.single_apply]
-
 theorem nablaEqDualWeylOf : NablaEqDualWeylOf := by
   intro hCW hHW hAdj hLT r n hn ν hν
   have hc := fockQ_hw_pos hn ν
@@ -226,7 +221,7 @@ theorem nablaEqDualWeylOf : NablaEqDualWeylOf := by
         apply hs
         intro s
         have hwt := hhom (d := e) (by simpa using hne)
-        rw [← weight_colW_apply' e s, hwt]
+        rw [← _root_.Formalism.GradedWeylDivisibility.lccomp_weight_colW_apply e s, hwt]
     obtain ⟨Q', hQ'⟩ := hLT r n ν P hP hcoef
     refine ⟨Q', (dualWeylIntRat r n ν Q').mpr ?_, hQ'.symm⟩
     rw [← intQ_apply, ← hQ']

@@ -41,14 +41,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 open NumberField GlobalTheory.UnitaryBC GlobalTheory.CuspRep Formalism.BasicNotions
 open UpperTheory.V.Z.J.D
 
-private theorem dual_dual' {n : ℕ} (lam : DomWeight n) : lam.dual.dual = lam := by
-  have h : ∀ a b : DomWeight n, (∀ i, a.w i = b.w i) → a = b := by
-    rintro ⟨a, ha⟩ ⟨b, hb⟩ h
-    have : a = b := funext h
-    subst this
-    rfl
-  exact h _ _ fun i => by simp [DomWeight.dual]
-
 private theorem conj_wt {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {σ : Submodule ℂ (UA E n → ℂ)}
     (hσ : IsAutRepU σ) {τ : E →+* ℂ} {μ : DomWeight n} (h : HasWeightAt σ τ μ) :
     HasWeightAt σ (ComplexEmbedding.conjugate τ) μ.dual :=
@@ -80,7 +72,7 @@ private theorem link_abs {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
         rwa [c] at hv
       · simp only [if_neg c] at hv
         have h2 := conj_wt hσ hv
-        rw [← hconj v c, dual_dual'] at h2
+        rw [← hconj v c, _root_.GlobalTheory.DefU.dual_dual] at h2
         exact (star_star (φ (y v))) ▸ h2
     have h3 := key _ (h (InfinitePlace.mk (φ i)))
     rwa [hi] at h3

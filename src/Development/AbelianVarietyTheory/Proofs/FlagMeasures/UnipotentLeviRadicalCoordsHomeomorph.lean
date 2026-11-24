@@ -79,9 +79,7 @@ theorem idx_cases (i : Fin (2 * r + k + 1)) :
     · right
       exact ⟨⟨2 * r + k - n, by omega⟩, Fin.ext (by rw [esI_val_flag_measures]; simp only; omega)⟩
 
-theorem sum_three (f : Fin (2 * r + k + 1) → ℂ) :
-    ∑ i, f i = ∑ a, f (eI k r a) + ∑ j, f (wI k r j) + ∑ a, f (esI k r a) := by
-  apply GlobalTheory.Amp.Rad.sum3 <;> assumption
+alias sum_three := _root_.GlobalTheory.Amp.Rad.sum3
 
 theorem H_e (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) : (Hpk k r *ᵥ v) (eI k r a) = v (esI k r a) := by
   simp only [mulVec, dotProduct]
@@ -119,11 +117,6 @@ theorem herm_col {g : Mat k r} (hg : g ∈ GG k r) (i j : Fin (2 * r + k + 1)) :
 theorem col_eq (g : Mat k r) (i j : Fin (2 * r + k + 1)) : (g *ᵥ bvec j) i = g i j := by
   simp only [bvec, mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero]
   simp
-
-theorem herm_b_star (v w : Fin (k + 1) → ℂ) : star (herm (Hb k) v w) = herm (Hb k) w v := by
-  simp only [Rad.herm_Hb, star_sum, star_mul', star_star, Rad.star_sg]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  ring
 
 def Bof (p : Mat k r) : Fin r → Fin (k + 1) → ℂ := fun b j => p (wI k r j) (esI k r b)
 
@@ -174,7 +167,7 @@ theorem rad_eq {p : Mat k r} (hp : p ∈ Nset k r) (he : ∀ a i, p i (eI k r a)
       p (eI k r b) (wI k r j) = -(star (Bof p b j) * Rad.sg k j) := by
     intro b j
     have h := herm_col hU' (wI k r j) (esI k r b)
-    rw [herm_three, Rad.H_ws, hmidw, ← herm_b_star, Rad.herm_bvec] at h
+    rw [herm_three, Rad.H_ws, hmidw, ← _root_.GlobalTheory.Amp.Rad.herm_star, Rad.herm_bvec] at h
     simp only [hss, hsw, star_zero, zero_mul, Finset.sum_const_zero, add_zero, mul_ite, mul_one,
       mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h
     have h2 := congrArg star h
@@ -192,7 +185,7 @@ theorem rad_eq {p : Mat k r} (hp : p ∈ Nset k r) (he : ∀ a i, p i (eI k r a)
   refine ⟨?_, ?_⟩
   · ext a b
     have h := hrel a b
-    have hs := herm_b_star (Bof p a) (Bof p b)
+    have hs := _root_.GlobalTheory.Amp.Rad.herm_star (Bof p a) (Bof p b)
     simp only [conjTranspose_apply, Matrix.neg_apply, Sof, star_add, star_div₀, hs]
     have h2 : star (2 : ℂ) = 2 := by simp
     rw [h2]
@@ -228,24 +221,13 @@ theorem qOf_pOf (q : PPar k r) : qOf (pOf k r q) = q := by
     rw [Sof_pEl]
     simp [skewM]
 
-theorem uEmb_col (u : Matrix (Fin r) (Fin r) ℂ) (a b : Fin r) : uEmb k r u (eI k r a) (eI k r b) = u a b := by
-  have h : (eI k r a).val < r ∧ (eI k r b).val < r := by
-    rw [eI_val_flag_measures, eI_val_flag_measures]; exact ⟨a.2, b.2⟩
-  simp only [uEmb, dif_pos h]
-  all_goals rfl
-
 private theorem upper_blockTriangular (x : UT r → ℂ) : (upper x).BlockTriangular id := by
   intro a b hab
   have hab' : b < a := hab
   simp only [upper, dif_neg (not_lt.mpr hab'.le), if_neg (ne_of_gt hab')]
 
-private theorem det_upper_eq_one (x : UT r → ℂ) : (upper x).det = 1 := by
-  rw [Matrix.det_of_isUpperTriangular (upper_blockTriangular x)]
-  refine Finset.prod_eq_one fun a _ => ?_
-  simp [upper]
-
 private theorem exists_upper_eq_inv_upper (x : UT r → ℂ) : ∃ y : UT r → ℂ, (upper x)⁻¹ = upper y := by
-  have hU : IsUnit (upper x).det := by rw [det_upper_eq_one]; exact isUnit_one
+  have hU : IsUnit (upper x).det := by rw [_root_.GlobalTheory.Amp.UEmb.det_upper]; exact isUnit_one
   let _ := (upper x).invertibleOfIsUnitDet hU
   have ht := Matrix.blockTriangular_inv_of_blockTriangular (upper_blockTriangular x)
   have hd : ∀ a, (upper x)⁻¹ a a = 1 := by
@@ -270,7 +252,7 @@ private theorem exists_upper_eq_inv_upper (x : UT r → ℂ) : ∃ y : UT r → 
 
 theorem uEmb_inv_mul (x : UT r → ℂ) : uEmb k r (upper x)⁻¹ * uEmb k r (upper x) = 1 ∧
     uEmb k r (upper x) * uEmb k r (upper x)⁻¹ = 1 ∧ uEmb k r (upper x)⁻¹ ∈ Nset k r := by
-  have hU : IsUnit (upper x).det := by rw [det_upper_eq_one]; exact isUnit_one
+  have hU : IsUnit (upper x).det := by rw [_root_.GlobalTheory.Amp.UEmb.det_upper]; exact isUnit_one
   obtain ⟨y, hy⟩ := exists_upper_eq_inv_upper x
   refine ⟨?_, ?_, ?_⟩
   · rw [← UEmb.uEmb_mul, Matrix.nonsing_inv_mul _ hU, UEmb.uEmb_one]
@@ -289,7 +271,7 @@ theorem cOf_coord (q : (UT r → ℂ) × PPar k r) : cOf (uEmb k r (upper q.1) *
   have hx : xOf (uEmb k r (upper s) * pOf k r p) = s := by
     funext x
     simp only [xOf, pOf, Matrix.mul_apply, pEl_apply_eI, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
-      Finset.mem_univ, if_true, uEmb_col]
+      Finset.mem_univ, if_true, _root_.GlobalTheory.Amp.UEmb.u_ee]
     simp only [upper, dif_pos x.2]
   simp only [cOf]
   rw [hx, ← Matrix.mul_assoc, (uEmb_inv_mul s).1, Matrix.one_mul, qOf_pOf]
@@ -308,7 +290,7 @@ theorem col_e {n : Mat k r} (hn : n ∈ Nset k r) (b : Fin r) :
   rw [col_eq, col_eq]
   obtain ⟨-, h1, -⟩ := hn
   rcases idx_cases i with ⟨a, rfl⟩ | ⟨a, rfl⟩ | ⟨a, rfl⟩
-  · rw [uEmb_col]
+  · rw [_root_.GlobalTheory.Amp.UEmb.u_ee]
     by_cases hab : a < b
     · simp only [upper, dif_pos hab, xOf]
     · have hba : b.val ≤ a.val := Fin.not_lt.mp hab
@@ -384,8 +366,7 @@ theorem cont_upper (r : ℕ) : Continuous (upper : (UT r → ℂ) → Matrix (Fi
   · simp only [upper, dif_neg h]
     exact continuous_const
 
-theorem det_upper (x : UT r → ℂ) : (upper x).det = 1 := by
-  exact det_upper_eq_one x
+alias det_upper := _root_.GlobalTheory.Amp.UEmb.det_upper
 
 theorem cont_upper_inv (r : ℕ) : Continuous fun x : UT r → ℂ => (upper x)⁻¹ := by
   have h : (fun x : UT r → ℂ => (upper x)⁻¹) = fun x => (upper x).adjugate := by

@@ -58,7 +58,7 @@ private theorem func_repr {ι : Type} [Fintype ι] [DecidableEq ι] (f : (ι →
       · subst h
         simp only [Pi.add_apply, Pi.smul_apply, Pi.single_eq_same, if_true]
         apply Complex.ext <;> simp
-      · simp [Pi.single_apply, h]
+      · simp [h]
     rw [Finset.sum_apply]
     simp only [hk]
     simp

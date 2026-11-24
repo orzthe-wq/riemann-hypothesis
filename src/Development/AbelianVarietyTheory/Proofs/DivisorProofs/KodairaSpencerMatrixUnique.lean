@@ -46,6 +46,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.TypeStar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AmplePt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.LieBridgeG
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -73,7 +74,7 @@ def wedgeDual {M : Type*} [AddCommGroup M] [Module R M] (x y : Module.Dual R M) 
   map_update_smul' v i r a := by
     fin_cases i <;> simp <;> ring
   map_eq_zero_of_eq' v i j h hij := by
-    fin_cases i <;> fin_cases j <;> simp_all <;> ring
+    fin_cases i <;> fin_cases j <;> simp_all
 
 theorem IsPolForm.unique (P : AbelianDeRham.Free) {A : Over (Sp R)} [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) {L : LB A.left} (hL : L.IsLB) {ψ ψ' : LinearMap.BilinForm R (HdR A)}
@@ -122,7 +123,7 @@ theorem constMor_surjective (P : AbelianDeRham) {A : Over (Sp R)} [GrpObj A] {g 
   obtain ⟨C, _, φ, hφ⟩ := GlobalTheory.FlagTan.exists_isGrpPullback A (spMap (algebraMap R (DualNumber R)))
   have eid : epsRed R ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _ := by
     have e0 : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R := by
-      ext r; simp [TrivSqZeroExt.algebraMap_eq_inl]
+      ext r; simp
     rw [epsRed, spMap_comp_spMap, e0]
     exact Spec.map_id _
   have w : 𝟙 A.left ≫ A.hom = (A.hom ≫ epsRed R) ≫ spMap (algebraMap R (DualNumber R)) := by

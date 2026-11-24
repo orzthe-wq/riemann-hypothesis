@@ -226,12 +226,7 @@ theorem cont_lhOf {p : ℕ} (σ : Equiv.Perm (Fin p)) : Continuous (LeftFubiniLe
   unfold LeftFubiniLemmas.lhOf
   exact (continuous_const.matrix_mul (cont_lowW σ)).matrix_mul continuous_const
 
-theorem cont_subS {p : ℕ} : Continuous (U.subS (p := p)) := by
-  unfold U.subS
-  refine continuous_finsetSum _ fun i _ => ?_
-  split_ifs
-  · exact (continuous_apply i).comp (continuous_apply _)
-  · exact continuous_const
+alias cont_subS := _root_.Formalism.FourierDecayAlt.P.Ux13.continuous_subS
 
 theorem cont_ellH {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (h : C.LPt) : Continuous (ellH (Wp := Wp) (Wq := Wq) h) := by

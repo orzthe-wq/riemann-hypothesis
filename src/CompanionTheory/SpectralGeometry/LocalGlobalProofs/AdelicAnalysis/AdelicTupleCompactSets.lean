@@ -115,7 +115,7 @@ theorem latN_mono {N N' : ℕ} (h : N ∣ N') : latN F N ⊆ latN F N' := by
 
 theorem exists_nat_mul_mem (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) :
     ∃ N : ℕ, 0 < N ∧ (N : v.adicCompletion F) * x ∈ v.adicCompletionIntegers F := by
-  apply PI.AdCpctDenWork.exists_nat_local <;> assumption
+  apply PI.AdCpctDenWork.exists_nat_local
 
 theorem exists_mem_latN (y : Af F) : ∃ N : ℕ, 0 < N ∧ y ∈ latN F N := by
   classical
@@ -248,8 +248,8 @@ def boxT (d n M N : ℕ) (r : ℝ) : Set (Fin n → Fin M → Fin d → AF F) :=
   {Z | (∀ a i k, sndA F (Z a i k) ∈ latN F N) ∧ sizeA Z ≤ r}
 
 theorem isCompact_boxT (d n M N : ℕ) (r : ℝ) (hN : 0 < N) : IsCompact (boxT F d n M N r) := by
-  haveI := GlobalTheory.AdeleCocompact.properSpace_completion F
-  haveI := GlobalTheory.CompanionTheory.AdeleTop.t2Space_finiteAdeleRing_of_numberField F
+  have := GlobalTheory.AdeleCocompact.properSpace_completion F
+  have := GlobalTheory.CompanionTheory.AdeleTop.t2Space_finiteAdeleRing_of_numberField F
   have hB : IsCompact (Set.pi Set.univ fun v : InfinitePlace F => Metric.closedBall (0 : v.Completion) r) :=
     isCompact_univ_pi fun v => isCompact_closedBall _ _
   have hP : IsCompact ((Set.pi Set.univ fun v : InfinitePlace F => Metric.closedBall (0 : v.Completion) r) ×ˢ
@@ -261,7 +261,7 @@ theorem isCompact_boxT (d n M N : ℕ) (r : ℝ) (hN : 0 < N) : IsCompact (boxT 
     isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hP
   refine hBig.of_isClosed_subset ?_ ?_
   · have h1 : IsClosed {Z : Fin n → Fin M → Fin d → AF F | ∀ a i k, sndA F (Z a i k) ∈ latN F N} := by
-      simp only [Set.setOf_forall]
+      simp only [Set.ofPred_forall]
       refine isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun k => ?_
       exact (isCompact_latN F N hN).isClosed.preimage (continuous_sndA.comp
         (continuous_coord a i k))
@@ -287,7 +287,7 @@ theorem compact_tuples : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
         (∀ v, (fun a i => (N : Fv F v ⊗[F] E) * projV v (projFin X) a i) ∈ latV b v) ∧
           sizeTup b (projInf X) ≤ r} = e ⁻¹' boxT F d n M N r := by
       ext X
-      simp only [Set.mem_setOf_eq, Set.mem_preimage, boxT, he, fin_iff, size_eq]
+      simp only [Set.mem_ofPred_eq, Set.mem_preimage, boxT, he, fin_iff, size_eq]
     rw [hset, e.isCompact_preimage]
     exact isCompact_boxT d n M N r hN
   · intro K hK

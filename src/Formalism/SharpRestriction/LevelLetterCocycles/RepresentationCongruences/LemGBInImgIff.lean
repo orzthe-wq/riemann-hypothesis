@@ -126,7 +126,7 @@ theorem lemG_units (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : 
   have hvp : v (PD.p : LL) = 1 := W.v_l
   have hv1 : v (-1 : LL) = 0 := by rw [AddValuation.map_neg, AddValuation.map_one]
   have h01 : (0 : WithTop ℚ) < 1 := by
-    first | exact zero_lt_one | exact WithTop.coe_lt_coe.mpr zero_lt_one | norm_num
+    first | exact zero_lt_one
   have hge : 0 ≤ v ((PD.p : LL) - 1) := by
     rw [sub_eq_add_neg]
     exact le_trans (le_min (by rw [hvp]; exact h01.le) (le_of_eq hv1.symm)) (AddValuation.map_add v _ _)
@@ -208,8 +208,6 @@ theorem inImg_smulO {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (i
   refine (lemGB_inImg_iff W).mpr ⟨c • x, inNΔi_smulO W T₁ i c hx, ?_⟩
   first
     | exact LinearMap.map_smul_of_tower _ _ _
-    | rw [← algebraMap_smul (LetA O n) c x, ← algebraMap_smul W.EE (algebraMap O (LetA O n) c) x, map_smul,
-        algebraMap_smul, algebraMap_smul]
 
 def imgSub {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (i : ZMod n) : Submodule O (W.DD T₂) where
   carrier := {z | InImg W F i z}
@@ -247,8 +245,6 @@ theorem qA_mem_AΔ (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : 
     funext j
     first
       | exact h1 δ hδ
-      | (show W.γ₀ δ W.π₀₁ = W.π₀₁; exact h1 δ hδ)
-      | (simp [LocWach.γA, letγ, LocWach.π₀]; exact h1 δ hδ)
   refine ⟨hπ, ?_⟩
   show W.π₀ + ((PD.p : ℕ) : LetA O n) ∈ W.AΔ
   exact W.AΔ.add_mem hπ (Subalgebra.natCast_mem _ _)
@@ -258,8 +254,8 @@ theorem lemGB_letγ_letE (g₀ : PowerSeries O →ₐ[O] PowerSeries O) (i : ZMo
   funext j
   by_cases h : j = i
   · subst h
-    first | simp [letγ, letE] | (show g₀ _ = _; simp [letE])
-  · first | simp [letγ, letE, h] | (show g₀ _ = _; simp [letE, h])
+    first | simp [letγ, letE]
+  · first | simp [letγ, letE, h]
 
 theorem lemGB_γD_letE (T : LocLat G Qp LL O) (δ : W.Gam) (i : ZMod n) (w : W.DD T) :
     W.γD T δ ((letE i : LetA O n) • w) = (letE i : LetA O n) • W.γD T δ w := by
@@ -279,16 +275,6 @@ theorem lemGB_Nl_le_N (T : LocLat G Qp LL O) (i : ZMod n) {x : W.DD T} (hx : x �
   obtain ⟨y, hy, rfl⟩ := hx
   exact (W.N T).smul_mem _ hy
 
-theorem lemGB_DelF_mul {δ δ' : W.Gam} (h : δ ∈ W.DelF) (h' : δ' ∈ W.DelF) : δ * δ' ∈ W.DelF := by
-  obtain ⟨k, hk, hk1⟩ := (W.DelF_def δ).mp h
-  obtain ⟨m, hm, hm1⟩ := (W.DelF_def δ').mp h'
-  refine (W.DelF_def _).mpr ⟨k * m, Nat.mul_pos hk hm, ?_⟩
-  rw [mul_pow, pow_mul, hk1, one_pow, one_mul, mul_comm k m, pow_mul, hm1, one_pow]
-
-theorem lemGB_DelF_inv {δ : W.Gam} (h : δ ∈ W.DelF) : δ⁻¹ ∈ W.DelF := by
-  obtain ⟨k, hk, hk1⟩ := (W.DelF_def δ).mp h
-  exact (W.DelF_def _).mpr ⟨k, hk, by rw [inv_pow, hk1, inv_one]⟩
-
 theorem lemGB_sum_inv (T : LocLat G Qp LL O) (x : W.DD T) (δ' : W.Gam) (h' : δ' ∈ W.DelF) :
     W.γD T δ' (∑ δ ∈ W.DelF, W.γD T δ x) = ∑ δ ∈ W.DelF, W.γD T δ x := by
 
@@ -297,9 +283,9 @@ theorem lemGB_sum_inv (T : LocLat G Qp LL O) (x : W.DD T) (δ' : W.Gam) (h' : δ
     intro δ
     exact (W.γD_mul T δ' δ x).symm
   simp_rw [hm]
-  refine Finset.sum_equiv (Equiv.mulLeft δ') (fun δ => ⟨fun h => lemGB_DelF_mul W h' h, fun h => ?_⟩)
+  refine Finset.sum_equiv (Equiv.mulLeft δ') (fun δ => ⟨fun h => _root_.Formalism.MainNotions.N.FrobeniusPowerSeries.mul_mem_delF W h' h, fun h => ?_⟩)
     (fun δ _ => rfl)
-  have h2 := lemGB_DelF_mul W (lemGB_DelF_inv W h') h
+  have h2 := _root_.Formalism.MainNotions.N.FrobeniusPowerSeries.mul_mem_delF W (_root_.Formalism.MainNotions.N.FrobeniusPowerSeries.inv_mem_delF W h') h
   rwa [Equiv.coe_mulLeft, inv_mul_cancel_left] at h2
 
 theorem inImg_of_Nimg (hΔ : IsUnit ((W.DelF.card : ℕ) : O)) {T₁ T₂ : LocLat G Qp LL O}
@@ -355,7 +341,6 @@ theorem q_pow_inImg (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 :
     have h := congrArg Subtype.val hab
     first
       | simpa [qA, lA, Formalism.MainNotions.LiftingTheory.lp] using h.symm
-      | (push_cast at h; rw [← h]; rfl)
   rw [hq, add_smul, mul_smul, mul_smul]
   exact inImg_add W F i (inImg_smulA W F i a.2 (key _ (pow_mem hπ _) hA))
     (inImg_smulA W F i b.2 (key _ (pow_mem hpA _) hr))

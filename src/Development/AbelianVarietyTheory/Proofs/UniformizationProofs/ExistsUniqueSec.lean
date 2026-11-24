@@ -103,11 +103,7 @@ theorem Given.sval_eq {π₁ : X₁ ⟶ X} {f₁ : X₁ ⟶ Spec (CommRingCat.of
   rw [h₁.sval r z hJ i hi, h₂.sval (𝟙 _) z hJ i hi, Category.id_comp, Category.id_comp, hf]
   simp only [germCst_comp]
 
-theorem sec_ext {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j = s'.f j) : s = s' := by
-  obtain ⟨a, ha⟩ := s
-  obtain ⟨b, hb⟩ := s'
-  obtain rfl : a = b := funext h
-  rfl
+alias sec_ext := _root_.ReciprocityTheory.ChartRestriction.G.DVR.SecOps.sec_ext
 
 theorem mulVec_map {a b : ℕ} (D : Matrix (Fin b) (Fin a) R) (g : R →+* R₁) (h : R₁ →+* R₂) {g' : R →+* R₂}
     (hg : h.comp g = g') (v : Fin a → R₁) (j : Fin b) :

@@ -102,9 +102,6 @@ theorem resE_mem (σ : GQ l) (hσ : σ ∈ (KwF (E := E) j).fixingSubgroup) :
     rw [← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq]
     first
       | (simp only [spectralNorm, minpoly.algEquiv_eq]; done)
-      | exact (spectralNorm.aut_isom σ y).symm
-      | (unfold spectralNorm; rw [minpoly.algEquiv_eq])
-      | (unfold spectralNorm; congr 1; exact minpoly.algEquiv_eq σ y)
   have key : ∀ x, resE j σ hσ x ∈ A ↔ x ∈ A := fun x => by
     rw [hj, hj, j_resE, hiso]
   show resE j σ hσ ∈ MulAction.stabilizer _ A
@@ -128,9 +125,6 @@ theorem continuous_aut (σ : GQ l) : Continuous σ := by
     rw [← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq]
     first
       | (simp only [spectralNorm, minpoly.algEquiv_eq]; done)
-      | exact (spectralNorm.aut_isom σ y).symm
-      | (unfold spectralNorm; rw [minpoly.algEquiv_eq])
-      | (unfold spectralNorm; congr 1; exact minpoly.algEquiv_eq σ y)
   exact (AddMonoidHomClass.isometry_of_norm σ hiso).continuous
 
 theorem rHom_injective : Function.Injective (rHom (E := E) hj) := by

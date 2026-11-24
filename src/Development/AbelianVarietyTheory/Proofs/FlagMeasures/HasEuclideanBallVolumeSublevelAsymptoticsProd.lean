@@ -107,7 +107,7 @@ theorem volume_norm_sq_le (d : ℕ) {r : ℝ} (hr : 0 ≤ r) :
 theorem setOf_sqrt_le {X : Type} (q : X → ℝ) {r : ℝ} (hr : 0 ≤ r) :
     {x | √(q x) ≤ r} = {x | q x ≤ r ^ 2} := by
   ext x
-  simp [Real.sqrt_le_left hr, Real.sqrt_le_iff, hr]
+  simp [Real.sqrt_le_left hr]
 
 theorem volume_prod_norm_sq_le (d e : ℕ) (t : ℝ) :
     ((volume : Measure (EuclideanSpace ℝ (Fin d))).prod

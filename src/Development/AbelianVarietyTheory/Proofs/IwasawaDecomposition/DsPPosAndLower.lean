@@ -46,10 +46,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.Mem.Top.DsLow
 
-theorem dimV_cast {n n' : ℕ} (h : n = n') (x : Fin n' → ℝ) :
-    StandardLattice.dimV (fun i : Fin n => x (Fin.cast h i)) = StandardLattice.dimV x := by
-  subst h; rfl
-
 theorem trueDsig_eq_dimV (R : Ranks) (p : HCParam R) :
     Vol.trueDsig R p =
       StandardLattice.dimV (Fin.append (fun i => ((p.v i : ℚ) : ℝ)) (fun j => -((p.b j : ℚ) : ℝ))) := by
@@ -57,7 +53,7 @@ theorem trueDsig_eq_dimV (R : Ranks) (p : HCParam R) :
   have hd : 2 * R.rS + R.k + 1 = R.k - 1 + R.m := by
     rw [Formalism.MainNotions.S.dimS_eq R]; simp only [Ranks.r]; omega
   unfold Vol.trueDsig
-  rw [← StandardLattice.dimV_eq_fdegHC _ (Vol.lamSH_isHCParam R p).1, ← dimV_cast hd]
+  rw [← StandardLattice.dimV_eq_fdegHC _ (Vol.lamSH_isHCParam R p).1, ← _root_.Formalism.MainNotions.StandardLattice.dim_weyl_finCast hd]
   congr 1
   funext a
   have key : ∀ (c : Fin (R.k - 1 + R.m)) (d : Fin R.r), d.val = c.val → Formalism.MainNotions.S.lamS R p d =

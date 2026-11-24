@@ -66,11 +66,9 @@ theorem exists_den {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E]
   haveI : IsDomain (Localization.AtPrime v.asIdeal) := by
     first
       | infer_instance
-      | exact IsLocalization.isDomain_localization (Ideal.primeCompl_le_nonZeroDivisors v.asIdeal)
   haveI : IsDiscreteValuationRing (Localization.AtPrime v.asIdeal) := by
     first
       | exact IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 E) v.ne_bot _
-      | infer_instance
   haveI : ValuationRing (Localization.AtPrime v.asIdeal) := inferInstance
   have hinj := IsLocalization.injective (Localization.AtPrime v.asIdeal)
     (Ideal.primeCompl_le_nonZeroDivisors v.asIdeal)
@@ -110,12 +108,9 @@ private theorem norm_le_one_of_isIntegral_int' {l : ℕ} [Fact l.Prime] (z : Om 
   have hcoef : ∀ c : ℤ, ‖(c : Om l)‖ ≤ 1 := fun c => by
     first
       | exact IsUltrametricDist.norm_intCast_le_one (Om l) c
-      | exact IsUltrametricDist.norm_intCast_le_one c
-      | (rcases Int.eq_nat_or_neg c with ⟨m, rfl | rfl⟩ <;>
-          simp [IsUltrametricDist.norm_natCast_le_one])
   rw [hmon.as_sum] at hp
   simp only [Polynomial.eval₂_add, Polynomial.eval₂_finsetSum, Polynomial.eval₂_mul,
-    Polynomial.eval₂_C, Polynomial.eval₂_X_pow, eq_intCast] at hp
+    Polynomial.eval₂_X_pow, eq_intCast] at hp
   have hcast : ∀ c : ℤ, Polynomial.eval₂ (algebraMap ℤ (Om l)) z (c : Polynomial ℤ) = (c : Om l) :=
     fun c => map_intCast (Polynomial.eval₂RingHom (algebraMap ℤ (Om l)) z) c
   simp only [hcast] at hp
@@ -156,7 +151,7 @@ theorem denseSurj : DenseSurj := by
     have h1 : ((l : ℕ) : Om l) = algebraMap ℚ_[l] (Om l) ((l : ℕ) : ℚ_[l]) := (map_natCast _ l).symm
     rw [h1]
     first
-      | (rw [PadicAlgCl.norm_extends]; first | exact Padic.norm_p_lt_one | exact padicNormE.norm_p_lt_one)
+      | (rw [PadicAlgCl.norm_extends]; first | exact Padic.norm_p_lt_one)
       | (erw [PadicAlgCl.norm_extends]; first | exact Padic.norm_p_lt_one | exact padicNormE.norm_p_lt_one)
   obtain ⟨_, ⟨e, rfl⟩, he⟩ := Metric.mem_closure_iff.mp (hcl hy) _ hr0
   rw [dist_eq_norm] at he

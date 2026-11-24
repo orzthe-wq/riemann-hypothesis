@@ -209,13 +209,13 @@ theorem SurjStep_of : SurjStep := by
       QuasiSeparatedSpace.inter_isCompact _ _ V.isOpen hVc W.isOpen hWc
     obtain ⟨x, hx⟩ := glue hM hH q f p i m V W (hinj _ hIc) (hb' _ hIc).2
       (pull _ (sch.map (resO (f ≫ p) (sup_le hV hW))) _ _ y) xV xW
-      (by rw [hxV]; first | rfl | rw [← pc, resO_comp]) (by rw [hxW]; first | rfl | rw [← pc, resO_comp])
+      (by rw [hxV]; first | rw [← pc, resO_comp]) (by rw [hxW]; first | rw [← pc, resO_comp])
     exact ⟨sup_le hV hW, x, by rw [hx]⟩
   have P : (U : Set S) = ∅ ∨ ∃ V : S.Opens, IsCompact (V : Set S) ∧ (U : Set S) ⊆ V ∧ Good V := by
     refine hU.induction_on (p := fun T : Set S => T = ∅ ∨ ∃ V : S.Opens, IsCompact (V : Set S) ∧ T ⊆ V ∧ Good V)
       (Or.inl rfl) ?_ ?_ ?_
     · rintro s t hst (h | ⟨V, hVc, htV, hV⟩)
-      · exact Or.inl (Set.subset_eq_empty hst h)
+      · exact Or.inl (Set.eq_empty_of_subset hst h)
       · exact Or.inr ⟨V, hVc, hst.trans htV, hV⟩
     · rintro s t (h | h1) (h' | h2)
       · left; rw [h, h', Set.empty_union]

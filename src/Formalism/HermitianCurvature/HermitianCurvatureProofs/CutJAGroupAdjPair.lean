@@ -65,11 +65,6 @@ open Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.CutMP.JA Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
-theorem hsVec_zero' {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W]
-    [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] : B.hsVec (0 : W →L[ℂ] V) = 0 := by
-  change Formalism.FourierDecayAlt.P.JFxI.hsVecL 0 = 0
-  exact map_zero _
-
 theorem group_action_pairing_holds : GAPair := by
   intro Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e hFr X Y F F' hX hY hF hF' hae
   have hplace : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' :=
@@ -221,7 +216,7 @@ theorem group_action_pairing_holds : GAPair := by
     have hX0 : X (B.gq Db x) = 0 := by
       by_contra h
       exact hx.2 ⟨hx.1, h⟩
-    rw [hX0, hsVec_zero', inner_zero_right, zero_mul, mul_zero]
+    rw [hX0, _root_.Formalism.FourierDecayAlt.P.JCx1.needs.hsVec_zero, inner_zero_right, zero_mul, mul_zero]
 
   unfold MA.ipA
   simp_rw [hR]
@@ -238,7 +233,7 @@ theorem group_action_pairing_holds : GAPair := by
         exact hxO ⟨hxQ, h⟩
       have hJ0 : B.JF Db F (B.gq Db x) = 0 := by rw [← (hxe hxQ).1]; exact hX0
       change ((W x : ℝ) : ℂ) * inner ℂ (B.hsVec (B.JF Db F' (B.gq Db x))) (B.hsVec (B.JF Db F (B.gq Db x))) = 0
-      rw [hJ0, hsVec_zero', inner_zero_right, mul_zero]
+      rw [hJ0, _root_.Formalism.FourierDecayAlt.P.JCx1.needs.hsVec_zero, inner_zero_right, mul_zero]
     · rcases hx with hx | hx
       · exfalso
         apply hxQ

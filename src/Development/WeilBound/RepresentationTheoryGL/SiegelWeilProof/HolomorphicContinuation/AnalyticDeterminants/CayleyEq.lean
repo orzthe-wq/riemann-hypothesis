@@ -279,8 +279,6 @@ end PositivityTheory.Rg.Sw.LVs.CEq
 
 namespace PositivityTheory.Rg.Sw.LVs
 
-theorem equivar : Equivar := CEq.equivar_thm
-
-theorem reindex : Reindex := CEq.reindex_thm
+alias reindex := _root_.PositivityTheory.Rg.Sw.LVs.CEq.reindex_thm
 
 end PositivityTheory.Rg.Sw.LVs

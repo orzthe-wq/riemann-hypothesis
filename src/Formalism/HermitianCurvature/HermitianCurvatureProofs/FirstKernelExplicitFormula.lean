@@ -1149,7 +1149,7 @@ theorem iso_blkM_mulVec (A : Matrix (Fin m) (Fin m) K) (b a : Fin m → K) (d : 
   · rw [iso_vec_inr]
     simp only [mulVec, dotProduct]
     rw [← (eN hN).sum_comp, Fintype.sum_sum_type]
-    simp [blkM_rl, blkM_rr, iso_vec_inl, iso_vec_inr, dotProduct]
+    simp [blkM_rl, blkM_rr, iso_vec_inl, iso_vec_inr]
 
 theorem iso_bigZ_mul_inv (Z : Matrix (Fin m) (Fin m) K) (hZ : IsUnit Z.det) (ξ η : Fin m → K)
     (c : Kˣ) : bigZ hN Z ξ η (c : K) *
@@ -1259,7 +1259,7 @@ def iso_rho (Z : Matrix (Fin m) (Fin m) K) (ξ : Fin m → K) : (Fin N → R) �
 
 theorem iso_mem_ker (Z : Matrix (Fin m) (Fin m) K) (ξ : Fin m → K) (x : Fin N → R) :
     x ∈ LinearMap.ker (iso_rho R hN Z ξ) ↔ iso_top R hN x ∈ latZ R Z ∧ affineForm R hN ξ x = 0 := by
-  simp [iso_rho, LinearMap.mem_ker, Prod.mk_eq_zero, Submodule.Quotient.mk_eq_zero]
+  simp [iso_rho, LinearMap.mem_ker, Submodule.Quotient.mk_eq_zero]
 
 abbrev iso_M (Z : Matrix (Fin m) (Fin m) K) (ξ : Fin m → K) : Type :=
   (Fin N → R) ⧸ LinearMap.ker (iso_rho R hN Z ξ)
@@ -1502,7 +1502,7 @@ theorem iA_spec (Z : Matrix (Fin m) (Fin m) K) (α : coker R Z →ₗ[R] KR R) (
       by_cases hk : k = j
       · subst hk
         simp [coeLin]
-      · simp [coeLin, Pi.single_apply, hk]
+      · simp [coeLin, hk]
     simp only [LinearMap.comp_apply, Submodule.mkQ_apply, iso_dot_apply, LinearMap.single_apply]
     rw [hc, dotProduct_single, mul_one, mk_outV]
     rfl
@@ -1566,7 +1566,7 @@ theorem mem_range_iA (Z : Matrix (Fin m) (Fin m) K) (x : Fin m → KR R)
     by_cases hk : k = j
     · subst hk
       simp [coeLin]
-    · simp [coeLin, Pi.single_apply, hk]
+    · simp [coeLin, hk]
   show (latZ R Z).liftQ f hker (Submodule.Quotient.mk (Pi.single j 1)) = x j
   rw [Submodule.liftQ_apply]
   simp only [f, LinearMap.comp_apply, iso_dot_apply, Submodule.mkQ_apply]

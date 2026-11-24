@@ -76,13 +76,11 @@ theorem mem_xsp [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) 
 theorem mem_y [NeZero r] {N : ℕ} (LL : Letters N) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ)
     (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     x ∈ Y p LL J M ↔ x ∈ Pol p r LL ∧ ∀ k, x ∈ YCond p LL (J k) (M k) := by
-  unfold Y
-  rw [Submodule.mem_inf, Submodule.mem_iInf]
+  simp only [Y, Submodule.mem_inf, Submodule.mem_iInf]
 
 theorem zero_mem_erase (ρ : Fin r) [NeZero r] (hr : 2 ≤ r) (hρ : (ρ : ℕ) = r - 1) :
     (0 : Fin r) ∈ (univ : Finset (Fin r)).erase ρ := by
-  refine Finset.mem_erase.mpr ⟨?_, Finset.mem_univ _⟩
-  intro h'
+  refine Finset.mem_erase.mpr ⟨fun h' => ?_, Finset.mem_univ _⟩
   have := congrArg Fin.val h'
   simp at this
   omega
@@ -112,8 +110,7 @@ theorem pderiv_freeOf {σ : Type} (u v : σ) (x : MvPolynomial σ ℚ_[p]) (hx :
   rw [Finset.mem_coe, mem_support_iff, coeff_pderiv] at hm
   have h1 : m + Finsupp.single u 1 ∈ x.support := mem_support_iff.mpr (left_ne_zero_of_mul hm)
   have h2 : (m + Finsupp.single u 1 : σ →₀ ℕ) v = 0 := hx (Finset.mem_coe.mpr h1)
-  rw [Finsupp.add_apply] at h2
-  exact (Nat.add_eq_zero_iff.mp h2).1
+  exact (Nat.add_eq_zero_iff.mp (by simpa [Finsupp.add_apply] using h2)).1
 
 theorem resL_of_free {σ : Type} (v : σ) (x : MvPolynomial σ ℚ_[p]) (hx : x ∈ FreeOf p v) : resL p v 0 x = x := by
   rw [FreeOf, mem_restrictSupport_iff] at hx
@@ -209,12 +206,10 @@ theorem restriction_mem_space [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : F
 
 theorem ycond_mono [NeZero r] {N : ℕ} (LL : Letters N) (j : ℕ) (Mt Mt' : WithTop ℤ) (h : Mt ≤ Mt') :
     YCond p (r := r) LL j Mt ≤ YCond p LL j Mt' := by
-  refine le_ycond LL j Mt' _ ?_ (fun c d x hx => ycond_glStable LL j Mt c d x hx)
-  intro x hx
+  refine le_ycond LL j Mt' _ (fun x hx => ?_) (fun c d x hx => ycond_glStable LL j Mt c d x hx)
   have h1 := ycond_le_supp LL j Mt hx
   rw [mem_restrictSupport_iff] at h1 ⊢
-  intro m hm
-  exact le_trans (h1 hm) h
+  exact fun m hm => le_trans (h1 hm) h
 
 theorem ycond_late [NeZero r] (LL : Letters (K + 1)) (j : ℕ) (hj : K + 1 ≤ j) (Mt : WithTop ℤ) :
     YCond p (r := r) LL j Mt = YCond p LL (K + 1) Mt := by
@@ -251,9 +246,7 @@ theorem pol_zero_free (LL : Letters (K + 1)) (x : MvPolynomial (Fin (K + 1) × F
   rw [Pol, mem_restrictSupport_iff] at hx
   rw [FreeLast, mem_restrictSupport_iff]
   intro m hm c
-  have h1 : ∑ c, m (Fin.last K, c) = (setLast LL 0).deg (Fin.last K) := hx hm (Fin.last K)
-  have h2 : (setLast LL 0).deg (Fin.last K) = 0 := by simp [setLast]
-  rw [h2] at h1
+  have h1 : ∑ c, m (Fin.last K, c) = 0 := by simpa [setLast] using hx hm (Fin.last K)
   exact Finset.sum_eq_zero_iff.mp h1 c (Finset.mem_univ c)
 
 theorem restriction_surjective [NeZero r] (hΩ : OmegaInj) (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ)

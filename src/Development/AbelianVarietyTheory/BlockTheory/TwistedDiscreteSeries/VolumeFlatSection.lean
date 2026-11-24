@@ -82,7 +82,7 @@ theorem mem_parahoric {g : GL (A ⊕ D) k} : g ∈ parahoric k A D ↔
     refine ⟨⟨h, rfl⟩, fun i j => ?_⟩
     rw [SetLike.mem_coe, Subgroup.mem_comap, GlobalTheory.SmGL.mem_parab] at hh
     have h0 := hh (Sum.inr i) (Sum.inl j) (by rw [hl, hr]; decide)
-    simp only [GeneralLinearGroup.map_apply, RingHom.mapMatrix_apply, Matrix.map_apply] at h0 ⊢
+    simp only [GeneralLinearGroup.map_apply] at h0 ⊢
     exact (hval _).mp h0
   · rintro ⟨⟨h, rfl⟩, hv⟩
     refine ⟨h, ?_, rfl⟩
@@ -91,7 +91,7 @@ theorem mem_parahoric {g : GL (A ⊕ D) k} : g ∈ parahoric k A D ↔
     rcases i with i | i <;> rcases j with j | j <;> simp only [hl, hr, lt_self_iff_false] at hij
     · exact absurd hij (by decide)
     · have h0 := hv i j
-      simp only [GeneralLinearGroup.map_apply, RingHom.mapMatrix_apply, Matrix.map_apply] at h0 ⊢
+      simp only [GeneralLinearGroup.map_apply] at h0 ⊢
       exact (hval _).mpr h0
 
 def typeSpace {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (A ⊕ D) k) V) (ξ : kˣ →* ℂˣ) :

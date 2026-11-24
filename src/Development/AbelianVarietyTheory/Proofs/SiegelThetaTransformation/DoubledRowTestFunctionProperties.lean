@@ -161,17 +161,10 @@ theorem isSB_dup {φ : Matrix (Fin n) (Fin g) ℚ → ℂ} (h : IsSB φ) : IsSB 
   · rw [dup_apply, dup_apply, rowM_add, rowM_add, rowM_smul, rowM_smul,
       h2 _ (rowM 0 y) (fun k i => hy 0 (k, i)), h2 _ (rowM 1 y) (fun k i => hy 1 (k, i))]
 
-theorem ph_mul {a b : ℂ} (ha : Ph a) (hb : Ph b) : Ph (a * b) := by
-  obtain ⟨m, hm, ha⟩ := ha
-  obtain ⟨k, hk, hb⟩ := hb
-  refine ⟨m * k, Nat.mul_pos hm hk, ?_⟩
-  rw [norm_mul, Complex.ofReal_mul, mul_pow, mul_pow, pow_mul a, ha, ← pow_mul, mul_comm m k,
-    pow_mul b, hb, ← pow_mul]
-
 theorem pv_dup {φ : Matrix (Fin n) (Fin g) ℚ → ℂ} (h : PV φ) : PV (dup φ) := by
   obtain ⟨⟨A, ε, hV⟩, hP⟩ := h
   refine ⟨⟨(A.prod A).map glueP, fun y => ε (comp 0 y) * ε (comp 1 y), ?_⟩,
-    fun x => ph_mul (hP _) (hP _)⟩
+    fun x => _root_.GlobalTheory.Phase.Ph.mul (hP _) (hP _)⟩
   have mem : ∀ y, y ∈ (A.prod A).map glueP ↔ comp 0 y ∈ A ∧ comp 1 y ∈ A := by
     intro y
     constructor

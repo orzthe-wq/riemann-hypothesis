@@ -101,7 +101,7 @@ theorem mem_span_part : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T 
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH i t p x hx hW
   have hR := complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim
   have hOk := hH.ok.ok2
-  have e1 := GlobalTheory.T.thetaMap_hilbertModel_eq_concreteThetaMap_familyThree D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH i t
+  have e1 := _root_.GlobalTheory.Mem.ThetaRead3.thetaP_read D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH i t
   have h5 := hR.lifts0.1
   let Φ : D.what₂.Mt (Y.tup t) ((i : ℕ) + 1) →ₗ[ℂ] (R.HW i (sg0 D A3.A)).H :=
     (Y.mj.eW i).comp (D.what₂.thetaP (Y.tup t) ((i : ℕ) + 1))
@@ -128,7 +128,7 @@ theorem mem_span_part : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T 
     funext j
     by_cases h : j = k
     · subst h; simp [cpt]
-    · simp [cpt, Pi.single_apply, h]
+    · simp [cpt, h]
   have hsum : ∀ c : Fin ((A3.A.fam.L i t).dZ (A3.A.fam.lvlA F.P0 F.ψ0) ((A3.fam3.toSub2 (zsOf R F)).Zl i t)) → ℂ, m (Φ (∑ k, c k • u (Pi.single k 1))) =
       (R.toCx3 F).tC F.cr false i t (fun k => cj (twAt D.what₂.embLL A3.A.v0) (c k)) := by
     intro c

@@ -117,7 +117,7 @@ theorem dOf_fac (P : Weyl.Pre a) (N : ℕ) (τ : E →+* ℂ) (X : Lie E a) :
   rw [dOf, Matrix.of_apply, h5.fderiv]
   have h6 : P.coef i j (Weyl.oneM a) = (1 : Matrix _ _ ℂ) i j := congrFun (congrFun (map_one P.mat) i) j
   have h7 : P.D ((Matrix.of X).map (coord τ)) i j = fderiv ℂ (P.coef i j) (Weyl.oneM a) (L X) := rfl
-  simp [hd, hL, h6, h7, fderiv_det_one]
+  simp [hL, h6, h7, fderiv_det_one]
   ring
 
 open Classical in

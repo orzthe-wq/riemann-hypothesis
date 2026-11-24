@@ -6,9 +6,11 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeo
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PushInvertible
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsBasisKaehlerOfAlgebraicIndependent
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCoordinateNearGenericPoint
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCptGen
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermGenPtInjectiveRangeRegAt
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SpanFinrankMaximalIdealLeNcardOfLeSupSq
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GermGenPtInjectiveRangeRegAtStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -208,7 +210,7 @@ theorem exists_chart {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} 
   obtain ⟨U, hU, hm⟩ := hT.affine c hc
   have hgen : genPt ξ ∈ U := (hm _).2 ⟨specializes_rfl, hc, fun c' => mem_regAt_gen hT.gen _⟩
   have hsp : ∀ q, q ∈ U → genPt ξ ⤳ q := fun q h => ((hm q).1 h).1
-  obtain ⟨inj, ran⟩ := GlobalTheory.T.germ_genPt_injective_range_regAt X Ω ξ hT.gen U hgen hsp
+  obtain ⟨inj, ran⟩ := _root_.GlobalTheory.CompanionTheory.Ar.regAt_sections X Ω ξ hT.gen U hgen hsp
   let val : Γ(X, U) →+* Ω := (X.presheaf.germ U (genPt ξ) hgen ≫ Scheme.stalkClosedPointTo ξ).hom
   have memZ : ∀ a, a ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c) ↔ a ∈ val.range := fun a =>
     (hT.ring c hc a).trans ((forall_congr' fun q => imp_congr
@@ -251,7 +253,7 @@ theorem exists_chart {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} 
     rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
     congr 2
     ext o
-    simp only [i, CommRingCat.hom_ofHom, RingHom.comp_apply]
+    simp only [i, RingHom.comp_apply]
     exact eU.symm_apply_apply _
   simp only [Iso.trans_hom, asIso_hom, Category.assoc]
   rw [e, hρ, ← hU.isoSpec_inv_ι]
@@ -278,7 +280,7 @@ theorem isFractionRing_chartQ {X : Scheme.{0}} {ξ : Sp Ω ⟶ X} {x : κ → Ω
     IsFractionRing (chartQ x c) Ω := by
   refine IsFractionRing.of_field _ _ fun a => ?_
   have hin : InChart ξ x c ⟨genPt ξ, specializes_rfl⟩ := ⟨hc, fun c' => mem_regAt_gen hT.gen _⟩
-  obtain ⟨s, hs, hu, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x hT c _ hin a).1 (mem_regAt_gen hT.gen a)
+  obtain ⟨s, hs, hu, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ κ x hT c _ hin a).1 (mem_regAt_gen hT.gen a)
   refine ⟨⟨s * a, chartZ_le x c hsa⟩, ⟨s, chartZ_le x c hs⟩, ?_⟩
   show a = s * a / s
   rw [mul_div_cancel_left₀ _ hu.1]

@@ -57,6 +57,7 @@ import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.CharacterValuation
 import Formalism.LocalToGlobal.KernelLattices.XiIndCClass
 import Formalism.SharpRestriction.CuspSpanNormBounds.Point
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

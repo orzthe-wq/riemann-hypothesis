@@ -44,6 +44,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FnAlgC
 import Development.AbelianVarietyTheory.Definitions.Divisors.IsProperToroidalModelStructureMap
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSectionOfChg
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PerValNeZero
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

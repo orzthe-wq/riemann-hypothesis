@@ -219,7 +219,7 @@ private theorem UpperTheory.V.Base.coords_restrict_to_submodules {R O ι : Type}
     simp [h.smul]
   · intro y
     ext
-    simp [Submodule.coe_sum, h.sum]
+    simp [h.sum]
   · intro i o x
     ext
     simp [h.coord]

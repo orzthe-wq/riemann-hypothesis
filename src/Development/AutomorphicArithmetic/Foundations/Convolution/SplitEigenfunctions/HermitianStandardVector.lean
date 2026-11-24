@@ -98,7 +98,7 @@ private theorem orbField {K : Type} [Field K] [CharZero K] (s : K →+* K) (θ :
           field_simp
           linear_combination -hN
         · rw [sa]
-          simp only [zero_mul, map_zero, mul_zero, zero_sub]
+          simp only [map_zero, mul_zero, zero_sub]
           field_simp
           linear_combination -hN
         · simp [hy0]

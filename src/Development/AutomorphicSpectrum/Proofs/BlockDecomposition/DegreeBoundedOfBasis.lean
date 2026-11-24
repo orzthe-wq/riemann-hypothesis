@@ -95,7 +95,7 @@ theorem exists_normal_basis {K : Type} [Field K] {n : ℕ} (W : Submodule K (Fin
     · rintro ⟨v, rfl⟩
       exact ⟨Q⁻¹ *ᵥ v, by simp [M, Matrix.mulVec_mulVec]⟩
     · rintro ⟨v, rfl⟩
-      exact ⟨Q *ᵥ v, by simp [M, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet]⟩
+      exact ⟨Q *ᵥ v, by simp [M, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet]⟩
   refine ⟨Module.finrank K W, M, a ∘ f, ?_, hs, Matrix.mulVec_injective_iff.1 hinj, ?_⟩
   · simpa using W.finrank_le
   · have h1 := Matrix.range_mulVecLin M

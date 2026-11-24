@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.UnipotentIdempotents.TCont
+import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocA
 
 @[expose] public section
 
@@ -50,15 +51,10 @@ namespace UpperTheory.V.Ws.Lk.BetaCyclotomicPlace
 
 variable (l : ℕ) [hl : Fact l.Prime]
 
-private theorem prime_l : Prime ((l : ℕ) : 𝓞 ℚ) := by
-  have h : Prime ((l : ℤ)) := Nat.prime_iff_prime_int.1 hl.out
-  have h2 := (MulEquiv.prime_iff (Rat.ringOfIntegersEquiv.symm : ℤ ≃* 𝓞 ℚ)).2 h
-  simpa using h2
-
 private noncomputable def vQ : HeightOneSpectrum (𝓞 ℚ) where
   asIdeal := Ideal.span {((l : ℕ) : 𝓞 ℚ)}
-  isPrime := (Ideal.span_singleton_prime (prime_l l).ne_zero).mpr (prime_l l)
-  ne_bot := by rw [Ne, Ideal.span_singleton_eq_bot]; exact (prime_l l).ne_zero
+  isPrime := (Ideal.span_singleton_prime (_root_.Formalism.BasicNotions.Examples₂.LB.prime_l l).ne_zero).mpr (_root_.Formalism.BasicNotions.Examples₂.LB.prime_l l)
+  ne_bot := by rw [Ne, Ideal.span_singleton_eq_bot]; exact (_root_.Formalism.BasicNotions.Examples₂.LB.prime_l l).ne_zero
 
 variable {l} {Ω : Type} [Field Ω]
 

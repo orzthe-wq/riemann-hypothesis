@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -85,7 +86,6 @@ theorem evV_cpt {m n : ℕ} {a : Fin m → Pt V n d} (ha : Sm a) (α : Fin d →
   rw [MvPowerSeries.c_eq_algebraMap, AlgHom.commutes]
   first
   | rfl
-  | simp [MvPowerSeries.algebraMap_apply]
 
 theorem evV_zero {m n : ℕ} {a : Fin m → Pt V n d} (ha : Sm a) : evV a 0 = 0 := by
   obtain ⟨ψ, -, he⟩ := evV_hom ha

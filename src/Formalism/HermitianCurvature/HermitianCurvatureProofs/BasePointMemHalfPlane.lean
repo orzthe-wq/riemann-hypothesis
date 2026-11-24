@@ -84,7 +84,7 @@ theorem hasFDerivAt_bet (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) 
   have hmem : Complex.exp w ∈ An TT := exp_mem_An hw
   have hdα : DifferentiableAt ℝ α (Complex.exp w) :=
     (hα.contDiffAt ((isOpen_An TT).mem_nhds hmem)).differentiableAt
-      (by first | simp | exact le_top)
+      (by first | simp)
   have hc : HasFDerivAt (fun z => α (Complex.exp z))
       ((fderiv ℝ α (Complex.exp w)).comp ((ContinuousLinearMap.mul ℝ ℂ) (Complex.exp w))) w :=
     hdα.hasFDerivAt.comp w he

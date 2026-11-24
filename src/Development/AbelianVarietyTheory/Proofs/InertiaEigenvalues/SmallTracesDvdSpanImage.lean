@@ -1,8 +1,11 @@
 module
 
 public import Formalism.SharpRestriction.LevelLetterCocycles.DataN
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfTraceMulEqZeroSemisimpleRepStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZlSpanImageContinuousRepFiniteStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfTraceMulEqZeroSemisimpleRep
+public import Mathlib.NumberTheory.Padics.Complex
+public import Mathlib.NumberTheory.Padics.PadicIntegers
+public import Mathlib.Topology.Instances.Matrix
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZlSpanImageContinuousRepFinite
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -139,14 +142,14 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card [TopologicalSpace Γ] [IsTopological
       (∀ g, ‖(matOf r f * ((r g : GL (Fin a) (PadicAlgCl l)) : Matrix (Fin a) (Fin a) (PadicAlgCl l))).trace‖
         ≤ ((l : ℝ)⁻¹) ^ (n + c)) →
       ∃ f' : Γ →₀ ℤ_[l], matOf r f = ((l : PadicAlgCl l) ^ n) • matOf r f' := by
-  obtain ⟨t, ht⟩ := GlobalTheory.T.zlSpan_image_continuous_rep_finite l Γ a r hr
+  obtain ⟨t, ht⟩ := _root_.GlobalTheory.zl_span_image_finite l Γ a r hr
   have ht' : ∀ f : Γ →₀ ℤ_[l], ∃ f' : Γ →₀ ℤ_[l], f'.support ⊆ t ∧ matOf r f = matOf r f' := ht
   let v : t → Matrix (Fin a) (Fin a) (PadicAlgCl l) := fun i =>
     ((r i : GL (Fin a) (PadicAlgCl l)) : Matrix (Fin a) (Fin a) (PadicAlgCl l))
   let Φ : Matrix (Fin a) (Fin a) (PadicAlgCl l) →ₗ[ℚ_[l]] (t → PadicAlgCl l) :=
     { toFun := fun M i => (M * v i).trace
       map_add' := by intro M N; funext i; simp [Matrix.add_mul, Matrix.trace_add]
-      map_smul' := by intro c M; funext i; simp [Matrix.smul_mul, Matrix.trace_smul] }
+      map_smul' := by intro c M; funext i; simp [Matrix.trace_smul] }
   let S : (t → ℚ_[l]) →ₗ[ℚ_[l]] (t → PadicAlgCl l) := Φ ∘ₗ Fintype.linearCombination ℚ_[l] v
   obtain ⟨ε, hε, hball⟩ := exists_ball_sub_image S
   have hl1 : (1 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).one_lt
@@ -181,7 +184,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card [TopologicalSpace Γ] [IsTopological
   refine ⟨f', ?_⟩
   have hlK : ((l : PadicAlgCl l) ^ n) = algebraMap ℚ_[l] (PadicAlgCl l) ((l : ℚ_[l]) ^ n) := by simp
   rw [← sub_eq_zero]
-  apply GlobalTheory.T.eq_zero_of_trace_mul_eq_zero_semisimple_rep (PadicAlgCl l) Γ a r hss
+  apply _root_.GlobalTheory.TrFormNd.eq_zero_of_trace_mul_eq_zero (PadicAlgCl l) Γ a r hss
   · exact Submodule.sub_mem _ (matOf_mem_span r f)
       (Submodule.smul_mem _ _ (matOf_mem_span r f'))
   · apply trace_zero_of_finset r t ht'

@@ -52,10 +52,7 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
-theorem sigma_sigma (h : IsCMExt F E σ) (a : E) : σ (σ a) = a := by
-  let τ : E →+* ℂ := (IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom
-  apply τ.injective
-  rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
+alias sigma_sigma := _root_.GlobalTheory.AdelicU.cm_conj_conj
 
 theorem form_swap (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : E} (hJ : ∀ i j, σ (J j i) = ε * J i j)
     (a b : Fin n → E) : σ (form σ J a b) = ε * form σ J b a := by

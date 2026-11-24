@@ -1,44 +1,6 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.NGData
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -149,12 +111,9 @@ theorem sizes_of_hypotheses : StepSizes := by
   have hkCl : (D.R.k : ℝ) ^ (2 : ℝ) ≤ (D.R.k : ℝ) ^ Cl :=
     Real.rpow_le_rpow_of_exponent_le (by linarith) hCl
   have hb256 : (256 : ℝ) ≤ large₂.sc.b ^ 2 := by
-    have e1 : (D.R.k : ℝ) ^ (2 : ℝ) = (D.R.k : ℝ) ^ 2 := Real.rpow_two _
-    have e2 : large₂.sc.b ^ (2 : ℝ) = large₂.sc.b ^ 2 := Real.rpow_two _
+    rw [Real.rpow_two] at hkCl hb2
     have h256 : (D.R.k : ℝ) ^ 2 ≥ 256 := by nlinarith
     have h5 := le_trans (le_max_left _ _) hb1
-    rw [e1] at hkCl
-    rw [e2] at hb2
     linarith
   have hb16 : (16 : ℝ) ≤ large₂.sc.b := by nlinarith
   have hb1' : (1 : ℝ) ≤ large₂.sc.b := by linarith
@@ -248,7 +207,6 @@ theorem stepHeight_of_normOne (h : StepNormOne) : StepHeight := by
   · have ha : 0 < (2 * D.R.rS + 1) * Fintype.card (InfinitePlace D.host.E) :=
       Nat.mul_pos (by omega) Fintype.card_pos
     simp [hg, zero_pow ha.ne']
-    try positivity
   · have hg1 : (1 : ℝ) ≤ X.B.g := by exact_mod_cast hg
     exact (inv_le_one_of_one_le₀ (one_le_pow₀ hg1)).trans (one_le_pow₀ hg1)
 

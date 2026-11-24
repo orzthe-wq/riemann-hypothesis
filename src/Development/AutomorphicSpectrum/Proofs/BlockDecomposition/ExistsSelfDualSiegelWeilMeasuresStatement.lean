@@ -55,4 +55,4 @@ theorem _root_.GlobalTheory.T.exists_self_dual_siegel_weil_measures : ∀ (D : D
     SdHerm D.host.F D.host.E D.sp.cm.sig (AF D.host.F) ψ r db ∧
     ∀ (φ : Mx D V.rank r → ℂ) (β : HermE D r),
       W ψ V μ lam φ β = coefN D.sp.cm.sig V.gram ψ dx db (fun X => φ (tupOf X)) β.1 := by
-  first | exact @GlobalTheory.CompanionTheory.SiegelND.whit_eq_coefN | exact GlobalTheory.CompanionTheory.SiegelND.whit_eq_coefN | (intros; apply GlobalTheory.CompanionTheory.SiegelND.whit_eq_coefN <;> assumption)
+  first | exact @GlobalTheory.CompanionTheory.SiegelND.whit_eq_coefN

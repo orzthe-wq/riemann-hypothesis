@@ -3,7 +3,7 @@ module
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EigLat
 public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRingStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeEvalAtLocalRing
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieOmegaLatticeVectorBundle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -189,7 +189,7 @@ namespace GlobalTheory.CompanionTheory.Ar
 open GlobalTheory.CompanionTheory.Ar.LieFrameIndep in
 theorem values_frame_sublattice_linearIndependent : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (C : Type) [Field C] (z : Sp C ⟶ X) (h : genPt ξ ⤳ centre z) (EC : Type) [AddCommGroup EC] [Module C EC] (N : LieModel G z EC) (g n : ℕ) (b : Fin g → E) (S : Finset (Fin g)) (c : Fin n → E) (L : Lat ξ E) (w : Fin n → EC), IsCptGen ξ → M.lat.IsFrameAt b ⟨centre z, h⟩ → L ⟨centre z, h⟩ = Submodule.span (regAt ξ ⟨centre z, h⟩) (b '' S) → L.IsFrameAt c ⟨centre z, h⟩ → (∀ i, M.ValAt z (c i) (N.pt (w i))) → LinearIndependent C w := by
   intro X G _ _ _ Ω _ ξ E _ _ M C _ z h EC _ _ N g n b S c L w hξ hb hLb hLc hw
-  obtain ⟨ev, h1, h2, h3⟩ := GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ E M C z h EC N hξ inferInstance
+  obtain ⟨ev, h1, h2, h3⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieLat_val X G Ω ξ E M C z h EC N hξ inferInstance
   let e : X.presheaf.stalk (centre z) ≃+* regAt ξ ⟨centre z, h⟩ :=
     RingEquiv.ofBijective (genMap ξ ⟨centre z, h⟩).rangeRestrict
       ⟨fun s t est => hξ.inj ⟨centre z, h⟩ (congrArg Subtype.val est), RingHom.rangeRestrict_surjective _⟩

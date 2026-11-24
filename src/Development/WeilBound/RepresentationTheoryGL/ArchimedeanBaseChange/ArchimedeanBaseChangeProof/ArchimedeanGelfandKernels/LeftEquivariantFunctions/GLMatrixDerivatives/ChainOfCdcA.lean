@@ -166,8 +166,8 @@ theorem hb_expand (H : Mat n) (hH : H.IsHermitian) : ∑ p, ((H * hb p).trace.re
         convert this using 1
         ring
       · simp only [hlt, not_lt.mpr hlt.le, if_true, if_false]
-        simp only [and_self, if_true, hij, Ne.symm hij, false_and, and_false, if_false, add_zero, zero_add, sub_zero,
-          zero_sub, mul_one, mul_neg]
+        simp only [and_self, if_true, hij, Ne.symm hij, false_and, and_false, if_false, zero_add, sub_zero,
+          mul_one]
         have := key_pair2 (H i j) (Real.sqrt 2) hs
         convert this using 1
     · intro p _ hp

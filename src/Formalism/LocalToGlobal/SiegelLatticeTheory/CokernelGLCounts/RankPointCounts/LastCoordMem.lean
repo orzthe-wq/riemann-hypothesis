@@ -78,13 +78,8 @@ theorem sgnP'_mem (b : Fin (D.R.rS + 1)) : sgnP' D p b ∈ (D.s.atP p).O := by
   simp only [Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_one]
   rw [sq, h, sub_self]
 
-theorem frFac_unit (b : Fin (D.R.rS + 1)) : IsUnit (frFac Zd.δ p b) := by
-  rw [frFac_eq Zd p b]
-  refine IsUnit.map _ (isUnit_iff_ne_zero.2 ?_)
-  exact pow_ne_zero _ (inv_ne_zero (yP_ne Zd p))
-
 theorem uF_unit (b : Fin (D.R.rS + 1)) : IsUnit (uF Zd p b) :=
-  (show IsUnit (sgnP' D p b) from ⟨⟨_, _, sgnP'_sq p b, sgnP'_sq p b⟩, rfl⟩).mul (frFac_unit Zd p b)
+  (show IsUnit (sgnP' D p b) from ⟨⟨_, _, sgnP'_sq p b, sgnP'_sq p b⟩, rfl⟩).mul (_root_.Formalism.L2.SG.Pf.BBTie.bt_frFac_unit Zd p b)
 
 end LocalXS
 

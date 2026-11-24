@@ -148,7 +148,7 @@ theorem exists_prime_iInf {B : Type} [CommRing B] {p : B} (hp : Prime p) (h0 : p
   have hcan : ∀ (n : ℕ) (a b : B), p ^ n * a = p ^ n * b → a = b := fun n a b h =>
     (mul_cancel_left_mem_nonZeroDivisors (pow_mem h0 n)).1 h
   have hmem : ∀ b, b ∈ (⨅ n : ℕ, Ideal.span {p ^ n}) ↔ ∀ n : ℕ, p ^ n ∣ b := fun b => by
-    simp [Ideal.mem_iInf, Ideal.mem_span_singleton]
+    simp [Ideal.mem_span_singleton]
   have hnot : p ∉ (⨅ n : ℕ, Ideal.span {p ^ n}) := fun h => by
     obtain ⟨c, hc⟩ := (hmem p).1 h 2
     exact hp.not_dvd_one ⟨c, hcan 1 _ _ (by linear_combination hc)⟩

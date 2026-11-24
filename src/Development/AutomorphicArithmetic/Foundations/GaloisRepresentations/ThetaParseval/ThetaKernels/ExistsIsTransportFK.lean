@@ -102,7 +102,7 @@ theorem exists_isTransportF_k : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
       ∃ Φ ∈ GlobalTheory.WeilM.schA F κ, GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ = f := fun f => by
     constructor
     · intro hf
-      obtain ⟨Φ, hΦ, h⟩ := _root_.GlobalTheory.T.schrodinger_model_intertwining F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hσξ hω.std _ (numCoordF co τ) he hr f hf
+      obtain ⟨Φ, hΦ, h⟩ := _root_.GlobalTheory.ThetaOntoF.exists_thV_eqF_k F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hσξ hω.std _ (numCoordF co τ) he hr f hf
       refine ⟨_, comp_mem_schA τ.symm hΦ, ?_⟩
       rw [thetaTr_eqF co τ, ← h]
       congr 2
@@ -110,7 +110,7 @@ theorem exists_isTransportF_k : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
       simp [Function.comp_def]
     · rintro ⟨Φ, hΦ, rfl⟩
       rw [thetaTr_eqF co τ]
-      exact _root_.GlobalTheory.T.schrodinger_model_isomorphism F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hσξ hω.std _ (numCoordF co τ) he hr _
+      exact _root_.GlobalTheory.ThetaTransformF.isThetaFunOF_thV_k F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hσξ hω.std _ (numCoordF co τ) he hr _
         (comp_mem_schA τ hΦ)
   obtain ⟨om, hom⟩ := exists_transport' _ _ _ hadd (thetaTr_smulF co) hinj hon
     (ω.comp (pairHomF hS hξ0 hA hB')) fun p f hf => hω.om_pres _ f hf

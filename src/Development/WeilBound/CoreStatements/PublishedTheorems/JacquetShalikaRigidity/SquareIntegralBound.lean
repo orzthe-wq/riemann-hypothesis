@@ -168,7 +168,7 @@ theorem moderate_growth_of : D0 → N0 → P2 → U0 → U2 → V1 → ThetaDeca
   have hgood2 := hgood2 hd.good
   have hK : ∀ g, lastRow g ∈ C → χ₁ g * conj (χ₂ g) = (Dt g : ℂ) ^ z := fun g hg => by
     have h1 : Φ₀ (lastRow g) = 1 := hΦ1 hg
-    simp only [hχ₁, hχ₂, map_mul, Complex.conj_conj, Complex.conj_ofReal, h1, Complex.ofReal_one, mul_one]
+    simp only [hχ₁, hχ₂, Complex.conj_conj, h1, Complex.ofReal_one, mul_one]
     rw [Complex.ofReal_cpow (hDpos g).le, ← Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 (hDpos g).ne')]
     congr 1; ring
   have hW : ∀ g, whit ψ (k - 1) (fun g => χ₁ g * f g) g * conj (whit ψ (k - 1) (fun g => χ₂ g * φ g) g) =

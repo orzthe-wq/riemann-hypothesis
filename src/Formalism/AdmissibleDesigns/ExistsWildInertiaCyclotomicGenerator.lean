@@ -1,32 +1,36 @@
 module
 
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Mathlib.Topology.Algebra.Nonarchimedean.Bases
+public import Mathlib.LinearAlgebra.Matrix.Defs
+public import Mathlib.RingTheory.Localization.FractionRing
 public import Formalism.AdmissibleDesigns.NonemptyPl
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.AddPreservesExpCongruence
 public import Formalism.SharpRestriction.LevelLetterCocycles.GoodCongruenceDataOf
 public import Formalism.WachLatticeTwists.RamifiedBlockRings.DistinctEigenvalueCornerPerturbation
 public import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapTheorem
 public import Development.AutomorphicArithmetic.CyclotomicBounds.FactorizationConductorLeLocalLevel
 public import Formalism.AdicCompletionExports.AdicCompleteRingEquiv.IsAdicCompleteOfRingEquiv
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.ExpCongruenceExtendsToSum
 public import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.Padics.ProperSpace
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -34,7 +38,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -48,9 +51,140 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.FinExtTop
+import Mathlib.NumberTheory.Padics.ProperSpace
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.AddPreservesExpCongruence, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.ExpCongruenceExtendsToSum, Formalism.AdmissibleDesigns.ExistsWildInertiaCyclotomicGenerator
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.AddPreservesExpCongruence =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.AddPreservesExpCongruence", "h": "module\n\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\npublic import Mathlib.Topology.Algebra.Nonarchimedean.Bases\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.PeriodIntegrals.FinExtTop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.UnitaryGroupMassFormula.FinExtTop
+
+open PI.FinExtTop Topology Filter
+
+section
+
+variable {O' : Type} [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O']
+
+def fracB (ϖ : O') (i : ℕ) : Submodule O' (FractionRing O') :=
+  Submodule.span O' {algebraMap O' (FractionRing O') (ϖ ^ i)}
+
+theorem mem_fracB {ϖ : O'} {i : ℕ} {x : FractionRing O'} :
+    x ∈ fracB ϖ i ↔ ∃ c : O', x = algebraMap O' (FractionRing O') (c * ϖ ^ i) := by
+  simp only [fracB, Submodule.mem_span_singleton]
+  constructor
+  · rintro ⟨c, rfl⟩
+    exact ⟨c, by rw [Algebra.smul_def, map_mul]⟩
+  · rintro ⟨c, rfl⟩
+    exact ⟨c, by rw [Algebra.smul_def, map_mul]⟩
+
+theorem algebraMap_mem_fracB {ϖ : O'} {i : ℕ} {x : O'} :
+    algebraMap O' (FractionRing O') x ∈ fracB ϖ i ↔ ϖ ^ i ∣ x := by
+  rw [mem_fracB]
+  constructor
+  · rintro ⟨c, hc⟩
+    exact ⟨c, by rw [mul_comm]; exact IsFractionRing.injective O' (FractionRing O') hc⟩
+  · rintro ⟨c, rfl⟩
+    exact ⟨c, by rw [mul_comm]⟩
+
+theorem fracB_anti (ϖ : O') {i j : ℕ} (h : i ≤ j) : fracB ϖ j ≤ fracB ϖ i := by
+  intro x hx
+  rw [mem_fracB] at hx ⊢
+  obtain ⟨c, rfl⟩ := hx
+  exact ⟨c * ϖ ^ (j - i), by rw [mul_assoc, ← pow_add, Nat.sub_add_cancel h]⟩
+
+theorem exists_pow_mul_mem {ϖ : O'} (hϖ : Irreducible ϖ) (a : FractionRing O') :
+    ∃ n : ℕ, ∃ c : O', algebraMap O' (FractionRing O') (ϖ ^ n) * a =
+      algebraMap O' (FractionRing O') c := by
+  obtain ⟨⟨x, y⟩, hxy⟩ := IsLocalization.surj (nonZeroDivisors O') a
+  have hy : (y : O') ≠ 0 := nonZeroDivisors.ne_zero y.2
+  obtain ⟨n, u, hu⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy hϖ
+  refine ⟨n, x * ↑u⁻¹, ?_⟩
+  have hy' : algebraMap O' (FractionRing O') (y : O') =
+      algebraMap O' (FractionRing O') (↑u) * algebraMap O' (FractionRing O') (ϖ ^ n) := by
+    rw [hu, map_mul]
+  have hu1 : algebraMap O' (FractionRing O') (↑u) * algebraMap O' (FractionRing O') (↑u⁻¹) = 1 := by
+    rw [← map_mul, Units.mul_inv, map_one]
+  have hxy' : a * algebraMap O' (FractionRing O') (y : O') = algebraMap O' (FractionRing O') x := hxy
+  rw [map_mul, ← hxy']
+  linear_combination (-(a * algebraMap O' (FractionRing O') (↑u⁻¹))) * hy' +
+    (-(algebraMap O' (FractionRing O') (ϖ ^ n) * a)) * hu1
+
+theorem fracB_basis {ϖ : O'} (hϖ : Irreducible ϖ) : SubmodulesRingBasis (fracB ϖ) := by
+  constructor
+  · intro i j
+    exact ⟨max i j, le_inf (fracB_anti ϖ (le_max_left _ _)) (fracB_anti ϖ (le_max_right _ _))⟩
+  · intro a i
+    obtain ⟨n, c, hc⟩ := exists_pow_mul_mem hϖ a
+    refine ⟨i + n, ?_⟩
+    rintro _ ⟨x, hx, rfl⟩
+    obtain ⟨d, rfl⟩ := mem_fracB.1 hx
+    refine mem_fracB.2 ⟨c * d, ?_⟩
+    have e : algebraMap O' (FractionRing O') (d * ϖ ^ (i + n)) =
+        algebraMap O' (FractionRing O') (d * ϖ ^ i) * algebraMap O' (FractionRing O') (ϖ ^ n) := by
+      rw [← map_mul, pow_add, mul_assoc]
+    show a * _ = _
+    rw [e, mul_comm (algebraMap O' (FractionRing O') (d * ϖ ^ i)), ← mul_assoc, mul_comm a, hc,
+      ← map_mul]
+    congr 1
+    ring
+  · intro i
+    refine ⟨i, ?_⟩
+    rintro _ ⟨x, hx, y, hy, rfl⟩
+    obtain ⟨c, rfl⟩ := mem_fracB.1 hx
+    obtain ⟨d, rfl⟩ := mem_fracB.1 hy
+    exact mem_fracB.2 ⟨c * d * ϖ ^ i, by show _ * _ = _; rw [← map_mul]; congr 1; ring⟩
+
+end
+
+end PI.UnitaryGroupMassFormula.FinExtTop
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.AddPreservesExpCongruence =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.ExpCongruenceExtendsToSum =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.ExpCongruenceExtendsToSum", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.Defs\npublic import Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.PeriodIntegrals.FinExtTop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.UnitaryGroupMassFormula.FinExtTop
+
+open PI.FinExtTop
+
+theorem torsionFree_pi_matrix (O' : Type) [CommRing O'] [IsDomain O'] (X' d : Type) [Fintype d]
+    [DecidableEq d] : Module.IsTorsionFree O' (X' → Matrix d d (FractionRing O')) where
+  isSMulRegular r hr f g h := by
+    have hr0 : algebraMap O' (FractionRing O') r ≠ 0 := by
+      intro h0
+      exact hr.ne_zero ((IsFractionRing.injective O' (FractionRing O')).eq_iff.1
+        (h0.trans (map_zero _).symm))
+    have h' : algebraMap O' (FractionRing O') r • f = algebraMap O' (FractionRing O') r • g := by
+      simpa only [algebraMap_smul] using h
+    exact ((IsUnit.mk0 _ hr0).smul_left_cancel).1 h'
+
+end PI.UnitaryGroupMassFormula.FinExtTop
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.ExpCongruenceExtendsToSum =====
+
+-- ===== clump member: Formalism.AdmissibleDesigns.ExistsWildInertiaCyclotomicGenerator =====
+-- clump-header: {"m": "Formalism.AdmissibleDesigns.ExistsWildInertiaCyclotomicGenerator", "h": "module\n\npublic import Formalism.AdmissibleDesigns.NonemptyPl\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.AddPreservesExpCongruence\npublic import Formalism.SharpRestriction.LevelLetterCocycles.GoodCongruenceDataOf\npublic import Formalism.WachLatticeTwists.RamifiedBlockRings.DistinctEigenvalueCornerPerturbation\npublic import Formalism.WachLatticeTwists.RealClassMaps.RealClassMapTheorem\npublic import Development.AutomorphicArithmetic.CyclotomicBounds.FactorizationConductorLeLocalLevel\npublic import Formalism.AdicCompletionExports.AdicCompleteRingEquiv.IsAdicCompleteOfRingEquiv\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteExtensionTopology.ExpCongruenceExtendsToSum\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ExistsInertiaCharpolyFactorOfTameType\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.Padics.ProperSpace\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 variable [hT2Core : Fact ReciprocityTheory.ChartRestriction.T2.Core]
@@ -509,3 +643,6 @@ end RecRing
 end Formalism.MainNotions.N.K.Topo
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.AdmissibleDesigns.ExistsWildInertiaCyclotomicGenerator =====

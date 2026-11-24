@@ -884,7 +884,7 @@ theorem partnerF_invol (p : C.LPt) : Function.Involutive (ptPartnerF p) := by
   rw [e1]
   have h2 := partner_spec p (ptPartner p a) h1.1
   apply Fin.ext
-  simp [ptPartnerF, h2.1, h1.2]
+  simp [ptPartnerF, h1.2]
 
 theorem ptPerm_apply (p : C.LPt) (a : Fin (ptSize p)) : ptPerm p a = ptPartnerF p a := by
   rw [ptPerm, dif_pos (partnerF_invol p).bijective]
@@ -1180,13 +1180,13 @@ theorem psd_pull {α β : Type} [DecidableEq β] (Z : Finset α) (φ : α → β
 theorem sesq_zero_left {V : Type*} [AddCommGroup V] [Module ℂ V] {U : Submodule ℂ V} {β : V → V → ℂ}
     (hS : P5.SesqOn U β) {y : V} (hy : y ∈ U) : β 0 y = 0 := by
   have h := (hS 0 U.zero_mem 0 U.zero_mem y hy 1).1
-  simp only [one_smul, add_zero, zero_add, one_mul] at h
+  simp only [one_smul, add_zero, one_mul] at h
   linear_combination -h
 
 theorem sesq_zero_right {V : Type*} [AddCommGroup V] [Module ℂ V] {U : Submodule ℂ V} {β : V → V → ℂ}
     (hS : P5.SesqOn U β) {y : V} (hy : y ∈ U) : β y 0 = 0 := by
   have h := (hS 0 U.zero_mem 0 U.zero_mem y hy 1).2
-  simp only [one_smul, add_zero, zero_add, one_mul, map_one] at h
+  simp only [one_smul, add_zero, one_mul, map_one] at h
   linear_combination -h
 
 theorem sesq_sum_left {V : Type*} [AddCommGroup V] [Module ℂ V] {U : Submodule ℂ V} {β : V → V → ℂ}
@@ -1242,7 +1242,7 @@ theorem gram_of_sesq {V : Type*} [AddCommGroup V] [Module ℂ V] (U : Submodule 
     have h := hN _ hw
     rw [sesq_sum_left hS Finset.univ (fun i : Z => (starRingEnd ℂ) (c i)) (fun i : Z => v i) (fun i => hv i) hw] at h
     simp only [sesq_sum_right hS Finset.univ (fun i : Z => (starRingEnd ℂ) (c i)) (fun i : Z => v i) (fun i => hv i) (hv _),
-      RCLike.conj_conj, Complex.conj_conj] at h
+      RCLike.conj_conj] at h
     convert h using 1
     rw [Finsupp.sum_fintype _ _ (by simp)]
     refine Finset.sum_congr rfl fun i _ => ?_
@@ -1379,8 +1379,7 @@ namespace Formalism.FourierDecayAlt.P.Dx1.Rel
 noncomputable section
 open Classical
 
-theorem ptSize_cons (s : ℕ) (t : ℂ) (rest : C.LPt) : ptSize ((s, t) :: rest) = s + ptSize rest := by
-  simp only [ptSize, List.map_cons, List.sum_cons]
+alias ptSize_cons := _root_.Formalism.FourierDecayAlt.P.Dx1.ptSize_cons
 
 theorem partner_spec : ∀ (p : C.LPt) (a : ℕ), a < ptSize p →
     ptPartner p a < ptSize p ∧ ptPartner p (ptPartner p a) = a ∧
@@ -1397,7 +1396,7 @@ theorem partner_spec : ∀ (p : C.LPt) (a : ℕ), a < ptSize p →
         by_cases hi : i < s
         · simp only [ptEntry, ptScal, ha, hi, and_self, if_true]
           split_ifs <;> first | rfl | (exfalso; omega)
-        · simp only [ptEntry, ptScal, ha, hi, false_and, and_true, if_false, if_true]
+        · simp only [ptEntry, ptScal, ha, hi, and_true, if_false, if_true]
           split_ifs <;> first | rfl | (exfalso; omega)
     · have ih := partner_spec rest (a - s) (by omega)
       have hp : ptPartner ((s, t) :: rest) a = s + ptPartner rest (a - s) := by simp [ptPartner, ha]
@@ -1407,7 +1406,7 @@ theorem partner_spec : ∀ (p : C.LPt) (a : ℕ), a < ptSize p →
         rw [show s + ptPartner rest (a - s) - s = ptPartner rest (a - s) by omega, ih.2.1]; omega
       · intro i
         by_cases hi : s ≤ i
-        · simp only [ptEntry, ptScal, ha, show ¬ i < s by omega, false_and, and_false, if_false,
+        · simp only [ptEntry, ptScal, ha, show ¬ i < s by omega, if_false,
             show s ≤ a by omega, hi, and_self, if_true]
           rw [ih.2.2 (i - s)]
           split_ifs <;> first | rfl | (exfalso; omega)
@@ -1618,7 +1617,7 @@ theorem expandAt (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
   · rw [Finset.sum_eq_single (⟨j.val, by omega⟩ : Fin (r + 1))]
     · rw [fvec_lt z (⟨j.val, by omega⟩ : Fin (r + 1)) hj]
       have hb : bvec (eI k r ⟨j.val, hj⟩) j = 1 := by
-        simp [bvec, Pi.single_apply, eI, Fin.ext_iff]
+        simp [bvec, eI]
       rw [hb, one_mul]
       simp only [Bm, Matrix.of_apply]
       rw [dif_pos hj]
@@ -1785,18 +1784,9 @@ namespace Formalism.FourierDecayAlt.P
 
 theorem ptPerm_spec : Formalism.FourierDecayAlt.D.PtPermSpec := by
   exact Dx1.d_ptPermSpec
-theorem ptG_spec : Formalism.FourierDecayAlt.D.PtGSpec := by
-  exact Dx1.ptGSpec
-theorem relevant_points_holds : Formalism.FourierDecayAlt.D.PtRelevant := by
-  exact Dx1.Rel.ptRelevant
-theorem good_of_admissible : Formalism.FourierDecayAlt.D.GoodOfAdm := by
-  exact Dx1.d_goodOfAdm
-theorem level_zero_holds : Formalism.FourierDecayAlt.D.LevelZero := by
-  exact Dx1.LZ.levelZero
-theorem lemma_E_of_residue : Formalism.FourierDecayAlt.D.LemmaEOfRR0 := by
-  exact Dx1.d_lemmaEOfRR0
-theorem positivity_of_module : Formalism.FourierDecayAlt.D.ThmPPosOfModule := by
-  exact Dx1.d_thmPPosOfModule
+alias ptG_spec := _root_.Formalism.FourierDecayAlt.P.Dx1.ptGSpec
+alias relevant_points_holds := _root_.Formalism.FourierDecayAlt.P.Dx1.Rel.ptRelevant
+alias level_zero_holds := _root_.Formalism.FourierDecayAlt.P.Dx1.LZ.levelZero
 theorem module_of_words : Formalism.FourierDecayAlt.D.ModuleOfWdOn := by
   exact Dx1.d_moduleOfWdOn
 

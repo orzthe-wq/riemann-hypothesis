@@ -1,7 +1,10 @@
 module
 
+public import Mathlib.LinearAlgebra.Dimension.Basic
+public import Mathlib.LinearAlgebra.Quotient.Defs
+public import Mathlib.LinearAlgebra.Dimension.Finite
+public import Mathlib.LinearAlgebra.Dimension.Localization
 public import Formalism.SharpRestriction.LevelLetterCocycles.SecondPropositionRingAll
-public import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankInverseBounds
 public import Formalism.SharpRestriction.LevelLetterCocycles.SecondRankCount
 public import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.FrobPiNPf
 public import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GeneratorBoundOfHypotheses
@@ -12,10 +15,13 @@ import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -23,8 +29,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -32,8 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -46,11 +48,156 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankInverseBounds, Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankBounds
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankInverseBounds =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankInverseBounds", "h": "module\n\npublic import Mathlib.LinearAlgebra.Dimension.Basic\npublic import Mathlib.LinearAlgebra.Quotient.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.LinearAlgebra.Dimension.Finite\npublic import Mathlib.LinearAlgebra.Dimension.Localization\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.N.Ln34.RankInverseBounds
+
+open Module
+open scoped Classical
+
+variable {O V : Type*} [CommRing O] [IsDomain O] [AddCommGroup V] [Module O V]
+
+def Inv (γ : V →ₗ[O] V) (K' P : Submodule O V) : Submodule O V :=
+  P ⊓ K'.comap (γ - LinearMap.id)
+
+abbrev InvQ (γ : V →ₗ[O] V) (K' P : Submodule O V) : Type _ :=
+  ↥(Inv γ K' P) ⧸ K'.comap (Inv γ K' P).subtype
+
+abbrev Gr (P P' : Submodule O V) : Type _ := ↥P ⧸ P'.comap P.subtype
+
+private theorem mem_Inv_iff_mem_and_sub_mem {γ : V →ₗ[O] V} {K' P : Submodule O V} {x : V} :
+    x ∈ Inv γ K' P ↔ x ∈ P ∧ γ x - x ∈ K' := by
+  first
+  | exact Iff.rfl
+
+theorem inv_mono (γ : V →ₗ[O] V) (K' : Submodule O V) {P P' : Submodule O V} (h : P' ≤ P) :
+    Inv γ K' P' ≤ Inv γ K' P := by
+  intro x hx
+  obtain ⟨h1, h2⟩ := mem_Inv_iff_mem_and_sub_mem.mp hx
+  exact mem_Inv_iff_mem_and_sub_mem.mpr ⟨h h1, h2⟩
+
+theorem rank_eq_zero_of_smul {M : Type*} [AddCommGroup M] [Module O M] (a : O) (ha : a ≠ 0)
+    (h : ∀ x : M, a • x = 0) : Module.rank O M = 0 := by
+  first
+  | exact rank_eq_zero_iff.mpr fun x => ⟨a, ha, h x⟩
+
+theorem step (γ : V →ₗ[O] V) (K' : Submodule O V) (hK : ∀ x ∈ K', γ x ∈ K')
+    (F0 F1 : Submodule O V) (c : O) (h10 : F1 ≤ F0) (hγ : ∀ x ∈ F0, γ x - c • x ∈ F1) :
+    Module.rank O (InvQ γ K' F0) ≤ Module.rank O (InvQ γ K' F1) +
+      (if c = 1 then Module.rank O (Gr F0 F1) else 0) := by
+  have hle : Inv γ K' F1 ≤ Inv γ K' F0 := inv_mono γ K' h10
+  let f : InvQ γ K' F1 →ₗ[O] InvQ γ K' F0 :=
+    Submodule.mapQ (K'.comap (Inv γ K' F1).subtype)
+      (K'.comap (Inv γ K' F0).subtype) (Submodule.inclusion hle) (by
+        intro x hx
+        simp only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion] at hx ⊢
+        exact hx)
+  let π : ↥(Inv γ K' F0) →ₗ[O] InvQ γ K' F0 ⧸ LinearMap.range f :=
+    (LinearMap.range f).mkQ ∘ₗ (K'.comap (Inv γ K' F0).subtype).mkQ
+  have hπ : Function.Surjective π := by
+    intro y
+    obtain ⟨z, rfl⟩ := Submodule.mkQ_surjective _ y
+    obtain ⟨x, rfl⟩ := Submodule.mkQ_surjective _ z
+    exact ⟨x, rfl⟩
+  have key : ∀ x : ↥(Inv γ K' F0),
+      (K'.comap (Inv γ K' F0).subtype).mkQ x ∈ LinearMap.range f → π x = 0 := by
+    intro x hx
+    simp only [π, LinearMap.comp_apply]
+    exact (Submodule.Quotient.mk_eq_zero _).mpr hx
+  have hquot : Module.rank O (InvQ γ K' F0 ⧸ LinearMap.range f) ≤
+      (if c = 1 then Module.rank O (Gr F0 F1) else 0) := by
+    split_ifs with hc1
+    · let ψ : ↥(Inv γ K' F0) →ₗ[O] Gr F0 F1 :=
+        (F1.comap F0.subtype).mkQ ∘ₗ Submodule.inclusion (fun y hy => (mem_Inv_iff_mem_and_sub_mem.mp hy).1)
+      have hker : LinearMap.ker ψ ≤ LinearMap.ker π := by
+        intro x hx
+        rw [LinearMap.mem_ker] at hx ⊢
+        have hxF1 : (x : V) ∈ F1 := by
+          first
+          | (simp only [ψ, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero,
+              Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion] at hx
+             exact hx)
+        apply key
+        have hx1 : (x : V) ∈ Inv γ K' F1 :=
+          mem_Inv_iff_mem_and_sub_mem.mpr ⟨hxF1, (mem_Inv_iff_mem_and_sub_mem.mp x.2).2⟩
+        refine LinearMap.mem_range.mpr ⟨Submodule.Quotient.mk ⟨x, hx1⟩, ?_⟩
+        first
+        | rfl
+      let g : ↥(Inv γ K' F0) ⧸ LinearMap.ker ψ →ₗ[O]
+          InvQ γ K' F0 ⧸ LinearMap.range f :=
+        (LinearMap.ker ψ).liftQ π hker
+      have hg : Function.Surjective g := by
+        intro b
+        obtain ⟨a, rfl⟩ := hπ b
+        exact ⟨Submodule.Quotient.mk a, rfl⟩
+      calc _ ≤ Module.rank O (↥(Inv γ K' F0) ⧸ LinearMap.ker ψ) :=
+            LinearMap.rank_le_of_surjective g hg
+        _ = Module.rank O (LinearMap.range ψ) := ψ.quotKerEquivRange.rank_eq
+        _ ≤ Module.rank O (Gr F0 F1) := Submodule.rank_le _
+    · apply le_of_eq
+      apply rank_eq_zero_of_smul (c - 1) (sub_ne_zero.mpr hc1)
+      intro y
+      obtain ⟨x, rfl⟩ := hπ y
+      rw [← map_smul π]
+      apply key
+      obtain ⟨hxF0, hxK⟩ := mem_Inv_iff_mem_and_sub_mem.mp x.2
+      have hmem : c • (x : V) - γ x ∈ Inv γ K' F1 := by
+        refine mem_Inv_iff_mem_and_sub_mem.mpr ⟨?_, ?_⟩
+        · rw [← neg_sub]
+          exact F1.neg_mem (hγ _ hxF0)
+        · have e : γ (c • (x : V) - γ x) - (c • (x : V) - γ x) = c • (γ x - x) - γ (γ x - x) := by
+            simp only [map_sub, map_smul, smul_sub]
+            abel
+          rw [e]
+          exact K'.sub_mem (K'.smul_mem c hxK) (hK _ hxK)
+      refine LinearMap.mem_range.mpr ⟨Submodule.Quotient.mk ⟨_, hmem⟩, ?_⟩
+      have e1 : f (Submodule.Quotient.mk ⟨_, hmem⟩) =
+          (Submodule.Quotient.mk (Submodule.inclusion hle ⟨_, hmem⟩) : InvQ γ K' F0) := by
+        first
+        | rfl
+      rw [e1, Submodule.mkQ_apply, Submodule.Quotient.eq, Submodule.mem_comap]
+      convert K'.neg_mem hxK using 1
+      simp only [map_sub, map_smul, Submodule.subtype_apply, Submodule.coe_inclusion, sub_smul,
+        one_smul]
+      abel
+  calc Module.rank O (InvQ γ K' F0)
+      = Module.rank O (InvQ γ K' F0 ⧸ LinearMap.range f) +
+          Module.rank O (LinearMap.range f) := by
+        exact (rank_quotient_add_rank_of_isDomain _).symm
+    _ ≤ (if c = 1 then Module.rank O (Gr F0 F1) else 0) +
+          Module.rank O (InvQ γ K' F1) :=
+        add_le_add hquot (by
+          first
+          | exact LinearMap.rank_le_of_surjective f.rangeRestrict f.surjective_rangeRestrict)
+    _ = _ := add_comm _ _
+
+end Formalism.MainNotions.N.Ln34.RankInverseBounds
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankInverseBounds =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankBounds =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankBounds", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.SecondPropositionRingAll\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankInverseBounds\npublic import Formalism.SharpRestriction.LevelLetterCocycles.SecondRankCount\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.FrobPiNPf\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GeneratorBoundOfHypotheses\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfA\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankLinkProof\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -152,7 +299,7 @@ theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i : LetA O n) = letE i
   simp only [LocWach.γA, letγ, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply, letE]
   by_cases h : j = i
   · subst h; simp
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 variable (S : Submodule O (LcQ W T π' c))
 
@@ -401,7 +548,7 @@ theorem lcq_finite_local (hπ0 : ∀ i, PowerSeries.constantCoeff (π' i) = 0)
   have hgen : ∀ j, e • b j ∈ NcS W T (c - 1) := by
     intro j
     refine ⟨⟨(W.N T).smul_mem e (hbN j), hDel _ fun δ hδ => ?_⟩, ?_⟩
-    · rw [gradNPf_γD_smul, hΔe δ hδ, hbΔ j δ hδ]
+    · rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hΔe δ hδ, hbΔ j δ hδ]
     · exact (mem_letS (c - 1) (e • b j)).mpr (by rw [smul_smul, hee])
   let g : Fin r → LcQ W T π' c := fun j => Submodule.Quotient.mk ⟨e • b j, hgen j⟩
   have htop : Submodule.span O (Set.range g) = ⊤ := by
@@ -509,3 +656,6 @@ theorem u2rank_of_ring (hR : Formalism.MainNotions.N.Ln34.SecondRingHypothesis) 
 end Formalism.MainNotions.N.Ln34.RankBounds
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.RankBounds =====

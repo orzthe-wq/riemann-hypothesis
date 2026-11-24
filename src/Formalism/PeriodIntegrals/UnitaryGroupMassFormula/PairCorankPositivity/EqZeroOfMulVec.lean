@@ -65,7 +65,7 @@ theorem hT_swap (S : HSpace E) (x y : S.V) : S.hT y x = star (S.hT x y) :=
 
 theorem gram_fvec {S : HSpace E} {r : ℕ} {T : E} (F : FlagG S r T) (c i : Fin (r + 1)) :
     S.hT (F.fvec c) (F.fvec i) = if c = Fin.last r ∧ i = Fin.last r then -T else 0 := by
-  apply PI.CntNotIntW.flag_gram <;> assumption
+  apply PI.CntNotIntW.flag_gram
 
 theorem det_mul_last {r : ℕ} (A : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (v : Fin (r + 1) → E) (c : E)
     (h : ∀ i, (A *ᵥ v) i = if i = Fin.last r then c else 0) :
@@ -93,8 +93,7 @@ theorem eq_zero_of_mulVec {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n
 
 theorem Dl_top {S : HSpace E} {r : ℕ} {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') :
     Dl F F' (r + 1) = (Zhat F F').det := by
-  simp only [Dl, leadMinorE, le_refl, dif_pos]
-  rfl
+  simp [Dl, leadMinorE]
 
 theorem Dl_r {S : HSpace E} {r : ℕ} {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') :
     Dl F F' r = ((Zhat F F').submatrix Fin.castSucc Fin.castSucc).det := by

@@ -1,20 +1,23 @@
 module
 
-import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
-public import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
 public import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility
-public import Formalism.CyclotomicNorms.NonsquarefreeBounds.NonsquarefreeMonicBoundHolds
+public import Formalism.CyclotomicNorms.StatementI
 public import Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateIVOfTypeSetWeight
-public import Formalism.SharpRestriction.LevelLetterCocycles.PrimesEffectiveChebotarev
+public import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders
+public import Formalism.CyclotomicNorms.NonsquarefreeBounds.NonsquarefreeMonicBoundHolds
 public import Formalism.SharpRestriction.LevelLetterCocycles.ResidualIrreducibleOfTheoremThreePrime
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -22,8 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -31,7 +32,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,39 +44,68 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.ConjugateSelfDual.Statement
+import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+import ReciprocityTheory.GaloisValuations.GlobalA
+import Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.LevelLetterCocycles.PrimesEffectiveChebotarev, Formalism.SharpRestriction.LevelLetterCocycles.PlaceLabelTeichmuller
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.PrimesEffectiveChebotarev =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.PrimesEffectiveChebotarev", "h": "module\n\npublic import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility\npublic import Formalism.CyclotomicNorms.StatementI\npublic import Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateIVOfTypeSetWeight\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.ConjugateSelfDual.Statement\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\nimport ReciprocityTheory.GaloisValuations.GlobalA\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.N.CuspidalLatticeIdempotents
+
+open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
+open scoped ComplexOrder
+
+open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
+
+theorem algBB_sub (g N : ℕ) (hg : 2 ≤ g) :
+    Formalism.CyclotomicNorms.BB N g ⊆ ((Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.BB g N : Finset ℕ) : Set ℕ) := by
+  intro l hl
+  rw [Finset.mem_coe, Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.mem_BB_iff]
+  rcases hl with h | ⟨d, hd1, hdN, hlp, hlt⟩
+  · exact Or.inl h
+  · refine Or.inr ⟨?_, hlp, d, Finset.mem_Icc.mpr ⟨hd1, hdN⟩, hlt⟩
+    have hone : 1 < g ^ d := Nat.one_lt_pow (by omega) (by omega)
+    have hv : padicValNat l (g ^ d - 1) ≠ 0 := by
+      intro h0
+      rw [h0, mul_zero, pow_zero] at hlt
+      omega
+    have hdvd : l ∣ g ^ d - 1 := by
+      by_contra hnd
+      exact hv (by rw [Nat.padicValNat_def]; exact multiplicity_eq_zero_of_not_dvd hnd)
+    have h1 := Nat.le_of_dvd (by omega) hdvd
+    have h2 : g ^ d ≤ g ^ N := Nat.pow_le_pow_right (by omega) hdN
+    omega
+
+end Formalism.MainNotions.N.CuspidalLatticeIdempotents
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.PrimesEffectiveChebotarev =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.PlaceLabelTeichmuller =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.PlaceLabelTeichmuller", "h": "module\n\nimport Formalism.SharpRestriction.Divisibility.PrimeDegreeVariant\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ArithmeticCylinders\npublic import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility\npublic import Formalism.CyclotomicNorms.NonsquarefreeBounds.NonsquarefreeMonicBoundHolds\npublic import Formalism.PadicSubsetSums.StableGradedCounts.LocalEstimateIVOfTypeSetWeight\npublic import Formalism.SharpRestriction.LevelLetterCocycles.PrimesEffectiveChebotarev\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ResidualIrreducibleOfTheoremThreePrime\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
 
 namespace Formalism.MainNotions.N.PlaceLabelTeichmuller
-
-section BoundedBy'
-
-open Formalism.BasicNotions Formalism.MainNotions
-
-section Len
-
-variable {R : Type} [CommRing R]
-
-end Len
-
-section Drop
-
-variable {O K V X : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Field K] [Algebra O K]
-    [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
-    [FiniteDimensional K V] [DecidableEq X]
-    (T : Subalgebra O (X → O)) (act : T →ₐ[O] (V →ₗ[K] V))
-
-
-
-end Drop
-
-end BoundedBy'
 
 section Tensor
 
@@ -90,7 +119,7 @@ theorem tens_coeff (a : ∀ i, MonoidAlgebra ℂ (G i)) (g : ∀ i, G i) :
 
 theorem conv_coeff {H : Type} [Group H] [Fintype H] (x y : MonoidAlgebra ℂ H) (g : H) :
     (x * y).coeff g = ∑ h, x.coeff h * y.coeff (h⁻¹ * g) := by
-  apply Formalism.MainNotions.PrimeDegreeVariant.Ten.conv_coeff <;> assumption
+  apply Formalism.MainNotions.PrimeDegreeVariant.Ten.conv_coeff
 
 theorem tens_mul (a b : ∀ i, MonoidAlgebra ℂ (G i)) :
     tens a * tens b = tens (fun i => a i * b i) := by
@@ -170,13 +199,11 @@ theorem tens_one : tens (fun i => (1 : MonoidAlgebra ℂ (G i))) = 1 := by
     rw [show (1 : MonoidAlgebra ℂ (G j)).coeff = Finsupp.single 1 1 by
       first
       | rfl
-      | exact SkewMonoidAlgebra.ofCoeff_eq_one.mp rfl
       | exact MonoidAlgebra.ofCoeff_eq_one.mp rfl, Finsupp.single_apply]
   have h2 : (1 : MonoidAlgebra ℂ (∀ i, G i)).coeff g = if (1 : ∀ i, G i) = g then 1 else 0 := by
     rw [show (1 : MonoidAlgebra ℂ (∀ i, G i)).coeff = Finsupp.single 1 1 by
       first
       | rfl
-      | exact SkewMonoidAlgebra.ofCoeff_eq_one.mp rfl
       | exact MonoidAlgebra.ofCoeff_eq_one.mp rfl, Finsupp.single_apply]
   simp only [h1, h2]
   by_cases hg : g = 1
@@ -195,7 +222,7 @@ theorem sum_tens {P : ι → Type} [∀ i, Fintype (P i)] [DecidableEq ι]
   have hs : ∀ {M κ : Type} (s : Finset κ) (f : κ → MonoidAlgebra ℂ M) (x : M),
       (∑ j ∈ s, f j).coeff x = ∑ j ∈ s, (f j).coeff x :=
     fun {M κ} s f x => map_sum (AddMonoidHom.mk' (fun y : MonoidAlgebra ℂ M => y.coeff x)
-      (fun y z => by first | rfl | simp)) f s
+      (fun y z => by first | rfl)) f s
   simp only [hs, tens_coeff]
   rw [Fintype.prod_sum]
 
@@ -213,7 +240,7 @@ theorem tens_mul_plc (a : ∀ i, MonoidAlgebra ℂ (G i)) (i : ι) (b : MonoidAl
   by_cases hj : j = i
   · subst hj
     simp
-  · simp [Function.update_apply, hj]
+  · simp [hj]
 
 theorem plc_central (i : ι) (a : MonoidAlgebra ℂ (G i)) (h : ∀ x, a * x = x * a)
     (x : MonoidAlgebra ℂ (∀ i, G i)) : plc i a * x = x * plc i a := by
@@ -222,7 +249,7 @@ theorem plc_central (i : ι) (a : MonoidAlgebra ℂ (G i)) (h : ∀ x, a * x = x
   by_cases hj : j = i
   · subst hj
     simpa using h y
-  · simp [Function.update_apply, hj]
+  · simp [hj]
 
 theorem mapDomain_mulSingle (i : ι) (a : MonoidAlgebra ℂ (G i)) :
     MonoidAlgebra.ofCoeff (Finsupp.mapDomain (fun h => Pi.mulSingle (M := G) i h) a.coeff) = plc i a := by
@@ -237,7 +264,6 @@ theorem mapDomain_mulSingle (i : ι) (a : MonoidAlgebra ℂ (G i)) :
     rw [show (1 : MonoidAlgebra ℂ (G j)).coeff = Finsupp.single 1 1 by
       first
       | rfl
-      | exact SkewMonoidAlgebra.ofCoeff_eq_one.mp rfl
       | exact MonoidAlgebra.ofCoeff_eq_one.mp rfl, Finsupp.single_apply]
   have hinj : Function.Injective (fun h : G i => Pi.mulSingle (M := G) i h) := Pi.mulSingle_injective i
   by_cases hg : ∀ j, j ≠ i → g j = 1
@@ -251,14 +277,14 @@ theorem mapDomain_mulSingle (i : ι) (a : MonoidAlgebra ℂ (G i)) :
     · simp
     · intro j hj
       rw [Pi.mulSingle_eq_of_ne hj]
-      first | rw [Function.update_of_ne hj] | rw [Function.update_noteq hj]
+      first | rw [Function.update_of_ne hj]
       rw [h1, if_pos rfl]
   · push_neg at hg
     obtain ⟨j, hj, hgj⟩ := hg
     rw [Finsupp.mapDomain_notin_range]
     · symm
       refine Finset.prod_eq_zero (Finset.mem_univ j) ?_
-      first | rw [Function.update_of_ne hj] | rw [Function.update_noteq hj]
+      first | rw [Function.update_of_ne hj]
       rw [h1]
       exact if_neg (Ne.symm hgj)
     · rintro ⟨h, rfl⟩
@@ -346,7 +372,7 @@ theorem onC_eGood (hid : ∀ i p, E i p * E i p = E i p) (hcen : ∀ i p a, E i 
       simp only [hid]
       congr 1
       funext j
-      by_cases hj : j = i <;> simp [Function.update_apply, hj]
+      by_cases hj : j = i <;> simp [hj]
     have hcp : plc i (E i (p i)) ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (∀ i, G i)) := by
       rw [Subalgebra.mem_center_iff]
       intro y
@@ -402,23 +428,10 @@ def ESer (kv : Σ k : Fin 2, D.nd.PlG k) (p : Fin D.R.r → ZMod (D.host.g kv.1)
 def goodVec (p : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), Fin D.R.r → ZMod (D.host.g kv.1)) : Prop :=
   D.ntypes.goodTuple (fun k v => Formalism.CyclotomicNorms.monicOf (p ⟨k, v⟩))
 
-private theorem monicOf_coeff_lemma {K : Type} [Field K] {N : ℕ} (a : Fin N → K) (i : Fin N) :
-    (Formalism.CyclotomicNorms.monicOf a).coeff i = a i := by
-  unfold Formalism.CyclotomicNorms.monicOf
-  rw [Polynomial.coeff_add, Polynomial.coeff_X_pow, if_neg (Nat.ne_of_lt i.isLt), zero_add,
-    Polynomial.finsetSum_coeff]
-  simp only [Polynomial.coeff_C_mul_X_pow]
-  rw [Finset.sum_eq_single i]
-  · simp
-  · intro j _ hj
-    rw [if_neg]
-    exact fun h => hj (Fin.ext h).symm
-  · simp
-
 theorem monicOf_inj {K : Type} [Field K] {N : ℕ} (a b : Fin N → K)
     (h : Formalism.CyclotomicNorms.monicOf a = Formalism.CyclotomicNorms.monicOf b) : a = b := by
   funext i
-  rw [← monicOf_coeff_lemma a i, ← monicOf_coeff_lemma b i, h]
+  rw [← _root_.Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt a i, ← _root_.Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt b i, h]
 
 theorem ESer_idem (kv) (p) : ESer D kv p * ESer D kv p = ESer D kv p := by
   unfold ESer
@@ -448,7 +461,7 @@ variable [DecidableEq (Σ k : Fin 2, D.nd.PlG k)]
 
 private theorem coeff_sum_lemma_3 {M ι : Type} (s : Finset ι) (f : ι → MonoidAlgebra ℂ M) (g : M) :
     (∑ i ∈ s, f i).coeff g = ∑ i ∈ s, (f i).coeff g :=
-  map_sum (AddMonoidHom.mk' (fun x : MonoidAlgebra ℂ M => x.coeff g) (fun x y => by first | rfl | simp)) f s
+  map_sum (AddMonoidHom.mk' (fun x : MonoidAlgebra ℂ M => x.coeff g) (fun x y => by first | rfl)) f s
 
 theorem e0_eq : D.ntypes.e0 = eGood (ESer D) (goodVec D) := by
   classical
@@ -458,11 +471,10 @@ theorem e0_eq : D.ntypes.e0 = eGood (ESer D) (goodVec D) := by
       if goodVec D p then ∏ kv, (ESer D kv (p kv)).coeff (g kv) else 0 := by
     first
     | rfl
-    | (unfold Formalism.BasicNotions.NTypes.e0; rfl)
   rw [h1, finsum_eq_sum_of_fintype]
   unfold eGood
   rw [coeff_sum_lemma_3]
-  refine Finset.sum_congr (by first | rfl | (congr 1; exact Subsingleton.elim _ _) | convert rfl) (fun p _ => ?_)
+  refine Finset.sum_congr (by first | rfl) (fun p _ => ?_)
   split_ifs <;> rfl
 
 
@@ -472,7 +484,7 @@ theorem atPlace_eq (k : Fin 2) (v : D.nd.PlG k) (a : MonoidAlgebra ℂ (GL (Fin 
   unfold Formalism.MainNotions.ArithmeticCylinders.atPlace
   convert mapDomain_mulSingle
     (G := fun kv : (Σ k : Fin 2, D.nd.PlG k) => GL (Fin D.R.r) (ZMod (D.host.g kv.1))) ⟨k, v⟩ a
-    <;> first | rfl | exact Subsingleton.elim _ _
+
 
 end Record
 
@@ -544,7 +556,6 @@ theorem pp_arith (l n : ℕ) (hl : l.Prime) (hn : 0 < n) :
   have htot : 0 < Nat.totient Q := by
     first
     | exact Nat.totient_pos.mpr hQpos
-    | exact Nat.totient_pos hQpos
   rw [← hPQ]
   refine (Nat.modEq_and_modEq_iff_modEq_mul hcop).mp ⟨?_, ?_⟩
   · have h1 : P ∣ P * ((P : ZMod Q)⁻¹).val := dvd_mul_right _ _
@@ -553,7 +564,6 @@ theorem pp_arith (l n : ℕ) (hl : l.Prime) (hn : 0 < n) :
   · have h1 : P * ((P : ZMod Q)⁻¹).val ≡ 1 [MOD Q] := by
       first
       | rw [← ZMod.natCast_eq_natCast_iff]
-      | rw [← ZMod.eq_iff_modEq_nat]
       rw [Nat.cast_mul, ZMod.natCast_zmod_val, Nat.cast_one]
       exact ZMod.coe_mul_inv_eq_one P hcop
     exact h1.trans (Nat.ModEq.pow_totient hcop).symm
@@ -597,11 +607,8 @@ theorem bigM_pos (hg : 2 ≤ g) (N : ℕ) : 0 < bigM g N := by
   have h2 : 1 < g ^ d := by
     first
     | exact Nat.one_lt_pow (by omega) (by omega)
-    | exact Nat.one_lt_pow _ _ (by omega) (by omega)
-    | exact one_lt_pow₀ (by omega) (by omega)
   first
   | exact Nat.sub_pos_of_lt h2
-  | omega
 
 theorem root_pow {N : ℕ} {f : (ZMod g)[X]} (h0 : f.coeff 0 ≠ 0) (hd : f.natDegree = N)
     {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ∈ Formalism.CyclotomicNorms.rootsBar f) : x ^ bigM g N = 1 := by
@@ -623,7 +630,6 @@ theorem root_pow {N : ℕ} {f : (ZMod g)[X]} (h0 : f.coeff 0 ≠ 0) (hd : f.natD
       g ^ (minpoly (ZMod g) x).natDegree := by
     first
     | rw [Module.card_eq_pow_finrank (K := ZMod g), ZMod.card, IntermediateField.adjoin.finrank hint]
-    | rw [card_eq_pow_finrank (K := ZMod g), ZMod.card, IntermediateField.adjoin.finrank hint]
   have hy : (⟨x, IntermediateField.mem_adjoin_simple_self (ZMod g) x⟩ :
       IntermediateField.adjoin (ZMod g) ({x} : Set (Formalism.CyclotomicNorms.Fbar g))) ≠ 0 := by
     intro h
@@ -680,34 +686,8 @@ end GoodTr
 
 end ClauseA
 
-section DualAmb
-
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Polynomial
-
-section Poly
-
-variable {g : ℕ} [Fact g.Prime]
-
-end Poly
-
-variable (D : D7)
-
-end DualAmb
-
-section RecordA
-
-open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Polynomial
-
-variable (D : D7)
-
-variable {D}
-
-variable (D)
-
-variable {D}
-
-variable (D)
-
-end RecordA
-
 end Formalism.MainNotions.N.PlaceLabelTeichmuller
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.PlaceLabelTeichmuller =====

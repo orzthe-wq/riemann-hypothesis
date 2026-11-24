@@ -97,12 +97,6 @@ theorem differentiable_risingS (m : I → ℕ) : Differentiable ℂ fun σ => ri
   unfold risingS
   fun_prop
 
-theorem isOpen_polydisc (I : Type) [Fintype I] : IsOpen (polydisc I) := by
-  have : polydisc I = ⋂ i : I, {z : I → ℂ | ‖z i‖ < 1} := by
-    ext z; simp [polydisc]
-  rw [this]
-  exact isOpen_iInter_of_finite fun i => isOpen_lt (continuous_apply i).norm continuous_const
-
 omit [Fintype I] in
 theorem one_add_ne_zero {z : I → ℂ} (hz : z ∈ polydisc I) (i : I) : 1 + z i ≠ 0 := by
   intro h

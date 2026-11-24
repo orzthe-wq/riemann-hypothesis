@@ -268,9 +268,7 @@ private theorem inId_sum {I : Ideal (𝓞 D.host.E)} {ι : Type} (s : Finset ι)
     (ha : ∀ i ∈ s, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (a i)) : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (∑ i ∈ s, a i) :=
   Finset.sum_induction _ _ (fun _ _ => inId_add) (inId_zero I) ha
 
-private def sqI (D : D7) : 𝓞 D.host.E := ⟨D.host.sqrtMinusD, Formalism.L2.Pj.sqrtMinusD_isIntegral D⟩
-
-private theorem xi0_mul_neg_sqI_eq_one_of_ccK_eq (hc : D.host.ccK = ⊤) : D.host.xi0 * ((-sqI D : 𝓞 D.host.E) : D.host.E) = 1 := by
+private theorem xi0_mul_neg_sqI_eq_one_of_ccK_eq (hc : D.host.ccK = ⊤) : D.host.xi0 * ((-_root_.Formalism.L2.Pj.rtE D : 𝓞 D.host.E) : D.host.E) = 1 := by
   have h := GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D
   have e : D.host.xi0 = -1 / D.host.sqrtMinusD := by
     rw [Formalism.BasicNotions.Host.xi0, hc, Ideal.absNorm_top, Nat.cast_one, one_mul]
@@ -283,11 +281,11 @@ private theorem idempotent_mul_xi0_integral (hc : D.host.ccK = ⊤) {e : Formali
     toEAf D e * eToEAf D D.host.xi0 ∈ OO := by
   obtain ⟨⟨⟨es, hes, hs⟩, -⟩, hP⟩ := he
   have hx := xi0_mul_neg_sqI_eq_one_of_ccK_eq hc
-  have hx0 : (-sqI D : 𝓞 D.host.E) ≠ 0 := fun h => by
+  have hx0 : (-_root_.Formalism.L2.Pj.rtE D : 𝓞 D.host.E) ≠ 0 := fun h => by
     rw [h] at hx
     simp at hx
-  have hξ : D.host.xi0 = ((-sqI D : 𝓞 D.host.E) : D.host.E)⁻¹ := eq_inv_of_mul_eq_one_left hx
-  have hsq : (-sqI D) * (-sqI D) = -((D.host.d : ℕ) : 𝓞 D.host.E) := by
+  have hξ : D.host.xi0 = ((-_root_.Formalism.L2.Pj.rtE D : 𝓞 D.host.E) : D.host.E)⁻¹ := eq_inv_of_mul_eq_one_left hx
+  have hsq : (-_root_.Formalism.L2.Pj.rtE D) * (-_root_.Formalism.L2.Pj.rtE D) = -((D.host.d : ℕ) : 𝓞 D.host.E) := by
     apply RingOfIntegers.coe_injective
     have := Formalism.BasicNotions.Host.sqrtMinusD_sq D.host
     rw [map_mul, map_neg, map_neg, map_natCast]
@@ -296,13 +294,13 @@ private theorem idempotent_mul_xi0_integral (hc : D.host.ccK = ⊤) {e : Formali
     ring
   rw [hs, StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.hom_sum, Finset.sum_mul]
   refine sum_mem fun w hw => ?_
-  have hn : (-sqI D) ∉ w.asIdeal := fun h => hP w hw (by
+  have hn : (-_root_.Formalism.L2.Pj.rtE D) ∉ w.asIdeal := fun h => hP w hw (by
     have h1 : ((D.host.d : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal := by
       rw [← neg_mem_iff, ← hsq]
       exact Ideal.mul_mem_left _ _ h
     rw [Nat.cast_mul]
     exact Ideal.mul_mem_left _ _ h1)
-  have hmem : finPart D (es w * incA D (((-sqI D : 𝓞 D.host.E) : D.host.E)⁻¹)) ∈ intAE D := by
+  have hmem : finPart D (es w * incA D (((-_root_.Formalism.L2.Pj.rtE D : 𝓞 D.host.E) : D.host.E)⁻¹)) ∈ intAE D := by
     by_contra h
     exact hn (((hes w hw).2 _ hx0).2 h)
   have h2 := GlobalTheory.IdemRes.toEAf_mem_of_finPart hmem
@@ -363,8 +361,8 @@ private theorem rows_of_support (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1
         ∀ (i j : Fin S.rank), ∑ l, toEAf D (y ⟨o + i.1, by omega⟩ l) * k l j = if i = j then toEAf D (cA D e) else 0 := by
   obtain ⟨-, hx, hx'⟩ := hx
   have hβi := (GlobalTheory.BotClassDict.mem_range_intGL βS).1 (GlobalTheory.BotClassDict.frame_mem_range hβ)
-  have hη : eToEAf D ((-sqI D : 𝓞 D.host.E) : D.host.E) ∈ OO := (Formalism.L2.DIV.oToS D.host.F D.host.E (-sqI D)).2
-  have hξη : eToEAf D D.host.xi0 * eToEAf D ((-sqI D : 𝓞 D.host.E) : D.host.E) = 1 := by
+  have hη : eToEAf D ((-_root_.Formalism.L2.Pj.rtE D : 𝓞 D.host.E) : D.host.E) ∈ OO := (Formalism.L2.DIV.oToS D.host.F D.host.E (-_root_.Formalism.L2.Pj.rtE D)).2
+  have hξη : eToEAf D D.host.xi0 * eToEAf D ((-_root_.Formalism.L2.Pj.rtE D : 𝓞 D.host.E) : D.host.E) = 1 := by
     rw [← RingHom.map_mul, xi0_mul_neg_sqI_eq_one_of_ccK_eq hc, RingHom.map_one]
   have hee : toEAf D e * toEAf D e = toEAf D e := by rw [← RingHom.map_mul, GlobalTheory.PlaceVec.idemSum_mul_self he.1]
   have hε := StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he.1
@@ -431,11 +429,4 @@ end GlobalTheory.BotSmallDict.Supp
 
 end
 
-theorem _root_.GlobalTheory.T.exists_maximalLevel_moves_standardPairSupport_to_unitCoset : ∀ {D : D7} (S T : HSp D), S.gram = 1 → T.gram = 1 → D.host.ccK = ⊤ →
-    ∀ (βS : GL (Fin S.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (Formalism.L2.Col.stdLat D.host.E S.rank) →
-    ∀ (e : Formalism.L2.Theta.AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (c : Formalism.L2.DIV.Pl D.host.E → ℕ), GoodIdem e P →
-    ∀ o : ℕ, o + S.rank = T.rank →
-    ∀ (ν : (Formalism.L2.Theta.AE D)ˣ →* Circle) (y : WO S T), GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd ν e (modul P c) o S T βS 1 y ≠ 0 →
-    ∃ k ∈ GlobalTheory.NormSum.intG D S.rank, ∀ g : Formalism.L2.Theta.GA D S, GlobalTheory.BotFormula.IsFinPt S g k →
-      cosetFn (cA D e) (D.host.conj • modul P c) (unitPt S T (cA D e) o) (actO S T g⁻¹ 1 y) ≠ 0 :=
-  GlobalTheory.BotSmallDict.Supp.exists_intG_cosetFn_ne_zero
+alias _root_.GlobalTheory.T.exists_maximalLevel_moves_standardPairSupport_to_unitCoset := _root_.GlobalTheory.BotSmallDict.Supp.exists_intG_cosetFn_ne_zero

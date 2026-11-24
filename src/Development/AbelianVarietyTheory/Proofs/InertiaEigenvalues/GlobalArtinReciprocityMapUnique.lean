@@ -248,7 +248,7 @@ theorem globalArtin_unique : ∀ (E Ω : Type) [Field E] [NumberField E] [Field 
     rw [MonoidHom.one_apply, MonoidHom.comp_apply, ← locUnit_apply]
     let m : ℕ := (WithZero.log (v.valuation E (c : E))).natAbs
     obtain ⟨a, hap, hapos⟩ :=
-      GlobalTheory.FinPlaceApproxPos.approxpos_target E S (fun u => if u = v then (c : E) else 1) (M + 1 + m)
+      _root_.GlobalTheory.FinPlaceApproxPos.exists_approx_totally_positive E S (fun u => if u = v then (c : E) else 1) (M + 1 + m)
     have haW : v.valuation E (a - c) ≤ WithZero.exp (-(((M + 1 : ℕ) : ℤ) + m)) := by
       have := hap v hv
       rw [if_pos rfl] at this

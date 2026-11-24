@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Alternates
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MaxNonThickSizeShiftedValueAndBoundsStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ParametersRoundedSizeBoundWindowStatement
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MaxNonThickSizeShiftedValueAndBounds
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RoundedSizeBoundWindow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -50,8 +50,8 @@ namespace GlobalTheory.HTW
 theorem mul_small_le_bHat {D : D7} (L : SizeData₂ D) (C C' : ℝ) (j : ℕ) (hR : Roomy L C') (hC : 0 ≤ C)
     (hCC : 2 * C ≤ C') (hj : 2 * j + 2 ≤ D.host.Lw) :
     C * ((j : ℝ) + 1) * (((wHat D + sHat L + etaHat L : ℕ) : ℝ) + 1) ≤ (bHat L : ℝ) := by
-  have hlow := (GlobalTheory.T.roundedSizeBound_window L C' hR).1
-  obtain ⟨-, hw2, hG⟩ := GlobalTheory.T.maxNonThickSizeShifted_value_and_bounds L C' hR
+  have hlow := (_root_.GlobalTheory.HTW.bHat_window L C' hR).1
+  obtain ⟨-, hw2, hG⟩ := _root_.GlobalTheory.HTW.wHat_le L C' hR
   obtain ⟨h100, -, -, -, -, hbig⟩ := hR
   have hw0 : (0 : ℝ) ≤ (wHat D : ℝ) := Nat.cast_nonneg _
   have heta := L.etaSz_pos

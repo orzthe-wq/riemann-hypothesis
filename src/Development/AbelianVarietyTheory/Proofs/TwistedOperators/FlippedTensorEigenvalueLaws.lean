@@ -93,7 +93,7 @@ theorem flips_law {ψ : AddChar k Circle} {ϖ : kˣ} {e : ℕ} (hϖ : IsUnif ϖ)
     have hg0 := hg x List.mem_cons_self
     obtain ⟨i, j⟩ := x
     obtain ⟨γ, J, T⟩ := St
-    obtain ⟨l₁, l₂, hγ, hfl⟩ := GlobalTheory.FlipAdm.exists_split hT.path hp
+    obtain ⟨l₁, l₂, hγ, hfl⟩ := _root_.GlobalTheory.SplitFlip.flipPath_split hT.path hp
     have hTt := hT.tensor
     simp only at hγ hfl hlaw hTt hν0 hg0 hJ
     change Γ.pathAct .one (flipPath i j γ) g (Γ.flipTensor .one ψ ϖ e i j J T) = c • Γ.flipTensor .one ψ ϖ e i j J T
@@ -204,10 +204,10 @@ theorem given_law_at (hL : L.Is μ₀) (B : Frames G) (Φ : G.Datum) (hw : w ∈
         rw [hκ'def, ← map_inv, reGL_symm_val, hX, submatrix_mul_equiv]
         simp only [Grid.moveArgs, Assignment.read, Edge.src, Edge.tgt, Pi.mulSingle_eq_same,
           Pi.mulSingle_eq_of_ne (show ((0 : ℕ), n) ≠ (0, n + 1) by simp), invT_val, invT_inv_val, transpose_mul,
-          transpose_transpose, Matrix.mul_assoc, map_one, inv_one, Units.val_one, Matrix.mul_one, Matrix.one_mul]
+          transpose_transpose, map_one, inv_one, Units.val_one, Matrix.one_mul]
       have hg1 : ∀ {a : Type} [Fintype a] [DecidableEq a], gdet (1 : GL a (Kw w)) = 1 := fun {_ _ _} => map_one _
       rw [hmv]
-      simp only [hl1, hd, hg1, map_one, inv_one, Units.val_one, mul_one, one_mul, one_div, Matrix.mul_one] at e'
+      simp only [hl1, hd, hg1, map_one, Units.val_one, one_mul, one_div, Matrix.mul_one] at e'
       rw [hν _ hv, hg1, map_one, inv_one, Units.val_one, mul_one, e']
       rfl
     funext x

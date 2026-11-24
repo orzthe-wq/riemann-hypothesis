@@ -139,7 +139,7 @@ theorem finsuppAntidiag_succ_reindex {N : Type*} [AddCommMonoid N] (s : Finset �
   symm
   apply Finset.sum_nbij' (fun f => f + Finsupp.single l 1) (fun g => g - Finsupp.single l 1)
   · intro f hf
-    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_finsuppAntidiag] at hf ⊢
+    simp only [Finset.mem_filter, Finset.mem_finsuppAntidiag] at hf ⊢
     refine ⟨⟨?_, ?_⟩, ?_⟩
     · rw [← hf.1]
       simp [Finset.sum_add_distrib, Finsupp.single_apply, hl]
@@ -150,7 +150,7 @@ theorem finsuppAntidiag_succ_reindex {N : Type*} [AddCommMonoid N] (s : Finset �
         exact hl
     · simp
   · intro g hg
-    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_finsuppAntidiag] at hg ⊢
+    simp only [Finset.mem_filter, Finset.mem_finsuppAntidiag] at hg ⊢
     have hle : Finsupp.single l 1 ≤ g := Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hg.2)
     have hg' : g - Finsupp.single l 1 + Finsupp.single l 1 = g := tsub_add_cancel_of_le hle
     refine ⟨?_, ?_⟩
@@ -172,7 +172,7 @@ theorem finsuppAntidiag_succ_reindex {N : Type*} [AddCommMonoid N] (s : Finset �
   · intro f _
     simp
   · intro g hg
-    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_finsuppAntidiag] at hg
+    simp only [Finset.mem_filter, Finset.mem_finsuppAntidiag] at hg
     exact tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 hg.2))
   · intro f _
     simp

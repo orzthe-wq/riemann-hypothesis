@@ -3,50 +3,9 @@ module
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.RaisingLoweringNormIdentities
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.FdDefs
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PmatIsHermitian
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.AdKMeasurePreserving
-import Std.Tactic.BVDecide.Normalize.Prop
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PSpecB
 
 @[expose] public section
 
@@ -106,11 +65,6 @@ theorem sum_pairs_pmat_fp {ε : Fin n → Bool} (w : Fin n → Fin n → ℝ) (z
   refine Finset.sum_congr rfl fun ab _ => ?_
   exact dif_pos ab.2
 
-private theorem pmat_apply_eq_zero_of_sign_eq {ε : Fin n → Bool} (y : PCoord ε → ℂ) {a b : Fin n} (he : ε a = ε b) :
-    pmat y a b = 0 := by
-  simp only [pmat]
-  rw [dif_neg (fun h => h.2 he), dif_neg (fun h => h.2 he.symm)]
-
 theorem qForm_term {ε : Fin n → Bool} (y : PCoord ε → ℂ) (a b : Fin n) :
     -((((Dvec n a : ℝ) : ℂ) - ((Dvec n b : ℝ) : ℂ)) * (pmat y a b * Lap.Base.partNM ε (Dvec n) (pmat y) b a)) =
       (((if b < a then (((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) * ‖pmat y a b‖ ^ 2 else 0 : ℝ)) : ℂ) := by
@@ -127,7 +81,7 @@ theorem qForm_term {ε : Fin n → Bool} (y : PCoord ε → ℂ) (a b : Fin n) :
       rw [Lap.Base.partNM, Matrix.of_apply]
       split_ifs with hin
       · rcases hin with ⟨_, he, _⟩ | h'
-        · rw [pmat_apply_eq_zero_of_sign_eq y he, zero_mul]
+        · rw [_root_.ReciprocityTheory.ChartRestriction.DS.pmat_eq_zero_of_eq y he, zero_mul]
         · exact absurd h' h
       · exact mul_zero _
     rw [h0, mul_zero, neg_zero]
@@ -135,7 +89,7 @@ theorem qForm_term {ε : Fin n → Bool} (y : PCoord ε → ℂ) (a b : Fin n) :
     · have he : ε a = ε b := by
         by_contra he
         exact h ⟨hba, he⟩
-      rw [pmat_apply_eq_zero_of_sign_eq y he]; simp
+      rw [_root_.ReciprocityTheory.ChartRestriction.DS.pmat_eq_zero_of_eq y he]; simp
     · simp
 
 theorem qForm_pmat {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
@@ -185,7 +139,7 @@ theorem matrix_coefficient_pointwise_limit (hB3 : Lap.Base.TangentPairingStateme
       Matrix.zero_apply]
     rw [pmat_herm_apply y a b, star_star]
     by_cases he : ε a = ε b
-    · rw [pmat_apply_eq_zero_of_sign_eq y he]; simp
+    · rw [_root_.ReciprocityTheory.ChartRestriction.DS.pmat_eq_zero_of_eq y he]; simp
     · cases ha : ε a <;> cases hb : ε b <;> simp_all
   have hR : S7.hs (pmat y) ≤ (S7.hs (pmat y) + 1) ^ 2 := by
     nlinarith [sq_nonneg (S7.hs (pmat y) + 1 / 2)]

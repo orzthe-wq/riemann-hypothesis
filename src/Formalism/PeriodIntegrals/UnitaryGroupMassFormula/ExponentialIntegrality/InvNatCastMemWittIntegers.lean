@@ -56,7 +56,6 @@ theorem norm_p (p : ℕ) [Fact p.Prime] : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ :
   rw [e, PadicComplex.norm_extends, PadicAlgCl.norm_extends]
   first
   | exact Padic.norm_p
-  | simp [Padic.norm_p]
 
 theorem norm_intCast_le_one (p : ℕ) [Fact p.Prime] (t : ℤ) : ‖(t : ℂ_[p])‖ ≤ 1 := by
   exact IsUltrametricDist.norm_intCast_le_one ℂ_[p] t

@@ -1,6 +1,6 @@
 module
 
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.GrothendieckRingPolynomial.ProdList
+public import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.GrothendieckRingPolynomial.ProdList
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -49,6 +49,7 @@ import Mathlib.Topology.Sheaves.Init
 open MvPolynomial
 
 namespace PositivityTheory.Groth.ChartWirtingerDerivatives
+open CompanionTheory.Groth (TriAut UniTri)
 
 def toZAlg {σ : Type*} (ψ : MvPolynomial σ ℤ →+* MvPolynomial σ ℤ) :
     MvPolynomial σ ℤ →ₐ[ℤ] MvPolynomial σ ℤ :=
@@ -281,6 +282,7 @@ theorem uni_bij {M I C : Type*} (L : M ≃ I) (c : M → C) (w : M → ℕ) (b :
 end PositivityTheory.Groth.ChartWirtingerDerivatives
 
 namespace PositivityTheory.Groth
+open CompanionTheory.Groth (TriAut UniTri)
 
 theorem triAut : TriAut := fun _ w ψ h => ChartWirtingerDerivatives.tri_bij w ψ h
 

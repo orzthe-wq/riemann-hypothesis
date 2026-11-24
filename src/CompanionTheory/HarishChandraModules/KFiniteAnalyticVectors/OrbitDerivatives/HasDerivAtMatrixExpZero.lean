@@ -206,7 +206,7 @@ theorem inner_ds (hσ : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = �
     (⟨(σ (ex X t) : H →ₗ[ℂ] H), hiso _ (hX t)⟩ : H →ₗᵢ[ℂ] H).inner_map_map u v
   rw [e] at h1
   have h2 := h1.unique (hasDerivAt_const _ _)
-  simp only [ex_zero, hσ.map_one, ContinuousLinearMap.one_apply] at h2
+  simp only [ex_zero, hσ.map_one, one_apply_eq_self] at h2
   rw [inner_neg_left]
   linear_combination h2
 

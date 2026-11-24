@@ -106,7 +106,7 @@ theorem isFreeGen_dForm_uniformiser_cons : ∀ (k V : Type) [Field k] [CharZero 
     have hφ := congrArg (mapBaseChange k V κ) hg
 
     simp only [map_add (f := _), map_sum, map_smul, map_zero, mapBaseChange_tmul, one_smul, map_D, ht₀,
-    Derivation.map_zero, smul_zero, zero_add] at hφ
+    smul_zero, zero_add] at hφ
     have hs : ∀ i : Fin n, g i.succ = 0 :=
       Fintype.linearIndependent_iff.mp hdli (fun i => g i.succ) hφ
     simp only [hs, zero_smul, Finset.sum_const_zero, add_zero] at hg

@@ -80,17 +80,9 @@ theorem localIdele_snd_ne (v w : HeightOneSpectrum (𝓞 L)) (h : w ≠ v) (x : 
 theorem localIdele_fst (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
     ((localIdele L v x : Ideles L) : AdeleRing (𝓞 L) L).1 = 1 := rfl
 
-theorem infIdele_fst_self (w : InfinitePlace L) (x : (w.Completion)ˣ) :
-    ((infIdele L w x : Ideles L) : AdeleRing (𝓞 L) L).1 w = x := by
-  classical
-  show (Pi.mulSingle w (x : w.Completion) : ∀ u : InfinitePlace L, u.Completion) w = x
-  convert Pi.mulSingle_eq_same w (x : w.Completion)
+alias infIdele_fst_self := _root_.ReciprocityTheory.Neutral.Bridge.HCFR.infIdele_fst_self
 
-theorem infIdele_fst_ne (w u : InfinitePlace L) (h : u ≠ w) (x : (w.Completion)ˣ) :
-    ((infIdele L w x : Ideles L) : AdeleRing (𝓞 L) L).1 u = 1 := by
-  classical
-  show (Pi.mulSingle w (x : w.Completion) : ∀ u : InfinitePlace L, u.Completion) u = 1
-  convert Pi.mulSingle_eq_of_ne h (x : w.Completion)
+alias infIdele_fst_ne := _root_.ReciprocityTheory.Neutral.Bridge.HCFR.infIdele_fst_ne
 
 end Comp
 
@@ -140,7 +132,7 @@ def cut (a : FiniteAdeleRing (𝓞 F) F) (T : Finset (HeightOneSpectrum (𝓞 F)
     exact one_mem _⟩
 
 theorem tendsto_cut (a : FiniteAdeleRing (𝓞 F) F) : Filter.Tendsto (cut a) Filter.atTop (nhds a) := by
-  apply GlobalTheory.Mem.Chr.CharModel.tendsto_cut <;> assumption
+  apply GlobalTheory.Mem.Chr.CharModel.tendsto_cut
 
 theorem prod_local (k : Fˣ) (T : Finset (HeightOneSpectrum (𝓞 F))) :
     ((infDiag k * ∏ v ∈ T, localIdele F v (atFin v k) : Ideles F) : AdeleRing (𝓞 F) F) =
@@ -168,7 +160,7 @@ theorem prod_local (k : Fˣ) (T : Finset (HeightOneSpectrum (𝓞 F))) :
 theorem tendsto_prod_local (k : Fˣ) :
     Filter.Tendsto (fun T : Finset (HeightOneSpectrum (𝓞 F)) => infDiag k * ∏ v ∈ T, localIdele F v (atFin v k))
       Filter.atTop (nhds (diagUnits F k)) := by
-  apply GlobalTheory.Mem.Chr.CharModel.tendsto_prod_local <;> assumption
+  apply GlobalTheory.Mem.Chr.CharModel.tendsto_prod_local
 
 theorem locK_unr (χ : HChar F) {v : HeightOneSpectrum (𝓞 F)} (h : χ.UnrAt v) (k : Fˣ) :
     χ.locK v k = χ.val v ^ ordF v k := by
@@ -184,7 +176,7 @@ theorem finite_ordF (k : Fˣ) : {v : HeightOneSpectrum (𝓞 F) | ordF v k ≠ 0
   exact h0
 
 theorem productRule (χ : HChar F) : χ.ProductRule := by
-  apply GlobalTheory.Mem.Chr.CharModel.productRule <;> assumption
+  apply GlobalTheory.Mem.Chr.CharModel.productRule
 
 end Product
 

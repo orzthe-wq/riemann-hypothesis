@@ -12,49 +12,9 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.Unita
 import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.NumericSettingWithGapSatisfiable
 public import Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily
 import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RightRegularIsometricMultiplicative
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -154,9 +114,7 @@ theorem lam_cast (v : InfinitePlace X.B.I.F) (i : Fin X.B.I.n) :
   congr 1
 
 theorem qAt_le (v : InfinitePlace X.B.I.F) : X.B.I.qAt v ≤ D.R.rS + 1 := by
-  have he : ∀ a, X.B.I.ε v a = epsS D.R (Fin.cast X.n_eq a) := X.eps_eq v
-  simp only [AutInst.qAt, he]
-  rw [card_cast X.n_eq (fun a => epsS D.R a = false)]
+  simp only [AutInst.qAt, X.eps_eq v, card_cast X.n_eq (fun a => epsS D.R a = false)]
   exact card_epsS_false
 
 theorem first_count_le_log : N1 X ≤ 4 * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2 * Real.sqrt (2 * ((D.R.rS + 1 : ℕ) : ℝ)) := by
@@ -195,7 +153,7 @@ theorem mem_spanLt {a : ℕ} (c : Fin r) (hc : c.1 < a) : e c ∈ spanLt e a :=
 
 theorem mulVec_mul_sub (g h : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) :
     (g * h - 1) *ᵥ x = g *ᵥ ((h - 1) *ᵥ x) + (g - 1) *ᵥ x := by
-  simp only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.one_mulVec, Matrix.mul_one]
+  simp only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.one_mulVec]
   abel
 
 variable {e z}
@@ -243,7 +201,7 @@ theorem inS_inv {g B : Matrix (Fin n) (Fin n) ℂ} (hg : InS e z g) (hBg : B * g
     InS e z B := by
   have key : ∀ x, (B - 1) *ᵥ x = -(B *ᵥ ((g - 1) *ᵥ x)) := by
     intro x
-    simp only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, hBg, Matrix.one_mulVec, Matrix.mul_one]
+    simp only [Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, hBg, Matrix.one_mulVec]
     abel
   refine ⟨fun a => ?_, ?_⟩
   · rw [key]; exact Submodule.neg_mem _ (inS_inv_maps hg hBg hgB a.1 _ (hg.1 a))
@@ -274,11 +232,9 @@ theorem mul_mem_Sloc (v : InfinitePlace X.B.I.F) {s t : Formalism.REAL.UJ (X.B.I
   show InS _ _ (uMat (s * t))
   rw [uMat_mul']; exact inS_mul hs ht
 
-theorem uMat_inv_mul {m : ℕ} {ε : Fin m → Bool} (s : Formalism.REAL.UJ ε) : uMat s⁻¹ * uMat s = 1 := by
-  rw [← uMat_mul', inv_mul_cancel]; rfl
+alias uMat_inv_mul := _root_.Formalism.L2.SG.PoincareInHH.Cut.uMat_inv_mul
 
-theorem uMat_mul_inv {m : ℕ} {ε : Fin m → Bool} (s : Formalism.REAL.UJ ε) : uMat s * uMat s⁻¹ = 1 := by
-  rw [← uMat_mul', mul_inv_cancel]; rfl
+alias uMat_mul_inv := _root_.PI.UnitaryGroupMassFormula.LCG.ap_uMat_mul_inv
 
 theorem inv_mem_Sloc (v : InfinitePlace X.B.I.F) {s : Formalism.REAL.UJ (X.B.I.ε v)} (hs : s ∈ Sloc X u v) :
     s⁻¹ ∈ Sloc X u v :=
@@ -298,14 +254,9 @@ theorem nuLocX_le (v : InfinitePlace X.B.I.F) (x t : Formalism.REAL.UJ (X.B.I.ε
 theorem nuLocX_inv (v : InfinitePlace X.B.I.F) {s : Formalism.REAL.UJ (X.B.I.ε v)} (hs : s ∈ Sloc X u v)
     (x : Formalism.REAL.UJ (X.B.I.ε v)) : nuLocX X u v (s * x) = nuLocX X u v x := by
   have : Nonempty (Sloc X u v) := ⟨⟨1, one_mem_Sloc X u v⟩⟩
-  apply le_antisymm
-  · refine le_ciInf fun t => ?_
-    have := nuLocX_le X u v (s * x) ((t : Formalism.REAL.UJ (X.B.I.ε v)) * s⁻¹)
-      (mul_mem_Sloc X u v t.2 (inv_mem_Sloc X u v hs))
-    simpa [mul_assoc] using this
-  · refine le_ciInf fun t => ?_
-    have := nuLocX_le X u v x ((t : Formalism.REAL.UJ (X.B.I.ε v)) * s) (mul_mem_Sloc X u v t.2 hs)
-    simpa [mul_assoc] using this
+  refine le_antisymm (le_ciInf fun t => ?_) (le_ciInf fun t => ?_)
+  · simpa [mul_assoc] using nuLocX_le X u v (s * x) ((t : Formalism.REAL.UJ (X.B.I.ε v)) * s⁻¹) (mul_mem_Sloc X u v t.2 (inv_mem_Sloc X u v hs))
+  · simpa [mul_assoc] using nuLocX_le X u v x ((t : Formalism.REAL.UJ (X.B.I.ε v)) * s) (mul_mem_Sloc X u v t.2 hs)
 
 end Loc
 
@@ -366,25 +317,10 @@ theorem nuInf_le_prod (x : X.B.I.Ginf) : nuInf X u x ≤ ∏ v, nuLocX X u v (x 
   simp only [add_zero] at ht
   exact ge_of_tendsto ht (eventually_nhdsWithin_of_forall fun δ hδ => key δ hδ)
 
-theorem norm_psiR {m r : ℕ} (ε : Fin m → Bool) (gg : ℕ) (e f : Fin r → Fin m → ℂ) (z : Fin m → ℂ)
-    (g : Matrix (Fin m) (Fin m) ℂ) : ‖psiR ε gg e f z g‖ = 1 := by
-  unfold psiR
-  set c := rootCoord ε e f z g
-  have hq : (∑ a, (c a + star (c a))) / (gg : ℂ) = (((∑ a, 2 * (c a).re) / gg : ℝ) : ℂ) := by
-    push_cast
-    congr 1
-    refine Finset.sum_congr rfl fun a _ => ?_
-    rw [show star (c a) = (starRingEnd ℂ) (c a) from rfl, Complex.add_conj]
-    push_cast; ring
-  rw [hq]
-  have : 2 * (Real.pi : ℂ) * Complex.I * (((∑ a, 2 * (c a).re) / gg : ℝ) : ℂ) =
-      ((2 * Real.pi * ((∑ a, 2 * (c a).re) / gg) : ℝ) : ℂ) * Complex.I := by push_cast; ring
-  rw [this, Complex.norm_exp_ofReal_mul_I]
+alias norm_psiR := _root_.Formalism.L2.SG.Pf.psiR_norm
 
 theorem norm_psiInf (s : X.B.I.Ginf) : ‖X.psiInfU u s‖ = 1 := by
-  unfold HidaSetting.psiInfU psiInf
-  rw [norm_prod]
-  exact Finset.prod_eq_one fun v _ => norm_psiR _ _ _ _ _ _
+  simpa only [HidaSetting.psiInfU, psiInf, norm_prod] using Finset.prod_eq_one fun v _ => norm_psiR _ _ _ _ _ _
 
 theorem norm_Wu (x : X.B.I.Ginf) : ‖X.Wu u x‖ = ∏ v, ‖X.Wloc u v (x v)‖ := by
   rw [X.Wu_tens]; exact norm_tens (X.tensU_inner u) _
@@ -613,7 +549,7 @@ variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 def psiV (v : InfinitePlace X.B.I.F) (g : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) : ℂ :=
   psiR (X.B.I.ε v) X.B.g (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) g
 
-theorem uMat_one' {m : ℕ} {ε : Fin m → Bool} : uMat (1 : Formalism.REAL.UJ ε) = 1 := rfl
+alias uMat_one' := _root_.Formalism.L2.SG.Pf.Tau.uMat_one
 
 theorem rootCoord_one (v : InfinitePlace X.B.I.F) (a : Fin D.R.rS) :
     rootCoord (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) 1 a
@@ -623,9 +559,7 @@ theorem rootCoord_one (v : InfinitePlace X.B.I.F) (a : Fin D.R.rS) :
   split_ifs with h
   · show hJ _ (rv X.B.I v (X.crd (X.fY a))) (rv X.B.I v (X.crd (X.eX ⟨a.1 + 1, h⟩))) = 0
     rw [Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, Formalism.L2.SG.PoincareInHH.Cut.hT_f_e, if_neg, map_zero]
-    intro hc
-    have := congrArg Fin.val hc
-    simp at this
+    exact fun hc => Nat.succ_ne_self a.1 (congrArg Fin.val hc)
   · show hJ _ (rv X.B.I v (X.crd (X.fY a))) (rv X.B.I v (X.crd (X.zu u))) = 0
     rw [Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, (X.zu_orth u a).2, map_zero]
 
@@ -799,8 +733,7 @@ theorem locHN_cast (hHN : LocHNProps) {k r n : ℕ} (hn : n = 2 * r + k + 1) (ε
       ∀ m : Formalism.REAL.UJ ε, InN ε e z (uMat m) → InN ε e z (uMat (h * m * h⁻¹))) := by
   subst hn
   have hc : (((Real.sqrt T)⁻¹ : ℝ) : ℂ) ≠ 0 := by
-    have : (Real.sqrt T)⁻¹ ≠ 0 := inv_ne_zero (Real.sqrt_pos.mpr hT).ne'
-    exact_mod_cast this
+    exact_mod_cast (inv_ne_zero (Real.sqrt_pos.mpr hT).ne')
   exact hHN k r ε e f wf (z0v T z) z _ (isFrameJ_of e f z wf hT hee hff hef hez hfz hzz hww hew hfw hzw) hc rfl
 
 theorem nUnimod_cast (hNU : NUnimodLoc) {k r n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool)
@@ -815,8 +748,7 @@ theorem nUnimod_cast (hNU : NUnimodLoc) {k r n : ℕ} (hn : n = 2 * r + k + 1) (
       ∀ s ∈ {g : Formalism.REAL.UJ ε | InN ε e z (uMat g)}, μ.map (fun x => x * s) = μ := by
   subst hn
   have hc : (((Real.sqrt T)⁻¹ : ℝ) : ℂ) ≠ 0 := by
-    have : (Real.sqrt T)⁻¹ ≠ 0 := inv_ne_zero (Real.sqrt_pos.mpr hT).ne'
-    exact_mod_cast this
+    exact_mod_cast (inv_ne_zero (Real.sqrt_pos.mpr hT).ne')
   exact hNU k r ε e f wf (z0v T z) z _ (isFrameJ_of e f z wf hT hee hff hef hez hfz hzz hww hew hfw hzw) hc rfl
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
@@ -1080,9 +1012,7 @@ theorem locReprodStep_of (hS : LocScalarStep) : LocReprodStep := by
   intro D hG X u μS νl C hQ v
   obtain ⟨c, hc0, hc⟩ := locReprod_scalar X u v
   have h1 : c = 1 := hS D hG X u μS νl C hQ v c hc0 hc
-  intro xv
-  refine ⟨(hc xv).1, ?_⟩
-  rw [(hc xv).2, h1, one_smul]
+  exact fun xv => ⟨(hc xv).1, by rw [(hc xv).2, h1, one_smul]⟩
 
 end Formalism.L2.SG.Pf.WuDec
 

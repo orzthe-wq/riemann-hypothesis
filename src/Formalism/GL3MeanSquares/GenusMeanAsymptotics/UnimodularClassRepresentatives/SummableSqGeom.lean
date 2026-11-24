@@ -71,7 +71,7 @@ def ebox (s : Finset ι) (J : ι → ℕ) : Finset (ι →₀ ℕ) := s.finsupp 
 theorem mem_ebox {s : Finset ι} {J : ι → ℕ} {v : ι →₀ ℕ} :
     v ∈ ebox s J ↔ v.support ⊆ s ∧ ∀ i ∈ s, v i ≤ J i := by
   classical
-  simp [ebox, Finset.mem_finsupp_iff, Nat.lt_succ_iff]
+  simp [ebox, Finset.mem_finsupp_iff]
 
 theorem sum_ebox (f : ι → ℕ → ℝ) (hf : ∀ i, f i 0 = 1) (s : Finset ι) (J : ι → ℕ) :
     ∑ v ∈ ebox s J, v.prod f = ∏ i ∈ s, ∑ j ∈ range (J i + 1), f i j := by
@@ -155,8 +155,6 @@ theorem summable_sq_geom : Summable fun j : ℕ => 8 * ((j : ℝ) + 2) ^ 2 * (1 
   refine (((h2.add (h1.mul_left 4)).add (h0.mul_left 4)).mul_left 8).congr fun j => ?_
   first
     | ring
-    | (simp only [Pi.add_apply]; ring)
-    | (simp; ring)
 
 def cGeom : ℝ := ∑' j : ℕ, 8 * ((j : ℝ) + 2) ^ 2 * (1 / 2 : ℝ) ^ j
 
@@ -205,8 +203,6 @@ theorem sum_dif_le (hq : ∀ i, 2 ≤ q i) {R : ι → ℕ → ℝ}
       _ ≤ 8 * ((j : ℝ) + 2) ^ 2 * (q i / 2) ^ j / q i := by
         first
           | exact div_le_div_of_nonneg_right (le_mul_of_one_le_right hc hx) hq0.le
-          | exact (div_le_div_iff_of_pos_right hq0).mpr (le_mul_of_one_le_right hc hx)
-          | exact (div_le_div_right hq0).mpr (le_mul_of_one_le_right hc hx)
   calc ∑ j ∈ range J, |R i (j + 1) - R i j| / q i ^ (j + 1)
       ≤ ∑ j ∈ range J, (q i ^ 2)⁻¹ * (8 * ((j : ℝ) + 2) ^ 2 * (1 / 2 : ℝ) ^ j) :=
         Finset.sum_le_sum hterm

@@ -288,9 +288,6 @@ theorem valS_C_nn (LL : Letters ι) (S : Set ι) (c : Kf) :
     rw [LaurentPolynomial.C_apply, if_neg hk0]
   · first
       | exact (hm rfl).elim
-      | exact (hm (by simp only [AddMonoidAlgebra.coeff_zero, Finsupp.coe_zero, Pi.zero_apply])).elim
-      | exact (hm (by rw [AddMonoidAlgebra.coeff_zero]; rfl)).elim
-      | exact (hm (by rw [← map_zero (LaurentPolynomial.C (R := GLCoord Kf n)), LaurentPolynomial.C_apply]; split_ifs <;> rfl)).elim
 
 theorem valS_smul_ge (LL : Letters ι) (S : Set ι) (c : Kf) (F : MvPolynomial (ι × Fin n) Kf) :
     valS LL S F ≤ valS LL S (c • F) := by

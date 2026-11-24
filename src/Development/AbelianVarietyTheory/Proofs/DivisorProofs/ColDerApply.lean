@@ -84,7 +84,7 @@ theorem colDer_X {d a : ℕ} (τ : ι) (S : Matrix (Fin a) (Fin a) ℂ) (v : Var
     · intro i _ hi
       simp [Ne.symm hi]
     · simp
-  · simp [h, Ne.symm h]
+  · simp [h]
 
 end GlobalTheory.ColLie
 

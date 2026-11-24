@@ -1,138 +1,62 @@
 module
 
 public import Mathlib.Analysis.Normed.Field.Basic
+public import Mathlib.Analysis.Normed.Group.Ultra
 public import Mathlib.RingTheory.MvPowerSeries.Basic
 public import Mathlib.Topology.MetricSpace.Ultra.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Analysis.Normed.Group.Ultra
 
 @[expose] public section
 
 universe u v w
 
-noncomputable def Bl.ProductIntegralBounds.IntegralMv :
-  {K : Type u} → [NormedField.{u} K] → {ι : Type v} → MvPowerSeries.{v, u} ι K → Prop :=
-  fun {K : Type u} [NormedField.{u} K] {ι : Type v} (F : MvPowerSeries.{v, u} ι K) ↦
-    ∀ (d : Finsupp.{v, 0} ι Nat),
-      LE.le.{0}
-        (Norm.norm.{u} (DFunLike.coe.{max (v + 1) (u + 1), max (v + 1) (u + 1), u + 1} (MvPowerSeries.coeff.{v, u} d) F))
-        1
+noncomputable def Bl.ProductIntegralBounds.IntegralMv {K : Type u} [NormedField K] {ι : Type v}
+    (F : MvPowerSeries ι K) : Prop :=
+  ∀ d : ι →₀ ℕ, ‖MvPowerSeries.coeff d F‖ ≤ 1
 
-noncomputable def Bl.ProductIntegralBounds.Bd :
-  {K : Type u} → [NormedField.{u} K] → {τ : Type w} → Real → MvPowerSeries.{w, u} τ K → Prop :=
-  fun {K : Type u} [NormedField.{u} K] {τ : Type w} (C : Real) (F : MvPowerSeries.{w, u} τ K) ↦
-    ∀ (d : Finsupp.{w, 0} τ Nat),
-      LE.le.{0}
-        (Norm.norm.{u} (DFunLike.coe.{max (u + 1) (w + 1), max (u + 1) (w + 1), u + 1} (MvPowerSeries.coeff.{w, u} d) F))
-        C
+noncomputable def Bl.ProductIntegralBounds.Bd {K : Type u} [NormedField K] {τ : Type w}
+    (C : ℝ) (F : MvPowerSeries τ K) : Prop :=
+  ∀ d : τ →₀ ℕ, ‖MvPowerSeries.coeff d F‖ ≤ C
 
 namespace Bl.ProductIntegralBounds
 
 private theorem mulBd {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : Type w}
-    {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (F G : MvPowerSeries τ K)
-    (hF : ∀ d, ‖MvPowerSeries.coeff d F‖ ≤ a) (hG : ∀ d, ‖MvPowerSeries.coeff d G‖ ≤ b) :
-    ∀ d, ‖MvPowerSeries.coeff d (F * G)‖ ≤ a * b := by
+    {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) {F G : MvPowerSeries τ K}
+    (hF : Bd a F) (hG : Bd b G) : Bd (a * b) (F * G) := fun d => by
   classical
-  intro d
   rw [MvPowerSeries.coeff_mul]
-  refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) ?_
-  intro p _
+  refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) fun p _ => ?_
   rw [norm_mul]
   exact mul_le_mul (hF _) (hG _) (norm_nonneg _) ha
 
 private theorem prodInt {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : Type w} {ι : Type v}
-    (X : ι → MvPowerSeries τ K) (s : Finset ι)
-    (hX : ∀ i ∈ s, ∀ d, ‖MvPowerSeries.coeff d (X i)‖ ≤ 1) :
-    ∀ d, ‖MvPowerSeries.coeff d (∏ i ∈ s, X i)‖ ≤ 1 := by
+    (X : ι → MvPowerSeries τ K) (s : Finset ι) (hX : ∀ i ∈ s, IntegralMv (X i)) :
+    IntegralMv (∏ i ∈ s, X i) := by
   classical
-  induction s using Finset.induction_on with
-  | empty =>
-    intro d
-    rw [Finset.prod_empty, MvPowerSeries.coeff_one]
-    split_ifs
-    · rw [norm_one]
-    · rw [norm_zero]; exact zero_le_one
-  | insert a t hat ih =>
-    rw [Finset.prod_insert hat]
-    have h := mulBd zero_le_one zero_le_one (X a) (∏ i ∈ t, X i)
-      (hX a (Finset.mem_insert_self a t))
-      (ih (fun i hi => hX i (Finset.mem_insert_of_mem hi)))
-    intro d
-    have := h d
-    rwa [one_mul] at this
+  refine Finset.prod_induction X IntegralMv (fun _ _ hF hG => ?_) (fun d => ?_) hX
+  · intro d; simpa only [one_mul] using mulBd zero_le_one zero_le_one hF hG d
+  · rw [MvPowerSeries.coeff_one]; split_ifs <;> simp
 
-theorem goal1 :
-  ∀ {K : Type u} [inst : NormedField.{u} K] [IsUltrametricDist.{u} K] {τ : Type w} {ι : Type v} {C : Real},
-  LE.le.{0} 0 C →
-    ∀ (X Y : ι → MvPowerSeries.{w, u} τ K) (s : Finset.{v} ι),
-      (∀ (i : ι), Membership.mem.{v, v} s i → Bl.ProductIntegralBounds.IntegralMv.{u, w} (X i)) →
-        (∀ (i : ι), Membership.mem.{v, v} s i → Bl.ProductIntegralBounds.IntegralMv.{u, w} (Y i)) →
-          (∀ (i : ι),
-              Membership.mem.{v, v} s i →
-                Bl.ProductIntegralBounds.Bd.{u, w} C (HSub.hSub.{max u w, max u w, max u w} (X i) (Y i))) →
-            Bl.ProductIntegralBounds.Bd.{u, w} C
-              (HSub.hSub.{max u w, max u w, max u w} (Finset.prod.{v, max u w} s fun (i : ι) ↦ X i)
-                (Finset.prod.{v, max u w} s fun (i : ι) ↦ Y i)) := by
-  intro K _ _ τ ι C hC X Y s hX hY hXY
+theorem goal1 {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : Type w} {ι : Type v}
+    {C : ℝ} (hC : 0 ≤ C) (X Y : ι → MvPowerSeries τ K) (s : Finset ι)
+    (hX : ∀ i ∈ s, IntegralMv (X i)) (hY : ∀ i ∈ s, IntegralMv (Y i))
+    (hXY : ∀ i ∈ s, Bd C (X i - Y i)) :
+    Bd C (∏ i ∈ s, X i - ∏ i ∈ s, Y i) := by
   classical
   induction s using Finset.induction_on with
-  | empty =>
-    intro d
-    rw [Finset.prod_empty, Finset.prod_empty, sub_self, map_zero, norm_zero]
-    exact hC
+  | empty => intro d; simpa using hC
   | insert a t hat ih =>
     have ih' := ih (fun i hi => hX i (Finset.mem_insert_of_mem hi))
       (fun i hi => hY i (Finset.mem_insert_of_mem hi))
       (fun i hi => hXY i (Finset.mem_insert_of_mem hi))
-    rw [Finset.prod_insert hat, Finset.prod_insert hat]
-    have e : X a * ∏ i ∈ t, X i - Y a * ∏ i ∈ t, Y i
-        = X a * (∏ i ∈ t, X i - ∏ i ∈ t, Y i) + (X a - Y a) * ∏ i ∈ t, Y i := by ring
-    rw [e]
-    have h1 := mulBd zero_le_one hC (X a) _ (hX a (Finset.mem_insert_self a t)) ih'
-    have h2 := mulBd hC zero_le_one (X a - Y a) _ (hXY a (Finset.mem_insert_self a t))
-      (prodInt Y t (fun i hi => hY i (Finset.mem_insert_of_mem hi)))
+    have h1 := mulBd zero_le_one hC (hX a (Finset.mem_insert_self a t)) ih'
+    have h2 := mulBd hC zero_le_one (hXY a (Finset.mem_insert_self a t))
+      (prodInt Y t fun i hi => hY i (Finset.mem_insert_of_mem hi))
     intro d
-    rw [map_add (f := _)]
-    refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)
-    · have := h1 d; rwa [one_mul] at this
-    · have := h2 d; rwa [mul_one] at this
+    rw [Finset.prod_insert hat, Finset.prod_insert hat,
+      show X a * ∏ i ∈ t, X i - Y a * ∏ i ∈ t, Y i =
+        X a * (∏ i ∈ t, X i - ∏ i ∈ t, Y i) + (X a - Y a) * ∏ i ∈ t, Y i by ring,
+      map_add]
+    exact (IsUltrametricDist.norm_add_le_max _ _).trans
+      (max_le (by simpa only [one_mul] using h1 d) (by simpa only [mul_one] using h2 d))
 
 end Bl.ProductIntegralBounds

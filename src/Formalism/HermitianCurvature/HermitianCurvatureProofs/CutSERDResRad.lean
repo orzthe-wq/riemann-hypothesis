@@ -140,7 +140,7 @@ theorem radial_residue_formula : RDResRad := by
           h * (wCell P.k P.r (Fin.last P.r) x.1 * x.2) * h' by
         simp only [← mul_assoc, (hcomm x.1 h hh).eq]]
       rw [hE _ (hin x hx) h hh h' hh']
-      simp [ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp]
+      simp [ContinuousLinearMap.smul_comp]
   refine ⟨⟨Φ0, hmem⟩, fun x hx => ?_⟩
   show (if (x.1, x.2) ∈ DomR P.k P.r z z' then _ else _) = _
   rw [if_pos hx]

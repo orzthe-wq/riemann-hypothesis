@@ -65,19 +65,19 @@ section Basic
 variable {n : ℕ} (ε : Fin n → Bool)
 
 lemma hJ_add_left (x x' y : Fin n → ℂ) : hJ ε (x + x') y = hJ ε x y + hJ ε x' y := by
-  first | simp only [hJ, star_add, add_dotProduct] | simp [hJ, add_dotProduct]
+  first | simp only [hJ, star_add, add_dotProduct]
 
 lemma hJ_add_right (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
-  first | simp only [hJ, Matrix.mulVec_add, dotProduct_add] | simp [hJ, Matrix.mulVec_add, dotProduct_add]
+  first | simp only [hJ, Matrix.mulVec_add, dotProduct_add]
 
 lemma hJ_sub_right (x y y' : Fin n → ℂ) : hJ ε x (y - y') = hJ ε x y - hJ ε x y' := by
-  first | simp only [hJ, Matrix.mulVec_sub, dotProduct_sub] | simp [hJ, Matrix.mulVec_sub, dotProduct_sub]
+  first | simp only [hJ, Matrix.mulVec_sub, dotProduct_sub]
 
 lemma hJ_smul_left (c : ℂ) (x y : Fin n → ℂ) : hJ ε (c • x) y = star c * hJ ε x y := by
-  first | simp only [hJ, star_smul, smul_dotProduct, smul_eq_mul] | simp [hJ, smul_dotProduct]
+  first | simp only [hJ, star_smul, smul_dotProduct, smul_eq_mul]
 
 lemma hJ_smul_right (c : ℂ) (x y : Fin n → ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
-  first | simp only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul] | simp [hJ, Matrix.mulVec_smul, dotProduct_smul]
+  first | simp only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 lemma hJ_zero_left (y : Fin n → ℂ) : hJ ε 0 y = 0 := by
   simp [hJ]
@@ -105,12 +105,10 @@ lemma hJ_nondeg_right (y : Fin n → ℂ) (h : ∀ x, hJ ε x y = 0) : y = 0 := 
     by_cases hj : j = i
     · subst hj
       simp
-    · simp [Pi.single_apply, hj]
+    · simp [hj]
   have e : hJ ε (Pi.single i 1) y = (if ε i then 1 else -1) * y i := by
     first
       | rw [hJ, hs, single_dotProduct, one_mul, Formalism.REAL.Jm, Matrix.mulVec_diagonal]
-      | rw [hJ, hs, Matrix.single_dotProduct, one_mul, Formalism.REAL.Jm, Matrix.mulVec_diagonal]
-      | simp [hJ, hs, Formalism.REAL.Jm, Matrix.mulVec_diagonal]
   rw [e] at h1
   simp only [Pi.zero_apply]
   split_ifs at h1 <;> simpa using h1
@@ -187,7 +185,6 @@ lemma pair (x : Fin n → ℂ) (g : (Fin r ⊕ Fin r) ⊕ (Unit ⊕ Fin k) → �
         (g (.inr (.inl ())) * hJ ε x L.z + ∑ c, g (.inr (.inr c)) * hJ ε x (L.w c)) := by
   rw [hJ_sum_right]
   simp only [Fintype.sum_sum_type, fam, Sum.elim_inl, Sum.elim_inr, Fintype.sum_unique]
-  all_goals rfl
 
 lemma fam_li : LinearIndependent ℂ L.fam := by
   rw [Fintype.linearIndependent_iff]

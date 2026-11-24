@@ -68,7 +68,6 @@ theorem div_mem_of_isGenAt {Λ : Lat ξ Ω} {p : Cpt ξ} {s t : Ω} (hs : Λ.IsG
   have hr' : (r : Ω) * t = s := by
     first
     | exact hr
-    | simpa [Subring.smul_def] using hr
   rw [← hr', mul_div_assoc, div_self ht0, _root_.mul_one]
   exact r.2
 

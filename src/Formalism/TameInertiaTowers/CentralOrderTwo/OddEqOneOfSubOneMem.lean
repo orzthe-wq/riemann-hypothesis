@@ -117,8 +117,7 @@ theorem odd_smul_lift {L : Type} [Field L] [NumberField L] (σ : Gal(L/ℚ)) (x 
     σ • X = (((sgn σ x : ℤˣ) : ℤ) : 𝓞 L) * X := by
   apply RingOfIntegers.coe_injective
   show ((σ • X : 𝓞 L) : L) = ((((sgn σ x : ℤˣ) : ℤ) : 𝓞 L) * X : 𝓞 L)
-  rw [odd_coe_smul, hX, odd_sgn_spec σ x c hx]
-  simp [hX]
+  simpa [odd_coe_smul, hX] using odd_sgn_spec σ x c hx
 
 theorem odd_eq_one_of_sub_one_mem {S : Type*} [CommRing S] [IsDomain S] (P : Ideal S) {η : S}
     {m : ℕ} (hη : η ^ m = 1) (hm : (m : S) ∉ P) (h : η - 1 ∈ P) : η = 1 := by
@@ -371,9 +370,7 @@ theorem layerInertiaTame_of (hG : LayerGalois) : LayerInertiaTame := by
     refine ⟨hfwd σ, fun hσ => ?_⟩
     rcases hσ with hσ | hσ
     · have : σ = 1 := hbij.1 (hσ.trans h1.symm)
-      subst this
-      intro x
-      simp
+      simp [this]
     · exact odd_inertia_back (galMap h.1 a b) hbij.1 h1 _ q P hfwd
         (odd_ram_ne_one q hq P a ha) σ hσ
   · have : Fact d.Prime := ⟨hd⟩
@@ -390,9 +387,7 @@ theorem layerInertiaTame_of (hG : LayerGalois) : LayerInertiaTame := by
     refine ⟨hfwd σ, fun hσ => ?_⟩
     rcases hσ with hσ | hσ
     · have : σ = 1 := hbij.1 (hσ.trans h1.symm)
-      subst this
-      intro x
-      simp
+      simp [this]
     · exact odd_inertia_back (galMap h.1 a b) hbij.1 h1 _ d P hfwd
         (odd_ram_ne_one d hd P b hb) σ hσ
 

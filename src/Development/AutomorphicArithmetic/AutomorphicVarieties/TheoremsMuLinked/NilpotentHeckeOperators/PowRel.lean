@@ -71,7 +71,7 @@ theorem UpperTheory.V.Th.powRel :
   have hsm : ∀ a : K, (a • (1 : Matrix (Fin n) (Fin n) K)).map f = f a • (1 : Matrix (Fin n) (Fin n) S) := by
     intro a
     ext p q
-    by_cases hpq : p = q <;> simp [Matrix.one_apply, hpq]
+    by_cases hpq : p = q <;> simp [hpq]
   have e1 : (⇑f.mapMatrix ∘ fun k => if k = i then 1 else P - α k • (1 : Matrix (Fin n) (Fin n) K))
       = fun k => if k = i then 1 else P.map f - f (α k) • (1 : Matrix (Fin n) (Fin n) S) := by
     funext k

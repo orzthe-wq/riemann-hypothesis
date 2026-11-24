@@ -49,17 +49,7 @@ namespace GlobalTheory.LocMod.TensorModel
 
 variable {D : D7}
 
-theorem cA_invol (z : AE D) : cA D (cA D z) = z := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a x =>
-    rw [show cA D (cA D (a ⊗ₜ[D.host.F] x)) = a ⊗ₜ[D.host.F] star (star x) from rfl, star_star]
-  | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
-
-theorem symplO_add_left' (S T : HSp D) (x x' y : WO S T) :
-    symplO S T (x + x') y = symplO S T x y + symplO S T x' y := by
-  unfold symplO hO
-  simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add (f := _)]
+alias symplO_add_left' := _root_.GlobalTheory.LatVac.symplO_add_left
 
 theorem half_sum {m n : ℕ} {e e' : AE D} (he : e * e' = 0) {u : Mx D m n} (hu : IsHalf e' u) : IsHalf (e + e') u :=
   fun i j => by
@@ -82,7 +72,7 @@ theorem symplO_half_zero {S T : HSp D} {e e' : AE D} (he : e * e' = 0) {s y : WO
       Finset.sum_eq_zero fun d _ => ?_
     have h1 : cA D (y c b) = e' * cA D (y c b) := by
       conv_lhs => rw [← hy c b]
-      rw [map_mul, cA_invol]
+      rw [map_mul, _root_.Formalism.L2.Theta.cA_cA]
     have h2 : s d a = e * s d a := (hs d a).symm
     rw [h1, h2]
     linear_combination (incA D (S.gram⁻¹ a b) * cA D (y c b) * incA D (T.gram c d) * s d a) * he

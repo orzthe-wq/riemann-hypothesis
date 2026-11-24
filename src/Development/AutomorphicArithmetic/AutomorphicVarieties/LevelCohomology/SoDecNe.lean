@@ -5,7 +5,8 @@ public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibra
 public import Mathlib.RingTheory.AdicCompletion.Noetherian
 public import Mathlib.RingTheory.Coalgebra.IsFrobenius
 public import Mathlib.RingTheory.HopfAlgebra.Basic
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDecompositionGroupCyclotomicCharacterZpowNStatement
+public import ReciprocityTheory.GaloisValuations.Global
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDecompositionGroupCyclotomicCharacterZpowN
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.SelmerTransport.DvrFacts
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -67,7 +68,7 @@ private theorem cyc_ne (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algeb
     [Fact l.Prime] (v : HeightOneSpectrum (𝓞 k)) (A : ValuationSubring Ω) (hA : IsPlaceOver A v) (n : ℤ) (hn : n ≠ 0) :
     ∃ g : G k Ω, g ∈ Dec (F := k) A ∧ cycZ k Ω l g ^ n ≠ 1 := by
   by_cases hl : ((l : ℕ) : 𝓞 k) ∈ v.asIdeal
-  · exact GlobalTheory.T.exists_decompositionGroup_cyclotomicCharacter_zpow_ne_one k Ω l v A hl hA n hn
+  · exact _root_.GlobalTheory.CycDec.exists_mem_Dec_cycZ_zpow_ne_one k Ω l v A hl hA n hn
   · obtain ⟨γ, hγ⟩ := exists_isFrob hA
     refine ⟨γ, hγ.1, fun h => ?_⟩
     have hc := cycZ_of_isFrob hl hA hγ

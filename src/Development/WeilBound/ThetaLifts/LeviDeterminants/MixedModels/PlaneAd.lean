@@ -145,7 +145,7 @@ theorem planeOK {B : Base F E} (hB : B.IsGood σ) {Y : Spc F E n} {Y₁ : Spc F 
     have h0 : v ᵥ* incM F Y.J = 0 := funext fun j => by
       have := hv (Pi.single j 1)
       have e : (fun l => (cA σ).toRingHom ((Pi.single j 1 : Fin n → AE F E) l)) = Pi.single j 1 := funext fun l => by
-        by_cases h : l = j <;> simp [Pi.single_apply, h]
+        by_cases h : l = j <;> simp [h]
       rw [bf, e, Matrix.dotProduct_mulVec] at this
       simpa using this
     have := congrArg (· ᵥ* (incM F Y.J)⁻¹) h0

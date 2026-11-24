@@ -93,7 +93,7 @@ private theorem exists_localFactor_lemma {R₀ : Type} [CommRing R₀] {O R K A 
     IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective
   let Λ : _root_.ReciprocityTheory.PGsh.LAlg R₀ := _root_.ReciprocityTheory.PGsh.LAlg.mk (A.carrier ⧸ I)
   let μ : _root_.ReciprocityTheory.PGsh.LHom A Λ := ⟨Ideal.Quotient.mkₐ R₀ I,
-    _root_.ReciprocityTheory.PGsh.TowerExample.isLocalHom_of_surj ((Ideal.Quotient.mkₐ R₀ I : A.carrier →ₐ[R₀] A.carrier ⧸ I) : A.carrier →+* A.carrier ⧸ I)
+    _root_.IsLocalHom.of_surjective ((Ideal.Quotient.mkₐ R₀ I : A.carrier →ₐ[R₀] A.carrier ⧸ I) : A.carrier →+* A.carrier ⧸ I)
       (Ideal.Quotient.mkₐ_surjective R₀ I)⟩
   have hqc : ∀ a ∈ RingHom.ker q.1, ((Ideal.Quotient.mkₐ R₀ I).comp s.1) a = 0 := by
     intro a ha

@@ -362,7 +362,6 @@ theorem pt_bijective : Function.Bijective (pt q F) := by
     congr 1
     first
       | exact funext fun χ => gen_eq_of_isConst (cg_isConst _ _ _) ((ha χ).of_eq (hu χ).symm)
-      | exact heq_of_eq (funext fun χ => gen_eq_of_isConst (cg_isConst _ _ _) ((ha χ).of_eq (hu χ).symm))
 
 private theorem eq_of_map_eq_of_eq_univ {Y : Scheme.{0}} {W : Y.Opens} (hW : W = ⊤) (h : W ≤ ⊤) {a b : Γ(Y, ⊤)}
     (e : (Y.presheaf.map (homOfLE h).op).hom a = (Y.presheaf.map (homOfLE h).op).hom b) : a = b := by

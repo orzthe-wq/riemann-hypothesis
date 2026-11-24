@@ -193,7 +193,7 @@ theorem lieS_mem (e : Fin a ⊕ Fin b ≃ Fin n) (i j : Fin a) (x : Cinf E) :
 
 theorem Eop_mem (e : Fin a ⊕ Fin b ≃ Fin n) (τ : E →+* ℂ) (i j : Fin a) :
     ((Eop τ i j, Eop τ (e (.inl i)) (e (.inl j))) : Module.End ℂ (Sm E a) × Module.End ℂ (Sm E n)) ∈ relAlg e :=
-  (relAlg e).smul_mem ((relAlg e).sub_mem (lieS_mem e i j _) ((relAlg e).smul_mem (lieS_mem e i j _) _)) _
+  (relAlg (E := E) e).smul_mem ((relAlg (E := E) e).sub_mem (lieS_mem e i j _) ((relAlg (E := E) e).smul_mem (lieS_mem e i j _) _)) _
 
 theorem qdet_mem (e : Fin a ⊕ Fin b ≃ Fin n) (τ : E →+* ℂ) (v : ℂ) :
     ((Formalism.REAL.qdet (Eop τ) v, Formalism.REAL.qdet (fun i j : Fin a => Eop τ (e (.inl i)) (e (.inl j))) v) :
@@ -203,13 +203,13 @@ theorem qdet_mem (e : Fin a ⊕ Fin b ≃ Fin n) (τ : E →+* ℂ) (v : ℂ) :
   have h1 := map_qdet (AlgHom.fst ℂ (Module.End ℂ (Sm E a)) (Module.End ℂ (Sm E n))) Z v
   have h2 := map_qdet (AlgHom.snd ℂ (Module.End ℂ (Sm E a)) (Module.End ℂ (Sm E n))) Z v
   have h3 : Formalism.REAL.qdet Z v ∈ relAlg e := by
-    refine (relAlg e).sum_mem fun σ _ => (relAlg e).mul_mem (intCast_mem (relAlg e) _)
-      ((relAlg e).list_prod_mem fun x hx => ?_)
+    refine (relAlg (E := E) e).sum_mem fun σ _ => (relAlg (E := E) e).mul_mem (intCast_mem (relAlg (E := E) e) _)
+      ((relAlg (E := E) e).list_prod_mem fun x hx => ?_)
     obtain ⟨k, rfl⟩ := List.mem_ofFn.1 hx
-    refine (relAlg e).add_mem ?_ (Eop_mem e τ _ _)
+    refine (relAlg (E := E) e).add_mem ?_ (Eop_mem e τ _ _)
     split_ifs
-    · exact (relAlg e).algebraMap_mem _
-    · exact (relAlg e).zero_mem
+    · exact (relAlg (E := E) e).algebraMap_mem _
+    · exact (relAlg (E := E) e).zero_mem
   convert h3 using 1
   exact Prod.ext h1.symm h2.symm
 
@@ -220,7 +220,7 @@ theorem aeval_mem (e : Fin a ⊕ Fin b ≃ Fin n) {z : Module.End ℂ (Sm E a)} 
   have h2 := Polynomial.aeval_algHom_apply (AlgHom.snd ℂ (Module.End ℂ (Sm E a)) (Module.End ℂ (Sm E n))) (z, z') q
   have h3 : Polynomial.aeval (z, z') q ∈ relAlg e := by
     rw [Polynomial.aeval_eq_sum_range]
-    exact (relAlg e).sum_mem fun i _ => (relAlg e).smul_mem ((relAlg e).pow_mem hz i) _
+    exact (relAlg (E := E) e).sum_mem fun i _ => (relAlg (E := E) e).smul_mem ((relAlg (E := E) e).pow_mem hz i) _
   convert h3 using 1
   exact Prod.ext h1 h2
 

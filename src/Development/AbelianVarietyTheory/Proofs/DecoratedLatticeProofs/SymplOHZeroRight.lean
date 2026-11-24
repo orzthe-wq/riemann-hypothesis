@@ -51,12 +51,6 @@ namespace GlobalTheory.ContrComb
 
 variable {D : D7}
 
-theorem symplOH_zero_right (S T : HSp D) (x : WO S T) : symplOH S T x 0 = 0 := by
-  simp [symplOH, symplO, hO]
-
-theorem symplOH_zero_left (S T : HSp D) (x : WO S T) : symplOH S T 0 x = 0 := by
-  simp [symplOH, symplO, hO]
-
 theorem heis_left {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ} (ψ : AddChar (AF D.host.F) ℂ) (l : Link B B'.L B'.ζ)
     (S : HSp D) (vL : VolM D B'.L.rank S.rank) (f₁ : WO B.V₀ S → ℂ) (f₂ : WO S B'.V₀ → ℂ) (a : WO B.A S)
     (u : WO B.A S) (v : WO S B'.A) :
@@ -68,7 +62,7 @@ theorem heis_left {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ} (ψ : AddCh
   funext w
   have h1 : (B.o.resS S).symm (u, l.κ S w) + (B.o.resS S).symm (a, 0) = (B.o.resS S).symm (u + a, l.κ S w) := by
     rw [← map_add (f := _)]; simp
-  rw [B.o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_right, add_zero, h1]
+  rw [B.o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, _root_.GlobalTheory.MixModel.symplOH_zero_right, add_zero, h1]
   ring
 
 theorem heis_right {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ} (ψ : AddChar (AF D.host.F) ℂ) (l : Link B B'.L B'.ζ)
@@ -82,7 +76,7 @@ theorem heis_right {ρ σ : ℕ} {B : BesLev D ρ} {B' : BesLev D σ} (ψ : AddC
   funext w
   have h1 : (B'.o.resT S).symm (v, w) + (B'.o.resT S).symm (b, 0) = (B'.o.resT S).symm (v + b, w) := by
     rw [← map_add (f := _)]; simp
-  rw [B'.o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_right, add_zero, h1]
+  rw [B'.o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, _root_.GlobalTheory.MixModel.symplOH_zero_right, add_zero, h1]
   ring
 
 end GlobalTheory.ContrComb
@@ -112,13 +106,11 @@ theorem continuous_extR {V₀ A L S : HSp D} (o : OrthDec V₀ A L) : Continuous
 theorem extL_inf {V₀ A L S : HSp D} (o : OrthDec V₀ A L) (u : WO A S) (h : u.map (infPart D) = 0) :
     (extL (S := S) o u).map (infPart D) = 0 := by
   rw [extL_apply, OrthDec.resS_symm_apply, Matrix.zero_mul, add_zero]
-  change (u * o.pA).map (infPart D) = 0
   rw [Matrix.map_mul, h, Matrix.zero_mul]
 
 theorem extR_inf {V₀ A L S : HSp D} (o : OrthDec V₀ A L) (u : WO S A) (h : u.map (infPart D) = 0) :
     (extR (S := S) o u).map (infPart D) = 0 := by
   rw [extR_apply, OrthDec.resT_symm_apply, Matrix.mul_zero, add_zero]
-  change (o.jA * u).map (infPart D) = 0
   rw [Matrix.map_mul, h, Matrix.mul_zero]
 
 theorem extL_half {V₀ A L S : HSp D} (o : OrthDec V₀ A L) (e : AE D) (u : WO A S) (h : IsHalf e u) :

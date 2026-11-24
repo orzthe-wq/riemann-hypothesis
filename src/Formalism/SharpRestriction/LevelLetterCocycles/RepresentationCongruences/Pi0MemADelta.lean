@@ -353,9 +353,8 @@ theorem RepVV_nat (N : ℕ) {x : W.DD T} {f : Fin d → W.EE} (h : RepVV W T c' 
     have key : lA W ^ κ' • (lA W ^ κ • Λ • (((N : ℕ) : LetA O n) • x) -
           ((N : ℕ) : LetA O n) • ∑ k, a k • ((W.φD T) ^ e) (H k)) =
         ((N : ℕ) : LetA O n) • (lA W ^ κ' • (lA W ^ κ • Λ • x - ∑ k, a k • ((W.φD T) ^ e) (H k))) := by
-      simp only [smul_add, smul_sub, smul_neg, smul_smul, sub_neg_eq_add, neg_sub, neg_add_rev, neg_neg]
+      simp only [smul_sub, smul_smul]
       ring_nf
-      try abel
     rw [key]
     exact inMultiple_smul W (natCast_mem _ _) hP
 
@@ -370,7 +369,7 @@ theorem RepVV_neg {x : W.DD T} {f : Fin d → W.EE} (h : RepVV W T c' e M Λ b s
   rw [hs]
   have key : lA W ^ κ' • (lA W ^ κ • Λ • (-x) - -∑ k, a k • ((W.φD T) ^ e) (H k)) =
       -(lA W ^ κ' • (lA W ^ κ • Λ • x - ∑ k, a k • ((W.φD T) ^ e) (H k))) := by
-    simp only [smul_add, smul_sub, smul_neg, smul_smul, sub_neg_eq_add, neg_sub, neg_add_rev, neg_neg]
+    simp only [smul_add, smul_sub, smul_neg, smul_smul, sub_neg_eq_add, neg_sub]
     ring_nf
     try abel
   rw [key]
@@ -405,7 +404,7 @@ theorem RepVV_add {x x' : W.DD T} {f f' : Fin d → W.EE} (h : RepVV W T c' e M 
         (lA W ^ κ₂ • ∑ k, a₁ k • ((W.φD T) ^ e) (H₁ k) + lA W ^ κ₁ • ∑ k, a₂ k • ((W.φD T) ^ e) (H₂ k))) =
       lA W ^ (κ₂' + κ₂) • (lA W ^ κ₁' • (lA W ^ κ₁ • Λ • x - ∑ k, a₁ k • ((W.φD T) ^ e) (H₁ k))) +
       lA W ^ (κ₁' + κ₁) • (lA W ^ κ₂' • (lA W ^ κ₂ • Λ • x' - ∑ k, a₂ k • ((W.φD T) ^ e) (H₂ k))) := by
-    simp only [smul_add, smul_sub, smul_neg, smul_smul, sub_neg_eq_add, neg_sub, neg_add_rev, neg_neg]
+    simp only [smul_add, smul_sub, smul_smul]
     ring_nf
     try abel
   rw [key]

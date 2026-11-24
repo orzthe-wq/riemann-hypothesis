@@ -1,13 +1,13 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.SecTieBaseChange
 public import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ToStkAInjective
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ModelChartLiftCoordsGeneratorIndep
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueThetaOfStatement
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueThetaOf
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsUniqueSecPull
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExpandsAtTransport
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.SecTieBaseChange
 import Formalism.LocalToGlobal.ProjectiveLattices.ThetaFramePf
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -166,7 +166,6 @@ theorem pmaps_of_genRelR (T : Tri w' w₁ w) (hw : PGen w) (hM : M.IsLB) (hM₀ 
       simp only [gm, dif_pos hz, dif_pos hz']
       all_goals first
       | rfl
-      | (ext; simp [pullU, Scheme.comp_app])
     · have hz' : (r ≫ h) z ∉ V := hz
       simp only [gm, dif_neg hz, dif_neg hz', MonoidHom.one_apply]
 
@@ -176,7 +175,7 @@ theorem pmaps_of_genRelR (T : Tri w' w₁ w) (hw : PGen w) (hM : M.IsLB) (hM₀ 
     by_cases hz : r z ∈ LB.wchart L (fun k => h ≫ φ k) j
     · exact (gm_res r z _ hz (pullU h _ (t.s j))).trans (gm_pullU_eq_gm_comp h r z _ _)
     · have hz' : (r ≫ h) z ∉ LB.wchart L φ j := fun H => hz (Set.mem_iInter.2 fun k => Set.mem_iInter.1 H k)
-      simp only [gm, dif_neg hz, dif_neg hz', MonoidHom.one_apply]
+      simp only [gm, dif_neg hz, dif_neg hz']
       rfl
 
   intro Z r z p q hp hq
@@ -469,7 +468,7 @@ theorem isoMaps_iff {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (
     (σ : LB.Sec L') (s : LB.Sec (L.pull F)) :
     IsoMaps w σ s ↔ ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (j : L.ι) (k : L'.ι), F (r z) ∈ L.U j → r z ∈ L'.U k →
       gs r z _ (s.f (fun _ => j)) = (gw w r z j k).val * gs r z _ (σ.f k) := by
-  apply _root_.GlobalTheory.LamT.TieCalc.isoMaps_iff <;> assumption
+  apply _root_.GlobalTheory.LamT.TieCalc.isoMaps_iff
 
 theorem isLocalRing_dual (R : Type) [CommRing R] [IsLocalRing R] : IsLocalRing (DualNumber R) :=
   have : Nontrivial (DualNumber R) := (TrivSqZeroExt.inl_injective (R := R) (M := R)).nontrivial
@@ -600,8 +599,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 theorem isArcFr_of_agree : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (k : Type) [Field k] (bF : c.F →+* k) (a : ArcIn Dw l (RingHom.id c.F) k bF) (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F) (Y : Model Xo c β) (Y' : Model Xo c β') (χ : Sp (PowerSeries k) ⟶ Y.X) (χ' : Sp (PowerSeries k) ⟶ Y'.X) (W : Wit Y (a.restrict β) χ) (W' : Wit Y' (a.restrict β') χ') (ψ : W.t.G ≅ W'.t.G), W.Agree W' ψ → ∀ y₀ : Sp (FractionRing (PowerSeries k)) ⟶ Xo.XF c, y₀ ≫ Y.j = Out.jK (PowerSeries k) ≫ χ → y₀ ≫ Y'.j = Out.jK (PowerSeries k) ≫ χ' → Mono Y.j → ∀ (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR k)) (th : a.D₀.P.L.Sec), ThNZ th → ∀ (S : Type) [CommRing S] [Algebra c.F S] (ι : PowerSeries k →+* S) (y : FrPt Xo c S), IsUnit (ι PowerSeries.X) → IsArcFr W e th ι y → IsArcFr W' e th ι y := by
   intro hL hL2 E _ _ _ H Dw l Xo c k _ bF a O O' _ _ β β' Y Y' χ χ' W W' ψ hA y₀ hy hy' hj e th hth S _ _ ι y hι h
-  obtain ⟨θ', hθ', -⟩ := (GlobalTheory.T.existsUnique_thetaOf_alt hL hL2 E H Dw l Xo c O' β' Y' k _ (a.restrict β') χ' W' th hth).1
+  obtain ⟨θ', hθ', -⟩ := (_root_.GlobalTheory.existsUnique_thetaOf hL hL2 E H Dw l Xo c O' β' Y' k _ (a.restrict β') χ' W' th hth).1
   exact FrAgree.isArcFr_move hA y₀ hy hy' hj e th
-    (fun _ _ => (GlobalTheory.T.existsUnique_thetaOf_alt hL hL2 E H Dw l Xo c O β Y k _ (a.restrict β) χ W th hth).1.unique) θ' hθ' ι y hι h
+    (fun _ _ => (_root_.GlobalTheory.existsUnique_thetaOf hL hL2 E H Dw l Xo c O β Y k _ (a.restrict β) χ W th hth).1.unique) θ' hθ' ι y hι h
 
 end GlobalTheory.ArcQ

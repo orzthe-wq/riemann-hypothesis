@@ -147,7 +147,7 @@ theorem exists_mat {K K' : Type} [Field K] [Field K'] (φ : K →+* K') {n n' : 
       simpa [Submodule.coe_sum] using this
     rw [e1]
     have e2 : ((∑ i, φ (y i) • bc i : V') : Fin n → K') = ∑ i, φ (y i) • c i := by
-      simp [Submodule.coe_sum, bc, cV]
+      simp [bc, cV]
     rw [e2, ← hΦsum]
 
 theorem lat_coords {K K' : Type} [Field K] [Field K'] [NumberField K] [NumberField K'] (φ : K →+* K') {n n' d d' : ℕ}

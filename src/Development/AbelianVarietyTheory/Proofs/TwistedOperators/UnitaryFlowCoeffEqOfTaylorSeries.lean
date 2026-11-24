@@ -189,7 +189,6 @@ private theorem norm_sub_taylor_sum_le {E : Type} [NormedAddCommGroup E] [Normed
           have hk : (k.factorial : ℝ) ≠ 0 := by positivity
           push_cast
           field_simp
-          try ring
         exact (((hasDerivAt_pow (k + 1) s).div_const ((k + 1).factorial : ℝ)).smul_const
           (V (m + 1 + k) 0)).congr_deriv (by rw [hc])
       exact (HasDerivAt.fun_sum hterm).add_const (V m 0)
@@ -206,7 +205,6 @@ private theorem norm_sub_taylor_sum_le {E : Type} [NormedAddCommGroup E] [Normed
         have hk : (n.factorial : ℝ) ≠ 0 := by positivity
         push_cast
         field_simp
-        try ring
       exact (((hasDerivAt_pow (n + 1) s).div_const ((n + 1).factorial : ℝ)).mul_const
         (M (m + 1 + n))).congr_deriv (by rw [hc])
     have key := image_norm_le_of_norm_deriv_right_le_deriv_boundary (a := 0) (b := t)
@@ -301,7 +299,6 @@ theorem unitaryFlow_coeff_eq_of_taylor : ∀ (H : Type) [NormedAddCommGroup H] [
       _ ≤ 2 ^ m * m.factorial * Real.sqrt C / 2 ^ m := by gcongr
       _ = m.factorial * Real.sqrt C := by
           field_simp
-          try ring
   have hkey : ∀ n (s : ℝ), |s| ^ n / (n.factorial : ℝ) * ‖x n‖ ≤
       Real.sqrt C * (|s| / ρ2) ^ n := by
     intro n s
@@ -313,12 +310,10 @@ theorem unitaryFlow_coeff_eq_of_taylor : ∀ (H : Type) [NormedAddCommGroup H] [
     calc |s| ^ n / (n.factorial : ℝ) * ‖x n‖
         = |s| ^ n * (‖x n‖ * (ρ2 : ℝ) ^ n) / (n.factorial * (ρ2 : ℝ) ^ n) := by
           field_simp
-          try ring
       _ ≤ |s| ^ n * (n.factorial * Real.sqrt C) / (n.factorial * (ρ2 : ℝ) ^ n) := by gcongr
       _ = Real.sqrt C * (|s| / ρ2) ^ n := by
           rw [div_pow]
           field_simp
-          try ring
   let P : FormalMultilinearSeries ℝ ℝ H := fun n =>
     ContinuousMultilinearMap.mkPiRing ℝ (Fin n) (((n.factorial : ℝ))⁻¹ • x n)
   have hPn : ∀ n, ‖P n‖ = ‖x n‖ / n.factorial := by

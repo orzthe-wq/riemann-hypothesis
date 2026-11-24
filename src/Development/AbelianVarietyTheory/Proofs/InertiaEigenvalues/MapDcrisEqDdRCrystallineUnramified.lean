@@ -1,7 +1,8 @@
 module
 
 public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamComponentsCrystallineLettersFinrankStatement
+public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamComponentsCrystallineLettersFinrank
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeRhamOfIsCrystallineSpan
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -72,19 +73,11 @@ theorem ιV_mulVB (c : K₀) (d : V ⊗[Qp] B) :
   | add a b ha hb => simp only [map_add (f := _), ha, hb]
   | tmul v b => simp [mulVdR, ιV, mulVB, ← IsScalarTower.algebraMap_apply]
 
-theorem act_mulVB (g : G) (c : K₀) (d : V ⊗[Qp] B) :
-    actVB PD ρ g (mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c d) =
-      mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c (actVB PD ρ g d) := by
-  induction d using TensorProduct.induction_on with
-  | zero => simp
-  | add a b ha hb => simp only [map_add (f := _), ha, hb]
-  | tmul v b => simp [actVB, mulVB]
-
 theorem mulVB_mem (c : K₀) {d : V ⊗[Qp] B} (hd : d ∈ Dcris PD ρ) :
     mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c d ∈ Dcris PD ρ := by
   rw [CrisDR.mem_Dcris_iff] at hd ⊢
   intro g
-  rw [act_mulVB, hd g]
+  rw [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.actVB_mulVB, hd g]
 
 theorem mulVdR_one (y : V ⊗[Qp] BdR) :
     mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) 1 y = y := by
@@ -150,7 +143,7 @@ theorem map_Dcris_eq_DdR : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : L
   obtain ⟨hdr, hspan⟩ := CrisDR.isDR_of_isCrys l P AI T K LL V ρ hc
   have h := map_Dcris_eq (P.PD K) ρ hb.2 hspan
   refine ⟨h, fun τ => ?_⟩
-  obtain ⟨h1, -, h2⟩ := (GlobalTheory.T.deRhamComponents_crystallineLetters_finrank l P AI T K LL V ρ).1 τ
+  obtain ⟨h1, -, h2⟩ := (_root_.GlobalTheory.Per.Components.components_finrank l P AI T K LL V ρ).1 τ
   exact ⟨h1, h2 hdr, FildR_eq (P.PD K) ρ hb.2 h τ⟩
 
 end GlobalTheory.Per.DdREqDcris

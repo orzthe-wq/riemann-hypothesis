@@ -50,18 +50,18 @@ public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CharacterOrt
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem second_gram_property : Formalism.FourierDecayAlt.A5.BlockKernelPosSemidef := second_gram_of_gram_and_modulus kernel_gram_property modulus_positive_multiplicative
+theorem second_gram_property : Formalism.FourierDecayAlt.A5.BlockKernelPosSemidef := _root_.Formalism.FourierDecayAlt.P.A5x6.second_gram_of_kernel_gram kernel_gram_property modulus_positive_multiplicative
 
 namespace FirstKernelProperties
 
 theorem first_kernel_periodic_gram_parseval :
     Formalism.FourierDecayAlt.A5.SingleBlockPeriodic ∧ Formalism.FourierDecayAlt.A5.SingleBlockPosSemidef ∧ Formalism.FourierDecayAlt.A5.SingleBlockParseval :=
-  first_kernel_properties_of_hypotheses first_kernel_explicit_formula integral_points_finite characterOrthogonalityDual
+  first_kernel_properties_of_hypotheses _root_.Formalism.FourierDecayAlt.P.A5x8.first_kernel_formula_proof integral_points_finite characterOrthogonalityDual
     characterOrthogonality cokernel_card_inverse_modulus second_gram_property
 
 end FirstKernelProperties
 
-theorem first_kernel_periodic : Formalism.FourierDecayAlt.A5.SingleBlockPeriodic := A5x6.first_kernel_periodic_of_formula first_kernel_explicit_formula
+theorem first_kernel_periodic : Formalism.FourierDecayAlt.A5.SingleBlockPeriodic := A5x6.first_kernel_periodic_of_formula _root_.Formalism.FourierDecayAlt.P.A5x8.first_kernel_formula_proof
 
 theorem first_kernel_gram_property : Formalism.FourierDecayAlt.A5.SingleBlockPosSemidef := A5x6.first_kernel_gram_of_second second_gram_property
 

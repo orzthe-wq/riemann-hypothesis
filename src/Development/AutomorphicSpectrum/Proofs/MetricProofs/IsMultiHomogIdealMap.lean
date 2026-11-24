@@ -48,6 +48,7 @@ import GroundTheory.HeightsAndTheta.Heights.HodgeLowerBound.FrameDefinitions.Per
 import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.GenericFibreKerTarget
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.IsRatSectionOn
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSeventh
 
 @[expose] public section
 
@@ -69,10 +70,6 @@ theorem isMultiHomog_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f
   have h1 := hf m1 hm1 k
   have h2 := hg m2 hm2 k
   simp [Finset.sum_add_distrib, h1, h2]
-
-theorem isMultiHomog_rename {κ : K → K'} {v : (Σ k, ι k) → (Σ k, ι' k)} (hv : IsBlockMap κ v) {f : MRing ι}
-    {a : K → ℕ} (hf : IsMultiHomog f a) : IsMultiHomog (rename v f : MRing ι') (Function.extend κ a 0) := by
-  apply PositivityTheory.UnitarySelfGeneration.ialg_rename <;> assumption
 
 theorem eval_map_rename (zt : (Σ k, ι' k) → ℂ) (v : (Σ k, ι k) → (Σ k, ι' k)) (s : MRing ι) :
     eval zt (map (Int.castRingHom ℂ) (rename v s : MRing ι')) = eval (fun p => zt (v p)) (map (Int.castRingHom ℂ) s) := by
@@ -101,7 +98,7 @@ theorem isMultiHomogIdeal_map {κ : K → K'} {v : (Σ k, ι k) → (Σ k, ι' k
   refine ⟨_ '' S, ?_, Ideal.map_span _ _⟩
   rintro _ ⟨s, hs, rfl⟩
   obtain ⟨a, ha⟩ := hS s hs
-  exact ⟨_, isMultiHomog_rename hv ha⟩
+  exact ⟨_, _root_.GlobalTheory.CompanionTheory.Ar.PB.BaseEtale.isMultiHomog_rename_block hv ha⟩
 
 end Forms
 
@@ -129,15 +126,6 @@ end GlobalTheory.CompanionTheory.Ar.PB.CovMap
 
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovMap
-
-section Corr
-
-variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
-  {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ} {M : FlagModel y Ψ N j} {K' : Type} [Fintype K']
-  {ι' : K' → Type} [∀ k, Fintype (ι' k)] {Φ' : Type} [Field Φ'] {y' : (Σ k, ι' k) → Φ'}
-  {M' : FlagModel y' Ψ N j}
-
-end Corr
 
 end GlobalTheory.CompanionTheory.Ar.PB.CovMap
 

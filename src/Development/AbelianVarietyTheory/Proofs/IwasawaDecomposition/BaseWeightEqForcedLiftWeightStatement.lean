@@ -48,7 +48,3 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 
 
 
-theorem _root_.GlobalTheory.T.baseWeight_eq_forcedLiftWeight : ∀ (X : Stages) (i : Fin X.toD7.R.m) (τ : X.B.fields.Tau) (a : Fin X.B.R.nV),
-    (X.B.wts.lamV ((i : ℕ) + 1) τ).w a =
-      (Bridge.lamLdef (D := X.toD7) (Vc X.toD7 i).rank ((i : ℕ) + 1) τ).w (Fin.cast (LiftBrg.rkEq X i) a) := by
-  first | exact @GlobalTheory.Mem.LiftWt.lamV_eq_lamLdef | exact GlobalTheory.Mem.LiftWt.lamV_eq_lamLdef | (intros; apply GlobalTheory.Mem.LiftWt.lamV_eq_lamLdef <;> assumption)

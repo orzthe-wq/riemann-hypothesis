@@ -326,7 +326,7 @@ theorem _root_.GlobalTheory.ClassFin.exists_real_translate_isMinVec : ∀ (ι : 
       star_trivial, Complex.re_sum]
     rw [← Finset.sum_add_distrib]
     refine Finset.sum_congr rfl fun k _ => ?_
-    simp [Complex.mul_re] <;> ring
+    simp [Complex.mul_re]
   have hRpsd : R.PosSemidef := by
     rw [hRAB]
     exact (posSemidef_self_mul_conjTranspose _).add (posSemidef_self_mul_conjTranspose _)

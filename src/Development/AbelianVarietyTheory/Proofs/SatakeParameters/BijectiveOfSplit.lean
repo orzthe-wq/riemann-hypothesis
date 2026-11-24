@@ -148,7 +148,7 @@ theorem trGL_ofChar (i : k ≃+* k') (hi' : Continuous i.symm) (χ : kˣ →* �
   have H := φ.toIntertwiningMap.isIntertwining' (Matrix.GeneralLinearGroup.map (n := Fin 1) i.symm.toRingHom g)
   refine LinearMap.ext fun x => ?_
   have Hx := LinearMap.congr_fun H x
-  simp only [LinearMap.coe_comp, Function.comp_apply] at Hx ⊢
+  simp only [LinearMap.coe_comp] at Hx ⊢
   change φ.toLinearEquiv _ = _
   refine Hx.trans ?_
   erw [Function.comp_apply, LinearMap.comp_apply, SmGL.twist_apply, SmGL.twist_apply]

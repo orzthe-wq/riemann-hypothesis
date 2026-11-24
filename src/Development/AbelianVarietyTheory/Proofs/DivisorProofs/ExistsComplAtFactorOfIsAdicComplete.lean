@@ -1,6 +1,8 @@
 module
 
-public import Mathlib
+import Mathlib
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Mathlib.RingTheory.RegularLocalRing.Polynomial
 public import Development.AbelianVarietyTheory.Definitions.Divisors.GalRigidOfSurjective
 public import Development.AbelianVarietyTheory.Definitions.Divisors.MinSt5OfMinSt4
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsChartMember

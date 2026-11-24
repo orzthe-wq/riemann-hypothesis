@@ -159,7 +159,7 @@ theorem cA_split {C : Type} [DecidableEq C] (col : P → C) (hq : ∀ p p', col 
     cA col b F = cA (fun x : {p // ¬ q p} => col x.1) (fun x => b x.1)
       (cA (fun x : {p // q p} => col x.1) (fun x => b x.1) (spl q F)) := by
 
-  simp only [cA, alt, colG, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, map_sum, map_smul, pm, LinearMap.pi_apply]
+  simp only [cA, alt, colG, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, pm, LinearMap.pi_apply]
   simp_rw [Finset.smul_sum, smul_smul, spl_apply]
   rw [← Finset.sum_product']
   symm

@@ -75,7 +75,6 @@ theorem continuous_smul_tup {F E : Type} [Field F] [NumberField F] [Field E] [Al
     continuous_pi fun i => continuous_const.matrix_mulVec (continuous_apply i)
   first
   | exact hm _
-  | exact hm ((HA.mat (AF F) σ J g : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) _)
 
 theorem nuInv_of (hU : OmUniq) (hI : OmInv) : NuInv := by
 
@@ -83,8 +82,6 @@ theorem nuInv_of (hU : OmUniq) (hI : OmInv) : NuInv := by
   haveI : FiniteDimensional F E := by
     first
     | infer_instance
-    | exact Module.Finite.of_restrictScalars_finite ℚ F E
-    | exact FiniteDimensional.right ℚ F E
   have hm : Measurable (fun y : Fin a → Fin M → AF F ⊗[F] E => g • y) :=
     (continuous_smul_tup σ J g).measurable
   have heq := hU F E σ hCM M J hJ h1 h2 a ha haM X0 hT hdet ψ hψ _ _
@@ -97,8 +94,6 @@ theorem omUniq_of (hD : DetAdm) : OmUniq := by
   haveI : FiniteDimensional F E := by
     first
     | infer_instance
-    | exact Module.Finite.of_restrictScalars_finite ℚ F E
-    | exact FiniteDimensional.right ℚ F E
   refine hD F E σ hCM M J hJ h1 h2 a ha haM X0 hT hdet ν1 ν2
     (fun K hK => nuFin_gen σ J _ hT ψ ν1 hν1 K hK) (fun K hK => nuFin_gen σ J _ hT ψ ν2 hν2 K hK) ?_
   rintro Φ ⟨d, b, Φinf, Φf, Φv, hc, hcs, hpure, hprod⟩

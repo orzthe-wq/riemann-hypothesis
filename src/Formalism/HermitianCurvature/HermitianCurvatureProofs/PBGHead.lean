@@ -177,7 +177,7 @@ theorem _root_.Formalism.FourierDecayAlt.P.head_algebra_relations : Formalism.Fo
       congr 2
       ext a l
       simp only [Matrix.of_apply, Matrix.submatrix_apply]
-      rw [hxi' _ _ (by simp <;> omega), dite_eq_left (by simp [xR, eI] <;> omega)]
+      rw [hxi' _ _ (by simp), dite_eq_left (by simp [xR, eI] <;> omega)]
       congr 1
     · intro a p ha hp
       rw [hxi' a p (by omega), dite_eq_right (by omega)]
@@ -268,7 +268,6 @@ theorem _root_.Formalism.FourierDecayAlt.P.head_algebra_relations : Formalism.Fo
     congr 1
     push_cast
     rw [pow_add]
-    try ring
   have hT : Tm E (u - ((m + 1 : ℕ) : ℂ)) (eI k r ⟨m + 1, by omega⟩) (eI k r ⟨m + 1, by omega⟩) =
       algebraMap ℂ A (u - ((m + 1 : ℕ) : ℂ)) + E (eI k r ⟨m + 1, by omega⟩) (eI k r ⟨m + 1, by omega⟩) := by
     simp [Tm]

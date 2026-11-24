@@ -45,6 +45,7 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsSncPatchRat
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsClopenSpecializationsGenPt
 import Development.WeilBound.CoreStatements.VolumeEquality.OnePieceB
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

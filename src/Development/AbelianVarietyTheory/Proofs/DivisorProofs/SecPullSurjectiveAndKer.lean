@@ -50,9 +50,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace GlobalTheory.CechDR
 
-private theorem spc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
-    (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f :=
-  Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)
+private alias spc := _root_.GlobalTheory.Cris.spMap_comp
 
 private theorem spi {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B}
     (h : spMap f = spMap g) : f = g :=

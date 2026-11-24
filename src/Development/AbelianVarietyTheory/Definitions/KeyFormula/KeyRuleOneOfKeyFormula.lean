@@ -115,7 +115,7 @@ theorem smul_one_row {g : ℕ} (c : ℂ) (i : Fin g) :
   by_cases h : j = i
   · subst h
     simp
-  · simp [Matrix.one_apply, h, Ne.symm h]
+  · simp [h, Ne.symm h]
 
 theorem normalAt_one_iff (x : KeyIn ℂ) (τ : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) :
     NormalAt x τ 1 a b 1 ↔ ∃ u : HolUnif x.P.A x.P.L x.P.g,

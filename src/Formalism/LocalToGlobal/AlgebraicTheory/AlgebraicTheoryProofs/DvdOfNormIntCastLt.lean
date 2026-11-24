@@ -55,6 +55,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.SqrtInUnramifiedCompletion
 
 @[expose] public section
 
@@ -81,25 +82,10 @@ theorem herm_smul (H : Sesq V) (s : ℂ) (hs : s * conj s = 1) (x y : V) : H (s 
   rw [LinearMap.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, smul_eq_mul]
   linear_combination (H x y) * hs
 
-theorem opU_cmul (H : Sesq V) (x : V) (c : ℂ) (G : V → ℂ) (z : V) :
-    opU H x (fun v => c * G v) z = c * opU H x G z := by
-  simp only [opU]
-  ring
-
-theorem opU_fsum {ι : Type} (H : Sesq V) (x : V) (S : Finset ι) (G : ι → V → ℂ) (z : V) :
-    opU H x (fun v => ∑ i ∈ S, G i v) z = ∑ i ∈ S, opU H x (G i) z := by
-  simp only [opU, Finset.sum_mul]
-
 theorem mem_cLat {c : ℂ} {Λ : AddSubgroup V} {a : V} (h : a ∈ cLat c Λ) : ∃ l ∈ Λ, a = c • l := by
   unfold cLat imgLat at h
   obtain ⟨l, hl, rfl⟩ := AddSubgroup.mem_map.mp h
   exact ⟨l, hl, rfl⟩
-
-theorem altE_int {H : Sesq V} {Λ : AddSubgroup V} (hsd : IsSelfDual H Λ) {x y : V} (hx : x ∈ Λ) (hy : y ∈ Λ) :
-    ∃ m : ℤ, altE H x y = m := by
-  unfold IsSelfDual at hsd
-  have hx' : x ∈ dualLat H Λ := by rw [hsd]; exact hx
-  exact hx' y hy
 
 theorem altE_smul_right (H : Sesq V) (x y : V) (c : ℕ) : altE H x ((c : ℂ) • y) = c * altE H x y := by
   simp [altE, LinearMap.map_smulₛₗ]
@@ -109,7 +95,7 @@ theorem altE_smul_left (H : Sesq V) (x y : V) (c : ℕ) : altE H ((c : ℂ) • 
 
 theorem q_int (H : Sesq V) (hH : IsHerm H) {Λ : AddSubgroup V} (hsd : IsSelfDual H Λ) (dK : ℕ) {l : V}
     (hl : l ∈ Λ) (hω : omegaK dK • l ∈ Λ) : ∃ k : ℤ, qOf (Real.sqrt dK / 2) H l = k := by
-  obtain ⟨m, hm⟩ := altE_int hsd hω hl
+  obtain ⟨m, hm⟩ := _root_.Formalism.L2.Th1.H.CharacterSumTripleLemmas.int_of_selfDual hsd hω hl
   refine ⟨m, ?_⟩
   rw [← hm]
   have hr : (H l l).im = 0 := by
@@ -161,19 +147,8 @@ theorem norm_natCast_eq (n : ℕ) : ‖(n : ℂ_[p])‖ = ‖(n : ℚ_[p])‖ :=
   congr 1
   exact (map_natCast (UniformSpace.Completion.coeRingHom : PadicAlgCl p →+* ℂ_[p]) n).symm
 
-theorem norm_intCast_eq (T : ℤ) : ‖(T : ℂ_[p])‖ = ‖(T : ℚ_[p])‖ := by
-  have h := PadicComplex.norm_extends' p (T : ℚ_[p])
-  rw [map_intCast] at h
-  rw [← h]
-  congr 1
-  exact (map_intCast (UniformSpace.Completion.coeRingHom : PadicAlgCl p →+* ℂ_[p]) T).symm
-
-theorem norm_intCast_le (T : ℤ) : ‖(T : ℂ_[p])‖ ≤ 1 := by
-  rw [norm_intCast_eq]
-  exact Padic.norm_int_le_one T
-
 theorem dvd_of_norm_intCast_lt (T : ℤ) (h : ‖(T : ℂ_[p])‖ < 1) : (p : ℤ) ∣ T := by
-  rw [norm_intCast_eq] at h
+  rw [_root_.Formalism.L2.Th1.D.GaussNormEstimates.normZ_eq] at h
   have h' : ‖(T : ℤ_[p])‖ < 1 := by rwa [PadicInt.norm_def, PadicInt.coe_intCast]
   exact (PadicInt.norm_int_lt_one_iff_dvd T).mp h'
 
@@ -183,7 +158,7 @@ private theorem norm_two_omegaK_sub_one_and_norm_omegaK_le (dK : ℕ) (hp2 : p �
   have hp : p.Prime := Fact.out
   have hone : ∀ d : ℕ, ¬ p ∣ d → ‖(d : ℂ_[p])‖ = 1 := by
     intro d hd
-    have h1 : ‖((d : ℤ) : ℂ_[p])‖ ≤ 1 := norm_intCast_le (d : ℤ)
+    have h1 : ‖((d : ℤ) : ℂ_[p])‖ ≤ 1 := _root_.Formalism.L2.Th1.D.GaussNormEstimates.normZ_le (d : ℤ)
     have h2 : ¬ ‖((d : ℤ) : ℂ_[p])‖ < 1 := fun h => hd (Int.natCast_dvd_natCast.mp (dvd_of_norm_intCast_lt _ h))
     push_cast at h1 h2
     exact le_antisymm h1 (not_lt.mp h2)
@@ -213,9 +188,9 @@ private theorem norm_int_add_int_mul_omegaK_le_one (dK : ℕ) (hp2 : p ≠ 2) (h
   haveI := PadicComplex.isUltrametricDist p
   have hw := (norm_two_omegaK_sub_one_and_norm_omegaK_le dK hp2 hpd ι).2
   rw [map_add (f := _), map_mul, map_intCast, map_intCast]
-  refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (norm_intCast_le a) ?_)
+  refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (_root_.Formalism.L2.Th1.D.GaussNormEstimates.normZ_le a) ?_)
   rw [norm_mul]
-  exact mul_le_one₀ (norm_intCast_le b) (norm_nonneg _) hw
+  exact mul_le_one₀ (_root_.Formalism.L2.Th1.D.GaussNormEstimates.normZ_le b) (norm_nonneg _) hw
 
 theorem norm_pi_one (dK : ℕ) (hp2 : p ≠ 2) (hpd : ¬ p ∣ dK) (ι : ℂ ≃+* ℂ_[p]) (π : ℂ) (hq : IsQInt dK π)
     (hpp : π * conj π = p) (hlt : ‖ι (conj π)‖ < 1) : ‖ι π‖ = 1 := by
@@ -349,7 +324,6 @@ theorem xi_swap : XiSwap := by
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_
   field_simp
-  try ring
 
 theorem xiEt_of (hE : EtLoc) : XiEt := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hOK n _ _ h Λ hH _ _ hsd hSt θ hθ p _ hp2 hpd ι hInt hLoc π hπq hpp hlt
@@ -394,13 +368,13 @@ theorem xiEt_of (hE : EtLoc) : XiEt := by
     funext z
     rw [Fintype.sum_prod_type]
     refine Finset.sum_congr rfl fun k _ => ?_
-    rw [hxG, XiTorsion.opU_fsum, Finset.mul_sum]
+    rw [hxG, _root_.Formalism.L2.Th1.H.Inv.opU_finset_sum, Finset.mul_sum]
     symm
     refine (Finset.sum_coe_sort Sa (fun a => r k *
       (xiHat (matH h) (p ^ Fintype.card n) Ψ Sb a * alphaQ (Real.sqrt dK / 2) (matH h) a) *
         Complex.exp (-(Real.pi : ℂ) * Complex.I * (altE (matH h) (t k) a : ℂ)) * opU (matH h) (t k + a) θ z)).trans ?_
     refine Finset.sum_congr rfl fun a _ => ?_
-    rw [XiTorsion.opU_cmul, Formalism.L2.Th1.H.opUMul _ (matH h) hH]
+    rw [_root_.Formalism.L2.Th1.H.Inv.opU_const_mul, Formalism.L2.Th1.H.opUMul _ (matH h) hH]
     ring
   have hT := (Formalism.L2.Th1.H.FormalGroupLawNegation.taylorMv_sum Formalism.L2.Th1.H.taylorMvLinear (Finset.univ : Finset (κx × Sa)) cc
     (fun x => opU (matH h) (t' x) θ)
@@ -427,7 +401,7 @@ theorem xiEt_of (hE : EtLoc) : XiEt := by
 
     rw [e, map_sum]
     refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun b hb => ?_
-    obtain ⟨m, hm⟩ := XiTorsion.altE_int hsd (hSb.1 b hb) (hpa a ha)
+    obtain ⟨m, hm⟩ := _root_.Formalism.L2.Th1.H.CharacterSumTripleLemmas.int_of_selfDual hsd (hSb.1 b hb) (hpa a ha)
     rw [XiTorsion.altE_smul_right] at hm
     have e2 : Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE (matH h) b a : ℂ)) =
         Complex.exp ((Real.pi : ℂ) * Complex.I * ((-2 * altE (matH h) b a : ℝ) : ℂ)) := by
@@ -445,7 +419,7 @@ theorem xiEt_of (hE : EtLoc) : XiEt := by
       rw [e]; unfold alphaQ; rw [hm]
       exact XiTorsion.norm_exp_piI ι _ 1 one_pos m (by simp)
     have h4 : ‖ι (Complex.exp (-(Real.pi : ℂ) * Complex.I * (altE (matH h) (t k) a : ℂ)))‖ = 1 := by
-      obtain ⟨m, hm⟩ := XiTorsion.altE_int hsd (ht k) (hpa a haS)
+      obtain ⟨m, hm⟩ := _root_.Formalism.L2.Th1.H.CharacterSumTripleLemmas.int_of_selfDual hsd (ht k) (hpa a haS)
       rw [XiTorsion.altE_smul_left, XiTorsion.altE_smul_right] at hm
       have e2 : Complex.exp (-(Real.pi : ℂ) * Complex.I * (altE (matH h) (t k) a : ℂ)) =
           Complex.exp ((Real.pi : ℂ) * Complex.I * ((-altE (matH h) (t k) a : ℝ) : ℂ)) := by
@@ -463,7 +437,7 @@ theorem xiEt_of (hE : EtLoc) : XiEt := by
     obtain ⟨m, k, hm⟩ := hπq
     exact ⟨N * m, N * k, by rw [hm]; push_cast; ring⟩
   have hαn : ‖ι ((N : ℂ) * π)‖ = 1 := by
-    rw [map_mul, map_natCast, norm_mul, LocalJetRescaling.norm_natCast p hpN, one_mul]
+    rw [map_mul, map_natCast, norm_mul, _root_.ReciprocityTheory.ChartRestriction.L1.norm_natCast_Cl_of_not_dvd p hpN, one_mul]
     exact XiTorsion.norm_pi_one dK hp2 hpd ι π hπq hpp hlt
   have hαt : ∀ x, ((N : ℂ) * π) • t' x ∈ Λ := by
     rintro ⟨k, a, haS⟩
@@ -481,7 +455,7 @@ theorem xiEt_of (hE : EtLoc) : XiEt := by
     · rw [mul_smul]; exact hΛq _ (hnat N) _ (hpa a haS)
   have hA' : ∀ j x, ‖A j x‖ ≤ ‖((N * p : ℕ) : ℂ_[p])‖ := by
     intro j x
-    rw [Nat.cast_mul, norm_mul, LocalJetRescaling.norm_natCast p hpN, one_mul]
+    rw [Nat.cast_mul, norm_mul, _root_.ReciprocityTheory.ChartRestriction.L1.norm_natCast_Cl_of_not_dvd p hpN, one_mul]
     exact hA j x
   exact (hE a₀ b₀ c₀ dK ha hdK lam hlam hOK n h Λ hsd hSt θ hθ p hp2 hpd ι hInt hLoc (κx × Sa) r' t'
     ((N : ℂ) * π) (N * p) hr' hαq hαn (Nat.mul_pos hN hp.pos) hαt hMt J v hv ν A hA').1

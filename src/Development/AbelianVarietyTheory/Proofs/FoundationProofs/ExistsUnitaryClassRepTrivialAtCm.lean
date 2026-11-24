@@ -100,7 +100,7 @@ theorem exists_unit_det {K B : Type} [Field K] [CommRing B] [IsArtinianRing B] (
     rw [RingHom.map_det]
     congr 1
     ext i j
-    by_cases hij : i = j <;> simp [Matrix.one_apply, hij] <;> exact mul_comm _ _
+    by_cases hij : i = j <;> simp [hij] <;> exact mul_comm _ _
   have hfin : (⋃ m : MaximalSpectrum B, {z : K | (1 + ι z • h).det ∈ m.asIdeal}).Finite :=
     Set.finite_iUnion key
   obtain ⟨z, hz, hn⟩ := hZ.exists_notMem_finite hfin
@@ -162,7 +162,7 @@ theorem mat_inv {R : Type} [CommRing R] (O : Subring R) {n : ℕ} (a : O) (ha : 
   refine ⟨(1 + a • X')⁻¹.map O.subtype, fun i j => ((1 + a • X')⁻¹ i j).2, ?_⟩
   have e : (1 + (a : R) • X) = (1 + a • X').map O.subtype := by
     ext i j
-    by_cases hij : i = j <;> simp [Matrix.one_apply, hij, X'] <;> rfl
+    by_cases hij : i = j <;> simp [hij, X'] <;> rfl
   rw [e, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _)]
 
 section Ad

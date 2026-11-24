@@ -91,8 +91,7 @@ theorem odd_rkV (D : D7) (i j : ℕ) : Odd (rkV D i j) ↔ ¬ Odd (i + j) := by
     exact ⟨a + b - 1, by unfold Ranks.r; omega⟩
   have hs : Odd (sLen D) := by unfold sLen; exact hr.add_even (by decide)
   unfold rkV
-  simp only [Nat.odd_add, Nat.odd_mul, Nat.even_mul, ← Nat.not_odd_iff_even, hr, ht, hs, not_true, or_false, true_iff,
-    iff_true]
+  simp only [Nat.odd_add, Nat.odd_mul, ← Nat.not_odd_iff_even, hr, ht, hs, true_iff]
   tauto
 
 section Facts
@@ -100,15 +99,15 @@ variable (D : D7) (τ : D.what₂.Tau)
 
 theorem grid_b {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ D.R.m) : ((grid D τ).b l : ℚ) = (D.hc τ).b ⟨l - 1, by omega⟩ := by
   have := (GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D) (cen D τ)).2.1 ⟨l - 1, by omega⟩
-  rw [this]; congr 2; simp only [Fin.val_mk]; omega
+  rw [this]; congr 2; simp only; omega
 
 theorem grid_e {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ D.R.m) : ((grid D τ).e l : ℚ) = (D.hc τ).e ⟨l - 1, by omega⟩ := by
   have := (GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D) (cen D τ)).2.2 ⟨l - 1, by omega⟩
-  rw [this]; congr 2; simp only [Fin.val_mk]; omega
+  rw [this]; congr 2; simp only; omega
 
 theorem grid_v {i : ℕ} (h1 : 2 ≤ i) (h2 : i ≤ D.R.k) : ((grid D τ).v i : ℚ) = (D.hc τ).v ⟨i - 2, by omega⟩ := by
   have := (GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D) (cen D τ)).1 ⟨i - 2, by omega⟩
-  rw [this]; congr 2; simp only [Fin.val_mk]; omega
+  rw [this]; congr 2; simp only; omega
 
 theorem grid_be {l : ℕ} (h1 : 1 ≤ l) (h2 : l ≤ D.R.m) :
     ((D.R.t : ℚ) + 3) / 2 ≤ (grid D τ).e l - (grid D τ).b l := by

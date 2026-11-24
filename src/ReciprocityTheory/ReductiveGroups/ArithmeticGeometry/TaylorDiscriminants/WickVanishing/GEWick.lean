@@ -102,10 +102,8 @@ theorem foldr_add (L : List ι) (m : ι →₀ ℕ) (f g : PS k 1 d) :
 private theorem Dof_C_mul (v : Fin d → k) (r : k) (f : PS k 1 d) :
     Dof F v (C r * f) = C r * Dof F v f := by
   first
-  | (simp only [Dof, ← MvPowerSeries.smul_eq_C_mul, map_smul, mul_smul_comm, Finset.smul_sum]; done)
+  | (simp only [Dof, ← MvPowerSeries.smul_eq_C_mul, Finset.smul_sum]; done)
   | (simp only [Dof, ← MvPowerSeries.smul_eq_C_mul, Derivation.map_smul, mul_smul_comm, Finset.smul_sum]; done)
-  | (simp only [Dof, Finset.mul_sum, Derivation.leibniz, smul_eq_mul, mul_add, Finset.sum_add_distrib]; done)
-  | (have hp := (pderiv : Unit))
 
 theorem foldr_Cmul (L : List ι) (m : ι →₀ ℕ) (r : k) (f : PS k 1 d) :
     L.foldr (fun l h => (Dof F (u l))^[m l] h) (C r * f) =
@@ -226,8 +224,6 @@ theorem degLt_pderiv {n : ℕ} {P : MvPolynomial ι k} (h : DegLt (n + 1) P) (l 
         first
         | rw [← hs', Finsupp.degree_add, Finsupp.degree_single]
         | rw [← hs', map_add (f := _), Finsupp.degree_single]
-        | (rw [← hs']; simp [Finsupp.degree_add])
-        | (rw [← hs']; simp)
       exact hc (h s (by omega))
   · rw [if_neg hsm]
 
@@ -245,10 +241,10 @@ theorem degLt_secondOrder (c : ι → ι → k) {n : ℕ} {P : MvPolynomial ι k
 theorem degLt_iterate (c : ι → ι → k) (n j : ℕ) {P : MvPolynomial ι k} (h : DegLt (n + j) P) :
     DegLt n ((secondOrder k c)^[j] P) := by
   induction j generalizing P with
-  | zero => first | exact h | simpa using h
+  | zero => first | exact h
   | succ j ih =>
     rw [Function.iterate_succ_apply]
-    exact ih (degLt_secondOrder c (n := n + j) (by first | exact h | simpa [Nat.add_assoc] using h))
+    exact ih (degLt_secondOrder c (n := n + j) (by first | exact h))
 
 theorem eq_zero_of_degLt_zero {P : MvPolynomial ι k} (h : DegLt 0 P) : P = 0 := by
   ext m
@@ -304,7 +300,6 @@ theorem exp_cut (t : k) (q : PS k 1 d) (hq0 : constantCoeff q = 0) (N : ℕ) :
     first
     | (simp only [map_sub, map_sum, map_smul, PowerSeries.coeff_exp, PowerSeries.coeff_X_pow, smul_eq_mul,
         mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, hm', if_true, sub_self]; done)
-    | (simp [PowerSeries.coeff_exp, PowerSeries.coeff_X_pow, hm']; done)
   obtain ⟨R, hR⟩ := hdvd
   have hexp : PowerSeries.exp k = (∑ n ∈ Finset.range (N + 1),
       algebraMap ℚ k (1 / (n.factorial : ℚ)) • (PowerSeries.X : PowerSeries k) ^ n) +
@@ -316,7 +311,6 @@ theorem exp_cut (t : k) (q : PS k 1 d) (hq0 : constantCoeff q = 0) (N : ℕ) :
   have hs : PowerSeries.HasSubst (t • q) := by
     first
     | exact PowerSeries.HasSubst.of_constantCoeff_zero hc
-    | (show IsNilpotent _; rw [hc]; exact IsNilpotent.zero)
   have key : ∀ f : PowerSeries k, PowerSeries.subst (t • q) f = PowerSeries.substAlgHom hs f := by
     intro f
     first
@@ -324,16 +318,14 @@ theorem exp_cut (t : k) (q : PS k 1 d) (hq0 : constantCoeff q = 0) (N : ℕ) :
   have hX : PowerSeries.substAlgHom hs (PowerSeries.X : PowerSeries k) = t • q := by
     first
     | exact PowerSeries.substAlgHom_X hs
-    | (rw [← key]; exact PowerSeries.subst_X hs)
   refine ⟨C (t ^ (N + 1)) * PowerSeries.subst (t • q) R, ?_⟩
   unfold FB.expS
   rw [hexp]
 
   simp only [key, map_add (f := _), map_sum, map_mul, map_pow, map_smul, hX]
-  simp only [smul_pow, smul_smul, MvPowerSeries.smul_eq_C_mul, map_mul, map_pow]
+  simp only [MvPowerSeries.smul_eq_C_mul]
   congr 1
   all_goals first
-    | rfl
     | ring1
     | (refine Finset.sum_congr rfl fun n _ => ?_; ring1)
 
@@ -392,14 +384,9 @@ theorem gauge_exp_identity (hA : ExpAddZeroConstant) (hE : ConstantCoeffSubstitu
     have hs : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d => a p.1 p.2) := by
       first
       | exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => hz p.1 p.2)
-      | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent
-          (fun p => by rw [hz p.1 p.2]; exact IsNilpotent.zero)
-      | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent
-          (fun p => by rw [hz p.1 p.2]; exact IsNilpotent.zero)
     unfold ev
     first
     | exact MvPowerSeries.subst_add hs f g
-    | (rw [← MvPowerSeries.coe_substAlgHom hs]; exact map_add _ f g)
   have hsplit : B.hL k h' w0 =
       B.hL k h w0 + ev (n := 1) ![pt k d 0, comp1 (B.actK k w0) (pt k d 0)] (h' - h) := by
     unfold FB.hL

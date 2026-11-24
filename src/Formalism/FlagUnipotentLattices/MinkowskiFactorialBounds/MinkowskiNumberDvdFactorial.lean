@@ -57,6 +57,8 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.NumberTheory.Padics.PadicVal.Basic
+import Formalism.HyperbolicPlaceProducts.SubgroupIndexCounts.CountO
+import Formalism.HyperbolicPlaceProducts.SecondLevelArithmeticNorm
 
 @[expose] public section
 
@@ -88,7 +90,7 @@ theorem coefficient_field_bound : Formalism.HermitianLatticeCounting.S6.CfBound 
   intro f x k hf hx
   have hx1 : (1:ℝ) ≤ x := by exact_mod_cast hx
   have hx0 : (0:ℝ) < x := by linarith
-  have h1 := Formalism.SLP.Final.omegaPow (2 * f) x (by omega) hx
+  have h1 := _root_.Formalism.SLP.P.pow_primeFactors_length_le (2 * f) x (by omega) hx
   have e : (((2 * f : ℕ) : ℝ)) = 2 * (f : ℝ) := by push_cast; ring
   rw [e] at h1 ⊢
   calc (2 * (f:ℝ)) ^ (Nat.primeFactorsList x).length * (x : ℝ) ^ k
@@ -114,7 +116,7 @@ lemma sublatticeCount_of (hS : Formalism.SLP.SubmoduleIndexCountO) (hC : Formali
   exact le_trans h3 (hC f x _ hf hx)
 
 theorem sublattice_count_alt : Formalism.HermitianLatticeCounting.S6.SublatticeCount :=
-  sublatticeCount_of Formalism.SLP.Final.submoduleIndexCountO coefficient_field_bound
+  sublatticeCount_of _root_.Formalism.SLP.P.card_submodules_of_index_le coefficient_field_bound
 
 lemma prod_primepow_dvd (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime) (e : ℕ → ℕ) (n : ℕ)
     (h : ∀ p ∈ s, p ^ e p ∣ n) : ∏ p ∈ s, p ^ e p ∣ n := by
@@ -224,7 +226,7 @@ theorem exterior_power_bound : Formalism.HermitianLatticeCounting.S6.ExtPowerBou
     simp only [Matrix.mul_apply (M := (A * Aᴴ)ᵀ), Matrix.transpose_apply, Matrix.conjTranspose_apply,
       Finset.sum_mul]
     rw [Finset.sum_comm]
-  have h := Formalism.SLP.Final.sesqDet _ _ B 2 hB j u w
+  have h := _root_.Formalism.SLP.P.sesquilinear_determinant_holds _ _ B 2 hB j u w
   rw [hmat, hgram A, hgram A', Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_transpose,
     Matrix.det_conjTranspose, norm_mul, norm_mul, norm_star] at h
   set p := ‖(A * Aᴴ).det‖ with hp
@@ -606,7 +608,7 @@ theorem det_form_bound_field : Formalism.HermitianLatticeCounting.S6.DetBBoundK 
       rw [h2] at h1
       have := hnn (x + η x)
       linarith
-    have hH := Formalism.HadamardInequality.P.hadamard_inequality_holds s N'ᵀ
+    have hH := _root_.Bl.DetNormLeProdRows.goal1 s N'ᵀ
     rw [Matrix.det_transpose] at hH
     have hrow : ∀ b, ∑ a, ‖N'ᵀ b a‖ ^ 2 ≤ 4 * (σ (h (g' b) (g' b))).re := by
       intro b

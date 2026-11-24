@@ -3,48 +3,10 @@ module
 public import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 public import Mathlib.Analysis.CStarAlgebra.Matrix
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.IsClosedEmbeddingToM
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.ExpInPPosDef
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.IntegrableOfDecayVG
 public import Mathlib.Analysis.SpecialFunctions.Exponential
@@ -104,8 +66,7 @@ lemma coefOp_unitary_le_one {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.
 theorem coefOp_le_sqrt_hs (A : Matrix (Fin n) (Fin n) ℂ) :
     ‖Matrix.toEuclideanCLM (𝕜 := ℂ) A‖ ≤ Real.sqrt (S7.hs A) := by
   refine ContinuousLinearMap.opNorm_le_bound _ (Real.sqrt_nonneg _) fun v => ?_
-  have h := coefOp_apply_le_frob A v
-  rwa [← S7.sqrt_hs_frobVG A] at h
+  simpa only [← S7.sqrt_hs_frobVG A] using coefOp_apply_le_frob A v
 
 theorem coefOp_unitary_mul_exp {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ)
     (X : Matrix (Fin n) (Fin n) ℂ) :
@@ -117,8 +78,7 @@ theorem coefOp_unitary_mul_exp {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matr
     let _ : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.frobeniusNormedRing
     let _ : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.frobeniusNormedAlgebra
     refine NormedSpace.map_exp_of_mem_ball (𝕂 := ℂ) _ hc X ?_
-    rw [NormedSpace.expSeries_radius_eq_top]
-    simp
+    simp [NormedSpace.expSeries_radius_eq_top]
   rw [map_mul, hexp]
   calc ‖Matrix.toEuclideanCLM (𝕜 := ℂ) k * NormedSpace.exp (Matrix.toEuclideanCLM (𝕜 := ℂ) X)‖
       ≤ ‖Matrix.toEuclideanCLM (𝕜 := ℂ) k‖ * ‖NormedSpace.exp (Matrix.toEuclideanCLM (𝕜 := ℂ) X)‖ :=
@@ -132,8 +92,7 @@ theorem coefOp_unitary_mul_exp {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matr
 theorem coefOp_kexp {ε : Fin n → Bool} (k : S7.KG ε) (X : Matrix (Fin n) (Fin n) ℂ) :
     ‖Matrix.toEuclideanCLM (𝕜 := ℂ) (S7.toMK k * NormedSpace.exp X)‖ ≤ Real.exp (Real.sqrt (S7.hs X)) := by
   have hk : S7.toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ := by
-    rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]
-    exact (S7.toMK_facts k).2.1
+    simpa [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose] using (S7.toMK_facts k).2.1
   exact coefOp_unitary_mul_exp hk X
 
 end ReciprocityTheory.ChartRestriction.DS

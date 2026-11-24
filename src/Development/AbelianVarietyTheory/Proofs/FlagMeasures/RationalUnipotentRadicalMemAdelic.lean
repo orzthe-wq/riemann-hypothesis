@@ -50,7 +50,7 @@ namespace GlobalTheory.Proof.rational_unipotentRadical_mem_adelic
 theorem sub_one_map {E A : Type} [Field E] [CommRing A] (ι : E →+* A) {n : ℕ}
     (g : Matrix (Fin n) (Fin n) E) : g.map ι - 1 = (g - 1).map ι := by
   ext i j
-  by_cases h : i = j <;> simp [Matrix.one_apply, h]
+  by_cases h : i = j <;> simp [h]
 
 theorem map_mulVec_incl {E A : Type} [Field E] [CommRing A] (ι : E →+* A) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) E) (w : Fin n → E) :
@@ -80,7 +80,7 @@ theorem span_univ {E A : Type} [Field E] [CommRing A] (ι : E →+* A) {n : ℕ}
   apply Submodule.subset_span
   refine ⟨Pi.single j 1, trivial, ?_⟩
   funext i
-  by_cases h : i = j <;> simp [Pi.single_apply, h]
+  by_cases h : i = j <;> simp [h]
 
 theorem inUnipRad_map (I : AutInst) {A : Type} [CommRing A] (σ : I.E →+* I.E) (s : A →+* A)
     (ι : I.E →+* A) (hι : ∀ e, s (ι e) = ι (σ e)) (W : Submodule I.E (Fin I.n → I.E))

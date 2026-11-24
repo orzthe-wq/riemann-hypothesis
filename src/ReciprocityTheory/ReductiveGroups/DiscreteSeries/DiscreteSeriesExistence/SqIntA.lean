@@ -103,7 +103,6 @@ def rt (h : G) : Lp ℂ 2 μ →ₗᵢ[ℂ] Lp ℂ 2 μ := Lp.compMeasurePreserv
 theorem rt_ae (h : G) (f : Lp ℂ 2 μ) : (rt hR h f : G → ℂ) =ᵐ[μ] fun g => f (g * h) := by
   first
   | exact Lp.coeFn_compMeasurePreserving f (hR h)
-  | (unfold rt; exact Lp.coeFn_compMeasurePreserving f (hR h))
 
 theorem rt_rt_inv (h : G) (f : Lp ℂ 2 μ) : rt hR h (rt hR h⁻¹ f) = f := by
   apply Lp.ext
@@ -158,12 +157,10 @@ theorem proj_act (hone : ρ 1 = 1) (hmul : ∀ a b, ρ (a * b) = (ρ a).comp (ρ
     intro z
     first
     | exact Submodule.starProjection_apply_mem _ z
-    | (rw [Submodule.starProjection_apply]; exact ((graph μ ρ w₀).orthogonalProjection z).2)
   have horth : ∀ z, z - (graph μ ρ w₀).starProjection z ∈ (graph μ ρ w₀)ᗮ := by
     intro z
     first
     | exact Submodule.sub_starProjection_mem_orthogonal z
-    | (rw [Submodule.starProjection_apply]; exact Submodule.sub_orthogonalProjection_mem_orthogonal z)
   apply Submodule.eq_starProjection_of_mem_of_inner_eq_zero (act_mem hR hmul w₀ h (hmemP y))
   intro z hz
   rw [← act_act_inv hR hone hmul h z, inner_sub_left, act_inner hR hiso, act_inner hR hiso,
@@ -279,13 +276,11 @@ theorem memLp_of_ne (hone : ρ 1 = 1) (hmul : ∀ a b, ρ (a * b) = (ρ a).comp 
     intro z
     first
     | exact Submodule.starProjection_apply_mem _ z
-    | (rw [Submodule.starProjection_apply]; exact ((graph μ ρ w₀).orthogonalProjection z).2)
   have hsa : ∀ u v : WithLp 2 (H × Lp ℂ 2 μ),
       ⟪(graph μ ρ w₀).starProjection u, v⟫_ℂ = ⟪u, (graph μ ρ w₀).starProjection v⟫_ℂ := by
     intro u v
     first
     | exact Submodule.inner_starProjection_left_eq_right _ u v
-    | (simp only [Submodule.starProjection_apply]; exact inner_orthogonalProjection_left_eq_right _ u v)
   have hsym : ∀ x y : H, ⟪bop (graph μ ρ w₀) x, y⟫_ℂ = ⟪x, bop (graph μ ρ w₀) y⟫_ℂ := by
     intro x y
     have e0 := hsa (WithLp.toLp 2 (x, (0 : Lp ℂ 2 μ))) (WithLp.toLp 2 (y, (0 : Lp ℂ 2 μ)))
@@ -341,7 +336,6 @@ theorem memLp_of_ne (hone : ρ 1 = 1) (hmul : ∀ a b, ρ (a * b) = (ρ a).comp 
         = WithLp.toLp 2 (x₀, MemLp.toLp _ h0) := by
       first
       | exact Submodule.starProjection_eq_self_iff.mpr hz
-      | (rw [Submodule.starProjection_apply, Submodule.orthogonalProjection_mem_subspace_eq_self ⟨_, hz⟩])
     have e0 := hsa (WithLp.toLp 2 (x₀, (0 : Lp ℂ 2 μ))) (WithLp.toLp 2 (x₀, MemLp.toLp _ h0))
     rw [hPz, WithLp.prod_inner_apply, WithLp.prod_inner_apply] at e0
     have e1 : ⟪((graph μ ρ w₀).starProjection (WithLp.toLp 2 (x₀, (0 : Lp ℂ 2 μ)))).fst, x₀⟫_ℂ

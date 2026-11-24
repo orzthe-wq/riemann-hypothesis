@@ -84,8 +84,6 @@ theorem eval_single_point_id (g : PS S 1 d) : ev (n := 1) ![pt S (n := 1) d 0] g
   rw [h]
   first
   | (rw [MvPowerSeries.subst_self]; rfl)
-  | exact congrFun MvPowerSeries.subst_self g
-  | simp [MvPowerSeries.subst_self]
 
 theorem jet_sL (m : ℕ) (act : Fin d → MvPowerSeries (Fin 1 × Fin d) S)
     (hact : ∀ j, MvPowerSeries.constantCoeff (act j) = 0) (f : PS S 2 d) :
@@ -150,7 +148,6 @@ theorem const_bilL (G : FGLaw S d) (cc : Fin d → Fin d → S) : MvPowerSeries.
     rw [map_mul, const_lg, zero_mul]
   first
   | simp [h0]
-  | (rw [MvPowerSeries.smul_eq_C_mul, map_mul, h0, mul_zero])
 
 variable {O : Type} [CommRing O] [StarRing O]
 
@@ -166,9 +163,6 @@ private theorem const_ev_lemma {R : Type} [CommRing R] {e m n : ℕ} (a : Fin m 
     MvPowerSeries.constantCoeff (ev a f) = 0 := by
   have hs : MvPowerSeries.HasSubst (fun p : Fin m × Fin e => a p.1 p.2) := by
     first
-    | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent
-        (fun p => by rw [ha p.1 p.2]; exact IsNilpotent.zero)
-    | exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun p => ha p.1 p.2)
     | exact ⟨fun p => by rw [ha p.1 p.2]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩
   unfold ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.ev
   rw [MvPowerSeries.constantCoeff_subst hs]

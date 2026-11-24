@@ -60,8 +60,6 @@ theorem subQuot_bot_equiv_of_bijective {G V W : Type} [Group G] [AddCommGroup V]
   have hbot : (⊥ : Subrepresentation ρ).toSubmodule = ⊥ := by
     first
       | rfl
-      | simp
-      | (ext v; simp)
   have hp : Submodule.comap S.toSubmodule.subtype (⊥ : Subrepresentation ρ).toSubmodule = ⊥ := by
     rw [hbot, Submodule.comap_bot, Submodule.ker_subtype]
   let e := (Submodule.quotEquivOfEqBot _ hp).trans (LinearEquiv.ofBijective O hO)

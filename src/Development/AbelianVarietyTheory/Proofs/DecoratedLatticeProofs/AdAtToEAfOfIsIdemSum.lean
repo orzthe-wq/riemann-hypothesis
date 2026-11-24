@@ -170,19 +170,12 @@ variable {D : D7}
 theorem finM_rfl (V : HSp D) (x : GA D V) : finM V rfl x = (Formalism.L2.Theta.mt V x).map (toEAf D) := by
   simp [finM, finCongr_refl]
 
-theorem mt_mul' (V : HSp D) (x y : GA D V) :
-    Formalism.L2.Theta.mt V (x * y) = Formalism.L2.Theta.mt V x * Formalism.L2.Theta.mt V y := by
-  show (matHom V (x * y)).1 = (matHom V x).1 * (matHom V y).1
-  rw [map_mul, Units.val_mul]
-
-theorem mt_one' (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by
-  show (matHom V 1).1 = 1
-  rw [map_one, Units.val_one]
+alias mt_mul' := _root_.GlobalTheory.BesselCompare.mt_mul
 
 theorem inv_val_eq (V : HSp D) (x : GA D V) (Y : GL (Fin V.rank) (EF D)) (hY : finM V rfl x = Y.1) :
     (Y⁻¹ : GL (Fin V.rank) (EF D)).1 = (Formalism.L2.Theta.mt V x⁻¹).map (toEAf D) := by
   have h1 : (Formalism.L2.Theta.mt V x⁻¹).map (toEAf D) * Y.1 = 1 := by
-    rw [← hY, finM_rfl, ← Matrix.map_mul, ← mt_mul', inv_mul_cancel, mt_one',
+    rw [← hY, finM_rfl, ← Matrix.map_mul, ← mt_mul', inv_mul_cancel, _root_.GlobalTheory.BesselCompare.mt_one,
       Matrix.map_one _ (map_zero _) (map_one _)]
   calc (Y⁻¹ : GL (Fin V.rank) (EF D)).1
       = ((Formalism.L2.Theta.mt V x⁻¹).map (toEAf D) * Y.1) * (Y⁻¹ : GL (Fin V.rank) (EF D)).1 := by

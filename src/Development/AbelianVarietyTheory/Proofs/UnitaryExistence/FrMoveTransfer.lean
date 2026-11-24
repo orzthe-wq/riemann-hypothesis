@@ -9,8 +9,8 @@ public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsObjTwis
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSimilitudeOfAutModLevelIdeal
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsReducedIsNormalSchemeIsLocallyNoetherianOfSmoo
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueFramedPointMoveUniversalTripleStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LevelMoveModuliUniqueUniversalTripleStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueFramedPointMoveUniversalTriple
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LevelMoveModuliUniqueUniversalTriple
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -124,7 +124,7 @@ theorem move_unique (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (Xo : Moduli 
     {ν' : SABMap Xo.univ.t Xo.univ.t ρ'} (i : IsIso ρ) (i' : IsIso ρ')
     (h : IsLevMove ρ ν (liftLa γ) LinearMap.id) (h' : IsLevMove ρ' ν' (liftLa γ) LinearMap.id) :
     ρ = ρ' ∧ ν.φ = ν'.φ :=
-  GlobalTheory.T.levelMove_moduli_unique_universalTriple E H D l Xo c ρ ρ' ν ν' _ _ _ _ hpq (fun a => by simp) (fun a => ⟨0, by simp⟩) i i' h h'
+  _root_.GlobalTheory.levMove_unique E H D l Xo c ρ ρ' ν ν' _ _ _ _ hpq (fun a => by simp) (fun a => ⟨0, by simp⟩) i i' h h'
     (exists_sim hpq hA γ)
 
 theorem frMove_transfer (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (Xo : Moduli D l) (c : Coeff l)
@@ -133,7 +133,7 @@ theorem frMove_transfer (hpq : 1 ≤ D.p + D.q) (hA : l.A.Coprime l.M) (Xo : Mod
     (hy : levR (liftLa γ, LinearMap.id) y y') : FrMove ρ ν y y' := by
   obtain ⟨ρ', ν', i', h', hm⟩ := hy
   obtain ⟨rfl, e⟩ := move_unique hpq hA Xo c γ i i' h h'
-  obtain ⟨⟨w, hw⟩, hu⟩ := GlobalTheory.T.existsUnique_framedPoint_move_universalTriple E H D l Xo c ρ ν h.1 S y
+  obtain ⟨⟨w, hw⟩, hu⟩ := _root_.GlobalTheory.exists_unique_frMove E H D l Xo c ρ ν h.1 S y
   rwa [← hu w y' ν' e.symm hw hm]
 
 theorem liftLa_one_sub (a : D.La) :

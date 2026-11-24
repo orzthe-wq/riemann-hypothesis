@@ -170,13 +170,13 @@ theorem powers_abs {R : Type} [CommRing R] [IsDomain R] [ValuationRing R] (p : �
       (∀ (t : T) (y : pfOb (R := R) B hB ⟶ j.obj t), ∃! φ : t₀ ⟶ t, g ≫ j.map φ = y) ∧
       Almost (Ideal.span (Set.range r)) ((tensF p R N).map g).hom) :
     ∃ P : Powers j A, P.Good j (tensF p R N) (Ideal.span (Set.range r)) := by
-  choose K iK aK ι hι using fun n => Leaf.wp_ex A.obj B n
+  choose K iK aK ι hι using fun n => _root_.GlobalTheory.CompanionTheory.AlgCoproduct.exists_isWP A.obj B n
   let _ : ∀ n, Algebra R (K n) := fun n => ((algebraMap A.obj (K n)).comp (algebraMap R A.obj)).toAlgebra
   have _ : ∀ n, IsScalarTower R A.obj (K n) := fun n => IsScalarTower.of_algebraMap_eq fun _ => rfl
-  obtain ⟨h0, h1, δ, hδ⟩ := Leaf.wp_cof A.obj B K ι hι
-  have hrel := Leaf.wp_rel A.obj B K ι δ hι hδ
-  have hK : ∀ n, Pf p (K n) := fun n => Leaf.wp_pf p A.obj B (K n) n (ι n) (hι n) A.property hB
-  obtain ⟨hc1, hc2⟩ := Leaf.cech_tens p R r N A.obj B K ι δ hr hdiv A.property hB hC hι hδ
+  obtain ⟨h0, h1, δ, hδ⟩ := _root_.GlobalTheory.CompanionTheory.Coproduct.coproduct_low_and_coface A.obj B K ι hι
+  have hrel := _root_.GlobalTheory.CompanionTheory.WpCoface.coface_rel A.obj B K ι δ hι hδ
+  have hK : ∀ n, Pf p (K n) := fun n => _root_.GlobalTheory.CompanionTheory.PerfectRing.wp_pf p A.obj B (K n) n (ι n) (hι n) A.property hB
+  obtain ⟨hc1, hc2⟩ := _root_.CrystallineSemistableComparison.D.cech_tens p R r N A.obj B K ι δ hr hdiv A.property hB hC hι hδ
   refine ⟨mkPowers j A B hB K hK ι hι δ hδ hrel h0 h1, H1, fun s hs => ⟨?_, fun n => ?_⟩, H3⟩
   · refine injUpTo_span _ _ (fun s' hs' => ?_) s hs
     obtain ⟨k, rfl⟩ := hs'

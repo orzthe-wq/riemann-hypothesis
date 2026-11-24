@@ -188,10 +188,6 @@ open scoped TensorProduct
 
 section Adelic
 
-theorem sigR_inclR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
-    (σ : E →ₐ[F] E) (e : E) : sigR R σ (inclR R e) = inclR R (σ e) := by
-  simp [sigR, inclR]
-
 theorem sigR_sigR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) (x : R ⊗[F] E) : sigR R σ (sigR R σ x) = x := by
   induction x using TensorProduct.induction_on with
@@ -204,7 +200,7 @@ theorem map_cT_inclR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [
     (Formalism.UG.cT (σ : E →+* E) P).map (inclR R) = Formalism.UG.cT (sigR R σ) (P.map (inclR R)) := by
   ext i j
   simp only [cT, Matrix.map_apply, Matrix.transpose_apply]
-  exact (sigR_inclR R σ _).symm
+  exact (_root_.GlobalTheory.Mem.VolFin.sigR_inclR R σ _).symm
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n r : ℕ} {J : Matrix (Fin n) (Fin n) E} {X Y : Matrix (Fin n) (Fin r) E}

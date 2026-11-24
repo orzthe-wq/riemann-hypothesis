@@ -232,7 +232,7 @@ namespace HermLine
 
 
 
-theorem ofGeo_toGeo_metric (A : HermLine n) {z : Cone n ℂ} (hz : BlockNonzero z) :
+theorem ofGeo_toGeo_metric (A : Heights.HermLine n) {z : Cone n ℂ} (hz : BlockNonzero z) :
     (ofGeo A.toGeo A.isSmoothHerm_toGeo).metric z = A.metric z :=
   toGeo_h_of_blockNonzero A (w := flatCone z) hz
 
@@ -367,7 +367,7 @@ theorem evalCone_rel {F : Type*} [CommRing F] {z : Cone n F} (hz : z ∈ P.point
   simp only [evalCone, eval₂_sub, eval₂_mul] at this ⊢
   exact sub_eq_zero.mp this
 
-theorem isSectionBounded_iff_supNormLE (A : HermLine n) (s : IntegralSection P A.deg)
+theorem isSectionBounded_iff_supNormLE (A : Heights.HermLine n) (s : IntegralSection P A.deg)
     {y : Coord n → Ω} (hy : Geo.mCoordIdeal (ι := blockIdx n) y = P.ideal) (C : ℝ) :
     IndefiniteRowSideFullHecke.HeightsSet.IsSectionBounded (ι := blockIdx n) P.ideal y A.toGeo (s.valueAt y)
       (Real.exp C) ↔ s.SupNormLE A C := by

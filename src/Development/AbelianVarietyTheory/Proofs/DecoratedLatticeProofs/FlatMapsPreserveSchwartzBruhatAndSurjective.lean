@@ -89,7 +89,7 @@ theorem ch_add' (a b : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) : ch (a + b)
   simp [ch, Finset.sum_add_distrib]
 
 theorem ch_basePt' (x₀ : Matrix n n' k) : ch (basePt c x₀) = 0 := by
-  simp [ch, basePt, Fin.ext_iff]
+  simp [ch, basePt]
 
 theorem ch_affPt_zero_eq (p : ℕ) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) :
     ch (affPt p (0 : Matrix n n' k) e) = ch (freeMat p e) := by
@@ -339,7 +339,7 @@ theorem readCol_ptCol (p : ℕ) (hp1 : 1 ≤ p) (hp : p - 1 < c + 1) (x : Matrix
   · simp [readCol, ptCol, affPt, basePt, colAt, Free]
     have h1 : ¬ p < p - 1 + 1 := by omega
     have h2 : p - 1 + 1 = p := by omega
-    simp [h1, h2]
+    simp [h2]
 
 theorem restOf_ptCol (p : ℕ) (x : Matrix n (n' ⊕ Unit) k) e :
     restOf (rdCol p) (ptCol (c := c) p x e) = freeMat p e := by
@@ -410,7 +410,7 @@ theorem readRow_ptRow (p : ℕ) (hp1 : 1 ≤ p) (hp : p - 1 < c) (x : Matrix (n 
   · simp [readRow, ptRow, affPt, basePt, rowAt, Free, Matrix.toRows₁]
   · have h1 : ¬ p - 1 + 1 < p := by omega
     have h2 : p - 1 + 1 = p := by omega
-    simp [readRow, ptRow, affPt, basePt, rowAt, Free, h1, h2]
+    simp [readRow, ptRow, affPt, basePt, rowAt, Free, h2]
 
 theorem restOf_ptRow (p : ℕ) (x : Matrix (n ⊕ Unit) n' k) e :
     restOf (rdRow p) (ptRow (c := c) p x e) = freeMat p e := by

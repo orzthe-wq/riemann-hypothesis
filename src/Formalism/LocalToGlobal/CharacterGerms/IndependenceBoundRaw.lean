@@ -128,14 +128,6 @@ theorem valuation_nonneg_div {x y : C} (hy : y ≠ 0) (h : V.v y ≤ V.v x) : V.
   have h4 : r ≤ s + r := by exact_mod_cast h
   linarith
 
-private theorem v_natCast_nonneg' (n : ℕ) : 0 ≤ V.v (n : C) := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    rw [Nat.cast_succ]
-    refine le_trans (le_min ih ?_) (V.v.map_add _ _)
-    rw [V.v.map_one]
-
 theorem frob2 {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) :
     V.MM ((a + b) ^ V.l - a ^ V.l - b ^ V.l) := by
   apply Formalism.L2.FormalSeriesBounds.MaximalIdealCongruence.mm_add_pow <;> assumption

@@ -90,9 +90,9 @@ theorem mem_Km_iff {N m : ℕ} (g : GL (Fin N) k) :
     intro u i j
     by_cases h : i = j
     · subst h
-      simp [Matrix.GeneralLinearGroup.map_apply]
+      simp
       rfl
-    · simp [Matrix.GeneralLinearGroup.map_apply, Matrix.one_apply_ne h]
+    · simp [Matrix.one_apply_ne h]
       rfl
   constructor
   · rintro ⟨u, hu, rfl⟩

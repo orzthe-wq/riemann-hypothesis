@@ -124,7 +124,7 @@ lemma wMat_sq (d : ℕ) : G.wMat d * G.wMat d = 1 := by
   by_cases h : a = b
   · subst h; simp [G.wMat]
   · have h' : b ≠ a.rev.rev := by rw [Fin.rev_rev]; exact Ne.symm h
-    simp [G.wMat, h, h'] <;> exact fun e => h e.symm
+    simp [G.wMat, h] <;> exact fun e => h e.symm
 
 theorem hpkBlocks : HpkBlocks := by
   intro k j ρ
@@ -158,8 +158,7 @@ theorem sliceMem : SliceMem := by
     rw [hpkBlocks k j ρ]; unfold mMap
     rw [block3_conjTranspose, block3_mul, block3_mul]
     refine block3_congr ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;>
-      simp [Matrix.mul_assoc, wMat_ct, Matrix.conjTranspose_nonsing_inv, wMat_sq_assoc, hγ', Matrix.nonsing_inv_mul _ hZu, Matrix.mul_nonsing_inv _ hu,
-        Matrix.mul_nonsing_inv_cancel_left _ _ hu, Matrix.nonsing_inv_mul_cancel_left _ _ hZu]
+      simp [Matrix.mul_assoc, wMat_ct, Matrix.conjTranspose_nonsing_inv, wMat_sq_assoc, hγ', Matrix.nonsing_inv_mul _ hZu, Matrix.mul_nonsing_inv_cancel_left _ _ hu]
   · intro q hq
     have hqu : IsUnit q.det := isUnit_iff_ne_zero.mpr hq
     have hu : IsUnit qᴴ.det := by
@@ -168,8 +167,7 @@ theorem sliceMem : SliceMem := by
     rw [hpkBlocks k j ρ]; unfold muP
     rw [block3_conjTranspose, block3_mul, block3_mul]
     refine block3_congr ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;>
-      simp [Matrix.mul_assoc, wMat_ct, Matrix.conjTranspose_nonsing_inv, wMat_sq_assoc, Matrix.nonsing_inv_mul _ hqu, Matrix.mul_nonsing_inv _ hu,
-        Matrix.mul_nonsing_inv_cancel_left _ _ hu, Matrix.nonsing_inv_mul_cancel_left _ _ hqu]
+      simp [Matrix.mul_assoc, wMat_ct, Matrix.conjTranspose_nonsing_inv, wMat_sq_assoc, Matrix.nonsing_inv_mul _ hqu, Matrix.mul_nonsing_inv_cancel_left _ _ hu]
   · intro y hy
     have hy' : yᴴ * Hpk k ρ * y = Hpk k ρ := hy
     show (embG k j ρ y)ᴴ * Hpk k (j + ρ) * embG k j ρ y = Hpk k (j + ρ)
@@ -272,7 +270,7 @@ lemma skewOf_ct (q : (G.UT j → ℂ) × (Fin j → ℝ)) : (skewOf q)ᴴ = -ske
   ext a b
   by_cases h : a = b
   · subst h; simp [skewOf, G.strictUpper, conjTranspose_apply]
-  · simp [skewOf, conjTranspose_apply, Matrix.diagonal_apply, h, Ne.symm h]
+  · simp [skewOf, conjTranspose_apply, h, Ne.symm h]
 
 lemma skewOf_lt (q : (G.UT j → ℂ) × (Fin j → ℝ)) {a b : Fin j} (h : a < b) : skewOf q a b = q.1 ⟨(a, b), h⟩ := by
   simp [skewOf, G.strictUpper, h, not_lt.mpr h.le, ne_of_lt h, conjTranspose_apply]
@@ -322,7 +320,7 @@ lemma rset_sub_range {g : B.Mat k (j + ρ)} (hg : g ∈ Rset k j ρ) : ∃ x, Rn
   rw [h11, h21, h31, h22, h32] at hgeta
   rw [hgeta, hpkBlocks k j ρ, block3_conjTranspose, block3_mul, block3_mul] at hG
   obtain ⟨-, -, e13, -, -, e23, -, -, e33⟩ := block3_injective hG
-  simp [Matrix.mul_assoc, wMat_ct] at e13 e23 e33
+  simp [Matrix.mul_assoc] at e13 e23 e33
   have hD : b33 g = 1 := by
     have := congrArg (G.wMat j * ·) e13
     simpa [wMat_sq_assoc, wMat_sq] using this
@@ -407,14 +405,9 @@ lemma lower_iff (l : Matrix (Fin p) (Fin p) ℂ) : G.IsLowerUni l ↔ uniK (kL p
 lemma upper_iff (u : Matrix (Fin p) (Fin p) ℂ) : G.IsUpperUni u ↔ uniK (kU p) u := by
   simp [G.IsUpperUni, uniK, kU_lt]
 
-lemma diag_mul_of {κ : Fin p → ℤ} (hκ : Function.Injective κ) {M N : Matrix (Fin p) (Fin p) ℂ}
-    (hM : ∀ a b, κ a < κ b → M a b = 0) (hN : ∀ a b, κ a < κ b → N a b = 0) (i : Fin p) :
-    (M * N) i i = M i i * N i i := by
-  first | exact GlobalTheory.TriangularDiagonal.mul_diag_of_triangular .. | (apply GlobalTheory.TriangularDiagonal.mul_diag_of_triangular <;> assumption) | (intros; apply GlobalTheory.TriangularDiagonal.mul_diag_of_triangular <;> assumption) | (apply @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular <;> assumption) | (intros; apply @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular <;> assumption) | (apply @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular <;> first | assumption | infer_instance) | exact @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular p κ hκ M N hM hN i | exact @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular p κ hκ M N hM hN | exact @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular p κ hκ M N hM | exact @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular p κ hκ M N | exact @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular p κ hκ M | exact @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular p κ hκ | exact @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular p κ | exact @GlobalTheory.TriangularDiagonal.mul_diag_of_triangular p
-
 lemma uniK_mul {κ : Fin p → ℤ} (hκ : Function.Injective κ) {M N : Matrix (Fin p) (Fin p) ℂ}
     (hM : uniK κ M) (hN : uniK κ N) : uniK κ (M * N) := by
-  refine ⟨fun i => by rw [diag_mul_of hκ hM.2 hN.2, hM.1, hN.1, one_mul], fun a b hab => ?_⟩
+  refine ⟨fun i => by rw [_root_.GlobalTheory.TriangularDiagonal.mul_diag_of_triangular hκ hM.2 hN.2, hM.1, hN.1, one_mul], fun a b hab => ?_⟩
   rw [Matrix.mul_apply]
   refine Finset.sum_eq_zero fun c _ => ?_
   by_cases h : κ a < κ c
@@ -578,7 +571,7 @@ theorem charBlock : CharBlock := by
   rw [upper_iff] at huh hu
   constructor
   · rw [symmetricScalarBlockMatrix_mul, subdiagonal_sum_block2]
-    simp only [Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one]
+    simp only [Matrix.one_mul, Matrix.mul_zero, add_zero, zero_add]
     congr 2
     unfold cornerA
     by_cases hps : 0 < s ∧ 0 < p
@@ -590,7 +583,7 @@ theorem charBlock : CharBlock := by
       · simp
     · rw [dite_eq_right hps, dite_eq_right hps]
   · rw [symmetricScalarBlockMatrix_mul, supS_eq, supS_eq, supS_eq]
-    simp only [Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one]
+    simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one]
     rw [symmetricScalarBlockMatrix_transpose, subdiagonal_sum_block2]
     congr 2
     unfold cornerB

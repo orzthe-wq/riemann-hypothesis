@@ -1,22 +1,25 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.CMField
+public import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ScalarCommutation.ExistsIdempotentHeckeOperatorWithRegularSupportAlt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductOfLocalLevelsUnitaryIsOpenIsCompactIsLeve
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFixedIff
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.IntegralStructures.GeometricFlagBases.PrimeLevelLocalization.NsmulIntegIff
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.InvTMemSim
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PIntConj
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PLocComm
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PLocMem
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsPrimeMem
-import GroundTheory.LocalFields.PadicLogSeries
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -31,7 +34,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,7 +47,42 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFixedIff
+import GroundTheory.LocalFields.PadicLogSeries
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsPrimeMem, Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ScalarCommutation.TyFact
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsPrimeMem =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsPrimeMem", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.CMField\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.LinearAlgebra.FreeModule.IdealQuotient\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+@[reducible] noncomputable def UpperTheory.Reformulated.B.Qk68.Plc :
+    (E : Type) → [Field E] → Type :=
+    fun (E : Type) [Field E] ↦ IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E)
+
+theorem UpperTheory.Reformulated.B.Qk68.exists_prime_mem :
+    ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [NumberField.IsCMField E] (w : UpperTheory.Reformulated.B.Qk68.Plc E),
+      ∃ (q : ℕ), Nat.Prime q ∧ (↑q : NumberField.RingOfIntegers E) ∈ w.asIdeal := by
+  intro E _ _ _ w
+  haveI : w.asIdeal.IsPrime := w.isPrime
+  haveI : Finite (NumberField.RingOfIntegers E ⧸ w.asIdeal) :=
+    Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot
+  refine ⟨ringChar (NumberField.RingOfIntegers E ⧸ w.asIdeal), ?_, ?_⟩
+  · exact (CharP.char_is_prime_or_zero (NumberField.RingOfIntegers E ⧸ w.asIdeal) _).resolve_right
+      (CharP.ringChar_ne_zero_of_finite _)
+  · rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
+    exact CharP.cast_eq_zero _ _
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsPrimeMem =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ScalarCommutation.TyFact =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ScalarCommutation.TyFact", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ScalarCommutation.ExistsIdempotentHeckeOperatorWithRegularSupportAlt\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductOfLocalLevelsUnitaryIsOpenIsCompactIsLeve\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFixedIff\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.IntegralStructures.GeometricFlagBases.PrimeLevelLocalization.NsmulIntegIff\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.InvTMemSim\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PIntConj\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PLocComm\npublic import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ProjectiveAutomorphicHecke.PLocMem\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsPrimeMem\nimport GroundTheory.LocalFields.PadicLogSeries\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -69,14 +107,6 @@ private theorem cont_comp (w : Plc E) : Continuous (comp w : GUf E n → GL (Fin
 
 private theorem th_eq (F : Frame S) (g : GUf E n) : F.th g = UpperTheory.Gal.CertificateRingHomMap.th g :=
   Subtype.ext (Prod.ext (Units.ext ((F.th_mat g).trans (UpperTheory.Gal.CertificateRingHomMap.invT_val _).symm)) (F.th_sim g))
-
-private theorem pr_loc_one {F : Frame S} {w u : Spl E p} {L : Loc S.G.GAf (GLw n w.1)} {L' : Loc S.G.GAf (GLw n u.1)}
-    (hf : IsFac F w L) (hf' : IsFac F u L') (h : GlobalTheory.Cong.Apart w.1 u.1) (y : GLw n u.1) : L.pr (L'.loc y) = 1 := by
-  rw [hf'.2, hf.1, UpperTheory.Gal.CertificateRingHomMap.comp_loc_of_apart u.2.1 h]
-
-private theorem fac_apart {F : Frame S} {w u : Spl E p} {L : Loc S.G.GAf (GLw n w.1)} {L' : Loc S.G.GAf (GLw n u.1)}
-    (hf : IsFac F w L) (hf' : IsFac F u L') (h : GlobalTheory.Cong.Apart w.1 u.1) : L.Apart L' :=
-  ⟨pr_loc_one hf hf' h, pr_loc_one hf' hf (Ne.symm h)⟩
 
 private theorem exists_prime_mem (w : Plc E) : ∃ q : ℕ, q.Prime ∧ (q : 𝓞 E) ∈ w.asIdeal :=
   _root_.UpperTheory.Reformulated.B.Qk68.exists_prime_mem w
@@ -168,42 +198,7 @@ private theorem iw_le (w : Plc E) : Iw n w ≤ GlobalTheory.LFun.KGL w (n := n) 
 
 end UpperTheory.Gal.Spc
 
-open UpperTheory.Gal.Spc in
-theorem UpperTheory.Gal.Spc.tyFact :
-    UpperTheory.Gal.Spc.TyFact := by
-  intro E _ _ _ A n p _ S F x U w₀ Up V _ _ _ _ _ r W aux N _ _ L hw Ty h
-  refine ⟨fun w hwW => ?_, fun w h1 h2 h3 => ⟨⟨fun y hy => ?_, fun g hg => ?_⟩, ?_⟩, ?_⟩
-  · haveI : Fact r.Prime := ⟨aux.prime⟩
-    have hoff : ∀ u ∈ V.S, GlobalTheory.Cong.Apart w.1 u := fun u hu =>
-      apart_of_not_mem (p := r) (aux.off u hu) (aux.half.above w hwW)
-    obtain ⟨-, hap, -⟩ := UpperTheory.Gal.CertificateRingHomMap.pLocComm_of E n w.1 w.2.1
-    have h1 : w.1 ∉ V.S := fun e => hoff _ e rfl
-    have h2 : cj w.1 ∉ V.S := fun e => ((hap _).1 (Ne.symm (hoff _ e))).2 rfl
-    refine ⟨⟨fun y hy => loc_mem h w h1 h2 (iw_le _ hy) fun u hu => ?_, fun g hg => ((h.K_iff g).1 hg).2 w hwW⟩, ?_,
-      fun w' hw' hne => fac_apart (h.fac w) (h.fac w') (aux.half.apart w hwW w' hw' hne)⟩
-    · by_cases e : u = w
-      · subst e
-        rw [Loc.pr_loc]
-        exact hy
-      · rw [pr_loc_one (h.fac u) (h.fac w) (aux.half.apart u hu w hwW e)]
-        exact one_mem _
-    · rw [h.L_eq]
-      exact fac_apart (h.fac ⟨w₀, hw⟩) (h.fac w) (Ne.symm (hoff _ V.shape.mem))
-  · refine loc_mem h w h1 h2 hy fun u hu => ?_
-    rw [pr_loc_one (h.fac u) (h.fac w) (Ne.symm (h3 u hu))]
-    exact one_mem _
-  · obtain ⟨⟨k, rfl, hk⟩, -⟩ := (h.K_iff g).1 hg
-    rw [th_eq, UpperTheory.Gal.CertificateRingHomMap.th_mem_lev] at hk
-    rw [(h.fac w).1]
-    exact (UpperTheory.Gal.CertificateRingHomMap.mem_lev.1 hk).2.2 w.1 h1 h2
-  · obtain ⟨-, hap, -, -, hcc, -⟩ := UpperTheory.Gal.CertificateRingHomMap.pLocComm_of E n w₀ hw.1
-    rw [h.L_eq]
-    refine fac_apart (h.fac ⟨w₀, hw⟩) (h.fac w) (Ne.symm ((hap w.1).2 ⟨fun e => h1 ?_, fun e => h2 ?_⟩))
-    · rw [e]
-      exact V.shape.mem
-    · rw [e, hcc]
-      exact V.shape.mem
-  · obtain ⟨c, h0, h1, h2⟩ := bound F V
-    refine ⟨c, h0, h1, fun k hk => ?_⟩
-    obtain ⟨⟨g, rfl, hg⟩, -⟩ := (h.K_iff k).1 hk
-    exact (nsmul_integ_iff F g c).2 (h2 g hg)
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ScalarCommutation.TyFact =====

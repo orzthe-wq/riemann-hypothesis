@@ -301,6 +301,6 @@ end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.RadAdj
 
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
-theorem radial_adjoint_identity_holds : GTRadAdj := RadAdj.radial_adjoint_identity_holds
+alias radial_adjoint_identity_holds := _root_.Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.RadAdj.radial_adjoint_identity_holds
 
 end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC

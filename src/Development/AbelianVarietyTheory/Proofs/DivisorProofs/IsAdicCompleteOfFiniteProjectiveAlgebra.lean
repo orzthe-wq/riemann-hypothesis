@@ -71,6 +71,6 @@ namespace GlobalTheory.FinProjComplete
 theorem isAdicComplete_of_finite_projective : ∀ (p : ℕ) (O A : Type) [CommRing O] [CommRing A]
     [Algebra O A] [Module.Finite O A] [Module.Projective O A]
     [IsAdicComplete (Ideal.span {(p : O)}) O], IsAdicComplete (Ideal.span {(p : A)}) A := by
-  apply GlobalTheory.FinProjComplete.isAdicComplete_span_natCast_of_finite_projective <;> assumption
+  apply GlobalTheory.FinProjComplete.isAdicComplete_span_natCast_of_finite_projective
 
 end GlobalTheory.FinProjComplete

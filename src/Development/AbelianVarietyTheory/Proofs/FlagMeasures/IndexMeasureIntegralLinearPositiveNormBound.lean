@@ -49,6 +49,7 @@ import Mathlib.Topology.Sheaves.Presheaf
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Normed.Field.Basic
 public import Mathlib.Basic.Complex.BigOperators
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.CintTranslate
 
 @[expose] public section
 
@@ -66,25 +67,6 @@ private lemma quotientEquivProdOfLE_mk_fst {W : Type} [AddCommGroup W] {C B : Ad
   rfl
 
 open scoped Pointwise Classical in
-open Function in
-private lemma Fine_of_le_of_relIndex_ne_zero {W : Type} [AddCommGroup W] {A B C : AddSubgroup W} {φ : W → ℂ}
-    (hB : _root_.GlobalTheory.IdxInt.Fine A φ B) (hCB : C ≤ B) (hC : C.relIndex A ≠ 0) :
-    _root_.GlobalTheory.IdxInt.Fine A φ C := by
-  obtain ⟨hBA, -, hinv, hsupp⟩ := hB
-  have hidx : C.relIndex B ≠ 0 := by
-    rw [← AddSubgroup.relIndex_mul_relIndex C B A hCB hBA] at hC
-    exact left_ne_zero_of_mul hC
-  have hfin : Finite (B ⧸ C.addSubgroupOf B) := Nat.finite_of_card_ne_zero hidx
-  refine ⟨hCB.trans hBA, hC, fun w b hb => hinv w b (hCB hb), ?_⟩
-  let e := AddSubgroup.quotientEquivProdOfLE hCB
-  refine ((hsupp.prod (Set.finite_univ (α := B ⧸ C.addSubgroupOf B))).preimage
-    e.injective.injOn).subset ?_
-  rintro _ ⟨w, hw, rfl⟩
-  simp only [Set.mem_preimage, Set.mem_prod, Set.mem_univ, and_true]
-  rw [quotientEquivProdOfLE_mk_fst]
-  exact ⟨w, hw, rfl⟩
-
-open scoped Pointwise Classical in
 variable {W : Type} [AddCommGroup W] in
 private lemma exists_fine_fine_of_nice_nice {W : Type} [AddCommGroup W] {A : AddSubgroup W} {φ ψ : W → ℂ}
     (hφ : _root_.GlobalTheory.IdxInt.Nice A φ) (hψ : _root_.GlobalTheory.IdxInt.Nice A ψ) :
@@ -92,7 +74,7 @@ private lemma exists_fine_fine_of_nice_nice {W : Type} [AddCommGroup W] {A : Add
   obtain ⟨B, hB⟩ := hφ
   obtain ⟨B', hB'⟩ := hψ
   have hidx : (B ⊓ B').relIndex A ≠ 0 := AddSubgroup.relIndex_inf_ne_zero hB.2.1 hB'.2.1
-  exact ⟨B ⊓ B', Fine_of_le_of_relIndex_ne_zero hB inf_le_left hidx, Fine_of_le_of_relIndex_ne_zero hB' inf_le_right hidx⟩
+  exact ⟨B ⊓ B', _root_.GlobalTheory.IdxInt.Model.fine_refine hB inf_le_left hidx, _root_.GlobalTheory.IdxInt.Model.fine_refine hB' inf_le_right hidx⟩
 
 open scoped Pointwise Classical in
 variable {W : Type} [AddCommGroup W] in

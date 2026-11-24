@@ -161,7 +161,7 @@ theorem span_restrict_eq_top_of_absIrrSub : ∀ {k Γ : Type} [Field k] [Group �
       apply Submodule.subset_span
       refine ⟨L (Pi.single j 1), (e.symm (Pi.single j 1)).2, ?_⟩
       funext i
-      simp [← hBv, Matrix.mulVec_single_one]
+      simp [← hBv]
   unfold AbsIrrSub at habs
   rw [hspan] at habs
   have hirr : IsIrrSub (mapRep f σ) ⊤ := by

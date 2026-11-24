@@ -50,4 +50,4 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.topologicalKrullDim_abVar_eq_dim : ∀ (K : Type) [Field K] (A : AbVar K), topologicalKrullDim A.X.left = (A.dim : ℕ) := by
-  first | exact @GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim | exact GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim | (intros; apply GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim <;> assumption)
+  first | exact @GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim

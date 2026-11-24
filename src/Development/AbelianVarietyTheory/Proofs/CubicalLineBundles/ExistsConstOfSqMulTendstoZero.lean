@@ -532,12 +532,12 @@ theorem _root_.GlobalTheory.invariants_eq_of_periodic_solution :
   have hβ₁ : 2 * b + 2 * W.a₁ * c = 0 := by
     have := congrArg (fun p : Polynomial ℂ => p.coeff 1) hlin
     simp only [Polynomial.coeff_add, Polynomial.coeff_C_mul_X, Polynomial.coeff_C,
-      Polynomial.coeff_zero, one_ne_zero, zero_ne_one, ↓reduceIte, add_zero, zero_add] at this
+      Polynomial.coeff_zero, one_ne_zero, ↓reduceIte, add_zero] at this
     exact this
   have hβ₀ : 2 * k' + 2 * W.a₁ * c * k + 2 * W.a₃ * c ^ 3 = 0 := by
     have := congrArg (fun p : Polynomial ℂ => p.coeff 0) hlin
     simp only [Polynomial.coeff_add, Polynomial.coeff_C_mul_X, Polynomial.coeff_C,
-      Polynomial.coeff_zero, one_ne_zero, zero_ne_one, ↓reduceIte, add_zero, zero_add] at this
+      Polynomial.coeff_zero, zero_ne_one, ↓reduceIte, zero_add] at this
     exact this
   have hb' : b = -(W.a₁ * c) := by linear_combination hβ₁ / 2
   have hk' : k' = -(W.a₁ * c * k) - W.a₃ * c ^ 3 := by linear_combination hβ₀ / 2

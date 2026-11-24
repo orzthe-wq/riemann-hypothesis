@@ -90,20 +90,18 @@ private lemma prod_norm_dvd_prime_pow_degree (p : ℕ) (T : Finset (Ideal (𝓞 
     ∏ P ∈ T, Ideal.absNorm P ∣ p ^ Module.finrank ℚ K := by
   classical
   have hdvd : (∏ P ∈ T, P) ∣ Ideal.span {(p : 𝓞 K)} := by
-    apply Finset.prod_dvd_of_coprime
+    refine Finset.prod_dvd_of_coprime ?_ ?_
     · intro P hP Q hQ hPQ
       exact Ideal.isCoprime_iff_sup_eq.mpr (Ideal.IsMaximal.coprime_of_ne (hT P hP).1 (hT Q hQ).1 hPQ)
     · intro P hP
-      try dsimp only
       rw [Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]
       exact (hT P hP).2
   have h3 : Ideal.absNorm (Ideal.span {(p : 𝓞 K)}) = p ^ Module.finrank ℚ K := by
-    rw [Ideal.absNorm_span_singleton]
-    have : (p : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ) := by simp
-    rw [this, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]
+    rw [Ideal.absNorm_span_singleton,
+      show (p : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ) by simp,
+      Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]
     simp [Int.natAbs_pow]
-  have := map_dvd Ideal.absNorm hdvd
-  rwa [map_prod, h3] at this
+  simpa [map_prod, h3] using map_dvd Ideal.absNorm hdvd
 
 private lemma abs_norm_eq_prime_pow (P : Ideal (𝓞 K)) (hP : P.IsMaximal) :
     ∃ k, 1 ≤ k ∧ Ideal.absNorm P = residueCharacteristic K P ^ k := by
@@ -181,23 +179,17 @@ private noncomputable def invPowMonoidHomReal (M : ℕ) : ℕ →* ℝ where
   map_mul' a b := by push_cast; rw [mul_inv, mul_pow]
 
 private lemma summable_inv_pow_real (M : ℕ) (hM : 2 ≤ M) : Summable (fun n : ℕ => ((n : ℝ)⁻¹) ^ M) := by
-  have := Real.summable_nat_pow_inv.mpr (by omega : 1 < M)
-  simpa [inv_pow] using this
+  simpa [inv_pow] using Real.summable_nat_pow_inv.mpr (by omega : 1 < M)
 
 private lemma tsum_inv_pow_eq_zeta_real (M : ℕ) (hM : 2 ≤ M) : ∑' n : ℕ, ((n : ℝ)⁻¹) ^ M = zetaR M := by
   rw [(summable_inv_pow_real M hM).tsum_eq_zero_add]
   rw [Nat.cast_zero, inv_zero, zero_pow (by omega), zero_add]
   show _ = ∑' n : ℕ, 1 / ((n : ℝ) + 1) ^ M
-  congr 1
-  ext n
-  push_cast
-  rw [one_div, inv_pow]
+  simp only [Nat.cast_add, Nat.cast_one, one_div, inv_pow]
 
 private lemma inv_prime_pow_lt_one' (M : ℕ) (hM : 1 ≤ M) (p : ℕ) (hp : p.Prime) :
     ((p : ℝ)⁻¹) ^ M < 1 := by
-  have h2 : (2 : ℝ) ≤ p := by exact_mod_cast hp.two_le
-  have h1 : (p : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ (by linarith)
-  exact pow_lt_one₀ (by positivity) h1 (by omega)
+  exact pow_lt_one₀ (by positivity) (inv_lt_one_of_one_lt₀ (by exact_mod_cast hp.one_lt)) (by omega)
 
 private lemma euler_product_le_zeta (M : ℕ) (hM : 2 ≤ M) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
     ∏ p ∈ S, (1 - ((p : ℝ)⁻¹) ^ M)⁻¹ ≤ zetaR M := by
@@ -240,24 +232,19 @@ private lemma euler_product_le_zeta (M : ℕ) (hM : 2 ≤ M) (S : Finset ℕ) (h
 
 private noncomputable def negLogOneSubInvPow (M p : ℕ) : ℝ := -Real.log (1 - ((p : ℝ)⁻¹) ^ M)
 
-private lemma inv_prime_pow_lt_one (M : ℕ) (hM : 1 ≤ M) (p : ℕ) (hp : p.Prime) : ((p : ℝ)⁻¹) ^ M < 1 := by
-  exact inv_prime_pow_lt_one' M hM p hp
-
 private lemma neg_log_one_sub_inv_pow_nonneg (M : ℕ) (hM : 1 ≤ M) (p : ℕ) (hp : p.Prime) : 0 ≤ negLogOneSubInvPow M p := by
-  have h := inv_prime_pow_lt_one M hM p hp
+  have h := _root_.Formalism.HermitianLattices.GenusMassVolumes.inv_prime_pow_lt_one' M hM p hp
   have h0 : 0 ≤ ((p : ℝ)⁻¹) ^ M := by positivity
   unfold negLogOneSubInvPow
-  have : Real.log (1 - ((p : ℝ)⁻¹) ^ M) ≤ 0 := Real.log_nonpos (by linarith) (by linarith)
-  linarith
+  exact neg_nonneg.mpr (Real.log_nonpos (by linarith) (by linarith))
 
 private lemma sum_neg_log_le_log_zeta (M : ℕ) (hM : 2 ≤ M) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
     ∑ p ∈ S, negLogOneSubInvPow M p ≤ Real.log (zetaR M) := by
   have hpos : ∀ p ∈ S, 0 < 1 - ((p : ℝ)⁻¹) ^ M := fun p hp => by
-    linarith [inv_prime_pow_lt_one M (by omega) p (hS p hp)]
+    linarith [_root_.Formalism.HermitianLattices.GenusMassVolumes.inv_prime_pow_lt_one' M (by omega) p (hS p hp)]
   have hsum : ∑ p ∈ S, negLogOneSubInvPow M p = Real.log (∏ p ∈ S, (1 - ((p : ℝ)⁻¹) ^ M)⁻¹) := by
     rw [Real.log_prod (fun p hp => (inv_pos.mpr (hpos p hp)).ne')]
-    refine Finset.sum_congr rfl (fun p _ => ?_)
-    rw [negLogOneSubInvPow, Real.log_inv]
+    simp_rw [negLogOneSubInvPow, Real.log_inv]
   rw [hsum]
   exact Real.log_le_log (Finset.prod_pos (fun p hp => inv_pos.mpr (hpos p hp))) (euler_product_le_zeta M hM S hS)
 
@@ -285,7 +272,7 @@ private lemma euler_factor_inert_prime_bound (M : ℕ) (hM : 1 ≤ M) (p : ℕ) 
   have hy0 : 0 ≤ ((Real.sqrt (N : ℝ))⁻¹) ^ M := by positivity
   have hyx : ((Real.sqrt (N : ℝ))⁻¹) ^ M ≤ ((p : ℝ)⁻¹) ^ M :=
     pow_le_pow_left₀ (by positivity) (inv_anti₀ (by linarith) hpN) M
-  have hx := inv_prime_pow_lt_one M hM p hp
+  have hx := _root_.Formalism.HermitianLattices.GenusMassVolumes.inv_prime_pow_lt_one' M hM p hp
   have hs := neg_one_pow_eq_or ℝ M
   rw [hzp]
   refine ⟨?_, abs_log_inv_one_sub_le_real _ _ _ hs hy0 hyx hx⟩
@@ -302,7 +289,7 @@ private lemma euler_factor_split_prime_bound (M : ℕ) (hM : 1 ≤ M) (p : ℕ) 
   have hyx : ((N : ℝ)⁻¹) ^ M ≤ ((p : ℝ)⁻¹) ^ M :=
     pow_le_pow_left₀ (by positivity) (inv_anti₀ (by linarith) hpN) M
   have hy0 : 0 ≤ ((N : ℝ)⁻¹) ^ M := by positivity
-  have hx := inv_prime_pow_lt_one M hM p hp
+  have hx := _root_.Formalism.HermitianLattices.GenusMassVolumes.inv_prime_pow_lt_one' M hM p hp
   have hb : 0 < 1 - ((N : ℝ)⁻¹) ^ M := by linarith
   refine ⟨Real.rpow_pos_of_pos hb _, ?_⟩
   rw [Real.log_rpow hb, abs_mul]
@@ -354,7 +341,7 @@ private lemma sum_weights_over_prime_le_half_degree (p : ℕ) (T : Finset {P : I
     _ = (∑ P ∈ T, Real.log (Ideal.absNorm P.1 : ℝ)) / (2 * Real.log p) := by rw [Finset.sum_div]
     _ ≤ (Module.finrank ℚ K * Real.log p) / (2 * Real.log p) := by
         apply div_le_div_of_nonneg_right hlog; linarith
-    _ = (Module.finrank ℚ K : ℝ) / 2 := by field_simp; try ring
+    _ = (Module.finrank ℚ K : ℝ) / 2 := by field_simp
 
 variable [StarRing K]
 
@@ -367,7 +354,7 @@ private lemma euler_factor_log_bound (hK : Formalism.HermitianLatticesTheory.IsC
   have hlp := log_prime_pos _ hp
   have hlne := hlp.ne'
   have hc : idealPrimeWeight K P = (k : ℝ) / 2 := by
-    rw [idealPrimeWeight, hk, Nat.cast_pow, Real.log_pow]; field_simp; try ring
+    rw [idealPrimeWeight, hk, Nat.cast_pow, Real.log_pow]; field_simp
   have hg := neg_log_one_sub_inv_pow_nonneg M hM _ hp
   unfold Formalism.HermitianLatticesTheory.eulerFac
   split_ifs with hconj

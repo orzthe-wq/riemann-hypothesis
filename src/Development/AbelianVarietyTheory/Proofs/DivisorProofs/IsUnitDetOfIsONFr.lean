@@ -114,15 +114,14 @@ theorem det_tr_inv_block {r : ℕ} (P Q b : Matrix (Fin r) (Fin r) ℂ) (hb : Is
     have : c * (P * b) = P := by rw [← hc, ← Matrix.mul_assoc, h2, Matrix.one_mul]
     subst hQ
     simp only [Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one,
-      Matrix.mul_assoc, h2, this, hc', hPP, hPP']
+      Matrix.mul_assoc, this, hc', hPP, hPP']
     abel
   have e3 : P * bᵀ + Q * c = (P * b + Q)ᵀ * (Q * c + P) := by
     have : ∀ y : Matrix (Fin r) (Fin r) ℂ, bᵀ * (P * y) = P * (bᵀ * y) := fun y => by
       rw [← Matrix.mul_assoc, hct, Matrix.mul_assoc]
     subst hQ
     simp only [transpose_add, transpose_mul, transpose_sub, transpose_one, hs,
-      Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one,
-      Matrix.mul_assoc, this, hct, hPP, hPP']
+      Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_assoc, this, hct, hPP, hPP']
     abel
   have d1 := congrArg det e1
   have d2 := congrArg det e2
@@ -205,7 +204,7 @@ theorem block_of_inv {r : ℕ} (P x k s : Matrix (Fin r) (Fin r) ℂ) (hx : IsUn
     calc s = s * x * y := by rw [Matrix.mul_assoc, i1, Matrix.mul_one]
       _ = _ := by
         rw [h1]
-        simp only [Matrix.neg_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one,
+        simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one,
           Matrix.mul_assoc, i1, neg_sub]
   have hconj : ∀ A : Matrix (Fin r) (Fin r) ℂ, A.det = (y * (A * x)).det := by
     intro A
@@ -214,7 +213,7 @@ theorem block_of_inv {r : ℕ} (P x k s : Matrix (Fin r) (Fin r) ℂ) (hx : IsUn
   have a2 : (1 / 2 : ℂ) • (1 + s) = 1 - x * (P * y) := by rw [hs]; module
   refine ⟨?_, ?_, ?_⟩
   · have := congrArg (fun z => y * z) h2
-    simp only [hs, Matrix.mul_neg, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one,
+    simp only [hs, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one,
       Matrix.one_mul, Matrix.mul_assoc, i2', neg_sub, sub_right_inj] at this
     simpa only [Matrix.mul_assoc] using (smul_right_injective _ (two_ne_zero (α := ℂ)) this).symm
   · rw [a1, a2, hconj]

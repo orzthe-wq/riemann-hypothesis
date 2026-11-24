@@ -1,50 +1,6 @@
 module
 
 public import Formalism.SharpRestriction.CuspSpanNormBounds.IsTermOver
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellDef
 
 @[expose] public section
@@ -218,8 +174,7 @@ theorem prF_mem_perp (v : V) : Fr.prF v ∈ H.perp (H.X Fr.f) := by
     constructor
     · simp only [FrameD.prF, hsub, hsum, H.h_smul_left, hee, hese, mul_zero, Finset.sum_const_zero, sub_zero,
         mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]
-    · simp only [FrameD.prF, hsub, hsum, H.h_smul_left, hees, hss, mul_zero, Finset.sum_const_zero, sub_zero,
-        mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]
+    · simp only [FrameD.prF, hsub, hsum, H.h_smul_left, hees, hss, mul_zero, Finset.sum_const_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]
   have hR : ∀ u y, H.h u y = M.L.cj (H.h y u) := fun u y => H.h_herm y u
   intro y hy
   unfold Formalism.MainNotions.S.Loc.HermSp.X at hy
@@ -253,8 +208,7 @@ theorem prF_prF' (v : V) : Fr.prF (Fr.prF v) = Fr.prF v := by
     constructor
     · simp only [FrameD.prF, hsub, hsum, H.h_smul_left, hee, hese, mul_zero, Finset.sum_const_zero, sub_zero,
         mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]
-    · simp only [FrameD.prF, hsub, hsum, H.h_smul_left, hees, hss, mul_zero, Finset.sum_const_zero, sub_zero,
-        mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]
+    · simp only [FrameD.prF, hsub, hsum, H.h_smul_left, hees, hss, mul_zero, Finset.sum_const_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]
   have h1 : ∀ a, H.h (Fr.prF v) (Fr.e a) = 0 := fun a => (hkey v a).1
   have h2 : ∀ a, H.h (Fr.prF v) (Fr.es a) = 0 := fun a => (hkey v a).2
   show Fr.prF v - ∑ a, H.h (Fr.prF v) (Fr.es a) • Fr.e a - ∑ a, H.h (Fr.prF v) (Fr.e a) • Fr.es a = Fr.prF v
@@ -283,8 +237,7 @@ theorem lset_LamStd (L : Submodule M.L.O (H.Wb Fr.f)) (w : H.Wb Fr.f) :
     constructor
     · simp only [FrameD.prF, hsub, hsum, H.h_smul_left, hee, hese, mul_zero, Finset.sum_const_zero, sub_zero,
         mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]
-    · simp only [FrameD.prF, hsub, hsum, H.h_smul_left, hees, hss, mul_zero, Finset.sum_const_zero, sub_zero,
-        mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]
+    · simp only [FrameD.prF, hsub, hsum, H.h_smul_left, hees, hss, mul_zero, Finset.sum_const_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]
   constructor
   · intro hw
     obtain ⟨x, hxw⟩ := Submodule.mkQ_surjective _ w

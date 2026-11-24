@@ -2,8 +2,11 @@ module
 
 public import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.IsOpenPart
 public import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.MemPrimitiveTensorsIffIsPrimitiveElem
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsIntegralOfDivisibleCharactersStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormSmulLeOneOfPrimitiveBoundedPowersStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsIntegralOfDivisibleCharacters
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.Topology.MetricSpace.Ultra.Basic
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NormSmulLeOneOfPrimitiveBoundedPowers
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -265,12 +268,12 @@ theorem dvd_mul_of_groupLike (C : Type) [NontriviallyNormedField C] [IsUltrametr
   set y : WithConv (A →ₗ[↥(intO C)] C) := (q : C)⁻¹ • extendHom ↥(intO C) C A (toConv D) with hy
   have hya : ∀ a, y.ofConv a = (q : C)⁻¹ * (D a : C) := fun _ => rfl
   have hint : IsIntegral ↥(intO C) y :=
-    GlobalTheory.T.isIntegral_of_divisible_characters C (CartierDual ↥(intO C) A) _ (extendHom ↥(intO C) C A) (toConv D) q hq
+    _root_.GlobalTheory.IntegralOfPointValues.isIntegral_inv_smul C (CartierDual ↥(intO C) A) _ (extendHom ↥(intO C) C A) (toConv D) q hq
       fun χ => by
         obtain ⟨u, h1, h2⟩ := exists_isGroupLikeElem χ
         rw [← h2]
         exact hu u h1
-  have key := GlobalTheory.T.norm_smul_le_one_of_primitive_bounded_powers C p hp _ _ supNorm supNorm (mulHom ↥(intO C) C A)
+  have key := _root_.GlobalTheory.NearlyPrimitive.norm_smul_le_one C p hp _ _ supNorm supNorm (mulHom ↥(intO C) C A)
     (inlHom ↥(intO C) C A) (inrHom ↥(intO C) C A) supNorm_smul supNorm_smul supNorm_nonneg
     supNorm_nonneg supNorm_add_le supNorm_mul_le
     (fun f => supNorm_le fun t => le_supNorm f _)

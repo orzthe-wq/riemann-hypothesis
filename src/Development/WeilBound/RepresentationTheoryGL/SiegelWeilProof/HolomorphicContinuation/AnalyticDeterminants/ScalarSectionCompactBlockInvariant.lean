@@ -81,7 +81,7 @@ theorem inG_mul {a b : M2 n} (ha : InG a) (hb : InG b) : InG (a * b) := by
   calc bᴴ * aᴴ * JJ n * (a * b) = bᴴ * (aᴴ * JJ n * a) * b := by simp only [Matrix.mul_assoc]
     _ = JJ n := by rw [ha, hb]
 
-theorem isUnit_det_of_inG {g : M2 n} (hg : InG g) : IsUnit g.det := isUnit_det_of_inG' hg
+alias isUnit_det_of_inG := _root_.PositivityTheory.Rg.Sw.LVs.isUnit_det_of_inG'
 
 theorem gset_sub_dom : GSet n ⊆ Dom n := fun g hg => by
   refine ⟨isUnit_det_of_inG' hg, det_first_cayley_block_ne_zero hg, det_second_cayley_block_ne_zero hg, ?_⟩

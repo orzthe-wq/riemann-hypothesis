@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatMapsSatisfyFlatLawsFinitePlacesStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemHomLatticeCompletionIffSupportedMaps
 import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilDatumTransportSourceRationalIsometry
@@ -65,8 +67,8 @@ theorem mulVec_latV_of_local {S S' : HSp D} {L : Lat S} {L' : Lat S'} (hL : Subm
     (hL' : Submodule.IsLattice D.host.E L') {P : Pl D → Prop} (M : Matrix (Fin S'.rank) (Fin S.rank) (AE D))
     (h : ∀ v, P v → ∀ y ∈ latV S L (· = v), M *ᵥ y ∈ latV S' L' (· = v)) {y : Fin S.rank → AE D}
     (hy : y ∈ latV S L P) : M *ᵥ y ∈ latV S' L' P := by
-  obtain ⟨h1, h2⟩ := (((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 S).2.2.2 L y hL).1 hy
-  refine (((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 S').2.2.2 L' _ hL').2 ⟨mulVec_mem_ideal _ M h1, fun v hv e he => ?_⟩
+  obtain ⟨h1, h2⟩ := (((_root_.GlobalTheory.FinPl.localComponents D P).2 S).2.2.2 L y hL).1 hy
+  refine (((_root_.GlobalTheory.FinPl.localComponents D P).2 S').2.2.2 L' _ hL').2 ⟨mulVec_mem_ideal _ M h1, fun v hv e he => ?_⟩
   rw [← Matrix.mulVec_smul]
   exact h v hv _ (h2 v hv e he)
 

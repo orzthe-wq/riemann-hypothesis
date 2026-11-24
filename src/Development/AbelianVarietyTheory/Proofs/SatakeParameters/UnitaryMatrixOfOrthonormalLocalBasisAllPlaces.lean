@@ -163,9 +163,7 @@ theorem norm_cmTypeEmbeddingPadic_le_one_of_mem_baseIdeal (z : Bool × HH D) {a 
 
 end Frob
 
-theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x :=
-  D.host.φ₀.injective (by
-    rw [Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply, Complex.conj_conj])
+alias conj_conj := _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.conj_conj
 
 section Entries
 

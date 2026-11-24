@@ -201,7 +201,7 @@ private theorem coc_zero {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type
       ring
     · intro _ h
       exact absurd h (by norm_num)
-  haveI : Subsingleton (F.selmerCohomologyQuotient (-2)) := hX
+  have : Subsingleton (F.selmerCohomologyQuotient (-2)) := hX
   have hq : (Submodule.Quotient.mk (⟨X, hmemZ⟩ : F.selmerCocycles (-2)) : F.selmerCohomologyQuotient (-2)) = 0 := Subsingleton.elim _ _
   rw [Submodule.Quotient.mk_eq_zero, Submodule.mem_comap] at hq
   obtain ⟨m, hm⟩ := (mem_coboundaries1 _ _).mp hq
@@ -319,7 +319,7 @@ private theorem conjBy_inv_mat_of_eta_eq_one (hm : HasMult η r) (h : GL (Fin 3)
     ((conjBy h⁻¹ r) g).mat = ((h⁻¹ : GL (Fin 3) A) : Matrix (Fin 3) (Fin 3) A) * (r g).mat * (h : Matrix (Fin 3) (Fin 3) A) := by
   have hr1 : (r g).right = 1 := by rw [hm g, hg]
   show ((((GG.ofGL h⁻¹) * r g * (GG.ofGL h⁻¹)⁻¹).left : GL (Fin 3) A) : Matrix (Fin 3) (Fin 3) A) = _
-  simp [SemidirectProduct.mul_left, hr1, sgnAct_one, GG.mat]
+  simp [SemidirectProduct.mul_left, hr1, GG.mat]
 
 private theorem loc_rel [IsDomain A] (hr : Red η Ψ r) (h21 : ∀ g, (r g).mat 2 1 = 0) {x : A} (hx : x ≠ 0) (b : D → A)
     (hb : ∀ g, (r g).mat 2 0 = x * b g) (h : GL (Fin 3) A) (hh : InHat h) (hU : Upper η (conjBy h⁻¹ r))
@@ -437,7 +437,7 @@ private theorem ent_zero {O A : Type} [CommRing O] [IsLocalRing O] [CommRing A] 
       rw [e]
       exact h21 _ hgc
   by_contra hne
-  push_neg at hne
+  push Not at hne
   obtain ⟨g', hg'⟩ := hne
   obtain ⟨g0, hg0⟩ := exists_dvd (fun g => (r g).mat 2 0)
   have hx : (r g0).mat 2 0 ≠ 0 := by

@@ -4,10 +4,10 @@ public import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceE
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.LawsFieldsSeparately
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.FiniteAndFinrankLeOfPointwise
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumWeightSpreadLeExponentNormAddStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedFrameSumPositiveStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CuspSquareIntegrableIffUnfolded
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumWeightSpreadLeExponentNormAdd
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.WeightedFrameSumPositive
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ReadingLinearIndependentAndInjective
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CuspSquareIntegrableIffUnfolded
 import Formalism.LocalToGlobal.ProjectiveLattices.FreeBridge
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -179,24 +179,32 @@ open Module
 
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
-theorem finrank_cuspW_le : GlobalTheory.UCls.MassBound → GlobalTheory.UCls.TorusBound → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → FiniteDimensional c.F (cuspW Xo c U (wtZ a n)) ∧ (Module.finrank c.F (cuspW Xo c U (wtZ a n)) : ℝ) ≤ supConst D.host.E D.R.r D.host.d l.M (((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1) := by
-  intro hM hT D j H Dw l Xo c U dict hL a n hDom
+/-- Parametric finiteness and dimension bound for `cuspW` given any sup-to-Petersson constant `K`. -/
+theorem finrank_cuspW_le_of_sup (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E)
+    (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l)
+    (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r)
+    (hL : Laws D j Xo c U dict) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hDom : Dom a n)
+    (K : ℝ) (hK0 : 0 ≤ K)
+    (hsup_fn : ∀ σ, GoodEmb c σ → ∀ (la : ∀ k, Wt ((U σ).X k).Ψ D.R.r) (w : ℝ), 0 < w →
+      (∀ k, (∑ τ, ((U σ).X k).spread (la k) τ) ≤ w) →
+      (∀ k, ∀ γ ∈ ((U σ).X k).Γ, ((U σ).X k).χ (la k) γ = 1) →
+      w = ((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1 →
+      ∀ P ∈ holSub (U σ).X la, supE (U σ).X la P ^ 2 ≤ ENNReal.ofReal K * petE (D.sp.W j) (dict σ) (muQ1 (D.sp.W j)) la P ^ 2) :
+    FiniteDimensional c.F (cuspW Xo c U (wtZ a n)) ∧ (Module.finrank c.F (cuspW Xo c U (wtZ a n)) : ℝ) ≤ K := by
   obtain ⟨σ, hσ⟩ : ∃ σ : c.F →+* ℂ, GoodEmb c σ := ⟨_, goodEmb_goodOf c c.F.val.toRingHom⟩
   obtain ⟨Kf, th, hr, hK, hth, hd, hu⟩ := hL.dictU σ hσ
   have hU : IsUnf (U σ) := hL.unf σ hσ
   obtain ⟨w, hw_def⟩ : ∃ w : ℝ, w = ((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1 := ⟨_, rfl⟩
-  rw [← hw_def]
   have hw : 0 < w := by rw [hw_def]; positivity
   have hspread : ∀ k, (∑ τ, ((U σ).X k).spread (laU (U σ) a n k) τ) ≤ w := fun k =>
-    (GlobalTheory.T.sum_weightSpread_le_exponentNorm_add D j H Dw l Xo c U dict hL σ hσ a n k).trans (by rw [hw_def]; linarith)
+    (_root_.GlobalTheory.LamSpread.sum_spread_laU_le D j H Dw l Xo c U dict hL σ hσ a n k).trans (by rw [hw_def]; linarith)
   have hχ := hL.chiTriv σ hσ a n hDom
-  have hsup := GlobalTheory.T.weighted_frame_sum_positive hM hT D j H Dw l Xo c U dict hL σ hσ (laU (U σ) a n) w hw hspread hχ
+  have hsup := hsup_fn σ hσ (laU (U σ) a n) w hw hspread hχ hw_def
   obtain ⟨Cw, hCw⟩ : ∃ Cw, Cw = cuspW Xo c U (wtZ a n) := ⟨_, rfl⟩
   rw [← hCw]
   have hsecOf : ∀ f ∈ Cw, f ∈ sec Xo c a n := fun f hf => by
     rw [hCw, cuspW_wtZ] at hf
     exact cusp_le_sec Xo c U a n hf
-
   have hgen : ∀ f ∈ Cw, rdU (U σ) f ∈ holSub (U σ).X (laU (U σ) a n) ∧
       (∀ k, ContinuousOn (rdU (U σ) f k) ((U σ).X k).dom) ∧
       (∀ k, ∀ γ ∈ ((U σ).X k).Γ, ∀ x ∈ ((U σ).X k).dom, rdU (U σ) f k (lact γ x) = rdU (U σ) f k x) ∧
@@ -226,20 +234,15 @@ theorem finrank_cuspW_le : GlobalTheory.UCls.MassBound → GlobalTheory.UCls.Tor
     | add P Q _ _ hP hQ =>
       refine ⟨Submodule.add_mem _ hP.1 hQ.1, fun k => (hP.2.1 k).add (hQ.2.1 k), fun k γ hγ x hx => ?_,
         fun k x hx => ?_⟩
-      · simp only [Pi.add_apply]
-        rw [hP.2.2.1 k γ hγ x hx, hQ.2.2.1 k γ hγ x hx]
-      · simp only [Pi.add_apply]
-        rw [hP.2.2.2 k x hx, hQ.2.2.2 k x hx, add_zero]
+      · simp only [Pi.add_apply]; rw [hP.2.2.1 k γ hγ x hx, hQ.2.2.1 k γ hγ x hx]
+      · simp only [Pi.add_apply]; rw [hP.2.2.2 k x hx, hQ.2.2.2 k x hx, add_zero]
     | smul z P _ hP =>
       refine ⟨Submodule.smul_mem _ z hP.1, fun k => (hP.2.1 k).const_smul z, fun k γ hγ x hx => ?_,
         fun k x hx => ?_⟩
-      · simp only [Pi.smul_apply]
-        rw [hP.2.2.1 k γ hγ x hx]
-      · simp only [Pi.smul_apply]
-        rw [hP.2.2.2 k x hx, smul_zero]
+      · simp only [Pi.smul_apply]; rw [hP.2.2.1 k γ hγ x hx]
+      · simp only [Pi.smul_apply]; rw [hP.2.2.2 k x hx, smul_zero]
   obtain ⟨hSfin, hSle⟩ := finrank_le_of_sup (D.sp.W j) (dict σ) (laU (U σ) a n) (Nat.pos_of_ne_zero (by
-      have := l.three_le; omega)) hth hd hK hu S hS (supConst_nonneg _ _ _ _ _) fun P hP => hsup P (hS P hP).1
-
+      have := l.three_le; omega)) hth hd hK hu S hS hK0 fun P hP => hsup P (hS P hP).1
   have hind : ∀ (m : ℕ) (b : Fin m → Rul Xo c), (∀ i, b i ∈ Cw) → LinearIndependent c.F b →
       LinearIndependent ℂ (fun i => rdU (U σ) (b i)) := fun m b hb hli =>
     (GlobalTheory.reading_linearIndependent_and_injective GlobalTheory.lawsFieldsSeparately.2.1 _ H Dw l Xo c σ _
@@ -259,7 +262,12 @@ theorem finrank_cuspW_le : GlobalTheory.UCls.MassBound → GlobalTheory.UCls.Tor
   have hfin : FiniteDimensional c.F Cw :=
     Module.rank_lt_aleph0_iff.1 (hrank.trans_lt Cardinal.natCast_lt_aleph0)
   have h2 : finrank c.F Cw ≤ finrank ℂ S := finrank_le_of_rank_le hrank
-  refine ⟨hfin, le_trans ?_ hSle⟩
-  exact Nat.cast_le.2 h2
+  exact ⟨hfin, le_trans (Nat.cast_le.2 h2) hSle⟩
+
+theorem finrank_cuspW_le : GlobalTheory.UCls.MassBound → GlobalTheory.UCls.TorusBound → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → FiniteDimensional c.F (cuspW Xo c U (wtZ a n)) ∧ (Module.finrank c.F (cuspW Xo c U (wtZ a n)) : ℝ) ≤ supConst D.host.E D.R.r D.host.d l.M (((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1) :=
+  fun hM hT D j H Dw l Xo c U dict hL a n hDom =>
+    finrank_cuspW_le_of_sup D j H Dw l Xo c U dict hL a n hDom _ (supConst_nonneg _ _ _ _ _)
+      fun σ hσ la w hw hsp hχ hw_eq => hw_eq ▸
+        _root_.GlobalTheory.supPet_principal hM hT D j H Dw l Xo c U dict hL σ hσ la w hw hsp hχ
 
 end GlobalTheory.LevGeo.RankBd

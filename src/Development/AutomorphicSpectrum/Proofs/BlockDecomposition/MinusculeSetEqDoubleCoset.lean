@@ -161,7 +161,6 @@ theorem minusculeSet_eq_doubleCoset {j : ℕ} (hj : j ≤ n) :
     have h0 : ∀ i, 0 ≤ μ i := fun i => exponent_nonneg (by
       have := m1 i i
       rwa [show (Cartan.diagPow F n μ) i i = (uniformizer F : F) ^ μ i by
-        change ((Cartan.diagPow F n μ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i = _
         rw [Cartan.coe_diagPow, diagonal_apply_eq]] at this)
     have h1 : ∀ i, μ i ≤ 1 := fun i => by
       have h2 : ((uniformizer F : F)) ≠ 0 := Cartan.uniformizer_ne_zero F

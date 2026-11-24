@@ -108,7 +108,7 @@ lemma hpart2_skew (Z : Mx k r) :
 lemma skew_real (X : Mx k r) (hX : Xᴴ = -(Hpk k r * X * Hpk k r)) (t : ℝ) :
     ((t : ℂ) • X)ᴴ = -(Hpk k r * ((t : ℂ) • X) * Hpk k r) := by
   rw [Matrix.conjTranspose_smul, hX, Complex.star_def, Complex.conj_ofReal]
-  simp [Matrix.smul_mul, Matrix.mul_smul]
+  simp
 
 lemma exp_mem_UH (Y : Mx k r) (hY : Yᴴ = -(Hpk k r * Y * Hpk k r)) :
     NormedSpace.exp Y ∈ UH (Hpk k r) := by

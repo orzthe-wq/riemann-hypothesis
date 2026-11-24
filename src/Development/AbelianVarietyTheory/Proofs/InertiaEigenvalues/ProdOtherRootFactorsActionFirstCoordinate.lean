@@ -124,12 +124,6 @@ theorem prod_other_factors_action {O : Type} [CommRing O] [IsDomain O] {n r t : 
   split_ifs with h0
   · simp only [h0, zero_add]
     congr 2
-    all_goals
-      rw [list_prod_range'_eq_prod_Ico]
-      apply Finset.prod_congr _ (fun _ _ => rfl)
-      ext x
-      simp only [Finset.mem_Ico, Finset.mem_Ioc]
-      omega
   · have hc := c.isLt
     rw [List.prod_eq_zero, map_zero, zero_mul]
     exact List.mem_map.2 ⟨(c : ℕ) + 1, List.mem_range'_1.2 ⟨by omega, by omega⟩, sub_self _⟩

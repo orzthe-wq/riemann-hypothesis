@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.BaseChangeKernels.PullbackSquarePartialSum
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PlaceDivisors.SiegelPullbackTransfer.AdelicGL2ExtOfLocalComponents
 
 @[expose] public section
 
@@ -128,16 +129,12 @@ theorem eBC_hom (f : Sp L' ⟶ Sp L) {G : Over (Sp L)} [GrpObj G] (T : TorusExte
   haveI := h
   exact (inferInstance : IsMonHom ((Over.pullback f).map e.hom))
 
-theorem map_left_fst {S S' : Scheme.{0}} (f : S' ⟶ S) {X Y : Over S} (a : X ⟶ Y) :
-    ((Over.pullback f).map a).left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left :=
-  pullback.lift_fst _ _ _
-
 theorem quot_bc (f : Sp L' ⟶ Sp L) {G : Over (Sp L)} [GrpObj G] (T : TorusExtension G) {B' : Over (Sp L)}
     (e : T.B ≅ B') : ((torusExtBC f T).q ≫ (eBC f T e).hom).left ≫ pullback.fst B'.hom f =
       pullback.fst G.hom f ≫ (T.q ≫ e.hom).left := by
   change ((Over.pullback f).map T.q ≫ (Over.pullback f).map e.hom).left ≫ _ = _
   rw [← Functor.map_comp]
-  exact map_left_fst f _
+  exact _root_.ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison.pullback_map_left_fst' f _
 
 theorem iB_point (e : L →+* L') {G : Over (Sp L)} [GrpObj G] {X : Type} [AddCommGroup X]
     (i : splitTorus (Sp L) X ⟶ G) {A : Type} [CommRing A] (a : Sp A ⟶ Sp L')

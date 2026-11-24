@@ -63,9 +63,6 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
-theorem mem_orth_iff' {U : Submodule E S.V} {v : S.V} : v ∈ orth S U ↔ ∀ x ∈ U, S.hT x v = 0 := by
-  simp [orth, Submodule.mem_iInf]
-
 theorem frame_mapLF {T : E} {γ : S.V ≃ₗ[E] S.V} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : LFlag S r T)
     (a : Fin (r + 1)) : frame (mapLF γ F) a = γ (frame F a) := by
   unfold mapLF; rw [dite_eq_left hγ]
@@ -130,7 +127,7 @@ theorem conj_nlam_top {T : D.host.E} {G : LFlag (D.sp.Y 0) D.R.rS T} {γ m : (VS
   · intro x hx
     have hXs := Xsp_mapLF hγ G
     have hy : γ.symm x ∈ orth (VS D) (Xsp G) := by
-      rw [mem_orth_iff'] at hx ⊢
+      rw [_root_.Formalism.MainNotions.LatticeGluingRadicals.p_mem_orth] at hx ⊢
       intro w hw
       have h1 := hx (γ w) (by rw [hXs]; exact Submodule.mem_map_of_mem hw)
       have h2 := hγ w (γ.symm x)
@@ -203,7 +200,7 @@ theorem nml_eq (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V}
   · rintro ⟨a, ha, b, hb, rfl⟩
     refine ⟨a * n⁻¹, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul _ ha hni, m * b,
       Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul _ hm hb, ?_⟩
-    rw [h]; simp only [mul_assoc, inv_mul_cancel_left]
+    rw [h]; simp only [mul_assoc]
   · rintro ⟨a, ha, b, hb, rfl⟩
     refine ⟨a * n, Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul _ ha hn, m⁻¹ * b,
       Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_mul _ hmi hb, ?_⟩
@@ -230,7 +227,7 @@ theorem rel_iff_frames (t₀ t : TauC Y u u') {n m : (VS D).V ≃ₗ[D.host.E] (
 
 theorem pt_eq (t₀ t : TauC Y u u') (hrl : t.relevant ↔ t₀.relevant) (hat : ∀ w, t.toTerm.atPt w ↔ t₀.toTerm.atPt w) :
     Formalism.L2.SG.PairVal.ptOf t.toTerm = Formalism.L2.SG.PairVal.ptOf t₀.toTerm := by
-  have hCP := Formalism.L2.SG.Pf.cell_point_unique_of_term_fun (Formalism.L2.SG.Closed.TermFun_holds D u u') (Y.rowsOK u)
+  have hCP := Formalism.L2.SG.Pf.cell_point_unique_of_term_fun (_root_.term_function_const D u u') (Y.rowsOK u)
   by_cases hx : ∃ w, t₀.toTerm.atPt w ∧ t₀.toTerm.relevant
   · have hx' : ∃ w, t.toTerm.atPt w ∧ t.toTerm.relevant := by
       obtain ⟨w, hw, hr⟩ := hx

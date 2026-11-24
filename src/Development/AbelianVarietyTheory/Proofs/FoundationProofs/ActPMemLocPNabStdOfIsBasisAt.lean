@@ -70,7 +70,7 @@ theorem int_of_mem_colLat_one {x : Fin n → K} (hx : x ∈ colLat (1 : GL (Fin 
     obtain ⟨j, rfl⟩ := h
     by_cases h : a = j
     · exact ⟨1, by simp [h]⟩
-    · exact ⟨0, by simp [Matrix.one_apply, h]⟩
+    · exact ⟨0, by simp [h]⟩
   | zero => exact ⟨0, by simp⟩
   | add x y _ _ hx hy =>
     obtain ⟨u, hu⟩ := hx

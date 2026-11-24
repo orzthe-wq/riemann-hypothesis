@@ -60,7 +60,7 @@ theorem summable_lat_wt {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [F
     ((ZLattice.summable_norm_pow_inv L k hk).add (hasSum_ite_eq (0 : L) (1 : ℝ)).summable)
   by_cases hz : z = 0
   · subst hz
-    simp only [if_pos rfl, norm_zero, add_zero, inv_one, one_pow]
+    simp only [norm_zero, add_zero, inv_one, one_pow]
     exact le_add_of_nonneg_left (by positivity)
   · have h0 : 0 < ‖z‖ := norm_pos_iff.2 hz
     simp only [hz, if_false, add_zero]

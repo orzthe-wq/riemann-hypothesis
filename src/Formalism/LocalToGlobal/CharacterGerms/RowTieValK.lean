@@ -1,50 +1,6 @@
 module
 
 public import Formalism.LocalToGlobal.CharacterGerms.RowTieFB
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 import Formalism.LocalToGlobal.ProjectiveLattices.SubConstMemOrig
 
 @[expose] public section
@@ -73,9 +29,6 @@ private theorem coeff_single_one_mul' (t : Fin 1 × Fin dd) (x y : PS C 1 dd) :
       rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]
       simp
      rw [key, key, key, Derivation.leibniz, map_add (f := _), smul_eq_mul, smul_eq_mul, map_mul, map_mul]
-     ring)
-  | (rw [MvPowerSeries.coeff_mul, Finsupp.antidiagonal_single]
-     simp [Finset.Nat.antidiagonal_succ]
      ring)
 
 private theorem coeff_single_one_pow_add_two_eq_zero (x : PS C 1 dd) (hx : MvPowerSeries.constantCoeff x = 0)
@@ -134,10 +87,7 @@ private theorem coeff_single_one_ev_eq_sum (f : PS C 1 dd) (ψ : Pt C 1 dd) (hψ
     rfl
   have hs : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin dd => ψ p.2) := by
     first
-    | exact MvPowerSeries.HasSubst.of_constantCoeff_zero (fun s => hψ s.2)
     | exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => hψ s.2)
-    | exact ⟨fun s => by simp [hψ s.2], fun d => Set.toFinite _⟩
-    | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by simp [hψ s.2])
   rw [hev, MvPowerSeries.coeff_subst hs]
   refine (finsum_eq_sum_of_support_subset _ (s := Finset.univ.image fun s => Finsupp.single s 1) ?_).trans ?_
   · intro d hd
@@ -149,7 +99,6 @@ private theorem coeff_single_one_ev_eq_sum (f : PS C 1 dd) (ψ : Pt C 1 dd) (hψ
     rw [(constantCoeff_and_linear_coeff_finsupp_prod_pow _ (fun s => hψ s.2) _ d).2 (fun s h => hne s h.symm), smul_zero]
   · first
     | rw [Finset.sum_image (fun x _ y _ h => Finsupp.single_left_injective one_ne_zero h)]
-    | rw [Finset.sum_image ((Finsupp.single_left_injective one_ne_zero).injOn)]
     rw [Fintype.sum_prod_type, Fin.sum_univ_one]
     simp [Finsupp.prod_single_index, smul_eq_mul]
 

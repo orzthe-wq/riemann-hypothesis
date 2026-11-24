@@ -121,7 +121,7 @@ theorem UpperTheory.V.Cj.S.hkLocal :
     rfl
   have hcard : ∀ S : Finset (Fin (r + s)), S.card = (sub1 S).card + (sub2 S).card := by
     intro S
-    calc S.card = ∑ i : Fin (r + s), if i ∈ S then 1 else 0 := by simp [Finset.sum_boole]
+    calc S.card = ∑ i : Fin (r + s), if i ∈ S then 1 else 0 := by simp
       _ = _ := Fin.sum_univ_add _
       _ = _ := by simp [sub1, sub2, Finset.sum_boole]
   let e : Finset (Fin (r + s)) ≃ Finset (Fin r) × Finset (Fin s) :=

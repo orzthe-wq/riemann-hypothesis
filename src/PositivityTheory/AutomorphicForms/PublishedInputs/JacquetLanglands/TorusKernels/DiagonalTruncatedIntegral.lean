@@ -131,7 +131,7 @@ theorem UpperTheory.Esk.diagonal_truncated_integral_zero : UpperTheory.Esk.B1a �
   obtain ⟨hcount, _, hpres, _, _, _, _, _⟩ := hE0a F I Gf D hH.ax
   obtain ⟨_, hinv, hmeas, _, hsupp, htr⟩ := hE0c F I Gf ι D k a hH
   obtain ⟨_, e2, e3, _, _, _, _, e8, _, _, _⟩ := hE0d F I Gf D hH.ax
-  haveI := hH.ax.two
+  have := hH.ax.two
   obtain ⟨g, hg⟩ : ∃ g, (γ : PG F).out = g := ⟨_, rfl⟩
   have hgq : (g : PG F) = (γ : PG F) := by rw [← hg]; exact QuotientGroup.out_eq' _
   obtain ⟨g01, g10⟩ := out_diag γ h01 h10
@@ -142,7 +142,7 @@ theorem UpperTheory.Esk.diagonal_truncated_integral_zero : UpperTheory.Esk.B1a �
     simp only [Dat.kk, Dat.kt, qq, Dat.J, Dat.act, Finset.prod_mul_distrib, hg]
   by_cases hc : D.Te a g (D.rep ω) = 0
   · have h0 : ∀ z, β z • (D.LamF T (γ : PG F)).indicator (D.kk k a (γ : PG F)) (ω, z) = 0 := by
-      intro z; simp [Set.indicator_apply, hkk, hc]
+      intro z; simp [hkk, hc]
     simp [h0]
   obtain ⟨i, hi⟩ := hsupp (γ : PG F) ω (by rw [hg]; exact hc)
   obtain ⟨htr0, htr1⟩ := htr (γ : PG F) ω i hi
@@ -170,7 +170,7 @@ theorem UpperTheory.Esk.diagonal_truncated_integral_zero : UpperTheory.Esk.B1a �
         Finset.prod_eq_zero (Finset.mem_univ v) (by rw [hfac, hv]; rfl)
       simp [hkk, hp]
     simp [h0]
-  push_neg at hz
+  push Not at hz
   have hφn' : ∀ v x, φ v x ≠ 0 := fun v => (hφn v).resolve_left (hz v)
 
   have h1pos : 0 < D.hf ![0, 1] (D.rep ω) := hH.ax.pos _ (by simp) _
@@ -183,7 +183,7 @@ theorem UpperTheory.Esk.diagonal_truncated_integral_zero : UpperTheory.Esk.B1a �
     intro z; simp [Dat.HtY, Dat.Ht]
   have hLam : ∀ z : D.Xs, (ω, z) ∈ D.LamF T (γ : PG F) ↔ D.HtY ![0, 1] (ω, z) ≤ T ∧ D.HtY ![1, 0] (ω, z) ≤ T := by
     intro z
-    simp only [Dat.LamF, Set.mem_setOf_eq, Fix, hg]
+    simp only [Dat.LamF, Set.mem_ofPred_eq, Fix, hg]
     constructor
     · intro h
       refine ⟨h _ (by simp) ⟨g 1 1, ?_⟩, h _ (by simp) ⟨g 0 0, ?_⟩⟩
@@ -315,7 +315,7 @@ theorem UpperTheory.Esk.diagonal_truncated_integral_zero : UpperTheory.Esk.B1a �
     by_cases h : ((ω, z) : D.Y) ∈ D.LamF T (γ : PG F)
     · rw [Set.indicator_of_mem (hm.2 h), Set.indicator_of_mem h, hk]
     · rw [Set.indicator_of_notMem (mt hm.1 h), Set.indicator_of_notMem h]
-  haveI := hcount
+  have := hcount
   have hC := (hC1 (MulAction.stabilizer (PG F) (((γ : PG F), ω) : D.Cj × D.Om)) D.Xs volume (fun δ => hpres δ.1)
     β (fun z => β0 (p z)) hβ hβ').2 u hum huinv hint2
   rw [hC.2]

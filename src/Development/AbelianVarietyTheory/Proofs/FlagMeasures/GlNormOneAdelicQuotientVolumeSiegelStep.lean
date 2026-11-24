@@ -1,21 +1,21 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsLatMeasurableConst
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeWithDensityDetNormSq
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TranslatedLatticeAtInfinityFullCovolumeDual
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GlVolEqTsumSlabVol
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsScalarStableLatticeAutomorphismFundamentalStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsLatticeTraceDualAndTraceDualTraceDualStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanCovolumeFunctionStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanSumNonzeroUnfoldStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsScalarStableLatticeAutomorphismFundamental
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableSetDetNormPos
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsLatticeTraceDualAndTraceDualTraceDual
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanSumNonzeroUnfold
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanTraceFormDualLattice
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableTranslatedLatticeFunctionsStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PoissonSummationInfinitePlaceGaussianLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TranslatedLatticeAtInfinityFullCovolumeDualStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PoissonSummationInfinitePlaceGaussianLattice
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -49,10 +49,133 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableTranslatedLatticeFunctions
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Algebra.Ring.IsFormallyReal
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanCovolumeFunction, Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlNormOneAdelicQuotientVolumeSiegelStep
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanCovolumeFunction =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanCovolumeFunction", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsLatMeasurableConst\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LeftQuotientCovolumeWithDensityDetNormSq\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TranslatedLatticeAtInfinityFullCovolumeDual\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.FlagBase
+
+namespace GlobalTheory.FlagBase.MeanCov
+
+theorem lintegral_div_inv (κ : ℝ) (hκ : 0 < κ) (w : ℝ → ENNReal) :
+    ∫⁻ t in Set.Ioi (0 : ℝ), w (κ / t) / ENNReal.ofReal t
+      = ∫⁻ t in Set.Ioi (0 : ℝ), w t / ENNReal.ofReal t := by
+  have himg : (fun t : ℝ => κ / t) '' Set.Ioi 0 = Set.Ioi 0 := by
+    ext s
+    constructor
+    · rintro ⟨t, ht, rfl⟩
+      exact div_pos hκ ht
+    · intro hs
+      have hs0 : s ≠ 0 := ne_of_gt (Set.mem_Ioi.mp hs)
+      refine ⟨κ / s, div_pos hκ hs, ?_⟩
+      field_simp
+  have hder : ∀ t ∈ Set.Ioi (0 : ℝ),
+      HasDerivWithinAt (fun t : ℝ => κ / t) (κ * -(t ^ 2)⁻¹) (Set.Ioi 0) t := by
+    intro t ht
+    have ht0 : t ≠ 0 := ne_of_gt (Set.mem_Ioi.mp ht)
+    have h1 : HasDerivAt (fun y : ℝ => κ * y⁻¹) (κ * -(t ^ 2)⁻¹) t := (hasDerivAt_inv ht0).const_mul κ
+    have h2 : (fun y : ℝ => κ / y) = fun y => κ * y⁻¹ := by
+      funext y
+      rw [div_eq_mul_inv]
+    rw [h2]
+    exact h1.hasDerivWithinAt
+  have hinj : Set.InjOn (fun t : ℝ => κ / t) (Set.Ioi 0) := by
+    intro a ha b hb hab
+    have ha0 : a ≠ 0 := ne_of_gt (Set.mem_Ioi.mp ha)
+    have hb0 : b ≠ 0 := ne_of_gt (Set.mem_Ioi.mp hb)
+    have hk0 : κ ≠ 0 := ne_of_gt hκ
+    simp only at hab
+    field_simp at hab
+    nlinarith [hab]
+  have key := lintegral_image_eq_lintegral_abs_deriv_mul measurableSet_Ioi hder hinj
+    (fun s => w (κ / s) / ENNReal.ofReal s)
+  rw [himg] at key
+  rw [key]
+  refine setLIntegral_congr_fun measurableSet_Ioi ?_
+  intro t ht
+  have ht' : 0 < t := Set.mem_Ioi.mp ht
+  have hq : 0 < κ / t := div_pos hκ ht'
+  have habs : |κ * -(t ^ 2)⁻¹| = κ / t * t⁻¹ := by
+    rw [abs_mul, abs_neg, abs_of_pos hκ, abs_of_pos (by positivity)]
+    field_simp
+  have hkk : κ / (κ / t) = t := by
+    field_simp
+  simp only
+  rw [habs, hkk, ENNReal.ofReal_mul hq.le, ENNReal.ofReal_inv_of_pos ht', div_eq_mul_inv, div_eq_mul_inv]
+  have hne : ENNReal.ofReal (κ / t) ≠ 0 := by simpa using hq
+  calc ENNReal.ofReal (κ / t) * (ENNReal.ofReal t)⁻¹ * (w t * (ENNReal.ofReal (κ / t))⁻¹)
+      = (ENNReal.ofReal (κ / t) * (ENNReal.ofReal (κ / t))⁻¹) * (w t * (ENNReal.ofReal t)⁻¹) := by ring
+    _ = w t * (ENNReal.ofReal t)⁻¹ := by
+      rw [ENNReal.mul_inv_cancel hne ENNReal.ofReal_ne_top, one_mul]
+
+alias measurable_detNorm := _root_.GlobalTheory.DetSlab.measurable_detNorm
+
+theorem ae_detNorm_pos (E : Type) [Field E] [NumberField E] (j : ℕ) (hj : 1 ≤ j) :
+    ∀ᵐ g ∂(haarGL E j), 0 < detNorm E j g := by
+  have hm := GlobalTheory.FlagBase.MeanCov.measurable_detNorm E j
+  rw [ae_iff]
+  have hs : MeasurableSet {g : MatInf E j | ¬ 0 < detNorm E j g} :=
+    (measurableSet_lt measurable_const hm).compl
+  have hz : ∀ g ∈ {g : MatInf E j | ¬ 0 < detNorm E j g},
+      ENNReal.ofReal ((detNorm E j g)⁻¹ ^ j) = 0 := by
+    intro g hg
+    have hnn : 0 ≤ detNorm E j g := by
+      unfold detNorm
+      exact Finset.prod_nonneg fun w _ => by positivity
+    have h0 : detNorm E j g = 0 := le_antisymm (not_lt.mp hg) hnn
+    rw [h0, _root_.inv_zero, zero_pow (by omega), ENNReal.ofReal_zero]
+  unfold haarGL
+  refine (withDensity_apply _ hs).trans ?_
+  refine (setLIntegral_congr_fun hs hz).trans ?_
+  simp
+
+private theorem covol_covAt (E : Type) [Field E] [NumberField E] (hE : IsTotallyComplex E)
+    (j : ℕ) (hj : 1 ≤ j) (w : ℝ → ENNReal) (hw : Measurable w)
+    (Λ : Submodule (𝓞 E) (Fin j → E)) (hΛ : Submodule.IsFullLattice E Λ) :
+    covol (autGL E j Λ) ((haarGL E j).withDensity fun g => w (covAt E j (latAt E j Λ g)))
+        {g | 0 < detNorm E j g} =
+      slabVol E j Λ * ∫⁻ t in Set.Ioi (0 : ℝ), w t / ENNReal.ofReal t := by
+  obtain ⟨κ, hκ, hL⟩ :=
+    (_root_.GlobalTheory.LatFacts.lattice_facts E hE j).1 Λ hΛ
+  have hF : Measurable fun t : ℝ => w (κ / t) := hw.comp (measurable_const.div measurable_id)
+  have hd : (haarGL E j).withDensity (fun g => w (covAt E j (latAt E j Λ g)))
+      = (haarGL E j).withDensity (fun g => w (κ / detNorm E j g)) := by
+    refine withDensity_congr_ae ?_
+    filter_upwards [GlobalTheory.FlagBase.MeanCov.ae_detNorm_pos E j hj] with g hg
+    rw [(hL g hg).2.1]
+  rw [hd]
+  refine (_root_.GlobalTheory.DetSlab.covol_withDensity_detNorm E hE j hj _ hΛ
+    (fun t => w (κ / t)) hF).trans ?_
+  congr 1
+  exact GlobalTheory.FlagBase.MeanCov.lintegral_div_inv κ hκ w
+
+theorem latMean_covAt : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ j : ℕ, 1 ≤ j → ∀ w : ℝ → ENNReal, Measurable w → latMean E j (fun L => w (covAt E j L)) = glVol E j * ∫⁻ t in Set.Ioi (0 : ℝ), w t / ENNReal.ofReal t := by
+  intro E _ _ hE j hj w hw
+  unfold latMean glVol
+  rw [← ENNReal.tsum_mul_right]
+  refine tsum_congr fun c => ?_
+  obtain ⟨Λ, hΛ⟩ := c.out
+  exact covol_covAt E hE j hj w hw Λ hΛ
+
+end GlobalTheory.FlagBase.MeanCov
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanCovolumeFunction =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlNormOneAdelicQuotientVolumeSiegelStep =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlNormOneAdelicQuotientVolumeSiegelStep", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsLatMeasurableConst\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GlVolEqTsumSlabVol\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsScalarStableLatticeAutomorphismFundamental\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableSetDetNormPos\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsLatticeTraceDualAndTraceDualTraceDual\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanCovolumeFunction\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanSumNonzeroUnfold\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LineLatticeClassMeanTraceFormDualLattice\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.PoissonSummationInfinitePlaceGaussianLattice\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.MeasurableTranslatedLatticeFunctions\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.TranslatedLatticeAtInfinityFullCovolumeDual\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas GlobalTheory.FlagBase
@@ -68,14 +191,6 @@ theorem measurable_detNorm : Measurable (detNorm E j) := by
     exact continuous_apply w
   exact h.measurable
 
-theorem ae_detNorm_pos (hj : 1 ≤ j) : ∀ᵐ g ∂(haarGL E j), 0 < detNorm E j g := by
-  unfold haarGL
-  refine (ae_withDensity_iff (((measurable_detNorm E j).inv.pow_const j).ennreal_ofReal)).2
-    (Filter.Eventually.of_forall fun g hg => ?_)
-  have h0 : 0 ≤ detNorm E j g := by unfold detNorm; positivity
-  refine lt_of_le_of_ne h0 fun h => hg ?_
-  simp [← h, show j ≠ 0 by omega]
-
 theorem latMean_congr (hj : 1 ≤ j) {F G : Submodule ℤ (VecInf E j) → ENNReal}
     (h : ∀ Λ : Submodule (𝓞 E) (Fin j → E), Submodule.IsFullLattice E Λ → ∀ g, 0 < detNorm E j g →
       F (latAt E j Λ g) = G (latAt E j Λ g)) : latMean E j F = latMean E j G := by
@@ -83,7 +198,7 @@ theorem latMean_congr (hj : 1 ≤ j) {F G : Submodule ℤ (VecInf E j) → ENNRe
   refine tsum_congr fun c => ?_
   congr 1
   refine withDensity_congr_ae ?_
-  filter_upwards [ae_detNorm_pos E j hj] with g hg using h _ (Quot.out c).2 g hg
+  filter_upwards [_root_.GlobalTheory.FlagBase.MeanCov.ae_detNorm_pos E j hj] with g hg using h _ (Quot.out c).2 g hg
 
 theorem latMean_add (hE : IsTotallyComplex E) (hj : 1 ≤ j) {F G : Submodule ℤ (VecInf E j) → ENNReal}
     (hF : ∀ Λ : Submodule (𝓞 E) (Fin j → E), Submodule.IsFullLattice E Λ →
@@ -95,9 +210,9 @@ theorem latMean_add (hE : IsTotallyComplex E) (hj : 1 ≤ j) {F G : Submodule �
   rw [← ENNReal.tsum_add]
   refine tsum_congr fun c => ?_
   obtain ⟨Λ, hΛ⟩ := Quot.out c
-  obtain ⟨D, hD, hDP, -, -, H⟩ := GlobalTheory.T.exists_scalarStable_latticeAutomorphismFundamentalDomain E hE j Λ hΛ
+  obtain ⟨D, hD, hDP, -, -, H⟩ := _root_.GlobalTheory.LatDom.exists_cone_domain E hE j Λ hΛ
   have hP : MeasurableSet {g | 0 < detNorm E j g} := measurableSet_lt measurable_const (measurable_detNorm E j)
-  rw [Measure.restrict_eq_self_of_ae_mem (s := {g | 0 < detNorm E j g}) (ae_detNorm_pos E j hj)] at H
+  rw [Measure.restrict_eq_self_of_ae_mem (s := {g | 0 < detNorm E j g}) (_root_.GlobalTheory.FlagBase.MeanCov.ae_detNorm_pos E j hj)] at H
   have hinv : ∀ γ ∈ autGL E j Λ, ∀ g ∈ {g | 0 < detNorm E j g}, γ * g ∈ {g | 0 < detNorm E j g} := by
     rintro γ ⟨c, -, hc⟩ g hg
     simp only [Set.mem_setOf_eq, detNorm] at hg ⊢
@@ -137,7 +252,7 @@ theorem measurable_weight_mul_sum (hE : IsTotallyComplex E) (w : ℝ → ENNReal
     (hw : Measurable w) (hΦ : Measurable Φ) (Λ : Submodule (𝓞 E) (Fin j → E)) (hΛ : Submodule.IsFullLattice E Λ) :
     Measurable (fun g : MatInf E j => {g | 0 < detNorm E j g}.indicator (fun g => w (covAt E j (latAt E j Λ g)) *
       ∑' x : {x : VecInf E j // x ∈ latAt E j Λ g ∧ x ≠ 0}, Φ x.1) g) := by
-  obtain ⟨h1, h2, -⟩ := GlobalTheory.T.measurable_translatedLattice_functions E hE j w Φ hw hΦ Λ hΛ
+  obtain ⟨h1, h2, -⟩ := _root_.GlobalTheory.LatMeasurable.measurable_latFun E hE j w Φ hw hΦ Λ hΛ
   convert h1.mul h2 using 2 with g
   by_cases hg : g ∈ {g | 0 < detNorm E j g} <;> simp [hg]
 
@@ -159,7 +274,7 @@ theorem measurable_gauss : Measurable fun x => ENNReal.ofReal (gaussV E j x) := 
   fun_prop
 
 theorem lintegral_gauss : ∫⁻ x, ENNReal.ofReal (gaussV E j x) = 1 := by
-  have h := (GlobalTheory.T.poisson_summation_infinitePlaceGaussian_lattice E j (Submodule.span ℤ (Set.range (Module.finBasis ℝ (VecInf E j))))
+  have h := (_root_.GlobalTheory.FlagBase.poisson_gaussV E j (Submodule.span ℤ (Set.range (Module.finBasis ℝ (VecInf E j))))
     inferInstance).2.2.2
   have hi : Integrable (gaussV E j) := by
     by_contra hn
@@ -172,7 +287,7 @@ theorem poisson_ne_zero (L : Submodule ℤ (VecInf E j)) [DiscreteTopology L] (h
     1 + ∑' x : {x : VecInf E j // x ∈ L ∧ x ≠ 0}, ENNReal.ofReal (gaussV E j x.1) =
       ENNReal.ofReal (covAt E j L)⁻¹ *
         (1 + ∑' x : {x : VecInf E j // x ∈ dualAt E j L ∧ x ≠ 0}, ENNReal.ofReal (gaussV E j x.1)) := by
-  obtain ⟨h1, h2, h3, -⟩ := GlobalTheory.T.poisson_summation_infinitePlaceGaussian_lattice E j L hL
+  obtain ⟨h1, h2, h3, -⟩ := _root_.GlobalTheory.FlagBase.poisson_gaussV E j L hL
   have h0 : ENNReal.ofReal (gaussV E j 0) = 1 := by simp [gaussV]
   have hc : 0 ≤ (covAt E j L)⁻¹ := inv_nonneg.2 (by unfold covAt ZLattice.covolume; exact ENNReal.toReal_nonneg)
   rw [← h0, ← tsum_eq_zero_add E j L fun x => ENNReal.ofReal (gaussV E j x),
@@ -267,8 +382,8 @@ private theorem latMean_dualAt_full (hE : IsTotallyComplex E) (F : Submodule ℤ
   let X := {Λ : Submodule (𝓞 E) (Fin j → E) // Submodule.IsFullLattice E Λ}
   let r : X → X → Prop := fun Λ Λ' => ∃ γ : GL (Fin j) E,
     ∀ y, (γ : Matrix (Fin j) (Fin j) E) *ᵥ y ∈ Λ'.1 ↔ y ∈ Λ.1
-  let d : X → X := fun Λ => ⟨trDual E j Λ.1, (GlobalTheory.T.isLattice_traceDual_and_traceDual_traceDual E j Λ.1 Λ.2).1⟩
-  have hdd : ∀ Λ, d (d Λ) = Λ := fun Λ => Subtype.ext (GlobalTheory.T.isLattice_traceDual_and_traceDual_traceDual E j Λ.1 Λ.2).2
+  let d : X → X := fun Λ => ⟨trDual E j Λ.1, (_root_.GlobalTheory.MeanDual.Alg.isLattice_trDual_and_trDual_trDual E j Λ.1 Λ.2).1⟩
+  have hdd : ∀ Λ, d (d Λ) = Λ := fun Λ => Subtype.ext (_root_.GlobalTheory.MeanDual.Alg.isLattice_trDual_and_trDual_trDual E j Λ.1 Λ.2).2
   have hd : ∀ ⦃a b⦄, r a b → r (d a) (d b) := fun a b ⟨γ, h⟩ => ⟨_, Carries.trDual h⟩
   let D : Quot r → Quot r := Quot.map d hd
   have hD : Function.Involutive D := by
@@ -300,9 +415,9 @@ theorem glVol_step : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex 
   have m3 : Measurable ((Set.Ioo (0 : ℝ) 1).indicator fun t => ENNReal.ofReal (t ^ 2)) :=
     Measurable.indicator (by fun_prop) measurableSet_Ioo
   have mg := measurable_gauss E j
-  have e1 := GlobalTheory.T.lineLatticeClassMean_covolume_function E hE j hj1 _ m1
-  have e2 := GlobalTheory.T.lineLatticeClassMean_sum_nonzero_unfold E hE j hj _ _ m2 mg
-  have e3 := GlobalTheory.T.lineLatticeClassMean_sum_nonzero_unfold E hE j hj _ _ m3 mg
+  have e1 := _root_.GlobalTheory.FlagBase.MeanCov.latMean_covAt E hE j hj1 _ m1
+  have e2 := _root_.GlobalTheory.FlagBase.SiegelUnfold.latMean_sum_ne_zero E hE j hj _ _ m2 mg
+  have e3 := _root_.GlobalTheory.FlagBase.SiegelUnfold.latMean_sum_ne_zero E hE j hj _ _ m3 mg
   have e4 := latMean_dualAt_full E j hE (fun L => (Set.Ioo (0 : ℝ) 1).indicator (fun t => ENNReal.ofReal (t ^ 2))
     (covAt E j L) * ∑' x : {x : VecInf E j // x ∈ L ∧ x ≠ 0}, ENNReal.ofReal (gaussV E j x.1))
     (measurable_weight_mul_sum E j hE _ _ m3 mg)
@@ -310,7 +425,7 @@ theorem glVol_step : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex 
     (F := fun L => (Set.Ioi (1 : ℝ)).indicator (fun t => ENNReal.ofReal (t⁻¹ - t⁻¹ ^ 2)) (covAt E j L))
     (G := fun L => (Set.Ioi (1 : ℝ)).indicator (fun t => ENNReal.ofReal t⁻¹) (covAt E j L) *
       ∑' x : {x : VecInf E j // x ∈ L ∧ x ≠ 0}, ENNReal.ofReal (gaussV E j x.1))
-    (fun Λ hΛ => (GlobalTheory.T.measurable_translatedLattice_functions E hE j _ _ m1 mg Λ hΛ).1) (measurable_weight_mul_sum E j hE _ _ m2 mg)
+    (fun Λ hΛ => (_root_.GlobalTheory.LatMeasurable.measurable_latFun E hE j _ _ m1 mg Λ hΛ).1) (measurable_weight_mul_sum E j hE _ _ m2 mg)
   rw [e1, e2, lintegral_diff, lintegral_cube, lintegral_gauss] at e5
   rw [e3, lintegral_unit, lintegral_gauss] at e4
   rw [latMean_congr E j hj1 (G := fun L => (Set.Ioo (0 : ℝ) 1).indicator (fun t => ENNReal.ofReal (t ^ 2))
@@ -324,9 +439,12 @@ theorem glVol_step : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex 
     have e7 := (ENNReal.add_left_inj (ENNReal.mul_ne_top hC (by simp))).1 e6
     exact (ENNReal.mul_left_inj (by simp) (by simp)).1 e7
   · intro Λ hΛ g hg
-    obtain ⟨κ, hκ, H⟩ := (GlobalTheory.T.translatedLatticeAtInfinity_full_covolume_dual E hE j).1 Λ hΛ
+    obtain ⟨κ, hκ, H⟩ := (_root_.GlobalTheory.LatFacts.lattice_facts E hE j).1 Λ hΛ
     obtain ⟨⟨_, hL⟩, hc, hd, -⟩ := H g hg
     rw [hd]
     exact weighted (by rw [hc]; positivity) (poisson_ne_zero E j _ hL)
 
 end GlobalTheory.FlagBase.SiegelStep
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.GlNormOneAdelicQuotientVolumeSiegelStep =====

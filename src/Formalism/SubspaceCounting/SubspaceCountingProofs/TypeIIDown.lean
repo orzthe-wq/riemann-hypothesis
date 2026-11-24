@@ -182,14 +182,12 @@ private theorem finrank_map_mkQ_add_finrank_eq {F Q : Type} [Field F] [AddCommGr
     [Module.Finite F Q] (R U : Submodule F Q) (h : R ≤ U) :
     Module.finrank F (U.map R.mkQ) + Module.finrank F R = Module.finrank F U := by
   have h1 := LinearMap.finrank_range_add_finrank_ker (R.mkQ.domRestrict U)
-  rw [LinearMap.range_domRestrict, LinearMap.ker_domRestrict, Submodule.ker_mkQ] at h1
-  rw [← h1, (Submodule.comapSubtypeEquivOfLe h).finrank_eq]
+  rw [← h1, LinearMap.range_domRestrict, LinearMap.ker_domRestrict, Submodule.ker_mkQ, (Submodule.comapSubtypeEquivOfLe h).finrank_eq]
 
 private theorem le_comap_mkQ' {F Q : Type} [Field F] [AddCommGroup Q] [Module F Q]
     (R : Submodule F Q) (V : Submodule F (Q ⧸ R)) : R ≤ V.comap R.mkQ := by
   intro x hx
-  have h0 : R.mkQ x = 0 := by simpa using hx
-  rw [Submodule.mem_comap, h0]
+  rw [Submodule.mem_comap, show R.mkQ x = 0 from by simpa using hx]
   exact V.zero_mem
 
 private theorem mkQ_surjective' {F Q : Type} [Field F] [AddCommGroup Q] [Module F Q]

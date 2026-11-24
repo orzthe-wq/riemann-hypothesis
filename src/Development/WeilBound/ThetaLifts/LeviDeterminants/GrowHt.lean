@@ -87,7 +87,7 @@ theorem Sz.mono {m m' : ℕ} {c c' : ℝ} {a : AF F} (h : Sz m c a) (hm : m ∣ 
   exact mul_mem (natCast_mem _ k) (h.2 v)
 
 theorem exists_den (a : AF F) : ∃ m : ℕ, 1 ≤ m ∧ ∀ v, evFin F v ((m : AF F) * a) ∈ v.adicCompletionIntegers F := by
-  obtain ⟨m, hm, -, hv⟩ := GlobalTheory.SmoothForms.denom_global (fun v => max 1 ‖evFin F v a‖₊) (fun v => le_max_left _ _) (by
+  obtain ⟨m, hm, -, hv⟩ := _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator (fun v => max 1 ‖evFin F v a‖₊) (fun v => le_max_left _ _) (by
     refine (Filter.eventually_cofinite.1 a.2.2).subset fun v hv hv' => hv (max_eq_left ?_)
     exact_mod_cast Valued.toNormedField.norm_le_one_iff.2 hv')
   refine ⟨m, hm, fun v => ?_⟩
@@ -221,7 +221,7 @@ theorem exists_entries : ∃ (ι : Type) (_ : Fintype ι) (β : Module.Basis ι 
   choose B hB0 hB using fun (p : s × InfinitePlace F) => exists_norm_repr_le b p.2 p.1
   refine ⟨s, inferInstance, Algebra.TensorProduct.basis (AF F) b.traceDual, ∑ p, B p,
     Finset.sum_nonneg fun p _ => hB0 p, fun n g => ?_⟩
-  obtain ⟨d, hd, hdc, hv⟩ := GlobalTheory.SmoothForms.denom_global (fun v => htFin F v (Formalism.UG.bc (compFin F E v) g))
+  obtain ⟨d, hd, hdc, hv⟩ := _root_.GlobalTheory.AdicNormZpowEstimates.exists_denominator (fun v => htFin F v (Formalism.UG.bc (compFin F E v) g))
     (fun v => one_le_htOf _ _) (finite_mulSupport_htFin F g)
   refine ⟨d, hd, ?_, fun i j k => ⟨norm_evH_le (mul_nonneg (Finset.sum_nonneg fun p _ => hB0 p) (NNReal.coe_nonneg _))
     fun w => ?_, fun v => ?_⟩⟩

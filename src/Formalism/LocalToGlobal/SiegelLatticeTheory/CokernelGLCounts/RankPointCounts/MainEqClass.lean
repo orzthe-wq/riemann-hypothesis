@@ -4,45 +4,7 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankP
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.GenericRatioOfBoundHolds
 public import Formalism.SharpRestriction.InertJacobiLevels.TwoPrimeFieldMemLevelOfCoprime
 import Mathlib.Algebra.AffineMonoid.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Ideal.Int
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -76,21 +38,6 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
-theorem gmap_mul' (a b : S.V ≃ₗ[E] S.V) (L : Submodule (𝓞 E) S.V) :
-    Formalism.HermitianLatticesTheory.gmap (a * b) L = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b L) := by
-  unfold Formalism.HermitianLatticesTheory.gmap
-  rw [← Submodule.map_comp]
-  rfl
-
-theorem gmap_one' (L : Submodule (𝓞 E) S.V) : Formalism.HermitianLatticesTheory.gmap (1 : S.V ≃ₗ[E] S.V) L = L := by
-  unfold Formalism.HermitianLatticesTheory.gmap
-  ext x
-  simp
-
-theorem gmap_inv_of' {a : S.V ≃ₗ[E] S.V} {L L' : Submodule (𝓞 E) S.V} (h : Formalism.HermitianLatticesTheory.gmap a L' = L) :
-    Formalism.HermitianLatticesTheory.gmap a⁻¹ L = L' := by
-  rw [← h, ← gmap_mul', inv_mul_cancel, gmap_one']
-
 theorem xflag_mapLF' {T : E} (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : LFlag S r T) (j : ℕ) :
     Xflag (mapLF γ F) j = (Xflag F j).map (γ : S.V →ₗ[E] S.V) := by
   unfold Xflag mapLF
@@ -115,7 +62,7 @@ theorem isPair_quot' {T T' : E} (Λ Λ' : Submodule (𝓞 E) S.V) (g : ℕ) (F :
   refine ⟨?_, ?_, ?_, hι⟩
   · unfold IsAutLam
     refine ⟨(Formalism.HermitianLatticesTheory.isom S.hT).mul_mem h₂ ((Formalism.HermitianLatticesTheory.isom S.hT).inv_mem h₁), ?_⟩
-    rw [gmap_mul', gmap_inv_of' hl₁, hl₂]
+    rw [_root_.PI.DCRelEquiv.UnitaryGroupMassFormula.gmap_mul', _root_.Formalism.L2.SG.Pf.gmap_inv hl₁, hl₂]
   · intro j
     rw [xflag_mapLF' γ₁ h₁, xflag_mapLF' γ₂ h₂, ← Submodule.map_comp]
     congr 1
@@ -138,7 +85,7 @@ theorem gval_ne (t : TauC Y u u) (ht : t ∈ (Y.tO u u).genSet) : Gval (lf D (X.
   unfold Formalism.L2.SG.TermOp.Gt at h
   have hG : t.G ≠ 0 := fun h0 => h (if_pos h0)
   have hrow : IsRowLat D (X.Fu u) t.lam := (Y.rowsOK u).1 t.lam t.mem
-  have hGF := (Formalism.L2.SG.Closed.TermFun_holds D u u (X.Fu u) t.lam hrow).1
+  have hGF := (_root_.term_function_const D u u (X.Fu u) t.lam hrow).1
   have hmk := Formalism.L2.SG.TermDef.Gt_mk hGF ⟨t.frame, t.rep.2.2.2.2⟩
   intro h0
   apply hG

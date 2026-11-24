@@ -213,12 +213,12 @@ theorem gTCRefTrace_of_cutK : GTCRefTraceOfCutK := by
     rw [← hcA Y]
     have h1 : X.t Y 0 0 = (X.QQ Y 0 0).1 := rfl
     rw [h1, hQ Y, hcN Y, pr_fst_sum]
-    exact Finset.sum_congr rfl fun j _ => pr_fst_smul _ _
+    exact Finset.sum_congr rfl fun j _ => _root_.Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.LNab.fst_smul' _ _
   have hk' := poly_coeff_eq (P.k + 2) cA (fun j => (cN j).1) hcoef P.k (by omega)
   have hTh : (ThetaNF P d).1 = cA P.k - ((sN : ℂ)) • (1 : Module.End ℂ _) := by
     rw [hk']
     show (ThetaNF P d).1 = (cN P.k).1 - _
-    rw [hsN, pr_fst_add, pr_fst_smul, pr_fst_one, add_sub_cancel_right]
+    rw [hsN, pr_fst_add, _root_.Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.LNab.fst_smul', pr_fst_one, add_sub_cancel_right]
   have hpt : ∀ (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'), ∀ x ∈ Q.DomR P.k P.r Bs.z Bs.z',
       (((ThetaNF P d).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 =
         (∑ a : Fin (Q.mdim P.k P.r (Fin.last P.r)),

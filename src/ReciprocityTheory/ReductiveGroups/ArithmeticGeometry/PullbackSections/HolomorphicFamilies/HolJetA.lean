@@ -3,53 +3,11 @@ module
 public import Formalism.LocalToGlobal.ProjectiveLattices.SubConstMemOrig
 public import Mathlib.AlgebraicGeometry.Stalk
 public import Mathlib.Combinatorics.Quiver.ReflQuiver
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.MvPolynomial.Ideal
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 
 @[expose] public section
 
@@ -71,7 +29,6 @@ theorem germ_stalkClosedPointTo_eq {R : CommRingCat.{0}} [IsLocalRing R] (f : Sp
   simp only [Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom, Category.assoc]
   first
   | rfl
-  | congr 3
 
 
 set_option backward.isDefEq.respectTransparency false in
@@ -129,10 +86,8 @@ theorem isLocalHom_nbhdLift [IsLocalRing A] (ψ : ∀ U : Y.Opens, y₀ ∈ U �
   have e : (nbhdLift y₀ A ψ hψ).hom (Y.presheaf.germ U y₀ hU f) = ψ U hU f := by
     first
     | simpa using congrArg (fun g => g.hom f) (germ_nbhdLift ψ hψ U hU)
-    | rw [← CommRingCat.comp_apply, germ_nbhdLift]
   rw [e] at ha
   first
-  | exact (Y.mem_basicOpen f ⟨y₀, hU⟩).mp (hloc U hU f ha)
   | exact (Y.mem_basicOpen f y₀ hU).mp (hloc U hU f ha)
 
 set_option backward.isDefEq.respectTransparency false in
@@ -147,7 +102,6 @@ theorem nbhdPt_closedPoint [IsLocalRing A] (ψ : ∀ U : Y.Opens, y₀ ∈ U →
       IsLocalRing.closedPoint (Y.presheaf.stalk y₀) := by
     first
     | exact IsLocalRing.comap_closedPoint (nbhdLift y₀ A ψ hψ).hom
-    | simp
   rw [e, Scheme.fromSpecStalk_closedPoint]
 
 
@@ -206,7 +160,6 @@ theorem nbhdPt_comp_appLE [IsLocalRing A] {Y' : Scheme.{0}} (φ : Y ⟶ Y')
   rw [Scheme.Hom.comp_appLE]
   first
   | rw [nbhdPt_appLE ψ hψ hloc (φ ⁻¹ᵁ U') hU']
-  | erw [nbhdPt_appLE ψ hψ hloc (φ ⁻¹ᵁ U') hU']
 
 end Lift
 

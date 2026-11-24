@@ -78,12 +78,12 @@ private theorem wt_shift {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   · subst hca; subst hcb
     simp [rt]
   · subst hca
-    simp [rt, Pi.single_apply, hcb, Ne.symm hcb, add_smul]
+    simp [rt, hcb, Ne.symm hcb, add_smul]
     abel
   · subst hcb
-    simp [rt, Pi.single_apply, hca, Ne.symm hca, add_smul, sub_smul]
+    simp [rt, hca, add_smul]
     abel
-  · simp [rt, Pi.single_apply, hca, hcb, Ne.symm hcb]
+  · simp [rt, hca, hcb, Ne.symm hcb]
 
 private theorem wt_word {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {F : Fin n → Fin n → Module.End ℂ V} (hg : GlRel F) {μ : Wt n} {x : V}

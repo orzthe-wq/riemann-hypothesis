@@ -1,13 +1,13 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalBilinearTermProductStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransportStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalLinearTermCompositionStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsoPowOneLawFormulaStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MultiplicationByPFactorsFrobeniusStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOneSeriesPFormulaStatement
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowerSeriesPowPFrobeniusStatement
+public import Development.WeilBound.CoreStatements.HodgeTatePoints.GermCompOneAssocOfConstantCoeffZero
+public import Development.WeilBound.CoreStatements.HodgeTatePoints.FirstPowerZeroAt
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalBilinearTermProduct
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransport
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MultiplicationByPFactorsFrobenius
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOneSeriesPFormula
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowerSeriesPowPFrobenius
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -26,9 +26,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -48,9 +45,52 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalLinearTermComposition, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsoPowOneLawFormula, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaIsomorphismTransport
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalLinearTermComposition =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalLinearTermComposition", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.GermCompOneAssocOfConstantCoeffZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
+
+namespace GlobalTheory.CompanionTheory.Ar.Conj
+
+theorem lin_comp_chain : ∀ (R : Type) [CommRing R] (d : ℕ) (φ ψ : Pt R 1 d), (∀ i, constantCoeff (φ i) = 0) → (∀ i, constantCoeff (ψ i) = 0) → lin (comp1 φ ψ) 1 = lin φ 1 * lin ψ 1 ∧ lin (pt R (n := 1) d 0) 1 = 1 ∧ ∀ p : ℕ, 1 ≤ p → lin (comp1 φ (ptPow R d p 0)) p = lin φ 1 ∧ lin (comp1 φ (comp1 ψ (ptPow R d p 0))) p = lin φ 1 * lin ψ 1 :=
+  @PositivityTheory.HtPt.Ca.lin_comp
+
+end GlobalTheory.CompanionTheory.Ar.Conj
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalLinearTermComposition =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsoPowOneLawFormula =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsoPowOneLawFormula", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.FirstPowerZeroAt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
+
+namespace GlobalTheory.CompanionTheory.Ar.Conj
+
+theorem iso_pow_one_law : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (B₂ : FB R d O) (φ ψ : Pt R 1 d) (lam : PS R 2 d) (n : ℕ), IsIso B B₂ φ ψ lam → pow1 B₂ n * ev (n := 2) ![comp1 (B₂.A.act (n : O)) (pt R d 0), pt R d 1] lam = lam ^ n * ev (n := 2) ![comp1 φ (pt R d 0), comp1 φ (pt R d 1)] (pow1 B n) :=
+  @PositivityTheory.HtPt.Cc.iso_first_power
+
+end GlobalTheory.CompanionTheory.Ar.Conj
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsoPowOneLawFormula =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaIsomorphismTransport =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaIsomorphismTransport", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalBilinearTermProduct\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalIsomorphismTransport\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FormalLinearTermComposition\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.IsoPowOneLawFormula\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.MultiplicationByPFactorsFrobenius\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowOneSeriesPFormula\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PowerSeriesPowPFrobenius\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -156,7 +196,7 @@ theorem frobenius_point_commutes_composition {φ : Pt R 1 d} (hφ : ∀ i, const
     comp1 (ptPow R d p (0 : Fin 1)) φ = comp1 (frobPt p φ) (ptPow R d p (0 : Fin 1)) := by
   rw [comp1_point_power_expand p φ hφ]
   funext i
-  rw [GlobalTheory.T.power_series_pow_p_frobenius R p d 1 (φ i)]
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.Conj.pow_eq_ev_frobenius R p d 1 (φ i)]
   change _ = ev ![ptPow R d p (0 : Fin 1)] (frobPt p φ i)
   congr 1
   funext j
@@ -205,24 +245,24 @@ theorem E_eq_ptPow' (p : ℕ) (f : PS R 2 d) :
 
 theorem axOne_E {A B : Pt R 1 d} (hA : ∀ i, constantCoeff (A i) = 0) (hB : ∀ i, constantCoeff (B i) = 0)
     {f : PS R 2 d} (hf : AxOne f) : AxOne (E A B f) :=
-  (GlobalTheory.T.formal_bilinear_term_product R d f f A B hf hf hA hB).2.2.2.1
+  (_root_.GlobalTheory.CompanionTheory.Ar.Conj.BilCalc.bil_calc R d f f A B hf hf hA hB).2.2.2.1
 
 theorem bil_E {A B : Pt R 1 d} (hA : ∀ i, constantCoeff (A i) = 0) (hB : ∀ i, constantCoeff (B i) = 0)
     {f : PS R 2 d} (hf : AxOne f) : bil (E A B f) 1 1 = (lin A 1).transpose * bil f 1 1 * lin B 1 :=
-  (GlobalTheory.T.formal_bilinear_term_product R d f f A B hf hf hA hB).2.2.2.2.1
+  (_root_.GlobalTheory.CompanionTheory.Ar.Conj.BilCalc.bil_calc R d f f A B hf hf hA hB).2.2.2.2.1
 
 theorem bil_E_ptPow {p : ℕ} (hp : 1 ≤ p) {f : PS R 2 d} (hf : AxOne f) :
     bil (E (ptPow R d p (0 : Fin 1)) (pt R d 0) f) p 1 = bil f 1 1 := by
   have hc : ∀ i, constantCoeff ((pt R d 0 : Pt R 1 d) i) = 0 := cc_pt 0
   rw [E_eq_ptPow]
-  exact (GlobalTheory.T.formal_bilinear_term_product R d f f _ _ hf hf hc hc).2.2.2.2.2.2 p 1 hp le_rfl
+  exact (_root_.GlobalTheory.CompanionTheory.Ar.Conj.BilCalc.bil_calc R d f f _ _ hf hf hc hc).2.2.2.2.2.2 p 1 hp le_rfl
 
 theorem axOne_mul {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) : AxOne (f * g) :=
-  (GlobalTheory.T.formal_bilinear_term_product R d f g _ _ hf hg (cc_pt 0) (cc_pt 0)).1
+  (_root_.GlobalTheory.CompanionTheory.Ar.Conj.BilCalc.bil_calc R d f g _ _ hf hg (cc_pt 0) (cc_pt 0)).1
 
 theorem bil_mul {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) (m : ℕ) :
     bil (f * g) m 1 = bil f m 1 + bil g m 1 :=
-  (GlobalTheory.T.formal_bilinear_term_product R d f g _ _ hf hg (cc_pt 0) (cc_pt 0)).2.1 m
+  (_root_.GlobalTheory.CompanionTheory.Ar.Conj.BilCalc.bil_calc R d f g _ _ hf hg (cc_pt 0) (cc_pt 0)).2.1 m
 
 theorem axOne_one : AxOne (1 : PS R 2 d) := ⟨ev_one _, ev_one _⟩
 
@@ -243,28 +283,28 @@ variable {O : Type} [CommRing O] [StarRing O] (p : ℕ) [Fact p.Prime] [CharP R 
 variable {B B₂ : FB R d O} {φ ψ : Pt R 1 d} {lam : PS R 2 d}
 
 theorem hw_rel (h : IsIso B B₂ φ ψ lam) : lin φ 1 * hw B₂ p = hw B p * (lin φ 1).map (· ^ p) := by
-  obtain ⟨V, cV, eV, lV⟩ := GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B
-  obtain ⟨V₂, cV₂, eV₂, lV₂⟩ := GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B₂
+  obtain ⟨V, cV, eV, lV⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.mulp_factors_frobenius R p d O B
+  obtain ⟨V₂, cV₂, eV₂, lV₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.mulp_factors_frobenius R p d O B₂
   have hp : p ≠ 0 := (Fact.out : p.Prime).ne_zero
   have hp1 : 1 ≤ p := Nat.one_le_iff_ne_zero.2 hp
   have e := h.act (p : O)
   rw [eV₂, eV, composition_assoc_no_constant V _ φ (cc_ptPow hp 0) h.c₁, frobenius_point_commutes_composition p h.c₁] at e
-  have l1 := ((GlobalTheory.T.formal_linear_term_composition R d φ V₂ h.c₁ cV₂).2.2 p hp1).2
-  have l2 := ((GlobalTheory.T.formal_linear_term_composition R d V (frobPt p φ) cV (cc_frobPt p h.c₁)).2.2 p hp1).2
+  have l1 := ((_root_.GlobalTheory.CompanionTheory.Ar.Conj.lin_comp_chain R d φ V₂ h.c₁ cV₂).2.2 p hp1).2
+  have l2 := ((_root_.GlobalTheory.CompanionTheory.Ar.Conj.lin_comp_chain R d V (frobPt p φ) cV (cc_frobPt p h.c₁)).2.2 p hp1).2
   rw [← lV₂, ← lV, ← lin_frobPt, ← l1, ← l2, e]
 
 theorem am_rel (h : IsIso B B₂ φ ψ lam) :
     am B₂ p + (hw B₂ p).transpose * bil lam 1 1 =
       ((lin φ 1).map (· ^ p)).transpose * am B p * lin φ 1 := by
-  obtain ⟨V₂, cV₂, eV₂, lV₂⟩ := GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B₂
-  obtain ⟨g₂, ax₂, e₂, b₂⟩ := GlobalTheory.T.pow_one_series_p_formula R p d O B₂
-  obtain ⟨g, ax, e, b⟩ := GlobalTheory.T.pow_one_series_p_formula R p d O B
+  obtain ⟨V₂, cV₂, eV₂, lV₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.mulp_factors_frobenius R p d O B₂
+  obtain ⟨g₂, ax₂, e₂, b₂⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.pow_one_series_in_p R p d O B₂
+  obtain ⟨g, ax, e, b⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.pow_one_series_in_p R p d O B
   have hp : p ≠ 0 := (Fact.out : p.Prime).ne_zero
   have hp1 : 1 ≤ p := Nat.one_le_iff_ne_zero.2 hp
   have cPw : ∀ i, constantCoeff (ptPow R d p (0 : Fin 1) i) = 0 := cc_ptPow hp 0
   have cI : ∀ i, constantCoeff ((pt R d 0 : Pt R 1 d) i) = 0 := cc_pt 0
   have cF : ∀ i, constantCoeff (frobPt p φ i) = 0 := cc_frobPt p h.c₁
-  have key := GlobalTheory.T.iso_pow_one_law_formula R d O B B₂ φ ψ lam p h
+  have key := _root_.GlobalTheory.CompanionTheory.Ar.Conj.iso_pow_one_law R d O B B₂ φ ψ lam p h
   have r1 : pow1 B₂ p = E (ptPow R d p (0 : Fin 1)) (pt R d 0) g₂ := by rw [e₂, E_eq_ptPow']
   have r2 : ev (n := 2) ![comp1 (B₂.A.act (p : O)) (pt R d 0), pt R d 1] lam =
       E (ptPow R d p (0 : Fin 1)) (pt R d 0) (E V₂ (pt R d 0) lam) := by
@@ -285,7 +325,7 @@ theorem am_rel (h : IsIso B B₂ φ ψ lam) :
   have k := congrArg (fun f => bil f p 1) key
   have z : p • bil lam p 1 = 0 := by
     ext i j
-    simp [nsmul_eq_mul, CharP.cast_eq_zero R p]
+    simp [nsmul_eq_mul]
   beta_reduce at k
   rw [bil_mul a1 a2, bil_mul (axOne_pow h.ax p) a3, bil_E_ptPow hp1 ax₂, bil_E_ptPow hp1 aL,
     bil_E_ptPow hp1 aG, bil_pow h.ax hp, z, zero_add, bil_E cV₂ cI h.ax, bil_E cF h.c₁ ax, lV₂, b₂, b,
@@ -311,7 +351,7 @@ theorem alpha_beta_of_isIso : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prim
       (∀ u, alpha B p (((lin φ 1).map (· ^ p)).mulVec u) = transH φ ψ lam (alpha B₂ p u)) ∧
         ∀ y, beta B p (transH φ ψ lam y) = ((lin ψ 1).transpose.map (· ^ p)).mulVec (beta B₂ p y) := by
   intro R _ p _ _ d O _ _ B B₂ φ ψ lam h
-  obtain ⟨i1, -, -, -, -, hpair⟩ := GlobalTheory.T.formal_isomorphism_transport R d O B B₂ φ ψ lam h
+  obtain ⟨i1, -, -, -, -, hpair⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.Iso.rho_pairing R d O B B₂ φ ψ lam h
   have H1 := IsoAlpha.hw_rel p h
   have H2 := IsoAlpha.am_rel p h
   have A : ∀ u, alpha B p (((lin φ 1).map (· ^ p)).mulVec u) = transH φ ψ lam (alpha B₂ p u) := by
@@ -341,3 +381,7 @@ theorem alpha_beta_of_isIso : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prim
     IsoAlpha.frob_mul_eq_one p i1, Matrix.transpose_one, Matrix.one_mulVec]
 
 end GlobalTheory.CompanionTheory.Ar.Conj
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.AlphaBetaIsomorphismTransport =====

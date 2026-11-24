@@ -217,7 +217,6 @@ theorem basis_form_sum_of_gain : A0 → FunctionalCalculusLaws → A12 → Basis
           ‖f (b j)‖ ^ 2 := by
       apply Finset.sum_image'
       intro i _
-      beta_reduce
       rw [Finset.mul_sum]
       refine Finset.sum_congr rfl fun j hj => ?_
       rw [(Finset.mem_filter.1 hj).2]

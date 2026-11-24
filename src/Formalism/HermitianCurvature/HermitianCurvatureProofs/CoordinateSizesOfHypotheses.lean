@@ -89,8 +89,7 @@ theorem block3_apply
 theorem ext_eB {M N : B.Mat k (j + ρ)} (h : ∀ x y : Ix k j ρ, M (eB k j ρ x) (eB k j ρ y) = N (eB k j ρ x) (eB k j ρ y)) :
     M = N := by
   ext i b
-  have := h ((eB k j ρ).symm i) ((eB k j ρ).symm b)
-  simpa using this
+  simpa using h ((eB k j ρ).symm i) ((eB k j ρ).symm b)
 
 theorem block3_mul
     (A11 : Matrix (Fin j) (Fin j) ℂ) (A12 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ) (A13 : Matrix (Fin j) (Fin j) ℂ)
@@ -126,8 +125,7 @@ theorem wMat_mul_self (d : ℕ) : G.wMat d * G.wMat d = 1 := by
     by_cases hk : k = i.rev
     · simp [hk, eq_comm]
     · simp [hk]
-  simp only [G.wMat, Matrix.mul_apply, Matrix.one_apply, Matrix.of_apply, key]
-  simp
+  simp [G.wMat, Matrix.mul_apply, Matrix.one_apply, Matrix.of_apply, key]
 
 theorem wMat_conjTranspose (d : ℕ) : (G.wMat d)ᴴ = G.wMat d := by
   ext i b
@@ -180,12 +178,9 @@ theorem Rn_unitary (x : RC k j ρ) : (Rn k j ρ x)ᴴ * Hpk k (j + ρ) * Rn k j 
   rw [hpkBlocks k j ρ]
   unfold Rn
   rw [block3_conjTranspose, block3_mul, block3_mul]
-  have hw := wMat_conjTranspose j
-  have hH := hpk_conjTranspose k ρ
-  have hS := skewOf_conjTranspose x.2
   congr 1 <;> simp only [Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add,
     Matrix.conjTranspose_one, Matrix.conjTranspose_zero, Matrix.conjTranspose_neg, Matrix.conjTranspose_mul,
-    Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_conjTranspose, hw, hH, hS,
+    Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_conjTranspose, wMat_conjTranspose, hpk_conjTranspose, skewOf_conjTranspose,
     Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, w_w_mul, w_w_mul', wMat_mul_self,
     neg_zero, neg_add_cancel, Matrix.smul_mul, star_neg, star_div₀, star_one, star_ofNat]
   all_goals module
@@ -242,12 +237,10 @@ theorem skew_entry_le (x : RC k j ρ) (a b : Fin j) : ‖skewOf x.2 a b‖ ≤ B
     rw [hS]; simp [Matrix.conjTranspose_apply]
   rw [he, norm_mul]
   have h2 : ‖W a b - star (W b a)‖ ≤ ‖W a b‖ + ‖W b a‖ := by
-    calc ‖W a b - star (W b a)‖ ≤ ‖W a b‖ + ‖star (W b a)‖ := norm_sub_le _ _
-      _ = ‖W a b‖ + ‖W b a‖ := by rw [norm_star]
+    simpa [norm_star] using norm_sub_le (W a b) (star (W b a))
   have h3 := hWe a b
   have h4 := hWe b a
-  have : ‖(1 / 2 : ℂ)‖ = 1 / 2 := by simp
-  rw [this]
+  rw [show ‖(1 / 2 : ℂ)‖ = 1 / 2 by simp]
   linarith
 
 theorem norm_le_gN_Rn (x : RC k j ρ) : ‖x‖ ≤ B.gN (Rn k j ρ x) := by
@@ -378,8 +371,7 @@ theorem coordinate_sizes_of_parts_holds : CoordinateSizesFromComponents := by
   have hDj : DjU k (p + s) ρ g = Zj.det := by rw [DjU, hgdef, hZh]
   have hdetK : ‖Zj.det‖ ∈ K := hDj ▸ hDK
   have hdet_ge : κ0 ≤ ‖Zj.det‖ := hκK _ hdetK
-  have hdet0 : Zj.det ≠ 0 := by
-    intro h; rw [h, norm_zero] at hdet_ge; linarith
+  have hdet0 : Zj.det ≠ 0 := norm_ne_zero_iff.mp (ne_of_gt (lt_of_lt_of_le hκ0 hdet_ge))
   have hZ0 : G.detM Z ≠ 0 := by
     intro h; apply hdet0; rw [hZjdef, hDet]; simp [h]
   obtain ⟨u1, u2, u3, u4, u5⟩ := hC1 ξ.1.1 ξ.1.2 Zj γ hdet0 hγ
@@ -421,7 +413,6 @@ theorem coordinate_sizes_of_parts_holds : CoordinateSizesFromComponents := by
 
   have b11 : mx (Matrix.of Z)⁻¹ ≤ cf * B.gN g ^ (p + s - 1) :=
     (v6 hZ0).trans (le_div_of_lower_bound (hgp0 _) hκ0 hdet_ge u4)
-  set Ct := ca + (1 + ca) + cc + cd + ce + cf with hCt
   refine ⟨hg1, le_big (hgp0 _) (by linarith) b1, le_big (hgp0 _) (by linarith) b2,
     le_big (hgp0 _) (by linarith) b3, le_big (hgp0 _) (by linarith) b4,
     le_big (hgp0 _) (by linarith) b5, le_big (hgp0 _) (by linarith) b6,
@@ -435,11 +426,10 @@ theorem norm_decay_of_coordinate_sizes_holds : CoordinateDecayOfSizes := by
   set C1 := max C 1 with hC1
   have hC1pos : 0 < C1 := lt_of_lt_of_le one_pos (le_max_right _ _)
   set N : ℕ := 2 * (p + s + ρ) + 1 with hN
-  have hpos : 0 < 8 * (2 * ((p + s + ρ : ℕ) : ℝ) + 1) := by positivity
   set e : ℝ := -(A' / (8 * (2 * ((p + s + ρ : ℕ) : ℝ) + 1))) with he
   have he0 : e ≤ 0 := by
-    have := div_nonneg hA' hpos.le
-    linarith
+    rw [he]
+    exact neg_nonpos.mpr (div_nonneg hA' (by positivity))
   refine ⟨(C1 ^ 8) ^ (-e), ?_⟩
   intro ξ Z γ hγ hD
   obtain ⟨hg1, -, -, h1, h2, h3, h4, h5, h6, h7, h8, -⟩ := hC ξ Z γ hγ hD
@@ -497,12 +487,10 @@ lemma finrank_fun (ι : Type) [Fintype ι] : Module.finrank ℝ (ι → ℂ) = F
   simp [Module.finrank_pi_fintype, Complex.finrank_real_complex]
 
 lemma card_UT (j : ℕ) : Fintype.card (Formalism.FourierDecayAlt.G.UT j) ≤ j * j := by
-  have := Fintype.card_subtype_le (fun q : Fin j × Fin j => q.1 < q.2)
-  simpa [Fintype.card_prod] using this
+  simpa [Fintype.card_prod] using Fintype.card_subtype_le (fun q : Fin j × Fin j => q.1 < q.2)
 
 lemma card_LW {p : ℕ} (σ : Equiv.Perm (Fin p)) : Fintype.card (LW σ) ≤ p * p := by
-  have := Fintype.card_subtype_le (fun q : Fin p × Fin p => q.2 < q.1 ∧ σ.symm q.2 < σ.symm q.1)
-  simpa [Fintype.card_prod] using this
+  simpa [Fintype.card_prod] using Fintype.card_subtype_le (fun q : Fin p × Fin p => q.2 < q.1 ∧ σ.symm q.2 < σ.symm q.1)
 
 lemma finrank_RC (k j ρ : ℕ) : Module.finrank ℝ (RC k j ρ) ≤ (2 * ρ + k + 1) * (j * 2) + j * j * 2 + j := by
   rw [Module.finrank_prod, Module.finrank_prod, finrank_pi_pi_complex, finrank_fun]
@@ -582,10 +570,3 @@ theorem coordinate_sizes_of_hypotheses (hSM : SliceMem) (hU1 : BigCellCoordinate
 
 end Formalism.FourierDecayAlt.P.Ux6
 
-theorem Formalism.FourierDecayAlt.P.coordinate_sizes_of_parts : Formalism.FourierDecayAlt.U.CoordinateSizesFromComponents := Formalism.FourierDecayAlt.P.Ux6.coordinate_sizes_of_parts_holds
-
-theorem Formalism.FourierDecayAlt.P.norm_decay_of_coordinate_sizes : Formalism.FourierDecayAlt.U.CoordinateDecayOfSizes := Formalism.FourierDecayAlt.P.Ux6.norm_decay_of_coordinate_sizes_holds
-
-theorem Formalism.FourierDecayAlt.P.weight_integrability : Formalism.FourierDecayAlt.U.WeightIntegrable := Formalism.FourierDecayAlt.P.Ux6.weight_integrability_holds
-
-theorem Formalism.FourierDecayAlt.P.integrability_top_level : Formalism.FourierDecayAlt.U.IntTop := Formalism.FourierDecayAlt.P.Ux6.intTop

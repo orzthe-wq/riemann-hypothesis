@@ -69,7 +69,6 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.O
 
 
 section
-attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 open NumberField Matrix IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Aut UpperTheory.V.UnitaryThreeInertia
 open IsDedekindDomain
 open UpperTheory.V.Af in

@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnipotentBlockColumnIndex
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFundamentalDomainMassOneCocompactLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetIntegralFundamentalDomainEqMassMulAverageStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsFundamentalDomainMassOneCocompactLattice
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SetIntegralFundamentalDomainEqMassMulAverage
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -58,7 +58,7 @@ theorem avg_add_right (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopolo
     avg Γ (fun x => Φ (x + y)) = avg Γ Φ := by
   letI : MeasurableSpace G := borel G
   haveI : BorelSpace G := ⟨rfl⟩
-  obtain ⟨μ, 𝓕, hμ, h𝓕, h1⟩ := GlobalTheory.T.exists_fundamentalDomain_mass_one_cocompactLattice G Γ hΓ
+  obtain ⟨μ, 𝓕, hμ, h𝓕, h1⟩ := _root_.GlobalTheory.CuspGeneric.exists_fundamentalDomain_mass_one G Γ hΓ
   have hΨ : Per Γ (fun x => Φ (x + y)) :=
     ⟨hΦ.1.comp (continuous_add_const y), fun γ hγ x => by simp only [add_assoc, hΦ.2 γ hγ]⟩
 
@@ -69,8 +69,8 @@ theorem avg_add_right (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopolo
       simp only [id, AddSubgroup.vadd_def, vadd_eq_add]; abel)
   have hm' : μ ((fun x : G => x - y) ⁻¹' 𝓕) = 1 := by
     rw [hpres.measure_preimage h𝓕.nullMeasurableSet, h1]
-  have hA := (GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average G Γ hΓ μ 𝓕 hμ h𝓕 _ hΨ).2.2.2
-  have hB := (GlobalTheory.T.setIntegral_fundamentalDomain_eq_mass_mul_average G Γ hΓ μ _ hμ h𝓕' Φ hΦ).2.2.2
+  have hA := (_root_.GlobalTheory.CuspGeneric.setIntegral_eq_mass_mul_avg G Γ hΓ μ 𝓕 hμ h𝓕 _ hΨ).2.2.2
+  have hB := (_root_.GlobalTheory.CuspGeneric.setIntegral_eq_mass_mul_avg G Γ hΓ μ _ hμ h𝓕' Φ hΦ).2.2.2
   rw [h1] at hA
   rw [hm'] at hB
   simp only [ENNReal.toReal_one, Complex.ofReal_one, one_mul] at hA hB

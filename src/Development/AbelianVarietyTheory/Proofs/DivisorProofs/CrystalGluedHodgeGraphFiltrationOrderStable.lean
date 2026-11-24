@@ -77,7 +77,7 @@ theorem push_mem_glueFil : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.H
   congr 2
   funext j
   rw [← push_apply, ← hg]
-  simp only [map_add (f := _), LinearMap.add_apply, LinearMap.sub_apply, map_sub]
+  simp only [map_add (f := _), LinearMap.add_apply, LinearMap.sub_apply]
   abel
 
 end GlobalTheory.HTGlue

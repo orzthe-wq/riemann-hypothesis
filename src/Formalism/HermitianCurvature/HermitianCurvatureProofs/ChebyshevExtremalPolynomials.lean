@@ -278,6 +278,4 @@ end Formalism.FourierDecayAlt.P.ChebyshevExtremalPolynomials
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem chebyshev_bound_sharp : Formalism.FourierDecayAlt.F7.ChebSharp := ChebyshevExtremalPolynomials.sharp
-
 end Formalism.FourierDecayAlt.P

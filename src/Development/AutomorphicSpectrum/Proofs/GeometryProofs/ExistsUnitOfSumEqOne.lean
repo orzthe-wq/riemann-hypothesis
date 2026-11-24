@@ -1,9 +1,11 @@
 module
 
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProdUpdateDiv
 public import Mathlib.FieldTheory.IntermediateField.Basic
 public import Mathlib.RingTheory.AlgebraicIndependent.Defs
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DetMulExpand
+public import Mathlib.Algebra.BigOperators.Field
+public import Mathlib.RingTheory.AlgebraicIndependent.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -23,11 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -47,10 +44,46 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.ReduceModChar
-public import Mathlib.Algebra.BigOperators.Field
-public import Mathlib.RingTheory.AlgebraicIndependent.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DetMulExpand, Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUnitOfSumEqOne
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DetMulExpand =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DetMulExpand", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.Reformulated.B.DetMulExpand.det_mul_expand :
+    ∀ {F : Type} [inst : CommRing F] {k r : ℕ} (A : Matrix (Fin k) (Fin r) F) (B : Matrix (Fin r) (Fin k) F),
+      (A * B).det = ∑ f : Fin k → Fin r, (∏ a : Fin k, A a (f a)) * (B.submatrix f id).det := by
+  intro F _ k r A B
+  have h1 : (A * B) = (fun a => ∑ j, (A a j • B j : Fin k → F)) := by
+    ext a c
+    simp [Matrix.mul_apply, Finset.sum_apply]
+  have h2 : (A * B).det
+      = (Matrix.detRowAlternating (R := F) (n := Fin k)).toMultilinearMap
+          (fun a => ∑ j, (A a j • B j : Fin k → F)) := by
+    rw [← h1]
+    rfl
+
+  rw [h2, MultilinearMap.map_sum]
+  refine Finset.sum_congr rfl fun f _ => ?_
+  rw [MultilinearMap.map_smul_univ]
+  rfl
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DetMulExpand =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUnitOfSumEqOne =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUnitOfSumEqOne", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ProdUpdateDiv\npublic import Mathlib.FieldTheory.IntermediateField.Basic\npublic import Mathlib.RingTheory.AlgebraicIndependent.Defs\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DetMulExpand\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\npublic import Mathlib.Algebra.BigOperators.Field\npublic import Mathlib.RingTheory.AlgebraicIndependent.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -75,11 +108,6 @@ theorem normAt_zero {F : Type} [Field F] (O : Subring F) {n r : ℕ} (Y : Matrix
   refine ⟨by simp [kMinor], fun I' => ?_⟩
   simpa [kMinor] using O.one_mem
 
-theorem det_mul_expand {F : Type} [CommRing F] {k r : ℕ} (A : Matrix (Fin k) (Fin r) F)
-    (B : Matrix (Fin r) (Fin k) F) :
-    (A * B).det = ∑ f : Fin k → Fin r, (∏ a, A a (f a)) * (B.submatrix f id).det :=
-  _root_.UpperTheory.Reformulated.B.DetMulExpand.det_mul_expand A B
-
 theorem kMinor_mul_expand {F : Type} [CommRing F] {n m r : ℕ} (A : Matrix (Fin n) (Fin m) F)
     (B : Matrix (Fin m) (Fin r) F) (k : ℕ) (hk : k ≤ r) (J : Fin k → Fin n) :
     kMinor (A * B) k hk J = ∑ I : Fin k → Fin m, (∏ a, A (J a) (I a)) * kMinor B k hk I := by
@@ -87,7 +115,7 @@ theorem kMinor_mul_expand {F : Type} [CommRing F] {n m r : ℕ} (A : Matrix (Fin
   have : (A * B).submatrix J (Fin.castLE hk) = A.submatrix J id * B.submatrix id (Fin.castLE hk) := by
     ext a b
     simp [Matrix.mul_apply]
-  rw [this, det_mul_expand]
+  rw [this, _root_.UpperTheory.Reformulated.B.DetMulExpand.det_mul_expand]
   rfl
 
 theorem kMinor_mul_div_mem {F : Type} [Field F] (D : Subring F) {n m r : ℕ} (A : Matrix (Fin n) (Fin m) F)
@@ -283,3 +311,7 @@ theorem genU_indep (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) :
     (IsFractionRing.injective _ _)
 
 end GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.Cell
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUnitOfSumEqOne =====

@@ -60,4 +60,4 @@ theorem _root_.GlobalTheory.T.exists_lieDerivative_polynomialFock_seesaw : ∀ {
     IsTriple B G X om om' → ∀ γ ∈ Lines σ G.W,
     ∃ δ : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a')), ∀ f ∈ G.M.Pol B.ψ B.emb,
       δ f ∈ G.M.Pol B.ψ B.emb ∧ ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f (δ f) := by
-  first | exact @GlobalTheory.OscLie.exists_lie_deriv_pol | exact GlobalTheory.OscLie.exists_lie_deriv_pol | (intros; apply GlobalTheory.OscLie.exists_lie_deriv_pol <;> assumption)
+  first | exact @GlobalTheory.OscLie.exists_lie_deriv_pol

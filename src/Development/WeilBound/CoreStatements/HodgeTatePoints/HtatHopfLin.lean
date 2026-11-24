@@ -1,13 +1,16 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
+public import Development.WeilBound.CoreStatements.HodgeTatePoints.TwhopfSec
 public import Mathlib.Tactic.ENatToNat
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumberStatement
-public import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfMul
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumber
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.AlgebraicGeometry.Morphisms.WeaklyEtale
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -23,7 +26,9 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.TotallySplit
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -32,7 +37,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,7 +52,149 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CharacterSectionMultiplicative
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfMul, Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfLin
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfMul =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfMul", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.TwhopfSec\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.AlgebraicGeometry.Morphisms.WeaklyEtale\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Development.AutomorphicSpectrum.Proofs.GeometryProofs.CharacterSectionMultiplicative\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
+open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
+
+noncomputable section
+
+namespace PositivityTheory.HtPt.Htat.SeparatedTensorPullback
+
+variable {R : Type} [CommRing R] [IsDomain R]
+
+theorem tensor_sep {K B₁ B₂ I J : Type} [Field K] [Algebra R K] [IsFractionRing R K]
+    [CommRing B₁] [CommRing B₂] [Algebra R B₁] [Algebra R B₂] [Module.Flat R B₁]
+    [Finite I] [Finite J] (e : I → B₁ →ₐ[R] K) (f : J → B₂ →ₐ[R] K)
+    (he : ∀ b, (∀ i, e i b = 0) → b = 0) (hf : ∀ b, (∀ j, f j b = 0) → b = 0)
+    (x : B₁ ⊗[R] B₂) (h : ∀ i j, Algebra.TensorProduct.productMap (e i) (f j) x = 0) : x = 0 := by
+  exact GlobalTheory.CompanionTheory.Ar.BT.CharMul.tensor_sep e f he hf x h
+
+theorem pullback_sep {K B₁ B₂ I J : Type} [Field K] [Algebra R K] [IsFractionRing R K]
+    [CommRing B₁] [CommRing B₂] [Algebra R B₁] [Algebra R B₂] [Module.Flat R B₁]
+    [Finite I] [Finite J] (e : I → B₁ →ₐ[R] K) (f : J → B₂ →ₐ[R] K)
+    (he : ∀ b, (∀ i, e i b = 0) → b = 0) (hf : ∀ b, (∀ j, f j b = 0) → b = 0)
+    (a₁ : Spec (CommRingCat.of B₁) ⟶ Spec (CommRingCat.of R))
+    (a₂ : Spec (CommRingCat.of B₂) ⟶ Spec (CommRingCat.of R))
+    (h₁ : a₁ = Spec.map (CommRingCat.ofHom (algebraMap R B₁)))
+    (h₂ : a₂ = Spec.map (CommRingCat.ofHom (algebraMap R B₂)))
+    (u : Γ(pullback a₁ a₂, ⊤))
+    (hz : ∀ i j (w : Spec (CommRingCat.of K) ⟶ pullback a₁ a₂),
+      w ≫ pullback.fst a₁ a₂ = Spec.map (CommRingCat.ofHom (e i).toRingHom) →
+      w ≫ pullback.snd a₁ a₂ = Spec.map (CommRingCat.ofHom (f j).toRingHom) → w.appTop u = 0) :
+    u = 0 := by
+  exact GlobalTheory.CompanionTheory.Ar.BT.CharMul.pullback_sep e f he hf a₁ a₂ h₁ h₂ u hz
+
+variable {T : Type} [CommGroup T]
+
+theorem chart_sep [Finite T] (Γ : QFGroup R T) (B : Type) [CommRing B] [Algebra R B]
+    (c : Spec (CommRingCat.of B) ⟶ Γ.G.left) [IsOpenImmersion c]
+    (hc : c ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap R B))) :
+    ∃ (I : Type) (_ : Finite I) (τ : I → T) (e : I → B →ₐ[R] FractionRing R),
+      (∀ i, Spec.map (CommRingCat.ofHom (e i).toRingHom) ≫ c = (Γ.pt (τ i)).left) ∧
+      ∀ b, (∀ i, e i b = 0) → b = 0 := by
+  classical
+  let I := {t : T // Set.range (Γ.pt t).left ⊆ Set.range c}
+  have lift : ∀ i : I, ∃ e : B →ₐ[R] FractionRing R,
+      Spec.map (CommRingCat.ofHom e.toRingHom) ≫ c = (Γ.pt i.1).left := by
+    intro i
+    let g := IsOpenImmersion.lift c (Γ.pt i.1).left i.2
+    have hg : g ≫ c = (Γ.pt i.1).left := IsOpenImmersion.lift_fac _ _ _
+    let φ : B →+* FractionRing R := (Spec.preimage g).hom
+    have hφ : Spec.map (CommRingCat.ofHom φ) = g := Spec.map_preimage g
+    have hcomp : φ.comp (algebraMap R B) = algebraMap R (FractionRing R) := by
+      have h1 : Spec.map (CommRingCat.ofHom (φ.comp (algebraMap R B))) =
+          Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R))) := by
+        rw [CommRingCat.ofHom_comp, Spec.map_comp, hφ, ← hc, ← Category.assoc, hg]
+        exact Over.w (Γ.pt i.1)
+      exact congrArg CommRingCat.Hom.hom (Spec.map_injective h1)
+    refine ⟨{ φ with commutes' := fun r => congr($hcomp r) }, ?_⟩
+    exact (congrArg (· ≫ c) hφ).trans hg
+  choose e he using lift
+  refine ⟨I, inferInstance, Subtype.val, e, he, fun b hb => ?_⟩
+  have hs := PositivityTheory.HtPt.Twhopf.sec_inj R T Γ (c ''ᵁ ⊤)
+    ((c.appIso ⊤).inv ((Scheme.ΓSpecIso (CommRingCat.of B)).inv b)) (fun t h => by
+      have hr : Set.range (Γ.pt t).left ⊆ Set.range c := by
+        rintro _ ⟨x, rfl⟩
+        have := h (show x ∈ (⊤ : (Spec (CommRingCat.of (FractionRing R))).Opens) from trivial)
+        obtain ⟨y, -, hy⟩ := this
+        exact ⟨y, hy⟩
+      have key : ∀ (p : Spec (CommRingCat.of (FractionRing R)) ⟶ Γ.G.left)
+          (hp : Spec.map (CommRingCat.ofHom (e ⟨t, hr⟩).toRingHom) ≫ c = p) (h' : ⊤ ≤ p ⁻¹ᵁ (c ''ᵁ ⊤)),
+          valAt p (c ''ᵁ ⊤) h' ((c.appIso ⊤).inv ((Scheme.ΓSpecIso (CommRingCat.of B)).inv b)) = 0 := by
+        rintro p rfl h'
+        rw [GlobalTheory.CompanionTheory.Ar.BT.CharMul.valAt_chart]
+        exact hb ⟨t, hr⟩
+      exact key _ (he ⟨t, hr⟩) h)
+  have h1 := congr((c.appIso ⊤).hom $hs)
+  have h2 := congr((Scheme.ΓSpecIso (CommRingCat.of B)).hom $h1)
+  simpa using h2
+
+theorem chart_pair [Finite T] (Γ : QFGroup R T) (A₁ A₂ : Type) [CommRing A₁] [CommRing A₂]
+    (c₁ : Spec (CommRingCat.of A₁) ⟶ Γ.G.left) (c₂ : Spec (CommRingCat.of A₂) ⟶ Γ.G.left)
+    (o₁ : IsOpenImmersion c₁) (o₂ : IsOpenImmersion c₂) (u : Γ(pullback (c₁ ≫ Γ.G.hom) (c₂ ≫ Γ.G.hom), ⊤))
+    (hu : ∀ (a b : T) (w : Spec (CommRingCat.of (FractionRing R)) ⟶ pullback (c₁ ≫ Γ.G.hom) (c₂ ≫ Γ.G.hom)),
+      w ≫ pullback.fst _ _ ≫ c₁ = (Γ.pt a).left → w ≫ pullback.snd _ _ ≫ c₂ = (Γ.pt b).left → w.appTop u = 0) :
+    u = 0 := by
+  letI : Algebra R A₁ := (Spec.preimage (c₁ ≫ Γ.G.hom)).hom.toAlgebra
+  letI : Algebra R A₂ := (Spec.preimage (c₂ ≫ Γ.G.hom)).hom.toAlgebra
+  have h₁ : c₁ ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap R A₁)) :=
+    (Spec.map_preimage (c₁ ≫ Γ.G.hom)).symm
+  have h₂ : c₂ ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom (algebraMap R A₂)) :=
+    (Spec.map_preimage (c₂ ≫ Γ.G.hom)).symm
+  haveI : Flat Γ.G.hom := Γ.flat
+  haveI : Module.Flat R A₁ := by
+    have : Flat (Spec.map (CommRingCat.ofHom (algebraMap R A₁))) := h₁ ▸ inferInstance
+    rw [Flat.SpecMap_iff] at this
+    exact (RingHom.flat_algebraMap_iff).1 this
+  obtain ⟨I, _, τ, e, he, hi⟩ := chart_sep Γ A₁ c₁ h₁
+  obtain ⟨J, _, τ', f, hf, hj⟩ := chart_sep Γ A₂ c₂ h₂
+  refine pullback_sep e f hi hj _ _ h₁ h₂ u fun i j w hw₁ hw₂ => hu (τ i) (τ' j) w ?_ ?_
+  · rw [← Category.assoc, hw₁, he]
+  · rw [← Category.assoc, hw₂, hf]
+
+theorem sec_prod_zero [Finite T] (Γ : QFGroup R T) (u : Γ((Γ.G ⊗ Γ.G).left, ⊤))
+    (hu : ∀ a b, (lift (Γ.pt a) (Γ.pt b)).left.appTop u = 0) : u = 0 := by
+  exact GlobalTheory.CompanionTheory.Ar.BT.CharMul.sec_prod_zero Γ u hu
+
+theorem mul_univ [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤))
+    (hs : Γ.HasValues s (fun t => ((χ t : Rˣ) : R))) :
+    (fst Γ.G Γ.G * snd Γ.G Γ.G).left.appTop s =
+      (fst Γ.G Γ.G).left.appTop s * (snd Γ.G Γ.G).left.appTop s := by
+  rw [← sub_eq_zero]
+  refine sec_prod_zero Γ _ fun a b => ?_
+  rw [map_sub, map_mul, GlobalTheory.CompanionTheory.Ar.BT.CharMul.pull, GlobalTheory.CompanionTheory.Ar.BT.CharMul.pull, GlobalTheory.CompanionTheory.Ar.BT.CharMul.pull, comp_mul, lift_fst, lift_snd, ← map_mul, GlobalTheory.CompanionTheory.Ar.BT.CharMul.appTop_pt Γ s _ hs,
+    GlobalTheory.CompanionTheory.Ar.BT.CharMul.appTop_pt Γ s _ hs, GlobalTheory.CompanionTheory.Ar.BT.CharMul.appTop_pt Γ s _ hs, ← map_mul, ← map_mul, map_mul χ, Units.val_mul, sub_self]
+
+end PositivityTheory.HtPt.Htat.SeparatedTensorPullback
+
+
+open PositivityTheory.HtPt.Htat.SeparatedTensorPullback GlobalTheory.CompanionTheory.Ar.BT.CharMul in
+theorem PositivityTheory.HtPt.Htat.SeparatedTensorPullback.charValues_mul : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤)), Γ.HasValues s (fun t => ((χ t : Rˣ) : R)) → ∀ (Y : Over (Spec (CommRingCat.of R))), (∀ y z : Y ⟶ Γ.G, (y * z).left.appTop s = y.left.appTop s * z.left.appTop s) ∧ (1 : Y ⟶ Γ.G).left.appTop s = 1 := by
+  intro R _ _ T _ _ Γ χ s hs Y
+  refine ⟨fun y z => ?_, ?_⟩
+  · have h := congrArg (lift y z).left.appTop (mul_univ Γ χ s hs)
+    rw [pull, map_mul, pull, pull, comp_mul, lift_fst, lift_snd] at h
+    exact h
+  · rw [Hom.one_def, ← pull, one_univ Γ χ s hs, map_one]
+
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfMul =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfLin =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfLin", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues\npublic import Mathlib.Tactic.ENatToNat\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumber\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfMul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
@@ -74,7 +221,7 @@ theorem valAt_mul [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.l
     (q : Spec (CommRingCat.of B) ⟶ Spec (CommRingCat.of R)) (y z : Over.mk q ⟶ Γ.G) :
     valAt (B := B) (y * z).left ⊤ le_top s =
       valAt (B := B) y.left ⊤ le_top s * valAt (B := B) z.left ⊤ le_top s := by
-  have h := (PositivityTheory.HtPt.Htat.ht_char_mul R T Γ χ s hs (Over.mk q)).1 y z
+  have h := (_root_.PositivityTheory.HtPt.Htat.SeparatedTensorPullback.charValues_mul R T Γ χ s hs (Over.mk q)).1 y z
   rw [valAt_top, valAt_top, valAt_top, ← map_mul]
   exact congrArg _ h
 
@@ -82,7 +229,7 @@ theorem valAt_one [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ) (s : Γ(Γ.G.l
     (hs : Γ.HasValues s (fun t => ((χ t : Rˣ) : R))) {B : Type} [CommRing B]
     (q : Spec (CommRingCat.of B) ⟶ Spec (CommRingCat.of R)) :
     valAt (B := B) (1 : Over.mk q ⟶ Γ.G).left ⊤ le_top s = 1 := by
-  have h := (PositivityTheory.HtPt.Htat.ht_char_mul R T Γ χ s hs (Over.mk q)).2
+  have h := (_root_.PositivityTheory.HtPt.Htat.SeparatedTensorPullback.charValues_mul R T Γ χ s hs (Over.mk q)).2
   rw [valAt_top]
   refine (congrArg _ h).trans ?_
   exact map_one _
@@ -206,7 +353,7 @@ theorem char_on_tangent_linear : ∀ (R : Type) [CommRing R] [IsDomain R] (T : T
   intro R _ _ T _ _ Γ S G _ _ x N i h L _ _ M χ s hs
   have hex : ∀ e : L, ∃ v, IsTan (Ideal.Quotient.mk (Ideal.span {(N : R)})) Γ i M e v ∧
       ∀ w, IsTan (Ideal.Quotient.mk (Ideal.span {(N : R)})) Γ i M e w → w = v :=
-    fun e => GlobalTheory.T.existsUnique_tangent_dual_number R T Γ S G x N i h L M e
+    fun e => _root_.GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion R T Γ S G x N i h L M e
   choose v hv hu using hex
   have hfst : ∀ e, (valAt (v e) ⊤ le_top s).fst = 1 := fun e => fst_valAt h χ s hs (hv e)
   refine ⟨{ toFun := fun e => (valAt (v e) ⊤ le_top s).snd, map_add' := ?_, map_smul' := ?_ }, ?_⟩
@@ -226,5 +373,7 @@ theorem char_on_tangent_linear : ∀ (R : Type) [CommRing R] [IsDomain R] (T : T
 
 end PositivityTheory.HtPt.Htat.QuotientDualMap
 
-theorem PositivityTheory.HtPt.Htat.ht_linear : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (χ : T →* Rˣ) (s : Γ(Γ.G.left, ⊤)), Γ.HasValues s (fun t => ((χ t : Rˣ) : R)) → ∃ l : L →ₗ[R] (R ⧸ Ideal.span {(N : R)}), ∀ (e : L) (v : Spec (CommRingCat.of (DualNumber (R ⧸ Ideal.span {(N : R)}))) ⟶ Γ.G.left), v ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom ((algebraMap (R ⧸ Ideal.span {(N : R)}) (DualNumber (R ⧸ Ideal.span {(N : R)}))).comp (Ideal.Quotient.mk _))) ∧ v ≫ i = Spec.map (CommRingCat.ofHom (dualMap (Ideal.Quotient.mk (Ideal.span {(N : R)})))) ≫ (M.pt e).left → valAt v ⊤ le_top s = TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (l e) :=
-  @PositivityTheory.HtPt.Htat.QuotientDualMap.char_on_tangent_linear
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfLin =====

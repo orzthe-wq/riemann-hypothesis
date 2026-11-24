@@ -69,7 +69,7 @@ theorem iwGL_entries {n : ℕ} {x : GL (Fin n) L} (hx : x ∈ IwGL L n) (i j : F
     by_cases hl : l = j
     · subst hl
       simp
-    · simp [Pi.single_apply, hl]
+    · simp [hl]
   have h2 : (Matrix.GeneralLinearGroup.toLin : GL (Fin n) L ≃* _).toMonoidHom x •
       (Pi.single j 1 : Fin n → L) ∈ latK L n (Fin.last n) := by
     rw [← hk]
@@ -90,20 +90,7 @@ theorem iwU_le_KU (σ : L →+* L) (n : ℕ) : IwU σ n ≤ KU σ n := by
     exact ⟨fun i j => iwGL_entries hx' i j, fun i j => iwGL_entries hxi i j⟩
   exact hmem
 
-theorem ordL_zpow {ϖ : L}
-    (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
-    (d : ℤ) : ordL (ϖ ^ d) = d := by
-  have h1 : Valued.v (ϖ ^ d) =
-      ((Multiplicative.ofAdd (-d) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
-    rw [map_zpow₀, hϖ, ← WithZero.coe_zpow, ← ofAdd_zsmul, smul_neg, smul_eq_mul, mul_one]
-  have hne : Valued.v (ϖ ^ d) ≠ 0 := by
-    rw [h1]
-    exact WithZero.coe_ne_zero
-  unfold ordL
-  rw [dite_eq_right hne]
-  have key : WithZero.unzero hne = Multiplicative.ofAdd (-d) :=
-    WithZero.coe_injective (by rw [WithZero.coe_unzero, h1])
-  rw [key, toAdd_ofAdd, neg_neg]
+alias ordL_zpow := _root_.Formalism.UG.P.fSatake_ord_zpow
 
 def expo (n : ℕ) (i : Fin n) : ℤ := (n : ℤ) - 1 - 2 * (i.val : ℤ)
 

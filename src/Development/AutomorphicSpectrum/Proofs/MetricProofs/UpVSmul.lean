@@ -2,10 +2,12 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.UpVApply
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.AevalNeZeroOfNotMem
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestrictionRegularStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestrictionStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsBaseChartAtGoodPointStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsContinuousOrbitSectionStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestrictionRegular
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestriction
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsBaseChart
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsBaseChartAtGoodPoint
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsContinuousOrbitSection
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentArithmeticHeight
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSecond
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
@@ -85,7 +87,7 @@ end Scale
 
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)), IsBlockMap κ v → (∀ k, k ∈ Set.range κ ↔ ((∀ p, M.blk p ≠ some k) ∨ ∃ p, keep p ∧ M.blk p = some k)) → ∀ z ∈ mcPts (mCoordIdeal (y ∘ v)), ∃ (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ), IsPCtx M Rb keep κ v F kb V bl r h ∧ z ∈ pO M Rb keep v F kb V r h := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n Rb keep Kk _ ιk _ κ v hbm hrange z hz
-  obtain ⟨bs, -⟩ := GlobalTheory.T.blockMap_frame_restriction K ι Φ y Ψ N j M keep Kk ιk κ v hbm hrange
+  obtain ⟨bs, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main K ι Φ y Ψ N j M keep Kk ιk κ v hbm hrange
   obtain ⟨-, fr, -⟩ := CPts.main K ι Φ y Ψ N j M
   have hzb : pBase M v z ∈ mcPts (mCoordIdeal M.x) := bs z hz
   obtain ⟨F, hF, hG⟩ := fr _ hzb
@@ -94,9 +96,9 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
       have := h.2 1 Submodule.mem_top
       simp at this
     exact ⟨x⟩
-  obtain ⟨r, hr1, hr2⟩ := GlobalTheory.T.exists_continuous_orbit_section _ _ _ n Rb hnon
+  obtain ⟨r, hr1, hr2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.exists_continuousOn_inv_pts _ _ _ n Rb hnon
   have hx0 := hr1 _ hzb
-  obtain ⟨kb, V, bl, hsrc, hV, hBC⟩ := GlobalTheory.T.exists_base_chart_at_good_point K ι Φ y Ψ N j M n Rb F (r (pBase M v z))
+  obtain ⟨kb, V, bl, hsrc, hV, hBC⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WMan.BaseLift.exists_baseChart K ι Φ y Ψ N j M n Rb F (r (pBase M v z))
     (by rw [CovMap.mCoordIdeal_eq_of_sameOrbit hx0]; exact hG)
   obtain ⟨hblm, hblnorm, hblgood, hblorb⟩ := hBC.2.2.2.2 _ hV
   rw [(Rb.A.chart kb).left_inv hsrc] at hblorb
@@ -122,7 +124,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
     show upV v z' ⟨k, m⟩ = c₀ ⟨k, hk⟩ * upV v z ⟨k, m⟩
     rw [upV_smul hbm c z ⟨k, m⟩]
     simp only [c, dif_pos hk]
-  obtain ⟨h, hh, H⟩ := GlobalTheory.T.blockMap_frame_restriction_regular K ι Φ y Ψ N j M keep Kk ιk κ v hbm hrange F z' hF hz'
+  obtain ⟨h, hh, H⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.Fwd.main K ι Φ y Ψ N j M keep Kk ιk κ v hbm hrange F z' hF hz'
     (hbp ▸ hblgood) (hbp ▸ hblnorm)
   refine ⟨F, kb, V, bl, r, h, ⟨hbm, hrange, hF, hBC, hr1, hr2, hh⟩, hz, hsrc, ?_, ?_⟩
   · rw [hzc] at *

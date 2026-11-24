@@ -187,11 +187,11 @@ theorem fix_of_exp (δ : Derivation ℂ (MvPolynomial (FinalTheorems m n) ℂ) (
     · intro a
       simp [Φ, MvPolynomial.derivation_C, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]
     · intro p q hp hq
-      simp only [map_add (f := _), Polynomial.derivative_add, hp, hq, mul_add]
+      simp only [map_add (f := _), hp, hq, mul_add]
     · intro p v hp
       rw [map_mul, Polynomial.derivative_mul, hp, Derivation.leibniz, smul_eq_mul, smul_eq_mul]
-      simp only [mul_add, map_add (f := _), map_mul, hΦδ, hX, hC, Polynomial.derivative_add, Polynomial.derivative_C,
-        Polynomial.derivative_mul, Polynomial.derivative_X, zero_add, one_mul, mul_zero, add_zero, Polynomial.C_mul]
+      simp only [mul_add, map_add (f := _), map_mul, hΦδ, hX, hC, Polynomial.derivative_C,
+        Polynomial.derivative_mul, Polynomial.derivative_X, zero_add, one_mul, mul_zero, add_zero]
       ring
   have hev1 : ∀ q, Polynomial.eval 1 (Φ q) = φ q := by
     intro q
@@ -264,7 +264,7 @@ theorem act_transvection (t : Matrix.TransvectionStruct (Fin n) ℂ) (p : MvPoly
       by_cases hl : l = j0
       · subst hl
         rw [Fintype.sum_eq_add l i0 (Ne.symm hij) (fun x hx => by simp [hx.1, Ne.symm hx.2])]
-        simp [hij, Ne.symm hij]
+        simp [hij]
       · rw [Fintype.sum_eq_single l (fun x hx => by simp [hx, Ne.symm hl])]
         simp [hl, Ne.symm hl]
   · rintro (⟨l, a⟩ | ⟨l, b⟩)
@@ -284,11 +284,11 @@ theorem Dsrc_diag_X (l : Fin n) (v : FinalTheorems m n) :
   · rw [Dsrc_inl]
     by_cases hk : k = l
     · subst hk; simp [wgt, Finsupp.single_apply]
-    · simp [wgt, Finsupp.single_apply, hk, Ne.symm hk]
+    · simp [wgt, hk, Ne.symm hk]
   · rw [Dsrc_inr]
     by_cases hk : k = l
     · subst hk; simp [wgt, Finsupp.single_apply]
-    · simp [wgt, Finsupp.single_apply, hk, Ne.symm hk]
+    · simp [wgt, hk, Ne.symm hk]
 
 theorem wgt_add (l : Fin n) (d e : FinalTheorems m n →₀ ℕ) : wgt l (d + e) = wgt l d + wgt l e := by
   simp only [wgt, Finsupp.add_apply, Nat.cast_add, Finset.sum_add_distrib]; ring
@@ -418,6 +418,6 @@ end PositivityTheory.Rg.Sw.LC.PolynomialWeightAction
 
 namespace PositivityTheory.Rg.Sw.LC
 
-theorem fftSym : FFTSym := PolynomialWeightAction.fftSym
+alias fftSym := _root_.PositivityTheory.Rg.Sw.LC.PolynomialWeightAction.fftSym
 
 end PositivityTheory.Rg.Sw.LC

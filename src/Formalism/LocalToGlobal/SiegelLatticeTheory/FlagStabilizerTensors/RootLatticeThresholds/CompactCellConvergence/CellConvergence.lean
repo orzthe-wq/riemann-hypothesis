@@ -1,15 +1,14 @@
 module
 
+public import Formalism.HermitianCurvature.BigCellVanishingOfCommute
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.MsetOfClosed
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.PairMeasBad
 public import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.AmpOrbOfAmpDD
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.EtEquiv
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.GrowthSide
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.OrbitIdentity
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.PairMajInv
-import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.PairMeasBad
-import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.BesselFrame
 public import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.SigmaFiniteAmplitudes.RStabInv
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.ClosedExistsOfCompact
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -26,8 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,7 +32,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,10 +45,92 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.ClosedExistsOfCompact
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving
+import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.BesselFrame
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.OrbitIdentity, Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.CellConvergence
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.OrbitIdentity =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.OrbitIdentity", "h": "module\n\npublic import Formalism.HermitianCurvature.BigCellVanishingOfCommute\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.MsetOfClosed\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.PairMeasBad\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory Matrix
+open scoped ENNReal
+
+noncomputable section
+
+namespace Formalism.MainNotions.S.Pv.AmpDDPf.CC
+
+open Formalism.QuantumDeterminants Formalism.MainNotions.S
+
+variable {k r : ℕ}
+
+theorem rmulF_meas (ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
+    Measurable (Formalism.FourierDecayAlt.B.rmulF (n := 2 * r + k + 1) ρ) := by
+  refine Measurable.of_eval fun i => Measurable.of_eval fun j => ?_
+  simp only [Formalism.FourierDecayAlt.B.rmulF, Matrix.mul_apply, Matrix.of_apply]
+  refine Finset.measurable_sum _ fun l _ => ?_
+  first
+  | fun_prop
+
+theorem orbit_identity (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
+    {μR : Measure (Mt k r)} (hR : Formalism.FourierDecayAlt.B.IsHaarOn (Formalism.FourierDecayAlt.C6.Rset γ) μR)
+    (hRc : μR {x | Matrix.of x ∉ RStab k r γ} = 0) (hR0 : μR ≠ 0)
+    {ν : Measure (PairSp k r)} (hQ : IsOrbQuot L γ μR ν)
+    (F : PairSp k r → ℝ≥0∞) (hF : Measurable F)
+    (hFinv : ∀ x, Good L x → ∀ a ∈ RStab k r γ, F (stabAct γ a x) = F x)
+    (E : Set (Mt k r)) (hE : MeasurableSet E) (A : Set (Mt k r)) (hA : MeasurableSet A)
+    (ρh : Mt k r → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
+    (hρ : ∀ n : Mt k r, Matrix.of n ∈ Nset k r → ρh n ∈ RStab k r γ ∧
+      ∀ a : Mt k r, Matrix.of a ∈ RStab k r γ →
+        ((fun i j => (Matrix.of a * Matrix.of n) i j : Mt k r) ∈ E ↔ Formalism.FourierDecayAlt.B.rmulF (ρh n) a ∈ A)) :
+    ∫⁻ x, F x * E.indicator (1 : Mt k r → ℝ≥0∞) x.1.2 ∂(pairMeas L) = μR A * ∫⁻ x, F x ∂ν := by
+  have hfst : Measurable (fun x : PairSp k r => x.1.2) := measurable_snd.comp measurable_fst
+  have hf : Measurable (fun x : PairSp k r => F x * E.indicator (1 : Mt k r → ℝ≥0∞) x.1.2) :=
+    hF.mul ((measurable_one.indicator hE).comp hfst)
+  rw [hQ _ hf, ← lintegral_const_mul _ hF]
+  have hgood : ∀ᵐ x ∂ν, Good L x := by
+    rw [ae_iff]
+    exact nu_bad L hR0 hRc hQ
+  have hstab : ∀ᵐ a ∂μR, Matrix.of a ∈ RStab k r γ := by
+    rw [ae_iff]
+    simpa using hRc
+  refine lintegral_congr_ae ?_
+  filter_upwards [hgood] with x hx
+  obtain ⟨hρn, hiff⟩ := hρ x.1.2 hx.1
+  have hmr : Measurable (Formalism.FourierDecayAlt.B.rmulF (n := 2 * r + k + 1) (ρh x.1.2)) := rmulF_meas _
+  have hin : ∀ᵐ a ∂μR, F (stabAct γ (Matrix.of a) x) *
+      E.indicator (1 : Mt k r → ℝ≥0∞) (stabAct γ (Matrix.of a) x).1.2 =
+      F x * ((Formalism.FourierDecayAlt.B.rmulF (n := 2 * r + k + 1) (ρh x.1.2)) ⁻¹' A).indicator 1 a := by
+    filter_upwards [hstab] with a ha
+    rw [hFinv x hx _ ha]
+    congr 1
+    have h1 := hiff a ha
+    show E.indicator (1 : Mt k r → ℝ≥0∞) (fun i j => (Matrix.of a * Matrix.of x.1.2) i j) = _
+    by_cases hA' : Formalism.FourierDecayAlt.B.rmulF (n := 2 * r + k + 1) (ρh x.1.2) a ∈ A
+    · simp only [Set.indicator_of_mem (h1.mpr hA'), Set.indicator_of_mem (show a ∈ _ ⁻¹' A from hA'),
+        Pi.one_apply]
+    · simp only [Set.indicator_of_notMem (fun h => hA' (h1.mp h)),
+        Set.indicator_of_notMem (show a ∉ _ ⁻¹' A from hA')]
+  rw [lintegral_congr_ae hin, lintegral_const_mul _ ((measurable_one.indicator (hmr hA))),
+    lintegral_indicator_one (hmr hA), ← Measure.map_apply hmr hA, hR.right _ hρn, mul_comm]
+
+end Formalism.MainNotions.S.Pv.AmpDDPf.CC
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.OrbitIdentity =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.CellConvergence =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.CellConvergence", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.MsetOfClosed\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.AmpOrbOfAmpDD\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.UnipotentCoordinatesMeasurePreserving\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.EtEquiv\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.GrowthSide\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.OrbitIdentity\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.PairMajInv\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.PairMeasBad\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.BesselFrame\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.SigmaFiniteAmplitudes.RStabInv\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.ClosedExistsOfCompact\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory Matrix
@@ -81,15 +160,13 @@ theorem gProxy_eq (L : LocBessel k r) (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2
     {x : PairSp k r} (hx : Good L x) : gProxy γ b x = Formalism.MainNotions.S.Pv.AmpDD.pairMaj γ b x := by
   obtain ⟨h12, h22, h11, h21⟩ := hx
   have e11 := uh_inv_eq (Formalism.L2.SG.Pf.WFL.Sset_sub_UH (uw_in_sset _ h11))
-  have e12 := uh_inv_eq (Formalism.L2.SG.Pf.WFL.Sset_sub_UH (n_in_sset L.z h12))
+  have e12 := uh_inv_eq (Formalism.L2.SG.Pf.WFL.Sset_sub_UH (_root_.Formalism.FourierDecayAlt.P.Ux3.nset_sset L.z h12))
   simp only [gProxy, Formalism.MainNotions.S.Pv.AmpDD.pairMaj, e11, e12]
 
 private theorem gProxy_nonneg (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (b : ℝ) (x : PairSp k r) :
     0 ≤ gProxy γ b x := by
   unfold gProxy
-  apply Real.rpow_nonneg
-  unfold Formalism.FourierDecayAlt.B.gN
-  exact Real.sqrt_nonneg _
+  exact Real.rpow_nonneg (Formalism.FourierDecayAlt.P.gN_nonneg_bessel_integrability _) _
 
 theorem cell_convergence : Formalism.MainNotions.S.Pv.AmpDD.CellConv := by
   intro k r L h μG γ μR νR ν hκ hgap hcell hdata hmono
@@ -188,5 +265,8 @@ theorem cell_convergence : Formalism.MainNotions.S.Pv.AmpDD.CellConv := by
 
 end Formalism.MainNotions.S.Pv.AmpDDPf.CC
 
-theorem Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence : Formalism.MainNotions.S.Pv.AmpDD.CellConv :=
-  Formalism.MainNotions.S.Pv.AmpDDPf.CC.cell_convergence
+alias Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence := _root_.Formalism.MainNotions.S.Pv.AmpDDPf.CC.cell_convergence
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.CellConvergence =====

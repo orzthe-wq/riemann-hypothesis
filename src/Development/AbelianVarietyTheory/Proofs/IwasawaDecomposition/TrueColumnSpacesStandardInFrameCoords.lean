@@ -104,7 +104,7 @@ theorem incl_co {S S' : Formalism.BasicNotions.HSpace E} {n : ℕ} (hn : S.rank 
     · simp [co]
     · intro a _ ha
       have : ¬ (a : ℕ) = k := fun h => ha (Fin.ext h)
-      simp [co, Finsupp.single_apply, Fin.ext_iff, this]
+      simp [co, Fin.ext_iff, this]
     · simp
   have hb : ∀ a : Fin (S.rank - 1), f (S'.frame (finCongr hn'.symm a)) = S.frame ⟨a.1, by omega⟩ := fun a => hf _ _ rfl
 

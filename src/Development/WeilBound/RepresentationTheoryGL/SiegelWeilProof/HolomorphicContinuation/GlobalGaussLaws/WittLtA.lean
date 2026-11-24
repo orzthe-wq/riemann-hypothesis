@@ -55,9 +55,7 @@ open ReciprocityTheory.ChartRestriction.G
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
-theorem cc_cc (t : E) : FD.cc (FD.cc t) = t := IsCMField.complexConj_apply_apply E t
-
-theorem emb_cc (τ : E →+* ℂ) (t : E) : τ (FD.cc t) = conj (τ t) := IsCMField.complexEmbedding_complexConj E τ t
+alias cc_cc := _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.cc_cc
 
 theorem exists_skew : ∃ θ : E, θ ≠ 0 ∧ FD.cc θ = -θ := by
   by_contra hne
@@ -74,7 +72,7 @@ theorem exists_skew : ∃ θ : E, θ ≠ 0 ∧ FD.cc θ = -θ := by
   ring
 
 theorem emb_real (τ : E →+* ℂ) {t : E} (ht : FD.cc t = t) : τ t = ((τ t).re : ℂ) := by
-  have h := emb_cc τ t
+  have h := _root_.GlobalTheory.Published.embedding_cc τ t
   rw [ht] at h
   apply Complex.ext
   · simp

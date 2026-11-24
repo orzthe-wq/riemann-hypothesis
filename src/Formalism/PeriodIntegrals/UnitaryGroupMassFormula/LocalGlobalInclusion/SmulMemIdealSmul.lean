@@ -116,8 +116,6 @@ theorem coe_prod_le (S : Finset (HeightOneSpectrum (𝓞 K))) (n : HeightOneSpec
     have h2 := FractionalIdeal.coe_le_coe.mpr ih
     first
       | exact mul_le_mul' h1 h2
-      | exact Submodule.mul_le_mul' h1 h2
-      | exact Submodule.mul_le_mul_of_le_of_le h1 h2
 
 theorem exists_unit_at (w : HeightOneSpectrum (𝓞 K)) (S : Finset (HeightOneSpectrum (𝓞 K)))
     (hw : w ∉ S) (n : HeightOneSpectrum (𝓞 K) → ℤ) :

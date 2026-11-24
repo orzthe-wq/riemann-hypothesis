@@ -167,7 +167,7 @@ theorem frameWt_div_le_div_ratio : ∀ (r : ℕ) (c : ℝ), 0 < c → ∃ K : �
     · simp [frameLev] at h
     · exfalso
       simp only [frameLev] at h
-      split_ifs at h <;> omega
+      split_ifs at h
     · have ha : a ≤ s := by
         by_contra hn
         simp [frameLev, hn] at h

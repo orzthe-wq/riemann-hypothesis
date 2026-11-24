@@ -57,7 +57,7 @@ theorem Host.sqrtMinusD_sq (H : Host R) : H.sqrtMinusD ^ 2 = -(H.d : H.E) := by
   exact H.sqd_sq
 
 theorem Host.conj_sqrtMinusD (H : Host R) : H.conj H.sqrtMinusD = -H.sqrtMinusD := by
-  apply Formalism.MainNotions.UnusedSlot33.HK.conj_b <;> assumption
+  apply Formalism.MainNotions.UnusedSlot33.HK.conj_b
 
 theorem Host.exists_trace_one (H : Host R) : ∃ c : 𝓞 H.E, (c : H.E) + H.conj c = 1 := by
   obtain ⟨m, hm⟩ : ∃ m : ℕ, H.d + 1 = 4 * m := ⟨(H.d + 1) / 4, by have := H.hyp.2.2.2.1; omega⟩

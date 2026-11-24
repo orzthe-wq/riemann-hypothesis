@@ -68,12 +68,11 @@ theorem _root_.GlobalTheory.ev_starProjection_eigenspace_eq_residue :
   have key : ∀ x : Y, ∀ u : ℂ, (∏ k, (u + m k)) • K u x = (∏ k, (u + m k)) • ∑ j, c j u • ev (P j x) := by
     intro x u
     have hx : x ∈ ⨆ μ, Module.End.eigenspace Om μ := by
-      rw [Submodule.orthogonal_eq_bot_iff.mp hOm.orthogonalComplement_iSup_eigenspaces_eq_bot]
-      exact Submodule.mem_top
+      simp [Submodule.orthogonal_eq_bot_iff.mp hOm.orthogonalComplement_iSup_eigenspaces_eq_bot]
     refine Submodule.iSup_induction (fun μ => Module.End.eigenspace Om μ) (motive := fun x => (∏ k, (u + m k)) • K u x = (∏ k, (u + m k)) • ∑ j, c j u • ev (P j x)) hx ?_ ?_ ?_
     · intro μ x hxμ
       by_cases hx0 : x = 0
-      · subst hx0; simp [hP]
+      · simp [hx0, hP]
       have hOmx : Om x = μ • x := Module.End.mem_eigenspace_iff.mp hxμ
       obtain ⟨i, rfl⟩ := hspec μ x hx0 hOmx
       have hPx : ∀ j, P j x = if j = i then x else 0 := by
@@ -101,16 +100,12 @@ theorem _root_.GlobalTheory.ev_starProjection_eigenspace_eq_residue :
     rw [← hKy]
     exact smul_right_injective V hu (key y u)
   have hdense : Dense {u : ℂ | ∏ k, (u + m k) ≠ 0} := by
-    have hfin : {u : ℂ | ∏ k, (u + m k) = 0}.Countable := by
-      apply Set.Finite.countable
-      apply (Set.finite_range (fun k => -m k)).subset
-      intro u hu
-      simp only [Set.mem_setOf_eq, Finset.prod_eq_zero_iff, Finset.mem_univ, true_and] at hu
-      obtain ⟨k, hk⟩ := hu
-      exact ⟨k, by linear_combination -hk⟩
-    simpa [Set.compl_setOf] using hfin.dense_compl ℝ
+    refine (Set.finite_range (fun k => -m k)).countable.dense_compl ℝ |>.mono ?_
+    intro u hu
+    simp only [Set.mem_compl_iff, Set.mem_range, not_exists, Set.mem_ofPred_eq] at hu ⊢
+    exact Finset.prod_ne_zero_iff.mpr fun k _ h => hu k (neg_eq_of_add_eq_zero_left h)
   have hcont : Continuous fun u => ∑ j, c j u • ev (P j y) := by
-    simp only [hc]; fun_prop
+    fun_prop
   have hf : Continuous fun u => q u • v := hq.smul continuous_const
   have hl := congrFun (Continuous.ext_on hdense hf hcont hgen) (-m l)
   rw [Finset.sum_eq_single l (fun j _ hjl => by

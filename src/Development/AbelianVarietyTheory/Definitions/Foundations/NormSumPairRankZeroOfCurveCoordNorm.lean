@@ -66,14 +66,14 @@ def gam (D : D7) {N : ℕ} (J : Subgroup (GA D N)) (g : GA D N) : ℕ :=
   Nat.card {γ : GA D N // γ ∈ ratG D N ∧ g⁻¹ * γ * g ∈ J}
 
 theorem inc_inj (D : D7) : Function.Injective (inc D) := by
-  haveI : Nontrivial (IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ) := by
+  have : Nontrivial (IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ) := by
     obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 ℚ)
     let v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ) :=
       ⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField ℚ)⟩
     refine ⟨0, 1, fun h => ?_⟩
     have h2 : (0 : v.adicCompletion ℚ) = 1 := congrArg (fun x : IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ => x v) h
     exact zero_ne_one h2
-  haveI : Nontrivial (AE D) :=
+  have : Nontrivial (AE D) :=
     (Algebra.TensorProduct.includeRight_injective (algebraMap ℚ D.host.E).injective :
       Function.Injective (Algebra.TensorProduct.includeRight :
         IsDedekindDomain.FiniteAdeleRing (𝓞 ℚ) ℚ →ₐ[ℚ] AE D)).nontrivial
@@ -288,7 +288,7 @@ theorem exists_crv_top (D : D7) : ∃ δ : ℂ, Crv D ⊤ δ := by
 namespace RankZero
 
 instance groupSubsingleton (D : D7) : Subsingleton (GA D 0) :=
-  ⟨fun x y => Subtype.ext (Units.ext (Subsingleton.elim _ _))⟩
+  ⟨fun _x _y => Subtype.ext (Units.ext (Subsingleton.elim _ _))⟩
 
 theorem hf0 (D : D7) (T : Tor D) (z w : VC D 0 0) : Hf D T z w = 0 := by simp [Hf]
 
@@ -296,13 +296,13 @@ theorem iop0 (D : D7) (T : Tor D) (A B : AddSubgroup (VC D 0 0)) (G : VC D 0 0 �
   funext z
   have hi : (A.addSubgroupOf B).index = 1 := by
     rw [AddSubgroup.index_eq_one]; exact Subsingleton.elim _ _
-  haveI : Subsingleton (B ⧸ A.addSubgroupOf B) := by
+  have : Subsingleton (B ⧸ A.addSubgroupOf B) := by
     refine ⟨fun x y => ?_⟩
     induction x using QuotientAddGroup.induction_on
     induction y using QuotientAddGroup.induction_on
     congr 1
     exact Subsingleton.elim _ _
-  haveI : Unique (B ⧸ A.addSubgroupOf B) := ⟨⟨((0 : B) : B ⧸ A.addSubgroupOf B)⟩, fun _ => Subsingleton.elim _ _⟩
+  have : Unique (B ⧸ A.addSubgroupOf B) := ⟨⟨((0 : B) : B ⧸ A.addSubgroupOf B)⟩, fun _ => Subsingleton.elim _ _⟩
   unfold Iop
   rw [hi, finsum_unique]
   simp only [al, U, hf0]
@@ -372,7 +372,7 @@ theorem normSq0 (D : D7) (T : Tor D) (A : AddSubgroup (VC D 0 0)) : normSq D T A
   simp [MeasureTheory.average_eq, MeasureTheory.Measure.real, hv]
 
 theorem vac0 (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) : oddE0 D cc δ t0 0 0 (fun _ => 1) := by
-  haveI : IsEmpty (Fin (fF D * 0 * 0)) := by simp only [mul_zero]; infer_instance
+  have : IsEmpty (Fin (fF D * 0 * 0)) := by simp only [mul_zero]; infer_instance
   have hon : OnB D (fun _ : Fin (fF D * 0 * 0) => (0 : Matrix (Fin 0) (Fin 0) D.host.E)) :=
     ⟨fun i => isEmptyElim i, Subsingleton.elim _ _⟩
   refine ⟨⟨differentiable_const _, fun x _ z => ?_⟩, fun α => ?_, ?_, ⟨fun _ => 0, 1, hon, ⟨one_mem _, fun σ => ?_⟩, ?_⟩, ?_⟩
@@ -430,7 +430,7 @@ theorem normSumPairRankZeroOfCurve_coord_norm (crv : Crv D cc δ) (pt0 : GL3Thet
     intro h
     unfold Pair.sq
     simp only [hc]
-    haveI : Unique (Tup D (pair0 crv pt0).a (pair0 crv pt0).d (pair0 crv pt0).n) :=
+    have : Unique (Tup D (pair0 crv pt0).a (pair0 crv pt0).d (pair0 crv pt0).n) :=
       ⟨⟨fun τ j => j.elim0⟩, fun T => funext fun τ => funext fun j => j.elim0⟩
     simp
   refine ⟨hc, ?_⟩

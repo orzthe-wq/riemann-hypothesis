@@ -267,7 +267,7 @@ theorem mem_congGrp {V : HSp D} (I : Ideal (AE D)) (x : GA D V) :
   rw [← Matrix.map_one (Ideal.Quotient.mk I) (map_zero _) (map_one _), ← Matrix.ext_iff]
   simp only [Matrix.map_apply, Ideal.Quotient.eq]
 
-theorem mt_mul (V : HSp D) (a b : GA D V) : mt V (a * b) = mt V a * mt V b := rfl
+alias mt_mul := _root_.GlobalTheory.BesselCompare.mt_mul
 
 theorem mt_inj {V : HSp D} {a b : GA D V} (h : mt V a = mt V b) : a = b := Subtype.ext (Units.ext h)
 
@@ -277,7 +277,7 @@ def mixGA (P : Pl D → Prop) {V : HSp D} (g h : GA D V) : GA D V :=
 theorem mt_mixGA (P : Pl D → Prop) {V : HSp D} (g h : GA D V) :
     mt V (mixGA P g h) = mix (idem D P) (mt V g) (mt V h) := rfl
 
-theorem mt_one (V : HSp D) : mt V 1 = 1 := rfl
+alias mt_one := _root_.GlobalTheory.BesselCompare.mt_one
 
 theorem mem_grpAt_iff (P : Pl D → Prop) {V : HSp D} (x : GA D V) :
     x ∈ grpAt V P ↔ mix (idem D P) (mt V x) 1 = mt V x := by

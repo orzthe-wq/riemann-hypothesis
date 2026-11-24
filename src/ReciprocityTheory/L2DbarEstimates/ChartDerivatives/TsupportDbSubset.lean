@@ -1,51 +1,8 @@
 module
 
 public import ReciprocityTheory.L2DbarEstimates.IsLocalHomeomorph
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Calculus.ContDiff.Basic
 public import Mathlib.Analysis.Calculus.ContDiff.Comp
 public import Mathlib.Analysis.Calculus.ContDiff.Operations
@@ -234,7 +191,7 @@ theorem d_add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : 
   · obtain ⟨he, ht, hsx⟩ := isChart_choose_and_symm_apply n z x h
     rw [d_eq_wd_comp_chosen_chart_symm n z j _ x h, d_eq_wd_comp_chosen_chart_symm n z j f x h, d_eq_wd_comp_chosen_chart_symm n z j g x h]
     exact (wd_wdb_add_and_mul n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht) (differentiableAt_comp_chart_symm_of_mem_target n z g hg _ he _ ht)).1
-  · simp [d, db, h]
+  · simp [d, h]
 
 theorem db_add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Ck n z 1 f) (hg : Ck n z 1 g) (j : Fin n) (x : M) :
     db n z j (fun y => f y + g y) x = db n z j f x + db n z j g x := by
@@ -242,7 +199,7 @@ theorem db_add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g :
   · obtain ⟨he, ht, hsx⟩ := isChart_choose_and_symm_apply n z x h
     rw [db_eq_wdb_comp_chosen_chart_symm n z j _ x h, db_eq_wdb_comp_chosen_chart_symm n z j f x h, db_eq_wdb_comp_chosen_chart_symm n z j g x h]
     exact (wd_wdb_add_and_mul n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht) (differentiableAt_comp_chart_symm_of_mem_target n z g hg _ he _ ht)).2.1
-  · simp [d, db, h]
+  · simp [db, h]
 
 theorem d_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℂ) (f : M → ℂ) (hf : Ck n z 1 f) (j : Fin n) (x : M) :
     d n z j (fun y => c * f y) x = c * d n z j f x := by
@@ -250,7 +207,7 @@ theorem d_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (
   · obtain ⟨he, ht, hsx⟩ := isChart_choose_and_symm_apply n z x h
     rw [d_eq_wd_comp_chosen_chart_symm n z j _ x h, d_eq_wd_comp_chosen_chart_symm n z j f x h]
     exact (wd_wdb_const_mul n j c (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht)).1
-  · simp [d, db, h]
+  · simp [d, h]
 
 theorem db_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℂ) (f : M → ℂ) (hf : Ck n z 1 f) (j : Fin n) (x : M) :
     db n z j (fun y => c * f y) x = c * db n z j f x := by
@@ -258,7 +215,7 @@ theorem db_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) 
   · obtain ⟨he, ht, hsx⟩ := isChart_choose_and_symm_apply n z x h
     rw [db_eq_wdb_comp_chosen_chart_symm n z j _ x h, db_eq_wdb_comp_chosen_chart_symm n z j f x h]
     exact (wd_wdb_const_mul n j c (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht)).2
-  · simp [d, db, h]
+  · simp [db, h]
 
 theorem d_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Ck n z 1 f) (hg : Ck n z 1 g) (j : Fin n) (x : M) :
     d n z j (fun y => f y * g y) x = d n z j f x * g x + f x * d n z j g x := by
@@ -268,7 +225,7 @@ theorem d_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : 
     rw [d_eq_wd_comp_chosen_chart_symm n z j _ x h, d_eq_wd_comp_chosen_chart_symm n z j f x h, d_eq_wd_comp_chosen_chart_symm n z j g x h]
     refine (wd_wdb_add_and_mul n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht) (differentiableAt_comp_chart_symm_of_mem_target n z g hg _ he _ ht)).2.2.1.trans ?_
     rw [hx' f, hx' g]
-  · simp [d, db, h]
+  · simp [d, h]
 
 theorem db_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g : M → ℂ) (hf : Ck n z 1 f) (hg : Ck n z 1 g) (j : Fin n) (x : M) :
     db n z j (fun y => f y * g y) x = db n z j f x * g x + f x * db n z j g x := by
@@ -278,7 +235,7 @@ theorem db_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f g :
     rw [db_eq_wdb_comp_chosen_chart_symm n z j _ x h, db_eq_wdb_comp_chosen_chart_symm n z j f x h, db_eq_wdb_comp_chosen_chart_symm n z j g x h]
     refine (wd_wdb_add_and_mul n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht) (differentiableAt_comp_chart_symm_of_mem_target n z g hg _ he _ ht)).2.2.2.trans ?_
     rw [hx' f, hx' g]
-  · simp [d, db, h]
+  · simp [db, h]
 
 theorem d_const {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℂ) (j : Fin n) (x : M) :
     d n z j (fun _ => c) x = 0 := by
@@ -317,7 +274,7 @@ theorem d_cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M
     rw [d_eq_wd_comp_chosen_chart_symm n z j _ x h, d_eq_wd_comp_chosen_chart_symm n z j f x h]
     refine (wd_wdb_cexp n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht)).1.trans ?_
     rw [hx' f]
-  · simp [d, db, h]
+  · simp [d, h]
 
 theorem db_cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ) (hf : Ck n z 1 f) (j : Fin n) (x : M) :
     db n z j (fun y => Complex.exp (f y)) x = Complex.exp (f x) * db n z j f x := by
@@ -327,7 +284,7 @@ theorem db_cexp {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : 
     rw [db_eq_wdb_comp_chosen_chart_symm n z j _ x h, db_eq_wdb_comp_chosen_chart_symm n z j f x h]
     refine (wd_wdb_cexp n j (differentiableAt_comp_chart_symm_of_mem_target n z f hf _ he _ ht)).2.trans ?_
     rw [hx' f]
-  · simp [d, db, h]
+  · simp [db, h]
 
 theorem db_comp_real {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℝ → ℝ) (hk : ContDiff ℝ ∞ k) (ph : M → ℝ) (hph : CkR n z 1 ph) (j : Fin n) (x : M) :
     db n z j (fun y => (k (ph y) : ℂ)) x = ((deriv k (ph x) : ℝ) : ℂ) * db n z j (fun y => (ph y : ℂ)) x := by
@@ -340,7 +297,7 @@ theorem db_comp_real {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) 
       exact h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun w => by simp)
     refine (wd_wdb_ofReal_comp_real_chain n j k (hk.differentiable (by simp)) _ _ hP).2.trans ?_
     simp [hsx, Function.comp_def]
-  · simp [d, db, h]
+  · simp [db, h]
 
 theorem tsupport_d_subset {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n) (f : M → ℂ) :
     tsupport (d n z j f) ⊆ tsupport f := by

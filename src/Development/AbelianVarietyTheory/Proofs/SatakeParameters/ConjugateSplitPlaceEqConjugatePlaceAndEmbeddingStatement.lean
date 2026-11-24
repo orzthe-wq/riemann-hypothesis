@@ -54,4 +54,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 theorem _root_.GlobalTheory.T.conjugateSplitPlace_eq_conjugatePlace_and_embedding : ∀ (D : D7) (s : SplitPlace D.host.E) (w : PlE D.host), IsConjPl D.host w s.w → (GlobalTheory.TypeTame.conjSP s).w = w ∧ ∀ x : D.host.E, (GlobalTheory.TypeTame.conjSP s).i x = s.i (D.host.conj x) := by
-  first | exact @GlobalTheory.TypeTame.conjSP_w_of_isConjPl | exact GlobalTheory.TypeTame.conjSP_w_of_isConjPl | (intros; apply GlobalTheory.TypeTame.conjSP_w_of_isConjPl <;> assumption)
+  first | exact @GlobalTheory.TypeTame.conjSP_w_of_isConjPl

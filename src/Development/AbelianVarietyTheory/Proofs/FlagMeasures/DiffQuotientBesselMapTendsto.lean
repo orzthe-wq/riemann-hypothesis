@@ -1,33 +1,31 @@
 module
 
+public import Formalism.FormalDegreeBessel.StatementIO
+public import Mathlib.Analysis.Calculus.ContDiff.Basic
+public import Mathlib.Analysis.Calculus.ContDiff.Operations
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdjointInverseTranslate.AnaHpartUnique
 public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmoothVectorsDenseInvariantStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EquivariantSubspace
-import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
-import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmoothVectorsDenseInvariant
+public import Mathlib.Analysis.InnerProductSpace.Calculus
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.InnerProductSpace.Calculus
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,11 +45,65 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Sheaves.Init
+import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
+import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.EquivariantSubspace, Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiffQuotientBesselMapTendsto
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.EquivariantSubspace =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.EquivariantSubspace", "h": "module\n\npublic import Formalism.FormalDegreeBessel.StatementIO\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Calculus.ContDiff.Basic\npublic import Mathlib.Analysis.Calculus.ContDiff.Operations\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.QuantumDeterminants
+
+namespace GlobalTheory.EquivariantSubspace
+
+attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
+
+variable {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
+
+theorem smoothOnH_zero (H : Matrix (Fin n) (Fin n) ℂ) :
+    SmoothOnH H (0 : Matrix (Fin n) (Fin n) ℂ → E) :=
+  fun _ _ => ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
+
+theorem smoothOnH_add {H : Matrix (Fin n) (Fin n) ℂ} {f f' : Matrix (Fin n) (Fin n) ℂ → E}
+    (hf : SmoothOnH H f) (hf' : SmoothOnH H f') : SmoothOnH H (f + f') := by
+  intro g₀ hg₀
+  obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf g₀ hg₀
+  obtain ⟨U', F', hU', hgU', hF', hfF'⟩ := hf' g₀ hg₀
+  refine ⟨U ∩ U', fun g => F g + F' g, hU.inter hU', ⟨hgU, hgU'⟩,
+    (hF.mono Set.inter_subset_left).add (hF'.mono Set.inter_subset_right), ?_⟩
+  intro g hg hH
+  rw [Pi.add_apply, hfF g hg.1 hH, hfF' g hg.2 hH]
+
+theorem smoothOnH_smul {H : Matrix (Fin n) (Fin n) ℂ} {f : Matrix (Fin n) (Fin n) ℂ → E} (a : ℂ)
+    (hf : SmoothOnH H f) : SmoothOnH H (a • f) := by
+  intro g₀ hg₀
+  obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf g₀ hg₀
+  refine ⟨U, fun g => a • F g, hU, hgU, hF.const_smul a, ?_⟩
+  intro g hg hH
+  rw [Pi.smul_apply, hfF g hg hH]
+
+end GlobalTheory.EquivariantSubspace
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.EquivariantSubspace =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiffQuotientBesselMapTendsto =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiffQuotientBesselMapTendsto", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdjointInverseTranslate.AnaHpartUnique\npublic import Mathlib.Analysis.LocallyConvex.AbsConvexOpen\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmoothVectorsDenseInvariant\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EquivariantSubspace\npublic import Mathlib.Analysis.InnerProductSpace.Calculus\nimport Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic\nimport Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.Normed.Algebra.MatrixExponential\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -107,7 +158,7 @@ theorem left_smooth {H : Matrix (Fin n) (Fin n) ℂ} (hH : AAInvW.HInvol H)
     have h := (LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ X)).contDiff (n := ∞)
     convert h using 1
     funext x
-    first | simp | rfl
+    first | rfl
   refine ⟨fun g₀ hg₀ => ?_, fun g hg => ?_⟩
   · obtain ⟨U, F, hU, hg₀U, hF, hfF⟩ := hf g₀ hg₀
     refine ⟨U, fun x => fderiv ℝ F x (X * x), hU, hg₀U, ?_, fun x hxU hxH => ?_⟩
@@ -175,11 +226,11 @@ variable [CompleteSpace H]
 
 theorem sm_translate {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec σ v)
     {g : Mat k r} (hg : g ∈ GG k r) : IsSmoothVec σ (σ g v) := by
-  exact ((GlobalTheory.T.smooth_vectors_dense_invariant k r σ v hσ).2.2.2.1 v hv).1 g hg
+  exact ((_root_.GlobalTheory.SgInfDD.DD_stable_dense k r σ v hσ).2.2.2.1 v hv).1 g hg
 
 theorem sm_dsig {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) {v : H} (hv : IsSmoothVec σ v)
     {Y : Mat k r} (hY : InLieHpk k r Y) : IsSmoothVec σ (dsig σ Y v) := by
-  exact (((GlobalTheory.T.smooth_vectors_dense_invariant k r σ v hσ).2.2.2.1 v hv).2 Y hY).1
+  exact (((_root_.GlobalTheory.SgInfDD.DD_stable_dense k r σ v hσ).2.2.2.1 v hv).2 Y hY).1
 
 
 omit [CompleteSpace H] in
@@ -359,7 +410,7 @@ variable [CompleteSpace H]
 theorem dsigW_zero {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ) (W : List (Mat k r))
     (hW : ∀ X ∈ W, InLieHpk k r X) : dsigW σ W 0 = 0 := by
   have h := dsigW_comb hσ W hW 1 (sm_zero σ) (sm_zero σ) (sm_zero σ)
-  simp only [sub_self, smul_zero, zero_sub, one_smul] at h
+  simp only [sub_self, smul_zero, zero_sub] at h
   have h2 : (2 : ℂ) • dsigW σ W 0 = 0 := by
     rw [two_smul]
     nth_rewrite 1 [h]
@@ -458,3 +509,7 @@ theorem GlobalTheory.diffQuot_bessel : ∀ (k r : ℕ) {H : Type} [NormedAddComm
     rw [intervalIntegral.integral_eq_sub_of_hasDerivAt (fun u _ => orbit_hasDerivAt hσ hx hX u)
       (hcont.intervalIntegrable 0 t)]
     simp [hσ.1.1]
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.DiffQuotientBesselMapTendsto =====

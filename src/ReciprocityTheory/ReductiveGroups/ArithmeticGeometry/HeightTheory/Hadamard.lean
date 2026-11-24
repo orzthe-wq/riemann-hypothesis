@@ -74,7 +74,6 @@ theorem psd_det_re_le_one_of_diag (N : ℕ) (H : Matrix (Fin N) (Fin N) ℂ) (hH
     rw [hHerm.det_eq_prod_eigenvalues]
     first
       | (norm_cast)
-      | simp [← Complex.ofReal_prod]
   rw [hre]
   calc ∏ i, hHerm.eigenvalues i ≤ ∏ i, Real.exp (hHerm.eigenvalues i - 1) :=
         Finset.prod_le_prod₀ (fun i _ => hH.eigenvalues_nonneg i)
@@ -142,6 +141,6 @@ theorem psd_det_re_le_prod_diag (N : ℕ) (G : Matrix (Fin N) (Fin N) ℂ) (hG :
 
 theorem hadamard_det_le {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     ‖A.det‖ ≤ ∏ i, Real.sqrt (∑ j, ‖A i j‖ ^ 2) := by
-  apply Formalism.HermitianLatticeCounting.P.norm_det_le_prod_row_norms <;> assumption
+  apply Formalism.HermitianLatticeCounting.P.norm_det_le_prod_row_norms
 
 end ReciprocityTheory.ChartRestriction.G.T0

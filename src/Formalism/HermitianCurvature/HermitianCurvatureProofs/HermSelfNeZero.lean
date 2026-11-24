@@ -48,6 +48,9 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianFormFlagVector
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.NFRadRedLocSec
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerPairs.IsUnitDetOfMemGV
 
 @[expose] public section
 
@@ -58,11 +61,6 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JfS.Sym
 noncomputable section
 
 variable {k r : ℕ}
-
-theorem herm_self_ne_zero {z : Fin (2 * r + k + 1) → ℂ} (hT : 0 < Tz k r z) : herm (Hpk k r) z z ≠ 0 := by
-  intro h
-  rw [Tz, h] at hT
-  simp at hT
 
 theorem herm_proj_zero (x z : Fin (2 * r + k + 1) → ℂ) (hc : herm (Hpk k r) z z ≠ 0) :
     herm (Hpk k r) (x - (herm (Hpk k r) x z / herm (Hpk k r) z z) • z) z = 0 := by
@@ -78,17 +76,17 @@ theorem coreW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k
     (N : ℕ) (h4 : ∀ u, inWb k r u → (ξ ^ N) *ᵥ u = 0) :
     ∀ u, inWb k r u → ξ *ᵥ u = 0 := by
   set c := herm (Hpk k r) z z with hcdef
-  have hc0 : c ≠ 0 := herm_self_ne_zero hT
+  have hc0 : c ≠ 0 := _root_.Formalism.FourierDecayAlt.P.C2x5.hzz_ne hT
 
   have stepA : ∀ w, inWb k r w → herm (Hpk k r) w z = 0 →
       ξ *ᵥ w = (herm (Hpk k r) (ξ *ᵥ w) z / c) • z := by
     intro w hw hwz
     set y := ξ *ᵥ w - (herm (Hpk k r) (ξ *ᵥ w) z / c) • z with hydef
-    have hy : inWb k r y := inWb_sub (h1 w hw) (inWb_smul _ hz)
+    have hy : inWb k r y := inWb_sub (h1 w hw) (_root_.Formalism.FourierDecayAlt.P.NFRadRedLocSec.inWb_smul _ hz)
     have hyz : herm (Hpk k r) y z = 0 := herm_proj_zero _ _ hc0
     have hyy : herm (Hpk k r) y y = 0 := by
       have e1 : herm (Hpk k r) (ξ *ᵥ w) y = 0 := h3 w y hw hy hwz hyz
-      have e2 : herm (Hpk k r) z y = 0 := by rw [herm_swap, hyz, star_zero]
+      have e2 : herm (Hpk k r) z y = 0 := by rw [_root_.PI.StabPairsW.herm_swap, hyz, star_zero]
       calc herm (Hpk k r) y y
           = herm (Hpk k r) (ξ *ᵥ w) y - (herm (Hpk k r) (ξ *ᵥ w) z / c) * herm (Hpk k r) z y := by
             conv_lhs => rw [hydef]
@@ -98,7 +96,7 @@ theorem coreW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k
     exact sub_eq_zero.1 this
   set μ := herm (Hpk k r) (ξ *ᵥ z) z / c with hμ
   set b := ξ *ᵥ z - μ • z with hbdef
-  have hb : inWb k r b := inWb_sub (h1 z hz) (inWb_smul _ hz)
+  have hb : inWb k r b := inWb_sub (h1 z hz) (_root_.Formalism.FourierDecayAlt.P.NFRadRedLocSec.inWb_smul _ hz)
   have hbz : herm (Hpk k r) b z = 0 := herm_proj_zero _ _ hc0
   have hξz : ξ *ᵥ z = μ • z + b := by rw [hbdef]; abel
 
@@ -170,7 +168,7 @@ theorem coreW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k
   have hξz0 : ξ *ᵥ z = 0 := by rw [hξz', hμ0, zero_smul]
   intro u hu
   set α := herm (Hpk k r) u z / c
-  have hu' : inWb k r (u - α • z) := inWb_sub hu (inWb_smul _ hz)
+  have hu' : inWb k r (u - α • z) := inWb_sub hu (_root_.Formalism.FourierDecayAlt.P.NFRadRedLocSec.inWb_smul _ hz)
   have hu'z : herm (Hpk k r) (u - α • z) z = 0 := herm_proj_zero _ _ hc0
   have e : u = α • z + (u - α • z) := by abel
   rw [e, mulVec_add, mulVec_smul, hξz0, stepB _ hu' hu'z, hb0, herm_zero_right]

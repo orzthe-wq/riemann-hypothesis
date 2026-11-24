@@ -54,6 +54,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.CanonGenIsGen
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.StTransl
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -131,13 +132,6 @@ theorem lagrange_decomp : ∀ (r : ℕ) (A : Matrix (Fin r) (Fin r) ℤ), (∀ i
     · simp; rw [hs i.succ 0]; ring
     · simp only [Fin.cons_succ]
       rw [← hm i j]; simp only [hS, hc]; ring
-
-theorem zpow_fsum {G I : Type} [CommGroup G] (a : G) (s : Finset I) (f : I → ℤ) :
-    a ^ (∑ i ∈ s, f i) = ∏ i ∈ s, a ^ f i := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add, ih]
 
 theorem tensor_pos : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [IsLocalRing R] (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (κ : X → (FractionRing R)ˣ), (∀ a, κ (-a) = κ a) → (∀ a a' b, κ (a + a' + b) * κ a * κ a' * κ b = κ (a + a') * κ (a + b) * κ (a' + b)) → (∀ a, a ≠ 0 → ∃ s ∈ maximalIdeal R, (κ a : FractionRing R) = algebraMap R _ s) → ∀ {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → ∀ z : Fin r → X, z ≠ 0 → ∃ s ∈ maximalIdeal R, ((∏ i, ∏ j, (κ (z i + z j) * (κ (z i))⁻¹ * (κ (z j))⁻¹) ^ W i j : (FractionRing R)ˣ) : FractionRing R) = algebraMap R _ s := by
   intro R _ _ _ _ _ X _ _ κ hneg hcub hmax r W hW z hz
@@ -239,7 +233,7 @@ theorem tensor_pos : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing 
         rw [← zpow_natCast, ← zpow_mul, _root_.mul_comm]
       _ = ∏ i, ∏ j, ∏ l, (B (z i) (z j) ^ (m l i * m l j)) ^ (n l) := by
         refine Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_
-        rw [hm, zpow_fsum]
+        rw [hm, _root_.GlobalTheory.SharpFamRel.zpow_finsetSum]
         refine Finset.prod_congr rfl fun l _ => ?_
         rw [← zpow_natCast, ← zpow_mul]; congr 1; ring
       _ = ∏ i, ∏ l, ∏ j, (B (z i) (z j) ^ (m l i * m l j)) ^ (n l) :=

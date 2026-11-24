@@ -351,7 +351,7 @@ theorem exists_ev_tied (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l
       IsUnit (tS P s) ∧
       (∀ (a : ℤ) (b : P.R.BdR), tS P s * b ∈ (P.PD K).Fil (a + 1) ↔ b ∈ (P.PD K).Fil a) ∧
       ∀ b : P.R.BdR, (∀ a : ℤ, b ∈ (P.PD K).Fil a) → b = 0 := by
-  first | exact Bridge.exists_power_series_evaluation | exact Bridge.exists_power_series_evaluation .. | (intros; apply Bridge.exists_power_series_evaluation <;> assumption)
+  first | (intros; apply Bridge.exists_power_series_evaluation <;> assumption)
 
 theorem exists_ev_dR : ∀ (D : Formalism.BasicNotions.D7) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (s : ℕ) (ι : ↥LL.1 →ₐ[ℚ_[l]] (D.loc l).R.BdR), ∃ ev : PowerSeries ↥LL.1 →+* (D.loc l).R.BdR, (∀ (f : PowerSeries ↥LL.1) (M : ℕ), ev f - ∑ k ∈ Finset.range M, ι (PowerSeries.coeff k f) * tS (D.loc l) s ^ k ∈ ((D.loc l).PD K).Fil (M : ℤ)) ∧ (∀ (f : PowerSeries ↥LL.1) (M : ℕ), ev f ∈ ((D.loc l).PD K).Fil (M : ℤ) ↔ PowerSeries.X ^ M ∣ f) ∧ IsUnit (tS (D.loc l) s) ∧ (∀ (a : ℤ) (b : (D.loc l).R.BdR), tS (D.loc l) s * b ∈ ((D.loc l).PD K).Fil (a + 1) ↔ b ∈ ((D.loc l).PD K).Fil a) ∧ ∀ b : (D.loc l).R.BdR, (∀ a : ℤ, b ∈ ((D.loc l).PD K).Fil a) → b = 0 :=
   fun D l _ K LL s ι => exists_ev_tied l _ _ (D.locT l) K LL s ι

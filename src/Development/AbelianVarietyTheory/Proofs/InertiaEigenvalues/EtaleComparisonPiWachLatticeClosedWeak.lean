@@ -2,13 +2,14 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ZlTowerGen
 public import Formalism.SharpRestriction.LevelLetterCocycles.DeltaInvariantLattices
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactSpaceATopStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousGaloisOrbitWittTensorLatticeWeakTopoloStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOneTmulStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousWittCbInclusionSmulWeakTopologyStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactSpaceATop
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousGaloisOrbitWittTensorLatticeWeakTopolo
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousOneTmul
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousWittCbInclusionSmulWeakTopology
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JDANEqRange
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsContinuousGaloisLatticeMatrixIntegral
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegersCompleteDVR
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JDANEqRangeStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -93,13 +94,13 @@ theorem jD_piN_closed : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F
     T2Space.of_injective_continuous (GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b).injective hc
   haveI hAG : IsTopologicalAddGroup (TW (RW LL) T) :=
     Topology.IsInducing.topologicalAddGroup (GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b) ⟨rfl⟩
-  refine ⟨τ, hT2, hAG, GlobalTheory.T.continuous_galois_orbit_wittTensorLatticeWeakTopology (D.locA l) T b, GlobalTheory.T.continuous_one_tmul_latB T b, ?_⟩
-  obtain ⟨r, y, hy⟩ := GlobalTheory.T.exists_image_aN_eq_range_sum ((F l).E K s LL h) T
+  refine ⟨τ, hT2, hAG, _root_.GlobalTheory.WeakClosed.continuous_orbit_twTop (D.locA l) T b, _root_.GlobalTheory.WeakClosed.continuous_one_tmul T b, ?_⟩
+  obtain ⟨r, y, hy⟩ := _root_.GlobalTheory.NL.WkRange.jD_aN_eq_range ((F l).E K s LL h) T
   rw [hy]
   letI := aTop (K := K) bO
-  haveI := GlobalTheory.T.compactSpace_aTop' (K := K) bO
+  haveI := _root_.GlobalTheory.WeakClosed.compactSpace_aTop (K := K) bO
   refine (isCompact_range ?_).isClosed
   refine continuous_finsetSum _ fun i _ => ?_
-  exact (GlobalTheory.T.continuous_wittCbInclusion_smul_weakTopology ((F l).E K s LL h) T b bO (y i)).comp (continuous_apply i)
+  exact (_root_.GlobalTheory.WeakClosed.continuous_inclR_io_smul ((F l).E K s LL h) T b bO (y i)).comp (continuous_apply i)
 
 end GlobalTheory.WeakClosed

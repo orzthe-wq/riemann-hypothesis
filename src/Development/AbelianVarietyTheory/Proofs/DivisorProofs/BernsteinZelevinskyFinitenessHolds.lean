@@ -46,7 +46,6 @@ import Mathlib.Topology.Sheaves.Init
 
 namespace GlobalTheory
 
-theorem bernsteinZelevinskyFiniteness_holds : GlobalTheory.Published.BernsteinZelevinskyFiniteness :=
-  GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness
+alias bernsteinZelevinskyFiniteness_holds := _root_.GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness
 
 end GlobalTheory

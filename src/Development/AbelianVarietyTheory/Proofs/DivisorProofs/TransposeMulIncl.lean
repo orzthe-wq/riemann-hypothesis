@@ -158,8 +158,8 @@ theorem blkGL_fst {r : ℕ} (h : r ≤ a) (m : GL (Fin r) R) : blkGL h (m, 1) = 
   rw [blkGL_apply, embGL_val, Matrix.add_apply, Matrix.sub_apply]
   rcases i with i | i <;> rcases j with j | j
   · simp only [← fstIx_apply, extN_apply_apply]; simp [Matrix.one_apply]
-  · simp only [extN_apply_right _ _ _ (hn j)]; simp [Matrix.one_apply]
-  · simp only [extN_apply_left _ _ (hn i)]; simp [Matrix.one_apply]
+  · simp only [extN_apply_right _ _ _ (hn j)]; simp
+  · simp only [extN_apply_left _ _ (hn i)]; simp
   · simp only [extN_apply_left _ _ (hn i)]; simp [Matrix.one_apply]
 
 theorem blkGL_snd {r : ℕ} (h : r ≤ a) (m : GL (Fin (a - r)) R) : blkGL h (1, m) = embGL (sndIx h) m := by
@@ -172,8 +172,8 @@ theorem blkGL_snd {r : ℕ} (h : r ≤ a) (m : GL (Fin (a - r)) R) : blkGL h (1,
   rw [blkGL_apply, embGL_val, Matrix.add_apply, Matrix.sub_apply]
   rcases i with i | i <;> rcases j with j | j
   · simp only [extN_apply_left _ _ (hn i)]; simp [Matrix.one_apply]
-  · simp only [extN_apply_left _ _ (hn i)]; simp [Matrix.one_apply]
-  · simp only [extN_apply_right _ _ _ (hn j)]; simp [Matrix.one_apply]
+  · simp only [extN_apply_left _ _ (hn i)]; simp
+  · simp only [extN_apply_right _ _ _ (hn j)]; simp
   · simp only [← sndIx_apply, extN_apply_apply]; simp [Matrix.one_apply]
 
 theorem blkGL_eq_fst {r : ℕ} (h : r ≤ a) (m₁ : GL (Fin r) R) (m₂ : GL (Fin (a - r)) R) :

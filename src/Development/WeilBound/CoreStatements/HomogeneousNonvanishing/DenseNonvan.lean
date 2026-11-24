@@ -2,11 +2,23 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel
 public import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.ContinuousAtOfClosedRel
+public import Mathlib.Analysis.Calculus.ContDiff.Defs
+public import ReciprocityTheory.AnalyticForms.MaIntEmpty
+public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+public import Mathlib.MeasureTheory.Integral.CurveIntegral.Poincare
+public import ReciprocityTheory.AnalyticForms.AnalyticCharts.Osgood
+public import Mathlib.Analysis.Calculus.ContDiff.Comp
+public import Mathlib.Analysis.Calculus.FDeriv.Mul
+public import Mathlib.Analysis.Calculus.FDeriv.RestrictScalars
+public import Mathlib.Analysis.RCLike.Extend
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.IsFieldIntersection
 public import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.IsOpenHoloPreimage
 public import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.JPull
 public import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.NonvanishingDense
-public import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RHolmap
-public import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RPluri
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedB
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -45,9 +57,234 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedB
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.NumberTheory.Height.NumberField
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.Linter.Style
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.GenericFibreKerTarget
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.IsRatSectionOn
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RHolmap, Development.WeilBound.CoreStatements.HomogeneousNonvanishing.CPluri, Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RPluri, Development.WeilBound.CoreStatements.HomogeneousNonvanishing.DenseNonvan
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RHolmap =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RHolmap", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel\npublic import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.ContinuousAtOfClosedRel\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.Cmp GlobalTheory.CompanionTheory.Ar.PB Filter Topology
+open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
+
+namespace PositivityTheory.UnitarySelfGeneration
+
+open HolomorphicMinorCharts in
+theorem r_holmap : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (e e' : ℕ) (X Y : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] [TopologicalSpace Y] (A : FinHolAtlas e X) (B : FinHolAtlas e' Y) (U : X → Set X) (lam : X → X → (Σ k, ι k) → ℂ) (V : Y → Set Y) (mu : Y → Y → (Σ k, ι k) → ℂ), IsEmbedded A P U lam → (∀ y, IsOpen (V y) ∧ y ∈ V y) → (∀ y p, B.HoloOn (V y) fun y' => mu y y' p) → (∀ y, ∀ y' ∈ V y, mu y y' ∈ mcPts P) → (∀ y y', ∀ w ∈ V y ∩ V y', SameOrbit (mu y w) (mu y' w)) → ∃ π : Y → X, HoloMap B A π ∧ ∀ y, SameOrbit (lam (π y) (π y)) (mu y y) := by
+  intro K _ ι _ P e e' X Y _ _ _ _ A B U lam V mu hE hV hm hmem hc
+  choose π hπ using fun y => hE.surj (mu y y) (hmem y y (hV y).2)
+  have hcl := isClosed_minors (U := U) (lam := lam) (V := V) (mu := mu) (fun x => ⟨hE.isOpen x, hE.mem_U x⟩)
+    (fun x p => holo_continuousAt (hE.holo x p) (hE.mem_U x)) hE.compat hV
+    (fun y p => holo_continuousAt (hm y p) (hV y).2) hc
+  have hcont : ∀ y, ContinuousAt π y := fun y =>
+    continuousAt_of_closed_rel hcl (fun y => minors_of_so (hπ y)) fun x hx =>
+      hE.inj _ _ (so_trans (so_of_minors hx (hE.mem x x (hE.mem_U x)).1 (hmem y y (hV y).2).1) (so_symm (hπ y)))
+  refine ⟨π, ⟨continuous_iff_continuousAt.mpr hcont, fun j k w hw => ?_⟩, hπ⟩
+  set y := (B.chart j).symm w with hy
+  have h := analyticAt_factor (A := A) (B := B) (U := U (π y)) (lam := lam (π y)) (V := V y) (mu := mu y) (π := π)
+    (y := y) (hE.holo _) (hE.mem_U _) (hm y) (hV y).2 (hcont y) (hE.mem _ _ (hE.mem_U _)).1 (hE.immersion (π y))
+    (by
+      filter_upwards [(hV y).1.mem_nhds (hV y).2, hcont y ((hE.isOpen _).mem_nhds (hE.mem_U (π y)))] with w' h1 h2
+      exact so_trans (hE.compat _ _ _ ⟨h2, hE.mem_U _⟩) (so_trans (hπ w') (hc _ _ _ ⟨(hV _).2, h1⟩)))
+    j k ((B.chart j).map_target hw.1) hw.2
+  rwa [hy, (B.chart j).right_inv hw.1] at h
+
+end PositivityTheory.UnitarySelfGeneration
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RHolmap =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.CPluri =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HomogeneousNonvanishing.CPluri", "h": "module\n\npublic import Mathlib.Analysis.Calculus.ContDiff.Defs\npublic import ReciprocityTheory.AnalyticForms.MaIntEmpty\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.FDeriv.Symmetric\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.MeasureTheory.Integral.CurveIntegral.Poincare\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.AnalyticForms.AnalyticCharts.Osgood\npublic import Mathlib.Analysis.Calculus.ContDiff.Comp\npublic import Mathlib.Analysis.Calculus.FDeriv.Mul\npublic import Mathlib.Analysis.Calculus.FDeriv.RestrictScalars\npublic import Mathlib.Analysis.RCLike.Extend\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace PositivityTheory.UnitarySelfGeneration.HolomorphicMinorCharts
+
+open ReciprocityTheory.AnForm Filter Topology Set Metric Complex
+
+theorem exists_re_of_levi_zero {e : ℕ} {d : (Fin e → ℂ) → ℝ} {c : Fin e → ℂ} {r : ℝ} (hr : 0 < r)
+    (hd : ContDiffOn ℝ 2 d (ball c r)) (h0 : ∀ z ∈ ball c r, ∀ w, levi d z w = 0) :
+    ∃ G : (Fin e → ℂ) → ℂ, AnalyticOnNhd ℂ G (ball c r) ∧ ∀ z ∈ ball c r, d z = (G z).re := by
+  have hUo : IsOpen (ball c r) := isOpen_ball
+  let J : (Fin e → ℂ) →L[ℝ] (Fin e → ℂ) := Complex.I • ContinuousLinearMap.id ℝ (Fin e → ℂ)
+  let P : ((Fin e → ℂ) →L[ℝ] ℝ) →L[ℝ] ((Fin e → ℂ) →L[ℝ] ℝ) :=
+    (ContinuousLinearMap.compL ℝ (Fin e → ℂ) (Fin e → ℂ) ℝ).flip J
+  have hP : ∀ (L : (Fin e → ℂ) →L[ℝ] ℝ) (w : Fin e → ℂ), P L w = L (Complex.I • w) := fun L w => rfl
+  let ω : (Fin e → ℂ) → (Fin e → ℂ) →L[ℝ] ℝ := fun z => -P (fderiv ℝ d z)
+  have hC : ∀ a ∈ ball c r, ContDiffAt ℝ 2 d a := fun a ha => hd.contDiffAt (hUo.mem_nhds ha)
+  have hω : ∀ a ∈ ball c r, HasFDerivAt ω (-(P.comp (fderiv ℝ (fderiv ℝ d) a))) a := by
+    intro a ha
+    have h1 : HasFDerivAt (fderiv ℝ d) (fderiv ℝ (fderiv ℝ d) a) a :=
+      (((hC a ha).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt
+    exact (P.hasFDerivAt.comp a h1).neg
+  have hωd : DifferentiableOn ℝ ω (ball c r) := fun a ha =>
+    (hω a ha).differentiableAt.differentiableWithinAt
+  have hsymm : ∀ a ∈ ball c r, ∀ x y, fderiv ℝ ω a x y = fderiv ℝ ω a y x := by
+    intro a ha x y
+    rw [(hω a ha).fderiv]
+    have hS : IsSymmSndFDerivAt ℝ d a := (hC a ha).isSymmSndFDerivAt (by simp)
+    have hL : ∀ w, fderiv ℝ (fderiv ℝ d) a w w
+        + fderiv ℝ (fderiv ℝ d) a (Complex.I • w) (Complex.I • w) = 0 := by
+      intro w
+      have h := h0 a ha w
+      simp only [levi] at h
+      linarith
+    have hB : ∀ u v, fderiv ℝ (fderiv ℝ d) a u v
+        + fderiv ℝ (fderiv ℝ d) a (Complex.I • u) (Complex.I • v) = 0 := by
+      intro u v
+      have h1 := hL (u + v)
+      have h2 := hL u
+      have h3 := hL v
+      simp only [smul_add, map_add (f := _), ContinuousLinearMap.add_apply] at h1
+      have e1 := hS u v
+      have e2 := hS (Complex.I • u) (Complex.I • v)
+      linarith
+    simp only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.comp_apply, hP]
+    have k1 := hB x (Complex.I • y)
+    rw [smul_smul, Complex.I_mul_I, neg_one_smul, map_neg] at k1
+    have k2 := hS (Complex.I • x) y
+    linarith
+  obtain ⟨v, hv⟩ := (convex_ball c r).exists_forall_hasFDerivAt_of_fderiv_symmetric hUo hωd hsymm
+  refine ⟨fun z => (d z : ℂ) + (v z : ℂ) * Complex.I, ?_, ?_⟩
+  · have hO := ReciprocityTheory.AnForm.Osgood.osgood
+    unfold ReciprocityTheory.AnForm.Osgood.OsgoodStatement at hO
+    apply hO e _ _ hUo
+    intro z hz
+    apply DifferentiableAt.differentiableWithinAt
+    have hdz : HasFDerivAt d (fderiv ℝ d z) z :=
+      ((hC z hz).differentiableAt (by norm_num)).hasFDerivAt
+    have hG : HasFDerivAt (fun z => (d z : ℂ) + (v z : ℂ) * Complex.I)
+        (Complex.ofRealCLM.comp (fderiv ℝ d z) + Complex.I • Complex.ofRealCLM.comp (ω z)) z :=
+      (Complex.ofRealCLM.hasFDerivAt.comp z hdz).add
+        ((Complex.ofRealCLM.hasFDerivAt.comp z (hv z hz)).mul_const Complex.I)
+    rw [differentiableAt_iff_restrictScalars ℝ hG.differentiableAt]
+    refine ⟨StrongDual.extendRCLike (fderiv ℝ d z), ?_⟩
+    rw [hG.fderiv]
+    ext w
+    simp [StrongDual.extendRCLike_apply, ω, hP]
+    ring
+  · intro z _
+    simp
+
+end PositivityTheory.UnitarySelfGeneration.HolomorphicMinorCharts
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.CPluri =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RPluri =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RPluri", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsTwiceDifferentiableAt\npublic import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.CPluri\npublic import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.ContinuousAtOfClosedRel\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.AnalyticForms.PotentialTheory.PshShiftA\nimport Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.GenericFibreKerTarget\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MultihomogeneousIdeals.IsFieldIntersection\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.RationalSections.IsRatSectionOn\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.Cmp GlobalTheory.CompanionTheory.Ar.PB Filter Topology
+open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
+
+namespace PositivityTheory.UnitarySelfGeneration
+
+private theorem continuousOn_levi_of_contDiffOn' {e : ℕ} (d : (Fin e → ℂ) → ℝ) (c : Fin e → ℂ) (r : ℝ) (w : Fin e → ℂ)
+    (hd2 : ContDiffOn ℝ 2 d (Metric.ball c r)) :
+    ContinuousOn (fun v => ReciprocityTheory.AnForm.levi d v w) (Metric.ball c r) := by
+  have hc0 := ReciprocityTheory.AnForm.continuousOn_levi Metric.isOpen_ball hd2
+  refine hc0.comp (f := fun v : Fin e → ℂ => (v, w)) ?_ ?_
+  · exact (continuous_id.prodMk continuous_const).continuousOn
+  · intro v hv
+    exact Set.mk_mem_prod hv (Set.mem_univ w)
+
+open HolomorphicMinorCharts ReciprocityTheory.AnForm in
+theorem r_pluri : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (U : Set X) (P Q : LocPot X), IsPotential A P → IsPotential A Q → IsOpen U → Dense U → SamePot A U P Q → SamePot A Set.univ P Q := by
+  intro e X _ _ _ A U P Q hP hQ hUo hUd hS x _
+  obtain ⟨j, hxj⟩ := A.cover x
+  set ψ := A.chart j with hψ
+  have hO : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (P.U x ∩ Q.U x)) :=
+    ψ.isOpen_inter_preimage_symm ((P.isOpen_U x).inter (Q.isOpen_U x))
+  have hxO : ψ x ∈ ψ.target ∩ ψ.symm ⁻¹' (P.U x ∩ Q.U x) := by
+    refine ⟨ψ.map_source hxj, ?_⟩
+    show ψ.symm (ψ x) ∈ P.U x ∩ Q.U x
+    rw [ψ.left_inv hxj]
+    exact ⟨P.mem_U x, Q.mem_U x⟩
+  obtain ⟨r, hr, hball⟩ := Metric.isOpen_iff.mp hO (ψ x) hxO
+  set d : (Fin e → ℂ) → ℝ := fun z => P.φ x (ψ.symm z) - Q.φ x (ψ.symm z) with hdd
+  have h1 := (hP.1 x j).mono (fun v (hv : v ∈ ψ.target ∩ ψ.symm ⁻¹' (P.U x ∩ Q.U x)) => (⟨hv.1, hv.2.1⟩ : v ∈ ψ.target ∩ ψ.symm ⁻¹' P.U x))
+  have h2 := (hQ.1 x j).mono (fun v (hv : v ∈ ψ.target ∩ ψ.symm ⁻¹' (P.U x ∩ Q.U x)) => (⟨hv.1, hv.2.2⟩ : v ∈ ψ.target ∩ ψ.symm ⁻¹' Q.U x))
+  have hd2 : ContDiffOn ℝ 2 d (Metric.ball (ψ x) r) :=
+    ((h1.sub h2).mono hball).of_le (WithTop.coe_le_coe.mpr le_top)
+  clear_value d
+  clear h1 h2
+  have hzero : ∀ z ∈ ψ.target ∩ ψ.symm ⁻¹' (P.U x ∩ Q.U x), ψ.symm z ∈ U → ∀ w, levi d z w = 0 := by
+    intro z hz hzU w
+    have hyPx : ψ.symm z ∈ P.U x := hz.2.1
+    have hyQx : ψ.symm z ∈ Q.U x := hz.2.2
+    obtain ⟨W1, hW1o, hyW1, G1, hG1, hEq1⟩ := hP.2 x (ψ.symm z) (ψ.symm z) ⟨hyPx, P.mem_U _⟩
+    obtain ⟨W2, hW2o, hyW2, G2, hG2, hEq2⟩ := hQ.2 x (ψ.symm z) (ψ.symm z) ⟨hyQx, Q.mem_U _⟩
+    obtain ⟨V3, hV3o, hyV3, G3, hG3, hEq3⟩ := hS (ψ.symm z) hzU
+    have hNo : IsOpen (W1 ∩ W2 ∩ V3 ∩ P.U x ∩ P.U (ψ.symm z) ∩ Q.U x ∩ Q.U (ψ.symm z)) :=
+      ((((((hW1o.inter hW2o).inter hV3o).inter (P.isOpen_U x)).inter (P.isOpen_U _)).inter
+        (Q.isOpen_U x)).inter (Q.isOpen_U _))
+    have hyN : ψ.symm z ∈ W1 ∩ W2 ∩ V3 ∩ P.U x ∩ P.U (ψ.symm z) ∩ Q.U x ∩ Q.U (ψ.symm z) :=
+      ⟨⟨⟨⟨⟨⟨hyW1, hyW2⟩, hyV3⟩, hyPx⟩, P.mem_U _⟩, hyQx⟩, Q.mem_U _⟩
+    have hH : AnalyticAt ℂ (fun v => G1 (ψ.symm v) - G2 (ψ.symm v) + G3 (ψ.symm v)) z :=
+      ((hG1 j z ⟨hz.1, hyW1⟩).sub (hG2 j z ⟨hz.1, hyW2⟩)).add (hG3 j z ⟨hz.1, hyV3⟩)
+    have hev : d =ᶠ[𝓝 z] fun v => (G1 (ψ.symm v) - G2 (ψ.symm v) + G3 (ψ.symm v)).re := by
+      have hmem := (ψ.continuousAt_symm hz.1).preimage_mem_nhds (hNo.mem_nhds hyN)
+      filter_upwards [hmem] with v hv
+      obtain ⟨⟨⟨⟨⟨⟨a1, a2⟩, a3⟩, a4⟩, a5⟩, a6⟩, a7⟩ := hv
+      have e1 := hEq1 _ ⟨⟨a1, a4⟩, a5⟩
+      have e2 := hEq2 _ ⟨⟨a2, a6⟩, a7⟩
+      have e3 := hEq3 _ a3
+      simp only [hdd, Complex.add_re, Complex.sub_re]
+      linarith
+    rw [levi_congr hev w]
+    exact levi_re_analytic hH w
+  have hlevi : ∀ z ∈ Metric.ball (ψ x) r, ∀ w, levi d z w = 0 := by
+    intro z hz w
+    by_contra hne
+    have hcw := continuousOn_levi_of_contDiffOn' d (ψ x) r w hd2
+    have hca : ContinuousAt (fun v => levi d v w) z := hcw.continuousAt (Metric.isOpen_ball.mem_nhds hz)
+    have hM : (fun v => levi d v w) ⁻¹' {b | b ≠ 0} ∩ Metric.ball (ψ x) r ∈ 𝓝 z :=
+      Filter.inter_mem (hca.preimage_mem_nhds (isOpen_ne.mem_nhds hne)) (Metric.isOpen_ball.mem_nhds hz)
+    obtain ⟨M, hMsub, hMo, hzM⟩ := mem_nhds_iff.mp hM
+    have hzt : z ∈ ψ.target := (hball (hMsub hzM).2).1
+    have hne2 : (ψ.source ∩ ψ ⁻¹' M).Nonempty := by
+      refine ⟨ψ.symm z, ψ.map_target hzt, ?_⟩
+      show ψ (ψ.symm z) ∈ M
+      rw [ψ.right_inv hzt]
+      exact hzM
+    obtain ⟨u, ⟨hus, huM⟩, huU⟩ := hUd.inter_open_nonempty _ (ψ.isOpen_inter_preimage hMo) hne2
+    have hvM := hMsub huM
+    apply hvM.1
+    apply hzero (ψ u) (hball hvM.2)
+    rw [ψ.left_inv hus]
+    exact huU
+  obtain ⟨G0, hG0an, hG0eq⟩ := exists_re_of_levi_zero hr hd2 hlevi
+  refine ⟨ψ.source ∩ ψ ⁻¹' Metric.ball (ψ x) r, ψ.isOpen_inter_preimage Metric.isOpen_ball,
+    ⟨hxj, Metric.mem_ball_self hr⟩, fun y => G0 (ψ y), ?_, ?_⟩
+  · exact holoOn_of_compat (isCompatChart_chart A j) Set.inter_subset_left (fun y hy => hG0an _ hy.2)
+  · intro y hy
+    have h := hG0eq (ψ y) hy.2
+    simp only [hdd, ψ.left_inv hy.1] at h
+    exact h
+
+end PositivityTheory.UnitarySelfGeneration
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RPluri =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.DenseNonvan =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HomogeneousNonvanishing.DenseNonvan", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSncModel\npublic import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.ContinuousAtOfClosedRel\npublic import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.IsOpenHoloPreimage\npublic import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.JPull\npublic import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.NonvanishingDense\npublic import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RHolmap\npublic import Development.WeilBound.CoreStatements.HomogeneousNonvanishing.RPluri\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.AnalyticForms.PotentialTheory.ContDiffAtOfIsPotential\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRedB\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P GlobalTheory.CompanionTheory.Ar.Cmp GlobalTheory.CompanionTheory.Ar.PB Filter Topology
@@ -165,3 +402,6 @@ theorem r_pull : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (�
     exact (eval_ne_so hβ (hπo x)).mp (hβ0 _ hx)
 
 end PositivityTheory.UnitarySelfGeneration
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HomogeneousNonvanishing.DenseNonvan =====

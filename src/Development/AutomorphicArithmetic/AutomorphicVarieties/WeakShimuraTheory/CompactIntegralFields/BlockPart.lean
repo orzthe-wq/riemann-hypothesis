@@ -171,7 +171,7 @@ private theorem ee_mem (A : Subalgebra R (M4 R)) (X : M4 R) (hX : X ∈ A) (hb :
     obtain ⟨v, hv⟩ := hu.exists_left_inv
     convert A.smul_mem (A.sub_mem (A.smul_mem hY (y0 + y3)) (A.mul_mem hY hY)) v using 1
     ext i j
-    fin_cases i <;> fin_cases j <;> simp [ee, Matrix.mul_apply, Fin.sum_univ_four] <;>
+    fin_cases i <;> fin_cases j <;> simp [ee] <;>
       first | linear_combination -hv | ring
   have b01 := hb 0 1 (by decide)
   have b03 := hb 0 3 (by decide)

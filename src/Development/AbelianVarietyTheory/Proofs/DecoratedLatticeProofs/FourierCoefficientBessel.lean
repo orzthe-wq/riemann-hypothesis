@@ -55,10 +55,6 @@ namespace GlobalTheory.Core.Mi.PhCol
 
 variable {D : D7}
 
-theorem one_le_level (X : HidaSetting D) : 1 ≤ X.B.g := by
-  rw [X.g_eq]
-  exact Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos
-
 theorem one_mem_level (X : HidaSetting D) : (1 : X.B.I.Gf) ∈ X.B.I.Kg X.B.g := by
   refine ⟨(Formalism.UG.stabGL X.B.I.Lf).one_mem, fun y _ => ⟨0, zero_mem _, ?_⟩⟩
   have h1 : X.B.I.fmat 1 = 1 := rfl
@@ -116,7 +112,7 @@ theorem continuous_col (hK : X.LevelSubgroupCharacter) (T : Cu X u hK) (ξ : X.V
     L.continuous_of_finiteDimensional.comp (hπ.comp continuous_fst)
   have hUo : IsOpen {p : Hinf X u × Hfin X u |
       (X.xu u)⁻¹ * ((p0.2⁻¹ * p.2 : Hfin X u) : X.B.I.Gf) * X.xu u ∈ X.B.I.Kg X.B.g} := by
-    refine (X.B.I.topf_open X.B.g (one_le_level X)).preimage ?_
+    refine (X.B.I.topf_open X.B.g (_root_.Formalism.L2.SG.PoincareInHH.Cut.one_le_g X)).preimage ?_
     exact (continuous_const.mul (continuous_subtype_val.comp (continuous_const.mul continuous_snd))).mul
       continuous_const
   have hp0 : p0 ∈ {p : Hinf X u × Hfin X u |

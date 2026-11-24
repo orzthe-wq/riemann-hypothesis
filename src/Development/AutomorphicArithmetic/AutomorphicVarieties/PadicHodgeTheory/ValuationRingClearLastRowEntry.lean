@@ -273,7 +273,7 @@ end UpperTheory.V.Loc
 theorem UpperTheory.V.Loc.lemma2c :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : _root_.UpperTheory.V.U3.Univ (_root_.UpperTheory.V.U3.GCond.noCondition O D.η D.Ψ)) (K : Type) [Field K] [Algebra O K] (r : GQ l →* GG (m := 3) (R := K)), D.On U r → ∃ (K' : Type) (_ : Field K') (_ : Algebra K K') (_ : Algebra O K') (_ : IsScalarTower O K K') (_ : FiniteDimensional K K') (h : GL (Fin 3) K'), UpperTheory.V.UnitaryThreeInertia.TriIn D.η D.Ψ (Iq l) ((GG.map (algebraMap K K')).comp r) h := by
   intro hP l _ O _ _ _ _ _ _ _ D U K _ _ r ⟨f, hr, hf⟩
-  obtain ⟨-, hp, hl, -⟩ := UpperTheory.V.Loc.rtBasic hP D U
+  obtain ⟨-, hp, hl, -⟩ := _root_.GlobalTheory.OrdLoc.component_basic hP D U
   haveI : IsDomain (D.Rt U) := Ideal.Quotient.isDomain _
   let φ : U.R →ₐ[O] FractionRing (D.Rt U) :=
     (IsScalarTower.toAlgHom O (D.Rt U) (FractionRing (D.Rt U))).comp (Ideal.Quotient.mkₐ O _)

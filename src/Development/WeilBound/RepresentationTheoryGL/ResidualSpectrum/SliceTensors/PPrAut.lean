@@ -1,11 +1,11 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSpanFormsNeBot
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AutomorphicFormDerivativeModerateGrowth
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LieGrowthOfFinite
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDimensionalSpanCompactOrbitLieDerivative
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HasCompactSupportSum
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemZalgCommuteCompactRep
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemZalgCommuteLieAction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemZalgCommuteCompactRep
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -108,7 +108,7 @@ theorem isAutForm_act (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (o 
   | lie X =>
     refine ⟨fun γ g => ?_, ?_, GlobalTheory.CuspRep.KFin.kfin_lie E N X φ h.kfin,
       zfin_of_comm _ (fun z hz => GlobalTheory.CuspRep.Zalg_mul_lie E N X z hz) h.zfin,
-      GlobalTheory.CuspStab.lie_growth hF E N X φ h⟩
+      _root_.GlobalTheory.AutGrowth.lie_growth_of_finite hF E N X φ h⟩
     · change lieD X φ.1 (ratGL E N γ * g) = lieD X φ.1 g
       have e : chart φ.1 (ratGL E N γ * g) = chart φ.1 g := by
         funext x

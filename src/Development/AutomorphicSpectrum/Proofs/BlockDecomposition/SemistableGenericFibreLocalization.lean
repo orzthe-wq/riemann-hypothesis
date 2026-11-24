@@ -109,7 +109,6 @@ theorem smooth_away_core (O : Type) [CommRing O] (ϖ : O) (σ : Type) [Finite σ
   have hψ : ∀ x : A, ψ (algebraMap A B x) = ψA x := fun x => by
     first
     | exact IsLocalization.lift_eq (M := Submonoid.powers a) (S := B) _ x
-    | simp [ψ, IsLocalization.liftAlgHom]
   let xB : σ → B := fun i => algebraMap A B (Ideal.Quotient.mk I (MvPolynomial.X i))
   have hxB : ∏ i ∈ T, xB i = algebraMap O B ϖ := by
     have e : (Ideal.Quotient.mk I (∏ i ∈ T, MvPolynomial.X i)) =
@@ -148,7 +147,6 @@ theorem smooth_away_core (O : Type) [CommRing O] (ϖ : O) (σ : Type) [Finite σ
   have hχ : ∀ x : C, χ (algebraMap C C' x) = χC x := fun x => by
     first
     | exact IsLocalization.lift_eq (M := Submonoid.powers h) (S := C') _ x
-    | simp [χ, IsLocalization.liftAlgHom]
   have hχu : χ (algebraMap C C' h) * χ u = 1 := by rw [← map_mul, hu, map_one]
   rw [hχ, hχh] at hχu
   have h1 : χ.comp ψ = AlgHom.id O B := by

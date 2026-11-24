@@ -137,7 +137,7 @@ private theorem kills {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n 
     add_neg_cancel, add_zero, map_one] at h1
   rw [← h1]
   congr 2
-  simp [mul_sub, Finset.sum_mul, MonoidAlgebra.single_mul_single, sub_eq_add_neg, mul_add]
+  simp [Finset.sum_mul, MonoidAlgebra.single_mul_single, sub_eq_add_neg, mul_add]
 
 theorem UpperTheory.V.CA.exists_openNormalSubgroup_kills_of_groupDetLaw_isCont :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (I : Ideal A), D.IsCont I → ∀ N : ℕ, ∃ H : OpenNormalSubgroup G, ∀ h ∈ H, (D.map (Ideal.Quotient.mk (I ^ N))).Kills (MonoidAlgebra.single h 1 - 1) := by

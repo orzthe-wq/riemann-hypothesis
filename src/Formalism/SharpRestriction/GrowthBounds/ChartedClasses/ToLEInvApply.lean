@@ -125,7 +125,7 @@ private lemma hform_mulVec_eq_of_cT_mul_mul_eq' (σ : E →+* E) (J : Matrix (Fi
   unfold cT at hM
   rw [Matrix.mul_assoc] at hM
   conv_lhs => rw [dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm]
-  simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc, hM]
+  simp only [Matrix.mulVec_mulVec, hM]
 
 theorem dualSet_mvL (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E) (γ : GL (Fin N) E) (hγ : γ ∈ UJ σ J)
     (Λ : Submodule (𝓞 E) (Fin N → E)) : dualSet σ J (mvL γ Λ) = toLE γ '' dualSet σ J Λ := by

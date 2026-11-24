@@ -97,7 +97,6 @@ theorem actO_inv (S T : HSp D) (h : GA D T) (y : WO S T) :
     unfold Formalism.L2.Theta.mt
     first
       | rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
-      | simp
   unfold actO
   simp [← Matrix.mul_assoc, h1]
 

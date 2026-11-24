@@ -113,8 +113,7 @@ private theorem krylov_mulVec {k : Type} [Field k] {n : ℕ} (A : Matrix (Fin n)
     simp [Algebra.smul_def]
   rw [h, Matrix.sum_mulVec]
   ext i
-  simp [krylov, Matrix.mulVec, dotProduct, Finset.sum_apply, Finset.mul_sum, mul_comm, mul_left_comm,
-    mul_assoc]
+  simp [krylov, Matrix.mulVec, dotProduct, Finset.sum_apply, Finset.mul_sum, mul_comm, mul_assoc]
 
 private theorem exists_krylov_det_ne_zero {k : Type} [Field k] {n : ℕ}
     (A : Matrix (Fin n) (Fin n) k) (hA : A.charpoly.Separable) :

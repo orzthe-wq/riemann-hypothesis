@@ -73,10 +73,6 @@ theorem perm_range (M : ℕ) (f : ℕ → ℕ) (hf : ∀ i < M, f i < M)
     exact Finset.mem_range.2 (hf i (Finset.mem_range.1 hi))
   · rw [Finset.card_image_of_injOn hI]
 
-theorem sum_range_mul (M m : ℕ) (g : ℕ → K) (hg : ∀ i, g (i + M) = g i) :
-    ∑ i ∈ Finset.range (M * m), g i = (m : K) * ∑ i ∈ Finset.range M, g i := by
-  first | exact Bl.PeriodicFunctions.goal1 .. | (apply Bl.PeriodicFunctions.goal1 <;> assumption) | (intros; apply Bl.PeriodicFunctions.goal1 <;> assumption)
-
 end Perm
 
 variable {E K : Type} [Field E] [NumberField E] [Field K]
@@ -160,7 +156,7 @@ theorem sg_stab {a b A B : ℕ} (hA : a ≤ A) (hB : b ≤ B) {φ : E → K} (h 
     rw [← pow_add]
     congr 1
     omega
-  rw [e2, sum_range_mul]
+  rw [e2, _root_.Bl.PeriodicFunctions.goal1]
   · rfl
   · intro i
     have e3 : (((i + qOf P ^ (a + b) : ℕ) : E) / (qOf P : E) ^ a) = (i : E) / (qOf P : E) ^ a + (qOf P : E) ^ b := by
@@ -295,7 +291,6 @@ theorem sg_qpow {a b : ℕ} {φ : E → K} (h : Good1 P a b φ) (f : ℕ) :
       unfold Sg
       rw [show a + f + b = a + (b + f) by ring]
       refine Finset.sum_congr rfl fun i _ => ?_
-      congr 1
       rw [pow_add]
       field_simp
     rw [e, sg_stab hN hp hq le_rfl (Nat.le_add_right b f) h, Nat.add_sub_cancel_left]
@@ -322,7 +317,6 @@ theorem sg_qinv {a b : ℕ} {φ : E → K} (h : Good1 P a b φ) (f : ℕ) :
       unfold Sg
       rw [show a + (b + f) = a + f + b by ring]
       refine Finset.sum_congr rfl fun i _ => ?_
-      congr 1
       rw [pow_add]
       field_simp
     rw [e, sg_stab hN hp hq (Nat.le_add_right a f) le_rfl h, Nat.sub_self, pow_zero, Nat.cast_one, one_mul]

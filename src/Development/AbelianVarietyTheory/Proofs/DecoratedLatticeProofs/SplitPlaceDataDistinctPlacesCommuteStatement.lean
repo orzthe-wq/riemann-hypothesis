@@ -50,4 +50,4 @@ theorem _root_.GlobalTheory.T.splitPlaceData_distinct_places_commute : ∀ (D : 
     (β' : Frame p' T m) (LS : Lat S) (LT : Lat T) (f₀ g h : WO S T → ℂ) (Ψ : Matrix n n' k → ℂ)
     (Ψ' : Matrix m m' k → ℂ), Vac ψ S T LS LT (· = p'.v) f₀ → Over ψ α β LS LT f₀ Ψ g →
       Over ψ α' β' LS LT g Ψ' h → ∃ g', Over ψ α' β' LS LT f₀ Ψ' g' ∧ Over ψ α β LS LT g' Ψ h := by
-  first | exact @GlobalTheory.FinPl.overSwap | exact GlobalTheory.FinPl.overSwap | (intros; apply GlobalTheory.FinPl.overSwap <;> assumption)
+  first | exact @GlobalTheory.FinPl.overSwap

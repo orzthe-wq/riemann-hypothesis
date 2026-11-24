@@ -158,11 +158,11 @@ private theorem hTens_single (σ : E →ₐ[F] E) (JA : Matrix α α E) (JB : Ma
     rw [Finset.sum_eq_single k₀, Finset.sum_eq_single l₀]
     · simp
     · intro l _ hl
-      simp [Matrix.single_apply, Ne.symm hl]
+      simp [Ne.symm hl]
     · simp
     · intro k _ hk
       refine Finset.sum_eq_zero fun l _ => ?_
-      simp [Matrix.single_apply, Ne.symm hk]
+      simp [Ne.symm hk]
     · simp
   rw [h1, Matrix.mul_apply, Finset.sum_mul, Finset.sum_comm]
   refine Finset.sum_congr rfl fun j _ => ?_

@@ -54,4 +54,4 @@ open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed I
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.abelianVariety_isProjectiveOverRingByCharts : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → GlobalTheory.AbLaw.IsProjBy A.hom := by
-  first | exact @GlobalTheory.ProjField.isProjBy_of_isAbelianScheme | exact GlobalTheory.ProjField.isProjBy_of_isAbelianScheme | (intros; apply GlobalTheory.ProjField.isProjBy_of_isAbelianScheme <;> assumption)
+  first | exact @GlobalTheory.ProjField.isProjBy_of_isAbelianScheme

@@ -54,11 +54,7 @@ variable {D : D7}
 
 theorem cA_tmul (a : AF D.host.F) (x : D.host.E) : cA D (a ⊗ₜ[D.host.F] x) = a ⊗ₜ[D.host.F] star x := rfl
 
-theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a x => rw [cA_tmul, cA_tmul, star_star]
-  | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
+alias cA_cA := _root_.Formalism.L2.Theta.cA_cA
 
 theorem finPart_tmul (a : AF D.host.F) (x : D.host.E) :
     finPart D (a ⊗ₜ[D.host.F] x) = sndA D.host.F a ⊗ₜ[D.host.F] x := rfl

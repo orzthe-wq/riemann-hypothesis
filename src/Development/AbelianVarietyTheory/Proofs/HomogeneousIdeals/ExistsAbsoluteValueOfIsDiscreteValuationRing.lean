@@ -1,22 +1,28 @@
 module
 
+public import Mathlib.RingTheory.AdicCompletion.Algebra
+public import Mathlib.RingTheory.AdicCompletion.RingHom
 public import Mathlib.Analysis.Normed.Field.Instances
 public import Mathlib.Analysis.Normed.Module.Completion
 public import Mathlib.FieldTheory.IsAlgClosed.Basic
 public import Mathlib.NumberTheory.Padics.PadicNumbers
-public import Mathlib.RingTheory.AdicCompletion.Algebra
 public import Mathlib.RingTheory.DiscreteValuationRing.Basic
 public import Mathlib.Topology.Algebra.Valued.NormedValued
-public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.PowLeComapMapPow
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 public import Mathlib.Analysis.Normed.Algebra.Ultra
 public import Mathlib.Analysis.Normed.Field.Approximation
 public import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
+public import Mathlib.NumberTheory.Ostrowski
+public import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
+public import Mathlib.RingTheory.Valuation.Integral
+public import Mathlib.Algebra.CharP.Algebra
+public import Mathlib.Analysis.Normed.Ring.WithAbs
+public import Mathlib.Data.Int.WithZero
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
+import Mathlib.Algebra.Order.Floor.Extended
+import Mathlib.Algebra.Order.Floor.Semifield
+import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -29,17 +35,8 @@ import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-public import Mathlib.NumberTheory.Ostrowski
-import Mathlib.NumberTheory.Padics.LocalField
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-public import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
-public import Mathlib.RingTheory.Valuation.Integral
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -47,7 +44,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -60,15 +56,83 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.NumberTheory.Padics.LocalField
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
-import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Algebra.CharP.Algebra
-public import Mathlib.Analysis.Normed.Ring.WithAbs
-public import Mathlib.Data.Int.WithZero
-public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.PowLeComapMapPow, Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsAbsoluteValueOfIsDiscreteValuationRing
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.PowLeComapMapPow =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.PowLeComapMapPow", "h": "module\n\npublic import Mathlib.RingTheory.AdicCompletion.Algebra\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RingTheory.AdicCompletion.RingHom\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u_1 u_2
+
+namespace GlobalTheory.PowerExtensionEvaluation
+
+theorem pow_le_comap_map_pow {A : Type u_1} {B : Type u_2} [CommRing A] [CommRing B]
+    (I : Ideal A) (f : A →+* B) (n : ℕ) : I ^ n ≤ ((I.map f) ^ n).comap f :=
+  Ideal.map_le_iff_le_comap.mp (le_of_eq (Ideal.map_pow f I n))
+
+theorem factorPow_evalₐ {A : Type u_1} [CommRing A] (I : Ideal A) {m n : ℕ} (hle : m ≤ n)
+    (x : AdicCompletion I A) :
+    Ideal.Quotient.factorPow I hle (AdicCompletion.evalₐ I n x) = AdicCompletion.evalₐ I m x := by
+  obtain ⟨s, rfl⟩ := AdicCompletion.mk_surjective I A x
+  rw [AdicCompletion.evalₐ_mk, AdicCompletion.evalₐ_mk]
+  change Ideal.Quotient.mk (I ^ m) (s.val n) = Ideal.Quotient.mk (I ^ m) (s.val m)
+  rw [Ideal.Quotient.eq]
+  have h := s.property hle
+  rw [SModEq.sub_mem] at h
+  have h2 : s.val m - s.val n ∈ I ^ m := by simpa [smul_eq_mul, Ideal.mul_top] using h
+  have h3 := (I ^ m).neg_mem h2
+  rwa [neg_sub] at h3
+
+theorem exists_extension {A : Type u_1} {B : Type u_2} [CommRing A] [CommRing B]
+    (I : Ideal A) (f : A →+* B) [IsAdicComplete (Ideal.map f I) B] :
+    ∃ g : AdicCompletion I A →+* B, g.comp (algebraMap A (AdicCompletion I A)) = f := by
+  let F : (n : ℕ) → AdicCompletion I A →+* B ⧸ (Ideal.map f I) ^ n := fun n =>
+    (Ideal.quotientMap ((Ideal.map f I) ^ n) f (pow_le_comap_map_pow I f n)).comp
+      (AdicCompletion.evalₐ I n : AdicCompletion I A →+* A ⧸ I ^ n)
+  have hF : ∀ {m n : ℕ} (hle : m ≤ n),
+      (Ideal.Quotient.factorPow (Ideal.map f I) hle).comp (F n) = F m := by
+    intro m n hle
+    ext x
+    obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)
+    have hm : AdicCompletion.evalₐ I m x = Ideal.Quotient.mk (I ^ m) a := by
+      rw [← factorPow_evalₐ I hle x, ← ha]
+      rfl
+    change Ideal.Quotient.factorPow (Ideal.map f I) hle
+        (Ideal.quotientMap _ f (pow_le_comap_map_pow I f n) (AdicCompletion.evalₐ I n x)) =
+      Ideal.quotientMap _ f (pow_le_comap_map_pow I f m) (AdicCompletion.evalₐ I m x)
+    rw [← ha, hm, Ideal.quotientMap_mk, Ideal.quotientMap_mk]
+    rfl
+  refine ⟨IsAdicComplete.liftRingHom (Ideal.map f I) F hF, ?_⟩
+  apply DFunLike.coe_injective
+  apply IsHausdorff.funext' (Ideal.map f I)
+  intro n a
+  rw [RingHom.coe_comp, Function.comp_apply, IsAdicComplete.mk_liftRingHom]
+  change Ideal.quotientMap _ f (pow_le_comap_map_pow I f n) (AdicCompletion.evalₐ I n (AdicCompletion.of I A a)) = _
+  rw [AdicCompletion.evalₐ_of, Ideal.quotientMap_mk]
+
+end GlobalTheory.PowerExtensionEvaluation
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.PowLeComapMapPow =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsAbsoluteValueOfIsDiscreteValuationRing =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsAbsoluteValueOfIsDiscreteValuationRing", "h": "module\n\npublic import Mathlib.Analysis.Normed.Field.Instances\npublic import Mathlib.Analysis.Normed.Module.Completion\npublic import Mathlib.FieldTheory.IsAlgClosed.Basic\npublic import Mathlib.NumberTheory.Padics.PadicNumbers\npublic import Mathlib.RingTheory.AdicCompletion.Algebra\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\npublic import Mathlib.Topology.Algebra.Valued.NormedValued\npublic import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.PowLeComapMapPow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\npublic import Mathlib.Analysis.Normed.Algebra.Ultra\npublic import Mathlib.Analysis.Normed.Field.Approximation\npublic import Mathlib.Analysis.Normed.Unbundled.SpectralNorm\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\npublic import Mathlib.NumberTheory.Ostrowski\nimport Mathlib.NumberTheory.Padics.LocalField\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\npublic import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing\npublic import Mathlib.RingTheory.Valuation.Integral\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Connected.Separation\nimport Mathlib.Topology.MetricSpace.Ultra.TotallySeparated\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.CharP.Algebra\npublic import Mathlib.Analysis.Normed.Ring.WithAbs\npublic import Mathlib.Data.Int.WithZero\npublic import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Polynomial
@@ -89,23 +153,6 @@ theorem mem_normIntegers_iff {C : Type*} [NormedField C] [IsUltrametricDist C] {
 theorem normIntegers_integers (C : Type*) [NormedField C] [IsUltrametricDist C] :
     (NormedField.valuation (K := C)).Integers (normIntegers C) :=
   Valuation.valuationSubring.integers _
-
-section Extend
-
-variable {A B : Type*} [CommRing A] [CommRing B]
-
-theorem exists_adicCompletion_ringHom_extend (I : Ideal A) (f : A →+* B)
-    [IsAdicComplete (I.map f) B] :
-    ∃ g : AdicCompletion I A →+* B, g.comp (algebraMap A _) = f := by
-  first
-  | exact @_root_.GlobalTheory.PowerExtensionEvaluation.exists_extension
-  | exact _root_.GlobalTheory.PowerExtensionEvaluation.exists_extension
-  | (apply _root_.GlobalTheory.PowerExtensionEvaluation.exists_extension <;> assumption)
-  | (intros; apply _root_.GlobalTheory.PowerExtensionEvaluation.exists_extension <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.PowerExtensionEvaluation.exists_extension <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.PowerExtensionEvaluation.exists_extension ..)
-
-end Extend
 
 namespace NormIntegers
 
@@ -447,3 +494,6 @@ theorem exists_isLocalHom_normIntegers {V K C : Type*} [CommRing V] [Field K] [A
   rw [map_mul, hb, mul_inv_cancel₀ h0, map_one]
 
 end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsAbsoluteValueOfIsDiscreteValuationRing =====

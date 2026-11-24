@@ -67,10 +67,6 @@ theorem two_intCast_mem_iff {L : Type} [Field L] [NumberField L]
   rw [← Ideal.mem_span_singleton, Ideal.over_def P (span {(2 : ℤ)}), Ideal.under_def,
     Ideal.mem_comap, eq_intCast]
 
-theorem exists_int_quad {L : Type} [Field L] [NumberField L] (x : L) (c : ℤ)
-    (hx : x ^ 2 = x + c) : ∃ X : 𝓞 L, (X : L) = x ∧ X ^ 2 = X + (c : 𝓞 L) := by
-  first | exact Bl.FirstBlockLemmaE.goal1 .. | (apply Bl.FirstBlockLemmaE.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaE.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaE.goal1 <;> assumption) | (intros; apply @Bl.FirstBlockLemmaE.goal1 <;> assumption) | (apply @Bl.FirstBlockLemmaE.goal1 <;> first | assumption | infer_instance) | exact @Bl.FirstBlockLemmaE.goal1 L ‹_› ‹_› x c hx | exact @Bl.FirstBlockLemmaE.goal1 L ‹_› ‹_› x c | exact @Bl.FirstBlockLemmaE.goal1 L ‹_› ‹_› x | exact @Bl.FirstBlockLemmaE.goal1 L ‹_› ‹_› | exact @Bl.FirstBlockLemmaE.goal1 L ‹_› | exact @Bl.FirstBlockLemmaE.goal1 L
-
 theorem gal_sq_fix {L : Type} [Field L] [Algebra ℚ L] (σ : Gal(L/ℚ)) (x : L) (m : ℤ)
     (hx : x ^ 2 = (m : L)) : σ x = x ∨ σ x = -x := by
   have : (σ x) ^ 2 = x ^ 2 := by rw [← map_pow, hx, map_intCast]
@@ -82,7 +78,7 @@ theorem half_elt {L : Type} [Field L] [NumberField L] (σ : Gal(L/ℚ)) (x : L) 
   have hW2 : ((1 + x) / 2) ^ 2 = (1 + x) / 2 + (c : L) := by
     push_cast at hx
     linear_combination (1 / 4 : L) * hx
-  obtain ⟨W, hWc, hW⟩ := exists_int_quad _ c hW2
+  obtain ⟨W, hWc, hW⟩ := _root_.Bl.FirstBlockLemmaE.goal1 _ c hW2
   refine ⟨W, hW, ?_⟩
   apply RingOfIntegers.coe_injective
   show σ (W : L) = ((1 - W : 𝓞 L) : L)
@@ -248,7 +244,7 @@ theorem efg_L (hG : LayerGalois) {n q d : ℕ} (hn : 1 ≤ n) (hqd : HypQD q d)
     have hx2 : ((1 + a) / 2) ^ 2 = (1 + a) / 2 + (((2 * c + 1 : ℤ)) : L) := by
       push_cast at ha ⊢
       linear_combination (1 / 4 : L) * ha
-    obtain ⟨W, -, hW⟩ := exists_int_quad _ _ hx2
+    obtain ⟨W, -, hW⟩ := _root_.Bl.FirstBlockLemmaE.goal1 _ _ hx2
     exact two_le_inertiaDeg P W _ hW (by omega)
 
   obtain ⟨c', hc'⟩ : ∃ c : ℤ, -(d : ℤ) = 4 * (2 * c) + 1 := ⟨(-(d : ℤ) - 1) / 8, by omega⟩

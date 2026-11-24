@@ -5,15 +5,19 @@ public import Mathlib.CategoryTheory.Category.Basic
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CharEqOneOfOpENeZero
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColEInvMulAffPt
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyCompSideMulEq
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSumSmulOfLocallyConstantCompactSupportStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSumSmulOfLocallyConstantCompactSupport
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralCompBlocks
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpEOmTargetUnipotent
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OrbitLocallyConstant
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QuotIntFJUniqueStatement
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FourierJacobiAverage
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QuotIntFJUnique
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilFormulaRootExchangeParabolicQuotient
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClosedEmbeddingAffPtUncurry
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.QuotientIntegralParabolicUnfolding
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeSupportAndFourierRelation
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatMatrixExistsOpenAddSubgroupInvaria
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilFormulaRootExchangeParabolicQuotientStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,8 +60,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClosedEmbeddingAffPtUncurry
 
 @[expose] public section
 
@@ -154,7 +156,7 @@ theorem target_bilinear : ∀ (k : Type) [Field k] [ValuativeRel k] [Topological
     rw [this, map_mul]
     rfl
   obtain ⟨z₀, hz₀⟩ := exists_isQuotInt_tInt (p := ρ + 1) (by omega) (by omega) hψ hψ1 ν μ hμ μX μG hσ hp F Φ
-  have W := GlobalTheory.T.weil_formula_rootExchange_parabolic_quotient k n c ρ h1 h2 ν μX μG (tInt ψ ν μ (ρ + 1) σ B F Φ.1)
+  have W := _root_.GlobalTheory.QuotIntFJ.weil_formula_FJ k n c ρ h1 h2 ν μX μG (tInt ψ ν μ (ρ + 1) σ B F Φ.1)
   have val : ∀ h w, HasTensorVal (fun Ψ Φ₀ => fj Ψ (σ h F) Φ₀) (fl ψ ν μ ρ (om μ 1 h Φ.1)) w ↔
       w = ∫ β : n → k, app B (fun x₀ => fl ψ ν μ ρ (om μ 1 h Φ.1) x₀ β) (σ (colE c (ρ + 1) β) (σ h F))
         ∂(Measure.pi fun _ => ν) := by
@@ -177,7 +179,7 @@ theorem target_bilinear : ∀ (k : Type) [Field k] [ValuativeRel k] [Topological
       ((orbit_locallyConstant (omR_smooth hμ) (omR μ (1, h) Φ)).comp_continuous
         (continuous_const.prodMk ExchangeSupport.continuous_colE)).comp fun Ψ => opL hψ ν (ρ + 1) Ψ
     obtain ⟨K, hK, HK⟩ := ColumnSupport.opE_colE_eq_zero k n n' c ρ h2 ψ ν μ _ (omR μ (1, h) Φ).2
-    obtain ⟨m, Ψ, Φ₀, hd⟩ := GlobalTheory.T.exists_sum_smul_of_locallyConstant_compactSupport (n → k) _ T hT K hK fun β hβ => Subtype.ext (by
+    obtain ⟨m, Ψ, Φ₀, hd⟩ := _root_.GlobalTheory.LocConstTensor.exists_sum (n → k) _ T hT K hK fun β hβ => Subtype.ext (by
       have := HK β hβ fun _ => 1
       simp only [one_mul] at this
       exact this)
@@ -192,7 +194,7 @@ theorem target_bilinear : ∀ (k : Type) [Field k] [ValuativeRel k] [Topological
           app B (fun x₀ => fl ψ ν μ ρ (om μ 1 h Φ.1) x₀ β) (σ (colE c (ρ + 1) β) (σ h F))
             ∂(Measure.pi fun _ => ν)) z := by
     simp only [e]
-    exact ⟨fun hz => (W z hz).2, fun hz => GlobalTheory.T.eq_of_isQuotIntFJ_of_isQuotIntFJ k n c ρ h1 h2 ν μX μG _ _ _ (W z₀ hz₀).2 hz ▸ hz₀⟩
+    exact ⟨fun hz => (W z hz).2, fun hz => _root_.GlobalTheory.QuotIntFJ.quotIntFJ_unique k n c ρ h1 h2 ν μX μG _ _ _ (W z₀ hz₀).2 hz ▸ hz₀⟩
   refine i1.trans ⟨fun hz => ⟨_, fun h => (val h _).2 rfl, hz⟩, ?_⟩
   rintro ⟨f, hf, hz⟩
   rwa [show f = _ from funext fun h => (val h _).1 (hf h)] at hz

@@ -107,10 +107,10 @@ theorem snd_evalPt_mul {v v' : epsR ℂ ⟶ A} (hv : IsTan (R := ℂ) (G := A) v
     simp only [LinearMap.add_apply, LinearMap.fst_apply, LinearMap.snd_apply, add_zero, zero_add]
     rw [Chart.scaleD_one, Chart.spMap_id, Category.id_comp, Category.id_comp]
   · rw [hval]
-    simp only [LinearMap.fst_apply, LinearMap.snd_apply]
+    simp only [LinearMap.snd_apply]
     rw [Chart.scaleD_one, Chart.spMap_id, Category.id_comp, Chart.spMap_scaleD_zero hv, _root_.one_mul]
   · rw [hval]
-    simp only [LinearMap.fst_apply, LinearMap.snd_apply]
+    simp only [LinearMap.fst_apply]
     rw [Chart.scaleD_one, Chart.spMap_id, Category.id_comp, Chart.spMap_scaleD_zero hv', _root_.mul_one]
 
 theorem isDiff_add {w w' : Fin g → ℂ} {v v' : epsR ℂ ⟶ A} (hv : IsTan (R := ℂ) (G := A) v)

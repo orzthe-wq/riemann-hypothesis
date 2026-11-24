@@ -71,12 +71,22 @@ def CycKSpec : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[
   (r : ℕ) (σ : GK l K) (ζ : PadicAlgCl l), ζ ^ (l ^ r) = 1 →
     σ ζ = ζ ^ ((cycK l K r σ : ZMod (l ^ r)).val)
 
+/-- For a finite extension `K` of `ℚ_l` and a finite module `M` killed by `l ^ r` with a continuous
+action of `Gal(ℚ̄_l/K)`, the groups `H⁰`, `H¹`, `H²` are finite and `Hⁿ = 0` for `n ≥ 3`.
+[J. S. Milne, *Arithmetic Duality Theorems* (Chapter I, Theorem 2.1 and p. 31)][milne2006].
+This is a special case: the modules are killed by `l ^ r`.
+This reference is a reader's proposal and has not been checked by a mathematician. -/
 def LocalFinitenessK : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)),
   FiniteDimensional ℚ_[l] K → ∀ (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M]
   [Finite M] [TopologicalSpace M] [DiscreteTopology M]
   (rho : Representation (ZMod (l ^ r)) (GK l K) M), 0 < r → ContAction rho →
     Finite (H0 rho) ∧ Finite (H1 rho) ∧ Finite (H2 rho) ∧ ∀ n, 3 ≤ n → Subsingleton (Hn rho n)
 
+/-- With `K` and `M` as in `LocalFinitenessK`, `H²(μ_{l^r})` is isomorphic to `ZMod (l ^ r)`, and
+cup product pairs `Hⁱ(M)` perfectly with `H²⁻ⁱ(Hom(M, μ_{l^r}))` for `i = 0, 1, 2`.
+[J. S. Milne, *Arithmetic Duality Theorems* (Chapter I, Corollary 2.3, p. 28; for `H²(μ_{l^r})`, p. 27)][milne2006].
+This is a special case: the modules are killed by `l ^ r`.
+This reference is a reader's proposal and has not been checked by a mathematician. -/
 def LocalTateDualityK : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)),
   FiniteDimensional ℚ_[l] K → ∀ (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M]
   [Finite M] [TopologicalSpace M] [DiscreteTopology M]
@@ -87,6 +97,10 @@ def LocalTateDualityK : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateFi
     Function.Bijective (cupH1H1TwistedDual (cycK l K r) rho (MonoidHom.id _) (hrho.comp' continuous_id)).flip ∧
     Function.Bijective (cup20 (cycK l K r) rho (MonoidHom.id _))
 
+/-- With `K` and `M` as in `LocalFinitenessK`, `#H¹ = #H⁰ · #H² · (#M) ^ [K : ℚ_l]`.
+[J. S. Milne, *Arithmetic Duality Theorems* (Chapter I, Theorem 2.8, p. 31)][milne2006].
+This is a special case: the modules are killed by `l ^ r`.
+This reference is a reader's proposal and has not been checked by a mathematician. -/
 def LocalEulerCharK : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)),
   FiniteDimensional ℚ_[l] K → ∀ (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M]
   [Finite M] [TopologicalSpace M] [DiscreteTopology M]

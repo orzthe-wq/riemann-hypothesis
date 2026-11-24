@@ -91,9 +91,8 @@ theorem factorization_bound_mono_lattices {O Kf V V' : Type*} [CommRing O] [IsDo
     [Algebra O Kf] [AddCommGroup V] [Module O V] [AddCommGroup V'] [Module O V'] (p : ℕ) (be : V → V' → Kf)
     {A B : Submodule O V} {A' B' : Submodule O V'} (h : A ≤ B) (h' : A' ≤ B') {n : ℕ} {D : ℝ}
     (hf : FactorsLE p be A A' n D) : FactorsLE p be B B' n D := by
-  rcases hf with h0 | ⟨x, y, hx, hy, rest⟩
-  · exact Or.inl h0
-  · exact Or.inr ⟨x, y, fun i => h (hx i), fun i => h' (hy i), rest⟩
+  exact Or.imp_right (fun ⟨x, y, hx, hy, rest⟩ =>
+    ⟨x, y, fun i => h (hx i), fun i => h' (hy i), rest⟩) hf
 
 theorem scaled_submodule_mono_exponent {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X] [Module Kf X]
     [Module O X] [IsScalarTower O Kf X] (w : O) (hw : algebraMap O Kf w ≠ 0) (M : Submodule O X) {t t' : ℕ}
@@ -143,18 +142,15 @@ theorem sum_dimensions_flattened_weights (hD : RestDims) {p n' : ℕ} (R : RS p 
   congr 1
   rw [← Finset.prod_univ_sum (fun s : TT => Finset.range (min (A s) (B s) + 1))
     (fun s j => Formalism.CountingSumsFrames.dimHar m (A s - j) (B s - j))]
-  exact Finset.prod_congr rfl fun s _ => Formalism.CountingSumsFrames.Top.levelCount m (A s) (B s)
+  exact Finset.prod_congr rfl fun s _ => _root_.Formalism.CountingSumsFrames.harmonic_level_count m (A s) (B s)
 
 theorem exponent_le_shifted_add {n' : ℕ} {TT : Finset (Fin n')} (B j : TT → ℕ) (J : ℕ) (hj : ∀ s, j s ≤ J) (s : Fin n') :
     (ex B s : ℝ) ≤ (ex (fun s => B s - j s) s : ℝ) + J := by
   unfold ex
-  by_cases hs : s ∈ TT
-  · simp only [hs, dite_true]
-    have := hj ⟨s, hs⟩
-    have h2 : B ⟨s, hs⟩ ≤ (B ⟨s, hs⟩ - j ⟨s, hs⟩) + J := by omega
-    exact_mod_cast h2
-  · simp only [hs, dite_false]
-    simp
+  split_ifs with hs
+  · have h := hj ⟨s, hs⟩
+    exact_mod_cast (show B ⟨s, hs⟩ ≤ B ⟨s, hs⟩ - j ⟨s, hs⟩ + J by omega)
+  · simp
 
 theorem initial_level_shift_bound (X : Dat) (hS : 2 ≤ numSeg X.TT) (K : Cst) (hp : 1 ≤ X.p) (hJ : 0 ≤ X.J0 K) (A B j : X.TT → ℕ)
     (hj : ∀ s, j s ≤ X.Jn K) :

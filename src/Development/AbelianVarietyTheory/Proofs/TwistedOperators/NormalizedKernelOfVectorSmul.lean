@@ -60,7 +60,7 @@ theorem kkVec_smul : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : 
       GlobalTheory.ChiGrid.GridData.Weil.ker, thetaKO, map_smul]
   have h := (GlobalTheory.JetIdentity.jetOpL (K := ℂ) (wt G p.small) (wt G p.big) (nuEnd G p)).map_smul c
     (jetTab W S.N.frC p f (x * S.N.u _) (y * S.N.u _))
-  simp only [GlobalTheory.JetIdentity.jetOpL, LinearMap.coe_mk, AddHom.coe_mk, RingHom.id_apply] at h
+  simp only [GlobalTheory.JetIdentity.jetOpL, LinearMap.coe_mk, AddHom.coe_mk] at h
   rw [hT, h, smul_comm]
 
 end GlobalTheory.TopZeroInv

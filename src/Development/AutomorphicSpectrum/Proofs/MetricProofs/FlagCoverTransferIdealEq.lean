@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.TransPtBase
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishingStatement
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GenericBlockMatrixIsBlockDiag
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -147,7 +148,7 @@ theorem exists_scale (M : FlagModel y Ψ N j) {F : Type} [Field F] (f : MvPolyno
         simp only [polyPt, dif_neg h, map_sum, map_mul, hfC, map_minorIJ, hmap]
       rw [hstep _ k (blk_stepOf M k h) m, Finset.mul_sum]
       refine Finset.sum_congr rfl fun I _ => ?_
-      rw [(GlobalTheory.T.block_diagonal_minor_vanishing F N j (stepOf M k h).2 M.j_le).2.2.1 _ _ I (hB _).1 (hB _).2.1]
+      rw [(_root_.GlobalTheory.CompanionTheory.Ar.PB.MinorCalc.minors_main F N j (stepOf M k h).2 M.j_le).2.2.1 _ _ I (hB _).1 (hB _).2.1]
       exact gen _ _ _ (hs _)
 
 end GlobalTheory.CompanionTheory.Ar.PB.CovGraph.GenIdeal

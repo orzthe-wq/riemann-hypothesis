@@ -142,8 +142,8 @@ theorem hpk_row (i m : Fin (2 * r + k + 1)) :
   have hi := i.isLt
   have hm := m.isLt
   unfold Hpk tau sgn
-  simp only [Fin.ext_iff, Fin.val_mk]
-  split_ifs <;> first | rfl | omega | (exfalso; omega) | norm_num
+  simp only [Fin.ext_iff]
+  split_ifs <;> first | rfl | omega
 
 theorem hpk_mul_apply (A : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (i j : Fin (2 * r + k + 1)) : (Hpk k r * A) i j = sgn k r i * A (tau k r i) j := by
@@ -161,7 +161,7 @@ theorem tau_tau (i : Fin (2 * r + k + 1)) : tau k r (tau k r i) = i := by
 theorem sgn_tau (i : Fin (2 * r + k + 1)) : sgn k r (tau k r i) = sgn k r i := by
   have hi := i.isLt
   simp only [sgn, tau, Fin.val_mk]
-  split_ifs <;> first | rfl | omega | (exfalso; omega) | norm_num
+  split_ifs <;> first | rfl | omega
 
 theorem sgn_mul_self (i : Fin (2 * r + k + 1)) : sgn k r i * sgn k r i = 1 := by
   unfold sgn
@@ -269,7 +269,6 @@ theorem ell_mul (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
   · simp only [dif_neg h1]
     first
       | simp only [Matrix.mulVec, dotProduct]
-      | simp only [Matrix.mulVec, Matrix.dotProduct]
     rw [← Finset.sum_add_distrib]
     refine Finset.sum_congr rfl (fun q _ => ?_)
     by_cases hq : q.val < r ∨ r + k < q.val
@@ -299,7 +298,6 @@ theorem additive_character_holds : PsiChar := by
     rw [mul_comm Complex.I]
     first
       | exact Complex.norm_exp_ofReal_mul_I _
-      | simp [Complex.norm_exp]
 
 namespace WeylGroupFacts
 
@@ -314,8 +312,6 @@ theorem col_of_fix {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
   first
     | (simp only [Matrix.mulVec, dotProduct, hb, mul_ite, mul_one, mul_zero,
         Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1; exact h1)
-    | simpa [Matrix.mulVec, dotProduct, hb] using h1
-    | simpa [Matrix.mulVec, Matrix.dotProduct, hb] using h1
 
 theorem row_of_fixed_col {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hU : h ∈ UH (Hpk k r)) (c : Fin (2 * r + k + 1))
@@ -450,7 +446,6 @@ theorem mulVec_apply_of_row {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 
     (hrow : ∀ p, h i p = if i = p then 1 else 0) : (h *ᵥ v) i = v i := by
   first
     | simp only [Matrix.mulVec, dotProduct]
-    | simp only [Matrix.mulVec, Matrix.dotProduct]
   rw [Fintype.sum_eq_single i]
   · rw [hrow i, if_pos rfl, one_mul]
   · intro p hp

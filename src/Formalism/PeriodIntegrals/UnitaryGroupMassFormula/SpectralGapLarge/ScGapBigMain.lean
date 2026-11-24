@@ -71,8 +71,7 @@ theorem scGapBig_main : ScGapBig := by
     · exact ⟨rk48 k r + 6, ⟨a + 3, by omega⟩, by omega, le_refl _⟩
   refine ⟨t, hodd, ht1, by omega, ?_⟩
   intro j hj
-  have hm : 2 * r + 2 ≤ rk48 k r + 1 := by omega
-  have hb := nat_bound (rk48 k r) (2 * r + 2) t hn hm ht2
+  have hb := nat_bound (rk48 k r) (2 * r + 2) t hn (by omega) ht2
   have hcast : 2 * ((rk48 k r + (2 * r + 2) * t : ℕ) : ℝ) ^ 3 + (t : ℝ) + 3 <
       16 * (rk48 k r : ℝ) ^ 19 := by
     exact_mod_cast hb

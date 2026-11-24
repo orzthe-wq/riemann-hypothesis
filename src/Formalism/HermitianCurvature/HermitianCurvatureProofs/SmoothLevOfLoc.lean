@@ -70,8 +70,8 @@ theorem hmat_zb (h : C.LPt) (s : ℕ) (τ : ℂ) (hl : D.IsLocPt (h ++ [(s, τ)]
       C3.Zb (D.ptSize h) s (U.hMat (D.ptPerm h) (D.ptDiag h)) τ a' q := by
   have hP := Formalism.FourierDecayAlt.P.Dx2.SL.ptSize_append h s τ
   have hlh := Formalism.FourierDecayAlt.P.Dx2.SL.isLocPt_head hl
-  have hspec := (Formalism.FourierDecayAlt.P.ptPerm_spec _ _ hl).1
-  have hspech := (Formalism.FourierDecayAlt.P.ptPerm_spec _ _ hlh).1
+  have hspec := (_root_.Formalism.FourierDecayAlt.P.Dx1.d_ptPermSpec _ _ hl).1
+  have hspech := (_root_.Formalism.FourierDecayAlt.P.Dx1.d_ptPermSpec _ _ hlh).1
   have entry : ∀ {p : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (x y : Fin p),
       U.hMat σ d x y = if σ x = y then d y else 0 := by
     intro p σ d x y

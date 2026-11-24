@@ -80,8 +80,7 @@ private lemma norm_apply_sq_le_mul_of_psdOn {α : Type} {T : Finset α} {k : α 
 
   have hs := (hk.submatrix ![(⟨a, ha⟩ : T), ⟨b, hb⟩]).det_nonneg
   rw [Matrix.det_fin_two] at hs
-  simp only [Matrix.submatrix_apply, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons] at hs
+  simp only [Matrix.submatrix_apply, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one] at hs
   have hba : k b a = conj (k a b) := by
     have := congrFun (congrFun hk.isHermitian ⟨b, hb⟩) ⟨a, ha⟩
     simpa [Matrix.conjTranspose_apply] using this.symm

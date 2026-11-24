@@ -236,15 +236,6 @@ def OrbitsAddAtConjugate (E : Ent D) : Prop :=
     ∀ β : Pl D → ℝ, (∀ z, OneGe E p h5 u i z (β z)) →
     ∀ Th, ThetaExpansionRealPlaces D p Th → product_zeroth_first_parts.KvalGe (D.R.N i) (D.R.N (i + 1)) p (E.nu u i) Th (∑ z, β z)
 
-def OrbitRestriction (E : Ent D) : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (h : OrbOK D p) (u : D.what₂.Word) (i : ℕ) (R : Finset (Pl D)), IsReps D p R →
-    ∀ (ep : ℂ_[p]) (sg : Pl D → ℂ_[p]) (be : Pl D → MvPowerSeries (ZMod (nP D p)) ℂ_[p]), BeOK D p R ep sg be →
-    ∀ Th, ThetaExpansionAllPlaces D p R ep sg be Th → ∀ r ∈ R, OrbitThetaExpansion (orbLoc E p h u i r (restr D p r Th)) ep (sg r) (be r)
-
-def OrbitRestrictionAtConjugate (E : Ent D) : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (h5 : 5 ≤ p), nP D p = 1 → ∀ (u : D.what₂.Word) (i : ℕ),
-    ∀ Th, ThetaExpansionRealPlaces D p Th → ∀ z, (oneLoc E p h5 u i z (restr1 D p z Th)).AdmB
-
 variable {L : SizeData₂ D}
 
 def repsPl (X : Inst D L) (p : ℕ) : Finset (Pl D) :=
@@ -478,7 +469,7 @@ def admitted (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX
 
 def Conclusion₂ (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (T : TwForms D) (E : Ent D) (lev : LevelData D)
     (Xe : ErrX D) (ce : ErrC) (sp C : ℝ) : Prop :=
-  ValuationComposition D T ∧ OrbitsAddLowerBound E ∧ OrbitsAddAtConjugate E ∧ OrbitRestriction E ∧ OrbitRestrictionAtConjugate E ∧ OrbitValuationBound E X K ce ∧ EntriesAtInert E Dx X K ce ∧ EntriesAtC E Dx L C ∧
+  ValuationComposition D T ∧ OrbitsAddLowerBound E ∧ OrbitsAddAtConjugate E ∧ OrbitValuationBound E X K ce ∧ EntriesAtInert E Dx X K ce ∧ EntriesAtC E Dx L C ∧
     EntriesAtDiscriminant E Dx ∧ OrbitSumBound X K ce ∧ ValuationSumBound E L ce C ∧ OneLiftInertBound D L X K Dx T lev Xe ce sp ∧ OneLiftAtC D L K Dx T lev Xe ce sp ∧
     OneLiftAtDiscriminant D L K Dx T lev Xe ce sp ∧ NoOperatorOrbitBound D L X K Dx T lev Xe ce sp ∧ JetConsequence D L K Dx T lev Xe ce sp ∧
     ValuationAtDiscriminant D L K Dx T lev Xe ce sp ∧ LiftIntegrality D Dx T sp
@@ -1188,13 +1179,13 @@ theorem sumI (X : Inst D L) (K : Consts) (ce : ErrC) : OrbitSumBound X K ce := b
   linarith
 
 def Core (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (E : Ent D) (ce : ErrC) (C : ℝ) : Prop :=
-  OrbitsAddLowerBound E ∧ OrbitsAddAtConjugate E ∧ OrbitRestriction E ∧ OrbitRestrictionAtConjugate E ∧ OrbitValuationBound E X K ce ∧ EntriesAtDiscriminant E Dx ∧ ValuationSumBound E L ce C ∧ ScaledGeneratorsInSup E L K ce
+  OrbitsAddLowerBound E ∧ OrbitsAddAtConjugate E ∧ OrbitValuationBound E X K ce ∧ EntriesAtDiscriminant E Dx ∧ ValuationSumBound E L ce C ∧ ScaledGeneratorsInSup E L K ce
 
 theorem lift_bounds_of_kernelForm {X : Inst D L} {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {lev : LevelData D} {Xe : ErrX D}
     {ce : ErrC} {sp C6 C : ℝ} (hk : KForm E Dx T sp) (hA : AdmK D L X K Dx E ce C6 C) (hC : Core D L X K Dx E ce C) :
     Conclusion₂ D L X K Dx T E lev Xe ce sp C := by
   obtain ⟨ho, hgd, hb, hbc, hall, ha', hint, _, hS, _⟩ := hA
-  obtain ⟨c2, c3, c4, c5, c6, c7, c9, c10⟩ := hC
+  obtain ⟨c2, c3, c6, c7, c9, c10⟩ := hC
   have c1 := compose D T
   have c8 := sumI X K ce
   have eI := entI_of (isReps_repsPl X) ho hb c2 c6 ha'
@@ -1202,7 +1193,7 @@ theorem lift_bounds_of_kernelForm {X : Inst D L} {K : Consts} {Dx : DivX D} {T :
   have lI : OneLiftInertBound D L X K Dx T lev Xe ce sp := liftI_of hk eI c8 ho hbc c10
   have lC : OneLiftAtC D L K Dx T lev Xe ce sp := liftC_of hk ho eC c9
   have lD : OneLiftAtDiscriminant D L K Dx T lev Xe ce sp := liftD_of hk hgd c7
-  exact ⟨c1, c2, c3, c4, c5, c6, eI, eC, c7, c8, c9, lI, lC, lD, noOp_of c1 lI, c_of c1 lC, atD_of c1 lD, int_of hk hint⟩
+  exact ⟨c1, c2, c3, c6, eI, eC, c7, c8, c9, lI, lC, lD, noOp_of c1 lI, c_of c1 lC, atD_of c1 lD, int_of hk hint⟩
 
 theorem lift_bounds_of_essential {X : Inst D L} {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {lev : LevelData D}
     {Xe : ErrX D} {ce : ErrC} {sp C6 C : ℝ} (hA : admitted D L X K Dx T E ce sp C6 C) (hC : Core D L X K Dx E ce C) :

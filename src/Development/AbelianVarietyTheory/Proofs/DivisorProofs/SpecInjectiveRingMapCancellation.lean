@@ -1,7 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointSpMapCompRestrictStalkStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatPath
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalSectionAtRingPointSpMapCompRestrictStalk
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -39,7 +40,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatPath
 
 @[expose] public section
 
@@ -54,7 +54,7 @@ namespace GlobalTheory.Nef
 theorem spec_localInjective_cancel_left (R R' : Type) [CommRing R] [CommRing R'] [IsLocalRing R] [IsLocalRing R']
     (φ : R →+* R') [IsLocalHom φ] (hφ : Function.Injective φ) (Y : Scheme.{0}) (a a' : Sp R ⟶ Y)
     (h : spMap φ ≫ a = spMap φ ≫ a') : a = a' := by
-  obtain ⟨hcomp, -, -, hloc, hext, -, -⟩ := GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk
+  obtain ⟨hcomp, -, -, hloc, hext, -, -⟩ := _root_.GlobalTheory.Nef.evAt_calculus
   have hc : (spMap φ) (IsLocalRing.closedPoint R') = IsLocalRing.closedPoint R :=
     IsLocalRing.comap_closedPoint φ
   have hy : a (IsLocalRing.closedPoint R) = a' (IsLocalRing.closedPoint R) := by

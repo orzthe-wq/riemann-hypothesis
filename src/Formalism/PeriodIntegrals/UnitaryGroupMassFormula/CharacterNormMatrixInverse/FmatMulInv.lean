@@ -62,8 +62,7 @@ theorem fmat_mul_inv' (a : I.Gf) : I.fmat a * I.fmat a⁻¹ = 1 := by
   rfl
 
 theorem kset_mem {k : I.Gf} (hk : k ∈ I.Kset) {y : VA I} (hy : y ∈ I.Lf) : I.fmat k *ᵥ y ∈ I.Lf := by
-  have h' : ∀ x, x ∈ I.Lf ↔ I.fmat k *ᵥ x ∈ I.Lf := hk
-  exact (h' y).1 hy
+  exact (hk y).1 hy
 
 theorem kset_inv {k : I.Gf} (hk : k ∈ I.Kset) : k⁻¹ ∈ I.Kset := by
   exact (Formalism.UG.stabGL I.Lf).inv_mem (show (k : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf from hk)
@@ -219,11 +218,10 @@ theorem hA_mL_right (m : ℕ) {δ w : VA I} (hδ : δ ∈ mL I m) (hw : w ∈ I.
 theorem bezout_cast {c g : ℕ} (hc : Nat.Coprime c g) :
     ∃ u v : ℤ, (u : I.E ⊗[I.F] Af I.F) * c + (v : I.E ⊗[I.F] Af I.F) * g = 1 := by
   refine ⟨Nat.gcdA c g, Nat.gcdB c g, ?_⟩
-  have h := Nat.gcd_eq_gcd_ab c g
+  have h := congrArg (Int.cast : ℤ → I.E ⊗[I.F] Af I.F) (Nat.gcd_eq_gcd_ab c g)
   rw [Nat.Coprime.gcd_eq_one hc] at h
-  have h' := congrArg (Int.cast : ℤ → I.E ⊗[I.F] Af I.F) h
-  push_cast at h'
-  linear_combination -h'
+  push_cast at h
+  linear_combination -h
 
 theorem hA_inAt_left {g : ℕ} {δ w : VA I} (hδ : InAt I g g δ) (hδL : δ ∈ I.Lf) (hw : w ∈ I.Lf) :
     ∃ t ∈ IntAf I.F I.E, hA I δ w = (g : I.E ⊗[I.F] Af I.F) * t := by

@@ -197,7 +197,7 @@ def linDer (T : Matrix σ σ ℂ) : Derivation ℂ (MvPolynomial σ ℂ) (MvPoly
 
 theorem linDer_apply (T : Matrix σ σ ℂ) (f : MvPolynomial σ ℂ) :
     linDer T f = ∑ l, ∑ l', T l l' • (X l * pderiv l' f) := by
-  simp [linDer, der_sum_apply, smul_eq_C_mul, mul_assoc]
+  simp [linDer, smul_eq_C_mul, mul_assoc]
 
 theorem linDer_X (T : Matrix σ σ ℂ) (i : σ) : linDer T (X i) = ∑ l, T l i • (X l : MvPolynomial σ ℂ) := by
   simp [linDer_apply, pderiv_X, Pi.single_apply]
@@ -284,7 +284,7 @@ theorem linDer_eval_series (T G : Matrix σ σ ℂ)
     · simp
     · intro n hn
       obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn
-      simp [pow_succ, Module.End.mul_apply, h0]
+      simp [pow_succ, h0]
   | add p q hp hq =>
     simpa [mul_add, map_add (f := _)] using hp.add hq
   | mul_X p i hp =>

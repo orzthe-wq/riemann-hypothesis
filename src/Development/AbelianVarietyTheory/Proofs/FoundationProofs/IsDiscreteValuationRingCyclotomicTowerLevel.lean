@@ -1,12 +1,13 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompletedLaurentIsDVRStatementStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBasisOnZetaPowMulQPowStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CompletedLaurentIsDVRStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBasisOnZetaPowMulQPow
+public import Mathlib.Algebra.Polynomial.Eval.Irreducible
+public import Mathlib.RingTheory.Polynomial.Cyclotomic.Eval
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Algebra.Polynomial.Eval.Irreducible
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -54,7 +55,6 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Mathlib.RingTheory.Polynomial.Cyclotomic.Eval
 
 @[expose] public section
 
@@ -257,7 +257,7 @@ theorem dvr_of_generators {R S F : Type*} [CommRing R] [IsDomain R] [IsDiscreteV
     simpa [f, this] using hirr
   haveI : Fact (Irreducible f) := ⟨hf⟩
   have hroot : f.eval₂ ψ (Ideal.Quotient.mk J y) = 0 := by
-    simp only [f, eval₂_sub, eval₂_pow, eval₂_X_pow, eval₂_X, eval₂_C, hψ]
+    simp only [f, eval₂_sub, eval₂_pow, eval₂_X, eval₂_C, hψ]
     rw [← map_pow, hy, sub_self]
   let θ : AdjoinRoot f →+* S ⧸ J := AdjoinRoot.lift ψ _ hroot
   have hsurj : Function.Surjective θ := by
@@ -305,8 +305,8 @@ theorem isDVR_On : ∀ (p : ℕ) [Fact p.Prime] (n : ℕ), 1 ≤ n →
     ∃ _ : IsDomain (On p n), IsDiscreteValuationRing (On p n) ∧ Irreducible (xn p n - 1) := by
   intro p hpr n hn
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le' hn
-  obtain ⟨_, hdvr, hp⟩ := GlobalTheory.T.completed_laurent_isDVR_statement p
-  obtain ⟨b, hb⟩ := GlobalTheory.T.exists_basis_On_zeta_pow_mul_q_pow p (m + 1)
+  obtain ⟨_, hdvr, hp⟩ := _root_.GlobalTheory.K5.completed_laurent_isDVR p
+  obtain ⟨b, hb⟩ := _root_.GlobalTheory.K5.OnFree.on_free p (m + 1)
   obtain ⟨φ, hφq, hφp⟩ := exists_red p
   have hpos : 0 < p ^ (m + 1) := pow_pos hpr.out.pos _
   haveI : Module.Finite (O0 p) (On p (m + 1)) := Module.Finite.of_basis b

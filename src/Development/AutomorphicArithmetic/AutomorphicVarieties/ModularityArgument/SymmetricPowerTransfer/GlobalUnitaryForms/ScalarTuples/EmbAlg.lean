@@ -104,9 +104,8 @@ private theorem mem_DX_iff (g : GL (Fin 2) (Lsq K Δ)) :
   have hg := Matrix.eta_fin_two (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ))
   simp only [inv_inv, Units.val_mul, winv, w]
   rw [hg]
-  simp only [Matrix.mul_fin_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.empty_val', Matrix.cons_val_fin_one, zero_mul, one_mul, neg_mul, mul_zero, mul_one, mul_neg,
-    zero_add, add_zero, neg_zero, neg_neg]
+  simp only [Matrix.mul_fin_two, Matrix.of_apply, Matrix.cons_val', Matrix.empty_val', Matrix.cons_val_fin_one, zero_mul, one_mul, neg_mul, mul_zero, mul_one, mul_neg,
+    zero_add, add_zero, neg_neg]
   set p := (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) 0 0
   set q := (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) 0 1
   set r := (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) 1 0
@@ -138,7 +137,7 @@ private theorem Q_lin (x y a b c d : K) :
     x • (1 : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) + y • Q Δ a b c d =
       Q Δ (x + y * a) (y * b) (y * c) (y * d) := by
   ext i j : 1
-  fin_cases i <;> fin_cases j <;> ext <;> simp [Q, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> ring
+  fin_cases i <;> fin_cases j <;> ext <;> simp [Q, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
 private theorem DX_ext {g h : DX Δ} (e : mt g = mt h) : g = h := Subtype.ext (Units.ext e)
 

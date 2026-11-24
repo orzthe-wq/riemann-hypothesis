@@ -1,48 +1,10 @@
 module
 
 public import Mathlib.Basic.Complex.Basic
-public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.LinearAlgebra.Eigenspace.Basic
+public import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+import Mathlib.Analysis.Complex.Polynomial.Basic
 
 @[expose] public section
 
@@ -50,146 +12,69 @@ universe u_1 u_2
 
 namespace Bl.general_b_fact_second_alt_form
 
-theorem goal1 :
-  ∀ {Wq : Type u_1} {Wp : Type u_2} [inst : AddCommGroup.{u_1} Wq] [inst_1 : Module.{0, u_1} Complex Wq]
-  [FiniteDimensional.{0, u_1} Complex Wq] [inst_3 : AddCommGroup.{u_2} Wp] [inst_4 : Module.{0, u_2} Complex Wp]
-  [FiniteDimensional.{0, u_2} Complex Wp] (S' : Submodule.{0, u_1} Complex Wq) (S : Submodule.{0, u_2} Complex Wp)
-  (Gq : Set.{u_1} (Module.End.{0, u_1} Complex Wq)) (Gp : Set.{u_2} (Module.End.{0, u_2} Complex Wp)),
-  (∀ (K : Submodule.{0, u_1} Complex Wq),
-      LE.le.{u_1} K S' →
-        (∀ (A : Module.End.{0, u_1} Complex Wq),
-            Membership.mem.{u_1, u_1} Gq A →
-              ∀ (v : Wq),
-                Membership.mem.{u_1, u_1} K v →
-                  Membership.mem.{u_1, u_1} K (DFunLike.coe.{u_1 + 1, u_1 + 1, u_1 + 1} A v)) →
-          Or (Eq.{u_1 + 1} K Bot.bot.{u_1}) (Eq.{u_1 + 1} K S')) →
-    (∀ (K : Submodule.{0, u_2} Complex Wp),
-        LE.le.{u_2} K S →
-          (∀ (B : Module.End.{0, u_2} Complex Wp),
-              Membership.mem.{u_2, u_2} Gp B →
-                ∀ (w : Wp),
-                  Membership.mem.{u_2, u_2} K w →
-                    Membership.mem.{u_2, u_2} K (DFunLike.coe.{u_2 + 1, u_2 + 1, u_2 + 1} B w)) →
-            Or (Eq.{u_2 + 1} K Bot.bot.{u_2}) (Eq.{u_2 + 1} K S)) →
-      (∀ (A : Module.End.{0, u_1} Complex Wq),
-          Membership.mem.{u_1, u_1} Gq A →
-            ∀ (v : Wq),
-              Membership.mem.{u_1, u_1} S' v →
-                Membership.mem.{u_1, u_1} S' (DFunLike.coe.{u_1 + 1, u_1 + 1, u_1 + 1} A v)) →
-        ∀ (E Z : LinearMap.{0, 0, u_1, u_2} (RingHom.id.{0} Complex) Wq Wp),
-          (∀ (v : Wq),
-              Membership.mem.{u_1, u_1} S' v →
-                Membership.mem.{u_2, u_2} S (DFunLike.coe.{max (u_1 + 1) (u_2 + 1), u_1 + 1, u_2 + 1} E v)) →
-            (∀ (v : Wq),
-                Membership.mem.{u_1, u_1} S' v →
-                  Membership.mem.{u_2, u_2} S (DFunLike.coe.{max (u_1 + 1) (u_2 + 1), u_1 + 1, u_2 + 1} Z v)) →
-              (∀ (A : Module.End.{0, u_1} Complex Wq),
-                  Membership.mem.{u_1, u_1} Gq A →
-                    Exists.{u_2 + 1} fun (B : Module.End.{0, u_2} Complex Wp) ↦
-                      And
-                        (Eq.{max (u_1 + 1) (u_2 + 1)} (LinearMap.comp.{0, 0, 0, u_1, u_1, u_2} E A)
-                          (LinearMap.comp.{0, 0, 0, u_1, u_2, u_2} B E))
-                        (Eq.{max (u_1 + 1) (u_2 + 1)} (LinearMap.comp.{0, 0, 0, u_1, u_1, u_2} Z A)
-                          (LinearMap.comp.{0, 0, 0, u_1, u_2, u_2} B Z))) →
-                (∀ (B : Module.End.{0, u_2} Complex Wp),
-                    Membership.mem.{u_2, u_2} Gp B →
-                      Exists.{u_1 + 1} fun (A : Module.End.{0, u_1} Complex Wq) ↦
-                        And (Membership.mem.{u_1, u_1} Gq A)
-                          (Eq.{max (u_1 + 1) (u_2 + 1)} (LinearMap.comp.{0, 0, 0, u_1, u_1, u_2} E A)
-                            (LinearMap.comp.{0, 0, 0, u_1, u_2, u_2} B E))) →
-                  (Exists.{u_1 + 1} fun (v : Wq) ↦
-                      And (Membership.mem.{u_1, u_1} S' v)
-                        (Ne.{u_2 + 1} (DFunLike.coe.{max (u_1 + 1) (u_2 + 1), u_1 + 1, u_2 + 1} E v) 0)) →
-                    Exists.{1} fun (c : Complex) ↦
-                      ∀ (v : Wq),
-                        Membership.mem.{u_1, u_1} S' v →
-                          Eq.{u_2 + 1} (DFunLike.coe.{max (u_1 + 1) (u_2 + 1), u_1 + 1, u_2 + 1} Z v)
-                            (HSMul.hSMul.{0, u_2, u_2} c (DFunLike.coe.{max (u_1 + 1) (u_2 + 1), u_1 + 1, u_2 + 1} E v)) := by
-  intro Wq Wp _ _ _ _ _ _ S' S Gq Gp hirrq hirrp hinvq E Z hE hZ hcomm hsurj hne
+theorem goal1 {Wq : Type u_1} {Wp : Type u_2} [AddCommGroup Wq] [Module ℂ Wq]
+    [FiniteDimensional ℂ Wq] [AddCommGroup Wp] [Module ℂ Wp] [FiniteDimensional ℂ Wp]
+    (S' : Submodule ℂ Wq) (S : Submodule ℂ Wp)
+    (Gq : Set (Module.End ℂ Wq)) (Gp : Set (Module.End ℂ Wp))
+    (hirrq : ∀ K : Submodule ℂ Wq, K ≤ S' → (∀ A ∈ Gq, ∀ v ∈ K, A v ∈ K) → K = ⊥ ∨ K = S')
+    (hirrp : ∀ K : Submodule ℂ Wp, K ≤ S → (∀ B ∈ Gp, ∀ w ∈ K, B w ∈ K) → K = ⊥ ∨ K = S)
+    (hinvq : ∀ A ∈ Gq, ∀ v ∈ S', A v ∈ S')
+    (E Z : Wq →ₗ[ℂ] Wp) (hE : ∀ v ∈ S', E v ∈ S) (hZ : ∀ v ∈ S', Z v ∈ S)
+    (hcomm : ∀ A ∈ Gq, ∃ B : Module.End ℂ Wp, E ∘ₗ A = B ∘ₗ E ∧ Z ∘ₗ A = B ∘ₗ Z)
+    (hsurj : ∀ B ∈ Gp, ∃ A ∈ Gq, E ∘ₗ A = B ∘ₗ E)
+    (hne : ∃ v ∈ S', E v ≠ 0) :
+    ∃ c : ℂ, ∀ v ∈ S', Z v = c • E v := by
   classical
   obtain ⟨v0, hv0S, hv0⟩ := hne
-  have hker : S' ⊓ LinearMap.ker E = ⊥ := by
-    rcases hirrq (S' ⊓ LinearMap.ker E) inf_le_left (by
-      intro A hA v hv
-      rw [Submodule.mem_inf, LinearMap.mem_ker] at hv ⊢
-      obtain ⟨B, hB1, -⟩ := hcomm A hA
-      refine ⟨hinvq A hA v hv.1, ?_⟩
-      have h3 := LinearMap.congr_fun hB1 v
-      simp only [LinearMap.comp_apply] at h3
-      rw [h3, hv.2, map_zero]) with h | h
-    · exact h
-    · exfalso
-      have h4 : v0 ∈ S' ⊓ LinearMap.ker E := by rw [h]; exact hv0S
-      exact hv0 (LinearMap.mem_ker.mp (Submodule.mem_inf.mp h4).2)
+  have hker_cases : ∀ (F : Wq →ₗ[ℂ] Wp),
+      (∀ A ∈ Gq, ∃ B : Module.End ℂ Wp, F ∘ₗ A = B ∘ₗ F) →
+      S' ⊓ LinearMap.ker F = ⊥ ∨ S' ⊓ LinearMap.ker F = S' := fun F hF =>
+    hirrq _ inf_le_left fun A hA v hv => by
+      obtain ⟨B, hB⟩ := hF A hA
+      have hFA : F (A v) = B (F v) := LinearMap.congr_fun hB v
+      exact ⟨hinvq A hA v hv.1, by show F (A v) = 0; rw [hFA, LinearMap.mem_ker.mp hv.2, map_zero]⟩
+  have hker : S' ⊓ LinearMap.ker E = ⊥ :=
+    (hker_cases E fun A hA => (hcomm A hA).imp fun _ h => h.1).resolve_right fun h =>
+      hv0 (LinearMap.mem_ker.mp (h.symm ▸ hv0S : v0 ∈ S' ⊓ LinearMap.ker E).2)
   have himg : S'.map E = S := by
-    rcases hirrp (S'.map E) (by
-      rintro _ ⟨v, hv, rfl⟩; exact hE v hv) (by
-      rintro B hB _ ⟨v, hv, rfl⟩
-      obtain ⟨A, hA, hAB⟩ := hsurj B hB
-      refine ⟨A v, hinvq A hA v hv, ?_⟩
-      have h3 := LinearMap.congr_fun hAB v
-      simpa only [LinearMap.comp_apply] using h3) with h | h
-    · exfalso
-      have h4 : E v0 ∈ S'.map E := ⟨v0, hv0S, rfl⟩
-      rw [h, Submodule.mem_bot] at h4
-      exact hv0 h4
-    · exact h
+    refine (hirrp (S'.map E) (by rintro _ ⟨v, hv, rfl⟩; exact hE v hv) ?_).resolve_left fun h =>
+      hv0 ((Submodule.mem_bot ℂ).mp (h ▸ ⟨v0, hv0S, rfl⟩))
+    rintro B hB _ ⟨v, hv, rfl⟩
+    obtain ⟨A, hA, hAB⟩ := hsurj B hB
+    exact ⟨A v, hinvq A hA v hv, LinearMap.congr_fun hAB v⟩
   let E' : S' →ₗ[ℂ] S := E.restrict hE
   let Z' : S' →ₗ[ℂ] S := Z.restrict hZ
   have hbij : Function.Bijective E' := by
-    constructor
-    · rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
-      intro x hx
-      have h1 : (x : Wq) ∈ S' ⊓ LinearMap.ker E := by
-        refine Submodule.mem_inf.mpr ⟨x.2, ?_⟩
-        rw [LinearMap.mem_ker]
-        have h5 := congrArg Subtype.val hx
-        simpa [E'] using h5
+    refine ⟨LinearMap.ker_eq_bot.mp (LinearMap.ker_eq_bot'.mpr fun x hx => ?_), fun ⟨w, hw⟩ => ?_⟩
+    · have h1 : (x : Wq) ∈ S' ⊓ LinearMap.ker E :=
+        ⟨x.2, by simpa [E'] using congrArg Subtype.val hx⟩
       rw [hker, Submodule.mem_bot] at h1
       exact Subtype.ext h1
-    · rintro ⟨w, hw⟩
-      rw [← himg] at hw
-      obtain ⟨v, hv, rfl⟩ := hw
+    · obtain ⟨v, hv, rfl⟩ := himg.symm ▸ hw
       exact ⟨⟨v, hv⟩, rfl⟩
   let e := LinearEquiv.ofBijective E' hbij
   let T : Module.End ℂ S' := e.symm.toLinearMap ∘ₗ Z'
-  have : Nontrivial S' := ⟨⟨⟨v0, hv0S⟩, 0, fun h => hv0 (by
-    rw [show v0 = 0 from congrArg Subtype.val h, map_zero])⟩⟩
+  have : Nontrivial S' :=
+    ⟨⟨⟨v0, hv0S⟩, 0, fun h => hv0 (by rw [show v0 = 0 from congrArg Subtype.val h, map_zero])⟩⟩
   obtain ⟨c, hc⟩ := Module.End.exists_eigenvalue T
   obtain ⟨x, hx⟩ := hc.exists_hasEigenvector
-  have hTx := hx.apply_eq_smul
   have hZx : Z x = c • E x := by
     have h1 : e (T x) = Z' x := by simp [T]
-    rw [hTx, map_smul] at h1
-    have h2 := congrArg Subtype.val h1
-    simp [e, E', Z'] at h2
-    exact h2.symm
-  have hx0 : (x : Wq) ≠ 0 := fun h => hx.2 (Subtype.ext h)
-  let K : Submodule ℂ Wq := S' ⊓ LinearMap.ker (Z - c • E)
-  have hK : K = S' := by
-    rcases hirrq K inf_le_left (by
-      intro A hA v hv
-      rw [Submodule.mem_inf, LinearMap.mem_ker] at hv ⊢
-      obtain ⟨B, hB1, hB2⟩ := hcomm A hA
-      refine ⟨hinvq A hA v hv.1, ?_⟩
-      have e1 := LinearMap.congr_fun hB1 v
-      have e2 := LinearMap.congr_fun hB2 v
-      simp only [LinearMap.comp_apply] at e1 e2
-      have hv2 := hv.2
-      simp only [LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero] at hv2 ⊢
-      rw [e1, e2, hv2, map_smul]) with h | h
-    · exfalso
-      have h6 : (x : Wq) ∈ K := by
-        refine Submodule.mem_inf.mpr ⟨x.2, ?_⟩
-        rw [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero]
-        exact hZx
-      rw [h, Submodule.mem_bot] at h6
-      exact hx0 h6
-    · exact h
+    rw [hx.apply_eq_smul, map_smul] at h1
+    simpa [e, E', Z'] using (congrArg Subtype.val h1).symm
+  have hK : S' ⊓ LinearMap.ker (Z - c • E) = S' := by
+    refine (hker_cases (Z - c • E) fun A hA => ?_).resolve_left fun h => ?_
+    · obtain ⟨B, hB1, hB2⟩ := hcomm A hA
+      refine ⟨B, LinearMap.ext fun v => ?_⟩
+      have e1 : E (A v) = B (E v) := LinearMap.congr_fun hB1 v
+      have e2 : Z (A v) = B (Z v) := LinearMap.congr_fun hB2 v
+      simp [e1, e2]
+    · have hmem : (x : Wq) ∈ S' ⊓ LinearMap.ker (Z - c • E) :=
+        ⟨x.2, by simp [LinearMap.mem_ker, hZx]⟩
+      rw [h, Submodule.mem_bot] at hmem
+      exact hx.2 (Subtype.ext hmem)
   refine ⟨c, fun v hv => ?_⟩
-  have h7 : v ∈ K := by rw [hK]; exact hv
-  have h8 := (Submodule.mem_inf.mp h7).2
-  rw [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero] at h8
-  exact h8
+  have hmem : v ∈ S' ⊓ LinearMap.ker (Z - c • E) := hK.symm ▸ hv
+  simpa [LinearMap.mem_ker, sub_eq_zero] using hmem.2
 
 end Bl.general_b_fact_second_alt_form

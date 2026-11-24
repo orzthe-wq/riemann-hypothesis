@@ -1,5 +1,6 @@
 module
 
+import Mathlib
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.SecondThirdPrimeConditionTransferAlt
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.IrrNormal
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.NiceSep
@@ -78,7 +79,7 @@ private lemma charpoly_block_three {A : Type} [CommRing A] (M : Matrix (Fin 3) (
     M.charpoly = (X - C (M 1 1)) * (M.submatrix ![0, 2] ![0, 2]).charpoly := by
   obtain ⟨h1, h2, h3, h4⟩ := h
   simp only [submatrix_corners_three, Matrix.charpoly, det_fin_three, det_fin_two]
-  simp [charmatrix_apply, h1, h2, h3, h4]
+  simp [h1, h2, h3, h4]
   ring
 
 private def corner {G A : Type} [Group G] [CommRing A] (m : G →* Matrix (Fin 3) (Fin 3) A) (h : ∀ g, IsBlockDiagFinThree (m g)) :
@@ -131,7 +132,7 @@ private lemma core {G D κ k A : Type} [Group G] [Group D] [Field κ] [IsAlgClos
     · rw [← Matrix.charpoly_map]; rfl
     · rw [← Matrix.charpoly_map]
       simp only [submatrix_corners_three, Matrix.charpoly, det_fin_two, chPoly, Fin.prod_univ_two]
-      simp [charmatrix_apply, h0, h2, mul_eq_zero.1 (h02 g)]
+      simp [h0, h2, mul_eq_zero.1 (h02 g)]
   · have e := hch g
     rw [charpoly_block_three _ (hb _), hi, chPoly, Fin.prod_univ_succAbove _ i] at e
     exact mul_left_cancel₀ (X_sub_C_ne_zero _) e

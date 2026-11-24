@@ -106,13 +106,6 @@ theorem aeval_tan [Fintype κ] [DecidableEq κ] (v : κ → S) (P : MvPolynomial
       MvPolynomial.constantCoeff_X, mul_zero, map_zero, zero_add]
     apply TrivSqZeroExt.ext <;> simp [Algebra.smul_def, TrivSqZeroExt.algebraMap_eq_inl, mul_comm]
 
-theorem const_of_mem_orig {P : MvPolynomial κ S} (h : P ∈ orig S κ) : MvPolynomial.constantCoeff P = 0 := by
-  have hle : orig S κ ≤ RingHom.ker (MvPolynomial.constantCoeff : MvPolynomial κ S →+* S) := by
-    rw [orig, Ideal.span_le]
-    rintro _ ⟨i, rfl⟩
-    simp
-  exact hle h
-
 theorem tanV_comp_jetMap {κ' : Type} [Fintype κ'] [DecidableEq κ'] (φ : κ → MvPolynomial κ' S)
     (hφ : ∀ i, φ i ∈ orig S κ') (v : κ' → S) :
     (tanV v).comp (jetMap φ hφ : Jet S κ (0 + 1) →ₐ[S] Jet S κ' (0 + 1)) =
@@ -126,7 +119,7 @@ theorem tanV_comp_jetMap {κ' : Type} [Fintype κ'] [DecidableEq κ'] (φ : κ �
       Ideal.Quotient.mk _ (φ i) := by
     show Ideal.Quotient.mk _ (MvPolynomial.aeval φ (MvPolynomial.X i)) = _
     rw [MvPolynomial.aeval_X]
-  rw [e, tanV_mk, tanV_mk, aeval_tan, MvPolynomial.aeval_X, const_of_mem_orig (hφ i), map_zero, zero_add]
+  rw [e, tanV_mk, tanV_mk, aeval_tan, MvPolynomial.aeval_X, GlobalTheory.EigDir.const_of_mem_orig (hφ i), map_zero, zero_add]
 
 theorem coeff_psTrunc' {ιt : Type} [Fintype ιt] [DecidableEq ιt] (m : ℕ) (f : MvPowerSeries ιt S) (e : ιt →₀ ℕ)
     (he : e.degree ≤ m) : AddMonoidAlgebra.coeff (psTrunc m f) e = MvPowerSeries.coeff e f := by
@@ -152,15 +145,11 @@ variable {S : Type} [CommRing S] {d : ℕ}
 
 
 open MvPowerSeries Formalism.FG.SolveVAux in
-theorem coeff_single_subst' {σ τ : Type} [Fintype σ] [DecidableEq σ] [DecidableEq τ]
-    (a : σ → MvPowerSeries τ S) (ha : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ S) (t : τ) :
-    coeff (Finsupp.single t 1) (subst a f) =
-      ∑ s, coeff (Finsupp.single s 1) f * coeff (Finsupp.single t 1) (a s) :=
-  _root_.UpperTheory.Reformulated.B.LinearTermOfSubstitution.main a ha f t
+alias coeff_single_subst' := _root_.UpperTheory.Reformulated.B.LinearTermOfSubstitution.main
 
 theorem law_coeff (G : Germ.FGLaw S d) (i j : Fin d) (k : Fin 2) :
     MvPowerSeries.coeff (Finsupp.single (k, j) 1) (G.F i) = if j = i then 1 else 0 := by
-  apply GlobalTheory.EigDir.law_coeff <;> assumption
+  apply GlobalTheory.EigDir.law_coeff
 
 end Law
 
@@ -244,17 +233,6 @@ theorem localization_quotient_separated_dvd {T A : Type} [DecidableEq T] (φ : A
       ∏ τ ∈ s, W τ = 1 → ∀ τ ∈ s, W τ = 1 := by
   apply GlobalTheory.EigDir.localization_quotient_separated_dvd <;> assumption
 
-theorem combT_add {m : ℕ} (D : Fin m → (overAt x0 (DualNumber S) ⟶ G)) (hD : ∀ j, smT x0 0 (D j) = 1)
-    (p q : Fin m → S) : combT x0 D (p + q) = combT x0 D p * combT x0 D q := by
-  simp only [combT, Pi.add_apply, smT_add x0 _ (hD _), Finset.prod_mul_distrib]
-
-theorem combT_sum {m : ℕ} (D : Fin m → (overAt x0 (DualNumber S) ⟶ G)) (hD : ∀ j, smT x0 0 (D j) = 1)
-    {κ : Type} (s : Finset κ) (f : κ → Fin m → S) : combT x0 D (∑ k ∈ s, f k) = ∏ k ∈ s, combT x0 D (f k) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simpa using combT_zero x0 D hD
-  | insert k s hk ih => rw [Finset.sum_insert hk, Finset.prod_insert hk, combT_add x0 D hD, ih]
-
 end Sep
 
 section Pts2
@@ -318,23 +296,11 @@ section Main
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
-theorem embK_sep {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l)
-    (τ τ' : E →+* ℂ) (h : τ ≠ τ') : ∃ a : 𝓞 E, embK c τ a ≠ embK c τ' a := by
-  by_contra hc
-  push Not at hc
-  apply h
-  have hF : embF c τ = embF c τ' :=
-    IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => hc a)
-  ext x
-  exact congrArg (fun f : E →+* c.F => ((f x : c.F) : ℂ)) hF
-
-
-
 theorem linEig_holds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (S : Type) [CommRing S] [Algebra c.F S]
     [Algebra ℚ S] (y : FrPt Xo c S) (C : ChartAt Xo c y) (a : 𝓞 E) (ℓ : Lt1 Dw) (i : Fin C.d),
     ∑ j, ReciprocityTheory.ChartRestriction.G.TB.dLin (C.B.A.act a) i j * C.uvec ℓ j = algebraMap c.F S (embK c ℓ.1 a) * C.uvec ℓ i := by
-  apply GlobalTheory.EigDir.linEig_holds <;> assumption
+  apply GlobalTheory.EigDir.linEig_holds
 
 end Main
 

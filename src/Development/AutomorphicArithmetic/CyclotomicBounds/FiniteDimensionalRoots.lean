@@ -63,11 +63,11 @@ theorem finiteDimensional_roots {M : ℕ} (hM : M ≠ 0) :
     apply (Polynomial.nthRootsFinset M (1 : Om l)).finite_toSet.subset
     intro x hx
     simpa [Polynomial.mem_nthRootsFinset (Nat.pos_of_ne_zero hM)] using hx
-  haveI : Finite ({x : Om l | x ^ M = 1} : Set (Om l)) := hfin.to_subtype
+  have : Finite ({x : Om l | x ^ M = 1} : Set (Om l)) := hfin.to_subtype
   apply IntermediateField.finiteDimensional_adjoin
   intro x hx
   refine ⟨Polynomial.X ^ M - 1, Polynomial.monic_X_pow_sub_C 1 hM, ?_⟩
-  simp [Set.mem_setOf_eq.mp hx]
+  simp [Set.mem_ofPred_eq.mp hx]
 
 def rootsExt (l : ℕ) [Fact l.Prime] (M : ℕ) (hM : M ≠ 0) : FinExt l :=
   ⟨IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ M = 1}, finiteDimensional_roots hM⟩
@@ -80,7 +80,7 @@ theorem le_roots_of_dense {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ
     (hN : H.condN ∣ M) (hdense : (K.1 : Set (Om l)) ⊆ closure (Set.range J)) :
     K.1 ≤ IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ M = 1} := by
   set A := IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ M = 1} with hA
-  haveI : FiniteDimensional ℚ_[l] A := finiteDimensional_roots hM
+  have : FiniteDimensional ℚ_[l] A := finiteDimensional_roots hM
   have hrange : Set.range J ⊆ (A : Set (Om l)) := by
     rintro _ ⟨y, rfl⟩
     apply H.image_mem_of_roots J A.toSubfield

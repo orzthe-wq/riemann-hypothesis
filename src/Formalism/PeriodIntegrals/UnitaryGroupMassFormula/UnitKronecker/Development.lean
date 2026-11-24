@@ -66,7 +66,7 @@ theorem map_relation {E : Type} [Field E] (c : E →+* E) (φ : E →+* ℂ)
   simp only [Matrix.map_mul] at h
   convert h using 3
   ext i j
-  simp [Matrix.conjTranspose_apply, hc, Complex.star_def]
+  simp [Matrix.conjTranspose_apply, hc]
 
 theorem unitKron_of (hA : StepA) (hB : StepB) (hC : StepC) : PI.UnitKron := by
   intro E _ _ c hc k J γ hJ hγ hint

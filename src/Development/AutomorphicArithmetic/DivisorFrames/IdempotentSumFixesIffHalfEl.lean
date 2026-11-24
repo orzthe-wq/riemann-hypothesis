@@ -60,10 +60,6 @@ open GlobalTheory.AdelicU (splitPrime_under)
 
 variable {D : D7}
 
-private theorem ext_cpt {a b : AE D} (h1 : infPart D a = infPart D b)
-    (h2 : ∀ Q, cpt (D := D) Q (toEAf D a) = cpt (D := D) Q (toEAf D b)) : a = b :=
-  (comp_toAd D).ext' h1 h2
-
 private theorem cpt_base {Q : HeightOneSpectrum (𝓞 D.host.E)} {v : HeightOneSpectrum (𝓞 D.host.F)}
     (h : Q.under (𝓞 D.host.F) = v) (u : AF D.host.F) :
     cpt (D := D) Q (toEAf D (algebraMap _ (AE D) u)) = complMap h (evFin D.host.F v u) := by
@@ -104,7 +100,7 @@ private theorem first_half {e₀ : AE D} {S : Finset (HeightOneSpectrum (𝓞 D.
   · intro hz
     refine ⟨fun u hu => ?_, fun v => ?_⟩
     · have h0 : algebraMap _ (AE D) u * e₀ = 0 := by
-        refine ext_cpt (by rw [RingHom.map_mul, e0, mul_zero, RingHom.map_zero]) fun Q => ?_
+        refine _root_.GlobalTheory.FunObj.ae_ext (by rw [RingHom.map_mul, e0, mul_zero, RingHom.map_zero]) fun Q => ?_
         rw [RingHom.map_mul, RingHom.map_mul, RingHom.map_zero, RingHom.map_zero]
         by_cases hQ : Q ∈ S
         · rw [cpt_base rfl, hu _ ((hP _).2 ⟨Q, hQ, rfl⟩), RingHom.map_zero, zero_mul]
@@ -118,7 +114,7 @@ private theorem first_half {e₀ : AE D} {S : Finset (HeightOneSpectrum (𝓞 D.
   · rintro ⟨h1, h2⟩
     have h1' : ∀ u : AF D.host.F, (∀ v ∈ P, evFin D.host.F v u = 0) → algebraMap _ (AE D) u * z = 0 :=
       fun u hu => (Algebra.smul_def u z).symm.trans (h1 u hu)
-    refine ext_cpt ?_ fun Q => ?_
+    refine _root_.GlobalTheory.FunObj.ae_ext ?_ fun Q => ?_
     · have h3 := congrArg (infPart D) (h1' ((1, 0) : Ainf D.host.F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) fun v _ => rfl)
       have h4 : infPart D (algebraMap (AF D.host.F) (AE D) ((1, 0) : Ainf D.host.F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F)) = 1 := rfl
       rw [RingHom.map_mul, h4, one_mul, RingHom.map_zero] at h3
@@ -147,9 +143,6 @@ private theorem first_half {e₀ : AE D} {S : Finset (HeightOneSpectrum (𝓞 D.
         simp only [RingHom.map_mul, RingHom.map_zero] at h3
         rwa [cpt_base rfl, h4, RingHom.map_one, one_mul] at h3
 
-private theorem cA_smul (u : AF D.host.F) (z : AE D) : cA D (u • z) = u • cA D z := by
-  rw [Algebra.smul_def, Algebra.smul_def, RingHom.map_mul, GlobalTheory.IdemSupport.cA_algebraMap]
-
 end
 
 theorem UpperTheory.idempotentSum_fixes_iff_halfEl :
@@ -169,6 +162,6 @@ theorem UpperTheory.idempotentSum_fixes_iff_halfEl :
   rw [← hi.eq_iff, RingHom.map_mul, hc] at h
   refine h.trans (and_congr (forall_congr' fun u => imp_congr_right fun _ => ?_) (forall_congr' fun v => ?_))
   · change u • cA D z = 0 ↔ u • z = 0
-    rw [← cA_smul, ← hi.eq_iff, hc, RingHom.map_zero]
+    rw [← _root_.GlobalTheory.FinTranslate.cA_smul, ← hi.eq_iff, hc, RingHom.map_zero]
   · change piW ((t v).comp D.sp.cm.sig) (cA D z) = 0 ↔ _
     rw [piW_comp, hc]

@@ -3,7 +3,7 @@ module
 public import Formalism.LocalRingCardinality.AdicCompletionLocal.InstIsAdicCompleteOCSpanSingletonSetCast
 public import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BoundedOrbitHasNearbyFixedPointStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BoundedOrbitHasNearbyFixedPoint
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -55,7 +55,7 @@ theorem ax_sen_tate : ∀ (l : ℕ) [Fact l.Prime], ∀ (H : Subgroup (GQ l)) (x
     (∀ g ∈ H, Per.σC g x = x) →
       x ∈ closure ((fun y : Om l => (y : ℂ_[l])) '' {y | ∀ g ∈ H, g y = y}) := by
   intro l _ H x hx
-  obtain ⟨c, hc, hax⟩ := GlobalTheory.T.bounded_orbit_has_nearby_fixed_point l
+  obtain ⟨c, hc, hax⟩ := _root_.GlobalTheory.AxLemma.ax_lemma l
   rw [Metric.mem_closure_iff]
   intro ε hε
   have hd : DenseRange (fun y : Om l => (y : ℂ_[l])) := by

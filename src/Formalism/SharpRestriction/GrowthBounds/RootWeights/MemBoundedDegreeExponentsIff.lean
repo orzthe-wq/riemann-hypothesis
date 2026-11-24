@@ -82,7 +82,6 @@ theorem asm_newton_big (f : ℕ → ℚ) (m B : ℕ) (h : m < B) :
   exact ext_lemma (mah f) m B h
 
 theorem asm_padicGe_one {p : ℕ} [Fact p.Prime] : PadicGe p 1 0 := by
-  show (1 : ℚ) = 0 ∨ (0 : ℝ) ≤ (padicValRat p 1 : ℝ)
   right
   simp [padicValRat.one]
 
@@ -106,12 +105,11 @@ def boundedDegreeExponents (σ : Type*) [Fintype σ] (c : ℕ) : Finset (σ → 
 theorem mem_bounded_degree_exponents_iff {σ : Type*} [Fintype σ] {c : ℕ} {j : σ → ℕ} : j ∈ boundedDegreeExponents σ c ↔ ∑ k, j k ≤ 4 * c := by
   classical
   unfold boundedDegreeExponents
-  rw [Finset.mem_filter, Fintype.mem_piFinset]
+  simp only [Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_range]
   constructor
   · exact fun h => h.2
   · intro h
     refine ⟨fun k => ?_, h⟩
-    rw [Finset.mem_range]
     have := Finset.single_le_sum (fun i _ => Nat.zero_le (j i)) (Finset.mem_univ k)
     omega
 
@@ -170,26 +168,18 @@ theorem asm_iter_zero (j : ℕ) : (fwdDiff 1)^[j] (fun _ : ℕ => (0 : ℚ)) = f
   induction j with
   | zero => rfl
   | succ j ih =>
-    rw [Function.iterate_succ_apply', ih]
-    funext n
-    simp [fwdDiff]
+    rw [Function.iterate_succ_apply', ih, fwdDiff_const]
 
 theorem asm_dec_one {p : ℕ} [Fact p.Prime] {θ : ℝ} : Dec p θ 0 (fun _ => (1 : ℚ)) := by
   intro j
   cases j with
   | zero =>
-    show mah (fun _ => (1 : ℚ)) 0 = 0 ∨
-      θ * ((0 : ℕ) : ℝ) + 0 ≤ (padicValRat p (mah (fun _ => (1 : ℚ)) 0) : ℝ)
     right
     simp [mah]
   | succ j =>
     left
     show (fwdDiff 1)^[j + 1] (fun _ : ℕ => (1 : ℚ)) 0 = 0
-    rw [Function.iterate_succ_apply]
-    have e : fwdDiff 1 (fun _ : ℕ => (1 : ℚ)) = fun _ => 0 := by
-      funext n
-      simp [fwdDiff]
-    rw [e, asm_iter_zero]
+    rw [Function.iterate_succ_apply, fwdDiff_const, asm_iter_zero]
 
 theorem asm_dec_prod {p : ℕ} [Fact p.Prime] (hM : HMul p) {θ : ℝ} (hθ : 0 ≤ θ) {ι : Type*} (s : Finset ι)
     (g : ι → ℕ → ℚ) (h : ∀ i ∈ s, Dec p θ 0 (g i)) : Dec p θ 0 (fun n => ∏ i ∈ s, g i n) := by
@@ -199,13 +189,10 @@ theorem asm_dec_prod {p : ℕ} [Fact p.Prime] (hM : HMul p) {θ : ℝ} (hθ : 0 
   · intro _
     simpa using (asm_dec_one (p := p) (θ := θ))
   · intro a s ha ih h
-    have e : (fun n => ∏ i ∈ insert a s, g i n) = fun n => g a n * ∏ i ∈ s, g i n := by
-      funext n
-      rw [Finset.prod_insert ha]
-    rw [e]
-    have := hM θ 0 0 (g a) (fun n => ∏ i ∈ s, g i n) hθ (h a (Finset.mem_insert_self a s))
-      (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
-    rwa [add_zero] at this
+    simpa [Finset.prod_insert ha, add_zero] using
+      hM θ 0 0 (g a) (fun n => ∏ i ∈ s, g i n) hθ
+        (h a (Finset.mem_insert_self a s))
+        (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 theorem asm_clause2 (p : ℕ) [Fact p.Prime] (f : ℕ → ℚ) (a : ℕ → ℚ)
     (h1 : ∀ m : ℕ, f m = ∑ j ∈ Finset.range (m + 1), a j * (m.choose j : ℚ))
@@ -308,16 +295,15 @@ def asm_f (p : ℕ) {σ : Type*} (t rho : σ → ℕ) (inv : Bool) (k : σ) (n :
 
 theorem asm_f_dec {p : ℕ} (h1 : HDec p) (h2 : HMul p) {σ : Type*} (t rho : σ → ℕ)
     (hr : ∀ k, rho k < p ^ (t k + 1)) (inv : Bool) (k : σ) : Dec p (1 / 4) 0 (asm_f p t rho inv k) := by
-  have := h2 (1 / 4) 0 0 (unitFn p ⟨t k, rho k, true, inv⟩) (unitFn p ⟨t k, rho k, false, inv⟩)
+  have h := h2 (1 / 4) 0 0 (unitFn p ⟨t k, rho k, true, inv⟩) (unitFn p ⟨t k, rho k, false, inv⟩)
     (by norm_num) (h1 _ (hr k)) (h1 _ (hr k))
-  rw [add_zero] at this
-  exact this
+  rwa [add_zero] at h
 
 theorem asm_prod_eq (p : ℕ) {σ : Type*} [Fintype σ] (t rho : σ → ℕ) (inv : Bool) (e' : σ → ℕ) :
     (if inv then (∏ k, cUnit (p ^ (t k + 1)) (e' k) * dUnit (p ^ (t k + 1)) (e' k) (rho k))⁻¹
       else (∏ k, cUnit (p ^ (t k + 1)) (e' k) * dUnit (p ^ (t k + 1)) (e' k) (rho k))) =
     ∏ k, asm_f p t rho inv k (e' k) := by
-  cases inv <;> simp [asm_f, unitFn, Finset.prod_mul_distrib, Finset.prod_inv_distrib, mul_inv] <;> ring
+  cases inv <;> simp [asm_f, unitFn, Finset.prod_mul_distrib, Finset.prod_inv_distrib] <;> ring
 
 private theorem dUnit_lemma (P n : ℕ) : ∀ rho : ℕ,
     dUnit P n rho * ((P * n).factorial : ℚ) * (rho.factorial : ℚ) = ((P * n + rho).factorial : ℚ) := by
@@ -354,10 +340,7 @@ theorem asm_ratio (p : ℕ) (hp : p.Prime) {σ : Type*} [Fintype σ] (t rho : σ
     ∏ k, cUnit (p ^ (t k + 1)) (e' k) * dUnit (p ^ (t k + 1)) (e' k) (rho k) := by
   rw [← Finset.prod_div_distrib]
   refine Finset.prod_congr rfl fun k _ => ?_
-  rw [fact_lemma_2 (p ^ (t k + 1)) (e' k) (rho k)]
-  have h0 : ((rho k).factorial : ℚ) * ((e' k).factorial : ℚ) *
-      ((p ^ (t k + 1)).factorial : ℚ) ^ (e' k) ≠ 0 := by positivity
-  rw [div_eq_iff h0]
+  rw [fact_lemma_2 (p ^ (t k + 1)) (e' k) (rho k), div_eq_iff (by positivity)]
   ring
 
 theorem unit_function_mahler_decay_of (D : Formalism.BasicNotions.D7) (h1 : ∀ p, p.Prime → HDec p) (h2 : ∀ p, p.Prime → HMul p)
@@ -371,7 +354,7 @@ theorem unit_function_mahler_decay_of (D : Formalism.BasicNotions.D7) (h1 : ∀ 
     intro k _
     have hc := h3 p hp ⟨t k, rho k, true, false⟩ (hr k) (e' k)
     have hd := h3 p hp ⟨t k, rho k, false, false⟩ (hr k) (e' k)
-    simp only [unitFn, if_true, if_false, Bool.false_eq_true, ↓reduceIte] at hc hd
+    simp only [unitFn, Bool.false_eq_true, ↓reduceIte] at hc hd
     refine ⟨mul_ne_zero hc.1 hd.1, ?_⟩
     rw [padicValRat.mul hc.1 hd.1, hc.2, hd.2, add_zero]
   · have hf := fun k => asm_f_dec (h1 p hp) (h2 p hp) t rho hr inv k

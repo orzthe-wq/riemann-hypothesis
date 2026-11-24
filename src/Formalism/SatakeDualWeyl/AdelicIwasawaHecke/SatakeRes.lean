@@ -61,7 +61,7 @@ theorem satake_unif_ne_zero {ϖ : v.adicCompletion F} (h : IsUnifV F v ϖ) : ϖ 
   intro h0
   subst h0
   unfold IsUnifV at h
-  first | simp at h | done
+  first | simp at h
 
 theorem satake_lt_one_le {x : WithZero (Multiplicative ℤ)} (hx : x < 1) :
     x ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
@@ -79,8 +79,6 @@ private theorem mem_Ov_iff' (x : v.adicCompletion F) : x ∈ Ov F v ↔ Valued.v
   unfold Ov
   first
     | exact Iff.rfl
-    | exact mem_adicCompletionIntegers
-    | simp [mem_adicCompletionIntegers]
 
 theorem satake_unif_inv_not_mem {ϖ : v.adicCompletion F} (h : IsUnifV F v ϖ) : ϖ⁻¹ ∉ Ov F v := by
   unfold IsUnifV at h
@@ -89,7 +87,7 @@ theorem satake_unif_inv_not_mem {ϖ : v.adicCompletion F} (h : IsUnifV F v ϖ) :
   rw [map_inv₀, h] at hm'
   have h4 : ((Multiplicative.ofAdd (-1 : ℤ))⁻¹ : Multiplicative ℤ) ≤ 1 := by
     rw [← WithZero.coe_le_coe, WithZero.coe_inv]
-    first | exact_mod_cast hm' | simpa using hm'
+    first | exact_mod_cast hm'
   have h5 : Multiplicative.toAdd ((Multiplicative.ofAdd (-1 : ℤ))⁻¹) ≤ Multiplicative.toAdd (1 : Multiplicative ℤ) := h4
   simp at h5
 
@@ -126,7 +124,7 @@ theorem satake_mem_span_iff {ϖ : v.adicCompletion F} (hϖ : ϖ ∈ Ov F v) (h :
 def satakeIota : 𝓞 F →+* Ov F v := algebraMap (𝓞 F) (v.adicCompletionIntegers F)
 
 theorem satakeIota_coe (r : 𝓞 F) :
-    ((satakeIota v r : Ov F v) : v.adicCompletion F) = algebraMap (𝓞 F) (v.adicCompletion F) r := by first | rfl | simp [satakeIota] | (unfold satakeIota Ov; done)
+    ((satakeIota v r : Ov F v) : v.adicCompletion F) = algebraMap (𝓞 F) (v.adicCompletion F) r := by first | rfl
 
 theorem satake_card_res {ϖ : v.adicCompletion F} (hϖ : ϖ ∈ Ov F v) (h : IsUnifV F v ϖ) :
     Nat.card (Ov F v ⧸ Ideal.span {(⟨ϖ, hϖ⟩ : Ov F v)}) = qV F v := by

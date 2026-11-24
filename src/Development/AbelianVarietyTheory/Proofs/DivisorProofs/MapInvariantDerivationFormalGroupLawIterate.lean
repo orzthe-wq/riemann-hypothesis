@@ -69,7 +69,7 @@ theorem map_atZero {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : �
 theorem map_smul_coeffChange {R S σ : Type} [CommRing R] [CommRing S] (f : R →+* S) (a : R)
     (H : MvPowerSeries σ R) : map f (a • H) = f a • map f H := by
   ext m
-  simp [MvPowerSeries.coeff_map, MvPowerSeries.coeff_smul]
+  simp [MvPowerSeries.coeff_map]
 
 theorem map_invDer {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : ℕ}
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0)

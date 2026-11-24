@@ -517,12 +517,12 @@ theorem thA_vacuum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r :
   have qs : ∀ (k : Fin n) (i : Fin g), qv ((Matrix.single k i (1 : ℚ)) k) = Pi.single i 1 := by
     intro k i; funext j
     by_cases hij : j = i
-    · subst hij; simp [qv, Matrix.single_apply]
-    · simp [qv, Matrix.single_apply, Pi.single_apply, hij, Ne.symm hij]
+    · subst hij; simp [qv]
+    · simp [qv, hij, Ne.symm hij]
   have qv0 : ∀ k : Fin n, qv ((0 : Matrix (Fin n) (Fin g) ℚ) k) = 0 := by
     intro k; funext j; simp [qv]
   have hs0 : ∀ (k : Fin n) (i : Fin g) (l : Fin n), l ≠ k → (Matrix.single k i (1 : ℚ)) l = 0 := by
-    intro k i l hl; funext j; simp [Matrix.single_apply, hl, Ne.symm hl]
+    intro k i l hl; funext j; simp [Ne.symm hl]
   have fix₁ : ∀ k i, cexp (2 * Real.pi * I * c₁ i) • heisS (Matrix.single k i 1) 0 (ω v) = ω v := by
     intro k i
     have := heis_fix idx hs hn hv hψSB hx₀ hh₀ hτ₀ e1₀ e2₀ (hbmem (Sum.inl i)) k

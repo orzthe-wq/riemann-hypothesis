@@ -67,7 +67,6 @@ theorem dvr_order_coe_addVal {a : O} (ha : a ≠ 0) : ((dvrOrderNat a : ℕ) : �
   unfold dvrOrderNat
   first
     | exact ENat.coe_toNat (by rwa [Ne, IsDiscreteValuationRing.addVal_eq_top_iff])
-    | exact ENat.coe_toNat ((AddValuation.top_iff _).not.mpr ha)
 
 theorem dvr_order_mul {a b : O} (ha : a ≠ 0) (hb : b ≠ 0) : dvrOrderNat (a * b) = dvrOrderNat a + dvrOrderNat b := by
   have h1 := dvr_order_coe_addVal (mul_ne_zero ha hb)
@@ -103,7 +102,6 @@ theorem dvr_order_unit_eq_zero {a : O} (ha : IsUnit a) : dvrOrderNat a = 0 := by
   unfold dvrOrderNat
   first
     | rw [IsDiscreteValuationRing.addVal_eq_zero_iff.2 ha]; rfl
-    | (obtain ⟨u, rfl⟩ := ha; simp [IsDiscreteValuationRing.addVal_eq_zero_of_unit])
 
 theorem ord_eq_order_sub_of_fraction (x : KK O) (a b : O) (ha : a ≠ 0) (hb : b ≠ 0)
     (h : x * algebraMap O (KK O) b = algebraMap O (KK O) a) :
@@ -232,8 +230,6 @@ theorem valuation_algebraMap_eq_alt (p : ℕ) (o : O) (ho : o ≠ 0) :
     vK p (algebraMap O (KK O) o) = ((((dvrOrderNat o : ℕ) : ℚ) / (ramE p O : ℚ) : ℚ) : WithTop ℚ) := by
   rw [valuation_eq_of_fraction p _ o 1 ho one_ne_zero (by rw [map_one, mul_one]), dvr_order_unit_eq_zero isUnit_one]
   congr 1
-  all_goals push_cast
-  all_goals ring
 
 theorem natCast_isUnit_of_coprime {p : ℕ} (hp : p.Prime) (S : UniformizedDVR p O) (n : ℕ) (hn : ¬ p ∣ n) :
     IsUnit (n : O) := by

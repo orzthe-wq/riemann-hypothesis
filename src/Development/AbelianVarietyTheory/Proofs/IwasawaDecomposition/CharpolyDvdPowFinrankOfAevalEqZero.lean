@@ -82,8 +82,6 @@ theorem charpoly_dvd_pow_finrank {K V : Type} [Field K] [AddCommGroup V] [Module
   have := matrix_charpoly_dvd_pow _ G hM
   rwa [LinearMap.charpoly_toMatrix, Fintype.card_fin] at this
 
-theorem main : ∀ {K V : Type} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
-    (f : Module.End K V) (G : K[X]), aeval f G = 0 → f.charpoly ∣ G ^ Module.finrank K V :=
-  fun f G hG => charpoly_dvd_pow_finrank f G hG
+alias main := _root_.GlobalTheory.CharpolyDvd.charpoly_dvd_pow_finrank
 
 end GlobalTheory.CharpolyDvd

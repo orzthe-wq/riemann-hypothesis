@@ -111,9 +111,9 @@ theorem fourier_sub_translate_eq_zero [MeasurableSpace k] [BorelSpace k] {n : �
         refine integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)
         have hga : g (w + a) = g w := by
           by_cases hw : w ∈ A
-          · simp [hgdef, Set.indicator, hw, A.add_mem hw haA]
+          · simp [hgdef, hw, A.add_mem hw haA]
           · have : w + a ∉ A := fun h => hw (by simpa using A.sub_mem h haA)
-            simp [hgdef, Set.indicator, hw, this]
+            simp [hgdef, hw, this]
         simp only [hga, add_dotProduct, AddChar.map_add_eq_mul, Circle.coe_mul, dotProduct_comm a y]
         ring
       rw [h3] at h

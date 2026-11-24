@@ -2,8 +2,8 @@ module
 
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.UnipotentDerivatives.DerUnipLeUnipB
 public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.MirabolicDerivatives.ColMatMulGlEmbMat
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicTwistedKernelDerivativeZeroStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedJacquetPhiMinusEquivStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MirabolicTwistedKernelDerivativeZero
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwistedJacquetPhiMinusEquiv
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,10 +56,10 @@ theorem iterPhi_twJacquet_equiv (k : Type) [Field k] [ValuativeRel k] [Topologic
       TwJacquet τ.ρ (derUnipM k (n + j) n) (derCharM k ψ (n + j) n)) := by
   induction j with
   | zero =>
-    exact ⟨Submodule.quotEquivOfEq _ _ (GlobalTheory.T.mirabolic_twisted_kernel_derivative_zero k ψ n τ.V τ.ρ)⟩
+    exact ⟨Submodule.quotEquivOfEq _ _ (_root_.GlobalTheory.CompanionTheory.BZMir.twKer_MirUin_eq_derUnipM k ψ n τ.V τ.ρ)⟩
   | succ j ih =>
     obtain ⟨e₁⟩ := ih (MRep.phiM k ψ τ)
-    obtain ⟨e₂⟩ := GlobalTheory.T.twisted_jacquet_phi_minus_equiv k ψ (n + j) n (Nat.le_add_right n j) τ.V τ.ρ
+    obtain ⟨e₂⟩ := _root_.GlobalTheory.CompanionTheory.BZMirStep.phiMinus_twJacquet_equiv k ψ (n + j) n (Nat.le_add_right n j) τ.V τ.ρ
     exact ⟨e₁.trans e₂⟩
 
 end GlobalTheory.CompanionTheory.BZMir

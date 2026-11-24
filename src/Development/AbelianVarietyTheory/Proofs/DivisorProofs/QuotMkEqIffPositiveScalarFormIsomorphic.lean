@@ -60,7 +60,7 @@ theorem rel_equivalence {p : ℕ} [Fact p.Prime] (G : HTGroup p) : Equivalence (
       rw [← sh_mul, Units.inv_mul, sh_one]
     rw [hβ]
     simp only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, smul_smul, mul_assoc, e, mul_one,
-      inv_mul_cancel₀ hs.ne', mul_inv_cancel₀ hs.ne', one_smul, Units.inv_mul_cancel_left]
+      mul_inv_cancel₀ hs.ne', one_smul, Units.inv_mul_cancel_left]
   · obtain ⟨y, s, hs, hβ⟩ := h
     obtain ⟨y', s', hs', hβ'⟩ := h'
     refine ⟨y' * y, s' * s, mul_pos hs' hs, ?_⟩

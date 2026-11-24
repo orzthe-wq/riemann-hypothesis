@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.FrameFacts
 
 @[expose] public section
 
@@ -56,21 +57,12 @@ def NumsL (D : D7) (L : SizeData₂ D) (Cn cL : ℝ) : Prop :=
 def WtsL (D : D7) (L : SizeData₂ D) (Cn : ℝ) : Prop :=
   ∀ u, flipTwoThree.Wts D u Cn L.sc.x L.sc.b L.sc.b' L.Sc L.etaSz
 
-theorem tau1_mem_Psi (φ : Formalism.HC.Frame) (t : φ.A) : φ.tau1 t ∈ φ.Psi := by
-  show φ.tau1 t ∈ φ.chD.ker
-  rw [MonoidHom.mem_ker]
-  rfl
-
-theorem tau1_injective_alt (φ : Formalism.HC.Frame) : Function.Injective φ.tau1 := by
-  intro a b h
-  simpa [Formalism.HC.Frame.tau1, Formalism.HC.Frame.iota] using h
-
 theorem sum_tops (D : D7) (g : D.what₂.Tau → ℝ) (h : D.host.TT → ℝ)
     (hg : ∀ τ (t : D.host.TT), (D.eTau τ : D.R.GG) = D.R.tau1 t → g τ = h t) :
     ∑ τ ∈ topsOf D.host D.eTau, g τ = ∑ t : D.host.TT, h t := by
   symm
   refine Finset.sum_bij
-    (fun (t : D.host.TT) _ => D.eTau.symm ⟨D.R.tau1 (t : D.R.A), tau1_mem_Psi D.R.toFrame (t : D.R.A)⟩)
+    (fun (t : D.host.TT) _ => D.eTau.symm ⟨D.R.tau1 (t : D.R.A), _root_.Formalism.HC.Frame.tau1_mem_Psi D.R.toFrame (t : D.R.A)⟩)
     ?_ ?_ ?_ ?_
   · intro t _
     simp only [topsOf, Finset.mem_filter, Finset.mem_univ, true_and, Equiv.apply_symm_apply,
@@ -79,7 +71,7 @@ theorem sum_tops (D : D7) (g : D.what₂.Tau → ℝ) (h : D.host.TT → ℝ)
   · intro a _ b _ hab
     have h1 := congrArg (fun x => ((D.eTau x : D.R.Psi) : D.R.GG)) hab
     simp only [Equiv.apply_symm_apply, Subtype.coe_mk] at h1
-    exact Subtype.ext (tau1_injective_alt D.R.toFrame h1)
+    exact Subtype.ext (_root_.Formalism.HC.Frame.tau1_injective D.R.toFrame h1)
   · intro τ hτ
     simp only [topsOf, Finset.mem_filter, Finset.mem_univ, true_and, Host.topPlaces,
       Finset.mem_image] at hτ
@@ -100,7 +92,7 @@ theorem lamCol_top (D : D7) (L : SizeData₂ D) (u : D.what₂.Word) (τ : D.wha
   obtain ⟨h1, -⟩ := L.top_u τ t hk h
   have e1 := D.hcW_first u τ hk
   have e2 : flipTwoThree.aT D u τ = (((D.hcW u τ).u ⟨0, hk⟩ : ℚ) : ℝ) - (((D.R.k : ℝ) - 1) / 2) := by
-    simp only [flipTwoThree.aT, flipTwoThree.lamCol, dif_pos hk, hcToWeightQ, rhoVec, Fin.val_mk, Nat.cast_zero,
+    simp only [flipTwoThree.aT, flipTwoThree.lamCol, dif_pos hk, hcToWeightQ, rhoVec, Nat.cast_zero,
       sub_zero] <;> push_cast <;> ring
   rw [e2, e1, h1]
   ring

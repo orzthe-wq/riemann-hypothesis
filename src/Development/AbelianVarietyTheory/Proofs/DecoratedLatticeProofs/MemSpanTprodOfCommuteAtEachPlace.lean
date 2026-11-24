@@ -385,7 +385,7 @@ theorem mem_span_map_of_commute :
         funext σ
         by_cases h : σ = τ
         · subst h; simp [hτ]
-        · simp [Function.update_of_ne h, h]
+        · simp [h]
       rw [e]
   have hy : y = PiTensorProduct.map π y := by
     rw [← sub_eq_zero]

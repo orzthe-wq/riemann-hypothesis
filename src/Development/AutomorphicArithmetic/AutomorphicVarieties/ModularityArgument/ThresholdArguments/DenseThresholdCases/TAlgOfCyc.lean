@@ -193,10 +193,10 @@ private theorem nhd_loc (V : Set (Ideles E)) (hV : V ∈ 𝓝 (1 : Ideles E)) : 
   have h1 : f ⁻¹' T1 ∈ 𝓝 0 := hf.continuousAt.preimage_mem_nhds (by rw [hf0]; exact hT1)
   have h2 : (fun b => MulOpposite.op (f b)) ⁻¹' T2 ∈ 𝓝 0 :=
     (MulOpposite.continuous_op.comp hf).continuousAt.preimage_mem_nhds (by rw [Function.comp_apply, hf0]; exact hT2)
-  obtain ⟨N, hN, hNW⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele E _ (Filter.inter_mem h1 h2)
+  obtain ⟨N, hN, hNW⟩ := _root_.GlobalTheory.LocalNormBound.main E _ (Filter.inter_mem h1 h2)
   let P : Set (FiniteAdeleRing (𝓞 E) E) :=
     {c | ∃ a : FiniteAdeleRing (𝓞 E) E, (∀ v, a v ∈ v.adicCompletionIntegers E) ∧ c = N • a}
-  have hP : P ∈ 𝓝 0 := GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds E N hN
+  have hP : P ∈ 𝓝 0 := _root_.GlobalTheory.IntegralNeighbourhoodZero.nsmul_integral_mem_nhds_zero E N hN
   have key : ∀ (u : Ideles E), (u : AdeleRing (𝓞 E) E).2 - 1 ∈ P → ∀ (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)ˣ),
       (x : v.adicCompletion E) = (u : AdeleRing (𝓞 E) E).2 v → Valued.v (x : v.adicCompletion E) ≤ 1 ∧
         ∃ b : FiniteAdeleRing (𝓞 E) E, (∀ v, b v ∈ v.adicCompletionIntegers E) ∧

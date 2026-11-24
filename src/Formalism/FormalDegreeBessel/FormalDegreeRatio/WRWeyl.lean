@@ -145,8 +145,7 @@ theorem Wc_comm {g : (Fin m → ℂ) → E} {x : Fin m → ℂ} (hg : ContDiffAt
       Wc u' w' s' (fderiv ℝ (fun y => Wc u w s (fderiv ℝ g y)) x) := by
   have hs := hg.isSymmSndFDerivAt two_le_smooth
   rw [fderiv_Wc hg, fderiv_Wc hg]
-  simp only [Wc_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply,
-    ContinuousLinearMap.coe_smul', Pi.smul_apply, map_add, map_smul]
+  simp only [Wc_apply, ContinuousLinearMap.comp_apply]
   rw [hs u' u, hs u' w, hs w' u, hs w' w]
   module
 
@@ -248,11 +247,11 @@ theorem wirt_coef {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (l : Fin m)
   by_cases hj : (j : ℕ) < 3 <;> by_cases hl : l = k
   · simp only [hl, hj, if_true, and_self, Pi.single_eq_same, smul_eq_mul]
     linear_combination (-(ck k j x) / 2) * Complex.I_sq
-  · simp [hj, hl, Pi.single_eq_of_ne (Ne.symm hl)]
+  · simp [hj, hl]
   · simp only [hl, hj, if_false, false_and, Pi.single_eq_same, smul_eq_mul, star_one,
       Complex.star_def, Complex.conj_I]
     linear_combination (ck k j x / 2) * Complex.I_sq
-  · simp [hj, hl, Pi.single_eq_of_ne (Ne.symm hl)]
+  · simp [hj, hl]
 
 theorem wirtBar_coef {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (l : Fin m) (j : Fin 6) :
     wirtBar l (coef k j) x = if ¬ (j : ℕ) < 3 ∧ l = k then ck k j x else 0 := by
@@ -261,11 +260,11 @@ theorem wirtBar_coef {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (l : Fin
   · simp only [hl, hj, if_true, not_true_eq_false, false_and, if_false, Pi.single_eq_same,
       smul_eq_mul]
     linear_combination (ck k j x / 2) * Complex.I_sq
-  · simp [hj, hl, Pi.single_eq_of_ne (Ne.symm hl)]
+  · simp [hj, hl]
   · simp only [hl, hj, if_false, not_false_eq_true, and_self, if_true, Pi.single_eq_same,
       smul_eq_mul, star_one, Complex.star_def, Complex.conj_I]
     linear_combination (-(ck k j x) / 2) * Complex.I_sq
-  · simp [hj, hl, Pi.single_eq_of_ne (Ne.symm hl)]
+  · simp [hj, hl]
 
 theorem contDiffAt_star_apply (k : Fin m) (x : Fin m → ℂ) :
     ContDiffAt ℝ ∞ (fun y : Fin m → ℂ => star (y k)) x := by

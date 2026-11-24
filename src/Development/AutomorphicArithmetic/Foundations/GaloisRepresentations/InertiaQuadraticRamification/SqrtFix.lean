@@ -46,7 +46,7 @@ open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.sqrtFix :
     SqrtFix := by
   intro F Ω _ _ _ _ A x a hx
-  haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective
+  have : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective
   have hsq : ∀ g : G F Ω, g x = x ∨ g x = -x := by
     intro g
     have hgx : (g x) ^ 2 = x ^ 2 := by rw [← map_pow, hx, map_intCast]
@@ -89,7 +89,7 @@ theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.sqrtFix :
         rw [hvs] at hs
         exact lt_irrefl _ hs
       · have hyl' : ¬ A.valuation y' < 1 := fun h' => hyl (hiff.1 h')
-        push_neg at hyl hyl'
+        push Not at hyl hyl'
         have hge : 1 ≤ A.valuation (y * y') := by
           rw [map_mul]
           exact one_le_mul hyl hyl'

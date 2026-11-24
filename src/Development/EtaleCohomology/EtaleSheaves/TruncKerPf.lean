@@ -97,7 +97,7 @@ theorem fgt_injective_of_pull_surjective : ∀ (R : Type) [CommRing R] (F : Shv 
   rw [mappingCone.ext_cochain_from_iff _ m n hm]
   refine ⟨?_, ?_⟩
   · simp only [mappingCone.inl_descCochain, Cochain.comp_add, mappingCone.inl_fst_assoc]
-    simp only [δ_neg, hα0, Cochain.comp_units_smul, smul_add, smul_smul, Int.units_mul_self, one_smul, mappingCone.inl_snd_assoc, zero_comp, Cochain.zero_comp, add_zero]
+    simp only [δ_neg, hα0, Cochain.comp_units_smul, smul_add, smul_smul, Int.units_mul_self, one_smul, mappingCone.inl_snd_assoc, add_zero]
     abel
   · simp
 

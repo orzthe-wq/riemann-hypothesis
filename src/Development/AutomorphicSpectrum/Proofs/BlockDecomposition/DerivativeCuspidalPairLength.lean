@@ -123,20 +123,6 @@ def dropMul {ι : Fin r → Fin c} (hι : Function.Injective ι) (z : ∀ j, X j
     intro _ m i a x
     simp only [extFam_update hι, MultilinearMap.map_update_smul]
 
-theorem tprod_ne_zero {ι : Type} [Fintype ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
-    (v : ∀ i, V i) (hv : ∀ i, v i ≠ 0) : PiTensorProduct.tprod ℂ v ≠ 0 := by
-  have hφ : ∀ i, ∃ φ : Module.Dual ℂ (V i), φ (v i) ≠ 0 := by
-    intro i
-    by_contra hcon
-    push Not at hcon
-    exact hv i ((Module.forall_dual_apply_eq_zero_iff ℂ (v i)).mp hcon)
-  choose φ hφ using hφ
-  intro h0
-  have h1 := congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap φ)) h0
-  rw [PiTensorProduct.lift.tprod, map_zero, MultilinearMap.compLinearMap_apply,
-    MultilinearMap.mkPiAlgebra_apply] at h1
-  exact Finset.prod_ne_zero_iff.mpr (fun i _ => hφ i) h1
-
 end Tensor
 
 section Sums
@@ -410,7 +396,7 @@ theorem isSubquotient_jac_drop (ι : Fin r ↪o Fin c) (b : Fin c → ℕ) (hb :
   have hF0 : F (PiTensorProduct.tprod ℂ fun i => z (ι i)) ≠ 0 := by
     show L (PiTensorProduct.tprod ℂ fun i => z (ι i)) ≠ 0
     rw [hL, hzz]
-    exact tprod_ne_zero z hz0
+    exact _root_.GlobalTheory.EmptyFirstBlock.tprod_ne_zero z hz0
   have hinj : Function.Injective L := injective_of_comp (restrictHom b ι) hres hI F hF0
   have hS : ∀ (G : Levi k (fun j => Fin (b j))) ⦃w⦄, w ∈ LinearMap.range L →
       (GlobalTheory.SmGL.piTensor fun j => (s j).ρ) G w ∈ LinearMap.range L := by
@@ -587,7 +573,7 @@ theorem exists_row (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {p c : 
     exact .of_injective F (injective_of_comp (MonoidHom.id _) Function.surjective_id x.2.rep.irr F h2)
   have hP : 1 ≤ jm y' hsum (prodIrr s hs) :=
     hjm.trans (GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient y' hsum x.rep (prodIrr s hs) (isSmooth_prodIrr _ _) hQ)
-  rw [GlobalTheory.T.jacquet_multiplicity_cuspidal_product hA s y' hs hsum hsc hy'c] at hP
+  rw [_root_.GlobalTheory.CompanionTheory.CuspJm.main hA s y' hs hsum hsc hy'c] at hP
   obtain ⟨e, he⟩ : ∃ e : Fin r ≃ Fin p, ∀ a, y' a = s (e a) := by
     by_contra hc
     have h0 : {e : Fin r ≃ Fin p | ∀ a, y' a = s (e a)} = ∅ := Set.eq_empty_of_forall_notMem fun e he => hc ⟨e, he⟩

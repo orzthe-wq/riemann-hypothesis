@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CharValMultiplicativeStatement
+public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.LocallyOfFinitePresentationDiagMap
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CharValMultiplicative
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -67,7 +68,7 @@ theorem charVal_pullPt {A A' : Type} [CommRing A] [CommRing A'] (g : A →+* A')
     {a' : Sp A' ⟶ S} (h : a' = spMap g ≫ a) (t : Over.mk a ⟶ splitTorus S X) (χ : X) :
     charVal (pullPt g h t) χ = g (charVal t χ) := by
   subst h
-  exact (GlobalTheory.T.charVal_multiplicative S X A _).2.2.2.2.2 A' g t _ rfl χ
+  exact (_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X A _).2.2.2.2.2 A' g t _ rfl χ
 
 def wOf (δ : X →+ R) : Multiplicative X →* DualNumber R where
   toFun χ := TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (δ χ.toAdd)
@@ -89,7 +90,7 @@ theorem base_ev (x : Sp R ⟶ S) :
 
 theorem isTanAt_iff (x : Sp R ⟶ S) (v : epsAt x ⟶ splitTorus S X) :
     IsTanAt (splitTorus S X) x v ↔ ∀ χ, (charVal v χ).fst = 1 := by
-  have hT := GlobalTheory.T.charVal_multiplicative S X
+  have hT := _root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X
   constructor
   · intro hv χ
     have e : pullPt (evZ R) (base_ev x) v = 1 := Over.OverMorphism.ext hv
@@ -104,16 +105,16 @@ theorem isTanAt_iff (x : Sp R ⟶ S) (v : epsAt x ⟶ splitTorus S X) :
     exact congrArg (fun t => t.left) e
 
 def ptOf (x : Sp R ⟶ S) (δ : X →+ R) : epsAt x ⟶ splitTorus S X :=
-  ((GlobalTheory.T.charVal_multiplicative S X (DualNumber R) (Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ x)).2.2.2.2.1
+  ((_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X (DualNumber R) (Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ x)).2.2.2.2.1
     (wOf δ)).choose
 
 theorem charVal_ptOf (x : Sp R ⟶ S) (δ : X →+ R) (χ : X) :
     charVal (ptOf x δ) χ = TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (δ χ) :=
-  ((GlobalTheory.T.charVal_multiplicative S X (DualNumber R) (Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ x)).2.2.2.2.1
+  ((_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X (DualNumber R) (Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ x)).2.2.2.2.1
     (wOf δ)).choose_spec χ
 
 theorem ptOf_ext (x : Sp R ⟶ S) (v v' : epsAt x ⟶ splitTorus S X) (h : ∀ χ, charVal v χ = charVal v' χ) : v = v' :=
-  (GlobalTheory.T.charVal_multiplicative S X (DualNumber R) _).1 v v' h
+  (_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X (DualNumber R) _).1 v v' h
 
 theorem epsMul_comp_base (c : R) (x : Sp R ⟶ S) :
     Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ x =
@@ -128,7 +129,7 @@ theorem epsMul_comp_base (c : R) (x : Sp R ⟶ S) :
 
 def deltaOf (x : Sp R ⟶ S) (v : epsAt x ⟶ splitTorus S X) (hv : ∀ χ, (charVal v χ).fst = 1) : X →+ R :=
   AddMonoidHom.mk' (fun χ => (charVal v χ).snd) (fun χ χ' => by
-    have := ((GlobalTheory.T.charVal_multiplicative S X (DualNumber R) _).2.2.2.1 v).2 χ χ'
+    have := ((_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X (DualNumber R) _).2.2.2.1 v).2 χ χ'
     simp [this, TrivSqZeroExt.snd_mul, hv, add_comm])
 
 theorem exists_lieModel_splitTorus : ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] (R : Type) [CommRing R]
@@ -153,7 +154,7 @@ theorem exists_lieModel_splitTorus : ∀ (S : Scheme.{0}) (X : Type) [AddCommGro
     · simp [deltaOf]
   · intro δ δ'
     refine ptOf_ext x _ _ fun χ => ?_
-    rw [(GlobalTheory.T.charVal_multiplicative S X (DualNumber R) _).2.1, charVal_ptOf, charVal_ptOf, charVal_ptOf]
+    rw [(_root_.GlobalTheory.CompanionTheory.Ar.TorusPoints.main S X (DualNumber R) _).2.1, charVal_ptOf, charVal_ptOf, charVal_ptOf]
     ext <;> simp [TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, add_comm]
   · intro c δ
     have e : ptOf x (c • δ) = pullPt (epsMul c) (epsMul_comp_base c x) (ptOf x δ) := by

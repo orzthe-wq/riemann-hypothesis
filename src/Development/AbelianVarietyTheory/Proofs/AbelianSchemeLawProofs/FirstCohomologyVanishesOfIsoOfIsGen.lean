@@ -185,7 +185,7 @@ theorem firstCohomologyVanishes_of_iso_of_isGen {N M : LB X} (hN : ⨆ i, N.U i 
     exact TopologicalSpace.Opens.mem_iSup.2 ⟨(a, i), hi⟩
   have hφ0 : ∀ a, φ a a = 0 := fun a => by
     have h := congrArg (rs X (le_inf le_rfl inf_le_left : V a ⊓ V a ≤ V a ⊓ V a ⊓ V a)) (hφ a a a)
-    simp only [map_add (f := _), map_mul, rs_rs, rs_self, rs_g_self hM, _root_.one_mul] at h
+    simp only [map_add (f := _), rs_rs, rs_self, rs_g_self hM, _root_.one_mul] at h
     exact add_eq_left.1 h
   obtain ⟨ψ, hψ⟩ := h0 (I × N.ι) (fun p => V p.1 ⊓ N.U p.2) (fun p => p.2) (fun _ => inf_le_right) hc'
     (fun p q => rs X (le_inf (inf_le_left.trans inf_le_right) ((inf_le_left.trans inf_le_left).trans (hV p.1)) :

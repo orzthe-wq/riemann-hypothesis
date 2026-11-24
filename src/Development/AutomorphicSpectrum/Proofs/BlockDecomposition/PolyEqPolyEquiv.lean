@@ -90,7 +90,7 @@ theorem expEquiv_single (e : E n d) :
   by_cases h : e' = e
   · subst h
     simp
-  · simp [Finsupp.single_apply, Pi.single_apply, h, Ne.symm h]
+  · simp [h]
 
 theorem poly_eq_polyEquiv (K : Type) [Field K] :
     poly n K (∅ : Finset (Fin d)) = (polyEquiv K).toAlgHom := by

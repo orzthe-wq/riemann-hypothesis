@@ -58,15 +58,6 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv.Rate
 
-theorem mInt_congr_φ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
-    (Φ Ψ : Fin e → LocPot X) (h : ∀ i, (Φ i).φ = (Ψ i).φ) (g : X → ℝ) :
-    mInt A Φ g = mInt A Ψ g := by
-  have hD : locDens A Φ = locDens A Ψ := by
-    funext j y
-    simp only [locDens, h]
-  unfold mInt integralWith
-  rw [hD]
-
 theorem maMeasure_univ_eq {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (Θ : LocPot X)
     (th : Fin e → LocPot X) (u : Fin e → X → ℝ) (hΘ : IsPotential A Θ)
@@ -82,7 +73,7 @@ theorem maMeasure_univ_eq {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpac
   have h2 := (hg _ measurable_const).2 hM
   have h3 : mInt A (fun i => th i + LocPot.ofFun (u i) + Θ) (fun _ => 1) =
       mInt A (fun i => (th i + Θ) + LocPot.ofFun (u i)) (fun _ => 1) := by
-    refine mInt_congr_φ A _ _ (fun i => ?_) _
+    refine _root_.ReciprocityTheory.AnForm.P.TailBoundAlt.mInt_congr_phi A _ _ (fun i => ?_) _
     funext x y
     show (th i).φ x y + u i y + Θ.φ x y = (th i).φ x y + Θ.φ x y + u i y
     ring
@@ -192,7 +183,6 @@ theorem convergenceRate_holds : ConvergenceRateStatement := by
     · simp only [h]; exact ⟨ht', htt'.trans ht_t₂⟩
   obtain ⟨hPP, hTR⟩ := hT _ hτ
   obtain ⟨-, hlogR⟩ := hTR ℓ hℓe
-  beta_reduce at hPP hlogR
   have hsm : ∀ i, A.Smooth (phT i (if c i then t else t')) := by
     intro i
     by_cases h : c i

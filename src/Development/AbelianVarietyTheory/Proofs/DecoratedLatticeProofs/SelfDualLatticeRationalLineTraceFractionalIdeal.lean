@@ -100,8 +100,6 @@ theorem pairing_smul_ratV (S : HSp D) (s x : Fin S.rank → D.host.E) (a : AE D)
   simp only [pairing, ratV, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.sum_mul]
   exact Finset.sum_congr rfl fun b _ => by ring
 
-theorem incA_inj : Function.Injective (incA D) := GlobalTheory.MixModel.incA_injective
-
 theorem smul_mem_latV {S : HSp D} {L : Lat S} {x : Fin S.rank → D.host.E} {𝔞 : FI D} (h : ∀ t ∈ 𝔞, t • x ∈ L)
     {v : GlobalTheory.FinPl.Pl D} {a : AE D} (ha : a ∈ idV 𝔞 v) : a • ratV x ∈ latV S L (· = v) := by
   induction ha using AddSubgroup.closure_induction with
@@ -125,7 +123,7 @@ theorem line_trace : ∀ (D : D7) (S : HSp D) (L : Lat S) (x : Fin S.rank → D.
   set c : Fin m → D.host.E := fun l => ∑ b, row S (s' l) b * x b with hc
   have hx' : ∀ i, x i = ∑ l, c l * s l i := by
     intro i
-    apply incA_inj (D := D)
+    apply _root_.GlobalTheory.MixModel.incA_injective (D := D)
     have := hexp ((1 : AE D) • ratV x) i
     simp only [pairing_smul_ratV, mul_one] at this
 

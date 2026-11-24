@@ -63,7 +63,7 @@ theorem hOfNat_hval (e : Formalism.HC.Frame) (h : e.A) : hOfNat e (hval e h) = h
 
 theorem hval_injective (e : Formalism.HC.Frame) : Function.Injective (hval e) := Formalism.HC.Frame.A.val_injective e
 
-theorem card_HA (e : Formalism.HC.Frame) : Fintype.card e.A = e.ord := e.card_A
+alias card_HA := _root_.Formalism.HC.Frame.card_A
 
 private theorem cftData_congr {A : Type} [AddCommGroup A] [Fintype A] [DecidableEq A] {N N' q q' d d' : ℕ} [NeZero N]
     (hN : N = N') (hq : q = q') (hd : d = d') (r : (ZMod N)ˣ →* Multiplicative (E0 × A))
@@ -1253,8 +1253,6 @@ section WinLarge
 
 variable {D : D7} {L : SizeData₂ D}
 
-theorem rpow_nat (x : ℝ) (n : ℕ) : x ^ (n : ℝ) = x ^ n := Real.rpow_natCast x n
-
 theorem k_le_X' (sK : SizeK L) (hE1 : L.sc.x ^ (5 : ℝ) ≤ Real.exp (1 * L.sc.x ^ (L.sc.eps / 3))) :
     (D.R.k : ℝ) ≤ L.sc.X' := by
   unfold Scale.X'
@@ -1289,7 +1287,7 @@ theorem four_le (x : ℝ) (h3 : 3 ≤ x) : 4 * (x + 1) ≤ x ^ 3 := by
 
 theorem f_le (sN : SizeN L) : (D.R.f : ℝ) ≤ 2 * L.sc.x ^ 3 := by
   have h := n_le_x_cubed sN
-  rw [show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, rpow_nat] at h
+  rw [show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, _root_.Real.rpow_natCast] at h
   have : (D.R.f : ℝ) = 2 * (D.R.n : ℝ) := by unfold Ranks.f; push_cast; ring
   rw [this]; linarith
 
@@ -1299,7 +1297,7 @@ theorem winJ (sN : SizeN L) (c6 : ℝ) (h3 : 3 ≤ L.sc.x)
   have hx : 0 < L.sc.x := by linarith
   have hf := f_le sN
   have h4 := four_le _ h3
-  rw [show (7 : ℝ) = ((7 : ℕ) : ℝ) by norm_num, rpow_nat] at hE3
+  rw [show (7 : ℝ) = ((7 : ℕ) : ℝ) by norm_num, _root_.Real.rpow_natCast] at hE3
   have h1 : 2 * (D.R.f : ℝ) * (L.sc.x + 1) * L.sc.x ≤ L.sc.x ^ 7 := by
     calc 2 * (D.R.f : ℝ) * (L.sc.x + 1) * L.sc.x ≤ 2 * (2 * L.sc.x ^ 3) * (L.sc.x + 1) * L.sc.x := by gcongr
       _ = L.sc.x ^ 4 * (4 * (L.sc.x + 1)) := by ring
@@ -1317,7 +1315,7 @@ theorem winK (P : ParameterChoice' D L) (sN : SizeN L) (sK : SizeK L) (h3 : 3 �
   have h4 := four_le _ h3
   have hη := L.etaSz_pos
   have hb : L.sc.x ^ 9 ≤ L.sc.b := by
-    rw [show (9 : ℝ) = ((9 : ℕ) : ℝ) by norm_num, rpow_nat, one_mul] at hE4
+    rw [show (9 : ℝ) = ((9 : ℕ) : ℝ) by norm_num, _root_.Real.rpow_natCast, one_mul] at hE4
     exact hE4
   have hf0 : (0 : ℝ) < D.R.f := by
     have : 0 < D.R.f := by
@@ -1333,7 +1331,7 @@ theorem winK (P : ParameterChoice' D L) (sN : SizeN L) (sK : SizeK L) (h3 : 3 �
     exact_mod_cast this
   have hk4 : L.sc.x ^ 4 ≤ (D.R.k : ℝ) := by
     have h := x_pow_four_le_k sK
-    rwa [show (4 : ℝ) = ((4 : ℕ) : ℝ) by norm_num, rpow_nat] at h
+    rwa [show (4 : ℝ) = ((4 : ℕ) : ℝ) by norm_num, _root_.Real.rpow_natCast] at h
   have hk0 : (0 : ℝ) < D.R.k := lt_of_lt_of_le (by positivity) hk4
   have hk12 : L.sc.x ^ 12 ≤ (D.R.k : ℝ) ^ 3 := by
     calc L.sc.x ^ 12 = (L.sc.x ^ 4) ^ 3 := by ring
@@ -1624,12 +1622,7 @@ end Formalism.MainNotions.Lnk
 
 end
 
-noncomputable section
-
 namespace Formalism.MainNotions
-
-open Formalism.MainNotions.Lnk
 
 end Formalism.MainNotions
 
-end

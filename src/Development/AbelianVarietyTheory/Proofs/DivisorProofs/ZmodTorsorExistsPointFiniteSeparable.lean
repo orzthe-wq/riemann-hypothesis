@@ -111,7 +111,7 @@ theorem _root_.GlobalTheory.TorsorFieldPoint.exists_point_finite_separable : ∀
     (Ideal.Quotient.mk m).comp Algebra.TensorProduct.includeRight.toRingHom, ?_⟩
   ext b
   simp only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
-    Algebra.TensorProduct.includeRight_apply, Ideal.Quotient.algebraMap_eq]
+    Algebra.TensorProduct.includeRight_apply]
   rw [Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_one]
   rfl
 

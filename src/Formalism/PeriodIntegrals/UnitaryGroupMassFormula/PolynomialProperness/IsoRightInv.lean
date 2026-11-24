@@ -93,8 +93,7 @@ theorem psd_image (H s : Matrix (Fin n) (Fin n) ℂ) (hHH : H * H = 1) (hs : s�
 theorem gram_image (H s : Matrix (Fin n) (Fin n) ℂ) (hs : sᴴ * H * s = H) (m : ι → Fin n → ℂ) :
     gramOf H (fun i => s *ᵥ m i) = gramOf H m := by
   ext i j
-  simp only [gramOf, Matrix.of_apply]
-  exact herm_iso H s hs (m j) (m i)
+  simpa [gramOf, Matrix.of_apply] using herm_iso H s hs (m j) (m i)
 
 theorem orth_bound (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H * H = 1)
     (Γi : Matrix ι ι ℂ) (q : ι → Fin n → ℂ) (hG : gramOf H q * Γi = 1) (R : ℝ) (hR : 0 ≤ R)

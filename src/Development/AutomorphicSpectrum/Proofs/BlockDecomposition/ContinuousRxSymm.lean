@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.ContinuousCoB
 
 @[expose] public section
 
@@ -137,19 +138,12 @@ section Std
 
 variable (D : D7) {n : ℕ}
 
-theorem sig_sig (x : D.host.E) : D.sp.cm.sig (D.sp.cm.sig x) = x := by
-  have h := isCMExt_host D
-  obtain ⟨τ⟩ : Nonempty (D.host.E →+* ℂ) := inferInstance
-  apply τ.injective
-  rw [h.2.2.2 τ, h.2.2.2 τ]
-  simp
-
 theorem sigR_sigR (z : AE D) : sigR (AF D.host.F) D.sp.cm.sig (sigR (AF D.host.F) D.sp.cm.sig z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
   | tmul a e =>
     change a ⊗ₜ[D.host.F] D.sp.cm.sig (D.sp.cm.sig e) = _
-    rw [sig_sig]
+    rw [_root_.Formalism.IndefR.Fin.U1.sig_sig]
   | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
 
 theorem sigR_inclR (x : D.host.E) :
@@ -159,7 +153,7 @@ theorem Jst_map : (GlobalTheory.StdUnn.Jst D n).map D.sp.cm.sig = GlobalTheory.S
   ext i j
   simp only [Matrix.map_apply, GlobalTheory.StdUnn.Jst, GlobalTheory.StdUnn.blk4, Matrix.submatrix_apply]
   rcases finSumFinEquiv.symm i with a | a <;> rcases finSumFinEquiv.symm j with b | b <;>
-    simp [Matrix.one_apply] <;> split_ifs <;> simp
+    simp [Matrix.one_apply]
 
 theorem JR_map : (JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n)).map (sigR (AF D.host.F) D.sp.cm.sig) =
     JR (AF D.host.F) (GlobalTheory.StdUnn.Jst D n) := by

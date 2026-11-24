@@ -51,8 +51,7 @@ variable {F : Type} [CommRing F] {Y : Scheme.{0}} {p : Y ⟶ Spec (CommRingCat.o
 @[ext] theorem ext {s t : SecMod p N} (h : ∀ j, s.sec.f j = t.sec.f j) : s = t :=
   DVR.SecOps.sec_ext (s := s.sec) (t := t.sec) h
 
-theorem eq_zero_iff (s : SecMod p N) : s = 0 ↔ ∀ j, s.sec.f j = 0 :=
-  ⟨fun h _ => h ▸ rfl, fun h => ext h⟩
+alias eq_zero_iff := _root_.GlobalTheory.UU.SecMod.eq_zero_iff_coord
 
 section Val
 variable {X Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
@@ -63,10 +62,7 @@ theorem sval_add (s t : SecMod p (LB.LinComb L φ ε)) :
     sval (s + t).sec r z J = sval s.sec r z J + sval t.sec r z J :=
   gs_add r z _ (hJ.mem φ r) _ _
 
-theorem sval_smul (c : F) (s : SecMod p (LB.LinComb L φ ε)) :
-    sval (c • s).sec r z J = gs r z ⊤ (scal p c) * sval s.sec r z J :=
-  (gs_mul r z _ (hJ.mem φ r) _ _).trans
-    (congrArg (· * sval s.sec r z J) (gs_res r z le_top (hJ.mem φ r) _))
+alias sval_smul := _root_.GlobalTheory.UU.SecMod.value_smul
 
 end Val
 

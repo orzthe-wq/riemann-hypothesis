@@ -9,48 +9,8 @@ public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.IntBa
 public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.AdditionIdentityOfSigmaFormulaUnit
 public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.FamilyLogGammaSmallHolds
 public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.OkpDict
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertPrimeTeichmuller.NormLeOneOfIntegralInt
 
 @[expose] public section
 
@@ -97,14 +57,8 @@ theorem okp_zp (u : ℤ_[p]) : (zc u, zc u) ∈ OKp D lam := by
     simpa [zc_int] using okp_intPair D lam n)
   rwa [(okp_closed D lam).closure_eq] at h
 
-theorem norm_p_cp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
-  have h := norm_int_cp (p := p) (p : ℤ)
-  push_cast at h
-  rw [h]
-  exact PadicInt.norm_p
-
 theorem pow_dvd_of_norm (t : ℤ) (e : ℕ) (h : ‖(t : ℂ_[p])‖ ≤ ‖(p : ℂ_[p])‖ ^ e) : ((p : ℤ) ^ e) ∣ t := by
-  rw [norm_int_cp, norm_p_cp] at h
+  rw [norm_int_cp, _root_.PI.OkpW.norm_p_cp] at h
   apply PadicInt.norm_int_le_pow_iff_dvd.1
   rw [zpow_neg, zpow_natCast, ← inv_pow]
   exact h
@@ -312,7 +266,7 @@ theorem lamb_change {N N' r : ℕ} (b b' : Fin r → Matrix (Fin N') (Fin N) D.h
 
   simp only [Matrix.smul_apply, smul_eq_mul, map_sum, map_mul]
   refine Finset.sum_congr rfl fun n _ => ?_
-  rw [← IntegralOrthonormalChange.embT_K D k.1 _ (hQK n m), IntegralOrthonormalChange.lamC_embT, IntegralOrthonormalChange.lamC_embT]
+  rw [← _root_.Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.embT_K D k.1 _ (hQK n m), IntegralOrthonormalChange.lamC_embT, IntegralOrthonormalChange.lamC_embT]
 
 theorem v_change {N N' r : ℕ} (b b' : Fin r → Matrix (Fin N') (Fin N) D.host.E) (Q : Fin r → Fin r → D.host.E)
     (hQK : ∀ i j, Q i j ∈ D.host.K) (hb' : ∀ j, b' j = ∑ i, Q i j • b i)

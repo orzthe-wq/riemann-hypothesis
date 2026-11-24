@@ -251,7 +251,7 @@ def latOf (r : ↥(GK K) →* GL (Fin n) ↥(OL LL)) (hr : Cont r) : LocLat ↥(
         rintro _ ⟨j, rfl⟩
         refine ⟨Pi.single j 1, ?_⟩
         funext j'
-        by_cases h : j' = j <;> simp [stdMap_apply, Pi.single_apply, h] }
+        by_cases h : j' = j <;> simp [stdMap_apply, h] }
 
 
 

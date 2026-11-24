@@ -135,10 +135,10 @@ theorem rhoP_N (x : C2.Lstidx w → ℂ) : rhoP S γ w x ∈ Nset k r := by
   exact Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv h1.2
 
 theorem lowPH_UT (y : C2.LPidx w → ℂ) : (lowP w y)ᴴ ∈ C2.UTset (r + 1) :=
-  UC.LT_ct (UC.lowerUnipotent_mem w y).1
+  _root_.Formalism.FourierDecayAlt.P.C2x2.lt_conjT (UC.lowerUnipotent_mem w y).1
 
 theorem lowSH_UT (x : C2.Lstidx w → ℂ) : (lowS w x)ᴴ ∈ C2.UTset (r + 1) :=
-  UC.LT_ct (UC.lowS_mem w x).1
+  _root_.Formalism.FourierDecayAlt.P.C2x2.lt_conjT (UC.lowS_mem w x).1
 
 include he in
 theorem upper_e_UT (p : (C2.Lstidx w → ℂ) × (C2.LPidx w → ℂ)) : G.upper (e p) ∈ C2.UTset (r + 1) := by

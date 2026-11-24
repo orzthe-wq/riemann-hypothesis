@@ -285,7 +285,7 @@ theorem exists_int_sol {F : Type} [Field F] [NumberField F] (v : HeightOneSpectr
     rwa [sub_add_cancel] at this
   obtain ⟨r, s, hQ, hder⟩ := exists_approx_mod v b c u₀ h2 hroot hu₀v
   have hQm := (hιm _).2 hQ
-  simp only [map_sub, map_add (f := _), map_mul, map_pow, map_ofNat] at hQm
+  simp only [map_sub, map_add (f := _), map_mul, map_pow] at hQm
   rcases hder with hA | hB
   · obtain ⟨a, ha⟩ := exists_root_quadratic_of_approx v (-(ι b * ι s)) (ι c * ι s ^ 2 - U) (ι r)
       (by

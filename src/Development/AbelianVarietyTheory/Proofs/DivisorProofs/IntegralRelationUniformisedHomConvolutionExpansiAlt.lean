@@ -44,6 +44,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenOfIso
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsTorsionLift
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.QuadTie
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

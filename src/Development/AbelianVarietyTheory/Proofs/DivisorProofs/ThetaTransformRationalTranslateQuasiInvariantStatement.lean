@@ -58,4 +58,4 @@ theorem _root_.GlobalTheory.T.thetaTransform_rational_translate_quasiInvariant :
           co.e (incM D.host.F x) = (fun i => algebraMap D.host.F (AF D.host.F) (y i), fun i => algebraMap D.host.F (AF D.host.F) (z i))) →
         ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ, ∀ (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (w : Formalism.IndefR.Datum.WO S T),
           GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ (ratW T S γ + w) = ψ (-(Formalism.IndefR.Datum.symplOH S T (ratW T S γ) w)) * GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ w := by
-  first | exact @GlobalTheory.ThetaQuasiRat.thetaTr_ratW_add | exact GlobalTheory.ThetaQuasiRat.thetaTr_ratW_add | (intros; apply GlobalTheory.ThetaQuasiRat.thetaTr_ratW_add <;> assumption)
+  first | exact @GlobalTheory.ThetaQuasiRat.thetaTr_ratW_add

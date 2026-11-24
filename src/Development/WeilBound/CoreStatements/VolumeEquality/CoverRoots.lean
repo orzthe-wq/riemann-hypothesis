@@ -1,16 +1,18 @@
 module
 
+public import Mathlib.FieldTheory.Separable
+public import Mathlib.FieldTheory.PrimitiveElement
 public import Development.WeilBound.CoreStatements.VolumeEquality.RootBranches
-public import Development.WeilBound.CoreStatements.VolumeEquality.CoverRootsAlg
 public import Development.WeilBound.CoreStatements.VolumeEquality.CoverRootsSch
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializesOfSpecializes
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtFractionNoetherianClosed
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -18,10 +20,14 @@ import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
+import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -30,7 +36,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,8 +49,108 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Topology.Sheaves.Init
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtFractionNoetherianClosed
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.VolumeEquality.CoverRootsAlg, Development.WeilBound.CoreStatements.VolumeEquality.CoverRoots
+
+-- ===== clump member: Development.WeilBound.CoreStatements.VolumeEquality.CoverRootsAlg =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.VolumeEquality.CoverRootsAlg", "h": "module\n\npublic import Mathlib.FieldTheory.Separable\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.FieldTheory.PrimitiveElement\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace SheetDecomposition.CovAlg
+
+open Polynomial
+
+def mon {R : Type} [CommRing R] {d : ℕ} (a : Fin d → R) : R[X] := X ^ d + ∑ j, C (a j) * X ^ (j : ℕ)
+
+def low {R : Type} [CommRing R] {d : ℕ} (a : Fin d → R) : R[X] := ∑ j, C (a j) * X ^ (j : ℕ)
+
+theorem mon_map {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (a : Fin d → R) (f : R →+* S) :
+    (mon a).map f = mon fun j => f (a j) := by
+  set_option synthInstance.maxHeartbeats 100000 in
+    simp [mon, Polynomial.map_sum]
+
+theorem eval₂_low {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (a : Fin d → R) (f : R →+* S) (x : S) :
+    eval₂ f x (low a) = ∑ j, f (a j) * x ^ (j : ℕ) := by
+  simp [low, eval₂_finsetSum]
+
+theorem mon_monic {R : Type} [CommRing R] {d : ℕ} (a : Fin d → R) : (mon a).Monic :=
+  monic_X_pow_add (degree_sum_fin_lt a)
+
+theorem exists_prim (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω] [Algebra Ω₀ Ω] (d : ℕ) (hd : 0 < d)
+    (hfin : Module.finrank Ω₀ Ω = d) {σ : Type} [Fintype σ] (t : σ → Ω)
+    (ht : Algebra.adjoin Ω₀ (Set.range t) = ⊤) (γ : Ω) :
+    ∃ (θ : Ω) (T : Set Ω₀), T.Finite ∧ ∀ (R : Type) [CommRing R] (i : R →+* Ω₀), Function.Injective i →
+      T ⊆ Set.range i → ∃ (a : Fin d → R) (cf : σ → Fin d → R) (G : R[X]) (Q : MvPolynomial σ R),
+        (mon a).Separable ∧ (∀ F : R[X], eval₂ ((algebraMap Ω₀ Ω).comp i) θ F = 0 ↔ mon a ∣ F) ∧
+        (∀ s, eval₂ ((algebraMap Ω₀ Ω).comp i) θ (low (cf s)) = t s) ∧
+        eval₂ ((algebraMap Ω₀ Ω).comp i) θ G = γ ∧ MvPolynomial.eval₂ ((algebraMap Ω₀ Ω).comp i) t Q = θ := by
+  classical
+  haveI : FiniteDimensional Ω₀ Ω := Module.finite_of_finrank_pos (hfin ▸ hd)
+  haveI : CharZero Ω₀ := (algebraMap Ω₀ Ω).charZero
+  let pb := Field.powerBasisOfFiniteOfSeparable Ω₀ Ω
+  obtain rfl : pb.dim = d := pb.finrank.symm.trans hfin
+  have hint : IsIntegral Ω₀ pb.gen := pb.isIntegral_gen
+  let a₀ : Fin pb.dim → Ω₀ := fun j => (minpoly Ω₀ pb.gen).coeff j
+  have hP : mon a₀ = minpoly Ω₀ pb.gen := by
+    conv_rhs => rw [(minpoly.monic hint).as_sum, pb.natDegree_minpoly, Finset.sum_range]
+    rfl
+  let cf₀ : σ → Fin pb.dim → Ω₀ := fun s j => pb.basis.repr (t s) j
+  have hcf : ∀ s, ∑ j, algebraMap Ω₀ Ω (cf₀ s j) * pb.gen ^ (j : ℕ) = t s := fun s => by
+    conv_rhs => rw [← pb.basis.sum_repr (t s)]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [pb.basis_eq_pow, Algebra.smul_def]
+  obtain ⟨G₀, hG₀⟩ := pb.exists_eq_aeval' γ
+  obtain ⟨Q₀, hQ₀⟩ : ∃ Q₀ : MvPolynomial σ Ω₀, MvPolynomial.aeval t Q₀ = pb.gen := by
+    have : pb.gen ∈ Algebra.adjoin Ω₀ (Set.range t) := ht ▸ Algebra.mem_top
+    rw [Algebra.adjoin_range_eq_range_aeval] at this
+    exact this
+  obtain ⟨u₀, v₀, huv⟩ : (minpoly Ω₀ pb.gen).Separable := Algebra.IsSeparable.isSeparable Ω₀ pb.gen
+  refine ⟨pb.gen, Set.range a₀ ∪ Set.range (fun q : σ × Fin pb.dim => cf₀ q.1 q.2) ∪ G₀.coeffs ∪ Q₀.coeffs ∪
+    u₀.coeffs ∪ v₀.coeffs, by
+      simp only [Set.finite_union, Set.finite_range, Finset.finite_toSet, and_self], ?_⟩
+  intro R _ i hi hT
+  simp only [Set.union_subset_iff] at hT
+  obtain ⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩ := hT
+  choose a ha using fun j => h1 ⟨j, rfl⟩
+  choose cf hcf' using fun s j => h2 ⟨(s, j), rfl⟩
+  obtain ⟨G, hG⟩ := (mem_lifts _).1 ((lifts_iff_coeffs_subset_range _).2 h3)
+  obtain ⟨u, hu⟩ := (mem_lifts _).1 ((lifts_iff_coeffs_subset_range _).2 h5)
+  obtain ⟨v, hv⟩ := (mem_lifts _).1 ((lifts_iff_coeffs_subset_range _).2 h6)
+  obtain ⟨Q, hQ⟩ := MvPolynomial.mem_range_map_iff_coeffs_subset.2 h4
+  have hm : (mon a).map i = minpoly Ω₀ pb.gen := by
+    rw [mon_map, ← hP]
+    exact congrArg mon (funext ha)
+  have hev : ∀ F : R[X], eval₂ ((algebraMap Ω₀ Ω).comp i) pb.gen F = aeval pb.gen (F.map i) := fun F => by
+    rw [aeval_def, eval₂_map]
+  refine ⟨a, cf, G, Q, ⟨u, v, ?_⟩, fun F => ?_, fun s => ?_, ?_, ?_⟩
+  · apply map_injective i hi
+    rw [Polynomial.map_add (f := _), Polynomial.map_mul, Polynomial.map_mul, ← derivative_map, hm, hu, hv, huv,
+      Polynomial.map_one]
+  · rw [hev, ← map_dvd_map i hi (mon_monic a), hm, minpoly.dvd_iff]
+  · rw [eval₂_low, ← hcf s]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [RingHom.comp_apply, hcf']
+  · rw [hev, hG, hG₀]
+  · rw [← MvPolynomial.eval₂_map, hQ, ← hQ₀, MvPolynomial.aeval_def]
+
+end SheetDecomposition.CovAlg
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.VolumeEquality.CoverRootsAlg =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.VolumeEquality.CoverRoots =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.VolumeEquality.CoverRoots", "h": "module\n\npublic import Development.WeilBound.CoreStatements.VolumeEquality.RootBranches\npublic import Development.WeilBound.CoreStatements.VolumeEquality.CoverRootsAlg\npublic import Development.WeilBound.CoreStatements.VolumeEquality.CoverRootsSch\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GenPtSpecializesOfSpecializes\nimport Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtFractionNoetherianClosed\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -305,3 +411,7 @@ theorem coverRoots : CoverRoots := by
   exact h p hp'
 
 end SheetDecomposition
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.VolumeEquality.CoverRoots =====

@@ -50,7 +50,7 @@ namespace GlobalTheory.SplitFlip
 def vertexDiff (X : ℕ × ℕ) : ℤ := (X.1 : ℤ) - X.2
 
 theorem vertexDiff_tgt (e : Edge) : vertexDiff e.tgt = vertexDiff e.src + 1 := by
-  cases e <;> simp [vertexDiff, Edge.src, Edge.tgt] <;> omega
+  cases e <;> simp [vertexDiff] <;> omega
 
 theorem IsPath.pairwise_vertexDiff : ∀ {γ : List Edge}, IsPath γ →
     γ.Pairwise fun a b => vertexDiff a.src < vertexDiff b.src := by

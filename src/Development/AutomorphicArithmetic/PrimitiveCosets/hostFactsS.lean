@@ -184,6 +184,6 @@ theorem UpperTheory.Comparison₂.hostFactsS :
     rw [Nat.primeFactors_mul H.QS_ne_zero H.q_prime.ne_zero, H.q_prime.primeFactors]
     show insert H.q H.QS.primeFactors = _
     ext a
-    simp [or_comm]
+    simp
   rw [hset]
   exact hostFactsS_pf φ H

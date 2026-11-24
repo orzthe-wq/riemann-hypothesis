@@ -50,4 +50,4 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.abVar_surjective_iff_ptMap_surjective : ∀ (K : Type) [Field K] (A B : AbVar K) (p : A ⟶ B), Surjective p.hom.left ↔ Function.Surjective (ptMap p) := by
-  first | exact @GlobalTheory.AV.AbVar.surjective_iff_ptMap_surjective | exact GlobalTheory.AV.AbVar.surjective_iff_ptMap_surjective | (intros; apply GlobalTheory.AV.AbVar.surjective_iff_ptMap_surjective <;> assumption)
+  first | exact @GlobalTheory.AV.AbVar.surjective_iff_ptMap_surjective

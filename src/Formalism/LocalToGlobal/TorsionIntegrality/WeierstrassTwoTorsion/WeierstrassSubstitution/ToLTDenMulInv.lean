@@ -4,49 +4,6 @@ public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.S
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.CurveSer
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowBasic
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.WeierstrassSubstitution.FlowTrans
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -120,7 +77,7 @@ theorem toL_tS_mul : toL (tS W xP) * (xL W - HahnSeries.C xP) = 1 := by
     _ = 1 := by rw [toL_X_mul, toL_tDen_mul_inv, one_pow, one_mul]
 
 theorem coeff_two_tS : coeff 2 (tS W xP) = 1 := by
-  simp [tS, PowerSeries.coeff_X_pow_mul', inv_cc]
+  simp [tS, PowerSeries.coeff_X_pow_mul']
 
 theorem toL_nS : toL (nS W xP yP) =
     HahnSeries.C (W.a₄ - W.a₁ * yP + 2 * W.a₂ * xP + 3 * xP ^ 2) * toL X * toL (xS W)
@@ -135,7 +92,7 @@ theorem toL_xPlus : toL (xPlus W xP yP) = HahnSeries.C xP
 theorem toL_yPlus : toL (yPlus W xP yP) =
     -(toL (yS W - C yP * X ^ 3) * toL (nS W xP yP) * toL (invOfUnit (tDen W xP) 1) ^ 3)
       - HahnSeries.C yP - HahnSeries.C W.a₁ * toL (xPlus W xP yP) - HahnSeries.C W.a₃ := by
-  simp only [yPlus, map_add (f := _), map_sub, map_neg, map_mul, map_pow, HahnSeries.ofPowerSeries_C]
+  simp only [yPlus, map_sub, map_neg, map_mul, map_pow, HahnSeries.ofPowerSeries_C]
 
 theorem inv_subst (hI : ISerSpec.{u}) :
     (invOfUnit (tDen W xP) 1).subst (iSer W) = iDen W ^ 2 * invOfUnit (tDen W xP) 1 := by
@@ -259,7 +216,7 @@ theorem map_xPlus : PowerSeries.map φ (xPlus W xP yP) = xPlus (W.map φ) (φ xP
     Plus.map_nS W xP yP φ, Plus.map_inv W xP φ]
 
 theorem map_yPlus : PowerSeries.map φ (yPlus W xP yP) = yPlus (W.map φ) (φ xP) (φ yP) := by
-  simp only [yPlus, yS, map_add (f := _), map_sub, map_neg, map_mul, map_pow, PowerSeries.map_C,
+  simp only [yPlus, yS, map_sub, map_neg, map_mul, map_pow, PowerSeries.map_C,
     PowerSeries.map_X, CurveSer.map_xS, Plus.map_nS W xP yP φ, Plus.map_inv W xP φ,
     Plus.map_xPlus W xP yP φ, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃]
 

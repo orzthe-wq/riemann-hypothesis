@@ -54,7 +54,6 @@ theorem exists_under (v : PlF E) : ∃ w : Pl E, w.under (𝓞 (maximalRealSubfi
   have hinj : Function.Injective (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) := by
     first
     | exact FaithfulSMul.algebraMap_injective _ _
-    | exact NoZeroSMulDivisors.algebraMap_injective _ _
   haveI : v.asIdeal.IsMaximal := v.isMaximal
   obtain ⟨Q, hQmax, hQ⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral v.asIdeal
     (by rw [(RingHom.injective_iff_ker_eq_bot _).mp hinj]; exact bot_le)

@@ -8,15 +8,14 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDesc
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCompletionPointClosedPointMemOfSmooth
 public import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.ExistsIsComplEigenSubOfValuationRing
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomBaseChangeBijectiveOfLeNilradical
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.CommonEigenvectorsFlatBaseChange
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsConstantLieBasisArcGroup
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsConstantLieBasisArcGroupStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieCombStatement
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.IsPullbackPullbackMap
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIsLieBasisBaseChange
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIsLieBasisEigen
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieComb
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -348,7 +347,7 @@ theorem lieMult_arc {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
 theorem exists_arcBasis : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) [IsPrincipalIdealRing A] [CharZero A] (ρ : (E →+* ℂ) → (𝓞 E →+* A)) (f : c.F →+* FractionRing A), f.comp β = (algebraMap A (FractionRing A)).comp b → (∀ τ x, algebraMap A (FractionRing A) (ρ τ x) = f (embK c τ x)) → (∃ r z : O, ((β r : c.F) : ℂ) = H.rt0 ∧ ((β z : c.F) : ℂ) = zeta l.A) → ∃ e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR A), (∀ τ k, GtTanR (e τ k)) ∧ ArcBasis W ρ e := by
   intro hL _ E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W _ _ ρ f hf hρ ⟨r, z, hr, hz⟩
   have hG := hL.globalFns
-  obtain ⟨g, e, v, M, hev, hv, -, hM⟩ := T.exists_constantLieBasis_arcGroup hG E H Dw l Xo c O β Y A b a χ W
+  obtain ⟨g, e, v, M, hev, hv, -, hM⟩ := _root_.GlobalTheory.ConstLie.exists_const_basis hG E H Dw l Xo c O β Y A b a χ W
   have := W.t.semi.smooth
   let F := AlgebraicClosure (FractionRing A)
   have := flat_of_injective A F (by
@@ -377,7 +376,7 @@ theorem exists_arcBasis : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [N
   choose u hu hu' using key
   choose ν hν using fun τ k => ConstLie.exists_gtComb (u τ k) e
   have img : ∀ τ k, LieImg W (ν τ k) (prodPts (fun j => PowerSeries.C (R := A) (u τ k j)) v) := fun τ k =>
-    (T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y A b a χ W g _ e _ v _ (fun i => (hev i).2) (hν τ k)).2
+    (_root_.GlobalTheory.ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y A b a χ W g _ e _ v _ (fun i => (hev i).2) (hν τ k)).2
       ((Chart.isLieComb_iff _ _ _).2 rfl)
   refine ⟨ν, fun τ k => ((ConstLie.main hG E H Dw l Xo c O β Y A b a χ W _).2 _ (img τ k)).2
     (isTangent_prodPts hv.1 _), _, img, fun τ => ⟨fun k => ⟨isTangent_prodPts hv.1 _, fun x => ?_⟩, fun w hw he => ?_⟩⟩

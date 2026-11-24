@@ -1,8 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDeterminantPowDepthBoundsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixVariablesDeterminantPowMonomialShapeStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupDeterminantPowDepthBounds
+public import Mathlib.Data.Nat.Prime.Factorial
+import Mathlib.RingTheory.MvPolynomial.Homogeneous
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixVariablesDeterminantPowMonomialShape
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -15,7 +17,6 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
-public import Mathlib.Data.Nat.Prime.Factorial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -51,25 +52,9 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FGDepth
 
-theorem val_natCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℕ) :
-    0 ≤ v (n : C) := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    push_cast
-    exact (le_min ih (le_of_eq (AddValuation.map_one v).symm)).trans (AddValuation.map_add v _ _)
-
-theorem val_intCast_nonneg {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (n : ℤ) :
-    0 ≤ v (n : C) := by
-  obtain ⟨m, rfl | rfl⟩ := Int.eq_nat_or_neg n
-  · rw [Int.cast_natCast]
-    exact val_natCast_nonneg v m
-  · rw [Int.cast_neg, AddValuation.map_neg, Int.cast_natCast]
-    exact val_natCast_nonneg v m
-
 theorem val_natCast_eq_zero {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (p : ℕ)
     (hp : p.Prime) (hv : v (p : C) = 1) (n : ℕ) (hn : ¬ p ∣ n) : v (n : C) = 0 := by
-  have h0 := val_natCast_nonneg v n
+  have h0 := _root_.GlobalTheory.FGDepth.natCast_isInt v n
   refine le_antisymm ?_ h0
   by_contra hlt
   rw [not_le] at hlt
@@ -82,10 +67,10 @@ theorem val_natCast_eq_zero {C : Type} [Field C] (v : AddValuation C (WithTop �
   have one_pos' : (0 : WithTop ℝ) < 1 := by exact_mod_cast (zero_lt_one : (0 : ℝ) < 1)
   have h1 : 0 < v ((p : C) * (Nat.gcdA p n : C)) := by
     rw [AddValuation.map_mul, hv]
-    exact add_pos_of_pos_of_nonneg one_pos' (val_intCast_nonneg v _)
+    exact add_pos_of_pos_of_nonneg one_pos' (_root_.GlobalTheory.FGDepth.intCast_isInt v _)
   have h2 : 0 < v ((n : C) * (Nat.gcdB p n : C)) := by
     rw [AddValuation.map_mul]
-    exact add_pos_of_pos_of_nonneg hlt (val_intCast_nonneg v _)
+    exact add_pos_of_pos_of_nonneg hlt (_root_.GlobalTheory.FGDepth.intCast_isInt v _)
   have hsum := AddValuation.map_add v ((p : C) * (Nat.gcdA p n : C)) ((n : C) * (Nat.gcdB p n : C))
   rw [← key, AddValuation.map_one] at hsum
   exact absurd hsum (not_le.2 (lt_min h1 h2))
@@ -96,8 +81,8 @@ namespace GlobalTheory.FGDepth
 
 theorem detDepth_eq_zero_of_lt : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (p : ℕ), p.Prime → v (p : C) = 1 → ∀ (i d c : ℕ) (G : LogFGL v d) (u : Fin i → Fin d → C), IsSatFrame v u → c < p → detDepth G u c = 0 := by
   intro C _ _ v p hp hv i d c G u hu hc
-  obtain ⟨hlo, hcont, -⟩ := GlobalTheory.T.formalGroupDeterminantPowDepth_bounds C v p hp hv i d c G u hu
-  obtain ⟨-, -, hone, hrow⟩ := GlobalTheory.T.matrixVariablesDeterminantPow_monomial_shape C i c
+  obtain ⟨hlo, hcont, -⟩ := _root_.GlobalTheory.FGDepth.detDepth_bounds C v p hp hv i d c G u hu
+  obtain ⟨-, -, hone, hrow⟩ := _root_.GlobalTheory.DetPowShape.detPow_shape C i c
   set α₀ : (Σ _ : Fin i, Fin i) →₀ ℕ := ∑ a : Fin i, Finsupp.single ⟨a, a⟩ c with hα₀
   have hmem : α₀ ∈ (detPow C i c).support := by
     rw [MvPolynomial.mem_support_iff, hone]

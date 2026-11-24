@@ -170,7 +170,7 @@ theorem l2_comp_flat_symm_eq_l2 (X : PT E) (Y : GT (Fin n × Idx X.dim))
       refine Finset.prod_eq_one fun k _ => ?_
       rcases X.eps_pm _ (hγ k) with h | h <;> simp [h]
     have hre : (HC (v + γ) (v + γ)).re = (HC v v).re + 2 * (HC v γ).re + (HC γ γ).re := by
-      rw [HC_add_left, HC_add_right, HC_add_right, HC_conj v γ]
+      rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.nA_HC_add_left, _root_.ReciprocityTheory.ChartRestriction.G.I2.nA_HC_add_right, _root_.ReciprocityTheory.ChartRestriction.G.I2.nA_HC_add_right, HC_conj v γ]
       simp only [Complex.add_re, Complex.conj_re]
       ring
     have hsq : ∀ a b c : ℝ, (Real.exp a * c) ^ 2 * Real.exp b = c ^ 2 * Real.exp (2 * a + b) := by
@@ -273,12 +273,12 @@ theorem im_HC_act_add (w₀ : 𝓞 E) (hw : (w₀ : E) + cc (w₀ : E) = 1) (γ 
     rw [HC_conj (fun k => actE (w₀ : E) (γ k)) δ, HC_actE]
   have h3 : HC γ δ = HC γ (fun k => actE (cc (w₀ : E)) (δ k)) +
       HC γ (fun k => actE (w₀ : E) (δ k)) := by
-    rw [← HC_add_right]
+    rw [← _root_.ReciprocityTheory.ChartRestriction.G.I2.nA_HC_add_right]
     congr 1
     funext k
     rw [Pi.add_apply, ← actE_add_left, show cc (w₀ : E) + w₀ = 1 by rw [add_comm]; exact hw,
       actE_one]
-  rw [hsplit, HC_add_left, HC_add_right, HC_add_right, h1]
+  rw [hsplit, _root_.ReciprocityTheory.ChartRestriction.G.I2.nA_HC_add_left, _root_.ReciprocityTheory.ChartRestriction.G.I2.nA_HC_add_right, _root_.ReciprocityTheory.ChartRestriction.G.I2.nA_HC_add_right, h1]
   have h3' := congrArg Complex.im h3
   simp only [Complex.add_im] at h3'
   simp only [Complex.add_im, Complex.conj_im]

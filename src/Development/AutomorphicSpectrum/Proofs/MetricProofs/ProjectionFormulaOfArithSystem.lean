@@ -6,12 +6,10 @@ public import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsPFSte
 public import GroundTheory.HeightsAndTheta.Heights.Intersections.StatementsPFVert
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArithmeticIntersection.MixedFieldContraction.ContractMixedFieldStatement
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FibreDim
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenericDegreeOfArithSystemStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.GenericDegreeOfArithSystem
 public import GroundTheory.HeightsAndTheta.Heights.Intersections.EqZeroOfEventuallyEval
-import GroundTheory.HeightsAndTheta.Heights.Intersections.IsMultiProjPrimeImageZ
 public import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFFibreBij
 public import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFFibreMult
-import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFFibreSum
 public import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFHoriz
 public import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFIntZero
 public import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFSecRed
@@ -27,6 +25,8 @@ public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.GeoNum
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ImageArithClosed
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.Multilin
 public import GroundTheory.HeightsAndTheta.Heights.OrbitLimits.ProjContract
+import GroundTheory.HeightsAndTheta.Heights.Intersections.IsMultiProjPrimeImageZ
+import GroundTheory.HeightsAndTheta.Heights.Intersections.PPFFibreSum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -88,11 +88,11 @@ theorem contractMixed : ContractMixedStatement :=
     pfIntZero pfVert
 
 theorem pfStep : Inter.PFStep.Statement :=
-  Inter.PFStep.proof (Inter.PFSecRed.proof (by intros; exact Targets.Multilin.full _ _) GlobalTheory.CompanionTheory.Ar.Giv.fibreDim) pfVert pfIntZero
-    Inter.PFHoriz.proof (Inter.PFFibreSum.proof GlobalTheory.CompanionTheory.Ar.Giv.fibreDim Inter.PFFibreBij.proof Inter.PFFibreMult.proof)
+  Inter.PFStep.proof (Inter.PFSecRed.proof (by intros; exact Targets.Multilin.full _ _) _root_.GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDim.proof) pfVert pfIntZero
+    Inter.PFHoriz.proof (Inter.PFFibreSum.proof _root_.GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDim.proof Inter.PFFibreBij.proof Inter.PFFibreMult.proof)
     imageArith contractMixed
 
 theorem projFormula : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → PFStatement := fun h =>
-  Inter.PushforwardProjLineFlag.proof (GlobalTheory.T.generic_degree_of_arith_system h) pfStep
+  Inter.PushforwardProjLineFlag.proof (_root_.GlobalTheory.CompanionTheory.Ar.Giv.genDeg_of_system h) pfStep
 
 end GlobalTheory.CompanionTheory.Ar.Giv.ProjF

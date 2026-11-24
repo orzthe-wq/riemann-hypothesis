@@ -123,7 +123,6 @@ theorem finiteDimensional_of_polynomial_of_eigenspaces :
   intro M _ _ T V hV p hp hker hfin
   have hsplit : p = C p.leadingCoeff * (p.roots.map fun a => (X - C a : ℂ[X])).prod := by
     first
-      | exact Polynomial.eq_prod_roots_of_splits_id (IsAlgClosed.splits p)
       | exact (Polynomial.C_leadingCoeff_mul_prod_multiset_X_sub_C
           (IsAlgClosed.card_roots_eq_natDegree (k := ℂ))).symm
   refine finiteDimensional_of_roots_of_eigenspaces T p.roots V hV ?_ hfin

@@ -617,7 +617,7 @@ theorem nval_sign_mul (n : ℕ) (u : ℤˣ) (x : T.Fr) : nval T.V n (((u : ℤ) 
 theorem wedgeOrd_eq_of_unique (n : ℕ) {φ : CoefHom c io K₀} {y : IntFr Xo c T io} {s : ι → RulK Xo c K₀}
     {o : ι ≃ TIx Dw Φ} (h : letI := io.toAlgebra; ∃! d, IsWedgeVal Φ o φ y.1 s d) {d : T.Fr}
     (hd : letI := io.toAlgebra; IsWedgeVal Φ o φ y.1 s d) : wedgeOrd Φ n φ y s = nval T.V n d := by
-  letI := io.toAlgebra
+  let := io.toAlgebra
   refine wedgeOrd_eq (wedgeOrd_ne_bot_iff.2 ⟨_, ⟨o, d, hd, rfl⟩, ?_⟩) ⟨o, d, hd, rfl⟩
   rintro _ ⟨o', d', hd', rfl⟩
   rw [← h.unique (hd'.reorder o) hd, nval_sign_mul]

@@ -50,6 +50,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.FiniteDimensionalOfOrtho
 
 @[expose] public section
 
@@ -180,9 +181,6 @@ theorem card_quot_extP (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
   rw [← Nat.card_congr e2.toEquiv, ← Nat.card_congr e1.toEquiv, main, hQ, hrank, ← pow_mul]
   congr 1; ring
 
-theorem exists_star_int (a : 𝓞 K) : ∃ a' : 𝓞 K, algebraMap (𝓞 K) K a' = star (algebraMap (𝓞 K) K a) :=
-  ⟨⟨star (algebraMap (𝓞 K) K a), map_isIntegral_int (starRingEnd K) (RingOfIntegers.isIntegral_coe a)⟩, rfl⟩
-
 theorem star_mem_extP (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) {z : 𝓞 K} (hz : z ∈ extP K 𝔭 ^ k) :
     ∃ z' ∈ extP K 𝔭 ^ k, algebraMap (𝓞 K) K z' = star (algebraMap (𝓞 K) K z) := by
   rw [extP, ← Ideal.map_pow, Ideal.map] at hz ⊢
@@ -197,7 +195,7 @@ theorem star_mem_extP (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) {z : �
     exact ⟨x' + y', add_mem hx' hy', by rw [map_add (f := _), map_add (f := _), star_add, ex, ey]⟩
   | smul a x _ hx =>
     obtain ⟨x', hx', ex⟩ := hx
-    obtain ⟨a', ea⟩ := exists_star_int a
+    obtain ⟨a', ea⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int a
     exact ⟨a' * x', Ideal.mul_mem_left _ _ hx', by
       rw [smul_eq_mul, map_mul, map_mul, star_mul', ex, ea]⟩
 

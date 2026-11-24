@@ -110,7 +110,7 @@ theorem nf_one (j : ℕ) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∉ Pr.vGs) 
       simp [Loc.inX, nfGen, Loc.eN, Finset.sum_apply, this]
     · simp [Loc.inX, nfGen, Loc.eN, Finset.sum_apply, Fin.val_inj]
   ext y
-  simp only [Set.mem_image, SetLike.mem_coe, mem_lamYat hP, nfLat, Set.mem_setOf_eq]
+  simp only [Set.mem_image, SetLike.mem_coe, mem_lamYat hP, nfLat, Set.mem_ofPred_eq]
   constructor
   · rintro ⟨x, hx, rfl⟩
     refine ⟨fun a => x (Fin.castAdd _ a), (mem_localization_standardLattice _ _).2 fun a => hx _, fun b => x (Fin.natAdd _ b),

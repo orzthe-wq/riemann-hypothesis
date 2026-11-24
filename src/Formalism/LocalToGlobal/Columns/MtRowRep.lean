@@ -52,7 +52,7 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 def finTypSetoid (Occ : Set (NG.FinTyp L n)) : Setoid Occ where
   r π π' := π.1.Iso π'.1
-  iseqv := ⟨fun π => NG.IsoRep.refl _, fun {π _} h => NG.IsoRep.symm π.1.stable h, fun h h' => NG.IsoRep.trans h h'⟩
+  iseqv := ⟨fun _π => NG.IsoRep.refl _, fun {π _} h => NG.IsoRep.symm π.1.stable h, fun h h' => NG.IsoRep.trans h h'⟩
 
 abbrev FinTypCls (Occ : Set (NG.FinTyp L n)) : Type := Quotient (finTypSetoid Occ)
 

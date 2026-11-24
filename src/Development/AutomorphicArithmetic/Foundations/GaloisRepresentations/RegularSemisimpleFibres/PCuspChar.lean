@@ -1,9 +1,11 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.ResEmbCompat
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsStandardUnipotentRadicalBijOnNilradicalStatement
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentationStatement
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveExtendZeroOfSumUnipotentRadicalStatement
+public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsStandardUnipotentRadicalBijOnNilradical
+public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentation
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsPrimitiveExtendZeroOfSumUnipotentRadical
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLabel
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SubsingletonJacquetOfPerm
 public import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.GreenCuspLabels.GreenCuspidal
@@ -96,11 +98,11 @@ theorem cuspChar : CuspChar := by
   intro F _ _ θ hθ m hm W _ _ _ κ hirr hcusp
   classical
   haveI : Fintype F := Fintype.ofFinite F
-  have hc := GlobalTheory.T.isCharacterOverSubfield_of_representation ℂ ℂ (GL (Fin m) F) W κ
+  have hc := _root_.GlobalTheory.BI.isChar_and_isIrrChar_of_rep ℂ ℂ (GL (Fin m) F) W κ
   have hprim : GlobalTheory.CuspGL.IsPrimitive
       (GlobalTheory.CuspGL.extZero (fun g : GL (Fin m) F => algebraMap ℂ ℂ (κ.character g))) := by
-    refine GlobalTheory.T.isPrimitive_extendZero_of_sum_unipotentRadical F m _ hc.1 fun a h0 ham => ?_
-    obtain ⟨A, H, -, hH, -⟩ := GlobalTheory.T.exists_standardUnipotentRadical_bijOn_nilradical F m a ham.le
+    refine _root_.GlobalTheory.CuspGL.isPrimitive_extZero_of_sum_unipotent F m _ hc.1 fun a h0 ham => ?_
+    obtain ⟨A, H, -, hH, -⟩ := _root_.GlobalTheory.CuspGL.UnipNilRad.exists_unip_bijOn_nilRad F m a ham.le
     have hd : ∑ b, (![a, m - a] : Fin 2 → ℕ) b = m := by
       simp [Fin.sum_univ_two]
       omega
@@ -115,7 +117,7 @@ theorem cuspChar : CuspChar := by
     rw [← hH, finsum_mem_def, finsum_eq_sum_of_fintype]
     rw [← hz]
     refine Finset.sum_congr rfl fun u _ => ?_
-    by_cases hu : u ∈ H <;> simp [Set.indicator_apply, hu]
+    by_cases hu : u ∈ H <;> simp [hu]
   obtain ⟨k, hk, hx⟩ := GlobalTheory.CuspFormula.exists_regular F θ hθ m hm _ (hc.2 hirr) hprim
   refine ⟨k, hk, fun x => ?_⟩
   have := hx x

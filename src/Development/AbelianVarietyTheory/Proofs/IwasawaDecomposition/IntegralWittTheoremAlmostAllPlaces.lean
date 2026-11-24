@@ -247,13 +247,9 @@ section Loc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {d : ℕ} (b : Module.Basis (Fin d) F E)
 
-theorem ae_mem (a : F) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
-    algebraMap F (Fv F v) a ∈ v.adicCompletionIntegers F :=
-  (algebraMap F (Af F) a).2
-
 theorem ae_incl (e : E) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
     inclR (F := F) (Fv F v) e ∈ intV b v := by
-  filter_upwards [Filter.eventually_all.2 fun k => ae_mem (b.repr e k)] with v hv k
+  filter_upwards [Filter.eventually_all.2 fun k => _root_.GlobalTheory.GaugeEx.IntBasis.ev_int (b.repr e k)] with v hv k
   have : (Algebra.TensorProduct.basis (Fv F v) b).repr (inclR (F := F) (Fv F v) e) k =
       algebraMap F (Fv F v) (b.repr e k) := by
     change (Algebra.TensorProduct.basis (Fv F v) b).repr (1 ⊗ₜ e) k = _
@@ -273,7 +269,7 @@ theorem ae_algebraMap : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite
     by_contra hne
     push Not at hne
     exact one_ne_zero (b.repr.map_eq_zero_iff.1 (Finsupp.ext hne))
-  filter_upwards [Filter.eventually_all.2 fun k => ae_mem (b.repr 1 k), ae_mem (b.repr 1 k)⁻¹] with v h1 h2 a
+  filter_upwards [Filter.eventually_all.2 fun k => _root_.GlobalTheory.GaugeEx.IntBasis.ev_int (b.repr 1 k), _root_.GlobalTheory.GaugeEx.IntBasis.ev_int (b.repr 1 k)⁻¹] with v h1 h2 a
   constructor
   · intro ha
     have := mul_mem (ha k) h2
@@ -287,7 +283,7 @@ end Loc
 theorem witt_integral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (x : Fin 1 → Fin M → E) (β : F), IsHermND σ J → β ≠ 0 → hE σ J (x 0) (x 0) = algebraMap F E β → ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ y ∈ latV (M := M) (n := 1) b v, qR (Fv F v) σ J (y 0) = algebraMap F (Fv F v) β → ∃ g : HA (Fv F v) σ J, g • ratTup (F := F) (Fv F v) x = y ∧ ∀ i j, ((HA.mat (Fv F v) σ J g : GL (Fin M) (Fv F v ⊗[F] E)) : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) i j ∈ intV b v ∧ ((HA.mat (Fv F v) σ J g⁻¹ : GL (Fin M) (Fv F v ⊗[F] E)) : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) i j ∈ intV b v := by
   intro F E _ _ _ _ _ σ h d b M J x β hJ hβ hx
   obtain ⟨u, hui, hu⟩ := exists_three h
-  filter_upwards [(GlobalTheory.GaugeEx.IntBasis.main F E σ d b).2.1, ae_algebraMap b, ae_mem (2⁻¹ : F), ae_mem β, ae_mem β⁻¹,
+  filter_upwards [(GlobalTheory.GaugeEx.IntBasis.main F E σ d b).2.1, ae_algebraMap b, _root_.GlobalTheory.GaugeEx.IntBasis.ev_int (2⁻¹ : F), _root_.GlobalTheory.GaugeEx.IntBasis.ev_int β, _root_.GlobalTheory.GaugeEx.IntBasis.ev_int β⁻¹,
     Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ae_incl b (J i j),
     Filter.eventually_all.2 fun i => ae_incl b (x 0 i),
     Filter.eventually_all.2 fun i => ae_incl b (u i),

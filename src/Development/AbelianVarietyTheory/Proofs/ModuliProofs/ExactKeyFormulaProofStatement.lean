@@ -50,4 +50,4 @@ open GlobalTheory.AbLaw
 open GlobalTheory.KeyPow GlobalTheory.KeyKa
 
 theorem _root_.GlobalTheory.T.exactKeyFormula_proof : KeyFormula := by
-  first | exact @GlobalTheory.KeyFam.keyFormula_holds | exact GlobalTheory.KeyFam.keyFormula_holds | (intros; apply GlobalTheory.KeyFam.keyFormula_holds <;> assumption)
+  first | exact @GlobalTheory.KeyFam.keyFormula_holds

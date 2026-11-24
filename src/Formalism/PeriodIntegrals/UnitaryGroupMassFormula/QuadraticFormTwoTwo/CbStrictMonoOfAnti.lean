@@ -63,10 +63,9 @@ theorem cb_anti_of_succ {n : ℕ} {a : ℕ → ℝ} (ha : ∀ i, 1 ≤ i → i +
   induction j with
   | zero => omega
   | succ j ih =>
-    by_cases h : i < j
+    rcases lt_or_eq_of_le (Nat.lt_succ_iff.mp hij) with h | heq
     · exact lt_trans (ha j (by omega) hj) (ih h (by omega))
-    · have e : i = j := by omega
-      rw [e]
+    · rw [heq]
       exact ha j (by omega) hj
 
 theorem cb_mem_of_prod_eq {n : ℕ} {a b : ℕ → ℝ}
@@ -121,7 +120,6 @@ theorem cb_rho_eq' (Q : M.Par) (π : M.Ty Q) (j : Fin (Q.k - 1)) :
   rw [dite_eq_left ⟨by omega, by have := j.isLt; omega⟩]
   first
     | rfl
-    | simp
 
 theorem cb_ofIcc {n i : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ n) : ∃ j : Fin n, i = j.1 + 1 := by
   exact ⟨⟨i - 1, by omega⟩, by show i = i - 1 + 1; omega⟩
@@ -221,18 +219,16 @@ theorem Pp_OK {P : M.Par} (hP : P.OK) : (Pp P).OK := by
     linarith
 
 theorem Pq_OK {P : M.Par} (hP : P.OK) : (Pq P).OK := by
-  refine ⟨hP.k_pos, hP.T_pos, hP.T'_pos, ?_, ?_, ?_⟩
-  · exact hP.int_u
-  · exact hP.int_u
-  · intro i hi
-    have g := hP.gap i hi
-    show max (P.u (i + 1)) (P.u (i + 1)) + 1 / 2 ≤ min (P.u i) (P.u i) - 1 / 2
-    have e1 : P.lo i = max (P.u (i + 1)) (P.u' (i + 1)) + 1 / 2 := rfl
-    have e2 : P.hi i = min (P.u i) (P.u' i) - 1 / 2 := rfl
-    rw [max_self, min_self]
-    have := le_max_left (P.u (i + 1)) (P.u' (i + 1))
-    have := min_le_left (P.u i) (P.u' i)
-    linarith
+  refine ⟨hP.k_pos, hP.T_pos, hP.T'_pos, hP.int_u, hP.int_u, ?_⟩
+  intro i hi
+  have g := hP.gap i hi
+  change max (P.u (i + 1)) (P.u' (i + 1)) + 1 / 2 ≤
+    min (P.u i) (P.u' i) - 1 / 2 at g
+  show max (P.u (i + 1)) (P.u (i + 1)) + 1 / 2 ≤ min (P.u i) (P.u i) - 1 / 2
+  rw [max_self, min_self]
+  have := le_max_left (P.u (i + 1)) (P.u' (i + 1))
+  have := min_le_left (P.u i) (P.u' i)
+  linarith
 
 theorem cb_lo_le_of (P : M.Par) (i : ℕ) (x : ℝ) (h1 : (Pp P).lo i ≤ x) (h2 : (Pq P).lo i ≤ x) :
     P.lo i ≤ x := by
@@ -313,8 +309,7 @@ def cb_xPoly (Q : M.Par) (σ : M.Ty Q) : Polynomial ℂ :=
   ∏ i ∈ Icc 1 (Q.k - 1), (Polynomial.X + Polynomial.C ((M.rho Q σ i : ℝ) : ℂ))
 
 theorem cb_eval_xPoly (Q : M.Par) (σ : M.Ty Q) (Y : ℂ) : (cb_xPoly Q σ).eval Y = M.xC Q σ Y := by
-  unfold cb_xPoly M.xC
-  simp only [Polynomial.eval_prod, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_C]
+  simp only [cb_xPoly, M.xC, Polynomial.eval_prod, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_C]
 
 theorem exists_sep {P : M.Par} (hP : P.OK) :
     ∃ Y₀ : ℂ, Function.Injective (fun σ : M.Ty (Pp P) => M.xC (Pp P) σ Y₀) := by

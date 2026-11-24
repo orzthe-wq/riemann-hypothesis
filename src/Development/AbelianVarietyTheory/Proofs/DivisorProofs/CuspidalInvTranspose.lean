@@ -50,11 +50,6 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 
 namespace GlobalTheory.InvTransposeCusp
 
-theorem invTranspose_invol {R : Type} [CommRing R] (n : ℕ) (g : GL (Fin n) R) :
-    GlobalTheory.TypeTame.invTranspose n (GlobalTheory.TypeTame.invTranspose n g) = g := by
-  apply Units.ext
-  exact Matrix.transpose_transpose (g : Matrix (Fin n) (Fin n) R)
-
 theorem isSupercuspidal_comp_invTranspose (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) k) V) (hs : IsSupercuspidal π) :
@@ -68,7 +63,7 @@ theorem isSupercuspidal_comp_invTranspose (k : Type) [Field k] [ValuativeRel k] 
     have : {g | π.dual g l = l} = (GlobalTheory.TypeTame.invTranspose n) ⁻¹'
         {g | Representation.dual (π.comp (GlobalTheory.TypeTame.invTranspose n)) g l = l} := by
       ext g
-      simp [Representation.dual, map_inv, invTranspose_invol]
+      simp [Representation.dual, map_inv, _root_.GlobalTheory.TypeTame.invTranspose_invTranspose]
     rw [this]
     exact hl.preimage hcont
   obtain ⟨C, hC, hCl⟩ := hc v l hl'
@@ -79,8 +74,8 @@ theorem isSupercuspidal_comp_invTranspose (k : Type) [Field k] [ValuativeRel k] 
     intro h
     have := Subgroup.mem_center_iff.1 hz (GlobalTheory.TypeTame.invTranspose n h)
     have h2 := congrArg (GlobalTheory.TypeTame.invTranspose n) this
-    simpa [map_mul, invTranspose_invol] using h2
-  · rw [← map_mul, ← hgc, invTranspose_invol]
+    simpa [map_mul, _root_.GlobalTheory.TypeTame.invTranspose_invTranspose] using h2
+  · rw [← map_mul, ← hgc, _root_.GlobalTheory.TypeTame.invTranspose_invTranspose]
 
 theorem isCuspidal_comp_invTranspose : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), IsCuspidal π → IsCuspidal (π.comp (GlobalTheory.TypeTame.invTranspose n)) := by
   intro k _ _ _ _ n V _ _ π h

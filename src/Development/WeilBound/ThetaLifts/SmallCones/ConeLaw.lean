@@ -112,7 +112,7 @@ theorem LawsT.rat (h : LawsT B M om om₀ H H' e u w ι) (hD : StabDec) (hTB : T
   have e1 : om (m * p * g, y) Φ = om (m, 1) (om (p, 1) (om (g, y) Φ)) := by simp [om_mul, mul_assoc]
   have e2 := h.theta (l := 1) (by rwa [h.one]) (levi_one (W₁ := W₁) H') hΨ
   have e3 := ((hTB F E σ B _ _ X₁ W₁ M₀ χX χW om₀ _ _ _ _ hp₀).1 _ (hs _ hΨ)).2.1 g₁ (hr hδ) 1 (one_mem _) 1 1
-  simp only [h.one, h.w1, map_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, mul_one, Circle.coe_one, one_pow] at e2 e3
+  simp only [h.one, h.w1, map_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, mul_one] at e2 e3
   unfold thv
   rw [e1, h.uni m hm _ (pair_pres hp _ hΨ), e2, e3]
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta, ← Prod.one_eq_mk]

@@ -67,7 +67,7 @@ theorem exists_fixing_mul_frobAt :
   have hKo : IsOpen (K.fixingSubgroup : Set (G ℚ Ω)) := IntermediateField.fixingSubgroup_isOpen K
   let V : Set (G ℚ Ω) := {φ | s⁻¹ * φ ∈ K.fixingSubgroup}
   have hVo : IsOpen V := hKo.preimage (continuous_const_mul s⁻¹)
-  have hVne : V.Nonempty := ⟨s, by simp [V, K.fixingSubgroup.one_mem]⟩
+  have hVne : V.Nonempty := ⟨s, by simp [V]⟩
   let T : ℕ := ∏ p ∈ S.filter (· ≠ 0), p
   have hT : T ≠ 0 := Finset.prod_ne_zero_iff.2 fun p hp => (Finset.mem_filter.1 hp).2
   have hS : {v : HeightOneSpectrum (𝓞 ℚ) | (T : 𝓞 ℚ) ∈ v.asIdeal}.Finite :=

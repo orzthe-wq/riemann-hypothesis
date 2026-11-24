@@ -2,9 +2,12 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AddCharNegEqOne
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterTrivialMatrixLatticeOpenCompactBasisStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinsetEqSumAddCosetIndicatorStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenSubgroupPeriodicStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.NumberTheory.LocalField.Basic
+public import Mathlib.Topology.Instances.Matrix
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterTrivialMatrixLatticeOpenCompactBasis
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFinsetEqSumAddCosetIndicator
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsOpenSubgroupPeriodic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -119,7 +122,7 @@ theorem GlobalTheory.LinSchur.eq_smul_of_commute : ∀ {k : Type} [Field k] [Val
     ∃ c : ℂ, ∀ x ∈ V, ι₂ x = c • ι₁ x := by
   intro k _ _ _ _ n d Xt _ _ V ψ0 hcont hne ι₁ ι₂ hbij hlin Tr Mu hTr hMu
   classical
-  obtain ⟨hLoc, hBasis⟩ := GlobalTheory.T.characterTrivialMatrixLattice_open_compact_basis n d ψ0 hcont hne
+  obtain ⟨hLoc, hBasis⟩ := _root_.GlobalTheory.LinSchurLatt.latt_open_compact_basis n d ψ0 hcont hne
   have inj : ∀ x ∈ V, ∀ y ∈ V, ι₁ x = ι₁ y → x = y := fun x hx y hy h => hbij.injOn hx hy h
   have surj : ∀ f ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k), ∃ x, x ∈ V ∧ ι₁ x = f := fun f hf => hbij.surjOn hf
   have maps : ∀ x ∈ V, ι₁ x ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k) := fun x hx => hbij.mapsTo hx
@@ -205,7 +208,7 @@ theorem GlobalTheory.LinSchur.eq_smul_of_commute : ∀ {k : Type} [Field k] [Val
   have stepE : ∀ s : k, s ≠ 0 → ∀ x ∈ V, (∀ Y, ∀ C ∈ latt ψ0 n d s, ι₁ x (Y + C) = ι₁ x Y) →
       ι₂ x = ι₂ (xs s 0) 0 • ι₁ x := by
     intro s hs x hx hper
-    obtain ⟨F, hF⟩ := GlobalTheory.T.exists_finset_eq_sum_addCosetIndicator _ (hLoc s hs).1 (ι₁ x) (maps x hx) hper
+    obtain ⟨F, hF⟩ := _root_.GlobalTheory.LinSchur.exists_finset_eq_sum_cind _ (hLoc s hs).1 (ι₁ x) (maps x hx) hper
     have hxeq : x = ∑ y ∈ F, ι₁ x y • xs s y :=
       inj _ hx _ (V.sum_mem fun y _ => V.smul_mem _ (hxsV s hs y)) (by
 
@@ -232,7 +235,7 @@ theorem GlobalTheory.LinSchur.eq_smul_of_commute : ∀ {k : Type} [Field k] [Val
     rw [hxs1 s hs 0] at e
     simpa [cind] using e
   refine ⟨ι₂ (xs 1 0) 0, fun x hx => ?_⟩
-  obtain ⟨⟨s, hs⟩, hper⟩ := GlobalTheory.T.exists_openSubgroup_periodic (fun s : {s : k // s ≠ 0} => latt ψ0 n d s) (fun s => (hLoc s.1 s.2).1)
+  obtain ⟨⟨s, hs⟩, hper⟩ := _root_.GlobalTheory.WeilM.SB.exists_periodic (fun s : {s : k // s ≠ 0} => latt ψ0 n d s) (fun s => (hLoc s.1 s.2).1)
     (fun W hW => by
       obtain ⟨s, hs, h⟩ := hBasis W hW
       exact ⟨⟨s, hs⟩, h⟩) (ι₁ x) (maps x hx)

@@ -1,54 +1,12 @@
 module
 
 public import ReciprocityTheory.L2DbarEstimates.WeakHolomorphy.HoloWeakStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Calculus.Deriv.Add
 public import Mathlib.Analysis.Calculus.Deriv.Comp
 public import Mathlib.Analysis.Calculus.Deriv.Mul
 public import Mathlib.Analysis.Calculus.DiffContOnCl
 public import Mathlib.Analysis.Complex.Liouville
+import Mathlib.Analysis.Complex.Schwarz
 
 @[expose] public section
 
@@ -69,43 +27,20 @@ theorem goal1 :
   obtain ⟨δ, hδ, hδΩ⟩ := hK.exists_cthickening_subset_open hΩ hKΩ
   obtain ⟨M, hM⟩ := (hK.cthickening (r := δ)).exists_bound_of_continuousOn
     (hu.continuousOn.mono hδΩ)
-  by_cases hv : v = 0
-  · refine ⟨0, fun x _ => ?_⟩
-    simp [hv]
-  · have hvpos : 0 < ‖v‖ := norm_pos_iff.mpr hv
-    refine ⟨M / (δ / ‖v‖), fun x hx => ?_⟩
-    have hr : 0 < δ / ‖v‖ := div_pos hδ hvpos
-    have hux : DifferentiableAt ℂ u x :=
-      (hu x (hKΩ hx)).differentiableAt (hΩ.mem_nhds (hKΩ hx))
-    have hR : fderiv ℝ u x v = fderiv ℂ u x v := by
-      rw [(hux.hasFDerivAt.restrictScalars ℝ).fderiv]
-      rfl
-    have hmem : ∀ z : ℂ, z ∈ Metric.closedBall (0 : ℂ) (δ / ‖v‖) →
-        x + z • v ∈ Metric.cthickening δ K := by
-      intro z hz
-      apply Metric.closedBall_subset_cthickening hx
-      rw [Metric.mem_closedBall, dist_eq_norm, add_sub_cancel_left, norm_smul]
-      rw [Metric.mem_closedBall, dist_zero_right] at hz
-      calc ‖z‖ * ‖v‖ ≤ δ / ‖v‖ * ‖v‖ := by gcongr
-        _ = δ := div_mul_cancel₀ δ hvpos.ne'
-    have hgd : DifferentiableOn ℂ (fun z : ℂ => u (x + z • v))
-        (Metric.closedBall (0 : ℂ) (δ / ‖v‖)) := by
-      intro z hz
-      have h1 : DifferentiableAt ℂ u (x + z • v) :=
-        (hu _ (hδΩ (hmem z hz))).differentiableAt (hΩ.mem_nhds (hδΩ (hmem z hz)))
-      have h2 : DifferentiableAt ℂ (fun w : ℂ => x + w • v) z :=
-        (differentiableAt_id.smul_const v).const_add x
-      exact (h1.comp z h2).differentiableWithinAt
-    have hdc := hgd.diffContOnCl_ball subset_rfl
-    have hest := Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hr hdc
-      (fun z hz => hM _ (hmem z (Metric.sphere_subset_closedBall hz)))
-    have hderiv : HasDerivAt (fun z : ℂ => u (x + z • v)) (fderiv ℂ u x v) 0 := by
-      have h2 : HasDerivAt (fun w : ℂ => x + w • v) v 0 := by
-        simpa using ((hasDerivAt_id (0 : ℂ)).smul_const v).const_add x
-      have h1 : HasFDerivAt u (fderiv ℂ u x) (x + (0 : ℂ) • v) := by
-        simpa using hux.hasFDerivAt
-      exact h1.comp_hasDerivAt 0 h2
-    rw [hR, ← hderiv.deriv]
-    exact hest
+  refine ⟨2 * M / δ * ‖v‖, fun x hx => ?_⟩
+  have hBall : Metric.ball x δ ⊆ Metric.cthickening δ K :=
+    Metric.ball_subset_closedBall.trans (Metric.closedBall_subset_cthickening hx δ)
+  have hmaps : Set.MapsTo u (Metric.ball x δ) (Metric.closedBall (u x) (2 * M)) := by
+    intro y hy
+    rw [Metric.mem_closedBall, dist_eq_norm]
+    simpa only [two_mul] using
+      (norm_sub_le (u y) (u x)).trans
+        (add_le_add (hM y (hBall hy)) (hM x (hBall (Metric.mem_ball_self hδ))))
+  have hfd := Complex.norm_fderiv_le_div_of_mapsTo_ball (hu.mono (hBall.trans hδΩ)) hmaps hδ
+  have hux : DifferentiableAt ℂ u x := hu.differentiableAt (hΩ.mem_nhds (hKΩ hx))
+  rw [(hux.hasFDerivAt.restrictScalars ℝ).fderiv]
+  change ‖fderiv ℂ u x v‖ ≤ _
+  exact ((fderiv ℂ u x).le_opNorm v).trans
+    (mul_le_mul_of_nonneg_right hfd (norm_nonneg v))
 
 end Bl.SecondBlockLemmaG

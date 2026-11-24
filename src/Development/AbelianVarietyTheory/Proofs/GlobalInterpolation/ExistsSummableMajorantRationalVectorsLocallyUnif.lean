@@ -72,7 +72,6 @@ theorem abs_re_algebraMap (hF : IsTotallyReal F) (x : F) (w : InfinitePlace F) :
   rw [← InfinitePlace.embedding_of_isReal_apply hw, Complex.ofReal_re]
   first
   | (rw [← Real.norm_eq_abs]; exact InfinitePlace.norm_embedding_of_isReal hw x)
-  | simpa [Real.norm_eq_abs] using InfinitePlace.norm_embedding_of_isReal hw x
 
 theorem sz_nonneg (u : Fin N → AF F) : 0 ≤ sz u :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _

@@ -99,30 +99,6 @@ theorem yrow_zero {n : ℕ} {ε : ℤˣ} {i₀ : Fin n} {M : Matrix (Fin n ⊕ F
   simp [QE, Matrix.one_apply] at h
   exact h
 
-theorem lagrangian_condition_parabolic_mul {d : SD σ} (L : LD d) {p γ : d.G} (hp : p ∈ par2 σ d.Y) (hγ : LagrangianCondition L γ) : LagrangianCondition L (p * γ) := by
-  intro i
-  have hP := (ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame p).1 hp
-  have e1 : ∀ j, inFrame d.b p (Sum.inr i) (Sum.inl j) = 0 := fun j => by
-    have := congrFun (congrFun hP i) j
-    simpa [Matrix.toBlocks₂₁] using this
-  rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply, Fintype.sum_sum_type]
-  simp [e1, hγ _]
-
-theorem lagrangian_condition_embedding {d : SD σ} (L : LD d) (g : G2 σ L.Y) : LagrangianCondition L (L.j g) := by
-  intro i
-  exact (L.j_out g (Sum.inl L.i₀) (by simp) (Sum.inr i)).2.trans (by simp [Matrix.one_apply])
-
-theorem par_of_j {d : SD σ} (L : LD d) {g : G2 σ L.Y} (h : L.j g ∈ par2 σ d.Y) : g ∈ par2 σ L.Y := by
-  rw [ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block L.ok.frame]
-  rw [ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame, inFrame_j] at h
-  refine Matrix.ext fun a c => ?_
-  have h1 := congrFun (congrFun h (L.em a)) (L.em c)
-  have h2 := padM_emS L (inFrame L.b g) (Sum.inr a) (Sum.inl c)
-  simp only [emS, Sum.map_inr, Sum.map_inl] at h2
-  simp only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply] at h1 ⊢
-  rw [← h2]
-  exact h1
-
 end Bq
 
 end PositivityTheory.SiegelWeilFormula.Act.C4

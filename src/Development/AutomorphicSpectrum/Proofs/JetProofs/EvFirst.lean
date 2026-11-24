@@ -73,7 +73,7 @@ private theorem ev_swap {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ
     List.prod_nil, mul_one]
   rw [← mul_assoc (D x.1 x.2), h2]
   split_ifs <;>
-    simp [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, inner_add_right, inner_sub_right]
+    simp [mul_add, add_mul, mul_sub, sub_mul, mul_assoc]
 
 private theorem ev_last {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
     {ε : Fin n → Bool} {D : Fin n → Fin n → Module.End ℂ V} {μ : Fin n → ℝ} {v : V}

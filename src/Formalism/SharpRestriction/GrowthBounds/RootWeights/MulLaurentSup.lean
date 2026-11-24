@@ -139,7 +139,7 @@ private theorem laurent_mul_C_coeff {B : Type*} [CommRing B] (y : LaurentPolynom
     (y * LaurentPolynomial.C q).coeff k = y.coeff k * q := by
   have hCc : ∀ j : ℤ, (LaurentPolynomial.C q).coeff j = if j = 0 then q else 0 := by
     intro j
-    simp [LaurentPolynomial.C_apply, Finsupp.single_apply, eq_comm]
+    simp [LaurentPolynomial.C_apply]
   have h := laurent_mul_coeff_of_unique_decomp y (LaurentPolynomial.C q) k 0 (by
     intro k₁ _ k₂ hk₂ he
     have : k₂ = 0 := by

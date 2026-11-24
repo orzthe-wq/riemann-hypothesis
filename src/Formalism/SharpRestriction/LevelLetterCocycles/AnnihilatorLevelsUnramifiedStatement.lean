@@ -1,12 +1,14 @@
 module
 
-import Formalism.SharpRestriction.LevelLetterCocycles.RingConditionOfDeltaInvariants
-public import Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsOfGrading
+public import Formalism.SharpRestriction.LevelLetterCocycles.FiltrationSaturationKiller
+public import Formalism.SharpRestriction.LevelLetterCocycles.KillerLevCoreOf
+public import Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorGeneralOfRingCondition
+public import Formalism.SharpRestriction.LevelLetterCocycles.PsCoprimeOf
 public import Formalism.SharpRestriction.LevelLetterCocycles.LemmasUnramifiedOfRingCondition
 public import Mathlib.RingTheory.PowerSeries.Binomial
-import Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorGeneralOfRingCondition
 public import Formalism.SharpRestriction.LevelLetterCocycles.ExistsPosConstLagrangeCondition
 public import Formalism.SharpRestriction.LevelLetterCocycles.LevelClauseOfOpenTool
+public import Mathlib.NumberTheory.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -17,17 +19,12 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.NumberTheory.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.Padics.MahlerBasis
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PowerSeries.NoZeroDivisors
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,10 +45,55 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.LevelLetterCocycles.RingConditionOfDeltaInvariants
+import Mathlib.NumberTheory.Padics.MahlerBasis
+import Mathlib.RingTheory.PowerSeries.NoZeroDivisors
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsOfGrading, Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsUnramifiedStatement
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsOfGrading =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsOfGrading", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.FiltrationSaturationKiller\npublic import Formalism.SharpRestriction.LevelLetterCocycles.KillerLevCoreOf\npublic import Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorGeneralOfRingCondition\npublic import Formalism.SharpRestriction.LevelLetterCocycles.PsCoprimeOf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.SharpRestriction.LevelLetterCocycles.LemmasUnramifiedOfRingCondition\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.UnusedSlot80
+
+open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.UnusedSlot80.KL
+
+def KillLevFacts (D : D7) (HW : HWOf D.loc) : Prop :=
+  AtCaseA fun l _ K LL hG => LevGrad ((HW l).W K 1 LL hG)
+
+theorem annihilator_levels_of_grading (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
+    (Cm : CmpOf D.loc D.locA HW F) (hK : KillLevFacts D HW) : KillerLevelsTheorem D HW F Cm := by
+  rintro ⟨-, h9⟩
+  intro l _ K LL hG hC h5
+  have hfd : FiniteDimensional (Padic l) ↥(K0 K) := by
+    first
+    | exact ((D.loc l).PD K).finK₀
+  haveI : NeZero (Module.finrank (Padic l) ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩
+  have hR := ring_condition_uniformizer_polynomial D HW F h9 l K LL hC
+  have hT := tool_algebra_of_ring_condition D HW F h9 l K LL hC h5
+  exact KL.killerLevCore_of _ (KF.psUnitE_of _ hR hT) (KF.psCoprime_of _ hR) (hK l K LL hG hC h5)
+    (KF.psStable_of _ hR) hR.1
+
+end Formalism.MainNotions.UnusedSlot80
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsOfGrading =====
+
+-- ===== clump member: Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsUnramifiedStatement =====
+-- clump-header: {"m": "Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsUnramifiedStatement", "h": "module\n\nimport Formalism.SharpRestriction.LevelLetterCocycles.RingConditionOfDeltaInvariants\npublic import Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsOfGrading\npublic import Formalism.SharpRestriction.LevelLetterCocycles.LemmasUnramifiedOfRingCondition\npublic import Mathlib.RingTheory.PowerSeries.Binomial\nimport Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorGeneralOfRingCondition\npublic import Formalism.SharpRestriction.LevelLetterCocycles.ExistsPosConstLagrangeCondition\npublic import Formalism.SharpRestriction.LevelLetterCocycles.LevelClauseOfOpenTool\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.NumberTheory.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.Padics.MahlerBasis\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PowerSeries.NoZeroDivisors\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -72,29 +113,12 @@ theorem exists_trunc_add (f : PowerSeries O) (N : ℕ) :
   obtain ⟨g, hg⟩ := h
   exact ⟨g, by rw [← hg]; ring⟩
 
-theorem algHom_ext_X (τ σ : PowerSeries O →ₐ[O] PowerSeries O) (hX : τ X = σ X)
-    (h0 : constantCoeff (τ X) = 0) : τ = σ := by
-  apply Formalism.MainNotions.WachCoordinates.Br.algHom_ext_X <;> assumption
-
 theorem algHom_eq_subst (τ : PowerSeries O →ₐ[O] PowerSeries O) (h0 : constantCoeff (τ X) = 0)
     (f : PowerSeries O) : τ f = subst (τ X) f := by
   have hs : HasSubst (τ X) := HasSubst.of_constantCoeff_zero' h0
-  have := algHom_ext_X τ ((substAlgHom hs).restrictScalars O) (by simp [substAlgHom_X]) h0
+  have := _root_.Formalism.MainNotions.WachCoordinates.Br.algHom_ext_X τ ((substAlgHom hs).restrictScalars O) (by simp [substAlgHom_X]) h0
   rw [show τ f = ((substAlgHom hs).restrictScalars O) f from DFunLike.congr_fun this f]
   simp [coe_substAlgHom]
-
-theorem cc_map (τ : PowerSeries O →ₐ[O] PowerSeries O) (h0 : constantCoeff (τ X) = 0)
-    (f : PowerSeries O) : constantCoeff (τ f) = constantCoeff f := by
-  obtain ⟨g, hg⟩ := exists_trunc_add f 1
-  have hd : X ∣ τ X := X_dvd_iff.mpr h0
-  have e : (trunc 1 f : PowerSeries O) = C (constantCoeff f) := by
-    ext m; rcases m with _ | m <;> simp [coeff_C]
-  conv_lhs => rw [hg]
-  conv_rhs => rw [hg]
-  rw [e, map_add (f := _), map_mul, map_pow, pow_one, map_add (f := _), map_add (f := _), map_mul, map_mul, pow_one]
-  have : τ (C (constantCoeff f)) = C (constantCoeff f) := τ.commutes _
-  rw [this, X_dvd_iff.mp hd, constantCoeff_X]
-  ring
 
 section Taylor
 
@@ -258,7 +282,7 @@ theorem subst_bs (l : ℕ) (hl : 1 ≤ l) (r : R) :
   have hσ0 : constantCoeff (σ X) = 0 := by rw [hσX]; exact hW0
   rw [← hσ]
   apply ode_unique (algebraMap R O ((l : R) * r))
-  · rw [cc_map σ hσ0, binomialSeries_constantCoeff, binomialSeries_constantCoeff]
+  · rw [_root_.Formalism.MainNotions.WachCoordinates.Br.constCoeff_algHom σ hσ0, binomialSeries_constantCoeff, binomialSeries_constantCoeff]
   · have hd : PowerSeries.derivative (R := O) ((1 + X) ^ l - 1 : PowerSeries O) = (l : PowerSeries O) * (1 + X) ^ (l - 1) := by
       simp only [map_sub, derivative_pow, map_add (f := _), derivative_X, derivative_one, zero_add, mul_one,
         sub_zero]
@@ -316,7 +340,7 @@ theorem func_unique (φ₀ : PowerSeries O →ₐ[O] PowerSeries O) (l : ℕ) (h
         linear_combination e1
       have e3 := congrArg constantCoeff e2
 
-      rw [map_mul, map_mul, map_pow, cc_map φ₀ hφ0, hq0, map_sum] at e3
+      rw [map_mul, map_mul, map_pow, _root_.Formalism.MainNotions.WachCoordinates.Br.constCoeff_algHom φ₀ hφ0, hq0, map_sum] at e3
       simp only [map_mul, map_pow, h0U, h0V, one_pow, mul_one, Finset.sum_const, Finset.card_range,
         nsmul_eq_mul] at e3
       have hne : ((l : O) ^ (m + 2) - l) ≠ 0 := by
@@ -479,7 +503,7 @@ theorem ps_ne (hR : RingP W) (s : ℕ) (i : ZMod n) : ps W s i ≠ 0 := by
   have h0 : constantCoeff ((W.φ₀ ^ s) X) = 0 := by
     rw [phi_pow_X W.φ₀ PD.p hl (φ₀_X_eq W)]; simp
   have := congrArg constantCoeff h
-  rw [ps_apply, cc_map _ h0, map_add (f := _), π₀₁_cc hR, zero_add, map_natCast, map_zero] at this
+  rw [ps_apply, _root_.Formalism.MainNotions.WachCoordinates.Br.constCoeff_algHom _ h0, map_add (f := _), π₀₁_cc hR, zero_add, map_natCast, map_zero] at this
   exact (Nat.cast_ne_zero.mpr (by omega : PD.p ≠ 0)) this
 
 theorem ps_mul_eq (hR : RingP W) (s : ℕ) (i : ZMod n) :
@@ -606,3 +630,7 @@ theorem annihilator_levels_unramified_statement (D : D7) (HW : HWOf D.loc) (F : 
   annihilator_levels_of_grading D HW F Cm (killLevFacts_of D HW F hAdm.2) hAdm
 
 end Formalism.MainNotions.UnusedSlot80
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.LevelLetterCocycles.AnnihilatorLevelsUnramifiedStatement =====

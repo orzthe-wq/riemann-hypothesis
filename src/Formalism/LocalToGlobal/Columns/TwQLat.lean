@@ -8,49 +8,6 @@ import Formalism.LocalToGlobal.Columns.RecLevelCls
 import Formalism.LocalToGlobal.Columns.TwQOrb
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsSpan
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -73,7 +30,6 @@ theorem qdf_frExists : FrExists (n := n) ST SG Q := by
   intro d P
   first
   | exact DetChrL.frame_exists P.1 ((let d := d; _root_.Formalism.L2.Col.hcnt_isFullLattice_of_unimodular d.2.lat d.2.uni))
-  | exact DetChrL.frame_exists P.1 d.2.lat
 
 abbrev qPi (q : QLoc hc n Q Θ) (P : Q) : E ⊗[F] Formalism.L2.Herm.Af F →+* (qv F P.1).adicCompletion F :=
   ((RingHom.fst _ _).comp (q.sp P).toRingHom).comp (prV (E := E) (qv F P.1))
@@ -196,7 +152,7 @@ theorem qdf_frLat (q : QLoc hc n Q Θ) : FrLat ST SG q := by
         funext k
         by_cases hk : k = j
         · subst hk; simp
-        · simp [Pi.single_apply, hk]
+        · simp [hk]
       rw [e3]
       exact Submodule.subset_span ⟨Pi.single j 1, by
         have := single_mem_stdLat (E := E) (n := n) j 1
@@ -215,7 +171,7 @@ theorem qdf_frLat (q : QLoc hc n Q Θ) : FrLat ST SG q := by
     rw [e0]
     have hcol : fr (Pi.single j 1) ∈ p.deco.1.at P.1 :=
       (p.2 P (Pi.single j 1)).2 ((mem_localization_standardLattice P.1 _).2 fun k => ⟨if k = j then 1 else 0, 1, P.1.isPrime.one_notMem, by
-        by_cases hk : k = j <;> simp [Pi.single_apply, hk]⟩)
+        by_cases hk : k = j <;> simp [hk]⟩)
     obtain ⟨s, hs, hsN⟩ := (mem_locP P.1 _ _).1 hcol
     rw [hN] at hsN
     have hpull := (mem_globLat x.1 (s • fr (Pi.single j 1))).1 hsN
@@ -230,7 +186,7 @@ theorem qdf_frLat (q : QLoc hc n Q Θ) : FrLat ST SG q := by
       rw [e5]
       have e6 : (fun k => q.phi P ((s • fr (Pi.single j 1)) k)) = q.phi P (s : E) • fun k => q.phi P ((fr (Pi.single j 1)) k) := by
         funext k
-        simp [Submodule.smul_def, Algebra.smul_def]
+        simp [Algebra.smul_def]
       rw [e6, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hne, one_mul, Units.val_mul,
         Matrix.mul_apply]
       rw [Matrix.mulVec, dotProduct]

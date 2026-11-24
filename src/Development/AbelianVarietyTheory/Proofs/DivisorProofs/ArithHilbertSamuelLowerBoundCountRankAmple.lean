@@ -1,15 +1,14 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardBoundedHomogeneousIntFormFamiliesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBoundedStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveSectionValueUnitFrameStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionFieldBasisOfSectionsStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMul
+public import Mathlib.Algebra.Order.Archimedean.Real.Basic
+public import Mathlib.LinearAlgebra.Dimension.Finrank
+public import Mathlib.RingTheory.MvPolynomial.Homogeneous
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardBoundedHomogeneousIntFormFamilies
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBounded
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveSectionValueUnitFrame
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionFieldBasisOfSections
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairPowSectionMemAndNormPow
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousFormCombinationEqZeroIndependentStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjArithFunctionFieldCharZeroTrdegStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionQuotientsTranscendenceBasisBasepointFreeStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -27,7 +26,6 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -36,6 +34,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,7 +47,141 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMul
+import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjArithFunctionFieldCharZeroTrdeg
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionQuotientsTranscendenceBasisBasepointFree
+import Mathlib.RingTheory.PiTensorProduct
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousFormCombinationEqZeroIndependent, Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHilbertSamuelLowerBoundCountRankAmple
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousFormCombinationEqZeroIndependent =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousFormCombinationEqZeroIndependent", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Filter Topology MvPolynomial GlobalTheory.HSAmp
+
+set_option autoImplicit false
+
+noncomputable section
+
+namespace GlobalTheory.HSAmp.HomInj
+
+theorem aeval_mul_hom {σ R A : Type} [CommRing R] [CommRing A] [Algebra R A] {P : MvPolynomial σ R} {q : ℕ} (hP : P.IsHomogeneous q)
+    (c : A) (z : σ → A) : aeval (fun i => c * z i) P = c ^ q * aeval z P := by
+  conv_lhs => rw [P.as_sum]
+  conv_rhs => rw [P.as_sum]
+
+  rw [map_sum, map_sum, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun m hm => ?_
+  have hd := hP (mem_support_iff.mp hm)
+  simp only [aeval_monomial, mul_pow]
+  rw [Finsupp.prod_mul, ← hd]
+  have : (m.prod fun _ k => c ^ k) = c ^ (Finsupp.weight 1 m) := by
+    simp [Finsupp.prod, Finset.prod_pow_eq_pow_sum, Finsupp.weight_apply, Finsupp.sum]
+  rw [this]; ring
+
+def dehom (D : ℕ) : MvPolynomial (Fin (D + 1)) ℤ →ₐ[ℤ] MvPolynomial (Fin D) ℤ :=
+  aeval (Fin.cons 1 X)
+
+theorem aeval_dehom {A : Type} [CommRing A] [Algebra ℤ A] {D : ℕ} (w : Fin D → A) (P : MvPolynomial (Fin (D + 1)) ℤ) :
+    aeval w (dehom D P) = aeval (Fin.cons 1 w : Fin (D + 1) → A) P := by
+  rw [dehom, ← AlgHom.comp_apply, comp_aeval]
+  congr 2
+  funext i
+  refine Fin.cases ?_ (fun j => ?_) i <;> simp
+
+theorem dehom_eq_zero {D q : ℕ} {P : MvPolynomial (Fin (D + 1)) ℤ} (hP : P.IsHomogeneous q)
+    (h : dehom D P = 0) : P = 0 := by
+  let R := MvPolynomial (Fin (D + 1)) ℤ
+  let F := FractionRing R
+  have hinj : Function.Injective (algebraMap R F) := IsFractionRing.injective R F
+  set c : F := algebraMap R F (X 0) with hc
+  have hc0 : c ≠ 0 := by
+    rw [hc, Ne, ← map_zero (algebraMap R F)]
+    exact fun e => X_ne_zero (R := ℤ) (0 : Fin (D + 1)) (hinj e)
+  let z : Fin (D + 1) → F := fun i => algebraMap R F (X i) / c
+  have hz : (fun i => algebraMap R F (X i)) = fun i => c * z i := by
+    funext i; exact (mul_div_cancel₀ _ hc0).symm
+  have hz0 : z = Fin.cons 1 (fun j => z j.succ) := by
+    funext i
+    refine Fin.cases ?_ (fun j => ?_) i
+    · show algebraMap R F (X 0) / c = 1
+      exact div_self hc0
+    · simp
+  have key : algebraMap R F P = c ^ q * aeval z P := by
+    have e1 : algebraMap R F P = aeval (fun i => algebraMap R F (X i)) P := by
+      rw [← Function.comp_def (algebraMap R F) X, aeval_algebraMap_apply, aeval_X_left_apply]
+    rw [e1, hz]
+    exact aeval_mul_hom hP c z
+  have hzP : aeval z P = 0 := by
+    have e2 := aeval_dehom (fun j => z j.succ) P
+    rw [h, map_zero] at e2
+    rw [hz0]; exact e2.symm
+  apply hinj
+  rw [key, hzP, mul_zero, map_zero]
+
+end GlobalTheory.HSAmp.HomInj
+
+namespace GlobalTheory.HSAmp
+
+
+open GlobalTheory.HSAmp.HomInj in
+theorem homogComb_eq_zero : ∀ (K : Type) [Field K] [CharZero K] (D : ℕ) (x : Fin (D + 1) → K), (∀ j, x j ≠ 0) →
+    AlgebraicIndependent ℤ (fun j : Fin D => x j.succ / x 0) → FiniteDimensional (ratF x) K →
+    ∀ (ι : Type) [Fintype ι] (g : ι → K), LinearIndependent (ratF x) g → ∀ (q : ℕ)
+    (T : ι → MvPolynomial (Fin (D + 1)) ℤ), (∀ i, (T i).IsHomogeneous q) → ∑ i, aeval x (T i) * g i = 0 → T = 0 := by
+  intro K _ _ D x hx hind _ ι _ g hg q T hT hsum
+  let y : Fin (D + 1) → K := fun j => x j / x 0
+  have hy : ∀ j, y j ∈ ratF x := by
+    intro j
+    refine Fin.cases ?_ (fun j => ?_) j
+    · simp only [y, div_self (hx 0)]; exact (ratF x).one_mem
+    · exact Subfield.subset_closure ⟨j, rfl⟩
+  let y' : Fin (D + 1) → ratF x := fun j => ⟨y j, hy j⟩
+  have hxy : x = fun j => x 0 * y j := by
+    funext j; exact (mul_div_cancel₀ _ (hx 0)).symm
+  have hval : ∀ i, aeval y (T i) = ((aeval y' (T i) : ratF x) : K) := by
+    intro i
+    show _ = algebraMap (ratF x) K _
+    rw [← aeval_algebraMap_apply]
+    rfl
+  have h1 : ∀ i, aeval x (T i) = x 0 ^ q * aeval y (T i) := by
+    intro i
+    rw [← aeval_mul_hom (hT i) (x 0) y]
+    exact congrArg (fun v => aeval v (T i)) hxy
+  have hsum' : ∑ i, aeval y' (T i) • g i = 0 := by
+    have hq : x 0 ^ q ≠ 0 := pow_ne_zero _ (hx 0)
+    have : x 0 ^ q * ∑ i, aeval y' (T i) • g i = 0 := by
+      rw [Finset.mul_sum, ← hsum]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      rw [h1, hval, Subfield.smul_def, smul_eq_mul]; ring
+    exact (mul_eq_zero.mp this).resolve_left hq
+  have h0 : ∀ i, aeval y (T i) = 0 := by
+    intro i
+    rw [hval, Fintype.linearIndependent_iff.1 hg _ hsum' i]; rfl
+  have hy0 : y = Fin.cons 1 (fun j : Fin D => x j.succ / x 0) := by
+    funext j
+    refine Fin.cases ?_ (fun j => ?_) j
+    · simp [y, div_self (hx 0)]
+    · simp [y]
+  funext i
+  apply dehom_eq_zero (hT i)
+  apply (algebraicIndependent_iff_injective_aeval.1 hind)
+  rw [aeval_dehom, ← hy0, h0, map_zero]
+
+end GlobalTheory.HSAmp
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousFormCombinationEqZeroIndependent =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHilbertSamuelLowerBoundCountRankAmple =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHilbertSamuelLowerBoundCountRankAmple", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IsRatioOfWeight\npublic import Mathlib.Algebra.Order.Archimedean.Real.Basic\npublic import Mathlib.LinearAlgebra.Dimension.Finrank\npublic import Mathlib.RingTheory.MvPolynomial.Homogeneous\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardBoundedHomogeneousIntFormFamilies\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousHermSectionValueMulConjAndNormBounded\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveSectionValueUnitFrame\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsFunctionFieldBasisOfSections\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermPairPowSectionMemAndNormPow\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HomogeneousFormCombinationEqZeroIndependent\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.HermLineBundlePairSectionsMulMemNormMul\nimport Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProjArithFunctionFieldCharZeroTrdeg\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionQuotientsTranscendenceBasisBasepointFree\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -67,13 +200,13 @@ abbrev Deg (D q : ℕ) : Type := {α : Fin (D + 1) →₀ ℕ // α.degree = q}
 
 scoped instance (D q : ℕ) : Finite (Deg D q) :=
   Nat.finite_of_card_ne_zero <| by
-    rw [(GlobalTheory.T.card_bounded_homogeneous_int_form_families D q 0 0 le_rfl).2.2.1]
+    rw [(_root_.GlobalTheory.HSAmp.card_bounded_forms D q 0 0 le_rfl).2.2.1]
     exact (Nat.choose_pos (Nat.le_add_left D q)).ne'
 
 scoped instance (D q : ℕ) : Fintype (Deg D q) := Fintype.ofFinite _
 
 theorem card_deg (D q : ℕ) : Fintype.card (Deg D q) = (q + D).choose D := by
-  rw [← Nat.card_eq_fintype_card]; exact (GlobalTheory.T.card_bounded_homogeneous_int_form_families D q 0 0 le_rfl).2.2.1
+  rw [← Nat.card_eq_fintype_card]; exact (_root_.GlobalTheory.HSAmp.card_bounded_forms D q 0 0 le_rfl).2.2.1
 
 def xm {K : Type} [CommRing K] {D : ℕ} (x : Fin (D + 1) → K) (α : Fin (D + 1) →₀ ℕ) : K := ∏ l, x l ^ α l
 
@@ -132,7 +265,7 @@ theorem sum_zsmul (P : Pair p) (a b : ℤ) {J : Type} [Fintype J] (f : J → X.f
     (n : J → ℤ) : (∑ j, n j • f j) ∈ P.H a b ∧ ∀ σ y,
       P.nu a b σ y (∑ j, n j • f j) ≤ ∑ j, |(n j : ℝ)| * P.nu a b σ y (f j) := by
   refine ⟨AddSubgroup.sum_mem _ fun j _ => AddSubgroup.zsmul_mem _ (hf j) _, fun σ y => ?_⟩
-  obtain ⟨ℓ, hℓ⟩ := GlobalTheory.T.exists_additive_sectionValueUnitFrame k X p P a b σ y
+  obtain ⟨ℓ, hℓ⟩ := _root_.GlobalTheory.HSAmp.val_additive k X p P a b σ y
   let F : P.H a b := ∑ j, n j • (⟨f j, hf j⟩ : P.H a b)
   have hF : (F : X.functionField) = ∑ j, n j • f j := by simp [F]
 
@@ -142,13 +275,13 @@ theorem sum_zsmul (P : Pair p) (a b : ℤ) {J : Type} [Fintype J] (f : J → X.f
 
 theorem count_rank_lower : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∀ a b : ℤ, ∃ (c : ℕ) (C : ℝ), 0 < C ∧ ∀ q : ℕ, (∃ v : Fin (Module.finrank (ratF x) X.functionField * (q + D).choose D) → X.functionField, (∀ i, v i ∈ P.H (e * (q + c : ℕ) + a) b) ∧ LinearIndependent ℤ v) ∧ ∀ R : ℝ, 0 ≤ R → (∀ l (σ : k →+* ℂ) (y : CxPts p σ), P.nu e 0 σ y (x l) ≤ 1) → (((2 * ⌊R⌋₊ + 1) ^ (Module.finrank (ratF x) X.functionField * (q + D).choose D) : ℕ) : ℕ∞) ≤ (P.Bl (e * (q + c : ℕ) + a) b (C * (q + D).choose D * R)).encard := by
   intro k _ X _ p D hX P hA e x hx a b
-  haveI : CharZero X.functionField := (GlobalTheory.T.projArith_functionField_charZero_trdeg k X p D hX).1
-  obtain ⟨hx0, halg, hfin⟩ := GlobalTheory.T.sectionQuotients_transcendenceBasis_basepointFree k X p D hX P hA e x hx
+  haveI : CharZero X.functionField := (_root_.GlobalTheory.ArithFnField.charZero_and_trdeg_functionField k X p D hX).1
+  obtain ⟨hx0, halg, hfin⟩ := _root_.GlobalTheory.HSAmp.gens_quot_trBasis k X p D hX P hA e x hx
   set δ := Module.finrank (ratF x) X.functionField with hδ
   obtain ⟨c, g, hg, hgi⟩ : ∃ (c : ℕ) (g : Fin δ → X.functionField), (∀ i, g i ∈ P.H (e * c + a) b) ∧
-      LinearIndependent (ratF x) g := GlobalTheory.T.exists_functionField_basis_of_sections k X p D hX P hA e x hx a b
+      LinearIndependent (ratF x) g := _root_.GlobalTheory.HSAmp.exists_linearIndependent_mem_H k X p D hX P hA e x hx a b
   have hbd : ∀ i, ∃ M : ℝ, ∀ σ y, P.nu (e * c + a) b σ y (g i) ≤ M := fun i =>
-    ((GlobalTheory.T.continuous_hermSectionValue_mul_conj_and_norm_bounded k X p D hX P _ b).2 (g i) (hg i)).2
+    ((_root_.GlobalTheory.HSAmp.continuous_val_and_bounded k X p D hX P _ b).2 (g i) (hg i)).2
   choose M hM using hbd
   set M' : ℝ := 1 + ∑ i, |M i| with hM'
   have hM'0 : 0 ≤ M' := by positivity
@@ -185,7 +318,7 @@ theorem count_rank_lower : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInteg
     have hTe : ∀ i, aeval x (T i) = ∑ α : Deg D q, n (i, α) • xm x α.1 := fun i => by
 
       simp only [T, map_sum, aeval_monomial, Finsupp.prod_pow, algebraMap_int_eq, eq_intCast, zsmul_eq_mul, xm]
-    have h0 := GlobalTheory.T.homogeneousFormCombination_eq_zero_independent X.functionField D x hx0 halg hfin (Fin δ) g hgi q T hT (by
+    have h0 := _root_.GlobalTheory.HSAmp.homogComb_eq_zero X.functionField D x hx0 halg hfin (Fin δ) g hgi q T hT (by
       rw [← hn, Fintype.sum_prod_type]
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [hTe, Finset.sum_mul]
@@ -198,7 +331,7 @@ theorem count_rank_lower : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInteg
     rw [Finset.sum_congr rfl fun α _ => h2 α] at h1
     simpa using h1
   · intro R hR hxl
-    obtain ⟨hfinS, hcnt, -, -, -⟩ := GlobalTheory.T.card_bounded_homogeneous_int_form_families D q δ R hR
+    obtain ⟨hfinS, hcnt, -, -, -⟩ := _root_.GlobalTheory.HSAmp.card_bounded_forms D q δ R hR
     let Φ : (Fin δ → MvPolynomial (Fin (D + 1)) ℤ) → X.functionField := fun T => ∑ i, aeval x (T i) * g i
     have hΦ : ∀ T : Fin δ → MvPolynomial (Fin (D + 1)) ℤ, (∀ i, (T i).IsHomogeneous q) →
         Φ T = ∑ ia : Fin δ × Deg D q, AddMonoidAlgebra.coeff (T ia.1) ia.2.1 • w ia := by
@@ -211,7 +344,7 @@ theorem count_rank_lower : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInteg
     have hinj : Set.InjOn Φ {T : Fin δ → MvPolynomial (Fin (D + 1)) ℤ | (∀ i, (T i).IsHomogeneous q) ∧
         ∀ i α, |((AddMonoidAlgebra.coeff (T i) α : ℤ) : ℝ)| ≤ R} := by
       intro T hT T' hT' h
-      have := GlobalTheory.T.homogeneousFormCombination_eq_zero_independent X.functionField D x hx0 halg hfin (Fin δ) g hgi q (T - T')
+      have := _root_.GlobalTheory.HSAmp.homogComb_eq_zero X.functionField D x hx0 halg hfin (Fin δ) g hgi q (T - T')
         (fun i => (hT.1 i).sub (hT'.1 i)) (by
           simp only [Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
           exact sub_eq_zero.2 h)
@@ -247,3 +380,7 @@ theorem count_rank_lower : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsInteg
     exact Set.encard_le_encard hmaps.image_subset
 
 end GlobalTheory.HSAmp.FLower
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.ArithHilbertSamuelLowerBoundCountRankAmple =====

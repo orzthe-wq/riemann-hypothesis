@@ -49,4 +49,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.AbLaw
 
 theorem _root_.GlobalTheory.T.nonempty_perfectSectionsComplex_of_noetherian : ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) [IsNoetherianRing R], Flat f → IsProjBy f → ∀ M : LB Y, M.IsLB → Nonempty (Perf f M) := by
-  first | exact @GlobalTheory.AbLaw.nonempty_perf_of_noetherian | exact GlobalTheory.AbLaw.nonempty_perf_of_noetherian | (intros; apply GlobalTheory.AbLaw.nonempty_perf_of_noetherian <;> assumption)
+  first | exact @GlobalTheory.AbLaw.nonempty_perf_of_noetherian

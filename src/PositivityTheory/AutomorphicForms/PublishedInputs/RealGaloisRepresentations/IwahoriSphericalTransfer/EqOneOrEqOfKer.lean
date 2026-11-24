@@ -2,11 +2,12 @@ module
 
 public import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjOnInterQuadraticKernelsOfTraceEq
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ConjOnInterQuadraticKernelsOfTraceEqStatement
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsExtensionRepIndexTwoOfTraceInvariant
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsExtensionRepIndexTwoOfTraceInvariantStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRepPatchTwistStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FiniteQuadraticCharactersInAdjointStatement
+public import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsRepPatchTwist
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.FiniteQuadraticCharactersInAdjoint
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntertwinerZeroOfCharacterTwist
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntertwinerZeroOfQuadraticTwists
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -47,8 +48,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
-public import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.IntertwinerZeroOfCharacterTwist
-public import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.IntertwinerZeroOfQuadraticTwists
 import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
@@ -64,7 +63,7 @@ theorem eq_one_or_eq_of_ker {Γ : Type} [Group Γ] (η₀ η : Γ →* ℤˣ) (h
   right
   obtain ⟨t, ht⟩ : ∃ t, η t ≠ 1 := by
     by_contra hc
-    push_neg at hc
+    push Not at hc
     exact h1 (MonoidHom.ext fun x => by simpa using hc x)
   have ht' : η t = -1 := (Int.units_eq_one_or _).resolve_left ht
   have h0t : η₀ t = -1 := by
@@ -95,18 +94,18 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' {Γ k : Type} [Group Γ] [F
     (hB2 : ∀ X : Matrix (Fin n) (Fin n) k, (∀ g, (ρ₀ g : Matrix (Fin n) (Fin n) k) * X = ((((η * η₀) g : ℤˣ) : ℤ) : k) • (X * (ρ₀ g : Matrix (Fin n) (Fin n) k))) → X = 0) :
     ∃ ρ : Γ →* GL (Fin n) k, (∀ g, η₀ g = 1 → ρ g = ρ₀ g) ∧ IsSSRep ρ ∧
       ∀ g, η g = 1 → ((ρ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((ρj g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace := by
-  obtain ⟨P, hP⟩ := GlobalTheory.T.conj_on_inter_quadraticKernels_of_trace_eq Γ k n ρ₀ ρj η₀ η h0 hj htr
+  obtain ⟨P, hP⟩ := _root_.GlobalTheory.QuadKernelConj.conj_on_ker_inf_ker Γ k n ρ₀ ρj η₀ η h0 hj htr
   have hs : ∃ s, η₀ s = 1 ∧ η s = -1 := by
     by_contra hc
-    push_neg at hc
+    push Not at hc
     have h4 : ∀ s, η₀ s = 1 → η s = 1 := fun s hs =>
       (Int.units_eq_one_or (η s)).resolve_right (hc s hs)
     rcases eq_one_or_eq_of_ker η₀ η h4 with h | h
     · exact hne1 h
     · exact hne2 h
   obtain ⟨s, hs0, hs1⟩ := hs
-  have hY := GlobalTheory.T.intertwiner_zero_of_character_twist Γ k n ρ₀ η₀ η hB1 hB2
-  obtain ⟨ρ, hρ0, hρ1⟩ := GlobalTheory.T.exists_rep_agreeing_on_kernels Γ k n ρ₀ ρj η₀ η P s hs0 hs1 hP
+  have hY := _root_.GlobalTheory.commute_on_ker_of_commute_on_ker_inter Γ k n ρ₀ η₀ η hB1 hB2
+  obtain ⟨ρ, hρ0, hρ1⟩ := _root_.GlobalTheory.exists_rep_patch_twist Γ k n ρ₀ ρj η₀ η P s hs0 hs1 hP
     (fun Y hYc => hY Y hYc s hs0)
   refine ⟨ρ, hρ0, ?_, ?_⟩
   · apply GlobalTheory.IndexTwoExt.isSSRep_of_ker η₀ t ht
@@ -121,23 +120,23 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' {Γ k : Type} [Group Γ] [F
 theorem main : ∀ (Γ k : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Field k] [CharZero k] [IsAlgClosed k] [TopologicalSpace k] [IsTopologicalRing k] (n : ℕ) (ι : Type) [Infinite ι] (η : ι → (Γ →* ℤˣ)), Function.Injective η → (∀ i, IsOpen ((η i).ker : Set Γ)) → ∀ r : ∀ i, (η i).ker →* GL (Fin n) k, (∀ i, Continuous (r i) ∧ IsSSRep (r i)) → (∀ i (g : Γ) (h h' : (η i).ker), (h' : Γ) = g * h * g⁻¹ → ((r i h' : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((r i h : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace) → (∀ i j (h : (η i).ker) (h' : (η j).ker), (h : Γ) = h' → ((r i h : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((r j h' : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace) → ∃ ρ : Γ →* GL (Fin n) k, Continuous ρ ∧ IsSSRep ρ ∧ ∀ᶠ j in Filter.cofinite, ∀ h : (η j).ker, ((ρ (h : Γ) : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((r j h : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace := by
   intro Γ k _ _ _ _ _ _ _ _ n ι _ η hinj hopen r hr hconj hcomp
   have hext : ∀ i, ∃ ρ : Γ →* GL (Fin n) k, Continuous ρ ∧ IsSSRep ρ ∧ ∀ h : (η i).ker, ρ h = r i h :=
-    fun i => GlobalTheory.T.exists_extension_rep_index_two_of_trace_invariant Γ k n (η i) (hopen i) (r i) (hr i).1 (hr i).2 (hconj i)
+    fun i => _root_.GlobalTheory.IndexTwoExt.main Γ k n (η i) (hopen i) (r i) (hr i).1 (hr i).2 (hconj i)
   choose ρe hρc hρs hρr using hext
   obtain ⟨i₀, hi₀⟩ : ∃ i, η i ≠ 1 := by
     by_contra hc
-    push_neg at hc
+    push Not at hc
     obtain ⟨a, b, hab⟩ := exists_pair_ne ι
     exact hab (hinj ((hc a).trans (hc b).symm))
   obtain ⟨t, ht⟩ : ∃ t, η i₀ t = -1 := by
     by_contra hc
-    push_neg at hc
+    push Not at hc
     exact hi₀ (MonoidHom.ext fun x => by simpa using (Int.units_eq_one_or _).resolve_right (hc x))
   obtain ⟨B, hBdef⟩ : ∃ B : Set (Γ →* ℤˣ), B = {χ | ∃ X : Matrix (Fin n) (Fin n) k, X ≠ 0 ∧
       ∀ g, ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X =
         (((χ g : ℤˣ) : ℤ) : k) • (X * ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))} := ⟨_, rfl⟩
   have hB : B.Finite := by
     rw [hBdef]
-    exact GlobalTheory.T.finite_quadratic_characters_in_adjoint' Γ k n (ρe i₀)
+    exact _root_.GlobalTheory.finite_quadratic_characters_in_adjoint Γ k n (ρe i₀)
   have notB : ∀ χ : Γ →* ℤˣ, χ ∉ B → ∀ X : Matrix (Fin n) (Fin n) k,
       (∀ g, ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X =
         (((χ g : ℤˣ) : ℤ) : k) • (X * ((ρe i₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) → X = 0 := by
@@ -157,7 +156,7 @@ theorem main : ∀ (Γ k : Type) [Group Γ] [TopologicalSpace Γ] [IsTopological
     apply ((hB.union (Set.Finite.preimage (f := fun χ => χ * η i₀)
       (fun _ _ _ _ h => mul_right_cancel h) hB)).union (Set.toFinite {1, η i₀})).subset
     intro χ hχ
-    simp only [Set.mem_setOf_eq, not_and_or, not_not] at hχ
+    simp only [Set.mem_ofPred_eq, not_and_or, not_not] at hχ
     rcases hχ with h | h | h | h
     · exact Or.inl (Or.inl h)
     · exact Or.inl (Or.inr h)
@@ -171,7 +170,7 @@ theorem main : ∀ (Γ k : Type) [Group Γ] [TopologicalSpace Γ] [IsTopological
       (fun _ _ _ _ h => mul_left_cancel h) hB)).union (Set.Finite.preimage (f := fun χ => η j₁ * χ * η i₀)
       (fun _ _ _ _ h => mul_left_cancel (mul_right_cancel h)) hB)).subset
     intro χ hχ
-    simp only [Set.mem_setOf_eq] at hχ
+    simp only [Set.mem_ofPred_eq] at hχ
     by_cases h1 : (χ ∉ B ∧ χ * η i₀ ∉ B ∧ χ ≠ 1 ∧ χ ≠ η i₀)
     · by_cases h2 : η j₁ * χ ∉ B
       · have h3 : η j₁ * χ * η i₀ ∈ B := by
@@ -191,7 +190,7 @@ theorem main : ∀ (Γ k : Type) [Group Γ] [TopologicalSpace Γ] [IsTopological
   filter_upwards [hev] with j hj
   obtain ⟨ρj, hρja, hρjs, hρjt⟩ := exists_ne_zero_smul_mem_of_mem_span' n (ρe i₀) (ρe j) (η i₀) (η j) t ht (hρs i₀) (hρs j)
     (fun g g0 g1 => htrc i₀ j g g0 g1) hj.1.2.2.1 hj.1.2.2.2 (notB _ hj.1.1) (notB _ hj.1.2.1)
-  have hall := GlobalTheory.T.intertwiner_zero_of_quadratic_twists Γ k n (ρe i₀) ρ₁ ρj (η i₀) (η j₁) (η j) hρ1a hρja hρ1s hρjs
+  have hall := _root_.GlobalTheory.trace_eq_of_agree_on_index_two_of_no_twisted_intertwiner Γ k n (ρe i₀) ρ₁ ρj (η i₀) (η j₁) (η j) hρ1a hρja hρ1s hρjs
     (by
       intro c hc
       apply notB

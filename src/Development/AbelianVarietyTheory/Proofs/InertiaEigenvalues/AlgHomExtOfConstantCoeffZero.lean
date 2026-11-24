@@ -1,8 +1,8 @@
 module
 
-import Formalism.SharpRestriction.LevelLetterCocycles.RingConditionOfDeltaInvariants
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MemEurOfTeichmullerSeries
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicPowerSeriesAlgHomActionLawsStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CyclotomicPowerSeriesAlgHomActionLaws
+import Formalism.SharpRestriction.LevelLetterCocycles.RingConditionOfDeltaInvariants
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -126,7 +126,7 @@ theorem eq_of_commute_pow {O : Type} [CommRing O] [IsDomain O] (l : ℕ) (hl0 : 
 
 theorem act_unique : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Algebra ℤ_[l] O], (l : O) ≠ 0 → ¬ IsUnit (l : O) → ∀ (f : PowerSeries O →ₐ[O] PowerSeries O) (φ₀ : PowerSeries O →ₐ[O] PowerSeries O) (c : ℤ_[l]), φ₀ PowerSeries.X = (1 + PowerSeries.X) ^ l - 1 → (∀ a, φ₀ (f a) = f (φ₀ a)) → PowerSeries.constantCoeff (f PowerSeries.X) = 0 → PowerSeries.coeff 1 (f PowerSeries.X) = algebraMap ℤ_[l] O c → φ₀ = phi l O ∧ f = act l O c := by
   intro l _ O _ _ _ _ _ hl0 hlu f φ₀ c hφ hcomm hf0 hf1
-  obtain ⟨hX, hmul, -, hnat, hlin, -⟩ := GlobalTheory.T.cyclotomicPowerSeriesAlgHom_action_laws l O
+  obtain ⟨hX, hmul, -, hnat, hlin, -⟩ := _root_.GlobalTheory.Cyc.act_laws l O
   have hφe : φ₀ = phi l O := by
     refine algHom_ext_of_constantCoeff_zero _ _ ?_ (by rw [hφ]; simp)
     rw [hφ, phi, hX, hnat]

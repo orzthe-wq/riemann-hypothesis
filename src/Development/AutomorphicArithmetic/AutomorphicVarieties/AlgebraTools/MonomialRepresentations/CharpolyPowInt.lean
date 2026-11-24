@@ -72,7 +72,7 @@ theorem UpperTheory.V.AlgebraTools.charpolyPowInt :
       by_cases hab : a = b
       · subst hab
         simp [Matrix.charmatrix_apply_eq]
-      · simp [Matrix.charmatrix_apply_ne _ _ _ hab, hab]
+      · simp [hab]
     rw [e1, ← hAB.geom_sum₂_mul N, Matrix.det_mul]
     exact Dvd.intro_left _ rfl
   have hl : (M ^ N).charpoly ∈ Polynomial.lifts (algebraMap S R) :=

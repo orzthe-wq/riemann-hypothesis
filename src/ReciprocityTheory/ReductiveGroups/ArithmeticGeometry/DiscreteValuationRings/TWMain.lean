@@ -2,48 +2,6 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.VRatioGtStatement
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PeriodicValuation
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ConstBFMul
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocalC
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
@@ -105,46 +63,41 @@ theorem tw_of (hG : GlobalFnsSt) (hTW : TwistBCSpanStatement) (hVR : VRatioGtSta
     intro x y
     first
       | exact (preHom (G := D.toPre.P.A) (ιS hϖ hv)).map_mul x y
-      | exact MonObj.comp_mul _ _ _
   have hone : ιS hϖ hv ≫ (1 : TO hϖ hv ⟶ D.toPre.P.A) = 1 := by
     first
       | exact (preHom (G := D.toPre.P.A) (ιS hϖ hv)).map_one
-      | exact MonObj.comp_one _
-      | simp
   have hinv : ∀ x : TO hϖ hv ⟶ D.toPre.P.A, ιS hϖ hv ≫ x⁻¹ = (ιS hϖ hv ≫ x)⁻¹ := by
     intro x
     first
       | exact map_inv (preHom (G := D.toPre.P.A) (ιS hϖ hv)) x
-      | simp
   have hpow : ∀ (x : TO hϖ hv ⟶ D.toPre.P.A) (n : ℕ), ιS hϖ hv ≫ x ^ n = (ιS hϖ hv ≫ x) ^ n := by
     intro x n
     first
       | exact map_pow (preHom (G := D.toPre.P.A) (ιS hϖ hv)) x n
-      | exact (preHom (G := D.toPre.P.A) (ιS hϖ hv)).map_pow x n
   have hjf : jO hϖ hv (D := D) ≫ fst (TO hϖ hv) D.toPre.P.A = fst (TF (R := V) F) D.toPre.P.A ≫ ιS hϖ hv := by
-    first | exact whiskerRight_fst _ _ | simp [jO]
+    first | exact whiskerRight_fst _ _
   have hjs : jO hϖ hv (D := D) ≫ snd (TO hϖ hv) D.toPre.P.A = snd (TF (R := V) F) D.toPre.P.A := by
-    first | exact whiskerRight_snd _ _ | simp [jO]
+    first | exact whiskerRight_snd _ _
   have hgsF : ∀ {Z : Scheme.{0}} (f : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (c : F),
       gs f z ⊤ (gF D.toPre F c) =
         gs (f ≫ (fst (TF (R := V) F) D.toPre.P.A).left) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c) := by
     intro Z f z c
-    exact gs_pull f _ z ⊤ (by first | trivial | simp) _
+    exact gs_pull f _ z ⊤ (by first | trivial) _
   have hgsm : ∀ {Z : Scheme.{0}} (f : Z ⟶ (TF (R := V) F).left) (z : Z) (a b : F),
       gs f z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (a * b)) =
         gs f z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom a) *
           gs f z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom b) := by
     intro Z f z a b
     rw [map_mul]
-    exact gs_mul f z ⊤ (by first | trivial | simp) _ _
+    exact gs_mul f z ⊤ (by first | trivial) _ _
   obtain ⟨e, he⟩ := exists_gen_of_local D.toPre.P.L hL (lineφO hϖ hv (D := D) m) (DegPre.lineε k)
   have hφw : (fun i => (ιS hϖ hv).left ≫ lineφO hϖ hv (D := D) m i) = DegPre.lineφ D.toPre F p.g.b := by
     funext i
     fin_cases i
     · show (ιS hϖ hv).left ≫ (1 : TO hϖ hv ⟶ D.toPre.P.A).left = (1 : TF (R := V) F ⟶ D.toPre.P.A).left
-      rw [← Over.comp_left, hone] <;> rfl
+      rw [← Over.comp_left, hone]
     · show (ιS hϖ hv).left ≫ m.left = p.g.b.left
-      rw [← Over.comp_left, hm] <;> rfl
+      rw [← Over.comp_left, hm]
   have hfw : FormEq (DegPre.lineφ D.toPre F p.g.b) (DegPre.lineε k)
       (fun i => (ιS hϖ hv).left ≫ lineφO hϖ hv (D := D) m i) (DegPre.lineε k) := by
     rw [hφw]
@@ -165,13 +118,13 @@ theorem tw_of (hG : GlobalFnsSt) (hTW : TwistBCSpanStatement) (hVR : VRatioGtSta
       funext i
       fin_cases i
       · show (ιS hϖ hv).left ≫ (cP D.toPre _ α * m).left = (cP D.toPre _ α * p.g.b).left
-        rw [← Over.comp_left, hmul, comp_cP, hm] <;> rfl
+        rw [← Over.comp_left, hmul, comp_cP, hm]
       · show (ιS hϖ hv).left ≫ (cP D.toPre _ α).left = (cP D.toPre _ α).left
-        rw [← Over.comp_left, comp_cP] <;> rfl
+        rw [← Over.comp_left, comp_cP]
       · show (ιS hϖ hv).left ≫ m.left = p.g.b.left
-        rw [← Over.comp_left, hm] <;> rfl
+        rw [← Over.comp_left, hm]
       · show (ιS hϖ hv).left ≫ (1 : TO hϖ hv ⟶ D.toPre.P.A).left = (1 : TF (R := V) F ⟶ D.toPre.P.A).left
-        rw [← Over.comp_left, hone] <;> rfl
+        rw [← Over.comp_left, hone]
     have hfα : FormEq (DegPre.gtφ D.toPre F p.g.b α) DegPre.gtε
         (fun i => (ιS hϖ hv).left ≫ gtφO hϖ hv (D := D) m α i) DegPre.gtε := by
       rw [hφα]
@@ -180,12 +133,12 @@ theorem tw_of (hG : GlobalFnsSt) (hTW : TwistBCSpanStatement) (hVR : VRatioGtSta
     obtain ⟨cα, hcα0, hcα⟩ := ReciprocityTheory.ChartRestriction.G.DVR.TWM.exists_ratio hL (p.g.s α) (p.g.isGen α)
       (LB.pullGen D.toPre.P.L _ _ G₀ (ιS hϖ hv).left) (pullGen_isGen D.toPre.P.L _ _ G₀ hG₀ _) hfα
     obtain ⟨qα, hvα, hkα⟩ := hVR V ϖ hϖ D Q hQ F v hv k hk p m hm α G₀ hG₀ cα
-      (fun Z r z J hJ => by rw [hcα Z r z J hJ, val_pull] <;> first | exact hJ | rfl)
+      (fun Z r z J hJ => by rw [hcα Z r z J hJ, val_pull] <;> first | exact hJ)
     have hα : cP D.toPre (TO hϖ hv) (α + p.y) = cP D.toPre (TO hϖ hv) α * m ^ k := by
       rw [cPoint_add]
       congr 1
       apply liftO_unique (hϖ := hϖ) (hv := hv) (D := D)
-      rw [comp_cP, cPoint_y, hpow, hm] <;> rfl
+      rw [comp_cP, cPoint_y, hpow, hm]
     obtain ⟨eO, heO, heOv⟩ := gen_uO (hϖ := hϖ) (hv := hv) (D := D) k α (α + p.y) m hα
       (LB.mulGen D.toPre.P.L _ _ _ _ G₀ e) (mulGen_isGen D.toPre.P.L _ _ _ _ G₀ e hG₀ he) (fun U _ h => prodF U h (cP D.toPre (TO hϖ hv) α * m).left (cP D.toPre (TO hϖ hv) α).left m.left
         (1 : TO hϖ hv ⟶ D.toPre.P.A).left k)
@@ -207,7 +160,6 @@ theorem tw_of (hG : GlobalFnsSt) (hTW : TwistBCSpanStatement) (hVR : VRatioGtSta
       have hC : ((ρ ≫ jO hϖ hv (D := D)) ≫ fst _ _).left = (ρ ≫ fst _ _).left ≫ (ιS hϖ hv).left := by
         first
           | rw [Category.assoc, hjf, ← Category.assoc, Over.comp_left]
-          | simp only [Category.assoc, hjf, Over.comp_left]
       rw [hA, hB, hC] at h2
       rw [h1, h2, hgsF, val_mul, val_mul]
       simp only [uVal, Units.val_mul, Over.comp_left]
@@ -251,7 +203,7 @@ theorem tw_of (hG : GlobalFnsSt) (hTW : TwistBCSpanStatement) (hVR : VRatioGtSta
             (𝟙 _) y J = (val u (DegPre.trPt D.toPre F p.g.b⁻¹).left y J)⁻¹ := by
         intro y J hJ
         rw [val_inv, val_pull, Category.id_comp]
-        all_goals first | exact hJ | rfl
+        all_goals first | exact hJ
       have hrel' : GeneratorPullback.SecRel D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k) (s.s α)
           (DegPre.famφ D.toPre F (α + p.y)) (DegPre.famε k) (t.s (α + p.y))
           (DegPre.trPt D.toPre F p.g.b⁻¹).left _ _
@@ -304,8 +256,7 @@ theorem tw_of (hG : GlobalFnsSt) (hTW : TwistBCSpanStatement) (hVR : VRatioGtSta
     have h1 := VGe.smul (s' := t.s (α + p.y)) h0 (le_of_eq (v_inv_coe (v := v) hζ hqζ).symm) (fun j => by
       rw [hsm (α + p.y) j, ← _root_.mul_assoc, ← constBF_mul, inv_mul_cancel₀ hζ, constBF_eq]
       first
-        | simp only [resTop, map_one, _root_.one_mul]
-        | simp [resTop])
+        | simp only [resTop, map_one, _root_.one_mul])
     have h2 := (hmove _).2 h1
     refine VGe.mono h2 (le_of_eq ?_)
     have hq : qα = ((Q (α + p.y) : ℚ) - Q p.y - Q α) / k := by

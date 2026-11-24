@@ -166,8 +166,7 @@ theorem swpM_mul_swpInv (hij : i ≠ j) (w : S) : swpM i j w * swpInv i j w = 1 
   simp only [swpM, swpInv, add_mul, mul_add, sub_mul, mul_sub, Matrix.one_mul, Matrix.mul_one,
     Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne _ _ _ _ hij, Matrix.single_mul_single_of_ne _ _ _ _ hij.symm]
   simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.single_apply, Matrix.one_apply, Matrix.zero_apply]
-  split_ifs <;> first | ring1 | (exfalso; omega) | skip
-  all_goals first | (simp_all; done) | (simp_all; ring1)
+  split_ifs <;> first | ring1
 
 theorem triM_mul_swpM (hij : i ≠ j) (x ξ : S) (h : x * ξ = 1) : triM i j x ξ * swpM i j ξ = uniM i j x := by
   ext k l
@@ -204,11 +203,11 @@ theorem triM_diag (hij : i ≠ j) (x ξ : S) (k : Fin n) :
     triM i j x ξ k k = if k = i then x else if k = j then -ξ else 1 := by
   by_cases h1 : k = i
   · subst h1
-    simp [triM, Matrix.single_apply, hij, Ne.symm hij]
+    simp [triM, Ne.symm hij]
   · by_cases h2 : k = j
     · subst h2
-      simp [triM, Matrix.single_apply, h1, Ne.symm h1]
-    · simp [triM, Matrix.single_apply, h1, h2, Ne.symm h1, Ne.symm h2]
+      simp [triM, h1, Ne.symm h1]
+    · simp [triM, h1, h2, Ne.symm h1, Ne.symm h2]
 
 end Mat
 
@@ -306,7 +305,7 @@ theorem eq_zero_of_lt (Xo : Moduli Dw l) (c : Coeff l) (e : Ix Dw → ℤ) (τ :
       (by simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Polynomial.aeval_X]; exact hT2 1) (χ1 a)
     simpa using this)
   replace hα2 : ∀ a, χ2 (α2 a) = Polynomial.toLaurent (χ1 a) := fun a => by
-    rw [hα2]; simp [Polynomial.toLaurentAlg_apply]
+    rw [hα2]; simp
   replace hβ : ∀ a, χ2 (β a) = Polynomial.aeval (T (-1) : LaurentPolynomial p.R) (χ1 a) := fun a => by
     rw [hβ]; simp
   set x2 := α2 x1 with hx2d

@@ -57,9 +57,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (piInf τ : AE F E → ℂ) :=
   GlobalTheory.Grow.continuous_infEmb_compInf F w τ
 
-theorem piInf_cA (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) :
-    piInf τ (cA σ z) = star (piInf τ z) :=
-  Dense.piInf_cA h τ z
+alias piInf_cA := _root_.GlobalTheory.ThK.Dbl.Dense.piInf_cA
 
 theorem map_cA {p q : Type} (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (X : Matrix p q (AE F E)) :
     (X.map (cA σ)).map (piInf τ) = (X.map (piInf τ)).map star :=
@@ -159,20 +157,6 @@ theorem psi_trace_at {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (h : IsCMExt F E
   rw [Complex.add_re, Complex.star_def, Complex.conj_re, two_mul]
 
 variable (d : SD σ)
-
-theorem _root_.PositivityTheory.SiegelWeilFormula.SD.cm (d : SD σ) : IsCMExt F E σ := d.ok.good.cm
-
-theorem _root_.PositivityTheory.SiegelWeilFormula.SD.std (d : SD σ) : IsStd d.B.ψ := d.ok.good.std
-
-theorem continuous_cw (w : InfinitePlace F) {p q : Type} : Continuous (fun X : Matrix p q (AE F E) => d.cw w X) :=
-  continuous_id.matrix_map (continuous_piInf (d.B.emb w))
-
-theorem cw_ext {p q : Type} {X Z : Matrix p q (AE F E)} (h1 : ∀ w, d.cw w X = d.cw w Z) (h2 : finOne F • X = finOne F • Z) :
-    X = Z :=
-  mat_ext d.cm d.B.emb h1 h2
-
-theorem cw_cA (w : InfinitePlace F) {p q : Type} (X : Matrix p q (AE F E)) : d.cw w (X.map (cA σ)) = (d.cw w X).map star :=
-  map_cA d.cm _ X
 
 end PositivityTheory.SiegelWeilFormula.Place
 

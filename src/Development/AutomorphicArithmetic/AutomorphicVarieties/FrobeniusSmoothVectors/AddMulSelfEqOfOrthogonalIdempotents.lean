@@ -65,13 +65,13 @@ private theorem UpperTheory.V.Fr.add_mul_self_eq_of_orthogonal_idempotents {C K 
     fin_cases i
     · have e : (2 : C) • Matrix.single (0 : Fin 2) 0 (1 : K) = 1 + Matrix.diagonal (fun i => (w 2 i : K)) := by
         ext a b
-        fin_cases a <;> fin_cases b <;> simp [w, two_smul, Matrix.one_apply, Matrix.single_apply] <;> norm_num
+        fin_cases a <;> fin_cases b <;> simp [w, two_smul] <;> norm_num
       have h := A.add_mem A.one_mem hY
       rw [← e] at h
       exact h
     · have e : (2 : C) • Matrix.single (1 : Fin 2) 1 (1 : K) = 1 - Matrix.diagonal (fun i => (w 2 i : K)) := by
         ext a b
-        fin_cases a <;> fin_cases b <;> simp [w, two_smul, Matrix.one_apply, Matrix.single_apply] <;> norm_num
+        fin_cases a <;> fin_cases b <;> simp [w, two_smul] <;> norm_num
       have h := A.sub_mem A.one_mem hY
       rw [← e] at h
       exact h
@@ -81,14 +81,14 @@ private theorem UpperTheory.V.Fr.add_mul_self_eq_of_orthogonal_idempotents {C K 
           Matrix.diagonal (fun i => (w 3 i : K)) * Matrix.diagonal (fun i => (w 3 i : K)) +
             Matrix.diagonal (fun i => (w 3 i : K)) := by
         ext a b
-        fin_cases a <;> fin_cases b <;> simp [w, two_smul, Matrix.single_apply] <;> norm_num
+        fin_cases a <;> fin_cases b <;> simp [w, two_smul] <;> norm_num
       have h := A.add_mem hYY hY
       rw [← e] at h
       exact h
     · have e : (2 : C) • Matrix.single (1 : Fin 3) 1 (1 : K) =
           (2 : C) • (1 - Matrix.diagonal (fun i => (w 3 i : K)) * Matrix.diagonal (fun i => (w 3 i : K))) := by
         ext a b
-        fin_cases a <;> fin_cases b <;> simp [w, two_smul, Matrix.one_apply, Matrix.single_apply] <;> norm_num
+        fin_cases a <;> fin_cases b <;> simp [w, two_smul] <;> norm_num
       have h := A.smul_mem (A.sub_mem A.one_mem hYY) (2 : C)
       rw [← e] at h
       exact h
@@ -96,7 +96,7 @@ private theorem UpperTheory.V.Fr.add_mul_self_eq_of_orthogonal_idempotents {C K 
           Matrix.diagonal (fun i => (w 3 i : K)) * Matrix.diagonal (fun i => (w 3 i : K)) -
             Matrix.diagonal (fun i => (w 3 i : K)) := by
         ext a b
-        fin_cases a <;> fin_cases b <;> simp [w, two_smul, Matrix.single_apply] <;> norm_num
+        fin_cases a <;> fin_cases b <;> simp [w, two_smul] <;> norm_num
       have h := A.sub_mem hYY hY
       rw [← e] at h
       exact h

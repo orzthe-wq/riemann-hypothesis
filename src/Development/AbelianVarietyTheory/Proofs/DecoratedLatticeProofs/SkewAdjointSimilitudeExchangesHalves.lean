@@ -55,24 +55,19 @@ namespace GlobalTheory.KappaHalf
 
 variable {D : D7}
 
-theorem isHalf_iff_smul {m n : ℕ} (e : AE D) (u : Mx D m n) : IsHalf e u ↔ e • u = u := by
-  constructor
-  · intro h; ext i j; rw [Matrix.smul_apply, smul_eq_mul, h i j]
-  · intro h i j; have := congrFun (congrFun h i) j; rwa [Matrix.smul_apply, smul_eq_mul] at this
-
 theorem isHalf_mul_left {k m n : ℕ} {e : AE D} (A : Mx D k m) {u : Mx D m n} (hu : IsHalf e u) :
     IsHalf e (A * u) := by
-  rw [isHalf_iff_smul] at hu ⊢
+  rw [_root_.GlobalTheory.SplitScalar.isHalf_iff] at hu ⊢
   rw [← Matrix.mul_smul, hu]
 
 theorem isHalf_mul_right {k m n : ℕ} {e : AE D} {u : Mx D k m} (B : Mx D m n) (hu : IsHalf e u) :
     IsHalf e (u * B) := by
-  rw [isHalf_iff_smul] at hu ⊢
+  rw [_root_.GlobalTheory.SplitScalar.isHalf_iff] at hu ⊢
   rw [← Matrix.smul_mul, hu]
 
 theorem isHalf_smul {m n : ℕ} {e : AE D} (c : AE D) {u : Mx D m n} (hu : IsHalf e u) :
     IsHalf e (c • u) := by
-  rw [isHalf_iff_smul] at hu ⊢
+  rw [_root_.GlobalTheory.SplitScalar.isHalf_iff] at hu ⊢
   rw [smul_comm, hu]
 
 theorem isHalf_adj_of_cA {m n : ℕ} {e : AE D} {z : Mx D m n} (hz : IsHalf (cA D e) z) :

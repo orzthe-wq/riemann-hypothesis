@@ -146,7 +146,7 @@ theorem intM_nat {A : Matrix α β E} (n : ℕ) (hA : IntM A) : IntM ((n : E) �
 omit [NumberField E] [IsCMField E] in
 theorem intM_J [DecidableEq α] : IntM (Matrix.J α E) := by
   rintro (a | a) (b | b) <;> by_cases h : a = b <;>
-    simp [Matrix.J, Matrix.one_apply, h, isIntegral_zero, isIntegral_one, isIntegral_one.neg]
+    simp [Matrix.J, h, isIntegral_zero, isIntegral_one, isIntegral_one.neg]
 
 theorem J_conj [DecidableEq α] : (Matrix.J α E)ᴴ = -Matrix.J α E := by
   simp [Matrix.J, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_neg]

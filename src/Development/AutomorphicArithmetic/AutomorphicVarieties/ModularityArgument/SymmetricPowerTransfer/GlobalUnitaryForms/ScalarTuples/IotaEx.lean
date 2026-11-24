@@ -153,7 +153,7 @@ private def mapD : DX Δ →* DX (f Δ) :=
     change GeneralLinearGroup.map (starRingEnd (Lsq K' (f Δ))) (GeneralLinearGroup.map (lmap f Δ) g.1) =
       (MulAut.conj (wJ (f Δ))⁻¹).toMonoidHom (GeneralLinearGroup.map (lmap f Δ) g.1)
     rw [c, h]
-    simp [MulAut.conj_apply, map_wJ]
+    simp [map_wJ]
 
 end Maps
 

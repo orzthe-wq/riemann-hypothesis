@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariantStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -94,7 +94,7 @@ theorem sigDp_aDp (g : Per.Gq l) (a : Per.Ainf l) : Per.σDp g (aDp l a) = aDp l
 theorem sec_root (o : Om l →+* Per.BdRp l) (ho : IsSec o) (x : Om l) (y : Per.BdRp l)
     (f : Polynomial (Om l)) (hy : Per.θD l y = (x : ℂ_[l])) (h0 : f.eval x = 0)
     (h1 : f.derivative.eval x ≠ 0) (h2 : (f.map o).eval y = 0) : y = o x :=
-  root_eq (Per.θD l) (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.1 o x y f (by rw [hy, ho.th]) h0 h1 h2
+  root_eq (Per.θD l) (_root_.GlobalTheory.MemLoc.thetaD_props l).2.2.1 o x y f (by rw [hy, ho.th]) h0 h1 h2
 
 theorem sec_uniq (o : Om l →+* Per.BdRp l) (ho : IsSec o) (o' : Om l →+* Per.BdRp l) (ho' : IsSec o') :
     o' = o := by
@@ -116,7 +116,7 @@ theorem sec_equiv (o : Om l →+* Per.BdRp l) (ho : IsSec o) (g : Per.Gq l) (x :
     constructor
     · intro x
       change Per.θD l (Per.σDp g (o (g.symm x))) = _
-      rw [(GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.2.2, ho.th, GlobalTheory.RingBasics.σC_coe, AlgEquiv.apply_symm_apply]
+      rw [(_root_.GlobalTheory.MemLoc.thetaD_props l).2.2.2.2, ho.th, GlobalTheory.RingBasics.σC_coe, AlgEquiv.apply_symm_apply]
     · intro z
       change Per.σDp g (o (g.symm (algebraMap ℚ_[l] (Om l) (z : ℚ_[l])))) = _
       rw [AlgEquiv.commutes, ho.z, sigDp_aDp, sigA_zA]

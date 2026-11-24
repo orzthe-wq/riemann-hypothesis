@@ -67,7 +67,7 @@ theorem one_le_localLevel : 1 ≤ N.s0 i := by rw [localLevel_eq_max_one_factori
 theorem two_le_localLevel_of_eq_two (h : N.l i = 2) : 2 ≤ N.s0 i := by rw [N.restNLevelExponent_of_two i h]; exact two_le_factorization H
 
 theorem factorization_conductor_le_localLevel : H.condN.factorization (N.l i) ≤ N.s0 i := by
-  haveI := N.lPrime i
+  have := N.lPrime i
   have hl : (N.l i).Prime := Fact.out
   obtain ⟨hq, hd, hq8, hd16, -⟩ := H.hyp
   have hqd : H.q ≠ H.d := by

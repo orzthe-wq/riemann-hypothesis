@@ -120,5 +120,5 @@ theorem _root_.GlobalTheory.T.theta_action_archimedean_locality : _root_.GlobalT
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
     IsCMExt F E σ → IsStd ψ → M.IsWeil ψ χX χW om →
     ∀ h ∈ UAt σ W (evI F), ∀ f : SInf F (Fin n × Fin d), ∃ f₁ : SInf F (Fin n × Fin d), Acts (evI F) (om (1, h)) f f₁ := by
-  first | exact @_root_.GlobalTheory.ArchLocality.theta_action_local_at_archimedean_place | exact _root_.GlobalTheory.ArchLocality.theta_action_local_at_archimedean_place | (intros; apply _root_.GlobalTheory.ArchLocality.theta_action_local_at_archimedean_place <;> assumption)
+  first | exact @_root_.GlobalTheory.ArchLocality.theta_action_local_at_archimedean_place
 end

@@ -9,26 +9,30 @@ public import Development.AbelianVarietyTheory.Definitions.TorusSections.ExistsS
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NotSteepOnOfGermZero
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KchMul
 public import Formalism.SharpRestriction.GrowthBounds.MonomialOrderSegments.BrData
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPatOfObj
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RigidifiedSectionCorrespondenceExistsUniqueNonva
+public import Development.AbelianVarietyTheory.Definitions.Divisors.UnitaryWeightExponentVectorSignatureWeightMuZero
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartFrameChangeDiagonalUnitsIntegralFrame
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsUniqueIsTanFrameOfIsEmpty
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitSectionThetaKeyRuleWeightFour
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeyScalarIsUnitOnIntegralModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeySectionValuationBoundsDifferent
+public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyFamOne
+public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.CardMulLeAddValEtaExpr
+public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.CardMulPhiLeValuationProductForm
+public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.IntegralThetaSectionExistsAndBaseChange
+public import Development.AbelianVarietyTheory.Definitions.KeyFormula.KeyRootOfKeyFormula
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsCoprimeTwoSubRtTwoAddRt
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.LawsFieldsSeparately
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExistsUniqueLbIsoPullEqOfCoheightLeOne
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsOfCmTriplePullback
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsPatOfObj
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RigidifiedSectionCorrespondenceExistsUniqueNonva
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsFramedPointBaseChangeAlgHom
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointBaseChangeLaws
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FullLinearLevelCoverBaseChangeTorsor
 import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ThetaNullValueExistsUniqueNaturalLinear
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChartFrameChangeDiagonalUnitsIntegralFrameStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitSectionThetaKeyRuleWeightFour
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeyScalarIsUnitOnIntegralModelsStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaKeySectionValuationBoundsDifferent
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUniversalTripleFibreAtFramedPoint
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SemiAbelianModelDeterminedByGenericFibre
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.UniformizationLawsAndExpansionStatements
-public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.KeyFamOne
-public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.CardMulLeAddValEtaExpr
-public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.CardMulPhiLeValuationProductForm
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.DegenerationDataAtModelPointOfUniformisation
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsAbelianSectionOfUniversalFibreSectionStatement
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsExpansionNonnegStatement
@@ -36,7 +40,6 @@ import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsFibIntThStat
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsHeisenbergLiftsSpanLatticeClassesStatement
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsValuationClosureStatement
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.FibPointsMulEquivStatement
-public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.IntegralThetaSectionExistsAndBaseChange
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.LeValuationOddLevelThetaConstantIntegralExpansioStatement
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.NormalisedThetaConstantOfUniversalOriginValueStatement
 import Development.AbelianVarietyTheory.Proofs.TorusSplitting.SumCosetMinGePhiCDivSqStatement
@@ -87,7 +90,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Cha
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.UnifAt
 import Development.AbelianVarietyTheory.Definitions.Divisors.CuspIso
 import Development.AbelianVarietyTheory.Definitions.Divisors.TupleReadBaseTupleEqFamily
-public import Development.AbelianVarietyTheory.Definitions.KeyFormula.KeyRootOfKeyFormula
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvalPtMemMaximalIdeal
+import Formalism.LocalToGlobal.ProjectiveLattices.HeightF1OfData
 
 @[expose] public section
 
@@ -148,8 +153,8 @@ theorem phiC_le_valuation (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
   obtain ⟨th, hth⟩ := GlobalTheory.T.exists_abelianSection_of_universalFibreSection E H Dw l Xo V y.x P.A Φ F z.x hzx z.s
   obtain ⟨ϑ, hϑ, hν⟩ := GlobalTheory.T.exists_expandsF_nuGe_zero_of_intTh V hcpl ϖ hϖ P.D Q hQ F v hv P.A G.G G.semi P.U w₀ hN.1 th
     (hint F ψ z th hψ hz hth)
-  obtain ⟨tr, htr, htra⟩ := GlobalTheory.T.exists_mulEquiv_ptO_hom_of_eq_spMap_comp E H Dw l Xo V y.x P.A Φ F z.x hzx
-  obtain ⟨pt, hpt, hspan⟩ := GlobalTheory.T.exists_heisenbergLifts_span_latticeClasses E H V G P htors F ((R ^ 2) ^ 2) (pow_pos (pow_pos hR0 2) 2)
+  obtain ⟨tr, htr, htra⟩ := _root_.GlobalTheory.EtaVal.fib_points_mulEquiv E H Dw l Xo V y.x P.A Φ F z.x hzx
+  obtain ⟨pt, hpt, hspan⟩ := _root_.GlobalTheory.EtaVal.exists_qkPt_span E H V G P htors F ((R ^ 2) ^ 2) (pow_pos (pow_pos hR0 2) 2)
     (LatMod Dw (R ^ 4)) (fun a => tr (ev a)) (fun a b => by rw [hev.1, map_mul])
     (fun o a => by rw [hev.2.1]; exact htra _ _ (hact o) _)
     (fun a => by rw [← map_pow, hevt, map_one])
@@ -159,7 +164,7 @@ theorem phiC_le_valuation (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
   have hb : ∀ a (q : ℚ), (∀ χ, q ≤ (Q ((R ^ 2) • χ + (pt a).y) : ℚ) / ((R ^ 2) ^ 2 : ℕ)) →
       (q : WithTop ℚ) ≤ v (w a) := by
     intro a q hq
-    obtain ⟨t, ht⟩ := GlobalTheory.T.normalisedThetaConstant_of_universal_origin_value E H Dw l Xo c V y.x P.A Φ F z hzx th hth (R ^ 2) hR2 (ev a) (tr (ev a)) (w a)
+    obtain ⟨t, ht⟩ := _root_.GlobalTheory.EtaVal.NullMove.thC_of_isNullVal E H Dw l Xo c V y.x P.A Φ F z hzx th hth (R ^ 2) hR2 (ev a) (tr (ev a)) (w a)
       (hevt a) (htr _) (hw a)
     exact GlobalTheory.T.le_valuation_oddLevel_thetaConstant_integralExpansion V hcpl ϖ hϖ P.D Q hQ F v hv P.A G.G G.semi P.U w₀ Φ.ρ hN th ϑ hϑ hν (R ^ 2) hR2 (pt a)
       (tr (ev a)) t (w a) (hpt a) ht q hq
@@ -193,7 +198,7 @@ theorem tau_bound {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.To
   obtain ⟨mK, -⟩ := sabComp pullCubComp E H _ _ _ G₀ I.t' t' _ (𝟙 _) I.m2 mF
   have hprop : IsProper t'.G.hom :=
     MorphismProperty.of_isPullback (P := @IsProper) m1.cart.1 Xo.univ.proper
-  obtain ⟨ψ, -⟩ := GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T.V inferInstance G G₀ t' hprop m2
+  obtain ⟨ψ, -⟩ := _root_.GlobalTheory.ModelUniqueChecks.extV_holds E H T.V inferInstance G G₀ t' hprop m2
     (PullbackSections.sabMapCast mK (Category.id_comp _))
   obtain ⟨S⟩ := intSec_baseChange (RingHom.id T.V) (AlgHom.id c.F T.Fr) y.1 y.1 G₀ G
     (PullbackSections.sabMapCast ψ (Spec.map_id _).symm) I (fun _ => rfl) (FramedBaseChange.refl y.1)
@@ -250,9 +255,9 @@ theorem key_unit_eqChar {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p + 
   obtain ⟨mK, -⟩ := sabCancel pullCubCancel E H _ _ _ Y.t tP t' yt (Out.jK T.V) mP' (PullbackSections.sabMapCast mJ hj)
   have hprop : IsProper t'.G.hom :=
     MorphismProperty.of_isPullback (P := @IsProper) m1.cart.1 Xo.univ.proper
-  obtain ⟨ψ, -⟩ := GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T.V inferInstance G tP t' hprop m2 mK
+  obtain ⟨ψ, -⟩ := _root_.GlobalTheory.ModelUniqueChecks.extV_holds E H T.V inferInstance G tP t' hprop m2 mK
   obtain ⟨n', -⟩ := sabComp pullCubComp E H _ _ _ Y.t tP G yt (𝟙 _) mP' ψ
-  exact (((GlobalTheory.T.thetaKeyScalar_isUnit_on_integralModels κ hκ E H Dw l Xo c _ _ Y p hpq (isBaseRing_local c W) hp h2 h3 h4 h5).1 T.V T.Fr z yt h1 G
+  exact (((_root_.GlobalTheory.KeyUnitModels.keyUnitOnModels κ hκ E H Dw l Xo c _ _ Y p hpq (isBaseRing_local c W) hp h2 h3 h4 h5).1 T.V T.Fr z yt h1 G
     (PullbackSections.sabMapCast n' (Category.id_comp yt)) n w hw θ k hk).1 hθ).1
 
 theorem exists_tied_integral {κ : KeyRule} (hκ : IsKeyRule κ) (hpq : 1 ≤ Dw.p + Dw.q) (hg : ∀ p : ℕ, p.Prime → l.GoodAt p)
@@ -374,11 +379,6 @@ theorem val_stalkPt {Y : Scheme.{0}} {k : Type} [CommRing k] {p : Y ⟶ Sp k} {B
   rw [H0.val_apply, H0.germ_apply]
   exact evalPt_stalkPt y ψ _ _ _ _
 
-theorem val_congr_pt {k : Type} [CommRing k] {T' : Scheme.{0}} {p : T' ⟶ Sp k} {B : LB T'} {O : T'.Opens} {R : Type}
-    [CommRing R] {x x' : Sp R ⟶ T'} (e : x = x') (i : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hO' : ⊤ ≤ x' ⁻¹ᵁ O)
-    (hi : ⊤ ≤ x ⁻¹ᵁ B.U i) (hi' : ⊤ ≤ x' ⁻¹ᵁ B.U i) (f : H0 p B O) : H0.val x i hO hi f = H0.val x' i hO' hi' f := by
-  subst e; rfl
-
 theorem val_restr_pt {k : Type} [CommRing k] {T' : Scheme.{0}} {p : T' ⟶ Sp k} {B : LB T'} {O O' : T'.Opens}
     (h : O' ≤ O) {R : Type} [CommRing R] (x : Sp R ⟶ T') (i : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hO' : ⊤ ≤ x ⁻¹ᵁ O')
     (hi : ⊤ ≤ x ⁻¹ᵁ B.U i) (f : H0 p B O) : H0.val x i hO' hi (H0.restr h f) = H0.val x i hO hi f :=
@@ -418,7 +418,7 @@ theorem exists_extension {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y]
     have a1 := top_le_stalkPt (genericPoint Y) ψ O hηO
     have a2 := top_le_stalkPt (genericPoint Y) ψ (B.U i) hηi
     have hv' := hv (e ▸ a1) (e ▸ a2)
-    rw [val_congr_pt e i _ a1 _ a2, val_stalkPt _ i hηO hηi] at hv'
+    rw [_root_.GlobalTheory.CuspOnTor.val_congr e i _ a1 _ a2, val_stalkPt _ i hηO hηi] at hv'
     change ψ (Y.germToFunctionField (O ⊓ B.U i) (LB.coord m i)) ∈ _ at hv'
     generalize Y.germToFunctionField (O ⊓ B.U i) (LB.coord m i) = q at hv' ⊢
     obtain ⟨b, hb⟩ := hv'
@@ -435,15 +435,6 @@ theorem exists_extension {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y]
   refine ⟨i, hi, ?_⟩
   rw [H0.germ_ofSec, H0.germ_apply]
   exact (ger_resG _ _ _ _).symm.trans (congrArg _ (ht i))
-
-theorem vV_unit (T : CDVR) (u : T.Vˣ) : vV T.V (algebraMap T.V T.Fr (u : T.V)) = 0 := by
-  have h1 : valV T.V (algebraMap T.V T.Fr (u : T.V)) = 1 := by
-    unfold valV
-    rw [IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]
-    refine (IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff).2 ?_
-    show (u : T.V) ∉ IsLocalRing.maximalIdeal T.V
-    exact fun h => h u.isUnit
-  simp [vV, h1]
 
 theorem mem_range_iff (T : CDVR) (x : T.Fr) : x ∈ (algebraMap T.V T.Fr).range ↔ 0 ≤ vV T.V x := by
   by_cases h : x = 0
@@ -471,7 +462,7 @@ theorem local_injective_of_centred {Y : Scheme.{0}} {y : Y}
   refine ⟨⟨fun a ha => key a (fun h => ?_) ?_⟩, (injective_iff_map_eq_zero g).2 fun a ha => ?_⟩
   · rw [h, map_zero] at ha; exact not_isUnit_zero ha
   · obtain ⟨u, hu⟩ := ha
-    rw [← hu, vV_unit]
+    rw [← hu, _root_.Formalism.L2.Pj.extVal_unit_zero]
   · by_contra h0
     have := (key a h0 (by simp [ha, vV])).map g
     rw [ha] at this
@@ -539,9 +530,9 @@ theorem through_point (y : Y₀ X Z) (T : CDVR) (io : c.F →+* T.Fr) (y' : IntF
   have e2 : evI y' f.1 = (∏ ix, t ix ^ AllWt.exOf Dw la 0 ix).val * H0.val (Spec.map (CommRingCat.ofHom
       ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ X Z).fromSpecStalk y) j hO hj (sec₀ X Z _ f) := by
     refine (evR_eq_val_secOf f hOf hQ ht).trans (congrArg (_ * ·) ?_)
-    rw [val_congr_pt hx' _ hOf (hx' ▸ hOf) hz (hx' ▸ hz)]
+    rw [_root_.GlobalTheory.CuspOnTor.val_congr hx' _ hOf (hx' ▸ hOf) hz (hx' ▸ hz)]
     exact (H0.val_pull (inc₀ X Z) (le_refl (U₀ X Z)) _ j hO hj _ _ (secOf X _ f)).symm
-  have hu := GlobalTheory.T.chartFrame_change_diagonal_units_integral_frame X T io y' _ hpt' (j PUnit.unit) hzV hz Q t hQ ht
+  have hu := _root_.GlobalTheory.IntFrameDiag.diag_unit_of_intFr X T io y' _ hpt' (j PUnit.unit) hzV hz Q t hQ ht
   have ex : ∀ ix, ∃ u : T.Vˣ, Units.map (algebraMap T.V T.Fr : T.V →* T.Fr) u = t ix ^ AllWt.exOf Dw la 0 ix := by
     intro ix
     rcases ix with _ | ⟨σ, i⟩

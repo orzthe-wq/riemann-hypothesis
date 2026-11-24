@@ -85,11 +85,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 abbrev Ring9 : Prop :=
   Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀ (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))
 
-theorem letE_mul_self' (c : ZMod n) : (letE c : LetA O n) * letE c = letE c := by
-  funext k
-  simp only [Pi.mul_apply, letE, Pi.single_apply]
-  split_ifs <;> simp
-
 theorem cc_π₀₁ (hR : Ring9 W) : constantCoeff W.π₀₁ = 0 := by
   obtain ⟨w, hw⟩ := hR.2.2.1
   have h1 := congrFun hw 0
@@ -177,7 +172,7 @@ theorem invariant_letter_eq_evaluation (hR : Ring9 W) {a : LetA O n} (ha : a ∈
   · subst hi
     simp only [Pi.mul_apply, letE, Pi.single_eq_same, mul_one, evaluation_apply]
     exact hF i
-  · simp [letE, Pi.single_apply, hi]
+  · simp [letE, hi]
 
 theorem EE_p_nzd (hO : ∀ c : O, ((PD.p : ℕ) : O) * c = 0 → c = 0) (y : W.EE)
     (hy : ((PD.p : ℕ) : W.EE) * y = 0) : y = 0 := by
@@ -323,12 +318,6 @@ theorem coord_inj (T : LocLat G Qp LL O) {R : ℕ} (b : Fin R → W.DD T) (hb : 
   obtain ⟨a, -, ha⟩ := huniq _ hx
   rw [ha g rfl, ha g' h]
 
-theorem γD_φpow (T : LocLat G Qp LL O) (g : W.Gam) (j : ℕ) (x : W.DD T) :
-    W.γD T g (((W.φD T) ^ j) x) = ((W.φD T) ^ j) (W.γD T g x) := by
-  induction j with
-  | zero => simp
-  | succ j ih => rw [pow_succ', Module.End.mul_apply, Module.End.mul_apply, ← W.φγ_comm, ih]
-
 theorem E_phi (T : LocLat G Qp LL O) {i : ZMod n} {y : W.DD T} (hy : (letE i : LetA O n) • y = y)
     (j : ℕ) : (letE (i + (j : ZMod n)) : LetA O n) • ((W.φD T) ^ j) y = ((W.φD T) ^ j) y := by
   conv_rhs => rw [← hy, Formalism.MainNotions.UnusedSlot80.SatPW.φD_pow_smulA, Formalism.MainNotions.UnusedSlot80.SatPW.φA_pow_letE]
@@ -338,7 +327,7 @@ theorem isBas_letter (hR : Ring9 W) (T : LocLat G Qp LL O) {R : ℕ} (b : Fin R 
     (hΔ : ∀ x ∈ W.NΔ T, ∃ a : Fin R → LetA O n, (∀ j, a j ∈ W.AΔ) ∧ x = ∑ j, a j • b j) (i : ZMod n) :
     IsBas W T i (fun k => (letE i : LetA O n) • b k) := by
   refine ⟨fun k => ⟨(W.N T).smul_mem _ (hb k).1, ?_, fun δ hδ => ?_⟩, fun x hx hxD => ?_⟩
-  · rw [smul_smul, letE_mul_self']
+  · rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
   · rw [Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA' W T, Formalism.MainNotions.UnusedSlot80.KL.γA_letE W, (hb k).2 δ hδ]
   · obtain ⟨α, hα, hx'⟩ := hΔ x ⟨hx, hxD.2⟩
     choose f hf using fun k => invariant_letter_eq_evaluation W hR (hα k) i
@@ -435,7 +424,7 @@ theorem exist_bL (hR : Ring9 W) (T : LocLat G Qp LL O) {R : ℕ} (b : Fin R → 
 
           rw [hα, map_sum]
           refine Finset.sum_congr rfl fun m _ => ?_
-          rw [Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA' W T, γD_φpow, Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA' W T,
+          rw [Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA' W T, _root_.Formalism.MainNotions.UnusedSlot80.Relay2.γ_φpow, Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA' W T,
             Formalism.MainNotions.UnusedSlot80.KL.γA_letE W, (hb m).2 δ hδ]
     have h2 := Formalism.MainNotions.UnusedSlot80.SatPW.coeff_eq W T b i j hli _ _ h1 m
     rw [map_mul, Formalism.MainNotions.UnusedSlot80.KL.γA_letE W, ← h2]
@@ -443,9 +432,9 @@ theorem exist_bL (hR : Ring9 W) (T : LocLat G Qp LL O) {R : ℕ} (b : Fin R → 
   refine ⟨f, ?_⟩
   rw [hα]
   refine Finset.sum_congr rfl fun m _ => ?_
-  have hE := E_phi W T (y := (letE i : LetA O n) • b m) (by rw [smul_smul, letE_mul_self']) j
+  have hE := E_phi W T (y := (letE i : LetA O n) • b m) (by rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]) j
   have h3 : α m * letE (i + (j : ZMod n)) = at0 W (f m) * letE (i + (j : ZMod n)) := by
-    rw [← hf m, mul_assoc, letE_mul_self']
+    rw [← hf m, mul_assoc, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
   rw [← hE, smul_smul, smul_smul, h3]
 
 theorem evaluation_single_sum (hR : Ring9 W) (T : LocLat G Qp LL O) {r : ℕ} (k : Fin r) (u : Fin r → W.DD T) :
@@ -453,7 +442,7 @@ theorem evaluation_single_sum (hR : Ring9 W) (T : LocLat G Qp LL O) {r : ℕ} (k
   rw [Finset.sum_eq_single k]
   · simp [evaluation_eq_homomorphism W hR]
   · intro k' _ hk'
-    simp [evaluation_eq_homomorphism W hR, Pi.single_apply, hk']
+    simp [evaluation_eq_homomorphism W hR, hk']
   · simp
 
 theorem pullback_coordinates (hR : Ring9 W) (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (hs : W.s = 1) {R : ℕ}
@@ -508,7 +497,7 @@ theorem pullback_coordinates (hR : Ring9 W) (T : LocLat G Qp LL O) (hT : IsCrys 
       (Pi.single k (1 : PowerSeries O) : Fin r → PowerSeries O) k' := by
     intro k k'
     apply evaluation_letter_injective W hR (i + (j : ZMod n))
-    have hE2 := letE_mul_self' (O := O) (i + (j : ZMod n))
+    have hE2 := _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq (O := O) (i + (j : ZMod n))
     calc at0 W (∑ m, ψC k m * ψD m k') * letE (i + (j : ZMod n))
         = ∑ m, (at0 W (ψC k m) * letE (i + (j : ZMod n))) * (at0 W (ψD m k') * letE (i + (j : ZMod n))) := by
 
@@ -531,7 +520,7 @@ theorem pullback_coordinates (hR : Ring9 W) (T : LocLat G Qp LL O) (hT : IsCrys 
           rw [hstar k k']
           by_cases hk : k' = k
           · subst hk; simp [evaluation_eq_homomorphism W hR]
-          · simp [evaluation_eq_homomorphism W hR, Pi.single_apply, hk]
+          · simp [evaluation_eq_homomorphism W hR, hk]
 
   obtain ⟨f, hf⟩ := exist_bL W hR T b hb i hb' j hli hx hxD
   have hex : x = ∑ k, at0 W (∑ m, f m * ψD m k) • ((W.φD T) ^ j) (e k) := by
@@ -611,7 +600,7 @@ theorem pullback_saturated (hO : ∀ c : O, ((PD.p : ℕ) : O) * c = 0 → c = 0
   have hβE : ∀ m, β m * letE (i + (j : ZMod n)) = β m := by
     intro m
     apply Formalism.MainNotions.UnusedSlot80.SatW.p_pow_cancel hO s
-    rw [← mul_assoc, ← hβ m, mul_assoc, letE_mul_self', hβ m]
+    rw [← mul_assoc, ← hβ m, mul_assoc, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq, hβ m]
   rw [← hε]
   refine Submodule.sum_mem _ fun m _ => ?_
   rw [hεβ m, algebraMap_smul, ← hβE m, mul_smul, ← hφb' m]

@@ -48,8 +48,6 @@ open Formalism.BasicNotions MeasureTheory Filter Topology Matrix
 
 namespace GlobalTheory.UpqHaarRight
 
-theorem isMulRightInvariant :
-    ∀ (P Q : ℕ) (μ : Measure (UpqT P Q)), μ.IsHaarMeasure → μ.IsMulRightInvariant :=
-  fun P Q μ hμ => GlobalTheory.UpqUnimodular.isMulRightInvariant_of_isHaarMeasure P Q μ hμ
+alias isMulRightInvariant := _root_.GlobalTheory.UpqUnimodular.isMulRightInvariant_of_isHaarMeasure
 
 end GlobalTheory.UpqHaarRight

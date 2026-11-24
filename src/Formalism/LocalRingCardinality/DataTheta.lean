@@ -279,17 +279,11 @@ theorem omAct_apply {p q r s : ℕ} (Z : Matrix (Ln p q r s) (Ln p q r s) ℂ) :
 
 theorem fockAct1_Eab {p q r s : ℕ} (a b : Ix p q) :
     fockAct1 p q r s (Eab a b) = ∑ c, omE (a, c) (b, c) := by
-  simp only [fockAct1, LinearMap.comp_apply, LinearMap.flip_apply, omAct_apply,
-    Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, LinearMap.mul_apply',
-    Fintype.sum_prod_type, Eab, Matrix.single_apply, Matrix.one_apply]
-  simp [ite_and, Finset.sum_ite_eq, ite_smul]
+  simp [fockAct1, LinearMap.comp_apply, LinearMap.flip_apply, omAct_apply, Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, Fintype.sum_prod_type, Eab, Matrix.single_apply, Matrix.one_apply, ite_and, Finset.sum_ite_eq, ite_smul]
 
 theorem fockAct2_Eab {p q r s : ℕ} (c d : Ix r s) :
     fockAct2 p q r s (Eab c d) = ∑ a, omE (a, c) (a, d) := by
-  simp only [fockAct2, LinearMap.comp_apply, omAct_apply,
-    Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, LinearMap.mul_apply',
-    Fintype.sum_prod_type, Eab, Matrix.single_apply, Matrix.one_apply]
-  simp [ite_and, Finset.sum_ite_eq, ite_smul]
+  simp [fockAct2, LinearMap.comp_apply, omAct_apply, Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, Fintype.sum_prod_type, Eab, Matrix.single_apply, Matrix.one_apply, ite_and, Finset.sum_ite_eq, ite_smul]
 
 theorem X_mul_pderiv_monomial {σ : Type*} [DecidableEq σ] (l : σ) (α : σ →₀ ℕ) :
     (X l : MvPolynomial σ ℂ) * pderiv l (monomial α 1) = ((α l : ℕ) : ℂ) • monomial α 1 := by
@@ -298,9 +292,7 @@ theorem X_mul_pderiv_monomial {σ : Type*} [DecidableEq σ] (l : σ) (α : σ �
   · simp [h]
   · have hα : Finsupp.single l 1 + (α - Finsupp.single l 1) = α := by
       ext i
-      by_cases hi : i = l
-      · subst hi; simp; omega
-      · simp [Ne.symm hi]
+      (by_cases hi : i = l <;> simp [hi]); omega
     rw [X, monomial_mul, smul_monomial, hα]
     simp
 
@@ -329,14 +321,12 @@ theorem omE_diag {p q r s : ℕ} (a : Ix p q) (c : Ix r s) (α : Ln p q r s →�
 theorem cartan1 {p q r s : ℕ} (a : Ix p q) (α : Ln p q r s →₀ ℕ) :
     fockAct1 p q r s (Eab a a) (monomial α 1) =
       (∑ c, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) • monomial α 1 := by
-  rw [fockAct1_Eab, LinearMap.sum_apply, Finset.sum_smul]
-  exact Finset.sum_congr rfl fun c _ => omE_diag a c α
+  simp only [fockAct1_Eab, LinearMap.sum_apply, Finset.sum_smul, omE_diag]
 
 theorem cartan2 {p q r s : ℕ} (c : Ix r s) (α : Ln p q r s →₀ ℕ) :
     fockAct2 p q r s (Eab c c) (monomial α 1) =
       (∑ a, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) • monomial α 1 := by
-  rw [fockAct2_Eab, LinearMap.sum_apply, Finset.sum_smul]
-  exact Finset.sum_congr rfl fun a _ => omE_diag a c α
+  simp only [fockAct2_Eab, LinearMap.sum_apply, Finset.sum_smul, omE_diag]
 
 end RuleR
 

@@ -58,7 +58,7 @@ noncomputable def intRep (M : Rep.{0} (ZMod ℓ) G) : Rep.{0} (ULift.{0} ℤ) G 
             obtain ⟨r⟩ := r
             exact map_zsmul (M.ρ g).toAddMonoidHom r m }
       map_one' := by ext m; simp
-      map_mul' := fun g h => by ext m; simp [Module.End.mul_apply] }
+      map_mul' := fun g h => by ext m; simp }
 
 def intRepEquiv (M : Rep.{0} (ZMod ℓ) G) : M ≃+ intRep M := AddEquiv.refl M
 

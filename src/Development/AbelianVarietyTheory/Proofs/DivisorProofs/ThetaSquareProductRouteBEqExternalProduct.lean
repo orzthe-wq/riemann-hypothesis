@@ -157,10 +157,6 @@ theorem tildeDet_one {V : HSp D} {g : GA D V} {a : Circle} (h : GlobalTheory.Ind
   rw [← h.2 x hx]
   rfl
 
-theorem dagger_zero (S T : HSp D) : dagger S T 0 = 0 := by
-  have e : adj (0 : WO S T) = 0 := by ext a b; simp [adj]
-  simp only [dagger, e, Matrix.zero_mul, Matrix.mul_zero]
-
 theorem dag_eq_cj (S T : HSp D) (f : WO S T → ℂ) : GlobalTheory.PairLift.dag S T f = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (dagger T S) f := by
   funext y
   simp only [GlobalTheory.PairLift.dag, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, GlobalTheory.PairLift.adjO, dagger, giA, gA, adj, rat, Matrix.mul_assoc]
@@ -262,7 +258,7 @@ theorem seesaw_small {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc
     rw [cjEnd_cj]
     simp only [GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, id, Complex.conj_conj]
     show W.om (.chi i j) (negGA _ g₁, u) f₂ (dagger _ _ 0) = W.om (.chi i j) (negGA _ g₁, u) f₂ 0
-    rw [dagger_zero]
+    rw [_root_.GlobalTheory.BiTransfer.dagger_zero]
   have k₁ : W.om (.mu t i j) (u, g) f₁ 0 = W.kerA (.down t i j) f₁ g u := rfl
   have x1 : xiV G i j g = ((b₁ : ℂ))⁻¹ := by
     unfold xiV flatDet

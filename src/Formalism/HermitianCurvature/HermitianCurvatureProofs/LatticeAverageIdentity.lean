@@ -872,11 +872,6 @@ section Cnt
 
 variable {K : Type} [CommRing K] (R : Subring K) {n : ℕ} (k : ℕ)
 
-theorem cnt_Lam_coord (Z : Matrix (Fin n) (Fin n) K) (x : Fin n → R) (j : Fin n) :
-    abelian₂ R k Z x j = if k < j.val then lamTil R Z j.val x else 0 := by
-  simp only [abelian₂, LinearMap.pi_apply]
-  split_ifs <;> rfl
-
 theorem cnt_msk_sub (a b : Fin n → K) : msk k (a - b) = msk k a - msk k b := by
   ext j
   simp only [msk, Pi.sub_apply]
@@ -907,10 +902,6 @@ theorem cnt_nrm_unique (Z₀ : Matrix (Fin n) (Fin n) K)
   congr 1
   exact Quotient.sound (s := dRel R k Z₀) h
 
-theorem cnt_det_mul (Z₀ p : Matrix (Fin n) (Fin n) K) (hd : IsUnit Z₀.det) (hp : IsPP R k p) :
-    IsUnit (Z₀ * p).det := by
-  rw [Matrix.det_mul, isUpUni_det K hp.1.1, mul_one]; exact hd
-
 theorem cnt_bad_iff (ψ : AddChar K ℂ) (hsd : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R)
     (hk : k + 2 ≤ n) (Z₀ Z₀' : Matrix (Fin n) (Fin n) K) (hd : IsUnit Z₀.det)
     (hd' : IsUnit Z₀'.det)
@@ -925,8 +916,8 @@ theorem cnt_bad_iff (ψ : AddChar K ℂ) (hsd : ∀ a : K, (∀ r ∈ R, ψ (a *
     ¬ InTT R k (Z₀ * p) (Z₀' * p') φ ↔
       ∃ x y : Fin n → R, Ψ (Submodule.Quotient.mk x) = Submodule.Quotient.mk y ∧
         abelian₂ R k Z₀ x = 0 ∧ lamTil R Z₀' k y - lamTil R Z₀ k x ∉ R := by
-  have hdZ := cnt_det_mul R k Z₀ p hd hp
-  have hdZ' := cnt_det_mul R k Z₀' p' hd' hp'
+  have hdZ := _root_.Formalism.FourierDecayAlt.P.A5x9.mat_det_mul R k Z₀ p hd hp
+  have hdZ' := _root_.Formalism.FourierDecayAlt.P.A5x9.mat_det_mul R k Z₀' p' hd' hp'
   have hstep := Formalism.FourierDecayAlt.P.triple_form_recursion K R ψ hsd n (Z₀ * p) (Z₀' * p') hdZ hdZ' hfin φ k
     (by omega) hT
   rw [hstep]
@@ -936,7 +927,7 @@ theorem cnt_bad_iff (ψ : AddChar K ℂ) (hsd : ∀ a : K, (∀ r ∈ R, ψ (a *
     obtain ⟨v, v', hv, hker, hne⟩ := h
     have hint : ∀ j, abelian₂ R k (Z₀ * p) v j ∈ R := by
       intro j
-      rw [cnt_Lam_coord]
+      rw [_root_.Formalism.FourierDecayAlt.P.A5x9.cnta_Lam_coord]
       split_ifs with hj
       · exact (A5x3.mk_eq_zero R _).1 (hker j.val hj)
       · exact R.zero_mem
@@ -977,7 +968,7 @@ theorem cnt_bad_iff (ψ : AddChar K ℂ) (hsd : ∀ a : K, (∀ r ∈ R, ψ (a *
       · have h1 : abelian₂ R k (Z₀ * p) x = 0 := by
           rw [Lam_mul R k Z₀ p hp, hx0, Matrix.mulVec_zero]
         have h2 := congrFun h1 ⟨j, hjn⟩
-        rw [cnt_Lam_coord, if_pos hj] at h2
+        rw [_root_.Formalism.FourierDecayAlt.P.A5x9.cnta_Lam_coord, if_pos hj] at h2
         show (Submodule.Quotient.mk (lamTil R (Z₀ * p) j x) : KR R) = 0
         rw [(A5x3.mk_eq_zero R _)]
         simp only at h2
@@ -1003,14 +994,14 @@ theorem countId (ψ : AddChar K ℂ) (hsd : ∀ a : K, (∀ r ∈ R, ψ (a * r) 
   have hn : 0 < n := by omega
   have hLe : abelian₂ R k Z₀ (eLast R) = 0 := by
     ext j
-    rw [cnt_Lam_coord]
+    rw [_root_.Formalism.FourierDecayAlt.P.A5x9.cnta_Lam_coord]
     split_ifs with hj
     · rw [A5x2.lamTil_eLast R Z₀ j ⟨n - 1, by omega⟩ (by simp only; omega)]
       exact he j _ hj (by simp only; omega)
     · rfl
   have hLe' : abelian₂ R k Z₀' (eLast R) = 0 := by
     ext j
-    rw [cnt_Lam_coord]
+    rw [_root_.Formalism.FourierDecayAlt.P.A5x9.cnta_Lam_coord]
     split_ifs with hj
     · rw [A5x2.lamTil_eLast R Z₀' j ⟨n - 1, by omega⟩ (by simp only; omega)]
       exact he' j _ hj (by simp only; omega)
@@ -1807,12 +1798,7 @@ theorem bad_zero (ψ : AddChar K ℂ) (hsd : ∀ a : K, (∀ r ∈ R, ψ (a * r)
   ext q
   simp only [Finset.mem_filter, Prod.mk.injEq]
 
-theorem isUnit_orbZ_det (w : Point K) (p : lowW K w.1 w.2 × upUniG K w.1.sum) :
-    IsUnit (orbZ w p).det := by
-  unfold orbZ
-  rw [Matrix.det_mul, Matrix.det_mul, isLowUni_det K p.1.2.1, isUpUni_det K p.2.2, one_mul,
-    mul_one]
-  exact Matrix.isUnit_det_of_right_inverse (Formalism.DoubleCosetMeasures.P.Phase.pt_mul_ptI w.1 w.2)
+alias isUnit_orbZ_det := _root_.Formalism.FourierDecayAlt.P.A5x9.grp_orbZ_det
 
 theorem top_intTT_eq (ψ : AddChar K ℂ) (k₁ : ℕ) (w w' : Point K)
     (Q : Finset (Cos R w × Cos R w'))

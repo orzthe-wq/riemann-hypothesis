@@ -114,7 +114,6 @@ theorem fromSpecStalk_appLE {X : Scheme.{0}} {U : X.Opens} {p : X} (hp : p ∈ U
       𝟙 (Opposite.op (⊤ : (Spec (X.presheaf.stalk p)).Opens)) := by
     first
     | exact Subsingleton.elim _ _
-    | rfl
   rw [e]
   exact (congrArg (fun t => X.presheaf.germ U p hp ≫ (Scheme.ΓSpecIso (X.presheaf.stalk p)).inv ≫ t)
     ((Spec (X.presheaf.stalk p)).presheaf.map_id _)).trans (by simp only [Category.comp_id])

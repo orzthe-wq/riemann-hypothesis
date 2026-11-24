@@ -297,7 +297,7 @@ theorem main (L : LevelData A r) (st : Start A) (hL : IsStarLevel L) (hst : IsLe
     have hr1 : star (l.pt + 1) = l.pt + 1 := by rw [star_add, hr, star_one]
     have hrm : star (l.pt - 1) = l.pt - 1 := by rw [star_sub, hr, star_one]
     obtain ⟨hx, hxi⟩ := x_kMat L st w
-    have hrec := Formalism.FourierDecayAlt.P.admissible_rec_of_admissible A S r L st (l :: w) hA0
+    have hrec := _root_.Formalism.FourierDecayAlt.P.Fr2.admissible_rec_of_admissible_word A S r L st (l :: w) hA0
     have h01 := eU_sum (A := A) l.intersection_update_fsHerm_neg_one
     have kE : ∀ i j, kapL L * (eU l.intersection_update_fsHerm_neg_one i j : SlopeTestRemainingChoices S A) = eU l.intersection_update_fsHerm_neg_one i j * kapL L := fun i j => (eU_comm_io _ _ _ _).eq
     have tE : ∀ i j, tz L * (eU l.intersection_update_fsHerm_neg_one i j : SlopeTestRemainingChoices S A) = eU l.intersection_update_fsHerm_neg_one i j * tz L := fun i j => (eU_comm_io _ _ _ _).eq

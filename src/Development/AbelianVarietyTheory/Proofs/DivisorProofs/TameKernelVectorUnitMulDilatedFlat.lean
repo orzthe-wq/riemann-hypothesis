@@ -144,7 +144,7 @@ theorem kerDat_xiR_ne : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : 
     rw [hx]; exact hk
   have hv : Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) k) = 1 := by
     rw [Valuation.map_eq_of_sub_lt _ hk']; exact hx
-  have hv1 : PP.valuation D.host.E k = 1 := by rw [← GlobalTheory.ChainOnto.TameRes.val_alg]; exact hv
+  have hv1 : PP.valuation D.host.E k = 1 := by rw [← _root_.Formalism.UG.P.levelaf_valued_algebraMap]; exact hv
   have hk0 : k ≠ 0 := by
     rintro rfl
     simp at hv1

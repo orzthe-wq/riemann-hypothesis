@@ -3,8 +3,9 @@ module
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsLocIsoRefl
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MeasurePreservingPiCurry
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierEqFiniteFourierSumDepth
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierInversionSchwartzBruhatStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierMemSchwartzBruhatStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExistsFrameMatrixFirstColumnBlock
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierInversionSchwartzBruhat
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PartialColumnFourierMemSchwartzBruhat
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -138,9 +139,9 @@ theorem GlobalTheory.ColFourier.exists_blockFourier : ∀ (k : Type) [Field k] [
   haveI := hm.1
   have hψ' : HasConductor ψ⁻¹ 1 := GlobalTheory.ColFourier.hasConductor_inv hψ
   have hSB := fun (χ : AddChar k Circle) (hχ : HasConductor χ 1) (Ξ : Matrix A C k → ℂ)
-    (h : Ξ ∈ SB (Matrix A C k)) => GlobalTheory.T.partialColumnFourier_mem_schwartzBruhat k A C χ m hχ hm P Ξ h
+    (h : Ξ ∈ SB (Matrix A C k)) => _root_.GlobalTheory.ColFourier.fourierInt_mem_SB k A C χ m hχ hm P Ξ h
   have hInv := fun (χ : AddChar k Circle) (hχ : HasConductor χ 1) (Ξ : Matrix A C k → ℂ)
-    (h : Ξ ∈ SB (Matrix A C k)) => GlobalTheory.T.partialColumnFourier_inversion_schwartzBruhat k A C χ m hχ hm P Ξ h
+    (h : Ξ ∈ SB (Matrix A C k)) => _root_.GlobalTheory.ColFourier.fourierInt_inv_fourierInt k A C χ m hχ hm P Ξ h
   let L : SB (Matrix A C k) →ₗ[ℂ] (Matrix A C k → ℂ) :=
     { toFun := fun Ξ => fourierInt ψ m P Ξ
       map_add' := fun a b => GlobalTheory.ColFourier.fourierInt_add ψ m hψ hm P a.2 b.2

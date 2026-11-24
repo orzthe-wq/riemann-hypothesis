@@ -62,7 +62,7 @@ namespace GlobalTheory.ThetaSumNe
 
 theorem exists_mem_schA_thetaSum_ne_zero : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     ∃ φ ∈ schA F κ, thetaSum F φ ≠ 0 := by
-  apply GlobalTheory.CompanionTheory.ThetaAdm.exists_thetaSum_ne_zero <;> assumption
+  apply GlobalTheory.CompanionTheory.ThetaAdm.exists_thetaSum_ne_zero
 
 end GlobalTheory.ThetaSumNe
 

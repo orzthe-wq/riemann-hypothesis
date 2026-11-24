@@ -136,8 +136,8 @@ theorem UpperTheory.V.Th.Nm.redOf :
     congr 1
     ext g i j
     simp only [MonoidHom.coe_comp, Function.comp_apply, diagRep, MonoidHom.coe_mk, OneHom.coe_mk,
-      RingHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.diagonal_apply, hchi]
-    split_ifs with hij <;> simp [hij, Matrix.diagonal_apply]
+      Matrix.diagonal_apply, hchi]
+    split_ifs with hij <;> simp [hij]
   · intro v i
     refine ⟨?_, ?_, ?_⟩
     · intro N

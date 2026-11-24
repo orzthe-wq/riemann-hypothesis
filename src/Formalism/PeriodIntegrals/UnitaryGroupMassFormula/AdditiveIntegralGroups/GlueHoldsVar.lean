@@ -67,8 +67,6 @@ theorem flog_constantCoeff (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_
     PowerSeries.constantCoeff (flog W wq) = 0 := by
   first
   | simp [PI.AddIntG.flog]
-  | (rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]; simp [PI.AddIntG.flog])
-  | (rw [← PowerSeries.coeff_zero_eq_constantCoeff]; simp [PI.AddIntG.flog])
 
 theorem coeff_one_flog {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     PowerSeries.coeff 1 (flog W wq) = 1 := by
@@ -83,22 +81,13 @@ theorem coeff_one_flog {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
   have h2 : (2 : ℂ_[p]) ≠ 0 := by
     first
     | exact two_ne_zero
-    | (intro h2z
-       have hinj := (algebraMap ℚ_[p] ℂ_[p]).injective
-       have h22 : algebraMap ℚ_[p] ℂ_[p] 2 = algebraMap ℚ_[p] ℂ_[p] 0 := by
-         rw [map_ofNat, map_zero]; exact h2z
-       exact two_ne_zero (hinj h22))
   have hinv : PowerSeries.constantCoeff (PI.AddIntG.omegaW W wq) = 1 := by
     have hc2 : PowerSeries.constantCoeff (2 : PowerSeries ℂ_[p]) = 2 := map_ofNat _ 2
     simp [PI.AddIntG.omegaW, hw, PowerSeries.constantCoeff_inv, h2, hc2]
-    first
-    | done
-    | field_simp
   have e : PowerSeries.coeff 1 (PI.AddIntG.flog W wq) = PowerSeries.coeff 0 (PI.AddIntG.omegaW W wq) := by
     simp [PI.AddIntG.flog]
   first
   | (rw [e, PowerSeries.coeff_zero_eq_constantCoeff_apply, hinv])
-  | (rw [e]; simpa using hinv)
 
 private theorem hasSubst_of_constantCoeff_eq_zero_additive_integral_groups {K : Type*} [Field K] {a : PowerSeries K}
     (ha : PowerSeries.constantCoeff a = 0) : PowerSeries.HasSubst a := by
@@ -233,14 +222,8 @@ theorem subst_left_inv {K : Type*} [Field K] {l ex : PowerSeries K} (hl0 : Power
   have hy0 : PowerSeries.constantCoeff (PowerSeries.subst l ex) = 0 := by
     first
     | (rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, powerSeries_coeff_subst_eq_sum_range_coeff_mul hl0]; simp [hex0])
-    | (have h00 := powerSeries_coeff_subst_eq_sum_range_coeff_mul hl0 ex 0
-       simp [hex0] at h00
-       simpa using h00)
-    | (obtain ⟨e, he⟩ := PowerSeries.X_dvd_iff.2 hex0
-       rw [he, PowerSeries.subst_mul (hasSubst_of_constantCoeff_eq_zero_additive_integral_groups hl0), subst_X_eq_self_of_constantCoeff_eq_zero hl0, map_mul, hl0, zero_mul])
   have hXl : PowerSeries.subst (PowerSeries.X : PowerSeries K) l = l := by
     first
-    | exact PowerSeries.subst_self l
     | (ext n
        rw [powerSeries_coeff_subst_eq_sum_range_coeff_mul PowerSeries.constantCoeff_X]
        simp [PowerSeries.coeff_X_pow])

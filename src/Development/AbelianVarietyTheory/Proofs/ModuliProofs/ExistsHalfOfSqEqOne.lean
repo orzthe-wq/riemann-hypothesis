@@ -155,7 +155,7 @@ theorem exists_half_char {d : ℕ} (Λ : Submodule ℤ (Fin d → ℂ)) (Hm : Ma
   have hsingle : ∀ j : Fin g, (fun i => (((Pi.single j (1 : ℤ) : Fin g → ℤ) i : ℤ) : ℂ)) = Pi.single j (1 : ℂ) := by
     intro j
     ext i
-    by_cases hij : i = j <;> simp [Pi.single_apply, hij]
+    by_cases hij : i = j <;> simp [hij]
   have hzero : (fun i => (((0 : Fin g → ℤ) i : ℤ) : ℂ)) = 0 := by ext i; simp
   let e : Fin g → Λ := fun i => ⟨Φ (Pi.single i 1), (hΛ _).2 ⟨Pi.single i 1, 0, by
     rw [hsingle, hzero, mulVec_zero, add_zero]⟩⟩

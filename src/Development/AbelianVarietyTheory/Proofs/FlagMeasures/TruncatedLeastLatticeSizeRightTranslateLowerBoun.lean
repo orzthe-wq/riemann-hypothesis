@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LayerProd
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointLatticeIntersectionSelfDualPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointMajorantFramesGiveMajorantsStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointLatticeIntersectionSelfDualProperties
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.AutPointMajorantFramesGiveMajorants
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
 public import Formalism.HarderNarasimhan.ShiftInvariance
 import Mathlib.Algebra.Order.Floor.Extended
@@ -179,9 +179,9 @@ theorem opNormAt_id (I : AutInst) (x k : I.GA) (w : InfinitePlace I.E) :
 
 theorem least_var (I : AutInst) (hn : 1 ≤ I.n) (x k : I.GA) (hk : k.2 ∈ I.Kset) :
     least I x * Real.exp (-((∑ v, dOp (uMat (k.1 v))) / I.f)) ≤ least I (x * k) := by
-  have h31x := GlobalTheory.T.autPointMajorantFrames_give_majorants I x
-  have h31k := GlobalTheory.T.autPointMajorantFrames_give_majorants I (x * k)
-  have h30 := GlobalTheory.T.autPointLatticeIntersection_selfDual_properties I x
+  have h31x := _root_.GlobalTheory.Count.FrameMajorant.frames_give_majorants I x
+  have h31k := _root_.GlobalTheory.Count.FrameMajorant.frames_give_majorants I (x * k)
+  have h30 := _root_.GlobalTheory.PointLattice.lamX_selfDual I x
   have : IsTotallyComplex I.E := h31x.1
   have hnPl : nPl I.E = I.f := h31x.2.1
   have hbij := h31x.2.2.2.1

@@ -1,30 +1,30 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.Basic
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowMinor
 public import Formalism.FlagUnipotentLattices.CardSubmodulesAndLinearEquivBounds
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsExtra
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StandardBaseFlagComplementIntegralLatticeStatement
 public import Formalism.FlagUnipotentLattices.CardSubgroupsOfIndexLe
+import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LatExistsSat
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -44,12 +44,43 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LinearFormsBoundedRepresentatives
+import Mathlib.RingTheory.PicardGroup
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsExtra, Development.AbelianVarietyTheory.Proofs.FlagMeasures.FixedFramesPerpendicularVectors
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsExtra =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsExtra", "h": "module\n\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.LatExistsSat\npublic import Mathlib.NumberTheory.NumberField.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.ClearingDenominatorsInOrder
+
+theorem main {E W : Type} [Field E] [NumberField E] [AddCommGroup W] [Module E W]
+    [Module (NumberField.RingOfIntegers E) W]
+    [IsScalarTower (NumberField.RingOfIntegers E) E W]
+    (L : Submodule (NumberField.RingOfIntegers E) W) :
+    ∀ v ∈ Submodule.span E (↑L : Set W),
+      ∃ (c : NumberField.RingOfIntegers E), c ≠ (0 : NumberField.RingOfIntegers E) ∧ c • v ∈ L := by
+  apply Formalism.L2.SG.Pf.LatEx.exists_smul_mem_of_mem_span
+
+end GlobalTheory.ClearingDenominatorsInOrder
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsExtra =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.FixedFramesPerpendicularVectors =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.FixedFramesPerpendicularVectors", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowMinor\npublic import Formalism.FlagUnipotentLattices.CardSubmodulesAndLinearEquivBounds\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsExtra\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StandardBaseFlagComplementIntegralLatticeStatement\npublic import Formalism.FlagUnipotentLattices.CardSubgroupsOfIndexLe\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.LinearFormsBoundedRepresentatives\nimport Mathlib.RingTheory.PicardGroup\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField Module Matrix Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.Cnt GlobalTheory.LoopC
@@ -79,21 +110,10 @@ theorem exists_rep {E W : Type} [Field E] [StarRing E] [AddCommGroup W] [Module 
   have := key f (h.flip (w : W)) (fun i => by simpa [L] using (congrFun hw i).symm) σ hσ
   simpa using this
 
-theorem exists_smul_mem {E W : Type} [Field E] [NumberField E] [AddCommGroup W] [Module E W]
-    [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W] (L : Submodule (𝓞 E) W) (v : W)
-    (hv : v ∈ Submodule.span E (L : Set W)) : ∃ c : 𝓞 E, c ≠ 0 ∧ c • v ∈ L := by
-  first
-  | exact @_root_.GlobalTheory.ClearingDenominatorsInOrder.main
-  | exact _root_.GlobalTheory.ClearingDenominatorsInOrder.main
-  | (apply _root_.GlobalTheory.ClearingDenominatorsInOrder.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.ClearingDenominatorsInOrder.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.ClearingDenominatorsInOrder.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.ClearingDenominatorsInOrder.main ..)
-
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 theorem exists_vec (S : HSpace E) (φ : S.V →ₗ[E] E) : ∃ w, ∀ x, φ x = S.hT w x := by
-  apply _root_.GlobalTheory.LoopC.FunIdx.exists_vec <;> assumption
+  apply _root_.GlobalTheory.LoopC.FunIdx.exists_vec
 
 
 theorem span_eq_top_of_unimodular {S : HSpace E} (L : Submodule (𝓞 E) S.V)
@@ -205,14 +225,14 @@ theorem norm_cof {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalis
     T * S.hT w w = leadMinorE (Zhat F F') (r + 1) * star (leadMinorE (Zhat F F') (r + 1)) -
       T * T' * (leadMinorE (Zhat F F') r * star (leadMinorE (Zhat F F') r)) := by
   have hZ : Formalism.HermitianLatticeCounting.LatticeSumBounds.crossGram S.hT.flip F.fvec F'.fvec = Zhat F F' := rfl
-  have h := Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.omegaNorm E S.V S.hT.flip (fun x y => hT_symm S y x) r F.fvec F'.fvec T T'
+  have h := _root_.Formalism.HermitianLatticeCounting.P.complementNormIdentity E S.V S.hT.flip (fun x y => hT_symm S y x) r F.fvec F'.fvec T T'
     (((-1 : E) ^ r) • x) (((-1 : E) ^ r) • w) ((-1 : E) ^ r * ζ) (fun a b => fvec_gram F a b)
     (fun a b => fvec_gram F' a b) hT
     (Submodule.smul_mem _ _ (by simpa [FlagG.fvec, FlagG.X] using (show x ∈ Submodule.span E (Set.range fun a => F.e a) from hx)))
     (fun a => by simp [hw a])
     (by
       rw [hZ]
-      simp only [Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.cofVecAdjugate E r (Zhat F F'), mul_smul]
+      simp only [_root_.Formalism.HermitianLatticeCounting.P.adjugateLastColumnEqCofactor E r (Zhat F F'), mul_smul]
       rw [← Finset.smul_sum, hom, smul_add, smul_add]
       simp [FlagG.fvec])
   rw [hZ] at h
@@ -251,7 +271,7 @@ theorem main : ∀ (D : D7) (u u' : D.what₂.Word) (F0 : Fb D u) (Λ : LatV D),
     rw [← (hw b).2 σ hσ.2]
     have huni : Formalism.HermitianLatticesTheory.dual (hS D).hT Λ = Λ := hrow.2.1.2.1
     exact (mem_dual _ _ _).1 (huni.symm ▸ hfΛ b) _ (iXY_mem D F0 Λ hb.1 hsp σ hσ.1)
-  · obtain ⟨c, hc, hcΛ⟩ := exists_smul_mem Λ (D.sp.iXY 0 (w b))
+  · obtain ⟨c, hc, hcΛ⟩ := _root_.GlobalTheory.ClearingDenominatorsInOrder.main Λ (D.sp.iXY 0 (w b))
       (by rw [span_eq_top_of_unimodular Λ hrow.2.1.1 hrow.2.1.2.1]; trivial)
     have hworth : D.sp.iXY 0 (w b) ∈ orth (hS D) (Xplus (lf D F0)) :=
       hW.1.le (Submodule.mem_sup_left ⟨w b, rfl⟩)
@@ -286,7 +306,7 @@ theorem main : ∀ (D : D7) (u u' : D.what₂.Word) (F0 : Fb D u) (Λ : LatV D),
       have := hst.2.2.2.1
       exact Nat.cast_ne_zero.2 (by omega)
     have hE : ∀ a, (hS D).hT (F0.e a) om = 0 := fun a => by
-      have h := congrFun (Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.kernelRowSpace _ _
+      have h := congrFun (_root_.Formalism.HermitianLatticeCounting.P.cofactorVectorKernel _ _
         ((Zhat F0 F'.fl).submatrix Fin.castSucc id)).1 a
 
       rw [hom, map_sum]
@@ -349,3 +369,6 @@ theorem main : ∀ (D : D7) (u u' : D.what₂.Word) (F0 : Fb D u) (Λ : LatV D),
       exact Submodule.mem_sup_left (Submodule.subset_span ⟨j, rfl⟩)
 
 end GlobalTheory.LoopC.WMem
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.FixedFramesPerpendicularVectors =====

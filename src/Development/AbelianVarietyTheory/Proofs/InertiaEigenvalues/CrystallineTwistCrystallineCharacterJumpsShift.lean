@@ -2,7 +2,7 @@ module
 
 public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
 public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamComponentsCrystallineLettersFinrankStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamComponentsCrystallineLettersFinrank
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FontaineBcrisBasicTheoremsProof
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsCrysIffOfTwist
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDeRhamOfIsCrystallineSpan
@@ -143,7 +143,7 @@ theorem isCrys_and_multV_twist : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (
   refine ⟨GlobalTheory.Cmp.WachMonoidal.isCrys_of_equiv (P.PD K) e (transport_apply e ρ')
     ((GlobalTheory.TwistCrys.isCrys_iff_of_twist GlobalTheory.MemLoc.fontaineBcris l P AI T K LL V ρ _ ν _ hν hρ cν).1 cρ),
     fun τ a b hb => ?_⟩
-  obtain ⟨hfin, hle, -⟩ := (GlobalTheory.T.deRhamComponents_crystallineLetters_finrank l P AI T K LL ↥LL.1 (charRep χ)).1 τ
+  obtain ⟨hfin, hle, -⟩ := (_root_.GlobalTheory.Per.Components.components_finrank l P AI T K LL ↥LL.1 (charRep χ)).1 τ
   rw [finrank_self] at hle
   rw [← multV_of_equiv (P.PD K) e (transport_apply e ρ')]
   refine GlobalTheory.TwistJump.multV_twist_char l P AI T K LL V ρ _ ν _ hν hρ

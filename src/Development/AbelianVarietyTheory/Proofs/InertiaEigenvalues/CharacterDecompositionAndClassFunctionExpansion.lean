@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentralStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIrrCharactersAndFinsumCentralIdempotentsEqStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentOfIrrCharacterOrthogonalCentral
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteIrrCharactersAndFinsumCentralIdempotentsEq
 import Mathlib.Algebra.Category.ModuleCat.Algebra
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -191,7 +191,7 @@ theorem class_eq_zero_of_orth {G : Type} [Group G] [Fintype G] (f : G → ℂ) (
       show _ = LinearMap.trace ℂ V (V.ρ (x⁻¹ * y))
       rw [map_mul, Module.End.mul_eq_comp]
     rw [← hy, hT0, LinearMap.zero_comp, map_zero]
-  obtain ⟨hS, hsum⟩ := GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one G
+  obtain ⟨hS, hsum⟩ := _root_.GlobalTheory.GLq.irr_finite_and_finsum_zOf_eq_one G
   rw [finsum_mem_eq_finite_toFinset_sum _ hS] at hsum
   have hB : ∀ w : G, ∑ ρ ∈ hS.toFinset, ρ 1 / (Fintype.card G : ℂ) * ρ w⁻¹ = if w = 1 then 1 else 0 := by
     intro w
@@ -221,7 +221,7 @@ theorem isChar_of_isIrr {G : Type} [Group G] {ρ : G → ℂ} (h : IsIrr ρ) : I
 
 theorem class_expand {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : IsClass χ) :
     χ = ∑ᶠ ρ ∈ {ρ : G → ℂ | IsIrr ρ}, ip χ ρ • ρ := by
-  have hS := (GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one G).1
+  have hS := (_root_.GlobalTheory.GLq.irr_finite_and_finsum_zOf_eq_one G).1
   rw [finsum_mem_eq_finite_toFinset_sum _ hS]
   set F := hS.toFinset with hF
   have hmem : ∀ ρ, ρ ∈ F ↔ IsIrr ρ := fun ρ => by simp [F]
@@ -236,7 +236,7 @@ theorem class_expand {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : Is
   · intro ρ' hρ'
     rw [ip_sub_left, ip_finset_sum_left]
     have : ∀ ρ ∈ F, ip χ ρ * ip ρ ρ' = if ρ = ρ' then ip χ ρ' else 0 := fun ρ hρ => by
-      rw [((GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G ρ ρ' ((hmem ρ).1 hρ) hρ').2.2)]
+      rw [((_root_.GlobalTheory.GLq.ZOrth.zorth G ρ ρ' ((hmem ρ).1 hρ) hρ').2.2)]
       split_ifs with h
       · subst h; ring
       · ring
@@ -250,7 +250,7 @@ theorem list_sum_flatMap {α M : Type} [AddCommMonoid M] (l : List α) (f : α �
 
 theorem char_decomp {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : IsChar χ) :
     ∃ L : List (G → ℂ), (∀ ρ ∈ L, IsIrr ρ) ∧ χ = L.sum := by
-  have hS := (GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one G).1
+  have hS := (_root_.GlobalTheory.GLq.irr_finite_and_finsum_zOf_eq_one G).1
   have hE := class_expand χ (isClass_of_isChar hχ)
   rw [finsum_mem_eq_finite_toFinset_sum _ hS] at hE
   set F := hS.toFinset with hF
@@ -277,7 +277,7 @@ theorem char_norm_one {G : Type} [Group G] [Fintype G] (χ : G → ℂ) (hχ : I
     IsIrr χ := by
   obtain ⟨L, hL, rfl⟩ := char_decomp χ hχ
   have hip : ∀ a ∈ L, ∀ b ∈ L, ip a b = ((if a = b then 1 else 0 : ℕ) : ℂ) := fun a ha b hb => by
-    rw [(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G a b (hL a ha) (hL b hb)).2.2]; split_ifs <;> simp
+    rw [(_root_.GlobalTheory.GLq.ZOrth.zorth G a b (hL a ha) (hL b hb)).2.2]; split_ifs <;> simp
   have key : ip L.sum L.sum = ((L.map fun a => (L.map fun b => if a = b then 1 else 0).sum).sum : ℕ) := by
     rw [ip_list_sum_left, Nat.cast_list_sum, List.map_map]
     refine congrArg List.sum (List.map_congr_left fun a ha => ?_)

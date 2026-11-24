@@ -113,9 +113,6 @@ theorem tri_solve' {X : Type} [AddCommGroup X] [Module ℂ X] (n : ℕ) (z : ℕ
 
 variable {D : D7}
 
-theorem rep_of_not {V : HSp D} {P : Pl D.host.E} {d : List ℤ} (h : ¬ IsLab V P d) : GlobalTheory.Hk3.rep V P d = ∅ := by
-  unfold GlobalTheory.Hk3.rep; rw [dite_eq_right h]
-
 theorem hkF_evC (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ W] (P : Pl D.host.E) (a : List ℤ → ℂ)
     (Φ : Bridge.Gf V → W) (h : ∀ d, IsLab V P d → hkF V P (Finsupp.single d 1) Φ = a d • Φ) (c : List ℤ →₀ ℂ) :
     hkF V P c Φ = evC V P a c • Φ := by
@@ -128,7 +125,7 @@ theorem hkF_evC (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ W] (P : Pl D
       unfold hkF at this
       rw [Finsupp.sum_single_index (by simp), one_smul] at this
       rw [if_pos hd, this]; rfl
-    · rw [if_neg hd, rep_of_not hd, Finset.sum_empty, zero_smul]
+    · rw [if_neg hd, _root_.GlobalTheory.DefiniteOps.rep_empty hd, Finset.sum_empty, zero_smul]
   simp only [hkF, evC, Finsupp.sum, Pi.smul_apply, Finset.sum_smul, e, smul_smul]
   refine Finset.sum_congr rfl fun d _ => ?_
   split_ifs <;> simp

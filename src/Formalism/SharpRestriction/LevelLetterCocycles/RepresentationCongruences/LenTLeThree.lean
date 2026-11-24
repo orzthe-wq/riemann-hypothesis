@@ -73,28 +73,8 @@ theorem tsum_three (l : ℕ) (hl : 11 ≤ l) (f : ℕ → ℝ) (x₀ x₁ X : �
   apply Formalism.MainNotions.N.FrobeniusPowerSeries.tsum_three <;> assumption
 
 theorem cW_le (l : ℕ) (hl : 11 ≤ l) (h η H : ℕ) (hη : η + 1 ≤ h) (hH : H ≤ h + η) :
-    (cW l H : ℝ) ≤ 2 + Real.logb l (2 * (h : ℝ)) := by
-  have ht : (11:ℝ) ≤ (l:ℝ) := by exact_mod_cast hl
-  have hl' : (1:ℝ) < l := by linarith
-  have hH0 : (0:ℝ) ≤ H := Nat.cast_nonneg H
-  have hlog0 : 0 ≤ Real.logb l ((H:ℝ) + 1) := Real.logb_nonneg hl' (by linarith)
-  have hle : (H:ℝ) + 1 ≤ 2 * (h:ℝ) := by
-    have : H + 1 ≤ 2 * h := by omega
-    exact_mod_cast this
-  have hmono := Real.logb_le_logb_of_le hl' (by linarith) hle
-  have hceil := Nat.ceil_lt_add_one (show (0:ℝ) ≤ 1 + Real.logb l ((H:ℝ) + 1) by linarith)
-  unfold cW
-  linarith
-
-private lemma div_le_div_of_mul_le_mul_of_pos {a b c d : ℝ} (hb : 0 < b) (hd : 0 < d) (h : a * d ≤ c * b) :
-    a / b ≤ c / d := by
-  have hb' : b ≠ 0 := hb.ne'
-  have hd' : d ≠ 0 := hd.ne'
-  have hbd : 0 < b * d := mul_pos hb hd
-  have e1 : a / b = (a * d) * (b * d)⁻¹ := by field_simp <;> ring
-  have e2 : c / d = (c * b) * (b * d)⁻¹ := by field_simp <;> ring
-  rw [e1, e2]
-  exact mul_le_mul_of_nonneg_right h (inv_nonneg.mpr hbd.le)
+    (cW l H : ℝ) ≤ 2 + Real.logb l (2 * (h : ℝ)) :=
+  Formalism.MainNotions.N.FrobeniusPowerSeries.cW_le l hl h η H hη hH
 
 theorem rr_le (l : ℕ) (hl : 11 ≤ l) (h w S η H H₁ : ℕ) (hη : η + 1 ≤ h)
     (hH : H ≤ h + η) (hH₁ : H₁ ≤ w + S + η) (s r : ℝ)
@@ -102,140 +82,13 @@ theorem rr_le (l : ℕ) (hl : 11 ≤ l) (h w S η H H₁ : ℕ) (hη : η + 1 �
     (hr : r ≤ s * l / ((l : ℝ) - 1) ^ 2 + cW l H) :
     r ≤ 2 * ((w : ℝ) + S + η) / l + 2 * (h : ℝ) / (l : ℝ) ^ 2 + 2 * Real.logb l (2 * (h : ℝ)) + 3 ∧
     2 * ((w : ℝ) + S + η) / l + 2 * (h : ℝ) / (l : ℝ) ^ 2 + 2 * Real.logb l (2 * (h : ℝ)) + 3 ≤
-      3 * SgN l h w S η := by
-  have ht : (11:ℝ) ≤ (l:ℝ) := by exact_mod_cast hl
-  have hc := cW_le l hl h η H hη hH
-  have hc0 : (0:ℝ) ≤ (cW l H : ℝ) := Nat.cast_nonneg _
-  have hl1 : (1:ℝ) < l := by linarith
-  have hh1 : (1:ℝ) ≤ 2 * (h:ℝ) := by
-    have : 1 ≤ h := by omega
-    have : (1:ℝ) ≤ h := by exact_mod_cast this
-    linarith
-  have hL0 : 0 ≤ Real.logb l (2 * (h:ℝ)) := Real.logb_nonneg hl1 hh1
-  have hA : (H₁:ℝ) ≤ (w:ℝ) + S + η := by exact_mod_cast hH₁
-  have hHh : (H:ℝ) ≤ (h:ℝ) + η := by exact_mod_cast hH
-  have hw0 : (0:ℝ) ≤ w := Nat.cast_nonneg w
-  have hS0 : (0:ℝ) ≤ S := Nat.cast_nonneg S
-  have hη0 : (0:ℝ) ≤ η := Nat.cast_nonneg η
-  have hh0 : (0:ℝ) ≤ h := Nat.cast_nonneg h
-  have hA0 : (0:ℝ) ≤ (w:ℝ) + S + η := by linarith
-  obtain ⟨P, hP⟩ : ∃ P : ℝ, P = (l:ℝ) / ((l:ℝ) - 1) ^ 2 := ⟨_, rfl⟩
-  obtain ⟨Q, hQ⟩ : ∃ Q : ℝ, Q = (l:ℝ) / (((l:ℝ) - 1) ^ 2 * ((l:ℝ) - 2)) := ⟨_, rfl⟩
-  have h1' : (l:ℝ) - 1 ≠ 0 := by linarith
-  have h2' : (l:ℝ) - 2 ≠ 0 := by linarith
-  have hP0 : 0 ≤ P := by rw [hP]; positivity
-  have hQ0 : 0 ≤ Q := by
-    rw [hQ]; exact div_nonneg (by linarith) (mul_nonneg (sq_nonneg _) (by linarith))
-  have hPQe : P + Q = (l:ℝ) / (((l:ℝ) - 1) * ((l:ℝ) - 2)) := by
-    rw [hP, hQ]; field_simp; ring
-  have hpos : (0:ℝ) < ((l:ℝ) - 1) * ((l:ℝ) - 2) := mul_pos (by linarith) (by linarith)
-  have hPQ2 : P + Q ≤ 2 / (l:ℝ) := by
-    rw [hPQe]
-    exact div_le_div_of_mul_le_mul_of_pos hpos (by linarith) (by nlinarith)
-  have hPQ8 : P + Q ≤ 1 / 8 := by
-    rw [hPQe]
-    exact div_le_div_of_mul_le_mul_of_pos hpos (by norm_num)
-      (by nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ (l:ℝ) - 11) (by linarith : (0:ℝ) ≤ (l:ℝ))])
-  have hQ2 : Q ≤ 2 / (l:ℝ) ^ 2 := by
-    have hpos3 : (0:ℝ) < ((l:ℝ) - 1) ^ 2 * ((l:ℝ) - 2) :=
-      mul_pos (pow_pos (by linarith) 2) (by linarith)
-    rw [hQ]
-    exact div_le_div_of_mul_le_mul_of_pos hpos3 (by positivity)
-      (by nlinarith [mul_nonneg (sq_nonneg (l:ℝ)) (by linarith : (0:ℝ) ≤ (l:ℝ) - 11)])
-  have hrP : r ≤ s * P + cW l H := by
-    have : s * l / ((l:ℝ) - 1) ^ 2 = s * P := by rw [hP]; ring
-    linarith
-  have hs' : s ≤ ((w:ℝ) + S + η + cW l H + 3) + ((h:ℝ) + η + cW l H + 3) / ((l:ℝ) - 2) := by
-    have : ((H:ℝ) + cW l H + 3) / ((l:ℝ) - 2) ≤ ((h:ℝ) + η + cW l H + 3) / ((l:ℝ) - 2) :=
-      div_le_div_of_nonneg_right (by linarith) (by linarith)
-    linarith
-  have hsP : s * P ≤ (((w:ℝ) + S + η + cW l H + 3) + ((h:ℝ) + η + cW l H + 3) / ((l:ℝ) - 2)) * P :=
-    mul_le_mul_of_nonneg_right hs' hP0
-  have hexp : (((w:ℝ) + S + η + cW l H + 3) + ((h:ℝ) + η + cW l H + 3) / ((l:ℝ) - 2)) * P =
-      ((w:ℝ) + S + η) * P + (η:ℝ) * Q + (h:ℝ) * Q + ((cW l H : ℝ) + 3) * (P + Q) := by
-    rw [hP, hQ]; field_simp; ring
-  have hb1 : (η:ℝ) * Q ≤ ((w:ℝ) + S + η) * Q := mul_le_mul_of_nonneg_right (by linarith) hQ0
-  have hb2 : ((w:ℝ) + S + η) * (P + Q) ≤ ((w:ℝ) + S + η) * (2 / (l:ℝ)) :=
-    mul_le_mul_of_nonneg_left hPQ2 hA0
-  have hb3 : (h:ℝ) * Q ≤ (h:ℝ) * (2 / (l:ℝ) ^ 2) := mul_le_mul_of_nonneg_left hQ2 hh0
-  have hb4 : ((cW l H : ℝ) + 3) * (P + Q) ≤ ((cW l H : ℝ) + 3) * (1 / 8) :=
-    mul_le_mul_of_nonneg_left hPQ8 (by linarith)
-  have key : r ≤ 2 * ((w:ℝ) + S + η) / l + 2 * (h:ℝ) / (l:ℝ) ^ 2 + 2 * Real.logb l (2 * (h:ℝ)) + 3 := by
-    have e1 : ((w:ℝ) + S + η) * (2 / (l:ℝ)) = 2 * ((w:ℝ) + S + η) / l := by ring
-    have e2 : (h:ℝ) * (2 / (l:ℝ) ^ 2) = 2 * (h:ℝ) / (l:ℝ) ^ 2 := by ring
-    linarith
-  refine ⟨key, ?_⟩
-  unfold SgN
-  have q1 : 0 ≤ (h:ℝ) / (l:ℝ) ^ 2 := by positivity
-  have q2 : 0 ≤ ((w:ℝ) + S + η) / l := by positivity
-  have e3 : 2 * ((w:ℝ) + S + η) / l = 2 * (((w:ℝ) + S + η) / l) := by ring
-  have e4 : 2 * (h:ℝ) / (l:ℝ) ^ 2 = 2 * ((h:ℝ) / (l:ℝ) ^ 2) := by ring
-  rw [e3, e4]
-  linarith
+      3 * SgN l h w S η :=
+  Formalism.MainNotions.N.FrobeniusPowerSeries.rr_le l hl h w S η H H₁ hη hH hH₁ s r hs hr
 
 theorem sig_le (l : ℕ) (hl : 11 ≤ l) (h w S η : ℕ) (h1 : 1 ≤ h) (hG : w + S ≤ h) :
     (⌈((2 * (w + S) : ℕ) + ((2 * h / (l - 1) + 1 : ℕ) : ℝ)) * l / ((l : ℝ) - 1) ^ 2 + 1⌉₊ : ℝ) ≤
-      3 * SgN l h w S η := by
-  have ht : (11:ℝ) ≤ (l:ℝ) := by exact_mod_cast hl
-  have hl1 : (1:ℝ) < l := by linarith
-  have hh : (1:ℝ) ≤ (h:ℝ) := by exact_mod_cast h1
-  have hG' : (w:ℝ) + S ≤ h := by exact_mod_cast hG
-  have hw0 : (0:ℝ) ≤ w := Nat.cast_nonneg w
-  have hS0 : (0:ℝ) ≤ S := Nat.cast_nonneg S
-  have hη0 : (0:ℝ) ≤ η := Nat.cast_nonneg η
-  have hL0 : 0 ≤ Real.logb l (2 * (h:ℝ)) := Real.logb_nonneg hl1 (by linarith)
-  have hM : ((2 * h / (l - 1) + 1 : ℕ) : ℝ) ≤ 2 * (h:ℝ) / ((l:ℝ) - 1) + 1 := by
-    have e0 : ((l - 1 : ℕ) : ℝ) = (l:ℝ) - 1 := by
-      rw [Nat.cast_sub (by omega)]; simp
-    have hdiv : ((2 * h / (l - 1) : ℕ) : ℝ) ≤ ((2 * h : ℕ) : ℝ) / ((l - 1 : ℕ) : ℝ) :=
-      Nat.cast_div_le
-    rw [e0] at hdiv
-    rw [Nat.cast_add, Nat.cast_one]
-    have : ((2 * h : ℕ) : ℝ) = 2 * (h:ℝ) := by push_cast; ring
-    rw [this] at hdiv
-    linarith
-  obtain ⟨M, hMdef⟩ : ∃ M : ℝ, M = ((2 * h / (l - 1) + 1 : ℕ) : ℝ) := ⟨_, rfl⟩
-  rw [← hMdef] at hM ⊢
-  have hWS : ((2 * (w + S) : ℕ) : ℝ) = 2 * ((w:ℝ) + S) := by push_cast; ring
-  rw [hWS]
-  obtain ⟨P, hP⟩ : ∃ P : ℝ, P = (l:ℝ) / ((l:ℝ) - 1) ^ 2 := ⟨_, rfl⟩
-  have h1' : (l:ℝ) - 1 ≠ 0 := by linarith
-  have hsq : (0:ℝ) < ((l:ℝ) - 1) ^ 2 := pow_pos (by linarith) 2
-  have hP0 : 0 ≤ P := by rw [hP]; exact div_nonneg (by linarith) hsq.le
-  have hM0 : 0 ≤ M := by rw [hMdef]; exact Nat.cast_nonneg _
-  have ex : (2 * ((w:ℝ) + S) + M) * l / ((l:ℝ) - 1) ^ 2 + 1 = (2 * ((w:ℝ) + S) + M) * P + 1 := by
-    rw [hP]; ring
-  rw [ex]
-  have hx0 : (0:ℝ) ≤ (2 * ((w:ℝ) + S) + M) * P + 1 := by positivity
-  have hceil := Nat.ceil_lt_add_one hx0
-  have hP2 : 2 * P ≤ 3 / (l:ℝ) := by
-    rw [hP, show 2 * ((l:ℝ) / ((l:ℝ) - 1) ^ 2) = (2 * (l:ℝ)) / ((l:ℝ) - 1) ^ 2 by ring]
-    exact div_le_div_of_mul_le_mul_of_pos hsq (by linarith) (by nlinarith)
-  have hPh : 2 / ((l:ℝ) - 1) * P ≤ 3 / (l:ℝ) ^ 2 := by
-    have hcu : (0:ℝ) < ((l:ℝ) - 1) ^ 3 := pow_pos (by linarith) 3
-    rw [hP, show 2 / ((l:ℝ) - 1) * ((l:ℝ) / ((l:ℝ) - 1) ^ 2) = (2 * (l:ℝ)) / ((l:ℝ) - 1) ^ 3 by
-      field_simp <;> ring]
-    exact div_le_div_of_mul_le_mul_of_pos hcu (by positivity)
-      (by nlinarith [mul_nonneg (sq_nonneg (l:ℝ)) (by linarith : (0:ℝ) ≤ (l:ℝ) - 11)])
-  have hP1 : P ≤ 1 := by
-    rw [hP]
-    have hq := div_le_div_of_mul_le_mul_of_pos (a := (l:ℝ)) (c := 1) (d := 1) hsq one_pos (by nlinarith)
-    rwa [div_one] at hq
-  have hnum : (2 * ((w:ℝ) + S) + M) * P ≤ (2 * ((w:ℝ) + S) + 2 * (h:ℝ) / ((l:ℝ) - 1) + 1) * P :=
-    mul_le_mul_of_nonneg_right (by linarith) hP0
-  have hb1 : ((w:ℝ) + S) * (2 * P) ≤ ((w:ℝ) + S) * (3 / (l:ℝ)) :=
-    mul_le_mul_of_nonneg_left hP2 (by linarith)
-  have hb2 : (h:ℝ) * (2 / ((l:ℝ) - 1) * P) ≤ (h:ℝ) * (3 / (l:ℝ) ^ 2) :=
-    mul_le_mul_of_nonneg_left hPh (by linarith)
-  have hexp : (2 * ((w:ℝ) + S) + 2 * (h:ℝ) / ((l:ℝ) - 1) + 1) * P =
-      ((w:ℝ) + S) * (2 * P) + (h:ℝ) * (2 / ((l:ℝ) - 1) * P) + P := by ring
-  have hη' : 0 ≤ (η:ℝ) / l := by positivity
-  unfold SgN
-  have e1 : ((w:ℝ) + S) * (3 / (l:ℝ)) = 3 * (((w:ℝ) + S) / l) := by ring
-  have e2 : (h:ℝ) * (3 / (l:ℝ) ^ 2) = 3 * ((h:ℝ) / (l:ℝ) ^ 2) := by ring
-  have e3 : ((w:ℝ) + S + η) / l = ((w:ℝ) + S) / l + (η:ℝ) / l := by ring
-  rw [e3]
-  linarith
+      3 * SgN l h w S η :=
+  Formalism.MainNotions.N.FrobeniusPowerSeries.sig_le l hl h w S η h1 hG
 
 end Num
 
@@ -322,7 +175,6 @@ theorem sum_lenT (hne : ∃ i, ¬ th i) :
             rw [Nat.cast_sub hlt.le]; ring
           rw [e5]; exact hth
       rw [hek]; ring
-  beta_reduce
   rw [hfib, Finset.card_image_of_injOn, Finset.card_range]
   intro k hk k' hk' hkk
   simp only [Finset.coe_range, Set.mem_Iio] at hk hk'

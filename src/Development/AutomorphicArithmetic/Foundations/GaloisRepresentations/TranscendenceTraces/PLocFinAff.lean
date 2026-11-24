@@ -58,7 +58,7 @@ theorem UpperTheory.Gal.TranscendenceTraces.locFinAff_of :
   obtain ⟨B, _, _, v, _, hpb⟩ := hC r A u
   haveI : IsIso v := hpb.isIso_fst_of_isIso
   let f : W ⟶ Spec (CommRingCat.of B) := π ≫ inv v
-  obtain ⟨C, g, h, hg, hh⟩ := GlobalTheory.T.exists_etaleFaithfullyFlat_refining_etale_surjection (CommRingCat.of B) W f inferInstance inferInstance
+  obtain ⟨C, g, h, hg, hh⟩ := _root_.GlobalTheory.EtC.exists_etFF_refine_of_etale_surjective (CommRingCat.of B) W f inferInstance inferInstance
   letI : Algebra B C := g.hom.toAlgebra
   haveI : Algebra.Etale B C := hg.1
   haveI : Module.FaithfullyFlat B C := hg.2

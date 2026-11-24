@@ -3,10 +3,11 @@ module
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.GeneralLinearGroups.CasselmanSuffTemp
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGL
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NontrivialOfIrreducible
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiExteriorTensorSmoothIrreducibleIsIrreducible
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSubquotientCompMulSingle
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JhMultSubAddQuot
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParIndJacPlacing
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiExteriorTensorSmoothIrreducibleIsIrreducibleStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSubquotientCompMulSingle
 import GroundTheory.LocalFields.PadicLogSeries
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -66,7 +67,7 @@ private theorem cellone_offdiag (hG : GeometricLemma) (hBZ : BernsteinZelevinsky
     (f : ∀ i, (Σ j, Fin (b i j)) ≃ Fin (x i).1) (g : ∀ j, (Σ i, Fin (b i j)) ≃ Fin (x j).1)
     (h0 : jhMult (piTensor fun i => (x i).rep) (cellFunctor f g (piTensor fun i => (x i).rep)) ≠ 0) :
     b 1 0 = 0 := by
-  have hτ : (piTensor fun i => (x i).rep).IsIrreducible := GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun i => (x i).2.rep
+  have hτ : (piTensor fun i => (x i).rep).IsIrreducible := _root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k _ _ fun i => (x i).2.rep
   have hτs : IsSmooth (piTensor fun i => (x i).rep) := isSmooth_piTensor fun i => (x i).2.rep.smooth
   obtain ⟨s, hrow, hcol⟩ := exists_of_cell (hG k).2 f g (fun i => (x i).2.rep.smooth)
     (fun i => (x i).2.rep.hasFiniteLength) hτ hτs h0
@@ -102,7 +103,7 @@ private theorem jacquet_multiplicity_single_cell (hG : GeometricLemma) (hBZ : Be
     {N : ℕ} (e : (Σ i, Fin (x i).1) ≃ Fin N) :
     jhMult (piTensor fun i => (x i).rep) (jac e (multiProd e fun i => (x i).rep)) = 1 := by
   classical
-  have hτ : (piTensor fun i => (x i).rep).IsIrreducible := GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun i => (x i).2.rep
+  have hτ : (piTensor fun i => (x i).rep).IsIrreducible := _root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k _ _ fun i => (x i).2.rep
   let M := fun i : Fin 2 => Fin (x i).1
   haveI : Fintype (SizeMatrix M M) := Fintype.ofFinite _
   let b₀ : SizeMatrix M M := ⟨fun i j => if i = j then (x i).1 else 0, by

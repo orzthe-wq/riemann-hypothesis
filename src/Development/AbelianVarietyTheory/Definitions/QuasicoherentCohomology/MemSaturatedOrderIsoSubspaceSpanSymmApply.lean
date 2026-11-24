@@ -21,6 +21,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Localization.Finiteness
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -229,32 +230,10 @@ theorem mem_span_localization_iff (N : Submodule R V) (x : V) :
     x ∈ Submodule.span S (N : Set V) ↔ ∃ a ∈ p, a • x ∈ N := by
   constructor
   · intro hx
-    induction hx using Submodule.span_induction with
-    | mem y hy => exact ⟨1, one_mem _, by rwa [one_smul]⟩
-    | zero => exact ⟨1, one_mem _, by rw [smul_zero]; exact N.zero_mem⟩
-    | add y z _ _ hy hz =>
-      obtain ⟨a, ha, hay⟩ := hy
-      obtain ⟨b, hb, hbz⟩ := hz
-      refine ⟨a * b, mul_mem ha hb, ?_⟩
-      rw [smul_add]
-      refine N.add_mem ?_ ?_
-      · rw [mul_comm, mul_smul]
-        exact N.smul_mem b hay
-      · rw [mul_smul]
-        exact N.smul_mem a hbz
-    | smul s y _ hy =>
-      obtain ⟨a, ha, hay⟩ := hy
-      obtain ⟨⟨r, t⟩, rfl⟩ := IsLocalization.mk'_surjective p s
-      refine ⟨(t : R) * a, mul_mem t.2 ha, ?_⟩
-      have e : ((t : R) * a) • (IsLocalization.mk' S r t • y) = r • (a • y) := by
-        rw [mul_smul, smul_comm a (IsLocalization.mk' S r t) y, ← algebraMap_smul S (t : R),
-          smul_smul (algebraMap R S t), IsLocalization.mk'_spec', algebraMap_smul]
-      rw [e]
-      exact N.smul_mem r hay
-  · rintro ⟨a, ha, hax⟩
-    have hu : IsUnit (algebraMap R S a) := IsLocalization.map_units S (⟨a, ha⟩ : p)
-    rw [← Submodule.smul_mem_iff_of_isUnit _ hu, algebraMap_smul]
-    exact Submodule.subset_span hax
+    obtain ⟨s, hs⟩ := multiple_mem_span_of_mem_localization_span p S (N : Set V) x hx
+    exact ⟨s, s.2, by simpa only [Submodule.span_eq, Submonoid.smul_def] using hs⟩
+  · rintro ⟨s, hs, hx⟩
+    exact (IsLocalization.smul_mem_iff (s := (⟨s, hs⟩ : p))).mp (Submodule.subset_span hx)
 
 theorem isLocalizedModule_inclusionSpan (M : Submodule R V) :
     IsLocalizedModule p (M.inclusionSpan S) where

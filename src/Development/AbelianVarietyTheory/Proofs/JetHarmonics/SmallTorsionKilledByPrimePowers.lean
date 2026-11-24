@@ -2,8 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommutatorPairingPowEqOneOfGoodLift
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ImagQuadraticMaximalOrderArithmeticAtSplitPrime
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MultiplicativeCoordAddAndComplexMulStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallPointMultiplicativeCoordinateExistsUniqueStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MultiplicativeCoordAddAndComplexMul
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallPointMultiplicativeCoordinateExistsUnique
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,10 +56,7 @@ namespace GlobalTheory.MomOne.SmallTors
 
 variable {q : ℕ} [hq : Fact q.Prime]
 
-lemma norm_zc' (a : ℤ_[q]) : ‖zc a‖ = ‖a‖ := by
-  unfold zc
-  rw [norm_algebraMap']
-  rfl
+alias norm_zc' := _root_.GlobalTheory.MomOne.ShiftComp.norm_zc
 
 lemma norm_nat_coprime {m : ℕ} (hm : Nat.Coprime m q) : ‖(m : ℂ_[q])‖ = 1 := by
   have h0 : (m : ℂ_[q]) = zc (m : ℤ_[q]) := by simp [zc]
@@ -80,14 +77,7 @@ lemma norm_eq_one {ξ : ℂ_[q]} (h : ‖ξ - 1‖ < 1) : ‖ξ‖ = 1 := by
   rw [this, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact h.ne), norm_one]
   exact max_eq_right h.le
 
-lemma norm_pow_sub_one {ξ : ℂ_[q]} (h : ‖ξ - 1‖ < 1) (n : ℕ) : ‖ξ ^ n - 1‖ < 1 := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    have : ξ ^ (n + 1) - 1 = ξ * (ξ ^ n - 1) + (ξ - 1) := by ring
-    rw [this]
-    refine (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ h)
-    rw [norm_mul, norm_eq_one h, one_mul]; exact ih
+alias norm_pow_sub_one := _root_.GlobalTheory.MomOne.ShiftComp.norm_pow_sub_one
 
 lemma norm_geom_sub {ξ : ℂ_[q]} (h : ‖ξ - 1‖ < 1) (n : ℕ) :
     ‖∑ i ∈ Finset.range n, ξ ^ i - n‖ < 1 := by
@@ -121,8 +111,8 @@ open SmallTors
 
 theorem smallTors : ∀ (d q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q]), d.Prime → d % 16 = 7 → Split d q → IsOK d M.L → M.MChart ω → (∀ p p', M.Small p → M.Small p' → M.Small (p + p') ∧ M.Small (-p)) ∧ (∀ (p : ℂ) (N : ℕ), 0 < N → InOK d ((N : ℂ) * p) → M.Small p → ∃ (n : ℕ) (ζ : ℂ_[q]), ζ ^ (q ^ n) = 1 ∧ M.At ω ζ p ∧ ∀ α, InOK d α → ‖M.ι α‖ ≤ (q : ℝ) ^ (-(n : ℤ)) → InOK d (α * p)) ∧ (∀ p, PrimeTo d q p → M.Small p → InOK d p) ∧ ∀ (p α s : ℂ), InOK d α → α ≠ 0 → PrimeTo d q s → InOK d (α * p + s - 1 / 2) → M.Small p → q ≠ 2 ∧ InOK d (s - 1 / 2) := by
   intro d q hq M ω hd hd16 hsp hL hM
-  obtain ⟨hadd, hcm⟩ := GlobalTheory.T.multiplicativeCoord_add_and_complexMul q M ω hM
-  obtain ⟨hex, hex', huniq, hlat, h10⟩ := GlobalTheory.T.smallPoint_multiplicativeCoordinate_existsUnique q M ω hM
+  obtain ⟨hadd, hcm⟩ := _root_.GlobalTheory.MomOne.AtAdd.at_add_and_mul q M ω hM
+  obtain ⟨hex, hex', huniq, hlat, h10⟩ := _root_.GlobalTheory.MomOne.SmallPt.at_exists_unique q M ω hM
   obtain ⟨⟨-, -, hring⟩, halg, -, -, hhalf, -, -⟩ := okArith d q M.ι hd hd16 hsp
   have iadd : ∀ {a b}, InOK d a → InOK d b → InOK d (a + b) := fun ha hb => (hring _ _ ha hb).1
   have imul : ∀ {a b}, InOK d a → InOK d b → InOK d (a * b) := fun ha hb => (hring _ _ ha hb).2.1

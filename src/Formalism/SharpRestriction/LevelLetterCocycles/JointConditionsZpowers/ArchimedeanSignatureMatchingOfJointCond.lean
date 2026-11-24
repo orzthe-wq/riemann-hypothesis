@@ -75,7 +75,7 @@ theorem card_rootsBar (a : (ZMod g)[X]) : Multiset.card (Formalism.CyclotomicNor
 
 theorem rootsBar_frob (a : (ZMod g)[X]) :
     (Formalism.CyclotomicNorms.rootsBar a).map (fun x => x ^ g) = Formalism.CyclotomicNorms.rootsBar a := by
-  apply GlobalTheory.TameLabels.rootsBar_frob <;> assumption
+  apply GlobalTheory.TameLabels.rootsBar_frob
 
 end Roots
 

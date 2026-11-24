@@ -172,7 +172,7 @@ theorem leadMinorK_eq {R : Type} [CommRing R] (A : Matrix (Fin d) (Fin d) R) (l 
 
 theorem E5minor_eq (c : Composition d) (t : Fin c.length → K) (a : Fin c.length) :
     IndexedMinorEntry c.blocksFun t a = leadingPrincipalMinor (blockAntidiagonalMatrix c t) (c.sizeUpTo ((a : ℕ) + 1)) := by
-  rw [Formalism.HermitianLatticeCounting.Final.ExpansionTerms.e4aValue K d c t ((a : ℕ) + 1)]
+  rw [_root_.Formalism.HermitianLatticeCounting.P.leading_minor_at_block_end K d c t ((a : ℕ) + 1)]
   unfold IndexedMinorEntry
   refine Finset.prod_congr (Finset.filter_congr fun x _ => ⟨fun h => Nat.lt_succ_of_le h, fun h => Nat.le_of_lt_succ h⟩) ?_
   · intro x _
@@ -299,7 +299,7 @@ theorem wPt_eq (γ : Point D.host.E (D.R.rS + 1)) : wPt D γ = blockMinorWeight 
 theorem point_embedding_of_boundary_point (T T' : ℕ) (γ : Point D.host.E (D.R.rS + 1)) (h : IsBPt D T T' γ) : BlockEndMinorsIntegral (toSig γ) := by
   obtain ⟨⟨Z, hZ, L, U, hL, hU, rfl⟩, -⟩ := h
   intro (a : Fin (toComp γ).length)
-  have key := Formalism.HermitianLatticeCounting.Final.ExpansionTerms.integral_evaluation_fourth D.host.E (integralClosure ℤ D.host.E).toSubring (D.R.rS + 1) (toComp γ) (toT γ)
+  have key := _root_.Formalism.HermitianLatticeCounting.P.orbit_integral_entries D.host.E (integralClosure ℤ D.host.E).toSubring (D.R.rS + 1) (toComp γ) (toT γ)
     (toT_ne γ) L U ⟨fun i => (hL i i).2 rfl, fun i j hij => (hL i j).1 hij⟩
     ⟨fun i => (hU i i).2 rfl, fun i j hij => (hU i j).1 hij⟩
     (by intro i j; rw [← ptMat_eq]; exact hZ i j)
@@ -328,7 +328,7 @@ theorem theorem_B_second_bound_64 (D : D7) : Formalism.MainNotions.OnePlaceEstim
     rw [Finset.sum_image (fun a _ b _ h => hinj h)]
     exact Finset.sum_congr rfl (fun γ _ => by rw [wPt_eq])
   rw [h1, ← card_places]
-  apply Formalism.HermitianLatticeCounting.Final.ExpansionTerms.component_total_sixty_four
+  apply _root_.Formalism.HermitianLatticeCounting.P.block_minor_sum_pow_sixty_four
   intro x hx
   obtain ⟨γ, _, rfl⟩ := Finset.mem_image.1 hx
   exact point_embedding_of_boundary_point D T T' γ.1 γ.2
@@ -437,7 +437,7 @@ theorem normWt_rpow (T T' : ℕ) (γ : Point D.host.E (D.R.rS + 1)) (p : ℝ) :
 
 theorem prod_absV_ge_one (x : D.host.E) (hx : IsIntegral ℤ x) (hx0 : x ≠ 0) : 1 ≤ ∏ v, absV D v x := by
   have : NumberField.IsCMField D.host.E := D.host.isCMField_hostE
-  have h := Formalism.HermitianLatticeCounting.Final.ExpansionTerms.integral_norm_estimate D.host.E ⟨x, hx⟩ (by
+  have h := _root_.Formalism.HermitianLatticeCounting.P.integral_norm_estimate_holds D.host.E ⟨x, hx⟩ (by
     intro h0; apply hx0; exact congrArg Subtype.val h0)
   have hm : ∀ w : NumberField.InfinitePlace D.host.E, w.mult = 2 := by
     intro w
@@ -622,8 +622,8 @@ theorem last_block {r : ℕ} (γ : Point ℂ (r + 1)) (t : ℂ) (h : γ.1.getLas
     rw [hys] at e ⊢
     simp at e ⊢
     omega
-  have v1 := Formalism.HermitianLatticeCounting.Final.ExpansionTerms.e4aValue ℂ (r + 1) (toComp γ) (toT γ) (ys.length + 1)
-  have v0 := Formalism.HermitianLatticeCounting.Final.ExpansionTerms.e4aValue ℂ (r + 1) (toComp γ) (toT γ) ys.length
+  have v1 := _root_.Formalism.HermitianLatticeCounting.P.leading_minor_at_block_end ℂ (r + 1) (toComp γ) (toT γ) (ys.length + 1)
+  have v0 := _root_.Formalism.HermitianLatticeCounting.P.leading_minor_at_block_end ℂ (r + 1) (toComp γ) (toT γ) ys.length
   rw [hs1] at v1
   rw [hs0] at v0
   have hf : (Finset.univ.filter fun a : Fin (toComp γ).length => (a : ℕ) < ys.length + 1) =
@@ -723,7 +723,7 @@ theorem term_le {Ch Cg dist K : ℝ} {A : ℕ} {T T' : ℕ} {b : ℝ} (hK0 : 0 �
 
   have hG0 : ∀ v, 0 < absV D v (Gglob D T T' γ) := fun v =>
     norm_pos_iff.2 ((map_ne_zero (plEmb D v)).2 hγ.2.1)
-  have hE := Formalism.HermitianLatticeCounting.Final.ExpansionTerms.integral_norm_application D.what₂.Tau (fun v => absV D v (Gglob D T T' γ))
+  have hE := _root_.Formalism.HermitianLatticeCounting.P.integral_norm_application_holds D.what₂.Tau (fun v => absV D v (Gglob D T T' γ))
     (fun v => plEmb D v (leadMinorK (ptMat γ) (D.R.rS + 1) le_rfl)) A hG0
     (prod_absV_ge_one D _ hγ.2.2 hγ.2.1) (fun v => absV_G_le D X γ hJ v)
   have hE' : ∏ v, max 1 (1 / absV D v (Gglob D T T' γ)) ^ A ≤ ∏ v, (1 + dLoc D v γ) ^ A := hE.1.trans hE.2

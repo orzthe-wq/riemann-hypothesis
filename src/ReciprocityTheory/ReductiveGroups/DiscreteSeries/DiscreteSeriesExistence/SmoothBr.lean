@@ -4,51 +4,8 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExi
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.ComplexifiedDerivativeCommutator
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.MemUnitaryGroupIffMulConjTranspose
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Symmetric
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -66,9 +23,6 @@ section Helpers
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {ε : Fin n → Bool}
-
-theorem smBr_inUJ_one : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ) := by
-  unfold inUJ; simp
 
 theorem smBr_hasDerivAt_ext (f F : Matrix (Fin n) (Fin n) ℂ → E) (U : Set (Matrix (Fin n) (Fin n) ℂ))
     (g X : Matrix (Fin n) (Fin n) ℂ) (hU : IsOpen U) (hg : g ∈ U) (hgJ : inUJ ε g)
@@ -152,8 +106,8 @@ theorem smBr_dS_eq (Z : Matrix (Fin n) (Fin n) ℂ) (w : H) :
 theorem smBr_orbit (hσ : IsURepOn (UJset ε) σ) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inG ε Z)
     {v : H} (hv : IsSmoothVecU ε σ v) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     σ g (dS σ Z v) = S7.RdV Z (fun g => σ g v) g := by
-  obtain ⟨U, F, hU, h1U, hF, hfF⟩ := hv 1 smBr_inUJ_one
-  have hc := smBr_hasDerivAt_ext (fun g => σ g v) F U 1 Z hU h1U smBr_inUJ_one hF hfF hZ
+  obtain ⟨U, F, hU, h1U, hF, hfF⟩ := hv 1 _root_.ReciprocityTheory.ChartRestriction.DS.smd_inUJ_one
+  have hc := smBr_hasDerivAt_ext (fun g => σ g v) F U 1 Z hU h1U _root_.ReciprocityTheory.ChartRestriction.DS.smd_inUJ_one hF hfF hZ
   simp only [one_mul] at hc
   have h2 := ((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hc
   have hfun : ((σ g) ∘ fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • Z)) v) =
@@ -178,11 +132,11 @@ theorem dS_bracket (hσ : IsURepOn (UJset ε) σ) {X Y : Matrix (Fin n) (Fin n) 
     dS σ X (dS σ Y v) - dS σ Y (dS σ X v) = dS σ (X * Y - Y * X) v := by
   have e1 : dS σ X (dS σ Y v) = S7.RdV X (S7.RdV Y (fun g => σ g v)) 1 := by
     rw [smBr_dS_eq]
-    exact smBr_loc (fun g hg => smBr_orbit hσ hY hv hg) hX smBr_inUJ_one
+    exact smBr_loc (fun g hg => smBr_orbit hσ hY hv hg) hX _root_.ReciprocityTheory.ChartRestriction.DS.smd_inUJ_one
   have e2 : dS σ Y (dS σ X v) = S7.RdV Y (S7.RdV X (fun g => σ g v)) 1 := by
     rw [smBr_dS_eq]
-    exact smBr_loc (fun g hg => smBr_orbit hσ hX hv hg) hY smBr_inUJ_one
+    exact smBr_loc (fun g hg => smBr_orbit hσ hX hv hg) hY _root_.ReciprocityTheory.ChartRestriction.DS.smd_inUJ_one
   rw [e1, e2, smBr_dS_eq]
-  exact smBr_rdBracket _ X Y 1 hv hX hY smBr_inUJ_one
+  exact smBr_rdBracket _ X Y 1 hv hX hY _root_.ReciprocityTheory.ChartRestriction.DS.smd_inUJ_one
 
 end ReciprocityTheory.ChartRestriction.DS

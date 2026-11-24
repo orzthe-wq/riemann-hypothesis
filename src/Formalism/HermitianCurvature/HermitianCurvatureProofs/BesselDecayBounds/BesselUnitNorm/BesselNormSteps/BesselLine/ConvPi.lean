@@ -116,7 +116,7 @@ theorem sum_block (F : Fin (2 * r + k + 1) → ℂ) (hF : ∀ l, ¬ inB k r l �
 
 theorem blockW_mul (h₁ h₂ : Matrix (Fin k) (Fin k) ℂ) :
     blockW k r (h₁ * h₂) = blockW k r h₁ * blockW k r h₂ := by
-  apply ReciprocityTheory.ChartRestriction.DS.Lap.Base.StandardBasisEmbedding.blockW_mul <;> assumption
+  apply ReciprocityTheory.ChartRestriction.DS.Lap.Base.StandardBasisEmbedding.blockW_mul
 
 theorem hpk_in_col {i m : Fin (2 * r + k + 1)} (hm : inB k r m) : Hpk k r i m = if i = m then 1 else 0 := by
   unfold inB at hm
@@ -134,7 +134,7 @@ private theorem Hpk_apply_wp_eq_ite {i : Fin (2 * r + k + 1)} (hi : ¬ inB k r i
     split_ifs <;> first | rfl | (exfalso; omega)
   · refine ⟨⟨2 * r + k - i.val, by omega⟩, by unfold inB; simp only; omega, 1, one_ne_zero, fun b => ?_⟩
     have hbl := b.isLt
-    simp only [Hpk, Fin.ext_iff, Fin.val_mk]
+    simp only [Hpk, Fin.ext_iff]
     split_ifs <;> first | rfl | (exfalso; omega)
 
 theorem eq_blockW {c : Mx k r} (hc : c ∈ UH (Hpk k r))
@@ -268,7 +268,7 @@ theorem piAll : PiAll := by
     · by_cases hj : inB k r j
       · rw [blockW_in hi hj, Matrix.one_apply]
         unfold inB at hi hj
-        simp only [Fin.ext_iff, Fin.val_mk]
+        simp only [Fin.ext_iff]
         split_ifs <;> first | rfl | (exfalso; omega)
       · rw [blockW_in_out hi hj, if_neg (by rintro rfl; exact hj hi)]
     · rw [blockW_out hi]
@@ -292,11 +292,6 @@ theorem piAll : PiAll := by
     rw [hea]
     exact hiso _ hua x
 
-theorem frame_block {z : Fin (2 * r + k + 1) → ℂ} {g : Mx k r} (hT : 0 < Tz k r z) (hg : IsFrameW k r z g)
-    {a : Mx k r} (ha : a ∈ UWset k r z) :
-    ub (g⁻¹ * a * g) ∈ UJset (allPos k) ∧ a = g * blockW k r (ub (g⁻¹ * a * g)) * g⁻¹ := by
-  exact ub_conj_mem_UJset_and_eq_blockW hT hg ha
-
 theorem piContAll : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (u : Fin k → ℝ)
     (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (π : Mx k r → (Wp →L[ℂ] Wp)),
     inWb k r z → 0 < Tz k r z → IsHCTypeW k r z u π → ∀ x : Wp, ContinuousOn (fun g => π g x) (UWset k r z) := by
@@ -308,12 +303,12 @@ theorem piContAll : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (u : Fin k
     exact ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_elem
       (eB k r m) (eB k r m')
   have hmaps : Set.MapsTo (fun a : Mx k r => ub (g⁻¹ * a * g)) (UWset k r z) (UJset (allPos k)) :=
-    fun a ha => (frame_block hT hg ha).1
+    fun a ha => (_root_.PI.WBL.Cv.ub_conj_mem_UJset_and_eq_blockW hT hg ha).1
   have h1 : ContinuousOn (fun a => π (g * blockW k r (ub (g⁻¹ * a * g)) * g⁻¹) x) (UWset k r z) :=
     (hcont x).comp hF.continuousOn hmaps
   refine h1.congr fun a ha => ?_
   simp only
-  rw [← (frame_block hT hg ha).2]
+  rw [← (_root_.PI.WBL.Cv.ub_conj_mem_UJset_and_eq_blockW hT hg ha).2]
 
 end PiRep
 

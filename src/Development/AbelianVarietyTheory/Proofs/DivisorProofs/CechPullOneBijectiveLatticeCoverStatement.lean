@@ -48,4 +48,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.cech_pull_one_bijective_lattice_cover : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (J : Type) [Finite J] [SemilatticeInf J] (U : J → X.affineOpens) (hU : Monotone U), (∀ i j, (U (i ⊓ j)).1 = (U i).1 ⊓ (U j).1) → ⨆ i, (U i).1 = ⊤ → Function.Bijective (CoefMap.restrict (OAff s) hU.functor.op).pull1 := by
-  first | exact @GlobalTheory.CoverO.restrict_bijective | exact GlobalTheory.CoverO.restrict_bijective | (intros; apply GlobalTheory.CoverO.restrict_bijective <;> assumption)
+  first | exact @GlobalTheory.CoverO.restrict_bijective

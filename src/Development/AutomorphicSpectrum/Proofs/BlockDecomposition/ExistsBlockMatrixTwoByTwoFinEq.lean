@@ -180,8 +180,8 @@ theorem cT_eId (σ : K →+* K) (n r : ℕ) : cT σ (eId K n r) = eId K n r := b
   ext i j
   by_cases h : i = j
   · subst h
-    simp [cT, eId, Matrix.diagonal_apply, apply_ite σ]
-  · simp [cT, eId, Matrix.diagonal_apply, h, Ne.symm h]
+    simp [cT, eId, apply_ite σ]
+  · simp [cT, eId, h, Ne.symm h]
 
 theorem eId_mul_extB {n r : ℕ} (b : Matrix (Fin r) (Fin r) K) : eId K n r * extB b = extB b := by
   ext i j
@@ -211,6 +211,6 @@ theorem repMat_eq (σ : K →+* K) {n r : ℕ} (b : Matrix (Fin r) (Fin r) K) (a
     repMat σ b a = blk4 ((1 - eId K n r) * a) (eId K n r * (cT σ a)⁻¹) (-(eId K n r * a))
       ((1 - eId K n r - extB b) * (cT σ a)⁻¹) := by
   rw [repMat, wr, nB, mA, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]
-  congr 1 <;> simp [sub_mul, mul_sub, add_mul, eId_mul_extB] <;> abel
+  congr 1 <;> simp [sub_mul, add_mul, eId_mul_extB] <;> abel
 
 end GlobalTheory.CompanionTheory.BruhatCell

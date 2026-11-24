@@ -52,4 +52,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.rational_unitary_subgroup_countable_discrete_fundDomain : ∀ (D : D7) (W : HSp D) (Γ : Subgroup (GA D W)), Γ ≤ GQ W → Countable Γ ∧ DiscreteTopology Γ ∧ ∀ μ : Measure (GA D W), μ.IsHaarMeasure → ∃ 𝓑 : Set (GA D W), IsFundamentalDomain Γ 𝓑 μ := by
-  first | exact @GlobalTheory.RationalSubgroupFund.countable_discrete_exists_fundamentalDomain | exact GlobalTheory.RationalSubgroupFund.countable_discrete_exists_fundamentalDomain | (intros; apply GlobalTheory.RationalSubgroupFund.countable_discrete_exists_fundamentalDomain <;> assumption)
+  first | exact @GlobalTheory.RationalSubgroupFund.countable_discrete_exists_fundamentalDomain

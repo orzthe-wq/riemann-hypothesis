@@ -64,10 +64,7 @@ section DStab
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
-theorem γD_smul' (g : W.Gam) (a : LetA O n) (x : W.DD T) :
-    W.γD T g (a • x) = W.γA g a • W.γD T g x := by
-  show W.γD T g (a • x) = letγ (W.γ₀ g) a • W.γD T g x
-  rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
+alias γD_smul' := _root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear
 
 theorem rToolMod_geom (a : LetA O n) (m : ℕ) : ∃ g : LetA O n, (1 + a) ^ m = 1 + a * g := by
   induction m with
@@ -138,8 +135,6 @@ theorem rToolMod_dStab [NeZero n] (hP9 : Formalism.MainNotions.DeltaInvariantLat
         (⊥ : Ideal W.EE).jacobson := by
       first
         | exact IsAdicComplete.le_jacobson_bot (Ideal.span {((PD.p : ℕ) : W.EE)}) hI
-        | exact IsAdicComplete.le_jacobson_bot (I := Ideal.span {((PD.p : ℕ) : W.EE)}) hI
-        | exact HenselianRing.jac (I := Ideal.span {((PD.p : ℕ) : W.EE)}) hI
     have h1 := Ideal.mem_jacobson_bot.mp hJ 1
     have hinv := Ring.mul_inverse_cancel _ ha
     have h2 : algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W) = algebraMap (LetA O n) W.EE W.π₀ *

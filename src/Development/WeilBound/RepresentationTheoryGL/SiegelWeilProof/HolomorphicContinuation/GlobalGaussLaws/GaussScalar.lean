@@ -108,7 +108,6 @@ theorem ftG_DG {m n : ℕ} (σ : Fin m → ℝ) (s : ℝ) (K : ℂ) (γ : Fin m 
       refine Finset.prod_congr rfl fun j _ => ?_
       congr 2
       rw [map_mul, Complex.conj_ofReal, mul_assoc, Complex.re_ofReal_mul]
-      all_goals (push_cast; try ring)
     rw [e, mul_assoc, ← Finset.prod_mul_distrib]
     congr 1
     refine Finset.prod_congr rfl fun a _ => ?_
@@ -144,7 +143,6 @@ theorem ftG_DG {m n : ℕ} (σ : Fin m → ℝ) (s : ℝ) (K : ℂ) (γ : Fin m 
   rw [Real.norm_eq_abs]
   have hs : ((|σ a| : ℝ) : ℂ) ^ 2 = ((σ a : ℝ) : ℂ) ^ 2 := by
     rw [← Complex.ofReal_pow, ← Complex.ofReal_pow, sq_abs]
-  push_cast
   rw [hs]
   ring
 

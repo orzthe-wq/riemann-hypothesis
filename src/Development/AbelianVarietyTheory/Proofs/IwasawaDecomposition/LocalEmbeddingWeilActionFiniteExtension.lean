@@ -1,9 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HasNormGroups
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilGroupAtPlaceDenseInDecompositionGroupStatement
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilGroupAtPlaceDenseInDecompositionGroup
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DecompositionGroupLocalGaloisIso
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -87,7 +88,7 @@ theorem exists_lifts_mul_mem (A : ValuationSubring Ω) (w : HeightOneSpectrum (�
     simpa using ht.mem_nhds hdt
   obtain ⟨F, hF, hFs⟩ := (krullTopology_mem_nhds_one_iff E Ω _).mp hnhds
   let pb := Field.powerBasisOfFiniteOfSeparable E F
-  obtain ⟨τ, hτW, hτ⟩ := GlobalTheory.T.weilGroupAtPlace_dense_in_decompositionGroup E Ω A w h (d : G E Ω) d.2 (pb.gen : Ω)
+  obtain ⟨τ, hτW, hτ⟩ := _root_.GlobalTheory.WeilDeligne.exists_weil_apply_eq E Ω A w h (d : G E Ω) d.2 (pb.gen : Ω)
   have hfix : (d : G E Ω)⁻¹ * τ ∈ F.fixingSubgroup := by
     rw [IntermediateField.mem_fixingSubgroup_iff]
     intro x hx

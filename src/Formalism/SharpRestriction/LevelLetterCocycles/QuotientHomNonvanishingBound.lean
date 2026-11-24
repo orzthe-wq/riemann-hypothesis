@@ -341,9 +341,7 @@ def MtLow (i : N.Loc) (Z' : Finset (N.X i)) :
 
 theorem stdO_inj (i : N.Loc) (k : ℕ) :
     Function.Injective (LinearMap.compLeft (Algebra.linearMap (N.O i) (KK N i)) (Fin k)) := by
-  intro u v h
-  funext j
-  exact IsFractionRing.injective (N.O i) (KK N i) (congrFun h j)
+  exact fun u v h => funext fun j => IsFractionRing.injective (N.O i) (KK N i) (congrFun h j)
 
 def stdLat (i : N.Loc) {Γ : Type} [Group Γ] {k : ℕ} (M : Γ →* Matrix (Fin k) (Fin k) (N.O i)) :
     Lattice (O := N.O i) (matRep (mapM (toK N i) M)) where
@@ -632,9 +630,7 @@ variable {O LL : Type} [CommRing O] [Field LL] [Algebra O LL]
 
 theorem stdG_inj (hinj : Function.Injective (algebraMap O LL)) (k : ℕ) :
     Function.Injective (LinearMap.compLeft (Algebra.linearMap O LL) (Fin k)) := by
-  intro u v h
-  funext j
-  exact hinj (congrFun h j)
+  exact fun u v h => funext fun j => hinj (congrFun h j)
 
 def stdLatG (hinj : Function.Injective (algebraMap O LL)) {Γ : Type} [Group Γ] {k : ℕ}
     (M : Γ →* Matrix (Fin k) (Fin k) O) : Lattice (O := O) (matRep (mapM (algebraMap O LL) M)) where

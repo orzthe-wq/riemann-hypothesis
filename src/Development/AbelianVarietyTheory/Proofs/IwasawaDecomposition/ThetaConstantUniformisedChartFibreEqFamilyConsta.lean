@@ -46,6 +46,8 @@ import Mathlib.Tactic.NormNum.RealSqrt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ValAtLem
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FnAlgClosedOfFixedPoints
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsNatDiagIffIsDiag
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -58,9 +60,6 @@ open MonoidalCategory CartesianMonoidalCategory MonObj
 noncomputable section
 
 namespace GlobalTheory.ArcThetaFib
-
-theorem val_res {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (u : Γ(X, U)ˣ) :
-    (res h u).val = (X.presheaf.map (homOfLE h).op).hom u.val := rfl
 
 theorem val_linComb {X Y : Scheme.{0}} {L M : LB X} (w : LB.Iso L M) (e : Y ⟶ X)
     (jM : PUnit → M.ι) (jL : PUnit → L.ι) :
@@ -97,14 +96,14 @@ theorem maps_val {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [Is
     fun q hq => ⟨hB hq, hA hq⟩
   have e := congrArg (fun v => valAt' t _ (Units.val v)) (h (fun _ _ => j, fun _ => i))
   dsimp only at e
-  rw [val_res, GlobalTheory.ThetaFn.valAt'_res t _ hBA, val_rigPullOf] at e
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.Out.WeightPf.res_val, GlobalTheory.ThetaFn.valAt'_res t _ hBA, val_rigPullOf] at e
   erw [GlobalTheory.ThetaFn.valAt'_res t _ hB] at e
   erw [GlobalTheory.ThetaFn.valAt'_app] at e
   rw [Units.val_mul, ReciprocityTheory.ChartRestriction.G.TB.ValAt.valAt'_mul] at e
   erw [val_linComb, GlobalTheory.ThetaFn.valAt'_res t _ hBA] at e
   refine e.trans ?_
   congr 1
-  rw [val_res]; exact GlobalTheory.ThetaFn.valAt'_res t _ hBA _
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.Out.WeightPf.res_val]; exact GlobalTheory.ThetaFn.valAt'_res t _ hBA _
 
 theorem maps_val' {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G]
     [IsCommMonObj G] (F : G'.left ⟶ G.left) (f : S' ⟶ S)

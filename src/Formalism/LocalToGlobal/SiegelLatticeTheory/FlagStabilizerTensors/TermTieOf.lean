@@ -4,10 +4,7 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SaturatedPf
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.GenericRatioOfBoundHolds
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.TermAttrConst
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FlagClassConstancy.FlagOfInSFRight
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RelativeEquivalence.DCRelEquivAllHolds
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TermAttractorConstant.LeadMinorEMulUpper
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TermAttractorConstant.SpanFrameLtSucc
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -119,60 +116,11 @@ theorem zhatL_mapL (F : LFlag S r T) (F' : LFlag S r T') :
 include hβ in
 theorem gval_mapL (F : LFlag S r T) (F' : LFlag S r T') : Gval (mapL β hβ F) (mapL β hβ F') = Gval F F' := gflag_mapFlag β hβ F.fl F'.fl
 
-include hβ in
-theorem inSF_mapL (F : LFlag S r T) (F' : LFlag S r T') :
-    Formalism.L2.SG.FourParts.InSF (mapL β hβ F) (mapL β hβ F') ↔ Formalism.L2.SG.FourParts.InSF F F' := by
-  unfold Formalism.L2.SG.FourParts.InSF
-  rw [Formalism.L2.SG.Pf.Xsp_mapL (β := β) (hβ := hβ)]
-  simp only [Formalism.L2.SG.Pf.Xflag_mapL (β := β) (hβ := hβ)]
-  simp only [Submodule.mem_map_equiv, Formalism.L2.SG.Saturated.mapL, Formalism.L2.SG.Saturated.mapFlag, map_sub,
-    LinearEquiv.symm_apply_apply]
-
-include hβ in
-theorem isIdF_mapL (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r T') :
-    Formalism.L2.SG.FourParts.IsIdF (Formalism.HermitianLatticesTheory.gmap β Λ) (mapL β hβ F) (mapL β hβ F') ↔
-      Formalism.L2.SG.FourParts.IsIdF Λ F F' := by
-  unfold Formalism.L2.SG.FourParts.IsIdF
-  rw [Formalism.L2.SG.Pf.Xsp_mapL (β := β) (hβ := hβ)]
-  constructor
-  · rintro ⟨n, hn, h1, h2⟩
-    refine ⟨β⁻¹ * n * β, (Formalism.L2.SG.Pf.mem_NLam_map (β := β) (hβ := hβ) Λ F n).1 hn, fun a => ?_, ?_⟩
-    · have h := h1 a
-      change n (β (F.fl.e a)) = β (F'.fl.e a) at h
-      change β.symm (n (β (F.fl.e a))) = F'.fl.e a
-      rw [h, LinearEquiv.symm_apply_apply]
-    · rw [Submodule.mem_map_equiv] at h2
-      change β.symm (n (β F.fl.z) - β F'.fl.z) ∈ Xsp F at h2
-      change β.symm (n (β F.fl.z)) - F'.fl.z ∈ Xsp F
-      rwa [map_sub, LinearEquiv.symm_apply_apply] at h2
-  · rintro ⟨n, hn, h1, h2⟩
-    refine ⟨β * n * β⁻¹, (Formalism.L2.SG.Pf.conj_mem_NLam (β := β) (hβ := hβ) Λ F n).2 hn, fun a => ?_, ?_⟩
-    · change β (n (β.symm (β (F.fl.e a)))) = β (F'.fl.e a)
-      rw [LinearEquiv.symm_apply_apply, h1 a]
-    · rw [Submodule.mem_map_equiv]
-      change β.symm (β (n (β.symm (β F.fl.z))) - β F'.fl.z) ∈ Xsp F
-      rwa [LinearEquiv.symm_apply_apply, ← map_sub, LinearEquiv.symm_apply_apply]
-
 end Iso
 
 section Terms
 
 variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X} {hF : FinX Y}
-
-theorem ex_rep_iff {u u' : D.what₂.Word} (t : RT Y u u')
-    (Q : LFlag (D.sp.Y 0) D.R.rS (((D.mem u').A.T : ℕ) : D.host.E) → Prop)
-    (hQ : ∀ x y : TermDef.Carrier (TermDef.PD D t.lam (lf D (X.Fu u)) u'),
-      TermDef.Rel t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') x y → (Q x.1 ↔ Q y.1)) :
-    (∃ F', TermDef.Rep t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') t.cls F' ∧ Q F') ↔
-      Q (Quot.out t.cls).1 := by
-  constructor
-  · rintro ⟨F', ⟨h, hm⟩, hF'⟩
-    have key : Q F' = Q (Quot.out t.cls).1 :=
-      congrArg (Quot.lift (fun x : TermDef.Carrier (TermDef.PD D t.lam (lf D (X.Fu u)) u') => Q x.1)
-        (fun x y hxy => propext (hQ x y hxy))) (hm.trans (Quot.out_eq t.cls).symm)
-    exact key.mp hF'
-  · intro hq
-    exact ⟨(Quot.out t.cls).1, Exists.intro (Quot.out t.cls).2 (Quot.out_eq t.cls), hq⟩
 
 variable (W : WittDat X) (hI : SIso D.s (sOf hF))
 
@@ -226,31 +174,6 @@ theorem pdC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     TermDef.PD D (lamOf W hI t) (lf D (FlagOfWord W u)) u' (fl'Of W hI t) := (Formalism.L2.SG.Pf.positive_definite_isomorphism D u' (W.δ u) (W.isom u) (tc hI t).lam (lf D (X.Fu u)) (repF (tc hI t))).2
     (Quot.out (tc hI t).cls).2
 
-theorem inS_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
-    D.s.inS t ↔ Formalism.L2.SG.FourParts.InSF (lf D (FlagOfWord W u)) (fl'Of W hI t) := by
-  rw [hI.inS t]
-  show Formalism.L2.SG.FourParts.termInS (tc hI t) ↔ _
-  unfold Formalism.L2.SG.FourParts.termInS
-  conv_lhs => rw [← Quot.out_eq (tc hI t).cls]
-  refine (Formalism.L2.SG.FourParts.isInS_mk (PI.InSClassConstW.inSFun_all _ _ _) _).trans ?_
-  exact (inSF_mapL (W.δ u) (W.isom u) _ _).symm
-
-theorem isId_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
-    D.s.isId t ↔ Formalism.L2.SG.FourParts.IsIdF (lamOf W hI t) (lf D (FlagOfWord W u)) (fl'Of W hI t) := by
-  rw [hI.isId t]
-  change Formalism.L2.SG.FourParts.IsIdT _ _ _ (tc hI t).cls ↔ _
-  refine Iff.trans ?_ (isIdF_mapL (W.δ u) (W.isom u) (tc hI t).lam (lf D (X.Fu u)) (repF (tc hI t))).symm
-  have hrow := rowLat_tc hI t
-  unfold Formalism.L2.SG.FourParts.IsIdT
-  constructor
-  · rintro ⟨F', ⟨h, hm⟩, hid⟩
-    have h2 := (ex_rep_iff (tc hI t) _ (Formalism.L2.SG.Closed.TermInSFun_holds D u u' (X.Fu u) _ hrow)).1
-      ⟨F', ⟨h, hm⟩, Formalism.L2.SG.FourParts.inSF_of_isIdF _ hid⟩
-    exact Formalism.L2.SG.Closed.TermIdIffInS_holds D u u' (X.Fu u) _ hrow (Quot.out (tc hI t).cls)
-      (Formalism.L2.SG.Closed.TermInSRel_holds D u u' (X.Fu u) _ hrow (Quot.out (tc hI t).cls) h2) h2
-  · intro h
-    exact ⟨_, ⟨(Quot.out (tc hI t).cls).2, Quot.out_eq _⟩, h⟩
-
 theorem gterm_val {u u' : D.what₂.Word} (t : D.s.Term u u') :
     algebraMap D.host.F D.host.E (D.s.Gterm t) = (tc hI t).G := by
   rw [hI.Gterm t]
@@ -260,15 +183,6 @@ theorem G_eqC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     algebraMap D.host.F D.host.E (D.s.Gterm t) = Gval (lf D (FlagOfWord W u)) (fl'Of W hI t) := by
   rw [gterm_val hI t]
   exact (gval_mapL (W.δ u) (W.isom u) (lf D (X.Fu u)) (repF (tc hI t))).symm
-
-theorem rel_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
-    D.s.relevant t ↔ Relevant D.host.F (lf D (FlagOfWord W u)).fl (fl'Of W hI t).fl := by
-  rw [hI.relevant t]
-  show (tc hI t).relevant ↔ _
-  unfold TermDef.Term.relevant
-  conv_lhs => rw [← Quot.out_eq (tc hI t).cls]
-  refine (TermDef.isRel_mk _ (PI.TermAttrConst.UnitaryGroupMassFormula.relFun_all _ _ _ _) _).trans ?_
-  exact (Formalism.L2.SG.Pf.relevant_mapFlag (β := W.δ u) (hβ := W.isom u) _ _ _).symm
 
 theorem gen_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     D.s.generic t ↔ IsGeneric (lamOf W hI t) (gS D) (lf D (FlagOfWord W u)) (fl'Of W hI t) := by
@@ -280,28 +194,6 @@ theorem gen_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
     ((Y.rowsOK u).1 _ (tc hI t).mem)).2.2.2.1) _).trans ?_
   exact (Formalism.L2.SG.Pf.generic_isomorphism_holds (gS D) _ _ (W.δ u) (W.isom u) (tc hI t).lam (lf D (X.Fu u))
     (repF (tc hI t))).symm
-
-theorem FeqF_iffC {u u' : D.what₂.Word} (t : D.s.Term u u') :
-    D.s.FeqF t ↔ ∃ n ∈ NLam (lamOf W hI t) (lf D (FlagOfWord W u)),
-      ∀ a, n (frame (lf D (FlagOfWord W u)) a) = frame (fl'Of W hI t) a := by
-  rw [hI.FeqF t]
-  show (tc hI t).FeqF ↔ _
-  unfold TermDef.Term.FeqF
-  conv_lhs => rw [← Quot.out_eq (tc hI t).cls]
-  refine (TermDef.isFeqF_mk (PI.TermAttrConst.UnitaryGroupMassFormula.feqFFun_all _ _ _) _).trans ?_
-  exact (Formalism.L2.SG.Pf.flag_equivalence_isomorphism _ _ (W.δ u) (W.isom u) (tc hI t).lam (lf D (X.Fu u)) (repF (tc hI t))).symm
-
-
-variable (Y) in
-def IdentityCellVanishes (u u' : D.what₂.Word) : Prop := ∀ t : RT Y u u', Formalism.L2.SG.FourParts.termIsId t → t.G = 0
-
-
-include hI in
-theorem id_GC (hId : ∀ u u', IdentityCellVanishes Y u u') {u u' : D.what₂.Word} (t : D.s.Term u u') (h : D.s.isId t) :
-    D.s.Gterm t = 0 := by
-  apply (algebraMap D.host.F D.host.E).injective
-  rw [map_zero, gterm_val hI t]
-  exact hId u u' _ ((hI.isId t).1 h)
 
 
 variable (Y) in
@@ -393,9 +285,7 @@ theorem wRowOf_pos (hA : ∀ u, Formalism.L2.SG.PairVal.AutFin D (FlagOfWord W u
 variable (X) in
 structure AmpDat where
   chi : ∀ {u u' : D.what₂.Word}, D.s.Pair u u' → ℂ
-  chi_norm : ∀ {u u' : D.what₂.Word} (p : D.s.Pair u u'), ‖chi p‖ = 1
   piB : ∀ {u u' : D.what₂.Word}, D.s.Pair u u' → (X.Vpi u' →L[ℂ] X.Vpi u')
-  piB_unit : ∀ {u u' : D.what₂.Word} (p : D.s.Pair u u') (x : X.Vpi u'), ‖piB p x‖ = ‖x‖
 
 def PvalForm (A : AmpDat X) : Prop :=
   ∀ {u u' : D.what₂.Word} (p : D.s.Pair u u'), D.s.pval p =
@@ -403,26 +293,18 @@ def PvalForm (A : AmpDat X) : Prop :=
 
 structure TieHyp : Prop where
   lat : LatIso D
-  idG : ∀ u u', IdentityCellVanishes Y u u'
   atSome : ∀ u u', AtSome Y u u'
   autFin : ∀ u, Formalism.L2.SG.PairVal.AutFin D (FlagOfWord W u) (rowsRec W Y u)
-  dim : ∀ u, DimTie (X := X) u
   pairs : PairTies W hI
 
-def termTieOf (H : TieHyp W hI) (A : AmpDat X) (hV : PvalForm W hI A) : TermTie D where
+def termTieOf (H : TieHyp W hI) (A : AmpDat X) (_hV : PvalForm W hI A) : TermTie D where
   abelian₂ := fun t => lamOf W hI t
   fl := fun {u _} _ => lf D (FlagOfWord W u)
   fl' := fun t => fl'Of W hI t
   fixed := fun t => fixedC W hI H.lat t
   lift' := fun t => (pdC W hI t).1
   adm := fun t => (pdC W hI t).2.1
-  conv' := fun t => (pdC W hI t).2.2.1
-  inS_iff := fun t => inS_iffC W hI t
-  isId_iff := fun t => isId_iffC W hI t
   G_eq := fun t => G_eqC W hI t
-  rel_iff := fun t => rel_iffC W hI t
-  FeqF_iff := fun t => FeqF_iffC W hI t
-  id_G := fun t h => id_GC hI H.idG t h
   gen_iff := fun t => gen_iffC W hI t
   pt_cell := fun t h hr => pt_cellC W hI H.atSome t h hr
   pLam := fun p => pLamC W hI p
@@ -433,14 +315,8 @@ def termTieOf (H : TieHyp W hI) (A : AmpDat X) (hV : PvalForm W hI A) : TermTie 
   scal_iff := fun p => H.pairs.scal_iff p
   wRow := fun p => wRowOf W hI p
   wRow_pos := fun p => wRowOf_pos W hI H.autFin p
-  chi := fun p => A.chi p
-  chi_norm := fun p => A.chi_norm p
   Hpi := X.Vpi
-  Hpi_dim := fun u => H.dim u
   Jt := fun t => JtOf hI t
-  piB := fun p => A.piB p
-  piB_unit := fun p x => A.piB_unit p x
-  pval_eq := fun p => hV p
 
 end Pairs
 
@@ -511,123 +387,6 @@ variable {W Y}
 variable (W Y)
 
 end WittEquiv
-
-section IdCell
-
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
-
-theorem hT_X_zero (F : LFlag S r T) (a : Fin (r + 1)) {x : S.V} (hx : x ∈ Xsp F) : S.hT (F.fl.fvec a) x = 0 := by
-  have hs : ∀ x y, starRingEnd E (S.hT x y) = S.hT y x := fun x y => by
-    first
-      | exact S.herm.eq x y
-      | exact S.herm x y
-  have he : ∀ i, S.hT (F.fl.fvec a) (F.fl.e i) = 0 := by
-    intro i
-    induction a using Fin.lastCases with
-    | last =>
-      simp only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last]
-      rw [← hs, F.fl.z_orth i, map_zero]
-    | cast j =>
-      simp only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]
-      exact F.fl.e_iso j i
-  have hx' : x ∈ Submodule.span E (Set.range F.fl.e) := hx
-  clear hx
-  induction hx' using Submodule.span_induction with
-  | mem y hy =>
-    obtain ⟨i, rfl⟩ := hy
-    exact he i
-  | zero => exact map_zero _
-  | add y z _ _ hy hz => simp [hy, hz]
-  | smul c y _ hy => simp [hy]
-
-theorem zhat_col_zero (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r T')
-    (h : Formalism.L2.SG.FourParts.IsIdF Λ F F') (a : Fin (r + 1)) (b : Fin r) :
-    Formalism.MainNotions.S.Zhat F.fl F'.fl a b.castSucc = 0 := by
-  obtain ⟨n, hn, he, -⟩ := h
-  have hmem : F'.fl.e b ∈ Xsp F := by
-    rw [← he b]
-    have h1 : F.fl.e b ∈ Xflag F (b.1 + 1) := Submodule.subset_span ⟨b, by simp, rfl⟩
-    have h2 := hn.2.1 b.1 _ h1
-    have h3 : Xflag F b.1 ≤ Xsp F := Submodule.span_mono (Set.image_subset_range _ _)
-    have h4 : F.fl.e b ∈ Xsp F := Submodule.subset_span ⟨b, rfl⟩
-    have h5 := (Xsp F).add_mem (h3 h2) h4
-    simpa using h5
-  have hb : F'.fl.fvec b.castSucc = F'.fl.e b := by simp [Formalism.MainNotions.S.FlagG.fvec]
-  show Formalism.MainNotions.S.brS S (F'.fl.fvec b.castSucc) (F.fl.fvec a) = 0
-  rw [hb]
-  exact hT_X_zero F a hmem
-
-theorem gval_of_isIdF (hTs : star T = T) (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (F' : LFlag S r T')
-    (h : Formalism.L2.SG.FourParts.IsIdF Λ F F') : Gval F F' = 0 := by
-  have hz := zhat_col_zero Λ F F' h
-  show Formalism.MainNotions.S.Gflag F.fl F'.fl = 0
-  rcases Nat.eq_zero_or_pos r with hr | hr
-  · subst hr
-    obtain ⟨n, hn, -, hz'⟩ := h
-    have hX : Xsp F = ⊥ := by
-      show Submodule.span E (Set.range F.fl.e) = ⊥
-      simp [Set.range_eq_empty]
-    have hnz : n F.fl.z = F.fl.z := by
-      have h3 := hn.2.2 F.fl.z (by simp [Formalism.MainNotions.S.Lat.orth, hX])
-      rw [hX, Submodule.mem_bot, sub_eq_zero] at h3
-      exact h3
-    rw [hX, Submodule.mem_bot, sub_eq_zero, hnz] at hz'
-    have hT' : T' = T := by
-      have h1 := F'.fl.z_norm
-      have h2 := F.fl.z_norm
-      rw [← hz', h2] at h1
-      exact (neg_inj.mp h1).symm
-    have hf : ∀ {T₀ : E} (G : Formalism.MainNotions.S.FlagG S 0 T₀), G.fvec 0 = G.z := fun G => by
-      simp [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc]
-    have hZ : Formalism.MainNotions.S.Zhat F.fl F'.fl 0 0 = -T := by
-      show Formalism.MainNotions.S.brS S (F'.fl.fvec 0) (F.fl.fvec 0) = -T
-      rw [hf, hf, ← hz']
-      exact F.fl.z_norm
-    have hD1 : Formalism.MainNotions.S.Dl F.fl F'.fl (0 + 1) = -T := by
-      unfold Formalism.MainNotions.S.Dl Formalism.MainNotions.S.leadMinorE
-      rw [dite_eq_left le_rfl]
-      exact (Matrix.det_fin_one _).trans hZ
-    have hD0 : Formalism.MainNotions.S.Dl F.fl F'.fl 0 = 1 := by
-      unfold Formalism.MainNotions.S.Dl Formalism.MainNotions.S.leadMinorE
-      rw [dite_eq_left (Nat.zero_le _), Matrix.det_isEmpty]
-    unfold Formalism.MainNotions.S.Gflag
-    rw [hD1, hD0, hT', star_neg, hTs, star_one]
-    ring
-  · have hD : ∀ l, (hl : l ≤ r + 1) → r ≤ l → Formalism.MainNotions.S.Dl F.fl F'.fl l = 0 := by
-      intro l hl hrl
-      unfold Formalism.MainNotions.S.Dl Formalism.MainNotions.S.leadMinorE
-      rw [dite_eq_left hl]
-      apply Matrix.det_eq_zero_of_column_eq_zero (⟨0, by omega⟩ : Fin l)
-      intro i
-      simp only [Matrix.submatrix_apply]
-      have h0 := hz (Fin.castLE hl i) ⟨0, hr⟩
-      convert h0 using 2
-      exact Fin.ext rfl
-    unfold Formalism.MainNotions.S.Gflag
-    rw [hD (r + 1) le_rfl (by omega), hD r (by omega) le_rfl]
-    simp
-
-end IdCell
-
-section IdCellD
-
-variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X}
-
-theorem identityCell_vanishes (u u' : D.what₂.Word) : IdentityCellVanishes Y u u' := by
-  unfold IdentityCellVanishes
-  intro t ht
-  obtain ⟨F', ⟨h, hm⟩, hid⟩ := ht
-  have hr : TermDef.Rel t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') ⟨F', h⟩ (Quot.out t.cls) :=
-    (eqIff_base (u' := u') t.lam t.mem _ _).1 (hm.trans (Quot.out_eq t.cls).symm)
-  have h0 := gval_of_isIdF (star_natCast _) t.lam (lf D (X.Fu u)) F' hid
-  have e : ∀ l, Formalism.MainNotions.S.Dl (X.Fu u) (Quot.out t.cls).1.fl l = Formalism.MainNotions.S.Dl (X.Fu u) F'.fl l :=
-    PI.TermAttrConst.UnitaryGroupMassFormula.dl_eq _ hr
-  refine Eq.trans ?_ h0
-  show Formalism.MainNotions.S.Gflag (X.Fu u) (Quot.out t.cls).1.fl = Formalism.MainNotions.S.Gflag (X.Fu u) F'.fl
-  unfold Formalism.MainNotions.S.Gflag
-  rw [e, e]
-
-end IdCellD
 
 def AtSomeAll : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word), AtSome Y u u'

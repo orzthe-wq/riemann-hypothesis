@@ -139,9 +139,6 @@ theorem T_shift (L : PeriodPair) {P : ℂ} (hP : P ∉ L.lattice) :
 theorem ev_notMem (L : PeriodPair) : ∀ᶠ z in 𝓝[≠] (0 : ℂ), z ∉ L.lattice := by
   first
   | exact ThreeTermRelation.eventually_notMem L 0
-  | exact Filter.inf_principal_eq_bot.1
-      ((discreteTopology_subtype_iff.1 (inferInstanceAs (DiscreteTopology L.lattice))) 0
-        L.lattice.zero_mem)
 
 theorem tendsto_mul_nhdsNE {α : ℂ} (hα : α ≠ 0) :
     Tendsto (fun z : ℂ => α * z) (𝓝[≠] 0) (𝓝[≠] 0) := by
@@ -181,7 +178,6 @@ theorem clause3 (L : PeriodPair) (α : ℂ) (S : Finset ℂ) (hα : α ≠ 0) (h
     rw [wp_eq L (α * z)]; ring
   have e2 : L.weierstrassPExcept 0 z = L.weierstrassP z - 1 / z ^ 2 := by
     rw [wp_eq L z]; ring
-  beta_reduce
   rw [e1, e2, mul_sub, hip]
   field_simp
   ring
@@ -209,7 +205,7 @@ theorem wp_logDeriv (L : PeriodPair) {P z : ℂ} (hP : P ∉ L.lattice) (hz : z 
     ((hasDerivAt_sgStar' L hm).comp z ((hasDerivAt_id' z).sub_const P))
   have hsq : HasDerivAt (fun u => sgStar L u ^ 2)
       (2 * sgStar L z * (sgStar L z * (wZeta L z - s2 L * z))) z := by
-    exact ((hasDerivAt_sgStar' L hz).pow 2).congr_deriv (by norm_num <;> ring)
+    exact ((hasDerivAt_sgStar' L hz).pow 2).congr_deriv (by norm_num)
   have hh := ((hsq.mul_const (sgStar L P ^ 2)).mul
     ((PDeriv.hasDerivAt_P L hz).sub_const (L.weierstrassP P))).neg
   have heq := hg.unique (hh.congr_of_eventuallyEq hev)
@@ -257,14 +253,14 @@ theorem hasDerivAt_fP (L : PeriodPair) {P w : ℂ} (hP : P ∉ L.lattice) (hw : 
   have hex : L.weierstrassPExcept 0 = fun u => L.weierstrassP u - (u ^ 2)⁻¹ := by
     funext u; rw [wp_eq L u]; ring
   have hinv : HasDerivAt (fun u : ℂ => (u ^ 2)⁻¹) (-(2 * w) / (w ^ 2) ^ 2) w :=
-    ((hasDerivAt_pow 2 w).inv (pow_ne_zero 2 hne)).congr_deriv (by norm_num <;> ring)
+    ((hasDerivAt_pow 2 w).inv (pow_ne_zero 2 hne)).congr_deriv (by norm_num)
   have hE : HasDerivAt (L.weierstrassPExcept 0)
       (L.derivWeierstrassP w - (-(2 * w) / (w ^ 2) ^ 2)) w := by
     rw [hex]; exact (PDeriv.hasDerivAt_P L hw0).sub hinv
   have hF : HasDerivAt (fP L P) (2 * w * (L.weierstrassPExcept 0 w - L.weierstrassP P)
       + w ^ 2 * (L.derivWeierstrassP w - (-(2 * w) / (w ^ 2) ^ 2))) w := by
     have h1 := ((hasDerivAt_pow 2 w).mul (hE.sub_const (L.weierstrassP P))).const_add 1
-    exact h1.congr_deriv (by norm_num <;> ring)
+    exact h1.congr_deriv (by norm_num)
   refine hF.congr_deriv ?_
   rw [wp_logDeriv L hP hw0 hwp hwm]
   simp only [fP, mP, hex]
@@ -330,7 +326,6 @@ theorem clause2 (L : PeriodPair) {P Q : ℂ} (hP : P ∉ L.lattice) (hQ : Q + P 
     have hc : L.weierstrassP (w + Q) = L.weierstrassP (w - P) := wp_congr L (by
       have e : w + Q - (w - P) = Q + P := by ring
       rw [e]; exact hQ)
-    beta_reduce
     rw [d2log_fP L hP hw, hc])
   unfold Formalism.L2.Th1.C.HasSecondLogDeriv
   rw [heq, show (C (2 : ℂ) : PowerSeries ℂ) = 2 from map_ofNat C 2]
@@ -400,7 +395,6 @@ theorem isogeny_formula_instance : IsogenyFormulaInstance := by
   have heq := T.unique hL hR (by
     filter_upwards [ev_notMem L, self_mem_nhdsWithin] with z hz hz0
     have hz0' : z ≠ 0 := hz0
-    beta_reduce
     have hsig := isogenySigma L α S hα hm hS z hz
     have hp : ∏ P : S, fP L (P : ℂ) z
         = ∏ P : S, (z ^ 2 * (L.weierstrassP z - L.weierstrassP (P : ℂ))) :=

@@ -1,13 +1,13 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GgNone
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportInnerLatticesStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FramePairCoordinatesTransportInnerLattices
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameCoordinatesTransportInnerLatticesStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFrameCoordinatesTransportInnerLattices
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToLePerp
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToZero
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnesses
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermOverFrameCoordinates
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToZero
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -143,8 +143,8 @@ theorem terms_correspond : ∀ {F : Type} [Field F] [ValuativeRel F] [Topologica
   letI := hM.loc
   haveI := hM.char0
   obtain ⟨hth, hN, hN', -, hpsi, -⟩ := GlobalTheory.HL.CoordUnip.transport M hM H r k P S c
-  obtain ⟨-, iA, oA, sA⟩ := GlobalTheory.T.hermitianFrameCoordinates_transport_innerLattices M hM H r k P S c
-  obtain ⟨-, iB, oB, sB⟩ := GlobalTheory.T.framePairCoordinates_transport_innerLattices M hM H r k P S c
+  obtain ⟨-, iA, oA, sA⟩ := _root_.GlobalTheory.HL.CoordInnerFst.transport M hM H r k P S c
+  obtain ⟨-, iB, oB, sB⟩ := _root_.GlobalTheory.HL.CoordInnerSnd.transport M hM H r k P S c
   have T1 := isTermW_iff M hM H r k P S c
   have hsurj : ∀ Λ : Submodule M.L.O S.V, ∃ Λ₀, c.lat Λ₀ = Λ := by
     intro B

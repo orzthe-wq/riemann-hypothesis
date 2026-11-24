@@ -123,16 +123,13 @@ theorem IsCyc.norm_eq_one {χ : GQ l →* ℚ_[l]ˣ} (h : IsCyc χ) (g : GQ l) :
   have h4 := norm_nonneg (χ g : ℚ_[l])
   nlinarith
 
-theorem exists_zpow_neg_lt {ε : ℝ} (hε : 0 < ε) : ∃ m : ℕ, (l : ℝ) ^ (-(m : ℤ)) < ε :=
-  PadicInt.exists_pow_neg_lt l hε
-
 theorem IsCyc.continuous {χ : GQ l →* ℚ_[l]ˣ} (h : IsCyc χ) :
     Continuous (fun g => (χ g : ℚ_[l])) := by
   change Continuous ((Units.coeHom ℚ_[l]).comp χ)
   apply continuous_of_continuousAt_one
   rw [ContinuousAt, Metric.tendsto_nhds]
   intro ε hε
-  obtain ⟨m, hm⟩ := exists_zpow_neg_lt (l := l) hε
+  obtain ⟨m, hm⟩ := PadicInt.exists_pow_neg_lt (p := l) hε
   obtain ⟨ζ, hζ⟩ := exists_primRoot_pow (l := l) m
   rw [Filter.Eventually, krullTopology_mem_nhds_one_iff]
   refine ⟨IntermediateField.adjoin ℚ_[l] {ζ},
@@ -172,7 +169,7 @@ theorem cyc_basic : ∀ (l : ℕ) [Fact l.Prime] (χ : GQ l →* ℚ_[l]ˣ), IsC
       have hpos : 0 < ‖(χ g : ℚ_[l]) - 1‖ := by
         rw [norm_pos_iff, sub_ne_zero]
         exact fun e => hne (Units.ext e)
-      obtain ⟨m, hm⟩ := exists_zpow_neg_lt (l := l) hpos
+      obtain ⟨m, hm⟩ := PadicInt.exists_pow_neg_lt (p := l) hpos
       exact absurd ((h.fix_iff g m).1 fun ζ hζ => h2 ζ ⟨m, hζ⟩) (not_le.2 hm)
     · intro h1
       refine ⟨hg, ?_⟩

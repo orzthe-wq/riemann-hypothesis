@@ -43,4 +43,4 @@ import Mathlib.Tactic.NormNum.RealSqrt
 
 @[expose] public section
 
-theorem LateralTheory.Ext.etale_tate_twist_sections_locally_generated : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyGenerated := GlobalTheory.T.tateTwist_sections_locally_generated
+theorem LateralTheory.Ext.etale_tate_twist_sections_locally_generated : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyGenerated := _root_.GlobalTheory.EtC.twist_sections

@@ -58,7 +58,7 @@ theorem qlen_inf_ne_top (O K V : Type) [CommRing O] [IsDomain O] [IsDiscreteValu
     [IsScalarTower O K V] (M Θ : Submodule O V) (hM : Formalism.LatticeIndexTer.IsLat O K V M)
     (hΘ : Formalism.LatticeIndexTer.IsLat O K V Θ) (W : Submodule O V) :
     Formalism.LatticeIndexTer.qlen O V (M ⊓ W) (Θ ⊓ W) ≠ ⊤ := by
-  have hfin := Formalism.LatticeIndexTer.latFinite O K V M Θ hM hΘ
+  have hfin := _root_.Formalism.LatticeIndexTer.lattice_quotient_finite O K V M Θ hM hΘ
   unfold Formalism.LatticeIndexTer.qlen at hfin ⊢
   let g : ↥(M ⊓ W) →ₗ[O] (↥M ⧸ Θ.comap M.subtype) :=
     (Θ.comap M.subtype).mkQ ∘ₗ Submodule.inclusion inf_le_left

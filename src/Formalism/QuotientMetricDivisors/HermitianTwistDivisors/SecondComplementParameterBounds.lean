@@ -120,7 +120,7 @@ theorem places_over_coprime : PlOverCoprime := by
     rcases Nat.eq_zero_or_pos n with h0 | h0
     · subst h0
       unfold PlOver vw at hn
-      first | simp [FractionalIdeal.count_zero] at hn | (unfold FractionalIdeal.count at hn; simp at hn)
+      first | simp [FractionalIdeal.count_zero] at hn
     · exact h0
   have m1 := plOver_mem (hpos g h1) w h1
   have m2 := plOver_mem (hpos g' h2) w h2

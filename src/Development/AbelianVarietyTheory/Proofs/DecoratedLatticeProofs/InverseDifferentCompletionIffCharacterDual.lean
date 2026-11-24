@@ -105,11 +105,9 @@ theorem chi_mul_int {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     have := Conductor.chi_add ψ (((1 : Af D.host.F) ⊗ₜ[D.host.F] x) * y) (((1 : Af D.host.F) ⊗ₜ[D.host.F] x) * -y)
     rwa [← mul_add, add_neg_cancel, mul_zero, Conductor.chi_zero, hy, one_mul, eq_comm] at this
 
-theorem psiE_add (ψ : AddChar (AF D.host.F) ℂ) (a b : AE D) : psiE ψ (a + b) = psiE ψ a * psiE ψ b := by
-  rw [psiE, psiE, psiE, map_add (f := _), ψ.map_add_eq_mul]
+alias psiE_add := _root_.GlobalTheory.MixPer.psiE_add
 
-theorem psiE_zero (ψ : AddChar (AF D.host.F) ℂ) : psiE ψ (0 : AE D) = 1 := by
-  rw [psiE, map_zero, ψ.map_zero_eq_one]
+alias psiE_zero := _root_.GlobalTheory.MixPer.psiE_zero
 
 theorem psiE_neg (ψ : AddChar (AF D.host.F) ℂ) (a : AE D) : psiE ψ (-a) = (psiE ψ a)⁻¹ := by
   rw [psiE, psiE, map_neg, ψ.map_neg_eq_inv]

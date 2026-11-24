@@ -278,7 +278,6 @@ private theorem cup_ext_uni (a : Finset β → E) (c : Finset (β ⊕ₗ κ) →
       ∑ i ∈ I, μ (a (I.filter (· ≤ i))) (c (uni (I.filter (i ≤ ·)) J)) := by
   simp only [cupE]
   rw [sum_uni]
-  beta_reduce
   rw [Finset.sum_eq_zero (s := J) (fun l hl => ?_), add_zero]
   · refine Finset.sum_congr rfl (fun i _ => ?_)
     simp [filter_le_l, filter_ge_l, ext0, lft_uni, rgt_uni]
@@ -295,7 +294,6 @@ private theorem cup_edge (q : ℕ) (a : Finset β → E) (ha : ∀ I : Finset β
       ((-1 : ℤ) ^ (q + 1)) • join μ a (fun J => c (uni ∅ J)) (uni I J) := by
   simp only [cupE]
   rw [sum_uni]
-  beta_reduce
   rw [Finset.sum_eq_zero (s := I) (fun i _ => ?_), zero_add]
   · simp only [join, lft_uni, rgt_uni]
     rcases J.eq_empty_or_nonempty with hJ | hJ
@@ -313,7 +311,7 @@ private theorem cup_edge (q : ℕ) (a : Finset β → E) (ha : ∀ I : Finset β
         have e2 : J.filter (J.min' hJ ≤ ·) = J :=
           Finset.filter_true_of_mem (fun x hx => J.min'_le x hx)
         simp only [filter_le_r, filter_ge_r, e1, e2, edge1, lft_uni, rgt_uni, Finset.card_singleton,
-          if_pos rfl, map_zsmul, LinearMap.smul_apply, if_true]
+          map_zsmul, LinearMap.smul_apply, if_true]
         by_cases hI : I.card = q + 1
         · rw [hI]
         · rw [ha I hI]

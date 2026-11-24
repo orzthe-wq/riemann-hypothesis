@@ -63,10 +63,7 @@ namespace ArithHilbertSamuel
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
 
-theorem resG_resG {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (f : Γ(X, U)) :
-    resG X h' (resG X h f) = resG X (h'.trans h) f := by
-  rw [← CommRingCat.comp_apply, ← X.presheaf.map_comp]
-  rfl
+alias resG_resG := _root_.GlobalTheory.Cartier.resG_resG
 
 def secTensTriv (A : LB X) : A.Sec ≃ (tens A (LB.triv X)).Sec where
   toFun s := ⟨fun c => resG X inf_le_left (s.f c.1), fun c d => by

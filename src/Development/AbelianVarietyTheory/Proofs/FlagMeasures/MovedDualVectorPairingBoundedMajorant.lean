@@ -1,17 +1,16 @@
 module
 
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerPairs.IsUnitDetOfMemGV
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsNormalFormStabilizerMeasure
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramSchmidtLengths
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicLeviEmbeddingHomomorphismProperties
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicStabilizerRadicalStructure
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantFlagLengthsInvarianceTorusPositivity
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormDetInnerLeOfDetEqOne
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLeadingMinorMonomial
-import Formalism.FormalDegreeBessel.FinalG
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -25,8 +24,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -34,7 +31,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,11 +44,206 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerPairs.IsUnitDetOfMemGV
+import Formalism.FormalDegreeBessel.FinalG
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLeadingMinorMonomial, Development.AbelianVarietyTheory.Proofs.FlagMeasures.MovedDualVectorPairingBoundedMajorant
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLeadingMinorMonomial =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLeadingMinorMonomial", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.Amp
+open scoped InnerProductSpace ENNReal
+
+namespace GlobalTheory.Amp
+
+theorem partialProd_inv_le (t : ℕ → ℝ) (ht : ∀ a, 0 < t a) (j : ℕ) (De : ℝ)
+    (h : ∀ b ≤ j, (∏ a ∈ Finset.range b, t a)⁻¹ ≤ De ∨ (0 < b ∧ b < j ∧ t (b - 1) = t b)) :
+    ∀ b ≤ j, (∏ a ∈ Finset.range b, t a)⁻¹ ≤ De := by
+  have hP : ∀ b, 0 < ∏ a ∈ Finset.range b, t a := fun b => Finset.prod_pos fun a _ => ht a
+  obtain ⟨m, hm, hmax⟩ := Finset.exists_max_image (Finset.range (j + 1))
+    (fun b => (∏ a ∈ Finset.range b, t a)⁻¹) ⟨0, by simp⟩
+  have hle : ∀ b ≤ j, (∏ a ∈ Finset.range b, t a)⁻¹ ≤ (∏ a ∈ Finset.range m, t a)⁻¹ :=
+    fun b hb => hmax b (Finset.mem_range.2 (Nat.lt_succ_of_le hb))
+
+  have key : ∀ b, b ≤ j → (∏ a ∈ Finset.range b, t a)⁻¹ = (∏ a ∈ Finset.range m, t a)⁻¹ →
+      (∏ a ∈ Finset.range m, t a)⁻¹ ≤ De := by
+    intro b
+    induction b with
+    | zero =>
+      intro hb h0
+      rcases h 0 hb with h1 | ⟨h1, -, -⟩
+      · rw [← h0]; exact h1
+      · exact absurd h1 (lt_irrefl 0)
+    | succ n ih =>
+      intro hn heq
+      rcases h (n + 1) hn with h1 | ⟨-, hlt, hteq⟩
+      · rw [← heq]; exact h1
+      · rw [Nat.add_sub_cancel] at hteq
+        apply ih (Nat.le_of_succ_le hn)
+        have hx := hP n
+        have hc := ht n
+        have h0 := hle n (Nat.le_of_succ_le hn)
+        have h2 := hle (n + 1 + 1) (by omega)
+        rw [← heq] at h0 h2 ⊢
+        rw [Finset.prod_range_succ] at h0 ⊢
+        rw [Finset.prod_range_succ, Finset.prod_range_succ, ← hteq] at h2
+        rw [inv_le_inv₀ hx (mul_pos hx hc)] at h0
+        rw [inv_le_inv₀ (mul_pos (mul_pos hx hc) hc) (mul_pos hx hc)] at h2
+        have c1 : t n ≤ 1 := by nlinarith
+        have c2 : 1 ≤ t n := by nlinarith [mul_pos hx hc]
+        rw [le_antisymm c1 c2, mul_one]
+  intro b hb
+  exact (hle b hb).trans (key m (Nat.lt_succ_iff.1 (Finset.mem_range.1 hm)) rfl)
+
+theorem norm_leading_minor_monomial {j l : ℕ} (hl : l ≤ j) (Z : Matrix (Fin j) (Fin j) ℂ) (w : Equiv.Perm (Fin j))
+    (hw : ∀ a b, Z a b ≠ 0 ↔ b = w a) (hc : ∀ a : Fin j, a.val < l → (w a).val < l) :
+    ‖(Z.submatrix (Fin.castLE hl) (Fin.castLE hl)).det‖ = ∏ a : Fin l, ‖Z (Fin.castLE hl a) (w (Fin.castLE hl a))‖ := by
+  set M := Z.submatrix (Fin.castLE hl) (Fin.castLE hl) with hM
+
+  let f : Fin l → Fin l := fun a => ⟨(w (Fin.castLE hl a)).val, hc _ a.2⟩
+  have hcf : ∀ a, Fin.castLE hl (f a) = w (Fin.castLE hl a) := fun a => Fin.ext rfl
+  have hinj : Function.Injective f := by
+    intro a b hab
+    have h1 := congrArg (Fin.castLE hl) hab
+    rw [hcf, hcf] at h1
+    exact Fin.castLE_injective hl (w.injective h1)
+  let w' : Equiv.Perm (Fin l) := Equiv.ofBijective f (Finite.injective_iff_bijective.mp hinj)
+  have hw' : ∀ a, w' a = f a := fun a => rfl
+  have hMne : ∀ a b, M a b ≠ 0 ↔ b = w' a := by
+    intro a b
+    rw [hM, Matrix.submatrix_apply, hw, hw', ← hcf]
+    exact (Fin.castLE_injective hl).eq_iff
+
+  rw [Matrix.det_apply', Finset.sum_eq_single w'.symm]
+  · have hs : ‖((Equiv.Perm.sign w'.symm : ℤ) : ℂ)‖ = 1 := by
+      rcases Int.units_eq_one_or (Equiv.Perm.sign w'.symm) with hsg | hsg <;> simp [hsg]
+    rw [norm_mul, hs, one_mul, norm_prod]
+    refine Fintype.prod_equiv w'.symm _ _ fun i => ?_
+    have hi : Fin.castLE hl i = w (Fin.castLE hl (w'.symm i)) := by
+      rw [← hcf, ← hw', Equiv.apply_symm_apply]
+    show ‖Z (Fin.castLE hl (w'.symm i)) (Fin.castLE hl i)‖ = _
+    rw [hi]
+  · intro σ _ hσ
+    obtain ⟨i, hi⟩ : ∃ i, w' (σ i) ≠ i := by
+      by_contra hne
+      push_neg at hne
+      exact hσ (Equiv.ext fun i => w'.eq_symm_apply.2 (hne i))
+    apply mul_eq_zero_of_right
+    apply Finset.prod_eq_zero (Finset.mem_univ i)
+    by_contra hz
+    exact hi ((hMne (σ i) i).1 hz).symm
+  · intro hn
+    exact absurd (Finset.mem_univ _) hn
+
+theorem blockAnti_perm_partialProd : ∀ (j : ℕ) (β : Fin j → ℕ) (Z : Matrix (Fin j) (Fin j) ℂ) (De : ℝ), BlockAnti β Z → 1 ≤ De → (∀ (l : ℕ) (hl : l ≤ j), (Z.submatrix (Fin.castLE hl) (Fin.castLE hl)).det ≠ 0 → ‖(Z.submatrix (Fin.castLE hl) (Fin.castLE hl)).det‖⁻¹ ≤ De) → ∃ (w : Equiv.Perm (Fin j)), (∀ a b, Z a b ≠ 0 ↔ b = w a) ∧ (∀ a, β (w a) = β a) ∧ ∀ b : ℕ, (∏ a ∈ Finset.univ.filter (fun a : Fin j => a.val < b), ‖Z a (w a)‖)⁻¹ ≤ De := by
+  intro j β Z De hZ _ hminor
+  unfold BlockAnti at hZ
+  obtain ⟨hmono, hdet, hblk, hanti⟩ := hZ
+
+  have hrow : ∀ a, ∃ b, Z a b ≠ 0 := by
+    intro a
+    by_contra hne
+    push_neg at hne
+    exact hdet (Matrix.det_eq_zero_of_row_eq_zero a hne)
+  choose f hf using hrow
+  have huniq : ∀ a b, Z a b ≠ 0 → b = f a := fun a b hab =>
+    (hanti a b a (f a) hab (hf a) rfl).2.1 rfl
+
+  have hinj : Function.Injective f := by
+    intro a a' h
+    have h1 := hf a
+    have h2 := hf a'
+    rw [← h] at h2
+    have hb : β a = β a' := (hblk a (f a) h1).trans (hblk a' (f a) h2).symm
+    rcases lt_trichotomy a a' with hlt | heq | hgt
+    · exact absurd ((hanti a (f a) a' (f a) h1 h2 hb).2.2 hlt) (lt_irrefl _)
+    · exact heq
+    · exact absurd ((hanti a' (f a) a (f a) h2 h1 hb.symm).2.2 hgt) (lt_irrefl _)
+  let w : Equiv.Perm (Fin j) := Equiv.ofBijective f (Finite.injective_iff_bijective.mp hinj)
+  have hw : ∀ a b, Z a b ≠ 0 ↔ b = w a := fun a b =>
+    ⟨huniq a b, fun h => by rw [h]; exact hf a⟩
+  have hβ : ∀ a, β (w a) = β a := fun a => (hblk a (w a) (hf a)).symm
+  refine ⟨w, hw, hβ, ?_⟩
+
+  let t : ℕ → ℝ := fun n => if h : n < j then ‖Z ⟨n, h⟩ (w ⟨n, h⟩)‖ else 1
+  have ht : ∀ n, 0 < t n := by
+    intro n
+    simp only [t]
+    split_ifs with h
+    · exact norm_pos_iff.2 (hf _)
+    · exact one_pos
+  have htfin : ∀ a : Fin j, t a.val = ‖Z a (w a)‖ := by
+    intro a
+    simp [t]
+  have hconv : ∀ b, ∏ a ∈ Finset.univ.filter (fun a : Fin j => a.val < b), ‖Z a (w a)‖ =
+      ∏ n ∈ Finset.range (min b j), t n := by
+    intro b
+    rw [Finset.prod_filter]
+    simp_rw [← htfin]
+    refine (Fin.prod_univ_eq_prod_range (fun n => if n < b then t n else 1) j).trans ?_
+    rw [← Finset.prod_filter]
+    congr 1
+    ext n
+    simp only [Finset.mem_filter, Finset.mem_range, lt_min_iff]
+    exact and_comm
+
+  have hh : ∀ l ≤ j, (∏ n ∈ Finset.range l, t n)⁻¹ ≤ De ∨ (0 < l ∧ l < j ∧ t (l - 1) = t l) := by
+    intro l hl
+    by_cases hbd : ∀ a : Fin j, a.val < l → (w a).val < l
+    · left
+      have hnorm := norm_leading_minor_monomial hl Z w hw hbd
+      have hprod : ∏ a : Fin l, ‖Z (Fin.castLE hl a) (w (Fin.castLE hl a))‖ = ∏ n ∈ Finset.range l, t n := by
+        rw [← Fin.prod_univ_eq_prod_range]
+        exact Finset.prod_congr rfl fun a _ => (htfin (Fin.castLE hl a)).symm
+      have hpos : 0 < ∏ n ∈ Finset.range l, t n := Finset.prod_pos fun n _ => ht n
+      have hne : (Z.submatrix (Fin.castLE hl) (Fin.castLE hl)).det ≠ 0 := by
+        intro h0
+        rw [h0, norm_zero, hprod] at hnorm
+        linarith
+      have hb := hminor l hl hne
+      rw [hnorm, hprod] at hb
+      exact hb
+    · right
+      push_neg at hbd
+      obtain ⟨a, hal, hwa⟩ := hbd
+      have hlj : l < j := lt_of_le_of_lt hwa (w a).2
+      have hl0 : 0 < l := lt_of_le_of_lt (Nat.zero_le _) hal
+      refine ⟨hl0, hlj, ?_⟩
+      let p : Fin j := ⟨l - 1, by omega⟩
+      let q : Fin j := ⟨l, hlj⟩
+      have hβeq : β p = β q := by
+        have h1 : β a ≤ β p := hmono (Fin.le_def.2 (show a.val ≤ l - 1 by omega))
+        have h2 : β p ≤ β q := hmono (Fin.le_def.2 (show l - 1 ≤ l by omega))
+        have h3 : β q ≤ β (w a) := hmono (Fin.le_def.2 hwa)
+        rw [hβ a] at h3
+        omega
+      have e1 : t (l - 1) = ‖Z p (w p)‖ := htfin p
+      have e2 : t l = ‖Z q (w q)‖ := htfin q
+      rw [e1, e2]
+      exact (hanti p (w p) q (w q) (hf p) (hf q) hβeq).1
+  intro b
+  rw [hconv]
+  exact partialProd_inv_le t ht j De hh (min b j) (min_le_right _ _)
+
+end GlobalTheory.Amp
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLeadingMinorMonomial =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.MovedDualVectorPairingBoundedMajorant =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.MovedDualVectorPairingBoundedMajorant", "h": "module\n\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerPairs.IsUnitDetOfMemGV\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsNormalFormStabilizerMeasure\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.GramSchmidtLengths\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicLeviEmbeddingHomomorphismProperties\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsotropicStabilizerRadicalStructure\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MajorantFlagLengthsInvarianceTorusPositivity\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormDetInnerLeOfDetEqOne\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLeadingMinorMonomial\nimport Formalism.FormalDegreeBessel.FinalG\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -91,19 +283,15 @@ lemma herm_symm (k r : ℕ) (v w : Fin (2 * r + k + 1) → ℂ) :
 
 lemma herm_e (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) v (bvec (eI k r a)) = v (esI k r a) := by
-  apply PI.StabPairsW.herm_e <;> assumption
+  apply PI.StabPairsW.herm_e
 
 lemma herm_es (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) v (bvec (esI k r a)) = v (eI k r a) := by
-  apply PI.StabPairsW.herm_es <;> assumption
+  apply PI.StabPairsW.herm_es
 
 lemma herm_smul_left {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (v w : Fin n → ℂ) :
     herm H (c • v) w = c * herm H v w := by
   simp [herm, Matrix.mulVec_smul]
-
-lemma eucl_eq {n : ℕ} (v : Fin n → ℂ) : eucl v = ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n))‖ := by
-  rw [EuclideanSpace.norm_eq]; unfold eucl
-  simp [Complex.normSq_eq_norm_sq]
 
 lemma inner_toLp {n : ℕ} (v w : Fin n → ℂ) :
     ⟪(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n)), WithLp.toLp 2 w⟫_ℂ = star v ⬝ᵥ w := by
@@ -116,7 +304,7 @@ lemma inner_H (k r : ℕ) (v w : Fin (2 * r + k + 1) → ℂ) :
 
 lemma norm_H (k r : ℕ) (w : Fin (2 * r + k + 1) → ℂ) :
     ‖(WithLp.toLp 2 (Hpk k r *ᵥ w) : EuclideanSpace ℂ (Fin (2 * r + k + 1)))‖ = eucl w := by
-  rw [eucl_eq, norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), inner_H, inner_toLp]
+  rw [_root_.GlobalTheory.Amp.GramFlag.eucl_eq, norm_eq_sqrt_re_inner (𝕜 := ℂ), norm_eq_sqrt_re_inner (𝕜 := ℂ), inner_H, inner_toLp]
   unfold herm
   rw [Matrix.mulVec_mulVec, (hpkFacts k r).2.1, Matrix.one_mulVec]
 
@@ -186,7 +374,7 @@ lemma pluck_flag {k r n : ℕ} (hn : n ≤ r) (z : Fin (2 * r + k + 1) → ℂ) 
       rw [hsum, hsum, inner_toLp]
       exact h2 _ _ fun h' => h (Fin.castLE_injective hn h'))
   simp only [inner_H, hsum, norm_H] at hp
-  simp only [← eucl_eq] at hp
+  simp only [← _root_.GlobalTheory.Amp.GramFlag.eucl_eq] at hp
   refine hp.trans (mul_le_mul ?_ ?_ ?_ ?_)
   · calc _ ≤ ∏ _a : Fin n, R := Finset.prod_le_prod₀ (fun _ _ => Real.sqrt_nonneg _) fun a _ => hy a
       _ = _ := by simp
@@ -279,7 +467,7 @@ lemma levi_diag_middle_mem_bessel_unitary_eucl {k r : ℕ} {m : Matrix (Fin (k +
     simp only [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (G_unit hG), Matrix.one_mulVec,
       Matrix.mulVec_smul] at this
     rw [eq_inv_smul_iff₀ hc]; exact this.symm
-  rw [h5, eucl_eq, WithLp.toLp_smul, norm_smul]
+  rw [h5, _root_.GlobalTheory.Amp.GramFlag.eucl_eq, WithLp.toLp_smul, norm_smul]
   simp [bvec, abs_of_pos (ha c)]
 
 lemma Dmin_eq {k r j : ℕ} (hj : j ≤ r) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) (l : ℕ) (hl : l ≤ j) :
@@ -385,3 +573,7 @@ theorem herm_sEl_inv_le : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r +
     _ ≤ _ := mul_le_mul_of_nonneg_left hP' (by positivity)
 
 end GlobalTheory.Amp.NfComp
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.MovedDualVectorPairingBoundedMajorant =====

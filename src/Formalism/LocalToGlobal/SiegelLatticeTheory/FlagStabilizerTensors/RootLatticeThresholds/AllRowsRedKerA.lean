@@ -7,48 +7,8 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.Unita
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicClassFiniteness.DictAll
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicClassFiniteness.DictGen
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicClassFiniteness.DictLat
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsDual
 
 @[expose] public section
 
@@ -65,26 +25,14 @@ section Form
 
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A) (J : Matrix n n A)
 
-theorem hform_smul_left (s : A) (x y : n → A) : Formalism.UG.hform σ J (s • x) y = σ s * Formalism.UG.hform σ J x y := by
-  simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
-  ring
-
 theorem hform_smul_right (s : A) (x y : n → A) : Formalism.UG.hform σ J x (s • y) = s * Formalism.UG.hform σ J x y := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
-theorem hform_add_left (x x' y : n → A) :
-    Formalism.UG.hform σ J (x + x') y = Formalism.UG.hform σ J x y + Formalism.UG.hform σ J x' y := by
-  simp only [Formalism.UG.hform, Pi.add_apply, map_add (f := _), add_mul, Finset.sum_add_distrib]
-
 theorem hform_add_right (x y y' : n → A) :
     Formalism.UG.hform σ J x (y + y') = Formalism.UG.hform σ J x y + Formalism.UG.hform σ J x y' := by
   simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
-
-theorem hform_zero_left (y : n → A) : Formalism.UG.hform σ J 0 y = 0 := by
-  simp [Formalism.UG.hform]
 
 theorem hform_zero_right (x : n → A) : Formalism.UG.hform σ J x 0 = 0 := by
   simp [Formalism.UG.hform]
@@ -263,21 +211,21 @@ theorem hform_wLat0 {w : HeightOneSpectrum (𝓞 I.E)} {u : Fin I.n → I.E} (hu
     obtain ⟨a, ha, y, hy, rfl⟩ := hz
     obtain ⟨b, hb⟩ := hv' y hy
     refine ⟨sigO I a * b, Ideal.mul_mem_right _ _ (sig_mem_wc I ha), ?_⟩
-    rw [hform_smul_left, ← hb]
+    rw [_root_.Formalism.UG.P.csDual_hform_smul_left, ← hb]
     show _ = algebraMap (𝓞 I.E) I.E (sigO I a * b)
     rw [map_mul]
     exact congrArg₂ (· * ·) (sigO_coe I a).symm rfl
   | zero =>
-    exact ⟨0, Ideal.zero_mem _, by rw [hform_zero_left]; exact (map_zero (algebraMap (𝓞 I.E) I.E)).symm⟩
+    exact ⟨0, Ideal.zero_mem _, by rw [_root_.Formalism.UG.P.csDual_hform_zero_left]; exact (map_zero (algebraMap (𝓞 I.E) I.E)).symm⟩
   | add x y _ _ hx hy =>
     obtain ⟨c1, hc1, e1⟩ := hx
     obtain ⟨c2, hc2, e2⟩ := hy
     exact ⟨c1 + c2, Ideal.add_mem _ hc1 hc2, by
-      rw [hform_add_left, e1, e2]; exact (map_add (algebraMap (𝓞 I.E) I.E) c1 c2).symm⟩
+      rw [_root_.Formalism.UG.P.csDual_hform_add_left, e1, e2]; exact (map_add (algebraMap (𝓞 I.E) I.E) c1 c2).symm⟩
   | smul r x _ hx =>
     obtain ⟨c, hc, e⟩ := hx
     refine ⟨sigO I r * c, Ideal.mul_mem_left _ _ hc, ?_⟩
-    rw [← algebraMap_smul I.E r x, hform_smul_left, e]
+    rw [← algebraMap_smul I.E r x, _root_.Formalism.UG.P.csDual_hform_smul_left, e]
     show _ = algebraMap (𝓞 I.E) I.E (sigO I r * c)
     rw [map_mul]
     exact congrArg₂ (· * ·) (sigO_coe I r).symm rfl
@@ -319,10 +267,7 @@ theorem hhat_sub_left (y y' z : Fin I.n → I.E ⊗[I.F] Af I.F) : hhat I (y - y
   unfold hhat
   exact hform_sub_left _ _ y y' z
 
-theorem hhat_fmat (x : I.Gf) (y z : Fin I.n → I.E ⊗[I.F] Af I.F) :
-    hhat I (I.fmat x *ᵥ y) (I.fmat x *ᵥ z) = hhat I y z := by
-  unfold hhat
-  exact hform_unit _ _ (I.fmat x) x.2 y z
+alias hhat_fmat := _root_.PIW.AdelClassFin.dictTop_hhat_unit
 
 theorem hhat_Lq {w : HeightOneSpectrum (𝓞 I.E)} {t β : 𝓞 I.E}
     (hβ : ∀ a ∈ (wc I w).asIdeal, ∃ g, β * a = t * g) {u : Fin I.n → I.E ⊗[I.F] Af I.F} (hu : u ∈ Lq I w)
@@ -333,7 +278,6 @@ theorem hhat_Lq {w : HeightOneSpectrum (𝓞 I.E)} {t β : 𝓞 I.E}
     intro e
     first
       | rfl
-      | simp [Formalism.UG.sigR, Formalism.UG.inclE, Formalism.BasicNotions.CMData.sig]
   have hInt : ∀ s ∈ IntAf I.F I.E, Formalism.UG.sigR I.cm.sig (Af I.F) s ∈ IntAf I.F I.E := by
     have hle : IntAf I.F I.E ≤ (IntAf I.F I.E).comap (Formalism.UG.sigR I.cm.sig (Af I.F)) := by
       show Subring.closure _ ≤ _
@@ -343,7 +287,6 @@ theorem hhat_Lq {w : HeightOneSpectrum (𝓞 I.E)} {t β : 𝓞 I.E}
         refine Subring.subset_closure (Or.inl ⟨⟨_, sigO I a, rfl⟩, ?_⟩)
         first
           | rfl
-          | simp [Formalism.UG.sigR, Formalism.BasicNotions.CMData.sig, sigO_coe]
       · rw [SetLike.mem_coe, Subring.mem_comap]
         refine Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, ?_⟩)
         simp [Formalism.UG.sigR]
@@ -358,7 +301,7 @@ theorem hhat_Lq {w : HeightOneSpectrum (𝓞 I.E)} {t β : 𝓞 I.E}
       hhat I (r • y) z = Formalism.UG.sigR I.cm.sig (Af I.F) r * hhat I y z := by
     intro r y z
     show Formalism.UG.hform _ _ ((r : I.E ⊗[I.F] Af I.F) • y) z = _ * Formalism.UG.hform _ _ y z
-    exact hform_smul_left _ _ _ _ _
+    exact _root_.Formalism.UG.P.csDual_hform_smul_left _ _ _ _ _
   have hsr : ∀ (r : IntAf I.F I.E) (y z : Fin I.n → I.E ⊗[I.F] Af I.F),
       hhat I y (r • z) = r * hhat I y z := by
     intro r y z

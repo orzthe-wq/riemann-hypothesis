@@ -547,7 +547,7 @@ theorem _root_.GlobalTheory.SiegQ.cth_eq {c M a : ℕ} (hM : 0 < M) (ha : a < M)
   rw [_root_.GlobalTheory.Sieg.cth, hF.tprod_eq, Finset.prod_congr rfl hfin, Finset.prod_mul_distrib,
     Finset.prod_pow_eq_pow_sum, hu, e4, _root_.GlobalTheory.SiegQ.expo, _root_.GlobalTheory.SiegQ.unitPart,
     zpow_add₀ hz0, zpow_add₀ hz0, zpow_natCast, zpow_natCast, ← pow_mul]
-  simp only [_root_.GlobalTheory.SiegQ.kk, Nat.cast_mul]
+  simp only [_root_.GlobalTheory.SiegQ.kk]
   ring
 
 open scoped UpperHalfPlane MatrixGroups Manifold Topology in
@@ -738,7 +738,7 @@ theorem _root_.GlobalTheory.SiegQ.sg_expansion_int : ∀ (c M a : ℕ), 0 < M �
   have hint : M ∣ c * a → ¬ ∃ n : ℤ, (n : ℚ) = (c : ℚ) * ((b : ℚ) / M) := by
     intro hdvd hex
     apply hnot
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
     obtain ⟨t, ht⟩ := hdvd
     refine ⟨⟨(t : ℤ), ?_⟩, hex⟩
     have hq : (c : ℚ) * a = t * M := by exact_mod_cast (by rw [ht, mul_comm] : c * a = t * M)
@@ -775,7 +775,7 @@ theorem _root_.GlobalTheory.SiegQ.sg_expansion_int : ∀ (c M a : ℕ), 0 < M �
       rw [hzdef, _root_.GlobalTheory.SiegQ.qv, ← Complex.exp_nat_mul, hvdef, _root_.GlobalTheory.Sieg.ee,
         _root_.GlobalTheory.Sieg.ee, ← Complex.exp_add, _root_.GlobalTheory.Sieg.pt]
       congr 1
-      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
       push_cast
       ring
     have e3 : _root_.GlobalTheory.Sieg.ee (-((_root_.GlobalTheory.SiegQ.expo c M a : ℂ) / M) * (τ : ℂ)) =

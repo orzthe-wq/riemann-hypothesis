@@ -271,7 +271,7 @@ theorem regular_fibre {A T : Type} [CommRing A] [IsLocalRing A] [CommRing T] [Al
     [IsScalarTower A T R] :
     IsRegularLocalRing (R ⧸ (maximalIdeal A).map (algebraMap A R)) ∧
       (g : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ (maximalIdeal A).map (algebraMap A R)) := by
-  letI := Ideal.Quotient.field (maximalIdeal A)
+  let := Ideal.Quotient.field (maximalIdeal A)
   let k := A ⧸ maximalIdeal A
   let T' := k ⊗[A] T
   let π : T →+* T' := Algebra.TensorProduct.includeRight.toRingHom
@@ -305,11 +305,11 @@ theorem regular_fibre {A T : Type} [CommRing A] [IsLocalRing A] [CommRing T] [Al
     (RingHom.isStandardSmoothOfRelativeDimension_algebraMap g).2 hss
   obtain ⟨φ, hφC, hφ⟩ := hf.exists_etale_mvPolynomial
   algebraize [φ]
-  haveI : IsScalarTower k (MvPolynomial (Fin g) k) T' := IsScalarTower.of_algebraMap_eq' hφC.symm
-  haveI hp := SmoothDim.isMaximal_under_of_finiteType k (MvPolynomial (Fin g) k) T' (q.map π)
+  have : IsScalarTower k (MvPolynomial (Fin g) k) T' := IsScalarTower.of_algebraMap_eq' hφC.symm
+  have hp := SmoothDim.isMaximal_under_of_finiteType k (MvPolynomial (Fin g) k) T' (q.map π)
   have h1 := ReciprocityTheory.CA.height_add_ringKrullDim_quotient_mvPolynomial_field k g
     ((q.map π).under (MvPolynomial (Fin g) k))
-  letI := Ideal.Quotient.field ((q.map π).under (MvPolynomial (Fin g) k))
+  let := Ideal.Quotient.field ((q.map π).under (MvPolynomial (Fin g) k))
   rw [ringKrullDim_eq_zero_of_field, add_zero] at h1
   have h2 : ((q.map π).under (MvPolynomial (Fin g) k)).height ≤ (q.map π).height := by
     rw [Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown
@@ -333,7 +333,7 @@ theorem exists_localRing {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRi
   obtain ⟨U, hU, V, hV, hxV, e, hs⟩ := hf.exists_isStandardSmoothOfRelativeDimension x
   obtain rfl : U = ⊤ := (closedPoint_mem_iff U).1 (hc ▸ e hxV)
   let ψ : CommRingCat.of A ⟶ Γ(X, V) := (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ f.appLE ⊤ V e
-  letI : Algebra A Γ(X, V) := ψ.hom.toAlgebra
+  let : Algebra A Γ(X, V) := ψ.hom.toAlgebra
   have hψ : ψ.hom.IsStandardSmoothOfRelativeDimension g :=
     RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _
       (Scheme.ΓSpecIso (CommRingCat.of A)).symm.commRingCatIsoToRingEquiv hs
@@ -343,9 +343,9 @@ theorem exists_localRing {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRi
     rw [← IsAffineOpen.SpecMap_appLE_fromSpec f hU hV e, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv,
       ← Spec.map_comp]
   let R : Type := X.presheaf.stalk x
-  letI : Algebra Γ(X, V) R := X.presheaf.algebra_section_stalk ⟨x, hxV⟩
+  let : Algebra Γ(X, V) R := X.presheaf.algebra_section_stalk ⟨x, hxV⟩
   have hloc : IsLocalization.AtPrime R (hV.primeIdealOf ⟨x, hxV⟩).asIdeal := hV.isLocalization_stalk ⟨x, hxV⟩
-  letI : Algebra A R := ((algebraMap Γ(X, V) R).comp (algebraMap A Γ(X, V))).toAlgebra
+  let : Algebra A R := ((algebraMap Γ(X, V) R).comp (algebraMap A Γ(X, V))).toAlgebra
   have : IsScalarTower A Γ(X, V) R := IsScalarTower.of_algebraMap_eq' rfl
   have hq := hV.primeIdealOf_isMaximal_of_isClosed ⟨x, hxV⟩ hp
   have : IsNoetherianRing Γ(X, V) := Algebra.FiniteType.isNoetherianRing A _

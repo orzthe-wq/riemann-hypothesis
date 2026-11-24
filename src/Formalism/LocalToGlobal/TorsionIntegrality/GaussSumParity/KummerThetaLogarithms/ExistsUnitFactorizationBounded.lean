@@ -80,7 +80,7 @@ lemma castL_ne_zero : (l : ℂ_[l]) ≠ 0 := Nat.cast_ne_zero.2 hl.out.ne_zero
 variable {l}
 
 lemma norm_ringA_le {x : ℂ_[l]} (hx : x ∈ ringA l) : ‖x‖ ≤ 1 := by
-  first | exact UpperTheory.Reformulated.B.Qi27.norm_ringA_le .. | (apply UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qi27.norm_ringA_le l hl x hx | exact @UpperTheory.Reformulated.B.Qi27.norm_ringA_le l hl x | exact @UpperTheory.Reformulated.B.Qi27.norm_ringA_le l hl | exact @UpperTheory.Reformulated.B.Qi27.norm_ringA_le l
+  first | (apply UpperTheory.Reformulated.B.Qi27.norm_ringA_le <;> assumption)
 
 lemma pow_pow_fix {M : Type*} [Monoid M] (x : M) (a : ℕ) (h : x ^ a = x) (k : ℕ) : x ^ (a ^ k) = x := by
   induction k with

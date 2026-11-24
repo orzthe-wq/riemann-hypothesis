@@ -143,17 +143,7 @@ theorem card_eq_of_bases {F M : Type} [Field F] [AddCommGroup M] [Module F M] {n
   obtain ⟨e'⟩ := key h'
   simpa using (e.trans e'.symm).finrank_eq
 
-theorem val_nonneg {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
-    {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)}
-    (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) (c : V) :
-    (0 : WithTop ℚ) ≤ v (algebraMap (FractionRing V) F (algebraMap V (FractionRing V) c)) := by
-  by_cases hc : c = 0
-  · simp [hc]
-  · obtain ⟨n, u, hu⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ
-    have h : HasVal ϖ (algebraMap V (FractionRing V) c) (n : ℤ) :=
-      ⟨u, by rw [hu, map_mul, map_pow, zpow_natCast, _root_.mul_comm]⟩
-    rw [hv _ _ h]
-    exact_mod_cast (Nat.cast_nonneg n : (0 : ℚ) ≤ n)
+alias val_nonneg := _root_.ReciprocityTheory.ChartRestriction.G.DVR.GC.v_alg_nonneg
 
 theorem prim_of {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ)
     {D : DegData V (maximalIdeal V)} {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q)

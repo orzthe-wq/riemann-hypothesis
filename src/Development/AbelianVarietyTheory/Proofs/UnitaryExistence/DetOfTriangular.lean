@@ -129,7 +129,7 @@ lemma _root_.GlobalTheory.PerMove.hermC_unitary (τ : E →+* ℂ) (G γ : Matri
     simp [Pi.single_apply, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc] at h
     simp [Matrix.mul_apply, Finset.sum_mul, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc]
     rw [Finset.sum_comm]
-    convert h using 3 <;> ring_nf
+    convert h using 3
   have hconj : (γ.map τ).map (starRingEnd ℂ) = (γ.map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc).map τ := by
     ext i j
     simp [_root_.GlobalTheory.PerMove.map_cc]

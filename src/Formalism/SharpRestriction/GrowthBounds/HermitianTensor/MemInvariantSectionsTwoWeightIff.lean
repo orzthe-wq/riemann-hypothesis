@@ -127,7 +127,7 @@ theorem delta_twoSp (K : Type) [Field K] (m a b : ℕ) (hm : 1 ≤ m) :
     rw [delta_prod]
     have h1 := hF true
     have h2 := hF false
-    simp only [eq_self_iff_true, if_true, Bool.false_eq_true, if_false] at h1 h2
+    simp only [if_true, Bool.false_eq_true, if_false] at h1 h2
     exact Formalism.GradedWeylDivisibility.dualWeyl_mul h1 h2
   | zero => simp
   | add y z _ _ hy hz =>

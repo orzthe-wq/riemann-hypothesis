@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.OneArc
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaCore
+import Development.WeilBound.CoreStatements.PlurisubharmonicCones.EmbEquivSymmApply
 
 @[expose] public section
 
@@ -79,7 +80,7 @@ theorem countable_hom (R : RiemLat E g Λ) (R' : RiemLat E g' Λ') : Countable (
 theorem exists_hom (R : RiemLat E g Λ) (R' : RiemLat E g' Λ') (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ))
     (h : φ '' Set.range R.P = Set.range R'.P) :
     ∃ ga : Λ →+ Λ', Function.Surjective ga ∧ ∀ a, R'.P (ga a) = φ (R.P a) := by
-  have hi := SheetDecomposition.Riem.inj R'
+  have hi := _root_.LevelTowerAlt.precomp_injective R'
   have h1 : ∀ a, ∃ a', R'.P a' = φ (R.P a) := fun a => by
     have : φ (R.P a) ∈ Set.range R'.P := h ▸ ⟨_, ⟨a, rfl⟩, rfl⟩
     exact this
@@ -90,7 +91,7 @@ theorem exists_hom (R : RiemLat E g Λ) (R' : RiemLat E g' Λ') (φ : (Fin g →
 
 theorem ext_of_P (R : RiemLat E g Λ) {φ φ' : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ)} (h : ∀ a, φ (R.P a) = φ' (R.P a)) : φ = φ' := by
   have : (φ : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)).restrictScalars ℝ = (φ' : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)).restrictScalars ℝ :=
-    LinearMap.ext_on_range (SheetDecomposition.Riem.span_top R) h
+    LinearMap.ext_on_range (_root_.LevelTowerAlt.span_top R) h
   exact LinearEquiv.ext fun a => LinearMap.congr_fun this a
 
 theorem countable_aut (R : RiemLat E g Λ) :

@@ -47,6 +47,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnimodMod
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGenOfIso
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -156,7 +157,7 @@ theorem cone_gen_mem_of_common {O : Type} [CommRing O] {bar : O → O} {φ : Inv
   rw [hej] at hEj
   refine ⟨i, LinearMap.ext₂ fun x y => ?_⟩
   have h3 := LinearMap.congr_fun₂ (congrArg Subtype.val hEj) x y
-  simp only [G, G', Submodule.coe_smul, LinearMap.smul_apply, nsmul_eq_mul] at h3
+  simp only [G, G'] at h3
   exact (mul_left_cancel₀ (by exact_mod_cast hk'.ne' : (k' : ℤ) ≠ 0) h3).symm
 
 theorem coneSum_eq : ∀ (φ : InvFun ℤ) (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (m m' : ℕ)

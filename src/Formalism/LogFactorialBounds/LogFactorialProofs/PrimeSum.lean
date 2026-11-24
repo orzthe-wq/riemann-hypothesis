@@ -74,7 +74,7 @@ lemma div_le_factorization_factorial {p : ℕ} (hp : p.Prime) (n : ℕ) :
 
 lemma sum_div_mul_log_le_log_factorial (n : ℕ) :
     ∑ p ∈ Nat.primesLE n, ((n / p : ℕ) : ℝ) * Real.log p ≤ Real.log (n.factorial : ℕ) := by
-  apply Formalism.MainNotions.WeilJacquetShalikaLaw.Proof.sz_sum_div_log <;> assumption
+  apply Formalism.MainNotions.WeilJacquetShalikaLaw.Proof.sz_sum_div_log
 
 lemma log_factorial_le (n : ℕ) : Real.log (n.factorial : ℕ) ≤ n * Real.log n := by
   rcases Nat.eq_zero_or_pos n with rfl | hn

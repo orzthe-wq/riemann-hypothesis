@@ -7,60 +7,16 @@ public import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
 public import Formalism.HermitianLattices.HermitianLatticesProofs.GenusCovolBound
 public import Formalism.HermitianLattices.HermitianLatticesProofs.NeighbourConstruct
 public import Formalism.LocalToGlobal.Columns.BaseLemmas
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.CoassocSimps
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.Etale.Weakly
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -422,39 +378,23 @@ theorem hStd_osmul_left (r : 𝓞 E) (x y : Sp E n) : hStd E n (r • x) y = hSt
   simp only [Pi.smul_apply, Algebra.smul_def, star_mul', algebraMap_cO]
   ring
 
-private theorem mem_dual_lemma_2 (L : Submodule (𝓞 E) (Sp E n)) (y : Sp E n) :
-    y ∈ dual (hStd E n) L ↔ ∀ x ∈ L, hStd E n x y ∈ (1 : Submodule (𝓞 E) E) := by
-  simp only [dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
-    LinearMap.restrictScalars_apply]
-
 theorem dual_anti {L M : Submodule (𝓞 E) (Sp E n)} (h : L ≤ M) :
     dual (hStd E n) M ≤ dual (hStd E n) L := by
   intro y hy
-  rw [mem_dual_lemma_2] at hy ⊢
+  rw [_root_.Formalism.L2.Col.mem_dual] at hy ⊢
   exact fun x hx => hy x (h hx)
-
-private theorem hStd_symm_lemma_8 : (hStd E n).IsSymm := by
-  first
-  | exact fun x y => by
-
-      simp only [hStd, LinearMap.mk₂'ₛₗ_apply, map_sum, map_mul, starRingEnd_apply, star_star]
-      exact Finset.sum_congr rfl fun i _ => mul_comm _ _
-  | exact ⟨fun x y => by
-
-      simp only [hStd, LinearMap.mk₂'ₛₗ_apply, map_sum, map_mul, starRingEnd_apply, star_star]
-      exact Finset.sum_congr rfl fun i _ => mul_comm _ _⟩
 
 theorem dual_dual {L : Submodule (𝓞 E) (Sp E n)} (hL : Submodule.IsFullLattice E L) :
     dual (hStd E n) (dual (hStd E n) L) = L := by
-  exact (dualLattice (𝓞 E) E (Sp E n) (hStd E n) hStd_symm_lemma_8 hStd_nondeg star_range L hL).2.1
+  exact (dualLattice (𝓞 E) E (Sp E n) (hStd E n) _root_.Formalism.L2.Col.hStd_isSymm hStd_nondeg star_range L hL).2.1
 
 theorem dual_lattice {L : Submodule (𝓞 E) (Sp E n)} (hL : Submodule.IsFullLattice E L) :
     Submodule.IsFullLattice E (dual (hStd E n) L) := by
-  exact (dualLattice (𝓞 E) E (Sp E n) (hStd E n) hStd_symm_lemma_8 hStd_nondeg star_range L hL).1
+  exact (dualLattice (𝓞 E) E (Sp E n) (hStd E n) _root_.Formalism.L2.Col.hStd_isSymm hStd_nondeg star_range L hL).1
 
 theorem mem_dual_sup (L M : Submodule (𝓞 E) (Sp E n)) (y : Sp E n) :
     y ∈ dual (hStd E n) (L ⊔ M) ↔ y ∈ dual (hStd E n) L ∧ y ∈ dual (hStd E n) M := by
-  rw [mem_dual_lemma_2, mem_dual_lemma_2, mem_dual_lemma_2]
+  rw [_root_.Formalism.L2.Col.mem_dual, _root_.Formalism.L2.Col.mem_dual, _root_.Formalism.L2.Col.mem_dual]
   constructor
   · intro h
     exact ⟨fun x hx => h x (Submodule.mem_sup_left hx), fun x hx => h x (Submodule.mem_sup_right hx)⟩
@@ -465,10 +405,10 @@ theorem mem_dual_sup (L M : Submodule (𝓞 E) (Sp E n)) (y : Sp E n) :
 
 theorem mem_dual_smul (I : Ideal (𝓞 E)) (D : Submodule (𝓞 E) (Sp E n)) (y : Sp E n) :
     y ∈ dual (hStd E n) (I • D) ↔ ∀ p ∈ I, cO E p • y ∈ dual (hStd E n) D := by
-  rw [mem_dual_lemma_2]
+  rw [_root_.Formalism.L2.Col.mem_dual]
   constructor
   · intro h p hp
-    rw [mem_dual_lemma_2]
+    rw [_root_.Formalism.L2.Col.mem_dual]
     intro x hx
     rw [← hStd_osmul_left]
     exact h _ (Submodule.smul_mem_smul hp hx)
@@ -476,7 +416,7 @@ theorem mem_dual_smul (I : Ideal (𝓞 E)) (D : Submodule (𝓞 E) (Sp E n)) (y 
     refine Submodule.smul_induction_on hz ?_ ?_
     · intro p hp x hx
       rw [hStd_osmul_left]
-      exact (mem_dual_lemma_2 D _).mp (h p hp) x hx
+      exact (_root_.Formalism.L2.Col.mem_dual D _).mp (h p hp) x hx
     · intro a b ha hb
       rw [map_add (f := _), LinearMap.add_apply]
       exact Submodule.add_mem _ ha hb
@@ -631,12 +571,12 @@ theorem conj_smul_dual_mem {I : Ideal (𝓞 E)} {N B : Submodule (𝓞 E) (Sp E 
     (hN : IsUnimodular (hStd E n) N) (hIN : I • N ≤ B) {p : 𝓞 E} (hp : cO E p ∈ I) {u : Sp E n}
     (hu : u ∈ dual (hStd E n) B) : p • u ∈ N := by
   have hN' : dual (hStd E n) N = N := hN
-  rw [← hN', mem_dual_lemma_2]
+  rw [← hN', _root_.Formalism.L2.Col.mem_dual]
   intro x hx
   have e : hStd E n x (p • u) = hStd E n (cO E p • x) u := by
     rw [hStd_osmul_left, cO_cO]
   rw [e]
-  exact (mem_dual_lemma_2 B u).mp hu _ (hIN (Submodule.smul_mem_smul hp hx))
+  exact (_root_.Formalism.L2.Col.mem_dual B u).mp hu _ (hIN (Submodule.smul_mem_smul hp hx))
 
 def Deco.repl (d : Deco E n ST SG) (P : ST) (N' : Submodule (𝓞 E) (Sp E n))
     (f' : Sp E n → 𝓞 E ⧸ P.1.asIdeal) : Deco E n ST SG where
@@ -1003,7 +943,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   simp [eLast]
 
 @[simp] theorem eLast_castSucc (i : Fin n) : eLast E n i.castSucc = 0 := by
-  simp [eLast, Pi.single_apply, Fin.castSucc_ne_last]
+  simp [eLast, Fin.castSucc_ne_last]
 
 @[simp] theorem initL_eLast : initL E n (eLast E n) = 0 := by
   funext i
@@ -1072,11 +1012,11 @@ theorem tilN_unimodular {N : Submodule (𝓞 E) (Sp E n)} (hN : IsUnimodular (hS
   have hN' : dual (hStd E n) N = N := hN
   show dual (hStd E (n + 1)) (tilN N) = tilN N
   ext y
-  rw [mem_dual_lemma_2 (tilN N) y, mem_tilN N y]
+  rw [_root_.Formalism.L2.Col.mem_dual (tilN N) y, mem_tilN N y]
   constructor
   · intro h
     refine ⟨?_, ?_⟩
-    · rw [← hN', mem_dual_lemma_2]
+    · rw [← hN', _root_.Formalism.L2.Col.mem_dual]
       intro u hu
       have h1 := h (incl E n u) ((mem_tilN N _).mpr
         ⟨by rwa [initL_incl], 0, by rw [incl_last, map_zero]⟩)
@@ -1090,7 +1030,7 @@ theorem tilN_unimodular {N : Submodule (𝓞 E) (Sp E n)} (hN : IsUnimodular (hS
     rw [← hN'] at h1
     obtain ⟨hx1, c, hc⟩ := (mem_tilN N x).mp hx
     rw [hStd_succ, ← hr, ← hc]
-    refine Submodule.add_mem _ ((mem_dual_lemma_2 N _).mp h1 _ hx1) ?_
+    refine Submodule.add_mem _ ((_root_.Formalism.L2.Col.mem_dual N _).mp h1 _ hx1) ?_
     exact Submodule.mem_one.mpr ⟨cO E c * r, by rw [map_mul, algebraMap_cO]⟩
 
 theorem IntAt.div_of_notMem {Q : HeightOneSpectrum (𝓞 E)} {a : E} (ha : IntAt Q a) {pi : 𝓞 E}
@@ -1293,12 +1233,12 @@ theorem Deco.Ok.smul_N_mem_L {d : Deco E n ST SG} (hd : d.Ok) {a : 𝓞 E}
 theorem Deco.Ok.smul_Lsh_mem_N {d : Deco E n ST SG} (hd : d.Ok) {a : 𝓞 E}
     (ha : ∀ P : ST, cO E a ∈ P.1.asIdeal) {x : Sp E n} (hx : x ∈ d.Lsh) : a • x ∈ d.N := by
   have hu : dual (hStd E n) d.N = d.N := hd.uni
-  rw [← hu, mem_dual_lemma_2]
+  rw [← hu, _root_.Formalism.L2.Col.mem_dual]
   intro y hy
   have e : hStd E n y (a • x) = hStd E n (cO E a • y) x := by
     rw [hStd_osmul_left, cO_cO]
   rw [e]
-  exact (mem_dual_lemma_2 d.L x).mp hx _ (hd.smul_N_mem_L ha hy)
+  exact (_root_.Formalism.L2.Col.mem_dual d.L x).mp hx _ (hd.smul_N_mem_L ha hy)
 
 theorem Deco.Ok.smul_Lsh_mem_L {d : Deco E n ST SG} (hd : d.Ok) {pi : 𝓞 E}
     (ha : ∀ P : ST, pi ∈ P.1.asIdeal) {x : Sp E n} (hx : x ∈ d.Lsh) :
@@ -1403,18 +1343,18 @@ private theorem dual_gmap_lemma_3 {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E
     dual (hStd E n) (gmap g L) = gmap g (dual (hStd E n) L) := by
   have hg' : ∀ x y, hStd E n (g x) (g y) = hStd E n x y := hg
   ext y
-  rw [mem_dual_lemma_2]
+  rw [_root_.Formalism.L2.Col.mem_dual]
   simp only [gmap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]
   constructor
   · intro h
     refine ⟨g.symm y, ?_, by simp⟩
-    rw [mem_dual_lemma_2]
+    rw [_root_.Formalism.L2.Col.mem_dual]
     intro x hx
     have h1 := h (g x) ⟨x, hx, rfl⟩
     rwa [← hg' x (g.symm y), LinearEquiv.apply_symm_apply]
   · rintro ⟨z, hz, rfl⟩ x ⟨x', hx', rfl⟩
     rw [hg']
-    exact (mem_dual_lemma_2 L z).mp hz x' hx'
+    exact (_root_.Formalism.L2.Col.mem_dual L z).mp hz x' hx'
 
 theorem upN_gmap {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) (P : Ideal (𝓞 E))
     (N : Submodule (𝓞 E) (Sp E n)) (x : Sp E n) :
@@ -1586,18 +1526,13 @@ theorem unimodular_eq_of_le {M N : Submodule (𝓞 E) (Sp E n)} (hM : IsUnimodul
   rw [hM', hN'] at h2
   exact le_antisymm h h2
 
-theorem Deco.up_f (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) (x y : Sp E n) :
-    (d.up P q x).f P y = open Classical in
-      if y ∈ localization₂ P.1.asIdeal (upN P.1.asIdeal d.N x) then d.f P (q • y) else 0 := by
-  simp [Deco.up]
+alias Deco.up_f := _root_.Formalism.L2.Col.up_f_lemma_5
 
 theorem Deco.up_f_of_mem (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) (x : Sp E n) {y : Sp E n}
     (hy : y ∈ upN P.1.asIdeal d.N x) : (d.up P q x).f P y = d.f P (q • y) := by
   rw [Deco.up_f, if_pos (mem_localized_of_mem _ _ hy)]
 
-theorem Deco.up_f_ne (d : Deco E n ST SG) (P : ST) (q : 𝓞 E) (x : Sp E n) {Q : ST} (hQ : Q ≠ P) :
-    (d.up P q x).f Q = d.f Q := by
-  simp [Deco.up, hQ]
+alias Deco.up_f_ne := _root_.Formalism.L2.Col.up_f_ne_lemma_6
 
 theorem inv_integral (P : HeightOneSpectrum (𝓞 E)) {q : 𝓞 E} (hq : q ∈ P.asIdeal)
     (hq2 : q ∉ P.asIdeal ^ 2) {b : E} (hb : b ∈ invIdeal (K := E) P.asIdeal) {β : 𝓞 E}
@@ -2494,13 +2429,6 @@ theorem card_Lsh_quot_L_of_ok {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr
 
 end Index
 
-section Misc
-
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
-  {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
-
-end Misc
-
 section AtBase2
 
 variable {X : Fields} {Pr : Primes X}
@@ -2543,25 +2471,6 @@ theorem piT_dvd_of_mem (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) (r : 𝓞 X.E)
   exact h2
 
 end AtBase2
-
-section Bridge
-
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
-
-end Bridge
-
-section TilClasses
-
-variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
-  {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
-
-end TilClasses
-
-section AtBase3
-
-variable {X : Fields} {Pr : Primes X}
-
-end AtBase3
 
 section DnNonempty
 

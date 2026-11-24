@@ -113,8 +113,6 @@ theorem cptPart_map_sub (P : Subgroup G) (hP : IsClosed (P : Set G)) (δ : G) (h
       rw [← Subgroup.coe_subtype, ← Subgroup.coe_map, MonoidHom.map_zpowers]
     first
       | (convert Iff.rfl using 3; exact this.symm)
-      | (convert Iff.rfl using 3; exact this)
-      | exact this ▸ Iff.rfl
   ext y
   constructor
   · rintro ⟨x, ⟨hx, hx'⟩, rfl⟩

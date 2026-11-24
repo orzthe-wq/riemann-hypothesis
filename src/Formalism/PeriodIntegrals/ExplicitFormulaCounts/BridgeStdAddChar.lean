@@ -1,7 +1,8 @@
 module
 
 public import Formalism.UnipotentAdelicQuotients.StdAdditiveCharExists
-public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.StdCharTR
+public import Formalism.PeriodIntegrals.StdCharTR
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StandardCharacterTrace.SumEmbeddingEqTrace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -49,7 +50,7 @@ open NumberField
 namespace PI.Bridge
 
 theorem bridge_stdAddChar : HeckeCharacterZeroLocus.StdAdditiveCharExists := by
-  have h := stdCharTR
+  have h := _root_.PI.StdCharTRWork.stdCharTR_main
   unfold PI.StdCharTR.Target at h
   unfold HeckeCharacterZeroLocus.StdAdditiveCharExists
   intro F _ _ hF

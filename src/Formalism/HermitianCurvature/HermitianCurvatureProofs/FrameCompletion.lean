@@ -96,10 +96,7 @@ theorem herm_comb {m : ℕ} {vs : List (Fin (2 * r + k + 1) → ℂ)} {C : Fin m
     (hC : IsFrameOf k r vs C) (f g : Fin m → ℂ) :
     herm (Hpk k r) (∑ a, f a • C a) (∑ b, g b • C b) = ∑ a, f a * star (g a) := by
   rw [herm_lsum]
-  apply Finset.sum_congr rfl
-  intro a _
-  rw [herm_rsum]
-  simp only [hC.2.1, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  simp only [herm_rsum, hC.2.1, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 theorem sum_mdim {X : Type*} [AddCommMonoid X] (F : ℕ → X) :
     ∑ j : Fin (mdim k r (Fin.last r)), F j.val = ∑ a : Fin k, F a.val + F k := by
@@ -113,8 +110,7 @@ theorem complete {x : Fin (2 * r + k + 1) → ℂ} {Bs : Fin k → Fin (2 * r + 
 theorem complete0 {x : Fin (2 * r + k + 1) → ℂ} {Bs : Fin k → Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x)
     (hxx : herm (Hpk k r) x x ≠ 0) (hB : IsFrameOf k r [x] Bs) {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v)
     (hvx : herm (Hpk k r) v x = 0) : v = ∑ a, herm (Hpk k r) v (Bs a) • Bs a := by
-  have h := complete hx hxx hB hv
-  rwa [hvx, zero_mul, zero_smul, add_zero] at h
+  simpa [hvx] using complete hx hxx hB hv
 
 theorem hzz {z : Fin (2 * r + k + 1) → ℂ} (hT : 0 < Tz k r z) : herm (Hpk k r) z z ≠ 0 := by
   intro h

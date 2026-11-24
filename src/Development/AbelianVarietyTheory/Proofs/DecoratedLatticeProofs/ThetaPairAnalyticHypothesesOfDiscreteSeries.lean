@@ -63,7 +63,7 @@ theorem inputs_of_chosenSeries :
     { chosen := hX
       hc := hHC
       decay := hDec
-      bridge := GlobalTheory.CoverModel.modelsAreCoverSeries_all hDS hHC D
+      bridge := _root_.GlobalTheory.CoverModel.modelsAreCoverSeries hDS hHC D
       vacChar := GlobalTheory.VacuumCharacter.vacChar D
       lie := GlobalTheory.LieScalar.lieFockAll D
       cpt := GlobalTheory.CompactFockAction.compactFockAll D

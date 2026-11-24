@@ -74,9 +74,6 @@ theorem phi_mem (φ : F →+* PadicAlgCl l) (x : F) : φ x ∈ Kphi φ := by
   refine mul_mem ?_ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)
   first
   | exact SubfieldClass.ratCast_mem _ _
-  | exact ratCast_mem _ _
-  | exact (Kphi φ).toSubfield.ratCast_mem _
-  | simp
 
 
 theorem exists_embAt (w : HeightOneSpectrum (𝓞 F)) (hw : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) :

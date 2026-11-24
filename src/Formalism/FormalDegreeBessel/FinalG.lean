@@ -60,9 +60,9 @@ theorem uWNormal : UWNormal := unitary_weyl_normal_holds
 theorem sGroup : SGroup := symmetric_group_holds
 theorem dInv : DInv := diagonal_inverse_holds
 theorem gInv : GInv := group_inverse_holds
-theorem gFactor : GFactor := group_factorization_holds
-theorem revCS : RevCS := reverse_cauchy_schwarz_holds
-theorem gGram : GGram := group_gram_holds
+alias gFactor := _root_.Formalism.QuantumDeterminants.group_factorization_holds
+alias revCS := _root_.Formalism.QuantumDeterminants.reverse_cauchy_schwarz_holds
+alias gGram := _root_.Formalism.QuantumDeterminants.group_gram_holds
 theorem gNonneg : GNonneg := gNonneg_of group_gram_holds
 
 end Formalism.QuantumDeterminants

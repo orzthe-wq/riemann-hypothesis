@@ -152,6 +152,6 @@ theorem map_mem_chartIdeal : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k,
     (y : (Σ k, J k) → Ω) (c : (k : K) → J k), (∀ k, y ⟨k, c k⟩ ≠ 0) → ∀ G : MvPolynomial (Σ k, J k) ℚ,
     aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) G = (0 : Ω) →
     map (algebraMap ℚ ℂ) G ∈ ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal y)) c := by
-  apply GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.Reg.ker_le_chart <;> assumption
+  apply GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.Reg.ker_le_chart
 
 end GlobalTheory.CompanionTheory.Ar.ChartDehom

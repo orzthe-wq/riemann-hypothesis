@@ -85,7 +85,7 @@ theorem isDomain_and_isIntegrallyClosed : ∀ (D E : Type) [CommRing D] [IsDomai
   let A := AdicCompletion (maximalIdeal D) D
   haveI : IsNoetherianRing A := AdicNoeth.isNoetherianRing_adicCompletion D _
   haveI : IsAdicComplete ((maximalIdeal D).map h) E := by rw [hmap]; exact hEc
-  obtain ⟨g, hg⟩ := exists_adicCompletion_ringHom_extend (maximalIdeal D) h
+  obtain ⟨g, hg⟩ := _root_.GlobalTheory.PowerExtensionEvaluation.exists_extension (maximalIdeal D) h
   letI : Algebra A E := g.toAlgebra
   have hgA : ∀ a, g (algebraMap D A a) = h a := fun a => RingHom.congr_fun hg a
   have hmA : (maximalIdeal A).map (algebraMap A E) = maximalIdeal E := by

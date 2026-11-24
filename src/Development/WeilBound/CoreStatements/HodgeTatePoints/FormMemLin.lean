@@ -147,7 +147,7 @@ theorem add_mem_pFun {p : ℕ} [Fact p.Prime] {ι : Type} [Fintype ι] [Decidabl
       by_cases hj : j = i
       · subst hj
         simp
-      · simp [Pi.single_apply, hj]
+      · simp [hj]
     rw [e]
     exact nsmul_mem (show (Pi.single i (1 : ZMod p) : ι → ZMod p) ∈ S from h1 i) _
   rw [pFun, Submodule.mem_pi]

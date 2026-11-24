@@ -55,18 +55,12 @@ noncomputable section
 
 namespace GlobalTheory.TypeProductCover
 
-theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
-  apply D.host.φ₀.injective
-  have := D.host.isCMField_hostE
-  exact (IsCMField.complexEmbedding_complexConj _ D.host.φ₀ x).trans
-    (D.host.conjE_apply D.host.φ₀ x).symm
-
 theorem lev_of_isConjPl (D : D7) {P P' : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.BasicNotions.IsConjPl D.host P P') :
     Formalism.IndefR.Lev.IsConjPl P P' := fun c hc =>
   ⟨RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E) c,
     (h c _ rfl).1 hc, by
       show D.host.conj (c : D.host.E) = star (c : D.host.E)
-      rw [star_eq_conj]⟩
+      rw [_root_.Formalism.MainNotions.S.Inh.tie_star]⟩
 
 theorem place_cover_prod : ∀ (D : D7) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (plg : (Σ k : Fin 2, D.nd.PlG k) ≃ ↥Pg),
     (∀ kv, ((plg kv : ↥Pg) : Formalism.L2.DIV.Pl D.host.E) = D.naut.plGw kv.1 kv.2) →

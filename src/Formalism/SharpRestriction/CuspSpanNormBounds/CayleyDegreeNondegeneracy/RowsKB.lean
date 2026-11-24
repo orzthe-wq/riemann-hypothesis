@@ -96,7 +96,7 @@ theorem rows_Dr_le_HHZ (D : D7) (large₂ : SizeData₂ D) (hrd : 0 < D.host.rdE
     have hmem : D.R.rS ∈ Finset.Icc 1 (D.R.rS + 1) := Finset.mem_Icc.2 ⟨hr, Nat.le_succ _⟩
     rw [← Finset.mul_prod_erase _ _ hmem]
     exact le_mul_of_one_le_right (le_trans zero_le_one (le_max_left _ _))
-      (rows_one_le_prod _ _ fun l _ => le_max_left _ _)
+      (_root_.Formalism.HermitianLatticeCounting.P.one_le_finset_prod_real_of_forall_one_le _ _ fun l _ => le_max_left _ _)
   have hs1 := rows_one_le_sizeZ (D := D) large₂.sc.b c Z
   calc ∏ τ, max 1 (absDl D Z D.R.rS τ ^ 2)
       ≤ ∏ τ : D.what₂.Tau, (H2 * max 1 (absDl D Z D.R.rS τ / H2)) ^ 2 :=
@@ -187,7 +187,7 @@ theorem rows_KBound_of {C' Cl Cg cb Cu cT CT C0 A c : ℝ} (hH : Cnt.Hyp D large
     have h8 : ∏ τ, max 1 (1 / Gz D (Tu D u) (Tu D u') (termGramMatrix X t) τ) ≤ HHZ D large₂.sc.b c (termGramMatrix X t) := by
       simp only [one_div]
       exact (rowsT_HH_term Y hH hHH t hG hrel).2.2.1
-    have key := Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.degFactorBound D.what₂.Tau
+    have key := _root_.Formalism.HermitianLatticeCounting.P.prodHyperbolicRatioSqLe D.what₂.Tau
       (fun τ => Lat.sh (Tu D u) (Tu D u') (X.fl t) (X.fl' t) (embS D τ))
       (fun τ => Lat.ch (Tu D u) (Tu D u') (X.fl t) (X.fl' t) (embS D τ))
       (fun τ => Gz D (Tu D u) (Tu D u') (termGramMatrix X t) τ) (fun τ => absDl D (termGramMatrix X t) D.R.rS τ)

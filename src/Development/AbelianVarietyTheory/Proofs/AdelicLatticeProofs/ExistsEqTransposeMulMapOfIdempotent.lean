@@ -1,8 +1,15 @@
 module
 
-public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.Algebra.Field.Defs
+public import Mathlib.Basic.Finite.Defs
 public import Mathlib.RingTheory.Henselian
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BinaryFormUniversal
+public import Mathlib.Algebra.CharP.Basic
+public import Mathlib.Algebra.Polynomial.Basic
+public import Mathlib.Algebra.Polynomial.Degree.Defs
+public import Mathlib.Algebra.Polynomial.Degree.SmallDegree
+public import Mathlib.Algebra.Polynomial.Eval.Defs
+public import Mathlib.FieldTheory.Finite.Basic
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsUnitFormSelfOfNotMem
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -22,13 +29,10 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -51,10 +55,55 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.TypeStar
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BinaryFormUniversal, Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsEqTransposeMulMapOfIdempotent
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BinaryFormUniversal =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BinaryFormUniversal", "h": "module\n\npublic import Mathlib.Algebra.Field.Defs\npublic import Mathlib.Basic.Finite.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.CharP.Basic\npublic import Mathlib.Algebra.Polynomial.Basic\npublic import Mathlib.Algebra.Polynomial.Degree.Defs\npublic import Mathlib.Algebra.Polynomial.Degree.SmallDegree\npublic import Mathlib.Algebra.Polynomial.Eval.Defs\npublic import Mathlib.FieldTheory.Finite.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u_1
+
+namespace GlobalTheory.BinaryFormUniversal
+
+open Polynomial
+
+theorem binary_form_universal {k : Type u_1} [Field k] [Finite k] {a n : k}
+    (hD : a ^ (2 : ℕ) - (4 : k) * n ≠ (0 : k)) (u : k) :
+    ∃ (r : k) (s : k), r ^ (2 : ℕ) + a * r * s + n * s ^ (2 : ℕ) = u := by
+  classical
+  by_cases h2 : ringChar k = 2
+  · obtain ⟨r, hr⟩ := FiniteField.isSquare_of_char_two h2 u
+    exact ⟨r, 0, by rw [hr]; ring⟩
+  · letI := Fintype.ofFinite k
+    have hodd : Fintype.card k % 2 = 1 := FiniteField.odd_card_of_char_ne_two h2
+    have h2' : (2 : k) ≠ 0 := Ring.two_ne_zero h2
+    have hD' : -(a ^ 2 - 4 * n) ≠ 0 := neg_ne_zero.mpr hD
+    have hf : degree (X ^ 2 : k[X]) = 2 := by simp
+    have hg : degree (C (-(a ^ 2 - 4 * n)) * X ^ 2 + C 0 * X + C (-(4 * u)) : k[X]) = 2 :=
+      degree_quadratic hD'
+    obtain ⟨x, s, h⟩ := FiniteField.exists_root_sum_quadratic hf hg hodd
+    simp only [eval_add, eval_mul, eval_pow, eval_X, eval_C] at h
+    refine ⟨(x - a * s) / 2, s, ?_⟩
+    field_simp
+    linear_combination h
+
+end GlobalTheory.BinaryFormUniversal
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BinaryFormUniversal =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsEqTransposeMulMapOfIdempotent =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsEqTransposeMulMapOfIdempotent", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Mathlib.RingTheory.Henselian\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.BinaryFormUniversal\npublic import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsUnitFormSelfOfNotMem\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix IsLocalRing
@@ -73,7 +122,7 @@ theorem exists_shear (G : Matrix ι ι R) (p : ι) (τ : ι → R) (hτ : τ p =
     rw [mul_sub, mul_one, add_mul, one_mul, vecMulVec_mul_vecMulVec]
     simp [hτ]
   · simp only [Matrix.mul_apply, transpose_apply, map_apply, Matrix.add_apply, vecMulVec_apply,
-      Matrix.one_apply, Pi.single_apply, map_add, map_mul, apply_ite c, map_one, map_zero,
+      Matrix.one_apply, Pi.single_apply, map_add, apply_ite c, map_one, map_zero,
       add_mul, mul_add, ite_mul, mul_ite, one_mul, zero_mul, mul_one, mul_zero,
       Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]
     ring
@@ -284,26 +333,9 @@ theorem exists_eq_transpose_mul_map [IsLocalRing R₀] (hc : ∀ x, c (c x) = x)
 
 end Base
 
-section Split
-
-variable {R₀ R : Type*} [CommRing R₀] [CommRing R] (c : R →+* R)
-  {ι : Type*} [Fintype ι] [DecidableEq ι]
-
-end Split
-
 section Norm
 
 open Polynomial
-
-theorem exists_binary_eq_of_finite {k : Type*} [Field k] [Finite k] {a n : k}
-    (hD : a ^ 2 - 4 * n ≠ 0) (u : k) : ∃ r s, r ^ 2 + a * r * s + n * s ^ 2 = u := by
-  first
-  | exact @_root_.GlobalTheory.BinaryFormUniversal.binary_form_universal
-  | exact _root_.GlobalTheory.BinaryFormUniversal.binary_form_universal
-  | (apply _root_.GlobalTheory.BinaryFormUniversal.binary_form_universal <;> assumption)
-  | (intros; apply _root_.GlobalTheory.BinaryFormUniversal.binary_form_universal <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.BinaryFormUniversal.binary_form_universal <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.BinaryFormUniversal.binary_form_universal ..)
 
 theorem exists_add_mul_sq_eq {R₀ : Type*} [CommRing R₀] (I : Ideal R₀) [HenselianRing R₀ I]
     (n : R₀) {e : R₀} (he : e ∈ I) : ∃ t, t + n * t ^ 2 = e := by
@@ -345,7 +377,7 @@ theorem exists_norm_eq_of_henselian (c : R →+* R) (hc : ∀ x, c (c x) = x)
     convert hω.pow 2 using 1
     simp only [map_sub, map_mul, map_pow, map_ofNat, ha, hn]
     ring
-  obtain ⟨r, s, hrs⟩ := exists_binary_eq_of_finite (a := residue R₀ a) (n := residue R₀ n)
+  obtain ⟨r, s, hrs⟩ := _root_.GlobalTheory.BinaryFormUniversal.binary_form_universal (a := residue R₀ a) (n := residue R₀ n)
     (by simpa only [map_sub, map_mul, map_pow, map_ofNat] using (hD.map (residue R₀)).ne_zero)
     (residue R₀ u)
   obtain ⟨r, rfl⟩ := residue_surjective r
@@ -381,3 +413,6 @@ variable [Module.Free R₀ R] [Algebra.FormallyUnramified R₀ R]
 end Norm
 
 end GlobalTheory.UnramifiedHermitian
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsEqTransposeMulMapOfIdempotent =====

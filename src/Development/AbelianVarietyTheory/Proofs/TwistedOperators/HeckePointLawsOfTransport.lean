@@ -88,25 +88,22 @@ abbrev epsBase (Ω : Type) [Field Ω] : Sp (DualNumber Ω) ⟶ Sp Ω := spMap (a
 
 abbrev epsZero (Ω : Type) [Field Ω] : Sp Ω ⟶ Sp (DualNumber Ω) := spMap (TrivSqZeroExt.fstHom Ω Ω Ω).toRingHom
 
-theorem spMap_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
-
 theorem epsZero_base : epsZero Ω ≫ epsBase Ω = 𝟙 _ := by
-  rw [spMap_spMap]
+  rw [_root_.GlobalTheory.TanMod.spMap_comp']
   exact (congrArg spMap (RingHom.ext fun _ => rfl)).trans (Spec.map_id _)
 
 theorem eps_base (a : Ω) : spMap (epsMul a) ≫ epsBase Ω = epsBase Ω := by
-  rw [spMap_spMap]
+  rw [_root_.GlobalTheory.TanMod.spMap_comp']
   refine congrArg spMap (RingHom.ext fun r => ?_)
   ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 theorem epsZero_eps (a : Ω) : epsZero Ω ≫ spMap (epsMul a) = epsZero Ω := by
-  rw [spMap_spMap]
+  rw [_root_.GlobalTheory.TanMod.spMap_comp']
   refine congrArg spMap (RingHom.ext fun r => ?_)
   simp [epsMul]
 
 theorem eps_comm (a b : Ω) : spMap (epsMul a) ≫ spMap (epsMul b) = spMap (epsMul b) ≫ spMap (epsMul a) := by
-  rw [spMap_spMap, spMap_spMap]
+  rw [_root_.GlobalTheory.TanMod.spMap_comp', _root_.GlobalTheory.TanMod.spMap_comp']
   refine congrArg spMap (RingHom.ext fun r => ?_)
   ext <;> simp [epsMul, mul_left_comm]
 

@@ -63,7 +63,7 @@ private theorem coord_sum (c : Fin d → BdR) (i : Fin d) :
   rw [Finset.sum_eq_single i]
   · simp
   · intro j _ hj
-    simp [Finsupp.single_apply, hj]
+    simp [hj]
   · simp
 
 private theorem sum_mem_fil_iff (a : ℤ) (c : Fin d → BdR) :

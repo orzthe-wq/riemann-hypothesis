@@ -178,13 +178,10 @@ theorem mem_eig (A : FI E) (s : ℕ) (t : E) :
   rw [this]; rfl
 
 theorem mul_mem_FI (A : FI E) (z : 𝓞 E) (t : E) (ht : t ∈ A) : (z : E) * t ∈ A := by
-  have := (A : Submodule (𝓞 E) E).smul_mem z ht
-  rw [Algebra.smul_def] at this
-  exact this
+  simpa [Algebra.smul_def] using (A : Submodule (𝓞 E) E).smul_mem z ht
 
 theorem sign_mem (A : FI E) (s : ℕ) (t : E) (ht : t ∈ A) : (-1) ^ s * t ∈ A := by
-  have := mul_mem_FI E A ((-1) ^ s) t ht
-  simpa using this
+  simpa using mul_mem_FI E A ((-1 : 𝓞 E) ^ s) t ht
 
 theorem sign_sq (s : ℕ) : ((-1 : E) ^ s) * (-1) ^ s = 1 := by
   rw [← mul_pow]; simp
@@ -196,8 +193,7 @@ theorem mem_gA (A : FI E) (g : ℕ) (x : E) :
 theorem gA_le (A : FI E) (g : ℕ) (x : E)
     (hx : x ∈ A * FractionalIdeal.spanSingleton (𝓞 E)⁰ (g : E)) : x ∈ A := by
   obtain ⟨a, ha, rfl⟩ := (mem_gA E A g x).mp hx
-  have := mul_mem_FI E A (g : 𝓞 E) a ha
-  simpa using this
+  simpa using mul_mem_FI E A (g : 𝓞 E) a ha
 
 theorem tw_eq (A : FI E) (g s : ℕ) (hA : ConjStable E A) (hg : 0 < g) (hU : UnramAbove E g) :
     twLat E A (A * FractionalIdeal.spanSingleton _ (g : E)) s
@@ -276,9 +272,7 @@ theorem finrank_sup (N₁ N₂ : Submodule ℤ E) [Module.Finite ℤ N₁] [Modu
     · simp
     · simpa using h
   have := LinearMap.finrank_range_of_inj hinj
-  rw [LinearMap.range_coprod, Submodule.range_subtype, Submodule.range_subtype,
-    Module.finrank_prod] at this
-  exact this
+  rwa [LinearMap.range_coprod, Submodule.range_subtype, Submodule.range_subtype, Module.finrank_prod] at this
 
 theorem exists_delta : ∃ δ : 𝓞 E, (δ : E) ≠ 0 ∧ complexConj E δ = -(δ : E) := by
   by_contra h

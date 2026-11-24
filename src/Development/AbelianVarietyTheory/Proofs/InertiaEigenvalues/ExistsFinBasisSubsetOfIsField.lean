@@ -227,7 +227,7 @@ theorem spans_dual_base {V : Type} [AddCommGroup V] [Module Qp V] [FiniteDimensi
 
     rw [hdec (x ⊗ₜ[Qp] (1 : F)), map_sum]
 
-    simp only [d', map_sum, hπ, hw, hκ, map_smul, smul_eq_mul, smul_one_mul]
+    simp only [map_sum, hπ, hw, hκ, map_smul, smul_eq_mul, smul_one_mul]
   have hd'inv : ∀ i g, actVdR PD ρ' g (d' i) = d' i := by
     intro i g
     apply hπext

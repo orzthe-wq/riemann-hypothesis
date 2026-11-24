@@ -68,7 +68,7 @@ theorem exists_prod_dvd_monomial (t : I → D) (k : ℕ) :
     obtain ⟨s, hs⟩ := ih m' (by rw [map_add (f := _), Finsupp.degree_single] at hm; omega)
     refine ⟨Fin.cons i s, ?_⟩
     have h1 : ∏ j, t j ^ (Finsupp.single i 1 : I →₀ ℕ) j = t i := by
-      rw [Finset.prod_eq_single i] <;> simp +contextual [Finsupp.single_apply, eq_comm]
+      rw [Finset.prod_eq_single i] <;> simp +contextual [eq_comm]
     simp only [Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, Finsupp.add_apply, pow_add,
       Finset.prod_mul_distrib, h1]
     exact mul_dvd_mul_left _ hs

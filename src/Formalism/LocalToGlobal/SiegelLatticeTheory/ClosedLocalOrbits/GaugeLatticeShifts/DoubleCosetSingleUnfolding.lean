@@ -7,54 +7,14 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.Unita
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.NilradicalLatticeZMemSpan
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.LevelSubgroupProperties
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHFinal
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.FoldUnfold
+import Formalism.PeriodIntegrals.FoldUnfold
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnfoldingIdentity.FoldUnfoldMain
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.PoincareSeriesInner
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ComplexDoubleCosets.ComplexDoubleCoset
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FoldingUnfolding.DoubleCosetTranslation
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FoldingUnfolding.TranslationIndependent
 import Formalism.SharpRestriction.CuspSpanNormBounds.UnimodularSchurMeasures.RightRegularIsometricMultiplicative
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -121,7 +81,7 @@ theorem dcSingleE (Γ S S' : Subgroup G) [Countable Γ] (hS : S ≤ Γ) (hS' : S
         exact (Measurable.tsum fun t => (hφm (r : G)).comp (measurable_const_mul _)).aemeasurable
     _ = ∑' r : R, ∫⁻ x in Fs r, f x * h ((r : G)⁻¹ * x) ∂μ := by
         refine tsum_congr fun r => ?_
-        exact lintegralTransversalSum G μ S (stab S S' r) inf_le_left (Fs r) (hFs r r.2) F hF (E r) (hE r) _
+        exact _root_.PI.FoldUnfold.UnitaryGroupMassFormula.foldUnfold_main G μ S (stab S S' r) inf_le_left (Fs r) (hFs r r.2) F hF (E r) (hE r) _
           (hφm r) (hφi r)
 
 end DC
@@ -552,18 +512,6 @@ namespace Formalism.L2.SG.Pf.Slab
 
 open Formalism.L2.SG.FoldBound Formalism.L2.SG.PoincareSeriesSquareIntegrable NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.L2.SG.TermOp
 
-section TilingE
-
-variable {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
-
-theorem fd_tilingE (Γ : Subgroup G) [Countable Γ] (FS : Set G) (hFS : IsFundamentalDomain Γ FS μ)
-    (P : Set G) (hP : MeasurableSet P) (f : G → ℝ≥0∞) (hfm : Measurable f) (hfi : ∀ s ∈ Γ, ∀ y, f (s * y) = f y)
-    (hcov : ∀ y, f y ≠ 0 → ∃ s ∈ Γ, s * y ∈ P) (huniq : ∀ y ∈ P, ∀ s ∈ Γ, s * y ∈ P → s = 1) :
-    ∫⁻ x in FS, f x ∂μ = ∫⁻ x in P, f x ∂μ :=
-  tiling_lemma μ Γ FS hFS P hP f hfm hfi hcov huniq
-
-end TilingE
-
 section SlabE
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
@@ -753,7 +701,7 @@ theorem Slab.ooLintSum_of {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting 
       congr 1
       refine tsum_congr fun δ => ?_
       rw [← mul_assoc, enorm_ph_right Y.hK hWD' (T' j) _ k hk]
-    have e1 := fd_tilingE (X.B.I.muA X.B.μf) (Srat X u) FS (hFS _) _ hPm G hGm hGi hGs hGu
+    have e1 := _root_.Formalism.L2.SG.Pf.Slab.tiling_lemma (X.B.I.muA X.B.μf) (Srat X u) FS (hFS _) _ hPm G hGm hGi hGs hGu
     have e2 : ∫⁻ z in ⋃ ρ, slab (Y.cs u) ρ (Ωs ρ), G z ∂(X.B.I.muA X.B.μf) =
         ∑ ρ, ∫⁻ z in slab (Y.cs u) ρ (Ωs ρ), G z ∂(X.B.I.muA X.B.μf) := by
       rw [lintegral_iUnion hsm hdisj, tsum_fintype]
@@ -965,7 +913,7 @@ theorem termsLEC_of (hMaj : MajPtC) (hInv : RInvC) (hCnt : CountC) : TermsLEC :=
           (Formalism.L2.SG.ProjRows.muInf X.B.I) :=
         isFund_of_strict _ hS.1 hS.2.1 hS.2.2 _
       have hab : aB Y u t.1.lam = a := by rw [t.2]
-      refine (lintegralTransversalSum X.B.I.Ginf (Formalism.L2.SG.ProjRows.muInf X.B.I) (NOlam X u Λ) _ (hle t.1 t.2)
+      refine (_root_.PI.FoldUnfold.UnitaryGroupMassFormula.foldUnfold_main X.B.I.Ginf (Formalism.L2.SG.ProjRows.muInf X.B.I) (NOlam X u Λ) _ (hle t.1 t.2)
         (FundOf t.1) hFd (Ωs b) hFdΩ (E t.1) (hEt t.1 t.2) (F i j t.1) (hFm i j t.1) ?_).symm
       intro s hs y
       have h := hInv D X Y u u' (T i) (T' j) t.1 s hs y
@@ -1057,7 +1005,7 @@ theorem rInvC_of (hNC : Formalism.L2.SG.TermOp.Vanish.NilradicalConjLevel) : RIn
     subst hrx
     refine Prod.ext ?_ ?_
     · simp
-    · simp only [Prod.snd_mul, Prod.snd_one]
+    · simp only [Prod.snd_mul]
       group
   have hγ : RatLink X t.pt t.lin := t.rep.2.1
   have hy : RatLink X (t.pt⁻¹ * xr * t.pt) (t.lin⁻¹ * m * t.lin) :=

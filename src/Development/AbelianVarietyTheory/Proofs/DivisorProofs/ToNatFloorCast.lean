@@ -114,11 +114,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
-theorem inR : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩
+theorem dat_p : (dat p i).p = D.R.k + i := (p.fw.laws.pins.2.2.2 _ (_root_.Formalism.IndefR.FWT.inR i)).1
 
-theorem dat_p : (dat p i).p = D.R.k + i := (p.fw.laws.pins.2.2.2 _ (inR i)).1
-
-theorem dat_q : (dat p i).q = D.R.m - ((i : ℕ) + 1) := (p.fw.laws.pins.2.2.2 _ (inR i)).2.1
+theorem dat_q : (dat p i).q = D.R.m - ((i : ℕ) + 1) := (p.fw.laws.pins.2.2.2 _ (_root_.Formalism.IndefR.FWT.inR i)).2.1
 
 theorem dat_rank : (dat p i).p + (dat p i).q = D.R.r := by
   have := i.2
@@ -150,7 +148,7 @@ theorem unit_eq : unitE p = (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.L * Real.log (
 theorem laOf_read (τ : Psi p.T.Q.H) (t : D.what₂.Tau) (ht : τ.1 = DV.tauEmb D t) (n : Fin ((dat p i).p + (dat p i).q)) :
     (laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ n : ℚ) = ent D i t n := by
   have hp := p.fw.laws.pins.1
-  have hs : (Wc D i).sig (TH.tauE D t) = D.R.sigW ((i : ℕ) + 1) := D.sp.W_sigval _ (inR i).1 (inR i).2 _
+  have hs : (Wc D i).sig (TH.tauE D t) = D.R.sigW ((i : ℕ) + 1) := D.sp.W_sigval _ (_root_.Formalism.IndefR.FWT.inR i).1 (_root_.Formalism.IndefR.FWT.inR i).2 _
   obtain ⟨k1, k2, -⟩ := p.fw.kap i t
   rw [hs] at k1 k2
   have s1 : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + i := rfl

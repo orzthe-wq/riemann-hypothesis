@@ -2,8 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 public import Mathlib.RingTheory.MvPowerSeries.Derivative
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSubstRestrictSumVariablesStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffsInIdealSolutionOfUnipotentSeriesMatrixStatement
+public import Mathlib.RingTheory.MvPowerSeries.Substitution
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffSubstRestrictSumVariables
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CoeffsInIdealSolutionOfUnipotentSeriesMatrix
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PderivSubstChainRule
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -122,7 +123,7 @@ theorem coeff_inr_of_unit {B : Type} [CommRing B] {d : ℕ} (μ : Fin d → MvPo
           (fun i => X (Sum.inl i)) s)) = Sum.elim (fun i => X i) (fun _ => 0) := by
       funext s; cases s <;> simp [subst_X hs]
     rw [e]; exact h1
-  have := (GlobalTheory.T.coeff_subst_restrict_sum_variables (μ j)).2 (Finsupp.single i 1)
+  have := (_root_.GlobalTheory.coeff_subst_restrict_sum (μ j)).2 (Finsupp.single i 1)
   rw [key, Finsupp.mapDomain_single] at this
   rw [← this, coeff_X]
   simp [Finsupp.single_left_inj one_ne_zero]
@@ -160,7 +161,7 @@ theorem dIn_of_QL : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [Co
     fun j i => subst ρB (pderiv (R := B) (Sum.inr i) (μ j))
   have hM : ∀ j i, constantCoeff (M j i) = if j = i then 1 else 0 := by
     intro j i
-    have h2 := (GlobalTheory.T.coeff_subst_restrict_sum_variables (R := B) (pderiv (R := B) (Sum.inr i) (μ j))).1 0
+    have h2 := (_root_.GlobalTheory.coeff_subst_restrict_sum (R := B) (pderiv (R := B) (Sum.inr i) (μ j))).1 0
     rw [← hρBe] at h2
     rw [← coeff_zero_eq_constantCoeff_apply]
     simp only [M]
@@ -190,7 +191,7 @@ theorem dIn_of_QL : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [Co
     rw [l4.1, l4.2, add_zero]
     refine in_add ?_ ?_
     · intro α
-      have h2 := (GlobalTheory.T.coeff_subst_restrict_sum_variables (R := Q)
+      have h2 := (_root_.GlobalTheory.coeff_subst_restrict_sum (R := Q)
         (pderiv (R := Q) (Sum.inr i) (cob1 (up Q μ) f))).1 α
       rw [← hρe] at h2
       rw [h2, coeff_pderiv]
@@ -202,7 +203,7 @@ theorem dIn_of_QL : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [Co
       by_cases h0 : α = 0
       · exact ⟨b, hb, by rw [h0, coeff_zero_C, e]⟩
       · exact ⟨0, N.zero_mem, by rw [coeff_C, ite_eq_right h0, map_zero]⟩
-  have hv := GlobalTheory.T.coeffsInIdeal_solution_of_unipotent_series_matrix N M hM
+  have hv := _root_.GlobalTheory.InvSolve.solve N M hM
     (fun j => pderiv (R := Q) j f) g hvg hg
   intro α i
   by_cases hi : α i = 0

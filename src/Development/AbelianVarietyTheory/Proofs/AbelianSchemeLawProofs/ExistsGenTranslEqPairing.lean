@@ -139,7 +139,7 @@ theorem exists_theta {T : Over S} (p₀ : T.left) (hT : ∀ p : T.left, p = p₀
       rw [e₁, e₃]
       apply Additive.ofMul.injective
       simp only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero,
-        Matrix.cons_val_zero, Matrix.cons_val_succ, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_one, e₂,
+        Matrix.cons_val_zero, Matrix.cons_val_succ, ofMul_mul, ofMul_zpow, ofMul_one, e₂,
         ← Over.comp_left, _root_.one_mul]
       module)
     (LB.mulGen L.L _ _ _ _ N (LB.pullGen L.L _ _ σ (fst T A).left))
@@ -168,7 +168,7 @@ theorem exists_triv {T : Over S} (p₀ : T.left) (hT : ∀ p : T.left, p = p₀)
       rw [e₁, e₃]
       apply Additive.ofMul.injective
       simp only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_succ, Fin.prod_univ_zero,
-        Matrix.cons_val_zero, Matrix.cons_val_succ, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_one, e₂,
+        Matrix.cons_val_zero, Matrix.cons_val_succ, ofMul_mul, ofMul_zpow, ofMul_one, e₂,
         ← Over.comp_left, _root_.one_mul]
       module)
     (LB.mulGen L.L _ _ _ _ N (LB.mulGen L.L _ _ _ _

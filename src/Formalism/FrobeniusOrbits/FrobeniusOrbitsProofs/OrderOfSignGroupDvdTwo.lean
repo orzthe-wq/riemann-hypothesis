@@ -68,7 +68,7 @@ theorem isSquare_of_hensel (p : ℕ) [Fact p.Prime] (c a : ℤ)
       ‖Polynomial.aeval (a : ℤ_[p])
         (Polynomial.derivative (Polynomial.X ^ 2 + Polynomial.C (c : ℤ_[p])))‖ ^ 2 := by
     push_cast at h
-    simp [Polynomial.derivative_X_pow, mul_comm] at h ⊢
+    simp [mul_comm] at h ⊢
     convert h using 4
     norm_num
   obtain ⟨z, hz, -⟩ := hensels_lemma h'
@@ -82,7 +82,7 @@ open Misc Galois
 
 theorem hostEmb : HostEmb := by
   intro e q d hqd L _ _ ζ a b hL φ₀
-  haveI := Galois.isGalois_hostE hqd hL
+  have := Galois.isGalois_hostE hqd hL
   have inj : Function.Injective
       (fun σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b => φ₀.comp (σ : hostE ζ a b →+* hostE ζ a b)) := by
     intro σ τ h
@@ -99,6 +99,6 @@ theorem hostClasses : HostClasses := by
   generalize (galE e ζ a b σ).1 = x
   obtain ⟨u1, u2⟩ := x
   rcases Int.units_eq_one_or u1 with rfl | rfl <;> rcases Int.units_eq_one_or u2 with rfl | rfl <;>
-    simp [c0, Prod.ext_iff] <;> decide
+    simp [c0, Prod.ext_iff]
 
 end Formalism.FrobeniusOrbits

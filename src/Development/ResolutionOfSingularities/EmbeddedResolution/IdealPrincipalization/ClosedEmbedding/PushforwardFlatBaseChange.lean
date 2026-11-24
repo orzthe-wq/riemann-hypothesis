@@ -151,7 +151,7 @@ theorem of_flat_isPullback {S X S' X' : Scheme.{u}}
       rw [← SequenceOfBlowups.projectionToBase_succ, hσ'2 (i + 1) hi, hσ'2 i hi.le,
         SequenceOfBlowups.projectionToBase_succ, Category.assoc]
   have hcen' : ∀ i : ℕ, ∀ hi : i < s'.length,
-      t'.center i = imageIdealSheaf (σ' i hi.le) (s'.center i) := by
+      t'.center i = _root_.FunctorialResolution.Blowup.schemeImageIdeal (σ' i hi.le) (s'.center i) := by
     intro i hi
     have hit : i < t'.length := by omega
     have his : i < s.length := by omega

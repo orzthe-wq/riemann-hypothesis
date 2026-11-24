@@ -61,9 +61,7 @@ theorem dominance_trans {n : ℕ} {a b c : Fin n → ℤ} (h1 : DomLE a b) (h2 :
 theorem dominance_refl {n : ℕ} (a : Fin n → ℤ) : DomLE a a := ⟨fun _ => le_rfl, rfl⟩
 
 theorem dominance_antisymm {n : ℕ} {a b : Fin n → ℤ} (h1 : DomLE a b) (h2 : DomLE b a) : a = b := by
-  have g1 := (dominanceOrder_iff a b).1 h1
-  have g2 := (dominanceOrder_iff b a).1 h2
-  exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.A3ev.domLe_eq g2 (Finset.sum_le_sum fun j _ => g1.2 j)
+  exact Formalism.InvariantFactorPaths.GelfandTsetlinBases.A3ev.domLe_eq ((dominanceOrder_iff b a).1 h2) (Finset.sum_le_sum fun j _ => ((dominanceOrder_iff a b).1 h1).2 j)
 
 abbrev WI (n N : ℕ) (LL : Letters (Fin N)) (B : Fin N → ℕ) :=
   {x : PPath n N LL B × (ℤ → Finset (Fin n)) // IsSt x.1.mu x.2}

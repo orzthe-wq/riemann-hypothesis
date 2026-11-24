@@ -40,8 +40,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.AnalyticForms.PotentialTheory.IntegralIoiFsDensRadial
-public import ReciprocityTheory.AnalyticForms.PotentialTheory.ProjectiveLinePartitionContinuousCoe
 
 @[expose] public section
 
@@ -62,8 +60,6 @@ def TailShift.Statement : Prop :=
 
 section Inhabitants
 
-open ReciprocityTheory.AnForm (fsDens fsDens_pos)
-open ReciprocityTheory.AnForm.M (p1 fsPot projectiveLine_locDens_first_chart projectiveLine_locDens_second_chart projectiveLine_fubiniStudy_mass_one)
 
 end Inhabitants
 

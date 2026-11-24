@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsOverIff
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -56,9 +57,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.UMin.CrdUniq
 
-theorem exists_spMap' {A B : Type} [CommRing A] [CommRing B] (f : Sp B ⟶ Sp A) : ∃ c : A →+* B, spMap c = f :=
-  ⟨(Spec.preimage f).hom, by simp [spMap]⟩
-
 theorem pCrd_iff {o R : Type} [CommRing o] [CommRing R] {n : ℕ} (x : Sp R ⟶ PSpace o n) (c : o →+* R)
     (hx : x ≫ PSpace.str o n = spMap c) (v : Fin (n + 1) → R) :
     PCrd x v ↔ ∃ hv : Ideal.span (Set.range v) = ⊤, x = ProjSpace.pt c v hv := by
@@ -70,14 +68,14 @@ theorem pCrd_iff {o R : Type} [CommRing o] [CommRing R] {n : ℕ} (x : Sp R ⟶ 
 
 theorem eq_of_pCrd {o R : Type} [CommRing o] [CommRing R] {n : ℕ} {x x' : Sp R ⟶ PSpace o n} {v : Fin (n + 1) → R}
     (hs : x ≫ PSpace.str o n = x' ≫ PSpace.str o n) (h : PCrd x v) (h' : PCrd x' v) : x = x' := by
-  obtain ⟨c, hc⟩ := exists_spMap' (x ≫ PSpace.str o n)
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.ZM.DenseFib.exists_spMap (x ≫ PSpace.str o n)
   obtain ⟨hv, e⟩ := (pCrd_iff x c hc.symm v).1 h
   obtain ⟨hv', e'⟩ := (pCrd_iff x' c (hs ▸ hc.symm) v).1 h'
   rw [e, e']
 
 theorem exists_ne_zero_of_pCrd {o K : Type} [CommRing o] [Field K] {n : ℕ} {x : Sp K ⟶ PSpace o n}
     {v : Fin (n + 1) → K} (h : PCrd x v) : ∃ k, v k ≠ 0 := by
-  obtain ⟨c, hc⟩ := exists_spMap' (x ≫ PSpace.str o n)
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.ZM.DenseFib.exists_spMap (x ≫ PSpace.str o n)
   obtain ⟨hv, -⟩ := (pCrd_iff x c hc.symm v).1 h
   by_contra hn
   push_neg at hn

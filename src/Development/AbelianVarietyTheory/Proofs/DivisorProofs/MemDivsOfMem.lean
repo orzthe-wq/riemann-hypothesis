@@ -50,10 +50,6 @@ section General
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
-theorem conjP_involutive (P : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPrime₂ P) = P := by
-  ext x
-  rw [mem_conjP, mem_conjP, cO_cO]
-
 variable {F : Type} [Field F] [NumberField F] [Algebra F E]
 
 noncomputable def starAlg (hF : ∀ x : F, star (algebraMap F E x) = algebraMap F E x) : E ≃ₐ[F] E :=

@@ -149,7 +149,7 @@ theorem embReg_of_free_permuted_summands : ∀ (K Γ V X : Type) [Field K] [Grou
   have hTc : ∀ f v (h : H), (T f v).coeff h = f (ρ (h : Γ)⁻¹ v) := by
     intro f v h
     rw [hT, MonoidAlgebra.coeff_sum]
-    simp [MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_single, Finsupp.single_apply]
+    simp [MonoidAlgebra.coeff_single, Finsupp.single_apply]
   have hTeq : ∀ f (g : H) v, T f (ρ g v) = MonoidAlgebra.single g 1 * T f v := by
     intro f g v
     rw [hT, hT, Finset.mul_sum]
@@ -158,7 +158,7 @@ theorem embReg_of_free_permuted_summands : ∀ (K Γ V X : Type) [Field K] [Grou
     rw [mul_smul_comm, MonoidAlgebra.single_mul_single, one_mul, mul_inv_cancel_left]
     have hc : ρ (h : Γ)⁻¹ (ρ g v) = ρ ((g⁻¹ * h : H) : Γ)⁻¹ v := by
       rw [← Module.End.mul_apply, ← map_mul]
-      simp [mul_assoc]
+      simp
     rw [hc]
   let j : V →ₗ[K] (Fin n → MonoidAlgebra K H) := LinearMap.pi fun k => T (fo (e k))
   refine ⟨n, ⟨j, ?_, ?_⟩, hcount⟩

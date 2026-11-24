@@ -156,12 +156,9 @@ theorem conjugated_generator_gl_relation : EabHGl := by
       rw [if_pos rfl]
       first
       | rw [Matrix.single_mul_single_same, mul_one]
-      | (ext p q; simp [Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq'])
     · rw [if_neg hjk]
       first
-      | exact Matrix.single_mul_single_of_ne hjk _ _
-      | (ext p q; simp [Matrix.mul_apply, Matrix.single_apply, ite_and, hjk, Finset.sum_ite_eq,
-          Finset.sum_ite_eq'])
+      | (ext p q; simp [Matrix.mul_apply, Matrix.single_apply, ite_and, hjk, Finset.sum_ite_eq])
   simp only [hE]
   rw [ana_EcComm hH f _ _ g hf hg, ana_Ec_sub hH hf hg, hm, hm]
   split_ifs <;> simp [ana_Ec_zero]
@@ -183,7 +180,6 @@ lemma ana_inv_mul (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H 
 lemma ana_mul_inv (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H s) : s * s⁻¹ = 1 := by
   first
   | exact Matrix.mul_nonsing_inv s (Matrix.isUnit_det_of_left_inverse (ana_inv_mul hH hs))
-  | exact mul_eq_one_comm.1 (ana_inv_mul hH hs)
 
 lemma isUnit_of_inUH (hH : HInvol H) {s : Matrix (Fin n) (Fin n) ℂ} (hs : inUH H s) : IsUnit s := ⟨⟨s, s⁻¹, ana_mul_inv hH hs, ana_inv_mul hH hs⟩, rfl⟩
 
@@ -257,7 +253,7 @@ lemma ana_conj_single (s : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     s⁻¹ * Matrix.single a b (1 : ℂ) * s = ∑ c, ∑ d, (s⁻¹ c a * s b d) • Matrix.single c d (1 : ℂ) := by
   ext i j
   simp [Matrix.mul_apply, Matrix.single_apply, Matrix.sum_apply, ite_and, Finset.sum_ite_eq,
-    Finset.sum_ite_eq'] <;> ring
+    Finset.sum_ite_eq']
 
 end Right
 

@@ -157,7 +157,7 @@ theorem sum_jac_cls_eq_zero (m₀ s a₀ : ℕ) [NeZero (m₀ * s)] (h1 : 1 < s)
   have hN : 0 < m₀ * s := Nat.pos_of_ne_zero (NeZero.ne _)
   obtain ⟨u, hu1, hus, hJu⟩ := exists_jacobiSym_neg_one_in_residue_class m₀ s h1 hodd hsq hcop
   have hre := sum_clsB_mul_mod_eq_sum m₀ s a₀ u hN hu1 hus (fun x => (jacobiSym (x : ℤ) s : ℝ))
-  simp only [jacobiSym_mul_mod_eq_mul, hJu, Int.cast_mul, Int.cast_neg, Int.cast_one, mul_neg, mul_one,
+  simp only [jacobiSym_mul_mod_eq_mul, hJu, Int.cast_neg, mul_neg, mul_one,
     Finset.sum_neg_distrib] at hre
   linarith
 
@@ -243,17 +243,12 @@ theorem main_twist_bound (m₀ s a₀ : ℕ) [NeZero (m₀ * s)] (hm : 0 < m₀)
       rw [← Finset.mul_sum] at hre
       have hgcd : Int.gcd (u : ℤ) s = 1 := by rw [Int.gcd_natCast_natCast]; exact hus
       have hc1 : (((jacobiSym (u : ℤ) s : ℝ)) : ℂ) * χ (u : ZMod (m₀ * s)) ≠ 1 := by
-        rcases jacobiSym.eq_one_or_neg_one hgcd with h | h
-        · rw [h] at hne ⊢
-          intro hh
-          apply hne
-          push_cast at hh ⊢
-          simpa using hh
-        · rw [h] at hne ⊢
-          intro hh
-          apply hne
-          push_cast at hh ⊢
-          linear_combination -hh
+        intro h
+        apply hne
+        have hsq : ((jacobiSym (u : ℤ) s : ℤ) : ℂ) ^ 2 = 1 := by
+          rw [← Int.cast_pow, jacobiSym.sq_one hgcd, Int.cast_one]
+        push_cast at h
+        linear_combination ((jacobiSym (u : ℤ) s : ℤ) : ℂ) * h - χ (u : ZMod (m₀ * s)) * hsq
       have hT : ∑ b ∈ clsB m₀ s a₀, (((jacobiSym (b : ℤ) s : ℝ)) : ℂ) * χ (b : ZMod (m₀ * s)) = 0 := by
         have h0 : ((((jacobiSym (u : ℤ) s : ℝ)) : ℂ) * χ (u : ZMod (m₀ * s)) - 1) *
             ∑ b ∈ clsB m₀ s a₀, (((jacobiSym (b : ℤ) s : ℝ)) : ℂ) * χ (b : ZMod (m₀ * s)) = 0 := by
@@ -278,7 +273,6 @@ theorem twist_one (m₀ s a₀ : ℕ) [NeZero (m₀ * s)] (hm : 0 < m₀) (h1 : 
       (4 * r + 2 * |k|) * (((PPset m₀ a₀ X).card : ℝ) + X ^ (1 / 2 : ℝ)) + X ^ (1 / 2 : ℝ) := by
   have hs : 0 < s := by omega
   obtain ⟨hd, hsumabs⟩ := twist_decomp m₀ s a₀ X hm hs hX (fun b => mainAP e b X) k hk hb
-  beta_reduce at hd hsumabs
   have hmain := main_twist_bound m₀ s a₀ hm h1 hodd hsq hcop ha X r e hr0 hr hli hG
   have h2 : 2 * r * ∑ b ∈ clsB m₀ s a₀, |mainAP e b X| ≤
       2 * r * (2 * (((PPset m₀ a₀ X).card : ℝ) + X ^ (1 / 2 : ℝ))) :=

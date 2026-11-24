@@ -1,46 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DatumEmbeddingMemHlam
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DatumInj
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DatumIrr
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.FormulaFA
@@ -97,8 +59,7 @@ theorem formulaF (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v�
     (ffaB_equiv T _ _) (ffaB_mem T _ _ (Hlam ε Ψ v₀) hRH) horth
   have hBv : ∫ k, inner ℂ (T.op k (Ψ g v - q)) v₀ •
       rreg ε (S7.toMK k) (rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q) ∂(dk ε) = 0 := by
-    have := LinearMap.congr_fun hB0 v₀
-    rwa [ffaB_apply, LinearMap.zero_apply] at this
+    simpa [ffaB_apply] using LinearMap.congr_fun hB0 v₀
   obtain ⟨yg, hyg⟩ := ffa_UJ_lift hg
   have hxae : ((rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q : L2 ε) : Formalism.REAL.UJ ε → ℂ) =ᵐ[Formalism.REAL.muG ε]
       fun y => jfun Ψ v₀ v (Formalism.MainNotions.S.umat y * g) - jfun Ψ v₀ q (Formalism.MainNotions.S.umat y) := by
@@ -119,8 +80,7 @@ theorem formulaF (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v�
     rwa [show S7.toMK (1 : S7.KG ε) = 1 from rfl, mul_one, ffa_op_one, mul_one] at e
   have hΨk1 : ∀ k : S7.KG ε, Ψ (S7.toMK k) = T.op k := by
     intro k
-    have e := hΨk k 1 (ffa_toMK_mem (1 : S7.KG ε))
-    rwa [mul_one, hP.2.1, mul_one] at e
+    simpa [hP.2.1] using hΨk k 1 (ffa_toMK_mem (1 : S7.KG ε))
   have hint : ∀ k : S7.KG ε, inner ℂ (T.op k (Ψ g v - q)) v₀ *
       (jfun Ψ v₀ v (S7.toMK k * g) - jfun Ψ v₀ q (S7.toMK k)) =
         ((‖inner ℂ v₀ (T.op k (Ψ g v - q))‖ ^ 2 : ℝ) : ℂ) := by
@@ -154,12 +114,9 @@ theorem formulaF (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v�
 theorem datumEmbedding_highest_ne_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : uniformisationL2 ε Ψ v₀ T.w ≠ 0 := by
   intro h
   have hz : uniformisationL2 ε Ψ v₀ (0 : T.V) = 0 := by
-    have := datumEmbedding_smul hP v₀ (0 : ℂ) (0 : T.V)
-    simpa using this
+    simpa using datumEmbedding_smul hP v₀ (0 : ℂ) (0 : T.V)
   have hw : T.w = 0 := uniformisationL2_injective hP hv₀ (h.trans hz.symm)
-  have hn := T.w_norm
-  rw [hw, norm_zero] at hn
-  exact zero_ne_one hn
+  simpa [hw] using T.w_norm
 
 theorem formulaF_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (v v' : T.V) :
     inner ℂ (⟨uniformisationL2 ε Ψ v₀ v', datumEmbedding_mem_Hlam hP v'⟩ : Hlam ε Ψ v₀)
@@ -174,12 +131,7 @@ theorem formulaF_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv�
   rw [hs, Submodule.coe_inner]
   have horth : y - (K.orthogonalProjectionOnto y : L2 ε) ∈ Kᗮ := by
     first
-      | exact Submodule.sub_orthogonalProjectionOnto_mem_orthogonal y
-      | exact K.sub_orthogonalProjectionOnto_mem_orthogonal y
-      | exact sub_orthogonalProjection_mem_orthogonal y
       | exact Submodule.sub_starProjection_mem_orthogonal y
-      | exact K.sub_starProjection_mem_orthogonal y
-      | (rw [Submodule.mem_orthogonal']; intro u hu; exact K.orthogonalProjectionOnto_inner_eq_zero y u hu)
   have h0 : inner ℂ a (y - (K.orthogonalProjectionOnto y : L2 ε)) = 0 :=
     Submodule.inner_right_of_mem_orthogonal ha horth
   rw [inner_sub_right, sub_eq_zero] at h0
@@ -218,9 +170,6 @@ theorem dec_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v
     have hk : (S7.toMK k)ᴴ * Jm ε * S7.toMK k = Jm ε := by
       first
         | exact (k : S7.UJ ε).2
-        | exact (k : S7.UJ ε).prop
-        | (simp only [S7.toMK]; exact (k : S7.UJ ε).2)
-        | (unfold S7.toMK; clear * - k; done)
     calc (NormedSpace.exp X)ᴴ * (S7.toMK k)ᴴ * Jm ε * (S7.toMK k * NormedSpace.exp X)
         = (NormedSpace.exp X)ᴴ * ((S7.toMK k)ᴴ * Jm ε * S7.toMK k) * NormedSpace.exp X := by
           simp only [Matrix.mul_assoc]

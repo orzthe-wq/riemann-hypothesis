@@ -283,10 +283,7 @@ theorem detachedCoprod_hom_ext (i : ℕ) {T : Scheme.{u}} {f g : S.detachedCopro
     (hf : ∀ s (hs : s < i), S.detachedToCoprod s i hs ≫ f = S.detachedToCoprod s i hs ≫ g) : f = g :=
   detachedCoprod_hom_ext_forall S i T f g hf
 
-theorem inl_totalTransition (i : ℕ) :
-    (coprod.inl : S.strictTransform (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.totalTransition i =
-      S.strictTransformMap i ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) :=
-  S.inl_totalTransition_eq_strictTransformMap_inl i
+alias inl_totalTransition := _root_.FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.inl_totalTransition_eq_strictTransformMap_inl
 
 theorem inl_totalTransition_assoc (i : ℕ) {T : Scheme.{u}} (g : S.totalSpace i ⟶ T) :
     (coprod.inl : S.strictTransform (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.totalTransition i ≫ g =

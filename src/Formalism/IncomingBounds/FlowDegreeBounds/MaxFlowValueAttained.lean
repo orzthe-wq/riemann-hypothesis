@@ -99,16 +99,11 @@ theorem weak_core {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ} {sig : ZMod 
 
 theorem coord_le_load (hl : 1 ≤ l) {x : ZMod d → ℕ → ℝ} (hx : ∀ s i, 0 ≤ x s i) (s : ZMod d)
     {i : ℕ} (hi : i ∈ oddLevels d) : x s i ≤ dpLoad l d x s := by
-  have hl' : (1 : ℝ) ≤ (l : ℝ) ^ i := by
-    have h : (1 : ℝ) ≤ (l : ℝ) := by exact_mod_cast hl
-    exact one_le_pow₀ h
-  have h1 : x s i ≤ (l : ℝ) ^ i * x s i := le_mul_of_one_le_left (hx s i) hl'
-  have h2 : (l : ℝ) ^ i * x s i ≤ ∑ j ∈ oddLevels d, (l : ℝ) ^ j * x s j :=
-    Finset.single_le_sum (f := fun j => (l : ℝ) ^ j * x s j)
-      (fun j _ => mul_nonneg (by positivity) (hx s j)) hi
-  have h3 : 0 ≤ ∑ j ∈ oddLevels d, x (s - (j : ZMod d)) j := Finset.sum_nonneg fun j _ => hx _ _
+  have h1 : x s i ≤ ∑ j ∈ oddLevels d, (l : ℝ) ^ j * x s j :=
+    (le_mul_of_one_le_left (hx s i) (one_le_pow₀ (show (1 : ℝ) ≤ (l : ℝ) by exact_mod_cast hl))).trans
+      (Finset.single_le_sum (fun j _ => mul_nonneg (by positivity) (hx s j)) hi)
   unfold dpLoad
-  linarith
+  exact h1.trans (le_add_of_nonneg_right (Finset.sum_nonneg fun j _ => hx _ _))
 
 theorem continuous_load (s : ZMod d) : Continuous fun x : ZMod d → ℕ → ℝ => dpLoad l d x s := by
   unfold dpLoad
@@ -132,18 +127,16 @@ theorem flowVal_trunc (x : ZMod d → ℕ → ℝ) : flowVal d (trunc d x) = flo
 
 theorem trunc_nonneg {x : ZMod d → ℕ → ℝ} (hx : ∀ s i, 0 ≤ x s i) : ∀ s i, 0 ≤ trunc d x s i := by
   intro s i
-  simp only [trunc]
-  split_ifs
-  · exact hx s i
-  · exact le_rfl
+  by_cases hi : i ∈ oddLevels d
+  · simpa [trunc, hi] using hx s i
+  · simp [trunc, hi]
 
 theorem trunc_le (hl : 1 ≤ l) {x : ZMod d → ℕ → ℝ} (hx : ∀ s i, 0 ≤ x s i) {R : ℝ} (hR : 0 ≤ R)
     (h : ∀ s, dpLoad l d x s ≤ R) : ∀ s i, trunc d x s i ≤ R := by
   intro s i
-  simp only [trunc]
-  split_ifs with hi
-  · exact (coord_le_load hl hx s hi).trans (h s)
-  · exact hR
+  by_cases hi : i ∈ oddLevels d
+  · simpa [trunc, hi] using (coord_le_load hl hx s hi).trans (h s)
+  · simpa [trunc, hi] using hR
 
 def box (d : ℕ) (R : ℝ) : Set (ZMod d → ℕ → ℝ) := Set.pi univ fun _ => Set.pi univ fun _ => Icc 0 R
 
@@ -205,22 +198,13 @@ theorem sum_comb' {ι : Type*} (S : Finset ι) (f g : ι → ℝ) (a b : ℝ) :
 
 theorem load_comb (x y : ZMod d → ℕ → ℝ) (a b : ℝ) (s : ZMod d) :
     dpLoad l d (fun s i => a * x s i + b * y s i) s = a * dpLoad l d x s + b * dpLoad l d y s := by
-  have e1 : ∑ i ∈ oddLevels d, (l : ℝ) ^ i * (a * x s i + b * y s i) =
-      a * ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x s i + b * ∑ i ∈ oddLevels d, (l : ℝ) ^ i * y s i :=
-    sum_comb _ _ _ _ _ _
-  have e2 : ∑ i ∈ oddLevels d, (a * x (s - (i : ZMod d)) i + b * y (s - (i : ZMod d)) i) =
-      a * ∑ i ∈ oddLevels d, x (s - (i : ZMod d)) i + b * ∑ i ∈ oddLevels d, y (s - (i : ZMod d)) i :=
-    sum_comb' _ _ _ _ _
   simp only [dpLoad]
-  rw [e1, e2]
+  rw [sum_comb, sum_comb']
   ring
 
 theorem flowVal_comb (x y : ZMod d → ℕ → ℝ) (a b : ℝ) :
     flowVal d (fun s i => a * x s i + b * y s i) = a * flowVal d x + b * flowVal d y := by
-  calc Formalism.IncomingBounds.flowVal d (fun s i => a * x s i + b * y s i)
-        = ∑ s, (a * ∑ i ∈ oddLevels d, x s i + b * ∑ i ∈ oddLevels d, y s i) :=
-          Finset.sum_congr rfl fun s _ => sum_comb' _ _ _ _ _
-    _ = a * Formalism.IncomingBounds.flowVal d x + b * Formalism.IncomingBounds.flowVal d y := sum_comb' _ _ _ _ _
+  simp only [Formalism.IncomingBounds.flowVal, sum_comb']
 
 def Kset (l d : ℕ) [NeZero d] : Set ((ZMod d → ℝ) × ℝ) :=
   {q | ∃ x : ZMod d → ℕ → ℝ, (∀ s i, 0 ≤ x s i) ∧ (∀ s, dpLoad l d x s ≤ q.1 s) ∧
@@ -435,8 +419,7 @@ theorem strong (hl : 1 ≤ l) (D : ZMod d → ℝ) (hD : 0 ≤ D) :
     linarith
   obtain ⟨σ, hσ, hmin⟩ := (isCompact_dual (l := l) (d := d)).exists_isMinOn ⟨_, hone⟩
     (by fun_prop : Continuous fun σ : ZMod d → ℝ => ∑ s, D s * σ s).continuousOn
-  have hσ' : Formalism.IncomingBounds.IsDual l d σ := hσ
-  refine ⟨σ, hσ', le_antisymm ?_ (weak_core hx (fun s => (hσ'.1 s).1) hσ'.2)⟩
+  refine ⟨σ, hσ, le_antisymm ?_ (weak_core hx (fun s => (hσ.1 s).1) hσ.2)⟩
   refine le_of_forall_pos_lt_add fun ε hε => ?_
   obtain ⟨τ, h0, h1, hlt⟩ := exists_dual_lt hl D hD (fun y hy => hmax y hy) hε
   have hfeas := clip_dual hl h0 h1

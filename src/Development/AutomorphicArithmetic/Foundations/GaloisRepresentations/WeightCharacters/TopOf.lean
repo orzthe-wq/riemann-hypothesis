@@ -58,12 +58,12 @@ open UpperTheory.Gal.Gen UpperTheory.Gal.Int.Cong in
 theorem top_of : FamEx → FamProj → FamWt → UpperTheory.Gal.Int.Cong.WtLacEx := by
   intro hEx hPr hWt E _ _ _ l _ ι a ha w₀ hw₀ hs₀ v' hv' hsv hap K hK hKv Kv hKvo lam Jx t η ht htv hact τ₀ hτ₀ U hU ε hε
   classical
-  obtain ⟨W, f, hW, hf0, hfU, hfK, -⟩ := GlobalTheory.T.exists_algebraicForm_weight_level_smooth_at_place E a lam _ U (inf_le_left.trans hK.fin) hU w₀
+  obtain ⟨W, f, hW, hf0, hfU, hfK, -⟩ := _root_.GlobalTheory.Cong.exists_algForm_ofType E a lam _ U (inf_le_left.trans hK.fin) hU w₀
   obtain rfl : lam = W.at := (funext hW).symm
   obtain ⟨X, b, hbd, hdef, hne⟩ := Loc.frame denomBdd_holds rhoBound_holds latFacts_holds levelEx_holds ι W t fun j => Or.inr (ht j)
   obtain ⟨g₀, i₀, hz⟩ : ∃ g i, f.1 (b g i) g ≠ 0 := by
     by_contra h
-    push_neg at h
+    push Not at h
     exact hf0 (hdef f h)
   set z₀ := f.1 (b g₀ i₀) g₀ with hz₀
   let f₁ : algForms W := z₀⁻¹ • f
@@ -124,12 +124,12 @@ theorem top_of : FamEx → FamProj → FamWt → UpperTheory.Gal.Int.Cong.WtLacE
       rw [Finset.sum_coe_sort I (fun V => ev x (-Ft V))]
       refine (Finset.sum_filter_of_ne fun V _ hV => ?_).trans (Finset.sum_congr rfl fun V _ => rfl)
       by_contra h
-      push_neg at h
+      push Not at h
       refine hV ?_
       rw [map_neg, hev, hFt, h, Pi.zero_apply, neg_zero]
     rw [h1]
     exact hnear _ _
-  obtain ⟨s, c, hs, hP⟩ := GlobalTheory.T.eigenvector_small_sub_finite_eigen_approx_inequality l ι (W.Sp →ₗ[ℂ] (UA E a → ℂ)) (UA E a × X) Jx
+  obtain ⟨s, c, hs, hP⟩ := _root_.GlobalTheory.Cong.eigen_small_sub_finite_approx l ι (W.Sp →ₗ[ℂ] (UA E a → ℂ)) (UA E a × X) Jx
     ↥I T ev hne' f₁.1 (η U) (g₀, i₀) heig0 hnorm vv (fun V => η V.1) heig ε hbound
   refine ⟨s, c, ?_, hP⟩
   intro z hz'

@@ -1,13 +1,17 @@
 module
 
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowSection
-import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.DenseGenericOfFlat
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff
+public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral
+public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothCommGroupSchemeEqOfPowEqOfClosedPoint
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSiegelObjectOfDescendedData
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemeGlueAffineCover
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UnitOnInjectiveOfCommRing
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCycAwayHomComplex
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelObjectLoweredLevelStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelObjectLoweredLevel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalSiegelObjectOddLevelRigid
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelChangeBySymplecticSimilitudeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelObjectPullbackLevelPowerCalculusStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticSimilitudeInvertibleModNStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelObjectPullbackLevelPowerCalculus
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelObjectPullbackExistsAndPrincipal
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPullbackIdCompCancel
 import Mathlib.Algebra.Order.Floor.Extended
@@ -45,7 +49,550 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.TypeStar
+import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.DenseGenericOfFlat
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowSection, Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelChangeBySymplecticSimilitude, Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticSimilitudeInvertibleModN, Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelFamilySimilitudeGroupActionFreeTransitive
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowSection =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowSection", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelObjectPullbackExistsAndPrincipal\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPullbackIdCompCancel\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
+open scoped CategoryTheory.Obj
+
+noncomputable section
+
+namespace GlobalTheory.SiegAct
+
+alias spMap_comp' := _root_.GlobalTheory.spMap_comp_ring
+
+alias spMap_id' := _root_.GlobalTheory.LevelFibre.spMap_id'
+
+variable {h N m : ℕ} {B B' : Type} [CommRing B] [CommRing B'] {ζ : B} {ζ' : B'} {S : Scheme.{0}} {s : S ⟶ Sp B}
+
+theorem lev_zero (C : SiegPre h N ζ s) : C.lev 0 = 1 := by
+  have := C.lev_add 0 0
+  rw [add_zero] at this
+  exact left_eq_mul.1 this
+
+theorem lev_nsmul (C : SiegPre h N ζ s) (k : ℕ) (a : Fin h ⊕ Fin h → ℤ) : C.lev (k • a) = C.lev a ^ k := by
+  induction k with
+  | zero => rw [zero_smul, pow_zero, lev_zero]
+  | succ k ih => rw [succ_nsmul, C.lev_add, ih, pow_succ]
+
+theorem lev_N_smul (C : SiegPre h N ζ s) (a : Fin h ⊕ Fin h → ℤ) : C.lev (N • a) = 1 := by
+  rw [lev_nsmul, C.lev_tors]
+
+def relabel (C : SiegPre h N ζ s) (T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)) (σ : B' →+* B)
+    (hN : N ≠ 0) (hζ : ζ ^ N = 1) (hσ : σ ζ' = ζ ^ m)
+    (hω : ∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N])
+    (hinj : ∀ a, (∃ b, T a = N • b) → ∃ b, a = N • b)
+    (hsurj : ∀ a, ∃ a' b, T a' = a + N • b) : SiegPre h N ζ' (s ≫ spMap σ) where
+  A := C.A
+  ab := C.ab
+  P := C.P
+  isLB := C.isLB
+  rig₁ := C.rig₁
+  rig₂ := C.rig₂
+  symm := C.symm
+  lev x := C.lev (T x)
+  lev_add a b := by rw [map_add (f := _), C.lev_add]
+  lev_tors a := C.lev_tors _
+  geom k _ _ x β z hx hz := by
+    obtain ⟨β₀, hβ₀⟩ := _root_.GlobalTheory.LevCover.exists_spMap (x ≫ s)
+    have hb : β = β₀.comp σ := _root_.GlobalTheory.ZM.DenseFib.spMap_inj (by rw [← hx, ← Category.assoc, hβ₀, spMap_comp'])
+    have h1 : β₀ ζ ^ N = 1 := by rw [← map_pow, hζ, map_one]
+    let z₀ : kˣ := Units.ofPowEqOne (β₀ ζ) N h1 hN
+    obtain ⟨g1, g2, g3⟩ := C.geom k x β₀ z₀ hβ₀ rfl
+    have hzm : z = z₀ ^ m := Units.ext (by
+      rw [hz, hb, RingHom.comp_apply, hσ, map_pow, Units.val_pow_eq_pow_val]; rfl)
+    have hz₀ : z₀ ^ N = 1 := Units.ext (by rw [Units.val_pow_eq_pow_val]; exact h1)
+    refine ⟨fun a => (g1 (T a)).trans ⟨hinj a, fun ⟨b, hb⟩ => ⟨T b, by rw [hb, map_nsmul]⟩⟩, fun g hg => ?_,
+      fun a b => ?_⟩
+    · obtain ⟨a, ha⟩ := g2 g hg
+      obtain ⟨a', b, hab⟩ := hsurj a
+      refine ⟨a', ?_⟩
+      show toUnit _ ≫ C.lev (T a') = g
+      rw [hab, C.lev_add, MonObj.comp_mul, lev_N_smul, MonObj.comp_one, _root_.mul_one, ha]
+    · have e : z₀ ^ (2 * omegaStd (T a) (T b)) = z ^ (2 * omegaStd a b) := by
+        rw [hzm, ← zpow_natCast, ← zpow_mul]
+        refine zpow_eq_zpow_iff_modEq.2 (Int.ModEq.of_dvd (Int.natCast_dvd_natCast.2 (orderOf_dvd_of_pow_eq_one hz₀)) ?_)
+        have := (hω a b).mul_left 2
+        calc 2 * omegaStd (T a) (T b) ≡ 2 * (m * omegaStd a b) [ZMOD N] := this
+          _ = m * (2 * omegaStd a b) := by ring
+      have := g3 (T a) (T b)
+      rw [e] at this
+      exact this
+
+section Calc
+
+open GlobalTheory.SiegelPullComp GlobalTheory.SiegelPull
+
+variable {h n n' n'' : ℕ} {B B' B'' : Type} [CommRing B] [CommRing B'] [CommRing B''] {ζ : B} {ζ' : B'} {ζ'' : B''}
+  {S S' S'' : Scheme.{0}} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {s'' : S'' ⟶ Sp B''}
+  {c : SiegPre h n ζ s} {c' : SiegPre h n' ζ' s'} {c'' : SiegPre h n'' ζ'' s''} {f : S' ⟶ S} {f' : S'' ⟶ S'}
+  {d d' d'' : ℕ}
+
+def Sq (c' : SiegPre h n' ζ' s') (c : SiegPre h n ζ s) (φ : c'.A.left ⟶ c.A.left) : Prop :=
+  ∃ φ₂ : (G2 c'.A).left ⟶ (G2 c.A).left, IsSquare φ φ₂ ∧ LBIso c'.P (c.P.pull φ₂)
+
+theorem Sq.comp {φ : c'.A.left ⟶ c.A.left} {ψ : c''.A.left ⟶ c'.A.left} (m : Sq c' c φ) (m' : Sq c'' c' ψ) :
+    Sq c'' c (ψ ≫ φ) := by
+  obtain ⟨φ₂, hs, hw⟩ := m
+  obtain ⟨ψ₂, hs', hw'⟩ := m'
+  refine ⟨ψ₂ ≫ φ₂, ⟨?_, ?_⟩, ?_⟩
+  · rw [Category.assoc, hs.1, ← Category.assoc, hs'.1, Category.assoc]
+  · rw [Category.assoc, hs.2, ← Category.assoc, hs'.2, Category.assoc]
+  · exact (hw'.trans c''.isLB (pull_isLB c'.isLB _) (pull_isLB (pull_isLB c.isLB _) _) (iso_pull ψ₂ hw)).trans
+      c''.isLB (pull_isLB (pull_isLB c.isLB _) _) (pull_isLB c.isLB _) (iso_pull_pull c.isLB φ₂ ψ₂)
+
+theorem sRelBy_comp {φ : c'.A.left ⟶ c.A.left} {ψ : c''.A.left ⟶ c'.A.left} (m : SRelBy c' c d' d f φ)
+    (m' : SRelBy c'' c' d'' d' f' ψ) : SRelBy c'' c d'' d (f' ≫ f) (ψ ≫ φ) := by
+  obtain ⟨hφ, hs, hl⟩ := m
+  obtain ⟨hψ, hs', hl'⟩ := m'
+  refine ⟨hψ.comp hφ, Sq.comp (c := c) (c' := c') (c'' := c'') hs hs', fun a => ?_⟩
+  exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ) (hl' a)).trans ((Category.assoc _ _ _).trans
+      ((congrArg (f' ≫ ·) (hl a)).trans (Category.assoc _ _ _).symm)))
+
+theorem pow_section {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left}
+    (hφ : IsGrpPullback A' A f φ) (x' : 𝟙_ (Over S') ⟶ A') (x : 𝟙_ (Over S) ⟶ A)
+    (e : x'.left ≫ φ = f ≫ x.left) (k : ℕ) : (x' ^ k).left ≫ φ = f ≫ (x ^ k).left := by
+  have e₁ : x' = SiegelPull.secPull hφ x := by
+    refine push_injective hφ _ (Over.OverMorphism.ext ?_)
+    exact e.trans (SiegelPull.secPull_left hφ x).symm
+  have e₂ : x' ^ k = SiegelPull.secPull hφ (x ^ k) := push_injective hφ _ (by
+    rw [map_pow, e₁, push_secPull', push_secPull', MonObj.comp_pow])
+  rw [e₂, SiegelPull.secPull_left]
+
+end Calc
+
+section Twist
+
+variable {h n N : ℕ}
+
+structure Twist (F : SFam h N (zetaAway N)) (j : cycAway n →+* cycAway N)
+    (T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)) (m : ℕ) (σ : cycAway N →+* cycAway N) (f : F.X ⟶ F.X) :
+    Prop where
+  cop : m.Coprime N
+  root : σ (zetaAway N) = zetaAway N ^ m
+  fix : σ.comp j = j
+  symp : ∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N]
+  low : ∀ x, F.univ.lev (T x) ^ (N / n) = F.univ.lev x ^ (N / n)
+  comm : f ≫ F.s = F.s ≫ spMap σ
+  map : ∃ ν : F.univ.A.left ⟶ F.univ.A.left, IsGrpPullback F.univ.A F.univ.A f ν ∧ Sq F.univ F.univ ν ∧
+    ∀ x, (F.univ.lev (T x)).left ≫ ν = f ≫ (F.univ.lev x).left
+
+end Twist
+
+end GlobalTheory.SiegAct
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowSection =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelChangeBySymplecticSimilitude =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelChangeBySymplecticSimilitude", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SmoothCommGroupSchemeEqOfPowEqOfClosedPoint\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSiegelObjectOfDescendedData\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsThetaLevelAbelianSchemeGlueAffineCover\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute\npublic import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UnitOnInjectiveOfCommRing\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools\nimport Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.SiegelToroidalIntegral\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
+open scoped CategoryTheory.Obj
+
+noncomputable section
+
+namespace GlobalTheory.SimilitudeLevel
+
+theorem similitude_bij_mod (h N m : ℕ) (T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)) (hN : 0 < N)
+    (hm : m.Coprime N) (hT : ∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N]) :
+    (∀ a, (∃ b, T a = N • b) ↔ ∃ b, a = N • b) ∧ ∀ a', ∃ a c, a' = T a + N • c := by
+  classical
+  haveI : NeZero N := ⟨hN.ne'⟩
+  let red : (Fin h ⊕ Fin h → ℤ) → (Fin h ⊕ Fin h → ZMod N) := fun a i => (a i : ZMod N)
+  have red_zero : ∀ a : Fin h ⊕ Fin h → ℤ, red a = 0 ↔ ∃ b, a = N • b := by
+    intro a
+    constructor
+    · intro ha
+      refine ⟨fun i => a i / N, funext fun i => ?_⟩
+      have hd : (N : ℤ) ∣ a i := (ZMod.intCast_zmod_eq_zero_iff_dvd (a i) N).1 (congrFun ha i)
+      simp only [Pi.smul_apply, nsmul_eq_mul]
+      exact (Int.mul_ediv_cancel' hd).symm
+    · rintro ⟨b, rfl⟩
+      funext i
+      simp [red]
+  have omega_smul : ∀ (b y : Fin h ⊕ Fin h → ℤ), omegaStd (N • b) y = N * omegaStd b y := by
+    intro b y
+    simp only [omegaStd, Finset.mul_sum, Pi.smul_apply, nsmul_eq_mul]
+    congr 1; ext i; ring
+  have omega_inr : ∀ (a : Fin h ⊕ Fin h → ℤ) (i : Fin h), omegaStd a (Pi.single (Sum.inr i) 1) = a (Sum.inl i) := by
+    intro a i; simp [omegaStd, Pi.single_apply]
+  have omega_inl : ∀ (a : Fin h ⊕ Fin h → ℤ) (i : Fin h), omegaStd a (Pi.single (Sum.inl i) 1) = - a (Sum.inr i) := by
+    intro a i; simp [omegaStd, Pi.single_apply]
+  have hmN : IsCoprime (N : ℤ) m := Nat.isCoprime_iff_coprime.2 hm.symm
+  have kerN : ∀ a, (∃ b, T a = N • b) → ∃ b, a = N • b := by
+    rintro a ⟨b, hb⟩
+    have hdiv : ∀ y, (N : ℤ) ∣ omegaStd a y := by
+      intro y
+      have h1 : (N : ℤ) ∣ omegaStd (T a) (T y) := by rw [hb, omega_smul]; exact dvd_mul_right _ _
+      have h2 : (N : ℤ) ∣ m * omegaStd a y := by
+        have := dvd_add (hT a y).dvd h1
+        simpa using this
+      exact hmN.dvd_of_dvd_mul_left h2
+    rw [← red_zero]
+    funext j
+    rcases j with i | i
+    · have := hdiv (Pi.single (Sum.inr i) 1)
+      rw [omega_inr] at this
+      exact (ZMod.intCast_zmod_eq_zero_iff_dvd _ N).2 this
+    · have := hdiv (Pi.single (Sum.inl i) 1)
+      rw [omega_inl, dvd_neg] at this
+      exact (ZMod.intCast_zmod_eq_zero_iff_dvd _ N).2 this
+  let M : Fin h ⊕ Fin h → Fin h ⊕ Fin h → ZMod N := fun j i => (T (Pi.single j 1) i : ZMod N)
+  let TN : (Fin h ⊕ Fin h → ZMod N) → (Fin h ⊕ Fin h → ZMod N) := fun v i => ∑ j, v j * M j i
+  have hT_sum : ∀ a : Fin h ⊕ Fin h → ℤ, T a = ∑ j, a j • T (Pi.single j 1) := by
+    intro a
+    conv_lhs => rw [← Finset.univ_sum_single a]
+
+    rw [map_sum]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [show Pi.single j (a j) = a j • (Pi.single j 1 : Fin h ⊕ Fin h → ℤ) by
+      ext i; by_cases hi : i = j <;> simp [hi], map_smul]
+  have reduction_uniformizerPoint : ∀ a, red (T a) = TN (red a) := by
+    intro a; funext i
+    simp only [red, TN, M]
+    rw [hT_sum a]
+    simp [Finset.sum_apply]
+  let lift : (Fin h ⊕ Fin h → ZMod N) → (Fin h ⊕ Fin h → ℤ) := fun v i => ((v i).val : ℤ)
+  have red_lift : ∀ v, red (lift v) = v := fun v => funext fun i => by simp [red, lift]
+  have TN_sub : ∀ v w, TN (v - w) = TN v - TN w := by
+    intro v w; funext i; simp only [TN, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
+  have TN_inj : Function.Injective TN := by
+    intro v w hvw
+    have h0 : red (T (lift (v - w))) = 0 := by rw [reduction_uniformizerPoint, red_lift, TN_sub, hvw, sub_self]
+    obtain ⟨b, hb⟩ := kerN _ ((red_zero _).1 h0)
+    have := (red_zero _).2 ⟨b, hb⟩
+    rw [red_lift] at this
+    exact sub_eq_zero.1 this
+  have TN_surj : Function.Surjective TN := Finite.injective_iff_surjective.1 TN_inj
+  refine ⟨fun a => ⟨kerN a, fun ⟨b, hb⟩ => ⟨T b, by rw [hb, map_nsmul]⟩⟩, fun a' => ?_⟩
+  obtain ⟨v, hv⟩ := TN_surj (red a')
+  obtain ⟨c, hc⟩ := (red_zero (a' - T (lift v))).1 (by
+    funext i
+    have := congrFun (reduction_uniformizerPoint (lift v)) i
+    rw [red_lift, hv] at this
+    simp only [red, Pi.sub_apply, Int.cast_sub, Pi.zero_apply] at this ⊢
+    rw [this, sub_self])
+  exact ⟨lift v, c, by rw [← hc]; abel⟩
+
+section Push
+
+variable {S : Scheme.{0}} {G G' : Over S} [GrpObj G] [GrpObj G'] {φ : G'.left ⟶ G.left}
+
+theorem exists_push (hp : IsGrpPullback G' G (𝟙 S) φ) (T : Over S) :
+    ∃ ψ : (T ⟶ G') →* (T ⟶ G), ∀ p, (ψ p).left = p.left ≫ φ := by
+  obtain ⟨ρ, hρ⟩ := GlobalTheory.SiegelDescent.exists_liftHom hp T T (𝟙 _) (by simp)
+  have key : ∀ u, (ρ u).left ≫ φ = u.left := fun u => ((hρ u (ρ u)).1 rfl).trans (Category.id_comp _)
+  have inj : Function.Injective ρ := fun u v e => Over.OverMorphism.ext ((key u).symm.trans (e ▸ key v))
+  have surj : Function.Surjective ρ := fun p => ⟨Over.homMk (p.left ≫ φ) (by
+      rw [Category.assoc, hp.1.w, Category.comp_id, Over.w]), (hρ _ p).2 (by simp)⟩
+  let e := MulEquiv.ofBijective ρ ⟨inj, surj⟩
+  refine ⟨e.symm.toMonoidHom, fun p => ?_⟩
+  have h1 : ρ (e.symm p) = p := e.apply_symm_apply p
+  have h2 := key (e.symm p)
+  rw [h1] at h2
+  exact h2.symm
+
+end Push
+
+theorem lev_zero {h N : ℕ} {B : Type} [CommRing B] {ζ : B} {S : Scheme.{0}} {s : S ⟶ Sp B}
+    (C : SiegPre h N ζ s) : C.lev 0 = 1 := by
+  have := C.lev_add 0 0
+  rw [add_zero] at this
+  exact mul_left_cancel (a := C.lev 0) (by rw [← this, _root_.mul_one])
+
+theorem lev_nsmul {h N : ℕ} {B : Type} [CommRing B] {ζ : B} {S : Scheme.{0}} {s : S ⟶ Sp B}
+    (C : SiegPre h N ζ s) (n : ℕ) (a : Fin h ⊕ Fin h → ℤ) : C.lev (n • a) = C.lev a ^ n := by
+  induction n with
+  | zero => rw [zero_smul, pow_zero, lev_zero]
+  | succ n ih => rw [succ_nsmul, C.lev_add, ih, pow_succ]
+
+theorem part_one (h N : ℕ) (B : Type) [CommRing B] (b : TBase B N) (hN : Odd N) (S : Scheme.{0}) (s : S ⟶ Sp B)
+    (C : SiegPre h N (b.ζ : B) s) (T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)) (m : ℕ) (hm : m.Coprime N)
+    (hT : ∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N]) :
+    ∃ (C' : SiegPre h N ((b.ζ : B) ^ m) s) (φ : C'.A.left ⟶ C.A.left) (φ₂ : (G2 C'.A).left ⟶ (G2 C.A).left),
+      IsGrpPullback C'.A C.A (𝟙 S) φ ∧ IsSquare φ φ₂ ∧ LBIso C'.P (C.P.pull φ₂) ∧
+        ∀ x, (C'.lev x).left ≫ φ = (C.lev (T x)).left := by
+  obtain ⟨hinj, hsurj⟩ := similitude_bij_mod h N m T hN.pos hm hT
+  have lev_mod : ∀ a c, C.lev (a + N • c) = C.lev a := by
+    intro a c; rw [C.lev_add, lev_nsmul, C.lev_tors, _root_.mul_one]
+  refine ⟨{ C with
+      lev := fun a => C.lev (T a), lev_add := fun a c => (by rw [map_add (f := _)]; exact C.lev_add _ _),
+      lev_tors := fun a => C.lev_tors _, geom := ?_ }, 𝟙 _, 𝟙 _, ?_, ⟨by simp, by simp⟩,
+      GlobalTheory.ThetaAffineGlue.lbIso_pull_id C.isLB, fun x => Category.comp_id _⟩
+  · intro k _ _ x β z hx hz
+    let z₀ : kˣ := Units.map β.toMonoidHom b.ζ
+    have hzz : z = z₀ ^ m := Units.ext (by rw [hz, map_pow, Units.val_pow_eq_pow_val]; rfl)
+    obtain ⟨ga, gb, gc⟩ := C.geom k x β z₀ hx rfl
+    have hprim : IsPrimitiveRoot z₀ N := IsPrimitiveRoot.coe_units_iff.1 (b.prim k β)
+    refine ⟨fun a => (ga (T a)).trans (hinj a), fun g hg => ?_, fun a c => ?_⟩
+    · obtain ⟨a', ha'⟩ := gb g hg
+      obtain ⟨a, c, rfl⟩ := hsurj a'
+      exact ⟨a, by rw [← ha', lev_mod]⟩
+    · have e : z ^ (2 * omegaStd a c) = z₀ ^ (2 * omegaStd (T a) (T c)) := by
+        rw [hzz, ← zpow_natCast, ← zpow_mul, ← div_eq_one, div_eq_mul_inv, ← zpow_sub, hprim.zpow_eq_one_iff_dvd]
+        obtain ⟨q, hq⟩ := (hT a c).dvd
+        exact ⟨2 * q, by linear_combination 2 * hq⟩
+      rw [e]
+      exact gc (T a) (T c)
+  · exact @isGrpPullback_of_iso _ _ _ _ _ (Iso.refl C.A) (inferInstanceAs (IsMonHom (𝟙 C.A)))
+
+end GlobalTheory.SimilitudeLevel
+
+namespace GlobalTheory.SimilitudeLevel
+
+theorem part_two (h N : ℕ) (B : Type) [CommRing B] (b : TBase B N) (hN : Odd N)
+    (R : Type) [CommRing R] [IsLocalRing R] (β : B →+* R) (m : ℕ) (β' : B →+* R)
+    (C : SiegPre h N (b.ζ : B) (spMap β)) (C' : SiegPre h N (b.ζ : B) (spMap β'))
+    (φ : C'.A.left ⟶ C.A.left) (φ₂ : (G2 C'.A).left ⟶ (G2 C.A).left) (hζ : β' (b.ζ : B) = β (b.ζ : B) ^ m)
+    (hpb : IsGrpPullback C'.A C.A (𝟙 _) φ) (hsq : IsSquare φ φ₂) (hP : LBIso C'.P (C.P.pull φ₂)) :
+    ∃ T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ), (∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N]) ∧
+      ∀ x, (C'.lev x).left ≫ φ = (C.lev (T x)).left := by
+  let K := AlgebraicClosure (IsLocalRing.ResidueField R)
+  let jr : R →+* K := (algebraMap (IsLocalRing.ResidueField R) K).comp (IsLocalRing.residue R)
+  let x : Sp K ⟶ Sp R := spMap jr
+  have hx : ∀ g₀ : B →+* R, x ≫ spMap g₀ = spMap (jr.comp g₀) := fun g₀ => by
+    simp only [x, spMap, ← Spec.map_comp]; rfl
+  let Tx : Over (Sp R) := Over.mk x
+  obtain ⟨ψ, hψ⟩ := exists_push hpb Tx
+  let p : (Fin h ⊕ Fin h → ℤ) → (Tx ⟶ C'.A) := fun a => toUnit Tx ≫ C'.lev a
+  have p_add : ∀ a c, p (a + c) = p a * p c := fun a c => by simp only [p, C'.lev_add, MonObj.comp_mul]
+  let z : Kˣ := Units.map (jr.comp β).toMonoidHom b.ζ
+  have gC := C.geom K x (jr.comp β) z (hx β) rfl
+  have hprim : IsPrimitiveRoot z N := IsPrimitiveRoot.coe_units_iff.1 (b.prim K (jr.comp β))
+  have hpN : ∀ a, ψ (p a) ^ N = 1 := fun a => by
+    rw [← map_pow, show p a ^ N = 1 by rw [← MonObj.comp_pow, C'.lev_tors, MonObj.comp_one], map_one]
+  choose a' ha' using fun i => gC.2.1 (ψ (p (Pi.single i 1))) (hpN _)
+  let T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ) := (Pi.basisFun ℤ (Fin h ⊕ Fin h)).constr ℤ a'
+  have hq : ∀ a, ψ (p a) = toUnit Tx ≫ C.lev (T a) := by
+    let f₁ : (Fin h ⊕ Fin h → ℤ) →+ Additive (Tx ⟶ C.A) :=
+      AddMonoidHom.mk' (fun a => Additive.ofMul (ψ (p a))) (fun a c => by rw [p_add, map_mul]; rfl)
+    let f₂ : (Fin h ⊕ Fin h → ℤ) →+ Additive (Tx ⟶ C.A) :=
+      AddMonoidHom.mk' (fun a => Additive.ofMul (toUnit Tx ≫ C.lev (T a)))
+        (fun a c => by rw [map_add (f := _), C.lev_add, MonObj.comp_mul]; rfl)
+    have hext : f₁ = f₂ := by
+      refine AddMonoidHom.functions_ext _ _ _ fun i k => ?_
+      rw [show (Pi.single i k : Fin h ⊕ Fin h → ℤ) = k • Pi.single i 1 by
+        ext j; by_cases hj : j = i <;> simp [hj], map_zsmul, map_zsmul]
+      congr 1
+      show Additive.ofMul (ψ (p (Pi.single i 1))) = Additive.ofMul (toUnit Tx ≫ C.lev (T (Pi.single i 1)))
+      rw [← ha' i]
+      congr 3
+      have := (Pi.basisFun ℤ (Fin h ⊕ Fin h)).constr_basis ℤ a' i
+      rw [Pi.basisFun_apply] at this
+      exact this.symm
+    intro a
+    exact congrArg Additive.toMul (DFunLike.congr_fun hext a)
+  have hdiag : LBIso C'.diag (C.diag.pull φ) :=
+    GlobalTheory.SiegelDescent.lbIso_square C'.isLB C.isLB hP
+      (GlobalTheory.SiegelDescent.lift_square (T := C'.A) (T₀ := C.A) (τ := φ) (a := 𝟙 _) (b := 𝟙 _) (a₀ := 𝟙 _)
+        (b₀ := 𝟙 _) hsq (by simp) (by simp))
+  let z' : Kˣ := Units.map (jr.comp β').toMonoidHom b.ζ
+  have hzz : z' = z ^ m := Units.ext (by simp [z, z', hζ])
+  have gC' := C'.geom K x (jr.comp β') z' (hx β') rfl
+  refine ⟨T, fun a c => ?_, fun a => ?_⟩
+  · have w1 := gC'.2.2 a c
+    have w2 : Out.WeilIs C.A C.diag N (ψ (p a)) (ψ (p c)) (unitOn (z' ^ (2 * omegaStd a c))) := by
+      have := (GlobalTheory.weilIs_grpPullback_of_comm' _ _ C.A C'.A (𝟙 _) φ C.diag C'.diag (pull_isLB C.isLB _)
+        (pull_isLB C'.isLB _) hpb hdiag Tx N (p a) (p c) (Over.homMk (ψ (p a)).left (by simp))
+        (Over.homMk (ψ (p c)).left (by simp)) _ (by simp [hψ]) (by simp [hψ])).1 w1
+      exact GlobalTheory.SiegelDescent.weilIs_congr (by simp) _ _ _ _ _ _ rfl rfl _ this
+    have w3 := gC.2.2 (T a) (T c)
+    rw [← hq, ← hq] at w3
+    have e := GlobalTheory.weilIs_unique_fieldPoint _ C.A C.diag (pull_isLB C.isLB _) K x N _ _ _ _ w2 w3
+    rw [hzz, ← zpow_natCast, ← zpow_mul, ← div_eq_one, div_eq_mul_inv, ← zpow_sub, hprim.zpow_eq_one_iff_dvd] at e
+    have h2 : IsCoprime (N : ℤ) 2 := by
+      rw [Int.isCoprime_iff_gcd_eq_one]
+      exact Nat.Coprime.symm (Nat.coprime_two_left.2 hN)
+    have e' : (N : ℤ) ∣ 2 * (m * omegaStd a c - omegaStd (T a) (T c)) := by
+      convert e using 1; ring
+    exact Int.modEq_iff_dvd.2 (h2.dvd_of_dvd_mul_left e')
+  · obtain ⟨ψ₀, hψ₀⟩ := exists_push hpb (𝟙_ (Over (Sp R)))
+    have key := GlobalTheory.LocalRigid.eq_of_pow_eq_of_closedPoint (Sp R) C.A (@IsAbelianScheme.smooth _ _ _ C.ab) R (𝟙 _) N
+      (by simpa using b.unit.map β) (ψ₀ (C'.lev a)) (C.lev (T a))
+      (by rw [← map_pow, C'.lev_tors, C.lev_tors, map_one]) K jr inferInstance ?_
+    · simpa [hψ₀] using congrArg (fun u => u.left) key
+    · have := congrArg (fun u => u.left) (hq a)
+      simp only [hψ, p, Over.comp_left] at this
+      have ht : (toUnit Tx).left = x := (Category.comp_id _).symm.trans (Over.w (toUnit Tx))
+      rw [ht] at this
+      rw [hψ₀]
+      exact this
+
+end GlobalTheory.SimilitudeLevel
+
+namespace GlobalTheory
+
+theorem siegel_level_change_by_similitude : ∀ (h N : ℕ) (B : Type) [CommRing B] (b : TBase B N), Odd N → (∀ (S : Scheme.{0}) (s : S ⟶ Sp B) (C : SiegPre h N (b.ζ : B) s) (T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)) (m : ℕ), m.Coprime N → (∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N]) → ∃ (C' : SiegPre h N ((b.ζ : B) ^ m) s) (φ : C'.A.left ⟶ C.A.left) (φ₂ : (G2 C'.A).left ⟶ (G2 C.A).left), IsGrpPullback C'.A C.A (𝟙 S) φ ∧ IsSquare φ φ₂ ∧ LBIso C'.P (C.P.pull φ₂) ∧ ∀ x, (C'.lev x).left ≫ φ = (C.lev (T x)).left) ∧ ∀ (R : Type) [CommRing R] [IsLocalRing R] (β : B →+* R) (m : ℕ) (β' : B →+* R) (C : SiegPre h N (b.ζ : B) (spMap β)) (C' : SiegPre h N (b.ζ : B) (spMap β')) (φ : C'.A.left ⟶ C.A.left) (φ₂ : (G2 C'.A).left ⟶ (G2 C.A).left), β' (b.ζ : B) = β (b.ζ : B) ^ m → IsGrpPullback C'.A C.A (𝟙 _) φ → IsSquare φ φ₂ → LBIso C'.P (C.P.pull φ₂) → ∃ T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ), (∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N]) ∧ ∀ x, (C'.lev x).left ≫ φ = (C.lev (T x)).left := by
+  intro h N B _ b hN
+  exact ⟨fun S s C T m hm hT => SimilitudeLevel.part_one h N B b hN S s C T m hm hT,
+    fun R _ _ β m β' C C' φ φ₂ hζ hpb hsq hP => SimilitudeLevel.part_two h N B b hN R β m β' C C' φ φ₂ hζ hpb hsq hP⟩
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelChangeBySymplecticSimilitude =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticSimilitudeInvertibleModN =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticSimilitudeInvertibleModN", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open ReciprocityTheory.ChartRestriction.G.Geo.Tor
+
+namespace GlobalTheory.SympModN
+
+theorem omegaStd_nsmul_left {h : ℕ} (N : ℕ) (a b : Fin h ⊕ Fin h → ℤ) :
+    omegaStd (N • a) b = N * omegaStd a b := by
+  unfold omegaStd
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  simp only [Pi.smul_apply, nsmul_eq_mul]
+  ring
+
+theorem omegaStd_single_inr {h : ℕ} (a : Fin h ⊕ Fin h → ℤ) (i : Fin h) :
+    omegaStd a (Pi.single (.inr i) 1) = a (.inl i) := by
+  simp [omegaStd, Pi.single_apply]
+
+theorem omegaStd_single_inl {h : ℕ} (a : Fin h ⊕ Fin h → ℤ) (i : Fin h) :
+    omegaStd a (Pi.single (.inl i) 1) = -a (.inr i) := by
+  simp [omegaStd, Pi.single_apply]
+
+theorem omegaStd_add_nsmul_modEq {h : ℕ} (N : ℕ) (x y b c : Fin h ⊕ Fin h → ℤ) :
+    omegaStd (x + N • b) (y + N • c) ≡ omegaStd x y [ZMOD N] := by
+  rw [Int.modEq_iff_dvd]
+  unfold omegaStd
+  rw [← Finset.sum_sub_distrib]
+  refine Finset.dvd_sum fun i _ => ?_
+  simp only [Pi.add_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply]
+  exact ⟨-(b (.inl i) * y (.inr i) + x (.inl i) * c (.inr i) + N * b (.inl i) * c (.inr i)) +
+    (b (.inr i) * y (.inl i) + x (.inr i) * c (.inl i) + N * b (.inr i) * c (.inl i)), by ring⟩
+
+theorem exists_eq_nsmul_iff {ι : Type*} (N : ℕ) (hN : N ≠ 0) (a : ι → ℤ) :
+    (∃ b, a = N • b) ↔ ∀ j, (N : ℤ) ∣ a j := by
+  constructor
+  · rintro ⟨b, rfl⟩ j
+    simp
+  · intro hd
+    refine ⟨fun j => a j / N, funext fun j => ?_⟩
+    simp [Int.mul_ediv_cancel' (hd j)]
+
+theorem symplecticSimilitude_modN : ∀ (h N m : ℕ) (T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)), N ≠ 0 →
+    m.Coprime N → (∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N]) →
+    (∀ a, (∃ b, T a = N • b) → ∃ b, a = N • b) ∧ (∀ a, ∃ a' b, T a' = a + N • b) ∧
+    ∃ T' : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ), (∀ x, ∃ b, T (T' x) = x + N • b) ∧
+      ∀ m' : ℕ, m * m' ≡ 1 [MOD N] → ∀ x y, omegaStd (T' x) (T' y) ≡ m' * omegaStd x y [ZMOD N] := by
+  intro h N m T hN hm hT
+  have h1 : ∀ a, (∃ b, T a = N • b) → ∃ b, a = N • b := by
+    rintro a ⟨b, hb⟩
+    have hd : ∀ y, (N : ℤ) ∣ omegaStd a y := by
+      intro y
+      have e := hT a y
+      rw [hb, omegaStd_nsmul_left] at e
+      have hdm : (N : ℤ) ∣ (m : ℤ) * omegaStd a y := by
+        have h3 := Int.modEq_iff_dvd.1 e
+        have h2 : (N : ℤ) ∣ (N : ℤ) * omegaStd b (T y) := dvd_mul_right _ _
+        simpa using dvd_add h3 h2
+      exact (Nat.isCoprime_iff_coprime.2 hm.symm).dvd_of_dvd_mul_left hdm
+    refine (exists_eq_nsmul_iff N hN a).2 fun j => ?_
+    rcases j with i | i
+    · simpa [omegaStd_single_inr] using hd (Pi.single (.inr i) 1)
+    · simpa [omegaStd_single_inl] using hd (Pi.single (.inl i) 1)
+  haveI : NeZero N := ⟨hN⟩
+  let red : (Fin h ⊕ Fin h → ℤ) → (Fin h ⊕ Fin h → ZMod N) := fun a j => (a j : ZMod N)
+  let lift : (Fin h ⊕ Fin h → ZMod N) → (Fin h ⊕ Fin h → ℤ) := fun v j => ((v j).val : ℤ)
+  have hred0 : ∀ a, red a = 0 ↔ ∃ b, a = N • b := by
+    intro a
+    rw [exists_eq_nsmul_iff N hN a, funext_iff]
+    exact forall_congr' fun j => ZMod.intCast_zmod_eq_zero_iff_dvd _ _
+  have hredlift : ∀ v, red (lift v) = v := by
+    intro v; funext j; simp [red, lift]
+  have hred_sub : ∀ a a', red (a - a') = red a - red a' := by
+    intro a a'; funext j; simp [red]
+  have finj : Function.Injective fun v => red (T (lift v)) := by
+    intro v w hvw
+    have e : red (T (lift v - lift w)) = 0 := by
+      rw [map_sub, hred_sub]; exact sub_eq_zero.2 hvw
+    obtain ⟨b', hb'⟩ := h1 _ ((hred0 _).1 e)
+    have e2 : red (lift v - lift w) = 0 := (hred0 _).2 ⟨b', hb'⟩
+    rw [hred_sub, hredlift, hredlift] at e2
+    exact sub_eq_zero.1 e2
+  have fsurj := Finite.injective_iff_surjective.1 finj
+  have h2 : ∀ a, ∃ a' b, T a' = a + N • b := by
+    intro a
+    obtain ⟨v, hv⟩ := fsurj (red a)
+    have e : red (T (lift v) - a) = 0 := by
+      rw [hred_sub]; exact sub_eq_zero.2 hv
+    obtain ⟨b, hb⟩ := (hred0 _).1 e
+    exact ⟨lift v, b, by rw [← hb]; abel⟩
+  choose v b hvb using fun i : Fin h ⊕ Fin h => h2 (Pi.single i 1)
+  let T' : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ) :=
+    ∑ i, (LinearMap.proj i : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] ℤ).smulRight (v i)
+  have hT' : ∀ x, T' x = ∑ i, x i • v i := by
+    intro x; simp [T']
+  have h3 : ∀ x, T (T' x) = x + N • ∑ i, x i • b i := by
+    intro x
+
+    rw [hT', map_sum]
+    simp only [map_zsmul, hvb, smul_add, Finset.sum_add_distrib]
+    congr 1
+    · funext j
+      simp [Finset.sum_apply, Pi.single_apply]
+    · rw [Finset.smul_sum]
+      exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
+  refine ⟨h1, h2, T', fun x => ⟨_, h3 x⟩, ?_⟩
+  intro m' hmm' x y
+  have e1 := hT (T' x) (T' y)
+  rw [h3, h3] at e1
+  have e2 := omegaStd_add_nsmul_modEq N x y (∑ i, x i • b i) (∑ i, y i • b i)
+  have e3 : (m : ℤ) * omegaStd (T' x) (T' y) ≡ omegaStd x y [ZMOD N] := e1.symm.trans e2
+  have hmm'' : (m : ℤ) * m' ≡ 1 [ZMOD N] := by
+    unfold Nat.ModEq at hmm'
+    unfold Int.ModEq
+    exact_mod_cast hmm'
+  calc omegaStd (T' x) (T' y) = 1 * omegaStd (T' x) (T' y) := by ring
+    _ ≡ ((m : ℤ) * m') * omegaStd (T' x) (T' y) [ZMOD N] := Int.ModEq.mul_right _ hmm''.symm
+    _ = m' * ((m : ℤ) * omegaStd (T' x) (T' y)) := by ring
+    _ ≡ m' * omegaStd x y [ZMOD N] := Int.ModEq.mul_left _ e3
+
+end GlobalTheory.SympModN
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticSimilitudeInvertibleModN =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelFamilySimilitudeGroupActionFreeTransitive =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelFamilySimilitudeGroupActionFreeTransitive", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowSection\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCycAwayHomComplex\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.SRelOneOneIff\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSiegelObjectLoweredLevel\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PrincipalSiegelObjectOddLevelRigid\npublic import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelLevelChangeBySymplecticSimilitude\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelObjectPullbackLevelPowerCalculus\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymplecticSimilitudeInvertibleModN\nimport Development.AbelianVarietyTheory.Definitions.ModuliSpaces.DenseGenericOfFlat\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelObjectPullbackExistsAndPrincipal\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPullbackIdCompCancel\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
@@ -107,7 +654,7 @@ theorem exists_twist (hN : N ≠ 0) {T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (
     (root : σ (zetaAway N) = zetaAway N ^ m) (fix : σ.comp j = j)
     (symp : ∀ x y, omegaStd (T x) (T y) ≡ m * omegaStd x y [ZMOD N])
     (low : ∀ x, F.univ.lev (T x) ^ (N / n) = F.univ.lev x ^ (N / n)) : ∃ f, Twist F j T m σ f := by
-  obtain ⟨hinj, hsurj, -⟩ := GlobalTheory.T.symplecticSimilitude_invertible_modN h N m T hN cop symp
+  obtain ⟨hinj, hsurj, -⟩ := _root_.GlobalTheory.SympModN.symplecticSimilitude_modN h N m T hN cop symp
   obtain ⟨hr, hd⟩ := F.isReduced_and_dense
   obtain ⟨f, hf, H⟩ := F.rep F.X (F.s ≫ spMap σ) (relabel F.univ T σ hN (zeta_pow hN) root symp hinj hsurj) hr
     (hd.mono fun x hx => by
@@ -123,7 +670,7 @@ theorem exists_twist (hN : N ≠ 0) {T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (
 theorem Twist.unique (hN : N ≠ 0) {T T' : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)} {m m' : ℕ}
     {σ σ' : cycAway N →+* cycAway N} {f f' : F.X ⟶ F.X} (t : Twist F j T m σ f) (t' : Twist F j T' m' σ' f')
     (hσ : σ = σ') (hT : ∀ x, F.univ.lev (T x) = F.univ.lev (T' x)) : f = f' := by
-  obtain ⟨hinj, hsurj, -⟩ := GlobalTheory.T.symplecticSimilitude_invertible_modN h N m T hN t.cop t.symp
+  obtain ⟨hinj, hsurj, -⟩ := _root_.GlobalTheory.SympModN.symplecticSimilitude_modN h N m T hN t.cop t.symp
   refine F.hom_ext (relabel F.univ T σ hN (zeta_pow hN) t.root t.symp hinj hsurj) f f' (by rw [t.comm, t'.comm, hσ])
     (t.siegPB hN hinj hsurj) ?_
   obtain ⟨ν, a, ⟨ν₂, b, c⟩, d⟩ := t'.map
@@ -145,9 +692,9 @@ theorem rig (hn : 3 ≤ n) (hN : Odd N) (hnN : n ∣ N) (hj : j (zetaAway n) = z
     (hφ' : SRelBy c' F.univ (N / n) (N / n) g φ') : φ = φ' := by
   have hN0 : N ≠ 0 := hN.pos.ne'
   have hn0 : n ≠ 0 := by omega
-  obtain ⟨c₀, hC0, h0C⟩ := GlobalTheory.T.exists_siegelObject_lowered_level h n N (cycAway n) (cycAway N) (zetaAway n) (zetaAway N) j F.X F.s F.univ
+  obtain ⟨c₀, hC0, h0C⟩ := _root_.GlobalTheory.SiegLower.exists_lower h n N (cycAway n) (cycAway N) (zetaAway n) (zetaAway N) j F.X F.s F.univ
     hN0 (isUnit_natCast hN0) hnN hj
-  have hc₀ : c₀.Principal := (GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h N n n (cycAway N) (cycAway n) (cycAway n) (zetaAway N) (zetaAway n)
+  have hc₀ : c₀.Principal := (_root_.GlobalTheory.SiegLevCalc.sRel_calculus h N n n (cycAway N) (cycAway n) (cycAway n) (zetaAway N) (zetaAway n)
     (zetaAway n) F.X F.X F.X F.s (F.s ≫ spMap j) (F.s ≫ spMap j) F.univ c₀ c₀ (𝟙 _) (𝟙 _) (N / n) 1 1 h0C).2.1 F.princ
   obtain ⟨ψ, hψ⟩ := hC0
   have e₁ := sRelBy_comp hψ hφ
@@ -169,13 +716,13 @@ variable {h n n' n'' : ℕ} {B B' B'' : Type} [CommRing B] [CommRing B'] [CommRi
   {d d' d'' : ℕ}
 
 theorem sRel_comp (h₁ : SRel c' c d' d f) (h₂ : SRel c'' c' d'' d' f') : SRel c'' c d'' d (f' ≫ f) :=
-  ((GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).1 h₂
+  ((_root_.GlobalTheory.SiegLevCalc.sRel_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).1 h₂
 
 theorem sRel_cancel (h₁ : SRel c' c d' d f) (h₂ : SRel c'' c d'' d (f' ≫ f)) : SRel c'' c' d'' d' f' :=
-  ((GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).2 h₂
+  ((_root_.GlobalTheory.SiegLevCalc.sRel_calculus h n n' n'' B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f' d d' d'' h₁).1).2 h₂
 
 theorem sRel_scale (h₁ : SRel c' c 1 1 f) (e : ℕ) : SRel c' c e e f := by
-  simpa using (GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n' n' B B' B' ζ ζ' ζ' S S' S' s s' s' c c' c' f (𝟙 S') 1 1 1 h₁).2.2 e
+  simpa using (_root_.GlobalTheory.SiegLevCalc.sRel_calculus h n n' n' B B' B' ζ ζ' ζ' S S' S' s s' s' c c' c' f (𝟙 S') 1 1 1 h₁).2.2 e
 
 end Calc2
 
@@ -199,19 +746,19 @@ theorem exists_eq_nsmul_of_pull (hN : N ≠ 0) {R : Type} [CommRing R] [IsLocalR
     rw [← hp4 v, hv, ← this]
   let K := AlgebraicClosure (IsLocalRing.ResidueField R)
   let z : Sp K ⟶ Sp R := spMap ((algebraMap (IsLocalRing.ResidueField R) K).comp (IsLocalRing.residue R))
-  obtain ⟨β, hβ⟩ := exists_spMap ((z ≫ y) ≫ F.s)
+  obtain ⟨β, hβ⟩ := _root_.GlobalTheory.LevCover.exists_spMap ((z ≫ y) ≫ F.s)
   let u : Kˣ := Units.ofPowEqOne (β (zetaAway N)) N (by rw [← map_pow, zeta_pow hN, map_one]) hN
   obtain ⟨g1, -, -⟩ := F.univ.geom K (z ≫ y) β u hβ rfl
   refine (g1 v).1 (Over.OverMorphism.ext ?_)
-  rw [unit_left', Category.assoc, e, ← Category.assoc, ← unit_left', MonObj.comp_one]
+  rw [_root_.GlobalTheory.LevelFibre.unit_left, Category.assoc, e, ← Category.assoc, ← _root_.GlobalTheory.LevelFibre.unit_left, MonObj.comp_one]
 
 theorem Twist.eq_id_of_fixed (hn : 3 ≤ n) (hN : Odd N) (hnN : n ∣ N) (hj : j (zetaAway n) = zetaAway N ^ (N / n))
     {T : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)} {m : ℕ} {σ : cycAway N →+* cycAway N} {f : F.X ⟶ F.X}
     (t : Twist F j T m σ f) {k : Type} [Field k] [IsAlgClosed k] (y : Sp k ⟶ F.X) (hy : y ≫ f = y) : f = 𝟙 _ := by
   have hN0 : N ≠ 0 := hN.pos.ne'
-  obtain ⟨β, hβ⟩ := exists_spMap (y ≫ F.s)
+  obtain ⟨β, hβ⟩ := _root_.GlobalTheory.LevCover.exists_spMap (y ≫ F.s)
   have hσβ : β.comp σ = β :=
-    spMap_inj (by rw [← spMap_comp', ← hβ, Category.assoc, ← t.comm, ← Category.assoc, hy])
+    _root_.GlobalTheory.ZM.DenseFib.spMap_inj (by rw [← spMap_comp', ← hβ, Category.assoc, ← t.comm, ← Category.assoc, hy])
   have e : β (zetaAway N) ^ m = β (zetaAway N) ^ 1 := by
     rw [pow_one, ← map_pow, ← t.root, ← RingHom.comp_apply, hσβ]
   have hσ1 : σ = RingHom.id _ := (cycAway_galois N hN0).2.1 _ σ (RingHom.id _) (by
@@ -233,7 +780,7 @@ theorem Twist.eq_id_of_fixed (hn : 3 ≤ n) (hN : Odd N) (hnN : n ∣ N) (hj : j
   obtain ⟨g1, -, -⟩ := F.univ.geom k y β z hβ rfl
   have hT : ∀ x, F.univ.lev (T x) = F.univ.lev x := fun x => by
     have e1 : toUnit (Over.mk y) ≫ F.univ.lev (T x) = toUnit (Over.mk y) ≫ F.univ.lev x :=
-      Over.OverMorphism.ext (by rw [unit_left', unit_left', hlev])
+      Over.OverMorphism.ext (by rw [_root_.GlobalTheory.LevelFibre.unit_left, _root_.GlobalTheory.LevelFibre.unit_left, hlev])
     have e2 : toUnit (Over.mk y) ≫ F.univ.lev (T x - x) = 1 := by
       have := F.univ.lev_add (T x - x) x
       rw [sub_add_cancel] at this
@@ -256,8 +803,8 @@ theorem exists_twist_of_points (hn : 3 ≤ n) (hN : Odd N) (hnN : n ∣ N) (hj :
     ∃ T m σ f, Twist F j T m σ f ∧ y ≫ f = y' := by
   have hN0 : N ≠ 0 := hN.pos.ne'
   have hn0 : n ≠ 0 := by omega
-  obtain ⟨β, hβ⟩ := exists_spMap (y ≫ F.s)
-  obtain ⟨β', hβ'⟩ := exists_spMap (y' ≫ F.s)
+  obtain ⟨β, hβ⟩ := _root_.GlobalTheory.LevCover.exists_spMap (y ≫ F.s)
+  obtain ⟨β', hβ'⟩ := _root_.GlobalTheory.LevCover.exists_spMap (y' ≫ F.s)
   have G := cycAway_galois N hN0
   obtain ⟨m, hmc, hm⟩ := G.2.2 R β β'
   obtain ⟨σ, hσ⟩ := G.1 m hmc
@@ -273,7 +820,7 @@ theorem exists_twist_of_points (hn : 3 ≤ n) (hN : Odd N) (hnN : n ∣ N) (hj :
   have a3 : SRel Cy' Cy (N / n) (N / n) (𝟙 _ ≫ 𝟙 _) := sRel_comp a1 a2
   rw [Category.comp_id] at a3
   obtain ⟨φ, hφ, ⟨φ₂, hsq, hP⟩, hl⟩ := a3
-  obtain ⟨T, hTω, hTl⟩ := (GlobalTheory.T.siegel_level_change_by_symplectic_similitude h N (cycAway N) (cycBase hN0) hN).2 R β m β' Cy Cy' φ φ₂ hm hφ hsq hP
+  obtain ⟨T, hTω, hTl⟩ := (_root_.GlobalTheory.siegel_level_change_by_similitude h N (cycAway N) (cycBase hN0) hN).2 R β m β' Cy Cy' φ φ₂ hm hφ hsq hP
 
   have low : ∀ x, F.univ.lev (T x) ^ (N / n) = F.univ.lev x ^ (N / n) := fun x => by
     have e1 := pow_section hφ _ _ ((hTl x).trans (Category.id_comp _).symm) (N / n)
@@ -290,7 +837,7 @@ theorem exists_twist_of_points (hn : 3 ≤ n) (hN : Odd N) (hnN : n ∣ N) (hj :
       _root_.one_mul] at e4
     exact e4
 
-  have hbj : β.comp j = β'.comp j := spMap_inj (by
+  have hbj : β.comp j = β'.comp j := _root_.GlobalTheory.ZM.DenseFib.spMap_inj (by
     rw [← spMap_comp', ← spMap_comp', ← hβ, ← hβ', Category.assoc, Category.assoc, hs])
   let r := IsLocalRing.residue R
   have e5 : (r.comp β) (zetaAway N) ^ (N / n) = (r.comp β) (zetaAway N) ^ (m * (N / n)) := by
@@ -301,7 +848,7 @@ theorem exists_twist_of_points (hn : 3 ≤ n) (hN : Odd N) (hnN : n ∣ N) (hj :
   have fix : σ.toRingHom.comp j = j := (cycAway_galois n hn0).2.1 _ _ _ (by
     rw [RingHom.comp_apply, hj, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, map_pow, hσ, ← pow_mul, e6])
   obtain ⟨f, t⟩ := exists_twist (F := F) hN0 σ.injective hmc hσ fix hTω low
-  obtain ⟨hinj, hsurj, -⟩ := GlobalTheory.T.symplecticSimilitude_invertible_modN h N m T hN0 hmc hTω
+  obtain ⟨hinj, hsurj, -⟩ := _root_.GlobalTheory.SympModN.symplecticSimilitude_modN h N m T hN0 hmc hTω
   have X0 : SiegPB Cy' (relabel Cy T σ.toRingHom hN0 (zeta_pow hN0) hσ hTω hinj hsurj) (𝟙 _) :=
     ⟨φ, φ₂, hφ, hsq, hP, fun x => (hTl x).trans (Category.id_comp _).symm⟩
   obtain ⟨p, p₂, hp1, hp2, hp3, hp4⟩ := hCy
@@ -326,7 +873,7 @@ theorem Twist.exists_inv (hN : N ≠ 0) (hN1 : 1 < N) (hn0 : n ≠ 0) (hj : j (z
     (t : Twist F j T m σ f) :
     ∃ (T' : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h → ℤ)) (m' : ℕ) (σ' : cycAway N →+* cycAway N) (f' : F.X ⟶ F.X),
       Twist F j T' m' σ' f' ∧ f ≫ f' = 𝟙 _ := by
-  obtain ⟨-, -, T', hT', hω'⟩ := GlobalTheory.T.symplecticSimilitude_invertible_modN h N m T hN t.cop t.symp
+  obtain ⟨-, -, T', hT', hω'⟩ := _root_.GlobalTheory.SympModN.symplecticSimilitude_modN h N m T hN t.cop t.symp
   haveI : NeZero N := ⟨hN⟩
   set m' : ℕ := (((ZMod.unitOfCoprime m t.cop)⁻¹ : (ZMod N)ˣ) : ZMod N).val with hm'
   have hmm : m * m' ≡ 1 [MOD N] := by
@@ -438,3 +985,7 @@ theorem siegel_group_action : ∀ (h n N : ℕ) (F : SFam h N (zetaAway N)) (j :
     exact ⟨⟨f, T, m, σ, t⟩, e⟩
 
 end GlobalTheory.SiegAct
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SiegelFamilySimilitudeGroupActionFreeTransitive =====

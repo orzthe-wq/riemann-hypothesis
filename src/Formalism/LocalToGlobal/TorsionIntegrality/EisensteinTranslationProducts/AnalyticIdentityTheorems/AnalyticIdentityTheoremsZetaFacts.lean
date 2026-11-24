@@ -131,7 +131,7 @@ private lemma hasDerivAt_inv_sub_add_inv_add_div_sq (l z : ℂ) (h : z - l ≠ 0
 lemma differentiableOn_zetaExcept (L : PeriodPair) (l₀ : ℂ) :
     DifferentiableOn ℂ (zetaExcept L l₀) (L.lattice \ {l₀})ᶜ := by
   refine differentiableOn_of_hasSumLocallyUniformlyOn' (hasSumLU_zetaExcept L l₀).hasSumLocallyUniformlyOn (fun l => ?_)
-    L.isOpen_compl_lattice_diff
+    L.isOpen_compl_lattice_sdiff
   by_cases h : (l : ℂ) = l₀
   · simp only [h, ↓reduceIte]
     exact differentiableOn_const 0
@@ -169,11 +169,6 @@ lemma zetaExcept_zero_zero (L : PeriodPair) : zetaExcept L 0 0 = 0 := by
     · rw [zero_sub, zero_div, add_zero, one_div_neg_eq_neg_one_div, neg_add_cancel]
   simp only [zetaExcept, h, tsum_zero]
 
-lemma hasDerivAt_term (l z : ℂ) (h : z - l ≠ 0) :
-    HasDerivAt (fun z : ℂ ↦ 1 / (z - l) + 1 / l + z / l ^ 2)
-      (-(1 / (z - l) ^ 2 - 1 / l ^ 2)) z := by
-  exact hasDerivAt_inv_sub_add_inv_add_div_sq l z h
-
 private lemma hasSum_deriv_of_hasSumLocallyUniformlyOn {ι : Type*} {F : ι → ℂ → ℂ} {g : ℂ → ℂ} {U : Set ℂ}
     (h : HasSumLocallyUniformlyOn F g U) (hF : ∀ i, DifferentiableOn ℂ (F i) U) (hU : IsOpen U)
     {z : ℂ} (hz : z ∈ U) : HasSum (fun i => deriv (F i) z) (deriv g z) := by
@@ -202,7 +197,7 @@ lemma eqOn_deriv_wZeta (L : PeriodPair) :
       apply hw
       rw [sub_eq_zero.mp e]
       exact l.2
-    exact (hasDerivAt_term l w hwl).differentiableAt.differentiableWithinAt
+    exact (_root_.Formalism.L2.Th1.F.AnalyticIdentityTheoremsZetaFacts.hasDerivAt_inv_sub_add_inv_add_div_sq l w hwl).differentiableAt.differentiableWithinAt
   have hs := hasSum_deriv_of_hasSumLocallyUniformlyOn (hasSumLU_wZeta L).hasSumLocallyUniformlyOn hF hU hz
   have hder : (fun l : L.lattice =>
       deriv (fun w : ℂ => 1 / (w - (l : ℂ)) + 1 / (l : ℂ) + w / (l : ℂ) ^ 2) z) =
@@ -213,7 +208,7 @@ lemma eqOn_deriv_wZeta (L : PeriodPair) :
       apply hz
       rw [sub_eq_zero.mp e]
       exact l.2
-    exact (hasDerivAt_term l z hzl).deriv
+    exact (_root_.Formalism.L2.Th1.F.AnalyticIdentityTheoremsZetaFacts.hasDerivAt_inv_sub_add_inv_add_div_sq l z hzl).deriv
   rw [hder] at hs
   exact hs.unique (L.hasSum_weierstrassP z).neg
 
@@ -227,7 +222,7 @@ lemma differentiableOn_wZeta (L : PeriodPair) :
     apply hw
     rw [sub_eq_zero.mp e]
     exact l.2
-  exact (hasDerivAt_term l w hwl).differentiableAt.differentiableWithinAt
+  exact (_root_.Formalism.L2.Th1.F.AnalyticIdentityTheoremsZetaFacts.hasDerivAt_inv_sub_add_inv_add_div_sq l w hwl).differentiableAt.differentiableWithinAt
 
 end AnalyticIdentityTheoremsZetaFacts
 

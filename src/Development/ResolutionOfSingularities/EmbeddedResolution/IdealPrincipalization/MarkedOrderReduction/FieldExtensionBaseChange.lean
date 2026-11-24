@@ -114,7 +114,7 @@ theorem isAdmissible_comap_of_iso {k : Type u} [Field k] {A B : Scheme.{u}} (e :
   exact
     { charZero := h.charZero
       locallyOfFiniteType := inferInstance
-      nonzeroOnComponents := nonzeroOnComponents_comap_iso_hom e J h.nonzeroOnComponents
+      nonzeroOnComponents := _root_.FunctorialResolution.EmbeddedResolution.PrincipalizationIsoTransport.nonzeroOnComponents_comap_iso e J h.nonzeroOnComponents
       one_le_mult := h.one_le_mult
       quasiCompact := inferInstance
       smooth := inferInstance

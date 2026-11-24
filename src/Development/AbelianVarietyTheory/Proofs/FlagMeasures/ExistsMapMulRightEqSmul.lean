@@ -149,7 +149,7 @@ theorem exists_lintegral_eq_mul (μ ρ κ : Measure G) [SigmaFinite μ] [SFinite
   classical
   have hind : Measurable (T.indicator (1 : G → ENNReal)) := measurable_one.indicator hT
   have ind_ne_top : ∀ x, T.indicator (1 : G → ENNReal) x ≠ ⊤ := fun x => by
-    by_cases hx : x ∈ T <;> simp [Set.indicator_apply, hx]
+    by_cases hx : x ∈ T <;> simp [hx]
   have hLm : ∀ φ : G → ENNReal, Measurable φ →
       Measurable fun h => T.indicator (1 : G → ENNReal) h⁻¹ * ∫⁻ q, ∫⁻ k, φ (q * h * k) ∂κ ∂ρ :=
     fun φ hφ => (hind.comp measurable_inv).mul

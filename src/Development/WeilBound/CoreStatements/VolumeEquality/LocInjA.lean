@@ -113,24 +113,10 @@ theorem reForm_pos (R : RiemLat E g Λ) (v : Λ) (hv : v ≠ 0) : 0 < reForm R v
   simp only [zero_dotProduct, Complex.zero_im] at this
   simpa using this.symm
 
-theorem periods_li (R : RiemLat E g Λ) {ι : Type} [Fintype ι] (b : Module.Basis ι ℤ Λ) :
-    LinearIndependent ℝ fun i => R.P (b i) := by
-  apply LevelTowerAlt.basis_indep <;> assumption
-
-theorem periods_span (R : RiemLat E g Λ) : Submodule.span ℝ (Set.range R.P) = ⊤ := by
-  have := R.free
-  have := R.fin
-  let b := Module.finBasisOfFinrankEq ℤ Λ R.rank
-  have h := (periods_li R b).span_eq_top_of_card_eq_finrank' (by
-    simp [Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm])
-  refine top_le_iff.1 (h ▸ Submodule.span_mono ?_)
-  rintro _ ⟨i, rfl⟩
-  exact ⟨_, rfl⟩
-
 theorem reForm_eqv {R R' : RiemLat E g Λ} {γ : Λ ≃ₗ[𝓞 E] Λ} (hf : ∀ x y, R'.form (γ x) (γ y) = R.form x y)
     (h : R.EqvBy R' γ) (x y : Λ) : reForm R' (γ x) (γ y) = reForm R x y := by
   obtain ⟨φ, hφ⟩ := h
-  rw [reForm_apply, reForm_apply, hφ, hφ, PeriodIso.isometry_of_periods R R' (periods_span R) γ φ hf hφ]
+  rw [reForm_apply, reForm_apply, hφ, hφ, PeriodIso.isometry_of_periods R R' (_root_.LevelTowerAlt.span_top R) γ φ hf hφ]
 
 theorem reForm_cont {X : Type} [TopologicalSpace X] (R : X → RiemLat E g Λ) (hP : ∀ v, Continuous fun x => (R x).P v)
     (hH : Continuous fun x => (R x).Hm) (u v : Λ) : Continuous fun x => reForm (R x) u v :=
@@ -158,7 +144,7 @@ theorem short_finite {X : Type} [TopologicalSpace X] (R : X → RiemLat E g Λ) 
   have hK : IsCompact (Metric.sphere (0 : Fin (2 * g) → ℝ) 1) := isCompact_sphere _ _
   obtain ⟨c, hc, hc'⟩ := hK.exists_forall_le' (f := fun a => Q (x₀, a)) (a := 0)
     (hQ.comp (continuous_const.prodMk continuous_id)).continuousOn (fun a ha => (R x₀).pos _ fun h => by
-      have h0 : a = 0 := funext (Fintype.linearIndependent_iff.1 (periods_li (R x₀) b) a h)
+      have h0 : a = 0 := funext (Fintype.linearIndependent_iff.1 (_root_.LevelTowerAlt.basis_indep (R x₀) b) a h)
       simp [h0] at ha)
   have hev : ∀ᶠ x in 𝓝 x₀, ∀ a ∈ Metric.sphere (0 : Fin (2 * g) → ℝ) 1, c / 2 < Q (x, a) := by
     apply hK.eventually_forall_of_forall_eventually

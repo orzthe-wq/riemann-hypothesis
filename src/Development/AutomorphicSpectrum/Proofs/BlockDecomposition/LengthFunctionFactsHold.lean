@@ -191,7 +191,7 @@ theorem fderiv_hs_sq_le (x v : Mat n) : (fderiv ℝ hs x v) ^ 2 ≤ 4 * hs x * h
   have h0 : (∑ a, ∑ b, (2 : ℕ) • (innerSL ℝ (x a b)).comp (ent a b)) v =
       2 * ∑ p ∈ univ ×ˢ univ, inner ℝ (x p.1 p.2) (v p.1 p.2) := by
     rw [sum_product, mul_sum]
-    simp [ContinuousLinearMap.sum_apply, mul_sum, ent_apply, mul_add]
+    simp [mul_sum, ent_apply, mul_add]
   rw [h0]
   have h1 : |∑ p ∈ (univ : Finset (Fin n)) ×ˢ (univ : Finset (Fin n)), inner ℝ (x p.1 p.2) (v p.1 p.2)| ≤
       ∑ p ∈ (univ : Finset (Fin n)) ×ˢ (univ : Finset (Fin n)), ‖x p.1 p.2‖ * ‖v p.1 p.2‖ :=
@@ -275,7 +275,7 @@ theorem hs_bs (p : Bool × Fin n × Fin n) : hs (bs p) = 1 := by
   obtain ⟨s, a, b⟩ := p
   have h : ∀ i j : Fin n, ‖bs (s, a, b) i j‖ ^ 2 = if a = i then (if b = j then 1 else 0) else 0 := by
     intro i j
-    by_cases h1 : a = i <;> by_cases h2 : b = j <;> cases s <;> simp [bs, Matrix.single_apply, h1, h2]
+    by_cases h1 : a = i <;> by_cases h2 : b = j <;> cases s <;> simp [bs, h1, h2]
   simp [hs, h]
 
 theorem lg_mul_le (x y : Mat n) : lg (x * y) ≤ lg x + lg y := by

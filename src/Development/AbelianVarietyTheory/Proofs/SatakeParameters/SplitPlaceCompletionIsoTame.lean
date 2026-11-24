@@ -95,11 +95,7 @@ theorem complRel_lt_one (p : HeightOneSpectrum (𝓞 F)) (x : p.adicCompletion F
     Valuation.Compatible.ofValuation _
   exact (ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).lt_one_iff_lt_one
 
-theorem complRel_le_one (p : HeightOneSpectrum (𝓞 F)) (x : p.adicCompletion F) :
-    ValuativeRel.valuation (p.adicCompletion F) x ≤ 1 ↔ Valued.v x ≤ 1 := by
-  haveI : (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible :=
-    Valuation.Compatible.ofValuation _
-  exact (ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one
+alias complRel_le_one := _root_.GlobalTheory.CuspRep.ParLaws.valuation_le_one_iff
 
 theorem mem_GLint_of_entries {L : Type} [Field L] {n : ℕ} (O : Subring L) (g : GL (Fin n) L)
     (h1 : ∀ i j, (g : Matrix (Fin n) (Fin n) L) i j ∈ O)

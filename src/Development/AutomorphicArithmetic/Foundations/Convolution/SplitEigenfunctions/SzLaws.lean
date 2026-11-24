@@ -144,7 +144,7 @@ private theorem sZ_conj (z : (A E)ˣ) (g : G1 ℚ) :
   rw [Units.val_mul, Units.val_mul, sZ_val, hb]
   ext i j
   simp only [Matrix.mul_apply, Fin.sum_univ_two, hc, em_val, gl_val, cD_val]
-  fin_cases i <;> fin_cases j <;> simp [inv_inv, map_mul, hN]
+  fin_cases i <;> fin_cases j <;> simp [inv_inv, map_mul]
   · ring
   · rw [GroundTheory.Global.coe_ideleNorm] at hN
     rw [hN]

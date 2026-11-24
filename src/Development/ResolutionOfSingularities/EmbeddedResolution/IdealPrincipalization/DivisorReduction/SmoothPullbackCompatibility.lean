@@ -449,11 +449,6 @@ theorem isBlowupAlongIdealSheaf_id_comap_containedComponentsIdeal (hres : Functo
   rw [← heq]
   exact hfacts.isBlowup_id_preIdeal _ hV' j hjE
 
-private theorem heq_toSequenceOfBlowups_of_eq (L : PrincipalizationAssignment.{u}) {S₁ S₂ : MarkedIdealWithBoundary.{u}}
-    (hS : S₁ = S₂) : HEq (L S₁).toSequenceOfBlowups (L S₂).toSequenceOfBlowups := by
-  cases hS
-  exact HEq.refl _
-
 private theorem isStrictPullbackSequenceOfBlowups_of_heq {X' X : Scheme.{u}} (φ : X' ⟶ X) (B : SequenceOfBlowups X)
     {B₁ B₂ : SequenceOfBlowups X'} (hB : HEq B₁ B₂) (h : IsStrictPullbackBlowupSeq φ B₁ B) :
     IsStrictPullbackBlowupSeq φ B₂ B := by
@@ -562,7 +557,7 @@ theorem isStrictPullbackBlowupSeq_restrictToDivisor_of_eq_top (hres : Functorial
     (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ q)
     (divisorPullbackMap T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) Y h (E'.get ⟨j, hjE⟩) hD)
     hq₀ ((restrictToDivisor ((T.pullbackAlong Y q h).withBoundary E') j hjE).boundary) hBE₀ hValid₀ hdim₀
-  exact isStrictPullbackSequenceOfBlowups_of_heq _ _ (heq_toSequenceOfBlowups_of_eq L hTriple) hmain
+  exact isStrictPullbackSequenceOfBlowups_of_heq _ _ (_root_.FunctorialResolution.EmbeddedResolution.PrincipalizationAssignment.toSequenceOfBlowups_heq_of_eq L hTriple) hmain
 
 theorem isStrictPullbackBlowupSeq_restrictTwistedToDivisor (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian) (n : ℕ)
@@ -676,7 +671,7 @@ theorem isStrictPullbackBlowupSeq_restrictTwistedToDivisor (hres : FunctorialRes
     (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ q)
     (divisorPullbackMap T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) Y h (E'.get ⟨j, hjE⟩) hD)
     hq₀ ((restrictTwistedToDivisor ((T.pullbackAlong Y q h).withBoundary E') j hjE).boundary) hBE₀ hValid₀ hdim₀
-  exact isStrictPullbackSequenceOfBlowups_of_heq _ _ (heq_toSequenceOfBlowups_of_eq L hTriple) hmain
+  exact isStrictPullbackSequenceOfBlowups_of_heq _ _ (_root_.FunctorialResolution.EmbeddedResolution.PrincipalizationAssignment.toSequenceOfBlowups_heq_of_eq L hTriple) hmain
 
 end DivisorReduction
 

@@ -259,7 +259,7 @@ theorem IsSide.mem_wtSub (h : IsSide e act) (μ : Ix p q → ℚ) (P : MvPolynom
       ∀ a, mixedOp ℂ (zC e) (zD e) a a P = (shiftNu (cPair r s) μ (.inr a) : ℂ) • P := by
   simp only [wtSub, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
     LinearMap.smul_apply, LinearMap.id_apply, Sum.forall, h.1, h.2, if_true, shiftNu, Rat.cast_sub,
-    Rat.cast_add, sub_smul, add_smul, sub_eq_zero, eq_sub_iff_add_eq, sub_eq_iff_eq_add, zero_add]
+    Rat.cast_add, sub_smul, add_smul, eq_sub_iff_add_eq, sub_eq_iff_eq_add, zero_add]
 
 theorem IsSide.mem_hwSub (h : IsSide e act) (μ : Ix p q → ℚ) (P : MvPolynomial σ ℂ) :
     P ∈ hwSub act μ ↔ P ∈ wtSub act μ ∧
@@ -304,9 +304,9 @@ theorem lowering_iff (e : Ln p q r s → σ) (P : MvPolynomial σ ℂ) :
     refine Finset.sum_congr rfl fun a _ => ?_
     rw [Finset.sum_eq_single c₀, Finset.sum_eq_single d₀]
     · split_ifs <;> simp [Eab]
-    · intro d _ hd; simp [Eab, Matrix.single_apply, hd.symm]
+    · intro d _ hd; simp [Eab, hd.symm]
     · simp
-    · intro c _ hc; simp [Eab, Matrix.single_apply, hc.symm]
+    · intro c _ hc; simp [Eab, hc.symm]
     · simp
   have pc : ∀ c₀ d₀ : Ix r s, ¬ sameBlock c₀ d₀ → IsPC (Eab c₀ d₀) := by
     intro c₀ d₀ h a b hab

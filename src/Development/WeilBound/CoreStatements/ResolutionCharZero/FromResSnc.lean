@@ -11,6 +11,7 @@ public import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoor
 public import Development.ResolutionOfSingularities.EmbeddedResolution.EtaleCoordinates.StrictNormalCrossingsOpenImmersion
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.StrictTransform
 import Development.ResolutionOfSingularities.Foundations.Schemes.IdealSheafData
+import Development.WeilBound.CoreStatements.ResolutionCharZero.ExistsFinsetComapProdIdealEqSpanProdCoord
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,59 +75,6 @@ theorem inSNCPosition_of_hasSNC {X : Scheme.{0}} {k : Type} [Field k] {p : X ⟶
   obtain ⟨U, hx, m, c, hc, he, a, h1, h2, h3⟩ := h.2 x
   exact ⟨U, hx, m, ⟨c, hc, he⟩, a, h1, h2, h3⟩
 
-private theorem ideal_top {X : Scheme.{0}} (U : X.affineOpens) :
-    (⊤ : X.IdealSheafData).ideal U = ⊤ := by simp
-
-private theorem ideal_comap_mul {X Y : Scheme.{0}} (g : X ⟶ Y) (U : Y.affineOpens)
-    (V : X.affineOpens) (e : (V : X.Opens) ≤ g ⁻¹ᵁ (U : Y.Opens)) (I J : Y.IdealSheafData) :
-    ((I * J).comap g).ideal V = (I.comap g).ideal V * (J.comap g).ideal V := by
-  rw [Scheme.IdealSheafData.comap_ideal_eq_map_appLE (I * J) g U V e,
-    Scheme.IdealSheafData.comap_ideal_eq_map_appLE I g U V e,
-    Scheme.IdealSheafData.comap_ideal_eq_map_appLE J g U V e,
-    Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, Ideal.map_mul]
-
-private theorem top_le_ι_preimage_self {Y : Scheme.{0}} (V : Y.Opens) :
-    (⊤ : V.toScheme.Opens) ≤ (Opens.map V.ι.base).obj V := by
-  intro x _
-  exact x.2
-
-private theorem ι_appLE_top_eq_topIso_inv {Y : Scheme.{0}} (V : Y.Opens) :
-    V.ι.appLE V ⊤ (top_le_ι_preimage_self V) = V.topIso.inv := by
-  simp
-  rfl
-
-private theorem ι_appLE_top_bijective {Y : Scheme.{0}} (V : Y.Opens) :
-    Function.Injective (CommRingCat.Hom.hom (V.ι.appLE V ⊤ (top_le_ι_preimage_self V))) ∧
-      Function.Surjective (CommRingCat.Hom.hom (V.ι.appLE V ⊤ (top_le_ι_preimage_self V))) := by
-  rw [ι_appLE_top_eq_topIso_inv]
-  exact V.topIso.commRingCatIsoToRingEquiv.symm.bijective
-
-private theorem ideal_eq_top_of_isAffineOpen_of_restrictIdeal_eq_top {Y : Scheme.{0}} (D : Y.IdealSheafData)
-    {V : Y.Opens} (hV : IsAffineOpen V) (htop : restrictIdeal D V = ⊤) :
-    D.ideal ⟨V, hV⟩ = ⊤ := by
-  have : IsAffine V.toScheme := hV
-  have key := Scheme.IdealSheafData.comap_ideal_eq_map_appLE D V.ι ⟨V, hV⟩
-      ⟨⊤, isAffineOpen_top V.toScheme⟩ (top_le_ι_preimage_self V)
-  rw [← restrictIdeal_eq_comap_ι, htop] at key
-  have h0 : ((⊤ : V.toScheme.IdealSheafData).ideal ⟨⊤, isAffineOpen_top V.toScheme⟩) = ⊤ := by
-    simp
-  rw [h0] at key
-  have key2 : Ideal.map (CommRingCat.Hom.hom (V.ι.appLE V ⊤ (top_le_ι_preimage_self V)))
-      (D.ideal ⟨V, hV⟩) = ⊤ := key.symm
-  have hbij := ι_appLE_top_bijective V
-  have hcomap : Ideal.comap (CommRingCat.Hom.hom (V.ι.appLE V ⊤ (top_le_ι_preimage_self V)))
-      (Ideal.map (CommRingCat.Hom.hom (V.ι.appLE V ⊤ (top_le_ι_preimage_self V)))
-        (D.ideal ⟨V, hV⟩)) = D.ideal ⟨V, hV⟩ := by
-    apply Ideal.comap_map_of_bijective
-    exact hbij
-  rw [key2, Ideal.comap_top] at hcomap
-  exact hcomap.symm
-
-private theorem etaleChartCoord_eq_coord {X : Scheme.{0}} {k : Type} [Field k]
-    {p : X ⟶ Spec (CommRingCat.of k)} {V : X.Opens} {m : ℕ} (c : EtaleChart p V m) (j : Fin m) :
-    @etaleChartCoord k _ m Γ(X, V) _ c.algebra j = c.coord j := by
-  rw [etaleChartCoord_def, c.algebraMap_eq_coordRingHom, c.coordRingHom_X]
-
 private theorem presheaf_map_mem_primeIdealOf {X : Scheme.{0}} {V V' : X.Opens}
     (hV : IsAffineOpen V) (hV' : IsAffineOpen V') (hle : V' ≤ V) (x : ↥X)
     (hxV : x ∈ V) (hxV' : x ∈ V') (s : Γ(X, V))
@@ -144,75 +92,6 @@ private theorem presheaf_map_mem_primeIdealOf {X : Scheme.{0}} {V V' : X.Opens}
       IsLocalRing.maximalIdeal (X.presheaf.stalk x)
   rw [hgerm]
   exact h1
-
-private theorem exists_finset_comap_prod_ideal_eq_span_prod_coord {Y W : Scheme.{0}} {k : Type}
-    [Field k] {pY : Y ⟶ Spec (CommRingCat.of k)} (g : Y ⟶ W) (U : W.affineOpens) {V : Y.Opens}
-    (hV : IsAffineOpen V) (e : V ≤ g ⁻¹ᵁ (U : W.Opens)) {n : ℕ} (c : EtaleChart pY V n) :
-    ∀ (F : List W.IdealSheafData) (γ : ℕ → Option (Fin n)),
-      (∀ i, ∀ h : i < F.length, γ i = none → restrictIdeal ((F[i]'h).comap g) V = ⊤) →
-      (∀ i, ∀ h : i < F.length, ∀ j, γ i = some j →
-        restrictIdeal ((F[i]'h).comap g) V = c.coordIdeal {j}) →
-      (∀ i i', i < F.length → i' < F.length → ∀ j, γ i = some j → γ i' = some j → i = i') →
-      ∃ J : Finset (Fin n),
-        (∀ j ∈ J, ∃ i, ∃ _ : i < F.length, γ i = some j) ∧
-        (F.prod.comap g).ideal ⟨V, hV⟩ = Ideal.span {∏ j ∈ J, c.coord j} := by
-  intro F
-  induction F with
-  | nil =>
-      intro γ _ _ _
-      refine ⟨∅, by simp, ?_⟩
-      have h1 : (([] : List W.IdealSheafData).prod).comap g = (⊤ : Y.IdealSheafData) := by
-        rw [Blowup.idealSheafData_prod_nil]
-        simp
-      rw [h1, Finset.prod_empty, Ideal.span_singleton_one]
-      exact ideal_top _
-  | cons D F ih =>
-      intro γ hnone hsome hinj
-      have hlen : ∀ i, i < F.length → i + 1 < (D :: F).length := by
-        intro i hi
-        simp only [List.length_cons]
-        omega
-      have hD0 : (0 : ℕ) < (D :: F).length := by
-        simp only [List.length_cons]
-        omega
-      obtain ⟨J', hJ'mem, hJ'⟩ := ih (fun i => γ (i + 1))
-        (fun i h hg => hnone (i + 1) (hlen i h) hg)
-        (fun i h j hg => hsome (i + 1) (hlen i h) j hg)
-        (fun i i' hi hi' j h1 h2 => by
-          have h3 := hinj (i + 1) (i' + 1) (hlen i hi) (hlen i' hi') j h1 h2
-          omega)
-      have hprod : ((D :: F).prod.comap g).ideal ⟨V, hV⟩
-          = (D.comap g).ideal ⟨V, hV⟩ * ((F.prod).comap g).ideal ⟨V, hV⟩ := by
-        rw [Blowup.idealSheafData_prod_cons]
-        exact ideal_comap_mul g U ⟨V, hV⟩ e D F.prod
-      cases hγ0 : γ 0 with
-      | none =>
-          have hD : (D.comap g).ideal ⟨V, hV⟩ = ⊤ :=
-            ideal_eq_top_of_isAffineOpen_of_restrictIdeal_eq_top _ hV (hnone 0 hD0 hγ0)
-          refine ⟨J', ?_, ?_⟩
-          · intro j hj
-            obtain ⟨i, hi, hγi⟩ := hJ'mem j hj
-            exact ⟨i + 1, hlen i hi, hγi⟩
-          · rw [hprod, hD, hJ', Ideal.top_mul]
-      | some j0 =>
-          have hD : (D.comap g).ideal ⟨V, hV⟩ = Ideal.span {c.coord j0} := by
-            have h2 := EtaleChart.ideal_eq_span_coord c hV (D.comap g) {j0}
-              (hsome 0 hD0 j0 hγ0)
-            rw [Finset.coe_singleton, Set.image_singleton] at h2
-            exact h2
-          have hj0 : j0 ∉ J' := by
-            intro hj0mem
-            obtain ⟨i, hi, hγi⟩ := hJ'mem j0 hj0mem
-            have h3 := hinj 0 (i + 1) hD0 (hlen i hi) j0 hγ0 hγi
-            omega
-          refine ⟨insert j0 J', ?_, ?_⟩
-          · intro j hj
-            rcases Finset.mem_insert.mp hj with rfl | hj'
-            · exact ⟨0, hD0, hγ0⟩
-            · obtain ⟨i, hi, hγi⟩ := hJ'mem j hj'
-              exact ⟨i + 1, hlen i hi, hγi⟩
-          · rw [hprod, hD, hJ', Ideal.span_singleton_mul_span_singleton,
-              Finset.prod_insert hj0]
 
 theorem isStrictNormalCrossings_radical_prod {W : Scheme.{0}} {k : Type} [Field k]
     (p : W ⟶ Spec (CommRingCat.of k)) [Smooth p] (E : List W.IdealSheafData)
@@ -243,7 +122,7 @@ theorem isStrictNormalCrossings_radical_prod {W : Scheme.{0}} {k : Type} [Field 
     refine ⟨fun hg => restrictIdeal_eq_top_of_le _ hV'V ((hγ i h).1 hg), fun j hg => ?_⟩
     exact restrictIdeal_eq_restrict_coordIdeal_of_le hV'V c _ {j} ((hγ i h).2 j hg)
   obtain ⟨J₀, hJ₀mem, hJ₀⟩ :=
-    exists_finset_comap_prod_ideal_eq_span_prod_coord (𝟙 W) ⟨V, hV⟩ hV' hV'U
+    BlowupCentre.exists_finset_comap_prod_ideal_eq_span_prod_coord (𝟙 W) ⟨V, hV⟩ hV' hV'U
       (c.restrictCompat hV'V) E γ (fun i h => (hγ' i h).1) (fun i h => (hγ' i h).2) hinjγ
   have hJ₀prime : ∀ j ∈ J₀,
       (c.restrictCompat hV'V).coord j ∈ (hV'.primeIdealOf ⟨y, hyV'⟩).asIdeal := by
@@ -265,12 +144,12 @@ theorem isStrictNormalCrossings_radical_prod {W : Scheme.{0}} {k : Type} [Field 
       (c.restrictCompat hV'V).algebra ((c.restrictCompat hV'V).algebra_etale hV') hntr
     intro a b hab
     refine h ?_
-    simp only [etaleChartCoord_eq_coord]
+    simp only [BlowupCentre.etaleChartCoord_eq_coord]
     exact hab
   have hrad := @isRadical_span_singleton_prod_etaleChartCoord k _ n
     ↥(W.presheaf.obj (op V')) _ (c.restrictCompat hV'V).algebra
     ((c.restrictCompat hV'V).algebra_etale hV') J₀
-  simp only [etaleChartCoord_eq_coord] at hrad
+  simp only [BlowupCentre.etaleChartCoord_eq_coord] at hrad
   obtain ⟨N, f, hfcoord, hfreg⟩ :=
     exists_isRegularParameterSystem_with_coords_of_mem_prime hV' (c.restrictCompat hV'V) y hyV'
       J₀ hJ₀prime

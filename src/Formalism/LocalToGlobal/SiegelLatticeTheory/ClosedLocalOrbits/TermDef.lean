@@ -148,17 +148,6 @@ theorem isGen_mk (g : ℕ) (hR : GenFun Λ F P g) (x : Carrier P) :
   · intro hr
     exact ⟨x.1, rep_mk x, hr⟩
 
-theorem isFeqF_mk (hR : FeqFFun Λ F P) (x : Carrier P) :
-    IsFeqF Λ F P (mk Λ F P x) ↔ ∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame x.1 a := by
-  unfold IsFeqF
-  constructor
-  · rintro ⟨F', ⟨h, e⟩, hr⟩
-    have e' := const_of_mk (fun y : Carrier P => ∃ n ∈ NLam Λ F, ∀ a, n (frame F a) = frame y.1 a)
-      (fun a b r => propext (hR a b r)) e
-    exact cast e' hr
-  · intro hr
-    exact ⟨x.1, rep_mk x, hr⟩
-
 theorem atPt_mk (hG : GFun Λ F P) (hC : CellFun Λ F P) (x : Carrier P) (w : Point E (r + 1)) :
     AtPt Λ F P (mk Λ F P x) w ↔ Gval F x.1 ≠ 0 ∧ IsInCell (ZhatOM (ZhatL F x.1)) w := by
   unfold AtPt

@@ -73,7 +73,7 @@ theorem isMulRightInvariant_of_lattice {G : Type} [Group G] [TopologicalSpace G]
   have hmap : (ν.map (· * x)) 𝓑 = ν ((· * x) ⁻¹' 𝓑) :=
     MeasurableEquiv.map_apply (MeasurableEquiv.mulRight x) 𝓑
   have h1 : (c : ENNReal) * ν 𝓑 = 1 * ν 𝓑 := by
-    calc (c : ENNReal) * ν 𝓑 = (c • ν) 𝓑 := by simp [Measure.smul_apply]
+    calc (c : ENNReal) * ν 𝓑 = (c • ν) 𝓑 := by simp
       _ = (ν.map (· * x)) 𝓑 := by rw [hc]
       _ = 1 * ν 𝓑 := by rw [one_mul]; exact hmap.trans hm
   have hc1 : c = 1 := by

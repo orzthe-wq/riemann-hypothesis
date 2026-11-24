@@ -4,8 +4,12 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStableComp
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ContinuousMapPFin
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivisorIndicatorMemHecke
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SatakeParametersUnramifiedUnitary
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryLocalPointsStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleRepIsotypicOfCentraliserFactorStatement
+import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsContinuousRetractionOntoUnitaryLocalPoints
+import Mathlib.Basic.Complex.Basic
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RepresentationTheory.Irreducible
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IrreducibleRepIsotypicOfCentraliserFactor
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FiniteCosetsInDoset
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -115,8 +119,8 @@ theorem heckeVec_eq_of_isCompAlong {L : Type} [Field L] [NumberField L] [IsCMFie
   have hF0 : F ≠ 0 := fun h => hf0 (LinearMap.ext fun v => by
     have := congrArg Subtype.val (DFunLike.congr_fun h v)
     exact this)
-  obtain ⟨r, -, -, hr⟩ := GlobalTheory.T.exists_continuous_retraction_onto_unitaryLocalPoints L n w
-  have htop := (GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor (UA L n) (locU n w) π.V X X π.rep (locU n w).subtype (σ.comp p) (σ.comp p)
+  obtain ⟨r, -, -, hr⟩ := _root_.GlobalTheory.DefU.LocRet.exists_ret L n w
+  have htop := (_root_.GlobalTheory.CuspRep.CompUniq.isotypic (UA L n) (locU n w) π.V X X π.rep (locU n w).subtype (σ.comp p) (σ.comp p)
     π.isIrreducible_rep hirr hirr (fun g => ⟨r g, fun y => hr g y⟩) F hF0).1
   let fi : Representation.IntertwiningMap (σ.comp p) (π.rep.comp (locU n w).subtype) → X →ₗ[ℂ] (UA L n → ℂ) :=
     fun i => U.subtype ∘ₗ i.toLinearMap

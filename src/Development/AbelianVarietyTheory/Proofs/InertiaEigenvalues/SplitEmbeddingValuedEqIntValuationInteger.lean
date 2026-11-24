@@ -293,9 +293,6 @@ theorem prod_idem {P1 : Finset (Formalism.L2.DIV.Pl D.host.E)} {es : Formalism.L
     rw [Finset.prod_insert hQ, Finset.sum_insert hQ, ih hs']
     linear_combination (c - 1) ^ 2 * hQS
 
-theorem absFin_one' : GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D 1 = 1 := by
-  simp [GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin, GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV]
-
 theorem absFin_idemSum : ∀ (D : D7) (P1 : Finset (Formalism.L2.DIV.Pl D.host.E)) (a : AE D), IsIdemSum a P1 → ∀ (m : ℕ) (hm : (m : D.host.E) ≠ 0) (x : (AE D)ˣ), (x : AE D) = a * (m : AE D) + (1 - a) → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D x = ∏ PP ∈ P1, ((Ideal.absNorm PP.asIdeal : ℕ) : ℝ) ^ (-(Formalism.L2.Host.ordF PP (Units.mk0 (m : D.host.E) hm))) := by
   intro D P1 a ha m hm x hx
   obtain ⟨⟨es, hes, hae⟩, -⟩ := ha
@@ -311,7 +308,7 @@ theorem absFin_idemSum : ∀ (D : D7) (P1 : Finset (Formalism.L2.DIV.Pl D.host.E
     rw [hx, Units.coe_prod]
     change _ = ∏ PP ∈ P1.attach, (fun PP => es PP * (m : AE D) + (1 - es PP)) PP.1
     rw [Finset.prod_attach P1 (fun PP => es PP * (m : AE D) + (1 - es PP)), prod_idem hes _ P1 subset_rfl, hae]
-  let A : (AE D)ˣ →* ℝ := ⟨⟨GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D, absFin_one'⟩, GlobalTheory.SplitLinear.absFin_mul⟩
+  let A : (AE D)ˣ →* ℝ := ⟨⟨GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D, _root_.GlobalTheory.SplitLinear.absFin_one⟩, GlobalTheory.SplitLinear.absFin_mul⟩
   have hA : GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D x = A x := rfl
   rw [hA, hx', map_prod, ← Finset.prod_attach P1]
   exact Finset.prod_congr rfl fun PP _ => absFin_idemAt (hes PP.1 PP.2) m hm (u PP) rfl

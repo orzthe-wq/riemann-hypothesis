@@ -1,13 +1,14 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompactStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresUniqueAeStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicUnitaryGroupLocallyCompact
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresUniqueAe
 public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.IsFibreFamilyTransport
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryActionPreservesHaarLocalStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensorStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitaryActionPreservesHaarLocal
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.UnitsOpenEmbeddingLocalTensor
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianMatricesLocallyCompactBorel
+import Formalism.UnipotentAdelicQuotients.SWXSDefs
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,11 +63,11 @@ theorem map_actW_fibre : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm h S
   have hR' := hR
   obtain ⟨_, _, _, _, -, -, -, -⟩ := hR'
-  obtain ⟨_, _, _, _, -, -, -, hbor, -, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R
+  obtain ⟨_, _, _, _, -, -, -, hbor, -, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ R
   have hbor' := hbor n M
   obtain ⟨_, _, _, _, hlift⟩ := GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R n
   obtain ⟨g, hgc, hgf⟩ := hlift M J hJ
-  obtain ⟨_, -, -, -, -, hact⟩ := GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ R
+  obtain ⟨_, -, -, -, -, hact⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ M J hJ R
   obtain ⟨hcont, hone, hmul, hgr⟩ := hact n
   have hcg : ∀ k : HA R σ J, Continuous (actW R σ J k : (Fin n → Fin M → R ⊗[F] E) → _) := fun k =>
     hcont.comp (Continuous.prodMk_right k)
@@ -79,7 +80,7 @@ theorem map_actW_fibre : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
       continuous_invFun := hcg h⁻¹ }
   let B : Set (HermR R σ n) := {S | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det}
   have hB : IsOpen B := by
-    have hop := (GlobalTheory.T.units_open_embedding_local_tensor F E σ hσ R hR).isOpen_range
+    have hop := (_root_.GlobalTheory.CompanionTheory.SW.KUnits.units_val_isOpenEmbedding F E σ hσ R hR).isOpen_range
     have hBe : B = (fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det) ⁻¹'
         Set.range (Units.val : (R ⊗[F] E)ˣ → R ⊗[F] E) := by
       ext T
@@ -88,7 +89,7 @@ theorem map_actW_fibre : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
     exact hop.preimage (Continuous.matrix_det continuous_subtype_val)
   have hU : {X | IsUnit (gramR R σ J X).det} = g ⁻¹' B := by
     ext X
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, B, hgf]
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage, B, hgf]
   have hm' : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (g ⁻¹' B) ν B m := by
     rw [← hU]
     exact hm
@@ -102,8 +103,8 @@ theorem map_actW_fibre : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
   have himg : (Homeomorph.refl (HermR R σ n)) '' B = B := by simp
   have hνm : ν.map (Homeomorph.refl (HermR R σ n)) = ν := by
     simpa using Measure.map_id (μ := ν)
-  have hμm : μ.map e = μ := GlobalTheory.T.unitary_action_preserves_haar_local F E σ hσ M J hJ R hR n μ hμ h
+  have hμm : μ.map e = μ := _root_.GlobalTheory.CompanionTheory.SW.HInv.map_actW_eq F E σ hσ M J hJ R hR n μ hμ h
   rw [himg, hνm, hμm, ← hU] at ht
-  exact (GlobalTheory.T.gram_fiber_measures_unique F E σ hσ M J hJ R hR n μ ν _ hμ hν ht m hm S)
+  exact (_root_.GlobalTheory.CompanionTheory.SW.GramFib.fibre_unique F E σ hσ M J hJ R hR n μ ν _ hμ hν ht m hm S)
 
 end GlobalTheory.CompanionTheory.SW.FibreInv

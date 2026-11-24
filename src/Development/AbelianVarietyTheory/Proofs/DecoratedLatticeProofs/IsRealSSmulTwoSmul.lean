@@ -73,15 +73,6 @@ theorem biComb_smul (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (a : WO A 
     rw [comb_smul]; rfl
   rw [h1, comb_smul]; rfl
 
-theorem isThetaFunO_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : ℂ) {f : WO S T → ℂ}
-    (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (c • f) := {
-  quasi γ w := by simp only [Pi.smul_apply, smul_eq_mul]; rw [hf.quasi]; ring
-  level := by
-    obtain ⟨U, hUo, hU⟩ := hf.level
-    exact ⟨U, hUo, fun u hu hi => by rw [heisO_smul, hU u hu hi]⟩
-  cont := continuous_const.mul hf.cont
-  smooth k L hL hfin w := contDiff_const.mul (hf.smooth k L hL hfin w) }
-
 theorem isLatVac_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : ℂ) {Λ : AddSubgroup (WO S T)} {f : WO S T → ℂ}
     (hf : IsLatVac (heisO ψ S T) Λ f) : IsLatVac (heisO ψ S T) Λ (c • f) :=
   ⟨fun u hu => by rw [heisO_smul, hf.1 u hu], fun e' he u hu hh => by rw [heisO_smul, hf.2 e' he u hu hh]⟩
@@ -92,10 +83,10 @@ theorem isBiVac_smul {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {LA : Set
   refine ⟨continuous_const.mul h.cont, ?_, ?_⟩
   · intro v
     have e : (fun u => (c • C) u v) = c • fun u => C u v := rfl
-    rw [e]; exact ⟨isThetaFunO_smul c (h.left v).1, isLatVac_smul c (h.left v).2⟩
+    rw [e]; exact ⟨_root_.GlobalTheory.OrientedHeis.theta_smul c (h.left v).1, isLatVac_smul c (h.left v).2⟩
   · intro u
     have e : (c • C) u = c • C u := rfl
-    rw [e]; exact ⟨isThetaFunO_smul c (h.right u).1, isLatVac_smul c (h.right u).2⟩
+    rw [e]; exact ⟨_root_.GlobalTheory.OrientedHeis.theta_smul c (h.right u).1, isLatVac_smul c (h.right u).2⟩
 
 theorem isBiSmooth_smul {A S A' : HSp D} (c : ℂ) {C : WO A S → WO S A' → ℂ} (h : IsBiSmooth C) :
     IsBiSmooth (c • C) :=

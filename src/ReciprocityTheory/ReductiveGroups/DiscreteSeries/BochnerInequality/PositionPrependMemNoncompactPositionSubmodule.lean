@@ -75,7 +75,6 @@ theorem ofCoords_apply' {X : Type*} [AddCommGroup X] [Module ℂ X] (k : ℕ)
 theorem wordContraction_apply (k : ℕ) (F : Big n k M) :
     phi E k F = ∑ κ, word E κ (F κ) := by
   first
-  | simp only [phi, LinearMap.coeFn_sum, Finset.sum_apply, LinearMap.comp_apply, coord_apply']
   | (rw [phi, LinearMap.sum_apply]; rfl)
 
 theorem mAct_apply' (k : ℕ) (a b : Fin n) (F : Big n k M) (κ : Fin k → Fin n × Fin n) :
@@ -136,7 +135,7 @@ theorem sum_ite_update_reindex {k : ℕ} (i : Fin k) (P Q : Fin n × Fin n → P
   refine Finset.sum_nbij' (fun κ => Function.update κ i (f (κ i)))
     (fun κ => Function.update κ i (g (κ i))) ?_ ?_ ?_ ?_ ?_ <;>
   intro κ hκ <;>
-  simp only [Finset.mem_coe, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_filter,
+  simp only [Finset.mem_filter,
     Finset.mem_univ, true_and] at hκ ⊢
   · simpa using hf _ hκ
   · simpa using hg _ hκ
@@ -148,8 +147,6 @@ theorem positionTensorAction_apply (k : ℕ) (a b : Fin n) (F : Big n k M) (κ :
     bAct E k a b F κ = E a b (F κ) + ∑ i, factorAd (M := M) k i a b F κ := by
   rw [← coord_apply' k κ (bAct E k a b F)]
   first
-  | (simp only [bAct, LinearMap.add_apply, LinearMap.coeFn_sum, Finset.sum_apply, map_add (f := _), map_sum]
-     simp only [coord_apply', mAct_apply'])
   | (simp only [bAct, LinearMap.add_apply, LinearMap.sum_apply, map_add (f := _), map_sum]
      simp only [coord_apply', mAct_apply'])
 
@@ -256,7 +253,7 @@ theorem wordContraction_prepend {k : ℕ} (p : Fin n × Fin n) (G : Big n k M) :
   rw [← Finset.sum_filter]
   refine Finset.sum_nbij' (fun κ => Fin.tail κ) (fun κ' => Fin.cons p κ') ?_ ?_ ?_ ?_ ?_ <;>
   intro κ hκ <;>
-  simp only [Finset.mem_coe, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_filter,
+  simp only [Finset.mem_filter,
     Finset.mem_univ, true_and] at hκ ⊢
   · simp
   · rw [← hκ]; exact Fin.cons_self_tail κ
@@ -342,9 +339,6 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
 
 theorem phi_bAct (hE : IsGlRep E) (k : ℕ) {a b : Fin n} (hab : ε a = ε b) (F : Big n k M) :
     phi E k (bAct E k a b F) = E a b (phi E k F) := wordContraction_tensorAction hE k a b F
-
-theorem phi_mem_layer {k : ℕ} {F : Big n k M} (hF : F ∈ ncV ε V k) :
-    phi E k F ∈ layer ε E V k := wordContraction_mem_noncompactLayer' hF
 
 theorem layer_succ_le (hE : IsGlRep E) (hV : IsKStableSub ε E V) (k : ℕ) :
     layer ε E V (k + 1) ≤ layer ε E V k ⊔ (ncV ε V (k + 1)).map (phi E (k + 1)) := noncompactLayer_succ_le_sup' k

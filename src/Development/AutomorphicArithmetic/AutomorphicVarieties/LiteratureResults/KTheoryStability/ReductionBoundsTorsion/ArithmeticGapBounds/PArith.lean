@@ -282,7 +282,7 @@ private theorem mem_Kg_one_inf_Kg_two_iff_transpose_dvd_pi_of_dg_two {L : Type} 
     simp only [map_mul]
     by_cases hj0 : j = k0
     · subst hj0
-      simp only [true_or, if_true, or_true, hne.symm, if_false, mul_one, one_mul] at hz
+      simp only [true_or, if_true, or_true, hne.symm, if_false, one_mul] at hz
       apply mul_left_cancel₀ hπ
       linear_combination hz
     · simp only [hj0, hj, or_self, if_false, or_true, if_true, hne.symm, one_mul, mul_one] at hz
@@ -324,7 +324,7 @@ private theorem transvection_mem_Kg_of_same_side {L : Type} [Field L] [NumberFie
     (show Matrix.SpecialLinearGroup (Fin N) L from ⟨Matrix.transvection a b (x : L), Matrix.det_transvection_of_ne a b hab _⟩) ∈ Kg L N π r := by
   refine (mem_Kg_iff_scaled_entries_integral π hπ r _).mpr ?_
   intro p q
-  simp only [Matrix.SpecialLinearGroup.coe_mk]
+  simp only
   refine ⟨Matrix.transvection a b x p q, ?_⟩
   simp only [Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single, Matrix.of_apply]
   by_cases hpq : p = q
@@ -334,7 +334,6 @@ private theorem transvection_mem_Kg_of_same_side {L : Type} [Field L] [NumberFie
   · by_cases h : a = p ∧ b = q
     · obtain ⟨rfl, rfl⟩ := h
       simp only [hab, if_false, if_true, and_self, zero_add]
-      push_cast
       by_cases ha : (a : ℕ) < r
       · simp [ha, hr.mp ha, mul_comm]
       · have hb : ¬ (b : ℕ) < r := fun h => ha (hr.mpr h)
@@ -504,7 +503,7 @@ private theorem exists_col_fixing_mul_entry_ne_zero {R : Type} [CommRing R] {F :
     · intro i hi
       have hki : k ≠ p := fun h => hpk h.symm
       rw [hε]
-      simp [Matrix.transvection, Matrix.one_apply_ne hi, Matrix.single_apply, hki.symm, Ne.symm hki]
+      simp [Matrix.transvection, Matrix.one_apply_ne hi, Ne.symm hki]
     · rw [Matrix.SpecialLinearGroup.coe_mul, hε]
       simp only [Matrix.transvection_mul_apply_same, one_mul, map_add (f := _), hm, zero_add]
       exact hp

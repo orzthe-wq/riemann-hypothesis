@@ -141,14 +141,6 @@ theorem starFun_evalR {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O 
     evalR (starFun bar ψ w K D) B = D * (K * evalR ψ B + evalR (starDepth bar ψ w) B) :=
   starFun_eval K D _
 
-theorem starDepth_zeroFun (n : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ) : (starDepth bar ψ (zeroFun O)).toFun n B = 0 := by
-  have : depthSet bar ψ (zeroFun O) n B = ∅ :=
-    Set.eq_empty_of_forall_notMem fun t ⟨X₁, i1, i2, i3, ρ, B₁, _, _, _, _, _, _, v, _, _, _, hv, _⟩ => by
-      rw [zeroFun_evalZ] at hv
-      exact zero_ne_one hv
-  show sSup _ = 0
-  rw [this, Real.sSup_empty]
-
 end Depth
 
 section Twist

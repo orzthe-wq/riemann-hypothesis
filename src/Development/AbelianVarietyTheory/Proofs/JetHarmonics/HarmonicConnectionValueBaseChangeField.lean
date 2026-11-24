@@ -3,7 +3,8 @@ module
 public import Formalism.LocalToGlobal.ProjectiveLattices.ThGerm
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsNatCastSmulCoeffIsIntegral
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.RawChartFormalBiextensionBaseChange
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicValueGermsIndependentOfChartStatement
+public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndSt
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.HarmonicValueGermsIndependentOfChart
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndBCNab
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -89,7 +90,7 @@ theorem sum_map_of_harmA {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
       (MvPowerSeries.map (ψ : S →+* S') (f b)) := fun b => hgerm k (F b) (F' b) (f b) (hF' b) (hf b)
   obtain ⟨C3, hex3, hpin3⟩ := hnab.2 S' z
   choose f3 hf3 using fun b => hex3 k (F' b)
-  have hI := GlobalTheory.T.harmonicValue_germs_independent_of_chart E H Dw l Xo c hnab.1 S' z C2 C3 k n F' _ f3 hg2 hf3 a P hP
+  have hI := _root_.GlobalTheory.ChartField.chartVal_indep E H Dw l Xo c hnab.1 S' z C2 C3 k n F' _ f3 hg2 hf3 a P hP
   have e3 : (∑ m ∈ P.support, algebraMap c.F S' (P.coeff m) * ∏ b, nab z k (F' b) (colOf m b)) =
       chartVal C3 k f3 P := by
     unfold chartVal

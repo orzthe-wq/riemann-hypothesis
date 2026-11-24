@@ -50,4 +50,4 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → IsProjBy B.hom := by
-  first | exact @GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme | exact GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme | (intros; apply GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme <;> assumption)
+  first | exact @GlobalTheory.AbelianProjective.isProjBy_of_isAbelianScheme

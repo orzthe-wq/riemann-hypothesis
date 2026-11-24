@@ -77,7 +77,7 @@ def wU (b : Matrix (Fin n) (Fin n) ℂ) : GL (Fin n ⊕ Fin n) ℂ where
 theorem wU_mem (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermitian) : wU b ∈ GR n := by
   change InG (JJ n * nU b)
   have hb' : bᴴ = b := hb
-  simp only [InG, JJ, nU, Matrix.conjTranspose_mul, fromBlocks_conjTranspose, fromBlocks_multiply, hb']
+  simp only [InG, JJ, nU, fromBlocks_conjTranspose, fromBlocks_multiply]
   congr 1 <;> simp [hb']
 
 theorem cell_dec (y : GR n) (hc : (mR y).toBlocks₂₁.det ≠ 0) :
@@ -138,7 +138,7 @@ theorem conj_cell {X : Fin n → ℝ} {a : ℝ → GR n} (ha : ∀ s, IsDil X s 
   simp only [JJ, nU, bS, fromBlocks_multiply]
   congr 1 <;> simp [diagonal_mul_diagonal, ← Complex.ofReal_mul, ← Real.exp_add, Matrix.mul_assoc, ← Complex.exp_add]
   ext i j
-  by_cases hij : i = j <;> simp [Matrix.diagonal_apply, Matrix.one_apply, hij]
+  by_cases hij : i = j <;> simp [hij]
 
 theorem cell_mul {X : Fin n → ℝ} {a : ℝ → GR n} (ha : ∀ s, IsDil X s (a s)) (y : GR n)
     (hc : (mR y).toBlocks₂₁.det ≠ 0) (s : ℝ) : (mR (y * a s)).toBlocks₂₁.det ≠ 0 := by
@@ -160,7 +160,7 @@ theorem weight_factor_dilation {X : Fin n → ℝ} {a : ℝ → GR n} (ha : ∀ 
     ← Complex.exp_int_mul, ← Complex.exp_add, ← Complex.exp_add]
   congr 1
   push_cast
-  simp only [Finset.sum_neg_distrib, ← Finset.mul_sum, Finset.sum_add_distrib]
+  simp only [Finset.sum_neg_distrib, ← Finset.mul_sum]
   ring
 
 end PositivityTheory.Rg.Sw.AbsSt.DF

@@ -197,7 +197,6 @@ theorem tens_tmul (τ : K →+* MvPowerSeries σ K) (hR : ∀ r : R, IsCst τ (a
       MvPowerSeries.map (Algebra.TensorProduct.includeLeft : K →ₐ[R] K ⊗[R] V).toRingHom (τ k) * C (1 ⊗ₜ v) := by
   first
     | (rw [tens, Algebra.TensorProduct.lift_tmul]; rfl)
-    | simp [tens, alg, MvPowerSeries.algebraMap_apply]
 
 theorem tens_co_tmul (τ : K →+* MvPowerSeries σ K) (hR : ∀ r : R, IsCst τ (algebraMap R K r)) (β : σ →₀ ℕ)
     (k : K) (v : V) : co (tens R V τ hR).toRingHom β (k ⊗ₜ v) = co τ β k ⊗ₜ v := by
@@ -266,7 +265,7 @@ theorem tayOp_isTay : Tay.IsTay (tayOp X la N) := Tay.loc_isTay (gI X la N).prim
 
 theorem tayOp_isCst (a : X.Ol la) : Tay.IsCst (tayOp X la N) (algebraMap (X.Ol la) (Op X la N) a) := by
   have e : algebraMap (X.Ol la) (Op X la N) a = algebraMap (Pol X la N) (Op X la N) (algebraMap (X.Ol la) (Pol X la N) a) := by
-    first | exact IsScalarTower.algebraMap_apply _ _ _ _ | rfl
+    first | exact IsScalarTower.algebraMap_apply _ _ _ _
   rw [e]
   exact Tay.loc_isCst (gI X la N).primeCompl (Op X la N) (tayPol X la N) (tayPol_isTay X la N)
     (Tay.pol_isCst (Idx D j N) (X.Ol la) a)
@@ -278,7 +277,7 @@ theorem tayKp_isTay : Tay.IsTay (tayKp X la N) := Tay.loc_isTay (nonZeroDivisors
 
 theorem tayKp_isCst_Ol (a : X.Ol la) : Tay.IsCst (tayKp X la N) (algebraMap (X.Ol la) (Kp X la N) a) := by
   have e : algebraMap (X.Ol la) (Kp X la N) a = @algebraMap (Op X la N) (Kp X la N) _ _ _ (algebraMap (X.Ol la) (Op X la N) a) := by
-    first | exact IsScalarTower.algebraMap_apply _ _ _ _ | rfl
+    first | exact IsScalarTower.algebraMap_apply _ _ _ _
   rw [e]
   exact Tay.loc_isCst (nonZeroDivisors (Op X la N)) (Kp X la N) (tayOp X la N) (tayOp_isTay X la N)
     (tayOp_isCst X la N a)
@@ -290,7 +289,7 @@ theorem tayKp_isCst (c : X.Kl la) : Tay.IsCst (tayKp X la N) (algebraMap (X.Kl l
     refine RingHom.ext fun a => ?_
     simp only [RingHom.comp_apply]
     have e : algebraMap (X.Kl la) (Kp X la N) (algebraMap (X.Ol la) (X.Kl la) a) = algebraMap (X.Ol la) (Kp X la N) a := by
-      first | exact IsFractionRing.lift_algebraMap _ _ | exact (IsScalarTower.algebraMap_apply _ _ _ _).symm
+      first | exact IsFractionRing.lift_algebraMap _ _
     rw [e]
     exact tayKp_isCst_Ol X la N a
   exact RingHom.congr_fun key c
@@ -318,7 +317,7 @@ theorem tayLc_isTay : Tay.IsTay (tayLc X la w) := Tay.loc_isTay (Submonoid.power
 
 theorem tayLc_isCst (c : X.Kl la) : Tay.IsCst (tayLc X la w) (algebraMap (X.Kl la) (Lc X la w) c) := by
   have e : algebraMap (X.Kl la) (Lc X la w) c = algebraMap (Rp X la N) (Lc X la w) (algebraMap (X.Kl la) (Rp X la N) c) := by
-    first | exact IsScalarTower.algebraMap_apply _ _ _ _ | rfl
+    first | exact IsScalarTower.algebraMap_apply _ _ _ _
   rw [e]
   exact Tay.loc_isCst (Submonoid.powers (sec X la w 0)) (Lc X la w) (tayRp X la N) (tayRp_isTay X la N)
     (tayRp_isCst X la N c)
@@ -394,24 +393,16 @@ theorem hasseRp_smul_bcV (β : Idx D j N →₀ ℕ) (k : Kp X la N) (v : X.Vl l
   have e : k • bcV X la N v = (k ⊗ₜ[X.Kl la] v : Kp X la N ⊗[X.Kl la] X.Vl la) := by
     first
       | (rw [Algebra.smul_def]; show (k ⊗ₜ[X.Kl la] (1 : X.Vl la)) * ((1 : Kp X la N) ⊗ₜ[X.Kl la] v) = _; simp)
-      | (show k • ((1 : Kp X la N) ⊗ₜ[X.Kl la] v) = _; rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one])
-      | rfl
   rw [e]
   refine (hasseRp_tmul X la β k v).trans ?_
   first
     | (rw [Algebra.smul_def]; show _ = (hasseKp X la N β k ⊗ₜ[X.Kl la] (1 : X.Vl la)) * ((1 : Kp X la N) ⊗ₜ[X.Kl la] v); simp)
-    | (show _ = hasseKp X la N β k • ((1 : Kp X la N) ⊗ₜ[X.Kl la] v); rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one])
-    | exact e.symm.trans rfl
-    | rfl
 
 theorem hasseRp_algebraMap (β : Idx D j N →₀ ℕ) (k : Kp X la N) :
     hasseRp X la N β (algebraMap (Kp X la N) (Rp X la N) k) =
       algebraMap (Kp X la N) (Rp X la N) (hasseKp X la N β k) := by
   first
     | exact hasseRp_tmul X la β k 1
-    | (show hasseRp X la N β (k ⊗ₜ[X.Kl la] (1 : X.Vl la) : Kp X la N ⊗[X.Kl la] X.Vl la) =
-        (hasseKp X la N β k ⊗ₜ[X.Kl la] (1 : X.Vl la) : Kp X la N ⊗[X.Kl la] X.Vl la)
-       exact hasseRp_tmul X la β k 1)
 
 theorem hasseRp_smul (β : Idx D j N →₀ ℕ) (k : Kp X la N) (x : Rp X la N) : hasseRp X la N β (k • x) =
     ∑ q ∈ antidiagonal β, hasseKp X la N q.1 k • hasseRp X la N q.2 x := by
@@ -544,7 +535,6 @@ theorem hasse_of_mul_eq (β : Idx D j N →₀ ℕ) {s x : Rp X la N} {y : Lc X 
 
 theorem Kl_charZero : CharZero (X.Kl la) := by
   first
-    | infer_instance
     | exact charZero_of_injective_algebraMap (algebraMap B.KO (X.Kl la)).injective
 
 end

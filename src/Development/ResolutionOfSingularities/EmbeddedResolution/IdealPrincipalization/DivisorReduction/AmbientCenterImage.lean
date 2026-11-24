@@ -50,13 +50,9 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-theorem imageIdealSheaf_eq_ker_subschemeι_comp {S X : Scheme.{u}} (f : S ⟶ X) (Z : S.IdealSheafData) :
-    imageIdealSheaf f Z = Scheme.Hom.ker (Z.subschemeι ≫ f) :=
-  rfl
-
 theorem support_imageIdealSheaf_eq_image_support {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] (Z : S.IdealSheafData) :
-    (↑(imageIdealSheaf ι Z).support : Set ↥X) = ⇑ι '' (↑Z.support : Set ↥S) := by
+    (↑(_root_.FunctorialResolution.Blowup.schemeImageIdeal ι Z).support : Set ↥X) = ⇑ι '' (↑Z.support : Set ↥S) := by
   have hqc : AlgebraicGeometry.QuasiCompact (Z.subschemeι ≫ ι) := inferInstance
   have hcl := AlgebraicGeometry.Scheme.Hom.isClosedEmbedding ι
   have hrange : Set.range ⇑Z.subschemeι = (↑Z.support : Set ↥S) :=
@@ -74,7 +70,7 @@ theorem support_imageIdealSheaf_eq_image_support {S X : Scheme.{u}} (ι : S ⟶ 
   have hsup : (↑(AlgebraicGeometry.Scheme.Hom.ker (Z.subschemeι ≫ ι)).support : Set ↥X)
       = closure (Set.range ⇑(Z.subschemeι ≫ ι)) := by
     rw [AlgebraicGeometry.Scheme.Hom.support_ker]
-  rw [imageIdealSheaf_eq_ker_subschemeι_comp, hsup, hcomp, hclosed.closure_eq]
+  rw [_root_.FunctorialResolution.EmbeddedResolution.imageIdealSheaf_eq_ker, hsup, hcomp, hclosed.closure_eq]
 
 private theorem exists_iso_ker_subscheme {W X : Scheme.{u}} (g : W ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion g] :
@@ -91,10 +87,10 @@ private theorem smooth_of_smooth_iso_hom_comp {A A' B : Scheme.{u}} (e : A ≅ A
 theorem smooth_imageIdealSheaf_subschemeι_comp {S X B : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] (Z : S.IdealSheafData) (f : X ⟶ B)
     (h : AlgebraicGeometry.Smooth (Z.subschemeι ≫ ι ≫ f)) :
-    AlgebraicGeometry.Smooth ((imageIdealSheaf ι Z).subschemeι ≫ f) := by
+    AlgebraicGeometry.Smooth ((_root_.FunctorialResolution.Blowup.schemeImageIdeal ι Z).subschemeι ≫ f) := by
   have : AlgebraicGeometry.IsClosedImmersion (Z.subschemeι ≫ ι) := inferInstance
   obtain ⟨e, he⟩ := exists_iso_ker_subscheme (Z.subschemeι ≫ ι)
-  rw [imageIdealSheaf_eq_ker_subschemeι_comp ι Z]
+  rw [_root_.FunctorialResolution.EmbeddedResolution.imageIdealSheaf_eq_ker ι Z]
   refine smooth_of_smooth_iso_hom_comp e _ ?_
   rw [← Category.assoc, he, Category.assoc]
   exact h
@@ -214,7 +210,7 @@ theorem support_ambientBlowupSeq_center_eq_image (hres : FunctorialResolution.Bl
         (↑((MarkedBlowupSequenceData.ofMarkedSequence s).center t).support :
           Set ↥((MarkedBlowupSequenceData.ofMarkedSequence s).obj t)) := by
   have h1 : (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t =
-      imageIdealSheaf (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (s.center t) :=
+      _root_.FunctorialResolution.Blowup.schemeImageIdeal (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (s.center t) :=
     ambientBlowupSeq_center_eq_imageIdealSheaf hres hno T j hj I₀ E₀ s hpr t
   have h2 : (MarkedBlowupSequenceData.ofMarkedSequence s).center t = s.center t :=
     MarkedBlowupSequenceData.ofMarkedSequence_center s t

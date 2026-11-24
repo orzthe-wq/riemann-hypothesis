@@ -2,48 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.ProjectiveLattices.IntegrableOnIntegrand
 public import Formalism.LocalToGlobal.ProjectiveLattices.RdOrbIntOfLatZ
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -80,10 +39,7 @@ theorem maxCuspsA_zMatC_add (X : Data E r) (cu : CuspFD X ρ) (τ : E →+* ℂ)
     zMatC X cu.e τ (β + β') = zMatC X cu.e τ β * zMatC X cu.e τ β' := by
   have hτ : ∀ x : E, τ (cc x) = (starRingEnd ℂ) (τ x) := fun x => by
     first
-    | exact IsCMField.complexEmbedding_complexConj τ x
     | exact IsCMField.complexEmbedding_complexConj (K := E) τ x
-    | simp [cc, IsCMField.complexEmbedding_complexConj]
-    | simp [cc]
   obtain ⟨U, hU⟩ : ∃ U : Matrix (Fin r) (Fin ρ) ℂ, U = Matrix.of fun k a => τ (cu.e a k) := ⟨_, rfl⟩
   obtain ⟨V, hV⟩ : ∃ V : Matrix (Fin ρ) (Fin r) ℂ,
       V = Matrix.of fun b l => ∑ k', τ (X.Gm l k') * (starRingEnd ℂ) (τ (cu.e b k')) := ⟨_, rfl⟩
@@ -129,10 +85,7 @@ theorem maxCuspsA_zMatE_map (X : Data E r) (e : Fin ρ → Fin r → E) (τ : E 
     (β : Matrix (Fin ρ) (Fin ρ) E) : (zMatE X e β).map τ = zMatC X e τ (β.map τ) := by
   have hτ : ∀ x : E, τ (cc x) = (starRingEnd ℂ) (τ x) := fun x => by
     first
-    | exact IsCMField.complexEmbedding_complexConj τ x
     | exact IsCMField.complexEmbedding_complexConj (K := E) τ x
-    | simp [cc, IsCMField.complexEmbedding_complexConj]
-    | simp [cc]
   ext k l
 
   simp only [zMatE, zMatC, Matrix.map_apply, Matrix.of_apply, map_add (f := _), map_sum, map_mul, hτ]

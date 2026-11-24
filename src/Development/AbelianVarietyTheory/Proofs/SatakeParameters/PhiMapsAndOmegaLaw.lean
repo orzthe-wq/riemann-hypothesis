@@ -272,9 +272,7 @@ section Mat
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] {P : HeightOneSpectrum (𝓞 E)}
 
-theorem q_ne : (qOf P : E) ≠ 0 := by
-  rw [Nat.cast_ne_zero]
-  exact fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)
+alias q_ne := _root_.GlobalTheory.TopStep.qOf_ne_zero
 
 theorem of_div {a : E} (h : IntAt P (a / (qOf P : E))) : IntAt P a ∧ redP P a = 0 := by
   refine SymLevelInv.of_inv_mul P (q := qOf P) (Nat.cast_ne_zero.1 (q_ne (E := E) (P := P)))

@@ -72,7 +72,6 @@ theorem slzMob_im (δ : M2) (τ : ℍ) :
       = (δ.det : ℝ) * τ.im / Complex.normSq (((δ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((δ 1 1 : ℤ) : ℂ)) := by
   rw [Complex.div_im, Matrix.det_fin_two]
   simp
-  push_cast
   ring
 
 theorem slzMob_im_pos (δ : M2) (hδ : 0 < δ.det) (τ : ℍ) :

@@ -1,10 +1,10 @@
 module
 
 public import Formalism.PeriodIntegrals.FglPhSplit
+public import Mathlib.Algebra.BigOperators.Field
 public import Mathlib.Analysis.Normed.Field.Instances
 public import Mathlib.NumberTheory.Padics.Complex
 public import Mathlib.RingTheory.PowerSeries.Log
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.AddPreservesExpCongruence
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.ExpCongruenceExtendsToSum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -17,6 +17,7 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -24,8 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -35,6 +34,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,10 +47,165 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.AddPreservesExpCongruence, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupCommon.ExpLog
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.AddPreservesExpCongruence =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.AddPreservesExpCongruence", "h": "module\n\npublic import Formalism.PeriodIntegrals.FglPhSplit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.BigOperators.Field\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.FglPhSplit.Wk
+
+open PI.FglPhSplit MvPowerSeries Finset
+
+variable {K : Type} [Field K] {σ : Type}
+
+theorem deg_eq (α : σ →₀ ℕ) : (α.sum fun _ k => k) = Finsupp.degree α := by rfl
+
+private theorem coeff_pow_eq_zero_of_degree_lt_formal_group_splitting {f : MvPowerSeries σ K} (hf : constantCoeff f = 0) :
+    ∀ (n : ℕ) {α : σ →₀ ℕ}, Finsupp.degree α < n → coeff α (f ^ n) = 0 := by
+  classical
+  intro n
+  induction n with
+  | zero => intro α h; exact absurd h (Nat.not_lt_zero _)
+  | succ n ih =>
+    intro α h
+    rw [pow_succ, coeff_mul]
+    refine Finset.sum_eq_zero fun p hp => ?_
+    rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp
+    by_cases h2 : p.2 = 0
+    · rw [h2, coeff_zero_eq_constantCoeff_apply, hf, mul_zero]
+    · have hd : Finsupp.degree p.1 + Finsupp.degree p.2 = Finsupp.degree α := by
+        rw [← hp, map_add (f := _)]
+      have h2' : 0 < Finsupp.degree p.2 := by
+        rw [Nat.pos_iff_ne_zero]
+        intro h0
+        exact h2 ((Finsupp.degree_eq_zero_iff _).mp h0)
+      rw [ih (by omega), zero_mul]
+
+theorem coeff_pow_mul_pow_eq_zero {f g : MvPowerSeries σ K} (hf : constantCoeff f = 0)
+    (hg : constantCoeff g = 0) {i j : ℕ} {α : σ →₀ ℕ} (h : Finsupp.degree α < i + j) :
+    coeff α (f ^ i * g ^ j) = 0 := by
+  classical
+  rw [coeff_mul]
+  refine Finset.sum_eq_zero fun p hp => ?_
+  rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp
+  have hd : Finsupp.degree p.1 + Finsupp.degree p.2 = Finsupp.degree α := by
+    rw [← hp, map_add (f := _)]
+  by_cases h1 : Finsupp.degree p.1 < i
+  · rw [coeff_pow_eq_zero_of_degree_lt_formal_group_splitting hf i h1, zero_mul]
+  · rw [coeff_pow_eq_zero_of_degree_lt_formal_group_splitting hg j (by omega), mul_zero]
+
+theorem coeff_pow_eq_zero' {f : MvPowerSeries σ K} (hf : constantCoeff f = 0) {n : ℕ}
+    {α : σ →₀ ℕ} (h : Finsupp.degree α < n) : coeff α (f ^ n) = 0 := by
+  exact coeff_pow_eq_zero_of_degree_lt_formal_group_splitting hf n h
+
+def expT (f : MvPowerSeries σ K) (N : ℕ) : MvPowerSeries σ K :=
+  ∑ n ∈ range N, ((n.factorial : K)⁻¹) • f ^ n
+
+theorem coeff_expT (f : MvPowerSeries σ K) (N : ℕ) (α : σ →₀ ℕ) :
+    coeff α (expT f N) = ∑ n ∈ range N, coeff α (f ^ n) / (n.factorial : K) := by
+
+  simp only [expT, map_sum, map_smul, smul_eq_mul]
+  refine Finset.sum_congr rfl fun n _ => ?_
+  rw [div_eq_inv_mul]
+
+theorem coeff_expMv_eq_expT {f : MvPowerSeries σ K} (hf : constantCoeff f = 0) {α : σ →₀ ℕ}
+    {N : ℕ} (hN : Finsupp.degree α < N) : coeff α (expMv f) = coeff α (expT f N) := by
+  rw [coeff_expT]
+  change (∑ n ∈ range ((α.sum fun _ k => k) + 1), coeff α (f ^ n) / (n.factorial : K)) = _
+  rw [deg_eq]
+  apply Finset.sum_subset
+  · intro n hn
+    simp only [Finset.mem_range] at hn ⊢
+    omega
+  · intro n _ hn
+    simp only [Finset.mem_range, not_lt] at hn
+    rw [coeff_pow_eq_zero' hf (by omega), zero_div]
+
+private theorem coeff_expT_add_eq_coeff_expT_mul_expT [CharZero K] {f g : MvPowerSeries σ K} (hf : constantCoeff f = 0)
+    (hg : constantCoeff g = 0) {α : σ →₀ ℕ} {N : ℕ} (hN : Finsupp.degree α < N) :
+    coeff α (expT (f + g) N) = coeff α (expT f N * expT g N) := by
+  set F : ℕ → ℕ → K := fun i j =>
+    coeff α (f ^ i * g ^ j) / ((i.factorial : K) * (j.factorial : K)) with hF
+  have hfac : ∀ n : ℕ, (n.factorial : K) ≠ 0 := fun n => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero n)
+  have lhs : coeff α (expT (f + g) N) = ∑ n ∈ range N, ∑ m ∈ range (n + 1), F m (n - m) := by
+    rw [coeff_expT]
+    refine Finset.sum_congr rfl fun n _ => ?_
+
+    rw [add_pow, map_sum, Finset.sum_div]
+    refine Finset.sum_congr rfl fun m hm => ?_
+    have hmn : m ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hm)
+    have hc : ((n.choose m : ℕ) : K) * (m.factorial : K) * ((n - m).factorial : K) =
+        (n.factorial : K) := by
+      exact_mod_cast Nat.choose_mul_factorial_mul_factorial hmn
+    rw [← map_natCast (MvPowerSeries.C (σ := σ) (R := K)), coeff_mul_C]
+    show _ = coeff α (f ^ m * g ^ (n - m)) / ((m.factorial : K) * ((n - m).factorial : K))
+    rw [← hc]
+    have := hfac m
+    have := hfac (n - m)
+    have hch : ((n.choose m : ℕ) : K) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.choose_pos hmn).ne'
+    field_simp
+  have rhs : coeff α (expT f N * expT g N) = ∑ i ∈ range N, ∑ j ∈ range N, F i j := by
+    simp only [expT]
+
+    rw [Finset.sum_mul_sum, map_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+
+    rw [map_sum]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [smul_mul_smul_comm, map_smul, smul_eq_mul]
+    show _ = coeff α (f ^ i * g ^ j) / ((i.factorial : K) * (j.factorial : K))
+    rw [div_eq_mul_inv, mul_inv]
+    ring
+  rw [lhs, rhs, Finset.sum_range_diag_flip]
+  refine Finset.sum_congr rfl fun i hi => ?_
+  simp only [Finset.mem_range] at hi
+  apply Finset.sum_subset
+  · intro j hj
+    simp only [Finset.mem_range] at hj ⊢
+    omega
+  · intro j _ hj
+    simp only [Finset.mem_range, not_lt] at hj
+    show coeff α (f ^ i * g ^ j) / _ = 0
+    rw [coeff_pow_mul_pow_eq_zero hf hg (by omega), zero_div]
+
+theorem expMv_add [CharZero K] {f g : MvPowerSeries σ K} (hf : constantCoeff f = 0)
+    (hg : constantCoeff g = 0) : expMv (f + g) = expMv f * expMv g := by
+  classical
+  ext α
+  have hfg : constantCoeff (f + g) = 0 := by rw [map_add (f := _), hf, hg, add_zero]
+  rw [coeff_expMv_eq_expT hfg (Nat.lt_succ_self (Finsupp.degree α)), coeff_mul]
+  have key : ∀ p ∈ antidiagonal α, coeff p.1 (expMv f) * coeff p.2 (expMv g) =
+      coeff p.1 (expT f (Finsupp.degree α + 1)) * coeff p.2 (expT g (Finsupp.degree α + 1)) := by
+    intro p hp
+    rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp
+    have hd : Finsupp.degree p.1 + Finsupp.degree p.2 = Finsupp.degree α := by
+      rw [← hp, map_add (f := _)]
+    rw [coeff_expMv_eq_expT hf (N := Finsupp.degree α + 1) (by omega),
+      coeff_expMv_eq_expT hg (N := Finsupp.degree α + 1) (by omega)]
+  rw [Finset.sum_congr rfl key, ← coeff_mul]
+  exact coeff_expT_add_eq_coeff_expT_mul_expT hf hg (Nat.lt_succ_self _)
+
+end PI.FglPhSplit.Wk
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.AddPreservesExpCongruence =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupCommon.ExpLog =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupCommon.ExpLog", "h": "module\n\npublic import Formalism.PeriodIntegrals.FglPhSplit\npublic import Mathlib.Analysis.Normed.Field.Instances\npublic import Mathlib.NumberTheory.Padics.Complex\npublic import Mathlib.RingTheory.PowerSeries.Log\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.AddPreservesExpCongruence\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupSplitting.ExpCongruenceExtendsToSum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -188,7 +343,7 @@ theorem int_of_mul_eq_one {σ : Type} [DecidableEq σ] {u n : MvPowerSeries σ �
   have key : coeff α u + ∑ x ∈ (Finset.HasAntidiagonal.antidiagonal α).erase (α, 0), coeff x.1 u * coeff x.2 n =
       coeff α (1 : MvPowerSeries σ ℂ_[p]) := by
     rw [← h, coeff_mul, ← Finset.add_sum_erase _ _ hmem]
-    simp [hn0', hn0]
+    simp [hn0']
   have hrest : ‖∑ x ∈ (Finset.HasAntidiagonal.antidiagonal α).erase (α, 0), coeff x.1 u * coeff x.2 n‖ ≤ 1 := by
     apply IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one
     intro x hx
@@ -215,3 +370,6 @@ end Padic
 end PI.FglShared
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FormalGroupCommon.ExpLog =====

@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.InvariantSubspaceMobiusInverseRecEqOfFinrankLt
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvertibleEndInnerProductRootPowerSumEqTorusSumStatement
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.InvertibleEndInnerProductRootPowerSumEqTorusSum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -69,7 +69,7 @@ theorem ipGL_rootSum_eq_of_modEq (F : Type) [Field F] [Finite F] (V : Type) [Add
       ipGL φ (fun g : Module.End F V => rootSum θ l (LinearMap.charpoly g)) := by
   classical
   obtain ⟨σ, hσ⟩ := exists_algEquiv_pow_card_pow F i
-  rw [GlobalTheory.T.invertibleEndInnerProduct_rootPowerSum_eq_torusSum F V θ φ hc hp hn k, GlobalTheory.T.invertibleEndInnerProduct_rootPowerSum_eq_torusSum F V θ φ hc hp hn l]
+  rw [_root_.GlobalTheory.CuspGL.ipGL_rootSum_eq_sum_torus F V θ φ hc hp hn k, _root_.GlobalTheory.CuspGL.ipGL_rootSum_eq_sum_torus F V θ φ hc hp hn l]
   set N := Nat.card F ^ Module.finrank F V - 1 with hN
   have hmem : ∀ α : AlgebraicClosure F, α ^ N = 1 ↔ σ α ^ N = 1 := by
     intro α

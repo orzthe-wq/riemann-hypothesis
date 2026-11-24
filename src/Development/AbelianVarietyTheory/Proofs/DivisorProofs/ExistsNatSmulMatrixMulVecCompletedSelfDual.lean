@@ -50,6 +50,7 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry�
 import Formalism.LocalToGlobal.Divisibility.CoefMod
 import Formalism.LocalToGlobal.IndefiniteForms.IndefSide
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBaseChangeFiniteAdeleRingEquiv
 
 @[expose] public section
 
@@ -137,23 +138,9 @@ theorem exists_nat_smul_single {D : D7} (V : HSp D) :
     funext i
     rcases eq_or_ne i j with rfl | h
     · simp
-    · simp [Pi.single_apply, h]
+    · simp [h]
   rw [this]
   exact Submodule.smul_of_tower_mem _ _ (hmv j)
-
-theorem mul_mem_intAE' (D : D7) {x y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
-    x * y ∈ intAE D := by
-  refine AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy
-  · rintro _ _ ⟨a, ha, u, rfl⟩ ⟨b, hb, v, rfl⟩
-    refine AddSubgroup.subset_closure ⟨a * b, fun w => ?_, u * v, ?_⟩
-    · rw [map_mul]; exact mul_mem (ha w) (hb w)
-    · rw [Algebra.TensorProduct.tmul_mul_tmul]; rfl
-  · intro x _; rw [zero_mul]; exact zero_mem _
-  · intro x _; rw [mul_zero]; exact zero_mem _
-  · intro x y z _ _ _ h1 h2; rw [add_mul]; exact add_mem h1 h2
-  · intro x y z _ _ _ h1 h2; rw [mul_add]; exact add_mem h1 h2
-  · intro x y _ _ h; rw [neg_mul]; exact neg_mem h
-  · intro x y _ _ h; rw [mul_neg]; exact neg_mem h
 
 theorem mulVec_lamHat_bound : ∀ {D : D7} (V V' : HSp D) (X : Matrix (Fin V'.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)), ∃ N : ℕ, 0 < N ∧ ∀ y ∈ Formalism.L2.NTheta.LamHat V, ((N : ℕ) : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) • X.mulVec y ∈ Formalism.L2.NTheta.LamHat V' := by
   intro D V V' X
@@ -173,7 +160,7 @@ theorem mulVec_lamHat_bound : ∀ {D : D7} (V V' : HSp D) (X : Matrix (Fin V'.ra
     intro j
     simp only [Matrix.mulVec, dotProduct, Finset.smul_sum]
     refine sum_mem fun i _ => ?_
-    have := mul_mem_intAE' D (hcX j i) (hy' i)
+    have := _root_.GlobalTheory.HostAdeleIso.intAE_mul_mem D (hcX j i) (hy' i)
     convert this using 1
     simp only [nsmul_eq_mul]
     push_cast
@@ -192,7 +179,7 @@ theorem mulVec_lamHat_bound : ∀ {D : D7} (V V' : HSp D) (X : Matrix (Fin V'.ra
     rw [e]
     refine sum_mem fun l _ => GlobalTheory.LatDual.smul_mem_lamHat V' _ (hw l) _ ?_
     refine AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, _, ?_, rfl⟩
-    have h := (GlobalTheory.Member.mem_latC V' _).1 (hbs l)
+    have h := (_root_.GlobalTheory.Member.mem_latC_iff_symm_mem V' _).1 (hbs l)
     rw [Module.Basis.equivFun_symm_apply] at h
     exact h
   have := hV' _ hw

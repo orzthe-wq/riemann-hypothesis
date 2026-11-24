@@ -118,8 +118,6 @@ structure OperatorIdentities (n : Type) [Fintype n] (M : Type) [AddCommGroup M] 
 
   D_U_ram : ∀ φ ∈ Mram k n M, D ϖ (U ϖ φ) = ((resCard k : ℂ) ^ ((Fintype.card n : ℤ) - 1)) • φ
 
-  U_D_ram : ∀ φ ∈ Mram k n M, U ϖ (D ϖ φ) = ((resCard k : ℂ) ^ ((Fintype.card n : ℤ) - 1)) • φ
-
   FFStar_dia : ∀ c : 𝓀[k]ˣ, (FFStar ϖ χ * dia c : Module.End ℂ (Form k n M)) = dia c * FFStar ϖ χ
 
   U_dia : ∀ c : 𝓀[k]ˣ, (U ϖ * dia c : Module.End ℂ (Form k n M)) = dia c * U ϖ

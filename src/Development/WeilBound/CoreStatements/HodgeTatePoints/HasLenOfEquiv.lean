@@ -193,12 +193,10 @@ lemma exists_hasLen (hv : v.Integers R) {Y : Type} (A B : Submodule R (Y → C))
   have hr : Set.range (fun i : s => (i : Fin (Module.finrank R A) → R)) = ↑s := by
     first
     | (ext; simp)
-    | ext
-    | simp
   have hs' : Submodule.span R (Set.range (fun i : s => (i : Fin (Module.finrank R A) → R))) =
       K.map (e : A →ₗ[R] (Fin (Module.finrank R A) → R)) := by
     rw [hr, hs]
-  exact (Submodule.Quotient.equiv K _ e (by rw [hs'] <;> rfl)).trans f
+  exact (Submodule.Quotient.equiv K _ e (by rw [hs'])).trans f
 
 lemma len_ne_zero_iff (hv : v.Integers R) {M : Type} [AddCommGroup M] [Module R M] {x : NNReal}
     (h : HasLen v R M x) : x ≠ 0 ↔ ∃ r : R, r ≠ 0 ∧ ∀ m : M, r • m = 0 := by

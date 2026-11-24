@@ -59,4 +59,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 
 theorem _root_.GlobalTheory.T.exists_idempotent_component_of_group_element : ∀ {D : D7} (T : HSp D) (g : GA D T) (ε : AE D), g ∈ GfC T → ε * ε = ε → cA D ε = ε → ∃ k : GA D T, k ∈ GfC T ∧ Formalism.L2.Theta.mt T k = ε • Formalism.L2.Theta.mt T g + (1 - ε) • (1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) := by
-  first | exact @GlobalTheory.GfCut.exists_cut | exact GlobalTheory.GfCut.exists_cut | (intros; apply GlobalTheory.GfCut.exists_cut <;> assumption)
+  first | exact @GlobalTheory.GfCut.exists_cut

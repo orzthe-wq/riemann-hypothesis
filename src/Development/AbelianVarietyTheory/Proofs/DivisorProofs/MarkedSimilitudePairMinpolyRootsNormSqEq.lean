@@ -120,9 +120,6 @@ theorem eigA : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (g : G.C) (v : Infin
     rw [hx]
     first
       | (erw [Algebra.TensorProduct.lift_tmul, map_one, one_mul]; rfl)
-      | (show (Algebra.ofId ℂ (Matrix (Fin G.n) (Fin G.n) ℂ)) 1 * ψF g = G.psi v g
-         rw [map_one, one_mul]; rfl)
-      | simp [Θ, ψF]
   have hmin : minpoly ℂ (G.psi v g) = minpoly ℂ x := by rw [← hΘx]; exact minpoly.algHom_eq Θ hinj x
   have hgi : IsIntegral G.F g := IsIntegral.of_finite G.F g
   have hdvd : minpoly ℂ (G.psi v g) ∣ (minpoly G.F g).map (algebraMap G.F ℂ) := by
@@ -190,7 +187,7 @@ theorem normSq_of_eigenvector {p : ℕ} [Fact p.Prime] (G : HTGroup p) (P : Pair
         apply hw
         apply mul_right_cancel₀ hμ0
         rw [hμ2]
-        first | exact h2 | (rw [mul_comm]; exact h2)
+        first | exact h2
       apply normSq_eq_of_form Γ A _ hΓ' x w hx
       intro h
       have hneg := GlobalTheory.re_form_neg_of_orth_of_sigPosH_eq_one (G.gram v) (G.gram_herm v) (G.gram_det v) h1 _ _

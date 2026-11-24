@@ -2,9 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ToOneSucc
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FramePositiveSum
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsQuotIntCellsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IsQuotIntCells
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EntriesWellDefined
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralCompBlocks
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClosedEmbeddingAffPtUncurry
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpEOmTargetUnipotent
@@ -144,7 +144,7 @@ theorem quotInt_posOne : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalS
     apply hh
     simp only at h0
     rw [hflat, h0, PosOneCell.app_zero, LinearMap.zero_apply]
-  obtain ⟨-, hiff⟩ := GlobalTheory.T.isQuotInt_cells_alt k n c 1 le_rfl hc ν (rescale ν b m) μG L.J hJ _ hinv hmod T hcov
+  obtain ⟨-, hiff⟩ := _root_.GlobalTheory.CellQuotInt.isQuotInt_cells k n c 1 le_rfl hc ν (rescale ν b m) μG L.J hJ _ hinv hmod T hcov
   refine (hiff _).2 (Finset.sum_congr rfl fun h _ => ?_)
   obtain ⟨-, -, -, -, hm⟩ := GlobalTheory.UnfoldedEntries.cosetMeasure (ν := ν) n c hc L.J hJ h
   obtain ⟨-, -, -, hresc, -⟩ := hm m inferInstance

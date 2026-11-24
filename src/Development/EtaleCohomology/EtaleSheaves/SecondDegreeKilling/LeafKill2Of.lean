@@ -60,7 +60,7 @@ theorem resY_comp {Y B : Scheme.{0}} (p : Y ⟶ B) {U U' U'' : B.Etale} (c : U''
     resY p (c ≫ a) = resY p c ≫ resY p a := by
   apply pullback.hom_ext
   · erw [pullback.lift_fst, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]
-    first | simp [resY_comp] | (rw [Category.assoc]; rfl)
+    first | simp
   · erw [pullback.lift_snd, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]
     simp only [Category.assoc]; rfl
 
@@ -68,9 +68,9 @@ theorem resYW_comp {Y B W : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) {U U' U'' :
     resYW p ι (c ≫ a) = resYW p ι c ≫ resYW p ι a := by
   apply pullback.hom_ext
   · erw [pullback.lift_fst, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]
-    first | simp [resY_comp] | (rw [resY_comp, Category.assoc])
+    first | simp [resY_comp]
   · erw [pullback.lift_snd, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]
-    first | simp [resY_comp] | (rw [Category.assoc]; rfl)
+    first | simp
 
 theorem rY_comp (q : ℕ) (i : ℤ) {B W Y : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) {U U' U'' : B.Etale} (c : U'' ⟶ U')
     (a : U' ⟶ U) (m : ℤ) (z : Hrel (ZMod q) (sch.map (prU p ι U)) (tw q i) m) :

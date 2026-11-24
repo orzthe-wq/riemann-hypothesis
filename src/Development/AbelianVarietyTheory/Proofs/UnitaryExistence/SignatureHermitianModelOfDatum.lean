@@ -1,14 +1,18 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
-public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemIffConjugateNotMem
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import Mathlib.Analysis.Matrix.Order
+public import Mathlib.Algebra.Star.UnitaryStarAlgAut
+public import Mathlib.Analysis.Matrix.Hermitian
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.Matrix.Order
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -20,11 +24,11 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -44,12 +48,143 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Mathlib.Algebra.Star.UnitaryStarAlgAut
-public import Mathlib.Analysis.Matrix.Hermitian
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemIffConjugateNotMem, Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SignatureHermitianModelOfDatum
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemIffConjugateNotMem =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemIffConjugateNotMem", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField
+open scoped ComplexConjugate
+
+namespace GlobalTheory
+
+structure CMType (E : Type*) [Field E] where
+
+  carrier : Set (E →+* ℂ)
+
+  mem_iff_conjugate_notMem' : ∀ τ, τ ∈ carrier ↔ ComplexEmbedding.conjugate τ ∉ carrier
+
+namespace CMType
+
+section Field
+
+variable {E : Type*} [Field E]
+
+instance : SetLike (CMType E) (E →+* ℂ) where
+  coe := carrier
+  coe_injective := by
+    rintro ⟨a, _⟩ ⟨b, _⟩ h
+    congr
+
+theorem mem_iff_conjugate_notMem (Φ : CMType E) (τ : E →+* ℂ) :
+    τ ∈ Φ ↔ ComplexEmbedding.conjugate τ ∉ Φ := Φ.mem_iff_conjugate_notMem' τ
+
+theorem conjugate_mem_iff (Φ : CMType E) (τ : E →+* ℂ) :
+    ComplexEmbedding.conjugate τ ∈ Φ ↔ τ ∉ Φ := by
+  rw [mem_iff_conjugate_notMem Φ τ, not_not]
+
+theorem mem_or_conjugate_mem (Φ : CMType E) (τ : E →+* ℂ) :
+    τ ∈ Φ ∨ ComplexEmbedding.conjugate τ ∈ Φ := by
+  rw [conjugate_mem_iff]
+  exact em _
+
+noncomputable def sumEquiv (Φ : CMType E) : Φ ⊕ Φ ≃ (E →+* ℂ) :=
+  Equiv.ofBijective (Sum.elim (fun τ => τ.1) (fun τ => ComplexEmbedding.conjugate τ.1)) <| by
+    have hinv : Function.Involutive (ComplexEmbedding.conjugate (K := E)) := star_involutive
+    constructor
+    · rintro (a | a) (b | b) h <;> simp only [Sum.elim_inl, Sum.elim_inr] at h
+      · rw [Subtype.ext h]
+      · exact absurd (h ▸ a.2) ((Φ.mem_iff_conjugate_notMem _).mp b.2)
+      · exact absurd (h ▸ b.2) ((Φ.mem_iff_conjugate_notMem _).mp a.2)
+      · rw [Subtype.ext (hinv.injective h)]
+    · intro τ
+      rcases Φ.mem_or_conjugate_mem τ with h | h
+      · exact ⟨.inl ⟨τ, h⟩, rfl⟩
+      · exact ⟨.inr ⟨_, h⟩, hinv τ⟩
+
+end Field
+
+section NumberField
+
+variable {E : Type*} [Field E] [NumberField E] (Φ : CMType E)
+
+noncomputable instance : Fintype Φ := Fintype.ofFinite _
+
+theorem sum_univ_eq {M : Type*} [AddCommMonoid M] (g : (E →+* ℂ) → M) :
+    ∑ τ, g τ = ∑ τ : Φ, (g τ + g (ComplexEmbedding.conjugate τ.1)) := by
+  rw [← Φ.sumEquiv.sum_comp, Fintype.sum_sum_type, Finset.sum_add_distrib]
+  rfl
+
+theorem two_mul_card : 2 * Fintype.card Φ = Module.finrank ℚ E := by
+  rw [← Embeddings.card E ℂ, ← Fintype.card_congr Φ.sumEquiv, Fintype.card_sum, two_mul]
+
+instance : Nonempty Φ := by
+  rw [← Fintype.card_pos_iff]
+  have h := Φ.two_mul_card
+  have := Module.finrank_pos (R := ℚ) (M := E)
+  omega
+
+theorem trace_eq_sum_two_mul_re (x : E) :
+    ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ τ : Φ, 2 * (τ.1 x).re := by
+  have h : ((Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ σ : E →+* ℂ, σ x := by
+    rw [Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) (fun f => f x) (fun φ => φ x)
+      (fun _ => rfl), ← trace_eq_sum_embeddings ℂ (K := ℚ) (x := x)]
+    simp
+  apply Complex.ofReal_injective
+  rw [Complex.ofReal_ratCast, h, Φ.sum_univ_eq, Complex.ofReal_sum]
+  refine Finset.sum_congr rfl fun τ _ => ?_
+  rw [ComplexEmbedding.conjugate_coe_eq, Complex.add_conj]
+
+theorem eq_zero_of_sum_re_eq_zero (δ : Φ → ℂ)
+    (h : ∀ a : 𝓞 E, ∑ τ : Φ, (τ.1 (a : E) * δ τ).re = 0) : δ = 0 := by
+  have hli : LinearIndependent ℂ (fun τ : E →+* ℂ => (fun a : 𝓞 E => τ (a : E))) := by
+    have h1 := linearIndependent_monoidHom (𝓞 E) ℂ
+    refine h1.comp (fun τ : E →+* ℂ => (τ.comp (algebraMap (𝓞 E) E)).toMonoidHom) ?_
+    intro τ τ' hτ
+    refine IsFractionRing.ringHom_ext (A := 𝓞 E) fun a => ?_
+    exact DFunLike.congr_fun hτ a
+  have h2 := Fintype.linearIndependent_iff.mp hli
+    (fun τ => Sum.elim δ (fun σ => conj (δ σ)) (Φ.sumEquiv.symm τ)) (by
+      funext a
+      rw [Finset.sum_apply, ← Φ.sumEquiv.sum_comp, Fintype.sum_sum_type]
+      simp only [Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr, Pi.smul_apply, smul_eq_mul,
+        Pi.zero_apply]
+      rw [← Finset.sum_add_distrib]
+      have h3 : ((∑ τ : Φ, 2 * (τ.1 (a : E) * δ τ).re : ℝ) : ℂ) = 0 := by
+        rw [← Finset.mul_sum, h a]; simp
+      rw [← h3, Complex.ofReal_sum]
+      refine Finset.sum_congr rfl fun τ _ => ?_
+      rw [← Complex.add_conj, map_mul]
+      change δ τ * τ.1 a + conj (δ τ) * ComplexEmbedding.conjugate τ.1 a = _
+      rw [ComplexEmbedding.conjugate_coe_eq]
+      ring)
+  funext τ
+  simpa using h2 (Φ.sumEquiv (.inl τ))
+
+end NumberField
+
+end CMType
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemIffConjugateNotMem =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SignatureHermitianModelOfDatum =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SignatureHermitianModelOfDatum", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature\npublic import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemIffConjugateNotMem\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Matrix.Order\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Algebra.Star.UnitaryStarAlgAut\npublic import Mathlib.Analysis.Matrix.Hermitian\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField Matrix
@@ -213,8 +348,7 @@ theorem trace_real_toLin' {r : ℕ} (N : Matrix (Fin r) (Fin r) ℂ) :
     LinearMap.trace ℝ _ ((toLin' N).restrictScalars ℝ) = 2 * N.trace.re := by
   classical
   rw [LinearMap.trace_eq_matrix_trace ℝ (Complex.basisOneI.smulTower (Pi.basisFun ℂ (Fin r)))]
-  simp [Matrix.trace, LinearMap.toMatrix_apply, Fintype.sum_prod_type, two_mul,
-    Finset.sum_add_distrib]
+  simp [Matrix.trace, LinearMap.toMatrix_apply, Fintype.sum_prod_type, two_mul]
 
 theorem trace_real_blocks {ι : Type} [Fintype ι] {r : ℕ} (N : ι → Matrix (Fin r) (Fin r) ℂ)
     (f : (ι → Fin r → ℂ) →ₗ[ℝ] (ι → Fin r → ℂ)) (hf : ∀ u τ, f u τ = N τ *ᵥ u τ) :
@@ -389,7 +523,7 @@ theorem realMap_surjective (hspan : Submodule.span E (Set.range φ) = ⊤) :
   intro u
   have : u = ∑ i, (fun τ => u τ i) • (fun (τ : Φ) j => τ.1 ((Pi.single i 1 : Fin r → E) j)) := by
     funext τ j
-    simp [Finset.sum_apply, Pi.single_apply, apply_ite τ.1]
+    simp [Finset.sum_apply, Pi.single_apply]
   rw [this]
   exact (LinearMap.range (realMap D Φ φ)).sum_mem fun i _ => hst _ _ (hv _)
 
@@ -571,3 +705,6 @@ theorem signature_of_model (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     linear_combination (-((D.p : ℂ) - D.q)) * Complex.I_mul_I
 
 end GlobalTheory.HermSign
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SignatureHermitianModelOfDatum =====

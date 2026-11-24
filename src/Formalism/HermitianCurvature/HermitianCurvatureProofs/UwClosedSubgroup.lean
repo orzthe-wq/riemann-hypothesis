@@ -90,13 +90,7 @@ theorem castM_UWv {a b : ℕ} (h : a = b) {v : Fin (2 * a + k + 1) → ℂ} {g :
   subst h
   simpa [D.castM, castV_rfl'] using hg
 
-theorem castM_cont {a b : ℕ} (h : a = b) : Continuous (D.castM (k := k) h) := by
-  subst h
-  have e : (D.castM (k := k) (rfl : a = a)) = fun g => g := by
-    funext g
-    simp [D.castM]
-  rw [e]
-  exact continuous_id
+alias castM_cont := _root_.Formalism.FourierDecayAlt.P.Dx2.Tower.castM_cont
 
 theorem inWb_castV {a b : ℕ} (h : a = b) {v : Fin (2 * a + k + 1) → ℂ} (hv : inWb k a v) : inWb k b (D.castV h v) := by
   subst h
@@ -130,18 +124,13 @@ theorem levA_cont (ρ : ℕ) : Continuous (levA (k := k) ρ) := by
   simp only [levA, Matrix.of_symm_apply, D.castM, Matrix.reindex_apply, Matrix.submatrix_apply]
   exact continuous_ιLev_apply ρ _ _
 
-private theorem castM_mul_hermitian_curvature {a b : ℕ} (h : a = b) (g g' : B.Mat k a) :
-    D.castM h (g * g') = D.castM h g * D.castM h g' := by
-  subst h
-  simp [D.castM]
-
 theorem lev_mul' (ρ : ℕ) (a b : B.Mat k ρ) :
     D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ (a * b)) =
       D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ a) * D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ b) := by
   have hL := PI.QnLevBasicsW.level_group_homomorphism
   unfold Formalism.QuantumDeterminants.LevHom at hL
   rw [(hL k 1 ρ).2 a b]
-  exact castM_mul_hermitian_curvature _ _ _
+  exact _root_.Formalism.FourierDecayAlt.P.Dx2.Tower.castM_mul _ _ _
 
 theorem castM_back {a b : ℕ} (h : a = b) (g : B.Mat k b) : D.castM h (D.castM h.symm g) = g := by
   subst h
@@ -227,11 +216,9 @@ theorem Qm_cont (ρ : ℕ) : Continuous (Qm (k := k) ρ) := by
 theorem sf_heis (ρ : ℕ) : SigmaFinite (B2.μHeis k ρ) :=
   Dx2.MN.sigma_of_haar (Formalism.FourierDecayAlt.P.heisenberg_haar_measure k ρ)
 
-theorem sf_muN (ρ : ℕ) : SigmaFinite (D.muN k ρ) := Dx2.MN.sigma_of_haar (Dx2.MN.haar ρ)
-
 theorem muN_succ' (ρ : ℕ) : D.muN k (ρ + 1) = ((B2.μHeis k ρ).prod (D.muN k ρ)).map (Qm ρ) := by
   have := sf_heis (k := k) ρ
-  have := sf_muN (k := k) ρ
+  have := _root_.Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_muN (k := k) ρ
   have hl : Measurable (B2.levM k ρ) := (B2x2.levM_cont k ρ).measurable
   have hmu : Measurable (B2.mulM : Mt k (1 + ρ) × Mt k (1 + ρ) → Mt k (1 + ρ)) := B2x2.mulM_cont.measurable
   have hc : Measurable (Dx2.MN.castMt (k := k) (Nat.add_comm 1 ρ)) := (Dx2.MN.castMt_cont _).measurable

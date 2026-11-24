@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsCharacterQuotientOfInjectiveIntertwiningStatement
-import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentationStatement
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.ExistsCharacterQuotientOfInjectiveIntertwining
+import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -105,9 +105,9 @@ theorem exists_irrChar_add : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] 
   obtain ⟨S, hS⟩ := exists_irreducible_subrepresentation ρ
   let f : Representation.IntertwiningMap S.toRepresentation ρ :=
     ⟨S.toSubmodule.subtype, fun g => by ext v; rfl⟩
-  obtain ⟨c, hc, hcg⟩ := GlobalTheory.T.exists_character_quotient_of_injective_intertwining K L G _ _ ρ S.toRepresentation f
+  obtain ⟨c, hc, hcg⟩ := _root_.GlobalTheory.BI.exists_isChar_eq_add_of_injective K L G _ _ ρ S.toRepresentation f
     S.toSubmodule.injective_subtype
-  refine ⟨_, c, (GlobalTheory.T.isCharacterOverSubfield_of_representation K L G _ S.toRepresentation).2 hS, hc, ?_⟩
+  refine ⟨_, c, (_root_.GlobalTheory.BI.isChar_and_isIrrChar_of_rep K L G _ S.toRepresentation).2 hS, hc, ?_⟩
   funext g
   rw [hρ, hcg]
   rfl

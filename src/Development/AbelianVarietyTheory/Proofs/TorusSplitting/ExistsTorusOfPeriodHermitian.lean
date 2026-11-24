@@ -1,15 +1,19 @@
 module
 
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
 public import Development.AbelianVarietyTheory.Definitions.TorusSections.IsTorusOf
-public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ConjEqNegOfSqEqNegNat
 public import Development.AbelianVarietyTheory.Proofs.TorusSplitting.TorusAtExistsOfParts
+public import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Commute
+public import Mathlib.Analysis.Matrix.Order
+public import Mathlib.Analysis.Matrix.Hermitian
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.GoodPointOrConjugate
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Commute
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.Matrix.Order
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -21,12 +25,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -34,7 +34,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -47,11 +46,52 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters
-public import Mathlib.Analysis.Matrix.Hermitian
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.TorusSplitting.ConjEqNegOfSqEqNegNat, Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsTorusOfPeriodHermitian
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TorusSplitting.ConjEqNegOfSqEqNegNat =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TorusSplitting.ConjEqNegOfSqEqNegNat", "h": "module\n\nimport Development.AutomorphicSpectrum.Proofs.GeometryProofs.GoodPointOrConjugate\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.ImaginarySqrtEmbedding
+
+open NumberField
+
+theorem conj_eq_neg_of_sq_eq_neg_nat (z : ℂ) (d : ℕ) (h : z ^ 2 = -(d : ℂ)) :
+    starRingEnd ℂ z = -z := by
+  apply GlobalTheory.CompanionTheory.Ar.QuotUnif.Dich.conj_eq_neg_of_sq_eq_neg_natCast <;> assumption
+
+theorem embedding_sqrt_sq_and_conj {E : Type} [Field E] [NumberField E] [IsCMField E]
+    {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (τ : E →+* ℂ) :
+    τ (↑(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.rt H) : E) ^ (2 : ℕ)
+        = -(↑(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.d H) : ℂ) ∧
+      starRingEnd ℂ (τ (↑(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.rt H) : E))
+        = -τ (↑(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.rt H) : E) := by
+  have h1 : τ (↑(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.rt H) : E) ^ (2 : ℕ)
+      = -(↑(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.d H) : ℂ) := by
+    have h := congrArg (fun a : 𝓞 E => τ (algebraMap (𝓞 E) E a)) H.rt_sq
+    simp only [map_pow, map_neg, map_natCast] at h
+    exact h
+  exact ⟨h1, conj_eq_neg_of_sq_eq_neg_nat _ _ h1⟩
+
+end GlobalTheory.ImaginarySqrtEmbedding
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TorusSplitting.ConjEqNegOfSqEqNegNat =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsTorusOfPeriodHermitian =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsTorusOfPeriodHermitian", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.TorusSections.IsTorusOf\npublic import Development.AbelianVarietyTheory.Proofs.TorusSplitting.ConjEqNegOfSqEqNegNat\npublic import Development.AbelianVarietyTheory.Proofs.TorusSplitting.TorusAtExistsOfParts\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Commute\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Matrix.Order\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters\npublic import Mathlib.Analysis.Matrix.Hermitian\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -181,19 +221,9 @@ section Host
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
-theorem conj_rt (τ : E →+* ℂ) : τ (H.rt : E) ^ 2 = -(H.d : ℂ) ∧
-    starRingEnd ℂ (τ (H.rt : E)) = -τ (H.rt : E) := by
-  first
-  | exact @_root_.GlobalTheory.ImaginarySqrtEmbedding.embedding_sqrt_sq_and_conj
-  | exact _root_.GlobalTheory.ImaginarySqrtEmbedding.embedding_sqrt_sq_and_conj
-  | (apply _root_.GlobalTheory.ImaginarySqrtEmbedding.embedding_sqrt_sq_and_conj <;> assumption)
-  | (intros; apply _root_.GlobalTheory.ImaginarySqrtEmbedding.embedding_sqrt_sq_and_conj <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.ImaginarySqrtEmbedding.embedding_sqrt_sq_and_conj <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.ImaginarySqrtEmbedding.embedding_sqrt_sq_and_conj ..)
-
 theorem mult_add_mult_conj (D : Datum H) (τ : E →+* ℂ) :
     D.mult τ + D.mult (ComplexEmbedding.conjugate τ) = D.p + D.q := by
-  obtain ⟨h1, h2⟩ := conj_rt (H := H) τ
+  obtain ⟨h1, h2⟩ := _root_.GlobalTheory.ImaginarySqrtEmbedding.embedding_sqrt_sq_and_conj (H := H) τ
   have h3 : H.rt0 ≠ -H.rt0 := fun h => by
     have h0 : H.rt0 = 0 := by linear_combination h / 2
     have := H.sqrt_neg_disc_sq
@@ -212,7 +242,7 @@ theorem coe_one_sub_w0 : ((1 - H.w0 : 𝓞 E) : E) = cc (H.w0 : E) := by
   rw [map_mul, map_add (f := _), map_one, map_ofNat] at h
   change 2 * τ (H.w0 : E) = 1 + τ (H.rt : E) at h
   have h' := congrArg (starRingEnd ℂ) h
-  rw [map_mul, map_add (f := _), map_one, map_ofNat, (conj_rt (H := H) τ).2] at h'
+  rw [map_mul, map_add (f := _), map_one, map_ofNat, (_root_.GlobalTheory.ImaginarySqrtEmbedding.embedding_sqrt_sq_and_conj (H := H) τ).2] at h'
   have : τ ((1 - H.w0 : 𝓞 E) : E) = 1 - τ (H.w0 : E) := by simp
   rw [this]
   linear_combination (-h - h') / 2
@@ -308,3 +338,6 @@ theorem exists_torusOf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   rw [hact', him, sgnFloor, Int.floor_intCast]
 
 end GlobalTheory.PeriodTorus
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TorusSplitting.ExistsTorusOfPeriodHermitian =====

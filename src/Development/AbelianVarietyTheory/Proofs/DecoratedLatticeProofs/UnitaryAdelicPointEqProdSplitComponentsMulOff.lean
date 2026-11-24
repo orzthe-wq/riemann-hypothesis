@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHermitianFramePropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHermitianFrameProperties
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,24 +56,8 @@ namespace GlobalTheory.FinPl.LocProd
 
 variable {D : D7}
 
-theorem mem_congGrp_entries (V : HSp D) (I : Ideal (AE D)) (g : GA D V) :
-    g ∈ congGrp V I ↔ ∀ i j, (Formalism.L2.Theta.mt V g - 1) i j ∈ I := by
-  rw [congGrp, MonoidHom.mem_ker, MonoidHom.comp_apply, Units.ext_iff]
-  simp only [Matrix.GeneralLinearGroup.map, Units.coe_map, Units.val_one]
-  rw [← Matrix.ext_iff]
-  refine forall_congr' fun i => forall_congr' fun j => ?_
-  rw [Matrix.sub_apply, ← Ideal.Quotient.eq]
-  change ((matHom V g).1.map (Ideal.Quotient.mk I)) i j = (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D ⧸ I)) i j ↔ _
-  rw [Matrix.map_apply]
-  by_cases hij : i = j
-  · subst hij
-    simp only [Matrix.one_apply_eq, map_one]
-    rfl
-  · simp only [Matrix.one_apply_ne hij, map_zero]
-    rfl
-
 theorem congGrp_mono (V : HSp D) {I J : Ideal (AE D)} (h : I ≤ J) : congGrp V I ≤ congGrp V J := fun g hg =>
-  (mem_congGrp_entries V J g).2 fun i j => h ((mem_congGrp_entries V I g).1 hg i j)
+  (_root_.GlobalTheory.FrameAt.mem_congGrp V J g).2 fun i j => h ((_root_.GlobalTheory.FrameAt.mem_congGrp V I g).1 hg i j)
 
 theorem idAt_le_idOff (P P' : Pl D → Prop) (h : ∀ w, P w → ¬ P' w) : idAt D P ≤ idOff D P' := by
   intro a ha
@@ -94,9 +78,9 @@ theorem mem_idOff_of_forall (P : Pl D → Prop) (a : AE D) (h : ∀ w, P w → a
 theorem mem_grpOff_of_forall (V : HSp D) (P : Pl D → Prop) (g : GA D V) (h : ∀ w, P w → g ∈ grpOff V (· = w)) :
     g ∈ grpOff V P := by
   unfold grpOff
-  rw [mem_congGrp_entries]
+  rw [_root_.GlobalTheory.FrameAt.mem_congGrp]
   intro i j
-  exact mem_idOff_of_forall P _ fun w hw => (mem_congGrp_entries V _ g).1 (h w hw) i j
+  exact mem_idOff_of_forall P _ fun w hw => (_root_.GlobalTheory.FrameAt.mem_congGrp V _ g).1 (h w hw) i j
 
 theorem map_list_prod_eq_one {ι G H : Type*} [Monoid G] [Monoid H] (φ : G →* H) (f : ι → G) :
     ∀ J : List ι, (∀ i ∈ J, φ (f i) = 1) → φ (J.map f).prod = 1
@@ -126,10 +110,10 @@ theorem eq_prod_gl_mul_off : ∀ (D : D7) (S : HSp D) (k : Type) [Field k] [Valu
   have hloc := fun i => ((GlobalTheory.FinPl.localComponents D (· = (p i).v)).2 S).1 κ
   have hcomm := fun i => ((GlobalTheory.FinPl.localComponents D (· = (p i).v)).2 S).2.1
   choose x hx y hy hxy using hloc
-  have hfr := fun i => ((GlobalTheory.T.splitPlaceHermitianFrame_properties D k (p i) S n (β i)).1 (x i)).1 (hx i)
+  have hfr := fun i => ((_root_.GlobalTheory.FrameAt.frame_facts D k (p i) S n (β i)).1 (x i)).1 (hx i)
   choose g hg using hfr
   have hglAt : ∀ i, (β i).gl (g i) ∈ grpAt S (· = (p i).v) := fun i =>
-    ((GlobalTheory.T.splitPlaceHermitianFrame_properties D k (p i) S n (β i)).1 _).2 ⟨g i, rfl⟩
+    ((_root_.GlobalTheory.FrameAt.frame_facts D k (p i) S n (β i)).1 _).2 ⟨g i, rfl⟩
   have key : ∀ i, κ * ((β i).gl (g i))⁻¹ ∈ grpOff S (· = (p i).v) := by
     intro i
     rw [← hg i, hxy i, hcomm i (x i) (hx i) (y i) (hy i), mul_assoc, mul_inv_cancel, mul_one]

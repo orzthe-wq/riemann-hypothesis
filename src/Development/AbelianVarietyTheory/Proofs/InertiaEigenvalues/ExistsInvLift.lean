@@ -2,8 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinApproxRootImageIndep
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EisensteinImagePowIdealAinfPropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EisensteinImagePowIdealAinfProperties
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsApproxRootEisensteinAwayPrime
+public import Mathlib.RingTheory.PowerSeries.WeierstrassPreparation
+public import Mathlib.RingTheory.Polynomial.Eisenstein.Distinguished
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -21,7 +23,6 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-public import Mathlib.RingTheory.PowerSeries.WeierstrassPreparation
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.DiscreteValuationRing
 import Mathlib.Tactic.Basify
@@ -53,7 +54,6 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LocalP
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.PolyApproxZeroPadic
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TrivIsCr
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
-public import Mathlib.RingTheory.Polynomial.Eisenstein.Distinguished
 
 @[expose] public section
 
@@ -121,7 +121,7 @@ theorem cancel_pow_l (k : ℕ) (a : Ainf l) (h : bk.ev bk.E ^ m ∣ (l : Ainf l)
   induction k generalizing a with
   | zero => simpa using h
   | succ k ih =>
-    apply (GlobalTheory.T.eisensteinImage_pow_ideal_ainf_properties l K bk m).1
+    apply (_root_.GlobalTheory.AinfEPow.ePow_facts l K bk m).1
     apply ih
     rwa [pow_succ, mul_assoc] at h
 

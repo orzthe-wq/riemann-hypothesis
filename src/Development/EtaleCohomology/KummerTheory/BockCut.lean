@@ -3,46 +3,6 @@ module
 public import Development.EtaleCohomology.KummerTheory.InjSlice
 public import Development.EtaleCohomology.TateTwists.PrimitiveRootsOfUnityBasicIdentities
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
 
 @[expose] public section
 
@@ -64,14 +24,20 @@ def DerDict : Prop := ∀ (R : Type) [CommRing R] (K : Cx R),
     ∀ {F G : Shv R} (φ : F ⟶ G) (n : ℤ) (x : HK R K F n),
       e G n (HK.post R K φ n x) = e F n x ≫ ((DerivedCategory.singleFunctor (Shv R) 0).map φ)⟦n⟧'
 
-def NatLES : Prop := ∀ (R : Type) [CommRing R] (K : Cx R),
-  ∃ d : ∀ (S : ShortComplex (Shv R)), S.ShortExact → ∀ n : ℤ, HK R K S.X₃ n →+ HK R K S.X₁ (n + 1),
-    (∀ (S : ShortComplex (Shv R)) (hS : S.ShortExact) (n : ℤ),
-      Function.Exact (HK.post R K S.f n) (HK.post R K S.g n) ∧
-      Function.Exact (HK.post R K S.g n) (d S hS n) ∧
-      Function.Exact (d S hS n) (HK.post R K S.f (n + 1))) ∧
-    ∀ (S T : ShortComplex (Shv R)) (hS : S.ShortExact) (hT : T.ShortExact) (φ : S ⟶ T) (n : ℤ) (x : HK R K S.X₃ n),
-      HK.post R K φ.τ₁ (n + 1) (d S hS n x) = d T hT n (HK.post R K φ.τ₃ n x)
+/-- Connecting homomorphisms for short exact sequences, exact in every degree and natural
+in morphisms of short exact sequences. -/
+def HasNaturalLES {C : Type*} [Category C] [Abelian C]
+    (H : C → ℤ → Type*) [∀ X n, AddCommGroup (H X n)]
+    (post : ∀ {X Y : C}, (X ⟶ Y) → (n : ℤ) → H X n →+ H Y n) : Prop :=
+  ∃ d : ∀ (S : ShortComplex C), S.ShortExact → ∀ n : ℤ, H S.X₃ n →+ H S.X₁ (n + 1),
+    (∀ (S : ShortComplex C) (hS : S.ShortExact) (n : ℤ),
+      Function.Exact (post S.f n) (post S.g n) ∧
+      Function.Exact (post S.g n) (d S hS n) ∧
+      Function.Exact (d S hS n) (post S.f (n + 1))) ∧
+    ∀ (S T : ShortComplex C) (hS : S.ShortExact) (hT : T.ShortExact) (φ : S ⟶ T) (n : ℤ) (x : H S.X₃ n),
+      post φ.τ₁ (n + 1) (d S hS n x) = d T hT n (post φ.τ₃ n x)
+
+def NatLES : Prop := ∀ (R : Type) [CommRing R] (K : Cx R), HasNaturalLES (HK R K) (HK.post R K)
 
 def ZHom : Prop := ∀ (F G : Shv ℤ) (f : ∀ U : Scheme.{0}, Sec F U →+ Sec G U),
   (∀ (V U : Scheme.{0}) (g : V ⟶ U) (a : Sec F U), Sec.res g (f U a) = f V (Sec.res g a)) →

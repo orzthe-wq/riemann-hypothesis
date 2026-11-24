@@ -69,9 +69,9 @@ theorem colSub_scalAt_X {d a : ℕ} (τ₀ : ι) (ζ : ℂ) (y : Var ι d a) :
   by_cases h : τ = τ₀
   · subst h
     rw [Finset.sum_eq_single j]
-    · simp [scalAt, Matrix.smul_apply, Matrix.one_apply]
+    · simp [scalAt, Matrix.smul_apply]
     · intro b _ hb
-      simp [scalAt, Matrix.smul_apply, Matrix.one_apply, hb]
+      simp [scalAt, Matrix.smul_apply, hb]
     · simp
   · simp [scalAt, h, Matrix.one_apply]
 
@@ -151,7 +151,7 @@ open MvPolynomial
 theorem prod_det_scalAt_zpow {ι : Type} [Fintype ι] {a : ℕ} (τ₀ : ι) (ζ : ℂ) (m : ι → ℤ) (n : ℕ)
     (hn : (n : ℤ) = m τ₀) : (∏ τ, (scalAt (a := a) τ₀ ζ τ).det ^ (m τ)) = ζ ^ (a * n) := by
   rw [Finset.prod_eq_single τ₀]
-  · simp [scalAt, Matrix.det_smul, ← hn, zpow_natCast, pow_mul]
+  · simp [scalAt, ← hn, zpow_natCast, pow_mul]
   · intro τ _ h
     simp [scalAt, h]
   · simp
@@ -215,7 +215,7 @@ theorem integral_detZpow_colSub_eq_zero :
       simp only [hB_def, map_mul, Pi.mul_apply, hu k]
       rw [Submonoid.coe_mul, hU k τ]
       simp only [scalAt]
-      split_ifs <;> simp [Matrix.smul_mul, Matrix.mul_smul]
+      split_ifs <;> simp
     simp only [hf_def, hc_def]
     rw [hBu, colSub_mul, map_smul, smul_eq_mul]
     simp only [Matrix.det_mul, mul_zpow, Finset.prod_mul_distrib]

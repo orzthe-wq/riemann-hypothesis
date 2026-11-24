@@ -58,6 +58,7 @@ import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.LocalToGlobal.CharacterGerms.CharacteristicFromRanks
 
 @[expose] public section
 
@@ -174,15 +175,6 @@ theorem mvExp_eq [CharZero C] {a : MvPowerSeries τ C} (ha : constantCoeff a = 0
   rw [PowerSeries.coeff_exp]
   simp [div_eq_mul_inv, mul_comm]
 
-theorem mvExp_zero' : mvExp (0 : MvPowerSeries σ C) = 1 := by
-  classical
-  ext μ
-  show ∑ k ∈ Finset.range (μ.degree + 1), coeff μ ((0 : MvPowerSeries σ C) ^ k) / (k.factorial : C) = _
-  rw [Finset.sum_range_succ', Finset.sum_eq_zero]
-  · simp
-  · intro k _
-    simp
-
 theorem coeff_subst_kill [Finite τ] (e : σ ↪ τ) (f : MvPowerSeries τ C)
     (a : τ → MvPowerSeries σ C) (ha : ∀ t, a t = killCompl e (X t)) (x : σ →₀ ℕ) :
     coeff x (subst a f) = coeff (Finsupp.embDomain e x) f := by
@@ -232,9 +224,8 @@ theorem pderiv_subst_eq [Fintype σ] {a : σ → MvPowerSeries τ C} (ha : ∀ s
   next p s hp =>
     rw [map_mul, MvPolynomial.aeval_X, Derivation.leibniz, hp, smul_eq_mul, smul_eq_mul, Finset.mul_sum]
     simp only [Derivation.leibniz, MvPolynomial.pderiv_X, Pi.single_apply, smul_eq_mul, map_add (f := _),
-      map_mul, MvPolynomial.aeval_X, add_mul, Finset.sum_add_distrib, mul_ite, mul_one, mul_zero,
-      map_one, map_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
-    simp [apply_ite (MvPolynomial.aeval a), mul_assoc, add_comm]
+      map_mul, MvPolynomial.aeval_X, add_mul, Finset.sum_add_distrib, mul_ite, mul_one, mul_zero]
+    simp [apply_ite (MvPolynomial.aeval a), mul_assoc]
 
 section
 variable [Fintype σ] {p : σ → MvPowerSeries τ C} (hp : ∀ s, constantCoeff (p s) = 0) (w : σ → MvPowerSeries τ C)
@@ -276,7 +267,7 @@ theorem int_tder_of_exp [CharZero C] (hpi : ∀ s, IntS V (p s)) (hw : ∀ s, In
   have h := int_tder hp w hpi hw hf
   rw [mvExp_eq hf0, tder_subst hp w (fun _ => hf0), hz] at h
   unfold tder at h
-  rw [Fintype.sum_unique, pderiv_exp, ← mvExp_eq (map_zero _), mvExp_zero', one_mul] at h
+  rw [Fintype.sum_unique, pderiv_exp, ← mvExp_eq (map_zero _), _root_.Formalism.L2.FormalSeriesBounds.CharacteristicFromRanks.mvExp_zero, one_mul] at h
   exact h
 
 end

@@ -45,7 +45,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 
 namespace GlobalTheory
 
-theorem semiAbelianHomExtension_holds : GlobalTheory.Published.SemiAbelianHomExtension :=
-  GlobalTheory.CompanionTheory.SAH.semiAbelianHomExtension
+alias semiAbelianHomExtension_holds := _root_.GlobalTheory.CompanionTheory.SAH.semiAbelianHomExtension
 
 end GlobalTheory

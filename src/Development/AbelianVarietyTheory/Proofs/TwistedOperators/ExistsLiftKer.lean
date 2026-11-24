@@ -2,7 +2,10 @@ module
 
 public import Formalism.LocalToGlobal.ProjectiveLattices.HeckeFr
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyLiftsToLatticeMapScalingFormsStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HeckeIsogenyLiftsToLatticeMapScalingForms
+public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.KerScheme
+public import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -67,7 +70,7 @@ theorem exists_lift_ker : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (∀ a, F.ex i P (((p : ℂ) ^ 2)⁻¹ • P a) ∈ C ↔ ∃ b, gam a = (p ^ 2) • b) ∧
     ∀ c ∈ C, ∃ a, c = F.ex i P (((p : ℂ) ^ 2)⁻¹ • P a) := by
   intro E _ _ _ H Dw l Xo σ g ty F i j P P' p C ψ ψp hP hP' hp hC hI
-  obtain ⟨gam, h, h1, h2, h3, h4⟩ := GlobalTheory.T.heckeIsogeny_lifts_to_lattice_map_scaling_forms E H Dw l Xo σ g ty F i j P P' p C ψ ψp hP hP' hp hC hI
+  obtain ⟨gam, h, h1, h2, h3, h4⟩ := _root_.GlobalTheory.HeckeLift.exists_linearMap_of_isHkIsog E H Dw l Xo σ g ty F i j P P' p C ψ ψp hP hP' hp hC hI
   have hker : ψp.ker = C := hI.2.2.2.2.2.1
   have hp0 : ((p : ℂ) ^ 2) ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 hp.ne_zero)
   refine ⟨gam, h, h1, h2, h3, h4, fun a => ?_, fun c hc => ?_⟩

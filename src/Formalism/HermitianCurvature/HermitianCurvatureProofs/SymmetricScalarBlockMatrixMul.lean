@@ -837,14 +837,6 @@ end Formalism.FourierDecayAlt.P.Ux3
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem hat_z_on_slice : Formalism.FourierDecayAlt.U.ZhSlice := Ux3.zhSlice
-
-theorem level_determinant_z : Formalism.FourierDecayAlt.U.DetZj := Ux3.detZj
-
-theorem hat_z_minimum_degree : Formalism.FourierDecayAlt.U.ZhDmin := Ux3.zhDmin
-
-theorem level_function_slice : Formalism.FourierDecayAlt.U.GfSlice := Ux3.gfSlice
-
-theorem big_cell_bijection : Formalism.FourierDecayAlt.U.BigCellBij := Ux3.bigCellBij
+alias level_determinant_z := _root_.Formalism.FourierDecayAlt.P.Ux3.detZj
 
 end Formalism.FourierDecayAlt.P

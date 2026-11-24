@@ -44,6 +44,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustFStatementPfB
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.DetSubUpper
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Algebra.Azumaya.Basic
 
 @[expose] public section
 

@@ -50,13 +50,6 @@ namespace GlobalTheory.HeckeSplitComp
 
 open ReciprocityTheory.Aut
 
-theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-(1 : ℕ) : ℤ) := by
-  by_cases hx : x = 0
-  · rw [hx]; exact zero_le'
-  rw [← WithZero.exp_log hx] at h ⊢
-  rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at h
-  rw [WithZero.exp_le_exp]; push_cast; omega
-
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s : ReciprocityTheory.Aut.SplitPlace L) (χ : Formalism.L2.Host.HChar L), χ.TameAt s.w → ∃ ξ : (s.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ, NG.IsCompAt χ s ξ ∧ ∀ (u : (s.v.adicCompletion (maximalRealSubfield L))ˣ) (a : 𝓞 L) (k : Lˣ), (k : L) = (a : L) → Valued.v (u : s.v.adicCompletion (maximalRealSubfield L)) = 1 → Valued.v ((u : s.v.adicCompletion (maximalRealSubfield L)) - s.i (a : L)) < 1 → ξ u = χ.locK s.w k := by
   intro L _ _ _ s χ hχ
   obtain ⟨c, hc, -, hci⟩ := GlobalTheory.SplitCompl.exists_ringEquiv L s
@@ -81,7 +74,7 @@ theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s : Recip
         c ((u : s.v.adicCompletion (maximalRealSubfield L)) - 1) := by
       rw [map_sub, map_one]; rfl
     rw [e]
-    exact le_exp_neg_one_of_lt_one ((hlt _).2 hu1)
+    exact _root_.GlobalTheory.Mem.ReadEx.le_exp_neg_one ((hlt _).2 hu1)
   · show χ.loc s.w (Units.map c.toRingHom.toMonoidHom (Units.map (s.i : L →* s.v.adicCompletion (maximalRealSubfield L)) k)) =
       χ.loc s.w (Formalism.L2.Host.atFin s.w k)
     congr 1

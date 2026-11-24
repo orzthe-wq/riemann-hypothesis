@@ -306,14 +306,12 @@ theorem dualMap_add (φ ψ : F ⟶ G) : dualMap (φ + ψ) = dualMap φ + dualMap
   ext l W h s
   first
   | simp [dualApp_dualMap]
-  | (rw [dualApp_dualMap]; simp)
 
 @[simp] theorem dualMap_zero : dualMap (0 : F ⟶ G) = 0 := by
   refine Scheme.Modules.hom_ext _ _ fun V => ?_
   ext l W h s
   first
   | simp [dualApp_dualMap]
-  | (rw [dualApp_dualMap]; simp)
 
 @[simp] theorem dualMap_smulHom (a : Γ(X, ⊤)) : dualMap (smulHom F a) = smulHom (dual F) a := by
   have key : ∀ (M : X.Modules) (T : X.Opens) (x : Γ(M, T)),
@@ -321,8 +319,6 @@ theorem dualMap_add (φ ψ : F ⟶ G) : dualMap (φ + ψ) = dualMap φ + dualMap
   have key2 : ∀ T : X.Opens, restrictGlobal X T a = resG X le_top a := fun T => by
     first
     | rfl
-    | simp [restrictGlobal, resG]
-    | (unfold restrictGlobal resG; rfl)
   refine Scheme.Modules.hom_ext _ _ fun V => ?_
   ext l W h s
   rw [dualApp_dualMap, key, key, dualApp_smul, map_smul, LinearMap.smul_apply, key2, key2, resG_resG]
@@ -377,7 +373,6 @@ def cartierDualToBidual : F ⟶ dual (dual F) :=
   ext s W h l
   first
   | simp [dualSheafSectionApply_toBidual, dualApp_dualMap, app_resM]
-  | (simp only [Scheme.Modules.Hom.comp_app, AddCommGrpCat.hom_comp, AddMonoidHom.comp_apply, dualSheafSectionApply_toBidual, dualApp_dualMap, app_resM])
 
 namespace IsFrame
 
@@ -587,7 +582,6 @@ theorem val_detUnit_pullback [F.IsQuasicoherent] (he : IsFrame e) (he' : IsFrame
   ext i j
   simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Module.Basis.toMatrix_apply]
   rw [← pullbackSections_resM f h' hT (e' j), pullback_basis_repr he f h hT]
-  try rfl
 
 end IsFrame
 

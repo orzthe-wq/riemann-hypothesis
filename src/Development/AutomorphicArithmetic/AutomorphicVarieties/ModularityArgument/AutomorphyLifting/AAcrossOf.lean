@@ -69,6 +69,5 @@ theorem guard_of (H : PlainRec) [IsCMField F] [IsAlgClosure F Ω] {ι : Qbar l �
     · exact Or.inl e)) σ hσ
 
 def ThruAway : Prop := PlainRec → Thru false
-def AIsoTwOf : Prop := FlagLaws → WinTw → AIsoTw
 
 end UpperTheory.V.Z.Win

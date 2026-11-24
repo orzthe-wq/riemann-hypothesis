@@ -230,9 +230,8 @@ theorem sameComp_baseChange {K F : Type} [Field K] [Field F] (e₀ : K →+* F) 
     intro p hp hp'
     apply pullback.hom_ext
     · apply pullback.hom_ext
-      · simp only [j, j₀, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]
-      · simp only [j, j₀, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc,
-          pullback.lift_snd_assoc, hp]
+      · simp only [j, j₀, Category.assoc, pullback.lift_fst]
+      · simp only [j, j₀, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_snd_assoc, hp]
     · simp only [j, Category.assoc, pullback.lift_snd]
   refine ⟨by rw [hp, Category.id_comp], by rw [hq, Category.id_comp], fun z => ?_⟩
   rw [key p _ hp', key q _ hq', Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]

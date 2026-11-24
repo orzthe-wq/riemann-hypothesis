@@ -51,23 +51,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.O
 
 open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th UpperTheory.V.Th.Nm GlobalTheory.GalOfCusp
 
-private theorem inOf_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
-  have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
-  have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
-  rw [h0, spectralValue_le_one_iff (minpoly.monic hi)]
-  constructor
-  · intro h n
-    rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]
-    exact PadicInt.norm_le_one _
-  · intro h
-    have hl' : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l]) :=
-      (Polynomial.lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩
-    obtain ⟨q, hq, -, hqm⟩ := Polynomial.lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)
-    exact ⟨q, hqm, by rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
-
 private theorem inOf_div {l : ℕ} [Fact l.Prime] (c : Coef l) (a b : c.O) (hb : (b : PadicAlgCl l) ≠ 0)
     (h : ‖(a : PadicAlgCl l)‖ ≤ ‖(b : PadicAlgCl l)‖) : (a : PadicAlgCl l) / b ∈ c.O := by
-  refine (coefSup l).2.2.2 c _ ((inOf_intIff _).2 ?_) ⟨a, b, hb, div_mul_cancel₀ _ hb⟩
+  refine (coefSup l).2.2.2 c _ ((_root_.GlobalTheory.isIntegral_padicInt_iff_norm_le_one _).2 ?_) ⟨a, b, hb, div_mul_cancel₀ _ hb⟩
   rw [norm_div]
   exact div_le_one_of_le₀ h (norm_nonneg _)
 
@@ -78,7 +64,7 @@ private theorem inOf_fin {l : ℕ} [Fact l.Prime] (c : Coef l) (s : Finset (Padi
   | empty => exact ⟨c, le_rfl, by simp⟩
   | insert a s _ ih =>
     obtain ⟨d, hd, hd'⟩ := ih fun x hx => hs x (Finset.mem_insert_of_mem hx)
-    obtain ⟨e, he, he'⟩ := (coefSup l).2.2.1 d a ((inOf_intIff _).2 (hs a (Finset.mem_insert_self _ _)))
+    obtain ⟨e, he, he'⟩ := (coefSup l).2.2.1 d a ((_root_.GlobalTheory.isIntegral_padicInt_iff_norm_le_one _).2 (hs a (Finset.mem_insert_self _ _)))
     refine ⟨e, hd.trans he, fun x hx => ?_⟩
     rcases Finset.mem_insert.1 hx with rfl | hx
     · exact he'
@@ -91,7 +77,7 @@ theorem UpperTheory.V.Th.Nm.inOf :
     intro x hx
     haveI := c.fin
     have hi : IsIntegral ℤ_[l] (⟨x, hx⟩ : c.O) := Algebra.IsIntegral.isIntegral _
-    exact (inOf_intIff x).mp (hi.map c.O.val)
+    exact (_root_.GlobalTheory.isIntegral_padicInt_iff_norm_le_one x).mp (hi.map c.O.val)
   have hl1 : ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by
     have e := PadicAlgCl.norm_extends l (l : ℚ_[l])
     rw [map_natCast] at e

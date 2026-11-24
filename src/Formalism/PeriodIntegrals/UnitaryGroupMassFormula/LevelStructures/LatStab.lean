@@ -68,12 +68,9 @@ theorem exists_common_mult {ι : Type} [Fintype ι] (L : Submodule (𝓞 E) (Fin
     (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) (x : ι → Fin n → E) :
     ∃ N : ℤ, N ≠ 0 ∧ ∀ q, N • x q ∈ L := by
   classical
-  have hN : ∀ q, ∃ N : ℤ, N ≠ 0 ∧ N • x q ∈ L := fun q => exists_int_smul_mem L hL _
-  choose Nf hNf hNm using hN
+  choose Nf hNf hNm using fun q => exists_int_smul_mem L hL (x q)
   refine ⟨∏ q, Nf q, Finset.prod_ne_zero_iff.2 fun q _ => hNf q, fun q => ?_⟩
-  have hq : ∏ q, Nf q = (∏ q' ∈ Finset.univ.erase q, Nf q') * Nf q :=
-    (Finset.prod_erase_mul _ _ (Finset.mem_univ q)).symm
-  rw [hq, mul_smul]
+  rw [← Finset.prod_erase_mul _ _ (Finset.mem_univ q), mul_smul]
   exact zsmul_mem (hNm q) _
 
 theorem isOpen_latLoc (L : Submodule (𝓞 E) (Fin n → E))
@@ -235,10 +232,7 @@ theorem isCompact_kloc :
     · rintro ⟨h1, h2⟩
       exact ⟨h1, ⟨_, h2, rfl⟩⟩
     · rintro ⟨h1, y, hy, hyg⟩
-      refine ⟨h1, ?_⟩
-      have hy' : y = (((g⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) :=
-        MulOpposite.op_injective hyg
-      rwa [hy'] at hy
+      exact ⟨h1, (MulOpposite.op_injective hyg) ▸ hy⟩
   rw [e]
   exact Units.isClosedEmbedding_embedProduct.isCompact_preimage
     (hSc.prod (hSc.image MulOpposite.continuous_op))

@@ -145,21 +145,21 @@ theorem u_det_ne (g : M2 n) (hg : InG g) (w : ℂ) (hw : w = Complex.I ∨ w = -
     exact hx
   rw [hl, JJ_mulVec, JJ_mulVec, star_elim, star_elim, dot_elim, dot_elim] at key
   have hs : star (w • x) = star w • star x := by
-    funext j; simp [mul_comm]
+    funext j; simp
   rw [hs] at key
-  simp only [dotProduct_zero, zero_add, Pi.star_apply, star_zero, zero_dotProduct, dotProduct_neg, smul_dotProduct,
+  simp only [dotProduct_zero, zero_add, star_zero, zero_dotProduct, dotProduct_neg, smul_dotProduct,
     dotProduct_smul, smul_eq_mul] at key
   have hxx : star x ⬝ᵥ x ≠ 0 := fun h => hx0 (dotProduct_star_self_eq_zero.mp h)
   rcases hw with rfl | rfl
   · apply hxx
-    have h2 : star Complex.I = -Complex.I := by simp [Complex.star_def]
+    have h2 : star Complex.I = -Complex.I := by simp
     rw [h2] at key
     have : (-(2 * Complex.I)) * (star x ⬝ᵥ x) = 0 := by linear_combination -key
     rcases mul_eq_zero.mp this with h | h
     · simp at h
     · exact h
   · apply hxx
-    have h2 : star (-Complex.I) = Complex.I := by simp [Complex.star_def]
+    have h2 : star (-Complex.I) = Complex.I := by simp
     rw [h2] at key
     have : (2 * Complex.I) * (star x ⬝ᵥ x) = 0 := by linear_combination -key
     rcases mul_eq_zero.mp this with h | h

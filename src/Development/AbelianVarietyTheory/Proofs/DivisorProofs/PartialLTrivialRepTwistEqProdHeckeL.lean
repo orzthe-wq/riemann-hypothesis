@@ -81,7 +81,6 @@ theorem trivPar_euler : ∀ {D : D7} (χ : (AE D)ˣ →* Circle) (Sf : Finset (F
   congr 2
   · simp
   · congr 1
-    push_cast
     ring
 
 end GlobalTheory.RallisEuler

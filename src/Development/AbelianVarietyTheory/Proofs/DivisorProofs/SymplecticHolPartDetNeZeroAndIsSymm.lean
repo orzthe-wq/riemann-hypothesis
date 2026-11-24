@@ -67,8 +67,7 @@ theorem herm_identity {l : Type} [Fintype l] [DecidableEq l] (A B C D : Matrix l
     simpa [transpose_sub, transpose_mul] using congrArg Matrix.transpose h3
   have e3 : Aᵀ * D = 1 + Cᵀ * B := by rw [← h3]; abel
   have e4 : Dᵀ * A = 1 + Bᵀ * C := by rw [← h4]; abel
-  simp only [Matrix.add_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_smul,
-    I_mul_I]
+  simp only [Matrix.add_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul]
   rw [← h1, ← h2, e3, e4]
   module
 
@@ -80,7 +79,7 @@ theorem symm_identity {l : Type} [Fintype l] [DecidableEq l] (A B C D : Matrix l
   have e3 : Aᵀ * D = 1 + Cᵀ * B := by rw [← h3]; abel
   have e4 : Dᵀ * A = 1 + Bᵀ * C := by rw [← h4]; abel
   simp only [transpose_sub, transpose_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul,
-    Matrix.mul_smul, smul_smul]
+    Matrix.mul_smul]
   rw [← h1, ← h2, e3, e4]
   module
 

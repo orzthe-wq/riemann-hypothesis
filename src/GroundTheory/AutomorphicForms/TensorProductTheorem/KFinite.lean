@@ -1,51 +1,156 @@
 module
 
-public import GroundTheory.AutomorphicForms.TensorProductTheorem.MatrixCoeff
 public import GroundTheory.AutomorphicForms.GKModules.GKModule
+public import Mathlib.MeasureTheory.Function.L1Space.Integrable
+public import Mathlib.MeasureTheory.Function.LocallyIntegrable
+public import Mathlib.MeasureTheory.Group.Integral
+public import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
+public import Mathlib.MeasureTheory.Measure.Haar.Basic
+public import GroundTheory.AutomorphicForms.TensorProductTheorem.MatrixCoeff
 public import Mathlib.Order.CompletePartialOrder
 public import Mathlib.RingTheory.SimpleModule.Isotypic
-public import GroundTheory.AutomorphicForms.TensorProductTheorem.CompactRep
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.AutomorphicForms.TensorProductTheorem.CompactRep, GroundTheory.AutomorphicForms.TensorProductTheorem.KFinite
+
+-- ===== clump member: GroundTheory.AutomorphicForms.TensorProductTheorem.CompactRep =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.TensorProductTheorem.CompactRep", "h": "module\n\npublic import GroundTheory.AutomorphicForms.GKModules.GKModule\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.MeasureTheory.Function.L1Space.Integrable\npublic import Mathlib.MeasureTheory.Function.LocallyIntegrable\npublic import Mathlib.MeasureTheory.Group.Integral\npublic import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap\npublic import Mathlib.MeasureTheory.Measure.Haar.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GroundTheory.Automorphic
+
+namespace CompactRep
+
+open MeasureTheory Module Set
+
+variable {K : Type*} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
+  [T2Space K] {W : Type*} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
+  {σ : Representation ℂ K W}
+
+theorem exists_isCompl_stable (hσ : Representation.HasContinuousCoeff σ) (U : Submodule ℂ W)
+    (hU : ∀ k, ∀ u ∈ U, σ k u ∈ U) :
+    ∃ C : Submodule ℂ W, IsCompl U C ∧ ∀ k, ∀ c ∈ C, σ k c ∈ C := by
+  classical
+  borelize K
+  let K₀ : TopologicalSpace.PositiveCompacts K :=
+    ⟨⟨univ, isCompact_univ⟩, by simp [interior_univ]⟩
+  set μ : Measure K := Measure.haarMeasure K₀
+  have hμ1 : μ univ = 1 := by
+    have := Measure.haarMeasure_self (K₀ := K₀)
+    simpa [K₀] using this
+  haveI : IsProbabilityMeasure μ := ⟨hμ1⟩
+  set d := finrank ℂ W
+  let b := Module.finBasis ℂ W
+  let e : W ≃ₗ[ℂ] (Fin d → ℂ) := b.equivFun
+
+  let S : K → ((Fin d → ℂ) →L[ℂ] (Fin d → ℂ)) := fun k =>
+    LinearMap.toContinuousLinearMap (e.toLinearMap ∘ₗ σ k ∘ₗ e.symm.toLinearMap)
+  have hSapply : ∀ k w, S k (e w) = e (σ k w) := fun k w => by
+    simp [S]
+  have hSmul : ∀ a c, S (a * c) = (S a).comp (S c) := fun a c => by
+    ext x : 1
+    simp [S, map_mul]
+  have hS : Continuous S := by
+    refine continuous_clm_apply.2 fun y => continuous_pi fun i => ?_
+    have := hσ (b.coord i) (e.symm y)
+    refine this.congr fun k => ?_
+    simp [S, e, Basis.equivFun_apply, Basis.coord_apply]
+
+  obtain ⟨C₀, hC₀⟩ := U.exists_isCompl
+  let p : W →ₗ[ℂ] W := U.subtype ∘ₗ Submodule.projectionOnto U C₀ hC₀
+  have hpU : ∀ u ∈ U, p u = u := fun u hu => by
+    show ((Submodule.projectionOnto U C₀ hC₀ u : U) : W) = u
+    rw [Submodule.projectionOnto_apply_of_mem_left _ hu]
+  have hpmem : ∀ w, p w ∈ U := fun w => Subtype.prop _
+  let P₀ : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ) :=
+    LinearMap.toContinuousLinearMap (e.toLinearMap ∘ₗ p ∘ₗ e.symm.toLinearMap)
+  have hP₀ : ∀ w, P₀ (e w) = e (p w) := fun w => by simp [P₀]
+  let f : K → ((Fin d → ℂ) →L[ℂ] (Fin d → ℂ)) := fun k => (S k).comp (P₀.comp (S k⁻¹))
+  have hf : Continuous f := hS.clm_comp (continuous_const.clm_comp (hS.comp continuous_inv))
+  have hfi : Integrable f μ :=
+    hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
+  have hfx : ∀ x, Integrable (fun k => f k x) μ := fun x =>
+    (hf.clm_apply continuous_const).integrable_of_hasCompactSupport
+      (HasCompactSupport.of_compactSpace _)
+  have hfapply : ∀ k w, f k (e w) = e (σ k (p (σ k⁻¹ w))) := fun k w => by
+    simp only [f, ContinuousLinearMap.comp_apply, hSapply, hP₀]
+  set P := ∫ k, f k ∂μ
+
+  have hPU : ∀ u ∈ U, P (e u) = e u := by
+    intro u hu
+    rw [ContinuousLinearMap.integral_apply hfi]
+    have : ∀ k, f k (e u) = e u := fun k => by
+      rw [hfapply, hpU _ (hU _ _ hu), ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one,
+        Module.End.one_apply]
+    simp only [this, integral_const]
+    rw [show μ.real univ = 1 by simp [Measure.real, hμ1], one_smul]
+
+  let R : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ) :=
+    LinearMap.toContinuousLinearMap (e.toLinearMap ∘ₗ (LinearMap.id - p) ∘ₗ e.symm.toLinearMap)
+  have hPmem : ∀ w, e.symm (P (e w)) ∈ U := by
+    intro w
+    have h1 : R (P (e w)) = 0 := by
+      rw [ContinuousLinearMap.integral_apply hfi, ← ContinuousLinearMap.integral_comp_comm _ (hfx _)]
+      have : ∀ k, R (f k (e w)) = 0 := fun k => by
+        rw [hfapply]
+        simp only [R, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_comp,
+          LinearEquiv.coe_coe, Function.comp_apply, LinearEquiv.symm_apply_apply, LinearMap.sub_apply,
+          LinearMap.id_apply, hpU _ (hU _ _ (hpmem _)), sub_self, map_zero]
+      simp [this]
+    have h2 : e.symm (P (e w)) - p (e.symm (P (e w))) = 0 := by
+      have := congrArg e.symm h1
+      simpa [R] using this
+    rw [sub_eq_zero] at h2
+    rw [h2]
+    exact hpmem _
+
+  have hPcomm : ∀ g x, P (S g x) = S g (P x) := by
+    intro g x
+    rw [ContinuousLinearMap.integral_apply hfi, ContinuousLinearMap.integral_apply hfi,
+      ← ContinuousLinearMap.integral_comp_comm _ (hfx _)]
+    have h1 : ∀ k, f k (S g x) = S k (P₀ (S (k⁻¹ * g) x)) := by
+      intro k
+      rw [hSmul]
+      rfl
+    have h2 : ∀ k, S g (f k x) = S (g * k) (P₀ (S ((g * k)⁻¹ * g) x)) := by
+      intro k
+      rw [hSmul g k, show (g * k)⁻¹ * g = k⁻¹ by group]
+      rfl
+    simp only [h1, h2]
+    exact (integral_mul_left_eq_self (μ := μ) (fun y => S y (P₀ (S (y⁻¹ * g) x))) g).symm
+
+  let Q : W →ₗ[ℂ] U := LinearMap.codRestrict U
+    (e.symm.toLinearMap ∘ₗ P.toLinearMap ∘ₗ e.toLinearMap) fun w => hPmem w
+  have hQ : ∀ x : U, Q x = x := fun x => Subtype.ext (by
+    simp [Q, hPU _ x.2])
+  refine ⟨LinearMap.ker Q, LinearMap.isCompl_of_proj hQ, fun k c hc => ?_⟩
+  rw [LinearMap.mem_ker] at hc ⊢
+  have hc' : P (e c) = 0 := by
+    have := congrArg (fun y : U => e (y : W)) hc
+    simpa [Q] using this
+  refine Subtype.ext ?_
+  simp only [Q, LinearMap.codRestrict_apply, LinearMap.coe_comp, LinearEquiv.coe_coe,
+    Function.comp_apply, ContinuousLinearMap.coe_coe, ZeroMemClass.coe_zero]
+  rw [← hSapply, hPcomm, hc', map_zero, map_zero]
+
+end CompactRep
+
+end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.TensorProductTheorem.CompactRep =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.TensorProductTheorem.KFinite =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.TensorProductTheorem.KFinite", "h": "module\n\npublic import GroundTheory.AutomorphicForms.TensorProductTheorem.MatrixCoeff\npublic import GroundTheory.AutomorphicForms.GKModules.GKModule\npublic import Mathlib.Order.CompletePartialOrder\npublic import Mathlib.RingTheory.SimpleModule.Isotypic\npublic import GroundTheory.AutomorphicForms.TensorProductTheorem.CompactRep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -196,3 +301,7 @@ end Isotypic
 end CompactRep
 
 end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.TensorProductTheorem.KFinite =====

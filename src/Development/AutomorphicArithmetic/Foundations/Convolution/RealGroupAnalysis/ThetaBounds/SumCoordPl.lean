@@ -100,7 +100,7 @@ private theorem dE_sum (D : Dat F E) (O : Fo.Ops F) (τ : E →+* ℂ) :
   have ht : τ D.θ ≠ 0 := fun h => theta_ne D ((map_eq_zero τ).1 h)
   have h2 : (2 : Module.End ℂ (S4 F)) = 1 + 1 := one_add_one_eq_two.symm
   simp only [Fo.Ops.dE, Fo.Ops.X, Fo.Ops.DX, Fo.Ops.h, Fin.sum_univ_two, Fin.sum_univ_four, h2]
-  simp only [Fin.isValue, if_true, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.cons_val]
+  simp only [Fin.isValue, if_true, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one]
   generalize τ D.θ = t at ht
   simp only [mul_add, add_mul, mul_sub, sub_mul, smul_add, smul_sub, smul_mul_assoc, mul_smul_comm, smul_smul]
   match_scalars <;> field_simp <;> ring
@@ -130,12 +130,10 @@ theorem UpperTheory.ConvolutionTheory.R2.Ff.dLCen :
   · rw [sum_coord_pl s (fun v => TR.Eop v 0 0 + TR.Eop v 1 1)]
     have hz : zF (trI F s) = ∑ v, trI F s v • (TR.toL (Matrix.single 0 0 (Pi.single v 1)) + TR.toL (Matrix.single 1 1 (Pi.single v 1)) : TR.Lie F 2) := by
       ext i j w
-      fin_cases i <;> fin_cases j <;> simp [zF, TR.toL, Matrix.scalar_apply, Finset.sum_apply, Pi.single_apply, Matrix.single_apply]
+      fin_cases i <;> fin_cases j <;> simp [zF, TR.toL, Matrix.scalar_apply, Finset.sum_apply, Pi.single_apply]
 
     rw [hz, map_sum]
     refine Finset.sum_congr rfl fun v _ => ?_
     rw [map_smul, map_add (f := _)]
     first
       | rfl
-      | exact (Complex.coe_smul _ _).symm
-      | (ext φ g; rfl)

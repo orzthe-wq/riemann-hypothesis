@@ -1,22 +1,23 @@
 module
 
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+public import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar
+public import Mathlib.Algebra.FiniteSupport.Basic
+public import Mathlib.Analysis.Complex.Norm
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.Algebra.Order.Ring.Finset
 public import Development.WeilBound.ThetaLifts.LatticeBasics.HypothesesE
 public import Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldC
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanMinorHeightBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenominatorBoundByHeightStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePlaceMinorHeightBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegersBoundedEmbeddingsCountStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftInvertibleExistsNonzeroMinorStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormFinitePlaceBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormInfinitePlaceBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PluckerMinorsDetermineColumnSpaceStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticIntegralCoefficientsBoundStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactEntriesIntegralStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableHeightPowOfPolynomialCountStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftInvertibleExistsNonzeroMinor
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PluckerMinorsDetermineColumnSpace
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableHeightPowOfPolynomialCount
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -29,8 +30,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -53,8 +52,613 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.Foundations.IsIwasawaOfIsCompact
+import Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldA
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.NumberTheory.NumberField.CanonicalEmbedding.Basic
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.WittVector.IsPoly
+import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+import Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyNormFinLeOne
+import Development.AbelianVarietyTheory.Definitions.Foundations.NormEulerPolySubOneLe
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanMinorHeightBound, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenominatorBoundByHeight, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePlaceMinorHeightBound, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegersBoundedEmbeddingsCount, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormFinitePlaceBound, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormInfinitePlaceBound, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticIntegralCoefficientsBound, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactEntriesIntegral, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesConvergent
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanMinorHeightBound =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanMinorHeightBound", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.LinearAlgebra.Matrix.AbsoluteValue\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.IsIwasawaOfIsCompact\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar\nimport Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldA\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped TensorProduct NNReal Matrix
+open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
+open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
+open GlobalTheory.Doubling (absE)
+open GlobalTheory.CompanionTheory.GodementH
+
+noncomputable section
+
+namespace GlobalTheory.CompanionTheory.GodementH.MinInf
+
+theorem opNorm_le_one_of_unitary {ι : Type} [Fintype ι] [DecidableEq ι] (U : Matrix ι ι ℂ) (hU : U * Uᴴ = 1) :
+    opNorm U ≤ 1 := by
+  have h1 : Uᴴ * U = 1 := mul_eq_one_comm.1 hU
+  set T := Matrix.toEuclideanCLM (n := ι) (𝕜 := ℂ) U with hT
+  have h2 : star T * T = 1 := by
+    rw [hT, ← map_star, ← map_mul, Matrix.star_eq_conjTranspose, h1, map_one]
+  have h3 : ‖T‖ * ‖T‖ ≤ 1 := by
+    rw [← CStarRing.norm_star_mul_self, h2]
+    exact ContinuousLinearMap.norm_id_le
+  have h4 : ‖T‖ ≤ 1 := by
+    by_contra h
+    have h' : 1 < ‖T‖ := not_le.1 h
+    nlinarith
+  exact_mod_cast h4
+
+theorem nnnorm_entry_le {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℂ) (i j : ι) :
+    ‖A i j‖₊ ≤ opNorm A := by
+  unfold opNorm
+  have h1 : (Matrix.toEuclideanCLM (n := ι) (𝕜 := ℂ) A (EuclideanSpace.single j 1)) i = A i j := by
+    change ∑ d, A i d * (EuclideanSpace.single j (1 : ℂ) : EuclideanSpace ℂ ι) d = A i j
+    simp
+  have h2 := ContinuousLinearMap.le_opNNNorm (Matrix.toEuclideanCLM (n := ι) (𝕜 := ℂ) A) (EuclideanSpace.single j 1)
+  rw [PiLp.nnnorm_single, nnnorm_one, mul_one] at h2
+  rw [← h1]
+  exact (PiLp.nnnorm_apply_le _ i).trans h2
+
+theorem nnnorm_det_le {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (c : ℝ≥0) (h : ∀ i j, ‖M i j‖₊ ≤ c) :
+    ‖M.det‖₊ ≤ (n.factorial : ℝ≥0) * c ^ n := by
+  have h1 := Matrix.det_le (A := M) (abv := NormedField.toAbsoluteValue ℂ) (x := (c : ℝ))
+    (fun i j => NNReal.coe_le_coe.2 (h i j))
+  simp only [Fintype.card_fin, nsmul_eq_mul] at h1
+  exact_mod_cast h1
+
+theorem minor_le {R : Type} [CommRing R] (φ : R →+* ℂ) {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
+    (A κ : Matrix ι ι R) (c : ℝ≥0) (hA : opNorm (A.map φ) ≤ c) (hκ : κ.map φ * (κ.map φ)ᴴ = 1) (f e : Fin n → ι) :
+    ‖φ ((A * κ).submatrix f e).det‖₊ ≤ (n.factorial : ℝ≥0) * c ^ n := by
+  have hAU : opNorm (A.map φ * κ.map φ) ≤ c :=
+    (opNorm_mul_le _ _).trans ((mul_le_of_le_one_right' (opNorm_le_one_of_unitary _ hκ)).trans hA)
+  have hdet : φ ((A * κ).submatrix f e).det = ((A.map φ * κ.map φ).submatrix f e).det := by
+    rw [RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.submatrix_map, Matrix.map_mul]
+  rw [hdet]
+  exact nnnorm_det_le _ c fun i j => (nnnorm_entry_le (A.map φ * κ.map φ) (f i) (e j)).trans hAU
+
+theorem opNorm_le_htInf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+    (ι : Type) [Fintype ι] [DecidableEq ι] (w : InfinitePlace F) (τ : EmbOver E w) (X : GL ι (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))) :
+    opNorm (X.1.map (piInf τ)) ≤ htInf F w (Formalism.UG.bc (compInf F E w) X) := by
+  have e : X.1.map (piInf τ) = ((Formalism.UG.bc (compInf F E w) X).1).map (infEmb τ) := by
+    ext i j
+    rfl
+  rw [e]
+  exact ((normInf_le_iff F w).1 le_rfl τ).trans (le_htOf (normInf F w) (Formalism.UG.bc (compInf F E w) X))
+
+theorem minor_le_htInf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
+    (ι : Type) [Fintype ι] [DecidableEq ι] (w : InfinitePlace F) (τ : EmbOver E w) (X : GL ι (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E)))
+    (κ : Matrix ι ι (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))) (hκ : κ.map (piInf τ) * (κ.map (piInf τ))ᴴ = 1) (f e : Fin n → ι) :
+    ‖piInf τ ((X.1 * κ).submatrix f e).det‖₊ ≤
+      (n.factorial : ℝ≥0) * htInf F w (Formalism.UG.bc (compInf F E w) X) ^ n :=
+  minor_le (piInf τ) X.1 κ _ (opNorm_le_htInf F E ι w τ X) hκ f e
+
+end GlobalTheory.CompanionTheory.GodementH.MinInf
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanMinorHeightBound =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenominatorBoundByHeight =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenominatorBoundByHeight", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels\npublic import Mathlib.Algebra.FiniteSupport.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.IsIwasawaOfIsCompact\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar\nimport Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldA\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped TensorProduct NNReal Matrix
+open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
+open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
+open GlobalTheory.Doubling (absE)
+open GlobalTheory.CompanionTheory.GodementH
+
+noncomputable section
+
+namespace GlobalTheory.CompanionTheory.GodementH.Den
+
+theorem local_exponent {F : Type} [Field F] [NumberField F] (v : Pl (F := F)) {y : F} (hy : y ≠ 0) :
+    ∃ e : ℕ, v.valuation F y ≤ WithZero.exp (e : ℤ) ∧
+      max 1 ‖algebraMap F (Fv F v) y‖₊ = (Ideal.absNorm v.asIdeal : ℝ≥0) ^ e := by
+  have ha : v.valuation F y ≠ 0 := (Valuation.ne_zero_iff _).2 hy
+  have hq : (1 : ℝ≥0) < (Ideal.absNorm v.asIdeal : ℝ≥0) := HeightOneSpectrum.one_lt_absNorm_nnreal v
+  have hnorm : ‖algebraMap F (Fv F v) y‖₊ =
+      WithZeroMulInt.toNNReal (HeightOneSpectrum.absNorm_ne_zero v) (v.valuation F y) :=
+    NNReal.eq (FinitePlace.norm_embedding' v y)
+  obtain ⟨n, hn⟩ : ∃ n : ℤ, v.valuation F y = WithZero.exp n := ⟨_, (WithZero.exp_log ha).symm⟩
+  have hval : WithZeroMulInt.toNNReal (HeightOneSpectrum.absNorm_ne_zero v) (WithZero.exp n) =
+      (Ideal.absNorm v.asIdeal : ℝ≥0) ^ n := by
+    rw [WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]
+    rw [WithZero.log_exp]
+  refine ⟨n.toNat, ?_, ?_⟩
+  · rw [hn]
+    exact WithZero.exp_le_exp.2 (Int.self_le_toNat n)
+  · rw [hnorm, hn, hval]
+    rcases le_total n 0 with h | h
+    · rw [Int.toNat_of_nonpos h, pow_zero]
+      exact max_eq_left (zpow_le_one_of_nonpos₀ hq.le h)
+    · have h1 : (Ideal.absNorm v.asIdeal : ℝ≥0) ^ n = (Ideal.absNorm v.asIdeal : ℝ≥0) ^ n.toNat := by
+        rw [← zpow_natCast, Int.toNat_of_nonneg h]
+      rw [h1]
+      exact max_eq_right (one_le_pow₀ hq.le)
+
+theorem finite_mulSupport {F : Type} [Field F] [NumberField F] {y : F} (hy : y ≠ 0) :
+    (Function.mulSupport fun v : Pl F => max 1 ‖algebraMap F (Fv F v) y‖₊).Finite := by
+  have h := (FinitePlace.hasFiniteMulSupport hy).comp_of_injective
+    (FinitePlace.equivHeightOneSpectrum (K := F)).symm.injective
+  refine Set.Finite.subset h ?_
+  intro v hv
+  simp only [Function.mem_mulSupport] at hv ⊢
+  intro h1
+  apply hv
+  have h2 : ‖algebraMap F (Fv F v) y‖₊ = 1 := by
+    apply NNReal.eq
+    have h3 : ‖FinitePlace.embedding v y‖ = 1 := by
+      simpa [FinitePlace.equivHeightOneSpectrum_symm_apply] using h1
+    exact h3
+  rw [h2, max_self]
+
+theorem denominator_le (F : Type) [Field F] [NumberField F] (y : F) :
+    ∃ m : ℕ, 0 < m ∧ (m : ℝ≥0) ≤ ∏ᶠ v : Pl (F := F), max 1 ‖algebraMap F (Fv F v) y‖₊ ∧
+      IsIntegral ℤ ((m : F) * y) := by
+  classical
+  by_cases hy : y = 0
+  · subst hy
+    exact ⟨1, one_pos, by simp, by simpa using isIntegral_zero⟩
+  choose e he1 he2 using fun v : Pl F => local_exponent v hy
+  have hfin := finite_mulSupport hy
+  set S : Finset (Pl (F := F)) := hfin.toFinset with hS
+  set b : Ideal (𝓞 F) := ∏ v ∈ S, v.asIdeal ^ e v with hb
+  have hb0 : b ≠ ⊥ := by
+    rw [hb, ← Ideal.zero_eq_bot, Finset.prod_ne_zero_iff]
+    intro v _
+    exact pow_ne_zero _ v.ne_bot
+  have hm : 0 < Ideal.absNorm b :=
+    Nat.pos_of_ne_zero fun h => hb0 (Ideal.absNorm_eq_zero_iff.1 h)
+  refine ⟨Ideal.absNorm b, hm, le_of_eq ?_, ?_⟩
+  · rw [finprod_eq_prod_of_mulSupport_subset _ (s := S) (by simp [hS])]
+    simp only [he2]
+    simp [hb, map_prod, map_pow]
+  · have key : ∀ v : Pl (F := F), v.valuation F ((Ideal.absNorm b : F) * y) ≤ 1 := by
+      intro v
+      have hmem : ((Ideal.absNorm b : ℕ) : 𝓞 F) ∈ v.asIdeal ^ e v := by
+        by_cases hv : v ∈ S
+        · exact Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ hv) (Ideal.absNorm_mem b)
+        · have h1 : max 1 ‖algebraMap F (Fv F v) y‖₊ = 1 := by
+            simpa [hS] using hv
+          have h0 : e v = 0 := by
+            by_contra hne
+            have hq : (1 : ℝ≥0) < (Ideal.absNorm v.asIdeal : ℝ≥0) :=
+              HeightOneSpectrum.one_lt_absNorm_nnreal v
+            have := one_lt_pow₀ hq hne
+            rw [← he2 v, h1] at this
+            exact lt_irrefl _ this
+          simp [h0]
+      have h2 := (v.intValuation_le_pow_iff_mem _ (e v)).2 hmem
+      have h3 : v.valuation F (Ideal.absNorm b : F) ≤ WithZero.exp (-(e v : ℤ)) := by
+        have : (Ideal.absNorm b : F) = algebraMap (𝓞 F) F ((Ideal.absNorm b : ℕ) : 𝓞 F) := by simp
+        rw [this, HeightOneSpectrum.valuation_of_algebraMap]
+        exact h2
+      rw [map_mul]
+      calc _ ≤ WithZero.exp (-(e v : ℤ)) * WithZero.exp (e v : ℤ) := mul_le_mul' h3 (he1 v)
+        _ = 1 := by rw [← WithZero.exp_add]; simp
+    obtain ⟨c, hc⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one F _ key
+    rw [← hc]
+    exact c.isIntegral_coe
+
+end GlobalTheory.CompanionTheory.GodementH.Den
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenominatorBoundByHeight =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePlaceMinorHeightBound =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePlaceMinorHeightBound", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.IsIwasawaOfIsCompact\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar\nimport Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldA\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped TensorProduct NNReal Matrix
+open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
+open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
+open GlobalTheory.Doubling (absE)
+open GlobalTheory.CompanionTheory.GodementH
+
+namespace GlobalTheory.CompanionTheory.GodementH
+
+theorem absFin_minor_mul_le (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
+    (ι : Type) [Fintype ι] [DecidableEq ι] (v : Pl (F := F)) (X : GL ι (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))) (κ : Matrix ι ι (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E)))
+    (hκ : ∀ i j, absFin F v (compFin F E v (κ i j)) ≤ 1) (f e : Fin n → ι) :
+    absFin F v (compFin F E v ((X.1 * κ).submatrix f e).det) ≤ htFin F v (Formalism.UG.bc (compFin F E v) X) ^ n := by
+  have hent : ∀ i j, absFin F v (compFin F E v ((X.1 * κ) i j)) ≤ htFin F v (Formalism.UG.bc (compFin F E v) X) := by
+    intro i j
+    have h1 : compFin F E v ((X.1 * κ) i j) = ((X.1.map (compFin F E v)) * (κ.map (compFin F E v))) i j := by
+      rw [← Matrix.map_mul]; rfl
+    rw [h1]
+    refine (absFin_le_normFin F v _ i j).trans ((normFin_mul_le F v _ _).trans ?_)
+    have h2 : normFin F v (κ.map (compFin F E v)) ≤ 1 := (normFin_le_iff F v).2 fun a b => hκ a b
+    exact (mul_le_of_le_one_right' h2).trans (le_htOf (normFin F v) (Formalism.UG.bc (compFin F E v) X))
+  rw [RingHom.map_det, Matrix.det_apply]
+  refine absFin_sum_le F v _ _ fun σ _ => ?_
+  have hprod : absFin F v (∏ i : Fin n, ((compFin F E v).mapMatrix ((X.1 * κ).submatrix f e)) (σ i) i)
+      ≤ htFin F v (Formalism.UG.bc (compFin F E v) X) ^ n := by
+    calc _ ≤ ∏ i : Fin n, absFin F v (((compFin F E v).mapMatrix ((X.1 * κ).submatrix f e)) (σ i) i) :=
+          Finset.le_prod_of_submultiplicative _ (absFin_one F v).le (absFin_mul_le F v) _ _
+      _ ≤ ∏ _i : Fin n, htFin F v (Formalism.UG.bc (compFin F E v) X) :=
+          Finset.prod_le_prod' fun i _ => hent _ _
+      _ = _ := by simp
+  rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h
+  · rw [h, one_smul]; exact hprod
+  · rw [h, Units.neg_smul, one_smul, absFin_neg]; exact hprod
+
+end GlobalTheory.CompanionTheory.GodementH
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePlaceMinorHeightBound =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegersBoundedEmbeddingsCount =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegersBoundedEmbeddingsCount", "h": "module\n\npublic import Mathlib.Analysis.Complex.Norm\npublic import Mathlib.NumberTheory.NumberField.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.NumberField.CanonicalEmbedding.Basic\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels\nimport Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff\nimport Development.AbelianVarietyTheory.Definitions.Foundations.EventuallyNormFinLeOne\nimport Development.AbelianVarietyTheory.Definitions.Foundations.IsIwasawaOfIsCompact\nimport Development.AbelianVarietyTheory.Definitions.Foundations.NormEulerPolySubOneLe\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar\nimport Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldA\nimport Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped TensorProduct NNReal Matrix
+open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
+open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
+open GlobalTheory.Doubling (absE)
+open GlobalTheory.CompanionTheory.GodementH
+
+namespace GlobalTheory.CompanionTheory.IntegerCount
+
+theorem card_bounded_conjugates_le :
+    ∀ (E : Type) [Field E] [NumberField E], ∃ C : ℝ, 0 < C ∧ ∀ R : ℝ, 1 ≤ R →
+    {β : 𝓞 E | ∀ τ : E →+* ℂ, ‖τ (β : E)‖ ≤ R}.Finite ∧
+    (Set.ncard {β : 𝓞 E | ∀ τ : E →+* ℂ, ‖τ (β : E)‖ ≤ R} : ℝ) ≤ C * R ^ Module.finrank ℚ E := by
+  intro E _ _
+  classical
+  let ι := Module.Free.ChooseBasisIndex ℤ (𝓞 E)
+  let b : Module.Basis ι ℤ (𝓞 E) := RingOfIntegers.basis E
+  let B := canonicalEmbedding.latticeBasis E
+
+  let L : ι → (((E →+* ℂ) → ℂ) →L[ℂ] ℂ) := fun i => LinearMap.toContinuousLinearMap (B.coord i)
+  let C₀ : ℝ := ∑ i, ‖L i‖
+  have hC₀ : 0 ≤ C₀ := Finset.sum_nonneg fun _ _ => norm_nonneg _
+  have hcoord : ∀ (β : 𝓞 E) (i : ι), L i (canonicalEmbedding E (β : E)) = ((b.repr β i : ℤ) : ℂ) := by
+    intro β i
+    have hx : canonicalEmbedding E (β : E) = ∑ j, ((b.repr β j : ℤ) : ℂ) • B j := by
+      have h0 : (β : E) = ∑ j, ((b.repr β j : ℤ) : E) * ((b j : 𝓞 E) : E) := by
+        conv_lhs => rw [← b.sum_repr β]
+
+        simp [map_sum, zsmul_eq_mul]
+
+      rw [h0, map_sum]
+      refine Finset.sum_congr rfl fun j _ => ?_
+      ext τ
+      simp [B, b, canonicalEmbedding.latticeBasis_apply, integralBasis_apply]
+    change B.coord i _ = _
+
+    rw [hx, map_sum]
+    simp [Module.Basis.coord_apply, Finsupp.single_apply]
+  have hbound : ∀ (R : ℝ), 1 ≤ R → ∀ β : 𝓞 E, (∀ τ : E →+* ℂ, ‖τ (β : E)‖ ≤ R) →
+      ∀ i, |((b.repr β i : ℤ) : ℝ)| ≤ C₀ * R := by
+    intro R hR β hβ i
+    have hx : ‖canonicalEmbedding E (β : E)‖ ≤ R :=
+      (pi_norm_le_iff_of_nonneg (by linarith)).2 fun τ => by simpa using hβ τ
+    have h1 : ‖L i (canonicalEmbedding E (β : E))‖ ≤ ‖L i‖ * R :=
+      ((L i).le_opNorm _).trans (mul_le_mul_of_nonneg_left hx (norm_nonneg _))
+    rw [hcoord, Complex.norm_intCast] at h1
+    refine h1.trans (mul_le_mul_of_nonneg_right ?_ (by linarith))
+    exact Finset.single_le_sum (f := fun i => ‖L i‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)
+  have hcard : Fintype.card ι = Module.finrank ℚ E := by
+    rw [← RingOfIntegers.rank E]
+    exact (Module.finrank_eq_card_chooseBasisIndex ℤ (𝓞 E)).symm
+  refine ⟨(2 * C₀ + 1) ^ Module.finrank ℚ E, by positivity, fun R hR => ?_⟩
+  set S : Set (𝓞 E) := {β : 𝓞 E | ∀ τ : E →+* ℂ, ‖τ (β : E)‖ ≤ R} with hS
+  let N : ℤ := ⌊C₀ * R⌋
+  have hN0 : 0 ≤ N := Int.floor_nonneg.2 (by nlinarith)
+  let box : Finset (ι → ℤ) := Fintype.piFinset fun _ => Finset.Icc (-N) N
+  let f : 𝓞 E → (ι → ℤ) := fun β i => b.repr β i
+  have hf : Function.Injective f := by
+    intro x y hxy
+    apply b.repr.injective
+    ext i
+    exact congrFun hxy i
+  have hmaps : Set.MapsTo f S (box : Set (ι → ℤ)) := by
+    intro β hβ
+    simp only [box, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc]
+    intro i
+    have h := abs_le.1 (hbound R hR β hβ i)
+    constructor
+    · have h2 : -(b.repr β i) ≤ N := Int.le_floor.2 (by push_cast; linarith [h.1])
+      change -N ≤ b.repr β i
+      omega
+    · exact Int.le_floor.2 h.2
+  have hfin : S.Finite := Set.Finite.of_injOn hmaps hf.injOn box.finite_toSet
+  refine ⟨hfin, ?_⟩
+  have hle : S.ncard ≤ box.card := by
+    have h := Set.ncard_le_ncard_of_injOn f hmaps hf.injOn box.finite_toSet
+    rwa [Set.ncard_coe_finset] at h
+  have hboxcard : (box.card : ℝ) = (2 * (N : ℝ) + 1) ^ Module.finrank ℚ E := by
+    have h1 : ((Finset.Icc (-N) N).card : ℤ) = 2 * N + 1 := by
+      rw [Int.card_Icc]
+      omega
+    have h2 : ((Finset.Icc (-N) N).card : ℝ) = 2 * (N : ℝ) + 1 := by
+      exact_mod_cast h1
+    simp only [box, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, hcard]
+    push_cast
+    rw [h2]
+  have hNle : (N : ℝ) ≤ C₀ * R := Int.floor_le _
+  calc (S.ncard : ℝ) ≤ box.card := by exact_mod_cast hle
+    _ = (2 * (N : ℝ) + 1) ^ Module.finrank ℚ E := hboxcard
+    _ ≤ ((2 * C₀ + 1) * R) ^ Module.finrank ℚ E := by
+        have hN0' : (0 : ℝ) ≤ N := by exact_mod_cast hN0
+        exact pow_le_pow_left₀ (by positivity) (by nlinarith) _
+    _ = (2 * C₀ + 1) ^ Module.finrank ℚ E * R ^ Module.finrank ℚ E := mul_pow _ _ _
+
+end GlobalTheory.CompanionTheory.IntegerCount
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegersBoundedEmbeddingsCount =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormFinitePlaceBound =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormFinitePlaceBound", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldA\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped TensorProduct NNReal Matrix
+open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
+open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
+open GlobalTheory.Doubling (absE)
+open GlobalTheory.CompanionTheory.GodementH
+
+noncomputable section
+
+namespace GlobalTheory.CompanionTheory.GodementH
+
+theorem absEv_mul_locFin_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (J : Type) [Fintype J] (v : Pl (F := F)) (u : J → E) (δ : (Fv F v ⊗[F] E)ˣ) (z : J → Fv F v ⊗[F] E) (c : ℝ≥0),
+    (∀ f, z f = ((1 : Fv F v) ⊗ₜ[F] u f) * δ.1) → (∀ f, absFin F v (z f) ≤ c) →
+    GlobalTheory.Doubling.absEv F E v δ * locFin σ v u ≤ c ^ 2 := by
+  intro F E _ _ _ _ _ σ hσ J _ v u δ z c hz hc
+  have e2 : ∀ (τ : E →ₐ[F] FvBar F v) (w : Fv F v ⊗[F] E),
+      finEmb F v τ (sigR (Fv F v) σ w) = finEmb F v (τ.comp σ) w := by
+    intro τ w
+    induction w using TensorProduct.induction_on with
+    | zero => simp
+    | tmul a b => simp [sigR]
+    | add y z hy hz => simp only [map_add (f := _), hy, hz]
+  have hN := congrArg (fun y => absBar F v (finEmb F v (embBar F E v) y))
+    (GlobalTheory.Doubling.algebraMap_norm_eq hσ (R := Fv F v) δ.1)
+  simp only [map_mul, absBar_mul, e2, AlgHom.commutes, absBar_algebraMap] at hN
+  have key : ∀ τ : E →ₐ[F] FvBar F v, absBar F v (finEmb F v τ δ.1) * supBar v τ u ≤ c := by
+    intro τ
+    unfold supBar
+    rw [NNReal.mul_finset_sup]
+    refine Finset.sup_le fun f _ => ?_
+    refine le_trans (le_of_eq ?_) ((le_absFin F v τ (z f)).trans (hc f))
+    rw [hz f, map_mul, absBar_mul, finEmb_tmul, map_one, one_mul, mul_comm]
+  rw [GlobalTheory.Doubling.absEv_apply, hN]
+  unfold locFin
+  calc _ = (absBar F v (finEmb F v (embBar F E v) δ.1) * supBar v (embBar F E v) u) *
+        (absBar F v (finEmb F v ((embBar F E v).comp σ) δ.1) * supBar v ((embBar F E v).comp σ) u) := by ring
+    _ ≤ c * c := mul_le_mul' (key _) (key _)
+    _ = c ^ 2 := (sq c).symm
+
+end GlobalTheory.CompanionTheory.GodementH
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormFinitePlaceBound =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormInfinitePlaceBound =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormInfinitePlaceBound", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Algebra.Order.Ring.Finset\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldA\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped TensorProduct NNReal Matrix
+open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
+open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
+open GlobalTheory.Doubling (absE)
+open GlobalTheory.CompanionTheory.GodementH
+
+noncomputable section
+
+namespace GlobalTheory.CompanionTheory.GodementH
+
+theorem absEw_mul_locInf_le (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+    (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (J : Type) [Fintype J] (w : InfinitePlace F) (e : EmbOver E w)
+    (u : J → E) (δ : (w.Completion ⊗[F] E)ˣ) (z : J → w.Completion ⊗[F] E) (c : ℝ≥0)
+    (hz : ∀ f, z f = ((1 : w.Completion) ⊗ₜ[F] u f) * δ.1) (hc : ∀ f, ‖infEmb e (z f)‖₊ ≤ c) :
+    GlobalTheory.Doubling.absEw F E w δ * locInf w u ≤ c ^ 2 := by
+  classical
+  have hnorm : ∀ (τ : EmbOver E w) (y : w.Completion ⊗[F] E), ‖infEmb τ y‖₊ = ‖infEmb e y‖₊ := by
+    intro τ y
+    rcases infEmb_eq_or_conj hσ e τ with h | h
+    · rw [h]
+    · rw [h, RingHom.comp_apply, RCLike.nnnorm_conj]
+  have hterm : ∀ p : EmbOver E w × J, ‖infEmb e δ.1‖₊ * ‖p.1.1 (u p.2)‖₊ ≤ c := by
+    rintro ⟨τ, f⟩
+    have h1 : infEmb τ (z f) = τ.1 (u f) * infEmb τ δ.1 := by
+      rw [hz f, map_mul, infEmb_tmul, map_one, one_mul]
+    calc ‖infEmb e δ.1‖₊ * ‖τ.1 (u f)‖₊ = ‖infEmb τ δ.1‖₊ * ‖τ.1 (u f)‖₊ := by rw [hnorm τ]
+      _ = ‖infEmb τ (z f)‖₊ := by rw [h1, nnnorm_mul, mul_comm]
+      _ = ‖infEmb e (z f)‖₊ := hnorm τ _
+      _ ≤ c := hc f
+  have hsup : ‖infEmb e δ.1‖₊ * (Finset.univ.sup fun p : EmbOver E w × J => ‖p.1.1 (u p.2)‖₊) ≤ c := by
+    rw [Finset.mul_sup₀]
+    exact Finset.sup_le fun p _ => hterm p
+  unfold locInf
+  rw [GlobalTheory.Doubling.absEw_eq_sq hσ e, ← mul_pow]
+  convert pow_le_pow_left' hsup 2
+end GlobalTheory.CompanionTheory.GodementH
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormInfinitePlaceBound =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticIntegralCoefficientsBound =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticIntegralCoefficientsBound", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.IsIwasawaOfIsCompact\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar\nimport Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldA\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped TensorProduct NNReal Matrix
+open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
+open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
+open GlobalTheory.Doubling (absE)
+open GlobalTheory.CompanionTheory.GodementH
+
+namespace GlobalTheory.CompanionTheory.GodementH
+
+theorem trace_norm_local_sizes : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ x : E, ∃ y₁ y₂ : F,
+    x ^ 2 - algebraMap F E y₁ * x + algebraMap F E y₂ = 0 ∧ ∀ (v : Pl (F := F)) (τ : E →ₐ[F] FvBar F v),
+      ‖algebraMap F (Fv F v) y₁‖₊ ≤ max (absBar F v (τ x)) (absBar F v (τ (σ x))) ∧
+      ‖algebraMap F (Fv F v) y₂‖₊ = absBar F v (τ x) * absBar F v (τ (σ x)) := by
+  intro F E _ _ _ _ _ σ hCM x
+  obtain ⟨_, hEc, hfin2, hconj⟩ := hCM
+  obtain ⟨τ0⟩ : Nonempty (E →+* ℂ) := inferInstance
+  have hσσ : ∀ z, σ (σ z) = z := fun z => τ0.injective (by rw [hconj, hconj, star_star])
+  have hσne : ∃ w, σ w ≠ w := by
+    by_contra hcon
+    simp only [not_exists, not_not] at hcon
+    have hreal : NumberField.ComplexEmbedding.IsReal τ0 := by
+      rw [NumberField.ComplexEmbedding.isReal_iff]
+      refine RingHom.ext fun w => ?_
+      rw [NumberField.ComplexEmbedding.conjugate_coe_eq]
+      have h1 := hconj τ0 w
+      rw [hcon w] at h1
+      exact h1.symm
+    exact InfinitePlace.not_isReal_iff_isComplex.2 (hEc.isComplex (InfinitePlace.mk τ0)) ⟨τ0, hreal, rfl⟩
+  haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)
+  have hfix : ∀ z : E, σ z = z → ∃ y : F, algebraMap F E y = z := by
+    intro z hz
+    have hSle : Submodule.span F {(1 : E)} ≤ LinearMap.ker (σ.toLinearMap - LinearMap.id) := by
+      rw [Submodule.span_le, Set.singleton_subset_iff]
+      simp
+    have hker : LinearMap.ker (σ.toLinearMap - LinearMap.id) ≠ ⊤ := by
+      intro htop
+      obtain ⟨w, hw⟩ := hσne
+      have hw' : w ∈ LinearMap.ker (σ.toLinearMap - LinearMap.id) := htop ▸ Submodule.mem_top
+      rw [LinearMap.mem_ker] at hw'
+      exact hw (sub_eq_zero.1 hw')
+    have h1 : Module.finrank F (Submodule.span F {(1 : E)}) = 1 := finrank_span_singleton one_ne_zero
+    have hlt := Submodule.finrank_lt hker
+    have hge := Submodule.finrank_mono hSle
+    have heq := Submodule.eq_of_le_of_finrank_eq hSle (by omega)
+    have hzk : z ∈ LinearMap.ker (σ.toLinearMap - LinearMap.id) := by
+      rw [LinearMap.mem_ker]
+      simp [hz]
+    rw [← heq] at hzk
+    obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 hzk
+    exact ⟨c, by rw [Algebra.algebraMap_eq_smul_one]; exact hc⟩
+  obtain ⟨y₁, hy₁⟩ := hfix (x + σ x) (by rw [map_add (f := _), hσσ, add_comm])
+  obtain ⟨y₂, hy₂⟩ := hfix (x * σ x) (by rw [map_mul, hσσ, mul_comm])
+  refine ⟨y₁, y₂, by rw [hy₁, hy₂]; ring, fun v τ => ?_⟩
+  have key : ∀ y : F, τ (algebraMap F E y) =
+      algebraMap (Fv F v) (FvBar F v) (algebraMap F (Fv F v) y) := fun y => by
+    rw [τ.commutes]
+    exact IsScalarTower.algebraMap_apply F (Fv F v) (FvBar F v) y
+  constructor
+  · rw [← absBar_algebraMap F v, ← key, hy₁, map_add (f := _)]
+    exact absBar_add_le F v _ _
+  · rw [← absBar_algebraMap F v, ← key, hy₂, map_mul]
+    exact absBar_mul F v _ _
+
+end GlobalTheory.CompanionTheory.GodementH
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticIntegralCoefficientsBound =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactEntriesIntegral =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactEntriesIntegral", "h": "module\n\npublic import Development.WeilBound.ThetaLifts.LatticeBasics.HypothesesE\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped TensorProduct NNReal Matrix
+open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
+open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
+open GlobalTheory.Doubling (absE)
+open GlobalTheory.CompanionTheory.GodementH
+
+noncomputable section
+
+namespace GlobalTheory.CompanionTheory.GodementH.StdInt
+
+variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+
+theorem compFin_finOne_smul' (v : HeightOneSpectrum (𝓞 F)) (z : AE F E) :
+    compFin F E v (finOne F • z) = compFin F E v z := by
+  have h1 : GlobalTheory.AdelicU.evFin F v (GlobalTheory.ThK.Dbl.finOne F) = 1 := by
+    simp only [GlobalTheory.AdelicU.evFin, GlobalTheory.ThK.Dbl.finOne, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA, LinearMap.inr_apply]
+    change (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) = 1
+    exact map_one _
+  induction z using TensorProduct.induction_on with
+  | zero => simp
+  | tmul x e =>
+    rw [TensorProduct.smul_tmul']
+    simp [GlobalTheory.AdelicU.compFin, h1]
+  | add x y hx hy => rw [smul_add, map_add (f := _), map_add (f := _), hx, hy]
+
+theorem absFin_compFin_le_one {z : AE F E} (hz : z ∈ intHat F E) (v : HeightOneSpectrum (𝓞 F)) :
+    absFin F v (compFin F E v z) ≤ 1 := by
+  let S : AddSubgroup (AE F E) :=
+    { carrier := {z | GlobalTheory.AdelicU.absFin F v (GlobalTheory.AdelicU.compFin F E v z) ≤ 1}
+      add_mem' := fun {x y} hx hy => by
+        simp only [Set.mem_ofPred_eq] at hx hy ⊢
+        rw [show GlobalTheory.AdelicU.compFin F E v (x + y) = GlobalTheory.AdelicU.compFin F E v x + GlobalTheory.AdelicU.compFin F E v y from map_add _ _ _]
+        exact (GlobalTheory.AdelicU.absFin_add_le F v _ _).trans (max_le hx hy)
+      zero_mem' := by
+        simp only [Set.mem_ofPred_eq]
+        rw [show GlobalTheory.AdelicU.compFin F E v 0 = 0 from map_zero _, GlobalTheory.AdelicU.absFin_zero]
+        exact zero_le_one
+      neg_mem' := fun {x} hx => by
+        simp only [Set.mem_ofPred_eq] at hx ⊢
+        rw [show GlobalTheory.AdelicU.compFin F E v (-x) = -GlobalTheory.AdelicU.compFin F E v x from map_neg _ _, GlobalTheory.AdelicU.absFin_neg]
+        exact hx }
+  have hle : intHat F E ≤ S := by
+    rw [GlobalTheory.ThK.Dbl.intHat, AddSubgroup.closure_le]
+    rintro z ⟨a, -, ha, o, rfl⟩
+    show GlobalTheory.AdelicU.absFin F v (GlobalTheory.AdelicU.compFin F E v _) ≤ 1
+    have h2 : GlobalTheory.AdelicU.compFin F E v (a • (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)) (o : E)) =
+        (GlobalTheory.AdelicU.evFin F v a) ⊗ₜ[F] (o : E) := by
+      simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR, GlobalTheory.AdelicU.compFin, TensorProduct.smul_tmul']
+    rw [h2]
+    refine (GlobalTheory.AdelicU.absFin_tmul_le F v _ o).trans ?_
+    exact nnnorm_le_one_iff_mem.mpr (ha v)
+  exact hle hz
+
+theorem absFin_inFrame_le_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (Y : Spc F E n) (B : Base F E) (b : GL (Fin n ⊕ Fin n) E) (K : Subgroup (G2 σ Y)),
+    IsStdK (σ := σ) (Y := Y) B b K → ∀ k ∈ K, ∀ (v : Pl (F := F)) (i j : Fin n ⊕ Fin n), absFin F v (compFin F E v (inFrame b k i j)) ≤ 1 := by
+  intro F E _ _ _ _ _ σ n Y B b K hK k hk v i j
+  have h : GlobalTheory.ThK.Dbl.finOne F • GlobalTheory.ThK.Dbl.inFrame b k i j ∈ GlobalTheory.ThK.Dbl.intHat F E :=
+    ((hK k).1 hk).2 k (by simp) i j
+  have h' := absFin_compFin_le_one h v
+  rwa [compFin_finOne_smul'] at h'
+
+end GlobalTheory.CompanionTheory.GodementH.StdInt
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactEntriesIntegral =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesConvergent =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesConvergent", "h": "module\n\npublic import Development.WeilBound.ThetaLifts.LatticeBasics.HypothesesE\npublic import Development.WeilBound.ThetaLifts.LatticeBasics.UnfoldC\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EmbBar\npublic import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ArchimedeanMinorHeightBound\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.T2SpaceTensorProductFiniteExtension\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DenominatorBoundByHeight\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FinitePlaceMinorHeightBound\npublic import Mathlib.Analysis.Complex.Norm\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegersBoundedEmbeddingsCount\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LeftInvertibleExistsNonzeroMinor\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormFinitePlaceBound\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalNormInfinitePlaceBound\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.PluckerMinorsDetermineColumnSpace\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.QuadraticIntegralCoefficientsBound\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactEntriesIntegral\npublic import Mathlib.Analysis.SpecialFunctions.Pow.Real\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SummableHeightPowOfPolynomialCount\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open scoped TensorProduct NNReal Matrix
@@ -130,10 +734,10 @@ theorem absE_mul_vecHt_le (hcm : IsCMExt F E σ) (e : ∀ w : InfinitePlace F, E
   rw [GlobalTheory.Doubling.absE_apply, vecHt, mul_mul_mul_comm, ← Finset.prod_mul_distrib, ← finprod_mul_distrib hs2 hs]
   refine mul_le_mul' (Finset.prod_le_prod' fun w _ => ?_) (finprod_le_finprod' (hs2.union hs |>.subset (Function.mulSupport_mul _ _))
     (hB.subset (Function.mulSupport_pow _ _)) fun v => ?_)
-  · refine GlobalTheory.T.local_norm_infinite_place_bound F E σ hcm J w (e w) u _ (fun f => compInf F E w (z f)) (Bi w) (fun f => ?_) (fun f => hi w f)
+  · refine _root_.GlobalTheory.CompanionTheory.GodementH.absEw_mul_locInf_le F E σ hcm J w (e w) u _ (fun f => compInf F E w (z f)) (Bi w) (fun f => ?_) (fun f => hi w f)
     rw [hz, map_mul]
     congr 1
-  · refine GlobalTheory.T.local_norm_finite_place_bound F E σ hcm J v u _ (fun f => compFin F E v (z f)) (Bf v) (fun f => ?_) (fun f => hf v f)
+  · refine _root_.GlobalTheory.CompanionTheory.GodementH.absEv_mul_locFin_le F E σ hcm J v u _ (fun f => compFin F E v (z f)) (Bf v) (fun f => ?_) (fun f => hf v f)
     rw [hz, map_mul, compFin_inclR]
     rfl
 
@@ -166,7 +770,7 @@ theorem isIntegral_of_quad {z b c : E} (hb : IsIntegral ℤ b) (hc : IsIntegral 
 
 theorem denom_one (hcm : IsCMExt F E σ) {u : J → E} {f₀ : J} (hu : u f₀ = 1) (f : J) :
     ∃ m : ℕ, 0 < m ∧ (m : ℝ≥0) ≤ (∏ᶠ v, locFin σ v u) ^ 2 ∧ IsIntegral ℤ ((m : E) * u f) := by
-  obtain ⟨y₁, y₂, hq, hy⟩ := GlobalTheory.T.quadratic_integral_coefficients_bound F E σ hcm (u f)
+  obtain ⟨y₁, y₂, hq, hy⟩ := _root_.GlobalTheory.CompanionTheory.GodementH.trace_norm_local_sizes F E σ hcm (u f)
   have hloc : ∀ (v : Pl (F := F)), max 1 ‖algebraMap F (Fv F v) y₁‖₊ ≤ locFin σ v u ∧ max 1 ‖algebraMap F (Fv F v) y₂‖₊ ≤ locFin σ v u := by
     intro v
     obtain ⟨h1, h2⟩ := hy v (embBar F E v)
@@ -189,8 +793,8 @@ theorem denom_one (hcm : IsCMExt F E σ) {u : J → E} {f₀ : J} (hu : u f₀ =
       refine hs.subset fun v hv hv' => hv ?_
       exact le_antisymm ((hy v).trans (le_of_eq hv')) (le_max_left _ _)
     exact finprod_le_finprod' hsub hs hy
-  obtain ⟨m₁, p₁, l₁, i₁⟩ := GlobalTheory.T.denominator_bound_by_height F y₁
-  obtain ⟨m₂, p₂, l₂, i₂⟩ := GlobalTheory.T.denominator_bound_by_height F y₂
+  obtain ⟨m₁, p₁, l₁, i₁⟩ := _root_.GlobalTheory.CompanionTheory.GodementH.Den.denominator_le F y₁
+  obtain ⟨m₂, p₂, l₂, i₂⟩ := _root_.GlobalTheory.CompanionTheory.GodementH.Den.denominator_le F y₂
   refine ⟨m₁ * m₂, Nat.mul_pos p₁ p₂, ?_, ?_⟩
   · rw [sq]; push_cast
     exact mul_le_mul' (l₁.trans (hsup _ fun v => (hloc v).1)) (l₂.trans (hsup _ fun v => (hloc v).2))
@@ -226,7 +830,7 @@ theorem count (hcm : IsCMExt F E σ) (J : Type) [Fintype J] : ∃ (C : ℝ) (c :
     {u : J → E | (∃ f₀, u f₀ = 1) ∧ (vecHt σ u : ℝ) ≤ T}.Finite ∧
     (Set.ncard {u : J → E | (∃ f₀, u f₀ = 1) ∧ (vecHt σ u : ℝ) ≤ T} : ℝ) ≤ C * T ^ c := by
   classical
-  obtain ⟨C₀, hC₀, hlat⟩ := GlobalTheory.T.integers_bounded_embeddings_count E
+  obtain ⟨C₀, hC₀, hlat⟩ := _root_.GlobalTheory.CompanionTheory.IntegerCount.card_bounded_conjugates_le E
   set Jc := Fintype.card J with hJc
   set d := Module.finrank ℚ E with hd
   refine ⟨C₀ ^ Jc, 2 * Jc + (2 * Jc + 1) * d * Jc, pow_pos hC₀ _, fun T hT => ?_⟩
@@ -417,8 +1021,8 @@ theorem key_bound (hcm : IsCMExt F E σ) {B : Base F E} {b : GL (Ix n) E} {K : S
     (fun w => (n.factorial : ℝ≥0) * htInf F w (Formalism.UG.bc (compInf F E w) X) ^ n)
     (fun v => htFin F v (Formalism.UG.bc (compFin F E v) X) ^ n)
     ((finite_mulSupport_htFin F X).subset (Function.mulSupport_pow _ _))
-    (fun w f => GlobalTheory.T.archimedean_minor_height_bound F E n (Ix n) w (B.emb w) X κ (((hK k⁻¹).1 (inv_mem hk)).1 w) f Sum.inl)
-    (fun v f => GlobalTheory.T.finite_place_minor_height_bound F E n (Ix n) v X κ (fun i j => GlobalTheory.T.standard_compact_entries_integral F E σ n Y B b K hK _ (inv_mem hk) v i j) f Sum.inl)
+    (fun w f => _root_.GlobalTheory.CompanionTheory.GodementH.MinInf.minor_le_htInf F E n (Ix n) w (B.emb w) X κ (((hK k⁻¹).1 (inv_mem hk)).1 w) f Sum.inl)
+    (fun v f => _root_.GlobalTheory.CompanionTheory.GodementH.absFin_minor_mul_le F E n (Ix n) v X κ (fun i j => _root_.GlobalTheory.CompanionTheory.GodementH.StdInt.absFin_inFrame_le_one F E σ n Y B b K hK _ (inv_mem hk) v i j) f Sum.inl)
   rw [hδ] at hmain
   have hprod : (∏ w, ((n.factorial : ℝ≥0) * htInf F w (Formalism.UG.bc (compInf F E w) X) ^ n) ^ 2) *
       ∏ᶠ v, (htFin F v (Formalism.UG.bc (compFin F E v) X) ^ n) ^ 2 =
@@ -483,7 +1087,7 @@ theorem godement_sum : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     obtain ⟨P, hP⟩ := hP
     have hg1 : ((g q).1 : Matrix (Ix n) (Ix n) E) * ((g q)⁻¹).1 = 1 := by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
     have hb1 : (b.1 : Matrix (Ix n) (Ix n) E) * (b⁻¹).1 = 1 := by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]
-    refine GlobalTheory.T.left_invertible_exists_nonzero_minor E (Ix n) n (pl b (g q)) ((P * ((g q).1 : Matrix (Ix n) (Ix n) E)) * (b.1 : Matrix (Ix n) (Ix n) E)) ?_
+    refine _root_.GlobalTheory.CompanionTheory.GodementH.exists_mnr_ne_zero_of_left_inverse E (Ix n) n (pl b (g q)) ((P * ((g q).1 : Matrix (Ix n) (Ix n) E)) * (b.1 : Matrix (Ix n) (Ix n) E)) ?_
     calc (P * ((g q).1 : Matrix (Ix n) (Ix n) E)) * (b.1 : Matrix (Ix n) (Ix n) E) * pl b (g q)
         = P * ((g q).1 : Matrix (Ix n) (Ix n) E) * ((b.1 : Matrix (Ix n) (Ix n) E) * (b⁻¹).1) * ((g q)⁻¹).1 *
           (diagCols (Fin n) : Matrix (Ix n) (Fin n) E) := by simp only [pl, Matrix.mul_assoc]
@@ -496,7 +1100,7 @@ theorem godement_sum : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   have hu1 : ∀ q, u q (f₀ q) = 1 := fun q => div_self (hf₀ q)
   have hinj : Function.Injective u := by
     intro q q' e
-    obtain ⟨c, hc⟩ := GlobalTheory.T.plucker_minors_determine_column_space E (Ix n) n _ _ _ _ (hf₀ q) (hf₀ q') (fun f => congrFun e f)
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.CompanionTheory.GodementH.Cramer.main E (Ix n) n _ _ _ _ (hf₀ q) (hf₀ q') (fun f => congrFun e f)
     have hp := isPar_of_pl (hg q) (hg q') hc
     have : (Quotient.mk _ (Quotient.out q') : Cos σ Y) = Quotient.mk _ (Quotient.out q) :=
       cos_eq.2 (Subgroup.subset_closure ⟨_, hp⟩)
@@ -519,7 +1123,7 @@ theorem godement_sum : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
     rw [ha.val p t hp k hk]; exact NNReal.coe_nonneg _
   refine ⟨c, fun s' hs' => ?_⟩
   have hs0 : 0 < s' := lt_of_le_of_lt (Nat.cast_nonneg c) hs'
-  have hsum : Summable fun q => h q ^ (-s') := GlobalTheory.T.summable_height_pow_of_polynomial_count _ h h1 C₁ c hcnt s' hs'
+  have hsum : Summable fun q => h q ^ (-s') := _root_.GlobalTheory.CompanionTheory.GodementH.summable_rpow_neg_of_polynomial_count _ h h1 C₁ c hcnt s' hs'
   have hterm : ∀ (x : G2 σ Y) (q : Cos σ Y), a ((Quotient.out q).1 * x) ^ s' ≤
       ((C : ℝ) * (ht2 x : ℝ) ^ (2 * n)) ^ s' * h q ^ (-s') := by
     intro x q
@@ -551,3 +1155,6 @@ theorem godement_sum : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
 
 end GlobalTheory.CompanionTheory.GodementH
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesConvergent =====

@@ -166,6 +166,11 @@ def LinkG {eps : ℝ} (Fm : FamP eps) : Prop :=
 def hsDiagFull (D : D7) (u : D.what₂.Word) : ℝ :=
   S.hsNormSq (S.KD D u u - ContinuousLinearMap.id ℂ (D.s.Cu u))
 
+/-- Per-scale near-orthogonality of words (`LinkS_at`): assuming every word `u` has comparable
+normalized multiplicity `C0⁻¹ ≤ du(u) * Gam² / D* ≤ C0`, the Hilbert-Schmidt Gram matrix satisfies:
+1. off-diagonal: `‖K(u, u')‖²_HS ≤ (1 + eta0) * du(u) * du(u') / D*` for `u ≠ u'`;
+2. diagonal: `‖K(u, u) - id‖²_HS ≤ e0 * du(u)`;
+3. total dimension: `Dall ≤ (1 + eta1) * D*`. -/
 def LinkS_at {D : D7} (L : SizeData₂ D) (C0 Gam eta0 eta1 e0 : ℝ) : Prop :=
   (∀ u, C0⁻¹ ≤ (D.duS u : ℝ) * Gam ^ 2 / D.what₂.Dstar ∧ (D.duS u : ℝ) * Gam ^ 2 / D.what₂.Dstar ≤ C0) →
   (∀ u u', u ≠ u' → L.hsSq u u' ≤ (1 + eta0) * (D.duS u : ℝ) * (D.duS u' : ℝ) / D.what₂.Dstar) ∧
@@ -173,12 +178,18 @@ def LinkS_at {D : D7} (L : SizeData₂ D) (C0 Gam eta0 eta1 e0 : ℝ) : Prop :=
 
 def GamOf {D : D7} (L : SizeData₂ D) : ℝ := Real.exp (L.CGam * (D.R.m : ℝ) ^ 5 * D.R.f * L.sc.L)
 
+/-- Family-level near-orthogonality of words: for all sufficiently large `x`, `LinkS_at` holds at
+scale `GamOf L = exp (CGam * m^5 * f * L)` with exponentially small errors
+`eta0, eta1, √e0 ≤ exp (-x^(eps / 8))`. -/
 def LinkS {eps : ℝ} (Fm : FamP eps) (C0 : ℝ) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∃ eta0 eta1 e0 : ℝ, 0 ≤ e0 ∧
     eta0 ≤ Real.exp (-(x ^ (eps / 8))) ∧ eta1 ≤ Real.exp (-(x ^ (eps / 8))) ∧
     Real.sqrt e0 ≤ Real.exp (-(x ^ (eps / 8))) ∧
     LinkS_at (Fm.L x i) C0 (GamOf (Fm.L x i)) eta0 eta1 e0
 
+/-- The five global arithmetic inputs assembled for a family `Fm`: local gain (`LinkG`),
+near-orthogonality of words (`LinkS`), irreducibility (`LinkIRR`), divisibility (`LinkDIV`),
+and lattice-measure comparison (`LinkMu`). -/
 def GlobalTheoremInputs {eps : ℝ} (Fm : FamP eps) (Cabs CH C0 : ℝ) : Prop :=
   LinkG Fm ∧ LinkS Fm C0 ∧ LinkIRR Fm ∧ LinkDIV Fm Cabs CH ∧
   LinkMu Fm

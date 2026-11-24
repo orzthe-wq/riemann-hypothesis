@@ -1,46 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DefsRep
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Analytic
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.ClosureK
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.ExistsExpEqOfMemKset
@@ -65,8 +26,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
 theorem closure_E_mem_genSub {V : Submodule ℂ D} (a b : Fin n) {v : D} (hv : v ∈ genSub E V) :
     E a b v ∈ genSub E V := by
   rw [genSub, Submodule.mem_sInf] at hv ⊢
-  intro T hT
-  exact hT.2 a b v (hv T hT)
+  exact fun T hT => hT.2 a b v (hv T hT)
 
 theorem closure_actM_pow_mem_genSub {V : Submodule ℂ D} (X : Matrix (Fin n) (Fin n) ℂ) (m : ℕ)
     {v : D} (hv : v ∈ genSub E V) : ((actM E X) ^ m) v ∈ genSub E V := by
@@ -174,8 +134,7 @@ theorem closure_genSub_stable (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn �
     closure_mapsTo_of_genSub _ (fun v hv => by
       rw [← hZe]
       exact exp_inK_apply_mem_closure hσ hD hVf hVK hZ hv) hy
-  rw [hσg, ContinuousLinearMap.comp_apply, hEq]
-  exact hs2 _ hs1
+  simpa only [hσg, ContinuousLinearMap.comp_apply, hEq] using hs2 _ hs1
 
 end Rep
 

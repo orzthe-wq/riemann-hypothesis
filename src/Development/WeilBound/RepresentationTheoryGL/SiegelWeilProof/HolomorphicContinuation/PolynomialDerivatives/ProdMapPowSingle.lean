@@ -71,7 +71,7 @@ theorem pderiv_comm' {σ : Type*} (i j : σ) (f : MvPolynomial σ ℂ) :
     · subst h; rfl
     · congr 1
       · rw [tsub_right_comm]
-      · simp [Finsupp.single_apply, h, Ne.symm h]; ring
+      · simp [h, Ne.symm h]; ring
 
 theorem prod_map_pow_single {M : Type*} [Monoid M] {ι : Type*} [DecidableEq ι] (P : ι → M)
     (hP : ∀ i j, Commute (P i) (P j)) (e : ι → ℕ) (k : ι) :
@@ -177,11 +177,11 @@ theorem op_mul_X_inl (s : Sym m n) (k : Fin m × Fin n × Bool) (f : PX m n) :
         t.comapDomain Sum.inl Sum.inl_injective.injOn + Finsupp.single k 1 := by
       ext x; simp [Finsupp.comapDomain_apply, Finsupp.single_apply]
     have h2 : (fun x => (t + Finsupp.single (Sum.inl k) 1 : _ →₀ ℕ) (Sum.inr x)) = fun x => t (Sum.inr x) := by
-      funext x; simp [Finsupp.single_apply]
+      funext x; simp
     rw [h1, h2, ← mul_one (1 : ℂ), ← monomial_mul, ← X]
-    simp only [mul_one, smul_eq_mul]
+    simp only [mul_one]
     ring_nf
-    simp [mul_comm, mul_left_comm, mul_assoc, Algebra.mul_smul_comm]
+    simp [mul_comm, mul_assoc, Algebra.mul_smul_comm]
   | add p q hp hq => rw [add_mul, op_add, op_add, hp, hq, mul_add]
 
 theorem op_mul_X_inr (s : Sym m n) (k : Fin m × Fin n × Bool) (f : PX m n) :
@@ -191,7 +191,7 @@ theorem op_mul_X_inr (s : Sym m n) (k : Fin m × Fin n × Bool) (f : PX m n) :
     rw [X, monomial_mul, mul_one, op_monomial, op_monomial, opMono_eq, opMono_eq]
     have h1 : (t + Finsupp.single (Sum.inr k) 1).comapDomain Sum.inl Sum.inl_injective.injOn =
         t.comapDomain Sum.inl Sum.inl_injective.injOn := by
-      ext x; simp [Finsupp.comapDomain_apply, Finsupp.single_apply]
+      ext x; simp [Finsupp.comapDomain_apply]
     have h2 : (fun x => (t + Finsupp.single (Sum.inr k) 1 : _ →₀ ℕ) (Sum.inr x)) =
         fun x => t (Sum.inr x) + if x = k then 1 else 0 := by
       funext x; simp [Finsupp.single_apply, eq_comm]
@@ -240,7 +240,7 @@ theorem KopL_X (ε : Fin m → Bool) (i j : Fin n) (k : Fin m × Fin n × Bool) 
   rw [collapse (fun a => ε a = true) j false (fun a => X (a, i, false)) k,
     collapse (fun a => ε a = false) i true (fun a => X (a, j, true)) k]
   obtain ⟨a, c, b⟩ := k
-  cases hε : ε a <;> cases b <;> by_cases hcj : c = j <;> by_cases hci : c = i <;> simp [hε, hcj, hci] <;>
+  cases hε : ε a <;> cases b <;> by_cases hcj : c = j <;> by_cases hci : c = i <;> simp [hcj, hci] <;>
     split_ifs <;> simp
 
 theorem KopL_mul (ε : Fin m → Bool) (i j : Fin n) (g h : PX m n) :
@@ -278,7 +278,7 @@ theorem KopL_pderiv (ε : Fin m → Bool) (i j : Fin n) (k : Fin m × Fin n × B
       else (if k.2.2 = true ∧ k.2.1 = j then pderiv (k.1, i, true) f else 0) := by
   rw [pderiv_KopL]
   obtain ⟨a, c, b⟩ := k
-  cases hε : ε a <;> cases b <;> by_cases hcj : c = j <;> by_cases hci : c = i <;> simp [hε, hcj, hci] <;>
+  cases hε : ε a <;> cases b <;> by_cases hcj : c = j <;> by_cases hci : c = i <;> simp [hcj, hci] <;>
     split_ifs <;> simp
 
 theorem symK_inl (ε : Fin m → Bool) (i j : Fin n) (k : Fin m × Fin n × Bool) :

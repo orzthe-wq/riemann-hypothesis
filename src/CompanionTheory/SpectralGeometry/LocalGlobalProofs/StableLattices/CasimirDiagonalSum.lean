@@ -2,52 +2,19 @@ module
 
 public import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.IsSimpleFam
 public import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AdmissibleSmoothVectors.AdmissibleOfIwasawa
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CasimirScalarOfCapelliDeterminantEigenvalueStatement
+public import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CasimirScalarOfCapelliDeterminantEigenvalue
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ComplexifiedDerivedActionLieHomGramAdjoint
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.DerivedActionExpandMatrixUnitsStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FreeAlgebraActionCapelliDeterminantEqOperatorStatement
+public import Formalism.PeriodIntegrals.DSInfCharCap
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FreeAlgebraActionCapelliDeterminantEqOperator
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.QuantumDeterminantEigenvalue
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmoothVectorsComplexDerivedActionCayleyTransportStatement
+import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmoothVectorsComplexDerivedActionCayleyTransport
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmoothVectorsDiscreteSeriesGlModuleStatement
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnCovDet
-import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnCovLin
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.ContractionsCovariantIff
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CovariantDeterminantScaling.IntCastMulEqSmul
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CovariantLinearProduct.OfFnProdSmul
 
 @[expose] public section
 
@@ -71,7 +38,7 @@ theorem qdet_smooth (hC : PI.DSInfCharCap.DSInfCharCap) (k r : ℕ) (ε : Fin (2
   obtain ⟨hmu, Q0, hQ0, hDS⟩ := id hR
   have hU0 : IsUnit Q0 := hQ0.1.1
   obtain ⟨E0, hE0, hgl⟩ := GlobalTheory.T.smoothVectors_discreteSeries_glModule hK k r ε mu R hR Q0 hU0
-  obtain ⟨hsm, hd⟩ := GlobalTheory.T.smoothVectors_complexDerivedAction_cayleyTransport k r ε R Q0 hQ0
+  obtain ⟨hsm, hd⟩ := _root_.GlobalTheory.CayleyTransport.smooth_and_dsigC_transport k r ε R Q0 hQ0
   obtain ⟨-, hexp, -⟩ := GlobalTheory.T.derivedAction_expand_matrixUnits hK k r ε mu R hR Q0 E0 hU0 hE0
   have hdQ : IsUnit Q.det := (Matrix.isUnit_iff_isUnit_det Q).1 hQ
   have hdQ0 : IsUnit Q0.det := (Matrix.isUnit_iff_isUnit_det Q0).1 hU0
@@ -83,15 +50,15 @@ theorem qdet_smooth (hC : PI.DSInfCharCap.DSInfCharCap) (k r : ℕ) (ε : Fin (2
         (Q0 * Q⁻¹) * Matrix.single a b (1 : ℂ) * (Q * Q0⁻¹) := by
       simp only [Matrix.mul_assoc]
     rw [h1]
-    simp only [GlobalTheory.CapelliSmooth.entry_conj, Formalism.FourierDecayAlt.Q.Econj, LinearMap.sum_apply, LinearMap.smul_apply,
+    simp only [_root_.Formalism.QuantumDeterminants.ioh_single, Formalism.FourierDecayAlt.Q.Econj, LinearMap.sum_apply, LinearMap.smul_apply,
       Submodule.coe_sum, Submodule.coe_smul]
   have h2 : (Q * Q0⁻¹) * (Q0 * Q⁻¹) = 1 := by
     rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hdQ0, Matrix.mul_nonsing_inv _ hdQ]
   have h3 : (Q0 * Q⁻¹) * (Q * Q0⁻¹) = 1 := by
     rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hdQ, Matrix.mul_nonsing_inv _ hdQ0]
-  rw [hEE, covariant_det_of_lin covariant_linear _ _ E0 _ _ hgl h2 h3]
+  rw [hEE, _root_.PI.QnCovDetW.qnCovDet_of_lin _root_.PI.QnCovLinW.qnCovLin _ _ E0 _ _ hgl h2 h3]
   apply Subtype.ext
-  have h4 := GlobalTheory.T.freeAlgebraAction_capelliDeterminant_eq_operator _ ε R.H (fun g => R.σ (Q0⁻¹ * g * Q0)) R.smSub E0
+  have h4 := _root_.GlobalTheory.CapelliFreeAction.actU_qdet _ ε R.H (fun g => R.σ (Q0⁻¹ * g * Q0)) R.smSub E0
     (fun a b v => by rw [hd, hE0 a b v]; rfl) (Y + ((((2 * r + k + 1) : ℕ) : ℂ) - 1) / 2) w
   rw [← h4, hC _ ε mu R.H _ hmu hDS w (hsm w w.2) Y]
   rfl
@@ -109,7 +76,7 @@ theorem isE_one (U : URep k r) : U.R.IsE 1 (fun a b => U.dC (Matrix.single a b 1
 theorem cas_smooth (hC : PI.DSInfCharCap.DSInfCharCap) {ε : Fin (2 * r + k + 1) → Bool}
     {μ : Fin (2 * r + k + 1) → ℝ} (U : URep k r) (hk : 1 ≤ k) (hU : U.R.IsDS ε μ) (w : U.R.smSub) :
     (∑ a, ∑ b, U.dC (Matrix.single a b 1) * U.dC (Matrix.single b a 1)) w = (casG μ : ℂ) • w :=
-  GlobalTheory.T.casimir_scalar_of_capelliDeterminant_eigenvalue U.R.smSub (2 * r + k + 1) (fun a b => U.dC (Matrix.single a b 1)) μ (by omega)
+  _root_.GlobalTheory.CapelliCasimir.cas_of_capelli U.R.smSub (2 * r + k + 1) (fun a b => U.dC (Matrix.single a b 1)) μ (by omega)
     (GlobalTheory.T.derivedAction_expand_matrixUnits CompanionTheory.D.gk.admitted.k_finite_smooth k r ε μ U.R hU 1 _ isUnit_one (isE_one U)).1
     (qdet_smooth hC k r ε μ U.R hU 1 _ isUnit_one (isE_one U)) w
 

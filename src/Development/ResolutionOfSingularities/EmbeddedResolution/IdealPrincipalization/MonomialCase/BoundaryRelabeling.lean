@@ -272,14 +272,9 @@ theorem nonempty_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSh
   rw [MarkedIdealWithBoundary.sameNontrivialBoundary_iff] at h
   exact nonempty_orderedMatchingOfNonTop_of_length_add_le (L.length + L'.length) L L' le_rfl h
 
-theorem sameNontrivialBoundary_refl {Y : Scheme.{u}} (L : List Y.IdealSheafData) :
-    MarkedIdealWithBoundary.SameNontrivialBoundary L L :=
-  MarkedIdealWithBoundary.SameNontrivialBoundary.refl L
+alias sameNontrivialBoundary_refl := _root_.FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.SameNontrivialBoundary.refl
 
-theorem sameNontrivialBoundary_append {Y : Scheme.{u}} {L₁ L₁' L₂ L₂' : List Y.IdealSheafData}
-    (h₁ : MarkedIdealWithBoundary.SameNontrivialBoundary L₁ L₁') (h₂ : MarkedIdealWithBoundary.SameNontrivialBoundary L₂ L₂') :
-    MarkedIdealWithBoundary.SameNontrivialBoundary (L₁ ++ L₂) (L₁' ++ L₂') :=
-  h₁.append h₂
+alias sameNontrivialBoundary_append := _root_.FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.SameNontrivialBoundary.append
 
 private theorem support_top_eq_empty {Y : Scheme.{u}} :
     (↑(⊤ : Y.IdealSheafData).support : Set ↥Y) = ∅ :=

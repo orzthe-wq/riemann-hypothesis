@@ -48,4 +48,4 @@ open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), ∀ d : List ℤ, IsLab V P d ↔ d.length = V.rank ∧ d.Pairwise (fun a b => b ≤ a) ∧ (conjPl P = P → dualLab d = d) := by
-  first | exact @GlobalTheory.LabChar.labels_char | exact GlobalTheory.LabChar.labels_char | (intros; apply GlobalTheory.LabChar.labels_char <;> assumption)
+  first | exact @GlobalTheory.LabChar.labels_char

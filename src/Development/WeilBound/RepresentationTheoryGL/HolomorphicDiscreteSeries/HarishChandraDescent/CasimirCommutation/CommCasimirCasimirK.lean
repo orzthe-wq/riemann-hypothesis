@@ -121,7 +121,7 @@ theorem Qop_eq (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) 
     · subst h
       simp only [adjSign, if_true, one_smul]
       abel
-    · simp [smul_mul_assoc]
+    · simp
   simp only [key, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 theorem comm_casimir_casimirK {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E) (ε : Fin n → Bool) :
@@ -137,7 +137,7 @@ theorem comm_casimir_casimirK {E : Fin n → Fin n → Module.End ℂ M} (hE : I
     show E c d * casimir E = casimir E * E c d
     rw [← sub_eq_zero, casimir, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]
     simp only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, key]
-    simp [sub_mul, mul_sub, add_mul, mul_add, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_mul,
+    simp [sub_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_mul,
       mul_ite]
   exact Commute.sum_left _ _ _ fun a _ => Commute.sum_left _ _ _ fun b _ => (hc a b).mul_left (hc b a)
 
@@ -188,7 +188,7 @@ private theorem commute_E_casimir_of_isGlRep {n : ℕ} {M : Type} [NormedAddComm
   show E c d * casimir E = casimir E * E c d
   rw [← sub_eq_zero, casimir, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]
   simp only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, key]
-  simp [sub_mul, mul_sub, add_mul, mul_add, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_mul,
+  simp [sub_mul, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, ite_mul,
     mul_ite]
 
 private theorem commute_E_diag_E_mul_E_of_isGlRep {n : ℕ} {M : Type} [NormedAddCommGroup M] [InnerProductSpace ℂ M]

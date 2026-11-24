@@ -83,11 +83,11 @@ def perp (x : Fin M → Ev F E v) : Submodule (Ev F E v) (Fin M → Ev F E v) wh
   zero_mem' := by simp [hR, Formalism.UG.hform]
   add_mem' := by
     intro a b ha hb
-    simp only [Set.mem_setOf_eq, hR, Formalism.UG.hform] at *
+    simp only [Set.mem_ofPred_eq, hR, Formalism.UG.hform] at *
     simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib, ha, hb, add_zero]
   smul_mem' := by
     intro c a ha
-    simp only [Set.mem_setOf_eq, hR, Formalism.UG.hform] at *
+    simp only [Set.mem_ofPred_eq, hR, Formalism.UG.hform] at *
     have : ∑ i, ∑ j, sigR (Fv F v) σ (x i) * JR (Fv F v) J i j * (c • a) j =
         c * ∑ i, ∑ j, sigR (Fv F v) σ (x i) * JR (Fv F v) J i j * a j := by
       simp only [Finset.mul_sum, Pi.smul_apply, smul_eq_mul]

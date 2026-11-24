@@ -73,17 +73,12 @@ theorem app_resTop (h : Y ⟶ X) (W : X.Opens) (a : Γ(X, ⊤)) :
   rw [← CommRingCat.comp_apply, Scheme.Hom.naturality, CommRingCat.comp_apply]
   rfl
 
-private theorem presheaf_map_resTop_eq_resTop {W W' : X.Opens} (h : W' ≤ W) (c : Γ(X, ⊤)) :
-    (X.presheaf.map (homOfLE h).op).hom (resTop W c) = resTop W' c := by
-  simp only [resTop, ← CommRingCat.comp_apply, ← Functor.map_comp]
-  rfl
-
 theorem res_comb {W W' : X.Opens} (hW : W' ≤ W) {I : Type} [Fintype I] (a : I → Γ(X, ⊤)) (y : I → Γ(X, W))
     (x : Γ(X, W)) (hx : x = ∑ l, resTop W (a l) * y l) :
     (X.presheaf.map (homOfLE hW).op).hom x = ∑ l, resTop W' (a l) * (X.presheaf.map (homOfLE hW).op).hom (y l) := by
   subst hx
 
-  simp only [map_sum, map_mul, presheaf_map_resTop_eq_resTop]
+  simp only [map_sum, map_mul, _root_.ReciprocityTheory.ChartRestriction.G.DVR.SecOps.resTop_res]
 
 theorem pull_comb (h : Y ⟶ X) {W : X.Opens} {W' : Y.Opens} (hW : W' ≤ h ⁻¹ᵁ W) {I : Type} [Fintype I]
     (a : I → Γ(X, ⊤)) (y : I → Γ(X, W)) (x : Γ(X, W)) (hx : x = ∑ l, resTop W (a l) * y l) :
@@ -91,7 +86,7 @@ theorem pull_comb (h : Y ⟶ X) {W : X.Opens} {W' : Y.Opens} (hW : W' ≤ h ⁻�
       ∑ l, resTop W' (h.appTop.hom (a l)) * (Y.presheaf.map (homOfLE hW).op).hom ((h.app W).hom (y l)) := by
   subst hx
 
-  simp only [map_sum, map_mul, app_resTop, presheaf_map_resTop_eq_resTop]
+  simp only [map_sum, map_mul, app_resTop, _root_.ReciprocityTheory.ChartRestriction.G.DVR.SecOps.resTop_res]
 
 private theorem sum_mul_sum_eq_sum_reindex_sigma {M : Type} [CommRing M] {I : Type} [Fintype I] {m : I → ℕ} {N : ℕ}
     (e : Fin N ≃ Σ l, Fin (m l)) (A : I → M) (C P : ∀ l, Fin (m l) → M) (C' : Fin N → M)

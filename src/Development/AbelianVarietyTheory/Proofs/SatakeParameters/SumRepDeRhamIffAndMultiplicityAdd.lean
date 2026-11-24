@@ -50,6 +50,7 @@ import Formalism.LocalToGlobal.NormalizedHeckeFactors.TypesDefs
 import Formalism.LocalToGlobal.ProjectiveLattices.ErealAddIInf
 import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import ReciprocityTheory.Automorphisms.PlaceA
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

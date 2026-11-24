@@ -147,7 +147,7 @@ theorem _root_.GlobalTheory.CountableFibres.exists_injective_fderiv {E F : Type}
     intro x y hxy
     have : x - y ∈ K := by
       simp only [K, LinearMap.mem_ker, ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply,
-        map_sub, hxy, sub_self, map_zero]
+        map_sub, hxy, sub_self]
     rw [hK, Submodule.mem_bot, sub_eq_zero] at this
     exact this
   have hcc : K.ClosedComplemented := (P.comp L).ker_closedComplemented_of_finiteDimensional_range

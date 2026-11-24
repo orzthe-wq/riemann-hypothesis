@@ -9,7 +9,13 @@ public import Formalism.LocalToGlobal.GlobalTheory.GL6.SecondBranchInclLengthOfL
 public import Formalism.LocalToGlobal.GlobalTheory.GL5.LocalEndomorphismContinuous
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.PowSmulLatticeLeWeightLatticeTop
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.SlopeLineRamifiedFormula
-public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.CMFieldLemmas
+public import Formalism.SharpRestriction.GlobalSchurBounds.CMFieldLemmas
+public import Formalism.FrobeniusOrbits.FrobeniusOrbitsProofs.ThickExists
+public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.GenericFramesLetters
+public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.LemmaOneEightHolds
+public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.PointsPropertyOfD7
+public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.RamificationTwoAndConjugationAtQAndD
+public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.SecondPropositionEveryLocalisation
 public import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.DivisionRationalLattice
 import Formalism.SharpRestriction.GlobalSchurBounds.JointsL
 public import Formalism.SharpRestriction.GlobalSchurBounds.MassRatioUnfoldedOfTheoremTwo
@@ -59,12 +65,9 @@ open Formalism.BasicNotions Formalism.MainNotions.Lnk Formalism.MainNotions.Glob
 
 variable {eps : ℝ}
 
-theorem stabF (Fm : FamP eps) : flipTwoThree.admF3 Fm := by
-  obtain ⟨C₅, h59a⟩ := UnusedSlot33.field_lemmas_except_seven
-  have h59 : UnusedSlot33.ConclusionOnFamily Fm 100 C₅ := fun x _ i => by
-    obtain ⟨p1, p2, p3, p4, p5, p5c, p6, p8⟩ := h59a (Fm.D x i) (Fm.L x i).sc
-    exact ⟨p1, p2, p3, p4, p5, p5c, p6, UnusedSlot33.division_rational_lattice _, p8⟩
-  exact flipTwoThree.stabiliser_family_of_column_lemma Fm 100 C₅ h59 (fun _ _ _ => GenusMassVolumes.levels_pro_g _ _)
+theorem stabF (Fm : FamP eps) : flipTwoThree.admF3 Fm :=
+  flipTwoThree.stabiliser_family_of_column_lemma Fm (fun _ _ _ => UnusedSlot33.division_rational_lattice _)
+    (fun _ _ _ => GenusMassVolumes.levels_pro_g _ _)
 
 theorem chiFin0_to0S {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
     (T : Formalism.L2.Forms.FormsTiedSym D u Ch chOf) (h : ChiFin0 T) : LocalLatticeBases.ChiFin0 T.to0 := by

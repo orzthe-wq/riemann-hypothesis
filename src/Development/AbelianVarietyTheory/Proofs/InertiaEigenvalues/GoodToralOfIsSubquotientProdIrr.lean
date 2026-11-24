@@ -49,7 +49,7 @@ open ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitW
 namespace GlobalTheory.RecT
 
 theorem geometricLemma_holds : GlobalTheory.Published.GeometricLemma :=
-  GlobalTheory.geometricLemma_of_filtration GlobalTheory.bernsteinZelevinskyFiniteness_holds GlobalTheory.geometricLemmaFiltration_holds
+  GlobalTheory.geometricLemma_of_filtration GlobalTheory.bernsteinZelevinskyFiniteness_holds _root_.CompanionTheory.Geo.geometricLemmaFiltration
 
 theorem good_toral_of_isSubquotient_prodIrr : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (t : ℕ) (y : Fin t → IrrGL (k := k)) (x : IrrGL (k := k)) (hd : ∑ i, (y i).1 = x.1),

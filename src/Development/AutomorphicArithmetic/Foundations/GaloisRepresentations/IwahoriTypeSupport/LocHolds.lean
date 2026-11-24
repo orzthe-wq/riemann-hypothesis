@@ -6,8 +6,11 @@ public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixedNe
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ApplyMemTwKerOfNormalizer
 public import Development.AutomorphicArithmetic.ThetaCorrespondence.FockModels.GlnMixed
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MoyPrasadJacquetIso
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.TotallyDisjointProductIrreducible
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.GrothendieckRingPolynomial
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.TotallyDisjointProductIrreducibleOfPolynomialRin
 import Development.WeilBound.CoreStatements.AutomorphicKernels.GrothendieckRingPolynomial.GrothendieckRingPolynomialOfSeg
-public import Development.WeilBound.CoreStatements.TotallyDisjointProducts.SLGLProductIrreducibility.TdpFill
 import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.ComplementarySeries.SegmentJacquetSubquotients.SegmentRepresentation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -59,7 +62,7 @@ theorem loc_holds : Loc := by
     { bz := bz
       geo := geo
       zel := zel
-      disj := PositivityTheory.SlGl.totallyDisjointProductIrreducible_of_parts geo seg
+      disj := _root_.GlobalTheory.CompanionTheory.Hypotheses₂.totallyDisjointProductIrreducible_of_parts geo seg
         (PositivityTheory.Groth.grothendieckRingPolynomial_of_seg seg)
       mp := GlobalTheory.CompanionTheory.MoyPrasadTop.moyPrasadJacquetIso
       dzi := GlobalTheory.DepthZeroPass.depthZeroInduction geo bz zel

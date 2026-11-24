@@ -1,7 +1,8 @@
 module
 
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.GeneralizedEigenspaces.IsLevel
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceUnitaryLocalPointsEquivGLStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SplitPlaceUnitaryLocalPointsEquivGL
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -51,7 +52,7 @@ theorem UpperTheory.V.Z.Sym.Al.secSpec :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (w : Plc L), IsSplitAt w →
         (∀ g, secW n w g ∈ locU n w) ∧ (∀ g, cLoc w (secW n w g) = g) ∧ (∀ x ∈ locU n w, secW n w (cLoc w x) = x) ∧ Continuous (secW n w) := by
   intro L _ _ _ n w hw
-  obtain ⟨e, he⟩ := GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL L n w hw
+  obtain ⟨e, he⟩ := _root_.GlobalTheory.locU_equiv_GL L n w hw
   have hs : ∀ y, cLoc w (e.symm y : UA L n) = y := fun y => by rw [← he, e.apply_symm_apply]
   have h : ∃ j : GL (Fin n) (Kw w) →* UA L n, (∀ g, j g ∈ locU n w) ∧ ∀ g, cLoc w (j g) = g :=
     ⟨(locU n w).subtype.comp e.symm.toMulEquiv.toMonoidHom, fun g => (e.symm g).2, hs⟩

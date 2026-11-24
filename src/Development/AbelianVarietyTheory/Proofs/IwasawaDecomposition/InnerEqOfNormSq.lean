@@ -105,7 +105,7 @@ def cjPol (ι : Type) (n : ℕ) : Pol ℂ ι n →ₗ⋆[ℂ] Pol ℂ ι n where
   toFun p := MvPolynomial.map (starRingEnd ℂ) p
   map_add' p q := map_add _ p q
   map_smul' c p := by
-    simp only [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, RingHom.id_apply]
+    simp only [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]
 
 theorem map_conj_smul {ι : Type} {n : ℕ} (r : ℂ) (p : Pol ℂ ι n) :
     MvPolynomial.map (starRingEnd ℂ) (r • p) = starRingEnd ℂ r • MvPolynomial.map (starRingEnd ℂ) p :=

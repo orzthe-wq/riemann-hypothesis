@@ -115,7 +115,7 @@ theorem leadT_hom_row (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p 
     have hs : ∑ i : Fin t, (if Fin.castLE hh.1 i = i₀ then 1 else 0) + ∑ _j : Fin t, 0 = 1 := by
       simp only [Finset.sum_const_zero, add_zero]
       rw [Finset.sum_eq_single ⟨i₀.val, hlt⟩]
-      · simp [Fin.ext_iff]
+      · simp
       · intro i _ hi
         rw [if_neg]
         intro e
@@ -152,7 +152,7 @@ theorem leadT_hom_col (ρ : Fin m → Ix p q) (κ : Fin k → Ix r s) (w : Ln p 
     have hs : ∑ _i : Fin t, 0 + ∑ j : Fin t, (if Fin.castLE hh.2 j = j₀ then 1 else 0) = 1 := by
       simp only [Finset.sum_const_zero, zero_add]
       rw [Finset.sum_eq_single ⟨j₀.val, hlt⟩]
-      · simp [Fin.ext_iff]
+      · simp
       · intro j _ hj
         rw [if_neg]
         intro e

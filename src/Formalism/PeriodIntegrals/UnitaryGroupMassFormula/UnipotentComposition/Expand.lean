@@ -123,7 +123,6 @@ theorem hasDerivAt_listSum {α : Type*} (L : List α) (f : α → ℝ → E) (f'
 theorem RdV_eq_Dx {k r : ℕ} (X : Mat k r) (f : Mat k r → E) : RdV X f = Dx (false, X) f := by
   first
   | rfl
-  | simp [Dx]
 
 theorem ck_Rw {k r m : ℕ} {F : Mat k r → E} (hF : CkOn (m : ℕ∞) (GV k r) F) {v : List (Mat k r)}
     (hv : ∀ X ∈ v, inLie k r X) (n : ℕ) (hn : n + v.length ≤ m) : CkOn (n : ℕ∞) (GV k r) (Rw v F) := by

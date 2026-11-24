@@ -2,10 +2,12 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.NoLeak
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsPowSmulMemOfIsLat
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFactsStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IndexMeasureIntegralEqMeanOverRepresentativesStatement
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Cint
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IndexMeasureIntegralEqMeanOverRepresentatives
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.QuadricCharacterLeakSharesFinite
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.QuadricCharacterLeakSharesFiniteStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -103,43 +105,18 @@ section
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
-theorem hf_addl (L : LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) (a b y : Fin n → E) :
-    hf L H (a + b) y = hf L H a y + hf L H b y := by
-  simp [hf, add_mul, Finset.sum_add_distrib]
-
 theorem hf_addr (L : LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) (a b y : Fin n → E) :
     hf L H y (a + b) = hf L H y a + hf L H y b := by
   simp [hf, mul_add, Finset.sum_add_distrib]
-
-theorem hf_smull (L : LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) (c : E) (a y : Fin n → E) :
-    hf L H (c • a) y = c * hf L H a y := by
-  simp [hf, Finset.mul_sum, mul_assoc]
 
 theorem hf_smulr (L : LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) (c : E) (a y : Fin n → E) :
     hf L H y (c • a) = L.cj c * hf L H y a := by
   simp only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
-theorem hf_cj (L : LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) (hH : IsHerm L H) (a y : Fin n → E) :
-    L.cj (hf L H a y) = hf L H y a := by
-  have h : ∀ i j, L.cj (H i j) = H j i := fun i j => congrFun (congrFun hH j) i
-
-  simp only [hf, map_sum, map_mul, L.cj_cj, h]
-  rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
+alias hf_cj := _root_.GlobalTheory.HL.GaussSummand.cj_hf
 
 variable [IsNonarchimedeanLocalField F]
-
-theorem exists_pow_smul (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {n : ℕ}
-    (Λ : Submodule L.O (Fin n → E)) (hΛ : IsLat L Λ) (y : Fin n → E) :
-    ∃ m : ℕ, algebraMap F E ((ϖ : F) ^ m) • y ∈ Λ := by
-  first
-  | exact @_root_.GlobalTheory.PowSmulMemLattice.exists_pow_smul_mem_of_isLat
-  | exact _root_.GlobalTheory.PowSmulMemLattice.exists_pow_smul_mem_of_isLat
-  | (apply _root_.GlobalTheory.PowSmulMemLattice.exists_pow_smul_mem_of_isLat <;> assumption)
-  | (intros; apply _root_.GlobalTheory.PowSmulMemLattice.exists_pow_smul_mem_of_isLat <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.PowSmulMemLattice.exists_pow_smul_mem_of_isLat <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.PowSmulMemLattice.exists_pow_smul_mem_of_isLat ..)
 
 theorem exists_inv_one_add (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {x : E} (hx : x ∈ L.O) :
     ∃ z ∈ L.O, z * (1 + algebraMap F E ϖ * x) = 1 := by
@@ -154,7 +131,7 @@ theorem exists_inv_one_add (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) 
     (L.O.add_mem L.O.one_mem (L.O.mul_mem (hint ϖ) (GlobalTheory.UnramOrder.cj_mem L hx))), ?_⟩
   have h2 := congrArg (fun a : 𝒪[F] => algebraMap F E a) hv
   push_cast at h2
-  simp only [map_mul, map_add (f := _), map_one, ← ht, ← hs] at h2
+  simp only [← ht, ← hs] at h2
   linear_combination h2
 
 end
@@ -176,10 +153,10 @@ theorem inZ_add {Λ : Submodule L.O S.V} (hΛ : IsSD L S.Hm Λ) {N : ℕ} (hN : 
   rw [hf_cj L _ S.herm.1] at ht
   refine ⟨c + S.ϖ ^ m * (t + S.ϖ ^ N * s), ?_⟩
   unfold Frames.h at hc ⊢
-  simp only [hf_addl, hf_addr, hf_smull, hf_smulr, AlgEquiv.commutes, hc, hs]
+  simp only [_root_.GlobalTheory.HL.Eichler.hf_add_l, _root_.GlobalTheory.HL.Eichler.hf_add_r, _root_.GlobalTheory.HL.Eichler.hf_smul_l, _root_.GlobalTheory.HL.Eichler.hf_smul_r, AlgEquiv.commutes, hc, hs]
   push_cast
   have h2 := congrArg (algebraMap F E) hpow
-  simp only [map_mul, map_add (f := _), map_pow, ← ht] at h2 ⊢
+  simp only [map_mul, map_pow, ← ht] at h2 ⊢
   linear_combination (hf L S.Hm u y + hf L S.Hm y u + algebraMap F E S.ϖ ^ N * algebraMap F E s) * h2
 
 theorem noLeak_add {Λ : Submodule L.O S.V} (hΛ : IsSD L S.Hm Λ) {N : ℕ} (hN : 1 ≤ N) {u y : S.V}
@@ -191,7 +168,7 @@ theorem noLeak_add {Λ : Submodule L.O S.V} (hΛ : IsSD L S.Hm Λ) {N : ℕ} (hN
   obtain ⟨z, hz, hz1⟩ := exists_inv_one_add L S.ϖ S.ϖ_irr (L.O.mul_mem hp ((hΛ.2 x).2 hx y hy))
   refine ⟨L.cj z • x, Λ.smul_mem ⟨_, GlobalTheory.UnramOrder.cj_mem L hz⟩ hx, S.W0.smul_mem _ hxW, ?_⟩
   unfold Frames.h at hux ⊢
-  rw [hf_smulr, hf_addl, hf_smull, hux, L.cj_cj, pow_succ, map_mul]
+  rw [_root_.GlobalTheory.HL.Eichler.hf_smul_r, _root_.GlobalTheory.HL.Eichler.hf_add_l, _root_.GlobalTheory.HL.Eichler.hf_smul_l, hux, L.cj_cj, pow_succ, map_mul]
   linear_combination hz1
 
 def mulP (Λ : Submodule L.O S.V) (N : ℕ) : AddSubgroup S.V where
@@ -225,7 +202,7 @@ theorem cint_eq_mean {W : Type} [AddCommGroup W] (A P : AddSubgroup W) (R : Fins
     (g : W → ℂ) (hR : ∀ w ∈ R, w ∈ A) (hR' : ∀ w ∈ A, ∃! x, x ∈ R ∧ w - x ∈ P)
     (hQ : ∀ w ∈ A, ∀ b ∈ P, Q w → Q (w + b)) (hg : ∀ w, ∀ b ∈ P, g (w + b) = g w) :
     cint A (fun u => ind (fun u => u ∈ A ∧ Q u) u * g u) = (∑ u ∈ R.filter Q, g u) / (R.card : ℂ) := by
-  have := (GlobalTheory.T.indexMeasureIntegral_eq_mean_over_representatives A (P ⊓ A) (fun u => ind (fun u => u ∈ A ∧ Q u) u * g u) R inf_le_right ?_ ?_ hR ?_).2.2
+  have := (_root_.GlobalTheory.IdxInt.cint_eq_mean_reps A (P ⊓ A) (fun u => ind (fun u => u ∈ A ∧ Q u) u * g u) R inf_le_right ?_ ?_ hR ?_).2.2
   · rw [this, Finset.sum_filter]
     congr 1
     refine Finset.sum_congr rfl fun u hu => ?_
@@ -250,7 +227,7 @@ theorem cint_eq_mean {W : Type} [AddCommGroup W] (A P : AddSubgroup W) (R : Fins
 
 theorem shares : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → ∀ (J : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → |(cint (S.refU J Λ) (ind fun u => u ∈ S.refU J Λ ∧ S.InZ u)).re * (S.q : ℝ) ^ S.a - 1| ≤ 8 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) ∧ (cint (S.refU J Λ) (ind fun u => u ∈ S.refU J Λ ∧ S.InZ u ∧ ¬ S.NoLeak Λ u)).re * (S.q : ℝ) ^ S.a ≤ 16 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) ∧ ∀ y : S.V, (∃ u ∈ S.refU J Λ, L.psi0 (S.h y u) ≠ 1) → ‖cint (S.refU J Λ) (fun u => ind (fun u => u ∈ S.refU J Λ ∧ S.InZ u) u * L.psi0 (S.h y u))‖ * (S.q : ℝ) ^ S.a ≤ 8 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) := by
   intro F _ _ _ _ _ E _ _ _ L r k S hk J d Λ hT
-  have hΛ : IsSD L S.Hm Λ := (GlobalTheory.T.hermitian_double_coset_term_basic_facts L r k S d Λ hT).1
+  have hΛ : IsSD L S.Hm Λ := (_root_.GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT).1
   have hq : (0 : ℝ) < (S.q : ℝ) ^ S.a := by
     obtain ⟨-, -, -, -, -, -, h7, -⟩ := GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr
     have : 0 < S.q := lt_of_lt_of_le two_pos h7
@@ -267,7 +244,7 @@ theorem shares : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
   set ε : ℝ := (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) with hε
   refine ⟨?_, ?_, ?_⟩
   · obtain ⟨R, h0, h1, h2⟩ := main (S.a.toNat + 1) (by omega) (by omega)
-    have h3 := (GlobalTheory.T.quadric_character_leak_shares_finite L r k S hk J d Λ hT (S.a.toNat + 1) R S.InZ (by omega) (fun _ => Iff.rfl)
+    have h3 := (_root_.GlobalTheory.HL.QuadricShare.shares L r k S hk J d Λ hT (S.a.toNat + 1) R S.InZ (by omega) (fun _ => Iff.rfl)
       h1 (fun u hu hu' => h2 u ⟨hu, hu'⟩)).1
     have h4 := cint_eq_mean _ _ R S.InZ (fun _ => 1) h1 h2 (hZ _ (by omega)) (fun _ _ _ => rfl)
     simp only [mul_one, Finset.sum_const, nsmul_eq_mul] at h4
@@ -283,7 +260,7 @@ theorem shares : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
     rw [h6, abs_div, abs_of_pos (div_pos h0 hq), div_le_iff₀ (div_pos h0 hq)]
     exact h3
   · obtain ⟨R, h0, h1, h2⟩ := main (S.a.toNat + 1) (by omega) (by omega)
-    have h3 := (GlobalTheory.T.quadric_character_leak_shares_finite L r k S hk J d Λ hT (S.a.toNat + 1) R S.InZ (by omega) (fun _ => Iff.rfl)
+    have h3 := (_root_.GlobalTheory.HL.QuadricShare.shares L r k S hk J d Λ hT (S.a.toNat + 1) R S.InZ (by omega) (fun _ => Iff.rfl)
       h1 (fun u hu hu' => h2 u ⟨hu, hu'⟩)).2.1
     have h4 := cint_eq_mean _ _ R (fun u => S.InZ u ∧ ¬ S.NoLeak Λ u) (fun _ => 1) h1 h2
       (fun w hw b hb h => ⟨hZ _ (by omega) w hw b hb h.1, fun h' => h.2 (by
@@ -306,13 +283,13 @@ theorem shares : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
     refine le_trans (le_of_eq ?_) h3
     congr 2
   · rintro y ⟨u, hu, hne⟩
-    obtain ⟨m, hm⟩ := exists_pow_smul L S.ϖ S.ϖ_irr Λ hΛ.1 y
+    obtain ⟨m, hm⟩ := _root_.GlobalTheory.PowSmulMemLattice.exists_pow_smul_mem_of_isLat L S.ϖ S.ϖ_irr Λ hΛ.1 y
     obtain ⟨R, h0, h1, h2⟩ := main (m + (S.a.toNat + 1)) (by omega) (by omega)
     have hint : ∀ z ∈ Λ, algebraMap F E ((S.ϖ : F) ^ (m + (S.a.toNat + 1))) * S.h y z ∈ L.O := by
       intro z hz
       have := L.O.mul_mem ((GlobalTheory.UnramOrder.algebraMap_mem_iff L _).2 (pow_mem S.ϖ.2 (S.a.toNat + 1)))
         ((hΛ.2 z).2 hz _ hm)
-      rw [hf_smull] at this
+      rw [_root_.GlobalTheory.HL.Eichler.hf_smul_l] at this
       convert this using 1
       rw [pow_add, map_mul, Frames.h]
       ring
@@ -322,7 +299,7 @@ theorem shares : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
       rw [mul_one] at this
       unfold Frames.h at this ⊢
       rw [hf_addr, hf_smulr, AlgEquiv.commutes, AddChar.map_add_eq_mul, this, mul_one]
-    have h3 := (GlobalTheory.T.quadric_character_leak_shares_finite L r k S hk J d Λ hT (m + (S.a.toNat + 1)) R S.InZ (by omega) (fun _ => Iff.rfl)
+    have h3 := (_root_.GlobalTheory.HL.QuadricShare.shares L r k S hk J d Λ hT (m + (S.a.toNat + 1)) R S.InZ (by omega) (fun _ => Iff.rfl)
       h1 (fun u hu hu' => h2 u ⟨hu, hu'⟩)).2.2 y (fun u hu => hint u (h1 u hu).1) (by
         obtain ⟨x, ⟨hx, hx'⟩, -⟩ := h2 u hu
         refine ⟨x, hx, ?_⟩

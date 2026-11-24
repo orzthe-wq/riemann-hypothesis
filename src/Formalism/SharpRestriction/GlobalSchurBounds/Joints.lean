@@ -1,5 +1,6 @@
 module
 
+import Development.AutomorphicArithmetic.DedekindLFunctions.LandauTheorems.LFunctionConj
 public import Formalism.SharpRestriction.GlobalSchurBounds.TaylorLogMetric
 public import Formalism.SharpRestriction.GlobalSchurBounds.FlipTwoThree
 public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLattice
@@ -137,53 +138,13 @@ theorem jnt_chiK_prim (D : D7) : (chiK D).IsPrimitive := by
 theorem jnt_chiK_real (D : D7) (a : ZMod D.host.d) : conj (chiK D a) = chiK D a := by
   simp [chiK, MulChar.ringHomComp_apply]
 
-theorem jnt_LFunction_conj {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1)
-    (hr : ∀ a, conj (χ a) = χ a) (s : ℂ) :
+theorem jnt_LFunction_conj {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
+    (hχ : χ ≠ 1) → (hr : ∀ a, conj (χ a) = χ a) → (s : ℂ) →
     LFunction χ (conj s) = conj (LFunction χ s) := by
-  have hf : Differentiable ℂ (LFunction χ) := differentiable_LFunction hχ
-  let g : ℂ → ℂ := conj ∘ LFunction χ ∘ conj
-  have hg : Differentiable ℂ g := fun z => by
-    have := (hf (conj z)).conj_conj
-    simpa [g] using this
-  have hreal : ∀ t : ℝ, 1 < t → LFunction χ t = g t := by
-    intro t ht
-    simp only [g, Function.comp, Complex.conj_ofReal]
-    rw [LFunction_eq_LSeries χ (by simpa using ht)]
-    unfold LSeries
-    rw [Complex.conj_tsum]
-    congr 1
-    funext n
-    unfold LSeries.term
-    split_ifs
-    · simp
-    · rw [map_div₀, hr, ← Complex.ofReal_natCast, ← Complex.ofReal_cpow (Nat.cast_nonneg _),
-        Complex.conj_ofReal]
-  have heq : Set.EqOn (LFunction χ) g Set.univ := by
-    apply AnalyticOnNhd.eqOn_of_preconnected_of_frequently_eq (z₀ := 2)
-      (fun z _ => hf.analyticAt z) (fun z _ => hg.analyticAt z) isPreconnected_univ (Set.mem_univ _)
-    let u : ℕ → ℂ := fun n => ((2 + 1 / ((n : ℝ) + 1) : ℝ) : ℂ)
-    have hpos : ∀ n : ℕ, (0 : ℝ) < 1 / ((n : ℝ) + 1) := fun n => by positivity
-    have hu : Filter.Tendsto u Filter.atTop (nhdsWithin 2 {2}ᶜ) := by
-      rw [tendsto_nhdsWithin_iff]
-      constructor
-      · have h0 : Filter.Tendsto (fun n : ℕ => (2 : ℝ) + 1 / ((n : ℝ) + 1)) Filter.atTop
-            (nhds (2 + 0)) := tendsto_const_nhds.add tendsto_one_div_add_atTop_nhds_zero_nat
-        rw [add_zero] at h0
-        have h1 := (Complex.continuous_ofReal.tendsto 2).comp h0
-        have h2 : ((2 : ℝ) : ℂ) = 2 := by norm_num
-        rw [h2] at h1
-        exact h1
-      · refine Filter.Eventually.of_forall (fun n => ?_)
-        simp only [u, Set.mem_compl_iff, Set.mem_singleton_iff]
-        intro h2
-        have h3 := congrArg Complex.re h2
-        simp only [Complex.ofReal_re, Complex.re_ofNat] at h3
-        linarith [hpos n]
-    apply hu.frequently
-    refine Filter.Eventually.frequently (Filter.Eventually.of_forall (fun n => ?_))
-    exact hreal _ (by linarith [hpos n])
-  have := heq (Set.mem_univ (conj s))
-  simpa [g] using this
+  intro _ hr s
+  have hinv : χ⁻¹ = χ :=
+    MulChar.ext' fun a => (MulChar.star_apply' χ a).symm.trans (hr a)
+  simpa only [hinv] using Deduction.LFunction_conj χ s
 
 theorem log_deriv_L_one_real_im_eq_zero {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1)
     (hr : ∀ a, conj (χ a) = χ a) : (logDerivativeAtOne χ).im = 0 := by

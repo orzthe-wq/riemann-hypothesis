@@ -73,7 +73,7 @@ theorem prod_plc (a : ∀ i, MonoidAlgebra ℂ (G i)) (L : List ι) (hL : L.Nodu
     funext j
     by_cases hj : j = i
     · subst hj; simp [hL.1]
-    · simp [Function.update_of_ne hj, hj]
+    · simp [hj]
 
 end Tensor
 

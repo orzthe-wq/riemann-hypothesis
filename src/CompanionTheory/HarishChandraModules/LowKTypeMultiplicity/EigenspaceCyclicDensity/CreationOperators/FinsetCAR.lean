@@ -1,10 +1,10 @@
 module
 
-public import Mathlib.Analysis.Complex.Basic
-public import Mathlib.Algebra.Algebra.Pi
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.Algebra.Module.Pi
 public import Mathlib.Algebra.Module.LinearMap.End
-import Mathlib.Data.Finset.Card
-import Mathlib.Tactic.Ring
+public import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic.SplitIfs
 
 @[expose] public section
@@ -40,7 +40,7 @@ theorem sg_insert (i : ι) {j : ι} {A : Finset ι} (h : j ∉ A) :
   unfold sg tw
   rw [Finset.filter_insert]
   split_ifs with hk
-  · rw [Finset.card_insert_of_notMem (fun hm => h (Finset.mem_filter.1 hm).1), pow_succ]; ring
+  · rw [Finset.card_insert_of_notMem (fun hm => h (Finset.mem_filter.1 hm).1), pow_succ, mul_comm]
   · simp
 
 theorem sg_erase (i : ι) {j : ι} {A : Finset ι} (h : j ∈ A) :
@@ -67,7 +67,8 @@ theorem ann_apply (i : ι) (x : Finset ι → V) (A : Finset ι) :
 theorem cre_apply (i : ι) (x : Finset ι → V) (A : Finset ι) :
     cre key i x A = if i ∈ A then sg key i A • x (A.erase i) else 0 := rfl
 
-private theorem cancellation (u v w : ℂ) : u * (-w * v) + v * (w * u) = 0 := by ring
+private theorem cancellation (u v w : ℂ) : u * (-w * v) + v * (w * u) = 0 := by
+  simp [mul_comm, mul_left_comm]
 
 theorem ann_ann (key_inj : Function.Injective key) (i j : ι) :
     (ann key i * ann key j + ann key j * ann key i : Module.End ℂ (Finset ι → V)) = 0 := by

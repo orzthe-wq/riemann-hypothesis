@@ -49,4 +49,4 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData (lastKer lastPai
 open GlobalTheory.FinPl
 
 theorem _root_.GlobalTheory.T.unitaryAdelicTrivialAtPlacesSubgroup_antitone : ∀ (D : D7) (S : HSp D) (P Q : Pl D → Prop), (∀ v, Q v → P v) → grpOff S P ≤ grpOff S Q := by
-  first | exact @GlobalTheory.FinPl.grpOff_anti | exact GlobalTheory.FinPl.grpOff_anti | (intros; apply GlobalTheory.FinPl.grpOff_anti <;> assumption)
+  first | exact @GlobalTheory.FinPl.grpOff_anti

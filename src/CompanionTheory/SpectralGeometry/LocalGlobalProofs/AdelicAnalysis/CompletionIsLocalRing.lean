@@ -140,12 +140,12 @@ theorem isLocR_of_ultrametric (K : Type) [NontriviallyNormedField K] [IsUltramet
 
 theorem isLocR_Fv : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)), IsLocR (Fv F v) := by
   intro F _ _ v
-  letI : NontriviallyNormedField (v.adicCompletion F) :=
+  let : NontriviallyNormedField (v.adicCompletion F) :=
     Valued.toNontriviallyNormedField (v.adicCompletion F) (WithZero (Multiplicative ℤ))
-  haveI : IsUltrametricDist (v.adicCompletion F) :=
+  have : IsUltrametricDist (v.adicCompletion F) :=
     inferInstanceAs (@IsUltrametricDist (v.adicCompletion F)
       (Valued.toNormedField (v.adicCompletion F) (WithZero (Multiplicative ℤ))).toDist)
-  haveI : ProperSpace (v.adicCompletion F) := Formalism.BasicNotions.Examples₂.LocF.proper v
+  have : ProperSpace (v.adicCompletion F) := Formalism.BasicNotions.Examples₂.LocF.proper v
   have h2 : (2 : v.adicCompletion F) ≠ 0 := two_ne_zero
   exact isLocR_of_ultrametric (v.adicCompletion F) h2
 

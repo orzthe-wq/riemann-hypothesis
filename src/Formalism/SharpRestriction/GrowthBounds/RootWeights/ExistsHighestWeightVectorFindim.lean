@@ -150,14 +150,6 @@ private theorem restrictStableOperators_apply_coe {n : ℕ} {K V : Type*} [Field
     (W : Submodule K V) (h : ∀ a b, ∀ x ∈ W, E a b x ∈ W) (a b : Fin n) (x : W) :
     ((restrictStableOperators E W h a b x : W) : V) = E a b x := rfl
 
-private theorem mem_weightSp_restrict_iff {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (E : GLOps n K V)
-    (W : Submodule K V) (h : ∀ a b, ∀ x ∈ W, E a b x ∈ W) (mu : Fin n → ℤ) (x : W) :
-    x ∈ weightSp (restrictStableOperators E W h) mu ↔ (x : V) ∈ weightSp E mu := by
-  rw [mem_weightSpace_iff_diagonal_rep, mem_weightSpace_iff_diagonal_rep]
-  refine forall_congr' fun a => ?_
-  rw [Subtype.ext_iff]
-  exact Iff.rfl
-
 private theorem weight_components_mem_of_sum_mem {n : ℕ} {K V : Type*} [Field K] [CharZero K] [AddCommGroup V] [Module K V]
     (E : GLOps n K V) (p : Submodule K V) (hp : ∀ a, ∀ x ∈ p, E a a x ∈ p) :
     ∀ (k : ℕ) (f : (Fin n → ℤ) →₀ V), f.support.card ≤ k → (∀ mu, f mu ∈ weightSp E mu) →
@@ -234,10 +226,10 @@ private theorem iSup_weightSp_restrictStableOperators_eq_univ {n : ℕ} {K V : T
     weight_components_mem_of_sum_mem E W (fun a => h a a) _ f le_rfl hf (by rw [hfx]; exact x.2)
   have hx' : x = ∑ mu ∈ f.support, (⟨f mu, hmem mu⟩ : W) := by
     apply Subtype.ext
-    simp only [Submodule.coe_sum, Submodule.coe_mk]
+    simp only [Submodule.coe_sum]
     rw [← hfx, Finsupp.sum]
   rw [hx']
-  exact Submodule.sum_mem _ fun mu _ => Submodule.mem_iSup_of_mem mu ((mem_weightSp_restrict_iff E W h mu _).2 (hf mu))
+  exact Submodule.sum_mem _ fun mu _ => Submodule.mem_iSup_of_mem mu ((_root_.Formalism.MainNotions.G.GLWeightTheory.restricted_mem_weightSpace_iff E W h mu _).2 (hf mu))
 
 private theorem restrictStableOperators_locallyFinite {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (E : GLOps n K V) (hE : IsGLRep E) (W : Submodule K V) (h : ∀ a b, ∀ x ∈ W, E a b x ∈ W) :
@@ -295,7 +287,7 @@ private theorem coe_mem_isoSub_of_mem_isoSub_restrict {n : ℕ} {K V : Type*} [F
     obtain ⟨u, hu, v, hv, rfl⟩ := hy
     obtain ⟨u', hu', hu''⟩ := exists_Umon_of_mem_Umon_restrict E W h u hu
     apply Submodule.subset_span
-    refine ⟨u', hu', (v : V), ⟨fun h0 => hv.1 (by ext; simpa using h0), (mem_weightSp_restrict_iff E W h mu v).1 hv.2.1,
+    refine ⟨u', hu', (v : V), ⟨fun h0 => hv.1 (by ext; simpa using h0), (_root_.Formalism.MainNotions.G.GLWeightTheory.restricted_mem_weightSpace_iff E W h mu v).1 hv.2.1,
       fun a b hab => ?_⟩, hu'' v⟩
     have := congrArg Subtype.val (hv.2.2 a b hab)
     simpa [restrictStableOperators_apply_coe] using this
@@ -324,7 +316,7 @@ private theorem restrictStableOperators_list_prod_sub_apply_coe {n : ℕ} {K V :
         (((l.map fun j : ℕ => restrictStableOperators E W h a a - (j : K) • (1 : Module.End K W)).prod) x)) : W) : V) =
       (E a a - (j : K) • (1 : Module.End K V)) (((l.map fun j : ℕ => E a a - (j : K) • (1 : Module.End K V)).prod) x)
     rw [← ih]
-    simp [restrictStableOperators_apply_coe]
+    simp
 
 theorem complete_reducibility_of_semisimple (D : Formalism.BasicNotions.D7) (h2 : adm2 D) : CompleteReducibilityIsotypic := by
   intro K V _ _ _ _ n E hE
@@ -357,7 +349,7 @@ theorem subrep_restriction_of_reducibility (hCR : CompleteReducibilityIsotypic) 
       · rw [he.2 mu hm _ (coe_mem_isoSub_of_mem_isoSub_restrict E W h _ y hy)]
         exact W.zero_mem
     exact key hx'
-  refine ⟨hrep, fun mu x => mem_weightSp_restrict_iff E W h mu x, ?_, ?_, ?_, ?_⟩
+  refine ⟨hrep, fun mu x => _root_.Formalism.MainNotions.G.GLWeightTheory.restricted_mem_weightSpace_iff E W h mu x, ?_, ?_, ?_, ?_⟩
   · intro a b k x
     unfold divPowE
     rw [LinearMap.smul_apply, LinearMap.smul_apply, Submodule.coe_smul, restrictStableOperators_pow_apply_coe]

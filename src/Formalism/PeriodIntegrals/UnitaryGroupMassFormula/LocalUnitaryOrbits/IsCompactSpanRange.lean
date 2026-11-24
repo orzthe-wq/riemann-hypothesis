@@ -4,7 +4,7 @@ public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbi
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FirstStatementA
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.DensFibV
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.PosNear
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.PosNear
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -118,23 +118,23 @@ theorem isOpen_oEv : IsOpen (OEv (E := E) v) := by
   have hc : c ≠ 0 := by
     rw [hcdef, ne_eq, map_eq_zero_iff _ (algebraMap F (Fv F v)).injective]
     exact_mod_cast hy0
-  set W : Set (Fv F v ⊗[F] E) := ⋂ k, (fun z => PI.VolStabSW.PositiveNearLattice.crd b (Fv F v) z k * c⁻¹) ⁻¹'
+  set W : Set (Fv F v ⊗[F] E) := ⋂ k, (fun z => PI.VolStabS.PositiveNearLattice.crd b (Fv F v) z k * c⁻¹) ⁻¹'
     (v.adicCompletionIntegers F : Set (Fv F v)) with hWdef
   have hWo : IsOpen W := isOpen_iInter_of_finite fun k =>
     (ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers v).preimage
-      ((PI.VolStabSW.PositiveNearLattice.continuous_crd b (Fv F v) k).mul continuous_const)
+      ((PI.VolStabS.PositiveNearLattice.continuous_crd b (Fv F v) k).mul continuous_const)
   have hW0 : (0 : Fv F v ⊗[F] E) ∈ W := by
     simp only [hWdef, Set.mem_iInter, Set.mem_preimage]
     intro k
-    simp [PI.VolStabSW.PositiveNearLattice.crd]
+    simp [PI.VolStabS.PositiveNearLattice.crd]
   have hWsub : W ⊆ OEv (E := E) v := by
     intro z hz
     simp only [hWdef, Set.mem_iInter, Set.mem_preimage] at hz
-    rw [PI.VolStabSW.PositiveNearLattice.eq_sum_crd b (Fv F v) z]
+    rw [PI.VolStabS.PositiveNearLattice.eq_sum_crd b (Fv F v) z]
     unfold OEv
     refine Submodule.sum_mem _ fun k _ => ?_
-    have e1 : PI.VolStabSW.PositiveNearLattice.crd b (Fv F v) z k • ((1 : Fv F v) ⊗ₜ[F] b k) =
-        (PI.VolStabSW.PositiveNearLattice.crd b (Fv F v) z k * c⁻¹) • inclR (F := F) (Fv F v) (y • b k) := by
+    have e1 : PI.VolStabS.PositiveNearLattice.crd b (Fv F v) z k • ((1 : Fv F v) ⊗ₜ[F] b k) =
+        (PI.VolStabS.PositiveNearLattice.crd b (Fv F v) z k * c⁻¹) • inclR (F := F) (Fv F v) (y • b k) := by
       have e2 : inclR (F := F) (Fv F v) (y • b k) = c • ((1 : Fv F v) ⊗ₜ[F] b k) := by
         show (1 : Fv F v) ⊗ₜ[F] (y • b k) = c • ((1 : Fv F v) ⊗ₜ[F] b k)
         rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one, hcdef, Algebra.algebraMap_eq_smul_one,
@@ -222,10 +222,6 @@ theorem isCompact_latLoc
   rw [e]
   exact isCompact_span_range v _
 
-theorem exists_int_smul_mem (L : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E)
-    (hx : x ∈ Submodule.span E (L : Set (Fin n → E))) : ∃ m : ℤ, m ≠ 0 ∧ m • x ∈ L :=
-  _root_.UpperTheory.Reformulated.B.FirstStatementA.main L x hx
-
 theorem isOpen_latLoc
     (hL : ∃ L : Submodule (𝓞 E) (Fin n → E), Submodule.IsFullLattice E L ∧ (L : Set (Fin n → E)) = Λ) :
     IsOpen (latLoc (E := E) v Λ : Set (Fin n → Fv F v ⊗[F] E)) := by
@@ -234,7 +230,7 @@ theorem isOpen_latLoc
   letI : Submodule.IsFullLattice E L := hLat
   have hsp := Submodule.IsFullLattice.span_eq_top (A := E) (M := L)
   have hm : ∀ i : Fin n, ∃ m : ℤ, m ≠ 0 ∧ m • (Pi.single i (1 : E) : Fin n → E) ∈ L := fun i =>
-    exists_int_smul_mem L _ (by rw [hsp]; exact Submodule.mem_top)
+    _root_.UpperTheory.Reformulated.B.FirstStatementA.main L _ (by rw [hsp]; exact Submodule.mem_top)
   choose m hm0 hmL using hm
   set N : ℤ := ∏ i, m i with hNdef
   have hN0 : N ≠ 0 := Finset.prod_ne_zero_iff.mpr fun i _ => hm0 i

@@ -135,7 +135,7 @@ theorem exists_pelUnif_pow : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDoma
   letI md : Module (NumberField.RingOfIntegers E) D'.toPre.X := pD.xe.module _
   have hx : ∀ (a : NumberField.RingOfIntegers E) (x : D'.toPre.X), pD.xe (a • x) = a • pD.xe x := fun a x =>
     pD.xe.apply_symm_apply _
-  obtain ⟨oD', hoD⟩ := GlobalTheory.powDeg_diagonal_action hG R j _ _ pD _ hx P.oD
+  obtain ⟨oD', hoD⟩ := _root_.GlobalTheory.TauBalBox.exists_pow_oAct hG R j _ _ pD _ hx P.oD
   obtain ⟨rA, hrA⟩ := (GlobalTheory.exists_powAct _ _ _ j pA.toIsPowGrp).1 _ P.oA.toRingAct
   let oA' : A'.OAct (NumberField.RingOfIntegers E) :=
     { toRingAct := rA

@@ -124,7 +124,7 @@ private theorem bd_triv (G : Type) [Group G] [Subsingleton G] (m : ℕ) (a : A) 
       Finsupp.single 1 ((1 + ∑ j ∈ Finset.range (m + 1), (-1 : A) ^ (j + 1)) * a) := by
   rw [bd_single]
   ext x
-  simp [Finsupp.finsetSum_apply, Finsupp.single_apply, eq_iff_true_of_subsingleton,
+  simp [Finsupp.single_apply, eq_iff_true_of_subsingleton,
     Fin.sum_univ_eq_sum_range (fun j => (-1 : A) ^ (j + 1) * a), add_mul, Finset.sum_mul]
 
 private theorem coef (m : ℕ) : (1 + ∑ j ∈ Finset.range (m + 1), (-1 : A) ^ (j + 1)) +

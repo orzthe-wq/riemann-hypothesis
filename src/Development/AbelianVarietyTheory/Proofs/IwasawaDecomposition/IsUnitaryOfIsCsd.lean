@@ -95,7 +95,6 @@ theorem norm_int (χ : HChar E) (k : GL (Fin 1) (Af E))
 
 theorem isUnitary_of_inf (χ : HChar E) (h : ∀ y, ‖((chiInf χ y : ℂˣ) : ℂ)‖ = 1) : χ.IsUnitary := by
   intro z
-  change ‖((χ.1 z : ℂˣ) : ℂ)‖ = 1
   obtain ⟨n, hn, -, h1⟩ := Subgroup.exists_pow_mem_of_index_ne_zero
     (GlobalTheory.Mem.UnitIndex.finiteIndex_unitIdl_sup E).index_ne_zero z
   refine norm_of_pow χ z hn ?_

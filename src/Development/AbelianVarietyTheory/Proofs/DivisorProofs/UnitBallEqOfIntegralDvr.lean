@@ -77,23 +77,18 @@ theorem unitBall_eq_of_integral_dvr (p : ℕ) [Fact p.Prime] (V W : Type) [CommR
           (κ'.comp (algebraMap W (FractionRing W))).comp (algebraMap V W) :=
         RingHom.ext fun a => (hc a).symm
       rw [Polynomial.eval₂_map, hcomp]
-      have h0 : (κ'.comp (algebraMap W (FractionRing W))) (q.eval₂ (algebraMap V W) w) = 0 := by
-        rw [hq, map_zero]
-      exact (Polynomial.hom_eval₂ q (algebraMap V W) _ w).symm.trans h0
+      exact (Polynomial.hom_eval₂ q (algebraMap V W) _ w).symm.trans (by rw [hq, map_zero])
     have h1 := (Valuation.integer.integers vP).mem_of_integral hint
     rw [Valuation.mem_integer_iff] at h1
-    have h2 : ‖κ' (algebraMap W (FractionRing W) w)‖₊ ≤ 1 := h1
-    have h3 : ((‖κ' (algebraMap W (FractionRing W) w)‖₊ : NNReal) : ℝ) ≤ 1 := by exact_mod_cast h2
-    simpa using h3
+    exact NNReal.coe_le_coe.1 (show ‖κ' (algebraMap W (FractionRing W) w)‖₊ ≤ 1 from h1)
   have hunit : ∀ u : Wˣ, ‖κ' (algebraMap W (FractionRing W) u)‖ = 1 := by
     intro u
     have hm : ‖κ' (algebraMap W (FractionRing W) u)‖ *
         ‖κ' (algebraMap W (FractionRing W) ↑u⁻¹)‖ = 1 := by
       rw [← norm_mul, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, norm_one]
     have ha := hW1 u
-    have hb := hW1 ↑u⁻¹
     refine le_antisymm ha ?_
-    nlinarith [mul_le_mul_of_nonneg_left hb (norm_nonneg (κ' (algebraMap W (FractionRing W) u)))]
+    nlinarith [hW1 ↑u⁻¹, norm_nonneg (κ' (algebraMap W (FractionRing W) u))]
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible V
   have hπK0 : algebraMap V (FractionRing V) π ≠ 0 := by
     intro h
@@ -107,24 +102,31 @@ theorem unitBall_eq_of_integral_dvr (p : ℕ) [Fact p.Prime] (V W : Type) [CommR
     refine isUnit_iff_exists_inv.2 ⟨a, IsFractionRing.injective V (FractionRing V) ?_⟩
     rw [map_mul, ha, mul_inv_cancel₀ hπK0, map_one]
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible W
+  -- the norm of an element of `W` only depends on the exponent of `ϖ`
+  have hnorm_pow : ∀ (n : ℕ) (u : Wˣ),
+      ‖κ' (algebraMap W (FractionRing W) (↑u * ϖ ^ n))‖ =
+        ‖κ' (algebraMap W (FractionRing W) ϖ)‖ ^ n := by
+    intro n u
+    rw [map_mul, map_mul, norm_mul, map_pow, map_pow, norm_pow, hunit, one_mul]
   have hϖ1 : ‖κ' (algebraMap W (FractionRing W) ϖ)‖ < 1 := by
     have hπW0 : algebraMap V W π ≠ 0 := fun h =>
       hπ.ne_zero (hinj (h.trans (map_zero _).symm))
     obtain ⟨e, u, he⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hπW0 hϖ
-    have he0 : e ≠ 0 := by
-      rintro rfl
-      rw [pow_zero, mul_one] at he
-      exact hπ.not_isUnit (isUnit_of_map_unit (algebraMap V W) π (he ▸ u.isUnit))
     have hnorm : ‖κ' (algebraMap W (FractionRing W) ϖ)‖ ^ e < 1 := by
       have h := congrArg norm (hc π)
-      rw [he, map_mul, map_mul, norm_mul, map_pow, map_pow, norm_pow, hunit, one_mul] at h
-      rw [← h] at hπ1
-      exact hπ1
+      rw [he, hnorm_pow e u] at h
+      rwa [h]
     by_contra hge
     exact absurd hnorm (not_lt.2 (one_le_pow₀ (not_lt.1 hge)))
+  -- an element of `W` with a positive exponent of `ϖ` has small norm
+  have hlt : ∀ (n : ℕ) (u : Wˣ), n ≠ 0 →
+      ‖κ' (algebraMap W (FractionRing W) (↑u * ϖ ^ n))‖ < 1 := by
+    intro n u hn
+    rw [hnorm_pow n u]
+    exact pow_lt_one₀ (norm_nonneg _) hϖ1 hn
   intro x
   constructor
-  · intro hx
+  · intro _
     by_contra hxW
     rcases ValuationRing.isInteger_or_isInteger W x with ⟨a, ha⟩ | ⟨a, ha⟩
     · exact hxW ⟨a, ha⟩
@@ -145,8 +147,8 @@ theorem unitBall_eq_of_integral_dvr (p : ℕ) [Fact p.Prime] (V W : Type) [CommR
         rw [← map_mul, Units.mul_inv, map_one]
       rw [eq_inv_of_mul_eq_one_right h1, ← hn, ha, inv_inv]
     have hsmall : ‖κ' x⁻¹‖ < 1 := by
-      rw [← ha, hn, map_mul, map_mul, norm_mul, map_pow, map_pow, norm_pow, hunit, one_mul]
-      exact pow_lt_one₀ (norm_nonneg _) hϖ1 hn0
+      rw [← ha, hn]
+      exact hlt n u hn0
     have hprod : ‖κ' x‖ * ‖κ' x⁻¹‖ = 1 := by
       rw [← norm_mul, ← map_mul, mul_inv_cancel₀ hx0, map_one, norm_one]
     have h0 := norm_nonneg (κ' x⁻¹)

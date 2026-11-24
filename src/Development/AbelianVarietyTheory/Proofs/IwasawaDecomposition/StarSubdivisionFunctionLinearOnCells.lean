@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StarDepthToFunNonneg
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentreDepthLeStarDepthOfCellStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalRStarDepthLeOfCentreBoundStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CentreDepthLeStarDepthOfCell
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EvalRStarDepthLeOfCentreBound
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -66,7 +66,7 @@ theorem starFun_linearOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
   refine ⟨?_, ?_⟩
   · intro X _ _ _ _ hX m γ hγ hno
     have ps0 : ∀ B ∈ rcone γ, evalR (starDepth H.bar ψ w) B = 0 := fun B hB =>
-      le_antisymm (GlobalTheory.T.evalR_starDepth_le_of_centre_bound _ H.bar ψ w X m γ B 0 hγ hB le_rfl fun v hv hp hw hin _ _ _ =>
+      le_antisymm (_root_.GlobalTheory.PolFan.evalR_starDepth_le _ H.bar ψ w X m γ B 0 hγ hB le_rfl fun v hv hp hw hin _ _ _ =>
         absurd (hno v hv hp hin) (by rw [hw]; norm_num)) (starDepth_eval_nonneg _)
     have psγ : ∀ i, (starDepth H.bar ψ w).evalZ (γ i) = 0 := fun i => by
       rw [← evalR_toReal]; exact ps0 _ (inRCone_self γ i)
@@ -96,8 +96,8 @@ theorem starFun_linearOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
       have hB : a • toReal β₀ + ∑ j, d j • toReal (γ (s j)) ∈ rcone γ :=
         ⟨fun i => a * e i + Function.extend s d 0 i,
           fun i => add_nonneg (mul_nonneg ha (he i)) (extend_nonneg_starLin s hd i), coords a d⟩
-      refine le_antisymm (GlobalTheory.T.evalR_starDepth_le_of_centre_bound _ H.bar ψ w X m γ _ a hγ hB ha fun v hv hp hw hin t ht hBt => ?_)
-        (GlobalTheory.T.centreDepth_le_starDepth_of_cell _ H.bar ψ w X m γ _ β₀ a hγ hB hβ₀ hp₀ hw₀ hin₀ hne uniq ha ?_)
+      refine le_antisymm (_root_.GlobalTheory.PolFan.evalR_starDepth_le _ H.bar ψ w X m γ _ a hγ hB ha fun v hv hp hw hin t ht hBt => ?_)
+        (_root_.GlobalTheory.PolFan.depth_le_starDepth _ H.bar ψ w X m γ _ β₀ a hγ hB hβ₀ hp₀ hw₀ hin₀ hne uniq ha ?_)
       · rw [uniq v hv hp hw hin] at hBt
         obtain ⟨g, hg, hBg⟩ := hBt
         have rel := sum_mul_eq_zero_of_sum_toReal (X := X) (j := LinearMap.id) (fun _ _ h => h) h
@@ -119,7 +119,7 @@ theorem starFun_linearOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
       have := psv 1 0 zero_le_one fun _ => le_rfl
       simpa using this
     have psγs : ∀ j, (starDepth H.bar ψ w).evalZ (γ (s j)) = 0 := fun j => by
-      have := psv 0 (Pi.single j 1) le_rfl fun i => by by_cases hi : i = j <;> simp [Pi.single_apply, hi]
+      have := psv 0 (Pi.single j 1) le_rfl fun i => by by_cases hi : i = j <;> simp [hi]
       simpa [Pi.single_apply] using this
     have ψv : ∀ (a : ℝ) (d : Fin m' → ℝ), 0 ≤ a → (∀ j, 0 ≤ d j) →
         evalR ψ (a • toReal β₀ + ∑ j, d j • toReal (γ (s j))) = a * ψ.evalZ β₀ + ∑ j, d j * ψ.evalZ (γ (s j)) := by

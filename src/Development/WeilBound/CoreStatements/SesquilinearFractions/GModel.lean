@@ -4,8 +4,11 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieMode
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModelBaseChange
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjective
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsExcisionNbhdAway
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFiniteProjectiveStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -47,7 +50,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AutomorphicSpectrum.Definitions.AdelicLattices.FactPrimes
-public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
 
 @[expose] public section
 
@@ -142,7 +144,7 @@ theorem lie_model_action_base_change : ∀ (E : Type) [Field E] [NumberField E] 
   haveI := t.comm
   haveI : Smooth t.G.hom := t.semi.smooth
   obtain ⟨L, _, _, ⟨M0⟩⟩ := lieModel_exists S t.G R x
-  obtain ⟨hfin, hproj⟩ := T.lie_model_finite_projective S t.G R x L M0
+  obtain ⟨hfin, hproj⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_finite_projective S t.G R x L M0
   haveI := hfin
   haveI := hproj
   haveI : Module.Free R L := Module.free_of_flat_of_isLocalRing
@@ -171,7 +173,7 @@ theorem lie_model_action_base_change : ∀ (E : Type) [Field E] [NumberField E] 
   · intro u
     rw [hpt]
     have h3 := hj (b.equivFun.symm u)
-    simp only [LieModel.Lifts, Category.comp_id] at h3
+    simp only [Category.comp_id] at h3
     exact h3
   · intro a u
     apply M'.inj
@@ -181,7 +183,7 @@ theorem lie_model_action_base_change : ∀ (E : Type) [Field E] [NumberField E] 
     rw [h1, hpt, hpt]
     have h3 := hj (b.equivFun.symm u)
     have h4 := hj (b.equivFun.symm (rho t.act M a u))
-    simp only [LieModel.Lifts, Category.comp_id] at h3 h4
+    simp only [Category.comp_id] at h3 h4
     ext1
     rw [Over.comp_left, h3, h4, h2, Over.comp_left, Category.assoc]
 

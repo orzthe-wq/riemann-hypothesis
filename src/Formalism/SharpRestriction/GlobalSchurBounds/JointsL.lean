@@ -79,7 +79,7 @@ theorem count_at_of (D : D7) (L : SizeData₂ D) (C0 C Δ : ℝ)
       have := D.R.toFrame.ord_pos
       omega
     exact_mod_cast this
-  have hfk : 1 ≤ (D.R.f : ℝ) * D.R.k := by nlinarith
+  have hfk : 1 ≤ (D.R.f : ℝ) * D.R.k := one_le_mul_of_one_le_of_one_le hf1 (by linarith)
   have hfk0 : 0 < (D.R.f : ℝ) * D.R.k := by linarith
   have hm0 : 0 ≤ (D.R.m : ℝ) := Nat.cast_nonneg _
   have hL1 : 1 ≤ L.sc.L := Real.one_le_rpow hx.le L.sc.eps_pos.le
@@ -88,8 +88,8 @@ theorem count_at_of (D : D7) (L : SizeData₂ D) (C0 C Δ : ℝ)
     have hrd1 : 1 ≤ D.host.rdE := by rw [hrd]; linarith [Real.pi_gt_three]
     have he : 0 < Real.exp L.sc.L := Real.exp_pos _
     have h1 : Real.exp L.sc.L ≤ L.sc.x * Real.exp L.sc.L * D.host.rdE := by
-      have h2 : Real.exp L.sc.L ≤ L.sc.x * Real.exp L.sc.L := by nlinarith
-      nlinarith
+      have h2 : Real.exp L.sc.L ≤ L.sc.x * Real.exp L.sc.L := le_mul_of_one_le_left he.le hx.le
+      exact le_trans h2 (le_mul_of_one_le_right (le_trans he.le h2) hrd1)
     have h3 := Real.log_le_log he h1
     rw [Real.log_exp] at h3
     exact h3
@@ -220,8 +220,12 @@ theorem logGam_le {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm
       have := (Fm.D x i).R.toFrame.ord_pos
       omega
     exact_mod_cast this
-  rw [div_le_one (by nlinarith), (Fm.L x i).Gam_eq u]
-  nlinarith
+  rw [div_le_one (mul_pos (by linarith) (by linarith)), (Fm.L x i).Gam_eq u]
+  have hkfk : ((Fm.D x i).R.k : ℝ) ≤ ((Fm.D x i).R.f : ℝ) * (Fm.D x i).R.k := le_mul_of_one_le_left (by linarith) hf1
+  have hX0 : 0 ≤ (Fm.L x i).CGam * ((Fm.D x i).R.m : ℝ) ^ 5 * ((Fm.D x i).R.f : ℝ) * (Fm.L x i).sc.L :=
+    mul_nonneg (mul_nonneg (mul_nonneg (Fm.L x i).CGam_pos.le (by positivity)) (by linarith))
+      (Real.rpow_nonneg (le_trans zero_le_one (Fm.L x i).sc.one_lt_alt.le) _)
+  linarith
 
 theorem exists_le_rpow (θ : ℝ) (hθ : 0 < θ) (C : ℝ) : ∃ x0 : ℝ, 1 ≤ x0 ∧ ∀ x, x0 ≤ x → C ≤ x ^ θ := by
   refine ⟨(max C 1) ^ (1 / θ), Real.one_le_rpow (le_max_right _ _) (by positivity), fun x hx => ?_⟩
@@ -265,7 +269,9 @@ theorem lowB_ge (D : D7) (sc : Scale) (C0 C Δ : ℝ) (w : ℕ → D.what₂.Tau
       intro _
       have h1 := (hb0 ρ).1
       rw [le_div_iff₀ (by linarith)] at h1
-      have h4 : (4 : ℝ) ≤ (D.R.k : ℝ) * (4 * Δ) := by nlinarith
+      have h4 : (4 : ℝ) ≤ (D.R.k : ℝ) * (4 * Δ) := by
+        have := le_mul_of_one_le_left (by linarith : (0 : ℝ) ≤ 4 * Δ) hk
+        linarith
       have h5 : (4 : ℝ) * 1 ≤ (D.R.k : ℝ) * (4 * Δ) * sc.x :=
         mul_le_mul h4 hx.le zero_le_one (by linarith)
       linarith
@@ -290,7 +296,7 @@ theorem lowB_ge (D : D7) (sc : Scale) (C0 C Δ : ℝ) (w : ℕ → D.what₂.Tau
   have hgi : ∀ i, 8 * sc.L ≤ Real.log (D.host.g i) := by
     intro i
     have h1 := (hg i).1
-    have hkb : sc.b ≤ (D.R.k : ℝ) * sc.b := by nlinarith
+    have hkb : sc.b ≤ (D.R.k : ℝ) * sc.b := le_mul_of_one_le_left hbpos.le hk
     have h2 : Real.log (((D.R.k : ℝ) * sc.b) ^ 8) ≤ Real.log (D.host.g i) :=
       Real.log_le_log (pow_pos (mul_pos (by linarith) hbpos) 8) h1
     rw [Real.log_pow] at h2
@@ -366,7 +372,8 @@ theorem tuSize_of {eps : ℝ} (Fm : FamP eps) (C0 C x0 : ℝ)
     fun u => ?_⟩
   · have h1 : max C 0 * ((Fm.L x i).sc.L + 1) ≤ max C 0 * (2 * (Fm.L x i).sc.L) :=
       mul_le_mul_of_nonneg_left (by linarith) hC0
-    nlinarith
+    have h2 := mul_le_mul_of_nonneg_right hmm (by linarith : (0 : ℝ) ≤ (Fm.L x i).sc.L / 2)
+    linarith
   · have hXpos : 0 < ((Fm.D x i).mem u).A.Xu :=
       Real.rpow_pos_of_pos (div_pos ((Fm.D x i).mem u).A.Dstar_pos
         (by exact_mod_cast ((Fm.D x i).mem u).A.duStar_pos)) _
@@ -594,10 +601,11 @@ theorem db_pi_le_v (D : D7) : Real.pi ≤ D.host.v := by
     exact_mod_cast (by omega : 7 ≤ D.host.d)
   have h3 : (2 : ℝ) ≤ Real.sqrt (D.host.d : ℝ) := by
     apply Real.le_sqrt_of_sq_le
-    nlinarith
+    linarith [show (2 : ℝ) ^ 2 = 4 by norm_num]
   have h4 : 8 ≤ D.host.rdE := by
     have := db_rdE D
-    nlinarith
+    have hmul := mul_le_mul h2' h3 (by norm_num) (by linarith)
+    linarith
   unfold Host.v
   linarith [Real.pi_le_four]
 
@@ -618,28 +626,33 @@ theorem db_basic {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x
     linarith
   have hsb : Real.sqrt L.sc.b ≤ L.sc.b := by
     rw [Real.sqrt_le_left (by linarith)]
-    nlinarith
+    exact le_self_pow₀ (by linarith) two_ne_zero
   have hq : (1 : ℝ) ≤ D.host.q := by exact_mod_cast D.host.hyp.1.one_lt.le
   have hd : (1 : ℝ) ≤ D.host.d := by exact_mod_cast D.host.hyp.2.1.one_lt.le
-  have hqd : 1 ≤ (D.host.q : ℝ) * D.host.d := by nlinarith
+  have hqd : 1 ≤ (D.host.q : ℝ) * D.host.d := one_le_mul_of_one_le_of_one_le hq hd
   have hQS : (1 : ℝ) ≤ D.host.QS := by exact_mod_cast D.host.QS_pos
-  have hc1 : 1 ≤ szCond L := by unfold szCond; nlinarith
+  have hc1 : 1 ≤ szCond L := by unfold szCond; rw [mul_assoc]; exact one_le_mul_of_one_le_of_one_le hQS hqd
   have ht1 : (1 : ℝ) ≤ D.R.t := by linarith
   have hc36 : szCond L ≤ szCond L ^ 36 := le_self_pow₀ hc1 (by norm_num)
   have ht150 : (D.R.t : ℝ) ≤ (D.R.t : ℝ) ^ 150 := le_self_pow₀ ht1 (by norm_num)
   have hc36' : 1 ≤ szCond L ^ 36 := one_le_pow₀ hc1
   have ht150' : 1 ≤ (D.R.t : ℝ) ^ 150 := one_le_pow₀ ht1
   have hCond' : szCond L ^ 36 * (D.R.t : ℝ) ^ 150 ≤ Real.sqrt L.sc.b := hCond
-  have hkb : (D.R.k : ℝ) ≤ L.sc.b := by nlinarith
+  have hkb : (D.R.k : ℝ) ≤ L.sc.b := by
+    have := le_mul_of_one_le_left (by linarith : (0 : ℝ) ≤ (D.R.t : ℝ) ^ 150) hc36'
+    linarith
   have hvb : D.host.v ≤ L.sc.b := by
     obtain ⟨-, -, -, -, -, -, -, hrd⟩ := hQD
     have hs : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ (D.host.q : ℝ) * D.host.d := by
       rw [Real.sqrt_le_left (by linarith)]
-      nlinarith
+      exact le_self_pow₀ hqd two_ne_zero
     have h1 : D.host.v ≤ szCond L := by
       unfold Host.v szCond
-      nlinarith
-    nlinarith
+      rw [mul_assoc]
+      have := mul_le_mul_of_nonneg_left hs (by linarith : (0 : ℝ) ≤ (D.host.QS : ℝ) / 2)
+      linarith [mul_nonneg (by linarith : (0 : ℝ) ≤ D.host.QS) (by linarith : (0 : ℝ) ≤ (D.host.q : ℝ) * D.host.d)]
+    have := le_mul_of_one_le_right (by linarith : (0 : ℝ) ≤ szCond L ^ 36) ht150'
+    linarith
   have hlx : 1 ≤ Real.log L.sc.x := by
     have h1 : Real.exp 1 ≤ L.sc.x := by linarith [Real.exp_one_lt_d9]
     have h2 := Real.log_le_log (Real.exp_pos 1) h1
@@ -674,7 +687,8 @@ theorem sizes_clause_seventeen {D : D7} (L : SizeData₂ D) (P : ParameterChoice
     rw [Real.rpow_one] at h2
     have h3 : 0 < L.sc.x ^ (2 + 8 * L.sc.eps + szTh L) := Real.rpow_pos_of_pos hx0 _
     rw [hf]
-    nlinarith
+    have := mul_le_mul_of_nonneg_right (by linarith : (2 : ℝ) ≤ L.sc.x) h3.le
+    linarith
   · have h1 : (D.R.k : ℝ) ≤ L.sc.x ^ (9 / 2 + 10 * L.sc.eps + szTh L) := hK.2
     have h2 : L.sc.x ^ (9 / 2 + 10 * L.sc.eps + szTh L) ≤ L.sc.x ^ (5 : ℝ) :=
       Real.rpow_le_rpow_of_exponent_le hx1 (by rw [hth]; linarith)
@@ -689,7 +703,7 @@ theorem sizes_clause_seventeen {D : D7} (L : SizeData₂ D) (P : ParameterChoice
     have h2 := Real.log_two_lt_d9
     have h3 : (P.CYL + 1) * L.sc.L ≤ max 5 (P.CYL + 1) * L.sc.L :=
       mul_le_mul_of_nonneg_right (le_max_right _ _) (by linarith)
-    nlinarith
+    linarith
   · have h1 : (D.R.N D.R.m : ℝ) * (D.R.m : ℝ) ^ 10 ≤ ((D.s.Del : ℚ) : ℝ) := hDel.1
     have h2 : (1 : ℝ) ≤ D.R.N D.R.m := by
       have : 1 ≤ D.R.N D.R.m := by
@@ -698,7 +712,8 @@ theorem sizes_clause_seventeen {D : D7} (L : SizeData₂ D) (P : ParameterChoice
         omega
       exact_mod_cast this
     have h3 : (1 : ℝ) ≤ (D.R.m : ℝ) ^ 10 := one_le_pow₀ (by linarith)
-    nlinarith
+    have := one_le_mul_of_one_le_of_one_le h2 h3
+    linarith
 
 theorem db_vN {D : D7} (ρ : D.what₂.Tau) (i : ℕ) (h : i < D.R.k - 1) :
     StandardLattice.vN D ρ i = (((D.hc ρ).v ⟨i, h⟩ : ℚ) : ℝ) := by
@@ -778,7 +793,7 @@ theorem db_w {D : D7} (L : SizeData₂ D) : 0 < L.sc.w'' D.R.n ∧ L.sc.w'' D.R.
   obtain ⟨hk3, hm2, hkt, hkr, hn1, hf, hmk⟩ := db_rk D
   have hx1 := L.sc.one_lt_alt
   have hb'0 := db_b'pos L
-  have hxn : 1 ≤ L.sc.x * D.R.n := by nlinarith
+  have hxn : 1 ≤ L.sc.x * D.R.n := one_le_mul_of_one_le_of_one_le hx1.le hn1
   constructor
   · unfold Scale.w''
     exact div_pos hb'0 (by linarith)
@@ -822,8 +837,10 @@ theorem db_b'le {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x)
   have e2 : (D.R.r : ℝ) * ((L.sc.b' + L.Sc) * D.R.k) * Real.log L.sc.x * L.sc.x ^ L.sc.eps =
       (D.R.r : ℝ) * (L.sc.b' + L.Sc) * Real.log L.sc.x * ((D.R.k : ℝ) * L.sc.x ^ L.sc.eps) := by ring
   have hm2L : (D.R.m : ℝ) ^ 2 * L.sc.L ≤ D.R.k := hKR.2.2.2.2.1
-  have hm2k : (D.R.m : ℝ) ^ 2 ≤ D.R.k := by nlinarith [sq_nonneg (D.R.m : ℝ)]
-  have hd2 : L.de2 ^ 2 ≤ 1 := by nlinarith
+  have hm2k : (D.R.m : ℝ) ^ 2 ≤ D.R.k := by
+    have := le_mul_of_one_le_right (sq_nonneg (D.R.m : ℝ)) hL1
+    linarith
+  have hd2 : L.de2 ^ 2 ≤ 1 := by simpa using pow_le_pow_left₀ hd0.le hd1 2
   have u1 : L.de2 * D.R.m * L.sc.b * ((D.R.m : ℝ) * L.de2) = L.de2 ^ 2 * ((D.R.m : ℝ) ^ 2 * L.sc.b) := by
     ring
   have u2 : L.de2 ^ 2 * ((D.R.m : ℝ) ^ 2 * L.sc.b) ≤ 1 * ((D.R.m : ℝ) ^ 2 * L.sc.b) :=
@@ -849,8 +866,8 @@ theorem eta_size_le_b_div_27 {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 
     linarith
   have hf1 : (1 : ℝ) ≤ D.R.f := by rw [hf]; linarith
   have h27 : (27 : ℝ) ≤ (D.R.t : ℝ) ^ 3 * D.R.f * (D.R.k : ℝ) ^ 3 := by
-    have a1 : (1 : ℝ) ≤ (D.R.t : ℝ) ^ 3 * D.R.f := by nlinarith
-    nlinarith
+    have a1 : (1 : ℝ) ≤ (D.R.t : ℝ) ^ 3 * D.R.f := one_le_mul_of_one_le_of_one_le ht1 hf1
+    exact le_trans hk27 (le_mul_of_one_le_left (by linarith) a1)
   exact h2.trans (div_le_div_of_nonneg_left hb0.le (by norm_num) h27)
 
 theorem db_xeta {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x) :
@@ -867,7 +884,9 @@ theorem db_xeta {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x)
   have h4 : (D.R.t : ℝ) * L.etaSz ≤ L.sc.w'' D.R.n / L.sc.x := hEta.2.2.2.1
   rw [le_div_iff₀ hx0] at h4
   have ht3 : (3 : ℝ) ≤ D.R.t := by linarith
-  have a1 : (L.sc.x + 1) * L.etaSz ≤ 3 * L.etaSz * L.sc.x := by nlinarith
+  have a1 : (L.sc.x + 1) * L.etaSz ≤ 3 * L.etaSz * L.sc.x := by
+    have := mul_le_mul_of_nonneg_right (by linarith : L.sc.x + 1 ≤ 3 * L.sc.x) hη.le
+    linarith
   have a2 : 3 * L.etaSz * L.sc.x ≤ (D.R.t : ℝ) * L.etaSz * L.sc.x := by
     have : 3 * L.etaSz ≤ (D.R.t : ℝ) * L.etaSz := mul_le_mul_of_nonneg_right ht3 hη.le
     exact mul_le_mul_of_nonneg_right this hx0.le
@@ -920,8 +939,11 @@ theorem db_xS {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x) :
   have h2 : L.sc.x ^ (2 : ℝ) ≤ L.sc.x ^ (9 / 2 + 10 * L.sc.eps - szTh L) :=
     Real.rpow_le_rpow_of_exponent_le hx1 (by rw [hth]; linarith [L.sc.eps_pos])
   rw [Real.rpow_two] at h2
-  have h3 : 3 * L.sc.x ≤ D.R.k := by nlinarith
-  nlinarith
+  have h3 : 3 * L.sc.x ≤ D.R.k := by
+    have := mul_le_mul_of_nonneg_right hx (by linarith : (0 : ℝ) ≤ L.sc.x)
+    linarith [show L.sc.x ^ 2 = L.sc.x * L.sc.x by ring]
+  have := mul_le_mul_of_nonneg_right h3 hSc.le
+  linarith [mul_nonneg hx0.le hSc.le]
 
 theorem db_win {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x) (ρ : D.what₂.Tau) (j : ℕ)
     (hj : j < D.R.m) : L.sc.w'' D.R.n ≤ wj D (j + 1) ρ ∧ wj D (j + 1) ρ ≤ 2 * L.sc.b := by
@@ -965,10 +987,10 @@ theorem db_top {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x) 
   rw [db_uN u ρ 0 hk0, db_uN u ρ (D.R.k - 1) (by omega), D.hcW_first u ρ hk0, D.hcW_last u ρ hk0, a1, a2]
   obtain ⟨w1, w2⟩ := L.aT_win ⟨t, ht⟩
   have ha : L.sc.a = L.sc.x * L.sc.b := rfl
-  have ha3 : 3 * L.sc.b ≤ L.sc.a := by rw [ha]; nlinarith
+  have ha3 : 3 * L.sc.b ≤ L.sc.a := by rw [ha]; exact mul_le_mul_of_nonneg_right hx (by linarith)
   have ha0 : 0 < L.sc.a := by linarith
   have hxa : 1 ≤ L.sc.x ^ (Scale.A / 2) := Real.one_le_rpow hx1 (by unfold Scale.A; norm_num)
-  have hden : 3 ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2) := by nlinarith
+  have hden : 3 ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2) := le_trans hk3 (le_mul_of_one_le_right (by linarith) hxa)
   have h3 : L.sc.a / ((D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)) ≤ L.sc.a / 3 :=
     div_le_div_of_nonneg_left ha0.le (by norm_num) hden
   have hbT := db_bT L S hx ⟨t, ht⟩
@@ -1002,7 +1024,7 @@ theorem sizes_clause_thirteen {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx :
   rw [abs_of_pos (by linarith), le_div_iff₀ hx0]
   have h1 : (wj D (j + 1) ρ - StandardLattice.bN D ρ j) * L.sc.x ≤ L.etaSz * L.sc.x :=
     mul_le_mul_of_nonneg_right b2 hx0.le
-  nlinarith
+  linarith
 
 theorem sizes_clause_fourteen {D : D7} : ∀ (ρ : D.what₂.Tau) j, j + 1 < D.R.m → wj D (j + 1) ρ < StandardLattice.bN D ρ (j + 1) := by
   intro ρ j hj
@@ -1028,7 +1050,8 @@ theorem sizes_clause_fifteen {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 
   have hxη := db_xeta L S hx
   have hxS := db_xS L S hx
   have hη := L.etaSz_pos
-  nlinarith
+  have h4η := mul_le_mul_of_nonneg_right (by linarith : (4 : ℝ) ≤ L.sc.x + 1) hη.le
+  linarith
 
 theorem sizes_clause_sixteen {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : SizesAt L) (hx : 3 ≤ L.sc.x) (C0 : ℝ)
     (hC0 : 1 ≤ C0) : StandardLattice.GapA D L.sc C0 := by
@@ -1079,11 +1102,19 @@ theorem gBig_of {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x)
   have hfk : (D.R.f : ℝ) ≤ D.R.k := by
     have : D.R.f ≤ D.R.k := by unfold Ranks.f Ranks.n; exact D.R.f_le_k
     exact_mod_cast this
-  have hkb1 : 1 ≤ (D.R.k : ℝ) * L.sc.b := by nlinarith
+  have hkb1 : 1 ≤ (D.R.k : ℝ) * L.sc.b := one_le_mul_of_one_le_of_one_le (by linarith) (by linarith)
   have h28 : ((D.R.k : ℝ) * L.sc.b) ^ 2 ≤ ((D.R.k : ℝ) * L.sc.b) ^ 8 := pow_le_pow_right₀ hkb1 (by norm_num)
-  have h2k : 2 * (D.R.k : ℝ) ≤ (D.R.k : ℝ) * L.sc.b := by nlinarith
+  have h2k : 2 * (D.R.k : ℝ) ≤ (D.R.k : ℝ) * L.sc.b := by
+    have := mul_le_mul_of_nonneg_left hb2 (by linarith : (0 : ℝ) ≤ D.R.k)
+    linarith
   have h4 : (2 * (D.R.k : ℝ)) ^ 2 ≤ ((D.R.k : ℝ) * L.sc.b) ^ 2 := pow_le_pow_left₀ (by linarith) h2k 2
-  have h1 : (2 : ℝ) * D.R.f * D.R.k + 1 < (D.host.g 0 : ℝ) := by nlinarith
+  have h1 : (2 : ℝ) * D.R.f * D.R.k + 1 < (D.host.g 0 : ℝ) := by
+    have hfkk := mul_le_mul_of_nonneg_right hfk (by linarith : (0 : ℝ) ≤ D.R.k)
+    have hk2 : (9 : ℝ) ≤ (D.R.k : ℝ) ^ 2 := by
+      have := mul_le_mul hk3 hk3 (by norm_num) (by linarith)
+      linarith [show (D.R.k : ℝ) ^ 2 = (D.R.k : ℝ) * D.R.k by ring]
+    linarith [show (2 * (D.R.k : ℝ)) ^ 2 = 4 * (D.R.k : ℝ) ^ 2 by ring,
+      show (D.R.k : ℝ) * D.R.k = (D.R.k : ℝ) ^ 2 by ring]
   have h2 : 2 * D.R.f * D.R.k + 1 < D.host.g 0 := by exact_mod_cast h1
   omega
 
@@ -1106,10 +1137,11 @@ theorem tuSize_fam {eps : ℝ} (Fm : FamP eps) (C x0 : ℝ)
     (hC : C ≤ Fm.CTu) : TuSize Fm :=
   tuSize_of Fm (max 5 (Fm.CYL + 1)) C x0 h ⟨3, fun x h3 hx i => ⟨_, _, JDB.dataB_fam Fm x h3 hx i⟩⟩ hC
 
-theorem _root_.Formalism.MainNotions.flipTwoThree.stabiliser_family_of_column_lemma {eps : ℝ} (Fm : FamP eps) (C₄ C₅ : ℝ) (h : UnusedSlot33.ConclusionOnFamily Fm C₄ C₅)
+theorem _root_.Formalism.MainNotions.flipTwoThree.stabiliser_family_of_column_lemma {eps : ℝ} (Fm : FamP eps)
+    (h : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, UnusedSlot33.division_rows_rational_lattice (Fm.D x i))
     (hP : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev) :
     flipTwoThree.admF3 Fm :=
-  flipTwoThree.stabiliser_family_of_definite Fm C₄ C₅ h (fun _ _ => gram0Def _) hP ⟨3, fun x h3 hx i => JDB.gBig_fam Fm x h3 hx i⟩
+  flipTwoThree.stabiliser_family_of_definite Fm h (fun _ _ => gram0Def _) hP ⟨3, fun x h3 hx i => JDB.gBig_fam Fm x h3 hx i⟩
 
 theorem two_lt_level_prime (D : D7) (u : D.what₂.Word) (h : product_first_zeroth_parts.HidaSetting D u) : 2 < (D.mem u).A.T := by
   have h1 := h.1
@@ -1175,10 +1207,6 @@ namespace JSL
 section
 
 open Formalism.FrobeniusOrbits
-
-def SlopesM_at {D : D7} (L : SizeData₂ D) (C : ℝ) : Prop :=
-  ∀ u, -(C * D.host.TT.card * L.sc.a * L.La * (1 + (D.R.m : ℝ) / D.R.k)) ≤ ((D.fm u).lat 0).mu ∧
-    ((D.fm u).lat 0).muMax ≤ C * D.host.TT.card * L.sc.a * L.La
 
 def NumsL (D : D7) (L : SizeData₂ D) (Cn cL : ℝ) : Prop :=
   ∀ u, flipTwoThree.Nums D (flipTwoThree.Tu D u) (D.host.g 0) (D.host.g 1) Cn L.sc.x L.sc.b (cL * L.sc.L) L.sc.b' L.Sc
@@ -1329,7 +1357,7 @@ theorem slopesM_at_of (D : D7) (L : SizeData₂ D) (Cn C5 C6 cL Cc : ℝ)
     (hk : Real.log (D.R.k : ℝ) ≤ 5 * Real.log L.sc.x)
     (hfkB : (D.R.f : ℝ) * D.R.k * (L.sc.b' + L.Sc) ≤ D.host.TT.card * L.sc.a)
     (hfk2 : (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 ≤ D.host.TT.card * L.sc.a) :
-    SlopesM_at L (2 * Cc + max (max C5 C6) 0 * (12 + Cc + cL)) := by
+    _root_.Formalism.MainNotions.Lnk.SlopesM_at L (2 * Cc + max (max C5 C6) 0 * (12 + Cc + cL)) := by
   intro u
   have hv1 : 1 ≤ D.host.v := by
     obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, h, -⟩ := hN u
@@ -1459,7 +1487,7 @@ theorem jnt_sizes_slopes (D : D7) (L : SizeData₂ D) (hS : SizesAt L) (hx2 : 2 
   · have hScb : L.Sc ≤ L.sc.b' := by
       have h1 : (D.R.k : ℝ) * L.Sc ≤ L.sc.b' / (L.sc.x * D.R.n) := hDel.2.2.2.1
       have h2 : L.sc.b' / (L.sc.x * D.R.n) ≤ L.sc.b' :=
-        div_le_self hb'.le (by nlinarith)
+        div_le_self hb'.le (one_le_mul_of_one_le_of_one_le (by linarith) (by linarith))
       have h3 : L.Sc ≤ (D.R.k : ℝ) * L.Sc := le_mul_of_one_le_left hSc.le (by linarith)
       linarith
     have h2fk : 2 * ((D.R.f : ℝ) * D.R.k) ≤ L.sc.X' := by
@@ -1503,7 +1531,7 @@ theorem slopesMF_of {eps : ℝ} (Fm : FamP eps) (Cn cL : ℝ) (hcL : 0 ≤ cL)
         ∀ u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u))
     (hT : ∃ Cc x0 : ℝ, 0 ≤ Cc ∧ ∀ x ≥ x0, ∀ (i : Fm.Ix x) u,
       Real.log (((Fm.D x i).mem u).A.T : ℝ) ≤ Cc * (Fm.D x i).R.m * (Fm.L x i).sc.L) :
-    ∃ C x0 : ℝ, 0 ≤ C ∧ ∀ x ≥ x0, ∀ i : Fm.Ix x, SlopesM_at (Fm.L x i) C := by
+    ∃ C x0 : ℝ, 0 ≤ C ∧ ∀ x ≥ x0, ∀ i : Fm.Ix x, _root_.Formalism.MainNotions.Lnk.SlopesM_at (Fm.L x i) C := by
   have heps : 0 < eps := by
     obtain ⟨i0⟩ := Fm.Ix_zero
     have := (Fm.L 0 i0).sc.eps_pos

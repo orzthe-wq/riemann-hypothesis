@@ -134,7 +134,7 @@ theorem GlobalTheory.AdForm.chi_std_trivial : ∀ {B : Base} {X : PreX B.toPre} 
     refine Ideal.mem_comap.2 ?_
     have h2 : (algebraMap (𝓞 (I.rec7 l Z).host.F) (𝓞 (I.rec7 l Z).host.E)) ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) =
         ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.E) := map_natCast _ _
-    first | (erw [h2]; exact hTE) | exact h2 ▸ hTE | simpa using hTE
+    first | (erw [h2]; exact hTE)
   have hne : v' ≠ (p i).v := by
     rintro rfl
     obtain ⟨-, hPr, -⟩ := GlobalTheory.Mem.Col2.base_fields_primes_ok B X

@@ -51,6 +51,7 @@ import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.RingTheory.Jacobson.Ideal
 public import Mathlib.RingTheory.Nakayama
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.AdicNeighbourhood
 
 @[expose] public section
 
@@ -77,60 +78,26 @@ def I (R : Subring K) (a : K) : Set K := {x | ∃ r ∈ R, x = a * r}
 
 theorem I_compact {R : Subring K} (hc : IsCompact (R : Set K)) (a : K) : IsCompact (I R a) := by
   have : I R a = (fun r => a * r) '' (R : Set K) := by
-    ext x; constructor
-    · rintro ⟨r, hr, rfl⟩; exact ⟨r, hr, rfl⟩
-    · rintro ⟨r, hr, rfl⟩; exact ⟨r, hr, rfl⟩
+    ext x
+    exact ⟨fun ⟨r, hr, h⟩ => ⟨r, hr, h.symm⟩, fun ⟨r, hr, h⟩ => ⟨r, hr, h.symm⟩⟩
   rw [this]
   exact hc.image (continuous_const.mul continuous_id)
 
 theorem I_nhds {R : Subring K} (ho : IsOpen (R : Set K)) (a : Kˣ) : I R (a : K) ∈ 𝓝 (0 : K) := by
-  have : I R (a : K) = (fun x => ((a⁻¹ : Kˣ) : K) * x) ⁻¹' (R : Set K) := by
-    ext x; constructor
+  have h : I R (a : K) = (fun x => ((a⁻¹ : Kˣ) : K) * x) ⁻¹' (R : Set K) := by
+    ext x
+    constructor
     · rintro ⟨r, hr, rfl⟩
-      show ((a⁻¹ : Kˣ) : K) * ((a : K) * r) ∈ R
       simpa using hr
     · intro hx
       exact ⟨_, hx, by simp⟩
-  rw [this]
-  refine (ho.preimage (continuous_const.mul continuous_id)).mem_nhds ?_
-  show ((a⁻¹ : Kˣ) : K) * 0 ∈ R
-  simp
+  rw [h]
+  exact (ho.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp)
 
 theorem inter_zero {R : Subring K} [T2Space K] [IsReduced K] (hc : IsCompact (R : Set K))
     (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) (ϖ : K) (hu : ∀ x : K, ∃ m : ℕ, ϖ ^ m * x ∈ R)
-    (x : K) (hx : ∀ n, x ∈ I R (ϖ ^ n)) : x = 0 := by
-  by_contra hx0
-  have hx2 : x ^ 2 ≠ 0 := fun h => hx0 (IsNilpotent.eq_zero ⟨2, h⟩)
-  have hI : ∀ y : K, y * x ∈ R := by
-    intro y
-    obtain ⟨m, hm⟩ := hu y
-    obtain ⟨r, hr, e⟩ := hx m
-    have : y * x = ϖ ^ m * y * r := by rw [e]; ring
-    rw [this]; exact R.mul_mem hm hr
-  have hW : ({x ^ 2}ᶜ : Set K) ∈ 𝓝 (0 : K) := isOpen_compl_singleton.mem_nhds (by
-    simpa using hx2.symm)
-  obtain ⟨U, hU, hUR⟩ := small_mul hc hW
-  obtain ⟨U', hU', hsub⟩ := exists_nhds_half_neg hU
-  obtain ⟨a, -, ha⟩ := hc.exists_mapClusterPt (f := (atTop : Filter ℕ)) (u := fun n : ℕ => (n : K) * x)
-    (le_principal_iff.2 (mem_map.2 (Filter.univ_mem' fun n : ℕ => hI (n : K))))
-  have hN : {y | y - a ∈ U'} ∈ 𝓝 a := by
-    have : ContinuousAt (fun y : K => y - a) a := (continuous_id.sub continuous_const).continuousAt
-    exact this.preimage_mem_nhds (by simpa using hU')
-  have hf := frequently_atTop.1 (ha.frequently hN)
-  obtain ⟨n, -, h1⟩ := hf 0
-  obtain ⟨m, hm, h2⟩ := hf (n + 1)
-  have h3 := hsub _ h2 _ h1
-  obtain ⟨d, rfl⟩ : ∃ d, m = n + 1 + d := ⟨m - (n + 1), by omega⟩
-  have e : ((n + 1 + d : ℕ) : K) * x - a - ((n : K) * x - a) = ((d + 1 : ℕ) : K) * x := by
-    push_cast; ring
-  rw [e] at h3
-  obtain ⟨v, hv⟩ := hn (d + 1) (by omega)
-  have h4 := hUR _ h3 _ (hI ((v⁻¹ : Kˣ) : K))
-  apply h4
-  show ((d + 1 : ℕ) : K) * x * (((v⁻¹ : Kˣ) : K) * x) = x ^ 2
-  rw [← hv]
-  have : (v : K) * ((v⁻¹ : Kˣ) : K) = 1 := by simp
-  linear_combination x ^ 2 * this
+    (x : K) (hx : ∀ n, x ∈ I R (ϖ ^ n)) : x = 0 :=
+  Formalism.FourierDecayAlt.P.AdicNeighbourhood.inter_zero hc hn ϖ hu x hx
 
 structure Adic (R : Subring K) (ϖ : Kˣ) : Prop where
   t2 : T2Space K
@@ -142,36 +109,14 @@ structure Adic (R : Subring K) (ϖ : Kˣ) : Prop where
 
 theorem adic_of_datum {R : Subring K} {ψ : AddChar K ℂ} (hD : LocalDatum K R ψ)
     (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) : ∃ ϖ : Kˣ, Adic R ϖ := by
-  obtain ⟨ϖ, hϖ, hu⟩ := hD.unif
-  have := hD.t2
-  have := hD.red
-  refine ⟨ϖ, hD.t2, hD.isOpen, hD.isCompact, hϖ, hu, fun W hW => ?_⟩
-  obtain ⟨W', hW'W, hW'o, h0⟩ := mem_nhds_iff.1 hW
-  have hs : IsCompact ((R : Set K) ∩ W'ᶜ) := hD.isCompact.inter_right hW'o.isClosed_compl
-  have hanti : Antitone fun n : ℕ => I R ((ϖ : K) ^ n) := by
-    intro n m hnm x hx
-    obtain ⟨r, hr, rfl⟩ := hx
-    obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hnm
-    exact ⟨(ϖ : K) ^ d * r, R.mul_mem (R.pow_mem hϖ d) hr, by ring⟩
-  obtain ⟨n, hn'⟩ := (hs.elim_directed_family_closed (fun n : ℕ => I R ((ϖ : K) ^ n))
-    (fun n => (I_compact hD.isCompact _).isClosed) (by
-      rw [Set.disjoint_iff_inter_eq_empty, Set.eq_empty_iff_forall_notMem]
-      rintro x ⟨⟨-, hxW⟩, hx⟩
-      have := inter_zero hD.isCompact hn (ϖ : K) hu x (fun n => Set.mem_iInter.1 hx n)
-      exact hxW (this ▸ h0)) hanti.directed_ge).imp (fun _ => Disjoint.inter_eq)
-  refine ⟨n, fun r hr => hW'W ?_⟩
-  by_contra hc
-  have : (ϖ : K) ^ n * r ∈ ((R : Set K) ∩ W'ᶜ) ∩ I R ((ϖ : K) ^ n) :=
-    ⟨⟨R.mul_mem (R.pow_mem hϖ n) hr, hc⟩, r, hr, rfl⟩
-  rw [hn'] at this
-  exact this
+  obtain ⟨ϖ, h⟩ := Formalism.FourierDecayAlt.P.AdicNeighbourhood.adic_of_datum hD hn
+  exact ⟨ϖ, h.t2, h.isOpen, h.isCompact, h.mem, h.absorb, h.basis⟩
 
 variable {R : Subring K} {ϖ : Kˣ}
 
 theorem Adic.approx (h : Adic R ϖ) (f : K → K) (hf : Continuous f) (b : K)
     (ha : ∀ n : ℕ, ∃ r ∈ R, ∃ e ∈ R, f r = b + (ϖ : K) ^ n * e) : ∃ r ∈ R, f r = b := by
   have := h.t2
-  have hcl : IsClosed (f '' (R : Set K)) := (h.isCompact.image hf).isClosed
   have hb : b ∈ closure (f '' (R : Set K)) := by
     rw [mem_closure_iff_nhds]
     intro N hN
@@ -181,9 +126,8 @@ theorem Adic.approx (h : Adic R ϖ) (f : K → K) (hf : Continuous f) (b : K)
     obtain ⟨n, hn⟩ := h.basis _ hW
     obtain ⟨r, hr, e, he, hre⟩ := ha n
     exact ⟨f r, by rw [hre]; exact hn e he, r, hr, rfl⟩
-  rw [hcl.closure_eq] at hb
-  obtain ⟨r, hr, e⟩ := hb
-  exact ⟨r, hr, e⟩
+  rw [(h.isCompact.image hf).isClosed.closure_eq] at hb
+  simpa only [Set.mem_image, SetLike.mem_coe] using hb
 
 theorem Adic.unit_one (h : Adic R ϖ) (j : K) (hj : j ∈ I R (ϖ : K)) : ∃ v ∈ R, (1 + j) * v = 1 := by
   obtain ⟨r, hr, rfl⟩ := hj
@@ -207,12 +151,10 @@ theorem Adic.inv_bounded (h : Adic R ϖ) {Om : Set K} (hC : IsCompact Om) (hU : 
   · rintro S T ⟨M, hM⟩ ⟨M', hM'⟩
     refine ⟨M + M', fun z hz z' e => ?_⟩
     rcases hz with hz | hz
-    · have := R.mul_mem (R.pow_mem h.mem M') (hM z hz z' e)
-      have e' : (ϖ : K) ^ (M + M') * z' = (ϖ : K) ^ M' * ((ϖ : K) ^ M * z') := by ring
-      rwa [e']
-    · have := R.mul_mem (R.pow_mem h.mem M) (hM' z hz z' e)
-      have e' : (ϖ : K) ^ (M + M') * z' = (ϖ : K) ^ M * ((ϖ : K) ^ M' * z') := by ring
-      rwa [e']
+    · have hb := R.mul_mem (R.pow_mem h.mem M') (hM z hz z' e)
+      rwa [show (ϖ : K) ^ (M + M') * z' = (ϖ : K) ^ M' * ((ϖ : K) ^ M * z') by ring]
+    · have hb := R.mul_mem (R.pow_mem h.mem M) (hM' z hz z' e)
+      rwa [show (ϖ : K) ^ (M + M') * z' = (ϖ : K) ^ M * ((ϖ : K) ^ M' * z') by ring]
   · intro x hx
     obtain ⟨u, rfl⟩ := hU x hx
     obtain ⟨M, hM⟩ := h.absorb ((u⁻¹ : Kˣ) : K)
@@ -232,7 +174,6 @@ theorem I_isOpen {R : Subring K} (ho : IsOpen (R : Set K)) (a : Kˣ) : IsOpen (I
   have : I R (a : K) = (fun x => ((a⁻¹ : Kˣ) : K) * x) ⁻¹' (R : Set K) := by
     ext x; constructor
     · rintro ⟨r, hr, rfl⟩
-      show ((a⁻¹ : Kˣ) : K) * ((a : K) * r) ∈ R
       simpa using hr
     · intro hx
       exact ⟨_, hx, by simp⟩
@@ -283,21 +224,17 @@ theorem Adic.root_bounded (h : Adic R ϖ) [IsReduced K] (s : ℕ) (hs : 1 ≤ s)
     induction k with
     | zero =>
       intro h0
-      have := R.mul_mem (R.pow_mem h.mem n0) h0
-      simpa using this
+      simpa using R.mul_mem (R.pow_mem h.mem n0) h0
     | succ k ih =>
       intro hk
       by_cases hkn : k + 1 ≤ n0
       · obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le hkn
-        have := R.mul_mem (R.pow_mem h.mem d) hk
-        have e : (ϖ : K) ^ n0 * v = (ϖ : K) ^ d * ((ϖ : K) ^ (k + 1) * v) := by rw [hd]; ring
-        rwa [e]
+        rw [show (ϖ : K) ^ n0 * v = (ϖ : K) ^ d * ((ϖ : K) ^ (k + 1) * v) by rw [hd]; ring]
+        exact R.mul_mem (R.pow_mem h.mem d) hk
       · apply ih
         have h1 : ((ϖ : K) ^ (k + 1) * v) ^ s ∈ I R ((ϖ : K) ^ n0) := by
-          have hle : n0 ≤ (k + 1) * s := by nlinarith
-          obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le hle
-          exact ⟨(ϖ : K) ^ d * v ^ s, R.mul_mem (R.pow_mem h.mem d) hv, by
-            rw [mul_pow, ← pow_mul, hd]; ring⟩
+          refine I_anti h.mem (n := n0) (m := (k + 1) * s) (by nlinarith) ?_
+          exact ⟨v ^ s, hv, by rw [mul_pow, ← pow_mul]⟩
         obtain ⟨r, hr, e⟩ := hn0 _ hk h1
         have i1 : ((ϖ⁻¹ : Kˣ) : K) * (ϖ : K) = 1 := by simp
         have : (ϖ : K) ^ k * v = r := by
@@ -439,9 +376,7 @@ theorem int_mul {A B : Matrix (Fin m) (Fin m) K} (hA : ∀ i j, A i j ∈ R) (hB
 theorem quad_diff {Λ : Submodule R K} {G Y Y' : Matrix (Fin m) (Fin m) K} (hG : ∀ i j, G i j ∈ R)
     (hY : ∀ i j, Y i j ∈ R) (hY' : ∀ i j, Y' i j ∈ R) (hd : MemM Λ (Y - Y')) :
     MemM Λ (Y * G * Y - Y' * G * Y') := by
-  have e : Y * G * Y - Y' * G * Y' = (Y - Y') * (G * Y) + Y' * G * (Y - Y') := by
-    noncomm_ring
-  rw [e]
+  rw [show Y * G * Y - Y' * G * Y' = (Y - Y') * (G * Y) + Y' * G * (Y - Y') by noncomm_ring]
   exact (hd.mul_right (int_mul hG hY)).add (hd.mul_left (int_mul hY' hG))
 
 theorem Adic.sqrtM (h : Adic R ϖ) (G N : Matrix (Fin m) (Fin m) K) (hG : ∀ i j, G i j ∈ R)
@@ -473,14 +408,13 @@ theorem Adic.sqrt_lip (h : Adic R ϖ) {G N N' Y Y' : Matrix (Fin m) (Fin m) K}
     (hG : ∀ i j, G i j ∈ R) (hY : ∀ i j, Y i j ∈ R) (hY' : ∀ i j, Y' i j ∈ R)
     (e : Y = N - (ϖ : K) • (Y * G * Y)) (e' : Y' = N' - (ϖ : K) • (Y' * G * Y'))
     (Λ : Submodule R K) (hN : MemM Λ (N - N')) : MemM Λ (Y - Y') := by
-  have := h.nak (ι := Fin m × Fin m) (fun p => (Y - Y') p.1 p.2) Λ (fun Λ' hd p => by
+  exact fun i j => h.nak (ι := Fin m × Fin m) (fun p => (Y - Y') p.1 p.2) Λ (fun Λ' hd p => by
     have h1 := quad_diff (Λ := Λ') hG hY hY' (fun i j => hd (i, j))
     refine ⟨_, hN p.1 p.2, _, Λ'.neg_mem (h1 p.1 p.2), ?_⟩
     have e1 := congrFun (congrFun e p.1) p.2
     have e2 := congrFun (congrFun e' p.1) p.2
     simp only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul] at e1 e2 ⊢
-    linear_combination e1 - e2)
-  exact fun i j => this (i, j)
+    linear_combination e1 - e2) (i, j)
 
 theorem Adic.sqrt_symm (h : Adic R ϖ) {G N Y : Matrix (Fin m) (Fin m) K}
     (hG : ∀ i j, G i j ∈ R) (hY : ∀ i j, Y i j ∈ R) (e : Y = N - (ϖ : K) • (Y * G * Y))
@@ -537,8 +471,7 @@ theorem Adic.core (h : Adic R ϖ) (𝔅 : Submodule R K) (hBR : ∀ x ∈ 𝔅, 
         simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
         linear_combination (-(ϖ : K)) * e)
     refine ⟨v, hv, ?_⟩
-    have e2 : η - (ϖ : K) • (Y v *ᵥ v) = v := e
-    exact (sub_eq_iff_eq_add.1 e2).symm
+    exact (sub_eq_iff_eq_add.1 e).symm
   · intro Λ v v' hv hv'
     constructor
     · intro hd
@@ -593,8 +526,7 @@ theorem quad_expand (y w : Fin m → K) :
 theorem prod_ordered (y w : Fin m → K) (h : ∀ k, (1 + y k) * w k = 1) (s : Finset (Fin m)) :
     ∏ i ∈ s, w i = 1 - ∑ i ∈ s, (y i * w i) * ∏ j ∈ s.filter (· < i), w j := by
   have ha : ∀ k, 1 - y k * w k = w k := fun k => by linear_combination -h k
-  have := Finset.prod_one_sub_ordered s (fun i => y i * w i)
-  simpa only [ha] using this
+  simpa only [ha] using Finset.prod_one_sub_ordered s (fun i => y i * w i)
 
 theorem phase_identity (y w : Fin m → K) (h : ∀ k, (1 + y k) * w k = 1) :
     ∑ k, y k + ∏ k, w k - 1 = ∑ i, y i ^ 2 * w i +
@@ -675,7 +607,6 @@ theorem conj_identity (p : K) (Y N : Matrix (Fin m) (Fin m) K) (hs : Yᵀ = Y)
     (e : Y = N - p • (Y * HA K m * Y)) :
     (1 + (2 * p) • (HA K m * Y))ᵀ * HH K m * (1 + (2 * p) • (HA K m * Y)) =
       HH K m + (4 * ((m + 1 : ℕ) : K) * p) • N := by
-  have eN : N = Y + p • (Y * HA K m * Y) := by rw [eq_sub_iff_add_eq] at e; exact e.symm
   have e1 : HH K m * (HA K m * Y) = ((m + 1 : ℕ) : K) • Y := by
     rw [← Matrix.mul_assoc, HH_HA, Matrix.smul_mul, one_mul]
   have e2 : Y * HA K m * HH K m = ((m + 1 : ℕ) : K) • Y := by
@@ -683,7 +614,7 @@ theorem conj_identity (p : K) (Y N : Matrix (Fin m) (Fin m) K) (hs : Yᵀ = Y)
   rw [Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_smul, Matrix.transpose_mul, hs,
     HA_symm]
   simp only [add_mul, mul_add, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, e1, e2]
-  conv_rhs => rw [eN]
+  rw [(eq_sub_iff_add_eq.1 e).symm]
   simp only [Matrix.mul_assoc]
   module
 
@@ -723,8 +654,7 @@ theorem LW.prod {ι : Type} (s : Finset ι) {f : ι → (Fin m → K) → K} (hf
   induction s using Finset.induction_on with
   | empty => simpa using LW.const (R := R) (c := c) (m := m) R.one_mem
   | insert a s ha ih =>
-    simp only [Finset.prod_insert ha]
-    exact (hf a).mul ih
+    simpa only [Finset.prod_insert ha] using (hf a).mul ih
 
 theorem LW.ite (p : Prop) [Decidable p] {f : (Fin m → K) → K} (hf : LW R c f) :
     LW R c (fun v => if p then f v else 0) := by
@@ -754,8 +684,7 @@ theorem LW.MW (hc : ∀ r ∈ R, ∃ u ∈ R, (1 + c * r) * u = 1) (i j : Fin m)
     LW R c (fun v : Fin m → K => MW (InverseBoundedFixedPoint.wv c v) i j) := by
   have hu : ∀ i j : Fin m, LW R c (fun v : Fin m → K => uW (InverseBoundedFixedPoint.wv c v) i j) := fun i j =>
     ((LW.wv hc i).mul (LW.wv hc j)).mul (LW.prod _ fun k => LW.wv hc k)
-  have h2 : (2 : K) ∈ R := ofNat_mem R 2
-  exact ((LW.ite _ ((LW.const h2).mul (LW.wv hc i))).add (LW.ite _ (hu i j))).add (LW.ite _ (hu j i))
+  exact ((LW.ite _ ((LW.const (ofNat_mem R 2)).mul (LW.wv hc i))).add (LW.ite _ (hu i j))).add (LW.ite _ (hu j i))
 
 def cm (a : K) (Λ : Submodule R K) : Submodule R K where
   carrier := {v | a * v ∈ Λ}
@@ -1001,9 +930,7 @@ theorem morse : MorseLemma := by
   obtain ⟨M0, hM0⟩ := h.inv_bounded hQ hQu
   obtain ⟨n0, hn0⟩ := h.root_bounded (m + 1) (by omega)
   obtain ⟨u4, hu4⟩ := hn (4 * (m + 1)) (by omega)
-  have h2 : IsUnit (2 : K) := by
-    have := hn 2 (by omega)
-    simpa using this
+  have h2 : IsUnit (2 : K) := by simpa using hn 2 (by omega)
   have hcv : ((u4 * ϖ : Kˣ) : K) = 4 * ((m + 1 : ℕ) : K) * (ϖ : K) := by
     rw [Units.val_mul, hu4]; push_cast; ring
   refine ⟨I R ((ϖ ^ (n0 + M0) * (u4 * ϖ) : Kˣ) : K), I_nhds h.isOpen _, fun B hB hBV z hz => ?_⟩
@@ -1012,8 +939,7 @@ theorem morse : MorseLemma := by
     have h1 := hM0 _ hz ((((z⁻¹ : Kˣ) : K)) ^ (m + 1)) (by rw [← mul_pow]; simp)
     have e : ((ϖ : K) ^ M0 * ((z⁻¹ : Kˣ) : K)) ^ (m + 1) =
         ((ϖ : K) ^ M0) ^ m * ((ϖ : K) ^ M0 * (((z⁻¹ : Kˣ) : K)) ^ (m + 1)) := by ring
-    rw [e]
-    exact R.mul_mem (R.pow_mem (R.pow_mem h.mem _) _) h1
+    simpa only [e] using R.mul_mem (R.pow_mem (R.pow_mem h.mem _) _) h1
   obtain ⟨φ, h1, h2', h3⟩ := h.morse_local h2 m (u4 * ϖ) z hcv B hB.2.isClosed (fun b hb => by
     obtain ⟨r, hr, e⟩ := hBV hb
     refine ⟨_, R.mul_mem hz' hr, ?_⟩
@@ -1027,4 +953,4 @@ end Main
 
 end Formalism.FourierDecayAlt.P.InverseBoundedFixedPoint
 
-theorem Formalism.FourierDecayAlt.P.morseLemma : Formalism.FourierDecayAlt.A6.MorseLemma := Formalism.FourierDecayAlt.P.InverseBoundedFixedPoint.morse
+alias Formalism.FourierDecayAlt.P.morseLemma := _root_.Formalism.FourierDecayAlt.P.InverseBoundedFixedPoint.morse

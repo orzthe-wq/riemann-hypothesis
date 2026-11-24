@@ -73,10 +73,6 @@ theorem constantCoeff_aeval {O S : Type} [CommRing O] [CommRing S] [Algebra O S]
   | monomial n a =>
     rw [Polynomial.aeval_monomial, Polynomial.aeval_monomial, map_mul, map_pow]
     congr 1
-    all_goals first
-      | rfl
-      | simp [PowerSeries.algebraMap_apply'']
-      | (rw [IsScalarTower.algebraMap_apply O S (PowerSeries S)]; simp)
 
 theorem eq_of_X_mul_eq {S : Type} [CommRing S] {f g : PowerSeries S}
     (h : (X : PowerSeries S) * f = X * g) : f = g := by
@@ -86,10 +82,10 @@ theorem eq_of_X_mul_eq {S : Type} [CommRing S] {f g : PowerSeries S}
 private theorem map_coe_eq_X_pow_lemma {O K : Type} [CommRing O] [CommRing K] (I : Ideal O) (f : O →+* K)
     (hf : ∀ c ∈ I, f c = 0) (P : Polynomial O) (hP : P.IsDistinguishedAt I) :
     PowerSeries.map f (P : PowerSeries O) = X ^ P.natDegree := by
-  have hmon : P.Monic := by first | exact hP.monic | exact hP.2
+  have hmon : P.Monic := by first | exact hP.monic
   have hmem : ∀ {n : ℕ}, n < P.natDegree → P.coeff n ∈ I := by
     intro n hn
-    first | exact hP.mem hn | exact hP.1.mem hn | exact hP.toIsWeaklyEisensteinAt.mem hn
+    first | exact hP.mem hn
   ext n
   rw [PowerSeries.coeff_map, Polynomial.coeff_coe, PowerSeries.coeff_X_pow]
   split_ifs with hn
@@ -120,7 +116,7 @@ private theorem exists_weierstrass_div_lemma_2 {O : Type} [CommRing O] [IsLocalR
 
 theorem rhoCompl : RhoComplStatement := by
   intro O LL S _ _ _ _ _ _ _ _ _ _ _ P hP ρ hunit hann
-  have hmon : P.Monic := by first | exact hP.monic | exact hP.2
+  have hmon : P.Monic := by first | exact hP.monic
   have key : ∀ a : PowerSeries O, (X : PowerSeries S) ∣ ρ a → (P : PowerSeries O) ∣ a := by
     intro a ha
     obtain ⟨q, r, hr, he⟩ := exists_weierstrass_div_lemma_2 P hP a
@@ -137,11 +133,11 @@ theorem rhoCompl : RhoComplStatement := by
       exact h1.symm
     have hdvd : P.map (algebraMap O LL) ∣ r.map (algebraMap O LL) := by
       apply hann
-      first | (rw [Polynomial.aeval_map_algebraMap]; exact hr0) | simpa [Polynomial.aeval_map_algebraMap] using hr0
+      first | (rw [Polynomial.aeval_map_algebraMap]; exact hr0)
     have hmap0 : r.map (algebraMap O LL) = 0 := by
       apply Polynomial.eq_zero_of_dvd_of_degree_lt hdvd
       calc (r.map (algebraMap O LL)).degree ≤ r.degree := by
-            first | exact Polynomial.degree_map_le | exact Polynomial.degree_map_le _ _
+            first | exact Polynomial.degree_map_le
         _ < P.natDegree := hr
         _ = P.degree := (Polynomial.degree_eq_natDegree hmon.ne_zero).symm
         _ = (P.map (algebraMap O LL)).degree := (hmon.degree_map _).symm

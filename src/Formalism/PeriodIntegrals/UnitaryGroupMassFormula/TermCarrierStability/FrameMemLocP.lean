@@ -120,9 +120,7 @@ theorem approx (G : 𝓞 E) (μ : E)
 
 theorem mem_locP {p : Ideal (𝓞 E)} [p.IsPrime] {L : Submodule (𝓞 E) S.V} {v : S.V} :
     v ∈ Formalism.HermitianLatticesTheory.localization₂ p L ↔ ∃ s : 𝓞 E, s ∉ p ∧ s • v ∈ L := by
-  constructor
-  · rintro ⟨s, hs, h⟩; exact ⟨s, hs, h⟩
-  · rintro ⟨s, hs, h⟩; exact ⟨s, hs, h⟩
+  exact Iff.rfl
 
 theorem localization_mono {p : Ideal (𝓞 E)} [p.IsPrime] {L L' : Submodule (𝓞 E) S.V} (h : L ≤ L') {v : S.V}
     (hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ p L) : v ∈ Formalism.HermitianLatticesTheory.localization₂ p L' := by

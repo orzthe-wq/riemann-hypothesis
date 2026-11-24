@@ -162,7 +162,6 @@ theorem ddS_ne_zero (D : D7) : ddS D ≠ 0 := by
   have hinj : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) := by
     first
     | exact FaithfulSMul.algebraMap_injective _ _
-    | exact NoZeroSMulDivisors.algebraMap_injective _ _
   rw [Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective hinj]
   exact differentIdeal_ne_bot
 

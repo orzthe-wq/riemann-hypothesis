@@ -4,9 +4,10 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFor
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HarishChandraModulesOn
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.BarMatrix
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ChosenSeries
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDerivedActionsTensorMembersStatement
+public import Formalism.LocalRingCardinality.DataTheta
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDerivedActionsTensorMembers
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockDualPairSwapSymmetry
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestKTypesJointShapeBlockUnitaryStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowestKTypesJointShapeBlockUnitary
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsContractionIsometricDiscreteSeriesFock
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFockPolynomialIsoUnitaryPairStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsGlobalFockIntertwinerTensorRealPlacesStatement
@@ -14,11 +15,13 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsLoc
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUniformRealThetaIntertwinerChainStep
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockKsetPreservesHomogeneousDegree
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockPolynomialKFiniteBothMembers
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorsOverVacuumIsometryOfSkeletonDatumStatement
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.VacuumFockVectors
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FockVectorsOverVacuumIsometryOfSkeletonDatum
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GluingLawHoldsStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsItWOfGlobIt
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaModelsEqCoverDiscreteSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaVacuumCharactersAtRealPlacesStatement
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaModelsEqCoverDiscreteSeries
+import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.RaisingLoweringOperators
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaVacuumCharactersAtRealPlaces
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TprodNeZeroOfNe
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -111,7 +114,7 @@ theorem exists_isCoverIt_swap (p q r s : ℕ) (T₀ : GrpData (p * r + q * s) (p
       (fun P x x' => by simp only [A, map_add (f := _), ContinuousLinearMap.add_apply])
       (fun c P x => by simp only [A, map_smul, map_smulₛₗ, ContinuousLinearMap.smul_apply])
   have hB : ∀ P x, B P x = A x (F.ι (sw P)) := fun _ _ => rfl
-  obtain ⟨-, hd1, hd2⟩ := GlobalTheory.T.fock_derived_actions_tensor_members p q r s T₀ T₁ T₂ F
+  obtain ⟨-, hd1, hd2⟩ := _root_.GlobalTheory.FockEmbExp.fock_derived p q r s T₀ T₁ T₂ F
   have hsym := GlobalTheory.FockSwap.swap_symmetry r s p q
   refine ⟨B, ?_, ?_, ?_, ?_, ?_⟩
   · intro P
@@ -194,7 +197,7 @@ theorem isParam_lamM' {t : ℕ} {al be ga de : List ℚ} (h : HypA t al be ga de
       tauto
     · simp only [List.mem_append] at he ⊢
       tauto
-  obtain ⟨-, -, ⟨p1, p2, p3, p4⟩, -⟩ := GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t ga de al be h'
+  obtain ⟨-, -, ⟨p1, p2, p3, p4⟩, -⟩ := _root_.GlobalTheory.LowestTypes.lowest_types t ga de al be h'
   let σ : Ix (al.length + de.length) (ga.length + be.length + t) → Ix (ga.length + be.length + t) (al.length + de.length) :=
     Sum.swap
   have e : ∀ a, lamM' t al be ga de a = lamA' t ga de al be (σ a) := fun a => by rcases a with a | a <;> rfl
@@ -213,7 +216,7 @@ theorem exists_locIt_large {X : ProvA} (hX : ChosenSeries X) (h1 : ArchimedeanRa
     (hS : S τ = dualPar (signed (al ++ de) (ga ++ block t ++ be) aT))
     (hS' : S' τ = dualPar (signed (al ++ be) (ga ++ de) aS)) :
     (0 < V.rank ∧ 0 < W.rank) ∧ ∃ A, LocIt M M' τ aS aT A := by
-  obtain ⟨-, p1, -⟩ := GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hd.1
+  obtain ⟨-, p1, -⟩ := _root_.GlobalTheory.LowestTypes.lowest_types t al be ga de hd.1
   have p2 := isParam_lamM' hd.1
   have ht := hd.1.1
   have hn := hd.1.2.1
@@ -226,27 +229,27 @@ theorem exists_locIt_large {X : ProvA} (hX : ChosenSeries X) (h1 : ArchimedeanRa
   obtain ⟨Φ, hΦ⟩ := (h1.2 t al be ga de hd).1
   obtain ⟨Tm, hi, hq, -⟩ := h2.2 t al be ga de hd Φ hΦ
   obtain ⟨B, hB⟩ := exists_isCoverIt_swap _ _ _ _ _ _ _ _ _ _ Tm hi hq
-  obtain ⟨κ, hκ⟩ := GlobalTheory.T.exists_fockPolynomialIso_unitaryPair _ _ _ _ _ _ _ _ e e' he he'
+  obtain ⟨κ, hκ⟩ := _root_.GlobalTheory.Chain.RealIt.PolyIso.exists_isPolyIso _ _ _ _ _ _ _ _ e e' he he'
   obtain ⟨v, hv, -⟩ := (hX _ _ _ p1).1
   have c1 := Fintype.card_congr e
   have c2 := Fintype.card_congr e'
   simp only [Fintype.card_sum, Fintype.card_fin] at c1 c2
   exact ⟨⟨by omega, by omega⟩,
-    GlobalTheory.T.exists_localFockIntertwiner_realPlace_of_coverContraction D V W S S' M M' τ _ _ _ _ _ _ _ _ e e' m m' aS aT U U' κ B hm hm' hU hU' ⟨v, 0, hv⟩ hκ hB⟩
+    _root_.GlobalTheory.Chain.RealIt.LocalFromCover.exists_locIt D V W S S' M M' τ _ _ _ _ _ _ _ _ e e' m m' aS aT U U' κ B hm hm' hU hU' ⟨v, 0, hv⟩ hκ hB⟩
 
 end GlobalTheory.Chain.RealItLarge
 
 theorem GlobalTheory.Chain.RealItLarge.itLarge : ∀ {D : D7} (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (t : ℕ) (aS aT : D.what₂.Tau → ℚ), GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → IsInfFam θ → (∀ τ, ∃ be de : List ℚ, Formalism.MainNotions.SchurIrreducible.DataARm t [] be [] de ∧ S τ = dualPar (GlobalTheory.Chain.signed de (Formalism.BasicNotions.TH.block t ++ be) (aT τ)) ∧ S' τ = dualPar (GlobalTheory.Chain.signed be de (aS τ))) → ∀ (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → (∀ τ, HasInfExp D χS τ (aS τ) ∧ HasInfExp D χT τ (aT τ)) → ∀ f, GlobalTheory.Chain.IsVacVec ψ θ M M' f → ∃ It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M, IsItW θ M M' ω (GlobalTheory.Chain.ptOf ψ θ M M' f) It := by
   intro D V W S S' M M' θ ψ t aS aT hD hH hθ hP χS χT ω hω hexp f hf
   obtain ⟨X, hX, h1, h2⟩ := GlobalTheory.Chain.ItPairObj.exists_record hD hH
-  have hB := GlobalTheory.T.thetaModels_eq_coverDiscreteSeries hD hH D
+  have hB := _root_.GlobalTheory.modelsAreCoverSeries_of_hypotheses hD hH D
   have key : ∀ τ, (0 < V.rank ∧ 0 < W.rank) ∧ ∃ A, GlobalTheory.Chain.RealIt.LocIt M M' τ (aS τ) (aT τ) A := fun τ => by
     obtain ⟨be, de, hd, e1, e2⟩ := hP τ
     exact GlobalTheory.Chain.RealItLarge.exists_locIt_large hX h1 h2 hB M M' τ (al := []) (ga := []) hd e1 e2
   choose hr A hA using key
   obtain ⟨It, I, hI⟩ := GlobalTheory.T.exists_globalFockIntertwiner_tensor_realPlaces D V W _ _ M M' aS aT A GlobalTheory.Contr.contraction.2 (GlobalTheory.T.gluing_law_holds D _ _) hA
-  have hc := fun τ => GlobalTheory.T.thetaVacuumCharacters_atRealPlaces D V W _ _ M M' θ ψ χS χT ω f τ _ _ hθ hω (hexp τ).1 (hexp τ).2 hf
-  exact ⟨It, GlobalTheory.Chain.RealIt.isItW_of_globIt hθ hI hr (GlobalTheory.T.fockVectorsOverVacuumIsometry_of_skeletonDatum D V W _ _ M M' ψ θ hω.std hθ f hf).2.2.2.2
+  have hc := fun τ => _root_.GlobalTheory.vacChar_of_record D V W _ _ M M' θ ψ χS χT ω f τ _ _ hθ hω (hexp τ).1 (hexp τ).2 hf
+  exact ⟨It, GlobalTheory.Chain.RealIt.isItW_of_globIt hθ hI hr (_root_.GlobalTheory.vacuumFock_all_records D V W _ _ M M' ψ θ hω.std hθ f hf).2.2.2.2
     (fun τ => (hc τ).2.1) fun τ => (hc τ).2.2⟩
 
 end

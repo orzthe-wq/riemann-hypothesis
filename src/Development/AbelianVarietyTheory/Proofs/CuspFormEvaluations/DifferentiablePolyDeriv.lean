@@ -144,7 +144,7 @@ theorem eigen_of_triangular (f : (J → V) → ℂ) (lt : J → J → Prop) (rk 
         by_cases h : lt i j
         · rw [if_neg fun hS => (hmin i hS).not_gt (hrk i j h)]
         · rw [hN i j (Finset.ne_of_mem_erase hi) h, zero_smul, zero_smul]
-      · simp [Function.update_of_ne hj, hj]
+      · simp [hj]
   simpa using key Finset.univ
 
 end Triangular

@@ -59,9 +59,7 @@ namespace GlobalTheory.RootEx.OpELevi
 section cov
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-lemma nabs_pos (x : kˣ) : 0 < nabs k x := by
-  unfold nabs
-  exact_mod_cast (distribHaarChar_pos (A := k) (g := x))
+alias nabs_pos := _root_.GlobalTheory.SplitWeil.nabs_pos'
 
 lemma nabs_pow (x : kˣ) (m : ℕ) : nabs k (x ^ m) = nabs k x ^ m := by
   simp [nabs]

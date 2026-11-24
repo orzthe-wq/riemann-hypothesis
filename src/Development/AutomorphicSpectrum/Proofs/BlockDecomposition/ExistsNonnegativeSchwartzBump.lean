@@ -86,7 +86,7 @@ theorem exists_compact_open_nhds (F : Type) [Field F] [NumberField F] {κ : Type
   have hO : (⋂ i, (fun a => w₀ i + a) ⁻¹' t i) ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F) :=
     Filter.iInter_mem.mpr fun i =>
       (continuous_const.add continuous_id).continuousAt.preimage_mem_nhds (by simpa using ht i)
-  obtain ⟨N, hN, hNO⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ hO
+  obtain ⟨N, hN, hNO⟩ := _root_.GlobalTheory.LocalNormBound.main F _ hO
   have hNF : ((N : ℕ) : F) ≠ 0 := Nat.cast_ne_zero.2 hN.ne'
   let c : FiniteAdeleRing (𝓞 F) F := algebraMap F _ ((N : F)⁻¹)
   have hcN : (N : FiniteAdeleRing (𝓞 F) F) * c = 1 := by

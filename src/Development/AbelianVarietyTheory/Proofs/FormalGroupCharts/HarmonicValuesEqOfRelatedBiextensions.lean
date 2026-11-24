@@ -80,20 +80,11 @@ theorem jeq_smul {σ : Type} {m : ℕ} (c : k) {f g : MvPowerSeries σ k} (h : J
   intro e he
   rw [MvPowerSeries.coeff_smul, MvPowerSeries.coeff_smul, h e he]
 
-theorem expS_zero [Algebra ℚ k] {n : ℕ} : FB.expS k (0 : PS k n d) = 1 := by
-  unfold FB.expS
-  have hs : PowerSeries.HasSubst (0 : PS k n d) := PowerSeries.HasSubst.of_constantCoeff_zero (by simp)
-  ext e
-  rw [PowerSeries.coeff_subst hs, finsum_eq_single _ 0]
-  · simp
-  · intro j hj
-    simp [hj]
-
 theorem expS_sum [Algebra ℚ k] {n : ℕ} {J : Type} (s : Finset J) (f : J → PS k n d)
     (hf : ∀ i, MvPowerSeries.constantCoeff (f i) = 0) : FB.expS k (∑ i ∈ s, f i) = ∏ i ∈ s, FB.expS k (f i) := by
   classical
   induction s using Finset.induction_on with
-  | empty => simp [expS_zero]
+  | empty => simp [_root_.ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.nt_expS_zero]
   | insert a s ha ih =>
 
     rw [Finset.sum_insert ha, Finset.prod_insert ha, gt_expS_add _ _ (hf a) (by simp [map_sum, hf]), ih]
@@ -104,16 +95,7 @@ theorem expS_natSmul [Algebra ℚ k] {n : ℕ} (q : ℕ) (f : PS k n d)
   rw [Finset.sum_const, Finset.prod_const, Finset.card_range] at h
   rw [← h, Nat.cast_smul_eq_nsmul]
 
-theorem ev_sum {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) {J : Type} (s : Finset J) (f : J → PS k m d) :
-    ev a (∑ i ∈ s, f i) = ∑ i ∈ s, ev a (f i) := by
-  unfold ev
-
-  rw [← MvPowerSeries.coe_substAlgHom (gt_hasSubst a ha), map_sum]
-
-theorem ev_smul {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (c : k) (f : PS k m d) :
-    ev a (c • f) = c • ev a f := by
-  unfold ev
-  rw [← MvPowerSeries.coe_substAlgHom (gt_hasSubst a ha), map_smul]
+alias ev_smul := _root_.ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.nt_ev_smul
 
 theorem ev_pt_self {n : ℕ} (f : PS k n d) : ev (fun b => pt k (n := n) d b) f = f := by
   change MvPowerSeries.subst (MvPowerSeries.X) f = f
@@ -192,7 +174,7 @@ theorem jeq_main [Algebra ℚ k] {n : ℕ} (m q : ℕ) (φ φi a : Pt k 1 d) (hi
     intro V hV g hg
     rw [MvPowerSeries.constantCoeff_smul, cS V hV g hg, smul_zero]
   simp only [ev_diag _ _ ha' (hp _), ev_diag _ _ ha (hp _)]
-  rw [gt_ev_mul _ hΦ, hcomp, gt_ev_expS _ hΦ _ (cS' _ hLa h hh), ev_smul _ hΦ, ev_sum _ hΦ]
+  rw [gt_ev_mul _ hΦ, hcomp, gt_ev_expS _ hΦ _ (cS' _ hLa h hh), ev_smul _ hΦ, _root_.GlobalTheory.ChartTrans.ev_sum _ hΦ]
   simp only [hterm]
   have hE : ∏ b : Fin n, (ev ![pt k (n := n) d b, comp1 a' (pt k (n := n) d b)] (FB.expS k lam)) ^ q =
       FB.expS k ((q : k) • ∑ b : Fin n, ev ![pt k (n := n) d b, comp1 a' (pt k (n := n) d b)] lam) := by

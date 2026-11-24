@@ -60,7 +60,7 @@ noncomputable section
 namespace PositivityTheory.HtPt.Mh
 
 theorem emb : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T), ∃! j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder ⊤)), Γ.IsEmb (Γ.btOrder ⊤) j := by
-  apply GlobalTheory.CompanionTheory.Ar.BT.exists_unique_emb_btOrder_top <;> assumption
+  apply GlobalTheory.CompanionTheory.Ar.BT.exists_unique_emb_btOrder_top
 
 theorem emb_square : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ (algebraMap R R') F → ∀ (A : Subalgebra R (T → R)) (A' : Subalgebra R' (T → R')) (ψ : A →+* A'), (∀ (a : A) t, (ψ a).1 t = algebraMap R R' (a.1 t)) → ∀ (j : Γ.G.left ⟶ Spec (CommRingCat.of A)) (j' : Γ'.G.left ⟶ Spec (CommRingCat.of A')), Γ.IsEmb A j → Γ'.IsEmb A' j' → F ≫ j = j' ≫ Spec.map (CommRingCat.ofHom ψ) := by
   intro R _ _ T _ _ Γ R' _ _ _ Γ' F hF A A' ψ hψ j j' hj hj'
@@ -129,11 +129,11 @@ theorem exists_den_of_open {A : Type} [CommRing A] {X : Scheme.{0}} (j : X ⟶ S
       simpa using hu.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom
     have e := congrArg (SubOrder.valHom (x ≫ j) D hx) ha
     have hres : ∀ b, SubOrder.valHom (x ≫ j) D hx (algebraMap Γ(Spec (CommRingCat.of A), ⊤) _ b) = val (x ≫ j) b :=
-      fun b => (Twhopf.valAt_restrict (x ≫ j) (homOfLE (le_top : D ≤ ⊤)) hx le_top b).trans (htop _ _ _)
+      fun b => (_root_.PositivityTheory.HtPt.Unc.valAt_restrict (x ≫ j) (homOfLE (le_top : D ≤ ⊤)) hx le_top b).trans (htop _ _ _)
     rw [map_mul, hres, hres, SubOrder.valHom_apply, valAt_comp] at e
     have e2 : valAt x (j ⁻¹ᵁ D) hx ((j.app D).hom s') = val x s :=
       (congrArg (valAt x (j ⁻¹ᵁ D) hx) hs').trans
-        ((Twhopf.valAt_restrict x (homOfLE (le_top : j ⁻¹ᵁ D ≤ ⊤)) hx le_top s).trans (htop _ _ _))
+        ((_root_.PositivityTheory.HtPt.Unc.valAt_restrict x (homOfLE (le_top : j ⁻¹ᵁ D ≤ ⊤)) hx le_top s).trans (htop _ _ _))
     rw [e2, map_pow] at e
     rw [← e]
     ring

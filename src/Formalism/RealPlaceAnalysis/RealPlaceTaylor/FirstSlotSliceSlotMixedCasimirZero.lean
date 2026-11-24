@@ -289,7 +289,6 @@ theorem casArr_of (hk : KCasSpan) : CasArr := by
     · rw [← inner_totalPositionAction]
       have hre : (⟪positionsE V n j b a F, positionsE V n j b a F⟫_ℂ).re = ‖positionsE V n j b a F‖ ^ 2 := by
         first
-          | exact inner_self_eq_norm_sq _
           | exact inner_self_eq_norm_sq (𝕜 := ℂ) _
       rw [hre]
       positivity
@@ -307,7 +306,7 @@ theorem update_comp_perm {X : Type*} (σ : Equiv.Perm (Fin j)) (α : Fin j → X
   · subst hk
     simp
   · have hk' : σ k ≠ i := fun h => hk (by rw [← h, Equiv.symm_apply_apply])
-    simp [Function.update_apply, hk, hk']
+    simp [hk, hk']
 
 theorem factorAction_mul_permuteFactors (σ : Equiv.Perm (Fin j)) (i : Fin j) (c d : Fin n) :
     factorAction (V := V) i c d * permArr V n σ = permArr V n σ * factorAction (σ.symm i) c d := by
@@ -443,7 +442,7 @@ theorem factorAction_mem_admissibleArrays {ε : Fin n → Bool} {E : Fin n → F
         · rw [hki] at hk hk'
           simp at hk'
           exact hk' (by rw [← hab, ← h1, hk])
-        · simp [Function.update_apply, hki] at hk'
+        · simp [hki] at hk'
           exact hk' hk
       · rfl
     have t2 : (if (α i).2 = b then F (Function.update α i ((α i).1, a)) else 0) = 0 := by
@@ -454,7 +453,7 @@ theorem factorAction_mem_admissibleArrays {ε : Fin n → Bool} {E : Fin n → F
         · rw [hki] at hk hk'
           simp at hk'
           exact hk' (by rw [hk, h2, hab])
-        · simp [Function.update_apply, hki] at hk'
+        · simp [hki] at hk'
           exact hk' hk
       · rfl
     rw [t1, t2, sub_zero]
@@ -544,7 +543,6 @@ variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n j : ℕ
 
 theorem re_inner_self_indexArray (F : Arr V n j) : (⟪F, F⟫_ℂ).re = ‖F‖ ^ 2 := by
   first
-    | exact inner_self_eq_norm_sq F
     | exact inner_self_eq_norm_sq (𝕜 := ℂ) F
 
 theorem norm_sq_eq_sum_firstPositionSlice (F : Arr V n (j+1)) :
@@ -567,7 +565,6 @@ theorem nPos_of (hca : CasArr) (hs : OmSymSlice) (hp : OmPlus) : NPos := by
       _ = _ := by
           first
             | simp
-            | (rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; push_cast; ring)
   have hom : (g - 2 * (n:ℝ)) * ‖F‖ ^ 2 ≤ (⟪F, OmS ε E 0 F⟫_ℂ).re := by
     rw [(hs V n ε E j F).2, Complex.re_sum, norm_sq_eq_sum_firstPositionSlice, Finset.mul_sum]
     exact Finset.sum_le_sum fun α' _ => hp V n ε E lam g u hgl hu hk hfd hg _ (hv α')

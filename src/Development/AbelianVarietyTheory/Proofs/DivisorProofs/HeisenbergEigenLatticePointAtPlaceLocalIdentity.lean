@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStable
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EventuallySelfDualLatticeIndicatorIsVacuum
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.EventuallySelfDualLatticeIndicatorIsVacuum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -71,23 +71,23 @@ theorem heis_at_local_identity : ∀ {F : Type} [Field F] [NumberField F] (v : I
     simpa [LinearEquiv.map_smul] using h
   set z : κ → AF F := fun k => GlobalTheory.LatVac.liftV v (ξ k - evFin F v (x₀ k)) with hz
   have hzat : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z :=
-    GlobalTheory.VacIndic.at_pi fun k => GlobalTheory.LatVac.at_liftV v _
+    Tw.VacIndic.at_pi fun k => GlobalTheory.LatVac.at_liftV v _
   set x : κ → AF F := x₀ + z with hx
   have hevx : (fun i => evFin F v (x i)) = ξ := by
     funext i
     simp [hx, hz, GlobalTheory.LatVac.evFin_liftV]
   have hrx : r x = r x₀ := hr.1 x₀ z hzat
-  have hrx1 : r (x + (co.e γ).1) = r x := hr.1 x _ (GlobalTheory.VacIndic.at_pi hx1)
+  have hrx1 : r (x + (co.e γ).1) = r x := hr.1 x _ (Tw.VacIndic.at_pi hx1)
   have key := congrFun (hA r hr) x
   simp only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens] at key
   have hAt : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v)
       (x ⬝ᵥ (co.e γ).2 + ⅟(2 : AF F) * ((co.e γ).1 ⬝ᵥ (co.e γ).2)) := by
-    refine GlobalTheory.VacIndic.at_add ?_ (GlobalTheory.VacIndic.at_mul_left ?_)
-    · exact GlobalTheory.VacIndic.at_sum _ _ fun i => GlobalTheory.VacIndic.at_mul_left (hy1 i)
-    · exact GlobalTheory.VacIndic.at_sum _ _ fun i => GlobalTheory.VacIndic.at_mul_left (hy1 i)
-  rw [GlobalTheory.VacIndic.psi_of_at ψ hAt, hrx1] at key
+    refine Tw.VacIndic.at_add ?_ (Tw.VacIndic.at_mul_left ?_)
+    · exact Tw.VacIndic.at_sum _ _ fun i => Tw.VacIndic.at_mul_left (hy1 i)
+    · exact Tw.VacIndic.at_sum _ _ fun i => Tw.VacIndic.at_mul_left (hy1 i)
+  rw [Tw.VacIndic.psi_of_at ψ hAt, hrx1] at key
   have hhalf : evFin F v (⅟(2 : AF F)) = (2 : Fv F v)⁻¹ := by
-    rw [GlobalTheory.VacIndic.invOf_two_eq, GlobalTheory.VacIndic.evFin_algebraMap]
+    rw [Tw.VacIndic.invOf_two_eq, Tw.VacIndic.evFin_algebraMap]
     simp [map_ofNat]
   have hdot : ∀ a b : κ → AF F, evFin F v (a ⬝ᵥ b) = (fun i => evFin F v (a i)) ⬝ᵥ (fun i => evFin F v (b i)) := by
     intro a b

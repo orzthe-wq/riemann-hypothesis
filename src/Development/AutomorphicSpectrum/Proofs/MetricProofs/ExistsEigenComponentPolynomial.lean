@@ -214,7 +214,7 @@ theorem eigComp_eq_combination : ∀ (E : Type) [Field E] [NumberField E] (s₀ 
     by_cases h : s' = s
     · subst h
       simp [evalHom_tmul]
-    · simp [evalHom_tmul, Pi.single_apply, h]
+    · simp [evalHom_tmul, h]
   have hsum' : ∀ x, ∑ s, actHom ρ (combo (cs s)) x = x := by
     intro x
     have h := congrArg (actHom ρ) hsum
@@ -246,7 +246,7 @@ theorem eigComp_eq_combination : ∀ (E : Type) [Field E] [NumberField E] (s₀ 
       rw [LinearMap.mem_ker, hval _ σ' y hy]
       have hne : extEmb σ' ≠ extEmb s₀ := fun h => hσ' (by
         rw [← extEmb_comp σ', h, extEmb_comp])
-      simp [Pi.single_apply, hne]
+      simp [hne]
     exact fun y hy => hle hy
   have hex : ∀ x, actHom ρ (combo (cs (extEmb s₀))) x ∈ eigSp ρ s₀ ∧
       x - actHom ρ (combo (cs (extEmb s₀))) x ∈ ⨆ σ' ∈ {σ' : 𝓞 E →+* ℂ | σ' ≠ s₀}, eigSp ρ σ' := by

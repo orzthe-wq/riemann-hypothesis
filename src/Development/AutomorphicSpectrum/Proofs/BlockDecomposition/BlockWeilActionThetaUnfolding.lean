@@ -100,10 +100,6 @@ theorem inner_mul_right (V : HSp D) {n : ℕ} (x y : Mx D V.rank n) (B : Mx D n 
     GlobalTheory.StdUnn.inner V x (HMul.hMul y B) = HMul.hMul (GlobalTheory.StdUnn.inner V x y) B := by
   simp only [GlobalTheory.StdUnn.inner, Matrix.mul_assoc]
 
-theorem trace_adj {n : ℕ} (M : Mx D n n) : Matrix.trace (adj M) = cA D (Matrix.trace M) := by
-
-  simp [Matrix.trace, adj, map_sum]
-
 theorem adj_inner (V : HSp D) {n : ℕ} (x y : Mx D V.rank n) :
     adj (GlobalTheory.StdUnn.inner V x y) = GlobalTheory.StdUnn.inner V y x := by
   simp only [GlobalTheory.StdUnn.inner, adj_mul, adj_adj, adj_gA, Matrix.mul_assoc]
@@ -111,7 +107,7 @@ theorem adj_inner (V : HSp D) {n : ℕ} (x y : Mx D V.rank n) :
 theorem trace_swap (V : HSp D) {n : ℕ} (x y : Mx D V.rank n) (B : Mx D n n) (hB : adj B = B) :
     Matrix.trace (HMul.hMul (GlobalTheory.StdUnn.inner V y x) B) =
       cA D (Matrix.trace (HMul.hMul (GlobalTheory.StdUnn.inner V x y) B)) := by
-  rw [← trace_adj, adj_mul, adj_inner, hB, Matrix.trace_mul_comm]
+  rw [← _root_.GlobalTheory.MixModel.trace_adj, adj_mul, adj_inner, hB, Matrix.trace_mul_comm]
 
 theorem exp_ring {R : Type*} [CommRing R] (c t₁ t₃ t₄ t₅ : R) (h : c + c = 1) :
     -t₁ + t₅ + c * t₃ + c * t₄ = t₅ + c * (t₃ - t₁ - t₁ + t₄) := by

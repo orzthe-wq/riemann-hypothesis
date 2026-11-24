@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.TrivialOnInertiaOfUnr
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetSubLeftOfAdmissible
 
 @[expose] public section
 
@@ -57,18 +58,6 @@ namespace GlobalTheory.SegLen
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
-
-theorem tmul_ne_zero_of_ne {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] {x : X} {y : Y}
-    (hx : x ≠ 0) (hy : y ≠ 0) : x ⊗ₜ[ℂ] y ≠ 0 := by
-  obtain ⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ Y, φ y ≠ 0 := by
-    by_contra hc
-    push_neg at hc
-    exact hy ((Module.forall_dual_apply_eq_zero_iff ℂ y).1 hc)
-  intro h0
-  have := congrArg ((TensorProduct.rid ℂ X).toLinearMap ∘ₗ LinearMap.lTensor X φ) h0
-  simp only [LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul,
-    map_zero] at this
-  exact hx ((smul_eq_zero.1 this).resolve_left hφ)
 
 theorem lpChar_lpSp_one' (x : WD h) : x.lpChar (WD.lpSp (h := h) 1) = x := by
   have h1 : WD.lpSp (h := h) 1 = WD.lpOfChar h (WeilDeligne.unrChar h (qPow w 0)) (isSmooth_unrChar h _) := by
@@ -95,6 +84,6 @@ theorem not_mono0_lpChar_lpSp {x : WD h} (hx : IsIrrWD x) {n : ℕ} (hn : 2 ≤ 
     exact shiftEnd_ne_zero hn (LinearMap.ext hc)
   have := LinearMap.congr_fun hN (v ⊗ₜ u)
   rw [LinearMap.lTensor_tmul, LinearMap.zero_apply] at this
-  exact tmul_ne_zero_of_ne hv hu this
+  exact _root_.UpperTheory.Reformulated.B.DYha2.main hv hu this
 
 end GlobalTheory.SegLen

@@ -67,7 +67,6 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 lemma enn_nnnorm (z : ℂ) : (‖z‖₊ : ℝ≥0∞) = ENNReal.ofReal ‖z‖ := by
   first
   | exact (ofReal_norm_eq_enorm z).symm
-  | (rw [ENNReal.ofReal, Real.toNNReal_of_nonneg (norm_nonneg _)]; rfl)
 
 lemma ofReal_rpow_neg_anti {a b s : ℝ} (hs : 0 ≤ s) (hab : a ≤ b) :
     ENNReal.ofReal b ^ (-s) ≤ ENNReal.ofReal a ^ (-s) := by
@@ -86,7 +85,6 @@ lemma measurable_PsiF {ι : Type*} [Fintype ι] [DecidableEq ι] (p q : ι) (s :
     first
     | exact measurable_const.sub (((continuous_star.comp (continuous_apply p)).measurable).div
         (Complex.continuous_ofReal.comp (continuous_tW q)).measurable)
-    | fun_prop
   show Measurable fun x : ι → ℂ => (‖(1 : ℂ) - star (x p) / ((tW q x : ℝ) : ℂ)‖₊ : ℝ≥0∞) ^ (-s)
   exact (measurable_coe_nnreal_ennreal.comp (measurable_nnnorm.comp h1)).pow_const _
 
@@ -102,17 +100,13 @@ private lemma mulVec_bvec_eq_fun_apply {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ
     M *ᵥ bvec j = fun i => M i j := by
   funext i
   first
-  | simp [Matrix.mulVec, bvec, Pi.single_apply]
+  | simp [Matrix.mulVec, bvec]
 
 private lemma star_bvec_dotProduct_eq_apply {n : ℕ} (j : Fin n) (w : Fin n → ℂ) : star (bvec j) ⬝ᵥ w = w j := by
   first
   | (rw [dotProduct, Finset.sum_eq_single j]
      · simp [bvec]
-     · intro b _ hb; simp [bvec, Pi.single_apply, hb]
-     · simp)
-  | (rw [Matrix.dotProduct, Finset.sum_eq_single j]
-     · simp [bvec]
-     · intro b _ hb; simp [bvec, Pi.single_apply, hb]
+     · intro b _ hb; simp [bvec, hb]
      · simp)
 
 lemma Tz_iK (k : ℕ) : 0 < Tz k 0 (bvec (iK k)) := by
@@ -129,7 +123,6 @@ lemma Tz_iK (k : ℕ) : 0 < Tz k 0 (bvec (iK k)) := by
 lemma ae_mem_fixedUnitary {ν : Measure (Mt k 0)} (hν : IsHaarOn (U0 k) ν) : ∀ᵐ x ∂ν, (Matrix.of x : Mat k 0) ∈ U0 k := by
   first
   | exact ae_iff.2 hν.conc
-  | (rw [ae_iff]; convert hν.conc using 1)
 
 lemma haar_univ_lt_top (hCW : CompactW) {ν : Measure (Mt k 0)} (hν : IsHaarOn (U0 k) ν) : ν Set.univ < ∞ := by
   obtain ⟨U, hU⟩ : ∃ U : Set (Mt k 0), U = U0 k := ⟨_, rfl⟩
@@ -225,10 +218,6 @@ lemma rot (hk : 1 ≤ k) {ν : Measure (Mt k 0)} (hν : IsHaarOn (U0 k) ν) {φ 
        exact continuous_finset_sum _ fun j _ =>
         (continuous_star.comp ((continuous_apply (iW k)).comp (continuous_apply j))).mul
           continuous_const)
-    | (simp only [Matrix.mulVec, Matrix.dotProduct, Matrix.conjTranspose_apply, Matrix.of_apply]
-       exact continuous_finset_sum _ fun j _ =>
-        (continuous_star.comp ((continuous_apply (iW k)).comp (continuous_apply j))).mul
-          continuous_const)
     | fun_prop
   have hmeasF : Measurable (fun x : Mt k 0 => φ (((Matrix.of x)ᴴ *ᵥ v) (iW k))) :=
     hφ.comp hcont.measurable
@@ -272,8 +261,6 @@ private lemma norm_one_sub_le_two_mul_norm_one_sub_real_mul {w : ℂ} {ρ : ℝ}
     rw [norm_mul, e2]
     first
     | rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonpos (by linarith)]; ring
-    | (simp only [Complex.norm_real, Real.norm_eq_abs]; rw [abs_of_nonpos (by linarith)]; ring)
-    | (rw [Complex.norm_eq_abs, Complex.abs_ofReal, abs_of_nonpos (by linarith)]; ring)
   have hA3 : 1 - ρ * ‖w‖ ≤ ‖1 - (ρ : ℂ) * w‖ := by
     have := norm_sub_norm_le (1 : ℂ) ((ρ : ℂ) * w)
     rwa [norm_one, hρw] at this
@@ -344,18 +331,14 @@ lemma bnd (hk : 1 ≤ k) {ν : Measure (Mt k 0)} (hν : IsHaarOn (U0 k) ν) {s :
       rw [e, hsc, Complex.normSq_neg, Complex.normSq_mul, Complex.normSq_ofReal,
         Complex.normSq_eq_norm_sq, ← ht, hρ]
       field_simp
-      try ring
     have hφ : Measurable (fun z : ℂ => ENNReal.ofReal (lam * ‖z + b‖) ^ (-s)) := by
       first
       | exact (ENNReal.continuous_ofReal.comp
           (continuous_const.mul (continuous_id.add continuous_const).norm)).measurable.pow_const _
-      | fun_prop
     have hrot := rot hk hν hφ v c hc hvc
     refine hrot.trans_le ?_
     have hmeasC : Measurable (fun x : Mt k 0 => (‖1 - x (iW k) (iW k)‖₊ : ℝ≥0∞) ^ (-s)) := by
       first
-      | exact (measurable_coe_nnreal_ennreal.comp (measurable_nnnorm.comp (measurable_const.sub
-          ((measurable_pi_apply (iW k)).comp (measurable_pi_apply (iW k)))))).pow_const _
       | fun_prop
     have key : ∀ x : Mt k 0, (Matrix.of x : Mat k 0) ∈ U0 k →
         ENNReal.ofReal (lam * ‖star c * star (x (iW k) (iW k)) + b‖) ^ (-s) ≤

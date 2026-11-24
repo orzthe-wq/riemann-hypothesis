@@ -69,7 +69,7 @@ theorem norm_glue_comm {G : Type} [CommGroup G] (A B F G' R R' : G) (k : A * G' 
 
 theorem norm_match_comm {G : Type} [CommGroup G] (A S R R' : G) (h : S = A * R' * R⁻¹) :
     A * S⁻¹ * R' = R := by
-  rw [h]; simp only [mul_inv]; simp [mul_comm, mul_left_comm, _root_.mul_assoc]
+  rw [h]; simp only [mul_inv]; simp [mul_comm, mul_left_comm]
 
 theorem exists_norm (X Y : Scheme.{0}) (p : X ⟶ Y) (e : Y ⟶ X) (hep : e ≫ p = 𝟙 Y) (V : Y.Opens)
     (W₁ W₂ : X.Opens) (L M : LB X) (w : Cmp (p ⁻¹ᵁ V) L M) (r : RigD e L) (r' : RigD e M)

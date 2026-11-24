@@ -255,7 +255,7 @@ theorem semiPos_iff_pull : ∀ (k : Type) [CommRing k] (X X' : Scheme.{0}) (p : 
         PtsOver.map π hπ _ (PtsOver.map (π ⁻¹ᵁ U).ι (by rw [Category.assoc, hπ]) _ w) :=
       Subtype.ext (Category.assoc _ _ _).symm
     rw [funext e]
-    simp only [e]
+    simp only
     rfl
   have e₁ (J : (L.B.pull π).ι) : ptsIn q σ ((L.B.pull π).U J) =
       PtsOver.map π hπ (spMap σ) ⁻¹' ptsIn p σ (L.B.U (J PUnit.unit)) := Set.ext fun z => by

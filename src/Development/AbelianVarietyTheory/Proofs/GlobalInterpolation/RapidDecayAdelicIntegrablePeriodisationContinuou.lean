@@ -1,9 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DecayZero
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsAdelesHaarMeasureCovolumeOneStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsSummableMajorantRationalVectorsLocallyUnifStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalVectorsAdelesFundamentalDomainMassOneStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsAdelesHaarMeasureCovolumeOne
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsSummableMajorantRationalVectorsLocallyUnif
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalVectorsAdelesFundamentalDomainMassOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -59,7 +59,7 @@ theorem decay_integrable_periodise : ∀ (F : Type) [Field F] [NumberField F] (N
       Continuous fun u => ∑' ξ : Fin N → F, Φ (rat ξ + u) := by
   intro F _ _ N hF Φ hΦ
   obtain ⟨hc, ⟨K, hK, hKz⟩, hdec⟩ := hΦ
-  obtain ⟨k, hk⟩ := GlobalTheory.T.exists_summableMajorant_rationalVectors_locallyUniform F N hF K hK
+  obtain ⟨k, hk⟩ := _root_.GlobalTheory.SumMaj.summable_majorant F N hF K hK
   obtain ⟨C, hC⟩ := hdec k
   have hsz : ∀ u : Fin N → AF F, 0 ≤ sz u := fun u =>
     Finset.sum_nonneg fun l _ => Finset.sum_nonneg fun w _ => abs_nonneg _
@@ -84,8 +84,8 @@ theorem decay_integrable_periodise : ∀ (F : Type) [Field F] [NumberField F] (N
   haveI : Countable F := Finsupp.Countable.of_moduleFinite (R := ℚ) (M := F)
   refine ⟨?_, ?_, ?_⟩
   · intro μ hμ
-    obtain ⟨ν, hν⟩ := GlobalTheory.T.exists_measure_isCov1 F
-    obtain ⟨-, -, -, ⟨K₀, hK₀, hcov⟩, -⟩ := GlobalTheory.T.rationalVectors_adeles_fundamentalDomain_mass_one F N ν hν
+    obtain ⟨ν, hν⟩ := _root_.GlobalTheory.SWQ.exists_adeles_haarMeasure_covolume_one F
+    obtain ⟨-, -, -, ⟨K₀, hK₀, hcov⟩, -⟩ := _root_.GlobalTheory.SWQ.rat_lattice_fundamentalDomain F N ν hν
     obtain ⟨c, hcs, hc0, hcb⟩ := key K₀ hK₀
     refine ⟨hc.aestronglyMeasurable, ?_⟩
     let S : (Fin N → F) → Set (Fin N → AF F) := fun ξ => (fun u => u + -rat ξ) ⁻¹' K₀

@@ -356,8 +356,6 @@ theorem proportional (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] 
               (ψ (-q (e.symm (e (y, z) + 0 + e (0, a))).2) * Φ.1 (G (e (y, z) + 0 + e (0, a))))) = _
           rw [add_zero, zero_dotProduct, mul_zero, add_zero, hb', LinearEquiv.symm_apply_apply, neg_dotProduct, hx, hGe,
             LinearEquiv.symm_apply_apply]
-          try dsimp only
-          try rfl
         rw [e1, e2, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, hphase]
         simp
       show l (Tinv Φ'.1) = l (Tinv Φ.1)

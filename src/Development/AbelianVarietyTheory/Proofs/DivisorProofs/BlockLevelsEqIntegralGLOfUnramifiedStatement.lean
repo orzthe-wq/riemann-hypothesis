@@ -46,4 +46,4 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 theorem _root_.GlobalTheory.T.blockLevels_eq_integralGL_of_unramified : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b n : ℕ) (h : a + b = n) (w : Pl E)
     (μ : (w.adicCompletion E)ˣ →* ℂˣ), (∀ u ∈ GlobalTheory.LFun.KGL w (n := 1), μ (GeneralLinearGroup.det u) = 1) →
     lev₁ h w (GlobalTheory.LFun.KGL w (n := n)) μ = GlobalTheory.LFun.KGL w (n := a) ∧ lev₂ h w (GlobalTheory.LFun.KGL w (n := n)) μ = GlobalTheory.LFun.KGL w (n := b) := by
-  first | exact @GlobalTheory.BCT.CtLevel.lev_KGL_of_unram | exact GlobalTheory.BCT.CtLevel.lev_KGL_of_unram | (intros; apply GlobalTheory.BCT.CtLevel.lev_KGL_of_unram <;> assumption)
+  first | exact @GlobalTheory.BCT.CtLevel.lev_KGL_of_unram

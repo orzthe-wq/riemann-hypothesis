@@ -45,6 +45,4 @@ import Mathlib.Topology.Sheaves.Init
 
 namespace Formalism.L2.Th1.C
 
-theorem curveEndoUnitBall : CurveEndoUnitBall := curve_endomorphisms_unit_ball
-
 end Formalism.L2.Th1.C

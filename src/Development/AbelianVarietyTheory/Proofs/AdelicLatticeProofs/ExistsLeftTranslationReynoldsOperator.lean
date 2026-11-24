@@ -1,8 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicPair
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsReynoldsOfCompletelyReducibleStatement
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.LeftTranslateMatrixPolyCompletelyReducibleStatement
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.Span.Defs
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsReynoldsOfCompletelyReducible
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.LeftTranslateMatrixPolyCompletelyReducible
 import Mathlib.Algebra.MvPolynomial.Funext
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -84,10 +86,10 @@ theorem isInv_iff (Γ : Set (Matrix ι ι ℂ)) (f : MvPolynomial (ι × ι) ℂ
 
 theorem exists_isReynolds : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → SS Γ → ∃ Rey, IsReynolds Γ Rey := by
   intro ι _ _ Γ hΓ hss
-  obtain ⟨Rey, h1, h2, -, -, h5, h6⟩ := GlobalTheory.T.exists_reynolds_of_completelyReducible' (MvPolynomial (ι × ι) ℂ)
+  obtain ⟨Rey, h1, h2, -, -, h5, h6⟩ := _root_.GlobalTheory.ClassFin.exists_reynolds_of_completelyReducible (MvPolynomial (ι × ι) ℂ)
     ((fun g => (ltr g).toLinearMap) '' Γ) (by
       intro U hU
-      obtain ⟨U', hU', hc⟩ := GlobalTheory.T.leftTranslateMatrixPoly_completelyReducible ι Γ hΓ hss U
+      obtain ⟨U', hU', hc⟩ := _root_.GlobalTheory.ClassFin.ltr_completely_reducible ι Γ hΓ hss U
         (fun g hg f hf => hU _ ⟨g, hg, rfl⟩ f hf)
       refine ⟨U', ?_, hc⟩
       rintro _ ⟨g, hg, rfl⟩ f hf

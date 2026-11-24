@@ -74,14 +74,10 @@ theorem sigmaFinite_of_unfold (M : Measure X) [SigmaFinite M] (ν : Measure Y) (
     have hm' : Measurable fun a => (w (m (y, a)) : ℝ≥0∞) :=
       (measurable_coe_nnreal_ennreal.comp hwm).comp (hm.comp measurable_prodMk_left)
     rw [hWdef, lintegral_eq_zero_iff hm'] at hy
-    have : μ Set.univ = 0 := by
-      have h0 : ∀ᵐ a ∂μ, False := by
-        filter_upwards [hy] with a ha
-        have := hwpos (m (y, a))
-        simp only [Pi.zero_apply, ENNReal.coe_eq_zero] at ha
-        exact (ne_of_gt this) ha
-      simpa using (ae_iff.mp h0)
-    exact hμ (Measure.measure_univ_eq_zero.mp this)
+    have h0 : ∀ᵐ a ∂μ, False := by
+      filter_upwards [hy] with a ha
+      exact (ne_of_gt (hwpos (m (y, a)))) (by simpa only [Pi.zero_apply, ENNReal.coe_eq_zero] using ha)
+    exact hμ (Measure.measure_univ_eq_zero.mp (by simpa [ae_iff] using h0))
   have hWi : ∫⁻ y, W y ∂ν < ⊤ := by
     have h1 := h (fun x => (w x : ℝ≥0∞)) (measurable_coe_nnreal_ennreal.comp hwm)
     calc ∫⁻ y, W y ∂ν = ∫⁻ x, (w x : ℝ≥0∞) ∂M := h1.symm
@@ -90,30 +86,21 @@ theorem sigmaFinite_of_unfold (M : Measure X) [SigmaFinite M] (ν : Measure Y) (
              set_mem := fun _ => trivial
              finite := fun n => ?_
              spanning := ?_ }⟩⟩
-  · have hε : ((n : ℝ≥0∞) + 1)⁻¹ ≠ 0 := ENNReal.inv_ne_zero.mpr (by simp)
-    have hε' : ((n : ℝ≥0∞) + 1)⁻¹ ≠ ⊤ := ENNReal.inv_ne_top.mpr (by simp)
-    calc ν {y | ((n : ℝ≥0∞) + 1)⁻¹ ≤ W y} ≤ (∫⁻ y, W y ∂ν) / ((n : ℝ≥0∞) + 1)⁻¹ :=
-          meas_ge_le_lintegral_div hWm.aemeasurable hε hε'
-      _ < ⊤ := ENNReal.div_lt_top hWi.ne hε
+  · calc ν {y | ((n : ℝ≥0∞) + 1)⁻¹ ≤ W y} ≤ (∫⁻ y, W y ∂ν) / ((n : ℝ≥0∞) + 1)⁻¹ :=
+          meas_ge_le_lintegral_div hWm.aemeasurable (by simp) (by simp)
+      _ < ⊤ := ENNReal.div_lt_top hWi.ne (by simp)
   · refine Set.eq_univ_of_forall fun y => ?_
     obtain ⟨n, hn⟩ := ENNReal.exists_inv_nat_lt (hWpos y)
-    refine Set.mem_iUnion.mpr ⟨n, ?_⟩
-    show ((n : ℝ≥0∞) + 1)⁻¹ ≤ W y
-    refine le_trans ?_ hn.le
-    exact ENNReal.inv_le_inv.mpr le_self_add
+    exact Set.mem_iUnion.mpr ⟨n, (ENNReal.inv_le_inv.mpr le_self_add).trans hn.le⟩
 
 theorem map_of_unfold (M : Measure X) (ν : Measure Y) (μ : Measure A) [SFinite μ]
     (m : Y × A → X) (hm : Measurable m)
     (h : ∀ f : X → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂M = ∫⁻ y, ∫⁻ a, f (m (y, a)) ∂μ ∂ν) :
     M = (ν.prod μ).map m := by
   ext s hs
-  rw [Measure.map_apply hm hs, Measure.prod_apply (hm hs)]
-  have h1 := h (s.indicator 1) (measurable_one.indicator hs)
-  rw [lintegral_indicator_one hs] at h1
-  rw [h1]
-  refine lintegral_congr fun y => ?_
-  rw [← lintegral_indicator_one (measurable_prodMk_left (hm hs))]
-  rfl
+  rw [Measure.map_apply hm hs, Measure.prod_apply (hm hs),
+    ← lintegral_indicator_one hs, h (s.indicator 1) (measurable_one.indicator hs)]
+  exact lintegral_congr fun y => lintegral_indicator_one (measurable_prodMk_left (hm hs))
 
 end General
 
@@ -138,12 +125,10 @@ theorem map_inv_haarLieN (κ : ℝ≥0∞) :
 
 theorem ae_mem_sk {S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)} {μ : Measure (Mt k r)} (h : Formalism.MainNotions.S.IsHaarOn S μ) :
     ∀ᵐ x ∂μ, Matrix.of x ∈ S := by
-  rw [ae_iff]
-  simpa using h.2.2.1
+  simpa [ae_iff] using h.2.2.1
 
 theorem ae_mem_haarLieN (κ : ℝ≥0∞) : ∀ᵐ x ∂(haarLie (Nset k r) κ), Matrix.of x ∈ Nset k r := by
-  rw [ae_iff]
-  simpa using Formalism.MainNotions.LowestKTypeMultiplicity.muN_conc (k := k) (r := r) κ
+  simpa [ae_iff] using Formalism.MainNotions.LowestKTypeMultiplicity.muN_conc (k := k) (r := r) κ
 
 end Local
 

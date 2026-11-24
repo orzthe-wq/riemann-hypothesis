@@ -309,9 +309,9 @@ theorem continuous_of_level (h : Chart θ σ) (hψ : Continuous ψ) (f : WO S T 
       ∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ S T u f = f)
     (hs : Sm (iotaW σ T S) f) : Continuous f := by
   obtain ⟨U, hUo, hU⟩ := hU
-  haveI : IsTopologicalAddGroup (AE D) := IsTopologicalRing.to_topologicalAddGroup
-  haveI : IsTopologicalAddGroup (WA T S) := Pi.topologicalAddGroup
-  haveI : ContinuousSub (WA T S) := IsTopologicalAddGroup.to_continuousSub
+  have : IsTopologicalAddGroup (AE D) := IsTopologicalRing.to_topologicalAddGroup
+  have : IsTopologicalAddGroup (WA T S) := Pi.topologicalAddGroup
+  have : ContinuousSub (WA T S) := IsTopologicalAddGroup.to_continuousSub
   refine continuous_iff_continuousAt.2 fun w => ?_
   let x : WA T S → RW T S := fun w' => piW θ T S (w' - w)
   let a : WA T S → WA T S := fun w' => w + iotaW σ T S (x w')

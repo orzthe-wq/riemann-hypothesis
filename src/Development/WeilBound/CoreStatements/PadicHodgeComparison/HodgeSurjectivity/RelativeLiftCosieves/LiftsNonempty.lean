@@ -1,7 +1,8 @@
 module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.FormUniq
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OntoFormLawsStatement
+public import Development.WeilBound.CoreStatements.PadicHodgeComparison.HodgeSurjectivity.FormLaws
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OntoFormLaws
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -150,7 +151,7 @@ end OmegaRestriction
 theorem omRes_pf : OmRes := by
   intro K _ Z q V V' h k
   exact ⟨OmegaRestriction.phi q h, fun g => rfl, fun a g₀ g c hc => OmegaRestriction.isForm_res q h k g₀ g c hc,
-    fun a e e' he he' ω => OmegaRestriction.isOm_res q h k GlobalTheory.T.onto_form_laws a e e' he he' ω⟩
+    fun a e e' he he' ω => OmegaRestriction.isOm_res q h k _root_.GlobalTheory.CompanionTheory.OntoForms.formLaws a e e' he he' ω⟩
 
 end CrystallineSemistableComparison.Onto
 

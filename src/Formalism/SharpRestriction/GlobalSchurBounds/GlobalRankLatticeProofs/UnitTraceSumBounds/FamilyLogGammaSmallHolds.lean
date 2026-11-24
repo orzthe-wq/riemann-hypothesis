@@ -77,9 +77,6 @@ namespace Formalism.MainNotions.GL3Theta
 
 open Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric NumberField
 
-instance instUltraCp (p : ℕ) [Fact p.Prime] : IsUltrametricDist ℂ_[p] :=
-  IsUltrametricDist.isUltrametricDist_of_isNonarchimedean_norm (PadicComplex.isNonarchimedean p)
-
 section Nu
 
 variable {E : Type} [Field E] [NumberField E] {K : Type} [NormedField K] [IsUltrametricDist K] (ψ : E →+* K)

@@ -81,7 +81,7 @@ theorem mem_box_iff {G₁ G₂ : Type} [Group G₁] [Group G₂] (K₁ : Subgrou
 theorem cls_out {G₁ G₂ : Type} [Group G₁] [Group G₂] (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
     (p : Quotient (QuotientGroup.rightRel K₁) × (G₂ ⧸ K₂)) :
     clsTS K₁ K₂ (p.1.out, p.2.out) = p := by
-  simp only [clsTS, Quotient.out_eq, QuotientGroup.out_eq']
+  simp only [clsTS, Quotient.out_eq]
 
 theorem inv_eq_cls {G₁ G₂ : Type} [Group G₁] [Group G₂] (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
     {E : Type} (f : G₁ × G₂ → E)

@@ -175,11 +175,6 @@ theorem inv_mul_mem_prinCong (a k : GLint E N P) : a⁻¹ * k ∈ prinCong N P c
   rw [e, ← map_smul]
   exact (a⁻¹).2 _
 
-theorem mem_levCong_iff (k : GLint E N P) :
-    k ∈ (levCong hN P c l).H ↔ ∃ j ∈ (levRed P l).H,
-      ∀ x ∈ stdAt E N P, ((qOf P : E) ^ (c + 1))⁻¹ • (k.1 x - sumE hN j.1 1 x) ∈ stdAt E N P := by
-  simp only [mem_levCong, inv_mul_mem_prinCong, extI_val]
-
 theorem prinCong_le_levCong : prinCong N P (c + 1) ≤ (levCong hN P c l).H := le_sup_right
 
 theorem extI_mem_levCong (j : GLint E n P) : extI hN P j ∈ (levCong hN P c l).H ↔ j ∈ (levRed P l).H := by
@@ -199,12 +194,6 @@ theorem levCong_lam_extI {j : GLint E n P} (hk : extI hN P j ∈ (levCong hN P c
 theorem levCong_lam_prinCong {k : GLint E N P} (h : k ∈ prinCong N P (c + 1)) :
     (levCong hN P c l).lam ⟨k, prinCong_le_levCong hN c l h⟩ = 1 :=
   (levCong_lam hN c l _ (one_mem _) (by simpa using h)).trans (map_one _)
-
-theorem levCong_last {k : GLint E N P} (hk : k ∈ (levCong hN P c l).H) {x : Sp E N} (hx : x ∈ stdAt E N P) :
-    IntAt P (((qOf P : E) ^ (c + 1))⁻¹ * (k.1 x (Br.iL hN) - x (Br.iL hN))) := by
-  obtain ⟨j, -, h⟩ := (mem_levCong_iff hN c l k).1 hk
-  have := mem_stdAt.1 (h x hx) (Br.iL hN)
-  rwa [Pi.smul_apply, Pi.sub_apply, sumE_last, Units.val_one, one_mul] at this
 
 instance levCong_finiteIndex : (levCong hN P c l).H.FiniteIndex := Subgroup.finiteIndex_of_le (prinCong_le_levCong hN c l)
 

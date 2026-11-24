@@ -5,8 +5,9 @@ public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NatCas
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.ConditionIffAdditiveMaps
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.SuccMulSuccSubOneDivSucc
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DifferentiableOnOfTendstoLocallyUniformlyOn
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelThetaAdmissibleLatticesStatement
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.KernelThetaAdmissibleLattices
 public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.LocalLevelIsKOneAtT
+public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.InvarianceRepresentativesTrivial
 import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.HkLatTupUpdate
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -49,7 +50,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.InvarianceRepresentativesTrivial
+import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.InvarianceRepresentativesLaw
 
 @[expose] public section
 
@@ -286,10 +287,6 @@ theorem linSub_lkB (f : MvPowerSeries (X.ZA j) Kc) : linSub (LkB X Kc j A) f = S
   congr 1
   funext z
   exact linS_LkB X Kc j A z
-
-theorem SA_C_mul' (a : Kc) (f : MvPowerSeries (X.ZA j) Kc) :
-    SA X Kc j A (MvPowerSeries.C a * f) = MvPowerSeries.C a * SA X Kc j A f := by
-  rw [← linSub_lkB, ← linSub_lkB, linSub_C_mul']
 
 end Lk
 
@@ -652,7 +649,7 @@ theorem kapLawLt_frecG : letI := fun D : D7 => D.host.cmStar; ∀ (D : D7) (cc :
         star (1 : Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj (j + 1)).m + 1)) D.host.E) = 1 := by
       rw [star_one, mul_one]
     exact kerTh_move D cc δ B χ SS cl _ _ _ _ e cΞ
-      (GlobalTheory.T.kernel_theta_unitary_lattice_equivariant D cc δ B χ hcv hd12 hδ hχ hLat hVec hEq SS cl hcl hSS _ _ (fd.kerN j (c0, L)) (fd.kerN (j + 1) La')
+      (_root_.GlobalTheory.TwU.KerMove.kerTh_move D cc δ B χ hcv hd12 hδ hχ hLat hVec hEq SS cl hcl hSS _ _ (fd.kerN j (c0, L)) (fd.kerN (j + 1) La')
         (fun x => cΞ * xiM X fd Ξ₀ j (c0, L) La' x) hAdm (hDat.const_mul cΞ) e 1 he h1) hXi z
   have hserG : (serP lam fun z => scal0 X fd χ muT j (c0, (X.Lv.lev j c0).smul γ L) La' *
         (Base.chiFac χ _ _ (fd.kerN j (c0, (X.Lv.lev j c0).smul γ L)) (fd.kerN (j + 1) La'))⁻¹ *
@@ -685,7 +682,7 @@ theorem kapLawLt_frecG : letI := fun D : D7 => D.host.cmStar; ∀ (D : D7) (cc :
   have hFG : ∀ v, IsUnit (fd.frM j (c0, (X.Lv.lev j c0).smul γ L) v).det := fun v => (hFrG v).1
   unfold thFOf
   rw [frecG_eq, frecG_eq, hserG, hserL, MvPowerSeries.smul_eq_C_mul, MvPowerSeries.smul_eq_C_mul, ← mul_assoc, ← mul_assoc,
-    ← map_mul, ← map_mul, linSub_C_mul', linSub_C_mul', resV_C_mul', resV_C_mul', SA_C_mul', ← mul_assoc, ← map_mul, hsc,
+    ← map_mul, ← map_mul, linSub_C_mul', linSub_C_mul', resV_C_mul', resV_C_mul', _root_.Formalism.L2.G.Pend.SA_C_mul, ← mul_assoc, ← map_mul, hsc,
     ← frm_move X E pos fd cc δ lam cS ρ hLP j c0 L La' γ e he hFL hFG hT]
 
 end GlobalTheory.TwU.LawAll

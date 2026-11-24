@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -78,7 +79,7 @@ theorem UpperTheory.Gal.G3.pPolDesc :
       rw [← Over.comp_left, ← Over.comp_left]
       congr 1
       apply CartesianMonoidalCategory.hom_ext
-      · simp [one_comp_monHom]
+      · simp
       · simp
     rw [map_sub, GlobalTheory.BirigidPow.cls_lbPow o₁.isLB e hP1, map_nsmul,
       ← cls_pull o₁.isLB _ (pull_isLB o₁.isLB _), (cls_eq_zero_iff _).2 o₁.rig₁, smul_zero,

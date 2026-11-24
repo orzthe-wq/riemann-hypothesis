@@ -73,11 +73,11 @@ theorem form_symm {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (hM : M.conjTranspo
 
 theorem star_mulVec' {n : ℕ} {k : Type} [Fintype k] (P : Matrix (Fin n) k ℂ) (b : k → ℂ) :
     star (P *ᵥ b) = P.map star *ᵥ star b := by
-  ext i; simp [Matrix.mulVec, dotProduct, star_sum, Pi.star_apply, mul_comm]
+  ext i; simp [Matrix.mulVec, dotProduct, star_sum, Pi.star_apply]
 
 theorem map_star_mul {a b c : Type} [Fintype b] (A : Matrix a b ℂ) (B : Matrix b c ℂ) :
     (A * B).map star = A.map star * B.map star := by
-  ext i j; simp [Matrix.mul_apply, star_sum, mul_comm]
+  ext i j; simp [Matrix.mul_apply]
 
 theorem dot_mulVec_left {n : ℕ} {k : Type} [Fintype k] (P : Matrix (Fin n) k ℂ) (a : k → ℂ) (v : Fin n → ℂ) :
     (P *ᵥ a) ⬝ᵥ v = a ⬝ᵥ (Pᵀ *ᵥ v) := by
@@ -126,7 +126,7 @@ theorem swapI_iso : swapIᵀ * hypI * swapI.map star = hypI := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [swapI, hypI, Matrix.mul_apply, Fin.sum_univ_two]
 
 theorem swapI_pos (y : Fin 2 → ℂ) : ((swapI *ᵥ y) ⬝ᵥ hypI *ᵥ star y) = (Complex.normSq (y 0) + Complex.normSq (y 1) : ℂ) := by
-  simp [swapI, hypI, Matrix.mulVec, dotProduct, Fin.sum_univ_two, Complex.mul_conj]
+  simp [swapI, hypI, Matrix.mulVec, dotProduct, Fin.sum_univ_two]
   rw [← Complex.mul_conj, ← Complex.mul_conj]
   linear_combination (-(y 1 * (starRingEnd ℂ) (y 1) + y 0 * (starRingEnd ℂ) (y 0))) * Complex.I_mul_I
 
@@ -184,7 +184,7 @@ noncomputable def cols {n₁ : ℕ} (X Y : Fin (n₁ + 2) → ℂ) (ι : Matrix 
 theorem cols_mulVec {n₁ : ℕ} (X Y : Fin (n₁ + 2) → ℂ) (ι : Matrix (Fin (n₁ + 2)) (Fin n₁) ℂ) (w : Fin n₁ ⊕ Fin 2 → ℂ) :
     cols X Y ι *ᵥ w = ι *ᵥ (w ∘ Sum.inl) + w (Sum.inr 0) • X + w (Sum.inr 1) • Y := by
   ext i
-  simp [cols, Matrix.fromCols_mulVec, Matrix.mulVec, dotProduct, Fin.sum_univ_two, mul_comm]
+  simp [cols, Matrix.mulVec, dotProduct, Fin.sum_univ_two, mul_comm]
   ring
 
 theorem cols_gram {n₁ : ℕ} (M : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) ℂ) (X Y : Fin (n₁ + 2) → ℂ)
@@ -193,11 +193,11 @@ theorem cols_gram {n₁ : ℕ} (M : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) ℂ
     (hι : ∀ u, (ι *ᵥ u) ⬝ᵥ M *ᵥ star X = 0 ∧ (ι *ᵥ u) ⬝ᵥ M *ᵥ star Y = 0) :
     (cols X Y ι)ᵀ * M * (cols X Y ι).map star = Matrix.fromBlocks (ιᵀ * M * ι.map star) 0 0 hypI := by
   have c1 : ∀ a, (fun i => cols X Y ι i (Sum.inl a)) = ι *ᵥ Pi.single a 1 := fun a => by
-    ext i; simp [cols, Matrix.mulVec_single_one]
+    ext i; simp [cols]
   have c2 : (fun i => cols X Y ι i (Sum.inr 0)) = X := by ext i; simp [cols]
   have c3 : (fun i => cols X Y ι i (Sum.inr 1)) = Y := by ext i; simp [cols]
   have s1 : ∀ a, (fun i => (cols X Y ι).map star i (Sum.inl a)) = star (ι *ᵥ Pi.single a 1) := fun a => by
-    ext i; simp [cols, Matrix.mulVec_single_one]
+    ext i; simp [cols]
   have s2 : (fun i => (cols X Y ι).map star i (Sum.inr 0)) = star X := by ext i; simp [cols]
   have s3 : (fun i => (cols X Y ι).map star i (Sum.inr 1)) = star Y := by ext i; simp [cols]
   ext (a | a) (b | b)
@@ -307,8 +307,8 @@ theorem exists_cartan_hyperbolic_swap : ∀ (n₁ : ℕ) (M : Matrix (Fin (n₁ 
       rw [hP, cols_mulVec, hz, Matrix.mulVec_zero]; ext i; simp
     have hDs : D *ᵥ Pi.single (Sum.inr 0) 1 = Complex.I • Pi.single (Sum.inr 1) 1 := by
       ext (i | i)
-      · simp [hD, Matrix.fromBlocks_mulVec]
-      · fin_cases i <;> simp [hD, Matrix.fromBlocks_mulVec, swapI, Matrix.mulVec, dotProduct, Fin.sum_univ_two]
+      · simp [hD]
+      · fin_cases i <;> simp [hD, swapI, Matrix.mulVec, dotProduct, Fin.sum_univ_two]
     have : (P * D * Q) *ᵥ X = Complex.I • Y := by
       rw [hX, Matrix.mulVec_mulVec, show P * D * Q * P = P * D * (Q * P) by simp only [Matrix.mul_assoc], hQP,
         Matrix.mul_one, ← Matrix.mulVec_mulVec, hDs, Matrix.mulVec_smul, ← hY]

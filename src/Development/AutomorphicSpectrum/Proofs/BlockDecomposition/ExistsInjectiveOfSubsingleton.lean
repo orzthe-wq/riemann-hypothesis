@@ -63,13 +63,13 @@ theorem exists_injective_of_subsingleton {G V Y : Type} [Group G] [Subsingleton 
     [AddCommGroup Y] [Module ℂ Y] [Nontrivial Y] (π : Representation ℂ G V) (τ : Representation ℂ G Y)
     (hi : π.IsIrreducible) : ∃ φ : π.IntertwiningMap τ, Function.Injective φ := by
   classical
-  haveI := hi
-  haveI : Nontrivial V := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hi
+  have := hi
+  have : Nontrivial V := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hi
   obtain ⟨v, hv⟩ := exists_ne (0 : V)
   obtain ⟨w, hw⟩ := exists_ne (0 : Y)
   obtain ⟨f, hf⟩ : ∃ f : Module.Dual ℂ V, f v ≠ 0 := by
     by_contra h
-    push_neg at h
+    push Not at h
     exact hv ((Module.forall_dual_apply_eq_zero_iff ℂ v).1 h)
   let φ : π.IntertwiningMap τ :=
     { toFun := fun u => f u • w
@@ -86,9 +86,9 @@ theorem zero_case {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
     {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin 0) k) V) (hi : π.IsIrreducible)
     (x : Fin 0 → IrrGL (k := k)) (hd : ∑ a, (x a).1 = 0) :
     ∃ φ : π.IntertwiningMap (prodIrr x hd), Function.Injective φ := by
-  haveI : Subsingleton (GL (Fin 0) k) := ⟨fun _ _ => Units.ext (Subsingleton.elim _ _)⟩
+  have : Subsingleton (GL (Fin 0) k) := ⟨fun _ _ => Units.ext (Subsingleton.elim _ _)⟩
   have hirr : (prodIrr x hd).IsIrreducible := GlobalTheory.SmGL.MultiIrr.isIrreducible_multiProd_zero _ _
-  haveI := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hirr
+  have := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hirr
   exact exists_injective_of_subsingleton π _ hi
 
 theorem succ_case

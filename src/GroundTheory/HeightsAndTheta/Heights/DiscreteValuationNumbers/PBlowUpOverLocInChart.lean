@@ -4,55 +4,10 @@ public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Stat
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.LiftFormNotMemBlowUpOf
 public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PBlowUpModel
 public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.PHomLocRingMem
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.LocalProperties.Reduced
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -82,7 +37,7 @@ theorem weight_blockWeight (d : (Σ o, E o) →₀ ℕ) :
     funext o
     by_cases h : v.1 = o
     · subst h; simp [blockWeight]
-    · simp [blockWeight, Pi.single_apply, Ne.symm h]
+    · simp [blockWeight, Ne.symm h]
 
 theorem coeff_eval₂_C_mul_X_fst {B : Type*} [CommRing B] (f : R →+* B) (a : (Σ o, E o) → B)
     (p : MvPolynomial (Σ o, E o) R) (e : κ →₀ ℕ) :
@@ -307,7 +262,7 @@ theorem BlowUpOverLocInChart.proof : BlowUpOverLocInChart.Statement.{u} := by
       rw [hQdef, RingHom.mem_ker, RingHom.comp_apply] at hmem
       simp only [hψ, coe_eval₂Hom, eval₂_X, map_mul, map_C, map_X] at hmem
       have h2 := congrArg (AddMonoidAlgebra.coeff · (Finsupp.single o 1)) hmem
-      simp only [coeff_C_mul, coeff_X, coeff_X', if_true, mul_one, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply] at h2
+      simp only [coeff_C_mul, coeff_X, if_true, mul_one, AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply] at h2
       rw [Ideal.Quotient.eq_zero_iff_mem] at h2
       have h1' : aC ⟨o, l⟩ = 1 := Subtype.ext (by rw [haC]; exact h1)
       rw [h1'] at h2

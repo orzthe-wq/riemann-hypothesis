@@ -49,4 +49,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 
 theorem _root_.GlobalTheory.T.families_values_correspond : Laws → Laws2 → BrFamSt := by
-  first | exact @GlobalTheory.Ex.brFam | exact GlobalTheory.Ex.brFam | (intros; apply GlobalTheory.Ex.brFam <;> assumption)
+  first | exact @GlobalTheory.Ex.brFam

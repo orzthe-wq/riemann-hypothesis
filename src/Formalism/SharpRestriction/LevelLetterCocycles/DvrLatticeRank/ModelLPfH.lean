@@ -40,6 +40,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.ModelFPfB
 
 @[expose] public section
 
@@ -61,17 +62,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop)
     (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n)
 
-theorem γLA_smulLA (b : LetA O n) (z : LA W T π' c) :
-    γLA W T π' c (smulLA W T π' c b z) = smulLA W T π' c (W.γA W.gamK b) (γLA W T π' c z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
-  | tmul e s =>
-    show W.γE W.gamK (algebraMap (LetA O n) W.EE b * e) ⊗ₜ s =
-      (algebraMap (LetA O n) W.EE (W.γA W.gamK b) * W.γE W.gamK e) ⊗ₜ s
-    rw [map_mul, W.γE_ext]
-    rfl
-  | add x y hx hy => simp only [map_add (f := _), hx, hy]
-
 theorem γA_mem_AΔ {a : LetA O n} (ha : a ∈ W.AΔ) : W.γA W.gamK a ∈ W.AΔ := by
   intro δ hδ
   have e1 : W.γA δ (W.γA W.gamK a) = W.γA (δ * W.gamK) a := by
@@ -92,7 +82,7 @@ theorem rep_γ {u₀ : LetA O n} (hu₀ : u₀ ∈ W.AΔ) (hΛ : u₀ * W.γA W.
   refine ⟨hy, ?_⟩
   have e : smulLA W T π' c (Eπ ^ h') (γLA W T π' c x) =
       smulLA W T π' c u₀ (γLA W T π' c (smulLA W T π' c (Eπ ^ h') x)) := by
-    rw [γLA_smulLA, MLE.smulLA_smulLA, hΛ]
+    rw [_root_.Formalism.MainNotions.N.Ln34.ModelFPf.γLA_smulLA, MLE.smulLA_smulLA, hΛ]
 
   rw [e, hx, map_sum, map_sum]
   refine Finset.sum_congr rfl (fun j _ => ?_)

@@ -123,7 +123,7 @@ theorem rowE_eq_rowDiv (R : Type) [CommRing R] (r n : ℕ) (a b : Fin r) (P : Mv
       simp only [rowGen, aeval_X]
       by_cases h : e = b
       · simp [h, Polynomial.coeff_C]
-      · simp [h, Ne.symm h, Polynomial.coeff_C]
+      · simp [h, Ne.symm h]
     refine ⟨?_, by rw [Polynomial.mul_coeff_zero, hp.2, h0]⟩
     rw [rowE_mul, rowE_X, Polynomial.coeff_mul, Finset.Nat.antidiagonal_succ]
     simp [hp.1, hp.2, h0, h1, add_comm]

@@ -37,6 +37,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -86,7 +87,7 @@ theorem alg_inv {R A R' B : Type} [CommRing R] [CommRing A] [CommRing R'] [CommR
       intro w i
       induction w with
       | add x y hx hy => simp only [map_add (f := _), Pi.add_apply, hx, hy]; ring
-      | tmul a r => simp [d, he, htA, htR, mul_sub, tmul_sub]
+      | tmul a r => simp [d, he, htA, htR, tmul_sub]
     have h0 : d.lTensor A w = 0 := by
       apply (TensorProduct.piRight R R A (fun _ : J => R')).injective
       ext i
@@ -165,18 +166,12 @@ theorem res_res {Y : Scheme.{0}} {U V W : Y.Opens} (e : U ≤ V) (e' : V ≤ W) 
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
-theorem le_iSup_affine {Y : Scheme.{0}} (V : Y.Opens) :
-    V ≤ ⨆ U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ V}, U.1 := by
-  intro x hx
-  obtain ⟨_, ⟨U, hU, rfl⟩, hxU, hUV⟩ := Y.isBasis_affineOpens.exists_subset_of_mem_open hx V.isOpen
-  exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, hUV⟩, hxU⟩
-
 theorem injective_of_affine {Y Y' : Scheme.{0}} (β : Y' ⟶ Y)
     (H : ∀ U : Y.Opens, IsAffineOpen U → Function.Injective (β.app U).hom) (V : Y.Opens) :
     Function.Injective (β.app V).hom := by
   intro a b hab
   refine Y.sheaf.eq_of_locally_eq' (fun U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ V} => U.1) V
-    (fun U => homOfLE U.2.2) (le_iSup_affine V) a b fun U => H U.1 U.2.1 ?_
+    (fun U => homOfLE U.2.2) (_root_.GlobalTheory.ConstThickening.le_iSup_affine V) a b fun U => H U.1 U.2.1 ?_
   exact (app_res β U.2.2 a).trans ((congrArg _ hab).trans (app_res β U.2.2 b).symm)
 
 theorem mem_range_of_affine {Y Y' : Scheme.{0}} (β : Y' ⟶ Y)
@@ -186,13 +181,13 @@ theorem mem_range_of_affine {Y Y' : Scheme.{0}} (β : Y' ⟶ Y)
     u ∈ Set.range (β.app V).hom := by
   choose a ha using fun U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ V} => hu U.1 U.2.1 U.2.2
   obtain ⟨s, hs, -⟩ := Y.sheaf.existsUnique_gluing' (fun U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ V} => U.1) V
-    (fun U => homOfLE U.2.2) (le_iSup_affine V) a (fun i j => H (i.1 ⊓ j.1) (by
+    (fun U => homOfLE U.2.2) (_root_.GlobalTheory.ConstThickening.le_iSup_affine V) a (fun i j => H (i.1 ⊓ j.1) (by
       refine (app_res β inf_le_left (a i)).trans (Eq.trans ?_ (app_res β inf_le_right (a j)).symm)
       rw [ha, ha, res_res, res_res]))
   refine ⟨s, Y'.sheaf.eq_of_locally_eq' (fun U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ V} => β ⁻¹ᵁ U.1) (β ⁻¹ᵁ V)
     (fun U => homOfLE (β.preimage_mono U.2.2)) ?_ _ _ fun U => ?_⟩
   · rw [← β.preimage_iSup]
-    exact β.preimage_mono (le_iSup_affine V)
+    exact β.preimage_mono (_root_.GlobalTheory.ConstThickening.le_iSup_affine V)
   · exact (app_res β U.2.2 s).symm.trans ((congrArg _ (hs U)).trans (ha U))
 
 theorem invariant_functions : ∀ (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R']

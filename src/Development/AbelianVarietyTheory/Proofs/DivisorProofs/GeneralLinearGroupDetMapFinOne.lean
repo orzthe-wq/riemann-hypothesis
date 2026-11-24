@@ -53,10 +53,6 @@ set_option backward.isDefEq.respectTransparency false
 noncomputable section
 namespace GlobalTheory.EtC.PicSpec
 
-theorem sec_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
-    Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) :=
-  Eq.symm (NatTrans.naturality_apply φ.hom g.op x)
-
 theorem sec_map_comp {R : Type} [CommRing R] {F G K : Shv R} (ψ : F ⟶ G) (φ : G ⟶ K) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map φ (Sec.map ψ x) = Sec.map (ψ ≫ φ) x := rfl
 
@@ -144,7 +140,7 @@ theorem fam_nat {E : Spc} (L : E ⟶ ofCat (glCat 1)) (p : ℕ) (s : ℤ) (h : -
   | 0 => simp [fam_zero]
   | 1 =>
     simp only [fam]
-    rw [sec_map_res, sec_map_res, unitSec_res, lineUnit_res]
+    rw [_root_.GlobalTheory.EtC.CupSpec.map_res, _root_.GlobalTheory.EtC.CupSpec.map_res, unitSec_res, lineUnit_res]
   | p + 2 => simp [fam_add_two]
 
 theorem sec_map_zero {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} :

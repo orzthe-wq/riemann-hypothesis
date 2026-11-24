@@ -91,9 +91,7 @@ private theorem isHalf_mul {c : AE D} {m n : ℕ} (P : Matrix (Fin m) (Fin m) (A
   intro i j
   exact congrFun (congrFun this i) j
 
-private theorem mt_one (S : HSp D) : mt S 1 = 1 := by
-  have := GlobalTheory.AdjAct.mt_one_inv S
-  rwa [inv_one] at this
+private alias mt_one := _root_.GlobalTheory.BesselCompare.mt_one
 
 private theorem isHalf_pull (c : AE D) (S T : HSp D) (g : GA D S) (k : GA D T) (y : WO S T) (h : IsHalf c y) :
     IsHalf c (GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.pullPt S T g k y) := by
@@ -289,12 +287,4 @@ end GlobalTheory.SndFrames
 
 end
 
-theorem _root_.GlobalTheory.T.standardThetaPair_second_frameChange_unitTranslate : ∀ {D : D7} (ν : (AE D)ˣ →* Circle) (e : AE D) (S : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e S →
-    ∀ (I : Ideal (𝓞 D.host.E)) (a : ℕ) (A' WW : HSp D) (ΛA : Submodule (𝓞 D.host.E) (Fin A'.rank → D.host.E))
-    (βA βA' : GL (Fin A'.rank) (EAf D)), Formalism.L2.DIV.IsFrame βA ΛA → Formalism.L2.DIV.IsFrame βA' ΛA →
-    ∀ (βW βW' : GL (Fin WW.rank) (EAf D)) (k : GA D WW), SuppAt e WW k →
-    (∀ i j, toEAf D e * (Formalism.IndefR.Lev.finE WW k).1 i j = toEAf D e * (βW' * βW⁻¹).1 i j) →
-    ∃ x : (AE D)ˣ, Formalism.L2.Pj.FinUnit x ∧ ∀ y : WO A' WW,
-      GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd ν e I a A' WW βA' βW' y =
-        ((ν x : Circle) : ℂ) * GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd ν e I a A' WW βA βW (GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.pullPt A' WW 1 k y) :=
-  @GlobalTheory.SndFrames.stdSnd_frames
+alias _root_.GlobalTheory.T.standardThetaPair_second_frameChange_unitTranslate := _root_.GlobalTheory.SndFrames.stdSnd_frames

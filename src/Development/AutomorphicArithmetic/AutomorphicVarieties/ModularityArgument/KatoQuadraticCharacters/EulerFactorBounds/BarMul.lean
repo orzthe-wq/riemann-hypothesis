@@ -161,10 +161,10 @@ theorem UpperTheory.V.Z.Kato.Nb.sTopT :
     have hOk : Ok x₀ y₀ := by
       refine ⟨fun h => ?_, fun h => ?_⟩
       · have h1 := congrFun h 0
-        simp only [Pi.smul_apply, Pi.zero_apply, nsmul_eq_mul, Nat.cast_ofNat] at h1
+        simp only [Pi.smul_apply, Pi.zero_apply] at h1
         exact two_ne l _ hl2 hdvdl _ ha0 h1
       · have h1 := congrFun h 1
-        simp only [Pi.smul_apply, Pi.zero_apply, nsmul_eq_mul, Nat.cast_ofNat] at h1
+        simp only [Pi.smul_apply, Pi.zero_apply] at h1
         exact two_ne l _ hl2 hdvdl _ hb1 h1
     have hx : ∀ i : Fin 2, ∃ j : ℤ, ixUT l (r + n) N p x i = toQ (N * l ^ (r + n) * p) x₀ i + j := by
       intro i

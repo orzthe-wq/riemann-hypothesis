@@ -59,6 +59,8 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolum
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.OrthoStatementPf
 import Std.Tactic.BVDecide.Normalize.Prop
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.KaUnfoldPfA
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -145,7 +147,7 @@ theorem hermForm_eq_of_orth {i : Fin W.F.n} {P : (W.F.Di i).La →+ (Fin W.g →
   ext b b'
   rw [of_apply, ← key, ← UnitDet.hermForm_mulVec, hcol, hcol]
   have hi : ∀ j j' : Fin (Dw.mult τ), W.e.symm ⟨τ, j⟩ = W.e.symm ⟨τ, j'⟩ ↔ j = j' := fun j j' => by simp
-  simp [hermForm, smul_mulVec, sum_dotProduct, dotProduct_sum, star_sum, Pi.single_apply, hi, mul_apply, mul_comm]
+  simp [hermForm, smul_mulVec, dotProduct_sum, star_sum, Pi.single_apply, hi, mul_comm]
   simp [Matrix.mul_apply, Matrix.conjTranspose_apply, mul_comm]
 
 end Riemann

@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsWeilRepresentationVacuumCosetVectorsGrid
 
 @[expose] public section
 
@@ -78,7 +79,7 @@ theorem vac_exists_of_defPair : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Co
   obtain ⟨h1, h2⟩ := hp.nodes
   rcases p with ⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩
   · exact GlobalTheory.VacuumO.vacExists D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _
-      (GlobalTheory.ChiGrid.WeilOver.sigOK_negSp (h2.sigOK G)) (h1.sigOK G)
+      (_root_.GlobalTheory.GridWeil.sigOK_neg (h2.sigOK G)) (h1.sigOK G)
       (fun τ => isCartanInv_neg (W.cart_is _ h2.inRange τ)) (fun τ => W.cart_is _ h1.inRange τ) _ _
       (isSelfDualC_neg (N.selfDual h2)) (N.selfDual h1)
   · exact hp.elim

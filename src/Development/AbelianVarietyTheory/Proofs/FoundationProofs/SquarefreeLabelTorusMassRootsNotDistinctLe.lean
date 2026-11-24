@@ -1,16 +1,18 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowPadicValEqOneOfPrimePow
+public import Mathlib.FieldTheory.Minpoly.IsConjRoot
+public import Mathlib.FieldTheory.Finite.Basic
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.Analysis.SpecialFunctions.Log.Base
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassDivisorBound
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassSamePartOneFactorLe
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassTwoFactorsLe
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassUnionBounds
-import Mathlib.Algebra.AffineMonoid.UniqueSums
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassUnionBounds
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowPadicValEqOneOfPrimePow
+public import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.Complex.ExponentialBounds
+import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -21,16 +23,12 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.GroupTheory.Nilpotent
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Artinian.Instances
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.WittVector.IsPoly
@@ -60,7 +58,458 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Algebra.AffineMonoid.UniqueSums
+import Mathlib.GroupTheory.Nilpotent
+import Mathlib.RingTheory.Artinian.Instances
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardIrreducibleSamePrimeToPartRootsLe, Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassSamePartOneFactorLe, Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassTwoFactorsLe, Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassRootsNotDistinctLe
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardIrreducibleSamePrimeToPartRootsLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardIrreducibleSamePrimeToPartRootsLe", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\npublic import Mathlib.FieldTheory.Minpoly.IsConjRoot\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.FieldTheory.Finite.Basic\npublic import Mathlib.FieldTheory.Galois.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial Classical GlobalTheory.BadShare
+namespace GlobalTheory.BadShare.TwoRoots
+
+theorem pow_card_pow_natDegree {g : ℕ} [Fact g.Prime] (x : AlgebraicClosure (ZMod g)) :
+    x ^ (g ^ (minpoly (ZMod g) x).natDegree) = x := by
+  haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩
+  have hi : IsIntegral (ZMod g) x := Algebra.IsIntegral.isIntegral x
+  haveI := IntermediateField.adjoin.finiteDimensional hi
+  haveI : Finite (IntermediateField.adjoin (ZMod g) {x}) := Module.finite_of_finite (ZMod g)
+  haveI : Fintype (IntermediateField.adjoin (ZMod g) {x}) := Fintype.ofFinite _
+  let y : IntermediateField.adjoin (ZMod g) {x} := ⟨x, IntermediateField.mem_adjoin_simple_self _ x⟩
+  have h := FiniteField.pow_card y
+  rw [Module.card_eq_pow_finrank (K := ZMod g), IntermediateField.adjoin.finrank hi, ZMod.card] at h
+  simpa [y] using congrArg Subtype.val h
+
+theorem pow_eq_pow_padicVal {k : Type} [Field k] {n l a : ℕ} (hn : n ≠ 0) (hl : l.Prime) {x y : k}
+    (hx : x ^ n = 1) (hy : y ^ n = 1) (h : x ^ (l ^ a) = y ^ (l ^ a)) :
+    x ^ (l ^ padicValNat l n) = y ^ (l ^ padicValNat l n) := by
+  haveI := Fact.mk hl
+  have hy0 : y ≠ 0 := by rintro rfl; simp [hn] at hy
+  have h1 : (x / y) ^ n = 1 := by rw [div_pow, hx, hy, div_one]
+  have h2 : (x / y) ^ (l ^ a) = 1 := by rw [div_pow, h, div_self (pow_ne_zero _ hy0)]
+  obtain ⟨b, -, hb⟩ := (Nat.dvd_prime_pow hl).1 (orderOf_dvd_of_pow_eq_one h2)
+  have h3 : l ^ b ∣ n := hb ▸ orderOf_dvd_of_pow_eq_one h1
+  have h4 : orderOf (x / y) ∣ l ^ padicValNat l n := by
+    rw [hb]; exact pow_dvd_pow _ (((by simpa only [_root_.Nat.padicValNat_def] using @_root_.multiplicity_dvd_iff_le : ∀ {p : _root_.Nat} [hp : _root_.Fact (_root_.Nat.Prime p)] {a n : _root_.Nat} (ha : a ≠ 0), p ^ n ∣ a ↔ n ≤ _root_.padicValNat p a) hn).1 h3)
+  have h5 := orderOf_dvd_iff_pow_eq_one.1 h4
+  rwa [div_pow, div_eq_one_iff_eq (pow_ne_zero _ hy0)] at h5
+
+theorem exists_small_degree {g : ℕ} [Fact g.Prime] {x y : AlgebraicClosure (ZMod g)} {L : ℕ}
+    (hm : minpoly (ZMod g) x = minpoly (ZMod g) y) (hxy : x ≠ y) (h : x ^ L = y ^ L) :
+    ∃ e, 1 ≤ e ∧ e ≤ (minpoly (ZMod g) x).natDegree / 2 ∧ (x ^ L) ^ (g ^ e) = x ^ L := by
+  have hi : IsIntegral (ZMod g) x := Algebra.IsIntegral.isIntegral x
+  have hz : IsIntegral (ZMod g) (x ^ L) := Algebra.IsIntegral.isIntegral _
+  haveI := IntermediateField.adjoin.finiteDimensional hi
+  haveI := IntermediateField.adjoin.finiteDimensional hz
+  refine ⟨(minpoly (ZMod g) (x ^ L)).natDegree, minpoly.natDegree_pos hz, ?_, pow_card_pow_natDegree _⟩
+  have hle : IntermediateField.adjoin (ZMod g) {x ^ L} ≤ IntermediateField.adjoin (ZMod g) {x} := by
+    rw [IntermediateField.adjoin_simple_le_iff]
+    exact pow_mem (IntermediateField.mem_adjoin_simple_self _ _) _
+  have hdvd := IntermediateField.finrank_dvd_of_le_right hle
+  have hne : Module.finrank (ZMod g) (IntermediateField.adjoin (ZMod g) {x ^ L}) ≠
+      Module.finrank (ZMod g) (IntermediateField.adjoin (ZMod g) {x}) := by
+    intro he
+    have heq := IntermediateField.eq_of_le_of_finrank_eq hle he
+    obtain ⟨σ, hσ⟩ := IsConjRoot.exists_algEquiv (show IsConjRoot (ZMod g) y x from hm.symm)
+    have hx : x ∈ IntermediateField.adjoin (ZMod g) {x ^ L} := heq ▸ IntermediateField.mem_adjoin_simple_self _ _
+    have hfix : IntermediateField.adjoin (ZMod g) {x ^ L} ≤ IntermediateField.fixedField (Subgroup.zpowers σ) := by
+      rw [IntermediateField.adjoin_simple_le_iff, ← IntermediateField.adjoin_simple_le_iff,
+        IntermediateField.le_iff_le, Subgroup.zpowers_le, IntermediateField.mem_fixingSubgroup_iff]
+      intro t ht
+      induction ht using IntermediateField.adjoin_induction with
+      | mem t ht => rw [Set.mem_singleton_iff.1 ht, map_pow, hσ, h]
+      | algebraMap t => exact σ.commutes t
+      | add a b _ _ ha hb => rw [map_add (f := _), ha, hb]
+      | inv a _ ha => rw [map_inv₀, ha]
+      | mul a b _ _ ha hb => rw [map_mul, ha, hb]
+    have := (IntermediateField.mem_fixedField_iff _ _).1 (hfix hx) σ (Subgroup.mem_zpowers σ)
+    exact hxy (this.symm.trans hσ)
+  rw [IntermediateField.adjoin.finrank hi, IntermediateField.adjoin.finrank hz] at hdvd hne
+  obtain ⟨c, hc⟩ := hdvd
+  have hpos := minpoly.natDegree_pos hi
+  rw [Nat.le_div_iff_mul_le two_pos, hc]
+  apply Nat.mul_le_mul_left
+  rcases c with _ | _ | c
+  · omega
+  · omega
+  · omega
+
+theorem sum_pow_le {g : ℕ} (hg : 2 ≤ g) (m : ℕ) : ∑ e ∈ Finset.Icc 1 m, g ^ e ≤ 2 * g ^ m := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+    rw [Finset.sum_Icc_succ_top (by omega), pow_succ]
+    nlinarith [Nat.zero_le (g ^ m)]
+
+theorem card_le_nat (g : ℕ) [Fact g.Prime] (d l : ℕ) (hd : 2 ≤ d) (hl : l.Prime) :
+    ((sqSet g d).filter fun P => Irreducible P ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)),
+      ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y).card ≤
+      l ^ padicValNat l (g ^ d - 1) * g ^ (d / 2) := by
+  have hg : 2 ≤ g := (Fact.out : g.Prime).two_le
+  set S := (sqSet g d).filter fun P => Irreducible P ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)),
+      ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y with hS
+  set L := l ^ padicValNat l (g ^ d - 1) with hL
+  have hL0 : 0 < L := pow_pos hl.pos _
+  let Q : ℕ → (AlgebraicClosure (ZMod g))[X] := fun e => X ^ (L * g ^ e) - X ^ L
+  have hQ : ∀ e, 1 ≤ e → (Q e).natDegree = L * g ^ e := by
+    intro e he
+    have : 1 < g ^ e := Nat.one_lt_pow (by omega) hg
+    rw [natDegree_sub_eq_left_of_natDegree_lt, natDegree_X_pow]
+    rw [natDegree_X_pow, natDegree_X_pow]; nlinarith
+  let B : Finset (AlgebraicClosure (ZMod g)) := (Finset.Icc 1 (d / 2)).biUnion fun e => (Q e).roots.toFinset
+  have hB : B.card ≤ 2 * (L * g ^ (d / 2)) := by
+    calc B.card ≤ ∑ e ∈ Finset.Icc 1 (d / 2), (Q e).roots.toFinset.card := Finset.card_biUnion_le
+      _ ≤ ∑ e ∈ Finset.Icc 1 (d / 2), L * g ^ e := by
+        refine Finset.sum_le_sum fun e he => ?_
+        rw [← hQ e (Finset.mem_Icc.1 he).1]
+        exact (Multiset.toFinset_card_le _).trans (card_roots' _)
+      _ ≤ _ := by
+        rw [← Finset.mul_sum]
+        have := Nat.mul_le_mul_left L (sum_pow_le hg (d / 2))
+        linarith
+  have hmemB : ∀ x y : AlgebraicClosure (ZMod g), minpoly (ZMod g) x = minpoly (ZMod g) y →
+      (minpoly (ZMod g) x).natDegree = d → x ≠ y → x ^ L = y ^ L → x ∈ B := by
+    intro x y h1 h2 h3 h4
+    obtain ⟨e, he1, he2, he3⟩ := exists_small_degree h1 h3 h4
+    rw [h2] at he2
+    refine Finset.mem_biUnion.2 ⟨e, Finset.mem_Icc.2 ⟨he1, he2⟩, ?_⟩
+    have hQ0 : Q e ≠ 0 := by
+      intro h0
+      have := hQ e he1
+      rw [h0, natDegree_zero] at this
+      have : 0 < L * g ^ e := by positivity
+      omega
+    rw [Multiset.mem_toFinset, mem_roots hQ0]
+    simp [Q, pow_mul, he3]
+  have hcount : 2 * S.card ≤ (B.filter fun x => minpoly (ZMod g) x ∈ S).card := by
+    refine Finset.mul_card_image_le_card_of_maps_to (f := fun x => minpoly (ZMod g) x)
+      (fun a ha => (Finset.mem_filter.1 ha).2) 2 ?_
+    intro P hP
+    obtain ⟨hP1, hirr, x, hx, y, hy, hxy, hs⟩ := Finset.mem_filter.1 hP
+    obtain ⟨hmon, hdeg, -, h0⟩ := mem_sqSet.1 hP1
+    have ex := (minpoly.eq_of_irreducible_of_monic hirr (mem_aroots.1 hx).2 hmon).symm
+    have ey := (minpoly.eq_of_irreducible_of_monic hirr (mem_aroots.1 hy).2 hmon).symm
+    have hx0 := root_ne_zero h0 hx
+    have hy0 := root_ne_zero h0 hy
+    have hgd : 1 < g ^ d := Nat.one_lt_pow (by omega) hg
+    have hroot : ∀ t : AlgebraicClosure (ZMod g), t ≠ 0 → minpoly (ZMod g) t = P → t ^ (g ^ d - 1) = 1 := by
+      intro t ht et
+      have := pow_card_pow_natDegree t
+      rw [et, hdeg] at this
+      apply mul_right_cancel₀ ht
+      rw [← pow_succ, Nat.sub_add_cancel hgd.le, this, one_mul]
+    obtain ⟨a, ha⟩ := (samePart_iff_of_ne_zero hl hx0 hy0).1 hs
+    have hLxy : x ^ L = y ^ L := pow_eq_pow_padicVal (by omega) hl (hroot x hx0 ex) (hroot y hy0 ey) ha
+    have hxB := hmemB x y (ex.trans ey.symm) (by rw [ex, hdeg]) hxy hLxy
+    have hyB := hmemB y x (ey.trans ex.symm) (by rw [ey, hdeg]) hxy.symm hLxy.symm
+    rw [← Finset.card_pair hxy]
+    apply Finset.card_le_card
+    intro t ht
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ht
+    simp only [Finset.mem_filter]
+    rcases ht with rfl | rfl
+    · exact ⟨⟨hxB, by rw [ex]; exact hP⟩, ex⟩
+    · exact ⟨⟨hyB, by rw [ey]; exact hP⟩, ey⟩
+  have := hcount.trans ((Finset.card_filter_le _ _).trans hB)
+  omega
+
+theorem card_irreducible_samePart_le : ∀ (g : ℕ) [Fact g.Prime], ∀ (N d l : ℕ), 2 ≤ d → d ≤ N → l.Prime → ¬ BB g N l → (((sqSet g d).filter fun P => Irreducible P ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y).card : ℝ) ≤ (g : ℝ) ^ ((3 * d : ℝ) / 4) := by
+  intro g _ N d l hd hN hl hb
+  have hg : 2 ≤ g := (Fact.out : g.Prime).two_le
+  have hg1 : (1 : ℝ) ≤ g := by exact_mod_cast (by omega : 1 ≤ g)
+  have h1 := card_le_nat g d l hd hl
+  have h2 : (l ^ padicValNat l (g ^ d - 1)) ^ 4 ≤ g ^ d := by
+    by_contra hc
+    exact hb (bb_iff.2 (Or.inr ⟨hl, d, by omega, hN, by rw [mul_comm, pow_mul]; omega⟩))
+  have h3 : ((l ^ padicValNat l (g ^ d - 1) : ℕ) : ℝ) ≤ (g : ℝ) ^ ((d : ℝ) / 4) := by
+    refine le_of_pow_le_pow_left₀ (n := 4) (by norm_num) (by positivity) ?_
+    rw [← Real.rpow_natCast ((g : ℝ) ^ ((d : ℝ) / 4)), ← Real.rpow_mul (by positivity)]
+    have : (d : ℝ) / 4 * (4 : ℕ) = d := by push_cast; ring
+    rw [this, Real.rpow_natCast]
+    exact_mod_cast h2
+  have h4 : ((g ^ (d / 2) : ℕ) : ℝ) ≤ (g : ℝ) ^ ((d : ℝ) / 2) := by
+    rw [Nat.cast_pow, ← Real.rpow_natCast]
+    exact Real.rpow_le_rpow_of_exponent_le hg1 (by exact_mod_cast Nat.cast_div_le (α := ℝ) (m := d) (n := 2))
+  calc _ ≤ ((l ^ padicValNat l (g ^ d - 1) * g ^ (d / 2) : ℕ) : ℝ) := by exact_mod_cast h1
+    _ ≤ (g : ℝ) ^ ((d : ℝ) / 4) * (g : ℝ) ^ ((d : ℝ) / 2) := by
+      rw [Nat.cast_mul]; exact mul_le_mul h3 h4 (by positivity) (by positivity)
+    _ = _ := by rw [← Real.rpow_add (by positivity)]; congr 1; ring
+
+end GlobalTheory.BadShare.TwoRoots
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardIrreducibleSamePrimeToPartRootsLe =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassSamePartOneFactorLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassSamePartOneFactorLe", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero\npublic import Mathlib.Analysis.SpecialFunctions.Log.Base\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CardIrreducibleSamePrimeToPartRootsLe\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassDivisorBound\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassUnionBounds\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial Classical GlobalTheory.BadShare
+
+namespace GlobalTheory.BadShare
+
+private theorem pow_card_pow_natDegree_eq_self_of_mem_aroots {g : ℕ} [Fact g.Prime] {P : (ZMod g)[X]} (hP : Irreducible P)
+    {x : AlgebraicClosure (ZMod g)} (hx : x ∈ P.aroots (AlgebraicClosure (ZMod g))) :
+    x ^ (g ^ P.natDegree) = x := by
+  have hP0 : P ≠ 0 := hP.ne_zero
+  have : Fact (Irreducible P) := ⟨hP⟩
+  have hxr : aeval x P = 0 := (Polynomial.mem_aroots.mp hx).2
+  have : Module.Finite (ZMod g) (AdjoinRoot P) := (AdjoinRoot.powerBasis hP0).finite
+  have : Finite (AdjoinRoot P) := Module.finite_of_finite (ZMod g)
+  let _ : Fintype (AdjoinRoot P) := Fintype.ofFinite _
+  have hcard : Fintype.card (AdjoinRoot P) = g ^ P.natDegree := by
+    rw [Module.card_eq_pow_finrank (K := ZMod g), ZMod.card, (AdjoinRoot.powerBasis hP0).finrank,
+      AdjoinRoot.powerBasis_dim]
+  have h := FiniteField.pow_card (AdjoinRoot.root P)
+  rw [hcard] at h
+  have hxr' : P.eval₂ (algebraMap (ZMod g) (AlgebraicClosure (ZMod g))) x = 0 := by
+    rwa [aeval_def] at hxr
+  have h' := congrArg (AdjoinRoot.lift (algebraMap (ZMod g) (AlgebraicClosure (ZMod g))) x hxr') h
+  rwa [map_pow, AdjoinRoot.lift_root] at h'
+
+theorem dvd_of_samePart_roots {g : ℕ} [Fact g.Prime] {P : (ZMod g)[X]} (hP : Irreducible P) (h0 : P.coeff 0 ≠ 0)
+    {l : ℕ} (hl : l.Prime) {x y : AlgebraicClosure (ZMod g)} (hx : x ∈ P.aroots (AlgebraicClosure (ZMod g)))
+    (hy : y ∈ P.aroots (AlgebraicClosure (ZMod g))) (hxy : x ≠ y) (hs : SamePart l x y) :
+    2 ≤ P.natDegree ∧ l ∣ g ^ P.natDegree - 1 := by
+  have hcard : (P.aroots (AlgebraicClosure (ZMod g))).card = P.natDegree :=
+    IsAlgClosed.card_aroots_eq_natDegree
+  have h2 : 2 ≤ P.natDegree := by
+    rw [← hcard]
+    have hsub : ({x, y} : Finset (AlgebraicClosure (ZMod g))) ⊆
+        (P.aroots (AlgebraicClosure (ZMod g))).toFinset := by
+      intro z hz
+      rw [Finset.mem_insert, Finset.mem_singleton] at hz
+      rw [Multiset.mem_toFinset]
+      rcases hz with rfl | rfl
+      · exact hx
+      · exact hy
+    calc 2 = ({x, y} : Finset (AlgebraicClosure (ZMod g))).card := (Finset.card_pair hxy).symm
+      _ ≤ (P.aroots (AlgebraicClosure (ZMod g))).toFinset.card := Finset.card_le_card hsub
+      _ ≤ (P.aroots (AlgebraicClosure (ZMod g))).card := Multiset.toFinset_card_le _
+  refine ⟨h2, ?_⟩
+  have hgp : g.Prime := Fact.out
+  have hx0 := root_ne_zero h0 hx
+  have hy0 := root_ne_zero h0 hy
+  have hM0 : g ^ P.natDegree - 1 ≠ 0 := by
+    have : 2 ≤ g ^ P.natDegree := le_trans hgp.two_le (Nat.le_self_pow (by omega) g)
+    omega
+  have hpow : ∀ z ∈ P.aroots (AlgebraicClosure (ZMod g)), z ≠ 0 → z ^ (g ^ P.natDegree - 1) = 1 := by
+    intro z hz hz0
+    have h := pow_card_pow_natDegree_eq_self_of_mem_aroots hP hz
+    have hg1 : 1 ≤ g ^ P.natDegree := Nat.one_le_pow _ _ hgp.pos
+    apply mul_left_cancel₀ hz0
+    rw [← pow_succ', Nat.sub_add_cancel hg1, h, mul_one]
+  by_contra hnd
+  have hcop : (g ^ P.natDegree - 1).Coprime l :=
+    Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hl).mpr hnd)
+  obtain ⟨a, ha⟩ := (samePart_iff_of_ne_zero hl hx0 hy0).mp hs
+  exact hxy (eq_of_pow_eq hcop (hpow x hx hx0) (hpow y hy hy0) hM0 ha)
+
+theorem card_primeFactors_pow_sub_one_le {g d : ℕ} (hg : 2 ≤ g) (hd : 1 ≤ d) :
+    ((g ^ d - 1).primeFactors.card : ℝ) ≤ d * Real.logb 2 g := by
+  have hgd : 2 ≤ g ^ d := le_trans hg (Nat.le_self_pow (by omega) g)
+  have hn0 : 0 < g ^ d - 1 := by omega
+  have h2k : 2 ^ (g ^ d - 1).primeFactors.card ≤ g ^ d := by
+    calc 2 ^ (g ^ d - 1).primeFactors.card ≤ ∏ p ∈ (g ^ d - 1).primeFactors, p :=
+          Finset.pow_card_le_prod _ _ _ fun p hp => (Nat.prime_of_mem_primeFactors hp).two_le
+      _ ≤ g ^ d - 1 := Nat.le_of_dvd hn0 (Nat.prod_primeFactors_dvd _)
+      _ ≤ g ^ d := Nat.sub_le _ _
+  have hreal : (2 : ℝ) ^ (((g ^ d - 1).primeFactors.card : ℕ) : ℝ) ≤ (g : ℝ) ^ d := by
+    rw [Real.rpow_natCast]
+    exact_mod_cast h2k
+  have hgpos : (0 : ℝ) < (g : ℝ) ^ d := pow_pos (by exact_mod_cast (by omega : 0 < g)) d
+  have := (Real.le_logb_iff_rpow_le (by norm_num : (1 : ℝ) < 2) hgpos).mpr hreal
+  rwa [Real.logb_pow] at this
+
+theorem sum_mul_pow_le {u : ℝ} (h0 : 0 ≤ u) (h1 : u ≤ 1 / 8) (N : ℕ) :
+    ∑ d ∈ Finset.Icc 2 N, (d : ℝ) * u ^ d ≤ 6 * u ^ 2 := by
+  have hIcc : Finset.Icc 2 N = Finset.Ico 2 (N + 1) := by
+    ext d
+    simp only [Finset.mem_Icc, Finset.mem_Ico]
+    omega
+  rw [hIcc, Finset.sum_Ico_eq_sum_range]
+  calc ∑ k ∈ Finset.range (N + 1 - 2), ((2 + k : ℕ) : ℝ) * u ^ (2 + k)
+      ≤ ∑ k ∈ Finset.range (N + 1 - 2), 3 * u ^ 2 * (1 / 2 : ℝ) ^ k := by
+        apply Finset.sum_le_sum
+        intro k _
+        have hk : ((2 + k : ℕ) : ℝ) ≤ 3 * 4 ^ k := by
+          have h1 : k < 4 ^ k := Nat.lt_pow_self (by norm_num)
+          have h2 : 1 ≤ 4 ^ k := Nat.one_le_pow _ _ (by norm_num)
+          exact_mod_cast (by omega : 2 + k ≤ 3 * 4 ^ k)
+        have hu : u ^ k ≤ (1 / 8 : ℝ) ^ k := pow_le_pow_left₀ h0 h1 k
+        calc ((2 + k : ℕ) : ℝ) * u ^ (2 + k) = ((2 + k : ℕ) : ℝ) * u ^ k * u ^ 2 := by ring
+          _ ≤ (3 * 4 ^ k) * (1 / 8 : ℝ) ^ k * u ^ 2 := by gcongr
+          _ = 3 * u ^ 2 * (1 / 2 : ℝ) ^ k := by
+            rw [show (1 / 2 : ℝ) = 4 * (1 / 8) by norm_num, mul_pow]
+            ring
+    _ = 3 * u ^ 2 * ∑ k ∈ Finset.range (N + 1 - 2), (1 / 2 : ℝ) ^ k := by rw [Finset.mul_sum]
+    _ ≤ 3 * u ^ 2 * 2 := by
+        gcongr
+        exact sum_geometric_two_le _
+    _ = 6 * u ^ 2 := by ring
+
+theorem mass_samePart_one_factor : ∀ (g : ℕ) [Fact g.Prime], ∀ N : ℕ, 2 ^ 12 ≤ g → (mass g N fun f => ∃ l : ℕ, l.Prime ∧ ¬ BB g N l ∧ ∃ P : (ZMod g)[X], P.Monic ∧ Irreducible P ∧ P ∣ f ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y) ≤ 12 * Real.logb 2 g / Real.sqrt g := by
+  intro g _ N hg
+  have hg2 : 2 ≤ g := le_trans (by norm_num) hg
+  obtain ⟨-, -, hunion, -⟩ := _root_.GlobalTheory.BadShare.mass_union_bounds g N
+  obtain ⟨S, hS⟩ : ∃ S : ℕ → ℕ → Finset (ZMod g)[X], S = fun d l => (sqSet g d).filter fun P =>
+      Irreducible P ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)),
+        ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y := ⟨_, rfl⟩
+  obtain ⟨L, hL⟩ : ∃ L : ℕ → Finset ℕ,
+      L = fun d => (g ^ d - 1).primeFactors.filter fun l => ¬ BB g N l := ⟨_, rfl⟩
+  obtain ⟨r, hr⟩ : ∃ r : ℝ, r = (g : ℝ) ^ ((1 : ℝ) / 4) := ⟨_, rfl⟩
+  have hgpos : (0 : ℝ) < g := by exact_mod_cast (by omega : 0 < g)
+  have hr0 : 0 < r := hr ▸ Real.rpow_pos_of_pos hgpos _
+  have hr4 : r ^ 4 = g := by
+    rw [hr, ← Real.rpow_natCast, ← Real.rpow_mul hgpos.le]
+    norm_num
+  have hr8 : 8 ≤ r := by
+    by_contra h
+    have h1 : r ^ 4 < 8 ^ 4 := pow_lt_pow_left₀ (lt_of_not_ge h) hr0.le (by norm_num)
+    have h2' : 4096 ≤ g := by simpa using hg
+    have h2 : (4096 : ℝ) ≤ (g : ℝ) := by exact_mod_cast h2'
+    norm_num at h1
+    linarith
+  have hlog : 0 ≤ Real.logb 2 g :=
+    Real.logb_nonneg (by norm_num) (by exact_mod_cast (by omega : 1 ≤ g))
+  have hstep3 : ∀ d ∈ Finset.Icc 2 N, ∀ l ∈ L d, mass g N (fun f => ∃ P ∈ S d l, P ∣ f) ≤
+      (g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹ := by
+    intro d hd l hl
+    rw [Finset.mem_Icc] at hd
+    simp only [hL, Finset.mem_filter, Nat.mem_primeFactors] at hl
+    calc mass g N (fun f => ∃ P ∈ S d l, P ∣ f)
+        ≤ ∑ P ∈ S d l, mass g N (fun f => P ∣ f) :=
+          hunion _ (S d l) _ (fun P f => P ∣ f) (fun f _ hf => hf)
+      _ ≤ ∑ P ∈ S d l, (((g ^ d - 1 : ℕ) : ℝ))⁻¹ := by
+          apply Finset.sum_le_sum
+          intro P hP
+          simp only [hS, Finset.mem_filter] at hP
+          have h1 := (_root_.GlobalTheory.BadShare.divisor_bound g).2 N d P hP.1
+          rw [torusCard_irreducible hP.2.1, (mem_sqSet.mp hP.1).2.1] at h1
+          exact h1
+      _ = ((S d l).card : ℝ) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹ := by
+          rw [Finset.sum_const, nsmul_eq_mul]
+      _ ≤ (g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹ := by
+          gcongr
+          have := _root_.GlobalTheory.BadShare.TwoRoots.card_irreducible_samePart_le g N d l hd.1 hd.2 hl.1.1 hl.2
+          rw [hS]
+          exact this
+  have hstep2 : ∀ d ∈ Finset.Icc 2 N, mass g N (fun f => ∃ l ∈ L d, ∃ P ∈ S d l, P ∣ f) ≤
+      ((d : ℝ) * Real.logb 2 g) * ((g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹) := by
+    intro d hd
+    have hd' := Finset.mem_Icc.mp hd
+    calc mass g N (fun f => ∃ l ∈ L d, ∃ P ∈ S d l, P ∣ f)
+        ≤ ∑ l ∈ L d, mass g N (fun f => ∃ P ∈ S d l, P ∣ f) :=
+          hunion _ (L d) _ (fun l f => ∃ P ∈ S d l, P ∣ f) (fun f _ hf => hf)
+      _ ≤ ∑ l ∈ L d, (g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹ :=
+          Finset.sum_le_sum (hstep3 d hd)
+      _ = ((L d).card : ℝ) * ((g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹) := by
+          rw [Finset.sum_const, nsmul_eq_mul]
+      _ ≤ ((d : ℝ) * Real.logb 2 g) * ((g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹) := by
+          gcongr
+          calc ((L d).card : ℝ) ≤ ((g ^ d - 1).primeFactors.card : ℝ) := by
+                exact_mod_cast Finset.card_le_card (by rw [hL]; exact Finset.filter_subset _ _)
+            _ ≤ d * Real.logb 2 g := card_primeFactors_pow_sub_one_le hg2 (by omega)
+  have hstep1 : (mass g N fun f => ∃ l : ℕ, l.Prime ∧ ¬ BB g N l ∧ ∃ P : (ZMod g)[X], P.Monic ∧
+      Irreducible P ∧ P ∣ f ∧ ∃ x ∈ P.aroots (AlgebraicClosure (ZMod g)),
+        ∃ y ∈ P.aroots (AlgebraicClosure (ZMod g)), x ≠ y ∧ SamePart l x y) ≤
+      ∑ d ∈ Finset.Icc 2 N, mass g N (fun f => ∃ l ∈ L d, ∃ P ∈ S d l, P ∣ f) := by
+    apply hunion
+    rintro f hf ⟨l, hl, hBB, P, hPm, hPi, hPf, x, hx, y, hy, hxy, hs⟩
+    have hfm := mem_sqSet.mp hf
+    have hP0 : P.coeff 0 ≠ 0 := by
+      intro h0
+      exact hfm.2.2.2 (Polynomial.X_dvd_iff.mp (dvd_trans (Polynomial.X_dvd_iff.mpr h0) hPf))
+    obtain ⟨hd2, hldvd⟩ := dvd_of_samePart_roots hPi hP0 hl hx hy hxy hs
+    have hdN : P.natDegree ≤ N := hfm.2.1 ▸ Polynomial.natDegree_le_of_dvd hPf hfm.1.ne_zero
+    refine ⟨P.natDegree, Finset.mem_Icc.mpr ⟨hd2, hdN⟩, l, ?_, P, ?_, hPf⟩
+    · simp only [hL, Finset.mem_filter, Nat.mem_primeFactors]
+      refine ⟨⟨hl, hldvd, ?_⟩, hBB⟩
+      have : 2 ≤ g ^ P.natDegree := le_trans hg2 (Nat.le_self_pow (by omega) g)
+      omega
+    · simp only [hS, Finset.mem_filter]
+      exact ⟨mem_sqSet.mpr ⟨hPm, rfl, hPi.squarefree, hP0⟩, hPi, x, hx, y, hy, hxy, hs⟩
+  have hE : ∀ d ∈ Finset.Icc 2 N,
+      (g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹ ≤ 2 * r⁻¹ ^ d := by
+    intro d hd
+    have hd' := Finset.mem_Icc.mp hd
+    have h1 : (g : ℝ) ^ ((3 * d : ℝ) / 4) = (r ^ d) ^ 3 := by
+      rw [hr, ← pow_mul, ← Real.rpow_natCast, ← Real.rpow_mul hgpos.le]
+      congr 1
+      push_cast
+      ring
+    have h2 : (((g ^ d - 1 : ℕ) : ℝ)) = (r ^ d) ^ 4 - 1 := by
+      have : 1 ≤ g ^ d := Nat.one_le_pow _ _ (by omega)
+      rw [Nat.cast_sub this, Nat.cast_pow, Nat.cast_one, ← hr4, ← pow_mul, ← pow_mul, mul_comm]
+    have hR : 8 ≤ r ^ d := le_trans hr8 (le_self_pow₀ (by linarith) (by omega))
+    rw [h1, h2, inv_pow]
+    generalize r ^ d = R at hR ⊢
+    have h4 : (8 : ℝ) ^ 4 ≤ R ^ 4 := pow_le_pow_left₀ (by norm_num) hR 4
+    rw [← div_eq_mul_inv, ← div_eq_mul_inv, div_le_div_iff₀ (by linarith) (by linarith)]
+    nlinarith
+  calc _ ≤ ∑ d ∈ Finset.Icc 2 N, mass g N (fun f => ∃ l ∈ L d, ∃ P ∈ S d l, P ∣ f) := hstep1
+    _ ≤ ∑ d ∈ Finset.Icc 2 N, ((d : ℝ) * Real.logb 2 g) *
+          ((g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹) := Finset.sum_le_sum hstep2
+    _ ≤ ∑ d ∈ Finset.Icc 2 N, 2 * Real.logb 2 g * ((d : ℝ) * r⁻¹ ^ d) := by
+        apply Finset.sum_le_sum
+        intro d hd
+        calc ((d : ℝ) * Real.logb 2 g) * ((g : ℝ) ^ ((3 * d : ℝ) / 4) * (((g ^ d - 1 : ℕ) : ℝ))⁻¹)
+            ≤ ((d : ℝ) * Real.logb 2 g) * (2 * r⁻¹ ^ d) :=
+              mul_le_mul_of_nonneg_left (hE d hd) (mul_nonneg (Nat.cast_nonneg _) hlog)
+          _ = 2 * Real.logb 2 g * ((d : ℝ) * r⁻¹ ^ d) := by ring
+    _ = 2 * Real.logb 2 g * ∑ d ∈ Finset.Icc 2 N, (d : ℝ) * r⁻¹ ^ d := by rw [Finset.mul_sum]
+    _ ≤ 2 * Real.logb 2 g * (6 * r⁻¹ ^ 2) := by
+        gcongr
+        refine sum_mul_pow_le (inv_nonneg.mpr hr0.le) ?_ N
+        rw [one_div]
+        exact inv_anti₀ (by norm_num) hr8
+    _ = 12 * Real.logb 2 g / Real.sqrt g := by
+        have hsq : Real.sqrt g = r ^ 2 := by
+          rw [← hr4, show r ^ 4 = (r ^ 2) ^ 2 by ring]
+          exact Real.sqrt_sq (by positivity)
+        rw [hsq]
+        field_simp
+        ring
+
+end GlobalTheory.BadShare
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassSamePartOneFactorLe =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassTwoFactorsLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassTwoFactorsLe", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial Classical GlobalTheory.BadShare
+
+namespace GlobalTheory.BadShare.TwoFactors
+
+variable {g : ℕ} [Fact g.Prime]
+
+def PairAt (d e : ℕ) (x y : AlgebraicClosure (ZMod g)) (f : (ZMod g)[X]) : Prop :=
+  (minpoly (ZMod g) x).natDegree = d ∧ (minpoly (ZMod g) y).natDegree = e ∧ minpoly (ZMod g) x ≠ minpoly (ZMod g) y ∧
+    minpoly (ZMod g) x ∣ f ∧ minpoly (ZMod g) y ∣ f
+
+def PairFor (d e l : ℕ) (f : (ZMod g)[X]) : Prop :=
+  ∃ x y : AlgebraicClosure (ZMod g), x ^ (g ^ d - 1) = 1 ∧ y ^ (g ^ e - 1) = 1 ∧ SamePart l x y ∧ PairAt d e x y f
+
+end GlobalTheory.BadShare.TwoFactors
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassTwoFactorsLe =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassRootsNotDistinctLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassRootsNotDistinctLe", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZero\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowPadicValEqOneOfPrimePow\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassDivisorBound\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassSamePartOneFactorLe\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassTwoFactorsLe\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassUnionBounds\nimport Mathlib.Algebra.AffineMonoid.UniqueSums\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Complex.ExponentialBounds\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.GroupTheory.Nilpotent\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Artinian.Instances\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Polynomial Classical GlobalTheory.BadShare
@@ -368,7 +817,7 @@ private theorem sum_icc_prod_add_mul_pow_le (N : ℕ) {r : ℝ} (hr0 : 0 ≤ r) 
   calc 2 * ((∑ d ∈ Finset.Icc 1 N, (d : ℝ) * r ^ d) * ∑ e ∈ Finset.Icc 1 N, r ^ e)
       ≤ 2 * (r / (1 - r) ^ 2 * (r / (1 - r))) := by
         gcongr
-    _ = 2 * r ^ 2 / (1 - r) ^ 3 := by field_simp <;> ring
+    _ = 2 * r ^ 2 / (1 - r) ^ 3 := by field_simp
 
 
 open Polynomial Classical in
@@ -489,3 +938,6 @@ theorem _root_.GlobalTheory.BadShare.mass_not_rootsApart_le : ∀ (g : ℕ) [Fac
       linarith
 
 end GlobalTheory.BadShare
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SquarefreeLabelTorusMassRootsNotDistinctLe =====

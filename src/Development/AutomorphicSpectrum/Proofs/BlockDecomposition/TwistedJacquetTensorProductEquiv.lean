@@ -81,7 +81,7 @@ theorem tprod_sub_mem [Fintype α] (K : ∀ a, Submodule ℂ (X a)) {x y : ∀ a
         by_cases hab : a = b
         · subst hab
           simp
-        · simp [Function.update_of_ne hab, Finset.mem_insert, hab]
+        · simp [Finset.mem_insert, hab]
       have e : PiTensorProduct.tprod ℂ
             (Function.update (fun a => if a ∈ s then y a else x a) b (x b - y b)) =
           PiTensorProduct.tprod ℂ (fun a => if a ∈ s then y a else x a) -

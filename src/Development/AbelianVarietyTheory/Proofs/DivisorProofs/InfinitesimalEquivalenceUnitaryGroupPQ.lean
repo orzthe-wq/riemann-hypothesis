@@ -1,19 +1,26 @@
 module
 
-public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IsIrrKSubOfIsKTypeOf
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IsAdmissibleSubOfFiniteDimensional
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InnerRepK
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeMultiplicityOneLargeGaps
+public import Development.AbelianVarietyTheory.Definitions.Foundations.ContinuousOfMemCcSmooth
+public import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne
+public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DifferentiableAtOrbit
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntertwinerOfKFiniteVectors
+public import Formalism.RealPlaceAnalysis.StatementB
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IsIrrKSubOfIsKTypeOf
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.Smooth
 public import CompanionTheory.AutomorphicTheory.HarishChandraMultiplicity.HCMult
 public import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AnalyticIntertwiners.SubquotientNontrivial
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HarishChandraModulesIndefiniteUnitaryGroup
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVectorsUnitaryRepStableConjSkewAdjoint
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InnerRepK
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedRepConjMaxCompactIntertwinesStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GelfandTraceConjInvertibleScalarMatrixStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GlRelationsOnKFiniteVectors
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MaxCompactIrreducibleHasHighestWeightAndIsoStatement
+public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MaxCompactIrreducibleHasHighestWeightAndIso
 public import Formalism.LocalToGlobal.IndefiniteReal.SmExpSmulContDiff
+public import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AnalyticIntertwiners.Clause1
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -23,16 +30,12 @@ import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -54,15 +57,400 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Presheaf
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum
+import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsStandardIndModule
+import Mathlib.Analysis.Normed.Algebra.MatrixExponential
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
+import Mathlib.Tactic.ENatToNat
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Closure
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.Bridge
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothA
-public import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AnalyticIntertwiners.Clause1
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntertwinerOfKFiniteVectors, Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedRepConjMaxCompactIntertwines, Development.AbelianVarietyTheory.Proofs.TwistedOperators.GelfandTraceConjInvertibleScalarMatrix, Development.AbelianVarietyTheory.Proofs.TwistedOperators.GlRelationsOnKFiniteVectors, Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfinitesimalEquivalenceUnitaryGroupPQ
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntertwinerOfKFiniteVectors =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntertwinerOfKFiniteVectors", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IsAdmissibleSubOfFiniteDimensional\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InnerRepK\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeMultiplicityOneLargeGaps\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Presheaf\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.ContinuousOfMemCcSmooth\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset\nimport Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne\nimport Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsStandardIndModule\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.FlagMeas GlobalTheory.GKModule GlobalTheory.RealInd GlobalTheory.OpTrace
+open GlobalTheory.SmoothGlob (lieSet)
+open GlobalTheory.Dec (IsHaarSub HasInfChar UEquiv gelfVal)
+open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
+open scoped InnerProductSpace
+
+noncomputable section
+
+namespace GlobalTheory.KFinDual
+
+theorem decomp : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsURepOn (Kset ε) ρ → (∀ S : Submodule ℂ H, FiniteDimensional ℂ S → S ≠ ⊥ → IsKStableOn ε ρ S → (∀ S' : Submodule ℂ H, S' ≤ S → IsKStableOn ε ρ S' → S' = ⊥ ∨ S' = S) → ∃ Λ, IsKTypeOf ε ρ Λ S) → ∀ v : H, IsKFin ε ρ v → v ∈ ⨆ Λ : Fin n → ℝ, sSup {S : Submodule ℂ H | IsKTypeOf ε ρ Λ S} := by
+  classical
+  intro n ε H _ _ ρ hU hirr
+  have key : ∀ (d : ℕ) (F : Submodule ℂ H), FiniteDimensional ℂ F → Module.finrank ℂ F ≤ d →
+      IsKStableOn ε ρ F → F ≤ ⨆ Λ : Fin n → ℝ, sSup {S : Submodule ℂ H | IsKTypeOf ε ρ Λ S} := by
+    intro d
+    induction d with
+    | zero =>
+      intro F hF hd _
+      rw [Submodule.finrank_eq_zero.1 (Nat.le_zero.1 hd)]
+      exact bot_le
+    | succ d ih =>
+      intro F hF hd hFK
+      by_cases hF0 : F = ⊥
+      · rw [hF0]; exact bot_le
+      have hex : ∃ m, ∃ S : Submodule ℂ H, S ≤ F ∧ S ≠ ⊥ ∧ IsKStableOn ε ρ S ∧ Module.finrank ℂ S = m :=
+        ⟨_, F, le_rfl, hF0, hFK, rfl⟩
+      obtain ⟨S, hSF, hS0, hSK, hSm⟩ := Nat.find_spec hex
+      haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le hSF
+      have hirrS : ∀ S' : Submodule ℂ H, S' ≤ S → IsKStableOn ε ρ S' → S' = ⊥ ∨ S' = S := by
+        intro S' hS' hS'K
+        by_cases h0 : S' = ⊥
+        · exact Or.inl h0
+        right
+        haveI : FiniteDimensional ℂ S' := Submodule.finiteDimensional_of_le hS'
+        have h1 := Nat.find_min' hex ⟨S', hS'.trans hSF, h0, hS'K, rfl⟩
+        exact Submodule.eq_of_le_of_finrank_le hS' (hSm ▸ h1)
+      obtain ⟨Λ, hΛ⟩ := hirr S inferInstance hS0 hSK hirrS
+      have hSle : S ≤ ⨆ Λ : Fin n → ℝ, sSup {S : Submodule ℂ H | IsKTypeOf ε ρ Λ S} :=
+        (le_sSup (s := {S : Submodule ℂ H | IsKTypeOf ε ρ Λ S}) hΛ).trans (le_iSup (fun Λ => sSup {S : Submodule ℂ H | IsKTypeOf ε ρ Λ S}) Λ)
+      have hF'K : IsKStableOn ε ρ (Sᗮ ⊓ F) := by
+        intro k hk v hv
+        refine ⟨?_, hFK k hk v hv.2⟩
+        show (ρ k) v ∈ Sᗮ
+        rw [Submodule.mem_orthogonal]
+        intro u hu
+        have h1 := GlobalTheory.Dec.FormF.inner_rep_K hU (Formalism.REAL.Kset_star ε hk) u v
+        rw [star_star] at h1
+        rw [← h1]
+        exact (Submodule.mem_orthogonal S v).1 hv.1 _ (hSK _ (Formalism.REAL.Kset_star ε hk) u hu)
+      haveI : FiniteDimensional ℂ (Sᗮ ⊓ F : Submodule ℂ H) := Submodule.finiteDimensional_of_le inf_le_right
+      have hsup : S ⊔ Sᗮ ⊓ F = F := Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hSF
+      have hinf : S ⊓ (Sᗮ ⊓ F) = ⊥ :=
+        eq_bot_iff.2 ((inf_le_inf_left S inf_le_left).trans (Submodule.inf_orthogonal_eq_bot S).le)
+      have hdim := Submodule.finrank_sup_add_finrank_inf_eq S (Sᗮ ⊓ F)
+      rw [hsup, hinf, finrank_bot, add_zero] at hdim
+      have hpos : 0 < Module.finrank ℂ S := Nat.pos_of_ne_zero fun h => hS0 (Submodule.finrank_eq_zero.1 h)
+      have hle : F ≤ _ := hsup ▸ sup_le hSle (ih _ inferInstance (by omega) hF'K)
+      exact hle
+  intro v ⟨F, hF, hvF, hFK⟩
+  exact key _ F hF le_rfl hFK hvF
+
+variable {n : ℕ} {ε : Fin n → Bool}
+
+section
+variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
+
+def kIso (ε : Fin n → Bool) (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Λ : Fin n → ℝ) : Submodule ℂ H :=
+  sSup {S | IsKTypeOf ε ρ Λ S}
+
+theorem kIso_le (Λ : Fin n → ℝ) : kIso ε ρ Λ ≤ kFinVec ε ρ :=
+  sSup_le fun S hS v hv => ⟨S, hS.1, hv, hS.2.1⟩
+
+theorem kIso_orth (hU : IsURepOn (Kset ε) ρ) {Λ μ : Fin n → ℝ} (hne : μ ≠ Λ) :
+    ∀ x ∈ kIso ε ρ Λ, ∀ y ∈ kIso ε ρ μ, ⟪x, y⟫_ℂ = 0 := by
+  rw [← Submodule.isOrtho_iff_inner_eq]
+  refine Submodule.isOrtho_sSup_left.2 fun S hS => Submodule.isOrtho_sSup_right.2 fun T hT => ?_
+  exact (Submodule.isOrtho_iff_inner_eq).2 (GlobalTheory.Jet.MultGap.orth_of_ne hU hS hT hne)
+
+theorem finset_orth (hU : IsURepOn (Kset ε) ρ) (s : Finset (Fin n → ℝ)) {μ : Fin n → ℝ} (hμ : μ ∉ s) :
+    ∀ x ∈ s.sup (kIso ε ρ), ∀ y ∈ kIso ε ρ μ, ⟪x, y⟫_ℂ = 0 := by
+  rw [← Submodule.isOrtho_iff_inner_eq, Finset.sup_eq_iSup]
+  refine Submodule.isOrtho_iSup_left.2 fun Λ => Submodule.isOrtho_iSup_left.2 fun hΛ => ?_
+  exact (Submodule.isOrtho_iff_inner_eq).2 (kIso_orth hU (fun e => hμ (e ▸ hΛ)))
+
+theorem exists_finset (hd : ∀ v, IsKFin ε ρ v → v ∈ ⨆ Λ, kIso ε ρ Λ) (v : H) (hv : IsKFin ε ρ v) :
+    ∃ s : Finset (Fin n → ℝ), v ∈ s.sup (kIso ε ρ) := by
+  obtain ⟨s, hs⟩ := Submodule.mem_iSup_iff_exists_finset.1 (hd v hv)
+  exact ⟨s, by rwa [Finset.sup_eq_iSup]⟩
+
+end
+
+section
+variable {H V : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup V]
+  [InnerProductSpace ℂ V] {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {π : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)}
+
+theorem map_kIso_le {T : H →ₗ[ℂ] V} (hT : ∀ k ∈ Kset ε, ∀ y, IsKFin ε ρ y → T (ρ k y) = π k (T y))
+    (Λ : Fin n → ℝ) : (kIso ε ρ Λ).map T ≤ kIso ε π Λ := by
+  rw [Submodule.map_le_iff_le_comap]
+  refine sSup_le fun S hS => ?_
+  rw [← Submodule.map_le_iff_le_comap]
+  haveI := hS.1
+  set Q : S →L[ℂ] V := LinearMap.toContinuousLinearMap (T ∘ₗ S.subtype) with hQdef
+  have hR : S.map T = LinearMap.range (Q : S →ₗ[ℂ] V) := by
+    rw [hQdef, LinearMap.coe_toContinuousLinearMap, LinearMap.range_comp, Submodule.range_subtype]
+  by_cases hQ : Q = 0
+  · rw [hR, hQ]; simp
+  · rw [hR]
+    refine le_sSup (GlobalTheory.Dec.FormF.rangeType n ε Λ H ρ S V π Q hS (fun k hk x y hxy => ?_) hQ)
+    change T y = π k (T x)
+    rw [hxy]
+    exact hT k hk x ⟨S, hS.1, x.2, hS.2.1⟩
+
+end
+
+end GlobalTheory.KFinDual
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntertwinerOfKFiniteVectors =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedRepConjMaxCompactIntertwines =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedRepConjMaxCompactIntertwines", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContDiffSetIntegralNat\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DifferentiableAtOrbit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.MatrixExponential\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped InnerProductSpace
+
+noncomputable section
+
+open Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta
+open GlobalTheory.SmoothGlob (lieSet)
+
+namespace GlobalTheory.GKLie
+
+theorem dRep_conj_Kset (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+    (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (hρ : Formalism.QuantumDeterminants.IsCRepOn (Formalism.MainNotions.S.UJset ε) ρ) :
+    ∀ κ ∈ Formalism.REAL.Kset ε, ∀ X ∈ GlobalTheory.SmoothGlob.lieSet ε, ∀ v : H,
+      Formalism.L2.Theta.SmoothVec (GlobalTheory.SmoothGlob.lieSet ε) ρ v →
+      Formalism.L2.Theta.dRep ρ (κ * X * κ⁻¹) (ρ κ v) = ρ κ (Formalism.L2.Theta.dRep ρ X v) := by
+  intro κ hκ X hX v hv
+  have h1 : κᴴ * κ = 1 := Matrix.mem_unitaryGroup_iff'.1 hκ.1
+  have h2 : κ * κᴴ = 1 := Matrix.mem_unitaryGroup_iff.1 hκ.1
+  have hu : IsUnit κ := IsUnit.of_mul_eq_one _ h2
+  have hinv : κ⁻¹ * κ = 1 := Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det κ).1 hu)
+  have hκU : κ ∈ UJset ε := by
+    change κᴴ * Jm ε * κ = Jm ε
+    rw [Matrix.mul_assoc, ← hκ.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
+  have hmul : ∀ a ∈ UJset ε, ∀ b ∈ UJset ε, a * b ∈ UJset ε := fun a ha b hb => by
+    change (a * b)ᴴ * Jm ε * (a * b) = Jm ε
+    have ha' : aᴴ * Jm ε * a = Jm ε := ha
+    have hb' : bᴴ * Jm ε * b = Jm ε := hb
+    rw [Matrix.conjTranspose_mul]
+    calc bᴴ * aᴴ * Jm ε * (a * b) = bᴴ * (aᴴ * Jm ε * a) * b := by simp only [Matrix.mul_assoc]
+      _ = Jm ε := by rw [ha', hb']
+  have hE : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ UJset ε := fun t =>
+    GlobalTheory.GardingVec.exp_mem (IsUnit.of_mul_eq_one _ (Jm_mul_self ε)) hX t
+  have hinvU : κ⁻¹ ∈ UJset ε := by
+    have hκinv : κ⁻¹ = κᴴ := Matrix.inv_eq_left_inv h1
+    rw [hκinv]
+    change κᴴᴴ * Jm ε * κᴴ = Jm ε
+    rw [Matrix.conjTranspose_conjTranspose, hκ.2, Matrix.mul_assoc, h2, Matrix.mul_one]
+  have hfun : (fun t : ℝ => ρ (NormedSpace.exp (t • (κ * X * κ⁻¹))) (ρ κ v)) =
+      fun t : ℝ => ρ κ (ρ (NormedSpace.exp (t • X)) v) := by
+    funext t
+    have hc : NormedSpace.exp (t • (κ * X * κ⁻¹)) = κ * NormedSpace.exp (t • X) * κ⁻¹ := by
+      rw [← Matrix.exp_conj _ _ hu, Matrix.mul_smul, Matrix.smul_mul]
+    rw [hc]
+    have hA : κ * NormedSpace.exp (t • X) * κ⁻¹ ∈ UJset ε := hmul _ (hmul _ hκU _ (hE t)) _ hinvU
+    rw [← ContinuousLinearMap.comp_apply, ← hρ.2 _ hA _ hκU, Matrix.mul_assoc _ κ⁻¹ κ, hinv, Matrix.mul_one,
+      hρ.2 _ hκU _ (hE t), ContinuousLinearMap.comp_apply]
+  unfold dRep
+  rw [hfun]
+  have hd := (differentiableAt_orbit hv hX).hasDerivAt
+  have hL : HasFDerivAt (ρ κ) ((ρ κ).restrictScalars ℝ) (ρ (NormedSpace.exp ((0 : ℝ) • X)) v) :=
+    ((ρ κ).restrictScalars ℝ).hasFDerivAt
+  exact (hL.comp_hasDerivAt (0 : ℝ) hd).deriv
+
+end GlobalTheory.GKLie
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedRepConjMaxCompactIntertwines =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.GelfandTraceConjInvertibleScalarMatrix =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.GelfandTraceConjInvertibleScalarMatrix", "h": "module\n\npublic import Formalism.RealPlaceAnalysis.StatementB\npublic import Mathlib.LinearAlgebra.Matrix.NonsingularInverse\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped InnerProductSpace
+
+namespace GlobalTheory
+
+theorem recursive_matrixPower_eq_matrix_pow {A : Type} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) (k : ℕ) :
+    Matrix.of (Formalism.REAL.epow E k) = (Matrix.of E) ^ k := by
+  induction k with
+  | zero =>
+    ext a b
+    simp [Formalism.REAL.epow, Matrix.one_apply]
+  | succ k ih =>
+    ext a b
+    rw [pow_succ, ← ih]
+    simp [Formalism.REAL.epow, Matrix.mul_apply]
+
+theorem scalarMatrix_mul_algebraMatrix_mul_apply {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
+    (M : Matrix (Fin n) (Fin n) A) (P Q : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
+    ((algebraMap ℂ A).mapMatrix P.transpose * M * (algebraMap ℂ A).mapMatrix Q.transpose) a b
+      = ∑ c, ∑ d, (P c a * Q b d) • M c d := by
+  rw [Finset.sum_comm]
+  simp only [Matrix.mul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.transpose_apply,
+    Finset.sum_mul]
+  refine Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_
+  rw [← Algebra.commutes, ← Algebra.smul_def, ← Algebra.smul_def, smul_smul, mul_comm]
+
+theorem etr_conj_scalar_matrix {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A)
+    (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) (k : ℕ) :
+    Formalism.REAL.etr (fun a b => ∑ c, ∑ d, (P c a * P⁻¹ b d) • E c d) k = Formalism.REAL.etr E k := by
+  have hd : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).1 hP
+  have h1 : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hd
+  have h2 : P⁻¹ * P = 1 := Matrix.nonsing_inv_mul P hd
+  set L : Matrix (Fin n) (Fin n) A := (algebraMap ℂ A).mapMatrix P.transpose with hL
+  set R : Matrix (Fin n) (Fin n) A := (algebraMap ℂ A).mapMatrix (P⁻¹).transpose with hR
+  have hLR : L * R = 1 := by
+    rw [hL, hR, ← map_mul, ← Matrix.transpose_mul, h2, Matrix.transpose_one, map_one]
+  have hRL : R * L = 1 := by
+    rw [hL, hR, ← map_mul, ← Matrix.transpose_mul, h1, Matrix.transpose_one, map_one]
+  have hE : Matrix.of (fun a b => ∑ c, ∑ d, (P c a * P⁻¹ b d) • E c d) = L * Matrix.of E * R := by
+    ext a b
+    rw [hL, hR, scalarMatrix_mul_algebraMatrix_mul_apply]
+    rfl
+  have hpow : ∀ m : ℕ, (L * Matrix.of E * R) ^ m = L * (Matrix.of E) ^ m * R := by
+    intro m
+    induction m with
+    | zero => simp [hLR]
+    | succ m ih =>
+      rw [pow_succ, ih, pow_succ]
+      calc L * Matrix.of E ^ m * R * (L * Matrix.of E * R)
+          = L * Matrix.of E ^ m * (R * L) * Matrix.of E * R := by simp only [mul_assoc]
+        _ = L * (Matrix.of E ^ m * Matrix.of E) * R := by rw [hRL]; simp only [mul_assoc, one_mul]
+  have hk := recursive_matrixPower_eq_matrix_pow (fun a b => ∑ c, ∑ d, (P c a * P⁻¹ b d) • E c d) k
+  rw [hE, hpow, ← recursive_matrixPower_eq_matrix_pow] at hk
+  have hent : ∀ a, Formalism.REAL.epow (fun a b => ∑ c, ∑ d, (P c a * P⁻¹ b d) • E c d) k a a
+      = ∑ c, ∑ d, (P c a * P⁻¹ a d) • Formalism.REAL.epow E k c d := by
+    intro a
+    have := congrFun (congrFun hk a) a
+    rw [hL, hR, scalarMatrix_mul_algebraMatrix_mul_apply] at this
+    exact this
+  unfold Formalism.REAL.etr
+  simp only [hent]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun c _ => ?_
+  rw [Finset.sum_comm]
+  simp only [← Finset.sum_smul, ← Matrix.mul_apply, h1, Matrix.one_apply, ite_smul, one_smul,
+    zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.GelfandTraceConjInvertibleScalarMatrix =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.GlRelationsOnKFiniteVectors =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.GlRelationsOnKFiniteVectors", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DifferentiableAtOrbit\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.ContinuousOfMemCcSmooth\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset\nimport Development.AbelianVarietyTheory.Definitions.SemilocalFrames.DefClassNum\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne\nimport Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.ExistsStandardIndModule\nimport Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IsAdmissibleSubOfFiniteDimensional\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta GlobalTheory.FlagMeas GlobalTheory.GKModule GlobalTheory.RealInd GlobalTheory.OpTrace
+open GlobalTheory.SmoothGlob (lieSet)
+open GlobalTheory.Dec (IsHaarSub HasInfChar UEquiv gelfVal)
+open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
+open scoped InnerProductSpace
+open PI.DSInfCharCap (actU Egl)
+
+namespace GlobalTheory.GKLie
+
+theorem epow_intertwine {A : Type} [Ring A] {n : ℕ} (E E' : Fin n → Fin n → A) (R : A)
+    (h : ∀ a b, R * E a b = E' a b * R) : ∀ k a b, R * epow E k a b = epow E' k a b * R := by
+  intro k
+  induction k with
+  | zero =>
+    intro a b
+    simp only [Formalism.REAL.epow]
+    split_ifs <;> simp
+  | succ k ih =>
+    intro a b
+    simp only [Formalism.REAL.epow, Finset.mul_sum, Finset.sum_mul]
+    refine Finset.sum_congr rfl fun c _ => ?_
+    rw [← mul_assoc, ih, mul_assoc, h, ← mul_assoc]
+
+theorem etr_intertwine {A : Type} [Ring A] {n : ℕ} (E E' : Fin n → Fin n → A) (R : A)
+    (h : ∀ a b, R * E a b = E' a b * R) (k : ℕ) : R * etr E k = etr E' k * R := by
+  simp only [etr, Finset.mul_sum, Finset.sum_mul]
+  exact Finset.sum_congr rfl fun a _ => epow_intertwine E E' R h k a a
+
+theorem single_mul_single' {n : ℕ} (a b c d : Fin n) :
+    (single a b (1 : ℂ)) * single c d 1 = if b = c then single a d 1 else 0 := by
+  split_ifs with h
+  · subst h; rw [single_mul_single_same, one_mul]
+  · exact single_mul_single_of_ne _ _ _ _ h _
+
+theorem conj_single {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
+    P * single a b 1 * P⁻¹ = ∑ c, ∑ d, (P c a * P⁻¹ b d) • single c d (1 : ℂ) := by
+  ext i j
+  simp [Matrix.mul_apply, single_apply, Matrix.sum_apply, ite_and, ite_mul, Finset.sum_ite_eq', Finset.sum_ite_eq]
+
+end GlobalTheory.GKLie
+
+namespace GlobalTheory.GKLie
+
+section Main
+
+variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+  {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
+
+end Main
+
+end GlobalTheory.GKLie
+
+namespace GlobalTheory.GKLie
+
+section KPart
+
+variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+  {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
+
+theorem kset_facts {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) :
+    κᴴ * κ = 1 ∧ κ⁻¹ = κᴴ ∧ κ * Jm ε = Jm ε * κ ∧ κᴴ * Jm ε = Jm ε * κᴴ := by
+  obtain ⟨hu, hc⟩ := hκ
+  have h1 : κᴴ * κ = 1 := by
+    rw [Matrix.mem_unitaryGroup_iff'] at hu
+    simpa [Matrix.star_eq_conjTranspose] using hu
+  refine ⟨h1, Matrix.inv_eq_left_inv h1, hc, ?_⟩
+  have := congrArg conjTranspose hc
+  simpa [conjTranspose_mul, Jm_conjTranspose] using this.symm
+
+theorem theta_kconj {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (Y : Matrix (Fin n) (Fin n) ℂ) :
+    PI.DSInfCharCap.thetaJ ε (κ * Y * κ⁻¹) = κ * PI.DSInfCharCap.thetaJ ε Y * κ⁻¹ := by
+  obtain ⟨_, hinv, hc, hc'⟩ := kset_facts hκ
+  rw [hinv]
+  simp only [PI.DSInfCharCap.thetaJ, conjTranspose_mul, conjTranspose_conjTranspose, mul_neg, neg_mul, mul_assoc]
+  rw [hc', ← mul_assoc (Jm ε) κ, ← hc, mul_assoc]
+
+theorem cre_kconj {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (Y : Matrix (Fin n) (Fin n) ℂ) :
+    cre ε (κ * Y * κ⁻¹) = κ * cre ε Y * κ⁻¹ := by
+  unfold cre
+  rw [theta_kconj hκ]
+  simp only [mul_add, add_mul, smul_mul_assoc, mul_smul_comm]
+
+theorem cim_kconj {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (Y : Matrix (Fin n) (Fin n) ℂ) :
+    cim ε (κ * Y * κ⁻¹) = κ * cim ε Y * κ⁻¹ := by
+  unfold cim
+  rw [theta_kconj hκ]
+  simp only [mul_sub, sub_mul, smul_mul_assoc, mul_smul_comm]
+
+end KPart
+
+end GlobalTheory.GKLie
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.GlRelationsOnKFiniteVectors =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfinitesimalEquivalenceUnitaryGroupPQ =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfinitesimalEquivalenceUnitaryGroupPQ", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.IsIrrKSubOfIsKTypeOf\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DifferentiableAtOrbit\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntertwinerOfKFiniteVectors\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.Smooth\npublic import CompanionTheory.AutomorphicTheory.HarishChandraMultiplicity.HCMult\npublic import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AnalyticIntertwiners.SubquotientNontrivial\npublic import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HarishChandraModulesIndefiniteUnitaryGroup\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SmoothVectorsUnitaryRepStableConjSkewAdjoint\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasDRepIffHasDerivAt\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DerivedRepConjMaxCompactIntertwines\npublic import Formalism.RealPlaceAnalysis.StatementB\npublic import Mathlib.LinearAlgebra.Matrix.NonsingularInverse\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GelfandTraceConjInvertibleScalarMatrix\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.GlRelationsOnKFiniteVectors\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MaxCompactIrreducibleHasHighestWeightAndIso\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.ContinuousOfMemCcSmooth\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsAuxiliaryPlaceNotMemFinset\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne\npublic import Formalism.LocalToGlobal.IndefiniteReal.SmExpSmulContDiff\npublic import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AnalyticIntertwiners.Clause1\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.InnerRepK\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Eigenspace.Triangularizable\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Closure\nimport ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary\nimport ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.Bridge\nimport ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothA\n\n"}
+section -- clump:auto
 @[expose] public section
 
 section
@@ -231,16 +619,14 @@ theorem vAct_bracket (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ
         (X1 * Y1 - Y1 * X1) + Complex.I • (X1 * Y2 - Y2 * X1) + Complex.I • (X2 * Y1 - Y1 * X2) -
           (X2 * Y2 - Y2 * X2) := by
     intro X1 X2 Y1 Y2
-    simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I, neg_one_smul,
-      smul_sub, smul_add, smul_neg, neg_smul, Complex.I_mul_I]
+    simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I, smul_sub, smul_add, neg_smul, Complex.I_mul_I]
     module
   have h := hm (cre ε X) (cim ε X) (cre ε Y) (cim ε Y)
   rw [cre_add_cim, cre_add_cim] at h
   rw [h, map_sub, map_add (f := _), map_add (f := _), map_smul, map_smul, vAct_bracket_of_mem hρ hV (cre_mem X) (cre_mem Y),
     vAct_bracket_of_mem hρ hV (cre_mem X) (cim_mem Y), vAct_bracket_of_mem hρ hV (cim_mem X) (cre_mem Y),
     vAct_bracket_of_mem hρ hV (cim_mem X) (cim_mem Y), vAct_decomp hρ hV X, vAct_decomp hρ hV Y]
-  simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I, neg_one_smul,
-    smul_sub, smul_add, smul_neg, neg_smul, Complex.I_mul_I]
+  simp only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I, smul_sub, smul_add, neg_smul, Complex.I_mul_I]
   module
 
 def vE (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V) (a b : Fin n) : Module.End ℂ V :=
@@ -250,7 +636,7 @@ theorem actM_vE (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV
     ReciprocityTheory.ChartRestriction.DS.actM (vE hρ hV) X = vAct hρ hV X := by
   have hX : X = ∑ a, ∑ b, X a b • single a b (1 : ℂ) := by
     ext i j
-    simp [Matrix.sum_apply, single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']
+    simp [Matrix.sum_apply, single_apply, ite_and, Finset.sum_ite_eq']
   conv_rhs => rw [hX]
 
   simp only [map_sum, map_smul, ReciprocityTheory.ChartRestriction.DS.actM, vE]
@@ -278,11 +664,6 @@ theorem vIso_le (Λ : Fin n → ℝ) : vIso ε ρ V Λ ≤ V := sSup_le fun _ hS
 
 theorem vIso_le_kIso (Λ : Fin n → ℝ) : vIso ε ρ V Λ ≤ GlobalTheory.KFinDual.kIso ε ρ Λ :=
   sSup_le_sSup fun _ hS => hS.2
-
-theorem isURepOn_Kset (hU : IsURepOn (UJset ε) ρ) : IsURepOn (Kset ε) ρ :=
-  ⟨⟨hU.1.1, fun a ha b hb => hU.1.2 a (mem_UJset_of_mem_Kset ha) b (mem_UJset_of_mem_Kset hb)⟩,
-    fun g hg => hU.2.1 g (mem_UJset_of_mem_Kset hg),
-    fun v => (hU.2.2 v).mono fun _ hk => mem_UJset_of_mem_Kset hk⟩
 
 theorem le_iSup_vIso (hU : IsURepOn (Kset ε) ρ)
     (hirr : ∀ S : Submodule ℂ H, FiniteDimensional ℂ S → S ≠ ⊥ → IsKStableOn ε ρ S →
@@ -345,12 +726,12 @@ theorem le_iSup_vIso (hU : IsURepOn (Kset ε) ρ)
 theorem kType_exists [CompleteSpace H] (hU : IsURepOn (UJset ε) ρ) :
     ∀ S : Submodule ℂ H, FiniteDimensional ℂ S → S ≠ ⊥ → IsKStableOn ε ρ S →
       (∀ S' : Submodule ℂ H, S' ≤ S → IsKStableOn ε ρ S' → S' = ⊥ ∨ S' = S) → ∃ Λ, IsKTypeOf ε ρ Λ S :=
-  (GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso n ε H ρ hU.1 hU.2.2 fun k hk => hU.2.1 k (mem_UJset_of_mem_Kset hk)).1
+  (_root_.GlobalTheory.KTypeHighest.ktype_highest_weight n ε H ρ hU.1 hU.2.2 fun k hk => hU.2.1 k (mem_UJset_of_mem_Kset hk)).1
 
 theorem mem_of_mem_closure [CompleteSpace H] (hU : IsURepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     (hA : IsAdmissibleSub ε ρ V) {w : H} (hw : w ∈ V.topologicalClosure) (hk : IsKFin ε ρ w) : w ∈ V := by
   classical
-  have hUK := isURepOn_Kset hU
+  have hUK := _root_.GlobalTheory.Dec.FormF.URep_K hU
   have hty := kType_exists hU
   obtain ⟨s, hs⟩ := GlobalTheory.KFinDual.exists_finset (GlobalTheory.KFinDual.decomp n ε H ρ hUK hty) w hk
   set A : Submodule ℂ H := s.sup (vIso ε ρ V) with hAdef
@@ -385,8 +766,8 @@ theorem mem_of_mem_closure [CompleteSpace H] (hU : IsURepOn (UJset ε) ρ) (hV :
 
 theorem casimir_eq_etr {M : Type} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M) :
     ReciprocityTheory.ChartRestriction.DS.casimir E = etr E 2 := by
-  simp only [ReciprocityTheory.ChartRestriction.DS.casimir, etr, Formalism.REAL.epow, Finset.sum_mul, ite_mul, one_mul, zero_mul,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  simp only [ReciprocityTheory.ChartRestriction.DS.casimir, etr, Formalism.REAL.epow, ite_mul, one_mul, zero_mul,
+    Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 def vK (hV : IsGKSub ε ρ V) (κ : Matrix (Fin n) (Fin n) ℂ) (hκ : κ ∈ Kset ε) : Module.End ℂ V :=
   (ρ κ : H →ₗ[ℂ] H).restrict (fun x hx => hV.kStable κ hκ x hx)
@@ -400,8 +781,8 @@ theorem vAct_kconj (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) 
   refine LinearMap.ext fun v => Subtype.ext ?_
   rw [Module.End.mul_apply, Module.End.mul_apply, vK_coe, vAct_coe, vAct_coe, vK_coe, dsigC_eq, dsigC_eq,
     cre_kconj hκ, cim_kconj hκ,
-    GlobalTheory.T.derivedRep_conj_maxCompact_intertwines n ε H ρ hρ κ hκ _ (cre_mem Y) v (hV.smooth v v.2),
-    GlobalTheory.T.derivedRep_conj_maxCompact_intertwines n ε H ρ hρ κ hκ _ (cim_mem Y) v (hV.smooth v v.2), map_add, map_smul]
+    _root_.GlobalTheory.GKLie.dRep_conj_Kset n ε H ρ hρ κ hκ _ (cre_mem Y) v (hV.smooth v v.2),
+    _root_.GlobalTheory.GKLie.dRep_conj_Kset n ε H ρ hρ κ hκ _ (cim_mem Y) v (hV.smooth v v.2), map_add, map_smul]
 
 theorem vAct_conj_etr (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) (k : ℕ) :
@@ -413,7 +794,7 @@ theorem vAct_conj_etr (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) �
 
     simp only [map_sum, map_smul]
   rw [this]
-  exact GlobalTheory.T.gelfandTrace_conj_invertible_scalarMatrix (fun a b => vAct hρ hV (single a b 1)) P hP k
+  exact _root_.GlobalTheory.etr_conj_scalar_matrix (fun a b => vAct hρ hV (single a b 1)) P hP k
 
 theorem casimir_kequiv (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (v w : V) (hw : (w : H) = ρ κ v) :
@@ -544,7 +925,7 @@ theorem admissibleClosure_gKSubmodule : GlobalTheory.Published.AdmissibleClosure
   have hgen : ∀ v ∈ V, σ g v ∈ V.topologicalClosure := by
     intro v hv
     refine Submodule.iSup_induction (vIso ε σ V) (motive := fun v => σ g v ∈ V.topologicalClosure)
-      (le_iSup_vIso (isURepOn_Kset hU) (kType_exists hU) hV hv)
+      (le_iSup_vIso (_root_.GlobalTheory.Dec.FormF.URep_K hU) (kType_exists hU) hV hv)
       (fun Λ y hy => rep_mem_closure_of_vIso hU hV hA Λ hg hy) (by simp)
       (fun a b ha hb => by rw [map_add]; exact add_mem ha hb)
   have hw' : w ∈ closure (V : Set H) := by rwa [← Submodule.topologicalClosure_coe]
@@ -567,7 +948,7 @@ theorem finiteDimensional_kIso' (hU : IsURepOn (UJset ε) ρ) (hI : IsIrredOn (U
   · obtain ⟨S₀, hS₀⟩ := hex
     have hfd := GlobalTheory.GKPort.KFinLink.isAdmissible_of hU hI S₀ (GlobalTheory.KFinVec.isIrrKSub_of_isKTypeOf hS₀)
     refine Submodule.finiteDimensional_of_le (sSup_le fun S hS => ?_ : _ ≤ GlobalTheory.KFinVec.kIsotypic ε ρ S₀)
-    obtain ⟨B, hB, hBS⟩ := (GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso n ε H ρ hU.1 hU.2.2 fun k hk =>
+    obtain ⟨B, hB, hBS⟩ := (_root_.GlobalTheory.KTypeHighest.ktype_highest_weight n ε H ρ hU.1 hU.2.2 fun k hk =>
       hU.2.1 k (mem_UJset_of_mem_Kset hk)).2 Λ S₀ S hS₀ hS
     have hT : GlobalTheory.KFinVec.IsKMapFrom ε ρ S₀ ((B : H →ₗ[ℂ] H) ∘ₗ S₀.subtype) := fun k hk s s' hs => by
       show B s' = ρ k (B s)
@@ -598,7 +979,7 @@ theorem exists_kIso_ne_bot [Nontrivial H₁] (hU : IsURepOn (UJset ε) σ₁) :
   by_contra hc
   push_neg at hc
   have hall : ∀ v : H₁, IsKFin ε σ₁ v → v = 0 := fun v hv => by
-    have h := GlobalTheory.KFinDual.decomp n ε H₁ σ₁ (isURepOn_Kset hU) (kType_exists hU) v hv
+    have h := GlobalTheory.KFinDual.decomp n ε H₁ σ₁ (_root_.GlobalTheory.Dec.FormF.URep_K hU) (kType_exists hU) v hv
     have h0 : (⨆ Λ : Fin n → ℝ, sSup {S : Submodule ℂ H₁ | IsKTypeOf ε σ₁ Λ S}) = ⊥ := iSup_eq_bot.2 hc
     rw [h0] at h
     exact (Submodule.mem_bot ℂ).1 h
@@ -616,8 +997,8 @@ theorem form_prop [Nontrivial H₁] (hU₁ : IsURepOn (UJset ε) σ₁) (hI₁ :
     (hL : ∀ X ∈ lieSet ε, ∀ v, IsKFin ε σ₁ v → T (dRep σ₁ X v) = dRep σ₂ X (T v)) :
     ∃ c : ℝ, 0 < c ∧ ∀ v w, IsKFin ε σ₁ v → IsKFin ε σ₁ w → ⟪T v, T w⟫_ℂ = (c : ℂ) * ⟪v, w⟫_ℂ := by
   classical
-  have hUK₁ := isURepOn_Kset hU₁
-  have hUK₂ := isURepOn_Kset hU₂
+  have hUK₁ := _root_.GlobalTheory.Dec.FormF.URep_K hU₁
+  have hUK₂ := _root_.GlobalTheory.Dec.FormF.URep_K hU₂
   have hG₁ := isGKSub_kFinVec hU₁ hI₁
   have hG₂ := isGKSub_kFinVec hU₂ hI₂
   obtain ⟨Λ₀, hΛ₀⟩ := exists_kIso_ne_bot hU₁
@@ -798,3 +1179,6 @@ theorem gkGlobalisation_holds : GlobalTheory.Published.GKGlobalisation :=
 end GlobalTheory
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.InfinitesimalEquivalenceUnitaryGroupPQ =====

@@ -47,4 +47,4 @@ theorem _root_.GlobalTheory.T.blockUpperTimesUnipotent_mul_blockDiagonal : ∀ (
     (m k : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)),
     blk h w (k * m) X = dgM h w k * blk h w m X ∧
       blk h w (m * k) X = blk h w m (k.1.val * X * (k.2⁻¹).val) * dgM h w k := by
-  first | exact @GlobalTheory.BCT.CtLevel.blk_mul_dgM | exact GlobalTheory.BCT.CtLevel.blk_mul_dgM | (intros; apply GlobalTheory.BCT.CtLevel.blk_mul_dgM <;> assumption)
+  first | exact @GlobalTheory.BCT.CtLevel.blk_mul_dgM

@@ -76,14 +76,12 @@ theorem exists_esymm_eq (n : ℕ) (a : ℕ → ℂ) (h0 : a 0 = 1) (hn : a n ≠
   have hroots : Multiset.card p.roots = p.natDegree := by
     first
     | exact Polynomial.splits_iff_card_roots.mp (IsAlgClosed.splits p)
-    | exact (IsAlgClosed.splits p).card_roots
-    | exact Polynomial.Splits.card_roots (IsAlgClosed.splits p)
   have h0c : p.coeff 0 ≠ 0 := by
     rcases Nat.eq_zero_or_pos n with h | h
     · subst h
       simp [hp, hq]
     · rw [hpc 0 h]
-      simp only [hc, Fin.val_mk, Nat.sub_zero]
+      simp only [hc, Nat.sub_zero]
       exact mul_ne_zero (pow_ne_zero _ (by norm_num)) hn
   have hne : ∀ r ∈ p.roots, r ≠ 0 := by
     intro r hr h0
@@ -106,7 +104,7 @@ theorem exists_esymm_eq (n : ℕ) (a : ℕ → ℂ) (h0 : a 0 = 1) (hn : a n ≠
         Multiset.prod_zero, h0]
     · have hlt : n - j < n := Nat.sub_lt (lt_of_lt_of_le hj0 hj) hj0
       rw [hpc _ hlt] at hv
-      simp only [hc, Fin.val_mk, Nat.sub_sub_self hj] at hv
+      simp only [hc, Nat.sub_sub_self hj] at hv
       have hu : ((-1 : ℂ) ^ j) ≠ 0 := pow_ne_zero _ (by norm_num)
       exact (mul_left_cancel₀ hu hv).symm
 
@@ -158,8 +156,6 @@ theorem Tj_indep (j : ℕ) {ϖ ϖ' : w.adicCompletion E} (h : IsUnifV E w ϖ) (h
     first
     | (simp [bc, D, dO, Matrix.diagonal_apply]; done)
     | (simp [bc, D, dO, Matrix.diagonal_apply]; split_ifs <;> simp)
-    | (unfold bc; simp [D, dO, Matrix.diagonal_apply]; split_ifs <;> simp)
-    | (simp [bc, D, dO, Matrix.diagonal_apply, Matrix.map_apply, RingHom.mapMatrix_apply]; split_ifs <;> simp)
   have hdiag : diagJ n ϖ' j = diagJ n ϖ j * (Dk : Matrix (Fin n) (Fin n) (w.adicCompletion E)) := by
     rw [hDval]
     unfold diagJ
@@ -235,8 +231,6 @@ theorem exists_hasSatGL (E : Type) [Field E] [NumberField E] (w : HeightOneSpect
     unfold IsUnifV
     first
     | (rw [hπdef, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hπ0]; rfl)
-    | (rw [hπdef, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation, hπ0]; rfl)
-    | simpa [hπdef] using hπ0
   have hπne : π ≠ 0 := by
     intro h0; have h1 := hπ; unfold IsUnifV at h1; rw [h0, map_zero] at h1; exact WithZero.zero_ne_coe h1
   set πu : (w.adicCompletion E)ˣ := Units.mk0 π hπne with hπu
@@ -305,8 +299,6 @@ theorem exists_hasSatGL (E : Type) [Field E] [NumberField E] (w : HeightOneSpect
     have h3 : ρ z⁻¹ (ρ z x0) = x0 := by
       first
       | (rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply])
-      | (rw [← LinearMap.comp_apply, ← Module.End.mul_eq_comp, ← map_mul, inv_mul_cancel, map_one]; rfl)
-      | simp [← Module.End.mul_apply, ← map_mul]
     rw [h3, map_zero] at h2
     exact h2
   set A : ℕ → ℂ := fun j => c j / (qV E w : ℂ) ^ (((j : ℂ) * ((n : ℂ) - j)) / 2) with hA

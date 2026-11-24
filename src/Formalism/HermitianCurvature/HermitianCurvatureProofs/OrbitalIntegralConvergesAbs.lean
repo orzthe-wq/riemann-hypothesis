@@ -102,8 +102,7 @@ theorem mp_mulVec (β : ℂ) {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matr
 
 theorem mp_vecMul (β : ℂ) {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℂ) (h : ‖M.det‖ = 1) :
     MeasurePreserving (fun x : ι → ℂ => x ᵥ* M) (muPi β ι) (muPi β ι) := by
-  have := mp_mulVec β Mᵀ (by rwa [Matrix.det_transpose])
-  simpa only [Matrix.mulVec_transpose] using this
+  simpa only [Matrix.mulVec_transpose] using (mp_mulVec β Mᵀ (by rwa [Matrix.det_transpose]))
 
 theorem norm_det_wMat (n : ℕ) : ‖(wMat n).det‖ = 1 := by
   have h := congrArg Matrix.det (G3.wMat_mul_self n)
@@ -558,8 +557,7 @@ theorem norm_entry_le {s : ℕ} (Z : Mat s) (i j : Fin s) : ‖Z i j‖ ≤ ‖Z
 theorem norm_coord_le {n : ℕ} (t σ : ℂ) (x : UT n → ℂ) (B ρ : Fin n → ℂ) (Z : Mat (n + 1))
     (hZ : Z = Mcoord t (strictUpper x) B ρ σ) : ‖((ρ, x, B) : BlockCoord n)‖ ≤ ‖Z‖ := by
   have hent : ∀ i j, ‖Mcoord t (strictUpper x) B ρ σ i j‖ ≤ ‖Z‖ := fun i j => by
-    have he : Z i j = Mcoord t (strictUpper x) B ρ σ i j := by rw [hZ]
-    rw [← he]; exact norm_entry_le Z i j
+    rw [← hZ]; exact norm_entry_le Z i j
   rw [Prod.norm_def, Prod.norm_def]
   refine max_le ?_ (max_le ?_ ?_)
   · refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => ?_
@@ -577,8 +575,7 @@ theorem norm_coord_le {n : ℕ} (t σ : ℂ) (x : UT n → ℂ) (B ρ : Fin n �
 theorem norm_long_le {d : ℕ} (z : ℂ) (v : UT d → ℂ) (Z : Mat d) (hZ : Z = ptLong d z * G.upper v) :
     ‖z • v‖ ≤ ‖Z‖ := by
   have hent : ∀ i j, ‖(ptLong d z * G.upper v) i j‖ ≤ ‖Z‖ := fun i j => by
-    have he : Z i j = (ptLong d z * G.upper v) i j := by rw [hZ]
-    rw [← he]; exact norm_entry_le Z i j
+    rw [← hZ]; exact norm_entry_le Z i j
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun ⟨⟨i, j⟩, hij⟩ => ?_
   have h := hent i.rev j
   have hij' : i < j := hij
@@ -695,9 +692,5 @@ theorem omConverges : OmConverges := by
 end Formalism.FourierDecayAlt.P.G7
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem orbital_integral_reduced : Formalism.FourierDecayAlt.G.OmReduced := G7.omReduced
-
-theorem orbital_integral_converges_abs : Formalism.FourierDecayAlt.G.OmConverges := G7.omConverges
 
 end Formalism.FourierDecayAlt.P

@@ -63,17 +63,7 @@ variable {F : Type} [Field F] [NumberField F]
 
 theorem trace_int_iff (a : F) : (∀ r : 𝓞 F, ∃ k : ℤ, Algebra.trace ℚ F (a * r) = k) ↔
     ∀ d ∈ differentIdeal ℤ (𝓞 F), ∃ r : 𝓞 F, (r : F) = a * d := by
-  apply _root_.GlobalTheory.SnMass.Inhab.trace_int_iff <;> assumption
-
-theorem integral_iff (x : F) : (∀ v : HeightOneSpectrum (𝓞 F), algebraMap F (Af F) x v ∈ v.adicCompletionIntegers F) ↔
-    ∃ r : 𝓞 F, (r : F) = x := by
-  constructor
-  · intro h
-    have hx := (GlobalTheory.AdLat.mem_adelicIdeal_one_iff_integral F _).2 h
-    rwa [GlobalTheory.Idele.algebraMap_mem_adelicIdeal (GlobalTheory.AdLat.one_ne_zero_fracIdeal F),
-      FractionalIdeal.mem_one_iff] at hx
-  · rintro ⟨r, rfl⟩ v
-    exact HeightOneSpectrum.coe_mem_adicCompletionIntegers v r
+  apply _root_.GlobalTheory.SnMass.Inhab.trace_int_iff
 
 theorem fin_conductor (χ : Af F → ℂ) (hc : Continuous χ) (hadd : ∀ x y, χ (x + y) = χ x * χ y)
     (hrat : ∀ a : F, χ (algebraMap F (Af F) a) =
@@ -126,7 +116,7 @@ theorem psiV_ne_one_of_trace {ψ : AddChar (AF F) ℂ} (h : IsCharAF F ψ)
 
 theorem sum_places_eq_trace [IsTotallyReal F] (x : F) :
     (((∑ w : InfinitePlace F, (w.embedding x).re : ℝ)) : ℂ) = ((Algebra.trace ℚ F x : ℚ) : ℂ) := by
-  apply _root_.GlobalTheory.SnMass.Inhab.sum_places_eq_trace <;> assumption
+  apply _root_.GlobalTheory.SnMass.Inhab.sum_places_eq_trace
 
 end Local
 

@@ -117,7 +117,7 @@ theorem UpperTheory.Gal.Gen.nullZero_pf :
     have hsymm : ∀ (s : UnitAddCircle) (θ : Fin n → UnitAddCircle),
         e.symm (s, θ) = (Fin.cons s θ : Fin (n + 1) → UnitAddCircle) := by
       intro s θ
-      simp [he, MeasurableEquiv.piFinSuccAbove, Fin.insertNth_zero']
+      simp [he, MeasurableEquiv.piFinSuccAbove]
     have hprod : ∀ᵐ z ∂(volume.prod volume : Measure (UnitAddCircle × (Fin n → UnitAddCircle))),
         MvPolynomial.eval (fun i => (pt (e.symm z) i : ℂ)) p ≠ 0 := by
       refine (Measure.ae_prod_iff_ae_ae hm).2 ?_

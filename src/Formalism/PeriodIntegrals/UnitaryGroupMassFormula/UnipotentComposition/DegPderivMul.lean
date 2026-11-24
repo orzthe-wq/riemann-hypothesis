@@ -57,7 +57,7 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.B Formalism.FourierDeca
 
 theorem deg_pderiv_mul {σ : Type*} (i : σ) (q L : MvPolynomial σ ℂ) (hL : L.totalDegree ≤ 1) :
     (pderiv i q * L).totalDegree ≤ q.totalDegree := by
-  first | exact Bl.PartialDerivativeDegree.goal1 .. | (apply Bl.PartialDerivativeDegree.goal1 <;> assumption) | (intros; apply Bl.PartialDerivativeDegree.goal1 <;> assumption) | (apply @Bl.PartialDerivativeDegree.goal1 <;> assumption) | (intros; apply @Bl.PartialDerivativeDegree.goal1 <;> assumption) | (apply @Bl.PartialDerivativeDegree.goal1 <;> first | assumption | infer_instance) | exact @Bl.PartialDerivativeDegree.goal1 σ i q L hL | exact @Bl.PartialDerivativeDegree.goal1 σ i q L | exact @Bl.PartialDerivativeDegree.goal1 σ i q | exact @Bl.PartialDerivativeDegree.goal1 σ i | exact @Bl.PartialDerivativeDegree.goal1 σ
+  first | (apply Bl.PartialDerivativeDegree.goal1 <;> assumption)
 
 theorem deg_CX {σ : Type*} (a : ℂ) (v : σ) : (C a * X v : MvPolynomial σ ℂ).totalDegree ≤ 1 :=
   (totalDegree_mul _ _).trans (by rw [totalDegree_C, totalDegree_X])

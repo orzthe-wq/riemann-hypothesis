@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsGauss
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisGaussNormEventuallyMonomial
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefiniteStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GaussNormAcrisRadiusPosDefinite
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsGaussGCTarget
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Acris0TorsionFree
 import Mathlib.Algebra.Order.Floor.Extended
@@ -174,7 +174,7 @@ theorem gC_monomial_near : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acris
       (∀ y z, gC l r (y + z) ≤ max (gC l r y) (gC l r z)) ∧ (∀ y, gC l r (-y) = gC l r y) ∧
       (∀ y z, gC l r (y * z) = gC l r y * gC l r z) ∧ gC l r (l : Formalism.Per.Acris l) = r := by
     intro r hr hr1
-    obtain ⟨e1, e2, e3, e4, e5⟩ := isGauss_gC_target l r hr hr1
+    obtain ⟨e1, e2, e3, e4, e5⟩ := _root_.GlobalTheory.PMon.Gauss.isGauss_gC_of_le l r hr hr1
     refine ⟨fun y => (e1 y).2, e2, e3, e4, ?_⟩
     rw [← map_natCast (algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l)) l, e5]
     exact GlobalTheory.GaussSlope.gauss_l l (hL.le.trans hr)
@@ -186,10 +186,10 @@ theorem gC_monomial_near : ∀ (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acris
     obtain ⟨k, a, ha⟩ := GlobalTheory.GaussSlope.exists_pow_mul_eq l s
     refine ⟨k, algebraMap (Formalism.Per.Ainf l) (Formalism.Per.Acris l) a, z,
       fun n => ‖(((a.coeff n).untilt : Formalism.Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ n), ?_,
-      fun n => by positivity, fun n => ?_, fun r hr hr1 => (isGauss_gC_target l r hr hr1).2.2.2.2 a⟩
+      fun n => by positivity, fun n => ?_, fun r hr hr1 => (_root_.GlobalTheory.PMon.Gauss.isGauss_gC_of_le l r hr hr1).2.2.2.2 a⟩
     · rw [h, mul_add, ha, pow_add, mul_assoc]
     · exact Real.rpow_le_one (norm_nonneg _) ((GlobalTheory.RingBasics.mem_OC _).1 (Subtype.prop _)) (by positivity)
-  have hb : 0 < gC l ρ₀ x := GlobalTheory.T.gaussNormAcrisRadius_pos_definite l x hx ρ₀ hρl hρ1
+  have hb : 0 < gC l ρ₀ x := _root_.GlobalTheory.PMon.Gauss.gC_pos_target l x hx ρ₀ hρl hρ1
   constructor
   · have hfL : ∀ᶠ r in 𝓝[≥] ρ₀, (l : ℝ)⁻¹ ≤ r ∧ r < 1 := by
       filter_upwards [self_mem_nhdsWithin, (eventually_lt_nhds hρ1).filter_mono nhdsWithin_le_nhds] with r hr hr1

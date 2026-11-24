@@ -4,51 +4,10 @@ public import Mathlib.NumberTheory.NumberField.CMField
 public import Mathlib.RingTheory.SimpleRing.Principal
 public import Mathlib.RingTheory.Unramified.Basic
 import Mathlib.Algebra.AffineMonoid.UniqueSums
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 public import Mathlib.RingTheory.DedekindDomain.Different
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.PicardGroup
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.NumberTheory.RamificationInertia.Unramified
 
 @[expose] public section
@@ -65,12 +24,6 @@ theorem unramBridge_holds : ∀ (K : Type) [Field K] [NumberField K] [IsCMField 
     Algebra.Unramified (𝓞 (maximalRealSubfield K)) (𝓞 K) := by
   intro K _ _ _ hθ
   set F := maximalRealSubfield K with hF
-  have hsep : Algebra.IsSeparable (FractionRing (𝓞 F)) (FractionRing (𝓞 K)) := by
-    refine Algebra.IsSeparable.of_equiv_equiv (FractionRing.algEquiv (𝓞 F) F).symm.toRingEquiv
-          (FractionRing.algEquiv (𝓞 K) K).symm.toRingEquiv ?_
-    ext _
-    exact IsFractionRing.algEquiv_commutes (FractionRing.algEquiv (𝓞 F) F).symm
-      (FractionRing.algEquiv (𝓞 K) K).symm _
   rw [Algebra.unramified_iff_forall]
   rintro ⟨Q, hQ⟩
   change Algebra.IsUnramifiedAt (𝓞 F) Q
@@ -78,7 +31,7 @@ theorem unramBridge_holds : ∀ (K : Type) [Field K] [NumberField K] [IsCMField 
   · exact Algebra.isUnramifiedAt_bot
   have hmax : Q.IsMaximal := hQ.isMaximal hne
   obtain ⟨θ, hθP⟩ := hθ Q hmax
-  set θ' := RingOfIntegers.mapRingEquiv (IsCMField.complexConj K : K ≃+* K) θ with hθ'
+  set θ' := RingOfIntegers.mapRingEquiv (IsCMField.complexConj K : K ≃+* K) θ
   have hσ : θ' = IsCMField.ringOfIntegersComplexConj K θ := RingOfIntegers.ext rfl
   have hne' : θ - θ' ≠ 0 := fun h => hθP (h ▸ Ideal.zero_mem _)
 
@@ -108,48 +61,38 @@ theorem unramBridge_holds : ∀ (K : Type) [Field K] [NumberField K] [IsCMField 
   set f := minpoly (𝓞 F) θ with hf
   have hθint : IsIntegral (𝓞 F) θ := Algebra.IsIntegral.isIntegral _
   have hmonic : f.Monic := minpoly.monic hθint
-  have hdeg : f.natDegree ≤ 2 := by
-    have h1 : f = minpoly (𝓞 F) (algebraMap (𝓞 K) K θ) :=
-      (minpoly.algebraMap_eq (FaithfulSMul.algebraMap_injective (𝓞 K) K) θ).symm
-    have h2 := minpoly.isIntegrallyClosed_eq_field_fractions' F
-      (IsIntegral.algebraMap hθint : IsIntegral (𝓞 F) (algebraMap (𝓞 K) K θ))
-    have h3 : (minpoly F (algebraMap (𝓞 K) K θ)).natDegree ≤ 2 :=
-      hfin ▸ minpoly.natDegree_le _
-    rw [h2, Polynomial.natDegree_map_eq_of_injective (FaithfulSMul.algebraMap_injective _ _)] at h3
-    rw [h1]; exact h3
   set fK := f.map (algebraMap (𝓞 F) (𝓞 K)) with hfK
   have hKmonic : fK.Monic := hmonic.map _
   have hKdeg : fK.natDegree ≤ 2 := by
-    rw [hfK, hmonic.natDegree_map]; exact hdeg
-  have hr1 : fK.IsRoot θ := by
-    rw [IsRoot, hfK, eval_map, ← aeval_def]; exact minpoly.aeval _ _
+    have h2 := minpoly.isIntegrallyClosed_eq_field_fractions' F
+      (IsIntegral.algebraMap hθint : IsIntegral (𝓞 F) (algebraMap (𝓞 K) K θ))
+    rw [hfK, hmonic.natDegree_map, hf,
+      ← minpoly.algebraMap_eq (FaithfulSMul.algebraMap_injective (𝓞 K) K) θ,
+      ← Polynomial.natDegree_map_eq_of_injective (FaithfulSMul.algebraMap_injective (𝓞 F) F), ← h2]
+    exact hfin ▸ minpoly.natDegree_le _
+  have hr1 : fK.IsRoot θ := by simp [IsRoot, hfK, hf]
   have hr2 : fK.IsRoot θ' := by
-    rw [IsRoot, hfK, eval_map, ← aeval_def, hσ]
-    rw [show IsCMField.ringOfIntegersComplexConj K θ = (IsCMField.ringOfIntegersComplexConj K).toAlgHom θ from rfl,
-      Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]
+    simp [IsRoot, hfK, hf, hσ, Polynomial.aeval_algHom_apply]
   set g := fK /ₘ (X - C θ) with hg
   have hfg : (X - C θ) * g = fK := (mul_divByMonic_eq_iff_isRoot).mpr hr1
+  have hgmonic : g.Monic := (monic_X_sub_C θ).of_mul_monic_left (hfg ▸ hKmonic)
   have hg2 : g.IsRoot θ' := by
     have := hr2
     rw [← hfg, IsRoot, eval_mul] at this
     rcases mul_eq_zero.mp this with h | h
     · exfalso; apply hne'; simp at h; rw [sub_eq_zero] at h ⊢; exact h.symm
     · exact h
-  set h := g /ₘ (X - C θ') with hh
-  have hgh : (X - C θ') * h = g := (mul_divByMonic_eq_iff_isRoot).mpr hg2
-  have hfac : fK = (X - C θ) * ((X - C θ') * h) := by rw [hgh, hfg]
-  have hhmonic : h.Monic := by
-    have hm2 : ((X - C θ) * (X - C θ')).Monic := (monic_X_sub_C θ).mul (monic_X_sub_C θ')
-    rw [hfac, ← mul_assoc] at hKmonic
-    exact hm2.of_mul_monic_left hKmonic
-  have hh1 : h = 1 := by
-    rw [← hhmonic.natDegree_eq_zero]
+  have hgdeg : g.natDegree ≤ 1 := by
     have := hKdeg
-    rw [hfac, natDegree_mul (X_sub_C_ne_zero θ) (mul_ne_zero (X_sub_C_ne_zero θ') hhmonic.ne_zero),
-      natDegree_mul (X_sub_C_ne_zero θ') hhmonic.ne_zero, natDegree_X_sub_C, natDegree_X_sub_C] at this
+    rw [← hfg, natDegree_mul (X_sub_C_ne_zero θ) hgmonic.ne_zero, natDegree_X_sub_C] at this
     omega
+  have hg_eq : g = X - C θ' :=
+    Polynomial.eq_of_monic_of_dvd_of_natDegree_le (monic_X_sub_C θ') hgmonic
+      ((dvd_iff_isRoot).mpr hg2) (by rw [natDegree_X_sub_C]; exact hgdeg)
+  have hfac : fK = (X - C θ) * (X - C θ') := by
+    rw [← hfg, hg_eq]
   have hval : aeval θ (derivative f) = θ - θ' := by
-    rw [aeval_def, ← eval_map, ← derivative_map, ← hfK, hfac, hh1]
+    rw [aeval_def, ← eval_map, ← derivative_map, ← hfK, hfac]
     simp [derivative_mul]
   rw [← not_dvd_differentIdeal_iff, Ideal.dvd_iff_le]
   intro hle

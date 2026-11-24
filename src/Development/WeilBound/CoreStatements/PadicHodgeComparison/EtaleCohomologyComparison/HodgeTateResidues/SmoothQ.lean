@@ -59,16 +59,11 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 theorem qC_eq (q : ℚ_[l]) : qC l q = algebraMap ℚ_[l] ℂ_[l] q :=
   (IsScalarTower.algebraMap_apply ℚ_[l] (PadicAlgCl l) ℂ_[l] q).symm
 
-theorem th_alg (x : Formalism.Per6.BdRp l) : period_ring_base.th l (algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) x) = Formalism.Per6.θD l x := by
-  have h : algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) x ∈ period_ring_base.Plus l := ⟨x, rfl⟩
-  rw [period_ring_base.th, dite_eq_left h]
-  exact congrArg _ (IsFractionRing.injective (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (RingHom.mem_range.1 h).choose_spec)
-
 theorem th_qQ (q : ℚ_[l]) : period_ring_base.th l (qQ l q) = qC l q := ((period_ring_base.base l).th_q q).2.trans (qC_eq q).symm
 
 theorem θA_zA (z : ℤ_[l]) : θA l (zA l z) = qC l (z : ℚ_[l]) := by
   have e : ACris.iota ℂ_[l] l (zA l z) = algebraMap ℚ_[l] (Formalism.Per6.BdRp l) (z : ℚ_[l]) := ACris.iota_padicInt z
-  exact (congrArg (Formalism.Per6.θD l) e).trans ((th_alg _).symm.trans (th_qQ _))
+  exact (congrArg (Formalism.Per6.θD l) e).trans ((_root_.period_ring_base.BaseB.th_alg _).symm.trans (th_qQ _))
 
 theorem σC_qC (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) (q : ℚ_[l]) : period_ring_base.σC g (qC l q) = qC l q := by
   rw [← th_qQ, ← (period_ring_base.base l).th_σ g _ ((period_ring_base.base l).th_q q).1, σD_qQ]

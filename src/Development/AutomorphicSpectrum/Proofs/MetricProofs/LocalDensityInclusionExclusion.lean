@@ -68,7 +68,7 @@ theorem locDens_expand_ofFun : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A 
     have hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' W) :=
       (A.chart j).isOpen_inter_preimage_symm hW
     have h1 := (hg j).contDiffAt (hopen.mem_nhds hyW)
-    exact h1.of_le (by first | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤) | exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤) | decide | simp)
+    exact h1.of_le (by first | exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))
   have hsP : ∀ k, ContDiffAt ℝ 2
       (fun y' => (P k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y := fun k =>
     smooth_at ((P k).φ ((A.chart j).symm y)) ((P k).U ((A.chart j).symm y)) ((P k).isOpen_U _)
@@ -84,11 +84,11 @@ theorem locDens_expand_ofFun : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A 
     have hev : ∀ χ : (Fin e → ℂ) → ℝ, ContDiffAt ℝ 2 χ y → ∀ᶠ w in 𝓝 y, DifferentiableAt ℝ χ w := by
       intro χ hχ
       obtain ⟨f', u, hu, -, hder⟩ :=
-        contDiffAt_one_iff.1 (hχ.of_le (by first | norm_num | exact one_le_two))
+        contDiffAt_one_iff.1 (hχ.of_le (by first | norm_num))
       exact Filter.mem_of_superset hu fun w hw => (hder w hw).differentiableAt
     have hd2 : ∀ χ : (Fin e → ℂ) → ℝ, ContDiffAt ℝ 2 χ y → DifferentiableAt ℝ (fderiv ℝ χ) y := by
       intro χ hχ
-      exact (hχ.fderiv_right (m := 1) (by first | norm_num | exact le_of_eq one_add_one_eq_two)).differentiableAt one_ne_zero
+      exact (hχ.fderiv_right (m := 1) (by first | norm_num)).differentiableAt one_ne_zero
     have hfd : fderiv ℝ (fun w => φ w + ψ w) =ᶠ[𝓝 y] fun w => fderiv ℝ φ w + fderiv ℝ ψ w := by
       filter_upwards [hev φ hφ, hev ψ hψ] with w h1 h2
       exact fderiv_add h1 h2

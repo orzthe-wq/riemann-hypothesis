@@ -1,11 +1,11 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetricCocycleModIdealEqCoboundaryQuasiLog
 public import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiffCoeffsInIdealSubstOfConstantCoeffZero
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedInOfQuasiLogarithmStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundarySymmCocycleModStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSubInOfCob2InStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DividedInOfQuasiLogarithm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FormalGroupLawCoboundarySymmCocycleMod
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SwapSubInOfCob2In
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SymmetricCocycleModIdealEqCoboundaryQuasiLog
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -81,14 +81,6 @@ theorem map_swap (φ : R →+* S) (c : MvPowerSeries (Fin d ⊕ Fin d) R) :
   rw [mvPowerSeriesMap_evalTwoGroups φ c _ _ (fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _)]
   simp only [map_X]
 
-theorem powerSeriesEvalTwoGroups_sub {τ : Type} (a b : MvPowerSeries (Fin d ⊕ Fin d) R)
-    (u v : Fin d → MvPowerSeries τ R) (hu : ∀ i, constantCoeff (u i) = 0)
-    (hv : ∀ i, constantCoeff (v i) = 0) : at2 (a - b) u v = at2 a u v - at2 b u v :=
-  subst_sub (hasSubst_of_constantCoeff_zero (fun i => by cases i <;> simp [hu, hv])) a b
-
-theorem swap_sub (a b : MvPowerSeries (Fin d ⊕ Fin d) R) : swap (a - b) = swap a - swap b :=
-  powerSeriesEvalTwoGroups_sub a b _ _ (fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _)
-
 theorem const_op (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0)
     {τ : Type} (u v : Fin d → MvPowerSeries τ R) (hu : ∀ i, constantCoeff (u i) = 0)
     (hv : ∀ i, constantCoeff (v i) = 0) (i : Fin d) : constantCoeff (op μ u v i) = 0 :=
@@ -104,8 +96,8 @@ theorem formalGroupLawCoboundaryTwo_sub (μ : Fin d → MvPowerSeries (Fin d ⊕
   have h3 : ∀ i, constantCoeff ((x3 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0 :=
     fun _ => constantCoeff_X _
   unfold cob2
-  rw [powerSeriesEvalTwoGroups_sub a b _ _ h2 h3, powerSeriesEvalTwoGroups_sub a b _ _ (const_op μ hμ _ _ h1 h2) h3,
-    powerSeriesEvalTwoGroups_sub a b _ _ h1 (const_op μ hμ _ _ h2 h3), powerSeriesEvalTwoGroups_sub a b _ _ h1 h2]
+  rw [_root_.GlobalTheory.CobLin.powerSeriesEvalTwoGroups_sub a b _ _ h2 h3, _root_.GlobalTheory.CobLin.powerSeriesEvalTwoGroups_sub a b _ _ (const_op μ hμ _ _ h1 h2) h3,
+    _root_.GlobalTheory.CobLin.powerSeriesEvalTwoGroups_sub a b _ _ h1 (const_op μ hμ _ _ h2 h3), _root_.GlobalTheory.CobLin.powerSeriesEvalTwoGroups_sub a b _ _ h1 h2]
   ring
 
 theorem map_formalGroupLawCoboundaryTwo (φ : R →+* S) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
@@ -131,11 +123,7 @@ namespace GlobalTheory.QLog.KLift
 section Ideal
 variable {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q] {σ : Type}
 
-theorem in_sub {N : Ideal B} {f g : MvPowerSeries σ Q} (hf : In N f) (hg : In N g) : In N (f - g) := by
-  intro α
-  obtain ⟨a, ha, ea⟩ := hf α
-  obtain ⟨b, hb, eb⟩ := hg α
-  exact ⟨a - b, N.sub_mem ha hb, by rw [map_sub, ea, eb, map_sub]⟩
+alias in_sub := _root_.GlobalTheory.SymCob.in_sub
 
 theorem in_add {N : Ideal B} {f g : MvPowerSeries σ Q} (hf : In N f) (hg : In N g) : In N (f + g) := by
   intro α
@@ -150,13 +138,6 @@ theorem in_mono {N N' : Ideal B} (h : N ≤ N') {f : MvPowerSeries σ Q} (hf : I
 
 theorem in_map (K : MvPowerSeries σ B) : In (⊤ : Ideal B) (map (algebraMap B Q) K) :=
   fun α => ⟨coeff α K, trivial, coeff_map _ _ _⟩
-
-theorem dIn_sub {N : Ideal B} {f g : MvPowerSeries σ Q} (hf : DIn N f) (hg : DIn N g) :
-    DIn N (f - g) := by
-  intro α i
-  obtain ⟨a, ha, ea⟩ := hf α i
-  obtain ⟨b, hb, eb⟩ := hg α i
-  exact ⟨a - b, N.sub_mem ha hb, by rw [map_sub, mul_sub, ea, eb, map_sub]⟩
 
 theorem dIn_map (K : MvPowerSeries σ B) : DIn (⊤ : Ideal B) (map (algebraMap B Q) K) :=
   fun α i => ⟨(α i : B) * coeff α K, trivial, by rw [coeff_map, map_mul, map_natCast]⟩
@@ -288,13 +269,13 @@ theorem formalGroupLawCoboundaryTwo_zero {R : Type} [CommRing R] {d : ℕ} (μ :
   simpa using formalGroupLawCoboundaryTwo_sub μ hμ 0 0
 
 theorem swap_zero {R : Type} [CommRing R] {d : ℕ} : swap (0 : MvPowerSeries (Fin d ⊕ Fin d) R) = 0 := by
-  simpa using swap_sub (0 : MvPowerSeries (Fin d ⊕ Fin d) R) 0
+  simpa using _root_.GlobalTheory.CobSwap.swap_sub (0 : MvPowerSeries (Fin d ⊕ Fin d) R) 0
 
 theorem lift_quasiLog : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B), IsLift θ μ → ∀ (C : Type) [CommRing C] [Algebra O C], IsFrame p C (RingHom.id O) → ∀ Θ : Q →+* C, (∀ b, Θ (algebraMap B Q b) = algebraMap O C (θ b)) → ∀ (g : MvPowerSeries (Fin d) C) (w : Fin d → B), QL (fun i => map θ (μ i)) ⊤ g → (∀ i, lin g i = algebraMap O C (θ (w i))) → ∃ f : MvPowerSeries (Fin d) Q, QL μ ⊤ f ∧ map Θ f = g ∧ ∀ i, lin f i = algebraMap B Q (w i) := by
   intro p _ B O Q _ _ _ _ θ F d μ hμ C _ _ G Θ hΘ g w hg hw
   have hμ' : IsLift (RingHom.id O) (fun i => map θ (μ i)) :=
     ⟨hμ.law.const, hμ.law.unit, hμ.law.comm, by simpa only [map_id, RingHom.id_apply] using hμ.law⟩
-  have hgD : DIn (⊤ : Ideal O) g := GlobalTheory.T.divided_in_of_quasi_logarithm p O O C (RingHom.id O) G d _ hμ' ⊤ g hg
+  have hgD : DIn (⊤ : Ideal O) g := _root_.GlobalTheory.QLogDiff.dIn_of_QL p O O C (RingHom.id O) G d _ hμ' ⊤ g hg
   obtain ⟨f₀, hf0c, hf0D, hf0Θ, hf0l⟩ := lift_coeffs F G hΘ g w hgD hg.1 hw
   have hμQ : ∀ i, constantCoeff (up Q μ i) = 0 := const_map _ μ hμ.const
   have hμC : ∀ i, constantCoeff (up C (fun i => map θ (μ i)) i) = 0 :=
@@ -322,7 +303,7 @@ theorem lift_quasiLog : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B]
       (fun i => constantCoeff_X _)).1
     rw [← hX Sum.inl] at h2
     rw [← hX Sum.inr] at h3
-    exact dIn_sub (dIn_sub h1 h2) h3
+    exact _root_.GlobalTheory.SymCob.din_sub (_root_.GlobalTheory.SymCob.din_sub h1 h2) h3
   have dec : ∀ α, ∃ b : B, Θ (coeff α κ) = algebraMap O C (θ b) := by
     intro α
     obtain ⟨o, -, e⟩ := hg.2.2 α
@@ -341,10 +322,10 @@ theorem lift_quasiLog : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B]
       rw [coeff_zero_eq_constantCoeff_apply, hκ0]
       simp
     · rw [hb α, sub_self, map_zero]
-  obtain ⟨hcob2, hsym⟩ := GlobalTheory.T.formalGroupLawCoboundary_symmCocycle_mod p B O Q θ F d μ hμ ⊤ f₀ hf0D
+  obtain ⟨hcob2, hsym⟩ := _root_.GlobalTheory.cob_symCoc_mod p B O Q θ F d μ hμ ⊤ f₀ hf0D
   have hD1 : DIn (RingHom.ker θ) κ₁ := by
     intro α i
-    obtain ⟨c, -, e⟩ := dIn_sub hκD (dIn_map K) α i
+    obtain ⟨c, -, e⟩ := _root_.GlobalTheory.SymCob.din_sub hκD (dIn_map K) α i
     refine ⟨c, RingHom.mem_ker.2 (ker_of_alg G hΘ c ?_), e⟩
     rw [← e, map_mul, map_natCast, ← coeff_map, hκ1Θ, map_zero, mul_zero]
   have hc1 : constantCoeff κ₁ = 0 := by
@@ -362,10 +343,10 @@ theorem lift_quasiLog : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B]
   have hsw : In (RingHom.ker θ) (swap κ₁ - κ₁) := by
     apply in_ker G hΘ
     · have : swap κ₁ - κ₁ = map (algebraMap B Q) (K - swap K) := by
-        rw [hκ1, swap_sub, hsym, map_sub, ← map_swap]; ring
+        rw [hκ1, _root_.GlobalTheory.CobSwap.swap_sub, hsym, map_sub, ← map_swap]; ring
       rw [this]; exact in_map _
     · rw [map_sub, map_swap, hκ1Θ, swap_zero, sub_zero]
-  obtain ⟨e, he0, hel, heJ, heN⟩ := GlobalTheory.T.swap_sub_in_of_cob2_in p B O Q θ F d μ hμ (RingHom.ker θ) (RingHom.ker θ)
+  obtain ⟨e, he0, hel, heJ, heN⟩ := _root_.GlobalTheory.symmetric_cocycle_is_coboundary_mod p B O Q θ F d μ hμ (RingHom.ker θ) (RingHom.ker θ)
     le_rfl κ₁ (Or.inr hD1) hc1 hJ hcob hsw
   have heΘ : map Θ e = 0 := by
     ext α

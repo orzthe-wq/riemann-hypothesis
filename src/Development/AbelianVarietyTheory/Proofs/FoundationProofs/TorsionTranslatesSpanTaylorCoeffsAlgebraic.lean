@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsTraceCompatibleTorusEmbeddingStandardTorus
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugateStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjProdCompLinearFormsOfCoeffConjStatement
+public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugate
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjProdCompLinearFormsOfCoeffConj
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoordsAlongOrthonormalRealSubfieldBasis
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
@@ -103,14 +104,14 @@ theorem translates_coef_algebraic : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (�
       change (starRingEnd ℂ) (embT D τ (b j a c)) ∈ Qbar
       rw [← emb_conj]
       exact emb_mem_Qbar D _ _
-    have key := GlobalTheory.T.conj_prod_comp_linearForms_of_coeff_conj D N N' r Qbar Qbar.val
+    have key := _root_.GlobalTheory.ThetaConj.ProdLin.cjF_prod D N N' r Qbar Qbar.val
       (fun j => U1 (lamOf D cc δ) (coordB D (tor0 D cc δ) b j t) (sgStar (lamOf D cc δ)))
       (fun j => U1 (lamOf D cc δ) (coordB D (tor0 D cc δ) b j t) (sgStar (lamOf D cc δ)))
       (fun j τ a c => (starRingEnd ℂ) ((tor0 D cc δ).emb τ (b j a c)))
       (fun j τ a c => (starRingEnd ℂ) ((tor0 D cc δ).emb τ (b j a c)))
       (fun j => differentiable_U1 _ _ hσ) (fun j => differentiable_U1 _ _ hσ)
       (fun j n => by
-        have := (GlobalTheory.T.forall_use1 D cc δ hC).1 _ (hq j) n
+        have := (_root_.GlobalTheory.ThetaConj.cmTheta_taylorCoeff_algebraic_and_conjugate D cc δ hC).1 _ (hq j) n
         exact ⟨this, (cj_val this).symm⟩)
       (fun j τ a c => ⟨hl j τ a c, (cj_val (hl j τ a c)).symm⟩)
     exact ⟨key.1, fun α => (key.2.2 α).1⟩

@@ -131,16 +131,10 @@ theorem conjT_mul (A B : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
 theorem conjT_one : conjT R σ (1 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = 1 := by
   simp [conjT]
 
-theorem sigR_sigR (hσ : ∀ x, σ (σ x) = x) (x : R ⊗[F] E) : sigR R σ (sigR R σ x) = x := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp
-  | tmul a b => simp [sigR, Algebra.TensorProduct.map_tmul, hσ]
-  | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
-
 theorem conjT_conjT (hσ : ∀ x, σ (σ x) = x) (A : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     conjT R σ (conjT R σ A) = A := by
   ext i j
-  simp [conjT, sigR_sigR R σ hσ]
+  simp [conjT, _root_.PI.VolStabSW.sigR_invol R σ hσ]
 
 theorem mem_herm_iff (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     S ∈ HermR R σ n ↔ conjT R σ S = S := by

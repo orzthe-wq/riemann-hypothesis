@@ -61,33 +61,25 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs PositivityTheory.Rg.Sw.HS
 
 variable {n : ℕ}
 
-theorem JJ_sq : JJ n * JJ n = -1 := by
-  simp only [JJ, fromBlocks_multiply]
-  rw [← fromBlocks_one, fromBlocks_neg]
-  simp
-
 theorem inv_of_inG {x : M2 n} (hx : InG x) : x⁻¹ = -(JJ n * xᴴ * JJ n) := by
   refine Matrix.inv_eq_left_inv ?_
   have h : xᴴ * JJ n * x = JJ n := hx
   calc -(JJ n * xᴴ * JJ n) * x = -(JJ n * (xᴴ * JJ n * x)) := by noncomm_ring
-    _ = 1 := by rw [h, JJ_sq]; simp
+    _ = 1 := by rw [h, _root_.PositivityTheory.Rg.Sw.AbsSt.IwaPf.JJ_mul_self]; simp
 
 theorem isUnit_of_inG {x : M2 n} (hx : InG x) : IsUnit x := by
   have h : (-(JJ n * xᴴ * JJ n)) * x = 1 := by
     have h : xᴴ * JJ n * x = JJ n := hx
     calc -(JJ n * xᴴ * JJ n) * x = -(JJ n * (xᴴ * JJ n * x)) := by noncomm_ring
-      _ = 1 := by rw [h, JJ_sq]; simp
+      _ = 1 := by rw [h, _root_.PositivityTheory.Rg.Sw.AbsSt.IwaPf.JJ_mul_self]; simp
   exact (Matrix.isUnit_iff_isUnit_det x).mpr (Matrix.isUnit_det_of_left_inverse h)
-
-theorem isUnit_det_of_inG {x : M2 n} (hx : InG x) : IsUnit x.det :=
-  (Matrix.isUnit_iff_isUnit_det x).mp (isUnit_of_inG hx)
 
 theorem inverse_first_block_eq_conjTranspose {x : M2 n} (hx : InG x) : ub1 x = (u1 x)ᴴ := by
   rw [ub1, inv_of_inG hx, u1]
   conv_lhs => rw [← fromBlocks_toBlocks x]
   simp only [JJ, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_neg, toBlocks_fromBlocks₁₁,
     toBlocks_fromBlocks₂₁]
-  simp [Matrix.conjTranspose_add, Matrix.conjTranspose_smul, sub_eq_add_neg]
+  simp [Matrix.conjTranspose_add, Matrix.conjTranspose_smul]
   abel
 
 theorem det_first_block_ne_zero_group {x : M2 n} (hx : InG x) : (u1 x).det ≠ 0 := by
@@ -119,7 +111,7 @@ theorem lowQ_eq (Q : Matrix (Fin n) (Fin n) ℂ) : lowQ Q = Nq Q := by
 theorem Nq_blocks (Q : Matrix (Fin n) (Fin n) ℂ) :
     Nq Q = fromBlocks (-(1 / 2 : ℂ) • Q) ((Complex.I / 2) • Q) ((Complex.I / 2) • Q) ((1 / 2 : ℂ) • Q) := by
   rw [Nq, Cm, Cmi, fromBlocks_multiply, fromBlocks_multiply]
-  congr 1 <;> ext i j <;> simp [Matrix.mul_apply, Matrix.one_apply, Matrix.smul_apply] <;> ring_nf <;>
+  congr 1 <;> ext i j <;> simp [Matrix.smul_apply] <;> ring_nf <;>
     simp [Complex.I_sq] <;> ring
 
 theorem inv_mul_lower {x : M2 n} (hx : IsUnit x) (Q : Matrix (Fin n) (Fin n) ℂ) (s : ℂ) :

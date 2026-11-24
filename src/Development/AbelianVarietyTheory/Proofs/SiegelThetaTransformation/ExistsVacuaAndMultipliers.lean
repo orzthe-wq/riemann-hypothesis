@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsSystem
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FiniteClsAndStab
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelStructurePropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.LevelStructureProperties
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeSelfDualSemicharacterIndex
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeVacuaExistUnique
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.WeilActionPreservesThetaAndInnerProduct
@@ -79,7 +79,7 @@ theorem exists_vacua_and_multipliers : ∀ (E : Type) [Field E] [NumberField E] 
   intro E _ _ _ r X g bas idx n hs hn D
 
   obtain ⟨-, huniq, hgrp, hlats, -, -, -⟩ :=
-    GlobalTheory.T.level_structure_properties E r X g bas idx (2 * r) hs ⟨r, two_mul r⟩ D (by omega)
+    _root_.GlobalTheory.SW.level_laws E r X g bas idx (2 * r) hs ⟨r, two_mul r⟩ D (by omega)
   obtain ⟨-, hstd, -⟩ := GlobalTheory.SW.finite_cls_and_stab E n 1 one_pos
 
   have hvac : ∀ L, SelfD X L → (∃ v, IsVac X bas D.w (tens (stdL E n) L) v) ∧

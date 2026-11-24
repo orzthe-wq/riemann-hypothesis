@@ -1,5 +1,9 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonemptyTorusExtensionOfIsAlgClosed
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniformisationTorusMonoAndFactor
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.GeneratorValues
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AllTorsMap
 public import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame
@@ -7,28 +11,33 @@ public import Development.AbelianVarietyTheory.Definitions.Uniformization.WCompa
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsoFreePerpLabelKernelWeights
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AssociatedPsiCoordinatesOfTauUnits
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjEqAddKummerTorusTorsionPointStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInertiaMovesTameRootStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTorsionMapUniformisationGenericStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTraitNonlocalTorusExtensionStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitTauCoordinateAddNsmulFirstVariableStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtendSplitTorusHomOverDvrStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertiaFixesAbelianPartOfTorsionPointStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameInertiaFixedDvdValuationOrderStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionUniformisationEqRestrictCharactersStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionCommutesRingActionStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionTraitSurjectiveStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniformisationTorusMonoAndFactorStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubicalBundlePairingCompatiblePullback
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjEqAddKummerTorusTorsionPoint
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInertiaMovesTameRoot
+public import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTorsionMapUniformisationGeneric
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTraitNonlocalTorusExtension
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitTauCoordinateAddNsmulFirstVariable
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtendSplitTorusHomOverDvr
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GtPtBridgeSt
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertiaFixesAbelianPartOfTorsionPoint
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameInertiaFixedDvdValuationOrder
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionUniformisationEqRestrictCharacters
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionTraitSurjective
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsPowEqOfBaseChange
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RelationsAreFunctions
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.LawsProved
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsSchemeTheoreticallyDominantSpecOfInjective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -51,7 +60,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -64,10 +73,90 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubicalBundlePairingCompatiblePullback
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsPowEqOfBaseChange
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RelationsAreFunctions
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.LawsProved
-public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonemptyTorusExtensionOfIsAlgClosed
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionCommutesRingAction, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharactersRestrictLinearToTraitUniformisation
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionCommutesRingAction =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionCommutesRingAction", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonemptyTorusExtensionOfIsAlgClosed\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniformisationTorusMonoAndFactor\nimport Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsSchemeTheoreticallyDominantSpecOfInjective\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
+open scoped CategoryTheory.Obj
+
+set_option autoImplicit false
+
+namespace GlobalTheory
+
+theorem restrict_torus_smul_comm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (t' : SAB H (Sp W)) (P' : PELUnif (maximalIdeal W) t')
+    (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ψ : R →+* V) [IsLocalHom ψ]
+    (tV : SAB H (Sp V)) (mV : SABMap tV t (spMap ψ))
+    (Ω : Type) [Field Ω] (α : V →+* Ω) (β : W →+* Ω) (hβ : ∀ x ∈ maximalIdeal W, β x = 0)
+    (tΩ : SAB H (Sp Ω)) (n : SABMap tΩ tV (spMap α)) (n' : SABMap tΩ t' (spMap β))
+    (j : splitTorus (Sp V) P'.D.toPre.X ⟶ tV.G) [IsMonHom j]
+    (t₀ : SAB H (Sp (ResidueField V))) (m₀ : SABMap t₀ tV (spMap (residue V)))
+    (h₀ : ∀ x ∈ maximalIdeal R, (residue V).comp ψ x = 0) (m₀' : SABMap t₀ t (spMap ((residue V).comp ψ)))
+    (ρ : P.D.toPre.X →+ P'.D.toPre.X),
+    Function.Injective α → GlobalTheory.TorusPart.pullTorus n.cart j = GlobalTheory.TorusPart.PELUnif.torus P' hβ n' →
+    m₀'.φ = m₀.φ ≫ mV.φ →
+    GlobalTheory.TorusPart.pullTorus m₀.cart j = GlobalTheory.SplitTorus.torusMap _ ρ ≫ GlobalTheory.TorusPart.PELUnif.torus P h₀ m₀' →
+    ∀ (a : 𝓞 E) (x : P.D.toPre.X), ρ (a • x) = a • ρ x := by
+  intro E _ _ _ H R _ _ _ t P W _ _ _ t' P' V _ _ _ ψ _ tV mV Ω _ α β hβ tΩ n n' j _ t₀ m₀ h₀ m₀' ρ
+    hα hj _ h₀j
+  letI := H.starRing
+  have key : ∀ a : 𝓞 E, j ≫ tV.act.act a =
+      SplitTorus.torusMap _ (DistribSMul.toAddMonoidHom P'.D.toPre.X (H.bar a)) ≫ j := by
+    intro a
+    have : IsSchemeTheoreticallyDominant (spMap α) :=
+      ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective _ hα
+    have : IsSeparated tV.G.hom := tV.semi.separated
+    have : Flat (splitTorusAff ZU P'.D.toPre.X).hom :=
+      (ExtUnique.splitTorusAff_flat_and_isSeparated _ _).1
+    have : Flat (splitTorus (Sp V) P'.D.toPre.X).hom := inferInstanceAs (Flat (pullback.snd _ _))
+    refine ExtUnique.over_hom_ext_of_isPullback (SplitTorus.isPullback_bcMap (spMap α) _) ?_
+    have e1 := TorusPart.pullTorus_comp n.cart n.cart (tV.act.act a) (tΩ.act.act a) (n.act a) j
+    have e2 := TorusPart.pullTorus_torusMap_comp n.cart j
+      (DistribSMul.toAddMonoidHom P'.D.toPre.X (H.bar a))
+    have e3 := TorusPart.PELUnif.torus_comp_act P' hβ n' a
+    rw [hj, e3] at e1
+    rw [hj] at e2
+    rw [← TorusPart.pullTorus_left n.cart, ← TorusPart.pullTorus_left n.cart, e1, e2]
+  have hmono := (_root_.GlobalTheory.TorusPart.mono_gtTorus_unif_and_factor E H R (maximalIdeal R) t P (ResidueField V) ((residue V).comp ψ) 0
+    (TorusPart.map_pow_one_eq_zero h₀) t₀.G m₀'.φ m₀'.cart).1
+  have key2 : ∀ a : 𝓞 E, ρ.comp (DistribSMul.toAddMonoidHom P.D.toPre.X (H.bar a)) =
+      (DistribSMul.toAddMonoidHom P'.D.toPre.X (H.bar a)).comp ρ := by
+    intro a
+    have e := congrArg (TorusPart.pullTorus m₀.cart) (key a)
+    rw [TorusPart.pullTorus_comp m₀.cart m₀.cart (tV.act.act a) (t₀.act.act a) (m₀.act a) j,
+      TorusPart.pullTorus_torusMap_comp m₀.cart j, h₀j, Category.assoc,
+      TorusPart.PELUnif.torus_comp_act P h₀ m₀' a, ← Category.assoc, ← Category.assoc,
+      ← SplitTorus.torusMap_comp, ← SplitTorus.torusMap_comp] at e
+    haveI : Mono (TorusPart.PELUnif.torus P h₀ m₀') := hmono
+    have : Nonempty (Sp (ResidueField V)) := inferInstance
+    exact SplitTorus.torusMap_injective ((cancel_mono _).1 e)
+  intro a x
+  have k := DFunLike.congr_fun (key2 (H.bar a)) x
+  rw [show H.bar (H.bar a) = a from star_star a] at k
+  exact k
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionCommutesRingAction =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharactersRestrictLinearToTraitUniformisation =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharactersRestrictLinearToTraitUniformisation", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.GeneratorValues\npublic import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.AllTorsMap\npublic import Development.AbelianVarietyTheory.Definitions.Uniformization.TXFrame\npublic import Development.AbelianVarietyTheory.Definitions.Uniformization.WCompat\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormalSt\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsoFreePerpLabelKernelWeights\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AssociatedPsiCoordinatesOfTauUnits\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConjEqAddKummerTorusTorsionPoint\npublic import Mathlib.FieldTheory.IsAlgClosed.Basic\npublic import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic\npublic import Mathlib.RingTheory.Flat.TorsionFree\npublic import Mathlib.RingTheory.Henselian\npublic import Mathlib.RingTheory.RegularLocalRing.Defs\npublic import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots\npublic import Mathlib.RingTheory.SimpleRing.Principal\npublic import Mathlib.RingTheory.Valuation.ValuationSubring\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsInertiaMovesTameRoot\npublic import Development.AbelianVarietyTheory.Definitions.Uniformization.PointEqOfSubsingleton\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTorsionMapUniformisationGeneric\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsTraitNonlocalTorusExtension\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsUnitTauCoordinateAddNsmulFirstVariable\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NonemptyTorusExtensionOfIsAlgClosed\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExtendSplitTorusHomOverDvr\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GtPtBridgeSt\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.InertiaFixesAbelianPartOfTorsionPoint\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TameInertiaFixedDvdValuationOrder\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ToricTorsionUniformisationEqRestrictCharacters\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionCommutesRingAction\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TorusCharacterRestrictionTraitSurjective\npublic import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.LawsProved\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniformisationTorusMonoAndFactor\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.CubicalBundlePairingCompatiblePullback\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPushEquiv\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsPowEqOfBaseChange\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RelationsAreFunctions\nimport Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsLocalRing
@@ -169,8 +258,8 @@ theorem dvd_ord_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
   have hkO : IsUnit (k : O) := by simpa using hk.map (φ.comp g)
   have hB := P.D.tau_bimult
   have hB' := P'.D.tau_bimult
-  obtain ⟨f, i₁, p₁, s₁, a₁, w₁, c₁⟩ := GlobalTheory.T.exists_torsionMap_uniformisation_generic E H R t P hR F k hk1
-  obtain ⟨f', i₂, p₂, s₂, a₂, w₂, c₂⟩ := GlobalTheory.T.exists_torsionMap_uniformisation_generic E H W t' P' hW F k hk1
+  obtain ⟨f, i₁, p₁, s₁, a₁, w₁, c₁⟩ := _root_.GlobalTheory.GenTors.exists_torsMap_generic E H R t P hR F k hk1
+  obtain ⟨f', i₂, p₂, s₂, a₂, w₂, c₂⟩ := _root_.GlobalTheory.GenTors.exists_torsMap_generic E H W t' P' hW F k hk1
   have hs : jFK (R := R) F ≫ jK R = (TF (R := W) F).hom ≫ spMap g := by
     show spMap _ ≫ spMap _ = (spMap _ ≫ spMap _) ≫ spMap g
     rw [← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]
@@ -205,10 +294,10 @@ theorem dvd_ord_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
     rw [hF, hgK]; exact eφ _
   obtain ⟨r, hr, -⟩ := GlobalTheory.TorusExt.existsUnique_qkExt hB σR.toRingHom (RingHom.ext σR.commutes) p
   obtain ⟨r', hr', -⟩ := GlobalTheory.TorusExt.existsUnique_qkExt hB' σ.toRingHom (RingHom.ext σ.commutes) p'
-  obtain ⟨τ₁, q₁, -, y₁, t₁, d₁, v₁⟩ := GlobalTheory.T.conj_eq_add_kummer_torusTorsionPoint R _ hB F O (φ.comp g) eφR k σR p r hr
-    (GlobalTheory.T.inertia_fixes_abelianPart_of_torsionPoint R _ hB F O (φ.comp g) eφR k hkO σR hσ p)
-  obtain ⟨τ₂, q₂, k₂, y₂, t₂, d₂, v₂⟩ := GlobalTheory.T.conj_eq_add_kummer_torusTorsionPoint W _ hB' F O φ eφ k σ p' r' hr'
-    (GlobalTheory.T.inertia_fixes_abelianPart_of_torsionPoint W _ hB' F O φ eφ k hkO σ hσ p')
+  obtain ⟨τ₁, q₁, -, y₁, t₁, d₁, v₁⟩ := _root_.GlobalTheory.KummerConj.conj_eq_add_tor R _ hB F O (φ.comp g) eφR k σR p r hr
+    (_root_.GlobalTheory.InertiaFix.sigma_fixes_abelianPart R _ hB F O (φ.comp g) eφR k hkO σR hσ p)
+  obtain ⟨τ₂, q₂, k₂, y₂, t₂, d₂, v₂⟩ := _root_.GlobalTheory.KummerConj.conj_eq_add_tor W _ hB' F O φ eφ k σ p' r' hr'
+    (_root_.GlobalTheory.InertiaFix.sigma_fixes_abelianPart W _ hB' F O φ eφ k hkO σ hσ p')
   have hq : f q₁ = e (f' q₂) := by
     have h₁ : f r = e (f' r') := Over.OverMorphism.ext (by
       rw [c₁ σR p r hr, he, c₂ σ p' r' hr', hp, he, Category.assoc])
@@ -221,10 +310,10 @@ theorem dvd_ord_sub {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
   obtain ⟨s, s0, sv, sσ⟩ := v₁ _ x hx
   obtain ⟨s', s0', sv', sσ'⟩ := v₂ _ x'' hx''
   have sσ : σ s = _ := sσ
-  have dv := GlobalTheory.T.tameInertia_fixed_dvd_valuation_order W F ϖ hϖ k O φ σ π hkO hφ eφ hσ hπ hζ (s / s') (Units.map gK.toMonoidHom x / x'')
+  have dv := _root_.GlobalTheory.Member.TameDivOrd.tame_fixed_dvd_ord W F ϖ hϖ k O φ σ π hkO hφ eφ hσ hπ hζ (s / s') (Units.map gK.toMonoidHom x / x'')
     (by rw [map_div₀, sσ, sσ', hτ, mul_div_mul_left _ _ (Units.ne_zero _)])
     (by rw [map_div₀, div_pow, sv, sv', Units.val_div_eq_div_val, map_div₀, map_div₀, hF]; rfl)
-  obtain ⟨u, hu⟩ := GlobalTheory.T.exists_unit_tauCoordinate_add_nsmul_first_variable W _ hB' _ z _ k x' xz x'' hx' hxz (hz ▸ hx'')
+  obtain ⟨u, hu⟩ := _root_.GlobalTheory.TauShift.main W _ hB' _ z _ k x' xz x'' hx' hxz (hz ▸ hx'')
   rw [val_div, hu, (ord_vw W).map_mul, (ord_vw W).map_unit, (ord_vw W).map_mul, val_pow, zero_add, nsmul_eq_mul,
     ← sub_sub] at dv
   exact (dvd_sub_left (dvd_mul_right _ _)).1 dv
@@ -259,24 +348,24 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
       ∃ n' : SABMap u'' u' f', n''.φ = n'.φ ≫ n.φ := by
     rintro _ _ _ _ _ _ _ _ _ n n' rfl
     exact GlobalTheory.ObjMaps.exists_sab_cancel n n'
-  obtain ⟨V, _, _, _, ψ, Ω, _, α, β, hψ, hβ, eα, hT⟩ := GlobalTheory.T.exists_trait_nonlocal_torusExtension' R t.G t.semi W g hnl
+  obtain ⟨V, _, _, _, ψ, Ω, _, α, β, hψ, hβ, eα, hT⟩ := _root_.GlobalTheory.exists_trait_nonlocal_torusExtension R t.G t.semi W g hnl
   obtain ⟨tV, ⟨mV⟩⟩ := pull (spMap ψ) t
   obtain ⟨_, _, _, _, _, mL, -⟩ := sabPull proved_CubePullSt (spMap ((algebraMap V (FractionRing V)).comp ψ)) t
   obtain ⟨mL', -⟩ := cancel mV mL (sc ψ (algebraMap V (FractionRing V)))
   obtain ⟨tΩ, ⟨n'⟩⟩ := pull (spMap β) t'
   obtain ⟨n'', en⟩ := comp m n' ((sc g β).trans (congrArg spMap eα.symm))
   obtain ⟨n, en'⟩ := cancel mV n'' (sc ψ (α.comp (algebraMap V (FractionRing V))))
-  obtain ⟨j, hj, ej⟩ := GlobalTheory.T.extend_splitTorus_hom_over_dvr V tV.G tV.semi _ _ mL'.cart hT Ω α tΩ.G n.φ n.cart _
+  obtain ⟨j, hj, ej⟩ := _root_.GlobalTheory.TorusPart.extend_torus_hom_dvr V tV.G tV.semi _ _ mL'.cart hT Ω α tΩ.G n.φ n.cart _
     (GlobalTheory.TorusPart.PELUnif.torus P' hβ n') inferInstance
   obtain ⟨t₀, ⟨m₀⟩⟩ := pull (spMap (residue V)) tV
   obtain ⟨m₀', e₀⟩ := comp mV m₀ (sc ψ (residue V))
   have h₀ : ∀ x ∈ maximalIdeal R, (residue V).comp ψ x = 0 := GlobalTheory.TorusPart.map_eq_zero_of_isLocalHom _
-  obtain ⟨ρ, hρ⟩ := (GlobalTheory.T.uniformisationTorus_mono_and_factor E H R _ t P (ResidueField V) _ 0 (GlobalTheory.TorusPart.map_pow_one_eq_zero h₀) t₀.G _
+  obtain ⟨ρ, hρ⟩ := (_root_.GlobalTheory.TorusPart.mono_gtTorus_unif_and_factor E H R _ t P (ResidueField V) _ 0 (GlobalTheory.TorusPart.map_pow_one_eq_zero h₀) t₀.G _
     m₀'.cart).2 _ (GlobalTheory.TorusPart.pullTorus m₀.cart j) inferInstance
   have hα : Function.Injective (α.comp (algebraMap V (FractionRing V))) :=
     α.injective.comp (IsFractionRing.injective V _)
-  refine ⟨{ ρ with map_smul' := GlobalTheory.T.torusCharacterRestriction_commutes_ringAction E H R t P W t' P' V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ hα ej e₀ hρ },
-    GlobalTheory.T.torusCharacterRestriction_trait_surjective E H R t P W t' P' V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ hα ej e₀ hρ, fun a b x x' hx hx' => ?_⟩
+  refine ⟨{ ρ with map_smul' := _root_.GlobalTheory.restrict_torus_smul_comm E H R t P W t' P' V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ hα ej e₀ hρ },
+    _root_.GlobalTheory.TorusOnto.restrict_surjective E H R t P W t' P' V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ hα ej e₀ hρ, fun a b x x' hx hx' => ?_⟩
   let gK : FractionRing R →+* FractionRing W := IsFractionRing.lift (A := R) (K := FractionRing R)
     (g := (algebraMap W (FractionRing W)).comp g) ((IsFractionRing.injective W (FractionRing W)).comp hg)
   have hgK : ∀ r, gK (algebraMap R _ r) = algebraMap W _ (g r) := IsFractionRing.lift_algebraMap _
@@ -290,9 +379,9 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
   letI : Algebra (FractionRing R) F := ((algebraMap (FractionRing W) F).comp gK).toAlgebra
   have key : ∀ k : ℕ, IsUnit (k : R) →
       (k : ℤ) ∣ (ord_vw W).toFun (Units.map gK.toMonoidHom x) - (ord_vw W).toFun x' := fun k hk => by
-    obtain ⟨O, φ, σ, π, h₁, h₂, h₃, h₄, h₅⟩ := GlobalTheory.T.exists_inertia_moves_tame_root W F ϖ hϖ k (by simpa using hk.map g)
+    obtain ⟨O, φ, σ, π, h₁, h₂, h₃, h₄, h₅⟩ := _root_.GlobalTheory.InertiaTameRoot.exists_inertia_moves_root W F ϖ hϖ k (by simpa using hk.map g)
     exact dvd_ord_sub P hR P' hW m ρ gK hgK (fun _ => rfl) hk hϖ O φ σ π h₁ h₂ h₃ h₄ h₅
-      (GlobalTheory.T.toricTorsion_uniformisation_eq_restrictCharacters E H R t P W t' P' hR hW g m V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ hα ej e₀ hρ eα
+      (_root_.GlobalTheory.ToricTorsionCompare.toric_torsion_eq_restrict E H R t P W t' P' hR hW g m V ψ tV mV Ω _ β hβ tΩ n n' j t₀ m₀ h₀ m₀' ρ hα ej e₀ hρ eα
         (en'.symm.trans en) F O φ h₁ h₂ (fun r => congrArg (algebraMap (FractionRing W) F) (hgK r)) k hk) hx hx'
   rw [← sub_eq_zero]
   refine Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (key (l ^ Int.natAbs
@@ -301,3 +390,6 @@ theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
   exact Nat.lt_pow_self (by omega)
 
 end GlobalTheory.TauForm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CharactersRestrictLinearToTraitUniformisation =====

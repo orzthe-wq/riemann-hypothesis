@@ -47,6 +47,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRin
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FracMapAlgebraMap
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PullCub
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -128,15 +129,14 @@ theorem exists_linearisation : ∀ (T X : Scheme.{0}) (π : X ⟶ T) (e : T ⟶ 
   refine corr_of_pull_section hL (hu _) (DVR.mulGen_isGen_of_isGen _ (hu a) _ (DVR.pullGen_isGen_of_isGen _ _ _ (hu c) _))
     ?_ π e he hπ ?_
   · rw [DVR.fsum_sumElim]
-    simp only [DVR.fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-      Category.comp_id, hρ]
+    simp only [DVR.fsum, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, hρ]
     rw [add_assoc, ← add_assoc (Finsupp.single (ρ a) (-1 : ℤ)), ← Finsupp.single_add, neg_add_cancel, Finsupp.single_zero,
       zero_add]
   · refine corr_of_val hL fun y J hJ => ?_
     have v1 := val_corr hJ (hue (a * c)) (𝟙 T)
     have v2 := val_corr hJ (hue a) (𝟙 T)
     have v3 := val_corr hJ (hue c) (θ a)
-    simp only [val_mul hJ, val_inv, val_pull hJ, Category.id_comp, Category.assoc, hθ] at v1 v2 v3 ⊢
+    simp only [val_mul hJ, val_inv, val_pull hJ, Category.id_comp, hθ] at v1 v2 v3 ⊢
     rw [heρ a, v1, v2, v3, _root_.mul_assoc, inv_mul_cancel_left]
 
 end GlobalTheory.MumLin

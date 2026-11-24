@@ -76,7 +76,7 @@ theorem mk_le_of_denseRange {A C : Type} [MetricSpace C] (f : A → C) (hf : Den
 
 theorem mk_le_continuum_of_finite_residueField (V : Type) [CommRing V] [IsLocalRing V]
     [IsNoetherianRing V] [Finite (ResidueField V)] : #V ≤ 𝔠 := by
-  apply _root_.GlobalTheory.ComplexEmbedding.mk_le_continuum_of_finite_residueField <;> assumption
+  apply _root_.GlobalTheory.ComplexEmbedding.mk_le_continuum_of_finite_residueField
 
 theorem exists_small_closed_subfield {K C : Type} [Field K] [NontriviallyNormedField C]
     [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [Algebra K C] (hK : #K ≤ 𝔠)

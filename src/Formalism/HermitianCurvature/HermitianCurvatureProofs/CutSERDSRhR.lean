@@ -61,8 +61,6 @@ section pair
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 theorem fst_mul_apply (p q : Pr V) (v : V) : (p * q).1 v = p.1 (q.1 v) := rfl
-theorem fst_mkP (a a' : Module.End ℂ V) : (mkP a a').1 = a := rfl
-
 end pair
 
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
@@ -79,7 +77,7 @@ theorem list_cb_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadS
     rfl
   | a :: ls, Ψ => by
     funext c g
-    rw [List.map_cons, List.prod_cons, fst_mul_apply, hL.2.2.2.2.1 a, fst_mkP, X.op_apply,
+    rw [List.map_cons, List.prod_cons, fst_mul_apply, hL.2.2.2.2.1 a, _root_.Formalism.FourierDecayAlt.P.NFx4.NO.fst_mkP, X.op_apply,
       list_cb_apply X L hL ls Ψ]
     simp only [crd, opL, cbOp, List.map_cons, List.prod_cons, mul_smul]
 
@@ -93,7 +91,7 @@ theorem list_c_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp
     rfl
   | a :: ls, Ψ => by
     funext c g
-    rw [List.map_cons, List.prod_cons, fst_mul_apply, hL.2.2.1 a, fst_mkP, X.op_apply,
+    rw [List.map_cons, List.prod_cons, fst_mul_apply, hL.2.2.1 a, _root_.Formalism.FourierDecayAlt.P.NFx4.NO.fst_mkP, X.op_apply,
       list_c_apply X L hL ls Ψ]
     simp only [crd, opL, cOp, List.map_cons, List.prod_cons, mul_smul]
 

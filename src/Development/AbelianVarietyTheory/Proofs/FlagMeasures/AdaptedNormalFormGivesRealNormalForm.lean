@@ -1,19 +1,22 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GoodLoc
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealPointGramMinorsAgreeProof
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.HermitianETransportInvariant
+public import Formalism.FlagUnipotentLattices.MemOfOrthogonalAnisotropic
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti
+public import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesPairingStabilizerBlockDiagonal
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SameBlockAppend
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsFundOne
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordOfMemXa
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelHyperbolicBasisScaledStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelLinearMapMatrixExistsStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualVectorsNormalFormMemSecondFlagStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBlockAntidiagonalScaledPairingMatrixStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryHermFrameUnipotentStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealMatrixMemBesselUnipotentOfFrameStatement
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealPointGramMinorsAgreeProof
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SameBlockAppend
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LoopTerm
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.Choice
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Ring.IsFormallyReal
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -26,8 +29,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,11 +48,806 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.TotallySplit
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelHyperbolicBasisScaled, Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelLinearMapMatrixExists, Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualVectorsNormalFormMemSecondFlag, Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBlockAntidiagonalScaledPairingMatrix, Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryHermFrameUnipotent, Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealMatrixMemBesselUnipotentOfFrame, Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdaptedNormalFormGivesRealNormalForm
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelHyperbolicBasisScaled =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelHyperbolicBasisScaled", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GoodLoc\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealPointGramMinorsAgreeProof\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+open Matrix NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocWSOf
+namespace GlobalTheory.TypeAsm.FramePf
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+theorem ka_div (D : D7) : D.host.ka / (2 * Real.pi) = (2 * D.host.v)⁻¹ := by
+  have h0 : 0 < D.host.rdE := _root_.Formalism.MainNotions.S.rdE_pos D
+  have hπ : Real.pi ≠ 0 := Real.pi_ne_zero
+  simp only [Formalism.BasicNotions.Host.ka, Formalism.BasicNotions.Host.v]
+  field_simp
+
+theorem two_v_pos (D : D7) : 0 < 2 * D.host.v := by
+  have h0 : 0 < D.host.rdE := _root_.Formalism.MainNotions.S.rdE_pos D
+  simp only [Formalism.BasicNotions.Host.v]
+  linarith
+
+theorem phiV_frame (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what₂.Tau) (a : Fin D.R.rS) :
+    GlobalTheory.TypeAsm.phiV C τ (X.eX a) =
+                 (((2 * D.host.v) ^ (D.R.rS - a.val) : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) ∧
+    GlobalTheory.TypeAsm.phiV C τ (X.fY a) =
+                 ((((2 * D.host.v) ^ (D.R.rS - a.val))⁻¹ : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) := by
+  obtain ⟨hQiQ, _, _, hfr⟩ := C.isT τ
+  obtain ⟨h1, h2⟩ := hfr a a rfl
+  have hc : ((2 * D.host.v) ^ (D.R.rS - a.val) : ℝ) ≠ 0 := pow_ne_zero _ (two_v_pos D).ne'
+  have hfp : frS D ^ (D.R.rS - a.val) = ((((2 * D.host.v) ^ (D.R.rS - a.val))⁻¹ : ℝ) : ℂ) := by
+    unfold frS
+    rw [ka_div, ← Complex.ofReal_pow, inv_pow]
+  unfold GlobalTheory.TypeAsm.phiV
+  constructor
+  · have e : rv X.B.I (vOf X τ) (X.crd (X.eX a)) =
+        ((((2 * D.host.v) ^ (D.R.rS - a.val)) : ℝ) : ℂ) • (C.Q τ *ᵥ Pi.single (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) 1) := by
+      rw [h1, hfp, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hc, Complex.ofReal_one, one_smul]
+      rfl
+    rw [e, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hQiQ, Matrix.one_mulVec]
+    rfl
+  · have e : rv X.B.I (vOf X τ) (X.crd (X.fY a)) =
+        ((((2 * D.host.v) ^ (D.R.rS - a.val))⁻¹ : ℝ) : ℂ) • (C.Q τ *ᵥ Pi.single (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) 1) := by
+      rw [h2, hfp, Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_inv, inv_inv, smul_smul,
+        ← Complex.ofReal_mul, inv_mul_cancel₀ hc, Complex.ofReal_one, one_smul]
+      rfl
+    rw [e, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hQiQ, Matrix.one_mulVec]
+    rfl
+
+end GlobalTheory.TypeAsm.FramePf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelHyperbolicBasisScaled =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelLinearMapMatrixExists =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelLinearMapMatrixExists", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GoodLoc\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.HermitianETransportInvariant\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+open scoped Classical
+open Matrix NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocWSOf
+
+namespace GlobalTheory.TypeAsm.GramPf
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+variable {D : D7} {X : HidaSetting D}
+
+theorem crd_map_mulVec (m : (VS D).V →ₗ[D.host.E] (VS D).V) (y : (VS D).V) :
+    X.crd (m y) = (Matrix.of fun i j => X.crd (m (Formalism.L2.SG.Pf.toV X (Pi.single j 1))) i) *ᵥ X.crd y := by
+  unfold Formalism.L2.SG.Pf.toV HidaSetting.crd crdOf
+  have hb : ∀ j : Fin X.B.I.n, (∑ i, X.ιE ((Pi.single j (1 : X.B.I.E) : Fin X.B.I.n → X.B.I.E) i) • X.bas i) = X.bas j := by
+    intro j
+    rw [Finset.sum_eq_single j]
+    · simp
+    · intro b _ hbj
+      simp [hbj]
+    · intro h
+      exact absurd (Finset.mem_univ j) h
+  simp only [hb]
+  funext i
+  conv_lhs => rw [← X.bas.sum_repr y]
+
+  simp only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul,
+  Matrix.mulVec, dotProduct, Matrix.of_apply, map_mul]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  ring
+
+theorem phiV_linMat (C : Choice X 1) (τ : D.what₂.Tau) (m : (VS D).V →ₗ[D.host.E] (VS D).V) :
+    ∃ n : MatKR D.R.k D.R.rS, ∀ y, n *ᵥ GlobalTheory.TypeAsm.phiV C τ y = GlobalTheory.TypeAsm.phiV C τ (m y) := by
+  obtain ⟨-, hQ, -⟩ := C.isT τ
+  refine ⟨C.Qi τ * (X.B.I.P (vOf X τ))⁻¹ *
+      (Matrix.of fun i j => X.crd (m (Formalism.L2.SG.Pf.toV X (Pi.single j 1))) i).map (X.B.I.φ (vOf X τ)) *
+      X.B.I.P (vOf X τ) * C.Q τ, fun y => ?_⟩
+  have hP : (X.B.I.P (vOf X τ))⁻¹ * ((Matrix.of fun i j => X.crd (m (Formalism.L2.SG.Pf.toV X (Pi.single j 1))) i).map
+      (X.B.I.φ (vOf X τ)) * (X.B.I.P (vOf X τ) * (X.B.I.P (vOf X τ))⁻¹)) =
+      (X.B.I.P (vOf X τ))⁻¹ * (Matrix.of fun i j => X.crd (m (Formalism.L2.SG.Pf.toV X (Pi.single j 1))) i).map
+      (X.B.I.φ (vOf X τ)) := by
+    by_cases h : IsUnit (X.B.I.P (vOf X τ)).det
+    · rw [Matrix.mul_nonsing_inv _ h, Matrix.mul_one]
+    · rw [Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.zero_mul, Matrix.zero_mul]
+  have hw : (fun i => X.B.I.φ (vOf X τ) (X.crd (m y) i)) =
+      (Matrix.of fun i j => X.crd (m (Formalism.L2.SG.Pf.toV X (Pi.single j 1))) i).map (X.B.I.φ (vOf X τ)) *ᵥ
+        (fun i => X.B.I.φ (vOf X τ) (X.crd y i)) := by
+    rw [crd_map_mulVec m y]
+    funext i
+    exact RingHom.map_mulVec _ _ _ i
+  have e1 : ∀ z, GlobalTheory.TypeAsm.phiV C τ z =
+      (C.Qi τ * (X.B.I.P (vOf X τ))⁻¹) *ᵥ (fun i => X.B.I.φ (vOf X τ) (X.crd z i)) := by
+    intro z
+    unfold GlobalTheory.TypeAsm.phiV Formalism.L2.SG.HidaSetting.rv
+    rw [Matrix.mulVec_mulVec]
+  rw [e1, e1, hw, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
+  congr 1
+  simp only [Matrix.mul_assoc]
+  rw [← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQ, Matrix.one_mul, hP]
+
+end GlobalTheory.TypeAsm.GramPf
+
+namespace GlobalTheory.TypeAsm
+
+theorem phiV_linMat_all : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what₂.Tau)
+    (m : (VS D).V →ₗ[D.host.E] (VS D).V),
+    ∃ n : MatKR D.R.k D.R.rS, ∀ y, n *ᵥ GlobalTheory.TypeAsm.phiV C τ y = GlobalTheory.TypeAsm.phiV C τ (m y) := by
+  intro D X C τ m
+  exact GramPf.phiV_linMat C τ m
+
+end GlobalTheory.TypeAsm
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelLinearMapMatrixExists =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualVectorsNormalFormMemSecondFlag =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualVectorsNormalFormMemSecondFlag", "h": "module\n\npublic import Formalism.FlagUnipotentLattices.MemOfOrthogonalAnisotropic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+
+namespace GlobalTheory
+
+theorem dual_vectors_in_second_flag : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
+    (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r j : ℕ} (hj : j ≤ r) (e e' s : Fin r → V),
+    (Matrix.of fun a b : Fin j => H.B (e (Fin.castLE hj a)) (e' (Fin.castLE hj b))).det ≠ 0 →
+    (∀ a b, H.B (e' a) (e' b) = 0) →
+    (∀ a b : Fin r, j ≤ a.val → b.val < j → H.B (e a) (e' b) = 0) →
+    (∀ a b : Fin r, j ≤ b.val → H.B (e a) (s b) = if a = b then 1 else 0) →
+    (∀ a b : Fin r, a.val < j → j ≤ b.val → H.B (e' a) (s b) = 0) →
+    (∀ a b : Fin r, j ≤ a.val → j ≤ b.val → H.B (s a) (s b) = 0) →
+    ∃ f : Fin r → V, (∀ a, j ≤ a.val → f a = s a) ∧
+      (∀ a, a.val < j → f a ∈ Submodule.span K (e' '' {b | b.val < j})) ∧
+      (∀ a b, H.B (e a) (f b) = if a = b then 1 else 0) ∧ (∀ a b, H.B (f a) (f b) = 0) ∧
+      (∀ a, a.val < j → e' a ∈ Submodule.span K (f '' {b | b.val < j})) := by
+  intro K V _ _ _ _ H r j hj e e' s hdet he' hz hs he's hss
+  set P : Matrix (Fin j) (Fin j) K := Matrix.of fun a b : Fin j => H.B (e (Fin.castLE hj a)) (e' (Fin.castLE hj b)) with hPdef
+  have hu : IsUnit P.det := isUnit_iff_ne_zero.mpr hdet
+  have hPQ : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hu
+  have hQP : P⁻¹ * P = 1 := Matrix.nonsing_inv_mul P hu
+  have hR : ∀ (x : V) (g : Fin j → K), H.B x (∑ c, g c • e' (Fin.castLE hj c)) = ∑ c, star (g c) * H.B x (e' (Fin.castLE hj c)) := by
+    intro x g; simp [map_sum, map_smulₛₗ, starRingEnd_apply]
+  have hL : ∀ (y : V) (g : Fin j → K), H.B (∑ c, g c • e' (Fin.castLE hj c)) y = ∑ c, g c * H.B (e' (Fin.castLE hj c)) y := by
+    intro y g; simp [map_sum, LinearMap.sum_apply]
+  let f : Fin r → V := fun b => if h : b.val < j then ∑ c : Fin j, star (P⁻¹ c ⟨b.val, h⟩) • e' (Fin.castLE hj c) else s b
+  have hf : ∀ b : Fin j, f (Fin.castLE hj b) = ∑ c, star (P⁻¹ c b) • e' (Fin.castLE hj c) := fun b => by
+    simp [f]
+  refine ⟨f, ?_, ?_, ?_, ?_, ?_⟩
+  · intro a ha; simp [f, Nat.not_lt.mpr ha]
+  · intro a ha
+    simp only [f, dif_pos ha]
+    exact Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Fin.castLE hj c, c.isLt, rfl⟩)
+  · intro a b
+    by_cases hb : b.val < j
+    · simp only [f, dif_pos hb, hR, star_star]
+      by_cases ha : a.val < j
+      · calc ∑ c, P⁻¹ c ⟨b.val, hb⟩ * H.B (e a) (e' (Fin.castLE hj c))
+            = ∑ c, P ⟨a.val, ha⟩ c * P⁻¹ c ⟨b.val, hb⟩ := by
+              refine Finset.sum_congr rfl fun c _ => ?_
+              rw [mul_comm]; rfl
+          _ = (P * P⁻¹) ⟨a.val, ha⟩ ⟨b.val, hb⟩ := by rw [Matrix.mul_apply]
+          _ = if a = b then 1 else 0 := by rw [hPQ, Matrix.one_apply]; simp [Fin.ext_iff]
+      · rw [Finset.sum_eq_zero]
+        · have : a ≠ b := fun h => ha (h ▸ hb)
+          simp [this]
+        intro c _
+        rw [hz a (Fin.castLE hj c) (Nat.not_lt.mp ha) (by simp), mul_zero]
+    · simp only [f, dif_neg hb]; exact hs a b (Nat.not_lt.mp hb)
+  · intro a b
+    by_cases ha : a.val < j <;> by_cases hb : b.val < j
+    · simp only [f, dif_pos ha, dif_pos hb, hL, hR, he', mul_zero, Finset.sum_const_zero]
+    · simp only [f, dif_pos ha, dif_neg hb, hL]
+      exact Finset.sum_eq_zero fun c _ => by rw [he's _ _ (by simp) (Nat.not_lt.mp hb), mul_zero]
+    · simp only [f, dif_neg ha, dif_pos hb, hR]
+      exact Finset.sum_eq_zero fun c _ => by rw [← H.herm, he's _ _ (by simp) (Nat.not_lt.mp ha), star_zero, mul_zero]
+    · simp only [f, dif_neg ha, dif_neg hb]; exact hss a b (Nat.not_lt.mp ha) (Nat.not_lt.mp hb)
+  · intro a ha
+    have key : e' a = ∑ b : Fin j, star (P b ⟨a.val, ha⟩) • f (Fin.castLE hj b) := by
+      calc e' a = ∑ c, star ((1 : Matrix (Fin j) (Fin j) K) c ⟨a.val, ha⟩) • e' (Fin.castLE hj c) := by
+              simp [Matrix.one_apply, apply_ite star]
+        _ = ∑ c, star ((P⁻¹ * P) c ⟨a.val, ha⟩) • e' (Fin.castLE hj c) := by rw [hQP]
+        _ = ∑ b, star (P b ⟨a.val, ha⟩) • ∑ c, star (P⁻¹ c b) • e' (Fin.castLE hj c) := by
+              simp_rw [Matrix.mul_apply, star_sum, Finset.sum_smul, Finset.smul_sum, smul_smul, star_mul]
+              rw [Finset.sum_comm]
+        _ = ∑ b, star (P b ⟨a.val, ha⟩) • f (Fin.castLE hj b) := by simp_rw [hf]
+    rw [key]
+    exact Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨Fin.castLE hj b, b.isLt, rfl⟩)
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualVectorsNormalFormMemSecondFlag =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBlockAntidiagonalScaledPairingMatrix =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBlockAntidiagonalScaledPairingMatrix", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianFramesPairingStabilizerBlockDiagonal\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SameBlockAppend\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+
+namespace GlobalTheory.Amp.BlockFrame
+
+theorem blockAnti_scaled_pairing : ∀ {K : Type} [Field K] {j r : ℕ} (hj : j ≤ r) (w : Formalism.MainNotions.S.Loc.Pt K j),
+    ∃ β : Fin r → ℕ, Monotone β ∧ (∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val)) ∧
+      ∀ (σ : K →+* ℂ) (sgn : Fin j → ℤˣ) (ρ : ℝ), 0 < ρ →
+      GlobalTheory.Amp.BlockAnti (fun a : Fin j => β (Fin.castLE hj a))
+        (Matrix.of fun a b : Fin j => (((ρ ^ (r - b.val))⁻¹ * (ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) *
+          σ (w.mat b a * ((sgn a : ℤ) : K))) := by
+  intro K _ j r hj w
+  obtain ⟨τ, γ, t, ht⟩ := GlobalTheory.HL.BlockStab.exists_monomial (E := K) w.blocks
+  rw [w.size] at ht
+
+  have hγN : ∀ a, a < j → γ a < (Finset.range j).sup γ + 1 := fun a ha =>
+    Nat.lt_succ_of_le (Finset.le_sup (f := γ) (Finset.mem_range.mpr ha))
+  refine ⟨fun a => if (a : ℕ) < j then γ a else (Finset.range j).sup γ + 1, ?_, ?_, ?_⟩
+  · intro a b hab
+    have hab' : (a : ℕ) ≤ b := hab
+    dsimp only
+    split_ifs with h1 h2 h2
+    · exact ((ht a h1).2.2.2 b h2).2.1 hab'
+    · exact (hγN a h1).le
+    · omega
+    · exact le_rfl
+  · intro a b hb
+    have hb' : ¬ ((b : ℕ) < j) := by omega
+    dsimp only
+    rw [if_neg hb']
+    by_cases ha : (a : ℕ) < j
+    · rw [if_pos ha]
+      exact ⟨fun h => absurd h (hγN a ha).ne, fun h => absurd h (by omega)⟩
+    · rw [if_neg ha]
+      exact ⟨fun _ => by omega, fun _ => rfl⟩
+  · intro σ sgn ρ hρ
+    simp only [Fin.val_castLE, Fin.is_lt, if_true]
+
+    have hent : ∀ a b : Fin j, w.mat b a = if (a : ℕ) = τ b then (t (γ b) : K) else 0 :=
+      fun a b => ((ht b b.isLt).2.2.2 a a.isLt).2.2.2
+    have key : ∀ a b : Fin j,
+        (((ρ ^ (r - b.val))⁻¹ * (ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) * σ (w.mat b a * ((sgn a : ℤ) : K)) ≠ 0 →
+          (a : ℕ) = τ b := by
+      intro a b h
+      by_contra hne
+      apply h
+      rw [hent a b, if_neg hne, zero_mul, map_zero, mul_zero]
+    have hs : ∀ a : Fin j, ‖σ ((sgn a : ℤ) : K)‖ = 1 := fun a => by
+      rcases Int.units_eq_one_or (sgn a) with h | h <;> simp [h]
+    have hsK : ∀ a : Fin j, ((sgn a : ℤ) : K) ≠ 0 := fun a => by
+      rcases Int.units_eq_one_or (sgn a) with h | h <;> simp [h]
+
+    have hZ : (Matrix.of fun a b : Fin j => (((ρ ^ (r - b.val))⁻¹ * (ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) *
+          σ (w.mat b a * ((sgn a : ℤ) : K))) =
+        Matrix.diagonal (fun a : Fin j => (((ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ)) *
+          (Matrix.diagonal (fun a : Fin j => ((sgn a : ℤ) : K)) * w.matᵀ).map σ *
+          Matrix.diagonal (fun a : Fin j => (((ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ)) := by
+      ext a b
+      simp only [Matrix.of_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply,
+        Matrix.transpose_apply, Complex.ofReal_mul, map_mul]
+      ring
+    have hd : ∀ a : Fin j, (((ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) ≠ 0 := fun a =>
+      Complex.ofReal_ne_zero.mpr (inv_ne_zero (pow_ne_zero _ hρ.ne'))
+    unfold GlobalTheory.Amp.BlockAnti
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · intro a b hab
+      exact ((ht a a.isLt).2.2.2 b b.isLt).2.1 hab
+    · rw [hZ, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal,
+        show ((Matrix.diagonal (fun a : Fin j => ((sgn a : ℤ) : K)) * w.matᵀ).map σ).det =
+          σ (Matrix.diagonal (fun a : Fin j => ((sgn a : ℤ) : K)) * w.matᵀ).det from
+          (RingHom.map_det σ _).symm,
+        Matrix.det_mul, Matrix.det_diagonal, Matrix.det_transpose]
+      have hP : ∏ a : Fin j, (((ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) ≠ 0 :=
+        Finset.prod_ne_zero_iff.mpr fun a _ => hd a
+      refine mul_ne_zero (mul_ne_zero hP ?_) hP
+      exact (map_ne_zero σ).mpr (mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun a _ => hsK a)
+        (GlobalTheory.SgLoc.PtAlg.isUnit_det w).ne_zero)
+    · intro a b h
+      have e := key a b h
+      show γ a = γ b
+      rw [e]
+      exact (ht b b.isLt).2.2.1
+    · intro a b a' b' h1 h2 hγ
+      have hγ' : γ a = γ a' := hγ
+      have e1 := key a b h1
+      have e2 := key a' b' h2
+      have hb : (b : ℕ) = τ a := by rw [e1, (ht b b.isLt).2.1]
+      have hb' : (b' : ℕ) = τ a' := by rw [e2, (ht b' b'.isLt).2.1]
+      have hsum : (a : ℕ) + τ a = a' + τ a' := ((ht a a.isLt).2.2.2 a' a'.isLt).2.2.1 hγ'
+      refine ⟨?_, ?_, ?_⟩
+      · have hγb : γ b = γ a := by rw [hb]; exact (ht a a.isLt).2.2.1
+        have hγb' : γ b' = γ a := by rw [hb', hγ']; exact (ht a' a'.isLt).2.2.1
+        have hw1 : w.mat b a = (t (γ a) : K) := by rw [hent a b, if_pos e1, hγb]
+        have hw2 : w.mat b' a' = (t (γ a) : K) := by rw [hent a' b', if_pos e2, hγb']
+        have ha := a.isLt
+        have hb2 := b.isLt
+        have ha' := a'.isLt
+        have hb2' := b'.isLt
+        have hexp : (r - b.val) + (r - a.val) = (r - b'.val) + (r - a'.val) := by omega
+        have hc : ((ρ ^ (r - b.val))⁻¹ * (ρ ^ (r - a.val))⁻¹ : ℝ) =
+            (ρ ^ (r - b'.val))⁻¹ * (ρ ^ (r - a'.val))⁻¹ := by
+          rw [← mul_inv, ← mul_inv, ← pow_add, ← pow_add, hexp]
+        simp only [Matrix.of_apply]
+        rw [hw1, hw2, hc, norm_mul, norm_mul, map_mul, map_mul, norm_mul, norm_mul, hs a, hs a']
+      · intro haa
+        subst haa
+        exact Fin.ext (hb.trans hb'.symm)
+      · intro hlt
+        have hlt' : (a : ℕ) < a' := hlt
+        exact Fin.lt_def.mpr (by omega)
+
+end GlobalTheory.Amp.BlockFrame
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBlockAntidiagonalScaledPairingMatrix =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryHermFrameUnipotent =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryHermFrameUnipotent", "h": "module\n\npublic import Formalism.FlagUnipotentLattices.MemOfOrthogonalAnisotropic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+
+noncomputable section
+open scoped BigOperators
+
+namespace GlobalTheory.RatIsoFrame
+
+variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
+  (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r : ℕ}
+
+def bl (y : V) : V →ₗ[K] K := H.B.flip y
+
+def crd (e f : Fin r → V) (z : V) (g h : Fin r → V) (t : V) : V →ₗ[K] V :=
+  ∑ a, (bl H (f a)).smulRight (g a) + ∑ a, (bl H (e a)).smulRight (h a) +
+    ((H.B z z)⁻¹ • bl H z).smulRight t
+
+theorem crd_apply (e f : Fin r → V) (z : V) (g h : Fin r → V) (t v : V) :
+    crd H e f z g h t v = ∑ a, H.B v (f a) • g a + ∑ a, H.B v (e a) • h a +
+      ((H.B z z)⁻¹ * H.B v z) • t := by
+  simp [crd, bl, LinearMap.sum_apply, smul_eq_mul]
+
+def nil (e f : Fin r → V) : V →ₗ[K] V := LinearMap.id - ∑ b, (bl H (f b)).smulRight (e b)
+
+theorem nil_apply (e f : Fin r → V) (w : V) : nil H e f w = w - ∑ b, H.B w (f b) • e b := by
+  simp [nil, bl, LinearMap.sum_apply]
+
+def rmap (e f : Fin r → V) (z : V) (e' f' : Fin r → V) (z' : V) : V →ₗ[K] V :=
+  crd H e' f' z' e f z + nil H e f ∘ₗ (LinearMap.id - crd H e' f' z' e' f' z')
+
+theorem herm0 {x y : V} (h : H.B x y = 0) : H.B y x = 0 := by rw [← H.herm, h, star_zero]
+
+theorem gram (e f : Fin r → V) (z : V)
+    (hee : ∀ a b, H.B (e a) (e b) = 0) (hff : ∀ a b, H.B (f a) (f b) = 0)
+    (hef : ∀ a b, H.B (e a) (f b) = if a = b then 1 else 0)
+    (hez : ∀ a, H.B (e a) z = 0) (hfz : ∀ a, H.B (f a) z = 0)
+    (α β α' β' : Fin r → K) (γ γ' : K) :
+    H.B (∑ a, α a • e a + ∑ a, β a • f a + γ • z) (∑ a, α' a • e a + ∑ a, β' a • f a + γ' • z) =
+      ∑ a, α a * star (β' a) + ∑ a, β a * star (α' a) + γ * star γ' * H.B z z := by
+  have hfe : ∀ a b, H.B (f a) (e b) = if a = b then 1 else 0 := by
+    intro a b; rw [← H.herm, hef]; split_ifs with h1 h2 h2 <;> simp_all
+  have hze : ∀ a, H.B z (e a) = 0 := fun a => herm0 H (hez a)
+  have hzf : ∀ a, H.B z (f a) = 0 := fun a => herm0 H (hfz a)
+
+  simp only [map_add (f := _), map_sum, map_smul, map_smulₛₗ, LinearMap.add_apply, LinearMap.sum_apply,
+  LinearMap.smul_apply, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, hee, hff, hef, hfe, hez, hfz, hze, hzf]
+  simp only [mul_comm (star _)]; ring
+
+theorem rem_perp (e f : Fin r → V) (z : V)
+    (hee : ∀ a b, H.B (e a) (e b) = 0) (hff : ∀ a b, H.B (f a) (f b) = 0)
+    (hef : ∀ a b, H.B (e a) (f b) = if a = b then 1 else 0)
+    (hez : ∀ a, H.B (e a) z = 0) (hfz : ∀ a, H.B (f a) z = 0) (hzz : H.B z z ≠ 0) (v : V) :
+    (∀ a, H.B (v - crd H e f z e f z v) (e a) = 0) ∧ (∀ a, H.B (v - crd H e f z e f z v) (f a) = 0) ∧
+      H.B (v - crd H e f z e f z v) z = 0 := by
+  have hfe : ∀ a b, H.B (f a) (e b) = if a = b then 1 else 0 := by
+    intro a b; rw [← H.herm, hef]; split_ifs with h1 h2 h2 <;> simp_all
+  have hze : ∀ a, H.B z (e a) = 0 := fun a => herm0 H (hez a)
+  have hzf : ∀ a, H.B z (f a) = 0 := fun a => herm0 H (hfz a)
+  refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;>
+
+    simp only [crd_apply, map_add (f := _), map_sub, map_sum, map_smul, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply,
+    LinearMap.smul_apply, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, hee, hff, hef, hfe, hez, hfz, hze, hzf, sub_self]
+  field_simp
+  simp
+
+theorem spanL {S : Set V} {y : V} (h : ∀ s ∈ S, H.B s y = 0) :
+    ∀ x ∈ Submodule.span K S, H.B x y = 0 := by
+  intro x hx
+  have : Submodule.span K S ≤ LinearMap.ker (bl H y) := Submodule.span_le.2 (fun s hs => h s hs)
+  exact this hx
+
+theorem spanR {S : Set V} {y : V} (h : ∀ s ∈ S, H.B y s = 0) :
+    ∀ x ∈ Submodule.span K S, H.B y x = 0 := by
+  intro x hx
+  have : Submodule.span K S ≤ LinearMap.ker (H.B y) := Submodule.span_le.2 (fun s hs => h s hs)
+  exact this hx
+
+theorem zz_eq (e : Fin r → V) (z z' : V) (hee : ∀ a b, H.B (e a) (e b) = 0)
+    (hez : ∀ a, H.B (e a) z = 0) (hx : z' - z ∈ Submodule.span K (Set.range e)) :
+    H.B z' z' = H.B z z := by
+  set x := z' - z
+  have hz' : z' = z + x := by simp [x]
+  have h1 : H.B x z = 0 := spanL H (by rintro _ ⟨a, rfl⟩; exact hez a) x hx
+  have h2 : H.B z x = 0 := herm0 H h1
+  have h3 : ∀ a, H.B x (e a) = 0 := fun a => spanL H (by rintro _ ⟨b, rfl⟩; exact hee b a) x hx
+  have h4 : H.B x x = 0 := spanR H (by rintro _ ⟨b, rfl⟩; exact h3 b) x hx
+  rw [hz']; simp [h1, h2, h4]
+
+theorem nil_perp (e f : Fin r → V) (z : V) (hee : ∀ a b, H.B (e a) (e b) = 0) (hff : ∀ a b, H.B (f a) (f b) = 0)
+    (hef : ∀ a b, H.B (e a) (f b) = if a = b then 1 else 0)
+    (hez : ∀ a, H.B (e a) z = 0) (hfz : ∀ a, H.B (f a) z = 0) (w : V) (hw : ∀ a, H.B w (e a) = 0) :
+    (∀ a, H.B (nil H e f w) (e a) = 0) ∧ (∀ a, H.B (nil H e f w) (f a) = 0) ∧
+      H.B (nil H e f w) z = H.B w z := by
+  refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;>
+
+    simp only [nil_apply, map_sub, map_sum, map_smul, LinearMap.sub_apply, LinearMap.sum_apply,
+    LinearMap.smul_apply, smul_eq_mul, mul_zero, Finset.sum_const_zero, sub_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, hee, hef, hez, hw, sub_self]
+
+theorem nil_isom (e f : Fin r → V) (hee : ∀ a b, H.B (e a) (e b) = 0) (w w' : V)
+    (hw : ∀ a, H.B w (e a) = 0) (hw' : ∀ a, H.B w' (e a) = 0) :
+    H.B (nil H e f w) (nil H e f w') = H.B w w' := by
+  have hw'' : ∀ a, H.B (e a) w' = 0 := fun a => herm0 H (hw' a)
+
+  simp only [nil_apply, map_sub, map_sum, map_smul, map_smulₛₗ, LinearMap.sub_apply, LinearMap.sum_apply,
+  LinearMap.smul_apply, smul_eq_mul, mul_zero, Finset.sum_const_zero, sub_zero, starRingEnd_apply, hee, hw, hw'', sub_self]
+
+theorem rem_all (e f e' f' : Fin r → V) (z z' : V) (he'e : ∀ a b, H.B (e' a) (e' b) = 0) (hf'f : ∀ a b, H.B (f' a) (f' b) = 0)
+    (he'f : ∀ a b, H.B (e' a) (f' b) = if a = b then 1 else 0)
+    (he'z : ∀ a, H.B (e' a) z' = 0) (hf'z : ∀ a, H.B (f' a) z' = 0) (hzz'0 : H.B z' z' ≠ 0)
+    (hsp : ∀ a, e a ∈ Submodule.span K (Set.range e')) (hzd : z' - z ∈ Submodule.span K (Set.range e))
+    (u : V) :
+    (∀ a, H.B (u - crd H e' f' z' e' f' z' u) (e' a) = 0) ∧ (∀ a, H.B (u - crd H e' f' z' e' f' z' u) (f' a) = 0) ∧
+      H.B (u - crd H e' f' z' e' f' z' u) z' = 0 ∧ (∀ a, H.B (u - crd H e' f' z' e' f' z' u) (e a) = 0) ∧
+      H.B (u - crd H e' f' z' e' f' z' u) z = 0 := by
+  obtain ⟨h1, h2, h3⟩ := rem_perp H e' f' z' he'e hf'f he'f he'z hf'z hzz'0 u
+  have h4 : ∀ a, H.B (u - crd H e' f' z' e' f' z' u) (e a) = 0 :=
+    fun a => spanR H (by rintro _ ⟨b, rfl⟩; exact h1 b) _ (hsp a)
+  have h5 : H.B (u - crd H e' f' z' e' f' z' u) (z' - z) = 0 := spanR H (by rintro _ ⟨b, rfl⟩; exact h4 b) _ hzd
+  refine ⟨h1, h2, h3, h4, ?_⟩
+  have : H.B (u - crd H e' f' z' e' f' z' u) z = H.B (u - crd H e' f' z' e' f' z' u) z' - H.B (u - crd H e' f' z' e' f' z' u) (z' - z) := by
+    rw [map_sub (H.B (u - crd H e' f' z' e' f' z' u)) z' z, sub_sub_cancel]
+  rw [this, h3, h5, sub_zero]
+
+theorem rmap_apply (e f e' f' : Fin r → V) (z z' v : V) :
+    rmap H e f z e' f' z' v = crd H e' f' z' e f z v + nil H e f (v - crd H e' f' z' e' f' z' v) := by
+  simp [rmap]
+
+theorem rmap_isom (e f e' f' : Fin r → V) (z z' : V) (hee : ∀ a b, H.B (e a) (e b) = 0) (hff : ∀ a b, H.B (f a) (f b) = 0)
+    (hef : ∀ a b, H.B (e a) (f b) = if a = b then 1 else 0)
+    (hez : ∀ a, H.B (e a) z = 0) (hfz : ∀ a, H.B (f a) z = 0) (hzz : H.B z z ≠ 0) (he'e : ∀ a b, H.B (e' a) (e' b) = 0) (hf'f : ∀ a b, H.B (f' a) (f' b) = 0)
+    (he'f : ∀ a b, H.B (e' a) (f' b) = if a = b then 1 else 0)
+    (he'z : ∀ a, H.B (e' a) z' = 0) (hf'z : ∀ a, H.B (f' a) z' = 0)
+    (hsp : ∀ a, e a ∈ Submodule.span K (Set.range e')) (hzd : z' - z ∈ Submodule.span K (Set.range e))
+    (v v' : V) : H.B (rmap H e f z e' f' z' v) (rmap H e f z e' f' z' v') = H.B v v' := by
+  have hzz' : H.B z' z' = H.B z z := zz_eq H e z z' hee hez hzd
+  have hzz'0 : H.B z' z' ≠ 0 := hzz' ▸ hzz
+  obtain ⟨a1, a2, a3, a4, a5⟩ := rem_all H e f e' f' z z' he'e hf'f he'f he'z hf'z hzz'0 hsp hzd v
+  obtain ⟨b1, b2, b3, b4, b5⟩ := rem_all H e f e' f' z z' he'e hf'f he'f he'z hf'z hzz'0 hsp hzd v'
+  have hv : H.B v v' = H.B (crd H e' f' z' e' f' z' v + (v - crd H e' f' z' e' f' z' v)) (crd H e' f' z' e' f' z' v' + (v' - crd H e' f' z' e' f' z' v')) := by
+    simp only [add_sub_cancel]
+  rw [hv, rmap_apply, rmap_apply]
+  generalize v - crd H e' f' z' e' f' z' v = w at a1 a2 a3 a4 a5 ⊢
+  generalize v' - crd H e' f' z' e' f' z' v' = w' at b1 b2 b3 b4 b5 ⊢
+  obtain ⟨n1, n2, n3⟩ := nil_perp H e f z hee hff hef hez hfz _ a4
+  obtain ⟨m1, m2, m3⟩ := nil_perp H e f z hee hff hef hez hfz _ b4
+  have b1' : ∀ a, H.B (e' a) w' = 0 := fun a => herm0 H (b1 a)
+  have b2' : ∀ a, H.B (f' a) w' = 0 := fun a => herm0 H (b2 a)
+  have b3' : H.B z' w' = 0 := herm0 H b3
+  have m1' : ∀ a, H.B (e a) (nil H e f w') = 0 := fun a => herm0 H (m1 a)
+  have m2' : ∀ a, H.B (f a) (nil H e f w') = 0 := fun a => herm0 H (m2 a)
+  have m3' : H.B z (nil H e f w') = 0 := herm0 H (m3.trans b5)
+  have hA : H.B (crd H e' f' z' e f z v) (crd H e' f' z' e f z v') = H.B (crd H e' f' z' e' f' z' v) (crd H e' f' z' e' f' z' v') := by
+    rw [crd_apply, crd_apply, crd_apply, crd_apply, gram H e f z hee hff hef hez hfz,
+      gram H e' f' z' he'e hf'f he'f he'z hf'z, hzz']
+  have c1 : H.B (crd H e' f' z' e f z v) (nil H e f w') = 0 := by
+
+    rw [crd_apply]; simp only [map_add (f := _), map_sum, map_smul, LinearMap.add_apply, LinearMap.sum_apply,
+    LinearMap.smul_apply, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero, m1', m2', m3']
+  have c2 : H.B (nil H e f w) (crd H e' f' z' e f z v') = 0 := by
+
+    rw [crd_apply]; simp only [map_add (f := _), map_sum, map_smulₛₗ, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero, starRingEnd_apply, n1, n2, n3, a5]
+  have c3 : H.B (crd H e' f' z' e' f' z' v) w' = 0 := by
+
+    rw [crd_apply]; simp only [map_add (f := _), map_sum, map_smul, LinearMap.add_apply, LinearMap.sum_apply,
+    LinearMap.smul_apply, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero, b1', b2', b3']
+  have c4 : H.B w (crd H e' f' z' e' f' z' v') = 0 := by
+
+    rw [crd_apply]; simp only [map_add (f := _), map_sum, map_smulₛₗ, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero, starRingEnd_apply, a1, a2, a3]
+  simp only [map_add (f := _), LinearMap.add_apply]
+  rw [hA, c1, c2, c3, c4, nil_isom H e f hee _ _ a4 b4]
+
+theorem rmap_vals (e f e' f' : Fin r → V) (z z' : V) (he'e : ∀ a b, H.B (e' a) (e' b) = 0) (hf'f : ∀ a b, H.B (f' a) (f' b) = 0)
+    (he'f : ∀ a b, H.B (e' a) (f' b) = if a = b then 1 else 0)
+    (he'z : ∀ a, H.B (e' a) z' = 0) (hf'z : ∀ a, H.B (f' a) z' = 0) (hzz'0 : H.B z' z' ≠ 0) :
+    (∀ a, rmap H e f z e' f' z' (e' a) = e a) ∧ (∀ a, rmap H e f z e' f' z' (f' a) = f a) ∧
+      rmap H e f z e' f' z' z' = z := by
+  have hf'e : ∀ a b, H.B (f' a) (e' b) = if a = b then 1 else 0 := by
+    intro a b; rw [← H.herm, he'f]; split_ifs with h1 h2 h2 <;> simp_all
+  have hz'e : ∀ a, H.B z' (e' a) = 0 := fun a => herm0 H (he'z a)
+  have hz'f : ∀ a, H.B z' (f' a) = 0 := fun a => herm0 H (hf'z a)
+  refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;>
+
+    simp only [rmap_apply, crd_apply, map_zero, mul_zero, Finset.sum_const_zero, add_zero, zero_add, Finset.sum_ite_eq, Finset.mem_univ, if_true, ite_smul, one_smul, zero_smul, Finset.sum_const_zero, he'e, hf'f, he'f, hf'e, he'z, hf'z, hz'e, hz'f,
+      inv_mul_cancel₀ hzz'0, sub_self]
+
+theorem rmap_perp (e f e' f' : Fin r → V) (z z' : V)
+    (hsp' : ∀ a, e' a - e a ∈ Submodule.span K (Set.range e)) (hzd : z' - z ∈ Submodule.span K (Set.range e))
+    (y : V) (hy : ∀ a, H.B (e a) y = 0) :
+    rmap H e f z e' f' z' y - y ∈ Submodule.span K (Set.range e) := by
+  have he' : ∀ a, e' a ∈ Submodule.span K (Set.range e) := fun a => by
+    have : e' a = (e' a - e a) + e a := by abel
+    rw [this]; exact Submodule.add_mem _ (hsp' a) (Submodule.subset_span ⟨a, rfl⟩)
+  have hβ : ∀ a, H.B y (e' a) = 0 := fun a =>
+    herm0 H (spanL H (by rintro _ ⟨b, rfl⟩; exact hy b) _ (he' a))
+  have heq : rmap H e f z e' f' z' y - y =
+      ∑ a, H.B y (f' a) • (e a - e' a) + ((H.B z' z')⁻¹ * H.B y z') • (z - z') -
+        ∑ b, H.B (y - crd H e' f' z' e' f' z' y) (f b) • e b := by
+    rw [rmap_apply, nil_apply]
+    generalize H.B (y - crd H e' f' z' e' f' z' y) = φ
+    rw [crd_apply, crd_apply]
+    simp only [hβ, zero_smul, Finset.sum_const_zero, add_zero, smul_sub, Finset.sum_sub_distrib]
+    abel
+  rw [heq]
+  refine Submodule.sub_mem _ (Submodule.add_mem _ (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ?_)
+    (Submodule.smul_mem _ _ ?_)) (Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩))
+  · rw [← neg_sub]; exact Submodule.neg_mem _ (hsp' a)
+  · rw [← neg_sub]; exact Submodule.neg_mem _ hzd
+
+theorem tri_span (e e' : Fin r → V) (h : ∀ a, e' a - e a ∈ Submodule.span K (e '' {b | b < a})) :
+    ∀ a, e a ∈ Submodule.span K (Set.range e') := by
+  intro a
+  induction a using WellFoundedLT.induction with
+  | _ a ih =>
+  have hsub : Submodule.span K (e '' {b | b < a}) ≤ Submodule.span K (Set.range e') :=
+    Submodule.span_le.2 (by rintro _ ⟨b, hb, rfl⟩; exact ih b hb)
+  have : e a = e' a - (e' a - e a) := by abel
+  rw [this]; exact Submodule.sub_mem _ (Submodule.subset_span ⟨a, rfl⟩) (hsub (h a))
+
+theorem tri_le (e : Fin r → V) (T : V →ₗ[K] V) (a : Fin r)
+    (h : ∀ b < a, T (e b) - e b ∈ Submodule.span K (e '' {c | c < b})) :
+    Submodule.span K (e '' {b | b < a}) ≤ (Submodule.span K (e '' {b | b < a})).comap T := by
+  refine Submodule.span_le.2 ?_
+  rintro _ ⟨b, hb, rfl⟩
+  rw [SetLike.mem_coe, Submodule.mem_comap]
+  have : T (e b) = (T (e b) - e b) + e b := by abel
+  rw [this]
+  refine Submodule.add_mem _ ?_ (Submodule.subset_span ⟨b, hb, rfl⟩)
+  have hsub : {c : Fin r | c < b} ⊆ {c : Fin r | c < a} := by
+    intro c hc
+    change c < b at hc
+    change b < a at hb
+    exact lt_trans hc hb
+  exact Submodule.span_mono (Set.image_mono hsub) (h b hb)
+
+theorem tri_map (e e' : Fin r → V) (T : V →ₗ[K] V) (hT : ∀ a, T (e' a) = e a)
+    (h : ∀ a, e' a - e a ∈ Submodule.span K (e '' {b | b < a})) :
+    ∀ a, T (e a) - e a ∈ Submodule.span K (e '' {b | b < a}) := by
+  intro a
+  induction a using WellFoundedLT.induction with
+  | _ a ih =>
+  have hle := tri_le e T a ih
+  have : T (e a) - e a = -(T (e' a - e a)) := by rw [map_sub, hT]; abel
+  rw [this]; exact Submodule.neg_mem _ (hle (h a))
+
+theorem symm_mem [FiniteDimensional K V] (m : V ≃ₗ[K] V) (S : Submodule K V)
+    (hS : S ≤ S.comap (m : V →ₗ[K] V)) : ∀ x ∈ S, m.symm x ∈ S := by
+  have hle : S.map (m : V →ₗ[K] V) ≤ S := Submodule.map_le_iff_le_comap.2 hS
+  have heq : S.map (m : V →ₗ[K] V) = S :=
+    Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq m S)
+  intro x hx
+  rw [← heq] at hx
+  exact (Submodule.mem_map_equiv S).1 hx
+
+theorem exists_isometry_frame_unipotent : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
+    (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r : ℕ} (e f e' f' : Fin r → V) (z z' : V),
+    (∀ a b, H.B (e a) (e b) = 0) → (∀ a b, H.B (f a) (f b) = 0) →
+    (∀ a b, H.B (e a) (f b) = if a = b then 1 else 0) →
+    (∀ a, H.B (e a) z = 0) → (∀ a, H.B (f a) z = 0) → H.B z z ≠ 0 →
+    (∀ a b, H.B (e' a) (e' b) = 0) → (∀ a b, H.B (f' a) (f' b) = 0) →
+    (∀ a b, H.B (e' a) (f' b) = if a = b then 1 else 0) →
+    (∀ a, H.B (e' a) z' = 0) → (∀ a, H.B (f' a) z' = 0) →
+    (∀ a, e' a - e a ∈ Submodule.span K (e '' {b | b < a})) →
+    z' - z ∈ Submodule.span K (Set.range e) →
+    ∃ m : V ≃ₗ[K] V, (∀ x y, H.B (m x) (m y) = H.B x y) ∧ (∀ a, m (e' a) = e a) ∧ (∀ a, m (f' a) = f a) ∧
+      m z' = z ∧ (∀ a, m (e a) - e a ∈ Submodule.span K (e '' {b | b < a})) ∧
+      (∀ y, (∀ a, H.B (e a) y = 0) → m y - y ∈ Submodule.span K (Set.range e)) ∧
+      (∀ a, m.symm (e a) - e a ∈ Submodule.span K (e '' {b | b < a})) ∧
+      (∀ y, (∀ a, H.B (e a) y = 0) → m.symm y - y ∈ Submodule.span K (Set.range e)) := by
+  intro K V _ _ _ _ _ H r e f e' f' z z' hee hff hef hez hfz hzz he'e hf'f he'f he'z hf'z htri hzd
+  have hsp : ∀ a, e a ∈ Submodule.span K (Set.range e') := tri_span e e' htri
+  have hsp' : ∀ a, e' a - e a ∈ Submodule.span K (Set.range e) :=
+    fun a => Submodule.span_mono (Set.image_subset_range e _) (htri a)
+  have hzz'0 : H.B z' z' ≠ 0 := (zz_eq H e z z' hee hez hzd) ▸ hzz
+  have hiso := rmap_isom H e f e' f' z z' hee hff hef hez hfz hzz he'e hf'f he'f he'z hf'z hsp hzd
+  obtain ⟨v1, v2, v3⟩ := rmap_vals H e f e' f' z z' he'e hf'f he'f he'z hf'z hzz'0
+  have hinj : Function.Injective (rmap H e f z e' f' z') := by
+    rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+    intro x hx
+    apply H.nondeg
+    intro w
+    rw [← hiso x w, hx, map_zero, LinearMap.zero_apply]
+  set T := rmap H e f z e' f' z' with hTdef
+  let m : V ≃ₗ[K] V := LinearEquiv.ofInjectiveEndo T hinj
+  have hm : ∀ x, m x = T x := fun x => rfl
+  have h5 : ∀ a, T (e a) - e a ∈ Submodule.span K (e '' {b | b < a}) := tri_map e e' T v1 htri
+  have h6 : ∀ y, (∀ a, H.B (e a) y = 0) → T y - y ∈ Submodule.span K (Set.range e) :=
+    fun y hy => rmap_perp H e f e' f' z z' hsp' hzd y hy
+  have hX : Submodule.span K (Set.range e) ≤ (Submodule.span K (Set.range e)).comap T := by
+    refine Submodule.span_le.2 ?_
+    rintro _ ⟨a, rfl⟩
+    rw [SetLike.mem_coe, Submodule.mem_comap]
+    have : T (e a) = (T (e a) - e a) + e a := by abel
+    rw [this]
+    exact Submodule.add_mem _ (Submodule.span_mono (Set.image_subset_range e _) (h5 a))
+      (Submodule.subset_span ⟨a, rfl⟩)
+  refine ⟨m, fun x y => hiso x y, v1, v2, v3, h5, h6, fun a => ?_, fun y hy => ?_⟩
+  · have hS := symm_mem m _ (tri_le e T a (fun b _ => h5 b)) _ (h5 a)
+    have : m.symm (e a) - e a = -(m.symm (T (e a) - e a)) := by
+      rw [map_sub, ← hm, LinearEquiv.symm_apply_apply]; abel
+    rw [this]; exact Submodule.neg_mem _ hS
+  · have hy' : ∀ a, H.B (e a) (m.symm y) = 0 := by
+      intro a
+      have : H.B (e a) (m.symm y) = H.B (T (e a)) y := by
+        rw [← hiso (e a) (m.symm y), ← hm (m.symm y), LinearEquiv.apply_symm_apply]
+      rw [this]
+      exact spanL H (by rintro _ ⟨b, rfl⟩; exact hy b) _ (hX (Submodule.subset_span ⟨a, rfl⟩))
+    have h := h6 (m.symm y) hy'
+    rw [← hm, LinearEquiv.apply_symm_apply] at h
+    rw [← neg_sub]; exact Submodule.neg_mem _ h
+
+end GlobalTheory.RatIsoFrame
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryHermFrameUnipotent =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealMatrixMemBesselUnipotentOfFrame =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealMatrixMemBesselUnipotentOfFrame", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsFundOne\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CoordOfMemXa\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+
+noncomputable section
+open Formalism.HermitianLatticeCounting.S6 Formalism.QuantumDeterminants GlobalTheory.DegVol.RealMat
+
+namespace GlobalTheory.DegVol.FrameUnip
+
+variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
+  {H : HermSpace K V} {k r : ℕ} {σ : K →+* ℂ} {Φ : V → Fin (2 * r + k + 1) → ℂ}
+
+theorem phi_zero' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) : Φ 0 = 0 := by
+  have := h.2.1 0 0
+  simpa using this
+
+theorem phi_sub' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) (x y : V) : Φ (x - y) = Φ x - Φ y := by
+  have := h.1 (x - y) y
+  rw [sub_add_cancel] at this
+  rw [this]; abel
+
+theorem phi_sum' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) {α : Type} (s : Finset α) (f : α → V) :
+    Φ (∑ i ∈ s, f i) = ∑ i ∈ s, Φ (f i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simpa using phi_zero' h
+  | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.1, ih]
+
+theorem span_ind' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) (P : (Fin (2 * r + k + 1) → ℂ) → Prop) (h0 : ∀ x, P (Φ x))
+    (ha : ∀ u v, P u → P v → P (u + v)) (hs : ∀ (c : ℂ) u, P u → P (c • u)) (u : Fin (2 * r + k + 1) → ℂ) : P u := by
+  have hu : u ∈ Submodule.span ℂ (Set.range Φ) := by rw [h.2.2.2]; trivial
+  induction hu using Submodule.span_induction with
+  | mem x hx => obtain ⟨y, rfl⟩ := hx; exact h0 y
+  | zero => rw [← phi_zero' h]; exact h0 0
+  | add x y _ _ hx hy => exact ha _ _ hx hy
+  | smul c x _ hx => exact hs _ _ hx
+
+theorem mem_UH' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
+    (e : ∀ x y, herm (Hpk k r) (m *ᵥ Φ x) (m *ᵥ Φ y) = herm (Hpk k r) (Φ x) (Φ y)) : m ∈ UH (Hpk k r) := by
+  have h1 : ∀ u w, herm (Hpk k r) (m *ᵥ u) (m *ᵥ w) = herm (Hpk k r) u w := by
+    intro u
+    refine span_ind' h (fun u => ∀ w, herm (Hpk k r) (m *ᵥ u) (m *ᵥ w) = herm (Hpk k r) u w) (fun x => ?_)
+      (fun u v hu hv w => by rw [mulVec_add, herm_add_left, herm_add_left, hu, hv])
+      (fun c u hu w => by rw [mulVec_smul, herm_smul_left, herm_smul_left, hu]) u
+    exact span_ind' h _ (e x) (fun u v hu hv => by rw [mulVec_add, herm_add_right, herm_add_right, hu, hv])
+      (fun c u hu => by rw [mulVec_smul, herm_smul_right, herm_smul_right, hu])
+  ext i j
+  exact (herm_bvec _ i j).symm.trans (by rw [← herm_mulVec, h1, herm_bvec])
+
+theorem coord_span (h : GlobalTheory.DegVol.IsReal H k r σ Φ) {e : Fin r → V} {ρ : Fin r → ℂ}
+    (he : ∀ a, Φ (e a) = ρ a • bvec (eI k r a)) {S : Set (Fin r)} (i : Fin (2 * r + k + 1))
+    (hS : ∀ b ∈ S, b.val < i.val) {y : V} (hy : y ∈ Submodule.span K (e '' S)) : Φ y i = 0 := by
+  induction hy using Submodule.span_induction with
+  | mem x hx =>
+    obtain ⟨b, hb, rfl⟩ := hx
+    have hb' := hS b hb
+    have : i ≠ eI k r b := fun e => by
+      have := congrArg Fin.val e
+      simp only [eI] at this; omega
+    simp [he, bvec, this]
+  | zero => rw [phi_zero' h]; rfl
+  | add x y _ _ hx hy => rw [h.1, Pi.add_apply, hx, hy, add_zero]
+  | smul c x _ hx => rw [h.2.1, Pi.smul_apply, hx, smul_zero]
+
+theorem mem_Nset : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
+    (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {k r : ℕ} (σ : K →+* ℂ) (Φ : V → Fin (2 * r + k + 1) → ℂ),
+    GlobalTheory.DegVol.IsReal H k r σ Φ → ∀ (e f : Fin r → V) (ρ ρ' : Fin r → ℂ), (∀ a, ρ a ≠ 0) → (∀ a, ρ' a ≠ 0) →
+    (∀ a, Φ (e a) = ρ a • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a)) →
+    (∀ a, Φ (f a) = ρ' a • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI k r a)) →
+    (∀ a b, H.B (e a) (f b) = if a = b then 1 else 0) →
+    ∀ m : V →ₗ[K] V, (∀ x y, H.B (m x) (m y) = H.B x y) →
+    (∀ a, m (e a) - e a ∈ Submodule.span K (e '' {b | b < a})) →
+    (∀ y, (∀ a, H.B (e a) y = 0) → m y - y ∈ Submodule.span K (Set.range e)) →
+    ∀ n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, (∀ y, n *ᵥ Φ y = Φ (m y)) →
+    n ∈ Formalism.QuantumDeterminants.Nset k r := by
+  intro K V _ _ _ _ H k r σ Φ h e f ρ ρ' hρ hρ' he hf hef m hm h2 h3 n hn
+  refine ⟨mem_UH' h fun x y => by rw [hn, hn, h.2.2.1, h.2.2.1, hm], fun a i hi => ?_, fun i j hj hj' hi => ?_⟩
+  · have := coord_span h he i (S := {b | b < a}) (fun b hb => lt_of_lt_of_le (Fin.lt_def.1 hb) hi) (h2 a)
+    rw [phi_sub' h, ← hn, he, mulVec_smul, ← smul_sub, Pi.smul_apply, smul_eq_zero, or_iff_right (hρ a), Pi.sub_apply,
+      sub_eq_zero] at this
+    simpa [bvec, Pi.single_apply] using this
+  · let P : (Fin (2 * r + k + 1) → ℂ) → Fin (2 * r + k + 1) → ℂ := fun u =>
+      u - ∑ a : Fin r, herm (Hpk k r) u (Φ (e a)) • Φ (f a)
+    have hP : ∀ u, (n *ᵥ P u - P u) i = 0 := by
+      refine span_ind' h _ (fun x => ?_) (fun u v hu hv => ?_) (fun c u hu => ?_)
+      · have ex : P (Φ x) = Φ (x - ∑ a : Fin r, H.B x (e a) • f a) := by
+          simp only [P, phi_sub' h, phi_sum' h, h.2.1, h.2.2.1]
+        rw [ex, hn, ← phi_sub' h]
+        have hperp : ∀ b, H.B (e b) (x - ∑ a : Fin r, H.B x (e a) • f a) = 0 := fun b => by
+
+          rw [map_sub, map_sum]
+          simp [hef]
+          rw [starRingEnd_apply, H.herm, sub_self]
+        have := h3 _ hperp
+        rw [← Set.image_univ] at this
+        exact coord_span h he i (fun b _ => lt_of_lt_of_le b.2 hi) this
+      · have ex : P (u + v) = P u + P v := by
+          simp only [P, herm_add_left, add_smul, Finset.sum_add_distrib]; abel
+        rw [ex, mulVec_add, add_sub_add_comm, Pi.add_apply, hu, hv, add_zero]
+      · have ex : P (c • u) = c • P u := by
+          simp only [P, herm_smul_left, smul_sub, Finset.smul_sum, smul_smul]
+        rw [ex, mulVec_smul, ← smul_sub, Pi.smul_apply, hu, smul_zero]
+    have ex : P (bvec j) = bvec j := by
+      simp only [P]
+      rw [Finset.sum_eq_zero, sub_zero]
+      intro a _
+      have hne : esI k r a ≠ j := fun e' => by
+        have := congrArg Fin.val e'
+        have := a.2
+        simp only [esI] at *; omega
+      rw [he, herm_smul_right, herm_eI]
+      simp [bvec, hne]
+    have := hP (bvec j)
+    rw [ex, Pi.sub_apply, sub_eq_zero] at this
+    simpa [bvec, Pi.single_apply] using this
+
+end GlobalTheory.DegVol.FrameUnip
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealMatrixMemBesselUnipotentOfFrame =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdaptedNormalFormGivesRealNormalForm =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdaptedNormalFormGivesRealNormalForm", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GoodLoc\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelHyperbolicBasisScaled\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelLinearMapMatrixExists\npublic import Formalism.FlagUnipotentLattices.MemOfOrthogonalAnisotropic\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DualVectorsNormalFormMemSecondFlag\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.BlockAnti\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsBlockAntidiagonalScaledPairingMatrix\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryHermFrameUnipotent\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.IsFundOne\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealMatrixMemBesselUnipotentOfFrame\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.LoopTerm\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.Choice\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.RealPointGramMinorsAgreeProof\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.SameBlockAppend\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -77,7 +872,7 @@ theorem L_ratIso : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Mod
       m z' = z ∧ (∀ a, m (e a) - e a ∈ Submodule.span K (e '' {b | b < a})) ∧
       (∀ y, (∀ a, H.B (e a) y = 0) → m y - y ∈ Submodule.span K (Set.range e)) ∧
       (∀ a, m.symm (e a) - e a ∈ Submodule.span K (e '' {b | b < a})) ∧
-      (∀ y, (∀ a, H.B (e a) y = 0) → m.symm y - y ∈ Submodule.span K (Set.range e)) := GlobalTheory.T.exists_isometry_hermFrame_unipotent
+      (∀ y, (∀ a, H.B (e a) y = 0) → m.symm y - y ∈ Submodule.span K (Set.range e)) := _root_.GlobalTheory.RatIsoFrame.exists_isometry_frame_unipotent
 
 theorem L_nset : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {k r : ℕ} (σ : K →+* ℂ) (Φ : V → Fin (2 * r + k + 1) → ℂ),
@@ -89,16 +884,16 @@ theorem L_nset : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Modul
     (∀ a, m (e a) - e a ∈ Submodule.span K (e '' {b | b < a})) →
     (∀ y, (∀ a, H.B (e a) y = 0) → m y - y ∈ Submodule.span K (Set.range e)) →
     ∀ n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, (∀ y, n *ᵥ Φ y = Φ (m y)) →
-    n ∈ Formalism.QuantumDeterminants.Nset k r := GlobalTheory.T.realMatrix_mem_besselUnipotent_of_frame
+    n ∈ Formalism.QuantumDeterminants.Nset k r := _root_.GlobalTheory.DegVol.FrameUnip.mem_Nset
 
 theorem L_mat : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what₂.Tau) (m : (VS D).V →ₗ[D.host.E] (VS D).V),
-    ∃ n : MatKR D.R.k D.R.rS, ∀ y, n *ᵥ GlobalTheory.TypeAsm.phiV C τ y = GlobalTheory.TypeAsm.phiV C τ (m y) := GlobalTheory.T.besselModel_linearMap_matrix_exists
+    ∃ n : MatKR D.R.k D.R.rS, ∀ y, n *ᵥ GlobalTheory.TypeAsm.phiV C τ y = GlobalTheory.TypeAsm.phiV C τ (m y) := _root_.GlobalTheory.TypeAsm.phiV_linMat_all
 
 theorem L_frame : ∀ (D : D7) (X : HidaSetting D) (C : Choice X 1) (τ : D.what₂.Tau) (a : Fin D.R.rS),
     GlobalTheory.TypeAsm.phiV C τ (X.eX a) =
                  (((2 * D.host.v) ^ (D.R.rS - a.val) : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI D.R.k D.R.rS a) ∧
     GlobalTheory.TypeAsm.phiV C τ (X.fY a) =
-                 ((((2 * D.host.v) ^ (D.R.rS - a.val))⁻¹ : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) := GlobalTheory.T.besselModel_hyperbolicBasis_scaled
+                 ((((2 * D.host.v) ^ (D.R.rS - a.val))⁻¹ : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) := _root_.GlobalTheory.TypeAsm.FramePf.phiV_frame
 
 theorem L_duals : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r j : ℕ} (hj : j ≤ r) (e e' s : Fin r → V),
@@ -111,35 +906,16 @@ theorem L_duals : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Modu
     ∃ f : Fin r → V, (∀ a, j ≤ a.val → f a = s a) ∧
       (∀ a, a.val < j → f a ∈ Submodule.span K (e' '' {b | b.val < j})) ∧
       (∀ a b, H.B (e a) (f b) = if a = b then 1 else 0) ∧ (∀ a b, H.B (f a) (f b) = 0) ∧
-      (∀ a, a.val < j → e' a ∈ Submodule.span K (f '' {b | b.val < j})) := GlobalTheory.T.dualVectors_normalForm_mem_secondFlag
+      (∀ a, a.val < j → e' a ∈ Submodule.span K (f '' {b | b.val < j})) := _root_.GlobalTheory.dual_vectors_in_second_flag
 
 theorem L_block : ∀ {K : Type} [Field K] {j r : ℕ} (hj : j ≤ r) (w : Formalism.MainNotions.S.Loc.Pt K j),
     ∃ β : Fin r → ℕ, Monotone β ∧ (∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val)) ∧
       ∀ (σ : K →+* ℂ) (sgn : Fin j → ℤˣ) (ρ : ℝ), 0 < ρ →
       GlobalTheory.Amp.BlockAnti (fun a : Fin j => β (Fin.castLE hj a))
         (Matrix.of fun a b : Fin j => (((ρ ^ (r - b.val))⁻¹ * (ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) *
-          σ (w.mat b a * ((sgn a : ℤ) : K))) := GlobalTheory.T.exists_blockAntidiagonal_scaled_pairing_matrix
+          σ (w.mat b a * ((sgn a : ℤ) : K))) := _root_.GlobalTheory.Amp.BlockFrame.blockAnti_scaled_pairing
 
-theorem herm_eI {k r : ℕ} (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
-    Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) v (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a)) = v (Formalism.QuantumDeterminants.esI k r a) := by
-  unfold Formalism.QuantumDeterminants.herm Formalism.QuantumDeterminants.bvec
-  have hs : star (Pi.single (Formalism.QuantumDeterminants.eI k r a) (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) =
-      (Pi.single (Formalism.QuantumDeterminants.eI k r a) (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) := by
-    ext j; by_cases h : j = Formalism.QuantumDeterminants.eI k r a <;> simp [Pi.single_apply, h]
-  rw [hs, single_one_dotProduct, Matrix.mulVec, dotProduct]
-  rw [Finset.sum_eq_single (Formalism.QuantumDeterminants.esI k r a)]
-  · simp [Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.eI, Formalism.QuantumDeterminants.esI]
-    omega
-  · intro b _ hb
-    have : Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.eI k r a) b = 0 := by
-      unfold Formalism.QuantumDeterminants.Hpk
-      have hb' : b.val ≠ 2 * r + k - a.val := fun h => hb (Fin.ext (by simp [Formalism.QuantumDeterminants.esI, h]))
-      have ha := a.isLt
-      have hbl := b.isLt
-      have hv : (Formalism.QuantumDeterminants.eI k r a).val = a.val := rfl
-      split_ifs with h1 h2 h3 <;> first | rfl | (exfalso; simp only [hv] at *; omega)
-    rw [this, zero_mul]
-  · simp
+alias herm_eI := _root_.GlobalTheory.DegVol.RealMat.herm_eI
 
 theorem uh_mul {n : ℕ} {H A B : Matrix (Fin n) (Fin n) ℂ} (hA : A ∈ Formalism.QuantumDeterminants.UH H) (hB : B ∈ Formalism.QuantumDeterminants.UH H) :
     A * B ∈ Formalism.QuantumDeterminants.UH H := by
@@ -194,9 +970,7 @@ theorem herm_uh {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formali
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec,
     hg']
 
-theorem entry_eq {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
-    g i j = (g *ᵥ Formalism.QuantumDeterminants.bvec j) i := by
-  simp [Formalism.QuantumDeterminants.bvec, Matrix.mulVec_single]
+alias entry_eq := _root_.Formalism.L2.SG.Pf.WFL.mat_apply_bvec
 
 end GlobalTheory.TypeAsm.FramePf
 namespace GlobalTheory.TypeAsm
@@ -303,7 +1077,7 @@ theorem frameC_holds : FrameC := by
     | smul c x _ hx => rw [hBl, hx, mul_zero]
   have hset : ∀ a : Fin D.R.rS, {b : Fin D.R.rS | b < a} = {b | b.val < a.castSucc.val} := fun a => rfl
   have hsetU : {b : Fin D.R.rS | b.val < (Fin.last D.R.rS).val} = Set.univ := by
-    ext b; simp [b.isLt]
+    ext b; simp
   have hzz0 : (HV D).B (X.zu u) (X.zu u) ≠ 0 := by
     rw [hBdef, X.zu_norm u]
     exact neg_ne_zero.2 (tu_ne D u)
@@ -377,7 +1151,7 @@ theorem frameC_holds : FrameC := by
   have hmat := L_mat D X C
   choose nOf hnOf using hmat
   have hρ : 0 < 2 * D.host.v := by
-    have := GramPf.rdE_pos' D
+    have := _root_.Formalism.MainNotions.S.rdE_pos D
     simp only [Formalism.BasicNotions.Host.v]; linarith
   refine ⟨β, fun τ => nOf τ mA.symm.toLinearMap,
     fun τ => nOf τ mA.toLinearMap * nOf τ t.lin.symm.toLinearMap * nOf τ m2.symm.toLinearMap,
@@ -559,3 +1333,7 @@ theorem frameC_holds : FrameC := by
     exact hβB (embS D τ) N.sgn (2 * D.host.v) hρ
 
 end GlobalTheory.TypeAsm
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.AdaptedNormalFormGivesRealNormalForm =====

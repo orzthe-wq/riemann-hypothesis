@@ -49,8 +49,7 @@ namespace Bl.IntegerMulIntegral
 
 private lemma int_mul_integral {E : Type} [Field E] [NumberField E] (a : E) :
     ∃ d : ℤ, d ≠ 0 ∧ IsIntegral ℤ ((d : E) * a) := by
-  have hx : IsAlgebraic ℤ a := (IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (.of_finite ℚ a)
-  obtain ⟨y, hy, hi⟩ := hx.exists_integral_multiple
+  obtain ⟨y, hy, hi⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (.of_finite ℚ a)).exists_integral_multiple
   exact ⟨y, hy, by simpa [zsmul_eq_mul] using hi⟩
 
 theorem goal1 :
@@ -58,6 +57,6 @@ theorem goal1 :
   (L : Submodule.{0, 0} (NumberField.RingOfIntegers.{0} E) (Fin n → E)) (v : Fin n → E),
   Membership.mem.{0, 0} (Submodule.span.{0, 0} E (SetLike.coe.{0, 0} L)) v →
     Exists.{1} fun (m : Int) ↦ And (Ne.{1} m 0) (Membership.mem.{0, 0} L (HSMul.hSMul.{0, 0, 0} m v)) := by
-  apply GlobalTheory.FiniteQuotientComap.exists_int_smul_mem <;> assumption
+  apply GlobalTheory.FiniteQuotientComap.exists_int_smul_mem
 
 end Bl.IntegerMulIntegral

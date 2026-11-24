@@ -2,9 +2,11 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.EtaleLocalizationAtPrimeTensorOfLowHeight
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.Bundle
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePointStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalizationStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePoint
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIffChartLocalization
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIsLocalRingIsFractionRingStalk
+public import Mathlib.RingTheory.Ideal.BigOperators
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -51,7 +53,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
-public import Mathlib.RingTheory.Ideal.BigOperators
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
 
@@ -110,9 +111,9 @@ theorem exists_pow_mul_mem (hT : CoordTie ℤ ξ x) (hc : x c ≠ 0) {f a : Ω} 
     rw [Ideal.radical_eq_sInf, Ideal.mem_sInf]
     rintro P ⟨hJP, hP⟩
     by_contra hfP
-    obtain ⟨p, ⟨hpc, hpu⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ κ x hT c hc P hP
+    obtain ⟨p, ⟨hpc, hpu⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X Ω ξ ℤ κ x hT c hc P hP
     have hu := (hpu ⟨f, hf⟩).1 hfP
-    obtain ⟨s, hs, hsu, hsa⟩ := (GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x hT c p hpc a).1 (ha p hpc hu)
+    obtain ⟨s, hs, hsu, hsa⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.regAt_iff_exists_chart_fraction X Ω ξ ℤ κ x hT c p hpc a).1 (ha p hpc hu)
     have hsJ : (⟨s, hs⟩ : A) ∈ J := hsa
     exact (hpu ⟨s, hs⟩).2 hsu (hJP hsJ)
   obtain ⟨n, hn⟩ := hmem
@@ -160,7 +161,7 @@ theorem exists_cover (hT : CoordTie ℤ ξ x) (hc : x c ≠ 0) (Q : X.Opens → 
   have htop : Ideal.span T = ⊤ := by
     by_contra hne
     obtain ⟨m, hm, hle⟩ := Ideal.exists_le_maximal _ hne
-    obtain ⟨p, ⟨hpc, hpu⟩, -⟩ := GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ κ x hT c hc m hm.isPrime
+    obtain ⟨p, ⟨hpc, hpu⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X Ω ξ ℤ κ x hT c hc m hm.isPrime
     obtain ⟨V, hpV, hQV⟩ := hQ p hpc
     obtain ⟨f, hf, hfu, hfV⟩ := exists_basic hT hc hpc V hpV
     exact (hpu ⟨f, hf⟩).2 hfu (hle (Ideal.subset_span ⟨V, hQV, hfV⟩))

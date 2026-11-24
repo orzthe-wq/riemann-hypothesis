@@ -45,7 +45,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ThetaSquare
 
-theorem thetaFunctions_squareIntegrable_heisenbergUnitary : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.ThetaSquareIntegrable D :=
-  GlobalTheory.ThetaSquare.theta_square_integrable
-
 end GlobalTheory.ThetaSquare

@@ -106,7 +106,7 @@ theorem block_schur {X ι : Type} [Fintype ι] (Y : Finset X) (κ : X → X → 
     rcases o with _ | v
     · exact hK
     · exact hKp v
-  have hP := Formalism.FourierDecayAlt.P.schur_product (X ⊕ X) (Option ι) (Y.disjSum Y) M hM
+  have hP := _root_.Formalism.FourierDecayAlt.P.Jx7.t_SchurProduct (X ⊕ X) (Option ι) (Y.disjSum Y) M hM
   have h2 := Formalism.FourierDecayAlt.P.JCx1.decay.psd_compress (Y.disjSum Y) (fun x y => ∏ o, M o x y) hP
     (fun _ : Fin 2 => Y) (fun j => if j = 0 then Sum.inl else Sum.inr) (by
       intro j h hh
@@ -236,7 +236,6 @@ theorem prod_univ_ite {ι R : Type} [Fintype ι] [CommMonoid R] (A : Finset ι) 
     ∏ v, (if v ∈ A then g v else 1) = ∏ v ∈ A, g v := by
   rw [← Finset.prod_filter]
   congr 1
-  ext v
   simp
 
 theorem rhs_eval (S : C.HidaSetting E Wp Wq) (ε : ℝ) (i : ℕ) (hi : i - 1 ≤ S.G.r + 1) (Y : Finset (TB.Pt E))
@@ -400,7 +399,7 @@ theorem psiInf_eq_prod (S : C.HidaSetting E Wp Wq) (l : E) (c : J.CV E) :
 
 theorem prod_dlB (S : C.HidaSetting E Wp Wq) (hg : 0 < S.g) (hU : S6.Unram E) (i : ℕ) :
     ∏ _v : Fin S.f, KB.dlB S i 1 = ZLattice.covolume (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1) := by
-  rw [Formalism.FourierDecayAlt.P.unipotent_dual_lattice_covolume E hU S.g _ 1 hg]
+  rw [_root_.Formalism.FourierDecayAlt.P.Dx2.NH.nhat E hU S.g _ 1 hg]
   have hf : S.f = S6.deg E := by
     have h1 := (Formalism.FourierDecayAlt.P.degreeFacts_statement E).2.1
     have h2 : Fintype.card (Fin S.f) = Fintype.card (InfinitePlace E) := Fintype.card_congr S.pl

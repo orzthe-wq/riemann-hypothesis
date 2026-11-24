@@ -60,7 +60,7 @@ variable {F : Type} [Field F] [NumberField F] {l : ℕ} [Fact l.Prime]
 theorem norm_natCast_lt_one : ‖((l : ℕ) : PadicAlgCl l)‖ < 1 := by
   have h := PadicComplex.norm_extends l ((l : ℕ) : PadicAlgCl l)
   rw [← h]
-  simpa using ReciprocityTheory.ChartRestriction.B3.IotaPl.norm_p_lt_one (p := l)
+  simpa using _root_.GlobalTheory.RingBasics.norm_p_lt (p := l)
 
 omit [NumberField F] in
 theorem norm_int_le_one (φ : F →+* PadicAlgCl l) (y : 𝓞 F) : ‖φ (y : F)‖ ≤ 1 := by
@@ -76,7 +76,7 @@ def placeOf (φ : F →+* PadicAlgCl l) : HeightOneSpectrum (𝓞 F) where
     intro h
     have hm : ((l : ℕ) : 𝓞 F) ∈ ReciprocityTheory.ChartRestriction.B3.IotaPl.smallIdeal ((algebraMap (PadicAlgCl l) ℂ_[l]).comp φ) := by
       rw [ReciprocityTheory.ChartRestriction.B3.IotaPl.mem_smallIdeal]
-      simpa using ReciprocityTheory.ChartRestriction.B3.IotaPl.norm_p_lt_one (p := l)
+      simpa using _root_.GlobalTheory.RingBasics.norm_p_lt (p := l)
     rw [h, Submodule.mem_bot] at hm
     exact (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) hm
 

@@ -61,4 +61,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 
 theorem _root_.GlobalTheory.T.extensionAdele_realComponents_cmType : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → (∀ z : AE D, (∀ w, compInf D.host.F D.host.E w z = 0) ↔ ∀ τ, θ τ (infPart D z) = 0) ∧ (∀ z τ, θ τ (infPart D (cA D z)) = conj (θ τ (infPart D z))) ∧ (∀ x τ, θ τ (infPart D (incA D x)) = tauE D τ x) ∧ (∀ z : AE D, (∀ τ, θ τ (infPart D z) = 0) → finPart D z = 0 → z = 0) := by
-  first | exact @GlobalTheory.StdUnn.RealComp.real_components | exact GlobalTheory.StdUnn.RealComp.real_components | (intros; apply GlobalTheory.StdUnn.RealComp.real_components <;> assumption)
+  first | exact @GlobalTheory.StdUnn.RealComp.real_components

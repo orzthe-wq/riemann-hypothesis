@@ -146,7 +146,7 @@ theorem lintegral_cone_lt_top {c : ℝ} (hc : 0 < c) : ∀ (m : ℕ) (a : ℕ �
           (fun t => ∏ i : Fin (m + 1), ENNReal.ofReal (t i ^ (a' i.val - 1))) y := by
       intro y
       have he : ∀ x, e.symm (Prod.swap (y, x)) = Fin.cons x y := by
-        intro x; simp [e, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNth_zero'] <;> rfl
+        intro x; simp [e, MeasurableEquiv.piFinSuccAbove_symm_apply] <;> rfl
       simp_rw [he]
       by_cases hy : y ∈ GlobalTheory.SiegelSet.cone (m + 1) c
       · have hy0 : 0 < y 0 := hy.1 0

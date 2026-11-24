@@ -6,48 +6,8 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExi
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.EqZeroOfDatumEmbeddingEqZero
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IntegrableComplexContinuousBoundedSupport
 public import Formalism.RealPlaceAnalysis.ThirdArithmeticHolds
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.RightDerivativeToL2
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.RregRep
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothCore
@@ -253,13 +213,6 @@ def IcxGood (ε : Fin n → Bool) (φ : E →L[ℂ] ℂ) (x : smD ε (rreg ε)) 
 
 variable {φ : E →L[ℂ] ℂ}
 
-private theorem toL2_congr_of_inUJ_eq {F G : Matrix (Fin n) (Fin n) ℂ → ℂ} (h : ∀ g, inUJ ε g → F g = G g) :
-    toL2 ε F = toL2 ε G := by
-  have hfg : (fun y : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat y)) = fun y => G (Formalism.MainNotions.S.umat y) :=
-    funext fun y => h _ y.2
-  unfold toL2
-  rw [hfg]
-
 private theorem toL2_zero' : toL2 ε (fun _ : Matrix (Fin n) (Fin n) ℂ => (0 : ℂ)) = 0 := by
   simp only [toL2]
   rw [dif_pos (show MemLp (fun _ : Formalism.REAL.UJ ε => (0 : ℂ)) 2 (Formalism.REAL.muG ε) from MemLp.zero)]
@@ -286,7 +239,7 @@ theorem icxGood_congr {x x' : smD ε (rreg ε)} {Φ Φ' : Matrix (Fin n) (Fin n)
     obtain ⟨U, F, hU, hgU, hF, hE⟩ := h1 g₀ hg₀
     exact ⟨U, F, hU, hgU, hF, fun g hg hgJ => by rw [← hΦ g hgJ]; exact hE g hg hgJ⟩
   · rw [h3]
-    exact toL2_congr_of_inUJ_eq (fun g hg => by simp only [hΦ g hg])
+    exact _root_.ReciprocityTheory.ChartRestriction.DS.toL2_congr_of_forall_inUJ_eq (fun g hg => by simp only [hΦ g hg])
 
 theorem icxGood_zero : IcxGood ε φ 0 (fun _ => (0 : E)) := by
   unfold IcxGood
@@ -406,7 +359,7 @@ theorem icxGood_tm {x : smD ε (rreg ε)} {Φ : Matrix (Fin n) (Fin n) ℂ → E
       (icxGood_eab hx a a) 1
     refine icxGood_congr h1 ?_ (fun g _ => ?_)
     · simp [Formalism.REAL.Tm]
-    · simp only [Formalism.QuantumDeterminants.Top, eq_self_iff_true, if_true, zero_add, one_smul, S7_EabV_eq_REAL_EabV]
+    · simp only [Formalism.QuantumDeterminants.Top, if_true, zero_add, one_smul, S7_EabV_eq_REAL_EabV]
   · refine icxGood_congr (icxGood_eab hx a b) ?_ (fun g _ => ?_)
     · simp [Formalism.REAL.Tm, hab]
     · simp only [Formalism.QuantumDeterminants.Top, if_neg hab, zero_add, S7_EabV_eq_REAL_EabV]
@@ -454,7 +407,7 @@ theorem icx_val {x y : smD ε (rreg ε)} {Φ Φ₀ : Matrix (Fin n) (Fin n) ℂ 
   obtain ⟨_, _, h3⟩ := hy
   apply Subtype.ext
   rw [Submodule.coe_smul, h3, hx,
-    toL2_congr_of_inUJ_eq (F := fun g => φ (Φ g)) (G := fun g => c * φ (Φ₀ g)) (fun g hg => by simp [hΦ g hg])]
+    _root_.ReciprocityTheory.ChartRestriction.DS.toL2_congr_of_forall_inUJ_eq (F := fun g => φ (Φ g)) (G := fun g => c * φ (Φ₀ g)) (fun g hg => by simp [hΦ g hg])]
   exact toL2_const_mul (fun g => φ (Φ₀ g)) c
 
 end Good

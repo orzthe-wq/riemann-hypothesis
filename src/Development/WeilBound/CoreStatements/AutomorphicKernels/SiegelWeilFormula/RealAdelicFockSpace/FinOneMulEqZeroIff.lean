@@ -1,6 +1,5 @@
 module
 
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.RealAdelicFockSpace.JnArcFin
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.CayleyTransform.CompFinFinOne
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.ThetaSplitting.SplitW
 import Mathlib.Algebra.Order.Floor.Extended
@@ -95,30 +94,6 @@ theorem mR_yrot (n : ℕ) (s : ℤˣ) (t : ℝ) : mR (yrot n s t) = yrotM n s t 
 
 variable {d : SD σ}
 
-def rot (R : RD d) (t : ℝ) : d.G :=
-  (((Finset.univ : Finset (InfinitePlace F)).toList).map fun w => R.ι w (yrot d.n (R.sg w) t)).prod
-
-theorem rot_mem (R : RD d) (t : ℝ) : rot R t ∈ d.K := by
-  unfold rot
-  refine d.K.list_prod_mem fun x hx => ?_
-  obtain ⟨w, -, rfl⟩ := List.mem_map.1 hx
-  exact KSplitW.iota_mem_K d R w _ (by rw [mR_yrot]; exact inK_yrotM _ _ _)
-
-theorem exists_tw (R : RD d) (W : Mx F E d.m d.n) :
-    ∃ W' : Mx F E d.m d.n, finOne F • W' = 0 ∧ ∀ w, d.cw w W' = (-(((R.sg w : ℤ) : ℂ) * R.ζ)) • d.cw w W := by
-  obtain ⟨s, -, hs1, hs2, -, -⟩ := Place.exists_sec d.cm d.B.emb
-  refine ⟨s (fun w => -(((R.sg w : ℤ) : ℂ) * R.ζ)) • W, ?_, fun w => ?_⟩
-  · ext i j
-    simp only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]
-    rw [← smul_mul_assoc, hs2, zero_mul]
-  · ext i j
-    simp only [SD.cw, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, hs1]
-
-def tw (R : RD d) (W : Mx F E d.m d.n) : Mx F E d.m d.n := (exists_tw R W).choose
-
-def vline (R : RD d) (W : Mx F E d.m d.n) (z : ℂ) : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E) :=
-  (realAd F z.re • W) * (incM F d.b.1.toCols₂)ᵀ + (realAd F z.im • tw R W) * (incM F d.b.1.toCols₁)ᵀ
-
 theorem finOne_mul_fst (a : AF F) : (finOne F * a).1 = 0 := by
   show (0 : InfiniteAdeleRing F) * a.1 = 0
   exact zero_mul _
@@ -135,23 +110,6 @@ theorem finOne_mul_eq_zero_iff (a : AF F) : finOne F * a = 0 ↔ a.2 = 0 := by
     exact this
   · intro h
     exact Prod.ext (finOne_mul_fst a) ((finOne_mul_snd a).trans h)
-
-theorem fin_eq_zero_iff (X : Mx F E d.m d.n) : fin d X = 0 ↔ finOne F • X = 0 := by
-  set bas := Algebra.TensorProduct.basis (AF F) d.bs
-  have key : ∀ z : AE F E, finOne F • z = 0 ↔ ∀ l, (bas.repr z l).2 = 0 := by
-    intro z
-    rw [← bas.repr.injective.eq_iff, LinearEquiv.map_smul, LinearEquiv.map_zero]
-    simp only [Finsupp.ext_iff, Finsupp.smul_apply, smul_eq_mul, Finsupp.coe_zero, Pi.zero_apply,
-      finOne_mul_eq_zero_iff]
-  constructor
-  · intro h
-    ext i j
-    simp only [Matrix.smul_apply, Matrix.zero_apply]
-    refine (key _).2 fun l => ?_
-    exact congrFun h (i, j, l)
-  · intro h
-    funext ⟨i, j, l⟩
-    exact (key (X i j)).1 (by simpa using congrFun (congrFun h i) j) l
 
 end PositivityTheory.SiegelWeilFormula.KFP
 

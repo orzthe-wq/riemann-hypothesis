@@ -137,11 +137,11 @@ theorem uu_bound (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) :
     ∃ C, ∀ b, ‖uu σ J ψ v μv Φv T b‖ ≤ C := by
   refine ⟨∫ Y, ‖Φv Y‖ ∂μv, fun b => ?_⟩
   unfold uu jtR
-  rw [norm_mul, norm_psiV h.chr, mul_one]
+  rw [norm_mul, _root_.PositivityTheory.SiegelWeilFormula.SwLocFin.norm_psiV' h.chr, mul_one]
   refine (norm_integral_le_integral_norm _).trans (le_of_eq ?_)
   congr 1
   funext Y
-  rw [norm_mul, norm_psiV h.chr, mul_one]
+  rw [norm_mul, _root_.PositivityTheory.SiegelWeilFormula.SwLocFin.norm_psiV' h.chr, mul_one]
 
 private theorem auxc_trPair {α : Type*} [TopologicalSpace α] {f g : α → Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)}
     (hf : Continuous f) (hg : Continuous g) : Continuous fun a => trPair (Fv F v) (f a) (g a) := by
@@ -168,14 +168,14 @@ theorem continuous_uu (h : Hyp σ M J n ψ v μv νv lam L₁ L₂ Φv g T) :
   have : SecondCountableTopology (HermR (Fv F v) σ n) :=
     TopologicalSpace.Subtype.secondCountableTopology
       (HermR (Fv F v) σ n : Set (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)))
-  have hψc : Continuous (psiV F ψ v) := continuous_psiV h.chr
+  have hψc : Continuous (psiV F ψ v) := _root_.PositivityTheory.SiegelWeilFormula.SwLocFin.continuous_psiV' h.chr
   have hΦc : Continuous Φv := h.sb.1.continuous
   have hgram := auxc_gramR (v := v) (n := n) σ J
   have hjt : Continuous fun b : HermR (Fv F v) σ n => jtR (Fv F v) σ J (psiV F ψ v) μv Φv b := by
     unfold jtR
     refine continuous_of_dominated (bound := fun Y => ‖Φv Y‖) (fun b => ?_) (fun b => ?_) ?_ ?_
     · exact (hΦc.mul (hψc.comp (auxc_trPair continuous_const hgram))).aestronglyMeasurable
-    · exact Eventually.of_forall fun Y => by rw [norm_mul, norm_psiV h.chr, mul_one]
+    · exact Eventually.of_forall fun Y => by rw [norm_mul, _root_.PositivityTheory.SiegelWeilFormula.SwLocFin.norm_psiV' h.chr, mul_one]
     · exact hΦc.norm.integrable_of_hasCompactSupport h.sb.2.norm
     · exact Eventually.of_forall fun Y =>
         continuous_const.mul (hψc.comp (auxc_trPair continuous_subtype_val continuous_const))

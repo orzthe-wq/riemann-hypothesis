@@ -118,7 +118,6 @@ theorem BR_cont_joint (σ : E →ₐ[F] E) {n a : ℕ} (J : Matrix (Fin n) (Fin 
   have htr : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E)) := by
     first
     | exact IsModuleTopology.continuous_of_linearMap _
-    | exact LinearMap.continuous_of_finiteDimensional _
   let φ : (Fv F v ⊗[F] E) →ₐ[Fv F v] (Fv F v ⊗[F] E) :=
     Algebra.TensorProduct.map (AlgHom.id (Fv F v) (Fv F v)) σ
   have hφ : ∀ z, sigR (Fv F v) σ z = φ z := by
@@ -132,7 +131,6 @@ theorem BR_cont_joint (σ : E →ₐ[F] E) {n a : ℕ} (J : Matrix (Fin n) (Fin 
     rw [h1]
     first
     | exact IsModuleTopology.continuous_of_linearMap _
-    | exact LinearMap.continuous_of_finiteDimensional _
   unfold BR hR Formalism.UG.hform
   fun_prop
 
@@ -167,7 +165,6 @@ theorem pairHerm_cont_joint (σ : E →ₐ[F] E) (a : ℕ) :
   have htr : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E)) := by
     first
     | exact IsModuleTopology.continuous_of_linearMap _
-    | exact LinearMap.continuous_of_finiteDimensional _
   unfold pairHerm
   refine continuous_const.mul (htr.comp (continuous_finsetSum _ fun i _ =>
     continuous_finsetSum _ fun j _ => ?_))

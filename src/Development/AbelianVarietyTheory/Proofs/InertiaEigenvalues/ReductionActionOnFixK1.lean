@@ -69,11 +69,7 @@ theorem _root_.GlobalTheory.GLp.red_invFun (x : _root_.GlobalTheory.GLq.Gn g n) 
 open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] in
-theorem _root_.GlobalTheory.GLp.mem_principalCongruenceFixedVectors_iff (π : Representation ℂ (GL (Fin n) ℚ_[g]) V)
-    (v : V) :
-    v ∈ _root_.GlobalTheory.GLp.fixK1 π ↔ ∀ k : GL (Fin n) ℤ_[g],
-      _root_.GlobalTheory.GLp.red g n k = 1 → π (_root_.GlobalTheory.GLp.inc g n k) v = v :=
-  _root_.GlobalTheory.GLp.Model.mem_principalCongruenceFixedVectors_iff π v
+alias _root_.GlobalTheory.GLp.mem_principalCongruenceFixedVectors_iff := _root_.GlobalTheory.GLp.Model.mem_principalCongruenceFixedVectors_iff
 
 open Polynomial in
 open scoped Classical in

@@ -68,7 +68,7 @@ theorem adq_hR_ratV {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [C
     hR R σ J (ratV (F := F) R x) (ratV (F := F) R y) = inclR R (hE σ J x y) := by
   set_option synthInstance.maxHeartbeats 100000 in
     simp only [hR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE, Formalism.UG.hform, ratV, JR, Matrix.map_apply, map_sum, map_mul,
-    sigR_inclR_lattice_indices, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]
+    sigR_inclR_lattice_indices, RingHom.coe_coe]
 
 section Loc
 
@@ -116,16 +116,11 @@ theorem adq_e_cong (a : Fin D.R.rS) :
   have h3 := (gLam X p).neg_mem h2
   rwa [neg_sub] at h3
 
-private lemma vecV_map_sub (x y : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) :
-    PI.FinKW.vecV X.B.I p.1 (x - y) = PI.FinKW.vecV X.B.I p.1 x - PI.FinKW.vecV X.B.I p.1 y := by
-  funext i
-  simp [PI.FinKW.vecV]
-
 theorem adq_f_cong (a : Fin D.R.rS) :
     ratV (F := X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.fY a)) -
       adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.f0 a) ∈ gLam X p := by
   have h1 := PIW.MassDataColumns.loc_of_InAt X p _ (X.basisApprox a).2
-  rw [vecV_map_sub, PIW.MassDataColumns.vecV_incl] at h1
+  rw [_root_.MassDataIdxSteps.vecV_sub', PIW.MassDataColumns.vecV_incl] at h1
   have h2 := PIW.MassDataColumns.kloc_gLam X p _ (adq_kloc X hb u p) _ h1
   rw [Matrix.mulVec_sub] at h2
   rw [show ((HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (xuP X hb u p) : GL (Fin X.B.I.n) (TpX X p)) :
@@ -135,16 +130,11 @@ theorem adq_f_cong (a : Fin D.R.rS) :
   have h3 := (gLam X p).neg_mem h2
   rwa [neg_sub] at h3
 
-private lemma vecV_sub_eq_sub (x y : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) :
-    PI.FinKW.vecV X.B.I p.1 (x - y) = PI.FinKW.vecV X.B.I p.1 x - PI.FinKW.vecV X.B.I p.1 y := by
-  funext i
-  simp [PI.FinKW.vecV]
-
 theorem adq_z_cong :
     ratV (F := X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.zu u)) -
       adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 X.z0 ∈ gLam X p := by
   have h1 := PIW.MassDataColumns.loc_of_InAt X p _ (X.xu_z u)
-  rw [vecV_sub_eq_sub] at h1
+  rw [_root_.MassDataIdxSteps.vecV_sub'] at h1
   have h2 := PIW.MassDataColumns.kloc_gLam X p _ (adq_kloc X hb u p) _ h1
   have hinv : X.B.I.fmat (X.xu u) *ᵥ (X.B.I.fmat (X.xu u)⁻¹ *ᵥ
       Formalism.L2.SG.HidaSetting.incl X.B.I (crdOf X.B.I X.ιE X.bas (X.zu u))) =

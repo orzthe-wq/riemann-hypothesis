@@ -58,7 +58,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 theorem cpt_diff (x0 : Frame X.Ψ r) : Differentiable ℂ (cpt X x0) := by
-  apply ReciprocityTheory.ChartRestriction.G.AR.Up.LUB.cpt_diff <;> assumption
+  apply ReciprocityTheory.ChartRestriction.G.AR.Up.LUB.cpt_diff
 
 theorem comp_cpt_diffOn {P : Frame X.Ψ r → ℂ} (hP : DifferentiableOn ℂ P X.dom) (x0 : Frame X.Ψ r) :
     DifferentiableOn ℂ (fun z => P (cpt X x0 z)) (OmF X x0) := hP.comp (cpt_diff X x0).differentiableOn (fun _ hz => hz)
@@ -119,16 +119,12 @@ theorem lact_rmul_diff {f : V (nd X) → Frame X.Ψ r} (hf : Differentiable ℂ 
   first
     | exact Differentiable.fun_sum fun k _ => (differentiable_const _).mul
         (Differentiable.fun_sum fun l _ => (frame_entry_diff X hf τ k l).mul (differentiable_const _))
-    | (have hk : ∀ k l, Differentiable ℂ fun z => f z τ k l := fun k l => frame_entry_diff X hf τ k l
-       fun_prop)
 
 private lemma continuous_dmin_Gm (τ : X.Ψ) (i : Fin (r + 1)) :
     Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i := by
   unfold dmin lminor gram hermC col mat
   first
     | fun_prop
-    | (apply Continuous.matrix_det; apply Continuous.matrix_submatrix; fun_prop)
-    | continuity
 
 theorem isOpen_dom : IsOpen X.dom := by
   have hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i :=
@@ -137,7 +133,6 @@ theorem isOpen_dom : IsOpen X.dom := by
     intro τ
     first
       | exact Continuous.matrix_det (continuous_apply τ)
-      | (unfold mat; fun_prop)
   show IsOpen {x : Frame X.Ψ r | ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧
     ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re}
   simp only [Set.setOf_forall, Set.setOf_and]
@@ -160,8 +155,6 @@ theorem sig_cpt_diffAt {L : Wt X.Ψ r} {w0 : Frame X.Ψ r → ℂ} {s : Fin (nd 
     exact (hd (s k) (hs k)).mul ((hd w0 hw0).inv hw)
   first
     | exact hq
-    | (unfold sig; exact hq)
-    | simpa [sig] using hq
 
 theorem etale_transfer (hLU : LUStatement (E := E)) {L : Wt X.Ψ r} {w0 : Frame X.Ψ r → ℂ}
     {s : Fin (nd X) → Frame X.Ψ r → ℂ} (hw0 : X.IsSec L w0) (hs : ∀ k, X.IsSec L (s k))
@@ -246,11 +239,9 @@ theorem nbhd_avoid (x0 : Frame X.Ψ r) (hx0 : ∀ τ, (mat x0 τ).det ≠ 0) {K 
     have h1 : Continuous fun p : Frame X.Ψ r × V (nd X) => mat (cpt X x0 p.2) τ := by
       first
         | exact (continuous_apply τ).comp (hc.comp continuous_snd)
-        | (unfold mat; fun_prop)
     have h2 : Continuous fun p : Frame X.Ψ r × V (nd X) => mat p.1 τ := by
       first
         | exact (continuous_apply τ).comp continuous_fst
-        | (unfold mat; fun_prop)
     exact (h1.matrix_adjugate.matrix_mul h2).matrix_elem a c
   have hx1P : ∀ z ∈ K, ∃ (τ : X.Ψ) (a c : Fin r), c < a ∧
       ((mat (cpt X x0 z) τ).adjugate * mat x1 τ) a c ≠ 0 := by

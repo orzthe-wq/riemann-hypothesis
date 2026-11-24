@@ -80,7 +80,7 @@ theorem coeff_eq_zero_of_forall {V : Type} [AddCommGroup V] [Module ℂ V] (N : 
   rw [finsetSum_coeff, Finset.sum_eq_single i] at this
   · simpa using this
   · intro j _ hji
-    simp [coeff_C_mul_X_pow, Ne.symm hji]
+    simp [Ne.symm hji]
   · simp [hi]
 
 section Gen

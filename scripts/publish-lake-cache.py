@@ -45,14 +45,6 @@ IMMUTABLE_CACHE_CONTROL = "public, max-age=31536000, immutable"
 SCHEMA = "2026-03-17"
 HASH = re.compile(r"[0-9a-f]{16}\Z")
 ARTIFACT = re.compile(r"[0-9a-f]{16}\.ltar\Z")
-PUBLISHED_REVISION = "9036e64326acf4acfae159b96664e9708445c1d1"
-MIRROR_PREFIX = f"published/JackMcCarthy/{PUBLISHED_REVISION}"
-PUBLISHED_FILES = {
-    "oleans.tar.zst": (28638044751, "953bab5386a7849527a11960f80a2fab427c49c637d6e94cc75788dd8f40196b"),
-    "olean-manifest.sha256": (64388496, "fb3609ad73a17102e6e3e2346c5358a9c0957bcf5945442a7e5ffaa00c441ff5"),
-    "README.md": (2741, "a11ba8ed783757b7ddc5294824d03c2a5d35adc998f102726204d82796f06210"),
-    "SHA256SUMS": (169, "620a08f3645b1e7336df7442f7e218921c4d86e861949e14654e000b7c927f7d"),
-}
 
 
 
@@ -255,47 +247,6 @@ def run(command: list[str], *, cwd: Path, env: dict, secrets: tuple[str, ...]) -
             raise RuntimeError(f"{Path(command[0]).name} failed with exit code {process.returncode}")
 
 
-def digest(path: Path) -> str:
-    value = hashlib.sha256()
-    with path.open("rb") as handle:
-        while chunk := handle.read(8 * 1024 * 1024):
-            value.update(chunk)
-    return value.hexdigest()
-
-
-def check_mirror(directory: Path) -> None:
-    for name, (size, expected) in PUBLISHED_FILES.items():
-        path = directory / name
-        if path.is_symlink() or not path.is_file() or path.stat().st_size != size or digest(path) != expected:
-            raise ValueError(f"Published mirror file failed its pinned size/SHA256 check: {name}")
-
-
-def mirror(directory: Path, temporary: Path, access: str, secret: str, redactions: tuple[str, ...]) -> None:
-    aws = shutil.which("aws")
-    if aws is None:
-        raise ValueError("The optional archive mirror requires the AWS CLI")
-    provenance = {"dataset": "JackMcCarthy/riemann-hypothesis-build", "revision": PUBLISHED_REVISION,
-                  "url": f"https://huggingface.co/datasets/JackMcCarthy/riemann-hypothesis-build/tree/{PUBLISHED_REVISION}",
-                  "files": {name: {"bytes": size, "sha256": sha} for name, (size, sha) in PUBLISHED_FILES.items()}}
-    (temporary / "provenance.json").write_text(json.dumps(provenance, indent=2) + "\n")
-    env = aws_environment(temporary, access, secret)
-    paths = [directory / name for name in PUBLISHED_FILES] + [temporary / "provenance.json"]
-    for path in paths:
-        sha = PUBLISHED_FILES[path.name][1] if path.name in PUBLISHED_FILES else digest(path)
-        key = f"{MIRROR_PREFIX}/{path.name}"
-        run([aws, "s3", "cp", str(path), f"s3://{BUCKET}/{key}", "--endpoint-url", S3_ENDPOINT,
-             "--metadata", f"sha256={sha}", "--cache-control", IMMUTABLE_CACHE_CONTROL,
-             "--only-show-errors", "--no-progress"],
-            cwd=temporary, env=env, secrets=redactions)
-        result = subprocess.run([aws, "s3api", "head-object", "--bucket", BUCKET, "--key", key,
-                                 "--endpoint-url", S3_ENDPOINT, "--output", "json"],
-                                cwd=temporary, env=env, check=True, capture_output=True, text=True)
-        metadata = json.loads(result.stdout)
-        if metadata.get("ContentLength") != path.stat().st_size or metadata.get("Metadata", {}).get("sha256") != sha:
-            raise RuntimeError(f"Mirror object metadata did not match: {path.name}")
-        print(f"Mirrored and checked {path.name}", flush=True)
-
-
 def publish_map_after_sync(staging: Path, contents: bytes, repo: str, revision: str,
                            temporary: Path, access: str, secret: str, redactions: tuple[str, ...],
                            platform: str | None = None) -> None:
@@ -370,19 +321,16 @@ def main() -> None:
     parser.add_argument("--public-url", default=os.environ.get("RIEMANN_HYPOTHESIS_CACHE_URL"))
     parser.add_argument("--account-record", type=Path,
                         default=Path.home() / ".cache/riemann-hypothesis/cloudflare/account.json")
-    parser.add_argument("--mirror-dir", type=Path, help="also mirror the pinned published archive and manifest")
-    parser.add_argument("--module-manifest", type=Path,
+    parser.add_argument("--module-manifest", type=Path, required=True,
                         help="publish a verified completed-build bulk restore index alongside this revision")
-    parser.add_argument("--build-receipt", type=Path,
-                        help="run-complete-build.py receipt, required for a new release baseline")
+    parser.add_argument("--build-receipt", type=Path, required=True,
+                        help="run-complete-build.py receipt for this revision")
     parser.add_argument("--check-only", action="store_true", help="validate data without credentials or uploads")
     parser.add_argument("--map-only-after-sync", action="store_true",
                         help="verify all staged artifacts already exist in R2, then upload only the revision map")
     parser.add_argument("--platform", help="also scope this map to a platform (requires --map-only-after-sync)")
     args = parser.parse_args()
     select_toolchain(args.release)
-    if TOOLCHAIN != "leanprover/lean4:v4.33.1" and (args.module_manifest is None or args.build_receipt is None):
-        parser.error("completed-build --module-manifest and --build-receipt are required for this release's cache namespace")
     if not re.fullmatch(r"[0-9a-f]{40}", args.revision):
         parser.error("--rev must be a full lowercase Git commit hash")
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*", args.repo):
@@ -391,13 +339,8 @@ def main() -> None:
         parser.error("--platform requires --map-only-after-sync and a target triple without path separators")
     staging = args.staging.absolute()
     contents, report = validate_staging(staging)
-    module_manifest = validate_module_manifest(args.module_manifest, contents, staging) if args.module_manifest else None
-    if args.build_receipt:
-        if module_manifest is None:
-            parser.error("--build-receipt requires --module-manifest")
-        validate_build_receipt(args.build_receipt, module_manifest, contents, args.revision)
-    if args.mirror_dir:
-        check_mirror(args.mirror_dir)
+    module_manifest = validate_module_manifest(args.module_manifest, contents, staging)
+    validate_build_receipt(args.build_receipt, module_manifest, contents, args.revision)
     print(json.dumps({"validated": True, "revision": args.revision, **report}), flush=True)
     if args.check_only:
         return
@@ -414,8 +357,6 @@ def main() -> None:
                           'name = "riemann-r2"\nkind = "s3"\n'
                           f'artifactEndpoint = "{S3_ENDPOINT}/{BUCKET}/artifacts"\n'
                           f'revisionEndpoint = "{S3_ENDPOINT}/{BUCKET}/revisions"\n')
-        if args.mirror_dir:
-            mirror(args.mirror_dir.resolve(), temporary, access, secret, redactions)
         if args.map_only_after_sync:
             publish_map_after_sync(staging, contents, args.repo, args.revision,
                                    temporary, access, secret, redactions, args.platform)
@@ -425,23 +366,19 @@ def main() -> None:
             run([elan, "run", TOOLCHAIN, "lake", "cache", "put-staged", str(staging),
                  "--service", "riemann-r2", "--repo", args.repo, "--toolchain", TOOLCHAIN,
                  "--rev", args.revision], cwd=temporary, env=env, secrets=redactions)
-        if module_manifest is not None:
-            aws = shutil.which("aws")
-            if aws is None:
-                raise ValueError("AWS CLI is required to publish the completed-build module index")
-            manifest_copy = temporary / "modules.jsonl.gz"
-            manifest_copy.write_bytes(module_manifest)
-            run([aws, "s3", "cp", str(manifest_copy), f"s3://{BUCKET}/bootstrap/{args.revision}/modules.jsonl.gz",
-                 "--endpoint-url", S3_ENDPOINT, "--content-type", "application/gzip",
-                 "--cache-control", IMMUTABLE_CACHE_CONTROL, "--only-show-errors", "--no-progress"],
-                cwd=temporary, env=aws_environment(temporary, access, secret), secrets=redactions)
+        aws = shutil.which("aws")
+        if aws is None:
+            raise ValueError("AWS CLI is required to publish the completed-build module index")
+        manifest_copy = temporary / "modules.jsonl.gz"
+        manifest_copy.write_bytes(module_manifest)
+        run([aws, "s3", "cp", str(manifest_copy), f"s3://{BUCKET}/bootstrap/{args.revision}/modules.jsonl.gz",
+             "--endpoint-url", S3_ENDPOINT, "--content-type", "application/gzip",
+             "--cache-control", IMMUTABLE_CACHE_CONTROL, "--only-show-errors", "--no-progress"],
+            cwd=temporary, env=aws_environment(temporary, access, secret), secrets=redactions)
     platform_scope = f"/pt/{urllib.parse.quote(args.platform, safe='')}" if args.platform else ""
     url = f"{base}/revisions/{args.repo}{platform_scope}/tc/{TOOLCHAIN_DIR}/{args.revision}.jsonl"
     verify_public(url, contents)
-    if module_manifest is not None:
-        verify_public(f"{base}/bootstrap/{args.revision}/modules.jsonl.gz", module_manifest)
-    if args.mirror_dir:
-        print(f"Published archive mirror: {base}/{MIRROR_PREFIX}/", flush=True)
+    verify_public(f"{base}/bootstrap/{args.revision}/modules.jsonl.gz", module_manifest)
 
 
 if __name__ == "__main__":

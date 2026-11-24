@@ -54,10 +54,6 @@ theorem powerSeries_algHom_C' {O : Type} [CommRing O] (ψ : PowerSeries O →ₐ
     ψ (C c) = C c := by
   first
   | exact ψ.commutes c
-  | (have e : (C c : PowerSeries O) = c • (1 : PowerSeries O) := by
-       rw [PowerSeries.smul_eq_C_mul, mul_one]
-     rw [e, map_smul, map_one])
-  | simpa using ψ.commutes c
 
 theorem psCoprime_dvdSub {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (a : PowerSeries O) :
@@ -80,7 +76,6 @@ private theorem constantCoeff_algHom_eq_of_X_mul_dvd {O : Type} [CommRing O] (l 
   rw [PowerSeries.X_dvd_iff] at h2
   first
   | simpa [sub_eq_zero] using h2
-  | (rw [map_sub, PowerSeries.constantCoeff_C, sub_eq_zero] at h2; exact h2)
 
 theorem psCoprime_cc {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (s : ℕ) :
@@ -128,7 +123,6 @@ theorem psCoprime : PsCoprimeStatement := by
       rw [PowerSeries.X_dvd_iff, map_sub, hc]
       first
       | simp
-      | rw [PowerSeries.constantCoeff_C, sub_self]
     rw [Ideal.mem_span_pair]
     exact ⟨1, -r, by linear_combination hr⟩
   · rcases Nat.lt_or_gt_of_ne hss with hlt | hlt

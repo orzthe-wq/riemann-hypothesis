@@ -424,7 +424,6 @@ theorem coef_eq (hom : IsWeilDatumO ψ S T χS χT om) (hcv : IsCovolOne (ratL T
     rwa [one_mul, hL0, h11] at this
   have key := eq_const_mul hO (thetaIP μ 𝓕 J J) (horb J hJ) hB
     (fun u hu s => by
-      beta_reduce
       have e : om (1, L (torEl (x0Mat M) s * u)) J = om (1, L (torEl (x0Mat M) s)) (om (1, L u) J) := by
         rw [hLmul _ (htm s) _ hu, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
       have a1 := htor s _ (hom.om_pres (1, L (torEl (x0Mat M) s)) _ (hom.om_pres (1, L u) _ hJ))

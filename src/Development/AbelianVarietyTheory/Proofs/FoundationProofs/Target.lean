@@ -70,7 +70,6 @@ theorem main {k A : Type} [Field k] [CommRing A] [Algebra k A] {Q : Ideal A} {π
     rw [key]
     exact Ideal.add_mem _ hq hpm
 
-theorem target : ∀ {k A : Type} [inst : Field k] [inst_1 : CommRing A] [inst_2 : Algebra k A] {Q : Ideal A} {π : A}, π ∈ Q → (∀ (c : A), ∃ (a : k), c - (Algebra.algebraMap k A : k → A) a ∈ Q) → (∀ (m : ℕ), Q ^ m ≤ Ideal.span {π ^ m} ⊔ Q ^ (m + (1 : ℕ))) → ∀ (m : ℕ) (u : A), ∃ (p : Polynomial k), u - (Polynomial.aeval π : Polynomial k → A) p ∈ Q ^ m :=
-  fun hπ hres hfil => main hπ hres hfil
+alias target := _root_.GlobalTheory.IntegralNormBound.main
 
 end GlobalTheory.IntegralNormBound

@@ -50,4 +50,4 @@ theorem _root_.GlobalTheory.T.besselPeriodCorank_converges_column : ∀ {D : D7}
     (Ψ : Bridge.Gf (G.V (.top 0)) → (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.coefPlus G W.θ).W) (_hΨ : Ψ ∈ GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.Cols G W.θ)
     (F : GA D (G.V (.grid D.R.m 0)) → ℂ) (_hF : IsAutFun (G.V (.grid D.R.m 0)) F),
     BplusConv W M (pairVec (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.coefPlus G W.θ) ξ Ψ) F := by
-  first | exact @GlobalTheory.RowBplus.bplusConv_col | exact GlobalTheory.RowBplus.bplusConv_col | (intros; apply GlobalTheory.RowBplus.bplusConv_col <;> assumption)
+  first | exact @GlobalTheory.RowBplus.bplusConv_col

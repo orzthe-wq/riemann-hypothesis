@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.DetCharacterMemPrincipalCongruenceFixedVectors
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntertwinerUnipotentInvariant
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LabelEqOfSuppAdds
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLawsStatement
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.HarishChandraSeriesCentralIdempotentLaws
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.MemPrincipalCongruenceFixedVectorsIff
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -68,11 +69,11 @@ theorem blk_eq_par {a b : ℕ} (x : Gn g a) (y : Gn g b) : blk a b (a + b) x y =
 
 def ofLabel (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) : Sys g where
   e := eSerC L
-  idem n := (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG n).1
-  central n := (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG n).2.1
-  orth n := (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG n).2.2.1
-  label n f h := by by_contra h'; exact h ((GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG n).2.2.2.1 f h')
-  sum n := by obtain ⟨S, -, h⟩ := (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG n).2.2.2.2; exact ⟨S, h⟩
+  idem n := (_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG n).1
+  central n := (_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG n).2.1
+  orth n := (_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG n).2.2.1
+  label n f h := by by_contra h'; exact h ((_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG n).2.2.2.1 f h')
+  sum n := by obtain ⟨S, -, h⟩ := (_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG n).2.2.2.2; exact ⟨S, h⟩
   mul a b n hn f f' V _ _ ρ v h0 h1 h2 := by
     subst hn
     have hN : ρ.asAlgebraHom (eN g (finSumFinEquiv (m := a) (n := b))) v = v := eN_right _ ρ v fun B => by
@@ -87,7 +88,7 @@ def ofLabel (L : LabelDatum g) (h5 : 5 ≤ g) (hG : Green) : Sys g where
       rw [← comp_alg, Supp.alg_apply]; simp only [blk_eq_par] at h1; exact h1
     have hB : ρ.asAlgebraHom (mapDomainAlgHom ℂ ℂ (inB finSumFinEquiv) (eSerC L b f')) v = v := by
       rw [← comp_alg, Supp.alg_apply]; simp only [blk_eq_par] at h2; exact h2
-    obtain ⟨S, -, hS⟩ := (GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L h5 hG (a + b)).2.2.2.2
+    obtain ⟨S, -, hS⟩ := (_root_.GlobalTheory.GLq.eSerC_laws g L h5 hG (a + b)).2.2.2.2
     have hz : ∀ F, F ≠ f * f' → ρ.asAlgebraHom (eSerC L (a + b) F) v = 0 := fun F hF => by
       have hv := ser_vanish' L h5 hG (finSumFinEquiv (m := a) (n := b)) F f f' hF
       have := congrArg (fun z => ρ.asAlgebraHom z v) hv

@@ -64,7 +64,7 @@ theorem eStd_swap (g n : ℕ) (a b : Fin g ⊕ Fin g → ZMod n) : eStd g n a b 
 
 theorem exists_eStd_eq (g n : ℕ) (f : (Fin g ⊕ Fin g → ZMod n) →ₗ[ZMod n] ZMod n) :
     ∃ b, ∀ y, eStd g n b y = f y := by
-  apply _root_.GlobalTheory.ZH.TestBasis.exists_eStd_eq_linear <;> assumption
+  apply _root_.GlobalTheory.ZH.TestBasis.exists_eStd_eq_linear
 
 theorem exists_retraction {n d : ℕ} [NeZero n] {Γ : Type} [AddCommGroup Γ] [Module (ZMod n) Γ]
     (T : AddSubgroup Γ) (e : T ≃+ (Fin d → ZMod n)) : ∃ p : Γ →+ T, ∀ t : T, p t = t := by

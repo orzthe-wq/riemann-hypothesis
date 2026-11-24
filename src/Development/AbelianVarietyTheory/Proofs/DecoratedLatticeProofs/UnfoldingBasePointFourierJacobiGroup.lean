@@ -54,19 +54,7 @@ namespace GlobalTheory.Unf
 
 variable {D : D7}
 
-theorem linInd_e {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) : LinearIndependent D.host.E d.e.transpose := by
-  show LinearIndependent D.host.E (fun i : Fin ρ => fun k : Fin W.rank => d.e k i)
-  rw [Fintype.linearIndependent_iff]
-  intro g hg
-  have h1 : d.e *ᵥ g = 0 := by
-    funext k
-    have := congrFun hg k
-    simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this
-    simp only [Matrix.mulVec, dotProduct, Pi.zero_apply]
-    rw [← this]; exact Finset.sum_congr rfl fun i _ => mul_comm _ _
-  have h2 : (d.e'ᴴ * W.gram * d.e) *ᵥ g = 0 := by rw [← Matrix.mulVec_mulVec, h1, Matrix.mulVec_zero]
-  rw [d.e'e, Matrix.one_mulVec] at h2
-  intro i; exact congrFun h2 i
+alias linInd_e := _root_.GlobalTheory.MixPer.Decomp.linInd
 
 theorem gramQ_e {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) : gramQ W d.e = 0 := by
   rw [gramQ, ← Matrix.mul_assoc]; exact d.ee

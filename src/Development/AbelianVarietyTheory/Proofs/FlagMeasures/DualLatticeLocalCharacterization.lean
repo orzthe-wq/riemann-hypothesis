@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.SelfDualAt
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemAdelicSpanOfLatticeIffForallPlaceStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemAdelicSpanOfLatticeIffForallPlace
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SelfDualLocalBasis.HformSumRight
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SelfDualLocalBasis.HvecApply
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SelfDualLocalBasis.LocBasis
@@ -190,7 +190,7 @@ theorem exists_dual_basis (hJ : J.det ≠ 0) (L : Submodule (𝓞 E) (Fin n → 
       (∀ i j, hform (σ : E →+* E) J (x i) (y j) = if i = j then 1 else 0) ∧
       (∀ w : Fin n → E, ∃ c : Fin n → E, w = ∑ j, c j • y j) ∧
       ∀ j, algebraMap F E (s : F) • y j ∈ dualL σ J L := by
-  obtain ⟨x, s, hs, hxL, hxs⟩ := PI.SelfDualLoc.W.locBasis F E n v L hL.1 hL.2
+  obtain ⟨x, s, hs, hxL, hxs⟩ := _root_.Bl.PaddedFamilies.goal1 F E n v L hL.1 hL.2
   have hsE : algebraMap F E (s : F) ≠ 0 := PI.SelfDualLoc.W.LB.algF_ne_zero v hs
   have hxspan : Submodule.span E (Set.range x) = ⊤ := by
     rw [eq_top_iff, ← hL.2, Submodule.span_le]
@@ -331,7 +331,7 @@ theorem dualL_local_adelic : ∀ (F E : Type) [Field F] [NumberField F] [Field E
   refine ⟨hD, fun v x => ⟨fun hx => Dual.fwd cm.sig J _ _ L x hx, fun h => ?_⟩,
     fun x => ⟨fun hx => Dual.fwd cm.sig J _ _ L x hx, fun h => ?_⟩⟩
   · exact Dual.bwd_loc cm.sig J hJ L hL v x fun a ha => h _ (Submodule.subset_span ⟨a, ha, rfl⟩)
-  · rw [GlobalTheory.T.mem_adelicSpanOfLattice_iff_forall_place F E n _ hD]
+  · rw [_root_.GlobalTheory.St.G.mem_hat_iff_forall_loc F E n _ hD]
     intro v
     refine Dual.bwd_loc cm.sig J hJ L hL v _ fun a ha => ?_
     rw [← Dual.prV_hR]

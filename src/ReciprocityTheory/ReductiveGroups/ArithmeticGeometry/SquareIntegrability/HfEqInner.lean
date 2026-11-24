@@ -2,48 +2,8 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.SplitSt
 public import Mathlib.Analysis.CStarAlgebra.Module.Constructions
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SquareIntegrability.LemmaS
 
 @[expose] public section
@@ -149,9 +109,6 @@ theorem Hf_prj {dim : (E →+* ℂ) → ℕ} {σ : E →+* ℂ} {ξ : Vsp dim} (
   · rw [if_pos hj]
   · rw [if_neg hj, hξ j hj]; simp
 
-theorem Hf_eq_inner' {ι : Type} [Fintype ι] (w v : EuclideanSpace ℂ ι) : Hf w v = inner ℂ v w :=
-  lemS_Hf_eq_inner w v
-
 theorem prj_inpart {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (a : Vsp dim) : InPart σ (prj σ a) := by
   intro j hj; simp [prj, hj]
 
@@ -169,7 +126,7 @@ theorem onb_data (X : PT E) (I : Submodule ℤ (Vsp X.dim)) (σ : E →+* ℂ) (
   set N := Module.finrank ℂ (VP (dim := X.dim) σ) with hN
   have hw_inner : ∀ s s', inner ℂ (w s) (w s') = if s = s' then (1 : ℂ) else 0 := by
     intro s s'
-    rw [← Hf_eq_inner', hon s' s]
+    rw [← _root_.ReciprocityTheory.ChartRestriction.G.I2.lemS_Hf_eq_inner, hon s' s]
     by_cases h : s = s' <;> simp [h, eq_comm]
   have hwo : Orthonormal ℂ w := by
     rw [orthonormal_iff_ite]; exact hw_inner
@@ -221,7 +178,7 @@ theorem onb_data (X : PT E) (I : Submodule ℤ (Vsp X.dim)) (σ : E →+* ℂ) (
         · rw [Submodule.span_le]; rintro _ ⟨s, rfl⟩; exact ⟨(hw s).2, (hw s).1⟩
         · rw [finrank_span_eq_card hwo.linearIndependent, Fintype.card_fin, hρ]
       rw [← hspan] at hpa
-      rw [Hf_eq_inner']
+      rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.lemS_Hf_eq_inner]
       refine Submodule.span_induction (p := fun z _ => inner ℂ z (bb k : Vsp X.dim) = 0) ?_ ?_ ?_ ?_ hpa
       · rintro _ ⟨s, rfl⟩
         have hs : (⟨s.val, lt_of_lt_of_le s.2 hρN⟩ : Fin N).val < ρ := s.2
@@ -239,9 +196,9 @@ theorem onb_data (X : PT E) (I : Submodule ℤ (Vsp X.dim)) (σ : E →+* ℂ) (
   · intro x y hx hy
     have := bb.sum_inner_mul_inner (⟨y, hy⟩ : VP (dim := X.dim) σ) ⟨x, hx⟩
     simp only [Submodule.coe_inner] at this
-    rw [Hf_eq_inner', ← this]
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.lemS_Hf_eq_inner, ← this]
     refine Finset.sum_congr rfl fun k _ => ?_
-    rw [Hf_eq_inner', Hf_eq_inner', mul_comm]
+    rw [_root_.ReciprocityTheory.ChartRestriction.G.I2.lemS_Hf_eq_inner, _root_.ReciprocityTheory.ChartRestriction.G.I2.lemS_Hf_eq_inner, mul_comm]
 
 end
 

@@ -55,7 +55,7 @@ def SecDegreeLe.Statement : Prop :=
   ∀ (k E : Type) [Field k] [Field E] [Algebra k E] (n e δ : ℕ)
     (Q : Ideal (MvPolynomial (Fin n) k)) (g : MvPolynomial (Fin (e + 1) × Fin n) k)
     (y : Vertical.Par e n → E),
-    IsProjPrime Q → IsChowForm Q (e + 1) g → IsMultiHomog δ g →
+    IsProjPrime Q → IsChowForm Q (e + 1) g → Heights.IsMultiHomog δ g →
       Module.Finite E (Vertical.SecAlg (Q.map (MvPolynomial.map (algebraMap k E))) y) →
       IsDomain (Vertical.SecAlg (Q.map (MvPolynomial.map (algebraMap k E))) y) →
       Algebra.IsSeparable E (Vertical.SecAlg (Q.map (MvPolynomial.map (algebraMap k E))) y) →

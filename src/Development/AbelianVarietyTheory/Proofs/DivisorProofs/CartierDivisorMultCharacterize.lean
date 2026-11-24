@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsClosedImmersionGenericPoint
 public import Development.AbelianVarietyTheory.Definitions.ShimuraVarieties.IsOpenOfMemIrreducibleComponentsOfFinite
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularAtIffForallSpecializesStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularAtIffForallSpecializes
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -84,7 +84,7 @@ variable [GlobalTheory.IsNormalScheme X]
 
 theorem regAt_iff_ord (x : X) (u : X.functionFieldˣ) :
     RegAt x (u : X.functionField) ↔ ∀ z, z ⤳ x → 0 ≤ Scheme.ord (u : X.functionField) z := by
-  rw [← regularAt_zero_iff, GlobalTheory.T.regularAt_iff_forall_specializes_ord_add_mult_nonneg X (0 : CartierDiv X) x u]
+  rw [← regularAt_zero_iff, _root_.GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes X (0 : CartierDiv X) x u]
   simp only [mult_zero, add_zero]
 
 theorem unitAt_of_ord (x : X) (u : X.functionFieldˣ)
@@ -97,9 +97,9 @@ theorem eff_supp_eq_of_mult : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoet
   have hEff : ∀ F : CartierDiv X, F.Eff ↔ ∀ z, 0 ≤ F.mult z := by
     intro F
     refine ⟨fun h z => ?_, fun h x => ?_⟩
-    · have := (GlobalTheory.T.regularAt_iff_forall_specializes_ord_add_mult_nonneg X F z 1).1 (h z) z (specializes_refl z)
+    · have := (_root_.GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes X F z 1).1 (h z) z (specializes_refl z)
       simpa [Units.val_one, ord_one] using this
-    · have := (GlobalTheory.T.regularAt_iff_forall_specializes_ord_add_mult_nonneg X F x 1).2 fun z _ => by simpa [Units.val_one, ord_one] using h z
+    · have := (_root_.GlobalTheory.RegCodimOne.regularAt_iff_forall_specializes X F x 1).2 fun z _ => by simpa [Units.val_one, ord_one] using h z
       simpa using this
   refine ⟨hEff D, fun x => ⟨fun hx => ?_, fun ⟨z, hz, hm⟩ => ?_⟩, fun E h => ?_, fun x g h => ?_⟩
   · by_contra hne

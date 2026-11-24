@@ -49,9 +49,6 @@ noncomputable section
 namespace GlobalTheory.UU
 variable {R : Type} [CommRing R] [IsDomain R]
 
-def IsCPOf (D : DegPre R) (M : CP D.P.A) : Prop :=
-  M.L = ⟨D.P.L, D.rig, D.P.isLB, D.rig_gen⟩ ∧ HEq M.c D.cub ∧ HEq M.sym D.sym
-
 structure PreU (I : Ideal R) (D : DegPre R) (A : PolAV (Spec (CommRingCat.of (FractionRing R))))
     (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] where
 

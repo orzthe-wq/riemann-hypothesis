@@ -79,7 +79,7 @@ theorem _root_.GlobalTheory.CNorm.algebraMap_norm_tensor_eq_prod_conjugates (F E
       calc ∑ g, v g * g x = ∑ g, v g * g (∑ j, b.repr x j • b j) := by rw [b.sum_repr]
         _ = ∑ j, b.repr x j • ∑ g, v g * g (b j) := by
 
-          simp only [map_sum, Algebra.smul_def, map_mul, AlgEquiv.commutes, Finset.mul_sum]
+          simp only [map_sum, Algebra.smul_def, map_mul, Finset.mul_sum]
           rw [Finset.sum_comm]
           exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun g _ => by rw [AlgEquiv.commutes]; ring
         _ = 0 := by simp [hj]
@@ -102,7 +102,7 @@ theorem _root_.GlobalTheory.CNorm.algebraMap_norm_tensor_eq_prod_conjugates (F E
     have h2 := congrArg (Algebra.TensorProduct.map (AlgHom.id K K) (g : E →ₐ[F] E)) h1
 
     simp only [map_mul, map_sum, b', Algebra.TensorProduct.basis_apply,
-    Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one, Algebra.smul_def,
+    Algebra.TensorProduct.map_tmul, map_one, Algebra.smul_def,
     AlgHom.commutes] at h2
     rw [Matrix.diagonal_mul, Matrix.mul_apply]
     change _ * (1 ⊗ₜ[F] (g : E →ₐ[F] E) (b j)) =

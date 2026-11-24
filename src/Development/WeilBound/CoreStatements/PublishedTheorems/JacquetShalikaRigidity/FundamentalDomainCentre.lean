@@ -86,7 +86,6 @@ theorem rational_GL_injective (hD : D0) (hk : 1 ≤ k) : Function.Injective (rat
       (ratGL E k γ' : Matrix (Fin k) (Fin k) (Ad E)) i j := by rw [h]
   first
   | exact (algebraMap E (Ad E)).injective h1
-  | (simp [ratGL] at h1; exact h1)
 
 theorem rational_centre_injective (hD : D0) (hk : 1 ≤ k) {γ γ' : GL (Fin k) E} {n n' : ℤ}
     (h : ratGL E k γ * splitCentre E k 1 ^ n = ratGL E k γ' * splitCentre E k 1 ^ n') : γ = γ' ∧ n = n' := by
@@ -128,16 +127,16 @@ theorem exp_band_iff_floor {c L : ℝ} (hc : 0 < c) (n : ℤ) :
     rw [eq_comm, Int.floor_eq_iff, le_div_iff₀ hc, div_lt_iff₀ hc]
     push_cast at h1 h2
     constructor
-    · first | linarith | nlinarith
-    · first | linarith | nlinarith
+    · first | linarith
+    · first | linarith
   · intro h
     rw [eq_comm, Int.floor_eq_iff, le_div_iff₀ hc, div_lt_iff₀ hc] at h
     obtain ⟨h1, h2⟩ := h
     rw [← Real.exp_add, Real.one_le_exp_iff, Real.exp_lt_exp]
     push_cast
     constructor
-    · first | linarith | nlinarith
-    · first | linarith | nlinarith
+    · first | linarith
+    · first | linarith
 
 theorem split_centre_band_iff (hD : D0) (hk : 1 ≤ k) (n : ℤ) (g : GA E k) :
     splitCentre E k 1 ^ (-n) * g ∈ band E k ↔
@@ -161,7 +160,7 @@ theorem fundamental_domain_of : Q1 → D0 → N3 → W0 := by
   have hlint := (hN3 E k).2.2.1
   have hF : MeasurableSet (FundamentalDomainCentre.fdL E k) := GlobalTheory.AutomorphicL2Unitary.measurableSet_stdDom (latticeGL E k)
   have hβ₁ : Measurable ((FundamentalDomainCentre.fdL E k).indicator (1 : GA E k → ℝ≥0∞)) := by
-    first | exact measurable_one.indicator hF | exact measurable_const.indicator hF
+    first | exact measurable_one.indicator hF
   refine ⟨⟨fun g => ∑' n : ℤ, (FundamentalDomainCentre.fdL E k).indicator (1 : GA E k → ℝ≥0∞) (splitCentre E k 1 ^ n * g),
     Measurable.tsum fun n => hβ₁.comp (measurable_const_mul _), fun g => ?_⟩, fun β hβ => ?_⟩
   · have hm : Measurable fun h : GA E k =>
@@ -178,7 +177,7 @@ theorem fundamental_domain_of : Q1 → D0 → N3 → W0 := by
     have hband : MeasurableSet (band E k) :=
       (measurableSet_le measurable_const hDm).inter (measurableSet_lt hDm measurable_const)
     have hΦ : Measurable ((band E k).indicator (1 : GA E k → ℝ≥0∞)) := by
-      first | exact measurable_one.indicator hband | exact measurable_const.indicator hband
+      first | exact measurable_one.indicator hband
     have hH : ∀ᵐ h ∂nuB E k k, h ∈ {x : GA E k | Dt x = 1} := by
       filter_upwards [hae] with h hh0
       obtain ⟨γ, u, -, hu, hh⟩ := hh0
@@ -194,12 +193,12 @@ theorem fundamental_domain_of : Q1 → D0 → N3 → W0 := by
         rw [hmul, hh', one_mul]
       by_cases hg : g ∈ band E k
       · rw [Set.indicator_of_mem hg, Set.indicator_of_mem (hiff.2 hg)]
-        first | rfl | simp
+        first | rfl
       · rw [Set.indicator_of_notMem hg, Set.indicator_of_notMem (mt hiff.1 hg)]
     have hone : ∀ g, ∫⁻ r, ∫⁻ h, (FundamentalDomainCentre.fdL E k).indicator (1 : GA E k → ℝ≥0∞) (r⁻¹ * h * g)
         ∂nuB E k k ∂FundamentalDomainCentre.rhoZ E k = 1 := by
       intro g
-      first | rw [FundamentalDomainCentre.lint_rhoZ] | simp only [FundamentalDomainCentre.lint_rhoZ]
+      first | rw [FundamentalDomainCentre.lint_rhoZ]
       refine Eq.trans ?_ (FundamentalDomainCentre.fundamental_domain_tsum hD hk g)
       rw [ENNReal.tsum_prod', ENNReal.tsum_comm]
       refine tsum_congr fun n => ?_
@@ -212,7 +211,7 @@ theorem fundamental_domain_of : Q1 → D0 → N3 → W0 := by
       rw [_root_.zpow_neg, inv_inv, FundamentalDomainCentre.split_centre_commute]
     have hin : ∀ g, ∫⁻ r, (band E k).indicator (1 : GA E k → ℝ≥0∞) (r * g) ∂FundamentalDomainCentre.rhoZ E k = 1 := by
       intro g
-      first | rw [FundamentalDomainCentre.lint_rhoZ] | simp only [FundamentalDomainCentre.lint_rhoZ]
+      first | rw [FundamentalDomainCentre.lint_rhoZ]
       rw [tsum_eq_single ⌊Real.log (Dt g) / ((k : ℝ) * (Module.finrank ℚ E : ℝ))⌋]
       · exact Set.indicator_of_mem ((FundamentalDomainCentre.split_centre_band_iff hD hk _ g).2 rfl) _
       · intro n hn

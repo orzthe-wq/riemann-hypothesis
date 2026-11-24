@@ -61,7 +61,7 @@ section Generic
 
 variable {K : Type} [Field K] [NumberField K]
 
-theorem ev_mul (a b : FiniteAdeleRing (𝓞 K) K) (Q : HeightOneSpectrum (𝓞 K)) : (a * b) Q = a Q * b Q := rfl
+alias ev_mul := _root_.Formalism.UG.P.afsplit_mul_apply
 
 theorem val_nat (Q : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
     Valued.v ((n : FiniteAdeleRing (𝓞 K) K) Q) = Q.valuation K ((n : 𝓞 K) : K) := by

@@ -145,7 +145,7 @@ theorem unitMap_mul {m n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (B' k : Matrix 
     by_cases h : j = q
     · subst h
       simp [Matrix.sum_apply, Matrix.single_apply]
-    · simp [Matrix.sum_apply, Matrix.single_apply, Matrix.mul_apply, h]
+    · simp [Matrix.sum_apply, Matrix.mul_apply, h]
   unfold unitMap
   rw [Matrix.mul_assoc B', e, Matrix.mul_sum, Matrix.sum_mul]
   simp only [Matrix.mul_smul, Matrix.smul_mul]

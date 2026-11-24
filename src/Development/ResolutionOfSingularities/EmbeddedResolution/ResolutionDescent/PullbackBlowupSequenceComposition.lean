@@ -50,10 +50,7 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
-private theorem transitionMap_self {X : Scheme.{u}} (u : SequenceOfBlowups X) {a : ℕ}
-    (h : a ≤ a) : u.transitionMap h = 𝟙 (u.schemeAt a) := by
-  have h0 : (CategoryTheory.homOfLE h).op = 𝟙 (Opposite.op a) := rfl
-  rw [u.transitionMap_def, h0, CategoryTheory.Functor.map_id]
+private alias transitionMap_self := _root_.FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.transitionMap_self
 
 theorem SequenceOfBlowups.iso_hom_comp_transitionMap {X : Scheme.{u}} (s t : SequenceOfBlowups X) (L : ℕ)
     (e : ∀ i : ℕ, i ≤ L → (s.schemeAt i ≅ t.schemeAt i))
@@ -209,9 +206,7 @@ theorem of_isomorphic_base {X' X : Scheme.{u}} {g : X' ⟶ X}
     rw [hc1 i hi, ← h2]
     simp [Scheme.IdealSheafData.comap_comp]
 
-private theorem projectionToBase_zero {X : Scheme.{u}} (s : SequenceOfBlowups X) :
-    s.projectionToBase 0 = s.isoZero.hom := by
-  rw [SequenceOfBlowups.projectionToBase_def, transitionMap_self s (le_refl 0), Category.id_comp]
+private alias projectionToBase_zero := _root_.FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.projectionToBase_zero
 
 private theorem blowupMorphism_comp_projectionToBase {X : Scheme.{u}} (s : SequenceOfBlowups X) (i : ℕ) :
     s.transitionMapSucc i ≫ s.projectionToBase i = s.projectionToBase (i + 1) := by

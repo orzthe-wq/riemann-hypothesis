@@ -70,15 +70,12 @@ theorem mah_zero_fn (j : ℕ) : mah (fun _ => (0 : ℚ)) j = 0 := by
   | succ j ih => rw [mah_succ, fwdDiff_const]; exact ih
 
 theorem mah_const (c : ℚ) (j : ℕ) : mah (fun _ => c) j = if j = 0 then c else 0 := by
-  cases j with
-  | zero => rfl
-  | succ j => rw [mah_succ, fwdDiff_const, mah_zero_fn]; simp
+  cases j <;> simp [mah_succ, mah_zero, fwdDiff_const, mah_zero_fn]
 
 theorem mah_neg (f : ℕ → ℚ) (j : ℕ) : mah (-f) j = - mah f j := by
   have h := mah_add f (-f) j
   rw [add_neg_cancel] at h
-  have h0 : mah (0 : ℕ → ℚ) j = 0 := mah_zero_fn j
-  rw [h0] at h
+  rw [show mah (0 : ℕ → ℚ) j = 0 from mah_zero_fn j] at h
   linarith
 
 theorem mah_smul (a : ℚ) (f : ℕ → ℚ) (j : ℕ) : mah (fun n => a * f n) j = a * mah f j := by
@@ -210,8 +207,7 @@ theorem mah_val {p : ℕ} [Fact p.Prime] {θ s : ℝ} {f : ℕ → ℚ} (hθ : 0
     PadicGe p (f n) s := by
   rw [mah_newton f n]
   refine padicGe_sum _ _ fun j _ => padicGe_mul_nat (padicGe_mono (h j) ?_) _
-  have : 0 ≤ θ * (j : ℝ) := by positivity
-  linarith
+  exact le_add_of_nonneg_left (mul_nonneg hθ (Nat.cast_nonneg j))
 
 theorem mah_of_vals {p : ℕ} [Fact p.Prime] {r : ℝ} (N : ℕ) :
     ∀ f : ℕ → ℚ, (∀ n, PadicGe p (f n) r) → PadicGe p (mah f N) r := by
@@ -221,8 +217,7 @@ theorem mah_of_vals {p : ℕ} [Fact p.Prime] {r : ℝ} (N : ℕ) :
     intro f h
     rw [mah_succ]
     refine ih _ fun n => ?_
-    simp only [fwdDiff, sub_eq_add_neg]
-    exact padicGe_add (h _) (padicGe_neg (h _))
+    simpa only [fwdDiff, sub_eq_add_neg] using padicGe_add (h (n + 1)) (padicGe_neg (h n))
 
 theorem mah_unit {p : ℕ} [Fact p.Prime] {x : ℚ} {θ : ℝ} (hθ : 0 < θ) (hx : PadicGe p x θ) :
     1 + x ≠ 0 ∧ padicValRat p (1 + x) = 0 := by
@@ -235,12 +230,10 @@ theorem mah_unit {p : ℕ} [Fact p.Prime] {x : ℚ} {θ : ℝ} (hθ : 0 < θ) (h
     exact_mod_cast this
   have hne : 1 + x ≠ 0 := by
     intro h
-    have hx1 : x = -1 := by linarith
-    rw [hx1, padicValRat.neg, padicValRat.one] at hpos
+    rw [show x = -1 by linarith, padicValRat.neg, padicValRat.one] at hpos
     exact lt_irrefl _ hpos
   refine ⟨hne, ?_⟩
-  have := padicValRat.add_eq_of_lt (p := p) hne one_ne_zero h0 (by rw [padicValRat.one]; exact hpos)
-  rw [this, padicValRat.one]
+  rw [padicValRat.add_eq_of_lt (p := p) hne one_ne_zero h0 (by rw [padicValRat.one]; exact hpos), padicValRat.one]
 
 theorem mah_padicGe_pow {p : ℕ} [Fact p.Prime] {x : ℚ} {r : ℝ} (hx : PadicGe p x r) (m : ℕ) :
     PadicGe p (x ^ m) (m * r) := by
@@ -353,10 +346,8 @@ theorem mah_dU {p : ℕ} [Fact p.Prime] (h : HdU p) (t rho : ℕ) (hr : rho < p 
 
 theorem mah_one_add {p : ℕ} [Fact p.Prime] {θ s : ℝ} {u : ℕ → ℚ} (hs : 0 ≤ s) (hu : Dec p θ s u) :
     Dec p θ 0 (fun n => 1 + u n) := by
-  have : (fun n => 1 + u n) = (fun _ => (1 : ℚ)) + u := rfl
-  rw [this]
-  refine mah_dec_add (mah_dec_const ?_) (mah_dec_weaken hu le_rfl hs)
-  right; simp
+  exact mah_dec_add (mah_dec_const (by right; simp))
+    (mah_dec_weaken hu le_rfl hs)
 
 theorem mah_cUnit_zero (P : ℕ) : cUnit P 0 = 1 := by simp [cUnit]
 

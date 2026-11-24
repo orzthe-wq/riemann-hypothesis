@@ -1,7 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.RealMetaplecticRepresentation
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHasDerivAtZeroOfMapAddMulStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.Deriv.Basic
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHasDerivAtZeroOfMapAddMul
+public import Mathlib.Analysis.Calculus.BumpFunction.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -45,7 +50,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Analysis.Calculus.BumpFunction.Basic
 
 @[expose] public section
 
@@ -137,7 +141,7 @@ theorem main_empty (l : Type) [Fintype l] [DecidableEq l] [IsEmpty l]
       rw [hTadd, LinearMap.comp_apply, hTν t, map_smul, hTν s, smul_smul, mul_comm]
     have e' := congrArg (fun g : Sch l => g 0) e
     simpa [hf0, hνdef] using e'
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_hasDerivAt_zero_of_map_add_mul' ν hν0 hνmul (hTcont f0 0).continuousAt
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.exists_hasDerivAt_zero_of_map_add_mul ν hν0 hνmul (hTcont f0 0).continuousAt
   refine ⟨a, fun f => ?_⟩
   have hslope := hasDerivAt_iff_tendsto_slope_zero.1 ha
   simp only [zero_add, hν0] at hslope

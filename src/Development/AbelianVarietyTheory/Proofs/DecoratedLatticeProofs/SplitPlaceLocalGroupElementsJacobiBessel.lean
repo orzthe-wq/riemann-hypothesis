@@ -141,7 +141,7 @@ theorem pair_zero {S : HSp D} {g : GA D S} (hg : SuppAt p.e S g) {a b : ℕ} (A 
   rw [m1, ← Matrix.map_mul, ← Matrix.map_mul] at h1 h2
   have e1 : adj (mt S g) * gA S = gA S * mt S g⁻¹ := by rw [GlobalTheory.MixModel.mt_inv, gA_giA_cancel]
   have e2 : adj (adj A * gA S * (mt S g - 1) * B) = adj B * gA S * (mt S g⁻¹ - 1) * A := by
-    simp only [adj_mul, adj_sub, adj_one, adj_adj, adj_gA, Matrix.mul_assoc, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul,
+    simp only [adj_mul, adj_sub, adj_adj, adj_gA, Matrix.mul_assoc, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul,
       cancel₂ e1]
   refine eq_zero_of_comp p ?_ h1 ?_
   · have : (p.e + cA D p.e) • (adj A * gA S * (mt S g - 1) * B) = adj A * gA S * (mt S g - 1) * B := by

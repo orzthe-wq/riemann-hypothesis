@@ -48,6 +48,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 public import Mathlib.RingTheory.Filtration
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TwistedNormLattice.UniformContinuityGaloisGroup
 
 @[expose] public section
 
@@ -100,8 +101,6 @@ theorem qO_mem : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∈ P.asIdeal := Ide
 theorem q_ne (hp : (Ideal.absNorm P.asIdeal).Prime) : (qOf P : E) ≠ 0 := by
   exact Nat.cast_ne_zero.mpr hp.ne_zero
 
-theorem one_nm : (1 : 𝓞 E) ∉ P.asIdeal := (Ideal.ne_top_iff_one _).mp P.isPrime.ne_top
-
 theorem not_int_inv_q (hp : (Ideal.absNorm P.asIdeal).Prime) : ¬ IntAt P ((qOf P : E)⁻¹) := by
   rintro ⟨r, s, hs, h⟩
   apply hs
@@ -117,7 +116,7 @@ theorem natCast_notMem (hp : (Ideal.absNorm P.asIdeal).Prime) {m : ℕ} (hm : ¬
   have hcop : IsCoprime ((qOf P : ℕ) : ℤ) (m : ℤ) :=
     Nat.isCoprime_iff_coprime.mpr ((Nat.Prime.coprime_iff_not_dvd hp).mpr hm)
   obtain ⟨u, v, huv⟩ := hcop
-  apply one_nm P
+  apply _root_.PI.TwNormLat.W.one_notMem' P
   have e : (((u * ((qOf P : ℕ) : ℤ) + v * (m : ℤ) : ℤ)) : 𝓞 E) = 1 := by
     rw [huv]
     simp

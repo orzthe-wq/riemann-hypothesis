@@ -5,43 +5,6 @@ public import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.HkLatTup
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.WeightUpdateAtPlace
 import Formalism.SharpRestriction.GrowthBounds.LatticeSystems
 public import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.NatCastInvMemRp
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import Formalism.SharpRestriction.GrowthBounds.MultisetValuation.DescentCore
 
 @[expose] public section
@@ -75,11 +38,8 @@ theorem T_finite (b0 : A) (hfin : Finite {γ : Γ // sm γ b0 = b0}) (B : Finset
   refine Set.Finite.biUnion B.finite_toSet (fun b _ => ?_)
   by_cases h : ∃ γ0, sm γ0 b0 = b
   · obtain ⟨γ0, rfl⟩ := h
-    have : Finite {γ : Γ // sm γ b0 = sm γ0 b0} := Finite.of_equiv _ (fibEquiv sm h1 hm b0 γ0).symm
-    exact Set.finite_coe_iff.1 this
-  · refine Set.finite_empty.subset ?_
-    intro γ hγ
-    exact (h ⟨γ, hγ⟩).elim
+    exact Set.finite_coe_iff.1 (Finite.of_equiv _ (fibEquiv sm h1 hm b0 γ0).symm)
+  · exact Set.finite_empty.subset (fun γ hγ => (h ⟨γ, hγ⟩).elim)
 
 include h1 hm in
 theorem orbit_sum_stabilizer (b0 : A) (B : Finset A) (f : A → K) (T : Finset Γ) (hT : ∀ γ, γ ∈ T ↔ sm γ b0 ∈ B) :
@@ -203,8 +163,7 @@ theorem upd_ne (L : P.Tup) (A : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) {u
 
 theorem upd_inj (L : P.Tup) : Function.Injective (upd v L) := by
   intro A B h
-  have := congrFun h v
-  rwa [upd_self, upd_self] at this
+  simpa [upd_self] using congrFun h v
 
 def Rel (L L1 : P.Tup) : Prop := IsEdge p (P.n' v) i ⟨L v, L1 v⟩ ∧ ∀ u, u ≠ v → L u = L1 u
 
@@ -237,34 +196,20 @@ theorem mem_upS (L L1 : P.Tup) : L1 ∈ upS v i L ↔ Rel v i L L1 := by
   rw [Finset.mem_image]
   constructor
   · rintro ⟨A, hA, rfl⟩
-    refine ⟨?_, fun u hu => (upd_ne v L A hu).symm⟩
-    rw [upd_self]
-    exact (mem_UP P).1 hA
+    exact ⟨by simpa [upd_self] using (mem_UP P).1 hA, fun u hu => (upd_ne v L A hu).symm⟩
   · intro h
     refine ⟨L1 v, (mem_UP P).2 h.1, ?_⟩
-    funext u
-    by_cases hu : u = v
-    · subst hu
-      exact upd_self u L _
-    · rw [upd_ne v L _ hu]
-      exact h.2 u hu
+    exact Function.update_eq_iff.mpr ⟨rfl, h.2⟩
 
 theorem mem_dnS (L L1 : P.Tup) : L ∈ dnS v i L1 ↔ Rel v i L L1 := by
   unfold dnS
   rw [Finset.mem_image]
   constructor
   · rintro ⟨A, hA, rfl⟩
-    refine ⟨?_, fun u hu => upd_ne v L1 A hu⟩
-    rw [upd_self]
-    exact (mem_EE P).1 hA
+    exact ⟨by simpa [upd_self] using (mem_EE P).1 hA, fun u hu => upd_ne v L1 A hu⟩
   · intro h
     refine ⟨L v, (mem_EE P).2 h.1, ?_⟩
-    funext u
-    by_cases hu : u = v
-    · subst hu
-      exact upd_self u L1 _
-    · rw [upd_ne v L1 _ hu]
-      exact (h.2 u hu).symm
+    exact Function.update_eq_iff.mpr ⟨rfl, fun u hu => (h.2 u hu).symm⟩
 
 theorem adj_level {K : Type} [Field K] [CharZero K] (Rc : Finset P.Tup) (hlat : ∀ L ∈ Rc, P.IsLatTup L)
     (hex : ∀ L, P.IsLatTup L → ∃! L0, L0 ∈ Rc ∧ ∃ γ : C.Γ, L = C.smul γ L0)
@@ -289,7 +234,7 @@ theorem adj_level {K : Type} [Field K] [CharZero K] (Rc : Finset P.Tup) (hlat : 
     rw [Finset.sum_image (fun a _ b _ h => upd_inj v L1 h)]
     exact finsum_mem_eq_finite_toFinset_sum _ (edges_fin P v i (L1 v))
   simp_rw [e1, e2]
-  exact adj C.smul (lsmul_one C) (lsmul_mul C) P.IsLatTup Rc hlat hex hst (Rel v i) (Rel_smul C v i) (Rel_lat v i)
+  exact adj C.smul (lsmul_one C) (_root_.Formalism.MainNotions.G.LatticeSystems.jd_smul_mul C) P.IsLatTup Rc hlat hex hst (Rel v i) (Rel_smul C v i) (Rel_lat v i)
     (upS v i) (dnS v i) (fun L _ L1 => mem_upS v i L L1) (fun L1 _ L => mem_dnS v i L L1) φ hφ
 
 end Conc

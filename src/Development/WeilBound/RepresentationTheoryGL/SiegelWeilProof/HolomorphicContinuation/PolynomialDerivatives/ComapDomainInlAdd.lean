@@ -72,7 +72,7 @@ theorem pderiv_comm (i j : Ix m n) (p : PX m n) : pderiv i (pderiv j p) = pderiv
     have hc : ∀ a b : Ix m n, pderiv a (pderiv b (X k : PX m n)) = 0 := by
       intro a b; rw [pderiv_X]; by_cases h : b = k
       · subst h; simp
-      · simp [Pi.single_apply, h]
+      · simp [h]
     simp only [pderiv_mul, map_add (f := _), hp, hc, mul_zero, add_zero]
     ring
 
@@ -115,7 +115,7 @@ theorem dvE_single (k : Ix m n) : dvE (Pi.single k 1) = Dk k := by
     exact @List.count_eq_one_of_mem _ instBEqOfDecidableEq inferInstance _ _ (Finset.nodup_toList _)
       (Finset.mem_toList.2 (Finset.mem_univ k))
   · intro a' ha' _
-    simp [Pi.single_apply, ha']
+    simp [ha']
 
 theorem opMono_eq (t : Ix m n ⊕ Ix m n →₀ ℕ) (f : PX m n) :
     opMono t f = monomial (t.comapDomain Sum.inl Sum.inl_injective.injOn) 1 * dvE (fun k => t (Sum.inr k)) f := rfl
@@ -188,9 +188,9 @@ theorem opMono_add_inl (t : Ix m n ⊕ Ix m n →₀ ℕ) (k : Ix m n) (f : PX m
   rw [opMono_eq, opMono_eq, comapDomain_inl_add]
   have h1 : (Finsupp.single (Sum.inl k) 1 : Ix m n ⊕ Ix m n →₀ ℕ).comapDomain Sum.inl Sum.inl_injective.injOn =
       Finsupp.single k 1 := by
-    ext j; simp [Finsupp.comapDomain_apply, Finsupp.single_apply]
-  have h2 : (fun j : Ix m n => (t + Finsupp.single (Sum.inl k) 1 : Ix m n ⊕ Ix m n →₀ ℕ) (Sum.inr j)) = fun j => t (Sum.inr j) := by
     ext j; simp [Finsupp.single_apply]
+  have h2 : (fun j : Ix m n => (t + Finsupp.single (Sum.inl k) 1 : Ix m n ⊕ Ix m n →₀ ℕ) (Sum.inr j)) = fun j => t (Sum.inr j) := by
+    ext j; simp
   rw [h1, h2, monomial_add_single, pow_one]
   ring
 
@@ -198,7 +198,7 @@ theorem opMono_add_inr (t : Ix m n ⊕ Ix m n →₀ ℕ) (k : Ix m n) (f : PX m
     opMono (t + Finsupp.single (Sum.inr k) 1) f = opMono t (pderiv k f) := by
   rw [opMono_eq, opMono_eq, comapDomain_inl_add]
   have h1 : (Finsupp.single (Sum.inr k) 1 : Ix m n ⊕ Ix m n →₀ ℕ).comapDomain Sum.inl Sum.inl_injective.injOn = 0 := by
-    ext j; simp [Finsupp.comapDomain_apply, Finsupp.single_apply]
+    ext j; simp
   have h2 : (fun j : Ix m n => (t + Finsupp.single (Sum.inr k) 1 : Ix m n ⊕ Ix m n →₀ ℕ) (Sum.inr j)) =
       (fun j => t (Sum.inr j)) + Pi.single k 1 := by
     ext j; simp [Finsupp.single_apply, Pi.single_apply, eq_comm]
@@ -224,13 +224,13 @@ theorem op_mul_inr (u : Sym m n) (k : Ix m n) (f : PX m n) : op (u * X (Sum.inr 
 theorem op_X_mul (u : Sym m n) : ∀ (k : Ix m n) (g : PX m n),
     op u (X k * g) = X k * op u g + op (pderiv (Sum.inr k) u) g := by
   induction u using MvPolynomial.induction_on with
-  | C a => intro k g; simp [op_C, op_zero, mul_smul_comm]
+  | C a => intro k g; simp [op_C, op_zero]
   | add p q hp hq => intro k g; rw [op_add, op_add, hp, hq, map_add (f := _), op_add]; ring
   | mul_X p j hp =>
     intro k g
     rcases j with j | j
     · rw [op_mul_inl, op_mul_inl, hp, pderiv_mul, pderiv_X, op_add, op_mul_inl]
-      simp only [Pi.single_apply, Sum.inl.injEq, reduceCtorEq, if_false, mul_zero, op_zero, add_zero]
+      simp only [Pi.single_apply, reduceCtorEq, if_false, mul_zero, op_zero, add_zero]
       ring
     · rw [op_mul_inr, op_mul_inr, pderiv_mul, pderiv_mul, pderiv_X, pderiv_X, op_add_f, op_add, hp, op_mul_inr]
       by_cases h : j = k

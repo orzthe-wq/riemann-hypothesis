@@ -111,8 +111,8 @@ theorem UpperTheory.inertia_eigenvector_extends_of_distinct_characters :
     refine (hfin.preimage (Function.Injective.injOn (fun a b h => Units.ext h))).subset ?_
     rintro x ⟨s, rfl⟩
     exact ⟨s, rfl⟩
-  haveI : Finite U.range := hfinU.to_subtype
-  letI : Fintype U.range := Fintype.ofFinite _
+  have : Finite U.range := hfinU.to_subtype
+  let : Fintype U.range := Fintype.ofFinite _
   have hpre0 : ∀ h : U.range, ∃ s, U s = h := fun h => h.2
   choose pre hpre using hpre0
   have hpreval : ∀ h : U.range, (((h : (Module.End ℂ W)ˣ)) : Module.End ℂ W) = ρ (i (pre h)) := by
@@ -207,7 +207,7 @@ theorem UpperTheory.inertia_eigenvector_extends_of_distinct_characters :
   have hPne : ∀ k, ∃ w, P k w ≠ 0 := by
     intro k
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     have h1 : P k = 0 := LinearMap.ext hcon
     have h2 := htrP k
     rw [h1, map_zero] at h2

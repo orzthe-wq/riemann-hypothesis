@@ -6,8 +6,9 @@ public import Formalism.LocalToGlobal.IndefiniteReal.HasInfExpF
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsOpenKerFinIdele
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsHalfAbstract
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryHeckeCharacterExtendingBaseCharacte
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFieldCompletionTensorOfIsInertAtStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceSplitOrInertStatement
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFieldCompletionTensorOfIsInertAt
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceSplitOrInert
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitEqNormCompletionTensorOfIsInertAt
 import Development.AbelianVarietyTheory.Proofs.HeightProofs.QuadraticExtNormFormOverAlgebra
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsOpenNsmulAdelicCompletionOfVectorSet
@@ -117,8 +118,6 @@ theorem small (T : Set (AF F ⊗[F] E)) (hT : T ∈ 𝓝 0) : ∃ N : ℕ, 0 < N
     have h1 : Continuous fun a : AF F => a • incAF F E (b i) := by
       first
         | fun_prop
-        | exact Continuous.smul (f := fun a : AF F => a) (g := fun _ => incAF F E (b i)) continuous_id continuous_const
-        | exact IsModuleTopology.continuous_of_linearMap (LinearMap.toSpanSingleton (AF F) _ (incAF F E (b i)))
     exact h1.comp (hP.comp (continuous_apply i))
   have hrep : ∀ s ∈ SE F E, ∃ c : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → Af F,
       (∀ i v, c i v ∈ v.adicCompletionIntegers F) ∧ fI F E * s = Φ c := by
@@ -149,7 +148,7 @@ theorem small (T : Set (AF F ⊗[F] E)) (hT : T ∈ 𝓝 0) : ∃ N : ℕ, 0 < N
   have h1 : Φ ⁻¹' T ∈ 𝓝 0 := hc.continuousAt.preimage_mem_nhds (by rw [map_zero]; exact hT)
   rw [nhds_pi, Filter.mem_pi] at h1
   obtain ⟨I, -, W, hW, hsub⟩ := h1
-  obtain ⟨N, hN, hNW⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F (⋂ i, W i) (Filter.iInter_mem.2 hW)
+  obtain ⟨N, hN, hNW⟩ := _root_.GlobalTheory.LocalNormBound.main F (⋂ i, W i) (Filter.iInter_mem.2 hW)
   refine ⟨N, hN, fun s hs => ?_⟩
   obtain ⟨c, h2, e⟩ := hrep s hs
   rw [e, ← map_nsmul]
@@ -182,8 +181,6 @@ theorem exists_level (η : (AF F ⊗[F] E)ˣ →* Circle) (hη : Continuous η) 
   have hf : Continuous fun b : AF F ⊗[F] E => 1 + b := by
     first
       | fun_prop
-      | exact continuous_add_left 1
-      | exact continuous_const_add 1
   have h1 : (fun b : AF F ⊗[F] E => 1 + b) ⁻¹' T1 ∈ 𝓝 0 :=
     hf.continuousAt.preimage_mem_nhds (by rw [add_zero]; exact hT1)
   have h2 : (fun b : AF F ⊗[F] E => MulOpposite.op (1 + b)) ⁻¹' T2 ∈ 𝓝 0 :=
@@ -389,7 +386,7 @@ theorem exists_sep (v : HeightOneSpectrum (𝓞 F)) : ∃ N : ℕ, 0 < N ∧ ∀
     rintro ⟨y, hy, e⟩
     have e' : algebraMap F (Fv F v) y = 0 := e.trans (map_zero (evalV F v))
     exact hy.2 ((map_eq_zero _).1 e')
-  obtain ⟨N, hN, hW⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ h0
+  obtain ⟨N, hN, hW⟩ := _root_.GlobalTheory.LocalNormBound.main F _ h0
   refine ⟨N, hN, fun y h1 h2 c hc' e => ?_⟩
   by_contra hy
   refine hW (sing v c) (fun w => ?_) ⟨y, ⟨⟨h1, h2⟩, hy⟩, ?_⟩
@@ -399,53 +396,6 @@ theorem exists_sep (v : HeightOneSpectrum (𝓞 F)) : ∃ N : ℕ, 0 < N ∧ ∀
     · rw [sing_ne _ h]; exact zero_mem _
   · show _ = evalV F v (N • sing v c)
     rw [map_nsmul, sing_self, e]
-
-theorem local_norm {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) (v : HeightOneSpectrum (𝓞 F)) (u : (Fv F v)ˣ)
-    (h1 : 2 * (u : Fv F v) ∈ v.adicCompletionIntegers F)
-    (h2 : 2 * ((u⁻¹ : (Fv F v)ˣ) : Fv F v) ∈ v.adicCompletionIntegers F) :
-    u ∈ GlobalTheory.QuadSymbol.normGroup F E (Fv F v) := by
-  obtain ⟨δ, b, hδ, hb0, hb1, hbb⟩ :=
-    GlobalTheory.QuadNormBase.exists_basis F E σ hB.cm.2.2.1 (sig_invol hB.cm) (sig_ne hB.cm)
-  have hbb' : b 1 * b 1 = algebraMap F E δ := hbb
-  refine (GlobalTheory.QuadSymbol.mem_normGroup_iff_form b hb0 hbb').2 ?_
-  rcases GlobalTheory.T.place_split_or_inert F E σ B hB v with ⟨⟨τ⟩⟩ | ⟨w, hw⟩
-  · have hs : τ (b 1) * τ (b 1) = algebraMap F (Fv F v) δ := by rw [← map_mul, hbb', AlgHom.commutes]
-    have hs0 : τ (b 1) ≠ 0 := (map_ne_zero τ).2 (b.ne_zero 1)
-    have h20 : (2 : Fv F v) ≠ 0 := by
-      rw [← map_ofNat (algebraMap F (Fv F v)) 2]
-      exact (map_ne_zero _).2 two_ne_zero
-    refine ⟨((u : Fv F v) + 1) / 2, ((u : Fv F v) - 1) / (2 * τ (b 1)), ?_⟩
-    rw [← hs]
-    field_simp
-    ring
-  · have hv2 : Valued.v (2 : Fv F v) = 1 := by
-      have e : (2 : Fv F v) = algebraMap F (Fv F v) (algebraMap (𝓞 F) F 2) := by rw [map_ofNat, map_ofNat]
-      rw [e]
-      refine (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _).trans ?_
-      refine le_antisymm (v.valuation_le_one 2) (not_lt.1 fun h => (hB.inert v w hw).1 ?_)
-      exact (v.valuation_lt_one_iff_mem 2).1 h
-    have a1 : Valued.v (2 * (u : Fv F v)) ≤ 1 := h1
-    have a2 : Valued.v (2 * ((u⁻¹ : (Fv F v)ˣ) : Fv F v)) ≤ 1 := h2
-    rw [map_mul, hv2, one_mul] at a1 a2
-    have hu : Valued.v (u : Fv F v) = 1 := by
-      refine le_antisymm a1 ?_
-      have hm := congrArg Valued.v u.mul_inv
-      rw [map_mul, map_one] at hm
-      rw [← hm]
-      exact mul_le_of_le_one_right' a2
-    obtain ⟨z, hz⟩ := GlobalTheory.InertUnitNorm.unit_eq_mul_conj F E σ B hB v w hw (GlobalTheory.T.isField_completion_tensor_of_isInertAt F E σ B hB v w hw) u hu
-    obtain ⟨x, y, rfl⟩ := tensor_decomp (A := Fv F v) (b 1) (fun x => ⟨b.repr x 0, b.repr x 1, by
-      have hx := b.sum_repr x
-      rw [Fin.sum_univ_two, hb0] at hx
-      exact hx.symm⟩) z
-    refine ⟨x, y, tensor_inj (F := F) (E := E) ?_⟩
-    have e1 : ((1 : Fv F v) ⊗ₜ[F] b 1) * ((1 : Fv F v) ⊗ₜ[F] b 1) =
-        algebraMap (Fv F v) (Fv F v ⊗[F] E) (algebraMap F (Fv F v) δ) := by
-      rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, hbb', ← IsScalarTower.algebraMap_apply,
-        Algebra.TensorProduct.algebraMap_apply']
-    rw [hz, map_add (f := _), map_mul, AlgHom.commutes, AlgHom.commutes, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hb1,
-      TensorProduct.tmul_neg, map_sub, map_mul, map_pow, map_pow, ← e1]
-    ring
 
 end PositivityTheory.ThKW.Eta
 

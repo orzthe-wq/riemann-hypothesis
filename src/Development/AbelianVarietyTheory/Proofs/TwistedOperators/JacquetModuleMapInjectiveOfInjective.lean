@@ -199,12 +199,6 @@ theorem eventually_mem_twKer_inf (e : (Σ a, m a) ≃ n) {π : Representation �
     filter_upwards [hx] with M h
     exact Submodule.smul_mem _ c h
 
-private theorem twKer_one_mono' {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
-    {ρ : Representation ℂ G V} {H K : Subgroup G} (hHK : H ≤ K) : twKer ρ H 1 ≤ twKer ρ K 1 := by
-  refine Submodule.span_mono ?_
-  rintro _ ⟨h, w, rfl⟩
-  exact ⟨⟨h, hHK h.2⟩, w, rfl⟩
-
 theorem jacMap_injective (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (α n : Type) (m : α → Type) [Fintype α] [LinearOrder α]
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n)
@@ -223,6 +217,6 @@ theorem jacMap_injective (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace
   have hcpt : IsCompact ((grp k (conc_wt e M) ⊓ unipRad k e : Subgroup (GL n k)) : Set (GL n k)) := by
     rw [Subgroup.coe_inf]
     exact (isCompact_grp (conc_wt e M)).inter_right (isClosed_unipRad e)
-  exact twKer_one_mono' inf_le_right (mem_twKer_of_map f hπ hf hcpt hM)
+  exact _root_.GlobalTheory.IwahoriInj.twKer_mono inf_le_right (mem_twKer_of_map f hπ hf hcpt hM)
 
 end GlobalTheory.JacInj

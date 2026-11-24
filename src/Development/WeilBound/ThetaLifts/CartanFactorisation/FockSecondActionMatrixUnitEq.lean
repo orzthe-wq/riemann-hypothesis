@@ -208,7 +208,7 @@ theorem radMax_pair {n d P Q R S : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Bas
     obtain ⟨Z₁, a1, Z₂, a2, e1, e2⟩ := decomp Z
     rw [e2, e1]
     simp only [map_add (f := _), map_neg, map_smul, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.neg_apply, LinearMap.map_smulₛₗ,
-      u Z₁ a1, u Z₂ a2, Complex.conj_I, smul_eq_mul, RingHom.id_apply]
+      u Z₁ a1, u Z₂ a2, Complex.conj_I, smul_eq_mul]
     ring
   choose K k1 k2 k3 k4 using ho
   have key := tens_max (V := fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) (A := fun _ => Mat R S)

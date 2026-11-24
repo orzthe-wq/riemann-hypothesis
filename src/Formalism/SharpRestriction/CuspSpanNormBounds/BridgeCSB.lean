@@ -243,8 +243,6 @@ variable {k r : ℕ}
 
 theorem continuous_lmulM (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Continuous (lmulM (k := k) (r := r) a) := by
-  have : (lmulM (k := k) (r := r) a) = fun x => mulP (a, x) := rfl
-  rw [this]
   exact continuous_mulP.comp (continuous_const.prodMk continuous_id)
 
 theorem haarS {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {μW μN : Measure (Mt k r)}
@@ -466,8 +464,7 @@ theorem Fil.mul {a b : ℕ} {X Y : Mat k r} (hX : Fil a X) (hY : Fil b Y) : Fil 
 
 theorem Fil.one : Fil 0 (1 : Mat k r) := by
   intro i j h
-  rw [Matrix.one_apply, if_neg]
-  intro e; rw [e] at h; omega
+  rw [Matrix.one_apply, if_neg (by rintro rfl; omega)]
 
 theorem Fil.eq_zero {X : Mat k r} {p : ℕ} (hp : 2 * r + 1 ≤ p) (h : Fil p X) : X = 0 := by
   ext i j
@@ -493,28 +490,23 @@ theorem exp_eq_sum {X : Mat k r} (hX : Fil 1 X) :
 theorem Fil.exp_sub_one {X : Mat k r} (hX : Fil 1 X) : Fil 1 (NormedSpace.exp X - 1) := by
   rw [exp_eq_sum hX, Finset.sum_range_succ']
   simp only [pow_zero, Nat.factorial_zero, Nat.cast_one, inv_one, one_smul, add_sub_cancel_right]
-  refine Fil.sum _ _ fun m _ => Fil.smul _ ?_
-  exact (hX.pow (m + 1)).mono (by omega)
+  exact Fil.sum _ _ fun m _ => Fil.smul _ ((hX.pow (m + 1)).mono (by omega))
 
 theorem Fil.pow_sub_pow {X Y : Mat k r} {p : ℕ} (hX : Fil 1 X) (hY : Fil 1 Y) (h : Fil p (X - Y)) (m : ℕ) :
     Fil (p + m) (X ^ (m + 1) - Y ^ (m + 1)) := by
   induction m with
   | zero => simpa using h
   | succ m ih =>
-    have e : X ^ (m + 1 + 1) - Y ^ (m + 1 + 1) = X * (X ^ (m + 1) - Y ^ (m + 1)) + (X - Y) * Y ^ (m + 1) := by
-      rw [Matrix.mul_sub, Matrix.sub_mul, ← pow_succ', ← pow_succ']; abel
-    rw [e]
-    refine Fil.add ?_ ?_
-    · exact (hX.mul ih).mono (by omega)
-    · exact (h.mul (hY.pow (m + 1))).mono (by omega)
+    rw [show X ^ (m + 1 + 1) - Y ^ (m + 1 + 1) =
+        X * (X ^ (m + 1) - Y ^ (m + 1)) + (X - Y) * Y ^ (m + 1) by
+      rw [Matrix.mul_sub, Matrix.sub_mul, ← pow_succ', ← pow_succ']; abel]
+    exact Fil.add ((hX.mul ih).mono (by omega)) ((h.mul (hY.pow (m + 1))).mono (by omega))
 
 theorem Fil.exp_sub_exp {X Y : Mat k r} {p : ℕ} (hX : Fil 1 X) (hY : Fil 1 Y) (h : Fil p (X - Y)) :
     Fil (p + 1) ((NormedSpace.exp X - NormedSpace.exp Y) - (X - Y)) := by
   rw [exp_eq_sum hX, exp_eq_sum hY, ← Finset.sum_sub_distrib, Finset.sum_range_succ', Finset.sum_range_succ']
   simp only [pow_zero, Nat.factorial_zero, Nat.cast_one, inv_one, one_smul, sub_self, add_zero, zero_add, pow_one,
-    Nat.factorial_one]
-  have e : ∀ s : Mat k r, s + (X - Y) - (X - Y) = s := fun s => by abel
-  rw [e]
+    Nat.factorial_one, add_sub_cancel_right]
   refine Fil.sum _ _ fun m _ => ?_
   rw [← smul_sub]
   exact Fil.smul _ ((Fil.pow_sub_pow hX hY h (m + 1)).mono (by omega))
@@ -527,10 +519,7 @@ theorem Fil.of_exp {X Y : Mat k r} {p : ℕ} (hX : Fil 1 X) (hY : Fil 1 Y)
     | zero => intro _; exact (hX.sub hY).mono (Nat.zero_le 1)
     | succ q ih =>
       intro hq
-      have h1 := Fil.exp_sub_exp hX hY (ih (by omega))
-      have h2 : Fil (q + 1) (NormedSpace.exp X - NormedSpace.exp Y) := h.mono hq
-      have := h2.sub h1
-      simpa using this
+      simpa using (h.mono hq).sub (Fil.exp_sub_exp hX hY (ih (by omega)))
   exact key p le_rfl
 
 theorem exp_injOn {X Y : Mat k r} (hX : Fil 1 X) (hY : Fil 1 Y) (h : NormedSpace.exp X = NormedSpace.exp Y) :
@@ -614,7 +603,6 @@ theorem adjH_exp {X : Mat k r} (hX : Fil 1 X) : adjH (NormedSpace.exp X) = Norme
   rw [exp_eq_sum hX, exp_eq_sum hX.adjH, adjH_sum]
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [adjH_smul, adjH_pow]
-  congr 1
   simp
 
 end Formalism.MainNotions.BridgeCSB
@@ -665,8 +653,7 @@ theorem mem_N_iff (g : Mat k r) : g ∈ Nset k r ↔ g ∈ UH (Hpk k r) ∧ Fil 
 def lieN (k r : ℕ) : Set (Mat k r) := {X | Fil 1 X ∧ adjH X + X = 0}
 
 theorem lieN_smul {X : Mat k r} (hX : X ∈ lieN k r) (t : ℝ) : ((t : ℂ) • X) ∈ lieN k r := by
-  refine ⟨hX.1.smul _, ?_⟩
-  rw [adjH_smul, Complex.star_def, Complex.conj_ofReal, ← smul_add, hX.2, smul_zero]
+  exact ⟨hX.1.smul _, by rw [adjH_smul, Complex.star_def, Complex.conj_ofReal, ← smul_add, hX.2, smul_zero]⟩
 
 theorem exp_mem_N {X : Mat k r} (hX : X ∈ lieN k r) : NormedSpace.exp X ∈ Nset k r := by
   rw [mem_N_iff]
@@ -681,15 +668,13 @@ theorem exp_smul_inj {d : ℕ} (A B : Matrix (Fin d) (Fin d) ℂ)
   letI : NormedAlgebra ℝ (Matrix (Fin d) (Fin d) ℂ) := Matrix.linftyOpNormedAlgebra
   have hA : HasDerivAt (fun u : ℝ => NormedSpace.exp (u • A)) (NormedSpace.exp ((0 : ℝ) • A) * A) 0 :=
     hasDerivAt_exp_smul_const A 0
-  have hB : HasDerivAt (fun u : ℝ => NormedSpace.exp (u • B)) (NormedSpace.exp ((0 : ℝ) • B) * B) 0 :=
-    hasDerivAt_exp_smul_const B 0
   have e : (fun u : ℝ => NormedSpace.exp (u • A)) = fun u : ℝ => NormedSpace.exp (u • B) := by
     funext u
     have hu : ∀ M : Matrix (Fin d) (Fin d) ℂ, u • M = ((u : ℂ) • M) := fun M => (Complex.coe_smul u M).symm
     rw [hu, hu]
     exact h u
   rw [e] at hA
-  have := hA.unique hB
+  have := hA.unique (hasDerivAt_exp_smul_const B 0)
   simpa using this
 
 theorem entry_zero_of_const' {d : ℕ} (X : Matrix (Fin d) (Fin d) ℂ) (i j : Fin d) (c : ℂ)
@@ -762,11 +747,7 @@ theorem Pg_of_Fil {p : ℕ} {M : Mat k r} (h : Fil (p + 1) M) : Pg p M = 0 := by
 
 theorem Pg_add (p : ℕ) (A B : Mat k r) : Pg p (A + B) = Pg p A + Pg p B := by
   ext i j
-  rw [Matrix.add_apply]
-  unfold Pg
-  split_ifs
-  · rfl
-  · rw [add_zero]
+  by_cases h : dg k r j = dg k r i + p <;> simp [Pg, Matrix.add_apply, h]
 
 theorem Pg_adjH (p : ℕ) (M : Mat k r) : Pg p (adjH M) = adjH (Pg p M) := by
   ext i j
@@ -781,9 +762,7 @@ theorem Pg_adjH (p : ℕ) (M : Mat k r) : Pg p (adjH M) = adjH (Pg p M) := by
 theorem lieN_add {X Y : Mat k r} (hX : X ∈ lieN k r) (hY : Y ∈ lieN k r) : X + Y ∈ lieN k r := by
   refine ⟨hX.1.add hY.1, ?_⟩
   rw [adjH_add]
-  have := congrArg₂ (· + ·) hX.2 hY.2
-  simp only [add_zero] at this
-  rw [← this]; abel
+  simpa only [add_assoc, add_comm, add_left_comm, add_zero] using congrArg₂ (· + ·) hX.2 hY.2
 
 theorem zero_mem_lieN : (0 : Mat k r) ∈ lieN k r := ⟨Fil.zero _, by simp [adjH]⟩
 
@@ -868,10 +847,7 @@ theorem Pg_apply (p : ℕ) (M : Mat k r) (i j : Fin (2 * r + k + 1)) :
 
 theorem Pg_smul (p : ℕ) (c : ℝ) (M : Mat k r) : Pg p (c • M) = c • Pg p M := by
   ext i j
-  rw [Matrix.smul_apply, Pg_apply, Pg_apply, Matrix.smul_apply]
-  split_ifs
-  · rfl
-  · rw [smul_zero]
+  by_cases h : dg k r j = dg k r i + p <;> simp [Pg_apply, Matrix.smul_apply, h]
 
 theorem Pg_Pg (p q : ℕ) (M : Mat k r) : Pg q (Pg p M) = if p = q then Pg p M else 0 := by
   by_cases h : p = q
@@ -891,12 +867,8 @@ theorem Pg_zero (p : ℕ) : Pg p (0 : Mat k r) = 0 := by
 theorem Pg_mem {X : Mat k r} (hX : X ∈ lieN k r) (p : ℕ) : Pg p X ∈ lieN k r := by
   refine ⟨fun i j hij => ?_, ?_⟩
   · rw [Pg_apply]
-    split_ifs with h
-    · exact hX.1 i j hij
-    · rfl
-  · have := congrArg (Pg p) hX.2
-    rw [Pg_add, Pg_adjH, Pg_zero] at this
-    exact this
+    by_cases h : dg k r j = dg k r i + p <;> simp [h, hX.1 i j hij]
+  · simpa [Pg_add, Pg_adjH, Pg_zero] using congrArg (Pg p) hX.2
 
 def PgL (p : ℕ) : Mat k r →ₗ[ℝ] Mat k r where
   toFun := Pg p
@@ -1029,9 +1001,7 @@ section Cont
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 theorem continuous_Ex : Continuous (Ex (k := k) (r := r)) := by
-  have h1 : Continuous fun x : Ix k r → ℝ => Lc (k := k) (r := r) x := LinearMap.continuous_of_finiteDimensional _
-  have h2 : Continuous fun M : Mat k r => NormedSpace.exp M := NormedSpace.exp_continuous
-  exact h2.comp h1
+  exact NormedSpace.exp_continuous.comp (LinearMap.continuous_of_finiteDimensional (Lc (k := k) (r := r)))
 
 end Cont
 
@@ -1041,9 +1011,7 @@ theorem Ex_mem (x : Ix k r → ℝ) : Matrix.of (Ex x) ∈ Nset k r := exp_mem_N
 
 theorem Ex_injective : Function.Injective (Ex (k := k) (r := r)) := by
   intro x y h
-  have h' : NormedSpace.exp (Lc x) = NormedSpace.exp (Lc (k := k) (r := r) y) := by
-    rw [← of_Ex, ← of_Ex, h]
-  exact Lc_injective (exp_injOn (Lc_mem x).1 (Lc_mem y).1 h')
+  exact Lc_injective (exp_injOn (Lc_mem x).1 (Lc_mem y).1 (by simpa [of_Ex] using congrArg Matrix.of h))
 
 theorem Ex_surj {m : Mt k r} (hm : Matrix.of m ∈ Nset k r) : ∃ x, Ex x = m := by
   obtain ⟨X, hX, he⟩ := exp_surj hm
@@ -1068,11 +1036,10 @@ theorem shear_translate {n0 : Mat k r} (hn0 : n0 ∈ Nset k r) (T : (Ix k r → 
   have hY' := (Lc_mem (T y)).1
   have h1 := Fil.exp_sub_exp hX hY hXY
   have h2 : Fil p (NormedSpace.exp (Lc x) - NormedSpace.exp (Lc y)) := by
-    have := (h1.mono (Nat.le_succ p)).add hXY
-    simpa using this
+    simpa using (h1.mono (Nat.le_succ p)).add hXY
   have hn1 : Fil 1 (n0 - 1) := ((mem_N_iff n0).1 hn0).2
   have h4 : Fil (p + 1) ((n0 - 1) * (NormedSpace.exp (Lc x) - NormedSpace.exp (Lc y))) := by
-    have := hn1.mul h2; rwa [add_comm] at this
+    simpa [add_comm] using hn1.mul h2
   have h3 : NormedSpace.exp (Lc (T x)) - NormedSpace.exp (Lc (T y)) =
       (NormedSpace.exp (Lc x) - NormedSpace.exp (Lc y)) + (n0 - 1) * (NormedSpace.exp (Lc x) - NormedSpace.exp (Lc y)) := by
     rw [eX, eY, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub]; abel
@@ -1089,8 +1056,7 @@ theorem shear_translate {n0 : Mat k r} (hn0 : n0 ∈ Nset k r) (T : (Ix k r → 
     rw [e]
     exact (h1.add h4).sub h7
   have := (Fil_Lc_iff (p + 1) _).1 h8 i (Nat.lt_succ_self p)
-  simp only [Pi.sub_apply] at this
-  linarith
+  simpa only [Pi.sub_apply, sub_eq_zero] using this
 
 def nuN (k r : ℕ) : Measure (Mt k r) := (volume : Measure (Ix k r → ℝ)).map Ex
 
@@ -1117,10 +1083,8 @@ theorem isHaarOn_nuN : IsHaarOn (Nset k r) (nuN k r) := by
     have hT : ∀ x, Ex (T x) = lmulM n0 (Ex x) := by
       intro x
       obtain ⟨y, hy⟩ := hsurj x
-      have : T x = y := by
-        show E' (lmulM n0 (Ex x)) = y
-        rw [← hy]; exact congrFun hE' y
-      rw [this, hy]
+      have hTx : T x = y := by simpa [T, ← hy] using congrFun hE' y
+      rw [hTx, hy]
     have hTm : Measurable T := hE'm.comp ((continuous_lmulM n0).measurable.comp mEx)
     have hmp : MeasurePreserving T volume volume :=
       shearMP (Ix k r) htI T hTm (shear_translate hn0 T hT)
@@ -1166,8 +1130,7 @@ attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebr
 
 theorem continuous_expLie (S : Set (Mat k r)) :
     Continuous fun x : lieE S => (fun i j => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ _)) i j : Mt k r) := by
-  have h2 : Continuous fun M : Mat k r => NormedSpace.exp M := NormedSpace.exp_continuous
-  exact h2.comp ((continuous_unrealify' _).comp continuous_subtype_val)
+  exact NormedSpace.exp_continuous.comp ((continuous_unrealify' _).comp continuous_subtype_val)
 
 end Cont2
 
@@ -1201,8 +1164,7 @@ def eL : (Ix k r → ℝ) →ₗ[ℝ] lieE (Nset k r) :=
 theorem eL_bijective : Function.Bijective (eL (k := k) (r := r)) := by
   constructor
   · intro x y h
-    have := congrArg Subtype.val h
-    exact Lc_injective (RL_injective this)
+    exact Lc_injective (RL_injective (congrArg Subtype.val h))
   · rintro ⟨y, hy⟩
     rw [lieE_N] at hy
     obtain ⟨X, hX, rfl⟩ := hy

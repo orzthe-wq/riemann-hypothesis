@@ -86,15 +86,15 @@ lemma isWeight_pow (hF : KRel ε E) {a b : Fin n} (he : ε a = ε b) {μ : Fin n
       simp [shift]
     · subst h1
       have h2' : ¬ c = b := fun h => h2 h.symm
-      simp only [shift, if_pos rfl, if_neg h2', if_neg h2, sub_zero, mul_one]
+      simp only [shift, if_neg h2', if_neg h2, sub_zero]
       push_cast
       simp only [mul_one, add_smul, one_smul]
       abel
     · subst h2
       have h1' : ¬ b = a := h1
-      simp only [shift, if_pos rfl, if_neg h1', zero_sub, mul_neg, mul_one, zero_sub]
+      simp only [shift, if_neg h1', zero_sub, mul_neg, zero_sub]
       push_cast
-      simp only [sub_eq_add_neg, mul_one, add_smul, neg_add, neg_smul, one_smul]
+      simp only [mul_one, add_smul, neg_add, neg_smul, one_smul]
       abel
     · have h2' : ¬ c = b := fun h => h2 h.symm
       simp only [shift, if_neg h1, if_neg h2', if_neg h2, sub_zero, mul_zero, add_zero]
@@ -102,7 +102,7 @@ lemma isWeight_pow (hF : KRel ε E) {a b : Fin n} (he : ε a = ε b) {μ : Fin n
 lemma norm_identity (hF : KRel ε E) (hU : KUnit ε E) {a b : Fin n} (he : ε a = ε b) {μ : Fin n → ℝ} {w : V}
     (hw : IsWeight E μ w) : ‖E a b w‖ ^ 2 = ‖E b a w‖ ^ 2 + (μ b - μ a) * ‖w‖ ^ 2 := by
   have hc := hF a b b a he he.symm
-  simp only [if_pos rfl, ↓reduceIte] at hc
+  simp only [↓reduceIte] at hc
   have hcw : E a b (E b a w) - E b a (E a b w) = (μ a : ℂ) • w - (μ b : ℂ) • w := by
     have := congrArg (fun T : Module.End ℂ V => T w) hc
     simpa [Module.End.mul_apply, hw a, hw b] using this
@@ -131,7 +131,7 @@ lemma string_bound (hF : KRel ε E) (hU : KUnit ε E) {a b : Fin n} (hab : a ≠
       rw [pow_succ', Module.End.mul_apply]
     have hE1 : (E a b ^ (k + 1)) z = E a b ((E a b ^ k) z) := by rw [pow_succ', Module.End.mul_apply]
     have hsh : shift μ a b (k + 1) b - shift μ a b (k + 1) a = μ b - μ a - 2 * ((k : ℝ) + 1) := by
-      simp only [shift, if_neg hab, if_neg (Ne.symm hab), if_pos rfl, ↓reduceIte]; push_cast; ring
+      simp only [shift, if_neg hab, if_neg (Ne.symm hab), ↓reduceIte]; push_cast; ring
     have hcs : ‖(E a b ^ (k + 1)) z‖ ^ 2 ≤ ‖E b a ((E a b ^ (k + 1)) z)‖ * ‖(E a b ^ k) z‖ := by
       have h1 : inner ℂ (E b a ((E a b ^ (k + 1)) z)) ((E a b ^ k) z) =
           inner ℂ ((E a b ^ (k + 1)) z) ((E a b ^ (k + 1)) z) := by
@@ -226,18 +226,18 @@ lemma swap_weight_of_le (hF : KRel ε E) (hU : KUnit ε E) {L : Submodule ℂ V}
     induction j with
     | zero =>
       rw [zero_add, pow_one, kcomm_apply hF he he.symm, hEu, map_zero, zero_add]
-      simp only [if_pos rfl, ↓reduceIte, pow_zero, Module.End.one_apply, hνu a, hνu b]
+      simp only [↓reduceIte, pow_zero, Module.End.one_apply, hνu a, hνu b]
       rw [← sub_smul]
       congr 1
       push_cast
       ring
     | succ j ih =>
       rw [pow_succ' (E b a) (j + 1), Module.End.mul_apply, kcomm_apply hF he he.symm, ih, map_smul]
-      simp only [if_pos rfl, ↓reduceIte]
+      simp only [↓reduceIte]
       have hwj := isWeight_pow hF he.symm hνu (j + 1)
       rw [hwj a, hwj b, ← Module.End.mul_apply (E b a), ← pow_succ', ← sub_smul, ← add_smul]
       congr 1
-      simp only [shift, if_neg hab, if_neg (Ne.symm hab), if_pos rfl, ↓reduceIte]
+      simp only [shift, if_neg hab, if_neg (Ne.symm hab), ↓reduceIte]
       push_cast
       ring
   have hnormlow : ∀ j : ℕ, ‖(E b a ^ (j + 1)) ((E a b ^ K') z)‖ ^ 2 =
@@ -299,12 +299,12 @@ lemma swap_weight_of_le (hF : KRel ε E) (hU : KUnit ε E) {L : Submodule ℂ V}
     by_cases hca : c = a
     · subst hca
       rw [Equiv.swap_apply_left]
-      simp only [if_pos rfl, ↓reduceIte, if_neg hab, sub_zero, mul_one]
+      simp only [↓reduceIte, if_neg hab, sub_zero, mul_one]
       linarith
     · by_cases hcb : c = b
       · subst hcb
         rw [Equiv.swap_apply_right]
-        simp only [if_pos rfl, ↓reduceIte, if_neg hca, zero_sub, mul_neg, mul_one]
+        simp only [↓reduceIte, if_neg hca, zero_sub, mul_neg, mul_one]
         linarith
       · rw [Equiv.swap_apply_of_ne_of_ne hca hcb]
         simp only [if_neg hca, if_neg hcb, sub_zero, mul_zero, add_zero]

@@ -308,7 +308,7 @@ theorem exists_norm_sym (hL : L.IsLB) (θ : ThetaGrp A L k T) (nu : LB.Gen (negL
   obtain ⟨α, hα, v⟩ := exists_gen hL (φ' := ![(snd T A).left, (snd T A ≫ ι[A]).left]) (ε' := ![k, -k])
     (fun U _ h => by
       simp only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_two, Matrix.cons_val_zero,
-        Matrix.cons_val_one, o₁, o₂, neg_neg, zpow_neg, inv_inv, inv_mul_cancel, _root_.mul_one])
+        Matrix.cons_val_one, o₁, o₂, zpow_neg, inv_inv, inv_mul_cancel, _root_.mul_one])
     (LB.mulGen L _ _ _ _ nu (LB.invGen L _ _ (LB.pullGen L _ _ nu o.left)))
     (mulGen_isGen _ _ _ _ _ _ _ hnu (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ hnu _)))
   have v' : ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) z J, Good L z J → val α r z J =
@@ -388,7 +388,7 @@ theorem sq_frame_of_symmetric : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F
       rw [eG, Hom.inv_def, Category.id_comp]
       simp [Fin.prod_univ_two, mul_comm])
     (GeneratorPullback.powGen U.LG.L _ _ (LB.invGen U.LG.L _ _ U.symG) N) (powGen_isGen _ _ _ _ (invGen_isGen _ _ _ _ U.symG_gen) N)
-  obtain ⟨⟨κ, hκ⟩, hP⟩ := GlobalTheory.T.expansion_pullback_section_endomorphism hL R I hA D A G hS U F E
+  obtain ⟨⟨κ, hκ⟩, hP⟩ := _root_.GlobalTheory.UT.PullExp.main hL R I hA D A G hS U F E
     (fun a b e => neg_injective ((eh a).symm.trans (e.trans (eh b)))) N N hN hN ⟨β, hβ⟩
   have hP' := hP w₀ ρ hρ (negT A.A _) (snd _ _ ≫ ι[A.A]) (lift_snd _ _) (lift_fst _ _)
     (by rw [eA, Hom.inv_def, Category.id_comp]) α hα (corr_of_val A.isLB fun y J' hJ' => by

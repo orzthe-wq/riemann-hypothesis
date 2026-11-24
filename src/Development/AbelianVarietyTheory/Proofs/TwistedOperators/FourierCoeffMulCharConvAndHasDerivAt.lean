@@ -91,7 +91,7 @@ theorem _root_.GlobalTheory.fourierCoeff_mul_char_conv_and_hasDerivAt :
     set g : G → ℂ := fun y => Ψ y * starRingEnd ℂ (χ y) with hg
     have hgper : ∀ (γ : Γ) (y : G), g (γ +ᵥ y) = g y := by
       intro γ y
-      simp only [hg, AddSubgroup.vadd_def, vadd_eq_add, hmul, map_mul, hχΓ γ γ.2, map_one, one_mul,
+      simp only [hg, AddSubgroup.vadd_def, vadd_eq_add, hmul, hχΓ γ γ.2, one_mul,
         hΨ γ γ.2]
     have hpt : ∀ y, Ψ (z + y) * starRingEnd ℂ (χ y) = g (z + y) * χ z := by
       intro y

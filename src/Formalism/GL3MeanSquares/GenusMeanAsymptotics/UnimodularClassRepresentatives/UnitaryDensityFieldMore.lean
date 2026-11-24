@@ -208,7 +208,7 @@ theorem cnt_one_of_mem (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
   have := MeanC.finite_quot_pow h𝔭 1
   have := Fintype.ofFinite (𝓞 F ⧸ 𝔭 ^ 1)
   rw [finsum_eq_sum_of_fintype,
-    Finset.sum_congr rfl fun n' _ => nkCount_eq_cnt hK hF hs hd (by first | exact hL | exact hL.toIsLattice) hLi h𝔭 hv le_rfl _,
+    Finset.sum_congr rfl fun n' _ => nkCount_eq_cnt hK hF hs hd (by first | exact hL) hLi h𝔭 hv le_rfl _,
     ← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ (0 : 𝓞 F ⧸ 𝔭 ^ 1))] at h0
   have h1 : (cnt hF 𝔭 1 (finrank K V) (ι (Quotient.out (0 : 𝓞 F ⧸ 𝔭 ^ 1))) : ℝ) +
       ∑ n' ∈ Finset.univ.erase (0 : 𝓞 F ⧸ 𝔭 ^ 1),

@@ -2,8 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.MatrixTwoByTwoCongr
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.GlobalFnsHolds
-public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LieBasisCoordinatesBijectiveTangentStatement
-public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ModelChartLiftCoordsGeneratorIndepStatement
+public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LieBasisCoordinatesBijectiveTangent
+public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ModelChartLiftCoordsGeneratorIndep
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.IsoEqOfMapsAlongSection
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -64,11 +64,7 @@ theorem eq_of_loc {X : Scheme.{0}} {U : X.Opens} (a b : Γ(X, U))
   have e2 := X.presheaf.germ_res_apply (homOfLE hW) p hpW b
   exact e1.symm.trans ((congrArg _ e).trans e2)
 
-theorem sec_ext {X : Scheme.{0}} {L : LB X} {s t : LB.Sec L} (h : ∀ i, s.f i = t.f i) : s = t := by
-  cases s
-  cases t
-  congr 1
-  exact funext h
+alias sec_ext := _root_.ReciprocityTheory.ChartRestriction.G.DVR.SecOps.sec_ext
 
 theorem isoMaps_unique {X : Scheme.{0}} {L M : LB X} (hL : L.IsLB) (w : LB.Iso L M) (σ : LB.Sec L)
     {s s' : LB.Sec M} (h : IsoMaps w σ s) (h' : IsoMaps w σ s') : s = s' := by
@@ -141,10 +137,10 @@ theorem frPt_eq_of_tie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
   obtain rfl : x = x' := hx
   obtain ⟨Λ, hv, hs⟩ := hy
   obtain ⟨Λ', hv', hs'⟩ := hz
-  obtain ⟨k1, k2⟩ := GlobalTheory.T.modelChartLift_coords_generator_indep E H Dw l Xo c O β Y M L f x Λ' Λ
+  obtain ⟨k1, k2⟩ := _root_.GlobalTheory.Reg.LiftUnique.lift_indep E H Dw l Xo c O β Y M L f x Λ' Λ
   obtain rfl : v = v' := by
     funext τ i
-    exact ((GlobalTheory.T.lieBasis_coordinates_bijective_tangent E H Dw l Xo c O β Y M L f x Λ).1 _).unique (hv τ i) (k1 _ _ (hv' τ i))
+    exact ((_root_.GlobalTheory.Reg.vec_bijective E H Dw l Xo c O β Y M L f x Λ).1 _).unique (hv τ i) (k1 _ _ (hv' τ i))
   obtain rfl : s = s' := thTie_unique Λ hs (k2 _ hs')
   rfl
 

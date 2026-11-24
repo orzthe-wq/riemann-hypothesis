@@ -349,7 +349,7 @@ theorem planch {φ : V → ℂ} (hφ : SB φ) : ∫ y, ‖fou χ μ φ y‖ ^ 2 
     rw [neg_neg, fou] at this
     simp only [mul_right_comm _ (conj (φ x)), integral_mul_const]
     rw [this, Complex.ofReal_pow, Complex.mul_conj']
-  simp only [e1, e2, integral_ofReal] at e
+  simp only [e1, e2] at e
   exact_mod_cast e
 
 theorem schur {T : (V → ℂ) → (V → ℂ)} (hadd : ∀ φ φ', SB φ → SB φ' → T (φ + φ') = T φ + T φ')

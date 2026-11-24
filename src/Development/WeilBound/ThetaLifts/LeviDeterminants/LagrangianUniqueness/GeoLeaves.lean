@@ -87,18 +87,4 @@ theorem hermitian_plane_theta_cusp_integral : ∀ (F E : Type) [Field F] [Number
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he y
   exact GeoAdm.comp_mem_adm F E σ B _ _ _ _ _ _ _ _ M M₁ _ _ _ e hP.good hP₁.good he _ (proj_adm F _ y)
 
-theorem evaluation_intertwining_support : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d n₁ d₁ : ℕ)
-    (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)
-    (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))))
-    (e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁), M.IsGood B.ψ → M₁.IsGood B.ψ → IsEv B M M₁ ι ι' I e →
-      ∃ Φ ∈ schA F (Fin n × Fin d), e Φ ≠ 0 := by
-  exact GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero
-
-theorem evaluation_intertwining_of_models : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d n₁ d₁ : ℕ)
-    (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)
-    (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))))
-    (e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁), M.IsGood B.ψ → M₁.IsGood B.ψ → IsEv B M M₁ ι ι' I e →
-      ∀ l ∈ (adeleClass F).adm (Fin n₁ × Fin d₁), l ∘ₗ e ∈ (adeleClass F).adm (Fin n × Fin d) := by
-  exact GeoAdm.comp_mem_adm
-
 end PositivityTheory.ThKF0

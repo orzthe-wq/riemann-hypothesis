@@ -3,52 +3,9 @@ module
 public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementC
 public import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FinalS
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.TopsChoicePartA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -145,12 +102,9 @@ theorem norm_eval_le (Q : Polynomial ℤ) {x : K} (hx : ‖x‖ ≤ 1) :
     rw [norm_pow]
     first
     | exact pow_le_one₀ (norm_nonneg _) hx
-    | exact pow_le_one _ (norm_nonneg _) hx
   rw [norm_mul]
   first
   | exact mul_le_one₀ hc (norm_nonneg _) hp
-  | exact mul_le_one' hc hp
-  | nlinarith [norm_nonneg ((Int.castRingHom K) (Q.coeff i)), norm_nonneg (x ^ i)]
 
 theorem norm_le_inv_of_lt_one {l : ℕ} (hl : 1 < l)
     (hval : ∀ a : K, a ≠ 0 → ∃ k : ℤ, ‖a‖ = (l : ℝ) ^ k) {y : K} (hy : ‖y‖ < 1) :
@@ -166,12 +120,10 @@ theorem norm_le_inv_of_lt_one {l : ℕ} (hl : 1 < l)
     have h1 : (1 : ℝ) ≤ (l : ℝ) ^ k := by
       first
       | exact one_le_zpow₀ hl'.le hc
-      | exact one_le_zpow_of_nonneg₀ hl'.le hc
     linarith
   have h2 : (l : ℝ) ^ k ≤ (l : ℝ) ^ (-1 : ℤ) := by
     first
     | exact zpow_le_zpow_right₀ hl'.le (by omega)
-    | exact zpow_le_of_le hl'.le (by omega)
   simpa using h2
 
 end Normed
@@ -270,7 +222,7 @@ theorem simeq_fixed : SimeqFixed := by
   obtain ⟨h0, hI⟩ := hs
   rw [sub_zero] at h0 hI
   have hp0 : l ≠ 0 := hp.ne_zero
-  have hD := Formalism.InvariantFactorPaths.G7.Top.dworkMv
+  have hD := _root_.Formalism.InvariantFactorPaths.G7.dwork_multivariable
   have h0' : MvPowerSeries.constantCoeff (MvPowerSeries.C c * f) = 0 := by simp [h0]
   refine ⟨by rwa [sub_zero], ?_⟩
   rw [sub_zero, hD K τ l σ hp hpn hσ _ h0']
@@ -290,7 +242,7 @@ theorem simeq_closed : SimeqClosed := by
   have hiso := sigma_isometry K l σ hU
   obtain ⟨hp, hp2, hpn, hval, hσ⟩ := hU
   have hp0 : l ≠ 0 := hp.ne_zero
-  have hD := Formalism.InvariantFactorPaths.G7.Top.dworkMv
+  have hD := _root_.Formalism.InvariantFactorPaths.G7.dwork_multivariable
   have hcont : Continuous σ := (AddMonoidHomClass.isometry_of_norm σ hiso).continuous
   have hf0 : ∀ k, MvPowerSeries.constantCoeff (f k) = 0 := fun k => by
     have := (hf k).1

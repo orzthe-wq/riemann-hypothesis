@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsTorsionFreeOfForallExists
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntersectionNumberEqGenericRankMulProjCurveStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntersectionNumberEqGenericRankMulProjCurve
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -134,6 +134,6 @@ theorem interNumOn_eq_residueDegree_mul : ∀ (κ : Type) [Field κ] (Z Z' : Sch
       interNum κ (structureModule Z) ![N] := by
   intro κ _ Z Z' _ _ _ f _ hP hd hg N hN
   haveI := isFiniteQC_pushforward_structureModule f
-  rw [interNumOn_def, GlobalTheory.T.intersectionNumber_eq_genericRank_mul_projCurve κ Z hP hd _ N hN, genRank_pushforward f hg]
+  rw [interNumOn_def, _root_.GlobalTheory.VB.interNum_one_eq_genRank_mul κ Z hP hd _ N hN, genRank_pushforward f hg]
 
 end GlobalTheory.ProjFin

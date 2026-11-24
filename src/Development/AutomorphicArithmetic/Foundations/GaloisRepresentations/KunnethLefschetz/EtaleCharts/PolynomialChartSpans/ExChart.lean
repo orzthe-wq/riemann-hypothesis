@@ -75,8 +75,7 @@ private theorem mem_map_ker_app_of_pullback_fst_app_eq_zero {X Y S : Scheme.{0}}
     have e : (RingHom.quotientKerEquivOfSurjective hδ).symm ((g.app N).hom b) =
         Ideal.Quotient.mk _ b := by
       rw [RingEquiv.symm_apply_eq]; rfl
-    simp only [ψ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e,
-      Ideal.Quotient.lift_mk]
+    simp only [ψ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e]
     exact Ideal.Quotient.lift_mk _ _ _
   let t : Spec (CommRingCat.of (Γ(X, V) ⧸ J)) ⟶ X :=
     Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ hV.fromSpec
@@ -108,8 +107,7 @@ private theorem mem_map_ker_app_of_pullback_fst_app_eq_zero {X Y S : Scheme.{0}}
     simp [ha]
   have h2 : t.appLE V ⊤ e0 = CommRingCat.ofHom (Ideal.Quotient.mk J) ≫
       (Scheme.ΓSpecIso (CommRingCat.of (Γ(X, V) ⧸ J))).inv := by
-    simp only [t, Scheme.Hom.comp_appLE, IsAffineOpen.fromSpec_app_self, Category.assoc,
-      Scheme.Hom.map_appLE]
+    simp only [t, Scheme.Hom.comp_appLE, IsAffineOpen.fromSpec_app_self, Category.assoc]
     rw [Scheme.ΓSpecIso_inv_naturality]
     rfl
   rw [h2] at h1

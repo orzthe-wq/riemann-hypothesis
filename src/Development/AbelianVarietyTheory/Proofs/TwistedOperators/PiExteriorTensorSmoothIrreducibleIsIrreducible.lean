@@ -59,7 +59,7 @@ theorem piTensor_isIrreducible : GlobalTheory.Published.BernsteinZelevinskyFinit
   intro hBZ k _ _ _ _ β _ c _ _ s
   obtain ⟨hAdm, -, -, -⟩ := hBZ k
   exact GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur (fun j => (s j).ρ) (fun j => (s j).irr)
-    fun j φ hφ => GlobalTheory.SchurAdm.schur_admissible (GL (c j) k) (KO k (c j)) GlobalTheory.SplitFlip.isOpen_KO
+    fun j φ hφ => _root_.GlobalTheory.SchurAdmissibility.schur_admissible (GL (c j) k) (KO k (c j)) GlobalTheory.SplitFlip.isOpen_KO
       GlobalTheory.SplitFlip.isCompact_KO (s j).V (s j).ρ (s j).irr
       (hAdm (c j) (s j).V (s j).ρ (s j).smooth (s j).irr) φ hφ
 

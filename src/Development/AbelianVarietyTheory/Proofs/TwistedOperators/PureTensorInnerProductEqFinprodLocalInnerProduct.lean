@@ -60,9 +60,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
-theorem wAt_zero {m n : ℕ} (p : Place D) : wAt p (0 : Mx D m n) = 0 := by
-  rw [wAt_eq_smul, smul_zero]
-
 theorem wAt_neg_wAt_self {m n : ℕ} (q : Place D) (w : Mx D m n) : wAt q (-(wAt q w)) = -(wAt q w) := by
   have hq : idem D q * idem D q = idem D q := (GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D).1 q
   rw [wAt_eq_smul, wAt_eq_smul, smul_neg, smul_smul, hq]
@@ -92,11 +89,7 @@ theorem finite_mulSupport_ip (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (hμ : I
   rw [Function.mem_mulSupport] at hp
   by_contra hout
   simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hout
-  exact hp (by rw [hout.1, hout.2]; exact ip_base hb hμ)
-
-private theorem heisO_zero_twisted_operators (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
-  funext u
-  simp [heisO, symplOH, symplO, hO]
+  exact hp (by rw [hout.1, hout.2]; exact _root_.GlobalTheory.LocalPure.ip_base hb hμ)
 
 theorem pureTensor_innerProduct_eq_finprod_local_of_finset (hb : IsBase ψ θ S T sS sT ΛS ΛT f₀) (hμ : IsCovolOne (ratL T S) μ 𝓕) (s : Finset (Place D)) :
     ∀ (x₁ x₂ : Place D → WO S T → ℂ) (f₁ f₂ : WO S T → ℂ), (∀ p, p ∉ s → x₁ p = f₀) →
@@ -121,7 +114,7 @@ theorem pureTensor_innerProduct_eq_finprod_local_of_finset (hb : IsBase ψ θ S 
         (GlobalTheory.T.isPureTensor_base_vector_and_local_factor D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ).1
     subst hf₁
     obtain ⟨hfin, hprod⟩ := h₂.2.2 0
-    simp only [wAt_zero, heisO_zero_twisted_operators] at hfin hprod
+    simp only [_root_.GlobalTheory.LatticeLocal.wAt_zero, _root_.GlobalTheory.OrientedHeis.heisO_zero] at hfin hprod
     rw [hsymm f₂ f₁ h₂.2.1 hθ₀, hprod, map_finprod _ hfin]
     exact finprod_congr fun p => (hsymm (x₂ p) f₁ (h₂.1.1 p).1 hθ₀).symm
   | insert q s hq ih =>
@@ -155,12 +148,12 @@ theorem pureTensor_innerProduct_eq_finprod_local_of_finset (hb : IsBase ψ θ S 
     have hθq : IsThetaFunO ψ S T (x₂ q) := (h₂.1.1 q).1
     have key := hc f₂ (x₂ q) (∏ᶠ (p) (_ : p ≠ q), ipO μ 𝓕 (x₁ p) (x₂ p)) h₂.2.1 hθq (fun w => by
       rw [hadj g₁ f₂ hg₁.2.1 h₂.2.1]
-      have hpw := GlobalTheory.T.heisenberg_operator_pure_tensor_place_by_place D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ x₂ f₂ h₂ (-(wAt q w))
+      have hpw := _root_.GlobalTheory.PlaceTensorHeis.isPure_heisO D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hb hμ x₂ f₂ h₂ (-(wAt q w))
       rw [ih _ _ _ _ hoff hg₁ hpw, ← mul_finprod_cond_ne q (finite_mulSupport_ip hb hμ hres hpw.1),
         Function.update_self, wAt_neg_wAt_self, ← hadj f₀ (x₂ q) hθ₀ hθq, mul_comm]
       congr 1
       refine finprod_congr fun p => finprod_congr fun hp => ?_
-      rw [Function.update_of_ne hp, wAt_neg_wAt_ne hp, heisO_zero_twisted_operators])
+      rw [Function.update_of_ne hp, wAt_neg_wAt_ne hp, _root_.GlobalTheory.OrientedHeis.heisO_zero])
     rw [key, mul_comm]
     exact mul_finprod_cond_ne q (finite_mulSupport_ip hb hμ h₁.1 h₂.1)
 

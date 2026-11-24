@@ -1,5 +1,6 @@
 module
 
+import Formalism.LocalToGlobal.SubmoduleMembership
 public import Formalism.LocalToGlobal.CMDeterminantIdeals.DetIdeal
 public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUniqueIdeleOfLinearEquivQuotientLocal
@@ -97,17 +98,8 @@ theorem mem_iff_forall_exists_smul_mem {V : Type} [AddCommGroup V] [Module (𝓞
     z ∈ Λ ↔ ∀ p : HeightOneSpectrum (𝓞 K), ∃ s : 𝓞 K, s ∉ p.asIdeal ∧ s • z ∈ Λ := by
   constructor
   · intro hz p
-    exact ⟨1, fun h => p.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simpa using hz⟩
-  · intro h
-    let A : Ideal (𝓞 K) := Λ.comap (LinearMap.toSpanSingleton (𝓞 K) V z)
-    have hA : A = ⊤ := by
-      by_contra hne
-      obtain ⟨m, hm, hAm⟩ := Ideal.exists_le_maximal A hne
-      have hm0 : m ≠ ⊥ := Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)
-      obtain ⟨s, hs, hsz⟩ := h ⟨m, hm.isPrime, hm0⟩
-      exact hs (hAm (by simpa [A] using hsz))
-    have : (1 : 𝓞 K) ∈ A := hA ▸ Submodule.mem_top
-    simpa [A] using this
+    exact ⟨1, p.asIdeal.primeCompl.one_mem, by simpa using hz⟩
+  · exact Submodule.mem_of_forall_heightOne_exists_smul_mem (NumberField.RingOfIntegers.not_isField K) Λ z
 
 theorem local_global_ideal_lattice : ∀ (K : Type) [Field K] [NumberField K],
     (∀ (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) (cl : HeightOneSpectrum (𝓞 K) → K), I ≠ 0 →

@@ -318,10 +318,10 @@ variable (a) in
 def mulChi (χ : HChar E) : Sm E a ≃ₗ[ℂ] Sm E a where
   toFun φ := ⟨fun x => φ.1 x * (chiDet a χ x : ℂˣ), mul_chi_mem_Sm χ φ.2⟩
   invFun φ := ⟨fun x => φ.1 x * (chiDet a χ⁻¹ x : ℂˣ), mul_chi_mem_Sm χ⁻¹ φ.2⟩
-  map_add' φ ψ := Subtype.ext <| funext fun x => add_mul _ _ _
-  map_smul' c φ := Subtype.ext <| funext fun x => mul_assoc _ _ _
-  left_inv φ := Subtype.ext <| funext fun x => Units.mul_inv_cancel_right _ _
-  right_inv φ := Subtype.ext <| funext fun x => Units.inv_mul_cancel_right _ _
+  map_add' φ ψ := Subtype.ext <| funext fun _x => add_mul _ _ _
+  map_smul' c φ := Subtype.ext <| funext fun _x => mul_assoc _ _ _
+  left_inv φ := Subtype.ext <| funext fun _x => Units.mul_inv_cancel_right _ _
+  right_inv φ := Subtype.ext <| funext fun _x => Units.inv_mul_cancel_right _ _
 
 @[simp] theorem mulChi_apply (χ : HChar E) (φ : Sm E a) (g : GA E a) :
     (mulChi a χ φ).1 g = φ.1 g * (chiDet a χ g : ℂˣ) := rfl
@@ -354,7 +354,7 @@ theorem fderiv_det_one (X : Lie E a) :
     simp only [Polynomial.eval_eq_sum_range]
     fun_prop
   have h2 := ((hr.const_mul (Matrix.of X).trace).const_add 1).add (hP.hasDerivAt.mul (hr.mul hr))
-  simp only [mul_one, zero_smul, Pi.mul_apply, mul_zero, zero_mul, add_zero] at h2
+  simp only [mul_one, zero_smul, Pi.mul_apply, mul_zero, add_zero] at h2
   refine h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)
   have e : Matrix.of (oneL E a + t • X) = 1 + (t • (1 : Cinf E)) • Matrix.of X := by
     rw [smul_assoc, one_smul]; rfl
@@ -377,7 +377,7 @@ theorem lie_mulChi (χ : HChar E) (X : Lie E a) (φ : Sm E a) :
   change fderiv ℝ (chart (fun x => φ.1 x * (chiDet a χ x : ℂˣ)) g) _ X = (lieD X φ.1 g + _ * φ.1 g) * _
   rw [chart_mul_chi]
   refine (congrArg (fun L : Lie E a →L[ℝ] ℂ => L X) h2).trans ?_
-  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply,
+  simp only [_root_.add_apply, _root_.smul_apply, ContinuousLinearMap.comp_apply,
     fderiv_det_one, h1, h3, h4, smul_eq_mul, lieD]
   ring
 

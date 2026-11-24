@@ -105,7 +105,4 @@ theorem exists_den (p : ℕ) (S : Set (AfP p)) (hS : IsCompact S) :
   rw [hk, Nat.cast_mul, mul_comm ((m a : ℕ) : AfP p), mul_assoc]
   exact mul_mem (natCast_mem _ k) hfa'
 
-theorem main : ∀ (p : ℕ) (S : Set (AfP p)), IsCompact S → ∃ D : ℕ, 0 < D ∧ ∀ a ∈ S, (D : AfP p) * a ∈ LevelExists.intAfP p :=
-  exists_den
-
 end GlobalTheory.AfPCpctDen

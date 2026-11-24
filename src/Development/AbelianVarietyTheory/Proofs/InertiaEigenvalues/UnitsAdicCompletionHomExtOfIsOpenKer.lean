@@ -64,7 +64,7 @@ theorem units_adicCompletion_hom_ext (F : Type) [Field F] [NumberField F]
   set S : Set (v.adicCompletion F)ˣ :=
     (fun y => x⁻¹ * y) ⁻¹' ((f.ker : Set (v.adicCompletion F)ˣ) ∩ g.ker) with hS
   have hSo : IsOpen S := (hf.inter hg).preimage (continuous_const.mul continuous_id)
-  have hxS : x ∈ S := by simp [hS, MonoidHom.mem_ker]
+  have hxS : x ∈ S := by simp [hS]
   obtain ⟨U, hU, hUS⟩ := Units.isEmbedding_val₀.isInducing.isOpen_iff.1 hSo
   have hxU : (x : v.adicCompletion F) ∈ U := by
     rw [← hUS] at hxS; exact hxS

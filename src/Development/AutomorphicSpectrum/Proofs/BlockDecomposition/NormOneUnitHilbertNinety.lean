@@ -1,25 +1,41 @@
 module
 
+public import Mathlib.Algebra.Field.Defs
+public import Mathlib.Algebra.Ring.Hom.Defs
+public import Mathlib.Basic.Finite.Defs
+public import Mathlib.Algebra.Algebra.Defs
+public import Mathlib.Algebra.Algebra.Equiv
+public import Mathlib.Algebra.Field.Subfield.Basic
+public import Mathlib.Algebra.Group.Subgroup.ZPowers.Basic
+public import Mathlib.Algebra.Ring.Int.Parity
+public import Mathlib.FieldTheory.Finite.GaloisField
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmFieldStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsConjMulEq
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField
 public import Formalism.LocalRingCardinality.SpanPowerMembership.Adelic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -27,7 +43,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -40,10 +55,72 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsConjMulEq, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormOneUnitHilbertNinety
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsConjMulEq =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsConjMulEq", "h": "module\n\npublic import Mathlib.Algebra.Field.Defs\npublic import Mathlib.Algebra.Ring.Hom.Defs\npublic import Mathlib.Basic.Finite.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Algebra.Algebra.Defs\npublic import Mathlib.Algebra.Algebra.Equiv\npublic import Mathlib.Algebra.Field.Subfield.Basic\npublic import Mathlib.Algebra.Group.Subgroup.ZPowers.Basic\npublic import Mathlib.Algebra.Ring.Int.Parity\npublic import Mathlib.FieldTheory.Finite.GaloisField\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.CompanionTheory.FFNorm
+
+theorem exists_conj_mul_eq : ∀ (κ : Type) [Field κ] [Finite κ] (τ : κ →+* κ), (∀ x, τ (τ x) = x) →
+    (∃ x, τ x ≠ x) → ∀ c : κ, τ c = c → ∃ s : κ, τ s * s = c := by
+  intro κ _ _ τ hinv hne c hc
+  classical
+  let F : Subfield κ := RingHom.eqLocusField τ (RingHom.id κ)
+  have hF : ∀ y : F, τ (y : κ) = y := fun y => y.2
+  let σ : κ ≃ₐ[F] κ := AlgEquiv.ofRingEquiv (f := RingEquiv.ofRingHom τ τ
+      (RingHom.ext hinv) (RingHom.ext hinv)) (fun y => hF y)
+  have hσ : ∀ x, σ x = τ x := fun x => rfl
+  have hσ1 : σ ≠ 1 := by
+    obtain ⟨x, hx⟩ := hne
+    intro h
+    exact hx (by rw [← hσ, h]; rfl)
+  have hall : ∀ ρ : κ ≃ₐ[F] κ, ρ = 1 ∨ ρ = σ := by
+    have hfix : IntermediateField.fixedField (Subgroup.zpowers σ) = ⊥ := by
+      rw [eq_bot_iff]
+      intro x hx
+      have : σ x = x := hx ⟨σ, Subgroup.mem_zpowers σ⟩
+      exact IntermediateField.mem_bot.2 ⟨⟨x, this⟩, rfl⟩
+    have htop : Subgroup.zpowers σ = ⊤ := by
+      rw [← IntermediateField.fixingSubgroup_fixedField (Subgroup.zpowers σ), hfix]
+      exact IntermediateField.fixingSubgroup_bot
+    intro ρ
+    have hρ : ρ ∈ Subgroup.zpowers σ := htop ▸ Subgroup.mem_top ρ
+    have hsq : σ ^ 2 = 1 := by
+      ext x
+      simp [pow_two, hσ, hinv]
+    obtain ⟨n, rfl⟩ := hρ
+    rcases Int.even_or_odd' n with ⟨k, rfl | rfl⟩
+    · left; simp [zpow_mul, hsq]
+    · right; simp [zpow_add, zpow_mul, hsq]
+  have huniv : (Finset.univ : Finset (κ ≃ₐ[F] κ)) = {1, σ} := by
+    ext ρ
+    simpa using hall ρ
+  obtain ⟨a, ha⟩ := FiniteField.norm_surjective F κ (⟨c, hc⟩ : F)
+  refine ⟨a, ?_⟩
+  have h := Algebra.norm_eq_prod_automorphisms F a
+  rw [huniv, Finset.prod_pair hσ1.symm, ha] at h
+  have h2 : algebraMap F κ (⟨c, hc⟩ : F) = c := rfl
+  rw [h2] at h
+  simpa [hσ, mul_comm] using h.symm
+
+end GlobalTheory.CompanionTheory.FFNorm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsConjMulEq =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormOneUnitHilbertNinety =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormOneUnitHilbertNinety", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PlaceConjugationPropertiesCmField\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsConjMulEq\npublic import Formalism.LocalRingCardinality.SpanPowerMembership.Adelic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Matrix Polynomial GlobalTheory.BCT GlobalTheory.UnitaryBC Formalism.UG
@@ -91,7 +168,7 @@ theorem exists_conj_mul_eq_of_residue_one {R : Type} [CommRing R] [HenselianLoca
     exact neg_mem (Ideal.mul_mem_left _ _ ha)
   have hP2 : IsUnit (Ideal.Quotient.mk (maximalIdeal R) (P.derivative.eval 1)) := by
     have : P.derivative.eval 1 = 1 := by
-      simp [P, derivative_X_pow]
+      simp [P]
     rw [this, map_one]; exact isUnit_one
   obtain ⟨u, hu, hu1⟩ := HenselianRing.is_henselian (I := maximalIdeal R) P hP 1 hP1 (by exact hP2)
   have hroot : u ^ 2 - u = n * a := by
@@ -169,7 +246,7 @@ theorem exists_isUnit_conj_mul_eq {R : Type} [CommRing R] [HenselianLocalRing R]
 
 theorem exists_unit_norm_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ c : w.adicCompletion E, cj w c = c → Valued.v c = 1 → ∃ s : w.adicCompletion E, Valued.v s = 1 ∧ cj w s * s = c := by
   intro E _ _ _ hU w hw c hcj hcv
-  obtain ⟨-, hinv, hval, hns, -⟩ := GlobalTheory.T.placeConjugation_properties_cmField E hU w
+  obtain ⟨-, hinv, hval, hns, -⟩ := _root_.GlobalTheory.ConjAtPlace.main E hU w
   obtain ⟨-, ⟨ϖ, q, hI, -⟩, -, -⟩ := hns hw
   obtain ⟨-, -, -, -, ⟨x₀, hx₀, hx⟩, hq, hcard⟩ := hI
   haveI : HenselianLocalRing (w.adicCompletionIntegers E) := by
@@ -179,7 +256,7 @@ theorem exists_unit_norm_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     have adicInt_dvd_iff (x y : Ov) :
         x ∣ y ↔ Valued.v (y : Kv) ≤ Valued.v (x : Kv) := by
       first
-      | exact (Formalism.BasicNotions.Examples₂.adicInt_integers (K := E) w ).dvd_iff_le
+      | exact (IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers.integers (K := E) w ).dvd_iff_le
 
     have adicInt_max_eq_span (π : Ov) (hπ : Valued.v (π : Kv) = exp (-1 : ℤ)) :
         maximalIdeal Ov = Ideal.span {π} := by
@@ -197,7 +274,6 @@ theorem exists_unit_norm_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
         rw [h1, map_pow, hπ]
         first
         | (rw [← WithZero.exp_nsmul]; congr 1; simp)
-        | (rw [← WithZero.exp_nsmul]; simp)
       rw [adicInt_max_eq_span π hπ, Ideal.span_singleton_pow, Ideal.mem_span_singleton,
         adicInt_dvd_iff, hpow]
 
@@ -220,7 +296,6 @@ theorem exists_unit_norm_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
       have hx0 : Valued.v x ≠ 0 := (lt_of_le_of_lt zero_le' hx').ne'
       have hmem : {y : Kv | Valued.v y = Valued.v x} ∈ 𝓝 x := by
         first
-        | exact Valuation.loc_const hx0
         | exact Valued.locally_const hx0
       filter_upwards [hmem] with y hy
       show ¬ Valued.v y ≤ r
@@ -295,7 +370,7 @@ theorem exists_unit_norm_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     ((cj w).comp (w.adicCompletionIntegers E).subtype).codRestrict _ hmem
   have hσc : ∀ x, ((σ x : w.adicCompletionIntegers E) : w.adicCompletion E) = cj w x := fun _ => rfl
   have hunit : ∀ x : w.adicCompletionIntegers E, IsUnit x ↔ Valued.v (x : w.adicCompletion E) = 1 :=
-    fun x => (Formalism.BasicNotions.Examples₂.adicInt_integers w).isUnit_iff_valuation_eq_one
+    fun x => (IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers.integers _ w).isUnit_iff_valuation_eq_one
   have hσ : ∀ x, σ (σ x) = x := fun x => Subtype.ext (hinv _)
   let y₀ : w.adicCompletionIntegers E := ⟨x₀, by
     rw [HeightOneSpectrum.mem_adicCompletionIntegers]; exact hx₀⟩
@@ -307,3 +382,6 @@ theorem exists_unit_norm_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
   exact ⟨s, (hunit s).1 hs, congrArg Subtype.val hsc⟩
 
 end GlobalTheory.CompanionTheory.UnitNormLocal
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.NormOneUnitHilbertNinety =====

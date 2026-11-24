@@ -157,7 +157,7 @@ theorem capelli_coef : PI.UnitaryGroupMassFormula.CapelliEig.FunAct := by
   simp only [List.map_ofFn, Function.comp_def] at h
   simp only [id]
   rw [h]
-  simp [Module.End.intCast_apply, ← Int.cast_smul_eq_zsmul ℂ]
+  simp [← Int.cast_smul_eq_zsmul ℂ]
 
 end GlobalTheory.CapelliCoef
 

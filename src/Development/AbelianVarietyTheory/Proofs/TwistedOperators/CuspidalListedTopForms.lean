@@ -46,6 +46,7 @@ import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RangeSndRel
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiscreteSeriesModelUnitaryIrreducibleOrthonormal
 
 @[expose] public section
 
@@ -93,7 +94,7 @@ theorem isTypeAt_of_finSum (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) {S :
   · refine summable_of_ne_finset_zero (s := Finset.range n) fun i hi => ?_
     have : ¬ i < n := by simpa using hi
     simp [CC, dif_neg this]
-  · simp [hD.2.2.1.2.1 _ (GlobalTheory.TypeAtCompare.conj_mem hP hJ hg) w]
+  · simp [hD.2.2.1.2.1 _ (_root_.GlobalTheory.HolDict.ModelRep.conj_mem hP hJ hg) w]
   · rw [hφ g hg]
     convert hasSum_sum_of_ne_finset_zero (s := Finset.range n)
       (f := fun i => ll i (σ (P * g * P⁻¹) (vv i))) (fun i hi => by
@@ -110,7 +111,7 @@ def conjFun {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Norm
     { toFun := fun w => star (ℓ (c w))
       map_add' := fun a b => by simp
       map_smul' := fun a w => by
-        simp only [LinearIsometryEquiv.map_smulₛₗ, map_smul, smul_eq_mul, map_mul, Complex.conj_conj, RingHom.id_apply]
+        simp only [LinearIsometryEquiv.map_smulₛₗ, map_smul, smul_eq_mul, RingHom.id_apply]
         rw [star_mul', Complex.star_def, Complex.conj_conj] }
     ‖ℓ‖ (fun w => by simpa using ℓ.le_opNorm (c w))
 

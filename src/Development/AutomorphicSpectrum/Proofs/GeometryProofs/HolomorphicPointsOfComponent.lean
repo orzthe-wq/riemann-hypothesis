@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUniqueLeftBasisCoordsAdicCompletion
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExponentialFamilyPeriods
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspCorrespondenceBoundStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.CuspCorrespondenceBound
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.StalkClosedPointToGermTop
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -104,7 +104,7 @@ theorem labVal_const_of_isHolPts : ∀ (E : Type) [Field E] [NumberField E] [IsC
   have hB : ∀ b : Fin n → ℂ, ∃ σ : CMType H ⊕ CMType H → (𝓞 E →+* ℂ),
       𝔐.LabVal (spMap (ψ b) ≫ jj) id σ ∧ IsCMFam (fun τ => σ (.inl τ)) ∧ IsCMFam (fun τ => σ (.inr τ)) := by
     intro b
-    obtain ⟨σ, h1, -, -, -, -, h6⟩ := GlobalTheory.T.cusp_correspondence_bound E H D l Xo c Y S Ω K J y 𝔐 ℂ (spMap (ψ b) ≫ jj)
+    obtain ⟨σ, h1, -, -, -, -, h6⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cusp.LabPt.exists_labVal E H D l Xo c Y S Ω K J y 𝔐 ℂ (spMap (ψ b) ≫ jj)
     obtain ⟨h7, h8, -⟩ := h6 (RingHom.id ℂ)
     exact ⟨σ, h1, by simpa using h7, by simpa using h8⟩
   choose σ hσ hc1 hc2 using hB

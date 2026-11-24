@@ -153,8 +153,7 @@ theorem ext_of_injective {R A : Type} [CommRing R] [CommRing A] (i : R →+* A) 
 
 variable {R : Type} [CommRing R]
 
-theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
+alias sp_comp := _root_.GlobalTheory.TanMod.spMap_comp'
 
 theorem dual_base (i : R →+* k) : spMap (dualMapR i) ≫ spMap (algebraMap R (DualNumber R)) =
     spMap (algebraMap k (DualNumber k)) ≫ spMap i := by

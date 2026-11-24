@@ -192,7 +192,7 @@ theorem measurable_base (e : Fin r ≃ Fin p ⊕ Fin q) : Measurable (base e) :=
 
 theorem det_shear (A : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) (Z : Matrix (Fin p) (Fin q) ℂ) :
     (shear A Z).det = A.det := by
-  simp [shear, det_conjTranspose, det_fromBlocks_zero₂₁]
+  simp [shear, det_conjTranspose]
 
 theorem posDef_shear {A : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (hA : A.PosDef) (Z : Matrix (Fin p) (Fin q) ℂ) :
     (shear A Z).PosDef :=

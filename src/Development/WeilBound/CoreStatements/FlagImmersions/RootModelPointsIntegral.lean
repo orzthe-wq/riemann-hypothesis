@@ -2,7 +2,7 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterNamed
 public import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.Birational
-public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralMultilinearStatement
+public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.LogIntegralMultilinear
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -171,7 +171,7 @@ theorem root_model_points_integral : ∀ II : IntersectionSystem, IsFullIntersec
   have hP : IsArithVar M.P (dimFl Ψ N + 1) := M.arith
   have hsm : ∀ j, IsSmoothHerm (M.line t j) := line_smooth M t
   obtain ⟨hexp, hperm⟩ :=
-    GlobalTheory.T.log_integral_multilinear II hII M.K M.ι M.P (dimFl Ψ N) (Option (Ψ × Fin N)) (M.line t) n hP hsm
+    _root_.GlobalTheory.CompanionTheory.Ar.Top.geo_multilin II hII M.K M.ι M.P (dimFl Ψ N) (Option (Ψ × Fin N)) (M.line t) n hP hsm
   have hterm : ∀ w : Fin (dimFl Ψ N) → Option (Ψ × Fin N),
       ptsIntegral M.P (fun k z => Real.log ((M.line t (w k)).h z)) (fun _ => 1) =
         M.δ * (M.kA : ℝ) ^ ((∑ k, Finsupp.single (w k) 1 : Option (Ψ × Fin N) →₀ ℕ) none) *

@@ -63,7 +63,7 @@ private lemma core_sqrt (A c c' t B Y : ℝ) (hA : 0 < A) (hc : 0 < c)
   have hL : 0 < Real.log Y := by linarith
   have hY1 : 1 < Y := by
     by_contra h
-    push_neg at h
+    push Not at h
     have := Real.log_nonpos hY.le h
     linarith
   have ht1 : 1 ≤ t := by linarith
@@ -80,7 +80,7 @@ private lemma core_sqrt (A c c' t B Y : ℝ) (hA : 0 < A) (hc : 0 < c)
       linarith
     have hb : 10 * t ^ 2 ≤ c * Real.sqrt (Real.log Y) := by
       by_contra h
-      push_neg at h
+      push Not at h
       have h1 := mul_self_lt_mul_self (mul_nonneg hc.le hS0) h
       have h2' : c * Real.sqrt (Real.log Y) * (c * Real.sqrt (Real.log Y)) = c ^ 2 * Real.log Y := by
         calc c * Real.sqrt (Real.log Y) * (c * Real.sqrt (Real.log Y))

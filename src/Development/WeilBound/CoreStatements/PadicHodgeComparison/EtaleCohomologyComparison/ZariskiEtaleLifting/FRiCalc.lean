@@ -66,7 +66,7 @@ lemma rc_restrict_comp {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C'
 
 lemma rc_iso_upTo {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {F F₁ : C ⥤ ModuleCat.{w} R}
     (e : F ≅ F₁) (n : ℕ) : UpTo (1 : R) ((Mor.ofNatTrans e.hom).pull n) := by
-  have h := CrystallineSemistableComparison.P.coef_upTo e.hom (1 : R) (fun T => by
+  have h := _root_.GlobalTheory.CompanionTheory.CoefUpTo.coef_upTo e.hom (1 : R) (fun T => by
     refine ((CrystallineSemistableComparison.P.upTo_alg (e.hom.app T).hom LinearMap.id 1 1).2.2.2.2).2 ?_
     exact (e.app T).toLinearEquiv.bijective) n
   rwa [one_pow] at h

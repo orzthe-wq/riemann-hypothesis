@@ -105,7 +105,7 @@ theorem dpsi_last_basis_shift (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (a 
   have c4 : r + k < 2 * r + k - a ∧ r + k < 2 * r + k - b := by omega
   have c5 : (2 * r + k - b = 2 * r + k - a + 1) ↔ (b + 1 = a) := by omega
   have c6 : ¬(2 * r + k - a ≤ r + k) := by omega
-  simp only [dpsiP, ps_val, c1, c2, c3, c4, c5, c6, if_false, if_true, and_self, and_false, false_and, and_true]
+  simp only [dpsiP, ps_val, c1, c2, c4, c5, c6, if_false, if_true, and_self, and_false, and_true]
 
 theorem third_peeling_minor_mem_ideal {A : Type} [Ring A] [Algebra ℂ A] (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ)
     (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (hG : GlRel E) (ell : ℂ) : ∀ (m i : ℕ), i ≤ m → m + 1 ≤ r →
@@ -210,11 +210,11 @@ theorem second_peeling_identity : PeelingCovector := by
       · simp only [dpsi_e_w k (m + 1) z' l.val (by omega), last_iff]
         by_cases hl : l.val = m
         · have e : l.val + 1 = m + 1 := by omega
-          simp only [e, if_true, hl]
+          simp only [if_true, hl]
           rw [herm_wsum k (m + 1) z' yb hz']
           congr 1; ext w; ring
         · have e : ¬ (l.val + 1 = m + 1) := by omega
-          simp [e, hl])
+          simp [hl])
   have hc : ((fun l : Fin (m + 1) => pe k (m + 1) l.val) ∘ Fin.castSucc) = fun l : Fin m => pe k (m + 1) l.val := by
     funext l; simp
   rw [hc] at step

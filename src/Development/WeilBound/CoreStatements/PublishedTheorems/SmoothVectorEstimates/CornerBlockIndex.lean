@@ -1,18 +1,18 @@
 module
 
+public import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.RowS
+public import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.BlockIndexEqCornerIff
 public import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.MirabolicColumnBlock
-public import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.BlkUInvVal
-public import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.IntegralMem
+public import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.CategoryTheory.Countable
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
@@ -23,7 +23,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
@@ -48,11 +48,222 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.BlockIndexEqCornerIff
+import Mathlib.CategoryTheory.Countable
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.BlkUInvVal, Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.IntegralMem, Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.CornerBlockIndex
+
+-- ===== clump member: Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.BlkUInvVal =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.BlkUInvVal", "h": "module\n\npublic import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.RowS\nimport Mathlib.Algebra.Order.Archimedean.Real.Hom\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix GlobalTheory.CuspGeneric Topology
+open scoped ContDiff
+
+namespace PositivityTheory.jumpWindows.CornerBlockIndex
+
+variable {ι : Type} {a m : ℕ}
+
+variable [Fintype ι]
+
+def betL (l : (ι → ℂ) →L[ℝ] ℝ) (x : V ι a m) : V ι a m →ₗ[ℝ] ℝ where
+  toFun y := l (∑ t, x t * y t)
+  map_add' y y' := by simp [mul_add, Finset.sum_add_distrib]
+  map_smul' c y := by simp [Finset.mul_sum]
+
+def bet (l : (ι → ℂ) →L[ℝ] ℝ) : V ι a m →L[ℝ] V ι a m →L[ℝ] ℝ :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun x => LinearMap.toContinuousLinearMap (betL l x)
+      map_add' := fun x x' => by ext y; simp [betL, add_mul, Finset.sum_add_distrib]
+      map_smul' := fun c x => by ext y; simp [betL, Finset.mul_sum] }
+
+theorem bet_apply (l : (ι → ℂ) →L[ℝ] ℝ) (x y : V ι a m) : bet l x y = l (∑ t, x t * y t) := by
+  rfl
+
+theorem bet_nondeg (hm : m + 1 < a) {χ : AddChar (ι → ℂ) ℂ} (hχ : ∀ z, (∀ w, χ (z * w) = 1) → z = 0)
+    {l : (ι → ℂ) →L[ℝ] ℝ} (hl : ∀ z, χ z = Complex.exp ((l z : ℝ) * Complex.I)) :
+    ∀ y : V ι a m, (∀ x, bet l x y = 0) → y = 0 := by
+  intro y hy
+  funext t
+  show y t = 0
+  apply hχ
+  intro w
+  have h1 := hy (Pi.single t w)
+  rw [bet_apply] at h1
+  have hs : ∑ s, (Pi.single t w : V ι a m) s * y s = y t * w := by
+    rw [Finset.sum_eq_single t]
+    · simp [mul_comm]
+    · intro s _ hs
+      simp [hs]
+    · simp
+  rw [hs] at h1
+  rw [hl, h1]
+  simp
+
+def Lb (_hm : m + 1 < a) : V ι a m →L[ℝ] LieI ι a :=
+  LinearMap.toContinuousLinearMap
+    { toFun := fun y => Matrix.of.symm (posM Subtype.val y)
+      map_add' := fun y y' => by rw [posM_add]; rfl
+      map_smul' := fun c y => by
+        ext i j k
+        simp only [posM, Matrix.sum_apply, Matrix.single_apply, Pi.smul_apply, Matrix.of_symm_apply]
+        rw [Finset.sum_apply, Finset.sum_apply, RingHom.id_apply, Finset.smul_sum]
+        refine Finset.sum_congr rfl fun t _ => ?_
+        split_ifs <;> simp }
+
+theorem blkU_val (hm : m + 1 < a) (y : V ι a m) : (blkU y : GL (Fin a) (ι → ℂ)).val = 1 + Matrix.of (Lb hm y) := by
+  rfl
+
+theorem blkU_inv_val (hm : m + 1 < a) (y : V ι a m) :
+    (blkU y : GL (Fin a) (ι → ℂ))⁻¹.val = 1 - Matrix.of (Lb hm y) := by
+  rfl
+
+theorem lastE_eq {R : Type} [CommRing R] (hm : m + 1 < a) (y : UnipotentBlockColumnIndex a (m + 1) (m + 1) → R) :
+    lastE (m + 1) y = y (t0 hm) := by
+  unfold lastE
+  rw [Finset.sum_eq_single (t0 hm)]
+  · simp [t0, ix, mm]
+  · intro t _ ht
+    rw [if_neg]
+    intro h1
+    apply ht
+    obtain ⟨⟨i, k⟩, h1', h2', h3'⟩ := t
+    simp only at h1 h1' h2' h3'
+    apply Subtype.ext
+    simp only [t0, ix, mm]
+    ext <;> simp <;> omega
+  · simp
+
+end PositivityTheory.jumpWindows.CornerBlockIndex
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.BlkUInvVal =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.IntegralMem =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.IntegralMem", "h": "module\n\npublic import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.BlockIndexEqCornerIff\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open MeasureTheory Matrix GlobalTheory.CuspGeneric Topology
+open scoped ContDiff
+
+namespace PositivityTheory.jumpWindows.CornerBlockIndex
+
+variable {ι : Type} {a m : ℕ}
+
+variable [Fintype ι]
+
+theorem isOpen_O (hm : m + 1 < a) : IsOpen (O ι hm) := by
+  have h : PositivityTheory.jumpWindows.CornerBlockIndex.O ι hm =
+      ⋂ i : ι, {x : PositivityTheory.jumpWindows.CornerBlockIndex.V ι a m | x (PositivityTheory.jumpWindows.CornerBlockIndex.t0 hm) i ≠ 0} := by
+    ext x
+    simp [PositivityTheory.jumpWindows.CornerBlockIndex.O]
+  rw [h]
+  exact isOpen_iInter_of_finite fun i =>
+    isOpen_ne_fun ((continuous_apply i).comp (continuous_apply _)) continuous_const
+
+theorem cd_sM (hm : m + 1 < a) : ContDiff ℝ ∞ (sM hm : V ι a m → LieI ι a) := by
+  show ContDiff ℝ ∞ (fun x => (PositivityTheory.jumpWindows.CornerBlockIndex.sM hm x : Fin a → Fin a → ι → ℂ))
+  refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => contDiff_pi.2 fun k => ?_
+  simp only [PositivityTheory.jumpWindows.CornerBlockIndex.sM, PositivityTheory.jumpWindows.CornerBlockIndex.rowS, Matrix.of_symm_apply, Matrix.updateRow_apply]
+  split_ifs <;> first
+    | exact contDiff_const
+    | exact (contDiff_apply ℝ (fun _ => ℂ) k).comp (contDiff_apply ℝ (fun _ => (ι → ℂ)) _)
+
+theorem cd_sI (hm : m + 1 < a) : ContDiffOn ℝ ∞ (sI hm : V ι a m → LieI ι a) (O ι hm) := by
+  have hc : ∀ q k, ContDiff ℝ ∞ (fun x : PositivityTheory.jumpWindows.CornerBlockIndex.V ι a m => x q k) := fun q k =>
+    (contDiff_apply ℝ (fun _ => ℂ) k).comp (contDiff_apply ℝ (fun _ => (ι → ℂ)) q)
+  have hne : ∀ x ∈ PositivityTheory.jumpWindows.CornerBlockIndex.O ι hm, ∀ k : ι, x (PositivityTheory.jumpWindows.CornerBlockIndex.t0 hm) k ≠ 0 :=
+    fun x hx => hx
+  show ContDiffOn ℝ ∞ (fun x => (PositivityTheory.jumpWindows.CornerBlockIndex.sI hm x : Fin a → Fin a → ι → ℂ)) _
+  refine contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => contDiffOn_pi.2 fun k => ?_
+  simp only [PositivityTheory.jumpWindows.CornerBlockIndex.sI, PositivityTheory.jumpWindows.CornerBlockIndex.rowT, Matrix.of_symm_apply, Matrix.updateRow_apply]
+  split_ifs <;> (try simp only [Pi.inv_apply, Pi.neg_apply, Pi.mul_apply]) <;> first
+    | exact contDiffOn_const
+    | exact (hc _ k).contDiffOn.inv fun x hx => hne x hx k
+    | exact ((hc _ k).contDiffOn.mul ((hc _ k).contDiffOn.inv fun x hx => hne x hx k)).neg
+
+theorem contOn_uM (hm : m + 1 < a) : ContinuousOn (uM hm : V ι a m → GL (Fin a) (ι → ℂ)) (O ι hm) := by
+  rw [Units.isEmbedding_embedProduct.isInducing.continuousOn_iff]
+  have h1 : ContinuousOn (fun x : V ι a m => ((Matrix.of (sM hm x) : Matrix (Fin a) (Fin a) (ι → ℂ)),
+      MulOpposite.op (Matrix.of (sI hm x) : Matrix (Fin a) (Fin a) (ι → ℂ)))) (O ι hm) :=
+    (cd_sM hm).continuous.continuousOn.prodMk
+      (MulOpposite.continuous_op.comp_continuousOn (cd_sI hm).continuousOn)
+  refine h1.congr fun x hx => ?_
+  simp [uM_val hm hx, uM_inv_val hm hx]
+
+theorem nhds_good (hm : m + 1 < a) {U : Set (GL (Fin a) (ι → ℂ))} (hU : U ∈ 𝓝 (1 : GL (Fin a) (ι → ℂ))) :
+    O ι hm ∩ uM hm ⁻¹' U ∈ 𝓝 (e ι hm) := by
+  have hb : PositivityTheory.jumpWindows.CornerBlockIndex.O ι hm ∈ 𝓝 (PositivityTheory.jumpWindows.CornerBlockIndex.e ι hm) :=
+    (PositivityTheory.jumpWindows.CornerBlockIndex.isOpen_O (ι := ι) hm).mem_nhds (PositivityTheory.jumpWindows.CornerBlockIndex.e_mem hm)
+  refine Filter.inter_mem hb ?_
+  have hc : ContinuousAt (PositivityTheory.jumpWindows.CornerBlockIndex.uM hm : PositivityTheory.jumpWindows.CornerBlockIndex.V ι a m → GL (Fin a) (ι → ℂ))
+      (PositivityTheory.jumpWindows.CornerBlockIndex.e ι hm) :=
+    (PositivityTheory.jumpWindows.CornerBlockIndex.contOn_uM hm).continuousAt hb
+  apply hc.preimage_mem_nhds
+  rw [PositivityTheory.jumpWindows.CornerBlockIndex.uM_e]
+  exact hU
+
+theorem cd_cut (hm : m + 1 < a) {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
+    {ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)} {v : X} (hv : SmV ρ v) {η : V ι a m → ℂ}
+    (hη : ContDiff ℝ ∞ η) (hs : tsupport η ⊆ O ι hm) :
+    ContDiff ℝ ∞ (fun x => η x • orb ρ v (sI hm x)) := by
+  have ho := PositivityTheory.jumpWindows.CornerBlockIndex.isOpen_O (ι := ι) hm
+  have hv' : ContDiffOn ℝ ∞ (PositivityTheory.jumpWindows.orb ρ v) {M : PositivityTheory.jumpWindows.LieI ι a | IsUnit (Matrix.of M)} := hv
+  have hmaps : Set.MapsTo (PositivityTheory.jumpWindows.CornerBlockIndex.sI hm) (PositivityTheory.jumpWindows.CornerBlockIndex.O ι hm)
+      {M : PositivityTheory.jumpWindows.LieI ι a | IsUnit (Matrix.of M)} := by
+    intro x hx
+    show IsUnit (Matrix.of (PositivityTheory.jumpWindows.CornerBlockIndex.sI hm x))
+    exact ⟨⟨Matrix.of (PositivityTheory.jumpWindows.CornerBlockIndex.sI hm x), Matrix.of (PositivityTheory.jumpWindows.CornerBlockIndex.sM hm x),
+      PositivityTheory.jumpWindows.CornerBlockIndex.sI_mul_sM hm hx, PositivityTheory.jumpWindows.CornerBlockIndex.sM_mul_sI hm hx⟩, rfl⟩
+  have hcomp : ContDiffOn ℝ ∞ (PositivityTheory.jumpWindows.orb ρ v ∘ PositivityTheory.jumpWindows.CornerBlockIndex.sI hm) (PositivityTheory.jumpWindows.CornerBlockIndex.O ι hm) :=
+    ContDiffOn.comp hv' (PositivityTheory.jumpWindows.CornerBlockIndex.cd_sI hm) hmaps
+  rw [contDiff_iff_contDiffAt]
+  intro x
+  by_cases hx : x ∈ tsupport η
+  · have hxO : PositivityTheory.jumpWindows.CornerBlockIndex.O ι hm ∈ 𝓝 x := ho.mem_nhds (hs hx)
+    exact hη.contDiffAt.smul (hcomp.contDiffAt hxO)
+  · have h0 : η =ᶠ[𝓝 x] 0 := notMem_tsupport_iff_eventuallyEq.1 hx
+    refine (contDiffAt_const (c := (0 : X))).congr_of_eventuallyEq ?_
+    filter_upwards [h0] with y hy
+    simp only [Pi.zero_apply] at hy
+    simp [hy]
+
+theorem integral_mem {α X : Type} [MeasurableSpace α] {μ : Measure α} [NormedAddCommGroup X]
+    [NormedSpace ℂ X] [CompleteSpace X] {Y : Submodule ℂ X} (hY : IsClosed (Y : Set X)) {f : α → X}
+    (hf : Integrable f μ) (hfY : ∀ x, f x ∈ Y) : ∫ x, f x ∂μ ∈ Y := by
+  have hcomplete : CompleteSpace Y := @IsClosed.completeSpace_coe X _ _ (Y : Set X) hY
+  have hgm : AEStronglyMeasurable (fun x => (⟨f x, hfY x⟩ : Y)) μ :=
+    (Topology.IsEmbedding.subtypeVal.aestronglyMeasurable_comp_iff).1 hf.aestronglyMeasurable
+  have hgi : Integrable (fun x => (⟨f x, hfY x⟩ : Y)) μ :=
+    hf.mono hgm (Filter.Eventually.of_forall fun x => le_rfl)
+  have key : ∫ x, f x ∂μ = Y.subtypeL (∫ x, (⟨f x, hfY x⟩ : Y) ∂μ) := by
+    rw [← Y.subtypeL.integral_comp_comm hgi]
+    first | rfl
+  rw [key]
+  first | exact (∫ x, (⟨f x, hfY x⟩ : Y) ∂μ).2
+
+end PositivityTheory.jumpWindows.CornerBlockIndex
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.IntegralMem =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.CornerBlockIndex =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.CornerBlockIndex", "h": "module\n\npublic import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.MirabolicColumnBlock\npublic import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.BlkUInvVal\npublic import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.IntegralMem\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.CategoryTheory.Countable\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.BlockIndexEqCornerIff\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -171,3 +382,6 @@ theorem mirabolic_induction_step_exists : S2 → S3 → S5 → S6 → S8 → Mir
 end PositivityTheory.jumpWindows
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstimates.CornerBlockIndex =====

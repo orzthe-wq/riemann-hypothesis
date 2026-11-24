@@ -128,7 +128,7 @@ theorem powerSumPolynomial : PowerSumPoly := by
       Finset.sum_eq_single (s + 1)]
     · simp [Polynomial.coeff_monomial]
     · intro b _ hb
-      simp [Polynomial.coeff_monomial, hb, Ne.symm hb]
+      simp [Polynomial.coeff_monomial, Ne.symm hb]
     · intro h
       exact absurd (Finset.self_mem_range_succ (s + 1)) h
   have hle : (Polynomial.bernoulli (s + 1)).natDegree ≤ s + 1 := by

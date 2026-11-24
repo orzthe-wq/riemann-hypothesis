@@ -412,7 +412,7 @@ theorem parallelogram_three_weierstrass_key (hA : FrobStickStar) {g2 g3 s2 c0 a1
       fExp (-par3 F i (phO s2 P l)) = -e := by
   have hl0 := hF.2.2.1
   have hl1 := hF.2.2.2.1
-  obtain ⟨hph0, hphe⟩ := phODef K s2 P l hl0 hl1
+  obtain ⟨hph0, hphe⟩ := _root_.Formalism.L2.Th1.B.Ph.logSigmaPullbackSpec K s2 P l hl0 hl1
   generalize phO s2 P l = ph at hph0 hphe ⊢
   have cL : ∀ j : Fin 3, MvPowerSeries.constantCoeff (at1 j l) = 0 :=
     fun j => constantCoeff_series_at_variable j l hl0
@@ -532,8 +532,8 @@ theorem ParThree_of (hF : FrobStickStar) (hU : FIUnit) : ParThree := by
   have hlog := ParO.fLog_mul cNN (constantCoeff_fExp hq0)
   rw [key, fLog_fExp hq0] at hlog
   have hq : q = fLog N + -fLog (-e) := by linear_combination hlog
-  have s1 := (simeqLog K (Fin 3) N cNN iNN).1
-  have s2' := (simeqLog K (Fin 3) (-e) (by rw [map_neg, he0, neg_neg]) (integral_neg heI)).2
+  have s1 := (_root_.Formalism.L2.Th1.B.Sim.simeq_formal_log K (Fin 3) N cNN iNN).1
+  have s2' := (_root_.Formalism.L2.Th1.B.Sim.simeq_formal_log K (Fin 3) (-e) (by rw [map_neg, he0, neg_neg]) (integral_neg heI)).2
   have s3 := (Formalism.InvariantFactorPaths.G7.equivalence_rules K (Fin 3)).2.2.2.1 _ _ _ _ s1 s2'
   rw [add_zero] at s3
   rw [hq]

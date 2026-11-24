@@ -87,10 +87,6 @@ theorem map_liftSL (M : ℕ) (g : SL(2, ZMod M)) :
     Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) (liftSL M g) = g :=
   Classical.epsilon_spec (GlobalTheory.specialLinearGroup_map_intCast_zmod_surjective M g)
 
-theorem liftSL_map_mul_inv_mem (M : ℕ) (γ : SL(2, ℤ)) :
-    liftSL M (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ) * γ⁻¹ ∈ CongruenceSubgroup.Gamma M := by
-  rw [CongruenceSubgroup.Gamma_mem', map_mul, map_inv, map_liftSL, mul_inv_cancel]
-
 theorem exists_place_over (Ω : Type) [Field Ω] [Algebra ℚ Ω] (l : ℕ) [Fact l.Prime] :
     ∃ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 := by
 

@@ -830,7 +830,7 @@ theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_isSmoothDivisor
     (hbd : T.boundary = []) (hmult : T.mult = 1)
     {Y : Scheme.{u}} (e : Y ⟶ T.scheme) [AlgebraicGeometry.IsClosedImmersion e]
     (hdiv : IsSmoothDivisor T.structMap (AlgebraicGeometry.Scheme.Hom.ker e))
-    (J : Y.IdealSheafData) (hJ : T.ideal = imageIdealSheaf e J)
+    (J : Y.IdealSheafData) (hJ : T.ideal = _root_.FunctorialResolution.Blowup.schemeImageIdeal e J)
     (hV : (T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).IsAdmissible) :
     IsStrictPullbackBlowupSeq (coverMap T h.valid)
       (coverMarkedBlowupData T h.valid hinv (MaxContactFunctoriality.lowerDimensionalFamily A T)).toSequenceOfBlowups

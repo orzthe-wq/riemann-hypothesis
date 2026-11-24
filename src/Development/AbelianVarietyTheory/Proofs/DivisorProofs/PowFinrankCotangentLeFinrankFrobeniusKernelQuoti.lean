@@ -166,7 +166,7 @@ theorem pow_le_finrank {n d : ℕ} {K A : Type*} [Field K] [CommRing A] [Algebra
     rw [h, hr, MvPolynomial.mem_ideal_span_monomial_image] at hmem
     by_contra hne
     have hc : AddMonoidAlgebra.coeff (∑ a, g a • MvPolynomial.monomial (e a) (1 : K)) (e a) = g a := by
-      simp [MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, he.eq_iff]
+      simp [MvPolynomial.coeff_monomial, he.eq_iff]
     obtain ⟨_, ⟨i, rfl⟩, hi⟩ := hmem (e a) (by rw [MvPolynomial.mem_support_iff, hc]; exact hne)
     have h1 := hi i
     have h2 := (a i).2

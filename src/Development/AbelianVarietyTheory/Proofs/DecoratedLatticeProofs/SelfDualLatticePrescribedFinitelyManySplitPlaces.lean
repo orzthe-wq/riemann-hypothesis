@@ -1,8 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.SmallPair
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSelfDualLatticeWithPrescribedSplitComponenStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSelfDualLatticeWithPrescribedSplitComponen
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,16 +61,16 @@ theorem latV_le_of_off {S : HSp D} {L L' : Lat S} (hL : Submodule.IsLattice D.ho
     (hL' : Submodule.IsLattice D.host.E L') {v₀ v : Pl D} (hv : v ≠ v₀)
     (h : latV S L (· ≠ v₀) = latV S L' (· ≠ v₀)) : latV S L (· = v) ≤ latV S L' (· = v) := by
   intro y hy
-  obtain ⟨⟨ε, -, -, hεint, hεat, -⟩, hSv⟩ := GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)
+  obtain ⟨⟨ε, -, -, hεint, hεat, -⟩, hSv⟩ := _root_.GlobalTheory.FinPl.localComponents D (· = v)
   have hyv := ((hSv S).2.2.2 L y hL).1 hy
-  have hoff := ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· ≠ v₀)).2 S).2.2.2
+  have hoff := ((_root_.GlobalTheory.FinPl.localComponents D (· ≠ v₀)).2 S).2.2.2
   have hy₀ : y ∈ latV S L (· ≠ v₀) := by
     rw [hoff L y hL]
     refine ⟨fun i => idAt_mono (fun w hw => hw ▸ hv) (hyv.1 i), fun u _ e he => ?_⟩
     by_cases huv : u = v
     · subst huv
       exact hyv.2 u rfl e he
-    · obtain ⟨⟨εu, -, -, -, hεuat, hεuoff⟩, -⟩ := GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = u)
+    · obtain ⟨⟨εu, -, -, -, hεuat, hεuoff⟩, -⟩ := _root_.GlobalTheory.FinPl.localComponents D (· = u)
       have hz : e • y = 0 := by
         funext i
         have hyi : y i ∈ idOff D (· = u) :=
@@ -104,7 +106,7 @@ theorem exists_modify {ι : Type} {p : ι → SplitPt D k} (hp : Function.Inject
   | nil => exact ⟨L, hL, by simp, fun _ _ => rfl⟩
   | cons i l ih =>
     obtain ⟨M, hM, h1, h2⟩ := ih
-    obtain ⟨M', hM', h3, h4⟩ := GlobalTheory.T.exists_selfDual_lattice_with_prescribed_splitComponent D k (p i) S n (β i) M (Λ i) hM (hΛ i)
+    obtain ⟨M', hM', h3, h4⟩ := _root_.GlobalTheory.FrameGlob.main D k (p i) S n (β i) M (Λ i) hM (hΛ i)
     refine ⟨M', hM', fun i' hi' => ?_, fun v hv => ?_⟩
     · by_cases e : i' = i
       · subst e; exact h3

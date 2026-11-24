@@ -123,25 +123,16 @@ def CutOffExists : Prop :=
       ∀ g, Dmin P.k P.r p.T.base.z p.T.base.z' g ⟨j + 1, by omega⟩ = aVal h t →
         Fc g = D.uwG P.k P.r p.T.base.z p.T.base.z' F (j + 1) hj w e g
 
-theorem det_lowW {p : ℕ} (σ : Equiv.Perm (Fin p)) (v : U.LW σ → ℂ) : (U.lowW σ v).det = 1 := by
-  rw [Matrix.det_of_lowerTriangular]
-  · refine Finset.prod_eq_one fun i _ => ?_
-    simp [U.lowW]
-  · intro a b hab
-    simp only [U.lowW, Matrix.add_apply, Matrix.one_apply, Matrix.of_apply]
-    have hab' : a < b := hab
-    rw [if_neg (ne_of_lt hab'), dite_eq_right (fun h => absurd h.1 (not_lt.mpr hab'.le)), add_zero]
-
 theorem zxH_det (h : C.LPt) (j : ℕ) (hh : D.IsLocPt h j) (v : XH h) :
     (zxH h j hh.2 v).det = (U.hMat (D.ptPerm h) (D.ptDiag h)).det := by
   have hH : (U.hMat (D.ptPerm h) (D.ptDiag h)).det ≠ 0 :=
-    Formalism.FourierDecayAlt.P.PBM.hMat_det_ne _ _ (CutHB.ptDiag_ne hh)
+    _root_.Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne _ _ (CutHB.ptDiag_ne hh)
   have hw : IsUnit (U.wP (D.ptPerm h)) := by
     rw [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
     intro h0
     apply hH
     rw [U.hMat, Matrix.det_mul, h0, zero_mul]
   unfold zxH LeftFubiniLemmas.lhOf
-  rw [Matrix.det_reindex_self, Matrix.det_mul, Matrix.det_conj hw, det_lowW, one_mul]
+  rw [Matrix.det_reindex_self, Matrix.det_mul, Matrix.det_conj hw, _root_.Formalism.FourierDecayAlt.P.Ux3.det_lowW, one_mul]
 
 end Formalism.FourierDecayAlt.P.LevelPointCoordinates

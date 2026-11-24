@@ -4,55 +4,11 @@ public import Mathlib.LinearAlgebra.Eigenspace.Basic
 public import Mathlib.Order.CompletePartialOrder
 public import Mathlib.RingTheory.LocalRing.ResidueField.Defs
 public import Lemmata.GeneralBFactLeftLast.Pz
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.LinearAlgebra.Eigenspace.Pi
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Algebra.Polynomial.Inductions
 public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 
@@ -100,10 +56,7 @@ theorem mem_maxGen_add {A B : End K V} (h : Commute A B) {a b : K} {x : V}
   rw [e]
   exact add_pow_apply_eq_zero (commute_sub_smul h a b) hk hl
 
-theorem mem_maxGen_mul {A B : End K V} (h : Commute A B) {a b : K} {x : V}
-    (hA : x ∈ A.maxGenEigenspace a) (hB : x ∈ B.maxGenEigenspace b) :
-    x ∈ (A * B).maxGenEigenspace (a * b) := by
-  first | exact Bl.general_b_fact_left_last.goal1 .. | (apply Bl.general_b_fact_left_last.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_last.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_last.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_last.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_last.goal1 <;> first | assumption | infer_instance)
+alias mem_maxGen_mul := _root_.Bl.general_b_fact_left_last.goal1
 
 theorem maxGen_smul_one (c : K) : (c • (1 : End K V)).maxGenEigenspace c = ⊤ := by
   rw [eq_top_iff]
@@ -201,8 +154,7 @@ theorem chi_mul (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b) {χ : Algebra.adjoi
 theorem chi_alg {χ : Algebra.adjoin O S → K} (hW : W _ χ ≠ ⊥) (c : O) :
     χ (algebraMap O (Algebra.adjoin O S) c) = algebraMap O K c := by
   refine eq_of_le_maxGen hW (W_le _ χ _) ?_
-  rw [Subalgebra.coe_algebraMap, algebraMap_end_eq, maxGen_smul_one]
-  exact le_top
+  simp only [Subalgebra.coe_algebraMap, algebraMap_end_eq, maxGen_smul_one, le_top]
 
 theorem chi_int (hS : ∀ a ∈ S, ∀ b ∈ S, Commute a b)
     (hint : ∀ a ∈ S, ∀ μ, a.maxGenEigenspace μ ≠ ⊥ → μ ∈ (algebraMap O K).range)
@@ -385,10 +337,7 @@ theorem pow_sub_apply_eq_zero [FiniteDimensional K V] (ψ : Algebra.adjoin O S �
     (t : Algebra.adjoin O S) {x : V} (hx : x ∈ W _ (pt ψ)) :
     (((t : End K V) - algebraMap O (End K V) (ψ t)) ^
       ((t : End K V).maxGenEigenspaceIndex (pt ψ t))) x = 0 := by
-  have h1 := W_le _ (pt ψ) t hx
-  rw [maxGenEigenspace_eq, mem_genEigenspace_nat] at h1
-  rw [algebraMap_end_eq]
-  exact h1
+  simpa [maxGenEigenspace_eq, mem_genEigenspace_nat, algebraMap_end_eq, pt] using W_le _ (pt ψ) t hx
 
 
 set_option linter.deprecated false in

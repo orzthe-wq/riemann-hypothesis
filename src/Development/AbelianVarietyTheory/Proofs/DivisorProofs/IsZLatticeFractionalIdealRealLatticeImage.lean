@@ -71,7 +71,7 @@ theorem span_range_remb (F : Type) [Field F] [NumberField F] :
     have h1 : f (remb F a) = 0 := hle (Submodule.subset_span ⟨a, rfl⟩)
     have h2 : remb F a = ∑ τ : F →+* ℝ, τ a • EuclideanSpace.single τ (1 : ℝ) := by
       ext σ
-      simp [PiLp.single_apply, Pi.single_apply]
+      simp [Pi.single_apply]
 
     rw [h2, map_sum] at h1
     simpa [mul_comm] using h1
@@ -84,7 +84,7 @@ theorem span_range_remb (F : Type) [Field F] [NumberField F] :
   intro x
   have hx : x = ∑ τ : F →+* ℝ, x τ • EuclideanSpace.single τ (1 : ℝ) := by
     ext σ
-    simp [PiLp.single_apply, Pi.single_apply]
+    simp [Pi.single_apply]
 
   rw [hx, map_sum]
   simp [hcoef]

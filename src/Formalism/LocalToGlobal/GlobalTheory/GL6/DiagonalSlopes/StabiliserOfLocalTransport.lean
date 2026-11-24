@@ -1,49 +1,89 @@
 module
 
+public import Mathlib.Algebra.Module.Lattice.Basic
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Formalism.LocalRingCardinality.DataHost
 public import Formalism.LocalToGlobal.GlobalTheory.EqGlobOfHat
 public import Formalism.LocalToGlobal.HermitianForms.PrkSmul
-public import Formalism.LocalToGlobal.GlobalTheory.GL4.PFrames
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLcInt
 public import Formalism.LocalToGlobal.GlobalTheory.GL6.PKerAtP
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Formalism.LocalToGlobal.GlobalTheory.GL4.PFrCore
+import Formalism.LocalToGlobal.HermitianColumns.InLocalDiscriminantKernel
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PRLocV
 import Formalism.LocalToGlobal.GlobalTheory.GL6.PRLocW
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsScale
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.GlobalTheory.GL4.PFrames, Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.StabiliserOfLocalTransport
+
+-- ===== clump member: Formalism.LocalToGlobal.GlobalTheory.GL4.PFrames =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.GlobalTheory.GL4.PFrames", "h": "module\n\npublic import Mathlib.Algebra.Module.Lattice.Basic\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Formalism.LocalRingCardinality.DataHost\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.GlobalTheory.EqGlobOfHat\nimport Formalism.LocalToGlobal.GlobalTheory.GL4.PFrCore\nimport Formalism.LocalToGlobal.HermitianColumns.InLocalDiscriminantKernel\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField Formalism.BasicNotions Formalism.L2.GlobalTheoryTheory.Comp
+
+namespace Formalism.L2.GlobalTheoryTheory.TraceIntegrality
+
+open Formalism.L2.GlobalTheoryTheory.TraceIntegrality.Fr
+
+section Gen
+
+variable {E : Type} [Field E] [NumberField E]
+
+theorem isLattice_between {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
+    (A B : Submodule (𝓞 E) W) (hA : Submodule.IsLattice E A) (hAB : A ≤ B) (T : ℕ) (hT : T ≠ 0)
+    (hTB : ∀ x ∈ B, (T : E) • x ∈ A) : Submodule.IsLattice E B := by
+  let f : W →ₗ[𝓞 E] W := ((T : ℕ) : 𝓞 E) • LinearMap.id
+  have hf : Function.Injective f := by
+    intro x y hxy
+    have h1 : ((T : ℕ) : E) • x = ((T : ℕ) : E) • y := by
+      simpa only [f, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul] using hxy
+    exact smul_right_injective W (by exact_mod_cast hT : ((T : ℕ) : E) ≠ 0) h1
+  have hmap : B.map f ≤ A := by
+    rintro _ ⟨x, hx, rfl⟩
+    have h1 := hTB x hx
+    simpa only [f, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul] using h1
+  haveI : IsNoetherian (𝓞 E) A := isNoetherian_of_fg_of_noetherian A hA.fg
+  have hmfg : (B.map f).FG := by
+    have h1 := IsNoetherian.noetherian ((B.map f).comap A.subtype)
+    have h2 := h1.map A.subtype
+    rwa [Submodule.map_comap_subtype, inf_eq_right.2 hmap] at h2
+  refine ⟨Submodule.fg_of_fg_map_injective f hf hmfg, ?_⟩
+  intro s hs hli
+  let g : W →ₗ[E] W := ((T : E) • LinearMap.id)
+  have hg : Function.Injective g := smul_right_injective W (by exact_mod_cast hT : (T : E) ≠ 0)
+  have hgs : g '' s ⊆ A := by
+    rintro _ ⟨x, hx, rfl⟩
+    have hxB : x ∈ B := hs hx
+    have hmul := hTB x hxB
+    simpa [g, LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul] using hmul
+  have hli' : LinearIndepOn (𝓞 E) id (g '' s) := by
+    apply LinearIndepOn.image (f := g.restrictScalars (𝓞 E)) hli
+    simp [LinearMap.ker_eq_bot.mpr hg]
+  have hli'' : LinearIndepOn E id (g '' s) := hA.linearIndepOn _ hgs hli'
+  exact (linearIndepOn_id_imageₛ_iff (f := g) hg.injOn).mp hli''
+
+end Gen
+
+open Formalism.L2.Herm
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+end Formalism.L2.GlobalTheoryTheory.TraceIntegrality
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.GlobalTheory.GL4.PFrames =====
+
+-- ===== clump member: Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.StabiliserOfLocalTransport =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.StabiliserOfLocalTransport", "h": "module\n\npublic import Formalism.LocalToGlobal.GlobalTheory.EqGlobOfHat\npublic import Formalism.LocalToGlobal.HermitianForms.PrkSmul\npublic import Formalism.LocalToGlobal.GlobalTheory.GL4.PFrames\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.PBwLcInt\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.PKerAtP\nimport Formalism.LocalToGlobal.GlobalTheory.GL6.PRLocV\nimport Formalism.LocalToGlobal.GlobalTheory.GL6.PRLocW\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsScale\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -225,3 +265,6 @@ end Fun
 end Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.GlobalTheory.GL6.DiagonalSlopes.StabiliserOfLocalTransport =====

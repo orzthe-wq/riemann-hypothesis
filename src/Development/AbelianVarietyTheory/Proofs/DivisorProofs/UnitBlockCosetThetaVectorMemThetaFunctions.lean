@@ -110,7 +110,7 @@ theorem homL_smul {𝔪 : Ideal (𝓞 D.host.E)} {a d M : ℕ}
   simp only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.lsmul_apply]
   refine Submodule.subset_span fun x hx => ?_
   have e : ((M : 𝓞 D.host.E) • A).mulVec x = (M : 𝓞 D.host.E) • A.mulVec x := by
-    funext i; simp [Matrix.mulVec, dotProduct, Finset.smul_sum, smul_mul_assoc]
+    funext i; simp [Matrix.mulVec, dotProduct, Finset.smul_sum]
   rw [e]
   exact hM _ (hA x hx)
 
@@ -140,7 +140,7 @@ theorem la_skew_nsmul (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (𝔪 : Ideal (�
     simp only [SetLike.mem_coe, AddSubgroup.mem_comap, DistribSMul.toAddMonoidHom_apply]
     refine AddSubgroup.subset_closure ⟨w, hw, _, hA', ?_⟩
     funext τ i j
-    simp [embV, tor0, Algebra.smul_def, nsmul_eq_mul]
+    simp [embV, tor0, Algebra.smul_def]
     ring
   exact key hx
 

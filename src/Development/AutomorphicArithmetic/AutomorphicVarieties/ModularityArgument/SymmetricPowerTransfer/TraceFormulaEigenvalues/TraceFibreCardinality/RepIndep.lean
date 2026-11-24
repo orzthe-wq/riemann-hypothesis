@@ -91,7 +91,7 @@ private theorem opF_mem (hf : s.IsTest f) (φ : B.Forms) : s.opF f φ.1 ∈ B.Fo
     have hf1 : f (s.θ ((s.θ.symm (u : G))⁻¹ * x.out)) = (B.ω u : ℂ) * f (s.θ x.out) := by
       rw [map_mul, map_inv, MulEquiv.apply_symm_apply]
       have hl := hf.left u⁻¹ (s.θ x.out)
-      simp only [Subgroup.coe_inv, InvMemClass.coe_inv] at hl
+      simp only [InvMemClass.coe_inv] at hl
       rw [hl, map_inv, inv_inv]
     rw [hg, hf1, mul_smul]
 

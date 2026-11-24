@@ -123,8 +123,7 @@ theorem isPushout_app {g : R →+* R'} (hg : g.Flat) {f : X ⟶ Spec (CommRingCa
   · simp [Scheme.Hom.app_eq_appLE]
   · ext x; simp [AbLaw.cst, Scheme.Hom.appLE]; rfl
 
-theorem gs_sum (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) {n : ℕ} (a : Fin n → Γ(X, U)) :
-    gs r z U (∑ i, a i) = ∑ i, gs r z U (a i) := by simp only [gs_eq r z U h, map_sum]
+alias gs_sum := _root_.ReciprocityTheory.ChartRestriction.G.DVR.SectionScalarValuation.gs_sum
 
 theorem gs_cst (f : X ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (c : R) :
     gs r z U (cst f U c) = gs r z ⊤ (cst f ⊤ c) := by

@@ -98,7 +98,7 @@ theorem ddConst_apply (f j k : ℕ) (G : IndefiniteRowSideFullHecke.RestTerms.Ro
       AddMonoidAlgebra.coeff (∑ w : Fin f → Equiv.Perm (Fin (j + k)),
         ((permSign f (j + k) w : ℤ) : ℝ) • rename (Equiv.prodCongrRight w) G) (rho f (j + k)) := by
   simp [IndefiniteRowSideFullHecke.RestTerms.ddConst, IndefiniteRowSideFullHecke.RestTerms.blockAntisym, permSign, rho,
-    IndefiniteRowSideFullHecke.RestTerms.rhoMon, coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul]
+    IndefiniteRowSideFullHecke.RestTerms.rhoMon, smul_eq_mul]
 
 theorem ddConst_eq (f j k : ℕ) (G : IndefiniteRowSideFullHecke.RestTerms.Roots f j k) :
     IndefiniteRowSideFullHecke.RestTerms.ddConst f j k G =

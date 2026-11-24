@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
 public import Mathlib.Basic.Complex.Basic
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFixedVectorProjectionStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactFixedVectorProjection
 import Mathlib.Algebra.Module.StablyFree.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -57,7 +57,7 @@ theorem invariant_forms_separate_fixed :
       (π : Representation ℂ G V), IsSmooth π → ∀ u ∈ fixed π J,
       (∀ l : Module.Dual ℂ V, (∀ x ∈ J, l ∘ₗ π x = l) → l u = 0) → u = 0 := by
   intro G _ _ _ J hJ V _ _ π hπ u hu hl
-  obtain ⟨E, -, hfix, -, hinv, -⟩ := GlobalTheory.T.compact_fixed_vector_projection G J hJ V π hπ
+  obtain ⟨E, -, hfix, -, hinv, -⟩ := _root_.GlobalTheory.CompanionTheory.CompactAvg.exists_average G J hJ V π hπ
   by_contra hne
   have hex : ∃ l0 : Module.Dual ℂ V, l0 u ≠ 0 := by
     by_contra hall

@@ -114,7 +114,7 @@ theorem levi_core (hc : ∀ x, c (c x) = x) {n r : ℕ} {Jh : Matrix (Fin n) (Fi
     rw [← Matrix.mul_assoc, hyx, Matrix.one_mul]
   have hPXa : P * Xa = 0 := by
     rw [hP]; simp only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hyx, hxx, Matrix.mul_one,
-      Matrix.mul_zero, sub_self, sub_zero]
+      Matrix.mul_zero, sub_self]
   have hPYa : P * Ya = 0 := by
     rw [hP]; simp only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hyy, hxy, Matrix.mul_one,
       Matrix.mul_zero, sub_self, sub_zero]
@@ -123,7 +123,7 @@ theorem levi_core (hc : ∀ x, c (c x) = x) {n r : ℕ} {Jh : Matrix (Fin n) (Fi
       Matrix.one_mul, sub_self, sub_zero]
   have hYdP : Yd * P = 0 := by
     rw [hP]; simp only [Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hyy, hyx, Matrix.zero_mul,
-      Matrix.one_mul, sub_self, sub_zero]
+      Matrix.one_mul, sub_self]
   have hPP : P * P = P := by
     have h : P * P = P * (1 - Xa * Yd - Ya * Xd) := by rw [← hP]
     rw [h, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hPXa, ← Matrix.mul_assoc, hPYa,

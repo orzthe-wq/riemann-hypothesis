@@ -122,7 +122,7 @@ noncomputable def splitTorusDown (x : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) 
 
 theorem splitTorusDown_left (x : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) X) :
     (splitTorusDown x).left = x.left ≫ torusFst (Sp k) X := by
-  simp [splitTorusDown, Adjunction.homEquiv_symm_apply, torusFst]
+  simp [splitTorusDown, torusFst]
   rfl
 
 theorem splitTorusDown_mul (x y : 𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) X) :

@@ -114,7 +114,6 @@ theorem dehom_homog {D : ℕ} (k : Fin (D + 1)) {N : ℕ} (G : MvPolynomial (Fin
   refine Finset.sum_congr rfl fun e _ => ?_
   first
     | rw [map_mul, map_pow, bind₁_X_right, dif_pos rfl, one_pow, one_mul]
-    | rw [map_mul, map_pow, aeval_X, dif_pos rfl, one_pow, one_mul]
 
 theorem ne_zero_of_generic {Ω : Type} [Field Ω] [CharZero Ω] {D : ℕ} {l : Fin (D + 1) → Ω}
     (hgen : ∀ (d : ℕ) (F : MvPolynomial (Fin (D + 1)) ℚ), F.IsHomogeneous d → aeval l F = 0 → F = 0)

@@ -95,7 +95,7 @@ theorem mD_mul_nU (a : (A F)ˣ) (b : A F) : mD a * nU b = nU ((a : A F) ^ 2 * b)
     simp [mD, nU, Matrix.mul_apply, Fin.sum_univ_two, pow_two, mul_assoc, mul_comm b]
 theorem gl_cD (t : (A F)ˣ) (g : G1 F) : gl (cD t g) * dM t = dM t * gl g := by
   refine Units.ext ?_; rw [Units.val_mul, Units.val_mul, val_gl, val_gl]; ext i j; fin_cases i <;> fin_cases j <;>
-    simp [cD, dM, Matrix.mul_apply, Fin.sum_univ_two, mul_assoc, mul_comm]
+    simp [cD, dM, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
 theorem gl_inj : Function.Injective (gl : G1 F → GL (Fin 2) (A F)) := Matrix.SpecialLinearGroup.toGL_injective
 theorem gl_cD' (t : (A F)ˣ) (g : G1 F) : gl (cD t g) = dM t * gl g * (dM t)⁻¹ := by
   rw [← gl_cD, mul_inv_cancel_right]

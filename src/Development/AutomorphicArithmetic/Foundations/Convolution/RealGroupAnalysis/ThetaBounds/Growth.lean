@@ -52,10 +52,7 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
-private theorem dM_one' {F : Type} [Field F] [NumberField F] : dM (1 : (A F)ˣ) = 1 := by
-  apply Units.ext
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [dM]
+private alias dM_one' := _root_.UpperTheory.ConvolutionTheory.R2.dM_one
 
 private theorem growth_alg (a b c d V : ℝ) (n m : ℕ) :
     (a * (2 * (c * d)) ^ n) * (b * (4 * (c * d) ^ 2) ^ m * V) =

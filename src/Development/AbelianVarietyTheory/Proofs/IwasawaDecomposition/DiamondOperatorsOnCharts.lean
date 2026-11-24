@@ -3,12 +3,14 @@ module
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.LatAtLattice
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FunKilled
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.NarrowJetMoments
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsDefiniteLaws
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetFramesInvariantRationalUnitaryStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiamondElementIntegralSupportLastRowStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPointOfLastCoordinateDilationOnePrimeStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPointOfRationalUnitaryAdelicMulStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CouplingCosetFramesInvariantRationalUnitary
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReferenceCharactersFactorTame
+public import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DiamondElementIntegralSupportLastRow
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPointOfLastCoordinateDilationOnePrime
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsPointOfRationalUnitaryAdelicMul
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.TrueColumnSpacesStandardInFrameCoordsStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseFieldsDefiniteLaws
 import Formalism.LocalToGlobal.Columns.BaseLemmas
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -155,11 +157,11 @@ theorem exists_level (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) {Ch : Type} 
   have hpt : PtOf (y' * (y'⁻¹ * (ratAd B.host.F γ⁻¹ * (y c * δ))) * k (chOf ((I.stp u a i).cl c.1 (dp I u a i P s c))))
       ((I.stp u a i).act c.1 (1, κ) ((I.stp u a i).rep ((I.stp u a i).cl c.1 (dp I u a i P s c)))).1.1 := by
     rw [hk, mul_inv_cancel_left, mul_assoc]
-    exact GlobalTheory.T.isPointOf_rational_unitary_adelic_mul _ _ _ _ _ _ _ γ⁻¹ _ _ hδ
+    exact _root_.GlobalTheory.Mem.Col2.RatMove.isPtOf_ratAd _ _ _ _ _ _ _ γ⁻¹ _ _ hδ
   have hx := (hlev _ _ hpt).2 ⟨(1, κ), map_one (ufGL _ _), rfl, by
     refine Eq.trans ?_ (hco'.trans hco.symm)
     refine (congrArg (fun q : (I.stp u a i).D c.1 => cosetIn q) hk).trans ?_
-    exact GlobalTheory.T.couplingCoset_frames_invariant_rational_unitary _ _ _ _ _ _ _ _ _ (GlobalTheory.Mem.FieldsLaws.fields_ok B) l.pr _ _ γ⁻¹ rfl rfl⟩
+    exact _root_.GlobalTheory.Mem.Col2.cosetIn_smul_unitary _ _ _ _ _ _ _ _ _ (GlobalTheory.Mem.FieldsLaws.fields_ok B) l.pr _ _ γ⁻¹ rfl rfl⟩
   refine ⟨⟨_, hx⟩, ?_, hchr ⟨_, hx⟩ (1, κ) (map_one (ufGL _ _)) hpt⟩
   show y c * δ = ratAd B.host.F γ * y' * (y'⁻¹ * (ratAd B.host.F γ⁻¹ * (y c * δ)))
   rw [mul_assoc, mul_inv_cancel_left, ← mul_assoc]
@@ -185,7 +187,7 @@ theorem isPt_dia (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) {Ch 
   have hPr := l.pr
   have hover : ∀ w : HeightOneSpectrum (𝓞 B.host.E), w.under (𝓞 B.host.F) = v → w = P.1 ∨ w = conjPrime₂ P.1 := fun w hw =>
     (under_eq_iff B.host P.1 w).1 (hw.trans hP)
-  obtain ⟨d1, d2, d3, d4⟩ := GlobalTheory.T.diamondElement_integral_support_lastRow _ _ B.sp.cm _ _ _ _ J S (X.piT u) P.1 v hv z δ hJ hP.symm hover
+  obtain ⟨d1, d2, d3, d4⟩ := _root_.GlobalTheory.Mem.Dil.dia_data _ _ B.sp.cm _ _ _ _ J S (X.piT u) P.1 v hv z δ hJ hP.symm hover
     (decoFin_mem_of_mem_divs P.2) (hPr.piT_notMem_sq hX u P.2) (conj_piT_notMem hPr u P)
     (fun x => by rw [hL]; exact h.lb _ x) hs hδ
   obtain ⟨p₀, hp₀, hN⟩ := h.k_std (chOf c)
@@ -196,7 +198,7 @@ theorem isPt_dia (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) {Ch 
     rw [← hw] at hv
     have h1 : algebraMap (𝓞 B.host.F) (𝓞 B.host.E) (B.T u : 𝓞 B.host.F) ∈ w.asIdeal := hv
     rwa [map_natCast] at h1
-  refine GlobalTheory.T.isPointOf_last_coordinate_dilation_one_prime _ _ B.sp.cm _ _ _ _ (y c) δ.1 (k (chOf c)) ((I.stp u a i).rep c).1.1 _ P s _
+  refine _root_.GlobalTheory.Mem.Col2.DilPt.isPointOf_last_coordinate_dilation_one_prime_alt _ _ B.sp.cm _ _ _ _ (y c) δ.1 (k (chOf c)) ((I.stp u a i).rep c).1.1 _ P s _
     ((h.pt c).of_extTo (I.Q_subset_SQ a) hdis) hp₀.uni (by subst hJ; exact δ.2) (hN ▸ hp₀.lat) d1 d2
     (fun w hw => d3 w fun e => ?_) (h.k_T _ P) (fun r j hr => hz ▸ d4 r j hr) ?_ ?_
   · rcases hw with hw | hw | ⟨hw, hne⟩

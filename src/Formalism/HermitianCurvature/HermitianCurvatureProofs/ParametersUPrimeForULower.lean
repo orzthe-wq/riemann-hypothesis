@@ -77,18 +77,13 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
 theorem hsInner_eq [FiniteDimensional ℂ Wq] (X Y : Wq →L[ℂ] Wp) :
     Formalism.FourierDecayAlt.B.hsInner X Y = ∑ i, inner ℂ (Y (stdOrthonormalBasis ℂ Wq i)) (X (stdOrthonormalBasis ℂ Wq i)) := by
   first
-    | (simp only [Formalism.FourierDecayAlt.B.hsInner, Formalism.FourierDecayAlt.B.hsVec, PiLp.inner_apply, PiLp.toLp_apply]; done)
-    | (unfold Formalism.FourierDecayAlt.B.hsInner Formalism.FourierDecayAlt.B.hsVec; rw [PiLp.inner_apply]; rfl)
-    | (simp [Formalism.FourierDecayAlt.B.hsInner, Formalism.FourierDecayAlt.B.hsVec, PiLp.inner_apply]; done)
+    | (simp only [Formalism.FourierDecayAlt.B.hsInner, Formalism.FourierDecayAlt.B.hsVec, PiLp.inner_apply]; done)
 
 theorem hsInner_sum_smul_left [FiniteDimensional ℂ Wq] {ι : Type} (s : Finset ι) (a : ι → ℂ)
     (X : ι → Wq →L[ℂ] Wp) (Y : Wq →L[ℂ] Wp) :
     Formalism.FourierDecayAlt.B.hsInner (∑ j ∈ s, a j • X j) Y = ∑ j ∈ s, a j * Formalism.FourierDecayAlt.B.hsInner (X j) Y := by
   first
     | (simp only [hsInner_eq, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, inner_sum, inner_smul_right, Finset.mul_sum]; exact Finset.sum_comm)
-    | (simp only [hsInner_eq, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, inner_sum, inner_smul_right, Finset.mul_sum]; exact Finset.sum_comm)
-    | (simp [hsInner_eq, inner_sum, inner_smul_right, Finset.mul_sum]; exact Finset.sum_comm)
-    | (simp [hsInner_eq, inner_sum, inner_smul_right, Finset.mul_sum, Finset.sum_comm]; done)
 
 theorem hsInner_proj (E : Wp →L[ℂ] Wp) (hidem : E.comp E = E) (hsa : ∀ v v' : Wp, inner ℂ (E v) v' = inner ℂ v (E v'))
     [FiniteDimensional ℂ Wq] (X Y : Wq →L[ℂ] Wp) :
@@ -105,12 +100,10 @@ theorem dH_nil (P : M.Par) (l0 : ℕ) (TT : ℝ) (p : C.LPt) (e : Wd.Ix (Fin ([]
   have hs : D.positionted ([] : List C.Letter) = [] := by
     first
     | rfl
-    | (unfold D.positionted; simp)
   unfold Top.dH Top.cW
   rw [hs]
   first
     | (simp only [Fr.cs, List.length_nil, pow_zero, Complex.one_re, one_mul, Real.sqrt_one]; done)
-    | (simp [Fr.cs]; done)
 
 theorem hsInner_types {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
@@ -175,8 +168,6 @@ theorem typ_inner_pres (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v�
     (v v' : W) : inner ℂ (π h v) (π h v') = inner ℂ v v' := by
   first
     | exact (⟨(π h).toLinearMap, hu h hh⟩ : W →ₗᵢ[ℂ] W).inner_map_map v v'
-    | (have key := (⟨(π h).toLinearMap, hu h hh⟩ : W →ₗᵢ[ℂ] W).inner_map_map v v'; simpa using key)
-    | (rw [inner_eq_sum_norm_sq_div_four, inner_eq_sum_norm_sq_div_four]; simp only [← map_add (f := _), ← map_sub, ← map_smul, hu h hh]; done)
 
 theorem typ_dOp_skew (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWset k r z))
     (hu : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) {X : Mx k r} (hX : QrD.InLieW k r z X) (v v' : W) :
@@ -223,7 +214,7 @@ theorem typ_EB_adj (hπ : IsCRepOn (UWset k r z) π) (hc : ContinuousOn π (UWse
   simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, inner_add_left, inner_add_right,
     inner_smul_left, inner_smul_right, Complex.conj_I]
   rw [typ_dOp_skew hπ hc hu h1, typ_dOp_skew hπ hc hu h2]
-  simp only [neg_smul, one_smul, ContinuousLinearMap.neg_apply, inner_neg_right]
+  simp only [neg_smul, one_smul, inner_neg_right]
   ring
 
 end adj
@@ -235,8 +226,6 @@ variable {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDime
 theorem typ_proj_orth (K : Submodule ℂ W) {u : W} (hu : u ∈ Kᗮ) : K.starProjection u = 0 := by
   first
     | exact Submodule.eq_starProjection_of_mem_of_inner_eq_zero K.zero_mem (fun w hw => by rw [sub_zero]; exact Submodule.inner_left_of_mem_orthogonal hw hu)
-    | (apply Submodule.eq_starProjection_of_mem_of_inner_eq_zero K.zero_mem; intro w hw; rw [sub_zero]; exact Submodule.inner_left_of_mem_orthogonal hw hu)
-    | (apply Submodule.eq_starProjection_of_mem_of_inner_eq_zero K.zero_mem; intro w hw; simpa using (Submodule.mem_orthogonal' K u).mp hu w hw)
 
 theorem typ_proj_comm {n : ℕ} (E : Fin n → Fin n → Module.End ℂ W) (K : Submodule ℂ W)
     (hst : ∀ a b, ∀ v ∈ K, E a b v ∈ K) (hadj : ∀ a b (v v' : W), inner ℂ (E a b v) v' = inner ℂ v (E b a v'))
@@ -244,12 +233,9 @@ theorem typ_proj_comm {n : ℕ} (E : Fin n → Fin n → Module.End ℂ W) (K : 
   have hP : K.starProjection x ∈ K := by
     first
     | exact K.starProjection_apply_mem x
-    | exact (K.orthogonalProjection x).2
   have hQ : x - K.starProjection x ∈ Kᗮ := by
     first
     | exact K.sub_starProjection_mem_orthogonal x
-    | exact Submodule.sub_starProjection_mem_orthogonal x
-    | exact Submodule.sub_orthogonalProjection_mem_orthogonal x
   apply Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hst a b _ hP)
   intro w hw
   rw [show E a b x - E a b (K.starProjection x) = E a b (x - K.starProjection x) from (map_sub _ _ _).symm, hadj]
@@ -305,12 +291,10 @@ def typM (P : M.Par) (ρ : M.Ty P) : Fin (P.k - 1) → ℂ :=
 
 theorem typ_prod_Icc (n : ℕ) (f : ℕ → ℂ) : ∏ i ∈ Finset.Icc 1 n, f i = ∏ j : Fin n, f ((j : ℕ) + 1) := by
   induction n with
-  | zero => first | simp | rfl
+  | zero => first | simp
   | succ n ih =>
     first
     | (rw [Finset.prod_Icc_succ_top (by omega), ih, Fin.prod_univ_castSucc]; simp)
-    | (rw [Finset.prod_Icc_succ_top (by omega), ih, Fin.prod_univ_castSucc]; rfl)
-    | (rw [← Nat.Ico_succ_right, Finset.prod_Ico_eq_prod_range, Finset.prod_range]; simp [add_comm])
 
 theorem typ_xC (P : M.Par) (ρ : M.Ty P) (w : ℂ) :
     M.xC P ρ (w - ((P.k : ℂ) - 2) / 2) = Qr.cpol (typM P ρ) w := by
@@ -325,7 +309,7 @@ theorem typ_rho_succ (P : M.Par) (ρ : M.Ty P) (j : Fin (P.k - 1)) :
   have hj := j.isLt
   unfold M.rho
   rw [dite_eq_left (show 1 ≤ (j : ℕ) + 1 ∧ (j : ℕ) + 1 ≤ P.k - 1 by omega)]
-  all_goals first | rfl | simp
+  all_goals first | rfl
 
 private theorem u_add_le_u_of_ok {Q : M.Par} (h : Q.OK) {i : ℕ} (hi1 : 1 ≤ i) :
     ∀ d : ℕ, i + d ≤ Q.k - 1 → Q.u (i + d) ≤ Q.u i := by
@@ -351,7 +335,6 @@ private theorem rho_succ_le_hi_of_ok {Q : M.Par} (h : Q.OK) (π : M.Ty Q) (j : F
   have hw : (Q.wid ((j : ℕ) + 1) : ℝ) ≤ Q.hi ((j : ℕ) + 1) - Q.lo ((j : ℕ) + 1) := by
     first
     | exact Nat.floor_le (by linarith)
-    | (unfold M.Par.wid; exact Nat.floor_le (by linarith))
   have h2 : ((π j : Fin _) : ℕ) ≤ Q.wid ((j : ℕ) + 1) := by omega
   have h3 : (((π j : Fin _) : ℕ) : ℝ) ≤ Q.wid ((j : ℕ) + 1) := by exact_mod_cast h2
   linarith
@@ -850,15 +833,6 @@ theorem vecw_u_step {Q : M.Par} (h : Q.OK) {l : ℕ} (hl : l ∈ Icc 1 (Q.k - 1)
   have a2 := min_le_left (Q.u l) (Q.u' l)
   linarith
 
-theorem vecw_u_mono {Q : M.Par} (h : Q.OK) {i : ℕ} (hi1 : 1 ≤ i) :
-    ∀ d : ℕ, i + d ≤ Q.k - 1 → Q.u (i + d) ≤ Q.u i
-  | 0, _ => by simp
-  | d + 1, hd => by
-    have s := vecw_u_step h (l := i + d) (by rw [Finset.mem_Icc]; omega)
-    have ih := vecw_u_mono h hi1 d (by omega)
-    rw [show i + (d + 1) = i + d + 1 by omega]
-    linarith
-
 theorem vecw_rho_int {Q : M.Par} (h : Q.OK) (π : M.Ty Q) {i : ℕ} (hi : i ∈ Icc 1 (Q.k - 1)) :
     ∃ n : ℤ, M.rho Q π i - Q.u 1 - 1 / 2 = n := by
   obtain ⟨N, -, he⟩ := vecw_rho_eq π hi
@@ -884,7 +858,7 @@ theorem vecw_rho_gap {Q : M.Par} (h : Q.OK) (π : M.Ty Q) {i j : ℕ} (hi : i �
   have hhi : Q.hi j = min (Q.u j) (Q.u' j) - 1 / 2 := rfl
   have m1 := le_max_left (Q.u (i + 1)) (Q.u' (i + 1))
   have m2 := min_le_left (Q.u j) (Q.u' j)
-  have hmono : Q.u (i + 1 + (j - (i + 1))) ≤ Q.u (i + 1) := vecw_u_mono h (by omega) (j - (i + 1)) (by omega)
+  have hmono : Q.u (i + 1 + (j - (i + 1))) ≤ Q.u (i + 1) := _root_.Formalism.FourierDecayAlt.P.Topx1.u_add_le_u_of_ok h (by omega) (j - (i + 1)) (by omega)
   have hj2 : i + 1 + (j - (i + 1)) = j := by omega
   rw [hj2] at hmono
   have hd : (1 : ℝ) ≤ (a : ℝ) - b := by linarith
@@ -913,7 +887,6 @@ theorem vecw_sdec {Q : M.Par} (h : Q.OK) (π : M.Ty Q) : Qr.SDec (vecwM Q π) :=
   simp only [vecwM]
   first
     | exact_mod_cast hN
-    | (rw [← Complex.ofReal_sub, hN]; push_cast; ring)
 
 theorem vecw_rho_match {P : M.Par} (h : P.OK) (τ : M.Ty (parametersUForUPrime P)) (σ : M.Ty (parametersUPrimeForU P))
     (he : ∀ Y, M.xC (parametersUForUPrime P) τ Y = M.xC (parametersUPrimeForU P) σ Y) :
@@ -930,19 +903,15 @@ theorem vecw_rho_match {P : M.Par} (h : P.OK) (τ : M.Ty (parametersUForUPrime P
 theorem parameters_u_for_u_prime_lower (P : M.Par) (i : ℕ) : (parametersUForUPrime P).lo i = P.u (i + 1) + 1 / 2 := by
   first
     | (simp only [parametersUForUPrime, M.Par.lo, max_self]; done)
-    | (show max (P.u (i + 1)) (P.u (i + 1)) + 1 / 2 = P.u (i + 1) + 1 / 2; rw [max_self])
 theorem parameters_u_for_u_prime_upper (P : M.Par) (i : ℕ) : (parametersUForUPrime P).hi i = P.u i - 1 / 2 := by
   first
     | (simp only [parametersUForUPrime, M.Par.hi, min_self]; done)
-    | (show min (P.u i) (P.u i) - 1 / 2 = P.u i - 1 / 2; rw [min_self])
 theorem parameters_u_prime_for_u_lower (P : M.Par) (i : ℕ) : (parametersUPrimeForU P).lo i = P.u' (i + 1) + 1 / 2 := by
   first
     | (simp only [parametersUPrimeForU, M.Par.lo, max_self]; done)
-    | (show max (P.u' (i + 1)) (P.u' (i + 1)) + 1 / 2 = P.u' (i + 1) + 1 / 2; rw [max_self])
 theorem parameters_u_prime_for_u_upper (P : M.Par) (i : ℕ) : (parametersUPrimeForU P).hi i = P.u' i - 1 / 2 := by
   first
     | (simp only [parametersUPrimeForU, M.Par.hi, min_self]; done)
-    | (show min (P.u' i) (P.u' i) - 1 / 2 = P.u' i - 1 / 2; rw [min_self])
 
 theorem vecw_ty_exists {P : M.Par} (h : P.OK) (τ : M.Ty (parametersUForUPrime P)) (σ : M.Ty (parametersUPrimeForU P))
     (he : ∀ i ∈ Icc 1 (P.k - 1), M.rho (parametersUForUPrime P) τ i = M.rho (parametersUPrimeForU P) σ i) :
@@ -978,7 +947,6 @@ theorem vecw_ty_exists {P : M.Par} (h : P.OK) (τ : M.Ty (parametersUForUPrime P
         have hn : (τ j : ℕ) ≤ P.wid ((j : ℕ) + 1) := by
           first
           | exact Nat.le_floor hw
-          | (unfold M.Par.wid; exact Nat.le_floor hw)
         omega
       · show P.lo ((j : ℕ) + 1) + ((τ j : ℕ) : ℝ) = _
         rw [hPlo, hm, ht]
@@ -992,7 +960,6 @@ theorem vecw_ty_exists {P : M.Par} (h : P.OK) (τ : M.Ty (parametersUForUPrime P
         have hn : (σ j : ℕ) ≤ P.wid ((j : ℕ) + 1) := by
           first
           | exact Nat.le_floor hw
-          | (unfold M.Par.wid; exact Nat.le_floor hw)
         omega
       · show P.lo ((j : ℕ) + 1) + ((σ j : ℕ) : ℝ) = _
         rw [hPlo, hm, e1, ht]
@@ -1013,10 +980,7 @@ end par
 section final
 open Finset
 
-theorem vecw_frame_exists (k r : ℕ) (hk : 1 ≤ k) (z e : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
-    (hT : 0 < Tz k r z) (he : inWb k r e) (hez : herm (Hpk k r) e z = 0) (hee : herm (Hpk k r) e e = 1) :
-    ∃ Bs : Fin (k - 1) → Fin (2 * r + k + 1) → ℂ, Q.IsFrameOf k r [z, e] Bs := by
-  exact typ_frame_exists k r hk z e hz hT he hez hee
+alias vecw_frame_exists := _root_.Formalism.FourierDecayAlt.P.Topx1.typ_frame_exists
 
 variable {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
@@ -1124,7 +1088,6 @@ theorem vecw_main : Formalism.FourierDecayAlt.Top.VecVTypes := by
 
 end Formalism.FourierDecayAlt.P.Topx1
 
-theorem Formalism.FourierDecayAlt.P.vector_valued_types : Formalism.FourierDecayAlt.Top.VecVTypes := by
-  exact Formalism.FourierDecayAlt.P.Topx1.vecw_main
+alias Formalism.FourierDecayAlt.P.vector_valued_types := _root_.Formalism.FourierDecayAlt.P.Topx1.vecw_main
 
 end PartVec

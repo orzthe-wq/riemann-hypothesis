@@ -248,15 +248,6 @@ def InClass {n' r0 r1 : ℕ} {K' : Type} [Field K'] (R' : Subring K')
     MvPowerSeries.coeff n f = ∑ i ∈ range (n.degree + 1),
       (((p : K') ^ i)⁻¹ * MvPowerSeries.coeff n (hh ^ i * g i))
 
-def SConcl {p : ℕ} [Fact p.Prime] {n' r0 r1 : ℕ} (B : OmBasis p n') (K1 : Type) [Field K1] [Algebra (K0 p) K1]
-    (R1 : Subring K1) (Th : MvPowerSeries (Eidx n' r0 r1 ⊕ Eidx n' r0 r1) K1) : Prop :=
-  ∀ (K' : Type) [Field K'] [Algebra (K0 p) K'] [Algebra K1 K'] [IsScalarTower (K0 p) K1 K'] (R' : Subring K')
-    (vp : K'), vp ^ (p ^ 2 - 1) = (p : K') → Rp p K' vp ≤ R' → (∀ x ∈ R1, algebraMap K1 K' x ∈ R') →
-    ∃ u : Fin n' → K', (∀ s, u s ∈ R') ∧ ∀ hh' : MvPowerSeries (Zidx n' r0 r1) K',
-      MvPowerSeries.constantCoeff hh' = 0 →
-      (∃ G : MvPowerSeries (Zidx n' r0 r1) K', IntR R' G ∧ hh' = hhS p K' u + MvPowerSeries.C (p : K') * G) →
-      InClass p R' (ThZ B K' vp (MvPowerSeries.map (algebraMap K1 K') Th)) hh'
-
 def DworkLemma : Prop :=
   p ≠ 2 → ∀ (n : ℕ) (Ps : MvPowerSeries (Fin n) (K0 p)), MvPowerSeries.constantCoeff Ps = 0 →
     (IntS p (expS p Ps) ↔ ∃ Q : MvPowerSeries (Fin n) (WW p),
@@ -361,8 +352,6 @@ def g0v (v : X.Pl) (j : ℕ) : ℝ := gA p X.t (X.TT v) (X.G.P.lam0 v) (X.w v) j
 
 def Conclusion₂ (v : X.Pl) (j : ℕ) : ℝ := Pr X.t X.G.P.r (X.G.P.lam0 v) (X.w v) j
 
-def Svv (v : X.Pl) : ℝ := Sv p X.t X.mm X.G.P.r (X.TT v) (X.G.P.lam0 v) (X.w v)
-
 def Tt (v : X.Pl) (i j : ℕ) (F : X.Fm j) : X.Fm j :=
   if i = 0 then F else ((p : X.G.Kf) ^ (Nprime (X.G.P.lam0 v) (X.w v) j i)) • X.Tm v i j F
 
@@ -466,13 +455,6 @@ def hhA (K' : Type) [Field K'] (j : ℕ) (v : X.Pl) (u : Fin (X.G.P.n' v) → K'
     ∑ a : Fin (NN X.G.P.m X.t j), ∑ b : Fin (NN X.G.P.m X.t (j + 1)),
       (X.sSA K' j v s a b) ^ p * X.sSA K' j v (posAdd s 1) a b
 
-def InProdA {K' : Type} [Field K'] (R' : Subring K') (j : ℕ) (h : X.Pl → MvPowerSeries (X.ZA j) K')
-    (F : MvPowerSeries (X.ZA j) K') : Prop :=
-  ∃ g : (X.Pl → ℕ) → MvPowerSeries (X.ZA j) K', (∀ i, IntR R' (g i)) ∧
-    ∀ α : X.ZA j →₀ ℕ, MvPowerSeries.coeff α F =
-      ∑ i ∈ Fintype.piFinset (fun _ : X.Pl => range (α.degree + 1)),
-        MvPowerSeries.coeff α (MvPowerSeries.C (∏ v, ((p : K') ^ i v)⁻¹) * (∏ v, h v ^ i v) * g i)
-
 end Sys
 
 abbrev XspC {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
@@ -568,8 +550,7 @@ def LowAt (j : ℕ) (v : X.Pl) (g : ℝ) : Prop :=
         (X.ThZA Y.Kc j (MvPowerSeries.map (algebraMap (K0 p) Y.Kc) (expS p (-Y.PhAt j v)) * U))) n) g
 
 theorem geC_mono {x : Y.Kc} {g g' : ℝ} (h : g' ≤ g) (hx : Y.geC x g) : Y.geC x g' := by
-  intro a b hb hab
-  exact hx a b hb (hab.trans (mul_le_mul_of_nonneg_right h (by exact_mod_cast hb.le)))
+  exact fun a b hb hab => hx a b hb (hab.trans (mul_le_mul_of_nonneg_right h (Nat.cast_nonneg b)))
 
 theorem LowAt.mono {j : ℕ} {v : X.Pl} {g g' : ℝ} (h : g' ≤ g) (hg : Y.LowAt j v g) : Y.LowAt j v g' := fun U hU I n => Y.geC_mono h (hg U hU I n)
 
@@ -665,31 +646,6 @@ def adm11 (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) 
 def Conclusion0 (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) : Prop :=
   ∀ j < X.mm, ∀ G ∈ X.Int j, X.vGe (j + 1) (X.Kz j G) (-(X.dG j : ℝ))
 
-def Conclusion1 (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) : Prop :=
-  ∀ v, ∀ j < X.mm, ∀ (La : X.Lt j) (La' : X.Lt (j + 1)), (X.Pj j).IsLatTup La.2 → (X.Pj (j + 1)).IsLatTup La'.2 →
-    ∀ (φ : Y.Frm j La La'), SConcl (X.om v) Y.Kc Y.Oc (Y.ThV v j La La' φ)
-
-def ExpansionsMultiply (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) : Prop :=
-  ∀ j < X.mm, ∀ (La : X.Lt j) (La' : X.Lt (j + 1)), (X.Pj j).IsLatTup La.2 → (X.Pj (j + 1)).IsLatTup La'.2 →
-    ∀ (φ : Y.Frm j La La') (K' : Type) [Field K'] [Algebra (K0 p) K'] [Algebra Y.Kc K']
-    [IsScalarTower (K0 p) Y.Kc K'] (R' : Subring K') (vp : K'),
-    vp ^ (p ^ 2 - 1) = (p : K') → Rp p K' vp ≤ R' → (∀ x ∈ Y.Oc, algebraMap Y.Kc K' x ∈ R') →
-    ∃ u : ∀ v : X.Pl, Fin (X.G.P.n' v) → K', (∀ v s, u v s ∈ R') ∧
-      ∀ h' : X.Pl → MvPowerSeries (X.ZA j) K',
-        (∀ v, MvPowerSeries.constantCoeff (h' v) = 0 ∧ ∃ G : MvPowerSeries (X.ZA j) K', IntR R' G ∧
-          h' v = X.hhA K' j v (u v) + MvPowerSeries.C (p : K') * G) →
-        X.InProdA R' j h'
-          (atPi vp (MvPowerSeries.map (algebraMap Y.Kc K') (X.ThZA Y.Kc j (Y.ThA j La La' φ))))
-
-def Conclusion2 (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) : Prop :=
-  ∀ j < X.mm, ∀ G ∈ X.Int j, X.vGe (j + 1) (X.Kz j G) (∑ v, X.g0v v (j + 1) - X.dG j)
-
-def projection_lemma_base_level (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) : Prop :=
-  ∀ j < X.mm, ∀ (La : X.Lt j) (La' : X.Lt (j + 1)), (X.Pj j).IsLatTup La.2 → (X.Pj (j + 1)).IsLatTup La'.2 →
-    ∀ (φ : Y.Frm j La La') (I : X.ColCh j) (n : X.FrI j →₀ ℕ),
-      Y.geC (AddMonoidAlgebra.coeff (applyD (X.PI j I fun _ => 0) (X.ThZA Y.Kc j (Y.ThA j La La' φ))) n)
-        (∑ v, X.g0v v (j + 1))
-
 def VolumeRatio₂ (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) : Prop :=
   ∀ v, ∀ j < X.mm, Y.LowAt j v (X.g0v v (j + 1))
 
@@ -729,12 +685,6 @@ def KernelCommutationUpToUnits (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact 
       (∀ G ∈ X.Int j, X.vGe (j + 1) (X.Zop v u (mHat u m) (j + 1) (X.Kz j G))
         (X.gv v (j + 1) + ∑ v' ∈ univ.erase v, X.g0v v' (j + 1) - X.dG j))
 
-def Conclusion5 (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) : Prop :=
-  (∀ v, X.Svv v ≤ (X.mm : ℝ) * gam p * ∑ s ∈ X.TT v, (X.alv v s : ℝ)) ∧
-  ∀ VV : Finset X.Pl, ∀ F ∈ X.Iprod X.Svv VV, X.vGe X.mm (X.chainK X.mm F)
-    (∑ j ∈ Icc 1 X.mm, (∑ v ∈ VV, max (X.gv v j - X.Conclusion₂ v j) (X.g0v v j) + ∑ v ∈ univ \ VV, X.g0v v j) -
-      ∑ j ∈ range X.mm, (X.dG j : ℝ))
-
 def RelativePresentationLiterature (_D : Formalism.BasicNotions.D7) : Prop :=
   ∀ (p n' k1 t m c r : ℕ) (TT : Finset (Fin n')) (a b : Fin n' → ℤ) (lam0 : Fin n' → Fin (k1 + 1) → ℤ)
     (w : ℕ → Fin n' → ℤ), Std p n' k1 t m c r TT a b lam0 w →
@@ -753,11 +703,9 @@ def LowTermBound (_D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : 
 theorem lowAt_max (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) (hU : VolumeRatio₂ D X Y)
     (hZ : adm11 D X Y) (v : X.Pl) (j : ℕ) (hj : j < X.mm) (g : ℝ) (hg : g ≤ max (X.g0v v (j + 1)) 0) :
     Y.LowAt j v g := by
-  rcases le_total (X.g0v v (j + 1)) 0 with h0 | h0
-  · rw [max_eq_right h0] at hg
-    exact Pend.LowAt.mono Y hg (hZ v j hj)
-  · rw [max_eq_left h0] at hg
-    exact Pend.LowAt.mono Y hg (hU v j hj)
+  rcases le_max_iff.mp hg with h | h
+  · exact Pend.LowAt.mono Y h (hU v j hj)
+  · exact Pend.LowAt.mono Y h (hZ v j hj)
 
 def NumCmp (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) : Prop :=
   ∀ hT : GatTies D, LatTied hT X Y → ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl)
@@ -800,8 +748,7 @@ def admitted (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p
     adm7 D X Y ∧ adm8 D X ∧ adm11 D X Y
 
 def Conclusion₂ (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) : Prop :=
-  Conclusion0 D X ∧ Conclusion1 D X Y ∧ ExpansionsMultiply D X Y ∧ Conclusion2 D X ∧ projection_lemma_base_level D X Y ∧ VolumeRatio₂ D X Y ∧ MassRatio₂ D X ∧ PointsLemma D X ∧ Conclusion4 D X ∧
-    Conclusion5 D X ∧ LowTermBound D X Y
+  Conclusion0 D X ∧ VolumeRatio₂ D X Y ∧ MassRatio₂ D X ∧ PointsLemma D X ∧ Conclusion4 D X ∧ LowTermBound D X Y
 
 def Stmt (D : Formalism.BasicNotions.D7) : Prop :=
   (∀ (p : ℕ) [Fact p.Prime] (X : Sys p) (Y : Pend X), admitted D X Y → Conclusion₂ D X Y) ∧ RelativePresentationLiterature D

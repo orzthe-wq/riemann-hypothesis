@@ -2,8 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
 public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.PublishedIntClosHolds
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GenericSectionsPolynomialDictionaryStatement
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IndepSpanRankTransferLargeFieldComplexStatement
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GenericSectionsPolynomialDictionary
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.IndepSpanRankTransferLargeFieldComplex
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -163,12 +163,12 @@ def secPoly (i : Fin (WeightFamilies.dimY D j + 1)) : MvPolynomial (Idx D j N) X
 
 theorem sameLin (hg : R.Generic t) (u : WeightFamilies.Wt D j) :
     SameLin (Kp X la N) ℂ (OfWt X u) (toRp X la N) (R.toFn t) := fun ι _ p hp =>
-  ⟨(GlobalTheory.T.indep_span_rank_transfer_largeField_complex D B P j X R la N t hg u ι p hp).1, (GlobalTheory.T.indep_span_rank_transfer_largeField_complex D B P j X R la N t hg u ι p hp).2.1⟩
+  ⟨(_root_.GlobalTheory.reading_transfer D B P j X R la N t hg u ι p hp).1, (_root_.GlobalTheory.reading_transfer D B P j X R la N t hg u ι p hp).2.1⟩
 
 include R la t in
 theorem ofWt_pow_mul (u : WeightFamilies.Wt D j) (k n : ℕ) (q : MvPolynomial (Idx D j N) X.Forms)
     (hq : OfWt X (addL u wL k) q) : OfWt X (addL u wL (k + n)) (secPoly X w 0 ^ n * q) := by
-  obtain ⟨h1, -, -, h4, -⟩ := GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t
+  obtain ⟨h1, -, -, h4, -⟩ := _root_.GlobalTheory.Shares.polyDictionary D B P j X R la N wL w t
   induction n with
   | zero => simpa using hq
   | succ n ih =>
@@ -180,7 +180,7 @@ theorem exists_family (u : WeightFamilies.Wt D j) (m : ℕ) :
       (∀ i, OfWt X (addL u wL (m + 1)) (b i)) ∧
       Submodule.span (Kp X la N) (Set.range fun i => toRp X la N (b i)) = Mon X la w u 1 m ∧
       Submodule.span ℂ (Set.range fun i => R.toFn t (b i)) = R.deep w t (addL u wL m) 1 := by
-  obtain ⟨h1, h2, h3, h4, h5, h6, h7, -⟩ := GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t
+  obtain ⟨h1, h2, h3, h4, h5, h6, h7, -⟩ := _root_.GlobalTheory.Shares.polyDictionary D B P j X R la N wL w t
   obtain ⟨n, e, he⟩ := Module.Finite.exists_fin (R := B.KO) (M := B.Cusp j (addL u wL m))
   refine ⟨n, fun p => secPoly X w p.1.succ * MvPolynomial.C (X.inc _ (e p.2)), fun p => ?_, ?_, ?_⟩
   · rw [← wadd_addL]
@@ -217,7 +217,7 @@ theorem indep_transfer (hg : R.Generic t) (u : WeightFamilies.Wt D j) {n : ℕ} 
       ∀ i, c i = 0) ↔
     (∀ c : Fin n → ℂ, R.s w t 0 ^ (m + 1) * ∑ i, c i • R.ev (X.inc u (θ i)) ∈ R.deep w t (addL u wL m) 1 →
       ∀ i, c i = 0) := by
-  obtain ⟨h1, h2, h3, -⟩ := GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t
+  obtain ⟨h1, h2, h3, -⟩ := _root_.GlobalTheory.Shares.polyDictionary D B P j X R la N wL w t
   obtain ⟨r, b, hb, e1, e2⟩ := exists_family X R la w t u m
   have hs := sameLin X R la t hg (addL u wL (m + 1))
   have ha : ∀ i, OfWt X (addL u wL (m + 1)) (secPoly X w 0 ^ (m + 1) * MvPolynomial.C (X.inc u (θ i))) := fun i => by
@@ -236,7 +236,7 @@ theorem mem_transfer (hg : R.Generic t) (u : WeightFamilies.Wt D j) {n : ℕ} (�
       (emb X la N F - sec X la w 0 ^ k * ∑ i, c i • emb X la N (X.inc u (θ i))) ∈ Mon X la w u 1 (k + m)) ↔
     (∃ c : Fin n → ℂ, R.s w t 0 ^ (m + 1) * (R.ev F - R.s w t 0 ^ k * ∑ i, c i • R.ev (X.inc u (θ i))) ∈
       R.deep w t (addL u wL (k + m)) 1) := by
-  obtain ⟨h1, h2, h3, -⟩ := GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t
+  obtain ⟨h1, h2, h3, -⟩ := _root_.GlobalTheory.Shares.polyDictionary D B P j X R la N wL w t
   obtain ⟨r, b, hb, e1, e2⟩ := exists_family X R la w t u (k + m)
   have hs := sameLin X R la t hg (addL u wL (k + m + 1))
   have ha : ∀ i, OfWt X (addL u wL (k + m + 1))
@@ -357,7 +357,7 @@ theorem deep_vanish (u : WeightFamilies.Wt D j) {y : R.Y} (hy : ∀ i : Fin (Wei
 include la in
 theorem s_pow_mul_mem (u : WeightFamilies.Wt D j) (k : ℕ) {g : R.Y → ℂ} (hg : g ∈ R.sp u Set.univ) :
     R.s w t 0 ^ k * g ∈ R.sp (addL u wL k) Set.univ := by
-  obtain ⟨h1, -, -, -, h5, h6, -⟩ := GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t
+  obtain ⟨h1, -, -, -, h5, h6, -⟩ := _root_.GlobalTheory.Shares.polyDictionary D B P j X R la N wL w t
   induction k with
   | zero => rw [addL_zero]; simpa using hg
   | succ n ih =>
@@ -378,7 +378,7 @@ open BasisVals
 
 theorem inBasis_iff_vals : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData X ka wL wF) (R : Rdg X) (t : Idx D j G.N → ℂ) (T : ℕ) (Mg : Submodule B.KO (B.Cusp j ka)) (δ : ℕ) (xs : Fin δ → R.Y), R.Generic t → AnFacts R G.w t ka wF T Mg xs → addL wF wL T = ka → ∀ la, InBasis G la ↔ (LinearIndependent ℂ (vals xs fun i => R.ev (X.inc wF (G.th' i))) ∧ G.del = δ) := by
   intro D B P j X ka wL wF G R t T Mg δ xs hg hA _ la
-  obtain ⟨-, -, h3, -⟩ := GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la G.N wL G.w t
+  obtain ⟨-, -, h3, -⟩ := _root_.GlobalTheory.Shares.polyDictionary D B P j X R la G.N wL G.w t
   have hI : LinearIndependent (Kp X la G.N) (tL G la) ↔
       LinearIndependent ℂ (vals xs fun i => R.ev (X.inc wF (G.th' i))) := by
     refine (indep_iff X la G.w wF G.th').trans ?_

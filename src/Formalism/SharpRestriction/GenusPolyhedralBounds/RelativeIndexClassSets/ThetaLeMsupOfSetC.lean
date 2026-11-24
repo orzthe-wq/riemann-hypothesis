@@ -144,16 +144,14 @@ theorem theta_first_le (X : PJ D B P j) (S : Scal B) {ka wL wF : WeightFamilies.
     (hW : X.WWc S.sW wL ≤ B.Mlat j wL) (hT : X.Thc S.sF wF ≤ B.Mlat j wF)
     (hF : IsF' ka wL wF T nP) (hL : wL.n = nW) (hn : ka.n = nP + T * nW) :
     X.emb wL (X.WWc S.sW wL) ^ T * X.emb wF (X.Thc S.sF wF) ≤ X.Msup ka := by
-  have h := emb_pow_mul_le X wL wF T hW hT
-  rwa [wt_first hF hL hn] at h
+  simpa [wt_first hF hL hn] using emb_pow_mul_le X wL wF T hW hT
 
 theorem theta_second_le (X : PJ D B P j) (S : Scal B) {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ}
     (hW : X.WWc S.sW wL ≤ B.Mlat j wL) (hT : X.Thc S.s0 (X.wF0 wL wF) ≤ B.Mlat j (X.wF0 wL wF))
     (hF : IsF' ka wL wF T nP) (hL : wL.n = nW) (hn : ka.n = nP + T * nW) (hD : WeightFamilies.dimY D j ≤ T) :
     X.emb wL (X.WWc S.sW wL) ^ (T - WeightFamilies.dimY D j) * X.emb (X.wF0 wL wF) (X.Thc S.s0 (X.wF0 wL wF)) ≤
       X.Msup ka := by
-  have h := emb_pow_mul_le X wL (X.wF0 wL wF) (T - WeightFamilies.dimY D j) hW hT
-  rwa [wt_second X hF hL hn hD] at h
+  simpa only [wt_second X hF hL hn hD] using emb_pow_mul_le X wL (X.wF0 wL wF) (T - WeightFamilies.dimY D j) hW hT
 
 theorem theta_third_le (X : PJ D B P j) (S : Scal B) {ka : WeightFamilies.Wt D j}
     (hT : X.Thc S.sK ka ≤ B.Mlat j ka) : X.emb ka (X.Thc S.sK ka) ≤ X.Msup ka :=

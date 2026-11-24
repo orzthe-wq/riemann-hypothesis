@@ -107,7 +107,7 @@ theorem UpperTheory.V.Ws.P1.towerGal :
     intro a b ha hb
     rw [Subgroup.mem_comap, ← hker, MonoidHom.mem_ker] at ha hb ⊢
     rw [map_mul, map_mul]
-    exact mul_eq_one_of_card_eq_two_of_ne_one (by convert hcard <;> first | rfl | exact Subsingleton.elim _ _) _ _ ha hb
+    exact mul_eq_one_of_card_eq_two_of_ne_one (by convert hcard) _ _ ha hb
   · intro g
     exact ⟨by ext; rfl, rfl, rfl⟩
   · intro A g

@@ -5,46 +5,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Gaug
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.DualCoords
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.NilradicalLatticeZMemSpan
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.LatDictK
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -60,15 +20,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
-theorem gB_ne_zero : X.B.g ≠ 0 := by
-  rw [X.g_eq]; exact Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero
+alias gB_ne_zero := _root_.Formalism.L2.SG.Pf.modulus_g_ne_zero
 
 theorem hfe : ∀ a b : Fin D.R.rS, a ≠ b → ZMod' X.B.I X.B.g (hA X.B.I (X.f0 a) (X.e0 b)) := by
   intro a b hab
   rw [hA_symm]
-  have := (X.gramIntegral b a).2.2
-  rw [if_neg (Ne.symm hab), sub_zero] at this
-  exact Z_sig X.B.I X.B.g this
+  exact Z_sig X.B.I X.B.g (by
+    simpa only [if_neg (Ne.symm hab), sub_zero] using (X.gramIntegral b a).2.2)
 
 theorem hfz : ∀ a, ZMod' X.B.I X.B.g (hA X.B.I (X.f0 a) X.z0) := fun a => ((X.formsAtZero).2 a).2
 
@@ -245,16 +203,14 @@ namespace Formalism.L2.SG.Pf
 
 open Formalism.L2.SG.TermOp.Vanish
 
-theorem chiTrivialC_of_nconj (hK : NilradicalConjLevel) : ChiTrivialC := Formalism.L2.SG.NormCut.chiTrivialC_of_nilradicalConjLevel hK
-
 theorem ooFundIndepC_of_nconj (hK : NilradicalConjLevel) : Formalism.L2.SG.Full.OOFundIndepC :=
-  ooFundIndepC_of_chi (chiTrivialC_of_nconj hK)
+  ooFundIndepC_of_chi (_root_.Formalism.L2.SG.NormCut.chiTrivialC_of_nilradicalConjLevel hK)
 
 theorem ampWellDefC_of_nconj (hK : NilradicalConjLevel) : Formalism.L2.SG.Full.AmpWellDefC :=
-  ampWellDefC_of_chi hK (chiTrivialC_of_nconj hK)
+  ampWellDefC_of_chi hK (_root_.Formalism.L2.SG.NormCut.chiTrivialC_of_nilradicalConjLevel hK)
 
 theorem lemmaVC_of_nconj (hA : AvgCore) (hK : NilradicalConjLevel) (h3 : RCocompactC) (h4 : NonRelCharC) :
     Formalism.L2.SG.Full.LemmaVC :=
-  lemmaVC_of_chi hA (chiTrivialC_of_nconj hK) h3 h4
+  lemmaVC_of_chi hA (_root_.Formalism.L2.SG.NormCut.chiTrivialC_of_nilradicalConjLevel hK) h3 h4
 
 end Formalism.L2.SG.Pf

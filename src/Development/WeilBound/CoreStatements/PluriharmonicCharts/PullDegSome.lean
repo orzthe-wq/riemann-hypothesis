@@ -64,8 +64,6 @@ theorem κ₁_inj (k₀ : K) : Function.Injective (κ₁ k₀) := by
     first
     | exact ha.trans hb.symm
     | (cases h; rfl)
-    | cases h
-    | exact Option.some_injective _ h
 
 theorem isBlockMap_v₁ (k₀ : K) :
     IsBlockMap (ι := ι) (ι' := fun o : Option K => ι (o.getD k₀)) (κ₁ k₀) (v₁ k₀) := by
@@ -101,8 +99,6 @@ theorem isBlockMap_v₁ (k₀ : K) :
         split_ifs at hj with h1 <;>
           first
           | (cases hj; exact h1 hk)
-          | cases hj
-          | exact h1 ((Option.some_injective _ hj).trans hk)
       refine ⟨⟨k, x⟩, ?_⟩
       unfold v₁
       rw [dite_eq_right hk]
@@ -135,8 +131,6 @@ theorem pullDeg_κ₁ (k₀ : K) (xi : K → ℤ) (o : Option K) :
         split_ifs at hj with h1 <;>
           first
           | (cases hj; exact h1 hk)
-          | cases hj
-          | exact h1 ((Option.some_injective _ hj).trans hk)
       rw [Function.extend_apply' _ _ _ hn]
       simp [hk]
     · have e := (κ₁_inj k₀).extend_apply xi 0 k

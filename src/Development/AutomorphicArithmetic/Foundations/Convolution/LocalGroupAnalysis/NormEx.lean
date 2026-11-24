@@ -133,7 +133,7 @@ private theorem exists_bump {G : Type} [Group G] [TopologicalSpace G] [IsTopolog
     have hgA : g ∈ A k := mul_subset_mul_left hk hg
     obtain ⟨n, hn⟩ : ∃ n, φ n g ≠ 0 := by
       by_contra hcon
-      push_neg at hcon
+      push Not at hcon
       exact hfg (by simp [hcon])
     have hnk : n ≤ k := by
       by_contra hnk
@@ -212,9 +212,9 @@ private theorem exists_nrm {G T : Type} [Group G] [TopologicalSpace G] [IsTopolo
 theorem normEx : NormEx := by
   intro G _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ μ j ν hp
   obtain ⟨-, hj, hν⟩ := hp
-  haveI := hν.1
-  haveI := hν.2
-  haveI : ν.IsMulRightInvariant := by
+  have := hν.1
+  have := hν.2
+  have : ν.IsMulRightInvariant := by
     have h : ν.inv.IsMulRightInvariant := inferInstance
     rwa [Measure.inv_eq_self] at h
   obtain ⟨f, hf, hf0, hpos, hsupp⟩ := exists_bump (Set.range j) hj.isClosed_range

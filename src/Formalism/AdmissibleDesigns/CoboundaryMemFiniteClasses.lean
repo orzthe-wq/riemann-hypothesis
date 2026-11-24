@@ -374,7 +374,7 @@ theorem coboundary_mem_finite_classes {V : Type} [AddCommGroup V] [Module O V] [
     abel
   · show (ofV e (ρ (ι g) x - x) : TrV e V) ⊗ₜ[Qp] (1 : B) = actVB PD (repL e ρ ι) g (ofV e x ⊗ₜ[Qp] (1 : B)) - ofV e x ⊗ₜ[Qp] (1 : B)
     rw [actVB, TensorProduct.AlgebraTensorModule.map_tmul]
-    simp only [LinearMap.restrictScalars_apply, AlgHom.toLinearMap_apply, AlgEquiv.coe_toAlgHom, map_one]
+    simp only [LinearMap.restrictScalars_apply, AlgHom.toLinearMap_apply, map_one]
     rw [← TensorProduct.sub_tmul]
     rfl
 
@@ -459,7 +459,7 @@ theorem cup_iff (hι : Continuous ι) (hK : HomeoK e) (hcyc : CycMatch Dat e ι 
     refine ⟨fun g => e (f (ι g)), hK.1.comp (hf.comp hι), ?_⟩
     funext ⟨g, g'⟩
     have h1 := congrFun hfe (ι g, ι g')
-    simp only [d1_apply, cupCocycleZ1Z1_apply, twist_apply, Algebra.smul_def] at h1
+    simp only [d1_apply, twist_apply, Algebra.smul_def] at h1
     show ((cycLL PD LL g : LLˣ) : LL) * e (f (ι g')) - e (f (ι (g * g'))) + e (f (ι g)) =
       e (Dat.bT (c.1 (ι g)) (Dat.ρT' (ι g) (d.1 (ι g'))))
     rw [← hcyc g, ← map_mul, ← map_sub, ← map_add (f := _), map_mul ι]

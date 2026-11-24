@@ -232,11 +232,11 @@ theorem not_inSupport_of_isCuspidal [Nontrivial n] {π : Representation ℂ (GL 
         have h1 : x ≠ y := fun h => hxy.ne (h ▸ rfl)
         have h2 : ¬ (i = x ∧ j = y) := by
           rintro ⟨rfl, rfl⟩; exact hij.not_gt hxy
-        simp [transvection, h1, single_apply, h2]
+        simp [transvection, h1, h2]
       · show (transvection i j (1 : k)) _ _ = _
         have h2 : ¬ (i = e ⟨b, x⟩ ∧ j = e ⟨b, y⟩) := by
           rintro ⟨rfl, rfl⟩; simp at hij
-        simp [transvection, single_apply, h2, Matrix.one_apply]
+        simp [transvection, h2, Matrix.one_apply]
     rw [hb, Subgroup.mem_bot] at hu
     have : (transvection i j (1 : k)) i j = (1 : Matrix n n k) i j :=
       congrArg (fun g : GL n k => (g : Matrix n n k) i j) hu

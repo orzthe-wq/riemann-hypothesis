@@ -226,9 +226,7 @@ theorem exists_chartToLastObj_eq (d : LocalResolutionData k f s) (x : ↥(s.last
   simp only [base_comp_apply] at h3
   exact h3.trans hp2
 
-private theorem exists_chartToLastObj_apply_eq (d : LocalResolutionData k f s) :
-    ∀ x : ↥(s.lastObj), ∃ (i : d.cover.I₀) (y : ↥((d.seq i).lastObj)), (d.chartToLastObj i) y = x :=
-  fun x => d.exists_chartToLastObj_eq x
+private alias exists_chartToLastObj_apply_eq := _root_.FunctorialResolution.EmbeddedResolution.LocalResolutionData.exists_chartToLastObj_eq
 
 def lastObjCover (d : LocalResolutionData k f s) : Scheme.OpenCover.{u, u} s.lastObj :=
   Scheme.Cover.mkOfCovers d.cover.I₀ (fun i => (d.seq i).lastObj)

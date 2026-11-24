@@ -7,8 +7,9 @@ public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Mathlib.RingTheory.SimpleRing.Principal
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplexStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitQExpansionCoeffsIntegralStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowerAnEqSiegelUnitOnComplex
+import Development.AbelianVarietyTheory.Definitions.Foundations.CthFac
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SmoothedSiegelUnitQExpansionCoeffsIntegral
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -163,9 +164,9 @@ theorem siegel_exp : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   intro Ω _ _ _ ε T c M a b hM haM hadm
   classical
   set x : Fin 2 → ℚ := ![(a : ℚ) / M, (b : ℚ) / M] with hx
-  obtain ⟨k, hk⟩ := GlobalTheory.T.smoothedSiegelUnit_qExpansion_coeffs_integral c M a hM haM
+  obtain ⟨k, hk⟩ := _root_.GlobalTheory.SiegQ.sg_expansion_int c M a hM haM
   obtain ⟨A', hA', -⟩ := hk b hadm
-  have hmem := GlobalTheory.T.siegelUnitInTower_an_eq_siegelUnitOnComplex Ω ε T c x hadm
+  have hmem := _root_.GlobalTheory.KZ.SiegelMem.an_siegel_eq Ω ε T c x hadm
   set f := siegel T c x with hf
   obtain ⟨φ, C, hφ, hsum⟩ := T.an_exp f
   have hMq : (M : ℚ) ≠ 0 := by exact_mod_cast hM.ne'

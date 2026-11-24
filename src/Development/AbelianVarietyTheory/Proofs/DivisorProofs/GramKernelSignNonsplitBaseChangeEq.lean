@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -126,17 +127,6 @@ end BC
 section Val
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
-theorem ordL_mul {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x + ordL y := by
-  have hx' : Valued.v x ≠ 0 := (Valuation.ne_zero_iff _).2 hx
-  have hy' : Valued.v y ≠ 0 := (Valuation.ne_zero_iff _).2 hy
-  have hxy' : Valued.v (x * y) ≠ 0 := (Valuation.ne_zero_iff _).2 (mul_ne_zero hx hy)
-  unfold ordL
-  rw [dite_eq_right hx', dite_eq_right hy', dite_eq_right hxy']
-  have : WithZero.unzero hxy' = WithZero.unzero hx' * WithZero.unzero hy' := by
-    apply WithZero.coe_injective
-    rw [WithZero.coe_mul, WithZero.coe_unzero, WithZero.coe_unzero, WithZero.coe_unzero, map_mul]
-  rw [this, toAdd_mul]; ring
-
 theorem sign_conj_mul {τ : L →+* L} (hv : ∀ x, Valued.v (τ x) = Valued.v x) {t : L} (ht : t ≠ 0) (a : L) :
     (-1 : ℂ) ^ ordL (τ t * a * t) = (-1) ^ ordL a := by
   by_cases ha : a = 0
@@ -144,7 +134,7 @@ theorem sign_conj_mul {τ : L →+* L} (hv : ∀ x, Valued.v (τ x) = Valued.v x
   have hτ : τ t ≠ 0 := (map_ne_zero τ).2 ht
   have ho : ordL (τ t) = ordL t := by
     unfold ordL; simp only [hv]
-  rw [ordL_mul (mul_ne_zero hτ ha) ht, ordL_mul hτ ha, ho,
+  rw [_root_.Formalism.UG.P.fSatake_ord_mul (mul_ne_zero hτ ha) ht, _root_.Formalism.UG.P.fSatake_ord_mul hτ ha, ho,
     show ordL t + ordL a + ordL t = ordL a + 2 * ordL t by ring, zpow_add₀ (by norm_num : (-1 : ℂ) ≠ 0), _root_.zpow_mul]
   norm_num
 

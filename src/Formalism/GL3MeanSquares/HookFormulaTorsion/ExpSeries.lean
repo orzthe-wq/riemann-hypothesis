@@ -100,8 +100,6 @@ theorem expS_add (f g : MvPowerSeries σ K) (hf : MvPowerSeries.constantCoeff f 
   have hS : MvPowerSeries.HasSubst h := by
     first
     | exact MvPowerSeries.hasSubst_of_constantCoeff_zero hh
-    | exact ⟨fun s => by rw [hh s]; exact IsNilpotent.zero,
-        by rw [Filter.cofinite_eq_bot]; exact Filter.tendsto_bot⟩
   have e2 : ∀ i, MvPowerSeries.subst h (MvPowerSeries.X i : MvPowerSeries (Fin 2) K) = h i :=
     fun i => MvPowerSeries.subst_X hS i
   have e1 : MvPowerSeries.subst h (MvPowerSeries.X 0 + MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) =
@@ -126,15 +124,11 @@ theorem Low.mul {m k : ℕ} {x y : MvPowerSeries σ K} (hx : Low m x) (hy : Low 
   intro p hp
   replace hp : p.1 + p.2 = d := by
     first
-    | exact _root_.Finset.mem_antidiagonal.1 hp
     | exact Finset.HasAntidiagonal.mem_antidiagonal.1 hp
   have hdeg : p.1.degree + p.2.degree = d.degree := by
     rw [← hp]
     first
     | exact (map_add Finsupp.degree p.1 p.2).symm
-    | (rw [Finsupp.degree_eq_weight_one, Finsupp.degree_eq_weight_one,
-        Finsupp.degree_eq_weight_one]; exact (map_add _ _ _).symm)
-    | (simp only [Finsupp.degree]; exact (Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)).symm)
   by_cases h1 : p.1.degree < m
   · rw [hx p.1 h1, zero_mul]
   · rw [hy p.2 (by omega), mul_zero]
@@ -223,8 +217,6 @@ theorem integral_of_mul_eq_one [IsUltrametricDist K] {u v : MvPowerSeries σ K} 
         | (rw [sub_eq_add_neg]
            have h1 := IsUltrametricDist.norm_add_le_max a (-b)
            rwa [norm_neg] at h1)
-        | (have h1 := IsUltrametricDist.dist_triangle_max a 0 b
-           simpa [dist_eq_norm] using h1)
       refine (hsub _ _).trans (max_le ?_ ?_)
       · rw [MvPowerSeries.coeff_one]
         split_ifs <;> simp
@@ -233,7 +225,6 @@ theorem integral_of_mul_eq_one [IsUltrametricDist K] {u v : MvPowerSeries σ K} 
         rw [Finset.mem_erase] at hp
         have hp2 : p.1 + p.2 = d := by
           first
-          | exact _root_.Finset.mem_antidiagonal.1 hp.2
           | exact Finset.HasAntidiagonal.mem_antidiagonal.1 hp.2
         have hp1 : p.1 ≠ 0 := by
           intro h0

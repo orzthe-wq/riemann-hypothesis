@@ -59,9 +59,6 @@ namespace GlobalTheory.PrincData
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
-theorem isIntegral_cc {x : E} (hx : IsIntegral ℤ x) : IsIntegral ℤ (cc x) :=
-  hx.map ((IsCMField.complexConj E : E →+* E).toIntAlgHom)
-
 theorem herm_add_left (G : Matrix (Fin r) (Fin r) E) (x x' y : Fin r → E) :
     herm G (x + x') y = herm G x y + herm G x' y := by
   simp only [herm, Pi.add_apply, add_mul, Finset.sum_add_distrib]
@@ -99,7 +96,7 @@ theorem exists_nat_herm_int (G : Matrix (Fin r) (Fin r) E) (L : Submodule (𝓞 
     | mem b hb => exact hgen a ha b hb
     | zero => simpa [herm, cc] using isIntegral_zero
     | add u v _ _ hu hv => rw [herm_add_right, mul_add]; exact hu.add hv
-    | smul c u _ hu => rw [herm_smul_right, mul_left_comm]; exact (isIntegral_cc c.2).mul hu
+    | smul c u _ hu => rw [herm_smul_right, mul_left_comm]; exact (_root_.ReciprocityTheory.ChartRestriction.G.FD.isIntegral_cc c.2).mul hu
   have hall : ∀ x ∈ Submodule.span (𝓞 E) (s : Set (Fin r → E)), ∀ y ∈ Submodule.span (𝓞 E) (s : Set (Fin r → E)),
       IsIntegral ℤ ((y0 : E) * herm G x y) := by
     intro x hx

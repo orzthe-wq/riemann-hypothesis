@@ -60,7 +60,7 @@ private theorem pm_conj_apply (R : Type) [CommRing R] {n : ℕ} (w : Equiv.Perm 
       (g : Matrix (Fin n) (Fin n) R) (w a) (w b) := by
   have hinv : (pm R n w)⁻¹ = pm R n w⁻¹ := (map_inv _ _).symm
   rw [hinv, Units.val_mul, Units.val_mul, Matrix.mul_apply]
-  simp [-map_inv, Matrix.mul_apply, pm_apply, Equiv.Perm.eq_inv_iff_eq, Equiv.eq_symm_apply]
+  simp [-map_inv, Matrix.mul_apply, pm_apply, Equiv.eq_symm_apply]
 
 private theorem pm_mem_KO (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (w : Equiv.Perm (Fin n)) : pm k n w ∈ KO k (Fin n) := by

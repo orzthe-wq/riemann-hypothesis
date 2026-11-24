@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Divisors.DensConst
 public import Development.AbelianVarietyTheory.Definitions.Divisors.AnalyticOnNhdFinChartIff
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IntegrableOnSourceIffOfDensity
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixedChernFormSignedPartMeasureChartApplyStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MixedChernFormSignedPartMeasureChartApply
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -114,7 +114,7 @@ theorem part_eq_lintegral_locDens [SecondCountableTopology (CxPts p σ)] (L : Fi
   rw [hA.chart_eq j] at hs hl ⊢
   set c := hA.anRead.chart j
   have hm := measurableSet_image c.e hS hs
-  rw [GlobalTheory.T.mixedChernFormSignedPartMeasure_chart_apply k X p σ D L ε c S hS hs,
+  rw [_root_.GlobalTheory.Mix.part_apply k X p σ D L ε c S hS hs,
     ← measurePreserving_toV.setLIntegral_comp_preimage_emb (toV D).toHomeomorph.measurableEmbedding]
   have e : c.e '' S = c.e.target ∩ c.e.symm ⁻¹' S := by
     rw [← c.e.image_source_inter_eq', inter_eq_right.2 (show S ⊆ c.e.source from hs)]

@@ -1,5 +1,6 @@
 module
 
+import Lemmata.GeneralBFactAltForm.Imports
 public import Mathlib.NumberTheory.NumberField.Basic
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -54,30 +55,6 @@ theorem goal1 :
     Exists.{1} fun (d : NumberField.RingOfIntegers.{0} K) ↦
       And (Ne.{1} d 0) (Membership.mem.{0, 0} L (HSMul.hSMul.{0, 0, 0} d v)) := by
   intro K V _ _ _ _ _ _ L v hv
-  induction hv using Submodule.span_induction with
-  | mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩
-  | zero => exact ⟨1, one_ne_zero, by simp⟩
-  | add x y _ _ hx hy =>
-    obtain ⟨d1, hd1, h1⟩ := hx
-    obtain ⟨d2, hd2, h2⟩ := hy
-    refine ⟨d1 * d2, mul_ne_zero hd1 hd2, ?_⟩
-    rw [smul_add]
-    refine L.add_mem ?_ ?_
-    · rw [mul_comm, mul_smul]
-      exact L.smul_mem d2 h1
-    · rw [mul_smul]
-      exact L.smul_mem d1 h2
-  | smul a x _ hx =>
-    obtain ⟨d, hd, h⟩ := hx
-    obtain ⟨⟨n, m⟩, hm⟩ := IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers K)) a
-    refine ⟨(m : NumberField.RingOfIntegers K) * d, mul_ne_zero (nonZeroDivisors.ne_zero m.2) hd, ?_⟩
-    have key : ((m : NumberField.RingOfIntegers K) * d) • (a • x) = n • (d • x) := by
-      rw [← algebraMap_smul K ((m : NumberField.RingOfIntegers K) * d) (a • x),
-        ← algebraMap_smul K n (d • x), ← algebraMap_smul K d x, smul_smul, smul_smul, map_mul]
-      congr 1
-      rw [← hm]
-      ring
-    rw [key]
-    exact L.smul_mem n h
+  exact Bl.general_b_fact_alt_form.goal1 (F := K) L (x := v) hv
 
 end Bl.general_b_fact_left''''''''

@@ -165,11 +165,10 @@ theorem coordF_act (K : FinExt l) (r : ↥(GK K) →* Matrix.GeneralLinearGroup 
       rw [embF_apply, P.actQdR_Om, hg _ c.2]
     funext j
 
-    simp only [actVdR, AlgebraTensorModule.map_tmul, coordF_tmul, repOf_apply, P.PD_actdR,
-    Matrix.mulVec, dotProduct, Matrix.map_apply, map_mul, hfix, map_sum]
+    simp only [actVdR, AlgebraTensorModule.map_tmul, coordF_tmul, repOf_apply, Matrix.mulVec, dotProduct, Matrix.map_apply, map_mul, hfix, map_sum]
     rw [Finset.sum_mul]
     refine Finset.sum_congr rfl fun i _ => ?_
-    simp only [AlgHom.toLinearMap_apply, LinearMap.coe_restrictScalars, AlgEquiv.coe_toAlgHom, AlgHom.coe_coe]
+    simp only [AlgHom.toLinearMap_apply, LinearMap.coe_restrictScalars, AlgEquiv.coe_toAlgHom]
     rw [mul_assoc]
     exact congrArg _ (congrArg _ (P.PD_actdR K g b))
 

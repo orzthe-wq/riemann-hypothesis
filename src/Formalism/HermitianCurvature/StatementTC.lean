@@ -59,9 +59,6 @@ open TB TB.Data
 
 variable {E W : Type} [Field E]
 
-def withTh (D : TB.Data E W) (Th : ℕ → ℕ → E → TB.Pt E → TB.Pt E → ℂ) : TB.Data E W :=
-  { D with Th := Th }
-
 def KrPSD (D : TB.Data E W) : Prop := ∀ i (Y : Finset (TB.Pt E)), TB.PSDOn Y (D.Kr i)
 
 def EBounds (D : TB.Data E W) : Prop := ∀ i, 1 ≤ i → i ≤ D.r + 1 → 0 ≤ D.e i ∧ D.e i ≤ 1
@@ -129,12 +126,6 @@ def TheoremAAfter : Prop :=
 
 def TheoremAAfterOfSteps : Prop :=
   OneLevelAfter → TB.LimitStep → Formalism.FourierDecayAlt.K.JointTheoremA → TheoremAAfter
-
-section sets
-
-variable {E : Type} [Field E] [DecidableEq E]
-
-end sets
 
 def RecHypAfter {E W : Type} [Field E] (D : TB.Data E W) (C₁ C₄ Θ jn : ℝ) {H : Type}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] (Vt : TB.Pt E → H) (c : ℕ → TB.Pt E → ℂ) : Prop :=

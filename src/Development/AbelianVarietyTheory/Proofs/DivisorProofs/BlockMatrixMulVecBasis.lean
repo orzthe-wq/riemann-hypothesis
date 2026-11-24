@@ -141,7 +141,7 @@ private theorem isUnit_det_map_of_det_ne_zero {K : Type} [Field K] {m : ℕ} {M 
   rw [isUnit_iff_ne_zero, hd]
   exact (map_ne_zero τ).2 hM
 
-theorem conjTranspose_map (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : E →+* ℂ) : (J.map τ)ᴴ = J.map τ := conjTranspose_map_eq_of_isHermND h hJ τ
+alias conjTranspose_map := _root_.GlobalTheory.LeviHC.conjTranspose_map_eq_of_isHermND
 
 omit [NumberField F] [NumberField E] in
 theorem isUnit_det_map (hJ : IsHermND σ J) (τ : E →+* ℂ) : IsUnit (J.map τ).det := isUnit_det_map_of_det_ne_zero hJ.2 τ

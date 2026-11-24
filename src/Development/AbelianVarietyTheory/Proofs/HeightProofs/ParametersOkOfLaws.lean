@@ -1,11 +1,11 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.HeightFunctions.NormComparisonConstants
 public import Formalism.LocalToGlobal.ProjectiveLattices.DepthTie
+public import Development.AbelianVarietyTheory.Definitions.Jets.ExistsSecTieFOfTies
+public import Development.AbelianVarietyTheory.Definitions.HeightFunctions.NormComparisonConstants
 public import Development.AbelianVarietyTheory.Definitions.HeightFunctions.GrowthConstantBoundGcR
 public import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.FunctionFieldAlgClosedLevel
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HalfEXIffOriented
 public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.LevelDvdBadN
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -41,7 +41,96 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinSt
+import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ExistsPowSmulMemBall
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.WchartLePreimage
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.PiTwistNegation, Development.AbelianVarietyTheory.Proofs.JetHarmonics.HalfEXIffOriented, Development.AbelianVarietyTheory.Proofs.HeightProofs.ParametersOkOfLaws
+
+-- ===== clump member: Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.PiTwistNegation =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.PiTwistNegation", "h": "module\n\npublic import Formalism.LocalToGlobal.ProjectiveLattices.DepthTie\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+namespace GlobalTheory.Survey.PiTwistNegation
+open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor
+
+variable {D : D7}
+
+theorem halfI_ne_top (T : Core D) (i : Fin 2) : halfI T i ≠ ⊤ := by
+  intro h
+  have hc : ((T.pb i).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))).comap
+      (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = ⊤ := by
+    rw [show (T.pb i).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) = ⊤ from h, Ideal.comap_top]
+  rw [Ideal.comap_map_eq_self_of_faithfullyFlat] at hc
+  exact (T.pb i).isPrime.ne_top hc
+
+theorem halfEX_iff_le (T : Core D) (h : LawsM T) (X : ErrX D) :
+    HalfEX T X ↔ ∀ i, T.Q.l.Mb ≤ Ideal.span {barE D (X.piG i)} := by
+  have hle : ∀ i, T.Q.l.Mb ≤ halfI T i := by
+    intro i
+    rw [Mb_eq T h]
+    fin_cases i
+    · exact Ideal.mul_le_left
+    · exact Ideal.mul_le_right
+  change (∀ i, barE D (X.piG i) ∈ halfI T i) ↔ _
+  refine forall_congr' fun i => ⟨fun hb => ?_, fun hM => ?_⟩
+  · rw [← (piOf_eq_bar_iff T h X i).2 hb, span_piOf T h]; exact hle i
+  · by_contra hb
+    have hp : piOf T X i = X.piG i := by
+      classical
+      unfold piOf; rw [if_neg hb]
+
+    have h1 : T.Q.l.Mb.map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) ≤ Ideal.span {barE D (X.piG i)} := by
+      rw [← hp, ← bar_core T, span_bar_piOf T h]; exact Ideal.map_mono (hle i)
+    have ht : Ideal.span {barE D (X.piG i)} = ⊤ := by
+      rw [eq_top_iff, ← T.Q.l.coprime]; exact sup_le hM h1
+    have hu : IsUnit (X.piG i) := by
+      have := (Ideal.span_singleton_eq_top.1 ht).map (barE D)
+      rwa [barE_barE] at this
+    apply halfI_ne_top T i
+    rw [← span_piOf T h X i, hp, Ideal.span_singleton_eq_top]; exact hu
+
+end GlobalTheory.Survey.PiTwistNegation
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.PiTwistNegation =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.HalfEXIffOriented =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.JetHarmonics.HalfEXIffOriented", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Jets.ExistsSecTieFOfTies\npublic import Formalism.LocalToGlobal.ProjectiveLattices.DepthTie\npublic import Development.AbelianVarietyTheory.Counterexamples.LevelGroupExamples.PiTwistNegation\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Formalism.SharpRestriction.Divisibility.GeneratorPowers.PhiCMinSt\nimport Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ExistsPowSmulMemBall\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.WchartLePreimage\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+noncomputable section
+open AlgebraicGeometry CategoryTheory NumberField IsLocalRing IsDedekindDomain
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.DVR.QForm Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1
+open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons Formalism.MainNotions.Gaps.EtaleWeightGaps
+open GlobalTheory.PtTie
+namespace GlobalTheory.PtTie
+
+theorem barE_piG_eq_piBarO {D : D7} (EX : ErrX D) (i : Fin 2) : barE D (EX.piG i) = piBarO EX i := by
+  apply IsFractionRing.injective (𝓞 D.host.E) D.host.E
+  exact barE_eq_conj D (EX.piG i)
+
+theorem halfEX_iff_oriented : ∀ (D : D7) (T : Top D), LawsP T → ∀ EX : ErrX D, HalfEX T.toCore EX ↔ Oriented T EX := by
+  intro D T h EX
+  rw [GlobalTheory.Survey.PiTwistNegation.halfEX_iff_le T.toCore h.toLawsCore.toLawsM EX]
+  exact forall_congr' fun i => by rw [barE_piG_eq_piBarO]
+
+end GlobalTheory.PtTie
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.HalfEXIffOriented =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.HeightProofs.ParametersOkOfLaws =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.HeightProofs.ParametersOkOfLaws", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.HeightFunctions.NormComparisonConstants\npublic import Formalism.LocalToGlobal.ProjectiveLattices.DepthTie\npublic import Development.AbelianVarietyTheory.Definitions.HeightFunctions.GrowthConstantBoundGcR\npublic import Formalism.LocalToGlobal.ProjectiveLattices.ParCanon\npublic import Development.AbelianVarietyTheory.Proofs.HeightProofs.FunctionFieldAlgClosedLevel\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.HalfEXIffOriented\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.LevelDvdBadN\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -74,3 +163,6 @@ theorem liftIndexParameterConditions_of_coreAndShortLaws : ∀ (D : D7) (J : Cor
   exact dvd_mul_right _ _
 
 end GlobalTheory.FinalJoin2
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.HeightProofs.ParametersOkOfLaws =====

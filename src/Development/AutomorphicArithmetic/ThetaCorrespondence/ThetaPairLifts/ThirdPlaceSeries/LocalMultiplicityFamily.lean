@@ -36,6 +36,8 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 
 @[expose] public section
+set_option backward.isDefEq.lazyProjDelta false
+set_option backward.isDefEq.lazyWhnfCore false
 
 
 
@@ -55,20 +57,14 @@ variable (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel 
 
 def yStructureLocal : NExpRealS (datL x L).R (datL x L).cG (SL L l.rat) := by
   let Y : NExpRealS (datL x L).R (datL x L).cG (ratL L l.rat.S) := {
-    fi := by with_unfolding_all exact (l.b.YS.fi :)
-    geq := by with_unfolding_all exact (l.b.YS.geq :)
-    rho := by with_unfolding_all exact (l.b.YS.rho :)
-    chi := by with_unfolding_all exact (l.b.YS.chi :)
-    eF := by
-      intro i j b h1 h2
-      with_unfolding_all exact (l.b.YS.eF i j b h1 h2 :)
-    bsup := by
-      intro i j b h1 h2
-      with_unfolding_all exact (l.b.YS.bsup i j b h1 h2 :)
-    act := by
-      intro i j b h1 h2 g y
-      with_unfolding_all exact (l.b.YS.act i j b h1 h2 g y :) }
-  with_unfolding_all exact (Y :)
+    fi := l.b.YS.fi
+    geq := l.b.YS.geq
+    rho := l.b.YS.rho
+    chi := l.b.YS.chi
+    eF := fun i j b h1 h2 => l.b.YS.eF i j b h1 h2
+    bsup := fun i j b h1 h2 => l.b.YS.bsup i j b h1 h2
+    act := fun i j b h1 h2 g y => l.b.YS.act i j b h1 h2 g y }
+  exact (Y :)
 
 def heckeHeightData : NExpRealH x.m.z.R x.m.z.cG l.rat.S l.b.YS where
   hL := l.rat.In.hL
@@ -81,30 +77,28 @@ def heckeHeightData : NExpRealH x.m.z.R x.m.z.cG l.rat.S l.b.YS where
   hkEq := by rw [l.b.eF]; exact l.b.Bs.hkEq
 
 def localHeckeHeightData : NExpRealH (datL x L).R (datL x L).cG (SL L l.rat) (_root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l) := by
-  let Y : NExpRealS (datL x L).R (datL x L).cG (ratL L l.rat.S) := by
-    with_unfolding_all exact (_root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l :)
+  let Y : NExpRealS (datL x L).R (datL x L).cG (ratL L l.rat.S) :=
+    (_root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l :)
   let H : NExpRealH (datL x L).R (datL x L).cG (ratL L l.rat.S) Y := {
-    hL := by with_unfolding_all exact ((heckeHeightData l).hL :)
-    hs := by with_unfolding_all exact ((heckeHeightData l).hs :)
-    cHk := by with_unfolding_all exact ((heckeHeightData l).cHk :)
-    cHk_zero := by with_unfolding_all exact ((heckeHeightData l).cHk_zero :)
-    cHk_unit := by with_unfolding_all exact ((heckeHeightData l).cHk_unit :)
-    cHk_pow := by with_unfolding_all exact ((heckeHeightData l).cHk_pow :)
-    hkEq := by
-      intro i j b h1 h2 k Q y hQ hsplit hk
-      with_unfolding_all exact ((heckeHeightData l).hkEq i j b h1 h2 k Q y hQ hsplit hk :) }
-  with_unfolding_all exact (H :)
+    hL := (heckeHeightData l).hL
+    hs := (heckeHeightData l).hs
+    cHk := (heckeHeightData l).cHk
+    cHk_zero := (heckeHeightData l).cHk_zero
+    cHk_unit := (heckeHeightData l).cHk_unit
+    cHk_pow := (heckeHeightData l).cHk_pow
+    hkEq := fun i j b h1 h2 k Q y hQ hsplit hk => (heckeHeightData l).hkEq i j b h1 h2 k Q y hQ hsplit hk }
+  exact (H :)
 
 def psiVectorLocal : ∀ i : Fin (DL x L).R.m, principalLevelFrame.RowPsi (Formalism.IndefR.Links.Vc (DL x L) i) (DL x L).R.nV :=
-  fun i => (by with_unfolding_all exact ((rowPsi (a := x.o.Z) (oL x L).Z (l.mt.ad.PV ((i)))) : _))
+  fun i => (rowPsi (a := x.o.Z) (oL x L).Z (l.mt.ad.PV i) :)
 def characterChoiceLocal : NChoice (DL x L) := { l.c.ch with }
 def localCharacterTupleAgreement : TupTied (DL x L) (cfD x L) (characterChoiceLocal L l) :=
   { l.c.tp with }
 def localMultiplicityFamily : MtFam (DL x L) := fun μ j h1 h2 =>
   { l.mt.M μ j h1 h2 with }
-def placeMapLocal : HeightOneSpectrum (𝓞 (maximalRealSubfield (DL x L).host.E)) → PlE (DL x L).host := (by with_unfolding_all exact (l.Pq :))
-def localEigenvalueDegree : ℕ → (DL x L).what₂.FT → ℕ → PlE (DL x L).host → ↥(DL x L).LL0 := (by with_unfolding_all exact (l.rat.In.eig :))
-def smallPlaceSet : Finset (PlE (DL x L).host) := (by with_unfolding_all exact (l.rat.In.Sb :))
+def placeMapLocal : HeightOneSpectrum (𝓞 (maximalRealSubfield (DL x L).host.E)) → PlE (DL x L).host := l.Pq
+def localEigenvalueDegree : ℕ → (DL x L).what₂.FT → ℕ → PlE (DL x L).host → ↥(DL x L).LL0 := l.rat.In.eig
+def smallPlaceSet : Finset (PlE (DL x L).host) := l.rat.In.Sb
 theorem twist_ok_local : ∀ v, TwistedAt (DL x L) v → IntegralHeckeForms.TwOK ((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).twI v) ((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).k' v) ((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).Q v)
     (((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).psi' v).comp ((DL x L).ntw.art ((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).twI v) ((_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l).Q v))) := by
   -- The kernel checks the conversion between the two character choices.
@@ -116,7 +110,7 @@ theorem thetaTie_yStructureLocal_nonempty : Nonempty (GlobalTheory.GeoTie.ThetaT
   obtain ⟨g⟩ := l.b.geo
   refine ⟨{ side := ?_, isUnramified₂ := ?_ }⟩
   · intro i j b
-    let side := g.side (by with_unfolding_all exact (i :)) (by with_unfolding_all exact (j :)) b
+    let side := g.side (i :) (j :) b
     refine { pt := ?_, cover := ?_, ev_eq := ?_, fmUr := ?_, hk := ?_, hk_none := ?_ }
     -- The transported fields have definitionally equal types. The kernel
     -- checks them in the resulting record without elaborator unification.
@@ -124,12 +118,12 @@ theorem thetaTie_yStructureLocal_nonempty : Nonempty (GlobalTheory.GeoTie.ThetaT
       for field in [`side.pt, `side.cover, `side.ev_eq, `side.fmUr, `side.hk, `side.hk_none] do
         Lean.Elab.Tactic.closeMainGoalUsing `thetaTieField fun _ _ =>
           Lean.Elab.Tactic.elabTerm (Lean.mkIdent field) none
-  · with_unfolding_all exact (g.isUnramified₂ :)
+  · exact (g.isUnramified₂ :)
 
 theorem kept_characterChoiceLocal : Kept l.c.ch (_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l) :=
-  ⟨sameGaloisL L, twistDataAgreeAcrossCoefficients_localized L, sameFormsL L, (by with_unfolding_all exact ((HEq.refl (Dof x).ntwbr) :)), (by with_unfolding_all exact ((HEq.refl l.c.ch.twI) :)), (by with_unfolding_all exact ((HEq.refl l.c.ch.sd) :)),
-    (by with_unfolding_all exact ((HEq.refl l.c.ch.Q) :)), (by with_unfolding_all exact ((HEq.refl l.c.ch.k') :)), (by with_unfolding_all exact ((HEq.refl l.c.ch.psi') :))⟩
-theorem yStructureLocal_fi_e_heq : ∀ i y, HEq (((_root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l).fi i).e y) y := (by with_unfolding_all exact (l.b.fi :))
+  ⟨sameGaloisL L, twistDataAgreeAcrossCoefficients_localized L, sameFormsL L, HEq.refl (Dof x).ntwbr, HEq.refl l.c.ch.twI, HEq.refl l.c.ch.sd,
+    HEq.refl l.c.ch.Q, HEq.refl l.c.ch.k', HEq.refl l.c.ch.psi'⟩
+theorem yStructureLocal_fi_e_heq : ∀ i y, HEq (((_root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l).fi i).e y) y := l.b.fi
 end GlobalTheory.HeightCounting.Fin3
 end
 end

@@ -138,7 +138,6 @@ theorem exists_field_BIs : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0
       · obtain ⟨c', hc', e⟩ := h _ (hQ P' hP')
         have e' : c' = (bad : 𝓞 D.host.E) := RingOfIntegers.ext (by
           rw [e]
-          change star ((bad : 𝓞 D.host.E) : D.host.E) = ((bad : 𝓞 D.host.E) : D.host.E)
           rw [show ((bad : 𝓞 D.host.E) : D.host.E) = (bad : D.host.E) from
             map_natCast (algebraMap (𝓞 D.host.E) D.host.E) bad, star_natCast])
         exact hv (e' ▸ hc')

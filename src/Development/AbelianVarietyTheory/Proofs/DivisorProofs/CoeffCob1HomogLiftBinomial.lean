@@ -76,14 +76,14 @@ theorem sumElim_sub_inl {d : ℕ} (a e : Fin d →₀ ℕ) (j : Fin d) :
   ext k
   rcases k with k | k
   · simp [Finsupp.single_apply]
-  · simp [Finsupp.single_apply]
+  · simp
 
 theorem sumElim_sub_inr {d : ℕ} (a e : Fin d →₀ ℕ) (j : Fin d) :
     Finsupp.sumElim a e - Finsupp.single (Sum.inr j) 1 =
       Finsupp.sumElim a (e - Finsupp.single j 1) := by
   ext k
   rcases k with k | k
-  · simp [Finsupp.single_apply]
+  · simp
   · simp [Finsupp.single_apply]
 
 theorem sub_add_iff {d : ℕ} (a e α : Fin d →₀ ℕ) (j : Fin d) (h : 1 ≤ a j) :
@@ -186,7 +186,7 @@ theorem coeff_prod_addLaw (d n : ℕ) : ∀ α : Fin d →₀ ℕ, α.degree = n
       have e1 : ∏ s, (α s).choose ((a - Finsupp.single j 1 : Fin d →₀ ℕ) s) =
           (α j).choose (a j - 1) * ∏ s ∈ Finset.univ.erase j, (α s).choose (a s) := by
         rw [prod_split (fun s => (α s).choose ((a - Finsupp.single j 1 : Fin d →₀ ℕ) s))
-          (fun s => (α s).choose (a s)) j fun s hs => by simp [Finsupp.single_apply, Ne.symm hs]]
+          (fun s => (α s).choose (a s)) j fun s hs => by simp [Ne.symm hs]]
         simp
       have e2 : ∏ s, (α s).choose (a s) =
           (α j).choose (a j) * ∏ s ∈ Finset.univ.erase j, (α s).choose (a s) :=
@@ -194,7 +194,7 @@ theorem coeff_prod_addLaw (d n : ℕ) : ∀ α : Fin d →₀ ℕ, α.degree = n
       have e3 : ∏ s, ((α + Finsupp.single j 1 : Fin d →₀ ℕ) s).choose (a s) =
           (α j + 1).choose (a j) * ∏ s ∈ Finset.univ.erase j, (α s).choose (a s) := by
         rw [prod_split (fun s => ((α + Finsupp.single j 1 : Fin d →₀ ℕ) s).choose (a s))
-          (fun s => (α s).choose (a s)) j fun s hs => by simp [Finsupp.single_apply, Ne.symm hs]]
+          (fun s => (α s).choose (a s)) j fun s hs => by simp [Ne.symm hs]]
         simp
       rw [e3, ← key, add_mul]
       by_cases h1 : 1 ≤ a j <;> by_cases h2 : 1 ≤ e j

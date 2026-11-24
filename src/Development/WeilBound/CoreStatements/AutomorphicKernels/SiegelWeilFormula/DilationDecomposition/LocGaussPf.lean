@@ -87,8 +87,6 @@ theorem gauss_int_pf {m n : ℕ} (δ : ℝ) (hδ : 0 < δ) :
   refine (gauss_int_mat (m := m) (n := n) δ hδ).congr (Filter.Eventually.of_forall fun v => ?_)
   simp only [PositivityTheory.SiegelWeilFormula.Kdil.sq, Finset.mul_sum, ← Real.exp_sum]
 
-theorem gauss_int_closed : type_of% @gauss_int_pf := @gauss_int_pf
-
 end PositivityTheory.SiegelWeilFormula.Kdil
 
 end

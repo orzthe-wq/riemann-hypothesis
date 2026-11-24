@@ -56,8 +56,7 @@ def TransferenceKey : Prop :=
 
 theorem cover_of_key (h : TransferenceKey) : TransferenceCover := by
   intro E _ _ _ Λ _ _ lam hlam hmin x
-  refine h E Λ lam x hlam ?_
-  intro y hy hlt
+  refine h E Λ lam x hlam fun y hy hlt => ?_
   by_cases hy0 : y = 0
   · exact ⟨0, by simp [hy0]⟩
   · exact absurd (hmin y hy0 hy) (not_le.mpr hlt)

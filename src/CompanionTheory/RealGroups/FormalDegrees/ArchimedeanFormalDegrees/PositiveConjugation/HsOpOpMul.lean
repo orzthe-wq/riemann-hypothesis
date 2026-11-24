@@ -62,7 +62,7 @@ theorem hsOp_op_mul {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ)
     hsOp (T.op k * A) = hsOp A := by
   unfold hsOp
   refine Finset.sum_congr rfl fun i _ => ?_
-  rw [ContinuousLinearMap.mul_apply, KType_norm_op_apply]
+  rw [mul_apply_eq_comp, KType_norm_op_apply]
 
 theorem hsPol : HsPol := by
   intro n ε g hg

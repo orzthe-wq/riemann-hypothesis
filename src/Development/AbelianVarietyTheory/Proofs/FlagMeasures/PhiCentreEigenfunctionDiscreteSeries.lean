@@ -319,8 +319,7 @@ lemma of_conj {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hU : IsOpen U) (k k' : Mat
     simp [Matrix.mul_apply, Matrix.single_apply, Matrix.sum_apply, ite_and, ite_mul, Finset.sum_ite_eq,
       Finset.sum_ite_eq']
   simp only [Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply,
-    Finset.sum_mul, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, mul_smul_comm, mul_one,
-    smul_smul]
+    Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, mul_smul_comm, mul_one]
 
   rw [hk, map_sum]
 

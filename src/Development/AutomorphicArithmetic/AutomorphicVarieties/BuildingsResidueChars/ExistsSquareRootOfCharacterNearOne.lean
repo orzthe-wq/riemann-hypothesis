@@ -34,18 +34,16 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.NonsingularNorm
 
 @[expose] public section
 
 section
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
-private theorem add_lt {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a + b‖ < 1 :=
-  lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max a b) (max_lt ha hb)
-
 private theorem sub_eq (h2 : ‖(2 : K)‖ = 1) {a b : K} (ha : ‖a - 1‖ < 1) (hb : ‖b - 1‖ < 1) :
     ‖a - b‖ = ‖a ^ 2 - b ^ 2‖ := by
-  have h := add_lt ha hb
+  have h := _root_.Formalism.L2.Th1.E.unitAtAlt.s_add ha hb
   have h1 : ‖a + b‖ = 1 := by
     have e : a + b = 2 + ((a - 1) + (b - 1)) := by ring
     rw [e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [h2]; exact h.ne'), h2]
@@ -56,7 +54,7 @@ private theorem sub_eq (h2 : ‖(2 : K)‖ = 1) {a b : K} (ha : ‖a - 1‖ < 1)
 private theorem mul_lt {a b : K} (ha : ‖a - 1‖ < 1) (hb : ‖b - 1‖ < 1) : ‖a * b - 1‖ < 1 := by
   have e : a * b - 1 = (a - 1) * (b - 1) + ((a - 1) + (b - 1)) := by ring
   rw [e]
-  refine add_lt ?_ (add_lt ha hb)
+  refine _root_.Formalism.L2.Th1.E.unitAtAlt.s_add ?_ (_root_.Formalism.L2.Th1.E.unitAtAlt.s_add ha hb)
   rw [norm_mul]
   nlinarith [norm_nonneg (a - 1), norm_nonneg (b - 1)]
 

@@ -110,7 +110,7 @@ end Basis
 theorem normForm_eq_det {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] {n : ℕ} {ι : Type*}
     [Fintype ι] [DecidableEq ι] (b : Module.Basis ι R A) (x : Fin n → A) :
     normForm A x = (∑ j, (X j : MvPolynomial (Fin n) R) • (Algebra.leftMulMatrix b (x j)).map C).det := by
-  apply GroundTheory.Heights₂.Heights.Vertical.normForm_eq_det <;> assumption
+  apply GroundTheory.Heights₂.Heights.Vertical.normForm_eq_det
 
 section Embeddings
 

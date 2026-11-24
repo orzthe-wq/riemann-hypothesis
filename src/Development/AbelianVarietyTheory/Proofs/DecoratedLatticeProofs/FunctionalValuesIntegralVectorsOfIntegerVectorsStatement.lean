@@ -62,4 +62,4 @@ theorem _root_.GlobalTheory.T.functional_values_integral_vectors_of_integer_vect
         P.HasVal (b' *ᵥ fun r' => p.pr (incA D (z r'))) (IsLocalRing.residue 𝒪[k] s)) →
     ∀ u : Fin m → k, (∀ r, u r ∈ 𝒪[k]) → ∀ r0 : Fin m, r0.1 + 1 = m →
       ∃ s : 𝒪[k], (s : k) = p.pr (incA D (c₀ : D.host.E)) * u r0 ∧ P.HasVal (b' *ᵥ u) (IsLocalRing.residue 𝒪[k] s) := by
-  first | exact @GlobalTheory.FinPl.SplitPt.hasVal_of_int_vectors | exact GlobalTheory.FinPl.SplitPt.hasVal_of_int_vectors | (intros; apply GlobalTheory.FinPl.SplitPt.hasVal_of_int_vectors <;> assumption)
+  first | exact @GlobalTheory.FinPl.SplitPt.hasVal_of_int_vectors

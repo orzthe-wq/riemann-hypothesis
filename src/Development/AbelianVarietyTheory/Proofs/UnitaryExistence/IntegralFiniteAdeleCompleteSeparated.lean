@@ -85,7 +85,7 @@ theorem eq_zero_of_valued_le_natCast (v : HeightOneSpectrum (𝓞 F)) (y : v.adi
     (h : ∀ N : ℕ, 0 < N → Valued.v y ≤ Valued.v (N : v.adicCompletion F)) : y = 0 := by
   by_contra hy
   obtain ⟨p, hp, hpn⟩ := exists_nat_valued_pow_le v
-  obtain ⟨n, hn⟩ := GlobalTheory.Idele.exists_exp_neg_lt (γ := Valued.v y) (by simpa using hy)
+  obtain ⟨n, hn⟩ := WithZero.exists_exp_neg_natCast_lt (x := Valued.v y) (by simpa using hy)
   exact absurd ((h _ (pow_pos hp n)).trans (hpn n)) (not_le.2 hn)
 
 theorem exists_limit_of_compatible (v : HeightOneSpectrum (𝓞 F)) (x : ℕ → v.adicCompletion F)
@@ -99,7 +99,7 @@ theorem exists_limit_of_compatible (v : HeightOneSpectrum (𝓞 F)) (x : ℕ →
     rw [pow_add]
     exact (h _ _ (pow_pos hp n) (pow_pos hp k)).trans (hpn n))
   refine ⟨t, fun N hN => ?_⟩
-  obtain ⟨n, hn⟩ := GlobalTheory.Idele.exists_exp_neg_lt (valued_natCast_ne_zero v hN)
+  obtain ⟨n, hn⟩ := WithZero.exists_exp_neg_natCast_lt (valued_natCast_ne_zero v hN)
   have h1 := (ht n).trans hn.le
   have h2 := ((h _ _ (pow_pos hp n) hN).trans (hpn n)).trans hn.le
   have h3 := h _ _ hN (pow_pos hp n)

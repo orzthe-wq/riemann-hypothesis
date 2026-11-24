@@ -1,49 +1,9 @@
 module
 
 public import Mathlib.Analysis.Normed.Field.Basic
+public import Mathlib.Analysis.Normed.Group.Ultra
 public import Mathlib.RingTheory.Valuation.ValuationSubring
 public import Mathlib.Topology.MetricSpace.Ultra.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-public import Mathlib.Analysis.Normed.Group.Ultra
 
 @[expose] public section
 
@@ -53,46 +13,25 @@ variable (K : Type*) [NormedField K] [IsUltrametricDist K]
 
 def closedBallSubring : Subring K where
   carrier := {x | ‖x‖ ≤ 1}
-  mul_mem' := by
-    intro a b ha hb
-    simp only [Set.mem_setOf_eq] at ha hb ⊢
-    rw [norm_mul]
-    exact mul_le_one₀ ha (norm_nonneg b) hb
-  one_mem' := by simp
-  add_mem' := by
-    intro a b ha hb
-    simp only [Set.mem_setOf_eq] at ha hb ⊢
-    exact (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
-  zero_mem' := by simp
-  neg_mem' := by
-    intro a ha
-    simpa using ha
+  mul_mem' {a b} ha hb :=
+    (norm_mul a b).trans_le ((mul_le_of_le_one_left (norm_nonneg b) ha).trans hb)
+  one_mem' := norm_one.le
+  add_mem' {a b} ha hb := (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
+  zero_mem' := norm_zero.trans_le zero_le_one
+  neg_mem' {a} ha := (norm_neg a).trans_le ha
 
 def closedBallValuationSubring : ValuationSubring K where
   toSubring := closedBallSubring K
-  mem_or_inv_mem' := by
-    intro x
-    change ‖x‖ ≤ 1 ∨ ‖x⁻¹‖ ≤ 1
-    rcases le_total ‖x‖ 1 with h | h
-    · exact Or.inl h
-    · right
-      rw [norm_inv]
-      exact inv_le_one_of_one_le₀ h
+  mem_or_inv_mem' x :=
+    (le_total ‖x‖ 1).imp_right fun h => (norm_inv x).trans_le (inv_le_one_of_one_le₀ h)
 
 def openBallIdeal : Ideal (closedBallSubring K) where
   carrier := {x | ‖(x : K)‖ < 1}
-  add_mem' := by
-    intro a b ha hb
-    simp only [Set.mem_setOf_eq] at ha hb ⊢
-    exact (IsUltrametricDist.norm_add_le_max (a : K) (b : K)).trans_lt (max_lt ha hb)
-  zero_mem' := by simp
-  smul_mem' := by
-    intro c x hx
-    simp only [Set.mem_setOf_eq] at hx ⊢
-    have hc : ‖(c : K)‖ ≤ 1 := c.2
-    change ‖(c : K) * (x : K)‖ < 1
-    rw [norm_mul]
-    exact mul_lt_one_of_nonneg_of_lt_one_right hc (norm_nonneg _) hx
+  add_mem' {a b} ha hb :=
+    (IsUltrametricDist.norm_add_le_max (a : K) (b : K)).trans_lt (max_lt ha hb)
+  zero_mem' := norm_zero.trans_lt zero_lt_one
+  smul_mem' c x hx :=
+    (norm_mul (c : K) (x : K)).trans_le (mul_le_of_le_one_left (norm_nonneg _) c.2) |>.trans_lt hx
 
 variable {K}
 
@@ -102,39 +41,19 @@ theorem mem_openBallIdeal {x : closedBallSubring K} :
     x ∈ openBallIdeal K ↔ ‖(x : K)‖ < 1 := Iff.rfl
 
 theorem isUnit_iff_norm_eq_one {x : closedBallSubring K} : IsUnit x ↔ ‖(x : K)‖ = 1 := by
-  constructor
+  refine ⟨?_, fun h => ?_⟩
   · rintro ⟨u, rfl⟩
-    have hu : ‖((u : closedBallSubring K) : K)‖ ≤ 1 := (u : closedBallSubring K).2
-    have hv : ‖((u⁻¹ : (closedBallSubring K)ˣ) : closedBallSubring K).1‖ ≤ 1 :=
-      ((u⁻¹ : (closedBallSubring K)ˣ) : closedBallSubring K).2
-    have hprod : ‖((u : closedBallSubring K) : K)‖ *
-        ‖((u⁻¹ : (closedBallSubring K)ˣ) : closedBallSubring K).1‖ = 1 := by
-      rw [← norm_mul]
-      have h := congrArg Subtype.val u.mul_inv
-      simp only [Subring.coe_mul, Subring.coe_one] at h
-      rw [h, norm_one]
-    refine le_antisymm hu ?_
-    calc (1 : ℝ) = _ := hprod.symm
-      _ ≤ ‖((u : closedBallSubring K) : K)‖ * 1 :=
-          mul_le_mul_of_nonneg_left hv (norm_nonneg _)
-      _ = _ := mul_one _
-  · intro h
-    have hx0 : (x : K) ≠ 0 := by
-      intro h0
-      rw [h0, norm_zero] at h
-      exact zero_ne_one h
-    have hinv : (x : K)⁻¹ ∈ closedBallSubring K := by
-      rw [mem_closedBallSubring, norm_inv, h, inv_one]
-    refine isUnit_iff_exists_inv.mpr ⟨⟨(x : K)⁻¹, hinv⟩, ?_⟩
-    apply Subtype.ext
-    simp only [Subring.coe_mul, Subring.coe_one]
-    exact mul_inv_cancel₀ hx0
+    have h : ‖(u.1 : K)‖ * ‖(u⁻¹.1 : K)‖ = 1 := by
+      rw [← norm_mul, ← Subring.coe_mul, u.mul_inv, Subring.coe_one, norm_one]
+    exact le_antisymm u.1.2 (h ▸ mul_le_of_le_one_right (norm_nonneg _) u⁻¹.1.2)
+  · have hx0 : (x : K) ≠ 0 := fun h0 => by simp [h0] at h
+    exact isUnit_iff_exists_inv.mpr
+      ⟨⟨(x : K)⁻¹, by simp [mem_closedBallSubring, h]⟩, Subtype.ext (mul_inv_cancel₀ hx0)⟩
 
 theorem mem_openBallIdeal_iff_not_isUnit {x : closedBallSubring K} :
     x ∈ openBallIdeal K ↔ ¬ IsUnit x := by
   rw [mem_openBallIdeal, isUnit_iff_norm_eq_one]
-  have hle : ‖(x : K)‖ ≤ 1 := mem_closedBallSubring.mp x.2
-  exact ⟨fun h he => (ne_of_lt h) he, fun h => lt_of_le_of_ne hle h⟩
+  exact (mem_closedBallSubring.mp x.2).lt_iff_ne
 
 variable (K)
 

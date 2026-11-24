@@ -77,7 +77,7 @@ theorem dAt_lin (φ : Mat C N →ₗ[C] Mat C M) (x Y : Mat C N) (q : Fin M × F
     dAt (lin φ q) x Y = φ Y q.1 q.2 := by
   rw [← sum_lin φ Y q]
 
-  simp only [dAt, lin, map_sum, Derivation.leibniz, pderiv_X, pderiv_C, smul_zero, add_zero, smul_eq_mul]
+  simp only [dAt, lin, map_sum, Derivation.leibniz, pderiv_X, pderiv_C, smul_eq_mul]
   refine Finset.sum_congr rfl fun p _ => ?_
   simp [ev, Pi.single_apply, Finset.sum_ite_eq']
 
@@ -113,4 +113,3 @@ theorem chain_of : Chain := by
 
 end LateralTheory.DivDb.ChainPf
 
-theorem LateralTheory.DivDb.Chain_of : LateralTheory.DivDb.Chain := LateralTheory.DivDb.ChainPf.chain_of

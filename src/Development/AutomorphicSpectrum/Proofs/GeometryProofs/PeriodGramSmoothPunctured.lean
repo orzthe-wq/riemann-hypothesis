@@ -101,17 +101,17 @@ theorem ofCoords_inl (k : Fin g) : ofCoords (Pi.single (.inl k) 1) = Pi.single k
   funext j
   by_cases h : j = k
   · subst h; simp [ofCoords]
-  · simp [ofCoords, Pi.single_apply, h]
+  · simp [ofCoords, h]
 
 theorem ofCoords_inr (k : Fin g) : ofCoords (Pi.single (.inr k) 1) = Pi.single k Complex.I := by
   funext j
   by_cases h : j = k
   · subst h; simp [ofCoords]
-  · simp [ofCoords, Pi.single_apply, h]
+  · simp [ofCoords, h]
 
 theorem form_single (H : Matrix (Fin g) (Fin g) ℂ) (c : ℂ) (k l : Fin g) :
     (Pi.single k c : Fin g → ℂ) ⬝ᵥ H *ᵥ star (Pi.single l 1 : Fin g → ℂ) = c * H k l := by
-  simp [mulVec, dotProduct, Pi.single_apply, Finset.sum_ite_eq]
+  simp [mulVec, dotProduct, Pi.single_apply]
 
 def coordForm (p : Fin g ⊕ Fin g → Fin g → ℂ) (Em : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) :
     Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ :=

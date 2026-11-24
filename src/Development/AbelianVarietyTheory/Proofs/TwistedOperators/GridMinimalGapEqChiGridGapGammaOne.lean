@@ -72,7 +72,7 @@ theorem gap_eq_chiGap : ∀ D : D7, GlobalTheory.Grid.gap D = GlobalTheory.ChiGr
   have key : ∀ γ : ℕ, GlobalTheory.Grid.GapCond D γ ↔ GlobalTheory.ChiGrid.GapBound D 1 γ := by
     intro γ
     unfold GlobalTheory.Grid.GapCond GlobalTheory.ChiGrid.GapBound
-    simp only [one_mul, hk, hn, hN, hN', hs, hc]
+    simp only [one_mul, hk, hn, hN', hs, hc]
     refine and_congr ?_ Iff.rfl
     have hB : (0 : ℝ) ≤ ((D.R.r : ℝ) + 1) ^ 3 := by positivity
     constructor

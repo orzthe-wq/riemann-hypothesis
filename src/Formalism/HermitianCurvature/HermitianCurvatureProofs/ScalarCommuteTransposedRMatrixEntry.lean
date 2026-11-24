@@ -60,19 +60,7 @@ section Base
 
 variable {A S : Type} [Ring A] [Fintype S] [DecidableEq S]
 
-theorem cond_iff (a : S) (i j : Fin 2) (x y : Ix S) :
-    (x a = i ∧ y a = j ∧ ∀ b, b ≠ a → x b = y b) ↔ (x a = i ∧ y = Function.update x a j) := by
-  constructor
-  · rintro ⟨h1, h2, h3⟩
-    refine ⟨h1, ?_⟩
-    funext b
-    by_cases hb : b = a
-    · subst hb; simp [h2]
-    · simp [Function.update_of_ne hb, h3 b hb]
-  · rintro ⟨h1, rfl⟩
-    refine ⟨h1, by simp, ?_⟩
-    intro b hb
-    simp [Function.update_of_ne hb]
+alias cond_iff := _root_.Formalism.FourierDecayAlt.P.Wd6.cond_iff
 
 theorem cond_iff' (a : S) (i j : Fin 2) (x y : Ix S) :
     (x a = i ∧ y a = j ∧ ∀ b, b ≠ a → x b = y b) ↔ (y a = j ∧ x = Function.update y a i) := by
@@ -88,11 +76,7 @@ theorem cond_iff' (a : S) (i j : Fin 2) (x y : Ix S) :
     intro b hb
     simp [Function.update_of_ne hb]
 
-theorem eU_apply (a : S) (i j : Fin 2) (x y : Ix S) :
-    (eU a i j : SlopeTestRemainingChoices S A) x y = if x a = i ∧ y = Function.update x a j then 1 else 0 := by
-  unfold eU
-  simp only [Matrix.of_apply]
-  exact if_congr (cond_iff a i j x y) rfl rfl
+alias eU_apply := _root_.Formalism.FourierDecayAlt.P.Wd6.eU_apply
 
 theorem eU_apply' (a : S) (i j : Fin 2) (x y : Ix S) :
     (eU a i j : SlopeTestRemainingChoices S A) x y = if y a = j ∧ x = Function.update y a i then 1 else 0 := by
@@ -100,13 +84,7 @@ theorem eU_apply' (a : S) (i j : Fin 2) (x y : Ix S) :
   simp only [Matrix.of_apply]
   exact if_congr (cond_iff' a i j x y) rfl rfl
 
-theorem eU_mul_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
-    ((eU a i j : SlopeTestRemainingChoices S A) * B) x y = if x a = i then B (Function.update x a j) y else 0 := by
-  rw [Matrix.mul_apply]
-  simp only [eU_apply]
-  by_cases h : x a = i
-  · simp [h]
-  · simp [h]
+alias eU_mul_apply := _root_.Formalism.FourierDecayAlt.P.Wd6.eU_mul_apply
 
 theorem mul_eU_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
     (B * (eU a i j : SlopeTestRemainingChoices S A)) x y = if y a = j then B x (Function.update y a i) else 0 := by
@@ -116,24 +94,7 @@ theorem mul_eU_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (
   · simp [h]
   · simp [h]
 
-theorem eU_mul_eU (a : S) (i j k l : Fin 2) :
-    (eU a i j : SlopeTestRemainingChoices S A) * eU a k l = if j = k then eU a i l else 0 := by
-  ext x y
-  rw [eU_mul_apply, eU_apply]
-  by_cases hjk : j = k
-  · subst hjk
-    simp only [Function.update_self, Function.update_idem, true_and, if_true]
-    rw [eU_apply]
-    by_cases h : x a = i <;> simp [h]
-  · simp [hjk]
-
-theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
-    Commute (eU c i j : SlopeTestRemainingChoices S A) (eU a k l) := by
-  show (eU c i j : SlopeTestRemainingChoices S A) * eU a k l = eU a k l * eU c i j
-  ext x y
-  rw [eU_mul_apply, eU_mul_apply, eU_apply, eU_apply]
-  rw [Function.update_of_ne (Ne.symm hc), Function.update_of_ne hc, Function.update_comm hc]
-  by_cases h1 : x c = i <;> by_cases h2 : x a = k <;> simp [h1, h2]
+alias eU_comm_of_ne := _root_.Formalism.FourierDecayAlt.P.Wd6.eU_comm_of_ne
 
 theorem star_eU [StarRing A] (a : S) (i j : Fin 2) :
     star (eU a i j : SlopeTestRemainingChoices S A) = eU a j i := by
@@ -152,7 +113,7 @@ theorem ins_mul (a : S) (M N : M2 (SlopeTestRemainingChoices S A)) (hM : FreeOf2
         = eU a i j * (M i j * eU a k l) * N k l := by simp only [mul_assoc]
       _ = eU a i j * (eU a k l * M i j) * N k l := by rw [h]
       _ = (eU a i j * eU a k l) * (M i j * N k l) := by simp only [mul_assoc]
-      _ = _ := by rw [eU_mul_eU]; split_ifs <;> simp
+      _ = _ := by rw [_root_.Formalism.FourierDecayAlt.P.Wd6.eU_mul_eU]; split_ifs <;> simp
   simp only [Finset.sum_mul, Finset.mul_sum, key, Matrix.mul_apply]
   simp only [Fin.sum_univ_two]
   simp
@@ -170,18 +131,9 @@ theorem ins_star [StarRing A] (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (
   simp only [star_sum, key]
   exact Finset.sum_comm
 
-theorem ins_free {a c : S} (hc : c ≠ a) (M : M2 (SlopeTestRemainingChoices S A)) (hM : FreeOf2 c M) :
-    FreeOf c (ins a M) := by
-  intro i j
-  unfold ins
-  refine Commute.sum_right _ _ _ fun k _ => Commute.sum_right _ _ _ fun l _ => ?_
-  exact (eU_comm_of_ne hc i j k l).mul_right (hM k l i j)
+alias ins_free := _root_.Formalism.FourierDecayAlt.P.Wd6.ins_free
 
-theorem ins_comm (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (b : SlopeTestRemainingChoices S A) (hb : FreeOf a b)
-    (hbM : ∀ i j, Commute b (M i j)) : Commute b (ins a M) := by
-  unfold ins
-  refine Commute.sum_right _ _ _ fun k _ => Commute.sum_right _ _ _ fun l _ => ?_
-  exact (hb k l).symm.mul_right (hbM k l)
+alias ins_comm := _root_.Formalism.FourierDecayAlt.P.Wd6.ins_comm
 
 theorem insert_mul_diagScalar (a : S) (M : M2 (SlopeTestRemainingChoices S A)) (b : SlopeTestRemainingChoices S A) : ins a (M * d0 b) = ins a M * b := by
   unfold ins d0
@@ -203,19 +155,9 @@ theorem mul_io_apply (x : A) (M : SlopeTestRemainingChoices S A) (z y : Ix S) : 
 theorem io_apply (x : A) (z y : Ix S) : (io x : SlopeTestRemainingChoices S A) z y = if z = y then x else 0 := by
   simp [io, Matrix.scalar_apply, Matrix.diagonal_apply]
 
-theorem io_comm_eU (a : S) (i j : Fin 2) (x : A) : Commute (eU a i j : SlopeTestRemainingChoices S A) (io x) := by
-  show (eU a i j : SlopeTestRemainingChoices S A) * io x = io x * eU a i j
-  ext z y
-  rw [io_mul_apply, mul_io_apply, eU_apply]
-  split_ifs <;> simp
+alias io_comm_eU := _root_.Formalism.FourierDecayAlt.P.Wd6.eU_io
 
-theorem io_comm_io {x y : A} (h : Commute x y) : Commute (io x : SlopeTestRemainingChoices S A) (io y) := by
-  show (io x : SlopeTestRemainingChoices S A) * io y = io y * io x
-  ext z z'
-  rw [io_mul_apply, io_mul_apply, io_apply, io_apply]
-  split_ifs
-  · exact h.eq
-  · simp
+alias io_comm_io := _root_.Formalism.FourierDecayAlt.P.Wd6.io_comm
 
 theorem free_apply_zero {a : S} {M : SlopeTestRemainingChoices S A} (hM : FreeOf a M) {z y : Ix S} (h : z a ≠ y a) :
     M z y = 0 := by
@@ -229,7 +171,7 @@ theorem free_mul {a : S} {x y : SlopeTestRemainingChoices S A} (hx : FreeOf a x)
   fun i j => (hx i j).mul_right (hy i j)
 theorem free_sub {a : S} {x y : SlopeTestRemainingChoices S A} (hx : FreeOf a x) (hy : FreeOf a y) : FreeOf a (x - y) :=
   fun i j => (hx i j).sub_right (hy i j)
-theorem free_io (a : S) (x : A) : FreeOf a (io x : SlopeTestRemainingChoices S A) := fun i j => io_comm_eU a i j x
+alias free_io := _root_.Formalism.FourierDecayAlt.P.Wd6.io_free
 theorem free_eU {a c : S} (hc : c ≠ a) (k l : Fin 2) : FreeOf c (eU a k l : SlopeTestRemainingChoices S A) :=
   fun i j => eU_comm_of_ne hc i j k l
 theorem free_smul {K : Type} [Field K] [Algebra K A] {a : S} (k : K) {x : SlopeTestRemainingChoices S A} (hx : FreeOf a x) :

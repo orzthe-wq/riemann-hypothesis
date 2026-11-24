@@ -3,45 +3,7 @@ module
 public import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.IsHolVOf
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.RChar2
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsUniqueIdeleOfLinearEquivQuotientLocal
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 public import Mathlib.Analysis.Calculus.Deriv.Prod
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ConstSmall
 
 @[expose] public section
@@ -71,10 +33,10 @@ theorem infGL_scalar (u : (Rinf F)ˣ) :
   refine ga_ext ?_ ?_
   · rw [TR.pInf_infGL]
     ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h1]
+    by_cases e : i = j <;> simp [e, h1]
   · rw [TR.pFin_infGL]
     ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]
+    by_cases e : i = j <;> simp [e, h2]
 
 theorem fin_expU {ω : HChar F} (h : IsOfFinOrder ω) (z : Rinf F) : ω.1 (infId F (expU z)) = 1 := by
   obtain ⟨n, hn, e⟩ := isOfFinOrder_iff_pow_eq_one.1 h
@@ -226,7 +188,7 @@ theorem rmul_E (v : InfinitePlace F) (j : Fin 2) (M : GL (Fin 2) (TR.Rinf F)) (h
     fin_cases a <;> fin_cases b <;> fin_cases j <;>
       simp [E, Matrix.mul_apply, Fin.sum_univ_two, Matrix.single_apply, hM]
   · fin_cases a <;> fin_cases b <;> fin_cases j <;>
-      simp [E, Matrix.mul_apply, Fin.sum_univ_two, Matrix.single_apply, hM, Pi.single_apply, hu]
+      simp [E, Matrix.mul_apply, Fin.sum_univ_two, Matrix.single_apply, hM, hu]
 
 theorem sepHol {k : InfinitePlace F → ℕ} {c : Pl F → ℕ} {ω : HChar F} {φ : TR.Sm F 2} (hω : IsOfFinOrder ω)
     (hφ : IsHolV k c ω φ) {f : X (InfinitePlace F) × GF F → ℂ} (hf : Rel k f φ.1) (x : GF F) :
@@ -259,10 +221,10 @@ theorem sepHol {k : InfinitePlace F → ℕ} {c : Pl F → ℕ} {ω : HChar F} {
       by_cases hu : u = v
       · subst hu
         fin_cases i <;> fin_cases j <;>
-          simp [B, L0, E, A_val, Matrix.vecHead, Matrix.vecTail, Pi.single_apply, Matrix.single_apply] <;>
-          simp only [Function.update_self, pP]
+          simp [B, L0, E, A_val, Matrix.vecHead, Matrix.vecTail] <;>
+          simp only [pP]
       · fin_cases i <;> fin_cases j <;>
-          simp [B, L0, E, A_val, hu, Function.update_of_ne hu, Pi.single_apply, Matrix.vecHead, Matrix.vecTail, Matrix.single_apply]
+          simp [B, L0, E, A_val, hu, Matrix.vecHead, Matrix.vecTail]
     have hN : ∀ t (ht : t.im ≠ 0), ∏ u, ((|(Function.update z v (pP t ht) u).1.im| ^ (-(k u : ℝ) / 2) : ℝ) : ℂ) =
         ((|t.im| ^ q : ℝ) : ℂ) * C := by
       intro t ht

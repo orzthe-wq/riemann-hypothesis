@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsFinEmb
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsDualOfAnisotropicOrthogonal
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnitaryOrthogonalEmbeddingStabilizerStatement
+public import Formalism.SatakeDualWeyl.Statement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsUnitaryOrthogonalEmbeddingStabilizer
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -83,7 +84,7 @@ theorem exists_stab_emb_baseChange {E R : Type} [Field E] [StarRing E] [CommRing
   have k5 : vecMulVec (φ ∘ x) (φ ∘ u) + A.map φ * A'.map φ = 1 := by
     rw [← Matrix.map_one φ (map_zero φ) (map_one φ), ← h5, ← Matrix.map_mul]
     ext i j; simp [vecMulVec_apply, Matrix.mul_apply]
-  obtain ⟨j, hj, hr⟩ := GlobalTheory.T.exists_unitary_orthogonal_embedding_stabilizer R σ n m (J.map φ) (J'.map φ) (φ ∘ x) (φ ∘ u) (A.map φ) (A'.map φ)
+  obtain ⟨j, hj, hr⟩ := _root_.GlobalTheory.StabRing.exists_emb R σ n m (J.map φ) (J'.map φ) (φ ∘ x) (φ ∘ u) (A.map φ) (A'.map φ)
     (by
       change IsUnit ((fun i => σ (φ (x i))) ⬝ᵥ _)
       rw [hsx, mv, ← RingHom.map_dotProduct]
@@ -100,7 +101,7 @@ theorem exists_stab_emb_baseChange {E R : Type} [Field E] [StarRing E] [CommRing
       Matrix.vecMulVec_mulVec, k4]
     simp
   · rw [hj, Matrix.add_mul, Matrix.mul_assoc, k1, Matrix.mul_one, Matrix.vecMulVec_mul, k3]
-    ext a b; simp [vecMulVec_apply]
+    ext a b; simp
 
 theorem exists_finEmb : ∀ (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E) (A : Matrix (Fin I.n) (Fin D.n) I.E) (xf : I.Gf), IsPerp D s x A xf → ∃ jf : D.inst.Gf →* I.Gf, IsFinEmb D x A jf ∧ ∀ h : I.Gf, I.fmat h *ᵥ afVec I x = afVec I x → h ∈ jf.range := by
   intro I D s x A xf h

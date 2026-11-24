@@ -323,11 +323,10 @@ theorem _root_.GlobalTheory.ParabVirt.parab_virt : ∀ (F : Type) [Field F] [Fin
       apply Subtype.ext
       obtain ⟨w, rfl⟩ := ((_root_.GlobalTheory.ParabVirt.lin t).submoduleMap W₀).surjective u
       rw [LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]
-      simp only [LinearMap.restrict_coe_apply, LinearEquiv.submoduleMap_apply, Subgroup.coe_mk,
-        ← _root_.GlobalTheory.ParabVirt.lin_apply]
+      simp only [LinearMap.restrict_coe_apply, LinearEquiv.submoduleMap_apply, ← _root_.GlobalTheory.ParabVirt.lin_apply]
       change _ = _root_.GlobalTheory.ParabVirt.lin t
         (_root_.GlobalTheory.ParabVirt.lin (t⁻¹ * x * t) (w : Fin n → F))
-      simp only [← _root_.GlobalTheory.ParabVirt.lin_mul, Subgroup.coe_mk, mul_assoc,
+      simp only [← _root_.GlobalTheory.ParabVirt.lin_mul, mul_assoc,
         mul_inv_cancel_left]
     · have h' : ¬ ∀ v ∈ W₀.map (_root_.GlobalTheory.ParabVirt.lin t).toLinearMap,
           Matrix.toLin' (x : Matrix (Fin n) (Fin n) F) v ∈

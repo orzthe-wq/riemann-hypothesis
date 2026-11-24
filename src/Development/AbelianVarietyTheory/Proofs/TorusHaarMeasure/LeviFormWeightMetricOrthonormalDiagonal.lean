@@ -166,14 +166,14 @@ theorem HasJet.mul {f g : V n → ℂ} {a b : JetRing} (hf : HasJet ξ x f a) (h
       simp only [dDir, wd_mul hf1 hg1, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]
       exact Finset.sum_congr rfl fun j _ => by ring
     rw [this, hf.val, hg.val, hf.hol, hg.hol]
-    simp [DualNumber.snd_mul]
+    simp
   · have : dbDir ξ (fun y => f y * g y) x = f x * dbDir ξ g x + dbDir ξ f x * g x := by
       simp only [dbDir, wdb_mul hf1 hg1, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]
       exact Finset.sum_congr rfl fun j _ => by ring
     rw [this, hf.val, hg.val, hf.anti, hg.anti]
-    simp [DualNumber.snd_mul]
+    simp
   · rw [leviV_mul' hf.cd hg.cd, hf.val, hg.val, hf.anti, hg.anti, hf.hol, hg.hol, hf.lev, hg.lev]
-    simp [DualNumber.snd_mul]
+    simp
 
 theorem HasJet.sum {ι : Type*} (s : Finset ι) {f : ι → V n → ℂ} {a : ι → JetRing}
     (h : ∀ i ∈ s, HasJet ξ x (f i) (a i)) : HasJet ξ x (fun y => ∑ i ∈ s, f i y) (∑ i ∈ s, a i) := by
@@ -208,7 +208,7 @@ theorem wd_coord (m j : Fin n) (y : V n) : wd n j (fun z : V n => z m) y = if m 
   have : fderiv ℂ (fun z : V n => z m) y = (EuclideanSpace.proj (𝕜 := ℂ) m : V n →L[ℂ] ℂ) :=
     (EuclideanSpace.proj (𝕜 := ℂ) m : V n →L[ℂ] ℂ).fderiv
   rw [this]
-  simp [bas, Pi.single_apply]
+  simp [bas]
 
 theorem coord_cd (m : Fin n) : ContDiff ℝ 2 (fun z : V n => z m) :=
   ((EuclideanSpace.proj (𝕜 := ℂ) m : V n →L[ℂ] ℂ).contDiff (n := 2)).restrict_scalars ℝ
@@ -217,9 +217,9 @@ theorem HasJet.coord (m : Fin n) : HasJet ξ 0 (fun z : V n => z m) (sJ * cJ (ξ
   have h0 : ∀ k, wdb n k (fun z : V n => z m) = fun _ => 0 := fun k =>
     funext fun y => wdb_of_differentiableAt (coord_diff m y)
   refine ⟨(coord_cd m).contDiffAt, by simp [sJ], ?_, ?_, ?_⟩
-  · simp [dDir, wd_coord, sJ, cJ, DualNumber.snd_mul]
-  · simp [dbDir, h0, sJ, cJ, DualNumber.snd_mul]
-  · simp [leviV, h0, wd, sJ, cJ, DualNumber.snd_mul]
+  · simp [dDir, wd_coord, sJ, cJ]
+  · simp [dbDir, h0, sJ, cJ]
+  · simp [leviV, h0, wd, sJ, cJ]
 
 theorem HasJet.conj_coord (m : Fin n) :
     HasJet ξ 0 (fun z : V n => conj (z m)) (tJ * cJ (conj (ξ m))) := by
@@ -228,10 +228,9 @@ theorem HasJet.conj_coord (m : Fin n) :
   have h0 : ∀ k, wdb n k (fun z : V n => conj (z m)) = fun _ => if m = k then 1 else 0 := fun k =>
     funext fun y => by rw [wdb_conj (hd y), wd_coord]; split_ifs <;> simp
   refine ⟨(Complex.conjCLE.contDiff.comp (coord_cd m)).contDiffAt, by simp [tJ], ?_, ?_, ?_⟩
-  · simp [dDir, wd_conj (hd _), wdb_of_differentiableAt (coord_diff m _), tJ, cJ,
-      DualNumber.snd_mul]
-  · simp [dbDir, h0, tJ, cJ, DualNumber.snd_mul]
-  · simp [leviV, h0, wd, tJ, cJ, DualNumber.snd_mul]
+  · simp [dDir, wd_conj (hd _), wdb_of_differentiableAt (coord_diff m _), tJ, cJ]
+  · simp [dbDir, h0, tJ, cJ]
+  · simp [leviV, h0, wd, tJ, cJ]
 
 end Jets
 
@@ -270,14 +269,14 @@ theorem det_jet_sq {m : ℕ} {s t : A} (hs : s * s = 0) (ht : t * t = 0) (ε : F
     rw [hR]
     simp only [Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_smul, Matrix.add_mul,
       Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul,
-      smul_add, e1, e2, e4, mul_zero, zero_smul, add_zero, mul_comm t s]
+      smul_add, e2, e4, zero_smul, add_zero, mul_comm t s]
     abel
   rw [hfac, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, huni _ _ hZ,
     huni _ _ hZ', Matrix.det_one_add_smul]
   have e3 : (s * t) ^ 2 = 0 := by rw [mul_pow, sq, hs, zero_mul]
   rw [e3, mul_zero, add_zero, one_mul, mul_one, Matrix.det_diagonal]
   congr 3
-  simp [D, Matrix.trace, Matrix.diagonal_mul, Matrix.mul_apply, Matrix.diagonal_apply]
+  simp [D, Matrix.trace, Matrix.mul_apply, Matrix.diagonal_apply]
 
 end Alg
 
@@ -300,9 +299,9 @@ theorem leviV_log_norm {d : V n → ℂ} {e c : ℂ} (he : e * e = 1) (hreal : �
     simp [cJ, sJ, tJ, he] at this
     exact this
   have hh : dDir ξ (fun y => ((Complex.normSq (d y) : ℝ) : ℂ)) x = 0 := by
-    rw [h2.hol]; simp [cJ, sJ, tJ, DualNumber.snd_mul]
+    rw [h2.hol]; simp [cJ, sJ, tJ]
   have hl : leviV n (fun y => ((Complex.normSq (d y) : ℝ) : ℂ)) x ξ = 2 * c := by
-    rw [h2.lev]; simp [cJ, sJ, tJ, DualNumber.snd_mul]
+    rw [h2.lev]; simp [cJ, sJ, tJ]
     linear_combination (2 * c) * he
   have hlog : ContDiffAt ℝ 2 Real.log (Complex.normSq (d x)) := by
     rw [hv]; exact Real.contDiffAt_log.2 one_ne_zero
@@ -525,9 +524,6 @@ theorem levi_phla_zero (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ
     simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true, ← sub_mul, hw]
     norm_cast
   · simp [hba, zMat]
-
-theorem leviZero : (∀ (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (x : Frame X.Ψ r), IsOrth X x → ∀ ξ : Fin (nd X) → ℂ, leviM X (phla X la) x 0 ξ = ∑ e : Ent X, sgn X.p0 e.2.1.1 * sgn X.p0 e.2.1.2 * ((la e.1 e.2.1.2 : ℝ) - (la e.1 e.2.1.1 : ℝ)) * ‖ξ (Fintype.equivFin (Ent X) e)‖ ^ 2) :=
-  levi_phla_zero
 
 end
 

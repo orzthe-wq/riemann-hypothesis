@@ -198,7 +198,7 @@ theorem exists_efh {s : K} {β : Etau K τ} (hD : τ ^ 2 - 4 ≠ 0) (h2 : (2 : K
   obtain ⟨h, hh⟩ := exists_psi hD hs hβ y₁ (G⁻¹ • y₂)
   refine ⟨e, f, h, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
     simp only [he, hf, hh, hstar, mul_smul_comm, im_smul, smul_eq_mul, n1, n2, h12, ← hG, zero_smul,
-      mul_zero, zero_add, add_zero, smul_smul, ← add_smul]
+      mul_zero, add_zero, smul_smul, ← add_smul]
   all_goals (ext <;> simp <;> field_simp <;> ring)
 
 end UpperTheory.V.Z.Sym.Loc.CP

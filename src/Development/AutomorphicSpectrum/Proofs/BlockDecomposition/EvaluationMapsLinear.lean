@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AvgVanish
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatMatrixTranslationModulationIrreduc
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantCompactSupportUnipotentStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocallyConstantCompactSupportUnipotent
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmoothIntegralLinear
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -103,23 +103,23 @@ theorem tw_lc (ψ : AddChar k Circle) (hψ : Continuous ψ) (f : XS τ σ) (y : 
   have h2 : IsLocallyConstant (fun d : Fin (t + 1) → k =>
       (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ)) :=
     h1.comp (fun z : Circle => (((Circle.toUnits z)⁻¹ : ℂˣ) : ℂ))
-  exact IsLocallyConstant.comp₂ h2 (GlobalTheory.T.locally_constant_compact_support_unipotent k i t τ σ f y).1 (fun a b => a • b)
+  exact IsLocallyConstant.comp₂ h2 (_root_.GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f y).1 (fun a b => a • b)
 
 theorem tw_cs (ψ : AddChar k Circle) (f : XS τ σ) (y : Mir k ((i + 1) + t + 1)) :
     HasCompactSupport (tw ψ f y) := by
-  refine (GlobalTheory.T.locally_constant_compact_support_unipotent k i t τ σ f y).2.mono fun d hd h0 => hd ?_
+  refine (_root_.GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f y).2.mono fun d hd h0 => hd ?_
   have h0' : evX f (dEmb k i t d * y) = 0 := h0
   show (_ : ℂ) • evX f (dEmb k i t d * y) = 0
   rw [h0', smul_zero]
 
 theorem intO_add (f g : XS τ σ) (y : Mir k ((i + 1) + t + 1)) :
     intO (f + g) y = intO f y + intO g y :=
-  muD_add (t + 1) (GlobalTheory.T.locally_constant_compact_support_unipotent k i t τ σ f y).1 (GlobalTheory.T.locally_constant_compact_support_unipotent k i t τ σ f y).2
-    (GlobalTheory.T.locally_constant_compact_support_unipotent k i t τ σ g y).1 (GlobalTheory.T.locally_constant_compact_support_unipotent k i t τ σ g y).2
+  muD_add (t + 1) (_root_.GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f y).1 (_root_.GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f y).2
+    (_root_.GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ g y).1 (_root_.GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ g y).2
 
 theorem intO_smul (c : ℂ) (f : XS τ σ) (y : Mir k ((i + 1) + t + 1)) :
     intO (c • f) y = c • intO f y :=
-  muD_smul (t + 1) c (GlobalTheory.T.locally_constant_compact_support_unipotent k i t τ σ f y).1 (GlobalTheory.T.locally_constant_compact_support_unipotent k i t τ σ f y).2
+  muD_smul (t + 1) c (_root_.GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f y).1 (_root_.GlobalTheory.CompanionTheory.BZPhiPG.Fib.fibre_isLocallyConstant_hasCompactSupport k i t τ σ f y).2
 
 theorem intC_add (ψ : AddChar k Circle) (hψ : Continuous ψ) (f g : XS τ σ) (y : Mir k ((i + 1) + t + 1)) :
     intC ψ (f + g) y = intC ψ f y + intC ψ g y :=

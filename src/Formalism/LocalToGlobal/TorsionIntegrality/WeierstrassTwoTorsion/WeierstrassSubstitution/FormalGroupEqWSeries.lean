@@ -2,52 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.StatementG
 public import Formalism.EllipticTorsion.EllipticTorsionProofs.WChord
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -142,7 +97,6 @@ theorem L_mul (φ ψ : MvPowerSeries (Fin 2) R) (i : Fin 2) :
     (L i) (φ * ψ) = cc φ * (L i) ψ + (L i) φ * cc ψ := by
   rw [MvPowerSeries.coeff_mul, Finsupp.antidiagonal_single]
   simp [Finset.Nat.antidiagonal_succ]
-  try ring
 
 theorem L_C (a : R) (i : Fin 2) : (L i) (MvPowerSeries.C a : MvPowerSeries (Fin 2) R) = 0 := by
   simp [MvPowerSeries.coeff_C]
@@ -252,18 +206,15 @@ theorem wSer_low : coeff 0 (wSer W) = 0 ∧ coeff 1 (wSer W) = 0 ∧ coeff 2 (wS
   have c0 : coeff 0 (wSer W) = 0 := by rwa [PowerSeries.coeff_zero_eq_constantCoeff_apply]
   have c1 : coeff 1 (wSer W) = 0 := by
     have h := congrArg (coeff 1) hfix
-    simp [pow_succ, PowerSeries.coeff_mul, Finset.Nat.antidiagonal_succ, c0, PowerSeries.coeff_X_pow,
-      PowerSeries.coeff_X, mul_assoc] at h
+    simp [pow_succ, PowerSeries.coeff_mul, Finset.Nat.antidiagonal_succ, c0, PowerSeries.coeff_X, mul_assoc] at h
     exact h
   have c2 : coeff 2 (wSer W) = 0 := by
     have h := congrArg (coeff 2) hfix
-    simp [pow_succ, PowerSeries.coeff_mul, Finset.Nat.antidiagonal_succ, c0, c1, PowerSeries.coeff_X_pow,
-      PowerSeries.coeff_X, mul_assoc] at h
+    simp [pow_succ, PowerSeries.coeff_mul, Finset.Nat.antidiagonal_succ, c0, c1, PowerSeries.coeff_X, mul_assoc] at h
     exact h
   have c3 : coeff 3 (wSer W) = 1 := by
     have h := congrArg (coeff 3) hfix
-    simp [pow_succ, PowerSeries.coeff_mul, Finset.Nat.antidiagonal_succ, c0, c1, c2, PowerSeries.coeff_X_pow,
-      PowerSeries.coeff_X, mul_assoc] at h
+    simp [pow_succ, PowerSeries.coeff_mul, Finset.Nat.antidiagonal_succ, c0, c1, c2, PowerSeries.coeff_X, mul_assoc] at h
     exact h
   exact ⟨c0, c1, c2, c3⟩
 
@@ -380,7 +331,7 @@ theorem cTwo_cc : cc (cTwo W) = 0 := by
   simp [cTwo, lam_cc, nu_cc]
 
 theorem cTwo_L (i : Fin 2) : (L i) (cTwo W) = 0 := by
-  simp [cTwo, sq, L_mul, L_C, lam_cc, lam_L, nu_cc, nu_L]
+  simp [cTwo, sq, L_mul, lam_cc, lam_L, nu_cc, nu_L]
 
 theorem uThird_cc : cc (uThird W) = 0 := by
   simp [uThird, cTwo_cc]

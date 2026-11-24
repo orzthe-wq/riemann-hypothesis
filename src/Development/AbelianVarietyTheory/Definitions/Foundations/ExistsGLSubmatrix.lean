@@ -117,7 +117,7 @@ theorem gram_hsum (V W : HSpace E) : (hsum V W).gram = blkMat finSumFinEquiv V.g
   obtain ⟨b, rfl⟩ := finSumFinEquiv.surjective j
   have key : ∀ u v, (hsum V W).hT u v = V.hT u.1 v.1 + W.hT u.2 v.2 := fun u v => orthSum_apply V W u v
   rcases a with a | a <;> rcases b with b | b <;>
-    simp [HSpace.gram, blkMat, key, frame_hsum_inl, frame_hsum_inr]
+    simp [HSpace.gram, blkMat, key]
 
 theorem gram_hdbl (V : HSpace E) : (hdbl V).gram = dblGram finSumFinEquiv V.gram := by
   show (hsum V (hneg V)).gram = _
@@ -127,7 +127,7 @@ theorem gram_hdbl (V : HSpace E) : (hdbl V).gram = dblGram finSumFinEquiv V.gram
 theorem sum_pairVec_frame (V W : HSpace E) (x : Fin V.rank → E) (y : Fin W.rank → E) :
     ∑ i, pairVec finSumFinEquiv x y i • (hsum V W).frame i = (∑ i, x i • V.frame i, ∑ i, y i • W.frame i) := by
   rw [← Equiv.sum_comp finSumFinEquiv, Fintype.sum_sum_type]
-  simp only [pairVec_inl, pairVec_inr, frame_hsum_inl, frame_hsum_inr, Prod.smul_mk, smul_zero]
+  simp only [pairVec_inl, pairVec_inr]
   ext <;> simp [Prod.fst_sum, Prod.snd_sum]
 
 theorem frameLat_hsum (V W : HSpace E) : frameLat (hsum V W) = sumLat finSumFinEquiv (frameLat V) (frameLat W) := by

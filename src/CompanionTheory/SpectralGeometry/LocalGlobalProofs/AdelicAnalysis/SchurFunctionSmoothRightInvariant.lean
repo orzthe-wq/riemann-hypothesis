@@ -1,61 +1,19 @@
 module
 
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.CountData
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureScalingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopologyStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeFundamentalDomainVolumeStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardAdelicCharacterStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionGrowthBoundStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicHaarMeasureScaling
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.LatticeFundamentalDomainVolume
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardAdelicCharacter
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ThetaFunctionGrowthBound
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteAdeleTopology
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TopoAF
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Dynamics.Ergodic.Action.Regular
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Monotonicity.Lemmas
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Presheaf
 
@@ -168,7 +126,7 @@ theorem hasSum_integral_cosets : ∀ (G Q : Type) [AddCommGroup G] [TopologicalS
 
 theorem cosets_of_multiples : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ), 0 < N → ∀ H : AddSubgroup F, (∀ b, b ∈ H ↔ ∃ r : 𝓞 F, b = (N : F) * (r : F)) → (∀ y : A F, ∃ q : F ⧸ H, y - algebraMap F (A F) q.out ∈ {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z}) ∧ ∀ q q' : F ⧸ H, (∃ w ∈ {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z}, ∃ w' ∈ {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z}, algebraMap F (A F) q.out + w = algebraMap F (A F) q'.out + w') → q = q' := by
   intro F _ _ N hN H hH
-  obtain ⟨-, -, -, -, hOopen, hdense, hOint, -, -, hWopen⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
+  obtain ⟨-, -, -, -, hOopen, hdense, hOint, -, -, hWopen⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
   have hO0 : (0 : A F) ∈ Oh F := fun v => zero_mem _
   have hOsub : ∀ x y : A F, x ∈ Oh F → y ∈ Oh F → x - y ∈ Oh F :=
     fun x y hx hy v => sub_mem (hx v) (hy v)
@@ -208,8 +166,8 @@ theorem cosets_of_multiples : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ)
 
 theorem mass_multiples : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ N : ℕ, 0 < N → (lf {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z}).toReal * (N : ℝ) ^ Module.finrank ℚ F = 1 := by
   intro F _ _ _ _ lf hlf h1 N hN
-  obtain ⟨-, -, -, -, hOopen, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
-  obtain ⟨h2, -⟩ := GlobalTheory.T.adelic_haar_measure_scaling F lf hlf h1
+  obtain ⟨-, -, -, -, hOopen, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
+  obtain ⟨h2, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.Scale.lf_scale F lf hlf h1
   have hN0 : (N : F) ≠ 0 := Nat.cast_ne_zero.2 hN.ne'
   have h3 := h2 (N : F) hN0 (Oh F) hOopen.measurableSet
   have h4 : (fun x => algebraMap F (A F) (N : F) * x) '' Oh F = {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z} := by
@@ -266,12 +224,12 @@ theorem fourier_coeff_eis : ∀ (F : Type) [Field F] [NumberField F] [Measurable
   intro F _ _ _ _ lf hlf h1 ψ hψ ι _ _ M B ρ P hQ hM φ hφ hΦ hc β hβ N hN hNβ hper D hD
   obtain ⟨hTR, -, -, -, hρ, -, -⟩ := id hQ
   have hcount : Countable F := (Module.finBasis ℚ F).equivFun.toEquiv.injective.countable
-  obtain ⟨-, hLcount, hLmem, hLD⟩ := GlobalTheory.T.lattice_fundamental_domain_volume F hTR ρ hρ N hN
+  obtain ⟨-, hLcount, hLmem, hLD⟩ := _root_.GlobalTheory.CompanionTheory.SW.FD.main F hTR ρ hρ N hN
   obtain ⟨hvol, horth⟩ := hLD D hD
-  obtain ⟨-, -, -, -, hOopen, -, hOint, -, -, hWopen⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
-  obtain ⟨-, hψ'⟩ := GlobalTheory.T.standard_adelic_character F
+  obtain ⟨-, -, -, -, hOopen, -, hOint, -, -, hWopen⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.AfTop.finiteAdele_topology F
+  obtain ⟨-, hψ'⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.StdChar.main F
   obtain ⟨hψ1, hψO, -⟩ := hψ' ψ hψ
-  obtain ⟨C, hC⟩ := GlobalTheory.T.summable_norm_eiTerm_and_wt_mul_tsum_le F lf hlf h1 ψ hψ ι M B ρ P hQ hM φ hφ 1 one_pos
+  obtain ⟨C, hC⟩ := _root_.GlobalTheory.CompanionTheory.SW.Core.EiBound.ei_bound F lf hlf h1 ψ hψ ι M B ρ P hQ hM φ hφ 1 one_pos
   haveI := hLcount
   haveI : lf.IsAddHaarMeasure := hlf
 

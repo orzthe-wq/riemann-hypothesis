@@ -1,16 +1,18 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ValQOfValQr
-import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsUniqueIsProdMeasureFinAway
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsCompactOpenLatticeStabilizerAtPlaces
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.IntegralQuotientEqIntegralFactorQuotient
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.LocalInvariantIntegralsSymmetricHaarSubgroupsStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PeriodLocalGroupsNormalFramesSplitPlaceStatement
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceLocalGroupClosedEmbeddingIntegralStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FlagUnipotentAnisotropicProjectionEqOne
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.T2SpaceCmHostAdeles
+import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsUniqueIsProdMeasureFinAway
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -174,26 +176,9 @@ theorem side_abs {A B P : Type} [Group A] [TopologicalSpace A] [Group B] [Topolo
 section Concrete
 variable {D : D7}
 
-theorem mem_congGrp {V : HSp D} {I : Ideal (AE D)} {g : GA D V} :
-    g ∈ congGrp V I ↔ ∀ i j, mt V g i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j ∈ I := by
-  unfold congGrp
-  rw [MonoidHom.mem_ker]
-  constructor
-  · intro h i j
-    have := congrArg (fun x : GL (Fin V.rank) (AE D ⧸ I) => x.1 i j) h
-    rw [← Ideal.Quotient.eq]
-    simp [Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢
-    exact this
-  · intro h
-    ext i j
-    have := h i j
-    rw [← Ideal.Quotient.eq] at this
-    simp [Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢
-    exact this
-
 theorem grpAt_mono {V : HSp D} {P R : Pl D → Prop} (h : ∀ p, P p → R p) {g : GA D V}
     (hg : g ∈ grpAt V P) : g ∈ grpAt V R := by
-  rw [grpAt, mem_congGrp] at hg ⊢
+  rw [grpAt, GlobalTheory.FinPl.PlacesAdeles.mem_congGrp] at hg ⊢
   intro i j
   have h1 := hg i j
   simp only [idAt, Submodule.mem_inf, Submodule.mem_iInf] at h1 ⊢
@@ -201,8 +186,8 @@ theorem grpAt_mono {V : HSp D} {P R : Pl D → Prop} (h : ∀ p, P p → R p) {g
 
 theorem grpAt_off {V : HSp D} {P R : Pl D → Prop} (h : ∀ p, P p → ¬ R p) {g : GA D V}
     (hg : g ∈ grpAt V P) : g ∈ grpOff V R := by
-  rw [grpAt, mem_congGrp] at hg
-  rw [grpOff, mem_congGrp]
+  rw [grpAt, GlobalTheory.FinPl.PlacesAdeles.mem_congGrp] at hg
+  rw [grpOff, GlobalTheory.FinPl.PlacesAdeles.mem_congGrp]
   intro i j
   have h1 := hg i j
   simp only [idAt, idOff, Submodule.mem_inf, Submodule.mem_iInf] at h1 ⊢
@@ -210,8 +195,8 @@ theorem grpAt_off {V : HSp D} {P R : Pl D → Prop} (h : ∀ p, P p → ¬ R p) 
 
 theorem grpAt_of_off {V : HSp D} {P P' : Pl D → Prop} {w : Pl D} (h : ∀ v, P v → w = v ∨ P' v) {g : GA D V}
     (hg : g ∈ grpAt V P) (hg' : g ∈ grpOff V (· = w)) : g ∈ grpAt V P' := by
-  rw [grpAt, mem_congGrp] at hg ⊢
-  rw [grpOff, mem_congGrp] at hg'
+  rw [grpAt, GlobalTheory.FinPl.PlacesAdeles.mem_congGrp] at hg ⊢
+  rw [grpOff, GlobalTheory.FinPl.PlacesAdeles.mem_congGrp] at hg'
   intro i j
   have h1 := hg i j
   have h2 := hg' i j
@@ -222,7 +207,7 @@ theorem grpAt_of_off {V : HSp D} {P P' : Pl D → Prop} {w : Pl D} (h : ∀ v, P
   · exact h1.2 ⟨u.1, hp⟩
 
 theorem grpAt_eq_one {V : HSp D} {P : Pl D → Prop} (hP : ∀ v, ¬ P v) {g : GA D V} (hg : g ∈ grpAt V P) : g = 1 := by
-  have h := ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 V).2.2.1
+  have h := ((_root_.GlobalTheory.FinPl.localComponents D P).2 V).2.2.1
   have : g ∈ grpAt V P ⊓ grpOff V P := ⟨hg, grpAt_off (fun p hp _ => hP p hp) hg⟩
   rwa [h, Subgroup.mem_bot] at this
 
@@ -433,8 +418,6 @@ theorem int₂ {r : ℕ} {Q : Fin (r + 1) → QStep S} (h : Function.Injective f
     (off_of_not (P' := (· = (Q 0).q.v)) (fun e => Fin.succ_ne_zero i (h e)) ((loc₂ (Q 0)).2.1 g))
 
 end Steps
-
-
 
 theorem reduce : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (S : Dbl2 ψ σ) (r : ℕ) (Q : Fin (r + 1) → QStep S), Function.Injective (fun i => (Q i).q.v) → ∀ (μ₁ : Measure (grpAt S.J.W (places Q))) (ρ₁ : Measure ((jacGrp S.J.d).subgroupOf (grpAt S.J.W (places Q)))) (μ₂ : Measure (grpAt S.B'.V (places Q))) (ρ₂ : Measure ((besGrp S.B'.d S.B'.o).subgroupOf (grpAt S.B'.V (places Q)))), Norm Q μ₁ ρ₁ μ₂ ρ₂ → LocallyCompactSpace (grpAt S.J.W (places fun i => Q i.succ)) ∧ LocallyCompactSpace (grpAt S.B'.V (places fun i => Q i.succ)) ∧ IsClosed (((jacGrp S.J.d).subgroupOf (grpAt S.J.W (places fun i => Q i.succ)) : Set (grpAt S.J.W (places fun i => Q i.succ)))) ∧ IsClosed (((besGrp S.B'.d S.B'.o).subgroupOf (grpAt S.B'.V (places fun i => Q i.succ)) : Set (grpAt S.B'.V (places fun i => Q i.succ)))) ∧ IsClosed ((RFJ (Q 0).k (Q 0).n₁ ((Q 0).c + 1 + 1) (σ + 1) : Set (GL ((Q 0).n₁ ⊕ Fin ((Q 0).c + 1 + 1)) (Q 0).k))) ∧ IsClosed ((R (Q 0).k (Q 0).n₂ ((Q 0).c + 1) (σ + 1) : Set (GL ((Q 0).n₂ ⊕ Fin ((Q 0).c + 1)) (Q 0).k))) ∧ ∃ (μ₁' : Measure (grpAt S.J.W (places fun i => Q i.succ))) (ρ₁' : Measure ((jacGrp S.J.d).subgroupOf (grpAt S.J.W (places fun i => Q i.succ)))) (μ₂' : Measure (grpAt S.B'.V (places fun i => Q i.succ))) (ρ₂' : Measure ((besGrp S.B'.d S.B'.o).subgroupOf (grpAt S.B'.V (places fun i => Q i.succ)))) (m₁ : Measure (GL ((Q 0).n₁ ⊕ Fin ((Q 0).c + 1 + 1)) (Q 0).k)) (s₁ : Measure (RFJ (Q 0).k (Q 0).n₁ ((Q 0).c + 1 + 1) (σ + 1))) (m₂ : Measure (GL ((Q 0).n₂ ⊕ Fin ((Q 0).c + 1)) (Q 0).k)) (s₂ : Measure (R (Q 0).k (Q 0).n₂ ((Q 0).c + 1) (σ + 1))) (p₁ : Measure (((jacGrp S.J.d).subgroupOf (grpAt S.J.W (places fun i => Q i.succ))).prod (RFJ (Q 0).k (Q 0).n₁ ((Q 0).c + 1 + 1) (σ + 1)))) (p₂ : Measure (((besGrp S.B'.d S.B'.o).subgroupOf (grpAt S.B'.V (places fun i => Q i.succ))).prod (R (Q 0).k (Q 0).n₂ ((Q 0).c + 1) (σ + 1)))), Norm (fun i => Q i.succ) μ₁' ρ₁' μ₂' ρ₂' ∧ LocNorm (Q 0) m₁ s₁ m₂ s₂ ∧ ρ₁'.IsInvInvariant ∧ ρ₂'.IsInvInvariant ∧ s₁.IsInvInvariant ∧ s₂.IsInvInvariant ∧ p₁.map (Subgroup.prodEquiv _ _) = ρ₁'.prod s₁ ∧ p₂.map (Subgroup.prodEquiv _ _) = ρ₂'.prod s₂ ∧ ∀ (F : GA D S.J.W → GA D S.B'.V → ℂ) (z : ℂ), Iter2 p₁ (μ₁'.prod m₁) p₂ (μ₂'.prod m₂) (fun x y => F (x.1.1 * (Q 0).gl₁ x.2) (y.1.1 * (Q 0).gl₂ y.2)) z → Iter2 ρ₁ μ₁ ρ₂ μ₂ (fun x y => F x.1 y.1) z := by
   intro D ψ σ S r Q h μ₁ ρ₁ μ₂ ρ₂ ⟨a1, a2, a3, a4, a5, a6, a7, a8⟩

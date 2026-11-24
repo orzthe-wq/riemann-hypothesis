@@ -1,6 +1,7 @@
 module
 
-public import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.EdgeFamOf
+public import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.EdgeLatticeMulOfWeightSum
+public import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.ManyEdges
 public import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.DvdOfAdd
 public import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.GoodRankOfPrim
 public import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.ScaleNegMono
@@ -26,7 +27,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -39,9 +39,59 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.GrowthBounds.ScaleEdges.EdgeFamOf, Formalism.SharpRestriction.GrowthBounds.ScaleEdges.ScaleZpowMono
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.ScaleEdges.EdgeFamOf =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.ScaleEdges.EdgeFamOf", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.EdgeLatticeMulOfWeightSum\npublic import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.ManyEdges\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.Pf14
+
+open Formalism.MainNotions.G Formalism.GradedWeylDivisibility
+
+def EdgeFamOf : Prop :=
+  ∀ (D : Formalism.BasicNotions.D7), tableLineDegreeFive.LevelPrimesProviso D → BePerfect → DualHeightInclusion →
+  ∀ (p n' : ℕ) (W Qq O Kf : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq]
+    [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
+    (ι : Qq →+* Kf) (σ : Qq ≃+* Qq) (j : W →+* O) (w : O),
+    HidaSetting p n' W Qq O Kf ι σ j w →
+  ∀ (m r : ℕ) (fl rest lam0 : Fin n' → Fin (m + 1) → ℤ) (hnu : lam0 = fl + rest) (h1 : IsDominant fl)
+    (h2 : IsDominant rest) (e : Edge W Qq (m + 1)), IsEdge p n' r e →
+  ∀ (nb n2 T oS tT D1 cStar c' : ℕ), cStar + oS ≤ c' → 2 * (D1 + 1) ≤ c' →
+  ∀ (Fvb Sy : Fin nb → Vsp Kf fl) (sh : Fin n2 → Vsp Kf rest),
+    (∀ b, Fvb b ∈ scale (algebraMap O Kf w ^ (-(T : ℤ))) (HL (O := O) ι σ fl e.src)) →
+    (∀ b, Fvb b - Sy b ∈ scale (algebraMap O Kf w ^ (c' : ℤ)) (Re p ι σ w r fl e)) →
+    (∀ b, ∀ e' : Edge W Qq (m + 1), IsEdge p n' r e' → e'.src = e.src → e' ≠ e →
+      Fvb b ∈ scale (algebraMap O Kf w ^ (c' : ℤ)) (Re p ι σ w r fl e')) →
+    (∀ b, Sy b ∈ Re p ι σ w r fl e) →
+    (∀ i, sh i ∈ Re p ι σ w r rest e ∧
+      sh i ∈ scale (algebraMap O Kf w ^ (-(oS : ℤ))) (HL (O := O) ι σ rest e.src)) →
+    (∀ c : Fin nb × Fin n2 → O, (∃ x, IsUnit (c x)) →
+      ∃ G : Module.Dual Kf (Vsp Kf lam0),
+        G ∈ scale (algebraMap O Kf w ^ (-(tT : ℤ))) (dualLat O Kf (HL (O := O) ι σ lam0 e.tgt)) ∧
+        G ∈ Re' p ι σ w r lam0 e ∧
+        (∀ e' : Edge W Qq (m + 1), IsEdge p n' r e' → e'.tgt = e.tgt → e' ≠ e →
+          G ∈ scale (algebraMap O Kf w ^ (cStar : ℤ)) (Re' p ι σ w r lam0 e')) ∧
+        ValLe (p : O) D1 (be p r lam0 (∑ x, c x • mulV hnu h1 h2 (Sy x.1) (sh x.2)) G)) →
+    EdgeFam (W := W) (O := O) p n' ι σ w r lam0 (T + oS) tT D1 cStar e (nb * n2)
+
+end Formalism.MainNotions.Pf14
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.ScaleEdges.EdgeFamOf =====
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.ScaleEdges.ScaleZpowMono =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.ScaleEdges.ScaleZpowMono", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.EdgeFamOf\npublic import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.DvdOfAdd\npublic import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.GoodRankOfPrim\npublic import Formalism.SharpRestriction.GrowthBounds.ScaleEdges.ScaleNegMono\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -159,3 +209,7 @@ theorem edgeFamOf : EdgeFamOf := by
     ring
 
 end Formalism.MainNotions.Pf14
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.ScaleEdges.ScaleZpowMono =====

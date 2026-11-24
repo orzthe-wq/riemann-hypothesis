@@ -3,7 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DefiniteThetaPairTestVectorExpansionStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
+import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -122,7 +123,7 @@ theorem smul_mem_La {D : D7} (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ
     obtain ⟨w, hw, A, hA, rfl⟩ := hx
     refine AddSubgroup.subset_closure ⟨w, hw, s • A, h A hA, ?_⟩
     funext τ i j
-    simp only [embV, tor0, Pi.smul_apply, Matrix.smul_apply, map_nsmul, smul_eq_mul, nsmul_eq_mul,
+    simp only [embV, tor0, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul,
       map_mul, map_natCast]
     ring
   | zero => simp
@@ -194,14 +195,6 @@ theorem Hf_nsmul (D : D7) (T : Tor D) {N N' : ℕ} (n : ℕ) (x y : VC D N N') :
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_
   ring
 
-theorem Hf_add_left (D : D7) (T : Tor D) {N N' : ℕ} (x y z : VC D N N') :
-    Hf D T (x + y) z = Hf D T x z + Hf D T y z := by
-  simp only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]
-
-theorem Hf_add_right (D : D7) (T : Tor D) {N N' : ℕ} (x y z : VC D N N') :
-    Hf D T x (y + z) = Hf D T x y + Hf D T x z := by
-  simp only [Hf, Pi.add_apply, map_add (f := _), mul_add, Finset.sum_add_distrib, add_div]
-
 theorem Hf_conj (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') :
     Hf D T y x = (starRingEnd ℂ) (Hf D T x y) := by
   set_option synthInstance.maxHeartbeats 100000 in
@@ -210,7 +203,7 @@ theorem Hf_conj (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') :
 theorem U_U (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') (G : VC D N N' → ℂ) (z : VC D N N') :
     U D T x (U D T y G) z =
       Complex.exp (-(Real.pi : ℂ) * Complex.I * ((Hf D T x y).im : ℂ)) * U D T (x + y) G z := by
-  simp only [U, Hf_add_left, Hf_add_right, add_assoc]
+  simp only [U, _root_.GlobalTheory.NormSum.VacMove.hf_add_left, _root_.GlobalTheory.NormSum.VacMove.hf_add_right, add_assoc]
   rw [mul_assoc, ← Complex.exp_add, mul_left_comm, ← Complex.exp_add]
   congr 2
   have h := Complex.sub_conj (Hf D T x y)
@@ -332,11 +325,11 @@ theorem GlobalTheory.NormSum.kernel_eq_sum_translates : ∀ (D : D7), Inp D → 
   rw [← he] at hs₂a
   have hLa := smul_mem_La ⊤ δ (smul_mem_YYl (smul_mem_homL hs₁a hs₂a))
   have hsp : Nat.Coprime (s₂ * s₁) p := Nat.Coprime.mul_left hs₂ hs₁
-  obtain ⟨-, -, -, -, hfg, -⟩ := GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hI.g1 ⊤ δ hC P.a P.d _
+  obtain ⟨-, -, -, -, hfg, -⟩ := _root_.GlobalTheory.ThetaLine.theta_line D hI.g1 ⊤ δ hC P.a P.d _
     (Or.inr ⟨Lt g, Lt' g', (hM g).2, (hM' g').2, rfl⟩)
   have hi₁ := coprime_index (La0 D (tor0 D ⊤ δ) P.a P.d) _ hfg _ p hp hsp hLa
   obtain ⟨b, ε, hb, hloc, hε, hεn, hi₀, he0⟩ := P.vac.2.2.2.2 p lam (by simp)
-  obtain ⟨-, -, hB, -⟩ := GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hI.g1 ⊤ δ hC P.a P.d _ (Or.inl ⟨_, b, hb, rfl⟩)
+  obtain ⟨-, -, hB, -⟩ := _root_.GlobalTheory.ThetaLine.theta_line D hI.g1 ⊤ δ hC P.a P.d _ (Or.inl ⟨_, b, hb, rfl⟩)
   obtain ⟨c, k, r, y, hex⟩ := GlobalTheory.T.definiteThetaPair_testVector_expansion D hI ⊤ δ t0 Q hC hT P g g' _ _ (hM g).1 (hM' g').1
   obtain ⟨⟨hc, -⟩, hy, hr, -, hOm, hcn⟩ := hex hQ
   have hcn := hcn p lam k' hk' hg hg'

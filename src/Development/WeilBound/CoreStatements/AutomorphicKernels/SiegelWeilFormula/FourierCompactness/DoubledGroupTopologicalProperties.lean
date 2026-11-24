@@ -129,8 +129,6 @@ variable (F E) in
 def ratMx (p q : ℕ) : AddSubgroup (Mx F E p q) :=
   AddSubgroup.closure (Set.range fun X : Matrix (Fin p) (Fin q) E => incM F X)
 
-theorem ratM_eq {σ : E →ₐ[F] E} (d : SD σ) : d.ratM = ratMx F E d.m d.n := rfl
-
 theorem incM_add {α β : Type} (X Z : Matrix α β E) : incM F (X + Z) = incM F X + incM F Z := by
   simp [incM, Matrix.map_add (f := _)]
 
@@ -195,7 +193,7 @@ instance ratMx_discrete {p q : ℕ} : DiscreteTopology (ratMx F E p q) := by
     subst h2
     exact Set.mem_singleton_iff.2 (Subtype.ext incM_zero)
 
-theorem countable_E : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
+alias countable_E := _root_.Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableE
 
 instance ratMx_countable {p q : ℕ} : Countable (ratMx F E p q) := by
   haveI := countable_E (E := E)

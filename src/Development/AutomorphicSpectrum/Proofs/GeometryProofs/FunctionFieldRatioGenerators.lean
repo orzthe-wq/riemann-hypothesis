@@ -66,8 +66,6 @@ theorem exists_eq_div_adjoin (X : Scheme.{0}) (Ω : Type) [Field Ω]
     simp only [genMap, TopCat.Presheaf.stalkSpecializes_refl]
     first
       | exact hs
-      | (rw [Category.id_comp]; exact hs)
-      | simpa using hs
   have hgU : genPt ξ ∈ U :=
     (hUc (genPt ξ)).mpr ⟨specializes_refl _, And.intro hc fun _ => hreg0 _⟩
   let φ : Γ(X, U) →+* Ω := (X.presheaf.germ U (genPt ξ) hgU ≫ Scheme.stalkClosedPointTo ξ).hom
@@ -81,15 +79,12 @@ theorem exists_eq_div_adjoin (X : Scheme.{0}) (Ω : Type) [Field Ω]
         X.presheaf.germ U (genPt ξ) hgU := by
       first
         | simp
-        | exact TopCat.Presheaf.germ_stalkSpecializes X.presheaf hpU p.2
-        | exact TopCat.Presheaf.germ_stalkSpecializes hpU p.2
     show (X.presheaf.stalkSpecializes p.2 ≫ Scheme.stalkClosedPointTo ξ).hom
         ((X.presheaf.germ U p.1 hpU).hom r) = φ r
     rw [← RingHom.comp_apply, ← CommRingCat.hom_comp]
     first
       | exact congrArg (fun (m : Γ(X, U) ⟶ CommRingCat.of Ω) => CommRingCat.Hom.hom m r)
           ((reassoc_of% e0) (Scheme.stalkClosedPointTo ξ))
-      | (simp only [reassoc_of% e0]; rfl)
   have gres : ∀ {W W' : X.Opens} (hle : W ≤ W') (hw : genPt ξ ∈ W) (z : Γ(X, W')),
       (X.presheaf.germ W (genPt ξ) hw).hom ((X.presheaf.map (homOfLE hle).op).hom z) =
         (X.presheaf.germ W' (genPt ξ) (hle hw)).hom z := by
@@ -98,7 +93,6 @@ theorem exists_eq_div_adjoin (X : Scheme.{0}) (Ω : Type) [Field Ω]
         X.presheaf.germ W' (genPt ξ) (hle hw) := by
       first
         | simp
-        | exact TopCat.Presheaf.germ_res _ _ _ _
     exact congrArg (fun m => m.hom z) e
   obtain ⟨s0, hs0⟩ : ∃ s0 : X.presheaf.stalk (genPt ξ), (Scheme.stalkClosedPointTo ξ).hom s0 = a :=
     hT.gen.bij.2 a
@@ -120,7 +114,6 @@ theorem exists_eq_div_adjoin (X : Scheme.{0}) (Ω : Type) [Field Ω]
     intro r
     first
       | rfl
-      | simp [φ, ψ]
   have hs0' : ψ ((X.presheaf.germ V (genPt ξ) hV).hom f) = a := hs0
   have h3 : φ y = φ t ^ n * a := by
     rw [hφ, hφ, h2, map_mul, map_pow, hs0']

@@ -2,50 +2,8 @@ module
 
 public import Formalism.LocalToGlobal.Columns.GenericUnipotentCharacter
 public import Mathlib.Analysis.SpecialFunctions.Complex.CircleAddChar
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.LogVandermondeBounds.LogVandermondeProofs.CardStabilizerVector
 
 @[expose] public section
 
@@ -232,23 +190,12 @@ theorem uniUT_full_eq : ((uniUT n κ n [] : Subgroup (GL (Fin n) κ)) : Set (GL 
     have hji' : j.val < i.val := (fine_lt_right i.2).mp hji
     exact h2 i j (fun e => by subst e; exact lt_irrefl _ hji') (fun h => absurd hji' (not_lt.mpr (le_of_lt h)))
 
-theorem card_lt_pairs (k : ℕ) : Nat.card {p : Fin k × Fin k // p.1 < p.2} = k * (k - 1) / 2 := by
-  have e : {p : Fin k × Fin k // p.1 < p.2} ≃ Σ j : Fin k, Fin j.val :=
-    { toFun := fun p => ⟨p.1.2, ⟨p.1.1.val, p.2⟩⟩
-      invFun := fun q => ⟨(⟨q.2.val, lt_trans q.2.2 q.1.2⟩, q.1), q.2.2⟩
-      left_inv := fun p => rfl
-      right_inv := fun q => rfl }
-  rw [Nat.card_eq_fintype_card, Fintype.card_congr e, Fintype.card_sigma]
-  simp only [Fintype.card_fin]
-  have h2 : ∑ j : Fin k, (j : ℕ) = ∑ i ∈ Finset.range k, i := Fin.sum_univ_eq_sum_range (fun i => i) k
-  rw [h2, Finset.sum_range_id]
-
 theorem card_HU (κ : Type) [CommRing κ] (k : ℕ) : Nat.card ↥(HU κ k) = Nat.card κ ^ (k * (k - 1) / 2) := by
   have h1 : Nat.card ↥(HU κ k) = Nat.card ↥(uSet κ (fun i j : Fin k => i < j)) := by
     rw [← uniUT_full_eq]; rfl
   rw [h1, card_uSet (fun _ _ h => h)]
   congr 1
-  exact card_lt_pairs k
+  exact _root_.Formalism.LogVandermondeBounds.StandardLattice.card_lt_pairs k
 
 theorem uGL_mem_uniUT {a : ℕ} (bl : List ℕ) {P : Fin n → Fin n → Prop} [∀ i j, Decidable (P i j)]
     (hP : ∀ i j, P i j → i < j) (hPa : ∀ i j, P i j → j.val < a) (f : {p : Fin n × Fin n // P p.1 p.2} → κ) :
@@ -442,24 +389,6 @@ theorem blkDet_diagEmb {s : ℕ} (h : s ≤ n) (β : ℕ → ℕ) (c : ℕ) (hc 
   rw [hb, Matrix.det_submatrix_equiv_self]
 
 end DiagChar
-
-section Sym
-
-variable {n : ℕ} {κ : Type} [CommRing κ]
-
-end Sym
-
-section More
-
-variable {κ : Type} [CommRing κ] {K : Type} [Field K]
-
-end More
-
-section Res
-
-variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type} [Field L]
-
-end Res
 
 section ParId
 

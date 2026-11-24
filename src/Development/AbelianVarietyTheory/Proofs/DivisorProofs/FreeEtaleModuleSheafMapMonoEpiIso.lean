@@ -83,7 +83,7 @@ theorem res_gsum (R : Type) [CommRing R] (P : PSh) {W V : Scheme.{0}} (k : W ⟶
   simp only [gsum, Sec.res, map_finsuppSum, map_smul]
   refine Finsupp.sum_congr fun x _ => ?_
   congr 1
-  exact (GlobalTheory.T.free_sections_ext_res_map R P ((free R).obj P)).2.2.1 W V k x
+  exact (_root_.GlobalTheory.EtC.free_hom_sections R P ((free R).obj P)).2.2.1 W V k x
 
 theorem res_gsum' (R : Type) [CommRing R] (P : PSh) {W V : Scheme.{0}} (k : W ⟶ V) (c : P.obj (op V) →₀ ULift.{1} R) :
     Sec.res k (gsum R P V c) = gsum R P W (Finsupp.mapDomain (P.map k.op) c) := by
@@ -97,14 +97,10 @@ theorem map_gsum (R : Type) [CommRing R] {P Q : PSh} (f : P ⟶ Q) {V : Scheme.{
   simp only [Sec.map, map_finsuppSum, map_smul]
   refine Finsupp.sum_congr fun x _ => ?_
   congr 1
-  exact (GlobalTheory.T.free_sections_ext_res_map R P ((free R).obj P)).2.2.2 Q f V x
+  exact (_root_.GlobalTheory.EtC.free_hom_sections R P ((free R).obj P)).2.2.2 Q f V x
 
 theorem loc_all {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : ∀ V g, P V g) : Loc U P :=
   GlobalTheory.T.etaleLocal_property_calculus_rules.1 U P h
-
-theorem loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P) (hPQ : ∀ V g, P V g → Q V g) :
-    Loc U Q :=
-  GlobalTheory.T.etaleLocal_property_calculus_rules.2.1 U P Q h hPQ
 
 theorem loc_trans {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
     (h : Loc U fun V g => Loc V fun W k => P W (k ≫ g)) : Loc U P :=
@@ -116,14 +112,14 @@ theorem loc_fin {U : Scheme.{0}} {ι : Type} [Finite ι] (P : ι → ∀ V : Sch
 
 theorem free_map_epi (R : Type) [CommRing R] {P Q : PSh} (f : P ⟶ Q)
     (hs : ∀ U (y : Q.obj (op U)), Loc U fun V g => ∃ x, f.app (op V) x = Q.map g.op y) : Epi ((free R).map f) := by
-  rw [(GlobalTheory.T.bigEtaleModuleSheaf_mono_epi_iff_sections R ((free R).map f)).2.2.1]
+  rw [(_root_.GlobalTheory.EtC.mono_epi_sections R ((free R).map f)).2.2.1]
   intro U b
   apply loc_trans
-  refine loc_mono ((GlobalTheory.T.freeEtaleSheaf_section_locally_finite_combination R Q U).1 b) ?_
+  refine _root_.GlobalTheory.EtC.etaleLocally_weaken_freeSheafSections ((_root_.GlobalTheory.EtC.free_sec_loc R Q U).1 b) ?_
   rintro V g ⟨c, hc⟩
   have hl : Loc V fun W k => ∀ i : c.support, ∃ x, f.app (op W) x = Q.map k.op i.1 :=
     loc_fin (fun i : c.support => fun W k => ∃ x, f.app (op W) x = Q.map k.op i.1) (fun i => hs V i.1)
-  refine loc_mono hl ?_
+  refine _root_.GlobalTheory.EtC.etaleLocally_weaken_freeSheafSections hl ?_
   intro W k hk
   choose x hx using hk
   refine ⟨∑ i : c.support, c i.1 • freeGen R P W (x i), ?_⟩
@@ -133,7 +129,7 @@ theorem free_map_epi (R : Type) [CommRing R] {P Q : PSh} (f : P ⟶ Q)
     simp only [Sec.map, map_sum, map_smul]
     refine Finset.sum_congr rfl fun i _ => ?_
     congr 1
-    rw [← hx i]; exact (GlobalTheory.T.free_sections_ext_res_map R P ((free R).obj P)).2.2.2 Q f W (x i)
+    rw [← hx i]; exact (_root_.GlobalTheory.EtC.free_hom_sections R P ((free R).obj P)).2.2.2 Q f W (x i)
   rw [e1, res_comp, hc, res_gsum, Finsupp.sum]
   exact Finset.sum_coe_sort c.support (fun y => c y • freeGen R Q W (Q.map k.op y))
 
@@ -146,9 +142,9 @@ theorem loc_kill {R : Type} [CommRing R] {P Q : PSh} (f : P ⟶ Q)
       f.app (op W) i.1.1 = f.app (op W) i.2.1 → P.map k.op i.1.1 = P.map k.op i.2.1 :=
     loc_fin _ fun i => by
       by_cases h : f.app (op W) i.1.1 = f.app (op W) i.2.1
-      · exact loc_mono (hi W _ _ h) fun _ _ e _ => e
+      · exact _root_.GlobalTheory.EtC.etaleLocally_weaken_freeSheafSections (hi W _ _ h) fun _ _ e _ => e
       · exact loc_all fun _ _ e => absurd e h
-  refine loc_mono hl ?_
+  refine _root_.GlobalTheory.EtC.etaleLocally_weaken_freeSheafSections hl ?_
   intro W' k hk
   rcases d.support.eq_empty_or_nonempty with h0 | ⟨x0, _⟩
   · rw [Finsupp.support_eq_empty.1 h0, Finsupp.mapDomain_zero]
@@ -166,22 +162,22 @@ theorem loc_kill {R : Type} [CommRing R] {P Q : PSh} (f : P ⟶ Q)
 theorem free_map_mono_of_loc (R : Type) [CommRing R] {P Q : PSh} (f : P ⟶ Q)
     (hi : ∀ U (x x' : P.obj (op U)), f.app (op U) x = f.app (op U) x' → Loc U fun _ g => P.map g.op x = P.map g.op x') :
     Mono ((free R).map f) := by
-  rw [(GlobalTheory.T.bigEtaleModuleSheaf_mono_epi_iff_sections R ((free R).map f)).2.1]
+  rw [(_root_.GlobalTheory.EtC.mono_epi_sections R ((free R).map f)).2.1]
   intro U a ha
   apply loc_trans
-  refine loc_mono ((GlobalTheory.T.freeEtaleSheaf_section_locally_finite_combination R P U).1 a) ?_
+  refine _root_.GlobalTheory.EtC.etaleLocally_weaken_freeSheafSections ((_root_.GlobalTheory.EtC.free_sec_loc R P U).1 a) ?_
   rintro V g ⟨c, hc⟩
   have h0 : gsum R Q V (Finsupp.mapDomain (f.app (op V)) c) = 0 := by
     rw [← map_gsum, show gsum R P V c = Sec.res g a from hc.symm, map_res, ha]; simp [Sec.res]
   apply loc_trans
-  refine loc_mono ((GlobalTheory.T.freeEtaleSheaf_section_locally_finite_combination R Q V).2 _ h0) ?_
+  refine _root_.GlobalTheory.EtC.etaleLocally_weaken_freeSheafSections ((_root_.GlobalTheory.EtC.free_sec_loc R Q V).2 _ h0) ?_
   intro W k hk
   have hd : Finsupp.mapDomain (f.app (op W)) (Finsupp.mapDomain (P.map k.op) c) = 0 := by
     rw [← Finsupp.mapDomain_comp]
     rw [show (f.app (op W) ∘ P.map k.op) = (Q.map k.op ∘ f.app (op V)) from
       funext fun x => NatTrans.naturality_apply f k.op x]
     rw [Finsupp.mapDomain_comp]; exact hk
-  refine loc_mono (loc_kill f hi _ hd) ?_
+  refine _root_.GlobalTheory.EtC.etaleLocally_weaken_freeSheafSections (loc_kill f hi _ hd) ?_
   intro W' k' hk'
   rw [res_comp, res_comp, hc, res_gsum', res_gsum', hk']
   simp [gsum]

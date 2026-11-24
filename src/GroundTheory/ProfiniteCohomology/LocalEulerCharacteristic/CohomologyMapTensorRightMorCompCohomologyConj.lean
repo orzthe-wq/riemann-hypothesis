@@ -1,9 +1,9 @@
 module
 
-public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.TwistDefs
+public import GroundTheory.ProfiniteCohomology.CupProducts.Functoriality
+public import GroundTheory.ProfiniteCohomology.CohomologicalDimension.SubsingletonCohomologyOfPrimaryOfFinite
+public import Mathlib.Algebra.Homology.ShortComplex.Linear
 public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.ConjAction
-import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom
-import GroundTheory.ProfiniteCohomology.CohomologyFunctoriality.Naturality
 public import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Descent
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -43,9 +43,146 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom
+import GroundTheory.ProfiniteCohomology.CohomologyFunctoriality.Naturality
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.TwistDefs, GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyMapTensorRightMorCompCohomologyConj
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.TwistDefs =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.TwistDefs", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.CupProducts.Functoriality\npublic import GroundTheory.ProfiniteCohomology.CohomologicalDimension.SubsingletonCohomologyOfPrimaryOfFinite\npublic import Mathlib.Algebra.Homology.ShortComplex.Linear\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+open CategoryTheory MonoidalCategory
+
+universe u
+
+variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+
+section Smul
+
+variable {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
+
+theorem cochainsMap_smul (c : k) (f : A ⟶ B) : cochainsMap (c • f) = c • cochainsMap f := by
+  ext n x : 3
+  apply Subtype.ext
+  funext y
+  rfl
+
+
+set_option backward.isDefEq.respectTransparency false in
+theorem cohomologyMap_smul (c : k) (f : A ⟶ B) (n : ℕ) :
+    cohomologyMap (c • f) n = c • cohomologyMap f n := by
+  rw [cohomologyMap, cochainsMap_smul]
+  dsimp [HomologicalComplex.homologyMap, cohomologyMap]
+  rw [← ShortComplex.homologyMap_smul]
+  rfl
+
+end Smul
+
+section Morphisms
+
+variable (T : Rep.{u} k G) {M : Rep.{u} k G}
+
+
+omit [TopologicalSpace G] [IsTopologicalGroup G] in
+noncomputable def tensorRightMor (m : M) (hm : ∀ g : G, M.ρ g m = m) : T ⟶ T ⊗ M :=
+  Rep.ofHom ⟨(TensorProduct.mk k T M).flip m, fun g => by
+    ext t
+    simp [Representation.tprod_apply, hm g]⟩
+
+
+
+omit [TopologicalSpace G] [IsTopologicalGroup G] in
+noncomputable def tensorFormMor (f : M →ₗ[k] k) (hf : ∀ (g : G) (m : M), f (M.ρ g m) = f m) :
+    T ⊗ M ⟶ T :=
+  Rep.ofHom ⟨(TensorProduct.rid k T).toLinearMap ∘ₗ LinearMap.lTensor T f, fun g => by
+    ext t m
+    simp [Representation.tprod_apply, hf g]⟩
+
+
+end Morphisms
+
+section TwistMap
+
+variable (T : Rep.{u} k G) [IsDiscreteRep T] {M : Rep.{u} k G} [IsDiscreteRep M]
+  (hM : ∀ (g : G) (m : M), M.ρ g m = m)
+
+omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep T] [IsDiscreteRep M] in
+theorem tensorRightMor_add (m m' : M) :
+    tensorRightMor T (m + m') (fun g => hM g _) =
+      tensorRightMor T m (fun g => hM g m) + tensorRightMor T m' (fun g => hM g m') := by
+  ext t
+  change t ⊗ₜ[k] (m + m') = t ⊗ₜ[k] m + t ⊗ₜ[k] m'
+  exact TensorProduct.tmul_add _ _ _
+
+omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep T] [IsDiscreteRep M] in
+theorem tensorRightMor_smul (c : k) (m : M) :
+    tensorRightMor T (c • m) (fun g => hM g _) = c • tensorRightMor T m (fun g => hM g m) := by
+  ext t
+  change t ⊗ₜ[k] (c • m) = c • t ⊗ₜ[k] m
+  exact TensorProduct.tmul_smul _ _ _
+
+noncomputable def twistMap (n : ℕ) :
+    TensorProduct k (cohomology T n) M →ₗ[k] cohomology (T ⊗ M) n :=
+  TensorProduct.lift
+    { toFun := fun x =>
+        { toFun := fun m => (cohomologyMap (tensorRightMor T m (fun g => hM g m)) n).hom x
+          map_add' := fun m m' => by
+            rw [tensorRightMor_add T hM, cohomologyMap_add]
+            rfl
+          map_smul' := fun c m => by
+            rw [tensorRightMor_smul T hM, cohomologyMap_smul, ModuleCat.hom_smul,
+              LinearMap.smul_apply, RingHom.id_apply] }
+      map_add' := fun x y => by
+        ext m
+        simp
+      map_smul' := fun c x => by
+        ext m
+        simp }
+
+theorem twistMap_tmul (n : ℕ) (x : cohomology T n) (m : M) :
+    twistMap T hM n (x ⊗ₜ[k] m) = (cohomologyMap (tensorRightMor T m (fun g => hM g m)) n).hom x :=
+  rfl
+
+end TwistMap
+
+section Subgroup
+
+variable (N : Subgroup G) (T M : Rep.{u} k G)
+
+variable [IsDiscreteRep T] [IsDiscreteRep M] (hM : ∀ (g : N) (m : M), M.ρ g m = m)
+
+noncomputable def twistResMap (n : ℕ) :
+    TensorProduct k (cohomology (Rep.res N.subtype T) n) M →ₗ[k]
+      cohomology (Rep.res N.subtype (T ⊗ M)) n :=
+  (cohomologyMap (resTensorIso N.subtype T M).inv n).hom ∘ₗ
+    twistMap (M := Rep.res N.subtype M) (Rep.res N.subtype T) hM n
+
+theorem twistResMap_tmul (n : ℕ) (x : cohomology (Rep.res N.subtype T) n) (m : M) :
+    twistResMap N T M hM n (x ⊗ₜ[k] m) =
+      (cohomologyMap (tensorRightMor (M := Rep.res N.subtype M) (Rep.res N.subtype T) m
+        (fun g => hM g m) ≫ (resTensorIso N.subtype T M).inv) n).hom x := by
+  rw [cohomologyMap_comp]
+  rfl
+
+end Subgroup
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.TwistDefs =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyMapTensorRightMorCompCohomologyConj =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyMapTensorRightMorCompCohomologyConj", "h": "module\n\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.TwistDefs\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.ConjAction\nimport GroundTheory.ProfiniteCohomology.ClassFormations.IsIsoCohomologyMapAlongResSubgroupOfHom\nimport GroundTheory.ProfiniteCohomology.CohomologyFunctoriality.Naturality\npublic import GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.Descent\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -240,3 +377,6 @@ theorem twistInvariantsEquiv_apply [Module.Free k M] [Module.Finite k M] (n : �
 end Subgroup
 
 end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.LocalEulerCharacteristic.CohomologyMapTensorRightMorCompCohomologyConj =====

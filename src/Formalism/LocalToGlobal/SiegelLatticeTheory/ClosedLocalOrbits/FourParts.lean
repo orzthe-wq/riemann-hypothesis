@@ -154,12 +154,6 @@ def IsIdT (t : TermQ Λ F P) : Prop := ∃ F', Rep Λ F P t F' ∧ IsIdF Λ F F'
 
 def InSFun : Prop := ∀ x y : Carrier P, Rel Λ F P x y → (InSF F x.1 ↔ InSF F y.1)
 
-def IdIffInS (K : Type) [Field K] [Algebra K E] : Prop :=
-  ∀ x : Carrier P, Relevant K F.fl x.1.fl → InSF F x.1 → IsIdF Λ F x.1
-
-def InSRel (K : Type) [Field K] [Algebra K E] : Prop :=
-  ∀ x : Carrier P, InSF F x.1 → Relevant K F.fl x.1.fl
-
 variable {Λ F P}
 
 theorem isInS_of_isIdT {t : TermQ Λ F P} (h : IsIdT Λ F P t) : IsInS Λ F P t := by
@@ -204,22 +198,6 @@ theorem G_eq_zero_of_termInS {t : Term D u u' F0 what₂} (hG : GFun t.lam (lf D
     (h : termInS t) : t.G = 0 := by
   refine gt_eq_zero_of_isInS (T := ((Tu D u : ℕ) : D.host.E)) hG ?_ h
   exact star_natCast _
-
-variable (D)
-
-def TermInSFun (u u' : D.what₂.Word) : Prop :=
-  ∀ (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V),
-    IsRowLat D F0 Λ → InSFun Λ (lf D F0) (PD D Λ (lf D F0) u')
-
-def TermIdIffInS (u u' : D.what₂.Word) : Prop :=
-  ∀ (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V),
-    IsRowLat D F0 Λ → IdIffInS Λ (lf D F0) (PD D Λ (lf D F0) u') D.host.F
-
-def TermInSRel (u u' : D.what₂.Word) : Prop :=
-  ∀ (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (Λ : Submodule (𝓞 D.host.E) (VS D).V),
-    IsRowLat D F0 Λ → InSRel (lf D F0) (PD D Λ (lf D F0) u') D.host.F
-
-variable {D}
 
 end D7
 

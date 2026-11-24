@@ -70,7 +70,7 @@ theorem exists_rightInv {p q : ℕ} (Γ : Matrix (Fin p) (Fin p) ℂ) (Γ' : Mat
   have h1 : fromCols (S * Mᴴ * Γ) (-(S * Qᵀ * Γ'ᵀ)) * fromRows M (Q.map (starRingEnd ℂ)) = 1 := by
     rw [fromCols_mul_fromRows, ← hS]
     nth_rewrite 4 [show S = Mᴴ * Γ * M - Qᵀ * Γ'ᵀ * Q.map (starRingEnd ℂ) from h.symm]
-    simp only [Matrix.mul_sub, Matrix.neg_mul, Matrix.mul_assoc, sub_eq_add_neg, Matrix.mul_add, Matrix.mul_neg]
+    simp only [Matrix.neg_mul, Matrix.mul_assoc, sub_eq_add_neg, Matrix.mul_add, Matrix.mul_neg]
   have h2 := (Matrix.mul_eq_one_comm_of_equiv (finSumFinEquiv (m := p) (n := q)).symm).1 h1
   rw [fromRows_mul_fromCols, ← fromBlocks_one, fromBlocks_inj] at h2
   exact ⟨_, h2.1⟩

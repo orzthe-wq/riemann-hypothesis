@@ -90,12 +90,12 @@ theorem rowLie_X_self (τ : ι) (k l j : Fin m) (c : Fin n) :
   by_cases h : j = l
   · subst h
     simp [pderiv_X, Pi.single_apply]
-  · simp [pderiv_X, Pi.single_apply, h]
+  · simp [pderiv_X, h]
 
 theorem rowLie_X_ne {τ ρ : ι} (h : ρ ≠ τ) (k l j : Fin m) (c : Fin n) :
     rowLie n τ k l (X (ρ, j, c)) = 0 := by
   classical
-  simp [rowLie_apply, pderiv_X, Pi.single_apply, h]
+  simp [rowLie_apply, pderiv_X, h]
 
 theorem exists_poly_rowSubst_coef (τ : ι) (k l : Fin m) (f : Pol ι m n) (φ : Module.Dual ℂ (Pol ι m n)) :
     ∃ Q : MvPolynomial (Fin m × Fin m) ℂ,
@@ -130,7 +130,7 @@ theorem exists_poly_rowSubst_coef (τ : ι) (k l : Fin m) (f : Pol ι m n) (φ :
         · by_cases hj : j = l
           · subst hj
             simp [Pi.single_apply, apply_ite]
-          · simp [Pi.single_apply, hj]
+          · simp [hj]
     · obtain ⟨P, hP, hP'⟩ := hp (φ ∘ₗ LinearMap.mulRight ℂ (X (ρ, j, c)))
       refine ⟨P, fun g => ?_, ?_⟩
       · rw [map_mul, rowSubst_X_ne h, ← hP g]; rfl

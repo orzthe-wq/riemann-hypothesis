@@ -5,54 +5,11 @@ public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.StatementsLatti
 public import Mathlib.Analysis.InnerProductSpace.GramMatrix
 public import GroundTheory.HeightsAndTheta.Heights.CovolumeGram
 public import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PMinkowskiCount
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 public import Mathlib.Analysis.Matrix.PosDef
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovGeometry.ABridgeStB
 public import Mathlib.Algebra.Star.UnitaryStarAlgAut
 
@@ -123,14 +80,14 @@ theorem coeff_eq_zero {y : (Σ k, ι k) → Ω} {r : ℕ} {f : Fin r → MRing �
   refine coeff_eq_zero_of_vanish hs fun z hz => ?_
   have hsec : ∀ k, secFun (b k) z = eval z (map (Int.castRingHom ℂ) (f k)) * eval z (map (Int.castRingHom ℂ) u) := by
     intro k
-    simp only [secFun, b, eval_map_int_rat, map_mul, eval_mul]
+    simp only [secFun, b, eval_map_int_rat, map_mul]
   simp only [hsec, ← mul_assoc, ← Finset.sum_mul]
   by_cases hz' : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0
   · rw [h z ⟨hz', fun g hg => hz g (mCoordIdeal_le_coordIdeal y hg)⟩, zero_mul]
   · push_neg at hz'
     obtain ⟨k, hk⟩ := hz'
     refine mul_eq_zero_of_right _ ?_
-    simp only [u, map_prod, map_X, eval_prod, eval_X]
+    simp only [u, map_prod, map_X, eval_X]
     exact Finset.prod_eq_zero (Finset.mem_univ k) (hk (i₀ k))
 
 variable {D : ℕ}
@@ -365,7 +322,7 @@ theorem exists_gram {r : ℕ} {G : Matrix (Fin r) (Fin r) ℝ} (hG : G.PosDef) :
   have hMM : star M * M = G := by
     conv_rhs => rw [hG.1.spectral_theorem]
     rw [Unitary.conjStarAlgAut_apply]
-    simp only [M, U, star_mul, star_star, Matrix.star_eq_conjTranspose, diagonal_conjTranspose, star_trivial,
+    simp only [M, U, star_mul, Matrix.star_eq_conjTranspose, diagonal_conjTranspose, star_trivial,
       conjTranspose_conjTranspose, Matrix.mul_assoc]
     rw [← Matrix.mul_assoc (diagonal _) (diagonal _), diagonal_mul_diagonal]
     congr 3
@@ -393,7 +350,7 @@ theorem count_of_gram {r : ℕ} {G : Matrix (Fin r) (Fin r) ℝ} (hG : G.PosDef)
   have hnorm : ∀ m, ‖e m‖ ^ 2 = (fun k => (m k : ℝ)) ⬝ᵥ (G *ᵥ fun k => (m k : ℝ)) := by
     intro m
     rw [← real_inner_self_eq_norm_sq, ← hB]
-    simp only [e, sum_inner, inner_sum, dotProduct, mulVec, Matrix.gram_apply, Finset.mul_sum, zsmul_eq_mul]
+    simp only [e, sum_inner, inner_sum, dotProduct, mulVec, Matrix.gram_apply, Finset.mul_sum]
     refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
     rw [← Int.cast_smul_eq_zsmul ℝ (m l), ← Int.cast_smul_eq_zsmul ℝ (m k), real_inner_smul_left,
       real_inner_smul_right, real_inner_comm (B l) (B k)]

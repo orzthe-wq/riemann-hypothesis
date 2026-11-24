@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -59,10 +60,6 @@ namespace GlobalTheory.Mum.RosatiSymmetry
 
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A]
 
-theorem padd_comm' {T : Over S} (x y : T ⟶ A) : padd A x y = padd A y x := by
-  show x * y = y * x
-  exact mul_comm x y
-
 abbrev sw : A ⊗ A ⟶ A ⊗ A := lift (snd A A) (fst A A)
 
 theorem sw_padd (x y : A ⊗ A ⟶ A) : sw A ≫ padd A x y = padd A (sw A ≫ x) (sw A ≫ y) := by
@@ -73,19 +70,19 @@ theorem formEq_sw (f g : A ⟶ A) (Y : Scheme.{0}) (p : Y ⟶ (A ⊗ A).left) :
       (fun k => p ≫ rosatiφ A f g k) rosatiε := by
   intro U _ h
   have e0 : (sw A).left ≫ (padd A (fst A A ≫ g) (snd A A)).left = (padd A (fst A A) (snd A A ≫ g)).left := by
-    rw [← Over.comp_left, sw_padd, padd_comm']; simp only [lift_fst_assoc, lift_snd]
+    rw [← Over.comp_left, sw_padd, _root_.ReciprocityTheory.ChartRestriction.G.Out.TLinPf.padd_comm]; simp only [lift_fst_assoc, lift_snd]
   have e1 : (sw A).left ≫ (fst A A ≫ g).left = (snd A A ≫ g).left := by
     rw [← Over.comp_left, lift_fst_assoc]
   have e2 : (sw A).left ≫ (snd A A).left = (fst A A).left := by
     rw [← Over.comp_left, lift_snd]
   have e3 : (sw A).left ≫ (padd A (fst A A) (snd A A ≫ f)).left = (padd A (fst A A ≫ f) (snd A A)).left := by
-    rw [← Over.comp_left, sw_padd, padd_comm']; simp only [lift_fst, lift_snd_assoc]
+    rw [← Over.comp_left, sw_padd, _root_.ReciprocityTheory.ChartRestriction.G.Out.TLinPf.padd_comm]; simp only [lift_fst, lift_snd_assoc]
   have e4 : (sw A).left ≫ (fst A A).left = (snd A A).left := by
     rw [← Over.comp_left, lift_fst]
   have e5 : (sw A).left ≫ (snd A A ≫ f).left = (fst A A ≫ f).left := by
     rw [← Over.comp_left, lift_snd_assoc]
   simp only [Fin.prod_univ_six, rosatiφ, rosatiε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.cons_val_four, Matrix.cons_val_succ, Matrix.cons_val, Matrix.vecHead, Matrix.vecTail, Function.comp_apply, Matrix.head_cons, e0, e1, e2, e3, e4, e5]
+    Matrix.cons_val_three, Matrix.cons_val_four, Matrix.cons_val_succ, Matrix.cons_val, Matrix.vecHead, Matrix.vecTail, Function.comp_apply, e0, e1, e2, e3, e4, e5]
   simp only [neg_neg, zpow_neg, zpow_one]
   ac_rfl
 

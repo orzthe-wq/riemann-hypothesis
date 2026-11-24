@@ -95,11 +95,10 @@ theorem Xflag_eq_of_inSF {T T' : E} {F : LFlag S r T} {G : LFlag S r T'} (h : In
 
 theorem Xsp_eq_of_flag {T T' : E} {F : LFlag S r T} {G : LFlag S r T'} (h : ∀ j, Xflag G j = Xflag F j) :
     Xsp G = Xsp F := by
-  rw [← Xflag_r G, ← Xflag_r F]
-  exact h r
+  simpa only [← Xflag_r] using h r
 
 theorem Xsp_le_orth {T : E} (F : LFlag S r T) : Xsp F ≤ orth S (Xsp F) := by
-  apply PI.UnitaryGroupMassFormula.BetaModX.xsp_le_orth <;> assumption
+  apply PI.UnitaryGroupMassFormula.BetaModX.xsp_le_orth
 
 theorem map_mem_Xflag {Λ : Submodule (𝓞 E) S.V} {T : E} {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V}
     (hn : n ∈ NLam Λ F) (j : ℕ) {v : S.V} (hv : v ∈ Xflag F j) : n v ∈ Xflag F j := by
@@ -113,9 +112,7 @@ theorem map_mem_Xflag {Λ : Submodule (𝓞 E) S.V} {T : E} {F : LFlag S r T} {n
     simp
   | succ k =>
     have h1 : n v - v ∈ Xflag F (k + 1) := Xa_mono F.fl (Nat.le_succ k) (hn1 k v hv)
-    have h2 := add_mem h1 hv
-    rw [sub_add_cancel] at h2
-    exact h2
+    simpa only [sub_add_cancel] using add_mem h1 hv
 
 theorem map_Xflag_eq {Λ : Submodule (𝓞 E) S.V} {T : E} {F : LFlag S r T} {n : S.V ≃ₗ[E] S.V}
     (hn : n ∈ NLam Λ F) (j : ℕ) : (Xflag F j).map (n : S.V →ₗ[E] S.V) = Xflag F j := by
@@ -128,15 +125,11 @@ theorem map_Xflag_eq {Λ : Submodule (𝓞 E) S.V} {T : E} {F : LFlag S r T} {n 
 
 theorem e_eq {T' : E} {x y : LFlag S r T'} {n m : S.V ≃ₗ[E] S.V}
     (hfr : ∀ a, frame y a = n (m (frame x a))) (a : Fin r) : y.fl.e a = n (m (x.fl.e a)) := by
-  have h := hfr a.castSucc
-  simp only [frame, FlagG.fvec, Fin.snoc_castSucc] at h
-  exact h
+  simpa only [frame, FlagG.fvec, Fin.snoc_castSucc] using hfr a.castSucc
 
 theorem z_eq {T' : E} {x y : LFlag S r T'} {n m : S.V ≃ₗ[E] S.V}
     (hfr : ∀ a, frame y a = n (m (frame x a))) : y.fl.z = n (m x.fl.z) := by
-  have h := hfr (Fin.last r)
-  simp only [frame, FlagG.fvec, Fin.snoc_last] at h
-  exact h
+  simpa only [frame, FlagG.fvec, Fin.snoc_last] using hfr (Fin.last r)
 
 theorem diff_of_flag {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag S r T} {x y : LFlag S r T'}
     {n m : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ x)
@@ -159,28 +152,21 @@ theorem diff_of_flag {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag S r T} 
       rw [← hfl]
       exact map_mem_Xflag hm _ hxa
     have h2 : n (m (x.fl.e a)) - m (x.fl.e a) ∈ Xflag F a.val := hn1 a.val _ hmx
-    have h3 := add_mem h2 h1
-    rw [sub_add_sub_cancel] at h3
-    exact h3
+    simpa only [sub_add_sub_cancel] using add_mem h2 h1
   · rw [z_eq hfr]
     have hXs : Xsp x = Xsp F := Xsp_eq_of_flag hfl
     have hz : x.fl.z ∈ orth S (Xsp x) := z_mem_orth x
     have h1 : m x.fl.z - x.fl.z ∈ Xsp x := hm2 _ hz
     have hmz : m x.fl.z ∈ orth S (Xsp F) := by
       rw [← hXs]
-      have h4 := add_mem (Xsp_le_orth x h1) hz
-      rw [sub_add_cancel] at h4
-      exact h4
+      simpa only [sub_add_cancel] using add_mem (Xsp_le_orth x h1) hz
     have h2 : n (m x.fl.z) - m x.fl.z ∈ Xsp F := hn2 _ hmz
     rw [hXs] at h1
-    have h3 := add_mem h2 h1
-    rw [sub_add_sub_cancel] at h3
-    exact h3
+    simpa only [sub_add_sub_cancel] using add_mem h2 h1
 
 theorem flag_of_inSF_right {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag S r T} {x y : LFlag S r T'}
     {n m : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ x)
     (hfr : ∀ a, frame y a = n (m (frame x a))) (hy : InSF F y) (j : ℕ) : Xflag x j = Xflag F j := by
-  have hyF : Xflag y j = Xflag F j := Xflag_eq_of_inSF hy j
   have hmap : Xflag y j = ((Xflag x j).map (m : S.V →ₗ[E] S.V)).map (n : S.V →ₗ[E] S.V) := by
     show Submodule.span E (y.fl.e '' {i : Fin r | i.1 < j}) =
       ((Submodule.span E (x.fl.e '' {i : Fin r | i.1 < j})).map (m : S.V →ₗ[E] S.V)).map
@@ -191,7 +177,7 @@ theorem flag_of_inSF_right {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag S
     intro a _
     simp only [LinearEquiv.coe_coe]
     exact e_eq hfr a
-  rw [map_Xflag_eq hm j, hyF, ← map_Xflag_eq hn j] at hmap
+  rw [map_Xflag_eq hm j, Xflag_eq_of_inSF hy j, ← map_Xflag_eq hn j] at hmap
   exact (Submodule.map_injective_of_injective (f := (n : S.V →ₗ[E] S.V)) n.injective hmap).symm
 
 theorem inSF_iff_of_dcrel {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag S r T} {x y : LFlag S r T'}
@@ -204,30 +190,21 @@ theorem inSF_iff_of_dcrel {Λ : Submodule (𝓞 E) S.V} {T T' : E} {F : LFlag S 
     obtain ⟨hx1, hx2⟩ := hx
     unfold InSF
     refine ⟨fun a => ?_, ?_⟩
-    · have h3 := add_mem (hd1 a) (hx1 a)
-      rw [sub_add_sub_cancel] at h3
-      exact h3
-    · have h3 := add_mem hd2 hx2
-      rw [sub_add_sub_cancel] at h3
-      exact h3
+    · simpa only [sub_add_sub_cancel] using add_mem (hd1 a) (hx1 a)
+    · simpa only [sub_add_sub_cancel] using add_mem hd2 hx2
   · intro hy
     have hfl := flag_of_inSF_right hn hm hfr hy
     obtain ⟨hd1, hd2⟩ := diff_of_flag hn hm hfr hfl
     obtain ⟨hy1, hy2⟩ := hy
     unfold InSF
     refine ⟨fun a => ?_, ?_⟩
-    · have h3 := sub_mem (hy1 a) (hd1 a)
-      rw [sub_sub_sub_cancel_left] at h3
-      exact h3
-    · have h3 := sub_mem hy2 hd2
-      rw [sub_sub_sub_cancel_left] at h3
-      exact h3
+    · simpa only [sub_sub_sub_cancel_left] using sub_mem (hy1 a) (hd1 a)
+    · simpa only [sub_sub_sub_cancel_left] using sub_mem hy2 hd2
 
 theorem inSFun_all (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (P : LFlag S r T' → Prop) :
     InSFun Λ F P := by
   unfold InSFun
-  intro x y h
-  exact inSF_iff_of_dcrel h
+  exact fun x y h => inSF_iff_of_dcrel h
 
 end Gen
 

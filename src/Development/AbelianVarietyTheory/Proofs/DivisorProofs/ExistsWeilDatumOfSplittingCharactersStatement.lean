@@ -45,4 +45,4 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.exists_weilDatum_of_splittingCharacters : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), (∃ η, IsEtaTilde D η) → IsHeckeChar D χS → IsHeckeChar D χT → ResEta D χS S.rank → ResEta D χT T.rank → ∃ om, IsWeilDatumO ψ S T χS χT om := by
-  first | exact @GlobalTheory.WeilExist.exists_isWeilDatumO | exact GlobalTheory.WeilExist.exists_isWeilDatumO | (intros; apply GlobalTheory.WeilExist.exists_isWeilDatumO <;> assumption)
+  first | exact @GlobalTheory.WeilExist.exists_isWeilDatumO

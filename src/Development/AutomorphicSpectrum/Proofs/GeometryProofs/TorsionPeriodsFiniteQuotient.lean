@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Definitions.Uniformization.PointE
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExponentialFamilyPeriods
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsToricTorsionCubWeilOne
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExponentialSurjectiveSemiabelianStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExponentialSurjectiveSemiabelian
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -141,7 +141,7 @@ theorem toric_torsion_radical_period : ∀ (E : Type) [Field E] [NumberField E] 
   have hNc : (N : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hN.ne'
   obtain ⟨T₀, hT₁, hT₂, hT₃⟩ := GlobalTheory.exists_toric_torsion_cubWeil_one GlobalTheory.firstFiveLaws.2.2.1 (Sp R) t.G t.semi t.PP t.cub g N ℂ
     (spMap (ψ b₀)) dG hNc
-  have hsurj := GlobalTheory.T.exponential_surjective_semiabelian R t.G g n M B ψ e t.semi b₀ hb₀
+  have hsurj := _root_.GlobalTheory.CompanionTheory.Ar.Flat.famExp_ex_surjective R t.G g n M B ψ e t.semi b₀ hb₀
   obtain ⟨T, h₁, h₂, h₃, h₄⟩ := exists_periodQuot_transport (e.ex b₀) (e.add b₀ hb₀) hsurj Γ₀ hΓ N hN T₀ hT₁
   refine ⟨T, by rw [h₁, h₂, hT₃], fun x y hx => ?_⟩
   exact hT₂ _ (h₃ x hx) _ (h₄ y)

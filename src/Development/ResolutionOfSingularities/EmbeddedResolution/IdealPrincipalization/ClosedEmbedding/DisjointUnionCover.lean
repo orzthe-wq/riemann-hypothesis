@@ -104,11 +104,11 @@ theorem disjointUnionMap_summandι_mem (D : FiniteOpenCoverWithIdeals T) (i : D.
   exact hmem
 
 private theorem comap_imageIdealSheaf_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
-    (imageIdealSheaf (D.summandι i) (D.localIdeal i)).comap (D.summandι i) = D.localIdeal i :=
+    (_root_.FunctorialResolution.Blowup.schemeImageIdeal (D.summandι i) (D.localIdeal i)).comap (D.summandι i) = D.localIdeal i :=
   FunctorialResolution.EmbeddedResolution.comap_ker_subschemeι_comp (D.localIdeal i) (D.summandι i)
 
 private theorem imageIdealSheaf_eq_ker {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f]
-    (I : X.IdealSheafData) : imageIdealSheaf f I = Scheme.Hom.ker (I.subschemeι ≫ f) := rfl
+    (I : X.IdealSheafData) : _root_.FunctorialResolution.Blowup.schemeImageIdeal f I = Scheme.Hom.ker (I.subschemeι ≫ f) := rfl
 
 private theorem subsingleton_sections_bot (Z : Scheme.{u}) :
     Subsingleton ↥(Z.presheaf.obj (Opposite.op (⊥ : Z.Opens))) := by
@@ -140,7 +140,7 @@ private theorem ideal_ker_eq_top_of_disjoint {Y Z : Scheme.{u}} (g : Z ⟶ Y) [Q
 private theorem ideal_imageIdealSheaf_eq_top_of_ne (D : FiniteOpenCoverWithIdeals T) {i j : D.idx} (hij : j ≠ i)
     (W : D.disjointUnion.Opens) (hW : IsAffineOpen W)
     (hsub : ∀ y ∈ (W : Set ↥D.disjointUnion), y ∈ Set.range (D.summandι i).base) :
-    (imageIdealSheaf (D.summandι j) (D.localIdeal j)).ideal ⟨W, hW⟩ = ⊤ := by
+    (_root_.FunctorialResolution.Blowup.schemeImageIdeal (D.summandι j) (D.localIdeal j)).ideal ⟨W, hW⟩ = ⊤ := by
   rw [imageIdealSheaf_eq_ker]
   refine ideal_ker_eq_top_of_disjoint ((D.localIdeal j).subschemeι ≫ D.summandι j) ⟨W, hW⟩ ?_
   intro z hz
@@ -153,7 +153,7 @@ private theorem ideal_imageIdealSheaf_eq_top_of_ne (D : FiniteOpenCoverWithIdeal
 theorem comap_iInfImageIdeal_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.idx) :
     D.iInfImageIdeal.comap (D.summandι i) = D.localIdeal i := by
   have hglue : D.iInfImageIdeal
-      = ⨅ j : D.idx, imageIdealSheaf (D.summandι j) (D.localIdeal j) := rfl
+      = ⨅ j : D.idx, _root_.FunctorialResolution.Blowup.schemeImageIdeal (D.summandι j) (D.localIdeal j) := rfl
   refine le_antisymm ?_ ?_
   · rw [hglue]
     exact le_trans (Scheme.IdealSheafData.comap_mono (D.summandι i) (iInf_le _ i))
@@ -170,9 +170,9 @@ theorem comap_iInfImageIdeal_summandι (D : FiniteOpenCoverWithIdeals T) (i : D.
     have h1 := Scheme.IdealSheafData.comap_ideal_eq_map_appLE D.iInfImageIdeal (D.summandι i)
       ⟨_, hW⟩ V hle
     have h2 := Scheme.IdealSheafData.comap_ideal_eq_map_appLE
-      (imageIdealSheaf (D.summandι i) (D.localIdeal i)) (D.summandι i) ⟨_, hW⟩ V hle
+      (_root_.FunctorialResolution.Blowup.schemeImageIdeal (D.summandι i) (D.localIdeal i)) (D.summandι i) ⟨_, hW⟩ V hle
     have h3 : D.iInfImageIdeal.ideal ⟨_, hW⟩
-        = (imageIdealSheaf (D.summandι i) (D.localIdeal i)).ideal ⟨_, hW⟩ := by
+        = (_root_.FunctorialResolution.Blowup.schemeImageIdeal (D.summandι i) (D.localIdeal i)).ideal ⟨_, hW⟩ := by
       rw [hglue]
       simp only [Scheme.IdealSheafData.ideal_iInf, iInf_apply]
       refine le_antisymm (iInf_le _ i) (le_iInf fun j => ?_)

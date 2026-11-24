@@ -1,51 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.IsInfUnitary
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -129,15 +85,13 @@ private theorem eq_zero_of_eq_neg_of_module_complex {M : Type*} [AddCommGroup M]
 
 theorem car_sum_sq_zero_of_anti {R ι : Type*} [Ring R] [Module ℂ R] (s : Finset ι) (F : ι → R)
     (h : ∀ x ∈ s, ∀ y ∈ s, F x * F y = -(F y * F x)) : (∑ x ∈ s, F x) * (∑ y ∈ s, F y) = 0 := by
-  have e : (∑ x ∈ s, F x) * (∑ y ∈ s, F y) = ∑ x ∈ s, ∑ y ∈ s, F x * F y := by
-    rw [Finset.sum_mul]; simp only [Finset.mul_sum]
-  have e2 : ∑ x ∈ s, ∑ y ∈ s, F x * F y = -∑ x ∈ s, ∑ y ∈ s, F x * F y := by
-    calc ∑ x ∈ s, ∑ y ∈ s, F x * F y = ∑ x ∈ s, ∑ y ∈ s, -(F y * F x) :=
-          Finset.sum_congr rfl fun x hx => Finset.sum_congr rfl fun y hy => h x hx y hy
-      _ = ∑ y ∈ s, ∑ x ∈ s, -(F y * F x) := Finset.sum_comm
-      _ = -∑ y ∈ s, ∑ x ∈ s, F y * F x := by simp only [Finset.sum_neg_distrib]
-  rw [e]
-  exact eq_zero_of_eq_neg_of_module_complex e2
+  rw [Finset.sum_mul]
+  simp only [Finset.mul_sum]
+  apply eq_zero_of_eq_neg_of_module_complex
+  calc ∑ x ∈ s, ∑ y ∈ s, F x * F y = ∑ x ∈ s, ∑ y ∈ s, -(F y * F x) :=
+        Finset.sum_congr rfl fun x hx => Finset.sum_congr rfl fun y hy => h x hx y hy
+    _ = ∑ y ∈ s, ∑ x ∈ s, -(F y * F x) := Finset.sum_comm
+    _ = -∑ y ∈ s, ∑ x ∈ s, F y * F x := by simp only [Finset.sum_neg_distrib]
 
 theorem car_anti_abs {R : Type*} [Ring R] (A B c e : R) (hcB : c * B = B * c) (heA : e * A = A * e)
     (hAB : A * B = B * A) (hce : c * e = -(e * c)) : A * c * (B * e) = -(B * e * (A * c)) := by
@@ -174,20 +128,48 @@ private theorem sum_sum_eq_apply_of_eq_zero_off_point {M ι κ : Type*} [AddComm
 private theorem sgE_eq_sum_minusIdx_of_true (ε : Fin n → Bool) (cp cm : Fin n → Fin n → Module.End ℂ W)
     {a b : Fin n} (ha : ε a = true) (hb : ε b = true) :
     sgE ε cp cm a b = ∑ x ∈ minusIdx ε, cp a x * cm b x := by
-  unfold sgE
-  rw [if_pos (And.intro ha hb)]
+  simp [sgE, ha, hb]
 
 private theorem sgE_eq_neg_sum_plusIdx_of_false (ε : Fin n → Bool) (cp cm : Fin n → Fin n → Module.End ℂ W)
     {a b : Fin n} (ha : ε a = false) (hb : ε b = false) :
     sgE ε cp cm a b = -∑ i ∈ plusIdx ε, cp i b * cm i a := by
-  unfold sgE
-  have h1 : ¬(ε a = true ∧ ε b = true) := by simp [ha]
-  rw [if_neg h1, if_pos (And.intro ha hb)]
+  simp [sgE, ha, hb]
 
 theorem sgE_comm {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm) (ε : Fin n → Bool)
     (a b c d : Fin n) (hab : ε a = ε b) (hcd : ε c = ε d) :
     sgE ε cp cm a b * sgE ε cp cm c d - sgE ε cp cm c d * sgE ε cp cm a b =
       (if b = c then sgE ε cp cm a d else 0) - (if d = a then sgE ε cp cm c b else 0) := by
+  have cross : ∀ (a b c d : Fin n), ε a = ε b → ε c = ε d →
+      ε a = true → ε c = false →
+      sgE ε cp cm a b * sgE ε cp cm c d - sgE ε cp cm c d * sgE ε cp cm a b =
+        (if b = c then sgE ε cp cm a d else 0) - (if d = a then sgE ε cp cm c b else 0) := by
+    intro a b c d hab hcd ha hc
+    have hb : ε b = true := by rw [← hab]; exact ha
+    have hd : ε d = false := by rw [← hcd]; exact hc
+    have hbc : b ≠ c := fun h => by simp [h, hc] at hb
+    have hda : d ≠ a := fun h => by simp [h, ha] at hd
+    rw [if_neg hbc, if_neg hda, sub_zero, sgE_eq_sum_minusIdx_of_true ε cp cm ha hb,
+      sgE_eq_neg_sum_plusIdx_of_false ε cp cm hc hd]
+    have e1 : ∑ x ∈ minusIdx ε, ∑ i ∈ plusIdx ε,
+        (if b = i ∧ x = d then cp a x * cm i c else 0) = cp a d * cm b c := by
+      refine (sum_sum_eq_apply_of_eq_zero_off_point _ _ d b (mem_minusIdx_iff_eq_false.mpr hd) (mem_plusIdx_iff_eq_true.mpr hb) _ ?_).trans ?_
+      · intro x _ i _ hne
+        rw [if_neg]
+        rintro ⟨rfl, rfl⟩
+        simp at hne
+      · simp
+    have e2 : ∑ x ∈ minusIdx ε, ∑ i ∈ plusIdx ε,
+        (if i = a ∧ c = x then cp i d * cm b x else 0) = cp a d * cm b c := by
+      refine (sum_sum_eq_apply_of_eq_zero_off_point _ _ c a (mem_minusIdx_iff_eq_false.mpr hc) (mem_plusIdx_iff_eq_true.mpr ha) _ ?_).trans ?_
+      · intro x _ i _ hne
+        rw [if_neg]
+        rintro ⟨rfl, rfl⟩
+        simp at hne
+      · simp
+    have key : (∑ x ∈ minusIdx ε, cp a x * cm b x) * (∑ i ∈ plusIdx ε, cp i d * cm i c) -
+        (∑ i ∈ plusIdx ε, cp i d * cm i c) * (∑ x ∈ minusIdx ε, cp a x * cm b x) = 0 := by
+      simp only [car_comm_sum, car_bil hC, Finset.sum_sub_distrib, e1, e2, sub_self]
+    rw [mul_neg, neg_mul, neg_sub_neg, ← neg_sub, key, neg_zero]
   by_cases ha : ε a = true <;> by_cases hc : ε c = true
   · have hb : ε b = true := by rw [← hab]; exact ha
     have hd : ε d = true := by rw [← hcd]; exact hc
@@ -203,59 +185,16 @@ theorem sgE_comm {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp c
       · subst h2; simp [h1]
       · simp [h1, h2]
   · have hc' : ε c = false := by simpa using hc
-    have hb : ε b = true := by rw [← hab]; exact ha
-    have hd : ε d = false := by rw [← hcd]; exact hc'
-    have hbc : b ≠ c := fun h => by simp [h, hc'] at hb
-    have hda : d ≠ a := fun h => by simp [h, ha] at hd
-    rw [if_neg hbc, if_neg hda, sub_zero, sgE_eq_sum_minusIdx_of_true ε cp cm ha hb,
-      sgE_eq_neg_sum_plusIdx_of_false ε cp cm hc' hd]
-    have e1 : ∑ x ∈ minusIdx ε, ∑ i ∈ plusIdx ε,
-        (if b = i ∧ x = d then cp a x * cm i c else 0) = cp a d * cm b c := by
-      refine (sum_sum_eq_apply_of_eq_zero_off_point _ _ d b (mem_minusIdx_iff_eq_false.mpr hd) (mem_plusIdx_iff_eq_true.mpr hb) _ ?_).trans ?_
-      · intro x _ i _ hne
-        rw [if_neg]
-        rintro ⟨rfl, rfl⟩
-        simp at hne
-      · simp
-    have e2 : ∑ x ∈ minusIdx ε, ∑ i ∈ plusIdx ε,
-        (if i = a ∧ c = x then cp i d * cm b x else 0) = cp a d * cm b c := by
-      refine (sum_sum_eq_apply_of_eq_zero_off_point _ _ c a (mem_minusIdx_iff_eq_false.mpr hc') (mem_plusIdx_iff_eq_true.mpr ha) _ ?_).trans ?_
-      · intro x _ i _ hne
-        rw [if_neg]
-        rintro ⟨rfl, rfl⟩
-        simp at hne
-      · simp
-    have key : (∑ x ∈ minusIdx ε, cp a x * cm b x) * (∑ i ∈ plusIdx ε, cp i d * cm i c) -
-        (∑ i ∈ plusIdx ε, cp i d * cm i c) * (∑ x ∈ minusIdx ε, cp a x * cm b x) = 0 := by
-      simp only [car_comm_sum, car_bil hC, Finset.sum_sub_distrib, e1, e2, sub_self]
-    rw [mul_neg, neg_mul, neg_sub_neg, ← neg_sub, key, neg_zero]
+    exact cross a b c d hab hcd ha hc'
   · have ha' : ε a = false := by simpa using ha
     have hb : ε b = false := by rw [← hab]; exact ha'
     have hd : ε d = true := by rw [← hcd]; exact hc
     have hbc : b ≠ c := fun h => by simp [h, hc] at hb
     have hda : d ≠ a := fun h => by simp [h, ha'] at hd
-    rw [if_neg hbc, if_neg hda, sub_zero, sgE_eq_neg_sum_plusIdx_of_false ε cp cm ha' hb,
-      sgE_eq_sum_minusIdx_of_true ε cp cm hc hd]
-    have e1 : ∑ i ∈ plusIdx ε, ∑ y ∈ minusIdx ε,
-        (if i = c ∧ a = y then cp i b * cm d y else 0) = cp c b * cm d a := by
-      refine (sum_sum_eq_apply_of_eq_zero_off_point _ _ c a (mem_plusIdx_iff_eq_true.mpr hc) (mem_minusIdx_iff_eq_false.mpr ha') _ ?_).trans ?_
-      · intro i _ y _ hne
-        rw [if_neg]
-        rintro ⟨rfl, rfl⟩
-        simp at hne
-      · simp
-    have e2 : ∑ i ∈ plusIdx ε, ∑ y ∈ minusIdx ε,
-        (if d = i ∧ y = b then cp c y * cm i a else 0) = cp c b * cm d a := by
-      refine (sum_sum_eq_apply_of_eq_zero_off_point _ _ d b (mem_plusIdx_iff_eq_true.mpr hd) (mem_minusIdx_iff_eq_false.mpr hb) _ ?_).trans ?_
-      · intro i _ y _ hne
-        rw [if_neg]
-        rintro ⟨rfl, rfl⟩
-        simp at hne
-      · simp
-    have key : (∑ i ∈ plusIdx ε, cp i b * cm i a) * (∑ y ∈ minusIdx ε, cp c y * cm d y) -
-        (∑ y ∈ minusIdx ε, cp c y * cm d y) * (∑ i ∈ plusIdx ε, cp i b * cm i a) = 0 := by
-      simp only [car_comm_sum, car_bil hC, Finset.sum_sub_distrib, e1, e2, sub_self]
-    rw [neg_mul, mul_neg, neg_sub_neg, ← neg_sub, key, neg_zero]
+    have h := cross c d a b hcd hab hc ha'
+    rw [if_neg hbc, if_neg hda, sub_zero] at h ⊢
+    rw [sub_eq_zero] at h ⊢
+    exact h.symm
   · have ha' : ε a = false := by simpa using ha
     have hc' : ε c = false := by simpa using hc
     have hb : ε b = false := by rw [← hab]; exact ha'
@@ -268,8 +207,8 @@ theorem sgE_comm {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp c
       simp [hxy, Ne.symm hxy]
     · rcases eq_or_ne b c with h1 | h1 <;> rcases eq_or_ne d a with h2 | h2
       · subst h1; subst h2; simp [Finset.sum_sub_distrib]; try abel
-      · subst h1; simp [h2, Ne.symm h2]; try abel
-      · subst h2; simp [h1, Ne.symm h1]; try abel
+      · subst h1; simp [h2, Ne.symm h2]
+      · subst h2; simp [h1, Ne.symm h1]
       · simp [h1, Ne.symm h1, h2, Ne.symm h2]
 
 theorem dOp_sq {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E) (hC : IsCAR cp cm)
@@ -286,9 +225,7 @@ theorem dOp_sq {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E)
   have n1 : x.1 ≠ y.2 := fun h => by simp [h, hy2] at hx1
   have n2 : y.1 ≠ x.2 := fun h => by simp [h, hx2] at hy1
   have hAB : E x.2 x.1 * E y.2 y.1 = E y.2 y.1 * E x.2 x.1 := by
-    have h := hE x.2 x.1 y.2 y.1
-    rw [if_neg n1, if_neg n2, sub_zero] at h
-    exact sub_eq_zero.mp h
+    simpa [n1, n2, sub_eq_zero] using hE x.2 x.1 y.2 y.1
   exact car_anti_abs _ _ _ _ ((hEC y.2 y.1 x.1 x.2).1).symm ((hEC x.2 x.1 y.1 y.2).1).symm hAB
     (eq_neg_iff_add_eq_zero.mpr (hC x.1 x.2 y.1 y.2).1)
 
@@ -306,9 +243,7 @@ theorem dOp'_sq {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E
   have n1 : x.2 ≠ y.1 := fun h => by simp [h, hy1] at hx2
   have n2 : y.2 ≠ x.1 := fun h => by simp [h, hx1] at hy2
   have hAB : E x.1 x.2 * E y.1 y.2 = E y.1 y.2 * E x.1 x.2 := by
-    have h := hE x.1 x.2 y.1 y.2
-    rw [if_neg n1, if_neg n2, sub_zero] at h
-    exact sub_eq_zero.mp h
+    simpa [n1, n2, sub_eq_zero] using hE x.1 x.2 y.1 y.2
   exact car_anti_abs _ _ _ _ ((hEC y.1 y.2 x.1 x.2).2).symm ((hEC x.1 x.2 y.1 y.2).2).symm hAB
     (eq_neg_iff_add_eq_zero.mpr (hC x.1 x.2 y.1 y.2).2.1)
 

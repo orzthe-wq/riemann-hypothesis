@@ -70,7 +70,6 @@ theorem isRatSec_pull_map {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (j : 
       fnMap j hη (r (c' PUnit.unit) : X.functionField)
   rw [hr _ _ h₀, map_mul, fnMap_fnOf j hη h₀ h₁, e]
   first
-    | exact congrArg (· * _) (fnOf_resG l h _)
     | exact congrArg (· * _) (fnOf_resG l h _).symm
 
 theorem ord_fnMap {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X]

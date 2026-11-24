@@ -67,10 +67,10 @@ theorem _root_.GlobalTheory.InertZeta.leviExists : _root_.GlobalTheory.InertZeta
   have hd : ∀ i, σ (d i) * d i.rev = 1 := by
     intro i
     rcases _root_.GlobalTheory.InertZeta.idx_cases i with rfl | ⟨k, rfl⟩ | rfl
-    · simp [d, _root_.GlobalTheory.InertZeta.last_ne_zero, map_zpow₀, hσϖ, mul_inv_cancel₀ (zpow_ne_zero a hϖ)]
+    · simp [d, map_zpow₀, hσϖ, mul_inv_cancel₀ (zpow_ne_zero a hϖ)]
     · simp [d, ← _root_.GlobalTheory.InertZeta.mid_rev, _root_.GlobalTheory.InertZeta.mid_ne_zero,
         _root_.GlobalTheory.InertZeta.mid_ne_last]
-    · simp [d, _root_.GlobalTheory.InertZeta.last_ne_zero, map_zpow₀, hσϖ, inv_mul_cancel₀ (zpow_ne_zero a hϖ)]
+    · simp [d, map_zpow₀, hσϖ, inv_mul_cancel₀ (zpow_ne_zero a hϖ)]
   obtain ⟨D, hD⟩ := _root_.GlobalTheory.SatakeWeyl.exists_mat (σ := σ) (Matrix.diagonal d) (by
     ext i j
     unfold _root_.Formalism.UG.cT
@@ -102,7 +102,7 @@ theorem _root_.GlobalTheory.InertZeta.leviExists : _root_.GlobalTheory.InertZeta
   · rw [hm, Matrix.diagonal_mul, h2 0 0 (Or.inl h0), Matrix.one_apply_eq, mul_one]
     simp [d]
   · rw [hm, Matrix.diagonal_mul, h2 _ _ (Or.inl hl), Matrix.one_apply_eq, mul_one]
-    simp [d, _root_.GlobalTheory.InertZeta.last_ne_zero]
+    simp [d]
   · intro i j
     rw [hm, Matrix.diagonal_mul, h1]
     simp [d, _root_.GlobalTheory.InertZeta.mid_ne_zero, _root_.GlobalTheory.InertZeta.mid_ne_last]

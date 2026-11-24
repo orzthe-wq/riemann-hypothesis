@@ -340,7 +340,7 @@ theorem degWave_of (hS : SlicePolyAll) : KB.DegWave := by
       rw [lst_succ, hcs t]
       simp only [smul_eq_mul]
   have hinj : ∀ a, Function.Injective (fun i => grid (Fin.rev a) i) := fun a => hgrid _
-  have hE := Formalism.FourierDecayAlt.P.extract_K_bound ℂ K (2 * j) (fun _ => s) W (fun a => grid (Fin.rev a)) hPS hinj (fun _ => 0)
+  have hE := _root_.Formalism.FourierDecayAlt.P.LagrangeExtraction.extractK ℂ K (2 * j) (fun _ => s) W (fun a => grid (Fin.rev a)) hPS hinj (fun _ => 0)
   rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hE
   have hW0 : W 0 (fun _ => 0) = p.form j hj w (KB.waveG (p.T.bs j) s w (Mo (KB.slv p.T F j hj w h hh.2)))
       (KB.slv p.T F j hj w h' hh'.2) := rfl

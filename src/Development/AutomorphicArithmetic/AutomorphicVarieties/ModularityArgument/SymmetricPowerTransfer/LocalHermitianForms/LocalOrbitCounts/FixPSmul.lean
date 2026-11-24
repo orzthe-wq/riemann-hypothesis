@@ -139,7 +139,7 @@ private theorem isDat_M {c s t : K} (hτ : τ ^ 2 - 4 ≠ 0) (hc : c ≠ 0) (hs 
     all_goals ring
   have hsm : sigL ((t • s • (ω : Lsq K Δ)) • ofE Δ (ω - star ω : Etau K τ)) =
       -((t • s • (ω : Lsq K Δ)) • ofE Δ (ω - star ω : Etau K τ)) := by
-    ext <;> simp [sigL, ofE] <;> ring
+    ext <;> simp [sigL, ofE]
   have hmm : ((t • s • (ω : Lsq K Δ)) • ofE Δ (ω - star ω : Etau K τ)) *
       ((algebraMap K (Lsq K Δ) (t ^ 2 * (Δ * s ^ 2) * (τ ^ 2 - 4))⁻¹) •
         ((t • s • (ω : Lsq K Δ)) • ofE Δ (ω - star ω : Etau K τ))) = 1 := by
@@ -280,7 +280,7 @@ private theorem cmb_add' (s : K) (a b a' b' : Etau K τ) :
 
 private theorem smul_cmb (r : O) (s : K) (a b : Etau K τ) :
     r • cmb Δ s a b = cmb Δ s (r • a) (r • b) := by
-  ext <;> simp [cmb] <;> simp only [Algebra.smul_def] <;> ring
+  ext <;> simp [cmb]
 
 private theorem cmb_zero' (s : K) : cmb Δ s (0 : Etau K τ) 0 = 0 := by
   ext <;> simp [cmb]
@@ -470,7 +470,7 @@ private theorem phi_fix (L : IsLoc O Δ) {c g s t : K} (hg : g ≠ 0) {η ε : O
         generalize hW : c • (g⁻¹ • (1 : Lsq K Δ) * star y1) + _ = W at hw
         have e : g • y1 = ((η⁻¹ : Oˣ) : O) • star W := by
           rw [← hW]
-          ext <;> simp [hc] <;> simp only [Algebra.smul_def, map_units_inv] <;> field_simp <;> ring
+          ext <;> simp [hc] <;> simp only [Algebra.smul_def, map_units_inv] <;> field_simp
         rw [e]
         exact IsIntegral.smul _ ((D _).2 hw)
       · rw [h.dual]
@@ -481,7 +481,7 @@ private theorem phi_fix (L : IsLoc O Δ) {c g s t : K} (hg : g ≠ 0) {η ε : O
         refine ⟨o, ?_⟩
         simp [hs0] at ho
         rw [← ho]
-        simp <;> ring
+        simp
       · rw [h.dual]
         intro b hb
         have hw := H (0, cmb Δ s b 0) ⟨by simpa using (isIntegral_zero : IsIntegral O (0 : Lsq K Δ)), b, hb, 0, fixP_zero h, rfl⟩
@@ -491,7 +491,7 @@ private theorem phi_fix (L : IsLoc O Δ) {c g s t : K} (hg : g ≠ 0) {η ε : O
         refine ⟨-(((ε⁻¹ : Oˣ) : O) * o), ?_⟩
         rw [map_neg, map_mul, ho, hs, map_units_inv]
         have hX : (b * star b').im = -(b.re * b'.im) + b.im * (b'.re + τ * b'.im) + -(τ * b.im * b'.im) := by
-          simp <;> ring
+          simp
         rw [hX]
         field_simp
   · have hsu : (star u).re ∈ (algebraMap O K).range ∧ (star u).im ∈ (algebraMap O K).range := by

@@ -74,29 +74,22 @@ theorem geo_Y_apply (v w : ι → S.V) (y : S.V) : geoY v w y = ∑ i, geoC v i 
 
 theorem geo_repr (v : ι → S.V) (h : IsUnit (geoGram v).det) (l : ι) (y : S.V) :
     S.hT (v l) y = ∑ k, geoGram v l k * geoC v k y := by
-  have hmul : geoGram v * (geoGram v)⁻¹ = 1 := Matrix.mul_nonsing_inv _ h
-  have hrow : ∀ m, ∑ k, geoGram v l k * (geoGram v)⁻¹ k m = if l = m then 1 else 0 := by
-    intro m
-    have hm := congrFun (congrFun hmul l) m
-    rw [Matrix.mul_apply, Matrix.one_apply] at hm
-    exact hm
-  simp_rw [geo_C_apply, Finset.mul_sum, ← mul_assoc]
-  rw [Finset.sum_comm]
-  simp_rw [← Finset.sum_mul, hrow]
-  simp
+  change (fun k => S.hT (v k) y) l = (geoGram v *ᵥ (fun k => geoC v k y)) l
+  have hu : (fun k => geoC v k y) = (geoGram v)⁻¹ *ᵥ (fun k => S.hT (v k) y) := by
+    funext k
+    rw [geo_C_apply]
+    rfl
+  rw [hu, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ h, Matrix.one_mulVec]
 
 theorem geo_C_v (v : ι → S.V) (h : IsUnit (geoGram v).det) (i l : ι) :
     geoC v i (v l) = if i = l then 1 else 0 := by
   rw [geo_C_apply]
-  have h1 : (geoGram v)⁻¹ * geoGram v = 1 := Matrix.nonsing_inv_mul _ h
-  have h2 := congrFun (congrFun h1 i) l
-  rw [Matrix.mul_apply, Matrix.one_apply] at h2
-  exact h2
+  change (∑ k, (geoGram v)⁻¹ i k * geoGram v k l) = if i = l then 1 else 0
+  rw [← Matrix.mul_apply, Matrix.nonsing_inv_mul _ h, Matrix.one_apply]
 
 theorem geo_Y_v (v w : ι → S.V) (h : IsUnit (geoGram v).det) (l : ι) : geoY v w (v l) = w l := by
   rw [geo_Y_apply]
-  simp only [geo_C_v v h]
-  simp
+  simp [geo_C_v v h]
 
 theorem geo_R (v : ι → S.V) (h : IsUnit (geoGram v).det) (z : S.V)
     (hz : z ∈ Submodule.span E (Set.range v)) (y : S.V) :
@@ -438,7 +431,7 @@ theorem geo_cross (F : FlagG S r T) (F' : FlagG S r T') (hj : j ≤ r + 1) (A A'
       (Aᴴ * (Zhat F F').submatrix (Fin.castLE hj) (Fin.castLE hj) +
         (Zhat F F').submatrix (Fin.castLE hj) (Fin.castLE hj) * A') a c := by
 
-  simp only [geoImg, map_sum, map_smulₛₗ, map_smul, LinearMap.sum_apply,
+  simp only [geoImg, map_sum, map_smulₛₗ, LinearMap.sum_apply,
   LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, Matrix.add_apply, Matrix.mul_apply,
   Matrix.conjTranspose_apply, Matrix.submatrix_apply, Zhat, brS]
   congr 1
@@ -786,10 +779,7 @@ theorem cell_geom : LeadingBlocksRelevant := by
   have h3 : supSum A - star (supSum A') = 0 := by
     rcases mul_eq_zero.1 h2 with h | h
     · exact h
-    · have h4 : star (supSum A - star (supSum A')) = 0 := by
-        rw [star_sub, star_star]
-        exact h
-      exact star_eq_zero.1 h4
+    · exact star_eq_zero.1 (by simpa only [star_sub, star_star] using h)
   exact sub_eq_zero.1 h3
 
 end Formalism.MainNotions.BridgeLemma

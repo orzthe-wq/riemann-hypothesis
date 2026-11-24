@@ -176,7 +176,7 @@ theorem tr_fst (v : epsAt (𝟙 (Sp R)) ⟶ G) (hv : IsTanAt G (𝟙 (Sp R)) v) 
     rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
     have : (TrivSqZeroExt.fstHom C C C).toRingHom.comp (algebraMap C (DualNumber C)) = RingHom.id C := by
       refine RingHom.ext fun r => ?_
-      simp [TrivSqZeroExt.algebraMap_eq_inl]
+      simp
     erw [this]
     simp
   have h2 : δ ≫ rhoE (y ≫ G.hom) ≫ v = 1 := by

@@ -61,10 +61,10 @@ abbrev V (m n : ℕ) := EuclideanSpace ℝ (Fin m × Fin n × Fin 2)
 def creL : (Fin m → Fin n → ℂ) →ₗ[ℝ] V m n where
   toFun u := WithLp.toLp 2 fun p : Fin m × Fin n × Fin 2 => if p.2.2 = 0 then (u p.1 p.2.1).re else (u p.1 p.2.1).im
   map_add' u v := by
-    ext p; simp only [PiLp.add_apply, WithLp.toLp_add, Pi.add_apply, Complex.add_re, Complex.add_im]
+    ext p; simp only [PiLp.add_apply, Pi.add_apply, Complex.add_re, Complex.add_im]
     split_ifs <;> rfl
   map_smul' c u := by
-    ext p; simp only [PiLp.smul_apply, WithLp.toLp_smul, Pi.smul_apply, Complex.real_smul, Complex.mul_re,
+    ext p; simp only [PiLp.smul_apply, Pi.smul_apply, Complex.real_smul, Complex.mul_re,
       Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero, add_zero, RingHom.id_apply, smul_eq_mul]
     split_ifs <;> rfl
 
@@ -116,7 +116,7 @@ theorem Mt_apply (ε : Fin m → Bool) (t : ℝ) (ht : t ≠ 0) (u : Fin m → F
 theorem re_trace_eq (ε : Fin m → Bool) (u y : Fin m → Fin n → ℂ) :
     (((Matrix.of u)ᴴ * Matrix.diagonal (sgn ε) * Matrix.of y).trace).re = inner ℝ (Lc y) (Lc (Dlin ε u)) := by
   rw [inner_Lc, Matrix.trace]
-  simp only [Matrix.diag, Matrix.mul_diagonal, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply,
+  simp only [Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply,
     Dlin_apply, map_mul, Complex.re_sum]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun j _ => ?_

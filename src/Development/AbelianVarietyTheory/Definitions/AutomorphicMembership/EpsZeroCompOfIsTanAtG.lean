@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -288,17 +289,6 @@ theorem mem_allSteps {B : Mdl Y i₀} {L : Lat B} {t : Step Y i₀} :
     exact ⟨σ, r, _, rfl⟩
   · rintro ⟨σ, r, hr, rfl⟩
     exact Finset.mem_image.2 ⟨⟨σ, ⟨r, Nat.lt_succ_iff.2 hr⟩⟩, Finset.mem_univ _, rfl⟩
-
-theorem stepTy_allSteps {B : Mdl Y i₀} (L : Lat B) (σ : E →+* ℂ) :
-    stepTy (allSteps L) σ = Finset.range (Dw.mult σ + 1) := by
-  ext r
-  rw [mem_stepTy, Finset.mem_range]
-  constructor
-  · rintro ⟨t, ht, rfl, rfl⟩
-    obtain ⟨σ', r', hr', rfl⟩ := mem_allSteps.1 ht
-    exact Nat.lt_succ_iff.2 hr'
-  · intro h
-    exact ⟨⟨B, L, σ, r, Nat.lt_succ_iff.1 h⟩, mem_allSteps.2 ⟨σ, r, _, rfl⟩, rfl, rfl⟩
 
 theorem allSteps_ne_empty {B : Mdl Y i₀} (L : Lat B) : allSteps L ≠ ∅ := by
   intro h

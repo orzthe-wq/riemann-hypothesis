@@ -1,6 +1,9 @@
 module
 
-public import Development.WeilBound.CoreStatements.HodgeTatePoints.Comp1PointPowerExpand
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst
+public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft
+public import Mathlib.RingTheory.MvPowerSeries.Expand
+public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermDJet
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsUniqueCharacterOfMul
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomBaseChangeBijectiveOfLeNilradical
@@ -9,7 +12,7 @@ public import Formalism.LocalToGlobal.ProjectiveLattices.ChartDirectionsIntegral
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBTransport
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLieLieModel
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModelStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.CbFrob
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.CdLocal
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.CdUniv
@@ -18,20 +21,23 @@ public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetTr
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetTrC
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetTrD
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBMapPf
-import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermDJet
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.GtPtsVal
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdIso
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullUUnitsCompatGeneric
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.GeneratorPullback.PullAlong
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.TangentLinearity.FnOfComp
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermFunPf
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.AlgebraicGeometry.Sites.Fpqc
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.CategoryTheory.Limits.Shapes.Connected
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.Finsupp.Pointwise
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
@@ -39,7 +45,6 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.MvPolynomial.Ideal
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
@@ -64,15 +69,211 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.GtPtsVal
+import Mathlib.AlgebraicGeometry.Modules.Sheaf
+import Mathlib.AlgebraicGeometry.Sites.Fpqc
+import Mathlib.CategoryTheory.Limits.Shapes.Connected
+import Mathlib.Data.Finsupp.Pointwise
+import Mathlib.RingTheory.MvPolynomial.Ideal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdIso
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullUUnitsCompatGeneric
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.GeneratorPullback.PullAlong
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.TangentLinearity.FnOfComp
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb
-public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.InvariantFunctionsDescend
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsAffineOpenAndBijectiveOfWeightUnits
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThickenedPointToTorusExtensionGenerator
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.HodgeTatePoints.Comp1PointPowerExpand, Development.WeilBound.CoreStatements.HodgeTatePoints.IsPullbackWhisker
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.Comp1PointPowerExpand =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HodgeTatePoints.Comp1PointPowerExpand", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ToFirst\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GermComp1ZeroPointLeft\npublic import Mathlib.RingTheory.MvPowerSeries.Expand\npublic import Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermDJet\nimport Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermFunPf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+namespace PositivityTheory.HtPt.Ce
+open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1 GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
+open scoped CategoryTheory.Obj
+attribute [local instance] Over.cartesianMonoidalCategory
+open Formalism.MainNotions.ModuliIntegralCharts.H1.GermD
+
+section Alg
+
+variable {k : Type} [CommRing k]
+
+theorem aug_mk {κ : Type} (m : ℕ) (P : MvPolynomial κ k) :
+    (jetAug : Jet k κ m →ₐ[k] k) (Ideal.Quotient.mk _ P) = MvPolynomial.constantCoeff P := by
+  have : (jetAug : Jet k κ m →ₐ[k] k) (Ideal.Quotient.mk _ P) = MvPolynomial.aeval (fun _ => (0 : k)) P := rfl
+  rw [this, MvPolynomial.aeval_zero']
+  rfl
+
+theorem substP_X {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' k) (i : κ) :
+    jetSubstP m φ (Ideal.Quotient.mk _ (MvPolynomial.X i)) =
+      Ideal.Quotient.mk _ (φ i - MvPolynomial.C (MvPolynomial.constantCoeff (φ i))) := by
+  rw [jetSubstP, jetMap_mk, MvPolynomial.aeval_X]
+
+theorem psTrunc_expand {σ : Type} [Fintype σ] [DecidableEq σ] (p : ℕ) (hp : p ≠ 0) (V : MvPowerSeries σ k)
+    (hV : MvPowerSeries.constantCoeff V = 0) :
+    psTrunc p (MvPowerSeries.expand p hp V) =
+      ∑ j, MvPolynomial.C (MvPowerSeries.coeff (Finsupp.single j 1) V) * MvPolynomial.X j ^ p := by
+  ext e
+  have hR : AddMonoidAlgebra.coeff (∑ j, MvPolynomial.C (MvPowerSeries.coeff (Finsupp.single j 1) V) * MvPolynomial.X j ^ p : MvPolynomial σ k)
+      e =
+      ∑ j, if Finsupp.single j p = e then MvPowerSeries.coeff (Finsupp.single j 1) V else 0 := by
+    rw [MvPolynomial.coeff_sum]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X_pow]
+    split_ifs <;> simp
+  rw [hR]
+  by_cases hs : ∃ j, Finsupp.single j p = e
+  · obtain ⟨j, rfl⟩ := hs
+    rw [GermFun.coeff_psTrunc _ _ _ (by simp), Finset.sum_eq_single j, if_pos rfl]
+    · have : Finsupp.single j p = p • Finsupp.single j 1 := by simp
+      rw [this, MvPowerSeries.coeff_expand_smul]
+    · intro b _ hb
+      rw [if_neg]
+      intro h
+      exact hb ((Finsupp.single_left_inj hp).1 h)
+    · simp
+  · rw [Finset.sum_eq_zero fun j _ => if_neg fun h => hs ⟨j, h⟩]
+    by_cases hd : e.degree ≤ p
+    · rw [GermFun.coeff_psTrunc _ _ _ hd]
+      by_cases hdv : ∀ i, p ∣ e i
+      · choose c hc using hdv
+        let e' : σ →₀ ℕ := Finsupp.equivFunOnFinite.symm c
+        have he : e = p • e' := by ext i; simp [e', hc]
+        have hdeg : e'.degree ≤ 1 := by
+          rw [he, map_nsmul, smul_eq_mul] at hd
+          by_contra hh
+          have : p * 2 ≤ p * e'.degree := Nat.mul_le_mul_left _ (by omega)
+          omega
+        rw [he, MvPowerSeries.coeff_expand_smul]
+        rcases Nat.le_one_iff_eq_zero_or_eq_one.1 hdeg with h0 | h1
+        · rw [(Finsupp.degree_eq_zero_iff _).1 h0]
+          simpa using hV
+        · exfalso
+          have h1' : e' ∈ {d : σ →₀ ℕ | d.degree = 1} := h1
+          rw [← Finsupp.range_single_one] at h1'
+          obtain ⟨j, hj⟩ := h1'
+          exact hs ⟨j, by rw [he, ← hj]; simp⟩
+      · push Not at hdv
+        obtain ⟨i, hi⟩ := hdv
+        exact MvPowerSeries.coeff_expand_of_not_dvd _ _ _ hi
+    · rw [psTrunc, MvPolynomial.coeff_sum]
+      refine Finset.sum_eq_zero fun b hb => ?_
+      rw [MvPolynomial.coeff_monomial, if_neg]
+      rintro rfl
+      apply hd
+      have := (Finset.mem_filter.1 hb).2
+      simpa [Finsupp.degree_apply, Finsupp.sum] using this
+
+theorem comp1_point_power_expand {d : ℕ} (p : ℕ) (hp : p ≠ 0) (V : Germ.Pt k 1 d) (i : Fin d) :
+    Germ.comp1 V (ptPow k d p (0 : Fin 1)) i = MvPowerSeries.expand p hp (V i) := by
+  have : (fun q : Fin 1 × Fin d => (![ptPow k d p (0 : Fin 1)] : Fin 1 → Germ.Pt k 1 d) q.1 q.2) =
+      fun q => MvPowerSeries.X q ^ p := by
+    funext ⟨a, b⟩
+    obtain rfl : a = 0 := Subsingleton.elim _ _
+    rfl
+  rw [Germ.comp1, Germ.ev, this, MvPowerSeries.expand, MvPowerSeries.substAlgHom_apply]
+
+def trTo (k : Type) [CommRing k] (κ : Type) {m n : ℕ} (h : n ≤ m) : Jet k κ m →ₐ[k] Jet k κ n :=
+  Ideal.Quotient.factorₐ k (Ideal.pow_le_pow_right (by omega))
+
+theorem trTo_mk {κ : Type} {m n : ℕ} (h : n ≤ m) (P : MvPolynomial κ k) :
+    trTo k κ h (Ideal.Quotient.mk _ P) = Ideal.Quotient.mk _ P := rfl
+
+theorem mem_orig_of_aug {κ : Type} {m : ℕ} {P : MvPolynomial κ k}
+    (h : (jetAug : Jet k κ m →ₐ[k] k) (Ideal.Quotient.mk _ P) = 0) : P ∈ orig k κ := by
+  rw [aug_mk] at h
+  simpa [h] using sub_const_mem_orig P
+
+theorem exists_low {κ κ' : Type} {m n : ℕ} (h : n ≤ m) (χ : Jet k κ m →ₐ[k] Jet k κ' m)
+    (hχ : ∀ q, (jetAug : Jet k κ' m →ₐ[k] k) (χ (Ideal.Quotient.mk _ (MvPolynomial.X q))) = 0) :
+    ∃ χ' : Jet k κ n →ₐ[k] Jet k κ' n,
+      (∀ q, (jetAug : Jet k κ' n →ₐ[k] k) (χ' (Ideal.Quotient.mk _ (MvPolynomial.X q))) = 0) ∧
+      χ'.comp (trTo k κ h) = (trTo k κ' h).comp χ := by
+  choose P hP using fun q => Ideal.Quotient.mk_surjective (χ (Ideal.Quotient.mk _ (MvPolynomial.X q)))
+  have hm : ∀ q, P q ∈ orig k κ' := fun q => mem_orig_of_aug (by rw [hP]; exact hχ q)
+  refine ⟨jetMap P hm, fun q => ?_, jet_hom_ext fun q => ?_⟩
+  · rw [jetMap_mk, MvPolynomial.aeval_X, aug_mk, ← aug_mk m, hP]
+    exact hχ q
+  · rw [AlgHom.comp_apply, AlgHom.comp_apply, trTo_mk, jetMap_mk, MvPolynomial.aeval_X, ← hP, trTo_mk]
+
+theorem pow_eq_of_first {k : Type} [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (hp : 1 ≤ p) {κ : Type}
+    (a b : Jet k κ p) (h : trTo k κ hp a = trTo k κ hp b) : a ^ p = b ^ p := by
+  haveI : CharP (MvPolynomial κ k) p := inferInstance
+  obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a
+  obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective b
+  rw [trTo_mk, trTo_mk, Ideal.Quotient.eq] at h
+  rw [← map_pow, ← map_pow, Ideal.Quotient.eq, ← sub_pow_char]
+  have := Ideal.pow_mem_pow h p
+  rw [← pow_mul] at this
+  exact Ideal.pow_le_pow_right (by omega) this
+
+end Alg
+
+section Geo
+
+variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [StarRing (𝓞 E)] {X0 : Scheme.{0}}
+  {t : SAB H X0}
+
+theorem act_nat (t : SAB H X0) (n : ℕ) : t.act.act (n : 𝓞 E) = (𝟙 t.G) ^ n := by
+  induction n with
+  | zero =>
+    have := t.act.add 0 0
+    rw [add_zero] at this
+    simpa using this
+  | succ n ih => rw [Nat.cast_succ, t.act.add, ih, t.act.one, pow_succ]
+
+theorem pow_eq_act {T : Over X0} (y : T ⟶ t.G) (n : ℕ) : y ^ n = y ≫ t.act.act (n : 𝓞 E) := by
+  rw [act_nat, MonObj.comp_pow, Category.comp_id]
+
+variable {S : Type} [CommRing S] {x : Sp S ⟶ X0} {d : ℕ} (g : GermAt t x d)
+
+theorem x_trTo {m n : ℕ} (h : n ≤ m) : homAt x (trTo S (Fin 1 × Fin d) h) ≫ g.x m = g.x n := by
+  induction m, h using Nat.le_induction with
+  | base =>
+    have : trTo S (Fin 1 × Fin d) (le_refl n) = AlgHom.id S _ := jet_hom_ext fun _ => rfl
+    rw [this, homAt_id, Category.id_comp]
+  | succ m h ih =>
+    have : trTo S (Fin 1 × Fin d) (h.trans (Nat.le_succ m)) = (trTo S (Fin 1 × Fin d) h).comp jetTrunc :=
+      jet_hom_ext fun _ => rfl
+    rw [this, ← homAt_comp, Category.assoc, g.chart.trunc, ih]
+
+theorem x_zero {A : Type} [CommRing A] [Algebra S A] {m : ℕ} (χ : Jet S (Fin 1 × Fin d) m →ₐ[S] A)
+    (hχ : ∀ q, χ (Ideal.Quotient.mk _ (MvPolynomial.X q)) = 0) : homAt x χ ≫ g.x m = 1 := by
+  have : χ = (Algebra.ofId S A).comp jetAug := jet_hom_ext fun q => by
+    rw [hχ, AlgHom.comp_apply, aug_mk]
+    simp
+  rw [this, ← homAt_comp, Category.assoc, g.chart.zero, MonObj.comp_one]
+
+theorem pow_coord {A : Type} [CommRing A] [Algebra S A] (p : ℕ) (hp : p ≠ 0)
+    (hV : ∃ V : Germ.Pt S 1 d, (∀ i, MvPowerSeries.constantCoeff (V i) = 0) ∧
+      g.B.A.act (p : 𝓞 E) = Germ.comp1 V (ptPow S d p 0) ∧ lin V 1 = hw g.B p)
+    (χ : Jet S (Fin 1 × Fin d) p →ₐ[S] A) :
+    ∃ ψ : Jet S (Fin 1 × Fin d) p →ₐ[S] A, (homAt x χ ≫ g.x p) ^ p = homAt x ψ ≫ g.x p ∧
+      ∀ q, ψ (Ideal.Quotient.mk _ (MvPolynomial.X q)) =
+        ∑ j, algebraMap S A (hw g.B p q.2 j) * χ (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), j))) ^ p := by
+  obtain ⟨V, hc, hV, hl⟩ := hV
+  refine ⟨χ.comp (jetSubstP p fun q : Fin 1 × Fin d => psTrunc p (g.B.A.act (p : 𝓞 E) q.2)), ?_, fun q => ?_⟩
+  · rw [pow_eq_act, Category.assoc, g.chart.act, ← Category.assoc, homAt_comp]
+  · rw [AlgHom.comp_apply, substP_X, hV, comp1_point_power_expand p hp, psTrunc_expand p hp _ (hc _), ← hl]
+
+    simp only [map_sum, map_mul, map_pow, MvPolynomial.constantCoeff_X, zero_pow hp, mul_zero,
+    Finset.sum_const_zero, map_zero, sub_zero, Fintype.sum_prod_type, Finset.univ_unique, Finset.sum_singleton]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    congr 1
+    exact χ.commutes _
+
+end Geo
+
+end PositivityTheory.HtPt.Ce
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.Comp1PointPowerExpand =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.IsPullbackWhisker =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HodgeTatePoints.IsPullbackWhisker", "h": "module\n\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.Comp1PointPowerExpand\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc\npublic import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsUniqueCharacterOfMul\npublic import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.HomBaseChangeBijectiveOfLeNilradical\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel\npublic import Formalism.LocalToGlobal.ProjectiveLattices.ChartDirectionsIntegral\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabPull\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBTransport\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLieLieModel\npublic import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.CbFrob\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.CdLocal\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.CdUniv\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatLieBc\npublic import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetTrA\npublic import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetTrC\npublic import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ChartJetTrD\npublic import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBMapPf\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.GtPtsVal\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ProdIso\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.PullUUnitsCompatGeneric\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.GeneratorPullback.PullAlong\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.TangentLinearity.FnOfComp\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.PrecompleteBases.PsbLb\npublic import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsCocharLie\nimport Formalism.SharpRestriction.Divisibility.GeneratorPowers.GermDJet\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Modules.Sheaf\nimport Mathlib.AlgebraicGeometry.Sites.Fpqc\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.CategoryTheory.Limits.Shapes.Connected\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.Finsupp.Pointwise\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.MvPolynomial.Ideal\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal\nimport Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.InvariantFunctionsDescend\nimport Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.IsAffineOpenAndBijectiveOfWeightUnits\nimport Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ThickenedPointToTorusExtensionGenerator\n\n"}
+section -- clump:auto
 @[expose] public section
 
 section
@@ -84,10 +285,6 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Formalism.MainNotions.ModuliIntegralCharts.H1.GermD Formalism.MainNotions.ModuliIntegralCharts.H1.JetTr
-
-theorem spMap_cp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := by
-  simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 theorem comp_listProd {X0 : Scheme.{0}} {G T T' : Over X0} [GrpObj G] (ρ : T' ⟶ T) (l : List (T ⟶ G)) :
     ρ ≫ l.prod = (l.map (ρ ≫ ·)).prod := by
@@ -124,7 +321,7 @@ theorem comb_iff {V : Type} [AddCommGroup V] [Module S V] (M : GlobalTheory.Comp
 def epsBC : tEpsG (spMap f ≫ x) ⟶ tEpsG x :=
   Over.homMk (spMap (GlobalTheory.CompanionTheory.Ar.dualMap f)) (by
     change spMap _ ≫ spMap _ ≫ x = spMap _ ≫ spMap f ≫ x
-    rw [← Category.assoc, ← Category.assoc, spMap_cp, spMap_cp]
+    rw [← Category.assoc, ← Category.assoc, _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp', _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp']
     congr 2
     ext s <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap, TrivSqZeroExt.algebraMap_eq_inl])
 
@@ -135,7 +332,7 @@ theorem comb_bc {n : ℕ} {v : Fin n → (Sp (DualNumber S) ⟶ t.G.left)} {a : 
   obtain ⟨u, hu, rfl⟩ := h
   refine ⟨fun i => epsBC f x ≫ u i, fun i => ?_, ?_⟩
   · change spMap _ ≫ (u i).left = _
-    rw [hu, ← Category.assoc, ← Category.assoc, spMap_cp, spMap_cp]
+    rw [hu, ← Category.assoc, ← Category.assoc, _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp', _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp']
     congr 2
     refine RingHom.ext fun s => ?_
     ext <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap, epsMul, mul_comm]
@@ -150,7 +347,7 @@ theorem tan_bc {v : Sp (DualNumber S) ⟶ t.G.left} (h : IsTanAtG t x v) :
     exact Over.w (epsBC f x)
   · have e : spMap (TrivSqZeroExt.fstHom S₂ S₂ S₂).toRingHom ≫ spMap (GlobalTheory.CompanionTheory.Ar.dualMap f) =
         spMap f ≫ spMap (TrivSqZeroExt.fstHom S S S).toRingHom := by
-      rw [spMap_cp, spMap_cp]
+      rw [_root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp', _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp']
       congr 1
       refine RingHom.ext fun s => ?_
       simp [GlobalTheory.CompanionTheory.Ar.dualMap]
@@ -163,8 +360,8 @@ theorem basis_bc {n : ℕ} {tg : Fin n → (Sp (DualNumber S) ⟶ t.G.left)} (ht
     (hw : IsTanAtG t (spMap f ≫ x) w) :
     ∃! a : Fin n → S₂, IsCombAtG t (spMap f ≫ x) (fun i => spMap (GlobalTheory.CompanionTheory.Ar.dualMap f) ≫ tg i) a w := by
   letI : Algebra S S₂ := f.toAlgebra
-  obtain ⟨V, _, _, ⟨M⟩⟩ := GlobalTheory.T.exists_lie_model X0 t.G S x
-  obtain ⟨V', _, _, ⟨M'⟩⟩ := GlobalTheory.T.exists_lie_model X0 t.G S₂ (spMap f ≫ x)
+  obtain ⟨V, _, _, ⟨M⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_exists X0 t.G S x
+  obtain ⟨V', _, _, ⟨M'⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.lieModel_exists X0 t.G S₂ (spMap f ≫ x)
   obtain ⟨j, hj, -, hbs⟩ := PositivityTheory.HtPt.Htat.lie_bc X0 t.G S S₂ x V V' M M'
   choose b hb' using fun l => M.onto (Over.homMk (tg l) (ht l).1) (ht l).2
   have htg : tg = fun l => (M.pt (b l)).left := funext fun l => by rw [hb']; rfl
@@ -200,7 +397,7 @@ theorem basis_bc {n : ℕ} {tg : Fin n → (Sp (DualNumber S) ⟶ t.G.left)} (ht
 def cO (κ : Type) (m : ℕ) : overAt (spMap f ≫ x) (Jet S₂ κ m) ⟶ overAt x (Jet S κ m) :=
   Over.homMk (spMap (jetCoef f κ m)) (by
     change spMap _ ≫ spMap _ ≫ x = spMap _ ≫ spMap f ≫ x
-    rw [← Category.assoc, ← Category.assoc, spMap_cp, spMap_cp, jetCoef_alg])
+    rw [← Category.assoc, ← Category.assoc, _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp', _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp', jetCoef_alg])
 
 theorem sq_of {κ κ' : Type} {m m' : ℕ} (α : Jet S κ m →ₐ[S] Jet S κ' m') (β : Jet S₂ κ m →ₐ[S₂] Jet S₂ κ' m')
     (h : (jetCoef f κ' m').comp (α : Jet S κ m →+* Jet S κ' m') =
@@ -208,7 +405,7 @@ theorem sq_of {κ κ' : Type} {m m' : ℕ} (α : Jet S κ m →ₐ[S] Jet S κ' 
     homAt (spMap f ≫ x) β ≫ cO f x κ m = cO f x κ' m' ≫ homAt x α := by
   apply Over.OverMorphism.ext
   change spMap _ ≫ spMap _ = spMap _ ≫ spMap _
-  rw [spMap_cp, spMap_cp, h]
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp', _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp', h]
 
 theorem sq_subst {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' S) (φ' : κ → MvPolynomial κ' S₂)
     (h : ∀ i, φ' i = MvPolynomial.map f (φ i)) :
@@ -250,7 +447,7 @@ theorem chart_bc {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {act : 𝓞 E 
         ρ ≫ homAt x (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) := by
       apply Over.OverMorphism.ext
       change spMap _ ≫ spMap _ = spMap _ ≫ spMap _
-      rw [spMap_cp, spMap_cp, jetCoef_aug]
+      rw [_root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp', _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp', jetCoef_aug]
     rw [yBC, ← Category.assoc, e, Category.assoc, h.zero, MonObj.comp_one]
   · intro m
     rw [yBC, yBC, ← Category.assoc, sq_of f x _ _ (jetCoef_trunc f _ m).symm, Category.assoc, h.trunc]
@@ -264,7 +461,7 @@ theorem chart_bc {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {act : 𝓞 E 
     have := comb_bc t f x (h.tan l)
     convert this using 2 with j j
     · change spMap _ ≫ spMap _ ≫ (y 1).left = spMap _ ≫ spMap _ ≫ (y 1).left
-      rw [← Category.assoc, ← Category.assoc, spMap_cp, spMap_cp]
+      rw [← Category.assoc, ← Category.assoc, _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp', _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp']
       congr 2
       apply Ideal.Quotient.ringHom_ext
       apply MvPolynomial.ringHom_ext
@@ -535,7 +732,7 @@ theorem pt_of_vec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
 
 theorem pow_first : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0), PowFns t → ∀ (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (hp : 1 ≤ p) (x : Sp k ⟶ X0) (y y₂ : overAt x (Jet k Unit p) ⟶ t.G), homAt x (jetAug : Jet k Unit p →ₐ[k] k) ≫ y = 1 → homAt x (jetAug : Jet k Unit p →ₐ[k] k) ≫ y₂ = 1 → homAt x (toFirst k p hp) ≫ y = homAt x (toFirst k p hp) ≫ y₂ → y ^ p = y₂ ^ p := by
   intro E _ _ _ H _ hstar X0 t hP k _ p _ _ hp x y y₂ hy hy₂ h
-  obtain ⟨d, ⟨g⟩⟩ := PositivityTheory.HtPt.Cd.germ_local E H hstar X0 t hP k x
+  obtain ⟨d, ⟨g⟩⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Conj.GermInh.germ_local E H hstar X0 t hP k x
   obtain ⟨χ, ⟨a0, rfl⟩, -⟩ := (PositivityTheory.HtPt.Cd.germ_univ E H hstar X0 t k x d g).2 Unit p y hy
   obtain ⟨χ₂, ⟨b0, rfl⟩, -⟩ := (PositivityTheory.HtPt.Cd.germ_univ E H hstar X0 t k x d g).2 Unit p y₂ hy₂
   obtain ⟨χ', a1, a2⟩ := exists_low hp χ a0
@@ -753,21 +950,6 @@ omit [Flat Q] in
 theorem surj_res (U : Y.Opens) : Surjective (Q ∣_ U) :=
   MorphismProperty.of_isPullback (P := @Surjective) (isPullback_morphismRestrict Q U).flip inferInstance
 
-set_option backward.isDefEq.respectTransparency false in
-omit [Flat Q] [Surjective Q] in
-theorem app_topIso (U : Y.Opens) :
-    Q.app U ≫ (Q ⁻¹ᵁ U).topIso.inv = U.topIso.inv ≫ (Q ∣_ U).appTop := by
-  rw [morphismRestrict_appTop, Scheme.Opens.topIso_inv, Scheme.Opens.topIso_inv, Scheme.Hom.app_eq_appLE,
-    Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map, Scheme.Hom.appLE_map]
-  exact (Scheme.Hom.map_appLE _ _ _).symm
-
-theorem app_inj (U : Y.Opens) : Function.Injective (Q.app U).hom := fun a b h => by
-  have := surj_res Q U
-  apply (ConcreteCategory.bijective_of_isIso U.topIso.inv).1
-  apply appTop_inj (Q ∣_ U)
-  have e := fun c => congrArg (fun q => q.hom c) (app_topIso Q U)
-  exact (e a).symm.trans ((congrArg (Q ⁻¹ᵁ U).topIso.inv.hom h).trans (e b))
-
 theorem gs_topIso (U : X.Opens) (s : Γ(X, U)) (y : Z ⟶ U.toScheme) (z : Z) :
     gs y z ⊤ (U.topIso.inv.hom s) = gs (y ≫ U.ι) z U s := by
   have hz : U.ι (y z) ∈ U := (y z).2
@@ -788,7 +970,7 @@ theorem desc_sec [QuasiCompact Q] (U : Y.Opens) (s : Γ(X, Q ⁻¹ᵁ U))
     refine e1.trans ((h Z _ _ ?_ z (y1 z).2).trans e2.symm)
     rw [Category.assoc, Category.assoc, ← morphismRestrict_ι, reassoc_of% e]
   refine ⟨U.topIso.hom.hom v, (ConcreteCategory.bijective_of_isIso (Q ⁻¹ᵁ U).topIso.inv).1 ?_⟩
-  refine (congrArg (fun q => q.hom (U.topIso.hom.hom v)) (app_topIso Q U)).trans ?_
+  refine (congrArg (fun q => q.hom (U.topIso.hom.hom v)) (_root_.GlobalTheory.TorusTrivial.app_comp_topIso_inv Q U)).trans ?_
   rw [← hv]
   exact congrArg (Q ∣_ U).appTop.hom (Iso.hom_inv_id_apply U.topIso v)
 
@@ -804,24 +986,20 @@ theorem desc_unit [QuasiCompact Q] (U : Y.Opens) (s : Γ(X, Q ⁻¹ᵁ U)ˣ)
     rw [gs_unit _ _ _ hz, gs_unit _ _ _ (hm Z r r' e z hz), h Z r r' e z hz]
   obtain ⟨w, hw⟩ := desc_sec Q U (s⁻¹).val fun Z r r' e z hz => by
     rw [gs_unit _ _ _ hz, gs_unit _ _ _ (hm Z r r' e z hz), map_inv, map_inv, h Z r r' e z hz]
-  have e : v * w = 1 := app_inj Q U (by rw [map_mul, hv, hw, map_one, Units.mul_inv])
+  have e : v * w = 1 := _root_.GlobalTheory.FunDescent.app_injective Q U (by rw [map_mul, hv, hw, map_one, Units.mul_inv])
   exact ⟨⟨v, w, e, by rw [mul_comm, e]⟩, Units.ext hv⟩
 
 theorem unit_ext_flat {U : Y.Opens} {a b : Γ(Y, U)ˣ} (h : ∀ x, Q x ∈ U → gm Q x U a = gm Q x U b) : a = b := by
   have : pullU Q U a = pullU Q U b := unit_ext fun x hx => by
     rw [gm_pull (𝟙 X) Q x U hx, gm_pull (𝟙 X) Q x U hx, Category.id_comp]
     exact h x hx
-  exact Units.ext (app_inj Q U (congrArg Units.val this))
+  exact Units.ext (_root_.GlobalTheory.FunDescent.app_injective Q U (congrArg Units.val this))
 
 end Fn
 
 section Gen
 
 variable {X Y P : Scheme.{0}} {K : Type} [Fintype K]
-
-theorem good_exists {M : LB P} (hM : M.IsLB) {Z : Scheme.{0}} (z : Z) : ∃ J, Good M z J := by
-  choose I hI using fun χ : Z ⟶ P => exists_chart hM (χ z)
-  exact ⟨I, hI⟩
 
 theorem desc_gen (Q : X ⟶ Y) [Flat Q] [Surjective Q] [QuasiCompact Q] {M : LB P} (hM : M.IsLB) (ψ : K → (Y ⟶ P))
     (ε : K → ℤ) (c : LB.Gen (LB.LinComb M (fun k => Q ≫ ψ k) ε)) (hc : c.IsGen)
@@ -834,7 +1012,7 @@ theorem desc_gen (Q : X ⟶ Y) [Flat Q] [Surjective Q] [QuasiCompact Q] {M : LB 
       change (r' ≫ Q) z ∈ LB.wchart M ψ j
       rw [← e]
       exact hz
-    obtain ⟨J, hJ⟩ := good_exists hM z
+    obtain ⟨J, hJ⟩ := _root_.GlobalTheory.TorusCoord.exists_good' hM z
     refine (gm_res r z (le j) hz _).trans (Eq.trans ?_ (gm_res r' z (le j) hz' _).symm)
     refine (gen_trans hc r z (le j hz) (hJ.mem _ r)).trans
       (Eq.trans ?_ (gen_trans hc r' z (le j hz') (hJ.mem _ r')).symm)
@@ -947,7 +1125,7 @@ theorem twist_coeff {R : Type} [CommRing R] (u : Multiplicative X →* R) (a : A
     by_cases h : x = 0
     · subst h
       simp
-    · simp [Finsupp.single_apply, h]
+    · simp [h]
 
 theorem const_apply {R : CommRingCat.{0}} (r : R) : (const X R).hom r = single 0 r := by
   simp [const, AddMonoidAlgebra.coe_algebraMap]
@@ -1232,7 +1410,7 @@ theorem desc_first {k : Type} [Field k] {X : Type} [AddCommGroup X] {G B : Over 
     ha ρ.val (fun R φ y hy => by
       have : (prodPoint φ y).appTop.hom ρ.val = (prodPoint φ y).appTop.hom 1 :=
         appTop_eq_of_gm _ _ _ 1 fun z => by
-          obtain ⟨J, hJ⟩ := good_exists hM z
+          obtain ⟨J, hJ⟩ := _root_.GlobalTheory.TorusCoord.exists_good' hM z
           have e := hρ' _ (prodPoint φ y) z J hJ
           rw [prodPoint_snd, hv R _ ((ha R φ y).trans hy) z J hJ, hv R y hy z J hJ, _root_.mul_one] at e
           rw [← e, map_one]
@@ -1251,7 +1429,7 @@ theorem desc_first {k : Type} [Field k] {X : Type} [AddCommGroup X] {G B : Over 
       have : Units.map (prodPoint ψ' y).appTop.hom.toMonoidHom ρ =
           Units.map (prodPoint φ (prodPoint φ' y ≫ (actW i (T1 k)).left)).appTop.hom.toMonoidHom ρ *
             Units.map (prodPoint φ' y).appTop.hom.toMonoidHom ρ := unit_ext fun z _ => by
-        obtain ⟨J, hJ⟩ := good_exists hM z
+        obtain ⟨J, hJ⟩ := _root_.GlobalTheory.TorusCoord.exists_good' hM z
         have e1 := hρ' _ (prodPoint ψ' y) z J hJ
         have e2 := hρ' _ (prodPoint φ (prodPoint φ' y ≫ (actW i (T1 k)).left)) z J hJ
         have e3 := hρ' _ (prodPoint φ' y) z J hJ
@@ -1407,3 +1585,6 @@ end PositivityTheory.HtPt.Ce
 
 end
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.IsPullbackWhisker =====

@@ -121,7 +121,7 @@ private lemma eq_of_eq_on_eigenspaces_lemma_2 {V : Type} [AddCommGroup V] [Modul
     [FiniteDimensional ℂ V] (T : Module.End ℂ V) (hT : T.IsSemisimple) {g g' : Module.End ℂ V}
     (h : ∀ (α : ℂ) (v : V), v ∈ T.eigenspace α → g v = g' v) : g = g' := by
   have hle : ⨆ α, T.eigenspace α ≤ LinearMap.ker (g - g') :=
-    iSup_le fun α v hv => by simp [sub_eq_zero, h α v hv]
+    iSup_le fun α v hv => by simp [h α v hv]
   rw [hT.iSup_eigenspace_eq_top] at hle
   ext v
   simpa [sub_eq_zero] using hle (Submodule.mem_top : v ∈ ⊤)

@@ -140,7 +140,7 @@ theorem infOf_lamLdef_eq_paramV : ∀ (D : D7) (j : Fin D.R.m) (τ : D.what₂.T
         push_cast; ring
     · refine Multiset.map_congr rfl fun c _ => ?_
       have he : (D.hc τ).e j = (W.e : ℚ) := by
-        rw [hWe]; congr 1; try (ext; simp)
+        rw [hWe]; congr 1
       simp only [Function.comp, ge, he]
       push_cast; ring
   rw [hL, hR, show (fun i => ((g i : ℚ) : ℂ)) = (fun x : ℚ => (x : ℂ)) ∘ g from rfl, ← Multiset.map_map]

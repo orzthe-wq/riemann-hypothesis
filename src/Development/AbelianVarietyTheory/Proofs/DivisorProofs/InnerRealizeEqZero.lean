@@ -88,7 +88,7 @@ theorem inner_pair [StarRing K] {n : ℕ} {b : Module.Basis (Fin n) K V}
     intro k z hz l
     by_cases hl : l = k
     · subst hl; simpa using Submodule.subset_span hz
-    · simp [Pi.single_apply, hl]
+    · simp [hl]
   have h := hN v.embedding (Pi.single i x + Pi.single j y) fun l =>
     Submodule.add_mem _ (hmem i x hx l) (hmem j y hy l)
   have hsum : ∑ l, (Pi.single i x + Pi.single j y : ι → V) l = x + y := by
@@ -97,10 +97,10 @@ theorem inner_pair [StarRing K] {n : ℕ} {b : Module.Basis (Fin n) K V}
       (Pi.single i (N v.embedding x ^ 2) : ι → ℝ) l + (Pi.single j (N v.embedding y ^ 2) : ι → ℝ) l := by
     intro l
     by_cases hli : l = i
-    · subst hli; simp [Pi.single_apply, hij]
+    · subst hli; simp [hij]
     · by_cases hlj : l = j
-      · subst hlj; simp [Pi.single_apply, hli]
-      · simp [Pi.single_apply, hli, hlj, gram_zero hG v]
+      · subst hlj; simp [hli]
+      · simp [hli, hlj, gram_zero hG v]
   rw [hsum, Finset.sum_congr rfl fun l _ => hpt l, Finset.sum_add_distrib] at h
   simpa using h
 

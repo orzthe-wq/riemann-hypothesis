@@ -6,52 +6,12 @@ import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 import Formalism.GradedWeylDivisibility.FinalD
 public import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkMapInitMinor
 public import Formalism.LocalToGlobal.Columns.PolyFnLemmas
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Rat
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 public import Mathlib.Analysis.Matrix.Order
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -128,16 +88,14 @@ theorem ps_fockF_pos {σ : Type} (f : MvPolynomial σ ℂ) (hf : f ≠ 0) : 0 < 
 theorem ps_nfL_pos {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (F : MvPolynomial (ι × Fin n × Fin n) ℂ)
     (hF : F ≠ 0) : 0 < Formalism.L2.Col.nfL lam F F := by
   rw [Formalism.L2.Col.nfL_apply, Formalism.L2.Forms.nfAll]
-  refine div_pos (ps_fockF_pos F hF) (Finset.prod_pos fun τ _ => ?_)
-  exact ps_fockF_pos _ (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl _)
+  exact div_pos (ps_fockF_pos F hF) (Finset.prod_pos fun τ _ => ps_fockF_pos _ (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl _))
 
 theorem ps_nfL_symm {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (F F' : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     star (Formalism.L2.Col.nfL lam F F') = Formalism.L2.Col.nfL lam F' F := by
   rw [Formalism.L2.Col.nfL_apply, Formalism.L2.Col.nfL_apply, Formalism.L2.Forms.nfAll, Formalism.L2.Forms.nfAll, star_div₀,
     ← Formalism.GradedWeylDivisibility.fockHerm, star_prod]
   congr 1
-  refine Finset.prod_congr rfl fun τ _ => ?_
-  exact (Formalism.GradedWeylDivisibility.fockHerm _ _ _).symm
+  exact Finset.prod_congr rfl fun τ _ => (Formalism.GradedWeylDivisibility.fockHerm _ _ _).symm
 
 theorem pairingPositive_holds : PairPos := by
   classical
@@ -199,7 +157,7 @@ theorem ps_gram_det_ne {σ κ : Type} [Fintype κ] [DecidableEq κ] (q : κ → 
   set p : MvPolynomial σ ℚ := ∑ j, v j • q j with hp
   have hpc : ∀ m, p.coeff m = ∑ j, v j * (q j).coeff m := by
     intro m
-    simp [hp, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul]
+    simp [hp]
   have hsub : ∀ i, (q i).support ⊆ S := fun i =>
     Finset.subset_biUnion_of_mem (fun j => (q j).support) (Finset.mem_univ i)
   have hwpos : ∀ m, 0 < w m := fun m => by
@@ -254,9 +212,7 @@ theorem ps_bVVfun_rat (K : Type) [Field K] [CharZero K] {ι : Type} [Fintype ι]
     (i : VVIdx lam) : ∃ q : MvPolynomial (ι × Fin n × Fin n) ℚ, bVVfun K lam i = map (algebraMap ℚ K) q := by
   obtain ⟨P, hP⟩ := bVVfun_int K lam i
   refine ⟨map (Int.castRingHom ℚ) P, ?_⟩
-  rw [hP, map_map]
-  have e : (algebraMap ℚ K).comp (Int.castRingHom ℚ) = Int.castRingHom K := RingHom.ext_int _ _
-  rw [e]
+  rw [hP, map_map, show (algebraMap ℚ K).comp (Int.castRingHom ℚ) = Int.castRingHom K from RingHom.ext_int _ _]
 
 theorem ps_fock_sep {K : Type} [Field K] [StarRing K] [CharZero K] {ι : Type} [Fintype ι] {n : ℕ}
     (lam : ι → DomWeight n) (x : Pol K ι n) (hx : x ∈ VV K lam) (h : ∀ y ∈ VV K lam, fockL x y = 0) : x = 0 := by

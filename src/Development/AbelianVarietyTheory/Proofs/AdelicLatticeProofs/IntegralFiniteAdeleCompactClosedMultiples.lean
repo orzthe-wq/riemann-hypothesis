@@ -61,10 +61,6 @@ namespace GlobalTheory.IntegralFinAdele
 
 variable (F : Type) [Field F] [NumberField F]
 
-theorem t2Space_finiteAdeleRing' : T2Space (FiniteAdeleRing (𝓞 F) F) :=
-  inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
-    (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite))
-
 theorem natCast_apply (M : ℕ) (v : HeightOneSpectrum (𝓞 F)) :
     (M : FiniteAdeleRing (𝓞 F) F) v = ((algebraMap (𝓞 F) F (M : 𝓞 F) : F) : v.adicCompletion F) := by
   rw [← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F)), FiniteAdeleRing.algebraMap_apply,
@@ -124,7 +120,7 @@ theorem integral_finiteAdele_properties : ∀ (F : Type) [Field F] [NumberField 
   intro F _ _
   refine ⟨GlobalTheory.AdeleCocompact.isCompact_integral F, fun M _ => ?_, eq_zero_of_forall_mul F,
     fun x hx => ?_, exists_nat_mul_integral F, ⟨fun a ⟨n, hn⟩ => ?_⟩⟩
-  · haveI := t2Space_finiteAdeleRing' F
+  · haveI := _root_.GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
     have h := ((GlobalTheory.AdeleCocompact.isCompact_integral F).image
       (continuous_const_mul (M : FiniteAdeleRing (𝓞 F) F))).isClosed
     convert h using 1

@@ -95,10 +95,8 @@ theorem exists_pos {X : Type*} [TopologicalSpace X] [SigmaCompactSpace X] [Measu
   by_contra hcon
   push Not at hcon
   apply h0
-  have : μ Set.univ = 0 := by
-    rw [← iUnion_compactCovering X]
-    exact measure_iUnion_null (fun n => hcon _ (isCompact_compactCovering _ n))
-  exact Measure.measure_univ_eq_zero.mp this
+  rw [← Measure.measure_univ_eq_zero, ← iUnion_compactCovering X]
+  exact measure_iUnion_null fun n => hcon _ (isCompact_compactCovering _ n)
 
 def amb (U : Set (Mat k r)) : Set (Mt k r) := {x | Matrix.of x ∈ U}
 
@@ -161,8 +159,7 @@ theorem pull_left (μ : Measure (Mt k r)) (h : ∀ a ∈ U, μ.map (lmulM a) = �
   rw [Measure.map_apply (continuous_const_mul g).measurable hs, pull, inc_memb.comap_apply, inc_memb.comap_apply]
   have e1 : (μ.map (lmulM (Matrix.of (inc g)))) (inc '' s) = μ (inc '' s) :=
     congrArg (fun m : Measure (Mt k r) => m (inc '' s)) (h (Matrix.of (inc g)) (inc_mem g))
-  have e2 := Measure.map_apply (μ := μ) (lmulM_cont (Matrix.of (inc g))).measurable (inc_memb.measurableSet_image.2 hs)
-  rw [← e1, e2]
+  rw [← e1, Measure.map_apply (μ := μ) (lmulM_cont (Matrix.of (inc g))).measurable (inc_memb.measurableSet_image.2 hs)]
   congr 1
   ext x
   constructor
@@ -273,8 +270,7 @@ theorem compactConjFromUnique : CompactConjFromUnique := by
   have hm := (conjM_cont a).measurable
   have hnorm' : ∀ u ∈ U, a⁻¹ * u * a ∈ U := by
     intro u hu
-    have := hnorm a⁻¹ (hKg.inv_mem a ha) u hu
-    rwa [Matrix.nonsing_inv_nonsing_inv a hau] at this
+    simpa [Matrix.nonsing_inv_nonsing_inv a hau] using hnorm a⁻¹ (hKg.inv_mem a ha) u hu
   have hH : IsHaarOn U (μ.map (conjM a)) := CH k r U μ a hU hau (hnorm a ha) hnorm' hμ
   obtain ⟨c, hc⟩ := HU k r U μ (μ.map (conjM a)) hU hμ hH.conc hH.left hH.finite_compact
   obtain ⟨C, hC, hC0⟩ := exists_pos μ hμ.ne_zero
@@ -299,13 +295,10 @@ theorem compactConjFromUnique : CompactConjFromUnique := by
     · rintro ⟨⟨b, y⟩, ⟨hb, hy⟩, rfl⟩
       refine ⟨(((a * (Matrix.of b : Mat k r) : Mat k r) : Mt k r), y), ⟨hKg.mul_mem _ ha _ hb, hy⟩, ?_⟩
       rw [conjugation_pair_eq, ← conjM_conjM]; rfl
-  have hS0 : μ S ≠ 0 := fun h => hC0 (measure_mono_null hCS h)
-  have hSt : μ S ≠ ∞ := (hμ.finite_compact S hSc).ne
   have h4 := congrArg (fun ν : Measure (Mt k r) => ν S) hc
   simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h4
   rw [Measure.map_apply hm hSc.isClosed.measurableSet, hpre] at h4
-  have h5 : ((c : ℝ≥0) : ℝ≥0∞) * μ S = 1 * μ S := by rw [one_mul]; exact h4.symm
-  have h6 : ((c : ℝ≥0) : ℝ≥0∞) = 1 := (ENNReal.mul_left_inj hS0 hSt).mp h5
+  have h6 : ((c : ℝ≥0) : ℝ≥0∞) = 1 := (ENNReal.mul_left_inj (fun h => hC0 (measure_mono_null hCS h)) (hμ.finite_compact S hSc).ne).mp (by rw [one_mul]; exact h4.symm)
   have h7 : c = 1 := by exact_mod_cast h6
   rw [hc, h7, one_smul]
 

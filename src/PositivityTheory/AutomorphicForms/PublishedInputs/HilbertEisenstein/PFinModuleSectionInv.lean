@@ -195,7 +195,7 @@ theorem hint1 {χ : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hyp �
   set K := ∑ i, ∑ j, ‖G' i j‖ with hKdef
   have hK : 0 ≤ K := by positivity
   refine ⟨k, ?_⟩
-  haveI : IsFiniteMeasure ((normOneMeasure F).restrict E) :=
+  have : IsFiniteMeasure ((normOneMeasure F).restrict E) :=
     ⟨by rw [Measure.restrict_apply_univ]; exact normOneMeasure_normOneFundamentalDomain_lt_top F⟩
   set bnd : Pp F × Xi F → ℝ := fun q =>
     (K + 1) ^ k * (((((q.1.1 : ℝ) ^ 2)⁻¹ * (q.1.1 : ℝ)) * 1) * |U q.2.1|) with hbnddef
@@ -286,7 +286,7 @@ theorem hint2 {χ : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (H : Hyp �
   set K := ∑ i, ∑ j, ‖G i j‖ with hKdef
   have hK : 0 ≤ K := by positivity
   refine ⟨k, ?_⟩
-  haveI : IsFiniteMeasure ((normOneMeasure F).restrict E) :=
+  have : IsFiniteMeasure ((normOneMeasure F).restrict E) :=
     ⟨by rw [Measure.restrict_apply_univ]; exact normOneMeasure_normOneFundamentalDomain_lt_top F⟩
   set bnd : Pp F × Xi F → ℝ := fun q =>
     (K + 1) ^ k * (((((q.1.1 : ℝ) ^ 2) * (q.1.1 : ℝ)⁻¹) * 1) * |U q.2.1|) with hbnddef

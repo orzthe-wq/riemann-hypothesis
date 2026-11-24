@@ -2,22 +2,19 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasisOfIsCompl
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardCokernelUnramifiedOrderMatrixOfDetBaseStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardCokernelUnramifiedOrderMatrixOfDetBase
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardEqPowAndIndexGe
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DetUpdateRowLastSingle
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EichlerIsometry
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsEqZpowMulUnit
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFramesLevelLeIffCongrFlagSteStatement
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemPerpSpan
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToLePerp
+public import Mathlib.Analysis.Fourier.FiniteAbelian.Orthogonality
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.Fourier.FiniteAbelian.Orthogonality
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -32,13 +29,12 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -62,7 +58,161 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemPerpSpan
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.ENatToNat
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFramesLevelLeIffCongrFlagSte, Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFramesLevelLeIffCongrFlagSte =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFramesLevelLeIffCongrFlagSte", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
+open scoped Pointwise ENNReal Classical
+
+namespace GlobalTheory.FrameLevel
+
+variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
+variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
+
+theorem exists_coords {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r + 1) → S.V) (j : ℕ)
+    {y : S.V} (hy : y ∈ S.spanTo g j) :
+    ∃ a : Fin (r + 1) → E, y = ∑ i, a i • g i ∧ ∀ i : Fin (r + 1), j ≤ (i : ℕ) → a i = 0 := by
+  obtain ⟨c, hc, rfl⟩ := (Finsupp.mem_span_image_iff_linearCombination E).mp hy
+  refine ⟨c, ?_, fun i hi => ?_⟩
+  · rw [Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]
+  · by_contra hne
+    have hmem : i ∈ {i : Fin (r + 1) | (i : ℕ) < j} :=
+      (Finsupp.mem_supported _ _).mp hc (Finsupp.mem_support_iff.mpr hne)
+    exact absurd hi (not_le.mpr hmem)
+
+theorem exists_coords_Mof {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g g' : Fin (r + 1) → S.V)
+    {y : S.V} (hy : y ∈ S.Mof g g') :
+    ∃ β γ : Fin (r + 1) → L.O, y = ∑ i, (β i : E) • g i +
+      ∑ i, (γ i : E) • (algebraMap F E S.th⁻¹ • (g' i - g i)) := by
+  unfold Frames.Mof at hy
+  rw [Submodule.span_union, Submodule.mem_sup] at hy
+  obtain ⟨u, hu, u', hu', rfl⟩ := hy
+  obtain ⟨β, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun L.O).mp hu
+  obtain ⟨γ, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun L.O).mp hu'
+  exact ⟨β, γ, rfl⟩
+
+theorem th_ne_zero {L : LocE F E} {r k : ℕ} (S : Frames L r k) : S.th ≠ 0 := by
+  unfold Frames.th
+  split_ifs
+  · exact fun h => S.ϖ_irr.ne_zero (by simpa using h)
+  · exact one_ne_zero
+
+theorem lev_le_iff {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g g' : Fin (r + 1) → S.V)
+    (y : S.V) (hy : y ∈ S.spanTo g (r + 1) ⊔ S.spanTo g' (r + 1)) (j : ℕ) :
+    S.lev g g' (algebraMap F E S.th • y) ≤ j ↔
+      ∃ y₁ ∈ S.spanTo g j ⊔ S.spanTo g' j, y - y₁ ∈ S.Mof g g' := by
+  constructor
+  · intro hle
+    unfold Frames.lev at hle
+    obtain ⟨u, hu, u', hu', huy⟩ := Submodule.mem_sup.mp hy
+    obtain ⟨c, hc, -⟩ := exists_coords S g (r + 1) hu
+    obtain ⟨c', hc', -⟩ := exists_coords S g' (r + 1) hu'
+    obtain ⟨al, al', hrep, hRR⟩ := Nat.sInf_mem (s := {j | ∃ al al' : Fin (r + 1) → E,
+        algebraMap F E S.th • y = ∑ i, al i • g i + ∑ i, al' i • g' i ∧
+        ∀ i : Fin (r + 1), j ≤ (i : ℕ) → S.RR (al i) (al' i)})
+      ⟨r + 1, fun i => algebraMap F E S.th * c i, fun i => algebraMap F E S.th * c' i, by
+        rw [← huy, hc, hc', smul_add, Finset.smul_sum, Finset.smul_sum]
+        simp only [smul_smul], fun i hi => absurd hi (not_le.mpr i.isLt)⟩
+    have hRR' : ∀ i : Fin (r + 1), j ≤ (i : ℕ) → S.RR (al i) (al' i) := fun i hi => hRR i (le_trans hle hi)
+    have htt : algebraMap F E S.th⁻¹ * algebraMap F E S.th = 1 := by
+      rw [← map_mul, inv_mul_cancel₀ (th_ne_zero S), map_one]
+    have hyy : y = algebraMap F E S.th⁻¹ • (∑ i, al i • g i + ∑ i, al' i • g' i) := by
+      rw [← hrep, smul_smul, htt, one_smul]
+    refine ⟨algebraMap F E S.th⁻¹ • (∑ i : Fin (r + 1), (if (i : ℕ) < j then al i else 0) • g i +
+      ∑ i : Fin (r + 1), (if (i : ℕ) < j then al' i else 0) • g' i), ?_, ?_⟩
+    · refine Submodule.smul_mem _ _ (Submodule.add_mem_sup (Submodule.sum_mem _ fun i _ => ?_)
+        (Submodule.sum_mem _ fun i _ => ?_))
+      · split_ifs with hi
+        · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)
+        · rw [zero_smul]
+          exact Submodule.zero_mem _
+      · split_ifs with hi
+        · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)
+        · rw [zero_smul]
+          exact Submodule.zero_mem _
+    · have hdiff : y - algebraMap F E S.th⁻¹ • (∑ i : Fin (r + 1), (if (i : ℕ) < j then al i else 0) • g i +
+          ∑ i : Fin (r + 1), (if (i : ℕ) < j then al' i else 0) • g' i) =
+          ∑ i : Fin (r + 1), algebraMap F E S.th⁻¹ • (if (i : ℕ) < j then 0 else al i • g i + al' i • g' i) := by
+        rw [hyy, ← smul_sub, ← Finset.smul_sum]
+        congr 1
+        rw [← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]
+        refine Finset.sum_congr rfl fun i _ => ?_
+        split_ifs <;> simp
+      rw [hdiff]
+      refine Submodule.sum_mem _ fun i _ => ?_
+      split_ifs with hi
+      · rw [smul_zero]
+        exact Submodule.zero_mem _
+      · obtain ⟨hO, cc, hcc, hsum⟩ := hRR' i (not_lt.mp hi)
+        have hal : al i = algebraMap F E S.th * cc - al' i := eq_sub_of_add_eq hsum
+        have heq : algebraMap F E S.th⁻¹ • (al i • g i + al' i • g' i) =
+            cc • g i + al' i • (algebraMap F E S.th⁻¹ • (g' i - g i)) := by
+          rw [hal]
+          calc algebraMap F E S.th⁻¹ • ((algebraMap F E S.th * cc - al' i) • g i + al' i • g' i)
+              = (algebraMap F E S.th⁻¹ * algebraMap F E S.th * cc) • g i +
+                  al' i • (algebraMap F E S.th⁻¹ • (g' i - g i)) := by module
+            _ = cc • g i + al' i • (algebraMap F E S.th⁻¹ • (g' i - g i)) := by rw [htt, one_mul]
+        rw [heq]
+        refine Submodule.add_mem _ ?_ ?_
+        · exact Submodule.smul_mem (S.Mof g g') (⟨cc, hcc⟩ : L.O)
+            (Submodule.subset_span (Set.mem_union_left _ ⟨i, rfl⟩))
+        · exact Submodule.smul_mem (S.Mof g g') (⟨al' i, hO⟩ : L.O)
+            (Submodule.subset_span (Set.mem_union_right _ ⟨i, rfl⟩))
+  · rintro ⟨y₁, hy₁, hm⟩
+    obtain ⟨u, hu, u', hu', rfl⟩ := Submodule.mem_sup.mp hy₁
+    obtain ⟨a, rfl, ha⟩ := exists_coords S g j hu
+    obtain ⟨a', rfl, ha'⟩ := exists_coords S g' j hu'
+    obtain ⟨β, γ, hβγ⟩ := exists_coords_Mof S g g' hm
+    have htt : algebraMap F E S.th * algebraMap F E S.th⁻¹ = 1 := by
+      rw [← map_mul, mul_inv_cancel₀ (th_ne_zero S), map_one]
+    have hy' : y = ∑ i, ((a i + (β i : E)) • g i + a' i • g' i +
+        (γ i : E) • (algebraMap F E S.th⁻¹ • (g' i - g i))) := by
+      simp only [add_smul, Finset.sum_add_distrib]
+      rw [eq_add_of_sub_eq hβγ]
+      abel
+    unfold Frames.lev
+    apply Nat.sInf_le
+    refine ⟨fun i => algebraMap F E S.th * a i + algebraMap F E S.th * (β i : E) - (γ i : E),
+      fun i => algebraMap F E S.th * a' i + (γ i : E), ?_, fun i hi => ?_⟩
+    · rw [hy', Finset.smul_sum, ← Finset.sum_add_distrib]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      rw [smul_add, smul_comm (algebraMap F E S.th) (γ i : E),
+        smul_smul (algebraMap F E S.th) (algebraMap F E S.th⁻¹), htt, one_smul]
+      module
+    · unfold Frames.RR
+      refine ⟨?_, (β i : E), (β i).2, ?_⟩
+      · dsimp only
+        rw [ha' i hi, mul_zero, zero_add]
+        exact (γ i).2
+      · dsimp only
+        rw [ha i hi, ha' i hi]
+        ring
+
+theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k) (g g' : Fin (r + 1) → S.V), ∀ y ∈ S.spanTo g (r + 1) ⊔ S.spanTo g' (r + 1), ∀ j : ℕ, S.lev g g' (algebraMap F E S.th • y) ≤ j ↔ ∃ y₁ ∈ S.spanTo g j ⊔ S.spanTo g' j, y - y₁ ∈ S.Mof g g' := by
+  intro F _ _ _ _ _ E _ _ _ L r k S g g' y hy j
+  exact lev_le_iff S g g' y hy j
+
+end GlobalTheory.FrameLevel
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFramesLevelLeIffCongrFlagSte =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasisOfIsCompl\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.IsHermND\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardCokernelUnramifiedOrderMatrixOfDetBase\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CardEqPowAndIndexGe\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.DetUpdateRowLastSingle\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EichlerIsometry\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsEqZpowMulUnit\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetFramesLevelLeIffCongrFlagSte\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianDoubleCosetTermBasicFacts\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SpanToLePerp\npublic import Mathlib.Analysis.Fourier.FiniteAbelian.Orthogonality\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemPerpSpan\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open ValuativeRel Formalism.MainNotions.S.Loc GlobalTheory.HL MeasureTheory
@@ -174,7 +324,7 @@ theorem defect [IsNonarchimedeanLocalField F] [CharZero F] (L : LocE F E) (ϖ : 
     rwa [hdet, ← mul_assoc, ← map_mul, h8] at h7
   · set M := Submodule.span L.O (Set.range b) with hM
     let K : AddSubgroup (ι → L.O) := (LinearMap.range A.mulVecLin).toAddSubgroup
-    have hK : K.index = resQ ϖ ^ (2 * a) := GlobalTheory.T.card_cokernel_unramifiedOrder_matrix_of_det_base L ϖ hϖ ι A a u (hAdet.trans hdet)
+    have hK : K.index = resQ ϖ ^ (2 * a) := _root_.GlobalTheory.UnramOrder.card_coker_of_det_eq L ϖ hϖ ι A a u (hAdet.trans hdet)
     have hq : 2 ≤ resQ ϖ := (order_facts L ϖ hϖ).2.2.2.2.2.2.1
     have hinj : Function.Injective Gᵀ.mulVec :=
       Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2
@@ -498,7 +648,7 @@ theorem exponents_and_defect : ∀ {F : Type} [Field F] [ValuativeRel F] [Topolo
   have hlev : ∀ y ∈ S.sat Λ, ∀ j, S.levC d Λ y ≤ j ↔
       ∃ y₁ ∈ S.spanTo S.f j ⊔ S.spanTo S.f' j, y - y₁ ∈ S.M d Λ := fun y hy j => by
     rw [← hsp, ← hsp']
-    exact GlobalTheory.T.hermitianDoubleCosetFrames_level_le_iff_congr_flagSteps L r k S _ _ y (hsat y hy) j
+    exact _root_.GlobalTheory.FrameLevel.main L r k S _ _ y (hsat y hy) j
   refine ⟨by omega, hvD, hD, hHp, le_trans (one_le_zpow₀ hq1 (by omega)) hHp,
     ⟨i, by omega, hbe'⟩, hBB, fun h => ?_, fun y hy => ?_, fun y hy => ?_, hlev⟩
   · have hi0 : i ≠ 0 := by
@@ -511,3 +661,6 @@ theorem exponents_and_defect : ∀ {F : Type} [Field F] [ValuativeRel F] [Topolo
     simp [Frames.spanTo]
 
 end GlobalTheory.HL.Defect
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermExponentsNonnegAndDefectGroupBound =====

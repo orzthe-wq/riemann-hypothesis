@@ -202,7 +202,7 @@ theorem exists_isSplitBasis_plane : ∀ (F E : Type) [Field F] [NumberField F] [
     · have : (fun r => M r i) = ι.map τ *ᵥ (β₁.1 *ᵥ Pi.single ⟨_, h2⟩ 1) := by
         funext r
         rw [Matrix.mulVec_mulVec, Matrix.mulVec_single_one]
-        simp only [hM, colMat, if_neg h0, if_neg h1, dif_pos h2, Matrix.transpose_apply]
+        simp only [hM, colMat, if_neg h0, if_neg h1, dif_pos h2]
         rfl
       rw [this]
       refine hImg _ ((hβ₁ _).1 fun k => ?_)

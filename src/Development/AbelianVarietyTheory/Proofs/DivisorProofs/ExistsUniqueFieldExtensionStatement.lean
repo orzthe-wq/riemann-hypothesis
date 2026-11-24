@@ -36,6 +36,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -46,4 +47,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 theorem _root_.GlobalTheory.T.existsUnique_fieldExtension : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (k : ℕ) (F₀ : IntFam I D k) (F : Type) [Field F] [Algebra (FractionRing R) F], ∃! s : Fam D F k, F₀.Over s := by
-  first | exact @GlobalTheory.Mum.IntFam.existsUnique_over | exact GlobalTheory.Mum.IntFam.existsUnique_over | (intros; apply GlobalTheory.Mum.IntFam.existsUnique_over <;> assumption)
+  first | exact @GlobalTheory.Mum.IntFam.existsUnique_over

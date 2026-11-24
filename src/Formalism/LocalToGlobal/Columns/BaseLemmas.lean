@@ -248,7 +248,7 @@ theorem sgHC_step {n : ℕ} (hn : n + 1 < R.N R.m - 1) : (of P).sgHC (n + 1) + 1
     · subst h0
       have hBm : B < R.m := by
         by_contra hc
-        push_neg at hc
+        push Not at hc
         have hmul : R.m * (R.t + 1) ≤ B * (R.t + 1) := Nat.mul_le_mul_right _ hc
         omega
       have e0 : (of P).sgHC (R.k - 1 + B * (R.t + 1) + 0) = sh R - (of P).bAt B := by
@@ -271,7 +271,7 @@ theorem sgHC_step {n : ℕ} (hn : n + 1 < R.N R.m - 1) : (of P).sgHC (n + 1) + 1
         have emul : (B + 1) * (R.t + 1) = B * (R.t + 1) + R.t + 1 := by ring
         have hB1 : B + 1 < R.m := by
           by_contra hc
-          push_neg at hc
+          push Not at hc
           have hmul : R.m * (R.t + 1) ≤ (B + 1) * (R.t + 1) := Nat.mul_le_mul_right _ hc
           omega
         have e0 := sgHC_e (of P) B R.t (by omega) le_rfl
@@ -485,7 +485,7 @@ theorem lamOf_wtN {R : Ranks} (P : HCParam R) {j : ℕ} (hj : j ≤ R.m) (i : Fi
       obtain ⟨a, ha⟩ := R.k_even
       have hk : (R.k : ℚ) = a + a := by exact_mod_cast ha
       refine ⟨z - a + 1 + ((i.1 : ℕ) : ℤ), ?_⟩
-      simp only [hcToWeightQ, rhoVec, Fin.val_mk]
+      simp only [hcToWeightQ, rhoVec]
       rw [hz, hk]
       push_cast
       ring

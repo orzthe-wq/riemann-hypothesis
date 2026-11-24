@@ -75,7 +75,7 @@ theorem e4 (J : Matrix β β R) : dbl J * (fromRows (1 : Matrix β β R) 1 : Mat
 theorem e6 (J : Matrix β β R) : (fromRows (1 : Matrix β β R) 1 : Matrix (β ⊕ β) β R) * J * (fromCols (1 : Matrix β β R) (-1) : Matrix β (β ⊕ β) R) +
     (fromRows (1 : Matrix β β R) (-1) : Matrix (β ⊕ β) β R) * J * (fromCols (1 : Matrix β β R) 1 : Matrix β (β ⊕ β) R) =
     (2 : R) • dbl J := by
-  simp only [Matrix.mul_assoc, fromRows_mul, mul_fromCols, fromRows_fromCols_eq_fromBlocks, dbl, fromBlocks_smul]
+  simp only [Matrix.mul_assoc, fromRows_mul, mul_fromCols, dbl, fromBlocks_smul]
   simp
   rw [fromBlocks_add]
   congr 1 <;> ext i j <;> simp <;> ring
@@ -179,10 +179,10 @@ theorem mul_inv_eq (hNtΔ : Nt * Δ = 0) (x : Matrix β β R) :
     simp
   constructor
   · simp only [Matrix.add_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul,
-      smul_smul, hM, smul_zero]
+      hM, smul_zero]
     abel
   · simp only [Matrix.sub_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul,
-      smul_smul, hM, smul_zero]
+      hM, smul_zero]
     abel
 
 theorem q_col (h2 : Δ * Δt + N * Nt = (2 : R) • 1) (hD' : D' * (Nt * G * N) = 1) :

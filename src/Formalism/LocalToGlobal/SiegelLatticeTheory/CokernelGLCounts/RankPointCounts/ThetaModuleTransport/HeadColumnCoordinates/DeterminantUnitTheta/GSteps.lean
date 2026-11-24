@@ -1,48 +1,131 @@
 module
 
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.TraceUniformizerEqNegOne
+public import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.CompOfMemR
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.ThetaGC
-import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.SharpSpanCounting.SharpEquivApply
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PiTensorProduct
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LsDatumA
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.SharpSpanCounting.SharpEquivApply
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.TraceUniformizerEqNegOne, Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.GSteps
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.TraceUniformizerEqNegOne =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.TraceUniformizerEqNegOne", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.CompOfMemR\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LsDatumA\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open ValuativeRel Formalism.MainNotions.S.Loc Formalism.L2.SG.LsDatumA Formalism.L2.SG.LocalCountModules.LocCntCommon
+
+namespace Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork
+
+variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
+variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
+variable {M : Model F E} {g : SplitG M.L}
+
+section Rtools
+
+theorem mem_R_of (hs : M.split = some g) (x : E) (a b c : 𝒪[F]) (hx : g.e x = ((a : F), (b : F)))
+    (h : (a : F) - b = (g.q : F) * c) : x ∈ M.R := by
+  unfold Formalism.MainNotions.S.Loc.Model.R
+  rw [hs]
+  simp only [Subring.mem_comap, Subring.mem_map]
+  refine ⟨(a, b), ?_, ?_⟩
+  · show (Ideal.Quotient.mk (Ideal.span {g.q})) a = (Ideal.Quotient.mk (Ideal.span {g.q})) b
+    rw [Ideal.Quotient.eq, Ideal.mem_span_singleton]
+    exact ⟨c, Subtype.ext (by push_cast; exact h)⟩
+  · show ((a : F), (b : F)) = g.e x
+    rw [hx]
+
+def dgR (hs : M.split = some g) : 𝒪[F] →+* M.R where
+  toFun c := ⟨algebraMap F E c, mem_R_of hs _ c c 0 (by rw [AlgEquiv.commutes]; rfl) (by simp)⟩
+  map_one' := by apply Subtype.ext; simp
+  map_mul' a b := by apply Subtype.ext; simp
+  map_zero' := by apply Subtype.ext; simp
+  map_add' a b := by apply Subtype.ext; simp
+
+theorem dgR_coe (hs : M.split = some g) (c : 𝒪[F]) : ((dgR hs c : M.R) : E) = algebraMap F E c := rfl
+
+theorem e_dgR (hs : M.split = some g) (c : 𝒪[F]) : g.e ((dgR hs c : M.R) : E) = ((c : F), (c : F)) := by
+  rw [dgR_coe, AlgEquiv.commutes]
+  rfl
+
+def trO (hs : M.split = some g) : M.R →+ 𝒪[F] where
+  toFun x := ⟨((g.e x).1 - (g.e x).2) / (g.q : F), by
+    obtain ⟨-, -, c, hc⟩ := comp_of_mem_R hs x.2
+    rw [hc, mul_div_cancel_left₀ _ (q_ne g)]; exact c.2⟩
+  map_zero' := by apply Subtype.ext; simp
+  map_add' x y := by
+    apply Subtype.ext
+    simp only [Subring.coe_add, map_add (f := _), Prod.fst_add, Prod.snd_add]
+    ring
+
+theorem trO_coe (hs : M.split = some g) (x : M.R) :
+    ((trO hs x : 𝒪[F]) : F) = ((g.e x).1 - (g.e x).2) / (g.q : F) := rfl
+
+def q2 (hs : M.split = some g) : M.R :=
+  ⟨g.e.symm (0, (g.q : F)), mem_R_of hs _ 0 g.q (-1) (by simp) (by simp)⟩
+
+theorem embedding_uniformizer (hs : M.split = some g) : g.e ((q2 hs : M.R) : E) = (0, (g.q : F)) := by
+  show g.e (g.e.symm (0, (g.q : F))) = _
+  exact g.e.apply_symm_apply _
+
+theorem trO_one (hs : M.split = some g) : trO hs 1 = 0 := by
+  apply Subtype.ext
+  rw [trO_coe]
+  simp
+
+theorem trO_dgR_mul (hs : M.split = some g) (c : 𝒪[F]) (x : M.R) :
+    trO hs (dgR hs c * x) = c * trO hs x := by
+  apply Subtype.ext
+  rw [trO_coe, MulMemClass.coe_mul, MulMemClass.coe_mul, trO_coe, map_mul, e_dgR, Prod.fst_mul, Prod.snd_mul]
+  ring
+
+theorem R_decomp (hs : M.split = some g) (s : M.R) :
+    ∃ a b : 𝒪[F], s = dgR hs a + dgR hs b * q2 hs := by
+  obtain ⟨h1, -, c, hc⟩ := comp_of_mem_R hs s.2
+  refine ⟨⟨(g.e s).1, h1⟩, -c, ?_⟩
+  apply Subtype.ext
+  apply g.e.injective
+  rw [AddMemClass.coe_add, MulMemClass.coe_mul, map_add (f := _), map_mul, e_dgR, e_dgR, embedding_uniformizer]
+  ext
+  · simp
+  · simp only [Prod.snd_add, Prod.snd_mul]
+    push_cast
+    linear_combination (-1 : F) * hc
+
+end Rtools
+
+section DD1
+
+variable (hs : M.split = some g) {r : ℕ}
+
+abbrev eV (r : ℕ) : Fin (r + 1) → M.R := Pi.single (Fin.last r) 1
+
+def llMap (Z : M.Mat (r + 1)) (TT : M.R) : (Fin (r + 1) → M.R) →+ (Fin (r + 1) → M.R) where
+  toFun m := Z.Z.mulVec m - (TT * dgR hs (trO hs (m (Fin.last r)))) • eV r
+  map_zero' := by simp
+  map_add' x y := by
+    simp only [Matrix.mulVec_add, Pi.add_apply, map_add (f := _), mul_add, add_smul]
+    abel
+
+def LL (Z : M.Mat (r + 1)) (TT : M.R) : AddSubgroup (Fin (r + 1) → M.R) := (llMap hs Z TT).range
+
+abbrev DD1 (Z : M.Mat (r + 1)) (TT : M.R) : Type := (Fin (r + 1) → M.R) ⧸ LL hs Z TT
+
+end DD1
+
+end Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.TraceUniformizerEqNegOne =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.GSteps =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.GSteps", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.TraceUniformizerEqNegOne\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.ThetaGC\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.SharpSpanCounting.SharpEquivApply\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LsDatumA\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -219,3 +302,7 @@ def StepDuU : Prop :=
 end Steps
 
 end Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.DeterminantUnitTheta.GSteps =====

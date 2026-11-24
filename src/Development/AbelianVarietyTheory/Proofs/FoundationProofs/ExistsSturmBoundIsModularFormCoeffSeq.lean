@@ -2,8 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.PetIPSmulRight
 public import Mathlib.NumberTheory.ModularForms.NormTrace
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoefQExpansionFunctionUpperHalfPlaneStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormGammaOneOfCoeffSeqStatement
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CoefQExpansionFunctionUpperHalfPlane
+public import Mathlib.NumberTheory.ModularForms.Basic
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFormGammaOneOfCoeffSeq
+public import Mathlib.NumberTheory.ModularForms.LevelOne.DimensionFormula
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -17,7 +20,6 @@ import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-public import Mathlib.NumberTheory.ModularForms.LevelOne.DimensionFormula
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Basify
@@ -158,10 +160,10 @@ theorem sturm_coef_zero : ∀ (k L N : ℕ) (ε : DirichletCharacter ℂ N), 0 <
   haveI : NeZero L := ⟨hL.ne'⟩
   obtain ⟨m, hm⟩ := exists_sturmBound_modularForm_arithmetic hΓ (k : ℤ)
   refine ⟨m, fun a ha hz => ?_⟩
-  obtain ⟨f, hf⟩ := GlobalTheory.T.modularForm_gammaOne_of_coeffSeq k L N ε a hL hN ha
+  obtain ⟨f, hf⟩ := _root_.GlobalTheory.EisM.modularForm_gammaOne_of_MF k L N ε a hL hN ha
   have hc : ∀ n, (qExpansion 1 f).coeff n = a n := by
     intro n
-    have := GlobalTheory.T.coef_qExpansionFunctionUpperHalfPlane a ha.1 n
+    have := _root_.GlobalTheory.EisM.coef_qs a ha.1 n
     unfold coef at this
     rw [← this, hf]
   have h0 : f = 0 := hm f fun n hn => by rw [hc n]; exact hz n hn

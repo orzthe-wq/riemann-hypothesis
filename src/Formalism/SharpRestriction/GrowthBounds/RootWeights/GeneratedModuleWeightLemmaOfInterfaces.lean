@@ -86,18 +86,12 @@ variable {R : Type} [Field R] {ι : Type} [Fintype ι] (LL : Letters ι) {n : �
 
 theorem generated_submodule_stable (G : MvPolynomial (ι × Fin n) R) (g : MvPolynomial (ι × Fin n) R →ₗ[R] MvPolynomial (ι × Fin n) R)
     (hg : g ∈ polUZgens R LL S) : ∀ x ∈ polGenSub R LL S G, g x ∈ polGenSub R LL S G := by
-  intro x hx
-  induction hx using Submodule.span_induction with
-  | mem y hy =>
-    obtain ⟨u, hu, rfl⟩ := hy
+  have hs : polGenSub R LL S G ≤ (polGenSub R LL S G).comap g := by
+    apply Submodule.span_le.mpr
+    rintro _ ⟨u, hu, rfl⟩
+    change g (u G) ∈ polGenSub R LL S G
     exact Submodule.subset_span ⟨g * u, Submonoid.mul_mem _ (Submonoid.subset_closure hg) hu, rfl⟩
-  | zero => simp
-  | add y z _ _ hy hz =>
-    rw [map_add (f := _)]
-    exact Submodule.add_mem _ hy hz
-  | smul c y _ hy =>
-    rw [map_smul]
-    exact Submodule.smul_mem _ c hy
+  exact fun x hx => hs hx
 
 theorem self_mem_generated_submodule (G : MvPolynomial (ι × Fin n) R) : G ∈ polGenSub R LL S G := Submodule.subset_span ⟨1, Submonoid.one_mem _, rfl⟩
 

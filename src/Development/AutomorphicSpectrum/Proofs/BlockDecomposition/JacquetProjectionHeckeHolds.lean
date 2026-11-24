@@ -1,8 +1,9 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.IwahoriFactorisation.StrictDominance.JointGeneralisedEigenvectors.IsJointGenEig
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantCosetRepsUnipotentStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeOperatorCosetFormulaStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DominantCosetRepsUnipotent
+public import Development.WeilBound.RepresentationTheoryGL.TwistedFactors.LocalBaseChange.TwistedIndependenceLemma.TwistedIndependence
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HeckeOperatorCosetFormula
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -53,8 +54,8 @@ namespace GlobalTheory.CompanionTheory.Cass
 theorem jacquet_projection_hecke_intertwines : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G],
     PositivityTheory.SphericalProduct.A2 G := by
   intro G _ _ _ D V _ _ π hπ t ht U hU v
-  obtain ⟨r, hr, x, hxJN, hx⟩ := GlobalTheory.T.dominant_coset_reps_unipotent G D t ht
-  have hUv := GlobalTheory.T.hecke_operator_coset_formula G D.J D.isOpen_J D.isCompact_J V π hπ (t : G) U hU r x hr
+  obtain ⟨r, hr, x, hxJN, hx⟩ := _root_.GlobalTheory.CompanionTheory.Casselman.exists_fin_coset_reps_of_isDom G D t ht
+  have hUv := _root_.GlobalTheory.CompanionTheory.HeckeAvg.heckeG_eq_average G D.J D.isOpen_J D.isCompact_J V π hπ (t : G) U hU r x hr
     (fun i => (hxJN i).1) hx v
   have hstep : ∀ i, (Submodule.Quotient.mk (π (x i * (t : G)) (v : V)) : GlobalTheory.PRep.Jacquet π D.N) =
       Submodule.Quotient.mk (π (t : G) (v : V)) := by

@@ -63,25 +63,9 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
-theorem boxSet_finite (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (T : ℝ) :
-    (boxSet K F T).Finite := by
-  apply Formalism.HermitianLattices.Ext.L3.BoxSum.finite_boxSet <;> assumption
+alias boxSet_finite := _root_.Formalism.HermitianLattices.Ext.L3.BoxSum.finite_boxSet
 
-theorem ne_zero_of_mem_boxSet {T : ℝ} {n : 𝓞 F} (hn : n ∈ boxSet K F T) : n ≠ 0 := by
-  rintro rfl
-  obtain ⟨φ⟩ := (inferInstance : Nonempty (K →+* ℂ))
-  have := (hn φ).1
-  simp at this
-
-theorem absNorm_le_of_mem_boxSet (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {T : ℝ} {n : 𝓞 F}
-    (hn : n ∈ boxSet K F T) :
-    (Ideal.absNorm (Ideal.span {n}) : ℝ) ≤ T ^ Formalism.HermitianLatticesTheory.fDeg K := by
-  by_contra hlt
-  have := box_inter_eq_empty hK hF (b := Ideal.span {n}) (not_le.mp hlt)
-  have hmem : n ∈ {n' : 𝓞 F | n' ∈ boxSet K F T ∧ n' ∈ Ideal.span {n}} :=
-    ⟨hn, Ideal.mem_span_singleton_self n⟩
-  rw [this] at hmem
-  exact hmem
+alias ne_zero_of_mem_boxSet := _root_.Formalism.HermitianLattices.Ext.L3.BoxSum.ne_zero_of_mem_boxSet
 
 def eFac (K : Type) {F : Type} [Field K] [Field F] [NumberField F] [Algebra F K] (m : ℕ)
     (𝔭 : Ideal (𝓞 F)) : ℝ :=

@@ -1,34 +1,29 @@
 module
 
+public import Mathlib.Algebra.Polynomial.AlgebraMap
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.QuotientVanishing.NonEllFlag
 public import Mathlib.LinearAlgebra.Charpoly.Basic
 public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyBlockAndInvariantUnderStabilizerNilradic
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AevalIntertwining
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwCentPreservesFlag
-import Mathlib.Algebra.AffineMonoid.UniqueSums
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.Charpoly.ToMatrix
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Artinian.Instances
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,7 +31,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -50,9 +44,57 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.AffineMonoid.UniqueSums
+import Mathlib.LinearAlgebra.Charpoly.ToMatrix
+import Mathlib.RingTheory.Artinian.Instances
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.QuotientVanishing.QuotVanish
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AevalIntertwining, Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ImgEqOfInvariant
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AevalIntertwining =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AevalIntertwining", "h": "module\n\npublic import Mathlib.Algebra.Polynomial.AlgebraMap\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.Reformulated.B.AevalIntertwining.aeval_intertwine :
+    ∀ {K : Type} [inst : Field K] {M N : Type} [inst_1 : AddCommGroup M]
+    [inst_2 : _root_.Module K M] [inst_3 : AddCommGroup N] [inst_4 : _root_.Module K N] (φ : M →ₗ[K] N)
+    (f : Module.End K M) (f' : Module.End K N),
+    (∀ (x : M), (φ : M → N) ((f : M → M) x) = (f' : N → N) ((φ : M → N) x)) →
+      ∀ (p : Polynomial K) (x : M),
+        (φ : M → N) (((Polynomial.aeval f : Polynomial K → Module.End K M) p : M → M) x) =
+          ((Polynomial.aeval f' : Polynomial K → Module.End K N) p : N → N) ((φ : M → N) x) := by
+  intro K _ M N _ _ _ _ φ f f' h p
+  have hpow : ∀ (n : ℕ) (x : M), φ ((f ^ n) x) = (f' ^ n) (φ x) := by
+    intro n
+    induction n with
+    | zero => intro x; simp
+    | succ n ih =>
+      intro x
+      rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]
+  induction p using Polynomial.induction_on' with
+  | add p q hp hq =>
+    intro x
+    simp only [map_add (f := _), LinearMap.add_apply, hp, hq]
+  | monomial n a =>
+    intro x
+    simp only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply,
+      map_smul, hpow]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AevalIntertwining =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ImgEqOfInvariant =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ImgEqOfInvariant", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.QuotientVanishing.NonEllFlag\npublic import Mathlib.LinearAlgebra.Charpoly.Basic\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyBlockAndInvariantUnderStabilizerNilradic\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AevalIntertwining\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TwCentPreservesFlag\nimport Mathlib.Algebra.AffineMonoid.UniqueSums\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Charpoly.ToMatrix\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Artinian.Instances\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.QuotientVanishing.QuotVanish\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Polynomial Matrix PositivityTheory.Rg.BcB
@@ -126,10 +168,10 @@ theorem exists_signs (ι : A → A) (hι : ∀ a, ι (ι a) = a) :
       · rintro ⟨j, ⟨rfl, h⟩ | ⟨rfl, h⟩⟩
         · by_contra hc
           simp only [e, hc, if_false] at h
-          split_ifs at h <;> exact absurd h (by decide)
+          split_ifs at h
         · by_contra hc
           simp only [e, hc, if_false] at h
-          split_ifs at h <;> exact absurd h (by decide)
+          split_ifs at h
       · intro ha
         have hna := hI a ha
         rcases lt_trichotomy a (ι a) with h | h | h
@@ -235,14 +277,9 @@ section Lin
 
 variable {K V : Type} [Field K] [AddCommGroup V] [Module K V]
 
-theorem aeval_intertwine {M N : Type} [AddCommGroup M] [Module K M] [AddCommGroup N] [Module K N] (φ : M →ₗ[K] N)
-    (f : Module.End K M) (f' : Module.End K N) (h : ∀ x, φ (f x) = f' (φ x)) (p : K[X]) (x : M) :
-    φ (aeval f p x) = aeval f' p (φ x) :=
-  _root_.UpperTheory.Reformulated.B.AevalIntertwining.aeval_intertwine φ f f' h p x
-
 theorem aeval_restrict_coe (f : Module.End K V) (W : Submodule K V) (hW : ∀ x ∈ W, f x ∈ W) (p : K[X]) (w : W) :
     ((aeval (f.restrict hW : Module.End K W) p) w : V) = aeval f p (w : V) :=
-  (aeval_intertwine W.subtype (f.restrict hW) f (fun _ => rfl) p w)
+  (_root_.UpperTheory.Reformulated.B.AevalIntertwining.aeval_intertwine W.subtype (f.restrict hW) f (fun _ => rfl) p w)
 
 theorem aeval_mem (f : Module.End K V) (W : Submodule K V) (hW : ∀ x ∈ W, f x ∈ W) (p : K[X]) {w : V} (hw : w ∈ W) :
     aeval f p w ∈ W := by
@@ -252,7 +289,7 @@ theorem aeval_mem (f : Module.End K V) (W : Submodule K V) (hW : ∀ x ∈ W, f 
 
 theorem aeval_mapQ (f : Module.End K V) (W : Submodule K V) (hW : ∀ x ∈ W, f x ∈ W) (p : K[X]) (v : V) :
     aeval (W.mapQ W f (fun x hx => hW x hx) : Module.End K (V ⧸ W)) p (W.mkQ v) = W.mkQ (aeval f p v) :=
-  (aeval_intertwine W.mkQ f (W.mapQ W f (fun x hx => hW x hx)) (fun _ => rfl) p v).symm
+  (_root_.UpperTheory.Reformulated.B.AevalIntertwining.aeval_intertwine W.mkQ f (W.mapQ W f (fun x hx => hW x hx)) (fun _ => rfl) p v).symm
 
 theorem invariant_eq_ker [FiniteDimensional K V] (f : Module.End K V) (hs : Squarefree f.charpoly) (W : Submodule K V)
     (hW : ∀ x ∈ W, f x ∈ W) : ∃ a b : K[X], a * b = f.charpoly ∧ W = LinearMap.ker (aeval f a) := by
@@ -337,7 +374,7 @@ theorem exists_atoms [FiniteDimensional K V] (f : Module.End K V) (hs : Squarefr
     refine Disjoint.mono_right hle (disjoint_ker_aeval_of_isCoprime f ?_)
     exact IsCoprime.prod_right fun Q hQ =>
       hcop _ a.2.1 _ (Finset.mem_of_mem_erase hQ) (Finset.ne_of_mem_erase hQ).symm
-  · have h1 : aeval f a.1 (f x) = f (aeval f a.1 x) := (aeval_intertwine f f f (fun _ => rfl) a.1 x).symm
+  · have h1 : aeval f a.1 (f x) = f (aeval f a.1 x) := (_root_.UpperTheory.Reformulated.B.AevalIntertwining.aeval_intertwine f f f (fun _ => rfl) a.1 x).symm
     have h2 : aeval f a.1 x = 0 := hx
     show aeval f a.1 (f x) = 0
     rw [h1, h2, map_zero]
@@ -484,3 +521,7 @@ theorem pairParam : PairParam := by
 end Main
 
 end GlobalTheory.CompanionTheory.PairParam
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ImgEqOfInvariant =====

@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsTorPartTorusExtension
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsSpecializesIsLocalization
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiAbelianHomExtensionHolds

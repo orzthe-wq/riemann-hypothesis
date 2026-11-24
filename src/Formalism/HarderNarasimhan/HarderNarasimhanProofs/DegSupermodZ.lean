@@ -321,9 +321,6 @@ theorem degree_supermodular_integral : DegSupermodZ := by
     intro v
     first
       | exact Submodule.norm_starProjection_apply_le _ v
-      | exact (span ℝ ((satur (A ⊔ B) A : Submodule ℤ E) : Set E))ᗮ.norm_starProjection_apply_le v
-      | exact ContinuousLinearMap.le_of_opNorm_le _ (Submodule.starProjection_norm_le _) v
-      | simpa using ContinuousLinearMap.le_of_opNorm_le _ (Submodule.starProjection_norm_le _) v
   have k1 : Real.log (covol (quot (A ⊔ B) (satur (A ⊔ B) A))) ≤
       Real.log (covol (quot B (satur B (A ⊓ B)))) :=
     Real.log_le_log (covol_pos _) hcov

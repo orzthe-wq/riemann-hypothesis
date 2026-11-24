@@ -110,7 +110,7 @@ theorem frameMat_herm (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
       by_cases h : i = k
       · subst h
         simp
-      · simp [Finsupp.single_apply, Pi.single_apply, h, Ne.symm h]
+      · simp [h]
     rw [hv]
     simp [Matrix.mulVec, dotProduct, Pi.single_apply]
   have hcolM : ∀ k l, (U.mulVec (fun i => v.embedding ((b.repr (e (b k))) i))) l = (U * M) l k := by

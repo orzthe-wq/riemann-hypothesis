@@ -55,11 +55,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 namespace NormResidues
 
-theorem coe_conjO (x : 𝓞 K) : ((conjO K x : 𝓞 K) : K) = star (x : K) := rfl
-
-theorem conjO_conjO (x : 𝓞 K) : conjO K (conjO K x) = x := by
-  apply RingOfIntegers.ext
-  rw [coe_conjO, coe_conjO, star_star]
+alias conjO_conjO := _root_.Formalism.HermitianLattices.Ext.L3.conjO_conjO
 
 theorem mem_conjIdeal (P : Ideal (𝓞 K)) (x : 𝓞 K) :
     x ∈ Formalism.HermitianLatticesTheory.conjIdeal (K := K) P ↔ conjO K x ∈ P := by

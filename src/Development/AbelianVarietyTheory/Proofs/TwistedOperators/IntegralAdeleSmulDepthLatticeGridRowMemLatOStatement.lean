@@ -49,4 +49,4 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 
 theorem _root_.GlobalTheory.T.integralAdele_smul_depthLatticeGridRow_mem_latO : All fun {D} _ _ _ {G} _ _ => ∀ i, i < D.R.m → ∀ v, ∀ e ∈ intAt D (· = v), ∀ u ∈ latRow G i, e • u ∈ latO _ _ (G.Λ (.grid (i + 1) 0) : Set _) (G.Λ (.grid i 0) : Set _) (· = v) := by
-  first | exact @GlobalTheory.RowInt.smul_mem_latO_at | exact GlobalTheory.RowInt.smul_mem_latO_at | (intros; apply GlobalTheory.RowInt.smul_mem_latO_at <;> assumption)
+  first | exact @GlobalTheory.RowInt.smul_mem_latO_at

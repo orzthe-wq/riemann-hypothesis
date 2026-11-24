@@ -5,10 +5,11 @@ public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDo
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.NonemptyUnitAt
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.LawsFieldsSeparately
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.CuspFormValueLeSupNormAtOrthonormalFrame
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsOrthonormalFrameBorelChangeComplexFramedPoStatement
+import Formalism.LocalToGlobal.ProjectiveLattices.PetersonNormSubspace
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsOrthonormalFrameBorelChangeComplexFramedPo
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ImDiagEqTrace
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MetricChangeOfFrameStatement
-import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MetricDataUniqueStatement
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MetricChangeOfFrame
+import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.MetricDataUnique
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RigidifiedSectionCorrespondenceExistsUniqueNonva
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UnifMetricScalar
 import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UniversalTripleFibreKeyDataNonemptyField
@@ -59,6 +60,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.O
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.SupAtUnit
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.UnitHmA
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -154,7 +156,7 @@ theorem isMetric_of_isOrtho : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
         Real.pi * hermForm Wu.Hm (Pi.single (W.e.symm ⟨b, j⟩) 1) (Pi.single (W.e.symm ⟨b, i⟩) 1) := by
     intro b i j
     rw [hH]
-    simp [hermForm, Matrix.mulVec_diagonal, Pi.single_apply, Matrix.one_apply]
+    simp [hermForm, Pi.single_apply, Matrix.one_apply]
     split_ifs <;> simp_all <;> ring
   exact isMetricAt_of Φ hg u Wu.Hm χ Wu.θ Wu.Fd w (fun b i => Pi.single (W.e.symm ⟨b, i⟩) 1)
     ⟨ht, hA, hR, hF, hFd, hN, hw, hG⟩
@@ -182,14 +184,14 @@ theorem isBddSec_of_isUnf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
     rw [e]; rfl
   rw [hrd']
   generalize U'.un k' ⟨_, hx'⟩ = y at hN ⊢
-  obtain ⟨k, x, t, hx, ht⟩ := GlobalTheory.T.exists_orthonormalFrame_borelChange_complexFramedPoint E H Dw l Xo c σ r U hU y
+  obtain ⟨k, x, t, hx, ht⟩ := _root_.GlobalTheory.LamT.exists_ortho_frBor E H Dw l Xo c σ r U hU y
   obtain ⟨g, hg0, hgd, hchg⟩ :=
     ((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) (U.un k x) y y).1 t).1 ht
   have hm0 := isMetric_of_isOrtho E H Dw l Xo c σ r U hσ hU hpq k x hx
-  have hm1 := GlobalTheory.T.metric_change_of_frame E H Dw l Xo c σ (U.un k x) y 1 _
+  have hm1 := _root_.GlobalTheory.MetricChange.isMetric_frChg E H Dw l Xo c σ (U.un k x) y 1 _
     (fun b => Matrix.transpose (show Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) ℂ from g b))
     (show ℂ from (t none : CAt σ)) (Units.ne_zero (M₀ := ℂ) (t none)) hchg hm0
-  obtain ⟨hNN, hG⟩ := GlobalTheory.T.metric_data_unique E H Dw l Xo c σ y _ _ _ _ hN hm1
+  obtain ⟨hNN, hG⟩ := _root_.GlobalTheory.LamT.MetUniq.isMetric_unique E H Dw l Xo c σ y _ _ _ _ hN hm1
   have hnone : cabs (t none : CAt σ) = 1 := by
     rw [_root_.mul_one] at hNN
     exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hNN.symm

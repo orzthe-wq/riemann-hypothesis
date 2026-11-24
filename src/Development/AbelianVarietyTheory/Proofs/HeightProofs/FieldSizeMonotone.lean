@@ -116,13 +116,13 @@ theorem _root_.GlobalTheory.FieldSize.sz_mono_and_of_le :
   · rintro F a b a' b' ⟨hF, h1, h2⟩ ha hb
     exact ⟨hF, h1.trans ha, h2.trans hb⟩
   · rintro F F' a b hFF' ⟨hF', h1, h2⟩
-    haveI : FiniteDimensional ℚ F' := hF'
-    haveI hF : FiniteDimensional ℚ F :=
+    have : FiniteDimensional ℚ F' := hF'
+    have hF : FiniteDimensional ℚ F :=
       FiniteDimensional.of_injective (IntermediateField.inclusion hFF').toLinearMap
         (IntermediateField.inclusion hFF').injective
-    haveI : NumberField F := ⟨⟩
-    haveI : NumberField F' := ⟨⟩
-    letI : Algebra F F' := (IntermediateField.inclusion hFF').toRingHom.toAlgebra
+    have : NumberField F := ⟨⟩
+    have : NumberField F' := ⟨⟩
+    let : Algebra F F' := (IntermediateField.inclusion hFF').toRingHom.toAlgebra
     obtain ⟨g1, g2⟩ := _root_.GlobalTheory.FieldSize.log_finrank_rootDiscr_le_of_tower F F'
     exact ⟨hF, g1.trans h1, g2.trans h2⟩
 

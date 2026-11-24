@@ -1,8 +1,10 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.ResEmbCompat
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentationStatement
-public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.StarVirtualCharacterEqApplyInvStatement
+public import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfComm
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.IsCharacterOverSubfieldOfRepresentation
+public import Mathlib.Basic.Complex.Basic
+public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.StarVirtualCharacterEqApplyInv
 import Formalism.PadicSubsetSums.StableGradedCounts.ZBrauerNesbittAlg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -101,8 +103,8 @@ theorem UpperTheory.Gal.InertialTypesAlt.meetsIff :
   have hstar : ∀ g : H, star (LinearMap.trace ℂ W (κ g)) = κ.character g⁻¹ := by
     intro g
     have hmem : (fun g => algebraMap ℂ ℂ (κ.character g)) ∈ GlobalTheory.BI.Virt ℂ ℂ H :=
-      AddSubgroup.subset_closure (GlobalTheory.T.isCharacterOverSubfield_of_representation ℂ ℂ H W κ).1
-    have := GlobalTheory.T.star_virtualCharacter_eq_apply_inv H _ hmem g
+      AddSubgroup.subset_closure (_root_.GlobalTheory.BI.isChar_and_isIrrChar_of_rep ℂ ℂ H W κ).1
+    have := _root_.GlobalTheory.CuspGL.star_virt_eq_inv H _ hmem g
     change star (κ.character g) = _
     simpa using this
   have hM : Meets ρ (fun g => LinearMap.trace ℂ W (κ g)) ↔

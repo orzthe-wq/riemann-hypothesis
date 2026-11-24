@@ -46,7 +46,4 @@ import Mathlib.Topology.Sheaves.Init
 
 namespace GlobalTheory
 
-theorem geometricLemmaFiltration_holds : GlobalTheory.Published.GeometricLemmaFiltration :=
-  CompanionTheory.Geo.geometricLemmaFiltration
-
 end GlobalTheory

@@ -57,4 +57,4 @@ theorem _root_.GlobalTheory.T.exists_adm_eq_thetaIntegral_of_conv : ∀ {F E : T
     (ψ : AddChar (AF F) ℂ) (χX χY : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : Rep σ X Y), M.IsWeil ψ χX χY om →
     (∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d), M.Conv om Φ) →
     ∃ l ∈ (GlobalTheory.WeilM.adeleClass F).adm (Fin n × Fin d), ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d), l Φ = M.I om Φ 1 := by
-  first | exact @GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral | exact GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral | (intros; apply GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral <;> assumption)
+  first | exact @GlobalTheory.ThetaIntAdm.exists_admissible_form_convergent_thetaIntegral

@@ -68,7 +68,6 @@ lemma revCol_eq {m : ℕ} (A : Matrix (Fin (m + 1)) (Fin (m + 1)) K) : revCol A 
   ext i j
   first
   | simp [PI.OddDualWeyl.revCol, Matrix.mul_apply, Matrix.one_apply]
-  | (rw [Matrix.mul_apply]; simp [PI.OddDualWeyl.revCol, Matrix.one_apply, Finset.sum_ite_eq, Finset.sum_ite_eq'])
 
 lemma det_revCol {m : ℕ} (A : Matrix (Fin (m + 1)) (Fin (m + 1)) K) :
     (revCol A).det = A.det * sgnK K m := by
@@ -134,7 +133,6 @@ theorem evalDuality : EV := by
       rw [← RingHom.map_adjugate]
       first
       | rfl
-      | simp [RingHom.mapMatrix_apply]
     simp only [dualM, Matrix.of_apply]
     rw [h1, hmap, hadj]
     simp [revCol]
@@ -147,7 +145,6 @@ theorem evalDuality : EV := by
           MvPolynomial.eval (fun v => MvPolynomial.eval ρ (g v)) := by
          ext <;> simp [MvPolynomial.algebraMap_eq]
        exact RingHom.congr_fun hh p)
-    | (induction p using MvPolynomial.induction_on <;> simp_all [MvPolynomial.algebraMap_eq])
   have hscale : ∀ (b : Fin (m + 1) × Fin (m + 1) → K) (c : K),
       MvPolynomial.eval (fun v => c * b v) F' = c ^ D * MvPolynomial.eval b F' := by
     intro b c
@@ -157,8 +154,6 @@ theorem evalDuality : EV := by
       have h1 := hF' (MvPolynomial.mem_support_iff.mp hd)
       first
       | (rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)] at h1; simpa using h1)
-      | simpa [Finsupp.weight_apply, Finsupp.sum_fintype] using h1
-      | (rw [← h1]; simp [Finsupp.weight_apply, Finsupp.sum_fintype])
     have hdeg' : ∑ i ∈ d.support, d i = D := by
       rw [← hdeg]
       exact Finset.sum_subset (Finset.subset_univ _) (fun i _ hi => by simpa using hi)

@@ -93,7 +93,7 @@ theorem norm_iteratedFDeriv_restr_le {V : Type} [NormedAddCommGroup V] [NormedSp
 theorem exists_schwartz_box {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {κ κ' : Type} [Fintype κ]
     [Fintype κ'] (f₁ : SchwartzMap (κ → V) ℂ) (f₂ : SchwartzMap (κ' → V) ℂ) :
     ∃ f : SchwartzMap (κ ⊕ κ' → V) ℂ, ∀ x, f x = f₁ (x ∘ Sum.inl) * f₂ (x ∘ Sum.inr) := by
-  apply GlobalTheory.CompanionTheory.ThetaBox.exists_schwartz_box <;> assumption
+  apply GlobalTheory.CompanionTheory.ThetaBox.exists_schwartz_box
 
 theorem sb_box {X : Type} [TopologicalSpace X] {κ κ' : Type} {g₁ : (κ → X) → ℂ} {g₂ : (κ' → X) → ℂ}
     (hg₁ : g₁ ∈ SB (κ → X)) (hg₂ : g₂ ∈ SB (κ' → X)) :

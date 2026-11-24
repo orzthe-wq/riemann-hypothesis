@@ -211,7 +211,6 @@ theorem exists_root_value {T0 : Type} {L : LevCh D T0} {μ0 : T0} (hL : L.Is μ0
     obtain rfl : b' = b := RingOfIntegers.ext (eb.trans hb.symm)
     obtain rfl : m' = (m : 𝓞 D.host.E) := RingOfIntegers.ext (by
       rw [em]
-      change star ((m : 𝓞 D.host.E) : D.host.E) = ((m : 𝓞 D.host.E) : D.host.E)
       rw [show ((m : 𝓞 D.host.E) : D.host.E) = (m : D.host.E) from
         map_natCast (algebraMap (𝓞 D.host.E) D.host.E) m, star_natCast])
     exact Or.inr (resS_sum_right P U p' hs hm' hb')

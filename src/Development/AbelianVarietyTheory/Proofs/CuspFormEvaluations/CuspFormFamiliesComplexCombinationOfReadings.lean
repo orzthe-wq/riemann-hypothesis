@@ -4,7 +4,9 @@ public import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
 public import Development.AbelianVarietyTheory.Definitions.ThetaValues.GamAt
 public import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThExprUniqOfChartIndep2
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.BddSecCuspCongr
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HolomorphicCuspFormsFramesLeSpanShortThetaReadinStatement
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
+public import Formalism.LocalToGlobal.ProjectiveLattices.RecPJThAllNeBot
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HolomorphicCuspFormsFramesLeSpanShortThetaReadin
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -39,7 +41,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsStabForm
 
 @[expose] public section
 
@@ -55,7 +56,7 @@ theorem rdOnto_rec : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2
     have hC := hSh.shCusp j hj (wtA u) u.n (dom_wtA u) hLast (dom_wtA u) hLast hg
     unfold cutR
     exact Submodule.mem_inf.2 ⟨hC, (Submodule.mem_iInf _).2 fun hn => absurd hj hn⟩
-  have hspan := GlobalTheory.T.holomorphicCuspForms_frames_le_span_shortThetaReadings hCI D T h.toLawsCore.toLawsM hSh hGam hbad hX j hj u hu
+  have hspan := _root_.GlobalTheory.Dict.holSub0_le_span_short_rec hCI D T h.toLawsCore.toLawsM hSh hGam hbad hX j hj u hu
   classical
   let f0 := fun (k : (T.U j T.σ₀).Comp) (x : Frame ((T.U j T.σ₀).X k).Ψ D.R.r) =>
     if x ∈ ((T.U j T.σ₀).X k).dom then f k x else 0

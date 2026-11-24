@@ -81,11 +81,16 @@ theorem oPlusAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     linarith
   have hN1 : (1 : ℝ) ≤ X.N1 := by exact_mod_cast St.N1pos
   have hk5 : 5 ≤ X.k := by linarith [St.N1k]
-  have hkP : 5 * X.k ≤ P := by nlinarith
+  have hkP : 5 * X.k ≤ P :=
+    calc 5 * X.k ≤ X.k * X.k := mul_le_mul_of_nonneg_right hk5 (by linarith)
+      _ = X.k ^ 2 := (sq _).symm
+      _ ≤ P := hk2
   have hN2 : (2 : ℝ) ≤ X.N := by exact_mod_cast St.N2
   have hLa1 : 1 ≤ La := St.La1
   have hLaN : 2 * X.N * La ≤ X.k := St.LaN
-  have hLa : 4 * La ≤ X.k := by nlinarith
+  have hLa : 4 * La ≤ X.k := by
+    have := mul_le_mul_of_nonneg_right (show (4 : ℝ) ≤ 2 * X.N by linarith) (show (0 : ℝ) ≤ La by linarith)
+    linarith
   have hsN : s ≤ X.N1 := by
     show ((segS X.TT j : ℕ) : ℝ) ≤ (X.N1 : ℝ)
     exact_mod_cast (St.segB j).2
@@ -93,13 +98,22 @@ theorem oPlusAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
   have hs2 : 2 * s ≤ X.k := by linarith [St.N1k]
   have hq1 : 1 ≤ q := by rw [hq]; linarith [(Nat.cast_nonneg X.m : (0 : ℝ) ≤ X.m)]
 
-  have e1 : A / P ^ 2 ≤ A / 25 := div_le_div_of_nonneg_left ha (by norm_num) (by nlinarith)
+  have e1 : A / P ^ 2 ≤ A / 25 := div_le_div_of_nonneg_left ha (by norm_num) (by
+    have := mul_le_mul hP5 hP5 (by norm_num) hP.le
+    rw [sq]
+    linarith)
   have e2 : s * (2 * (X.b' / P)) ≤ A / 25 := by
     rw [show s * (2 * (X.b' / P)) = 2 * s * X.b' / P by ring, div_le_div_iff₀ hP (by norm_num)]
     have f1 := mul_le_mul_of_nonneg_right hs2 hb.le
     have f2 := mul_le_mul_of_nonneg_right hkP hb.le
     have f3 := mul_le_mul_of_nonneg_right hP5 ha
-    nlinarith
+    calc 2 * s * X.b' * 25 ≤ X.k * X.b' * 25 := by linarith
+      _ = 5 * (5 * X.k * X.b') := by ring
+      _ ≤ 5 * (P * X.b') := by linarith
+      _ = 5 * (X.b' * P) := by ring
+      _ ≤ 5 * A := by linarith
+      _ ≤ P * A := f3
+      _ = A * P := by ring
   have e3 : (La / q + 4 / P ^ 2) * (s * (2 * A / P)) ≤ A / 4 + 4 * A / 125 := by
     have hsA : 0 ≤ s * (2 * A / P) := by positivity
     have g1 : (La / q + 4 / P ^ 2) * (s * (2 * A / P)) ≤ (La + 4 / P ^ 2) * (s * (2 * A / P)) :=
@@ -196,8 +210,7 @@ theorem oPlusAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     change (X.bT (segPos X.TT j i) : ℝ) ≤ 2 * X.b'
     have h1 := (St.winB _ (pos_mem X.TT j i).1).2
     have hbe : be ≤ 1 := by linarith [hbeLe, St.de6, St.be0]
-    have h2 := mul_le_mul_of_nonneg_left hbe St.bpos.le
-    nlinarith
+    linarith [mul_le_mul_of_nonneg_left (show 1 + be ≤ 2 by linarith) St.bpos.le]
   have hplus : (S.bPlus : ℝ) ≤ b' * (1 + be) := (St.winB _ (next_mem X.TT j).1).2
   have hO : Oplus p r S b ≤ S.a / (p : ℝ) ^ 2 + (s : ℝ) * (2 * (b' / p)) +
       (S.La / ((r : ℝ) + 1) + 4 / (p : ℝ) ^ 2) * ((s : ℝ) * (2 * (S.a : ℝ) / p)) + 2 * (S.La * b' / ((r : ℝ) + 1)) := by
@@ -226,7 +239,7 @@ theorem oPlusAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
       rw [← hP'] at hc
       have hca : (0 : ℝ) ≤ (coarseA p S b i : ℝ) := Nat.cast_nonneg _
       rw [mul_div_assoc', le_div_iff₀ hp0]
-      nlinarith [mul_le_mul_of_nonneg_left hP hca]
+      linarith [mul_le_mul_of_nonneg_left hP hca]
     have hcap : (cap p S b s : ℝ) ≤ (S.a : ℝ) / (p : ℝ) ^ 2 + (s : ℝ) * (2 * (b' / p)) := by
       have h1 := cap_le p S b s
       have h2 : (S.A0 p : ℝ) ≤ (S.a : ℝ) / (p : ℝ) ^ 2 := by
@@ -255,13 +268,12 @@ theorem oPlusAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     have hbP : (S.bPlus : ℝ) ≤ 2 * b' := by
       have h1 := hplus
       have hbe : be ≤ 1 := by linarith [hbeLe, St.de6, St.be0]
-      nlinarith [mul_le_mul_of_nonneg_left hbe hb0.le]
+      linarith [mul_le_mul_of_nonneg_left (show 1 + be ≤ 2 by linarith) hb0.le]
     have h3 : S.La * (S.bPlus : ℝ) / ((r : ℝ) + 1) ≤ 2 * (S.La * b' / ((r : ℝ) + 1)) := by
-      have hnum : S.La * (S.bPlus : ℝ) ≤ 2 * (S.La * b') := by
-        nlinarith [mul_le_mul_of_nonneg_left hbP hLa]
-      have hinv : 0 ≤ ((r : ℝ) + 1)⁻¹ := inv_nonneg.mpr hr0.le
-      simp only [div_eq_mul_inv]
-      nlinarith [mul_le_mul_of_nonneg_right hnum hinv]
+      have hnum : S.La * (S.bPlus : ℝ) ≤ 2 * (S.La * b') :=
+        (mul_le_mul_of_nonneg_left hbP hLa).trans_eq (by ring)
+      rw [show 2 * (S.La * b' / ((r : ℝ) + 1)) = 2 * (S.La * b') / ((r : ℝ) + 1) by ring]
+      exact div_le_div_of_nonneg_right hnum hr0.le
     have h2 : (S.La / ((r : ℝ) + 1) + 4 / (p : ℝ) ^ 2) * (∑ i, 2 * (S.a : ℝ) / (S.P p i : ℝ)) ≤
         (S.La / ((r : ℝ) + 1) + 4 / (p : ℝ) ^ 2) * ((s : ℝ) * (2 * (S.a : ℝ) / p)) :=
       mul_le_mul_of_nonneg_left hsumP hcoef

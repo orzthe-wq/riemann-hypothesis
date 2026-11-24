@@ -185,7 +185,6 @@ theorem fullLat_of (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v) (C : Submodule K R
     Submodule.IsLattice.of_fg K (fg_latOf_of_lowerBound C Vs hV N hN B hB)
   first
   | exact { toIsLattice := lat, span_eq_top := span_latOf_eq_top hV C h }
-  | exact lat
 
 end Abstract
 

@@ -106,9 +106,6 @@ theorem dualGram_conj (A T : Matrix n n ℂ) : dualGram (Tᴴ * A * T) = (T⁻¹
   simp only [dualGram, Matrix.mul_inv_rev, transpose_mul, Matrix.mul_assoc, ← conjTranspose_nonsing_inv]
   rfl
 
-theorem dualGram_smul_one {a : ℂ} (ha : a ≠ 0) : dualGram (a • (1 : Matrix n n ℂ)) = a⁻¹ • 1 := by
-  rw [dualGram, inv_eq_left_inv (B := a⁻¹ • 1) (by simp [smul_smul, ha]), transpose_smul, transpose_one]
-
 end Gram
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X X' : Scheme.{0}}

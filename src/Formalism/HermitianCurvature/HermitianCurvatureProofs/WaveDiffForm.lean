@@ -179,7 +179,7 @@ theorem grid_exists (P : M.Par) (l0 : ℕ) (lo hi : ℝ) (hcut : ∀ Y, lo ≤ Y
       ∀ n : Fin 3 → Fin (2 * j + 1), KB.CutWord P l0 (KB.plusW (List.ofFn fun a => grid a (n a)) w) ∧
         KB.CutWord P l0 (KB.minusW (List.ofFn fun a => grid a (n a)) w) ∧
         (List.ofFn fun a => grid a (n a)).Pairwise (fun y y' => 2 < |y - y'|) := by
-  obtain ⟨ys, hl, -, hp, h1, h2⟩ := Formalism.FourierDecayAlt.P.room_off_grid P l0 lo hi hcut w (3 * (2 * j + 1)) ∅ hw
+  obtain ⟨ys, hl, -, hp, h1, h2⟩ := _root_.Formalism.FourierDecayAlt.P.PBD.roomOffGrid P l0 lo hi hcut w (3 * (2 * j + 1)) ∅ hw
     (by simpa using hroom)
   have hget : ∀ i i' : Fin ys.length, i ≠ i' → 4 < |ys.get i - ys.get i'| := by
     intro i i' hne

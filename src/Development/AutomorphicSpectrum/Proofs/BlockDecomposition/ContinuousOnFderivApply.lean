@@ -2,9 +2,10 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DifferentiableAtOfSmooth
 public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.ArchimedeanGelfandKernels.WaveSt
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneralLinearGroupUnimodular
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHold
 import Aesop.Main
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GeneralLinearGroupUnimodularStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LengthFunctionFactsHoldStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -126,8 +127,7 @@ theorem exists_eps (X : Mat n) : ∃ ε > 0, ∀ t ∈ Metric.closedBall (0 : �
   obtain ⟨ε, hε, h'⟩ := Metric.nhds_basis_closedBall.mem_iff.1 (h.mem_nhds h0)
   exact ⟨ε, hε, h'⟩
 
-theorem val_mem_GLs (y : G n) : y.val ∈ GLs n :=
-  ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
+alias val_mem_GLs := _root_.GlobalTheory.CompanionTheory.LengthGL.mem_GLs_val
 
 theorem mul_mem_GLs' {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *
@@ -229,4 +229,4 @@ theorem ibp_of (hL : LgFacts) (hU : Unimod) : IBP := by
 end GlobalTheory.CompanionTheory.RCalc.ByParts
 
 theorem GlobalTheory.CompanionTheory.RCalc.ibp : GlobalTheory.CompanionTheory.RCalc.IBP :=
-  GlobalTheory.CompanionTheory.RCalc.ByParts.ibp_of GlobalTheory.T.length_function_facts_hold GlobalTheory.T.general_linear_group_unimodular
+  GlobalTheory.CompanionTheory.RCalc.ByParts.ibp_of _root_.GlobalTheory.CompanionTheory.LengthGL.lgFacts _root_.GlobalTheory.CompanionTheory.GLUnimod.unimod

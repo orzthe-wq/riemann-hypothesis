@@ -1,54 +1,10 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.AlgebraMapOLInjective
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 public import Mathlib.RingTheory.DedekindDomain.PID
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.Valuation.LocalSubring
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
 public import Mathlib.RingTheory.DedekindDomain.Factorization
 
@@ -118,9 +74,7 @@ theorem addv_mem (v : HeightOneSpectrum (integralClosure O L)) : addv L v ∈ Pl
     haveI := v.isMaximal
     apply IsLocalRing.eq_maximalIdeal
     first
-      | exact Ideal.isMaximal_comap_of_isIntegral_of_isMaximal v.asIdeal
       | exact Ideal.IsMaximal.under O v.asIdeal
-      | infer_instance
   simp only [PlacesOver, IsNormDiscrete, Set.mem_setOf_eq]
   refine ⟨⟨fun a ha => ?_, ?_⟩, fun x => ?_⟩
   · rw [hval a ha]
@@ -134,7 +88,6 @@ theorem addv_mem (v : HeightOneSpectrum (integralClosure O L)) : addv L v ∈ Pl
     rw [hval π hπ0, hπ]
     first
       | simp
-      | rfl
   · have hx : algebraMap O L x =
         algebraMap (integralClosure O L) L (algebraMap O (integralClosure O L) x) :=
       IsScalarTower.algebraMap_apply O (integralClosure O L) L x
@@ -157,12 +110,10 @@ theorem addv_mem (v : HeightOneSpectrum (integralClosure O L)) : addv L v ∈ Pl
         rw [hx]
         first
           | exact v.valuation_lt_one_iff_mem _
-          | exact v.valuation_lt_one_iff_mem L _
       have hint : v.valuation L (algebraMap O L x) ≤ 1 := by
         rw [hx]
         first
           | exact v.valuation_le_one _
-          | exact v.valuation_le_one L _
       rw [← hP, Ideal.mem_comap, ← hmem]
       constructor
       · have h3 := hle.2 hint
@@ -214,7 +165,6 @@ theorem mem_integralClosure_iff (y : L) :
     · rw [addv_nonneg_iff v hy0]
       first
         | exact v.valuation_le_one (⟨y, hy⟩ : integralClosure O L)
-        | exact v.valuation_le_one L (⟨y, hy⟩ : integralClosure O L)
   · intro h
     by_cases hy0 : y = 0
     · subst hy0
@@ -224,7 +174,6 @@ theorem mem_integralClosure_iff (y : L) :
       have hr : y ∈ (algebraMap (integralClosure O L) L).range := by
         first
           | exact HeightOneSpectrum.mem_integers_of_valuation_le_one L y hle
-          | exact HeightOneSpectrum.mem_integers_of_valuation_le_one y hle
       obtain ⟨b, hb⟩ := hr
       rw [← hb]
       exact b.2

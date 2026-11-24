@@ -1,5 +1,7 @@
 module
 
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LogDerivLFunctionStrip
+
 public import Mathlib.Analysis.Analytic.Order
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.NumberTheory.Harmonic.ZetaAsymp
@@ -66,64 +68,14 @@ theorem scaled : ∃ C : ℝ, 0 < C ∧ ∀ (F : ℂ → ℂ) (c : ℂ) (M : ℝ
     ∀ s : ℂ, ‖s - c‖ ≤ 3 → F s ≠ 0 →
       ‖deriv F s / F s - ∑ᶠ w ∈ {w : ℂ | ‖w - c‖ ≤ 7/2 ∧ F w = 0},
         (analyticOrderNatAt F w : ℂ) / (s - w)‖ ≤ C * (1 + Real.log (M / ‖F c‖)) := by
-  obtain ⟨C, hC, H⟩ := GlobalTheory.LogDerivZeros.main (4/5) (14/15) (by norm_num) (by norm_num)
-    (by norm_num)
+  obtain ⟨C, hC, H⟩ := GlobalTheory.LWide.disc (4/5) (14/15) (by norm_num) (by norm_num) (by norm_num)
   refine ⟨C, hC, fun F c M hF hc hM => ?_⟩
-  set g : ℂ → ℂ := fun z => c + 15/4 * z with hg
-  have hgn : ∀ z, ‖g z - c‖ = 15/4 * ‖z‖ := fun z => by simp [hg]
-  have hgd : ∀ z, HasDerivAt g (15/4) z := fun z => by
-    have := ((hasDerivAt_id z).const_mul (15/4 : ℂ)).const_add c
-    rw [mul_one] at this
-    exact this
-  have hgD : Differentiable ℂ g := fun z => (hgd z).differentiableAt
-  have hfD : Differentiable ℂ (F ∘ g) := hF.comp hgD
-  have hg0 : g 0 = c := by simp [hg]
-  have hf0 : (F ∘ g) 0 = F c := by simp [hg0]
-  obtain ⟨⟨h1, h2⟩, h3⟩ := H (F ∘ g) M (fun z _ => hfD.analyticAt z) (by rwa [hf0])
-    (fun z hz => hM _ (by
-      have : ‖z‖ ≤ 1 := by simpa using hz
-      rw [hgn]; linarith))
-  rw [hf0] at h2 h3
-  have hinj : Function.Injective g := fun a b h => by simpa [hg] using h
-  have hsur : ∀ w, g ((w - c) * (4/15)) = w := fun w => by simp only [hg]; ring
-  have hset : {w : ℂ | ‖w - c‖ ≤ 7/2 ∧ F w = 0} = g '' {w : ℂ | ‖w‖ ≤ 14/15 ∧ (F ∘ g) w = 0} := by
-    ext w
-    constructor
-    · rintro ⟨ha, hb⟩
-      refine ⟨(w - c) * (4/15), ⟨?_, by simp only [Function.comp, hsur, hb]⟩, hsur w⟩
-      have := hgn ((w - c) * (4/15))
-      rw [hsur] at this
-      linarith
-    · rintro ⟨z, ⟨ha, hb⟩, rfl⟩
-      exact ⟨by rw [hgn]; linarith, hb⟩
-  have hord : ∀ z, analyticOrderNatAt (F ∘ g) z = analyticOrderNatAt F (g z) := fun z => by
-    unfold analyticOrderNatAt
-    rw [analyticOrderAt_comp_of_deriv_ne_zero (hgD.analyticAt z) (by rw [(hgd z).deriv]; norm_num)]
-  simp only [hord] at h2 h3
-  rw [hset]
-  refine ⟨⟨h1.image g, by rwa [finsum_mem_image hinj.injOn]⟩, fun s hs hFs => ?_⟩
-  obtain ⟨z, rfl⟩ : ∃ z, s = g z := ⟨_, (hsur s).symm⟩
-  rw [hgn] at hs
-  have h4 := h3 z (by linarith) hFs
-  have hL : 0 ≤ C * (1 + Real.log (M / ‖F c‖)) := (norm_nonneg _).trans h4
-  rw [finsum_mem_image hinj.injOn]
-  rw [finsum_mem_eq_finite_toFinset_sum _ h1] at h4 ⊢
-  have hd : deriv (F ∘ g) z = deriv F (g z) * (15/4) :=
-    ((hF (g z)).hasDerivAt.comp z (hgd z)).deriv
-  have e : deriv F (g z) / F (g z) - ∑ w ∈ h1.toFinset, (analyticOrderNatAt F (g w) : ℂ) / (g z - g w)
-      = (4/15) * (deriv (F ∘ g) z / (F ∘ g) z -
-        ∑ w ∈ h1.toFinset, (analyticOrderNatAt F (g w) : ℂ) / (z - w)) := by
-    rw [hd, mul_sub, Finset.mul_sum]
-    congr 1
-    · simp only [Function.comp]; ring
-    · refine Finset.sum_congr rfl fun w _ => ?_
-      have : g z - g w = 15/4 * (z - w) := by simp only [hg]; ring
-      rw [this, div_eq_mul_inv, mul_inv]
-      ring
-  rw [e, norm_mul]
-  have : ‖(4/15 : ℂ)‖ = 4/15 := by simp
-  rw [this]
-  linarith
+  obtain ⟨hfin, hsum, hderiv⟩ := H F c (15/4) M (by norm_num) hF hc hM
+  norm_num at hfin hsum hderiv
+  refine ⟨⟨hfin, hsum⟩, fun s hs hs0 => ?_⟩
+  exact (le_mul_of_one_le_left (norm_nonneg _) (by norm_num : (1 : ℝ) ≤ 15/4)).trans
+    (hderiv s hs hs0)
+
 
 theorem zeta₁_eq {s : ℂ} (hs : s ≠ 1) : riemannZeta₁ s = (s - 1) * riemannZeta s := by
   rw [riemannZeta_eq_inv_sub_mul hs, mul_inv_cancel_left₀ (sub_ne_zero.2 hs)]

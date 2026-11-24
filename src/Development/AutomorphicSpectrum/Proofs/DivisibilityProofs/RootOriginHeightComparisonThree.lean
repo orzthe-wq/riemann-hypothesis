@@ -6,13 +6,15 @@ public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsP
 public import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.Objects
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BadExists
 public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplierLine
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsDenseNonvanishingStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ComplexPointsDenseNonvanishing
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinCoordsUnitValues
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProjectStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootModelFlagCompareStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCompareFirstStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCompareSecondStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginPointCompareStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootModelFlagCompare
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCompareFirst
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginCompareSecond
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RootOriginPointCompare
+public import GroundTheory.HeightsAndTheta.Heights.Intersections.ProjLineRankTwoPushforwardHypotheses
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProject
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.ArithModel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -62,7 +64,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.BundleChernComparison
 import GroundTheory.HeightsAndTheta.Heights.Intersections.IsSmoothHermFubiniStudyO1
-public import GroundTheory.HeightsAndTheta.Heights.Intersections.ProjLineRankTwoPushforwardHypotheses
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterAlgRes
 
 @[expose] public section
 
@@ -225,20 +227,6 @@ theorem exists_scale {Ω : Type} [Field Ω] [CharZero Ω] (y : (Σ k, ι k) → 
   rw [eval_mConeMap, map_zero, e]
   exact h0
 
-theorem aeval_smul_of_homog {A : Type} [CommRing A] {g : MRing ι} {d : K' → ℕ} (hg : IsMultiHomog g d)
-    (c : K' → A) (z : (Σ k, ι k) → A) :
-    aeval (fun p => c p.1 * z p) g = (∏ k, c k ^ d k) * aeval z g := by
-  classical
-  rw [aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.mul_sum]
-  refine Finset.sum_congr rfl fun m hm => ?_
-  have h1 : ∏ p : (Σ k, ι k), c p.1 ^ m p = ∏ k, c k ^ d k := by
-    rw [Fintype.prod_sigma]
-    refine Finset.prod_congr rfl fun k _ => ?_
-    show ∏ i, c k ^ m ⟨k, i⟩ = c k ^ d k
-    rw [Finset.prod_pow_eq_pow_sum, hg m hm k]
-  simp only [mul_pow, Finset.prod_mul_distrib, h1]
-  ring
-
 theorem hasVal_smul {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {a : K' → ℤ} {s : Ω} {z : (Σ k, ι k) → ℂ} {w : ℂ}
     (h : Small.HasVal y a s z w) {c : K' → ℂ} (hc : ∀ k, c k ≠ 0) :
     Small.HasVal y a s (fun p => c p.1 * z p) ((∏ k, c k ^ a k) * w) := by
@@ -246,9 +234,9 @@ theorem hasVal_smul {Ω : Type} [Field Ω] {y : (Σ k, ι k) → Ω} {a : K' →
   have hP : ∀ d : K' → ℕ, (∏ k, c k ^ d k) ≠ 0 := fun d =>
     Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)
   refine ⟨dg, dh, g, h', hg, hh, hd, e, ?_, ?_⟩
-  · rw [aeval_smul_of_homog hh]
+  · rw [_root_.GlobalTheory.CompanionTheory.Ar.aeval_blockScale hh]
     exact mul_ne_zero (hP _) n
-  · rw [aeval_smul_of_homog hg, aeval_smul_of_homog hh, v]
+  · rw [_root_.GlobalTheory.CompanionTheory.Ar.aeval_blockScale hg, _root_.GlobalTheory.CompanionTheory.Ar.aeval_blockScale hh, v]
     have : (∏ k, c k ^ dg k) = (∏ k, c k ^ a k) * ∏ k, c k ^ dh k := by
       rw [← Finset.prod_mul_distrib]
       refine Finset.prod_congr rfl fun k _ => ?_
@@ -346,16 +334,6 @@ theorem isMultiHomog_of_dvr {K : Type} [Fintype K] [DecidableEq K] {ι : K → T
   rw [Fintype.sum_sigma]
   simp
 
-theorem aeval_zero_of_mem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
-    (y : (Σ k, ι k) → Ω) {g : MRing ι} (h : g ∈ mCoordIdeal y) : aeval y g = 0 := by
-  have h0 : mConeMap y g = 0 := (RingHom.mem_ker).1 h
-  have e : ((aeval (fun _ : K => (1 : Ω)) : MvPolynomial K Ω →ₐ[Ω] Ω).restrictScalars ℤ).comp (mConeMap y) =
-      aeval y := by
-    apply MvPolynomial.algHom_ext
-    intro p
-    simp [mConeMap]
-  rw [← e, AlgHom.comp_apply, h0, map_zero]
-
 theorem scaleForm_mem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     (c : K → ℕ) (y : (Σ k, ι k) → Ω) {q : MRing ι} (hq : q ∈ mCoordIdeal y) : scaleForm c q ∈ mCoordIdeal y := by
   have e : (mConeMap y).comp (bind₁ (fun p : Σ k, ι k => C (c p.1 : ℤ) * X p)) =
@@ -384,12 +362,6 @@ theorem block_ne {K₁ K : Type} [Fintype K] {ι : K₁ → Type} {J : K → Typ
     exact this.symm
   obtain rfl := hv.1 h1
   exact ⟨b, by rw [hp]; exact ha⟩
-
-theorem orbit_trans {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {a b c : (Σ k, ι k) → ℂ}
-    (h1 : SameOrbit a b) (h2 : SameOrbit b c) : SameOrbit a c := by
-  obtain ⟨c1, hc1, rfl⟩ := h1
-  obtain ⟨c2, hc2, rfl⟩ := h2
-  exact ⟨fun k => c1 k * c2 k, fun k => mul_ne_zero (hc1 k) (hc2 k), by funext q; simp [mul_assoc]⟩
 
 theorem sum_ite_pull {K₁ K : Type} [Fintype K₁] [DecidableEq K] {κ : K₁ → K} (hκ : Function.Injective κ)
     (a : K₁ → ℤ) (k : K) : (∑ k', if κ k' = k then a k' else 0) = pullDeg κ a k := by
@@ -424,7 +396,7 @@ theorem side [CharZero M.Ω] (o : RootOrigin Y S M Fx) (o₀ : RootOrigin Y S₀
             Small.HasVal (Ht.joinOf M R i) (Ht.joinDeg M R (some r)) (i (o₀.e r) / o.e r) w v →
             ‖v‖ * (o₀.sing r).h (fun p => w (Cmp.joinInr M.ι R.ι p)) =
               (o.sing r).h (fun p => w (Cmp.joinInl M.ι R.ι p)) := by
-  obtain ⟨f, hf, hfp⟩ := GlobalTheory.T.root_origin_compare_second E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi hJ hJ₀
+  obtain ⟨f, hf, hfp⟩ := _root_.GlobalTheory.CompanionTheory.Ar.JoinPts.join_points E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi hJ hJ₀
   obtain ⟨cc, hcc, hne⟩ := exists_scale (Ht.joinOf M R i) hf
   refine ⟨scaleForm cc f, hne, fun w hw hwF => ?_⟩
   have hwF' := hwF
@@ -440,10 +412,10 @@ theorem side [CharZero M.Ω] (o : RootOrigin Y S M Fx) (o₀ : RootOrigin Y S₀
     rw [Cmp.evC, Small.LineModel.eval_map_eq]
     exact hwF'
   obtain ⟨x, x', z₁, z₂, ho₁, ho₂, hπ, hop, hc₁, hc₂, hi₁, hi₂⟩ := hfp _ hw' hwf
-  refine ⟨x, x', orbit_trans ho₁ ⟨fun k => (cc (Sum.inl k) : ℂ), fun k => hc _, rfl⟩,
-    orbit_trans ho₂ ⟨fun k => (cc (Sum.inr k) : ℂ), fun k => hc _, rfl⟩, hπ, hop, ?_⟩
+  refine ⟨x, x', _root_.ReciprocityTheory.ChartRestriction.G.Geo.sameOrbit_trans ho₁ ⟨fun k => (cc (Sum.inl k) : ℂ), fun k => hc _, rfl⟩,
+    _root_.ReciprocityTheory.ChartRestriction.G.Geo.sameOrbit_trans ho₂ ⟨fun k => (cc (Sum.inr k) : ℂ), fun k => hc _, rfl⟩, hπ, hop, ?_⟩
   intro r v hv
-  have h1 := GlobalTheory.T.root_origin_compare_first E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi z₁ z₂ _ hw' hc₁ hc₂ hi₁ hi₂ r _
+  have h1 := _root_.GlobalTheory.CompanionTheory.Ar.SingCmp.sing_agree E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi z₁ z₂ _ hw' hc₁ hc₂ hi₁ hi₂ r _
     (hasVal_smul hv (c := fun k => (cc k : ℂ)) hc)
   have e₁ : (fun p => (cc (Cmp.joinInl M.ι R.ι p).1 : ℂ) * w (Cmp.joinInl M.ι R.ι p)) =
       fun p => (fun k => (cc (Sum.inl k) : ℂ)) p.1 * w (Cmp.joinInl M.ι R.ι p) := rfl
@@ -531,7 +503,7 @@ theorem side_pt {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {
     obtain ⟨x, x', ho₁, ho₂, hπ, hop, hs⟩ := hFp _ hw hzF
     have hunit : ∀ r, Ht.GenUnit (Ht.joinOf M R i) (Ht.joinDeg M R (some r)) (i (o₀.e r) / o.e r) := by
       intro r
-      refine GlobalTheory.T.root_model_flag_compare E H D l Xo c Y S S₀ M R o.𝔐 o₀.𝔐 o.Fl o₀.Fl i o.e o₀.e ?_ ?_ o.lines o₀.lines r
+      refine _root_.GlobalTheory.CompanionTheory.Ar.Ht.CloseGen.genUnit_join E H D l Xo c Y S S₀ M R o.𝔐 o₀.𝔐 o.Fl o₀.Fl i o.e o₀.e ?_ ?_ o.lines o₀.lines r
       · rw [o.g_over, o₀.g_over, ← hi, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]
       · intro s' k
         have hd : dualMap o.g = (dualMap i).comp (dualMap o₀.g) := by
@@ -540,10 +512,10 @@ theorem side_pt {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {
         rw [o.g_flag, o₀.g_flag, hd, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]
     have hex := fun r => hunit r ℂ _ hw
     choose val hval0 hval using hex
-    obtain ⟨hw₁, hw₂⟩ := (GlobalTheory.T.join_model_points_project _ _ M R i).2.2.1 ℂ _ hw
+    obtain ⟨hw₁, hw₂⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Ht.JoinFacts.main _ _ M R i).2.2.1 ℂ _ hw
     rw [Small.LineModel.ptsOver_complex] at hw₁ hw₂
     refine ⟨x', val, ho₂, hval0, hval, fun t ht0 ht τ p => ?_⟩
-    have hid := GlobalTheory.T.root_origin_point_compare E H D l Xo c Y S S₀ M R Sys Fx o o₀ x x' _ _ (fun r => ‖val r‖) t ht0 ht hw₁ hw₂ ho₁ ho₂
+    have hid := _root_.GlobalTheory.CompanionTheory.Ar.OrArch.defect_eq_regWeight_add_bracket E H D l Xo c Y S S₀ M R Sys Fx o o₀ x x' _ _ (fun r => ‖val r‖) t ht0 ht hw₁ hw₂ ho₁ ho₂
       hπ hop (fun r => ⟨norm_pos_iff.2 (hval0 r), hs r _ (hval r)⟩) τ p
     rw [hπ] at hid
     exact hid
@@ -699,10 +671,10 @@ theorem root_isometric : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
       _ = _ := by rw [hR]; ring
 
   have hFne : F₀ * F₁ ∉ mCoordIdeal y := fun h => by
-    have := aeval_zero_of_mem y h
+    have := _root_.GlobalTheory.CompanionTheory.Ar.JoinPts.aeval_eq_zero_of_mem y h
     rw [map_mul] at this
     exact (mul_ne_zero hF₀ hF₁) this
-  have hzc := GlobalTheory.T.complex_points_dense_nonvanishing K J (mCoordIdeal y) _ (F₀ * F₁) hA hFne hz
+  have hzc := _root_.GlobalTheory.CompanionTheory.Ar.Flat.nonvanishing_dense K J (mCoordIdeal y) _ (F₀ * F₁) hA hFne hz
   haveI hnb := mem_closure_iff_nhdsWithin_neBot.1 hzc
   have cont : ∀ {K₁ : Type} [Fintype K₁] {ι : K₁ → Type} [∀ k, Fintype (ι k)] (A : HermLine ι) (_ : IsSmoothHerm A)
       (u : (Σ k, ι k) → Σ k, J k), (∀ k, ∃ a, z (u ⟨k, a⟩) ≠ 0) →

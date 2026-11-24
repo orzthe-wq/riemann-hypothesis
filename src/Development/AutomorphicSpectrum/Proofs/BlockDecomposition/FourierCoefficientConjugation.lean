@@ -62,11 +62,9 @@ theorem adj_mul_sq (x y : Mx D n n) : adj (x * y) = adj y * adj x := adj_mul x y
 
 theorem rat_mul_sq (x y : Matrix (Fin n) (Fin n) D.host.E) : (rat (x * y) : Mx D n n) = rat x * rat y := rat_mul x y
 
-theorem rat_one_sq : (rat (1 : Matrix (Fin n) (Fin n) D.host.E) : Mx D n n) = 1 :=
-  Matrix.map_one _ (map_zero (incA D)) (map_one (incA D))
+alias rat_one_sq := _root_.GlobalTheory.MixModel.rat_one
 
-theorem adj_one_sq : adj (1 : Mx D n n) = 1 := by
-  rw [← rat_one_sq, ← rat_conjTranspose, Matrix.conjTranspose_one]
+alias adj_one_sq := _root_.GlobalTheory.MixModel.adj_one
 
 theorem rat_gl_mul_inv (a : GL (Fin n) D.host.E) : (rat a.1 * rat (a⁻¹).1 : Mx D n n) = 1 := by
   rw [← rat_mul_sq, show a.1 * (a⁻¹).1 = 1 from by simp, rat_one_sq]

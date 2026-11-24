@@ -89,7 +89,7 @@ theorem bf_single (i j : Fin n) : bf c J (Pi.single i 1) (Pi.single j 1) = J i j
     by_cases hl : l = j
     · subst hl
       simp
-    · simp [Pi.single_apply, hl]
+    · simp [hl]
   simp only [bf, e, mulVec_single_one, single_one_dotProduct]
   rfl
 

@@ -92,7 +92,7 @@ theorem admissibleBasePoint_chart_mul_twist : ∀ {B : Base} {X : PreX B.toPre} 
     have hent : ∀ r l, adAt B.host.F P.1 (((t β)⁻¹ : GA B (B.R.N i)).1 r l) = if r = l then 1 else 0 := by
       intro r l
       have e := congrArg (fun g => g.1 r l) ht'
-      simp only [bc, Units.coe_map, Units.val_one, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply] at e
+      simp only [bc, Units.coe_map, Units.val_one] at e
       split_ifs with h
       · subst h
         exact FullDt.adAt_eq_one_of_prV P.1 (by simpa using e)

@@ -171,9 +171,7 @@ theorem io_zero : (io (0 : A) : SlopeTestRemainingChoices S A) = 0 := by simp [i
 
 theorem io_one : (io (1 : A) : SlopeTestRemainingChoices S A) = 1 := by simp [io]
 
-theorem lift_reduction_mul (M N : M2 A) : (lift0 (M * N) : M2 (SlopeTestRemainingChoices S A)) = lift0 M * lift0 N := by
-  refine Matrix.ext fun i j => ?_
-  simp only [lift0, Matrix.map_apply, Matrix.mul_apply, Fin.sum_univ_two, io_add, io_mul]
+alias lift_reduction_mul := _root_.Formalism.FourierDecayAlt.P.Wd7.lift_reduction_mul
 
 theorem liftMatrix_one : (lift0 (1 : M2 A) : M2 (SlopeTestRemainingChoices S A)) = 1 := by
   refine Matrix.ext fun i j => ?_
@@ -260,7 +258,7 @@ theorem comm_Ts_star {R : Type} [Ring R] (φ : A →+* R)
     rw [← algebraMap_star_comm]
     exact hφ _ b
   fin_cases i <;> fin_cases j <;> simp [Ts, Tm, hc, hci] <;>
-    first | exact hY.add_left hp | exact (hφ (star Y) b).add_left hp
+    first | exact hY.add_left hp
 
 end Basic
 
@@ -299,19 +297,15 @@ theorem sitesCommute_symm {σ τ : Site A} (h : SitesCommute σ τ) : SitesCommu
 
 theorem liftMatrix_transfer_commute_diagScalar {τ : Site A} {b : SlopeTestRemainingChoices S A} (h : CC τ b) (Y : K) :
     Commute (lift0 (Ts τ Y)) (d0 b) := by
-  have hφ : ∀ (k : K) (r : SlopeTestRemainingChoices S A),
-      Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) (algebraMap K A k)) r :=
-    fun k r => io_algebraMap_comm k r
-  have h' : ∀ x ∈ ops τ, Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) x) b := h
-  exact liftMatrix_commute_diagScalar _ _ fun i j => comm_Ts _ hφ τ b h' Y i j
+  exact liftMatrix_commute_diagScalar _ _ fun i j =>
+    comm_Ts (Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A)
+      (fun k r => io_algebraMap_comm k r) τ b h Y i j
 
 theorem liftMatrix_transfer_conjTranspose_commute {τ : Site A} {b : SlopeTestRemainingChoices S A} (h : CC τ b) (Y : K) :
     Commute (lift0 (Ts τ Y)ᴴ) (d0 b) := by
-  have hφ : ∀ (k : K) (r : SlopeTestRemainingChoices S A),
-      Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) (algebraMap K A k)) r :=
-    fun k r => io_algebraMap_comm k r
-  have h' : ∀ x ∈ ops τ, Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) x) b := h
-  exact liftMatrix_commute_diagScalar _ _ fun i j => comm_Ts_star _ hφ τ b h' Y j i
+  exact liftMatrix_commute_diagScalar _ _ fun i j =>
+    comm_Ts_star (Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A)
+      (fun k r => io_algebraMap_comm k r) τ b h Y j i
 
 theorem exchA_mat (sites : List (Site A)) (w : List (Letter K S)) (Y : K)
     (h1 : ∀ σ ∈ sites, Xp w Y * lift0 (Ts σ Y) * d0 (bT σ w) = d0 (bT σ w) * lift0 (Ts σ Y) * Xp w Y)
@@ -348,12 +342,10 @@ theorem exchB_mat (sites : List (Site A)) (w : List (Letter K S)) (Y : K)
 
 theorem mul_col_fix (B C : SlopeTestRemainingChoices S A) (z : Ix S) (h : ∀ z', C z' e1 = if z' = e1 then 1 else 0) :
     (B * C) z e1 = B z e1 := by
-  rw [Matrix.mul_apply]
-  simp [h]
+  simp [Matrix.mul_apply, h]
 
 theorem mul_col_zero (B C : SlopeTestRemainingChoices S A) (z : Ix S) (h : ∀ z', C z' e1 = 0) : (B * C) z e1 = 0 := by
-  rw [Matrix.mul_apply]
-  simp [h]
+  simp [Matrix.mul_apply, h]
 
 theorem sum_col_fix (B C : Fin 2 → SlopeTestRemainingChoices S A) (z : Ix S)
     (h : ∀ (k : Fin 2) (z' : Ix S), C k z' e1 = if k = 0 ∧ z' = e1 then 1 else 0) :
@@ -442,15 +434,13 @@ theorem eU_apply (a : S) (i j : Fin 2) (x y : Ix S) :
     by_cases hb : b = a
     · rw [hb]
       simp [h2]
-    · simp [Function.update_apply, hb, h3 b hb]
+    · simp [hb, h3 b hb]
   · rintro ⟨h1, rfl⟩
-    exact ⟨h1, by simp, fun b hb => by simp [Function.update_apply, hb]⟩
+    exact ⟨h1, by simp, fun b hb => by simp [hb]⟩
 
 theorem eU_mul_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
     ((eU a i j : SlopeTestRemainingChoices S A) * B) x y = if x a = i then B (Function.update x a j) y else 0 := by
-  rw [Matrix.mul_apply]
-  simp only [eU_apply]
-  by_cases h : x a = i <;> simp [h]
+  by_cases h : x a = i <;> simp [Matrix.mul_apply, eU_apply, h]
 
 theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
     Commute (eU c i j : SlopeTestRemainingChoices S A) (eU a k l) := by
@@ -458,7 +448,7 @@ theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
   refine Matrix.ext fun x y => ?_
   rw [eU_mul_apply, eU_mul_apply, eU_apply, eU_apply, Function.update_comm hc]
   by_cases h1 : x c = i <;> by_cases h2 : x a = k <;>
-    simp [Function.update_apply, hc, Ne.symm hc, h1, h2]
+    simp [hc, Ne.symm hc, h1, h2]
 
 theorem ins_lift0_mul_apply (a : S) (M : M2 A) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
     ((ins a (lift0 M) : SlopeTestRemainingChoices S A) * B) x y = ∑ j, M (x a) j * B (Function.update x a j) y := by
@@ -560,13 +550,13 @@ theorem word_product_formula_general (sites : List (Site A)) (w : List (Letter K
       subst hz'
       simp [e1]
     · have hz' : z ≠ e1 := fun h => hz fun c => by simp [h, e1]
-      simp [Matrix.one_apply, hz', hz]
+      simp [hz', hz]
   | cons l w' ih =>
     have hnd : l.intersection_update_fsHerm_neg_one ∉ w'.map Letter.intersection_update_fsHerm_neg_one ∧ (w'.map Letter.intersection_update_fsHerm_neg_one).Nodup := by
       simpa using hw
     have ih' : ∀ z', uw sites w' z' = if ∀ c, c ∉ w'.map Letter.intersection_update_fsHerm_neg_one → z' c = 0 then
         (w'.map fun l => (sites.map (lm l)).prod (z' l.intersection_update_fsHerm_neg_one) 0).prod else 0 := fun z' => by
-      first | exact ih hnd.2 z' | exact ih z' hnd.2
+      first | exact ih hnd.2 z'
     have hne : ∀ l' ∈ w', l'.intersection_update_fsHerm_neg_one ≠ l.intersection_update_fsHerm_neg_one := fun l' hl' h =>
       hnd.1 (List.mem_map.mpr ⟨l', hl', h⟩)
     have hsplit : (sites.map fun σ => (bT σ (l :: w') : SlopeTestRemainingChoices S A)).prod =
@@ -625,13 +615,10 @@ theorem tTFactor : TTFactor := by
   induction w with
   | nil => simp [TTw, Xm, Xp]
   | cons l w ih =>
-    by_cases h : l.plus = true
-    · simp [TTw, Xm, Xp, h, ih, mul_assoc]
-    · simp [TTw, Xm, Xp, h, ih, mul_assoc]
+    cases h : l.plus <;> simp [TTw, Xm, Xp, h, ih, mul_assoc]
 
 end Formalism.FourierDecayAlt.P.Wd8
 
 theorem Formalism.FourierDecayAlt.P.conjugate_word_eigen : Formalism.FourierDecayAlt.Wd.CwEigen := Formalism.FourierDecayAlt.P.Wd8.cwEigen_of Formalism.FourierDecayAlt.P.exchange_plus_factor Formalism.FourierDecayAlt.P.exchange_second_case
   Formalism.FourierDecayAlt.P.positive_word_fixed Formalism.FourierDecayAlt.P.negative_word_fixed Formalism.FourierDecayAlt.P.Wd8.tTFactor
 
-theorem Formalism.FourierDecayAlt.P.word_product_formula : Formalism.FourierDecayAlt.Wd.UwProduct := Formalism.FourierDecayAlt.P.Wd8.uwProduct

@@ -1,50 +1,9 @@
 module
 
 public import ReciprocityTheory.DualLattices.VEqZeroOfPowEqOne
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.Order.CompletePartialOrder
 public import Mathlib.RingTheory.PowerSeries.Substitution
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Presheaf
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -72,9 +31,6 @@ private theorem hs_lemma_2 {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries 
     (ha0 : ∀ s, constantCoeff (a s) = 0) : HasSubst a := by
   first
   | exact hasSubst_of_constantCoeff_zero ha0
-  | exact HasSubst.of_constantCoeff_zero' ha0
-  | exact hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)
-  | exact HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)
 
 theorem mvIsInt_subst {σ τ : Type} [Finite σ] (v : AddValuation C (WithTop ℝ))
     {f : MvPowerSeries σ C} (hf : MvIsInt v f) {a : σ → MvPowerSeries τ C}
@@ -263,7 +219,6 @@ theorem degree_eq_one {σ : Type} {e : σ →₀ ℕ} (he : e.degree = 1) :
   have hd : ∑ i ∈ e.support, e i = 1 := by
     first
     | exact he
-    | simpa [Finsupp.degree] using he
   have hne : e.support.Nonempty := by
     rw [Finset.nonempty_iff_ne_empty]
     intro h
@@ -293,7 +248,6 @@ theorem order_lg_sub_X (G : LogFGL v d) (a : Fin d) : ((2 : ℕ) : ℕ∞) ≤ (
   rcases (show e.degree = 0 ∨ e.degree = 1 by omega) with h0 | h1
   · have hz : e = 0 := by
       first
-      | exact Finsupp.degree_eq_zero_iff.mp h0
       | exact (Finsupp.degree_eq_zero_iff e).mp h0
     rw [hz, coeff_zero_eq_constantCoeff_apply, coeff_zero_eq_constantCoeff_apply, G.lg_const,
       constantCoeff_X, sub_zero]

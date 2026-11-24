@@ -75,19 +75,13 @@ private theorem mem_max_iff (E : Type) [Field E] (σ : Type) (g : MvPowerSeries 
   rw [mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]
   simp
 
-open MvPowerSeries in
-private theorem pi_span_X {O σ : Type} [CommRing O] (s : Finset σ) :
-    ∀ f : MvPowerSeries σ O, (∀ n : σ →₀ ℕ, (∀ i ∈ s, n i = 0) → coeff n f = 0) →
-      f ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O)) :=
-  _root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X s
-
 private theorem max_eq_span (E : Type) [Field E] (σ : Type) [Finite σ] :
     maximalIdeal (MvPowerSeries σ E) ≤
       Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ E)) := by
   intro g hg
   rw [mem_max_iff] at hg
   cases nonempty_fintype σ
-  refine pi_span_X Finset.univ g fun n hn => ?_
+  refine _root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X Finset.univ g fun n hn => ?_
   have : n = 0 := by ext i; exact hn i (Finset.mem_univ i)
   subst this
   simpa using hg

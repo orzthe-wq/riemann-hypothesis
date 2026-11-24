@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -58,7 +59,7 @@ private theorem finsum_sigma {I : Type} {κ : I → Type} (f : (Σ i, κ i) → 
     intro i hi
     obtain ⟨k, hk⟩ : ∃ k, f ⟨i, k⟩ ≠ 0 := by
       by_contra h
-      push_neg at h
+      push Not at h
       exact hi (finsum_eq_zero_of_forall_eq_zero h)
     simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe]
     exact ⟨⟨i, k⟩, by simpa using hk, rfl⟩

@@ -87,8 +87,7 @@ private theorem jetCopy_trunc_lemma {n : ℕ} (m : ℕ) (i : Fin n) :
   apply Ideal.Quotient.algHom_ext
   apply MvPolynomial.algHom_ext
   intro p
-  simp [jetCopy, jetMap, jetTrunc, liftJet, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.lift_mk,
-    Ideal.Quotient.factor_mk, MvPolynomial.bind₁_X_right]
+  simp [jetCopy, jetMap, jetTrunc, liftJet, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.factor_mk]
   rfl
 
 theorem jpt_tr (hch : IsChartG t x0 d F act tg uvec x) (m : ℕ) {n : ℕ} (i : Fin n) :

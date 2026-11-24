@@ -58,7 +58,7 @@ open Formalism.MainNotions.S (AutInst)
 
 theorem index_pi₂ {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgroup (G i)) :
     (Subgroup.pi Set.univ H).index = ∏ i, (H i).index := by
-  apply GlobalTheory.index_pi_univ_dep <;> assumption
+  apply GlobalTheory.index_pi_univ_dep
 
 def KsetSub (I : AutInst) : Subgroup I.Gf :=
   (Formalism.UG.stabGL I.Lf).comap (Formalism.UG.UPts I.cm.sig I.J (Af I.F)).subtype

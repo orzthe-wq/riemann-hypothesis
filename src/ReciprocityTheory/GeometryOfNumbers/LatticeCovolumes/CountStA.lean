@@ -3,46 +3,7 @@ module
 public import ReciprocityTheory.GeometryOfNumbers.LatticeCovolumes.ConjSymm
 public import Mathlib.Algebra.Module.ZLattice.Covolume
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MeasurePreservingSwapPi
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.LinearAlgebra.FreeModule.Finite.CardQuotient
 
 @[expose] public section
@@ -80,13 +41,6 @@ theorem covol_div_covol_eq_relIndex {E : Type*} [NormedAddCommGroup E] [NormedSp
   congr; ext i j
   rw [Matrix.map_apply, Basis.toMatrix_apply, Basis.toMatrix_apply]
   exact (b₂.ofZLatticeBasis_repr_apply ℝ L₂ ⟨b₁ j, h (Submodule.coe_mem _)⟩ i)
-
-theorem measurePreserving_swapPi {ι κ X : Type*} [Fintype ι] [Fintype κ] [MeasurableSpace X]
-    (ν : Measure X) [SigmaFinite ν] :
-    MeasurePreserving (fun (f : ι → κ → X) (k : κ) (i : ι) => f i k)
-      (Measure.pi fun _ : ι => Measure.pi fun _ : κ => ν)
-      (Measure.pi fun _ : κ => Measure.pi fun _ : ι => ν) := by
-  first | exact UpperTheory.Reformulated.B.Qe3b.measurePreserving_swapPi .. | (apply UpperTheory.Reformulated.B.Qe3b.measurePreserving_swapPi <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qe3b.measurePreserving_swapPi <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe3b.measurePreserving_swapPi <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qe3b.measurePreserving_swapPi <;> assumption) | (apply @UpperTheory.Reformulated.B.Qe3b.measurePreserving_swapPi <;> first | assumption | infer_instance)
 
 end ReciprocityTheory.GeometryOfNumbersTheory
 
@@ -126,11 +80,5 @@ theorem HermFam.form_expand (h : HermFam K V) (σ : K →+* ℂ) {n : ℕ} (c : 
   ring
 
 end Form
-
-section Places
-
-variable {K : Type*} [Field K] [NumberField K]
-
-end Places
 
 end ReciprocityTheory.GeometryOfNumbersTheory

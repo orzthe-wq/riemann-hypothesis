@@ -71,10 +71,9 @@ theorem JHfr_anti (u : WeightFamilies.Wt D j) {b c : ℕ} (h : c ≤ b) : JHfr X
   intro x hx
   have hx' : x ∈ JHs X la w u b := hx
   rw [← Jid_pow_smul_HK] at hx'
-  have : x ∈ JHs X la w u c := by
-    rw [← Jid_pow_smul_HK]
-    exact Submodule.smul_mono_left (Ideal.pow_le_pow_right h) hx'
-  exact this
+  show x ∈ JHs X la w u c
+  rw [← Jid_pow_smul_HK]
+  exact Submodule.smul_mono_left (Ideal.pow_le_pow_right h) hx'
 
 theorem mem_JHfr_zero (u : WeightFamilies.Wt D j) {x : Lw X la w} : x ∈ JHfr X la w u 0 ↔ x ∈ Hfr X la w u := by
   have e := Jid_pow_smul_HK X la w u 0

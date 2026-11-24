@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.Admissible
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselTorusElementPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LebesgueRootCoordinatesMapBesselTorusConjStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselTorusElementProperties
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LebesgueRootCoordinatesMapBesselTorusConj
 import Formalism.FormalDegreeBessel.FormalDegreeRatio.BesselUnitaryEquivHolds
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -145,10 +145,10 @@ theorem besselJ_changeFrame : ∀ (k r : ℕ) (L : Formalism.MainNotions.S.LocBe
   have hα : cStd / L.c ≠ 0 := div_ne_zero (by simp [cStd]) hc
   have hcα : L.c * (cStd / L.c) = cStd := by field_simp
   set α := cStd / L.c with hαdef
-  obtain ⟨-, hT, -, -⟩ := GlobalTheory.T.besselTorusElement_properties k r α hα
+  obtain ⟨-, hT, -, -⟩ := _root_.GlobalTheory.ThA.TorusElt.torusElt k r α hα
   obtain ⟨hcz, hnz⟩ := hT L.z L.hz.1
   obtain ⟨hcz', hnz'⟩ := hT L.z' L.hz'.1
-  have hmap := GlobalTheory.T.lebesgue_rootCoordinates_map_besselTorus_conj k r α hα
+  have hmap := _root_.GlobalTheory.ThA.TorusJac.muN_map_conj k r α hα
   have ha : IsUnit (aT k r α).det := by
     rw [aT, Matrix.det_diagonal]
     refine isUnit_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun i _ => ?_)

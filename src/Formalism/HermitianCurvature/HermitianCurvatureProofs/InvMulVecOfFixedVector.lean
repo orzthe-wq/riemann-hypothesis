@@ -149,7 +149,7 @@ lemma om_herm_wb_zero {v w : Fin (2 * r + k + 1) → ℂ} (hw : inWb k r w)
       · have : Hpk k r i j = 0 := by
           unfold Hpk
           have hij : i ≠ j := fun h => hj (h ▸ hi)
-          split_ifs <;> first | rfl | omega | exact absurd ‹_› (by tauto)
+          split_ifs <;> first | rfl | omega
         simp [this]
     simp [this]
   · have : w i = 0 := hw i (by omega)
@@ -311,8 +311,8 @@ theorem om_norm {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp
   have hm := (HermitianLatticeCounting.P.dual_vector_norm_on_group k r Bs.z Bs.z' Bs.z_mem Bs.z'_mem Bs.T'_pos g hg).1
   rw [← om_expand Bs hB hg] at hm
   simp only [om_herm_sum, om_herm_smul, om_herm_sum_right, om_herm_smul_right, hB.2.1,
-    mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at hm
-  simp only [Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true] at hm
+    mul_ite, mul_one, mul_zero] at hm
+  simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true] at hm
   apply Complex.ofReal_injective
   rw [← hm]
   simp only [C6.sq2, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self]

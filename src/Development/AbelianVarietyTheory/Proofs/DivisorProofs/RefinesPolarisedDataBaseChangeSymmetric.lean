@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBLocal
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -132,9 +133,7 @@ section Kappa
 
 variable {R R₁ R₂ : Type} [CommRing R] [IsDomain R] [CommRing R₁] [IsDomain R₁] [CommRing R₂] [IsDomain R₂]
 
-theorem spMap_comp_spMap' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) := by
-  rw [spMap, spMap, spMap, ← Spec.map_comp]; rfl
+alias spMap_comp_spMap' := _root_.GlobalTheory.spMap_comp_ring
 
 theorem gam_comm (σ : R₁ →+* R₂) (gam : FractionRing R₁ →+* FractionRing R₂)
     (hg : ∀ r, gam (algebraMap R₁ _ r) = algebraMap R₂ _ (σ r)) : spMap gam ≫ jK R₁ = jK R₂ ≫ spMap σ := by

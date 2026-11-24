@@ -129,7 +129,6 @@ theorem ddI_ne_bot : ddI D ≠ ⊥ := by
   · exact differentIdeal_ne_bot
   · first
     | exact FaithfulSMul.algebraMap_injective _ _
-    | exact NoZeroSMulDivisors.algebraMap_injective _ _
 
 theorem mem_inv_coe {J : Ideal (𝓞 D.host.E)} (hJ : J ≠ ⊥) (x : D.host.E) :
     x ∈ ((J : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E))⁻¹ ↔
@@ -212,7 +211,6 @@ theorem locGenXS_of (hD : DdOffG) : LocGenXS := by
       have := hdE a
       field_simp
       try simp
-      try ring
     · intro a
       refine ⟨t a, htP a, ?_⟩
       rw [aaI_eq, mem_inv_coe D (hJ a)]

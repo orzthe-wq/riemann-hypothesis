@@ -104,10 +104,7 @@ theorem principal_root_re_zero_im_sq (H : Host E) : H.rt0.re = 0 ∧ H.rt0.im �
     nlinarith [mul_self_nonneg H.rt0.re]
   exact ⟨mul_right_cancel₀ him (by linarith), him⟩
 
-theorem bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
-  have h : H.rt = 2 * H.w0 - 1 := by rw [H.two_weight_eq_one_add_root]; ring
-  rw [h, map_sub, map_mul, map_one, HostModel.cmHost_bar_halfIntegerGenerator, map_ofNat]
-  ring
+alias bar_rt := _root_.GlobalTheory.HostModel.bar_rt
 
 theorem orth_of_pure (hP : IsPeriod D ty Pe) {x y : D.La} (hx : x ∈ PureType.lat hP H.rt0)
     (hy : y ∈ PureType.lat hP (-H.rt0)) : D.EF x y = 0 := by

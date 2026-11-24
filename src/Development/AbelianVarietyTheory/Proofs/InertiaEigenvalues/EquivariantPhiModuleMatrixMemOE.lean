@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralElementsUnitFactorizationStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantPhiSolutionMemOEStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralElementsUnitFactorization
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantPhiSolutionMemOE
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -71,17 +71,17 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : �
     bk.evW bk.E ^ S.a • (S'.A.map bk.evW * X.map (frobW l)) = bk.evW bk.E ^ S'.a • (X * S.A.map bk.evW) →
     ∀ i j, X i j ∈ bk.OE := by
   intro l _ K bk d d' S S' X hg hφ
-  obtain ⟨u, hu, heu⟩ := (GlobalTheory.T.integral_elements_unit_factorization l K bk).2.2.1 bk.E (not_dvd_E bk)
+  obtain ⟨u, hu, heu⟩ := (_root_.GlobalTheory.OEDvr.main l K bk).2.2.1 bk.E (not_dvd_E bk)
   have hA : S.A.map bk.evW * S.A'.map bk.evW = bk.evW bk.E ^ S.b • (1 : Matrix (Fin d) (Fin d) (WCb l)) := by
     rw [← Matrix.map_mul, S.A_mul]
     ext i j
-    by_cases h : i = j <;> simp [h, Matrix.one_apply]
+    by_cases h : i = j <;> simp [h]
   have h1 : X = (u ^ (S'.a + S.b) * bk.evW bk.E ^ S.a) •
       (S'.A.map bk.evW * X.map (frobW l) * S.A'.map bk.evW) := by
     rw [mul_smul, ← Matrix.smul_mul, hφ, Matrix.smul_mul, Matrix.mul_assoc, hA, Matrix.mul_smul, Matrix.mul_one,
       smul_smul, smul_smul, mul_assoc, ← pow_add, ← mul_pow, mul_comm u, heu, one_pow, one_smul]
   intro i j
-  refine GlobalTheory.T.mem_OE_of_invariant_frobenius_solution l K bk (Fin d' × Fin d) (fun p => X p.1 p.2)
+  refine _root_.GlobalTheory.BSP.invariant_phi_solution_mem_OE l K bk (Fin d' × Fin d) (fun p => X p.1 p.2)
     (fun p q => u ^ (S'.a + S.b) * bk.evW bk.E ^ S.a * bk.evW (S'.A q.1 p.1) * bk.evW (S.A' p.2 q.2))
     (fun p q => ?_) (fun q => ?_) (fun g h q => ?_) (i, j)
   · exact bk.OE.mul_mem (bk.OE.mul_mem (bk.OE.mul_mem (bk.OE.pow_mem hu _) (bk.OE.pow_mem (evW_mem bk _) _))

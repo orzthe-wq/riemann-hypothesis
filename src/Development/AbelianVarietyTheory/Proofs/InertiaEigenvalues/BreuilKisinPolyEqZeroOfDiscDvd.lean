@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClosedDiscGaugeCompletionZeroOnePropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaussNormCoeffWittDiscStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ClosedDiscGaugeCompletionZeroOneProperties
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaussNormCoeffWittDisc
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -104,8 +104,8 @@ theorem eq_zero_of_dvd : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K)
     toDisc l (X : bk.S) bk.ρ₀ bk.E ∣ toDisc l (X : bk.S) bk.ρ₀ (r : bk.S) → r = 0 := by
   intro l hl K bk r hr ⟨y, hy⟩
   obtain ⟨h0, h1, hpow⟩ := rho_zero bk
-  obtain ⟨a, ha1, ha2, ha3, ha4⟩ := GlobalTheory.T.exists_gaussNorm_coeff_wittDisc l K bk bk.ρ₀ h0 h1
-  obtain ⟨-, -, hinj, -⟩ := GlobalTheory.T.closedDiscGaugeCompletion_zero_one_properties l K bk
+  obtain ⟨a, ha1, ha2, ha3, ha4⟩ := _root_.GlobalTheory.BSP.DiscSer.exists_coeff_disc l K bk bk.ρ₀ h0 h1
+  obtain ⟨-, -, hinj, -⟩ := _root_.GlobalTheory.BSP.disc_zero_one l K bk
   have h0' : (0 : ℝ) < bk.ρ₀ := h0
   have h1' : (bk.ρ₀ : ℝ) < 1 := h1
   have hc : ∀ n, Continuous (a n) := fun n =>

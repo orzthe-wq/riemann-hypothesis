@@ -59,14 +59,12 @@ theorem glEquiv_apply' {K : Type} [Field K] {n : Type} [Fintype n] [DecidableEq 
     (g : GL n K) (x : n → K) : Formalism.UG.glEquiv g x = (g : Matrix n n K) *ᵥ x := by
   first
   | rfl
-  | simp [LinearMap.GeneralLinearGroup.generalLinearEquiv, Matrix.GeneralLinearGroup.toLin, Matrix.toLin'_apply]
 
 theorem hform_eq_dot {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A)
     (J : Matrix n n A) (x y : n → A) : Formalism.UG.hform σ J x y = (σ ∘ x) ⬝ᵥ (J *ᵥ y) := by
   unfold Formalism.UG.hform
   first
   | simp only [dotProduct, mulVec, Function.comp_apply, Finset.mul_sum, mul_assoc]
-  | simp [dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 theorem hform_mulVec {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+* A)
     (J M : Matrix n n A) (x y : n → A) :
@@ -77,7 +75,6 @@ theorem hform_mulVec {A : Type} [CommRing A] {n : Type} [Fintype n] (σ : A →+
     funext i
     first
     | exact RingHom.map_mulVec σ M x i
-    | simp [mulVec, dotProduct, map_sum, map_mul]
   rw [h1, mulVec_mulVec, ← vecMul_transpose (M.map ⇑σ) (⇑σ ∘ x), ← dotProduct_mulVec, mulVec_mulVec,
     Matrix.mul_assoc]
 
@@ -90,7 +87,7 @@ theorem hform_single {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq
     by_cases hk : k = i
     · subst hk
       simp
-    · simp [Pi.single_apply, hk]
+    · simp [hk]
   rw [hs]
   simp [mulVec_single]
 
@@ -103,7 +100,7 @@ theorem hform_gram {K : Type} [Field K] [StarRing K] {n : Type} [Fintype n] [Dec
     simp [Finset.sum_apply, Pi.single_apply]
   conv_lhs => rw [hx x, hx y]
 
-  simp only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul,
+  simp only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
   Finset.mul_sum]
   unfold Formalism.UG.hform Formalism.UG.gram
   conv_lhs => rw [Finset.sum_comm]

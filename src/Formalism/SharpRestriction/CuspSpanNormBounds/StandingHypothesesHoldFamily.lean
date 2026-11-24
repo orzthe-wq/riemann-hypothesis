@@ -1,19 +1,22 @@
 module
 
+public import Formalism.SharpRestriction.CuspSpanNormBounds.StandingNumericalData
+public import Formalism.SharpRestriction.CuspSpanNormBounds.FlagEEqHyperbolic
+public import Formalism.SharpRestriction.FamCore
+public import Formalism.SharpRestriction.ParConsts
 public import Formalism.SharpRestriction.GlobalTheoremInputs
 public import Formalism.SharpRestriction.CuspSpanNormBounds.LeSCSCl
 public import Formalism.SharpRestriction.CuspSpanNormBounds.AdmissibleBoundsFromSource
-public import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusProjectedBounds
 public import Formalism.SharpRestriction.GlobalSchurBounds.CMFieldLemmas
 public import Formalism.SharpRestriction.GlobalSchurBounds.ShortIntervalPrimes
 public import Formalism.SharpRestriction.CuspSpanNormBounds.UniformConstantsAndStatements
-import Mathlib.Algebra.AffineMonoid.Basic
+public import Mathlib.NumberTheory.RamificationInertia.Basic
+public import Mathlib.RingTheory.Ideal.Int
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Algebra.Order.Star.Rat
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -23,12 +26,8 @@ import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-public import Mathlib.NumberTheory.RamificationInertia.Basic
 import Mathlib.NumberTheory.SelbergSieve
-public import Mathlib.RingTheory.Ideal.Int
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,7 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,10 +47,112 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.AffineMonoid.Basic
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.TypeStar
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusProjectedBounds, Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily
+
+-- ===== clump member: Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusProjectedBounds =====
+-- clump-header: {"m": "Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusProjectedBounds", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.StandingNumericalData\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.FlagEEqHyperbolic\npublic import Formalism.SharpRestriction.FamCore\npublic import Formalism.SharpRestriction.ParConsts\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.FrobeniusProjectedBounds
+
+open Formalism.BasicNotions Formalism.MainNotions.S NumberField
+open scoped InnerProductSpace
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+section Letters
+
+variable (D : D7)
+
+def kR : ℝ := D.R.k
+
+def mR : ℝ := D.R.m
+
+def fR : ℝ := D.R.f
+
+def rR : ℝ := D.R.rS
+
+def nR : ℝ := D.R.r
+
+def du (u : D.what₂.Word) : ℝ := D.duS u
+
+def Dall : ℝ := D.what₂.Dall
+
+def Dst : ℝ := D.what₂.Dstar
+
+def Gam : ℝ := (D.mem D.u₀).A.GamP
+
+end Letters
+
+section Flags
+
+variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
+
+end Flags
+
+section Parts
+
+variable (D : D7)
+
+end Parts
+
+def Hyp (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) : Prop :=
+  StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT ∧ StandingNumericalData D C0 ∧ 1 ≤ C0
+
+section Statements
+
+variable (D : D7) (large₂ : SizeData₂ D) (X : TermTie D) (C' Cl Cg cb Cu cT CT C0 : ℝ)
+
+def adm5 (c C : ℝ) : Prop := Hyp D large₂ C' Cl Cg cb Cu cT CT C0 →
+  ∀ u u' : D.what₂.Word, hsNormSq (KOf D.s u u' (famNG D.s)) ≤
+    (Real.exp (-(c * kR D * fR D * Real.log (kR D))) +
+      (2 : ℝ) ^ (-(kR D - 2 * rR D - 5)) * Real.exp (C * mR D ^ 5 * fR D * large₂.sc.L)) *
+      (du D u * du D u') / Dst D
+
+def adm7 (c : ℝ) : Prop := Hyp D large₂ C' Cl Cg cb Cu cT CT C0 →
+  |Dall D - Dst D| ≤ Real.exp (-(c * nR D * fR D * Real.log (nR D))) * Dst D
+
+def eF (D : D7) (C0 : ℝ) : ℝ := 2 * C0 / Gam D + 2 * Real.exp (-(kR D * fR D * Real.log (kR D)))
+
+end Statements
+
+section LinAlg
+
+variable {H G : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
+  [NormedAddCommGroup G] [InnerProductSpace ℂ G] [FiniteDimensional ℂ G]
+
+end LinAlg
+
+section Family
+
+variable {eps : ℝ} (Fm : FamP eps) (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
+  (Cg cb Cu cT CT C0 : ℝ)
+
+end Family
+
+end Formalism.MainNotions.FrobeniusProjectedBounds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusProjectedBounds =====
+
+-- ===== clump member: Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily =====
+-- clump-header: {"m": "Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalTheoremInputs\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.LeSCSCl\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.AdmissibleBoundsFromSource\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusProjectedBounds\npublic import Formalism.SharpRestriction.GlobalSchurBounds.CMFieldLemmas\npublic import Formalism.SharpRestriction.GlobalSchurBounds.ShortIntervalPrimes\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.UniformConstantsAndStatements\nimport Mathlib.Algebra.AffineMonoid.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\npublic import Mathlib.NumberTheory.RamificationInertia.Basic\nimport Mathlib.NumberTheory.SelbergSieve\npublic import Mathlib.RingTheory.Ideal.Int\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -68,7 +168,9 @@ theorem linear_le_pow_eight_eventually (a B : ℝ) (ha : 0 < a) : ∃ Y0 : ℝ, 
   have hy2' : B ≤ a * y := by
     rw [div_le_iff₀ ha] at hy2; linarith
   have hp : y ^ 2 ≤ y ^ 8 := pow_le_pow_right₀ hy1 (by norm_num)
-  have h2 : B * y ≤ a * y ^ 2 := by nlinarith
+  have h2 : B * y ≤ a * y ^ 2 := by
+    have := mul_le_mul_of_nonneg_right hy2' (by linarith : (0 : ℝ) ≤ y)
+    linarith [show a * y * y = a * y ^ 2 by ring]
   have h3 : a * y ^ 2 ≤ a * y ^ 8 := mul_le_mul_of_nonneg_left hp ha.le
   linarith
 
@@ -91,10 +193,15 @@ theorem size_thresholds (c c7 C0 : ℝ) (hc : 0 < c) (hc7 : 0 < c7) (hC0 : 1 ≤
   · have h1 : 2 * C0 + 2 = Real.exp A := (Real.exp_log (by linarith)).symm
     rw [h1, ← Real.exp_add]
     apply Real.exp_le_exp.2
-    have h2 : (2 + A) * y ≤ c * y ^ 2 := by nlinarith
+    have h2 : (2 + A) * y ≤ c * y ^ 2 := by
+      have := mul_le_mul_of_nonneg_right hy2' hy0
+      linarith [show c * y * y = c * y ^ 2 by ring]
     have h3 : c * y ^ 2 ≤ c * y ^ 8 := mul_le_mul_of_nonneg_left hp hc.le
-    nlinarith
-  · have h2 : y ≤ 8 * c7 * c * y ^ 2 := by nlinarith
+    have hAy : A ≤ A * y := le_mul_of_one_le_right hA0 hy1
+    linarith
+  · have h2 : y ≤ 8 * c7 * c * y ^ 2 := by
+      have := mul_le_mul_of_nonneg_right hy3' hy0
+      linarith [show 8 * c7 * c * y * y = 8 * c7 * c * y ^ 2 by ring]
     have h3 : 8 * c7 * c * y ^ 2 ≤ 8 * c7 * c * y ^ 8 := mul_le_mul_of_nonneg_left hp (by positivity)
     linarith
 
@@ -115,7 +222,12 @@ theorem hsNormSq_add_le {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpa
   have h := norm_add_le (A (stdOrthonormalBasis ℂ Wq i)) (B (stdOrthonormalBasis ℂ Wq i))
   have h0 := norm_nonneg (A (stdOrthonormalBasis ℂ Wq i) + B (stdOrthonormalBasis ℂ Wq i))
   rw [add_apply]
-  nlinarith [sq_nonneg (‖A (stdOrthonormalBasis ℂ Wq i)‖ - ‖B (stdOrthonormalBasis ℂ Wq i)‖)]
+  have hsq : ‖A (stdOrthonormalBasis ℂ Wq i) + B (stdOrthonormalBasis ℂ Wq i)‖ ^ 2 ≤
+      (‖A (stdOrthonormalBasis ℂ Wq i)‖ + ‖B (stdOrthonormalBasis ℂ Wq i)‖) ^ 2 := pow_le_pow_left₀ h0 h 2
+  linarith [sq_nonneg (‖A (stdOrthonormalBasis ℂ Wq i)‖ - ‖B (stdOrthonormalBasis ℂ Wq i)‖),
+    show (‖A (stdOrthonormalBasis ℂ Wq i)‖ + ‖B (stdOrthonormalBasis ℂ Wq i)‖) ^ 2 +
+      (‖A (stdOrthonormalBasis ℂ Wq i)‖ - ‖B (stdOrthonormalBasis ℂ Wq i)‖) ^ 2 =
+      2 * ‖A (stdOrthonormalBasis ℂ Wq i)‖ ^ 2 + 2 * ‖B (stdOrthonormalBasis ℂ Wq i)‖ ^ 2 by ring]
 
 section Record
 
@@ -155,7 +267,8 @@ theorem logGam_ge : L.CGam * L.sc.L ≤ L.CGam * (D.R.m : ℝ) ^ 5 * D.R.f * L.s
   have hL : 0 ≤ L.sc.L := by unfold Scale.L; exact Real.rpow_nonneg (le_trans zero_le_one L.sc.one_lt_alt.le) _
   have h1 : 1 ≤ (D.R.m : ℝ) ^ 5 * D.R.f := one_le_mul_of_one_le_of_one_le hm hf
   have h2 : 0 ≤ L.CGam * L.sc.L := mul_nonneg L.CGam_pos.le hL
-  nlinarith
+  have := le_mul_of_one_le_left h2 h1
+  linarith
 
 theorem k_ge_of_hyp {C0 C' Cl Cg cb Cu cT CT : ℝ} (hh : AdmissibleBoundsFromSource.hyp D L C0 C' Cl Cg cb Cu cT CT) :
     8 * L.CGam * L.sc.L ≤ D.R.k := by
@@ -256,10 +369,10 @@ theorem eF_nonneg_and_le_exp_neg (C0 C' Cl Cg cb Cu cT CT c7 y : ℝ) (h1 : 1 �
   have hlr : 1 ≤ Real.log (D.R.r : ℝ) := one_le_log_of_five_le (le_trans hk5 hkr)
   have hkfl : (D.R.k : ℝ) ≤ (D.R.k : ℝ) * D.R.f * Real.log (D.R.k : ℝ) := by
     have : (D.R.k : ℝ) ≤ (D.R.k : ℝ) * D.R.f := le_mul_of_one_le_right (by linarith) hf1
-    exact le_trans this (le_mul_of_one_le_right (by nlinarith) hlk)
+    exact le_trans this (le_mul_of_one_le_right (by linarith) hlk)
   have hrfl : (D.R.k : ℝ) ≤ (D.R.r : ℝ) * D.R.f * Real.log (D.R.r : ℝ) := by
     have : (D.R.r : ℝ) ≤ (D.R.r : ℝ) * D.R.f := le_mul_of_one_le_right (by linarith) hf1
-    exact le_trans hkr (le_trans this (le_mul_of_one_le_right (by nlinarith) hlr))
+    exact le_trans hkr (le_trans this (le_mul_of_one_le_right (by linarith) hlr))
   have he : FrobeniusProjectedBounds.eF D C0 ≤ Real.exp (-(2 * y)) := by
     unfold FrobeniusProjectedBounds.eF FrobeniusProjectedBounds.kR FrobeniusProjectedBounds.fR
     rw [hG]
@@ -284,11 +397,11 @@ theorem eF_nonneg_and_le_exp_neg (C0 C' Cl Cg cb Cu cT CT c7 y : ℝ) (h1 : 1 �
     have : y ≤ y ^ 8 := by
       calc y = y ^ 1 := (pow_one y).symm
         _ ≤ y ^ 8 := pow_le_pow_right₀ hy1 (by norm_num)
-    nlinarith
+    linarith
   · apply Real.exp_le_exp.2
     have : c7 * (8 * (L.CGam * y ^ 8)) ≤ c7 * ((D.R.r : ℝ) * D.R.f * Real.log (D.R.r : ℝ)) :=
       mul_le_mul_of_nonneg_left (by linarith) hc7.le
-    nlinarith
+    linarith
   · have h2 : Real.exp (-(2 * y)) = Real.exp (-y) ^ 2 := by
       rw [← Real.exp_nat_mul]; congr 1; push_cast; ring
     calc Real.sqrt (FrobeniusProjectedBounds.eF D C0) ≤ Real.sqrt (Real.exp (-y) ^ 2) := Real.sqrt_le_sqrt (by rw [← h2]; exact he)
@@ -300,21 +413,23 @@ section S7real
 
 theorem k_ge_of_chain_bound {k m L Cl : ℝ} (hm : 2 ≤ m) (hL : 1 < L) (hCl : 2 ≤ Cl) (H7 : Cl * (m ^ 2 * L) ≤ k) :
     m ^ 2 ≤ k ∧ L ≤ k ∧ Cl * L ≤ k := by
-  have hm2 : 4 ≤ m ^ 2 := by nlinarith
+  have hm2 : 4 ≤ m ^ 2 := by
+    have := mul_le_mul hm hm (by norm_num) (by linarith)
+    linarith [show m ^ 2 = m * m by ring]
   have hp : 0 < m ^ 2 * L := mul_pos (by linarith) (by linarith)
-  have h1 : m ^ 2 * L ≤ Cl * (m ^ 2 * L) := by nlinarith
-  have h2 : m ^ 2 ≤ m ^ 2 * L := by nlinarith
-  have h3 : L ≤ m ^ 2 * L := by nlinarith
+  have h1 : m ^ 2 * L ≤ Cl * (m ^ 2 * L) := le_mul_of_one_le_left hp.le (by linarith)
+  have h2 : m ^ 2 ≤ m ^ 2 * L := le_mul_of_one_le_right (sq_nonneg m) hL.le
+  have h3 : L ≤ m ^ 2 * L := le_mul_of_one_le_left (by linarith) (by linarith)
   have h4 : Cl * L ≤ Cl * (m ^ 2 * L) := mul_le_mul_of_nonneg_left h3 (by linarith)
   exact ⟨by linarith, by linarith, by linarith⟩
 
 theorem k_le_rank_product {k r f lr : ℝ} (hk : 5 ≤ k) (hkr : k ≤ r) (hf : 1 ≤ f) (hl : 1 ≤ lr) : k ≤ r * f * lr := by
   have h1 : r ≤ r * f := le_mul_of_one_le_right (by linarith) hf
-  have h2 : r * f ≤ r * f * lr := le_mul_of_one_le_right (by nlinarith) hl
+  have h2 : r * f ≤ r * f * lr := le_mul_of_one_le_right (by linarith) hl
   linarith
 
 theorem four_r_lt_g_of_bounds {k b g r : ℝ} (hk : 5 ≤ k) (hb : 1 ≤ b) (hr : r ≤ 2 * k) (hg : (k * b) ^ 8 ≤ g) : 4 * r < g := by
-  have h1 : k ^ 8 ≤ (k * b) ^ 8 := pow_le_pow_left₀ (by linarith) (by nlinarith) 8
+  have h1 : k ^ 8 ≤ (k * b) ^ 8 := pow_le_pow_left₀ (by linarith) (le_mul_of_one_le_right (by linarith) hb) 8
   have h7 : (5 : ℝ) ^ 7 ≤ k ^ 7 := pow_le_pow_left₀ (by norm_num) hk 7
   have h8 : k ^ 8 = k * k ^ 7 := by ring
   have h9 : k * (5 : ℝ) ^ 7 ≤ k * k ^ 7 := mul_le_mul_of_nonneg_left h7 (by linarith)
@@ -332,7 +447,9 @@ theorem gap_product_le_of_bounds {C Cl X L lrd : ℝ} (hC : 0 ≤ C) (hX : 0 ≤
 theorem le_of_le_four_mul_of_mul_le_chain {v k Del Cl m b1 B : ℝ} (hk : 0 ≤ k) (hDel : 0 ≤ Del) (hCl : 2 ≤ Cl) (hm : 2 ≤ m)
     (v1 : v ≤ 4 * k * Del) (h1 : Cl * (m * k * Del) ≤ b1) (h2 : b1 ≤ B) : v ≤ B := by
   have h0 : 0 ≤ k * Del := mul_nonneg hk hDel
-  have h4 : 4 ≤ Cl * m := by nlinarith
+  have h4 : 4 ≤ Cl * m := by
+    have := mul_le_mul hCl hm (by norm_num) (by linarith)
+    linarith
   have h3 : 4 * (k * Del) ≤ Cl * m * (k * Del) := mul_le_mul_of_nonneg_right h4 h0
   linarith
 
@@ -740,7 +857,7 @@ theorem w''_le_a : L.sc.w'' D.R.n ≤ L.sc.a := by
   have hb' : L.sc.b' ≤ L.sc.a := by unfold Scale.b'; exact div_le_self ha.le hX
   have hb'0 : 0 ≤ L.sc.b' := by unfold Scale.b'; positivity
   unfold Scale.w''
-  exact le_trans (div_le_self hb'0 (by nlinarith)) hb'
+  exact le_trans (div_le_self hb'0 (one_le_mul_of_one_le_of_one_le hx.le hn)) hb'
 
 variable (P : ParameterChoice' D L)
 
@@ -764,7 +881,8 @@ theorem data3 (u : D.what₂.Word) (τ : D.what₂.Tau) :
     have hk5 := five_le_k (D := D)
     have hS := L.Sc_pos
     rw [h1]
-    nlinarith
+    have h5S : 5 * L.Sc ≤ (D.R.k : ℝ) * L.Sc := mul_le_mul_of_nonneg_right hk5 hS.le
+    linarith
   · have := (L.cloud_gap τ (by omega) (fun h => ht ((isTop_iff τ).2 h))).1
     push_cast at this
     exact this
@@ -839,7 +957,8 @@ theorem formal_degree_two_sided_bound (C0 : ℝ) (h1 : 1 ≤ C0)
   constructor
   · rw [div_le_iff₀ hC, inv_mul_le_iff₀ hG2]
     have : C0⁻¹ * D.what₂.Dstar * C0 = D.what₂.Dstar := by field_simp
-    nlinarith
+    have hmul := mul_le_mul_of_nonneg_right a hC.le
+    linarith
   · rw [mul_assoc, le_inv_mul_iff₀ hG2]
     linarith
 
@@ -889,7 +1008,7 @@ theorem w''_le_b' : L.sc.w'' D.R.n ≤ L.sc.b' := by
     exact_mod_cast this
   have hb'0 : 0 ≤ L.sc.b' := by unfold Scale.b' Scale.a Scale.b Scale.X'; positivity
   unfold Scale.w''
-  exact div_le_self hb'0 (by nlinarith)
+  exact div_le_self hb'0 (one_le_mul_of_one_le_of_one_le hx.le hn)
 
 theorem w''_le_b : L.sc.w'' D.R.n ≤ L.sc.b := by
   have hx : 0 < L.sc.x := lt_trans one_pos L.sc.one_lt_alt
@@ -903,7 +1022,7 @@ theorem w''_le_b : L.sc.w'' D.R.n ≤ L.sc.b := by
     unfold Scale.w'' Scale.b' Scale.a
     field_simp
   rw [e]
-  exact div_le_self hb.le (by nlinarith)
+  exact div_le_self hb.le (one_le_mul_of_one_le_of_one_le hX hn)
 
 theorem wj_ge (τ : D.what₂.Tau) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : L.sc.w'' D.R.n ≤ wj D j τ := by
   by_cases ht : (D.eTau τ : D.R.GG) ∈ D.host.topPlaces
@@ -969,7 +1088,9 @@ theorem permutedRowProductSplitSum {X θ Cl : ℝ} (hθ : 0 < θ) (h2 : 2 ≤ X)
   have e : 3 * X ^ 21 ≤ X ^ 23 := by
     have : X ^ 23 = X ^ 2 * X ^ 21 := by ring
     rw [this]
-    have : (3 : ℝ) ≤ X ^ 2 := by nlinarith
+    have : (3 : ℝ) ≤ X ^ 2 := by
+      have := mul_le_mul h2 h2 (by norm_num) (by linarith)
+      linarith [show X ^ 2 = X * X by ring]
     exact mul_le_mul_of_nonneg_right this (by positivity)
   have f : Cl * (1 + 3 * (X / θ) + X ^ 21) ≤ X * X ^ 23 :=
     mul_le_mul hCl (le_trans d e) (by positivity) (by linarith)
@@ -994,7 +1115,10 @@ theorem permutedRowProductSplit {X : ℝ} (h2 : 2 ≤ X) : X ^ 3 + 1 ≤ X ^ 100
 theorem four_le_pow_hundred {X : ℝ} (h2 : 2 ≤ X) : 4 ≤ X ^ 100 := by
   have h1 : 1 ≤ X := by linarith
   have a : X ^ 2 ≤ X ^ 100 := pX_pow h1 (by norm_num)
-  nlinarith
+  have h4 : (4 : ℝ) ≤ X ^ 2 := by
+    have := mul_le_mul h2 h2 (by norm_num) (by linarith)
+    linarith [show X ^ 2 = X * X by ring]
+  linarith
 
 end PureX
 
@@ -1175,16 +1299,21 @@ theorem first_node_le_b_cubed (SzK : SizeK L) (h2 : 2 ≤ XX L) (h3 : 5 / szTh L
     rw [show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
   have ha : L.sc.a ≤ L.sc.b ^ 2 := by
     unfold Scale.a; rw [sq]; exact mul_le_mul_of_nonneg_right xb (by linarith)
-  have hb3 : 2 * L.sc.b ^ 2 + L.sc.b ≤ L.sc.b ^ 3 := by nlinarith [sq_nonneg L.sc.b]
+  have hb3 : 2 * L.sc.b ^ 2 + L.sc.b ≤ L.sc.b ^ 3 := by
+    have h3 : 3 * L.sc.b ^ 2 ≤ L.sc.b ^ 3 := by
+      have := mul_le_mul_of_nonneg_right (by linarith : (3 : ℝ) ≤ L.sc.b) (sq_nonneg L.sc.b)
+      linarith [show L.sc.b * L.sc.b ^ 2 = L.sc.b ^ 3 by ring]
+    have h2 : L.sc.b ≤ L.sc.b ^ 2 := le_self_pow₀ (by linarith) two_ne_zero
+    linarith
   rw [e1, e3]
   by_cases ht : IsTop D τ
   · obtain ⟨t, ht⟩ := ht
     rw [(L.top_u τ t k_pos ht).1]
     have a := (L.aT_win t).2
-    have ha0 : 0 ≤ L.sc.a := by unfold Scale.a; nlinarith
+    have ha0 : 0 ≤ L.sc.a := by unfold Scale.a; positivity
     have hden : 1 ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2) := by
       have : 1 ≤ L.sc.x ^ (Scale.A / 2) := Real.one_le_rpow hx.le (by unfold Scale.A; norm_num)
-      nlinarith
+      exact one_le_mul_of_one_le_of_one_le (by linarith) this
     have b : L.sc.a / ((D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)) ≤ L.sc.a := div_le_self ha0 hden
     linarith
   · have a := P.cloud_place_bound τ (by omega) (fun h => ht ((isTop_iff τ).2 h))
@@ -1208,8 +1337,8 @@ theorem count_power_le_discriminant (Cl : ℝ) (hCl0 : 0 < Cl) (hClC : Cl ≤ P.
     have : D.R.k ≤ D.R.N D.R.m := by unfold Ranks.N; omega
     exact_mod_cast this
   have h1 : 1 ≤ (D.R.k : ℝ) * D.R.f * L.sc.L := by
-    have : 1 ≤ (D.R.k : ℝ) * D.R.f := by nlinarith
-    nlinarith
+    have : 1 ≤ (D.R.k : ℝ) * D.R.f := one_le_mul_of_one_le_of_one_le (by linarith) hf1
+    exact one_le_mul_of_one_le_of_one_le this hL1.le
   have h2 : (D.R.k : ℝ) * D.R.f * L.sc.L ≤ (D.R.N D.R.m : ℝ) * D.R.f * L.sc.L := by
     apply mul_le_mul_of_nonneg_right _ (by linarith)
     exact mul_le_mul_of_nonneg_right hkN (by linarith)
@@ -1251,7 +1380,8 @@ theorem type_prime_size_bounds (i : Fin 2) :
     exact y3
   rw [Real.rpow_add hb0, Real.rpow_one]
   have hp : 0 ≤ L.sc.b ^ P.CYL := by positivity
-  nlinarith
+  have h2 := mul_le_mul_of_nonneg_left hb2 hp
+  linarith
 
 end Hyp3
 
@@ -1445,8 +1575,11 @@ def ArithmeticConditionsOfDatum (D : D7) : Prop :=
   NumberField.discr D.host.E = NumberField.discr D.host.F ^ 2
 
 theorem ne_of_mod {T a c : ℕ} (ha : 2 ≤ a) (hc : 2 ≤ c) (h : T % (a * c) ^ 2 = 1 % (a * c) ^ 2) : T ≠ a ∧ T ≠ c := by
-  have h1 : a < (a * c) ^ 2 := by nlinarith [Nat.mul_le_mul ha hc, Nat.mul_le_mul_left a hc]
-  have h2 : c < (a * c) ^ 2 := by nlinarith [Nat.mul_le_mul ha hc, Nat.mul_le_mul_right c ha]
+  have hac : 2 * a ≤ a * c := by simpa [mul_comm] using Nat.mul_le_mul_left a hc
+  have hca : 2 * c ≤ a * c := by simpa [mul_comm] using Nat.mul_le_mul_right c ha
+  have hsq : a * c ≤ (a * c) ^ 2 := by rw [sq]; exact Nat.le_mul_self _
+  have h1 : a < (a * c) ^ 2 := by omega
+  have h2 : c < (a * c) ^ 2 := by omega
   have h3 : 1 < (a * c) ^ 2 := by omega
   rw [Nat.mod_eq_of_lt h3] at h
   constructor
@@ -1646,7 +1779,10 @@ theorem root_discriminant_ge_two (D : D7) (_h : UnusedSlot33.Conclusion1 D) : 2 
   have h3 : 0 ≤ D.host.rdE := by unfold Host.rdE; positivity
   by_contra hc
   push Not at hc
-  nlinarith
+  have hsq : D.host.rdE ^ 2 < 4 := by
+    have := mul_lt_mul'' hc hc h3 h3
+    linarith [show D.host.rdE ^ 2 = D.host.rdE * D.host.rdE by ring]
+  linarith
 
 theorem level_norm_one_mod_conductor (D : D7) (u : D.what₂.Word) : ShortIntervalPrimes.NormOneMod D (NE D) (D.mem u).A.T := by
   obtain ⟨π, hK, hT, hπ⟩ := D.T_norm u
@@ -1682,3 +1818,6 @@ end FromGL
 end Formalism.MainNotions.S
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.CuspSpanNormBounds.StandingHypothesesHoldFamily =====

@@ -105,9 +105,9 @@ theorem exists_corner_unit_of_right_inverse :
     rw [hψdef, Polynomial.eval_mul, Matrix.eval_charpoly, hev, hpdef, hqdef, hP2]
     congr 2
     · ext i j
-      by_cases h : i = j <;> simp [Matrix.one_apply, h]
+      by_cases h : i = j <;> simp [h]
     · ext i j
-      by_cases h : i = j <;> simp [Matrix.one_apply, h] <;> ring
+      by_cases h : i = j <;> simp [h] <;> ring
   rw [hψs] at ht
   obtain ⟨w, hw⟩ := ht.exists_right_inv
 

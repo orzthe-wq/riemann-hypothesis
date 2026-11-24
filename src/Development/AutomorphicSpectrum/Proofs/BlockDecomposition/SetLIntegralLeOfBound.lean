@@ -178,7 +178,7 @@ theorem setLIntegral_le_of_bound {α : Type*} [MeasurableSpace α] (μ : Measure
     have : {g | f g ≤ c}ᶜ ∩ A = ∅ := by
       ext g
       simp only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_setOf_eq, Set.mem_empty_iff_false,
-        iff_false, not_and, not_not]
+        iff_false, not_and]
       intro h1 h2
       exact h1 (h g h2)
     rw [this, measure_empty]

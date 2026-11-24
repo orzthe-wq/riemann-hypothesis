@@ -4,55 +4,10 @@ public import Mathlib.Algebra.Central.Defs
 public import Mathlib.LinearAlgebra.TensorProduct.Basis
 public import Mathlib.RingTheory.TensorProduct.Basic
 public import Mathlib.Algebra.Central.TensorProduct
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 public import Mathlib.RingTheory.SimpleRing.Congr
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.TwoSidedIdeal.Instances
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Algebra.Central.Basic
 public import Mathlib.LinearAlgebra.Basis.VectorSpace
+import Mathlib.RingTheory.TensorProduct.Maps
 
 @[expose] public section
 
@@ -151,19 +106,9 @@ theorem center_tensorProduct_eq_map_includeRight [Algebra.IsCentral K A] :
 
 theorem center_tensorProduct_eq_map_includeLeft [Algebra.IsCentral K A] :
     Subalgebra.center K (B ⊗[K] A) = (Subalgebra.center K B).map includeLeft := by
-  refine le_antisymm ?_ (Algebra.TensorProduct.includeLeft_map_center_le K B A)
-  intro x hx
-  let e := Algebra.TensorProduct.comm K A B
-  have hx' : e.symm x ∈ Subalgebra.center K (A ⊗[K] B) := by
-    rw [Subalgebra.mem_center_iff] at hx ⊢
-    intro w
-    apply e.injective
-    rw [map_mul, map_mul, e.apply_symm_apply, hx]
-  rw [center_tensorProduct_eq_map_includeRight] at hx'
-  obtain ⟨b, hb, hbx⟩ := hx'
-  refine ⟨b, hb, ?_⟩
-  rw [← e.apply_symm_apply x, ← hbx]
-  simp [e]
+  rw [← Subalgebra.map_center_eq (Algebra.TensorProduct.comm K A B),
+    center_tensorProduct_eq_map_includeRight K A B, Subalgebra.map_map,
+    Algebra.TensorProduct.comm_comp_includeRight]
 
 end Central
 
@@ -251,6 +196,8 @@ theorem exists_one_tmul_mem_of_ne_bot [Algebra.IsCentral K A] [IsSimpleRing A]
 
 instance isSimpleRing_tensorProduct [Algebra.IsCentral K A] [IsSimpleRing A] [IsSimpleRing B] :
     IsSimpleRing (A ⊗[K] B) := by
+  let _ : Nontrivial (A ⊗[K] B) :=
+    (Algebra.TensorProduct.includeRight_injective (algebraMap K A).injective).nontrivial
   refine IsSimpleRing.of_eq_bot_or_eq_top fun I ↦ ?_
   refine or_iff_not_imp_left.mpr fun hI ↦ ?_
   obtain ⟨b, hb0, hbI⟩ := exists_one_tmul_mem_of_ne_bot I hI

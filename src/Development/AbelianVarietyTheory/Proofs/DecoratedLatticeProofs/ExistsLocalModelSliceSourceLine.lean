@@ -56,15 +56,12 @@ namespace GlobalTheory.SliceModel
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k)
 
-theorem ι_e (x : k) : p.e * p.ι x = p.ι x := by
-  rw [← p.ι_π (p.ι x), p.π_ι]
-
 theorem ι_mul (x y : k) : p.ι (x * y) = p.ι x * p.ι y := by
   have h1 : p.ι (x * y) = p.ι (p.π (p.ι x * p.ι y)) := by rw [map_mul p.π, p.π_ι, p.π_ι]
-  rw [h1, p.ι_π, ← mul_assoc, ι_e]
+  rw [h1, p.ι_π, ← mul_assoc, _root_.GlobalTheory.LocMod.Witness.e_ι]
 
 theorem ι_mul_right (x : k) (z : AE D) : p.ι x * z = p.ι (x * p.π z) := by
-  rw [ι_mul, p.ι_π, ← mul_assoc, mul_comm (p.ι x) p.e, ι_e]
+  rw [ι_mul, p.ι_π, ← mul_assoc, mul_comm (p.ι x) p.e, _root_.GlobalTheory.LocMod.Witness.e_ι]
 
 theorem ι_mul_left (x : k) (z : AE D) : z * p.ι x = p.ι (p.π z * x) := by
   rw [mul_comm, ι_mul_right, mul_comm]
@@ -182,9 +179,6 @@ theorem tens_apply (a : (n → k) → ℂ) (ha : a ∈ SB (n → k)) (Ξ : SB (M
 
 end Tensor
 
-theorem symplO_zero_right'' (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
-  simp [symplO, hO]
-
 theorem exists_isModel_slice : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (ρ : ℕ) (B : BesLev D ρ) (S : HSp D) (s : k) (FA : Frame k B.A.rank n') (F₀ : Frame k B.V₀.rank (n' ⊕ Unit)) (FS : Frame k S.rank n), p.IsCoreFrame B s FA F₀ → ∀ T₀, p.IsModel ψ F₀ FS T₀ → ∀ (a : (n → k) → ℂ), a ∈ SB _ → ∀ v : WO B.L S, ∃ T₁, p.IsModel ψ FA FS T₁ ∧ ∀ (Ξ : SB (Matrix n n' k)) (Ψ : SB (Matrix n (n' ⊕ Unit) k)), (∀ x, Ψ.1 x = Ξ.1 x.toCols₁ * a fun r => x r (Sum.inr ())) → ∀ u, T₀ Ψ ((B.o.resS S).symm (u, v)) = T₁ Ξ u := by
   intro D k _ _ _ _ p ψ n n' _ _ _ _ ρ B S s FA F₀ FS h T₀ hT a ha v
   let T₁ : SB (Matrix n n' k) →ₗ[ℂ] (WO B.A S → ℂ) :=
@@ -196,7 +190,7 @@ theorem exists_isModel_slice : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k
       intro t
       rw [tens_apply, tens_apply, hΦ]
       congr 2
-      ext i j; simp [Matrix.toCols₁, fromCols]
+      ext i; simp [fromCols]
     have h2 := hT.trans (fromCols x 0) _ _ h1
     funext u
     rw [hT₁, h2, ← up_slice S FS h x]
@@ -213,7 +207,7 @@ theorem exists_isModel_slice : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k
         ψ (symplO B.V₀ S (p.up F₀ FS t) ((B.o.resS S).symm (y, 0))) * (tens a ha Φ).1 t := by
       intro t
       rw [tens_apply, tens_apply, hΦ, B.o.symplO_resS, AddEquiv.apply_symm_apply, res_up S FS h,
-        symplO_zero_right'', add_zero, mul_assoc]
+        _root_.GlobalTheory.PlaceModel.symplO_zero_right, add_zero, mul_assoc]
     have h2 := hT.modul _ hY _ _ h1
     funext u
     rw [hT₁, h2]

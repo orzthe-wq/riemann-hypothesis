@@ -4,14 +4,14 @@ public import Development.AbelianVarietyTheory.Definitions.Jets.CmLatticeCommuta
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffShiftS
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpBinomialPowerSubOneSeriesIntegralityCompositio
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpSeriesCoeffNormBoundedRingLaws
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpSeriesMultiplicativeShiftCompAndSubstStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpSeriesMultiplicativeShiftCompAndSubst
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesInChartRingHomLaws
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesMultiplicativeChartStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesShiftEqTranslateStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralWeierstrassChartXyUnitSeriesStatement
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MultiplicativeShiftEqTranslateBySmallPointStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesMultiplicativeChart
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CpTransportedTaylorSeriesShiftEqTranslate
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.RingHomPointBijective
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallPointMultiplicativeCoordinateExistsUniqueStatement
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SmallPointMultiplicativeCoordinateExistsUnique
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IntegralWeierstrassChartXyUnitSeries
+import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MultiplicativeShiftEqTranslateBySmallPoint
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.UwEllipticFlow
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -110,11 +110,10 @@ theorem sub_mem_of_germ (M : Mdl q) (hM : M.Ok) (α s t : ℂ) (hα : α ≠ 0) 
   have := sub_mem_of_uw M hM _ _ h1.1 h1.2.1 h2 h3
   simpa using this
 
-theorem const_ell (ω : ℂ_[q]) : constantCoeff (C ω * logS : ℂ_[q]⟦X⟧) = 0 := by
-  simp [logS, ← coeff_zero_eq_constantCoeff_apply]
+alias const_ell := _root_.GlobalTheory.MomOne.hatmul_const_log
 
 theorem bd_w (M : Mdl q) (ℓ : ℂ_[q]⟦X⟧) (h : M.Chart ℓ) : Bd 1 (hat M.ι ℓ M.w) := by
-  obtain ⟨-, v, xs, ys, -, -, hys, -, -, hc, -, hw, -⟩ := GlobalTheory.T.integral_weierstrass_chart_xy_unit_series q M ℓ h
+  obtain ⟨-, v, xs, ys, -, -, hys, -, -, hc, -, hw, -⟩ := _root_.GlobalTheory.MomOne.ChartXY.chart_xy q M ℓ h
   apply (sup_norm_laws q).2.2.2.2.2 _ ys 0 1 hys hc
   rw [pow_zero, one_mul, mul_comm, hw]
   intro n
@@ -137,9 +136,9 @@ theorem germ_add (M : Mdl q) (ω : ℂ_[q]) (hM : M.MChart ω) (F : ℂ → ℂ)
   have hBp : Bdd (hat M.ι (C ω * logS) (fun z => F (z + p))) := by
     rw [hT ζ p h]
     exact ⟨1, (Shift.shift_laws q ζ h.2.1).1 _ _ hB⟩
-  obtain ⟨ψ, hψa, hψe, hψ⟩ := GlobalTheory.T.cpTransportedTaylorSeries_shift_eq_translate q M ω ζ' p' _ hM h' hEp (han p h.1) hBp
-  rw [hT ζ p h, (GlobalTheory.T.cpSeriesMultiplicativeShift_comp_and_subst q).1 ζ' ζ _ h'.2.1 h.2.1 ⟨1, hB⟩, mul_comm ζ' ζ, ← hT _ t ht] at hψ
-  have h1 := (GlobalTheory.T.integral_weierstrass_chart_xy_unit_series q M _ hM).1
+  obtain ⟨ψ, hψa, hψe, hψ⟩ := _root_.GlobalTheory.MomOne.Transfer.shift_eq_hat_translate q M ω ζ' p' _ hM h' hEp (han p h.1) hBp
+  rw [hT ζ p h, (_root_.GlobalTheory.MomOne.ShiftComp.main q).1 ζ' ζ _ h'.2.1 h.2.1 ⟨1, hB⟩, mul_comm ζ' ζ, ← hT _ t ht] at hψ
+  have h1 := (_root_.GlobalTheory.MomOne.ChartXY.chart_xy q M _ hM).1
   have he := ((TaylorRead.hat_laws q M.ι _ (const_ell ω)).1 _ _ hψa (han t ht.1)).2.2.2 h1 hψ
   filter_upwards [hψe, he.filter_mono nhdsWithin_le_nhds] with z e1 e2
   rw [one_mul, ← e2, e1]
@@ -164,44 +163,31 @@ theorem germ_mul (M : Mdl q) (ω : ℂ_[q]) (hM : M.MChart ω) (F : ℂ → ℂ)
     · exact (hE.1 (α * x)).comp_analyticAt (f := F) (g := fun z => α * z) (by fun_prop)
     · show F (α * (z + l)) = F (α * z)
       rw [mul_add, hE.2 _ (hL l hl)]
-  have hsub := (GlobalTheory.T.cpTransportedTaylorSeries_multiplicativeChart q M.ι ω F hF0).2.2.1 α a hα
+  have hsub := (_root_.GlobalTheory.MomOne.hat_multiplicative_chart q M.ι ω F hF0).2.2.1 α a hα
   have hm := (MulSeries.mulS_laws q).1 a
   have hBα : Bdd (hat M.ι (C ω * logS) (fun z => F (α * z))) := by
     rw [hsub]
     exact ⟨1, (sup_norm_laws q).2.1 _ _ _ hB hm.1 hm.2.1⟩
-  obtain ⟨ψ, hψa, hψe, hψ⟩ := GlobalTheory.T.cpTransportedTaylorSeries_shift_eq_translate q M ω ζ p _ hM h hEα (hmul F hF0) hBα
-  rw [hsub, ((GlobalTheory.T.cpSeriesMultiplicativeShift_comp_and_subst q).2 ζ n k a _ hζ hk ⟨1, hB⟩).2, ← hT _ t ht,
-    ← (GlobalTheory.T.cpTransportedTaylorSeries_multiplicativeChart q M.ι ω _ (han t ht.1)).2.2.1 α a hα] at hψ
-  have h1 := (GlobalTheory.T.integral_weierstrass_chart_xy_unit_series q M _ hM).1
+  obtain ⟨ψ, hψa, hψe, hψ⟩ := _root_.GlobalTheory.MomOne.Transfer.shift_eq_hat_translate q M ω ζ p _ hM h hEα (hmul F hF0) hBα
+  rw [hsub, ((_root_.GlobalTheory.MomOne.ShiftComp.main q).2 ζ n k a _ hζ hk ⟨1, hB⟩).2, ← hT _ t ht,
+    ← (_root_.GlobalTheory.MomOne.hat_multiplicative_chart q M.ι ω _ (han t ht.1)).2.2.1 α a hα] at hψ
+  have h1 := (_root_.GlobalTheory.MomOne.ChartXY.chart_xy q M _ hM).1
   have he := ((TaylorRead.hat_laws q M.ι _ (const_ell ω)).1 _ _ hψa
     (hmul _ (han t ht.1))).2.2.2 h1 hψ
   filter_upwards [hψe, he.filter_mono nhdsWithin_le_nhds] with z e1 e2
   rw [← mul_add, ← e1, e2]
 
-theorem norm_mul_sub_one_lt {ζ ξ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) (h' : ‖ξ - 1‖ < 1) : ‖ζ * ξ - 1‖ < 1 := by
-  have e : ζ * ξ - 1 = (ζ - 1) * (ξ - 1) + ((ζ - 1) + (ξ - 1)) := by ring
-  rw [e]
-  refine lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ ?_)
-  · rw [norm_mul]
-    exact mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) h h'.le
-  · exact lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt h h')
-
-theorem norm_pow_sub_one_lt {ζ : ℂ_[q]} (h : ‖ζ - 1‖ < 1) (k : ℕ) : ‖ζ ^ k - 1‖ < 1 := by
-  induction k with
-  | zero => simp
-  | succ k ih => rw [pow_succ]; exact norm_mul_sub_one_lt ih h
-
 theorem at_add_and_mul : ∀ (q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q]), M.MChart ω → (∀ ζ ζ' p p', M.At ω ζ p → M.At ω ζ' p' → M.At ω (ζ * ζ') (p + p')) ∧ ∀ (α : ℂ) (a : ℤ_[q]) (n k : ℕ) (ζ : ℂ_[q]) (p : ℂ), (∀ l ∈ M.L.lattice, α * l ∈ M.L.lattice) → M.ι α = zc a → ‖a - (k : ℤ_[q])‖ ≤ (q : ℝ) ^ (-(n : ℤ)) → ζ ^ (q ^ n) = 1 → M.At ω ζ p → M.At ω (ζ ^ k) (α * p) := by
   intro q _ M ω hM
   have hOk : M.Ok := hM.1
-  obtain ⟨hex, -, -, hiff, h10⟩ := GlobalTheory.T.smallPoint_multiplicativeCoordinate_existsUnique q M ω hM
+  obtain ⟨hex, -, -, hiff, h10⟩ := _root_.GlobalTheory.MomOne.SmallPt.at_exists_unique q M ω hM
   obtain ⟨hEu, hEw, -, -, -, -, -, -, hS⟩ := uw_elliptic_flow q M hOk
   have hBu : Bd 1 (hat M.ι (C ω * logS) M.u) := hM.2.2.1
   have hBw := bd_w M _ hM
-  have hTu := fun ζ p h => (GlobalTheory.T.multiplicativeShift_eq_translate_by_small_point q M ω ζ p hM h).1
-  have hTw := fun ζ p h => (GlobalTheory.T.multiplicativeShift_eq_translate_by_small_point q M ω ζ p hM h).2
+  have hTu := fun ζ p h => (_root_.GlobalTheory.MomOne.SmallTranslate.shift_eq_translate q M ω ζ p hM h).1
+  have hTw := fun ζ p h => (_root_.GlobalTheory.MomOne.SmallTranslate.shift_eq_translate q M ω ζ p hM h).2
   refine ⟨fun ζ ζ' p p' h h' => ?_, fun α a n k ζ p hL hα hk hζ h => ?_⟩
-  · obtain ⟨t, ht⟩ := hex _ (norm_mul_sub_one_lt h.2.1 h'.2.1)
+  · obtain ⟨t, ht⟩ := hex _ (_root_.GlobalTheory.MomOne.ShiftComp.norm_mul_sub_one h.2.1 h'.2.1)
     have := sub_mem_of_germ M hOk 1 (p + p') t one_ne_zero ht.1
       (germ_add M ω hM M.u hEu (fun z hz => (hS z hz).1) hBu hTu ζ ζ' p p' t h h' ht)
       (germ_add M ω hM M.w hEw (fun z hz => (hS z hz).2.1) hBw hTw ζ ζ' p p' t h h' ht)
@@ -222,7 +208,7 @@ theorem at_add_and_mul : ∀ (q : ℕ) [Fact q.Prime] (M : Mdl q) (ω : ℂ_[q])
       obtain ⟨m, rfl⟩ := hd'
       rw [pow_mul, hζ, one_pow, zero_mul]
       exact h10
-    · obtain ⟨t, ht⟩ := hex _ (norm_pow_sub_one_lt h.2.1 k)
+    · obtain ⟨t, ht⟩ := hex _ (_root_.GlobalTheory.MomOne.ShiftComp.norm_pow_sub_one h.2.1 k)
       have := sub_mem_of_germ M hOk α (α * p) t h0 ht.1
         (germ_mul M ω hM M.u hEu (fun z hz => (hS z hz).1) hBu hTu α a n k ζ p t hL hα hk hζ h ht)
         (germ_mul M ω hM M.w hEw (fun z hz => (hS z hz).2.1) hBw hTw α a n k ζ p t hL hα hk hζ h ht)

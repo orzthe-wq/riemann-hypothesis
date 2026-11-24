@@ -84,7 +84,7 @@ theorem lev0Q {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductS
     simp [U.cutDG, U.DjU, bumpOne_one]
   rw [hF] at hS
   obtain ⟨hck, -, hbd⟩ := hS
-  refine ⟨Formalism.FourierDecayAlt.P.JCx2.pd_ccle_mono_c (Formalism.FourierDecayAlt.P.compactly_supported_monotone k (0 + ρ) _
+  refine ⟨Formalism.FourierDecayAlt.P.JCx2.pd_ccle_mono_c (_root_.Formalism.FourierDecayAlt.P.Ux8.ccMono k (0 + ρ) _
       (A₀ - ((0 : ℕ) : ℝ) - ((0 : ℕ) : ℝ) * ((0 : ℕ) : ℝ) - 2 * (((0 + ρ : ℕ) : ℝ) + 1) * ((mm + 0 : ℕ) : ℝ))
       A (C * c) mm _ ?_ ⟨hck, ?_⟩) (mul_le_mul_of_nonneg_right (le_max_left _ _) hc0), ?_⟩
   · push_cast at hA ⊢; linarith
@@ -178,14 +178,9 @@ theorem sliceQ : ∃ Cs : ℝ, 0 ≤ Cs ∧ ∀ Cc : ℝ, Cs ≤ Cc →
       hA₀ ε hε i hi h1 w hw p hc hp a
     exact ⟨ε', K, hε', hK, hQ1, hQ2⟩
 
-theorem auser_mono (P0 : M.Par) {L N : ℕ} (h : L ≤ N) : P5.Auser P0 L ≤ P5.Auser P0 N := by
-  unfold P5.Auser
-  have : (L : ℝ) ≤ N := by exact_mod_cast h
-  gcongr
+alias auser_mono := _root_.Formalism.FourierDecayAlt.P.JCx2.auser_mono
 
-theorem mmUser_mono (P0 : M.Par) {L N : ℕ} (h : L ≤ N) : P5.mmUser P0 L ≤ P5.mmUser P0 N := by
-  unfold P5.mmUser
-  gcongr
+alias mmUser_mono := _root_.Formalism.FourierDecayAlt.P.JCx2.mmUser_mono
 
 theorem formLev_limit {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P0 : M.Par)

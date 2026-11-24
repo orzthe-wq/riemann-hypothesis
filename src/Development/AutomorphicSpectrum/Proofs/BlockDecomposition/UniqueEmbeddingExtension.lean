@@ -90,7 +90,7 @@ theorem continuous_withVal (w : HeightOneSpectrum (𝓞 E)) (f : E →+* Om l)
     exact pow_ne_zero n hy0 ((WithVal.equiv (w.valuation E)).symm.map_eq_zero_iff.1 h)
   have h0 : Valued.v.restrict x0 ≠ 0 := by simp [hx0']
   filter_upwards [Valued.mem_nhds_zero.2 ⟨Units.mk0 _ h0, subset_rfl⟩] with z hz
-  simp only [Set.mem_setOf_eq, Units.val_mk0, Valuation.restrict_lt_iff] at hz
+  simp only [Units.val_mk0, Valuation.restrict_lt_iff] at hz
   have hz' : w.valuation E (WithVal.equiv (w.valuation E) z) < w.valuation E (y ^ n) := hz
   have hv : 0 < w.valuation E (y ^ n) := zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (pow_ne_zero n hy0))
   have hu : w.valuation E (WithVal.equiv (w.valuation E) z / y ^ n) ≤ 1 := by

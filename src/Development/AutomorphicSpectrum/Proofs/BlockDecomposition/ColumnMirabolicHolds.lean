@@ -86,21 +86,11 @@ theorem cM_zero (k : ℕ) : cM n k (0 : Fin (k + 1) → F) = 0 := by
 theorem col_coe (k : ℕ) (x : Fin (k + 1) → F) :
     ((col n k x : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 1 + cM n k x := rfl
 
-private theorem cM_mul_cM_eq_zero (k : ℕ) (x y : Fin (k + 1) → F) :
-    cM n k x * cM n k y = 0 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.zero_apply]
-  apply Finset.sum_eq_zero
-  intro l _
-  by_cases hl : (l : ℕ) = k + 1
-  · rw [cM_apply_neg k y (fun h => absurd h.2 (by omega)), mul_zero]
-  · rw [cM_apply_neg k x (fun h => hl h.1), zero_mul]
-
 theorem col_add (k : ℕ) (x y : Fin (k + 1) → F) :
     col n k (x + y) = col n k x * col n k y := by
   apply Units.ext
   rw [Units.val_mul, col_coe, col_coe, col_coe, cM_add, add_mul, one_mul, mul_add, mul_one,
-    cM_mul_cM_eq_zero, add_zero]
+    _root_.PositivityTheory.JacquetShalikaLocal.cM_mul, add_zero]
   abel
 
 theorem col_zero (k : ℕ) : col n k (0 : Fin (k + 1) → F) = 1 := by

@@ -105,7 +105,7 @@ theorem rep_sat_ratN (hl : l.Prime) {v : m → ℂ} (hv : SatMem l Λ v) (r : �
     rintro h; exact hk (by rw [Nat.cast_eq_zero.mp h]; exact dvd_zero _)
   refine ⟨n * k, fun h => (hl.dvd_mul.mp h).elim hn hk, ?_⟩
   have e : (n * k) • (((r : ℂ) / k) • v) = r • (n • v) := by
-    funext i; simp only [Pi.smul_apply, nsmul_eq_mul, zsmul_eq_mul, smul_eq_mul, Nat.cast_mul, Pi.mul_apply, Pi.natCast_apply, Pi.intCast_apply]; field_simp
+    funext i; simp only [Pi.smul_apply, nsmul_eq_mul, zsmul_eq_mul, smul_eq_mul, Nat.cast_mul, Pi.mul_apply, Pi.natCast_apply]; field_simp
   rw [e]
   exact Λ.zsmul_mem hnv _
 

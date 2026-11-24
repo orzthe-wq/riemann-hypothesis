@@ -91,7 +91,7 @@ private lemma exists_sq_eq_one_sub_four_mul {t : F} (ht : valuation F t < 1) :
   have h1 : IsUnit ((Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[F]))
       (Polynomial.eval 0 (Polynomial.derivative (Polynomial.X ^ 2 + Polynomial.X +
         Polynomial.C (⟨t, htmem⟩ : 𝒪[F]) : Polynomial 𝒪[F])))) := by
-    simp [Polynomial.derivative_X_pow]
+    simp
   obtain ⟨w, hw, -⟩ := hH.is_henselian _ hf 0 (eval_zero_quadratic_mem_maximalIdeal t ht htmem) h1
   refine ⟨(w : F), ?_⟩
   have h := congrArg (fun x : 𝒪[F] => (x : F)) hw.eq_zero

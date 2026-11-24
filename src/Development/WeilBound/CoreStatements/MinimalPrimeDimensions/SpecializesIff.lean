@@ -221,10 +221,7 @@ theorem isProjPrime (hE : Emb p s) (z : Z) : IsProjPrime (ptIdeal p s z) := by
   rw [h.ptIdeal_eq hE.isLB hk]
   exact isProjPrime_pr (h.one hE.isLB) _
 
-private theorem linForm_isHomogeneous_one_minimal_prime_dimensions (u : Fin m → R) :
-    (GroundTheory.Heights₂.Heights.linForm u).IsHomogeneous 1 := by
-  unfold GroundTheory.Heights₂.Heights.linForm
-  exact MvPolynomial.IsHomogeneous.sum _ _ _ fun j _ => isHomogeneous_C_mul_X (u j) j
+private alias linForm_isHomogeneous_one_minimal_prime_dimensions := _root_.ChowFormHeightComparison₂.CF.A.isHomog_linForm
 
 theorem Ch.germ_comb (h : Ch p s k t) {u : Fin m → R} {su : B.Sec} (hu : IsComb p s u su) {z : Z}
     (hz : z ∈ nonzeroLocus (s k)) {i : B.ι} (hi : z ∈ B.U i) :

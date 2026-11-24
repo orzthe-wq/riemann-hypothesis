@@ -47,4 +47,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.fourierJacobiHandOff_automorphic : ∀ D : D7, HandFBLaw D := by
-  first | exact @GlobalTheory.handFBLaw | exact GlobalTheory.handFBLaw | (intros; apply GlobalTheory.handFBLaw <;> assumption)
+  first | exact @GlobalTheory.handFBLaw

@@ -35,12 +35,6 @@ on:
         description: Pull request whose proposed merge result should be built
         type: number
         required: true
-      runner_pool:
-        description: Full-build pool (small hosts use quick-check mode)
-        type: choice
-        default: rh-build
-        options:
-          - rh-build
       fragment_commit:
         description: "Fragment: commit SHA, or 'SHA BASE HEAD DATE PR' for an rh-buildq PR merge"
         type: string
@@ -57,6 +51,10 @@ on:
         description: "Fragment: LEAN_NUM_THREADS (empty: all cores)"
         type: string
         default: ''
+      fragment_publish:
+        description: "Fragment: publish the result to the shared cache"
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -472,17 +470,20 @@ jobs:
           PYTHON
 
   # Build a list of Lake targets of one commit on a chosen runner, against the shared R2 cache:
-  # restore (Mathlib, the nearest CI cache, the rh-buildq pool), `lake build`, and publish
-  # finished modules to the pool while building. See scripts/rh-buildq/README.md.
+  # restore (Mathlib, the nearest CI cache, the rh-buildq pool), `lake build`, and stage the
+  # newly built modules as an artifact. The runner may be donor-owned: this job holds no cache
+  # credentials, and everything that evaluates or runs the target commit's code runs in a
+  # bubblewrap sandbox (fail closed). `fragment_publish` verifies and publishes the staged
+  # modules from a GitHub-hosted runner. See scripts/rh-buildq/README.md.
   fragment:
     if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.mode == 'fragment' }}
     runs-on:
       group: RiemannHypothesisBuild
       labels: ${{ inputs.fragment_runner }}
-    environment: ci-cache-publish
     timeout-minutes: 1440
     permissions:
       contents: read
+      actions: read  # the prune step reads the status of earlier fragment runs
     steps:
       - name: Checkout trusted harness
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -490,24 +491,30 @@ jobs:
           ref: ${{ github.workflow_sha }}
           path: trusted
           persist-credentials: false
-          sparse-checkout: scripts/rh-buildq
-      - name: Describe the host
+          # main's toolchain and dependency pins: the target must use exactly these.
+          sparse-checkout: |
+            scripts/rh-buildq
+            lakefile.toml
+            lake-manifest.json
+            lean-toolchain
+          sparse-checkout-cone-mode: false
+      - name: Describe the host and remove trees of finished runs
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           umask 077
-          # RUNNER_TEMP is emptied after every job: the derived keys never outlive it.
-          printf 'FRAGMENT_SECRET=%s\nFRAGMENT_TMP=%s\n' "$RUNNER_TEMP/rh-fragment-secret" "$RUNNER_TEMP/rh-fragment" >> "$GITHUB_ENV"
+          printf 'FRAGMENT_TMP=%s\nFRAGMENT_STAGE=%s\n' "$RUNNER_TEMP/rh-fragment" "$RUNNER_TEMP/rh-fragment-stage" >> "$GITHUB_ENV"
           mkdir -p "$RUNNER_TEMP/rh-fragment"
           root="${RH_FRAGMENT_ROOT:-$HOME/rh-fragments}"
           mkdir -p "$root"
           echo "RH_FRAGMENT_ROOT=$root" >> "$GITHUB_ENV"
-          # Trees of failed runs are kept for reruns; drop those untouched for a week.
-          find "$root" -mindepth 1 -maxdepth 1 -type d -regextype posix-extended \
-            -regex '.*/[0-9a-f]{40}-[0-9]+' -mtime +7 -print -exec rm -rf -- {} + || true
+          python3 -I trusted/scripts/rh-buildq/fragment.py prune --root "$root" || true
           echo "runner $RUNNER_NAME, $(nproc) cpus, $(awk '/MemTotal/ {printf "%d GiB", $2/1048576}' /proc/meminfo)"
           sed -n 's/^PRETTY_NAME=//p' /etc/os-release; uname -r
           df -h "$root" | tail -n 1
           for tool in git curl python3 bwrap elan; do printf '%s: %s\n' "$tool" "$(command -v "$tool" || echo missing)"; done
-          if bwrap --dev-bind / / --proc /proc --unshare-pid true 2>/dev/null; then echo "bwrap sandbox: usable"; else echo "bwrap sandbox: unavailable"; fi
+      - name: Require the bubblewrap sandbox (no unsandboxed fallback)
+        run: python3 -I trusted/scripts/rh-buildq/fragment.py probe --work "$RUNNER_TEMP/rh-fragment/probe"
       - name: Install elan if missing
         run: |
           if [[ ! -x "$HOME/.elan/bin/elan" ]]; then
@@ -529,38 +536,52 @@ jobs:
           [[ "$target" =~ ^[0-9a-f]{40}$ ]] || { echo "fragment_commit must start with a 40-hex SHA"; exit 1; }
           # One tree per run: concurrent fragments of a commit never share one; reruns resume it.
           echo "FRAGMENT_QUEUE=$RH_FRAGMENT_ROOT/$target-$GITHUB_RUN_ID" >> "$GITHUB_ENV"
+      # Trusted host code clones, checks that the target uses main's toolchain and dependency
+      # manifest, prepares those dependencies (Mathlib's cache included) from main's own
+      # configuration, and downloads maps and artifacts. Only `lake cache add` runs target code,
+      # in the offline sandbox.
       - name: Restore Mathlib, the nearest CI cache and the rh-buildq pool
         env:
           COMMIT: ${{ inputs.fragment_commit }}
         run: |
           python3 -I trusted/scripts/rh-buildq/fragment.py restore --queue "$FRAGMENT_QUEUE" --commit "$COMMIT" \
-            --timings "$FRAGMENT_TMP/timings.json"
-      # Only after the restore: it runs the target commit's lakefile (`lake cache add`) outside
-      # the sandbox, so the derived keys must not exist yet.
-      - name: Prepare publisher credentials
-        env:
-          R2_ACCOUNT_TOKEN: ${{ secrets.R2_ACCOUNT_TOKEN }}
-        run: python3 -I trusted/scripts/rh-buildq/fragment.py credentials --out "$FRAGMENT_SECRET/r2.json"
-      - name: Build the targets and publish while building
+            --trusted trusted --timings "$FRAGMENT_TMP/timings.json"
+      - name: Build the targets in the offline sandbox
         env:
           JOBS: ${{ inputs.fragment_jobs }}
         run: |
-          python3 -I trusted/scripts/rh-buildq/fragment.py build --queue "$FRAGMENT_QUEUE" \
+          # exec: on cancellation the runner signals this process, which then stops the sandbox
+          # before the stage step runs.
+          exec python3 -I trusted/scripts/rh-buildq/fragment.py build --queue "$FRAGMENT_QUEUE" \
             --targets "$FRAGMENT_TMP/targets.txt" --log "$FRAGMENT_TMP/build.log" --jobs "${JOBS:-0}" \
-            --creds "$FRAGMENT_SECRET/r2.json" --hide "$FRAGMENT_SECRET" --timings "$FRAGMENT_TMP/timings.json"
-      - name: Publish what is left, even after a failure
+            --timings "$FRAGMENT_TMP/timings.json"
+      - name: Stage newly built modules, even after a failure
+        id: stage
         if: ${{ always() }}
         run: |
           if [[ -n "${FRAGMENT_QUEUE:-}" ]]; then
-            python3 -I trusted/scripts/rh-buildq/fragment.py flush --queue "$FRAGMENT_QUEUE" \
-              --creds "$FRAGMENT_SECRET/r2.json" --tmp "$FRAGMENT_SECRET/flush-tmp" --timings "$FRAGMENT_TMP/timings.json"
+            python3 -I trusted/scripts/rh-buildq/fragment.py stage --queue "$FRAGMENT_QUEUE" \
+              --out "$FRAGMENT_STAGE" --timings "$FRAGMENT_TMP/timings.json"
+            if [[ -f "$FRAGMENT_STAGE/manifest.json" ]]; then echo "staged=true" >> "$GITHUB_OUTPUT"; fi
           fi
+      # One name per run: a rerun of this job replaces it, and a rerun of only the publisher
+      # (a later run attempt) still finds it.
+      - name: Upload the staged modules for the trusted publisher
+        if: ${{ always() && steps.stage.outputs.staged == 'true' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: fragment-cache-${{ github.run_id }}
+          path: ${{ env.FRAGMENT_STAGE }}
+          compression-level: 0
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 3
       - name: Summarize built and failed modules
         if: ${{ always() }}
         run: |
           if [[ -n "${FRAGMENT_QUEUE:-}" ]]; then
             python3 -I trusted/scripts/rh-buildq/fragment.py result --queue "$FRAGMENT_QUEUE" \
-              --targets "$FRAGMENT_TMP/targets.txt" --log "$FRAGMENT_TMP/build.log" \
+              --targets "$FRAGMENT_TMP/targets.txt" --log "$FRAGMENT_TMP/build.log" --stage "$FRAGMENT_STAGE" \
               --out "$FRAGMENT_TMP/result.json" --timings "$FRAGMENT_TMP/timings.json"
             gzip -kf "$FRAGMENT_TMP/build.log" 2>/dev/null || true
           fi
@@ -574,9 +595,69 @@ jobs:
             ${{ env.FRAGMENT_TMP }}/build.log.gz
           if-no-files-found: warn
           retention-days: 14
-      - name: Remove credentials and scratch files
+      - name: Remove scratch files
         if: ${{ always() }}
-        run: rm -rf -- "$FRAGMENT_SECRET" "$FRAGMENT_TMP"
+        run: rm -rf -- "$FRAGMENT_TMP" "$FRAGMENT_STAGE"
       - name: Remove the tree of a successful run
         if: ${{ success() }}
         run: rm -rf -- "$FRAGMENT_QUEUE"
+
+  # The only job of the fragment mode that sees cache credentials: a fresh GitHub-hosted runner
+  # that runs trusted code only. It verifies the staged modules against the target commit
+  # (read as Git objects) before deriving the R2 keys, then publishes them. It runs after
+  # failed or cancelled builds too, so their finished modules are not lost. The shared cache is
+  # fully trusted by policy, so this runs unless the dispatcher sets fragment_publish=false;
+  # see verification/CACHE.md.
+  fragment_publish:
+    needs: fragment
+    if: ${{ always() && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.mode == 'fragment' && inputs.fragment_publish && needs.fragment.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    environment: ci-cache-publish
+    timeout-minutes: 240
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout trusted publisher
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.workflow_sha }}
+          path: trusted
+          persist-credentials: false
+          sparse-checkout: scripts/rh-buildq
+      - name: Free hosted runner space for the staged modules
+        run: sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc
+      - name: Download the staged modules (untrusted data)
+        id: download
+        continue-on-error: true
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: fragment-cache-${{ github.run_id }}
+          path: ${{ runner.temp }}/stage
+      - name: Install pinned elan for content hashing
+        if: ${{ steps.download.outcome == 'success' }}
+        run: |
+          mkdir "$RUNNER_TEMP/elan-install"
+          curl --fail --silent --show-error --location --retry 3 \
+            https://github.com/leanprover/elan/releases/download/v4.2.4/elan-x86_64-unknown-linux-gnu.tar.gz \
+            --output "$RUNNER_TEMP/elan-install/elan.tar.gz"
+          printf '%s  %s\n' 42b94d4244e8353142c456ec0e4ca6528fd898a6c604d4059f494e706e431f63 \
+            "$RUNNER_TEMP/elan-install/elan.tar.gz" | sha256sum --check
+          tar --extract --gzip --file "$RUNNER_TEMP/elan-install/elan.tar.gz" --directory "$RUNNER_TEMP/elan-install"
+          "$RUNNER_TEMP/elan-install/elan-init" -y --default-toolchain none --no-modify-path
+          printf '%s\n' "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Verify the staged modules before any credential exists
+        if: ${{ steps.download.outcome == 'success' }}
+        env:
+          COMMIT: ${{ inputs.fragment_commit }}
+        run: |
+          python3 -I trusted/scripts/rh-buildq/publish-fragment.py verify --stage "$RUNNER_TEMP/stage" \
+            --commit "$COMMIT" --out "$RUNNER_TEMP/verified.json" --work "$RUNNER_TEMP/verify"
+      - name: Publish the verified modules
+        if: ${{ steps.download.outcome == 'success' }}
+        env:
+          R2_ACCOUNT_TOKEN: ${{ secrets.R2_ACCOUNT_TOKEN }}
+        run: |
+          umask 077
+          python3 -I trusted/scripts/rh-buildq/publish-fragment.py credentials --out "$RUNNER_TEMP/secret/r2.json"
+          python3 -I trusted/scripts/rh-buildq/publish-fragment.py publish --verified "$RUNNER_TEMP/verified.json" \
+            --creds "$RUNNER_TEMP/secret/r2.json"

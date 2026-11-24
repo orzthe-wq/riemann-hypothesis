@@ -72,7 +72,7 @@ theorem cK_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F
     simp only [cK] at hx hy ⊢
     simp [map_add (f := _), hx, hy]
   | tmul r e =>
-    simp [cK, Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def]
+    simp [cK, Algebra.TensorProduct.basis_repr_tmul]
 
 variable (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [SecondCountableTopology R]
   [MeasurableSpace R] [BorelSpace R] {d : ℕ} {b : Module.Basis (Fin d) F E}
@@ -115,7 +115,7 @@ theorem map_coordW (hK : IsHomeomorph (cK (F := F) (E := E) R b)) (lam : Measure
     (n M : ℕ) :
     MeasurePreserving (eW R hK n M) (coordW R b lam n M)
       (Measure.pi fun _ : Fin n × Fin M × Fin d => lam) := by
-  haveI := sigmaFinite_coordK R hK lam
+  have := sigmaFinite_coordK R hK lam
   refine ⟨(eW R hK n M).measurable, ?_⟩
   symm
   refine Measure.pi_eq fun s hs => ?_
@@ -148,13 +148,13 @@ theorem coordW_box : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   intro F E _ _ _ _ _ σ hσ d b lam hlam lf hlf h1 n M S A hA
   obtain ⟨-, hAfLC, hAfSC, hAfT2⟩ := GlobalTheory.CompanionTheory.AdeleTop.adele_top F
   have hloc := fun v => GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
-  haveI : ∀ v, IsTopologicalRing (Fv F v) := fun v => (hloc v).1
-  haveI : ∀ v, LocallyCompactSpace (Fv F v) := fun v => (hloc v).2.1
-  haveI : ∀ v, SecondCountableTopology (Fv F v) := fun v => (hloc v).2.2.1
-  haveI : ∀ v, T2Space (Fv F v) := fun v => (hloc v).2.2.2.1
-  haveI : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩
-  haveI : ∀ v, (lam v).IsAddHaarMeasure := fun v => (hlam v).1
-  haveI : BorelSpace (Af F) := ⟨rfl⟩
+  have : ∀ v, IsTopologicalRing (Fv F v) := fun v => (hloc v).1
+  have : ∀ v, LocallyCompactSpace (Fv F v) := fun v => (hloc v).2.1
+  have : ∀ v, SecondCountableTopology (Fv F v) := fun v => (hloc v).2.2.1
+  have : ∀ v, T2Space (Fv F v) := fun v => (hloc v).2.2.2.1
+  have : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩
+  have : ∀ v, (lam v).IsAddHaarMeasure := fun v => (hlam v).1
+  have : BorelSpace (Af F) := ⟨rfl⟩
   have hKf : IsHomeomorph (cK (F := F) (E := E) (Af F) b) :=
     (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Af F)).2.2.2.2.2.2.1 d b
   have hKv : ∀ v, IsHomeomorph (cK (F := F) (E := E) (Fv F v) b) := fun v =>
@@ -174,7 +174,7 @@ theorem coordW_box : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
       (eW (Af F) hKf n M) ⁻¹' {x | (∀ v ∈ S, (fun i => evalV F v (x i)) ∈ A' v) ∧
         ∀ v, v ∉ S → ∀ i, evalV F v (x i) ∈ v.adicCompletionIntegers F} := by
     ext X
-    simp only [Set.mem_setOf_eq, Set.mem_preimage, hcomm]
+    simp only [Set.mem_ofPred_eq, Set.mem_preimage, hcomm]
     refine and_congr (forall₂_congr fun v _ => ?_) (forall₂_congr fun v _ => ?_)
     · simp [A']
     · exact ⟨fun h p => h p.1 p.2.1 p.2.2, fun h a i k => h (a, i, k)⟩

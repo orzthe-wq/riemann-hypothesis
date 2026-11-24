@@ -1,20 +1,27 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemUnitOff
+public import Formalism.LocalToGlobal.Columns.AbelianHostFieldConditions
+public import Formalism.LocalToGlobal.Columns.DecoFin
+public import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
+public import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ValOUnramifiedDegreeOne
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMatrixBasisLatticeUpToDenominatorNotMem
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMulMemSpan
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUnimodularLatticeLocalMatch
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnimodularLatticeLocalConjSymm
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -22,8 +29,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -31,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,10 +48,310 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LevelChainSharpColumnValuationOwnChainIff
+import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+import Formalism.LocalToGlobal.Columns.AlgebraMapMemMaximalIdealPowIff
+import Formalism.LocalToGlobal.Divisibility.CoefMod
+import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
+import Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GlobSpecOfExists
+import Formalism.SharpRestriction.GrowthBounds.UnramifiedQuadraticSetting
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ValOUnramifiedDegreeOne, Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMulMemSpan, Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUnimodularLatticeLocalMatch, Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InvSmulMemOfRedL
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ValOUnramifiedDegreeOne =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ValOUnramifiedDegreeOne", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.GlobalTwisting.LevelChainSharpColumnValuationOwnChainIff\nimport Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemUnitOff\nimport Formalism.LocalToGlobal.Columns.AbelianHostFieldConditions\npublic import Formalism.LocalToGlobal.Columns.DecoFin\npublic import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions Classical NumberField IsDedekindDomain Matrix GlobalTheory.LvT GlobalTheory.LvT.Inh
+open Formalism.MainNotions.product_first_zeroth_parts (Ow ten blk CSpan IntSpan wSh)
+open Formalism.L2.Col (conjPrime₂ PosStar hStd UF Sp)
+
+namespace GlobalTheory.LvT.LocUnr
+
+variable {K : Type} [Field K] [NumberField K]
+
+theorem valuation_eq_exp_neg_one (P : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) (h1 : r ∈ P.asIdeal)
+    (h2 : r ∉ P.asIdeal ^ 2) : P.valuation K (algebraMap (𝓞 K) K r) = WithZero.exp (-1 : ℤ) := by
+  have e : P.valuation K (algebraMap (𝓞 K) K r) = P.intValuation r := P.valuation_of_algebraMap r
+  rw [e]
+  have hr : r ≠ 0 := by rintro rfl; exact h2 (Submodule.zero_mem _)
+  have a1 := (P.intValuation_le_pow_iff_mem r 1).2 (by simpa using h1)
+  have a2 := mt (P.intValuation_le_pow_iff_mem r 2).1 h2
+  rw [← WithZero.exp_log (P.intValuation_ne_zero r hr)] at a1 a2 ⊢
+  rw [WithZero.exp_le_exp] at a1 a2
+  congr 1
+  push_cast at a1 a2
+  omega
+
+end GlobalTheory.LvT.LocUnr
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ValOUnramifiedDegreeOne =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMulMemSpan =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMulMemSpan", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.Basic\npublic import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks\npublic import Formalism.LocalToGlobal.Columns.AbelianHostFieldConditions\nimport Formalism.LocalToGlobal.Columns.AlgebraMapMemMaximalIdealPowIff\nimport Formalism.LocalToGlobal.Divisibility.CoefMod\nimport Formalism.LocalToGlobal.HermitianForms.IsLocBasis\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Forms GlobalTheory.Mem.Col2
+
+noncomputable section
+
+namespace GlobalTheory.Mem.Col2.LevLaws
+
+section Gen
+
+variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
+  {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
+
+
+omit [StarRing E] in
+theorem exists_mul_mem_span (P : HeightOneSpectrum (𝓞 E)) {q : 𝓞 E} (hq : q ∈ P.asIdeal)
+    (hq2 : q ∉ P.asIdeal ^ 2) : ∃ s ∉ P.asIdeal, ∀ r ∈ P.asIdeal, ∃ t, s * r = q * t := by
+  have h1 : P.asIdeal ∣ Ideal.span {q} := Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hq)
+  obtain ⟨J, hJ⟩ := h1
+  have h2 : ¬ J ≤ P.asIdeal := by
+    intro h
+    apply hq2
+    have : q ∈ P.asIdeal * J := hJ ▸ Ideal.mem_span_singleton_self q
+    rw [sq]
+    exact Ideal.mul_mono_right h this
+  obtain ⟨s, hs, hsP⟩ := SetLike.not_le_iff_exists.1 h2
+  refine ⟨s, hsP, fun r hr => ?_⟩
+  have : r * s ∈ Ideal.span {q} := hJ ▸ Ideal.mul_mem_mul hr hs
+  obtain ⟨t, ht⟩ := Ideal.mem_span_singleton'.1 this
+  exact ⟨t, by rw [mul_comm s r, ← ht, mul_comm]⟩
+
+end Gen
+
+variable {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))}
+
+end GlobalTheory.Mem.Col2.LevLaws
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMulMemSpan =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUnimodularLatticeLocalMatch =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUnimodularLatticeLocalMatch", "h": "module\n\npublic import Formalism.LocalToGlobal.Columns.DecoFin\nimport Formalism.HermitianLattices.HermitianLatticesProofs.DualLattice\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.GaloisGeometry.GlobSpecOfExists\nimport Formalism.SharpRestriction.GrowthBounds.UnramifiedQuadraticSetting\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.L2.Col Formalism.HermitianLatticesTheory Formalism.BasicNotions Formalism.L2.DIV GlobalTheory.GO
+
+namespace GlobalTheory.GO.SplitGlue
+
+variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
+
+
+omit [StarRing E] in
+theorem exists_smul_le {N N' : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsFullLattice E N)
+    (hN' : Submodule.IsLattice E N') : ∃ a : 𝓞 E, a ≠ 0 ∧ ∀ x ∈ N', a • x ∈ N := by
+  classical
+  have h0 : ∀ x : Sp E n, ∃ a : 𝓞 E, a ≠ 0 ∧ a • x ∈ N := by
+    intro x
+    have hx : x ∈ Submodule.span E (N : Set (Sp E n)) := Submodule.IsFullLattice.span_eq_top (self := hN) ▸ Submodule.mem_top
+    obtain ⟨t, ht⟩ := multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 E)) E (N : Set (Sp E n)) x hx
+    rw [Submodule.span_eq] at ht
+    exact ⟨t, nonZeroDivisors.ne_zero t.2, ht⟩
+  obtain ⟨s, rfl⟩ := hN'.fg
+  choose a ha0 ha using h0
+  refine ⟨∏ y ∈ s, a y, Finset.prod_ne_zero_iff.mpr fun y _ => ha0 y, ?_⟩
+  intro x hx
+  induction hx using Submodule.span_induction with
+  | mem y hy =>
+    rw [← Finset.prod_erase_mul _ _ hy, mul_smul]
+    exact N.smul_mem _ (ha y)
+  | zero => simp
+  | add y z _ _ hy hz => rw [smul_add]; exact N.add_mem hy hz
+  | smul c y _ hy => rw [smul_comm]; exact N.smul_mem _ hy
+
+
+omit [StarRing E] in
+theorem mem_of_forall (N : Submodule (𝓞 E) (Sp E n)) {x : Sp E n}
+    (h : ∀ w : HeightOneSpectrum (𝓞 E), ∃ s ∉ w.asIdeal, s • x ∈ N) : x ∈ N := by
+  by_contra hx
+  have hI : N.comap (LinearMap.toSpanSingleton (𝓞 E) (Sp E n) x) ≠ ⊤ := by
+    intro h1
+    have : (1 : 𝓞 E) ∈ N.comap (LinearMap.toSpanSingleton (𝓞 E) (Sp E n) x) := h1 ▸ Submodule.mem_top
+    exact hx (by simpa using this)
+  obtain ⟨m, hm, hle⟩ := Ideal.exists_le_maximal _ hI
+  have hm0 : m ≠ ⊥ := Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)
+  obtain ⟨s, hs, hsx⟩ := h ⟨m, hm.isPrime, hm0⟩
+  exact hs (hle (by simpa using hsx))
+
+
+omit [StarRing E] in
+theorem eq_of_sameAt {N N' : Submodule (𝓞 E) (Sp E n)} (h : ∀ w, SameAt w N N') : N = N' := by
+  apply le_antisymm
+  · intro x hx
+    refine mem_of_forall N' fun w => ?_
+    obtain ⟨_, _, a', ha', _, h2⟩ := h w
+    exact ⟨a', ha', h2 x hx⟩
+  · intro x hx
+    refine mem_of_forall N fun w => ?_
+    obtain ⟨a, ha, _, _, h1, _⟩ := h w
+    exact ⟨a, ha, h1 x hx⟩
+
+omit [NumberField E] [StarRing E] in
+theorem sameAt_symm {Q : HeightOneSpectrum (𝓞 E)} {N N' : Submodule (𝓞 E) (Sp E n)} (h : SameAt Q N N') :
+    SameAt Q N' N := by
+  obtain ⟨a, ha, a', ha', h1, h2⟩ := h
+  exact ⟨a', ha', a, ha, h2, h1⟩
+
+omit [NumberField E] [StarRing E] in
+theorem sameAt_trans {Q : HeightOneSpectrum (𝓞 E)} {N N' N'' : Submodule (𝓞 E) (Sp E n)} (h : SameAt Q N N')
+    (h' : SameAt Q N' N'') : SameAt Q N N'' := by
+  obtain ⟨a, ha, a', ha', h1, h2⟩ := h
+  obtain ⟨b, hb, b', hb', h3, h4⟩ := h'
+  refine ⟨a * b, fun hm => (Q.isPrime.mem_or_mem hm).elim ha hb, b' * a',
+    fun hm => (Q.isPrime.mem_or_mem hm).elim hb' ha', fun x hx => ?_, fun x hx => ?_⟩
+  · rw [mul_smul]; exact h1 _ (h3 x hx)
+  · rw [mul_smul]; exact h4 _ (h2 x hx)
+
+theorem conjP_conjP (P : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPrime₂ P) = P := by
+  ext r
+  rw [mem_conjP, mem_conjP, cO_cO]
+
+theorem sameAt_dual {Q : HeightOneSpectrum (𝓞 E)} {N N' : Submodule (𝓞 E) (Sp E n)} (h : SameAt Q N N') :
+    SameAt (conjPrime₂ Q) (dual (hStd E n) N) (dual (hStd E n) N') := by
+  obtain ⟨a, ha, a', ha', h1, h2⟩ := h
+  refine ⟨cO E a', by rwa [mem_conjP, cO_cO], cO E a, by rwa [mem_conjP, cO_cO], fun x hx => ?_, fun x hx => ?_⟩
+  · rw [mem_dual] at hx ⊢
+    intro y hy
+    rw [← hStd_osmul_left]
+    exact hx _ (h2 y hy)
+  · rw [mem_dual] at hx ⊢
+    intro y hy
+    rw [← hStd_osmul_left]
+    exact hx _ (h1 y hy)
+
+theorem exists_glue {L L' : Submodule (𝓞 E) (Sp E n)} (hL : Submodule.IsFullLattice E L) (hL' : Submodule.IsFullLattice E L')
+    (P : HeightOneSpectrum (𝓞 E)) : ∃ L'' : Submodule (𝓞 E) (Sp E n), Submodule.IsFullLattice E L'' ∧ SameAt P L' L'' ∧
+      ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → SameAt Q L L'' := by
+  classical
+  obtain ⟨a, ha0, ha⟩ := exists_smul_le hL hL'.toIsLattice
+  obtain ⟨b, hb0, hb⟩ := exists_smul_le hL' hL.toIsLattice
+  have hI : Ideal.span {a * b} ≠ ⊥ := by simpa using ⟨ha0, hb0⟩
+  obtain ⟨J, hJ, hdJ⟩ := Ideal.eq_prime_pow_mul_coprime hI P.asIdeal (hpm := P.isMaximal)
+  generalize Multiset.count P.asIdeal (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {a * b})) = k at hdJ
+  have hdvd : ∀ r ∈ P.asIdeal ^ k, ∀ s ∈ J, ∃ c, r * s = c * (a * b) := by
+    intro r hr s hs
+    have := Ideal.mul_mem_mul hr hs
+    rw [← hdJ, Ideal.mem_span_singleton'] at this
+    obtain ⟨c, hc⟩ := this
+    exact ⟨c, hc.symm⟩
+  have h1 : ∀ r ∈ P.asIdeal ^ k, ∀ s ∈ J, ∀ x ∈ L, (r * s) • x ∈ L' := by
+    intro r hr s hs x hx
+    obtain ⟨c, hc⟩ := hdvd r hr s hs
+    rw [hc, ← mul_assoc, mul_smul]
+    exact L'.smul_mem _ (hb x hx)
+  have h2 : ∀ r ∈ P.asIdeal ^ k, ∀ s ∈ J, ∀ x ∈ L', (r * s) • x ∈ L := by
+    intro r hr s hs x hx
+    obtain ⟨c, hc⟩ := hdvd r hr s hs
+    rw [hc, mul_comm a b, ← mul_assoc, mul_smul]
+    exact L.smul_mem _ (ha x hx)
+  obtain ⟨s, hsJ, hsP⟩ : ∃ s ∈ J, s ∉ P.asIdeal := by
+    by_contra H
+    push Not at H
+    have : P.asIdeal ⊔ J ≤ P.asIdeal := sup_le le_rfl H
+    rw [hJ] at this
+    exact P.isPrime.ne_top (top_le_iff.1 this)
+  have hs0 : s ≠ 0 := by rintro rfl; exact hsP P.asIdeal.zero_mem
+  let L'' : Submodule (𝓞 E) (Sp E n) := J • L' ⊔ (P.asIdeal ^ k) • L
+  have hA : ∀ x ∈ L', s • x ∈ L'' := fun x hx => Submodule.mem_sup_left (Submodule.smul_mem_smul hsJ hx)
+  have hB : ∀ x ∈ L'', s • x ∈ L' := by
+    intro x hx
+    obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 hx
+    rw [smul_add]
+    refine L'.add_mem (L'.smul_mem _ (Submodule.smul_le_right hy)) ?_
+    refine Submodule.smul_induction_on hz (fun r hr u hu => ?_) (fun u v hu hv => ?_)
+    · rw [← mul_smul, mul_comm]; exact h1 r hr s hsJ u hu
+    · rw [smul_add]; exact L'.add_mem hu hv
+  refine ⟨L'', ?_, ⟨s, hsP, s, hsP, hB, hA⟩, fun Q hQ => ?_⟩
+  · have hsup : Submodule.IsLattice E (L' ⊔ L) :=
+      ⟨hL'.fg.sup hL.fg, by
+        intro s hs hli
+        exact (LinearIndependent.iff_fractionRing _ _).mp hli⟩
+    let : Submodule.IsLattice E L'' := lattice_of_smul hL'.toIsLattice hsup (sup_le_sup Submodule.smul_le_right Submodule.smul_le_right) hs0 hA
+    refine { span_eq_top := ?_ }
+    apply top_unique
+    intro x hx
+    have hx' : x ∈ Submodule.span E (L' : Set (Sp E n)) :=
+      Submodule.IsFullLattice.span_eq_top (self := hL') ▸ Submodule.mem_top
+    have hspan : ∀ y ∈ L', y ∈ Submodule.span E (L'' : Set (Sp E n)) := by
+      intro y hy
+      have hsE : (algebraMap (𝓞 E) E s) ≠ 0 :=
+        fun h => hs0 ((IsFractionRing.injective (𝓞 E) E) (by simpa using h))
+      have hy' : s • y ∈ Submodule.span E (L'' : Set (Sp E n)) := Submodule.subset_span (hA y hy)
+      rw [← IsScalarTower.algebraMap_smul E s y] at hy'
+      have := (Submodule.span E (L'' : Set (Sp E n))).smul_mem (algebraMap (𝓞 E) E s)⁻¹ hy'
+      rw [← mul_smul, inv_mul_cancel₀ hsE, one_smul] at this
+      exact this
+    exact (Submodule.span_le.mpr hspan) hx' 
+  · obtain ⟨t, htP, htQ⟩ := exists_mem_notMem hQ.symm
+    have ht : t ^ k ∈ P.asIdeal ^ k := Ideal.pow_mem_pow htP k
+    have ht' : t ^ k ∉ Q.asIdeal := fun h => htQ (Q.isPrime.mem_of_pow_mem k h)
+    refine ⟨t ^ k, ht', t ^ k, ht', fun x hx => ?_, fun x hx => Submodule.mem_sup_right (Submodule.smul_mem_smul ht hx)⟩
+    obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 hx
+    rw [smul_add]
+    refine L.add_mem ?_ (L.smul_mem _ (Submodule.smul_le_right hz))
+    refine Submodule.smul_induction_on hy (fun r hr u hu => ?_) (fun u v hu hv => ?_)
+    · rw [← mul_smul]; exact h2 _ ht r hr u hu
+    · rw [smul_add]; exact L.add_mem hu hv
+
+theorem exists_selfDual_prescribed (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ)
+    (N M : Submodule (𝓞 E) (Sp E n)) (Q : HeightOneSpectrum (𝓞 E)) (hQ : conjPrime₂ Q ≠ Q) (hN : Submodule.IsFullLattice E N)
+    (hu : IsUnimodular (hStd E n) N) (hM : Submodule.IsFullLattice E M) :
+    ∃ N' : Submodule (𝓞 E) (Sp E n), Submodule.IsLattice E N' ∧ IsUnimodular (hStd E n) N' ∧
+      localization₂ Q.asIdeal N' = localization₂ Q.asIdeal M ∧
+      ∀ Q' : HeightOneSpectrum (𝓞 E), Q' ≠ Q → Q' ≠ conjPrime₂ Q → localization₂ Q'.asIdeal N' = localization₂ Q'.asIdeal N := by
+  have hsymm : (hStd E n).IsSymm := ⟨fun x y => by
+    simp only [hStd, LinearMap.mk₂'ₛₗ_apply, map_sum, map_mul, starRingEnd_apply, star_star]
+    exact Finset.sum_congr rfl fun i _ => mul_comm _ _⟩
+  have hdual := dualLattice (𝓞 E) E (Sp E n) (hStd E n) hsymm hStd_nondeg star_range M hM
+  obtain ⟨L, hL, hLQ, hLo⟩ := exists_glue hN hM Q
+  obtain ⟨N', hN', hc, ho⟩ := exists_glue hL hdual.1 (conjPrime₂ Q)
+  have h1 : SameAt Q M N' := sameAt_trans hLQ (ho Q hQ.symm)
+  have h2 : ∀ Q' : HeightOneSpectrum (𝓞 E), Q' ≠ Q → Q' ≠ conjPrime₂ Q → SameAt Q' N N' :=
+    fun Q' a b => sameAt_trans (hLo Q' a) (ho Q' b)
+  refine ⟨N', hN'.toIsLattice, ?_, h1.localization_eq, fun Q' a b => (h2 Q' a b).localization_eq⟩
+  refine eq_of_sameAt fun w => ?_
+  by_cases hw : w = Q
+  · subst hw
+    have := sameAt_dual hc
+    rw [conjP_conjP, hdual.2.1] at this
+    exact sameAt_trans (sameAt_symm this) h1
+  by_cases hw' : w = conjPrime₂ Q
+  · subst hw'
+    exact sameAt_trans (sameAt_symm (sameAt_dual h1)) hc
+  have := sameAt_dual (h2 (conjPrime₂ w) (fun h => hw' (by rw [← h, conjP_conjP]))
+    (fun h => hw (by rw [← conjP_conjP w, h, conjP_conjP])))
+  rw [conjP_conjP, show dual (hStd E n) N = N from hu] at this
+  exact sameAt_trans (sameAt_symm this) (h2 w hw hw')
+
+end GlobalTheory.GO.SplitGlue
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUnimodularLatticeLocalMatch =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InvSmulMemOfRedL =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InvSmulMemOfRedL", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemUnitOff\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.PredMemGamRanks\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ValOUnramifiedDegreeOne\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMatrixBasisLatticeUpToDenominatorNotMem\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMulMemSpan\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsUnimodularLatticeLocalMatch\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnimodularLatticeLocalConjSymm\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -437,7 +741,7 @@ theorem span_eq_top_of_unimodular (N : Submodule (𝓞 E) (Sp E n))
       rw [Finset.sum_mul]
       apply Finset.sum_congr rfl
       intro i _
-      simp [Pi.smul_apply, smul_eq_mul, mul_comm, mul_left_comm, mul_assoc]
+      simp [Pi.smul_apply, smul_eq_mul, mul_comm, mul_left_comm]
     rw [heq, hz, zero_mul]
     exact zero_mem _
   obtain ⟨ψ, hψ, -⟩ := Submodule.exists_le_ker_of_notMem
@@ -651,3 +955,7 @@ theorem ok_of_agree {d : Deco E n ST SG} (hd : d.Ok) {e : Deco E n ST ∅} (he :
 end Deco
 
 end GlobalTheory.LvT.Pts
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.InvSmulMemOfRedL =====

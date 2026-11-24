@@ -79,15 +79,7 @@ end GlobalTheory.RealLift.OneParam
 namespace GlobalTheory.RealLift.OneParam
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
-theorem exists_moved {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ ξ : E, σ ξ ≠ ξ := by
-  by_contra hc
-  push Not at hc
-  have := h.2.1
-  let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom
-  refine (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ)))
-    (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_)))
-  change star (τ x) = τ x
-  rw [← h.2.2.2 τ x, hc x]
+alias exists_moved := _root_.GlobalTheory.AdelicU.exists_cm_conj_ne
 
 theorem im_ne_zero {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {ξ : E} (hξ : σ ξ ≠ ξ) (τ : E →+* ℂ) : (τ ξ).im ≠ 0 := by
   intro h0
@@ -107,7 +99,7 @@ theorem piInf_liftC [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w
     (c : InfinitePlace F → ℂ) (w : InfinitePlace F) : piInf (τ w) (liftC τ ξ c) = c w := by
   rw [liftC, map_add (f := _), piInf_tmul, piInf_tmul, evInf_liftR, evInf_liftR, map_one, mul_one]
   have := hξ w
-  apply Complex.ext <;> simp <;> field_simp <;> ring
+  apply Complex.ext <;> simp <;> field_simp
 
 theorem continuous_liftC [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (ξ : E) :
     Continuous (liftC τ ξ) := by

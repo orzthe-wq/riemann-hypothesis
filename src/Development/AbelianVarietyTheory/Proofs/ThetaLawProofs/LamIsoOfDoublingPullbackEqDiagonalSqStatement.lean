@@ -54,4 +54,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 
 theorem _root_.GlobalTheory.T.lam_iso_of_doubling_pullback_eq_diagonal_sq : Out.Laws → ∀ (h k : ℕ) (o : Type) [CommRing o] (ζ : o) (R : Type) [CommRing R] [Algebra ℚ R] [IsNoetherianRing R] (β : o →+* R) (c : SiegPre h k ζ (spMap β)) (L : LB c.A.left), c.Principal → L.IsLB → LBIso (lbPow c.diag 2) (L.pull ((𝟙 c.A) ^ 2 : c.A ⟶ c.A).left) → LBIso (abelian₂ c.A L) c.P := by
-  first | exact @GlobalTheory.LamOfDouble.lam_iso_of_pull_two | exact GlobalTheory.LamOfDouble.lam_iso_of_pull_two | (intros; apply GlobalTheory.LamOfDouble.lam_iso_of_pull_two <;> assumption)
+  first | exact @GlobalTheory.LamOfDouble.lam_iso_of_pull_two

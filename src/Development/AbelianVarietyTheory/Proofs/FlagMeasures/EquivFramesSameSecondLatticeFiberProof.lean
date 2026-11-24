@@ -2,9 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.EncardBiUnionLe
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FixedFrameSelfNormalFormExistsProofStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FixedFrameSelfNormalFormExistsProof
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SmulMemOfOne
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryHostFieldArithmeticConditionsProofStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryHostFieldArithmeticConditionsProof
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -223,8 +223,8 @@ theorem fibC : FibC := by
     rw [hg]
     exact h
 
-  obtain ⟨N₁, hF₁, -, -, -, hd₁, -, hRef₁, -⟩ := GlobalTheory.T.fixedFrameSelfNormalFormExists_proof D large₂ X Y u hStd t₁.lam' (Or.inl t₁.mem')
-  obtain ⟨N₂, hF₂, -, -, -, hd₂, hTm₂, hRef₂, -⟩ := GlobalTheory.T.fixedFrameSelfNormalFormExists_proof D large₂ X Y u hStd t₂.lam' (Or.inl t₂.mem')
+  obtain ⟨N₁, hF₁, -, -, -, hd₁, -, hRef₁, -⟩ := _root_.GlobalTheory.IdNF.idNFC_holds D large₂ X Y u hStd t₁.lam' (Or.inl t₁.mem')
+  obtain ⟨N₂, hF₂, -, -, -, hd₂, hTm₂, hRef₂, -⟩ := _root_.GlobalTheory.IdNF.idNFC_holds D large₂ X Y u hStd t₂.lam' (Or.inl t₂.mem')
   have hP₁ : N₁.P0 ≤ t₁.lam' :=
     (show N₁.P0 ≤ N₁.Ref (GlobalTheory.HermLat.latL N₁.F N₁.F' t₁.lam') from le_sup_left).trans hRef₁.le
   have hP₂ : N₂.P0 ≤ t₂.lam' :=
@@ -256,7 +256,7 @@ theorem fibC : FibC := by
     exact h
   have hGz : G.z ∈ t₂.lam' := hgmem _ hz₁
 
-  have hK := (GlobalTheory.T.unitaryHostFieldArithmeticConditions D large₂ hStd).1
+  have hK := (_root_.GlobalTheory.TypeAsm.hostC D large₂ hStd).1
   obtain ⟨m, hmN, hmΛ, hmE⟩ := GlobalTheory.DegAsm.FrameMove.main D.host.E (VS D).V (HV D) hK D.R.rS (F0 X u) G N₂.aa
     t₂.lam' hU₂ hFr₂ hSG rfl hint hz₂ hGz
 

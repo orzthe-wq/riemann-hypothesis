@@ -228,4 +228,4 @@ private theorem main : MultUnit := by
 
 end UpperTheory.MultiplicativeUnitDivisibility
 
-theorem UpperTheory.multiplier_is_unit : MultUnit := UpperTheory.MultiplicativeUnitDivisibility.main
+alias UpperTheory.multiplier_is_unit := _root_.UpperTheory.MultiplicativeUnitDivisibility.main

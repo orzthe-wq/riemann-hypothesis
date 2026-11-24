@@ -114,7 +114,7 @@ theorem pairGOps : PairGOps := by
     · intro h
       simpa using congrFun h 0
     · intro s _
-      simp [fac]
+      simp
     · intro s _
       simp [fac]
   · intro L₁ L₁' L₂ L₂' β₁ β₂ q P₁ P₂ h₁ h₂

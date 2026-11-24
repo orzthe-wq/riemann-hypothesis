@@ -63,8 +63,7 @@ namespace Formalism.REAL
 
 theorem compact_weight_orthogonal : KWtOrth := by
   intro V _ _ n ε F μ ν x y hU hx hy hne
-  obtain ⟨a, ha⟩ : ∃ a, μ a ≠ ν a := by
-    by_contra h; push Not at h; exact hne (funext h)
+  obtain ⟨a, ha⟩ := Function.ne_iff.mp hne
   have h1 := hU a a rfl x y
   rw [hx a, hy a, inner_smul_left, inner_smul_right, Complex.conj_ofReal] at h1
   have h2 : ((μ a : ℂ) - (ν a : ℂ)) * ⟪x, y⟫_ℂ = 0 := by
@@ -91,7 +90,6 @@ theorem compact_lie_commutator (h : KRel ε F) {a b c d : Fin n} (hab : ε a = �
     F a b (F c d y) - F c d (F a b y) =
       (if b = c then F a d y else 0) - (if d = a then F c b y else 0) := by
   have := LinearMap.congr_fun (h a b c d hab hcd) y
-  simp only [LinearMap.sub_apply, Module.End.mul_apply] at this
   split_ifs at this ⊢ <;> simpa using this
 
 theorem word_action_nil (x : V) : ew F [] x = x := rfl
@@ -139,9 +137,7 @@ theorem height_word_shift_nonneg {m : ℕ} (w : List (Fin m × Fin m)) (hw : ∀
     have h2 : ((p.2 : ℕ) : ℝ) < ((p.1 : ℕ) : ℝ) := by
       exact_mod_cast (hw p List.mem_cons_self)
     simp only [wordWeightShift, height_functional_add, height_functional_root]
-    constructor
-    · linarith [h1.1]
-    · intro _; linarith [h1.1]
+    refine ⟨by linarith [h1.1], fun _ => by linarith [h1.1]⟩
 
 theorem word_action_weight (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (hx : IsWeight F μ x)
     (w : List (Fin n × Fin n)) (hw : ∀ p ∈ w, ε p.1 = ε p.2) :

@@ -89,7 +89,7 @@ theorem cmp : Cmp := by
   let a : Row M → Row M → X.Kˣ := fun x y => if h : Ok x y then Classical.choose (key x y h) else 1
   have ha : ∀ x y (h : Ok x y), a x y ∈ X.Un m ∧ Mv X m (RingEquiv.refl _) 1 (R x y) (Q x y) (a x y) := by
     intro x y h
-    simp only [a, dif_pos h]
+    simp only [a, h, ↓reduceDIte]
     exact Classical.choose_spec (key x y h)
   have hgal : ∀ s : Gal(Ω/ℚ), galU X s = unU X (X.gal s) := fun s => rfl
   refine ⟨a, ?_, ?_⟩
@@ -103,7 +103,7 @@ theorem cmp : Cmp := by
     rcases eq_or_ne m 1 with h1 | h1
     · subst h1
       exact ⟨(F' s x y * tw X 1 M s a x y / a x y)⁻¹ * F s x y, by rw [pow_one, mul_inv_cancel_left]⟩
-    haveI : Fact (1 < m) := ⟨by omega⟩
+    have : Fact (1 < m) := ⟨by omega⟩
     rw [ZMod.val_one, pow_one] at hsq
     unfold Cgr at hsq
     obtain ⟨h, eh⟩ := hsq
@@ -116,7 +116,7 @@ theorem cmp : Cmp := by
     intro τ x' y' hτ hxy' eU eV mR mQ
     rcases eq_or_ne m 1 with h1 | h1
     · exact triv h1 _ _
-    haveI : Fact (1 < m) := ⟨by omega⟩
+    have : Fact (1 < m) := ⟨by omega⟩
     have hsq := square X m hm τ 1 hτ (U x) (V y) (R x y) (Q x y) (R x' y') (Q x' y')
       (hRQ x y hxy).1 (hRQ x y hxy).2 (by rw [eU, eV]; exact (hRQ x' y' hxy').1) (by rw [eU, eV]; exact (hRQ x' y' hxy').2)
       _ _ 1 1 (ha x y hxy).2 (ha x' y' hxy').2 mR mQ

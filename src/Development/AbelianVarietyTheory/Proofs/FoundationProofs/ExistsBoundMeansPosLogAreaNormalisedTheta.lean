@@ -1,26 +1,26 @@
 module
 
+public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice
 public import Mathlib.Analysis.SpecialFunctions.Log.PosLog
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AreaBoundedOfDiscrEqOne
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizesStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizes
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTwoTorsionCMPointAllConjugates
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatumStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicDataStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeanLogPeriodConjugatesEqChowlaSelbergStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaHalfPeriodValueIsIntegralStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaNormUnimodularLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SigmaStarValueLeMeanSquareGenusOneStatement
-import Formalism.LocalRingCardinality.ConjSqrtMinusD
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeanLogPeriodConjugatesEqChowlaSelberg
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaNormUnimodularLattice
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SigmaStarValueLeMeanSquareGenusOne
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.WeierstrassPAddOfNeOfDerivNeZero
+import Mathlib.Algebra.CharP.Subring
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.Real.Pi.Bounds
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -41,6 +41,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -50,11 +51,144 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
+import Formalism.LocalRingCardinality.ConjSqrtMinusD
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Real.Pi.Bounds
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaHalfPeriodValueIsIntegral, Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBoundMeansPosLogAreaNormalisedTheta
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaHalfPeriodValueIsIntegral =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaHalfPeriodValueIsIntegral", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\npublic import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness\nimport Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.WeierstrassPAddOfNeOfDerivNeZero\nimport Mathlib.Algebra.CharP.Subring\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
+open scoped BigOperators Topology
+open Filter
+
+namespace GlobalTheory.HalfPeriodValue
+
+lemma second_order {f f' a s b : ℂ → ℂ} {c : ℂ} (hf : ∀ᶠ z in 𝓝 (0 : ℂ), HasDerivAt f (f' z) z)
+    (hf' : HasDerivAt f' c 0) (h0 : f 0 = 0) (h0' : f' 0 = 0) (ha : Differentiable ℂ a)
+    (hs : Differentiable ℂ s) (hb : Differentiable ℂ b) (hs0 : s 0 = 0) (hs1 : deriv s 0 = 1)
+    (h : ∀ᶠ z in 𝓝 (0 : ℂ), f z * a z = s z ^ 2 * b z) : c * a 0 = 2 * b 0 := by
+  have d : ∀ {g : ℂ → ℂ}, Differentiable ℂ g → Differentiable ℂ (deriv g) := fun hg =>
+    differentiableOn_univ.1 (hg.differentiableOn.deriv isOpen_univ)
+  have h1 : ∀ᶠ z in 𝓝 (0 : ℂ), f' z * a z + f z * deriv a z =
+      (2 * s z * deriv s z) * b z + (s z * s z) * deriv b z := by
+    filter_upwards [hf, h.eventually_nhds] with z hz hz'
+    have e1 := hz.mul (ha z).hasDerivAt
+    have e2 := ((hs z).hasDerivAt.mul (hs z).hasDerivAt).mul (hb z).hasDerivAt
+    have e3 := e1.unique (e2.congr_of_eventuallyEq (by
+      filter_upwards [hz'] with w hw
+      simpa [sq] using hw))
+    simp only [Pi.mul_apply] at e3
+    linear_combination e3
+  have e1 := (hf'.mul (ha 0).hasDerivAt).add (hf.self_of_nhds.mul (d ha 0).hasDerivAt)
+  have e2 := ((((hs 0).hasDerivAt.const_mul 2).mul (d hs 0).hasDerivAt).mul (hb 0).hasDerivAt).add
+    (((hs 0).hasDerivAt.mul (hs 0).hasDerivAt).mul (d hb 0).hasDerivAt)
+  have e3 := e1.unique (e2.congr_of_eventuallyEq (by
+      filter_upwards [h1] with w hw
+      simpa using hw))
+  simp only [Pi.mul_apply, h0, h0', hs0, hs1] at e3
+  linear_combination e3
+
+lemma isIntegral_of_eq {u j : ℂ} (hj : IsIntegral ℤ j) (h : (u ^ 12 + 16) ^ 3 = j * u ^ 12) :
+    IsIntegral ℤ u := by
+  refine IsIntegral.of_pow (n := 12) (by norm_num) ?_
+  let R := integralClosure ℤ ℂ
+  refine isIntegral_trans (A := R) _ ?_
+  refine ⟨(Polynomial.X + 16) ^ 3 - Polynomial.C (⟨j, hj⟩ : R) * Polynomial.X, by monicity!, ?_⟩
+  rw [← Polynomial.aeval_def]
+  simp only [map_sub, map_pow, map_add (f := _), map_mul, Polynomial.aeval_X, Polynomial.aeval_C, map_ofNat]
+  exact sub_eq_zero.2 h
+
+theorem value_half_period : ∀ (Λ : AddSubgroup ℂ), (∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) → TaylorLogMetric.discr Λ = 1 → IsIntegral ℤ (1728 * g2 Λ ^ 3) → ∀ t, 2 * t ∈ Λ → t ∉ Λ → U1 Λ t (sgStar Λ) 0 ≠ 0 ∧ IsIntegral ℤ (U1 Λ t (sgStar Λ) 0) ∧ U1 Λ t (sgStar Λ) 0 ^ 8 = 16 * (g2 Λ - 3 * wpF Λ t ^ 2) ∧ 4 * wpF Λ t ^ 3 - g2 Λ * wpF Λ t - g3 Λ = 0 := by
+  intro Λ hΛ hΔ hj t h2 ht
+  obtain ⟨⟨hd, hd1, hodd, hU⟩, hzero, -, hwp, -⟩ := _root_.GlobalTheory.OddTheta.sgStar_laws Λ hΛ
+  obtain ⟨w₁, w₂, hli, hΛ⟩ := hΛ
+  let L : PeriodPair := ⟨w₁, w₂, hli⟩
+  have hL : ∀ z, z ∈ Λ ↔ z ∈ L.lattice := fun z => by
+    rw [hΛ, PeriodPair.mem_lattice, AddSubgroup.mem_closure_pair]
+    simp [L]
+  obtain ⟨hg2, hg3, -, -, hw, -⟩ := _root_.GlobalTheory.LatticeInvariants.invariants_dictionary L Λ hL
+  have htL : t ∉ L.lattice := fun h => ht ((hL t).2 h)
+  have hP' : L.derivWeierstrassP t = 0 := by
+    have e1 := L.derivWeierstrassP_add_coe (-t) ⟨2 * t, (hL _).1 h2⟩
+    rw [L.derivWeierstrassP_neg] at e1
+    have : -t + 2 * t = t := by ring
+    simp only [this] at e1
+    linear_combination e1 / 2
+  have hcub : 4 * wpF Λ t ^ 3 - g2 Λ * wpF Λ t - g3 Λ = 0 := by
+    rw [(hw t ht).1, hg2, hg3, ← L.derivWeierstrassP_sq t htL, hP']
+    simp
+  set k : ℂ := (Real.pi : ℂ) * (starRingEnd ℂ) t / (area Λ : ℂ) with hk
+  have hsys := GlobalTheory.weierstrass_system_add_const L t (z := 0) (by simpa using htL)
+  have key := second_order (f := fun z => L.weierstrassP (z + t) - L.weierstrassP t)
+    (f' := fun z => L.derivWeierstrassP (z + t))
+    (a := fun z => sgStar Λ (z + t) ^ 2 * sgStar Λ t ^ 2) (s := sgStar Λ)
+    (b := fun z => Complex.exp (2 * k * z + 2 * k * t))
+    (hsys.mono fun z hz => hz.1.sub_const _) hsys.self_of_nhds.2 (by simp) (by simpa using hP')
+    (by fun_prop) hd (by fun_prop) ((hzero 0).2 Λ.zero_mem) hd1 (by
+      filter_upwards [(continuous_add_const t).continuousAt.eventually
+        (GlobalTheory.eventually_notMem_periodLattice L (z := 0 + t) (by simpa using htL))] with z hz
+      have hz' : z + t ∉ Λ := fun h => hz ((hL _).1 h)
+      have e1 := hwp (z + t) t hz' ht
+      rw [(hw _ hz').1, (hw t ht).1] at e1
+      have e2 := hU (2 * t) h2 z
+      rw [if_neg (by simpa using ht)] at e2
+      have e3 : -(Real.pi : ℂ) * z * (starRingEnd ℂ) (2 * t) / (area Λ : ℂ) -
+          (Real.pi : ℂ) * (2 * t) * (starRingEnd ℂ) (2 * t) / (2 * (area Λ : ℂ)) =
+          -(2 * k * z + 2 * k * t) := by
+        rw [hk, map_mul, map_ofNat]; ring
+      simp only [U1] at e2
+      rw [e3, Complex.exp_neg] at e2
+      have e4 : z + t + t = z + 2 * t := by ring
+      rw [e1, e4, add_sub_cancel_right]
+      have e5 := Complex.exp_ne_zero (2 * k * z + 2 * k * t)
+      rw [mul_inv_eq_iff_eq_mul₀ e5] at e2
+      rw [e2]; ring)
+  simp only [zero_add, mul_zero] at key
+  rw [← (hw t ht).1, ← hg2] at key
+  have hu : U1 Λ t (sgStar Λ) 0 ^ 4 * Complex.exp (2 * k * t) = sgStar Λ t ^ 4 := by
+    simp only [U1, zero_add]
+    rw [mul_pow, mul_assoc, ← Complex.exp_nat_mul, ← Complex.exp_add]
+    have : ((4 : ℕ) : ℂ) * (-(Real.pi : ℂ) * 0 * (starRingEnd ℂ) t / (area Λ : ℂ) -
+      (Real.pi : ℂ) * t * (starRingEnd ℂ) t / (2 * (area Λ : ℂ))) + 2 * k * t = 0 := by
+      rw [hk]; push_cast; ring
+    rw [this, Complex.exp_zero, mul_one]
+  set u := U1 Λ t (sgStar Λ) 0
+  set e := wpF Λ t
+  have h4 : (12 * e ^ 2 - g2 Λ) * u ^ 4 = 4 := by
+    apply mul_right_cancel₀ (Complex.exp_ne_zero (2 * k * t))
+    linear_combination 2 * key + (12 * e ^ 2 - g2 Λ) * hu
+  have hD : (12 * e ^ 2 - g2 Λ) ^ 2 * (g2 Λ - 3 * e ^ 2) = 1 := by
+    have h3 : g3 Λ = 4 * e ^ 3 - g2 Λ * e := by linear_combination -hcub
+    rw [← hΔ, TaylorLogMetric.discr, h3]; ring
+  have h8 : u ^ 8 = 16 * (g2 Λ - 3 * e ^ 2) := by
+    linear_combination (-u ^ 8) * hD +
+      (g2 Λ - 3 * e ^ 2) * ((12 * e ^ 2 - g2 Λ) * u ^ 4 + 4) * h4
+  refine ⟨fun h => by simp [h] at h4, isIntegral_of_eq hj ?_, h8, hcub⟩
+  have h5 : u ^ 12 + 16 = 12 * g2 Λ * u ^ 4 := by
+    linear_combination u ^ 4 * h8 - 4 * h4
+  rw [h5]; ring
+
+end GlobalTheory.HalfPeriodValue
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaHalfPeriodValueIsIntegral =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBoundMeansPosLogAreaNormalisedTheta =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBoundMeansPosLogAreaNormalisedTheta", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice\npublic import Mathlib.Analysis.SpecialFunctions.Log.PosLog\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AreaBoundedOfDiscrEqOne\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizes\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsTwoTorsionCMPointAllConjugates\npublic import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeanLogPeriodConjugatesEqChowlaSelberg\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaHalfPeriodValueIsIntegral\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaNormUnimodularLattice\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SigmaStarValueLeMeanSquareGenusOne\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeInvariantsPeriodPairDictionary\nimport Formalism.LocalRingCardinality.ConjSqrtMinusD\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.Real.Pi.Bounds\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
@@ -114,9 +248,9 @@ theorem inv_le (Λ : AddSubgroup ℂ)
   obtain ⟨v, hv2, hv, hvt⟩ := exists_half Λ hΛ t
   have hs : t + v ∉ Λ := fun h => hvt (by convert Λ.sub_mem h h2 using 1; ring)
   have hs2 : 2 * (t + v) ∈ Λ := by convert Λ.add_mem h2 hv2 using 1; ring
-  obtain ⟨a0, -, a1, a2⟩ := GlobalTheory.T.oddTheta_halfPeriod_value_isIntegral Λ hΛ hd hj t h2 ht
-  obtain ⟨-, -, b1, b2⟩ := GlobalTheory.T.oddTheta_halfPeriod_value_isIntegral Λ hΛ hd hj v hv2 hv
-  obtain ⟨-, -, c1, c2⟩ := GlobalTheory.T.oddTheta_halfPeriod_value_isIntegral Λ hΛ hd hj (t + v) hs2 hs
+  obtain ⟨a0, -, a1, a2⟩ := _root_.GlobalTheory.HalfPeriodValue.value_half_period Λ hΛ hd hj t h2 ht
+  obtain ⟨-, -, b1, b2⟩ := _root_.GlobalTheory.HalfPeriodValue.value_half_period Λ hΛ hd hj v hv2 hv
+  obtain ⟨-, -, c1, c2⟩ := _root_.GlobalTheory.HalfPeriodValue.value_half_period Λ hΛ hd hj (t + v) hs2 hs
   have hp := prod_roots hd a2 b2 c2
     (wpF_ne Λ hΛ ht hv hs fun h => hvt (by convert Λ.neg_mem h using 1; ring))
     (wpF_ne Λ hΛ ht hs (fun h => hv (by convert Λ.sub_mem h h2 using 1; ring))
@@ -149,7 +283,7 @@ theorem posLog_nrm_le (Λ : AddSubgroup ℂ)
     Real.posLog (nrm1Sq Λ (GL3Theta.th0 Λ t)) ≤
       2 * Real.posLog B + 3 / 2 * (Real.posLog (2 * Real.pi ^ 2) + Real.posLog (area Λ)⁻¹) := by
   obtain ⟨h0, hi⟩ := inv_le Λ hΛ hd hj hS h2 ht
-  obtain ⟨hN, hth⟩ := GlobalTheory.T.odd_theta_norm_unimodular_lattice Λ hΛ hd
+  obtain ⟨hN, hth⟩ := _root_.GlobalTheory.OddThetaNorm.odd_theta_norm_sigma_star Λ hΛ hd
   rw [hth t h0]
   have e1 : 2 * Real.posLog (nrm1Sq Λ (sgStar Λ)) ≤
       Real.posLog (2 * Real.pi ^ 2) + Real.posLog (area Λ)⁻¹ := by
@@ -226,7 +360,7 @@ theorem exists_crv_conj {D : D7} (hI : Inp D) {cc : Ideal (𝓞 D.host.K)} {δ :
       rw [← e]
       exact (congrArg Tor.abelian₂ hbar).symm
     generalize lamConj M' ρ' (lamOf D cc δ) = Λ at hm
-    obtain ⟨-, -, hdisc, -, hO⟩ := GlobalTheory.T.idealPeriodLattice_of_curveDatum D hI.g1 cc' δ' hc'
+    obtain ⟨-, -, hdisc, -, hO⟩ := _root_.GlobalTheory.CurveLattice.lattice_of_curve D hI.g1 cc' δ' hc'
     have hd : TaylorLogMetric.discr Λ = 1 := by
       rw [← hm, TaylorLogMetric.discr, g2, g3, eisG_conj, eisG_conj] at hdisc
       apply (starRingEnd ℂ).injective
@@ -279,11 +413,11 @@ theorem means_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), Inp D → ∀ (cc : Idea
   have hc2 : 0 ≤ Real.posLog (2 * Real.pi ^ 2) := Real.posLog_nonneg
   refine ⟨18 + 3 / 2 * (Real.posLog (2 * Real.pi ^ 2) + (Real.posLog C + 2)), by positivity, ?_⟩
   intro D hI cc δ t0 hc _ L hL hrd hdl M _ h2 h3 _ t ht
-  obtain ⟨-, hlogd, hr1, -⟩ := GlobalTheory.T.derivationDenominators_and_hostField_sizes D hI.g1
+  obtain ⟨-, hlogd, hr1, -⟩ := _root_.GlobalTheory.NormSum.letters_and_sizes D hI.g1
   have hn : (0 : ℝ) < Module.finrank ℚ M := by exact_mod_cast Module.finrank_pos
   have hcard : (Fintype.card (M →ₐ[ℚ] ℂ) : ℝ) = Module.finrank ℚ M := by
     exact_mod_cast AlgHom.card ℚ M ℂ
-  have hper := GlobalTheory.T.mean_log_period_conjugates_eq_chowlaSelberg D hI.g1 cc δ hc M h2 h3
+  have hper := _root_.GlobalTheory.PeriodMean.mean_log_period D hI.g1 cc δ hc M h2 h3
   have hd0 : (0 : ℝ) < D.host.d := by exact_mod_cast D.host.hyp.2.1.pos
   have hpi := Real.pi_gt_three
   have hγ := Real.one_half_lt_eulerMascheroniConstant
@@ -306,15 +440,15 @@ theorem means_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), Inp D → ∀ (cc : Idea
     obtain ⟨cc', δ', hc', e⟩ := exists_crv_conj hI hc M ρ h2 h3
     have ht' := ht ρ
     rw [e] at ht' ⊢
-    obtain ⟨hΛ, -, hdisc, -, hO⟩ := GlobalTheory.T.idealPeriodLattice_of_curveDatum D hI.g1 cc' δ' hc'
+    obtain ⟨hΛ, -, hdisc, -, hO⟩ := _root_.GlobalTheory.CurveLattice.lattice_of_curve D hI.g1 cc' δ' hc'
     obtain ⟨ha0, haC⟩ := hA _ hΛ hdisc
     constructor
     · rw [Real.log_div ha0.ne' (by positivity)]
       have h1 := Real.posLog_le_posLog (by linarith [ha0.le]) haC
       have h4 := Real.posLog_sub_posLog_inv (x := area (lamOf D cc' δ'))
       linarith
-    · have := posLog_nrm_le _ hΛ hdisc ((GlobalTheory.T.admJ_and_torsion_data_algebraic D hI.g1).1 cc' δ' hc'.1 hc'.2)
-        (GlobalTheory.T.sigmaStar_value_le_meanSquare_genusOne D hI.g1 cc' δ' hc') ht'.1 (not_mem_lattice_of_isCMTorsionBasePoint ht' hO)
+    · have := posLog_nrm_le _ hΛ hdisc ((_root_.GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hI.g1).1 cc' δ' hc'.1 hc'.2)
+        (_root_.GlobalTheory.GenusOneSup.value_le_mean_square D hI.g1 cc' δ' hc') ht'.1 (not_mem_lattice_of_isCMTorsionBasePoint ht' hO)
       linarith
   have s1 : ∑ ρ : M →ₐ[ℚ] ℂ, Real.posLog (area (lamConj M ρ (lamOf D cc δ)))⁻¹ ≤
       (Real.posLog C + 2) * L * Module.finrank ℚ M := by
@@ -339,3 +473,6 @@ theorem means_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), Inp D → ∀ (cc : Idea
     linarith
 
 end GlobalTheory.PositiveMeans
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBoundMeansPosLogAreaNormalisedTheta =====

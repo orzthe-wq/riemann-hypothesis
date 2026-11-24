@@ -130,8 +130,8 @@ private theorem fg_rB {F L : Type} [Field F] [Field L] [Algebra ℂ F] [Algebra 
     rw [hbot]
     exact Subalgebra.fg_bot
   · haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap ℂ F).injective
-    haveI : IsFractionRing (rA ℂ x J) F := (GlobalTheory.T.standardOpenCoordinateRing_isFractionRing_isNoetherianRing ℂ F d x pd J ⟨i, hi⟩).1
-    haveI : IsNoetherianRing (rA ℂ x J) := (GlobalTheory.T.standardOpenCoordinateRing_isFractionRing_isNoetherianRing ℂ F d x pd J ⟨i, hi⟩).2
+    haveI : IsFractionRing (rA ℂ x J) F := (_root_.GlobalTheory.PD.rA_isFractionRing_isNoetherianRing ℂ F d x pd J ⟨i, hi⟩).1
+    haveI : IsNoetherianRing (rA ℂ x J) := (_root_.GlobalTheory.PD.rA_isFractionRing_isNoetherianRing ℂ F d x pd J ⟨i, hi⟩).2
     haveI := rA_isIntegrallyClosed pd hi
     set_option synthInstance.maxHeartbeats 200000 in
       haveI : Module.Finite (rA ℂ x J) (integralClosure (rA ℂ x J) L) :=

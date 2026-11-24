@@ -68,8 +68,6 @@ theorem int_smul_mem (I : FractionalIdeal (𝓞 E)⁰ E) (b : 𝓞 F) (t : E) (h
   have hb : IsIntegral ℤ (algebraMap F E (b : F)) := by
     first
     | exact IsIntegral.map (algebraMap F E).toIntAlgHom b.isIntegral_coe
-    | exact (b.isIntegral_coe).algebraMap
-    | exact IsIntegral.map (IsScalarTower.toAlgHom ℤ F E) b.isIntegral_coe
   let z : 𝓞 E := ⟨algebraMap F E (b : F), hb⟩
   have hz : algebraMap F E (b : F) * t = z • t := by
     rw [Algebra.smul_def]
@@ -77,7 +75,6 @@ theorem int_smul_mem (I : FractionalIdeal (𝓞 E)⁰ E) (b : 𝓞 F) (t : E) (h
   rw [hz]
   first
   | exact (I : Submodule (𝓞 E) E).smul_mem z ht
-  | exact Submodule.smul_mem _ z ht
 
 theorem mem_iff_forall_atP (I : FractionalIdeal (𝓞 E)⁰ E) (t : E) :
     t ∈ I ↔ ∀ p : HeightOneSpectrum (𝓞 F), atP p I t := by
@@ -115,7 +112,6 @@ theorem mem_iff_forall_atP (I : FractionalIdeal (𝓞 E)⁰ E) (t : E) :
     have hM0 : M ≠ ⊥ := by
       first
       | exact Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField F)
-      | (intro h0; subst h0; exact NumberField.RingOfIntegers.not_isField F (Ring.isField_iff_maximal_bot.2 hM))
     obtain ⟨a, ha, hat⟩ := h ⟨M, hM.isPrime, hM0⟩
     exact ha (hJM hat)
 
@@ -158,24 +154,14 @@ theorem cmul (a b : 𝓞 F) : ((a * b : 𝓞 F) : F) = (a : F) * (b : F) := by
   first
   | rfl
   | push_cast; ring
-  | simp
 
 private theorem vle_iff_valuation_le (x y : A.Fp) : (x ≤ᵥ y) ↔ valuation A.Fp x ≤ valuation A.Fp y := by
   first
   | exact Valuation.Compatible.vle_iff_le x y
-  | exact Valuation.Compatible.vle_iff_le
-  | exact ValuativeRel.vle_iff_le x y
-  | exact ValuativeRel.vle_iff_le
-  | exact (ValuativeRel.vle_iff_le x y).symm
-  | simp [Valuation.Compatible.vle_iff_le]
 
 private theorem mem_valuationSubring_iff_valuation_le_one (x : A.Fp) : x ∈ 𝒪[A.Fp] ↔ valuation A.Fp x ≤ 1 := by
   first
   | exact Valuation.mem_integer_iff _ _
-  | exact Iff.rfl
-  | (rw [← map_one (valuation A.Fp)]; exact vle_iff_valuation_le A x 1)
-  | simp [Valuation.mem_integer_iff]
-  | (rw [← map_one (valuation A.Fp), ← vle_iff_valuation_le A x 1]; exact Iff.rfl)
 
 theorem val_iff (a b : F) : valuation A.Fp (A.ιF a) ≤ valuation A.Fp (A.ιF b) ↔ p.valuation F a ≤ p.valuation F b := by
   exact (vle_iff_valuation_le A _ _).symm.trans (A.val a b)
@@ -190,8 +176,6 @@ theorem val_eq_one (a : 𝓞 F) (ha : a ∉ p.asIdeal) : p.valuation F (a : F) =
   change p.valuation F (algebraMap (𝓞 F) F a) = 1
   first
   | (rw [HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]; exact ha)
-  | (rw [HeightOneSpectrum.valuation_of_algebraMap]; exact HeightOneSpectrum.intValuation_eq_one_iff.2 ha)
-  | exact le_antisymm (p.valuation_le_one a) (not_lt.1 fun h => ha ((p.valuation_lt_one_iff_mem a).1 h))
 
 theorem vFp_eq_one (a : F) (ha : p.valuation F a = 1) : valuation A.Fp (A.ιF a) = 1 := by
   have h1 := val_iff A a 1
@@ -207,8 +191,6 @@ theorem alg_mem_O (b : A.Fp) (hb : b ∈ 𝒪[A.Fp]) : algebraMap A.Fp A.Ep b �
   have h : IsIntegral 𝒪[A.Fp] (algebraMap 𝒪[A.Fp] A.Ep ⟨b, hb⟩) := isIntegral_algebraMap
   first
   | exact h
-  | (rw [IsScalarTower.algebraMap_apply 𝒪[A.Fp] A.Fp A.Ep] at h; exact h)
-  | simpa using h
 
 private theorem mem_valuationSubring_of_isIntegral' (b : A.Fp) (h : IsIntegral 𝒪[A.Fp] b) : b ∈ 𝒪[A.Fp] := by
   first
@@ -224,20 +206,17 @@ theorem mem_OF_of_alg (b : A.Fp) (h : algebraMap A.Fp A.Ep b ∈ A.O) : b ∈ �
   apply mem_valuationSubring_of_isIntegral' A
   first
   | exact (isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[A.Fp] A.Fp A.Ep) (algebraMap A.Fp A.Ep).injective).1 h
-  | exact (isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[A.Fp] A.Fp A.Ep) (FaithfulSMul.algebraMap_injective A.Fp A.Ep)).1 h
 
 theorem ιE_int (z : 𝓞 E) : A.ιE (z : E) ∈ A.O := by
   rw [A.O_def]
   have hz : IsIntegral ℤ (A.ιE (z : E)) := IsIntegral.map A.ιE.toIntAlgHom z.isIntegral_coe
   first
   | exact hz.tower_top
-  | exact IsIntegral.tower_top (A := 𝒪[A.Fp]) hz
 
 theorem cj_mem (x : A.Ep) (h : x ∈ A.O) : A.cj x ∈ A.O := by
   rw [A.O_def] at h ⊢
   first
   | exact h.map ((A.cj : A.Ep →ₐ[A.Fp] A.Ep).restrictScalars 𝒪[A.Fp])
-  | exact IsIntegral.map (A.cj.toAlgHom.restrictScalars 𝒪[A.Fp]) h
 
 theorem scal_iff (S : Set A.Ep) (hS : ∀ b ∈ 𝒪[A.Fp], ∀ z ∈ S, algebraMap A.Fp A.Ep b * z ∈ S) (b b' : A.Fp) (hb : b ≠ 0)
     (hb' : b' ≠ 0) (hv : valuation A.Fp b = valuation A.Fp b') (z : A.Ep) :
@@ -246,7 +225,7 @@ theorem scal_iff (S : Set A.Ep) (hS : ∀ b ∈ 𝒪[A.Fp], ∀ z ∈ S, algebra
       algebraMap A.Fp A.Ep c * z ∈ S → algebraMap A.Fp A.Ep c' * z ∈ S := by
     intro c c' hc hv h
     have hu : c' / c ∈ 𝒪[A.Fp] := by
-      (rw [mem_valuationSubring_iff_valuation_le_one A, map_div₀, ← hv, div_self ((Valuation.ne_zero_iff _).2 hc)]) <;> exact le_rfl
+      (rw [mem_valuationSubring_iff_valuation_le_one A, map_div₀, ← hv, div_self ((Valuation.ne_zero_iff _).2 hc)])
     have h2 := hS _ hu _ h
     have e : c' / c * c = c' := by field_simp
     rwa [← mul_assoc, ← map_mul, e] at h2
@@ -261,7 +240,6 @@ private theorem exists_integer_eq_algebraMap_integer (b : 𝓞 F) : ∃ z : 𝓞
   have hb : IsIntegral ℤ (algebraMap F E (b : F)) := by
     first
     | exact IsIntegral.map (algebraMap F E).toIntAlgHom b.isIntegral_coe
-    | exact (b.isIntegral_coe).algebraMap
   exact ⟨⟨algebraMap F E (b : F), hb⟩, rfl⟩
 
 theorem int_iff (hinv : ∀ x, sig (sig x) = x) (hfix : ∀ x : E, sig x = x → ∃ a : F, algebraMap F E a = x) (x : E) :
@@ -293,7 +271,6 @@ theorem int_iff (hinv : ∀ x, sig (sig x) = x) (hfix : ∀ x : E, sig x = x →
       refine ⟨Polynomial.X ^ 2 - Polynomial.C U * Polynomial.X + Polynomial.C V, ?_, ?_⟩
       · first
         | monicity!
-        | monicity
       · simp only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_X_pow,
           Polynomial.eval₂_C, Polynomial.eval₂_X]
         have eU : algebraMap (𝓞 E) E U = algebraMap F E ((a2 : F) * (z1 : F)) := hU
@@ -314,7 +291,7 @@ theorem int_iff (hinv : ∀ x, sig (sig x) = x) (hfix : ∀ x : E, sig x = x →
     rw [map_mul, A.compat] at hzO
     have hv : valuation A.Fp (A.ιF (a : F)) = 1 := vFp_eq_one A _ (val_eq_one a ha)
     have hinvO : (A.ιF (a : F))⁻¹ ∈ 𝒪[A.Fp] := by
-      (rw [mem_valuationSubring_iff_valuation_le_one A, map_inv₀, hv, inv_one]) <;> exact le_rfl
+      (rw [mem_valuationSubring_iff_valuation_le_one A, map_inv₀, hv, inv_one])
     have hne : A.ιF (a : F) ≠ 0 := by
       intro h0
       rw [h0, map_zero] at hv
@@ -348,7 +325,7 @@ theorem cond_gen (c : F) (ν gp ot : ℕ) (hg : ((gp : ℕ) : A.Fp) ≠ 0) (ho :
   · refine scal_iff A (A.O : Set A.Ep) (O_scal A) _ _ ?_ ?_ ?_ _
     · exact inv_ne_zero (mul_ne_zero (pow_ne_zero _ (mul_ne_zero hg ho)) hC)
     · exact mul_ne_zero (inv_ne_zero (pow_ne_zero _ hg)) (inv_ne_zero hC)
-    · simp only [map_inv₀, map_mul, map_pow, hvo, one_pow, mul_one, mul_inv]
+    · simp only [map_inv₀, map_mul, map_pow, hvo, mul_one, mul_inv]
 
 theorem tw_gen (b : A.Fp) (s : ℕ) (t : E) :
     algebraMap A.Fp A.Ep b * A.ιE (t - (-1) ^ s * sig t) =
@@ -414,8 +391,6 @@ theorem LocGen.self {I : FractionalIdeal (𝓞 E)⁰ E} {c : E} (h : LocGen p I 
   apply memLocalization_of_mem
   first
   | exact FractionalIdeal.one_mem_one _
-  | exact FractionalIdeal.one_mem_one
-  | simp
 
 theorem LocGen.mul {I J : FractionalIdeal (𝓞 E)⁰ E} {c c' : E} (h : LocGen p I c) (h' : LocGen p J c') :
     LocGen p (I * J) (c * c') := by
@@ -493,7 +468,6 @@ theorem e_alg (c : A.Fp) : sg.e (algebraMap A.Fp A.Ep c) = (c, c) := by
   rw [AlgEquiv.commutes]
   first
   | rfl
-  | simp [Prod.algebraMap_apply]
 
 theorem O_split (x : A.Ep) : x ∈ A.O ↔ (sg.e x).1 ∈ 𝒪[A.Fp] ∧ (sg.e x).2 ∈ 𝒪[A.Fp] := by
   rw [A.O_def]
@@ -510,7 +484,6 @@ theorem O_split (x : A.Ep) : x ∈ A.O ↔ (sg.e x).1 ∈ 𝒪[A.Fp] ∧ (sg.e x
     have h4 := h3.map (sg.e.symm.toAlgHom.restrictScalars 𝒪[A.Fp])
     first
     | simpa using h4
-    | (rw [show (sg.e.symm.toAlgHom.restrictScalars 𝒪[A.Fp]) (sg.e x) = x from sg.e.symm_apply_apply x] at h4; exact h4)
 
 theorem typed_iff (s : ℕ) (X : A.Ep) :
     sg.e (sg.e.symm ((sg.e X).1, (-1) ^ s * (sg.e X).2) * algebraMap A.Fp A.Ep ((sg.q : A.Fp)⁻¹)) ∈
@@ -519,9 +492,7 @@ theorem typed_iff (s : ℕ) (X : A.Ep) :
         algebraMap A.Fp A.Ep (((sg.q : A.Fp) ^ 2)⁻¹) * (X - (-1) ^ s * A.cj X) ∈ A.O := by
   have hq0 : (sg.q : A.Fp) ≠ 0 := fun h0 => sg.q_irr.ne_zero (by
     first
-    | exact Subtype.ext h0
-    | exact_mod_cast h0
-    | simpa using h0)
+    | exact Subtype.ext h0)
   have hS : ((-1 : A.Fp) ^ s) * (-1) ^ s = 1 := by
     rw [← mul_pow]
     norm_num
@@ -541,13 +512,11 @@ theorem typed_iff (s : ℕ) (X : A.Ep) :
     simp only [map_mul, AlgEquiv.apply_symm_apply, e_alg A sg]
     first
     | rfl
-    | simp
   have e2 : sg.e (algebraMap A.Fp A.Ep ((sg.q : A.Fp)⁻¹) * X) =
       ((sg.q : A.Fp)⁻¹ * (sg.e X).1, (sg.q : A.Fp)⁻¹ * (sg.e X).2) := by
     simp only [map_mul, e_alg A sg]
     first
     | rfl
-    | simp
   have e3 : sg.e (algebraMap A.Fp A.Ep (((sg.q : A.Fp) ^ 2)⁻¹) * (X - (-1) ^ s * A.cj X)) =
       (((sg.q : A.Fp) ^ 2)⁻¹ * ((sg.e X).1 - (-1) ^ s * (sg.e X).2),
         ((sg.q : A.Fp) ^ 2)⁻¹ * ((sg.e X).2 - (-1) ^ s * (sg.e X).1)) := by
@@ -590,9 +559,7 @@ theorem conjF_inv (x : D.host.E) : D.conjF (D.conjF x) = x := by
   have hc : ∀ y, D.host.φ₀ (D.host.conj y) = starRingEnd ℂ (D.host.φ₀ y) :=
     (D.host.der.conj_iff D.host.φ₀ D.host.conj).2 (by
       first
-      | simp only [Formalism.HC.HostRaw.conj, MulEquiv.apply_symm_apply]
-      | rfl
-      | simp [Formalism.HC.HostRaw.conj])
+      | simp only [Formalism.HC.HostRaw.conj, MulEquiv.apply_symm_apply])
   apply D.host.φ₀.injective
   rw [hc, hc, Complex.conj_conj]
 
@@ -601,13 +568,11 @@ theorem conjF_fix (x : D.host.E) (h : D.conjF x = x) : ∃ a : D.host.F, algebra
   refine ⟨⟨x, hx⟩, ?_⟩
   first
   | rfl
-  | simp
 
 theorem natCast_mem_iff (p : PlF D) (n : ℕ) : ((n : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal ↔ Loc.resChar p ∣ n := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
   first
   | exact ringChar.spec _ n
-  | (simp only [Loc.resChar]; exact ringChar.spec _ n)
 
 def oth (p : PlF D) : ℕ :=
   if Loc.resChar p = D.host.g 0 then D.host.g 1
@@ -658,7 +623,6 @@ theorem unitAt_eq (p : PlF D) : uP p = ((oth p : ℕ) : ℚ)⁻¹ := by
   rw [← gpart_mul_oth p, Nat.cast_mul]
   first
   | (rw [div_mul_eq_div_div, div_self hg, one_div])
-  | field_simp
 
 theorem v_nat (p : PlF D) (n : ℕ) (h : ¬ Loc.resChar p ∣ n) :
     valuation (D.s.atP p).Fp ((n : ℕ) : (D.s.atP p).Fp) = 1 := by
@@ -667,7 +631,6 @@ theorem v_nat (p : PlF D) (n : ℕ) (h : ¬ Loc.resChar p ∣ n) :
   have h2' : p.valuation D.host.F ((n : ℕ) : D.host.F) = 1 := by
     first
     | simpa using h2
-    | exact_mod_cast h2
   have h3 := vFp_eq_one (D.s.atP p) ((n : ℕ) : D.host.F) h2'
   simpa using h3
 
@@ -764,11 +727,8 @@ theorem R_scal {K R : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [Com
       refine Subring.mem_comap.2 (Subring.mem_map.2 ⟨(⟨b, hb⟩, ⟨b, hb⟩), ?_, ?_⟩)
       · first
         | rfl
-        | exact (RingHom.mem_eqLocus _).2 rfl
-        | simp
       · first
         | (ext <;> simp [AlgEquiv.commutes])
-        | simp [AlgEquiv.commutes]
   exact Mp.R.mul_mem halg hz
 
 theorem twist_membership_iff_integral (p : PlF D) (Mp : Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hO : Mp.L.O = (D.s.atP p).O)
@@ -807,7 +767,6 @@ theorem twist_membership_iff_integral (p : PlF D) (Mp : Loc.Model (D.s.atP p).Fp
         push_cast at hc'
         first
         | linear_combination -hc'
-        | (rw [← hc']; ring)
       · rintro ⟨hy1, hy2, t, ht, hteq⟩
         refine ⟨(⟨(sg.e Y).1, hy1⟩, ⟨(sg.e Y).2, hy2⟩), ?_, ?_⟩
         · show Ideal.Quotient.mk (Ideal.span {g.q}) ⟨(sg.e Y).1, hy1⟩ =

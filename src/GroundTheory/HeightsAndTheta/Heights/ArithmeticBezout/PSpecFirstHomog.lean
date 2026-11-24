@@ -71,7 +71,7 @@ theorem specFirstVar_isWeightedHomogeneous {k n : ℕ} (u : Fin n → ℂ) (ij :
 
 theorem SpecFirstHomog.proof : SpecFirstHomog.Statement := by
   intro n k δ f u hf
-  unfold IsMultiHomog specFirst
+  unfold Heights.IsMultiHomog specFirst
 
   rw [f.as_sum, map_sum]
   refine IsWeightedHomogeneous.sum _ _ _ fun d hd => ?_

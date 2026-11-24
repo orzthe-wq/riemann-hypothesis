@@ -80,12 +80,10 @@ theorem Obj.lieHer (o : Obj b N s) (R' : Type) [CommRing R'] (β : R →+* R') (
   have e₁ : (spMap g ≫ x) ≫ s = spMap (g.comp β) := by
     rw [Category.assoc, hx]
     simp [spMap, ← Spec.map_comp]
-    try rfl
   refine ⟨o.lie R'' (g.comp β) (spMap g ≫ x) e₁, fun k _ _ g' i => ?_⟩
   refine o.lieRank k (spMap g' ≫ spMap g ≫ x) (g'.comp (g.comp β)) ?_ i
   rw [Category.assoc, Category.assoc, hx]
   simp [spMap, ← Spec.map_comp]
-  try rfl
 
 theorem RosatiFor.of_iso {A : Over S} [GrpObj A] {act : OActN D.O A} {P P' : LB (G2 A).left} (hP : P.IsLB)
     (hP' : P'.IsLB) (H : LBIso P P') (h : RosatiFor D act P) : RosatiFor D act P' := fun c =>

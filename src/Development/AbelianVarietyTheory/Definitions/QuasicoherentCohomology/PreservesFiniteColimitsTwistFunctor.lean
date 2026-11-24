@@ -253,7 +253,7 @@ def chartEquiv (hL : L.IsLB) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i) :
     rw [← coord_rel s j i le_rfl, resM_self]
   right_inv t := by
     change resM F _ (_ • _) = _
-    simp only [resM_smul, resM_resM, resG_resG, resM_self, resG_g_self hL, one_smul]
+    simp only [resM_resM, resM_self, resG_g_self hL, one_smul]
 
 theorem chartEquiv_apply (hL : L.IsLB) (i : L.ι) {V : X.Opens} (h : V ≤ L.U i)
     (s : Γ(twist F L, V)) : chartEquiv hL i h s = resM F (le_inf le_rfl h) (coord s i) := rfl
@@ -999,13 +999,6 @@ theorem zchartEquiv_resM (hL : L.IsLB) (i : L.ι) {V W : X.Opens} (h : V ≤ L.U
     zchartEquiv hL n i (h'.trans h) (resM (twistZ F L n) h' s) =
       resM F h' (zchartEquiv hL n i h s) :=
   chartEquiv_resM _ _ _ h' s
-
-theorem zchartEquiv_change (hL : L.IsLB) (i j : L.ι) {V : X.Opens} (hi : V ≤ L.U i)
-    (hj : V ≤ L.U j) (s : Γ(twistZ F L n, V)) :
-    zchartEquiv hL n i hi s =
-      ((res (le_inf hi hj) (L.g i j) ^ n : Γ(X, V)ˣ) : Γ(X, V)) • zchartEquiv hL n j hj s := by
-  rw [zchartEquiv_apply, zchartEquiv_apply]
-  exact zcoord_rel s i j _ _ _
 
 def zfun (σ : LB.Sec (lbZPow L m)) (i : L.ι) : Γ(X, L.U i) :=
   resG X (le_zidx_U m i) (σ.f (zidx L m i))

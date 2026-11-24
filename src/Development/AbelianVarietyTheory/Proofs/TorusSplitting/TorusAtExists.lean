@@ -133,7 +133,7 @@ private lemma im_hermC_emb_eq_sign_mul_trace (E : Type) [Field E] [NumberField E
       linarith
     have hre := _root_.GlobalTheory.re_map_xi_eq_zero X τ.1
     rw [_root_.GlobalTheory.c_eq_two_mul_abs_im, abs_of_neg hy,
-      _root_.GlobalTheory.hermC_emb_eq_map_herm, map_mul, Complex.mul_re, hre]
+      _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, map_mul, Complex.mul_re, hre]
     ring
   · refine ⟨-1, Or.inr rfl, fun u v => ?_⟩
     rw [_root_.ReciprocityTheory.ChartRestriction.G.FD.TraceFormIndependence.trace_re X, neg_one_mul, ← Finset.sum_neg_distrib]
@@ -145,7 +145,7 @@ private lemma im_hermC_emb_eq_sign_mul_trace (E : Type) [Field E] [NumberField E
       linarith
     have hre := _root_.GlobalTheory.re_map_xi_eq_zero X τ.1
     rw [_root_.GlobalTheory.c_eq_two_mul_abs_im, abs_of_pos hy,
-      _root_.GlobalTheory.hermC_emb_eq_map_herm, map_mul, Complex.mul_re, hre]
+      _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, map_mul, Complex.mul_re, hre]
     ring
 
 

@@ -64,25 +64,21 @@ theorem chi_exists (S : Set (HeightOneSpectrum (𝓞 F)))
     rw [unramOutside_iff S _ (continuous_cycZ F Ω l)]
     intro v hv A hA σ hσ
     refine Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)
-    rw [cycZ_toZModPow_eq (hS v hv) hA (q := 1) (fun x hx => by simpa using hσ.2 x hx) n]
-    simp
+    simp [cycZ_toZModPow_eq (hS v hv) hA (q := 1) (fun x hx => by simpa using hσ.2 x hx) n]
   refine ⟨QuotientGroup.lift (NS Ω S) (cycZ F Ω l) (fun σ h => (MonoidHom.mem_ker).2 (hU σ h)), ?_⟩
   ext σ; rfl
 
 theorem above_finite : (Above F l).Finite := by
   have hl : ((l : ℕ) : 𝓞 F) ≠ 0 := by
     intro h
-    have h2 := congrArg (algebraMap (𝓞 F) F) h
-    simp only [map_natCast, map_zero, Nat.cast_eq_zero] at h2
-    exact (Fact.out : l.Prime).ne_zero h2
+    exact (Fact.out : l.Prime).ne_zero (by
+      simpa [map_natCast, map_zero, Nat.cast_eq_zero] using congrArg (algebraMap (𝓞 F) F) h)
   have h0 : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0 := by
-    rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
-    exact hl
+    simpa [Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot] using hl
   refine (Ideal.finite_factors h0).subset ?_
-  intro v hv
+  rintro v hv
   show v.asIdeal ∣ Ideal.span {((l : ℕ) : 𝓞 F)}
-  rw [Ideal.dvd_span_singleton]
-  exact hv
+  rwa [Ideal.dvd_span_singleton]
 
 theorem ldata_nonempty : Nonempty (LData F Ω l) := by
   classical
@@ -94,7 +90,6 @@ theorem ldata_nonempty : Nonempty (LData F Ω l) := by
 end
 
 theorem ldataExists : LDataExists := by
-  intro F Ω _ _ _ _ _ l _
-  exact ldata_nonempty (F := F) (Ω := Ω) l
+  exact fun F Ω _ _ _ _ _ l _ => ldata_nonempty (F := F) (Ω := Ω) l
 
 end Formalism.GaloisCohomology

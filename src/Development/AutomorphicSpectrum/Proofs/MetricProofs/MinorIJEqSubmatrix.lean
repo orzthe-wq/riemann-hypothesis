@@ -219,7 +219,7 @@ theorem minor_block (H U U' : Matrix (Fin N) (Fin N) ℂ) (C : Finset (Fin N)) (
         v a x := fun a x => rfl
     rcases y with x | y
     · simp only [Sum.elim_inl, Sum.elim_inr, Fintype.sum_sum_type, b11, b21, ite_self, Finset.sum_const_zero,
-        add_zero, Fin.sum_univ_two]
+        add_zero]
       rw [h1 _ (mem x), Finset.sum_eq_single x]
       · simp
       · intro b _ hb
@@ -252,7 +252,7 @@ def selCol (r : Fin 2) : Matrix (Fin 2) (Fin 1) ℂ := Matrix.of fun x _ => if x
 
 theorem det_sel (S : Matrix (Fin 2) (Fin 2) ℂ) (r s : Fin 2) : ((selCol r)ᴴ * S * selCol s).det = S r s := by
   rw [det_fin_one]
-  fin_cases r <;> fin_cases s <;> simp [Matrix.mul_apply, selCol, Fin.sum_univ_two, conjTranspose_apply]
+  fin_cases r <;> fin_cases s <;> simp [Matrix.mul_apply, selCol, conjTranspose_apply]
 
 def lineCol (t : ℂ) : Matrix (Fin 2) (Fin 1) ℂ := Matrix.of fun x _ => ![1, t] x
 

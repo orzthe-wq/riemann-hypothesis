@@ -54,6 +54,7 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.RealLow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.InnerProductFormula
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ConstMemBddAut
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

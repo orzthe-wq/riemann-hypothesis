@@ -145,7 +145,7 @@ theorem exists_comm {k : ℕ} {G r : Matrix (Fin k) (Fin k) ℂ} (hG : Gᴴ = G)
     simp only [Matrix.mul_assoc, e2, e5, hCB]
   have hsu : (C * r * B)ᴴ * (C * r * B) = 1 := by
     calc _ = Bᴴ * (rᴴ * (Cᴴ * C) * r) * B := by simp only [conjTranspose_mul, Matrix.mul_assoc]
-      _ = 1 := by rw [hinv]; simp only [Matrix.mul_assoc, e3, hCB]
+      _ = 1 := by rw [hinv]; simp only [e3, hCB]
   have hu : (C * r * B)ᴴ = C * r * B := by
     calc _ = (C * r * B)ᴴ * ((C * r * B) * (C * r * B)) := by rw [huu, Matrix.mul_one]
       _ = _ := by rw [← Matrix.mul_assoc, hsu, Matrix.one_mul]

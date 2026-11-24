@@ -89,7 +89,7 @@ theorem sum_pairs {M : Type} [AddCommGroup M] (n : ℕ) (T : Fin (n + 3) → Fin
         else (p.1.succ, p.2.castSucc)) ?_ ?_ ?_ ?_
     · rintro ⟨i, j⟩ -
       simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-      split_ifs with h <;> simp [Fin.ext_iff, Fin.le_def, Fin.lt_def] at h ⊢ <;> omega
+      split_ifs with h <;> simp [Fin.ext_iff, Fin.le_def] at h ⊢ <;> omega
     · rintro ⟨i, j⟩ - ⟨i', j'⟩ - h
       simp only at h
       split_ifs at h with h₁ h₂ h₂ <;>
@@ -180,7 +180,7 @@ theorem homotopy (n : ℕ) (f : Cn (Cyl G) (n + 1)) :
     smul_smul, S, pow_add]
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_
-    first | rfl | exact congrArg₂ (· • ·) (mul_comm _ _) rfl
+    first | exact congrArg₂ (· • ·) (mul_comm _ _) rfl
   have e2 : hop G (n + 1) (dn (Cyl G) (n + 1) f) = ∑ j, ∑ i, T i j := by
 
     simp only [dn, hop, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, P_cof, Finset.smul_sum,
@@ -205,7 +205,7 @@ theorem homotopy (n : ℕ) (f : Cn (Cyl G) (n + 1)) :
       refine lab_comp _ _ _ fun x ↦ ?_
       have h' : j.val < i.val := h
       rw [val_succAbove]
-      simp only [Fin.val_castSucc, Fin.val_succ]
+      simp only [Fin.val_succ]
       split_ifs <;> omega
     have s : ((-1 : R) ^ ((i : ℕ) + 1 + (j : ℕ))) = -(-1) ^ ((i : ℕ) + (j : ℕ)) := by
       rw [show (i : ℕ) + 1 + (j : ℕ) = (i : ℕ) + (j : ℕ) + 1 by omega, pow_succ]; simp

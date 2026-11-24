@@ -80,7 +80,7 @@ theorem curve_endomorphisms_unit_ball : CurveEndoUnitBall := by
   intro K _ _ _ h2 W hW s2 O _ _ _ τ hτ hstar hsa h2O hsum Dn hDn hdata
   obtain ⟨hc, hfr, hF1⟩ := curve_frame_unit_ball K h2 W hW s2
   have h2R : (2 : K)⁻¹ ∈ Formalism.G.unitBall K := inv_mem_unitBall h2
-  have hall := (curveEndoAll K (Formalism.G.unitBall K) (unitBallClosed K) h2R W hc s2 hF1 O τ hτ hstar
+  have hall := (_root_.Formalism.L2.Th1.C.curve_all_endomorphism_series K (Formalism.G.unitBall K) (_root_.Formalism.L2.Th1.C.unit_ball_closed K) h2R W hc s2 hF1 O τ hτ hstar
     hsa h2O hsum Dn hDn (by
       intro α hα
       obtain ⟨ι, iF, neg, xP, yP, h1, hx, hy, hN, hn, hb, hs⟩ := hdata α hα

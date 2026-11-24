@@ -83,12 +83,13 @@ theorem ra_cond {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x)
       norm_num at hr2
       linarith
     · exact_mod_cast h0
-  have hqd : (1 : ℝ) ≤ (D.host.q : ℝ) * D.host.d := by nlinarith
+  have hqd : (1 : ℝ) ≤ (D.host.q : ℝ) * D.host.d := one_le_mul_of_one_le_of_one_le hq hd
   have hsq : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ (D.host.q : ℝ) * D.host.d := by
-    nlinarith [Real.sq_sqrt (by linarith : (0 : ℝ) ≤ (D.host.q : ℝ) * D.host.d),
+    linarith [Real.sq_sqrt (by linarith : (0 : ℝ) ≤ (D.host.q : ℝ) * D.host.d),
       Real.sqrt_nonneg ((D.host.q : ℝ) * D.host.d),
       sq_nonneg (Real.sqrt ((D.host.q : ℝ) * D.host.d) - 1)]
-  have hc1 : (1 : ℝ) ≤ (D.host.QS : ℝ) * D.host.q * D.host.d := by nlinarith
+  have hc1 : (1 : ℝ) ≤ (D.host.QS : ℝ) * D.host.q * D.host.d := by
+    rw [mul_assoc]; exact one_le_mul_of_one_le_of_one_le hQS hqd
   have hc36 : (D.host.QS : ℝ) * D.host.q * D.host.d ≤ ((D.host.QS : ℝ) * D.host.q * D.host.d) ^ 36 :=
     le_self_pow₀ hc1 (by norm_num)
   have hL : 0 < L.sc.L := by
@@ -99,7 +100,7 @@ theorem ra_cond {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x)
     simp only [Formalism.BasicNotions.Scale.b]
     linarith
   have hsb : Real.sqrt L.sc.b ≤ L.sc.b := by
-    nlinarith [Real.sq_sqrt (by linarith : (0 : ℝ) ≤ L.sc.b), Real.sqrt_nonneg L.sc.b,
+    linarith [Real.sq_sqrt (by linarith : (0 : ℝ) ≤ L.sc.b), Real.sqrt_nonneg L.sc.b,
       sq_nonneg (Real.sqrt L.sc.b - 1)]
   have htk : (D.R.k : ℝ) + 6 ≤ D.R.t := by
     have h9 := D.R.rank_add_five_le
@@ -117,14 +118,16 @@ theorem ra_cond {D : D7} (L : SizeData₂ D) (S : SizesAt L) (hx : 3 ≤ L.sc.x)
   constructor
   · rw [hv]
     have h11 : D.host.rdE ≤ (D.host.QS : ℝ) * D.host.q * D.host.d := by
-      have h12 : (D.host.QS : ℝ) / 2 * Real.sqrt ((D.host.q : ℝ) * D.host.d)
-          ≤ (D.host.QS : ℝ) * ((D.host.q : ℝ) * D.host.d) := by
-        have : (0 : ℝ) ≤ D.host.QS := Nat.cast_nonneg _
-        nlinarith [Real.sqrt_nonneg ((D.host.q : ℝ) * D.host.d)]
-      nlinarith
-    nlinarith
-  · have h13 : 2 * (D.R.k : ℝ) ≤ (D.R.t : ℝ) ^ 2 := by nlinarith
-    nlinarith
+      have hQS0 : (0 : ℝ) ≤ D.host.QS := Nat.cast_nonneg _
+      calc D.host.rdE ≤ (D.host.QS : ℝ) / 2 * Real.sqrt ((D.host.q : ℝ) * D.host.d) := hr2
+        _ ≤ (D.host.QS : ℝ) * ((D.host.q : ℝ) * D.host.d) := mul_le_mul (by linarith) hsq (Real.sqrt_nonneg _) hQS0
+        _ = (D.host.QS : ℝ) * D.host.q * D.host.d := by ring
+    exact h11.trans (hc36.trans ((le_mul_of_one_le_right (by positivity) ht150).trans (h5.trans hsb)))
+  · have h13 : 2 * (D.R.k : ℝ) ≤ (D.R.t : ℝ) ^ 2 := by
+      calc 2 * (D.R.k : ℝ) ≤ 2 * D.R.t := by linarith
+        _ ≤ (D.R.t : ℝ) * D.R.t := mul_le_mul_of_nonneg_right (by linarith) (by linarith)
+        _ = (D.R.t : ℝ) ^ 2 := (sq _).symm
+    exact h13.trans (ht2.trans ((le_mul_of_one_le_left (by positivity) hc36').trans (h5.trans hsb)))
 
 theorem rank_m_le_x {D : D7} (L : SizeData₂ D) (S : SizesAt L) : (D.R.m : ℝ) ≤ L.sc.x := by
 
@@ -201,7 +204,7 @@ theorem ra_Sc {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : Sizes
   have hScp := L.Sc_pos
   have hw'' : L.sc.w'' D.R.n ≤ L.sc.b' := by
     simp only [Formalism.BasicNotions.Scale.w'']
-    exact div_le_self hb'0 (by nlinarith)
+    exact div_le_self hb'0 (one_le_mul_of_one_le_of_one_le hx1 hn1)
 
   have hkey : L.sc.x ^ (-(L.sc.eps / 100)) * Real.sqrt (L.sc.x * L.sc.delta1)
       = L.sc.x ^ (-(L.sc.eps / 100) + (1 + -(L.sc.eps / 8)) * (1 / 2)) := by
@@ -221,7 +224,7 @@ theorem ra_Sc {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : Sizes
     exact_mod_cast h5
   have hm10 : (D.R.m : ℝ) ^ 10 ≤ (D.s.Del : ℝ) := by
     have h6 : (0 : ℝ) ≤ (D.R.m : ℝ) ^ 10 := by positivity
-    nlinarith
+    exact (le_mul_of_one_le_left h6 hN1).trans hD1
   have hlogm : Real.log ((D.R.m : ℝ) ^ 10) ≤ Real.log (D.s.Del : ℝ) :=
     Real.log_le_log (by positivity) hm10
   rw [Real.log_pow] at hlogm
@@ -232,17 +235,18 @@ theorem ra_Sc {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : Sizes
     Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)
   have hlx : Real.log L.sc.x ≤ L.sc.x ^ (L.sc.eps / 3) := by
     push_cast at hlogm
-    nlinarith [Real.log_nonneg hx1]
+    linarith [Real.log_nonneg hx1]
   have hxe : L.sc.x ≤ Real.exp (L.sc.x ^ (L.sc.eps / 3)) := by
     calc L.sc.x = Real.exp (Real.log L.sc.x) := (Real.exp_log hx0).symm
       _ ≤ Real.exp (L.sc.x ^ (L.sc.eps / 3)) := Real.exp_le_exp.mpr hlx
   refine ⟨hScp.le, ?_, ?_, ?_⟩
-  · nlinarith
+  · have : 1 * L.Sc ≤ (D.R.k : ℝ) * L.Sc := mul_le_mul_of_nonneg_right (by linarith) hScp.le
+    linarith
   · simp only [Formalism.BasicNotions.Scale.b', Formalism.BasicNotions.Scale.a, Formalism.BasicNotions.Scale.X']
     rw [div_le_iff₀ (Real.exp_pos _)]
-    nlinarith [mul_le_mul_of_nonneg_right hxe hb0.le]
+    linarith [mul_le_mul_of_nonneg_right hxe hb0.le, mul_comm L.sc.b (Real.exp (L.sc.x ^ (L.sc.eps / 3)))]
   · simp only [Formalism.BasicNotions.Scale.a]
-    nlinarith [mul_le_mul_of_nonneg_right hx100 hb0.le]
+    exact mul_le_mul_of_nonneg_right hx100 hb0.le
 
 theorem rowsA_of' {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : SizesAt L) (hx : (44 : ℝ) ^ 4 ≤ L.sc.x) (CY : ℝ)
     (hg : ∀ i : Fin 2, Real.log (D.host.g i : ℝ) ≤ CY * L.sc.L) :
@@ -283,7 +287,10 @@ theorem rowsA_of' {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (S : S
       obtain ⟨w1, w2⟩ := L.aT_win t
       have ha0 : 0 < L.sc.a := by linarith
       have hxa : 1 ≤ L.sc.x ^ (Scale.A / 2) := Real.one_le_rpow hx1 (by unfold Scale.A; norm_num)
-      have hden : 3 ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2) := by nlinarith
+      have hden : 3 ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2) := by
+        have hk3' : (3 : ℝ) ≤ D.R.k := by exact_mod_cast hk3
+        calc (3 : ℝ) = 3 * 1 := (mul_one 3).symm
+          _ ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2) := mul_le_mul hk3' hxa zero_le_one (by positivity)
       have h3 : L.sc.a / ((D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)) ≤ L.sc.a / 3 :=
         div_le_div_of_nonneg_left ha0.le (by norm_num) hden
       have hbT := db_bT L S hx3 t

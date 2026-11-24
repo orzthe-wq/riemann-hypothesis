@@ -1,7 +1,8 @@
 module
 
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.RingTheory.MvPolynomial.Basic
 public import Formalism.GaussJetBounds.StatementI
-public import Formalism.GaussJetBounds.GaussJetProofs.MinorProductSupportTop
 public import Formalism.GaussJetBounds.MonoShapeTop
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -14,16 +15,16 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -44,11 +45,158 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
+import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.GaussJetBounds.GaussJetProofs.MinorProductSupportTop, Formalism.GaussJetBounds.GaussJetProofs.ThmAOp
+
+-- ===== clump member: Formalism.GaussJetBounds.GaussJetProofs.MinorProductSupportTop =====
+-- clump-header: {"m": "Formalism.GaussJetBounds.GaussJetProofs.MinorProductSupportTop", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Mathlib.RingTheory.MvPolynomial.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+open scoped BigOperators
+
+universe u
+
+namespace Formalism.DworkPowerSeriesWeights
+
+open MvPolynomial
+
+section ShapeSec
+
+variable {σ : Type}
+
+lemma shape_prod_eq {R : Type u} [CommRing R] {ι : Type*} (g : (σ →₀ ℕ) → ℕ) (hg0 : g 0 = 0)
+    (hgadd : ∀ a b, g (a + b) = g a + g b) (f : ι → MvPolynomial σ R) (a : ι → ℕ) (s : Finset ι)
+    (h : ∀ c ∈ s, ∀ mono ∈ (f c).support, g mono = a c) :
+    ∀ mono ∈ (∏ c ∈ s, f c).support, g mono = ∑ c ∈ s, a c := by
+  classical
+  revert h
+  induction s using Finset.induction_on with
+  | empty =>
+    intro _ mono hm
+    rw [Finset.prod_empty, MvPolynomial.mem_support_iff, MvPolynomial.coeff_one] at hm
+    split_ifs at hm with h0
+    · rw [← h0, hg0, Finset.sum_empty]
+    · exact absurd rfl hm
+  | insert c s hc ih =>
+    intro h mono hm
+    rw [Finset.prod_insert hc] at hm
+    obtain ⟨m1, hm1, m2, hm2, rfl⟩ := Finset.mem_add.mp (MvPolynomial.support_mul _ _ hm)
+    rw [hgadd, Finset.sum_insert hc, h c (Finset.mem_insert_self c s) m1 hm1,
+      ih (fun c' hc' => h c' (Finset.mem_insert_of_mem hc')) m2 hm2]
+
+lemma shape_prod_le {R : Type u} [CommRing R] {ι : Type*} (g : (σ →₀ ℕ) → ℕ) (hg0 : g 0 = 0)
+    (hgadd : ∀ a b, g (a + b) = g a + g b) (f : ι → MvPolynomial σ R) (a : ι → ℕ) (s : Finset ι)
+    (h : ∀ c ∈ s, ∀ mono ∈ (f c).support, g mono ≤ a c) :
+    ∀ mono ∈ (∏ c ∈ s, f c).support, g mono ≤ ∑ c ∈ s, a c := by
+  classical
+  revert h
+  induction s using Finset.induction_on with
+  | empty =>
+    intro _ mono hm
+    rw [Finset.prod_empty, MvPolynomial.mem_support_iff, MvPolynomial.coeff_one] at hm
+    split_ifs at hm with h0
+    · rw [← h0, hg0, Finset.sum_empty]
+    · exact absurd rfl hm
+  | insert c s hc ih =>
+    intro h mono hm
+    rw [Finset.prod_insert hc] at hm
+    obtain ⟨m1, hm1, m2, hm2, rfl⟩ := Finset.mem_add.mp (MvPolynomial.support_mul _ _ hm)
+    rw [hgadd, Finset.sum_insert hc]
+    exact Nat.add_le_add (h c (Finset.mem_insert_self c s) m1 hm1)
+      (ih (fun c' hc' => h c' (Finset.mem_insert_of_mem hc')) m2 hm2)
+
+end ShapeSec
+
+lemma shape_count_total {J : Type} [Fintype J] [DecidableEq J] {p : ℕ} (τ : Fin p → J) :
+    (∑ j, (Finset.univ.filter (fun i => τ i = j)).card) = p := by
+  have := Finset.card_eq_sum_card_fiberwise (s := (Finset.univ : Finset (Fin p)))
+    (t := Finset.univ) (f := τ) (fun i _ => Finset.mem_coe.mpr (Finset.mem_univ (τ i)))
+  rw [Finset.card_univ, Fintype.card_fin] at this
+  exact this.symm
+
+lemma shape_count_le_one {J : Type} [DecidableEq J] {p : ℕ} (τ : Fin p → J)
+    (hτ : Function.Injective τ) (j : J) :
+    (Finset.univ.filter (fun i => τ i = j)).card ≤ 1 := by
+  rw [Finset.card_le_one]
+  intro a ha b hb
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at ha hb
+  exact hτ (ha.trans hb.symm)
+
+def shapeSet {R : Type u} [CommRing R] {J : Type} {N1 p : ℕ} (A : Fin p → J → R)
+    (I : Fin p → Fin N1) : Set (J × Fin N1 →₀ ℕ) :=
+  {mono | ∃ τ : Fin p → J, Function.Injective τ ∧
+    (∃ π : Equiv.Perm (Fin p), ∀ i, A (π i) (τ i) ≠ 0) ∧ mono = ∑ i, Finsupp.single (τ i, I i) 1}
+
+lemma shape_minor {R : Type u} [CommRing R] {J : Type} [Fintype J] [DecidableEq J] {N1 p : ℕ}
+    (A : Fin p → J → R) (I : Fin p → Fin N1) :
+    (Matrix.of fun (r r' : Fin p) =>
+      (∑ j, C (A r j) * X (j, I r') : MvPolynomial (J × Fin N1) R)).det ∈
+        restrictSupport R (shapeSet A I) := by
+  classical
+  have hτ : ∀ τ : Fin p → J, ∑ π : Equiv.Perm (Fin p), Equiv.Perm.sign π •
+      ∏ i, (C (A (π i) (τ i)) * X (τ i, I i) : MvPolynomial (J × Fin N1) R) =
+      C (Matrix.of fun (r i : Fin p) => A r (τ i)).det * ∏ i, X (τ i, I i) := by
+    intro τ
+
+    rw [Matrix.det_apply, map_sum, Finset.sum_mul]
+    refine Finset.sum_congr rfl fun π _ => ?_
+    simp only [Units.smul_def, map_zsmul, smul_mul_assoc, Finset.prod_mul_distrib, map_prod,
+      Matrix.of_apply]
+  rw [Matrix.det_apply]
+  simp only [Matrix.of_apply]
+  simp_rw [Finset.prod_univ_sum, Finset.smul_sum]
+  rw [Finset.sum_comm]
+  refine Submodule.sum_mem _ fun τ _ => ?_
+  have hX : ∏ i, (X (τ i, I i) : MvPolynomial (J × Fin N1) R) =
+      monomial (∑ i, Finsupp.single (τ i, I i) 1) 1 := by
+    rw [monomial_sum_one]
+    rfl
+  rw [hτ τ, hX, C_mul_monomial, mul_one, monomial_mem_restrictSupport]
+  by_cases hinj : Function.Injective τ
+  · by_cases hd : (Matrix.of fun (r i : Fin p) => A r (τ i)).det = 0
+    · exact Or.inr hd
+    · left
+      refine ⟨τ, hinj, ?_, rfl⟩
+      by_contra hno
+      push_neg at hno
+      apply hd
+      rw [Matrix.det_apply]
+      refine Finset.sum_eq_zero fun π _ => ?_
+      obtain ⟨i, hi⟩ := hno π
+      rw [Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi]), smul_zero]
+  · right
+    simp only [Function.Injective, not_forall] at hinj
+    obtain ⟨i, i', hii, hne⟩ := hinj
+    exact Matrix.det_zero_of_column_eq hne (fun k => by simp [hii])
+
+lemma shape_minor_mem {R : Type u} [CommRing R] {J : Type} [Fintype J] [DecidableEq J]
+    {N1 p : ℕ} (A : Fin p → J → R) (I : Fin p → Fin N1) (mono : J × Fin N1 →₀ ℕ)
+    (hm : mono ∈ (Matrix.of fun (r r' : Fin p) =>
+      (∑ j, C (A r j) * X (j, I r') : MvPolynomial (J × Fin N1) R)).det.support) :
+    mono ∈ shapeSet A I := by
+  have h := shape_minor A I
+  rw [mem_restrictSupport_iff] at h
+  exact h hm
+
+end Formalism.DworkPowerSeriesWeights
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GaussJetBounds.GaussJetProofs.MinorProductSupportTop =====
+
+-- ===== clump member: Formalism.GaussJetBounds.GaussJetProofs.ThmAOp =====
+-- clump-header: {"m": "Formalism.GaussJetBounds.GaussJetProofs.ThmAOp", "h": "module\n\npublic import Formalism.GaussJetBounds.StatementI\npublic import Formalism.GaussJetBounds.GaussJetProofs.MinorProductSupportTop\npublic import Formalism.GaussJetBounds.MonoShapeTop\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -101,8 +249,7 @@ lemma rowOp_eq {K : Type u} [Field K] {d N0 N1 : ℕ} (TT : Finset (ZMod d))
     · simp
     · intro k _ hk
       simp [hk]
-    · intro hi
-      exact absurd (Finset.mem_univ i) hi
+    · simp
   · refine Finset.sum_congr rfl fun k _ => ?_
     split_ifs <;> simp
 
@@ -119,13 +266,11 @@ lemma opA_top {K : Type u} [Field K] {d N0 : ℕ} (TT : Finset (ZMod d))
   by_cases hi : i.val = 0
   · rw [if_pos ⟨hs, hi⟩] at h
     by_cases hk : k = i
-    · rw [hk]
-    · rw [if_neg hk] at h
-      exact absurd rfl h
+    · simp [hi, hk]
+    · simp [hk] at h
   · rw [if_neg (fun hh => hi hh.2)] at h
     by_cases hk : k.val = 0
-    · rw [if_pos ⟨hs, hk⟩] at h
-      exact absurd rfl h
+    · simp [hs, hk] at h
     · exact ⟨fun hh => absurd hh hi, fun hh => absurd hh hk⟩
 
 lemma rowOp_mem_opInt {K : Type u} [NormedField K] [IsUltrametricDist K] {d N0 N1 : ℕ}
@@ -137,8 +282,7 @@ lemma rowOp_mem_opInt {K : Type u} [NormedField K] [IsUltrametricDist K] {d N0 N
   refine Subring.sum_mem _ fun k _ => ?_
   intro κ
   rw [coeff_C_mul, coeff_X, norm_mul]
-  refine mul_le_one₀ (opA_norm_le TT T hT s i k) (norm_nonneg _) ?_
-  split_ifs <;> simp
+  exact mul_le_one₀ (opA_norm_le TT T hT s i k) (norm_nonneg _) (by split_ifs <;> simp)
 
 lemma minorProd_mem_opInt {K : Type u} [NormedField K] [IsUltrametricDist K] {σ : Type}
     {N0 N1 Cn : ℕ} (row : Fin N0 → Fin N1 → MvPolynomial σ K)
@@ -149,9 +293,7 @@ lemma minorProd_mem_opInt {K : Type u} [NormedField K] [IsUltrametricDist K] {σ
   rw [Matrix.det_apply]
   refine Subring.sum_mem _ fun π _ => ?_
   rw [Units.smul_def]
-  refine zsmul_mem ?_ _
-  refine Subring.prod_mem _ fun r _ => ?_
-  exact hrow _ _
+  exact zsmul_mem (Subring.prod_mem _ fun r _ => hrow _ _) _
 
 def rowDeg {d N0 N1 : ℕ} (s : ZMod d) (k : Fin N0) (κ : ZV d N0 N1 →₀ ℕ) : ℕ :=
   ∑ b : Fin N1, κ (s, k, b)
@@ -175,14 +317,9 @@ lemma rowDeg_shape {d N0 N1 p : ℕ} (s s' : ZMod d) (k : Fin N0) (τ : Fin p �
   · subst hs
     rw [if_pos rfl, Finset.card_filter]
     refine Finset.sum_congr rfl fun i _ => ?_
-    by_cases h : τ i = k
-    · simp [h]
-    · simp [h]
+    by_cases h : τ i = k <;> simp [h]
   · rw [if_neg hs]
-    refine Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun b _ => ?_
-    rw [if_neg]
-    intro hh
-    exact hs hh.1.symm
+    simp [Ne.symm hs]
 
 lemma op_minor_mem {K : Type u} [Field K] {d N0 N1 p : ℕ} (s : ZMod d) (A : Fin p → Fin N0 → K)
     (I : Fin p → Fin N1) (mono : ZV d N0 N1 →₀ ℕ)
@@ -192,9 +329,8 @@ lemma op_minor_mem {K : Type u} [Field K] {d N0 N1 p : ℕ} (s : ZMod d) (A : Fi
       (∃ π : Equiv.Perm (Fin p), ∀ i, A (π i) (τ i) ≠ 0) ∧
       mono = ∑ i, Finsupp.single ((s, τ i, I i) : ZV d N0 N1) 1 := by
   classical
-  have hinj : Function.Injective (fun y : Fin N0 × Fin N1 => ((s, y.1, y.2) : ZV d N0 N1)) := by
-    intro a b h
-    simpa [Prod.ext_iff] using h
+  have hinj : Function.Injective (fun y : Fin N0 × Fin N1 => ((s, y.1, y.2) : ZV d N0 N1)) :=
+    fun _ _ h => by simpa [Prod.ext_iff] using h
   have hdet : (Matrix.of fun (r r' : Fin p) =>
       (∑ j, C (A r j) * X (s, j, I r') : MvPolynomial (ZV d N0 N1) K)).det =
       rename (fun y : Fin N0 × Fin N1 => ((s, y.1, y.2) : ZV d N0 N1))
@@ -229,12 +365,7 @@ lemma op_minor_shape {K : Type u} [Field K] {d N0 N1 p : ℕ} (TT : Finset (ZMod
   intro hs hp1 k0 hk0
   have hiff : ∀ i, (π i).val = 0 ↔ τ i = k0 := by
     intro i
-    rw [opA_top TT T s hs _ _ (hπ i)]
-    constructor
-    · intro h
-      exact Fin.ext (h.trans hk0.symm)
-    · intro h
-      rw [h, hk0]
+    rw [opA_top TT T s hs _ _ (hπ i), Fin.ext_iff, hk0]
   set i0 : Fin p := π.symm ⟨0, hp1⟩ with hi0
   have hnone : (Finset.univ.filter (fun i => τ i = k0)).card = 1 := by
     rw [Finset.card_eq_one]
@@ -354,9 +485,7 @@ lemma sum_filter_rows {d N0 N1 : ℕ} [NeZero d] (Pr : ZMod d × Fin N0 → Prop
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [Fintype.sum_prod_type]
   refine Finset.sum_congr rfl fun k _ => ?_
-  by_cases h : Pr (s, k)
-  · simp [h, rowDeg]
-  · simp [h]
+  by_cases h : Pr (s, k) <;> simp [h, rowDeg]
 
 theorem thmAOp : ThmAOp.{u} := by
   intro K _ _ _ l d N0 N1 _ hl hl3 hd hde hnl h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε
@@ -391,7 +520,7 @@ theorem thmAOp : ThmAOp.{u} := by
       exact ((hsh s).2.2 hs ⟨0, h0⟩ rfl).2 k (fun hk => hsk ⟨hs, hk⟩)
     · rw [hnu1]
       exact (hsh s).2.1 k
-  have hjet := thmAJetA K l d N0 N1 hl hl3 hd hde hnl h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε
+  have hjet := _root_.Formalism.DworkPowerSeriesWeights.theorem_A_one_monomial_log_loss K l d N0 N1 hl hl3 hd hde hnl h0 K0 hK0 ζ hζ be hbe x hx g hg0 hg U hU ε hε
     TT nu1 nu2 size h21 h1s a ha hsa spec κ ?_ ?_ hspec ?_ hframe
   · rw [mul_assoc, norm_mul]
     calc ‖AddMonoidAlgebra.coeff (∏ s : ZMod d, minorProd (rowOp (N1 := N1) TT T s) (p s) (hp s) (I s)) κ‖ * _
@@ -453,3 +582,7 @@ theorem thmAOp : ThmAOp.{u} := by
       simp
 
 end Formalism.DworkPowerSeriesWeights
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.GaussJetBounds.GaussJetProofs.ThmAOp =====

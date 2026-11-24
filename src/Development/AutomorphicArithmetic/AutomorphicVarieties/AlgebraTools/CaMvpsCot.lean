@@ -50,11 +50,6 @@ import Mathlib.Topology.Sheaves.Init
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
-private theorem mem_span_variables_of_coeff {O σ : Type} [CommRing O] (s : Finset σ) :
-    ∀ f : MvPowerSeries σ O, (∀ n : σ →₀ ℕ, (∀ i ∈ s, n i = 0) → MvPowerSeries.coeff n f = 0) →
-      f ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O)) :=
-  _root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X s
-
 theorem UpperTheory.V.AlgebraTools.mvPowerSeries_cotInd :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ →
       ∀ (σ : Type) [Fintype σ], IsRegularLocalRing (MvPowerSeries σ O) ∧
@@ -84,7 +79,7 @@ theorem UpperTheory.V.AlgebraTools.mvPowerSeries_cotInd :
       obtain ⟨c, hc⟩ := h0
       have h1 : f - MvPowerSeries.C (ϖ * c) ∈
           Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O)) := by
-        refine mem_span_variables_of_coeff Finset.univ _ fun n hn => ?_
+        refine _root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X Finset.univ _ fun n hn => ?_
         have : n = 0 := Finsupp.ext fun i => hn i (Finset.mem_univ i)
         subst this
         simp [hc]

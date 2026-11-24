@@ -65,8 +65,8 @@ theorem measurePreserving_withDensity {X : Type} [MeasurableSpace X] (μ : Measu
     congr 1
     funext x
     by_cases hx : f x ∈ s
-    · simp [Set.indicator_apply, hx, ← hρf x]
-    · simp [Set.indicator_apply, hx]
+    · simp [hx, ← hρf x]
+    · simp [hx]
   rw [h1, lintegral_const_mul d (f := fun x => s.indicator ρ (f x)) ((hρ.indicator hs).comp hf),
     ← lintegral_map (hρ.indicator hs) hf, hμ,
     lintegral_smul_measure, smul_eq_mul, ← mul_assoc, hcd, one_mul, lintegral_indicator hs]

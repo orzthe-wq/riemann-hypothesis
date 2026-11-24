@@ -1,7 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationSubOnePowEqPrimeStatement
+public import Mathlib.Basic.NNReal.Defs
+public import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+public import Mathlib.RingTheory.Valuation.Basic
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ValuationSubOnePowEqPrime
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -120,7 +123,7 @@ theorem valuation_zeta_sub_one : ∀ (p : ℕ) [hpf : Fact p.Prime] (Ω : Type) 
     calc v (∑ i ∈ Finset.range (p ^ m), T.ζ (m + 1) ^ i) * v (T.ζ (m + 1) - 1)
         ≤ 1 * v (T.ζ (m + 1) - 1) := by gcongr
       _ = v (T.ζ (m + 1) - 1) := one_mul _
-  have h1 := GlobalTheory.T.valuation_primitiveRoot_sub_one_pow_pred_eq Ω v p hp (T.ζ 1) (by simpa using T.prim 1)
+  have h1 := _root_.GlobalTheory.AlmostEt.valuation_sub_one_pow_eq_prime Ω v p hp (T.ζ 1) (by simpa using T.prim 1)
   have ha1 : v (T.ζ 1 - 1) ≤ 1 := (hlt 1).le
   have hp3 : 2 ≤ p - 1 := by have := hp.two_le; omega
   rw [← h1]

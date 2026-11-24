@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.Divisors.NormNegCmConstantEqAtAllEmbeddings
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.CmHostUnitAddConjEqOne
 
 @[expose] public section
 
@@ -55,6 +56,7 @@ open GlobalTheory.CompHt (hodgeWt)
 open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
+open scoped GlobalTheory.CompHt
 
 set_option autoImplicit false
 noncomputable section
@@ -66,7 +68,7 @@ open Classical
 theorem sandwich {ι κ K : Type} [Fintype ι] [DecidableEq ι] [CommRing K] (B : Matrix ι κ K) (a b : ι) (x y : κ) :
     (Matrix.transpose B * Matrix.of (fun u v => (if u = a ∧ v = b then (1 : K) else 0) + (if u = b ∧ v = a then 1 else 0)) * B) x y =
       B a x * B b y + B b x * B a y := by
-  simp [Matrix.mul_apply, add_mul, mul_add, Finset.sum_add_distrib, ite_and, Finset.sum_mul, Finset.mul_sum]
+  simp [Matrix.mul_apply, add_mul, mul_add, Finset.sum_add_distrib, ite_and]
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
@@ -89,15 +91,6 @@ theorem hostRoot_conj_eq_neg_and_ne_zero (H : ReciprocityTheory.ChartRestriction
   simp at hre
   exact H.d_prime.ne_zero hre
 
-theorem emb_rt_cases (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (τ : E →+* ℂ) :
-    τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) = -H.rt0 := by
-  apply sq_eq_sq_iff_eq_or_eq_neg.1
-  rw [H.sqrt_neg_disc_sq, ← map_pow]
-  have : ((H.rt : E)) ^ 2 = -(H.d : E) := by
-    have := congrArg (algebraMap (𝓞 E) E) H.rt_sq
-    simpa using this
-  rw [this]; simp
-
 theorem conj_off (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (τ : E →+* ℂ) (h : τ (H.rt : E) = H.rt0) :
     ((starRingEnd ℂ).comp τ) (H.rt : E) ≠ H.rt0 := by
   obtain ⟨h1, h2⟩ := hostRoot_conj_eq_neg_and_ne_zero H
@@ -107,7 +100,7 @@ theorem conj_off (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (τ :
 
 theorem conj_on (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (τ : E →+* ℂ) (h : τ (H.rt : E) ≠ H.rt0) :
     ((starRingEnd ℂ).comp τ) (H.rt : E) = H.rt0 := by
-  rcases emb_rt_cases H τ with h' | h'
+  rcases _root_.ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.emb_rt H τ with h' | h'
   · exact absurd h' h
   · rw [RingHom.comp_apply, h', map_neg, (hostRoot_conj_eq_neg_and_ne_zero H).1, neg_neg]
 
@@ -154,10 +147,10 @@ theorem sym_entry {n' : ℕ} (e' : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ F
     rintro ⟨h, -⟩
     have h5 : σ = (starRingEnd ℂ).comp τ := congrArg Sigma.fst (e'.injective h)
     exact conj_off H τ hτ (h5 ▸ hσ)
-  simp only [symPair, Matrix.of_apply, if_neg h2, add_zero, e'.apply_eq_iff_eq]
+  simp only [symPair, Matrix.of_apply, e'.apply_eq_iff_eq]
   by_cases h : τ = σ
   · subst h
-    simp [Sigma.mk.inj_iff, eq_comm]
+    simp [eq_comm]
     intro h5
     exact (conj_off H τ hτ (by rw [← h5]; exact hτ)).elim
   · have h3 : ¬ (σ = τ) := Ne.symm h

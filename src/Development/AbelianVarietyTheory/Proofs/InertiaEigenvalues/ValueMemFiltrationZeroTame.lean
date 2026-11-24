@@ -1,15 +1,15 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPotential
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
-import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinLatticeExponentsAinfComparisonStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinMuPowSmulFrobeniusMemAinfStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinLatticeExponentsAinfComparison
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinMuPowSmulFrobeniusMemAinf
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InclLSmulCoord
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BdRFiltrationLaws
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadic
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLogTeichmullerAcrisEqMuMulUnit
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FontaineTIsUnitBcrisAndUniformizerBdRPlus
+import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
+import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsCompatibleRootsOfUnityAndTiltPadic
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PeriodRingsGaloisActionLawsFrobeniusComm
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
 import Mathlib.Algebra.Order.Floor.Extended
@@ -49,6 +49,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalPeriodRingsDataUnramifiedLaws
 
 @[expose] public section
 
@@ -68,11 +69,6 @@ theorem toB_tmul_pt {O : Type} [CommRing O] [Algebra ℤ_[l] O] (o : O) (w : Per
   rw [GlobalTheory.RingIface.aB_alg]
   rfl
 
-theorem core_ι_aB (C : GlobalTheory.MemLoc.Core l) (w : Per.Ainf l) :
-    C.ι (Per.aB l w) = algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l w) := by
-  rw [GlobalTheory.RingIface.aB_alg, C.ι_j, GlobalTheory.MemLoc.LogEx.algebraMap_acris, C.j_cris.on0, Subalgebra.coe_algebraMap]
-  rfl
-
 theorem one_mem_filZero : (1 : Per.BdR l) ∈ Per.FilD l 0 :=
   (GlobalTheory.MemLoc.filD_laws l).2.1
 
@@ -88,7 +84,7 @@ theorem ι_mem_filZero_of_mul (C : GlobalTheory.MemLoc.Core l) {d : Per.Bcris l}
     (hd : d * Per.aB l x ^ n = 1) (hx : IsUnit (GlobalTheory.MemLoc.aDp l x)) : C.ι d ∈ Per.FilD l 0 := by
   obtain ⟨v, hv⟩ := hx
   have h1 : C.ι d * algebraMap (Per.BdRp l) (Per.BdR l) ((v : Per.BdRp l) ^ n) = 1 := by
-    rw [map_pow, hv, ← core_ι_aB, ← map_pow, ← map_mul, hd, map_one]
+    rw [map_pow, hv, ← _root_.GlobalTheory.MemLoc.ULaws.iota_aB, ← map_pow, ← map_mul, hd, map_one]
   have h2 : C.ι d = algebraMap (Per.BdRp l) (Per.BdR l) (((v⁻¹ : (Per.BdRp l)ˣ) : Per.BdRp l) ^ n) := by
     calc C.ι d = C.ι d * algebraMap (Per.BdRp l) (Per.BdR l)
           ((v : Per.BdRp l) ^ n * ((v⁻¹ : (Per.BdRp l)ˣ) : Per.BdRp l) ^ n) := by
@@ -159,7 +155,7 @@ theorem smul_TWincl_mem (C : GlobalTheory.MemLoc.Core l) (T : LocLat G ℚ_[l] K
         rw [toB_tmul_pt, Algebra.TensorProduct.tmul_mul_tmul, one_mul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
       rw [e, ← smul_tmul']
       refine Submodule.smul_mem _ o (Submodule.subset_span ⟨d * Per.aB l w, x, ?_, rfl⟩)
-      rw [map_mul, core_ι_aB, mul_comm, ← Algebra.smul_def]
+      rw [map_mul, _root_.GlobalTheory.MemLoc.ULaws.iota_aB, mul_comm, ← Algebra.smul_def]
       exact Submodule.smul_mem _ _ hd
     | add c c' hc hc' => rw [map_add (f := _), mul_add, add_tmul]; exact add_mem hc hc'
   | add z z' hz hz' => rw [map_add (f := _), smul_add]; exact add_mem hz hz'
@@ -187,9 +183,9 @@ theorem GlobalTheory.BKGal.value_mem_filtration_zero : ∀ (l : ℕ) [Fact l.Pri
   have hEps : IsEps ε := ⟨he, _, hδl, hE.2⟩
   set δ := (frobeniusEquiv (Per.Fl l) l).symm ε with hδ
 
-  obtain ⟨hMA, -⟩ := GlobalTheory.T.breuilKisin_mu_pow_smul_frobenius_mem_ainf l a e O K t ϖ ι D.toPhiMod T R.I η H D.upper D.lower ε δ hEps hδl
+  obtain ⟨hMA, -⟩ := _root_.GlobalTheory.BKGal.LiftStep.mu_pow_smul_mem l a e O K t ϖ ι D.toPhiMod T R.I η H D.upper D.lower ε δ hEps hδl
     ⟨y, hy⟩ hyY.1 m₀ h1
-  obtain ⟨-, hK2, hK3, -⟩ := GlobalTheory.T.breuilKisin_lattice_exponents_ainf_comparison l a e O K t ϖ ι D.toPhiMod T R.I η H D.upper D.lower ε δ hEps hδl
+  obtain ⟨-, hK2, hK3, -⟩ := _root_.GlobalTheory.BKExp.exponents l a e O K t ϖ ι D.toPhiMod T R.I η H D.upper D.lower ε δ hEps hδl
   obtain ⟨z, hz⟩ := hK2 _ hMA
 
   have hLA : ∀ (c : OA l O) {v : ι → OW l O}, v ∈ LA t ϖ D.toPhiMod → inclO l O c • v ∈ LA t ϖ D.toPhiMod := by

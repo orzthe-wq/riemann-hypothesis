@@ -65,7 +65,7 @@ private theorem abW_of_sum {x y : WD h} (H : AbW (x.lpSum y)) : AbW x ∧ AbW y 
 private theorem scaleRoots_cancel {p q : ℂ[X]} {c : ℂ} (hc : c ≠ 0) (e : p.scaleRoots c = q.scaleRoots c) :
     p = q := by
   have e' := congrArg (fun r : ℂ[X] => r.scaleRoots c⁻¹) e
-  simp only [← scaleRoots_mul, inv_mul_cancel₀ hc, mul_inv_cancel₀ hc, scaleRoots_one] at e'
+  simp only [← scaleRoots_mul, mul_inv_cancel₀ hc, scaleRoots_one] at e'
   exact e'
 
 end UpperTheory.V.Lev

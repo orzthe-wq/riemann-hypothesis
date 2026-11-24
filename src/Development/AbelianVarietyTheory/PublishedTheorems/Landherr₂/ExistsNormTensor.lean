@@ -52,6 +52,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.Published
 
+/-- The local-to-global direction of the quadratic Hasse norm theorem. For nonsquare `δ`,
+`a ^ 2 - δ * b ^ 2` is the norm of `a + b √δ` from the quadratic extension of `F`.
+The hypotheses cover the finite and real places. At a complex place every element has a
+square root. The case of square `δ` is proved below in `HasseNormSt.of_isSquare`.
+
+See [Hasse, *Beweis eines Satzes und Widerlegung einer Vermutung über das allgemeine
+Normenrestsymbol* (§1, Satz, pp. 64–65)][hasse1931]. -/
 def HasseNormSt : Prop := (∀ (F : Type) [Field F] [NumberField F] (δ x : F), δ ≠ 0 → x ≠ 0 → (∀ σ : F →+* ℝ, ∃ a b : ℝ, σ x = a ^ 2 - σ δ * b ^ 2) → (∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), ∃ a b : v.adicCompletion F, algebraMap F (v.adicCompletion F) x = a ^ 2 - algebraMap F (v.adicCompletion F) δ * b ^ 2) → ∃ a b : F, x = a ^ 2 - δ * b ^ 2)
 
 namespace HasseNormSt

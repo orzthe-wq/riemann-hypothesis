@@ -95,7 +95,7 @@ theorem dualNumber_map_flat_surjective : ∀ (k K : Type) [Field k] [Field K] (�
   have hbij : Function.Bijective g := Function.bijective_iff_has_inverse.2 ⟨h, hhg, hgh⟩
   refine ⟨ψ₀.toRingHom, ?_, ?_, ?_⟩
   · refine RingHom.ext fun a ↦ ?_
-    ext <;> simp [hψ₀, TrivSqZeroExt.algebraMap_eq_inl', RingHom.algebraMap_toAlgebra]
+    ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl', RingHom.algebraMap_toAlgebra]
   · refine RingHom.ext fun x ↦ ?_
     simp [hψ₀]
   · have hc : ψ₀.toRingHom = g.toRingHom.comp (algebraMap (DualNumber k) (TensorProduct k (DualNumber k) K)) := by

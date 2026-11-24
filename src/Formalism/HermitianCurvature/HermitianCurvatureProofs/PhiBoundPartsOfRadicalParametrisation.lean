@@ -65,6 +65,7 @@ import Mathlib.Topology.Separation.CompletelyRegular
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Calculus.ParametricIntegral
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.Block3MulBlocks
 
 @[expose] public section
 
@@ -75,48 +76,16 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.U Formalism.REAL Formal
 
 namespace Formalism.FourierDecayAlt.P.Ux10
 
-theorem block2_det_lower_triangular {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (C : Matrix (Fin s) (Fin p) ℂ)
-    (D : Matrix (Fin s) (Fin s) ℂ) : (blk2 A 0 C D).det = A.det * D.det := by
-  unfold blk2
-  rw [Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₁₂]
+alias block2_det_upper_triangular := _root_.Formalism.FourierDecayAlt.P.Ux3.block2_det_upper_triangular
 
-theorem block2_det_upper_triangular {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B : Matrix (Fin p) (Fin s) ℂ)
-    (D : Matrix (Fin s) (Fin s) ℂ) : (blk2 A B 0 D).det = A.det * D.det := by
-  unfold blk2
-  rw [Matrix.det_reindex_self, Matrix.det_fromBlocks_zero₂₁]
+alias det_upper := _root_.Formalism.FourierDecayAlt.P.Ux3.det_upper
 
-theorem det_upper {p : ℕ} (u : G.UT p → ℂ) : (G.upper u).det = 1 := by
-  have h : (G.upper u).BlockTriangular id := by
-    intro i j hij
-    simp only [id] at hij
-    simp [G.upper, G.strictUpper, ne_of_gt hij, not_lt.mpr (le_of_lt hij)]
-  rw [Matrix.det_of_isUpperTriangular h]
-  simp [G.upper, G.strictUpper]
-
-theorem det_lowW {p : ℕ} (σ : Equiv.Perm (Fin p)) (v : LW σ → ℂ) : (lowW σ v).det = 1 := by
-  have h : (lowW σ v).BlockTriangular OrderDual.toDual := by
-    intro i j hij
-    have hij' : i < j := hij
-    have : ¬ (j < i ∧ σ.symm j < σ.symm i) := fun h => absurd h.1 (not_lt.mpr (le_of_lt hij'))
-    simp [lowW, ne_of_lt hij', this]
-  rw [Matrix.det_of_isLowerTriangular _ h]
-  simp [lowW]
-
-theorem detZj : DetZj := by
-  intro p s σ d η Z
-  unfold ZjH Zj headH hMat G.detM
-  rw [Matrix.det_mul, Matrix.det_mul, block2_det_lower_triangular, block2_det_lower_triangular, block2_det_upper_triangular]
-  simp only [Matrix.det_mul, det_upper, det_lowW, Matrix.det_one]
-  ring
-
-theorem permutationMatrix_eq_permMatrix {p : ℕ} (σ : Equiv.Perm (Fin p)) : wP σ = σ.permMatrix ℂ := by
-  ext a b
-  simp [wP, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, eq_comm]
+alias det_lowW := _root_.Formalism.FourierDecayAlt.P.Ux3.det_lowW
 
 theorem det_hMat_ne {p : ℕ} (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0) :
     (hMat σ d).det ≠ 0 := by
   unfold hMat
-  rw [Matrix.det_mul, permutationMatrix_eq_permMatrix, Matrix.det_permutation, Matrix.det_diagonal]
+  rw [Matrix.det_mul, _root_.Formalism.FourierDecayAlt.P.Ux5.permutationMatrix_eq_permMatrix, Matrix.det_permutation, Matrix.det_diagonal]
   refine mul_ne_zero ?_ (Finset.prod_ne_zero_iff.mpr fun i _ => hd i)
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
 
@@ -128,7 +97,7 @@ theorem gaXi_mem (hM : SliceMem) (hR : RadicalParam) {k p s ρ : ℕ} (σ : Equi
     (hd : ∀ i, d i ≠ 0) (ξ : Xi k p s ρ σ) (Z : G.Mat s) (hZ : G.detM Z ≠ 0) {γ : B.Mat k ρ}
     (hγ : γ ∈ B.GV k ρ) : gaXi k ρ σ d ξ Z γ ∈ B.GV k (p + s + ρ) := by
   have hdet : (ZjH σ d ξ.2 Z).det ≠ 0 := by
-    rw [detZj]; exact mul_ne_zero (det_hMat_ne σ d hd) hZ
+    rw [_root_.Formalism.FourierDecayAlt.P.Ux3.detZj]; exact mul_ne_zero (det_hMat_ne σ d hd) hZ
   unfold gaXi
   refine BetaSesquilinearity.gv_mul (BetaSesquilinearity.gv_mul (BetaSesquilinearity.gv_inv (Rn_mem hR _ _ _ _)) ((hM k (p + s) ρ).1 _ _ hdet hγ))
     (Rn_mem hR _ _ _ _)
@@ -137,7 +106,7 @@ theorem DjU_gaXi (hZh : ZhSlice) {k p s ρ : ℕ} (σ : Equiv.Perm (Fin p)) (d :
     (ξ : Xi k p s ρ σ) (Z : G.Mat s) (γ : B.Mat k ρ) :
     DjU k (p + s) ρ (gaXi k ρ σ d ξ Z γ) = (hMat σ d).det * G.detM Z := by
   unfold DjU gaXi
-  rw [hZh, detZj]
+  rw [hZh, _root_.Formalism.FourierDecayAlt.P.Ux3.detZj]
 
 theorem phiSupport_of (hM : SliceMem) (hR : RadicalParam) (hZh : ZhSlice) : PhiSupport := by
   intro k p s ρ σ d z z' E _ _ F₁ A₁ B₁ Q K hd hS Z hZ hK γ hγ
@@ -433,7 +402,7 @@ def kap (Y : Mat k r) : Mat k r := (1 + Y) * (1 - Y)⁻¹
 def iot (Z : Mat k r) : Mat k r := (Z - 1) * (Z + 1)⁻¹
 
 lemma kap_mem {Y : Mat k r} (hY : inLie k r Y) (hu : IsUnit (1 - Y).det) : kap Y ∈ GV k r := by
-  first | exact UpperTheory.Reformulated.B.Qk20.kap_mem .. | (apply UpperTheory.Reformulated.B.Qk20.kap_mem <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qk20.kap_mem <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk20.kap_mem <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qk20.kap_mem <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk20.kap_mem <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qk20.kap_mem k r Y hY hu | exact @UpperTheory.Reformulated.B.Qk20.kap_mem k r Y hY | exact @UpperTheory.Reformulated.B.Qk20.kap_mem k r Y | exact @UpperTheory.Reformulated.B.Qk20.kap_mem k r | exact @UpperTheory.Reformulated.B.Qk20.kap_mem k
+  first | (apply UpperTheory.Reformulated.B.Qk20.kap_mem <;> assumption)
 
 lemma iot_facts {h : Mat k r} (hh : h ∈ GV k r) (hu : IsUnit (h + 1).det) :
     inLie k r (iot h) ∧ IsUnit (1 - iot h).det ∧ kap (iot h) = h := by
@@ -982,7 +951,7 @@ lemma cont_lowW {p : ℕ} (σ : Equiv.Perm (Fin p)) {f : X → LW σ → ℂ} (h
       Matrix (Fin p) (Fin p) ℂ) := by
     refine continuous_pi fun a => continuous_pi fun b => ?_
     by_cases h : b < a ∧ σ.symm b < σ.symm a
-    · simp only [Matrix.of_apply, h, dite_true]
+    · simp only [Matrix.of_apply, h]
       exact (continuous_apply _).comp hf
     · simp only [Matrix.of_apply, h, dite_false]
       exact continuous_const
@@ -1007,7 +976,7 @@ lemma cont_gaXi {k p s ρ : ℕ} (hR : RadicalParam) (σ : Equiv.Perm (Fin p)) (
       (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_unit (Rn_mem hR k (p + s) ρ ξ.1.1)).ne_zero
   have h2 : Continuous fun ξ : Xi k p s ρ σ => (ZjH σ d ξ.2 Z)ᴴ⁻¹ := by
     refine cont_inv (((cont_ZjH σ d Z).comp continuous_snd).matrix_conjTranspose) fun ξ => ?_
-    rw [Matrix.det_conjTranspose, detZj]
+    rw [Matrix.det_conjTranspose, _root_.Formalism.FourierDecayAlt.P.Ux3.detZj]
     exact star_ne_zero.2 (mul_ne_zero (det_hMat_ne σ d hd) hZ)
   have h3 : Continuous fun ξ : Xi k p s ρ σ => ZjH σ d ξ.2 Z := (cont_ZjH σ d Z).comp continuous_snd
   have h4 : Continuous fun ξ : Xi k p s ρ σ => Rn k (p + s) ρ ξ.1.2 :=
@@ -1053,14 +1022,14 @@ lemma cont_supS {p : ℕ} {f : X → Matrix (Fin p) (Fin p) ℂ} (hf : Continuou
 lemma cont_cornerA {p s : ℕ} {f : X → Fin s → Fin p → ℂ} (hf : Continuous f) : Continuous fun x => cornerA (f x) := by
   unfold cornerA
   by_cases h : 0 < s ∧ 0 < p
-  · simp only [h, dite_true]; exact (continuous_apply_apply _ _).comp hf
+  · simp only [h]; exact (continuous_apply_apply _ _).comp hf
   · simp only [h, dite_false]; exact continuous_const
 
 @[fun_prop]
 lemma cont_cornerB {p s : ℕ} {f : X → Fin p → Fin s → ℂ} (hf : Continuous f) : Continuous fun x => cornerB (f x) := by
   unfold cornerB
   by_cases h : 0 < s ∧ 0 < p
-  · simp only [h, dite_true]; exact (continuous_apply_apply _ _).comp hf
+  · simp only [h]; exact (continuous_apply_apply _ _).comp hf
   · simp only [h, dite_false]; exact continuous_const
 
 @[fun_prop]
@@ -1396,13 +1365,13 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.U
 
 theorem Ux10.phi_bound_parts_of_radical_parametrisation (hR : RadicalParam) : PointwiseIntegralBoundFromComponents :=
-  Ux10.phi_bound_parts_of_radical_and_slice hR hat_z_on_slice
+  Ux10.phi_bound_parts_of_radical_and_slice hR _root_.Formalism.FourierDecayAlt.P.Ux3.zhSlice
 
 theorem Ux10.phiSupport_of_parts (hM : SliceMem) (hR : RadicalParam) : PhiSupport :=
-  Ux10.phiSupport_of hM hR hat_z_on_slice
+  Ux10.phiSupport_of hM hR _root_.Formalism.FourierDecayAlt.P.Ux3.zhSlice
 
-theorem phi_bound_of_parts : Formalism.FourierDecayAlt.U.PointwiseIntegralBoundFromComponents := Ux10.phi_bound_parts_of_radical_parametrisation radical_parametrisation
+theorem phi_bound_of_parts : Formalism.FourierDecayAlt.U.PointwiseIntegralBoundFromComponents := Ux10.phi_bound_parts_of_radical_parametrisation _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam
 
-theorem phi_support_determinant : Formalism.FourierDecayAlt.U.PhiSupport := Ux10.phiSupport_of_parts slice_membership radical_parametrisation
+theorem phi_support_determinant : Formalism.FourierDecayAlt.U.PhiSupport := Ux10.phiSupport_of_parts _root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem _root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam
 
 end Formalism.FourierDecayAlt.P

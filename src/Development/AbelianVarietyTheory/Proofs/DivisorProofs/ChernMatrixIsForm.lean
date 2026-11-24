@@ -93,7 +93,6 @@ theorem chernMat_isForm : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X �
     refine ContinuousAt.continuousWithinAt (hc.congr ?_)
     filter_upwards [ho.mem_nhds hm] with w hw
     unfold chernMat
-    beta_reduce
     rw [c.hess_eq hφ (c.e.map_target hw.1) hw.2 (mem_pick _ _), AlgChart.hess, c.e.right_inv hw.1]
   · have hd := hφ.contDiffAt c hy (mem_pick φ.isLB y)
     set g : V D → ℂ := fun v => ((φ.φ (pick φ.isLB y) (c.e.symm v) : ℝ) : ℂ) with hg

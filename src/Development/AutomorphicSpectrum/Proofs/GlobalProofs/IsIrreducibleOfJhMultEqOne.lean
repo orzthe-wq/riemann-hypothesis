@@ -4,18 +4,19 @@ public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.Exists
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivMultiProdOne
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmRep
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.HasFiniteLengthOfIsIrreducible
-import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.NotInSupportOfSubsingleton
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEquivProdIrrTw
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGL
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CuspidalPairIrreducibleProduct
+public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.NontrivialOfIrreducible
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiExteriorTensorSmoothIrreducibleIsIrreducible
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HasSupportOfIsSubquotientProdIrr
+public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSubquotientCompMulSingle
+import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.NotInSupportOfSubsingleton
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormalisedParabolicInductionReindexEquivStatement
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsCovBySubmodule
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.InSupportOfIsSubquotient
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.JhMultSubAddQuot
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParIndJacPlacing
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.PiExteriorTensorSmoothIrreducibleIsIrreducibleStatement
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.HasSupportOfIsSubquotientProdIrr
-public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsSubquotientCompMulSingle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -168,7 +169,7 @@ theorem isIrreducible_of_occurs (hG : GeometricLemma) (hBZ : BernsteinZelevinsky
       IsSubquotient (piTensor fun i => (p i).π) (jac e Q.π)) :
     (multiProd e fun i => (p i).π).IsIrreducible := by
   have hτ : (piTensor fun i => (p i).π).IsIrreducible :=
-    GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun i => (p i).toIrrRep
+    _root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k _ _ fun i => (p i).toIrrRep
   have hτs : IsSmooth (piTensor fun i => (p i).π) := isSmooth_piTensor fun i => (p i).smooth
   have hB : IsSmooth (multiProd e fun i => (p i).π) := isSmooth_parInd _ _
   refine isIrreducible_of_jhMult_eq_one e hB hτ ?_ ?_
@@ -189,7 +190,7 @@ theorem occurs_of_embedding (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFini
     (hF : ∀ i (y : IrrRep (GL (Fin (d i)) k)), IsSubquotient y.ρ (F i) → HasSupport y.ρ (A i))
     (φ : Q.π.IntertwiningMap (multiProd e F)) (hφ : Function.Injective φ) :
     IsSubquotient (piTensor fun i => (p i).π) (jac e Q.π) := by
-  have hirr : (piTensor fun i => (p i).π).IsIrreducible := GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun i => (p i).toIrrRep
+  have hirr : (piTensor fun i => (p i).π).IsIrreducible := _root_.GlobalTheory.ExtTensorIrr.piTensor_isIrreducible hBZ k _ _ fun i => (p i).toIrrRep
   haveI := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible Q.irr
 
   let ψ := Model.evalOne e φ
@@ -273,7 +274,7 @@ theorem isIrreducible_multiProd_of_prod₂ {n : Type} [Fintype n] [DecidableEq n
   have hc : Fintype.card (Fin (d 0 + d 1)) = Fintype.card n := by
     rw [Fintype.card_fin, ← hd, ← Fintype.card_congr e]; simp
   let ψ : Fin (d 0 + d 1) ≃ n := Fintype.equivOfCardEq hc
-  obtain ⟨E₂⟩ := GlobalTheory.T.normalisedParabolicInduction_reindex_equiv k (Fin 2) (fun i => Fin (d i)) _ _ (stdBlocks d hd) ψ _ (piTensor fun i => (σ i).π)
+  obtain ⟨E₂⟩ := _root_.GlobalTheory.SmGL.Relabel.parInd_reindex k (Fin 2) (fun i => Fin (d i)) _ _ (stdBlocks d hd) ψ _ (piTensor fun i => (σ i).π)
   have h4 := GlobalTheory.SwapTwo.isIrreducible_of_comp _ (GlobalTheory.Parabolic.isIrreducible_of_equiv E₂ h3)
   obtain ⟨E₃⟩ := (GlobalTheory.SmGL.Placing.parInd_jac_placing k (Fin 2) n (fun i => Fin (d i)) ((stdBlocks d hd).trans ψ) e _).1
     (piTensor fun i => (σ i).π)

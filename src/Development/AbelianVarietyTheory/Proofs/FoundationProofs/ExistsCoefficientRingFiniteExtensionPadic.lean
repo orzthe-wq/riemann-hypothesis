@@ -47,6 +47,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.TrivialOnInertiaOfUnr
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.Newform
 import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

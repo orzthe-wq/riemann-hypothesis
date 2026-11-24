@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 public import Mathlib.NumberTheory.NumberField.AdeleRing
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIdempotentIsUnitOneAddOrSubAdeleStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIdempotentIsUnitOneAddOrSubAdele
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -139,7 +139,7 @@ theorem hilbert90_adeleRing_tensor_quadratic : ∀ (F E : Type) [Field F] [Numbe
     push Not at h
     exact hc (AlgEquiv.ext h)
   obtain ⟨t, ht⟩ := hT u
-  obtain ⟨e, he, hun⟩ := GlobalTheory.T.exists_idempotent_isUnit_one_add_or_sub_adele F ((2 : F)⁻¹ • t)
+  obtain ⟨e, he, hun⟩ := _root_.GlobalTheory.AdIdem.exists_idem_isUnit F ((2 : F)⁻¹ • t)
   let ι : AdeleRing (𝓞 F) F →+* AdeleRing (𝓞 F) F ⊗[F] E := Algebra.TensorProduct.includeLeftRingHom
   have hι : ∀ a, ι a = a ⊗ₜ 1 := fun a => rfl
   let κ : E →ₐ[F] AdeleRing (𝓞 F) F ⊗[F] E := Algebra.TensorProduct.includeRight

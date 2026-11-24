@@ -4,47 +4,6 @@ public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.LetterSh
 public import Formalism.FormalGroupWitt.WeightInvariance
 public import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.TopsChoicePartA
 public import Lemmata.GeneralBFactUpper.Imports
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Formalism.FormalGroupWitt.Statement
 
 @[expose] public section
@@ -56,10 +15,6 @@ namespace Formalism.L2.Th1.D
 
 open Formalism.DworkPowerSeriesWeights (Integral)
 open Formalism.InvariantFactorPaths.G7 (lgF UnrOK frobVar frobVar_eq_expand)
-
-theorem ip_norm_pow_sub_pow_le {K : Type} [NormedField K] [IsUltrametricDist K] {x y : K}
-    (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) (n : ℕ) : ‖x ^ n - y ^ n‖ ≤ ‖x - y‖ := by
-  first | exact Bl.general_b_fact_upper.goal1 .. | (apply Bl.general_b_fact_upper.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_upper.goal1 <;> assumption) | (apply @Bl.general_b_fact_upper.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_upper.goal1 <;> assumption) | (apply @Bl.general_b_fact_upper.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_upper.goal1 K ‹_› ‹_› x y hx hy n | exact @Bl.general_b_fact_upper.goal1 K ‹_› ‹_› x y hx hy | exact @Bl.general_b_fact_upper.goal1 K ‹_› ‹_› x y hx | exact @Bl.general_b_fact_upper.goal1 K ‹_› ‹_› x y | exact @Bl.general_b_fact_upper.goal1 K ‹_› ‹_› x | exact @Bl.general_b_fact_upper.goal1 K ‹_› ‹_› | exact @Bl.general_b_fact_upper.goal1 K ‹_› | exact @Bl.general_b_fact_upper.goal1 K
 
 theorem frobenius_square : FrobSq := by
   intro K _ _ _ l σ h
@@ -83,7 +38,7 @@ theorem frobenius_square : FrobSq := by
       ring
     rw [h]
     refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hσ _ (hball a ha)) ?_)
-    exact (ip_norm_pow_sub_pow_le (hball a ha)
+    exact (_root_.Bl.general_b_fact_upper.goal1 (hball a ha)
       (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha) l).trans (hσ a ha)
 
 section Closure
@@ -217,7 +172,7 @@ theorem IPLemma_of : FrobSq → IPLemma := by
     simp only [Finset.univ_unique, Finset.sum_singleton, one_smul]
     rw [MvPowerSeries.smul_eq_C_mul, ← frobVar_eq_expand hq]
     exact hg.2
-  obtain ⟨hh, h0, hI, hs⟩ := Formalism.FG.funEqHomV K l (l ^ 2) hq (σ.comp σ) hset Unit
+  obtain ⟨hh, h0, hI, hs⟩ := _root_.Formalism.FG.functional_equation_hom_vector K l (l ^ 2) hq (σ.comp σ) hset Unit
     (fun _ _ => 1) (fun _ _ => by simp) (fun _ => lgF K l) hid hf τ (fun _ => g)
     (fun _ => hg.1) hgt
   exact ⟨hh (), h0 (), hI (), hs ()⟩

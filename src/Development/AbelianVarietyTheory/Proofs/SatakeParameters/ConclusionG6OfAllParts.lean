@@ -1,5 +1,6 @@
 module
 
+import Lemmata.CharpolySmul
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.HeckeCharEqOfLAdicRealisation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -51,18 +52,9 @@ section Alg
 
 variable {Γ : Type} [Group Γ] {K : Type} [Field K]
 
-theorem charpoly_smul [CharZero K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {c : K} (hc : c ≠ 0) :
-    (c • M).charpoly = M.charpoly.scaleRoots c := by
-  have : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective
-  apply Polynomial.funext
-  intro x
-  obtain ⟨y, rfl⟩ : ∃ y, x = c * y := ⟨c⁻¹ * x, by rw [← mul_assoc, mul_inv_cancel₀ hc, one_mul]⟩
-  rw [scaleRoots_eval_mul, Matrix.charpoly_natDegree_eq_dim, Matrix.eval_charpoly, Matrix.eval_charpoly,
-    ← Matrix.det_smul, smul_sub]
-  congr 2
-  ext a b
-  simp only [Matrix.smul_apply, Matrix.scalar_apply, Matrix.diagonal_apply, smul_eq_mul]
-  split_ifs <;> simp
+theorem charpoly_smul [CharZero K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {c : K} :
+    (hc : c ≠ 0) → (c • M).charpoly = M.charpoly.scaleRoots c :=
+  fun _ ↦ Matrix.charpoly_smul M c
 
 theorem twGL_val {a : ℕ} (ρ : Γ →* GL (Fin a) K) (χ : Γ →* Kˣ) (g : Γ) :
     ((Formalism.MainNotions.SumRepresentations.At.twGL ρ χ g : GL _ K) : Matrix (Fin a) (Fin a) K) =

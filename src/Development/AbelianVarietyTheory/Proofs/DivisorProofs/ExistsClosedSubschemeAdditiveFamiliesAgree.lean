@@ -201,11 +201,11 @@ theorem same_iff_locTriv (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {T : Over S
         refine ⟨U, hU, ?_⟩
         unfold CubeGen.TrivAt
         rw [cl]
-        simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+        simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
         rw [sec, sub_zero, pull_comp]
         exact (key _).1 ht
     have := (cl _).1 T₀
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at this
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at this
     have s₁ := sec (𝟙 _)
     rw [Category.id_comp] at s₁
     rwa [s₁, sub_zero] at this

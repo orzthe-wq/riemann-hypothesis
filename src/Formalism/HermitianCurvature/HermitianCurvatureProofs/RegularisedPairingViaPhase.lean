@@ -384,14 +384,10 @@ theorem _root_.Formalism.FourierDecayAlt.P.phase_function_bound : Formalism.Four
     have h0 := hF.2 [] [] (by simp) (by simp) (by simp) g hg
     first
     | exact h0
-    | simpa [dLR] using h0
-    | simpa [dLR, Rw] using h0
   have hb' : ∀ g ∈ GV k r, gN g ^ A * ‖F' g‖ ≤ c' := fun g hg => by
     have h0 := hF'.2 [] [] (by simp) (by simp) (by simp) g hg
     first
     | exact h0
-    | simpa [dLR] using h0
-    | simpa [dLR, Rw] using h0
   have h1G : (1 : Mat k r) ∈ GV k r := by
     show (1 : Mat k r)ᴴ * Hpk k r * 1 = Hpk k r
     simp

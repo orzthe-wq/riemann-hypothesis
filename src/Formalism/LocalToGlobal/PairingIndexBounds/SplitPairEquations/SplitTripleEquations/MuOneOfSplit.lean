@@ -3,49 +3,6 @@ module
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.GaussDegenerate
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharacterIdentityReformulated2
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.SelfDualCovolume
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -182,11 +139,6 @@ def gGrp (Λ₁ Λ₂ Λ₃ A' : AddSubgroup V) : AddSubgroup V where
 theorem mem_gGrp {Λ₁ Λ₂ Λ₃ A' : AddSubgroup V} {p : V} :
     p ∈ gGrp Λ₁ Λ₂ Λ₃ A' ↔ p ∈ Λ₃ ∧ p ∈ A' ∧ ∃ r, r ∈ Λ₂ ∧ r ∈ A' ∧ p + r ∈ Λ₁ := Iff.rfl
 
-theorem altE_int {H : Sesq V} {Λ : AddSubgroup V} (hsd : IsSelfDual H Λ) {r k : V} (hr : r ∈ Λ) (hk : k ∈ Λ) :
-    ∃ m : ℤ, altE H r k = m := by
-  have : r ∈ dualLat H Λ := by rw [hsd]; exact hr
-  exact this k hk
-
 theorem exp_int_one (m : ℤ) : Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((m : ℝ) : ℂ)) = 1 := by
   have : 2 * (Real.pi : ℂ) * Complex.I * ((m : ℝ) : ℂ) = (m : ℂ) * (2 * Real.pi * Complex.I) := by push_cast; ring
   rw [this]; exact Complex.exp_int_mul_two_pi_mul_I m
@@ -253,7 +205,7 @@ theorem mu_one_of_split {H : Sesq V} {α : V → ℂ} {Λ₁ Λ₂ Λ₃ A A' : 
       simp only [altE, map_add (f := _), Complex.add_im]
       push_cast; ring
     · intro k hk
-      obtain ⟨m, hm⟩ := altE_int hT.sd₂ hs₁2 hk
+      obtain ⟨m, hm⟩ := _root_.Formalism.L2.Th1.H.CharacterSumTripleLemmas.int_of_selfDual hT.sd₂ hs₁2 hk
       simp only [hχ, hm]
       exact exp_int_one m
   choose! t ht0 ht using hc

@@ -89,16 +89,4 @@ def ToroidalChartsForFan : Prop :=
           (∀ x ∈ genBd Y, GlobalTheory.MumfordChart.HasChartOf φ Y BD d x) ∧
           ((GlobalTheory.FlagMod.detOm Y).IsLB → GlobalTheory.IsAmpleLB (GlobalTheory.TorRef.polOf Y k BD))
 
-namespace ToroidalChartsForFan
-
-theorem toroidalCharts (h : ToroidalChartsForFan)
-    (hφ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ),
-      ∃ φ : InvFun (𝓞 E), IsPolFan H.bar q φ ∧ NoSelfInt H.bar q φ) : ToroidalCharts := by
-  intro E _ _ _ H Dw hr l Xo c
-  obtain ⟨φ, h₁, h₂⟩ := hφ E H (min Dw.p Dw.q)
-  obtain ⟨Y, BD, d, k, -, -, h₃, h₄, -, h₅, -⟩ := h E H Dw hr φ h₁ h₂ l Xo c
-  exact ⟨Y, h₃, h₄, fun x hx => (h₅ x hx).hasChart⟩
-
-end ToroidalChartsForFan
-
 end GlobalTheory.Published

@@ -1,48 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SquareIntegrableInnerProduct
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.MeasureTheory.Function.LpSpace.DomAct.Continuous
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Topology.Algebra.Constructions.DomMulAct
 
 @[expose] public section
@@ -55,45 +14,18 @@ namespace ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
-theorem rregRep_umat_inj (ε : Fin n → Bool) {x y : Formalism.REAL.UJ ε}
-    (h : Formalism.MainNotions.S.umat x = Formalism.MainNotions.S.umat y) : x = y := Subtype.ext (Units.ext h)
-
-theorem rregRep_rreg_umat (ε : Fin n → Bool) (y : Formalism.REAL.UJ ε) :
-    rreg ε (Formalism.MainNotions.S.umat y) = rregG ε y := by
-  have h : ∃ y' : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat y' = Formalism.MainNotions.S.umat y := ⟨y, rfl⟩
-  rw [rreg, dite_eq_left h]
-  exact congrArg (rregG ε) (rregRep_umat_inj ε h.choose_spec)
-
-theorem rregRep_rregG_apply (ε : Fin n → Bool) (y : Formalism.REAL.UJ ε) (f : L2 ε) :
-    rregG ε y f = Lp.compMeasurePreserving (fun x : Formalism.REAL.UJ ε => x * y)
-      (measurePreserving_mul_right ε y) f := by
-  rw [rregG, dite_eq_left (measurePreserving_mul_right ε y)]
-  rfl
-
-private theorem Jm_mul_selfDiscreteSeriesExistence (ε : Fin n → Bool) :
-    Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_mul_diagonal]
-  ext i j
-  by_cases hij : i = j
-  · subst hij
-    by_cases h : ε i <;> simp [h]
-  · simp [Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]
-
 private theorem Jm_conjTranspose_Jm_mul_eq_one_of_mem_UJset (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ UJset ε) : (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) * g = 1 := by
   have hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε := hg
   rw [Matrix.mul_assoc] at hg'
   simp only [Matrix.mul_assoc]
-  rw [hg', Jm_mul_selfDiscreteSeriesExistence]
+  rw [hg', _root_.Formalism.REAL.Jm_mul_self]
 
 private theorem mul_Jm_conjTranspose_Jm_eq_one_of_mem_UJset (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ UJset ε) : g * (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) = 1 := by
   have hl := Jm_conjTranspose_Jm_mul_eq_one_of_mem_UJset ε hg
   first
   | exact mul_eq_one_comm.mp hl
-  | (rw [← Matrix.inv_eq_left_inv hl]
-     exact Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse hl))
 
 theorem rregRep_range (ε : Fin n → Bool) :
     Set.range (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g) = UJset ε := by
@@ -105,19 +37,11 @@ theorem rregRep_range (ε : Fin n → Bool) :
     exact ⟨⟨⟨g, Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε, mul_Jm_conjTranspose_Jm_eq_one_of_mem_UJset ε hg,
       Jm_conjTranspose_Jm_mul_eq_one_of_mem_UJset ε hg⟩, hg⟩, rfl⟩
 
-theorem rregRep_mem (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
-    ∃ y : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat y = g := by
-  have h2 : g ∈ Set.range (fun y : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat y) := by
-    rw [rregRep_range ε]
-    exact hg
-  obtain ⟨y, hy⟩ := h2
-  exact ⟨y, hy⟩
-
 theorem rregRep_one (ε : Fin n → Bool) : rreg ε 1 = 1 := by
   have h1 : (1 : Matrix (Fin n) (Fin n) ℂ) = Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε) := rfl
-  rw [h1, rregRep_rreg_umat]
+  rw [h1, _root_.ReciprocityTheory.ChartRestriction.DS.rightRegular_unitary_eq]
   ext1 f
-  rw [rregRep_rregG_apply, ContinuousLinearMap.one_apply]
+  rw [_root_.ReciprocityTheory.ChartRestriction.DS.rightRegularGroup_eq_comp, ContinuousLinearMap.one_apply]
   apply Lp.ext
   filter_upwards [Lp.coeFn_compMeasurePreserving f (measurePreserving_mul_right ε 1)] with x hx
   rw [hx]
@@ -126,8 +50,8 @@ theorem rregRep_one (ε : Fin n → Bool) : rreg ε 1 = 1 := by
 theorem rregRep_mul (ε : Fin n → Bool) (a b : Formalism.REAL.UJ ε) :
     rregG ε (a * b) = (rregG ε a).comp (rregG ε b) := by
   ext1 f
-  rw [ContinuousLinearMap.comp_apply, rregRep_rregG_apply, rregRep_rregG_apply,
-    rregRep_rregG_apply]
+  rw [ContinuousLinearMap.comp_apply, _root_.ReciprocityTheory.ChartRestriction.DS.rightRegularGroup_eq_comp, _root_.ReciprocityTheory.ChartRestriction.DS.rightRegularGroup_eq_comp,
+    _root_.ReciprocityTheory.ChartRestriction.DS.rightRegularGroup_eq_comp]
   apply Lp.ext
   filter_upwards [Lp.coeFn_compMeasurePreserving f (measurePreserving_mul_right ε (a * b)),
     Lp.coeFn_compMeasurePreserving
@@ -144,19 +68,16 @@ theorem rregRep_cont (ε : Fin n → Bool) (v : L2 ε) :
     refine ⟨fun c s hs => ?_⟩
     first
     | exact (measurePreserving_mul_right ε c.unop).measure_preimage hs.nullMeasurableSet
-    | exact (measurePreserving_mul_right ε c.unop).measure_preimage hs
   haveI : Fact ((2 : ENNReal) ≠ ⊤) := ⟨by first | simp | exact ENNReal.ofNat_ne_top⟩
   have he : (fun y : Formalism.REAL.UJ ε => rregG ε y v) =
       fun y => (DomMulAct.mk (MulOpposite.op y)) • v := by
     funext y
-    rw [rregRep_rregG_apply]
+    rw [_root_.ReciprocityTheory.ChartRestriction.DS.rightRegularGroup_eq_comp]
     rfl
   rw [he]
   have hm : Continuous (fun y : Formalism.REAL.UJ ε => DomMulAct.mk (MulOpposite.op y)) := by
     first
     | exact DomMulAct.continuous_mk.comp MulOpposite.continuous_op
-    | exact DomMulAct.mkHomeomorph.continuous.comp MulOpposite.continuous_op
-    | fun_prop
   haveI : OpensMeasurableSpace (Formalism.REAL.UJ ε)ᵐᵒᵖ :=
     ⟨MeasurableSpace.generateFrom_le fun s hs =>
       (IsOpen.preimage MulOpposite.continuous_op hs).measurableSet⟩
@@ -166,13 +87,13 @@ theorem rreg_isURepOn (ε : Fin n → Bool) : IsURepOn (UJset ε) (rreg ε) := b
   unfold IsURepOn
   refine ⟨⟨rregRep_one ε, ?_⟩, ?_, ?_⟩
   · intro a ha b hb
-    obtain ⟨ya, rfl⟩ := rregRep_mem ε ha
-    obtain ⟨yb, rfl⟩ := rregRep_mem ε hb
+    obtain ⟨ya, rfl⟩ := _root_.ReciprocityTheory.ChartRestriction.DS.exists_unitary_preimage ε ha
+    obtain ⟨yb, rfl⟩ := _root_.ReciprocityTheory.ChartRestriction.DS.exists_unitary_preimage ε hb
     have hab : Formalism.MainNotions.S.umat ya * Formalism.MainNotions.S.umat yb = Formalism.MainNotions.S.umat (ya * yb) := rfl
-    rw [hab, rregRep_rreg_umat, rregRep_rreg_umat, rregRep_rreg_umat, rregRep_mul]
+    rw [hab, _root_.ReciprocityTheory.ChartRestriction.DS.rightRegular_unitary_eq, _root_.ReciprocityTheory.ChartRestriction.DS.rightRegular_unitary_eq, _root_.ReciprocityTheory.ChartRestriction.DS.rightRegular_unitary_eq, rregRep_mul]
   · intro g hg v
-    obtain ⟨y, rfl⟩ := rregRep_mem ε hg
-    rw [rregRep_rreg_umat, rregRep_rregG_apply]
+    obtain ⟨y, rfl⟩ := _root_.ReciprocityTheory.ChartRestriction.DS.exists_unitary_preimage ε hg
+    rw [_root_.ReciprocityTheory.ChartRestriction.DS.rightRegular_unitary_eq, _root_.ReciprocityTheory.ChartRestriction.DS.rightRegularGroup_eq_comp]
     exact Lp.norm_compMeasurePreserving v _
   · intro v
     obtain ⟨φ, hφc, hφ⟩ : ∃ φ : UJset ε → Formalism.REAL.UJ ε, Continuous φ ∧
@@ -190,7 +111,7 @@ theorem rreg_isURepOn (ε : Fin n → Bool) : IsURepOn (UJset ε) (rreg ε) := b
         fun g => rfl⟩
     have he : ∀ g : UJset ε, rreg ε (g : Matrix (Fin n) (Fin n) ℂ) v = rregG ε (φ g) v := by
       intro g
-      rw [← hφ g, rregRep_rreg_umat]
+      rw [← hφ g, _root_.ReciprocityTheory.ChartRestriction.DS.rightRegular_unitary_eq]
     rw [continuousOn_iff_continuous_restrict]
     convert (rregRep_cont ε v).comp hφc using 1
     funext g

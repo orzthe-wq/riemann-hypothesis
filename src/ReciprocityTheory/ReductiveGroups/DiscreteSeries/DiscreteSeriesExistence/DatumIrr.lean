@@ -1,42 +1,6 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.EqZeroOfDatumEmbeddingEqZero
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DatumInj
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.SingleMulJmComm
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.Weight
@@ -77,9 +41,8 @@ theorem smE_jSm (hP : IsPsiFor ε lam T Ψ) (v₀ v : T.V) {a b : Fin n} (hab : 
 theorem jSm_injective (hP : IsPsiFor ε lam T Ψ) {v₀ : T.V} (hv₀ : v₀ ≠ 0) :
     Function.Injective (jSm hP v₀) := by
   intro v v' h
-  apply uniformisationL2_injective hP hv₀
-  have := congrArg (fun x : smD ε (rreg ε) => (x : L2 ε)) h
-  simpa [jSm_coe] using this
+  exact uniformisationL2_injective hP hv₀
+    (congrArg (fun x : smD ε (rreg ε) => (x : L2 ε)) h)
 
 theorem datumV_isKIrrHW (hP : IsPsiFor ε lam T Ψ) {v₀ : T.V} (hv₀ : v₀ ≠ 0) :
     IsKIrrHW ε (smE ε (rreg ε)) (lowK ε lam) (datumV ε Ψ v₀) := by
@@ -91,9 +54,8 @@ theorem datumV_isKIrrHW (hP : IsPsiFor ε lam T Ψ) {v₀ : T.V} (hv₀ : v₀ �
     have hW : ∀ a b, ε a = ε b → ∀ v ∈ S'.comap (jSm hP v₀),
         T.dτ (Matrix.single a b 1) v ∈ S'.comap (jSm hP v₀) := by
       intro a b hab v hv
-      rw [Submodule.mem_comap] at hv ⊢
-      rw [← smE_jSm hP v₀ v hab]
-      exact hst a b hab _ hv
+      simpa [Submodule.mem_comap, smE_jSm hP v₀ v hab] using
+        hst a b hab (jSm hP v₀ v) (Submodule.mem_comap.mp hv)
     rcases HW.KType.dτ_irred T _ hW with h | h
     · left
       rw [eq_bot_iff]
@@ -106,13 +68,10 @@ theorem datumV_isKIrrHW (hP : IsPsiFor ε lam T Ψ) {v₀ : T.V} (hv₀ : v₀ �
     · right
       refine le_antisymm hS' ?_
       rintro x ⟨v, rfl⟩
-      have hv : v ∈ S'.comap (jSm hP v₀) := by rw [h]; trivial
-      exact hv
+      exact Submodule.mem_comap.mp (by rw [h]; trivial)
   · refine ⟨jSm hP v₀ T.w, ⟨T.w, rfl⟩, ?_, ?_, ?_⟩
     · intro h0
-      apply HW.KType.w_ne_zero T
-      apply jSm_injective hP hv₀
-      rw [h0, map_zero]
+      exact HW.KType.w_ne_zero T (jSm_injective hP hv₀ (by rw [h0, map_zero]))
     · intro a
       rw [smE_jSm hP v₀ T.w rfl, T.w_wt a, map_smul]
     · intro a b _ hab

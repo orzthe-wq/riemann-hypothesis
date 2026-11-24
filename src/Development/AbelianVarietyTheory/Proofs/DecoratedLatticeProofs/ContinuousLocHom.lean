@@ -53,11 +53,9 @@ namespace GlobalTheory.LevIdx
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {Y : Type} [Fintype Y] [DecidableEq Y]
 
-theorem mt_mul (S : HSp D) (g h : GA D S) : mt S (g * h) = mt S g * mt S h := by
-  simp [Formalism.L2.Theta.mt]
+alias mt_mul := _root_.GlobalTheory.BesselCompare.mt_mul
 
-theorem mt_one (S : HSp D) : mt S 1 = 1 := by
-  simp [Formalism.L2.Theta.mt]
+alias mt_one := _root_.GlobalTheory.BesselCompare.mt_one
 
 def locHom (q : SplitPt D k) (S : HSp D) (F : GlobalTheory.LocMod.Frame k S.rank Y) : GA D S →* GL Y k where
   toFun g := ⟨F.γ * (mt S g).map q.pr * F.β, F.γ * (mt S g⁻¹).map q.pr * F.β, by

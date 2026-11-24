@@ -209,13 +209,12 @@ theorem d_cupC {m n k : ℕ} (h : m + n = k) (f : Cn F m) (g : Cn F n) :
     refine congrArg₂ (· • ·) rfl (mul_ev_congr μ s _ f g (fun a => ?_) (fun b => ?_))
     · have := a.isLt
       rcases lt_or_ge (a : ℕ) i with h1 | h1 <;> simp only [Function.comp_apply, Fin.succAboveOrderEmb_apply, Fin.succAbove,
-        finCongr_apply_coe, Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, fr, bk, Fin.val_castLE,
-        Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_last, Fin.val_zero] <;>
-      split_ifs <;> (try simp only [finCongr_apply_coe, Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_castLE] at *) <;> omega
+        finCongr_apply_coe, Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, fr, Fin.val_castLE,
+        Fin.val_castAdd] <;>
+      split_ifs <;> (try simp only at *)
     · have := b.isLt
       simp only [Function.comp_apply, Fin.succAboveOrderEmb_apply, Fin.succAbove,
-        finCongr_apply_coe, Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, fr, bk, Fin.val_castLE,
-        Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_last, Fin.val_zero] <;>
+        finCongr_apply_coe, Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, bk, Fin.val_castAdd] <;>
       split_ifs <;> (try simp only [finCongr_apply_coe, Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_castLE] at *) <;> omega
   · have := j.isLt
     rw [smul_smul, ← pow_add]
@@ -223,25 +222,23 @@ theorem d_cupC {m n k : ℕ} (h : m + n = k) (f : Cn F m) (g : Cn F n) :
       (mul_ev_congr μ s _ f g (fun a => ?_) (fun b => ?_))
     · have := a.isLt
       simp only [Function.comp_apply, Fin.succAboveOrderEmb_apply, Fin.succAbove,
-        finCongr_apply_coe, Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, fr, bk, Fin.val_castLE,
-        Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_last, Fin.val_zero] <;>
-      split_ifs <;> (try simp only [finCongr_apply_coe, Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_castLE] at *) <;> omega
+        finCongr_apply_coe, Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, fr, Fin.val_castLE,
+        Fin.val_natAdd] <;>
+      split_ifs <;> (try simp only at *) <;> omega
     · have := b.isLt
       rcases lt_or_ge (b : ℕ) (j + 1) with h1 | h1 <;> simp only [Function.comp_apply, Fin.succAboveOrderEmb_apply, Fin.succAbove,
-        finCongr_apply_coe, Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, fr, bk, Fin.val_castLE,
-        Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_last, Fin.val_zero] <;>
-      split_ifs <;> (try simp only [finCongr_apply_coe, Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_castLE] at *) <;> omega
+        finCongr_apply_coe, Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, bk, Fin.val_natAdd] <;>
+      split_ifs <;> (try simp only at *) <;> omega
   · rw [Fin.val_last, Fin.val_zero]
     refine neg_one_pow_boundary_terms_cancel m (mul_ev_congr μ s _ f g (fun a => ?_) (fun b => ?_))
     · have := a.isLt
       simp only [Function.comp_apply, Fin.succAboveOrderEmb_apply, Fin.succAbove,
-        finCongr_apply_coe, Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, fr, bk, Fin.val_castLE,
-        Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_last, Fin.val_zero] <;>
-      split_ifs <;> (try simp only [finCongr_apply_coe, Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_castLE] at *) <;> omega
+        Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, fr, Fin.val_castLE,
+        Fin.val_last] <;>
+      split_ifs <;> (try simp only at *)
     · have := b.isLt
       simp only [Function.comp_apply, Fin.succAboveOrderEmb_apply, Fin.succAbove,
-        finCongr_apply_coe, Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, fr, bk, Fin.val_castLE,
-        Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_last, Fin.val_zero] <;>
+        Fin.lt_def, Fin.val_castSucc, Fin.val_succ, apply_ite, bk, Fin.val_zero] <;>
       split_ifs <;> (try simp only [finCongr_apply_coe, Fin.val_cast, Fin.val_castAdd, Fin.val_natAdd, Fin.val_castLE] at *) <;> omega
 
 theorem cupC_mem_ker {m n k : ℕ} (h : m + n = k) {f : Cn F m} {g : Cn F n} (hf : d F m f = 0)
@@ -294,10 +291,10 @@ def cup {m n k : ℕ} (h : m + n = k) : H F m →ₗ[R] H F n →ₗ[R] H F k :=
     { toFun := cupProductCocycleClass μ h
       map_add' := fun f f' => Submodule.linearMap_qext _ (LinearMap.ext fun g => by
         simp only [cupProductCocycleClass, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.liftQ_apply, map_add (f := _),
-          LinearMap.add_apply, Submodule.Quotient.mk_add])
+          LinearMap.add_apply])
       map_smul' := fun r f => Submodule.linearMap_qext _ (LinearMap.ext fun g => by
         simp only [cupProductCocycleClass, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.liftQ_apply, map_smul,
-          LinearMap.smul_apply, Submodule.Quotient.mk_smul, RingHom.id_apply]) }
+          LinearMap.smul_apply, RingHom.id_apply]) }
     fun f hf => by
       rw [LinearMap.mem_ker]
       refine Submodule.linearMap_qext _ (LinearMap.ext fun g => ?_)
@@ -358,7 +355,6 @@ def triv : LB L where
 def mul (E E' : LB L) : LB L where
   g α β _ y := E.g α β y * E'.g α β y
   g_map := fun {_ _ _ _} φ {_} h1 h2 => by
-    change E.g _ _ _ * E'.g _ _ _ = Units.map _ (E.g _ _ _ * E'.g _ _ _)
     rw [E.g_map φ h1 h2, E'.g_map φ h1 h2, map_mul]
   g_self h := by rw [E.g_self h, E'.g_self h, mul_one]
   g_comp h1 h2 h3 := by rw [mul_mul_mul_comm, E.g_comp h1 h2 h3, E'.g_comp h1 h2 h3]

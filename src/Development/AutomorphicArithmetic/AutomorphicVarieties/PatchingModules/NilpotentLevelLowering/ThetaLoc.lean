@@ -133,7 +133,7 @@ theorem UpperTheory.V.Pa.Lev.thetaLoc :
     by_cases h : i = j
     · subst h
       simpa [atJ] using hu
-    · simp [atJ, Pi.mulSingle_eq_of_ne h, Subgroup.one_mem]
+    · simp [atJ, Pi.mulSingle_eq_of_ne h]
   let ι : fixd ρ (UC n w C) → fixd (ρ.comp (atJ n w j)) (iwC _ n (C j)) := fun x =>
     ⟨x, show ∀ u ∈ iwC _ n (C j), (ρ.comp (atJ n w j)) u x = x from fun u hu =>
       (show ∀ u ∈ UC n w C, ρ u x = x from x.2) _ (hmem u hu)⟩

@@ -1,11 +1,14 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DegreeOnePrimeReductionSplitPlaceDictionary
 public import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteFieldQuadraticFormPointCountStatement
-public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PrimitiveVectorQuadraticLevelMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardLocalHaarPropertiesStatement
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.LinearAlgebra.Matrix.Symmetric
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.FiniteFieldQuadraticFormPointCount
+public import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.PrimitiveVectorQuadraticLevelMeasure
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DegreeOnePrimeReductionSplitPlaceDictionary
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.StandardLocalHaarProperties
 import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -106,7 +109,7 @@ local notation "𝓴" => IsLocalRing.ResidueField 𝒪
 local notation "res" => IsLocalRing.residue 𝒪
 
 theorem res_eq_zero_iff (a : 𝒪) : res a = 0 ↔ Valued.v (a : Fv F v) < 1 := by
-  apply GlobalTheory.PlaceRed.mem_max_iff <;> assumption
+  apply GlobalTheory.PlaceRed.mem_max_iff
 
 theorem res_eq_iff (a b : 𝒪) : res a = res b ↔ Valued.v ((a : Fv F v) - b) < 1 := by
   rw [← sub_eq_zero, ← map_sub, res_eq_zero_iff]
@@ -182,10 +185,10 @@ theorem core (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v (2 : 
         (Measure.pi fun _ : ι => lam) {x | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧
           (∃ i, Valued.v (x i) = 1) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) ∈ A} = (D : ℝ≥0∞) * lam A := by
   classical
-  have hLoc := GlobalTheory.T.completion_is_local_ring F v
+  have hLoc := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
   haveI : SecondCountableTopology (Fv F v) := hLoc.2.2.1
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
-  obtain ⟨-, -, -, hcard⟩ := GlobalTheory.T.standard_local_haar_properties F v lam hlam
+  obtain ⟨-, -, -, hcard⟩ := _root_.GlobalTheory.CompanionTheory.SW.Vol.volumes_in_completion F v lam hlam
   have hq0 : Ideal.absNorm v.asIdeal ≠ 0 := by
     rw [Ne, Ideal.absNorm_eq_zero_iff]
     exact v.ne_bot
@@ -232,7 +235,7 @@ theorem core (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v (2 : 
     rw [e2, hBdet] at h3
     exact lt_irrefl _ h3
   set sb : 𝓴 := res (⟨s, hs⟩ : 𝒪) with hsb
-  have hcount := GlobalTheory.T.finite_field_quadratic_form_point_count 𝓴 hchar ι M hM hM1 (BO.map res) hBks hBkdet sb
+  have hcount := _root_.GlobalTheory.CompanionTheory.SW.QuadricCount.quadric_count_even 𝓴 hchar ι M hM hM1 (BO.map res) hBks hBkdet sb
   let qk : (ι → 𝓴) → 𝓴 := fun y => (2 : 𝓴)⁻¹ * (y ⬝ᵥ ((BO.map res) *ᵥ y))
   let Fl : Finset (ι → 𝓴) := Finset.univ.filter fun y => qk y = sb
   let T : Finset (ι → 𝓴) := Fl.filter fun y => y ≠ 0
@@ -292,7 +295,7 @@ theorem core (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v (2 : 
       have hy0 : y ≠ 0 := (Finset.mem_filter.1 hy).2
       obtain ⟨hint, hprim⟩ := (cover (lf y)).2 ⟨y, hy0, fun i => by simp⟩
       obtain ⟨a, haQ, har⟩ := res_Q c hc hr BO y
-      have key := GlobalTheory.T.primitive_vector_quadratic_level_measure F v lam hlam h2 ι (BO.map phi) hBs hBint hBdet (lf y) hint hprim A hA
+      have key := _root_.GlobalTheory.CompanionTheory.SW.Hensel.measure_residue_class F v lam hlam h2 ι (BO.map phi) hBs hBint hBdet (lf y) hint hprim A hA
       have hkey : (Measure.pi fun _ : ι => lam) (P y) = _ := key
       rw [hkey, hM]
       have hcl : Valued.v (s - Qf (lf y)) < 1 ↔ qk y = sb := by

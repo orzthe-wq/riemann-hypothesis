@@ -2,7 +2,7 @@ module
 
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.SdUniq
 import Aesop.Main
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensHI
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocDensHI
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -104,7 +104,7 @@ theorem vol_sq_mul_index {μ : Measure V} {χ : V → V → ℂ} (hμ : SelfDual
     μ.real (L : Set V) ^ 2 * (L.relIndex L' : ℝ) = 1 := by
   have := hμ.1
   have h1 := vol_mul_vol_ann hμ hχ h0 L L' hLc hLo hL'c hL'o hA
-  have h2 := PI.VolStabSW.measure_eq_relIndex_mul μ L L' hle hL'o.measurableSet
+  have h2 := PI.VolStabS.measure_eq_relIndex_mul μ L L' hle hL'o.measurableSet
     hLo.measurableSet hN
   have h3 : μ.real (L' : Set V) = (L.relIndex L' : ℝ) * μ.real (L : Set V) := by
     rw [measureReal_def, measureReal_def, h2, ENNReal.toReal_mul]

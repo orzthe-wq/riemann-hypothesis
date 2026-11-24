@@ -75,17 +75,7 @@ theorem _root_.GlobalTheory.AmpleRigid.mul_comp_of_grpPullback_id {S : Scheme.{0
 set_option autoImplicit false in
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct NumberField in
 attribute [local instance] Over.cartesianMonoidalCategory in
-theorem _root_.GlobalTheory.AmpleRigid.isMonHom_of_mul_comp {S : Scheme.{0}} {G H : Over S} [GrpObj G] [GrpObj H]
-    (e : G ⟶ H) (mul : ∀ (T : Over S) (x y : T ⟶ G), (x * y) ≫ e = (x ≫ e) * (y ≫ e)) :
-    IsMonHom e := by
-  have hone : (1 : 𝟙_ (Over S) ⟶ G) ≫ e = 1 := by
-    have h1 := mul (𝟙_ (Over S)) 1 1
-    rw [_root_.mul_one] at h1
-    exact _root_.left_eq_mul.mp h1
-  refine ⟨?_, ?_⟩
-  · simpa [Hom.one_def] using hone
-  · have h2 := mul (G ⊗ G) (fst G G) (snd G G)
-    simpa [Hom.mul_def] using h2
+alias _root_.GlobalTheory.AmpleRigid.isMonHom_of_mul_comp := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isMonHom_of_mul
 
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
 

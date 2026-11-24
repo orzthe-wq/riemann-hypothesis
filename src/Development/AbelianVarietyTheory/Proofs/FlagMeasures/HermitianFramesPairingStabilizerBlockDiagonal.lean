@@ -178,7 +178,7 @@ theorem cT_mul_eq_one (L : LocE F E) (A B : Matrix (Fin n) (Fin n) E) (h : A * B
   rw [Finset.sum_congr rfl fun k _ => mul_comm _ _, h1]
   by_cases hij : i = j
   · subst hij; simp
-  · simp [Matrix.one_apply, hij, Ne.symm hij]
+  · simp [hij, Ne.symm hij]
 
 theorem stab_monomial (L : LocE F E) (σ : Fin n → Fin n) (β : Fin n → ℕ) (c : Fin n → Eˣ)
     (Z : Matrix (Fin n) (Fin n) E) (hσ : ∀ a, σ (σ a) = a) (hβ : ∀ a, β (σ a) = β a)

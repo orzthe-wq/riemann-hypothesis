@@ -42,6 +42,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Contin
 import Development.AbelianVarietyTheory.Definitions.Divisors.HasBlockOfOccurs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSystemOf
 import Formalism.PieriBlockIdeals.BlockIdealBound5Derived
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ArchimedeanUnitaryPointsEquivUnitaryGroup
 
 @[expose] public section
 
@@ -54,16 +55,9 @@ noncomputable section
 
 namespace GlobalTheory.AutRec
 
-theorem continuous_coord_emb {E : Type} [Field E] [NumberField E] [IsCMField E] (τ : E →+* ℂ) :
-    Continuous (coord (E := E) τ) := by
-  unfold coord
-  split_ifs
-  · exact continuous_apply _
-  · exact Complex.continuous_conj.comp (continuous_apply _)
-
 theorem continuous_cEmb_emb {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (τ : E →+* ℂ) :
     Continuous (cEmb (E := E) (n := n) τ) :=
-  (Continuous.units_map _ (continuous_id.matrix_map (continuous_coord_emb τ))).comp GlobalTheory.DefU.continuous_cInf
+  (Continuous.units_map _ (continuous_id.matrix_map (_root_.GlobalTheory.EmbUnitary.continuous_coord τ))).comp GlobalTheory.DefU.continuous_cInf
 
 end GlobalTheory.AutRec
 

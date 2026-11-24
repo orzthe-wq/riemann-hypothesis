@@ -62,13 +62,9 @@ lemma qa_row_strictMono {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) 
 def qa_exp {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) : Fin n × Fin n →₀ ℕ :=
   ∑ c : ↥(TCols mu), ∑ p : Fin (colH mu c), Finsupp.single (qa_row I c p, Fin.castLE (colH_le mu c) p) 1
 
-lemma qa_lower_iff {n : ℕ} (Q : Fin n → Prop) [DecidablePred Q] (hQ : ∀ q q', q' ≤ q → Q q → Q q') (p : Fin n) :
-    Q p ↔ p.val < (univ.filter Q).card := by
-  first | exact Bl.general_b_fact_second_ter.goal1 .. | (apply Bl.general_b_fact_second_ter.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second_ter.goal1 <;> assumption)
-
 lemma qa_lt_colH {n : ℕ} {mu : Fin n → ℤ} (hmu : Dominant mu) (c : ℤ) (p : Fin n) :
     p.val < colH mu c ↔ c ≤ mu p :=
-  (qa_lower_iff (fun m => c ≤ mu m) (fun _ _ hqq hq => hq.trans (hmu hqq)) p).symm
+  (_root_.Bl.general_b_fact_second_ter.goal1 (fun m => c ≤ mu m) (fun _ _ hqq hq => hq.trans (hmu hqq)) p).symm
 
 lemma qa_emb_le_iff {n h : ℕ} (J : Finset (Fin n)) (hJ : J.card = h) (p : Fin h) (a : Fin n) :
     J.orderEmbOfFin hJ p ≤ a ↔ p.val < (J.filter (· ≤ a)).card := by
@@ -77,7 +73,7 @@ lemma qa_emb_le_iff {n h : ℕ} (J : Finset (Fin n)) (hJ : J.card = h) (p : Fin 
     rw [Finset.filter_map, Finset.card_map]
     rfl
   rw [h1]
-  exact qa_lower_iff (fun q : Fin h => J.orderEmbOfFin hJ q ≤ a)
+  exact _root_.Bl.general_b_fact_second_ter.goal1 (fun q : Fin h => J.orderEmbOfFin hJ q ≤ a)
     (fun q q' hqq hq => ((J.orderEmbOfFin hJ).monotone hqq).trans hq) p
 
 def qa_cnt {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) (c : ↥(TCols mu)) (a : Fin n) : ℕ :=

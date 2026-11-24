@@ -3,7 +3,7 @@ module
 public import Mathlib.RingTheory.Etale.Basic
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.Localization.AtPrime.Basic
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveResidueCompEtaleHenselianStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BijectiveResidueCompEtaleHenselian
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -118,7 +118,7 @@ theorem bijective_localization {R A T : Type} [CommRing R] [CommRing A] [CommRin
     simp only [AlgHom.comp_apply] at this ⊢
     rw [← this]
     congr 1
-    simp [ι, IsLocalization.liftAlgHom_apply, IsLocalization.lift_eq]
+    simp [IsLocalization.liftAlgHom_apply, IsLocalization.lift_eq]
 
 theorem bijective_residue_comp : ∀ (R S T : Type) [CommRing R] [CommRing S] [CommRing T] [Algebra R S] [Algebra R T] [HenselianLocalRing T], (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra R S), Monotone Si ∧ (∀ s : S, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Si i)) → Function.Bijective (fun φ : S →ₐ[R] T => (IsScalarTower.toAlgHom R T (ResidueField T)).comp φ) := by
   intro R S T _ _ _ _ _ _ hS
@@ -127,7 +127,7 @@ theorem bijective_residue_comp : ∀ (R S T : Type) [CommRing R] [CommRing S] [C
       (IsScalarTower.toAlgHom R T (ResidueField T)).comp φ) := by
     intro i
     obtain ⟨A, _, _, _, q, _, ⟨e⟩⟩ := hloc i
-    exact bijective_of_algEquiv e (bijective_localization q (GlobalTheory.T.bijective_residue_comp_etale_henselian R A T))
+    exact bijective_of_algEquiv e (bijective_localization q (_root_.GlobalTheory.EtaleHensel.bijective_residue_comp R A T))
   have dir : Directed (· ≤ ·) Si := hmono.directed_le
   have htop : (⊤ : Subalgebra R S) ≤ iSup Si := fun s _ => by
     obtain ⟨i, hi⟩ := hcov s

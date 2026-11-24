@@ -1,12 +1,15 @@
 module
 
+public import Mathlib.Algebra.Category.ModuleCat.Abelian
+public import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+public import GroundTheory.ProfiniteCohomology.FilteredHomology
+public import Mathlib.RepresentationTheory.Rep.Basic
 public import GroundTheory.GlobalFields.HerbrandQuotients.CycTateNegOneOrbitEquivSymmMk
 public import GroundTheory.ProfiniteCohomology.ContinuousCochains.Functoriality
 public import GroundTheory.ProfiniteCohomology.DiscreteModules.IsDiscreteRepIffForallExistsOpenNormalSubgroup
 public import GroundTheory.ProfiniteCohomology.ShapiroDefs
 public import GroundTheory.ProfiniteCohomology.CohomologyFunctoriality.Naturality
-public import GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.Product
-import GroundTheory.ProfiniteCohomology.Shapiro
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -26,7 +29,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -48,7 +50,90 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import GroundTheory.ProfiniteCohomology.Shapiro
+import Mathlib.RingTheory.WittVector.IsPoly
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.Product, GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.IsDiscreteRepCoindStabRep
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.Product =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.Product", "h": "module\n\npublic import Mathlib.Algebra.Category.ModuleCat.Abelian\npublic import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex\npublic import Mathlib.Combinatorics.Quiver.ReflQuiver\npublic import GroundTheory.ProfiniteCohomology.FilteredHomology\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.RepresentationTheory.Rep.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.ProfCoh
+
+open CategoryTheory Limits
+
+universe u
+
+section Complex
+
+variable {R : Type u} [Ring R] {ι' : Type*} {c : ComplexShape ι'} {ι : Type*}
+  {K : HomologicalComplex (ModuleCat.{u} R) c} {L : ι → HomologicalComplex (ModuleCat.{u} R) c}
+
+theorem homologyMap_pi_bijective (p : ∀ i, K ⟶ L i)
+    (hp : ∀ m, Function.Bijective fun (x : K.X m) (i : ι) => ((p i).f m).hom x) (n : ι') :
+    Function.Bijective fun (x : K.homology n) (i : ι) =>
+      (HomologicalComplex.homologyMap (p i) n).hom x := by
+  constructor
+  · intro x y hxy
+    rw [← sub_eq_zero]
+    obtain ⟨z, hz⟩ := (ModuleCat.epi_iff_surjective (K.homologyπ n)).1 inferInstance (x - y)
+    have h0 : ∀ i, (HomologicalComplex.homologyMap (p i) n).hom (x - y) = 0 := fun i => by
+      rw [map_sub, sub_eq_zero]
+      exact congrFun hxy i
+    rw [← hz] at h0 ⊢
+    have hw : ∀ i, ∃ w : (L i).X (c.prev n),
+        ((L i).d (c.prev n) n).hom w = ((p i).f n).hom ((K.iCycles n).hom z) := fun i => by
+      have h := h0 i
+      rw [homologyMap_homologyπ_apply, homologyπ_eq_zero_iff, iCycles_cyclesMap_apply] at h
+      exact h
+    choose w hw using hw
+    obtain ⟨v, hv⟩ := (hp (c.prev n)).2 w
+    rw [homologyπ_eq_zero_iff]
+    refine ⟨v, (hp n).1 (funext fun i => ?_)⟩
+    have hvi : ((p i).f (c.prev n)).hom v = w i := congrFun hv i
+    change ((p i).f n).hom ((K.d (c.prev n) n).hom v) = ((p i).f n).hom ((K.iCycles n).hom z)
+    rw [hom_f_d_apply, hvi, hw i]
+  · intro y
+    have hz : ∀ i, ∃ z : (L i).cycles n, ((L i).homologyπ n).hom z = y i := fun i =>
+      (ModuleCat.epi_iff_surjective _).1 inferInstance (y i)
+    choose z hz using hz
+    obtain ⟨x, hx⟩ := (hp n).2 fun i => ((L i).iCycles n).hom (z i)
+    have hxi : ∀ i, ((p i).f n).hom x = ((L i).iCycles n).hom (z i) := fun i => congrFun hx i
+    have hdx : (K.d n (c.next n)).hom x = 0 := by
+      refine (hp (c.next n)).1 (funext fun i => ?_)
+      change ((p i).f (c.next n)).hom ((K.d n (c.next n)).hom x) = ((p i).f (c.next n)).hom 0
+      rw [map_zero, hom_f_d_apply, hxi]
+      exact iCycles_d_apply _ _ _ _
+    obtain ⟨w, hw⟩ := exists_iCycles_eq K x hdx
+    refine ⟨(K.homologyπ n).hom w, funext fun i => ?_⟩
+    change (HomologicalComplex.homologyMap (p i) n).hom ((K.homologyπ n).hom w) = y i
+    rw [homologyMap_homologyπ_apply, ← hz i]
+    congr 1
+    apply (ModuleCat.mono_iff_injective ((L i).iCycles n)).1 inferInstance
+    rw [iCycles_cyclesMap_apply, hw, hxi]
+
+end Complex
+
+section GroupCohomology
+
+variable {k G : Type u} [CommRing k] [Group G] {ι : Type*} {P : Rep.{u} k G}
+  {A : ι → Rep.{u} k G}
+
+end GroupCohomology
+
+end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.Product =====
+
+-- ===== clump member: GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.IsDiscreteRepCoindStabRep =====
+-- clump-header: {"m": "GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.IsDiscreteRepCoindStabRep", "h": "module\n\npublic import GroundTheory.GlobalFields.HerbrandQuotients.CycTateNegOneOrbitEquivSymmMk\npublic import GroundTheory.ProfiniteCohomology.ContinuousCochains.Functoriality\npublic import GroundTheory.ProfiniteCohomology.DiscreteModules.IsDiscreteRepIffForallExistsOpenNormalSubgroup\npublic import GroundTheory.ProfiniteCohomology.ShapiroDefs\npublic import GroundTheory.ProfiniteCohomology.CohomologyFunctoriality.Naturality\npublic import GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.Product\nimport GroundTheory.ProfiniteCohomology.Shapiro\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -226,3 +311,6 @@ noncomputable def orbitShapiroIso (n : ℕ) :
 end Shapiro
 
 end GroundTheory.ProfCoh
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.ProfiniteCohomology.GlobalClassFormation.IdeleCohomology.IsDiscreteRepCoindStabRep =====

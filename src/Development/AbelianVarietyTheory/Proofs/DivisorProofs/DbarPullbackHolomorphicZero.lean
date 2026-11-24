@@ -98,11 +98,10 @@ theorem _root_.GlobalTheory.CxForm.PullClosed.dbarAt_sum_smul {ι : Type} [Finty
 
     simp only [map_sum, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
     rw [_root_.GlobalTheory.dbar_sum fun i _ => (hf i).mul_const _]
-    simp [ContinuousLinearMap.sum_apply,
-      _root_.GlobalTheory.dbar_mul (hf _) (differentiableAt_const _),
+    simp [_root_.GlobalTheory.dbar_mul (hf _) (differentiableAt_const _),
       _root_.GlobalTheory.dbar_const]
   rw [key, Finset.mul_sum]
-  simp [mul_smul_comm]
+  simp
 
 
 open Set Filter Topology in

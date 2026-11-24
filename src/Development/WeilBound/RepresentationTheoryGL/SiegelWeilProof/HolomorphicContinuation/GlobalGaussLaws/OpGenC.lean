@@ -63,14 +63,9 @@ theorem compAt_zero' (θ : InfFam D) (τ : D.what₂.Tau) {m n : ℕ} : compAt �
   ext i j
   simp [compAt]
 
-theorem compAt_one' (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} : compAt θ τ (1 : Mx D n n) = 1 := by
-  ext i j
-  simp only [compAt, Matrix.map_apply, Matrix.one_apply]
-  split_ifs <;> simp
-
 theorem compAt_J (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} :
     compAt θ τ (blk4 (0 : Mx D n n) 1 (-1) 0) = blk4 0 1 (-1) 0 := by
-  rw [component_block_matrix, GlobalTheory.RealParamSize.compAt_neg, compAt_zero', compAt_one']
+  rw [component_block_matrix, GlobalTheory.RealParamSize.compAt_neg, compAt_zero', _root_.GlobalTheory.WeilVacMove.compAt_one]
 
 theorem fin_J {n : ℕ} : (blk4 (0 : Mx D n n) 1 (-1) 0).map (finPart D) = blk4 0 1 (-1) 0 := by
   rw [finite_part_block_matrix, Matrix.map_neg _ (map_neg (finPart D)), Matrix.map_zero _ (map_zero (finPart D)),

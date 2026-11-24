@@ -121,7 +121,6 @@ lemma sgs_curveR (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X g
   rw [hc]
   first
     | rw [Matrix.exp_conj' _ _ hu]
-    | rw [Matrix.exp_conj' ℂ _ _ hu]
   simp only [Matrix.mul_assoc]
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_sR D hp)]
 
@@ -135,7 +134,6 @@ lemma sgs_curveL (D : RealPlaceData k r Wp Wq) {p : SS k r} (hp : D.inSS p) (X g
   rw [hc]
   first
     | rw [Matrix.exp_conj' _ _ hu]
-    | rw [Matrix.exp_conj' ℂ _ _ hu]
   simp only [Matrix.mul_assoc]
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_sL D hp)]
 

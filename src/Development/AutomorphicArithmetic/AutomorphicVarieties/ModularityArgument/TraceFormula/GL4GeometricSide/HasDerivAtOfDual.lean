@@ -69,7 +69,7 @@ private def kW (w : InfinitePlace E) (k : Un n) : Kinf E n :=
       simp only [atW, Matrix.of_apply]
       split_ifs <;> rfl
     · ext i j v
-      simp only [atW, Matrix.of_apply]
+      simp only [atW]
       split_ifs <;> rfl⟩
 
 private theorem continuous_kW (w : InfinitePlace E) : Continuous (kW (n := n) w) := by
@@ -125,11 +125,10 @@ private theorem skew_of_curve (X : Matrix (Fin n) (Fin n) ℂ) (γ : ℝ → Un 
     simpa [Matrix.mul_apply, Matrix.star_apply] using this
   rw [hconst] at hs
   have h := hs.unique (hasDerivAt_const _ _)
-  simp only [h0, Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_mul, one_mul, zero_mul, Finset.sum_add_distrib,
-    Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true] at h
+  simp only [h0, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_add_distrib,
+    Finset.sum_ite_eq', Finset.mem_univ, if_true] at h
   have e : ∑ x, star (if x = i then (1 : ℂ) else 0) * X x j = X i j := by
-    simp only [apply_ite star, star_one, star_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.sum_ite_eq,
-      Finset.mem_univ, if_true]
+    simp only [apply_ite star, star_one, star_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   rw [e] at h
   show star (X j i) = -X i j
   exact eq_neg_of_add_eq_zero_left h

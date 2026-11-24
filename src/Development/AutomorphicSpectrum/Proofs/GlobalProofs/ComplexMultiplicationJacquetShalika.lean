@@ -54,13 +54,8 @@ theorem latticeCurve_eq_weierstrassCurve (L : PeriodPair) :
     GlobalTheory.latticeCurve L = weierstrassCurve L := by
   simp [GlobalTheory.latticeCurve, weierstrassCurve, neg_div]
 
-theorem j_eq_of_eq {W W' : WeierstrassCurve ℂ} [W.IsElliptic] [W'.IsElliptic] (h : W = W') :
-    W.j = W'.j := by
-  subst h
-  rfl
-
 theorem latticeCurve_j (L : PeriodPair) : (GlobalTheory.latticeCurve L).j = (weierstrassCurve L).j :=
-  j_eq_of_eq (latticeCurve_eq_weierstrassCurve L)
+  _root_.GroundTheory.Global.Elliptic.j_congr (latticeCurve_eq_weierstrassCurve L)
 
 theorem under_ne_bot (M : IntermediateField K ℂ) [NumberField M] {P : Ideal (𝓞 M)} (hP : P ≠ ⊥) :
     P.under (𝓞 K) ≠ ⊥ :=

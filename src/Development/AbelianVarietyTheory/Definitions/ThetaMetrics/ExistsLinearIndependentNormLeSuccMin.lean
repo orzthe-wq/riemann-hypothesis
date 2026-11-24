@@ -354,18 +354,6 @@ theorem dualLattice_span_basis {ι : Type*} [Finite ι] [DecidableEq ι] (b : Ba
     dualLattice (span ℤ (Set.range b)) = span ℤ (Set.range (innerDualBasis b)) :=
   LinearMap.BilinForm.dualSubmodule_span_of_basis _ _ b
 
-theorem dualLattice_smul {c : ℝ} (hc : c ≠ 0) (L : Submodule ℤ E) :
-    dualLattice (c • L) = c⁻¹ • dualLattice L := by
-  ext y
-  rw [mem_smul_iff_inv_smul_mem (inv_ne_zero hc), inv_inv, mem_dualLattice, mem_dualLattice]
-  constructor
-  · intro h x hx
-    have := h (c • x) (Submodule.smul_mem_pointwise_smul _ _ _ hx)
-    rwa [real_inner_smul_left, ← real_inner_smul_right] at this
-  · intro h x hx
-    have := h _ ((mem_smul_iff_inv_smul_mem hc).1 hx)
-    rwa [real_inner_smul_left, real_inner_smul_right, inv_mul_cancel_left₀ hc] at this
-
 variable [FiniteDimensional ℝ E] (L) [DiscreteTopology L] [IsZLattice ℝ L]
 
 theorem dualLattice_eq_span {ι : Type*} [Finite ι] [DecidableEq ι] (b : Basis ι ℤ L) :
@@ -411,9 +399,6 @@ theorem covolume_mul_covolume_dualLattice :
   have hL : L = span ℤ (Set.range b) := (Basis.ofZLatticeBasis_span ℝ L _).symm
   rw [hL, dualLattice_span_basis, covolume_span_basis o, covolume_span_basis o, ← abs_mul,
     det_mul_det_innerDualBasis, abs_one]
-
-theorem covolume_dualLattice : ZLattice.covolume (dualLattice L) = (ZLattice.covolume L)⁻¹ :=
-  eq_inv_of_mul_eq_one_right (covolume_mul_covolume_dualLattice L)
 
 end Dual
 

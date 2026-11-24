@@ -92,7 +92,7 @@ theorem tof_shell_term (d k : ℕ) (hd : 2 ≤ d) :
         have h1 : (3 * ((k : ℝ) + 1)) ^ d ≤ (3 * (d : ℝ)) ^ d :=
           pow_le_pow_left₀ (by positivity) (by linarith) d
         have h2 : 0 ≤ Real.pi / 2 * (k : ℝ) ^ 2 + (-1 + k * (1 - Real.pi / 2)) := by
-          nlinarith [mul_nonneg (mul_nonneg (by linarith : (0 : ℝ) ≤ Real.pi / 2)
+          linarith [mul_nonneg (mul_nonneg (by positivity : (0 : ℝ) ≤ Real.pi / 2)
             (by linarith : (0 : ℝ) ≤ k)) (by linarith : (0 : ℝ) ≤ k - 1)]
         calc (3 * ((k : ℝ) + 1)) ^ d ≤ (3 * (d : ℝ)) ^ d := h1
           _ ≤ _ := le_mul_of_one_le_right (by positivity) (Real.one_le_exp h2)
@@ -102,11 +102,12 @@ theorem tof_shell_term (d k : ℕ) (hd : 2 ≤ d) :
           calc ((k : ℝ) + 1) ^ d ≤ (Real.exp k) ^ d :=
                 pow_le_pow_left₀ (by positivity) (by linarith [Real.add_one_le_exp (k : ℝ)]) d
             _ = Real.exp (d * k) := by rw [← Real.exp_nat_mul]
-            _ ≤ Real.exp (k * k) := Real.exp_le_exp.mpr (by nlinarith)
+            _ ≤ Real.exp (k * k) := Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_right hdk (by linarith))
         have h2 : (k : ℝ) * k ≤ Real.pi / 2 * (k : ℝ) ^ 2 + (-1 + k * (1 - Real.pi / 2)) := by
-          have hkk : 2 ≤ (k : ℝ) * ((k : ℝ) - 1) := by nlinarith
+          have hkk : 2 ≤ (k : ℝ) * ((k : ℝ) - 1) := by
+            linarith [mul_le_mul hk2 (show (1 : ℝ) ≤ k - 1 by linarith) zero_le_one (by linarith)]
           have hpp : (1 : ℝ) / 2 ≤ Real.pi / 2 - 1 := by linarith
-          nlinarith [mul_le_mul hpp hkk (by norm_num) (by linarith)]
+          linarith [mul_le_mul hpp hkk (by norm_num) (by linarith)]
         have h3 : (1 : ℝ) ≤ (d : ℝ) ^ d := one_le_pow₀ (by linarith)
         calc (3 * ((k : ℝ) + 1)) ^ d = 3 ^ d * ((k : ℝ) + 1) ^ d := mul_pow _ _ _
           _ ≤ 3 ^ d * Real.exp (Real.pi / 2 * (k : ℝ) ^ 2 + (-1 + k * (1 - Real.pi / 2))) := by
@@ -138,19 +139,19 @@ theorem tof_shell_sum (d K : ℕ) (hd : 2 ≤ d) :
     have hrr : r * Real.exp (Real.pi / 2 - 1) = 1 := by
       rw [hr, ← Real.exp_add]
       simp
-    nlinarith
+    linarith [mul_le_mul_of_nonneg_left (show (3 : ℝ) / 2 ≤ Real.exp (Real.pi / 2 - 1) by linarith) hr0.le]
   have he1 : Real.exp (-1) ≤ 1 / 2 := by
     have h := Real.add_one_le_exp (1 : ℝ)
     have hrr : Real.exp (-1) * Real.exp 1 = 1 := by
       rw [← Real.exp_add]
       simp
     have := Real.exp_pos (-1)
-    nlinarith
+    linarith [mul_le_mul_of_nonneg_left h this.le]
   have hsum0 : 0 ≤ ∑ k ∈ Finset.range K, r ^ k := Finset.sum_nonneg (fun k _ => pow_nonneg hr0.le k)
   have hS : ∑ k ∈ Finset.range K, r ^ k ≤ 3 := by
     have h := geom_sum_mul r K
     have : 0 ≤ r ^ K := by positivity
-    nlinarith
+    linarith [mul_le_mul_of_nonneg_left hr1 hsum0]
   have hd0 : (0 : ℝ) ≤ (3 * (d : ℝ)) ^ d := by positivity
   calc ∑ k ∈ Finset.range K, (3 * ((k : ℝ) + 1)) ^ d * Real.exp (-(Real.pi / 2) * (k : ℝ) ^ 2)
       ≤ ∑ k ∈ Finset.range K, (3 * (d : ℝ)) ^ d * (Real.exp (-1) * r ^ k) :=
@@ -160,7 +161,7 @@ theorem tof_shell_sum (d K : ℕ) (hd : 2 ≤ d) :
         refine Finset.sum_congr rfl (fun k _ => ?_)
         ring
     _ ≤ (3 * (d : ℝ)) ^ d * (1 / 2) * 3 := by gcongr
-    _ ≤ 2 * (3 * (d : ℝ)) ^ d := by nlinarith
+    _ ≤ 2 * (3 * (d : ℝ)) ^ d := by linarith
 
 theorem tof_uMap_sep [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) {I : Submodule ℤ (Vsp X.dim)}
     (hI : IsSplit P I) {x x' : Vsp X.dim} (hx : x ∈ X.L) (hx' : x' ∈ X.L)
@@ -175,7 +176,7 @@ theorem tof_uMap_sep [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) {I : Sub
   by_contra hlt
   have hlt' : ‖uMap I (x - x')‖ < 1 := lt_of_not_ge hlt
   have h0 := norm_nonneg (uMap I (x - x'))
-  nlinarith
+  linarith [pow_lt_pow_left₀ hlt' h0 two_ne_zero]
 
 theorem tof_finrank_IR_le [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) {I : Submodule ℤ (Vsp X.dim)}
     (hI : IsSplit P I) : Module.finrank ℝ (IR I) ≤ dstar (E := E) P.m := by
@@ -243,7 +244,7 @@ theorem tof_sep_sum [IsCMField E] {X : PT E} {DF : ℕ} (P : Par X DF) {I : Subm
       exact Nat.floor_le (norm_nonneg _)
     apply Real.exp_le_exp.mpr
     have : (k : ℝ) ^ 2 ≤ ‖u - y‖ ^ 2 := pow_le_pow_left₀ (Nat.cast_nonneg k) hle 2
-    nlinarith [Real.pi_pos]
+    linarith [mul_le_mul_of_nonneg_left this (show (0 : ℝ) ≤ Real.pi / 2 by positivity)]
   have hinj : Set.InjOn g Fk := by
     intro y hy y' hy' hgg
     by_contra hne

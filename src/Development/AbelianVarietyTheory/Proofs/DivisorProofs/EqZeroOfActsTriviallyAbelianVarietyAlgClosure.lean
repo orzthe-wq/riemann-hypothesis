@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+public import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TateUnramifiedOfTorsionUnramified
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.OfDerivationFnOn
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardAbelianVarietyTorsionSepClosedStatement

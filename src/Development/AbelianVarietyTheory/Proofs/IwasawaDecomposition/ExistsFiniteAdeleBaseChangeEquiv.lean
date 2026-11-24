@@ -103,7 +103,7 @@ theorem exists_locMap (F : Type) [Field F] [NumberField F] [Algebra F E]
   obtain ⟨e, he, h⟩ := (GlobalTheory.QNorm.places_over F E).2.2 P
   rw [h]
   refine le_trans ?_ hx
-  refine pow_le_of_le_one zero_le' (hx.trans ?_) he.ne'
+  refine pow_le_of_le_one zero_le (hx.trans ?_) he.ne'
   rw [← WithZero.exp_zero, WithZero.exp_le_exp]
   omega
 
@@ -155,7 +155,7 @@ theorem adMap_int {a : FiniteAdeleRing (𝓞 F) F} (ha : a ∈ intAd F) : adMap 
 variable (F E) in
 theorem exists_toAd : ∃ ι : AfE F E →+* FiniteAdeleRing (𝓞 E) E,
     ∀ x a, ι (x ⊗ₜ[F] a) = algebraMap E _ x * adMap F E a := by
-  letI : Algebra F (FiniteAdeleRing (𝓞 E) E) :=
+  let : Algebra F (FiniteAdeleRing (𝓞 E) E) :=
     ((algebraMap E (FiniteAdeleRing (𝓞 E) E)).comp (algebraMap F E)).toAlgebra
   let f : E →ₐ[F] FiniteAdeleRing (𝓞 E) E := ⟨algebraMap E _, fun _ => rfl⟩
   let g : FiniteAdeleRing (𝓞 F) F →ₐ[F] FiniteAdeleRing (𝓞 E) E :=

@@ -113,7 +113,7 @@ variable {O : Type} [CommRing O] {bar : O → O} {q : ℕ}
 
 theorem inRCone_self {X : Type} [AddCommGroup X] {m : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ X) (j : Fin m) :
     InRCone γ (γ j) :=
-  ⟨Pi.single j 1, fun i => by by_cases h : i = j <;> simp [Pi.single_apply, h], by
+  ⟨Pi.single j 1, fun i => by by_cases h : i = j <;> simp [h], by
     rw [Finset.sum_eq_single j (fun i _ hi => by simp [Pi.single_apply, hi]) (by simp)]
     simp⟩
 

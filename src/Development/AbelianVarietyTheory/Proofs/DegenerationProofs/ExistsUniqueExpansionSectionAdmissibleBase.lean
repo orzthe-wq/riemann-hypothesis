@@ -140,7 +140,6 @@ theorem exists_limit (hS : SecAlgSt) (hI : IsAdicComplete I R) (D : DegPre R) (k
         (Eq.trans ?_ (hf' _ _ _ z _ (hJ.mem (fun _ : PUnit => (fstG I e D.P.A).left) _)).symm)
       have E : thickMap R I e D.P.A ≫ (fstG I (e + 1) D.P.A).left = 𝟙 _ ≫ (fstG I e D.P.A).left :=
         (thickMap_fst e).trans (Category.id_comp _).symm
-      beta_reduce
       rw [E]
       exact gs_eq_of_sval D.P.isLB _ _ _ _ (fun i => (Category.assoc _ _ _).symm.trans
         ((congrArg (· ≫ D.famφB α i) E).trans (Category.assoc _ _ _))) z (hf e z) _

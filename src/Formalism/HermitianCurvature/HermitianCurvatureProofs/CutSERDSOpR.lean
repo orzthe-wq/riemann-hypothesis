@@ -109,7 +109,7 @@ def RDSOpX : Prop :=
     D.π = π → D.π' = π' → 0 < P.r →
     ∀ Y : ℂ, Y ∈ st.inv → ∃ T0 : B.DTerm P.k P.r Wp Wq, Good0 D T0 ∧
       ∀ (Ψ : RadSp P.k P.r z z' π π'), ∀ x ∈ DomR P.k P.r z z',
-        (((GiR L * st.xi Y).1 Ψ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 =
+        (((_root_.Formalism.FourierDecayAlt.TL.gI L * st.xi Y).1 Ψ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 =
           T0.coef (wCell P.k P.r (Fin.last P.r) x.1 * x.2) ((Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2)
 
 def RDSRhR : Prop :=
@@ -153,8 +153,8 @@ theorem rDSOpR_of_parts (hG : RDSOpRGrp) (hX : RDSOpX) (hR : RDSRhR) (hC : RDSCo
   obtain ⟨Θ, hΘ, hΘe⟩ := hG Wp Wq P.k P.r D Y σ
   refine ⟨dcomp T0 Θ, hC Wp Wq P.k P.r D T0 Θ hT0 hΘ, ?_⟩
   intro J hJ Φ hΦ x hx
-  have e1 : (((GiR L * st.xi Y * RhR L st Y).1 Φ : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp))
-      x.1 x.2 = (((GiR L * st.xi Y).1 ((RhR L st Y).1 Φ) : RadSp P.k P.r D.z D.z' D.π D.π') :
+  have e1 : (((_root_.Formalism.FourierDecayAlt.TL.gI L * st.xi Y * RhR L st Y).1 Φ : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp))
+      x.1 x.2 = (((_root_.Formalism.FourierDecayAlt.TL.gI L * st.xi Y).1 ((RhR L st Y).1 Φ) : RadSp P.k P.r D.z D.z' D.π D.π') :
         Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 := rfl
   rw [e1, hT0e _ x hx, hσ J hJ Φ hΦ x hx, ← hΘe J hJ x hx]
   simp only [resG, opApply_dcomp, map_smul]
@@ -168,8 +168,8 @@ theorem rDSOpRv_of_parts (hG : RDSOpRvGrp) (hX : RDSOpX) (hR : RDSRhvR) (hC : RD
   obtain ⟨Θ, hΘ, hΘe⟩ := hG Wp Wq P.k P.r D (Y + 1) σ
   refine ⟨dcomp T0 Θ, hC Wp Wq P.k P.r D T0 Θ hT0 hΘ, ?_⟩
   intro J hJ Φ hΦ x hx
-  have e1 : (((GiR L * st.xi (Y + 1) * RhvR L st (Y + 1)).1 Φ : RadSp P.k P.r D.z D.z' D.π D.π') :
-      Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = (((GiR L * st.xi (Y + 1)).1 ((RhvR L st (Y + 1)).1 Φ) :
+  have e1 : (((_root_.Formalism.FourierDecayAlt.TL.gI L * st.xi (Y + 1) * RhvR L st (Y + 1)).1 Φ : RadSp P.k P.r D.z D.z' D.π D.π') :
+      Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = (((_root_.Formalism.FourierDecayAlt.TL.gI L * st.xi (Y + 1)).1 ((RhvR L st (Y + 1)).1 Φ) :
         RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 := rfl
   rw [e1, hT0e _ x hx, hσ J hJ Φ hΦ x hx, ← hΘe J hJ x hx]
   simp only [resG, opApply_dcomp, map_smul]

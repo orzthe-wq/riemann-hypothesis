@@ -1,10 +1,13 @@
 module
 
 public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.IsDSOfIsDG
-public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorDecompositionInjectiveParametersStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsFRepDualStandardUnitaryRepStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsFRepExteriorPowerStandardRepStatement
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGapsStatement
+public import CompanionTheory.AutomorphicTheory.PieriRules.ThetaBesselIsometries.TensorDecompositionInjectiveParameters
+public import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPrAlt
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsFRepDualStandardUnitaryRep
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsFRepExteriorPowerStandardRep
+public import Development.AbelianVarietyTheory.Definitions.Jets.SideFam
+public import Development.AbelianVarietyTheory.Definitions.Jets.SumIoPr
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NumericalFamilyShapeGaps
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -96,12 +99,12 @@ theorem sub_single_inj {n : ℕ} (mu : Fin n → ℝ) :
   intro s t hst
   by_contra hne
   have h := congrFun hst s
-  simp [Pi.single_apply, hne] at h
+  simp [hne] at h
 
 theorem tens_exists : HypsG → ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r), Num k r lam u b bv ga h q0 → IsFamG lam q0 R → ∀ ν, (∀ l, n1 ν + l ≤ q0 → ∃ io pr ep, TensH (cmp l) (cmp l (Formalism.QuantumDeterminants.Hpk k r)) (R ν) (fun I : Sub (2 * r + k + 1) l => R (ν + eZ I.1)) io pr ep) ∧ (n1 ν + 1 ≤ q0 → ∃ io pr ep, TensH dualM (Formalism.QuantumDeterminants.Hpk k r) (R ν) (fun s => R (ν - Pi.single s 1)) io pr ep) := by
   intro hH k r lam u b bv ga h q0 R hN hF ν
   have hZ : ZuckG := hH.2.2.2.2.1
-  have hnum := (GlobalTheory.T.numericalFamily_shape_gaps k r lam u b bv ga h q0 hN).2 ν
+  have hnum := (_root_.GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hN).2 ν
   constructor
   · intro l hl
     have h0 : n1 ν ≤ q0 := by omega
@@ -120,7 +123,7 @@ theorem tens_exists : HypsG → ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → �
         split_ifs <;> push_cast <;> ring
       rwa [e] at h2
     obtain ⟨io, pr, hT⟩ := (hZ k r _ lam q0 R hF ν).1 l hl
-    exact GlobalTheory.T.tensor_decomposition_injective_parameters hH k r _ _ _ _ l _ _ io pr _ _ _ hR hI (addSet_inj _) (GlobalTheory.T.isFRep_exteriorPower_standardRep k r l) hT
+    exact _root_.Gp91.GlobalTheory.TensOrth.tensH_of_raw hH k r _ _ _ _ l _ _ io pr _ _ _ hR hI (addSet_inj _) (_root_.GlobalTheory.WedgeFRep.isFRep_cmp k r l) hT
   · intro hl
     have h0 : n1 ν ≤ q0 := by omega
     have hR := hF ν h0
@@ -139,6 +142,6 @@ theorem tens_exists : HypsG → ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → �
         split_ifs <;> push_cast <;> ring
       rwa [e] at h2
     obtain ⟨io, pr, hT⟩ := (hZ k r _ lam q0 R hF ν).2 hl
-    exact GlobalTheory.T.tensor_decomposition_injective_parameters hH k r _ _ _ _ 1 _ _ io pr _ _ _ hR hI (sub_single_inj _) (GlobalTheory.T.isFRep_dual_standard_unitaryRep k r) hT
+    exact _root_.Gp91.GlobalTheory.TensOrth.tensH_of_raw hH k r _ _ _ _ 1 _ _ io pr _ _ _ hR hI (sub_single_inj _) (_root_.GlobalTheory.isFRep_dualM k r) hT
 
 end GlobalTheory.TensExists

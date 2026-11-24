@@ -59,9 +59,6 @@ theorem continuous_lmulM (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
     Continuous (lmulM (k := k) (r := r) a) := by
   first
   | exact (continuous_const.matrix_mul continuous_id : Continuous fun x : Mt k r => a * Matrix.of x)
-  | exact continuous_pi fun i => continuous_pi fun j => by
-      simp only [lmulM, Matrix.mul_apply, Matrix.of_apply]
-      fun_prop
 
 def lmulEquiv (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (ha : IsUnit a.det) :
     Mt k r ≃ᵐ Mt k r where

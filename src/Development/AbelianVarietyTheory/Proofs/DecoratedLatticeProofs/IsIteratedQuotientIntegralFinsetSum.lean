@@ -2,8 +2,9 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CombAtSingleZero
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsOneComb
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselThetaContractionExtendByZeroVacuumSmoothStatement
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsBiSmooth
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsQuasiFam
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BesselThetaContractionExtendByZeroVacuumSmooth
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.BilinearVacuumCentralCharacter
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.DoubleThetaUnfoldingEquivariantUnitaryGroups
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.FlatThetaMapsConvergeThetaFunctionsStatement
@@ -12,8 +13,11 @@ public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.Hei
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixSupportedAtPlaceOfIsHalfSplitPoint
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MemSupportAconvPair
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PeriodSumHolds
-import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlacewiseToAdelicDecompositionForall
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ThetaFunctionProductsSlicesOrthogonalDecompositi
+import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
+import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.PlacewiseToAdelicDecompositionForall
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -100,14 +104,14 @@ variable {D : D7}
 
 theorem moves_iff_forall {S : HSp D} {L : Lat S} (hL : IsSelfDualC S L) (P : Pl D → Prop) (g : GA D S) :
     Moves S g L L P ↔ ∀ v, P v → Moves S g L L (· = v) := by
-  have hP := fun z => ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D P).2 S).2.2.2 L z hL.1
+  have hP := fun z => ((_root_.GlobalTheory.FinPl.localComponents D P).2 S).2.2.2 L z hL.1
   have hmv := fun (R : Pl D → Prop) (y : Fin S.rank → AE D) (hy : ∀ i, y i ∈ idAt D R) =>
     GlobalTheory.FinPl.PlacesAdeles.supp_mulVec S R g hy
   constructor
   · intro h v hv y hy
     have key : ∀ z : Fin S.rank → AE D, (∀ i, z i ∈ idAt D (· = v)) → (z ∈ latV S L P ↔ z ∈ latV S L (· = v)) := by
       intro z hz
-      rw [hP, ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)).2 S).2.2.2 L z hL.1]
+      rw [hP, ((_root_.GlobalTheory.FinPl.localComponents D (· = v)).2 S).2.2.2 L z hL.1]
       constructor
       · rintro ⟨_, h⟩
         exact ⟨hz, fun w hw e he => h w (hw ▸ hv) e he⟩
@@ -115,7 +119,7 @@ theorem moves_iff_forall {S : HSp D} {L : Lat S} (hL : IsSelfDualC S L) (P : Pl 
         refine ⟨fun i => GlobalTheory.FinPl.PlacesAdeles.idAt_single_le hv (hz i), fun w _ e he => ?_⟩
         by_cases hwv : w = v
         · exact h w hwv e he
-        · obtain ⟨ε, -, -, -, hAt, hOff⟩ := (GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = w)).1
+        · obtain ⟨ε, -, -, -, hAt, hOff⟩ := (_root_.GlobalTheory.FinPl.localComponents D (· = w)).1
           have hzero : e • z = 0 := by
             funext i
             have h1 : ε * e = e := (hAt e).1 he.1
@@ -206,7 +210,7 @@ theorem aconv_single_cons {G : Type} [AddMonoid G] (l : List (G →₀ ℂ)) : a
   simp
 
 theorem comb_single_zero (S T : HSp D) (f : WO S T → ℂ) : comb ψ S T (Finsupp.single 0 1) f = f := by
-  simp [comb, Finsupp.support_single_ne_zero, GlobalTheory.BoxSlice.heisO_zero']
+  simp [comb, GlobalTheory.BoxSlice.heisO_zero']
 
 theorem biComb_single_zero (A S A' : HSp D) (C : WO A S → WO S A' → ℂ) :
     biComb ψ A S A' (Finsupp.single 0 1) (Finsupp.single 0 1) C = C := by
@@ -294,7 +298,7 @@ theorem contAut_lift (hψ : IsStdChar D ψ (-1)) (hS : HandIsLift S) {c₁ : WO 
       (GlobalTheory.Unf.contr S.l S.J.W₀ S.vL (flatBF S.s₁ Φ₁) (flatFB S.s₂ Φ₂)))) := by
   have t₁ := GlobalTheory.AvgMid.theta_comb hψ (isFinComb_extS S.B.o S.J.W₀ hc₁) (theta_flatBF h₁)
   have t₂ := GlobalTheory.AvgMid.theta_comb hψ (isFinComb_extT S.B'.o S.J.W₀ hc₂) (theta_flatFB h₂)
-  rw [← (GlobalTheory.T.besselThetaContraction_extendByZero_vacuum_smooth D ψ hψ _ _ S.B S.B' S.l S.J.W₀ S.vL _ _ (theta_flatBF h₁) (theta_flatFB h₂)).2.1, ← hS φ _ _ hφ t₁ t₂]
+  rw [← (_root_.GlobalTheory.ContrComb.contr_comb_main D ψ hψ _ _ S.B S.B' S.l S.J.W₀ S.vL _ _ (theta_flatBF h₁) (theta_flatFB h₂)).2.1, ← hS φ _ _ hφ t₁ t₂]
   exact GlobalTheory.FinPl.Comm.contAut_hand0 _ _ _ _ hφ t₁ t₂
 
 end Step

@@ -1,7 +1,9 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.IsLatFamilyCongr
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LemmaBTHoldsStatement
+public import Development.AutomorphicSpectrum.Statements.GeometryStatements.NonemptyEquivOfCardHom
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LemmaBTHolds
+public import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -18,7 +20,6 @@ import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-public import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
@@ -134,7 +135,7 @@ theorem PositivityTheory.Xgn.function_family_idempotent : ∀ (E : Type) [Field 
     exact sec_eq pq sc hsec.1 hsec.2 _
   haveI := 𝔐.t.act.hom e
   haveI := frac_epi (CR O y c')
-  have h4 := (GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
+  have h4 := (_root_.GlobalTheory.CompanionTheory.Ar.BT.lemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁
     𝔐.t.semi.smooth).2.2.2.1 (𝔐.t.act.act e) (mulT _ p e) (by
       intro t
       obtain ⟨x, rfl⟩ := qmk_surj _ p t

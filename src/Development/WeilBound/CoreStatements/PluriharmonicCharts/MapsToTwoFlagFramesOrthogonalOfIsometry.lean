@@ -2,21 +2,26 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.TransPtBase
 public import Development.WeilBound.CoreStatements.PluriharmonicCharts.LocalAnalyticSectionCoords
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticEighthStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFifthStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFourthStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSecondStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSeventhStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSixthStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticThirdStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsImg
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticEighth
+public import GroundTheory.HeightsAndTheta.Heights.Intersections.PtsOverPt
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFifth
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticFourth
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSecond
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSeventh
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSixth
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsMultiHomogIdealMap
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogPeriodStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionCompatiblePullbackStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionMapLocallyAnalyticStatement
-import Development.AutomorphicSpectrum.Proofs.MetricProofs.SameOrbitRefl
+public import ReciprocityTheory.AnalyticForms.PotentialTheory.IsPotentialPullbackStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.InterRes
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionCompatiblePullback
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogResolutionMapLocallyAnalytic
 public import Development.WeilBound.CoreStatements.PluriharmonicCharts.BlockFnFieldCompLe
 public import GroundTheory.HeightsAndTheta.Heights.Intersections.IsMultiHomogOfPullWeight
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticThird
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogPeriodStatement
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.SameOrbitRefl
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -153,8 +158,8 @@ theorem sameOrbit_of_relW_relW (Cv : FlagCover M' M) (S' : Sw M' τ a b k₀' ca
     {z : (Σ o : Option K', ι' (o.getD k₀')) → ℂ} (hz : z ∈ mcPts (mCoordIdeal (M'.wCo (τ, a) k₀' ca cb RatFunc.X)))
     {w w' : (Σ o : Option K, ι (o.getD k₀)) → ℂ} (h : RelW Cv k₀ k₀' z w) (h' : RelW Cv k₀ k₀' z w') :
     SameOrbit w w' :=
-  sameOrbit_of_sameOrbit_fstPt_sndPt (GlobalTheory.T.flag_cover_arithmetic_second K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (fst_mem hz) _ _ h.1 h'.1)
-    (GlobalTheory.T.flag_cover_arithmetic_second K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (S'.snd_mem hy' hz) _ _ h.2 h'.2)
+  sameOrbit_of_sameOrbit_fstPt_sndPt (_root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.isImg_unique K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (fst_mem hz) _ _ h.1 h'.1)
+    (_root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.isImg_unique K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (S'.snd_mem hy' hz) _ _ h.2 h'.2)
 
 theorem pull_form (S : Sw M τ a b k₀ ca cb) (hy : IsArithVar (mCoordIdeal y) (d + 2)) {G : MRing ι} {dG : K → ℕ}
     (hG : IsMultiHomog G dG) (hn : G ∉ mCoordIdeal y) :
@@ -203,17 +208,17 @@ theorem mapsTo_twoFlagFramesOrthogonal_of_isometry (hRes : ResExistsStatement) (
     exact ⟨x₀, h2.orbit (Cj.sameOrbit_refl _) hx⟩
   choose g hg using himg
   have hgholo : HoloMap R'.A RW.A g := by
-    refine GlobalTheory.T.log_resolution_map_locally_analytic _ _ _ _ _ ⊤ _ J' (d + 2) (d + 2) RW R' g rfl fun x => ?_
+    refine _root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.holoMap_of_local_analytic _ _ _ _ _ ⊤ _ J' (d + 2) (d + 2) RW R' g rfl fun x => ?_
     obtain ⟨V, f, hV, hzV, hf, hff⟩ := local_analytic_section_coords Cv S S' hy' (hmem' x)
     refine ⟨V, f, hV, hzV, hf, fun z' hz' x' hx' => ?_⟩
     exact sameOrbit_of_relW_relW Cv S' hy hy' hz'.2 (hff z' hz').2 ((hg x').orbit hx' (Cj.sameOrbit_refl _))
   have hholo : HoloMap R'.A A (e ∘ g) := holoMap_comp hgholo he
-  have hbase := GlobalTheory.T.flag_cover_arithmetic_third K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy'
-  obtain ⟨D₁, a₁, hD₁, hD₁n, hcount⟩ := GlobalTheory.T.flag_cover_arithmetic_fourth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy'
-  obtain ⟨E₁, b₁, hE₁, hE₁n, hE₁e⟩ := GlobalTheory.T.flag_cover_arithmetic_sixth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' D₁ a₁ hD₁ hD₁n
+  have hbase := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.ImgBase.img_lies_over K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy'
+  obtain ⟨D₁, a₁, hD₁, hD₁n, hcount⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.BaseCount.base_count K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy'
+  obtain ⟨E₁, b₁, hE₁, hE₁n, hE₁e⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.BaseForm.exists_form K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' D₁ a₁ hD₁ hD₁n
   obtain ⟨G₁, c₁, hG₁, hG₁n, hG₁e⟩ := pull_form S hy hE₁ hE₁n
-  obtain ⟨D₂, a₂, hD₂, hD₂n, het⟩ := GlobalTheory.T.flag_cover_arithmetic_seventh K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy'
-  obtain ⟨E₂, b₂, hE₂, hE₂n, hE₂e⟩ := GlobalTheory.T.flag_cover_arithmetic_sixth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' D₂ a₂ hD₂ hD₂n
+  obtain ⟨D₂, a₂, hD₂, hD₂n, het⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.BaseEtale.main K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy'
+  obtain ⟨E₂, b₂, hE₂, hE₂n, hE₂e⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.BaseForm.exists_form K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' D₂ a₂ hD₂ hD₂n
   obtain ⟨G₂, c₂, hG₂, hG₂n, hG₂e⟩ := pull_form S hy hE₂ hE₂n
   obtain ⟨G₃, c₃, hG₃, hG₃n, hG₃e⟩ := exists_homog_eval_eq_zero_of_relW Cv S S' hy hy' J' hJ'h hJ'n
   have hprime := hP.2.1.1
@@ -231,7 +236,7 @@ theorem mapsTo_twoFlagFramesOrthogonal_of_isometry (hRes : ResExistsStatement) (
     intro w hw
     simp only [map_mul] at hw
     exact ⟨fun h => hw (by rw [h]; simp), fun h => hw (by rw [h]; simp)⟩
-  refine ⟨J', R', g, _, hgholo, GlobalTheory.T.log_resolution_compatible_pullback _ _ _ _ _ ⊤ _ J' (d + 2) X A RW e R' _ (RelW Cv k₀ k₀')
+  refine ⟨J', R', g, _, hgholo, _root_.GlobalTheory.CompanionTheory.Ar.PB.CovMap.Deg.isDegreeOff_of_correspondence _ _ _ _ _ ⊤ _ J' (d + 2) X A RW e R' _ (RelW Cv k₀ k₀')
     (G₁ * G₂ * G₃) G₄ _ c₄ Cv.deg rfl hP hP' he hdeg hholo hGh hGn hG₄ hG₄n
     (fun z z₁ w w₁ h h1 h2 => h.orbit h1 h2) ?_ ?_ ?_ ?_ (fun z hz w hw hi h0 => hG₄e z hz w hw hi h0) ?_, hg⟩
   · intro x x₀ h
@@ -241,7 +246,7 @@ theorem mapsTo_twoFlagFramesOrthogonal_of_isometry (hRes : ResExistsStatement) (
     rw [RW.inj x₀ (g x) (hnot _) (sameOrbit_of_relW_relW Cv S' hy hy' (hmem' x) h (hg x))]
     rfl
   · intro w hw h0
-    rw [ncard_orbits_relW_eq_ncard_orbits_isImg Cv S S' hy hy' hw, GlobalTheory.T.flag_cover_arithmetic_fifth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (fst_mem hw)]
+    rw [ncard_orbits_relW_eq_ncard_orbits_isImg Cv S S' hy hy' hw, _root_.GlobalTheory.CompanionTheory.Ar.PB.FibreCount.fibre_count K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _ (fst_mem hw)]
     refine hcount _ (CPts.base_mem M (fst_mem hw)) ?_
     rw [← hE₁e, ← hG₁e]
     exact (hev w h0).1
@@ -254,9 +259,9 @@ theorem mapsTo_twoFlagFramesOrthogonal_of_isometry (hRes : ResExistsStatement) (
       rw [← hE₂e, ← hG₂e]
       exact (hev w₀ h0).2
     obtain ⟨V, V', s, hV, hwV, hV', hbV, hs1, hs2⟩ := het _ (CPts.base_mem M' (fst_mem hz)) _ hs h2
-    obtain ⟨U₀, U₀', f₀, hU₀, hw0, hU₀', hz0, hf₀, r₀⟩ := GlobalTheory.T.flag_cover_arithmetic_eighth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _
+    obtain ⟨U₀, U₀', f₀, hU₀, hw0, hU₀', hz0, hf₀, r₀⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovLift.lift_inverse K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _
       (fst_mem hz) _ (fst_mem hw₀) hi.1 V V' s hV hwV hV' hbV hs1 hs2
-    obtain ⟨U₁, U₁', f₁, hU₁, hw1, hU₁', hz1, hf₁, r₁⟩ := GlobalTheory.T.flag_cover_arithmetic_eighth K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _
+    obtain ⟨U₁, U₁', f₁, hU₁, hw1, hU₁', hz1, hf₁, r₁⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.CovLift.lift_inverse K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv d hy hy' _
       (S'.snd_mem hy' hz) _ (S.snd_mem hy hw₀) hi.2 V V' s hV (by rw [Pts.basePart_snd M S.hk]; exact hwV) hV'
       (by rw [Pts.basePart_snd M' S'.hk]; exact hbV) hs1 hs2
     refine ⟨fstPt k₀ ⁻¹' U₀ ∩ sndPt k₀ ⁻¹' U₁, fstPt k₀' ⁻¹' U₀' ∩ sndPt k₀' ⁻¹' U₁',

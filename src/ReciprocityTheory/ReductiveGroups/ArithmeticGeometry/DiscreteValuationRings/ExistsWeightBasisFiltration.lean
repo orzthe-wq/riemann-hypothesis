@@ -2,51 +2,11 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ValuationMultiplicationInvariance
 public import Mathlib.RingTheory.Valuation.ValuationSubring
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Rat
 public import Mathlib.AlgebraicGeometry.ValuativeCriterion
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 
 @[expose] public section
 
@@ -63,24 +23,14 @@ open ReciprocityTheory.ChartRestriction.G.Out
 variable {F : Type} [Field F] (v : AddValuation F (WithTop ℚ))
 
 theorem exists_weight_basis_filtration {a b : WithTop ℚ} (h : a + b = 0) (ha : a ≤ 0) : 0 ≤ b := by
-  rcases eq_or_ne b ⊤ with rfl | hbt
-  · exact le_top
-  rcases eq_or_ne a ⊤ with rfl | hat
-  · simp at h
-  lift a to ℚ using hat
-  lift b to ℚ using hbt
-  norm_cast at h ha ⊢
-  linarith
+  have hba : b + a = 0 := by
+    rw [add_comm]
+    exact h
+  simpa [h, hba] using add_le_add_right ha b
 
 theorem le_zero_of_add_eq_zero_nonneg {a b : WithTop ℚ} (h : a + b = 0) (hb : 0 ≤ b) : a ≤ 0 := by
-  rcases eq_or_ne b ⊤ with rfl | hbt
-  · simp at h
-  rcases eq_or_ne a ⊤ with rfl | hat
-  · simp at h
-  lift a to ℚ using hat
-  lift b to ℚ using hbt
-  norm_cast at h hb ⊢
-  linarith
+  have h' : b + a = 0 := by simpa [add_comm] using h
+  simpa [h, h'] using add_le_add_left hb a
 
 def Ov : ValuationSubring F where
   carrier := {x | 0 ≤ v x}
@@ -106,12 +56,11 @@ theorem mem_Ov {x : F} : x ∈ Ov v ↔ 0 ≤ v x := Iff.rfl
 theorem v_nonneg (r : Ov v) : (0 : WithTop ℚ) ≤ v (r : F) := (mem_Ov v).1 r.2
 
 theorem v_unit (r : (Ov v)ˣ) : v ((r : Ov v) : F) = 0 := by
-  have h1 := v_nonneg v (r : Ov v)
   have h2 := v_nonneg v ((r⁻¹ : (Ov v)ˣ) : Ov v)
   have hm : ((r : Ov v) : F) * (((r⁻¹ : (Ov v)ˣ) : Ov v) : F) = 1 := congrArg Subtype.val r.mul_inv
   have hs : v ((r : Ov v) : F) + v (((r⁻¹ : (Ov v)ˣ) : Ov v) : F) = 0 := by
     rw [← AddValuation.map_mul, hm, AddValuation.map_one]
-  exact le_antisymm (le_zero_of_add_eq_zero_nonneg hs h2) h1
+  exact le_antisymm (le_zero_of_add_eq_zero_nonneg hs h2) (v_nonneg v (r : Ov v))
 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
   [Algebra (FractionRing V) F]
@@ -121,22 +70,17 @@ abbrev algVF : V →+* F := (algebraMap (FractionRing V) F).comp (algebraMap V (
 theorem v_of_V (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) (x : V) : (0 : WithTop ℚ) ≤ v (algVF x) ∧
     (¬ IsUnit x → x ≠ 0 → (1 : WithTop ℚ) ≤ v (algVF x)) := by
   by_cases hx0 : x = 0
-  · subst hx0
-    refine ⟨?_, fun _ h => absurd rfl h⟩
-    rw [map_zero, AddValuation.map_zero]
-    exact le_top
+  · simp [hx0, map_zero, AddValuation.map_zero]
   obtain ⟨n, u, hu⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ
   have hH : HasVal ϖ (algebraMap V (FractionRing V) x) (n : ℤ) :=
     ⟨u, by rw [hu, map_mul, map_pow, zpow_natCast, mul_comm]⟩
   have hval : v (algVF x) = (((n : ℤ) : ℚ) : WithTop ℚ) := hv _ _ hH
   rw [hval]
   refine ⟨?_, fun hnu _ => ?_⟩
-  · have h0 : (0 : ℚ) ≤ ((n : ℤ) : ℚ) := by positivity
-    exact_mod_cast h0
+  · exact_mod_cast (show (0 : ℚ) ≤ ((n : ℤ) : ℚ) by positivity)
   · rcases Nat.eq_zero_or_pos n with h0 | hpos
     · exact (hnu (by rw [hu, h0, pow_zero, mul_one]; exact u.isUnit)).elim
-    · have h1 : (1 : ℚ) ≤ ((n : ℤ) : ℚ) := by exact_mod_cast hpos
-      exact_mod_cast h1
+    · exact_mod_cast (show (1 : ℚ) ≤ ((n : ℤ) : ℚ) by exact_mod_cast hpos)
 
 def fO (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) : V →+* Ov v :=
   (algVF (F := F) (V := V)).codRestrict (Ov v).toSubring fun x => (v_of_V v hϖ hv x).1
@@ -180,7 +124,6 @@ theorem lift_unique (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) {X : Scheme.{0}
       i₂ := Spec.map (CommRingCat.ofHom (fO v hϖ hv)),
       commSq := ⟨by rw [Category.assoc, h₁]⟩ }
   have hU : Subsingleton S.commSq.LiftStruct := IsSeparated.valuativeCriterion p S
-  have hl : (⟨x₁, rfl, h₁⟩ : S.commSq.LiftStruct) = ⟨x₂, h.symm, h₂⟩ := @Subsingleton.elim _ hU _ _
-  exact congrArg CommSq.LiftStruct.l hl
+  exact congrArg CommSq.LiftStruct.l (@Subsingleton.elim _ hU (⟨x₁, rfl, h₁⟩ : S.commSq.LiftStruct) ⟨x₂, h.symm, h₂⟩)
 
 end ReciprocityTheory.ChartRestriction.G.DVR.TWO

@@ -82,7 +82,7 @@ theorem mem_splitL (d : HypDec S S₀ ρ) (L₀ : Lat S₀) (𝔟 : ℕ → FI D
 
 variable (d : HypDec S S₀ ρ)
 
-theorem qX_e : d.qX * d.e = 1 := d.e'e
+alias qX_e := _root_.GlobalTheory.MixPer.qX_e
 theorem qX_i₀ : d.qX * d.i₀ = 0 := by
   have h := congrArg Matrix.conjTranspose d.i₀e'
   simpa only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, gram_conjTranspose,
@@ -178,7 +178,7 @@ theorem colMul_rat {m : ℕ} (q : Matrix (Fin ρ) (Fin m) D.host.E) (f : Matrix 
     (y : Fin m → AE D) : colMul (rat f) i ((rat q *ᵥ y) i) = rat (colProj q f i) *ᵥ y := by
   funext k
   simp only [colMul, colProj, rat, Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.of_apply, map_mul,
-    Finset.sum_mul, Finset.mul_sum]
+    Finset.sum_mul]
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 

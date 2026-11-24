@@ -1,23 +1,28 @@
 module
 
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Mathlib.LinearAlgebra.Matrix.Symmetric
+public import Mathlib.LinearAlgebra.Matrix.Trace
+public import Mathlib.Algebra.Order.Archimedean.Defs
+public import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
+public import Mathlib.Data.Nat.Cast.Field
+public import Mathlib.LinearAlgebra.Matrix.SchurComplement
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.IsPluriharmonicSiegel
 public import Mathlib.MeasureTheory.Integral.Bochner.Basic
 public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.EventuallyIteratedFDerivEqZeroOfRealSubspace
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.FderivIntegralApplyOfHolomorphicOfDominated
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.SetIntegralPowEqZeroOfPosFreqEuclidean
-public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNatMulQuadraticLt
 public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SndFDerivAddSndFDerivIEqZeroOfHarmonicAtLine
 public import Development.AbelianVarietyTheory.Proofs.ToricGeometry.FourierCoeffUnitCubeTranslateOfEntirePeriodic
-import Mathlib.Algebra.Order.Archimedean.Real.Hom
+public import Mathlib.Analysis.Matrix.Order
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Order.Star.Rat
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Fourier.AddCircleMulti
-import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-public import Mathlib.Analysis.Matrix.Order
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -30,14 +35,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.Order.CompletePartialOrder
-import Mathlib.RingTheory.Coalgebra.IsFrobenius
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.HopfAlgebra.Basic
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -59,11 +57,158 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Archimedean.Real.Hom
+import Mathlib.Analysis.Fourier.AddCircleMulti
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNatMulQuadraticLt, Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.NormLeTsumOfCubeFourierCoeffLe
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNatMulQuadraticLt =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNatMulQuadraticLt", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Mathlib.LinearAlgebra.Matrix.Symmetric\npublic import Mathlib.LinearAlgebra.Matrix.Trace\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.Order.Archimedean.Defs\npublic import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset\npublic import Mathlib.Data.Nat.Cast.Field\npublic import Mathlib.LinearAlgebra.Matrix.SchurComplement\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+
+namespace GlobalTheory
+
+theorem exists_nat_mul_quadratic_lt (N : ℕ) (hN : 1 ≤ N) (a b q c : ℚ) (hq : q < 0) :
+    ∃ k : ℕ, a + ((N : ℚ) * k) * b + ((N : ℚ) * k) ^ 2 * q < c := by
+  set B : ℚ := (|b| + |a - c| + 1) / (-q) with hB
+  have hq' : 0 < -q := by linarith
+  have hBpos : 0 < B := div_pos (by positivity) hq'
+  obtain ⟨k, hk⟩ := exists_nat_gt B
+  refine ⟨k, ?_⟩
+  have hk1 : (1 : ℚ) ≤ k := by
+    have : (0 : ℚ) < k := lt_trans hBpos hk
+    exact_mod_cast Nat.one_le_iff_ne_zero.mpr (by rintro rfl; simp at this)
+  have hN1 : (1 : ℚ) ≤ N := by exact_mod_cast hN
+  set m : ℚ := (N : ℚ) * k with hm
+  have hm1 : 1 ≤ m := by nlinarith
+  have hmk : (k : ℚ) ≤ m := by nlinarith
+  have hmB : B < m := lt_of_lt_of_le hk hmk
+  have h1 : |b| + |a - c| + 1 < m * (-q) := by
+    rw [hB, div_lt_iff₀ hq'] at hmB; linarith
+  have h2 : m * (|b| + |a - c| + 1) < m * (m * (-q)) := mul_lt_mul_of_pos_left h1 (by linarith)
+  have h3 : m * b ≤ m * |b| := mul_le_mul_of_nonneg_left (le_abs_self b) (by linarith)
+  have h4 : a - c ≤ |a - c| := le_abs_self _
+  have h5 : 0 ≤ (m - 1) * (|a - c| + 1) := mul_nonneg (by linarith) (by positivity)
+  nlinarith
+
+private theorem trace_mul_vecMulVec {n : Type*} [Fintype n] [DecidableEq n]
+    (T : Matrix n n ℚ) (u w : n → ℚ) : (T * vecMulVec u w).trace = w ⬝ᵥ T.mulVec u := by
+  simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, vecMulVec_apply, dotProduct, mulVec, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
+
+theorem trace_transvection_conj {n : Type*} [Fintype n] [DecidableEq n]
+    (T : Matrix n n ℚ) (x y : n → ℚ) (t : ℚ) :
+    ((1 + t • vecMulVec x y)ᵀ * T * (1 + t • vecMulVec x y)).trace =
+      T.trace + t * (x ⬝ᵥ T.mulVec y + y ⬝ᵥ T.mulVec x) +
+        t ^ 2 * ((y ⬝ᵥ y) * (x ⬝ᵥ T.mulVec x)) := by
+  have hP : (1 + t • vecMulVec x y)ᵀ = 1 + t • vecMulVec y x := by
+    rw [transpose_add, transpose_one, transpose_smul, transpose_vecMulVec]
+  rw [hP]
+  have e : (1 + t • vecMulVec y x) * T * (1 + t • vecMulVec x y) =
+      T + t • (T * vecMulVec x y) + t • (vecMulVec y x * T) + (t * t) • (vecMulVec y x * T * vecMulVec x y) := by
+    simp only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul,
+      smul_add, smul_smul]
+    abel
+  rw [e, trace_add, trace_add, trace_add, trace_smul, trace_smul, trace_smul, smul_eq_mul, smul_eq_mul,
+    smul_eq_mul, Matrix.trace_mul_comm (vecMulVec y x) T]
+  simp only [trace_mul_vecMulVec]
+  rw [← Matrix.mulVec_mulVec]
+  have hv : ∀ w : n → ℚ, vecMulVec y x *ᵥ w = (x ⬝ᵥ w) • y := by
+    intro w
+    ext i
+    simp only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]
+    exact Finset.sum_congr rfl fun j _ => by ring
+  rw [hv, dotProduct_smul, smul_eq_mul]
+  ring
+
+theorem exists_congruence_trace_lt :
+    ∀ (g N : ℕ), 2 ≤ g → 1 ≤ N → ∀ T : Matrix (Fin g) (Fin g) ℚ, T.IsSymm →
+      (∃ v : Fin g → ℚ, v ⬝ᵥ T.mulVec v < 0) →
+      ∀ c : ℚ, ∃ U : Matrix (Fin g) (Fin g) ℤ, U.det = 1 ∧
+        (∀ i j, (N : ℤ) ∣ U i j - (1 : Matrix (Fin g) (Fin g) ℤ) i j) ∧
+        ((U.map (Int.cast : ℤ → ℚ)).transpose * T * U.map (Int.cast : ℤ → ℚ)).trace < c := by
+  intro g N hg hN T _ hv c
+  obtain ⟨v, hv⟩ := hv
+  set D : ℕ := ∏ i, (v i).den with hD
+  have hDpos : 0 < D := Finset.prod_pos fun i _ => (v i).den_pos
+  have hden : ∀ i, (v i).den ∣ D := fun i => Finset.dvd_prod_of_mem _ (Finset.mem_univ i)
+  set xz : Fin g → ℤ := fun i => ((D / (v i).den : ℕ) : ℤ) * (v i).num with hxz
+  have hx : ∀ i, ((xz i : ℤ) : ℚ) = (D : ℚ) * v i := by
+    intro i
+    have hne : ((v i).den : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (v i).den_nz
+    simp only [hxz]
+    rw [Int.cast_mul, Int.cast_natCast, Nat.cast_div (hden i) hne, ← Rat.mul_den_eq_num (v i)]
+    field_simp
+  set x : Fin g → ℚ := fun i => (xz i : ℚ) with hxdef
+  have hxv : x = (D : ℚ) • v := funext fun i => by simp [hxdef, hx]
+  have hxT : x ⬝ᵥ T *ᵥ x < 0 := by
+    rw [hxv, mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul, ← mul_assoc]
+    have : (0 : ℚ) < D := by exact_mod_cast hDpos
+    exact mul_neg_of_pos_of_neg (by positivity) hv
+  obtain ⟨i0, hi0⟩ : ∃ i0, xz i0 ≠ 0 := by
+    by_contra h
+    push Not at h
+    have : x = 0 := funext fun i => by simp [hxdef, h i]
+    rw [this] at hxT
+    simp at hxT
+  obtain ⟨i1, hi1⟩ := Fintype.exists_ne_of_one_lt_card (by simp; omega) i0
+  set yz : Fin g → ℤ := Pi.single i0 (xz i1) - Pi.single i1 (xz i0) with hyz
+  have hyx : yz ⬝ᵥ xz = 0 := by
+    rw [hyz, sub_dotProduct, single_dotProduct, single_dotProduct]; ring
+  set y : Fin g → ℚ := fun j => (yz j : ℚ) with hydef
+  have hy1 : y i1 = -(xz i0 : ℚ) := by
+    simp [hydef, hyz, Pi.single_apply, hi1]
+  have hyy : 0 < y ⬝ᵥ y := by
+    have hle : y i1 * y i1 ≤ y ⬝ᵥ y :=
+      Finset.single_le_sum (f := fun j => y j * y j) (fun j _ => mul_self_nonneg _) (Finset.mem_univ i1)
+    have hpos : 0 < y i1 * y i1 := by
+      rw [hy1]
+      have : (xz i0 : ℚ) ≠ 0 := by exact_mod_cast hi0
+      exact mul_self_pos.mpr (neg_ne_zero.mpr this)
+    linarith
+  have hq : (y ⬝ᵥ y) * (x ⬝ᵥ T *ᵥ x) < 0 := mul_neg_of_pos_of_neg hyy hxT
+  obtain ⟨k, hk⟩ := exists_nat_mul_quadratic_lt N hN T.trace (x ⬝ᵥ T.mulVec y + y ⬝ᵥ T.mulVec x)
+    ((y ⬝ᵥ y) * (x ⬝ᵥ T.mulVec x)) c hq
+  refine ⟨1 + ((N : ℤ) * k) • vecMulVec xz yz, ?_, ?_, ?_⟩
+  · rw [← smul_vecMulVec, vecMulVec_eq Unit, det_one_add_replicateCol_mul_replicateRow, dotProduct_smul,
+      hyx, smul_zero, add_zero]
+  · intro i j
+    refine ⟨k * (xz i * yz j), ?_⟩
+    simp only [Matrix.add_apply, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul]
+    ring
+  · have hmap : (1 + ((N : ℤ) * k) • vecMulVec xz yz).map (Int.cast : ℤ → ℚ) =
+        1 + ((N : ℚ) * k) • vecMulVec x y := by
+      ext i j
+      simp only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul,
+        Matrix.one_apply, hxdef, hydef]
+      split_ifs <;> push_cast <;> ring
+    rw [hmap, trace_transvection_conj]
+    exact hk
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNatMulQuadraticLt =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.NormLeTsumOfCubeFourierCoeffLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.NormLeTsumOfCubeFourierCoeffLe", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.IsPluriharmonicSiegel\npublic import Mathlib.MeasureTheory.Integral.Bochner.Basic\npublic import Mathlib.MeasureTheory.Measure.Haar.OfBasis\npublic import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.EventuallyIteratedFDerivEqZeroOfRealSubspace\npublic import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.FderivIntegralApplyOfHolomorphicOfDominated\npublic import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.SetIntegralPowEqZeroOfPosFreqEuclidean\npublic import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsNatMulQuadraticLt\npublic import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.SndFDerivAddSndFDerivIEqZeroOfHarmonicAtLine\npublic import Development.AbelianVarietyTheory.Proofs.ToricGeometry.FourierCoeffUnitCubeTranslateOfEntirePeriodic\nimport Mathlib.Algebra.Order.Archimedean.Real.Hom\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Fourier.AddCircleMulti\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\npublic import Mathlib.Analysis.Matrix.Order\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Complex Matrix Filter Topology MeasureTheory
@@ -92,7 +237,7 @@ theorem norm_le_tsum_of_cube_fourierCoeff_le {ι : Type*} [Fintype ι] [Decidabl
       obtain ⟨n, hn⟩ := (AddCircle.coe_eq_zero_iff _).1 h3
       exact ⟨n, by simpa using hn⟩
     choose n hn using h2
-    rw [← apply_add_intCast_vec_of_unit_periods hA n x]
+    rw [← _root_.GlobalTheory.IntegerShiftSingle.main hA n x]
     change A x' = _
     congr 1
     funext i
@@ -251,7 +396,7 @@ theorem exists_bound_of_unit_periods {ι : Type*} [Fintype ι] [DecidableEq ι]
   obtain ⟨M, hM⟩ := (isCompact_Icc (a := (0 : ι → ℝ)) (b := 1)).exists_bound_of_continuousOn
     hc.continuousOn
   refine ⟨M, fun x => ?_⟩
-  have h := apply_add_intCast_vec_of_unit_periods hA (fun i => ⌊x i⌋) fun i => Int.fract (x i)
+  have h := _root_.GlobalTheory.IntegerShiftSingle.main hA (fun i => ⌊x i⌋) fun i => Int.fract (x i)
   have e : ((fun i => Int.fract (x i)) + fun i => ((⌊x i⌋ : ℤ) : ℝ)) = x := by
     funext i; simp
   rw [e] at h
@@ -410,7 +555,7 @@ theorem summable_exp_neg_mul_sum_abs {ι : Type*} [Fintype ι] {ε : ℝ} (hε :
     rw [← Real.exp_nat_mul]; congr 1; ring
   have h1 : Summable fun n : ℤ => Real.exp (-(ε * |(n : ℝ)|)) :=
     Summable.of_nat_of_neg (by simpa using h0) (by simpa using h0)
-  refine (summable_prod_tuples (J := fun _ : ι => ℤ)
+  refine (_root_.GlobalTheory.SummablePiProd.summable_pi_prod (J := fun _ : ι => ℤ)
     (u := fun _ n => Real.exp (-(ε * |(n : ℝ)|))) (fun _ _ => (Real.exp_pos _).le)
     fun _ => h1).congr fun m => ?_
   rw [← Real.exp_sum, Finset.mul_sum, Finset.sum_neg_distrib]
@@ -548,7 +693,7 @@ theorem phKoecher : PhKoecherStatement := by
           U.map (Int.cast : ℤ → ℚ)).trace : ℚ) : ℝ) := by
       rw [Matrix.trace_mul_cycle]
       simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply (M := _ * _), Matrix.map_apply, hT,
-        Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, Fintype.sum_prod_type, Finset.mul_sum]
+        Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, Fintype.sum_prod_type]
       push_cast
       rw [Finset.sum_comm]
       simp only [Finset.mul_sum]
@@ -606,3 +751,6 @@ theorem phKoecher : PhKoecherStatement := by
         gcongr
 
 end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.NormLeTsumOfCubeFourierCoeffLe =====

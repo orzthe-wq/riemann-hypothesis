@@ -138,7 +138,7 @@ theorem lev_values [CharZero LL] (i : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPr
     (constantCoeff (W.lev i ζ W.X) = 0 ↔ ζ ^ (PD.p ^ (W.s - 1)) = 1) ∧
     (constantCoeff (W.lev i ζ W.Q) = 0 ↔ IsPrimitiveRoot ζ (PD.p ^ W.s)) ∧ W.lev i ζ W.Q ≠ 0 := by
   have hp : PD.p.Prime := PD.hp
-  haveI : Fact PD.p.Prime := ⟨hp⟩
+  have : Fact PD.p.Prime := ⟨hp⟩
   obtain ⟨E, hE0, hE1, hE⟩ := W.lev_π i ζ hζ
   obtain ⟨j, hj⟩ := hζ
   have hζ0 : ζ ≠ 0 := hj.ne_zero (pow_ne_zero _ hp.ne_zero)
@@ -260,7 +260,7 @@ theorem lev_at_root_of_unity : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.
   have hp : ((D.loc l).PD K).p = l := (D.loc l).PD_p K
   have hs : W.s = s := (HW l).W_s K s LL h
   clear_value W
-  haveI : CharZero ↥LL.1 := algebraRat.charZero _
+  have : CharZero ↥LL.1 := algebraRat.charZero _
   have hζ' : ∃ j : ℕ, IsPrimitiveRoot ζ (((D.loc l).PD K).p ^ j) := by rw [hp]; exact hζ
   obtain ⟨H1, H2⟩ := LevPt.lev_values W i ζ hζ'
   simp only [hp, hs] at H2

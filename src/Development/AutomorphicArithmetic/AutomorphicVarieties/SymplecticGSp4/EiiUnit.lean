@@ -59,7 +59,7 @@ private theorem eii_step {R : Type} [CommRing R] (A : Submodule R (M4 R)) (hmul 
         (!![y0, 0, y1, 0; 0, 0, 0, 0; y2, 0, y3, 0; 0, 0, 0, 0] : M4 R) *
           (!![y0, 0, y1, 0; 0, 0, 0, 0; y2, 0, y3, 0; 0, 0, 0, 0] : M4 R) := by
     ext a b
-    fin_cases a <;> fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_four] <;> ring
+    fin_cases a <;> fin_cases b <;> simp <;> ring
   have hm : (y0 * y3 - y1 * y2) • (!![1, 0, 0, 0; 0, 0, 0, 0; 0, 0, 1, 0; 0, 0, 0, 0] : M4 R) ∈ A := by
     rw [key]
     exact A.sub_mem (A.smul_mem _ hY) (hmul _ hY _ hY)
@@ -94,7 +94,7 @@ private theorem eii_alg {R : Type} [CommRing R] (A : Submodule R (M4 R)) (hmul :
     convert hYA using 1
     ext a b
     fin_cases a <;> fin_cases b <;>
-      simp [Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply, x01, x03, x10, x12, x21, x23, x30, x32] <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_four, x01, x03, x10, x12, x21, x23, x30, x32] <;>
       ring
   have hZ : (H 0 0 - H 2 2) • Matrix.single 0 0 (1 : R) =
       (!![1, 0, 0, 0; 0, 0, 0, 0; 0, 0, 1, 0; 0, 0, 0, 0] : M4 R) * H *

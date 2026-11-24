@@ -1,9 +1,10 @@
 module
 
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutER
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.CapelliDetAdInvariant
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralAeConvergenceContinuity
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.RadialAdjointOfParts
+import Formalism.HermitianCurvature.StatementJF
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.CapAdInv
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.OrbitalIntegralAeConvergenceContinuity
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RegularisedPairingViaPhase
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.RestrictionIrrelevantDoubleLevelOperator
 import Mathlib.Algebra.Order.Floor.Extended
@@ -122,7 +123,7 @@ theorem capacity_theta_facts : CapThFacts := by
     have hgG : g ∈ B.GV k r := hg.1
     have hs' := Formalism.FourierDecayAlt.P.B7.sgs_mem D hp hgG
     rw [hApp _ (Formalism.FourierDecayAlt.P.B5.ckOn_rho D hp hf) g hgG,
-      Formalism.FourierDecayAlt.P.capelli_rho_commute k r Wp Wq D Y f p hp hf g hgG]
+      _root_.Formalism.FourierDecayAlt.P.JFxE.cVRho k r Wp Wq D Y f p hp hf g hgG]
     simp only [B.rho]
     rw [hApp f hf _ hs', ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]
   · intro T hT

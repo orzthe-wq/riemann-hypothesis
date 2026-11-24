@@ -1,5 +1,11 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SimpleSum
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField
+public import Development.AbelianVarietyTheory.Definitions.Foundations.SimpleSumRowCol
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralCompBlocks
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpEOmTargetUnipotent
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeSupportAndFourierRelation
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClosedEmbeddingAffPtUncurry
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 public import Mathlib.Data.Matrix.ColumnRowPartitioned
@@ -8,20 +14,15 @@ public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColEInvMu
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousWittExtendByZero
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyCompSideMulEq
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeakIntegralOfIsLocallyConstantOfIsCompact
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpECutOmEquivariant
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpEOmTargetUnipotent
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeSupportAndFourierRelation
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentSubgroupSuccDecompositionStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowSupportUniform
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatMatrixExistsOpenAddSubgroupInvariaStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentSubgroupSuccDecomposition
+public import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatMatrixExistsOpenAddSubgroupInvaria
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilFormulaRootExchangeParabolicIntersection
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnipotentRadicalBasic
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilFormulaRootExchangeParabolicIntersectionStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -36,7 +37,6 @@ import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -44,7 +44,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -58,10 +57,201 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.CStarAlgebra.Classes
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Topology.Algebra.Group.Units
+import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpECutOmEquivariant, Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowSupportUniform, Development.AbelianVarietyTheory.Proofs.TwistedOperators.OrbitLocallyConstant
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpECutOmEquivariant =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpECutOmEquivariant", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.SimpleSum\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.SecondCountableAndT2LocalField\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.SimpleSumRowCol\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralCompBlocks\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpEOmTargetUnipotent\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnipotentRadicalBasic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx
+
+namespace GlobalTheory.RootEx.CutRow
+
+variable {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] {c p : ℕ}
+
+end GlobalTheory.RootEx.CutRow
+
+
+open MeasureTheory ValuativeRel Matrix in
+theorem _root_.GlobalTheory.RootEx.opE_cut_om_equivariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c p : ℕ) (_ : 1 ≤ p) (_ : p < c) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] (μ : kˣ →* ℂˣ) (χ : (n' → k) → ℂ) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (x : GL n k), ∀ u ∈ _root_.GlobalTheory.RootEx.N k n c p ⊓ _root_.GlobalTheory.RootEx.N k n c (p + 1), _root_.GlobalTheory.RootEx.opE ψ ν (p + 1) (fun y => (∑ l : Fin c, if l.val + 1 = p then χ (fun s => y (Sum.inr l) (Sum.inl s)) else 0) * _root_.GlobalTheory.SplitWeil.om μ 1 (_root_.GlobalTheory.RootEx.embX c x * u) Φ y) = (((_root_.GlobalTheory.SplitWeil.nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - ((p + 1 : ℕ) : ℝ)) : ℝ) : ℂ) * (ψ (-_root_.GlobalTheory.RootEx.simpleSum u) : ℂ)) • _root_.GlobalTheory.SplitWeil.om μ 1 x (_root_.GlobalTheory.RootEx.opE ψ ν (p + 1) (fun y => (∑ l : Fin c, if l.val + 1 = p then χ (fun s => y (Sum.inr l) (Sum.inl s)) else 0) * Φ y)) := by
+  intro k _ _ _ _ _ _ n n' _ _ _ _ c p hp1 hpc ψ ν _ μ χ Φ x u hu
+  obtain ⟨huP, huP1⟩ := Subgroup.mem_inf.mp hu
+  set cut : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ := fun y =>
+    ∑ l : Fin c, if l.val + 1 = p then χ (fun s => y (Sum.inr l) (Sum.inl s)) else 0 with hcut
+  have hlevi : ∀ (g : GL n k) (y : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k),
+      cut (((_root_.GlobalTheory.RootEx.embX c g : GL (n ⊕ Fin c) k) : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * y) = cut y := by
+    intro g y
+    simp only [hcut, _root_.GlobalTheory.RootEx.Radical.embX_val, _root_.GlobalTheory.RootEx.OpELevi.left_inr]
+  have hgen : _root_.GlobalTheory.RootEx.InN p u⁻¹ :=
+    _root_.GlobalTheory.RootEx.Model.mem_N_iff.mp (inv_mem huP)
+  have hunip : ∀ (x₀ : Matrix n n' k) (e : { rs // _root_.GlobalTheory.RootEx.Free (p + 1) rs } → k),
+      cut (((u⁻¹ : GL (n ⊕ Fin c) k) : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * _root_.GlobalTheory.RootEx.affPt (p + 1) x₀ e) =
+        cut (_root_.GlobalTheory.RootEx.affPt (p + 1) x₀ e) := by
+    intro x₀ e
+    simp only [hcut]
+    refine Finset.sum_congr rfl fun l _ => ?_
+    split_ifs with hl
+    · congr 1
+      funext s
+      rw [_root_.GlobalTheory.RootEx.TargetUnip.mul_apply_of_inN hgen, Finset.sum_eq_zero, add_zero]
+      intro r _
+      split_ifs with hlt
+      · cases r with
+        | inl i =>
+          simp [_root_.GlobalTheory.RootEx.lev] at hlt
+          omega
+        | inr i =>
+          simp [_root_.GlobalTheory.RootEx.lev] at hlt
+          rw [_root_.GlobalTheory.RootEx.TargetUnip.affPt_of_not_free]
+          · simp [_root_.GlobalTheory.RootEx.basePt]
+          · simp [_root_.GlobalTheory.RootEx.Free]
+            omega
+      · rfl
+    · rfl
+  have hmul : _root_.GlobalTheory.SplitWeil.om μ 1 (_root_.GlobalTheory.RootEx.embX c x * u) Φ =
+      _root_.GlobalTheory.SplitWeil.om μ 1 (_root_.GlobalTheory.RootEx.embX c x) (_root_.GlobalTheory.SplitWeil.om μ 1 u Φ) := by
+    have h := _root_.GlobalTheory.SplitWeil.Model.om_mul μ 1 1 (_root_.GlobalTheory.RootEx.embX c x) u Φ
+    rwa [one_mul] at h
+  have hcomm : ∀ Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ,
+      (fun y => cut y * _root_.GlobalTheory.SplitWeil.om μ 1 (_root_.GlobalTheory.RootEx.embX c x) Ψ y) =
+        _root_.GlobalTheory.SplitWeil.om μ 1 (_root_.GlobalTheory.RootEx.embX c x) (fun y => cut y * Ψ y) := by
+    intro Ψ
+    funext y
+    simp only [_root_.GlobalTheory.SplitWeil.om, Units.val_one, Matrix.mul_one, ← map_inv, hlevi]
+    ring
+  have hcut_unip : _root_.GlobalTheory.RootEx.opE ψ ν (p + 1) (fun y => cut y * _root_.GlobalTheory.SplitWeil.om μ 1 u Φ y) =
+      _root_.GlobalTheory.RootEx.opE ψ ν (p + 1) (_root_.GlobalTheory.SplitWeil.om μ 1 u (fun y => cut y * Φ y)) := by
+    funext x₀
+    unfold _root_.GlobalTheory.RootEx.opE
+    congr 1
+    funext e
+    simp only [_root_.GlobalTheory.SplitWeil.om, Units.val_one, Matrix.mul_one, hunip]
+    ring
+  rw [hmul, hcomm, (_root_.GlobalTheory.RootEx.opE_om_embX k n n' c (p + 1) (by omega) (by omega) ψ ν μ _).1 x,
+    hcut_unip, _root_.GlobalTheory.RootEx.opE_om_target_unipotent k n n' c (p + 1) (by omega) (by omega) ψ ν μ _ u huP1]
+  funext y
+  simp only [_root_.GlobalTheory.SplitWeil.om, Pi.smul_apply, smul_eq_mul]
+  ring
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpECutOmEquivariant =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowSupportUniform =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowSupportUniform", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.SimpleSum\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeSupportAndFourierRelation\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Algebra.Group.Units\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx
+open Filter Topology
+
+noncomputable section
+namespace GlobalTheory.RootEx.RowSupport
+open GlobalTheory.RootEx.ExchangeSupport
+
+theorem exists_box {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
+    [IsNonarchimedeanLocalField k] {n : Type} [Fintype n] [DecidableEq n]
+    {ψ : AddChar k Circle} (hψ : ψ ≠ 1) (W : Set (n → k)) (hW : W ∈ 𝓝 (0 : n → k)) :
+    ∃ B : Set (n → k), IsCompact B ∧ ∀ u, u ∉ B → ∃ β ∈ W, ψ (u ⬝ᵥ β) ≠ 1 := by
+  classical
+  obtain ⟨a, ha⟩ := AddChar.ne_one_iff.mp hψ
+  have ha0 : a ≠ 0 := by
+    rintro rfl
+    exact ha (AddChar.map_zero_eq_one ψ)
+  have hU : ∀ s : n, {x : k | (Pi.single s x : n → k) ∈ W} ∈ 𝓝 (0 : k) := by
+    intro s
+    have hcont : Continuous fun x : k => (Pi.single s x : n → k) := by
+      refine continuous_pi fun j => ?_
+      simp only [Pi.single_apply]
+      split_ifs
+      · exact continuous_id
+      · exact continuous_const
+    exact hcont.continuousAt.preimage_mem_nhds (by simpa using hW)
+  obtain ⟨γ, hγ⟩ := (IsValuativeTopology.mem_nhds_zero_iff _).mp (Filter.iInter_mem.mpr hU)
+  refine ⟨Set.univ.pi fun _ => {x : k | valuation k x ≤ valuation k a / (γ : ValueGroupWithZero k)},
+    isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k _, ?_⟩
+  intro u hu
+  simp only [Set.mem_pi, Set.mem_univ, true_implies, Set.mem_ofPred_eq, not_forall, not_le] at hu
+  obtain ⟨s, hs⟩ := hu
+  have hus : u s ≠ 0 := by
+    intro h
+    rw [h, map_zero] at hs
+    exact not_lt.mpr zero_le hs
+  have hv : 0 < valuation k (u s) := by
+    rw [zero_lt_iff]
+    exact (Valuation.ne_zero_iff _).mpr hus
+  refine ⟨Pi.single s (a / u s), ?_, ?_⟩
+  · have hsmall : valuation k (a / u s) < γ := by
+      rw [map_div₀, div_lt_iff₀ hv]
+      have hg : (0 : ValueGroupWithZero k) < γ := by
+        rw [zero_lt_iff]
+        exact γ.ne_zero
+      rw [div_lt_iff₀ hg] at hs
+      simpa [mul_comm] using hs
+    exact Set.mem_iInter.mp (hγ hsmall) s
+  · rw [dotProduct_single, mul_div_cancel₀ _ hus]
+    exact ha
+
+theorem row_support_uniform : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ) (_ : 1 ≤ p) (_ : p < c) (ψ : AddChar k Circle) (_ : ψ ≠ 1) (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (_ : IsSmoothRep σ) (F : A) (Ω : Set (GL (n ⊕ Fin c) k)) (_ : IsCompact Ω), ∃ B : Set (n → k), IsCompact B ∧ ∀ l : A →ₗ[ℂ] ℂ, IsNEquiv ψ p σ l → ∀ w ∈ Ω, ∀ u, u ∉ B → l (σ (rowE c p u) (σ w F)) = 0 := by
+  intro k _ _ _ _ n _ _ c p hp hc ψ hψ A _ _ σ hσ F Ω hΩ
+  set S : Set (GL (n ⊕ Fin c) k) := {g | σ g F = F} with hSdef
+  have hS : IsOpen S := hσ F
+  have hcol : Continuous fun β : n → k => colE (k := k) c (p + 1) β :=
+    ExchangeSupport.continuous_colE
+  have hfix : ∀ᶠ β in 𝓝 (0 : n → k), ∀ w ∈ Ω, σ (colE c (p + 1) β) (σ w F) = σ w F := by
+    refine hΩ.eventually_forall_of_forall_eventually fun w _ => ?_
+    have hc2 : Continuous fun z : (n → k) × GL (n ⊕ Fin c) k => z.2⁻¹ * colE c (p + 1) z.1 * z.2 :=
+      ((continuous_snd.inv).mul (hcol.comp continuous_fst)).mul continuous_snd
+    have hmem : ((0 : n → k), w).2⁻¹ * colE c (p + 1) ((0 : n → k), w).1 * ((0 : n → k), w).2 ∈ S := by
+      simp [hSdef, ExchangeSupport.colE_zero]
+    filter_upwards [hc2.continuousAt.preimage_mem_nhds (hS.mem_nhds hmem)] with z hz
+    have hz' : σ (z.2⁻¹ * colE c (p + 1) z.1 * z.2) F = F := hz
+    calc σ (colE c (p + 1) z.1) (σ z.2 F)
+        = σ (z.2 * (z.2⁻¹ * colE c (p + 1) z.1 * z.2)) F := by
+          rw [map_mul σ z.2, Module.End.mul_apply, map_mul, map_mul, Module.End.mul_apply,
+            Module.End.mul_apply]
+          rw [← Module.End.mul_apply (σ z.2), ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
+      _ = σ z.2 F := by rw [map_mul, Module.End.mul_apply, hz']
+  obtain ⟨B, hB, hBout⟩ := exists_box hψ {β | ∀ w ∈ Ω, σ (colE c (p + 1) β) (σ w F) = σ w F} hfix
+  refine ⟨B, hB, fun l hl w hw u hu => ?_⟩
+  obtain ⟨β, hβ, hne⟩ := hBout u hu
+  obtain ⟨hN, hsum⟩ := ExchangeSupport.conj_col (k := k) (n := n) hp hc u β
+  have key := hl _ hN (σ (rowE c p u) (σ w F))
+  rw [hsum] at key
+  have lhs : σ (rowE c p u * colE c (p + 1) β * (rowE c p u)⁻¹) (σ (rowE c p u) (σ w F)) =
+      σ (rowE c p u) (σ w F) := by
+    rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, map_mul, Module.End.mul_apply, hβ w hw]
+  rw [lhs] at key
+  have hne' : (ψ (u ⬝ᵥ β) : ℂ) ≠ 1 := by
+    intro h
+    exact hne (Subtype.ext (by simpa using h))
+  have : (1 - (ψ (u ⬝ᵥ β) : ℂ)) * l (σ (rowE c p u) (σ w F)) = 0 := by
+    rw [sub_mul, one_mul, ← key, sub_self]
+  rcases mul_eq_zero.mp this with h | h
+  · exact absurd (sub_eq_zero.mp h).symm hne'
+  · exact h
+
+end GlobalTheory.RootEx.RowSupport
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowSupportUniform =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.OrbitLocallyConstant =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TwistedOperators.OrbitLocallyConstant", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClosedEmbeddingAffPtUncurry\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField\npublic import Mathlib.Data.Matrix.ColumnRowPartitioned\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.CharEqOneOfOpENeZero\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ColEInvMulAffPt\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousWittExtendByZero\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.EventuallyCompSideMulEq\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsWeakIntegralOfIsLocallyConstantOfIsCompact\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpECutOmEquivariant\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.SimpleSum\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeUnipotentSubgroupSuccDecomposition\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RowSupportUniform\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SchwartzBruhatMatrixExistsOpenAddSubgroupInvaria\npublic import Development.AbelianVarietyTheory.Proofs.TwistedOperators.WeilFormulaRootExchangeParabolicIntersection\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.OpEOmTargetUnipotent\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.RootExchangeSupportAndFourierRelation\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnipotentRadicalBasic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Algebra.Group.Units\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootEx
@@ -220,7 +410,7 @@ theorem fc_supp (hp : 1 ≤ p) (hc : p < c) (hψ1 : ψ ≠ 1) (hσ : IsSmoothRep
     (Φ : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)) :
     ∃ Ω : Set (GL (n ⊕ Fin c) k), IsCompact Ω ∧ ∀ χ hχ h, fc hψ ν μ σ θ b φ F p χ hχ Φ h ≠ 0 →
       ∃ x : GL n k, ∃ u ∈ N k n c p ⊓ N k n c (p + 1), ∃ w ∈ Ω, h = embX c x * u * w := by
-  obtain ⟨Λ, hΛ, hΦ⟩ := GlobalTheory.T.schwartzBruhat_matrix_exists_open_addSubgroup_invariant k _ _ Φ.1 Φ.2
+  obtain ⟨Λ, hΛ, hΦ⟩ := _root_.GlobalTheory.RootEx.sb_matrix_exists_isOpen_addSubgroup k _ _ Φ.1 Φ.2
   obtain ⟨Ω, hΩ, H⟩ := opE_support_compact_mod_R k n n' c (p + 1) (by omega) hc ψ hψ hψ1 ν
     (tsupport Φ.1) Φ.2.2 Λ hΛ
   obtain ⟨B, hB, HB⟩ := _root_.GlobalTheory.RootEx.RowSupport.row_support_uniform k n c p hp hc ψ hψ1 A σ hσ F Ω hΩ
@@ -233,7 +423,7 @@ theorem fc_supp (hp : 1 ≤ p) (hc : p < c) (hψ1 : ψ ≠ 1) (hσ : IsSmoothRep
     exact h1 (Subtype.ext (funext hh))
   obtain ⟨r, hr, w, hw, rfl⟩ := H μ Φ.1 (subset_tsupport _) hΦ (cut p χ) (cut_lc p hχ) h x₀ hx₀
   obtain ⟨x, g, hg, rfl⟩ := Radical.exists_of_mem_R hr
-  obtain ⟨g₁, hg₁, u, rfl⟩ := GlobalTheory.T.rootExchangeUnipotentSubgroup_succ_decomposition k n c p g hg
+  obtain ⟨g₁, hg₁, u, rfl⟩ := _root_.GlobalTheory.RootEx.RadicalDecomp.succ_decomp k n c p g hg
   refine ⟨x, g₁, hg₁, rowE c p u * w, Set.mul_mem_mul (Set.mem_image_of_mem _ ?_) hw, by group⟩
   by_contra hu
   apply hne
@@ -352,7 +542,7 @@ theorem step_two (hp : 1 ≤ p) (hc : p < c) (hψ1 : ψ ≠ 1) (hμ : IsOpen (μ
     apply hne
     rw [fc_equiv hψ ν φ F hp hc hθ hb χ hχ Φ x u hu w,
       fc_equiv hψ ν φ F hp hc hθ hb (fun _ => 1) (IsLocallyConstant.const 1) Φ x u hu w, hw w hw']
-  obtain ⟨z, hz1, hz2⟩ := GlobalTheory.T.weil_formula_rootExchange_parabolic_intersection k n c p hp hc ν μX μG (fc hψ ν μ σ θ b φ F p χ hχ Φ)
+  obtain ⟨z, hz1, hz2⟩ := _root_.GlobalTheory.RootEx.QuotStep.quotInt_step k n c p hp hc ν μX μG (fc hψ ν μ σ θ b φ F p χ hχ Φ)
     (fc_lc hψ ν φ F hμ hσ χ hχ Φ) ⟨Ω, hΩ, fun h hh => by
       obtain ⟨x, u, hu, w, hw', rfl⟩ := H _ _ h hh
       exact ⟨_, ⟨Subgroup.mul_mem_sup ⟨x, rfl⟩ hu.1, Subgroup.mul_mem_sup ⟨x, rfl⟩ hu.2⟩, w, hw', rfl⟩⟩
@@ -364,3 +554,7 @@ theorem step_two (hp : 1 ≤ p) (hc : p < c) (hψ1 : ψ ≠ 1) (hμ : IsOpen (μ
 end Step
 
 end GlobalTheory.RootEx.Unfolding
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TwistedOperators.OrbitLocallyConstant =====

@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -91,7 +92,7 @@ private theorem exists_phi {B : Type} [CommRing B] [Algebra ℂ B] (e : B →ₐ
     by_cases h : l' = l
     · subst h
       simp [φ]
-    · simp [φ, Finsupp.single_apply, Pi.single_apply, h, Ne.symm h]
+    · simp [φ, h]
   · intro ω hω
     refine ⟨d, fun l => bs.repr ω l, bs, ?_, (bs.sum_repr ω).symm⟩
     intro i

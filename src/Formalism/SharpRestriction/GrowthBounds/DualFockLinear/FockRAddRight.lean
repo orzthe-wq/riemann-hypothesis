@@ -57,12 +57,12 @@ open Formalism.L2.G.Model.TS
 
 def fockL {τ K : Type} [CommRing K] (Q : MvPolynomial τ K) : MvPolynomial τ K →ₗ[K] K where
   toFun P := fockR P Q
-  map_add' a b := tsact_add_left a b Q
-  map_smul' c a := by simpa using tsact_smul_left c a Q
+  map_add' a b := FockPairing.pair_add_left a b Q
+  map_smul' c a := by simpa using FockPairing.pair_smul_left c a Q
 
 theorem fockR_add_right {τ K : Type} [CommRing K] (g f f' : MvPolynomial τ K) :
     fockR g (f + f') = fockR g f + fockR g f' := by
-  simp only [Formalism.L2.G.Model.TS.fockR, MvPolynomial.coeff_add, mul_add, add_mul, Finset.sum_add_distrib]
+  exact FockPairing.pair_add_right g f f'
 
 section Pair
 
@@ -128,7 +128,7 @@ def TY (c : Kf) : ↥(Vsp Kf (flW (m := m) d)) →ₗ[Kf] Module.Dual Kf ↥(Vsp
     ext u
     simp only [LinearMap.smul_apply, LinearMap.comp_apply, fockL, LinearMap.coe_mk, AddHom.coe_mk, map_smul,
       Submodule.coe_smul, smul_eq_mul, RingHom.id_apply]
-    rw [tsact_smul_right]
+    simp_rw [FockPairing.pair_smul_right]
     ring
 
 theorem TY_apply (c : Kf) (P Q : ↥(Pol Kf (ι := Fin n') (m + 1) d)) :
@@ -154,12 +154,12 @@ theorem int_pair (p κ : ℕ) (hMD : MultDiv O p κ (k := m + 1) d) (G : MvPolyn
   choose w hw using hw
   refine ⟨∑ μ ∈ G.support, AddMonoidAlgebra.coeff G μ * AddMonoidAlgebra.coeff E μ * w μ, ?_⟩
 
-  rw [fockR_eq_sum _ _ G.support (support_map_subset _ _), Finset.mul_sum, map_sum]
+  simp_rw [FockPairing.pair_eq_sum _ _ G.support (support_map_subset _ _), Finset.mul_sum, map_sum]
   refine Finset.sum_congr rfl ?_
   intro μ hμ
   have h := congrArg (algebraMap O Kf) (hw μ hμ)
   simp only [map_mul, map_pow, map_natCast] at h
-  simp only [coeff_map, map_mul]
+  simp only [coeff_map, map_mul, FockPairing.weight]
   rw [div_mul_eq_mul_div, div_eq_iff hD0]
   linear_combination (algebraMap O Kf (AddMonoidAlgebra.coeff G μ) * algebraMap O Kf (AddMonoidAlgebra.coeff E μ)) * h
 

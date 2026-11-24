@@ -1,52 +1,173 @@
 module
 
+public import GroundTheory.GlobalFields.TateThesis.TraceDualLattice
+public import GroundTheory.GlobalFields.TateThesis.LatticePoissonBasic
+public import GroundTheory.GlobalFields.TateThesis.LatticePoisson
 public import GroundTheory.GlobalFields.TateThesis.SchwartzBruhat
 public import GroundTheory.GlobalFields.IdeleGroups.ClassGroup
-import GroundTheory.GlobalFields.TateThesis.AdeleScaling
-public import GroundTheory.GlobalFields.TateThesis.TraceLatticePoisson
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import GroundTheory.GlobalFields.TateThesis.AdeleScaling
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.GlobalFields.TateThesis.TraceLatticeEuclidean, GroundTheory.GlobalFields.TateThesis.TraceLatticePoisson, GroundTheory.GlobalFields.TateThesis.AdelePoisson
+
+-- ===== clump member: GroundTheory.GlobalFields.TateThesis.TraceLatticeEuclidean =====
+-- clump-header: {"m": "GroundTheory.GlobalFields.TateThesis.TraceLatticeEuclidean", "h": "module\n\npublic import GroundTheory.GlobalFields.TateThesis.TraceDualLattice\npublic import GroundTheory.GlobalFields.TateThesis.LatticePoissonBasic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Global
+
+open NumberField NumberField.InfinitePlace NumberField.mixedEmbedding Module MeasureTheory
+open scoped Classical RealInnerProductSpace nonZeroDivisors
+
+noncomputable section
+
+variable (K : Type*) [Field K] [NumberField K]
+
+abbrev euclideanIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
+    Submodule ℤ (euclidean.mixedSpace K) :=
+  ZLattice.comap ℝ (idealLattice K I) (mixedToEuclidean K).symm.toLinearMap
+
+abbrev euclideanConjIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
+    Submodule ℤ (euclidean.mixedSpace K) :=
+  ZLattice.comap ℝ (idealLattice K I) (mixedToEuclideanConj K).symm.toLinearMap
+
+theorem mem_euclideanIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
+    (u : euclidean.mixedSpace K) :
+    u ∈ euclideanIdealLattice K I ↔ (mixedToEuclidean K).symm u ∈ idealLattice K I := Iff.rfl
+
+theorem mem_euclideanConjIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
+    (u : euclidean.mixedSpace K) :
+    u ∈ euclideanConjIdealLattice K I ↔ (mixedToEuclideanConj K).symm u ∈ idealLattice K I :=
+  Iff.rfl
+
+theorem measurePreserving_mixedToEuclidean_symm :
+    MeasurePreserving (mixedToEuclidean K).symm volume (selfDualMeasure K) := by
+  have : MeasurePreserving (mixedToEuclidean K).toHomeomorph.toMeasurableEquiv
+      (selfDualMeasure K) volume := measurePreserving_mixedToEuclidean K
+  exact this.symm
+
+theorem covolume_euclideanIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
+    ZLattice.covolume (euclideanIdealLattice K I) =
+      FractionalIdeal.absNorm (I : FractionalIdeal (𝓞 K)⁰ K) * √|(discr K : ℝ)| := by
+  rw [ZLattice.covolume_comap (idealLattice K I) (selfDualMeasure K) volume
+    (measurePreserving_mixedToEuclidean_symm K), covolume_idealLattice_selfDualMeasure]
+
+theorem dualLattice_euclideanIdealLattice (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
+    dualLattice (euclideanIdealLattice K I) =
+      euclideanConjIdealLattice K (traceDualIdeal K I) := by
+  ext μ
+  rw [mem_dualLattice, mem_euclideanConjIdealLattice, mem_idealLattice_traceDualIdeal_iff]
+  constructor
+  · intro h x hx
+    obtain ⟨k, hk⟩ := h (mixedToEuclidean K x) (by
+      rw [mem_euclideanIdealLattice, ContinuousLinearEquiv.symm_apply_apply]
+      exact hx)
+    refine ⟨k, ?_⟩
+    rw [mixedTraceForm_comm, mixedTraceForm_eq_inner, ContinuousLinearEquiv.apply_symm_apply,
+      real_inner_comm]
+    exact hk
+  · intro h ℓ hℓ
+    obtain ⟨k, hk⟩ := h ((mixedToEuclidean K).symm ℓ) hℓ
+    refine ⟨k, ?_⟩
+    rw [← hk, mixedTraceForm_comm, mixedTraceForm_eq_inner, ContinuousLinearEquiv.apply_symm_apply,
+      ContinuousLinearEquiv.apply_symm_apply, real_inner_comm]
+
+theorem inner_mixedToEuclideanConj_mixedToEuclidean (β a : mixedSpace K) :
+    ⟪mixedToEuclideanConj K β, mixedToEuclidean K a⟫ = mixedTraceForm K β a := by
+  rw [real_inner_comm, ← mixedTraceForm_eq_inner, mixedTraceForm_comm]
+
+end
+
+end GroundTheory.Global
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.GlobalFields.TateThesis.TraceLatticeEuclidean =====
+
+-- ===== clump member: GroundTheory.GlobalFields.TateThesis.TraceLatticePoisson =====
+-- clump-header: {"m": "GroundTheory.GlobalFields.TateThesis.TraceLatticePoisson", "h": "module\n\npublic import GroundTheory.GlobalFields.TateThesis.TraceDualLattice\npublic import GroundTheory.GlobalFields.TateThesis.LatticePoisson\npublic import GroundTheory.GlobalFields.TateThesis.TraceLatticeEuclidean\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Global
+
+open NumberField NumberField.InfinitePlace NumberField.mixedEmbedding Module MeasureTheory
+open scoped Classical RealInnerProductSpace FourierTransform SchwartzMap nonZeroDivisors
+
+noncomputable section
+
+variable (K : Type*) [Field K] [NumberField K]
+
+theorem idealLattice_summable_norm (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (f : 𝓢(mixedSpace K, ℂ))
+    (a : mixedSpace K) : Summable fun α : idealLattice K I => ‖f (α + a)‖ := by
+  simpa [add_comm] using summable_norm_comp_add (idealLattice K I) f a
+
+theorem traceDualIdeal_summable_norm (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
+    (f : 𝓢(mixedSpace K, ℂ)) (a : mixedSpace K) :
+    Summable fun β : idealLattice K (traceDualIdeal K I) =>
+      ‖mixedFourier K f β * 𝐞 (mixedTraceForm K β a)‖ := by
+  have h := summable_norm_comp_add (idealLattice K (traceDualIdeal K I)) (mixedFourierSchwartz K f) 0
+  simpa [norm_mul, Circle.norm_coe, mixedFourierSchwartz_apply] using h
+
+theorem idealLattice_poisson_summation (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
+    (f : 𝓢(mixedSpace K, ℂ)) (a : mixedSpace K) :
+    ∑' α : idealLattice K I, f (α + a) =
+      (FractionalIdeal.absNorm (I : FractionalIdeal (𝓞 K)⁰ K) * √|(discr K : ℝ)|)⁻¹ •
+        ∑' β : idealLattice K (traceDualIdeal K I),
+          mixedFourier K f β * 𝐞 (mixedTraceForm K β a) := by
+  set L := euclideanIdealLattice K I
+  set F : 𝓢(euclidean.mixedSpace K, ℂ) :=
+    SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (mixedToEuclidean K).symm f
+  have hF : (F : euclidean.mixedSpace K → ℂ) = f ∘ (mixedToEuclidean K).symm := rfl
+  have h := lattice_poisson_summation L F (mixedToEuclidean K a)
+
+  let eL : idealLattice K I ≃ L :=
+    { toFun := fun α => ⟨mixedToEuclidean K α, by
+        rw [mem_euclideanIdealLattice, ContinuousLinearEquiv.symm_apply_apply]; exact α.2⟩
+      invFun := fun ℓ => ⟨(mixedToEuclidean K).symm ℓ, ℓ.2⟩
+      left_inv := fun α => Subtype.ext (ContinuousLinearEquiv.symm_apply_apply _ _)
+      right_inv := fun ℓ => Subtype.ext (ContinuousLinearEquiv.apply_symm_apply _ _) }
+
+  let eD : idealLattice K (traceDualIdeal K I) ≃ dualLattice L :=
+    { toFun := fun β => ⟨mixedToEuclideanConj K β, by
+        rw [dualLattice_euclideanIdealLattice, mem_euclideanConjIdealLattice,
+          ContinuousLinearEquiv.symm_apply_apply]; exact β.2⟩
+      invFun := fun μ => ⟨(mixedToEuclideanConj K).symm μ, by
+        have hμ : (μ : euclidean.mixedSpace K) ∈ euclideanConjIdealLattice K (traceDualIdeal K I) := by
+          rw [← dualLattice_euclideanIdealLattice]
+          exact μ.2
+        exact hμ⟩
+      left_inv := fun β => Subtype.ext (ContinuousLinearEquiv.symm_apply_apply _ _)
+      right_inv := fun μ => Subtype.ext (ContinuousLinearEquiv.apply_symm_apply _ _) }
+  have hlhs : ∑' ℓ : L, F (ℓ + mixedToEuclidean K a) = ∑' α : idealLattice K I, f (α + a) := by
+    rw [← Equiv.tsum_eq eL]
+    refine tsum_congr fun α => ?_
+    change f ((mixedToEuclidean K).symm (mixedToEuclidean K α + mixedToEuclidean K a)) = _
+    rw [← map_add (f := _), ContinuousLinearEquiv.symm_apply_apply]
+  have hrhs : ∑' μ : dualLattice L, 𝓕 (F : euclidean.mixedSpace K → ℂ) μ *
+      𝐞 ⟪(μ : euclidean.mixedSpace K), mixedToEuclidean K a⟫ =
+      ∑' β : idealLattice K (traceDualIdeal K I),
+        mixedFourier K f β * 𝐞 (mixedTraceForm K β a) := by
+    rw [← Equiv.tsum_eq eD]
+    refine tsum_congr fun β => ?_
+    change 𝓕 (F : euclidean.mixedSpace K → ℂ) (mixedToEuclideanConj K β) *
+      𝐞 ⟪mixedToEuclideanConj K β, mixedToEuclidean K a⟫ = _
+    rw [hF, ← mixedFourier_eq, inner_mixedToEuclideanConj_mixedToEuclidean]
+  rw [hlhs, hrhs, covolume_euclideanIdealLattice] at h
+  exact h
+
+end
+
+end GroundTheory.Global
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.GlobalFields.TateThesis.TraceLatticePoisson =====
+
+-- ===== clump member: GroundTheory.GlobalFields.TateThesis.AdelePoisson =====
+-- clump-header: {"m": "GroundTheory.GlobalFields.TateThesis.AdelePoisson", "h": "module\n\npublic import GroundTheory.GlobalFields.TateThesis.SchwartzBruhat\npublic import GroundTheory.GlobalFields.IdeleGroups.ClassGroup\nimport GroundTheory.GlobalFields.TateThesis.AdeleScaling\npublic import GroundTheory.GlobalFields.TateThesis.TraceLatticePoisson\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace GroundTheory.Global
@@ -355,3 +476,6 @@ theorem tsum_smul_algebraMap_eq (a : IdeleGroup K) {F : 𝔸[K] → ℂ} (hF : F
 end
 
 end GroundTheory.Global
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.GlobalFields.TateThesis.AdelePoisson =====

@@ -64,17 +64,9 @@ def Nm (x : M2 n) : Matrix (Fin n) (Fin n) ℂ := Complex.I • x.toBlocks₁₁
 
 def Nm' (x : M2 n) : Matrix (Fin n) (Fin n) ℂ := -(Complex.I • x.toBlocks₁₁) + x.toBlocks₁₂
 
-private theorem Cm_mul_Cmi_eq_one : Cm n * Cmi n = 1 := by
-  simp only [Cm, Cmi, Matrix.fromBlocks_multiply]
-  rw [← Matrix.fromBlocks_one]
-  congr 1 <;> ext i j <;> by_cases hij : i = j <;> simp [Matrix.one_apply, hij] <;> ring_nf <;>
-    simp [Complex.I_sq] <;> ring_nf
-
-private theorem Cm_inv_eq_Cmi : (Cm n)⁻¹ = Cmi n := Matrix.inv_eq_right_inv Cm_mul_Cmi_eq_one
-
 private theorem Cmi_mul_Cm_eq_one : Cmi n * Cm n = 1 := by
-  rw [← Cm_inv_eq_Cmi]
-  exact Matrix.nonsing_inv_mul _ (Matrix.isUnit_det_of_right_inverse Cm_mul_Cmi_eq_one)
+  rw [← _root_.PositivityTheory.Rg.Sw.LVs.cm_inv]
+  exact Matrix.nonsing_inv_mul _ (Matrix.isUnit_det_of_right_inverse _root_.PositivityTheory.Rg.Sw.LVs.cm_mul_cmi)
 
 private theorem u1_eq_mul_Cm_toBlocks₂₁ (g : M2 n) : u1 g = (g * Cm n).toBlocks₂₁ := by
   conv_rhs => rw [← Matrix.fromBlocks_toBlocks g]
@@ -104,7 +96,7 @@ private theorem mul_fromBlocks_toBlocks₂₁ (A : M2 n) (P Q R S : Matrix (Fin 
 
 private theorem mul_mX_mul_Cm_eq_mul_Cm_mul_fromBlocks (x : M2 n) (P Q R S : Matrix (Fin n) (Fin n) ℂ) :
     x * mX P Q R S * Cm n = x * Cm n * fromBlocks P Q R S := by
-  simp only [mX, Cm_inv_eq_Cmi, Matrix.mul_assoc, Cmi_mul_Cm_eq_one, Matrix.mul_one]
+  simp only [mX, _root_.PositivityTheory.Rg.Sw.LVs.cm_inv, Matrix.mul_assoc, Cmi_mul_Cm_eq_one, Matrix.mul_one]
 
 theorem zOfE_eq (x : M2 n) : zOfE x = Nm x * (u1 x)⁻¹ := rfl
 
@@ -211,9 +203,9 @@ theorem mX_low (Q : Matrix (Fin n) (Fin n) ℂ) : mX 1 Q 0 1 = 1 + lowQ Q := by
   rw [lowQ]; abel
 
 theorem det_mX_low (Q : Matrix (Fin n) (Fin n) ℂ) : (mX 1 Q 0 1 : M2 n).det = 1 := by
-  simp only [mX, Cm_inv_eq_Cmi]
+  simp only [mX, _root_.PositivityTheory.Rg.Sw.LVs.cm_inv]
   rw [Matrix.det_mul, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁]
   simp only [Matrix.det_one, mul_one]
-  rw [← Matrix.det_mul, Cm_mul_Cmi_eq_one, Matrix.det_one]
+  rw [← Matrix.det_mul, _root_.PositivityTheory.Rg.Sw.LVs.cm_mul_cmi, Matrix.det_one]
 
 end PositivityTheory.Rg.Sw.HSt.CR

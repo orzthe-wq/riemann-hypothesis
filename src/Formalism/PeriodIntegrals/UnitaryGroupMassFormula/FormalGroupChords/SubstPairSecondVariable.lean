@@ -123,11 +123,6 @@ theorem coeff_mul_second_variable (f : MvPowerSeries (Fin 2) ℂ_[p]) (e : Fin 2
   congr 1
   simp [Finsupp.single_le_iff]
 
-theorem single0_iff (e : Fin 2 →₀ ℕ) : e = Finsupp.single 0 (e 0) ↔ e 1 = 0 := by
-  constructor
-  · intro h; rw [h]; simp
-  · intro h; ext j; fin_cases j <;> simp [h]
-
 theorem fact_div {S : Subring ℂ_[p]} {H : MvPowerSeries (Fin 2) ℂ_[p]} {f : PowerSeries ℂ_[p]}
     (hf0 : PowerSeries.constantCoeff f = 0) (hfS : ∀ n, PowerSeries.coeff n f ∈ S) (hH : H ∈ SerS S (Fin 2))
     (hz : MvPowerSeries.subst ![MvPowerSeries.X 0,
@@ -163,9 +158,9 @@ theorem fact_div {S : Subring ℂ_[p]} {H : MvPowerSeries (Fin 2) ℂ_[p]} {f : 
     ext e
     rw [map_add (f := _), hb, coeff_mul_second_variable, ha, PowerSeries.coeff_subst_single]
     by_cases he : e 1 = 0
-    · have he' : e = Finsupp.single 0 (e 0) := (single0_iff e).2 he
+    · have he' : e = Finsupp.single 0 (e 0) := (_root_.PI.AddIntG.Wk.lamA_single0 e).2 he
       rw [if_neg (by omega), if_pos he', zero_add, hr, PowerSeries.coeff_mk, ← he']
-    · have he' : ¬ e = Finsupp.single 0 (e 0) := fun h => he ((single0_iff e).1 h)
+    · have he' : ¬ e = Finsupp.single 0 (e 0) := fun h => he ((_root_.PI.AddIntG.Wk.lamA_single0 e).1 h)
       rw [if_pos (by omega), if_neg he', add_zero]
       show MvPowerSeries.coeff e Hp = MvPowerSeries.coeff (e - Finsupp.single 1 1 + Finsupp.single 1 1) Hp
       rw [tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (by omega))]

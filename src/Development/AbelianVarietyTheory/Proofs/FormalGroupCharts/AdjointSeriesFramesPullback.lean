@@ -195,7 +195,7 @@ theorem adjoint_series_pull_back : ∀ (E : Type) [Field E] [NumberField E] [IsC
   refine corr_down (Y := (jOG (𝟙 (Sp S)) d m 2).left) t.PP.isLB t'.PP.isLB w (adj_comm mp a (H.bar a)) hp hc hm hl
     _ _ (unitΓ u) (fun V _ h => ?_) hu2
   simp only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, wl_pt, wl_pt', pe_pt, pt_sub, Matrix.cons_val_zero,
-    Matrix.cons_val_one, Matrix.head_cons, pt_X, pt_act' hact, zpow_neg, Finset.prod_inv_distrib]
+    Matrix.cons_val_one, pt_X, pt_act' hact, zpow_neg, Finset.prod_inv_distrib]
   simp only [inv_mul_cancel_right]
 
 end GlobalTheory.FrameAdjDown

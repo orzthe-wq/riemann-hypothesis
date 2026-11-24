@@ -1,48 +1,8 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.SharpSpanCounting.Common
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.CoassocSimps
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.SharpSpanCounting.ModularBoundZeroHolds
 
 @[expose] public section
 
@@ -190,21 +150,21 @@ theorem lift_partner (σ : R →+* R) (Z₁ Z₂ Zσ₁ Zσ₂ : Matrix (Fin (r 
   have hmapA : ∀ a : Fin r, (lstar σ Q₂).mulVec (fun i => Zσ₁ i a.castSucc) ∈ headCols Zσ₂ := by
     intro a
     rw [← lift_col_mul, hA, lift_col_mul]
-    apply lift_mem_head
+    apply _root_.Formalism.L2.SG.LocalCountModules.LocCntCommon.mulVec_mem_headCols
     rw [lstar_apply, hP₂l]; simp [Fin.castSucc_ne_last]
   have hmapB : ∀ a : Fin r, (lstar σ Q).mulVec (fun i => Zσ₂ i a.castSucc) ∈ headCols Zσ₁ := by
     intro a
     rw [← lift_col_mul, hB, lift_col_mul]
-    apply lift_mem_head
+    apply _root_.Formalism.L2.SG.LocalCountModules.LocCntCommon.mulVec_mem_headCols
     rw [lstar_apply, hPl]; simp [Fin.castSucc_ne_last]
   have hcompBA : ∀ w, (lstar σ Q).mulVec ((lstar σ Q₂).mulVec w) - w ∈ headCols Zσ₁ := by
     intro w
     rw [Matrix.mulVec_mulVec, hBA, Matrix.sub_mulVec, Matrix.one_mulVec, sub_sub_cancel_left, ← Matrix.mulVec_mulVec]
-    exact Submodule.neg_mem _ (lift_mem_head _ _ (hlastK K hKc w))
+    exact Submodule.neg_mem _ (_root_.Formalism.L2.SG.LocalCountModules.LocCntCommon.mulVec_mem_headCols _ _ (hlastK K hKc w))
   have hcompAB : ∀ w, (lstar σ Q₂).mulVec ((lstar σ Q).mulVec w) - w ∈ headCols Zσ₂ := by
     intro w
     rw [Matrix.mulVec_mulVec, hAB, Matrix.sub_mulVec, Matrix.one_mulVec, sub_sub_cancel_left, ← Matrix.mulVec_mulVec]
-    exact Submodule.neg_mem _ (lift_mem_head _ _ (hlastK K' hK'c w))
+    exact Submodule.neg_mem _ (_root_.Formalism.L2.SG.LocalCountModules.LocCntCommon.mulVec_mem_headCols _ _ (hlastK K' hK'c w))
   let φ := liftEquiv Zσ₁ Zσ₂ (lstar σ Q₂) (lstar σ Q) hmapA hmapB hcompBA hcompAB
   have hb : φ (bCls Zσ₁) = bCls Zσ₂ := by
     show Submodule.Quotient.mk ((lstar σ Q₂).mulVec fun i => Zσ₁ i (Fin.last r)) = Submodule.Quotient.mk _
@@ -212,7 +172,7 @@ theorem lift_partner (σ : R →+* R) (Z₁ Z₂ Zσ₁ Zσ₂ : Matrix (Fin (r 
     have : (fun i => Zσ₂ i (Fin.last r)) = Zσ₂.mulVec (Pi.single (Fin.last r) 1) := by
       funext i; simp [Matrix.mulVec, dotProduct, Pi.single_apply]
     rw [this, ← Matrix.mulVec_sub]
-    apply lift_mem_head
+    apply _root_.Formalism.L2.SG.LocalCountModules.LocCntCommon.mulVec_mem_headCols
     simp [lstar_apply, hP₂l]
   have he : φ (eCl Zσ₁) = eCl Zσ₂ := by
     show Submodule.Quotient.mk ((lstar σ Q₂).mulVec (Pi.single (Fin.last r) 1)) = Submodule.Quotient.mk _

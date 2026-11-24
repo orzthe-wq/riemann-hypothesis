@@ -142,7 +142,7 @@ theorem trace_smul_single {m n : ℕ} (c : ℂ) (a : Fin m) (b : Fin n) (X : Mat
     rw [Finset.sum_eq_single b]
     · simp [Matrix.diag, Matrix.single_mul_apply_same]
     · intro x _ h
-      simp [Matrix.diag, Matrix.mul_apply, Matrix.single_apply, Ne.symm h]
+      simp [Matrix.diag, Matrix.mul_apply, Ne.symm h]
     · simp
   rw [this]; rfl
 

@@ -63,7 +63,7 @@ theorem conj_not_mem (D : D7) (ρ : D.what₂.Tau) (g : D.R.GG)
   intro hg
   have e1 := ((factEmb D.R D.host).2 _).2 (D.eTau ρ).2
   have e2 := ((factEmb D.R D.host).2 _).2 hg
-  simp only [Formalism.HC.HostRaw.cmType, Set.mem_setOf_eq] at e1 e2
+  simp only [Formalism.HC.HostRaw.cmType, Set.mem_ofPred_eq] at e1 e2
   rw [h, RingHom.comp_apply, tauE, e1] at e2
   have hd : (0 : ℝ) < Real.sqrt D.host.d :=
     Real.sqrt_pos.2 (by exact_mod_cast D.host.hyp.2.1.pos)

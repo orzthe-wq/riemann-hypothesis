@@ -186,7 +186,7 @@ theorem am_move (hL : IsLevi Γ K Q Γ' K' π ι c₀) (ρ : K →* (W →L[ℂ]
   rw [h1]
   have h2 : (c₀ (q : G) * c₀ r) • ρ k⁻¹ (ρ s (v : W)) = c₀ (q : G) • ρ k⁻¹ (c₀ r • ρ s (v : W)) := by
     rw [map_smul, smul_smul]
-  simp only [Subgroup.coe_mk] at *
+  simp only at *
   rw [h2, hv]
 
 theorem exists_qk (hL : IsLevi Γ K Q Γ' K' π ι c₀) (g : G) : ∃ (q : Q) (k : K), g = q * k := by

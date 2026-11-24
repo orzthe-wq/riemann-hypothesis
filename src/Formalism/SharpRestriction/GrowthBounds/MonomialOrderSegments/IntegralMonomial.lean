@@ -122,7 +122,7 @@ theorem ldeg_mapDomain [Fintype L] [DecidableEq L] [DecidableEq L'] (f : L → L
     refine Finset.sum_congr rfl (fun l _ => ?_)
     by_cases hl : f l = i'
     · simp [Finsupp.single_apply, hl]
-    · simp [Finsupp.single_apply, hl]
+    · simp [hl]
   simp only [ldeg, key]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl (fun l _ => ?_)
@@ -176,7 +176,7 @@ theorem valS_prod_le [DecidableEq L] (sg : L → Bool) (S : Finset L) {κ : Type
   induction s using Finset.induction_on with
   | empty =>
     simp only [Finset.sum_empty, Finset.prod_empty]
-    simp [valS, lord, MvPolynomial.support_one]
+    simp [valS, lord]
     intro b hb a ha
     rw [MvPolynomial.coeff_one] at hb ha
     split_ifs at hb ha with hb0

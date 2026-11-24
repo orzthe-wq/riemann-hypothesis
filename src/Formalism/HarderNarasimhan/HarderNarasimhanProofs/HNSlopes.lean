@@ -76,26 +76,20 @@ theorem card_filter_val_lt_alt (n m : ℕ) (hm : m ≤ n) :
 
 theorem sum_ite_val_lt_one (n m : ℕ) (hm : m ≤ n) :
     (∑ j : Fin n, if (j : ℕ) < m then (1 : ℝ) else 0) = m := by
-  simp only [Finset.sum_boole]
-  exact_mod_cast card_filter_val_lt_alt n m hm
+  simp [Finset.sum_boole, card_filter_val_lt_alt n m hm]
 
 theorem sum_ite_val_lt_sub_mul (n m : ℕ) (hm : m ≤ n) (x : Fin n → ℝ) (a : ℝ) :
     (∑ j : Fin n, if (j : ℕ) < m then x j else 0) - a * m =
       ∑ j : Fin n, if (j : ℕ) < m then x j - a else 0 := by
-  have h : ∀ j : Fin n, (if (j : ℕ) < m then x j - a else 0) =
-      (if (j : ℕ) < m then x j else 0) - a * (if (j : ℕ) < m then (1 : ℝ) else 0) := by
-    intro j
-    split_ifs <;> ring
-  rw [Finset.sum_congr rfl (fun j _ => h j), Finset.sum_sub_distrib, ← Finset.mul_sum,
-    sum_ite_val_lt_one n m hm]
+  rw [← sum_ite_val_lt_one n m hm, Finset.mul_sum, ← Finset.sum_sub_distrib]
+  exact Finset.sum_congr rfl fun j _ => by split_ifs <;> ring
 
 theorem sum_ite_val_lt_sub_mul_mono (n m₁ m₂ : ℕ) (h₁₂ : m₁ ≤ m₂) (h₂ : m₂ ≤ n) (x : Fin n → ℝ) (a : ℝ)
     (hx : ∀ j : Fin n, m₁ ≤ (j : ℕ) → (j : ℕ) < m₂ → a ≤ x j) :
     (∑ j : Fin n, if (j : ℕ) < m₁ then x j else 0) - a * m₁ ≤
       (∑ j : Fin n, if (j : ℕ) < m₂ then x j else 0) - a * m₂ := by
   rw [sum_ite_val_lt_sub_mul n m₁ (le_trans h₁₂ h₂) x a, sum_ite_val_lt_sub_mul n m₂ h₂ x a]
-  apply Finset.sum_le_sum
-  intro j _
+  refine Finset.sum_le_sum fun j _ => ?_
   by_cases h1 : (j : ℕ) < m₁
   · simp only [if_pos h1, if_pos (lt_of_lt_of_le h1 h₁₂), le_refl]
   · by_cases h2 : (j : ℕ) < m₂
@@ -107,26 +101,22 @@ theorem sum_ite_val_lt_sub_mul_anti (n m₁ m₂ : ℕ) (h₁₂ : m₁ ≤ m₂
     (hx : ∀ j : Fin n, m₁ ≤ (j : ℕ) → (j : ℕ) < m₂ → x j ≤ a) :
     (∑ j : Fin n, if (j : ℕ) < m₂ then x j else 0) - a * m₂ ≤
       (∑ j : Fin n, if (j : ℕ) < m₁ then x j else 0) - a * m₁ := by
-  rw [sum_ite_val_lt_sub_mul n m₁ (le_trans h₁₂ h₂) x a, sum_ite_val_lt_sub_mul n m₂ h₂ x a]
-  apply Finset.sum_le_sum
-  intro j _
+  rw [sum_ite_val_lt_sub_mul n m₁ (le_trans h₁₂ h₂) x a,
+    sum_ite_val_lt_sub_mul n m₂ h₂ x a]
+  refine Finset.sum_le_sum fun j _ => ?_
   by_cases h1 : (j : ℕ) < m₁
-  · simp only [if_pos h1, if_pos (lt_of_lt_of_le h1 h₁₂), le_refl]
+  · simp [h1, lt_of_lt_of_le h1 h₁₂]
   · by_cases h2 : (j : ℕ) < m₂
-    · rw [if_neg h1, if_pos h2]
-      linarith [hx j (not_lt.mp h1) h2]
-    · simp only [if_neg h1, if_neg h2, le_refl]
+    · simpa [h1, h2] using sub_nonpos.mpr (hx j (not_lt.mp h1) h2)
+    · simp [h1, h2]
 
 theorem eq_zero_of_abs_le_mul (a : ℝ) (n : ℕ) (h : ∀ t : ℝ, 0 < t → |a| ≤ t * n) : a = 0 := by
   by_contra ha
   have hpos : 0 < |a| := abs_pos.mpr ha
-  obtain ⟨t, ht⟩ : ∃ t, t = |a| / (2 * ((n : ℝ) + 1)) := ⟨_, rfl⟩
-  have htpos : 0 < t := by rw [ht]; positivity
-  have h1 := h t htpos
-  have hm : t * (2 * ((n : ℝ) + 1)) = |a| := by
-    rw [ht]
-    exact div_mul_cancel₀ _ (by positivity)
-  nlinarith [mul_nonneg htpos.le (Nat.cast_nonneg n)]
+  have hD : 0 < 2 * ((n : ℝ) + 1) := by positivity
+  have h1 := h (|a| / (2 * ((n : ℝ) + 1))) (div_pos hpos hD)
+  rw [div_mul_eq_mul_div, le_div_iff₀ hD] at h1
+  nlinarith [hpos, h1, mul_nonneg hpos.le (Nat.cast_nonneg n)]
 
 
 universe u v w in

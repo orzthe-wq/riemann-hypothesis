@@ -1,52 +1,8 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.CapelliIdentity.CapelliCentralStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -69,7 +25,7 @@ theorem prod_ofFn_update_eq {p : ℕ} (f : Fin p → 𝒰) (j : Fin p) :
   | succ p ih =>
     refine Fin.cases ?_ (fun j' => ?_) j
     · refine ⟨1, (List.ofFn fun i : Fin p => f i.succ).prod, fun v => ?_⟩
-      simp [List.ofFn_succ, Function.update_apply, Fin.succ_ne_zero]
+      simp [List.ofFn_succ, Fin.succ_ne_zero]
     · obtain ⟨A, B, h⟩ := ih (fun i => f i.succ) j'
       refine ⟨f 0 * A, B, fun v => ?_⟩
       have e1 : (fun i : Fin p => Function.update f j'.succ v i.succ) =
@@ -89,7 +45,7 @@ theorem comm_prod_ofFn (y : 𝒰) {p : ℕ} (f : Fin p → 𝒰) :
   | succ p ih =>
     have h0 : (List.ofFn (Function.update f 0 (y * f 0 - f 0 * y))).prod =
         (y * f 0 - f 0 * y) * (List.ofFn fun i : Fin p => f i.succ).prod := by
-      simp [List.ofFn_succ, Function.update_apply, Fin.succ_ne_zero]
+      simp [List.ofFn_succ, Fin.succ_ne_zero]
     have hs : ∀ j' : Fin p,
         (List.ofFn (Function.update f j'.succ (y * f j'.succ - f j'.succ * y))).prod =
           f 0 * (List.ofFn (Function.update (fun i : Fin p => f i.succ) j'
@@ -130,7 +86,7 @@ theorem capEntry_comm (hE : GlRelR E) (a b c d : Fin n) (x : ℂ) :
     · exact Or.inl rfl
   rw [key, hz _ hs, add_zero, hE a b c d]
   unfold capEntry
-  split_ifs <;> subst_vars <;> first | rfl | simp_all | abel
+  split_ifs <;> subst_vars <;> first | rfl | simp_all
 
 private theorem prod_ofFn_update_sub' {p : ℕ} (f : Fin p → 𝒰) (j : Fin p) (u v : 𝒰) :
     (List.ofFn (Function.update f j (u - v))).prod =
@@ -182,7 +138,7 @@ theorem cminor_comm (hE : GlRelR E) (a b : Fin n) {p : ℕ} (R C : Fin p → Fin
       by_cases hk : k = j
       · subst hk
         simp
-      · simp [Function.update_apply, hk, σ.injective.ne hk]
+      · simp [hk, σ.injective.ne hk]
     · rw [if_neg (Ne.symm h), if_neg h, smul_zero]
   · rw [sum_ite_sum_comm]
     refine Finset.sum_congr rfl fun σ _ => ?_
@@ -196,7 +152,7 @@ theorem cminor_comm (hE : GlRelR E) (a b : Fin n) {p : ℕ} (R C : Fin p → Fin
       by_cases hk : k = j
       · subst hk
         simp
-      · simp [Function.update_apply, hk]
+      · simp [hk]
     · rw [if_neg h, if_neg h, smul_zero]
 
 end ReciprocityTheory.ChartRestriction.DS.Lap.Capelli

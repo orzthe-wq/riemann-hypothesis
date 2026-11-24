@@ -99,7 +99,7 @@ private theorem isUnit_det_of_isUnit_diag_of_dvd_lower {O : Type*} [CommRing O] 
     obtain ⟨c, hc⟩ := hl i j hij
     simp only [map_apply, hc]
     exact (IsLocalRing.residue_eq_zero_iff _).mpr (Ideal.mul_mem_right _ _ hϖ)
-  rw [RingHom.mapMatrix_apply, Matrix.det_of_upperTriangular htri]
+  rw [RingHom.mapMatrix_apply, Matrix.det_of_isUpperTriangular htri]
   refine Finset.prod_ne_zero_iff.mpr fun i _ => ?_
   simpa [IsLocalRing.residue_ne_zero_iff_isUnit] using hd i
 

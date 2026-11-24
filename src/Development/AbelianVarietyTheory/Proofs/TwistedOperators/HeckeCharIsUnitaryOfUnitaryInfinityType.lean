@@ -78,7 +78,7 @@ theorem isUnitary_of_hasInf : ∀ (L : Type) [Field L] [NumberField L] (χ : For
     obtain ⟨m, hm, u, k, u1, u2, e⟩ := GlobalTheory.UnUnitCmp.Val.exists_pow_eq x hx
     have e1 := congrArg (fun a => ‖((χ.1 a : ℂˣ) : ℂ)‖) e
     simp only [map_mul, map_pow, Units.val_mul, Units.val_pow_eq_pow_val, norm_mul, norm_pow, hinf k,
-      GlobalTheory.HeckeFin.norm_eq_one χ u u1 u2, χ.2.2 k, Units.val_one, norm_one, mul_one] at e1
+      GlobalTheory.HeckeFin.norm_eq_one χ u u1 u2, χ.2.2 k, mul_one] at e1
     exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 e1
   intro z
   have hz : z = GlobalTheory.HeckeGal.inlInf L (Units.map (MonoidHom.fst (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)) z) *

@@ -115,7 +115,7 @@ theorem exists_injective_rows_leadingMinors_not_mem (R : Type) [CommRing R] (p :
         ext a b
         have e1 : Fin.castLE hk a = a := Fin.ext rfl
         have e2 : Fin.castLE hk b = b := Fin.ext rfl
-        simp [σ, e1, e2]
+        simp [σ]
       rw [hmat, Matrix.det_permute]
       intro hm
       apply hT

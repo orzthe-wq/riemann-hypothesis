@@ -2,8 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AinfIsDomainAndAinfInvPInjectiveStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElementStatement
+public import Formalism.LocalRingCardinality.AdicCompletionLocal.InstIsAdicCompleteOCSpanSingletonSetCast
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AinfIsDomainAndAinfInvPInjective
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.KerThetaLocalizedEqSpanFontaineXiElement
+public import Mathlib.RingTheory.AdicCompletion.Topology
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -22,7 +24,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.AdicCompletion.Completeness
-public import Mathlib.RingTheory.AdicCompletion.Topology
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -125,8 +126,8 @@ theorem GlobalTheory.MemLoc.filtration_eq_xi_pow : ∀ (l : ℕ) [Fact l.Prime],
     IsAdicComplete (Ideal.span {aDp l (xi e)}) (Per.BdRp l) ∧
     (∀ n : ℕ, Function.Surjective (Per.ev l n)) := by
   intro l _ e he
-  have hk := GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he
-  obtain ⟨-, hd, hinj⟩ := GlobalTheory.T.usage l
+  have hk := _root_.GlobalTheory.MemLoc.ker_localizedTheta_eq_span_xi l e he
+  obtain ⟨-, hd, hinj⟩ := _root_.GlobalTheory.MemLoc.ainf_isDomain_and_injective l
   have hne : algebraMap (Per.Ainf l) (Per.AinfP l) (xi e) ≠ 0 := fun h =>
     xi_ne_zero e he (hinj (h.trans (map_zero _).symm))
   obtain ⟨E, hE, hev⟩ := GlobalTheory.RingIface.exists_bdRp_equiv l

@@ -3,8 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
 public import Mathlib.Analysis.SpecialFunctions.Log.Base
 public import Mathlib.Data.Nat.Digits.Defs
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixVariablesDeterminantPowMonomialShapeStatement
+public import Mathlib.RingTheory.MvPolynomial.Homogeneous
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MatrixVariablesDeterminantPowMonomialShape
 public import Development.AbelianVarietyTheory.Proofs.UnramifiedDepth.LegendreBoundsFactorialMultiIndexCapelli
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuation
+public import Mathlib.Analysis.MeanInequalities
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -46,8 +49,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.WeightedSumBounds.PeriodValuation
-public import Mathlib.Analysis.MeanInequalities
 
 @[expose] public section
 
@@ -134,7 +135,7 @@ theorem val_mfact {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {p : �
 theorem content_detPow_bounds : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (p : ℕ), p.Prime → v (p : C) = 1 → ∀ (i c : ℕ), content v (detPow C i c) ≤ (((i * c : ℝ) / (p - 1) : ℝ) : EReal) ∧ ((((i * c : ℝ) / (p - 1) - (i : ℝ) ^ 2 * Real.logb p (c + 1) : ℝ)) : EReal) ≤ content v (detPow C i c) := by
   intro C _ _ v p hp hv i c
   classical
-  obtain ⟨-, hint, hdiag, hrows⟩ := GlobalTheory.T.matrixVariablesDeterminantPow_monomial_shape C i c
+  obtain ⟨-, hint, hdiag, hrows⟩ := _root_.GlobalTheory.DetPowShape.detPow_shape C i c
   have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.one_lt
   have hpos : (0 : ℝ) < (p : ℝ) - 1 := by linarith
   have key : ∀ α ∈ (detPow C i c).support,

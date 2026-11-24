@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -98,14 +99,14 @@ theorem omegaStd_single (g : ℕ) (a b : Fin g ⊕ Fin g) :
       | .inr p, .inl q => if p = q then -1 else 0
       | _, _ => 0 := by
   rcases a with p | p <;> rcases b with q | q <;>
-    simp [omegaStd, Pi.single_apply, Finset.sum_ite_eq, Finset.sum_ite_eq', eq_comm] <;> split_ifs <;> simp
+    simp [omegaStd, Pi.single_apply, Finset.sum_ite_eq, eq_comm] <;> split_ifs <;> simp
 
 theorem stdSymp_eq (g : ℕ) (i j : Fin (2 * g)) :
     stdSymp g i j = omegaStd (Pi.single (half g i) (1 : ℤ)) (Pi.single (half g j) 1) := by
   rw [omegaStd_single]
   unfold half stdSymp
   by_cases hi : (i : ℕ) < g <;> by_cases hj : (j : ℕ) < g <;> simp only [hi, hj, dif_pos, dif_neg, not_false_eq_true, true_and, false_and, if_false]
-  all_goals (try simp only [Fin.ext_iff, Fin.val_mk])
+  all_goals (try simp only [Fin.ext_iff])
   all_goals (have := i.2; have := j.2; split_ifs <;> omega)
 
 end GlobalTheory.MumLevel

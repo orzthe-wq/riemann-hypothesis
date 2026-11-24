@@ -55,7 +55,7 @@ theorem UpperTheory.V.KH.transport :
     obtain ⟨hfin, hcard⟩ := h
     let f : AddCommGroup.torsion M ≃ AddCommGroup.torsion N :=
       (e : M ≃ N).subtypeEquiv fun x => by
-        simp only [SetLike.mem_coe, AddCommGroup.mem_torsion, ← addOrderOf_pos_iff]
+        simp only [AddCommGroup.mem_torsion, ← addOrderOf_pos_iff]
         simp
     exact ⟨Finite.of_equiv _ f, (Nat.card_congr f).symm ▸ hcard⟩
   · intro M N e B h

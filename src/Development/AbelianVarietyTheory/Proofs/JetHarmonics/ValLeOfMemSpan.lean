@@ -1,28 +1,36 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.Jets.ColValMonomial
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsFormalBiextMap
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CanonGaugeDmonOfHLIntegral
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonOfSubMem
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsGroupedOfSublist
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InvariantDerivAlongEndo
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NabValPullbackMonomial
 public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FormalSecondPointDerivativeSecondCoordinate
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BilinPartEigenMemRange
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CoeffProdLeadingMinors
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MapDofIterate
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NabValColumnsCongr
-import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NabValPullbackMonomial
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonOfProdLinear
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdConstantCoeffDmonOfCols
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdNabValLeadingMinors
-public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdNabValLeadingMinorsOfColumnJets
-public import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DofIterSmulDir
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.DofDApply
+public import Development.AbelianVarietyTheory.Definitions.Jets.ColValMonomial
+public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsFormalBiextMap
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BilinPartEigenMemRange
+public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MapDofIterate
+public import Mathlib.Data.Nat.Prime.Factorial
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.GEWick
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
-public import Mathlib.Data.Nat.Prime.Factorial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -31,8 +39,6 @@ import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -52,12 +58,339 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.GEWick
+import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.NabTrans
+import Mathlib.Tactic.ReduceModChar
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.JetHarmonics.NabValColumnsCongr, Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonOfCongrJet, Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdNabValLeadingMinorsOfColumnJets, Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DofIterSmulDir, Development.AbelianVarietyTheory.Proofs.JetHarmonics.ValLeOfMemSpan
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.NabValColumnsCongr =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.JetHarmonics.NabValColumnsCongr", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CanonGaugeDmonOfHLIntegral\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonOfSubMem\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsGroupedOfSublist\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.InvariantDerivAlongEndo\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NabValPullbackMonomial\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.NabTrans\npublic import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FormalSecondPointDerivativeSecondCoordinate\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+noncomputable section
+
+open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.TB ReciprocityTheory.ChartRestriction.G.TB.WickVanishing
+
+namespace GlobalTheory.ColumnValue
+
+theorem dmonOf_zero_index {k : Type} [CommRing k] {d : ℕ} (F : Fin d → PS k 2 d) {ι : Type} [Fintype ι]
+    (u : ι → Fin d → k) (g : PS k 1 d) : DmonOf F u 0 g = g := by
+  unfold DmonOf
+  induction (Finset.univ : Finset ι).toList with
+  | nil => rfl
+  | cons a L ih => rw [List.foldr_cons, ih]; rfl
+
+theorem dmonOf_smul {k : Type} [CommRing k] {d : ℕ} (F : Fin d → PS k 2 d) {ι : Type} [Fintype ι]
+    (u : ι → Fin d → k) (mo : ι →₀ ℕ) (c : k) (g : PS k 1 d) :
+    DmonOf F u mo (c • g) = C c * DmonOf F u mo g := by
+  rw [smul_eq_C_mul]
+  unfold DmonOf
+  induction (Finset.univ : Finset ι).toList with
+  | nil => rfl
+  | cons a L ih => rw [List.foldr_cons, List.foldr_cons, ih, DerivEndo.iterate_dof_C_mul]
+
+theorem column_value {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] {k : Type}
+    [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d) (hh : B.IsCanonGauge k h)
+    (w0 a : O) (N m : ℕ) (w : PS R 1 d)
+    (hw : FB.toK k w = FB.expS k (ev (n := 1) ![B.actK k a] (B.hL k h w0) - (N : k) • B.hL k h w0))
+    (I : Ideal R) {ι : Type} [Fintype ι] (u : ι → Fin d → R) (α : ι → R) (hI : ∀ l, α l ∈ I)
+    (hα : ∀ l, (dAct k B a).mulVec (fun i => algebraMap R k (u l i)) =
+      algebraMap R k (α l) • (fun i => algebraMap R k (u l i)))
+    (hβ : ∀ l l', dotProduct (fun i => algebraMap R k (u l i)) ((bilinPart k h).mulVec
+      ((dAct k B w0).mulVec (fun i => algebraMap R k (u l' i)))) ∈ (algebraMap R k).range)
+    (f : PS R 1 d) (y : ι → R) (hf : ∀ l mo, coeff mo (Dof B.G.F (u l) f - C (y l) * f) ∈ I)
+    (mo : ι →₀ ℕ) :
+    ∃ s : R, s - (∏ l, y l ^ mo l) * constantCoeff f ∈ I ∧
+      B.nabVal k h w0 (N * m) (FB.toK k (f * w ^ m)) (fun l i => algebraMap R k (u l i))
+        (MvPolynomial.monomial mo 1) = algebraMap R k s := by
+  have hA : ∀ b : O, GP (B.actK k b) := fun b => QuadDeriv.constantCoeff_mapP_eq_zero _ _ (B.A.const b)
+  have hh0 : constantCoeff h = 0 := by
+    have := congrArg constantCoeff hh.ax0
+    rwa [gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt 0)), map_zero] at this
+  have cL : constantCoeff (B.hL k h w0) = 0 :=
+    gt_const_ev _ (pair_points_zero_constant (gp_pt 0) (gp_comp1 _ _ (hA w0) (gp_pt 0))) h hh0
+  have cA : constantCoeff (ev (n := 1) ![B.actK k a] (B.hL k h w0)) = 0 :=
+    gt_const_ev _ (single_point_zero_constant (hA a)) _ cL
+  have cD : constantCoeff (ev (n := 1) ![B.actK k a] (B.hL k h w0) - (N : k) • B.hL k h w0) = 0 := by
+    rw [map_sub, cA, nt_const_smul, cL, mul_zero, sub_zero]
+  have hG : FB.toK k (f * w ^ m) * FB.expS k (((N * m : ℕ) : k) • B.hL k h w0) =
+      FB.toK k f * FB.expS k ((m : k) • ev (n := 1) ![B.actK k a] (B.hL k h w0)) := by
+    have e : FB.toK k (f * w ^ m) = FB.toK k f * FB.toK k w ^ m := by
+      rw [FB.toK, map_mul, map_pow]
+    rw [e, hw, PullbackColumn.expS_pow _ cD, mul_assoc,
+      ← gt_expS_add _ _ (by rw [nt_const_smul, cD, mul_zero]) (by rw [nt_const_smul, cL, mul_zero]),
+      smul_sub, smul_smul, Nat.cast_mul, mul_comm (N : k) (m : k), sub_add_cancel]
+  have hφ : ∀ mo : ι →₀ ℕ, ∃ r ∈ I, constantCoeff (DmonOf (B.FK k) (fun l i => algebraMap R k (u l i)) mo
+      ((m : k) • ev (n := 1) ![B.actK k a] (B.hL k h w0))) = algebraMap R k r := by
+    intro mo
+    rcases eq_or_ne mo 0 with rfl | hmo
+    · exact ⟨0, I.zero_mem, by rw [dmonOf_zero_index, nt_const_smul, cA, mul_zero, map_zero]⟩
+    · obtain ⟨l, hl⟩ := Finsupp.ne_iff.1 hmo
+      obtain ⟨t, ht⟩ := canonGauge_dmonOf_hL_integral R d O k B h hh w0 ι u hβ mo
+      refine ⟨(m : R) * ((∏ l, α l ^ mo l) * t), I.mul_mem_left _ (I.mul_mem_right _
+        (Ideal.prod_mem I (Finset.mem_univ l) (I.pow_mem_of_mem (hI l) _ (Nat.pos_of_ne_zero hl)))), ?_⟩
+      rw [dmonOf_smul, map_mul, constantCoeff_C,
+        (invariantDeriv_along_endo R d O k B a).2 ι _ (fun l => algebraMap R k (α l)) hα mo, ← ht]
+      simp only [map_mul, map_prod, map_pow, map_natCast]
+  obtain ⟨r, hr, e⟩ := dmonOf_mul_expS_congr R d k B.G.F I ι u _
+    (by rw [nt_const_smul, cA, mul_zero]) hφ f mo
+  refine ⟨constantCoeff (DmonOf B.G.F u mo f) + r, ?_, ?_⟩
+  · rw [add_sub_right_comm]
+    exact I.add_mem (constantCoeff_dmonOf_sub_mem R d B.G.F I ι u y f hf mo) hr
+  · unfold FB.nabVal
+    rw [hG, PullbackColumn.dpolyOf_monomial_one]
+    exact e
+
+end GlobalTheory.ColumnValue
+
+namespace GlobalTheory
+
+open ColumnValue
+
+theorem nabVal_columns_congr : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h → ∀ (w0 a : O) (N m : ℕ) (w : PS R 1 d), FB.toK k w = FB.expS k (ev (n := 1) ![B.actK k a] (B.hL k h w0) - (N : k) • B.hL k h w0) → ∀ (I : Ideal R) (ι : Type) [Fintype ι] (u : ι → Fin d → R) (α : ι → R), (∀ l, α l ∈ I) → (∀ l, (dAct k B a).mulVec (fun i => algebraMap R k (u l i)) = algebraMap R k (α l) • (fun i => algebraMap R k (u l i))) → (∀ l l', dotProduct (fun i => algebraMap R k (u l i)) ((bilinPart k h).mulVec ((dAct k B w0).mulVec (fun i => algebraMap R k (u l' i)))) ∈ (algebraMap R k).range) → ∀ (n : ℕ) (f : Fin n → PS R 1 d) (y : ι × Fin n → R), (∀ l b mo, coeff mo (Dof B.G.F (u l) (f b) - C (y (l, b)) * f b) ∈ I) → ∀ P : MvPolynomial (ι × Fin n) R, ∃ r ∈ I, ∑ mo ∈ P.support, algebraMap R k (P.coeff mo) * ∏ b, B.nabVal k h w0 (N * m) (FB.toK k (f b * w ^ m)) (fun l i => algebraMap R k (u l i)) (MvPolynomial.monomial (colM mo b) 1) = algebraMap R k (MvPolynomial.eval y P * ∏ b, constantCoeff (f b) + r) := by
+  intro R _ d O _ _ k _ _ _ B h hh w0 a N m w hw I ι _ u α hI hα hβ n f y hf P
+  choose s hs he using fun (mo : ι × Fin n →₀ ℕ) (b : Fin n) =>
+    column_value B h hh w0 a N m w hw I u α hI hα hβ (f b) (fun l => y (l, b)) (fun l => hf l b) (colM mo b)
+  refine ⟨∑ mo ∈ P.support, P.coeff mo * ∏ b, s mo b -
+    MvPolynomial.eval y P * ∏ b, constantCoeff (f b), ?_, ?_⟩
+  · rw [MvPolynomial.eval_eq', Finset.sum_mul, ← Finset.sum_sub_distrib]
+    refine I.sum_mem fun mo _ => ?_
+    rw [mul_assoc, ← mul_sub]
+    refine I.mul_mem_left _ ?_
+    rw [Fintype.prod_prod_type_right, ← Finset.prod_mul_distrib, ← Ideal.Quotient.eq, map_prod, map_prod]
+    exact Finset.prod_congr rfl fun b _ => Ideal.Quotient.eq.2 (hs mo b)
+  · rw [add_sub_cancel]
+    simp only [he]
+
+    simp only [map_sum, map_mul, map_prod]
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.NabValColumnsCongr =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonOfCongrJet =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonOfCongrJet", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.TB
+
+namespace GlobalTheory.JetOnly
+
+variable {k : Type} [CommRing k] {d : ℕ}
+
+theorem coeff_Dof_congr (F : Fin d → PS k 2 d) (v : Fin d → k) (n : ℕ) (f g : PS k 1 d)
+    (h : ∀ mo : Fin 1 × Fin d →₀ ℕ, mo.degree ≤ n + 1 → coeff mo f = coeff mo g)
+    (mo : Fin 1 × Fin d →₀ ℕ) (hmo : mo.degree ≤ n) :
+    coeff mo (Dof F v f) = coeff mo (Dof F v g) := by
+  classical
+  unfold Dof
+
+  rw [map_sum, map_sum]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [coeff_mul, coeff_mul]
+  refine Finset.sum_congr rfl fun p hp => ?_
+  have hp' : p.1 + p.2 = mo := Finset.HasAntidiagonal.mem_antidiagonal.1 hp
+  have hd : p.1.degree + p.2.degree = mo.degree := by rw [← hp', map_add (f := _)]
+  rw [coeff_pderiv, coeff_pderiv, h]
+  rw [map_add (f := _), Finsupp.degree_single]
+  omega
+
+theorem coeff_iterate_Dof_congr (F : Fin d → PS k 2 d) (v : Fin d → k) (r : ℕ) :
+    ∀ (n : ℕ) (f g : PS k 1 d),
+      (∀ mo : Fin 1 × Fin d →₀ ℕ, mo.degree ≤ n + r → coeff mo f = coeff mo g) →
+      ∀ mo : Fin 1 × Fin d →₀ ℕ, mo.degree ≤ n →
+        coeff mo ((Dof F v)^[r] f) = coeff mo ((Dof F v)^[r] g) := by
+  induction r with
+  | zero => intro n f g h mo hmo; exact h mo hmo
+  | succ r ih =>
+    intro n f g h mo hmo
+    rw [Function.iterate_succ_apply, Function.iterate_succ_apply]
+    exact ih n _ _ (coeff_Dof_congr F v (n + r) f g h) mo hmo
+
+theorem coeff_foldr_Dof_congr (F : Fin d → PS k 2 d) {ι : Type} (u : ι → Fin d → k) (m : ι → ℕ)
+    (f g : PS k 1 d) (L : List ι) :
+    ∀ n : ℕ,
+      (∀ mo : Fin 1 × Fin d →₀ ℕ, mo.degree ≤ n + (L.map m).sum → coeff mo f = coeff mo g) →
+      ∀ mo : Fin 1 × Fin d →₀ ℕ, mo.degree ≤ n →
+        coeff mo (L.foldr (fun l s => (Dof F (u l))^[m l] s) f) =
+          coeff mo (L.foldr (fun l s => (Dof F (u l))^[m l] s) g) := by
+  induction L with
+  | nil => intro n h mo hmo; exact h mo hmo
+  | cons l L ih =>
+    intro n h mo hmo
+    rw [List.foldr_cons, List.foldr_cons]
+    refine coeff_iterate_Dof_congr F (u l) (m l) n _ _ (ih (n + m l) fun mo' h' => h mo' ?_) mo hmo
+    rw [List.map_cons, List.sum_cons]
+    omega
+
+theorem coeff_DmonOf_congr (F : Fin d → PS k 2 d) {ι : Type} [Fintype ι] (u : ι → Fin d → k)
+    (m : ι →₀ ℕ) (f g : PS k 1 d) (n : ℕ)
+    (h : ∀ mo : Fin 1 × Fin d →₀ ℕ, mo.degree ≤ n + m.degree → coeff mo f = coeff mo g)
+    (mo : Fin 1 × Fin d →₀ ℕ) (hmo : mo.degree ≤ n) :
+    coeff mo (DmonOf F u m f) = coeff mo (DmonOf F u m g) := by
+  unfold DmonOf
+  refine coeff_foldr_Dof_congr F u m f g _ n (fun mo' h' => h mo' ?_) mo hmo
+  rwa [Finset.sum_map_toList, ← Finsupp.degree_eq_sum] at h'
+
+end GlobalTheory.JetOnly
+
+namespace GlobalTheory
+
+theorem constantCoeff_DmonOf_congr_jet :
+    ∀ (k : Type) [CommRing k] (d : ℕ) (F : Fin d → PS k 2 d) (ι : Type) [Fintype ι]
+      (u : ι → Fin d → k) (m : ι →₀ ℕ) (f g : PS k 1 d),
+      (∀ mo : Fin 1 × Fin d →₀ ℕ, mo.degree ≤ m.degree → coeff mo f = coeff mo g) →
+      constantCoeff (DmonOf F u m f) = constantCoeff (DmonOf F u m g) := by
+  intro k _ d F ι _ u m f g h
+  rw [← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply]
+  exact JetOnly.coeff_DmonOf_congr F u m f g 0 (fun mo h' => h mo (by simpa using h')) 0 (by simp)
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonOfCongrJet =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdNabValLeadingMinorsOfColumnJets =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdNabValLeadingMinorsOfColumnJets", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CoeffProdLeadingMinors\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonOfCongrJet\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ConstantCoeffDmonOfProdLinear\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdConstantCoeffDmonOfCols\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdNabValLeadingMinors\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.TB
+
+namespace GlobalTheory
+
+
+open CrudeValue SymbolCols in
+theorem sum_prod_nabVal_leading_minors_of_column_jets : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d), constantCoeff h = 0 → ∀ (w0 : O) (q : ℕ) (T : Type) [Fintype T] [DecidableEq T] (r : T → ℕ) (n : ℕ) (col : ∀ τ, Fin (r τ) → Fin n) (m : ∀ τ, Fin (r τ) → ℕ), (∀ τ, Function.Injective (col τ)) → ∀ (P : MvPolynomial ((Σ τ : T, Fin (r τ)) × Fin n) k) (al : (Σ τ : T, Fin (r τ)) × Fin n →₀ ℕ), P = (∏ τ, ∏ s : Fin (r τ), (Matrix.of fun a i : Fin (s.val + 1) => (MvPolynomial.X ((⟨τ, Fin.castLE s.isLt a⟩ : Σ τ : T, Fin (r τ)), col τ (Fin.castLE s.isLt i)) : MvPolynomial ((Σ τ : T, Fin (r τ)) × Fin n) k)).det ^ m τ s) → al = ∑ τ, ∑ s : Fin (r τ), m τ s • ∑ a : Fin (s.val + 1), Finsupp.single ((⟨τ, Fin.castLE s.isLt a⟩ : Σ τ : T, Fin (r τ)), col τ (Fin.castLE s.isLt a)) 1 → ∀ (u : (Σ τ : T, Fin (r τ)) → Fin d → k) (lam : Fin n → (Σ τ : T, Fin (r τ)) → Fin d → k), (∀ b l l', (∃ i, col l.1 i = b) → (∃ i, col l'.1 i = b) → ∑ i, lam b l i * u l' i = if l = l' then 1 else 0) → ∀ (c : Fin n → k) (f : Fin n → PS k 1 d), (∀ b (mo : Fin 1 × Fin d →₀ ℕ), mo.degree ≤ (colM al b).degree → coeff mo (f b) = c b * coeff mo (∏ l, (∑ i, C (lam b l i) * (X ((0 : Fin 1), i) : PS k 1 d)) ^ al (l, b))) → ∑ mo ∈ P.support, P.coeff mo * ∏ b, B.nabVal k h w0 q (f b) u (MvPolynomial.monomial (colM mo b) 1) = (∏ b, c b) * ∏ p, ((al p).factorial : k) := by
+  intro R _ d O _ _ k _ _ _ B h hh w0 q T _ _ r n col m hcol P al hP hal u lam hpair c f hf
+  obtain ⟨h1, hhom, -, hsupp⟩ :=
+    LeadingMinors.coeff_prod_leading_minors k T r n col m hcol P al hP hal
+  rcases subsingleton_or_nontrivial k with hk | hk
+  · exact Subsingleton.elim _ _
+  have halP : al ∈ P.support := by
+    rw [MvPolynomial.mem_support_iff, h1]
+    exact one_ne_zero
+  set E : PS k 1 d := FB.expS k ((q : k) • B.hL k h w0) with hE
+  have hE1 : constantCoeff E = 1 := constantCoeff_expS _ (by
+    rw [smul_eq_C_mul, map_mul, constantCoeff_hL B h hh w0, mul_zero])
+  have hdeg : ∀ mo ∈ P.support, mo.degree = al.degree := fun mo hmo => by
+    have := hhom (MvPolynomial.mem_support_iff.1 hmo)
+    rw [← this, Finsupp.degree_eq_weight_one]
+    rfl
+  have hval : ∀ mo ∈ P.support, ∀ b, (colM mo b).degree ≤ (colM al b).degree →
+      B.nabVal k h w0 q (f b) u (MvPolynomial.monomial (colM mo b) 1) =
+        if colM mo b = colM al b then (∏ l, ((al (l, b)).factorial : k)) * c b else 0 := by
+    intro mo hmo b hb
+    have hsym := constantCoeff_dmonOf_prod_linear R k (algebraMap R k) d B.G _ u (lam b)
+      (fun _ => 1) (colM al b) (colM mo b) (C (c b) * E)
+      (fun l l' hl hl' => hpair b l l' (hsupp al halP l b (by rwa [colM_apply] at hl))
+        (hsupp mo hmo l' b (by rwa [colM_apply] at hl'))) hb
+    simp only [colM_apply, one_pow, mul_one, map_mul, constantCoeff_C, hE1] at hsym
+    rw [nabVal_monomial, ← hE, ← hsym, ← mul_assoc, mul_comm _ (C (c b))]
+    refine constantCoeff_DmonOf_congr_jet k d _ _ u (colM mo b) _ _ fun mo' hm => ?_
+    refine coeff_mul_congr (colM al b).degree _ _ E (fun mo'' hm' => ?_) mo' (hm.trans hb)
+    rw [coeff_C_mul]
+    exact hf b mo'' hm'
+  rw [Finset.sum_eq_single al]
+  · rw [h1, one_mul, Finset.prod_congr rfl fun b _ => (hval al halP b le_rfl).trans (if_pos rfl),
+      Finset.prod_mul_distrib, mul_comm, Fintype.prod_prod_type_right]
+  · intro mo hmo hne
+    obtain ⟨b, hb, hb'⟩ := exists_col mo al (hdeg mo hmo) hne
+    rw [Finset.prod_eq_zero (Finset.mem_univ b) (by rw [hval mo hmo b hb, if_neg hb']), mul_zero]
+  · intro hal'
+    exact absurd halP hal'
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdNabValLeadingMinorsOfColumnJets =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DofIterSmulDir =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DofIterSmulDir", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.DofDApply\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ConnectionKillsSeries\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+noncomputable section
+
+open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.TB
+
+namespace GlobalTheory.DirScale
+
+variable {R : Type} [CommRing R] {d : ℕ}
+
+theorem dof_smul_dir (F : Fin d → PS R 2 d) (c : R) (u : Fin d → R) (f : PS R 1 d) :
+    Dof F (c • u) f = C c * Dof F u f := by
+  unfold Dof
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [← mul_assoc, Finset.mul_sum]
+  congr 1
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]
+
+theorem dof_iter_C_mul (F : Fin d → PS R 2 d) (u : Fin d → R) (n : ℕ) (r : R) (f : PS R 1 d) :
+    (Dof F u)^[n] (C r * f) = C r * (Dof F u)^[n] f := by
+  induction n generalizing f with
+  | zero => rfl
+  | succ n ih =>
+    rw [Function.iterate_succ_apply, Function.iterate_succ_apply, GE.dof_C_mul, ih]
+
+theorem dof_iter_smul_dir (F : Fin d → PS R 2 d) (c : R) (u : Fin d → R) (n : ℕ) (f : PS R 1 d) :
+    (Dof F (c • u))^[n] f = C (c ^ n) * (Dof F u)^[n] f := by
+  induction n generalizing f with
+  | zero => simp
+  | succ n ih =>
+    rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ih, dof_smul_dir, dof_iter_C_mul,
+      pow_succ, map_mul, mul_assoc]
+
+theorem foldr_smul_dir (F : Fin d → PS R 2 d) {ι : Type} (c : ι → R) (u : ι → Fin d → R)
+    (m : ι → ℕ) (f : PS R 1 d) (L : List ι) :
+    L.foldr (fun l g => (Dof F (c l • u l))^[m l] g) f =
+      C (L.map fun l => c l ^ m l).prod * L.foldr (fun l g => (Dof F (u l))^[m l] g) f := by
+  induction L with
+  | nil => simp
+  | cons l L ih =>
+    simp only [List.foldr_cons, List.map_cons, List.prod_cons]
+    rw [ih, dof_iter_smul_dir, dof_iter_C_mul, map_mul, mul_assoc]
+
+theorem dmonOf_smul_dir : ∀ (R : Type) [CommRing R] (d : ℕ) (F : Fin d → PS R 2 d) (ι : Type)
+    [Fintype ι] (c : ι → R) (u : ι → Fin d → R) (m : ι →₀ ℕ) (f : PS R 1 d),
+    DmonOf F (fun l => c l • u l) m f = C (∏ l, c l ^ m l) * DmonOf F u m f := by
+  intro R _ d F ι _ c u m f
+  unfold DmonOf
+  have h : ((Finset.univ : Finset ι).toList.map fun l => c l ^ m l).prod = ∏ l, c l ^ m l :=
+    Finset.prod_map_toList _ _
+  rw [← h]
+  exact foldr_smul_dir F c u (fun l => m l) f _
+
+end GlobalTheory.DirScale
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DofIterSmulDir =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.ValLeOfMemSpan =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.JetHarmonics.ValLeOfMemSpan", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Jets.ColValMonomial\npublic import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.ExistsFormalBiextMap\npublic import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FormalSecondPointDerivativeSecondCoordinate\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.BilinPartEigenMemRange\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.CoeffProdLeadingMinors\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.MapDofIterate\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.NabValColumnsCongr\nimport Development.AbelianVarietyTheory.Proofs.JetHarmonics.NabValPullbackMonomial\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdConstantCoeffDmonOfCols\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdNabValLeadingMinors\npublic import Development.AbelianVarietyTheory.Proofs.JetHarmonics.SumProdNabValLeadingMinorsOfColumnJets\npublic import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.DofIterSmulDir\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\npublic import Mathlib.Data.Nat.Prime.Factorial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.GEWick\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.WickVanishing.NabTrans\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -328,12 +661,10 @@ theorem val_eigen_columns {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing
             by_contra hx
             exact hl (minorMonomial_support col m Z hm hmo l b hx).1
           rw [this, pow_zero]
-      beta_reduce
       rw [nabVal_map B h φ hφ, e1, nabVal_smul_dir, e2, one_mul, mul_comm p k, FB.toK, FB.toK, FB.toK, map_mul, map_pow,
         ← FB.toK, ← FB.toK, ← FB.toK, ← FB.toK, toK_map φ hφ]
       simp only [f₁, if_pos hb])
     (fun b hb => by
-      beta_reduce
       rw [nabVal_zero _ h hB']
       simp [f₁, hb, hω1])]
   rw [← map_minorsP (algebraMap (TWO.Ov v) F), MvPolynomial.support_map_of_injective _ hinj]
@@ -454,7 +785,6 @@ theorem val_unit_columns {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing 
       (MvPolynomial.monomial mo 1))
     (fun b mo => B.nabVal F h w0 k (f₂ b) u' (MvPolynomial.monomial mo 1))
     (fun mo hmo b hb => by
-      beta_reduce
       rw [mul_comm k p, nabVal_pullback_monomial R d O F B h hh w0 a p k ω hω _ _ (fun l => (τ l.1 a : F)) he,
         nabVal_smul_dir]
       simp only [f₂, if_pos hb]
@@ -467,7 +797,6 @@ theorem val_unit_columns {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing 
           exact hl (minorMonomial_support col m Z hm hmo l b hx).1
         rw [this, pow_zero, pow_zero])
     (fun b hb => by
-      beta_reduce
       have h0 : ∀ l, al (l, b) = 0 := fun l => by
         by_contra hx
         exact hb (hcols al hsup l b hx)
@@ -477,3 +806,7 @@ theorem val_unit_columns {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing 
     v.map_one fun x _ => val_factorial v hp' hp (lt_of_le_of_lt (Finsupp.le_degree x al) (hdeg ▸ hD))
 
 end GlobalTheory.DepthBound
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.JetHarmonics.ValLeOfMemSpan =====

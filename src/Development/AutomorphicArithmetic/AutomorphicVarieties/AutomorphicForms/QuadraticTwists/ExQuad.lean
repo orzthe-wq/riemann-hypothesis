@@ -153,7 +153,7 @@ private theorem nonempty_ringHom_Kstar_of_sq_eq_neg (l : ℕ) [Fact l.Prime] (p 
   have hf : (map (algebraMap ℚ ℚ_[l]) (X ^ 2 + C (p : ℚ))) = (X - C s) * (X - C (-s)) := by
     have h' : C s ^ 2 = -C (p : ℚ_[l]) := by rw [← C_pow, hs, C_neg]
     rw [map_natCast] at h'
-    simp only [Polynomial.map_add (f := _), Polynomial.map_pow, map_X, map_C, map_natCast, Polynomial.map_natCast, C_neg]
+    simp only [Polynomial.map_add (f := _), Polynomial.map_pow, map_X, map_natCast, Polynomial.map_natCast, C_neg]
     linear_combination h'
   have hsp : (map (algebraMap ℚ ℚ_[l]) (X ^ 2 + C (p : ℚ))).Splits := by
     rw [hf]

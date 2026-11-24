@@ -1,8 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsIsLogMult
-public import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.RegularSequenceExtendCoords
-public import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.RegularSequencePrimeDivisors
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitMkOfFormallyUnramified
+public import ReciprocityTheory.AnalyticForms.RegularLocalRings.FinalTheorems
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularSequenceExtendCoords
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnIffGeneratesAtInv
+public import Mathlib.AlgebraicGeometry.OrderOfVanishing.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularSequencePrimeDivisors
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -73,8 +77,8 @@ theorem exists_isSncChart (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [Is
       (u : Fin n → Y.functionFieldˣ), IsSncChart q n B y U hy z J w u := by
   classical
   obtain ⟨hreg, U, hyU, c, f, J₀, hrsp, hid⟩ := hB y
-  obtain ⟨V, hV, hyV, z, e, hz, hframe⟩ := GlobalTheory.T.regular_sequence_extend_coords k Y q n y U hyU c f hrsp
-  obtain ⟨w₀, u₀, hinj, hw⟩ := GlobalTheory.T.regular_sequence_prime_divisors Y y U.1 hyU c f hreg hrsp
+  obtain ⟨V, hV, hyV, z, e, hz, hframe⟩ := _root_.GlobalTheory.ParamFrame.exists_frame_of_rsp k Y q n y U hyU c f hrsp
+  obtain ⟨w₀, u₀, hinj, hw⟩ := _root_.GlobalTheory.RegParPrime.exists_primeDivisors_of_regularParams Y y U.1 hyU c f hreg hrsp
   have hwe : ∀ i, Function.extend e w₀ (fun _ => y) (e i) = w₀ i :=
     fun i => e.injective.extend_apply _ _ i
   have hue : ∀ i, Function.extend e u₀ (fun _ => 1) (e i) = u₀ i :=

@@ -104,14 +104,14 @@ theorem lineSub_coeff (y : Par e n → R) (m : Fin n) (ij : Fin (e + 1) × Fin n
     split_ifs <;> simp [Polynomial.coeff_one]
   | succ i => simp [lineSub, lineTop, groupWeight, Fin.succ_ne_zero]
 
-theorem weight_sum {δ : ℕ} {g : MvPolynomial (Fin (e + 1) × Fin n) k} (hg : IsMultiHomog δ g)
+theorem weight_sum {δ : ℕ} {g : MvPolynomial (Fin (e + 1) × Fin n) k} (hg : Heights.IsMultiHomog δ g)
     {d : Fin (e + 1) × Fin n →₀ ℕ} (hd : AddMonoidAlgebra.coeff g d ≠ 0) :
     ∑ ij, d ij * groupWeight (e + 1) n ij 0 = δ := by
   have h := congrFun (hg hd) 0
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)] at h
   simpa [Finset.sum_apply, smul_eq_mul] using h
 
-theorem lineSub_aeval {δ : ℕ} {g : MvPolynomial (Fin (e + 1) × Fin n) k} (hg : IsMultiHomog δ g)
+theorem lineSub_aeval {δ : ℕ} {g : MvPolynomial (Fin (e + 1) × Fin n) k} (hg : Heights.IsMultiHomog δ g)
     (y : Par e n → R) (m : Fin n) :
     (aeval (lineSub y m) g).natDegree ≤ δ ∧
       (aeval (lineSub y m) g).coeff δ =
@@ -142,7 +142,7 @@ theorem lineSub_aeval {δ : ℕ} {g : MvPolynomial (Fin (e + 1) × Fin n) k} (hg
 
 theorem coord_integral {δ : ℕ} (Q : Ideal (MvPolynomial (Fin n) k))
     (g : MvPolynomial (Fin (e + 1) × Fin n) k) (y : Par e n → R)
-    (hg : IsChowForm Q (e + 1) g) (hδ : IsMultiHomog δ g)
+    (hg : IsChowForm Q (e + 1) g) (hδ : Heights.IsMultiHomog δ g)
     (hu : IsUnit (eval (fun j => y (.inr j)) (specRest (algebraMap k R) g y))) (m : Fin n) :
     IsIntegral R (secCoord (Q.map (MvPolynomial.map (algebraMap k R))) y m) := by
   set Q' := Q.map (MvPolynomial.map (algebraMap k R))

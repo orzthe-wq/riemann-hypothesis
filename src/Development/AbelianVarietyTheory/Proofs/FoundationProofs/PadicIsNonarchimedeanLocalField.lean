@@ -62,6 +62,7 @@ import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Algebra.Module.CharacterModule
 public import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+public import Mathlib.NumberTheory.Padics.LocalField
 
 @[expose] public section
 
@@ -84,28 +85,6 @@ theorem padic_valuation_lt_iff (x y : ℚ_[p]) :
   · simp [hx, hy, zero_lt_iff]
   rw [Padic.norm_eq_zpow_log_mulValuation hx, Padic.norm_eq_zpow_log_mulValuation hy,
     zpow_lt_zpow_iff_right₀ hp, WithZero.log_lt_log (by simpa using hx) (by simpa using hy)]
-
-instance padic_isValuativeTopology : IsValuativeTopology ℚ_[p] := by
-  refine IsValuativeTopology.of_zero fun s => ?_
-  rw [Metric.mem_nhds_iff]
-  constructor
-  · rintro ⟨ε, hε, hs⟩
-    obtain ⟨y, hy0, hy⟩ := NormedField.exists_norm_lt ℚ_[p] hε
-    refine ⟨Units.mk0 (valuation ℚ_[p] y) (by simpa using norm_pos_iff.mp hy0), fun z hz => hs ?_⟩
-    rw [mem_ball_zero_iff]
-    exact ((padic_valuation_lt_iff p z y).mp hz).trans hy
-  · rintro ⟨γ, hs⟩
-    obtain ⟨y, hy⟩ := ValuativeRel.valuation_surjective (γ : ValueGroupWithZero ℚ_[p])
-    have hy0 : y ≠ 0 := by
-      rintro rfl
-      exact γ.ne_zero (by simpa using hy.symm)
-    refine ⟨‖y‖, norm_pos_iff.mpr hy0, fun z hz => hs ?_⟩
-    rw [mem_ball_zero_iff] at hz
-    show valuation ℚ_[p] z < γ
-    rw [← hy]
-    exact (padic_valuation_lt_iff p z y).mpr hz
-
-instance padic_isNonarchimedeanLocalField : IsNonarchimedeanLocalField ℚ_[p] where
 
 end Padic
 
@@ -300,7 +279,7 @@ theorem ratCircle_eq_zero {x : AddCircle (1 : ℚ)} (h : ratCircle x = 0) : x = 
 
 variable (k) in
 theorem exists_hasConductor_one : ∃ ψ : AddChar k Circle, HasConductor ψ 1 := by
-  apply GlobalTheory.SplitWeil.Model.exists_hasConductor <;> assumption
+  apply GlobalTheory.SplitWeil.Model.exists_hasConductor
 
 variable {ψ : AddChar k Circle} {c : kˣ}
 

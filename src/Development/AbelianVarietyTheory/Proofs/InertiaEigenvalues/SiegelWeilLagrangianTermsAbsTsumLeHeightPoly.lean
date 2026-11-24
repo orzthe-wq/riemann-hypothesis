@@ -275,7 +275,7 @@ theorem tsum_lagTerm_le : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : H
   have hr : ResEta D 1 (GlobalTheory.Doubling.dblSp W).rank := by
     have := GlobalTheory.Eis.SimplePoleModel.resEta_one_two_mul D W.rank
     convert this using 2
-    simp [GlobalTheory.Doubling.dblSp]
+    simp
     omega
   obtain ⟨omh, hω⟩ := GlobalTheory.weilRepresentationUnitaryPair D ψ (GlobalTheory.Doubling.dblSp W) V 1 χV hw.std
     ⟨continuous_const, fun _ => rfl⟩ hw.hecS hr hw.resS

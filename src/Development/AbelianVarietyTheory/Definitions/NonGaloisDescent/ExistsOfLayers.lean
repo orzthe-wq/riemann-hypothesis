@@ -325,6 +325,16 @@ end Generic
 
 section Concrete
 
+@[reducible] local instance (priority := high) instAlgebraOLRA {l : ℕ} [Fact l.Prime]
+    (LL : Formalism.BasicNotions.Loc.FinExt l) :
+    Algebra (↥(Formalism.BasicNotions.Loc.OL LL)) (Formalism.BasicNotions.Loc.RA LL) :=
+  Algebra.TensorProduct.leftAlgebra
+
+@[reducible] local instance (priority := high) instAlgebraOLRW {l : ℕ} [Fact l.Prime]
+    (LL : Formalism.BasicNotions.Loc.FinExt l) :
+    Algebra (↥(Formalism.BasicNotions.Loc.OL LL)) (Formalism.BasicNotions.Loc.RW LL) :=
+  Algebra.TensorProduct.leftAlgebra
+
 variable {l : ℕ} [Fact l.Prime]
 
 abbrev GamS (P : LocPrime l) (K : FinExt l) (s : ℕ) (LL : FinExt l) : Type 1 :=

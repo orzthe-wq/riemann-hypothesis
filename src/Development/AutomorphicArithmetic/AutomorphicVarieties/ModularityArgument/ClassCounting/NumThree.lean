@@ -1,12 +1,13 @@
 module
 
+public import Mathlib.NumberTheory.NumberField.ClassNumber
+public import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.IdealCounting.ClassC
+public import Mathlib.Analysis.Complex.ExponentialBounds
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.LemmaKOfSteps
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.NumGens
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -21,8 +22,12 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,7 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,9 +47,79 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.LemmaK
+import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.TorsBoundPow
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.NumGens, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.NumThree
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.NumGens =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.NumGens", "h": "module\n\npublic import Mathlib.NumberTheory.NumberField.ClassNumber\npublic import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.IdealCounting.ClassC\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\npublic import Mathlib.Analysis.Complex.ExponentialBounds\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.LemmaK\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.TorsBoundPow\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField UpperTheory.V UpperTheory.V.K
+
+theorem UpperTheory.V.K.numGens :
+    ∀ (l : ℕ) [Fact l.Prime] (L : Type) [Field L] [NumberField L] (a : ℕ), a ≤ classNumber L * l ^ Module.finrank ℚ L → Real.log a ≤ 4 * (Module.finrank ℚ L : ℝ) * Real.log (2 * ((discr L).natAbs : ℝ)) * Real.log l := by
+  intro l hl L _ _ a ha
+  have hp := hl.out
+  have hn1 : (1 : ℝ) ≤ (Module.finrank ℚ L : ℝ) := by
+    exact_mod_cast Module.finrank_pos (R := ℚ) (M := L)
+  have hDcast : (((discr L).natAbs : ℕ) : ℝ) = |((discr L : ℤ) : ℝ)| := by
+    rw [Nat.cast_natAbs, Int.cast_abs]
+  have hD1 : (1 : ℝ) ≤ |((discr L : ℤ) : ℝ)| := by
+    rw [← hDcast]
+    exact Nat.one_le_cast.2 (Int.natAbs_pos.2 (discr_ne_zero L))
+  have hX : 0 ≤ Real.log |((discr L : ℤ) : ℝ)| := Real.log_nonneg hD1
+  have hY : Real.log (2 * |((discr L : ℤ) : ℝ)|) = Real.log 2 + Real.log |((discr L : ℤ) : ℝ)| :=
+    Real.log_mul (by norm_num) (by linarith)
+  have hl2 : (2 : ℝ) ≤ l := by exact_mod_cast hp.two_le
+  have hlam : Real.log 2 ≤ Real.log l := Real.log_le_log (by norm_num) hl2
+  have hlog2 := Real.log_two_gt_d9
+  have hcl := KStar.IdealCounting.log_classNumber_le L
+  have hlog1 : Real.log (1 + Real.log |((discr L : ℤ) : ℝ)| / 2) ≤ Real.log |((discr L : ℤ) : ℝ)| / 2 := by
+    have := Real.log_le_sub_one_of_pos (show 0 < 1 + Real.log |((discr L : ℤ) : ℝ)| / 2 by linarith)
+    linarith
+  have hh : 0 < classNumber L := classNumber_pos L
+  have hmain : Real.log a ≤ Real.log (classNumber L) + (Module.finrank ℚ L : ℝ) * Real.log l := by
+    rcases Nat.eq_zero_or_pos a with rfl | ha0
+    · rw [Nat.cast_zero, Real.log_zero]
+      exact add_nonneg (Real.log_natCast_nonneg _) (mul_nonneg (by positivity) (Real.log_nonneg (by linarith)))
+    · calc Real.log a ≤ Real.log ((classNumber L : ℝ) * (l : ℝ) ^ Module.finrank ℚ L) :=
+            Real.log_le_log (by exact_mod_cast ha0) (by exact_mod_cast ha)
+        _ = _ := by
+          rw [Real.log_mul (by exact_mod_cast hh.ne') (by positivity), Real.log_pow]
+  rw [hDcast, hY]
+  set X := Real.log |((discr L : ℤ) : ℝ)|
+  set lam := Real.log (l : ℝ)
+  set n := (Module.finrank ℚ L : ℝ)
+  have hlam0 : 0 ≤ lam := by linarith
+  have ha1 : X / 2 ≤ X * lam := by
+    calc X / 2 = X * (1 / 2) := by ring
+      _ ≤ X * lam := mul_le_mul_of_nonneg_left (by linarith) hX
+  have ha2 : X * lam ≤ n * (X * lam) := le_mul_of_one_le_left (mul_nonneg hX hlam0) hn1
+  have ha3 : n * Real.log (1 + X / 2) ≤ n * (X / 2) := mul_le_mul_of_nonneg_left hlog1 (by linarith)
+  have ha4 : n * lam ≤ 4 * n * Real.log 2 * lam := by
+    calc n * lam = 1 * (n * lam) := (one_mul _).symm
+      _ ≤ (4 * Real.log 2) * (n * lam) :=
+          mul_le_mul_of_nonneg_right (by linarith) (mul_nonneg (by linarith) hlam0)
+      _ = 4 * n * Real.log 2 * lam := by ring
+  have ha5 : n * (X / 2) ≤ n * (X * lam) := mul_le_mul_of_nonneg_left ha1 (by linarith)
+  have h0 : 0 ≤ n * (X * lam) := mul_nonneg (by linarith) (mul_nonneg hX hlam0)
+  have heq : 4 * n * (Real.log 2 + X) * lam = 4 * n * Real.log 2 * lam + 4 * (n * (X * lam)) := by ring
+  linarith
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.NumGens =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.NumThree =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.NumThree", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.LemmaKOfSteps\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTuples.NumGens\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.ExponentialBounds\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK
@@ -67,8 +141,13 @@ private theorem num_three (C u Y t : ℝ) (hu : 2 ≤ u) (hY : 1 / 2 ≤ Y) (P :
   have hAC : u ^ C * Y ≤ u ^ (max C 9) * Y := mul_le_mul_of_nonneg_right hA1 hY0.le
   have hPA : P ≤ u ^ (max C 9) * Y := le_trans hP (mul_le_mul_of_nonneg_right hA2 hY0.le)
   have hA9 : u ^ (9:ℕ) * Y ≤ u ^ (max C 9) * Y := mul_le_mul_of_nonneg_right hA2 hY0.le
-  have hApos : 1 ≤ u ^ (max C 9) * Y := by nlinarith
-  have hu2 : (4:ℝ) ≤ u ^ (2:ℕ) := by nlinarith
+  have hApos : 1 ≤ u ^ (max C 9) * Y := by
+    calc (1 : ℝ) ≤ 256 * (1 / 2) := by norm_num
+      _ ≤ u ^ (9 : ℕ) * Y := mul_le_mul hu9 hY (by norm_num) (by positivity)
+      _ ≤ u ^ (max C 9) * Y := hA9
+  have hu2 : (4:ℝ) ≤ u ^ (2:ℕ) := by
+    calc (4 : ℝ) = 2 ^ 2 := by norm_num
+      _ ≤ u ^ 2 := pow_le_pow_left₀ (by norm_num) hu 2
   have h4A : 4 * (u ^ (max C 9) * Y) ≤ u ^ (max C 9 + 2) * Y := by
     rw [h2]
     have : u ^ (max C 9) * u ^ (2:ℕ) * Y = u ^ (2:ℕ) * (u ^ (max C 9) * Y) := by ring
@@ -88,24 +167,42 @@ private theorem num_three (C u Y t : ℝ) (hu : 2 ≤ u) (hY : 1 / 2 ≤ Y) (P :
       Real.exp (u ^ (max C 9) * Y) * Real.exp (3 * (u ^ (max C 9) * Y)) :=
     mul_le_mul_of_nonneg_left e3 ep.le
   calc t ≤ 2 * Real.exp (u ^ (max C 9) * Y) + u ^ (max C 9) * Y := by linarith
-    _ ≤ Real.exp (4 * (u ^ (max C 9) * Y)) := by rw [e4]; nlinarith
+    _ ≤ Real.exp (4 * (u ^ (max C 9) * Y)) := by
+        rw [e4]
+        have h1 : Real.exp (u ^ (max C 9) * Y) ≤ Real.exp (u ^ (max C 9) * Y) * (u ^ (max C 9) * Y) :=
+          le_mul_of_one_le_right ep.le hApos
+        have h2 : Real.exp (u ^ (max C 9) * Y) * (3 * (u ^ (max C 9) * Y) + 1) =
+            3 * (Real.exp (u ^ (max C 9) * Y) * (u ^ (max C 9) * Y)) + Real.exp (u ^ (max C 9) * Y) := by ring
+        linarith
     _ ≤ Real.exp (u ^ (max C 9 + 2) * Y) := Real.exp_le_exp.mpr h4A
 
 private theorem num_poly (u Y t b g c v : ℝ) (hu : 2 ≤ u) (hY : 1 / 2 ≤ Y) (ht : t ≤ u)
     (hb0 : 0 ≤ b) (hb : b ≤ u + 2 * u ^ 2) (hg0 : 0 ≤ g) (hg : g ≤ u + 2 * u * Y + 2) (hc0 : 0 ≤ c) (hc : c ≤ u)
     (hv0 : 0 ≤ v) (hv : v ≤ u) : ((b + v) * g + c + v) * t ≤ u ^ 9 * Y := by
   have hu0 : (0:ℝ) ≤ u := by linarith
-  have huY : 1 ≤ u * Y := by nlinarith
-  have hu2 : 2 * u ≤ u ^ 2 := by nlinarith
-  have hbv : b + v ≤ 3 * u ^ 2 := by nlinarith
-  have hg' : g ≤ 6 * (u * Y) := by nlinarith
+  have huY : 1 ≤ u * Y := by
+    calc (1 : ℝ) = 2 * (1 / 2) := by norm_num
+      _ ≤ u * Y := mul_le_mul hu hY (by norm_num) hu0
+  have hu2Y : u ≤ 2 * (u * Y) := by
+    have := mul_le_mul_of_nonneg_left hY hu0
+    linarith
+  have hu2 : 2 * u ≤ u ^ 2 := by
+    calc 2 * u ≤ u * u := mul_le_mul_of_nonneg_right hu hu0
+      _ = u ^ 2 := by ring
+  have hbv : b + v ≤ 3 * u ^ 2 := by linarith
+  have hg' : g ≤ 6 * (u * Y) := by linarith
   have h1 : (b + v) * g ≤ 3 * u ^ 2 * (6 * (u * Y)) :=
     mul_le_mul hbv hg' hg0 (by positivity)
-  have h4 : (4:ℝ) ≤ u ^ 2 := by nlinarith
+  have h4 : (4:ℝ) ≤ u ^ 2 := by
+    calc (4 : ℝ) = 2 ^ 2 := by norm_num
+      _ ≤ u ^ 2 := pow_le_pow_left₀ (by norm_num) hu 2
   have h4' : 4 * (u * Y) ≤ u ^ 2 * (u * Y) := mul_le_mul_of_nonneg_right h4 (by positivity)
-  have hcv : c + v ≤ 4 * (u * Y) := by nlinarith
+  have hcv : c + v ≤ 4 * (u * Y) := by linarith
   have hS0 : 0 ≤ (b + v) * g + c + v := by positivity
-  have hsum : (b + v) * g + c + v ≤ 19 * (u ^ 3 * Y) := by nlinarith
+  have hsum : (b + v) * g + c + v ≤ 19 * (u ^ 3 * Y) := by
+    have e1 : 3 * u ^ 2 * (6 * (u * Y)) = 18 * (u ^ 3 * Y) := by ring
+    have e2 : u ^ 2 * (u * Y) = u ^ 3 * Y := by ring
+    linarith
   have hst : ((b + v) * g + c + v) * t ≤ ((b + v) * g + c + v) * u :=
     mul_le_mul_of_nonneg_left ht hS0
   have hsu : ((b + v) * g + c + v) * u ≤ 19 * (u ^ 3 * Y) * u :=
@@ -144,24 +241,32 @@ private theorem num_down (C : ℝ) (hC : 0 ≤ C) (E n D n' D' d w : ℕ) (hE : 
   have hwR : (w:ℝ) ≤ 2 * n' := by exact_mod_cast hw
   have h3R : (D':ℝ) ≤ D ^ d * w ^ n' := by exact_mod_cast h3
   have hd16 : (d:ℝ) ≤ 16 * E * n := by
-    have : ((n:ℝ) + 1) * (4 * E + 4) ≤ (2 * n) * (8 * E) :=
-      mul_le_mul (by linarith) (by linarith) (by positivity) (by positivity)
-    nlinarith
+    calc (d : ℝ) ≤ ((n : ℝ) + 1) * (4 * E + 4) := h2R
+      _ ≤ (2 * n) * (8 * E) :=
+          mul_le_mul (by linarith) (by linarith) (by positivity) (by positivity)
+      _ = 16 * E * n := by ring
   have hn'16 : (n':ℝ) ≤ 16 * E * n ^ 2 := by
     rw [h1R]
-    have := mul_le_mul_of_nonneg_right hd16 (by linarith : (0:ℝ) ≤ n)
-    nlinarith
+    calc (d : ℝ) * n ≤ 16 * E * n * n := mul_le_mul_of_nonneg_right hd16 (by linarith)
+      _ = 16 * E * n ^ 2 := by ring
   set x : ℝ := 2 * E * n with hx
-  have hx2 : 2 ≤ x := by nlinarith
+  have hx2 : 2 ≤ x := by
+    calc (2 : ℝ) = 2 * 1 * 1 := by ring
+      _ ≤ 2 * (E : ℝ) * n :=
+          mul_le_mul (mul_le_mul_of_nonneg_left hE' (by norm_num)) hn1 zero_le_one (by positivity)
   have hx0 : 0 < x := by linarith
   have hEn : (E:ℝ) * n ^ 2 ≤ E ^ 2 * n ^ 2 := by
-    have : (E:ℝ) ≤ E ^ 2 := by nlinarith
+    have : (E:ℝ) ≤ E ^ 2 := by rw [sq]; exact le_mul_of_one_le_left (by linarith) hE'
     exact mul_le_mul_of_nonneg_right this (by positivity)
   have hn'x : (n':ℝ) ≤ 4 * x ^ 2 := by
-    have : x ^ 2 = 4 * E ^ 2 * n ^ 2 := by rw [hx]; ring
-    nlinarith
+    calc (n' : ℝ) ≤ 16 * E * n ^ 2 := hn'16
+      _ = 16 * ((E : ℝ) * n ^ 2) := by ring
+      _ ≤ 16 * ((E : ℝ) ^ 2 * n ^ 2) := mul_le_mul_of_nonneg_left hEn (by norm_num)
+      _ = 4 * x ^ 2 := by rw [hx]; ring
   have hd8 : (d:ℝ) ≤ 8 * x := by rw [hx]; linarith
-  have hx3 : 8 ≤ x ^ 3 := by nlinarith
+  have hx3 : 8 ≤ x ^ 3 := by
+    calc (8 : ℝ) = 2 ^ 3 := by norm_num
+      _ ≤ x ^ 3 := pow_le_pow_left₀ (by norm_num) hx2 3
   have hbase : 2 * (E:ℝ) * n' ≤ x ^ 5 := by
     have a1 : 2 * (E:ℝ) * n' ≤ 2 * E * (16 * E * n ^ 2) :=
       mul_le_mul_of_nonneg_left hn'16 (by positivity)
@@ -201,8 +306,8 @@ private theorem num_down (C : ℝ) (hC : 0 ≤ C) (E n D n' D' d w : ℕ) (hE : 
   have hLD1 : 1 ≤ 2 * LD := by linarith
   have hx40 : 0 ≤ 32 * x ^ 4 := by positivity
   have t3 : 32 * x ^ 4 * 1 ≤ 32 * x ^ 4 * (2 * LD) := mul_le_mul_of_nonneg_left hLD1 hx40
-  have hx4 : 1 ≤ x ^ 4 := by nlinarith
-  have hxx4 : x ≤ x ^ 4 := by nlinarith
+  have hx4 : 1 ≤ x ^ 4 := one_le_pow₀ (by linarith : (1 : ℝ) ≤ x)
+  have hxx4 : x ≤ x ^ 4 := le_self_pow₀ (by linarith : (1 : ℝ) ≤ x) (by norm_num)
   have hx7 : 128 ≤ x ^ 7 := by
     calc (128:ℝ) = 2 ^ 7 := by norm_num
       _ ≤ x ^ 7 := pow_le_pow_left₀ (by norm_num) hx2 7
@@ -228,8 +333,8 @@ private theorem gens_le (L : Type) [Field L] [NumberField L] :
   have key0 := K.numGens 2 L 0 (Nat.zero_le _)
   simp only [Nat.cast_zero, Real.log_zero, Nat.cast_ofNat] at key key0
   have hl2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
-  have hnD : 0 ≤ 4 * (Module.finrank ℚ L : ℝ) * Real.log (2 * ((discr L).natAbs : ℝ)) := by
-    nlinarith
+  have hnD : 0 ≤ 4 * (Module.finrank ℚ L : ℝ) * Real.log (2 * ((discr L).natAbs : ℝ)) :=
+    nonneg_of_mul_nonneg_left key0 hl2
   have hk : (Nat.log 2 (classNumber L) : ℝ) ≤
       4 * (Module.finrank ℚ L : ℝ) * Real.log (2 * ((discr L).natAbs : ℝ)) := by
     rcases Nat.eq_zero_or_pos (classNumber L) with h0 | hpos
@@ -240,7 +345,7 @@ private theorem gens_le (L : Type) [Field L] [NumberField L] :
       have hlog : (Nat.log 2 (classNumber L) : ℝ) * Real.log 2 ≤ Real.log (classNumber L) := by
         rw [← Real.log_pow]
         exact Real.log_le_log (by positivity) hpR
-      nlinarith
+      exact le_of_mul_le_mul_right (hlog.trans key) hl2
   show ((2 * Module.finrank ℚ L + Nat.log 2 (classNumber L) + 2 : ℕ) : ℝ) ≤ _
   push_cast
   linarith
@@ -402,3 +507,6 @@ theorem UpperTheory.V.ZK.sNum :
     unfold kBound
     rfl
   linarith
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ClassCounting.NumThree =====

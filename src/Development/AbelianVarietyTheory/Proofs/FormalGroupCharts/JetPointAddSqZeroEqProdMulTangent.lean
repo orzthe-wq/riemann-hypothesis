@@ -1,7 +1,9 @@
 module
 
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.DualLiftInjective
+public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ReductionSurjectiveOfIsNilpotent
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsChartOfMemRedKer
-public import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FirstJetEqProdTangent
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -28,6 +30,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -41,6 +44,122 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FirstJetEqProdTangent, Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.JetPointAddSqZeroEqProdMulTangent
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FirstJetEqProdTangent =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FirstJetEqProdTangent", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsLieBasis\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.DualLiftInjective\npublic import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ReductionSurjectiveOfIsNilpotent\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\npublic import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsChartOfMemRedKer\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option autoImplicit false
+
+noncomputable section
+
+open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G.Chart
+open scoped CategoryTheory.MonObj
+open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp epsR IsTangent IsLieComb IsLieBasis)
+attribute [local instance] Over.cartesianMonoidalCategory
+
+namespace GlobalTheory
+
+open SqZero TrivSqZeroExt
+
+theorem firstJet_eq_aug_add_sum {R : Type} [CommRing R] {d : ℕ} (a : JetR R (Fin d) 1) :
+    a = algebraMap R _ (jetAug R (Fin d) 1 a) +
+      ∑ j, algebraMap R _ (dualLift (Pi.single j (1 : R)) a).snd * zR 1 j := by
+  classical
+  let e := firstJetEquiv R (Fin d)
+  have hcoord (j : Fin d) : (e a).snd j = (dualLift (Pi.single j (1 : R)) a).snd := by
+    have h : (TrivSqZeroExt.map (Finsupp.lapply j : (Fin d →₀ R) →ₗ[R] R)).comp e.toAlgHom =
+        dualLift (Pi.single j (1 : R)) := by
+      apply jet_ext
+      intro i
+      simp [e, dualLift_zR, Finsupp.single_apply, Pi.single_apply, eq_comm]
+    have he := congrArg TrivSqZeroExt.snd (AlgHom.congr_fun h a)
+    simpa [TrivSqZeroExt.snd_map] using he
+  calc
+    a = e.symm (e a) := (e.symm_apply_apply a).symm
+    _ = _ := by
+      rw [firstJetEquiv_symm_apply, Finsupp.sum_fintype (e a).snd
+        (fun j (c : R) => c • zR (R := R) 1 j) (fun _ => zero_smul _ _)]
+      rw [show (e a).fst = jetAug R (Fin d) 1 a from firstJetEquiv_fst R (Fin d) a]
+      simp only [hcoord, Algebra.smul_def]
+
+theorem firstJet_eq_prod_tangent : ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R)))
+    [GrpObj G] [IsCommMonObj G], Smooth G.hom → ∀ (d : ℕ) (v : Fin d → (epsR R ⟶ G)),
+    IsLieBasis v → ∀ (x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin d) m) ⟶ G),
+    (∀ m, spMap (jetZeroR R (Fin d) m) ≫ x m = 1) →
+    (∀ j, spMap (dualLift (Pi.single j (1 : R))) ≫ x 1 = v j) →
+    ∀ (A : Type) [CommRing A] [Algebra R A] (ψ : JetR R (Fin d) 1 →ₐ[R] A)
+      (e : Fin d → (DualNumber R →ₐ[R] A)), (∀ j, e j (TrivSqZeroExt.inr 1) = ψ (zR 1 j)) →
+      spMap ψ ≫ x 1 = ∏ j, (spMap (e j) ≫ v j : sp (R₀ := R) A ⟶ G) := by
+  set_option maxHeartbeats 200000 in
+    intro R _ G _ _ hG d v hv x hx0 hx1 A _ _ ψ e he
+    have haug : spMap (jetAug R (Fin d) 1) ≫ x 1 = 1 := by
+      have e : jetAug R (Fin d) 1 = (jetAug R (Fin d) 0).comp (jetZeroR R (Fin d) 1) :=
+        jet_ext fun j => by rw [AlgHom.comp_apply, jetAug_zR]; exact (jetAug_zR (R := R) 0 j).symm
+      rw [e, ← spMap_comp, Category.assoc, hx0 1, comp_one']
+    letI : Smooth G.hom := hG
+    let J := RingHom.ker (jetAug R (Fin d) 1)
+    have hJ : J ^ 2 = ⊥ := ker_jetAug_pow (R := R) (Fin d) 1
+    obtain ⟨c', hc'⟩ := (expHom_bijective (A := JetR R (Fin d) 1) hv hJ).2
+      ⟨x 1, mem_redKer_of_section _ (Algebra.ofId R _) (fun a => (jetAug R (Fin d) 1).commutes a) haug⟩
+    let c : Fin d → JetR R (Fin d) 1 := fun i => c' i
+    have hcJ : ∀ i, c i ∈ J := fun i => (c' i).2
+    have hc : ∀ i, c i * c i = 0 := fun i => mul_eq_zero_of_sq hJ (hcJ i) (hcJ i)
+    have hxc : x 1 = lieExp v c hc := by
+      have h := congrArg (fun y : Additive (redKer (R := R) G J) =>
+        ((y.toMul : redKer (R := R) G J) : sp (R₀ := R) (JetR R (Fin d) 1) ⟶ G)) hc'
+      rw [expHom_apply] at h
+      exact h.symm
+    have hs : ∀ j i : Fin d, dualLift (Pi.single j (1 : R)) (c i) =
+        inr ((Pi.single j (1 : R) : Fin d → R) i) := fun j => by
+      have h₁ := hx1 j
+      rw [hxc, comp_lieExp] at h₁
+      have h₂ : lieExp v (fun i => (inr ((Pi.single j (1 : R) : Fin d → R) i) : DualNumber R))
+          (fun _ => inr_mul_inr _ _ _) = v j := by
+        rw [lieExp, Finset.prod_eq_single j]
+        · rw [← scaleD_eq, Pi.single_eq_same, scaleD_one, spMap_id]
+          exact Category.id_comp _
+        · intro i _ hi
+          exact epsTo_zero_comp ((isTan_iff _).2 (hv.1 i)) _
+            (by rw [Pi.single_eq_of_ne hi, inr_zero]) _
+        · exact fun h => absurd (Finset.mem_univ j) h
+      have h₃ : ∀ i, dualLift (Pi.single j (1 : R)) (c i) ∈ RingHom.ker (fstD R) := fun i => by
+        rw [RingHom.mem_ker, ← AlgHom.comp_apply, fstD_comp_dualLift]
+        exact hcJ i
+      intro i
+      have heq : expHom hv.1 (J := RingHom.ker (fstD R)) kerD_sq (fun i => ⟨dualLift (Pi.single j (1 : R)) (c i), h₃ i⟩) =
+          expHom hv.1 (J := RingHom.ker (fstD R)) kerD_sq (fun i => ⟨inr ((Pi.single j (1 : R) : Fin d → R) i), inr_mem_kerD _⟩) := by
+        apply Additive.toMul.injective
+        apply Subtype.ext
+        rw [expHom_apply, expHom_apply]
+        exact h₁.trans h₂.symm
+      have heq' := congrFun ((expHom_bijective (A := DualNumber R) (J := RingHom.ker (fstD R)) hv kerD_sq).1 heq) i
+      exact congrArg Subtype.val heq'
+
+    have hcz : ∀ i, c i = zR 1 i := fun i => by
+      rw [firstJet_eq_aug_add_sum (c i), (hcJ i : jetAug R (Fin d) 1 (c i) = 0), map_zero, zero_add,
+        Finset.sum_eq_single i]
+      · rw [hs, snd_inr, Pi.single_eq_same, map_one, _root_.one_mul]
+      · intro j _ hj
+        rw [hs, snd_inr, Pi.single_eq_of_ne hj.symm, map_zero, zero_mul]
+      · exact fun h => absurd (Finset.mem_univ i) h
+    rw [hxc, comp_lieExp, lieExp]
+    refine Finset.prod_congr rfl fun j _ => ?_
+    congr 2
+    exact DualNumber.algHom_ext (by rw [epsTo_eps, hcz]; exact (he j).symm)
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FirstJetEqProdTangent =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.JetPointAddSqZeroEqProdMulTangent =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.JetPointAddSqZeroEqProdMulTangent", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsChartOfMemRedKer\npublic import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FirstJetEqProdTangent\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -211,3 +330,7 @@ theorem jet_add_sqZero_eq_prod_mul : ∀ (R : Type) [CommRing R]
   exact DualNumber.algHom_ext (epsTo_eps _ _)
 
 end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.JetPointAddSqZeroEqProdMulTangent =====

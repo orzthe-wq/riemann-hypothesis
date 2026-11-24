@@ -3,44 +3,7 @@ module
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.EqZeroOfDatumEmbeddingEqZero
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.CasValK
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.RigidityTheorems.MultOne
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.DatumIrr
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.ExistsKhwGenSubOfKType
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.PropsAdm
@@ -104,15 +67,12 @@ theorem isKTypeOf_map_iff (φ : H₁ →ₗ[ℂ] H₂) (hφ : Function.Injective
         obtain ⟨w, hw, hwx⟩ := Submodule.mem_map.mp (hS' hx)
         rw [← hφ hwx]
         exact hw
-      have hst'' : Formalism.MainNotions.S.IsKStableOn ε σ₁ (S'.comap φ) := by
-        intro g hg x hx
-        show φ (σ₁ g x) ∈ S'
-        rw [hint g hg x]
-        exact hst' g hg (φ x) hx
       have hS'eq : (S'.comap φ).map φ = S' := by
         refine le_antisymm (Submodule.map_comap_le _ _) fun y hy => ?_
         obtain ⟨w, -, rfl⟩ := Submodule.mem_map.mp (hS' hy)
         exact Submodule.mem_map_of_mem hy
+      have hst'' : Formalism.MainNotions.S.IsKStableOn ε σ₁ (S'.comap φ) :=
+        (kStableOn_map_iff φ hφ hint (S'.comap φ)).2 (by rwa [hS'eq])
       rcases h _ hle hst'' with h0 | h1
       · left
         rw [← hS'eq, h0, Submodule.map_bot]
@@ -181,9 +141,8 @@ theorem rreg_mem_Hlam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ 
 theorem sigLam_coe (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (x : Hlam ε Ψ v₀) :
     ((sigLam ε Ψ v₀ g x : Hlam ε Ψ v₀) : L2 ε) = rreg ε g x := by
   have hm := rreg_mem_Hlam hgap hP hv₀ g hg x x.2
-  have h1 : sigLam ε Ψ v₀ g x = ⟨rreg ε g x, hm⟩ :=
-    Submodule.orthogonalProjectionOnto_mem_subspace_eq_self (⟨rreg ε g x, hm⟩ : Hlam ε Ψ v₀)
-  rw [h1]
+  exact congrArg (fun z : Hlam ε Ψ v₀ => (z : L2 ε))
+    (Submodule.orthogonalProjectionOnto_mem_subspace_eq_self ⟨rreg ε g x, hm⟩)
 
 theorem sigLam_isURepOn (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : IsURepOn (UJset ε) (sigLam ε Ψ v₀) := by
   have hR := rreg_isURepOn ε
@@ -212,13 +171,11 @@ theorem sigLam_irred (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ :
   intro S hSc hSG
   have hinj : Function.Injective (Hlam ε Ψ v₀).subtype := Subtype.val_injective
   have hcl : IsClosed ((S.map (Hlam ε Ψ v₀).subtype : Submodule ℂ (L2 ε)) : Set (L2 ε)) := by
-    have h := (Submodule.isClosed_topologicalClosure _).isClosedEmbedding_subtypeVal.isClosedMap
-      (S : Set (Hlam ε Ψ v₀)) hSc
     rw [Submodule.map_coe]
-    exact h
+    exact (Submodule.isClosed_topologicalClosure _).isClosedEmbedding_subtypeVal.isClosedMap
+      (S : Set (Hlam ε Ψ v₀)) hSc
   have hle : S.map (Hlam ε Ψ v₀).subtype ≤ closGen (smE ε (rreg ε)) (datumV ε Ψ v₀) := by
-    rintro _ ⟨x, -, rfl⟩
-    exact x.2
+    exact Submodule.map_subtype_le _ S
   have hst : ∀ g ∈ UJset ε, ∀ x ∈ S.map (Hlam ε Ψ v₀).subtype, rreg ε g x ∈ S.map (Hlam ε Ψ v₀).subtype := by
     rintro g hg _ ⟨x, hx, rfl⟩
     exact ⟨sigLam ε Ψ v₀ g x, hSG g (by rw [mir_UJset_eq]; exact hg) x hx, sigLam_coe hgap hP hv₀ hg x⟩
@@ -238,8 +195,7 @@ theorem Hlam_nontrivial (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv�
     exact Submodule.le_topologicalClosure _
       (Submodule.mem_map_of_mem (Submodule.mem_sInf.mpr fun U hU => hU.1 hw))
   refine ⟨⟨⟨w, hm⟩, 0, fun h => hw0 ?_⟩⟩
-  have h2 : ((w : smD ε (rreg ε)) : L2 ε) = 0 := congrArg (fun z : Hlam ε Ψ v₀ => (z : L2 ε)) h
-  exact Subtype.ext h2
+  exact Subtype.ext (congrArg (fun z : Hlam ε Ψ v₀ => (z : L2 ε)) h)
 
 private theorem Kset_subset_UJset_mem {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ Formalism.REAL.Kset ε) : g ∈ UJset ε := by
@@ -252,8 +208,7 @@ private theorem Kset_subset_UJset_mem {g : Matrix (Fin n) (Fin n) ℂ}
 theorem subtype_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, (Hlam ε Ψ v₀).subtype (sigLam ε Ψ v₀ g x) =
       rreg ε g ((Hlam ε Ψ v₀).subtype x) := by
-  intro g hg x
-  exact sigLam_coe hgap hP hv₀ (Kset_subset_UJset_mem hg) x
+  exact fun g hg x => sigLam_coe hgap hP hv₀ (Kset_subset_UJset_mem hg) x
 
 theorem map_lowKSubLam : (lowKSubLam ε Ψ v₀).map (Hlam ε Ψ v₀).subtype =
     (datumV ε Ψ v₀).map (smD ε (rreg ε)).subtype := by
@@ -290,8 +245,7 @@ theorem sigLam_kType_bounds (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (
     Formalism.MainNotions.S.vNormSq ε (Formalism.QuantumDeterminants.lowK ε lam) ≤ Formalism.MainNotions.S.vNormSq ε μ ∧
       ∀ h : ℝ, GapAtLeast ε lam h → (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h → μ ≠ lowK ε lam →
         casValK ε (lowK ε lam) + 2 * (h - n + 1) ≤ casValK ε μ := by
-  have hinj : Function.Injective (Hlam ε Ψ v₀).subtype := Subtype.val_injective
-  rw [isKTypeOf_map_iff _ hinj (subtype_sigLam hgap hP hv₀)] at hS
+  rw [isKTypeOf_map_iff (Hlam ε Ψ v₀).subtype Subtype.val_injective (subtype_sigLam hgap hP hv₀)] at hS
   exact ⟨data_vogan hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε))
       (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) _ (map_subtype_le_closGen S) hS,
     fun h hh hbig hμ => data_casValK_gap hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε))

@@ -78,8 +78,6 @@ theorem mem_H0Lat {T : LocLat S.G S.Qp S.LL S.O} (t : ↥T.L.T) : t ∈ invarian
     sub_eq_zero]
   first
   | rfl
-  | exact Iff.rfl
-  | (constructor <;> intro h g <;> exact h g)
 
 theorem mem_fixDD {T : LocLat S.G S.Qp S.LL S.O} (x : S.W.DD T) : x ∈ fixDD S.W T ↔
     S.W.φD T x = x ∧ S.W.γD T S.W.gamK x = x ∧ ∀ δ ∈ S.W.DelF, S.W.γD T δ x = x := by

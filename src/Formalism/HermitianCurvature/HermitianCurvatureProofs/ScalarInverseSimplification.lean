@@ -104,7 +104,7 @@ theorem column_indicator_expansion : ExpansionCovector := by
       else xi (Fin.castLE le_rfl a) (ew w l)).det = (-1) ^ s'' * (h.det * t ^ s'' * sgnW s'') := by
     intro w
     rw [Matrix.det_succ_row _ i, Finset.sum_eq_single (Fin.last _)]
-    · simp only [Matrix.of_apply, if_pos rfl, (hew_last w (Fin.last _)).mpr rfl, if_true, mul_one,
+    · simp only [Matrix.of_apply, (hew_last w (Fin.last _)).mpr rfl, if_true, mul_one,
         Fin.succAbove_last]
       have hsub : (Matrix.of fun a l => if a = i then (if ew w l = wI k _ w then (1 : ℂ) else 0)
           else xi (Fin.castLE le_rfl a) (ew w l)).submatrix i.succAbove Fin.castSucc =
@@ -124,7 +124,7 @@ theorem column_indicator_expansion : ExpansionCovector := by
       rw [show i.val + (i0 + s'') = (i0 + i0) + s'' by simp [i]; ring, pow_add, ← two_mul, pow_mul]
       norm_num
     · intro j _ hj
-      simp only [Matrix.of_apply, if_pos rfl]
+      simp only [Matrix.of_apply]
       rw [if_neg (fun h' => hj ((hew_last w j).mp h'))]; simp
     · simp
   have hAA : AAx k (i0 + s'' + 1) E xi (i0 + s'' + 1) le_rfl u =

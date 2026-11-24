@@ -51,5 +51,3 @@ open GlobalTheory.DownLift
 open GlobalTheory.DownLift.GenFinite
 open GlobalTheory.DownLift.SplitCoef
 
-theorem _root_.GlobalTheory.T.splitPlace_invariantForms_separate_thetaFunctions : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) → ∀ a : AE D, IsSplitIdem D a → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → (∀ ℓ, InvForm ψ S T a ℓ → ∀ x, IsHalf a x → ℓ (heisO ψ S T x f) = 0) → f = 0 := by
-  first | exact @GlobalTheory.DownLift.SplitSep.invForms_separate | exact GlobalTheory.DownLift.SplitSep.invForms_separate | (intros; apply GlobalTheory.DownLift.SplitSep.invForms_separate <;> assumption)

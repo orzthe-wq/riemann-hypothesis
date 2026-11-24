@@ -80,7 +80,7 @@ theorem cm_inv : (Cm n)⁻¹ = CmI n := Matrix.inv_eq_right_inv cm_mul_cmI
 
 theorem cmH_JJ_cm : (Cm n)ᴴ * JJ n * Cm n = fromBlocks ((-(2 * Complex.I)) • 1) 0 0 ((2 * Complex.I) • 1) := by
   rw [Cm, JJ, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply, fromBlocks_inj]
-  simp [smul_smul]
+  simp
   refine ⟨?_, ?_⟩
   · rw [← neg_add, ← add_smul, two_mul]
   · rw [← add_smul, two_mul]

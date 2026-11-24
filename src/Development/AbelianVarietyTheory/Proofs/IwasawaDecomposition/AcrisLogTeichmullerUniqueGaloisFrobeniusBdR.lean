@@ -5,7 +5,7 @@ public import Development.AbelianVarietyTheory.CrystallinePeriods.CrisIncl
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsLogAExtends
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApproxStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonicalAcrisToBdRPlusUniqueEquivariantApprox
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -82,9 +82,7 @@ theorem mu_mem {e : Per.Fl l} (he : e.untilt = 1) :
     algebraMap (Per.Ainf l) (Per.AinfP l) (mu e) ∈ Per.kerP l := by
   exact GlobalTheory.RingIface.alg_mem_kerP l (by rw [Model.theta_mu, he, sub_self])
 
-theorem ev_alg (n : ℕ) (a : Per.AinfP l) :
-    Per.ev l n (algebraMap (Per.AinfP l) (Per.BdRp l) a) = Ideal.Quotient.mk _ a :=
-  GlobalTheory.RingIface.ev_alg l n a
+alias ev_alg := _root_.GlobalTheory.MemLoc.CrisUnique.ev_alg
 
 theorem isLog_map {e : Per.Fl l} (he : e.untilt = 1) {t : Per.Acris l} (ht : IsLogA e t)
     {j : Per.Acris l →+* Per.BdRp l} (hj : IsCrisP j) : Per.IsLog l e (j t) := by
@@ -99,7 +97,7 @@ theorem isLog_map {e : Per.Fl l} (he : e.untilt = 1) {t : Per.Acris l} (ht : IsL
       ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Per.AinfP l) *
         (algebraMap (Per.Ainf l) (Per.AinfP l) (mu e)) ^ (k + 1) :=
     ⟨d * _, by rw [← mul_assoc, hd, one_mul]⟩
-  have key := (GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l j hj).2.2 n t (algebraMap (Per.AinfP l) (Per.BdRp l) c) (by
+  have key := (_root_.GlobalTheory.MemLoc.crisP_unique_equivariant l j hj).2.2 n t (algebraMap (Per.AinfP l) (Per.BdRp l) c) (by
     intro r
     obtain ⟨N, hN⟩ := ht r
     obtain ⟨s, hs, z, hz⟩ := hN (max N n) (le_max_left _ _)

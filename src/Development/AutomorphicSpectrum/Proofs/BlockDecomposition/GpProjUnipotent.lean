@@ -102,8 +102,8 @@ theorem gpProj_unip : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
       rcases Fin.eq_castSucc_or_eq_last i with ⟨i, rfl⟩ | rfl <;>
         rcases Fin.eq_castSucc_or_eq_last j with ⟨j, rfl⟩ | rfl
       · simp [Matrix.one_apply, Fin.castSucc_ne_last, hblock]
-      · simp [Matrix.one_apply, Fin.castSucc_ne_last]
-      · simp [Matrix.one_apply, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm, hrow,
+      · simp [Fin.castSucc_ne_last]
+      · simp [Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm, hrow,
           GlobalTheory.BZMir.eLast]
       · simp [hrow, GlobalTheory.BZMir.eLast]
     apply mem_of_proj j _
@@ -114,6 +114,6 @@ theorem gpProj_unip : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
       fun hl => Fin.castSucc_ne_last i' ((GlobalTheory.BZMir.Leib.blockIndex_true_eq_last_iff m j _).mp hl)
     refine h.trans ((key _ _ hne).trans ?_)
     simp only [Matrix.one_apply, e_inj.eq_iff, Sigma.mk.inj_iff, heq_eq_eq, true_and,
-      Fin.castSucc_inj, Units.val_one]
+      Fin.castSucc_inj]
 
 end GlobalTheory.CompanionTheory.GpUnip

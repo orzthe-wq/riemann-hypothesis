@@ -101,18 +101,6 @@ theorem cg_mul_left {k m : ℕ} (h : k ≤ m) {a x y : Qbar l} (ha : ‖a‖ ≤
   rw [cg_sub_iff h, ← mul_sub, norm_mul]
   exact mul_le_mul ha hxy (norm_nonneg _) (by positivity)
 
-theorem seqN_single {N : ℕ} (hN : N ≠ 0) (j : Ω →+* Qbar l) (s : ℕ) (a : Ω) :
-    seqN N j (HahnSeries.single ((s : ℚ) / N) a) = Pi.single s (j a) := by
-  funext t
-  have hN' : (N : ℚ) ≠ 0 := by exact_mod_cast hN
-  by_cases h : t = s
-  · subst h; simp [seqN]
-  · have : (t : ℚ) / N ≠ (s : ℚ) / N := fun e => h (by exact_mod_cast (div_left_inj' hN').1 e)
-    simp [seqN, HahnSeries.coeff_single_of_ne this, h]
-
-theorem finSupp_proj (s : ℕ) : FinSupp (LinearMap.proj (R := Qbar l) (φ := fun _ : ℕ => Qbar l) s) :=
-  ⟨{s}, fun f hf => hf s (Finset.mem_singleton_self s)⟩
-
 theorem FinSupp.smul {lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l} (h : FinSupp lam) (a : Qbar l) : FinSupp (a • lam) := by
   obtain ⟨S, hS⟩ := h
   exact ⟨S, fun f hf => by simp [hS f hf]⟩

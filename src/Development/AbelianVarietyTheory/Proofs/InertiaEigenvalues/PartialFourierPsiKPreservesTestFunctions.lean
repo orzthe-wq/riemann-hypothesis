@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WHyp
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFactsStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualMeasureExistsUniqueFourierInversionStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleHermitianPairStructureFacts
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SelfDualMeasureExistsUniqueFourierInversion
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -106,9 +107,9 @@ theorem GlobalTheory.JR.Hyp.pt_isTest : ∀ (F E : Type) [NontriviallyNormedFiel
   have hβapp : ∀ u b, β u b = Algebra.trace F A.K ((x : A.K) * u * b) := fun u b => by simp [β, Algebra.traceForm_apply, mul_assoc]
   have hsymm : β.IsSymm := by
     refine ⟨fun u b => ?_⟩
-    simp only [RingHom.id_apply, hβapp]
+    simp only [hβapp]
     ring_nf
-  have htr := (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.1
+  have htr := (_root_.GlobalTheory.JR.EtFacts.main F E A).2.2.1
   have hsepL : ∀ u : A.K, (∀ b, β u b = 0) → u = 0 := fun u hu => by
     have h1 : (x : A.K) * u = 0 := htr.1 _ fun b => by simpa [hβapp] using hu b
     simpa using congrArg (fun t => ((x⁻¹ : A.Kˣ) : A.K) * t) h1
@@ -117,7 +118,7 @@ theorem GlobalTheory.JR.Hyp.pt_isTest : ∀ (F E : Type) [NontriviallyNormedFiel
     rw [hβapp] at this
     rw [hβapp, mul_right_comm]; exact this⟩
   have hF : ∀ f : A.K → ℂ, IsTest f → IsTest (fourB ν (kx A ψ (x : A.K)) f) := fun f hf =>
-    (GlobalTheory.T.selfDual_measure_exists_unique_fourier_inversion F E ψ hψ A.K β hsymm hnd).2 ν hν f hf
+    (_root_.GlobalTheory.JR.SelfDualUniq.selfDual_exists_unique_isTest F E ψ hψ A.K β hsymm hnd).2 ν hν f hf
   have hG : ∀ p, Hyp.pt A ν ψ x Φ p = fourB ν (kx A ψ (x : A.K)) (fun b => Φ (p.1, b)) p.2 := fun p => rfl
   have hloc : IsLocallyConstant (Hyp.pt A ν ψ x Φ) := by
     rw [IsLocallyConstant.iff_eventually_eq]

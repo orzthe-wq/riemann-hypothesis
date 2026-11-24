@@ -89,9 +89,7 @@ theorem mulR_eq {K : Type} [CommRing K] (R : Subring K) (d e : K) (hd : d ∈ R)
 
 theorem modK_eq_one {K : Type} [CommRing K] (R : Subring K) (d e : K) (hd : d ∈ R) (he : e ∈ R)
     (hde : d * e = 1) : modK R d = 1 := by
-  unfold modK
-  rw [mulR_eq R d e hd he hde]
-  simp [AddSubgroup.relIndex_self]
+  simp [modK, mulR_eq R d e hd he hde, AddSubgroup.relIndex_self]
 
 theorem det_mem {K : Type} [CommRing K] (R : Subring K) {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     (hM : IsInt R M) : M.det ∈ R := by
@@ -254,8 +252,7 @@ theorem first_theta_eq_of_equality (h : SingleBlockThetaProps) : Th1Eq := by
   unfold SingleBlockThetaProps at h
   intro K _ _ _ R ψ hLD m
   obtain ⟨Θ, h1, h2, h3⟩ := h K R ψ hLD m
-  obtain ⟨hp, -⟩ := h3 ∅ (by simp)
-  exact ⟨Θ, hp, h1, h2⟩
+  exact ⟨Θ, (h3 ∅ (by simp)).1, h1, h2⟩
 
 theorem first_level_of_equality (h : SingleBlockThetaProps) : A13 1 := by
   unfold A13 ThetaExists
@@ -283,15 +280,13 @@ theorem psiKR_mk (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) (a : K) :
   have h1 : b - a ∈ R := by
     rw [← mem_rangeR R, ← Submodule.Quotient.eq]
     exact Quotient.out_eq _
-  calc ψ b = ψ (a + (b - a)) := by congr 1; abel
-    _ = ψ a := by rw [AddChar.map_add_eq_mul, hψ _ h1, mul_one]
+  rw [show b = a + (b - a) by abel, AddChar.map_add_eq_mul, hψ _ h1, mul_one]
 
 theorem psiKR_add (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) (x y : KR R) :
     psiKR R ψ (x + y) = psiKR R ψ x * psiKR R ψ y := by
   obtain ⟨a, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   obtain ⟨b, rfl⟩ := Submodule.Quotient.mk_surjective _ y
-  rw [← Submodule.Quotient.mk_add, psiKR_mk R ψ hψ, psiKR_mk R ψ hψ, psiKR_mk R ψ hψ,
-    AddChar.map_add_eq_mul]
+  simp [← Submodule.Quotient.mk_add, psiKR_mk R ψ hψ, AddChar.map_add_eq_mul]
 
 theorem latZ_le_ker {n : ℕ} (Z : Matrix (Fin n) (Fin n) K) (hZ : IsUnit Z.det) :
     latZ R Z ≤ LinearMap.ker (lamLin R Z) := by
@@ -320,8 +315,7 @@ theorem muZ_mk {n : ℕ} (Z : Matrix (Fin n) (Fin n) K) (hZ : IsUnit Z.det) (v :
 theorem lamLin_out {n : ℕ} (Z : Matrix (Fin n) (Fin n) K) (hZ : IsUnit Z.det) (β : coker R Z) :
     lamLin R Z (Quotient.out β) = muZ R Z hZ β := by
   rw [← muZ_mk R Z hZ (Quotient.out β)]
-  congr 1
-  exact Quotient.out_eq β
+  exact congrArg (muZ R Z hZ) (Quotient.out_eq β)
 
 theorem mem_isoZZ_iff {n n' : ℕ} (Z : Matrix (Fin n) (Fin n) K) (Z' : Matrix (Fin n') (Fin n') K)
     (hZ : IsUnit Z.det) (hZ' : IsUnit Z'.det) (θ : coker R Z ≃ₗ[R] coker R Z') :
@@ -448,9 +442,7 @@ theorem first_kernel_inner_sum {K : Type} [CommRing K] (R : Subring K) (ψ : Add
 
 theorem orbZ_det {K : Type} [CommRing K] (w : Point K)
     (p : lowW K w.1 w.2 × upUniG K w.1.sum) : (orbZ w p).det = (pt w.1 w.2).det := by
-  unfold orbZ
-  rw [Matrix.det_mul, Matrix.det_mul, isLowUni_det K p.1.2.1, isUpUni_det K p.2.2, one_mul,
-    mul_one]
+  simp [orbZ, Matrix.det_mul, isLowUni_det K p.1.2.1, isUpUni_det K p.2.2]
 
 theorem first_kernel_periodic_of_formula (hF : SingleBlockFormula) : SingleBlockPeriodic := by
   unfold SingleBlockPeriodic
@@ -460,12 +452,8 @@ theorem first_kernel_periodic_of_formula (hF : SingleBlockFormula) : SingleBlock
   have e : (Submodule.Quotient.mk (c : K) : KR R) = Submodule.Quotient.mk (c' : K) := by
     rw [Submodule.Quotient.eq, mem_rangeR]
     exact hc
-  have e2 : ∀ {n n' : ℕ} (Z : Matrix (Fin n) (Fin n) K) (Z' : Matrix (Fin n') (Fin n') K),
-      singleBlockInner R ψ Z Z' (c : K) = singleBlockInner R ψ Z Z' (c' : K) := by
-    intro n n' Z Z'
-    unfold singleBlockInner
-    rw [e]
-  simp only [e2]
+  simp only [singleBlockInner]
+  rw [e]
 
 theorem first_kernel_parseval_of_formula (hF : SingleBlockFormula) (hI : IntFinite) (hCD : CharOrthDual) (hCO : CharOrth)
     (hCC : CokerCard) : SingleBlockParseval := by
@@ -604,8 +592,7 @@ private lemma sum_mul_comp_eq_sum_image_filter {X Y : Type} [DecidableEq Y] (F :
     (fun x => a x * g (f x))]
   refine Finset.sum_congr rfl fun y _ => ?_
   rw [Finset.sum_mul]
-  refine Finset.sum_congr rfl fun x hx => ?_
-  rw [(Finset.mem_filter.mp hx).2]
+  exact Finset.sum_congr rfl fun x hx => by rw [(Finset.mem_filter.mp hx).2]
 
 theorem psd_comap {X Y : Type} [DecidableEq Y] (k : Y → Y → ℂ) (f : X → Y) (F : Finset X)
     (h : IsPSD (F.image f) k) : IsPSD F (fun x y => k (f x) (f y)) := by
@@ -648,8 +635,7 @@ private lemma isPSD_real_rescale {X : Type} (F : Finset X) (k : X → X → ℂ)
     refine Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_
     rw [map_mul, Complex.conj_ofReal]
     ring
-  rw [e]
-  exact h _
+  simpa only [← e] using h (fun x => a x * (c x : ℂ))
 
 theorem second_gram_of_kernel_gram (hG : KpGram) (hM : ModMul) : BlockKernelPosSemidef := by
   classical
@@ -667,8 +653,7 @@ theorem second_gram_of_kernel_gram (hG : KpGram) (hM : ModMul) : BlockKernelPosS
     funext x y
     unfold Ns
     rw [(hM K R ψ hLD x.2 y.2).2, mul_pow, Complex.ofReal_mul]
-  rw [e]
-  exact hc
+  simpa only [e] using hc
 
 theorem first_kernel_gram_of_second (h : BlockKernelPosSemidef) : SingleBlockPosSemidef := by
   classical
@@ -684,8 +669,6 @@ theorem first_kernel_gram_of_second (h : BlockKernelPosSemidef) : SingleBlockPos
 end A5x6
 
 open A5x6
-
-theorem second_gram_of_gram_and_modulus : Formalism.FourierDecayAlt.A5.KpGram → Formalism.FourierDecayAlt.A5.ModMul → Formalism.FourierDecayAlt.A5.BlockKernelPosSemidef := fun hG hM => second_gram_of_kernel_gram hG hM
 
 theorem second_gram_vanishing_of_parts : Formalism.FourierDecayAlt.A5.BlockKernelPropertiesOfSteps := by
   unfold Formalism.FourierDecayAlt.A5.BlockKernelPropertiesOfSteps Formalism.FourierDecayAlt.A5.A2

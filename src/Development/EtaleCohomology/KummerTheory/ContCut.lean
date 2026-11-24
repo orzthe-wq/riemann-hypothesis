@@ -79,7 +79,7 @@ def Hf {R : Type} [CommRing R] (F : Shv R) (n : ℤ) : Scheme.{0}ᵒᵖ ⥤ AddC
 theorem bcMap_comp {X : Scheme.{0}} {R A B C : CommRingCat.{0}} (p : X ⟶ Spec R) (f : R ⟶ A) (g : R ⟶ B) (k : R ⟶ C)
     (h : A ⟶ B) (h' : B ⟶ C) (e : f ≫ h = g) (e' : g ≫ h' = k) (e'' : f ≫ h ≫ h' = k) :
     bcMap p f k (h ≫ h') e'' = bcMap p g k h' e' ≫ bcMap p f g h e := by
-  apply pullback.hom_ext <;> simp [bcMap, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_snd_assoc]
+  apply pullback.hom_ext <;> simp [bcMap, pullback.map]
 
 def bc {X : Scheme.{0}} {R : CommRingCat.{0}} (p : X ⟶ Spec R) : Under R ⥤ Scheme.{0}ᵒᵖ where
   obj A := op (pullback p (Spec.map A.hom))
@@ -94,8 +94,7 @@ def bcHom {U X : Scheme.{0}} {R A : CommRingCat.{0}} (f : U ⟶ X) (p : X ⟶ Sp
 theorem bcHom_bcMap {U X : Scheme.{0}} {R A B : CommRingCat.{0}} (f : U ⟶ X) (p : X ⟶ Spec R) (r : U ⟶ Spec R)
     (e : f ≫ p = r) (s : R ⟶ A) (t : R ⟶ B) (h : A ⟶ B) (e' : s ≫ h = t) :
     bcHom f p r e t ≫ bcMap p s t h e' = bcMap r s t h e' ≫ bcHom f p r e s := by
-  apply pullback.hom_ext <;> simp [bcMap, bcHom, pullback.map, pullback.lift_fst, pullback.lift_snd,
-    pullback.lift_snd_assoc, pullback.lift_fst_assoc]
+  apply pullback.hom_ext <;> simp [bcMap, bcHom, pullback.map]
 
 def bcNat {U X : Scheme.{0}} {R : CommRingCat.{0}} (f : U ⟶ X) (p : X ⟶ Spec R) (r : U ⟶ Spec R) (e : f ≫ p = r) :
     bc p ⟶ bc r where

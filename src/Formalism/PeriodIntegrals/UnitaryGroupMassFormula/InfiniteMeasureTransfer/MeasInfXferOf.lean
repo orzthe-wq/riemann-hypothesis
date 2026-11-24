@@ -98,9 +98,7 @@ theorem transport (E : I.Ginf ≃ₜ* H) (K : Subgroup H) (S : Set I.Ginf) (hS :
     (hcl : IsClosed S) (μ : Measure I.Ginf) (hμ : IsHaarOnSet I S μ) :
     ∃ ν : Measure K, ν.IsHaarMeasure ∧ Formalism.L2.SG.Measures.amb ν = μ.map E := by
   set S' : Subgroup I.Ginf := K.comap E.toMulEquiv.toMonoidHom with hS'def
-  have hSS : (S' : Set I.Ginf) = S := by
-    ext s
-    exact hS s
+  have hSS : (S' : Set I.Ginf) = S := Set.ext hS
   have hcl' : IsClosed (S' : Set I.Ginf) := hSS ▸ hcl
   have hμ' : IsHaarOnSet I (S' : Set I.Ginf) μ := hSS ▸ hμ
   obtain ⟨hHaar, -, -⟩ := Formalism.L2.SG.Pf.haarOnSet_isHaar_inst I S' hcl' μ hμ'
@@ -156,8 +154,7 @@ theorem measInfXfer_of (h1 : IsoStep) (h2 : NStep) (h3 : HStep) (h4 : NClosed) (
   obtain ⟨ν2, hν2, hamb2⟩ := transport I E _ (Hset I (Set.range e ∪ Set.range f ∪ {z}))
     (fun s => by rw [hE]; exact h3 I hb r e f z s) (h5 I _) muH hH
   have hEfun : (E : I.Ginf → HI I) = Formalism.L2.SG.Pf.MeasInf.toInfL I hb := funext hE
-  refine ⟨ν1, ν2, hν1, hν2, ?_, ?_⟩
-  · rw [hamb1, hEfun]
-  · rw [hamb2, hEfun]
+  exact ⟨ν1, ν2, hν1, hν2, by simpa [hEfun] using hamb1,
+    by simpa [hEfun] using hamb2⟩
 
 end Formalism.L2.SG.Pf.MeasInfW

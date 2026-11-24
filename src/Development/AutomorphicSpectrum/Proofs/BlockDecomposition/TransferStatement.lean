@@ -64,7 +64,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
-lemma isOpen_omegaSet : IsOpen (OmegaSet n) := Ps1.isOpen_omega'
+alias isOpen_omegaSet := _root_.ReciprocityTheory.ChartRestriction.DS.S7.isOpen_omega
 
 lemma omF_diffAt {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (hF : F ∈ OmF n) {z : Matrix (Fin n) (Fin n) ℂ}
     (hz : z ∈ OmegaSet n) : DifferentiableAt ℂ F z :=

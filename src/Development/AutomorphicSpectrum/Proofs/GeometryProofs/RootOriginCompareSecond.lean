@@ -2,12 +2,15 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ArchBetween
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.TowerOrigin
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegersAlt
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.BadExists
 public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.HasMultiplierLine
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGenericStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptMultihomogFormStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProjectStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeLine
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptInteriorGeneric
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ConjugateHermitianLineIsometries
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ArithmeticHilbertSamuelLowerBound
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeCptMultihomogForm
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.JoinModelPointsProject
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonoSpMapRingOfIntegersAlt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -130,8 +133,8 @@ theorem exists_form (o : RootOrigin Y S M Fx) :
     ∃ b : MRing M.ι, aeval M.y b ≠ 0 ∧ ∀ w ∈ mcPts M.P, aeval w b ≠ 0 →
       ∃ z : Spec (CommRingCat.of ℂ) ⟶ o.𝔐.X, CoordsAt o.𝔐.ξ M.y z w ∧ o.𝔐.Interior z := by
   have hinj : Function.Injective (algebraMap (𝓞 c.F) c.F) := FaithfulSMul.algebraMap_injective _ _
-  obtain ⟨-, ⟨x, hx⟩, -⟩ := GlobalTheory.T.hodge_cpt_interior_generic E H D l Xo c (𝓞 c.F) _ Y S M.Ω M.K M.ι M.y o.𝔐 hinj
-  obtain ⟨b, d, hd, hb, hw⟩ := GlobalTheory.T.hodge_cpt_multihomog_form E H D l Xo c (𝓞 c.F) _ Y S M.Ω M.K M.ι M.y o.𝔐 x hx (mono_coeff c)
+  obtain ⟨-, ⟨x, hx⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.HodgeCpt.basic E H D l Xo c (𝓞 c.F) _ Y S M.Ω M.K M.ι M.y o.𝔐 hinj
+  obtain ⟨b, d, hd, hb, hw⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Cmp.HInterior.exists_form_interior E H D l Xo c (𝓞 c.F) _ Y S M.Ω M.K M.ι M.y o.𝔐 x hx (mono_coeff c)
   refine ⟨b, fun h => hb (Small.LineModel.mem_of_aeval M.y hd h), fun w hw' hne => hw w hw' ?_⟩
   rw [Cmp.evC, Small.LineModel.eval_map_eq]
   exact hne
@@ -172,7 +175,7 @@ theorem join_points : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
   · have h0 := aeval_eq_zero_of_mem _ h
     rw [map_mul, aeval_rename, aeval_rename, eL, eR, aeval_map_hom] at h0
     exact (mul_ne_zero hb ((map_ne_zero i).2 hb₀)) h0
-  · obtain ⟨hw₁, hw₂⟩ := (GlobalTheory.T.join_model_points_project (CMType H) (D.p + D.q) M R i).2.2.1 ℂ w hw
+  · obtain ⟨hw₁, hw₂⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.Ht.JoinFacts.main (CMType H) (D.p + D.q) M R i).2.2.1 ℂ w hw
     rw [Small.LineModel.ptsOver_complex] at hw₁ hw₂
     rw [Cmp.evC, Small.LineModel.eval_map_eq, map_mul, aeval_rename, aeval_rename] at hf
     obtain ⟨z₁, hz₁, hI₁⟩ := hbw _ hw₁ (left_ne_zero_of_mul hf)

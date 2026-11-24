@@ -12,47 +12,9 @@ public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.F
 import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.FlowTwoTorsionWp
 public import Formalism.LocalToGlobal.TorsionIntegrality.WeierstrassTwoTorsion.TwoTorsionU
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FrobeniusLiftNorms.TopsChoicePartA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -280,7 +242,7 @@ theorem phi_comparison : PhCompare := by
     rw [h, norm_zero] at hε
     exact zero_ne_one hε
   obtain ⟨cV, hsub⟩ := ph_sub hl.two_le g2 g3 s2 hε0
-  have h := (Formalism.L2.Th1.B.simeqLog K Unit _ cV (integral_V hε hθ)).2
+  have h := (_root_.Formalism.L2.Th1.B.Sim.simeq_formal_log K Unit _ cV (integral_V hε hθ)).2
   unfold Simeq at h ⊢
   rw [sub_zero] at h
   have e : (phFF l g2 g3 s2 ε : MvPowerSeries Unit K) -
@@ -296,7 +258,7 @@ theorem first_level_curve_holds : CurveExponentCoboundaryCocycle := by
   obtain ⟨hLaw, hInv, -⟩ := Formalism.L2.Th1.A.bridgeLaw K (shortW g2 g3) hW
   have hO := Formalism.L2.Th1.B.f1O K _ _ s2 _ _ _ _ _ _ (Formalism.L2.Th1.A.bridgeWp K (shortW g2 g3))
     hLaw hInv (Formalism.L2.Th1.A.bridgeCurve K (shortW g2 g3) hW) ht
-  exact transport_first_level K l hl hn F hF (fgl (shortW g2 g3)) (thetaS l g2 g3 ε) (phCurve g2 g3 s2)
+  exact _root_.Formalism.L2.Th1.D.transport_first_level_holds K l hl hn F hF (fgl (shortW g2 g3)) (thetaS l g2 g3 ε) (phCurve g2 g3 s2)
     (phFF l g2 g3 s2 ε) hLaw.1 hθ (theta_homomorphism K l hl hn F hF g2 g3 ε).2
     ⟨hO.1, hO.2.2.1, hO.2.2.2⟩ (phi_comparison K l hl g2 g3 s2 ε hε hθ)
 

@@ -1,22 +1,25 @@
 module
 
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt
 public import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion
-public import Mathlib.RingTheory.RegularLocalRing.Defs
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsSplitExtIsGtOfTorusExtension
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RangeSubsetAbLocusOfIsProper
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFiniteTorusExtensionOfModel
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFinsetFactor
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCompleteDvrFiniteSubalgebra
+public import Mathlib.Topology.Algebra.Valued.NormedValued
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.AlgebraicGeometry.Morphisms.FinitePresentation
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -28,10 +31,11 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PicardGroup
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -39,7 +43,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,10 +56,89 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.RingTheory.Valuation.LocalSubring
+import Mathlib.Tactic.Linter.Style
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AmplePt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull
-public import Mathlib.Topology.Algebra.Valued.NormedValued
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFinsetFactor, Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModuliModelUltrametricPoints
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFinsetFactor =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFinsetFactor", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.AlgebraicGeometry.Morphisms.FinitePresentation\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory AlgebraicGeometry
+
+namespace GlobalTheory.PointDescentFactorization
+
+theorem exists_finset_factor {R Ω : Type} [CommRing R] [Field Ω] (g : ℚ →+* R) (hg : g.FiniteType)
+    (φ : R →+* Ω) :
+    ∃ s : Finset Ω, ∀ (k : Type) [Field k] (β : k →+* Ω), (↑s : Set Ω) ⊆ Set.range β →
+      ∃ ψ : R →+* k, β.comp ψ = φ := by
+  classical
+  letI : Algebra ℚ R := g.toAlgebra
+  have hft : Algebra.FiniteType ℚ R := hg
+  obtain ⟨t, ht⟩ := hft.out
+  refine ⟨t.image φ, fun k _ β hs => ?_⟩
+  have hq : ∀ q : ℚ, φ (g q) ∈ β.fieldRange := by
+    intro q
+    have h := map_ratCast (φ.comp g) q
+    rw [Rat.cast_id, RingHom.comp_apply] at h
+    rw [h]
+    exact SubfieldClass.ratCast_mem _ q
+  have hall : ∀ x : R, φ x ∈ β.fieldRange := by
+    intro x
+    have hx : x ∈ Algebra.adjoin ℚ (t : Set R) := ht ▸ Algebra.mem_top
+    induction hx using Algebra.adjoin_induction with
+    | mem x hx => exact hs (by simpa using ⟨x, hx, rfl⟩)
+    | algebraMap q => exact hq q
+    | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
+    | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
+  refine ⟨(β.rangeRestrictFieldEquiv.symm.toRingHom).comp (φ.codRestrict β.fieldRange hall), ?_⟩
+  ext x
+  have h := β.rangeRestrictFieldEquiv.apply_symm_apply ⟨φ x, hall x⟩
+  exact congrArg Subtype.val h
+
+theorem point_descends {Ω : Type} [Field Ω] {X : Scheme}
+    (p : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℚ) [LocallyOfFiniteType p]
+    (a : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp Ω ⟶ X) :
+    ∃ s : Finset Ω, ∀ (k : Type) [Field k] (β : k →+* Ω), (↑s : Set Ω) ⊆ Set.range (⇑β : k → Ω) →
+      ∃ b : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp k ⟶ X, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap β ≫ b = a := by
+  let x₀ : (Spec (CommRingCat.of Ω)) := IsLocalRing.closedPoint Ω
+  obtain ⟨R, j, hj, hx⟩ : ∃ (R : CommRingCat.{0}) (j : Spec R ⟶ X), IsOpenImmersion j ∧
+      a x₀ ∈ Set.range j := by
+    obtain ⟨U, hU, hxU, -⟩ := exists_isAffineOpen_mem_and_subset (x := a x₀) (U := ⊤) trivial
+    exact ⟨_, hU.fromSpec, inferInstance, by rw [hU.range_fromSpec]; exact hxU⟩
+  have hr : Set.range a ⊆ Set.range j := by
+    rintro _ ⟨y, rfl⟩
+    have : y = x₀ := Subsingleton.elim (α := PrimeSpectrum Ω) _ _
+    rw [this]; exact hx
+  let a' := IsOpenImmersion.lift j a hr
+  have ha' : a' ≫ j = a := IsOpenImmersion.lift_fac j a hr
+  obtain ⟨φ, hφ⟩ := Spec.map_surjective a'
+  obtain ⟨g, hg⟩ := Spec.map_surjective (j ≫ p)
+  have hl : LocallyOfFiniteType (Spec.map g) := by rw [hg]; infer_instance
+  have hft : g.hom.FiniteType := HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType).mp hl
+  obtain ⟨s, hs⟩ := exists_finset_factor g.hom hft φ.hom
+  refine ⟨s, fun k _ β hβ => ?_⟩
+  obtain ⟨ψ, hψ⟩ := hs k β hβ
+  refine ⟨Spec.map (CommRingCat.ofHom ψ) ≫ j, ?_⟩
+  rw [← ha', ← hφ, ← Category.assoc, ← Spec.map_comp]
+  congr 2
+  ext1
+  exact hψ
+
+end GlobalTheory.PointDescentFactorization
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFinsetFactor =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModuliModelUltrametricPoints =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModuliModelUltrametricPoints", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Degenerations.AdmissibleBaseOfCompleteDvr\npublic import Development.AbelianVarietyTheory.Definitions.Degenerations.HomExtSt\npublic import Development.AbelianVarietyTheory.Statements.TorsionEndomorphisms.EndDeterminedOnTorsion\npublic import Mathlib.RingTheory.RegularLocalRing.Defs\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.UnifUniqSt\npublic import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.ExistsSplitExtIsGtOfTorusExtension\npublic import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RangeSubsetAbLocusOfIsProper\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFiniteTorusExtensionOfModel\npublic import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsFinsetFactor\npublic import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsCompleteDvrFiniteSubalgebra\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PicardGroup\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.Valuation.LocalSubring\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AmplePt\nimport ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.CubePullbacks.CubePull\npublic import Mathlib.Topology.Algebra.Valued.NormedValued\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField
@@ -177,18 +260,6 @@ theorem exists_cart {V : Type} [CommRing V] [IsDomain V] {C : Type} [Field C] [A
 
 end Geometry
 
-theorem exists_finset_point {Ω : Type} [Field Ω] {X : Scheme.{0}} (p : X ⟶ Sp ℚ) [LocallyOfFiniteType p]
-    (a : Sp Ω ⟶ X) : ∃ s : Finset Ω, ∀ (k : Type) [Field k] (β : k →+* Ω), (s : Set Ω) ⊆ Set.range β →
-      ∃ b : Sp k ⟶ X, spMap β ≫ b = a := by
-  first
-  | (rename_i h_1 h_4; revert Ω h_1 X p h_4 a; exact @_root_.GlobalTheory.PointDescentFactorization.point_descends)
-  | exact @_root_.GlobalTheory.PointDescentFactorization.point_descends
-  | exact _root_.GlobalTheory.PointDescentFactorization.point_descends
-  | (apply _root_.GlobalTheory.PointDescentFactorization.point_descends <;> assumption)
-  | (intros; apply _root_.GlobalTheory.PointDescentFactorization.point_descends <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.PointDescentFactorization.point_descends <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.PointDescentFactorization.point_descends ..)
-
 theorem isLocalHom_of_integral {V W Ω : Type} [CommRing V] [IsLocalRing V] [CommRing W] [IsLocalRing W] [Algebra V W]
     [Algebra.IsIntegral V W] [CommRing Ω] [IsLocalRing Ω] (g : W →+* Ω)
     (h : ∀ v ∈ IsLocalRing.maximalIdeal V, g (algebraMap V W v) ∈ IsLocalRing.maximalIdeal Ω) : IsLocalHom g := by
@@ -302,7 +373,7 @@ theorem exists_split_point (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValua
       f.Finite ∧ Function.Injective i ∧ (∀ x, i (f x) = algebraMap W F x) ∧ spMap i ≫ χ = y ≫ Y.j ∧
       GlobalTheory.LN.PolAt t (jK V) ∧ GlobalTheory.LN.SplitOver t.G (IsLocalRing.maximalIdeal V) := by
   obtain ⟨p, hp⟩ := exists_finiteType Xo c
-  obtain ⟨s, hs⟩ := exists_finset_point p y
+  obtain ⟨s, hs⟩ := _root_.GlobalTheory.PointDescentFactorization.point_descends p y
   obtain ⟨W₁, d₁, c₁, -, f₁, -, -, hW₁, -⟩ := exists_complete_dvr_finite_subalgebra W F s
   have i₁ : Function.Injective (algebraMap W₁ F) := Subtype.val_injective
   let β₁ : FractionRing W₁ →+* F := IsFractionRing.lift i₁
@@ -382,3 +453,6 @@ theorem exists_mdl : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN
   exact ⟨M, f, χ, mp, k₁, k₂, k₃, k₄⟩
 
 end GlobalTheory.Ex.UnifModel
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ModuliModelUltrametricPoints =====

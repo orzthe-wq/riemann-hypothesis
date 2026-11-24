@@ -57,18 +57,12 @@ namespace GlobalTheory.FlatColLaw
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-theorem e_iota (p : Place D k) (x : k) : p.e * p.ι x = p.ι x := by rw [← p.ι_π, p.π_ι]
-
 theorem iota_mul (p : Place D k) (x : k) (m : AE D) : p.ι x * m = p.ι (x * p.π m) := by
   have h2 := p.ι_π (p.ι x * m)
   rw [map_mul, p.π_ι] at h2
-  rw [h2, ← mul_assoc, e_iota]
+  rw [h2, ← mul_assoc, _root_.GlobalTheory.LocMod.Witness.e_ι]
 
-theorem xi_ne (p : Place D k) : p.xi ≠ 0 := by
-  have h : p.xi * p.pr D.host.xi0⁻¹ = 1 := by
-    rw [Place.xi, Place.pr, Place.pr, ← map_mul, ← map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one,
-      map_one]
-  exact left_ne_zero_of_mul_eq_one h
+alias xi_ne := _root_.GlobalTheory.LocMod.Witness.xi_ne
 
 theorem map_iota_mul (p : Place D k) {a b c : ℕ} (zk : Matrix (Fin a) (Fin b) k) (x : Mx D b c) :
     (zk.map p.ι : Mx D a b) ⬝ x = (zk * x.map p.π).map p.ι := by
@@ -114,7 +108,7 @@ theorem isHalf_mul_right {e : AE D} {a b c : ℕ} {x : Mx D a b} (y : Mx D b c) 
 
 theorem isHalf_adj (p : Place D k) {a b : ℕ} (zk : Matrix (Fin a) (Fin b) k) :
     IsHalf (cA D p.e) (adj (zk.map p.ι : Mx D a b)) := fun i j =>
-  (map_mul (cA D) p.e (p.ι (zk j i))).symm.trans (congrArg (cA D) (e_iota p _))
+  (map_mul (cA D) p.e (p.ι (zk j i))).symm.trans (congrArg (cA D) (_root_.GlobalTheory.LocMod.Witness.e_ι p _))
 
 theorem exists_mxAt (p : Place D k) : ∃ v : GlobalTheory.FinPl.Pl D, ∀ (a b : ℕ) (x : Mx D a b), IsHalf (cA D p.e) x →
     GlobalTheory.FinPl.MxAt (· = v) x := by

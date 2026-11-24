@@ -4,7 +4,7 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatAtVAtStab
 public import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.ExistsNhdsInvariant
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsStdCharNegOneOfStandardTraceAdelicAddChar
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardAddCharSymplecticLocalLatticeEqOne
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StandardTraceAdelicAddCharLocalComponentNeOne
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.StandardTraceAdelicAddCharLocalComponentNeOne
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LcscAdelicUnitaryGroup
 public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissible
 import Mathlib.Algebra.Order.Floor.Extended
@@ -184,7 +184,7 @@ theorem exists_sep (h : IsCMExt F E σ) {ψ : AddChar (AF F) ℂ} (hψ : IsStd �
   obtain ⟨s, hs⟩ : ∃ s, ψ (liftV v s) ≠ 1 := by
     by_contra e
     push Not at e
-    exact GlobalTheory.PsiNontriv.psiV_ne_one ψ hψ v (AddChar.ext _ _ e)
+    exact Tw.PsiNontriv.psiV_ne_one ψ hψ v (AddChar.ext _ _ e)
   obtain ⟨w, hw, e⟩ : ∃ w, At (evFin F v) w ∧ symp (cA σ) (-1) (incM F X.J) (incM F W.J) z w = liftV v s := by
     have hat : ∀ p : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F), At (evFin F v) p → At (evFin F v) (M.co.e.symm p) :=
       fun p hp a ha => by rw [← map_smul, hp a ha, map_zero]

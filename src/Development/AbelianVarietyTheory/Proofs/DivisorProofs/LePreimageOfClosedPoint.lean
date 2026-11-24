@@ -68,10 +68,6 @@ theorem snd_valR_epsMul {Z : Scheme.{0}} {S : Type} [CommRing S] (T : Sp (DualNu
   rw [GlobalTheory.Points.valR_spMap_comp (epsMul a) T O h f]
   simp [epsMul]
 
-theorem epsMul_comp_algebraMap {S : Type} [CommRing S] (a : S) :
-    (epsMul a).comp (algebraMap S (DualNumber S)) = algebraMap S (DualNumber S) := by
-  ext x <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]
-
 theorem fst_comp_epsMul {S : Type} [CommRing S] (a : S) :
     (TrivSqZeroExt.fstHom S S S).toRingHom.comp (epsMul a) = (TrivSqZeroExt.fstHom S S S).toRingHom := by
   ext x <;> simp [epsMul]

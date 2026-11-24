@@ -202,13 +202,8 @@ theorem test_bound_of_two_halves (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cde
   · unfold om
     push_cast
     linarith
-  · push_cast
-    have e1 : (CK + CDf) * (TT.card : ℝ) * ((m : ℝ) + 1) ^ 2 * Real.logb p a =
-        CK * (TT.card : ℝ) * ((m : ℝ) + 1) ^ 2 * Real.logb p a + CDf * (TT.card : ℝ) * ((m : ℝ) + 1) ^ 2 * Real.logb p a := by
-      ring
-    push_cast at hκ hDF
-    rw [e1]
-    linarith
+  · push_cast at hκ hDF ⊢
+    nlinarith [hκ, hDF]
   intro n2 sh hsh S hS c hv
   obtain ⟨F1, f1, f2, f3, Λ, cc, l1, l2, l3, l4⟩ := hcl n2 sh hsh S hS c hv
   obtain ⟨T, t1, t2, t3, t4⟩ := hfl F1 f1 f2 f3

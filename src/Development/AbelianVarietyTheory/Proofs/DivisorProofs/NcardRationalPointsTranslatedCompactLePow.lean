@@ -53,6 +53,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsSmoothVector
 import Formalism.LocalToGlobal.Divisibility.CoefMod
 import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

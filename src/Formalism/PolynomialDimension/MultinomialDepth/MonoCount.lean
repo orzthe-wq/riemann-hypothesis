@@ -627,10 +627,10 @@ theorem sl_mul (m : σ →₀ ℕ) {g q : MvPolynomial σ K} (hg : IsF fs g) (hq
     · rfl
   rw [Finset.sum_congr rfl fun b hb => Finset.sum_congr rfl fun a ha => key a ha b hb, Finset.sum_comm]
   by_cases hm : m ∈ q.support
-  · simp only [Finset.sum_ite_eq', Finset.sum_ite_eq, hm, if_true]
+  · simp only [Finset.sum_ite_eq', hm, if_true]
     rw [← Finset.smul_sum, ← g.as_sum]
   · have h0 : AddMonoidAlgebra.coeff q m = 0 := by simpa using hm
-    simp only [Finset.sum_ite_eq', Finset.sum_ite_eq, hm, if_false, Finset.sum_const_zero, h0, zero_smul]
+    simp only [Finset.sum_ite_eq', hm, if_false, Finset.sum_const_zero, h0, zero_smul]
 
 theorem ext_eq_sum (φ : MvPolynomial σ K →ₗ[K] MvPolynomial σ K) (x : MvPolynomial σ K) (S : Finset (σ →₀ ℕ))
     (hS : ∀ m ∈ x.support, ltr fs m ∈ S) : ext fs φ x = ∑ m ∈ S, φ (slc fs m x) * monomial m 1 := by
@@ -832,7 +832,7 @@ theorem slc_pol (L : Letters N) (j0 : ℕ) (m : Fin N × Fin r →₀ ℕ) {x : 
     simp only [frst, Finsupp.filter_apply, fsj, Lz]
     split_ifs with h
     · simpa [h] using hmd i
-    · simp [h]
+    · simp
   · exact Submodule.zero_mem _
 
 theorem isF_of_polLz (L : Letters N) (j0 : ℕ) {y : MvPolynomial (Fin N × Fin r) ℚ_[p]}
@@ -1157,7 +1157,7 @@ theorem finrank_of_proj {K V : Type} [Field K] [AddCommGroup V] [Module K V] (Y 
     intro x
     apply Subtype.ext
     simp only [g, f, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.pi_apply,
-      LinearMap.codRestrict_apply, Submodule.coe_sum, Submodule.coe_inclusion, Submodule.subtype_apply]
+      Submodule.coe_sum, Submodule.coe_inclusion]
     exact c4 x x.2
   have hfg : ∀ q, f (g q) = q := by
     intro q

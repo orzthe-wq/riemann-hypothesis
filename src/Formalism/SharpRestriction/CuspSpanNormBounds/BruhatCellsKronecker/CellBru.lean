@@ -81,9 +81,6 @@ theorem bru_lo_mul {A B : Matrix (Fin n) (Fin n) K} (hA : IsLoUni A) (hB : IsLoU
     · intro h
       exact absurd (Finset.mem_univ i) h
 
-theorem bru_up_mul {A B : Matrix (Fin n) (Fin n) K} (hA : IsUpUni A) (hB : IsUpUni B) : IsUpUni (A * B) := by
-  first | exact GlobalTheory.UpperUnipotentMul.isUpUni_mul .. | (apply GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (intros; apply GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (apply @GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (intros; apply @GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> assumption) | (apply @GlobalTheory.UpperUnipotentMul.isUpUni_mul <;> first | assumption | infer_instance) | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› n A B hA hB | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› n A B hA | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› n A B | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› n A | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› n | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K ‹_› | exact @GlobalTheory.UpperUnipotentMul.isUpUni_mul K
-
 def bruL (u : Fin n → K) (p : Fin n) : Matrix (Fin n) (Fin n) K :=
   fun a k => (if a = k then 1 else 0) + u a * (if k = p then 1 else 0)
 
@@ -250,7 +247,7 @@ theorem bru_all (Z : Matrix (Fin n) (Fin n) K) (hdet : Z.det ≠ 0) : ∀ m : �
       apply hdet
       rw [hZ, Matrix.det_mul, Matrix.det_mul, h0, mul_zero, zero_mul]
     obtain ⟨L1, U1, M', σ', hL1, hU1, hM', hR'⟩ := bru_step (Nat.lt_of_succ_le hm) M hM σ hR
-    refine ⟨L * L1, U1 * U, M', σ', bru_lo_mul hL hL1, bru_up_mul hU1 hU, ?_, hR'⟩
+    refine ⟨L * L1, U1 * U, M', σ', bru_lo_mul hL hL1, _root_.GlobalTheory.UpperUnipotentMul.isUpUni_mul hU1 hU, ?_, hR'⟩
     rw [hZ, hM']
     simp only [Matrix.mul_assoc]
 

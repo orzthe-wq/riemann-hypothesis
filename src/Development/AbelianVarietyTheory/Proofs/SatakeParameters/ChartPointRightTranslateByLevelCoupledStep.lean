@@ -288,7 +288,7 @@ theorem exists_pt_frames (p : ChPt (R := R) sel mu u j) (g : ∀ P : rowSG Pr se
     · simp only [κ, dif_pos hP, not_not.2 hP, IsEmpty.forall_iff, and_true]
       have e : redGL _ P.1 (t1 ⟨P.1, hP⟩) = h ⟨P.1, hP⟩ := redGL_passFr (d := p.deco.1) (w := ⟨P.1, hP⟩) 1 h (liftFr_spec p.deco.2 _) (hl _)
       rw [map_mul, map_inv, map_inv, e]
-      simp only [h, map_inv, inv_inv, Subtype.coe_eta, inv_mul_cancel]
+      simp only [h, map_inv, inv_inv, inv_mul_cancel]
     · simp only [κ, dif_neg hP, inv_inv, inv_mul_cancel, map_one]
       exact ⟨trivial, fun _ => trivial⟩
 

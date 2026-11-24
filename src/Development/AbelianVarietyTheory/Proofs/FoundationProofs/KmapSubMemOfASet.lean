@@ -74,7 +74,7 @@ theorem gal_eq_of_coeff (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (f : X.K)
 theorem coeff_alg (c : Ω) (r : ℚ) :
     ((algebraMap Ω (HahnSeries ℚ Ω)) c).coeff r = if r = 0 then c else 0 := by
   rw [HahnSeries.algebraMap_apply']
-  simp [PowerSeries.algebraMap_apply, HahnSeries.coeff_single, eq_comm]
+  simp [HahnSeries.coeff_single]
 
 theorem gal_algebraMap (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (c : Ω) (hc : s c = c) :
     X.gal s (algebraMap Ω X.K c) = algebraMap Ω X.K c := by
@@ -270,7 +270,7 @@ theorem galB_cont : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
       (hF s (fun x hx => hs x (Finset.mem_union_right _ hx)) u)
     rw [map_add (f := _)]
     convert this using 1
-    simp only [LinearMap.sub_apply, Pi.add_apply, Pi.sub_apply]
+    simp only [Pi.add_apply, Pi.sub_apply]
     abel
   | smul r a _ ha =>
     obtain ⟨E, hE⟩ := ha
@@ -278,6 +278,6 @@ theorem galB_cont : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
     have := Submodule.smul_mem _ r (hE s hs u)
     rw [map_smul]
     convert this using 1
-    simp only [LinearMap.sub_apply, Pi.smul_apply, Pi.sub_apply, smul_sub]
+    simp only [Pi.smul_apply, Pi.sub_apply, smul_sub]
 
 end GlobalTheory.KZ.GalCont

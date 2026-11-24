@@ -107,8 +107,7 @@ theorem UpperTheory.V.Fr.framePoint_fiber_nonempty :
     have h10 := congrFun (congrFun (ρ.ord v ![s, t]) 1) 0
     simp only [ordProd, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one,
       Matrix.mul_apply, Fin.sum_univ_two, Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply,
-      Matrix.zero_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.succ_zero_eq_one, (by decide : (1 : Fin 2) ≠ 0), if_false, if_true, smul_zero,
-      sub_zero, smul_eq_mul, mul_one] at h10
+      Matrix.zero_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.succ_zero_eq_one, (by decide : (1 : Fin 2) ≠ 0), if_false, if_true, smul_eq_mul, mul_one] at h10
     have hl : ∀ s, ((F.loc0 v s : F.G0) : F.Γ) = F.loc v s := fun _ => rfl
     rw [hd0, hd1, hψ0, hψ1, hl, hl] at h10
     simp only [mul_zero, sub_zero] at h10

@@ -1,7 +1,7 @@
 module
 
 public import Formalism.LocalRingCardinality.DataTheta
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockQuadraticActionMapLieBracketStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockQuadraticActionMapLieBracket
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,13 +61,13 @@ theorem pair_lie_commute : ∀ (p q r s : ℕ), IsLieAct (fockAct1 p q r s) ∧
   refine ⟨fun X Y => ?_, fun X Y => ?_, fun Y Z => ?_⟩
   · rw [map_sub]
     simp only [fockAct1_eq_kron]
-    rw [← GlobalTheory.T.fockQuadraticAction_map_lie_bracket, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, Matrix.mul_one,
+    rw [← _root_.GlobalTheory.FockLie.omAct_lie, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, Matrix.mul_one,
       map_sub]
   · rw [map_sub]
     simp only [fockAct2_eq_kron]
-    rw [← GlobalTheory.T.fockQuadraticAction_map_lie_bracket, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, Matrix.mul_one,
+    rw [← _root_.GlobalTheory.FockLie.omAct_lie, ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul, Matrix.mul_one,
       map_sub]
-  · rw [← sub_eq_zero, fockAct1_eq_kron, fockAct2_eq_kron, ← GlobalTheory.T.fockQuadraticAction_map_lie_bracket,
+  · rw [← sub_eq_zero, fockAct1_eq_kron, fockAct2_eq_kron, ← _root_.GlobalTheory.FockLie.omAct_lie,
       ← Matrix.mul_kronecker_mul, ← Matrix.mul_kronecker_mul]
     simp
 

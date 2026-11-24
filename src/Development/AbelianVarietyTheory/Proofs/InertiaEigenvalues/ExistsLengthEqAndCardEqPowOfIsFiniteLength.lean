@@ -63,7 +63,7 @@ theorem _root_.GlobalTheory.exists_length_eq_and_card_eq_pow_of_isFiniteLength (
   | @of_subsingleton M _ _ _ =>
     refine ⟨0, ?_, ?_⟩
     · simpa using (Module.length_eq_zero_iff (R := O) (M := M)).mpr ‹_›
-    · simp [Nat.card_of_subsingleton (0 : M)]
+    · simp
   | @of_simple_quotient M _ _ N _ _ ih =>
     obtain ⟨n, hl, hc⟩ := ih
     refine ⟨n + 1, ?_, ?_⟩

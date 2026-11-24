@@ -225,18 +225,6 @@ theorem evaluation_zero_antisymmetric {m n : ℕ} {σ : E →ₐ[F] E} (bs : Mod
   simp only [ev0, LinearMap.coe_mk, AddHom.coe_mk, Darboux.rho, schr, ha, zero_dotProduct, zero_add, hdot, invOf_two_alg, hψ,
     one_mul]
 
-theorem sEv : SEv := by
-  intro F E _ _ _ _ _ σ B bs m n A Y b ε r s hB hm hn hsg hb hε dd hd
-  refine ⟨adelicCoordinatesEvalZeroForm_mem_admissible _, fun z Φ _ => evaluation_zero_unipotent_kill bs A Y b hb dd hd B.ψ z Φ, fun Φ hΦ => ?_⟩
-  have hψ : ∀ x : F, B.ψ (algebraMap F (AF F) x) = 1 := hB.std.2.1
-  have hs := (summable_of_mem_schA F hΦ).hasSum
-  have h := (Equiv.hasSum_iff (xiEquiv (m := m) bs b hb)).mpr hs
-  have e1 : thetaSum F Φ = ∑' ξ : Fin m × Fin n × Fin 2 → F, Φ fun i => algebraMap F (AF F) (ξ i) := rfl
-  rw [e1]
-  convert h using 1
-  funext y
-  exact evaluation_zero_antisymmetric bs A Y b hb dd hd B.ψ hψ Φ y
-
 end PositivityTheory.SiegelWeilFormula.Ldexa
 
 end

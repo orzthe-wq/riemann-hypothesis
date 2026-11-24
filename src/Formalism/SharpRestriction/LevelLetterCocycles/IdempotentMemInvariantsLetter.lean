@@ -86,11 +86,6 @@ theorem idempotent_mem_invariants_letter (a : ZMod n) : (letE a : LetA O n) ∈ 
     Pi.single_apply]
   split_ifs <;> simp
 
-theorem idempotent_mul_self_letter (a : ZMod n) : (letE a : LetA O n) * letE a = letE a := by
-  funext i
-  simp only [Pi.mul_apply, letE, Pi.single_apply]
-  split_ifs <;> simp
-
 theorem level_idempotent_one (a : ZMod n) (ζ : LL) : W.lev a ζ (letE a : LetA O n) = 1 := by
   have h : W.lev a ζ (1 - letE a) = 0 := W.lev_letter a ζ _ (by simp [letE])
   rw [map_sub, map_one, sub_eq_zero] at h
@@ -100,19 +95,12 @@ theorem level_idempotent_mul (a : ZMod n) (ζ : LL) (g : LetA O n) :
     W.lev a ζ ((letE a : LetA O n) * g) = W.lev a ζ g := by
   rw [map_mul, level_idempotent_one, one_mul]
 
-theorem prime_natCast_ne_zero (W : LocWach PD LL O v n) : ((PD.p : ℕ) : O) ≠ 0 := by
-  intro h
-  have h1 : ((PD.p : ℕ) : LL) = 0 := by rw [← map_natCast (algebraMap O LL), h, map_zero]
-  have h2 := W.v_l
-  rw [h1, AddValuation.map_zero] at h2
-  exact absurd h2 (by simp)
-
 theorem qP_eq_qp : qP W = Formalism.MainNotions.LiftingTheory.qp W := rfl
 
 variable [IsDomain O]
 
 theorem q_component_ne_zero (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (i : ZMod n) : qP W i ≠ 0 :=
-  Formalism.MainNotions.UnusedSlot80.ToolsR.q_component_ne_zero' hR (prime_natCast_ne_zero W) i
+  Formalism.MainNotions.UnusedSlot80.ToolsR.q_component_ne_zero' hR (_root_.Formalism.MainNotions.LiftingTheory.tr_p_ne W) i
 
 theorem q_pow_component_ne_zero (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (k : ℕ) (i : ZMod n) : (qP W ^ k) i ≠ 0 := by
   rw [Pi.pow_apply]; exact pow_ne_zero _ (q_component_ne_zero hR i)
@@ -219,7 +207,7 @@ theorem q_pow_dvd_of_level_vanishing (hR : Formalism.MainNotions.UnusedSlot80.To
       exact X_pow_dvd_iff.mp ((hSu.dvd_mul_left).mp hd)
     obtain ⟨h2, h2m, e2⟩ := ih h1 h1m hv1
     refine ⟨h2, h2m, ?_⟩
-    rw [← idempotent_mul_self_letter a, mul_assoc, e1, mul_left_comm, e2, ← mul_assoc, ← pow_succ']
+    rw [← _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq a, mul_assoc, e1, mul_left_comm, e2, ← mul_assoc, ← pow_succ']
 
 end H2A
 
@@ -234,12 +222,10 @@ def QExpansionAlt (W : LocWach PD LL O v n) (a : ZMod n) (g : LetA O n) (F : Pow
 theorem trunc_add_alt (F G : PowerSeries O) (N : ℕ) : trunc N (F + G) = trunc N F + trunc N G := by
   ext m
   simp only [PowerSeries.coeff_trunc, Polynomial.coeff_add, map_add (f := _)]
-  all_goals split_ifs <;> simp
 
 theorem trunc_sub_alt (F G : PowerSeries O) (N : ℕ) : trunc N (F - G) = trunc N F - trunc N G := by
   ext m
   simp only [PowerSeries.coeff_trunc, Polynomial.coeff_sub, map_sub]
-  all_goals split_ifs <;> simp
 
 theorem trunc_smul_alt (o : O) (F : PowerSeries O) (N : ℕ) : trunc N (o • F) = o • trunc N F := by
   ext m
@@ -277,7 +263,7 @@ theorem qExpansion_smul_alt {a : ZMod n} {g : LetA O n} {F : PowerSeries O} (o :
   intro N
   obtain ⟨h, hh, e1⟩ := hF N
   refine ⟨o • h, SMulMemClass.smul_mem o hh, ?_⟩
-  simp only [trunc_smul_alt, map_smul, mul_smul_comm, e1, smul_add]
+  simp only [map_smul, mul_smul_comm, e1, smul_add]
 
 theorem qExpansion_mul_alt (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) {a : ZMod n} {g g' : LetA O n}
     {F F' : PowerSeries O} (hF : QExpansionAlt W a g F) (hF' : QExpansionAlt W a g' F') :
@@ -306,7 +292,7 @@ theorem qExpansion_mul_alt (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP
       (W.AΔ.mul_mem (W.AΔ.mul_mem hE (aeval_mem_invariants hR _)) hm'))
       (W.AΔ.mul_mem (W.AΔ.mul_mem hE (aeval_mem_invariants hR _)) hm))
       (W.AΔ.mul_mem (W.AΔ.pow_mem (Formalism.MainNotions.UnusedSlot80.ToolsR.qP_AΔ hR) N) (W.AΔ.mul_mem hm hm'))
-  · have hEE : E * E = E := idempotent_mul_self_letter a
+  · have hEE : E * E = E := _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq a
     calc E * (g * g') = (E * g) * (E * g') := by rw [mul_mul_mul_comm, hEE]
       _ = (E * P + qP W ^ N * h) * (E * P' + qP W ^ N * h') := by rw [e, e']
       _ = (E * E) * (P * P') + qP W ^ N * (E * P * h' + E * P' * h + qP W ^ N * (h * h')) := by ring
@@ -352,7 +338,7 @@ theorem qExpansion_idempotent_mul {a : ZMod n} {g : LetA O n} {F : PowerSeries O
     QExpansionAlt W a ((letE a : LetA O n) * g) F := by
   intro N
   obtain ⟨h, hm, e⟩ := hF N
-  exact ⟨h, hm, by rw [← mul_assoc, idempotent_mul_self_letter, e]⟩
+  exact ⟨h, hm, by rw [← mul_assoc, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq, e]⟩
 
 variable [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O]
 
@@ -376,9 +362,9 @@ theorem exists_qExpansion (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP 
         qP W * ((letE a : LetA O n) * H (rem N)) + R (rem N) • (letE a : LetA O n) := by
       calc (letE a : LetA O n) * (rem N : LetA O n) =
             (letE a : LetA O n) * ((letE a : LetA O n) * (rem N : LetA O n)) := by
-            rw [← mul_assoc, idempotent_mul_self_letter]
+            rw [← mul_assoc, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
         _ = _ := by
-            rw [e, mul_add, mul_left_comm, mul_smul_comm, idempotent_mul_self_letter]
+            rw [e, mul_add, mul_left_comm, mul_smul_comm, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
     rw [ih, trunc_succ, map_add (f := _), Polynomial.aeval_monomial, coeff_mk, e2, hrem]
     simp only [Algebra.smul_def]
     ring
@@ -430,7 +416,7 @@ theorem qExpansion_pk_one (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP 
       QExpansionAlt W a (Formalism.MainNotions.LiftingTheory.pk W 1) (C ((PD.p : ℕ) : O) * ε + u * X ^ PD.p) := by
   obtain ⟨w, hw⟩ := hR.2.2.2.2.2.1
   rw [Formalism.MainNotions.UnusedSlot80.ToolsR.eat_qP] at hw
-  have hwm : (w : LetA O n) ∈ W.AΔ := Formalism.MainNotions.UnusedSlot80.ToolsR.w_AΔ hR (prime_natCast_ne_zero W) hw
+  have hwm : (w : LetA O n) ∈ W.AΔ := Formalism.MainNotions.UnusedSlot80.ToolsR.w_AΔ hR (_root_.Formalism.MainNotions.LiftingTheory.tr_p_ne W) hw
   have hwi : ((w⁻¹ : (LetA O n)ˣ) : LetA O n) ∈ W.AΔ := by
     refine Formalism.MainNotions.UnusedSlot80.ToolsR.cancel_AΔ hwm (fun i => ?_) (by rw [Units.mul_inv]; exact W.AΔ.one_mem)
     intro h0
@@ -481,7 +467,7 @@ theorem scalar_integrality_relation [IsDiscreteValuationRing O] [IsFractionRing 
   have hϖ0 : ϖ ≠ 0 := hϖ.ne_zero
   have hϖL : algebraMap O LL ϖ ≠ 0 := by
     intro h; exact hϖ0 (hinj (by rw [h, map_zero]))
-  obtain ⟨eO, ⟨μ, hμ⟩⟩ := IsDiscreteValuationRing.associated_pow_irreducible (prime_natCast_ne_zero W) hϖ
+  obtain ⟨eO, ⟨μ, hμ⟩⟩ := IsDiscreteValuationRing.associated_pow_irreducible (_root_.Formalism.MainNotions.LiftingTheory.tr_p_ne W) hϖ
   have heO : 1 ≤ eO := by
     rcases Nat.eq_zero_or_pos eO with h | h
     · exfalso; apply hpu
@@ -673,46 +659,16 @@ section DelH2
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
-theorem frobenius_smul_series (a : LetA O n) (x : W.DD T) : W.φD T (a • x) = W.φA a • W.φD T x := by
-  rw [← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]
-  rfl
-
-theorem frobenius_pow_smul_series (j : ℕ) (a : LetA O n) (x : W.DD T) :
-    ((W.φD T) ^ j) (a • x) = (W.φA ^ j) a • ((W.φD T) ^ j) x := by
-  induction j with
-  | zero => simp
-  | succ j ih =>
-    rw [pow_succ', Module.End.mul_apply, ih, frobenius_smul_series, pow_succ', AlgHom.mul_apply, Module.End.mul_apply]
-
-theorem gamma_smul_series (g : W.Gam) (a : LetA O n) (x : W.DD T) :
-    W.γD T g (a • x) = W.γA g a • W.γD T g x := by
-  rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
-  rfl
-
 theorem frobenius_pow_gamma_comm (j : ℕ) (g : W.Gam) (x : W.DD T) :
     ((W.φD T) ^ j) (W.γD T g x) = W.γD T g (((W.φD T) ^ j) x) := by
   induction j with
   | zero => simp
   | succ j ih => rw [pow_succ', Module.End.mul_apply, ih, W.φγ_comm]; rfl
 
-theorem gammaRing_mul (g h : W.Gam) (a : LetA O n) : W.γA (g * h) a = W.γA g (W.γA h a) := by
-  simp only [LocWach.γA, map_mul]
-  rfl
-
-theorem finiteDelta_mul_mem_group {g h : W.Gam} (hg : g ∈ W.DelF) (hh : h ∈ W.DelF) : g * h ∈ W.DelF := by
-  obtain ⟨k, hk, hgk⟩ := (W.DelF_def g).1 hg
-  obtain ⟨k', hk', hhk⟩ := (W.DelF_def h).1 hh
-  refine (W.DelF_def _).2 ⟨k * k', Nat.mul_pos hk hk', ?_⟩
-  rw [mul_pow, pow_mul, hgk, one_pow, one_mul, mul_comm, pow_mul, hhk, one_pow]
-
-theorem finiteDelta_inv_mem_group {g : W.Gam} (hg : g ∈ W.DelF) : g⁻¹ ∈ W.DelF := by
-  obtain ⟨k, hk, hgk⟩ := (W.DelF_def g).1 hg
-  exact (W.DelF_def _).2 ⟨k, hk, by rw [inv_pow, hgk, inv_one]⟩
-
 theorem sum_finiteDelta_translate {M : Type} [AddCommMonoid M] (f : W.Gam → M) {g : W.Gam} (hg : g ∈ W.DelF) :
     ∑ h ∈ W.DelF, f (g * h) = ∑ h ∈ W.DelF, f h := by
-  refine Finset.sum_nbij' (fun h => g * h) (fun h => g⁻¹ * h) (fun h hh => finiteDelta_mul_mem_group W hg hh)
-    (fun h hh => finiteDelta_mul_mem_group W (finiteDelta_inv_mem_group W hg) hh) (fun h _ => by simp) (fun h _ => by simp)
+  refine Finset.sum_nbij' (fun h => g * h) (fun h => g⁻¹ * h) (fun h hh => _root_.Formalism.MainNotions.LiftingTheory.delta_mul_mem W hg hh)
+    (fun h hh => _root_.Formalism.MainNotions.LiftingTheory.delta_mul_mem W (_root_.Formalism.MainNotions.LiftingTheory.delta_inv_mem_alt W hg) hh) (fun h _ => by simp) (fun h _ => by simp)
     (fun h _ => rfl)
 
 def h2avA (κ : O) (a : LetA O n) : LetA O n := κ • ∑ h ∈ W.DelF, W.γA h a
@@ -725,7 +681,7 @@ theorem averageRing_mem_invariants (κ : O) (a : LetA O n) : h2avA W κ a ∈ W.
   simp only [h2avA, map_smul, map_sum]
   congr 1
   rw [← sum_finiteDelta_translate W (fun h => W.γA h a) hg]
-  exact Finset.sum_congr rfl fun h _ => (gammaRing_mul W g h a).symm
+  exact Finset.sum_congr rfl fun h _ => (_root_.Formalism.MainNotions.LiftingTheory.tr_γA_mul W g h a).symm
 
 theorem average_of_invariant (κ : O) (hκ : κ * (W.DelF.card : O) = 1) {x : W.DD T}
     (hx : ∀ h ∈ W.DelF, W.γD T h x = x) : h2avD W T κ x = x := by
@@ -735,7 +691,7 @@ theorem average_of_invariant (κ : O) (hκ : κ * (W.DelF.card : O) = 1) {x : W.
 theorem average_smul_invariant (κ : O) (a : LetA O n) {z : W.DD T} (hz : ∀ h ∈ W.DelF, W.γD T h z = z) :
     h2avD W T κ (a • z) = h2avA W κ a • z := by
   simp only [h2avD, h2avA]
-  rw [Finset.sum_congr rfl fun h hh => by rw [gamma_smul_series, hz h hh], ← Finset.sum_smul, smul_assoc]
+  rw [Finset.sum_congr rfl fun h hh => by rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hz h hh], ← Finset.sum_smul, smul_assoc]
 
 theorem average_sub (κ : O) (x y : W.DD T) : h2avD W T κ (x - y) = h2avD W T κ x - h2avD W T κ y := by
   simp only [h2avD, map_sub, Finset.sum_sub_distrib, smul_sub]
@@ -749,7 +705,7 @@ theorem average_finset_sum (κ : O) {ι : Type} (s : Finset ι) (x : ι → W.DD
 theorem average_smul_invariant_ring (κ : O) {a : LetA O n} (ha : a ∈ W.AΔ) (x : W.DD T) :
     h2avD W T κ (a • x) = a • h2avD W T κ x := by
   simp only [h2avD]
-  rw [Finset.sum_congr rfl fun h hh => by rw [gamma_smul_series, ha h hh], ← Finset.smul_sum, smul_comm]
+  rw [Finset.sum_congr rfl fun h hh => by rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, ha h hh], ← Finset.smul_sum, smul_comm]
 
 theorem average_scalar_smul (κ o : O) (x : W.DD T) : h2avD W T κ (o • x) = o • h2avD W T κ x := by
   simp only [h2avD, map_smul, ← Finset.smul_sum]
@@ -764,7 +720,7 @@ theorem pullback_gamma_stable (i : ZMod n) (j : ℕ) {g : W.Gam} (hg : g ∈ W.D
     exact Submodule.subset_span ⟨z, ⟨hzN, hzD⟩, rfl⟩
   | zero => rw [map_zero]; exact Submodule.zero_mem _
   | add y z _ _ hy hz => rw [map_add (f := _)]; exact Submodule.add_mem _ hy hz
-  | smul a y _ hy => rw [gamma_smul_series]; exact Submodule.smul_mem _ _ hy
+  | smul a y _ hy => rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear]; exact Submodule.smul_mem _ _ hy
 
 theorem average_mem_pullback (κ : O) (i : ZMod n) (j : ℕ) {x : W.DD T}
     (hx : x ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T i j) : h2avD W T κ x ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T i j := by
@@ -813,7 +769,7 @@ theorem truncation_delta_invariant (hR : Formalism.MainNotions.UnusedSlot80.Tool
       exact Subalgebra.sum_mem _ fun k _ =>
         W.AΔ.mul_mem (W.AΔ.algebraMap_mem _) (W.AΔ.pow_mem hR.1 _)
     have e1 := (hrs y).2
-    apply Formalism.MainNotions.UnusedSlot80.ToolsR.cancel_comp (prime_pow_component_ne_zero (prime_natCast_ne_zero W) (Formalism.MainNotions.CrystallineLiftingInputs.eY PD.p y))
+    apply Formalism.MainNotions.UnusedSlot80.ToolsR.cancel_comp (prime_pow_component_ne_zero (_root_.Formalism.MainNotions.LiftingTheory.tr_p_ne W) (Formalism.MainNotions.CrystallineLiftingInputs.eY PD.p y))
     have e2 := congrArg (W.γA g) e1
     rw [map_mul, map_mul, map_pow, map_pow, map_natCast, hr g hg] at e2
     rw [e2, e1]
@@ -821,7 +777,7 @@ theorem truncation_delta_invariant (hR : Formalism.MainNotions.UnusedSlot80.Tool
   rw [map_sub, map_smul, map_sum, ← frobenius_pow_gamma_comm, hwD.2 g hg]
   congr 1
   refine Finset.sum_congr rfl fun y _ => ?_
-  rw [gamma_smul_series, hs y, ← frobenius_pow_gamma_comm, ((hser.2.1 y).1).2 g hg]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hs y, ← frobenius_pow_gamma_comm, ((hser.2.1 y).1).2 g hg]
 
 theorem frobenius_idempotent_succ (i : ZMod n) : W.φA (letE i : LetA O n) = letE (i + 1) := by
   funext k
@@ -834,7 +790,7 @@ theorem frobenius_idempotent_succ (i : ZMod n) : W.φA (letE i : LetA O n) = let
 theorem frobenius_shifts_idempotent {i : ZMod n} {x : W.DD T} (hx : (letE i : LetA O n) • x = x) :
     (letE (i + 1) : LetA O n) • W.φD T x = W.φD T x := by
   conv_rhs => rw [← hx]
-  rw [frobenius_smul_series, frobenius_idempotent_succ]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.wmap_φD_smul, frobenius_idempotent_succ]
 
 theorem frobenius_sq_mem_pullback (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) (i : ZMod n) {m : W.DD T}
     (hm : m ∈ W.Nl T i) : ((W.φD T) ^ 2) m ∈ Formalism.MainNotions.CrystallineLiftingInputs.pullJ W T i 2 := by
@@ -850,12 +806,12 @@ theorem frobenius_sq_mem_pullback (hmod : Formalism.MainNotions.DeltaInvariantLa
 
   rw [e1, map_sum]
   refine Submodule.sum_mem _ fun k _ => ?_
-  rw [frobenius_pow_smul_series]
+  rw [_root_.Formalism.MainNotions.UnusedSlot80.SatPW.φD_pow_smulA]
   refine Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨?_, ?_, ?_⟩, rfl⟩)
   · exact (W.N T).smul_mem _ (hbΔ k).1
   · rw [smul_smul, MC.letE_mul_self]
   · intro g hg
-    rw [gamma_smul_series, (hbΔ k).2 g hg, idempotent_mem_invariants_letter i g hg]
+    rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, (hbΔ k).2 g hg, idempotent_mem_invariants_letter i g hg]
 
 theorem pullback_mem_of_level_bound (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (hs : W.s = 1)
     (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) (Mi hi : ZMod n → ℕ) (hp5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T Mi hi)
@@ -877,7 +833,7 @@ theorem pullback_mem_of_level_bound (hR : Formalism.MainNotions.UnusedSlot80.Too
       exact Submodule.smul_mem _ _ h1
     have e : Formalism.MainNotions.LiftingTheory.pk W 1 ^ hi (c - 1) • W.φD T z =
         W.φD T (Formalism.MainNotions.LiftingTheory.qp W ^ hi (c - 1) • z) := by
-      rw [frobenius_smul_series, map_pow]; rfl
+      rw [_root_.Formalism.MainNotions.LiftingTheory.wmap_φD_smul, map_pow]; rfl
     rw [e]
     clear e h1
     generalize Formalism.MainNotions.LiftingTheory.qp W ^ hi (c - 1) • z = t at h2 ⊢
@@ -888,7 +844,7 @@ theorem pullback_mem_of_level_bound (hR : Formalism.MainNotions.UnusedSlot80.Too
       rwa [pow_two, Module.End.mul_apply] at this
     | zero => rw [map_zero]; exact Submodule.zero_mem _
     | add y y' _ _ h h' => rw [map_add (f := _)]; exact Submodule.add_mem _ h h'
-    | smul a y _ h => rw [frobenius_smul_series]; exact Submodule.smul_mem _ _ h
+    | smul a y _ h => rw [_root_.Formalism.MainNotions.LiftingTheory.wmap_φD_smul]; exact Submodule.smul_mem _ _ h
   | zero => rw [smul_zero]; exact Submodule.zero_mem _
   | add y y' _ _ h h' => rw [smul_add]; exact Submodule.add_mem _ h h'
   | smul a y _ h => rw [smul_comm]; exact Submodule.smul_mem _ _ h
@@ -905,7 +861,7 @@ theorem pole_clearing_multiplier (Mi hi : ZMod n → ℕ) (hp5 : Formalism.MainN
         W.Q ^ Mi (c - 1) • W.φD T z := by
       rw [smul_comm, show c - 1 = c - 1 - 1 + 1 by ring, frobenius_shifts_idempotent W T hzD.1]
     have h2 := hp5.1 c _ (MC.mem_Nl_of W h1 hlet)
-    rw [frobenius_smul_series, map_pow, smul_smul] at h2
+    rw [_root_.Formalism.MainNotions.LiftingTheory.wmap_φD_smul, map_pow, smul_smul] at h2
     rw [pow_two, Module.End.mul_apply, mul_smul]
     rw [mul_smul] at h2
     exact h2
@@ -985,7 +941,7 @@ theorem kernel_rank_bound [NeZero n] (hT2 : Formalism.MainNotions.CrystallineLif
   have hzinv : ∀ k, ∀ h ∈ W.DelF, W.γD T h (zk k) = zk k := fun k =>
     truncation_delta_invariant W T hR (c - 1 - 1) 2 1 X₀ σ (hwkI k).1 (hwkT k)
   have hPinv : ∀ h ∈ W.DelF, W.γD T h (Pc • w) = Pc • w := by
-    intro h hh; rw [gamma_smul_series, hPcm h hh, hwD.2 h hh]
+    intro h hh; rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hPcm h hh, hwD.2 h hh]
   have hfm : Formalism.MainNotions.CrystallineLiftingInputs.fMX W 1 X₀ ∈ W.AΔ := W.AΔ.mul_mem (W.AΔ.pow_mem hR.1 _)
     (W.AΔ.pow_mem (Formalism.MainNotions.UnusedSlot80.ToolsR.qP_AΔ hR) _)
   set ak : Fin N → LetA O n := fun k => h2avA W κ (a k) with hak
@@ -1253,7 +1209,7 @@ theorem integral_coordinate_of_relation (hinj : Function.Injective (algebraMap O
     simp only [hlam, Finset.smul_sum, smul_smul, hv] at h1
     rw [Finset.sum_comm] at h1
     have h2 : ∑ j, (P R * vv j - ∑ k, cc R k * algebraMap O LL (mm k j)) • ((bas j : M') : Q) = 0 := by
-      simp only [sub_smul, Finset.sum_sub_distrib, Finset.sum_smul, smul_smul]
+      simp only [sub_smul, Finset.sum_sub_distrib, Finset.sum_smul]
       rw [sub_eq_zero, h1]
     intro j
     exact sub_eq_zero.mp (hind _ h2 j)

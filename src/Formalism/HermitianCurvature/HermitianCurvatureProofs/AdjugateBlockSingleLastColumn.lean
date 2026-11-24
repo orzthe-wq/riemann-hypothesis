@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.KloostermanDensityOfParts
 
 @[expose] public section
 
@@ -57,19 +58,6 @@ namespace Formalism.FourierDecayAlt.P.PBM
 
 section blocks
 
-theorem ptEntry_append (h l : C.LPt) (a b : ℕ) :
-    D.ptEntry (h ++ l) a b =
-      if a < D.ptSize h ∧ b < D.ptSize h then D.ptEntry h a b
-      else if D.ptSize h ≤ a ∧ D.ptSize h ≤ b then D.ptEntry l (a - D.ptSize h) (b - D.ptSize h) else 0 := by
-  induction h generalizing a b with
-  | nil => simp [D.ptSize]
-  | cons x rest ih =>
-    obtain ⟨s, t⟩ := x
-    have hs : D.ptSize ((s, t) :: rest) = s + D.ptSize rest := by simp [D.ptSize]
-    rw [List.cons_append, hs]
-    simp only [D.ptEntry, ih, Nat.sub_sub]
-    split_ifs <;> first | rfl | (exfalso; omega) | omega | simp_all
-
 theorem ptMatN_append_one (h : C.LPt) (ζ : ℂ) (j : ℕ) (hj : D.ptSize h = j) :
     D.ptMatN (h ++ [(1, ζ)]) (j + 1) =
       Matrix.reindex (Ux3.eC j 0) (Ux3.eC j 0) (Matrix.fromBlocks (D.ptMatN h j) 0 0 (Matrix.of fun _ _ => ζ)) := by
@@ -78,15 +66,15 @@ theorem ptMatN_append_one (h : C.LPt) (ζ : ℂ) (j : ℕ) (hj : D.ptSize h = j)
   obtain ⟨y, rfl⟩ := (Ux3.eC j 0).surjective b
   simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, D.ptMatN]
   rcases x with x | x <;> rcases y with y | y
-  · simp only [Matrix.fromBlocks_apply₁₁, ptEntry_append, Ux3.column_index_first_val, hj, x.isLt, y.isLt, and_self, if_true]
+  · simp only [Matrix.fromBlocks_apply₁₁, _root_.Formalism.FourierDecayAlt.P.PBJ.Asm.ptEntry_append, Ux3.column_index_first_val, hj, x.isLt, y.isLt, and_self, if_true]
     rfl
-  · simp only [Matrix.fromBlocks_apply₁₂, ptEntry_append, Ux3.column_index_first_val, Ux3.column_index_second_val, hj, Matrix.zero_apply]
+  · simp only [Matrix.fromBlocks_apply₁₂, _root_.Formalism.FourierDecayAlt.P.PBJ.Asm.ptEntry_append, Ux3.column_index_first_val, Ux3.column_index_second_val, hj, Matrix.zero_apply]
     rw [if_neg (by omega), if_neg (by omega)]
-  · simp only [Matrix.fromBlocks_apply₂₁, ptEntry_append, Ux3.column_index_first_val, Ux3.column_index_second_val, hj, Matrix.zero_apply]
+  · simp only [Matrix.fromBlocks_apply₂₁, _root_.Formalism.FourierDecayAlt.P.PBJ.Asm.ptEntry_append, Ux3.column_index_first_val, Ux3.column_index_second_val, hj, Matrix.zero_apply]
     rw [if_neg (by omega), if_neg (by omega)]
   · have hx : x.val = 0 := by omega
     have hy : y.val = 0 := by omega
-    simp only [Matrix.fromBlocks_apply₂₂, ptEntry_append, Ux3.column_index_second_val, hj, Matrix.of_apply]
+    simp only [Matrix.fromBlocks_apply₂₂, _root_.Formalism.FourierDecayAlt.P.PBJ.Asm.ptEntry_append, Ux3.column_index_second_val, hj, Matrix.of_apply]
     rw [if_neg (by omega), if_pos ⟨by omega, by omega⟩, hx, hy]
     simp [D.ptEntry]
 
@@ -303,9 +291,7 @@ theorem hpk_mulVec_e (u : Fin (2 * (j + 0) + k + 1) → ℂ) (a : Fin j) :
     (Hpk k (j + 0) *ᵥ u) (eB k j 0 (Sum.inl (Sum.inl a))) = u (eB k j 0 (Sum.inr a.rev)) := by
   rw [Ux3.hpkBlocks k j 0, mulVec_eB]
   simp only [Ux3.block3_apply]
-  simp [Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,
-    Matrix.fromBlocks_apply₂₂, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inl,
-    Matrix.fromCols_apply_inr, G.wMat]
+  simp [Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inl, G.wMat]
 
 theorem hpk_mulVec_es (u : Fin (2 * (j + 0) + k + 1) → ℂ) (a : Fin j) :
     (Hpk k (j + 0) *ᵥ u) (eB k j 0 (Sum.inr a)) = u (eB k j 0 (Sum.inl (Sum.inl a.rev))) := by
@@ -367,13 +353,6 @@ theorem orth_lift (Z : Matrix (Fin j) (Fin j) ℂ) (hZ : IsUnit Z.det) (γ0 : B.
     congr 1
   · exact hs c
 
-theorem fvec_last {r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) : fvec k r z (Fin.last r) = z := by
-  simp [fvec]
-
-theorem fvec_low {r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (a : Fin (r + 1)) (ha : a.val < r) :
-    fvec k r z a = bvec (eI k r ⟨a.val, ha⟩) := by
-  rw [fvec, dite_eq_left ha]
-
 theorem adj_one (ζ : ℂ) (a b : Fin (0 + 1)) : (Matrix.of fun (_ _ : Fin (0 + 1)) => ζ).adjugate a b = 1 := by
   have hab : a = b := Subsingleton.elim a b
   subst hab
@@ -398,23 +377,23 @@ theorem dFrame_mMap (S : B.RealPlaceData k (j + 0) Wp Wq) (S0 : B.RealPlaceData 
   have hcofR : D.cofR S (mMap k j 0 Z γ0) = Z.det • (mMap k j 0 Z γ0 *ᵥ S.z') := by
     unfold D.cofR
     rw [hZh, Finset.sum_eq_single (Fin.last (j + 0))]
-    · rw [adjugate_block_single_last_column Z ζ hZ hζ, if_pos rfl, fvec_last]
+    · rw [adjugate_block_single_last_column Z ζ hZ hζ, if_pos rfl, _root_.Formalism.FourierDecayAlt.P.Dx2.DF.fvec_lastI]
     · intro b _ hb; rw [adjugate_block_single_last_column Z ζ hZ hζ, if_neg hb, zero_smul]
     · intro h; exact absurd (Finset.mem_univ _) h
   have hcofL : D.cofL S (mMap k j 0 Z γ0) = star Z.det • S.z := by
     unfold D.cofL
     rw [hZh, Finset.sum_eq_single (Fin.last (j + 0))]
-    · rw [adjugate_block_single_last_line Z ζ hZ hζ, if_pos rfl, fvec_last]; rfl
+    · rw [adjugate_block_single_last_line Z ζ hZ hζ, if_pos rfl, _root_.Formalism.FourierDecayAlt.P.Dx2.DF.fvec_lastI]; rfl
     · intro b _ hb; rw [adjugate_block_single_last_line Z ζ hZ hζ, if_neg hb]; simp
     · intro h; exact absurd (Finset.mem_univ _) h
   have hcofR0 : D.cofR S0 γ0 = γ0 *ᵥ S0.z' := by
     unfold D.cofR
     rw [Fintype.sum_eq_single (Fin.last 0) (fun b hb => absurd (Fin.ext (by have := b.isLt; simp)) hb),
-      hZ0, adj_one, one_smul, fvec_last]
+      hZ0, adj_one, one_smul, _root_.Formalism.FourierDecayAlt.P.Dx2.DF.fvec_lastI]
   have hcofL0 : D.cofL S0 γ0 = S0.z := by
     unfold D.cofL
     rw [Fintype.sum_eq_single (Fin.last 0) (fun b hb => absurd (Fin.ext (by have := b.isLt; simp)) hb),
-      hZ0, adj_one, fvec_last]
+      hZ0, adj_one, _root_.Formalism.FourierDecayAlt.P.Dx2.DF.fvec_lastI]
     simp
   obtain ⟨⟨a0, ha0, h1⟩, ⟨b0, hb0, h2⟩, h3⟩ := hD
   refine ⟨⟨a0, ha0, ?_⟩, ⟨b0, hb0, ?_⟩, ?_⟩
@@ -428,23 +407,23 @@ theorem dFrame_mMap (S : B.RealPlaceData k (j + 0) Wp Wq) (S0 : B.RealPlaceData 
     have hu1 : ∀ a : Fin j, herm (Hpk k (j + 0)) u (bvec (eB k j 0 (Sum.inl (Sum.inl a)))) = 0 := by
       intro a
       have := (hu ⟨a.val, by omega⟩).1
-      rwa [fvec_low _ _ (by simp), eI_eB] at this
+      rwa [_root_.Formalism.FourierDecayAlt.P.Dx1.Rel.fvec_lt _ _ (by simp), eI_eB] at this
     have hu2 : ∀ b : Fin j,
         herm (Hpk k (j + 0)) u (mMap k j 0 Z γ0 *ᵥ bvec (eB k j 0 (Sum.inl (Sum.inl b)))) = 0 := by
       intro b
       have := (hu ⟨b.val, by omega⟩).2
-      rwa [fvec_low _ _ (by simp), eI_eB] at this
+      rwa [_root_.Formalism.FourierDecayAlt.P.Dx1.Rel.fvec_lt _ _ (by simp), eI_eB] at this
     have hlift := orth_lift Z hZ γ0 u hu1 hu2
     set u0 := lowV k j 0 u
     have hz0 : herm (Hpk k 0) u0 S0.z = 0 := by
       have := (hu (Fin.last (j + 0))).1
-      rwa [fvec_last, hlift, hz, herm_lift] at this
+      rwa [_root_.Formalism.FourierDecayAlt.P.Dx2.DF.fvec_lastI, hlift, hz, herm_lift] at this
     have hz0' : herm (Hpk k 0) u0 (γ0 *ᵥ S0.z') = 0 := by
       have := (hu (Fin.last (j + 0))).2
-      rwa [fvec_last, hlift, hz', mMap_mulVec_lift, herm_lift] at this
+      rwa [_root_.Formalism.FourierDecayAlt.P.Dx2.DF.fvec_lastI, hlift, hz', mMap_mulVec_lift, herm_lift] at this
     have h3u := h3 u0 (fun a => by
       have ha : a = Fin.last 0 := Fin.ext (by have := a.isLt; simp)
-      subst ha; rw [fvec_last, fvec_last]; exact ⟨hz0, hz0'⟩)
+      subst ha; rw [_root_.Formalism.FourierDecayAlt.P.Dx2.DF.fvec_lastI, _root_.Formalism.FourierDecayAlt.P.Dx2.DF.fvec_lastI]; exact ⟨hz0, hz0'⟩)
     rw [hlift, hinv, mMap_mulVec_lift, hz, hz', prW_lift, prW_lift, h3u, Dx2.Tower.lev_mulVec_lift]
 
 end frame

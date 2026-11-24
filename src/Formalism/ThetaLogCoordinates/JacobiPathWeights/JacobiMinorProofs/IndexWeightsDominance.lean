@@ -573,7 +573,7 @@ theorem weight_letter {n : ℕ} (i : ℕ) (e : ℕ × Fin n →₀ ℕ) :
     · by_cases hi : x1 = i
       · subst hi
         simp [Finsupp.single_apply]
-      · simp [Finsupp.single_apply, hi]
+      · simp [hi]
     · simp
 
 def mkMon {n N : ℕ} (d : Fin N → (Fin n →₀ ℕ)) : ℕ × Fin n →₀ ℕ :=

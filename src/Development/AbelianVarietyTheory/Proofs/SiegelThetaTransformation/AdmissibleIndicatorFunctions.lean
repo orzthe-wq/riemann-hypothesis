@@ -87,25 +87,19 @@ private theorem cc_zero_siegel_theta_transformation : cc (0 : E) = 0 := map_zero
 
 private theorem cc_one' : cc (1 : E) = 1 := map_one (IsCMField.complexConj E)
 
-private theorem isIntegral_cc' {t : E} (ht : IsIntegral ℤ t) : IsIntegral ℤ (cc t) :=
-  ht.map (IsCMField.complexConj E).toRingEquiv.toRingHom.toIntAlgHom
-
-private theorem herm_one_apply (x y : Fin n → E) : herm 1 x y = ∑ a, x a * cc (y a) := by
-  simp [herm, Matrix.one_apply]
-
 theorem stdL_mem_Vset (M : ℕ) : stdL E n ∈ Vset E n M := by
   refine ⟨Submodule.fg_span (Set.finite_range _), fun x => ?_,
     ⟨1, one_pos, Nat.coprime_one_left M, fun v hv => by simpa using hv, fun v hv => by simpa using hv⟩⟩
   constructor
   · intro hx y hy
-    rw [herm_one_apply]
+    rw [_root_.GlobalTheory.SW.Base.herm_one]
     rw [mem_stdL] at hx hy
-    exact IsIntegral.sum _ fun a _ => (hx a).mul (isIntegral_cc' (hy a))
+    exact IsIntegral.sum _ fun a _ => (hx a).mul (_root_.GlobalTheory.SW.Base.isIntegral_cc (hy a))
   · intro h
     rw [mem_stdL]
     intro a
     have ha := h (Pi.single a 1) (Submodule.subset_span ⟨a, rfl⟩)
-    rw [herm_one_apply, Finset.sum_eq_single a (fun b _ hb => by simp [hb, cc_zero_siegel_theta_transformation])
+    rw [_root_.GlobalTheory.SW.Base.herm_one, Finset.sum_eq_single a (fun b _ hb => by simp [hb, cc_zero_siegel_theta_transformation])
       (by simp)] at ha
     simpa [cc_one'] using ha
 

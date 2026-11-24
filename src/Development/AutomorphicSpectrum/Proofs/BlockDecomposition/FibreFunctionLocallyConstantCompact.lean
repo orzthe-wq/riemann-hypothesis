@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsUMOfMem
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousLeviUnipotentProj
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicUnipotentLeviDecompStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicUnipotentLeviDecomp
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -89,7 +89,7 @@ theorem last_column_entry_product_formula (n : ℕ) (a : Fin n → k) (A : Matri
       a j + (A.mulVec (fun l => P (Fin.castSucc l) (Fin.last n))) j := by
   rw [add_mul, one_mul, GlobalTheory.BZMir.colMat_mul_glEmbMat, add_mul, Matrix.add_apply]
   simp [Matrix.mul_apply, Fin.sum_univ_castSucc, GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat, Matrix.mulVec,
-    dotProduct, hP, Fin.castSucc_ne_last]
+    dotProduct, hP]
   all_goals ring
 
 theorem col_uM_levi_mul (n : ℕ) (a : Fin n → k) (g : GL (Fin n) k) (p : Mir k n) :
@@ -100,7 +100,7 @@ theorem col_uM_levi_mul (n : ℕ) (a : Fin n → k) (g : GL (Fin n) k) (p : Mir 
 
 theorem col_one (n : ℕ) : col k n 1 = 0 := by
   funext j
-  simp [GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col, Matrix.one_apply, Fin.castSucc_ne_last]
+  simp [GlobalTheory.CompanionTheory.BZPsiPG.FibCompact.col, Fin.castSucc_ne_last]
 
 theorem col_uM_levi (n : ℕ) (a : Fin n → k) (g : GL (Fin n) k) :
     col k n (uM k n a * levi k n g) = a := by
@@ -175,7 +175,7 @@ theorem fibV_main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace 
     obtain ⟨h, hh, c, hc, hp⟩ := hCf (GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.midV k i t v) *
       GlobalTheory.BZMir.levi k (i + t) g) hv
     refine ⟨c, hc, ?_⟩
-    obtain ⟨x, q, hxq⟩ := GlobalTheory.T.parabolic_unipotent_levi_decomp k i t ⟨h, hh⟩
+    obtain ⟨x, q, hxq⟩ := _root_.GlobalTheory.CompanionTheory.BZPsiPG.HpgMem.main k i t ⟨h, hh⟩
     have hxq' : h = GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.topV k i t x) *
         GlobalTheory.BZMir.levi k (i + t) q := hxq
     have key : GlobalTheory.CompanionTheory.BZPsiPG.topV k i t x = GlobalTheory.CompanionTheory.BZPsiPG.midV k i t v +

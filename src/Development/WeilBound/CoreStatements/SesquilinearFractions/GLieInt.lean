@@ -2,13 +2,19 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ThickTransComp
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualFamilyIsBasisStatement
+public import Mathlib.LinearAlgebra.Basis.Defs
+public import Mathlib.LinearAlgebra.LinearIndependent.Defs
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.DualFamilyIsBasis
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsActionStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinearStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFreeOfSmoothStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFunctorialMapStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackEquivalenceStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelEigenvectorsAction
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelExistsUniqueSemilinear
+public import Mathlib.AlgebraicGeometry.Morphisms.Smooth
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFreeOfSmooth
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelFunctorialMap
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieModelPullbackEquivalence
 public import Development.WeilBound.CoreStatements.SesquilinearFractions.GLieIntA
 public import Development.WeilBound.CoreStatements.SesquilinearFractions.GLieIntB
 public import Development.WeilBound.CoreStatements.SesquilinearFractions.GLieIntC
@@ -71,12 +77,9 @@ theorem tan_comp {S : Scheme.{0}} {R : Type} [CommRing R] {A B : Over S} [GrpObj
   unfold IsTanAt at ht ⊢
   rw [Over.comp_left, ← Category.assoc, ht, ← Over.comp_left, MonObj.one_comp]
 
-theorem one_left {S : Scheme.{0}} {X A : Over S} [GrpObj A] : (1 : X ⟶ A).left = X.hom ≫ η[A].left := by
-  rw [Hom.one_def]; simp
+alias one_left := _root_.ReciprocityTheory.ChartRestriction.G.Chart.one_left'
 
-theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
-    spMap b ≫ spMap a = spMap (b.comp a) := by
-  simp [spMap, ← Spec.map_comp]
+alias spMap_comp := _root_.GlobalTheory.CompanionTheory.Ar.LieFin.spMap_comp'
 
 theorem bc_one {R V : Type} [CommRing R] [CommRing V] (f : R →+* V) {A : Over (Sp R)} [GrpObj A] :
     spMap (dualMap f) ≫ (1 : epsR R ⟶ A).left = (1 : epsAt (spMap f ≫ 𝟙 (Sp R)) ⟶ A).left := by
@@ -91,7 +94,7 @@ theorem bc_eps {R V : Type} [CommRing R] [CommRing V] (f : R →+* V) (N : ℕ) 
     spMap (dualMap f) ≫ spMap (GlobalTheory.CompanionTheory.Ar.epsMul (N : R)) = spMap (GlobalTheory.CompanionTheory.Ar.epsMul (N : V)) ≫ spMap (dualMap f) := by
   rw [spMap_comp, spMap_comp]
   congr 1
-  ext a <;> simp [dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl, mul_comm]
+  ext a <;> simp [dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 theorem pow_left {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] [IsCommMonObj A] (v : epsR R ⟶ A)
     (hv : IsLieBasis ![v]) (N : ℕ) :
@@ -113,9 +116,9 @@ theorem isogeny_decomposition_product : ∀ (R V : Type) [CommRing R] [CommRing 
   intro R V _ _ _ f n N C v B ψ χ G _ π hg hv hψ hχ hpc hpo hN hpb
   obtain ⟨EBR, _, _, ⟨MBR⟩⟩ := lieModel_exists (Sp R) B.A R (𝟙 (Sp R))
   obtain ⟨EBV, _, _, ⟨MBV⟩⟩ := lieModel_exists (Sp R) B.A V (spMap f ≫ 𝟙 (Sp R))
-  obtain ⟨j, hj, -⟩ := GlobalTheory.T.lie_model_existsUnique_semilinear (Sp R) B.A R V f (𝟙 _) EBR EBV MBR MBV
+  obtain ⟨j, hj, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LieBaseChange.existsUnique_semilinear_lifts (Sp R) B.A R V f (𝟙 _) EBR EBV MBR MBV
   have hx : spMap f ≫ 𝟙 (Sp R) = 𝟙 (Sp V) ≫ spMap f := by simp
-  obtain ⟨MG, hMG⟩ := (GlobalTheory.T.lie_model_pullback_equivalence (Sp R) (Sp V) B.A G (spMap f) π hpb V (𝟙 (Sp V)) EBV).1 (castM hx MBV)
+  obtain ⟨MG, hMG⟩ := (_root_.GlobalTheory.CompanionTheory.Ar.LiePull.lieModel_pullback (Sp R) (Sp V) B.A G (spMap f) π hpb V (𝟙 (Sp V)) EBV).1 (castM hx MBV)
   have hMG' : ∀ e, (MG.pt e).left ≫ π = (MBV.pt e).left := fun e => (hMG e).trans (castM_left hx MBV e)
 
   have hvt : ∀ k, IsTanAt B.A (𝟙 (Sp R)) (toAt (v k) ≫ ψ k) := fun k => by
@@ -131,7 +134,7 @@ theorem isogeny_decomposition_product : ∀ (R V : Type) [CommRing R] [CommRing 
   choose EC iC mC MC bC hbC using fun k => lc (C k) (v k) (hv k) V f
   have hd : ∀ k, ∃ A : EBV →ₗ[V] EC k, ∀ e, (MC k).pt (A e) = MBV.pt e ≫ χ k := fun k => by
     haveI := hχ k
-    exact (GlobalTheory.T.lie_model_functorial_map (Sp R) B.A (C k).A V (spMap f ≫ 𝟙 (Sp R)) EBV (EC k) MBV (MC k) (χ k)).exists
+    exact (_root_.GlobalTheory.CompanionTheory.Ar.lieModel_exists_unique_diff (Sp R) B.A (C k).A V (spMap f ≫ 𝟙 (Sp R)) EBV (EC k) MBV (MC k) (χ k)).exists
   choose dχ hdχ using hd
   let fV : Fin n → (EBV →ₗ[V] V) := fun k => ((bC k).coord 0).comp (dχ k)
   have hval : ∀ i k, fV k (EV i) = if i = k then (N : V) else 0 := by
@@ -152,9 +155,9 @@ theorem isogeny_decomposition_product : ∀ (R V : Type) [CommRing R] [CommRing 
         congr 1
         rw [← Over.comp_left, MonObj.comp_one]
       simp [fV, e2]
-  obtain ⟨bB⟩ := GlobalTheory.T.lie_model_free_of_smooth (Sp R) B.A n (hg ▸ B.smoothDim) V (spMap f ≫ 𝟙 (Sp R)) EBV MBV
-  obtain ⟨hli, hsp⟩ := GlobalTheory.T.dual_family_is_basis V EBV n bB EV fV (N : V) hN hval
-  have bridge := (GlobalTheory.T.lie_model_eigenvectors_action (Sp V) V G (𝟙 (Sp V)) EBV MG).1 n
+  obtain ⟨bB⟩ := _root_.GlobalTheory.CompanionTheory.Relay.lie_model_free_of_smooth (Sp R) B.A n (hg ▸ B.smoothDim) V (spMap f ≫ 𝟙 (Sp R)) EBV MBV
+  obtain ⟨hli, hsp⟩ := _root_.GlobalTheory.CompanionTheory.CommAlg.linearIndependent_span_of_dual_unit V EBV n bB EV fV (N : V) hN hval
+  have bridge := (_root_.GlobalTheory.CompanionTheory.Ar.Fl.Bridge.comb_eig_frame (Sp V) V G (𝟙 (Sp V)) EBV MG).1 n
   refine ⟨fun k => MG.pt (EV k), fun k => hMG' (EV k) ▸ hEV k, fun k => MG.tan _, fun w hw => ?_⟩
   obtain ⟨e, rfl⟩ := MG.onto w hw
   have hmem : e ∈ Submodule.span V (Set.range EV) := hsp ▸ Submodule.mem_top

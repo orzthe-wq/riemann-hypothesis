@@ -445,7 +445,6 @@ theorem chord_x_id {z1 z2 w1 w2 c v : E} (hw1 : w1 ≠ 0) (hw2 : w2 ≠ 0)
   rw [chord_slope hw1 hw2 hN, WeierstrassCurve.Affine.addX, chordPX]
   generalize z1 * w2 - z2 * w1 = N at *
   field_simp
-  try ring
 
 theorem chord_y_id {z1 z2 w1 w2 c v : E} (hw1 : w1 ≠ 0) (hw2 : w2 ≠ 0)
     (hN : z1 * w2 - z2 * w1 ≠ 0) (hv : v ≠ 0) :
@@ -551,7 +550,7 @@ theorem map_chordPX (a1 a2 z1 z2 w1 w2 c v : R) :
 
 theorem map_chordPY (a1 a3 z1 z2 w1 w2 c v : R) :
     f (chordPY a1 a3 z1 z2 w1 w2 c v) = chordPY (f a1) (f a3) (f z1) (f z2) (f w1) (f w2) (f c) (f v) := by
-  simp only [chordPY, map_sub, map_add (f := _), map_mul, map_pow]
+  simp only [chordPY, map_sub, map_add (f := _), map_mul]
 
 theorem map_tanPX (a1 a2 a3 a4 z w c v : R) :
     f (tanPX a1 a2 a3 a4 z w c v) = tanPX (f a1) (f a2) (f a3) (f a4) (f z) (f w) (f c) (f v) := by
@@ -1100,7 +1099,7 @@ theorem case_tan (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) {W : Weierstrass
     have hw0' := jne nw0
     simp only [← hj] at h
     field_simp at h
-    first | linear_combination h | linear_combination -h
+    first | linear_combination h
   obtain ⟨nD, hxD, hyD⟩ := dbl_formal hU hS hw F hch hyF
   have nwD : w.subst D ≠ 0 := WeierstrassSubstitution.ne_zero_of_weq (hU K W w hw (Fin 2) D cD).1 nD
   unfold xOf yOf at hxD hyD
@@ -1185,7 +1184,6 @@ theorem case_inv (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) {W : Weierstrass
     have : -(-1 / evalPS w a) - W.toAffine.a₁ * (a / evalPS w a) - W.toAffine.a₃ =
         (1 - W.a₁ * a - W.a₃ * evalPS w a) / evalPS w a := by
       field_simp
-      try ring
     rw [this]
     field_simp
 
@@ -1249,7 +1247,7 @@ theorem e1hom_main (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) (hPar : Formal
           apply hy
           rw [hxa, hya, WeierstrassCurve.Affine.negY]
           field_simp
-          first | linear_combination hM0 | linear_combination -hM0
+          first | linear_combination hM0
         rw [hxa, hya]
         exact case_tan hU hS hW hw F hFi hch ha hwa hM
     · rw [WeierstrassCurve.Affine.Point.add_of_X_ne hx]
@@ -1261,7 +1259,7 @@ theorem e1hom_main (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) (hPar : Formal
         apply hx
         rw [hxa, hxb]
         field_simp
-        first | linear_combination h0 | linear_combination -h0
+        first | linear_combination h0
       rw [hxa, hxb, hya, hyb]
       exact case_chord hU hW hw F hFi hch ha hb hwa hwb hN
 

@@ -53,27 +53,13 @@ import ReciprocityTheory.CommutativeAlgebra.ChainConnInDim
 
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
-private theorem maximalIdeal_map_eq_of_surjective {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
-    (f : R →+* R') (hf : Function.Surjective f) : (maximalIdeal R).map f = maximalIdeal R' := by
-  have hk : RingHom.ker f ≤ maximalIdeal R := IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top f)
-  rcases Ideal.map_eq_top_or_isMaximal_of_surjective (f := f) hf (I := maximalIdeal R)
-      (maximalIdeal.isMaximal R) with h | h
-  · exfalso
-    have h1 : (1 : R') ∈ (maximalIdeal R).map f := h ▸ Submodule.mem_top
-    obtain ⟨y, hy, hy1⟩ := (Ideal.mem_map_iff_of_surjective f hf).1 h1
-    have hker : 1 - y ∈ RingHom.ker f := by simp [RingHom.mem_ker, hy1]
-    have h2 := Ideal.add_mem _ (hk hker) hy
-    rw [sub_add_cancel] at h2
-    exact (maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 h2)
-  · exact IsLocalRing.eq_maximalIdeal h
-
 private theorem isLocalHom_of_surjective {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
     (f : R →+* R') (hf : Function.Surjective f) : IsLocalHom f := by
   refine ⟨fun x hx => ?_⟩
   by_contra h
   have hx' : x ∈ maximalIdeal R := h
   have : f x ∈ maximalIdeal R' := by
-    rw [← maximalIdeal_map_eq_of_surjective f hf]
+    rw [← IsLocalRing.map_maximalIdeal_of_surjective f hf]
     exact Ideal.mem_map_of_mem f hx'
   exact this hx
 
@@ -89,7 +75,7 @@ theorem UpperTheory.V.CA.cl_quot :
   haveI := hR.noeth
   haveI : IsNoetherianRing R' := isNoetherianRing_of_surjective R R' (p : R →+* R') hpr
   haveI := hR.complete
-  have hm : maximalIdeal R' = (maximalIdeal R).map (p : R →+* R') := (maximalIdeal_map_eq_of_surjective _ hpr).symm
+  have hm : maximalIdeal R' = (maximalIdeal R).map (p : R →+* R') := (IsLocalRing.map_maximalIdeal_of_surjective _ hpr).symm
   refine ⟨inferInstance, ?_, ?_, ?_⟩
   · haveI : IsHausdorff (maximalIdeal R') R' := inferInstance
     refine { toIsHausdorff := inferInstance, toIsPrecomplete := ⟨fun f hf => ?_⟩ }

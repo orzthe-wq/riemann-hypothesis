@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsAdmissibleIntegralBasisChangeOne
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculusStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldFiniteSupportSumOrderEqZero
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FunctionFieldPlaceOrderCalculus
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,13 +64,13 @@ theorem lineFin : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field
   · let S : Set (Place k F) := {v | ¬ Unimod v (g v)} ∪
       ⋃ i ∈ {i : Fin n | w i ≠ 0}, {v : Place k F | v.1 (w i) ≠ 1}
     have hS : S.Finite := hfin.union (Set.Finite.biUnion (Set.toFinite _)
-      fun i hi => ((GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k F hFF (w i) hi).1))
+      fun i hi => ((_root_.GlobalTheory.Nef.finite_support_and_sum_ord_eq_zero k F hFF (w i) hi).1))
     refine hS.subset fun v hv => ?_
     by_contra hvS
     simp only [S, Set.mem_union, Set.mem_setOf_eq, Set.mem_iUnion, not_or, not_not, not_exists] at hvS
     obtain ⟨hu, hw1⟩ := hvS
     apply hv
-    rw [(((GlobalTheory.T.functionFieldPlaceOrder_calculus k F v).2.2.2.2.2.2.2.2.1) n (g v) w hu)]
+    rw [(((_root_.GlobalTheory.Nef.ord_calculus k F v).2.2.2.2.2.2.2.2.1) n (g v) w hu)]
     obtain ⟨i0, hi0⟩ : ∃ i, w i ≠ 0 := by
       by_contra h; push_neg at h; exact hw (funext h)
     have h1 : ∀ i, v.1 (w i) ≤ 1 := by

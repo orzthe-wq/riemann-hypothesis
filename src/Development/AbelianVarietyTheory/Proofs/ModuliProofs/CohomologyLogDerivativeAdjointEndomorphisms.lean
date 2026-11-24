@@ -82,9 +82,7 @@ theorem isUnit_pbT (f : Z ⟶ X) {U : X.Opens} {O : Z.Opens} (h : O ≤ f ⁻¹�
     IsUnit (pbT f u.val O) := by
   rw [← val_res_pullU f h]; exact Units.isUnit _
 
-theorem res_res' {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (u : Γ(X, U)ˣ) :
-    res h₂ (res h₁ u) = res (h₂.trans h₁) u := by
-  ext; rw [val_res, val_res, val_res, rsT_rsT h₁ h₂]
+alias res_res' := _root_.ReciprocityTheory.ChartRestriction.G.DVR.res_res'
 
 theorem pbT_g_self {L : LB X} (hL : L.IsLB) (f : Z ⟶ X) (i : L.ι) {O : Z.Opens} (h : O ≤ f ⁻¹ᵁ L.U i) :
     pbT f (L.g i i).val O = 1 := by

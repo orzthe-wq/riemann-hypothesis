@@ -168,6 +168,6 @@ theorem hasInfCharGL_map {V : Submodule ℂ (Sm E a)} {τ : E →+* ℂ} {m : Mu
   rw [cap_mulChi, h.2 _ φ hφ, map_smul, Multiset.map_map]
   congr 3
   ext x
-  simp [add_assoc, add_comm, add_left_comm]
+  simp [add_comm, add_left_comm]
 
 end GlobalTheory.BCT.TwistDisc

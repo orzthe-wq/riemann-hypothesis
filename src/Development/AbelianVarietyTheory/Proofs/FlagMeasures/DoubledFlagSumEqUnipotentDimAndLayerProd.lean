@@ -145,7 +145,7 @@ theorem _root_.GlobalTheory.DoubledFlag.sum_eq_dimN_and_layerProd_eq : ∀ (n a 
     simp only [hc]
     unfold _root_.GlobalTheory.Count.layerProd
     simp only [id, ← Real.exp_nat_mul, ← Real.exp_sub, ← Real.exp_add, ← Real.exp_sum, ← Real.exp_neg,
-      pow_one, mul_one]
+      mul_one]
     rw [Real.exp_eq_exp, ← hJ, _root_.GlobalTheory.DoubledFlag.sum_range_double, eq_neg_iff_add_eq_zero, ← add_assoc,
       ← Finset.sum_add_distrib, ← Finset.sum_add_distrib,
       Finset.sum_congr (s₁ := (univ : Finset (Fin a))) rfl (g := fun i : Fin a =>

@@ -51,4 +51,4 @@ open GlobalTheory.Core.Rk.IP
 
 
 theorem _root_.GlobalTheory.T.weilRep_preserves_fockDegree_of_commute_cartan : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T) (sS : RealMat S) (sT : RealMat T), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → ∀ k : GA D S, (∀ τ, compAt θ τ (Formalism.L2.Theta.mt S k) * sS τ = sS τ * compAt θ τ (Formalism.L2.Theta.mt S k)) → ∀ (N : ℕ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → (∀ l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ), l.length = N → l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p.1) (sT p.1)) p.2 f) f = 0) → ∀ l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ), l.length = N → l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p.1) (sT p.1)) p.2 f) (om (k, 1) f) = 0 := by
-  first | exact @GlobalTheory.CartanFockDeg.om_keeps_fockDeg | exact GlobalTheory.CartanFockDeg.om_keeps_fockDeg | (intros; apply GlobalTheory.CartanFockDeg.om_keeps_fockDeg <;> assumption)
+  first | exact @GlobalTheory.CartanFockDeg.om_keeps_fockDeg

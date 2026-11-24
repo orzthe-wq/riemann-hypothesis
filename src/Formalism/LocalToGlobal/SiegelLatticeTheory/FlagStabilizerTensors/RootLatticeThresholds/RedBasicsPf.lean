@@ -83,13 +83,11 @@ theorem wLat0_eq : wLat0 I w = w.asIdeal • I.L := by
     exact Submodule.subset_span ⟨r, hr, n, hn, rfl⟩
 
 theorem wLat0_le : wLat0 I w ≤ I.L := by
-  rw [wLat0_eq]
-  exact Submodule.smul_le_right
+  simpa only [wLat0_eq] using Submodule.smul_le_right
 
 theorem smul_mem_wLat0 (a : 𝓞 I.E) {z : Fin I.n → I.E} (hz : z ∈ wLat0 I w) :
     ((a : 𝓞 I.E) : I.E) • z ∈ wLat0 I w := by
-  rw [coe_smul]
-  exact Submodule.smul_mem _ a hz
+  simpa only [coe_smul] using Submodule.smul_mem (wLat0 I w) a hz
 
 theorem mem_wLat0_of_mem {a : 𝓞 I.E} (ha : a ∈ w.asIdeal) {y : Fin I.n → I.E} (hy : y ∈ I.L) :
     ((a : 𝓞 I.E) : I.E) • y ∈ wLat0 I w :=
@@ -102,24 +100,23 @@ theorem mem_iff (y : I.L) :
   rw [e]
   constructor
   · rintro ⟨z, hz, hzy⟩
-    have hzy' : z = y := Subtype.ext hzy
-    rwa [← hzy']
+    rwa [← Subtype.ext hzy]
   · intro h
     exact ⟨y, h, rfl⟩
 
 private lemma charP_residue_of_card_eq_prime {p : ℕ} (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) :
     CharP (𝓞 I.E ⧸ w.asIdeal) p := by
-  haveI : Fact p.Prime := ⟨hp⟩
-  haveI : Finite (𝓞 I.E ⧸ w.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hp.ne_zero)
-  letI := Fintype.ofFinite (𝓞 I.E ⧸ w.asIdeal)
+  have : Fact p.Prime := ⟨hp⟩
+  have : Finite (𝓞 I.E ⧸ w.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hp.ne_zero)
+  let := Fintype.ofFinite (𝓞 I.E ⧸ w.asIdeal)
   exact charP_of_card_eq_prime (by rw [← Nat.card_eq_fintype_card, hcard])
 
 theorem int_surj {p : ℕ} (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p)
     (κ : 𝓞 I.E ⧸ w.asIdeal) : ∃ c : ℤ, (c : 𝓞 I.E ⧸ w.asIdeal) = κ := by
-  haveI : Fact p.Prime := ⟨hp⟩
-  haveI := charP_residue_of_card_eq_prime I w hp hcard
-  haveI : Finite (𝓞 I.E ⧸ w.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hp.ne_zero)
-  letI := Fintype.ofFinite (𝓞 I.E ⧸ w.asIdeal)
+  have : Fact p.Prime := ⟨hp⟩
+  have := charP_residue_of_card_eq_prime I w hp hcard
+  have : Finite (𝓞 I.E ⧸ w.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hp.ne_zero)
+  let := Fintype.ofFinite (𝓞 I.E ⧸ w.asIdeal)
   have hinj : Function.Injective (ZMod.castHom (dvd_refl p) (𝓞 I.E ⧸ w.asIdeal)) :=
     (ZMod.castHom (dvd_refl p) (𝓞 I.E ⧸ w.asIdeal)).injective
   have hbij := (Fintype.bijective_iff_injective_and_card _).mpr
@@ -130,13 +127,12 @@ theorem int_surj {p : ℕ} (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asId
 
 theorem int_mem_iff {p : ℕ} (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) (c : ℤ) :
     (c : 𝓞 I.E) ∈ w.asIdeal ↔ (p : ℤ) ∣ c := by
-  haveI := charP_residue_of_card_eq_prime I w hp hcard
+  have := charP_residue_of_card_eq_prime I w hp hcard
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_intCast, CharP.intCast_eq_zero_iff _ p]
 
 theorem natCast_mem {p : ℕ} (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) :
     (p : 𝓞 I.E) ∈ w.asIdeal := by
-  have h := (int_mem_iff I w hp hcard (p : ℤ)).mpr dvd_rfl
-  simpa using h
+  simpa using (int_mem_iff I w hp hcard (p : ℤ)).mpr dvd_rfl
 
 theorem mk_sum' {d : ℕ} (f : Fin d → I.L) :
     (Submodule.Quotient.mk (∑ i, f i) : RedQ I w) = ∑ i, Submodule.Quotient.mk (f i) :=
@@ -149,9 +145,7 @@ instance finite_Q : Module.Finite (𝓞 I.E ⧸ w.asIdeal) (RedQ I w) := by
 theorem exists_lift (y : I.L) {d : ℕ} (e : Module.Basis (Fin d) (𝓞 I.E ⧸ w.asIdeal) (RedQ I w))
     (b' : Fin d → I.L) (hb' : ∀ i, Submodule.Quotient.mk (b' i) = e i) :
     ∃ α : Fin d → 𝓞 I.E, y - ∑ i, α i • b' i ∈ (w.asIdeal • (⊤ : Submodule (𝓞 I.E) I.L)) := by
-  have hκ : ∀ i, ∃ a : 𝓞 I.E, Ideal.Quotient.mk w.asIdeal a = e.repr (Submodule.Quotient.mk y) i :=
-    fun i => Ideal.Quotient.mk_surjective _
-  choose α hα using hκ
+  choose α hα using fun i => Ideal.Quotient.mk_surjective (e.repr (Submodule.Quotient.mk y) i)
   refine ⟨α, ?_⟩
   rw [← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub, mk_sum']
   simp only [← Module.Quotient.mk_smul_mk, hα, hb']
@@ -217,8 +211,7 @@ theorem exists_redBasis {p : ℕ} (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸
   classical
   let e : Module.Basis (Fin I.n) (𝓞 I.E ⧸ w.asIdeal) (RedQ I w) :=
     Module.finBasisOfFinrankEq _ _ (finrank_eq I w)
-  have hl : ∀ i, ∃ b : I.L, Submodule.Quotient.mk b = e i := fun i => Submodule.Quotient.mk_surjective _ (e i)
-  choose b' hb' using hl
+  choose b' hb' using fun i => Submodule.Quotient.mk_surjective _ (e i)
   refine ⟨fun i => (b' i : Fin I.n → I.E), fun i => (b' i).2, fun y hy => ?_⟩
   obtain ⟨α, hα⟩ := exists_lift I w ⟨y, hy⟩ e b' hb'
   choose c hc using fun i => int_surj I w hp hcard (Ideal.Quotient.mk w.asIdeal (α i))
@@ -413,16 +406,15 @@ theorem coords {p : ℕ} (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdea
   obtain ⟨l, hl, hyl⟩ := dense I w hp hcard hy
   obtain ⟨c, hc⟩ := hb.2 l hl
   refine ⟨c, ?_⟩
-  have h2 := iv_mem_w I w hc
-  rw [iv_lin] at h2
-  have h3 := Submodule.add_mem _ hyl h2
+  have h3 := Submodule.add_mem _ hyl (iv_mem_w I w hc)
+  rw [iv_lin] at h3
   rwa [sub_add_sub_cancel] at h3
 
 theorem val_sub {p : ℕ} (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p)
     {z : Fin I.n → I.E} (hz : z ∈ I.L) (c : ℤ) :
     ((((c : ZMod p)).val : ℕ) : I.E ⊗[I.F] Af I.F) • iv I z - (c : I.E ⊗[I.F] Af I.F) • iv I z ∈
       lamAf (F := I.F) (wLat0 I w) := by
-  haveI : Fact p.Prime := ⟨hp⟩
+  have : Fact p.Prime := ⟨hp⟩
   have hd : (p : ℤ) ∣ ((c : ZMod p).val : ℤ) - c := by
     rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]
     simp

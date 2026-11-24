@@ -6,13 +6,14 @@ public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.EqZeroOfT
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsInvariantNatLengthLattice
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FramePeriodsAlongIsotropicFlowAndBlockChange
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.HolArcNilpotent
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RiemannFormFramePeriodsEqMajorantStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CmTypeLetterFrameColumnDictionary
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFrameOfIsPeriod
+public import Formalism.LocalToGlobal.ProjectiveLattices.NormsFree
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.RiemannFormFramePeriodsEqMajorant
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsInverseBlock
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsLocalGeneratorStableBaseChange
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPeriodMulVec
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsTangentEigenbasisExponential
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CmTypeLetterFrameColumnDictionary
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFrameOfIsPeriod
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsPeriodMulVec
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniqueScaledBaseChangeFibreSection
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsDerivAt0CompLinear
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.RelabelEmbeddingsGoodBijectiveConjCompat
@@ -329,7 +330,7 @@ lemma orbit (hL : Out.Laws) (hσ : GoodEmb c σ) (hU : IsUnf U) {Y : Type} [AddC
       rw [← ht, ht0]; simp
     · exact h
   obtain ⟨-, -, -, -, Hm, hHm⟩ := Uw.period k x₀
-  have hκ := (GlobalTheory.T.riemann_form_frame_periods_eq_majorant E H Dw l Xo c σ r U Uw k x₀ Hm hσ hU hHm).2.1 hr
+  have hκ := (_root_.GlobalTheory.RiemMaj.riemann_eq_majorant E H Dw l Xo c σ r U Uw k x₀ Hm hσ hU hHm).2.1 hr
   obtain ⟨sE, hiso, hbe, hsp, hlev, hform⟩ := rank_one (U.X k) (Uw.φ k) _ (Uw.iso k) y hY hκ hy be hsym hpos nn hnn
     hrep ξ hξ t ht hyt
   refine ⟨k, _, sE, hiso, hbe, fun τ => hsp τ.1, hlev, fun z hz => ?_⟩

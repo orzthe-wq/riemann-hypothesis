@@ -1,33 +1,35 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormProperties
+public import Mathlib.Analysis.Complex.Norm
+public import Mathlib.Data.Matrix.Mul
+public import Mathlib.Analysis.Normed.Ring.Basic
+public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
+public import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction
+public import ReciprocityTheory.SemistableReduction.TorsionNonvanishStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.LUStatementPfA
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LeadingMinorInvariant
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisMore
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLowerLe
-public import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsLowerUnitriangularMulUpperTriangular
 public import Formalism.FormalDegreeBessel.FinalG
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -35,7 +37,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,9 +49,213 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormProperties
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisMore, Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLowerLe, Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsLowerUnitriangularMulUpperTriangular, Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelRegionNormBound
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisMore =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisMore", "h": "module\n\npublic import Mathlib.Analysis.Complex.Norm\npublic import Mathlib.Data.Matrix.Mul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Normed.Ring.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.LatticeFactsFlagMeasures
+
+theorem main : ∀ {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (a b : ℝ), (∀ (i j : Fin n), ‖A i j‖ ≤ a) → (∀ (i j : Fin n), ‖B i j‖ ≤ b) → ∀ (i j : Fin n), ‖(A * B) i j‖ ≤ (↑n : ℝ) * (a * b) := by
+  intro n A B a b hA hB i j
+  rw [Matrix.mul_apply]
+  calc ‖∑ k, A i k * B k j‖ ≤ ∑ k, ‖A i k * B k j‖ := norm_sum_le _ _
+    _ ≤ ∑ _k : Fin n, a * b := by
+        apply Finset.sum_le_sum
+        intro k _
+        rw [norm_mul]
+        have ha : 0 ≤ a := le_trans (norm_nonneg _) (hA i k)
+        exact mul_le_mul (hA i k) (hB k j) (norm_nonneg _) ha
+    _ = (n : ℝ) * (a * b) := by simp
+
+end GlobalTheory.LatticeFactsFlagMeasures
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisMore =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLowerLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLowerLe", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.LinearAlgebra.Matrix.AbsoluteValue\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf
+open scoped InnerProductSpace
+
+namespace GlobalTheory.SgInf.LduBound
+
+theorem norm_det_le {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℂ) (B : ℝ)
+    (h : ∀ i j, ‖A i j‖ ≤ B) : ‖A.det‖ ≤ (Fintype.card ι).factorial * B ^ Fintype.card ι := by
+  have := Matrix.det_le (A := A) (abv := NormedField.toAbsoluteValue ℂ) (x := B) h
+  rw [nsmul_eq_mul] at this
+  exact this
+
+theorem det_minor {n : ℕ} (L R : Matrix (Fin n) (Fin n) ℂ) (hL : IsLoUni L)
+    (hR : ∀ a b, b < a → R a b = 0) (i j : Fin n) :
+    ((L * R).submatrix (fun a : {k : Fin n // k ≤ j} => if a.1 = j then i else a.1)
+      (fun a : {k : Fin n // k ≤ j} => a.1)).det = L i j * ∏ k ∈ Finset.Iic j, R k k := by
+  have hf : (L * R).submatrix (fun a : {k : Fin n // k ≤ j} => if a.1 = j then i else a.1)
+      (fun a : {k : Fin n // k ≤ j} => a.1) =
+      L.submatrix (fun a : {k : Fin n // k ≤ j} => if a.1 = j then i else a.1)
+      (fun a : {k : Fin n // k ≤ j} => a.1) * R.submatrix (fun a : {k : Fin n // k ≤ j} => a.1)
+      (fun a : {k : Fin n // k ≤ j} => a.1) := by
+    ext a b
+    simp only [Matrix.submatrix_apply, Matrix.mul_apply]
+    rw [← Fintype.sum_subtype_add_sum_subtype (fun k : Fin n => k ≤ j)]
+    have : ∑ k : {k : Fin n // ¬ k ≤ j}, L (if a.1 = j then i else a.1) k.1 * R k.1 b.1 = 0 := by
+      refine Finset.sum_eq_zero fun k _ => ?_
+      rw [hR k.1 b.1 (lt_of_le_of_lt b.2 (not_le.1 k.2)), mul_zero]
+    rw [this, add_zero]
+  rw [hf, Matrix.det_mul]
+  congr 1
+  · rw [Matrix.det_of_lowerTriangular]
+    · rw [Finset.prod_eq_single (⟨j, le_rfl⟩ : {k : Fin n // k ≤ j})]
+      · simp
+      · intro b _ hb
+        have : b.1 ≠ j := fun h => hb (Subtype.ext h)
+        simp only [Matrix.submatrix_apply, if_neg this]
+        exact (hL _ _).2 rfl
+      · simp
+    · intro a b hab
+      have hab' : a.1 < b.1 := hab
+      have : a.1 ≠ j := ne_of_lt (lt_of_lt_of_le hab' b.2)
+      simp only [Matrix.submatrix_apply, if_neg this]
+      exact (hL _ _).1 hab'
+  · rw [Matrix.det_of_upperTriangular]
+    · simp only [Matrix.submatrix_apply]
+      exact (Finset.prod_subtype (Finset.Iic j) (fun k => Finset.mem_Iic) (fun k => R k k)).symm
+    · intro a b hab
+      exact hR _ _ hab
+
+theorem norm_lower_le {n : ℕ} (L U : Matrix (Fin n) (Fin n) ℂ) (t : Fin n → ℂ) (B δ : ℝ)
+    (hL : IsLoUni L) (hU : IsUpUni U) (hB : 1 ≤ B) (hδ : 0 < δ)
+    (ht : ∀ l : Fin n, δ ≤ ‖∏ i ∈ Finset.Iic l, t i‖)
+    (hZ : ∀ i j, ‖(L * Matrix.diagonal t * U) i j‖ ≤ B) (i j : Fin n) :
+    ‖L i j‖ ≤ n.factorial * B ^ n / δ := by
+  have h1 := det_minor L (Matrix.diagonal t * U) hL
+    (fun a b hab => by rw [Matrix.diagonal_mul, (hU a b).1 hab, mul_zero]) i j
+  have h2 : ∏ k ∈ Finset.Iic j, (Matrix.diagonal t * U) k k = ∏ k ∈ Finset.Iic j, t k :=
+    Finset.prod_congr rfl fun k _ => by rw [Matrix.diagonal_mul, (hU k k).2 rfl, mul_one]
+  rw [h2, ← Matrix.mul_assoc] at h1
+  have h3 := norm_det_le ((L * Matrix.diagonal t * U).submatrix
+    (fun a : {k : Fin n // k ≤ j} => if a.1 = j then i else a.1)
+      (fun a : {k : Fin n // k ≤ j} => a.1)) B (fun a b => hZ _ _)
+  rw [h1, norm_mul] at h3
+  have hc : Fintype.card {k : Fin n // k ≤ j} ≤ n := by
+    simpa using Fintype.card_subtype_le (fun k : Fin n => k ≤ j)
+  have h4 : ((Fintype.card {k : Fin n // k ≤ j}).factorial : ℝ) * B ^ Fintype.card {k : Fin n // k ≤ j}
+      ≤ n.factorial * B ^ n :=
+    mul_le_mul (by exact_mod_cast Nat.factorial_le hc) (pow_le_pow_right₀ hB hc) (by positivity)
+      (by positivity)
+  rw [le_div_iff₀ hδ]
+  exact (mul_le_mul_of_nonneg_left (ht j) (norm_nonneg _)).trans (h3.trans h4)
+
+theorem norm_inv_le {m : ℕ} (A : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hA : A.det = 1) (x : ℝ)
+    (h : ∀ i j, ‖A i j‖ ≤ x) (i j : Fin (m + 1)) : ‖A⁻¹ i j‖ ≤ m.factorial * x ^ m := by
+  rw [Matrix.inv_def, hA, Ring.inverse_one, one_smul, Matrix.adjugate_fin_succ_eq_det_submatrix,
+    norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]
+  simpa using norm_det_le (A.submatrix j.succAbove i.succAbove) x (fun a b => h _ _)
+
+theorem ldu_bound (m : ℕ) : ∃ c : ℝ, 0 < c ∧ ∀ (L U : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
+    (t : Fin (m + 1) → ℂ) (B δ : ℝ), IsLoUni L → IsUpUni U → 1 ≤ B → 0 < δ → δ ≤ 1 →
+    (∀ l : Fin (m + 1), δ ≤ ‖∏ i ∈ Finset.Iic l, t i‖) →
+    (∀ i j, ‖(L * Matrix.diagonal t * U) i j‖ ≤ B) →
+    ∀ i j, ‖L i j‖ ≤ c * B ^ (m + 1) / δ ∧ ‖U i j‖ ≤ c * B ^ (m + 1) / δ ∧
+      ‖L⁻¹ i j‖ ≤ c * (B ^ (m + 1) / δ) ^ m ∧ ‖U⁻¹ i j‖ ≤ c * (B ^ (m + 1) / δ) ^ m := by
+  refine ⟨(m + 1).factorial + m.factorial * ((m + 1).factorial : ℝ) ^ m, by positivity, ?_⟩
+  intro L U t B δ hL hU hB hδ _ ht hZ
+  have hB0 : 0 < B := by linarith
+  have h1 := norm_lower_le L U t B δ hL hU hB hδ ht hZ
+  have h2 : ∀ i j, ‖U i j‖ ≤ (m + 1).factorial * B ^ (m + 1) / δ := fun i j =>
+    norm_lower_le Uᵀ Lᵀ t B δ (fun a b => ⟨(hU b a).1, fun h => (hU b a).2 h.symm⟩)
+      (fun a b => ⟨(hL b a).1, fun h => (hL b a).2 h.symm⟩) hB hδ ht
+      (fun a b => by
+        have : Uᵀ * Matrix.diagonal t * Lᵀ = (L * Matrix.diagonal t * U)ᵀ := by
+          simp [Matrix.transpose_mul, Matrix.mul_assoc]
+        rw [this]; exact hZ b a) j i
+  have dL : L.det = 1 := by
+    rw [Matrix.det_of_lowerTriangular L (fun a b hab => (hL a b).1 hab)]
+    exact Finset.prod_eq_one fun k _ => (hL k k).2 rfl
+  have dU : U.det = 1 := by
+    rw [Matrix.det_of_upperTriangular (M := U) (fun a b hab => (hU a b).1 hab)]
+    exact Finset.prod_eq_one fun k _ => (hU k k).2 rfl
+  have e1 : ((m + 1).factorial : ℝ) * B ^ (m + 1) / δ ≤
+      ((m + 1).factorial + m.factorial * ((m + 1).factorial : ℝ) ^ m) * B ^ (m + 1) / δ := by
+    gcongr
+    exact le_add_of_nonneg_right (by positivity)
+  have e2 : (m.factorial : ℝ) * (((m + 1).factorial : ℝ) * B ^ (m + 1) / δ) ^ m ≤
+      ((m + 1).factorial + m.factorial * ((m + 1).factorial : ℝ) ^ m) * (B ^ (m + 1) / δ) ^ m := by
+    rw [mul_div_assoc, mul_pow, ← mul_assoc]
+    gcongr
+    exact le_add_of_nonneg_left (by positivity)
+  exact fun i j => ⟨(h1 i j).trans e1, (h2 i j).trans e1, (norm_inv_le L dL _ h1 i j).trans e2,
+    (norm_inv_le U dU _ h2 i j).trans e2⟩
+
+end GlobalTheory.SgInf.LduBound
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLowerLe =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsLowerUnitriangularMulUpperTriangular =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsLowerUnitriangularMulUpperTriangular", "h": "module\n\npublic import ReciprocityTheory.SemistableReduction.TorsionNonvanishStatement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.LUStatementPfA\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix MvPolynomial ReciprocityTheory.MultiplicativeHeights
+
+namespace GlobalTheory
+
+theorem exists_lowerUnitriangular_mul_upperTriangular :
+    ∀ (p : ℕ) (x : Matrix (Fin p) (Fin p) ℂ), (∀ i, leadMinor x i ≠ 0) →
+      ∃ n b : Matrix (Fin p) (Fin p) ℂ, x = n * b ∧ (∀ i, n i i = 1) ∧
+        (∀ i j, i < j → n i j = 0) ∧ (∀ i j, j < i → b i j = 0) := by
+  intro p x hx
+  have hM : ∀ k : Fin (p + 1), ReciprocityTheory.ChartRestriction.G.FD.lminor x k ≠ 0 := by
+    intro k
+    refine Fin.cases ?_ (fun i => ?_) k
+    · unfold ReciprocityTheory.ChartRestriction.G.FD.lminor
+      have : IsEmpty (Fin ((0 : Fin (p + 1)) : ℕ)) := inferInstanceAs (IsEmpty (Fin 0))
+      rw [Matrix.det_isEmpty]
+      exact one_ne_zero
+    · exact hx i
+  set L := ReciprocityTheory.ChartRestriction.G.AR.Up.LUPf.Lm x with hL
+  have hu : IsUnit L.det := by
+    rw [hL, ReciprocityTheory.ChartRestriction.G.AR.Up.LUPf.Lm_det]; exact isUnit_one
+  have hup : ∀ i k : Fin p, i < k → L i k = 0 := ReciprocityTheory.ChartRestriction.G.AR.Up.LUPf.Lm_up x
+  have hd : ∀ i : Fin p, L i i = 1 := ReciprocityTheory.ChartRestriction.G.AR.Up.LUPf.Lm_diag x
+  have hbt : L.BlockTriangular OrderDual.toDual := fun i k h => hup i k h
+  let : Invertible L := L.invertibleOfIsUnitDet hu
+  have hinv : L⁻¹.BlockTriangular OrderDual.toDual := blockTriangular_inv_of_blockTriangular hbt
+  have hup' : ∀ i k : Fin p, i < k → L⁻¹ i k = 0 := fun i k h => hinv h
+  refine ⟨L⁻¹, L * x, ?_, fun i => ?_, hup', fun i j h => ?_⟩
+  · rw [← Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.one_mul]
+  · have h := ReciprocityTheory.ChartRestriction.G.AR.Up.LUPf.row_expand L L⁻¹ i i (hup i) (hd i)
+    rw [mul_nonsing_inv _ hu, Matrix.one_apply_eq, Finset.sum_eq_zero, zero_add] at h
+    · exact h.symm
+    · intro k _
+      rw [hup' _ i (by rw [Fin.lt_def]; exact k.isLt), mul_zero]
+  · exact ReciprocityTheory.ChartRestriction.G.AR.Up.LUPf.Lm_mul_up x hM i j h
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsLowerUnitriangularMulUpperTriangular =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelRegionNormBound =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelRegionNormBound", "h": "module\n\nimport Development.AbelianVarietyTheory.Proofs.FlagMeasures.BesselModelUnitaryGroupOpNormProperties\npublic import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.MatrixOfBesselTwoSidedAction\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LeadingMinorInvariant\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ImportsBisMore\npublic import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NormLowerLe\npublic import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.ExistsLowerUnitriangularMulUpperTriangular\npublic import Formalism.FormalDegreeBessel.FinalG\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S GlobalTheory.SgInf GlobalTheory.LeadingMinorInv
@@ -140,16 +345,6 @@ theorem det_loUni {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : IsLoUni A) : 
   have h2 := congrArg star this
   rwa [star_star, star_one] at h2
 
-theorem norm_mul_apply_le {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (a b : ℝ)
-    (hA : ∀ i j, ‖A i j‖ ≤ a) (hB : ∀ i j, ‖B i j‖ ≤ b) (i j : Fin n) : ‖(A * B) i j‖ ≤ n * (a * b) := by
-  first
-  | exact @_root_.GlobalTheory.LatticeFactsFlagMeasures.main
-  | exact _root_.GlobalTheory.LatticeFactsFlagMeasures.main
-  | (apply _root_.GlobalTheory.LatticeFactsFlagMeasures.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.LatticeFactsFlagMeasures.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.LatticeFactsFlagMeasures.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.LatticeFactsFlagMeasures.main ..)
-
 theorem uni_bound (m : ℕ) (B0 δ : ℝ) (hB0 : 1 ≤ B0) (hδ : 0 < δ) (hδ1 : δ ≤ 1) :
     ∃ K : ℝ, ∀ (Z P Q : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (B : ℝ), IsUpUni P → IsUpUni Q → 1 ≤ B →
       (∀ i j, ‖Z i j‖ ≤ B) → (∀ i j, ‖(Pᴴ * Z * Q) i j‖ ≤ B0) → (∀ l, δ ≤ ‖mnr Z l‖) →
@@ -182,10 +377,10 @@ theorem uni_bound (m : ℕ) (B0 δ : ℝ) (hB0 : 1 ≤ B0) (hδ : 0 < δ) (hδ1 
   intro i j
   rw [ek]
   constructor
-  · have := norm_mul_apply_le (Pᴴ * L) L⁻¹ _ _ (fun i j => (H0 i j).1) (fun i j => (H1 i j).2.2.1) j i
+  · have := _root_.GlobalTheory.LatticeFactsFlagMeasures.main (Pᴴ * L) L⁻¹ _ _ (fun i j => (H0 i j).1) (fun i j => (H1 i j).2.2.1) j i
     rw [← eP] at this
     simpa using this
-  · have := norm_mul_apply_le U⁻¹ (U * Q) _ _ (fun i j => (H1 i j).2.2.2) (fun i j => (H0 i j).2.1) i j
+  · have := _root_.GlobalTheory.LatticeFactsFlagMeasures.main U⁻¹ (U * Q) _ _ (fun i j => (H1 i j).2.2.2) (fun i j => (H0 i j).2.1) i j
     rw [← eQ, mul_comm (c * _) _] at this
     exact this
 
@@ -342,3 +537,7 @@ theorem frame_image_bound : ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
     rw [mul_pow]; ring
 
 end GlobalTheory.SgInf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelRegionNormBound =====

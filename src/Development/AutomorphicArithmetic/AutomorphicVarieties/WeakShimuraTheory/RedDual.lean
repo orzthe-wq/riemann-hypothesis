@@ -69,7 +69,7 @@ private theorem rd_adj_mul (X Y : M4 R) : adj (X * Y) = adj Y * adj X := by
 
 private theorem rd_adj_one : adj (1 : M4 R) = 1 := by
   ext i j
-  fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]
+  fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]
 
 private theorem rd_sp {n n' m : M4 R} (h1 : n * m = 1) (h : adj n' * n + adj n * n' = 0) : n' * m ∈ sp4 R := by
   show adj _ = -_
@@ -117,7 +117,7 @@ private theorem rd_gsp {ν : DualNumber k} (hν : ν.snd = 0) {X : M4 (DualNumbe
     adj (X.map TrivSqZeroExt.snd) * X.map TrivSqZeroExt.fst + adj (X.map TrivSqZeroExt.fst) * X.map TrivSqZeroExt.snd = 0 := by
   rw [← rd_snd_adj, ← rd_fst_adj, ← rd_snd_mul, h]
   ext i j
-  by_cases hij : i = j <;> simp [Matrix.one_apply, hij, hν]
+  by_cases hij : i = j <;> simp [hij, hν]
 
 private theorem rd_gsp_one {X : M4 (DualNumber k)} (h : IsGSp 1 X) :
     adj (X.map TrivSqZeroExt.fst) * X.map TrivSqZeroExt.fst = 1 := by
@@ -164,7 +164,7 @@ theorem UpperTheory.V.Ws.redDual :
     rw [hP.kill g hg]
     have : (1 : M4 (DualNumber k)).map TrivSqZeroExt.snd = 0 := by
       ext i j
-      by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+      by_cases hij : i = j <;> simp [hij]
     rw [this, zero_mul]
   · have d1 : ((Q.r Φ.g0).map TrivSqZeroExt.snd).IsDiag := hP.nrm.map rfl
     have d2 : (c.r Φ.g0).IsDiag := er _ ▸ hP.nrm.map rfl

@@ -61,10 +61,6 @@ variable {S : Type} [CommRing S] (s : S →+* S) {n : ℕ} (J : Matrix (Fin n) (
 def r1 (c : S) (u v : Fin n → S) : Matrix (Fin n) (Fin n) S :=
   1 - c • vecMulVec v (vecMul (fun i => s (u i)) J)
 
-private lemma hform_eq_lemma (M : Matrix (Fin n) (Fin n) S) (u z : Fin n → S) :
-    hform s M u z = (fun i => s (u i)) ⬝ᵥ (M *ᵥ z) := by
-  simp only [hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
-
 theorem reflection_mulVec (c : S) (u v z : Fin n → S) :
     r1 s J c u v *ᵥ z = z - (c * hform s J u z) • v := by
   unfold r1
@@ -79,7 +75,7 @@ theorem reflection_mulVec (c : S) (u v z : Fin n → S) :
 
 theorem hform_mulVec (T : Matrix (Fin n) (Fin n) S) (z w : Fin n → S) :
     hform s J (T *ᵥ z) (T *ᵥ w) = hform s (cT s T * J * T) z w := by
-  rw [hform_eq_lemma, hform_eq_lemma]
+  rw [_root_.PIW.AdelicOrbitU.hform_eq_dot, _root_.PIW.AdelicOrbitU.hform_eq_dot]
   have e : (fun i => s ((T *ᵥ z) i)) = (T.map s) *ᵥ (fun i => s (z i)) := by
     funext i
     exact RingHom.map_mulVec s T z i

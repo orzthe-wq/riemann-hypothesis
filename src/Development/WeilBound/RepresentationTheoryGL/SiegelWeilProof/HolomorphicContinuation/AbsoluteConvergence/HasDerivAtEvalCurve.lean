@@ -100,7 +100,7 @@ theorem hasDerivAt_eval_curve {σ : Type*} [Fintype σ] [DecidableEq σ] (Q : Mv
         rw [Derivation.leibniz, pderiv_X, smul_eq_mul, smul_eq_mul, map_add (f := _), map_mul, map_mul, eval_X]
         by_cases hk : k = i
         · subst hk; simp; ring
-        · simp [Pi.single_apply, hk]; ring
+        · simp [hk]; ring
       simp only [e1, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_mul]
     rw [e]
     exact (hp.mul (hw i)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => by simp)
@@ -133,12 +133,12 @@ theorem integral_scal (α : Fin n → ℝ) (hα : ∀ j, 0 < α j) (f : (Fin m �
     (LinearMap.ext fun y => funext fun a => funext fun j => by
       have h0 : (α j : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr (hα j).ne'
       simp only [L, Li, Linv, LinearMap.comp_apply, LinearMap.pi_apply, LinearMap.proj_apply, LinearMap.smul_apply,
-        LinearMap.id_apply, LinearMap.id_coe, id_eq, Complex.real_smul, Complex.ofReal_inv]
+        LinearMap.id_apply, Complex.real_smul, Complex.ofReal_inv]
       field_simp)
     (LinearMap.ext fun y => funext fun a => funext fun j => by
       have h0 : (α j : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr (hα j).ne'
       simp only [L, Li, Linv, LinearMap.comp_apply, LinearMap.pi_apply, LinearMap.proj_apply, LinearMap.smul_apply,
-        LinearMap.id_apply, LinearMap.id_coe, id_eq, Complex.real_smul, Complex.ofReal_inv]
+        LinearMap.id_apply, Complex.real_smul, Complex.ofReal_inv]
       field_simp)
   have hH1 : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure := by infer_instance
   have hH2 : (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _

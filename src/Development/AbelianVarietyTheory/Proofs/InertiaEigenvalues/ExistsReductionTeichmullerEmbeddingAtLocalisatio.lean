@@ -105,7 +105,7 @@ theorem exists_redVia : ∀ (D : D7) (i : D.nd.Loc) (k : Fin 2), D.nd.l i ≠ D.
   · refine D.ntypes.teichC_inj k x y hx hy ?_
     rw [← ht, ← ht]
     congr 1
-    refine GlobalTheory.TameRed.eq_of_map_eq g (M := orderOf x * orderOf y) ?_ ?_ ?_ h
+    refine _root_.GlobalTheory.RootsOfUnityInjectiveInertiaEigenvalues.rootsOfUnity_inj g (M := orderOf x * orderOf y) ?_ ?_ ?_ h
     · rw [Ne, CharP.cast_eq_zero_iff _ (D.nd.l i)]
       exact (Nat.Prime.coprime_iff_not_dvd (D.nd.lPrime i).out).1 (Nat.Coprime.mul_left hcx hcy).symm
     · rw [← map_pow, pow_mul, pow_orderOf_eq_one, one_pow, map_one]

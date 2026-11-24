@@ -59,9 +59,9 @@ namespace GlobalTheory.Ker.OmRat
 
 variable {D : D7} {S T : HSp D}
 
-theorem mt_mul' (V : HSp D) (g g' : GA D V) : mt V (g * g') = mt V g * mt V g' := by simp [Formalism.L2.Theta.mt]
+alias mt_mul' := _root_.GlobalTheory.WeilVacMove.mt_mul
 
-theorem mt_one' (V : HSp D) : mt V 1 = 1 := by simp [Formalism.L2.Theta.mt]
+alias mt_one' := _root_.GlobalTheory.WeilVacMove.mt_one
 
 theorem actO_inv_cancel (g : GA D S) (h : GA D T) (w : WO S T) :
     actO S T g h (actO S T g⁻¹ h⁻¹ w) = w := by

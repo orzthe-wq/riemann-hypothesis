@@ -137,7 +137,7 @@ private theorem dPol_ne_zero (n : ℕ) (t : ℂ) : dPol n t ≠ 0 := by
     have := congrFun e p.1
     simp [hp'.ne] at this
   have := congrArg (fun y : LaurentRing n => y.coeff (Pi.single p.1 1)) h
-  simp [Finsupp.single_apply, hne] at this
+  simp [hne] at this
 
 private theorem inj_of_dPol {n : ℕ} {z : Fin n → ℂˣ} (h : evalAt z (dPol n 1) ≠ 0) : Function.Injective z := by
   have key : ∀ i j, i < j → z i ≠ z j := fun i j hij e => by
@@ -146,7 +146,7 @@ private theorem inj_of_dPol {n : ℕ} {z : Fin n → ℂˣ} (h : evalAt z (dPol 
     rw [map_prod]
     refine Finset.prod_eq_zero (i := (i, j)) (Finset.mem_filter.2 ⟨Finset.mem_univ _, hij⟩) ?_
     have hv : ∀ a, evalAt z (varL a) = z a := fun a => by
-      rw [evalAt_single, one_mul, monomialChar_apply, Finset.prod_eq_single a] <;> simp +contextual [Pi.single_apply]
+      rw [evalAt_single, one_mul, monomialChar_apply, Finset.prod_eq_single a] <;> simp +contextual
     simp [hv, e]
   intro i j e
   rcases lt_trichotomy i j with h | h | h

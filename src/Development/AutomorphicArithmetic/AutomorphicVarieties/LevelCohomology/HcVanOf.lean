@@ -68,7 +68,7 @@ theorem UpperTheory.V.X.vanOf :
   · refine ⟨K, fun h => hKl (dvd_trans h (Subgroup.relIndex_dvd_index_of_normal _ _)), ?_⟩
     intro g hgK hgA _
     exact hzI A hA g hgA hgK
-  · push_neg at hA
+  · push Not at hA
     obtain ⟨p, hpT, hAp⟩ := hA
     obtain ⟨hpp, hplp⟩ := hT p hpT
     obtain ⟨m, hm⟩ := hzD p hpT

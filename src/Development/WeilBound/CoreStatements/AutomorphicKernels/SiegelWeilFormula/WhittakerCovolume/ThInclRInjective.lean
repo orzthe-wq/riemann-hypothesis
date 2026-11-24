@@ -67,47 +67,6 @@ theorem th_sigR_eq (x : AE F E) : HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F
   | tmul a b => rfl
   | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
 
-theorem th_JR (d : SD σ) (η : E) :
-    HeckeCharacterZeroLocus.SiegelWeilU.JR (AF F) (Jd d η) = inclR (F := F) (E := E) (AF F) η • (incM F d.A.J)ᵀ := by
-  ext i j
-  simp [HeckeCharacterZeroLocus.SiegelWeilU.JR, Jd, incM, th_inclR_eq, Matrix.transpose_apply, map_mul]
-
-theorem th_mem_iff (d : SD σ) {η : E} (hη : η ≠ 0) (g : GL (Fin d.m) (AE F E)) :
-    g ∈ UG (cA σ) (incM F d.A.J) ↔ g ∈ HeckeCharacterZeroLocus.SiegelWeilU.HR (AF F) σ (Jd d η) := by
-  have hc : IsUnit (inclR (F := F) (E := E) (AF F) η) := (Ne.isUnit hη).map _
-  have hm : (g : Matrix (Fin d.m) (Fin d.m) (AE F E)).map (HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F) σ) =
-      (g : Matrix (Fin d.m) (Fin d.m) (AE F E)).map (cA σ) := by
-    ext i j; exact th_sigR_eq _
-  show (g : Matrix (Fin d.m) (Fin d.m) (AE F E))ᵀ * incM F d.A.J * (g : Matrix (Fin d.m) (Fin d.m) (AE F E)).map (cA σ) =
-      incM F d.A.J ↔ HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F) σ) (g : Matrix (Fin d.m) (Fin d.m) (AE F E)) *
-      HeckeCharacterZeroLocus.SiegelWeilU.JR (AF F) (Jd d η) * (g : Matrix (Fin d.m) (Fin d.m) (AE F E)) = HeckeCharacterZeroLocus.SiegelWeilU.JR (AF F) (Jd d η)
-  rw [th_JR, HeckeCharacterZeroLocus.SiegelWeilU.cT, hm]
-  set L := (g : Matrix (Fin d.m) (Fin d.m) (AE F E))ᵀ * incM F d.A.J * (g : Matrix (Fin d.m) (Fin d.m) (AE F E)).map (cA σ)
-  have hL : ((g : Matrix (Fin d.m) (Fin d.m) (AE F E)).map (cA σ))ᵀ *
-      (inclR (F := F) (E := E) (AF F) η • (incM F d.A.J)ᵀ) * (g : Matrix (Fin d.m) (Fin d.m) (AE F E)) =
-      inclR (F := F) (E := E) (AF F) η • Lᵀ := by
-    simp only [L, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]
-  rw [hL]
-  constructor
-  · intro h; rw [h]
-  · intro h
-    have h2 := congrArg (fun M => (hc.unit⁻¹ : (AE F E)ˣ) • M) h
-    simp only [Units.smul_def, smul_smul] at h2
-    have h3 : ((hc.unit⁻¹ : (AE F E)ˣ) : AE F E) * inclR (F := F) (E := E) (AF F) η = 1 := by
-      exact hc.val_inv_mul
-    rw [h3, one_smul, one_smul] at h2
-    have := congrArg Matrix.transpose h2
-    simpa using this
-
-def thE (d : SD σ) {η : E} (hη : η ≠ 0) : UA σ d.A.J ≃* HeckeCharacterZeroLocus.SiegelWeilU.HA (AF F) σ (Jd d η) :=
-  MulEquiv.subgroupCongr (Subgroup.ext (th_mem_iff d hη))
-
-theorem thE_cont (d : SD σ) {η : E} (hη : η ≠ 0) : Continuous (thE d hη) :=
-  continuous_subtype_val.subtype_mk _
-
-theorem thE_symm_cont (d : SD σ) {η : E} (hη : η ≠ 0) : Continuous (thE d hη).symm :=
-  continuous_subtype_val.subtype_mk _
-
 theorem th_haar_map {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G] [MeasurableMul G] [Group H]
     [TopologicalSpace H] [MeasurableSpace H] [BorelSpace H] (μ : Measure G) [hμ : μ.IsHaarMeasure] (e : G ≃* H)
     (he : Continuous e) (hs : Continuous e.symm) : (μ.map e).IsHaarMeasure := by

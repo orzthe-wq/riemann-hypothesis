@@ -147,7 +147,7 @@ theorem coeff_int {O : Type} [CommRing O] {bar : O → O} {X : Type} [AddCommGro
     rw [show (⟨γ i', hmem i'⟩ : balForms bar X) = bb (Sum.inl i') from (hbb i').symm, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]
     by_cases h' : i' = i
     · simp [h']
-    · simp [h', Ne.symm h']
+    · simp [h']
   simp only [hc] at this
   simp only [Int.cast_ite, Int.cast_one, Int.cast_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
     Finset.mem_univ, if_true] at this

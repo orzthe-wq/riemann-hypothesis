@@ -117,15 +117,11 @@ theorem locW_intAtI (V : ValTied u eV i hi K) (w : D.what₂.places.Pl) (x : ((D
     rw [hPy t]
     rfl
 
-theorem exists_denI (u : D.what₂.Word) (i : ℕ) (x : ((D.fm u).lat i).V) :
-    ∃ d : 𝓞 D.what₂.LL, d ≠ 0 ∧ d • x ∈ ((D.fm u).lat i).L :=
-  _root_.UpperTheory.Reformulated.B.ExistsIdealDenominator.exists_denI u i x
-
 theorem locWBackI (V : ValTied u eV i hi K) (w : D.what₂.places.Pl) (x : ((D.fm u).lat i).V) (hx : ∀ c, IntAtI V w x c) :
     x ∈ Formalism.BasicNotions.locW D.what₂.places w ((D.fm u).lat i).L := by
   have key : ∀ (r : 𝓞 D.what₂.LL) (v : ((D.fm u).lat i).V), r • v = (algebraMap (𝓞 D.what₂.LL) D.what₂.LL r) • v :=
     fun r v => (algebraMap_smul D.what₂.LL r v).symm
-  obtain ⟨d, hd0, hdL⟩ := exists_denI u i x
+  obtain ⟨d, hd0, hdL⟩ := _root_.UpperTheory.Reformulated.B.ExistsIdealDenominator.exists_denI u i x
   obtain ⟨s, hsP, hsv⟩ := exists_prime_to_le (D.plEq w) d hd0
   have hs0 : s ≠ 0 := fun h => hsP (h ▸ Submodule.zero_mem _)
   have hsL : s • x ∈ ((D.fm u).lat i).L := by

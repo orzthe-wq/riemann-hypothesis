@@ -54,31 +54,26 @@ namespace Formalism.LogVandermondeBounds.StandardLattice
 open Finset
 
 lemma hasSum_inv_succ_sq : HasSum (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ 2) (Real.pi ^ 2 / 6) := by
-  have h := (hasSum_nat_add_iff' 1).mpr hasSum_zeta_two
-  simpa using h
+  simpa using (hasSum_nat_add_iff' 1).mpr hasSum_zeta_two
 
 lemma zetaR_nonneg_le_two (M : ℕ) (hM : 2 ≤ M) : 0 ≤ zetaR M ∧ zetaR M ≤ 2 := by
   have hle : ∀ n : ℕ, 1 / ((n : ℝ) + 1) ^ M ≤ 1 / ((n : ℝ) + 1) ^ 2 := by
     intro n
     have h1 : (1 : ℝ) ≤ (n : ℝ) + 1 := by linarith [(Nat.cast_nonneg n : (0:ℝ) ≤ n)]
-    apply one_div_le_one_div_of_le (by positivity)
-    exact pow_le_pow_right₀ h1 hM
+    exact one_div_le_one_div_of_le (by positivity) (pow_le_pow_right₀ h1 hM)
   have hnn : ∀ n : ℕ, 0 ≤ 1 / ((n : ℝ) + 1) ^ M := fun n => by positivity
   have hs : Summable (fun n : ℕ => 1 / ((n : ℝ) + 1) ^ M) :=
     Summable.of_nonneg_of_le hnn hle hasSum_inv_succ_sq.summable
   refine ⟨tsum_nonneg hnn, ?_⟩
   have h3 : zetaR M ≤ Real.pi ^ 2 / 6 := hasSum_le hle hs.hasSum hasSum_inv_succ_sq
-  have hp := Real.pi_lt_d2
-  have hp0 := Real.pi_pos
-  nlinarith
+  nlinarith [Real.pi_lt_d2, Real.pi_pos]
 
 lemma log_zetaR_le_one (M : ℕ) (hM : 2 ≤ M) : Real.log (zetaR M) ≤ 1 := by
   obtain ⟨h0, h2⟩ := zetaR_nonneg_le_two M hM
   rcases h0.eq_or_lt with h | h
   · rw [← h, Real.log_zero]; norm_num
-  · calc Real.log (zetaR M) ≤ Real.log 2 := Real.log_le_log h h2
-      _ ≤ 2 - 1 := Real.log_le_sub_one_of_pos (by norm_num)
-      _ = 1 := by norm_num
+  · calc Real.log (zetaR M) ≤ zetaR M - 1 := Real.log_le_sub_one_of_pos h
+      _ ≤ 1 := by linarith
 
 lemma sum_log_factorial (k r : ℕ) (hkr : k ≤ r) :
     ∑ M ∈ Ico (k + 1) (r + 1), Real.log (((M - 1).factorial : ℕ) : ℝ)

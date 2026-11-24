@@ -81,8 +81,6 @@ theorem col_over (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ placesOver
   rw [plOf_colIdx]
   first
   | exact (dc.cover l.1).mp (Or.inr l.2)
-  | exact ((dc.cover l.1).mp (Or.inr l.2)).1
-  | (have h := (dc.cover l.1).mp (Or.inr l.2); done)
 
 theorem col_hp (l : K.Col i dc) :
     (K.Aw i dc (K.colIdx i dc l)).valuation ((D.nd.l i : ℕ) : D.nd.Om) < 1 := by

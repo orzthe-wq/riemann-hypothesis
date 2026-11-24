@@ -4,7 +4,8 @@ public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSpl
 public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExCusp
 public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.ExTwist
 public import Development.AutomorphicArithmetic.Foundations.Convolution.CentreSplitting.LocIff
-public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursBasics
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SummandFactor
+public import Development.WeilBound.CuspidalAdmissibility.OccursIff
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursIff
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.CarryLift
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.FamParts
@@ -58,7 +59,7 @@ private theorem occ_basic {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : M
     (∃ σ, Occurs μ V w σ) ∧ (∀ σ σ', Occurs μ V w σ → Occurs μ V w σ' → Nonempty (σ.ρ.Equiv σ'.ρ)) := by
   letI : MeasurableSpace (Gw n w) := borel _
   haveI : BorelSpace (Gw n w) := ⟨rfl⟩
-  have h := occursBasics K n μ V w Measure.haar hV
+  have h := _root_.PositivityTheory.TfC.OccursBasics_holds K n μ V w Measure.haar hV
   exact ⟨h.1, h.2.1⟩
 
 private theorem loc_iff {E : Type} [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] {n : ℕ} (μ : Measure (normOneGL (K := E) (n := n)))

@@ -63,6 +63,8 @@ import Std.Tactic.BVDecide.Normalize.Prop
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
 public import Mathlib.Analysis.Calculus.BumpFunction.Basic
 public import Mathlib.Analysis.Calculus.ContDiff.Convolution
+import Mathlib.Topology.Connected.Separation
+import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 
 @[expose] public section
 
@@ -79,7 +81,6 @@ section Param
 variable {P T : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ P]
   [NormedAddCommGroup T] [NormedSpace ℝ T] [FiniteDimensional ℝ T] [MeasurableSpace T] [BorelSpace T]
 
-
 end Param
 
 section Torus
@@ -93,9 +94,6 @@ variable {V T : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensio
 include h𝓕 hS hν
 
 def ch (B : V →L[ℝ] T →L[ℝ] ℝ) (l : V) (t : T) : ℂ := Complex.exp (2 * Real.pi * Complex.I * (B l t : ℝ))
-
-
-
 
 end Torus
 
@@ -153,7 +151,6 @@ theorem trace_emb (a : F) : Algebra.trace ℝ (mixedSpace F) (mixedEmbedding F a
 
 variable {κ : Type} [Fintype κ]
 
-
 end PositivityTheory.Member.ZakTransform.Z
 end
 end
@@ -170,7 +167,6 @@ open NumberField.mixedEmbedding GlobalTheory.IndefiniteRowSideFullHecke.WeilTens
 section Coord
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
-
 
 end Coord
 
@@ -195,7 +191,6 @@ open Filter Topology
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {ψ : AddChar k ℂ} {κ : Type} [Fintype κ]
-
 
 variable [Invertible (2 : k)]
 
@@ -223,9 +218,7 @@ open GlobalTheory.SplitWeil hiding SB
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-
 end LocD
-
 
 end PositivityTheory.Member.ZakTransform
 end
@@ -242,22 +235,6 @@ namespace S
 section Real
 open Complex
 open scoped Real ContDiff
-
-theorem hadamard_lemma : ∀ (n : ℕ) (f : (Fin n → ℝ) → ℂ), ContDiff ℝ ∞ f → f 0 = 0 → ∃ g : Fin n → (Fin n → ℝ) → ℂ, (∀ i, ContDiff ℝ ∞ (g i)) ∧ ∀ x, f x = ∑ i, (x i : ℂ) * g i x :=
-  GlobalTheory.CompanionTheory.DiracComb.hadamard_lemma
-
-theorem dense_hasCompactSupport : ∀ (n : ℕ), Dense {f : SchwartzMap (Fin n → ℝ) ℂ | HasCompactSupport (f : (Fin n → ℝ) → ℂ)} :=
-  fun _ => SchwartzMap.dense_hasCompactSupport
-
-theorem exists_quot : ∃ q : ℝ → ℂ, ContDiffOn ℝ ∞ q (Metric.ball 0 1) ∧
-    ∀ t ∈ Metric.ball (0 : ℝ) 1, (t : ℂ) = (cexp (2 * π * I * t) - 1) * q t :=
-  GlobalTheory.CompanionTheory.DiracComb.exists_quot
-
-theorem exists_div (n : ℕ) (f : SchwartzMap (Fin n → ℝ) ℂ)
-    (hf : tsupport (f : (Fin n → ℝ) → ℂ) ⊆ Metric.ball 0 1) (h0 : f 0 = 0) :
-    ∃ g : Fin n → SchwartzMap (Fin n → ℝ) ℂ, (∀ i, HasCompactSupport (g i : (Fin n → ℝ) → ℂ)) ∧
-      ∀ x, f x = ∑ i, (cexp (2 * π * I * x i) - 1) * g i x :=
-  GlobalTheory.CompanionTheory.DiracComb.exists_div n f hf h0
 
 theorem zero_of_ball (n : ℕ) (T : SchwartzMap (Fin n → ℝ) ℂ →L[ℂ] ℂ)
     (hχ : ∀ (i : Fin n) (f g : SchwartzMap (Fin n → ℝ) ℂ), (∀ x, g x = cexp (2 * π * I * x i) * f x) → T g = T f)
@@ -844,7 +821,6 @@ theorem lift_one (Φ : (κ → AF F) → ℂ) : lift v 1 Φ = Φ := funext fun x
   rw [lift_apply]
   exact congrArg Φ (funext fun i => off_add_at v _)
 
-
 variable (v) in
 def psv (ψ : AddChar (AF F) ℂ) : AddChar (Fv F v) ℂ := ψ.compAddMonoidHom (atPlace v).toAddMonoidHom
 
@@ -854,10 +830,8 @@ scoped instance invTwoV : Invertible (2 : Fv F v) :=
   ⟨evFin F v (⅟2), by rw [← map_ofNat (evFin F v) 2, ← map_mul, invOf_mul_self, map_one],
     by rw [← map_ofNat (evFin F v) 2, ← map_mul, mul_invOf_self, map_one]⟩
 
-
 variable (v) in
 def evP (w : (κ → AF F) × (κ → AF F)) : (κ → Fv F v) × (κ → Fv F v) := (fun i => evFin F v (w.1 i), fun i => evFin F v (w.2 i))
-
 
 variable (v) in
 def offP (w : (κ → AF F) × (κ → AF F)) : (κ → AF F) × (κ → AF F) := (fun i => off v (w.1 i), fun i => off v (w.2 i))
@@ -997,7 +971,6 @@ theorem ev_trace (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (z : AE F E) :
     rw [trace_tmul, map_mul, AlgHom.commutes, piW_tmul, piW_tmul, ← t.commutes, trace_cm h, map_add (f := _), mul_add]
     rfl
 
-
 variable (v) in
 def ep : AF F := atPlace v 1
 
@@ -1104,8 +1077,6 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {v : Heig
 
 theorem cont_at : Continuous (atPlace (F := F) v) := continuous_const.prodMk (continuous_singleFin v)
 
-
-
 open Classical in
 theorem exists_bump : ∃ f : SInf F κ, HasCompactSupport f ∧ f 0 = 1 := by
   let b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -1144,7 +1115,6 @@ theorem sub_mem {n d : ℕ} (γ : GL (Fin n) (Fv F v)) {f : Matrix (Fin n) (Fin 
       continuous_toFun := continuous_const.matrix_mul continuous_id
       continuous_invFun := continuous_const.matrix_mul continuous_id }
   exact ⟨hf.1.comp_continuous h.continuous, hf.2.comp_homeomorph h⟩
-
 
 end Gen
 

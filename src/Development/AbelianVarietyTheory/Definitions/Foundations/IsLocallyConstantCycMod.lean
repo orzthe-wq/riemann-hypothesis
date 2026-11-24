@@ -39,6 +39,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ContinuousFixingSubgroupEquiv
 
 @[expose] public section
 
@@ -103,22 +104,9 @@ theorem map_cycMod_succ (r : ℕ) (s : G ℚ Ω) :
   simp only [cycMod, MonoidHom.comp_apply, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]
   rw [← RingHom.comp_apply, PadicInt.zmod_cast_comp_toZModPow _ _ (Nat.le_succ r)]
 
-private lemma continuous_toZModPow_foundations {l : ℕ} [Fact l.Prime] (r : ℕ) :
-    Continuous (PadicInt.toZModPow (p := l) r) := by
-  rw [continuous_discrete_rng]
-  intro b
-  rw [Metric.isOpen_iff]
-  intro x hx
-  refine ⟨(l : ℝ) ^ (-(r : ℤ)), zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _, fun y hy => ?_⟩
-  simp only [Set.mem_preimage, Set.mem_singleton_iff] at hx ⊢
-  rw [← hx, ← sub_eq_zero, ← map_sub, ← RingHom.mem_ker, PadicInt.ker_toZModPow,
-    ← PadicInt.norm_le_pow_iff_mem_span_pow]
-  rw [Metric.mem_ball, dist_eq_norm] at hy
-  exact hy.le
-
 theorem isLocallyConstant_cycMod [IsAlgClosure ℚ Ω] (r : ℕ) : IsLocallyConstant (cycMod ℚ Ω l r) := by
   rw [IsLocallyConstant.iff_continuous]
-  exact (Units.continuous_map (continuous_toZModPow_foundations (l := l) r)).comp (continuous_cycZ ℚ Ω l)
+  exact (Units.continuous_map (_root_.GlobalTheory.Cyc.TwistLift.continuous_toZModPow (l := l) r)).comp (continuous_cycZ ℚ Ω l)
 
 
 open Classical in

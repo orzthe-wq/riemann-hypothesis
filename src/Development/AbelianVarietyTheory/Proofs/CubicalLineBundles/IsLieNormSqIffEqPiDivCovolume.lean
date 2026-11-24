@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Statements.PrincipalLattices.LogHermFormOfUnitDiscriminant
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HermFormPrincipalDimOne
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HolomorphicUniformisationTangentUnimodularRiemanStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.HolomorphicUniformizationTangentUnimodularRiemann
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -52,7 +53,7 @@ theorem isLieNormSq_iff_eq_pi_div_covolume :
   have key : ∀ r, IsLieNormSq P v s r → 0 < r ∧ r = Real.pi / |(L.ω₁ * starRingEnd ℂ L.ω₂).im| := by
     rintro r ⟨P', φ, v', u, Hm, χ, w, hP, hv', hA, hd, rfl⟩
     obtain ⟨hw, hL⟩ := hΛ P' φ v' u w hP hv' hd
-    obtain ⟨Ef, hEf, hbij⟩ := (GlobalTheory.T.holomorphicUniformisation_tangent_unimodular_riemannForm hU P' u).2.2 Hm χ hA
+    obtain ⟨Ef, hEf, hbij⟩ := (_root_.GlobalTheory.AnyUnif.tangent_and_unimodular hU P' u).2.2 Hm χ hA
     have hpos : 0 < (hermForm Hm w w).re := hA.2.1 w hw
     have e := hermForm_principal_dim_one P'.g u.Λ w L Hm Ef (hP.1.trans hg) hw hL hA.1 hpos hEf hbij 1 1
     refine ⟨mul_pos Real.pi_pos hpos, ?_⟩

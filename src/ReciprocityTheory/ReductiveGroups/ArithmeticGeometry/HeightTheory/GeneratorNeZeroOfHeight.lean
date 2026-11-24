@@ -2,54 +2,8 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HeightIntegralEstimates
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.HtDefs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.NormByPlaces
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.UniformizerOfResidueIndep
 
@@ -59,18 +13,8 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 
 open NumberField
 
-theorem ratio_eq_of_eq_smul {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {f g : V} {a : Ω}
-    (hg : g ≠ 0) (h : f = a • g) : ratio f g = a := by
-  unfold ratio
-  have hex : ∃ a' : Ω, f = a' • g := ⟨a, h⟩
-  rw [dite_eq_left hex]
-  have hs : a • g = hex.choose • g := by
-    rw [← h]
-    exact hex.choose_spec
-  exact (smul_left_injective Ω hg hs).symm
-
 theorem ratio_self_height {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {f : V}
-    (hf : f ≠ 0) : ratio (Ω := Ω) f f = 1 := ratio_eq_of_eq_smul hf (one_smul Ω f).symm
+    (hf : f ≠ 0) : ratio (Ω := Ω) f f = 1 := _root_.ReciprocityTheory.ChartRestriction.G.T0.ValuationResidueLemmas.ratio_eq hf (one_smul Ω f).symm
 
 theorem untopD_nonneg {x : WithTop ℤ} (hx : 0 ≤ x) : 0 ≤ WithTop.untopD 0 x := by
   induction x with
@@ -96,7 +40,7 @@ theorem eq_ratio_smul_on_line {hd : d.AxH 𝒜} {c : ι} {G : WT} {f g : A c} (h
   have hfa : f = a • g := by
     have := congrArg Subtype.val ha
     simpa using this.symm
-  rw [ratio_eq_of_eq_smul hg0 hfa]
+  rw [_root_.ReciprocityTheory.ChartRestriction.G.T0.ValuationResidueLemmas.ratio_eq hg0 hfa]
   exact hfa
 
 theorem ratio_line_expansion (hd : d.AxH 𝒜) (c : ι) (j0 : Fin (d.N + 1)) (hj0 : d.w j0 c ≠ 0) :
@@ -109,7 +53,7 @@ theorem ratio_line_expansion (hd : d.AxH 𝒜) (c : ι) (j0 : Fin (d.N + 1)) (hj
     intro j
     have h1 := eq_ratio_smul_on_line d (hd := hd) (hd.w_mem j c) (hd.w_mem j0 c) hj0
     have h2 := eq_ratio_smul_on_line d (hd := hd) (hd.w_mem j0 c) (hd.w_mem (d.jc c) c) hjc
-    apply ratio_eq_of_eq_smul hjc
+    apply _root_.ReciprocityTheory.ChartRestriction.G.T0.ValuationResidueLemmas.ratio_eq hjc
     calc d.w j c = ratio (Ω := Ω c) (d.w j c) (d.w j0 c) • d.w j0 c := h1
       _ = ratio (Ω := Ω c) (d.w j c) (d.w j0 c) • (ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c) • d.w (d.jc c) c) := by
           rw [← h2]
@@ -136,7 +80,7 @@ theorem lineRatio_ne_zero (hd : d.AxH 𝒜) (c : ι) : d.rationalBaseRow c ≠ 0
   have hinj := IsFractionRing.injective (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N)
   rw [← map_zero (algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N))] at h0
   have h1 := congrArg (AddMonoidAlgebra.coeff · (Finsupp.single (Sum.inl ()) 1)) (hinj h0)
-  simp [MvPolynomial.coeff_X', MvPolynomial.coeff_sum, MvPolynomial.coeff_X_mul', Finsupp.single_eq_single_iff] at h1
+  simp [MvPolynomial.coeff_X', MvPolynomial.coeff_X_mul'] at h1
 
 end Data
 
@@ -206,7 +150,7 @@ theorem good_valuation_balance (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (p : Ideal 
   have hprod : ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c) * ratio (Ω := Ω c) (d.w (d.jc c) c) (d.w j0 c) = 1 := by
     have e : d.w j0 c = (ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c) * ratio (Ω := Ω c) (d.w (d.jc c) c) (d.w j0 c)) • d.w j0 c := by
       rw [← smul_smul, ← hl2, ← hl1]
-    rw [← ratio_eq_of_eq_smul (Ω := Ω c) hj0 e, ratio_self_height (Ω := Ω c) hj0]
+    rw [← _root_.ReciprocityTheory.ChartRestriction.G.T0.ValuationResidueLemmas.ratio_eq (Ω := Ω c) hj0 e, ratio_self_height (Ω := Ω c) hj0]
   have hr1ne : ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c) ≠ 0 := fun h0 => by rw [h0, zero_smul] at hl1; exact hj0 hl1
   have hr2ne : ratio (Ω := Ω c) (d.w (d.jc c) c) (d.w j0 c) ≠ 0 := fun h0 => by rw [h0, zero_smul] at hl2; exact hjc hl2
   obtain ⟨m1, hm1⟩ := WithTop.ne_top_iff_exists.1

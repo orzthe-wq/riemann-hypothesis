@@ -151,7 +151,7 @@ theorem cong_factor (e : a ⊕ b ≃ n) (γ : (ValueGroupWithZero k)ˣ) (hγ : �
     · simpa [M, h] using hg i j
   obtain ⟨p, -, hp⟩ := exists_mem_KOne (M := M) fun i j => (hM i j).trans_le hγ
   have hpK : p ∈ cong (n := n) γ hγ := fun i j => hp ▸ hM i j
-  have hpP : p ∈ parab k (two e) := (mem_parab_two k).2 fun j i => by simp [hp, M, one_apply]
+  have hpP : p ∈ parab k (two e) := (mem_parab_two k).2 fun j i => by simp [hp, M]
   let q : parab k (two e) := ⟨_, leviEmb_mem_parab k (two e) (leviProj k (two e) ⟨p, hpP⟩)⟩
   have hqK : q.1 ∈ cong (n := n) γ hγ := by
     intro i j
@@ -202,7 +202,7 @@ theorem cong_contract (e : a ⊕ b ≃ n) (γ : (ValueGroupWithZero k)ˣ) (hγ :
   obtain ⟨j, rfl⟩ := e.surjective j
   rcases i with i | i <;> rcases j with j | j
   · simpa [mul_comm, mul_left_comm] using h1
-  · simp [(mem_parabLower_two k).1 hc' i j, one_apply]
+  · simp [(mem_parabLower_two k).1 hc' i j]
   · simp only [Matrix.one_apply, EmbeddingLike.apply_eq_iff_eq, reduceCtorEq, if_false, sub_zero] at h1 ⊢
     simpa using (mul_le_of_le_one_right' hz).trans_lt h1
   · simpa using h1

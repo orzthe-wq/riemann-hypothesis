@@ -46,4 +46,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PairLift
 
 theorem _root_.GlobalTheory.T.lowerTowerLiftsVanish_of_vanish_on_fock : ∀ (D : D7) (X : ProvA), Inputs D X → LowFock D X → LowAll D X := by
-  first | exact @GlobalTheory.PairLift.lowAll_of_lowFock | exact GlobalTheory.PairLift.lowAll_of_lowFock | (intros; apply GlobalTheory.PairLift.lowAll_of_lowFock <;> assumption)
+  first | exact @GlobalTheory.PairLift.lowAll_of_lowFock

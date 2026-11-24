@@ -1,13 +1,15 @@
 module
 
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
+public import Mathlib.Analysis.Matrix.Order
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
+public import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+public import Development.WeilBound.ThetaLifts.LatticeBasics.SchwartzFunctionalEqZeroOfDense
+public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.NormIteratedFDerivCexpCompLe
 public import Development.WeilBound.ThetaLifts.LatticeBasics.SchToPol
-public import Development.WeilBound.ThetaLifts.LatticeBasics.DenseM
 public import Development.WeilBound.ThetaLifts.LatticeBasics.ExistsRealStructure
-import Development.AutomorphicSpectrum.Proofs.TwistedProofs.EqZeroOfPiInf
 public import Development.WeilBound.ThetaLifts.ConeHypotheses.PureEqPureA
-public import Development.WeilBound.ThetaLifts.LatticeBasics.DenseG
-import Development.WeilBound.ThetaLifts.LatticeBasics.IsCompactIntV
-import Development.WeilBound.ThetaLifts.LatticeBasics.SchwartzFunctionalEqZeroOfDense
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -22,7 +24,6 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -32,7 +33,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,10 +46,299 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
+import Mathlib.Analysis.InnerProductSpace.EuclideanDist
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ReduceModChar
+import Development.AutomorphicSpectrum.Proofs.TwistedProofs.EqZeroOfPiInf
+import Development.WeilBound.ThetaLifts.LatticeBasics.IsCompactIntV
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.ThetaLifts.LatticeBasics.DenseM, Development.WeilBound.ThetaLifts.LatticeBasics.DenseG, Development.WeilBound.ThetaLifts.LatticeBasics.ExistsIsGauss
+
+-- ===== clump member: Development.WeilBound.ThetaLifts.LatticeBasics.DenseM =====
+-- clump-header: {"m": "Development.WeilBound.ThetaLifts.LatticeBasics.DenseM", "h": "module\n\npublic import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Matrix.Order\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GlobalTheory.ThK.Dbl.Dense
+
+open Matrix GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
+open scoped ComplexOrder Kronecker
+
+variable {n d : ℕ}
+
+def hf (A : Matrix (Fin n) (Fin n) ℂ) (C : Matrix (Fin d) (Fin d) ℂ) (x y : Matrix (Fin n) (Fin d) ℂ) : ℂ :=
+  trace (xᵀ * A * y.map star * Cᵀ)
+
+def cs (θ : Matrix (Fin n) (Fin n) ℂ) (θ' : Matrix (Fin d) (Fin d) ℂ) :
+    Matrix (Fin n) (Fin d) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin d) ℂ where
+  toFun x := Complex.I • (θ * x * θ'ᵀ)
+  map_add' x y := by rw [Matrix.mul_add, Matrix.add_mul, smul_add]
+  map_smul' t x := by
+    simp only [Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply]
+    rw [smul_comm]
+
+theorem map_star_mul {a b c : ℕ} (x : Matrix (Fin a) (Fin b) ℂ) (y : Matrix (Fin b) (Fin c) ℂ) :
+    (x * y).map star = x.map star * y.map star := by
+  ext i j
+  simp only [Matrix.map_apply, Matrix.mul_apply, star_sum, star_mul']
+
+private theorem map_star_smul_matrix {a b : ℕ} (c : ℂ) (M : Matrix (Fin a) (Fin b) ℂ) :
+    (c • M).map star = star c • M.map star := by
+  ext i j
+  simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, star_mul']
+
+theorem star_cs (θ : Matrix (Fin n) (Fin n) ℂ) (θ' : Matrix (Fin d) (Fin d) ℂ) (x) :
+    (cs θ θ' x).map star = (-Complex.I) • (θ.map star * x.map star * (θ'.map star)ᵀ) := by
+  rw [show cs θ θ' x = Complex.I • (θ * x * θ'ᵀ) from rfl, map_star_smul_matrix, map_star_mul, map_star_mul,
+    Matrix.transpose_map, show star Complex.I = -Complex.I from Complex.conj_I]
+
+theorem posDef_cartan {M θ : Matrix (Fin n) (Fin n) ℂ} (hM : Mᴴ = M) (h : IsCartan M θ) : (M * θ.map star).PosDef := by
+  obtain ⟨h1, h2, h3⟩ := h
+  have hbar : θ.map star * θ.map star = 1 := by
+    rw [← map_star_mul, h1, Matrix.map_one _ (by simp) (by simp)]
+  have hcomm : θᵀ * M = M * θ.map star := by
+    calc θᵀ * M = θᵀ * M * (θ.map star * θ.map star) := by rw [hbar, Matrix.mul_one]
+      _ = (θᵀ * M * θ.map star) * θ.map star := by simp only [Matrix.mul_assoc]
+      _ = M * θ.map star := by rw [h2]
+  have hH : (M * θ.map star).IsHermitian := by
+    unfold Matrix.IsHermitian
+    rw [Matrix.conjTranspose_mul, hM, ← hcomm]
+    congr 1
+    ext i j
+    simp [Matrix.conjTranspose_apply]
+  refine Matrix.PosDef.of_dotProduct_mulVec_pos hH fun x hx => ?_
+  have hy : θ *ᵥ star x ≠ 0 := by
+    intro h0
+    apply hx
+    have h5 : θ *ᵥ (θ *ᵥ star x) = 0 := by rw [h0, Matrix.mulVec_zero]
+    rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] at h5
+    simpa using h5
+  have hs : star (θ *ᵥ star x) = θ.map star *ᵥ x := by
+    ext i
+    simp [Matrix.mulVec, dotProduct, star_sum, star_mul']
+  have heq : (θ *ᵥ (θ *ᵥ star x)) ⬝ᵥ M *ᵥ star (θ *ᵥ star x) = star x ⬝ᵥ (M * θ.map star) *ᵥ x := by
+    rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, hs, Matrix.mulVec_mulVec]
+  have hpos := h3 _ hy
+  rw [Complex.pos_iff]
+  refine ⟨by rw [← heq]; exact hpos, ?_⟩
+  have him := hH.im_star_dotProduct_mulVec_self x
+  simp only [RCLike.im_to_complex] at him
+  exact him.symm
+
+variable {A θ : Matrix (Fin n) (Fin n) ℂ} {C θ' : Matrix (Fin d) (Fin d) ℂ}
+
+theorem hf_cs_cs (h : IsCartan A θ) (h' : IsCartan (Complex.I • C) θ') (x y) :
+    hf A C (cs θ θ' x) (cs θ θ' y) = hf A C x y := by
+  have e : θ'ᵀ * C * θ'.map star = C := by
+    have := h'.2.1
+    rw [Matrix.mul_smul, Matrix.smul_mul] at this
+    exact smul_right_injective _ Complex.I_ne_zero this
+  have e' : (θ'.map star)ᵀ * Cᵀ * θ' = Cᵀ := by
+    simpa only [transpose_mul, transpose_transpose, Matrix.mul_assoc] using congrArg transpose e
+  rw [hf, star_cs, hf]
+  simp only [cs, LinearMap.coe_mk, AddHom.coe_mk, transpose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, trace_smul,
+    transpose_mul, transpose_transpose]
+  rw [neg_mul, Complex.I_mul_I, neg_neg, one_smul]
+  conv_rhs => rw [← h.2.1, ← e']
+  simp only [Matrix.mul_assoc]
+  rw [trace_mul_comm]
+  simp only [Matrix.mul_assoc]
+
+theorem cs_cs (h : IsCartan A θ) (h' : IsCartan (Complex.I • C) θ') (x) : cs θ θ' (cs θ θ' x) = -x := by
+  show Complex.I • (θ * (Complex.I • (θ * x * θ'ᵀ)) * θ'ᵀ) = -x
+  simp only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Complex.I_mul_I]
+  have e1 : θ * (θ * x * θ'ᵀ) * θ'ᵀ = x := by
+    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h.1, Matrix.one_mul, Matrix.mul_assoc,
+      ← Matrix.transpose_mul, h'.1, Matrix.transpose_one, Matrix.mul_one]
+  rw [e1, neg_one_smul]
+
+private theorem hf_neg_right_lattice_basics (u v : Matrix (Fin n) (Fin d) ℂ) : hf A C u (-v) = -hf A C u v := by
+  unfold hf
+  rw [Matrix.map_neg _ star_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.trace_neg]
+
+theorem hf_cs (h : IsCartan A θ) (h' : IsCartan (Complex.I • C) θ') (x y) :
+    hf A C (cs θ θ' x) y = -hf A C x (cs θ θ' y) := by
+  calc hf A C (cs θ θ' x) y = hf A C (cs θ θ' x) (cs θ θ' (cs θ θ' (-y))) := by rw [cs_cs h h', neg_neg]
+    _ = hf A C x (cs θ θ' (-y)) := hf_cs_cs h h' x _
+    _ = -hf A C x (cs θ θ' y) := by rw [map_neg, hf_neg_right_lattice_basics]
+
+private theorem trace_transpose_mul_eq_star_dotProduct (x W : Matrix (Fin n) (Fin d) ℂ) :
+    trace (xᵀ * W) = star (fun p : Fin n × Fin d => x.map star p.1 p.2) ⬝ᵥ (fun p => W p.1 p.2) := by
+  simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, dotProduct,
+    Fintype.sum_prod_type, Pi.star_apply, Matrix.map_apply, star_star]
+  exact Finset.sum_comm
+
+private theorem kroneckerMap_mul_mulVec_eq_mul_mul_transpose (P : Matrix (Fin n) (Fin n) ℂ) (Q : Matrix (Fin d) (Fin d) ℂ)
+    (Z : Matrix (Fin n) (Fin d) ℂ) :
+    Matrix.kroneckerMap (fun a b => a * b) P Q *ᵥ (fun p : Fin n × Fin d => Z p.1 p.2) =
+      fun p => (P * Z * Qᵀ) p.1 p.2 := by
+  funext p
+  obtain ⟨i, a⟩ := p
+  simp only [Matrix.mulVec, dotProduct, Matrix.kroneckerMap_apply, Fintype.sum_prod_type, Matrix.mul_apply,
+    Matrix.transpose_apply, Finset.sum_mul]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun j _ => ?_
+  ring
+
+theorem hf_neg (hA : Aᴴ = A) (hC : (Complex.I • C)ᴴ = Complex.I • C) (h : IsCartan A θ) (h' : IsCartan (Complex.I • C) θ')
+    {x : Matrix (Fin n) (Fin d) ℂ} (hx : x ≠ 0) : (hf A C x (cs θ θ' x)).re < 0 := by
+  have hK := (posDef_cartan hA h).kronecker (posDef_cartan hC h')
+  have key1 : hf A C x (cs θ θ' x) =
+      -trace (xᵀ * (A * θ.map star * x.map star * (Complex.I • C * θ'.map star)ᵀ)) := by
+    unfold hf
+    rw [star_cs]
+    simp only [Matrix.transpose_mul, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul,
+      Matrix.trace_smul, Matrix.mul_assoc, neg_smul, Matrix.trace_neg, Matrix.mul_neg, Matrix.neg_mul]
+  have hz : (fun p : Fin n × Fin d => x.map star p.1 p.2) ≠ 0 := by
+    intro h0
+    apply hx
+    ext i a
+    have := congrFun h0 (i, a)
+    simpa using this
+  have hpos := hK.re_dotProduct_pos hz
+  rw [key1, trace_transpose_mul_eq_star_dotProduct, ← kroneckerMap_mul_mulVec_eq_mul_mul_transpose (A * θ.map star) (Complex.I • C * θ'.map star) (x.map star)]
+  simp only [RCLike.re_to_complex] at hpos
+  rw [Complex.neg_re]
+  linarith
+
+end GlobalTheory.ThK.Dbl.Dense
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.ThetaLifts.LatticeBasics.DenseM =====
+
+-- ===== clump member: Development.WeilBound.ThetaLifts.LatticeBasics.DenseG =====
+-- clump-header: {"m": "Development.WeilBound.ThetaLifts.LatticeBasics.DenseG", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Distribution.SchwartzSpace.Basic\npublic import Mathlib.Analysis.LocallyConvex.AbsConvexOpen\npublic import Development.WeilBound.ThetaLifts.LatticeBasics.SchwartzFunctionalEqZeroOfDense\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Distribution.SchwartzSpace.Deriv\nimport Mathlib.Analysis.InnerProductSpace.EuclideanDist\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Development.AutomorphicSpectrum.Proofs.MembershipProofs.NormIteratedFDerivCexpCompLe\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace GlobalTheory.ThK.Dbl.Dense
+
+variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
+
+theorem exists_gauss (Q Q' : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hpos : ∀ x, x ≠ 0 → 0 < Q x x) :
+    ∃ f : SchwartzMap V ℂ, ∀ x, f x = 1 * Complex.exp (-(Q x x : ℂ) - Complex.I * (Q' x x : ℂ)) := by
+  let L : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) ≃L[ℝ] V := (toEuclidean (E := V)).symm
+  obtain ⟨w, hw, hlow⟩ := lower_bound L Q hpos
+  have hq : (fun x => -(Q (L x) (L x) : ℂ) - Complex.I * (Q' (L x) (L x) : ℂ)).HasTemperateGrowth :=
+    (Complex.ofRealCLM.hasTemperateGrowth.comp (quad_tg L Q)).neg.sub
+      ((Function.HasTemperateGrowth.const _).mul (Complex.ofRealCLM.hasTemperateGrowth.comp (quad_tg L Q')))
+  let g := GlobalTheory.CompanionTheory.OM.GaussSch.cexpSchwartz hq hw fun x => by
+    simpa using hlow x
+  refine ⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L.symm g, fun x => ?_⟩
+  change Complex.exp (-(Q (L (L.symm x)) (L (L.symm x)) : ℂ) - Complex.I * (Q' (L (L.symm x)) (L (L.symm x)) : ℂ)) = _
+  rw [L.apply_symm_apply, one_mul]
+
+theorem hasFDerivAt_quad (Q : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hs : ∀ x y, Q x y = Q y x) (x a : V) :
+    HasDerivAt (fun t : ℝ => (Q (x + t • a) (x + t • a) : ℂ)) (2 * Q x a) 0 := by
+  have e : (fun t : ℝ => Q (x + t • a) (x + t • a)) = fun t => Q x x + t * (2 * Q x a) + t * (t * Q a a) := by
+    funext t
+    simp only [map_add (f := _), map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hs a x]
+    ring
+  have h : HasDerivAt (fun t : ℝ => Q (x + t • a) (x + t • a)) (2 * Q x a) 0 := by
+    rw [e]
+    have h1 := ((hasDerivAt_id (0 : ℝ)).mul_const (2 * Q x a)).const_add (Q x x)
+    have h2 := (hasDerivAt_id (0 : ℝ)).mul ((hasDerivAt_id (0 : ℝ)).mul_const (Q a a))
+    exact (h1.add h2).congr_deriv (by simp)
+  simpa using h.ofReal_comp
+
+theorem fderiv_gauss {Q Q' : V →ₗ[ℝ] V →ₗ[ℝ] ℝ} (hs : ∀ x y, Q x y = Q y x) (hs' : ∀ x y, Q' x y = Q' y x)
+    {f : SchwartzMap V ℂ} (hf : ∀ x, f x = 1 * Complex.exp (-(Q x x : ℂ) - Complex.I * (Q' x x : ℂ))) (x a : V) :
+    fderiv ℝ f x a = -(2 * Q x a + Complex.I * (2 * Q' x a)) * f x := by
+  have h0 : HasDerivAt (fun t : ℝ => x + t • a) a 0 := by
+    simpa using ((hasDerivAt_id (0 : ℝ)).smul_const a).const_add x
+  have h1 : HasDerivAt (fun t : ℝ => f (x + t • a)) (fderiv ℝ f x a) 0 := by
+    have := (f.hasFDerivAt (x + (0 : ℝ) • a)).comp_hasDerivAt (0 : ℝ) h0
+    simpa [Function.comp_def] using this
+  have h2 := ((hasFDerivAt_quad Q hs x a).neg.sub ((hasFDerivAt_quad Q' hs' x a).const_mul Complex.I)).cexp
+  simp only [hf, one_mul] at h1 ⊢
+  rw [h1.unique h2]
+  simp only [Pi.sub_apply, Pi.neg_apply, zero_smul, add_zero]
+  ring
+
+def om (T : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (p q : V × V) : ℝ := T p.1 q.2 - T q.1 p.2
+
+theorem exists_vacuum (T : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hT : ∀ x y, T x y = T y x) (J : V × V →ₗ[ℝ] V × V)
+    (h1 : ∀ p q, om T (J p) q = -om T p (J q)) (h2 : ∀ p q, om T (J p) (J q) = om T p q)
+    (h3 : ∀ p, p ≠ 0 → 0 < om T p (J p)) :
+    ∃ (Q Q' : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (f : SchwartzMap V ℂ), (∀ x, x ≠ 0 → 0 < Q x x) ∧
+      (∀ x, f x = 1 * Complex.exp (-(Q x x : ℂ) - Complex.I * (Q' x x : ℂ))) ∧
+      ∀ p x, fderiv ℝ f x (J p).1 + (-(2 * Real.pi * Complex.I) * (T x (J p).2 : ℂ)) * f x =
+        Complex.I * (fderiv ℝ f x p.1 + (-(2 * Real.pi * Complex.I) * (T x p.2 : ℂ)) * f x) := by
+  let K : V →ₗ[ℝ] V := LinearMap.fst ℝ V V ∘ₗ J ∘ₗ LinearMap.inr ℝ V V
+  have hK : ∀ b, b ≠ 0 → T (K b) b < 0 := fun b hb => by
+    have := h3 (0, b) fun h => hb (congrArg Prod.snd h)
+    simpa [om, K] using this
+  have inj : Function.Injective K := (injective_iff_map_eq_zero K).2 fun b h => by
+    by_contra hb
+    simpa [h] using hK b hb
+  let e := LinearEquiv.ofInjectiveEndo K inj
+  let c : V →ₗ[ℝ] V := -e.symm.toLinearMap
+  have hc : ∀ y, (J (0, c y)).1 = -y := fun y => by
+    change K (-e.symm y) = _
+    rw [map_neg]
+    exact congrArg _ (e.apply_symm_apply y)
+  let c' : V →ₗ[ℝ] V := LinearMap.snd ℝ V V ∘ₗ J ∘ₗ LinearMap.inr ℝ V V ∘ₗ c
+  have hc' : ∀ y, (J (0, c y)).2 = c' y := fun _ => rfl
+  let Q : V →ₗ[ℝ] V →ₗ[ℝ] ℝ := Real.pi • (T ∘ₗ c)
+  let Q' : V →ₗ[ℝ] V →ₗ[ℝ] ℝ := Real.pi • (T ∘ₗ c')
+  have hQ : ∀ x y, Q x y = Real.pi * T y (c x) := fun x y => by rw [hT]; rfl
+  have hQ' : ∀ x y, Q' x y = Real.pi * T y (c' x) := fun x y => by rw [hT]; rfl
+  have s1 : ∀ x y, Q x y = Q y x := fun x y => by
+    have := h1 (0, c x) (0, c y)
+    simp only [om, hc, hc', map_neg, map_zero, LinearMap.neg_apply, LinearMap.zero_apply] at this
+    rw [hQ, hQ]
+    congr 1
+    linarith
+  have s2 : ∀ x y, Q' x y = Q' y x := fun x y => by
+    have := h2 (0, c x) (0, c y)
+    simp only [om, hc, hc', map_neg, map_zero, LinearMap.neg_apply, LinearMap.zero_apply] at this
+    rw [hQ', hQ']
+    congr 1
+    linarith
+  have pos : ∀ x, x ≠ 0 → 0 < Q x x := fun x hx => by
+    have := h3 (0, c x) fun h => hx (by
+      have := hc x
+      rw [h, map_zero] at this
+      exact neg_eq_zero.1 this.symm)
+    simp only [om, hc, hc', map_neg, map_zero, LinearMap.neg_apply, LinearMap.zero_apply] at this
+    rw [hQ]
+    exact mul_pos Real.pi_pos (by linarith)
+  obtain ⟨f, hf⟩ := exists_gauss Q Q' pos
+  refine ⟨Q, Q', f, pos, hf, fun p x => ?_⟩
+  have a1 := h1 p (0, c x)
+  have a2 := h2 p (0, c x)
+  simp only [om, hc, hc', map_neg, map_zero, LinearMap.neg_apply, LinearMap.zero_apply, sub_zero] at a1 a2
+  rw [fderiv_gauss s1 s2 hf, fderiv_gauss s1 s2 hf, hQ, hQ, hQ', hQ', a1,
+    show T (J p).1 (c' x) = T p.1 (c x) - T x (J p).2 by linarith]
+  push_cast
+  linear_combination ((2 * Real.pi) * f x * (T p.1 (c' x) + T x p.2 : ℂ)) * Complex.I_mul_I
+
+end GlobalTheory.ThK.Dbl.Dense
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.ThetaLifts.LatticeBasics.DenseG =====
+
+-- ===== clump member: Development.WeilBound.ThetaLifts.LatticeBasics.ExistsIsGauss =====
+-- clump-header: {"m": "Development.WeilBound.ThetaLifts.LatticeBasics.ExistsIsGauss", "h": "module\n\npublic import Development.WeilBound.ThetaLifts.LatticeBasics.SchToPol\npublic import Development.WeilBound.ThetaLifts.LatticeBasics.DenseM\npublic import Development.WeilBound.ThetaLifts.LatticeBasics.ExistsRealStructure\nimport Development.AutomorphicSpectrum.Proofs.TwistedProofs.EqZeroOfPiInf\npublic import Development.WeilBound.ThetaLifts.ConeHypotheses.PureEqPureA\npublic import Development.WeilBound.ThetaLifts.LatticeBasics.DenseG\nimport Development.WeilBound.ThetaLifts.LatticeBasics.IsCompactIntV\nimport Development.WeilBound.ThetaLifts.LatticeBasics.SchwartzFunctionalEqZeroOfDense\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -73,7 +363,7 @@ theorem trace_evI (hF : IsTotallyReal F) (a : AF F) : Algebra.trace ℝ (mixedEm
     Algebra.trace_eq_matrix_trace (Pi.basisFun ℝ _), Matrix.trace]
   refine Fintype.sum_equiv (Equiv.subtypeUnivEquiv IsTotallyReal.isReal) _ _ fun w => ?_
   simp only [Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, Pi.basisFun_repr, Pi.basisFun_apply, Pi.mul_apply,
-    Pi.single_eq_same, mul_one, Equiv.subtypeUnivEquiv_apply]
+    Pi.single_eq_same, mul_one]
   exact congrArg Complex.re (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply w.2 (a.1 w.1))
 
 theorem piInf_cA (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) :
@@ -243,3 +533,6 @@ theorem schToPol_of (hW : WeilConv) : SchToPol := by
 end GlobalTheory.ThK.Dbl
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.ThetaLifts.LatticeBasics.ExistsIsGauss =====

@@ -100,7 +100,7 @@ theorem conj_back {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) {h h' : B.Mat k r
   ext v
   have k1 := DFunLike.congr_fun e1 (Y (Bs.π' h' (Bs.π' h'⁻¹ v)))
   have k2 := DFunLike.congr_fun e2 v
-  simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply] at k1 k2 ⊢
+  simp only [ContinuousLinearMap.comp_apply, one_apply_eq_self] at k1 k2 ⊢
   rw [k1, k2]
 
 theorem conj_fwd {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) {h h' : B.Mat k r} (hh : h ∈ UWset k r Bs.z)
@@ -115,7 +115,7 @@ theorem conj_fwd {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) {h h' : B.Mat k r}
   ext v
   have k1 := DFunLike.congr_fun e1 (Y (Bs.π' h'⁻¹ (Bs.π' h' v)))
   have k2 := DFunLike.congr_fun e2 v
-  simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply] at k1 k2 ⊢
+  simp only [ContinuousLinearMap.comp_apply, one_apply_eq_self] at k1 k2 ⊢
   rw [k2] at k1
   rw [k2, k1]
 

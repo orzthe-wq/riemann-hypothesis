@@ -65,7 +65,7 @@ lemma mulVec_single' (a b : Fin (2 * r + k + 1)) (c : ℂ) (z : Fin (2 * r + k +
   by_cases h : i = a
   · subst h
     simp [Matrix.mulVec, dotProduct, Matrix.single_apply]
-  · simp [Matrix.mulVec, dotProduct, Matrix.single_apply, h, Ne.symm h]
+  · simp [Matrix.mulVec, dotProduct, h, Ne.symm h]
 
 lemma ell_single_zero (z : Fin (2 * r + k + 1) → ℂ) (a b : Fin (2 * r + k + 1)) (c : ℂ)
     (hb : r ≤ b.val) (hzb : z b = 0) : ell k r z (Matrix.single a b c) = 0 := by
@@ -125,7 +125,7 @@ private lemma hpk_eq_lemma (i j : Fin (2 * r + k + 1)) :
   have hj := j.isLt
   unfold Hpk WeylGroupFacts.sgn
   simp only [Fin.ext_iff, tau_val_lemma]
-  split_ifs <;> first | rfl | omega | norm_num
+  split_ifs <;> first | rfl | omega
 
 private lemma hpk_col_lemma (x y : Fin (2 * r + k + 1)) :
     Hpk k r x y = if x = WeylGroupFacts.tau k r y then WeylGroupFacts.sgn k r y else 0 := by
@@ -145,7 +145,7 @@ private lemma sgn_sq_lemma (i : Fin (2 * r + k + 1)) : WeylGroupFacts.sgn k r i 
 private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
   ext i j
   rw [Matrix.mul_apply, Matrix.one_apply]
-  simp only [hpk_eq_lemma, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, tau_tau_lemma, sgn_tau_lemma]
+  simp only [hpk_eq_lemma, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, tau_tau_lemma, sgn_tau_lemma]
   by_cases h : i = j
   · subst h
     simp [sgn_sq_lemma]
@@ -164,7 +164,7 @@ private lemma single_ct_lemma (a b : Fin (2 * r + k + 1)) (c : ℂ) :
 private lemma conj_single_lemma (A B : Mx k r) (a b : Fin (2 * r + k + 1)) (c : ℂ)
     (p q : Fin (2 * r + k + 1)) : (A * Matrix.single a b c * B) p q = A p a * c * B b q := by
   simp only [Matrix.mul_apply, Matrix.single_apply, ite_and, mul_ite, mul_zero, ite_mul, zero_mul,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 lemma dag_single (a b : Fin (2 * r + k + 1)) (c : ℂ) :
     dag k r (Matrix.single a b c) = Matrix.single (WeylGroupFacts.tau k r b) (WeylGroupFacts.tau k r a)
@@ -245,7 +245,7 @@ lemma esI_ge (l : Fin r) : r ≤ (esI k r l).val := by
 lemma herm_bvec_left (x : Fin (2 * r + k + 1) → ℂ) (v : Fin (2 * r + k + 1)) :
     herm (Hpk k r) (bvec v) x = star (x (WeylGroupFacts.tau k r v)) * WeylGroupFacts.sgn k r v := by
   unfold herm
-  simp only [dotProduct, Matrix.mulVec, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true,
+  simp only [dotProduct, Matrix.mulVec, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true,
     hpk_col_lemma, Pi.star_apply]
 
 lemma val_ev (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (l : Fin r) (j : Fin (mdim k r l.succ)) :

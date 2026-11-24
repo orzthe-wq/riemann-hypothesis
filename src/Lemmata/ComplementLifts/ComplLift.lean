@@ -1,50 +1,9 @@
 module
 
 public import Mathlib.RingTheory.Finiteness.Defs
-import Mathlib.Algebra.Module.StablyFree.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Algebra.Module.Projective
 public import Mathlib.LinearAlgebra.Projection
+import Mathlib.LinearAlgebra.FreeModule.PID
 
 @[expose] public section
 
@@ -52,73 +11,38 @@ universe u_1 u_2
 
 namespace Bl.ComplementLifts
 
-private lemma compl_lift {R : Type*} {M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
-    (N N' : Submodule R M) (hN : IsCompl N N') (A B : Submodule R N) (hAB : IsCompl A B) :
-    IsCompl (A.map N.subtype) (B.map N.subtype ⊔ N') := by
-  constructor
-  · rw [Submodule.disjoint_def]
-    intro x hxA hxB
-    obtain ⟨y, hy, n', hn', rfl⟩ := Submodule.mem_sup.1 hxB
-    obtain ⟨a, ha, hax⟩ := Submodule.mem_map.1 hxA
-    obtain ⟨b, hb, rfl⟩ := Submodule.mem_map.1 hy
-    simp only [Submodule.subtype_apply] at hax ⊢
-    have hn'N : n' ∈ N := by
-      have : n' = (a : M) - (b : M) := by
-        rw [hax]; abel
-      rw [this]; exact N.sub_mem a.2 b.2
-    have hn0 : n' = 0 := (Submodule.disjoint_def.1 hN.disjoint) n' hn'N hn'
-    rw [hn0, add_zero] at hax ⊢
-    have hab : a = b := Subtype.ext hax
-    have h0 : b = 0 := (Submodule.disjoint_def.1 hAB.disjoint) b (hab ▸ ha) hb
-    simp [h0]
-  · rw [codisjoint_iff, ← sup_assoc, ← Submodule.map_sup, hAB.sup_eq_top, Submodule.map_top,
-      Submodule.range_subtype, hN.sup_eq_top]
+variable {R : Type u_1} {M : Type u_2} [inst : CommRing R] [IsDomain R] [IsPrincipalIdealRing R]
+  [inst_3 : AddCommGroup M] [inst_4 : Module R M]
 
-theorem goal1 :
-  ∀ {R : Type u_1} {M : Type u_2} [inst : CommRing.{u_1} R] [IsDomain.{u_1} R] [IsPrincipalIdealRing.{u_1} R]
-  [inst_3 : AddCommGroup.{u_2} M] [inst_4 : Module.{u_1, u_2} R M] (N N' S : Submodule.{u_1, u_2} R M),
-  IsCompl.{u_2} N N' →
-    ∀ [Module.Finite.{u_1, u_2} R (Subtype.{u_2 + 1} fun (x : M) ↦ Membership.mem.{u_2, u_2} N x)],
-      LE.le.{u_2} S N →
-        (∀ (a : R) (x : M),
-            Ne.{u_1 + 1} a 0 →
-              Membership.mem.{u_2, u_2} S (HSMul.hSMul.{u_1, u_2, u_2} a x) → Membership.mem.{u_2, u_2} S x) →
-          Exists.{u_2 + 1} fun (T : Submodule.{u_1, u_2} R M) ↦ IsCompl.{u_2} S T := by
-  intro R M _ _ _ _ _ N N' S hN _ hSN hsat
-  let S' : Submodule R N := S.comap N.subtype
+/-- A saturated submodule contained in a finitely generated direct summand over a PID
+is itself a direct summand. -/
+theorem goal1 (N N' S : Submodule R M) :
+    IsCompl N N' → ∀ [Module.Finite R N], S ≤ N →
+      (∀ (a : R) (x : M), a ≠ 0 → a • x ∈ S → x ∈ S) →
+        ∃ T : Submodule R M, IsCompl S T := by
+  intro hN _ hSN hsat
+  let S' := S.comap N.subtype
   have : Module.IsTorsionFree R (N ⧸ S') := by
     apply Module.IsTorsionFree.of_smul_eq_zero
     intro r q hq
     obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective S' q
-    by_cases hr : r = 0
-    · exact Or.inl hr
-    · right
-      rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at hq
-      rw [Submodule.Quotient.mk_eq_zero]
-      simp only [S', Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul] at hq ⊢
-      exact hsat r x hr hq
-  obtain ⟨h, hh⟩ := LinearMap.exists_rightInverse_of_surjective S'.mkQ (Submodule.range_mkQ S')
-  have hidem : IsIdempotentElem (h ∘ₗ S'.mkQ) :=
-    LinearMap.ext fun x => congrArg h (LinearMap.congr_fun hh (S'.mkQ x))
-  have hker : LinearMap.ker (h ∘ₗ S'.mkQ) = S' := by
-    ext x
-    simp only [LinearMap.mem_ker, LinearMap.comp_apply]
-    constructor
-    · intro hx
-      have := congrArg S'.mkQ hx
-      rw [← LinearMap.comp_apply S'.mkQ h, hh, LinearMap.id_apply, map_zero] at this
-      rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at this
-    · intro hx
-      rw [Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero S').2 hx, map_zero]
-  have hc : IsCompl S' (LinearMap.range (h ∘ₗ S'.mkQ)) := by
-    have := LinearMap.IsIdempotentElem.isCompl hidem
-    rw [hker] at this
-    exact this.symm
-  have hS : S'.map N.subtype = S := by
-    simp only [S', Submodule.map_comap_subtype]
-    exact inf_eq_right.2 hSN
-  refine ⟨(LinearMap.range (h ∘ₗ S'.mkQ)).map N.subtype ⊔ N', ?_⟩
-  have := compl_lift N N' hN S' _ hc
-  rwa [hS] at this
+    refine or_iff_not_imp_left.mpr fun hr => ?_
+    rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero] at hq
+    exact (Submodule.Quotient.mk_eq_zero S').2 (hsat r x hr hq)
+  -- The quotient is finitely generated and torsion-free over a PID, so its quotient map splits.
+  obtain ⟨s, hs⟩ := S'.mkQ.exists_rightInverse_of_surjective (Submodule.range_mkQ S')
+  have hp : IsIdempotentElem (s ∘ₗ S'.mkQ) :=
+    LinearMap.ext fun x => congrArg s (LinearMap.congr_fun hs (S'.mkQ x))
+  have hc : IsCompl S' s.range := by
+    simpa only [LinearMap.ker_comp_of_ker_eq_bot _ (LinearMap.ker_eq_bot_of_inverse hs),
+      Submodule.ker_mkQ, LinearMap.range_comp_of_range_eq_top s (Submodule.range_mkQ S')] using
+      (LinearMap.IsIdempotentElem.isCompl hp).symm
+  -- Lift the two complementary submodules of N, then adjoin N' to the second one.
+  have hS : S'.map N.subtype = S := (Submodule.map_comap_subtype _ _).trans (inf_eq_right.mpr hSN)
+  rw [← hS]
+  refine ⟨s.range.map N.subtype ⊔ N', ?_⟩
+  have hd := Submodule.disjoint_map N.injective_subtype hc.disjoint
+  apply hd.isCompl_sup_right_of_isCompl_sup_left
+  rwa [← Submodule.map_sup, hc.sup_eq_top, Submodule.map_top, Submodule.range_subtype]
 
 end Bl.ComplementLifts

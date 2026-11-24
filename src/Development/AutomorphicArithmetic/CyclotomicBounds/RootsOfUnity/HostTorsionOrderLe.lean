@@ -49,7 +49,7 @@ open NumberField Formalism.BasicNotions
 namespace UpperTheory.Mu
 
 theorem host_torsionOrder_le {R : Ranks} (H : Host R) : Units.torsionOrder H.E ≤ 8 * R.f ^ 2 := by
-  have h := torsionOrder_le H.E
+  have h := _root_.Formalism.L2.SG.NGCut.TorsionTotientBound.torsionOrder_le H.E
   rw [H.finrank_cmField] at h
   have hn : R.f = 2 * R.ord := rfl
   rw [hn]

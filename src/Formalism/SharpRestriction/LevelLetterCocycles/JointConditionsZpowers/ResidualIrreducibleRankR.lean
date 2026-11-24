@@ -206,11 +206,11 @@ theorem span_descent {k L : Type} [Field k] [Field L] (φ : k →+* L) {n : ℕ}
       rw [Finset.sum_eq_single i, Finset.sum_eq_single j]
       · simp
       · intro q _ hq
-        simp [Matrix.single_apply, Ne.symm hq]
+        simp [Ne.symm hq]
       · simp
       · intro p _ hp
         refine Finset.sum_eq_zero fun q _ => ?_
-        simp [Matrix.single_apply, Ne.symm hp]
+        simp [Ne.symm hp]
       · simp
     rw [h2] at this
     exact (map_eq_zero_iff φ φ.injective).mp this.symm

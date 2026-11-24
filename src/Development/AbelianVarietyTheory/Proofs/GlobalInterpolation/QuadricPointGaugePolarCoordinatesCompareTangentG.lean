@@ -81,14 +81,6 @@ theorem norm_exp_eq (θ : ℝ) :
   rw [mul_comm, Complex.norm_exp_I_mul_ofReal_sub_one]
   simp
 
-theorem abs_sin_eq (x : ℝ) (h : |x| ≤ Real.pi) : |Real.sin x| = Real.sin |x| := by
-  rcases le_total 0 x with h0 | h0
-  · rw [abs_of_nonneg h0] at h ⊢
-    exact abs_of_nonneg (Real.sin_nonneg_of_nonneg_of_le_pi h0 h)
-  · rw [abs_of_nonpos h0] at h ⊢
-    rw [← abs_neg, ← Real.sin_neg]
-    exact abs_of_nonneg (Real.sin_nonneg_of_nonneg_of_le_pi (by linarith) h)
-
 theorem exp_bounds (θ : ℝ) (h : |θ| ≤ Real.pi) :
     ‖Complex.exp ((θ : ℂ) * Complex.I) - 1‖ ≤ |θ| ∧
     |θ| ≤ 2 * ‖Complex.exp ((θ : ℂ) * Complex.I) - 1‖ ∧
@@ -96,7 +88,7 @@ theorem exp_bounds (θ : ℝ) (h : |θ| ≤ Real.pi) :
   have hp := Real.pi_pos
   have h0 := abs_nonneg θ
   have e1 : |θ / 2| = |θ| / 2 := by rw [abs_div]; norm_num
-  rw [norm_exp_eq, abs_sin_eq _ (by rw [e1]; linarith), e1]
+  rw [norm_exp_eq, Real.abs_sin_eq_sin_abs_of_abs_le_pi (by rw [e1]; linarith), e1]
   set T := |θ|
   refine ⟨?_, ?_, fun h2 => ?_⟩
   · have := Real.sin_le (x := T / 2) (by linarith)

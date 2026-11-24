@@ -64,9 +64,6 @@ theorem fil_anti (δ : DividedPowers J) {m n : ℕ} (h : m ≤ n) : fil δ n ≤
   rintro _ ⟨l, h1, h2, rfl⟩
   exact ⟨l, h1, h.trans h2, rfl⟩
 
-theorem fil_zero_top (δ : DividedPowers J) : fil δ 0 = ⊤ := by
-  refine (Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨[], ?_, ?_, ?_⟩) <;> simp
-
 theorem dpow_mem_fil (δ : DividedPowers J) {x : B} (hx : x ∈ J) (n : ℕ) : δ.dpow n x ∈ fil δ n := by
   refine Ideal.subset_span ⟨[(n, x)], ?_, ?_, ?_⟩ <;> simp [hx]
 
@@ -108,7 +105,7 @@ theorem fil_le_map {C : Type} [CommRing C] (δ : DividedPowers J) (f : B →+* C
     exact this (Ideal.mul_mem_mul ha hb)
   have hzero : ∀ c : C, c ∈ (fil δ 0).map f := by
     intro c
-    rw [fil_zero_top, Ideal.map_top]
+    rw [_root_.GlobalTheory.PDA.fil_zero_eq_top, Ideal.map_top]
     trivial
   have hdp : ∀ y ∈ J.map f, ∀ n, δ'.dpow n y ∈ (fil δ n).map f := by
     intro y hy

@@ -509,7 +509,7 @@ theorem _root_.GlobalTheory.PDiv.epsRedPow_pow {v : epsR O ⟶ A} (hv : IsTangen
     have h0 : (p : ModPow p O n) ^ n = 0 := by
       rw [← map_natCast (Ideal.Quotient.mk _), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]
       exact Ideal.mem_span_singleton_self _
-    ext <;> simp [h0]
+    ext <;> simp
   rw [← MonObj.comp_pow, GrpTangent.pow_eq_epsScale_comp hv, ← Category.assoc, h, Category.assoc,
     GrpTangent.epsScale_zero_comp hv, MonObj.comp_one]
 

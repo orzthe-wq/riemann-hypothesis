@@ -1,6 +1,5 @@
 module
 
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.LocDensHI
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.UnifVSpec
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.DensFibV
@@ -44,6 +43,14 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+public import Mathlib.GroupTheory.Index
+public import Mathlib.MeasureTheory.Group.Defs
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Formalism.PeriodIntegrals.VolFromSW
+import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Mathlib.MeasureTheory.Group.Measure
 
 @[expose] public section
 
@@ -58,7 +65,47 @@ theorem measure_eq_relIndex_mul {V : Type} [AddCommGroup V] [MeasurableSpace V] 
     (μ : Measure V) [μ.IsAddLeftInvariant] (Λ L : AddSubgroup V) (hΛL : Λ ≤ L)
     (hL : MeasurableSet (L : Set V)) (hΛ : MeasurableSet (Λ : Set V)) (hfin : Λ.relIndex L ≠ 0) :
     μ L = (Λ.relIndex L : ENNReal) * μ Λ := by
-  apply PI.VolStabSW.measure_eq_relIndex_mul <;> assumption
+  have emb : MeasurableEmbedding ((↑) : L → V) := MeasurableEmbedding.subtype_coe hL
+  have hadd : ∀ g : L, Measurable (fun x : L => g + x) := fun g =>
+    ((measurable_const_add (g : V)).comp measurable_subtype_coe).subtype_mk
+  have : MeasurableAdd L := ⟨hadd, fun g =>
+    ((measurable_add_const (g : V)).comp measurable_subtype_coe).subtype_mk⟩
+  have : (Λ.addSubgroupOf L).FiniteIndex := ⟨hfin⟩
+  have : (μ.comap ((↑) : L → V)).IsAddLeftInvariant := by
+    refine ⟨fun g => ?_⟩
+    ext s hs
+    rw [Measure.map_apply (hadd g) hs, emb.comap_apply, emb.comap_apply]
+    have e : ((↑) : L → V) '' ((fun x : L => g + x) ⁻¹' s) =
+        (fun x : V => (g : V) + x) ⁻¹' (((↑) : L → V) '' s) := by
+      ext x
+      simp only [Set.mem_image, Set.mem_preimage]
+      constructor
+      · rintro ⟨y, hy, rfl⟩
+        exact ⟨g + y, hy, rfl⟩
+      · rintro ⟨z, hz, hzx⟩
+        have hxL : x ∈ L := by
+          have : x = (z : V) - g := by rw [hzx]; abel
+          rw [this]
+          exact L.sub_mem z.2 g.2
+        refine ⟨⟨x, hxL⟩, ?_, rfl⟩
+        have : g + (⟨x, hxL⟩ : L) = z := Subtype.ext (by simp [hzx])
+        rw [this]
+        exact hz
+    rw [e, measure_preimage_add]
+  have key := AddSubgroup.index_mul_measure (Λ.addSubgroupOf L)
+    (measurable_subtype_coe hΛ) (μ.comap ((↑) : L → V))
+  rw [emb.comap_apply, emb.comap_apply, Set.image_univ, Subtype.range_coe] at key
+  have e2 : ((↑) : L → V) '' ((Λ.addSubgroupOf L : AddSubgroup L) : Set L) = Λ := by
+    ext x
+    simp only [Set.mem_image, SetLike.mem_coe, AddSubgroup.mem_addSubgroupOf]
+    constructor
+    · rintro ⟨y, hy, rfl⟩
+      exact hy
+    · intro hx
+      exact ⟨⟨x, hΛL hx⟩, hx, rfl⟩
+  rw [e2] at key
+  rw [← key]
+  rfl
 
 theorem smul_mem_hermO {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : ℕ}
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (a : ℕ)

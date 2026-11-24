@@ -3,62 +3,18 @@ module
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.TraceIntegralEstimates.AmpNZFinal
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.OneParameterDerivatives.BesselNVG
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselDecayBounds.BesselIntegrability.BesselFunctionBound
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselFunctionalOfSigmaContinuity
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.SmoothAdd
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.BesselDiscreteSeries.DecInfPf
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AmpOrbClosed
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AmpOrbPf
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.CompactCellConvergence.CellConvergence
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.DoubleCosetBesselBoundOfBesselUniq
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.TraceIntegralEstimates.HzOfInWb
 import Formalism.SharpRestriction.CuspSpanNormBounds.BesselShellMomentBounds
 import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSB
 import Formalism.SharpRestriction.CuspSpanNormBounds.FamilyDoubleCosetBesselBoundOfGap
-public import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.AIsL
 public import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.AmpTrans
 public import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.SigmaFiniteAmplitudes.GapOfHypotheses
 import Formalism.SharpRestriction.CuspSpanNormBounds.FrobeniusCoefficientMemLp.SigmaFiniteAmplitudes.SigmaFiniteOfUnfold
 import Formalism.SharpRestriction.CuspSpanNormBounds.LowestKTypeMultiplicity
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -146,139 +102,6 @@ theorem B_ne {k r : ℕ} {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace
   rw [hl2] at hz0
   have hm0 : 0 < c * (Module.finrank ℂ Wp : ℝ) := mul_pos hc (by exact_mod_cast Module.finrank_pos)
   exact (ENNReal.ofReal_pos.2 hm0).ne' hz0
-
-
-variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
-theorem ampOrbCoefDD_of (hJ : PI.BesselMapUniq.BesselMapUniq) : Formalism.MainNotions.S.Pv.LemmaJ.AmpOrbCoefDD := by
-  intro Cg cb Cu cT CT C0
-  refine ⟨0, 1000, fun C' Cl _ hCl D large₂ hH τ w w' hTT θ W hW A hA hT hT' => ?_⟩
-  have hI : Formalism.FourierDecayAlt.ThreeDimData.Inputs := Formalism.MainNotions.BridgeCS3dClosed.inputs_of Formalism.L2.SG.BesselDiscreteSeries.decInf hJ
-  have hAt := Formalism.FourierDecayAlt.P.admissible_atomic_form_one
-  have hl0 : l1dist (lamD D τ) (lamD D τ) ≤ 0 * D.R.k * (D.R.m : ℝ) ^ 3 := by
-    delta l1dist
-    simp
-  obtain ⟨h, hg, hok, hcell⟩ :=
-    Formalism.MainNotions.S.Pv.AmpDDPf.gap_of_hypotheses D large₂ C' Cl Cg cb Cu cT CT C0 0 hCl (by linarith) hH τ (lamD D τ) hl0
-  set L := toBessel D τ w w' θ W (lamD D τ) A hW hA hT hT' with hL
-  set w0 : A.H := (((‖A.v0‖⁻¹ : ℝ) : ℂ) • A.v0) with hw0def
-  obtain ⟨l, l', hl1, hl1', hOP⟩ := ls_pair hI hAt hW hA hT hT' hg hok
-  have hw0 : PI.UpqRep.IsLowUnitH D.R.k D.R.rS (epsSH D.R) (lamD D τ) A.σ w0 := lowest_K_type_unit hA
-  have hKS : PI.KFinSmooth := hI.2.2.1
-  have hG : IsHaarOn (UH (Hpk D.R.k D.R.rS)) W.μG := hW.2.2.2.2.2.2.1
-  have hDDs : ∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp A.σ w0, x ∈ PI.UpqRep.smoothVecs (k := D.R.k) (r := D.R.rS) A.σ :=
-    Formalism.FourierDecayAlt.P.DDSmoothness.DD_smooth hKS hA.1 hA.2.1 hw0
-
-  obtain ⟨⟨x, hx, y, hy, hxy⟩, ⟨x', hx', y', hy', hxy'⟩⟩ :=
-    Formalism.L2.S.Pv.NonVacuity.nvHyp0 D large₂ C' Cl Cg cb Cu cT CT C0 (by linarith) hH τ w w' hTT θ W hW (lamD D τ) hl0 A hA hT hT'
-      w0 hw0
-  have hlx : l x ≠ 0 := by
-    intro h0; apply hxy
-    have e : Formalism.FourierDecayAlt.ThreeDimData.be W.z L.c W.π A.σ W.μW L.μN x y = (innerSL ℂ (l y)).smulRight (l x) :=
-      hOP.1.2.2.2.2.2.1 x hx y hy
-    rw [e, h0]; ext; simp
-  have hlx' : l' x' ≠ 0 := by
-    intro h0; apply hxy'
-    have e : Formalism.FourierDecayAlt.ThreeDimData.be W.z' L.c W.π' A.σ W.μW' L.μN x' y' = (innerSL ℂ (l' y')).smulRight (l' x') :=
-      hOP.1.2.2.2.2.2.2 x' hx' y' hy'
-    rw [e, h0]; ext; simp
-
-  have hB : PI.BesselMapUniq.IsBesselMapSm (k := D.R.k) (r := D.R.rS) W.z
-      (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z (fun _ => L.c)) A.σ W.π A.B := by
-    rw [psiGen_const]; exact (Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).1 hA.2.2.1
-  have hB' : PI.BesselMapUniq.IsBesselMapSm (k := D.R.k) (r := D.R.rS) W.z'
-      (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z' (fun _ => L.c)) A.σ W.π' A.B' := by
-    rw [psiGen_const]; exact (Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).1 hA.2.2.2.1
-  have hlG : PI.BesselMapUniq.IsBesselMapSm (k := D.R.k) (r := D.R.rS) W.z
-      (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z (fun _ => L.c)) A.σ W.π l := by
-    rw [psiGen_const]; exact hl1
-  have hlG' : PI.BesselMapUniq.IsBesselMapSm (k := D.R.k) (r := D.R.rS) W.z'
-      (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z' (fun _ => L.c)) A.σ W.π' l' := by
-    rw [psiGen_const]; exact hl1'
-  obtain ⟨c0, hc0⟩ := Formalism.MainNotions.S.Pv.AIsL.aIsL hJ hA.1 hA.2.1 L.hz.1 L.hz.2 (fun _ => c_ne_zero D) L.hπ hB hlG
-    ⟨x, hDDs x hx, hlx⟩
-  obtain ⟨c0', hc0'⟩ := Formalism.MainNotions.S.Pv.AIsL.aIsL hJ hA.1 hA.2.1 L.hz'.1 L.hz'.2 (fun _ => c_ne_zero D) L.hπ' hB' hlG'
-    ⟨x', hDDs x' hx', hlx'⟩
-
-  have hW' := hW
-  obtain ⟨hc1, hc2, -, -, -, -, -, hUW, -, hUW', -, hNq, hq, hq'⟩ := hW'
-  have hA' := hA
-  obtain ⟨-, -, -, -, hv0s, hv0ne, -, hcN, hl2, hl2', -⟩ := hA'
-  have hNa : ∀ᵐ x ∂W.μN, Matrix.of x ∈ Nset D.R.k D.R.rS := by
-    rw [hNq]; exact Formalism.MainNotions.S.Pv.AmpDDPf.ae_mem_haarLieN _
-  have hκtop : kapN D θ ≠ ⊤ := ENNReal.ofReal_ne_top
-  have hκ0 : kapN D θ ≠ 0 := Formalism.L2.SG.AmpOrbPf.kapN_ne_zero hW
-  have : SigmaFinite W.μN := by
-    have := (Formalism.MainNotions.BridgeCSB.haarLieN D.R.k D.R.rS _ hκ0 hκtop).1
-    rw [hNq]; exact this
-  have hNt : Nontrivial W.Wp := by obtain ⟨g, -, hU⟩ := hc1; exact hU.1
-  have hNt' : Nontrivial W.Wq := by obtain ⟨g, -, hU⟩ := hc2; exact hU.1
-  obtain ⟨xb, hxb, hBx⟩ := B_ne hA.2.1 hG hUW hNa hq hv0s hcN hl2
-  obtain ⟨xb', hxb', hBx'⟩ := B_ne hA.2.1 hG hUW' hNa hq' hv0s hcN hl2'
-  have hc0ne : c0 ≠ 0 := by
-    intro e; apply hBx; have h1 := hc0 xb hxb; rw [e] at h1; rw [h1]; exact zero_smul ℂ _
-  have hc0ne' : c0' ≠ 0 := by
-    intro e; apply hBx'; have h1 := hc0' xb' hxb'; rw [e] at h1; rw [h1]; exact zero_smul ℂ _
-
-  set t : ℂ := ((‖A.v0‖ : ℝ) : ℂ) with ht
-  have hv0 : A.v0 = t • w0 := by
-    rw [hw0def, ht, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hv0ne),
-      Complex.ofReal_one, one_smul]
-  have htne : t ≠ 0 := by rw [ht]; exact_mod_cast norm_ne_zero_iff.mpr hv0ne
-  have hw0s : w0 ∈ PI.UpqRep.smoothVecs (k := D.R.k) (r := D.R.rS) A.σ :=
-    Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ hv0s
-  have hΦ : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ g = (c0 * t) • l (A.σ g w0) := by
-    intro g hg'
-    show A.B (A.σ g A.v0) = _
-    rw [hv0]
-    exact orbit_mul hA.2.1 c0 hc0 hl1.2.1 hw0s t hg'
-  have hΦ' : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ' g = (c0' * t) • l' (A.σ g w0) := by
-    intro g hg'
-    show A.B' (A.σ g A.v0) = _
-    rw [hv0]
-    exact orbit_mul hA.2.1 c0' hc0' hl1'.2.1 hw0s t hg'
-
-  set s : ℂ := ⟪l x, l x⟫_ℂ * ⟪l' x', l' x'⟫_ℂ with hs
-  have hs0 : s ≠ 0 := mul_ne_zero (inner_self_ne_zero.mpr hlx) (inner_self_ne_zero.mpr hlx')
-  set dg : ℂ := (PI.BesselPeriodGGP.fdegH W.μG A.σ w0 : ℂ) with hdg
-  have hdg0 : dg ≠ 0 := by
-    rw [hdg]
-    obtain ⟨-, -, hn1, -⟩ := hw0
-    exact_mod_cast (fdegH_pos hA.1 hA.2.1 hG hn1).ne'
-  set K1 : ℂ := ((A.cN : ℂ)⁻¹) * (c0 * t) * (starRingEnd ℂ) (c0' * t) with hK1
-  have hK1ne : K1 ≠ 0 := by
-    rw [hK1]
-    refine mul_ne_zero (mul_ne_zero (inv_ne_zero (by exact_mod_cast hcN.ne')) (mul_ne_zero hc0ne htne)) ?_
-    exact (map_ne_zero _).2 (mul_ne_zero hc0ne' htne)
-  refine ⟨x, x', l x, l' x', l x, l' x', K1 * s⁻¹ * dg⁻¹,
-    mul_ne_zero (mul_ne_zero hK1ne (inv_ne_zero hs0)) (inv_ne_zero hdg0), hDDs x hx, hDDs x' hx',
-    hOP.1.2.2.2.2.2.1 x hx x hx, hOP.1.2.2.2.2.2.2 x' hx' x' hx', inner_self_ne_zero.mpr hlx,
-    inner_self_ne_zero.mpr hlx', ?_⟩
-  intro γ hγ hGf hMono hRel μR νR ν hRH hOQ hqR
-  have hCD : Formalism.MainNotions.S.Pv.AmpDD.CellData L W.μG γ μR νR ν := ⟨hγ, hGf, hMono, hRel, hRH, hOQ, hqR⟩
-  obtain ⟨b, hb0, hbm, hbi⟩ :=
-    Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence _ _ L h W.μG γ μR νR ν ENNReal.ofReal_ne_top hok hcell hCD hMono
-  have hAmp := Formalism.L2.SG.AmpOrbClosed.ampDD_thm hI _ _ L h W.μG w0 l l' hOP.1 γ μR νR ν hCD b hb0 (by linarith) hbi
-    x hx x' hx' (l x) (l' x')
-  have hae := ae_UH_conj hγ hG hRH hqR
-  have hJ1 : A.J νR γ = K1 • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ :=
-    ampJ_mul νR A.cN A.Φ _ A.Φ' _ (c0 * t) (c0' * t) γ hγ hΦ hΦ' hae
-  have hJ2 : ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ =
-      (s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν := by
-    have hAmp' : s • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ =
-        dg⁻¹ • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν := hAmp
-    have e1 : ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ =
-        s⁻¹ • (s • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ) := by
-      rw [smul_smul, inv_mul_cancel₀ hs0, one_smul]
-    rw [e1, hAmp']
-    exact smul_smul s⁻¹ dg⁻¹ _
-  rw [hJ1, hJ2]
-  have hO := orbInt_smul L (K1 * s⁻¹ * dg⁻¹) (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν
-  have e2 : K1 • ((s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν) =
-      (K1 * s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν := by
-    rw [smul_smul]
-    congr 1
-    ring
-  exact e2.trans hO.symm
 
 
 end Formalism.L2.S.Pv.AmpOrbCoef

@@ -1,16 +1,24 @@
 module
 
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+public import Mathlib.Basic.NNReal.Defs
+public import Mathlib.Data.Fintype.Basic
+public import Mathlib.Data.Nat.ModEq
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Algebra.Order.BigOperators.Group.Finset
+public import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
+public import Mathlib.Data.ZMod.Basic
 public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderRes
 public import Mathlib.FieldTheory.IsAlgClosed.Basic
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CharacterIdealPrincipalEigen
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusChainCarry
 public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalCharacterIdealPowers
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalIdealFrobeniusPowersStatement
-import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TeichmullerCharacterOrderGenerates
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalIdealFrobeniusPowers
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.RbProj
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -26,11 +34,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -39,7 +43,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,10 +55,126 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TeichmullerCharacterOrderGenerates
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.HodgeTatePoints.RaCarry, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusChainCarry, Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalIdealFrobeniusProduct
+
+-- ===== clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.RaCarry =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.HodgeTatePoints.RaCarry", "h": "module\n\npublic import Mathlib.Algebra.BigOperators.Group.Finset.Defs\npublic import Mathlib.Basic.NNReal.Defs\npublic import Mathlib.Data.Fintype.Basic\npublic import Mathlib.Data.Nat.ModEq\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Algebra.BigOperators.Group.Finset.Basic\npublic import Mathlib.Algebra.BigOperators.Ring.Finset\npublic import Mathlib.Algebra.Order.BigOperators.Group.Finset\npublic import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset\npublic import Mathlib.Data.ZMod.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped Matrix TensorProduct
+open Matrix
+
+namespace PositivityTheory.HtPt.Ra
+
+theorem carry : ∀ (p f : ℕ), 2 ≤ p → 0 < f → ∀ (y : ℕ → NNReal), (∀ n, y (n + f) = y n) → (∀ n, y n ≤ 1) → (∀ n, y n ^ p ≤ y (n + 1)) → ∀ (e : Fin f → ℕ) (j : ℕ), 2 ≤ ∑ n, e n → (∑ n : Fin f, e n * p ^ (n : ℕ)) ≡ p ^ (j + 1) [MOD (p ^ f - 1)] → ∏ n : Fin f, y n ^ e n ≤ y j ^ p := by
+  intro p f hp hf y hper hle1 hstep e j he hcong
+  have hperm : ∀ a c, y (a + f * c) = y a := fun a c => by
+    rw [Nat.mul_comm]
+    exact Function.Periodic.nat_mul hper c a
+  have hiter : ∀ a k, y a ^ (p ^ k) ≤ y (a + k) := by
+    intro a k
+    induction k with
+    | zero => simp
+    | succ k ih =>
+      rw [pow_succ, pow_mul, ← Nat.add_assoc]
+      exact (pow_le_pow_left₀ zero_le ih p).trans (hstep _)
+  obtain ⟨q, s, hs, hj⟩ : ∃ q s, s < f ∧ j = s + f * q :=
+    ⟨j / f, j % f, Nat.mod_lt _ hf, (Nat.mod_add_div j f).symm⟩
+  have hk : ∀ n : Fin f, ∃ k c m c', k + m = f - 1 ∧ (n : ℕ) + k = s + f * c ∧
+      m + (j + 1) = n + f * c' := by
+    intro n
+    have hn := n.isLt
+    by_cases h : (n : ℕ) ≤ s
+    · refine ⟨s - n, 0, f - 1 - (s - n), q + 1, by omega, by omega, ?_⟩
+      rw [hj, Nat.mul_succ]
+      omega
+    · refine ⟨s + f - n, 1, f - 1 - (s + f - n), q, by omega, by omega, ?_⟩
+      rw [hj]
+      omega
+  choose k c m c' hkm hkc hmc using hk
+  have hyk : ∀ n : Fin f, y n ^ (p ^ k n) ≤ y j := by
+    intro n
+    simpa [hj, hperm, hkc n] using hiter n (k n)
+  have hN : p ^ f - 1 + 1 = p ^ f := Nat.sub_add_cancel (Nat.one_le_pow _ _ (by omega))
+  have hT1 : (∑ n : Fin f, e n * p ^ m n) ≡ 1 [MOD (p ^ f - 1)] := by
+    rw [← ZMod.natCast_eq_natCast_iff]
+    have hc := (ZMod.natCast_eq_natCast_iff _ _ _).2 hcong
+    push_cast at hc ⊢
+    set u : ZMod (p ^ f - 1) := (p : ZMod (p ^ f - 1)) with hu
+    have huf : u ^ f = 1 := by
+      rw [hu, ← Nat.cast_pow, ← hN, Nat.cast_add, ZMod.natCast_self, zero_add, Nat.cast_one]
+    have hper' : ∀ a c, u ^ (a + f * c) = u ^ a := by
+      intro a c
+      rw [pow_add, pow_mul, huf, one_pow, mul_one]
+    have hunit : IsUnit (u ^ (j + 1)) := by
+      refine IsUnit.pow _ (isUnit_iff_exists_inv.2 ⟨u ^ (f - 1), ?_⟩)
+      rw [← pow_succ', Nat.sub_add_cancel hf, huf]
+    have hmul : (∑ n : Fin f, (e n : ZMod (p ^ f - 1)) * u ^ m n) * u ^ (j + 1) = u ^ (j + 1) := by
+      refine (Finset.sum_mul _ _ _).trans ((Finset.sum_congr rfl fun n _ => ?_).trans hc)
+      rw [mul_assoc, ← pow_add, hmc, hper']
+    have h0 : ((∑ n : Fin f, (e n : ZMod (p ^ f - 1)) * u ^ m n) - 1) * u ^ (j + 1) = 0 := by
+      rw [sub_mul, hmul, one_mul, sub_self]
+    exact sub_eq_zero.1 (hunit.mul_left_eq_zero.1 h0)
+  have hT2 : 2 ≤ ∑ n : Fin f, e n * p ^ m n :=
+    le_trans he (Finset.sum_le_sum fun n _ => Nat.le_mul_of_pos_right _ (pow_pos (by omega) _))
+  have hTf : p ^ f ≤ ∑ n : Fin f, e n * p ^ m n := by
+    have hd := (Nat.modEq_iff_dvd' (by omega : 1 ≤ ∑ n : Fin f, e n * p ^ m n)).1 hT1.symm
+    exact (Nat.sub_le_sub_iff_right (by omega)).1 (Nat.le_of_dvd (by omega) hd)
+  have hP : 0 < p ^ (f - 1) := pow_pos (by omega) _
+  refine (pow_le_pow_iff_left₀ zero_le zero_le hP.ne').1 ?_
+  calc (∏ n : Fin f, y n ^ e n) ^ p ^ (f - 1)
+      = ∏ n : Fin f, (y n ^ p ^ k n) ^ (e n * p ^ m n) := by
+        rw [← Finset.prod_pow]
+        refine Finset.prod_congr rfl fun n _ => ?_
+        rw [← pow_mul, ← pow_mul]
+        congr 1
+        rw [← hkm n, pow_add]
+        ring
+    _ ≤ ∏ n : Fin f, y j ^ (e n * p ^ m n) := by
+        gcongr with n
+        exact hyk n
+    _ = y j ^ (∑ n : Fin f, e n * p ^ m n) := Finset.prod_pow_eq_pow_sum _ _ _
+    _ ≤ y j ^ p ^ f := pow_le_pow_of_le_one zero_le (hle1 j) hTf
+    _ = (y j ^ p) ^ p ^ (f - 1) := by
+        rw [← pow_mul, ← pow_succ', Nat.sub_add_cancel hf]
+
+end PositivityTheory.HtPt.Ra
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.HodgeTatePoints.RaCarry =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusChainCarry =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusChainCarry", "h": "module\n\npublic import Mathlib.Algebra.BigOperators.Group.Finset.Defs\npublic import Mathlib.Basic.NNReal.Defs\npublic import Mathlib.Data.Fintype.Basic\npublic import Mathlib.Data.Nat.ModEq\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.RaCarry\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open scoped Matrix TensorProduct
+open Matrix
+
+namespace GlobalTheory.CompanionTheory.Ar.GR
+
+alias frobeniusChain_carry := _root_.PositivityTheory.HtPt.Ra.carry
+
+end GlobalTheory.CompanionTheory.Ar.GR
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusChainCarry =====
+
+-- ===== clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalIdealFrobeniusProduct =====
+-- clump-header: {"m": "Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalIdealFrobeniusProduct", "h": "module\n\npublic import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.StepOrderRes\npublic import Mathlib.FieldTheory.IsAlgClosed.Basic\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.CharacterIdealPrincipalEigen\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FrobeniusChainCarry\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalCharacterIdealPowers\npublic import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalIdealFrobeniusPowers\npublic import Development.WeilBound.CoreStatements.HodgeTatePoints.RbProj\nimport Development.AutomorphicSpectrum.Proofs.AlgebraProofs.TeichmullerCharacterOrderGenerates\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionTheory.Ar.GR
@@ -173,7 +292,7 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.fundamental_ideal_frobenius_pr
   have hord : orderOf σ = p ^ f - 1 := (FundGen.main p C v R hv hp F f hf σ hσ).1
   obtain ⟨h0, -⟩ := exists_inv_card hv hp hf
   have hprin := eig_rank_one p C v R hv hp F f hf AA hst
-  have hmono := (GlobalTheory.T.fundamental_ideal_frobenius_powers p C v R hv hp F f hf AA hst σ hσ c hc).2
+  have hmono := (_root_.GlobalTheory.CompanionTheory.Relay.fundamental_ideal_frobenius_powers p C v R hv hp F f hf AA hst σ hσ c hc).2
   have hq : 1 ≤ p ^ f := Nat.one_le_pow _ _ (by omega)
   have hsq : ∀ n, (fun a => algebraMap R C (c n ^ p * (σ ^ p ^ (n + 1)) a)) ∈
       sqIdeal (augIdeal AA.carrier) := fun n => by
@@ -269,3 +388,6 @@ theorem _root_.GlobalTheory.CompanionTheory.Relay.fundamental_ideal_frobenius_pr
       change r • (fun a => algebraMap R C (c (n + 1) * (σ ^ p ^ (n + 1)) a)) ∈ _ ↔ _
       rw [hsm, hiff, hδ, Ideal.mem_span_singleton, Ideal.mem_span_singleton,
         mul_dvd_mul_iff_right hne]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicSpectrum.Proofs.AlgebraProofs.FundamentalIdealFrobeniusProduct =====

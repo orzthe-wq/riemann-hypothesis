@@ -140,9 +140,6 @@ theorem evalV_finOf_not (c : ∀ v : S, Fv F v.1) (u : HeightOneSpectrum (𝓞 F
   rw [map_sum]
   exact Finset.sum_eq_zero fun b _ => evalV_singleFin_ne (fun e => h (by rw [e]; exact b.2)) _
 
-theorem af_ext {x y : Af F} (h : ∀ u, evalV F u x = evalV F u y) : x = y :=
-  by first | exact RestrictedProduct.ext _ _ h | exact Subtype.ext (funext h)
-
 variable (S)
 
 def pS : AF F →ₐ[F] RS S :=
@@ -166,7 +163,7 @@ theorem pS_sS (r : RS S) : pS S (sS S r) = r := by
   exact evalV_finOf r.2 v.1 v.2
 
 theorem sS_mul (r r' : RS S) : sS S (r * r') = sS S r * sS S r' := by
-  refine Prod.ext rfl (af_ext fun u => ?_)
+  refine Prod.ext rfl (_root_.GlobalTheory.AdelicU.af_ext fun u => ?_)
   change evalV F u (finOf S (r.2 * r'.2)) = evalV F u (finOf S r.2 * finOf S r'.2)
   rw [map_mul]
   by_cases h : u ∈ S
@@ -174,7 +171,7 @@ theorem sS_mul (r r' : RS S) : sS S (r * r') = sS S r * sS S r' := by
   · rw [evalV_finOf_not _ u h, evalV_finOf_not _ u h, zero_mul]
 
 theorem sS_pS (a : AF F) : sS S (pS S a) = sS S 1 * a := by
-  refine Prod.ext (one_mul _).symm (af_ext fun u => ?_)
+  refine Prod.ext (one_mul _).symm (_root_.GlobalTheory.AdelicU.af_ext fun u => ?_)
   change evalV F u (finOf S fun v : S => evalV F v.1 a.2) = evalV F u (finOf S 1 * a.2)
   rw [map_mul]
   by_cases h : u ∈ S

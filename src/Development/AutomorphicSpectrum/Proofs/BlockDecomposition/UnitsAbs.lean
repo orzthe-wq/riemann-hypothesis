@@ -179,11 +179,6 @@ theorem lift_h (Λ : E.Lift G D) {T T' : C} (φ : T ⟶ T') :
     (Spec.map (CommRingCat.ofHom (mapU (G.map φ).1.hom)) ≫ Λ.p T) ≫ D.f = Λ.p T' ≫ D.f := by
   rw [Category.assoc, Λ.hp, Λ.hp]; exact pt_hom φ
 
-theorem mapU_sharp' {A A' : PAlg l} (f : A ⟶ A') (a : A.A) : mapU f (A.sharp a) = A'.sharp (PAlg.Hom.f f a) := by
-  change A'.th (mapW f (WittVector.teichmuller l a)) = _
-  rw [mapW, WittVector.map_teichmuller]
-  rfl
-
 theorem sharp_r (Λ : E.Lift G D) {c₀ c₁ c₂ : C} (a : c₀ ⟶ c₁) (b : c₁ ⟶ c₂) (c : c₀ ⟶ c₂) (hc : c = a ≫ b) :
     (G.obj c₂).1.obj.sharp ((Units.map (PAlg.Hom.f (G.map b).1.hom).toMonoidHom (Λ.w a) * Λ.w b * (Λ.w c)⁻¹ :
       ((G.obj c₂).1.obj.A)ˣ) : (G.obj c₂).1.obj.A) = 1 := by
@@ -193,7 +188,7 @@ theorem sharp_r (Λ : E.Lift G D) {c₀ c₁ c₂ : C} (a : c₀ ⟶ c₁) (b : 
   have wc := Λ.hw (a ≫ b) (lift_h Λ (a ≫ b))
   have key := u_coc D (mapU (G.map a).1.hom) (mapU (G.map b).1.hom) (mapU (G.map (a ≫ b)).1.hom)
     (by rw [G.map_comp]; exact mapU_comp _ _) (Λ.p c₀) (Λ.p c₁) (Λ.p c₂) (lift_h Λ a) (lift_h Λ b) (lift_h Λ (a ≫ b))
-  rw [← wa, ← wb, ← wc, mapU_sharp', ← map_mul] at key
+  rw [← wa, ← wb, ← wc, _root_.GlobalTheory.CompanionTheory.PAlgNat.mapU_sharp, ← map_mul] at key
   rw [Units.val_mul, Units.val_mul, map_mul]
   change (G.obj c₂).1.obj.sharp (PAlg.Hom.f (G.map b).1.hom (Λ.w a) * Λ.w b) * _ = 1
   rw [key, ← map_mul, Units.mul_inv, map_one]

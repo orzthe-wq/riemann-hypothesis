@@ -67,8 +67,7 @@ lemma character_sum_range_modulus_eq_zero {q : ℕ} [NeZero q] (χ : DirichletCh
 lemma character_sum_range_add_modulus {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (M : ℕ) :
     ∑ n ∈ range (q + M), χ (n : ZMod q) = ∑ n ∈ range M, χ (n : ZMod q) := by
   rw [Finset.sum_range_add, character_sum_range_modulus_eq_zero χ hχ, zero_add]
-  refine Finset.sum_congr rfl fun n _ => ?_
-  rw [Nat.cast_add, ZMod.natCast_self, zero_add]
+  simp only [Nat.cast_add, ZMod.natCast_self, zero_add]
 
 lemma norm_character_sum_range_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (M : ℕ) :
     ‖∑ n ∈ range M, χ (n : ZMod q)‖ ≤ q := by

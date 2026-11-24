@@ -1,15 +1,21 @@
 module
 
+public import Mathlib.Algebra.MvPolynomial.Basic
+public import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HookLengthBound.CapelliMain
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HookLengthBound.CapelliDefs
+public import Mathlib.Analysis.Calculus.ContDiff.Defs
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Mathlib.Analysis.Calculus.BumpFunction.Basic
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DifferentiableAtChart
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ArchimedeanSchwartz.ShiftOf
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPermOfNotInjective
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CapCommuteRtInfGL
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TowerBaseChange
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Calculus.FDeriv.Symmetric
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -20,9 +26,8 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,6 +35,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,11 +48,180 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.InfinitesimalCharacterPullback.HasInfCharPullSub
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPermOfNotInjective, Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsSmoothExtensionNear, Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TowerBaseChange, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ArchimedeanSchwartz.ArchimedeanDerivatives.ContDiffFderivApply
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPermOfNotInjective =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPermOfNotInjective", "h": "module\n\npublic import Mathlib.Algebra.MvPolynomial.Basic\npublic import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HookLengthBound.CapelliMain\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HookLengthBound.CapelliDefs\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial MeasureTheory
+
+namespace GlobalTheory.CapelliWeyl
+
+theorem sum_perm_of_not_injective {M : Type} [AddCommMonoid M] {n : ℕ}
+    (F : (Fin n → Fin n) → M) (hF : ∀ s, ¬ Function.Injective s → F s = 0) :
+    ∑ s, F s = ∑ p : Equiv.Perm (Fin n), F p := by
+  symm
+  have e : ∑ p : Equiv.Perm (Fin n), F p = ∑ s ∈ Finset.univ.map
+      (⟨fun p : Equiv.Perm (Fin n) => (p : Fin n → Fin n), DFunLike.coe_injective⟩ :
+        Equiv.Perm (Fin n) ↪ (Fin n → Fin n)), F s := by
+    rw [Finset.sum_map]; rfl
+  rw [e]
+  refine Finset.sum_subset (Finset.subset_univ _) fun s _ hs => hF s fun hinj => hs ?_
+  rw [Finset.mem_map]
+  exact ⟨Equiv.ofBijective s (Finite.injective_iff_bijective.mp hinj), Finset.mem_univ _, rfl⟩
+
+theorem map_det_eq {C W : Type} [CommRing C] [Ring W] {n : ℕ} (f : C →+* W)
+    (M : Matrix (Fin n) (Fin n) C) :
+    f M.det = ∑ p : Equiv.Perm (Fin n), ((Equiv.Perm.sign p : ℤˣ) : ℤ) •
+      (List.ofFn fun j : Fin n => f (M (p j) j)).prod := by
+
+  rw [Matrix.det_apply, map_sum]
+  refine Finset.sum_congr rfl fun p _ => ?_
+  rw [Units.smul_def, map_zsmul, ← List.prod_ofFn, map_list_prod, List.map_ofFn]
+  rfl
+
+theorem normal_sum_of_map {C W : Type} [CommRing C] [Ring W] {n : ℕ} (f : C →+* W)
+    (M : Matrix (Fin n) (Fin n) C) (d : Fin n → Fin n → W) :
+    ∑ p : Equiv.Perm (Fin n), ((Equiv.Perm.sign p : ℤˣ) : ℤ) •
+      ∑ s : Fin n → Fin n, (List.ofFn fun j : Fin n => f (M (s j) (p j))).prod *
+        (List.ofFn fun j : Fin n => d (s j) j).prod =
+    (∑ p : Equiv.Perm (Fin n), ((Equiv.Perm.sign p : ℤˣ) : ℤ) •
+      (List.ofFn fun j : Fin n => f (M (p j) j)).prod) *
+    (∑ p : Equiv.Perm (Fin n), ((Equiv.Perm.sign p : ℤˣ) : ℤ) •
+      (List.ofFn fun j : Fin n => d (p j) j).prod) := by
+  have hdet : ∀ s : Fin n → Fin n, ∑ p : Equiv.Perm (Fin n), ((Equiv.Perm.sign p : ℤˣ) : ℤ) •
+      (List.ofFn fun j : Fin n => f (M (s j) (p j))).prod = f (M.submatrix s id).det := by
+    intro s
+    rw [← Matrix.det_transpose, map_det_eq]
+    rfl
+  rw [← map_det_eq]
+  simp only [Finset.smul_sum]
+  rw [Finset.sum_comm]
+  simp only [← smul_mul_assoc, ← Finset.sum_mul, hdet]
+  rw [sum_perm_of_not_injective
+    (fun s => f (M.submatrix s id).det * (List.ofFn fun j : Fin n => d (s j) j).prod)]
+  · rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun p _ => ?_
+    rw [Matrix.det_permute, map_mul, map_intCast, mul_assoc, ← zsmul_eq_mul, mul_smul_comm]
+  · intro s hs
+    simp only [Function.Injective, not_forall] at hs
+    obtain ⟨i, j, hij, hne⟩ := hs
+    rw [Matrix.det_zero_of_row_eq hne (by funext k; simp [hij]), map_zero, zero_mul]
+
+theorem exists_comm_lift {W : Type} [Ring W] {n : ℕ} (x : Fin n → Fin n → W)
+    (hx : ∀ a b c e, Commute (x a b) (x c e)) :
+    ∃ f : MvPolynomial (Fin n × Fin n) ℤ →+* W, ∀ a b, f (MvPolynomial.X (a, b)) = x a b := by
+  let S : Set W := Set.range fun p : Fin n × Fin n => x p.1 p.2
+  have hS : ∀ u ∈ S, ∀ v ∈ S, u * v = v * u := by
+    rintro _ ⟨p, rfl⟩ _ ⟨q, rfl⟩
+    exact (hx _ _ _ _).eq
+  letI : IsMulCommutative (Subring.closure S) :=
+    Subring.isMulCommutative_closure (fun a ha b hb _ => hS a ha b hb)
+  open scoped IsMulCommutative in
+  refine ⟨(Subring.closure S).subtype.comp
+    (MvPolynomial.eval₂Hom (Int.castRingHom _)
+      (fun p => (⟨x p.1 p.2, Subring.subset_closure ⟨p, rfl⟩⟩ : Subring.closure S))), ?_⟩
+  intro a b
+  rw [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']
+  rfl
+
+theorem capelli_identity : ∀ {W : Type} [Ring W] {n : ℕ} (x d : Fin n → Fin n → W), (∀ a b c e, Commute (x a b) (x c e)) → (∀ a b c e, Commute (d a b) (d c e)) → (∀ a b c e, d a b * x c e - x c e * d a b = if a = c ∧ b = e then 1 else 0) → ∑ p : Equiv.Perm (Fin n), ((Equiv.Perm.sign p : ℤˣ) : ℤ) • (List.ofFn fun j : Fin n => (∑ k, x k (p j) * d k j) + if p j = j then ((n - 1 - j.val : ℕ) : W) else 0).prod = (∑ p : Equiv.Perm (Fin n), ((Equiv.Perm.sign p : ℤˣ) : ℤ) • (List.ofFn fun j : Fin n => x (p j) j).prod) * (∑ p : Equiv.Perm (Fin n), ((Equiv.Perm.sign p : ℤˣ) : ℤ) • (List.ofFn fun j : Fin n => d (p j) j).prod) := by
+  intro W _ n x d hx _ hdx
+  have hA := PI.HookSteps.Cap.capelli_absolute_value W (Fin n) (Fin n) (fun a t => x t a)
+    (fun b t => d t b) (fun a s b t => (hx _ _ _ _).eq)
+    (fun a s b t => by
+      have h := hdx t b s a
+      rw [sub_eq_iff_eq_add'] at h
+      rw [h]
+      congr 1
+      refine if_congr ⟨?_, ?_⟩ rfl rfl <;> rintro ⟨h1, h2⟩ <;> exact ⟨h2.symm, h1.symm⟩)
+    n id id
+  simp only [smul_sub, Finset.sum_sub_distrib, sub_eq_zero] at hA
+  obtain ⟨f, hf⟩ := exists_comm_lift x hx
+  have hB := normal_sum_of_map f (Matrix.of fun a b => MvPolynomial.X (a, b)) d
+  simp only [Matrix.of_apply, hf] at hB
+  rw [← hB]
+  refine Eq.trans ?_ (hA.trans rfl)
+  refine Finset.sum_congr rfl fun p _ => ?_
+  unfold PI.HookSteps.Cap.Lw PI.HookSteps.Cap.Eop
+  congr 3
+  funext j
+  have hj : 1 + j.val ≤ n := by have := j.isLt; omega
+  rw [Nat.sub_sub, Nat.cast_sub hj, Nat.cast_add, Nat.cast_one, ← sub_sub]
+  rfl
+
+end GlobalTheory.CapelliWeyl
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPermOfNotInjective =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsSmoothExtensionNear =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsSmoothExtensionNear", "h": "module\n\npublic import Mathlib.Analysis.Calculus.ContDiff.Defs\npublic import Mathlib.LinearAlgebra.FiniteDimensional.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Calculus.BumpFunction.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.exists_smooth_extension_near :
+    ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+      {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {m : ℕ∞} {U : Set E},
+      IsOpen U → ∀ {F : E → V}, ContDiffOn ℝ (m : WithTop ℕ∞) F U → ∀ {x : E}, x ∈ U →
+        ∃ G : E → V, ContDiff ℝ (m : WithTop ℕ∞) G ∧ G =ᶠ[nhds x] F := by
+  intro E _ _ _ V _ _ m U hU F hF x hx
+  obtain ⟨ε, hε, hball⟩ := Metric.nhds_basis_closedBall.mem_iff.1 (hU.mem_nhds hx)
+  let b : ContDiffBump x := ⟨ε / 2, ε, half_pos hε, half_lt_self hε⟩
+  have hsub : tsupport (b : E → ℝ) ⊆ U := by
+    rw [b.tsupport_eq]
+    exact hball
+  refine ⟨fun y => b y • F y, ?_, ?_⟩
+  · rw [contDiff_iff_contDiffAt]
+    intro y
+    by_cases hy : y ∈ U
+    · exact (b.contDiff (n := m)).contDiffAt.smul (hF.contDiffAt (hU.mem_nhds hy))
+    · have h0 : (b : E → ℝ) =ᶠ[nhds y] 0 :=
+        notMem_tsupport_iff_eventuallyEq.1 fun h => hy (hsub h)
+      have h1 : (fun z => b z • F z) =ᶠ[nhds y] fun _ => (0 : V) := by
+        filter_upwards [h0] with z hz
+        simp [hz]
+      exact contDiffAt_const.congr_of_eventuallyEq h1
+  · filter_upwards [b.eventuallyEq_one] with z hz
+    simp [hz]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsSmoothExtensionNear =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TowerBaseChange =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TowerBaseChange", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.DifferentiableAtChart\npublic import Mathlib.Analysis.Calculus.ContDiff.Defs\npublic import Mathlib.LinearAlgebra.FiniteDimensional.Defs\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsSmoothExtensionNear\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.Reformulated.B.LocalSmoothExtension.exists_smooth_eq : ∀ {K : Type} [Field K] [NumberField K] {n : ℕ}
+    {U : Set (GlobalTheory.CuspRep.Lie K n)}, IsOpen U →
+    ∀ {F : GlobalTheory.CuspRep.Lie K n → ℂ}, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F U →
+    ∀ {x : GlobalTheory.CuspRep.Lie K n}, x ∈ U →
+      ∃ G : GlobalTheory.CuspRep.Lie K n → ℂ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) G ∧ G =ᶠ[nhds x] F := by
+  intro K _ _ n U hU F hF x hx
+  exact _root_.UpperTheory.exists_smooth_extension_near hU hF hx
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TowerBaseChange =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ArchimedeanSchwartz.ArchimedeanDerivatives.ContDiffFderivApply =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ArchimedeanSchwartz.ArchimedeanDerivatives.ContDiffFderivApply", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ArchimedeanSchwartz.ShiftOf\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPermOfNotInjective\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CapCommuteRtInfGL\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TowerBaseChange\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Calculus.FDeriv.Symmetric\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.InfinitesimalCharacterPullback.HasInfCharPullSub\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -60,15 +235,10 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 private abbrev eDir (τ : K →+* ℂ) (i j : Fin n) (z : ℂ) : Lie K n := toL (Matrix.single i j (atEmb τ z))
 
-omit [NumberField K] in
-private theorem coord_smul' (τ : K →+* ℂ) (t : ℝ) (x : Cinf K) : coord τ (t • x) = t • coord τ x := by
-  unfold coord
-  split_ifs <;> simp
-
 private def coordL (τ : K →+* ℂ) (i j : Fin n) : Lie K n →ₗ[ℝ] ℂ where
   toFun y := coord τ (y i j)
   map_add' x y := map_add (coord τ) (x i j) (y i j)
-  map_smul' t x := coord_smul' τ t (x i j)
+  map_smul' t x := _root_.UpperTheory.V.FieldIso.coord_smul τ t (x i j)
 
 private def coordC (τ : K →+* ℂ) (i j : Fin n) : Lie K n →L[ℝ] ℂ :=
   LinearMap.toContinuousLinearMap (coordL τ i j)
@@ -96,7 +266,7 @@ private theorem rmul_eDir (τ : K →+* ℂ) (a b : Fin n) (z : ℂ) (y : Lie K 
       Matrix.single_apply_same, GlobalTheory.CapAdInv.mul_atEmb]
     rfl
   · rw [Matrix.mul_single_apply_of_ne _ _ _ _ _ hj]
-    simp [Matrix.single_apply, Ne.symm hj]
+    simp [Ne.symm hj]
 
 private theorem map_eDir (L : Lie K n →L[ℝ] ℂ) (τ : K →+* ℂ) (a b : Fin n) (z : ℂ) :
     L (eDir τ a b z) = (z.re : ℂ) * L (eDir τ a b 1) + (z.im : ℂ) * L (eDir τ a b Complex.I) := by
@@ -248,7 +418,7 @@ private theorem lhs_op (τ : K →+* ℂ) (p : Equiv.Perm (Fin n)) (j : Fin n) (
   funext y
   rw [rd_eq_sum, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, sum_apply_val]
   congr 1
-  split_ifs <;> simp [Module.End.natCast_apply]
+  split_ifs <;> simp
 
 private theorem capelli_glob (τ : K →+* ℂ) (G : Smth K n) (x : Lie K n) :
     detAt τ x * detD τ G.1 x = ∑ p : Equiv.Perm (Fin n), (((Equiv.Perm.sign p : ℤˣ) : ℤ) : ℂ) *
@@ -279,10 +449,7 @@ private theorem rd_congr (τ : K →+* ℂ) (a b : Fin n) (c : ℂ) (y : Lie K n
     (fun z => rd τ a b G z + c * G z) =ᶠ[nhds y] fun z => rd τ a b H z + c * H z :=
   ((h.fderiv (𝕜 := ℝ)).and h).mono fun z hz => by simp only [rd_eq, hz.1, hz.2]
 
-private theorem exists_smooth_eq {U : Set (Lie K n)} (hU : IsOpen U) {F : Lie K n → ℂ}
-    (hF : ContDiffOn ℝ ∞ F U) {x : Lie K n} (hx : x ∈ U) :
-    ∃ G : Lie K n → ℂ, ContDiff ℝ ∞ G ∧ G =ᶠ[nhds x] F :=
-  _root_.UpperTheory.Reformulated.B.LocalSmoothExtension.exists_smooth_eq hU hF hx
+private alias exists_smooth_eq := _root_.UpperTheory.Reformulated.B.LocalSmoothExtension.exists_smooth_eq
 
 end UpperTheory.V.Z.Inf.WeylGroupAction
 
@@ -302,3 +469,7 @@ theorem UpperTheory.V.Z.Inf.weyl :
   congr 1
   exact (foldr_congr_nhds _ (fun j y G H h => rd_congr τ (p j) j
     (if p j = j then ((n - 1 - j.val : ℕ) : ℂ) else 0) y G H h) (List.finRange n) hGF).eq_of_nhds
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.ArchimedeanSchwartz.ArchimedeanDerivatives.ContDiffFderivApply =====

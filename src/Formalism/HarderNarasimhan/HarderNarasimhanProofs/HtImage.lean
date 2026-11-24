@@ -262,7 +262,7 @@ theorem htImage_norm_placePart {P ι : Type*} [Fintype P] [Fintype ι] {v : P}
     apply Finset.sum_congr rfl
     intro i _
     rw [Fin.sum_univ_two]
-    simp only [PiLp.toLp_apply, htImageCv, Complex.sq_norm, Complex.normSq_apply,
+    simp only [htImageCv, Complex.sq_norm, Complex.normSq_apply,
       Real.norm_eq_abs, sq_abs]
     ring
   · intro w _ hw

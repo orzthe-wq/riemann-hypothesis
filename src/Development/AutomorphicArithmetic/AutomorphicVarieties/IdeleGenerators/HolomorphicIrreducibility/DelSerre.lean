@@ -87,11 +87,11 @@ private def bdd {I : Type} (V : Submodule K (I → K)) : Submodule K V where
     rintro v w ⟨c, hc, hv⟩ ⟨e, he, hw⟩
     rcases le_total ‖c‖ ‖e‖ with h | h
     · refine ⟨c, hc, fun n => ?_⟩
-      have : (c • (v + w)).1 n = c * v.1 n + c * w.1 n := by simp [mul_add]
+      have : (c • (v + w)).1 n = c * v.1 n + c * w.1 n := by simp
       rw [this]
       exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hv n) (key c e _ he h (hw n)))
     · refine ⟨e, he, fun n => ?_⟩
-      have : (e • (v + w)).1 n = e * v.1 n + e * w.1 n := by simp [mul_add]
+      have : (e • (v + w)).1 n = e * v.1 n + e * w.1 n := by simp
       rw [this]
       exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (key e c _ hc h (hv n)) (hw n))
   smul_mem' := by

@@ -1,5 +1,6 @@
 module
 
+public import Formalism.PeriodIntegrals.FlagSubmonoid
 public import Formalism.LocalToGlobal.Columns.ScaledRamifiedLattice
 public import Formalism.LocalToGlobal.Columns.RowForms
 public import Formalism.LocalToGlobal.Columns.CoefModB
@@ -516,34 +517,18 @@ def inX : (Fin n → k) →ₗ[k] (Fin (n + c) → k) :=
   LinearMap.pi fun l => if h : l.1 < n then LinearMap.proj ⟨l.1, h⟩ else 0
 
 def R1cond (r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) : Prop :=
-  (∀ i, ∀ v ∈ Ufl k n c i, r v ∈ Ufl k n c i) ∧ r (eN k (n + c) n) = eN k (n + c) n ∧
-    ∀ i, r (eN k (n + c) (n + i)) - eN k (n + c) (n + i) ∈ Ufl k n c i
+  r ∈ PI.flagSubmonoid (Ufl k n c) (eN k (n + c)) n
 
 variable {k n c} in
 theorem R1cond.mul {r s : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr : R1cond k n c r) (hs : R1cond k n c s) :
-    R1cond k n c (r * s) := by
-  refine ⟨fun i v hv => hr.1 i _ (hs.1 i v hv), ?_, fun i => ?_⟩
-  · show r (s _) = _
-    rw [hs.2.1, hr.2.1]
-  · have h1 : (r * s) (eN k (n + c) (n + i)) - eN k (n + c) (n + i) =
-        r (s (eN k (n + c) (n + i)) - eN k (n + c) (n + i)) + (r (eN k (n + c) (n + i)) - eN k (n + c) (n + i)) := by
-      rw [map_sub]
-      show r (s _) - _ = _
-      abel
-    rw [h1]
-    exact add_mem (hr.1 i _ (hs.2.2 i)) (hr.2.2 i)
+    R1cond k n c (r * s) :=
+  (PI.flagSubmonoid (Ufl k n c) _ _).mul_mem hr hs
 
 theorem R1cond_one : R1cond k n c 1 :=
-  ⟨fun _ _ hv => hv, rfl, fun i => by
-    show eN k (n + c) (n + i) - eN k (n + c) (n + i) ∈ _
-    rw [sub_self]
-    exact zero_mem _⟩
+  (PI.flagSubmonoid (Ufl k n c) _ _).one_mem
 
-def R1 : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) where
-  carrier := {r | R1cond k n c r ∧ R1cond k n c r⁻¹}
-  one_mem' := ⟨R1cond_one k n c, by rw [inv_one]; exact R1cond_one k n c⟩
-  mul_mem' := fun {a b} ha hb => ⟨ha.1.mul hb.1, by rw [mul_inv_rev]; exact hb.2.mul ha.2⟩
-  inv_mem' := fun {a} ha => ⟨ha.2, by rw [inv_inv]; exact ha.1⟩
+def R1 : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) :=
+  (PI.flagSubmonoid (Ufl k n c) (eN k (n + c)) n).mulSupport
 
 def fixX : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) where
   carrier := {r | ∀ x, r (inX k n c x) = inX k n c x}

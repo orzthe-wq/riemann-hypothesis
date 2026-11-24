@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsCombAt
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsFiniteAdeleProjectionIntegralReductionStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DiagonalBlockDetBlockTriangular
+public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsFiniteAdeleProjectionIntegralReduction
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -54,22 +56,11 @@ open GlobalTheory.LocMod GlobalTheory.StepData GlobalTheory.SymChain
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-theorem mt_mul' (V : HSp D) (g h : GA D V) : mt V (g * h) = mt V g * mt V h := by
-  unfold Formalism.L2.Theta.mt; rw [map_mul]; rfl
+alias mt_mul' := _root_.GlobalTheory.BesselCompare.mt_mul
 
-theorem mt_one' (V : HSp D) : mt V 1 = 1 := by
-  unfold Formalism.L2.Theta.mt; rw [map_one]; rfl
+alias mt_one' := _root_.GlobalTheory.BesselCompare.mt_one
 
 theorem finE_val' (V : HSp D) (g : GA D V) : (Lev.finE V g).val = (mt V g).map (toEAf D) := rfl
-
-theorem exists_lift (z : EAf D) : ∃ w : AE D, toEAf D w = z := by
-  induction z using TensorProduct.induction_on with
-  | zero => exact ⟨0, RingHom.map_zero _⟩
-  | tmul b α => exact ⟨pairA D.host.F 0 α ⊗ₜ[D.host.F] b, rfl⟩
-  | add x y hx hy =>
-    obtain ⟨a, rfl⟩ := hx
-    obtain ⟨b, rfl⟩ := hy
-    exact ⟨a + b, RingHom.map_add _ _ _⟩
 
 theorem frGL_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
@@ -97,10 +88,10 @@ theorem red_of_movedTo (q : SplitPt D k) (PP : Formalism.L2.DIV.Pl D.host.E) (hP
     (hx : Lev.finE V (t⁻¹ * h * t) ∈ Formalism.L2.DIV.St β) (i j : Fin V.rank) (z : 𝓞 D.host.E)
     (hz : Ideal.Quotient.mk PP.asIdeal z = (Formalism.L2.DIV.redFn β PP (Lev.finE V (t⁻¹ * h * t))).val i j) :
     valuation k (M i j - (ofSplit q).pr (z : D.host.E)) < 1 := by
-  obtain ⟨π', hπ, hred, -⟩ := GlobalTheory.T.exists_finiteAdele_projection_integral_reduction D k q PP hPP
+  obtain ⟨π', hπ, hred, -⟩ := _root_.GlobalTheory.FinPl.SplitPt.exists_lift_isRed D k q PP hPP
   obtain ⟨y, hy⟩ := hx
   rw [← hy, Formalism.L2.DIV.redFn_frGL] at hz
-  choose l hl using exists_lift (D := D)
+  choose l hl using _root_.GlobalTheory.ResLoc.toEAf_surj (D := D)
   have hπ' : ∀ m : Matrix (Fin V.rank) (Fin V.rank) (AE D), (m.map (toEAf D)).map π' = m.map q.pr := fun m => by
     ext a b; exact hπ _
   have hb : (β.val.map l).map (toEAf D) = β.val := by ext a b; exact hl _

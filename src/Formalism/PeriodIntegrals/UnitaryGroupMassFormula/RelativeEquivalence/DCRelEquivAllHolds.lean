@@ -1,6 +1,6 @@
 module
 
-public import Formalism.PeriodIntegrals.DCRelEquiv
+public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermDef
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -24,7 +24,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -37,11 +36,56 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.DCRelEquiv, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RelativeEquivalence.DCRelEquivAllHolds
+
+-- ===== clump member: Formalism.PeriodIntegrals.DCRelEquiv =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.DCRelEquiv", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.TermDef\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open scoped Classical
+
+namespace PI.DCRelEquiv
+
+open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.L2.SG.TermDef
+
+def NLamGroup : Prop :=
+  ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : HSpace E) (r : ℕ) (T : E)
+    (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (n m : S.V ≃ₗ[E] S.V),
+    n ∈ NLam Λ F → m ∈ NLam Λ F → n * m ∈ NLam Λ F ∧ n⁻¹ ∈ NLam Λ F
+
+def NLamConj : Prop :=
+  ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : HSpace E) (r : ℕ) (T : E)
+    (Λ : Submodule (𝓞 E) S.V) (F₁ F₂ : LFlag S r T) (g : S.V ≃ₗ[E] S.V),
+    IsAutLam S Λ g → (∀ a, frame F₂ a = g (frame F₁ a)) →
+    ∀ x : S.V ≃ₗ[E] S.V, x ∈ NLam Λ F₂ ↔ g⁻¹ * x * g ∈ NLam Λ F₁
+
+def DCRelEquivAll : Prop :=
+  ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : HSpace E) (r : ℕ) (T T' : E)
+    (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T), Equivalence (DCRel Λ F (T' := T'))
+
+def EqIffAll : Prop :=
+  ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (S : HSpace E) (r : ℕ) (T T' : E)
+    (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (P : LFlag S r T' → Prop), EqIff Λ F P
+
+end PI.DCRelEquiv
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.DCRelEquiv =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RelativeEquivalence.DCRelEquivAllHolds =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RelativeEquivalence.DCRelEquivAllHolds", "h": "module\n\npublic import Formalism.PeriodIntegrals.DCRelEquiv\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -177,20 +221,16 @@ theorem nlam_mul {F : LFlag S r T} {n m : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ
   refine ⟨autLam_mul hnA hmA, ?_, ?_⟩
   · intro j x hx
     show n (m x) - x ∈ Xflag F j
-    have e : n (m x) - x = (n (m x) - m x) + (m x - x) := by abel
-    rw [e]
-    exact add_mem (hnF j _ (nlam_maps_Xflag hm j x hx)) (hmF j x hx)
+    simpa only [sub_add_sub_cancel] using
+      add_mem (hnF j _ (nlam_maps_Xflag hm j x hx)) (hmF j x hx)
   · intro x hx
     show n (m x) - x ∈ Xsp F
-    have e : n (m x) - x = n (m x - x) + (n x - x) := by rw [map_sub]; abel
-    rw [e]
-    exact add_mem (nlam_maps_X hn _ (hmO x hx)) (hnO x hx)
+    simpa only [map_sub, sub_add_sub_cancel] using
+      add_mem (nlam_maps_X hn _ (hmO x hx)) (hnO x hx)
 
 theorem e_of_frame {F₁ F₂ : LFlag S r T} {g : S.V ≃ₗ[E] S.V} (hfr : ∀ a, frame F₂ a = g (frame F₁ a))
     (i : Fin r) : F₂.fl.e i = g (F₁.fl.e i) := by
-  have h := hfr i.castSucc
-  simp only [frame, FlagG.fvec, Fin.snoc_castSucc] at h
-  exact h
+  simpa only [frame, FlagG.fvec, Fin.snoc_castSucc] using hfr i.castSucc
 
 theorem Xflag_transport {F₁ F₂ : LFlag S r T} {g : S.V ≃ₗ[E] S.V}
     (hfr : ∀ a, frame F₂ a = g (frame F₁ a)) (j : ℕ) :
@@ -270,9 +310,8 @@ theorem nLamConj_holds : NLamConj := by
       exact autLam_mul (autLam_mul hg hx) (autLam_inv hg)
   simp only [NLam, Set.mem_setOf_eq]
   refine and_congr hA (and_congr ?_ ?_)
-  · apply forall_congr'
-    intro j
-    exact conj_cond g x _ _ _ _ (Xflag_mem_transport hfr (j + 1)) (Xflag_mem_transport hfr j)
+  · exact forall_congr' fun j =>
+      conj_cond g x _ _ _ _ (Xflag_mem_transport hfr (j + 1)) (Xflag_mem_transport hfr j)
   · exact conj_cond g x _ _ _ _ (orth_mem_transport hfr hgi) (Xsp_mem_transport hfr)
 
 theorem dCRelEquivAll_holds : DCRelEquivAll := by
@@ -328,10 +367,10 @@ theorem eqIffAll_holds : EqIffAll := by
     ⟨fun x => hEq.refl x.1, fun h => hEq.symm h, fun h₁ h₂ => hEq.trans h₁ h₂⟩
   unfold EqIff
   intro x y
-  constructor
-  · intro h
-    exact (Equivalence.eqvGen_iff hR).mp (Quot.eqvGen_exact h)
-  · intro h
-    exact Quot.sound h
+  exact ⟨fun h => (Equivalence.eqvGen_iff hR).mp (Quot.eqvGen_exact h), fun h => Quot.sound h⟩
 
 end PI.DCRelEquiv.UnitaryGroupMassFormula
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RelativeEquivalence.DCRelEquivAllHolds =====

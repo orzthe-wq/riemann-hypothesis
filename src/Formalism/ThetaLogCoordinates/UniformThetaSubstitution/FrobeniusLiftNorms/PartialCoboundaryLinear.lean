@@ -79,8 +79,6 @@ theorem subst_psubst {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : MvPowe
       PowerSeries.subst (MvPowerSeries.subst b a) f := by
   first
     | exact MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.const ha) hb f
-    | exact MvPowerSeries.subst_comp_subst_apply ha hb f
-    | exact MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.const_coeff ha) hb f
 
 theorem subst_single_var {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : MvPowerSeries.HasSubst b)
     (x : ι) (f : PowerSeries K) :
@@ -106,9 +104,7 @@ theorem constantCoeff_frobVar {ι : Type} {p : ℕ} (hp : p ≠ 0) (f : MvPowerS
     MvPowerSeries.constantCoeff (frobVar p f) = MvPowerSeries.constantCoeff f := by
   have e : frobVar p f = MvPowerSeries.expand p hp f := by
     first
-      | rfl
       | (unfold frobVar; simp [MvPowerSeries.expand])
-      | (unfold frobVar; rw [MvPowerSeries.expand_apply])
   rw [e, MvPowerSeries.constantCoeff_expand]
 
 theorem frobVar_psubst {ι : Type} {p : ℕ} (hp : p ≠ 0) {a : MvPowerSeries ι K}
@@ -199,7 +195,6 @@ theorem pderiv_single_self {ι : Type} [Finite ι] (x : ι) (f : PowerSeries K) 
   rw [Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X x) f x]
   first
     | rw [MvPowerSeries.pderiv_X_self, mul_one]
-    | simp [MvPowerSeries.pderiv_X]
 
 theorem pderiv_single_ne {ι : Type} [Finite ι] {x y : ι} (h : y ≠ x) (f : PowerSeries K) :
     MvPowerSeries.pderiv (R := K) x (at1 y f) = 0 := by
@@ -207,17 +202,15 @@ theorem pderiv_single_ne {ι : Type} [Finite ι] {x y : ι} (h : y ≠ x) (f : P
   rw [Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X y) f x]
   first
     | rw [MvPowerSeries.pderiv_X_of_ne h, mul_zero]
-    | simp [MvPowerSeries.pderiv_X, h]
 
 theorem pderiv_prod (k : K) (f g : PowerSeries K) :
     MvPowerSeries.pderiv (R := K) (0 : Fin 2) (MvPowerSeries.C k * (at1 0 f * at1 1 g)) =
       MvPowerSeries.C k * (at1 0 (PowerSeries.derivative (R := K) f) * at1 1 g) := by
   have hC : MvPowerSeries.pderiv (R := K) (0 : Fin 2) (MvPowerSeries.C k) = 0 := by
     ext n
-    simp [MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_C]
+    simp
   have h10 : (1 : Fin 2) ≠ 0 := by decide
-  simp only [Derivation.leibniz, hC, pderiv_single_self, pderiv_single_ne h10, smul_zero, add_zero, zero_add,
-    smul_eq_mul]
+  simp only [Derivation.leibniz, hC, pderiv_single_self, pderiv_single_ne h10, smul_eq_mul]
   ring
 
 theorem partial_coboundary_linear {F : MvPowerSeries (Fin 2) K} (hF0 : MvPowerSeries.constantCoeff F = 0) (k q : K)
@@ -234,8 +227,6 @@ theorem partial_coboundary_linear {F : MvPowerSeries (Fin 2) K} (hF0 : MvPowerSe
       ψ (MvPowerSeries.C a) = MvPowerSeries.C a := fun ψ a => by
     first
       | exact ψ.commutes a
-      | (have h := ψ.commutes a; rwa [MvPowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply] at h)
-      | simp
   unfold d1
   rw [← MvPowerSeries.coe_substAlgHom h1, ← MvPowerSeries.coe_substAlgHom h2,
     ← MvPowerSeries.coe_substAlgHom h3]

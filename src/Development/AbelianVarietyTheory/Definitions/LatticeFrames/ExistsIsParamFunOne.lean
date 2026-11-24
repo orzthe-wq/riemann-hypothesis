@@ -80,11 +80,6 @@ theorem exists_cartan {m : Type} [Fintype m] [DecidableEq m] {n : ℕ} (e : Fin 
     have := congrArg (C' *ᵥ ·) hxy
     simpa [Matrix.mulVec_mulVec, h1] using this
 
-theorem gramAt_unit (V : HSp D) (τ : D.what₂.Tau) : IsUnit (gramAt D V τ).det := by
-  have : (gramAt D V τ).det = tauE D τ V.gram.det := (RingHom.map_det _ _).symm
-  rw [this]
-  exact (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).map _
-
 theorem isSplit_two (v : FinPl D) (h2 : (2 : 𝓞 D.host.F) ∈ v.asIdeal) : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v := by
   have hun : Formalism.MainNotions.SchurIrreducible.IsUnram (E := D.host.E) v := fun P _ => by
     haveI := GlobalTheory.BaseChangeExistsCompare.unram_of_cm D D.sp.cm P
@@ -132,13 +127,6 @@ theorem isSphOff_of_vac {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : 
   · rintro rfl
     obtain ⟨⟨p, hp⟩, h'⟩ := h.2.norm
     simpa [nrm2] using h' p hp
-
-section Coef
-
-variable {ψ : AddChar (AF D.host.F) ℂ} {A B : HSp D} {χA χB : (AE D)ˣ →* Circle} {om : WRep A B} {ν : Measure (WO A B)}
-  {𝓕 : Set (WO A B)} {Φ₁ Φ₂ : WO A B → ℂ}
-
-end Coef
 
 end GlobalTheory.Core.Rk.IP.Model
 

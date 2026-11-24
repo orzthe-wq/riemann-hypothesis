@@ -24,13 +24,15 @@ def bind(plan,master,receipt):
     plan=Path(plan);snapshot=rpc.read(plan/'snapshot.json')
     rpc.archive_receipt(receipt)
     rpc.require(master['schema']==1 and master['snapshot']==snapshot['fingerprint'],'foreign input inventory')
-    rpc.require(len(master['modules'])==len(set(master['modules'])),'duplicate master module')
+    master_modules = set(master['modules'])
+    rpc.require(len(master['modules'])==len(master_modules),'duplicate master module')
     for row in rpc.read(plan/'matrix.json')['include']:
         control=plan/row['id'];lease=rpc.read(control/'lease.json');request=rpc.read(control/'request-0.json')
         names=request['modules']
-        rpc.require(set(names)<=set(master['modules']),'requested module missing from inventory')
+        requested_modules = set(names)
+        rpc.require(requested_modules<=master_modules,'requested module missing from inventory')
         subset={'schema':1,'snapshot':master['snapshot'],'modules':names,
-                'files':[x for x in master['files'] if x['module'] in set(names)]}
+                'files':[x for x in master['files'] if x['module'] in requested_modules]}
         paths={x['path'] for x in subset['files']}
         for name in names:
             stem='/'.join(name.split('.'))

@@ -172,9 +172,7 @@ theorem lin_of_generators {X : Scheme.{0}} {O M : Type} [CommRing O] [AddCommGro
     | neg y _ hy => intro a; rw [neg_smul, hevneg, hy, hactneg, GrpObj.comp_inv]
   exact key o (by rw [hs]; exact AddSubgroup.mem_top o) a
 
-private lemma spMap_comp_moduli_spaces {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
-    (f : R →+* R') (g : R' →+* R'') : spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp [spMap, CommRingCat.ofHom_comp]
+private alias spMap_comp_moduli_spaces := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp
 
 private lemma modN_add' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} {k : ℕ} {x y : Dw.La} (hx : Dw.ModN k x) (hy : Dw.ModN k y) :

@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.NormConst
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsThetaPtStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsThetaPt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -74,7 +74,7 @@ theorem exists_isNormUn : Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberFie
     have hκ0 : κ ≠ 0 := by
       rintro rfl
       exact hne (by rw [← hκ]; simp)
-    obtain ⟨y, hy⟩ := GlobalTheory.T.exists_isThetaPt' hS E H Dw l Xo c σ g e F r M k T _ hb κ hκ0
+    obtain ⟨y, hy⟩ := _root_.GlobalTheory.FrameUnif.ThetaPtEx.exists_thetaPt hS E H Dw l Xo c σ g e F r M k T _ hb κ hκ0
     exact ⟨y, κ, hκ, hy⟩
   choose un hun using key
   exact ⟨un, hun⟩

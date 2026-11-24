@@ -168,7 +168,7 @@ theorem aVT_mod {l L N p : ℕ} (hL : 1 ≤ L) (hl : l ≠ 0) (hN : N ≠ 0) (hp
     push_cast
     rw [ZMod.natCast_self, zero_pow (by omega)]
     ring
-  · simp only [aVT, Matrix.cons_val_one, Matrix.head_cons]
+  · simp only [aVT, Matrix.cons_val_one]
     push_cast
     rw [ZMod.natCast_self, zero_pow (by omega)]
     linear_combination (N : ZMod l) * hb

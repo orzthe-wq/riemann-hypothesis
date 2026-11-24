@@ -2,7 +2,7 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePointStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PrimeChartExistsUniquePoint
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.RegAtIsLocalRingIsFractionRingStalk
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -90,6 +90,6 @@ theorem eq_of_regAt_eq_of_coordTie :
     intro s
     rw [hp' s]
     simp only [unitAt, e]
-  exact (GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ o κ x h c hc.1 _ hI).unique ⟨hc, hp'⟩ ⟨hq, hq'⟩
+  exact (_root_.GlobalTheory.CompanionTheory.Ar.chart_point_of_prime X Ω ξ o κ x h c hc.1 _ hI).unique ⟨hc, hp'⟩ ⟨hq, hq'⟩
 
 end GlobalTheory.CompanionTheory.Ar.SncBase

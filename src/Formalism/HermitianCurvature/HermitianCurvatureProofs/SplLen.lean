@@ -84,7 +84,7 @@ private theorem dx_eq_deriv_crv (x : Bool × Mat k r) (f : Mat k r → E) (g : M
 
 private theorem dirL_eq_dirv (x : Bool × Mat k r) (g : Mat k r) : dirL x g = dirv x g := by
   rcases x with ⟨b, X⟩
-  cases b <;> first | rfl | simp [dirL, dirv]
+  cases b <;> first | rfl
 
 lemma dx_fd (x : Bool × Mat k r) {f : Mat k r → E} (hf : Differentiable ℝ f) :
     Dx x f = fun g => fderiv ℝ f g (dirL x g) := by

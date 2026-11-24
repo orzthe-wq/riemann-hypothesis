@@ -56,20 +56,20 @@ theorem castGL_bc {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {m n : 
     castGL h (Formalism.UG.bc f x) = Formalism.UG.bc f (castGL h x) := by
   subst h
   ext i j
-  simp [castGL, Formalism.UG.bc, Matrix.reindexAlgEquiv_apply]
+  simp [castGL, Formalism.UG.bc]
 
 theorem castGL_symm_castGL' {A : Type} [CommRing A] {m n : ℕ} (h : m = n) (x : GL (Fin m) A) :
     castGL h.symm (castGL h x) = x := by
   subst h
   ext i j
-  simp [castGL, Matrix.reindexAlgEquiv_apply]
+  simp [castGL]
 
 theorem castGL_mem_UJ_one {A : Type} [CommRing A] (σ : A →+* A) {m n : ℕ} (h : m = n) (x : GL (Fin m) A)
     (hx : x ∈ Formalism.UG.UJ σ (1 : Matrix (Fin m) (Fin m) A)) : castGL h x ∈ Formalism.UG.UJ σ (1 : Matrix (Fin n) (Fin n) A) := by
   subst h
   have e : castGL (rfl : m = m) x = x := by
     ext i j
-    simp [castGL, Matrix.reindexAlgEquiv_apply]
+    simp [castGL]
   rwa [e]
 
 theorem bc_injective {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (hf : Function.Injective f) {m : ℕ} :
@@ -140,8 +140,8 @@ def psiQ (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gram = 1) :
         (⟨Formalism.UG.bc (inclR (F := X.toD7.host.F) (AF X.toD7.host.F)) (castGL (rkEq X i) (γ : GL (Fin X.B.R.nV) X.toD7.host.E)),
           bc_inclR_mem_HR _ _ _ _ hm⟩ : HR (AF X.toD7.host.F) X.toD7.sp.cm.sig (Vc X.toD7 i).gram)),
       Subgroup.mem_subgroupOf.2 ⟨_, hm, rfl⟩⟩
-  map_one' := Subtype.ext (Subtype.ext (by first | rfl | (simp only [map_one]; rfl) | (simp <;> rfl)))
-  map_mul' a b := Subtype.ext (Subtype.ext (by first | rfl | (simp only [map_mul]; rfl) | (simp <;> rfl)))
+  map_one' := Subtype.ext (Subtype.ext (by first | (simp only; rfl) | (simp <;> rfl)))
+  map_mul' a b := Subtype.ext (Subtype.ext (by first | (simp only; rfl) | (simp <;> rfl)))
 
 theorem psiQ_mat (X : Stages) (i : Fin X.toD7.R.m) (hg : (Vc X.toD7 i).gram = 1) (γ : Formalism.L2.Col.URat X.toD7.sp.cm X.B.R.nV) :
     matHom (Vc X.toD7 i) (psiQ X i hg γ : GA X.toD7 (Vc X.toD7 i)) =

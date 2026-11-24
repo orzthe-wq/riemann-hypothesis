@@ -1,7 +1,9 @@
 module
 
+public import Formalism.LocalToGlobal.GlobalTheory.GL6.BwAValIntegralNonneg
+public import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
+public import Formalism.LocalToGlobal.UnitaryNorms.UnramT
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.RootOfUnityInt
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.NatNotMemPv
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -24,7 +26,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -37,8 +38,177 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.GlobalTheory.GL6.Statement
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.SeenZero, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.NatNotMemPv, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.IntInvOfLoc
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.SeenZero =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.SeenZero", "h": "module\n\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.BwAValIntegralNonneg\npublic import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts\npublic import Formalism.LocalToGlobal.UnitaryNorms.UnramT\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.GlobalTheory.GL6.Statement\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField Ideal
+
+namespace PI.UnitaryGroupMassFormula.IAT
+
+open Formalism.BasicNotions Formalism.L2.Forms Formalism.L2.Host Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
+
+variable {D : D7} {u : D.what₂.Word}
+
+theorem seen_pos (A : AtTTied u) (w : D.what₂.places.Pl) (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) (hseen : (D.fm u).seenP w = true)
+    (v : (D.mem u).A.vT) (y : 𝓞 D.host.E) (hy : y ∈ A.Pv v) :
+    0 < D.what₂.places.val w (D.embE (D.host.sigmaOf (D.eTau ((D.fm u).tauOf w v) : D.R.GG) (y : D.host.E))) := by
+  have hw' : D.what₂.places.resChar w = (D.mem u).A.T := hw
+  let σ : D.host.E ≃ₐ[ℚ] D.host.E :=
+    D.host.sigmaOf (D.eTau ((D.fm u).tauOf w v) : D.R.GG)
+  let ν : AddValuation D.host.E (WithTop ℤ) :=
+    (D.what₂.places.val w).comap (D.embE.comp (σ : D.host.E →+* D.host.E))
+  change 0 < ν (y : D.host.E)
+  let cO : 𝓞 D.host.E ≃+* 𝓞 D.host.E := RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv
+  have hcO : ∀ y : 𝓞 D.host.E, ((cO y : 𝓞 D.host.E) : D.host.E) = D.host.conj (y : D.host.E) := fun y => rfl
+  have hinv := conj_conj D.host
+  have mkF : ∀ z : 𝓞 D.host.E, D.host.conj (z : D.host.E) = z →
+      ∃ zF : 𝓞 D.host.F, algebraMap (𝓞 D.host.F) (𝓞 D.host.E) zF = z := by
+    intro z hz
+    have hF : (z : D.host.E) ∈ D.host.F := (D.host.conjE_mem_hostF_iff _).2 hz
+    refine ⟨⟨⟨z, hF⟩, ?_⟩, ?_⟩
+    · exact (isIntegral_algHom_iff (D.host.F.subtype.toIntAlgHom) Subtype.val_injective).mp
+        (RingOfIntegers.isIntegral_coe z)
+    · rfl
+  have hcoe : ∀ zF : 𝓞 D.host.F, algebraMap (𝓞 D.host.F) D.host.E zF =
+      ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) zF : 𝓞 D.host.E) : D.host.E) := fun _ => rfl
+  have hTau : ∀ zF : 𝓞 D.host.F, zF ∈ (A.eV v).1.asIdeal ↔
+      0 < ν ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) zF : 𝓞 D.host.E) : D.host.E) := by
+    intro zF
+    rw [A.tauOf w hw' v zF, hcoe]
+    exact Iff.rfl
+  have hπ : 0 < ν (A.piU : D.host.E) := by
+    have := A.seenP w hw' ((D.fm u).tauOf w v)
+    rw [if_pos hseen] at this
+    exact this
+  have hpb : A.res v (cO A.piU) ≠ 0 := A.res_conj v (cO A.piU) rfl
+  have hπb : ν ((cO A.piU : 𝓞 D.host.E) : D.host.E) = 0 := by
+    obtain ⟨zF, hzF⟩ := mkF (A.piU + cO A.piU) (by
+      push_cast; simp only [hcO, map_add (f := _), hinv]; ring)
+    have hnot : zF ∉ (A.eV v).1.asIdeal := by
+      rw [A.res_v, hzF, map_add (f := _), A.res_pi, zero_add]; exact hpb
+    rw [hTau, hzF] at hnot
+    refine le_antisymm (not_lt.mp fun h => hnot ?_) (addVal_nonneg ν _)
+    push_cast
+    exact lt_of_lt_of_le (lt_min hπ h) (ν.map_add _ _)
+  have hy' : A.res v y = 0 := hy
+  obtain ⟨zF, hzF⟩ := mkF (y * cO A.piU + cO y * A.piU) (by
+    push_cast; simp only [hcO, map_add (f := _), map_mul, hinv]; ring)
+  have hin : zF ∈ (A.eV v).1.asIdeal := by
+    rw [A.res_v, hzF, map_add (f := _), map_mul, map_mul, hy', A.res_pi]; simp
+  rw [hTau, hzF] at hin
+  push_cast at hin
+  have h2 : 0 < ν (((cO y : 𝓞 D.host.E) : D.host.E) * A.piU) := by
+    rw [ν.map_mul]; exact lt_of_lt_of_le hπ (le_add_of_nonneg_left (addVal_nonneg ν _))
+  have h3 : 0 < ν ((y : D.host.E) * (cO A.piU : 𝓞 D.host.E)) := by
+    have : (y : D.host.E) * (cO A.piU : 𝓞 D.host.E) =
+        ((y : D.host.E) * (cO A.piU : 𝓞 D.host.E) + ((cO y : 𝓞 D.host.E) : D.host.E) * A.piU) -
+          ((cO y : 𝓞 D.host.E) : D.host.E) * A.piU := by ring
+    rw [this]
+    exact lt_of_lt_of_le (lt_min hin h2) (ν.map_sub _ _)
+  rwa [ν.map_mul, hπb, add_zero] at h3
+
+theorem seen_zero (A : AtTTied u) (w : D.what₂.places.Pl) (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) (hseen : (D.fm u).seenP w = true)
+    (v : (D.mem u).A.vT) (s : 𝓞 D.host.E) (hs : s ∉ A.Pv v) :
+    D.what₂.places.val w (D.embE (D.host.sigmaOf (D.eTau ((D.fm u).tauOf w v) : D.R.GG) (s : D.host.E))) = 0 := by
+  let σ : D.host.E ≃ₐ[ℚ] D.host.E :=
+    D.host.sigmaOf (D.eTau ((D.fm u).tauOf w v) : D.R.GG)
+  let ν : AddValuation D.host.E (WithTop ℤ) :=
+    (D.what₂.places.val w).comap (D.embE.comp (σ : D.host.E →+* D.host.E))
+  have hPmax : (A.Pv v).IsMaximal := RingHom.ker_isMaximal_of_surjective (A.res v) (A.res_surj v)
+  exact addVal_eq_zero_of_not_mem ν (A.Pv v) hPmax (fun y hy => seen_pos A w hw hseen v y hy) s hs
+
+theorem seen_mem (A : AtTTied u) (w : D.what₂.places.Pl) (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) (hseen : (D.fm u).seenP w = true)
+    (v : (D.mem u).A.vT) (e : D.host.E) (s : 𝓞 D.host.E) (hs : s ∉ A.Pv v)
+    (he : (s : D.host.E) * e ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) :
+    embT D ((D.fm u).tauOf w v) e ∈ bwA_Ow D w := by
+  obtain ⟨a, ha⟩ := he
+  let σ : D.host.E ≃ₐ[ℚ] D.host.E :=
+    D.host.sigmaOf (D.eTau ((D.fm u).tauOf w v) : D.R.GG)
+  let ν : AddValuation D.host.E (WithTop ℤ) :=
+    (D.what₂.places.val w).comap (D.embE.comp (σ : D.host.E →+* D.host.E))
+  have hν : ∀ y, ν y = D.what₂.places.val w (D.embE (σ y)) := fun y => rfl
+  have hs0 : ν (s : D.host.E) = 0 := seen_zero A w hw hseen v s hs
+  have ha0 : 0 ≤ ν (a : D.host.E) := addVal_nonneg ν a
+  have he0 : 0 ≤ ν e := by
+    have h1 : ν ((s : D.host.E) * e) = ν (a : D.host.E) := by rw [← ha]
+    rw [ν.map_mul, hs0, zero_add] at h1
+    rw [h1]; exact ha0
+  rw [bwA_embT_eq]
+  exact ⟨_, he0, rfl⟩
+
+end PI.UnitaryGroupMassFormula.IAT
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.SeenZero =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.NatNotMemPv =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.NatNotMemPv", "h": "module\n\npublic import Formalism.LocalToGlobal.GlobalTheory.GL6.BwAValIntegralNonneg\npublic import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.SeenZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.LocalToGlobal.GlobalTheory.GL6.Statement\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField Ideal Matrix
+
+namespace PI.UnitaryGroupMassFormula.IAT
+
+open Formalism.BasicNotions Formalism.L2.Forms Formalism.L2.Host Formalism.L2.GlobalTheoryTheory.LocalLatticeBases
+
+variable {D : D7} {u : D.what₂.Word}
+
+theorem nat_not_mem_Pv (A : AtTTied u) (v : (D.mem u).A.vT) (m : ℕ) (hm : ¬ (D.mem u).A.T ∣ m) :
+    (m : 𝓞 D.host.E) ∉ A.Pv v := by
+  have : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩
+  have : CharP ((D.mem u).A.Fv v) (D.mem u).A.T := charP_of_card_eq_prime ((D.mem u).A.card_Fv v)
+  intro h
+  have h0 : A.res v (m : 𝓞 D.host.E) = 0 := h
+  rw [map_natCast] at h0
+  exact hm ((CharP.cast_eq_zero_iff _ (D.mem u).A.T m).1 h0)
+
+theorem coord_mem (A : AtTTied u) (w : D.what₂.places.Pl) (hw : Formalism.MainNotions.product_first_zeroth_parts.OverT D u w) (hseen : (D.fm u).seenP w = true)
+    (v : (D.mem u).A.vT) {n : ℕ} {L : Set (Fin n → D.host.E)} {B : GL (Fin n) D.host.E}
+    (hB : IsLocBasis (D.mem u).A.T L B) (x : Fin n → D.host.E) (s : 𝓞 D.host.E) (hs : s ∉ A.Pv v)
+    (hx : (s : D.host.E) • x ∈ L) (a : Fin n) :
+    embT D ((D.fm u).tauOf w v) ((((B⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) *ᵥ x) a) ∈ bwA_Ow D w := by
+  have hy : ∃ m : ℕ, ¬ (D.mem u).A.T ∣ m ∧ (m : D.host.E) • ((s : D.host.E) • x) ∈ L :=
+    ⟨1, (D.mem u).A.T_prime.not_dvd_one, by rw [Nat.cast_one, one_smul]; exact hx⟩
+  obtain ⟨m, hm, hm'⟩ := (hB _).1 hy
+  have hma := hm' a
+  rw [Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, ← mul_assoc] at hma
+  refine seen_mem A w hw hseen v _ ((m : 𝓞 D.host.E) * s) ?_ ?_
+  · intro h
+    rcases Ideal.IsPrime.mem_or_mem (inferInstance : (A.Pv v).IsPrime) h with h | h
+    · exact nat_not_mem_Pv A v m hm h
+    · exact hs h
+  · have e : (((m : 𝓞 D.host.E) * s : 𝓞 D.host.E) : D.host.E) = (m : D.host.E) * (s : D.host.E) := by
+      push_cast; ring
+    rw [e]
+    exact hma
+
+end PI.UnitaryGroupMassFormula.IAT
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.NatNotMemPv =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.IntInvOfLoc =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.IntInvOfLoc", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.RootOfUnityInt\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.NatNotMemPv\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -170,3 +340,6 @@ theorem intInv_of_loc (A : AtTTied u) (w : D.what₂.places.Pl) (hw : Formalism.
 end PI.UnitaryGroupMassFormula.IAT
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IntegralityAtPrimeLattices.IntInvOfLoc =====

@@ -56,9 +56,7 @@ noncomputable def evalAt {E : Type} [Field E] [NumberField E] (P : HeightOneSpec
   map_zero' := rfl
   map_add' _ _ := rfl
 
-theorem val_algebraMap {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (a : E) :
-    Valued.v (algebraMap E (P.adicCompletion E) a) = P.valuation E a :=
-  P.valuedAdicCompletion_eq_valuation' a
+alias val_algebraMap := _root_.Formalism.UG.P.levelaf_valued_algebraMap
 
 theorem evalAt_algebraMap {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (a : E) :
     evalAt P (algebraMap E (FiniteAdeleRing (𝓞 E) E) a) = algebraMap E (P.adicCompletion E) a := rfl

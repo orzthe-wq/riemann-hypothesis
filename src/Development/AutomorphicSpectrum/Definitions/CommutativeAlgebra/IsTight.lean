@@ -111,7 +111,7 @@ def afLat (p : ℕ) {ι : Type} [Fintype ι] (M : Submodule R ((ι → ZMod p) �
     rintro c l ⟨g, hg, h⟩
     refine ⟨c • g, M.smul_mem c hg, fun x => ?_⟩
     convert Submodule.smul_mem _ c (h x) using 1
-    simp only [Pi.smul_apply, smul_eq_mul, smul_sub, mul_assoc, ← Finset.mul_sum, map_mul,
+    simp only [Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, map_mul,
       Algebra.smul_def]
     ring
 

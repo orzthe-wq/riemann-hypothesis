@@ -1,7 +1,9 @@
 module
 
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibDis
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibGlue
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibFour
+public import Mathlib.MeasureTheory.Integral.RieszMarkovKakutani.Real
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.DensGen
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibGlue
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -27,7 +29,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -40,9 +41,310 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Separation.CompletelyRegular
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibDis
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Topology.Separation.CompletelyRegular
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibGlue, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibDis
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibGlue =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibGlue", "h": "module\n\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibGlue\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibFour\npublic import Mathlib.MeasureTheory.Integral.RieszMarkovKakutani.Real\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.DensGen\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.VolStabS.Glue
+
+open MeasureTheory Topology Set Filter PI.VolStabS
+open scoped CompactlySupported
+
+section Ext
+
+variable {V : Type} [TopologicalSpace V] [T2Space V]
+
+open Classical in
+def extZ (U : Set V) (φ : U → ℝ) : V → ℝ := fun v => if h : v ∈ U then φ ⟨v, h⟩ else 0
+
+theorem extZ_val (U : Set V) (φ : U → ℝ) (u : U) : extZ U φ u = φ u := by simp [extZ]
+
+theorem extZ_props {U : Set V} (hU : IsOpen U) (φ : U → ℝ) (hc : Continuous φ)
+    (hs : HasCompactSupport φ) : IsCcOn U (extZ U φ) := by
+  set K : Set V := Subtype.val '' tsupport φ with hKdef
+  have hK : IsCompact K := hs.image continuous_subtype_val
+  have hKU : K ⊆ U := by rintro _ ⟨u, -, rfl⟩; exact u.2
+  have hzero : ∀ v ∉ K, extZ U φ v = 0 := by
+    intro v hv
+    by_cases h : v ∈ U
+    · simp only [extZ, h, dite_true]
+      exact image_eq_zero_of_notMem_tsupport (fun hm => hv ⟨⟨v, h⟩, hm, rfl⟩)
+    · simp [extZ, h]
+  have hsupp : tsupport (extZ U φ) ⊆ K := by
+    apply closure_minimal _ hK.isClosed
+    intro v hv
+    by_contra h
+    exact hv (hzero v h)
+  refine ⟨?_, HasCompactSupport.intro' hK hK.isClosed hzero, hsupp.trans hKU⟩
+  rw [continuous_iff_continuousAt]
+  intro v
+  by_cases hv : v ∈ U
+  · have hcon : ContinuousOn (extZ U φ) U := by
+      rw [continuousOn_iff_continuous_restrict]
+      convert hc using 1
+      funext u; exact extZ_val U φ u
+    exact hcon.continuousAt (hU.mem_nhds hv)
+  · have hvK : v ∉ K := fun h => hv (hKU h)
+    have hev : (fun _ => (0 : ℝ)) =ᶠ[𝓝 v] extZ U φ := by
+      filter_upwards [hK.isClosed.isOpen_compl.mem_nhds hvK] with w hw using (hzero w hw).symm
+    exact (continuousAt_const (y := (0 : ℝ))).congr hev
+
+theorem extZ_add (U : Set V) (φ ψ : U → ℝ) : extZ U (φ + ψ) = extZ U φ + extZ U ψ := by
+  funext v; by_cases h : v ∈ U <;> simp [extZ, h]
+
+theorem extZ_smul (U : Set V) (c : ℝ) (φ : U → ℝ) : extZ U (c • φ) = c • extZ U φ := by
+  funext v; by_cases h : v ∈ U <;> simp [extZ, h]
+
+theorem extZ_nonneg (U : Set V) (φ : U → ℝ) (h : 0 ≤ φ) : 0 ≤ extZ U φ := by
+  intro v; by_cases hv : v ∈ U
+  · simp only [extZ, hv, dite_true]; exact h _
+  · simp [extZ, hv]
+
+end Ext
+
+section Dens
+
+variable {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [TopologicalSpace X]
+  [MeasurableSpace X] {μ : Measure V} {ν : Measure X} {f : V → Y} {ι : X → Y} {U : Set V}
+
+open Classical in
+def G (hD : DensAll μ f ι ν U) (φ : V → ℝ) : X → ℝ :=
+  if h : IsCcOn U φ then Classical.choose (hD φ h.1 h.2.1 h.2.2) else 0
+
+theorem G_spec (hD : DensAll μ f ι ν U) {φ : V → ℝ} (h : IsCcOn U φ) :
+    Continuous (G hD φ) ∧ ∀ S : Set X, IsCompact S →
+      ∫ v in f ⁻¹' (ι '' S), φ v ∂μ = ∫ b in S, G hD φ b ∂ν := by
+  classical
+  simp only [G, dif_pos h]
+  exact Classical.choose_spec (hD φ h.1 h.2.1 h.2.2)
+
+variable [OpensMeasurableSpace X] [T2Space X] [LocallyCompactSpace X]
+  [IsFiniteMeasureOnCompacts ν] [ν.IsOpenPosMeasure]
+
+theorem dens_unique {g1 g2 : X → ℝ} (h1 : Continuous g1) (h2 : Continuous g2)
+    (h : ∀ S, IsCompact S → ∫ b in S, g1 b ∂ν = ∫ b in S, g2 b ∂ν) : g1 = g2 := by
+  funext b
+  have := DensGen.eq_zero_of_setIntegral (ν := ν) (fun b => g1 b - g2 b) univ b univ_mem
+    (h1.sub h2).continuousOn (fun S hS _ => by
+      rw [integral_sub (h1.continuousOn.integrableOn_compact hS)
+        (h2.continuousOn.integrableOn_compact hS), h S hS, sub_self])
+  linarith
+
+theorem dens_nonneg {g : X → ℝ} (hg : Continuous g)
+    (h : ∀ S, IsCompact S → 0 ≤ ∫ b in S, g b ∂ν) (b0 : X) : 0 ≤ g b0 := by
+  apply (config := { allowSynthFailures := true }) PI.VolStabSW.Glue.dens_nonneg <;> assumption
+
+variable [IsFiniteMeasureOnCompacts μ] [OpensMeasurableSpace V]
+
+theorem isCc_add {φ ψ : V → ℝ} (hφ : IsCcOn U φ) (hψ : IsCcOn U ψ) : IsCcOn U (φ + ψ) :=
+  ⟨hφ.1.add hψ.1, hφ.2.1.add hψ.2.1,
+    (tsupport_add φ ψ).trans (union_subset hφ.2.2 hψ.2.2)⟩
+
+theorem isCc_smul (c : ℝ) {φ : V → ℝ} (hφ : IsCcOn U φ) : IsCcOn U (c • φ) :=
+  ⟨hφ.1.const_smul c, hφ.2.1.smul_left,
+    (tsupport_smul_subset_right (fun _ : V => c) φ).trans hφ.2.2⟩
+
+theorem G_add (hD : DensAll μ f ι ν U) {φ ψ : V → ℝ} (hφ : IsCcOn U φ) (hψ : IsCcOn U ψ) :
+    G hD (φ + ψ) = G hD φ + G hD ψ := by
+  have hs := G_spec hD (isCc_add hφ hψ)
+  refine dens_unique (ν := ν) hs.1 ((G_spec hD hφ).1.add (G_spec hD hψ).1) fun S hS => ?_
+  rw [← hs.2 S hS, Pi.add_def, integral_add
+    (hφ.1.integrable_of_hasCompactSupport hφ.2.1).integrableOn
+    (hψ.1.integrable_of_hasCompactSupport hψ.2.1).integrableOn, (G_spec hD hφ).2 S hS,
+    (G_spec hD hψ).2 S hS, Pi.add_def, integral_add
+    ((G_spec hD hφ).1.continuousOn.integrableOn_compact hS)
+    ((G_spec hD hψ).1.continuousOn.integrableOn_compact hS)]
+
+theorem G_smul (hD : DensAll μ f ι ν U) (c : ℝ) {φ : V → ℝ} (hφ : IsCcOn U φ) :
+    G hD (c • φ) = c • G hD φ := by
+  have hs := G_spec hD (isCc_smul c hφ)
+  refine dens_unique (ν := ν) hs.1 ((G_spec hD hφ).1.const_smul c) fun S hS => ?_
+  rw [← hs.2 S hS]
+  simp only [Pi.smul_apply, smul_eq_mul]
+  rw [integral_const_mul, integral_const_mul, (G_spec hD hφ).2 S hS]
+
+theorem G_nonneg (hD : DensAll μ f ι ν U) {φ : V → ℝ} (hφ : IsCcOn U φ) (h0 : 0 ≤ φ) :
+    0 ≤ G hD φ := fun b =>
+  dens_nonneg (G_spec hD hφ).1 (fun S hS => by
+    rw [← (G_spec hD hφ).2 S hS]; exact integral_nonneg fun v => h0 v) b
+
+end Dens
+
+section Riesz
+
+variable {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
+  [LocallyCompactSpace V] [T2Space V] [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
+  [T2Space X] [LocallyCompactSpace X] [TopologicalSpace Y] [T2Space Y]
+  {μ : Measure V} {ν : Measure X} {f : V → Y} {ι : X → Y} {U : Set V}
+  [IsFiniteMeasureOnCompacts ν] [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts μ]
+
+theorem tsupport_extZ (U : Set V) (φ : U → ℝ) (hs : HasCompactSupport φ) :
+    tsupport (extZ U φ) ⊆ Subtype.val '' tsupport φ := by
+  have hK : IsCompact (Subtype.val '' tsupport φ) := hs.image continuous_subtype_val
+  apply closure_minimal _ hK.isClosed
+  intro v hv
+  by_contra h
+  apply hv
+  by_cases hU : v ∈ U
+  · simp only [extZ, hU, dite_true]
+    exact image_eq_zero_of_notMem_tsupport (fun hm => h ⟨⟨v, hU⟩, hm, rfl⟩)
+  · simp [extZ, hU]
+
+def lam (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) : C_c(U, ℝ) →ₚ[ℝ] ℝ :=
+  PositiveLinearMap.mk₀
+    { toFun := fun ψ => G hD (extZ U ψ) b
+      map_add' := fun ψ1 ψ2 => by
+        simp only [CompactlySupportedContinuousMap.coe_add, extZ_add]
+        rw [G_add hD (extZ_props hU ψ1 ψ1.continuous ψ1.hasCompactSupport)
+          (extZ_props hU ψ2 ψ2.continuous ψ2.hasCompactSupport)]
+        rfl
+      map_smul' := fun c ψ => by
+        simp only [CompactlySupportedContinuousMap.coe_smul, extZ_smul, RingHom.id_apply]
+        rw [G_smul hD c (extZ_props hU ψ ψ.continuous ψ.hasCompactSupport)]
+        rfl }
+    (fun ψ hψ => G_nonneg hD (extZ_props hU ψ ψ.continuous ψ.hasCompactSupport)
+      (extZ_nonneg U ψ fun u => (CompactlySupportedContinuousMap.le_def.1 hψ) u) b)
+
+theorem lam_apply (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) (ψ : C_c(U, ℝ)) :
+    lam hD hU b ψ = G hD (extZ U ψ) b := rfl
+
+variable [OpensMeasurableSpace V]
+
+def fibG (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) : Measure V :=
+  haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
+  (RealRMK.rieszMeasure (lam hD hU b)).map Subtype.val
+
+def restr (hU : IsOpen U) (φ : V → ℝ) (h : IsCcOn U φ) : C_c(U, ℝ) where
+  toFun := fun u => φ u
+  continuous_toFun := h.1.comp continuous_subtype_val
+  hasCompactSupport' := by
+    have hsub : tsupport φ ⊆ Set.range (Subtype.val : U → V) := by
+      rw [Subtype.range_coe]; exact h.2.2
+    have hK : IsCompact ((Subtype.val : U → V) ⁻¹' tsupport φ) :=
+      (Topology.IsInducing.subtypeVal.isCompact_preimage_iff hsub).2 h.2.1
+    exact HasCompactSupport.intro' hK ((isClosed_tsupport φ).preimage continuous_subtype_val)
+      fun u hu => image_eq_zero_of_notMem_tsupport hu
+
+theorem extZ_restr (hU : IsOpen U) (φ : V → ℝ) (h : IsCcOn U φ) :
+    extZ U (restr hU φ h) = φ := by
+  funext v
+  by_cases hv : v ∈ U
+  · simp [extZ, hv, restr]
+  · simp only [extZ, hv, dite_false]
+    exact (image_eq_zero_of_notMem_tsupport fun hm => hv (h.2.2 hm)).symm
+
+theorem fibG_integral (hD : DensAll μ f ι ν U) (hU : IsOpen U) (b : X) (φ : V → ℝ)
+    (h : IsCcOn U φ) :
+    Integrable φ (fibG hD hU b) ∧ ∫ v, φ v ∂(fibG hD hU b) = G hD φ b := by
+  haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
+  have hme : MeasurableEmbedding (Subtype.val : U → V) :=
+    MeasurableEmbedding.subtype_coe hU.measurableSet
+  have hint : Integrable (restr hU φ h) (RealRMK.rieszMeasure (lam hD hU b)) :=
+    (restr hU φ h).continuous.integrable_of_hasCompactSupport (restr hU φ h).hasCompactSupport
+  refine ⟨(hme.integrable_map_iff).2 hint, ?_⟩
+  rw [fibG, hme.integral_map]
+  have := RealRMK.integral_rieszMeasure (lam hD hU b) (restr hU φ h)
+  rw [lam_apply, extZ_restr] at this
+  exact this
+
+theorem fibG_supp (hD : DensAll μ f ι ν U) (hU : IsOpen U) (hf : Continuous f)
+    (hι : Continuous ι) (b : X) : fibG hD hU b (f ⁻¹' {ι b} ∩ U)ᶜ = 0 := by
+  haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
+  have hme : MeasurableEmbedding (Subtype.val : U → V) :=
+    MeasurableEmbedding.subtype_coe hU.measurableSet
+  rw [fibG, hme.map_apply]
+  have hOeq : (Subtype.val : U → V) ⁻¹' (f ⁻¹' {ι b} ∩ U)ᶜ = (f ∘ Subtype.val) ⁻¹' {ι b}ᶜ := by
+    ext u; simp
+  have hO : IsOpen ((f ∘ Subtype.val : U → Y) ⁻¹' {ι b}ᶜ) :=
+    isOpen_compl_singleton.preimage (hf.comp continuous_subtype_val)
+  rw [hOeq]
+  refine le_antisymm ?_ bot_le
+  rw [hO.measure_eq_iSup_isCompact]
+  refine iSup_le fun K => iSup_le fun hKO => iSup_le fun hK => ?_
+  obtain ⟨g, hg1, hgc, hgO, hg01⟩ := exists_continuousMap_one_of_isCompact_subset_isOpen hK hO hKO
+  let ψ : C_c(U, ℝ) := ⟨g, hgc⟩
+  have hle := RealRMK.rieszMeasure_le_of_eq_one (lam hD hU b) (f := ψ) (fun x => (hg01 x).1) hK
+    (fun x hx => hg1 hx)
+  refine hle.trans (le_of_eq ?_)
+  rw [lam_apply]
+  have hcc : IsCcOn U (extZ U ψ) := extZ_props hU ψ ψ.continuous ψ.hasCompactSupport
+  have hts := tsupport_extZ U ψ ψ.hasCompactSupport
+  have hCc : IsCompact (f '' tsupport (extZ U ψ)) := hcc.2.1.image hf
+  set N : Set X := (ι ⁻¹' (f '' tsupport (extZ U ψ)))ᶜ with hN
+  have hNo : IsOpen N := (hCc.isClosed.preimage hι).isOpen_compl
+  have hbN : b ∈ N := by
+    rintro ⟨v, hv, hfv⟩
+    obtain ⟨u, hu, rfl⟩ := hts hv
+    exact hgO hu hfv
+  have hz := DensGen.eq_zero_of_setIntegral (ν := ν) (G hD (extZ U ψ)) N b (hNo.mem_nhds hbN)
+    (G_spec hD hcc).1.continuousOn (fun S hS hSN => by
+      rw [← (G_spec hD hcc).2 S hS]
+      refine setIntegral_eq_zero_of_forall_eq_zero fun v hv => ?_
+      by_contra hne
+      obtain ⟨s, hs, hfs⟩ := hv
+      exact hSN hs ⟨v, subset_tsupport _ hne, hfs.symm⟩)
+  rw [hz, ENNReal.ofReal_zero]
+
+end Riesz
+
+def DisintStep : Prop :=
+  ∀ (V X Y : Type) [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V] [LocallyCompactSpace V]
+    [T2Space V] [SecondCountableTopology V] [TopologicalSpace X] [MeasurableSpace X]
+    [BorelSpace X] [LocallyCompactSpace X] [T2Space X] [SecondCountableTopology X]
+    [TopologicalSpace Y] [T2Space Y] (μ : Measure V) (ν : Measure X),
+    IsFiniteMeasureOnCompacts μ → IsFiniteMeasureOnCompacts ν → ν.IsOpenPosMeasure →
+    ∀ (f : V → Y) (ι : X → Y) (U : Set V), Continuous f → IsClosedEmbedding ι →
+      (∀ v, f v ∈ Set.range ι) → IsOpen U → ∀ fib : X → Measure V,
+      (∀ b, fib b (f ⁻¹' {ι b} ∩ U)ᶜ = 0) →
+      (∀ b K, IsCompact K → K ⊆ U → fib b K < ⊤) →
+      (∀ φ : V → ℝ, IsCcOn U φ → (∀ b, Integrable φ (fib b)) ∧
+        Continuous (fun b => ∫ v, φ v ∂(fib b)) ∧
+        ∀ S : Set X, IsCompact S → ∫ v in f ⁻¹' (ι '' S), φ v ∂μ = ∫ b in S, ∫ v, φ v ∂(fib b) ∂ν) →
+      ∀ φ : V → ENNReal, Measurable φ → ∫⁻ v in U, φ v ∂μ = ∫⁻ b, ∫⁻ v, φ v ∂(fib b) ∂ν
+
+theorem fibOfDens_of (hDis : DisintStep) : FibOfDens := by
+  intro V X Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν hμ hν hpos f ι U hf hι hr hU hD
+  refine ⟨fibG hD hU, fibG_supp hD hU hf hι.continuous, ?_, fun φ hc hs hsu => ?_⟩
+  · have hint : ∀ φ : V → ℝ, IsCcOn U φ → (fun b => ∫ v, φ v ∂(fibG hD hU b)) = G hD φ :=
+      fun φ h => funext fun b => (fibG_integral hD hU b φ h).2
+    refine hDis V X Y μ ν hμ hν hpos f ι U hf hι hr hU (fibG hD hU)
+      (fibG_supp hD hU hf hι.continuous) (fun b K hK hKU => ?_) (fun φ h => ?_)
+    · haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace
+      have hme : MeasurableEmbedding (Subtype.val : U → V) :=
+        MeasurableEmbedding.subtype_coe hU.measurableSet
+      rw [fibG, hme.map_apply]
+      have hsub : K ⊆ Set.range (Subtype.val : U → V) := by rw [Subtype.range_coe]; exact hKU
+      exact ((Topology.IsInducing.subtypeVal.isCompact_preimage_iff hsub).2 hK).measure_lt_top
+    · refine ⟨fun b => (fibG_integral hD hU b φ h).1, ?_, fun S hS => ?_⟩
+      · rw [hint φ h]; exact (G_spec hD h).1
+      · rw [hint φ h]; exact (G_spec hD h).2 S hS
+  · have h : IsCcOn U φ := ⟨hc, hs, hsu⟩
+    refine ⟨fun b _ => (fibG_integral hD hU b φ h).1, ?_⟩
+    have : (fun b => ∫ v, φ v ∂(fibG hD hU b)) = G hD φ :=
+      funext fun b => (fibG_integral hD hU b φ h).2
+    rw [this]; exact (G_spec hD h).1.continuousOn
+
+end PI.VolStabS.Glue
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibGlue =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibDis =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibDis", "h": "module\n\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerOrbitVolume.FibDis\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibGlue\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Separation.CompletelyRegular\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -79,130 +381,15 @@ variable {X Y : Type} [MeasurableSpace V] [BorelSpace V] [TopologicalSpace X] [M
 
 include hf hι hr hU h0 h2 h3
 
-theorem cc_case (ψ : V → ℝ) (hψ : IsCcOn U ψ) (h0ψ : ∀ v, 0 ≤ ψ v) :
-    ∫⁻ v, ENNReal.ofReal (ψ v) ∂μ = ∫⁻ b, ∫⁻ v, ENNReal.ofReal (ψ v) ∂(fib b) ∂ν := by
-  obtain ⟨hint, hcont, hS⟩ := h3 ψ hψ
-  set S : Set X := ι ⁻¹' (f '' tsupport ψ) with hSdef
-  have hSc : IsCompact S := hι.isCompact_preimage (hψ.2.1.image hf)
-  have hsub : tsupport ψ ⊆ f ⁻¹' (ι '' S) := by
-    intro v hv
-    obtain ⟨s, hs⟩ := hr v
-    exact ⟨s, ⟨v, hv, hs.symm⟩, hs⟩
-  have hzero : ∀ b ∉ S, ∫ v, ψ v ∂(fib b) = 0 := by
-    intro b hb
-    apply integral_eq_zero_of_ae
-    have hae : ∀ᵐ v ∂(fib b), v ∉ (f ⁻¹' {ι b} ∩ U)ᶜ := measure_eq_zero_iff_ae_notMem.1 (h0 b)
-    filter_upwards [hae] with v hv
-    simp only [mem_compl_iff, not_not] at hv
-    exact (eq_or_ne (ψ v) 0).resolve_right fun hne => hb ⟨v, subset_tsupport _ hne, hv.1⟩
-  have e1 : ∫ v in f ⁻¹' (ι '' S), ψ v ∂μ = ∫ v, ψ v ∂μ :=
-    setIntegral_eq_integral_of_forall_compl_eq_zero fun v hv =>
-      image_eq_zero_of_notMem_tsupport fun h => hv (hsub h)
-  have e2 : ∫ b in S, (∫ v, ψ v ∂(fib b)) ∂ν = ∫ b, (∫ v, ψ v ∂(fib b)) ∂ν :=
-    setIntegral_eq_integral_of_forall_compl_eq_zero fun b hb => hzero b hb
-  have hG : Integrable (fun b => ∫ v, ψ v ∂(fib b)) ν :=
-    hcont.integrable_of_hasCompactSupport (HasCompactSupport.intro' hSc hSc.isClosed hzero)
-  have hi : Integrable ψ μ := hψ.1.integrable_of_hasCompactSupport hψ.2.1
-  calc ∫⁻ v, ENNReal.ofReal (ψ v) ∂μ = ENNReal.ofReal (∫ v, ψ v ∂μ) :=
-        (ofReal_integral_eq_lintegral_ofReal hi (ae_of_all _ h0ψ)).symm
-    _ = ENNReal.ofReal (∫ b, (∫ v, ψ v ∂(fib b)) ∂ν) := by rw [← e1, hS S hSc, e2]
-    _ = ∫⁻ b, ENNReal.ofReal (∫ v, ψ v ∂(fib b)) ∂ν :=
-        ofReal_integral_eq_lintegral_ofReal hG
-          (ae_of_all _ fun b => integral_nonneg fun v => h0ψ v)
-    _ = ∫⁻ b, ∫⁻ v, ENNReal.ofReal (ψ v) ∂(fib b) ∂ν :=
-        lintegral_congr fun b => ofReal_integral_eq_lintegral_ofReal (hint b) (ae_of_all _ h0ψ)
-
-theorem open_case (O : Set V) (hO : IsOpen O) (hOU : O ⊆ U) :
-    Measurable (fun b => fib b O) ∧ μ O = ∫⁻ b, fib b O ∂ν := by
-  obtain ⟨φ, hφ, h01, hmono, hlim⟩ := approx O hO
-  have hcc : ∀ k, IsCcOn U (φ k) := fun k => ⟨(hφ k).1, (hφ k).2.1, (hφ k).2.2.trans hOU⟩
-  have hmeas : ∀ k, Measurable fun v => ENNReal.ofReal (φ k v) :=
-    fun k => ENNReal.measurable_ofReal.comp (hφ k).1.measurable
-  have hmon : Monotone fun k v => ENNReal.ofReal (φ k v) :=
-    fun i j hij v => ENNReal.ofReal_le_ofReal (hmono v hij)
-  have hfibO : ∀ b, fib b O = ⨆ k, ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b) := by
-    intro b
-    rw [← lintegral_iSup hmeas hmon]
-    simp_rw [hlim]
-    rw [lintegral_indicator_one hO.measurableSet]
-  have hk : ∀ k, Measurable fun b => ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b) := by
-    intro k
-    have : (fun b => ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b)) =
-        fun b => ENNReal.ofReal (∫ v, φ k v ∂(fib b)) :=
-      funext fun b => (ofReal_integral_eq_lintegral_ofReal ((h3 _ (hcc k)).1 b)
-        (ae_of_all _ fun v => (h01 k v).1)).symm
-    rw [this]
-    exact ENNReal.measurable_ofReal.comp (h3 _ (hcc k)).2.1.measurable
-  have hmonb : Monotone fun k b => ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b) :=
-    fun i j hij b => lintegral_mono fun v => ENNReal.ofReal_le_ofReal (hmono v hij)
-  refine ⟨?_, ?_⟩
-  · simp_rw [hfibO]
-    exact Measurable.iSup hk
-  · calc μ O = ∫⁻ v, O.indicator 1 v ∂μ := (lintegral_indicator_one hO.measurableSet).symm
-      _ = ∫⁻ v, ⨆ k, ENNReal.ofReal (φ k v) ∂μ := by simp_rw [hlim]
-      _ = ⨆ k, ∫⁻ v, ENNReal.ofReal (φ k v) ∂μ := lintegral_iSup hmeas hmon
-      _ = ⨆ k, ∫⁻ b, ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b) ∂ν := by
-          congr 1; funext k
-          exact cc_case hf hι hr hU h0 h2 h3 (φ k) (hcc k) fun v => (h01 k v).1
-      _ = ∫⁻ b, ⨆ k, ∫⁻ v, ENNReal.ofReal (φ k v) ∂(fib b) ∂ν := (lintegral_iSup hk hmonb).symm
-      _ = ∫⁻ b, fib b O ∂ν := by simp_rw [hfibO]
-
-theorem null_compl (b : X) : fib b Uᶜ = 0 :=
-  measure_mono_null (compl_subset_compl.2 inter_subset_right) (h0 b)
-
-theorem meas_fib : ∀ A, MeasurableSet A → Measurable fun b => fib b A := by
-  obtain ⟨W, hW, hWU⟩ := cover U hU
-  have hWsub : ∀ n, W n ⊆ U := fun n => subset_closure.trans (hW n).2.2
-  have hfin : ∀ b n, fib b (W n) ≠ ⊤ := fun b n =>
-    (lt_of_le_of_lt (measure_mono subset_closure) (h2 b _ (hW n).2.1 (hW n).2.2)).ne
-  have hP : ∀ n, ∀ A, MeasurableSet A → Measurable fun b => fib b (A ∩ W n) := by
-    intro n
-    refine MeasurableSpace.induction_on_inter
-      (C := fun A _ => Measurable fun b => fib b (A ∩ W n)) (s := {s : Set V | IsOpen s})
-      BorelSpace.measurable_eq isPiSystem_isOpen ?_ ?_ ?_ ?_
-    · simp only [empty_inter, measure_empty]; exact measurable_const
-    · intro t ht
-      exact (open_case hf hι hr hU h0 h2 h3 (t ∩ W n) ((ht : IsOpen t).inter (hW n).1)
-        (inter_subset_right.trans (hWsub n))).1
-    · intro t htm IH
-      have e : ∀ b, fib b (tᶜ ∩ W n) = fib b (W n) - fib b (t ∩ W n) := by
-        intro b
-        rw [← measure_diff inter_subset_right (htm.inter (hW n).1.measurableSet).nullMeasurableSet
-          ((measure_mono inter_subset_right).trans_lt (lt_top_iff_ne_top.2 (hfin b n))).ne]
-        congr 1
-        ext x
-        simp only [mem_inter_iff, mem_compl_iff, mem_diff]
-        tauto
-      simp_rw [e]
-      exact (open_case hf hι hr hU h0 h2 h3 (W n) (hW n).1 (hWsub n)).1.sub IH
-    · intro g hd hgm IH
-      have e : ∀ b, fib b ((⋃ i, g i) ∩ W n) = ∑' i, fib b (g i ∩ W n) := by
-        intro b
-        rw [iUnion_inter, measure_iUnion (fun i j hij => (hd hij).mono inter_subset_left
-          inter_subset_left) (fun i => (hgm i).inter (hW n).1.measurableSet)]
-      simp_rw [e]
-      exact Measurable.tsum IH
-  intro A hA
-  have hD : ∀ n, MeasurableSet (disjointed W n) :=
-    MeasurableSet.disjointed fun n => (hW n).1.measurableSet
-  have e : ∀ b, fib b A = ∑' n, fib b (A ∩ disjointed W n) := by
-    intro b
-    rw [← measure_inter_add_diff A hU.measurableSet,
-      measure_mono_null (show A \ U ⊆ Uᶜ from fun x hx => hx.2) (null_compl hf hι hr hU h0 h2 h3 b),
-      add_zero,
-      ← hWU, ← iUnion_disjointed, inter_iUnion,
-      measure_iUnion (fun i j hij => ((disjoint_disjointed W) hij).mono inter_subset_right
-        inter_subset_right) (fun n => hA.inter (hD n))]
-  simp_rw [e]
-  refine Measurable.tsum fun n => ?_
-  have := hP n (A ∩ disjointed W n) (hA.inter (hD n))
-  simpa only [inter_eq_left.2 (inter_subset_right.trans (disjointed_subset W n))] using this
-
 end
 
 theorem disintStep_holds : DisintStep := by
-  apply PI.VolStabSW.DiscreteGroups.disintStep_holds <;> assumption
+  apply PI.VolStabSW.DiscreteGroups.disintStep_holds
 
 theorem fibOfDens_holds : FibOfDens := fibOfDens_of disintStep_holds
 
 end PI.VolStabS.DiscreteGroups
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.FibDis =====

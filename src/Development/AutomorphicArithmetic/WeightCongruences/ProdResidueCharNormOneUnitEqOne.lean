@@ -177,7 +177,7 @@ theorem UpperTheory.prod_residue_char_norm_one_unit_eq_one :
           apply w₀.ne_bot
           rw [← smul_inv_smul τ w₀.asIdeal, h]
           ext x
-          simp [Ideal.mem_pointwise_smul_iff_inv_smul_mem]
+          simp
         let w : HeightOneSpectrum (𝓞 L) := ⟨τ⁻¹ • w₀.asIdeal, inferInstance, hne⟩
         have hw : w ∈ S := by
           rw [memS, ← (memS w₀).1 hw₀]

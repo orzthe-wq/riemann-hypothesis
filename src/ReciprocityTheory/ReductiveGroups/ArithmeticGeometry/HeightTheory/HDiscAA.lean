@@ -3,53 +3,9 @@ module
 public import Mathlib.RingTheory.DiscreteValuationRing.Basic
 public import Mathlib.RingTheory.Discriminant
 public import Mathlib.Tactic.Continuity
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 public import Mathlib.RingTheory.OrderOfVanishing.Noetherian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.SemistableReduction.DetSubtypeCompAssociatedProd
 public import Mathlib.LinearAlgebra.FreeModule.Finite.Quotient
 
@@ -83,11 +39,9 @@ theorem det_blockDiagonal' {ι R : Type*} [Fintype ι] [DecidableEq ι] [CommRin
     show Matrix.blockDiagonal' M ⟨c, k⟩ ⟨c, k'⟩ = M c k k'
     first
       | exact Matrix.blockDiagonal'_apply_eq M c k k'
-      | simp [Matrix.blockDiagonal'_apply]
   letI : LinearOrder ι := LinearOrder.lift' (Fintype.equivFin ι) (Fintype.equivFin ι).injective
   first
     | rw [(Matrix.blockTriangular_blockDiagonal' M).det]
-    | rw [Matrix.BlockTriangular.det (Matrix.blockTriangular_blockDiagonal' M)]
   rw [Finset.prod_congr rfl (fun c _ => hblk c)]
   refine Finset.prod_subset (Finset.subset_univ _) ?_
   intro c _ hc
@@ -133,7 +87,7 @@ theorem length_quot {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRi
     rw [← Ring.ord_eq_addVal]
     rfl
   have hdet : Associated (α.det (b' ∘ σ)) (∏ i, s i) := by
-    have key := ReciprocityTheory.MultiplicativeHeights.det_subtype_comp_associated_prod α N hrank (α.equiv (Basis.span hli) σ)
+    have key := _root_.Bl.general_b_fact_tail.goal1 α N hrank (α.equiv (Basis.span hli) σ)
     convert key using 1
     rw [← LinearMap.det_toMatrix α, Basis.det_apply]
     congr 1

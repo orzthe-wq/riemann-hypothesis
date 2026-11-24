@@ -65,9 +65,7 @@ private theorem ev_pb {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α : Coc
     ev (R := R) (pb f α) p s h U x = ev (R := R) α p s h U (x.map f) :=
   (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.2.1 f α p s h U x
 
-private theorem ev_zero {E : Spc} {K : Cx R} {n : ℤ} (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0})
-    (x : Sx E p U) : ev (R := R) (0 : Cochain ((chains R).obj E) K n) p s h U x = 0 :=
-  ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).1 0 0 p s h U x).2.2.1
+private alias ev_zero := _root_.GlobalTheory.EtC.CupSpec.ev_zero
 
 private theorem pb_eq_zero {E E' : Spc} (f : E ⟶ E') {K : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E') K n)
     (h : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U), ev (R := R) α p s h U (x.map f) = 0) :

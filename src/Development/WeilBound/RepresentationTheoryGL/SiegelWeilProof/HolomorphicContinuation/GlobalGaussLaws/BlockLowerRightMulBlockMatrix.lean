@@ -116,7 +116,7 @@ theorem lower_rel (σ : k →+* k) (g : GL (Fin (n + n)) k) (hg : g ∈ Formalis
     exact this
   have hJJ : J' * J' = -1 := by
     rw [hJ', Matrix.fromBlocks_multiply]
-    simp only [Matrix.zero_mul, Matrix.mul_zero, Matrix.one_mul, Matrix.mul_one, Matrix.neg_mul, Matrix.mul_neg, zero_add, add_zero]
+    simp only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero]
     rw [← Matrix.fromBlocks_one, Matrix.fromBlocks_neg, neg_zero]
   have h2 : (-J' * Formalism.UG.cT σ Gs * J') * Gs = 1 := by
     rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (Formalism.UG.cT σ Gs), h1, Matrix.neg_mul, hJJ, neg_neg]

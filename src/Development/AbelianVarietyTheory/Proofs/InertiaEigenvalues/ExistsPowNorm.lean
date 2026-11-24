@@ -1,11 +1,11 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisGaussNormEventuallyMonomial
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisGaussNormEventuallyMonomial
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsCrisP
 public import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisGaussNormEventuallyMonomialStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisNormOfNonzeroStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaussNormExtensionAcrisStatement
+public import Formalism.LocalRingCardinality.AdicCompletionLocal.InstIsAdicCompleteOCSpanSingletonSetCast
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AcrisNormOfNonzero
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaussNormExtensionAcris
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AcrisToBdRPlusInjective
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -158,9 +158,6 @@ theorem homog_eq (C : Core l) (a b : Per.Acris l) (y : Om l) (hy : ‖y‖ ≤ 1
   simp only [RingHom.comp_apply, PadicInt.algebraMap_apply]
   ring
 
-theorem untilt_zero : (0 : Per.Fl l).untilt = 0 := by
-  rw [← WittVector.fontaineTheta_teichmuller, WittVector.teichmuller_zero, map_zero]
-
 theorem gauss_l (r : ℝ) (hr : 0 ≤ r) :
     (⨆ n : ℕ, ‖(((((l : ℕ) : Per.Ainf l).coeff n).untilt : Per.OC l) : ℂ_[l])‖ ^
       ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n) = r := by
@@ -195,7 +192,7 @@ theorem norm_eq_zpow : ∀ (l : ℕ) [Fact l.Prime] (C : Core l) (a b : Per.Acri
   have hex : ∀ r : ℝ, ∃ N : Per.Acris l → ℝ, (l : ℝ)⁻¹ ≤ r → r < 1 → (∀ x, 0 ≤ N x ∧ N x ≤ 1) ∧ (∀ x y, N (x + y) ≤ max (N x) (N y)) ∧ (∀ x, N (-x) = N x) ∧ (∀ x y, N (x * y) = N x * N y) ∧ ∀ a : Per.Ainf l, N (algebraMap (Per.Ainf l) (Per.Acris l) a) = ⨆ n : ℕ, ‖(((a.coeff n).untilt : Per.OC l) : ℂ_[l])‖ ^ ((1 : ℝ) / (l : ℝ) ^ n) * r ^ n := by
     intro r
     by_cases h1 : (l : ℝ)⁻¹ ≤ r ∧ r < 1
-    · obtain ⟨N, hN⟩ := GlobalTheory.T.exists_gauss_norm_extension_acris l r h1.1 h1.2
+    · obtain ⟨N, hN⟩ := _root_.GlobalTheory.GaussExt.exists_gauss_acris l r h1.1 h1.2
       exact ⟨N, fun _ _ => hN⟩
     · exact ⟨fun _ => 0, fun h2 h3 => absurd ⟨h2, h3⟩ h1⟩
   choose N hN using hex
@@ -207,8 +204,8 @@ theorem norm_eq_zpow : ∀ (l : ℕ) [Fact l.Prime] (C : Core l) (a b : Per.Acri
     simp only [map_zero, mul_zero, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hx, map_one,
       one_mul] at this
     rw [← this, map_zero]
-  obtain ⟨r₁, c, k, hr₁, hr₁', hc, hNa⟩ := GlobalTheory.T.acris_gauss_norm_eventually_monomial l N hN a (GlobalTheory.T.acris_norm_of_nonzero l N hN a ha)
-  obtain ⟨r₂, c', k', hr₂, hr₂', hc', hNb⟩ := GlobalTheory.T.acris_gauss_norm_eventually_monomial l N hN b (GlobalTheory.T.acris_norm_of_nonzero l N hN b hb)
+  obtain ⟨r₁, c, k, hr₁, hr₁', hc, hNa⟩ := _root_.GlobalTheory.MemLoc.gauss_slope l N hN a (_root_.GlobalTheory.MemLoc.gauss_ne_zero l N hN a ha)
+  obtain ⟨r₂, c', k', hr₂, hr₂', hc', hNb⟩ := _root_.GlobalTheory.MemLoc.gauss_slope l N hN b (_root_.GlobalTheory.MemLoc.gauss_ne_zero l N hN b hb)
   obtain ⟨t, s, ht, hts⟩ := exists_pow_norm x hx
   obtain ⟨m, n, rfl⟩ : ∃ m n : ℕ, s = (m : ℤ) - n := ⟨s.toNat, (-s).toNat, by omega⟩
   have hl0 : ((l : ℕ) : Om l) ≠ 0 := by exact_mod_cast (Fact.out : l.Prime).ne_zero

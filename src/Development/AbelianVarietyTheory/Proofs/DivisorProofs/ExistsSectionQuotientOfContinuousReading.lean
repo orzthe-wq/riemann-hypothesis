@@ -7,18 +7,24 @@ public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.EqZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecZEqZeroOfGenVal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldingSectionsFiniteType
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemSuppOnIffIdemMulOfNatural
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHold
-public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsCountableHolomorphicFamiliesSmoothStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.Smooth.Basic
+public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsCountableHolomorphicFamiliesSmooth
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsEvenSecEvRNeZero
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsGenericComponentPointsOffMeagre
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsHolomorphicPeriodsAdapted
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ImNegOfFramePeriodVector
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.PeriodCoordinatesFramesLiftTendstoStatement
-import Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularFrameChangeOfTriangularPeriod
-import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDomainAndIsIntegrallyClosedAtPrimeOfSmoothOfCo
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsEquivComp
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIntegerExponentSectionOfChartRegular
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsEqMulOfContinuousOnQuotient
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.EvaluationLawsGenericFramesAtlasHold
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsHolomorphicPeriodsAdapted
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ImNegOfFramePeriodVector
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.PeriodCoordinatesFramesLiftTendsto
+import Development.AbelianVarietyTheory.Proofs.GenericRegularity.TriangularFrameChangeOfTriangularPeriod
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsDomainAndIsIntegrallyClosedAtPrimeOfSmoothOfCo
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -54,7 +60,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FourierCoefficientDomain
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompIdeal
 
 @[expose] public section
 
@@ -79,7 +84,7 @@ theorem dvd_of_locally_bounded {K A : Type} [Field K] [NumberField K] [CommRing 
   letI : Algebra K ℂ := σ.toAlgebra
   have h0 : Ideal.Quotient.mkₐ K p s ≠ 0 := fun h => hs (Ideal.Quotient.eq_zero_iff_mem.mp h)
   obtain ⟨e, he⟩ := not_forall.mp fun h => h0 (GlobalTheory.FiniteOrderRule.eq_zero_of_forall_algHom (K := K) (Ω := ℂ) _ h)
-  obtain ⟨ι, -, m, B, φ, hB, hφσ, hd, hcov, hne⟩ := GlobalTheory.T.exists_countable_holomorphic_families_smooth K A σ
+  obtain ⟨ι, -, m, B, φ, hB, hφσ, hd, hcov, hne⟩ := _root_.GlobalTheory.SmoothPointCover.exists_countable_families K A σ
   let ψ : A →ₐ[K] ℂ := e.comp (Ideal.Quotient.mkₐ K p)
   obtain ⟨i, z₀, hz₀, hψ⟩ := hcov ψ.toRingHom (RingHom.ext fun k => ψ.commutes k)
   obtain ⟨n, hn0, M, hM⟩ := H _ _ _ (hB i) (hφσ i) (hd i) z₀ hz₀
@@ -144,7 +149,7 @@ theorem exists_near_frames (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf 
   choose! x₂ hx₂ hr₂ using fun b (hb : b ∈ B') => honto (P b) (hP.1 b hb)
   have hBn : ∀ᶠ b in 𝓝 b₀, b ∈ B' := hB'.mem_nhds hb'
   refine ⟨k, ⟨x₂ b₀, hx₂ b₀ hb'⟩, (hbor _ _ b₀ hb' (hr₂ b₀ hb')).imp fun _ h => h.1, fun V hV => ?_⟩
-  have key := GlobalTheory.T.period_coordinates_frames_lift_tendsto E r (U.X k) _ (𝓝 b₀) (x₂ b₀) x₂ (hx₂ b₀ hb') (hBn.mono hx₂) (fun v hv τ i => by
+  have key := _root_.GlobalTheory.PeriodLift.period_lift E r (U.X k) _ (𝓝 b₀) (x₂ b₀) x₂ (hx₂ b₀ hb') (hBn.mono hx₂) (fun v hv τ i => by
     obtain ⟨a, rfl⟩ : ∃ a, (ψ k a : Fin r → E) = v := ⟨(ψ k).symm ⟨v, hv⟩, by simp⟩
     obtain ⟨j, hj⟩ := idx.surjective (τ, i)
     obtain ⟨rfl, rfl⟩ : τ = (idx j).1 ∧ i = (idx j).2 := by rw [hj]; exact ⟨rfl, rfl⟩

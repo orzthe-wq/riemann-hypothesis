@@ -158,7 +158,7 @@ theorem _root_.GlobalTheory.differentials_iff_trdegD_and_genericSection : ∀ (K
     rw [hadj]
   have key := _root_.GlobalTheory.exists_linearIndependent_D_iff_trdeg_adjoin_eq hD (d.x c)
   refine ⟨key.trans htr.symm, fun hT => ?_⟩
-  obtain ⟨hind, hfin⟩ := _root_.ReciprocityTheory.MultiplicativeHeights.Closed.fieldOfS K (Ω c) d.D d.N (d.x c) hfg hD (key.mpr (htr.mp hT))
+  obtain ⟨hind, hfin⟩ := _root_.ReciprocityTheory.MultiplicativeHeights.genericImageFinite K (Ω c) d.D d.N (d.x c) hfg hD (key.mpr (htr.mp hT))
   let e := (finSuccEquiv' (d.jc c)).trans (finSuccEquiv d.N).symm
   let σ : _root_.ReciprocityTheory.ChartRestriction.G.T0.TVar d.D d.N → Fin (d.D + 1) × Fin (d.N + 1) := fun p => (p.1, e p.2)
   have hσ : Function.Bijective σ := ((Equiv.refl (Fin (d.D + 1))).prodCongr e).bijective

@@ -1,7 +1,7 @@
 module
 
 public import Formalism.SharpRestriction.GlobalSchurBounds.GL3Theta
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormProdCmEmbeddingsEqOneOfInertStatement
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.NormProdCmEmbeddingsEqOneOfInert
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PLinkThIndep
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -92,14 +92,14 @@ theorem chi_alg_unit_inert : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam : Taylor
     rw [h0, zero_pow hk0] at hpow
     exact hP0 (inv_eq_zero.mp hpow.symm)
   refine ⟨halg, hne, ?_⟩
-  have hnu := GlobalTheory.T.norm_prod_cmEmbeddings_eq_one_of_inert D p lam hp2 hin z hz
+  have hnu := _root_.GlobalTheory.normUnit_of_inert D p lam hp2 hin z hz
   rw [← hPdef, lamC_eq_of_mem lam hP] at hnu
   have hsub : (⟨χ 𝔞, halg⟩ : TaylorLogMetric.Qbar) ^ k = (⟨P, hP⟩ : TaylorLogMetric.Qbar)⁻¹ := by
     apply Subtype.ext
     simp [hpow]
   have e1 : ‖lam ⟨χ 𝔞, halg⟩‖ ^ k = 1 := by
     rw [← norm_pow, ← map_pow, hsub, map_inv₀, norm_inv, hnu, inv_one]
-  rw [lamC_eq_of_mem lam halg]
+  rw [_root_.GlobalTheory.NormUnitInert.lamC_of_mem lam halg]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hk0).mp e1
 
 end GlobalTheory.TwV.Xc

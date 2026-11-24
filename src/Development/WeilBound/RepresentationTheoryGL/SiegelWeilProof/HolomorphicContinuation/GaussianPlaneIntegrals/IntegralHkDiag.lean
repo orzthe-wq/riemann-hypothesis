@@ -133,7 +133,7 @@ theorem integral_hk_ne (k l : ℕ) (h : k ≠ l) : ∫ z, hk k l z = 0 := by
       _ = -(z ^ k * star z ^ l * e1 z) := by rw [hfac]; ring
   have key := (rotation (Circle.exp θ)).measurePreserving.integral_comp
     (rotation (Circle.exp θ)).toHomeomorph.measurableEmbedding (hk k l)
-  simp only [LinearIsometryEquiv.coe_toHomeomorph, rotation_apply, Circle.coe_exp, hrot, integral_neg] at key
+  simp only [rotation_apply, Circle.coe_exp, hrot, integral_neg] at key
   linear_combination (-1 / 2 : ℂ) * key
 
 def jr (k : ℕ) : ℝ := ∫ z : ℂ, (‖z‖ ^ 2) ^ k * Real.exp (-(‖z‖ ^ 2))

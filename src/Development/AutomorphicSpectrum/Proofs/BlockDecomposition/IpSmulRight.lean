@@ -81,17 +81,9 @@ theorem adj_ip (V : HSp D) (x : Mx D V.rank a) (y : Mx D V.rank b) : adj (ip V x
   unfold ip mm
   rw [adj_mul, adj_mul, adj_adj, adj_gA, Matrix.mul_assoc]
 
-theorem adj_add_r (x y : Mx D a b) : adj (x + y) = adj x + adj y := by
-  ext i j
-  simp [adj]
+alias adj_add_r := _root_.GlobalTheory.MixModel.adj_add
 
-theorem adj_one_r : adj (1 : Mx D a a) = 1 := by
-  ext i j
-  by_cases h : i = j
-  · subst h
-    simp [adj]
-  · have h' : j ≠ i := fun q => h q.symm
-    simp [adj, Matrix.one_apply, h, h']
+alias adj_one_r := _root_.GlobalTheory.MixModel.adj_one
 
 theorem adj_rat_inv (b₀ : HermE D r) (hb : b₀.1.det ≠ 0) : adj (rat b₀.1⁻¹) = rat b₀.1⁻¹ := by
   have h1 : adj (mm (rat b₀.1⁻¹) (rat b₀.1)) = 1 := by rw [rat_inv_mul b₀ hb, adj_one_r]

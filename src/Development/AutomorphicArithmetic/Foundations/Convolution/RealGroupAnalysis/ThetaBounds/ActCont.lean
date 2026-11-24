@@ -54,20 +54,10 @@ private theorem cont_fin (E : Type) [Field E] [NumberField E] (a : ℕ) :
   have hs : Continuous (sFin E : Af E → Ad E) := continuous_const.prodMk continuous_id
   exact Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map hs))
 
-private theorem cont_unherm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (D : Dat F E) : Continuous D.unherm := by
-  have hco : ∀ i, Continuous fun z => D.co z i := fun i => (continuous_apply i).comp D.continuous_co
-  refine continuous_pi fun i => ?_
-  fin_cases i
-  · exact (hco 0).comp (continuous_id.matrix_elem 1 1)
-  · exact (hco 0).comp (continuous_id.matrix_elem 0 0)
-  · exact (hco 0).comp (continuous_id.matrix_elem 0 1)
-  · exact (hco 1).comp (continuous_id.matrix_elem 0 1)
-
 private theorem cont_act {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (D : Dat F E) (v : V4 F) : Continuous fun h : GL (Fin 2) (A E) => D.act h v := by
   have hv : Continuous fun h : GL (Fin 2) (A E) => h.val := Units.continuous_val
-  exact (cont_unherm D).comp ((hv.matrix_mul continuous_const).matrix_mul
+  exact (_root_.UpperTheory.ConvolutionTheory.R2.Dat.continuous_unherm D).comp ((hv.matrix_mul continuous_const).matrix_mul
     (hv.matrix_map D.continuous_bar).matrix_transpose)
 
 theorem UpperTheory.ConvolutionTheory.R2.Ff.actCont :

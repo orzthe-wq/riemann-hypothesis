@@ -134,7 +134,7 @@ theorem exists_chi_ne_one {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.hos
   have key : ∀ (A : Mx D s V.rank) (c : AE D), Matrix.trace (A * Matrix.single j i c) = A i j * c := by
     intro A c
     simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.single_apply, ite_and, mul_ite, mul_zero]
-    simp [Finset.sum_ite_eq, Finset.sum_ite_eq']
+    simp [Finset.sum_ite_eq]
   refine ⟨Matrix.single j i (incA D ((qᴴ * V.gram) i j)⁻¹ * (x • half D)), ?_⟩
   rw [inner_rat_eq]
   change ψ (trA (Matrix.trace (rat (qᴴ * V.gram) *

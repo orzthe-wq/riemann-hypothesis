@@ -100,10 +100,6 @@ theorem div_le_sub_mul_div (g : ℤ) {n : ℤ} (hn : 0 < n) : g / n ≤ g - (n -
   have h₁ : n * (g / n) ≤ g := by
     first
       | exact Int.mul_ediv_self_le hn.ne'
-      | exact Int.mul_ediv_le hn g
-      | (have := Int.emod_def g n; have := Int.emod_nonneg g hn.ne'; linarith)
-      | (have := Int.ediv_mul_le g hn.ne'; linarith)
-      | (have := Int.emod_add_mul_ediv g n; have := Int.emod_nonneg g hn.ne'; linarith)
   linarith
 
 theorem gaps_of_wtBig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (P : WtPar Dw), WtBig P → ∀ la ∈ [P.u₁, P.u₂, P.ub, P.u₁ - FlagTan.kap Dw - (dimFlag Dw + 2) • P.ub], GapGe 1 la ∧ GapGe (((dimFlag Dw + 1).choose 2 + 1 : ℕ) : ℤ) (la - FlagTan.kap Dw) := by

@@ -2,7 +2,8 @@ module
 
 public import Formalism.LocalToGlobal.GaloisLevelStructure.DefsAut
 public import Formalism.LocalToGlobal.NormalizedHeckeFactors.ExpDefs
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDoubleCosetsDefiniteUnitaryMaximalLevelStatement
+public import Formalism.AlgebraicWeights.IsAlgWeight
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDoubleCosetsDefiniteUnitaryMaximalLevel
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FiniteDimensionalForms
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -62,7 +63,7 @@ theorem typeSpF_finiteDimensional : ∀ (L : Type) [Field L] [NumberField L] [Is
   intro L _ _ _ n K _ W _ _ _ ρ J χ hJ
   classical
   obtain ⟨N, hN, hNJ⟩ := hJ
-  obtain ⟨T, hT⟩ := GlobalTheory.T.finite_doubleCosets_definiteUnitary_maximalLevel L n
+  obtain ⟨T, hT⟩ := _root_.GlobalTheory.DefiniteClassFinite.exists_finset_double_cosets_Umax L n
   obtain ⟨Jc, hJc⟩ := GlobalTheory.AlgFormsFin.exists_cover L n hN
   let Φ : ↥(NX.TypeSpF L n K ρ J χ) →ₗ[K] (↥(T ×ˢ Jc) → W) :=
     { toFun := fun f p => (f : GAf L n → W) (p.1.1 * p.1.2)

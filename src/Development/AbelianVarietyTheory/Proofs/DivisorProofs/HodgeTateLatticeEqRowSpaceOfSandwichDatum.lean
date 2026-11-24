@@ -1,10 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.GhostFrobenius
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfGhostThetaFrobIterValuesXiMuPadicStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfTeichmullerMinusOneDvdOfGhostComponentsZeroStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FontaineAinfLocalDomainXiAdicOrder
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfGhostThetaFrobIterValuesXiMuPadic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfTeichmullerMinusOneDvdOfGhostComponentsZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsRegularOfMulEqSmul
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FontaineAinfLocalDomainXiAdicOrder
 import Development.AutomorphicArithmetic.IntegralCasts.CrystallinePeriods.Kernel
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -98,11 +98,11 @@ theorem toA_smul {G : PDivGroup p O} {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p]] (Fin 
 
 theorem toA_single {G : PDivGroup p O} {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p]))
     (i : Fin h) : toA e (e.symm (Pi.single i 1)) = Pi.single i 1 := by
-  ext j; by_cases hij : j = i <;> simp [toA, Pi.single_apply, hij]
+  ext j; by_cases hij : j = i <;> simp [toA, hij]
 
 theorem toO_single {G : PDivGroup p O} {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p]))
     (i : Fin h) : toO e (e.symm (Pi.single i 1)) = Pi.single i 1 := by
-  ext j; by_cases hij : j = i <;> simp [toO, Pi.single_apply, hij]
+  ext j; by_cases hij : j = i <;> simp [toO, hij]
 
 def rowMap {G : PDivGroup p O} {h : ℕ} (F : Matrix (Fin h) (Fin h) (Ainf p O))
     (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p])) : (Fin h → Ainf p O) →ₗ[Ainf p O] TDual G where
@@ -159,7 +159,7 @@ end SlopeTestRemainingChoices
 
 theorem latt_eq_rowSpace : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ (G : PDivGroup p O) (h : ℕ) (D : Datum ε h ℤ_[p]) (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p])) (fil : G.dual.omega ≃ₗ[O] D.Fil), (∀ t, D.al (toO e t) = (fil (hodgeTate G t) : Fin h → O)) → ∃ L : (Fin h → Ainf p O) ≃ₗ[Ainf p O] latt G, ∀ r t, (L r).1 t = r ⬝ᵥ (D.F *ᵥ fun i => ofPadic p O (e t i)) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε G h D e fil hal
-  obtain ⟨-, hofP, hmu, -, -, hphi⟩ := GlobalTheory.T.ainfGhostThetaFrobIter_values_xi_mu_padic p C v O hv ε hε
+  obtain ⟨-, hofP, hmu, -, -, hphi⟩ := _root_.GlobalTheory.PDivLat.ghost_values p C v O hv ε hε
   have hε1 : IsPrimitiveRoot (root ε).untilt p := by simpa [zeta] using hε 1
   obtain ⟨hdom, -, -, -, hν, hξ, -⟩ := GlobalTheory.AinfXi.ainf_local_xi_order p C v O hv ε hε1
   haveI := hdom
@@ -233,7 +233,7 @@ theorem latt_eq_rowSpace : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [Is
       exact Finset.sum_congr rfl fun i _ => mul_comm _ _
     have hdiv : ∀ j, Sandwich.mu ε ∣ (s ᵥ* D.G) j := by
       intro j
-      refine GlobalTheory.T.ainfTeichmullerMinusOne_dvd_of_ghost_components_zero p C v O hv ε hε _ fun n => ?_
+      refine _root_.GlobalTheory.GhostKer.mu_dvd_of_ghost p C v O hv ε hε _ fun n => ?_
       obtain ⟨x, hx⟩ := y.2 n
       set gs : Fin h → O := ghostHom p O n ∘ s with hgs
       have hgt : ∀ t, gs ⬝ᵥ toO e t = x (hodgeTate G t) := by

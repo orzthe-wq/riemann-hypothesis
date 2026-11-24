@@ -1,11 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TrivIsCr
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfDivisibilityBreuilKisinFacts
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EisensteinImagePowIdealAinfProperties
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisElemCyclotomicPeriodNotRootOfUnity
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 import Development.AbelianVarietyTheory.CrystallinePeriods.RingIface
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AinfDivisibilityBreuilKisinFacts
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EisensteinImagePowIdealAinfPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGaloisElemCyclotomicPeriodNotRootOfUnityStatement
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ThetaBdRPlusSurjectiveKerUnitsEquivariant
 import Mathlib.Algebra.GroupWithZero.Submonoid.CancelMulZero
 import Mathlib.Algebra.Order.Floor.Extended
@@ -78,9 +79,6 @@ theorem theta_gal_ev (g : ↥(GK K)) (s : bk.S) :
 theorem theta_eq_zero_iff (a : Ainf l) : Per.θ l a = 0 ↔ bk.ev bk.E ∣ a := by
   rw [← RingHom.mem_ker, ← bk.span_ev, Ideal.mem_span_singleton]
 
-theorem evE_ne_zero : bk.ev bk.E ≠ 0 := fun h =>
-  GlobalTheory.BSP.AinfDiv.cc_E_ne bk (by rw [h, map_zero])
-
 theorem l_ne_zero_OC : ((l : ℕ) : OC l) ≠ 0 := fun h =>
   GlobalTheory.RingBasics.p_ne_zero (p := l) (by simpa using congrArg Subtype.val h)
 
@@ -112,9 +110,9 @@ theorem step {d : ℕ} (g : ↥(GK K)) (w : Ainf l)
   have h1 : bk.ev bk.E ∣ w ^ i * ∑ c, P a c * Per.σA (g : GQ l) (bk.ev (δ' c b)) - bk.ev (δ' a b) := by
     have h2 := hδ a b
     rw [hX, show m = i + (m - i) by omega, pow_add] at h2
-    have h3 := (mul_dvd_mul_iff_left (pow_ne_zero i (evE_ne_zero bk))).1 h2
+    have h3 := (mul_dvd_mul_iff_left (pow_ne_zero i (_root_.GlobalTheory.AinfEPow.evE_ne_zero bk))).1 h2
     exact (dvd_pow_self (bk.ev bk.E) (by omega)).trans h3
-  rw [← theta_eq_zero_iff] at h1
+  rw [← _root_.GlobalTheory.AinfEPow.theta_eq_zero_iff] at h1
 
   simp only [map_sub, map_mul, map_pow, map_sum, theta_gal_ev, hP, ite_mul, one_mul, zero_mul,
   Finset.sum_ite_eq, Finset.mem_univ, if_true] at h1
@@ -123,7 +121,7 @@ theorem step {d : ℕ} (g : ↥(GK K)) (w : Ainf l)
       rw [sub_mul, one_mul]; exact h1
     exact (mul_eq_zero.1 h5).resolve_left (sub_ne_zero.2 (hwi i hi))
   rw [theta_eq_zero_iff] at h4
-  have h6 := (GlobalTheory.T.eisensteinImage_pow_ideal_ainf_properties l K bk 1).2.1 (δ' a b) (by rwa [pow_one])
+  have h6 := (_root_.GlobalTheory.AinfEPow.ePow_facts l K bk 1).2.1 (δ' a b) (by rwa [pow_one])
   rw [hδ' a b, pow_succ]
   exact mul_dvd_mul_left _ (by rwa [pow_one] at h6)
 
@@ -133,7 +131,7 @@ theorem GlobalTheory.BKLim.beta_unique : ∀ (l : ℕ) [Fact l.Prime] (K : FinEx
   intro l _ K bk m N d ρ F k k' β β' hβ hβ'
   rcases Nat.eq_zero_or_pos m with rfl | hm
   · intro i j; simp
-  obtain ⟨g, z, ⟨w, hw, hz⟩, hzi⟩ := GlobalTheory.T.exists_galois_elem_cyclotomic_period_not_root_of_unity l K bk
+  obtain ⟨g, z, ⟨w, hw, hz⟩, hzi⟩ := _root_.GlobalTheory.BKLim.exists_isZ_not_root l K bk
   have hwi : ∀ i : ℕ, 1 ≤ i → Per.θ l w ^ i ≠ 1 := by
     intro i hi h
     have h1 : Per.θD l (aDp l w) = (Per.θ l w : ℂ_[l]) := (GlobalTheory.MemLoc.thetaD_props l).2.2.2.1 w
@@ -151,14 +149,14 @@ theorem GlobalTheory.BKLim.beta_unique : ∀ (l : ℕ) [Fact l.Prime] (K : FinEx
   have hθβ : ∀ c b, Per.θ l (bk.ev (β c b)) = (l : OC l) ^ k * (if c = b then 1 else 0) := by
     intro c b
     have h2 : Per.θ l (bk.ev ((β - (l : bk.S) ^ k • (1 : Matrix (Fin d) (Fin d) bk.S)) c b)) = 0 :=
-      (BetaUniq.theta_eq_zero_iff bk _).2 (map_dvd bk.ev (hβ.1 c b))
+      (_root_.GlobalTheory.AinfEPow.theta_eq_zero_iff bk _).2 (map_dvd bk.ev (hβ.1 c b))
     simp only [Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, map_sub, map_mul, map_pow,
       map_natCast] at h2
     rw [sub_eq_zero] at h2
     rw [h2]; split_ifs <;> simp
   have hP : ∀ a c, Per.θ l (P a c) = if a = c then 1 else 0 := by
     intro a b
-    have h := (BetaUniq.theta_eq_zero_iff bk _).2 ((dvd_pow_self _ hm.ne').trans (hent k β hβ a b))
+    have h := (_root_.GlobalTheory.AinfEPow.theta_eq_zero_iff bk _).2 ((dvd_pow_self _ hm.ne').trans (hent k β hβ a b))
 
     simp only [map_sub, map_sum, map_mul, BetaUniq.theta_gal_ev, hθβ, mul_ite, mul_one, mul_zero,
     Finset.sum_ite_eq', Finset.mem_univ, if_true] at h

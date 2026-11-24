@@ -43,6 +43,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.PublishedTheorems.GlobalTheta.IsSchwartzBruhatOfProd
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EventuallyAlgebraMapMemIntegers
 
 @[expose] public section
 
@@ -122,13 +123,6 @@ theorem mem_latH_iff (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F 
   simp only [Set.mem_ofPred_eq, hermV_apply, trace_map _ b, repr_map]
   rfl
 
-theorem ev_rat (a : F) :
-    ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, algebraMap F (Fv F v) a ∈ v.adicCompletionIntegers F := by
-  filter_upwards [(algebraMap F (Af F) a).2] with v hv
-  have h : evalV F v (algebraMap F (Af F) a) = algebraMap F (Fv F v) a := (evalV F v).commutes a
-  rw [← h]
-  exact hv
-
 theorem ev_cf {d : ℕ} (b : Module.Basis (Fin d) F E) (x : AF F ⊗[F] E) (k : Fin d) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, cf v b x k ∈ v.adicCompletionIntegers F :=
   (sndA F ((Algebra.TensorProduct.basis (AF F) b).repr x k)).2
@@ -140,8 +134,8 @@ theorem ev_latH (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) {n
     Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => Filter.eventually_all.2 fun k => ev_cf b _ k
   have h2 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ k : Fin d,
       algebraMap F (Fv F v) (Algebra.trace F E (b k)) ∈ v.adicCompletionIntegers F :=
-    Filter.eventually_all.2 fun k => ev_rat _
-  filter_upwards [h1, h2, ev_rat (1 / 2 : F)] with v h1 h2 h3
+    Filter.eventually_all.2 fun k => _root_.GlobalTheory.AdelicU.eventually_algebraMap_mem_integers _
+  filter_upwards [h1, h2, _root_.GlobalTheory.AdelicU.eventually_algebraMap_mem_integers (1 / 2 : F)] with v h1 h2 h3
   rw [mem_latH_iff]
   refine ⟨fun i => mul_mem h3 (sum_mem fun k _ => mul_mem (h1 i i k) (h2 k)), fun i j _ k => h1 i j k⟩
 
@@ -190,7 +184,7 @@ theorem measurableSet_latH (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin
 theorem measurableSet_intH (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) {n : ℕ}
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
     MeasurableSet {y : HermR (AF F) σ n | hermFin σ y ∈ intH σ b n S} := by
-  haveI := GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.placesCountable F
+  haveI := _root_.GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F
   have hset : {y : HermR (AF F) σ n | hermFin σ y ∈ intH σ b n S} =
       ⋂ v : HeightOneSpectrum (𝓞 F), ⋂ _ : v ∉ S,
         {y : HermR (AF F) σ n | hermV σ v (hermFin σ y) ∈ latH σ b v n} := by
@@ -225,7 +219,7 @@ end Cont
 theorem coefSN_tendsto : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ), 2 * n < M → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ (dx : Measure (Fin n → Fin M → AF F ⊗[F] E)) (db : Measure (HermR (AF F) σ n)) (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ), Integrable (starN σ J ψ dx Φ) db → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (T : Matrix (Fin n) (Fin n) E), Filter.Tendsto (fun S => coefSN σ b J ψ dx db Φ T S) Filter.atTop (nhds (coefN σ J ψ dx db Φ T)) := by
   intro F E _ _ _ _ _ σ _ M J _ n _ ψ hψ dx db Φ hI d b T
   haveI : BorelSpace (HermR (AF F) σ n) := ⟨rfl⟩
-  haveI := GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.placesCountable F
+  haveI := _root_.GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F
   obtain ⟨hψc, hψn, -, -⟩ := hψ
   have hchar : AEStronglyMeasurable (chiT σ ψ T) db := (continuous_chiT σ ψ hψc T).aestronglyMeasurable
   have hf : AEStronglyMeasurable (fun y => starN σ J ψ dx Φ y * chiT σ ψ T y) db :=

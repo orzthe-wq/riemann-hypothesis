@@ -160,7 +160,7 @@ theorem unit_tri {i : ι} (hi : ∀ x, x = i) (M : Matrix (ι ⊕ ι) (ι ⊕ ι
   have e12 := congrFun (congrFun h (.inl i)) (.inr i)
   have e22 := congrFun (congrFun h (.inr i)) (.inr i)
   rw [mul2 hi] at e11 e12 e22
-  simp only [Matrix.star_apply, h21, star_zero, zero_mul, add_zero, Matrix.one_apply_eq, mul_zero, zero_add] at e11 e12 e22
+  simp only [Matrix.star_apply, h21, star_zero, zero_mul, add_zero, Matrix.one_apply_eq, mul_zero] at e11 e12 e22
   have e12' : M (.inl i) (.inr i) = 0 := by
     have hne : star (M (.inl i) (.inl i)) ≠ 0 := fun h0 => by
       rw [h0, zero_mul] at e11; exact zero_ne_one e11

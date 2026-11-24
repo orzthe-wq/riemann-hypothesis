@@ -60,4 +60,4 @@ theorem _root_.GlobalTheory.T.exists_negConj_member_hermitianLatticeSpaceData : 
       Spc.IsHerm D.sp.cm.sig B
         (Spc.mk ((-1 : D.host.E) • (spW₁ G i j).gram) Λ (fun w => -W.cart (.grid (i : ℕ) (j : ℕ)) (τf w)) bas)
         ((D.R.m - j) / 2) ((spW₁ G i j).rank - (D.R.m - j) / 2) := by
-  first | exact @GlobalTheory.TripleSpace.negConj_isHerm | exact GlobalTheory.TripleSpace.negConj_isHerm | (intros; apply GlobalTheory.TripleSpace.negConj_isHerm <;> assumption)
+  first | exact @GlobalTheory.TripleSpace.negConj_isHerm

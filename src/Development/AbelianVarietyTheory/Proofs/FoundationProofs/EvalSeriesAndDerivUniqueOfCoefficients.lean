@@ -129,7 +129,7 @@ theorem psi_C {T : Tower p Ω} {n : ℕ} {ψ : O0 p →+* Ω} (h : IsReb T n ψ)
       simp [hi, this]
   · intro r hr
     have : r ≠ 0 := by rintro rfl; exact hr (dvd_zero _)
-    simp [HahnSeries.C_apply, HahnSeries.coeff_single, this]
+    simp [HahnSeries.C_apply, this]
 
 theorem sum_psi_eq_zero (hc : IsClo p Ω) {T : Tower p Ω} {n : ℕ} {ψ : O0 p →+* Ω} (h : IsReb T n ψ)
     {ι : Type} [Fintype ι] (E : ι → Ω) (A G : ι → Lau p) (φ : ℤ → ℤ_[p])

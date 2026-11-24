@@ -141,8 +141,6 @@ theorem om_latVac_split : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : H
     have hs1 : ‖(splitFacO χS χT x y : ℂ)‖ = 1 := by
       first
         | exact Circle.norm_coe _
-        | exact Circle.abs_coe _
-        | simp
     rw [hs1, mul_one]
   have hr1 : r = 1 := by
     have hc : ‖(r : ℂ) * (splitFacO χS χT x y : ℂ)‖₊ ^ 2 = 1 := by

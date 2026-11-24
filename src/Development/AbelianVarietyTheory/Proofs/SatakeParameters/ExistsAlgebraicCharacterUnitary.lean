@@ -81,7 +81,7 @@ theorem exists_place (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prim
     rw [this]
     have := PadicAlgCl.norm_extends (p := l) (l : ℚ_[l])
     rw [this]
-    first | exact Padic.norm_p_lt_one | exact padicNormE.norm_p_lt_one
+    first | exact Padic.norm_p_lt_one
   have := (hu (((l : ℕ) : 𝓞 E) : E)).2 h1
   simpa using this
 

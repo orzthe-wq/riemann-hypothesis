@@ -1,11 +1,11 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MoveLatticeIsTermSameDatumWithWitnesses
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ComplementReferenceCompactSubgroup
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BasisOfIsCompl
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemPerpSpan
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualLatticeUnipotentTranslateStandardStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnessesStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SelfDualLatticeUnipotentTranslateStandard
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TermInvariantsIndependentOfWitnesses
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MoveLatticeIsTermSameDatumWithWitnesses
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -136,7 +136,7 @@ theorem side {g : Fin (r + 1) → S.V} {gs : Fin r → S.V}
       ext i; simpa using i.2
     rw [Submodule.smul_span, hs, Set.image_univ, Set.smul_set_range]
     rfl
-  obtain ⟨B, hB, m, hm, hmn, hL⟩ := GlobalTheory.T.selfDual_lattice_unipotent_translate_standard L r k S g gs hg (h • n • S.stdLat g gs A)
+  obtain ⟨B, hB, m, hm, hmn, hL⟩ := _root_.GlobalTheory.HL.FrameLift.lift L r k S g gs hg (h • n • S.stdLat g gs A)
     (isSD_smul S hh (isSD_smul S hn.1.1 hs.1)) n hn (fun x => by
       rw [← hsp, mem_smul S n, ← hs.2.1 _ le_rfl, mem_smul, mem_smul]
       constructor
@@ -241,8 +241,8 @@ theorem termW {d : S.Datum} {Λ : Submodule L.O S.V} {n n' : S.GLV} (H : S.IsTer
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → ∀ h ∈ S.H0, S.IsTerm (h • d) (h • Λ) ∧ S.om (h • d) (h • Λ) = S.om d Λ ∧ S.mu (h • Λ) = S.mu Λ ∧ S.M (h • d) (h • Λ) = S.M d Λ ∧ S.sat (h • Λ) = S.sat Λ ∧ S.Fr (h • d) (h • Λ) = S.Fr d Λ := by
   intro F _ _ _ _ _ E _ _ _ L r k S d Λ ⟨⟨n, n'⟩, H⟩ h hh
   obtain ⟨m, m', H', hm, hm'⟩ := termW S H hh
-  obtain ⟨a1, a2, a3, -⟩ := GlobalTheory.T.term_invariants_independent_of_witnesses L r k S _ _ _ _ H
-  obtain ⟨b1, b2, b3, -⟩ := GlobalTheory.T.term_invariants_independent_of_witnesses L r k S _ _ _ _ H'
+  obtain ⟨a1, a2, a3, -⟩ := _root_.GlobalTheory.HL.WitIndep.witness_independence L r k S _ _ _ _ H
+  obtain ⟨b1, b2, b3, -⟩ := _root_.GlobalTheory.HL.WitIndep.witness_independence L r k S _ _ _ _ H'
   refine ⟨⟨(m, m'), H'⟩, ?_, ?_, ?_, ?_, ?_⟩
   · rw [a1, b1]
     simp only [Frames.psi, Frames.psi', Frames.psiOf, Frames.coef, hm, hm']

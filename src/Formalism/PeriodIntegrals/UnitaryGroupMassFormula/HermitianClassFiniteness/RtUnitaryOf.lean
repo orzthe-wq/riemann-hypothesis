@@ -69,7 +69,6 @@ theorem rt_inj (I : Formalism.MainNotions.S.AutInst) : Function.Injective (rtι 
     have h2 := congrArg (fun x : FiniteAdeleRing (𝓞 I.F) I.F => x v) h
     first
     | exact zero_ne_one (α := v.adicCompletion I.F) h2
-    | exact zero_ne_one (α := v.adicCompletion I.F) (by simpa using h2)
   first
   | (have h1 : ⇑(rtι I) = (LinearMap.lTensor I.E (Algebra.linearMap I.F (FiniteAdeleRing (𝓞 I.F) I.F))) ∘
         (TensorProduct.rid I.F I.E).symm := by
@@ -78,7 +77,6 @@ theorem rt_inj (I : Formalism.MainNotions.S.AutInst) : Function.Injective (rtι 
      rw [h1]
      exact (Module.Flat.lTensor_preserves_injective_linearMap _ (algebraMap I.F _).injective).comp
        (TensorProduct.rid I.F I.E).symm.injective)
-  | exact Algebra.TensorProduct.includeLeft_injective (R := I.F) (S := I.F) (algebraMap I.F _).injective
 
 theorem rt_map_inj (I : Formalism.MainNotions.S.AutInst) {p q : Type} (M N : Matrix p q I.E)
     (h : M.map (rtι I) = N.map (rtι I)) : M = N := by
@@ -117,7 +115,6 @@ theorem rt_det_ne (I : Formalism.MainNotions.S.AutInst) {k : Type} [Fintype k] [
 theorem rt_sig_eq (I : Formalism.MainNotions.S.AutInst) : (I.cm.sig : I.E →+* I.E) = starRingEnd I.E := by
   first
   | rfl
-  | exact RingHom.ext fun e => rfl
 
 theorem rt_conj_mul {k : Type} [Fintype k] [DecidableEq k] (P Pi A B : Matrix k k ℂ) (h1 : P * Pi = 1) :
     (Pi * A * P) * (Pi * B * P) = Pi * (A * B) * P := by

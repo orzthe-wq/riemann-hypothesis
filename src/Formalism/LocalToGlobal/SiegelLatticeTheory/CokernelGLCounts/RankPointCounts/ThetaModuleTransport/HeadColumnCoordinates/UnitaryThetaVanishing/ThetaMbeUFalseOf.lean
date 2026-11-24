@@ -5,42 +5,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankP
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LsDatumAGram
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.ThetaModuleTransport.HeadColumnCoordinates.SharpSpanCounting.SharpEquivApply
 import Formalism.SharpRestriction.CuspSpanNormBounds.LocalModelPeriodLattices
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LsDatumA
 
 @[expose] public section
@@ -61,16 +25,6 @@ theorem gdet_fix (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F
     intro x
     rw [HermSp.normE, map_mul, M.L.cj_cj, mul_comm]
   simp only [HermSp.Gdet, map_sub, map_mul, AlgEquiv.commutes, hn]
-
-theorem gdet_unit (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) (T T' : F)
-    (hG : H.Gdet f f' T T' ≠ 0) : IsUnit (H.Gdet f f' T T') := by
-  obtain ⟨a, ha⟩ := (M.L.cj_fix _).mp (gdet_fix H f f' T T')
-  have ha0 : a ≠ 0 := by
-    rintro rfl
-    apply hG
-    rw [← ha, map_zero]
-  rw [← ha]
-  exact (IsUnit.mk0 a ha0).map (algebraMap F E)
 
 theorem gdet_rel (H : HermSp M V) {r : ℕ} (f₁ f₁' f₂ f₂' : Fin (r + 1) → V) (T T' : F)
     (hrel : H.Dl f₁ f₁' r * H.Dl f₂ f₂' (r + 1) = H.Dl f₂ f₂' r * H.Dl f₁ f₁' (r + 1)) :
@@ -120,7 +74,7 @@ theorem thetaMbeU_false_of (h1 : CoordU) (h2 : AlgAll) (M : Model F E) (r n : �
   have hT' : t₁.T' ∈ 𝒪[F] := hyp.1.1.2.2.1.2.2.2.1
   have hF₁ : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f t₁.T := ⟨hyp.1.1.2.1.2.1, hyp.1.1.2.1.2.2.1⟩
   have hF₁' : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f' t₁.T' := ⟨hyp.1.1.2.2.1.2.1, hyp.1.1.2.2.1.2.2.1⟩
-  have hGu₁ : IsUnit (H.Gdet t₁.f t₁.f' t₁.T t₁.T') := gdet_unit H _ _ _ _ hyp.1.1.2.2.2.2.1
+  have hGu₁ : IsUnit (H.Gdet t₁.f t₁.f' t₁.T t₁.T') := _root_.Formalism.L2.SG.LsDatumA.isUnit_Gdet H _ _ _ _ hyp.1.1.2.2.2.2.1
   have hGu₂ : IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T') := by
     have hN₂ : IsUnit (H.normE (H.Dl f₂ f₂' (r + 1))) := hU2.mul (hU2.map L.cj)
     have := gdet_rel H t₁.f t₁.f' f₂ f₂' t₁.T t₁.T' hrel

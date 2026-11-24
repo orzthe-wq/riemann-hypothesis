@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Presheaf
+import Formalism.SharpRestriction.GrowthBounds.MonomialOrderSegments.DigitPartMonomial
 
 @[expose] public section
 
@@ -60,12 +61,12 @@ variable {K : Type} [Field K] (D : TwistData K)
 
 theorem Lam_smul (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (a : K) (Z : MvPolynomial (D.ML × Fin D.r) K) :
     D.abelian₂ p F (a • Z) = a * D.abelian₂ p F Z := by
-  unfold abelian₂; simp only [gaAct_eq_dg, map_smul, fock_smul_right]
+  unfold abelian₂; simp only [_root_.Formalism.MainNotions.PlaneGram.TwistData.gaAct_eq, map_smul, fock_smul_right]
 
 theorem Lam_monomial (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (ζ : D.EM) (c : K) :
     D.abelian₂ p F (monomial ζ c) =
       F.coeff (D.phE p ζ) * (D.ga (D.phE p ζ) * c) * (fact (D.phE p ζ) : K) := by
-  unfold abelian₂; rw [ph_monomial, gaAct_eq_dg, dg_monomial, fock_monomial_right]
+  unfold abelian₂; rw [ph_monomial, _root_.Formalism.MainNotions.PlaneGram.TwistData.gaAct_eq, dg_monomial, fock_monomial_right]
 
 theorem ph_eq_sum (p : ℕ) (Z : MvPolynomial (D.ML × Fin D.r) K) :
     D.ph p Z = ∑ ζ ∈ Z.support, monomial (D.phE p ζ) (Z.coeff ζ) := by

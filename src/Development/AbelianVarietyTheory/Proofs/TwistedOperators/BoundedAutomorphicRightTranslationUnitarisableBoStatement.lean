@@ -53,4 +53,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.boundedAutomorphicRightTranslation_unitarisable_bounded : ∀ (D : D7) (V : HSp D), IsUnitarisable (bddRep V) ∧ ∀ (ν : Measure (GA D V)) (𝓕 : Set (GA D V)), ν.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 ν → ∀ f₂ : bddAut V, ∃ ℓ : bddAut V →ₗ[ℂ] ℂ, (∀ f : bddAut V, ℓ f = l2 ν 𝓕 (f : GA D V → ℂ) f₂) ∧ ∀ f : bddAut V, ∃ C : ℝ, ∀ g, ‖ℓ (bddRep V g f)‖ ≤ C := by
-  first | exact @GlobalTheory.FinZeta.bddRep_unitarisable_and_bounded | exact GlobalTheory.FinZeta.bddRep_unitarisable_and_bounded | (intros; apply GlobalTheory.FinZeta.bddRep_unitarisable_and_bounded <;> assumption)
+  first | exact @GlobalTheory.FinZeta.bddRep_unitarisable_and_bounded

@@ -187,7 +187,6 @@ theorem charpoly_conj (D : D7) (hD : FrobDense D) (i : D.nd.Loc) (π : D.naut.CG
     (by rw [← Matrix.map_mul, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one,
       Matrix.map_one _ (map_zero _) (map_one _)]) _ (((normV w : ℕ) : ℂ) ^ (1 - (D.R.r : ℤ))) e1
   apply Polynomial.map_injective (D.naut.iotaQC i).toRingHom (D.naut.iotaQC i).injective
-  beta_reduce
   rw [← Matrix.charpoly_map, ← Matrix.charpoly_map, cyc_val_frob hwl hB hσ]
   refine e2.trans (Eq.trans ?_ (e3.symm.trans ?_))
   · rw [Multiset.map_map, Multiset.map_map, Multiset.map_map]

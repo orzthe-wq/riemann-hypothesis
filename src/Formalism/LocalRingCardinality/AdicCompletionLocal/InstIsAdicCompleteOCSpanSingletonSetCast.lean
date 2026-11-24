@@ -68,6 +68,15 @@ variable (l : ℕ) [Fact l.Prime]
 scoped instance instFactNotIsUnitOCCast : Fact (¬ IsUnit ((l : ℕ) : OC l)) := inferInstance
 scoped instance instIsAdicCompleteOCSpanSingletonSetCast : IsAdicComplete (Ideal.span {((l : ℕ) : OC l)}) (OC l) := inferInstance
 abbrev Fl : Type := Tilt l (OC l)
+
+/-- The period ring `A_{inf} = W(𝒪_{ℂ_l}♭)`, specializing
+`Reformulated.AutPerF.Ainf` to `Formalism.Per.OC l`.
+
+See [Bhatt–Morrow–Scholze, *Integral p-adic Hodge theory*
+(§3.1, Definition 3.1, p. 244)][bhattMorrowScholze2018] and
+[Fontaine, *Le corps des périodes p-adiques* (§1.3.3, p. 66, with `K = ℚ_[p]`)][fontaine1994].
+
+TODO: Unify this with `GroundTheory.PAdicHodge.AInf`. -/
 abbrev Ainf : Type := Reformulated.AutPerF.Ainf l (OC l)
 abbrev θ : Ainf l →+* OC l := WittVector.fontaineTheta (OC l) l
 def φA : Ainf l →+* Ainf l := Ainf.frob l (OC l)
@@ -93,12 +102,35 @@ instance instAlgebraBdRpBdR : Algebra (BdRp l) (BdR l) := inferInstanceAs (Algeb
 def pD : AinfP l →+* BdR l := UpperTheory.Ring.Comp.pD l
 def zD : ℤ_[l] →+* BdR l := UpperTheory.Ring.Comp.zD l
 def FilD (a : ℤ) : Submodule (BdRp l) (BdR l) := BdR.fil l (OC l) a
+
+/-- The uncompleted divided power hull of the kernel of Fontaine's map on `Formalism.Per.Ainf l`.
+
+This specializes `Reformulated.AutPerF.acrisZero` to `Formalism.Per.OC l`.
+
+TODO: Unify this with `GroundTheory.PAdicHodge.ACris.ACrisZero`. -/
 def Acris0 : Subalgebra (Ainf l) (AinfP l) := acrisZero l (OC l)
+
+/-- The period ring `A_{cris}`, the `l`-adic completion of `Formalism.Per.Acris0 l`.
+
+See [Fontaine, *Le corps des périodes p-adiques* (§2.2.2, p. 76)][fontaine1994] and
+[Bhatt–Morrow–Scholze, *Integral p-adic Hodge theory* (§1.2, p. 223)][bhattMorrowScholze2018],
+where the latter denotes this ring by `A_{crys}`.
+
+TODO: Unify this with `GroundTheory.PAdicHodge.ACris.ACris`. -/
 def Acris : Type := Reformulated.AutPerF.Acris l (OC l)
 instance instCommRingAcris : CommRing (Acris l) := inferInstanceAs (CommRing (Reformulated.AutPerF.Acris l (OC l)))
 instance instAlgebraAcris0Acris : Algebra ↥(Acris0 l) (Acris l) :=
   inferInstanceAs (Algebra (AcrisZero l (OC l)) (Reformulated.AutPerF.Acris l (OC l)))
 instance instAlgebraAinfAcris : Algebra (Ainf l) (Acris l) := inferInstanceAs (Algebra (Ainf l) (Reformulated.AutPerF.Acris l (OC l)))
+/-- Fontaine's period ring `B_{cris}`, specializing `Reformulated.AutPerF.Bcris`
+to `Formalism.Per.OC l`. This inverts all primitive logarithmic periods in `B⁺_{cris}`.
+
+See [Fontaine, *Le corps des périodes p-adiques* (§2.3.4, pp. 78–79)][fontaine1994].
+[Bhatt–Morrow–Scholze, *Integral p-adic Hodge theory* (§1.2, p. 223)][bhattMorrowScholze2018]
+use the notation `B_{crys}` and invert `μ = [ε] - 1` in `A_{crys}`;
+Lemma 12.2(iii), pp. 358–359, relates `μ` to the logarithmic period.
+
+TODO: Unify this with `GroundTheory.PAdicHodge.ACris.BCris`. -/
 def Bcris : Type := Reformulated.AutPerF.Bcris l (OC l)
 instance instCommRingBcris : CommRing (Bcris l) := inferInstanceAs (CommRing (Reformulated.AutPerF.Bcris l (OC l)))
 instance instAlgebraAcrisBcris : Algebra (Acris l) (Bcris l) :=

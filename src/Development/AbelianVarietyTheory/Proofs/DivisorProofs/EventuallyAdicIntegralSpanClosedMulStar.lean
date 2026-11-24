@@ -59,7 +59,7 @@ namespace GlobalTheory.AdicSpan
 theorem rat_mem_adicCompletionIntegers_eventually (x : ℚ) :
     ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite,
       algebraMap ℚ (v.adicCompletion ℚ) x ∈ v.adicCompletionIntegers ℚ := by
-  apply _root_.GlobalTheory.FinClsLoc.ratInt_eventually <;> assumption
+  apply _root_.GlobalTheory.FinClsLoc.ratInt_eventually
 
 section
 

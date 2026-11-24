@@ -1,17 +1,21 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsReadingLaws
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RpowNegLeNormOfComponent
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GlMapDiagUniformizerElementarySublattice
+public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt
+public import Formalism.SatakeDualWeyl.StatementE
+public import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GlMapStandardLatticeEqIffMemGLintAdic
+public import Formalism.SatakeDualWeyl.KpqSubgroupCompact
+public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsReadingLaws
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSubquotSmIndCongr
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GlMapDiagUniformizerElementarySublatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GlMapStandardLatticeEqIffMemGLintAdicStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemCartanDoubleCosetOfLatticeBetweenUniformizerStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -32,7 +36,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -45,9 +49,159 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemCartanDoubleCosetOfLatticeBetweenUniformizer, Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitarySphericalSatakeOfUnitarisableHasSatake
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemCartanDoubleCosetOfLatticeBetweenUniformizer =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemCartanDoubleCosetOfLatticeBetweenUniformizer", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RpowNegLeNormOfComponent\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GlMapDiagUniformizerElementarySublattice\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt\npublic import Formalism.SatakeDualWeyl.StatementE\npublic import Mathlib.NumberTheory.NumberField.Completion.FinitePlace\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GlMapStandardLatticeEqIffMemGLintAdic\npublic import Formalism.SatakeDualWeyl.KpqSubgroupCompact\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain GlobalTheory.LatHecke Formalism.UG
+
+namespace GlobalTheory.ElemCartan
+
+section Adic
+
+variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
+
+theorem zpow_mem_iff {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (m : ℤ) :
+    ϖ ^ m ∈ w.adicCompletionIntegers E ↔ 0 ≤ m := by
+  rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_zpow₀, hϖ, ← WithZero.coe_zpow,
+    ← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zsmul, ← ofAdd_zero, Multiplicative.ofAdd_le,
+    smul_eq_mul]
+  omega
+
+theorem antitone_zero_one {n j : ℕ} (a : Fin n → ℤ) (ha : Antitone a)
+    (h01 : ∀ i, a i = 0 ∨ a i = 1)
+    (hS : (Finset.univ.filter fun i => a i = 1).card = j) (i : Fin n) :
+    a i = 1 ↔ (i : ℕ) < j := by
+  rw [← hS]
+  refine (Fin.lt_card_filter_univ_iff_apply_of_imp (fun k => a k = 1) ?_).symm
+  intro k l hlk hk
+  have hle := ha hlk
+  rcases h01 l with hl | hl <;> omega
+
+end Adic
+
+theorem mem_doubleCoset_of_subElem :
+    ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
+      (n : ℕ) (ϖ : w.adicCompletion E), IsUnifV E w ϖ →
+      ∀ (j : ℕ), j ≤ n → ∀ (g : GL (Fin n) (w.adicCompletion E)),
+        (haveI := _root_.Formalism.UG.P.glint_finite_residueField w
+         glMap g (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ∈
+           Subtype.val '' subElem j (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) →
+         ∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w),
+           (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) =
+             (a : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * diagJ n ϖ j *
+               (b : Matrix (Fin n) (Fin n) (w.adicCompletion E))) := by
+  intro E _ _ w n ϖ hϖ j _ g hg
+  have := _root_.Formalism.UG.P.glint_finite_residueField w
+  obtain ⟨M₀, hM, hMg⟩ := hg
+  set L := std (w.adicCompletionIntegers E) (w.adicCompletion E) n with hLdef
+  set M : Lat (w.adicCompletionIntegers E) (w.adicCompletion E) n := M₀ with hMdef
+  have hϖ0 := _root_.Formalism.UG.P.satake_unif_ne_zero w hϖ
+  have hϖO : ϖ ∈ Ov E w := by
+    have := (zpow_mem_iff w hϖ 1).2 zero_le_one
+    simpa using this
+  obtain ⟨a, ha, k₁, hk₁, k₂, hk₂, e⟩ := Formalism.UG.Final.CartanDecomp E w n ϖ hϖO hϖ g
+  have hs₁ : glMap k₁⁻¹ L.1 = L.1 := (_root_.GlobalTheory.LatHecke.glMap_std_eq_iff_mem_GLint E w n k₁⁻¹).2 (inv_mem hk₁)
+  have hs₂ : glMap k₂⁻¹ L.1 = L.1 := (_root_.GlobalTheory.LatHecke.glMap_std_eq_iff_mem_GLint E w n k₂⁻¹).2 (inv_mem hk₂)
+  set D : GL (Fin n) (w.adicCompletion E) := k₁⁻¹ * g * k₂⁻¹ with hDdef
+  have hD : (D : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = diagPow E w ϖ a := by
+    rw [hDdef, Units.val_mul, Units.val_mul, e]
+    simp only [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]
+    rw [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]
+
+  have hDL : glMap D L.1 = (k₁⁻¹ • M).1 := by
+    rw [smul_def, glLat_val, hMg, hDdef, glMap_mul, glMap_mul, hs₂]
+  have hMD : k₁⁻¹ • M ∈ subElem j L := by
+    have h := (smul_mem_subElem_iff k₁⁻¹ j M L).2 hM
+    have hL : k₁⁻¹ • L = L := Subtype.ext (by rw [smul_def, glLat_val, hs₁])
+    rwa [hL] at h
+  obtain ⟨⟨hle, hidx⟩, hmax⟩ := hMD
+  rw [← hDL] at hle hidx hmax
+  have hDe : ∀ (x : Fin n → w.adicCompletion E) (i : Fin n),
+      Matrix.toLin' (D : Matrix (Fin n) (Fin n) (w.adicCompletion E)) x i = ϖ ^ (a i) * x i := by
+    intro x i
+    rw [Matrix.toLin'_apply, hD, diagPow, Matrix.mulVec_diagonal]
+
+  have hpos : ∀ i, 0 ≤ a i := by
+    intro i
+    have hmem : Matrix.toLin' (D : Matrix (Fin n) (Fin n) (w.adicCompletion E)) (Pi.basisFun (w.adicCompletion E) (Fin n) i) ∈ glMap D L.1 :=
+      ⟨_, Submodule.subset_span ⟨i, rfl⟩, rfl⟩
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.LatHecke.coord_of_mem_std (hle hmem) i
+    rw [hDe] at hc
+    simp only [Pi.basisFun_apply, Pi.single_eq_same, mul_one] at hc
+    rw [← zpow_mem_iff w hϖ, ← hc]
+    exact c.2
+
+  have hle1 : ∀ i, a i ≤ 1 := by
+    intro i
+    have hϖm : (⟨ϖ, hϖO⟩ : w.adicCompletionIntegers E) ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers E) := by
+      apply (Valuation.mem_maximalIdeal_iff (v := (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))))).2
+      show Valued.v ϖ < 1
+      rw [hϖ, ← WithZero.coe_one, WithZero.coe_lt_coe, ← ofAdd_zero, Multiplicative.ofAdd_lt]
+      omega
+    have hmem : (⟨ϖ, hϖO⟩ : w.adicCompletionIntegers E) • Pi.basisFun (w.adicCompletion E) (Fin n) i ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers E) • L.1 :=
+      Submodule.smul_mem_smul hϖm (Submodule.subset_span ⟨i, rfl⟩)
+    obtain ⟨x, hx, hxe⟩ := hmax hmem
+    obtain ⟨c, hc⟩ := _root_.GlobalTheory.LatHecke.coord_of_mem_std hx i
+    have hxi := congrFun hxe i
+    simp only [LinearMap.coe_restrictScalars] at hxi
+    rw [hDe] at hxi
+    have hval : (((⟨ϖ, hϖO⟩ : w.adicCompletionIntegers E) • Pi.basisFun (w.adicCompletion E) (Fin n) i) i) = ϖ := by
+      simp [Algebra.smul_def]
+    rw [hval] at hxi
+    have hx' : x i = ϖ ^ (1 - a i) := by
+      rw [zpow_sub₀ hϖ0, zpow_one, eq_div_iff (zpow_ne_zero (a i) hϖ0), mul_comm]
+      exact hxi
+    rw [← sub_nonneg, ← zpow_mem_iff w hϖ, ← hx', ← hc]
+    exact c.2
+  have h01 : ∀ i, a i = 0 ∨ a i = 1 := fun i => by
+    have := hpos i; have := hle1 i; omega
+
+  set S : Finset (Fin n) := Finset.univ.filter fun i => a i = 1 with hSdef
+  have hdiag : (fun i => ϖ ^ (a i)) = fun i => if i ∈ S then ϖ else 1 := by
+    funext i
+    rcases h01 i with h | h <;> simp [hSdef, h]
+  have hD' : (D : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.diagonal fun i => if i ∈ S then ϖ else 1 := by
+    rw [hD, diagPow, hdiag]
+  obtain ⟨M₂, ⟨⟨-, hidx₂⟩, -⟩, hM₂⟩ := _root_.GlobalTheory.DiagElem.glMap_diag_mem_subElem E w n ϖ hϖ S D hD'
+  rw [hM₂] at hidx₂
+  have hcard : S.card = j := by
+    have h := hidx₂.symm.trans hidx
+    exact Nat.pow_right_injective (two_le_qRes (O := w.adicCompletionIntegers E)) h
+  have hkey := antitone_zero_one a ha h01 hcard
+  refine ⟨k₁, hk₁, k₂, hk₂, ?_⟩
+  rw [e]
+  congr 2
+  rw [diagPow, diagJ]
+  congr 1
+  funext i
+  by_cases hi : (i : ℕ) < j
+  · rw [ite_eq_left hi, (hkey i).2 hi, zpow_one]
+  · rw [ite_eq_right hi]
+    have : a i = 0 := (h01 i).resolve_right fun h => hi ((hkey i).1 h)
+    rw [this, zpow_zero]
+
+end GlobalTheory.ElemCartan
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemCartanDoubleCosetOfLatticeBetweenUniformizer =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitarySphericalSatakeOfUnitarisableHasSatake =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitarySphericalSatakeOfUnitarisableHasSatake", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.ExistsReadingLaws\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RpowNegLeNormOfComponent\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatVecUOfIsSphericalU\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsSubquotSmIndCongr\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GlMapDiagUniformizerElementarySublattice\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt\npublic import Formalism.SatakeDualWeyl.StatementE\npublic import Mathlib.NumberTheory.NumberField.Completion.FinitePlace\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GlMapStandardLatticeEqIffMemGLintAdic\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemCartanDoubleCosetOfLatticeBetweenUniformizer\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.RowTie GlobalTheory.SplitRead
@@ -73,33 +227,33 @@ theorem diagJ_det_ne {n : ℕ} {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) 
 theorem stab_iff (n : ℕ) (g : GL (Fin n) (w.adicCompletion E)) :
     glMap g (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 =
       (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ↔ g ∈ GLint (Fin n) (Ov E w) :=
-  GlobalTheory.T.glMap_standardLattice_eq_iff_mem_GLint_adic E w n g
+  _root_.GlobalTheory.LatHecke.glMap_std_eq_iff_mem_GLint E w n g
 
 theorem coset_of_elem (n : ℕ) (ϖ : w.adicCompletion E) (hϖ : IsUnifV E w ϖ) (j : ℕ) (hj : j ≤ n)
     (g : GL (Fin n) (w.adicCompletion E)) :
-    haveI := GlobalTheory.RowSatakeBound.finite_residue w
+    haveI := _root_.Formalism.UG.P.glint_finite_residueField w
     glMap g (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ∈
       Subtype.val '' subElem j (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) →
     ∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w),
       (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = (a : Matrix (Fin n) (Fin n) _) * diagJ n ϖ j * (b : Matrix (Fin n) (Fin n) _) :=
-  GlobalTheory.T.mem_cartanDoubleCoset_of_lattice_between_uniformizer E w n ϖ hϖ j hj g
+  _root_.GlobalTheory.ElemCartan.mem_doubleCoset_of_subElem E w n ϖ hϖ j hj g
 
 theorem diag_elem (n : ℕ) (ϖ : w.adicCompletion E) (hϖ : IsUnifV E w ϖ) (S : Finset (Fin n))
     (d : GL (Fin n) (w.adicCompletion E))
     (hd : (d : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.diagonal (fun i => if i ∈ S then ϖ else 1)) :
-    haveI := GlobalTheory.RowSatakeBound.finite_residue w
+    haveI := _root_.Formalism.UG.P.glint_finite_residueField w
     glMap d (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ∈
       Subtype.val '' subElem S.card (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) :=
-  GlobalTheory.T.glMap_diagUniformizer_elementarySublattice E w n ϖ hϖ S d hd
+  _root_.GlobalTheory.DiagElem.glMap_diag_mem_subElem E w n ϖ hϖ S d hd
 
 theorem elem_of_coset (n : ℕ) (ϖ : w.adicCompletion E) (hϖ : IsUnifV E w ϖ) (j : ℕ) (hj : j ≤ n)
     (g : GL (Fin n) (w.adicCompletion E)) :
-    haveI := GlobalTheory.RowSatakeBound.finite_residue w
+    haveI := _root_.Formalism.UG.P.glint_finite_residueField w
     (∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w),
       (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = (a : Matrix (Fin n) (Fin n) _) * diagJ n ϖ j * (b : Matrix (Fin n) (Fin n) _)) →
     glMap g (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ∈
       Subtype.val '' subElem j (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) := by
-  haveI := GlobalTheory.RowSatakeBound.finite_residue w
+  haveI := _root_.Formalism.UG.P.glint_finite_residueField w
   rintro ⟨a, ha, b, hb, e⟩
   set S : Finset (Fin n) := Finset.univ.filter fun i => (i : ℕ) < j
   have hS : S.card = j := by
@@ -138,11 +292,11 @@ theorem heckeVec_Tj_eq_sum {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) {x : V} (hx : x ∈ fixed ρ (KGL w (n := n)))
     {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {j : ℕ} (hj : j ≤ n)
     (s : Finset (GL (Fin n) (w.adicCompletion E)))
-    (hs : haveI := GlobalTheory.RowSatakeBound.finite_residue w
+    (hs : haveI := _root_.Formalism.UG.P.glint_finite_residueField w
       Set.BijOn (fun g => glMap g (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1) s
         (Subtype.val '' subElem j (std (w.adicCompletionIntegers E) (w.adicCompletion E) n))) :
     heckeVec ρ (KGL w (n := n)) (Tj ℂ n (Ov E w) ϖ j) x = ∑ g ∈ s, ρ g x := by
-  haveI := GlobalTheory.RowSatakeBound.finite_residue w
+  haveI := _root_.Formalism.UG.P.glint_finite_residueField w
   set D := Matrix.GeneralLinearGroup.mkOfDetNeZero (diagJ n ϖ j) (diagJ_det_ne hϖ j)
   have hD : ∀ g : GL (Fin n) (w.adicCompletion E), g ∈ DoubleCoset.doubleCoset D (KGL w (n := n) : Set _) (KGL w (n := n)) ↔
       ∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w),
@@ -209,7 +363,7 @@ theorem isUnitarySatakeAt_of_hasSatake : ∀ (E : Type) [Field E] [NumberField E
   letI cd : InnerProductSpace.Core ℂ π.V := formCore B hB hpos
   letI : NormedAddCommGroup π.V := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)
   letI : InnerProductSpace ℂ π.V := InnerProductSpace.ofCore cd.toCore
-  haveI := GlobalTheory.RowSatakeBound.finite_residue w
+  haveI := _root_.Formalism.UG.P.glint_finite_residueField w
   have hn : ∀ y : π.V, ‖y‖ ^ 2 = (B y y).re := fun y => by
     rw [← @inner_self_eq_norm_sq ℂ]
     rfl
@@ -229,3 +383,7 @@ theorem isUnitarySatakeAt_of_hasSatake : ∀ (E : Type) [Field E] [NumberField E
     rfl
 
 end GlobalTheory.SatHecke
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitarySphericalSatakeOfUnitarisableHasSatake =====

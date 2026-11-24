@@ -1,6 +1,5 @@
 module
 
-public import Mathlib
 public import Formalism.LocalToGlobal.IndefiniteReal.BaseLiftsPackageOfPrimitiveLinks
 public import Formalism.LocalToGlobal.IndefiniteReal.LinksLemmas
 public import Formalism.LocalToGlobal.IndefiniteReal.LinksExistW
@@ -12,7 +11,8 @@ public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.HeckeSupportLattices
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.OffRange
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.HeckeSplitOne
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SupLatticeLocalisationOfUnitBall
+public import Formalism.LocalToGlobal.IndefiniteReal.GramCEqTranspose
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsSmulMemSupLattice
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsPlaceOfValuationRing
 public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ZeroDegreeOfPinFor
 public import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.ExistsIsHeckeSetting
@@ -212,7 +212,7 @@ theorem mk_smul (i : D.ntw.Tw) (b : Bool) (i' : Fin D.R.m) (k : ℕ) (P : PlE D.
   obtain ⟨hwk, hn⟩ : ∃ h : (Y.fi i').e x ∈ (R.FW i').WK, ∀ lp y, (R.FW i').nrm lp y ⟨_, h⟩ ≤ 1 := hx'
   obtain ⟨la, hl, hla⟩ := GlobalTheory.EmbeddingPlace.exists_place D T.Q.c.F i ((ιK S i b).comp (Y.fi i').eK.symm.toRingHom)
   have hb := (hK la hl).sup ⟨_, hwk⟩ (fun y => hn la y)
-  obtain ⟨s', hs'la, hs'mk⟩ := GlobalTheory.supLattice_localisation_of_unitBall _ _ _ _ _ (R.FW i') hMK.2 la _ hb
+  obtain ⟨s', hs'la, hs'mk⟩ := _root_.GlobalTheory.DenominatorExistenceTwistedOperators.exists_smul_mem_supLattice _ _ _ _ _ (R.FW i') hMK.2 la _ hb
   have e1 : ((Y.fi i').e.toLinearMap ∘ₗ H.hL ((i' : ℕ) + 1) k P ∘ₗ (Y.fi i').e.symm.toLinearMap) ((Y.fi i').e x) =
       (Y.fi i').e (H.hL ((i' : ℕ) + 1) k P x) := by
     simp

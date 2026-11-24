@@ -49,6 +49,7 @@ import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.UnitCharTriangle
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.HermitianOrthogonalExtensionData
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RatInOfUnit
+import Formalism.SharpRestriction.GlobalSchurBounds.LocalCountingBounds
 
 @[expose] public section
 
@@ -96,7 +97,7 @@ theorem norm_det_compAt {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau)
   have hc : ∀ z, ρ (cA D z) = starRingEnd ℂ (ρ z) := fun z => by
     simp only [hρ, RingHom.comp_apply]
     rw [infPart_cA]
-    exact GlobalTheory.Mem.VolExists.infEmb_sigR (GlobalTheory.DefiniteQuotient.cmExt D) (hθ τ) _
+    exact GlobalTheory.Mem.VolExists.infEmb_sigR (_root_.Formalism.MainNotions.UnusedSlot34.isCMExt_D D) (hθ τ) _
   have hd := congrArg (fun M => ρ M.det) h
   simp only [Matrix.det_mul, Matrix.det_transpose, map_mul] at hd
   have e1 : ρ (((mt V g).map (cA D)).det) = starRingEnd ℂ (ρ (mt V g).det) := by
@@ -192,12 +193,6 @@ theorem one_le_prod_tauE (z : D.host.E) (hz : z ∈ intR D) (h0 : z ≠ 0) : 1 �
     Finset.prod_nonneg fun _ _ => norm_nonneg _
   nlinarith
 
-theorem mul_mem_int {x y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
-    x * y ∈ intAE D := by
-  rw [GlobalTheory.IdemSupport.mem_intAE_iff] at *
-  rw [map_mul]
-  exact mul_mem hx hy
-
 theorem exists_den_matrix {a b : ℕ}
     {K : Set (Matrix (Fin a) (Fin b) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E))} (hK : IsCompact K) :
     ∃ N : ℕ, 0 < N ∧ ∀ m ∈ K, ∀ i j, N • m i j ∈ intAE D := by
@@ -207,8 +202,6 @@ theorem exists_den_matrix {a b : ℕ}
   refine ⟨∏ p, N p, Finset.prod_pos fun p _ => hN p, fun m hm i j => ?_⟩
   rw [← Finset.mul_prod_erase _ _ (Finset.mem_univ (i, j)), mul_comm, mul_smul]
   exact AddSubgroup.nsmul_mem _ (h (i, j) _ ⟨m, hm, rfl⟩) _
-
-theorem nonempty_tau (D : D7) : Nonempty D.what₂.Tau := ⟨D.eTau.symm (Classical.arbitrary _)⟩
 
 end GlobalTheory.CompanionTheory.Ipf.Bdd
 

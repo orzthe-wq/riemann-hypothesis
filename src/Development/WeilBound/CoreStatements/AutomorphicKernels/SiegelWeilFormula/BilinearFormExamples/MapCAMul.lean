@@ -114,7 +114,7 @@ theorem symp_frame (σ : E →ₐ[F] E) (JA : Matrix (Fin m) (Fin m) E) (YJ : Ma
       ((ε : ℤ) : AF F) * Algebra.trace (AF F) (AE F E) t := fun t => by rw [smul_eq_mul, key]
   have key3 : ∀ t : AE F E, Algebra.trace (AF F) (AE F E) (t * ((ε : ℤ) : AE F E)) =
       ((ε : ℤ) : AF F) * Algebra.trace (AF F) (AE F E) t := fun t => by rw [mul_comm, key]
-  simp only [Bf, neg_one_mul, map_neg, map_add (f := _), key, key2, key3]
+  simp only [Bf, neg_one_mul, map_neg, map_add (f := _), key2]
   ring
 
 end PositivityTheory.SiegelWeilFormula.Ldexa

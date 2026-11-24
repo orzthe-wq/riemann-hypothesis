@@ -269,11 +269,7 @@ def liftb_base (W : LocWach PD LL O v n) : Formalism.CoboundaryTransfers.Base �
   comm := fun a => W.φA_γA W.gam a
   φX := ⟨W.Q, W.φA_X⟩
 
-theorem liftb_φ_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
-    W.φD T (a • x) = W.φA a • W.φD T x := by
-  have := W.φD_smul T (algebraMap (LetA O n) W.EE a) x
-  rw [algebraMap_smul, W.φE_ext, algebraMap_smul] at this
-  exact this
+alias liftb_φ_smul := _root_.Formalism.MainNotions.LiftingTheory.wmap_φD_smul
 
 theorem liftb_γ_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
     W.γ T (a • x) = W.γA W.gam a • W.γ T x := by
@@ -325,11 +321,6 @@ theorem liftb_letE_mem (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMo
     (hx : x ∈ W.N T) : (letE i : LetA O n) • x ∈ W.Nl T i :=
   Submodule.mem_map.2 ⟨x, hx, rfl⟩
 
-theorem liftb_Nl_le (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) :
-    W.Nl T i ≤ W.N T := by
-  rintro _ ⟨x, hx, rfl⟩
-  exact (W.N T).smul_mem _ hx
-
 theorem liftb_split [NeZero n] (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (x : W.DD T) :
     x = ∑ i : ZMod n, (letE i : LetA O n) • x := by
   rw [← Finset.sum_smul, liftb_sum_letE, one_smul]
@@ -343,8 +334,7 @@ theorem liftb_mx_eq [NeZero n] (Mi : ZMod n → ℕ) : Formalism.MainNotions.Del
   · exact ciSup_le (fun i => liftb_le_Mmax Mi i)
   · exact Finset.sup_le (fun k _ => le_ciSup (Set.finite_range Mi).bddAbove (k : ZMod n))
 
-theorem liftb_jl (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (Mi hi : ZMod n → ℕ)
-    (h : JumpsLet W T Mi hi) : Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T Mi hi := fun τ i hτ => h i τ hτ
+alias liftb_jl := _root_.Formalism.MainNotions.LiftingTheory.wmap_Jumps
 
 theorem liftb_good_of [NeZero n] (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (hc : IsCrys PD T.ρ)
     (Mi hi : ZMod n → ℕ) (h2 : Formalism.MainNotions.DeltaInvariantLattices.p2 W T) (h5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T Mi hi)
@@ -409,7 +399,7 @@ theorem liftb_kills_all [NeZero n] (W : LocWach PD LL O v n) {T₁ T₂ : LocLat
   have : ∀ i : ZMod n, ∃ x ∈ W.N T₁, W.map F x = a • ((letE i : LetA O n) • y) := by
     intro i
     obtain ⟨x, hx, hxe⟩ := h i _ (liftb_letE_mem W T₂ i hy)
-    exact ⟨x, liftb_Nl_le W T₁ i hx, hxe⟩
+    exact ⟨x, _root_.Formalism.MainNotions.LiftingTheory.wmap_Nl_le W T₁ i hx, hxe⟩
   choose x hx hxe using this
   refine ⟨∑ i, x i, Submodule.sum_mem _ (fun i _ => hx i), ?_⟩
 
@@ -442,9 +432,6 @@ theorem liftb_aeval_res {D : Type} [AddCommGroup D] [Module O D] [Module ℤ_[�
       Module.End.mul_apply, Module.End.mul_apply, Module.algebraMap_end_apply,
       Module.algebraMap_end_apply, algebraMap_smul, Module.End.pow_apply, Module.End.pow_apply]
     rfl
-
-theorem liftb_zero_notMem_JSet (jumps : Finset ℤ) (M : ℕ) : (0 : ℤ) ∉ JSet jumps M := by
-  simp [JSet]
 
 theorem liftb_semi (W : LocWach PD LL O v n) (T₀ : LocLat G Qp LL O) (M : ℕ)
     (g₀ : liftb_Good W T₀ M) (u : ℤ_[ℓ]ˣ)
@@ -482,7 +469,7 @@ theorem liftb_semi (W : LocWach PD LL O v n) (T₀ : LocLat G Qp LL O) (M : ℕ)
       (Polynomial.X - Polynomial.C (((u ^ (-j) : ℤ_[ℓ]ˣ) : ℤ_[ℓ])))).map (algebraMap ℤ_[ℓ] O) =
       ∏ j ∈ insert 0 (JSet jumps M),
         (Polynomial.X - Polynomial.C ((((Formalism.MainNotions.DeltaInvariantLattices.uU W) ^ (-j) : Oˣ) : O))) := by
-    rw [Finset.prod_insert (liftb_zero_notMem_JSet jumps M), Polynomial.map_mul,
+    rw [Finset.prod_insert (_root_.Formalism.MainNotions.LiftingTheory.partR_zero_notMem_JSet jumps M), Polynomial.map_mul,
       Polynomial.map_prod]
     congr 1
     · simp
@@ -520,9 +507,7 @@ theorem liftb_mem_Z1D (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (y z : W.
     (y, z) ∈ W.divisibleCocycles T ↔ (W.γ T y - y) - (W.φD T z - z) = 0 := by
   simp [LocWach.divisibleCocycles, herrCocycles, LinearMap.mem_ker, sub_eq_add_neg]
 
-theorem liftb_map_smul (W : LocWach PD LL O v n) {T T' : LocLat G Qp LL O} (F : LatHom T.L T'.L)
-    (a : LetA O n) (x : W.DD T) : W.map F (a • x) = a • W.map F x :=
-  ((W.map F).restrictScalars (LetA O n)).map_smul a x
+alias liftb_map_smul := _root_.Formalism.MainNotions.LiftingTheory.wmap_map_smul
 
 theorem liftb_Qpow_bij (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (M : ℕ) :
     Function.Bijective (fun x : W.DD T => W.Q ^ M • x) :=
@@ -610,17 +595,6 @@ theorem lifta_avg_apply (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (d : O)
     lifta_avg W T d x = d • ∑ δ ∈ W.DelF, W.γD T δ x := by
   simp [lifta_avg, LinearMap.sum_apply]
 
-theorem lifta_Del_mul (W : LocWach PD LL O v n) {a b : W.Gam} (ha : a ∈ W.DelF) (hb : b ∈ W.DelF) :
-    a * b ∈ W.DelF := by
-  obtain ⟨k, hk, hak⟩ := (W.DelF_def a).1 ha
-  obtain ⟨m, hm, hbm⟩ := (W.DelF_def b).1 hb
-  refine (W.DelF_def _).2 ⟨k * m, Nat.mul_pos hk hm, ?_⟩
-  rw [mul_pow, pow_mul, hak, one_pow, mul_comm k m, pow_mul, hbm, one_pow, one_mul]
-
-theorem lifta_Del_inv (W : LocWach PD LL O v n) {a : W.Gam} (ha : a ∈ W.DelF) : a⁻¹ ∈ W.DelF := by
-  obtain ⟨k, hk, hak⟩ := (W.DelF_def a).1 ha
-  exact (W.DelF_def _).2 ⟨k, hk, by rw [inv_pow, hak, inv_one]⟩
-
 theorem lifta_avg_inv (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (d : O) (x : W.DD T) :
     ∀ δ ∈ W.DelF, W.γD T δ (lifta_avg W T d x) = lifta_avg W T d x := by
   intro δ hδ
@@ -628,8 +602,8 @@ theorem lifta_avg_inv (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (d : O) (
   rw [lifta_avg_apply, map_smul, map_sum]
   congr 1
   refine Finset.sum_bij' (fun a _ => δ * a) (fun a _ => δ⁻¹ * a) ?_ ?_ ?_ ?_ ?_
-  · intro a ha; exact lifta_Del_mul W hδ ha
-  · intro a ha; exact lifta_Del_mul W (lifta_Del_inv W hδ) ha
+  · intro a ha; exact _root_.Formalism.MainNotions.LiftingTheory.delta_mul_mem W hδ ha
+  · intro a ha; exact _root_.Formalism.MainNotions.LiftingTheory.delta_mul_mem W (_root_.Formalism.MainNotions.LiftingTheory.delta_inv_mem_alt W hδ) ha
   · intro a _; simp
   · intro a _; simp
   · intro a _; rw [W.γD_mul]
@@ -940,7 +914,7 @@ theorem lifta_core (ℓ : ℕ) [Fact ℓ.Prime] (hℓ : ℓ ≠ 2) (A : Type) [C
   have hcj : ∀ j ∈ Formalism.RepresentationBoundsCohomology.N2.JSet jumps M, (0 - c j) ∣ (ℓ : ℤ_[ℓ]) ^ padicValInt ℓ j := by
     intro j hj
     have hj0 : j ≠ 0 := fun h => Formalism.RepresentationBoundsCohomology.N2.zero_notMem_JSet jumps M (h ▸ hj)
-    obtain ⟨hne, hval⟩ := Formalism.WindowSums.arc_ZpowVal ℓ u 1 le_rfl (fun h => absurd h hℓ) hv (-j)
+    obtain ⟨hne, hval⟩ := _root_.Formalism.WindowSums.valuation_zpow_sub_one ℓ u 1 le_rfl (fun h => absurd h hℓ) hv (-j)
       (neg_ne_zero.2 hj0)
     have hneg : padicValInt ℓ (-j) = padicValInt ℓ j := by simp [padicValInt]
     rw [hneg] at hval
@@ -1132,15 +1106,9 @@ theorem lifta_inv_of_q (W : LocWach PD LL O v n) (R : lifta_Ring W) (T : LocLat 
   rw [gammaD_semilinear, (W.AΔ.pow_mem (lifta_qΔ W R.πΔ) M) δ hδ] at h
   exact h
 
-theorem lifta_Q_eq (W : LocWach PD LL O v n) (hs : W.s = 1) : W.Q = W.q := by
-  unfold LocWach.Q
-  rw [hs]
-  rfl
+alias lifta_Q_eq := _root_.Formalism.MainNotions.LiftingTheory.wmap_Q_one
 
-theorem lifta_X_eq (W : LocWach PD LL O v n) (hs : W.s = 1) : W.X = letπ := by
-  unfold LocWach.X
-  rw [hs]
-  rfl
+alias lifta_X_eq := _root_.Formalism.MainNotions.LiftingTheory.wmap_X_one
 
 theorem lifta_Qq (W : LocWach PD LL O v n) (R : lifta_Ring W) (hs : W.s = 1)
     (T : LocLat G Qp LL O) (M : ℕ) (y : W.DD T) : W.Q ^ M • y ∈ W.N T ↔ qp W ^ M • y ∈ W.N T := by
@@ -1461,7 +1429,7 @@ theorem lone_K_mem (c : K) (a : ℤ) (ha : a ≤ 0) : algebraMap K BdR c ∈ PD.
 
 include PD in
 theorem lone_one_notMem : (1 : BdR) ∉ PD.Fil 1 := by
-  apply PI.HodgeOfFon.W.Triv.one_not_mem_fil_one <;> assumption
+  apply PI.HodgeOfFon.W.Triv.one_not_mem_fil_one
 
 
 include PD in
@@ -1655,13 +1623,6 @@ def linj_HMid (W : LocWach PD LL O v n) : Prop :=
     IsSESLat (Qp := Qp) ι π → ∀ x : W.DD T₁, W.map π x = 0 → ∃ x₀, W.map ι x₀ = x
 
 end LiftInj
-
-section LiftInjD
-
-variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {H : LocHW l P} {AI : LocAinf l P} {K : FinExt l} {s : ℕ}
-    {LL : FinExt l} {h : Good K s LL}
-
-end LiftInjD
 
 def linjMidOpen (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
@@ -2520,7 +2481,7 @@ theorem lreg_RegXQ (W : LocWach PD LL O v n) (hreg : ∀ c : O, ((PD.p : ℕ) : 
         (congrFun heq j)
     choose a' ha' using hdiv
     refine ⟨∑ j, (Pi.single i (a' j) : LetA O n) • b j,
-      Submodule.sum_mem _ (fun j _ => (W.N T).smul_mem _ (liftb_Nl_le W T i (hb j))), ?_⟩
+      Submodule.sum_mem _ (fun j _ => (W.N T).smul_mem _ (_root_.Formalism.MainNotions.LiftingTheory.wmap_Nl_le W T i (hb j))), ?_⟩
     rw [ha, Finset.smul_sum]
     refine Finset.sum_congr rfl (fun j _ => ?_)
     rw [smul_smul, lreg_mul_single, ← ha']
@@ -2795,13 +2756,6 @@ theorem hstr_π_mem : (letπ : LetA O n) ∈ hstrI O n p := by
   rw [← h]
   exact Ideal.mem_map_of_mem _ (Ideal.subset_span (by simp))
 
-theorem hstr_mul_single (c : LetA O n) (i : ZMod n) (y : PowerSeries O) :
-    c * (Pi.single i y : LetA O n) = Pi.single i (c i * y) := by
-  funext j
-  by_cases hj : j = i
-  · subst hj; simp
-  · simp [Pi.single_eq_of_ne hj]
-
 end HStrRing
 
 section HStrB
@@ -2854,7 +2808,7 @@ def hstrSyn (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (r : ZMod n → ℕ
     (b : ∀ i, Fin (r i) → W.DD T) (hb : ∀ i j, b i j ∈ W.Nl T i) :
     ((Σ i, Fin (r i)) → PowerSeries O) →+ ↥(W.N T) where
   toFun c := ∑ κ : (Σ i, Fin (r i)), (Pi.single κ.1 (c κ) : LetA O n) •
-    (⟨b κ.1 κ.2, liftb_Nl_le W T κ.1 (hb κ.1 κ.2)⟩ : ↥(W.N T))
+    (⟨b κ.1 κ.2, _root_.Formalism.MainNotions.LiftingTheory.wmap_Nl_le W T κ.1 (hb κ.1 κ.2)⟩ : ↥(W.N T))
   map_zero' := by simp
   map_add' c c' := by
     simp only [Pi.add_apply, Pi.single_add, add_smul, Finset.sum_add_distrib]
@@ -2875,12 +2829,12 @@ theorem hstr_syn_letter (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (r : ZM
   rw [hstr_syn_coe, Finset.smul_sum, Finset.sum_eq_single i]
   · rw [Finset.smul_sum]
     refine Finset.sum_congr rfl (fun j _ => ?_)
-    rw [smul_smul, hstr_mul_single]
+    rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.lreg_mul_single]
     simp [letE]
   · intro i' _ hi'
     rw [Finset.smul_sum]
     refine Finset.sum_eq_zero (fun j _ => ?_)
-    rw [smul_smul, hstr_mul_single]
+    rw [smul_smul, _root_.Formalism.MainNotions.LiftingTheory.lreg_mul_single]
     simp [letE, Pi.single_eq_of_ne hi']
   · intro h; exact absurd (Finset.mem_univ i) h
 
@@ -2889,7 +2843,7 @@ theorem hstr_syn_smul (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (r : ZMod
     (c : (Σ i, Fin (r i)) → PowerSeries O) (a : LetA O n) :
     a • hstrSyn W T r b hb c = hstrSyn W T r b hb (fun κ => a κ.1 * c κ) := by
   simp only [hstrSyn, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Finset.smul_sum, smul_smul,
-    hstr_mul_single]
+    _root_.Formalism.MainNotions.LiftingTheory.lreg_mul_single]
 
 theorem hstr_CompleteB (W : LocWach PD LL O v n) [IsAdicComplete (hstrI₀ O PD.p) (PowerSeries O)]
     (T : LocLat G Qp LL O) (hfree : Formalism.MainNotions.DeltaInvariantLattices.wachFree W T) : liftb_Complete W T := by
@@ -2932,7 +2886,7 @@ theorem hstr_CompleteB (W : LocWach PD LL O v n) [IsAdicComplete (hstrI₀ O PD.
       exact Ideal.add_mem _ (hy κ) (hz κ)
   · rw [← he' x]
     show (∑ κ : (Σ i, Fin (r i)), (Pi.single κ.1 (e x κ) : LetA O n) •
-      (⟨b κ.1 κ.2, liftb_Nl_le W T κ.1 (hb κ.1 κ.2)⟩ : ↥(W.N T))) ∈ _
+      (⟨b κ.1 κ.2, _root_.Formalism.MainNotions.LiftingTheory.wmap_Nl_le W T κ.1 (hb κ.1 κ.2)⟩ : ↥(W.N T))) ∈ _
     exact Submodule.sum_mem _ (fun κ _ =>
       Submodule.smul_mem_smul (hstr_single_mem κ.1 k (hx κ)) Submodule.mem_top)
 
@@ -3166,9 +3120,6 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 def hstraIA (O : Type) [CommRing O] (n p : ℕ) : Ideal (LetA O n) :=
   Ideal.span {((p : ℕ) : LetA O n), letπ}
 
-def maximalIdealPowerSeries (O : Type) [CommRing O] (p : ℕ) : Ideal (PowerSeries O) :=
-  Ideal.span {PowerSeries.C ((p : ℕ) : O), PowerSeries.X}
-
 def hstraI (W : LocWach PD LL O v n) (h9 : P9π₀ W) : Ideal ↥W.AΔ :=
   Ideal.span {((PD.p : ℕ) : ↥W.AΔ), ⟨W.π₀, h9.1⟩}
 
@@ -3183,12 +3134,12 @@ theorem hstra_mem_I_pow (W : LocWach PD LL O v n) (h9 : P9π₀ W) (k : ℕ) (a 
   exact Ideal.mem_map_iff_of_surjective _ (hstraΘ_bij W h9).2
 
 theorem hstra_mem_IA_pow [NeZero n] (p k : ℕ) (f : LetA O n) :
-    f ∈ hstraIA O n p ^ k ↔ ∀ i, f i ∈ maximalIdealPowerSeries O p ^ k := by
+    f ∈ hstraIA O n p ^ k ↔ ∀ i, f i ∈ _root_.Formalism.MainNotions.LiftingTheory.hstrI₀ O p ^ k := by
   constructor
   · intro hf i
     have h1 : Ideal.map (Pi.evalRingHom (fun _ : ZMod n => PowerSeries O) i) (hstraIA O n p) ≤
-        maximalIdealPowerSeries O p := by
-      unfold hstraIA maximalIdealPowerSeries
+        _root_.Formalism.MainNotions.LiftingTheory.hstrI₀ O p := by
+      unfold hstraIA _root_.Formalism.MainNotions.LiftingTheory.hstrI₀
       rw [Ideal.map_span, Set.image_pair, map_natCast]
       apply Ideal.span_mono
       have : ((p : ℕ) : PowerSeries O) = PowerSeries.C ((p : ℕ) : O) := by rw [map_natCast]
@@ -3198,9 +3149,9 @@ theorem hstra_mem_IA_pow [NeZero n] (p k : ℕ) (f : LetA O n) :
     rw [Ideal.map_pow] at h2
     exact Ideal.pow_right_mono h1 k h2
   · intro hf
-    have h1 : Ideal.map (Pi.constRingHom (ZMod n) (PowerSeries O)) (maximalIdealPowerSeries O p) ≤
+    have h1 : Ideal.map (Pi.constRingHom (ZMod n) (PowerSeries O)) (_root_.Formalism.MainNotions.LiftingTheory.hstrI₀ O p) ≤
         hstraIA O n p := by
-      unfold hstraIA maximalIdealPowerSeries
+      unfold hstraIA _root_.Formalism.MainNotions.LiftingTheory.hstrI₀
       rw [Ideal.map_span, Set.image_pair]
       apply Ideal.span_mono
       have : Pi.constRingHom (ZMod n) (PowerSeries O) (PowerSeries.C ((p : ℕ) : O)) =
@@ -3221,7 +3172,7 @@ theorem hstra_mem_IA_pow [NeZero n] (p k : ℕ) (f : LetA O n) :
     exact Ideal.sum_mem _ (fun i _ => Ideal.mul_mem_left _ _ (h2 i))
 
 theorem hstra_complete (W : LocWach PD LL O v n)
-    [IsAdicComplete (maximalIdealPowerSeries O PD.p) (PowerSeries O)] (h9 : P9π₀ W) (T : LocLat G Qp LL O)
+    [IsAdicComplete (_root_.Formalism.MainNotions.LiftingTheory.hstrI₀ O PD.p) (PowerSeries O)] (h9 : P9π₀ W) (T : LocLat G Qp LL O)
     (hm : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) : lifta_Complete W T := by
   have := liftb_neZero W
   obtain ⟨⟨r, b, hb, huniq, hΔ⟩, -⟩ := hm
@@ -3252,7 +3203,7 @@ theorem hstra_complete (W : LocWach PD LL O v n)
         exact Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))
     exact fun a ha => hle ha
   · refine hstra_abs (lifta_N W T) (hstraΘ W h9 : LetA O n →+* ↥W.AΔ) (hstraΘ_bij W h9) (hstraI W h9)
-      (maximalIdealPowerSeries O PD.p) (fun k a => ?_) b hb (fun a ha => ?_) (fun x hx => ?_)
+      (_root_.Formalism.MainNotions.LiftingTheory.hstrI₀ O PD.p) (fun k a => ?_) b hb (fun a ha => ?_) (fun x hx => ?_)
     · rw [hstra_mem_I_pow]
       constructor
       · rintro ⟨f, hf, rfl⟩
@@ -3276,7 +3227,7 @@ theorem hstr_CompleteA_D (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) 
   have hO : IsAdicComplete (Ideal.span {((((D.loc l).PD K).p : ℕ) : ↥(OL LL))}) ↥(OL LL) := by
     rw [(D.loc l).PD_p K]
     exact phib_OL_complete LL
-  have hR : IsAdicComplete (maximalIdealPowerSeries ↥(OL LL) ((D.loc l).PD K).p) (PowerSeries ↥(OL LL)) :=
+  have hR : IsAdicComplete (_root_.Formalism.MainNotions.LiftingTheory.hstrI₀ ↥(OL LL) ((D.loc l).PD K).p) (PowerSeries ↥(OL LL)) :=
     hstr_ps_complete _
   obtain ⟨h9, hm⟩ := uniformizer_ring_and_module_clauses _ (a9 l K s LL h) hA T hT
   exact hstra_complete _ h9 T hm
@@ -3689,7 +3640,7 @@ theorem lqb_lifts (W : LocWach PD LL O v n) (hp : PD.p = ℓ) (u : ℤ_[ℓ]ˣ)
   have hL := Formalism.CoboundaryTransfers.wachLatticeUnramified_statement PD.p (LetA O n) (liftb_base (ℓ := PD.p) W) M u rfl W.φA_X hγX hγQ
     (W.DD T₀) (W.DD T₁) (lqbD (liftb_hom (ℓ := PD.p) W ι M g₀ g₁)) _ _ _
     (lqbS (liftb_hom (ℓ := PD.p) W ι M g₀ g₁) (lqb_X_surj W T₀) hE.1 hsat) 0 W.s
-    (JSet jumps M) W.s_pos W.s_two hv (liftb_zero_notMem_JSet jumps M) h1 hRX
+    (JSet jumps M) W.s_pos W.s_two hv (_root_.Formalism.MainNotions.LiftingTheory.partR_zero_notMem_JSet jumps M) h1 hRX
     (liftb_semi W T₀ M g₀ u hu jumps hj hss) hRL
     (lqb_coker _ _ _ _) (lqb_ratSurj _ _ _ _ hrat)
   have hU := lqb_lifts_abs _ _ _ _ _ hL

@@ -74,8 +74,6 @@ private theorem one_mem_intAE_twisted_operators (D : D7) : 1 ∈ intAE D := by
   · intro v
     first
       | exact one_mem _
-      | (rw [map_one]; exact one_mem _)
-      | simp [evalV]
   · rw [Algebra.TensorProduct.one_def]
     all_goals simp
 

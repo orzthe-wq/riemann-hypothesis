@@ -1,19 +1,23 @@
 module
 
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
+public import Mathlib.LinearAlgebra.Eigenspace.Basic
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.PtLawsOf
 public import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyBlockAndInvariantUnderStabilizerNilradic
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CommonEigenvalue
-import Formalism.PadicSubsetSums.StableGradedCounts.ZBrauerNesbittAlg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
-import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.GroupTheory.FiniteAbelian.Duality
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
@@ -21,6 +25,7 @@ import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -28,7 +33,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -38,11 +43,74 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Formalism.PadicSubsetSums.StableGradedCounts.ZBrauerNesbittAlg
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.GroupTheory.FiniteAbelian.Duality
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CommonEigenvalue, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.NormalValuationBounds.CharpolyScalar
+
+-- ===== clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CommonEigenvalue =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CommonEigenvalue", "h": "module\n\npublic import Mathlib.FieldTheory.IsAlgClosed.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\npublic import Mathlib.LinearAlgebra.Eigenspace.Triangularizable\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.LinearAlgebra.Eigenspace.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+theorem UpperTheory.Reformulated.B.CommonEigenvectorOfCommutingSet.common_eig :
+    ∀ {k : Type} [inst : Field k] [IsAlgClosed k]
+    {V : Type} [inst_2 : AddCommGroup V] [inst_3 : _root_.Module k V] [FiniteDimensional k V] (S : Set (Module.End k V)),
+    (∀ f ∈ S, ∀ f' ∈ S, f * f' = f' * f) →
+      ∀ (d : ℕ) (W : Submodule k V),
+        Module.finrank k ↥W = d →
+          W ≠ ⊥ →
+            (∀ f ∈ S, ∀ x ∈ W, (f : V → V) x ∈ W) → ∃ v ∈ W, v ≠ (0 : V) ∧ ∀ f ∈ S, ∃ (c : k), (f : V → V) v = c • v := by
+  intro k _ _ V _ _ _ S hS d
+  induction d using Nat.strong_induction_on with
+  | _ d ih =>
+    intro W hd hW hinv
+    by_cases h : ∀ f ∈ S, ∀ x ∈ W, ∃ c : k, f x = c • x
+    · obtain ⟨v, hv, hv0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hW
+      exact ⟨v, hv, hv0, fun f hf => h f hf v hv⟩
+    · push Not at h
+      obtain ⟨f, hf, x, hx, hfx⟩ := h
+      haveI : Nontrivial W := Submodule.nontrivial_iff_ne_bot.mpr hW
+      obtain ⟨μ, hμ⟩ := Module.End.exists_eigenvalue (f.restrict (hinv f hf) : Module.End k W)
+      obtain ⟨w, hw⟩ := hμ.exists_hasEigenvector
+      have hwe : f (w : V) = μ • (w : V) := by
+        have h1 := congrArg Subtype.val hw.apply_eq_smul
+        simpa [LinearMap.restrict_apply] using h1
+      have hw0 : (w : V) ≠ 0 := fun h0 => hw.2 (Subtype.ext h0)
+      have hlt : W ⊓ f.eigenspace μ < W := by
+        refine lt_of_le_of_ne inf_le_left fun he => ?_
+        have hx' : x ∈ W ⊓ f.eigenspace μ := he.symm ▸ hx
+        exact hfx μ (Module.End.mem_eigenspace_iff.mp hx'.2)
+      have hne : W ⊓ f.eigenspace μ ≠ ⊥ := by
+        intro hb
+        have hm : (w : V) ∈ W ⊓ f.eigenspace μ :=
+          ⟨w.2, Module.End.mem_eigenspace_iff.mpr hwe⟩
+        rw [hb] at hm
+        exact hw0 ((Submodule.mem_bot k).mp hm)
+      have hinv' : ∀ g ∈ S, ∀ y ∈ W ⊓ f.eigenspace μ, g y ∈ W ⊓ f.eigenspace μ := by
+        intro g hg y hy
+        refine ⟨hinv g hg y hy.1, Module.End.mem_eigenspace_iff.mpr ?_⟩
+        have h1 : f y = μ • y := Module.End.mem_eigenspace_iff.mp hy.2
+        have h2 : f (g y) = g (f y) := LinearMap.congr_fun (hS f hf g hg) y
+        rw [h2, h1, map_smul]
+      obtain ⟨v, hv, hv0, hv'⟩ := ih _ (hd ▸ Submodule.finrank_lt_finrank_of_lt hlt) _ rfl hne hinv'
+      exact ⟨v, hv.1, hv0, hv'⟩
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CommonEigenvalue =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.NormalValuationBounds.CharpolyScalar =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.NormalValuationBounds.CharpolyScalar", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.PtLawsOf\npublic import Development.AbelianVarietyTheory.Proofs.CharacterTheory.CharpolyBlockAndInvariantUnderStabilizerNilradic\npublic import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CommonEigenvalue\nimport Formalism.PadicSubsetSums.StableGradedCounts.ZBrauerNesbittAlg\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.FieldTheory.Galois.Profinite\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.GroupTheory.FiniteAbelian.Duality\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -54,12 +122,6 @@ namespace UpperTheory.V.Keep
 section linear
 
 variable {k : Type} [Field k] [IsAlgClosed k]
-
-private theorem common_eig {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
-    (S : Set (End k V)) (hS : ∀ f ∈ S, ∀ f' ∈ S, f * f' = f' * f) :
-    ∀ (d : ℕ) (W : Submodule k V), finrank k W = d → W ≠ ⊥ → (∀ f ∈ S, ∀ x ∈ W, f x ∈ W) →
-      ∃ v ∈ W, v ≠ 0 ∧ ∀ f ∈ S, ∃ c : k, f v = c • v :=
-  _root_.UpperTheory.Reformulated.B.CommonEigenvectorOfCommutingSet.common_eig S hS
 
 private theorem charpoly_scalar {W : Type} [AddCommGroup W] [Module k W] [FiniteDimensional k W] (hW : finrank k W = 1)
     (f : End k W) (c : k) (hf : ∀ x, f x = c • x) : f.charpoly = X - C c := by
@@ -84,7 +146,7 @@ private theorem chars_of_comm {Γ : Type} [Group Γ] :
   | succ d ih =>
     intro V _ _ _ ρ hc hd
     haveI : Nontrivial V := Module.nontrivial_of_finrank_pos (R := k) (by omega)
-    obtain ⟨v, -, hv0, hv⟩ := common_eig (Set.range ρ)
+    obtain ⟨v, -, hv0, hv⟩ := _root_.UpperTheory.Reformulated.B.CommonEigenvectorOfCommutingSet.common_eig (Set.range ρ)
       (by rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩; exact hc a b) _ ⊤ rfl top_ne_bot (fun _ _ _ _ => trivial)
     choose c hcv using fun g => hv (ρ g) ⟨g, rfl⟩
     have inj : ∀ a b : k, a • v = b • v → a = b := fun a b h => smul_left_injective k hv0 h
@@ -109,7 +171,7 @@ private theorem chars_of_comm {Γ : Type} [Group Γ] :
         map_mul' := fun a b => by
           refine LinearMap.ext fun x => ?_
           obtain ⟨y, rfl⟩ := Submodule.mkQ_surjective W x
-          simp [Module.End.mul_apply] }
+          simp }
     have hW1 : finrank k W = 1 := finrank_span_singleton hv0
     have hq : finrank k (V ⧸ W) = d := by
       have := Submodule.finrank_quotient_add_finrank W
@@ -239,3 +301,7 @@ theorem ineOf : IneOf := by
   exact descend r H hH hc (Ine (F := ℚ) A) (Dec (F := ℚ) A) (ht A hl)
 
 end UpperTheory.V.Keep
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.UpperTriangularPlaces.NormalValuationBounds.CharpolyScalar =====

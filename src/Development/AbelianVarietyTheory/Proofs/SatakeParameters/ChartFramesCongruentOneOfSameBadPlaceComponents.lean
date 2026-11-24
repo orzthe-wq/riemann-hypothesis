@@ -1,20 +1,25 @@
 module
 
+public import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs
+public import Mathlib.Topology.Algebra.Valued.ValuationTopology
+public import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntegralGLAtPrimeOfCongruentOneModPow
 public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReferenceCharactersFactorTame
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralPowerExpansion
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PlaceProjectionZeroIntegralIffComponentsAbove
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GLInvMulCongrOneModUniformizerStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntegralGLAtPrimeOfCongruentOneModPowStatement
-import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -22,8 +27,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -31,7 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -44,10 +47,121 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.SatakeParameters.GLInvMulCongrOneModUniformizer, Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntegralGLAtPrimeOfCongruentOneModPowStatement, Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartFramesCongruentOneOfSameBadPlaceComponents
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.GLInvMulCongrOneModUniformizer =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.GLInvMulCongrOneModUniformizer", "h": "module\n\npublic import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs\npublic import Mathlib.Topology.Algebra.Valued.ValuationTopology\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix
+
+namespace GlobalTheory
+
+theorem GL_inv_mul_congr_one : ∀ {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] {N : ℕ} (π : K), π ≠ 0 → Valued.v π < 1 →
+  ∀ (a a₁ : GL (Fin N) K), (∀ i j, Valued.v (π⁻¹ * ((a : Matrix (Fin N) (Fin N) K) - 1) i j) ≤ 1) →
+    (∀ i j, Valued.v (π⁻¹ * ((a₁ : Matrix (Fin N) (Fin N) K) - 1) i j) ≤ 1) →
+    ∀ i j, Valued.v (π⁻¹ * (((a⁻¹ * a₁ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) - 1) i j) ≤ 1 := by
+  intro K _ _ N π hπ0 hπ a a₁ ha ha₁
+  set v : Valuation K (WithZero (Multiplicative ℤ)) := Valued.v with hv
+  let S : Subring K := v.integer
+  have hpS : π ∈ S := (Valuation.mem_integer_iff _ _).2 hπ.le
+  let p : S := ⟨π, hpS⟩
+  let B : Matrix (Fin N) (Fin N) S := fun i j =>
+    ⟨π⁻¹ * ((a : Matrix (Fin N) (Fin N) K) - 1) i j, (Valuation.mem_integer_iff _ _).2 (ha i j)⟩
+  let B₁ : Matrix (Fin N) (Fin N) S := fun i j =>
+    ⟨π⁻¹ * ((a₁ : Matrix (Fin N) (Fin N) K) - 1) i j, (Valuation.mem_integer_iff _ _).2 (ha₁ i j)⟩
+  let f : S →+* K := S.subtype
+  let A' : Matrix (Fin N) (Fin N) S := 1 + p • B
+  have hA : f.mapMatrix A' = (a : Matrix (Fin N) (Fin N) K) := by
+    ext i j
+    have h1 : (((1 : Matrix (Fin N) (Fin N) S) i j : S) : K) = (1 : Matrix (Fin N) (Fin N) K) i j := by
+      rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp
+    rw [RingHom.mapMatrix_apply, Matrix.map_apply]
+    change ((A' i j : S) : K) = _
+    change (((1 + p • B) i j : S) : K) = _
+    rw [Matrix.add_apply, Matrix.smul_apply, Subring.coe_add, smul_eq_mul, Subring.coe_mul, h1]
+    change _ + π * (π⁻¹ * ((a : Matrix (Fin N) (Fin N) K) - 1) i j) = _
+    rw [← mul_assoc, mul_inv_cancel₀ hπ0, one_mul, Matrix.sub_apply]
+    ring
+  have hB : (a₁ : Matrix (Fin N) (Fin N) K) - a = π • f.mapMatrix (B₁ - B) := by
+    ext i j
+    rw [Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sub_apply, smul_eq_mul]
+    change _ = π * (((B₁ i j - B i j : S)) : K)
+    rw [AddSubgroupClass.coe_sub]
+    change _ = π * (π⁻¹ * ((a₁ : Matrix (Fin N) (Fin N) K) - 1) i j - π⁻¹ * ((a : Matrix (Fin N) (Fin N) K) - 1) i j)
+    rw [← mul_sub, ← mul_assoc, mul_inv_cancel₀ hπ0, one_mul, Matrix.sub_apply, Matrix.sub_apply]
+    ring
+  let I : Ideal S := Ideal.span {p}
+  have hp : Ideal.Quotient.mk I p = 0 := Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)
+  have hdet1 : A'.det - 1 ∈ I := by
+    rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, RingHom.map_det]
+    have hm : (Ideal.Quotient.mk I).mapMatrix A' = 1 := by
+      ext i j
+      rw [RingHom.mapMatrix_apply, Matrix.map_apply]
+      simp only [A', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add (f := _), map_mul, hp, zero_mul,
+        add_zero, Matrix.one_apply]
+      split_ifs <;> simp
+    rw [hm, det_one, sub_self]
+  obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 hdet1
+  have hvd : v (f A'.det) = 1 := by
+    have hlt : v (f (A'.det - 1)) < 1 := by
+      rw [← hc, map_mul, map_mul]
+      have hc' : v (f c) ≤ 1 := (Valuation.mem_integer_iff _ _).1 c.2
+      calc v (f c) * v (f p) ≤ 1 * v (f p) := mul_le_mul_of_nonneg_right hc' zero_le'
+        _ = v π := one_mul _
+        _ < 1 := hπ
+    have he : f A'.det = 1 + f (A'.det - 1) := by rw [map_sub, map_one]; ring
+    rw [he, Valuation.map_add_eq_of_lt_left v (by rwa [v.map_one]), v.map_one]
+  have hu : IsUnit A'.det := (Valuation.integer.integers v).isUnit_of_one' hvd
+  have hinv : (a : Matrix (Fin N) (Fin N) K) * f.mapMatrix A'⁻¹ = 1 := by
+    rw [← hA, ← map_mul, Matrix.mul_nonsing_inv _ hu, map_one]
+  have hainv : ((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) = f.mapMatrix A'⁻¹ := by
+    calc ((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K)
+        = ((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) * ((a : Matrix (Fin N) (Fin N) K) * f.mapMatrix A'⁻¹) := by
+          rw [hinv, mul_one]
+      _ = _ := by rw [← mul_assoc, Units.inv_mul, one_mul]
+  have key : ((a⁻¹ * a₁ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) - 1 = π • f.mapMatrix (A'⁻¹ * (B₁ - B)) := by
+    calc ((a⁻¹ * a₁ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) - 1
+        = ((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) * a₁ - ((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) * a := by
+          rw [Units.val_mul, Units.inv_mul]
+      _ = ((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) * ((a₁ : Matrix (Fin N) (Fin N) K) - a) := by rw [Matrix.mul_sub]
+      _ = ((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) * (π • f.mapMatrix (B₁ - B)) := by rw [hB]
+      _ = π • (((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) * f.mapMatrix (B₁ - B)) := by rw [Matrix.mul_smul]
+      _ = _ := by rw [map_mul, hainv]
+  intro i j
+  rw [key, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hπ0, one_mul,
+    RingHom.mapMatrix_apply, Matrix.map_apply]
+  exact (Valuation.mem_integer_iff _ _).1 ((A'⁻¹ * (B₁ - B)) i j).2
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.GLInvMulCongrOneModUniformizer =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntegralGLAtPrimeOfCongruentOneModPowStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntegralGLAtPrimeOfCongruentOneModPowStatement", "h": "module\n\npublic import Formalism.LocalToGlobal.Columns.FiniteSumNonzeroLargeDepth\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntegralGLAtPrimeOfCongruentOneModPow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain
+
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntegralGLAtPrimeOfCongruentOneModPowStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartFramesCongruentOneOfSameBadPlaceComponents =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartFramesCongruentOneOfSameBadPlaceComponents", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ReferenceCharactersFactorTame\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralPowerExpansion\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PlaceProjectionZeroIntegralIffComponentsAbove\npublic import Mathlib.LinearAlgebra.Matrix.GeneralLinearGroup.Defs\npublic import Mathlib.Topology.Algebra.Valued.ValuationTopology\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.GLInvMulCongrOneModUniformizer\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntegralGLAtPrimeOfCongruentOneModPowStatement\nimport Formalism.LocalRingCardinality.SpanPowerMembership.LocAtA\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.UG Formalism.L2.Col Formalism.L2.PairingIndexBounds.F Formalism.MainNotions.G.KAat Formalism.L2.Forms Formalism.L2.Ker Formalism.MainNotions Formalism.L2.DIV Formalism.MainNotions.G GlobalTheory.TwU GlobalTheory.TwV
@@ -62,14 +176,7 @@ theorem inv_mul_cong {K : Type} [Field K] [Valued K (WithZero (Multiplicative �
     (ha : ∀ i j, Valued.v (π⁻¹ * ((a : Matrix (Fin N) (Fin N) K) - 1) i j) ≤ 1)
     (ha₁ : ∀ i j, Valued.v (π⁻¹ * ((a₁ : Matrix (Fin N) (Fin N) K) - 1) i j) ≤ 1) :
     ∀ i j, Valued.v (π⁻¹ * (((a⁻¹ * a₁ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) - 1) i j) ≤ 1 :=
-  GlobalTheory.T.GL_inv_mul_congr_one_mod_uniformizer π hπ0 hπ a a₁ ha ha₁
-
-theorem glint_of_cong {E : Type} [Field E] [NumberField E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (d : ℕ)
-    (g : Sp E n ≃ₗ[E] Sp E n)
-    (hg : ∀ a b, IntAt P (((qOf P : E) ^ d)⁻¹ * (LinearMap.toMatrix' g.toLinearMap a b - (1 : Matrix (Fin n) (Fin n) E) a b)))
-    (hg' : ∀ a b, IntAt P (((qOf P : E) ^ d)⁻¹ * (LinearMap.toMatrix' g.symm.toLinearMap a b - (1 : Matrix (Fin n) (Fin n) E) a b))) :
-    g ∈ GLint E n P ∧ ∀ w ∈ stdAt E n P, ((qOf P : E) ^ d)⁻¹ • (g w - w) ∈ stdAt E n P :=
-  GlobalTheory.T.mem_integralGLAtPrime_of_congruent_one_mod_pow P d g hg hg'
+  _root_.GlobalTheory.GL_inv_mul_congr_one π hπ0 hπ a a₁ ha ha₁
 
 section Loc
 
@@ -107,14 +214,10 @@ theorem loc_agree (Q : HeightOneSpectrum (𝓞 E)) {x x₁ : GL (Fin N) (E ⊗[F
   rw [map_sub, sub_eq_zero] at h2
   exact h2
 
-theorem val_alg (Q : HeightOneSpectrum (𝓞 E)) (e : E) :
-    Valued.v (algebraMap E (Q.adicCompletion E) e) = Q.valuation E e :=
-  HeightOneSpectrum.valuedAdicCompletion_eq_valuation' Q e
-
 theorem intAt_of_val (Q : HeightOneSpectrum (𝓞 E)) (c m o : E)
     (h : Valued.v ((algebraMap E (Q.adicCompletion E) c)⁻¹ * (algebraMap E (Q.adicCompletion E) m - algebraMap E (Q.adicCompletion E) o)) ≤ 1) :
     IntAt Q (c⁻¹ * (m - o)) := by
-  rw [GlobalTheory.Proof.IntegralPowerExpansion.intAt_iff_val, ← val_alg, map_mul, map_inv₀, map_sub]
+  rw [GlobalTheory.Proof.IntegralPowerExpansion.intAt_iff_val, ← _root_.Formalism.UG.P.levelaf_valued_algebraMap, map_mul, map_inv₀, map_sub]
   exact h
 
 theorem one_entry {E₀ : Type} [Field E₀] (Q : HeightOneSpectrum (𝓞 E)) (ψ : E₀ ≃+* E) (a b : Fin N) :
@@ -183,12 +286,12 @@ theorem core (hTie : AdTie A dtU a) (j : ℕ) (hj : j ≤ D.R.m) (β : (St j hj)
     rw [Ne, map_eq_zero_iff _ (algebraMap D.host.E _).injective]
     exact pow_ne_zero _ (by exact_mod_cast hq0)
   have hπ : Valued.v (algebraMap D.host.E (Q.adicCompletion D.host.E) (((qOf Q : ℕ) : D.host.E) ^ (t.cst μ).D P)) < 1 := by
-    rw [val_alg, map_pow]
+    rw [_root_.Formalism.UG.P.levelaf_valued_algebraMap, map_pow]
     refine pow_lt_one₀ zero_le' ?_ (by omega)
     have e : ((qOf Q : ℕ) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E (qOf Q : 𝓞 D.host.E) := by rw [map_natCast]
     rw [e, HeightOneSpectrum.valuation_of_algebraMap]
     exact (Q.intValuation_lt_one_iff_mem _).2 (Ideal.absNorm_mem _)
-  have key := inv_mul_cong _ hπ0 hπ _ _ c0 c1
+  have key := _root_.GlobalTheory.GL_inv_mul_congr_one _ hπ0 hπ _ _ c0 c1
   have hs : (frsF t.sel (t.tup μ) p₁ P).trans (frsF t.sel (t.tup μ) p P).symm =
       (frsF t.sel (t.tup μ) p P)⁻¹ * frsF t.sel (t.tup μ) p₁ P := by
     ext w; rfl
@@ -237,6 +340,10 @@ theorem frame_away : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =
   have hsymm : ((frsF t.sel (t.tup μ) p₁ P).trans (frsF t.sel (t.tup μ) p P).symm).symm =
       (frsF t.sel (t.tup μ) p P).trans (frsF t.sel (t.tup μ) p₁ P).symm := by
     ext w; rfl
-  exact glint_of_cong P.1 ((t.cst μ).D P) _ h1 (by rw [hsymm]; exact h2)
+  exact _root_.GlobalTheory.Proof.mem_integralGLAtPrime_of_congruent_one_mod_pow.glint_of_cong P.1 ((t.cst μ).D P) _ h1 (by rw [hsymm]; exact h2)
 
 end GlobalTheory.FrameAgree
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.ChartFramesCongruentOneOfSameBadPlaceComponents =====

@@ -287,7 +287,7 @@ theorem thetaP_read_noEta : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I
   have hUw : PiTensorProduct.lift U = w' := LinearEquiv.apply_symm_apply _ w'
   have h1 := (Y.mjRead i (D.what₂.thetaP (Y.tup t) ((i : ℕ) + 1) xM)).symm.trans hth
   change PiTensorProduct.lift _ = R.eWf i (sg0 D A3.A) ∘ₗ w' at h1
-  rw [← hUw, sub_eq_zero.1 hw0, ← lift_postOn, ← hE.thG i t zt] at h1
+  rw [← hUw, sub_eq_zero.1 hw0, ← _root_.GlobalTheory.ThetaFireLift.lift_postOn, ← hE.thG i t zt] at h1
   exact (hM.HW i (sg0 D A3.A)).1 (PiTensorProduct.lift.injective h1)
 
 end GlobalTheory.Mem.ThetaRead3

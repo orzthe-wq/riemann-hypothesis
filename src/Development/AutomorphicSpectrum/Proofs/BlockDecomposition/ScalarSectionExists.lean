@@ -160,7 +160,6 @@ theorem tScal : TScal := by
           + PositivityTheory.RgEis.pos Γ' P' (fun x => N * η x - b * η x) (Φ g)) := key
       _ = _ := by
         rw [e3, e1, e2]
-        try rfl
 
 end GlobalTheory.CompanionTheory.ScalWall
 

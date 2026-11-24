@@ -1,16 +1,33 @@
 module
 
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TsumOneDivRpowLe
+
 public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan
+public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+public import Mathlib.Analysis.Complex.RemovableSingularity
+public import Mathlib.Analysis.Real.Pi.Bounds
+public import Mathlib.Analysis.Calculus.DSlope
+public import Mathlib.Analysis.Calculus.Deriv.Comp
+public import Mathlib.Analysis.Calculus.Deriv.Inv
+public import Mathlib.Analysis.Calculus.Deriv.Mul
+public import Mathlib.Analysis.Calculus.Deriv.Pow
+public import Mathlib.Analysis.Complex.CauchyIntegral
 public import Mathlib.NumberTheory.LSeries.DirichletContinuation
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TruncatedPerronKernel
+public import Mathlib.Analysis.Complex.ExponentialBounds
+public import Mathlib.NumberTheory.Harmonic.Bounds
+public import Mathlib.Analysis.SumIntegralComparisons
+import Formalism.LFunctionBounds.LFunctionBoundsProofs.RectResidue
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-public import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Complex.Arctan
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -18,12 +35,10 @@ import Mathlib.Data.NNRat.Floor
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
-public import Mathlib.NumberTheory.Harmonic.Bounds
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
@@ -36,7 +51,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -52,9 +66,403 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.NumberTheory.DirichletCharacter.Basic
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Linter.Style
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Mathlib.Analysis.SumIntegralComparisons
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TruncatedPerronKernel, Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TruncatedPerronPsi
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TruncatedPerronKernel =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TruncatedPerronKernel", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\nimport Formalism.LFunctionBounds.LFunctionBoundsProofs.RectResidue\npublic import Mathlib.Analysis.SpecialFunctions.Trigonometric.Arctan\npublic import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\npublic import Mathlib.Analysis.Complex.RemovableSingularity\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\npublic import Mathlib.Analysis.Real.Pi.Bounds\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Complex.Arctan\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Analysis.Calculus.DSlope\npublic import Mathlib.Analysis.Calculus.Deriv.Comp\npublic import Mathlib.Analysis.Calculus.Deriv.Inv\npublic import Mathlib.Analysis.Calculus.Deriv.Mul\npublic import Mathlib.Analysis.Calculus.Deriv.Pow\npublic import Mathlib.Analysis.Complex.CauchyIntegral\nimport Mathlib.NumberTheory.DirichletCharacter.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Complex DirichletCharacter ArithmeticFunction MeasureTheory
+
+namespace GlobalTheory.PerronKernel
+
+lemma ne_zero_of_re {σ t : ℝ} (h : σ ≠ 0) : (σ : ℂ) + t * I ≠ 0 := by
+  intro h0
+  apply h
+  simpa using congrArg Complex.re h0
+
+lemma ne_zero_of_im {σ t : ℝ} (h : t ≠ 0) : (σ : ℂ) + t * I ≠ 0 := by
+  intro h0
+  apply h
+  simpa using congrArg Complex.im h0
+
+lemma cont_vinv {σ : ℝ} (h : σ ≠ 0) : Continuous fun t : ℝ => ((σ : ℂ) + t * I)⁻¹ := by
+  exact (by fun_prop : Continuous fun t : ℝ => (σ : ℂ) + t * I).inv₀ fun t => ne_zero_of_re h
+
+lemma cont_hinv {t : ℝ} (h : t ≠ 0) : Continuous fun σ : ℝ => ((σ : ℂ) + t * I)⁻¹ := by
+  exact (by fun_prop : Continuous fun σ : ℝ => (σ : ℂ) + t * I).inv₀ fun σ => ne_zero_of_im h
+
+private lemma hasDerivAt_half_log_sub_I_mul_arctan_eq_inv {s : ℝ} (hs : s ≠ 0) (x : ℝ) :
+    HasDerivAt (fun x : ℝ => ((Real.log (x ^ 2 + s ^ 2) / 2 : ℝ) : ℂ) - I * (Real.arctan (x / s) : ℂ))
+      ((x : ℂ) + s * I)⁻¹ x := by
+  have hpos : 0 < x ^ 2 + s ^ 2 := by positivity
+  have h1 : HasDerivAt (fun x : ℝ => Real.log (x ^ 2 + s ^ 2) / 2) (x / (x ^ 2 + s ^ 2)) x :=
+    ((((hasDerivAt_pow 2 x).add_const (s ^ 2)).log hpos.ne').div_const 2).congr_deriv
+      (by field_simp; ring)
+  have h2a : HasDerivAt (fun y : ℝ => y / s) (1 / s) x := (hasDerivAt_id' x).div_const s
+  have h2b := (Real.hasDerivAt_arctan (x / s)).comp x h2a
+  have h2 : HasDerivAt (fun x : ℝ => Real.arctan (x / s)) (s / (x ^ 2 + s ^ 2)) x :=
+    h2b.congr_deriv (by field_simp; ring)
+  refine (h1.ofReal_comp.sub (h2.ofReal_comp.const_mul I)).congr_deriv ?_
+  have hz : (x : ℂ) + s * I ≠ 0 := ne_zero_of_im hs
+  have hc : (x : ℂ) ^ 2 + (s : ℂ) ^ 2 ≠ 0 := by exact_mod_cast hpos.ne'
+  symm
+  apply inv_eq_of_mul_eq_one_right
+  push_cast
+  field_simp
+  ring_nf
+  rw [I_sq]
+  ring
+
+lemma vinv {σ : ℝ} (h : σ ≠ 0) (T : ℝ) :
+    ∫ t in (-T)..T, ((σ : ℂ) + t * I)⁻¹ = ((2 * Real.arctan (T / σ) : ℝ) : ℂ) := by
+  have hs : -σ ≠ 0 := neg_ne_zero.mpr h
+  have hd : ∀ t ∈ Set.uIcc (-T) T, HasDerivAt
+      (fun t : ℝ => -I * (((Real.log (t ^ 2 + (-σ) ^ 2) / 2 : ℝ) : ℂ) -
+        I * (Real.arctan (t / -σ) : ℂ))) ((σ : ℂ) + t * I)⁻¹ t := by
+    intro t _
+    refine ((hasDerivAt_half_log_sub_I_mul_arctan_eq_inv hs t).const_mul (-I)).congr_deriv ?_
+    rw [show (t : ℂ) + ((-σ : ℝ) : ℂ) * I = -I * ((σ : ℂ) + t * I) by
+      push_cast; ring_nf; rw [I_sq]; ring]
+    rw [mul_inv, ← mul_assoc]
+    rw [show -I * (-I)⁻¹ = 1 from mul_inv_cancel₀ (neg_ne_zero.mpr I_ne_zero), one_mul]
+  rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hd ((cont_vinv h).intervalIntegrable _ _)]
+  simp only [neg_sq, neg_div, div_neg, neg_neg, Real.arctan_neg]
+  push_cast
+  ring_nf
+  rw [I_sq]
+  ring
+
+/-- At the jump, the truncated Perron kernel is an arctangent rather than a step value. -/
+lemma truncated_perron_kernel_one {c : ℝ} (hc : c ≠ 0) (T : ℝ) :
+    (1 / (2 * Real.pi) : ℂ) *
+      (∫ t in (-T)..T, (1 : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I)) =
+      ((Real.arctan (T / c) / Real.pi : ℝ) : ℂ) := by
+  simp only [Complex.one_cpow, one_div]
+  rw [vinv hc T]
+  push_cast
+  field_simp
+
+lemma hinv {T : ℝ} (h : T ≠ 0) (a b : ℝ) :
+    (∫ x in a..b, ((x : ℂ) + ((-T : ℝ) : ℂ) * I)⁻¹) - ∫ x in a..b, ((x : ℂ) + T * I)⁻¹
+      = 2 * I * ((Real.arctan (b / T) - Real.arctan (a / T) : ℝ) : ℂ) := by
+  have hs : -T ≠ 0 := neg_ne_zero.mpr h
+  rw [intervalIntegral.integral_eq_sub_of_hasDerivAt (fun x _ => hasDerivAt_half_log_sub_I_mul_arctan_eq_inv hs x)
+      ((cont_hinv hs).intervalIntegrable _ _),
+    intervalIntegral.integral_eq_sub_of_hasDerivAt (fun x _ => hasDerivAt_half_log_sub_I_mul_arctan_eq_inv h x)
+      ((cont_hinv h).intervalIntegrable _ _)]
+  simp only [neg_sq, div_neg, Real.arctan_neg]
+  push_cast
+  ring
+
+lemma norm_exp (L σ t : ℝ) : ‖cexp (L * ((σ : ℂ) + t * I))‖ = Real.exp (L * σ) := by
+  rw [Complex.norm_exp]
+  simp
+
+lemma vbound (L : ℝ) {σ T : ℝ} (h : σ ≠ 0) (hT : 0 ≤ T) :
+    ‖∫ t in (-T)..T, cexp (L * ((σ : ℂ) + t * I)) / ((σ : ℂ) + t * I)‖
+      ≤ Real.exp (L * σ) / |σ| * (2 * T) := by
+  have hb : ∀ t ∈ Set.uIoc (-T) T,
+      ‖cexp (L * ((σ : ℂ) + t * I)) / ((σ : ℂ) + t * I)‖ ≤ Real.exp (L * σ) / |σ| := by
+    intro t _
+    rw [norm_div, norm_exp]
+    apply div_le_div_of_nonneg_left (Real.exp_pos _).le (abs_pos.mpr h)
+    simpa using Complex.abs_re_le_norm ((σ : ℂ) + t * I)
+  have := intervalIntegral.norm_integral_le_of_norm_le_const hb
+  rwa [show |T - -T| = 2 * T by rw [sub_neg_eq_add, ← two_mul, abs_of_nonneg (by linarith)]] at this
+
+lemma hbound {L : ℝ} (hL : L ≠ 0) {t a b : ℝ} (h : t ≠ 0) (hab : a ≤ b) :
+    ‖∫ x in a..b, cexp (L * ((x : ℂ) + t * I)) / ((x : ℂ) + t * I)‖
+      ≤ (Real.exp (L * b) - Real.exp (L * a)) / (L * |t|) := by
+  have hb : ∀ᵐ x ∂MeasureTheory.volume, x ∈ Set.Ioc a b →
+      ‖cexp (L * ((x : ℂ) + t * I)) / ((x : ℂ) + t * I)‖ ≤ Real.exp (L * x) / |t| := by
+    refine Filter.Eventually.of_forall fun x _ => ?_
+    rw [norm_div, norm_exp]
+    apply div_le_div_of_nonneg_left (Real.exp_pos _).le (abs_pos.mpr h)
+    simpa using Complex.abs_im_le_norm ((x : ℂ) + t * I)
+  have hF : ∀ x ∈ Set.uIcc a b, HasDerivAt (fun x => Real.exp (L * x) / (L * |t|))
+      (Real.exp (L * x) / |t|) x := by
+    intro x _
+    refine (((hasDerivAt_id' x).const_mul L).exp.div_const (L * |t|)).congr_deriv ?_
+    have ht : |t| ≠ 0 := abs_ne_zero.mpr h
+    field_simp
+  calc _ ≤ ∫ x in a..b, Real.exp (L * x) / |t| :=
+        intervalIntegral.norm_integral_le_of_norm_le hab hb
+          ((by fun_prop : Continuous fun x : ℝ => Real.exp (L * x) / |t|).intervalIntegrable _ _)
+    _ = _ := by
+        rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hF
+          ((by fun_prop : Continuous fun x : ℝ => Real.exp (L * x) / |t|).intervalIntegrable _ _)]
+        ring
+
+lemma rect_right (L : ℝ) {a b : ℝ} (T : ℝ) (ha : 0 < a) (hab : a ≤ b) :
+    (∫ x in a..b, cexp (L * ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) / ((x : ℂ) + ((-T : ℝ) : ℂ) * I))
+    - (∫ x in a..b, cexp (L * ((x : ℂ) + T * I)) / ((x : ℂ) + T * I))
+    + I * (∫ t in (-T)..T, cexp (L * ((b : ℂ) + t * I)) / ((b : ℂ) + t * I))
+    - I * (∫ t in (-T)..T, cexp (L * ((a : ℂ) + t * I)) / ((a : ℂ) + t * I)) = 0 := by
+  have hd : DifferentiableOn ℂ (fun z : ℂ => cexp (L * z) / z)
+      (Set.uIcc ((a : ℂ) + ((-T : ℝ) : ℂ) * I).re ((b : ℂ) + T * I).re ×ℂ
+        Set.uIcc ((a : ℂ) + ((-T : ℝ) : ℂ) * I).im ((b : ℂ) + T * I).im) := by
+    rintro z ⟨hzr, -⟩
+    have hre : a ≤ z.re := by
+      simp only [add_re, ofReal_re, mul_re, I_re, I_im, ofReal_im, mul_zero, mul_one, sub_zero,
+        add_zero] at hzr
+      rcases Set.mem_uIcc.mp hzr with h | h <;> linarith [h.1, h.2]
+    apply DifferentiableAt.differentiableWithinAt
+    apply DifferentiableAt.div (by fun_prop) differentiableAt_id
+    intro h0
+    rw [h0, zero_re] at hre
+    linarith
+  have h1 : ((a : ℂ) + ((-T : ℝ) : ℂ) * I).re = a := by simp
+  have h2 : ((a : ℂ) + ((-T : ℝ) : ℂ) * I).im = -T := by simp
+  have h3 : ((b : ℂ) + (T : ℂ) * I).re = b := by simp
+  have h4 : ((b : ℂ) + (T : ℂ) * I).im = T := by simp
+  have := Complex.integral_boundary_rect_eq_zero_of_differentiableOn
+    (fun z : ℂ => cexp (L * z) / z) ((a : ℂ) + ((-T : ℝ) : ℂ) * I) ((b : ℂ) + T * I) hd
+  rw [h1, h2, h3, h4] at this
+  simpa only [smul_eq_mul] using this
+
+lemma rect_left (L : ℝ) {a b T : ℝ} (ha : a < 0) (hb : 0 < b) (hT : 0 < T) :
+    (∫ x in a..b, cexp (L * ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) / ((x : ℂ) + ((-T : ℝ) : ℂ) * I))
+    - (∫ x in a..b, cexp (L * ((x : ℂ) + T * I)) / ((x : ℂ) + T * I))
+    + I * (∫ t in (-T)..T, cexp (L * ((b : ℂ) + t * I)) / ((b : ℂ) + t * I))
+    - I * (∫ t in (-T)..T, cexp (L * ((a : ℂ) + t * I)) / ((a : ℂ) + t * I))
+      = 2 * Real.pi * I := by
+  set D : ℂ → ℂ := dslope (fun z : ℂ => cexp (L * z)) 0 with hD
+  have hDd : Differentiable ℂ D := by
+    have : DifferentiableOn ℂ D Set.univ :=
+      (differentiableOn_dslope Filter.univ_mem).2 (by fun_prop)
+    exact fun z => (this z trivial).differentiableAt Filter.univ_mem
+  have hsplit : ∀ z : ℂ, z ≠ 0 → cexp (L * z) / z = D z + z⁻¹ := by
+    intro z hz
+    rw [hD, dslope_of_ne _ hz, slope_def_field]
+    simp only [mul_zero, Complex.exp_zero, sub_zero]
+    field_simp
+    ring
+  have hres := Formalism.FX.rectangle_residue (fun z : ℂ => cexp (L * z) / z)
+    D {0} (fun _ => 1) a b (-T) T (ha.trans hb) (by linarith)
+    (by
+      intro p hp
+      simp only [Finset.mem_singleton] at hp
+      subst p
+      exact ⟨ha, hb, by simpa using neg_neg_of_pos hT, hT⟩)
+    ⟨Set.univ, isOpen_univ, Set.subset_univ _, hDd.differentiableOn⟩
+    (by
+      intro w hw
+      have hw0 : w ≠ 0 := by simpa using hw
+      simpa using hsplit w hw0)
+  simpa [Formalism.FX.rectInt] using hres
+
+lemma le_of_forall_large {x B K c : ℝ} (hc : 0 < c) (hK : 0 ≤ K)
+    (h : ∀ U : ℝ, c ≤ U → x ≤ B + K / U) : x ≤ B := by
+  have h0 : Filter.Tendsto (fun U : ℝ => K / U) Filter.atTop (nhds 0) :=
+    tendsto_const_nhds.div_atTop Filter.tendsto_id
+  have hlim := h0.const_add B
+  rw [add_zero] at hlim
+  exact ge_of_tendsto hlim ((Filter.eventually_ge_atTop c).mono fun U hU => h U hU)
+
+lemma norm_le_three {x p q r : ℂ} (h : I * x = p - q + I * r ∨ I * x = q - p + I * r) :
+    ‖x‖ ≤ ‖p‖ + ‖q‖ + ‖r‖ := by
+  have hx : ‖x‖ = ‖I * x‖ := by rw [norm_mul, Complex.norm_I, one_mul]
+  have hr : ‖I * r‖ = ‖r‖ := by rw [norm_mul, Complex.norm_I, one_mul]
+  rcases h with h | h
+  · rw [hx, h]
+    calc ‖p - q + I * r‖ ≤ ‖p - q‖ + ‖I * r‖ := norm_add_le _ _
+      _ ≤ ‖p‖ + ‖q‖ + ‖r‖ := by rw [hr]; linarith [norm_sub_le p q]
+  · rw [hx, h]
+    calc ‖q - p + I * r‖ ≤ ‖q - p‖ + ‖I * r‖ := norm_add_le _ _
+      _ ≤ ‖p‖ + ‖q‖ + ‖r‖ := by rw [hr]; linarith [norm_sub_le q p]
+
+lemma far_neg {L c T : ℝ} (hL : L < 0) (hc : 0 < c) (hT : 0 < T) :
+    ‖∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)‖
+      ≤ 2 * Real.exp (L * c) / (T * |L|) := by
+  apply le_of_forall_large (c := c) hc (K := 2 * T * Real.exp (L * c)) (by positivity)
+  intro U hU
+  have hU0 : 0 < U := lt_of_lt_of_le hc hU
+  have hR := rect_right L T hc hU
+  have h3 := norm_le_three
+    (x := ∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I))
+    (p := ∫ x in c..U, cexp (L * ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) / ((x : ℂ) + ((-T : ℝ) : ℂ) * I))
+    (q := ∫ x in c..U, cexp (L * ((x : ℂ) + T * I)) / ((x : ℂ) + T * I))
+    (r := ∫ t in (-T)..T, cexp (L * ((U : ℂ) + t * I)) / ((U : ℂ) + t * I)) (Or.inl (by linear_combination -hR))
+  have hLT : 0 < T * -L := mul_pos hT (neg_pos.mpr hL)
+  have key : ∀ s : ℝ, |s| = T → (Real.exp (L * U) - Real.exp (L * c)) / (L * |s|)
+      ≤ Real.exp (L * c) / (T * |L|) := by
+    intro s hs
+    rw [hs, abs_of_neg hL, show L * T = -(T * -L) by ring, div_neg, ← neg_div, neg_sub]
+    exact div_le_div_of_nonneg_right (by linarith [Real.exp_pos (L * U)]) hLT.le
+  have hp := (hbound hL.ne (t := -T) (neg_ne_zero.mpr hT.ne') hU).trans
+    (key (-T) (by rw [abs_neg, abs_of_pos hT]))
+  have hq := (hbound hL.ne (t := T) hT.ne' hU).trans (key T (abs_of_pos hT))
+  have hexp : Real.exp (L * U) ≤ Real.exp (L * c) := Real.exp_le_exp.mpr (by nlinarith)
+  have hr : Real.exp (L * U) / |U| * (2 * T) ≤ 2 * T * Real.exp (L * c) / U := by
+    rw [abs_of_pos hU0, div_mul_eq_mul_div]
+    exact div_le_div_of_nonneg_right (by nlinarith) hU0.le
+  have hr' := (vbound L (σ := U) hU0.ne' hT.le).trans hr
+  have h2 : 2 * Real.exp (L * c) / (T * |L|) =
+      Real.exp (L * c) / (T * |L|) + Real.exp (L * c) / (T * |L|) := by ring
+  rw [h2]
+  linarith
+
+lemma far_pos {L c T : ℝ} (hL : 0 < L) (hc : 0 < c) (hT : 0 < T) :
+    ‖(∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)) - 2 * Real.pi‖
+      ≤ 2 * Real.exp (L * c) / (T * |L|) := by
+  apply le_of_forall_large (c := c) hc (K := 2 * T) (by positivity)
+  intro U hU
+  have hU0 : 0 < U := lt_of_lt_of_le hc hU
+  have hR := rect_left L (a := -U) (b := c) (T := T) (by linarith) hc hT
+  have h3 := norm_le_three
+    (x := (∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)) - 2 * Real.pi)
+    (p := ∫ x in (-U)..c, cexp (L * ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) / ((x : ℂ) + ((-T : ℝ) : ℂ) * I))
+    (q := ∫ x in (-U)..c, cexp (L * ((x : ℂ) + T * I)) / ((x : ℂ) + T * I))
+    (r := ∫ t in (-T)..T, cexp (L * (((-U : ℝ) : ℂ) + t * I)) / (((-U : ℝ) : ℂ) + t * I)) (Or.inr (by linear_combination hR))
+  have hLT : 0 < L * T := mul_pos hL hT
+  have key : ∀ s : ℝ, |s| = T → (Real.exp (L * c) - Real.exp (L * -U)) / (L * |s|)
+      ≤ Real.exp (L * c) / (T * |L|) := by
+    intro s hs
+    rw [hs, abs_of_pos hL, mul_comm T L]
+    exact div_le_div_of_nonneg_right (by linarith [Real.exp_pos (L * -U)]) hLT.le
+  have hUc : -U ≤ c := by linarith
+  have hp := (hbound hL.ne' (t := -T) (neg_ne_zero.mpr hT.ne') hUc).trans
+    (key (-T) (by rw [abs_neg, abs_of_pos hT]))
+  have hq := (hbound hL.ne' (t := T) hT.ne' hUc).trans (key T (abs_of_pos hT))
+  have hexp : Real.exp (L * -U) ≤ 1 := Real.exp_le_one_iff.mpr (by nlinarith)
+  have hr : Real.exp (L * -U) / |-U| * (2 * T) ≤ 2 * T / U := by
+    rw [abs_neg, abs_of_pos hU0, div_mul_eq_mul_div]
+    exact div_le_div_of_nonneg_right (by nlinarith) hU0.le
+  have hr' := (vbound L (σ := -U) (by linarith) hT.le).trans hr
+  have h2 : 2 * Real.exp (L * c) / (T * |L|) =
+      Real.exp (L * c) / (T * |L|) + Real.exp (L * c) / (T * |L|) := by ring
+  rw [h2]
+  linarith
+
+lemma near (L : ℝ) {c T : ℝ} (hc : 0 < c) (hT : 0 < T) :
+    ‖∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)‖
+      ≤ Real.exp (L * c) * (Real.pi + 2 * (T * |L|)) := by
+  have hc0 : c ≠ 0 := hc.ne'
+  set g : ℝ → ℂ := fun t => (cexp (I * ((L * t : ℝ) : ℂ)) - 1) / ((c : ℂ) + t * I) with hg
+  have hpt : ∀ t : ℝ, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)
+      = (Real.exp (L * c) : ℂ) * (g t + ((c : ℂ) + t * I)⁻¹) := by
+    intro t
+    have hz : (c : ℂ) + t * I ≠ 0 := ne_zero_of_re hc0
+    have he : cexp (L * ((c : ℂ) + t * I)) =
+        (Real.exp (L * c) : ℂ) * cexp (I * ((L * t : ℝ) : ℂ)) := by
+      rw [Complex.ofReal_exp, ← Complex.exp_add]
+      congr 1
+      push_cast
+      ring
+    simp only [hg]
+    rw [he]
+    field_simp
+    ring
+  have hgc : Continuous g := by
+    simp only [hg]
+    exact (by fun_prop : Continuous fun t : ℝ => cexp (I * ((L * t : ℝ) : ℂ)) - 1).div
+      (by fun_prop) fun t => ne_zero_of_re hc0
+  have hgb : ∀ t ∈ Set.uIoc (-T) T, ‖g t‖ ≤ |L| := by
+    intro t _
+    have hz : (c : ℂ) + t * I ≠ 0 := ne_zero_of_re hc0
+    have hzn : 0 < ‖(c : ℂ) + t * I‖ := norm_pos_iff.mpr hz
+    simp only [hg]
+    rw [norm_div, div_le_iff₀ hzn]
+    calc ‖cexp (I * ((L * t : ℝ) : ℂ)) - 1‖ ≤ ‖L * t‖ := Real.norm_exp_I_mul_ofReal_sub_one_le
+      _ = |L| * |t| := by rw [Real.norm_eq_abs, abs_mul]
+      _ ≤ |L| * ‖(c : ℂ) + t * I‖ := by
+        apply mul_le_mul_of_nonneg_left _ (abs_nonneg L)
+        simpa using Complex.abs_im_le_norm ((c : ℂ) + t * I)
+  have hint : (∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I))
+      = (Real.exp (L * c) : ℂ) *
+        ((∫ t in (-T)..T, g t) + ∫ t in (-T)..T, ((c : ℂ) + t * I)⁻¹) := by
+    rw [intervalIntegral.integral_congr (fun t _ => hpt t), intervalIntegral.integral_const_mul,
+      intervalIntegral.integral_add (hgc.intervalIntegrable _ _)
+        ((cont_vinv hc0).intervalIntegrable _ _)]
+  rw [hint, vinv hc0 T, norm_mul, Complex.norm_real, Real.norm_eq_abs,
+    abs_of_pos (Real.exp_pos _)]
+  apply mul_le_mul_of_nonneg_left _ (Real.exp_pos _).le
+  have hg2 := intervalIntegral.norm_integral_le_of_norm_le_const hgb
+  rw [show |T - -T| = 2 * T by rw [sub_neg_eq_add, ← two_mul, abs_of_pos (by linarith)]] at hg2
+  have hat : |2 * Real.arctan (T / c)| ≤ Real.pi := by
+    rw [abs_of_pos (by have := Real.arctan_pos.mpr (div_pos hT hc); linarith)]
+    linarith [Real.arctan_lt_pi_div_two (T / c)]
+  calc ‖(∫ t in (-T)..T, g t) + ((2 * Real.arctan (T / c) : ℝ) : ℂ)‖
+      ≤ ‖∫ t in (-T)..T, g t‖ + ‖((2 * Real.arctan (T / c) : ℝ) : ℂ)‖ := norm_add_le _ _
+    _ ≤ |L| * (2 * T) + Real.pi := by
+        rw [Complex.norm_real, Real.norm_eq_abs]
+        linarith
+    _ = Real.pi + 2 * (T * |L|) := by ring
+
+theorem truncated_perron_kernel : ∃ C : ℝ, 0 < C ∧ ∀ y c T : ℝ, 0 < y → y ≠ 1 → 0 < c → 1 ≤ T → ‖(1 / (2 * Real.pi) : ℂ) * (∫ t in (-T)..T, (y : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I)) - (if 1 < y then 1 else 0)‖ ≤ C * y ^ c * min 1 (1 / (T * |Real.log y|)) := by
+  refine ⟨3, by norm_num, fun y c T hy hy1 hc hT => ?_⟩
+  have hint : (∫ t in (-T)..T, (y : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I))
+      = ∫ t in (-T)..T, cexp ((Real.log y : ℝ) * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I) := by
+    refine intervalIntegral.integral_congr fun t _ => ?_
+    rw [Complex.cpow_def_of_ne_zero (by exact_mod_cast hy.ne'), Complex.ofReal_log hy.le]
+  rw [hint, Real.rpow_def_of_pos hy]
+  set L := Real.log y with hLdef
+  set V := ∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I) with hV
+  have hL : L ≠ 0 := Real.log_ne_zero_of_pos_of_ne_one hy hy1
+  have hT0 : 0 < T := by linarith
+  have hpi : 0 < Real.pi := Real.pi_pos
+  have hE : 0 < Real.exp (L * c) := Real.exp_pos _
+  have hLa : 0 < |L| := abs_pos.mpr hL
+  have hTL : 0 < T * |L| := mul_pos hT0 hLa
+  have hn : ‖(1 / (2 * Real.pi) : ℂ)‖ = 1 / (2 * Real.pi) := by
+    rw [show (1 / (2 * Real.pi) : ℂ) = ((1 / (2 * Real.pi) : ℝ) : ℂ) by push_cast; rfl,
+      Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]
+  have hfar : ‖(1 / (2 * Real.pi) : ℂ) * V - (if 1 < y then 1 else 0)‖
+      ≤ 1 / (2 * Real.pi) * (2 * Real.exp (L * c) / (T * |L|)) := by
+    split_ifs with h1
+    · have hLp : 0 < L := Real.log_pos h1
+      have e : (1 / (2 * Real.pi) : ℂ) * V - 1 = (1 / (2 * Real.pi) : ℂ) * (V - 2 * Real.pi) := by
+        have : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast hpi.ne'
+        field_simp
+      rw [e, norm_mul, hn]
+      exact mul_le_mul_of_nonneg_left (far_pos hLp hc hT0) (by positivity)
+    · have hLn : L < 0 := Real.log_neg hy (lt_of_le_of_ne (not_lt.mp h1) hy1)
+      rw [sub_zero, norm_mul, hn]
+      exact mul_le_mul_of_nonneg_left (far_neg hLn hc hT0) (by positivity)
+  have hind : ‖(if 1 < y then (1 : ℂ) else 0)‖ ≤ Real.exp (L * c) := by
+    split_ifs with h1
+    · rw [norm_one]
+      exact Real.one_le_exp (mul_nonneg (Real.log_pos h1).le hc.le)
+    · rw [norm_zero]
+      exact hE.le
+  have hnr : ‖(1 / (2 * Real.pi) : ℂ) * V - (if 1 < y then 1 else 0)‖
+      ≤ 1 / (2 * Real.pi) * (Real.exp (L * c) * (Real.pi + 2 * (T * |L|))) + Real.exp (L * c) := by
+    refine (norm_sub_le _ _).trans ?_
+    rw [norm_mul, hn]
+    exact add_le_add (mul_le_mul_of_nonneg_left (near L hc hT0) (by positivity)) hind
+  rcases le_or_gt (T * |L|) 1 with hs | hs
+  · rw [min_eq_left (by rw [le_div_iff₀ hTL]; linarith)]
+    refine hnr.trans ?_
+    have h2 : 1 / (2 * Real.pi) * (Real.exp (L * c) * (Real.pi + 2 * (T * |L|)))
+        ≤ Real.exp (L * c) * 2 := by
+      rw [div_mul_eq_mul_div, one_mul, div_le_iff₀ (by positivity)]
+      nlinarith [mul_le_mul_of_nonneg_left hs hE.le, Real.pi_gt_three]
+    linarith
+  · rw [min_eq_right (by rw [div_le_iff₀ hTL]; linarith)]
+    refine hfar.trans ?_
+    rw [show 1 / (2 * Real.pi) * (2 * Real.exp (L * c) / (T * |L|))
+        = 1 / Real.pi * (Real.exp (L * c) / (T * |L|)) by field_simp,
+      show 3 * Real.exp (L * c) * (1 / (T * |L|)) = 3 * (Real.exp (L * c) / (T * |L|)) by ring]
+    apply mul_le_mul_of_nonneg_right _ (by positivity)
+    rw [div_le_iff₀ hpi]
+    nlinarith [Real.pi_gt_three]
+
+end GlobalTheory.PerronKernel
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TruncatedPerronKernel =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TruncatedPerronPsi =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TruncatedPerronPsi", "h": "module\n\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.NumberTheory.LSeries.DirichletContinuation\npublic import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TruncatedPerronKernel\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\npublic import Mathlib.Analysis.Complex.ExponentialBounds\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Complex.Arctan\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\npublic import Mathlib.NumberTheory.Harmonic.Bounds\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Analysis.SumIntegralComparisons\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory
@@ -72,29 +480,19 @@ lemma kernel_bound : ∃ C : ℝ, 0 < C ∧ ∀ y c T : ℝ, 0 < y → 0 < c →
   have hyc : 0 < y ^ c := Real.rpow_pos_of_pos hy c
   by_cases hy1 : y = 1
   · subst hy1
-    have hI : ∫ t in (-T)..T, ((1 : ℝ) : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I)
-        = ((2 * Real.arctan (T / c) : ℝ) : ℂ) := by
-      rw [← GlobalTheory.PerronKernel.vinv hc.ne' T]
-      congr 1
-      ext t
-      rw [Complex.ofReal_one, Complex.one_cpow, one_div]
     have ha0 : 0 < Real.arctan (T / c) := Real.arctan_pos.2 (by positivity)
     have ha1 : Real.arctan (T / c) < Real.pi / 2 := Real.arctan_lt_pi_div_two _
     have hpi := Real.pi_pos
-    have hE : ‖(1 / (2 * Real.pi) : ℂ) * ((2 * Real.arctan (T / c) : ℝ) : ℂ)
-        - (if (1 : ℝ) ≤ 1 then 1 else 0)‖ ≤ 1 := by
-      rw [if_pos le_rfl]
-      have hre : (1 / (2 * Real.pi) : ℂ) * ((2 * Real.arctan (T / c) : ℝ) : ℂ) - 1
-          = ((Real.arctan (T / c) / Real.pi - 1 : ℝ) : ℂ) := by
-        push_cast
-        field_simp
+    have hE : ‖((Real.arctan (T / c) / Real.pi : ℝ) : ℂ) - 1‖ ≤ 1 := by
+      have hre : ((Real.arctan (T / c) / Real.pi : ℝ) : ℂ) - 1
+          = ((Real.arctan (T / c) / Real.pi - 1 : ℝ) : ℂ) := by push_cast; rfl
       rw [hre, Complex.norm_real, Real.norm_eq_abs, abs_le]
       have h1 : 0 ≤ Real.arctan (T / c) / Real.pi := div_nonneg ha0.le hpi.le
       have h2 : Real.arctan (T / c) / Real.pi ≤ 1 := by
         rw [div_le_one hpi]
         linarith
       constructor <;> linarith
-    rw [hI]
+    rw [Complex.ofReal_one, GlobalTheory.PerronKernel.truncated_perron_kernel_one hc.ne', ite_eq_left le_rfl]
     refine ⟨?_, ?_⟩
     · calc _ ≤ (1 : ℝ) := hE
         _ ≤ max C 1 * (1 : ℝ) ^ c := by
@@ -204,64 +602,12 @@ lemma interchange (a : ℕ → ℂ) (ha0 : a 0 = 0) {c u : ℝ} (T : ℝ) (hc : 
   exact key
 
 lemma zeta_bound {s : ℝ} (hs : 1 < s) : ∑' n : ℕ, 1 / (n : ℝ) ^ s ≤ 1 + 1 / (s - 1) := by
-  have hs0 : 0 < s := by linarith
-  have hnn : ∀ n : ℕ, 0 ≤ 1 / (n : ℝ) ^ s := fun n => by positivity
-  have hI : ∀ a : ℕ, ∑ i ∈ Finset.range a, 1 / ((i : ℝ) + 1 + 1) ^ s ≤ 1 / (s - 1) := by
-    intro a
-    have hanti : AntitoneOn (fun x : ℝ => 1 / x ^ s) (Set.Icc 1 (1 + a)) := by
-      intro x hx y hy hxy
-      have hx0 : 0 < x := by linarith [hx.1]
-      exact one_div_le_one_div_of_le (Real.rpow_pos_of_pos hx0 s)
-        (Real.rpow_le_rpow hx0.le hxy hs0.le)
-    have h1 := hanti.sum_le_integral
-    have h1a : (1 : ℝ) ≤ 1 + a := by
-      have := (Nat.cast_nonneg a : (0 : ℝ) ≤ a)
-      linarith
-    have hsum : ∑ i ∈ Finset.range a, 1 / ((i : ℝ) + 1 + 1) ^ s
-        = ∑ i ∈ Finset.range a, 1 / ((1 : ℝ) + ((i + 1 : ℕ) : ℝ)) ^ s := by
-      apply Finset.sum_congr rfl
-      intro i _
-      push_cast
-      ring_nf
-    have hint : ∫ x in (1 : ℝ)..1 + a, 1 / x ^ s = ∫ x in (1 : ℝ)..1 + a, x ^ (-s) := by
-      apply intervalIntegral.integral_congr
-      intro x hx
-      have hx0 : 0 < x := by
-        rw [Set.uIcc_of_le h1a] at hx
-        linarith [hx.1]
-      simp only
-      rw [Real.rpow_neg hx0.le, one_div]
-    have h0 : (0 : ℝ) ∉ Set.uIcc (1 : ℝ) (1 + a) := by
-      rw [Set.uIcc_of_le h1a]
-      intro h
-      linarith [h.1]
-    have hval : ∫ x in (1 : ℝ)..1 + a, x ^ (-s) = (1 - (1 + (a : ℝ)) ^ (1 - s)) / (s - 1) := by
-      rw [integral_rpow (r := -s) (Or.inr ⟨fun h => by linarith, h0⟩), Real.one_rpow]
-      have : -s + 1 = 1 - s := by ring
-      rw [this]
-      have hs1 : s - 1 ≠ 0 := by linarith
-      have hs2 : 1 - s ≠ 0 := by linarith
-      field_simp
-      ring
-    have hpos : 0 ≤ (1 + (a : ℝ)) ^ (1 - s) := by positivity
-    rw [hsum]
-    calc _ ≤ _ := h1
-      _ = (1 - (1 + (a : ℝ)) ^ (1 - s)) / (s - 1) := by rw [hint, hval]
-      _ ≤ 1 / (s - 1) := by
-        apply div_le_div_of_nonneg_right _ (by linarith)
-        linarith
-  apply Real.tsum_le_of_sum_range_le hnn
-  intro n
-  calc ∑ i ∈ Finset.range n, 1 / (i : ℝ) ^ s
-      ≤ ∑ i ∈ Finset.range (n + 2), 1 / (i : ℝ) ^ s :=
-        Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2 (by omega))
-          (fun i _ _ => hnn i)
-    _ = ∑ i ∈ Finset.range n, 1 / ((i : ℝ) + 1 + 1) ^ s + 1 := by
-        rw [Finset.sum_range_succ', Finset.sum_range_succ']
-        push_cast
-        rw [Real.zero_rpow hs0.ne', Real.one_rpow]
-        simp
-    _ ≤ 1 + 1 / (s - 1) := by linarith [hI n]
+  have hsum := Real.summable_one_div_nat_rpow.mpr hs
+  rw [hsum.tsum_eq_zero_add]
+  simp only [Nat.cast_zero, Real.zero_rpow (by linarith : s ≠ 0), div_zero, zero_add, Nat.cast_add, Nat.cast_one]
+  refine (GlobalTheory.LLower.tsum_one_div_rpow_le hs).trans_eq ?_
+  field_simp
+  ring
 
 noncomputable def w (N : ℕ) (B : ℝ) (n : ℕ) : ℝ :=
   (if n = N then 1 else 0) + (if n = N + 1 then 1 else 0)
@@ -360,7 +706,7 @@ lemma far_term {u T C E : ℝ} {n : ℕ} (hu : 2 ≤ u) (hT : 0 < T) (hn : 0 < n
     have h2 : 2 * L * a = 1 := by rw [ha]; field_simp
     calc Real.log n = 2 * L * (a * Real.log n) := by rw [← mul_assoc, h2, one_mul]
       _ ≤ 2 * L * ((n : ℝ) ^ a - 1) := mul_le_mul_of_nonneg_left h1 (by linarith)
-      _ ≤ 2 * L * (n : ℝ) ^ a := by nlinarith
+      _ ≤ 2 * L * (n : ℝ) ^ a := by linarith [hL0]
   have he : Real.exp 1 < 3 := by have := Real.exp_one_lt_d9; linarith
   have hgoal : C * (12 * u * L / T * (1 / (n : ℝ) ^ (1 + a)))
       = (12 * C * u * L) / (T * (n : ℝ) ^ (1 + a)) := by
@@ -373,7 +719,7 @@ lemma far_term {u T C E : ℝ} {n : ℕ} (hu : 2 ≤ u) (hT : 0 < T) (hn : 0 < n
         exact mul_le_mul key3 key1 (mul_nonneg hE hT.le) (mul_nonneg (by linarith) hQ.le)
     _ = 4 * C * L * ((u / n) ^ (1 + 1 / L) * ((n : ℝ) ^ (1 + a) * (n : ℝ) ^ a)) := by ring
     _ = 4 * C * L * (u * Real.exp 1) := by rw [key2]
-    _ ≤ 12 * C * u * L := by nlinarith
+    _ ≤ 12 * C * u * L := by linarith [mul_le_mul_of_nonneg_left he.le h0]
 
 lemma near_term {u T C E : ℝ} {n : ℕ} (hu : 2 ≤ u) (hT : 0 < T) (hC : 0 ≤ C)
     (hE : 0 ≤ E) (h0 : E ≤ C * (u / n) ^ (1 + 1 / Real.log u))
@@ -419,7 +765,7 @@ lemma near_term {u T C E : ℝ} {n : ℕ} (hu : 2 ≤ u) (hT : 0 < T) (hC : 0 �
     intro hw1
     have h1 : Real.log n * E ≤ 2 * L * (6 * C) :=
       mul_le_mul hlogn (h0.trans hCM) hE (by linarith)
-    nlinarith [mul_le_mul_of_nonneg_left hw1 hCL]
+    linarith [hCL, mul_le_mul_of_nonneg_left hw1 hCL]
   have core : ∀ k : ℝ, 0 < k → k / (2 * u) ≤ |Real.log (u / n)| → B * (1 / k) ≤ w N B n →
       Real.log n * E ≤ C * (16 * L * w N B n) := by
     intro k hk hlog hwk
@@ -438,7 +784,7 @@ lemma near_term {u T C E : ℝ} {n : ℕ} (hu : 2 ≤ u) (hT : 0 < T) (hC : 0 �
       rw [show 12 * C * L * (B * (1 / k)) = (12 * C * L * B) / k by ring, le_div_iff₀ hk]
       linarith
     have hbk : 0 ≤ B * (1 / k) := mul_nonneg hB0 (by positivity)
-    nlinarith [mul_le_mul_of_nonneg_left hwk hCL, mul_nonneg hCL hbk]
+    linarith [mul_le_mul_of_nonneg_left hwk hCL, mul_nonneg hCL hbk]
   have hNu : (N : ℝ) ≤ u := Nat.floor_le hu0.le
   have huN : u < (N : ℝ) + 1 := Nat.lt_floor_add_one u
   rcases lt_trichotomy n N with hlt | heq | hgt
@@ -490,10 +836,11 @@ lemma near_term {u T C E : ℝ} {n : ℕ} (hu : 2 ≤ u) (hT : 0 < T) (hC : 0 �
       rw [hwdef, if_neg (by omega), if_pos heq1]
       linarith
 
-theorem truncated_perron_psi : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (u T : ℝ), 2 ≤ T → T ≤ 2 * u → 2 ≤ u → ‖(∑ n ∈ Finset.Icc 1 ⌊u⌋₊, (Λ n : ℂ) * χ (n : ZMod q)) - (1 / (2 * Real.pi) : ℂ) * ∫ t in (-T)..T, -(deriv (LFunction χ) ((1 + 1 / Real.log u : ℝ) + t * I) / LFunction χ ((1 + 1 / Real.log u : ℝ) + t * I)) * (u : ℂ) ^ (((1 + 1 / Real.log u : ℝ) : ℂ) + t * I) / ((1 + 1 / Real.log u : ℝ) + t * I)‖ ≤ C * (u * Real.log u ^ 2 / T + Real.log u) := by
+/-- The Perron height may be chosen independently of the summation cutoff. -/
+theorem truncated_perron_psi_of_one_le : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (u T : ℝ), 1 ≤ T → 2 ≤ u → ‖(∑ n ∈ Finset.Icc 1 ⌊u⌋₊, (Λ n : ℂ) * χ (n : ZMod q)) - (1 / (2 * Real.pi) : ℂ) * ∫ t in (-T)..T, -(deriv (LFunction χ) ((1 + 1 / Real.log u : ℝ) + t * I) / LFunction χ ((1 + 1 / Real.log u : ℝ) + t * I)) * (u : ℂ) ^ (((1 + 1 / Real.log u : ℝ) : ℂ) + t * I) / ((1 + 1 / Real.log u : ℝ) + t * I)‖ ≤ C * (u * Real.log u ^ 2 / T + Real.log u) := by
   obtain ⟨C0, hC0, hK⟩ := kernel_bound
   refine ⟨240 * C0, by positivity, ?_⟩
-  intro q _ χ u T hT2 hTu hu
+  intro q _ χ u T hT1 hu
   have hu0 : 0 < u := by linarith
   have hT0 : 0 < T := by linarith
   have hL := half_le_log hu
@@ -650,7 +997,7 @@ theorem truncated_perron_psi : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (
   have b3 : 12 * u * L / T * (1 + 2 * L) + 16 * L * (2 + B * (2 * (1 + L)))
       ≤ 240 * (u * L ^ 2 / T + L) := by
     rw [e1, e2, e3]
-    nlinarith [mul_nonneg (mul_nonneg hL0.le hX.le) (show (0 : ℝ) ≤ 2 * L - 1 by linarith),
+    linarith [hL0, mul_nonneg (mul_nonneg hL0.le hX.le) (show (0 : ℝ) ≤ 2 * L - 1 by linarith),
       mul_nonneg (mul_nonneg hL0.le hL0.le) hX.le]
   have b4 : 12 * u * L / T * ∑' n : ℕ, 1 / (n : ℝ) ^ (1 + 1 / (2 * L))
       + 16 * L * ∑ n ∈ Finset.range (N + 1 + (N + 1)), w N B n ≤ 240 * (u * L ^ 2 / T + L) := by
@@ -658,4 +1005,11 @@ theorem truncated_perron_psi : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (
   have b5 := mul_le_mul_of_nonneg_left b4 hC0.le
   linarith
 
+theorem truncated_perron_psi : ∃ C : ℝ, 0 < C ∧ ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (u T : ℝ), 2 ≤ T → T ≤ 2 * u → 2 ≤ u → ‖(∑ n ∈ Finset.Icc 1 ⌊u⌋₊, (Λ n : ℂ) * χ (n : ZMod q)) - (1 / (2 * Real.pi) : ℂ) * ∫ t in (-T)..T, -(deriv (LFunction χ) ((1 + 1 / Real.log u : ℝ) + t * I) / LFunction χ ((1 + 1 / Real.log u : ℝ) + t * I)) * (u : ℂ) ^ (((1 + 1 / Real.log u : ℝ) : ℂ) + t * I) / ((1 + 1 / Real.log u : ℝ) + t * I)‖ ≤ C * (u * Real.log u ^ 2 / T + Real.log u) := by
+  obtain ⟨C, hC, h⟩ := truncated_perron_psi_of_one_le
+  exact ⟨C, hC, fun q _ χ u T hT _ hu => h q χ u T (by linarith) hu⟩
+
 end GlobalTheory.PerronPsi
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TruncatedPerronPsi =====

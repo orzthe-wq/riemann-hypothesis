@@ -149,7 +149,7 @@ theorem lv_of (hC : Cayley) (hU : UAct) (hDj : DjSec) (hDp : DpDual) (hHI : HolI
   have hΩ : IsOpen Ω := isOpen_domK Kg ι hι
   have hGΩ : ∀ g : M2 n, InG g → g ∈ Ω := fun g hg k => gset_sub_dom (inG_mul (hGk k) hg)
   have hf0 : ContDiffOn ℂ ∞ (f0 (p:ℤ) (q:ℤ)) (Dom n) :=
-    (contDiffOn_scalar_section (n := n) _ _).mono (fun x hx => dom_sub x hx)
+    (_root_.PositivityTheory.Rg.Sw.LVs.contDiffOn_scalar_section_of_units (n := n) _ _).mono (fun x hx => dom_sub x hx)
   have hcV : Continuous fun k => fV (p:ℤ) (q:ℤ) (ι k) :=
     cont_on_K _ (contDiffOn_fV _ _) Kg ι hι (fun k => gset_sub_dom (hGk k))
   have hk_cd : ∀ (F : M2 n → ℂ), ContDiffOn ℂ ∞ F (Dom n) → ∀ k : Kg,

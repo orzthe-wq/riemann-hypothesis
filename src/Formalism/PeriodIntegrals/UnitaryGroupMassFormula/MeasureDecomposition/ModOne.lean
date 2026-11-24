@@ -44,7 +44,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Mathlib
+import Mathlib.Tactic
 
 @[expose] public section
 
@@ -86,9 +86,6 @@ theorem conj_eq_smul (N : Subgroup G) (hN : IsClosed (N : Set G)) (g : G) (h1 : 
   haveI : SecondCountableTopology N := by
     first
       | exact TopologicalSpace.Subtype.secondCountableTopology (N : Set G)
-      | exact Topology.IsInducing.subtypeVal.secondCountableTopology
-      | exact inducing_subtype_val.secondCountableTopology
-      | infer_instance
   have hφc := continuous_conjSub N g h1 h2
   have hφs := continuous_conjSub_symm N g h1 h2
   haveI := MulEquiv.isHaarMeasure_map (Measure.haar : Measure N) (conjSub N g h1 h2) hφc hφs
@@ -132,9 +129,6 @@ theorem genModOne_of (hHaar : GenHaarSub) : GenModOne := by
   have key : ∀ a b : ℝ≥0∞, a * haarSub N hN C = b * haarSub N hN C → a = b := fun a b hab => by
     first
       | exact (ENNReal.mul_left_inj hCpos.ne' hCfin.ne).mp hab
-      | exact (ENNReal.mul_eq_mul_right hCpos.ne' hCfin.ne).mp hab
-      | (rw [mul_comm a, mul_comm b] at hab; exact (ENNReal.mul_right_inj hCpos.ne' hCfin.ne).mp hab)
-      | (rw [mul_comm a, mul_comm b] at hab; exact (ENNReal.mul_eq_mul_left hCpos.ne' hCfin.ne).mp hab)
   have cancel : ∀ c d : ℝ≥0, c • haarSub N hN = d • haarSub N hN → c = d := fun c d hcd => by
     have e := congrArg (fun μ : Measure G => μ C) hcd
     simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e

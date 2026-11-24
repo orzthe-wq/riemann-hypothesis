@@ -105,7 +105,7 @@ theorem span_I_le : Submodule.span (𝓞 L) (A.I : Set V) ≤ A.Λ := Submodule.
 
 theorem mem_span_I {x : V} (hx : x ∈ A.Λ) (h : x ∈ Submodule.span L (A.I : Set V)) :
     x ∈ Submodule.span (𝓞 L) (A.I : Set V) := by
-  obtain ⟨c, hc, h1⟩ := exists_smul_mem_of_mem_span (Submodule.span (𝓞 L) (A.I : Set V))
+  obtain ⟨c, hc, h1⟩ := _root_.UpperTheory.Reformulated.B.Qo3.exists_smul_mem_of_mem_span (Submodule.span (𝓞 L) (A.I : Set V))
     (fun y hy => Submodule.subset_span hy) h
   have h2 := (A.ker (c • ⟨x, hx⟩)).2 h1
   rw [map_smul] at h2

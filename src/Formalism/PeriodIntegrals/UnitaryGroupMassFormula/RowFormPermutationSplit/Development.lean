@@ -92,7 +92,6 @@ theorem rowForm_of (h1 : DblDec) (h2 : DblInc) (h3 : DblPerm) : PI.RowForm := by
   exact e4
 
 theorem qmRowForm_of (h1 : DblDec) (h2 : DblInc) (h3 : DblPerm) : PI.QmRowForm := by
-  unfold PI.QmRowForm
-  exact rowForm_of h1 h2 h3
+  simpa [PI.QmRowForm] using rowForm_of h1 h2 h3
 
 end PI.UnitaryGroupMassFormula.QmRowForm

@@ -107,13 +107,3 @@ theorem bd_bd : ∀ (V : Type) (c : List V →₀ ℤ), bd V (bd V c) = 0 := by
 
 end GlobalTheory.SeqCx
 
-section
-open GlobalTheory.SeqCx Matrix
-theorem _root_.GlobalTheory.T.seqChain_boundary_comp_boundary_apply : ∀ (V : Type) (c : List V →₀ ℤ), bd V (bd V c) = 0 := by
-  first
-  | exact @GlobalTheory.SeqCx.bd_bd
-  | exact @GlobalTheory.SeqCx.BdBd.bd_bd_single
-  | exact @GlobalTheory.SeqCx.BdBd.bd_consMap
-  | exact @GlobalTheory.SeqCx.BdBd.bd_single_cons
-  | exact @GlobalTheory.SeqCx.BdBd.bd_single
-end

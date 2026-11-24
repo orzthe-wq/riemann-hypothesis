@@ -58,7 +58,7 @@ namespace GlobalTheory.QuadSymbol
 theorem exists_basis_of_isQuadraticExtension (K L : Type) [Field K] [CharZero K] [Field L] [Algebra K L]
     [Algebra.IsQuadraticExtension K L] :
     ∃ (δ : K) (e : Module.Basis (Fin 2) K L), ¬ IsSquare δ ∧ e 0 = 1 ∧ e 1 * e 1 = algebraMap K L δ := by
-  apply GlobalTheory.QuadSymbol.AlmostNorm.exists_basis_sq <;> assumption
+  apply GlobalTheory.QuadSymbol.AlmostNorm.exists_basis_sq
 
 theorem exists_completion_hom_real {K : Type} [Field K] (σ : K →+* ℝ) :
     ∃ (w : InfinitePlace K) (f : w.Completion →+* ℝ), ∀ x : K, f (algebraMap K w.Completion x) = σ x := by

@@ -1,7 +1,10 @@
 module
 
 public import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.FixedIntegersIsUnitOfNotMemPrimeSpan
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPolynomialPrimitiveRootOfCyclotomicInertiaStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra.ResMapBijective
+public import Mathlib.RingTheory.AdicCompletion.Noetherian
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsPolynomialPrimitiveRootOfCyclotomicInertia
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -43,7 +46,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 theorem UpperTheory.Kd.C7.pPolyEx :
     UpperTheory.Kd.C7.SPolyEx := by
   intro l _ _ Ω _ _ _ A hA ζ hζ m u hu hinv
-  obtain ⟨P, hP, hev⟩ := GlobalTheory.T.exists_polynomial_primitiveRoot_of_cyclotomic_inertia_fixed l Ω A hA m (ζ m) (hζ m).1 u hu
+  obtain ⟨P, hP, hev⟩ := _root_.GlobalTheory.CycIne.exists_poly_of_fixed l Ω A hA m (ζ m) (hζ m).1 u hu
     (fun s hs h1 => hinv s ⟨hs, MonoidHom.mem_ker.2 h1⟩)
   have hsub : (↑P.coeffs : Set Ω) ⊆ (R0 A : Set Ω) := fun z hz => hP z hz
   refine ⟨P.toSubring (R0 A) hsub, ?_⟩

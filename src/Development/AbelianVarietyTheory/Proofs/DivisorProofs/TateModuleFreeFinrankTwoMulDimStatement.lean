@@ -50,4 +50,4 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 
 theorem _root_.GlobalTheory.T.tateModule_free_finrank_two_mul_dim : ∀ (K : Type) [Field K] (l : ℕ) [Fact l.Prime], (l : K) ≠ 0 → ∀ (A : AbVar K), Module.Free ℤ_[l] (Tl l A) ∧ Module.Finite ℤ_[l] (Tl l A) ∧ Module.finrank ℤ_[l] (Tl l A) = 2 * A.dim ∧ Module.Finite ℚ_[l] (Vl l A) ∧ Module.finrank ℚ_[l] (Vl l A) = 2 * A.dim := by
-  first | exact @GlobalTheory.AV.AbVar.tl_free_finrank | exact GlobalTheory.AV.AbVar.tl_free_finrank | (intros; apply GlobalTheory.AV.AbVar.tl_free_finrank <;> assumption)
+  first | exact @GlobalTheory.AV.AbVar.tl_free_finrank

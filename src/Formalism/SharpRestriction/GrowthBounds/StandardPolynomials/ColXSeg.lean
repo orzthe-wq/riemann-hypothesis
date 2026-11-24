@@ -195,10 +195,7 @@ theorem topStart_ne_end (h2 : 2 ≤ numSeg X.TT) : topStart X j ≠ topEnd X j :
   have a := (segG_eq X.TT h2 j).2
   rw [← h1] at a
   have hx := (segStart X.TT j).isLt
-  have : cdist (segStart X.TT j) (segStart X.TT j) = 0 := by
-    unfold cdist
-    have e : (segStart X.TT j).val + X.n' - (segStart X.TT j).val = X.n' := by omega
-    rw [e, Nat.mod_self]
+  have : cdist (segStart X.TT j) (segStart X.TT j) = 0 := by simp [cdist]
   omega
 
 theorem lamS_injective (h2 : 2 ≤ numSeg X.TT) : Function.Injective (lamS X j) := by
@@ -240,14 +237,11 @@ theorem lamS_injective (h2 : 2 ≤ numSeg X.TT) : Function.Injective (lamS X j) 
 theorem lamS_ne_endFalse (i : Fin (2 * segS X.TT j + 1 + 1)) (j' : Fin (numSeg X.TT)) :
     lamS X j i ≠ (topEnd X j', false) := by
   refine Fin.cases ?_ (fun a => ?_) i
-  · rw [lamS_zero]
-    simp
+  · simp [lamS_zero]
   · by_cases h : (a : ℕ) < 2 * segS X.TT j
     · rw [lamS_succ_lt X j a h]
-      intro he
-      exact topOdd_ne_end X j _ j' (Prod.ext_iff.1 he).1
-    · rw [lamS_succ_ge X j a h]
-      simp
+      exact fun he => topOdd_ne_end X j _ j' (Prod.ext_iff.1 he).1
+    · simp [lamS_succ_ge X j a h]
 
 theorem lev_succ (C0 CE1 CE2 : ℝ) (a : Fin (2 * segS X.TT j + 1)) (b : Fin X.m) :
     X.p ^ (zS X j - posS X j a.succ).toNat = symLev X.p C0 CE1 CE2 X j (Sum.inl (a.castSucc, b)) := by
@@ -255,22 +249,14 @@ theorem lev_succ (C0 CE1 CE2 : ℝ) (a : Fin (2 * segS X.TT j + 1)) (b : Fin X.m
   · rw [posS_succ_lt X j a h]
     have e : symLev X.p C0 CE1 CE2 X j (Sum.inl (a.castSucc, b)) =
         (X.seg C0 CE1 CE2 j).P X.p ⟨(a : ℕ) / 2, by omega⟩ := by
-      unfold symLev
-      simp only [Fin.val_castSucc]
-      rw [dif_pos h]
+      simp [symLev, Fin.val_castSucc, h]
     rw [e]
     show _ = X.p ^ (segG X.TT j - (segDists X.TT j).get (⟨(a : ℕ) / 2, by omega⟩ : Fin (segS X.TT j)))
     congr 1
     unfold zS
     omega
   · rw [posS_succ_ge X j a h]
-    have e : symLev X.p C0 CE1 CE2 X j (Sum.inl (a.castSucc, b)) = 1 := by
-      unfold symLev
-      simp only [Fin.val_castSucc]
-      rw [dif_neg h]
-    rw [e]
-    unfold zS
-    simp
+    simp [symLev, Fin.val_castSucc, h, zS]
 
 theorem lev_zero (C0 CE1 CE2 : ℝ) : X.p ^ (zS X j - posS X j 0).toNat = (X.seg C0 CE1 CE2 j).Qj X.p := by
   rw [posS_zero]

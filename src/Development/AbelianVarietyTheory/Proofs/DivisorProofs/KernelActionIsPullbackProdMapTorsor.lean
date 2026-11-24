@@ -48,6 +48,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Development.AbelianVarietyTheory.PublishedTheorems.AbelianLaws.PrincipalPolarisationOneSection
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsAdditiveOfUniversal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.CocycleRightZeroThd
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RankLie
 
 @[expose] public section
 
@@ -61,9 +62,6 @@ namespace GlobalTheory.CharKer
 
 variable {S : Scheme.{0}}
 
-theorem comp_one_hom {X Y M : Over S} [GrpObj M] (u : Y ⟶ X) : u ≫ (1 : X ⟶ M) = 1 := by
-  rw [Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (u ≫ toUnit X) (toUnit Y)]
-
 theorem pmap_isPullback_actMap : ∀ (S : Scheme.{0}) (A A' N T : Over S) [GrpObj A] [GrpObj A'] [GrpObj N] (i : N ⟶ A) (q : A ⟶ A'), IsMonHom i → IsMonHom q → IsPullback i (toUnit N) q η[A'] → IsPullback (prMap A N T) (actMap i T) (pmap q T) (pmap q T) := by
   intro S A A' N T _ _ _ i q hi hq hker
   have hiq : i ≫ q = 1 := by rw [hker.w, Hom.one_def]
@@ -73,7 +71,7 @@ theorem pmap_isPullback_actMap : ∀ (S : Scheme.{0}) (A A' N T : Over S) [GrpOb
     apply CartesianMonoidalCategory.hom_ext
     · rw [Category.assoc, Category.assoc, hpf]
       simp only [prMap, actMap, lift_fst_assoc, mul_comp, Category.assoc, hiq]
-      simp only [comp_one_hom, _root_.mul_one]
+      simp only [_root_.ReciprocityTheory.ChartRestriction.G.Chart.comp_one'', _root_.mul_one]
     · rw [Category.assoc, Category.assoc, hps]
       simp [prMap, actMap]
   have hfs : ∀ s : PullbackCone (pmap q T) (pmap q T), (s.fst ≫ fst A T) ≫ q = (s.snd ≫ fst A T) ≫ q := by

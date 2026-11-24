@@ -9,41 +9,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Gaug
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.NcTieCOf
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocVolKap
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocVolPrim
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -127,8 +92,7 @@ def CardC : Prop := ∀ (D : D7) (T : STies D), Fintype.card (InfinitePlace T.X.
 
 theorem cardC_holds : CardC := by
   intro D T
-  rw [Fintype.card_congr T.X.pl]
-  exact D.what₂.card_Tau
+  exact (Fintype.card_congr T.X.pl).trans D.what₂.card_Tau
 
 def SizesAt (CA C0 CG CDel cT Cb Cn : ℝ) (k0 : ℕ) (D : D7) (L : SizeData₂ D) (T : STies D) (u u' : D.what₂.Word) : Prop :=
   ∃ (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (τ : D.what₂.Tau) (Cp Th Cf : ℝ),
@@ -190,14 +154,13 @@ theorem massDataInputsAll_of (hPos : MassDataPosAll) (hV : MassDataVolAll) (hP :
     (hPrim : _root_.PI.LocFramePrim.Statement) : MassDataHypAll := by
   intro D T u u' X0 C Th Q i0 i0' νq Lsp ϖ hne hSt hGap hCT hdet hC hTh _ _ hii hPt hNu hϖ
   have hPs := hPos D T u u' X0 C Th Q i0 i0' νq Lsp ϖ hne hSt hCT hdet hC hTh hϖ
-  have hH : HypX T.X T.hb (T.Y.FN u) (T.Y.FN u') u u' := ⟨T.measTie, hCT.1, T.Y.FN_fund u, T.Y.FN_fund u'⟩
   obtain ⟨hVo, hLS, hMs, hCo, hIx⟩ := hV D T u u' X0 (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p)
     C Th Q i0 i0' νq
   exact massDataInputs_Y T.X T.hb T.Y u u' X0 T.ψ _ C Th _ Q i0 i0' νq hPs
     (inFormC_bCF T.X T.hb T.Y.hK (T.Y.FN u) (T.Y.FN u') u u' X0 T.ψ (T.Y.tO u u') _ C Th _ Q T.Y.M T.Y.δ i0 i0' νq
       (ne_of_gt (pos_rho hPs)))
     (Formalism.L2.SG.Pf.realObj_inNuX T.X u u' 1) (hInf D hGap T.X u u')
-    (Formalism.L2.SG.Pf.NcAsm.kapN_ne D) hH
+    (Formalism.L2.SG.Pf.NcAsm.kapN_ne D) ⟨T.measTie, hCT.1, T.Y.FN_fund u, T.Y.FN_fund u'⟩
     hVo T.ψ_char T.ψ_std T.measCompat hdet hLS hMs hCo hIx (hP D T u u' hne hSt) (hTy D T u u' X0 _ C Th Q i0 i0' νq)
     (locTieX_of T.X T.ψ u (T.locCompat u) (Formalism.L2.SG.Pf.LocVolPrim.primX T.X u hPrim))
     (locTieX_of T.X T.ψ u' (T.locCompat u') (Formalism.L2.SG.Pf.LocVolPrim.primX T.X u' hPrim))

@@ -1,18 +1,24 @@
 module
 
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrystallinePull2SumCup
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsHolFormConst
+public import Mathlib.Algebra.Algebra.Operations
+public import Mathlib.Algebra.Module.Projective
+public import Mathlib.RingTheory.Finiteness.Defs
+public import Mathlib.LinearAlgebra.Projection
+public import Mathlib.RingTheory.Finiteness.Cardinality
+public import Mathlib.RingTheory.Ideal.Operations
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsAdditiveOfUniversal
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDualCrystalOfDualAbelianScheme
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeFirstDeRhamStructureStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeHomLiftingNilpotentDividedPowersStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeFirstDeRhamStructure
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianLifting
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeHomLiftingNilpotentDividedPowers
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeUnobstructedSquareZeroAffineStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualAbelianSchemeExistsBidualityStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveLiftIff
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrothendieckDeformationOfLifting
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupObjectLiftDividedPowers
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetRingMorphismUniqueness
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalIsotropicLiftModIdealStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothOfRelativeDimensionOfCharZero
-import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
+public import Development.AbelianVarietyTheory.Definitions.Divisors.IsKSValueOneOfRetraction
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsChernExistsUniqueAndIso
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -30,7 +36,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -38,7 +43,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -51,11 +55,238 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic
+import Development.AbelianVarietyTheory.Definitions.Divisors.TorsTransport
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualAbelianSchemeExistsBidualityStatement
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveLiftIff
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothOfRelativeDimensionOfCharZero
+import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing
+import Mathlib.Tactic.Basify
 import Mathlib.Tactic.TypeStar
 import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
-public import Development.AbelianVarietyTheory.Definitions.Divisors.IsKSValueOneOfRetraction
+import Mathlib.Algebra.Azumaya.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetRingMorphismUniqueness, Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalIsotropicLiftModIdeal, Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSmulTopOfForallMem
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetRingMorphismUniqueness =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetRingMorphismUniqueness", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrystallinePull2SumCup\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsChernExistsUniqueAndIso\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Development.AbelianVarietyTheory.Definitions.Divisors.JetAnalytic\nimport Development.AbelianVarietyTheory.Definitions.Divisors.TorsTransport\npublic import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsHolFormConst\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj NumberField
+open scoped CategoryTheory.Obj
+open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.RealMult GlobalTheory.LatVal GlobalTheory.LatJet GlobalTheory.AbDual GlobalTheory.CechPic GlobalTheory.AbLaw GlobalTheory.Published GlobalTheory.CatCoh
+attribute [local instance] Over.cartesianMonoidalCategory
+
+set_option autoImplicit false
+
+noncomputable section
+
+namespace GlobalTheory.JetIsotropic
+
+section Gen
+
+variable {R : Type} [CommRing R] {I : Ideal R} {S : Scheme.{0}} {κ : DividedPowers I} {t : S ⟶ Sp R}
+  {A : Over S} [GrpObj A]
+
+theorem corrForm_antisymm (C : CupSquare κ t (A ⊗ A)) {P : LB (A ⊗ A).left} (hP : P.IsLB)
+    (hs : LBIso P (P.pull (lift (snd A A) (fst A A)).left))
+    {φ : Crys κ t A →ₗ[R] Crys κ t A →ₗ[R] R} (H : IsCorrForm κ t A A P φ) (x y : Crys κ t A) :
+    φ x y = -φ y x := by
+  obtain ⟨n, a, b, hc, hφ⟩ := id H
+  let s : A ⊗ A ⟶ A ⊗ A := lift (snd A A) (fst A A)
+  have ms : IsMor κ ((A ⊗ A).hom ≫ t) κ ((A ⊗ A).hom ≫ t) (RingHom.id R) s.left :=
+    IsMor.of_over κ (φ := s.left) (by rw [← Category.assoc, Over.w])
+  have hz := isChern_pull ms hc
+  rw [crystallinePull2_sum_cup s ms] at hz
+  simp only [pullOver_pullOver, s, lift_fst, lift_snd] at hz
+  have e' : LBIso (P.pull s.left) P :=
+    (cls_eq_iff (pull_isLB hP _) hP).1 ((cls_eq_iff hP (pull_isLB hP _)).2 hs).symm
+  have hz' := (isChern_existsUnique_and_iso R _ κ _ _).2 _ _ (pull_isLB hP _) hP e' _ hz
+  have H' : IsCorrForm κ t A A P (-φ.flip) := by
+    refine ⟨n, fun k ↦ -b k, a, (congrArg (IsChern κ ((A ⊗ A).hom ≫ t) P) ?_).mp hz', fun u v ↦ ?_⟩
+    · refine Finset.sum_congr rfl fun k _ ↦ ?_
+      rw [Submodule.coe_neg, map_neg, LinearMap.map_neg, LinearMap.neg_apply]
+      exact (neg_eq_of_add_eq_zero_right (cup_add_cup _ _ _)).symm
+    · simp only [LinearMap.neg_apply, LinearMap.flip_apply]
+      rw [hφ, ← Finset.sum_neg_distrib]
+      refine Finset.sum_congr rfl fun k _ ↦ ?_
+      rw [map_neg, neg_mul, mul_comm]
+  have e := congrArg (fun f ↦ f x y) (H.unique C hP H')
+  simpa using e
+
+end Gen
+
+section Jet
+
+variable {R : Type} [CommRing R] {I : Type} [Fintype I] {n : ℕ}
+
+end Jet
+
+section Diag
+
+variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A]
+
+end Diag
+
+section Props
+
+variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R] [IsDomain R] [CharZero R]
+  {I : Type} [Fintype I]
+
+end Props
+
+section BC
+
+variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {I : Ideal R} {I' : Ideal R'} {S S' : Scheme.{0}}
+  {κ : DividedPowers I} {t : S ⟶ Sp R} {A : Over S} [GrpObj A] {κ' : DividedPowers I'} {t' : S' ⟶ Sp R'}
+  {A' : Over S'} [GrpObj A'] {b : S' ⟶ S} {φ : A'.left ⟶ A.left}
+
+end BC
+
+end GlobalTheory.JetIsotropic
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetRingMorphismUniqueness =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalIsotropicLiftModIdeal =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalIsotropicLiftModIdeal", "h": "module\n\npublic import Mathlib.Algebra.Algebra.Operations\npublic import Mathlib.Algebra.Module.Projective\npublic import Mathlib.RingTheory.Finiteness.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.LinearAlgebra.Projection\npublic import Mathlib.RingTheory.Finiteness.Cardinality\npublic import Mathlib.RingTheory.Ideal.Operations\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+
+theorem isotropic_summand_lift : ∀ (R : Type) [CommRing R] (I : Ideal R) (D : Type) [AddCommGroup D] [Module R D] [Module.Finite R D] [Module.Projective R D] (φ : D →ₗ[R] D →ₗ[R] R), I ^ 2 = ⊥ → IsUnit (2 : R) → (∀ x y, φ x y = -φ y x) → (∀ l : D →ₗ[R] R, ∃ z, ∀ x, l x - φ x z ∈ I) → ∀ F N : Submodule R D, IsCompl F N → (∀ x ∈ F, ∀ y ∈ F, φ x y ∈ I) → ∃ E N' : Submodule R D, IsCompl E N' ∧ (∀ x ∈ E, ∀ y ∈ E, φ x y = 0) ∧ E ⊔ I • (⊤ : Submodule R D) = F ⊔ I • (⊤ : Submodule R D) := by
+  intro R _ I D _ _ _ _ φ hI2 h2 hskew hsurj F N hFN hF
+  have hII : ∀ a ∈ I, ∀ b ∈ I, a * b = 0 := by
+    intro a ha b hb
+    have h : a * b ∈ I ^ 2 := by rw [pow_two]; exact Ideal.mul_mem_mul ha hb
+    rw [hI2] at h; exact (Submodule.mem_bot R).1 h
+  have hφI : ∀ a ∈ I • (⊤ : Submodule R D), ∀ y, φ a y ∈ I := by
+    intro a ha y
+    refine Submodule.smul_induction_on (p := fun a => φ a y ∈ I) ha ?_ ?_
+    · intro r hr m _
+      simp only [map_smul, LinearMap.smul_apply, smul_eq_mul]
+      exact I.mul_mem_right _ hr
+    · intro x z hx hz
+      simp only [map_add (f := _), LinearMap.add_apply]
+      exact I.add_mem hx hz
+  have hφII : ∀ a ∈ I • (⊤ : Submodule R D), ∀ b ∈ I • (⊤ : Submodule R D), φ a b = 0 := by
+    intro a ha b hb
+    refine Submodule.smul_induction_on (p := fun a => φ a b = 0) ha ?_ ?_
+    · intro r hr m _
+      simp only [map_smul, LinearMap.smul_apply, smul_eq_mul]
+      have : φ m b ∈ I := by rw [hskew]; exact I.neg_mem (hφI b hb m)
+      exact hII r hr _ this
+    · intro x z hx hz
+      simp only [map_add (f := _), LinearMap.add_apply, hx, hz, add_zero]
+  have hsmul0 : ∀ r ∈ I, ∀ w ∈ I • (⊤ : Submodule R D), r • w = 0 := by
+    intro r hr w hw
+    refine Submodule.smul_induction_on (p := fun w => r • w = 0) hw ?_ ?_
+    · intro r' hr' m _
+      rw [smul_smul, hII r hr r' hr', zero_smul]
+    · intro x z hx hz
+      rw [smul_add, hx, hz, add_zero]
+
+  obtain ⟨n, f, hf⟩ := Module.Finite.exists_fin' R D
+  obtain ⟨s, hs⟩ := Module.projective_lifting_property f LinearMap.id hf
+  have hfs : ∀ x, f (s x) = x := fun x => by simpa using LinearMap.congr_fun hs x
+  let e : Fin n → D := fun i => f (fun j => if i = j then 1 else 0)
+  have hexp : ∀ x, x = ∑ i, s x i • e i := fun x => by
+    conv_lhs => rw [← hfs x]
+    exact LinearMap.pi_apply_eq_sum_univ f (s x)
+  choose z hz using fun i : Fin n => hsurj ((LinearMap.proj i).comp s)
+  have hz' : ∀ i x, s x i - φ x (z i) ∈ I := fun i x => by simpa using hz i x
+
+  let P : D →ₗ[R] D := F.subtype ∘ₗ Submodule.linearProjOfIsCompl F N hFN
+  have hPF : ∀ x, P x ∈ F := fun x => (Submodule.linearProjOfIsCompl F N hFN x).2
+  have hPx : ∀ x ∈ F, P x = x := fun x hx =>
+    congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hFN ⟨x, hx⟩)
+  let B : D →ₗ[R] D →ₗ[R] R := φ.compl₁₂ P P
+  have hB : ∀ x y, B x y = φ (P x) (P y) := fun x y => rfl
+  have hBI : ∀ x y, B x y ∈ I := fun x y => hF _ (hPF x) _ (hPF y)
+  let c : R := ↑(h2.unit⁻¹)
+  have hc : c * 2 = 1 := h2.val_inv_mul
+  let T : D →ₗ[R] D := ∑ i, (-c) • (LinearMap.smulRight (B (e i)) (z i))
+  have hT : ∀ y, T y = ∑ i, (-c) • (B (e i) y • z i) := fun y => by
+    simp [T]
+  have hTr : ∀ y, T y ∈ I • (⊤ : Submodule R D) := fun y => by
+    rw [hT]
+    exact Submodule.sum_mem _ fun i _ =>
+      Submodule.smul_mem _ _ (Submodule.smul_mem_smul (hBI _ _) Submodule.mem_top)
+  have hTI : ∀ a ∈ I • (⊤ : Submodule R D), T a = 0 := by
+    intro a ha
+    refine Submodule.smul_induction_on (p := fun a => T a = 0) ha ?_ ?_
+    · intro r hr m _
+      rw [map_smul]; exact hsmul0 r hr _ (hTr m)
+    · intro x w hx hw
+      rw [map_add (f := _), hx, hw, add_zero]
+  have hTT : ∀ y, T (T y) = 0 := fun y => hTI _ (hTr y)
+  have hkey0 : ∀ x y, φ x (T y) = -c * B x y := by
+    intro x y
+    have hBx : B x y = ∑ i, s x i * B (e i) y := by
+      conv_lhs => rw [hexp x]
+
+      simp [map_sum, LinearMap.sum_apply, smul_eq_mul]
+    have h0 : ∑ i, B (e i) y * (s x i - φ x (z i)) = 0 :=
+      Finset.sum_eq_zero fun i _ => hII _ (hBI _ _) _ (hz' i x)
+
+    rw [hT, map_sum, hBx]
+    simp only [map_smul, smul_eq_mul]
+    rw [Finset.mul_sum]
+    have h1 : ∑ i, -c * (s x i * B (e i) y) - ∑ i, -c * (B (e i) y * φ x (z i)) = 0 := by
+      rw [← Finset.sum_sub_distrib]
+      have : ∀ i, -c * (s x i * B (e i) y) - -c * (B (e i) y * φ x (z i))
+          = -c * (B (e i) y * (s x i - φ x (z i))) := fun i => by ring
+      simp only [this]
+      rw [← Finset.mul_sum, h0, mul_zero]
+    exact (sub_eq_zero.1 h1).symm
+  have hkey : ∀ x ∈ F, ∀ y ∈ F, φ x (T y) = -c * φ x y := by
+    intro x hx y hy
+    rw [hkey0, hB, hPx x hx, hPx y hy]
+  let u : D ≃ₗ[R] D := LinearEquiv.ofLinear (LinearMap.id + T) (LinearMap.id - T)
+    (LinearMap.ext fun y => by simp [hTT]) (LinearMap.ext fun y => by simp [hTT])
+  have hu : ∀ x, u x = x + T x := fun x => rfl
+  refine ⟨F.map (u : D →ₗ[R] D), N.map (u : D →ₗ[R] D), ?_, ?_, ?_⟩
+  · exact (Submodule.orderIsoMapComap u).isCompl hFN
+  · rintro _ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩
+    show φ (u x) (u y) = 0
+    rw [hu, hu, map_add (f := _), map_add (f := _), LinearMap.add_apply, LinearMap.add_apply]
+    have h1 := hkey x hx y hy
+    have h2' := hkey y hy x hx
+    have h3 := hskew (T x) y
+    have h4 := hskew y x
+    have h5 := hφII (T x) (hTr x) (T y) (hTr y)
+    linear_combination h1 + h3 - h2' + h5 + c * h4 - (φ x y) * hc
+  · apply le_antisymm
+    · refine sup_le ?_ le_sup_right
+      rintro _ ⟨x, hx, rfl⟩
+      show u x ∈ _
+      rw [hu]
+      exact Submodule.add_mem_sup hx (hTr x)
+    · refine sup_le ?_ le_sup_right
+      intro x hx
+      refine Submodule.mem_sup.2 ⟨u x, ⟨x, hx, rfl⟩, -T x, Submodule.neg_mem _ (hTr x), ?_⟩
+      rw [hu]; abel
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalIsotropicLiftModIdeal =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSmulTopOfForallMem =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSmulTopOfForallMem", "h": "module\n\npublic import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsAdditiveOfUniversal\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDualCrystalOfDualAbelianScheme\npublic import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBijective\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeFirstDeRhamStructure\npublic import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.AbelianLifting\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeHomLiftingNilpotentDividedPowers\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeUnobstructedSquareZeroAffineStatement\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GrothendieckDeformationOfLifting\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GroupObjectLiftDividedPowers\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.JetRingMorphismUniqueness\npublic import Mathlib.Algebra.Algebra.Operations\npublic import Mathlib.Algebra.Module.Projective\npublic import Mathlib.RingTheory.Finiteness.Defs\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MaximalIsotropicLiftModIdeal\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.IsKSValueOneOfRetraction\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualAbelianSchemeExistsBidualityStatement\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdditiveLiftIff\nimport Development.AbelianVarietyTheory.Proofs.ModuliProofs.SmoothOfRelativeDimensionOfCharZero\nimport Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ConnectedSpaceSpecOfIsLocalRing\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne\nimport Mathlib.Algebra.Azumaya.Basic\nimport Mathlib.CategoryTheory.Monoidal.Opposite.Mon\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -143,7 +374,7 @@ theorem lagr_univ {R : Type} [CommRing R] [IsLocalRing R] (I : Ideal R) {D : Typ
   let ψ : (Fin (Module.finrank R D) → R) →ₗ[R] (Fin (Module.finrank R D) → R) →ₗ[R] R :=
     φ.compl₁₂ ε.symm.toLinearMap ε.symm.toLinearMap
   have hψ : ∀ x y, ψ x y = φ (ε.symm x) (ε.symm y) := fun _ _ ↦ rfl
-  obtain ⟨E, N', hEN, hE, hEF⟩ := GlobalTheory.T.maximal_isotropic_lift_mod_ideal R I _ ψ hI h2 (fun x y ↦ by simp only [hψ]; exact anti _ _)
+  obtain ⟨E, N', hEN, hE, hEF⟩ := _root_.GlobalTheory.isotropic_summand_lift R I _ ψ hI h2 (fun x y ↦ by simp only [hψ]; exact anti _ _)
     (fun l ↦ by
       obtain ⟨z, hz⟩ := perf (l ∘ₗ ε.toLinearMap)
       refine ⟨ε z, fun x ↦ ?_⟩
@@ -174,13 +405,13 @@ theorem exists_lift_lam : ∀ (R R₀ : Type) [CommRing R] [IsLocalRing R] [IsNo
   have hI0 : RingHom.ker π ^ 2 = 0 := hI2
   let κ := divided₂ hI0
   have hκ : IsNilDP κ := isDPNilpotent_squareZero hI0
-  have ADD : GlobalTheory.Published.DualAbelianScheme := GlobalTheory.T.dualAbelianScheme_exists_biduality
-  have ADR : GlobalTheory.Published.AbelianDeRham := GlobalTheory.T.abelianScheme_firstDeRham_structure
+  have ADD : GlobalTheory.Published.DualAbelianScheme := _root_.GlobalTheory.dualAbelianScheme
+  have ADR : GlobalTheory.Published.AbelianDeRham := _root_.GlobalTheory.abelianDeRham
   have ADC : GlobalTheory.Published.AbelianDualCrystal := GlobalTheory.abelianDualCrystal_of_dualAbelianScheme ADD
   have GD : GlobalTheory.Published.GrothendieckDeformation :=
-    GlobalTheory.Published.grothendieckDeformation_of_lifting ADR GlobalTheory.T.print_abelianLifting
+    GlobalTheory.Published.grothendieckDeformation_of_lifting ADR _root_.GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers
   haveI := P₀.isAb.comm
-  obtain ⟨A', _, i', h', hA'⟩ := GlobalTheory.T.abelianScheme_unobstructed_squareZero_affine R (RingHom.ker π) hI0 R₀ π hπ rfl P₀.A P₀.isAb
+  obtain ⟨A', _, i', h', hA'⟩ := _root_.GlobalTheory.UnobTop.abelianUnobstructed R (RingHom.ker π) hI0 R₀ π hπ rfl P₀.A P₀.isAb
   obtain ⟨g, hg⟩ := GlobalTheory.AbelianDim.exists_relDim R A' hA'
   have C := GlobalTheory.Published.AbelianDualCrystal.cupSquare_crys_prod ADR.1 ADC.2 hκ hπ rfl hA' hg hA' hg h' h'
   have hΛ := isPerfect_lam P₀.isLB P₀.ktriv
@@ -278,3 +509,7 @@ theorem exists_lift_lam : ∀ (R R₀ : Type) [CommRing R] [IsLocalRing R] [IsNo
   exact ⟨A, _, i, l, Q, hA, h, ⟨l₁, l₂⟩, hQ, a₁, a₂, eQ⟩
 
 end GlobalTheory.BirigLift
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemSmulTopOfForallMem =====

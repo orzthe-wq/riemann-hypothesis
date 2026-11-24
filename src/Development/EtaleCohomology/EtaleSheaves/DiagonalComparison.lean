@@ -52,7 +52,7 @@ theorem hkpull_comp {R : Type} [CommRing R] {K L M : Cx R} (a : K ⟶ L) (b : L 
     (x : HK R M F n) : HK.pull R (a ≫ b) F n x = HK.pull R a F n (HK.pull R b F n x) := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
   refine congrArg CohomologyClass.mk (Cocycle.ext ?_)
-  simp [HK.pull, HK.pre, cpre, zcomp, Cochain.ofHom_comp]
+  simp [zcomp, Cochain.ofHom_comp]
 
 def diag {Y X : Scheme.{0}} (f : Y ⟶ X) : sch.obj Y ⟶ cech f where
   app n := WidePullback.lift (yoneda.map f) (fun _ => 𝟙 _) (fun _ => Category.id_comp _)

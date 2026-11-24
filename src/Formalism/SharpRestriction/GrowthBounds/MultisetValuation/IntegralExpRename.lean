@@ -108,29 +108,6 @@ def E0 {ι : Type} (f : MvPowerSeries ι (K0 p)) : Prop :=
   MvPowerSeries.constantCoeff f = 0 ∧ ∃ h : MvPowerSeries ι (WW p), MvPowerSeries.constantCoeff h = 0 ∧
     expK f = 1 + MvPowerSeries.map (algebraMap (WW p) (K0 p)) h
 
-theorem integralExp_zero {ι : Type} : E0 p (0 : MvPowerSeries ι (K0 p)) := by
-  refine ⟨map_zero _, 0, map_zero _, ?_⟩
-  rw [th_expK_zero, map_zero, add_zero]
-
-theorem integralExp_add {ι : Type} {f g : MvPowerSeries ι (K0 p)} (hf : E0 p f) (hg : E0 p g) : E0 p (f + g) := by
-  obtain ⟨hf0, h, hh0, hfe⟩ := hf
-  obtain ⟨hg0, h', hh0', hge⟩ := hg
-  refine ⟨by rw [map_add (f := _), hf0, hg0, add_zero], h + h' + h * h', by simp [hh0, hh0'], ?_⟩
-  rw [expK_add hf0 hg0, hfe, hge, map_add (f := _), map_add (f := _), map_mul]
-  ring
-
-theorem integralExp_sum {ι α : Type} (s : Finset α) (f : α → MvPowerSeries ι (K0 p)) (h : ∀ a ∈ s, E0 p (f a)) :
-    E0 p (∑ a ∈ s, f a) := by
-  classical
-  revert h
-  refine Finset.induction_on s ?_ ?_
-  · intro _
-    rw [Finset.sum_empty]
-    exact integralExp_zero p
-  · intro a s ha ih h
-    rw [Finset.sum_insert ha]
-    exact integralExp_add p (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
-
 def ren {κ σ R : Type} [CommRing R] (φ : κ → σ) (f : MvPowerSeries κ R) : MvPowerSeries σ R :=
   MvPowerSeries.subst (fun k => (MvPowerSeries.X (φ k) : MvPowerSeries σ R)) f
 

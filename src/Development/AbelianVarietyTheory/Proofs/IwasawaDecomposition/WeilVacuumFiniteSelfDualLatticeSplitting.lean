@@ -1,5 +1,6 @@
 module
 
+import Formalism.LocalToGlobal.IndefiniteReal.SelfDualFullLattice
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FibExtMarked
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsDetInt
 public import Development.AbelianVarietyTheory.Definitions.Divisors.IsUnitaryOnTheta
@@ -199,12 +200,6 @@ end Generic
 
 variable {D : D7}
 
-theorem exists_placeIdem (v : HeightOneSpectrum (𝓞 D.host.F)) : ∃ ε, IsPlaceIdem D v ε := by
-  classical
-  exact ⟨_, singleV D.host.F v 1, rfl,
-    Pi.single_eq_same (M := fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletion D.host.F) v 1,
-    fun w hw => Pi.single_eq_of_ne (M := fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletion D.host.F) hw 1⟩
-
 theorem placeIdem_idem {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) :
     ε * ε = ε := by
   obtain ⟨α, rfl, h1, h0⟩ := h
@@ -378,63 +373,8 @@ theorem unram_cut {ε : AF D.host.F} {χ : (AE D)ˣ →* Circle} (hχ : UnramAt 
   linear_combination ((x : AE D) - 1) * hb
 
 private theorem selfDual_full {D : D7} (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
-    (hΛ : IsSelfDualC V Λ) : Submodule.IsFullLattice D.host.E Λ := by
-  haveI : Submodule.IsLattice D.host.E Λ := hΛ.1
-  refine ⟨?_⟩
-  obtain ⟨s, hs⟩ := hΛ.1.fg
-  apply eq_top_iff.mpr
-  intro y _
-  let f : (Fin V.rank → D.host.E) → D.host.E := fun x =>
-    ∑ i, ∑ j, star (x i) * V.gram i j * y j
-  obtain ⟨a, ha⟩ := IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 D.host.E)) s f
-  have ha0 : (algebraMap (𝓞 D.host.E) D.host.E a) ≠ 0 := by
-    exact (FaithfulSMul.algebraMap_injective _ _).ne (mem_nonZeroDivisors_iff_ne_zero.mp a.2)
-  let P : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E) := {
-    carrier := {x | ∃ b : 𝓞 D.host.E, (b : D.host.E) = (algebraMap (𝓞 D.host.E) D.host.E a) * f x}
-    zero_mem' := by refine ⟨0, ?_⟩; simp [f]
-    add_mem' := by
-      rintro x z ⟨b, hb⟩ ⟨c, hc⟩
-      refine ⟨b + c, ?_⟩
-      change (b : D.host.E) + c = _
-      rw [hb, hc]
-      simp [f, map_add, add_mul, Finset.sum_add_distrib, mul_add]
-    smul_mem' := by
-      rintro c x ⟨b, hb⟩
-      refine ⟨RingOfIntegers.mapRingHom (starRingEnd D.host.E) c * b, ?_⟩
-      simp only [map_mul, hb, f, Pi.smul_apply, Algebra.smul_def, map_mul, RingOfIntegers.mapRingHom_apply, star_mul]
-      simp only [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro i _
-      apply Finset.sum_congr rfl
-      intro j _
-      change star (c : D.host.E) * _ = _
-      ring }
-  have hsP : (s : Set (Fin V.rank → D.host.E)) ⊆ P := by
-    intro x hx
-    obtain ⟨b, hb⟩ := ha x hx
-    exact ⟨b, by simpa [Algebra.smul_def] using hb⟩
-  have hy : (algebraMap (𝓞 D.host.E) D.host.E a) • y ∈ Λ := by
-    apply (hΛ.2 _).2
-    intro x hx
-    have hxP : x ∈ P := (hs ▸ Submodule.span_le.mpr hsP) hx
-    obtain ⟨b, hb⟩ := hxP
-    refine ⟨b, ?_⟩
-    rw [hb]
-    dsimp only [f, Pi.smul_apply]
-    simp only [smul_eq_mul, Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro i _
-    apply Finset.sum_congr rfl
-    intro j _
-    ring
-  have hy' : (algebraMap (𝓞 D.host.E) D.host.E a) • y ∈ Submodule.span D.host.E (Λ : Set (Fin V.rank → D.host.E)) :=
-    Submodule.subset_span hy
-  have := (Submodule.span D.host.E (Λ : Set (Fin V.rank → D.host.E))).smul_mem
-    (algebraMap (𝓞 D.host.E) D.host.E a)⁻¹ hy' 
-  change (algebraMap (𝓞 D.host.E) D.host.E a)⁻¹ •
-    ((algebraMap (𝓞 D.host.E) D.host.E a) • y) ∈ _ at this
-  rw [← smul_assoc, smul_eq_mul, inv_mul_cancel₀ ha0, one_smul] at this
-  exact this
+    (hΛ : IsSelfDualC V Λ) : Submodule.IsFullLattice D.host.E Λ :=
+  Formalism.IndefR.Datum.IsSelfDualC.isFullLattice V Λ hΛ
 
 theorem om_vacuum_finite : ∀ (D : D7) (S T : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → S.SigOK → T.SigOK → ∀ (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → (∃ η, IsEtaTilde D η) → (∀ v ε, NonSplitAt D v ε → UnramAt ε χS ∧ UnramAt ε χT) → ∀ (sS : Fam S) (sT : Fam T), (∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) → ∀ (ΛS : Lt D.host.E S.rank) (ΛT : Lt D.host.E T.rank), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ f, IsVacO ψ θ S T sS sT (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) f → ∀ k ∈ GfC S, ∀ k' ∈ GfC T, GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmt S k) ΛS ΛS → GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmt T k') ΛT ΛT → ∀ x y : (AE D)ˣ, FinUnit x → FinUnit y → IsDetRoot S k x → IsDetRoot T k' y → om (k, k') f = ((((χT x)⁻¹ * χS y : Circle)) : ℂ) • f := by
   intro D S T ψ θ _ _ _ χS χT om hW hη hun sS sT _ _ ΛS ΛT hS hT f hf k hk k' hk' mk mk' x y hx hy rx ry
@@ -444,7 +384,7 @@ theorem om_vacuum_finite : ∀ (D : D7) (S T : HSp D) (ψ : AddChar (AF D.host.F
   have hh := stab_of_isMov T hβT hk' mk'
   have hth := hf.2.theta
   have hvac := hf.2.lat
-  choose ε hε using exists_placeIdem (D := D)
+  choose ε hε using _root_.GlobalTheory.IdemSupport.exists_placeIdem (D := D)
   obtain ⟨κ, a0, a1, a2, a3⟩ := exists_trunc hε S βS
   obtain ⟨μ, b0, b1, b2, b3⟩ := exists_trunc hε T βT
   have hloc : ∀ v, om (κ {v} k, μ {v} k') f = ((((χT (cut _ (idS_idem hε {v}) x))⁻¹ *

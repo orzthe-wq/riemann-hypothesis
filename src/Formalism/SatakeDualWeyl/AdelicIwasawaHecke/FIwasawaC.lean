@@ -118,7 +118,7 @@ theorem fIwasawa_Km_one : fIwasawaKm σ (1 : Matrix (Fin n) (Fin n) L) := by
   · subst h
     simp
   · rw [Matrix.one_apply_ne h, map_zero]
-    exact zero_le'
+    exact zero_le
 
 theorem fIwasawa_gram_un (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (a b : Fin n) :
     ∑ j, σ (M (Fin.rev j) a) * M j b = if b = Fin.rev a then 1 else 0 := by
@@ -224,13 +224,13 @@ theorem fIwasawa_perm (ρ a : Fin n) (hρ : ρ < Fin.rev ρ) (ha1 : ρ ≤ a) (h
       split_ifs <;> (simp only [Fin.rev_rev, Fin.ext_iff, Fin.val_rev, Fin.lt_def, Fin.le_def] at * <;> omega)
   · refine ⟨Equiv.swap ρ a * Equiv.swap (Fin.rev ρ) (Fin.rev a), ?_, fun i => ?_, fun i hi => ?_⟩
     · simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]
-      split_ifs <;> (simp only [Fin.rev_rev, Fin.ext_iff, Fin.val_rev, Fin.lt_def, Fin.le_def] at * <;> (try simp only [not_true_eq_false] at *) <;> omega)
+      split_ifs <;> (simp only [Fin.ext_iff, Fin.val_rev, Fin.lt_def, Fin.le_def] at * <;> (try simp only [not_true_eq_false] at *) <;> omega)
     · have hin := i.isLt
       simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]
       split_ifs <;> (simp only [Fin.rev_rev, Fin.ext_iff, Fin.val_rev, Fin.lt_def, Fin.le_def] at * <;> omega)
     · have hin := i.isLt
       simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]
-      split_ifs <;> (simp only [Fin.rev_rev, Fin.ext_iff, Fin.val_rev, Fin.lt_def, Fin.le_def] at * <;> omega)
+      split_ifs <;> (simp only [Fin.ext_iff, Fin.val_rev, Fin.lt_def, Fin.le_def] at * <;> omega)
 
 end FIwasawaRed
 

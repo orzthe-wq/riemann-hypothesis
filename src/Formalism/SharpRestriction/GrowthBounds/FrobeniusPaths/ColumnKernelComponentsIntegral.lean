@@ -116,8 +116,7 @@ lemma KKc_eq (LL : LiftLetters (Fin N)) (g : Matrix (Fin k) (Fin k) (WF p f)) (z
     (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) :
     KKc p f (O := O) LL g z mu c = ZZ p (letG p f (O := O) LL g) LL.pos mu c N z := by
   unfold KKc ZZ; simp only [KKstate_eq]
-  generalize KKs p (letG p f (O := O) LL g) LL.pos mu c N = st
-  rcases st with ⟨a, _ | sl⟩ <;> rfl
+  rfl
 
 end Link
 
@@ -127,12 +126,10 @@ variable {A R : Type*} [CommRing A] [CommRing R] [Algebra A R] {N k : ℕ}
 
 lemma colStep_mem (Sg : Subalgebra A R) (c : ℤ) (hP hN : ℕ) (x : Fin k → R) (Kv : Finset (Fin k) → R)
     (hx : ∀ b, x b ∈ Sg) (hK : ∀ J, Kv J ∈ Sg) (J : Finset (Fin k)) : colStep c hP hN x Kv J ∈ Sg := by
-  have h1 : ∀ n : ℕ, ((-1 : R)) ^ n ∈ Sg := fun n => Sg.pow_mem (Sg.neg_mem Sg.one_mem) n
   unfold colStep wedgeR contrR
-  split_ifs
-  all_goals first
+  split_ifs <;> first
     | exact hK J
-    | exact Sg.sum_mem fun m _ => Sg.mul_mem (Sg.mul_mem (h1 _) (hx m)) (hK _)
+    | exact Sg.sum_mem fun m _ => Sg.mul_mem (Sg.mul_mem (Sg.pow_mem (Sg.neg_mem Sg.one_mem) _) (hx m)) (hK _)
 
 lemma ZZ_mem (Sg : Subalgebra A R) (p : ℕ) (x : Fin N → Fin k → R) (pos : Fin N → ℤ)
     (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (hx : ∀ i b, x i b ∈ Sg) (j : ℕ) (hj : j ≤ N) :
@@ -160,11 +157,9 @@ variable (p f : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDisc
 lemma letG_int (LL : LiftLetters (Fin N)) (g : Matrix (Fin k) (Fin k) (WF p f)) (hg : IsGLW g) (i : Fin N)
     (b : Fin k) : letG p f (O := O) LL g i b ∈ intSub O (Fin N × Fin k) := by
   unfold letG
-  split_ifs
-  · refine Subalgebra.sum_mem _ fun a _ => Subalgebra.mul_mem _ (X_mem_goodSub _ rfl) ?_
-    rw [sigMat_apply]; exact C_mem_sub _ _
-  · refine Subalgebra.sum_mem _ fun a _ => Subalgebra.mul_mem _ (X_mem_goodSub _ rfl) ?_
-    rw [sigMat_inv p f O g hg, sigMat_apply]; exact C_mem_sub _ _
+  split_ifs <;> refine Subalgebra.sum_mem _ fun a _ => Subalgebra.mul_mem _ (X_mem_goodSub _ rfl) ?_
+  · rw [sigMat_apply]; exact C_mem_sub _ _
+  · rw [sigMat_inv p f O g hg, sigMat_apply]; exact C_mem_sub _ _
 
 theorem column_kernel_components_integral (LL : LiftLetters (Fin N)) (g : Matrix (Fin k) (Fin k) (WF p f)) (hg : IsGLW g) (z : ℤ)
     (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (J : Finset (Fin k)) : InA (KKc p f (O := O) LL g z mu c J) := by
@@ -245,8 +240,7 @@ lemma ZZ_map (φ : R →+* R') (p : ℕ) (x : Fin N → Fin k → R) (pos : Fin 
 lemma colStep_smul (a : R) (c : ℤ) (hP hN : ℕ) (x : Fin k → R) (Kv : Finset (Fin k) → R) (J : Finset (Fin k)) :
     colStep c hP hN x (fun J => a * Kv J) J = a * colStep c hP hN x Kv J := by
   unfold colStep wedgeR contrR
-  split_ifs
-  all_goals first
+  split_ifs <;> first
     | rfl
     | (rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun m _ => by ring)
 

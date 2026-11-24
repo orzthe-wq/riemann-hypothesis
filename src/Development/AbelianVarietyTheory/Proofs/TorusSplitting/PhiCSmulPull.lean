@@ -40,6 +40,7 @@ import Development.AbelianVarietyTheory.Definitions.ThetaValues.IsNullVal
 import Development.AbelianVarietyTheory.Definitions.TorusSections.ExistsSecTie
 import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.AbelianAt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.QuadTie
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 

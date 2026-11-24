@@ -145,14 +145,12 @@ theorem exists_family_of_curve : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ :
   · obtain ⟨g, hg⟩ := exists_moves_of_selfDual D N L.1 L.2
     obtain ⟨g', hg'⟩ := exists_moves_of_selfDual D N' L'.1 L'.2
     obtain ⟨h', hh'⟩ := exists_moves_of_selfDual D N' L''.1 L''.2
-    change e N N' _ _ = fun z => χ _ ^ _ * Iop D (tor0 D cc δ) _ _ (e N N' _ _) z
     rw [hmove N N' hN hN' g g g' h' _ _ _ _ hg hg hg' hh', hdet _ _ _ _ _ hg' hh', scal, inv_mul_cancel g]
     funext z
     simp
   · obtain ⟨g, hg⟩ := exists_moves_of_selfDual D N L.1 L.2
     obtain ⟨g', hg'⟩ := exists_moves_of_selfDual D N' L'.1 L'.2
     obtain ⟨h, hh⟩ := exists_moves_of_selfDual D N L₁.1 L₁.2
-    change e N N' _ _ = fun z => χ _ ^ _ * Iop D (tor0 D cc δ) _ _ (e N N' _ _) z
     rw [hmove N N' hN hN' g h g' g' _ _ _ _ hg hh hg' hg', hdet _ _ _ _ _ hg hh, scal, inv_mul_cancel g']
     funext z
     simp

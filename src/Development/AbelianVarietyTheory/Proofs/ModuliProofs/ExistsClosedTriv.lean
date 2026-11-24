@@ -71,7 +71,7 @@ theorem exists_closed_triv :
     obtain ⟨n, -, m, s, h₁, h₂⟩ := GlobalTheory.AbLaw.polAV_veryAmpleBy hL.polBaseChange (Sp K) P K (𝟙 _) P.A.left
       (𝟙 _) P.A.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)
     exact ⟨_, h₁, m, s, h₂⟩
-  obtain ⟨H, j, hj, hH⟩ := GlobalTheory.T.exists_closedSubscheme_locallyTrivial_product_lineBundle hL.globalFns K T P.A P.isAb hproj N hN
+  obtain ⟨H, j, hj, hH⟩ := _root_.GlobalTheory.TrivSubscheme.exists_closed_locTriv hL.globalFns K T P.A P.isAb hproj N hN
   refine ⟨H.left, j.left, hj, fun T' h => ⟨?_, ?_⟩⟩
   · rintro ⟨t, ht⟩
     obtain ⟨y, hy⟩ := (hH T' h).1 fun p => ⟨⊤, trivial, GlobalTheory.TorsionFixedAut.exists_gen_pull _ t ht _⟩

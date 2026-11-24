@@ -51,30 +51,7 @@ namespace GlobalTheory.Proof.unfoldingCharacterArgument_comp_unipotentRadicals
 
 variable {F : Type} [Field F] {n' c' n c : ℕ}
 
-private theorem mem_Ufl_iff_forall_not_lt_eq_zero {N C i : ℕ} {v : Fin (N + C) → F} :
-    v ∈ Loc.Ufl F N C i ↔ ∀ l : Fin (N + C), ¬ l.1 < N + i → v l = 0 := Iff.rfl
-
-private theorem atN_add' {N : ℕ} (v w : Fin N → F) (i : ℕ) :
-    Loc.atN (v + w) i = Loc.atN v i + Loc.atN w i := by
-  unfold Loc.atN
-  split_ifs <;> simp
-
-private theorem atN_smul' {N : ℕ} (a : F) (v : Fin N → F) (i : ℕ) :
-    Loc.atN (a • v) i = a * Loc.atN v i := by
-  unfold Loc.atN
-  split_ifs <;> simp
-
-private theorem atN_sub' {N : ℕ} (v w : Fin N → F) (i : ℕ) :
-    Loc.atN (v - w) i = Loc.atN v i - Loc.atN w i := by
-  unfold Loc.atN
-  split_ifs <;> simp
-
-private theorem atN_eq_zero_of_mem_Ufl {N C i : ℕ} {v : Fin (N + C) → F} (hv : v ∈ Loc.Ufl F N C i) :
-    Loc.atN v (N + i) = 0 := by
-  unfold Loc.atN
-  split_ifs with h
-  · exact mem_Ufl_iff_forall_not_lt_eq_zero.1 hv ⟨N + i, h⟩ (lt_irrefl _)
-  · rfl
+private alias mem_Ufl_iff_forall_not_lt_eq_zero := _root_.GlobalTheory.QNormal.mem_Ufl
 
 private theorem atN_eN_self {N j : ℕ} (h : j < N) : Loc.atN (Loc.eN F N j) j = 1 := by
   simp [Loc.atN, Loc.eN, h]
@@ -158,8 +135,8 @@ private theorem atN_apply_eq_atN_of_mem_Ufl_succ {N' C' N C : ℕ} (y : (Fin (N'
       Loc.atN v (N' + s) • (Loc.eN F (N + C) (N + s) +
         (y (Loc.eN F (N' + C') (N' + s)) - Loc.eN F (N + C) (N + s))) := by
     rw [hsm, ← map_add (f := _), sub_add_cancel]
-  rw [hy, atN_add', atN_smul', atN_add', atN_eq_zero_of_mem_Ufl (hU s _ hd),
-    atN_eN_self (by omega), atN_eq_zero_of_mem_Ufl (h3 s)]
+  rw [hy, _root_.GlobalTheory.QNormal.atN_add, _root_.GlobalTheory.QNormal.atN_smul, _root_.GlobalTheory.QNormal.atN_add, _root_.GlobalTheory.QNormal.atN_of_mem_Ufl (hU s _ hd),
+    atN_eN_self (by omega), _root_.GlobalTheory.QNormal.atN_of_mem_Ufl (h3 s)]
   ring
 
 theorem atN_map {xj : (Fin n' → F) →ₗ[F] (Fin n → F)} {x : (Fin (n' + c') → F) →ₗ[F] (Fin (n + c) → F)}
@@ -191,8 +168,8 @@ private theorem atN_r_x_r'_eq_atN_x_add_atN_r'_add_atN_r (x : (Fin (n' + c') →
   have hxu : Loc.atN (x (r' e' - e')) (n + i) = Loc.atN (r' e' - e') (n' + i) :=
     atN_apply_eq_atN_of_mem_Ufl_succ x hU h3 hi hu'
   simp only [LinearEquiv.coe_coe] at hrz
-  rw [map_sub, atN_sub', atN_sub', hE] at hrz
-  rw [map_sub, atN_sub', atN_sub', he'] at hxu
+  rw [map_sub, _root_.GlobalTheory.QNormal.atN_sub, _root_.GlobalTheory.QNormal.atN_sub, hE] at hrz
+  rw [map_sub, _root_.GlobalTheory.QNormal.atN_sub, _root_.GlobalTheory.QNormal.atN_sub, he'] at hxu
   linear_combination hrz + hxu
 
 theorem chArg_comp :

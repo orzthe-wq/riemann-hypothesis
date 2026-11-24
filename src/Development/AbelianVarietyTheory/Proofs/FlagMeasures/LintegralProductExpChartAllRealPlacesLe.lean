@@ -150,7 +150,6 @@ theorem dOp_chart_le {n : ℕ} {ε : Fin n → Bool} {s : ℝ} {E : Fin (n ^ 2) 
   have hr : uMat a' * uMat a'⁻¹ = 1 := by
     first
       | exact Units.mul_inv (a' : (Matrix (Fin n) (Fin n) ℂ)ˣ)
-      | simp [uMat]
   have hinv : T (uMat a'⁻¹) = B := by
     calc T (uMat a'⁻¹) = (B * T (uMat a')) * T (uMat a'⁻¹) := by rw [hB, one_mul]
       _ = B * T (uMat a' * uMat a'⁻¹) := by rw [map_mul, mul_assoc]

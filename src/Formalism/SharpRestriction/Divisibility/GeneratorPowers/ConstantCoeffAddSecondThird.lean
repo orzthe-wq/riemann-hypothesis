@@ -77,9 +77,7 @@ theorem cc_pt' {n : ℕ} (j : Fin n) (i : Fin d) : MvPowerSeries.constantCoeff (
 theorem ev_eq_hom {m n : ℕ} (a : Fin m → Pt S n d) (ha : ∀ j i, MvPowerSeries.constantCoeff (a j i) = 0)
     (f : PS S m d) : ev a f = MvPowerSeries.substAlgHom (hasSubst_pts a ha) f := by
   first
-    | rfl
     | (rw [MvPowerSeries.coe_substAlgHom]; rfl)
-    | simp [ev, MvPowerSeries.coe_substAlgHom]
 
 theorem ev_at {m n : ℕ} (a : Fin m → Pt S n d) (ha : ∀ j i, MvPowerSeries.constantCoeff (a j i) = 0) (j : Fin m)
     (f : PS S 1 d) : ev a (ev ![pt S d j] f) = ev ![a j] f := by
@@ -167,7 +165,7 @@ theorem twist_mul_second_argument (G : FGLaw S d) (cc : Fin d → Fin d → S) :
   have hsum : ev (![pt S d 0, G.add (pt S d 1) (pt S d 2)] : Fin 2 → Pt S 3 d) (bilL G cc) =
       ev (![pt S d 0, pt S d 1] : Fin 2 → Pt S 3 d) (bilL G cc) + ev (![pt S d 0, pt S d 2] : Fin 2 → Pt S 3 d) (bilL G cc) := by
     rw [ev_bilL G cc _ ha, ev_bilL G cc _ hb, ev_bilL G cc _ hc]
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
     rw [← Finset.sum_add_distrib]
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [← Finset.sum_add_distrib]
@@ -216,7 +214,7 @@ theorem mk_X_psJet {n : ℕ} (m : ℕ) (q : Fin n × Fin d) :
         by_cases h : i = q
         · subst h
           simp
-        · simp [h, Finsupp.single_apply, Ne.symm h]
+        · simp [h]
       · rw [Finsupp.sum_single_index rfl]
         show 1 ≤ m
         omega
@@ -242,8 +240,7 @@ theorem mk_psIn_psJet {n n' : ℕ} (m : ℕ) (σ : Fin n → Fin n') (f : PS S n
       psJet m ((fun i => pt S d (σ i)) p.1 p.2) := fun p => mk_X_psJet m (σ p.1, p.2)
   rw [← jetSubstP_psJet m (fun p : Fin n × Fin d => (X (σ p.1, p.2) : MvPolynomial (Fin n' × Fin d) S)) (fun i => pt S d (σ i)) ha hφ hmk f]
   unfold jetSubstP jetMap liftJet psJet psIn
-  simp only [MvPolynomial.constantCoeff_X, map_zero, sub_zero, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.lift_mk,
-    AlgHom.coe_toRingHom, AlgHom.coe_comp, Function.comp_apply, Ideal.Quotient.mkₐ_eq_mk]
+  simp only [MvPolynomial.constantCoeff_X, map_zero, sub_zero, Ideal.Quotient.liftₐ_apply]
   have hr : (aeval fun i : Fin n × Fin d => (X (σ i.1, i.2) : MvPolynomial (Fin n' × Fin d) S)) =
       rename (fun p : Fin n × Fin d => (σ p.1, p.2)) :=
     MvPolynomial.algHom_ext fun i => by simp
@@ -414,7 +411,7 @@ theorem twist_bal {O : Type} [CommRing O] [StarRing O] (B : FB S d O) (cc : Fin 
     (fun k => ev (n := 2) ![pt S d 0] (LogPf.logOf B.G k)) (fun l => ev (n := 2) ![pt S d 1] (LogPf.logOf B.G l))
   simp only [Matrix.of_apply] at key
   rw [ev_expP _ h0, ev_expP _ h1, ev_bilL _ _ _ h0, ev_bilL _ _ _ h1]
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ev_act_pt]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, ev_act_pt]
   rw [key]
 
 theorem twist_bal_jet {O : Type} [CommRing O] [StarRing O] (B : FB S d O) (cc : Fin d → Fin d → S) (a b : O)

@@ -59,99 +59,6 @@ open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 namespace UpperTheory.V.Z.Sym.Loc
 
-private theorem su_star {O K : Type} [CommRing O] [CommRing K] [Algebra O K] {a b : K}
-    {x : QuadraticAlgebra K a b} (hx : IsIntegral O x) : IsIntegral O (star x) := by
-  let f : QuadraticAlgebra K a b →ₐ[O] QuadraticAlgebra K a b :=
-    { toFun := star
-      map_one' := star_one _
-      map_mul' := fun u v => by rw [star_mul, mul_comm]
-      map_zero' := star_zero _
-      map_add' := fun u v => star_add u v
-      commutes' := fun r => by
-        ext <;> simp [QuadraticAlgebra.algebraMap_re, QuadraticAlgebra.algebraMap_im,
-          IsScalarTower.algebraMap_apply O K (QuadraticAlgebra K a b)] }
-  exact hx.map f
-
-section
-
-variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ τ : K}
-
-private theorem su_fg (h : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) :
-    (Subalgebra.toSubmodule (integralClosure O (Etau K τ))).FG := by
-  classical
-  haveI := h.frac
-  have hD : τ ^ 2 - 4 ≠ 0 := hτ
-  have toK : ∀ k : K, IsIntegral O (algebraMap K (Etau K τ) k) → ∃ o : O, algebraMap O K o = k := by
-    intro k hk
-    have hk' : IsIntegral O k :=
-      (isIntegral_algHom_iff (IsScalarTower.toAlgHom O K (Etau K τ))
-        (algebraMap K (Etau K τ)).injective).mp hk
-    exact IsIntegrallyClosed.isIntegral_iff.mp hk'
-  obtain ⟨nD, bD, hbD, hnD⟩ := IsFractionRing.div_surjective O ((τ ^ 2 - 4)⁻¹)
-  obtain ⟨nτ, bτ, hbτ, hnτ⟩ := IsFractionRing.div_surjective O τ
-  have hbD0 : algebraMap O K bD ≠ 0 := IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hbD
-  have hbτ0 : algebraMap O K bτ ≠ 0 := IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hbτ
-  obtain ⟨u2, hu2⟩ := h.two
-  have hi2 : algebraMap O K (↑u2⁻¹ : O) * 2 = 1 := by
-    rw [← map_ofNat (algebraMap O K) 2, ← hu2, ← map_mul, Units.inv_mul, map_one]
-  have hnD' : algebraMap O K nD = (τ ^ 2 - 4)⁻¹ * algebraMap O K bD := by
-    rw [← hnD]
-    field_simp
-  have hnτ' : algebraMap O K nτ = τ * algebraMap O K bτ := by
-    rw [← hnτ]
-    field_simp
-  set a : O := bD * bτ with ha
-  have ha0 : algebraMap O K a ≠ 0 := by
-    rw [ha, map_mul]
-    exact mul_ne_zero hbD0 hbτ0
-  have key : ∀ x : Etau K τ, IsIntegral O x →
-      (∃ u : O, algebraMap O K u = algebraMap O K a * x.re) ∧
-      (∃ w : O, algebraMap O K w = algebraMap O K a * x.im) := by
-    intro x hx
-    have hs := su_star (O := O) hx
-    obtain ⟨t, ht⟩ := toK (2 * x.re + τ * x.im) (by
-      have e : algebraMap K (Etau K τ) (2 * x.re + τ * x.im) = x + star x := by
-        ext <;> simp [QuadraticAlgebra.re_star, QuadraticAlgebra.im_star] <;> ring
-      rw [e]
-      exact hx.add hs)
-    obtain ⟨o1, ho1⟩ := toK (x.im ^ 2 * (τ ^ 2 - 4)) (by
-      have e : algebraMap K (Etau K τ) (x.im ^ 2 * (τ ^ 2 - 4)) = (x - star x) ^ 2 := by
-        ext <;> simp [pow_two, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star] <;> ring
-      rw [e]
-      exact (hx.sub hs).pow 2)
-    have hq : IsIntegral O (x.im * algebraMap O K bD) := by
-      refine ⟨Polynomial.X ^ 2 - Polynomial.C (o1 * nD * bD), Polynomial.monic_X_pow_sub_C _ (by norm_num), ?_⟩
-      simp only [Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_mul, Polynomial.eval₂_C,
-        map_mul, ho1, hnD']
-      field_simp
-      ring
-    obtain ⟨w0, hw0⟩ := IsIntegrallyClosed.isIntegral_iff.mp hq
-    refine ⟨⟨(t * bD * bτ - nτ * w0) * ↑u2⁻¹, ?_⟩, ⟨w0 * bτ, ?_⟩⟩
-    · simp only [map_mul, map_sub, ht, hnτ', hw0, ha]
-      linear_combination (algebraMap O K bD * algebraMap O K bτ * x.re) * hi2
-    · simp only [map_mul, hw0, ha]
-      ring
-  let e1 : Etau K τ := ⟨(algebraMap O K a)⁻¹, 0⟩
-  let e2 : Etau K τ := ⟨0, (algebraMap O K a)⁻¹⟩
-  have hle : Subalgebra.toSubmodule (integralClosure O (Etau K τ)) ≤ Submodule.span O {e1, e2} := by
-    intro x hx
-    obtain ⟨⟨u, hu⟩, ⟨w, hw⟩⟩ := key x hx
-    have hx' : x = (algebraMap O K u) • e1 + (algebraMap O K w) • e2 := by
-      rw [hu, hw]
-      ext
-      · simp [e1, e2]
-        field_simp
-      · simp [e1, e2]
-        field_simp
-    rw [hx', algebraMap_smul, algebraMap_smul]
-    exact Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))
-      (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))
-  haveI : IsNoetherian O (Submodule.span O ({e1, e2} : Set (Etau K τ))) :=
-    isNoetherian_of_fg_of_noetherian _ (Submodule.fg_span (Set.toFinite _))
-  exact Submodule.FG.of_le_of_isNoetherian hle
-
-end
-
 private theorem mat_int {O L : Type} [CommRing O] [CommRing L] [Algebra O L] (g : Matrix (Fin 3) (Fin 3) L)
     (hg : ∀ i j, IsIntegral O (g i j)) : IsIntegral O g := by
   classical
@@ -284,7 +191,7 @@ theorem UpperTheory.V.Z.Sym.Loc.stabU :
     have h2 : IsIntegral O (ofEA O Δ τ (quo z)) := h1.map (AlgHom.snd O (Lsq K Δ) (EL Δ τ))
     exact (isIntegral_algHom_iff _ (ofEA_inj O Δ τ)).mp h2
   refine ⟨fun z hz => ⟨intq z hz, intq z⁻¹ (H.inv_mem hz)⟩, ?_⟩
-  obtain ⟨s, hs⟩ := su_fg h hτ
+  obtain ⟨s, hs⟩ := _root_.UpperTheory.V.Z.Sym.Loc.intE_fg h hτ
   let F : Etau K τ →ₗ[O] Matrix (Fin 3) (Fin 3) (Lsq K Δ) :=
     ρO.toLinearMap ∘ₗ LinearMap.inr O (Lsq K Δ) (EL Δ τ) ∘ₗ (ofEA O Δ τ).toLinearMap
   haveI : Algebra.IsAlgebraic K (Lsq K Δ) := Algebra.IsAlgebraic.of_finite K _
@@ -331,4 +238,4 @@ theorem UpperTheory.V.Z.Sym.Loc.stabU :
     · exact isIntegral_one
     · exact isIntegral_zero
   intro i j
-  exact ⟨hent i j, su_star (hent i j)⟩
+  exact ⟨hent i j, _root_.UpperTheory.V.Z.Sym.Loc.isIntegral_star_quad (hent i j)⟩

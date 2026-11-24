@@ -96,15 +96,11 @@ theorem prWv_smul (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (x : Fin (2 * r + 
   unfold SSn.prWv
   rw [blockProjection_smul, P.Qx8.herm_smul_left', smul_add, smul_smul, mul_div_assoc]
 
-theorem inWb_add {x y : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) (hy : inWb k r y) : inWb k r (x + y) := by
-  intro i hi; simp [hx i hi, hy i hi]
-
-theorem inWb_smul (c : ℂ) {x : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) : inWb k r (c • x) := by
-  intro i hi; simp [hx i hi]
+alias inWb_smul := _root_.Formalism.FourierDecayAlt.P.NFRadRedLocSec.inWb_smul
 
 theorem prWv_inW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) (y : Fin (2 * r + k + 1) → ℂ) :
     InW k r z (SSn.prWv k r z y) := by
-  refine ⟨inWb_add (blockProjection_mem_block y) (inWb_smul _ hz), ?_⟩
+  refine ⟨_root_.Formalism.FourierDecayAlt.P.Qx8.inWb_add (blockProjection_mem_block y) (inWb_smul _ hz), ?_⟩
   unfold SSn.prWv
   rw [P.Qx8.herm_add_left', P.Qx8.herm_smul_left', herm_alt]
   have : ((Tz k r z : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hT.ne'
@@ -239,11 +235,11 @@ theorem frame_at {z e₀ b : Fin (2 * r + k + 1) → ℂ} {m : ℕ} {F : Fin m �
   obtain ⟨c, hc0, huu, hhe⟩ := uu_facts he hN hs
   have hc2 : (2 + 2 * c : ℝ) ≠ 0 := by linarith
   have huW : inWb k r (uu k r e₀ b) :=
-    inWb_add he₀.1 (inWb_smul _ hb.1)
+    _root_.Formalism.FourierDecayAlt.P.Qx8.inWb_add he₀.1 (inWb_smul _ hb.1)
   have huz : herm (Hpk k r) (uu k r e₀ b) z = 0 := by
     unfold uu ehat; rw [Qx8.herm_add_left', Qx8.herm_smul_left', he₀.2, hb.2]; ring
   refine ⟨fun t => ?_, fun t t' => ?_, fun t v hv => ?_⟩
-  · unfold hh; exact inWb_add (hF.1 t) (inWb_smul _ huW)
+  · unfold hh; exact _root_.Formalism.FourierDecayAlt.P.Qx8.inWb_add (hF.1 t) (inWb_smul _ huW)
   · rw [herm_hh _ _ _ huu hc2]; exact hF.2.1 t t'
   · simp only [List.mem_cons, List.not_mem_nil, or_false] at hv
     rcases hv with h | h <;> subst h
@@ -337,6 +333,6 @@ end Formalism.FourierDecayAlt.P.CutMP.JA.PRhoCut.FL
 
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.PRhoCut
 
-theorem frame_locality_holds : FrameLoc := FL.frame_locality_holds
+alias frame_locality_holds := _root_.Formalism.FourierDecayAlt.P.CutMP.JA.PRhoCut.FL.frame_locality_holds
 
 end Formalism.FourierDecayAlt.P.CutMP.JA.PRhoCut

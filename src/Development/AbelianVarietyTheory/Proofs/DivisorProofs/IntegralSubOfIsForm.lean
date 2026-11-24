@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsTypeIsRealConst
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlueMeasUnivNeTopOfCompactStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDegreeDensityPullbackEqNormSqDetMulStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ChartMeasApplyOfSubset
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GlueMeasUnivNeTopOfCompact
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TopDegreeDensityPullbackEqNormSqDetMul
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GluedChartDensityMeasureAddOfCompatibleOn
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -77,7 +78,7 @@ theorem reDens_compat {α : A.Fld} (hα : A.IsForm α) (i j : A.ι) (y : M) (hi 
   have h2 := A.loc_crd α (⟨(j, y), hj⟩ : A.Pt)
   have h3 := hα.compat (⟨(i, y), hi⟩ : A.Pt) ⟨(j, y), hj⟩ rfl
   simp only [reDens]
-  erw [h1, h2, h3, GlobalTheory.T.topDegreeDensity_pullback_eq_normSq_det_mul]
+  erw [h1, h2, h3, _root_.GlobalTheory.CxForm.dens_pull]
   rw [Complex.re_ofReal_mul]
   rfl
 
@@ -162,7 +163,7 @@ theorem integral_sub [CompactSpace M] [MeasurableSpace M] [BorelSpace M] [Second
     (continuousOn_const.mul (cF i)).add (continuousOn_const.mul (cG i))
   let P (c d : ℝ) : ℝ≥0∞ := ChartGlue.glueMeas A.e (fun i y => ENNReal.ofReal (lin c d i (A.e i y))) univ
   have fin (c d : ℝ) : P c d ≠ ∞ :=
-    GlobalTheory.T.glueMeas_univ_ne_infty_of_continuousOn A.e A.cover A.holo (lin c d) (clin c d) (hlin c d)
+    _root_.GlobalTheory.glueMeas_univ_ne_top_of_compact A.e A.cover A.holo (lin c d) (clin c d) (hlin c d)
   have part_eq (γ : A.Fld) (ε : ℤˣ) (c d : ℝ) (h : ∀ i v, ((ε : ℤ) : ℝ) * A.reDens γ i v = lin c d i v) :
       A.part γ ε univ = P c d := by
     simp only [part, P]

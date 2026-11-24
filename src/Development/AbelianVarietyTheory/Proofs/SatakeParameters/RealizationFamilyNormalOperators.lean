@@ -282,11 +282,6 @@ theorem opOf_comm {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] (π : G
       (GlobalTheory.T.sphericalHecke_conjPlace_eq_dualLabel V P).2.2 c' M π _ ((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).2.1 c M π u hu)]
     exact GlobalTheory.T.sphericalHeckeCombinations_commute_fixedVectors V P c _ M π u hu
 
-theorem pairwise_dualLab {d : List ℤ} (h : d.Pairwise fun a b => b ≤ a) : (dualLab d).Pairwise fun a b => b ≤ a := by
-  unfold dualLab
-  rw [List.pairwise_reverse, List.pairwise_map]
-  exact h.imp fun h => neg_le_neg h
-
 theorem exists_sphOp_pair {V : HSp D} {P : Pl D.host.E} {d : List ℤ} {e f : AE D} (hP : IsPrimeIdem P e f)
     (K : Subgroup (GA D V)) (hK : ∀ g, g ∈ hyp V P ↔ g ∈ K) (h : IsLab V P d) :
     ∃ α R', SuppF V f α ∧ IsCosetRep V {k | k ∈ KsphC V ∅ ∧ SuppF V f k} α (Hk3.rep V P d) ∧ SphOp V P (dualLab d) R' ∧
@@ -313,7 +308,7 @@ theorem exists_sphOp_pair {V : HSp D} {P : Pl D.host.E} {d : List ℤ} {e f : AE
     exact delta_idem hΦ (of_isPrimeIdem hΦ hP).1
   have hϖ : (ϖ : D.host.E) ≠ 0 := fun h0 => h3 (by
     rw [show ϖ = 0 from RingOfIntegers.ext h0]; exact Ideal.zero_mem _)
-  exact ⟨α, _, h7, h10, ⟨e, f, ϖ, α⁻¹, h0, hP, h2, h3, pairwise_dualLab h4, h5, h6, (suppGroup V f).inv_mem h7,
+  exact ⟨α, _, h7, h10, ⟨e, f, ϖ, α⁻¹, h0, hP, h2, h3, _root_.GlobalTheory.SphLabelOps.dualLab_pairwise h4, h5, h6, (suppGroup V f).inv_mem h7,
     (GlobalTheory.DivDual.divAt_inv_and_mul V e ϖ d α hee hϖ h8).1, l4, l6⟩, l6⟩
 
 section Level

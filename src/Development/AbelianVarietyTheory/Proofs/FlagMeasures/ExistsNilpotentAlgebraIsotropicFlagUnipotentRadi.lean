@@ -483,6 +483,6 @@ theorem exists_algebra_flagN : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j 
   · ext g
     change (flagN ε W).Mem g ↔ uMat g - 1 ∈ A
     rw [hA, mem_lowering]
-    simp only [flagN, Set.mem_setOf_eq, mem_mapsInto, mem_perp, Matrix.toLin'_apply, sub_mulVec, one_mulVec]
+    simp only [flagN, mem_mapsInto, mem_perp, Matrix.toLin'_apply, sub_mulVec, one_mulVec]
 
 end GlobalTheory.RadicalAlg

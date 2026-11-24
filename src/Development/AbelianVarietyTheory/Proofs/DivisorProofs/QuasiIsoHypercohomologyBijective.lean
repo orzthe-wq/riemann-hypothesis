@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafPropertiesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
+public import Mathlib.Algebra.Homology.HomotopyCategory.KInjective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafProperties
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HypercohomologyPullbackBijectiveOfQuasiIsoStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -51,7 +53,7 @@ namespace GlobalTheory.EtC
 
 theorem quasiIso_hypercohomology_bijective' : A1 := by
   intro R _ K L f _ F n
-  haveI : (res R F).IsKInjective := (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F).1
+  haveI : (res R F).IsKInjective := (_root_.GlobalTheory.EtC.ResBasic.res_basic R F).1
   exact GlobalTheory.T.hypercohomologyPullback_bijective_of_quasiIso R f (res R F) n
 
 end GlobalTheory.EtC

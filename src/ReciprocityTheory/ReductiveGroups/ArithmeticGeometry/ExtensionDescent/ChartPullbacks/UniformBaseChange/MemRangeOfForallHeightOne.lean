@@ -5,8 +5,6 @@ public import Mathlib.RingTheory.Ideal.Height
 public import Mathlib.RingTheory.Ideal.AssociatedPrime.Basic
 public import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.TypeStar
 
 @[expose] public section
@@ -57,11 +55,12 @@ lemma exists_assoc [IsNoetherianRing A] {ι : Type*} (x : ι → K)
     simp only [map_mul, mul_assoc]
   refine ⟨d, P, hPp, key, ?_⟩
   by_contra hcon
-  push_neg at hcon
   apply hPp.ne_top
   rw [Ideal.eq_top_iff_one, key 1]
   intro i
-  simpa using hcon i
+  rw [(algebraMap A K).map_one, one_mul]
+  by_contra hi
+  exact hcon ⟨i, hi⟩
 
 theorem exists_clear [IsNoetherianRing A] [IsIntegrallyClosed A] {ι : Type*} [Finite ι]
     (x : ι → K) (hx : ∃ i, x i ∉ (algebraMap A K).range) :
@@ -80,7 +79,6 @@ theorem exists_clear [IsNoetherianRing A] [IsIntegrallyClosed A] {ι : Type*} [F
   have hex : ∃ p ∈ P, ∃ u : A, algebraMap A K u = algebraMap A K p * (algebraMap A K d * x i0) ∧
       u ∉ P := by
     by_contra hne
-    push_neg at hne
     apply hi0
     let N : Submodule A K := Submodule.map (Algebra.linearMap A K) P
     have hNfg : N.FG := (IsNoetherian.noetherian P).map (Algebra.linearMap A K)
@@ -93,11 +91,12 @@ theorem exists_clear [IsNoetherianRing A] [IsIntegrallyClosed A] {ι : Type*} [F
       refine isIntegral_of_smul_mem_submodule N hNne hNfg _ fun n hn => ?_
       obtain ⟨a, haP, rfl⟩ := (Submodule.mem_map).1 hn
       obtain ⟨u, hu⟩ := (hPmem a).1 haP i0
-      have huP := hne a haP u hu
+      have huP : u ∈ P := by
+        by_contra huP
+        exact hne ⟨a, haP, u, hu, huP⟩
       refine (Submodule.mem_map).2 ⟨u, huP, ?_⟩
-      simp only [Algebra.linearMap_apply, smul_eq_mul]
-      rw [hu]
-      ring
+      change algebraMap A K u = (algebraMap A K d * x i0) * algebraMap A K a
+      rw [hu, mul_comm]
     obtain ⟨a, ha⟩ := IsIntegrallyClosed.isIntegral_iff.1 hint
     exact ⟨a, ha⟩
   obtain ⟨p, hpP, u, hu, huP⟩ := hex
@@ -107,7 +106,8 @@ theorem exists_clear [IsNoetherianRing A] [IsIntegrallyClosed A] {ι : Type*} [F
       refine ⟨⟨hP, (Ideal.span_singleton_le_iff_mem P).2 hpP⟩, fun Q hQ hQP => ?_⟩
       intro q hq
       obtain ⟨v, hv⟩ := (hPmem q).1 hq i0
-      have e : q * u = p * v := IsFractionRing.injective A K (by rw [map_mul, map_mul, hu, hv]; ring)
+      have e : q * u = p * v := IsFractionRing.injective A K (by
+        rw [(algebraMap A K).map_mul, (algebraMap A K).map_mul, hu, hv, mul_left_comm])
       have h1 : q * u ∈ Q := e ▸ Q.mul_mem_right v ((Ideal.span_singleton_le_iff_mem Q).1 hQ.2)
       rcases hQ.1.mem_or_mem h1 with h2 | h2
       · exact h2
@@ -116,9 +116,8 @@ theorem exists_clear [IsNoetherianRing A] [IsIntegrallyClosed A] {ι : Type*} [F
     have h0 : P.height ≠ 0 := fun h => hPne (Ideal.height_eq_zero_iff_eq_bot.1 h)
     exact le_antisymm h1 (ENat.one_le_iff_ne_zero.2 h0)
   · obtain ⟨v, hv⟩ := (hPmem p).1 hpP j
-    exact ⟨v, by rw [hv, map_mul]; ring⟩
-  · rw [hu, map_mul]
-    ring
+    exact ⟨v, by rw [hv, (algebraMap A K).map_mul, mul_assoc]⟩
+  · rw [hu, (algebraMap A K).map_mul, mul_assoc]
 
 theorem exists_height_one_not_mem [IsNoetherianRing A] [IsIntegrallyClosed A] (x : K)
     (hx : x ∉ (algebraMap A K).range) :
@@ -130,8 +129,7 @@ theorem exists_height_one_not_mem [IsNoetherianRing A] [IsIntegrallyClosed A] (x
   refine ⟨P, hP, h1, fun s hs hsx => ?_⟩
   obtain ⟨a, ha⟩ := hsx
   have e : algebraMap A K (s * u) = algebraMap A K (b * a) := by
-    rw [map_mul, map_mul, hu', ha]
-    ring
+    rw [(algebraMap A K).map_mul, (algebraMap A K).map_mul, hu', ha, mul_left_comm]
   have e2 : s * u = b * a := IsFractionRing.injective A K e
   have h3 : s * u ∈ P := e2 ▸ P.mul_mem_right a hbP
   rcases hP.mem_or_mem h3 with h4 | h4

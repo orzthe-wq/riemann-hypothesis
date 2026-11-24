@@ -77,13 +77,6 @@ theorem IntR_pow {f : MvPowerSeries ι K} (hf : IntR R f) (k : ℕ) : IntR R (f 
   | zero => rw [pow_zero]; exact IntR_one
   | succ k ih => rw [pow_succ]; exact IntR_mul ih hf
 
-theorem IntR_prod {α : Type} (s : Finset α) (f : α → MvPowerSeries ι K) (h : ∀ a ∈ s, IntR R (f a)) :
-    IntR R (∏ a ∈ s, f a) :=
-  Finset.prod_induction f (IntR R) (fun _ _ => IntR_mul) IntR_one h
-
-theorem IntR_mono {R' : Subring K} (h : R ≤ R') {f : MvPowerSeries ι K} (hf : IntR R f) : IntR R' f :=
-  fun n => h (hf n)
-
 end IntRLemmas
 
 section Exp
@@ -152,18 +145,6 @@ theorem IntR_expK {R : Subring K} {c : K} (hc : ∀ k : ℕ, c ^ k * ((k.factori
   rw [mul_pow, ← map_pow, MvPowerSeries.coeff_C_mul, ← mul_assoc, mul_comm _ (c ^ k)]
   exact R.mul_mem (hc k) (IntR_pow hG k n)
 
-theorem low_prod_sub {Pl : Type} (s : Finset Pl) (a a' : Pl → MvPowerSeries ι K) (M : ℕ)
-    (h : ∀ v ∈ s, Low M (a v - a' v)) : Low M (∏ v ∈ s, a v - ∏ v ∈ s, a' v) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-    rw [Finset.prod_empty, Finset.prod_empty, sub_self]
-    intro d _
-    simp
-  | insert v s hv ih =>
-    rw [Finset.prod_insert hv, Finset.prod_insert hv]
-    exact low_mul_sub (h v (Finset.mem_insert_self _ _)) (ih fun v' hv' => h v' (Finset.mem_insert_of_mem hv'))
-
 theorem neg_pow_mem {R : Subring K} {c : K} (hc : ∀ k : ℕ, c ^ k * ((k.factorial : K))⁻¹ ∈ R) (k : ℕ) :
     (-c) ^ k * ((k.factorial : K))⁻¹ ∈ R := by
   rw [neg_pow, mul_assoc]
@@ -202,35 +183,6 @@ theorem inClass_of_exp {R : Subring K} {pp c : K} (hpp : pp ≠ 0) (hc : ∀ k :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [term_exp hpp, ← MvPowerSeries.coeff_C_mul]
   congr 1
-  ring
-
-theorem inProd_of_exp {Pl : Type} [Fintype Pl] [DecidableEq Pl] {R : Subring K} {pp c : K} (hpp : pp ≠ 0)
-    (hc : ∀ k : ℕ, c ^ k * ((k.factorial : K))⁻¹ ∈ R)
-    (h : Pl → MvPowerSeries ι K) (h0 : ∀ v, MvPowerSeries.constantCoeff (h v) = 0) {V : MvPowerSeries ι K}
-    (hV : IntR R V) :
-    ∃ g : (Pl → ℕ) → MvPowerSeries ι K, (∀ i, IntR R (g i)) ∧ ∀ α : ι →₀ ℕ,
-      MvPowerSeries.coeff α ((∏ v, expK (-(MvPowerSeries.C (c / pp) * h v))) * V) =
-        ∑ i ∈ Fintype.piFinset (fun _ : Pl => range (α.degree + 1)),
-          MvPowerSeries.coeff α (MvPowerSeries.C (∏ v, (pp ^ i v)⁻¹) * (∏ v, h v ^ i v) * g i) := by
-  refine ⟨fun i => MvPowerSeries.C (∏ v, ((-c) ^ i v * (((i v).factorial : K))⁻¹)) * V,
-    fun i => IntR_mul (IntR_C (Subring.prod_mem _ fun v _ => neg_pow_mem hc (i v))) hV, fun α => ?_⟩
-  have hx : ∀ v, MvPowerSeries.constantCoeff (-(MvPowerSeries.C (c / pp) * h v)) = 0 := fun v => by
-    rw [map_neg, map_mul, h0, mul_zero, neg_zero]
-  have h1 : Low (α.degree + 1) ((∏ v, expK (-(MvPowerSeries.C (c / pp) * h v)) -
-      ∏ v, expSum (-(MvPowerSeries.C (c / pp) * h v)) (α.degree + 1)) * V) := by
-    simpa using low_mul (low_prod_sub univ _ _ (α.degree + 1) fun v _ => low_expK_sub (hx v) (α.degree + 1))
-      (low_zero V)
-  have h2 := h1 α (by omega)
-  rw [sub_mul, map_sub, sub_eq_zero] at h2
-  rw [h2]
-  unfold expSum
-
-  rw [Finset.prod_univ_sum, Finset.sum_mul, map_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  congr 1
-  rw [Finset.prod_congr rfl fun v _ => term_exp hpp (h v) (i v), Finset.prod_mul_distrib,
-    Finset.prod_mul_distrib]
-  simp only [map_prod]
   ring
 
 end Exp

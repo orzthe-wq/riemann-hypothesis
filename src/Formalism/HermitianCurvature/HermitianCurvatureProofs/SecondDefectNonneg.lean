@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnipotentComposition.Development
 
 @[expose] public section
 
@@ -176,11 +177,6 @@ theorem gN_top (hVT : Top.VecVTypes) {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq}
       · rw [if_neg h1, inner_zero_right]
     simp [hz]
 
-theorem hsVec_smul {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp'] [NormedAddCommGroup Wq']
-    [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq'] (c : ℂ) (X : Wq' →L[ℂ] Wp') :
-    B.hsVec (c • X) = c • B.hsVec X := by
-  unfold B.hsVec; rfl
-
 theorem hsVec_sum {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp'] [NormedAddCommGroup Wq']
     [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq'] {ι : Type} (s : Finset ι) (X : ι → Wq' →L[ℂ] Wp') :
     B.hsVec (∑ i ∈ s, X i) = ∑ i ∈ s, B.hsVec (X i) := by
@@ -249,10 +245,10 @@ theorem vecT_deg (hDT : KB.DegTop) {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq}
       induction a using Finset.induction_on with
       | empty => simp
       | insert n a hn ih => simp [hn, ContinuousLinearMap.comp_add, ih]
-    rw [hV, ContinuousLinearMap.comp_smul, hcomp, hsVec_smul, hsVec_sum]
+    rw [hV, ContinuousLinearMap.comp_smul, hcomp, _root_.PI.UnitaryGroupMassFormula.UsCompose.hsVec_smul, hsVec_sum]
     congr 1
     refine Finset.sum_congr rfl fun n _ => ?_
-    rw [ContinuousLinearMap.comp_smul, hsVec_smul]
+    rw [ContinuousLinearMap.comp_smul, _root_.PI.UnitaryGroupMassFormula.UsCompose.hsVec_smul]
     rfl
   · unfold vecT
     simp only [if_neg hloc, smul_zero, Finset.sum_const_zero]

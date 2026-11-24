@@ -52,6 +52,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianLattices.HermitianLatticesProofs.GenusCovol
 
 @[expose] public section
 
@@ -85,7 +86,6 @@ theorem jι_ne_zero {a : 𝓞 F} (ha : a ≠ 0) : jK (ι a) ≠ 0 := by
   rw [map_eq_zero] at h1
   first
   | exact_mod_cast h1
-  | exact RingOfIntegers.ext h1
 
 theorem IsUnif0.ne_zero {𝔭 : Ideal (𝓞 F)} {π₀ s₀ : 𝓞 F} (hu : IsUnif0 𝔭 π₀ s₀) : π₀ ≠ 0 := by
   rintro rfl
@@ -162,13 +162,13 @@ theorem isLocUnif (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsF
       ring
     · intro h
       apply hθ
-      rw [jK_inj (h.trans (map_zero _).symm)]
+      rw [_root_.Formalism.HermitianLatticesTheory.genusCovol_hinj (h.trans (map_zero _).symm)]
       exact zero_mem _
   case dv =>
     intro f hf hfix
     obtain ⟨t, ht, z, e⟩ := mem_SP.1 hf
     have hzfix : conjO K z = z := by
-      apply jK_inj
+      apply _root_.Formalism.HermitianLatticesTheory.genusCovol_hinj
       have : jK (conjO K z) = star (jK z) := rfl
       rw [this, e, star_mul', star_ι hF, hfix]
     obtain ⟨z₀, rfl⟩ := (conjO_eq_iff_mem_range hF z).1 hzfix
@@ -258,7 +258,7 @@ theorem isLocUnif (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsF
       exact Ideal.mul_mem_mul (Ideal.pow_mem_pow hu.mem _) ht
     obtain ⟨w, hw⟩ := Ideal.mem_span_singleton'.1 h1
     refine ⟨ι w * conjO K y * x, ?_⟩
-    have hyK : jK y ≠ 0 := fun h => hy0 (jK_inj (h.trans (map_zero _).symm))
+    have hyK : jK y ≠ 0 := fun h => hy0 (_root_.Formalism.HermitianLatticesTheory.genusCovol_hinj (h.trans (map_zero _).symm))
     have h2 := congrArg (fun x => jK (ι x)) hw
     simp only [map_mul, map_pow, hn₀] at h2 ⊢
     field_simp

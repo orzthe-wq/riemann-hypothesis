@@ -62,10 +62,10 @@ open Loc
 variable {K : Type} [Field K] {Δ τ : K}
 
 private theorem sg_mul (x y : EL Δ τ) : sigL (x * y) = sigL x * sigL y := by
-  ext <;> simp [sigL] <;> ring
+  ext <;> simp [sigL]
 
 private theorem sg_add (x y : EL Δ τ) : sigL (x + y) = sigL x + sigL y := by
-  ext <;> simp [sigL] <;> ring
+  ext <;> simp [sigL]
 
 private theorem sg_sg (x : EL Δ τ) : sigL (sigL x) = x := by
   ext <;> simp [sigL]
@@ -74,10 +74,10 @@ private theorem sg_star (x : EL Δ τ) : sigL (star x) = star (sigL x) := by
   ext <;> simp [sigL]
 
 private theorem sg_smul (a : Lsq K Δ) (x : EL Δ τ) : sigL (a • x) = star a • sigL x := by
-  ext <;> simp [sigL] <;> ring
+  ext <;> simp [sigL]
 
 private theorem sg_tr (x : EL Δ τ) : QuadraticAlgebra.trace (sigL x) = star (QuadraticAlgebra.trace x) := by
-  ext <;> simp [sigL, QuadraticAlgebra.trace_def, two_mul] <;> ring
+  ext <;> simp [sigL, QuadraticAlgebra.trace_def, two_mul]
 
 private theorem sg_ofE (z : Etau K τ) : sigL (ofE Δ z) = ofE Δ z := by
   ext <;> simp [sigL, ofE]

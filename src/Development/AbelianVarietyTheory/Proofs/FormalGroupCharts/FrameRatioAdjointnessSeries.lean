@@ -2,6 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.TwoChartAtlas.AdditionLawSecondIdentity
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FrameBiextDictionarySecondPartialLaw
+import Development.AbelianVarietyTheory.Proofs.FormalGroupCharts.FrameRatioFirstPartialLaw
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.FBIdJet
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ThetaSwapFirstTwo
 import Mathlib.Algebra.Order.Floor.Extended
@@ -62,45 +63,11 @@ open ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction
 
 variable {V : Type} [CommRing V] {d n : ℕ}
 
-theorem jEq_of_psJet {σ : Type} [Fintype σ] [DecidableEq σ] {m : ℕ} {f g : MvPowerSeries σ V}
-    (h : psJet m f = psJet m g) : JEq m f g := by
-  intro e he
-  rw [psJet, psJet, FBIdJet.psTrunc_eq, FBIdJet.psTrunc_eq] at h
-  have h' := Ideal.Quotient.eq.1 h
-  have h'' := (MvPolynomial.mem_pow_idealOfVars_iff' _ _).1 h' e (Nat.lt_succ_of_le he)
-  rwa [MvPolynomial.coeff_sub, MvPowerSeries.coeff_truncTotal _ (Nat.lt_succ_of_le he),
-    MvPowerSeries.coeff_truncTotal _ (Nat.lt_succ_of_le he), sub_eq_zero] at h''
-
 theorem ac_ac (A B : Q V d 1) (u : Q V d n) : ac (ac A B) u = ac A (ac B u) := sq_ac _ _ _
 
 theorem formalSeriesValueAtTwoPoints_zero_zero (f : PS V 2 d) (h : ev (n := 1) ![0, pt V d 0] f = 1) : E2 f (0 : Q V d n) 0 = 1 := by
   have := congrArg (sb (![0] : Fin 1 → Q V d n)) ((formalSeriesValueAtTwoPoints_eq_ev f 0 (gen 0)).trans h)
   rwa [formalPointSubstitutionSeries_valueAtTwoPoints, map_zero, sq_gen, map_one] at this
-
-variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {t : SAB H (Sp V)}
-  {x x' : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G}
-
-theorem PP_coord (Φ : Q V d 1) (h : CoordRel x x' Φ.1) (m : ℕ) (u : Q V d n) : PP m x' u = PP m x (ac Φ u) := by
-  have e := h m
-  rw [subst_eq m _ ![Φ] (fun s => by obtain ⟨j, s⟩ := s; fin_cases j; rfl)
-    (fun s => (cc_psTrunc m _).trans (Φ.2 _))] at e
-  rw [PP, e]
-  exact PP_sq m x _ _
-
-theorem ee_rel (Φ : Q V d 1) {e : ∀ m, FrTyG t (𝟙 (Sp V)) d x m} {e' : ∀ m, FrTyG t (𝟙 (Sp V)) d x' m} {m : ℕ}
-    {ε : PS V 2 d} (h : FrRel t x x' e e' Φ.1 m ε) {y : (jOG (𝟙 (Sp V)) d m n).left} {J} (hJ : Good t.PP.L y J)
-    (u v : Q V d n) : VV m y (E2 ε u v) = (ee x' e' y J u v * (ee x e y J (ac Φ u) (ac Φ v))⁻¹).val := by
-  obtain ⟨U, hU, h⟩ := h
-  have hΦ : ∀ (i : Fin 2) (j : Fin d), (Ideal.Quotient.mk _ (psIn d m ![i] (Φ.1 j)) : Jet V (Fin 2 × Fin d) m) =
-      psJet m ((ac Φ (gen i) : Q V d 2).1 j) := fun i j =>
-    (mk_psIn m _ _).trans (congrArg (fun b => psJet m (sb b (Φ.1 j))) (funext fun l => by fin_cases l; rfl))
-  have e₀ := val_peG x hJ e ![u, v] ![fun j => psIn d m ![0] (Φ.1 j), fun j => psIn d m ![1] (Φ.1 j)]
-    (ac Φ (gen 0)) (ac Φ (gen 1)) (by rintro ⟨l, j⟩; fin_cases l; exacts [hΦ 0 j, hΦ 1 j])
-    (by rintro ⟨l, j⟩; fin_cases l <;> exact (cc_psIn d m _ _).trans (Φ.2 j))
-  rw [sq_ac, sq_ac, sq_gen, sq_gen] at e₀
-  have k := (val_corr hJ h (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jQ m ![u, v])).left).trans
-    ((val_scale hJ _ _ _).trans (congrArg₂ (· * ·) rfl e₀))
-  exact (gm_unit (y := y) U ![u, v] _ hU).symm.trans (congrArg Units.val (eq_mul_inv_of_mul_eq k.symm))
 
 end
 
@@ -129,13 +96,10 @@ theorem ratio_adj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     (formalSeriesValueAtTwoPoints_eq_ev f (gen 0) (gen 1)).symm.trans (formalSeriesValueAtTwoPoints_genericPoints f)
   have key : psJet m (E2 (B'.ad a) (gen 0 : Q V d 2) (gen 1) * E2 ε (gen 0) (ac (AQ B'.A (H.bar a)) (gen 1))) =
       psJet m (E2 (B.ad a) (ac Φ (gen 0)) (ac Φ (gen 1)) * E2 ε (ac (AQ B'.A a) (gen 0)) (gen 1)) := by
-    refine cst_ext fun y => ?_
-    choose J hJ using fun ψ : (jOG (𝟙 (Sp V)) d m 2).left ⟶ t.G.left => exists_chart t.PP.isLB (ψ y)
-    replace hJ : Good t.PP.L (Z := (jOG (𝟙 (Sp V)) d m 2).left) y J := hJ
-    change VV (x0 := 𝟙 (Sp V)) m y _ = VV (x0 := 𝟙 (Sp V)) m y _
+    refine psJet_eq_of_VV (x0 := 𝟙 (Sp V)) t.PP.isLB fun y J hJ => ?_
     have dA := dict_ad (A := B.A) (ad := B.ad) hJ a w U h₁ h₂
     have dB := dict_ad (A := B'.A) (ad := B'.ad) hJ a w' U' h₁' h₂'
-    have hE := ee_rel Φ hrel hJ
+    have hE := RatioPh1.ee_rel hJ Φ hrel
     have k : ∀ p q : jOG (𝟙 (Sp V)) d m 2 ⟶ t.G, (val₂ w' y J p q * (val₂ w y J p q)⁻¹).val =
         gs (jOG (𝟙 (Sp V)) d m 2).hom y ⊤ c₀ := fun p q => by
       have := hc₀ _ (lift p q).left y J hJ
@@ -147,11 +111,11 @@ theorem ratio_adj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
     rw [formalSeriesValueAtTwoPoints_zero_zero _ (B'.adjoint_zero_fst a), VV_one, ac0, ac0, mul_inv_cancel_right, PP_zero hc'] at b₀
     have k₁ := Units.ext ((k (PP m x (ac Φ (gen 0))) (PP m x (ac Φ (gen 1)))).trans (k 1 1).symm)
     rw [Units.ext a₀.symm (v := 1), Units.ext b₀.symm (v := 1), mul_inv_cancel, mul_inv_eq_one] at k₁
-    simp only [VV_mul, dA, dB, hE, hA, PP_coord Φ hx, k₁, ← Units.val_mul]
+    simp only [VV_mul, dA, dB, hE, hA, RatioPh1.PP_coord Φ hx, k₁, ← Units.val_mul]
     refine congrArg Units.val (Additive.ofMul.injective ?_)
     simp only [ofMul_mul, ofMul_inv]
     abel
   rw [hstar a]
-  simpa only [formalSeriesValueAtTwoPoints_eq_ev, ac_val, gen_val, g2] using jEq_of_psJet key
+  simpa only [formalSeriesValueAtTwoPoints_eq_ev, ac_val, gen_val, g2] using RatioPh1.jeq_of_psJet key
 
 end GlobalTheory.FrameRatioAdj

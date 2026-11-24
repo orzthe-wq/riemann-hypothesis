@@ -1,8 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsFirstChernClassOfLineBundle
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.C1FiniteExtensionLangStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TsenLangRatFuncStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.C1FiniteExtensionLang
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.FieldTheory.RatFunc.Basic
+public import Mathlib.RingTheory.MvPolynomial.Homogeneous
+public import Mathlib.RingTheory.SimpleRing.Principal
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.TsenLangRatFunc
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -51,6 +55,6 @@ namespace GlobalTheory.NeedB
 
 theorem tsen : Tsen := by
   intro k K _ _ _ _ _
-  exact GlobalTheory.T.isFirstChernClass_of_finiteDimensional_of_forms_have_zeros (RatFunc k) K (GlobalTheory.T.exists_common_zero_homogeneous_ratFunc_of_mul_lt k)
+  exact _root_.GlobalTheory.is_c1_of_finite_of_tsen_lang_systems (RatFunc k) K (_root_.GlobalTheory.tsenLang_ratFunc k)
 
 end GlobalTheory.NeedB

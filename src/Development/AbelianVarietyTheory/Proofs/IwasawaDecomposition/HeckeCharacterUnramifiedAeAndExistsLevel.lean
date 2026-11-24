@@ -60,7 +60,7 @@ namespace GlobalTheory.Mem.UnrAe
 variable {L : Type} [Field L] [NumberField L]
 
 theorem continuous_finSingle (v : HeightOneSpectrum (𝓞 L)) : Continuous (Neutral.B1.finiteSingle L v) := by
-  apply GlobalTheory.CompanionTheory.InertOpen.continuous_finiteSingle <;> assumption
+  apply GlobalTheory.CompanionTheory.InertOpen.continuous_finiteSingle
 
 theorem continuous_localIdele (v : HeightOneSpectrum (𝓞 L)) : Continuous (localIdele L v) := by
   apply Continuous.units_map
@@ -111,7 +111,7 @@ theorem finite_ramified (χ : HChar L) : {v | ¬ χ.UnrAt v}.Finite := by
       (‖((χ.loc v x : ℂˣ) : ℂ) - 1‖ < 1 / 2 → χ.UnrAt v) := fun v => by
     by_contra hc
     push Not at hc
-    refine (hc 1 (map_one _)).2 fun x hx => Units.ext (GlobalTheory.CharConductor.eq_one_of_pow_near_one fun m => ?_)
+    refine (hc 1 (map_one _)).2 fun x hx => Units.ext (_root_.GlobalTheory.IterationConvergence.main fun m => ?_)
     rw [← Units.val_pow_eq_pow_val, ← map_pow]
     exact (hc _ (isUnitAt_pow hx m)).1
   choose x hx hx' using h
@@ -131,7 +131,7 @@ theorem exists_levelLe (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)) : ∃ n, 
   obtain ⟨γ, hγ⟩ := Valued.mem_nhds.mp ht
   have hγ0 : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0 := by simp
   refine ⟨(1 - WithZero.log (MonoidWithZeroHom.ValueGroup₀.embedding γ.1)).toNat, fun x hx hx1 => ?_⟩
-  refine Units.ext (GlobalTheory.CharConductor.eq_one_of_pow_near_one fun m => ?_)
+  refine Units.ext (_root_.GlobalTheory.IterationConvergence.main fun m => ?_)
   rw [← Units.val_pow_eq_pow_val, ← map_pow]
   apply hsub
   apply hγ

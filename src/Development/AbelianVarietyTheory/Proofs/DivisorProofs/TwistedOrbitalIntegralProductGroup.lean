@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageLinearTranslateConstStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageProdMulEqMulStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AvgEqOfLeRightStabiliser
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageLinearTranslateConst
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -19,8 +19,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -28,7 +26,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -41,10 +39,96 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageProdMulEqMul, Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageProdMulEqMul =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageProdMulEqMul", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AvgEqOfLeRightStabiliser\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC GlobalTheory.BCT
+open scoped Classical TensorProduct
+
+namespace GlobalTheory.AvgProd
+
+lemma apply_out_rStab {H : Type} [Group H] (u : H → ℂ) (x : H) :
+    u ((x : H ⧸ rStab u).out) = u x := by
+  obtain ⟨k, hk⟩ := QuotientGroup.mk_out_eq_mul (rStab u) x
+  rw [hk]
+  have hk' : ∀ y, u (y * (k : H)) = u y := k.2
+  exact hk' x
+
+theorem avg_prod : ∀ (H H' : Type) [Group H] [Group H'] (u : H → ℂ) (v : H' → ℂ), (rStab u).index ≠ 0 →
+    (rStab v).index ≠ 0 → avg (fun x : H × H' => u x.1 * v x.2) = avg u * avg v := by
+  intro H H' _ _ u v hu hv
+  set S : Subgroup (H × H') := (rStab u).prod (rStab v) with hS
+  have hle : S ≤ rStab (fun x : H × H' => u x.1 * v x.2) := by
+    intro p hp
+    rw [hS, Subgroup.mem_prod] at hp
+    have ha : ∀ y, u (y * p.1) = u y := hp.1
+    have hb : ∀ y, v (y * p.2) = v y := hp.2
+    intro x
+    simp only [Prod.fst_mul, Prod.snd_mul]
+    rw [ha x.1, hb x.2]
+  have hSi : S.index = (rStab u).index * (rStab v).index := Subgroup.index_prod _ _
+  have hS0 : S.index ≠ 0 := by rw [hSi]; exact mul_ne_zero hu hv
+  rw [_root_.GlobalTheory.BCT.avg_eq_of_le_rStab _ _ S hle hS0]
+  haveI : (rStab u).FiniteIndex := ⟨hu⟩
+  haveI : (rStab v).FiniteIndex := ⟨hv⟩
+  haveI : S.FiniteIndex := ⟨hS0⟩
+  letI : Fintype (H ⧸ rStab u) := Fintype.ofFinite _
+  letI : Fintype (H' ⧸ rStab v) := Fintype.ofFinite _
+  letI : Fintype ((H × H') ⧸ S) := Fintype.ofFinite _
+  let f : (H × H') ⧸ S → (H ⧸ rStab u) × (H' ⧸ rStab v) :=
+    fun q => ((q.out.1 : H ⧸ rStab u), (q.out.2 : H' ⧸ rStab v))
+  have hf : Function.Bijective f := by
+    constructor
+    · intro q q' h
+      simp only [f, Prod.mk.injEq] at h
+      obtain ⟨h1, h2⟩ := h
+      rw [QuotientGroup.eq] at h1 h2
+      rw [← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq]
+      exact (Subgroup.mem_prod (H := rStab u) (K := rStab v)).2 ⟨by simpa using h1, by simpa using h2⟩
+    · rintro ⟨a, b⟩
+      induction a using QuotientGroup.induction_on with | H x => ?_
+      induction b using QuotientGroup.induction_on with | H y => ?_
+      refine ⟨((x, y) : (H × H') ⧸ S), ?_⟩
+      have h := QuotientGroup.out_eq' ((x, y) : (H × H') ⧸ S)
+      rw [QuotientGroup.eq] at h
+      replace h := (Subgroup.mem_prod (H := rStab u) (K := rStab v)).1 h
+      simp only [f, Prod.mk.injEq]
+      rw [QuotientGroup.eq, QuotientGroup.eq]
+      exact ⟨by simpa using h.1, by simpa using h.2⟩
+  have hsum : ∑ᶠ q : (H × H') ⧸ S, (fun x : H × H' => u x.1 * v x.2) q.out =
+      (∑ᶠ a : H ⧸ rStab u, u a.out) * ∑ᶠ b : H' ⧸ rStab v, v b.out := by
+    rw [finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.sum_mul_sum,
+      ← Fintype.sum_prod_type']
+    refine Fintype.sum_bijective f hf _ _ ?_
+    intro q
+    simp only [f, apply_out_rStab]
+  rw [hsum]
+  unfold avg
+  rw [hSi]
+  push_cast
+  rw [mul_inv]
+  ring
+
+end GlobalTheory.AvgProd
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageProdMulEqMul =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageLinearTranslateConst\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SubgroupAverageProdMulEqMul\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC GlobalTheory.BCT
@@ -85,7 +169,7 @@ theorem map_conj_prod {G G' : Type} [Group G] [Group G'] (K : Subgroup G) (K' : 
     simp only [Prod.ext_iff, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv] at h
     exact ⟨⟨k, hk, h.1⟩, ⟨k', hk', h.2⟩⟩
   · rintro ⟨⟨k, hk, h⟩, ⟨k', hk', h'⟩⟩
-    exact ⟨k, k', ⟨hk, hk'⟩, by simp [Prod.ext_iff, h, h']⟩
+    exact ⟨k, k', ⟨hk, hk'⟩, by simp [h, h']⟩
 
 theorem map_conj_self {G : Type} [Group G] (H : Subgroup G) {h : G} (hh : h ∈ H) :
     H.map (MulAut.conj h).toMonoidHom = H := by
@@ -267,7 +351,7 @@ theorem orbTerm_inv (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ)
   rw [conj_cpt _ ht] at e2
   rw [map_conj_mul_three_subgroup_of_mem K hk, e1, e2, fun_inv θ K δ f ht hk x]
   congr 1
-  exact (GlobalTheory.T.subgroupAverage_linear_translate_const K (fun k2 : K => f ((x * k2)⁻¹ * δ * θ (x * k2))) (fun k2 : K => f ((x * k2)⁻¹ * δ * θ (x * k2))) 0 ⟨k, hk⟩ (hf x) (hf x)).2.2.1
+  exact (_root_.GlobalTheory.AvgLin.avg_linear_translate_const K (fun k2 : K => f ((x * k2)⁻¹ * δ * θ (x * k2))) (fun k2 : K => f ((x * k2)⁻¹ * δ * θ (x * k2))) 0 ⟨k, hk⟩ (hf x) (hf x)).2.2.1
 
 end Orb
 
@@ -290,7 +374,7 @@ theorem orbTerm_prod (θ : G →* G) (θ' : G' →* G') (K : Subgroup G) (K' : S
   rw [twCent_prod, map_conj_prod, prod_inf_prod, cptPart_prod, relIndex_prod_prod, Nat.cast_mul,
     mul_mul_mul_comm]
   congr 1
-  have hA := GlobalTheory.T.subgroupAverage_prod_mul_eq_mul K K' (fun k : K => f ((x * k)⁻¹ * δ * θ (x * k)))
+  have hA := _root_.GlobalTheory.AvgProd.avg_prod K K' (fun k : K => f ((x * k)⁻¹ * δ * θ (x * k)))
     (fun k : K' => f' ((x' * k)⁻¹ * δ' * θ' (x' * k))) hf hf'
   rw [← hA, ← avg_comp_equiv (Subgroup.prodEquiv K K')]
   rfl
@@ -389,3 +473,7 @@ theorem twOrb_prod : ∀ (G G' : Type) [Group G] [TopologicalSpace G] [IsTopolog
     (hfin'.subset (support_sub θ' K' δ' f'))
 
 end GlobalTheory.BCT.OrbProd
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwistedOrbitalIntegralProductGroup =====

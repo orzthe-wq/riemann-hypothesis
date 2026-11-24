@@ -177,7 +177,7 @@ theorem UpperTheory.exists_irreducible_subrep_hecke_eigen_of_invariant_form :
   have hmin : ∀ N : Submodule ℂ W, (∀ g, ∀ u ∈ N, ρ g u ∈ N) → (∃ u ∈ N, B u x ≠ 0) →
       Nat.find hex ≤ Module.finrank ℂ ↥(N ⊓ V) :=
     fun N h1 h2 => Nat.find_min' hex ⟨N, h1, h2, rfl⟩
-  haveI hfinV : FiniteDimensional ℂ V := hfin
+  have hfinV : FiniteDimensional ℂ V := hfin
   have finInf : ∀ N : Submodule ℂ W, FiniteDimensional ℂ ↥(N ⊓ V) :=
     fun N => Submodule.finiteDimensional_of_le inf_le_right
   let U : Submodule ℂ W := Submodule.span ℂ {w | ∃ h : H, ∃ s ∈ N0 ⊓ V, w = ρ h s}
@@ -206,7 +206,7 @@ theorem UpperTheory.exists_irreducible_subrep_hecke_eigen_of_invariant_form :
     · right
       have h1 := hmin N hNi hF
       have hle : N ⊓ V ≤ N0 ⊓ V := by rw [← hUV]; exact inf_le_inf_right _ hNU
-      haveI := finInf N0
+      have := finInf N0
       have heq : N ⊓ V = N0 ⊓ V := Submodule.eq_of_le_of_finrank_le hle (by rw [hN0d]; exact h1)
       apply le_antisymm hNU
       rw [Submodule.span_le]
@@ -214,11 +214,11 @@ theorem UpperTheory.exists_irreducible_subrep_hecke_eigen_of_invariant_form :
       have : s ∈ N ⊓ V := by rw [heq]; exact hs
       exact hNi h s (Submodule.mem_inf.1 this).1
     · left
-      push_neg at hF
+      push Not at hF
       have hS1 : N ⊓ V = ⊥ := by
         by_contra hne
         obtain ⟨s1, hs1, hs1ne⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne
-        haveI := finInf N
+        have := finInf N
         obtain ⟨p, hp, hpq⟩ := proj (N ⊓ V) inferInstance s0
         have hpS : p ∈ N0 ⊓ V := by rw [← hUV]; exact inf_le_inf_right _ hNU hp
         have hpN : p ∈ N := (Submodule.mem_inf.1 hp).1
@@ -249,7 +249,7 @@ theorem UpperTheory.exists_irreducible_subrep_hecke_eigen_of_invariant_form :
           (fun g u hu => Submodule.mem_inf.2 ⟨hUi g u (Submodule.mem_inf.1 hu).1,
             orth_inv N hNi g u (Submodule.mem_inf.1 hu).2⟩)
           ⟨s0 - p, Submodule.mem_inf.2 ⟨hSU hqS, hqo⟩, hqx⟩
-        haveI := finInf N0
+        have := finInf N0
         have := Submodule.finrank_lt_finrank_of_lt hlt
         omega
       rw [eq_bot_iff]
@@ -259,7 +259,7 @@ theorem UpperTheory.exists_irreducible_subrep_hecke_eigen_of_invariant_form :
       have hvv : B v v ≠ 0 := fun h => hv0 (hB v h)
       have hex2 : ∃ h : H, ∃ s ∈ N0 ⊓ V, B (ρ h s) v ≠ 0 := by
         by_contra hall
-        push_neg at hall
+        push Not at hall
         have hle : U ≤ LinearMap.ker (B.flip v) := by
           rw [Submodule.span_le]
           rintro w ⟨h, s, hs, rfl⟩
@@ -277,7 +277,7 @@ theorem UpperTheory.exists_irreducible_subrep_hecke_eigen_of_invariant_form :
       rw [hv'N, map_zero] at h2
       have hm' : (m : ℂ) ≠ 0 := by exact_mod_cast hm.ne'
       exact hne ((mul_eq_zero.1 h2.symm).resolve_left hm')
-  haveI := finInf N0
+  have := finInf N0
   obtain ⟨p, hp, hpt⟩ := proj (N0 ⊓ V) inferInstance x
   have htU : x - p ∈ orth U := by
     rw [mem_orth]

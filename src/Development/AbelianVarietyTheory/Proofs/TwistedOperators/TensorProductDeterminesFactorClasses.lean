@@ -108,7 +108,7 @@ theorem tprod_update_mulSingle (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (x 
   funext a
   by_cases h : a = j
   · subst h; simp
-  · simp [h, Pi.mulSingle_eq_of_ne h]
+  · simp [h]
 
 theorem cl_eq_of_piTensor_equiv : ∀ (β : Type) [Fintype β] (Γ : β → Type) [∀ j, Group (Γ j)] [∀ j, TopologicalSpace (Γ j)] (s s' : ∀ j, GlobalTheory.SmGL.IrrRep (Γ j)), Nonempty ((GlobalTheory.SmGL.piTensor fun j => (s j).ρ).Equiv (GlobalTheory.SmGL.piTensor fun j => (s' j).ρ)) → ∀ j, (s j).cl = (s' j).cl := by
   intro β _ Γ _ _ s s' ⟨φ⟩ j

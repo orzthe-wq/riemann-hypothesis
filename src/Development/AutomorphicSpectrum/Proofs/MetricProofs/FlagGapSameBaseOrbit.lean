@@ -1,10 +1,10 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.HasStepCharts
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMetricExplicitMatrixFormStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMetricRowEchelonLocalStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMetricExplicitMatrixForm
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMetricRowEchelonLocal
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsPermOfRange
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogBlockMetricOffBoundaryStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LogBlockMetricOffBoundary
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -84,10 +84,10 @@ theorem stepGap_eq_of_base_block : ∀ (K : Type) [Fintype K] (ι : K → Type) 
   have hh : Real.log ((BM.hom p).h z) = Real.log ((BM.hom p).h z') := by
     cases hp : M.blk p with
     | none =>
-      rw [GlobalTheory.T.log_block_metric_off_boundary K ι Φ y Ψ N j M n BM p l x₀ z hp hx hz horb,
-        GlobalTheory.T.log_block_metric_off_boundary K ι Φ y Ψ N j M n BM p l x₀ z' hp hx hz' horb', hbm, hbase]
+      rw [_root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.BaseLine.main K ι Φ y Ψ N j M n BM p l x₀ z hp hx hz horb,
+        _root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.BaseLine.main K ι Φ y Ψ N j M n BM p l x₀ z' hp hx hz' horb', hbm, hbase]
     | some k₀ =>
-      obtain ⟨I₀, hI₀, hne⟩ := GlobalTheory.T.block_metric_row_echelon_local K ι Φ y Ψ N j M n BM p k₀ l x₀ z hp hl hz horb
+      obtain ⟨I₀, hI₀, hne⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.exists_plk_ne_zero K ι Φ y Ψ N j M n BM p k₀ l x₀ z hp hl hz horb
       obtain ⟨C, B, hCB⟩ := GlobalTheory.CompanionTheory.Ar.PB.StepW.GrChart.exists_isGrChart N j p.2 I₀ M.j_le hI₀
       have hfun : GlobalTheory.CompanionTheory.Ar.PB.StepW.plk M (BM.F l) k₀ z = GlobalTheory.CompanionTheory.Ar.PB.StepW.plk M (BM.F l) k₀ z' := by
         funext I
@@ -97,8 +97,8 @@ theorem stepGap_eq_of_base_block : ∀ (K : Type) [Fintype K] (ι : K → Type) 
       have hne' : GlobalTheory.CompanionTheory.Ar.PB.StepW.plk M (BM.F l) k₀ z' I₀ ≠ 0 := by
         rw [← hfun]
         exact hne
-      rw [GlobalTheory.T.block_metric_explicit_matrix_form K ι Φ y Ψ N j M n BM p k₀ l x₀ z I₀ C B hp hCB hx hz horb hne,
-        GlobalTheory.T.block_metric_explicit_matrix_form K ι Φ y Ψ N j M n BM p k₀ l x₀ z' I₀ C B hp hCB hx hz' horb' hne', hfun, hbm]
+      rw [_root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.ExactStep.main K ι Φ y Ψ N j M n BM p k₀ l x₀ z I₀ C B hp hCB hx hz horb hne,
+        _root_.GlobalTheory.CompanionTheory.Ar.PB.StepW.ExactStep.main K ι Φ y Ψ N j M n BM p k₀ l x₀ z' I₀ C B hp hCB hx hz' horb' hne', hfun, hbm]
   unfold GlobalTheory.CompanionTheory.Ar.PB.StepW.stepGap
   rw [hh, hfs]
 

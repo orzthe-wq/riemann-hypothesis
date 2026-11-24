@@ -63,7 +63,7 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 private theorem infOfWeight_reflect_eq_weights (lam : DomWeight 2) : (infOfWeight lam).map (fun z => (((2 : ℕ) : ℂ) - 1) / 2 - z) = ({-lam.w 0, 1 - lam.w 1} : Multiset ℤ).map (fun k : ℤ => (k : ℂ)) := by
-  simp only [infOfWeight, Multiset.map_map, Function.comp_def, Fin.univ_val_map]
+  simp only [infOfWeight, Fin.univ_val_map]
   simp [List.ofFn_succ]
   rw [← Multiset.cons_coe, Multiset.coe_singleton]
   congr 2

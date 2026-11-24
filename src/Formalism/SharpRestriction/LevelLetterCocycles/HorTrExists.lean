@@ -98,7 +98,7 @@ theorem horTr_mem (T : LocLat G Qp LL O) (c' : ZMod n) {d : ℕ} (b : Fin d → 
   · refine ⟨∑ m, y r m • b m, (W.N T).sum_mem fun m _ => (W.N T).smul_of_tower_mem _ ((hb.1 m).1.1), ?_⟩
     simp only [LinearMap.smul_apply, LinearMap.id_apply, Finset.smul_sum]
     refine Finset.sum_congr rfl fun m _ => ?_
-    rw [smul_comm, Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' (hb.1 m).2]
+    rw [smul_comm, _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c' (hb.1 m).2]
 
 theorem yM_gen (hTr : Formalism.MainNotions.LiftingTheory.coreTr W) (hCA : Formalism.MainNotions.LiftingTheory.CaseA W) (hπ : W.π₀ ∈ W.AΔ) (h5p : 5 ≤ PD.p)
     (A : ArcP n) (hA : A.OK) (a : ZMod n) (e : ℕ) :

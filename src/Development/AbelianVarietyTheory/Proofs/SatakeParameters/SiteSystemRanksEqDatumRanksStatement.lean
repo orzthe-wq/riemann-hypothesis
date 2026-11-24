@@ -47,4 +47,4 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.siteSystem_ranks_eq_datum_ranks : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => (sysS H X std).mm = D.R.m ∧ (sysS H X std).t = D.R.t ∧ (∀ j, ((sysS H X std).Pj j).m + 1 = D.R.N j) ∧ ∀ j, RankTie (sysS H X std) D j) := by
-  first | exact @GlobalTheory.TwV.DelB.sysS_ranks | exact GlobalTheory.TwV.DelB.sysS_ranks | (intros; apply GlobalTheory.TwV.DelB.sysS_ranks <;> assumption)
+  first | exact @GlobalTheory.TwV.DelB.sysS_ranks

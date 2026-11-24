@@ -227,7 +227,7 @@ lemma wlocal_L_insert {r : ℕ} (k a : Fin r) (c : Fin r → R) (s : Finset (Fin
     by_cases hj : j = k
     · rw [hj]
       simp [hak, ha]
-    · simp [hak, ha, hj, Ne.symm hj]
+    · simp [hak, hj, Ne.symm hj]
   · simp [hi]
 
 lemma wlocal_good_L {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (k : Fin r) (c : Fin r → R) :
@@ -573,7 +573,6 @@ lemma wlocal_loc (P : Ideal R) [P.IsPrime] {r n : ℕ} (hn : n ≤ r) (ν : Fin 
         rw [hφ]
         first
         | exact IsLocalization.mk'_spec' (S := Localization.AtPrime P) b s'
-        | simp
       rw [wlocal_map_smul, ← e, ← hbs, ← hspec, map_mul, smul_smul, smul_smul]
       congr 1
       ring
@@ -606,7 +605,6 @@ theorem wlocal_global : Formalism.UG.WeylGLStable := by
         (g⁻¹ : GL (Fin r) R).val.map (algebraMap R (Localization.AtPrime P)) := by
       first
       | rfl
-      | simp [Units.coe_map_inv, RingHom.mapMatrix_apply]
     have hmem : map (algebraMap R (Localization.AtPrime P)) (dwAct R r n g f) ∈
         weyl (Localization.AtPrime P) r n hn ν := by
       unfold dwAct at hloc ⊢
@@ -622,8 +620,6 @@ theorem wlocal_global : Formalism.UG.WeylGLStable := by
     exact Submodule.mem_top
   rw [hJdef, Submodule.mem_comap, LinearMap.toSpanSingleton_apply, one_smul] at h1
   exact h1
-
-theorem weyl_module_GL_stable_local : Formalism.UG.WeylGLStableLocal := wlocal_local
 
 theorem weyl_module_GL_stable : Formalism.UG.WeylGLStable := wlocal_global
 

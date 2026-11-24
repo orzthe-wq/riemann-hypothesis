@@ -1,43 +1,40 @@
 module
 
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.RepresentationTheory.Irreducible
+public import Formalism.ConjugateSelfDual.Statement
+public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.LocalLanglandsGL
+public import Mathlib.RepresentationTheory.Semisimple
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPowEqPowOfWeilDegreeEqSmooth
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilGroupIsSemisimpleOfSemisimpleFrob
+public import Mathlib.RingTheory.SimpleModule.Rank
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.AbsCentral
-public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SumTrWEqZeroOfFrobCoset
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralCharacterRecCompatible
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EpsilonFactorRecCompatible
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLanglandsClassificationAddOfIrreducibleProductStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLanglandsClassificationDetCharacterStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LanglandsClassificationSupercuspidalSupportMultiStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SphericalSatakeEqLanglandsQuotientUnramifiedStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportOfPrincipalSeriesSubquotientStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGL
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGLStatement
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistRecCompatible
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedWeilDeligneEqDiagonalInvStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilDeligneCharpolyTwistSpecialStatement
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDimEqOne
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalRepGLExistsSatakeParameters
-import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParIndJacPlacing
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSteinberg
-import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FixedNeBotOfEquiv
 public import Development.AutomorphicArithmetic.Foundations.LocalLanglands.Multi
-import Development.WeilBound.CoreStatements.AutomorphicKernels.LanglandsExhaustion.IrreducibleAdmissibleGL
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.Coalgebra.CoassocSimps
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -60,9 +57,262 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow
+import ReciprocityTheory.GaloisValuations.GlobalA
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemOfLpCharLpSpEqSumList
+import Mathlib.LinearAlgebra.Eigenspace.Minpoly
+import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.ReduceModChar
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLanglandsClassificationDetCharacterStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LanglandsClassificationSupercuspidalSupportMultiStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SphericalSatakeEqLanglandsQuotientUnramifiedStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportOfPrincipalSeriesSubquotientStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGL
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGLStatement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilDeligneCharpolyTwistSpecialStatement
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDimEqOne
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalRepGLExistsSatakeParameters
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParIndJacPlacing
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSteinberg
+import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FixedNeBotOfEquiv
+import Development.WeilBound.CoreStatements.AutomorphicKernels.LanglandsExhaustion.IrreducibleAdmissibleGL
+import Mathlib.RingTheory.PicardGroup
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonodromyFreeSumIrreducibles, Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SumTrWEqZeroOfFrobCoset, Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PolarizedLinkage.ExtraV
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonodromyFreeSumIrreducibles =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonodromyFreeSumIrreducibles", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.RepresentationTheory.Irreducible\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.CoassocSimps\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.ExistsNotCongPow\npublic import Formalism.ConjugateSelfDual.Statement\nimport ReciprocityTheory.GaloisValuations.GlobalA\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.HasExponentZeroIff\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne
+  GlobalTheory.LocLanglands Module
+
+namespace GlobalTheory.WeilDeligne.IrrDecomp
+
+theorem isIrreducible_of_equiv {G V V' : Type} [Monoid G] [AddCommGroup V] [Module ℂ V]
+    [AddCommGroup V'] [Module ℂ V'] {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'}
+    (e : V ≃ₗ[ℂ] V') (he : ∀ g v, e (ρ g v) = ρ' g (e v)) (hρ : ρ.IsIrreducible) :
+    ρ'.IsIrreducible := by
+  have he' : ∀ g v, e.symm (ρ' g v) = ρ g (e.symm v) := fun g v => by
+    rw [e.symm_apply_eq, he, e.apply_symm_apply]
+  let F : Subrepresentation ρ ≃o Subrepresentation ρ' :=
+    { toFun := fun U => ⟨U.toSubmodule.map (e : V →ₗ[ℂ] V'), fun g v hv => by
+        obtain ⟨u, hu, rfl⟩ := hv
+        exact ⟨ρ g u, U.apply_mem_toSubmodule g hu, he g u⟩⟩
+      invFun := fun U => ⟨U.toSubmodule.map (e.symm : V' →ₗ[ℂ] V), fun g v hv => by
+        obtain ⟨u, hu, rfl⟩ := hv
+        exact ⟨ρ' g u, U.apply_mem_toSubmodule g hu, he' g u⟩⟩
+      left_inv := fun U => by
+        apply Subrepresentation.toSubmodule_injective
+        ext v
+        simp [Submodule.mem_map_equiv]
+      right_inv := fun U => by
+        apply Subrepresentation.toSubmodule_injective
+        ext v
+        simp [Submodule.mem_map_equiv]
+      map_rel_iff' := by
+        intro U U'
+        show U.toSubmodule.map (e : V →ₗ[ℂ] V') ≤ U'.toSubmodule.map (e : V →ₗ[ℂ] V') ↔
+          U.toSubmodule ≤ U'.toSubmodule
+        exact Submodule.map_le_map_iff_of_injective e.injective _ _ }
+  haveI : IsSimpleOrder (Subrepresentation ρ) := hρ
+  exact F.symm.isSimpleOrder
+
+variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
+  {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
+
+end GlobalTheory.WeilDeligne.IrrDecomp
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonodromyFreeSumIrreducibles =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SumTrWEqZeroOfFrobCoset =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SumTrWEqZeroOfFrobCoset", "h": "module\n\nimport Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemOfLpCharLpSpEqSumList\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.LocalLanglandsGL\npublic import Mathlib.RepresentationTheory.Semisimple\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPowEqPowOfWeilDegreeEqSmooth\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MonodromyFreeSumIrreducibles\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeilGroupIsSemisimpleOfSemisimpleFrob\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Eigenspace.Minpoly\nimport Mathlib.LinearAlgebra.Eigenspace.Triangularizable\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\npublic import Mathlib.RingTheory.SimpleModule.Rank\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial Module
+open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands
+
+namespace GlobalTheory.VWeil
+
+variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
+  {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
+variable {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
+
+theorem exists_pow_frob_comm (ρ : Representation ℂ (Weil h) V) (hρ : IsSmooth ρ) :
+    ∃ m : ℕ, 0 < m ∧ ∀ σ, Commute (ρ σ) (ρ (frob h) ^ m) := by
+  classical
+  have h1 : ∀ T : Set.range fun τ : Ine (F := E) A => ρ (ineIncl h τ),
+      ∃ m : ℕ, 0 < m ∧ Commute T.1 (ρ (frob h) ^ m) := by
+    rintro ⟨_, τ, rfl⟩
+    obtain ⟨m, hm, hpow⟩ := exists_pow_eq_pow_of_deg_eq E Ω A w h V ρ hρ
+      (ineIncl h τ * frob h * (ineIncl h τ)⁻¹) (frob h) (by simp)
+    refine ⟨m, hm, ?_⟩
+    rw [← map_pow, conj_pow] at hpow
+    show ρ (ineIncl h τ) * _ = _ * ρ (ineIncl h τ)
+    conv_rhs => rw [← hpow]
+    rw [← map_pow, ← map_mul, ← map_mul, inv_mul_cancel_right]
+  choose m hm hc using h1
+  haveI := hρ.finite_range.fintype
+  refine ⟨∏ T, m T, Finset.prod_pos fun T _ => hm T, fun σ => ?_⟩
+  obtain ⟨τ, hτ⟩ := exists_eq_zpow_mul (deg_frob (h := h)) σ
+  rw [hτ, map_mul]
+  refine Commute.mul_left ?_ ?_
+  · rw [← map_pow]
+    exact ((Commute.refl (frob h)).zpow_left _).pow_right _ |>.map ρ
+  · obtain ⟨k, hk⟩ := Finset.dvd_prod_of_mem m (Finset.mem_univ ⟨_, τ, rfl⟩)
+    rw [hk, pow_mul]
+    exact (hc ⟨_, τ, rfl⟩).pow_right k
+
+theorem isSemisimple_apply (ρ : Representation ℂ (Weil h) V) (hρ : IsSmooth ρ)
+    (hss : ρ.IsSemisimpleRepresentation) (σ : Weil h) : End.IsSemisimple (ρ σ) := by
+  classical
+  obtain ⟨m, hm, hc⟩ := exists_pow_frob_comm ρ hρ
+  refine isSemisimple_of_isSemisimple_frob E Ω A w h V ρ hρ (frob h) deg_frob
+    (FrobSemisimple.isSemisimple_of_pow ((Group.isUnit _).map ρ) hm ?_) σ
+  set T := ρ (frob h) ^ m with hT
+  let p : ℂ[X] := ∏ μ ∈ (minpoly ℂ T).roots.toFinset, (X - C μ)
+  refine End.isSemisimple_of_squarefree_aeval_eq_zero (p := p)
+    (Separable.squarefree (separable_prod_X_sub_C_iff'.2 fun _ _ _ _ e => e)) ?_
+  have hcp : ∀ g, Commute (ρ g) (aeval T p) := fun g => by
+    simp only [p]
+    rw [aeval_eq_sum_range]
+    exact Commute.sum_right _ _ _ fun i _ => ((hc g).pow_right i).smul_right _
+  let K : Subrepresentation ρ := ⟨LinearMap.ker (aeval T p), fun g v hv => by
+    rw [LinearMap.mem_ker, ← End.mul_apply, ← (hcp g).eq, End.mul_apply, LinearMap.mem_ker.1 hv,
+      map_zero]⟩
+  obtain ⟨Q, hQ⟩ := hss.exists_isCompl K
+  have hinf : K.toSubmodule ⊓ Q.toSubmodule = ⊥ :=
+    congrArg Subrepresentation.toSubmodule hQ.inf_eq_bot
+  have hsup : K.toSubmodule ⊔ Q.toSubmodule = ⊤ :=
+    congrArg Subrepresentation.toSubmodule hQ.sup_eq_top
+  have hQT : ∀ v ∈ Q.toSubmodule, T v ∈ Q.toSubmodule := fun v hv => by
+    rw [hT, ← map_pow]; exact Q.apply_mem_toSubmodule _ hv
+  have hQ0 : Q.toSubmodule = ⊥ := by
+    by_contra hne
+    haveI : Nontrivial Q.toSubmodule := Submodule.nontrivial_iff_ne_bot.mpr hne
+    obtain ⟨μ, hμ⟩ := End.exists_eigenvalue (T.restrict hQT)
+    obtain ⟨v, hv⟩ := hμ.exists_hasEigenvector
+    have hv1 : T v = μ • (v : V) := congrArg Subtype.val hv.apply_eq_smul
+    have hv0 : (v : V) ≠ 0 := fun e => hv.2 (Subtype.ext e)
+    have hvT : End.HasEigenvector T μ v := ⟨End.mem_eigenspace_iff.2 hv1, hv0⟩
+    have hroot : μ ∈ (minpoly ℂ T).roots.toFinset := by
+      rw [Multiset.mem_toFinset, mem_roots (minpoly.ne_zero_of_finite ℂ T)]
+      exact End.hasEigenvalue_iff_isRoot.1 (End.hasEigenvalue_of_hasEigenvector hvT)
+    have hK : (v : V) ∈ K.toSubmodule := by
+      show aeval T p v = 0
+      rw [End.aeval_apply_of_hasEigenvector hvT, show p.eval μ = 0 from ?_, zero_smul]
+      simp only [p, eval_prod]
+      exact Finset.prod_eq_zero hroot (by simp)
+    exact hv0 ((Submodule.mem_bot ℂ).1 (hinf ▸ Submodule.mem_inf.2 ⟨hK, v.2⟩))
+  rw [hQ0, sup_bot_eq] at hsup
+  exact LinearMap.ker_eq_top.1 hsup
+
+def wdOfRep (ρ : Representation ℂ (Weil h) V) (hρ : IsSmooth ρ)
+    (hss : ρ.IsSemisimpleRepresentation) : WDRep h V where
+  ρ := ρ
+  N := 0
+  smooth := hρ
+  semisimple := isSemisimple_apply ρ hρ hss
+  nilpotent := IsNilpotent.zero
+  comm σ := by simp
+
+
+variable (h) in
+abbrev IrrW : Type := {x : WD h // IsIrrWD x}
+
+theorem isIrrWD_mk (a : WDRep h V) : IsIrrWD (WD.mk a) ↔ a.ρ.IsIrreducible := by
+  constructor
+  · rintro ⟨n, b, hb, hirr⟩
+    obtain ⟨e, he, -⟩ := WD.mk_eq_mk.1 hb
+    exact IrrDecomp.isIrreducible_of_equiv e he hirr
+  · intro hirr
+    obtain ⟨e, he, -⟩ := WD.iso_std a
+    exact ⟨_, (WD.std a).2, (WD.sound (WD.iso_std _)).symm, IrrDecomp.isIrreducible_of_equiv e he hirr⟩
+
+theorem nontrivial_of_irr {ρ : Representation ℂ (Weil h) V} (hρ : ρ.IsIrreducible) : Nontrivial V := by
+  by_contra hV
+  rw [not_nontrivial_iff_subsingleton] at hV
+  exact bot_ne_top (α := Subrepresentation ρ)
+    (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))
+
+theorem N_eq_zero_of_irr (a : WDRep h V) (hirr : a.ρ.IsIrreducible) : a.N = 0 := by
+  apply GlobalTheory.WeilDeligne.SpSummand.N_eq_zero_of_irr <;> assumption
+
+theorem IrrW.mono0 (z : IrrW h) : z.1.mono0 := by
+  obtain ⟨_, n, a, rfl, ha⟩ := z
+  exact (WD.monodromyZero_ofWeilDeligneRepClass_iff a).2 (N_eq_zero_of_irr a ha)
+
+theorem IrrW.lpDim_pos (z : IrrW h) : 0 < z.1.lpDim := by
+  obtain ⟨_, n, a, rfl, ha⟩ := z
+  have := nontrivial_of_irr ha
+  show 0 < (WD.mk a).lpDim
+  rw [WD.lpDim_mk]
+  exact finrank_pos
+
+theorem isIrrWD_lpOfChar (χ : Weil h →* ℂˣ) (hχ : IsSmooth χ) : IsIrrWD (WD.lpOfChar h χ hχ) := by
+  refine ⟨1, _, rfl, ?_⟩
+  haveI : IsSimpleModule ℂ (Fin 1 → ℂ) := isSimpleModule_iff_finrank_eq_one.2 (by simp)
+  refine { exists_pair_ne := ⟨⊥, ⊤, fun hbt => ?_⟩, eq_bot_or_eq_top := fun U => ?_ }
+  · exact bot_ne_top (α := Submodule ℂ (Fin 1 → ℂ)) (congrArg Subrepresentation.toSubmodule hbt)
+  · rcases eq_bot_or_eq_top U.toSubmodule with hU | hU
+    · exact Or.inl (Subrepresentation.toSubmodule_injective hU)
+    · exact Or.inr (Subrepresentation.toSubmodule_injective hU)
+
+def IrrW.ofChar (χ : Weil h →* ℂˣ) (hχ : IsSmooth χ) : IrrW h :=
+  ⟨WD.lpOfChar h χ hχ, isIrrWD_lpOfChar χ hχ⟩
+
+
+variable (h) in
+def frobCoset (r : ℕ) : Set (Weil h) := {τ | deg τ = -(r : ℤ)}
+
+@[simp] theorem mem_frobCoset {r : ℕ} {τ : Weil h} : τ ∈ frobCoset h r ↔ deg τ = -(r : ℤ) := Iff.rfl
+
+
+
+
+section Artin
+
+attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+
+end Artin
+
+
+variable (h) in
+abbrev VR : Type := IrrW h →₀ ℚ
+
+namespace VR
+
+
+
+
+
+
+end VR
+
+end GlobalTheory.VWeil
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SumTrWEqZeroOfFrobCoset =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PolarizedLinkage.ExtraV =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PolarizedLinkage.ExtraV", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.AbsCentral\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SumTrWEqZeroOfFrobCoset\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralCharacterRecCompatible\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EpsilonFactorRecCompatible\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLanglandsClassificationAddOfIrreducibleProductStatement\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsLanglandsClassificationDetCharacterStatement\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LanglandsClassificationSupercuspidalSupportMultiStatement\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SphericalSatakeEqLanglandsQuotientUnramifiedStatement\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportOfPrincipalSeriesSubquotientStatement\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGL\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SupercuspidalSupportUniqueGLStatement\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistRecCompatible\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedWeilDeligneEqDiagonalInvStatement\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeilDeligneCharpolyTwistSpecialStatement\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrreducibleFixed\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Mono0OfLpDimEqOne\nimport Development.AbelianVarietyTheory.Proofs.SatakeParameters.SphericalRepGLExistsSatakeParameters\nimport Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParIndJacPlacing\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSteinberg\nimport Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.FixedNeBotOfEquiv\npublic import Development.AutomorphicArithmetic.Foundations.LocalLanglands.Multi\nimport Development.WeilBound.CoreStatements.AutomorphicKernels.LanglandsExhaustion.IrreducibleAdmissibleGL\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Mathlib.RingTheory.PicardGroup\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -81,25 +331,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 private theorem cz : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective
 
-private theorem geo : GlobalTheory.Published.GeometricLemma := PositivityTheory.Exh.geometricLemmaGL
-
-private theorem eq_of_support_singleton {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
-    [IsNonarchimedeanLocalField k] {y z : IrrGL (k := k)} (h : HasSupport y.rep {z}) : y = z := by
-  obtain ⟨r, u, hu, hi, hc, e, hsub⟩ := h
-  obtain rfl : r = 1 := by simpa using congrArg Multiset.card hu
-  obtain rfl : u = fun _ => z := funext fun i => by
-    rw [Subsingleton.elim i 0]
-    simpa using hu
-  obtain ⟨d, c⟩ := y
-  obtain rfl : z.1 = d := by simpa using Fintype.card_congr e
-  have hd : ∑ _ : Fin 1, z.1 = z.1 := by simp
-  obtain ⟨φ⟩ := (GlobalTheory.SmGL.Placing.parInd_jac_placing k _ _ _ e (stdBlocks (fun _ : Fin 1 => z.1) hd) _).1
-    (piTensor fun _ => z.rep)
-  obtain ⟨ψ⟩ := nonempty_equiv_prodIrr_one z hd
-  let χ := φ.trans ψ.symm
-  obtain ⟨θ⟩ := SupportUnique.nonempty_equiv_of_isSubquotient hi z.2.rep.irr
-    (hsub.trans (.of_injective χ.toIntertwiningMap χ.toLinearEquiv.injective))
-  exact ((IrrGL.of_rep z).symm.trans ((IrrGL.of_eq_of.2 ⟨θ⟩).trans (IrrGL.of_rep ⟨_, c⟩))).symm
+private alias geo := _root_.GlobalTheory.CompanionTheory.GeoLink.geometricLemma
 
 private theorem det_law (H : LawsT a ha rc) (t : ℕ) (χ : (w.adicCompletion E)ˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     rc (cls (IrrRep.det (Fin t) χ hχ)) =
@@ -234,7 +466,7 @@ private theorem cusp_law (H : LawsT a ha rc) (x : IrrGL (k := w.adicCompletion E
   haveI := cz (E := E) (w := w)
   obtain ⟨𝔪, hm⟩ := Pr.exh (w.adicCompletion E) x
   obtain ⟨l, rfl⟩ : ∃ l : List (Segment (w.adicCompletion E)), (l : Multiset _) = 𝔪 := ⟨_, 𝔪.coe_toList⟩
-  have hs := GlobalTheory.T.langlandsClassification_supercuspidalSupport_multisegment Pr.zel _ _ x hm
+  have hs := _root_.GlobalTheory.LocGL.hasSupport_msupp_of_isL Pr.zel _ _ x hm
   rw [H.langlands l x hm] at hx
   have key : ∀ (Δ : Segment (w.adicCompletion E)) (m : List (Segment (w.adicCompletion E))), segSum rc (Δ :: m) =
       (((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp (h := h) Δ.len)).lpSum (segSum rc m) := fun _ _ => rfl
@@ -260,7 +492,7 @@ private theorem cusp_law (H : LawsT a ha rc) (x : IrrGL (k := w.adicCompletion E
       rw [msupp, Multiset.coe_singleton, Multiset.singleton_bind]
       exact (congrArg Segment.ms e').trans (Segment.ms_single _ _)
     rw [hms] at hs
-    rw [eq_of_support_singleton hs]
+    rw [_root_.GlobalTheory.CompanionTheory.CuspPairSub.eq_of_hasSupport_singleton hs]
     exact Δ.isCusp_first
   | Δ :: Δ' :: m, _, hx =>
     rw [key] at hx
@@ -285,3 +517,6 @@ theorem UpperTheory.V.Z.Win.toV' {E Ω : Type} [Field E] [NumberField E] [Field 
   UpperTheory.V.Z.Win.extraV E Ω A w h rc H
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.AutomorphyLifting.PolarizedLinkage.ExtraV =====

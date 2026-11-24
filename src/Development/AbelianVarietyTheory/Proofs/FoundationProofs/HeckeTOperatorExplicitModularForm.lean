@@ -1,11 +1,13 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.PetEqRelIndexMulPetProd
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTSlashInvariantStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUOperatorExplicitEqSumSlashStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MdifferentiableHeckeOperatorsExplicitStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowSmulHeckeVOperatorExplicitEqSlashDiagStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlashRatIsBoundedAtGamma1InterGamma0LevelStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeTSlashInvariant
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HeckeUOperatorExplicitEqSumSlash
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Geometry.Manifold.VectorBundle.CovariantDerivative.LeviCivita
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MdifferentiableHeckeOperatorsExplicit
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PowSmulHeckeVOperatorExplicitEqSlashDiag
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlashRatIsBoundedAtGamma1InterGamma0Level
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -87,16 +89,16 @@ theorem heckeT_modularForm : ∀ (N l q : ℕ) (k : ℤ) (σ : SL(2, ℤ)), 0 < 
     f.slash_action_eq' _ ⟨γ, hγ, rfl⟩
   refine ⟨{ toFun := heckeT k q σ ⇑f, slash_action_eq' := ?_, holo' := ?_, bdd_at_cusps' := ?_ }, rfl⟩
   · rintro _ ⟨A, (hA : A ∈ lev N l), rfl⟩
-    exact GlobalTheory.T.heckeT_slash_eq_of_slash_eq N l q k σ ⇑f hN hq hql hσ hinv A hA
-  · exact (GlobalTheory.T.mdifferentiable_heckeOperatorsExplicit q k σ ⇑f hq0 f.holo').2.2
+    exact _root_.GlobalTheory.HkInv.heckeT_slash_invariant N l q k σ ⇑f hN hq hql hσ hinv A hA
+  · exact (_root_.GlobalTheory.Hk.hecke_mdiff q k σ ⇑f hq0 f.holo').2.2
   · intro c hc
-    have hsum := GlobalTheory.T.heckeUOperatorExplicit_eq_sum_slash q k (⇑f) hq0
-    have hv := GlobalTheory.T.pow_smul_heckeVOperatorExplicit_eq_slash_diag q k ((⇑f) ∣[k] σ) hq0
+    have hsum := _root_.GlobalTheory.Hk.uOp_eq_sum_slash q k (⇑f) hq0
+    have hv := _root_.GlobalTheory.Hk.smul_vOp_eq_slash q k ((⇑f) ∣[k] σ) hq0
     show c.IsBoundedAt (heckeT k q σ ⇑f) k
     unfold heckeT
     rw [hsum, hv]
     refine OnePoint.IsBoundedAt.add (isBoundedAt_finsetSum_heckeT _ _ fun j _ => ?_) ?_
-    · exact GlobalTheory.T.slash_rat_isBoundedAt_gamma1InterGamma0Level N l k _ hN hl (by simp [Matrix.det_fin_two_of]; exact_mod_cast hq0) f c hc
+    · exact _root_.GlobalTheory.Hk.slash_rat_isBoundedAt N l k _ hN hl (by simp [Matrix.det_fin_two_of]; exact_mod_cast hq0) f c hc
     · set D := Matrix.GeneralLinearGroup.mkOfDetNeZero !![(q : ℚ), 0; 0, 1]
           (by simp [Matrix.det_fin_two_of]; exact_mod_cast hq0.ne') with hD
       have e : ((⇑f ∣[k] σ) ∣[k] Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) D)
@@ -107,7 +109,7 @@ theorem heckeT_modularForm : ∀ (N l q : ℕ) (k : ℤ) (σ : SL(2, ℤ)), 0 < 
         ext i j
         simp [Matrix.SpecialLinearGroup.mapGL]
       rw [e]
-      refine GlobalTheory.T.slash_rat_isBoundedAt_gamma1InterGamma0Level N l k _ hN hl ?_ f c hc
+      refine _root_.GlobalTheory.Hk.slash_rat_isBoundedAt N l k _ hN hl ?_ f c hc
       simp [hD, Matrix.det_fin_two_of]
       exact_mod_cast hq0
 end GlobalTheory.Hk

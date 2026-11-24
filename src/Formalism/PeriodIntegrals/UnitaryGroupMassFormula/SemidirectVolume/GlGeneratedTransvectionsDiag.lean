@@ -354,9 +354,6 @@ end
 
 theorem gl_generated_transvections_diag : ElimSR1 := by
   intro A _ hA k X
-  exact reduce hA k X (by
-    intro i j h
-    exfalso
-    omega)
+  exact reduce hA k X (by simp [Red])
 
 end PI.VolSemiDirect.W.Cj

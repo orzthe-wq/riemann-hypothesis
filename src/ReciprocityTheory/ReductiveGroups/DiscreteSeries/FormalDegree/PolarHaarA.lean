@@ -1,49 +1,11 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PolarBasic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.CategoryTheory.Countable
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.KFacts
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.KinstSecondCountable
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.FormalDegree.PolarBasicA
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -72,11 +34,9 @@ instance fdph_dk_openPos (ε : Fin n → Bool) : Measure.IsOpenPosMeasure (dk ε
   rw [dk_def]
   exact Measure.isOpenPosMeasure_smul (muK ε) (ENNReal.inv_ne_zero.mpr (fdph_muK_univ_ne_top ε))
 
-lemma fdph_shc_pos (u : ℝ) : 0 < shc u := pb_shc_pos u
-
 lemma fdph_jac_pos {ε : Fin n → Bool} (z : PCoord ε → ℂ) : 0 < Jac z := by
   delta Jac
-  exact Finset.prod_pos fun a _ => Finset.prod_pos fun b _ => fdph_shc_pos _
+  exact Finset.prod_pos fun a _ => Finset.prod_pos fun b _ => _root_.ReciprocityTheory.ChartRestriction.DS.pb_shc_pos _
 
 abbrev fdphNu (ε : Fin n → Bool) : Measure (PCoord ε → ℂ) :=
   (volume : Measure (PCoord ε → ℂ)).withDensity fun z => ENNReal.ofReal (Jac z)
@@ -84,7 +44,7 @@ abbrev fdphNu (ε : Fin n → Bool) : Measure (PCoord ε → ℂ) :=
 instance fdph_nu_openPos (ε : Fin n → Bool) : Measure.IsOpenPosMeasure (fdphNu ε) := by
   refine ⟨fun U hU hne => ?_⟩
   have hm : Measurable fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z) :=
-    ENNReal.measurable_ofReal.comp (jac_continuous ε).measurable
+    ENNReal.measurable_ofReal.comp (_root_.ReciprocityTheory.ChartRestriction.DS.pb_jac_continuous ε).measurable
   rw [Ne, fdphNu, withDensity_apply_eq_zero hm]
   have hu : {x : PCoord ε → ℂ | ENNReal.ofReal (Jac x) ≠ 0} = Set.univ := by
     ext x
@@ -97,7 +57,7 @@ instance fdph_nu_finCpt (ε : Fin n → Bool) : IsFiniteMeasureOnCompacts (fdphN
   refine ⟨fun K hK => ?_⟩
   rw [fdphNu, withDensity_apply' _ K]
   exact setLIntegral_lt_top_of_isCompact hK.measure_lt_top.ne hK (f := fun z => (Jac z).toNNReal)
-    (continuous_real_toNNReal.comp (jac_continuous ε))
+    (continuous_real_toNNReal.comp (_root_.ReciprocityTheory.ChartRestriction.DS.pb_jac_continuous ε))
 
 def fdphPhi (ε : Fin n → Bool) (kz : KG ε × (PCoord ε → ℂ)) : UJ ε :=
   ⟨⟨polarM kz, Jm ε * (polarM kz)ᴴ * Jm ε,

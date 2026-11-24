@@ -110,7 +110,6 @@ theorem Ar_le_AHH {n' : ℕ} (m : ℕ) (hm : 1 ≤ m) (TT : Finset (Fin n')) (A 
       · rw [if_pos he, if_pos he, f0]
         exact_mod_cast Nat.sub_le _ _
       · rw [if_neg he, if_neg he]
-        beta_reduce
         rw [Fin.rev_zero, fl, neg_neg]
         exact_mod_cast Nat.sub_le _ _
     · have hz : ∀ i, flatW m (fun s => A s - j s) (fun s => B s - j s) s i = 0 := fun i => by
@@ -120,7 +119,6 @@ theorem Ar_le_AHH {n' : ℕ} (m : ℕ) (hm : 1 ≤ m) (TT : Finset (Fin n')) (A 
       by_cases he : Even s.val
       · rw [if_pos he, hz]
       · rw [if_neg he]
-        beta_reduce
         rw [hz, neg_zero]
   unfold Ar AHH
   calc _ ≤ ∑ s : Fin n', (if s ∈ TT then (hhDeg (ex A) (ex B) s true : ℤ) else 0) :=

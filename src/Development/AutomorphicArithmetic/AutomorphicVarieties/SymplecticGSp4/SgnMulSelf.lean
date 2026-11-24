@@ -88,7 +88,7 @@ private theorem adj_smul' (a : R) (X : M4 R) : adj (a • X) = a • adj X := by
 
 private theorem adj_one' : adj (1 : M4 R) = 1 := by
   ext i j
-  fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Matrix.one_apply]
+  fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn]
 
 private theorem tconj_apply' (t : Rˣ × Rˣ) (X : M4 R) (i j : Fin 4) : tconj t X i j = (wv t (wt i j) : R) * X i j := rfl
 

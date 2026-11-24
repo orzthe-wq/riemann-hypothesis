@@ -118,7 +118,6 @@ theorem blk_val {j : ℕ} (x : UnipotentBlockColumnIndex k j j → Ad E) (i c : 
   · rw [Finset.sum_eq_single (⟨(i, c), h.1, h.2.ge, h.2.le⟩ : UnipotentBlockColumnIndex k j j)]
     · first
       | exact Matrix.single_apply_same _ _ _
-      | simp [Matrix.single_apply]
     · intro t _ ht
       apply Matrix.single_apply_of_ne
       rintro ⟨h1, h2⟩
@@ -137,7 +136,6 @@ theorem blk_mul_val (j : ℕ) (hj : j < k) (x : UnipotentBlockColumnIndex k j j 
   congr 1
   · first
     | rw [← Matrix.mul_apply, Matrix.one_mul]
-    | simp [Matrix.one_apply]
   · rw [Finset.sum_eq_single ⟨j, hj⟩]
     · by_cases h : (i : ℕ) < j
       · rw [dite_eq_left (show (i : ℕ) < j ∧ ((⟨j, hj⟩ : Fin k) : ℕ) = j from ⟨h, rfl⟩), dite_eq_left h]
@@ -251,7 +249,6 @@ theorem UU_col {j : ℕ} (hj : j < k) (u : GA E k) (hu : UU j u) : UU (j + 1) (b
         show u.val i ⟨j, hj⟩ + -u.val i ⟨j, hj⟩ = 0
         first
         | exact add_neg_cancel _
-        | simp
       · rw [dite_eq_right h, zero_mul, add_zero]
         rcases Nat.lt_or_ge j (i : ℕ) with hij | hij
         · have hne : i ≠ ⟨j, hj⟩ := fun e => by subst e; exact lt_irrefl j hij
@@ -267,14 +264,12 @@ theorem UU_split {j : ℕ} (hj : j < k) (u : GA E k) (hu : UU j u) :
 theorem nuD_zero : nuD E k 0 = Measure.dirac 1 := by
   first
   | rfl
-  | simp only [nuD]
 
 theorem nuD_succ (d : ℕ) : nuD E k (d + 1) =
     Measure.map (fun p : (UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → Ad E) × GA E k => blkU p.1 * p.2)
       ((vecMeasure E (UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)))).prod (nuD E k d)) := by
   first
   | rfl
-  | simp only [nuD]
 
 theorem sf_nuD : ∀ d, SFinite (nuD E k d)
   | 0 => by rw [nuD_zero]; infer_instance
@@ -386,8 +381,7 @@ theorem props_succ (hDt : ∀ j (u : GA E k), UU j u → Dt u = 1)
         _ = ∫⁻ n, F (blkU (-x) * (blkU x * n * blkU (-x))) ∂nuD E k d :=
             lintegral_congr fun n => congrArg F (by
               first
-              | rw [← mul_assoc, ← mul_assoc, bU_neg_mul, one_mul]
-              | (rw [← bU_inv]; group))
+              | rw [← mul_assoc, ← mul_assoc, bU_neg_mul, one_mul])
         _ = ∫⁻ n, F (blkU (-x) * n) ∂nuD E k d :=
             iconj x (fun n => F (blkU (-x) * n)) (hF.comp (meas_lmul _))
     have hH : Measurable fun u : GA E k => ∫⁻ n, F (u * n) ∂nuD E k d :=

@@ -4,10 +4,12 @@ public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsGalois
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.IsReducedAlgebraOfSmoothOfIsNoetherianRing
 public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.OverHomEqIffForallIsAlgClosedAlgebra
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFiniteEtaleDeeperLevelCoverStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFiniteEtaleDeeperLevelCover
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsSabCancel
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFiniteEtaleSurjective
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NonemptyObjMapOfFiniteEtaleCoverStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NonemptyObjMapOfFiniteEtaleCover
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.NsmulMemSmulTop
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjPull
 import Mathlib.Algebra.Order.Floor.Extended
@@ -183,7 +185,7 @@ theorem exists_cover (hL : Out.Laws) (hpq : 1 ≤ D.p + D.q) (hd : l.Dvd l₂) {
   obtain ⟨k1, k2, k3⟩ := finite_etale_onto_spMap Q.jK
   obtain ⟨o₁, ⟨n₁⟩⟩ := obj_pull E H D l _ _ (baseKA l) (baseUp Q) Q.jK _ _ s' (pullback.snd s' (spMap Q.jK))
     (pullback.fst _ _) rfl rfl pullback.condition ob
-  obtain ⟨S₂, p, o₂, m, hf, he, hs, ⟨hm₁, hm₂⟩, -⟩ := GlobalTheory.T.exists_finiteEtale_deeper_level_cover hL E H D l l₂ _ (baseUp Q) (baseKA l₂) _ _ o₁ hpq hd
+  obtain ⟨S₂, p, o₂, m, hf, he, hs, ⟨hm₁, hm₂⟩, -⟩ := _root_.GlobalTheory.LevCover.levelCover_closed hL E H D l l₂ _ (baseUp Q) (baseKA l₂) _ _ o₁ hpq hd
     (baseUp_rho Q) (baseUp_zeta Q hd.2.2)
   have hr : IsReduced S₂ := isReduced_of_smooth_of_isReduced (p ≫ pullback.fst s' (spMap Q.jK))
   obtain ⟨f₂, ⟨hf₂, ⟨u⟩⟩, -⟩ := Xo₂.rep S₂ _ hr o₂
@@ -223,7 +225,7 @@ theorem levelQuot_represents : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field 
   have hfac : q ≫ EffectiveEpi.desc q g hcoeq = g := EffectiveEpi.fac q g hcoeq
   refine ⟨EffectiveEpi.desc q g hcoeq, ?_, ?_⟩
   · rw [← cancel_epi q, ← Category.assoc, hfac, hg]
-  · exact GlobalTheory.T.nonempty_objMap_of_finite_etale_surjective_cover hL hL2 E H D l _ _ _ _ _ _ _ _ _ _ _ _ Q.univ ob o q _ (Or.inl hS) hf he hs ⟨mq⟩
+  · exact _root_.GlobalTheory.nonempty_objMap_of_finite_etale_cover hL hL2 E H D l _ _ _ _ _ _ _ _ _ _ _ _ Q.univ ob o q _ (Or.inl hS) hf he hs ⟨mq⟩
       (hfac.symm ▸ ⟨mg⟩)
 
 end GlobalTheory

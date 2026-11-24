@@ -85,7 +85,7 @@ private lemma actP_mem_range_map_of_entries_mem {K : Type} [Field K] (K₀ : Sub
   have hd : _root_.Formalism.L2.DIV.detTwK lam g ∈ K₀ := by
     rw [_root_.Formalism.L2.DIV.detTw_eq]
     exact prod_mem fun τ _ => by
-      first | exact pow_mem (hdet τ) _ | exact zpow_mem (hdet τ) _
+      first | exact zpow_mem (hdet τ) _
   unfold _root_.Formalism.L2.DIV.actP _root_.Formalism.L2.DIV.trAct
   rw [LinearMap.smul_apply, AlgHom.toLinearMap_apply, MvPolynomial.smul_eq_C_mul]
   refine mul_mem ⟨MvPolynomial.C ⟨_, hd⟩, by simp⟩ (blockAct_map_mem_range_map_of_entries_mem K₀ _ ?_ P)

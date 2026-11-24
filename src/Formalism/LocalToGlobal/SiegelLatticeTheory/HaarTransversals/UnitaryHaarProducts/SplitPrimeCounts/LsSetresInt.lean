@@ -4,43 +4,6 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NotDvdAbsNormDiffere
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.SettingBlocks
 public import Mathlib.Algebra.AffineMonoid.Basic
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.SplitPrimeCounts.LsSetresSplit
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 import ReciprocityTheory.ReductiveGroups.PlaceCounting.RaySplA
 
 @[expose] public section
@@ -71,12 +34,10 @@ theorem natNorm_mem (m : ℕ) :
     (((Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) ^ m : ℕ) : D.host.E)) ∈ ddS D ^ m := by
   unfold ddS
   rw [← FractionalIdeal.coeIdeal_pow, FractionalIdeal.mem_coeIdeal]
-  refine ⟨((Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) : 𝓞 D.host.E)) ^ m, ?_, ?_⟩
-  · apply Ideal.pow_mem_pow
-    have h := Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))
-      (Ideal.absNorm_mem (differentIdeal ℤ (𝓞 D.host.F)))
-    simpa using h
-  · simp
+  refine ⟨((Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) : 𝓞 D.host.E)) ^ m, ?_, by simp⟩
+  apply Ideal.pow_mem_pow
+  simpa using Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))
+    (Ideal.absNorm_mem (differentIdeal ℤ (𝓞 D.host.F)))
 
 theorem ddS_ne_zero : ddS D ≠ 0 := by
   intro h
@@ -105,8 +66,7 @@ theorem one_mem_aaD (a : Fin D.R.rS) : (1 : D.host.E) ∈ aaD D a := by
 
 theorem mem_aaD_inv (a : Fin D.R.rS) :
     (((Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) ^ (D.R.rS - (a : ℕ)) : ℕ) : D.host.E)) ∈ (aaD D a)⁻¹ := by
-  rw [aaD_eq, inv_inv]
-  exact natNorm_mem _
+  simpa [aaD_eq] using natNorm_mem (D := D) (D.R.rS - (a : ℕ))
 
 theorem inAt_of_smul_mem (A : UnitaryGroupInstance D) (y : (VS D).V) (c : ℕ) (hc : Nat.Coprime c (gD D))
     (hy : ((c : ℕ) : D.host.E) • y ∈ (VS D).L0) :

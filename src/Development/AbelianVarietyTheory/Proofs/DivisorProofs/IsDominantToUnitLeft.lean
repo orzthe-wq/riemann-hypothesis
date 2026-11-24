@@ -45,6 +45,7 @@ import Mathlib.Tactic.Polynomial.Basic
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.GtPtsVal
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.ExistsRosatiGen
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -99,8 +100,7 @@ theorem gm_top_eq (ρ : Γ(Spec (CommRingCat.of V), ⊤)ˣ) (z : (TF (R := V) (F
   rw [← gs_unit _ z ⊤ trivial, toUnit_left_eq, GlobalTheory.RatioVal.gs_specMap]
   exact (GlobalTheory.RatioVal.gs_id_const z _).symm
 
-theorem oneGen_gen {X Y : Scheme.{0}} (L : LB X) : (LB.oneGen L (Y := Y)).IsGen := fun _ _ =>
-  (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm
+alias oneGen_gen := _root_.GlobalTheory.SelfUnif.oneGen_isGen
 
 theorem exists_unit_of_triv {P v} (h : SymFrame.GRep D.P.L (𝟙_ (Over (Spec (CommRingCat.of V)))) P v)
     (hP : ∀ (U : Type) [CommGroup U] (h : ((𝟙_ (Over (Spec (CommRingCat.of V)))).left ⟶ D.P.A.left) → U), P U h = 1) :

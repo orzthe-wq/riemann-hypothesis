@@ -1,34 +1,35 @@
 module
 
-public import Development.AbelianVarietyTheory.Definitions.Foundations.ClassMassEqSumOfBijective
-public import Formalism.HermitianLattices.StatementMass
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB
 public import Formalism.SatakeDualWeyl.DefsCS
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraMapApply
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EpsMemLatSIff
+public import Formalism.HermitianLattices.HermitianLatticesProofs.LocBasic
+public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AdelstabL
+public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox
+public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
+public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Adelstab
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUnitaryClassRepTrivialAtCm
+public import Development.AbelianVarietyTheory.Definitions.Foundations.ClassMassEqSumOfBijective
+public import Formalism.HermitianLattices.StatementMass
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryTranspose
-import Formalism.HermitianLattices.HermitianLatticesProofs.LocBasic
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AdelstabL
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Bridge
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.ClassInjectiveOfSpanRecovery
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsAsmHformSmulRight
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsEasy
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsEquiv
-import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsSpan
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.RationalPointsLeHolds
-import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -45,6 +46,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -58,10 +60,467 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.ReduceModChar
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit
+import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraMapApply, Development.AbelianVarietyTheory.Proofs.FoundationProofs.EpsMemLatSIff, Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryMassLatticeEqGenusMass
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraMapApply =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraMapApply", "h": "module\n\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB\npublic import Formalism.SatakeDualWeyl.DefsCS\npublic import Formalism.HermitianLattices.HermitianLatticesProofs.LocBasic\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AdelstabL\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Adelstab\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.UG Formalism.UG.P
+open scoped TensorProduct Matrix
+
+namespace GlobalTheory.LocDict
+
+section Adele
+
+variable {F : Type} [Field F] [NumberField F]
+
+local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
+
+theorem algebraMap_apply' (a : 𝓞 F) (w : HeightOneSpectrum (𝓞 F)) :
+    algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) a w =
+      algebraMap (𝓞 F) (w.adicCompletion F) a := rfl
+
+theorem exists_inv (v : HeightOneSpectrum (𝓞 F)) (a : 𝓞 F) (ha : a ∉ v.asIdeal) :
+    ∃ u ∈ intAd F, u * algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) a = afsplitI v 1 := by
+  have hval : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) a) = 1 := by
+    rw [csApprox_val_int]
+    exact HeightOneSpectrum.intValuation_eq_one_iff.2 ha
+  have hne : algebraMap (𝓞 F) (v.adicCompletion F) a ≠ 0 := by
+    intro h
+    rw [h, map_zero] at hval
+    exact zero_ne_one hval
+  have heval := afsplitI_eval v (algebraMap (𝓞 F) 𝔸 a)
+  rw [GlobalTheory.LocDict.algebraMap_apply'] at heval
+  refine ⟨afsplitI v (algebraMap (𝓞 F) (v.adicCompletion F) a)⁻¹, afsplitI_mem_intAd v _ ?_, ?_⟩
+  · rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hval, inv_one]
+  · calc afsplitI v (algebraMap (𝓞 F) (v.adicCompletion F) a)⁻¹ * algebraMap (𝓞 F) 𝔸 a
+        = afsplitI v (algebraMap (𝓞 F) (v.adicCompletion F) a)⁻¹ *
+            (afsplitI v 1 * algebraMap (𝓞 F) 𝔸 a) := by
+          rw [← mul_assoc, ← afsplitI_mul, mul_one]
+      _ = afsplitI v 1 := by rw [← heval, ← afsplitI_mul, inv_mul_cancel₀ hne]
+
+theorem exists_approx (v : HeightOneSpectrum (𝓞 F)) (d : 𝓞 F) (hd : d ≠ 0) :
+    ∃ t : 𝓞 F, t ∉ v.asIdeal ∧ ∃ y ∈ intAd F,
+      algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) t =
+        algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) t * afsplitI v 1 +
+          y * algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) d := by
+  classical
+  obtain ⟨k, hk0⟩ : ∃ k : ℕ, v.intValuation d = WithZero.exp (-(k : ℤ)) :=
+    ⟨_, v.intValuation_if_neg hd⟩
+  have hk : v.asIdeal ^ k ∣ Ideal.span {d} := by
+    rw [← HeightOneSpectrum.intValuation_le_pow_iff_dvd, hk0]
+  have hk1 : ¬ v.asIdeal ^ (k + 1) ∣ Ideal.span {d} := by
+    rw [← HeightOneSpectrum.intValuation_le_pow_iff_dvd, hk0, WithZero.exp_le_exp]
+    push_cast
+    omega
+  obtain ⟨J, hJ⟩ := hk
+  have hJP : ¬ J ≤ v.asIdeal := by
+    intro hle
+    apply hk1
+    rw [hJ, pow_succ]
+    exact mul_dvd_mul_left _ (Ideal.dvd_iff_le.2 hle)
+  obtain ⟨t, htJ, htP⟩ := SetLike.not_le_iff_exists.1 hJP
+  have hb : ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → ∃ b ∈ v.asIdeal ^ k, b ∉ w.asIdeal := by
+    intro w hw
+    by_contra h
+    push_neg at h
+    have hle : v.asIdeal ≤ w.asIdeal := Ideal.IsPrime.le_of_pow_le (fun b hb' => h b hb')
+    exact hw (HeightOneSpectrum.ext (v.isMaximal.eq_of_le w.isPrime.ne_top hle).symm)
+  have hval : ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → w.intValuation t ≤ w.intValuation d := by
+    intro w hw
+    obtain ⟨b, hbk, hbw⟩ := hb w hw
+    have hmem : t * b ∈ Ideal.span {d} := by
+      rw [hJ, mul_comm t b]
+      exact Ideal.mul_mem_mul hbk htJ
+    obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 hmem
+    have h1 : w.intValuation b = 1 := HeightOneSpectrum.intValuation_eq_one_iff.2 hbw
+    calc w.intValuation t = w.intValuation (t * b) := by rw [map_mul, h1, mul_one]
+      _ = w.intValuation c * w.intValuation d := by rw [← hc, map_mul]
+      _ ≤ 1 * w.intValuation d := by gcongr; exact w.intValuation_le_one c
+      _ = w.intValuation d := one_mul _
+  have hdF : algebraMap (𝓞 F) F d ≠ 0 :=
+    (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 hd
+  refine ⟨t, htP, algebraMap F 𝔸 (algebraMap (𝓞 F) F t / algebraMap (𝓞 F) F d) * (1 - afsplitI v 1),
+    ?_, ?_⟩
+  · show ∀ w, _
+    intro w
+    rw [afsplit_mul_apply, afsplit_sub_apply, afsplit_one_apply]
+    by_cases hw : w = v
+    · subst hw
+      rw [afsplitI_self, sub_self, mul_zero]
+      exact zero_mem _
+    · rw [afsplitI_ne v w hw, sub_zero, mul_one, HeightOneSpectrum.mem_adicCompletionIntegers]
+      have hc : ∀ c : F, (algebraMap F 𝔸 c) w = algebraMap F (w.adicCompletion F) c := fun c => rfl
+      rw [hc, levelaf_valued_algebraMap, map_div₀, HeightOneSpectrum.valuation_of_algebraMap,
+        HeightOneSpectrum.valuation_of_algebraMap,
+        div_le_one₀ (zero_lt_iff.2 (w.intValuation_ne_zero d hd))]
+      exact hval w hw
+  · rw [IsScalarTower.algebraMap_apply (𝓞 F) F 𝔸 t, IsScalarTower.algebraMap_apply (𝓞 F) F 𝔸 d]
+    have hq : algebraMap F 𝔸 (algebraMap (𝓞 F) F t / algebraMap (𝓞 F) F d) *
+        algebraMap F 𝔸 (algebraMap (𝓞 F) F d) = algebraMap F 𝔸 (algebraMap (𝓞 F) F t) := by
+      rw [← map_mul, div_mul_cancel₀ _ hdF]
+    linear_combination (-(1 - afsplitI v 1)) * hq
+
+end Adele
+
+section Main
+
+variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+
+local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
+local notation "ι" => inclE (F := F) (E := E) 𝔸
+
+theorem eps_eq (v : HeightOneSpectrum (𝓞 F)) :
+    afsplitEps E v = (1 : E) ⊗ₜ[F] afsplitI v 1 := rfl
+
+theorem one_tmul_mem {y : FiniteAdeleRing (𝓞 F) F} (hy : y ∈ intAd F) :
+    (1 : E) ⊗ₜ[F] y ∈ tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F) := by
+  have h := levelaf_tmul_mem (F := F) (E := E) 1 hy
+  rwa [map_one] at h
+
+theorem exists_den {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
+    (hspan : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) (x : Fin n → E) :
+    ∃ d : ℤ, d ≠ 0 ∧ (d : 𝓞 E) • x ∈ Λ := by
+  obtain ⟨m, hm, hsingle⟩ := csGlob_single Λ hspan
+  obtain ⟨m', hm', hint⟩ := adelstabL_den x
+  refine ⟨m * m', mul_ne_zero hm hm', ?_⟩
+  have hmk : ∀ (a : E) (h : IsIntegral ℤ a), algebraMap (𝓞 E) E ⟨a, h⟩ = a := fun _ _ => rfl
+  have key : ((m * m' : ℤ) : 𝓞 E) • x =
+      ∑ k : Fin n, (⟨(m' : E) * x k, hint k⟩ : 𝓞 E) • (Pi.single k (m : E) : Fin n → E) := by
+    funext i
+    rw [Finset.sum_apply, Pi.smul_apply]
+    simp only [Pi.smul_apply, Pi.single_apply, smul_ite, smul_zero, Finset.sum_ite_eq,
+      Finset.mem_univ, if_true]
+    simp only [Algebra.smul_def, map_intCast]
+    push_cast
+    show (m : E) * (m' : E) * x i = ((m' : E) * x i) * (m : E)
+    ring
+  rw [key]
+  exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hsingle k)
+
+theorem exists_inv_gen (σ : E →ₐ[F] E) (hs : ∀ e, (σ : E →+* E) ((σ : E →+* E) e) = e)
+    (hfix : ∀ e : E, σ e = e → ∃ a : F, algebraMap F E a = e)
+    (v : HeightOneSpectrum (𝓞 F)) (p : Ideal (𝓞 E)) (hp : p.IsPrime)
+    (hpv : p.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal) (s : 𝓞 E) (h1 : s ∉ p)
+    (h2 : ∀ t : 𝓞 E, algebraMap (𝓞 E) E t = (σ : E →+* E) (algebraMap (𝓞 E) E s) → t ∉ p) :
+    ∃ u ∈ tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F),
+      u * inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E s) =
+        afsplitEps E v := by
+  set s' := algebraMap (𝓞 E) E s with hs'
+  have hsint : IsIntegral ℤ s' := RingOfIntegers.isIntegral_coe s
+  have hσint : IsIntegral ℤ ((σ : E →+* E) s') := hsint.map (σ : E →+* E).toIntAlgHom
+  obtain ⟨sb, hsb⟩ : ∃ sb : 𝓞 E, algebraMap (𝓞 E) E sb = (σ : E →+* E) s' := ⟨⟨_, hσint⟩, rfl⟩
+  have hsbp : sb ∉ p := h2 sb hsb
+  have hfixN : σ ((σ : E →+* E) s' * s') = (σ : E →+* E) s' * s' := by
+    show (σ : E →+* E) ((σ : E →+* E) s' * s') = (σ : E →+* E) s' * s'
+    rw [map_mul, hs, mul_comm]
+  obtain ⟨a, ha⟩ := hfix _ hfixN
+  have haint : IsIntegral ℤ a := by
+    rw [← isIntegral_algHom_iff (algebraMap F E).toIntAlgHom (algebraMap F E).injective]
+    show IsIntegral ℤ (algebraMap F E a)
+    rw [ha]
+    exact hσint.mul hsint
+  obtain ⟨aO, haO'⟩ : ∃ aO : 𝓞 F, algebraMap (𝓞 F) F aO = a := ⟨⟨a, haint⟩, rfl⟩
+  have haO : algebraMap (𝓞 F) E aO = (σ : E →+* E) s' * s' := by
+    rw [IsScalarTower.algebraMap_apply (𝓞 F) F E, haO', ha]
+  have haOv : aO ∉ v.asIdeal := by
+    rw [← hpv, Ideal.mem_comap]
+    intro hmem
+    have heq : algebraMap (𝓞 F) (𝓞 E) aO = sb * s := by
+      apply IsFractionRing.injective (𝓞 E) E
+      rw [← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E, haO, map_mul, hsb]
+    rw [heq] at hmem
+    rcases hp.mem_or_mem hmem with h | h
+    · exact hsbp h
+    · exact h1 h
+  obtain ⟨u0, hu0, hu0e⟩ := GlobalTheory.LocDict.exists_inv v aO haOv
+  have key : (1 : E) ⊗ₜ[F] (u0 * algebraMap (𝓞 F) 𝔸 aO) =
+      ((1 : E) ⊗ₜ[F] u0) * ι (algebraMap (𝓞 F) E aO) := by
+    rw [← mul_one (algebraMap (𝓞 F) E aO), ← csGlob_tmul_int, Algebra.TensorProduct.tmul_mul_tmul,
+      one_mul]
+  refine ⟨ι ((σ : E →+* E) s') * ((1 : E) ⊗ₜ[F] u0), mul_mem ?_ (GlobalTheory.LocDict.one_tmul_mem hu0), ?_⟩
+  · rw [← hsb]
+    exact adelstab_incl_int sb
+  · rw [GlobalTheory.LocDict.eps_eq, ← hu0e, key, haO, map_mul]
+    ring
+
+private theorem eps_mem_intAd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
+    [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) :
+    afsplitEps E v ∈ tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F) := by
+  rw [GlobalTheory.LocDict.eps_eq]
+  exact GlobalTheory.LocDict.one_tmul_mem (afsplitI_mem_intAd v 1 (one_mem _))
+
+private theorem inclE_tmul' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
+    [Algebra F E] (ρ : 𝓞 F) (z : E) :
+    inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) E ρ * z) =
+      ((1 : E) ⊗ₜ[F] algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) ρ) *
+        inclE (F := F) (FiniteAdeleRing (𝓞 F) F) z := by
+  rw [← csGlob_tmul_int]
+  show z ⊗ₜ[F] _ = _ * (z ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F))
+  rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]
+
+private theorem split_lemma_3 {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
+    [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (t d : 𝓞 F) (y : FiniteAdeleRing (𝓞 F) F)
+    (hty : algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) t =
+      algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) t * afsplitI v 1 +
+        y * algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) d) (z : E) :
+    inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) E t * z) =
+      ((1 : E) ⊗ₜ[F] algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) t) *
+          (afsplitEps E v * inclE (F := F) (FiniteAdeleRing (𝓞 F) F) z) +
+        ((1 : E) ⊗ₜ[F] y) *
+          inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) E d * z) := by
+  rw [inclE_tmul', inclE_tmul', GlobalTheory.LocDict.eps_eq]
+  have h1 : (1 : E) ⊗ₜ[F] (algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) t * afsplitI v 1) =
+      ((1 : E) ⊗ₜ[F] algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) t) * ((1 : E) ⊗ₜ[F] afsplitI v 1) := by
+    rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
+  have h2 : (1 : E) ⊗ₜ[F] (y * algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) d) =
+      ((1 : E) ⊗ₜ[F] y) * ((1 : E) ⊗ₜ[F] algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) d) := by
+    rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
+  conv_lhs => rw [hty]
+  rw [TensorProduct.tmul_add, h1, h2]
+  ring
+
+end Main
+
+theorem mem_loc_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hs : ∀ e, (σ : E →+* E) ((σ : E →+* E) e) = e), (∀ e : E, σ e = e → ∃ a : F, algebraMap F E a = e) → ∀ (n : ℕ) (Λ : Submodule (𝓞 E) (Fin n → E)), Module.Finite (𝓞 E) Λ → Submodule.span E (Λ : Set (Fin n → E)) = ⊤ → ∀ (v : HeightOneSpectrum (𝓞 F)) (p : Ideal (𝓞 E)), p.IsPrime → p.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal → ∀ x : Fin n → E, (letI := Formalism.UG.CS.starOfInv (σ : E →+* E) hs; x ∈ Formalism.HermitianLatticesTheory.loc (K := E) p Λ) ↔ (afsplitEps E v • fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ := by
+  intro F E _ _ _ _ _ σ hs hfix n Λ hfin hspan v p hp hpv x
+  letI := Formalism.UG.CS.starOfInv (σ : E →+* E) hs
+  show x ∈ Formalism.HermitianLatticesTheory.locS (Formalism.HermitianLatticesTheory.hcompl (K := E) p) Λ ↔ _
+  rw [Formalism.HermitianLatticesTheory.locBasic_mem_locS]
+  constructor
+  · rintro ⟨s, hsS, hsx⟩
+    have hgood : ∀ s₁ ∈ Formalism.HermitianLatticesTheory.hcompl (K := E) p,
+        ∃ u ∈ tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F),
+        u * inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E s₁) = afsplitEps E v := by
+      intro s₁ hs₁
+      change s₁ ∈ Submonoid.closure _ at hs₁
+      induction hs₁ using Submonoid.closure_induction with
+      | mem s₀ hs₀ => exact GlobalTheory.LocDict.exists_inv_gen σ hs hfix v p hp hpv s₀ hs₀.1 hs₀.2
+      | one => exact ⟨afsplitEps E v, eps_mem_intAd v, by rw [map_one, map_one, mul_one]⟩
+      | mul a b _ _ ha hb =>
+        obtain ⟨u₁, hu₁, e₁⟩ := ha
+        obtain ⟨u₂, hu₂, e₂⟩ := hb
+        refine ⟨u₁ * u₂, mul_mem hu₁ hu₂, ?_⟩
+        rw [map_mul, map_mul, mul_mul_mul_comm, e₁, e₂, afsplit_eps_idem]
+    obtain ⟨u, hu, hue⟩ := hgood s hsS
+    have heq : (afsplitEps E v • fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) =
+        (⟨u, hu⟩ : tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) •
+          fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((s • x) i) := by
+      funext i
+      show afsplitEps E v * inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i) =
+        u * inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E s * x i)
+      rw [map_mul, ← hue]
+      ring
+    rw [heq]
+    exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨s • x, hsx, rfl⟩)
+  · intro h
+    obtain ⟨dz, hdz, hdx⟩ := GlobalTheory.LocDict.exists_den Λ hspan x
+    have hd0 : (dz : 𝓞 F) ≠ 0 := Int.cast_ne_zero.2 hdz
+    obtain ⟨t, htv, y, hy, hty⟩ := GlobalTheory.LocDict.exists_approx v (dz : 𝓞 F) hd0
+    have hmem : (fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F)
+        ((algebraMap (𝓞 F) (𝓞 E) t • x) i)) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F)
+          (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ := by
+      have heq : (fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F)
+          ((algebraMap (𝓞 F) (𝓞 E) t • x) i)) =
+          (⟨_, GlobalTheory.LocDict.one_tmul_mem (levelaf_int_mem t)⟩ :
+              tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) •
+            (afsplitEps E v • fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) +
+          (⟨_, GlobalTheory.LocDict.one_tmul_mem hy⟩ :
+              tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) •
+            (fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (((dz : 𝓞 E) • x) i)) := by
+        funext i
+        have hx1 : algebraMap (𝓞 F) (𝓞 E) t • x i = algebraMap (𝓞 F) E t * x i := by
+          rw [Algebra.smul_def, ← IsScalarTower.algebraMap_apply]
+        have hx2 : (dz : 𝓞 E) • x i = algebraMap (𝓞 F) E (dz : 𝓞 F) * x i := by
+          rw [Algebra.smul_def, map_intCast, map_intCast]
+        show inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) (𝓞 E) t • x i) =
+          ((1 : E) ⊗ₜ[F] algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) t) *
+              (afsplitEps E v * inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) +
+            ((1 : E) ⊗ₜ[F] y) * inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((dz : 𝓞 E) • x i)
+        rw [hx1, hx2]
+        exact split_lemma_3 v t (dz : 𝓞 F) y hty (x i)
+      rw [heq]
+      exact add_mem (Submodule.smul_mem _ _ h)
+        (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hdx, rfl⟩))
+    have hx' : algebraMap (𝓞 F) (𝓞 E) t • x ∈ Λ := by
+      rw [← csGlob_one (F := F) integral_adele_approximation_holds Λ hfin hspan, csGlob_eq, adelstab_mem_iff]
+      simpa using hmem
+    have hnot : algebraMap (𝓞 F) (𝓞 E) t ∉ p := by
+      intro hm
+      apply htv
+      rw [← hpv]
+      exact hm
+    refine ⟨algebraMap (𝓞 F) (𝓞 E) t, Submonoid.subset_closure ⟨hnot, ?_⟩, hx'⟩
+    intro t' ht'
+    have ht'' : t' = algebraMap (𝓞 F) (𝓞 E) t := by
+      apply IsFractionRing.injective (𝓞 E) E
+      rw [ht']
+      show (σ : E →+* E) (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) t)) = _
+      rw [← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]
+      simp
+    rw [ht'']
+    exact hnot
+
+end GlobalTheory.LocDict
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraMapApply =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.EpsMemLatSIff =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.EpsMemLatSIff", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUnitaryClassRepTrivialAtCm\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AdelstabL\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain Formalism.UG Formalism.UG.P
+open scoped TensorProduct Matrix
+
+namespace GlobalTheory.GenusCong
+
+open GlobalTheory.NormSum.RepAt
+
+theorem mem_iff_one_add {R : Type} [CommRing R] (O : Subring R) {n : ℕ} (L : Submodule O (Fin n → R))
+    (m : R) (hmO : m ∈ O)
+    (hm : ∀ Y ∈ matIn O n, ∀ u ∈ L, m • (Y *ᵥ u) ∈ L)
+    (a : O) (ha : ∀ x : O, IsUnit (1 + a * x))
+    (X : Matrix (Fin n) (Fin n) R) (hX : X ∈ matIn O n) (w : Fin n → R) :
+    w ∈ L ↔ (1 + (a : R) • m • X) *ᵥ w ∈ L := by
+  have haX : (a : R) • X ∈ matIn O n := fun i j => mul_mem a.2 (hX i j)
+  constructor
+  · intro hw
+    rw [Matrix.add_mulVec, Matrix.one_mulVec, smul_comm, Matrix.smul_mulVec]
+    exact add_mem hw (hm _ haX _ hw)
+  · intro hz
+    obtain ⟨W, hW, e⟩ := mat_inv O a ha (m • X) (fun i j => mul_mem hmO (hX i j))
+    have e' := mul_eq_one_comm.1 e
+    have eW : W = 1 - m • ((a : R) • X * W) := by
+      rw [← e, add_mul, one_mul, smul_comm, Matrix.smul_mul, add_sub_cancel_right]
+    have h1 : w = W *ᵥ ((1 + (a : R) • m • X) *ᵥ w) := by
+      rw [Matrix.mulVec_mulVec, e', Matrix.one_mulVec]
+    generalize (1 + (a : R) • m • X) *ᵥ w = z at hz h1
+    rw [h1, eW, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec]
+    exact sub_mem hz (hm _ (mul_mem haX hW) _ hz)
+
+theorem eps_mulVec {R : Type} [CommRing R] {n : ℕ} (e p m : R) (he : e * e = e)
+    (k X : Matrix (Fin n) (Fin n) R) (h : e • (k - 1) = (p * m) • X) (u : Fin n → R) :
+    e • (k *ᵥ u) = (1 + (e * p) • m • X) *ᵥ (e • u) := by
+  have h1 : e • k = e • (1 + (e * p) • m • X) := by
+    rw [smul_add, smul_smul, smul_smul, ← mul_assoc, he, mul_assoc, mul_smul, ← h, smul_smul, he,
+      smul_sub, add_sub_cancel]
+  rw [← Matrix.smul_mulVec, h1, Matrix.smul_mulVec, Matrix.mulVec_smul]
+
+section Ad
+
+variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+
+local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
+local notation "𝒜" => E ⊗[F] 𝔸
+local notation "𝒮" => tensInt (F := F) 𝔸 (intOE E) (intAd F)
+
+theorem exists_mult {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (hfin : Module.Finite (𝓞 E) Λ)
+    (hspan : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) :
+    ∃ m : ℕ, 0 < m ∧ ∀ Y ∈ matIn 𝒮 n, ∀ u ∈ latS (F := F) 𝔸 𝒮 Λ,
+      (m : 𝒜) • (Y *ᵥ u) ∈ latS (F := F) 𝔸 𝒮 Λ := by
+  obtain ⟨c₁, hc₁, h₁⟩ := adelstabL_lower (F := F) Λ hspan
+  obtain ⟨c₂, hc₂, h₂⟩ := adelstabL_upper (F := F) Λ hfin
+  obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {c₁ * c₂}))
+  have hcast (m : ℕ) : levelafC (F := F) E (m : 𝓞 F) = (m : 𝒜) := by
+    rw [levelafC, map_natCast]
+    exact map_natCast (Algebra.TensorProduct.includeRight : 𝔸 →ₐ[F] 𝒜) m
+  refine ⟨Ideal.absNorm (Ideal.span {c₁ * c₂}), Nat.pos_of_ne_zero ?_, fun Y hY u hu => ?_⟩
+  · rw [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]; exact mul_ne_zero hc₁ hc₂
+  · rw [← hcast, ← hc, levelafC_mul, levelafC_mul]
+    have e : (levelafC E c * (levelafC E c₁ * levelafC E c₂)) • (Y *ᵥ u) =
+        fun i => levelafC E c₁ * ∑ j, levelafC E c * Y i j * (levelafC E c₂ * u j) := by
+      ext i
+      rw [Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.mul_sum]
+      exact Finset.sum_congr rfl fun j _ => by ring
+    rw [e]
+    exact h₁ _ fun i => sum_mem fun j _ => mul_mem (mul_mem (levelafC_mem c) (hY i j)) (h₂ u hu j)
+
+end Ad
+
+theorem eps_mem_latS_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (Λ : Submodule (𝓞 E) (Fin n → E)), Module.Finite (𝓞 E) Λ → Submodule.span E (Λ : Set (Fin n → E)) = ⊤ → ∀ (v : HeightOneSpectrum (𝓞 F)), ∃ D : ℕ, 0 < D ∧ ∀ (k X : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), (∀ i j, X i j ∈ tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) → afsplitEps E v • (k - 1) = D • X → ∀ u : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F, afsplitEps E v • u ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ ↔ afsplitEps E v • (k *ᵥ u) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ := by
+  intro F E _ _ _ _ _ n Λ hfin hspan v
+  obtain ⟨m, hm0, hm⟩ := exists_mult (F := F) Λ hfin hspan
+  have hpv := Ideal.absNorm_mem v.asIdeal
+  have hp : 0 < Ideal.absNorm v.asIdeal :=
+    Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot)
+  generalize Ideal.absNorm v.asIdeal = p at hpv hp
+  refine ⟨p * m, Nat.mul_pos hp hm0, fun k X hX h u => ?_⟩
+  rw [← Nat.cast_smul_eq_nsmul (E ⊗[F] FiniteAdeleRing (𝓞 F) F), Nat.cast_mul] at h
+  have heps : afsplitEps E v * (p : E ⊗[F] FiniteAdeleRing (𝓞 F) F) =
+      (1 : E) ⊗ₜ[F] afsplitI v p := by
+    rw [← afsplit_decomp, map_natCast, ← afsplitIE_tmul]
+    congr 1
+    exact (map_natCast (Algebra.TensorProduct.includeRight :
+      v.adicCompletion F →ₐ[F] E ⊗[F] v.adicCompletion F) p).symm
+  rw [eps_mulVec _ _ _ (afsplit_eps_idem v) k X h u, heps]
+  let a : intAd F := ⟨afsplitI v p, afsplitI_mem_intAd v _ (natCast_mem _ _)⟩
+  have hcastVal : Valued.v (p : v.adicCompletion F) = v.valuation F (algebraMap (𝓞 F) F p) := by
+    rw [← levelaf_valued_algebraMap, map_natCast (algebraMap (𝓞 F) F), map_natCast (algebraMap F _)]
+  have ha (c : intAd F) : IsUnit (1 + a * c) := by
+    have hval : Valued.v (1 + (p : v.adicCompletion F) * (c : FiniteAdeleRing (𝓞 F) F) v) = 1 := by
+      apply Valuation.map_one_add_of_lt
+      rw [Valuation.map_mul, hcastVal]
+      exact mul_lt_one_of_lt_of_le ((v.valuation_lt_one_iff_mem _).2 hpv)
+        ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (c.2 v))
+    have hne : 1 + (p : v.adicCompletion F) * (c : FiniteAdeleRing (𝓞 F) F) v ≠ 0 := fun hzero => by
+      rw [hzero, map_zero] at hval
+      exact zero_ne_one hval
+    refine IsUnit.of_mul_eq_one ⟨1 - afsplitI v 1 +
+      afsplitI v (1 + (p : v.adicCompletion F) * (c : FiniteAdeleRing (𝓞 F) F) v)⁻¹,
+      add_mem (sub_mem (one_mem _) (afsplitI_mem_intAd v _ (one_mem _))) (afsplitI_mem_intAd v _ ?_)⟩ ?_
+    · rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hval, inv_one]
+    · apply Subtype.ext
+      change (1 + afsplitI v p * (c : FiniteAdeleRing (𝓞 F) F)) * _ = 1
+      ext w
+      by_cases hw : w = v
+      · subst w
+        simp only [afsplit_add_apply, afsplit_mul_apply, afsplit_sub_apply, afsplit_one_apply, afsplitI_self,
+          sub_self, zero_add, mul_inv_cancel₀ hne]
+      · simp only [afsplit_add_apply, afsplit_mul_apply, afsplit_sub_apply, afsplit_one_apply, afsplitI_ne v w hw,
+          zero_mul, add_zero, sub_zero, mul_one]
+  let S := tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)
+  let incl : FiniteAdeleRing (𝓞 F) F →ₐ[F] E ⊗[F] FiniteAdeleRing (𝓞 F) F :=
+    Algebra.TensorProduct.includeRight
+  let ι : intAd F →+* S := (incl.toRingHom.comp (intAd F).subtype).codRestrict _
+    fun y => Subring.subset_closure (Or.inr ⟨y, rfl⟩)
+  have hIntegral : ι.IsIntegral := by
+    rintro ⟨x, hx⟩
+    refine Subring.closure_induction
+      (p := fun x hx => ι.IsIntegralElem ⟨x, hx⟩) ?_ ?_ ?_ ?_ ?_ ?_ hx
+    · rintro x (⟨⟨e, ⟨b, rfl⟩⟩, rfl⟩ | ⟨y, rfl⟩)
+      · let ψ : 𝓞 E →+* S :=
+          ((inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)).comp (algebraMap (𝓞 E) E)).codRestrict _
+            fun y => Subring.subset_closure (Or.inl ⟨⟨_, ⟨y, rfl⟩⟩, rfl⟩)
+        have hb : IsIntegral ℤ (ψ b) := map_isIntegral_int ψ (Algebra.IsIntegral.isIntegral b)
+        let := ι.toAlgebra
+        exact hb.tower_top (A := intAd F)
+      · exact RingHom.isIntegralElem_map ι (x := y)
+    · exact RingHom.isIntegralElem_zero _
+    · exact RingHom.isIntegralElem_one _
+    · intro x y _ _ hx hy; exact hx.add _ hy
+    · intro x _ hx; exact hx.neg _
+    · intro x y _ _ hx hy; exact hx.mul _ hy
+  exact mem_iff_one_add _ _ _ (natCast_mem _ _) hm (ι a) (unit_of_integral ι hIntegral a ha) X hX _
+
+end GlobalTheory.GenusCong
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.EpsMemLatSIff =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryMassLatticeEqGenusMass =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryMassLatticeEqGenusMass", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.ClassMassEqSumOfBijective\npublic import Formalism.HermitianLattices.StatementMass\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AfsplitB\npublic import Formalism.SatakeDualWeyl.DefsCS\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.AlgebraMapApply\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.EpsMemLatSIff\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryTranspose\nimport Formalism.HermitianLattices.HermitianLatticesProofs.LocBasic\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AdelstabL\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Afsplit\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Bridge\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.ClassInjectiveOfSpanRecovery\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsApprox\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsAsmHformSmulRight\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsEasy\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsEquiv\nimport Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsGlob\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.CsSpan\npublic import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.RationalPointsLeHolds\nimport Formalism.SatakeDualWeyl.KpqSubgroupCompact\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -377,7 +836,7 @@ theorem GlobalTheory.Mass.classMass_lattice_eq_genus_mass {F E : Type} [Field F]
     rw [h] at this
     exact this.symm
   have hfix := fixed_mem σ hσ.2.2.1 hne
-  haveI := Formalism.UG.Final.ClassSetFiniteL F E _ σ J hτ hH hJ.2.isUnit hd Λ hΛ hsp
+  haveI := _root_.Formalism.UG.P.lattice_class_set_finite_local_holds F E _ σ J hτ hH hJ.2.isUnit hd Λ hΛ hsp
   have hgen := globLat_mem_genus hs hfix hne hH hJ.2 hΛ hsp
   have hsur := exists_globLat_eq (J := J) hs hfix hΛ hsp
   have hmk := mk_eq_iff (J := J) hs hΛ hsp
@@ -423,3 +882,7 @@ theorem GlobalTheory.Mass.unitaryMass_lattice_eq_genus_mass {F E : Type} [Field 
                  (GlobalTheory.Mass.swapPts (Af F) σ J : HA (Af F) σ J →* UPts σ J (Af F))) =
       Formalism.HermitianLatticesTheory.mass (formJ (σ : E →+* E) hs J 1) Λ :=
   (GlobalTheory.Mass.unitaryMass_comap_swapPts σ J _).trans (GlobalTheory.Mass.classMass_lattice_eq_genus_mass hσ hJ hd hs Λ hΛ hsp)
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryMassLatticeEqGenusMass =====

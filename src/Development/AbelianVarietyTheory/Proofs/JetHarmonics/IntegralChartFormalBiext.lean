@@ -145,139 +145,139 @@ def descFB [StarRing O] (hf : Function.Injective f) (B : FB k d O) (G' : FGLaw R
   ad := ad
   cocycleLeft_zero_fst := by
     have h := B.cocycleLeft_zero_fst
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [h1] at h
     apply map_inj hf
     map_descent_series
     exact h
   cocycleLeft_zero_snd := by
     have h := B.cocycleLeft_zero_snd
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [h1] at h
     apply map_inj hf
     map_descent_series
     exact h
   cocycleLeft_zero_thd := by
     have h := B.cocycleLeft_zero_thd
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [h1] at h
     apply map_inj hf
     map_descent_series
     exact h
   cocycleRight_zero_fst := by
     have h := B.cocycleRight_zero_fst
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [h2] at h
     apply map_inj hf
     map_descent_series
     exact h
   cocycleRight_zero_snd := by
     have h := B.cocycleRight_zero_snd
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [h2] at h
     apply map_inj hf
     map_descent_series
     exact h
   cocycleRight_zero_thd := by
     have h := B.cocycleRight_zero_thd
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [h2] at h
     apply map_inj hf
     map_descent_series
     exact h
   symmetry_zero_fst := by
     have h := B.symmetry_zero_fst
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [hs] at h
     apply map_inj hf
     map_descent_series
     exact h
   symmetry_zero_snd := by
     have h := B.symmetry_zero_snd
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [hs] at h
     apply map_inj hf
     map_descent_series
     exact h
   adjoint_zero_fst a := by
     have h := B.adjoint_zero_fst a
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [ha] at h
     apply map_inj hf
     map_descent_series
     exact h
   adjoint_zero_snd a := by
     have h := B.adjoint_zero_snd a
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [ha] at h
     apply map_inj hf
     map_descent_series
     exact h
   cocycleLeft_assoc := by
     have h := B.cocycleLeft_assoc
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [FGLaw.add, hF, h1] at h
     apply map_inj hf
     map_descent_series
     exact h
   cocycleLeft_comm := by
     have h := B.cocycleLeft_comm
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [h1] at h
     apply map_inj hf
     map_descent_series
     exact h
   cocycleRight_assoc := by
     have h := B.cocycleRight_assoc
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [FGLaw.add, hF, h2] at h
     apply map_inj hf
     map_descent_series
     exact h
   cocycleRight_comm := by
     have h := B.cocycleRight_comm
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [h2] at h
     apply map_inj hf
     map_descent_series
     exact h
   interchange := by
     have h := B.interchange
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [FGLaw.add, hF, h1, h2] at h
     apply map_inj hf
     map_descent_series
     exact h
   sy_inv := by
     have h := B.sy_inv
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [hs] at h
     apply map_inj hf
     map_descent_series
     exact h
   sy_law := by
     have h := B.sy_law
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [FGLaw.add, hF, h1, h2, hs] at h
     apply map_inj hf
     map_descent_series
     exact h
   adjoint_compat_left a := by
     have h := B.adjoint_compat_left a
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [FGLaw.add, hF, hA, h1, ha] at h
     apply map_inj hf
     map_descent_series
     exact h
   adjoint_compat_right a := by
     have h := B.adjoint_compat_right a
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [FGLaw.add, hF, hA, h2, ha] at h
     apply map_inj hf
     map_descent_series
     exact h
   ad_one := by
     have h := B.ad_one
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [ha] at h
     apply map_inj hf
     map_descent_series
     exact h
   ad_mul a b := by
     have h := B.ad_mul a b
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [hA, ha] at h
     apply map_inj hf
     map_descent_series
     exact h
   ad_add a b := by
     have h := B.ad_add a b
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [hA, h1, h2, ha] at h
     apply map_inj hf
     map_descent_series
     exact h
   ad_sy a := by
     have h := B.ad_sy a
-    simp only [FGLaw.add, hF, hA, h1, h2, hs, ha] at h
+    simp only [hA, hs, ha] at h
     apply map_inj hf
     map_descent_series
     exact h

@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.Degenerations.SepticCharacterInjective
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.CubNSucc
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.DegenerationDataPsiQuadraticGeneratorsLinear
-public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLawsStatement
+public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.MulqLaws
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.NormalisingFactor
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -67,7 +67,7 @@ theorem wQ_nest {n k l : ℕ} (hk : Odd k) (hl : Odd l) (e : l = n * (k * n)) (p
   · simp only [NumD.tk, hg, NumD.Gt.pow_b] at hA
     have ps := NumD.Gt.pow_s p''.1.2 n p.1.1.toAdd
     have ss := PsiQuadratic.s_nsmul N p''.1.2 n p.1.1.toAdd
-    have db := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB n 0 p''.1.2.b p''.1.2.b).2.2.1
+    have db := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB n 0 p''.1.2.b p''.1.2.b).2.2.1
     have cm1 := CubeBalance.cubN_mul N.cub n (k * n) p''.1.2.b p''.1.2.b
     have cm2 := CubeBalance.cubN_mul N.cub k n p''.1.2.b p''.1.2.b
     have sw := CubeBalance.cubN_swap N.cub k n (p''.1.2.b ^ n) p''.1.2.b
@@ -87,8 +87,8 @@ theorem wQ_nest {n k l : ℕ} (hk : Odd k) (hl : Odd l) (e : l = n * (k * n)) (p
     linear_combination (norm := module) hA - (k : ℤ) • db + sw + ps - ss - cm1 - (n : ℤ) • cm2
   · rw [hb] at hB
     have hψ := PsiQuadratic.ψ_nsmul N n p.1.1.toAdd
-    have hm1 := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB n (k * n) p''.1.2.b p''.1.2.b).1
-    have hm2 := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB k n p''.1.2.b p''.1.2.b).1
+    have hm1 := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB n (k * n) p''.1.2.b p''.1.2.b).1
+    have hm2 := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB k n p''.1.2.b p''.1.2.b).1
     rw [hc] at hψ
     rw [hy']
     apply Additive.ofMul.injective
@@ -103,7 +103,7 @@ theorem wQ_nest {n k l : ℕ} (hk : Odd k) (hl : Odd l) (e : l = n * (k * n)) (p
 theorem txT_nest : ∀ (O : Type) [CommRing O] (N : NumD O), ∀ (n m : ℕ), Odd n → Odd m → ∀ (p'' : N.QT ((n * m) ^ 2)) (p : N.QT (m ^ 2)), p''.1.1 = p.1.1 ^ n → p.1.2 = p''.1.2 ^ n → ∀ χ, N.txT (n * m) p'' χ = N.txT m p χ := by
   intro O _ N n m hn hm p'' p hy hg χ
   have hw := wQ_nest N hm.pow (hn.mul hm).pow (by ring) p'' p hy hg
-  have hq := (GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB m n p''.1.2.b p''.1.2.b).1
+  have hq := (_root_.GlobalTheory.Ex.mulq_laws O N.toNumB m n p''.1.2.b p''.1.2.b).1
   rw [mul_comm m n] at hq
   have hb : p.1.2.b = p''.1.2.b ^ n := by rw [hg, NumD.Gt.pow_b]
   have hu : N.wQ p'' / mulq N.θ N.σ (n * m) p''.1.2.b = N.wQ p / mulq N.θ N.σ m p.1.2.b := by

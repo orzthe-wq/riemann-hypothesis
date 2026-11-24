@@ -139,22 +139,6 @@ theorem absE_adrU (h : IsCMExt F E σ) (w : InfinitePlace F) (τ : ℝ) :
   · intro hw
     exact absurd (Finset.mem_univ w) hw
 
-theorem chi_adrU (d : SD σ) (w : InfinitePlace F) (τ : ℝ) :
-    haveI := d.cm.1
-    (d.χ (Units.map (algebraMap (AF F) (AE F E)).toMonoidHom (adrU w τ)) : ℂ) = 1 := by
-  haveI := d.cm.1
-  have hmem : adrU w τ ∈ (Units.map (Algebra.norm (AF F) (S := AE F E))).range := by
-    refine ⟨Units.map (algebraMap (AF F) (AE F E)).toMonoidHom (adrU w (τ / 2)), ?_⟩
-    apply Units.ext
-    show Algebra.norm (AF F) (algebraMap (AF F) (TensorProduct F (AF F) E) (adr w (Real.exp (τ / 2)))) =
-      adr w (Real.exp τ)
-    rw [Algebra.norm_algebraMap_of_basis (Algebra.TensorProduct.basis (AF F) d.bs), Fintype.card_fin, pow_two,
-      adr_mul, ← Real.exp_add, add_halves]
-  have h2 := d.ok.res (adrU w τ)
-  split_ifs at h2 with hc
-  · exact h2
-  · exact absurd (Subgroup.mem_sup_right hmem) hc
-
 end PositivityTheory.SiegelWeilFormula.AStep
 
 end

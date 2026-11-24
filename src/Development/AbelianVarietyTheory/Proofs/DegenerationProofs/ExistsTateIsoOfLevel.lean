@@ -91,8 +91,8 @@ namespace GlobalTheory.Ex.ThetaDescent
 theorem nonempty_algHom (K A : Type) [Field K] [IsAlgClosed K] [CommRing A] [Nontrivial A] [Algebra K A]
     [Algebra.FiniteType K A] : Nonempty (A →ₐ[K] K) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal A
-  letI := Ideal.Quotient.field M
-  haveI : Module.Finite K (A ⧸ M) := finite_of_finite_type_of_isJacobsonRing K (A ⧸ M)
+  let := Ideal.Quotient.field M
+  have : Module.Finite K (A ⧸ M) := finite_of_finite_type_of_isJacobsonRing K (A ⧸ M)
   exact ⟨(IsAlgClosed.lift : (A ⧸ M) →ₐ[K] K).comp (Ideal.Quotient.mkₐ K M)⟩
 
 theorem exists_retract {F R K κ : Type} [CommRing F] [CommRing R] [Field K] [IsAlgClosed K] [Field κ] (g : F →+* R)
@@ -100,11 +100,11 @@ theorem exists_retract {F R K κ : Type} [CommRing F] [CommRing R] [Field K] [Is
     ∃ (A : Type) (_ : CommRing A) (_ : IsDomain A) (j : A →+* κ) (s : A →+* K) (k : K →+* A) (ψ : R →+* A) (u' : Aˣ),
       Function.Injective j ∧ j.comp ψ = φ ∧ j.comp k = i ∧ (∀ x, s (k x) = x) ∧ j u' = u := by
   classical
-  letI := g.toAlgebra
-  letI := i.toAlgebra
+  let := g.toAlgebra
+  let := i.toAlgebra
   obtain ⟨t, ht⟩ := hg.out
   let A : Subalgebra K κ := Algebra.adjoin K ((insert (u : κ) (insert ((u⁻¹ : κˣ) : κ) (t.image φ)) : Finset κ) : Set κ)
-  haveI : Algebra.FiniteType K A := (Subalgebra.fg_iff_finiteType _).1 ⟨_, rfl⟩
+  have : Algebra.FiniteType K A := (Subalgebra.fg_iff_finiteType _).1 ⟨_, rfl⟩
   have hA : ∀ r, φ r ∈ A := fun r => by
     have hr : r ∈ Algebra.adjoin F (t : Set R) := ht ▸ Algebra.mem_top
     induction hr using Algebra.adjoin_induction with
@@ -196,7 +196,7 @@ theorem exists_affine (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {S : Scheme.{
   obtain ⟨α₀, hα₀⟩ := (GlobalTheory.MulPull.mulPull_of_cube_of_symm cg neg).1 S P k
   have sym := (GlobalTheory.symLift_odd hG (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube cg).1).2.2 neg).1
   obtain ⟨V₀, hV₀, b, hb⟩ := hB S P 1 le_rfl (T.hom p)
-  haveI := hf.to_subtype
+  have := hf.to_subtype
   choose V hV θ hθ using fun i : Set.range y =>
     (sym S P (k ^ 2) hk.pow T i.1 (by obtain ⟨_, j, rfl⟩ := i; exact hy j)).1 p
   let O : T.left.Opens := T.hom ⁻¹ᵁ V₀ ⊓ ⟨⋂ i, (V i).carrier, isOpen_iInter_of_finite fun i => (V i).2⟩
@@ -214,7 +214,7 @@ theorem exists_affine (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {S : Scheme.{
   let r : baseAt t ⟶ T := Over.homMk x₀ ex.symm
   refine ⟨W, hW', t ≫ (overRes (T := baseOver S) V₀).hom, r, hpW, rfl, ?_⟩
   obtain ⟨-, hsp⟩ := hb _ t (fun i => VVRank.pullS P.A _ (homAt t) (b i)) fun i => VVRank.isPullSec_pullS _ _ _ _
-  haveI : Subsingleton (Fin (1 ^ P.g)) := by rw [one_pow]; infer_instance
+  have : Subsingleton (Fin (1 ^ P.g)) := by rw [one_pow]; infer_instance
   obtain ⟨th, hth⟩ := ThetaLocal.exists_generator _ hsp
   refine ThetaLocal.exists_isThetaPt P k hk α₀ hα₀ (T := baseAt t) ?_ _ th hth fun i => ?_
   · simpa using hu.map (baseAt t).hom.appTop.hom
@@ -235,7 +235,7 @@ theorem finite_range {La Q : Type} [AddCommGroup La] [Module.Finite ℤ La] [Gro
   let φ : La →+ Additive Q := AddMonoidHom.mk' (fun a => Additive.ofMul (x a)) hadd
   let M : Submodule ℤ La := φ.ker.toIntSubmodule
   have hM : ∀ a, a ∈ M ↔ φ a = 0 := fun _ => Iff.rfl
-  haveI : Finite (La ⧸ M) := Module.finite_of_fg_torsion _ fun q => by
+  have : Finite (La ⧸ M) := Module.finite_of_fg_torsion _ fun q => by
     obtain ⟨a, rfl⟩ := M.mkQ_surjective q
     refine ⟨⟨(N : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hN)⟩, ?_⟩
     change M.mkQ ((N : ℤ) • a) = 0
@@ -276,7 +276,7 @@ theorem exists_spread (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {F K κ : Typ
       (J : Over.mk y ⟶ Over.mk t) (xA : La → (Over.mk t ⟶ P.A)), Function.Injective j ∧ j.comp k = i ∧
       (∀ x, s (k x) = x) ∧ J.left = spMap j ∧ t ≫ sF = spMap (k.comp b) ∧ (∀ a, J ≫ xA a = x a) ∧
       IsThetaPt P m xA fun a => fnA (k (v a)) := by
-  haveI := P.isAb.comm
+  have := P.isAb.comm
   obtain ⟨Z, et, hfin, -, eadd, epow, huniv⟩ := GlobalTheory.exists_finiteEtale_latticeTorsionHom S P.A (m ^ 2) La P.isAb
     (by rw [Nat.cast_pow]; exact hu.pow 2)
   obtain ⟨h, hh, -⟩ := huniv _ x hadd hpow
@@ -303,11 +303,11 @@ theorem exists_spread (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {F K κ : Typ
     inferInstanceAs (IsAffine (Spec _))
   let hκ : Over.mk y ⟶ Over.mk x₀ := Over.homMk (spMap φ) hφ
   have eκ : hκ ≫ r = h := Over.OverMorphism.ext ((congrArg (spMap φ ≫ ·) hr).trans hy')
-  haveI := aff x₀
-  haveI := aff y
+  have := aff x₀
+  have := aff y
   have w₁ := ThetaBaseChange.isThetaPt_pull P hB hκ hw
   simp only [← Category.assoc, eκ, hh] at w₁
-  haveI : IsLocalRing Γ((Over.mk y).left, ⊤) :=
+  have : IsLocalRing Γ((Over.mk y).left, ⊤) :=
     (Scheme.ΓSpecIso (CommRingCat.of κ)).commRingCatIsoToRingEquiv.symm.isLocalRing
   obtain ⟨u, hu₁⟩ := ThetaUniq.exists_unit_over hG P hm (ThetaUniq.isThetaPtOver_of_local P y w₁)
     (ThetaUniq.isThetaPtOver_of_local P y hv)
@@ -320,7 +320,7 @@ theorem exists_spread (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {F K κ : Typ
     change spMap j ≫ spMap ψ ≫ x₀ = y
     rw [← Category.assoc, e₁, hφ])
   have eJ : J ≫ hA = hκ := Over.OverMorphism.ext e₁
-  haveI := aff (spMap ψ ≫ x₀)
+  have := aff (spMap ψ ≫ x₀)
   refine ⟨A, inferInstance, inferInstance, j, s, k, _, J, fun a => hA ≫ r ≫ et a, hj, h₂, h₃, rfl, ?_, fun a => ?_, ?_⟩
   · rw [Category.assoc, ← hg, ← spMap_comp]
     congr 1
@@ -346,17 +346,17 @@ theorem exists_full (hL : Laws) (hB : SecBaseChangeAnySt) {E : Type} [Field E] [
     (hact : letI := H.starRing; ∀ x, (o'.oa.act x).left ≫ φ = φ ≫ (oF.t.act.act x).left)
     (m : ℕ) (hm : Odd m) (z : K) (v : D.La → K) (hz : (o'.I.ζ (m ^ 2) : κ) = i z) (hv : o'.Theta m fun x => i (v x)) :
     ∃ o : Full D K, o.ρ = b (e bs.ρ) ∧ (o.I.ζ (m ^ 2) : K) = z ∧ o.Theta m v := by
-  letI := H.starRing
+  let := H.starRing
   have hG := hL.globalFns
   have hN : 0 < m ^ 2 := pow_pos hm.pos 2
   let P := objPolAV oF
-  haveI := D.fin
-  haveI := D.proj
-  haveI : Module.Finite ℤ D.La := Module.Finite.trans (𝓞 E) D.La
-  haveI : Module.Flat ℤ D.La := Module.Flat.trans ℤ (𝓞 E) D.La
-  haveI : Module.Free ℤ D.La := inferInstance
-  haveI : IsLocallyNoetherian S := LocallyOfFiniteType.isLocallyNoetherian sF
-  haveI : IsLocallyNoetherian (Sp K) := inferInstanceAs (IsLocallyNoetherian (Spec _))
+  have := D.fin
+  have := D.proj
+  have : Module.Finite ℤ D.La := Module.Finite.trans (𝓞 E) D.La
+  have : Module.Flat ℤ D.La := Module.Flat.trans ℤ (𝓞 E) D.La
+  have : Module.Free ℤ D.La := inferInstance
+  have : IsLocallyNoetherian S := LocallyOfFiniteType.isLocallyNoetherian sF
+  have : IsLocallyNoetherian (Sp K) := inferInstanceAs (IsLocallyNoetherian (Spec _))
   have hu : IsUnit (m : Γ(S, ⊤)) := by
     have := ((bs.unit m hm.pos).map (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom).map sB.appTop.hom
     rwa [map_natCast, map_natCast] at this
@@ -367,9 +367,9 @@ theorem exists_full (hL : Laws) (hB : SecBaseChangeAnySt) {E : Type} [Field E] [
     ((Category.assoc _ _ _).trans ((Category.id_comp _).trans hy)) m hm hu (fun a => Φ (o'.I.ev (m ^ 2) a))
     (fun a c => by rw [o'.I.add]; exact map_mul Φ _ _) p'' v
     ((ThetaPtUp.isThetaPt_iff (P₀ := P) cart lb (fun _ => rfl) p' _).1 hv)
-  haveI : IsDominant (spMap j) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical j).2 (by
+  have : IsDominant (spMap j) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical j).2 (by
     rw [(RingHom.injective_iff_ker_eq_bot j).1 hj]; exact bot_le)⟩
-  haveI := oF.proper
+  have := oF.proper
   have inj : ∀ p q : Over.mk t ⟶ oF.t.G, J ≫ p = J ≫ q → p = q := fun p q h => Over.OverMorphism.ext
     (ext_of_isDominant_of_isSeparated (X := Sp A) oF.t.G.hom ((Over.w p).trans (Over.w q).symm) (spMap j)
       (hJ ▸ congrArg CommaMorphism.left h))
@@ -446,8 +446,8 @@ theorem exists_full (hL : Laws) (hB : SecBaseChangeAnySt) {E : Type} [Field E] [
   refine ⟨⟨objPolAV o, oa, o.t.prim, b (e bs.ρ), by
     rw [← map_pow, ← map_pow, bs.ρ_sq, map_neg, map_neg, map_natCast, map_natCast], hdet, I₁, ‹_›⟩, rfl,
     congrArg Units.val hI₁, ?_⟩
-  haveI : IsAffine (Over.mk t).left := inferInstanceAs (IsAffine (Spec _))
-  haveI : IsAffine (Over.mk (𝟙 _ ≫ spMap s ≫ t)).left := inferInstanceAs (IsAffine (Spec _))
+  have : IsAffine (Over.mk t).left := inferInstanceAs (IsAffine (Spec _))
+  have : IsAffine (Over.mk (𝟙 _ ≫ spMap s ≫ t)).left := inferInstanceAs (IsAffine (Spec _))
   have w₁ := ThetaBaseChange.isThetaPt_pull P hB J₀ hth
   have e₁ : I₁.ev (m ^ 2) = x₁ := funext hI₂
   have e₂ : (fun a => J₀.left.appTop.hom (fnA (k (v a)))) = fun a => fnOf (v a) := funext fun a =>

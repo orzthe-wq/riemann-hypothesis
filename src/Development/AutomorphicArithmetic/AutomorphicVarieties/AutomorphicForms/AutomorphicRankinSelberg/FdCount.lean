@@ -50,8 +50,8 @@ theorem UpperTheory.V.Af.Rs.fdCount :
   intro hN
   unfold UpperTheory.V.Af.Rs.FdNull at hN
   unfold UpperTheory.V.Af.Rs.FdCount
-  haveI : Countable (Matrix (Fin 2) (Fin 2) ℤ) := inferInstanceAs (Countable (Fin 2 → Fin 2 → ℤ))
-  haveI : Countable SL(2, ℤ) :=
+  have : Countable (Matrix (Fin 2) (Fin 2) ℤ) := inferInstanceAs (Countable (Fin 2 → Fin 2 → ℤ))
+  have : Countable SL(2, ℤ) :=
     inferInstanceAs (Countable {A : Matrix (Fin 2) (Fin 2) ℤ // A.det = 1})
   have hnull : ∀ γ : SL(2, ℤ),
       volume ((fun z : ℍ => γ • z) ⁻¹' (ModularGroup.fd \ ModularGroup.fdo)) = 0 := by

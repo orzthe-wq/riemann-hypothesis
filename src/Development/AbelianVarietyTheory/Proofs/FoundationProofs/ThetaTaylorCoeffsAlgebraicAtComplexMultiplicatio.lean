@@ -2,12 +2,13 @@ module
 
 public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
 public import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugateStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrtStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermitianPairingRationalValuesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatumStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmThetaTaylorCoeffAlgebraicAndConjugate
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HermitianPairingRationalValues
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeCovolumePosAndSelfDual
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeCovolumePosAndSelfDualStatement
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -421,7 +422,7 @@ theorem U_pullB (hG : admG1 D) (hb : OnB D b) (c : Fin r → ℂ) (g : ℂ → �
 
 theorem exists_pair (hG : admG1 D) (hC : Crv D cc δ) :
     ∃ P : PeriodPair, ∀ z, z ∈ lamOf D cc δ ↔ z ∈ P.lattice :=
-  GlobalTheory.OddTheta.exists_periodPair _ (GlobalTheory.T.idealPeriodLattice_of_curveDatum D hG cc δ hC).1
+  GlobalTheory.OddTheta.exists_periodPair _ (_root_.GlobalTheory.CurveLattice.lattice_of_curve D hG cc δ hC).1
 
 theorem im_Hf (T : Tor D) (z w : VC D N N') : (Hf D T z w).im = (sq z w).im / area T.abelian₂ := by
   rw [Hf_eq, Complex.div_ofReal_im]
@@ -435,7 +436,7 @@ theorem integral_of_gen (hG : admG1 D) (hC : Crv D cc δ)
     (∀ x ∈ A, ∀ y ∈ A, ∃ m : ℤ, (Hf D (tor0 D cc δ) x y).im = m) ∧
       ∀ x ∈ A, ∃ m : ℤ, qH D (tor0 D cc δ) x = m := by
   obtain ⟨L, hL⟩ := exists_pair cc δ hG hC
-  obtain ⟨-, hdual⟩ := GlobalTheory.T.latticeCovolume_pos_and_selfDual L _ hL
+  obtain ⟨-, hdual⟩ := _root_.GlobalTheory.PlaneLattice.area_pos_and_selfDual L _ hL
   have hLam : (tor0 D cc δ).abelian₂ = lamOf D cc δ := rfl
   have hsq : ∀ z ∈ A, ∀ x ∈ S, sq z (embV D (tor0 D cc δ) x) ∈ lamOf D cc δ := by
     intro z hz x hx
@@ -469,7 +470,7 @@ theorem integral_of_gen (hG : admG1 D) (hC : Crv D cc δ)
       have e : sq z (-a) = -sq z a := by simp [sq]
       exact ⟨-m, by rw [e, Complex.neg_im, neg_div, hm, Int.cast_neg]⟩
   refine ⟨fun x hx => hint x (hsq x hx), fun x hx => ?_⟩
-  obtain ⟨a, ha⟩ := GlobalTheory.T.exists_integer_map_eq_halfOneAddSqrt D
+  obtain ⟨a, ha⟩ := _root_.GlobalTheory.NormSum.exists_integer_map_eq_w0 D
   obtain ⟨m, hm⟩ := hint (w0 D • x) (fun y hy => by
     rw [sq_smul_left, ← ha]
     exact lam_mul cc δ a (hsq x hx _ hy)) x hx
@@ -498,7 +499,7 @@ theorem integral_la (hG : admG1 D) (hC : Crv D cc δ)
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hL : SD D L) (hL' : SD D L') :
     ∀ x ∈ La D (tor0 D cc δ) L L', ∃ m : ℤ, qH D (tor0 D cc δ) x = m :=
   (integral_of_gen cc δ hG hC {x | x ∈ YYl D L L'}
-    (fun x hx y hy => GlobalTheory.T.hermitian_pairing_integral_values D N N' L L' hL hL' x hx y hy) _ rfl).2
+    (fun x hx y hy => _root_.GlobalTheory.NormSum.TraceInt.hYY_integral D N N' L L' hL hL' x hx y hy) _ rfl).2
 
 def Good (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (G : VC D N N' → ℂ) : Prop :=
   ∀ x ∈ sat (LaB D (tor0 D cc δ) b), Gen (coordV D) (U D (tor0 D cc δ) x G)
@@ -648,7 +649,7 @@ theorem pow_smul_liftY (hG : admG1 D) {L : Submodule (𝓞 D.host.E) (Fin N → 
 theorem taylor_algebraic : ∀ D : D7, useAlg D := by
   intro D cc δ hC t0 ht N N' L L' hL hL' _ G hE
   have hG : admG1 D := (GlobalTheory.InducedType.induced_type D).1
-  have hU : use1 D := GlobalTheory.T.forall_use1 D
+  have hU : use1 D := _root_.GlobalTheory.ThetaConj.cmTheta_taylorCoeff_algebraic_and_conjugate D
   obtain ⟨b, κ, hb, hκ, rfl⟩ := hE
   have hg := ((good_theta hG hU hC hb ht).iop hG hC hb (LaB D (tor0 D cc δ) b) _
     (la_le cc δ hG hb L L')).const_mul hκ.1

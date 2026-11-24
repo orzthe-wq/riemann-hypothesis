@@ -130,7 +130,7 @@ theorem isDerivAt0_pt {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCo
       funext c
       by_cases h : c = a
       · subst h; simp
-      · simp [Pi.single_apply, h]
+      · simp [h]
     rw [h3]
     exact e.diff b hb a
   have hs : ∀ s : Finset (Fin g), IsDerivAt0 (fun z => (e.ex b z).left)

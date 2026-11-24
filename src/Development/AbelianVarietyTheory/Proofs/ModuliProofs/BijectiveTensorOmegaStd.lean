@@ -67,8 +67,7 @@ theorem re_realForm (M : Matrix ι ι ℝ) (z w : ι → ℂ) :
     (z ⬝ᵥ (M.map Complex.ofReal) *ᵥ star w).re =
       (fun i => (z i).re) ⬝ᵥ M *ᵥ (fun i => (w i).re) +
         (fun i => (z i).im) ⬝ᵥ M *ᵥ (fun i => (w i).im) := by
-  simp [dotProduct, mulVec, Complex.re_sum, Complex.im_sum, Finset.sum_add_distrib,
-    Finset.sum_sub_distrib]
+  simp [dotProduct, mulVec, Complex.re_sum, Complex.im_sum, Finset.sum_add_distrib]
 
 theorem im_realForm (M : Matrix ι ι ℝ) (z w : ι → ℂ) :
     (z ⬝ᵥ (M.map Complex.ofReal) *ᵥ star w).im =
@@ -322,7 +321,7 @@ theorem eq_of_period_equiv [Nonempty (Fin r)] {τ τ' : Matrix (Fin h) (Fin h) �
     by_cases hv : v = u
     · subst hv
       simp [Pi.single_apply, mulVec, dotProduct]
-    · simp [Pi.single_apply, mulVec, dotProduct, hv]
+    · simp [mulVec, dotProduct, hv]
   have h1 : (e : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) = LinearMap.id := by
     refine (Pi.basisFun ℂ (Fin g)).ext fun k => ?_
     obtain ⟨⟨u, i⟩, rfl⟩ := σ.surjective k

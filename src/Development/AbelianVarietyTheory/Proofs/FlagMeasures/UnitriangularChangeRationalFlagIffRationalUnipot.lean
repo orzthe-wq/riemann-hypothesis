@@ -44,6 +44,10 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.GflagSwap
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IdentityCellTrace.TermIdIffInSOf
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarPairOrthogonal.XLeOrthXplus
+import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.CellGeo
 
 @[expose] public section
 
@@ -63,23 +67,8 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
 theorem mem_orth_X {U : Submodule E S.V} {y : S.V} : y ∈ orth S U ↔ ∀ x ∈ U, S.hT x y = 0 := by
   simp [orth, Submodule.mem_iInf]
 
-theorem Xa_le_X (F : FlagG S r T) (j : ℕ) : F.Xa j ≤ F.X :=
-  Submodule.span_mono (Set.image_subset_range _ _)
-
-theorem Xa_mono (F : FlagG S r T) {i j : ℕ} (h : i ≤ j) : F.Xa i ≤ F.Xa j :=
-  Submodule.span_mono (Set.image_mono fun a (ha : a.1 < i) => lt_of_lt_of_le ha h)
-
-theorem fvec_castSucc (F : FlagG S r T) (a : Fin r) : F.fvec a.castSucc = F.e a := by
-  simp [FlagG.fvec]
-
-theorem fvec_last (F : FlagG S r T) : F.fvec (Fin.last r) = F.z := by
-  simp [FlagG.fvec]
-
 theorem e_mem_Xa (F : FlagG S r T) (a : Fin r) {j : ℕ} (h : a.1 < j) : F.e a ∈ F.Xa j :=
   Submodule.subset_span ⟨a, h, rfl⟩
-
-theorem e_mem_X (F : FlagG S r T) (a : Fin r) : F.e a ∈ F.X :=
-  Submodule.subset_span ⟨a, rfl⟩
 
 theorem X_orth_fvec (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) (b : Fin (r + 1)) :
     S.hT x (F.fvec b) = 0 := by
@@ -87,28 +76,15 @@ theorem X_orth_fvec (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) (b : Fin (r + 1
   | mem x h =>
     obtain ⟨a, rfl⟩ := h
     have := Formalism.L2.SG.NGCut.NormalVectorPairings.brS_fvec F b a.castSucc
-    simp only [brS, fvec_castSucc] at this
+    simp only [brS, _root_.Formalism.MainNotions.BridgeLemma.geo_fvec_cast] at this
     rw [this]
     simp [Fin.castSucc_ne_last]
   | zero => simp
   | add x y _ _ hx hy => simp [map_add (f := _), hx, hy]
-  | smul c x _ hx => simp [LinearMap.map_smulₛₗ₂, hx]
-
-theorem X_iso (F : FlagG S r T) {x y : S.V} (hx : x ∈ F.X) (hy : y ∈ F.X) : S.hT x y = 0 := by
-  induction hy using Submodule.span_induction with
-  | mem y h =>
-    obtain ⟨a, rfl⟩ := h
-    rw [← fvec_castSucc]
-    exact X_orth_fvec F hx _
-  | zero => simp
-  | add y y' _ _ h h' => simp [map_add (f := _), h, h']
-  | smul c y _ h => simp [h]
+  | smul c x _ hx => simp [hx]
 
 theorem isotropicSpan_orthogonal_anisotropicVector (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) : S.hT x F.z = 0 := by
-  rw [← fvec_last]; exact X_orth_fvec F hx _
-
-theorem z_orth_X (F : FlagG S r T) {x : S.V} (hx : x ∈ F.X) : S.hT F.z x = 0 := by
-  rw [Formalism.L2.SG.NGCut.NormalVectorPairings.hT_swap x F.z, isotropicSpan_orthogonal_anisotropicVector F hx, star_zero]
+  rw [← _root_.PI.ScalarPairDr.W.fvec_last]; exact X_orth_fvec F hx _
 
 theorem fvec_indep (F : FlagG S r T) (hT : T ≠ 0) : LinearIndependent E F.fvec := by
   unfold FlagG.fvec
@@ -128,7 +104,7 @@ theorem chg_sub_mem (F : FlagG S r T) {A : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
   · have hlt : a.1 < b.1 := h
     have hr : a.1 < r := by have := b.2; omega
     have ea : a = (⟨a.1, hr⟩ : Fin r).castSucc := by ext; rfl
-    rw [ea, fvec_castSucc]
+    rw [ea, _root_.Formalism.MainNotions.BridgeLemma.geo_fvec_cast]
     exact Submodule.smul_mem _ _ (e_mem_Xa F _ hlt)
   · rw [hA.1 a b h, zero_smul]
     exact Submodule.zero_mem _
@@ -157,32 +133,32 @@ theorem exists_chg (F : FlagG S r T) (hT : T ≠ 0) {A : Matrix (Fin (r + 1)) (F
   have hli := chg_indep (fvec_indep F hT) hA hg
   have hsub := chg_sub_mem F hA hg
   have heX : ∀ a : Fin r, g a.castSucc ∈ F.X := fun a => by
-    have h1 := Xa_le_X F _ (hsub a.castSucc)
-    rw [fvec_castSucc] at h1
-    simpa using F.X.add_mem h1 (e_mem_X F a)
+    have h1 := _root_.Formalism.MainNotions.BridgeLemma.geo_Xa_le_X F _ (hsub a.castSucc)
+    rw [_root_.Formalism.MainNotions.BridgeLemma.geo_fvec_cast] at h1
+    simpa using F.X.add_mem h1 (_root_.PI.UnitaryGroupMassFormula.IdCellInSW.e_mem_X F a)
   have hzX : g (Fin.last r) - F.z ∈ F.X := by
-    have h1 := Xa_le_X F _ (hsub (Fin.last r))
-    rwa [fvec_last] at h1
+    have h1 := _root_.Formalism.MainNotions.BridgeLemma.geo_Xa_le_X F _ (hsub (Fin.last r))
+    rwa [_root_.PI.ScalarPairDr.W.fvec_last] at h1
   have hz : g (Fin.last r) = F.z + (g (Fin.last r) - F.z) := by abel
   let F₁ : FlagG S r T :=
     { e := fun a => g a.castSucc
       z := g (Fin.last r)
       e_indep := hli.comp _ (Fin.castSucc_injective r)
-      e_iso := fun a b => X_iso F (heX a) (heX b)
+      e_iso := fun a b => _root_.Formalism.L2.SG.NGCut.NormalVectorPairings.hT_X_X F (heX a) (heX b)
       z_orth := fun a => by
         show S.hT (g a.castSucc) (g (Fin.last r)) = 0
-        rw [hz, map_add (f := _), isotropicSpan_orthogonal_anisotropicVector F (heX a), X_iso F (heX a) hzX, add_zero]
+        rw [hz, map_add (f := _), isotropicSpan_orthogonal_anisotropicVector F (heX a), _root_.Formalism.L2.SG.NGCut.NormalVectorPairings.hT_X_X F (heX a) hzX, add_zero]
       z_norm := by
         show S.hT (g (Fin.last r)) (g (Fin.last r)) = -T
         rw [hz]
         simp only [map_add (f := _), LinearMap.add_apply]
-        rw [isotropicSpan_orthogonal_anisotropicVector F hzX, z_orth_X F hzX, X_iso F hzX hzX, F.z_norm]
+        rw [isotropicSpan_orthogonal_anisotropicVector F hzX, _root_.Formalism.L2.SG.NGCut.NormalVectorPairings.hT_z_X F hzX, _root_.Formalism.L2.SG.NGCut.NormalVectorPairings.hT_X_X F hzX hzX, F.z_norm]
         simp }
   have hF : F₁.fvec = g := by
     funext b
     induction b using Fin.lastCases with
-    | last => exact fvec_last F₁
-    | cast b => exact fvec_castSucc F₁ b
+    | last => exact _root_.PI.ScalarPairDr.W.fvec_last F₁
+    | cast b => exact _root_.Formalism.MainNotions.BridgeLemma.geo_fvec_cast F₁ b
   exact ⟨F₁, by rw [hF]; exact hg⟩
 
 theorem exists_unip (F F₁ : FlagG S r T) (hT : T ≠ 0) {A : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hA : Uni A)
@@ -190,7 +166,7 @@ theorem exists_unip (F F₁ : FlagG S r T) (hT : T ≠ 0) {A : Matrix (Fin (r + 
     ∃ n : S.V ≃ₗ[E] S.V, n ∈ Formalism.HermitianLatticesTheory.isom S.hT ∧ (∀ j, ∀ x ∈ F.Xa (j + 1), n x - x ∈ F.Xa j) ∧
       (∀ x ∈ orth S F.X, n x - x ∈ F.X) ∧ ∀ a, F₁.fvec a = n (F.fvec a) := by
   have hsub := chg_sub_mem F hA hc
-  have hsubX : ∀ b, F₁.fvec b - F.fvec b ∈ F.X := fun b => Xa_le_X F _ (hsub b)
+  have hsubX : ∀ b, F₁.fvec b - F.fvec b ∈ F.X := fun b => _root_.Formalism.MainNotions.BridgeLemma.geo_Xa_le_X F _ (hsub b)
 
   set P : Submodule E S.V := Submodule.span E (Set.range F.fvec) with hP
   set U : Submodule E S.V := orth S F.X with hU
@@ -260,8 +236,8 @@ theorem exists_unip (F F₁ : FlagG S r T) (hT : T ≠ 0) {A : Matrix (Fin (r + 
       rintro _ ⟨a, ha, rfl⟩
       have ha' : a.1 < j + 1 := ha
       show m (F.e a) ∈ F.Xa j
-      rw [hm, ← fvec_castSucc, hnF]
-      exact Xa_mono F (by simpa using Nat.lt_succ_iff.1 ha') (hsub a.castSucc))
+      rw [hm, ← _root_.Formalism.MainNotions.BridgeLemma.geo_fvec_cast, hnF]
+      exact _root_.Formalism.MainNotions.BridgeLemma.geo_Xa_mono F (by simpa using Nat.lt_succ_iff.1 ha') (hsub a.castSucc))
     exact hle hx
   · have hx' : x ∈ P ⊔ C := by rw [hsup]; exact hx
     obtain ⟨p, hp, w, hw, rfl⟩ := Submodule.mem_sup.1 hx'
@@ -304,10 +280,10 @@ theorem tri_of_unip (F F₁ : FlagG S r T) (n : S.V ≃ₗ[E] S.V)
     intro b
     induction b using Fin.lastCases with
     | last =>
-      rw [fvec_last, Fin.val_last, ← hX]
+      rw [_root_.PI.ScalarPairDr.W.fvec_last, Fin.val_last, ← hX]
       exact hp _ (mem_orth_X.2 fun x hx => isotropicSpan_orthogonal_anisotropicVector F hx)
     | cast b =>
-      rw [fvec_castSucc, Fin.val_castSucc]
+      rw [_root_.Formalism.MainNotions.BridgeLemma.geo_fvec_cast, Fin.val_castSucc]
       exact hf _ _ (e_mem_Xa F b (Nat.lt_succ_self _))
   choose c hc0 hc using fun b => Xa_coords F (hb b)
   let B : Matrix (Fin (r + 1)) (Fin (r + 1)) E := fun a b => Fin.lastCases 0 (fun i => c b i) a
@@ -326,7 +302,7 @@ theorem tri_of_unip (F F₁ : FlagG S r T) (n : S.V ≃ₗ[E] S.V)
   · have h1 : ∑ a, B a b • F.fvec a = ∑ i, c b i • F.e i := by
       rw [Fin.sum_univ_castSucc, hBl, zero_smul, add_zero]
       refine Finset.sum_congr rfl fun i _ => ?_
-      rw [hBc, fvec_castSucc]
+      rw [hBc, _root_.Formalism.MainNotions.BridgeLemma.geo_fvec_cast]
     have h2 : ∑ a, (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) a b • F.fvec a = F.fvec b := by
       simp [Matrix.one_apply]
     simp only [Matrix.add_apply, add_smul, Finset.sum_add_distrib]

@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.CoeEqAlgebraMapZeroEquiv
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -95,7 +96,7 @@ private lemma sum_evFull {F : Type} [Field F] [NumberField F] {g : ℕ} (ty : Fi
     ∑ τ : F →+* ℂ, τ x * ((evFull ty e τ).map fun r => r ^ j).sum =
       (∑ i, ty i x * e i ^ j) + (starRingEnd ℂ) (∑ i, ty i x * e i ^ j) := by
   have cc : ∀ φ : F →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ :=
-    fun φ => RingHom.ext fun y => by simp [ComplexEmbedding.conjugate_coe_eq]
+    fun φ => RingHom.ext fun y => by simp
   have h1 : ∑ τ : F →+* ℂ, τ x * ((evAt ty e τ).map fun r => r ^ j).sum = ∑ i, ty i x * e i ^ j := by
     simp_rw [sum_evAt, Finset.mul_sum, mul_ite, mul_zero]
     rw [Finset.sum_comm]

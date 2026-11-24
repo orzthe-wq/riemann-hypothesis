@@ -349,13 +349,12 @@ theorem smoothOrderOneCentersIsolated_of_principalizationCertificate {V : Vanish
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m : ℕ} {Mem : Set ↥W}
     {Z : W.IdealSheafData} (h : PrincipalizationCertificate W p I m Mem Z) :
     SmoothOrderOneCentersIsolated V W p I m Mem Z := by
-  refine PrincipalizationCertificate.rec
-    (motive_1 := fun W p I m Mem Z _ => SmoothOrderOneCentersIsolated V W p I m Mem Z)
-    (motive_2 := fun W p N μ Mem Z _ => SmoothOrderOneCentersIsolated V W p N μ Mem Z)
-    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ h
-  · intro W p I m Mem Z hZM C hp hm hsm hcomp hxi hdisj hagree hpt
+  refine ResolutionCertificate.rec
+    (motive := fun _ W p I m Mem Z _ => SmoothOrderOneCentersIsolated V W p I m Mem Z)
+    ?_ ?_ ?_ ?_ ?_ h
+  · intro _ W p I m Mem Z hZM C hp hm hsm hcomp hxi hdisj hagree hpt
     exact (Set.disjoint_left.mp hdisj C.memPt) (hZM hpt)
-  · intro W p I m Mem Z hm2 C hp hm hsm hcomp hxi hdisj hagree hpt
+  · intro _ W p I m Mem Z hm2 C hp hm hsm hcomp hxi hdisj hagree hpt
     omega
   · intro W p I m Mem Z M N μ hI hM hmu hZc hcert ih C hp hm hsm hcomp hxi hdisj hagree hpt
     have hIN : ∀ x ∈ C.S, AgreeNear I N x := by
@@ -380,17 +379,9 @@ theorem smoothOrderOneCentersIsolated_of_principalizationCertificate {V : Vanish
       rw [FunctorialResolution.EmbeddedResolution.mem_orderAtLeastLocus_iff, hord] at hmem
       have hle : μ ≤ 1 := by exact_mod_cast hmem
       omega
-  · intro W p I m Mem Z U hU hcert ih C hp hm hsm hcomp hxi hdisj hagree hpt
+  · intro _ W p I m Mem Z U hU hcert ih C hp hm hsm hcomp hxi hdisj hagree hpt
     have hz : C.pt ∈ Z.support := hpt
     exact false_of_smoothOrderOneCentersIsolated_opens hV hG p I Z m Mem C (U C.pt hz) (hU C.pt hz)
-      (ih C.pt hz) hp hm hsm hcomp hxi hdisj hagree hpt
-  · intro W p N μ Mem Z hZM C hp hm hsm hcomp hxi hdisj hagree hpt
-    exact (Set.disjoint_left.mp hdisj C.memPt) (hZM hpt)
-  · intro W p N μ Mem Z hmu2 C hp hm hsm hcomp hxi hdisj hagree hpt
-    omega
-  · intro W p N μ Mem Z U hU hcert ih C hp hm hsm hcomp hxi hdisj hagree hpt
-    have hz : C.pt ∈ Z.support := hpt
-    exact false_of_smoothOrderOneCentersIsolated_opens hV hG p N Z μ Mem C (U C.pt hz) (hU C.pt hz)
       (ih C.pt hz) hp hm hsm hcomp hxi hdisj hagree hpt
   · intro W p N μ Mem Z U hU H hH hNsubH hZH J hJnone hJcomp hJloc hJcert ih C hp hm hsm hcomp hxi
       hdisj hagree hpt

@@ -80,7 +80,7 @@ theorem ratF_injective (V : HSp D) : Function.Injective (Bridge.ratF V) := by
       exact Algebra.TensorProduct.includeRight_injective (RingHom.injective _)
     apply hi
     rw [← h3, h1]
-    by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+    by_cases hij : i = j <;> simp [hij]
   subst h2
   exact Subtype.ext (Subtype.ext (e.symm.trans (map_one _)))
 

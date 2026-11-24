@@ -305,7 +305,6 @@ theorem UpperTheory.ConvolutionTheory.T.splitMatch :
       (by funext g; simp only [h0])
       (fun i hi => by
         funext g
-        change h (e i) (mapGL n (completionMap v (e i).1) g) = _
         rw [h1 (e i) fun hh => hi (e.injective hh)]
         exact hind (e i) g)
     rw [hvol iF bF mF hF h1F] at hcv

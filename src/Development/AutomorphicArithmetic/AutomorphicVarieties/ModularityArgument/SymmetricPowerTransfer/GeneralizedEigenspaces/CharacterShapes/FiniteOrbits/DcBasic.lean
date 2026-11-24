@@ -132,10 +132,10 @@ theorem UpperTheory.V.Z.Sym.So.dcBasic :
     let u' : U := ⟨u, hu⟩
     refine Finset.sum_nbij' (fun y => u' • y) (fun y => u'⁻¹ • y) ?_ ?_ ?_ ?_ ?_
     · intro y hy
-      simp only [Finset.mem_coe, Set.Finite.mem_toFinset] at hy ⊢
+      simp only [Set.Finite.mem_toFinset] at hy ⊢
       exact hO u' y hy
     · intro y hy
-      simp only [Finset.mem_coe, Set.Finite.mem_toFinset] at hy ⊢
+      simp only [Set.Finite.mem_toFinset] at hy ⊢
       exact hO u'⁻¹ y hy
     · intro y _
       exact inv_smul_smul u' y

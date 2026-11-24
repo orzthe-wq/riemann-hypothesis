@@ -4,7 +4,6 @@ public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.Tor
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.InterNumDetNonposSplitTorus
 public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.GreenCuspidalIff
 public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.PointSeparationPair
-public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.FubiniStudyChowHeight
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -53,7 +52,5 @@ structure HypothesesX : Prop where
   green : GlobalTheory.Published.GreenCuspidal
 
   sep : GlobalTheory.Published.PointSeparationPair
-
-  fsch : GlobalTheory.Published.FubiniStudyChowHeight
 
 end GlobalTheory.CovTop

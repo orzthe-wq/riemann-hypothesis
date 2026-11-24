@@ -120,7 +120,6 @@ private theorem lev_fin {U U' : Subgroup (GL (Fin a) (Af E))} {x : GL (Fin a) (A
       congrFun (congrArg Subtype.val (h.2.1 _ (hx u hu))) (g * finGL E a x)
     change φ.1 (g * finGL E a u * finGL E a x) = φ.1 (g * finGL E a x)
     rw [← e, mul_assoc, mul_assoc, ← map_mul, ← map_mul]
-    congr 3
     group
   · have e : lie E a (oneL E a) (act (.fin x) φ) = act (.fin x) (lie E a (oneL E a) φ) :=
       LinearMap.congr_fun (lie_rt_fin (oneL E a) x) φ

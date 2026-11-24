@@ -51,6 +51,7 @@ import Formalism.SharpRestriction.Divisibility.GeneratorPowers.CIndRaw
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.ExpBijectiveUniformisation
 import Formalism.SharpRestriction.Divisibility.GeneratorPowers.LemmaBStatement
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.ChartChg
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -88,7 +89,7 @@ theorem exists_isos {X₀ X' XG XK XA : Scheme.{0}} {L₀ : LB X₀} {L' : LB X'
   refine ⟨W, ω, hW, (isGen_iff _).2 (T.pgen_comp h' g₁ hω'), fun Z r z j₀ j' jG jA k₀ k' kG kA => ?_⟩
   have e : BoxExpansion.pw W r z jA jG = Geo.Tor.gw ω₂ (r ≫ a) z jG jA := vW Z r z jG jA kG kA
   rw [e, T Z (r ≫ a) z j₀ j' jA k₀ k' kA, T' Z (r ≫ a) z jG j' jA kG k' kA]
-  simp only [mul_comm, mul_left_comm, _root_.mul_assoc]
+  simp only [mul_comm, _root_.mul_assoc]
 
 theorem isoCast_isGen {X Y : Scheme.{0}} {L L' : LB X} (h : L = L') {M : LB Y} (f : Y ⟶ X) {w : LB.Iso M (L.pull f)}
     (hw : w.IsGen) : (isoCast h f w).IsGen := by

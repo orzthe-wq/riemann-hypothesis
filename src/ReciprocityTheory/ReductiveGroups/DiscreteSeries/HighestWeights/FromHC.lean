@@ -1,52 +1,201 @@
 module
 
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ModelDer
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ContinuousTorepK
+public import Formalism.PeriodIntegrals.WeylForU
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CompactGroupIntegrability.IsPositiveDefiniteMatrixCoefficientOfMemAlgA
 public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ContinuousRepresentations.DerivExistsAllPosStatement
-public import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.PolyCoef
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHCA
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHCB
-public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ContinuousTorepK
+import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
+import Mathlib.Tactic.Lemma
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHCA, ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHC
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHCA =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHCA", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ModelDer\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ContinuousTorepK\npublic import Formalism.PeriodIntegrals.WeylForU\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CompactGroupIntegrability.IsPositiveDefiniteMatrixCoefficientOfMemAlgA\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.LinearAlgebra.Matrix.FiniteDimensional\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Matrix
+
+namespace ReciprocityTheory.ChartRestriction.DS.HW
+
+open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
+
+section Sig
+
+variable {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
+  [CompleteSpace V]
+
+
+open Classical in
+def fhSig (τ : KG ε →* unitary (V →L[ℂ] V)) (g : Matrix (Fin n) (Fin n) ℂ) : V →L[ℂ] V :=
+  if h : g ∈ Kset ε then ((τ (torepK ε h) : unitary (V →L[ℂ] V)) : V →L[ℂ] V) else 1
+
+lemma fhSig_of_mem (τ : KG ε →* unitary (V →L[ℂ] V)) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
+    fhSig τ g = ((τ (torepK ε hg) : unitary (V →L[ℂ] V)) : V →L[ℂ] V) := by
+  unfold fhSig
+  rw [dite_eq_left hg]
+
+lemma fhSig_toMK (τ : KG ε →* unitary (V →L[ℂ] V)) (k : KG ε) :
+    fhSig τ (toMK k) = ((τ k : unitary (V →L[ℂ] V)) : V →L[ℂ] V) := by
+  rw [fhSig_of_mem τ (g := toMK k) k.2, torepK_toMK]
+
+lemma fh_op_mul (τ : KG ε →* unitary (V →L[ℂ] V)) (k k' : KG ε) :
+    ((τ (k * k') : unitary (V →L[ℂ] V)) : V →L[ℂ] V) =
+      ((τ k : unitary (V →L[ℂ] V)) : V →L[ℂ] V).comp ((τ k' : unitary (V →L[ℂ] V)) : V →L[ℂ] V) := by
+  rw [map_mul]
+  rfl
+
+lemma fhSig_isURepOn (τ : KG ε →* unitary (V →L[ℂ] V)) (hτ : Continuous τ) :
+    Formalism.MainNotions.S.IsURepOn (Formalism.REAL.Kset ε) (fhSig τ) := by
+  have hmul : ∀ a ∈ Kset ε, ∀ b ∈ Kset ε, a * b ∈ Kset ε := by
+    intro a ha b hb
+    refine ⟨Submonoid.mul_mem _ ha.1 hb.1, ?_⟩
+    rw [Matrix.mul_assoc, hb.2, ← Matrix.mul_assoc, ha.2, Matrix.mul_assoc]
+  have hone : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε :=
+    ⟨Submonoid.one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩
+  refine ⟨⟨?_, ?_⟩, ?_, ?_⟩
+  · rw [fhSig_of_mem τ hone]
+    have h1 : torepK ε hone = 1 := onep_KG_ext (by rw [toMK_torepK]; rfl)
+    rw [h1, map_one]
+    rfl
+  · intro a ha b hb
+    rw [fhSig_of_mem τ ha, fhSig_of_mem τ hb, fhSig_of_mem τ (hmul a ha b hb)]
+    have h1 : torepK ε (hmul a ha b hb) = torepK ε ha * torepK ε hb := onep_KG_ext (by
+      rw [toMK_torepK]
+      exact (congrArg₂ (· * ·) (toMK_torepK ε ha) (toMK_torepK ε hb)).symm)
+    rw [h1, fh_op_mul]
+  · intro g hg v
+    rw [fhSig_of_mem τ hg]
+    exact Unitary.norm_map _ v
+  · intro v
+    rw [continuousOn_iff_continuous_restrict]
+    show Continuous fun x : ↥(Kset ε) => fhSig τ (x : Matrix (Fin n) (Fin n) ℂ) v
+    have hc : Continuous fun x : ↥(Kset ε) =>
+        ((τ (torepK ε x.2) : unitary (V →L[ℂ] V)) : V →L[ℂ] V) v :=
+      (continuous_subtype_val.comp (hτ.comp (continuous_torepK ε))).clm_apply continuous_const
+    refine hc.congr fun x => ?_
+    rw [fhSig_of_mem τ x.2]
+
+end Sig
+
+section InK
+
+variable {n : ℕ} {ε : Fin n → Bool}
+
+end InK
+
+section Coef
+
+attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
+
+variable {k : ℕ}
+
+def fhEnt (k : ℕ) : Matrix (Fin k) (Fin k) ℂ →ₗ[ℂ] (Fin k × Fin k → ℂ) where
+  toFun A ij := A ij.1 ij.2
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+
+lemma fh_diff_eval (P : MvPolynomial (Fin k × Fin k) ℂ) (A : Matrix (Fin k) (Fin k) ℂ) :
+    DifferentiableAt ℂ (fun A : Matrix (Fin k) (Fin k) ℂ => MvPolynomial.eval (fhEnt k A) P) A := by
+  induction P using MvPolynomial.induction_on
+  next a =>
+    simp only [MvPolynomial.eval_C]
+    exact differentiableAt_const _
+  next p q hp hq =>
+    simp only [map_add (f := _)]
+    exact hp.add hq
+  next p i hp =>
+    simp only [map_mul, MvPolynomial.eval_X]
+    exact hp.mul (differentiableAt_pi.1
+      (LinearMap.toContinuousLinearMap (fhEnt k)).differentiableAt i)
+
+lemma fh_det_eq (A : Matrix (Fin k) (Fin k) ℂ) :
+    A.det = MvPolynomial.eval (fhEnt k A) (Matrix.det (Matrix.mvPolynomialX (Fin k) (Fin k) ℂ)) := by
+  have h : (fhEnt k A : Fin k × Fin k → ℂ) = fun p => A p.1 p.2 := rfl
+  rw [h, RingHom.map_det, Matrix.mvPolynomialX_mapMatrix_eval]
+
+end Coef
+
+section Coef2
+
+attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
+
+variable {k : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
+  [CompleteSpace V]
+
+lemma fh_det_ne_zero {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Kset (fun _ : Fin k => true)) : g.det ≠ 0 := by
+  intro h0
+  have hu := Matrix.mem_unitaryGroup_iff.1 hg.1
+  have h := congrArg Matrix.det hu
+  rw [Matrix.det_mul, h0, zero_mul, Matrix.det_one] at h
+  exact zero_ne_one h
+
+theorem fh_coef (τ : KG (fun _ : Fin k => true) →* unitary (V →L[ℂ] V)) (hτ : Continuous τ) (v w : V) :
+    ∃ L : Matrix (Fin k) (Fin k) ℂ →ₗ[ℂ] ℂ, ∀ X, inK (fun _ : Fin k => true) X →
+      inner ℂ w (derOp (fun _ : Fin k => true) τ X v) = L X := by
+  classical
+  obtain ⟨m, P, hP⟩ := _root_.PI.UnitaryGroupMassFormula.PolyCoef.polyCoef k V (fhSig τ) ⊤ (fhSig_isURepOn τ hτ) inferInstance
+    (fun _ _ _ _ => Submodule.mem_top) v Submodule.mem_top w
+  have hdet1 : DifferentiableAt ℂ (fun A : Matrix (Fin k) (Fin k) ℂ => A.det) 1 := by
+    have h : (fun A : Matrix (Fin k) (Fin k) ℂ => A.det) = fun A =>
+        MvPolynomial.eval (fhEnt k A) (Matrix.det (Matrix.mvPolynomialX (Fin k) (Fin k) ℂ)) :=
+      funext fh_det_eq
+    rw [h]
+    exact fh_diff_eval _ _
+  let F : Matrix (Fin k) (Fin k) ℂ → ℂ := fun A =>
+    MvPolynomial.eval (fhEnt k A) P * (A.det ^ m)⁻¹
+  have hF : DifferentiableAt ℂ F 1 := by
+    have hne : (1 : Matrix (Fin k) (Fin k) ℂ).det ^ m ≠ 0 := by
+      rw [Matrix.det_one, one_pow]
+      exact one_ne_zero
+    have hpow : DifferentiableAt ℂ (fun A : Matrix (Fin k) (Fin k) ℂ => A.det ^ m) 1 :=
+      (differentiableAt_pow m).comp 1 hdet1
+    exact (fh_diff_eval P 1).mul (hpow.inv hne)
+  refine ⟨(fderiv ℂ F 1).toLinearMap, fun X hX => ?_⟩
+  have hγ := (kcurve_spec (fun _ : Fin k => true) hX).2.1
+  have hD := derOp_hasDeriv (fun _ : Fin k => true) τ hτ X hX (kcurve (fun _ : Fin k => true) X) hγ
+  let Λ : (V →L[ℂ] V) →L[ℂ] ℂ := (innerSL ℂ w).comp (ContinuousLinearMap.apply ℂ V v)
+  have h1 := (Λ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hD
+  have he := hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)
+  rw [zero_smul, NormedSpace.exp_zero, one_mul] at he
+  have h3 := (hF.hasFDerivAt.restrictScalars ℝ).comp_hasDerivAt_of_eq 0 he (by simp)
+  have heq : (⇑(Λ.restrictScalars ℝ) ∘ fun t : ℝ =>
+      ((τ (kcurve (fun _ : Fin k => true) X t) : unitary (V →L[ℂ] V)) : V →L[ℂ] V)) =
+      F ∘ fun u : ℝ => NormedSpace.exp (u • X) := by
+    funext t
+    have hx : NormedSpace.exp (t • X) = toMK (kcurve (fun _ : Fin k => true) X t) := by
+      rw [hγ t]
+      exact congrArg NormedSpace.exp (Complex.coe_smul t X).symm
+    simp only [Function.comp_apply]
+    rw [hx]
+    have hk : toMK (kcurve (fun _ : Fin k => true) X t) ∈ Kset (fun _ : Fin k => true) := (kcurve (fun _ : Fin k => true) X t).2
+    have hP' := hP _ hk
+    rw [fhSig_toMK] at hP'
+    simp only [Λ, F, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.apply_apply, innerSL_apply_apply]
+    rw [eq_mul_inv_iff_mul_eq₀ (pow_ne_zero _ (fh_det_ne_zero hk))]
+    exact hP'
+  rw [heq] at h1
+  have h4 := h1.unique h3
+  exact h4
+
+end Coef2
+
+end ReciprocityTheory.ChartRestriction.DS.HW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHCA =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHC =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHC", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ContinuousRepresentations.DerivExistsAllPosStatement\npublic import Formalism.PeriodIntegrals.WeylForU\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CompactGroupIntegrability.IsPositiveDefiniteMatrixCoefficientOfMemAlgA\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHCA\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHCB\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.ContinuousTorepK\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -96,7 +245,7 @@ theorem derivExists_allPos : DerivExistsAllPosStatement := by
       exact hc.congr fun g => (congrArg (fun A : V →L[ℂ] V => A v) (hσ g.2)).symm
   let b := stdOrthonormalBasis ℂ V
   have hcoeff (i j : Fin (Module.finrank ℂ V)) :=
-    polynomial_coefficients k V σ ⊤ hrep inferInstance
+    _root_.PI.UnitaryGroupMassFormula.PolyCoef.polyCoef k V σ ⊤ hrep inferInstance
       (fun _ _ _ _ => Submodule.mem_top) (b j) Submodule.mem_top (b i)
   choose m P hP using hcoeff
   let F (A : Matrix (Fin k) (Fin k) ℂ) : V →L[ℂ] V :=
@@ -172,7 +321,6 @@ theorem kType_of_hcTypeU {k : ℕ} {u : Fin k → ℝ} {H : Type} [NormedAddComm
     rw [← hσ] at this
     first
     | (rwa [toMK_torepK (fun _ : Fin k => true) hg] at this)
-    | (convert this using 2; exact (toMK_torepK (fun _ : Fin k => true) hg).symm)
   case nrm =>
     rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm]
     exact inv_mul_cancel₀ (norm_ne_zero_iff.mpr hv0)
@@ -185,7 +333,10 @@ theorem kType_of_hcTypeU {k : ℕ} {u : Fin k → ℝ} {H : Type} [NormedAddComm
     rw [map_smul, hhw a b hab, smul_zero]
   intro g x
   first
-  | (simp only [LinearIsometryEquiv.refl_apply, KType.op, hσ])
   | (show π (toMK g) x = ((fhTau π hU g : unitary (H →L[ℂ] H)) : H →L[ℂ] H) x; rw [hσ])
 
 end ReciprocityTheory.ChartRestriction.DS.HW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHC =====

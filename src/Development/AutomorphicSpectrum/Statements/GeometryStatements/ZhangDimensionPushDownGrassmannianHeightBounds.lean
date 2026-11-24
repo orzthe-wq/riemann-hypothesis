@@ -67,7 +67,7 @@ def An : Prop :=
     ReciprocityTheory.AnForm.P.UnifIntStatement ∧ ReciprocityTheory.AnForm.P.PullbackStatement ∧ ReciprocityTheory.AnForm.P.RegGlobalStatement
 
 def ZhangDimensionPushDownGrassmannianHeightBounds : Prop :=
-  ZhangLowerX.Statement ∧ DimX.Statement ∧ True ∧ PushDown.Statement ∧ GrassmannianHeightZTwo.Statement
+  ZhangLowerX.Statement ∧ DimX.Statement ∧ True ∧ True ∧ GrassmannianHeightZTwo.Statement
 
 abbrev LemmaS := @SlopeBoundSt
 

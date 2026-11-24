@@ -229,7 +229,7 @@ theorem step (S : Matrix p p (WittVector l R)) (S' : Matrix q q (WittVector l R)
     have := hr a b
     simp only [Matrix.map_apply] at this
     rw [← this]
-    simp [hι, Z₀, WittVector.map_coeff]
+    simp [hι, Z₀]
   choose Z' hZ' using h2
   have hZ : Z = Z₀.map ι + (l : WittVector l K) • Matrix.of Z' := by
     ext1 a b

@@ -1180,8 +1180,8 @@ lemma lint_μQ (D : RealPlaceData k r Wp Wq) (f : (Fin r → ℂ) × ℂ → ℝ
   congr 1
   funext q
   by_cases hq : q ∈ Qset D
-  · simp [Set.indicator_apply, hq]
-  · simp [Set.indicator_apply, hq, wt_eq_zero D hq]
+  · simp [hq]
+  · simp [hq, wt_eq_zero D hq]
 
 lemma normSqTau_eq (D : RealPlaceData k r Wp Wq) (τ : ℝ × ℝ) (F : Mat k r → (Wq →L[ℂ] Wp)) :
     normSqTau D τ F = ∫⁻ q, ‖Jv D τ F q‖ₑ ^ 2 ∂μQ D := by

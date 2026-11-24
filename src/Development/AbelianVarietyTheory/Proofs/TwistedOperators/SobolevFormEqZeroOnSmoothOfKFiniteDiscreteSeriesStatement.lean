@@ -45,4 +45,4 @@ open Classical Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.sobolevForm_eq_zero_on_smooth_of_kFinite_discreteSeries : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (ℓ : M.H τ →ₗ[ℂ] ℂ), Sobolev₂ (lieAt V τ) (M.rep τ) ℓ → (∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ, ℓ w = 0) → ∀ w ∈ M.sm τ, ℓ w = 0 := by
-  first | exact @GlobalTheory.KFiniteDense.eq_zero_of_kFin | exact GlobalTheory.KFiniteDense.eq_zero_of_kFin | (intros; apply GlobalTheory.KFiniteDense.eq_zero_of_kFin <;> assumption)
+  first | exact @GlobalTheory.KFiniteDense.eq_zero_of_kFin

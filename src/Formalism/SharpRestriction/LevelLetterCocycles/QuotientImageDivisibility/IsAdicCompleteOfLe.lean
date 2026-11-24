@@ -73,7 +73,7 @@ theorem isAdicComplete_of_le {R : Type} [CommRing R] (I J : Ideal R) (a : ℕ) (
 
 theorem complete_max {l : ℕ} [Fact l.Prime] (LL : FinExt l) :
     IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL) := by
-  apply Formalism.MainNotions.N.Ln17.isAdicComplete_integers_local <;> assumption
+  apply Formalism.MainNotions.N.Ln17.isAdicComplete_integers_local
 
 end Formalism.MainNotions.N.Pv.LocalLengthBound.OLC
 

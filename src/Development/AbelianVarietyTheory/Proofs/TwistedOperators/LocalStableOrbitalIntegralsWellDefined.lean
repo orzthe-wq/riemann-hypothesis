@@ -4,10 +4,11 @@ public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsMulCommutativeCentRealUJ
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ArchimedeanUnitaryGroupStabilisersUnimodular
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LocalUnitaryGroupStabilizersUnimodularFinitePlac
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteUnitaryTorusNormClassesAtAllPlacesStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormClassesIffConjUnitaryTorusEllipticElementsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TorusElementCharpolyRegularCentralizerStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryTorusEquivCentralizerWithMeasureStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FiniteUnitaryTorusNormClassesAtAllPlaces
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsHasCls
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.NormClassesIffConjUnitaryTorusEllipticElements
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TorusElementCharpolyRegularCentralizer
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryTorusEquivCentralizerWithMeasure
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -48,6 +49,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -78,16 +80,16 @@ theorem phiOK_of (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (k : Type) [Field k
   set φ0 := q.2.choose_spec.choose
   change HasOrbInt μ (gam h) (centMeas h dt) f (orbInt μ (gam h0) (centMeas h0 dt) f)
 
-  have halg0 := GlobalTheory.T.torusElement_charpoly_regular_centralizer F E σ hσ r n P J hJ k x0 φ0 h0
-  obtain ⟨e0, he0, hm0⟩ := GlobalTheory.T.unitaryTorus_equiv_centralizer_with_measure F E σ hσ r n P J hJ k x0 φ0 h0
-  obtain ⟨e, he, hm⟩ := GlobalTheory.T.unitaryTorus_equiv_centralizer_with_measure F E σ hσ r n P J hJ k x φ h
+  have halg0 := _root_.GlobalTheory.TrEll.gam_charpoly_regular_cent F E σ hσ r n P J hJ k x0 φ0 h0
+  obtain ⟨e0, he0, hm0⟩ := _root_.GlobalTheory.TorCentTop.torEquiv_cent F E σ hσ r n P J hJ k x0 φ0 h0
+  obtain ⟨e, he, hm⟩ := _root_.GlobalTheory.TorCentTop.torEquiv_cent F E σ hσ r n P J hJ k x φ h
   haveI : (centMeas h0 dt).IsHaarMeasure := by rw [hm0]; exact e0.isHaarMeasure_map dt
   haveI : (centMeas h0 dt).IsMulRightInvariant :=
     isMulRightInvariant_cent (isMulCommutative_cent_HA halg0.2.1) _
   have H0 : HasOrbInt μ (gam h0) (centMeas h0 dt) f (orbInt μ (gam h0) (centMeas h0 dt) f) :=
     (hpr _ halg0.2.1).hasOrbInt hf hc
 
-  obtain ⟨g, hg⟩ := (GlobalTheory.T.normClasses_iff_conj_unitaryTorusEllipticElements F E σ hσ r n P J hJ k x0 φ0 h0 x φ h).1 (by rw [hx0])
+  obtain ⟨g, hg⟩ := (_root_.GlobalTheory.TrEll.cls_conj_torus F E σ hσ r n P J hJ k x0 φ0 h0 x φ h).1 (by rw [hx0])
   have hgam : g * gam h0 * g⁻¹ = gam h := (hg _).symm
   have hmeas : centMeas h dt = (centMeas h0 dt).map (centEquiv (conjEquiv g) (gam h0) hgam) := by
     rw [hm, hm0, Measure.map_map (map_continuous _).measurable (map_continuous _).measurable]
@@ -105,7 +107,7 @@ end GlobalTheory.TrPhiOK
 open GlobalTheory.TrPhiOK in
 theorem GlobalTheory.TrPhiOK.phiOK_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (r n : ℕ) (P : PPol σ r) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → (∀ (v : HeightOneSpectrum (𝓞 F)) (μ : Measure (GLoc σ J v)) (dt : Measure (Tor P (Fv F v))) (f : GLoc σ J v → ℂ), μ.IsHaarMeasure → dt.IsHaarMeasure → Continuous f → HasCompactSupport f → PhiOK (J := J) μ dt f) ∧ ∀ (w : InfinitePlace F) (μ : Measure (GArch σ J w)) (dt : Measure (Tor P w.Completion)) (f : GArch σ J w → ℂ), μ.IsHaarMeasure → dt.IsHaarMeasure → Continuous f → HasCompactSupport f → PhiOK (J := J) μ dt f := by
   intro F E _ _ _ _ _ σ hσ r n P J hJ
-  have hfin := GlobalTheory.T.finite_unitaryTorusNormClasses_at_all_places F E σ hσ r P
+  have hfin := _root_.GlobalTheory.SqCls.finite_cls F E σ hσ r P
   refine ⟨fun v μ dt f hμ hdt hf hc => ?_, fun w μ dt f hμ hdt hf hc => ?_⟩
   · have hU := (GlobalTheory.LocalUnitaryUnimod.unimodularOver_adicCompletion F E σ hσ n J hJ v).1
     exact phiOK_of hσ hJ (Fv F v) (hfin.1 v) hU.2.2.2.2.2.2 (fun g hg => isProperOrbit_GLoc hσ hJ hg) μ dt f hf hc

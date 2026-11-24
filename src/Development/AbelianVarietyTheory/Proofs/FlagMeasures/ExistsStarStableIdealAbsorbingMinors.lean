@@ -259,7 +259,7 @@ private theorem exists_triangular_lattice_vectors (F : _root_.Formalism.Hermitia
       intro a b hab
       have hab' : a < b := hab
       simp [hab'.ne, hm a b hab'.le]
-    rw [Matrix.det_of_lowerTriangular _ hP]
+    rw [Matrix.det_of_isLowerTriangular _ hP]
     exact Finset.prod_congr rfl fun a _ => by simp [hm a a le_rfl]
   · intro a
     convert hmΛ a using 1
@@ -345,7 +345,7 @@ private theorem Dl_mul_mem_one_of_mem_ipow (N : _root_.GlobalTheory.DegCnt.NF H 
         star v ∈ _root_.GlobalTheory.HermLat.lead N.F' Λ (Fin.castLE hl a) := by
     intro a v hv
     have hv' : v ∈ _root_.GlobalTheory.DegCnt.ipow N.𝔡 (-((r : ℤ) - a)) := hv
-    rw [lead_eq_ipow_of_isFrame N h.2.1, lead_eq_ipow_of_isFrame N h.2.2, Fin.coe_castLE]
+    rw [lead_eq_ipow_of_isFrame N h.2.1, lead_eq_ipow_of_isFrame N h.2.2, Fin.val_castLE]
     refine ⟨hv', star_mem_ipow_neg_of_nonneg N ?_ hv'⟩
     have := a.isLt
     omega
@@ -491,7 +491,7 @@ open NumberField in
 open scoped Pointwise ENNReal Classical nonZeroDivisors in
 theorem _root_.GlobalTheory.DegCnt.Absorb.exists_absorbing_ideal : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : _root_.Formalism.HermitianLatticeCounting.S6.HermSpace K V), _root_.Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : _root_.GlobalTheory.DegCnt.NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → ∃ 𝔠 : Ideal (𝓞 K), (Ideal.absNorm 𝔠 : ℝ) ≤ (N.Db * N.NT) ^ 2 ∧ 1 ≤ N.Db ∧ 1 ≤ N.Del ∧ ∀ Q : Prop, (𝔠 ≠ ⊥ → (∀ x ∈ 𝔠, ∃ y ∈ 𝔠, (y : K) = star (x : K)) → (∀ x ∈ 𝔠, (N.T : 𝓞 K) ∣ x) → (∀ (l : ℕ) (hl : l ≤ r + 1), l ≤ N.j → _root_.Formalism.HermitianLatticeCounting.S6.Dl N.F N.F' l hl ≠ 0 → ∀ x ∈ 𝔠, ∀ y ∈ _root_.GlobalTheory.DegCnt.ipow N.𝔡 (2 * ∑ a ∈ Finset.range l, ((r : ℤ) - a)), (x : K) * y / _root_.Formalism.HermitianLatticeCounting.S6.Dl N.F N.F' l hl ∈ (1 : Submodule (𝓞 K) K) ∧ (x : K) * y / star (_root_.Formalism.HermitianLatticeCounting.S6.Dl N.F N.F' l hl) ∈ (1 : Submodule (𝓞 K) K)) → Q) → Q := by
   intro K V _ _ _ _ _ _ _ _ H hCM r N g Λ _ hΛ
-  haveI : IsTotallyComplex K := hCM.1
+  have : IsTotallyComplex K := hCM.1
   have hF := hΛ.1
   choose A hA0 hA using fun l => _root_.GlobalTheory.DegCnt.Absorb.exists_ideal N hF l
   set S := (Finset.Icc 1 N.j).filter (fun l => N.nD l ≠ 0) with hSdef

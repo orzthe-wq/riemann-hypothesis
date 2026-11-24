@@ -66,7 +66,7 @@ theorem mul_elem_apply (A : Matrix (Fin N) (Fin N) ℂ) (ca cb r s : Fin N) (t :
   by_cases h : s = ca
   · subst h
     simp [Matrix.single_apply]
-  · simp [Matrix.single_apply, h, Ne.symm h]
+  · simp [h, Ne.symm h]
 
 theorem elem_mul_elem {ca cb : Fin N} (hne : ca ≠ cb) (t u : ℂ) :
     (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ) * (1 + Matrix.single cb ca u) =
@@ -77,10 +77,9 @@ theorem elem_mul_elem {ca cb : Fin N} (hne : ca ≠ cb) (t u : ℂ) :
   · subst h
     by_cases hr : cb = r
     · subst hr
-      simp [Matrix.add_apply, Matrix.single_apply, Matrix.one_apply, hne, Ne.symm hne]
-      try ring
-    · simp [Matrix.add_apply, Matrix.single_apply, Matrix.one_apply, hne, Ne.symm hne, hr, Ne.symm hr]
-  · simp [Matrix.add_apply, Matrix.single_apply, h, Ne.symm h]
+      simp [Matrix.add_apply, hne, Ne.symm hne]
+    · simp [Matrix.add_apply, Matrix.one_apply, hne, hr, Ne.symm hr]
+  · simp [Matrix.add_apply, h, Ne.symm h]
 
 theorem mul_elem_cancel {ca cb : Fin N} (hne : ca ≠ cb) (A : Matrix (Fin N) (Fin N) ℂ) (t : ℂ) :
     A * (1 + Matrix.single cb ca t) * (1 + Matrix.single cb ca (-t)) = A := by

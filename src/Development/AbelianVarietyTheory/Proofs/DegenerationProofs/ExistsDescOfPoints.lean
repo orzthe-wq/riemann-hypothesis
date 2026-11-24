@@ -73,7 +73,7 @@ theorem exists_desc_of_points {K L : Type} [Field K] [CharZero K] [Field L] (gam
     [IsSeparated z] (φ : X' ⟶ Z) (s : X ⟶ S) (hs : φ ≫ z = π ≫ s)
     (H : ∀ (F : Type) [Field F] [IsAlgClosed F] (x₁ x₂ : Sp F ⟶ X'), x₁ ≫ π = x₂ ≫ π → x₁ ≫ φ = x₂ ≫ φ) :
     ∃ ψ : X ⟶ Z, π ≫ ψ = φ := by
-  letI := gam.toAlgebra
+  let := gam.toAlgebra
   have f₁ : Flat (spMap gam) := by
     rw [HasRingHomProperty.Spec_iff (P := @Flat)]
     exact RingHom.Flat.of_isField (Field.toIsField K) gam
@@ -280,11 +280,11 @@ end Values
 
 theorem exists_common_field {K F L : Type} [Field K] [Field F] [Field L] (i : K →+* F) (j : K →+* L) :
     ∃ (F' : Type) (_ : Field F') (_ : IsAlgClosed F') (σ : F →+* F') (τ : L →+* F'), σ.comp i = τ.comp j := by
-  letI := i.toAlgebra
-  letI := j.toAlgebra
+  let := i.toAlgebra
+  let := j.toAlgebra
   have : Nontrivial (TensorProduct K F L) := inferInstance
   obtain ⟨m, hm⟩ := Ideal.exists_maximal (TensorProduct K F L)
-  letI := Ideal.Quotient.field m
+  let := Ideal.Quotient.field m
   let q : TensorProduct K F L →+* AlgebraicClosure (TensorProduct K F L ⧸ m) :=
     (algebraMap (TensorProduct K F L ⧸ m) _).comp (Ideal.Quotient.mk m)
   refine ⟨AlgebraicClosure (TensorProduct K F L ⧸ m), inferInstance, inferInstance,

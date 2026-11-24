@@ -114,14 +114,6 @@ theorem exp_mean_le {ι : Type} [Fintype ι] [Nonempty ι] (d : ι → ℝ) (K :
       _ = d v₀ * Fintype.card ι := by simp [Finset.sum_const, nsmul_eq_mul, mul_comm]
   exact (Real.exp_le_exp.2 hmean).trans (h v₀)
 
-theorem card_places (I : AutInst) : Fintype.card (InfinitePlace I.F) = I.f := by
-  have := I.cm.totReal
-  have h1 := NumberField.InfinitePlace.card_add_two_mul_card_eq_rank I.F
-  have h2 := NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := I.F)
-  rw [NumberField.IsTotallyReal.nrComplexPlaces_eq_zero] at h1 h2
-  simp only [AutInst.f]
-  omega
-
 theorem inv_tau_mul_le (I : AutInst) (hn : 1 ≤ I.n) (x g : I.GA) (hg : g.2 = 1) (K : ℝ)
     (h : ∀ v, Real.exp (GlobalTheory.Count.dOp (uMat (g.1 v))) ≤ K) :
     (GlobalTheory.Count.tau1 I (x * g))⁻¹ ≤ (GlobalTheory.Count.tau1 I x)⁻¹ * K := by
@@ -135,7 +127,7 @@ theorem inv_tau_mul_le (I : AutInst) (hn : 1 ≤ I.n) (x g : I.GA) (hg : g.2 = 1
   have hxg := GlobalTheory.TauLipschitz.trunc_pos I hn (x * g)
   have hmean : Real.exp (GlobalTheory.Dec.dSum I g.1 / I.f) ≤ K := by
     have := exp_mean_le (fun v => GlobalTheory.Count.dOp (uMat (g.1 v))) K h
-    rw [card_places] at this
+    rw [_root_.GlobalTheory.Count.FrameMajorant.card_places] at this
     simpa only [GlobalTheory.Dec.dSum] using this
   have hdiv : GlobalTheory.Count.tau1 I x / GlobalTheory.Count.tau1 I (x * g) ≤ K := by
     rw [← Real.exp_log (div_pos hx hxg), Real.log_div hx.ne' hxg.ne']

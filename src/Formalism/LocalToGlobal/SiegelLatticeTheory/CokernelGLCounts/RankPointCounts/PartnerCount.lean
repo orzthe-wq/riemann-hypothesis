@@ -8,49 +8,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedVolumeStatements.Generi
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocModel
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LsDatumBTup
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLatticeThresholds.AtPtRel
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -197,12 +155,9 @@ theorem isLo_inv {L : Matrix (Fin n) (Fin n) K} (h : IsLo L) : IsLo L⁻¹ := by
   rw [← Matrix.transpose_nonsing_inv] at h2
   exact ⟨fun a => h2.1 a, fun a b hab => h2.2 a b hab⟩
 
-theorem det_up' {U : Matrix (Fin n) (Fin n) K} (h : IsUp U) : U.det = 1 := by
-  have hbt : U.BlockTriangular id := fun i j hij => h.2 j i hij
-  rw [Matrix.det_of_isUpperTriangular hbt]; simp [h.1]
+alias det_up' := _root_.Formalism.L2.SG.Pf.AtPt.det_up
 
-theorem det_lo' {L : Matrix (Fin n) (Fin n) K} (h : IsLo L) : L.det = 1 := by
-  rw [← Matrix.det_transpose]; exact det_up' (isUp_transpose h)
+alias det_lo' := _root_.Formalism.L2.SG.Pf.AtPt.det_lo
 
 end Tri
 
@@ -231,13 +186,6 @@ section LocalOrb
 variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
   {δ : ∀ p : PlF D, (D.s.atP p).Fp}
 
-theorem alg_mem_O' (p : PlF D) {c : (D.s.atP p).Fp} (hc : c ∈ 𝒪[(D.s.atP p).Fp]) :
-    algebraMap (D.s.atP p).Fp (D.s.atP p).Ep c ∈ (D.s.atP p).O := by
-  rw [(D.s.atP p).O_def]
-  have h := isIntegral_algebraMap (R := 𝒪[(D.s.atP p).Fp]) (A := (D.s.atP p).Ep) (x := ⟨c, hc⟩)
-  rw [IsScalarTower.algebraMap_apply 𝒪[(D.s.atP p).Fp] (D.s.atP p).Fp (D.s.atP p).Ep] at h
-  exact h
-
 theorem iotaE_alg (p : PlF D) (x : D.host.F) :
     (D.s.atP p).ιE (algebraMap D.host.F D.host.E x) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF x) :=
   (D.s.atP p).compat x
@@ -256,8 +204,8 @@ theorem yP_int (Zd : LocDat D) (p : PlF D) (hd1 : Zd.δ p ∈ 𝒪[(D.s.atP p).F
   rw [eu', iotaE_alg, map_inv₀] at hu2
   unfold yP
   refine ⟨?_, ?_⟩
-  · rw [map_mul]; exact Subring.mul_mem _ (alg_mem_O' p hd1) hu1
-  · rw [mul_inv, map_mul]; exact Subring.mul_mem _ (alg_mem_O' p hd2) hu2
+  · rw [map_mul]; exact Subring.mul_mem _ (_root_.Formalism.L2.SG.Pf.LocModel.LM.algebraMap_mem_O p hd1) hu1
+  · rw [mul_inv, map_mul]; exact Subring.mul_mem _ (_root_.Formalism.L2.SG.Pf.LocModel.LM.algebraMap_mem_O p hd2) hu2
 
 theorem tupZ_eq_x0L_at (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word) {w : Point D.host.E (D.R.rS + 1)}
     {Z L U : PairVal.MatR D} (hL : IsLo L) (hU : IsUp U) (hZ : Z * Sg D.host.E D.R.rS = L * ptMat w * U)
@@ -359,7 +307,7 @@ theorem atMat_zT (hN : PairVal.NormRepExists D u u' F0 what₂) (hrows : IsRowRe
   obtain ⟨hRep, -, hL, hU, e⟩ := hex.choose_spec
   have hz : zT γ = ZhatL (lf D F0) hex.choose.2.1 := by unfold zT; rw [hn]
   obtain ⟨F₁, hR₁, -, hc₁⟩ := hat
-  have hw : w = hex.choose.1 := pt_eq_of_cells cell_point_uniqueness (Formalism.L2.SG.Closed.TermFun_holds D u u') hrows γ
+  have hw : w = hex.choose.1 := pt_eq_of_cells cell_point_uniqueness (_root_.term_function_const D u u') hrows γ
     hR₁ hRep hc₁ ⟨_, _, hL, hU, e⟩
   exact ⟨_, _, hL, hU, by rw [hz, hw]; exact e⟩
 
@@ -598,7 +546,7 @@ theorem zzplus_locF' (u u' : D.what₂.Word) (p : PlF D) (Λ : Submodule (𝓞 D
     · ext a b
       simp only [Matrix.map_apply, Loc.HermSp.ZZplus, Loc.HermSp.ZZplusOf, hM, CntLocal.ZZP, CntLocal.ZhatLoc,
         LsDatumB.sgnP, Matrix.mul_diagonal, Matrix.of_apply, hge, hgq, map_mul, map_sub, snd_proj_symm, apply_ite (p2 sg.e),
-        map_zero, zhat_locF', Prod.fst_mul, Prod.snd_mul, ← adeleInfiniteComponent_apply, ← adele_ext_components, hs', hs1, hcj1, hcj2, hs2, hm2, hf1, hf2, Tu, map_neg, Zd.hcj p]
+        map_zero, zhat_locF', Prod.fst_mul, Prod.snd_mul, ← adeleInfiniteComponent_apply, ← adele_ext_components, hs', hs1, hcj1, hcj2, hs2, hm2, hf1, hf2, Tu, Zd.hcj p]
       split_ifs with h
       · obtain ⟨rfl, rfl⟩ := h
         simp only [Fin.val_last, Nat.sub_self, pow_zero]

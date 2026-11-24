@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsOverIff
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -55,7 +56,7 @@ namespace GlobalTheory.UMin.CrdChart
 
 theorem pCrd_chart : ∀ (o K : Type) [CommRing o] [Field K] (n : ℕ) (x : Sp K ⟶ PSpace o n) (v : Fin (n + 1) → K) (a : Fin (n + 1)), PCrd x v → ⊤ ≤ x ⁻¹ᵁ ProjSpace.chart o n a → v a ≠ 0 ∧ ∀ b, valR x (ProjSpace.chart o n a) (ProjSpace.ratio o n a b) = v b / v a := by
   intro o K _ _ n x v a hx ha
-  obtain ⟨c, hc⟩ := CrdUniq.exists_spMap' (x ≫ PSpace.str o n)
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.ZM.DenseFib.exists_spMap (x ≫ PSpace.str o n)
   obtain ⟨hv, e⟩ := (CrdUniq.pCrd_iff x c hc.symm v).1 hx
   subst e
   have hu : IsUnit (v a) := (Points.le_pt_preimage_chart_iff c v hv a).1 ha

@@ -1,21 +1,24 @@
 module
 
+public import GroundTheory.AutomorphicForms.SphericalLaurent
+public import Mathlib.Data.Fintype.Perm
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Mathlib.Tactic.Continuity
 public import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.SymSum
+public import Mathlib.LinearAlgebra.Dual.Lemmas
+public import GroundTheory.AutomorphicForms.IwahoriFactorization
 public import GroundTheory.AutomorphicForms.MacdonaldNormalization
 public import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.DcoShape
-public import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.EigBasis
 public import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.GapDom
 public import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.HlEval
 public import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.IntegralConv
 public import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.Mac
-public import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.PsDimDecomp
 public import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.ThPMul
 public import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.VandSum
-import GroundTheory.AutomorphicForms.MacdonaldFormula
-import GroundTheory.LocalFields.LocalFourierHaar
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
@@ -31,13 +34,10 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.TotallySplit
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -45,6 +45,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -57,11 +58,242 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import GroundTheory.AutomorphicForms.GLnLocal
+import GroundTheory.AutomorphicForms.Iwasawa
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import GroundTheory.AutomorphicForms.MacdonaldFormula
+import GroundTheory.LocalFields.LocalFourierHaar
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.EigBasis, Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.PsDimDecomp, Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.SandPS
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.EigBasis =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.EigBasis", "h": "module\n\npublic import GroundTheory.AutomorphicForms.SphericalLaurent\npublic import Mathlib.Data.Fintype.Perm\npublic import Mathlib.LinearAlgebra.FiniteDimensional.Defs\npublic import Mathlib.Tactic.Continuity\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.CStarAlgebra.Classes\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.SymSum\nimport GroundTheory.AutomorphicForms.GLnLocal\nimport GroundTheory.AutomorphicForms.Iwasawa\npublic import Mathlib.LinearAlgebra.Dual.Lemmas\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
+
+private def eigCone (n : ℕ) : AddSubmonoid (Fin n → ℤ) where
+  carrier := {a | Antitone a}
+  add_mem' ha hb := Antitone.add ha hb
+  zero_mem' := fun _ _ _ => le_rfl
+
+private noncomputable def eigChar {n : ℕ} (w : Fin n → ℂˣ) : Multiplicative (eigCone n) →* ℂ where
+  toFun a := monomialChar (a.toAdd : Fin n → ℤ) w
+  map_one' := by simp [monomialChar_zero]
+  map_mul' a b := by simp [monomialChar_add]
+
+private lemma eig_mc_ne {n : ℕ} (a : Fin n → ℤ) (w : Fin n → ℂˣ) : monomialChar a w ≠ 0 := by
+  have h := monomialChar_add a (-a) w
+  rw [add_neg_cancel, monomialChar_zero] at h
+  intro h0
+  rw [h0, zero_mul] at h
+  exact one_ne_zero h
+
+private lemma eig_mc_single {n : ℕ} (i : Fin n) (w : Fin n → ℂˣ) :
+    monomialChar (Pi.single i 1) w = w i := by
+  change ∏ j, (((w j) ^ ((Pi.single i (1 : ℤ) : Fin n → ℤ) j) : ℂˣ) : ℂ) = w i
+  rw [Finset.prod_eq_single i]
+  · simp
+  · intro j _ hj
+    simp [Pi.single_eq_of_ne hj]
+  · simp
+
+private lemma eigChar_inj {n : ℕ} : Function.Injective (eigChar (n := n)) := by
+  intro w w' h
+  have H : ∀ a, Antitone a → monomialChar a w = monomialChar a w' := fun a ha =>
+    DFunLike.congr_fun h (Multiplicative.ofAdd ⟨a, ha⟩)
+  funext i
+  let p : Fin n → ℤ := fun j => if j < i then 1 else 0
+  have hp : Antitone p := by
+    intro j k hjk
+    simp only [p]
+    split_ifs with h1 h2
+    · exact le_rfl
+    · exact absurd (lt_of_le_of_lt hjk h1) h2
+    · exact zero_le_one
+    · exact le_rfl
+  have hq : Antitone (Pi.single i 1 + p) := by
+    intro j k hjk
+    simp only [p, Pi.add_apply, Pi.single_apply]
+    split_ifs <;> omega
+  have h1 := H _ hq
+  rw [monomialChar_add, monomialChar_add, H p hp, eig_mc_single, eig_mc_single] at h1
+  exact Units.ext (mul_right_cancel₀ (eig_mc_ne _ _) h1)
+
+theorem UpperTheory.ConvolutionTheory.H.eigBasis :
+    ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V], Module.finrank ℂ V ≤ n.factorial →
+      ∀ θ : (Fin n → ℤ) → Module.End ℂ V, θ 0 = 1 → (∀ a b, Antitone a → Antitone b → θ (a + b) = θ a * θ b) →
+      ∀ (u : V) (ℓ : Module.Dual ℂ V) (z : Fin n → ℂˣ) (c : Equiv.Perm (Fin n) → ℂ), Function.Injective z → (∀ σ, c σ ≠ 0) →
+      (∀ a, Antitone a → ℓ (θ a u) = ∑ σ, c σ * monomialChar a (z ∘ σ)) →
+      ∃ v : Module.Basis (Equiv.Perm (Fin n)) ℂ V, (∀ σ a, Antitone a → θ a (v σ) = monomialChar a (z ∘ σ) • v σ) ∧ (∀ σ, ℓ (v σ) = 1) ∧
+        u = ∑ σ, c σ • v σ := by
+  intro n V _ _ _ hdim θ h0 hadd u ℓ z c hz hc hu
+  classical
+  let χ : Equiv.Perm (Fin n) → Multiplicative (eigCone n) → ℂ := fun σ => eigChar (z ∘ σ)
+  have hχ : ∀ σ a, χ σ a = monomialChar (a.toAdd : Fin n → ℤ) (z ∘ σ) := fun _ _ => rfl
+  have hinj : Function.Injective (fun σ : Equiv.Perm (Fin n) => eigChar (z ∘ σ)) := by
+    intro σ τ h
+    have := eigChar_inj h
+    exact Equiv.ext fun i => hz (congrFun this i)
+  have hli : LinearIndependent ℂ χ :=
+    (linearIndependent_monoidHom (Multiplicative (eigCone n)) ℂ).comp _ hinj
+  let Φ : V →ₗ[ℂ] (Multiplicative (eigCone n) → ℂ) :=
+    LinearMap.pi fun a => ℓ ∘ₗ θ (a.toAdd : Fin n → ℤ)
+  have hΦ : ∀ x a, Φ x a = ℓ (θ (a.toAdd : Fin n → ℤ) x) := fun _ _ => rfl
+  let L : (Equiv.Perm (Fin n) → ℂ) →ₗ[ℂ] (Multiplicative (eigCone n) → ℂ) :=
+    Fintype.linearCombination ℂ (fun σ => c σ • χ σ)
+  have hL : ∀ w a, L w a = ∑ σ, w σ * (c σ * χ σ a) := by
+    intro w a
+    simp [L, Fintype.linearCombination_apply, Finset.sum_apply]
+  have hspan := span_flip_eq_top_iff_linearIndependent.2 hli
+  have hle : Submodule.span ℂ (Set.range (flip χ)) ≤ (LinearMap.range Φ).comap L := by
+    rw [Submodule.span_le]
+    rintro _ ⟨b, rfl⟩
+    refine ⟨θ (b.toAdd : Fin n → ℤ) u, ?_⟩
+    funext a
+    rw [hΦ, hL, ← Module.End.mul_apply, ← hadd _ _ a.toAdd.2 b.toAdd.2,
+      hu (_ + _) (a.toAdd + b.toAdd).2]
+    refine Finset.sum_congr rfl fun σ _ => ?_
+    rw [monomialChar_add]
+    simp only [flip, hχ]
+    ring
+  have hex : ∀ σ, ∃ x, Φ x = χ σ := by
+    intro σ
+    have h1 : (Pi.single σ (c σ)⁻¹ : Equiv.Perm (Fin n) → ℂ) ∈ (LinearMap.range Φ).comap L :=
+      hle (hspan ▸ Submodule.mem_top)
+    obtain ⟨x, hx⟩ := h1
+    refine ⟨x, hx.trans ?_⟩
+    funext a
+    rw [hL, Finset.sum_eq_single σ]
+    · rw [Pi.single_eq_same, ← mul_assoc, inv_mul_cancel₀ (hc σ), one_mul]
+    · intro τ _ hτ
+      simp [Pi.single_eq_of_ne hτ]
+    · simp
+  choose v hv using hex
+  have hlc : LinearIndependent ℂ (Φ ∘ v) := by
+    have : Φ ∘ v = χ := funext hv
+    rw [this]; exact hli
+  have hlv : LinearIndependent ℂ v := LinearIndependent.of_comp Φ hlc
+  have hcard : Fintype.card (Equiv.Perm (Fin n)) = Module.finrank ℂ V := by
+    refine le_antisymm hlv.fintype_card_le_finrank ?_
+    rw [Fintype.card_perm, Fintype.card_fin]
+    exact hdim
+  let B := basisOfLinearIndependentOfCardEqFinrank hlv hcard
+  have hB : ∀ σ, B σ = v σ := fun σ => by
+    simp [B, coe_basisOfLinearIndependentOfCardEqFinrank]
+  have hΦinj : Function.Injective Φ := by
+    set_option backward.isDefEq.respectTransparency.instanceSearchTypes false in rw [injective_iff_map_eq_zero]
+    intro x hx
+    rw [← B.sum_repr x] at hx ⊢
+
+    simp only [map_sum, map_smul, hB] at hx
+    have := Fintype.linearIndependent_iff.1 hlc (fun σ => B.repr x σ) hx
+    simp [this]
+  refine ⟨B, fun σ a ha => ?_, fun σ => ?_, ?_⟩
+  · apply hΦinj
+    funext b
+    rw [hB, map_smul, hv, hΦ, ← Module.End.mul_apply, ← hadd _ _ b.toAdd.2 ha]
+    have := congrFun (hv σ) (Multiplicative.ofAdd ⟨_, Antitone.add b.toAdd.2 ha⟩)
+    rw [hΦ, hχ] at this
+    refine this.trans ?_
+    change monomialChar (_ + a) _ = _
+    rw [monomialChar_add, Pi.smul_apply, hχ, smul_eq_mul, mul_comm]
+  · have := congrFun (hv σ) 1
+    rw [hΦ, hχ] at this
+    simpa [h0, monomialChar_zero, hB] using this
+  · apply hΦinj
+    funext a
+    rw [hΦ, hu _ a.toAdd.2]
+
+    simp only [map_sum, map_smul, hB, hv, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hχ]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.EigBasis =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.PsDimDecomp =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.PsDimDecomp", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.SymSum\npublic import GroundTheory.AutomorphicForms.IwahoriFactorization\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
+
+section
+
+variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
+
+private theorem psDim_conj (σ : Equiv.Perm (Fin n)) {z : GL (Fin n) F} (hz : z ∈ iwahori F n)
+    (hz' : z ∈ Parabolic.oppositeUnipotentRadical F n (id : Fin n → Fin n)) :
+    (permGL F σ)⁻¹ * z * permGL F σ ∈ iwahori F n := by
+  have hent : ∀ i j, (((permGL F σ)⁻¹ * z * permGL F σ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j =
+      (z : Matrix (Fin n) (Fin n) F) (σ i) (σ j) := by
+    intro i j
+    rw [← map_inv, Units.val_mul, mul_permGL_apply, Units.val_mul, permGL_mul_apply, inv_inv]
+  obtain ⟨h1, h2, h3⟩ := (mem_iwahori_iff F n).1 hz
+  have h4 := (Parabolic.mem_oppositeUnipotentRadical.1 hz').1
+  rw [mem_iwahori_iff]
+  refine ⟨fun i j => ?_, fun i j hij => ?_, fun i => ?_⟩
+  · rw [hent]; exact h1 _ _
+  · rw [hent]
+    rcases lt_trichotomy (σ i) (σ j) with h | h | h
+    · rw [h4 _ _ h, map_zero]; exact zero_lt_one
+    · exact absurd (σ.injective h) hij.ne'
+    · exact h2 _ _ h
+  · rw [hent]; exact h3 _
+
+private theorem psDim_decomp (g : GL (Fin n) F) :
+    ∃ p : blockUpper F n (id : Fin n → Fin n), ∃ σ : Equiv.Perm (Fin n), ∃ y ∈ iwahori F n,
+      g = (p : GL (Fin n) F) * (permGL F σ * y) := by
+  obtain ⟨p, k, hk, rfl⟩ := exists_borel_mul g
+  have hk' : k ∈ (integralGL F n : Set (GL (Fin n) F)) := hk
+  rw [integralGL_eq_iUnion_doubleCoset_permGL] at hk'
+  obtain ⟨σ, hσ⟩ := Set.mem_iUnion.1 hk'
+  obtain ⟨x, hx, y, hy, rfl⟩ := DoubleCoset.mem_doubleCoset.1 hσ
+  obtain ⟨u, hu, t, ht, z, hz, rfl⟩ := Parabolic.iwahoriFactorization_symm
+    (Parabolic.iwahori_iwahoriFactorization (F := F) (β := (id : Fin n → Fin n)) monotone_id) x hx
+  refine ⟨p * ⟨u, Parabolic.unipotentRadical_le_blockUpper hu.2⟩ * ⟨t, Parabolic.levi_le_blockUpper ht.2⟩, σ,
+    (permGL F σ)⁻¹ * z * permGL F σ * y, mul_mem (psDim_conj σ hz.1 hz.2) hy, ?_⟩
+  simp only [Subgroup.coe_mul]
+  group
+
+end
+
+theorem UpperTheory.ConvolutionTheory.H.psDim :
+    ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ) (z : Fin n → ℂˣ),
+      FiniteDimensional ℂ (psI F z) ∧ Module.finrank ℂ (psI F z) ≤ n.factorial := by
+  intro F _ _ _ _ n z
+  let L : psI F z →ₗ[ℂ] (Equiv.Perm (Fin n) → ℂ) :=
+    { toFun := fun f σ => (f : GL (Fin n) F → ℂ) (permGL F σ)
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl }
+  have hL : Function.Injective L := by
+    set_option backward.isDefEq.respectTransparency.instanceSearchTypes false in rw [injective_iff_map_eq_zero]
+    intro f hf
+    refine Subtype.ext (funext fun g => ?_)
+    obtain ⟨p, σ, y, hy, rfl⟩ := psDim_decomp g
+    have h0 : (f : GL (Fin n) F → ℂ) (permGL F σ) = 0 := congrFun hf σ
+    rw [(mem_principalSeriesSpace.1 f.2.1).1 p, f.2.2 _ y hy, h0, mul_zero]
+    rfl
+  refine ⟨FiniteDimensional.of_injective L hL, ?_⟩
+  have := LinearMap.finrank_le_finrank_of_injective hL
+  simpa [Fintype.card_perm] using this
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.PsDimDecomp =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.SandPS =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.SandPS", "h": "module\n\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.SymSum\npublic import GroundTheory.AutomorphicForms.MacdonaldNormalization\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.DcoShape\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.EigBasis\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.GapDom\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.HlEval\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.IntegralConv\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.Mac\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.PsDimDecomp\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.ThPMul\npublic import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.VandSum\nimport GroundTheory.AutomorphicForms.MacdonaldFormula\nimport GroundTheory.LocalFields.LocalFourierHaar\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
@@ -375,3 +607,6 @@ theorem UpperTheory.ConvolutionTheory.H.sandPS :
   simpa only [one_mul] using h
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeOperators.SandPS =====

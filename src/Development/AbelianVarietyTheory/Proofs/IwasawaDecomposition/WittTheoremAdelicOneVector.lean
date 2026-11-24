@@ -1,11 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmExtensionLocalFieldProductRingExistsSmulEqStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianQuadraticUnitaryLocalComponentsStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntegralWittTheoremAlmostAllPlacesStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNiceLocalFieldProductRingInfiniteAdelesCompletStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableEmbeddingAdelicTupleLocalComponentsStatement
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CmExtensionLocalFieldProductRingExistsSmulEq
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HermitianQuadraticUnitaryLocalComponents
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IntegralWittTheoremAlmostAllPlaces
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IsNiceLocalFieldProductRingInfiniteAdelesComplet
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MeasurableEmbeddingAdelicTupleLocalComponents
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -108,7 +109,7 @@ theorem prV_inclR (v : HeightOneSpectrum (𝓞 F)) (e : E) :
 theorem ext_comp {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ} (X Y : Fin n → Fin M → AF F ⊗[F] E)
     (hi : ∀ a i, prInf (X a i) = prInf (Y a i))
     (hv : ∀ (v : HeightOneSpectrum (𝓞 F)) a i, prV v (X a i) = prV v (Y a i)) : X = Y := by
-  apply (GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E d b n M).1.injective
+  apply (_root_.GlobalTheory.GaugeGlue.adelicTuple_measurableEmbedding F E d b n M).1.injective
   refine Prod.ext ?_ ?_
   · funext a i; exact hi a i
   · funext v a i; exact hv v a i
@@ -124,7 +125,7 @@ theorem exists_mat {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
     (Xv : ∀ v : HeightOneSpectrum (𝓞 F), Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E))
     (h : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ i j, Xv v i j ∈ intV b v) :
     ∃ X : Matrix (Fin M) (Fin M) (AF F ⊗[F] E), X.map prInf = Xi ∧ ∀ v, X.map (prV v) = Xv v := by
-  have := ((Set.ext_iff.1 (GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E d b M M).2.1) (Xi, Xv)).2 h
+  have := ((Set.ext_iff.1 (_root_.GlobalTheory.GaugeGlue.adelicTuple_measurableEmbedding F E d b M M).2.1) (Xi, Xv)).2 h
   obtain ⟨X, hX⟩ := this
   exact ⟨X, congrArg Prod.fst hX, fun v => congrFun (congrArg Prod.snd hX) v⟩
 
@@ -171,16 +172,16 @@ theorem exists_HA {d : ℕ} (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E) 
 theorem witt_adelic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (x : Fin 1 → Fin M → E) (β : F), IsHermND σ J → β ≠ 0 → hE σ J (x 0) (x 0) = algebraMap F E β → ∀ y : (Fin 1 → Fin M → AF F ⊗[F] E), qR (AF F) σ J (y 0) = algebraMap F (AF F) β → ∃ g : HA (AF F) σ J, g • ratTup (F := F) (AF F) x = y := by
   intro F E _ _ _ _ _ σ hCM M J x β hJ hβ hx y hy
   let b : Module.Basis (Fin 2) F E := Module.finBasisOfFinrankEq F E hCM.2.2.1
-  obtain ⟨hyi, hyv⟩ := ((GlobalTheory.T.hermitianQuadratic_unitary_local_components F E σ M J).1 (y 0) β).1 hy
+  obtain ⟨hyi, hyv⟩ := ((_root_.GlobalTheory.GaugeEx.q_and_unitary_local_components F E σ M J).1 (y 0) β).1 hy
   have hu : IsUnit β := hβ.isUnit
-  obtain ⟨gi, hgi⟩ := GlobalTheory.T.cmExtension_localFieldProductRing_exists_smul_eq F E σ hCM (Ainf F) (GlobalTheory.T.isNiceLocalFieldProductRing_infiniteAdeles_completions F).1 M J hJ
+  obtain ⟨gi, hgi⟩ := _root_.GlobalTheory.GaugeWittLoc.exists_smul_eq F E σ hCM (Ainf F) (_root_.GlobalTheory.GaugeEx.nice_ainf_fv F).1 M J hJ
     (algebraMap F _ β) (ratTup (F := F) (Ainf F) x) (projInf y) (hu.map _)
     (qR_ratTup b _ σ J x β hx) hyi
   have hlat : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, projV v (projFin y) ∈ latV b v := by
-    have h := (GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E 2 b 1 M).2.1 ▸ Set.mem_range_self (f := fun X : (Fin 1 → Fin M → AF F ⊗[F] E) =>
+    have h := (_root_.GlobalTheory.GaugeGlue.adelicTuple_measurableEmbedding F E 2 b 1 M).2.1 ▸ Set.mem_range_self (f := fun X : (Fin 1 → Fin M → AF F ⊗[F] E) =>
       (projInf X, fun v : HeightOneSpectrum (𝓞 F) => projV v (projFin X))) y
     exact h
-  have hae := GlobalTheory.T.integral_witt_theorem_almost_all_places F E σ hCM 2 b M J x β hJ hβ hx
+  have hae := _root_.GlobalTheory.WittIntegral.witt_integral F E σ hCM 2 b M J x β hJ hβ hx
   let P : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) σ J → Prop := fun v g => ∀ i j,
       (HA.mat (Fv F v) σ J g).val i j ∈ intV b v ∧ (HA.mat (Fv F v) σ J g⁻¹).val i j ∈ intV b v
   have hloc : ∀ v : HeightOneSpectrum (𝓞 F), ∃ g : HA (Fv F v) σ J,
@@ -192,7 +193,7 @@ theorem witt_adelic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numb
         g' • ratTup (F := F) (Fv F v) x = projV v (projFin y) ∧ P v g'
     · obtain ⟨g, h1, h2⟩ := h
       exact ⟨g, h1, fun _ => h2⟩
-    · obtain ⟨g, hg⟩ := GlobalTheory.T.cmExtension_localFieldProductRing_exists_smul_eq F E σ hCM (Fv F v) ((GlobalTheory.T.isNiceLocalFieldProductRing_infiniteAdeles_completions F).2 v) M J hJ
+    · obtain ⟨g, hg⟩ := _root_.GlobalTheory.GaugeWittLoc.exists_smul_eq F E σ hCM (Fv F v) ((_root_.GlobalTheory.GaugeEx.nice_ainf_fv F).2 v) M J hJ
         (algebraMap F _ β) (ratTup (F := F) (Fv F v) x) (projV v (projFin y)) (hu.map _)
         (qR_ratTup b _ σ J x β hx) (hyv v)
       exact ⟨g, hg, fun h' => absurd h' h⟩

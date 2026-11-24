@@ -66,8 +66,6 @@ def tOf {K' σ τ : Type} [Field K'] (vp : K') (μ : PowerSeries K') (L : σ →
 private theorem constantCoeff_logF_eq_zero : PowerSeries.constantCoeff (logF p) = 0 := by
   first
   | (rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]; unfold logF; simp)
-  | (unfold logF; simp)
-  | (simp [logF, ← PowerSeries.coeff_zero_eq_constantCoeff_apply])
 
 private theorem cc_subst_lemma_2 {τ S : Type} [CommRing S] {a : MvPowerSeries τ S}
     (ha : MvPowerSeries.constantCoeff a = 0) {f : PowerSeries S} (hf : PowerSeries.constantCoeff f = 0) :
@@ -75,12 +73,9 @@ private theorem cc_subst_lemma_2 {τ S : Type} [CommRing S] {a : MvPowerSeries �
   have hs : PowerSeries.HasSubst a := by
     first
     | exact PowerSeries.HasSubst.of_constantCoeff_zero ha
-    | exact PowerSeries.HasSubst.of_constantCoeff_nilpotent (by rw [ha]; exact IsNilpotent.zero)
   obtain ⟨g, rfl⟩ := PowerSeries.X_dvd_iff.mpr hf
   first
   | rw [PowerSeries.subst_mul hs, PowerSeries.subst_X hs, map_mul, ha, zero_mul]
-  | rw [← PowerSeries.coe_substAlgHom hs, map_mul, PowerSeries.coe_substAlgHom hs, PowerSeries.subst_X hs,
-      map_mul, ha, zero_mul]
 
 theorem th_lX_const (K1 : Type) [Field K1] [Algebra (K0 p) K1] {σ : Type} (i : σ) :
     MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ K1)
@@ -119,36 +114,10 @@ theorem th_tOf_const {K' σ τ : Type} [Field K'] (vp : K') (μ : PowerSeries K'
   refine cc_subst_lemma_2 (hL0 i) ?_
   rw [map_mul, h0, mul_zero]
 
-theorem th_subst_log (K' : Type) [Field K'] [Algebra (K0 p) K'] {σ τ : Type} [Finite σ] (vp : K')
-    (μ : PowerSeries K') (h0 : PowerSeries.constantCoeff μ = 0)
-    (h1 : (PowerSeries.subst μ (lamF p vp) : PowerSeries K') = PowerSeries.X)
-    (L : σ → MvPowerSeries τ K') (hL0 : ∀ i, MvPowerSeries.constantCoeff (L i) = 0) (U : MvPowerSeries σ K') :
-    MvPowerSeries.subst (fun i => MvPowerSeries.C vp * L i) U =
-      MvPowerSeries.subst (tOf vp μ L) (inParamK p K' U) := by
-  have hsh : MvPowerSeries.HasSubst (tOf vp μ L) :=
-    MvPowerSeries.hasSubst_of_constantCoeff_zero (th_tOf_const vp μ h0 L hL0)
-  unfold inParamK
-  rw [MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero (th_lX_const p K')) hsh]
-  congr 1
-  funext i
-  have hX : PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries σ K') :=
-    PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)
-  have e3 : MvPowerSeries.subst (tOf vp μ L) (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ K')
-      (PowerSeries.map (algebraMap (K0 p) K') (logF p))) =
-      PowerSeries.subst (MvPowerSeries.subst (tOf vp μ L) (MvPowerSeries.X i : MvPowerSeries σ K'))
-        (PowerSeries.map (algebraMap (K0 p) K') (logF p)) :=
-    MvPowerSeries.subst_comp_subst_apply (PowerSeries.hasSubst_iff.1 hX) hsh _
-  rw [e3, MvPowerSeries.subst_X hsh, map_logF]
-  exact (log_at p K' vp μ h0 h1 (L i) (hL0 i)).symm
-
 private theorem hasSubst_of_constantCoeff_eq_zero' {κ τ S : Type} [CommRing S] [Finite κ] {a : κ → MvPowerSeries τ S}
     (h : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) : MvPowerSeries.HasSubst a := by
   first
-  | exact MvPowerSeries.HasSubst.of_constantCoeff_zero' h
   | exact MvPowerSeries.hasSubst_of_constantCoeff_zero h
-  | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [h s]; exact IsNilpotent.zero)
-  | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [h s]; exact IsNilpotent.zero)
-  | exact ⟨fun s => by rw [h s]; exact IsNilpotent.zero, fun d => Set.toFinite _⟩
 
 theorem th_hasSubst_lX {σ : Type} [Finite σ] : MvPowerSeries.HasSubst
     (fun i : σ => PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries σ (K0 p)) (logF p)) := by
@@ -242,66 +211,6 @@ theorem substitution_of_variables {σ : Type} (be : MvPowerSeries (Fin 2) (K0 p)
 
 def Gt (E : Type) [Fintype E] (c c' : K0 p) : MvPowerSeries (E ⊕ E) (K0 p) :=
   ∑ e : E, ren ![Sum.inl e, Sum.inr e] (Gser p c c')
-
-theorem th_reduce {E τ : Type} [Fintype E] (be : MvPowerSeries (Fin 2) (K0 p))
-    (hbe0 : MvPowerSeries.constantCoeff be = 0) (c c' : K0 p)
-    (hG0 : MvPowerSeries.constantCoeff (Gser p c c') = 0) (hβ : E → E0 p (inParam p be - Gser p c c'))
-    (Ph : MvPowerSeries (E ⊕ E) (K0 p))
-    (hPh : Simeq p Ph (∑ e : E, sub2 p be (MvPowerSeries.X (Sum.inl e)) (MvPowerSeries.X (Sum.inr e))))
-    (K' : Type) [Field K'] [Algebra (K0 p) K'] (vp : K') (μ : PowerSeries K')
-    (h0 : PowerSeries.constantCoeff μ = 0) (hμ : ∀ n, PowerSeries.coeff n μ ∈ Rp p K' vp)
-    (h1 : (PowerSeries.subst μ (lamF p vp) : PowerSeries K') = PowerSeries.X)
-    (L : E ⊕ E → MvPowerSeries τ K') (hL0 : ∀ i, MvPowerSeries.constantCoeff (L i) = 0)
-    (hL : ∀ i, IntR (Rp p K' vp) (L i)) :
-    ∃ V' : MvPowerSeries τ K', IntR (Rp p K' vp) V' ∧
-      MvPowerSeries.subst (fun i => MvPowerSeries.C vp * L i)
-          (MvPowerSeries.map (algebraMap (K0 p) K') (expS p (-Ph))) =
-        MvPowerSeries.subst (tOf vp μ L) (expK (-(MvPowerSeries.map (algebraMap (K0 p) K') (Gt p E c c')))) * V' := by
-  have hcz := charZero_K' p (K0 p)
-  obtain ⟨hc0, h, hh0, hE⟩ := hPh
-  have hPsi0 : MvPowerSeries.constantCoeff
-      (∑ e : E, sub2 p be (MvPowerSeries.X (Sum.inl e)) (MvPowerSeries.X (Sum.inr e)) :
-        MvPowerSeries (E ⊕ E) (K0 p)) = 0 := by
-
-    rw [map_sum]
-    exact Finset.sum_eq_zero fun e _ => by rw [substitution_of_variables]; exact th_ren_const _ hbe0
-  have hPh0 : MvPowerSeries.constantCoeff Ph = 0 := by
-    rw [map_sub, hPsi0, sub_zero] at hc0
-    exact hc0
-  have hGt0 : MvPowerSeries.constantCoeff (Gt p E c c') = 0 := by
-    unfold Gt
-
-    rw [map_sum]
-    exact Finset.sum_eq_zero fun e _ => th_ren_const _ hG0
-  have hδ : E0 p (inParam p Ph - Gt p E c c') := by
-    have e : inParam p Ph - Gt p E c c' =
-        inParam p (Ph - ∑ e : E, sub2 p be (MvPowerSeries.X (Sum.inl e)) (MvPowerSeries.X (Sum.inr e))) +
-          ∑ e : E, ren ![Sum.inl e, Sum.inr e] (inParam p be - Gser p c c') := by
-      rw [th_inParam_sub, th_inParam_sum]
-      simp only [substitution_of_variables, th_inParam_ren, th_ren_sub, Finset.sum_sub_distrib, Gt]
-      ring
-    rw [e]
-    exact integralExp_add p ⟨th_inParam_const p hc0, h, hh0, hE⟩ (integralExp_sum p _ _ fun e _ => integralExp_rename p _ (hβ e))
-  obtain ⟨w, hw⟩ := exp_neg_integral p hδ
-  have ht0 := th_tOf_const vp μ h0 L hL0
-  have htI : ∀ i, IntR (Rp p K' vp) (tOf vp μ L i) := fun i => IntR_psubst (hL0 i) (hL i) fun n => by
-    rw [PowerSeries.coeff_C_mul]
-    exact (Rp p K' vp).mul_mem (vp_mem_Rp p K' vp) (hμ n)
-  refine ⟨MvPowerSeries.subst (tOf vp μ L) (MvPowerSeries.map (algebraMap (K0 p) K')
-    (MvPowerSeries.map (algebraMap (WW p) (K0 p)) w)), IntR_subst _ ht0 htI fun n => ?_, ?_⟩
-  · rw [MvPowerSeries.coeff_map, MvPowerSeries.coeff_map]
-    exact W_mem_Rp p K' vp _
-  · have e1 : inParam p (expS p (-Ph)) = expK (-(Gt p E c c')) * expK (-(inParam p Ph - Gt p E c c')) := by
-      have : inParam p (expS p (-Ph)) = expK (inParam p (-Ph)) := by
-        unfold inParam
-        exact th_subst_expK _ (fun i => by
-          have := th_lX_const p (K0 p) i
-          rwa [Algebra.algebraMap_self, PowerSeries.map_id] at this) (by rw [map_neg, hPh0, neg_zero])
-      rw [this, ← expK_add (by rw [map_neg, hGt0, neg_zero]) (by rw [map_neg, hδ.1, neg_zero]), th_inParam_neg]
-      congr 1
-      ring
-    rw [th_subst_log p K' vp μ h0 h1 L hL0, th_inParamK_map p (K0 p) K', ← th_inParam_eq, e1, hw, map_mul,
-      th_map_expK, map_neg, MvPowerSeries.subst_mul (MvPowerSeries.hasSubst_of_constantCoeff_zero ht0)]
 
 end Param
 

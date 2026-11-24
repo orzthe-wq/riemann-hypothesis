@@ -79,7 +79,7 @@ theorem FilV_anti (a : ℤ) : FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (L
   congr 1
   apply TensorProduct.AlgebraTensorModule.ext
   intro v w
-  first | rfl | simp
+  first | rfl
 
 theorem FildR_anti (τ : K →ₐ[Qp] LL) (a : ℤ) : FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a := by
   unfold FildR
@@ -101,7 +101,7 @@ theorem finite_DdR (h : IsDR PD ρ) : Module.Finite LL ↥(DdR PD ρ) := by
   rcases subsingleton_or_nontrivial V with hV | hV
   · haveI : Subsingleton (V ⊗[Qp] BdR) := subsingleton_tensor (V := V) BdR
     haveI : Subsingleton ↥(DdR PD ρ) := ⟨fun a b => Subtype.ext (Subsingleton.elim _ _)⟩
-    first | exact inferInstance | exact Module.Finite.of_finite
+    first | exact inferInstance
   · haveI := PD.finK
     apply Module.finite_of_finrank_pos
     unfold IsDR at h
@@ -113,13 +113,11 @@ theorem finite_FildR (h : IsDR PD ρ) (τ : K →ₐ[Qp] LL) (a : ℤ) : Module.
   have hle : FildR PD ρ τ a ≤ DdR PD ρ := fun x hx => (Submodule.mem_inf.1 (Submodule.mem_inf.1 hx).1).1
   first
     | exact Submodule.finiteDimensional_of_le hle
-    | exact Module.Finite.of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective hle)
 
 theorem multV_nonneg (h : IsDR PD ρ) (τ : K →ₐ[Qp] LL) (a : ℤ) : 0 ≤ multV PD ρ τ a := by
   haveI := finite_FildR PD ρ h τ a
   have hle : finrank LL ↥(FildR PD ρ τ (a + 1)) ≤ finrank LL ↥(FildR PD ρ τ a) := by
     first
-      | exact Submodule.finrank_le_finrank_of_le (FildR_anti PD ρ τ a)
       | (rw [← (Submodule.comapSubtypeEquivOfLe (FildR_anti PD ρ τ a)).finrank_eq]; exact Submodule.finrank_le _)
   unfold multV
   omega
@@ -129,7 +127,6 @@ theorem isJumpV_iff (h : IsDR PD ρ) (τ : K →ₐ[Qp] LL) (a : ℤ) :
   haveI := finite_FildR PD ρ h τ a
   have hle : finrank LL ↥(FildR PD ρ τ (a + 1)) ≤ finrank LL ↥(FildR PD ρ τ a) := by
     first
-      | exact Submodule.finrank_le_finrank_of_le (FildR_anti PD ρ τ a)
       | (rw [← (Submodule.comapSubtypeEquivOfLe (FildR_anti PD ρ τ a)).finrank_eq]; exact Submodule.finrank_le _)
   unfold IsJumpV multV
   constructor
@@ -155,7 +152,7 @@ def subRho : Representation LL G ↥U where
     simp
   map_mul' g h := by
     ext u
-    simp [Module.End.mul_apply]
+    simp
 
 def GRep.sub : GRep G Qp LL O :=
   letI : TopologicalSpace ↥U := moduleTopology LL ↥U
@@ -184,7 +181,7 @@ def quotRho : Representation LL G (A.V ⧸ U) where
   map_mul' g h := by
     apply Submodule.linearMap_qext
     ext u
-    simp [Module.End.mul_apply]
+    simp
 
 def GRep.quot : GRep G Qp LL O :=
   letI : TopologicalSpace (A.V ⧸ U) := moduleTopology LL (A.V ⧸ U)
@@ -278,7 +275,7 @@ def sumRho {m : ℕ} (xs : Fin m → ι) : Representation LL G (Fin m → Fin k 
     apply LinearMap.ext
     intro u
     funext a
-    simp [Module.End.mul_apply, Matrix.toLin'_mul]
+    simp [Matrix.toLin'_mul]
 
 theorem sumRho_apply {m : ℕ} (xs : Fin m → ι) (g : G) (u : Fin m → Fin k → LL) :
     sumRho Ms xs g u = fun a => (Ms (xs a) g).mulVec (u a) := rfl
@@ -307,10 +304,10 @@ def cons0 (LL : Type) [Field LL] (k m : ℕ) : (Fin m → Fin k → LL) →ₗ[L
   LinearMap.pi fun a => Fin.cases 0 (fun b => LinearMap.proj b) a
 
 theorem first_inclusion_zero (v : Fin k → LL) : inc0 LL k m v 0 = v := by
-  first | rfl | simp [inc0]
+  first | rfl
 
 theorem first_inclusion_succ (v : Fin k → LL) (b : Fin m) : inc0 LL k m v b.succ = 0 := by
-  simp [inc0, Pi.single_apply, Fin.succ_ne_zero]
+  simp [inc0, Fin.succ_ne_zero]
 
 theorem first_inclusion_equivariant (g : G) (v : Fin k → LL) :
     inc0 LL k m (matRep (Ms (xs 0)) g v) = sumRho Ms xs g (inc0 LL k m v) := by
@@ -318,7 +315,7 @@ theorem first_inclusion_equivariant (g : G) (v : Fin k → LL) :
   simp only [sumRho_apply]
   rcases Fin.eq_zero_or_eq_succ a with rfl | ⟨b, rfl⟩
   · rw [first_inclusion_zero, first_inclusion_zero]
-    first | rfl | simp [matRep]
+    first | rfl
   · rw [first_inclusion_succ, first_inclusion_succ, Matrix.mulVec_zero]
 
 theorem first_inclusion_injective : Function.Injective (inc0 LL k m) := by
@@ -392,11 +389,9 @@ theorem cj_sum (hF : Formalism.MainNotions.TruncatedSeriesCountingIdentities.Fon
       funext b
       first
         | rfl
-        | (show (sumRho Ms xs g x) b.succ = (Ms (xs b.succ) g).mulVec (x b.succ); rw [sumRho_apply])
     · funext b
       first
         | rfl
-        | (show cons0 LL k m u b.succ = u b; simp [cons0])
 
 
 include hc in
@@ -456,15 +451,13 @@ theorem subsum_crys (hF : Formalism.MainNotions.TruncatedSeriesCountingIdentitie
     apply hj
     have e1 : ∀ z : ↥(LinearMap.range j), j ((LinearEquiv.ofInjective j hj).symm z) = z := fun z => by
       first
-        | exact LinearEquiv.apply_ofInjective_symm hj z
-        | exact LinearEquiv.apply_ofInjective_symm j hj z
         | simp
     calc j ((LinearEquiv.ofInjective j hj).symm (((GRep.sum (Qp := Qp) (O := O) Ms hc xs).sub
           (LinearMap.range j) hR).ρ g y))
         = sumRho Ms xs g (y : Fin m → Fin k → LL) := e1 _
       _ = fun a => (Ms (xs a) g).mulVec ((y : Fin m → Fin k → LL) a) := sumRho_apply Ms xs g _
       _ = fun a => (Ms (xs a) g).mulVec (j ((LinearEquiv.ofInjective j hj).symm y) a) := by
-          first | rw [e1 y] | simp only [e1 y]
+          first | rw [e1 y]
       _ = j (A.ρ g ((LinearEquiv.ofInjective j hj).symm y)) := (hje g _).symm
   have hA' := cj_image hF ((GRep.sum (Qp := Qp) (O := O) Ms hc xs).sub (LinearMap.range j) hR) A
     ((LinearEquiv.ofInjective j hj).symm : ↥(LinearMap.range j) →ₗ[LL] A.V) h2

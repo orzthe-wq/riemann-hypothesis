@@ -211,14 +211,14 @@ theorem eich_exists {T : E} (Λ : Submodule (𝓞 E) S.V) (hUn : Formalism.Hermi
   have h3 : ∀ v, N (N (N v)) = 0 := by
     intro v
     apply PI.TermsAtPtFiniteW.HeisW.nil3 <;>
-      first | exact F.fl.e_iso | exact hea | exact hs | assumption
+      first | exact F.fl.e_iso | exact hea
   have hiso : ∀ x y, S.hT (x + N x) (y + N y) = S.hT x y := by
     intro x y
     apply PI.TermsAtPtFiniteW.HeisW.isom_nil <;>
-      first | exact F.fl.e_iso | exact hea | exact hs | assumption
+      first | exact F.fl.e_iso | exact hea | exact hs
   have hker : ∀ i, N (F.fl.e i) = 0 := fun i => by
     apply PI.TermsAtPtFiniteW.HeisW.nil_e <;>
-      first | exact F.fl.e_iso | exact hea | exact hs | assumption
+      first | exact F.fl.e_iso | exact hea
   let n : S.V ≃ₗ[E] S.V := LinearEquiv.ofLinear (LinearMap.id + N) (LinearMap.id - N + N ∘ₗ N)
     (LinearMap.ext fun v => by
       simp only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply,
@@ -226,7 +226,7 @@ theorem eich_exists {T : E} (Λ : Submodule (𝓞 E) S.V) (hUn : Formalism.Hermi
       abel)
     (LinearMap.ext fun v => by
       simp only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply,
-        map_add, map_sub, h3]
+        map_add, h3]
       abel)
   have hn : ∀ v, n v = v + N v := fun v => rfl
   have hninv : ∀ v, n.symm v = v - N v + N (N v) := fun v => rfl

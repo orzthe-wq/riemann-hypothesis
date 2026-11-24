@@ -75,14 +75,6 @@ open Formalism.L2.Th1.H
 open Formalism.MainNotions
 open Formalism.MainNotions.GlobalTheoryTheory.Inhab (mem_stdL single_mem_stdL)
 
-theorem kInterInv : InterInv :=
-  InterInv_of heisenbergComm (InterReps_of semicharacterHom) (InterFixed_of semicharacterHom) cosetRepsExist
-theorem kInterTh : InterTh := InterTh_of semicharacterHom heisenbergAnalytic
-theorem kLineTransport : LineTransport := LineTransport_of kInterInv kInterTh
-theorem kThetaVector : ThetaVector :=
-  ThetaVector_of kLineTransport ThStd_proof product_theta_mem StdSelfDual_proof StdSemiChar_proof (ThIsom_of heisenbergIsometry)
-    fourth_root
-
 theorem formV_apply (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) (z w : n → Fin N' → Fin N → ℂ) :
     formV A n N N' z w = (∑ τ, ∑ i, ∑ j, z τ i j * conj (w τ i j)) / (A : ℂ) := rfl
 
@@ -116,16 +108,16 @@ variable (L : PeriodPair) (ω₀ : ℂ) (c : ℝ) {n : Type} [Fintype n] [Decida
   (ΛM : AddSubgroup (n → ℂ)) (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) (κ : ℂ)
 
 theorem thM_spec (h : StdOK L ω₀ c ΛM g) (hκ : κ ≠ 0) : IsThM L ω₀ c ΛM g κ (thM L ω₀ c ΛM g κ) := by
-  obtain ⟨θ, h1, h2⟩ := (kThetaVector L ω₀ n _ ΛM _ _ g h κ hκ).1
+  obtain ⟨θ, h1, h2⟩ := (_root_.Formalism.L2.Th1.H.thetaVector L ω₀ n _ ΛM _ _ g h κ hκ).1
   exact Classical.epsilon_spec (p := IsThM L ω₀ c ΛM g κ) ⟨θ, h1, h2⟩
 
 theorem isThM_ne_zero (h : StdOK L ω₀ c ΛM g) (hκ : κ ≠ 0) {θ : (n → ℂ) → ℂ} (hθ : IsThM L ω₀ c ΛM g κ θ) :
     θ ≠ 0 :=
-  ((kThetaVector L ω₀ n _ ΛM _ _ g h κ hκ).2 θ hθ.1 hθ.2).1
+  ((_root_.Formalism.L2.Th1.H.thetaVector L ω₀ n _ ΛM _ _ g h κ hκ).2 θ hθ.1 hθ.2).1
 
 theorem isThM_spans (h : StdOK L ω₀ c ΛM g) (hκ : κ ≠ 0) {θ : (n → ℂ) → ℂ} (hθ : IsThM L ω₀ c ΛM g κ θ) :
     ∀ F ∈ Formalism.L2.Th1.H.Th (matH (hOne L n)) (alphaQ c (matH (hOne L n))) ΛM, ∃ a : ℂ, F = a • θ :=
-  ((kThetaVector L ω₀ n _ ΛM _ _ g h κ hκ).2 θ hθ.1 hθ.2).2.2
+  ((_root_.Formalism.L2.Th1.H.thetaVector L ω₀ n _ ΛM _ _ g h κ hκ).2 θ hθ.1 hθ.2).2.2
 
 omit [DecidableEq n] in
 theorem tensPow_ne_zero {θ : (n → ℂ) → ℂ} (hθ : θ ≠ 0) (N N' : ℕ) : tensPow θ N N' ≠ 0 := by
@@ -237,9 +229,7 @@ theorem KapChoice.kappa_ne_zero : k.kappa ≠ 0 :=
 
 end Kap
 
-theorem inter_zero {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (Λ₁ Λ₂ : AddSubgroup V) :
-    inter H α Λ₁ Λ₂ 0 = 0 := by
-  funext z; simp [inter, opU]
+alias inter_zero := _root_.Formalism.L2.Th1.H.Inv.inter_zero
 
 theorem inter_ne_zero {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (hH : IsHerm H) (Λ₁ Λ₂ : AddSubgroup V)
     (α : V → ℂ) (s₁ : IsSelfDual H Λ₁) (s₂ : IsSelfDual H Λ₂) (c₁ : IsSemiChar H Λ₁ α) (c₂ : IsSemiChar H Λ₂ α)
@@ -248,7 +238,7 @@ theorem inter_ne_zero {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (h
   intro h
   apply h0
   funext z
-  have := kInterInv V H hH Λ₁ Λ₂ α s₁ s₂ c₁ c₂ i₁ i₂ F hF z
+  have := _root_.Formalism.L2.Th1.H.interInv V H hH Λ₁ Λ₂ α s₁ s₂ c₁ c₂ i₁ i₂ F hF z
   rw [h, inter_zero] at this
   exact this.symm
 
@@ -276,9 +266,9 @@ theorem thMoved_mem (hL : B.LatAll) {N N' : ℕ} (h0 : B.ThZeroMem N N') {L : Su
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hA : TaylorLogMetric.admitted D N N' L L') :
     B.thMoved N N' L L' ∈ Formalism.L2.Th1.H.Th (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') (TaylorLogMetric.al D B.tor)
       (TaylorLogMetric.La D B.tor L L') := by
-  have h1 := kInterTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _
+  have h1 := _root_.Formalism.L2.Th1.H.interTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _
     (hL.1 N N' L _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).2 (hL.2 N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).1 _ h0
-  exact kInterTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _
+  exact _root_.Formalism.L2.Th1.H.interTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _
     (hL.1 N N' L L' hA).2 (hL.2 N N' _ _ _ _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA) hA).1 _ h1
 
 theorem thMoved_ne_zero (hS : B.StdOK) (hL : B.LatAll) {N N' : ℕ} (h0 : B.ThZeroMem N N')
@@ -290,7 +280,7 @@ theorem thMoved_ne_zero (hS : B.StdOK) (hL : B.LatAll) {N N' : ℕ} (h0 : B.ThZe
   have a2 := hL.1 N N' _ _ hA
   have c01 := hL.2 N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)
   have c12 := hL.2 N N' _ _ _ _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA) hA
-  have h1 := kInterTh _ _ hH _ _ _ a1.2 c01.1 _ h0
+  have h1 := _root_.Formalism.L2.Th1.H.interTh _ _ hH _ _ _ a1.2 c01.1 _ h0
   have n1 := inter_ne_zero _ hH _ _ _ a0.1 a1.1 a0.2 a1.2 c01.1 c01.2 h0.2 (B.thZero_ne_zero hS N N')
   exact inter_ne_zero _ hH _ _ _ a1.1 a2.1 a1.2 a2.2 c12.1 c12.2 h1.2 n1
 
@@ -424,7 +414,7 @@ theorem single_mem_homL (i : Fin N') (j : Fin N) :
   intro i'
   by_cases h : i = i'
   · subst h; simpa [Matrix.mulVec, dotProduct, Matrix.single_apply] using hx j
-  · simp [Matrix.mulVec, dotProduct, Matrix.single_apply, h]
+  · simp [Matrix.mulVec, dotProduct, h]
 
 def putE (D : D7) (N N' : ℕ) (i : Fin N') (j : Fin N) : (D.what₂.Tau → ℂ) →+ TaylorLogMetric.VC D N N' where
   toFun v := fun τ i' j' => if i' = i ∧ j' = j then v τ else 0
@@ -433,7 +423,7 @@ def putE (D : D7) (N N' : ℕ) (i : Fin N') (j : Fin N) : (D.what₂.Tau → ℂ
 
 theorem Lat0 (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') = powLat (lamMM D (TaylorLogMetric.lamOf D cc δ)) N N' := by
-  apply GlobalTheory.FourthRootStd.Lat0 <;> assumption
+  apply GlobalTheory.FourthRootStd.Lat0
 
 end Lat0
 
@@ -557,7 +547,7 @@ theorem thHalf_mem (hS : B.StdOK) (hL : B.LatAll) {N N' : ℕ} {L : Submodule (�
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hA : TaylorLogMetric.admitted D N N' L L') :
     B.thHalf N N' L ∈ Formalism.L2.Th1.H.Th (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') (TaylorLogMetric.al D B.tor)
       (TaylorLogMetric.La D B.tor L (StandardLatticesGL3.stdL D N')) :=
-  kInterTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _
+  _root_.Formalism.L2.Th1.H.interTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _
     (hL.1 N N' L _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).2 (hL.2 N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).1 _ (B.thZeroMem hS N N')
 
 end Base
@@ -669,12 +659,12 @@ variable {D : D7}
 def emb4 (D : D7) (x : Fin 4 → D.host.E) : Fin 4 × D.what₂.Tau → ℂ := fun w => TaylorLogMetric.embT D w.2 (x w.1)
 
 theorem span_range_emb4_eq_top (D : D7) : Submodule.span ℂ (Set.range (emb4 D)) = ⊤ := by
-  apply GlobalTheory.FourthRootStd.span_range_emb4_eq_top <;> assumption
+  apply GlobalTheory.FourthRootStd.span_range_emb4_eq_top
 
 theorem isoK_hermitian_sum_eq_emb4_hermitian_sum (γ : IsoK D) (x y : Fin 4 → D.host.E) :
     ∑ w, D.host.φ₀ ((γ.g x w : D.host.K) : D.host.E) * conj (D.host.φ₀ ((γ.g y w : D.host.K) : D.host.E))
       = ∑ w, emb4 D x w * conj (emb4 D y w) := by
-  apply GlobalTheory.FourthRootStd.isoK_hermitian_sum_eq_emb4_hermitian_sum <;> assumption
+  apply GlobalTheory.FourthRootStd.isoK_hermitian_sum_eq_emb4_hermitian_sum
 
 theorem blockFourfold_hOne_eq_hOne (L : PeriodPair) (n : Type) [Fintype n] [DecidableEq n] :
     blk4 (hOne L n) = hOne L (Fin 4 × n) := by
@@ -757,10 +747,6 @@ theorem exists_gen (D : D7) (𝔭 : IsDedekindDomain.HeightOneSpectrum (𝓞 D.h
 end KapInh
 
 namespace Test
-
-open Formalism.L2.Th1.H.Inh (L7 gU stdData_seven seven_nontrivial)
-
-variable (n : Type) [Fintype n] [DecidableEq n]
 
 end Test
 

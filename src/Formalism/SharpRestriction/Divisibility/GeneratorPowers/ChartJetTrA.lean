@@ -71,9 +71,6 @@ theorem jetCoef_alg (κ : Type) (m : ℕ) :
   first
   | (show jetCoef f κ m (Ideal.Quotient.mk _ (MvPolynomial.C v)) = Ideal.Quotient.mk _ (MvPolynomial.C (f v))
      rw [jetCoef_mk, MvPolynomial.map_C])
-  | (simp only [RingHom.comp_apply]
-     rw [← Ideal.Quotient.mk_algebraMap, ← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq,
-       MvPolynomial.algebraMap_eq, jetCoef_mk, MvPolynomial.map_C])
 
 theorem jetCoef_aug (κ : Type) (m : ℕ) :
     ((jetAug : Jet K κ m →ₐ[K] K) : Jet K κ m →+* K).comp (jetCoef f κ m) =
@@ -98,7 +95,6 @@ theorem jetCoef_trunc (κ : Type) (m : ℕ) :
   refine Ideal.Quotient.ringHom_ext (RingHom.ext fun p => ?_)
   first
   | rfl
-  | simp [jetCoef_mk, jetTrunc]
 
 theorem jetCoef_map {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' V) (hφ : ∀ i, φ i ∈ orig V κ')
     (hφ' : ∀ i, MvPolynomial.map f (φ i) ∈ orig K κ') :

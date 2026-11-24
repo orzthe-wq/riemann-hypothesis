@@ -3,8 +3,8 @@ module
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.UnivFrame
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NaturalRuleValueBaseChangeOfIsReduced
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeComposeInvertBaseChangeTriangularStatement
-public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeExistsUniqueInvertibleStatement
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeComposeInvertBaseChangeTriangular
+public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.FrameChangeExistsUniqueInvertible
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,11 +64,11 @@ theorem evR_frBor_of_isDomain {E : Type} [Field E] [NumberField E] [IsCMField E]
   have hφ : Function.Injective φ := IsFractionRing.injective S (FractionRing S)
   obtain ⟨z, hz⟩ := hL.bc _ _ φ y
   obtain ⟨z', hz'⟩ := hL.bc _ _ φ y'
-  obtain ⟨g, hg1, hg2, hg⟩ := ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c S).2.2.2 t y y').1 h
-  have hc := ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c S).2.2.1 _ φ g _ y y' z z' hg hz).1 hz'
+  obtain ⟨g, hg1, hg2, hg⟩ := ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c S).2.2.2 t y y').1 h
+  have hc := ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c S).2.2.1 _ φ g _ y y' z z' hg hz).1 hz'
   let t' : Ix Dw → (FractionRing S)ˣ := fun i => Units.map (φ : S →* FractionRing S) (t i)
   have hb : FrBor t' z z' :=
-    ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c (FractionRing S)).2.2.2 t' z z').2
+    ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c (FractionRing S)).2.2.2 t' z z').2
       ⟨fun τ => (g τ).map φ, fun τ i => by simp [t', hg1], fun τ i j hij => by simp [hg2 τ i j hij], hc⟩
   have hw := hL.wt a n F hF _ t' z z' (hL.test _ _) (hL.test _ _) hb
   rw [GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n F hF S _ φ y z hz,
@@ -82,10 +82,10 @@ theorem evR_natural_weight_scaling : ∀ (E : Type) [Field E] [NumberField E] [I
   intro E _ _ _ H Dw l Xo c hL a n F hF S _ _ _
   refine ⟨fun T _ _ φ y z h => GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n F hF S T φ y z h,
     fun hD => ⟨fun t y y' h => evR_frBor_of_isDomain hL hF t y y' h, fun s y y' h => ?_⟩⟩
-  obtain ⟨u, rfl⟩ := ((GlobalTheory.T.frameChange_exists_unique_invertible E H Dw l Xo c S _ s y).2.2.1 y' h).2
+  obtain ⟨u, rfl⟩ := ((_root_.GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c S _ s y).2.2.1 y' h).2
   let t : Ix Dw → Sˣ := fun i => i.elim u fun _ => 1
   have hb : FrBor t y y' :=
-    ((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c S).2.2.2 t y y').2
+    ((_root_.GlobalTheory.Frames.frChg_calculus E H Dw l Xo c S).2.2.2 t y y').2
       ⟨fun _ => 1, fun τ i => by simp [t], fun τ i j hij => Matrix.one_apply_ne hij.ne, h⟩
   rw [evR_frBor_of_isDomain hL hF t y y' hb]
   congr 1

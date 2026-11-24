@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
 public import Formalism.SharpRestriction.LevelLetterCocycles.DeltaInvariantLattices
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.ApplyLayers
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleComparisonPiWachLatticeClosedWeakStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EtaleComparisonPiWachLatticeClosedWeak
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGammaLayerPadicCoordinates
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUniqueFits
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FrobeniusSubOneWittTensorLatticeSurjectiveFixed
@@ -205,13 +205,22 @@ theorem zg_formula_let : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (
     have hc := GlobalTheory.HerrClassMaps.compact_GK K
     have hcoords := GlobalTheory.HWL.Coord.exists_gamma_coordinates l (D.loc l) K s LL h
       (gamOf W ((HW l).W_s K s LL h))
-    rcases hcoords with ⟨⟨lam, hlc, hl1', hlg, ⟨g₀, hg₀⟩, hcl⟩, -⟩
+    refine hcoords.1.elim fun lam hL => hL.2.2.2.1.elim fun g₀ hg₀ => ?_
+    have hlc := hL.1
+    have hl1' := hL.2.1
+    have hlg := hL.2.2.1
+    have hcl := hL.2.2.2.2
     have hcs : CompactSpace ↥W.GKs := isCompact_iff_compactSpace.1 hcl.isCompact
     have hl1 (g : ↥W.GKs) : lam g = 1 ↔ W.resΓ (g : ↥(GK K)) = 1 := hl1' g
     have hg₀γ : W.resΓ (g₀ : ↥(GK K)) = W.gam := (hlg g₀).mp hg₀
-    have htop := GlobalTheory.T.etaleComparison_pi_wachLattice_closed_weak D HW F l K s LL h T hT
-    rcases htop with ⟨τ, hT2, hTG, hact, hemb, hclo⟩
+    have htop := _root_.GlobalTheory.WeakClosed.jD_piN_closed D HW F l K s LL h T hT
+    refine htop.elim fun τ hτ => ?_
     letI := τ
+    have hT2 := hτ.1
+    have hTG := hτ.2.1
+    have hact := hτ.2.2.1
+    have hemb := hτ.2.2.2.1
+    have hclo := hτ.2.2.2.2
     letI : Algebra ↥(OL LL) (RW LL) := inferInstance
     let M := TW (RW LL) T
     let gRW (g : ↥(GK K)) := (D.locA l).gRW LL (g : GQ l)
@@ -263,19 +272,14 @@ theorem zg_formula_let : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (
     have hfit (b : M) (hb : P b) :
         ∃ c, Q c ∧ (∀ g, lam g = 1 → u c g = -(a g b - b)) ∧
           u c g₀ = j z - (a g₀ b - b) := by
-      have H := E.cl_def T p b hb
-      rcases H with ⟨c, hclass, hvalues⟩
-      exact ⟨c, hclass, fun g hg => (hvalues g (cVal c g) rfl).1 ((hl1 g).mp hg),
-        (hvalues g₀ (cVal c g₀) rfl).2 hg₀γ⟩
+      exact (E.cl_def T p b hb).elim fun c hc =>
+        ⟨c, hc.1, fun g hg => (hc.2 g (cVal c g) rfl).1 ((hl1 g).mp hg), (hc.2 g₀ (cVal c g₀) rfl).2 hg₀γ⟩
     have H := @assemble_zg l _ ↥W.GKs (W.DD T) M C _ _ hcs _ _ τ hT2 hTG
       lam hlc g₀ hg₀ a ha hamul j.toAddMonoidHom (E.jD_inj T) δ haj hδk N.toAddSubgroup
       hclo hstab z hz u huc hum P Q hP hfit
-    rcases H with ⟨zz, hzz⟩
-    refine ⟨zz, hzz.1, fun g => ?_, fun b hb => ?_⟩
+    refine H.elim fun zz hzz => ⟨zz, hzz.1, fun g => ?_, fun b hb => ?_⟩
     · exact (congrArg (fun γ' => W.γD T γ' (zz g) - zz g) hg₀γ.symm).trans (hzz.2.1 g)
-    · have H := hzz.2.2 b hb
-      rcases H with ⟨c, hc⟩
-      exact ⟨c, hc.1, fun g => ⟨cVal c g, rfl, hc.2 g⟩⟩
+    · exact (hzz.2.2 b hb).elim fun c hc => ⟨c, hc.1, fun g => ⟨cVal c g, rfl, hc.2 g⟩⟩
 
 theorem zg_formula : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ (y z : ((HW l).W K s LL h).DD T), z ∈ aN ((HW l).W K s LL h) T letπ → ∀ hyz : (y, z) ∈ ((HW l).W K s LL h).divisibleCocycles T, ∃ zz : ↥((HW l).W K s LL h).GKs → ((HW l).W K s LL h).DD T, (∀ g, zz g ∈ aN ((HW l).W K s LL h) T letπ) ∧ (∀ g, ((HW l).W K s LL h).γ T (zz g) - zz g = ((HW l).W K s LL h).γD T (((HW l).W K s LL h).resΓ g) z - z) ∧ ∀ b : TW (RW LL) T, TWmap (φRW LL) T b - b = ((F l).E K s LL h).tie.jD T y → ∃ c : ↥(latticeCocycles (resLat T ((HW l).W K s LL h).GKs)), Submodule.Quotient.mk c = ((HW l).W K s LL h).cl T ⟨(y, z), hyz⟩ ∧ ∀ g : ↥((HW l).W K s LL h).GKs, ∃ t : ↥T.L.T, (t : T.V) = (c : ↥((HW l).W K s LL h).GKs → T.V) g ∧ (1 : RW LL) ⊗ₜ[↥(OL LL)] t = ((F l).E K s LL h).tie.jD T (zz g) - (TWact ((D.locA l).gRW LL ((g : ↥(GK K)) : GQ l)) T g b - b) :=
   fun D HW F l _ K s LL h => zg_formula_let D HW F l K s LL h

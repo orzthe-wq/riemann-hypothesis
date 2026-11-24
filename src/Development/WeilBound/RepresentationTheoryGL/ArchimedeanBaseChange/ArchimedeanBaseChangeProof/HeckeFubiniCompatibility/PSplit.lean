@@ -95,9 +95,6 @@ theorem continuous_pInf' : Continuous (pInf E) :=
     (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
       ((continuous_apply w).comp continuous_fst)
 
-theorem continuous_gInf (n : ℕ) (v : InfinitePlace E) : Continuous (gInf (n := n) v : GA E n → G n) :=
-  Continuous.units_map _ (continuous_id.matrix_map ((continuous_apply v).comp continuous_pInf'))
-
 omit [IsCMField E] in
 theorem continuous_gFin (n : ℕ) : Continuous (gFin : GA E n → GL (Fin n) (Af E)) :=
   Continuous.units_map _ (continuous_id.matrix_map continuous_snd)

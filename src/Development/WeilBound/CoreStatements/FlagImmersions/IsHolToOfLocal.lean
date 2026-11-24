@@ -2,8 +2,11 @@ module
 
 public import Development.WeilBound.CoreStatements.FlagImmersions.Transport
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsSheetCover
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPointStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SectionBoundaryClosedAndCodenseStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.CoordsAt
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HolomorphicCoordsOfGenericPoint
+public import ReciprocityTheory.AnalyticForms.LeviForms.IsRegFamilyInhabitStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.SectionBoundaryClosedAndCodense
 public import Development.WeilBound.CoreStatements.VolumeEquality.ChartMeetsForm
 public import Development.WeilBound.CoreStatements.VolumeEquality.HolNull
 public import Development.WeilBound.CoreStatements.VolumeEquality.Pieces
@@ -110,7 +113,7 @@ theorem ptsFam : PtsFam := by
       (Sys.A.chart k).symm.isOpen_inter_preimage ((Or.Re.R.isOpen_U w₀).preimage hψ.1)
     refine ⟨(Sys.A.chart k).target ∩ (Sys.A.chart k).symm ⁻¹' (ψ ⁻¹' Or.Re.R.U w₀), Set.inter_subset_left,
       ⟨ht₀, Or.Re.R.mem_U w₀⟩, ?_⟩
-    refine GlobalTheory.T.holomorphic_coords_of_generic_point _ _ Or.𝔐.ξ _ _ RM.y Or.𝔐.tie Or.𝔐.all _ _
+    refine _root_.GlobalTheory.CompanionTheory.Ar.PeriodsHol.isHolTo_of_coordsAt_family _ _ Or.𝔐.ξ _ _ RM.y Or.𝔐.tie Or.𝔐.all _ _
       (fun t => Or.Re.R.lift w₀ (ψ ((Sys.A.chart k).symm t))) _ hB ?_ ?_
     · refine differentiableOn_pi.2 fun p t ht => ?_
       exact (analyticAt_comp hψ (Or.Re.R.holo w₀ p) k ht.1 ht.2).differentiableAt.differentiableWithinAt
@@ -139,7 +142,7 @@ theorem ptsFam : PtsFam := by
     have hx₀ : centre (z (Or.Re.π w₁)) ∈ U := hgU _ _ (Or.𝔐.all _) hc hg0
     obtain ⟨k, hk⟩ := Sys.A.cover (Or.Re.π w₁)
     have hopen := (Sys.A.chart k).isOpen_inter_preimage (hol k U 0).1
-    have hd := (GlobalTheory.T.section_boundary_closed_and_codense _ _ Sys.A Sys.L Sys.s Sys.nb Sys.m Sys.W Sys.sec Sys.snc).2
+    have hd := (_root_.GlobalTheory.CompanionTheory.Ar.Bdry.bdry_isClosed_dense_compl _ _ Sys.A Sys.L Sys.s Sys.nb Sys.m Sys.W Sys.sec Sys.snc).2
     obtain ⟨x, ⟨hxs, -, hxU⟩, hxo⟩ := hd.inter_open_nonempty _ hopen ⟨Or.Re.π w₁, hk, (Sys.A.chart k).map_source hk, by
       show ⊤ ≤ z ((Sys.A.chart k).symm (Sys.A.chart k _)) ⁻¹ᵁ U
       rw [(Sys.A.chart k).left_inv hk]

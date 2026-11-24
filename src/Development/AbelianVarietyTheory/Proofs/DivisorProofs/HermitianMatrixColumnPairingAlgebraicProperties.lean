@@ -141,7 +141,7 @@ theorem pr_alg : ∀ (F : Type) [Field F] [CharZero F] (E : Type) [Field E] [Alg
     have h : ((y * (a.map c)ᵀ).map c)ᵀ = a * (y.map c)ᵀ := by
       ext i j
 
-      simp [Matrix.mul_apply, map_sum, hc, mul_comm]
+      simp [Matrix.mul_apply, hc, mul_comm]
     rw [hap, hap, h, Matrix.mul_assoc]
 
 end GlobalTheory.KSp

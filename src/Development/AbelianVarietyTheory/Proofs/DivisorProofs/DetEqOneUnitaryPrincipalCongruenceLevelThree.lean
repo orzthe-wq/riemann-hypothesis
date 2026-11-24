@@ -172,7 +172,7 @@ theorem det_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r M
     rw [this]; exact hy
   have hAmap : A.map φ = (M : AlgebraicClosure E)⁻¹ • (g.map φ - 1) := by
     ext i j
-    by_cases hij : i = j <;> simp [hA, Matrix.one_apply, hij]
+    by_cases hij : i = j <;> simp [hA, hij]
   have hroot : ∀ l ∈ (g.map φ).charpoly.roots, IsIntegral ℤ ((l - 1) / (M : AlgebraicClosure E)) := by
     intro l hl
     have hdet : (scalar (Fin r) l - g.map φ).det = 0 := by

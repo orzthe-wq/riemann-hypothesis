@@ -61,7 +61,7 @@ theorem intPol_iff_bnd (x : MvPolynomial σ ℚ_[p]) : x ∈ IntPol p σ ↔ ∀
   · intro h
     refine ⟨∑ m ∈ x.support, MvPolynomial.monomial m (⟨AddMonoidAlgebra.coeff x m, h m⟩ : ℤ_[p]), ?_⟩
 
-    simp only [AlgHom.toLinearMap_apply, map_sum, MvPolynomial.mapAlgHom_apply, MvPolynomial.map_monomial]
+    simp only [AlgHom.toLinearMap_apply, map_sum, MvPolynomial.mapAlgHom_apply]
     conv_rhs => rw [x.as_sum]
     refine Finset.sum_congr rfl fun m _ => ?_
     erw [MvPolynomial.map_monomial]

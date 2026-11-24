@@ -47,6 +47,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Upqcpt
 
 @[expose] public section
 
@@ -55,11 +56,6 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FrameComplement
-
-private theorem cT_sig_eq_conjTranspose {m k : Type} (M : Matrix m k ℂ) :
-    Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
-  ext i j
-  simp [Formalism.UG.cT, Matrix.conjTranspose_apply]
 
 private theorem conjTranspose_submatrix_mul_mul_submatrix {R k l m : Type} [CommRing R] [StarRing R] [Fintype k]
     (B : Matrix k l R) (M : Matrix k k R) (f : m → l) :
@@ -93,7 +89,7 @@ theorem hasSignature_of_frame {n : Type} [Fintype n] [DecidableEq n] {J : Matrix
   have hu : IsUnit (Q.submatrix e.symm id) :=
     (Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet)
   refine ⟨e, hu.unit, ?_⟩
-  rw [IsUnit.unit_spec, cT_sig_eq_conjTranspose]
+  rw [IsUnit.unit_spec, _root_.Formalism.UG.P.cT_conj_eq]
   exact hP
 
 private theorem card_eq_add_and_exists_conj_eq_Jpq_of_hasSignature {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p q : ℕ}
@@ -101,17 +97,9 @@ private theorem card_eq_add_and_exists_conj_eq_Jpq_of_hasSignature {n : Type} [F
     Fintype.card n = p + q ∧ ∃ Q : Matrix n (Fin p ⊕ Fin q) ℂ, Qᴴ * J * Q = Formalism.UG.Jpq p q := by
   obtain ⟨e, P, hP⟩ := h
   refine ⟨by simpa using Fintype.card_congr e, (P : Matrix _ _ ℂ).submatrix e id, ?_⟩
-  rw [cT_sig_eq_conjTranspose] at hP
+  rw [_root_.Formalism.UG.P.cT_conj_eq] at hP
   rw [← hP, ← conjTranspose_submatrix_mul_reindex_mul_submatrix e ((P : Matrix _ _ ℂ).submatrix e id) J]
   simp
-
-private theorem Jpq_eq_diagonal_elim_one_neg_one (p q : ℕ) :
-    Formalism.UG.Jpq p q = Matrix.diagonal (Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1)) := by
-  ext (i|i) (j|j)
-  · by_cases h : i = j <;> simp [Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, h]
-  · simp [Formalism.UG.Jpq]
-  · simp [Formalism.UG.Jpq]
-  · by_cases h : i = j <;> simp [Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, h]
 
 theorem hasSignature_fromBlocks {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
     {G : Matrix n n ℂ} {H : Matrix m m ℂ} {p q p' q' : ℕ}
@@ -128,7 +116,7 @@ theorem hasSignature_fromBlocks {n m : Type} [Fintype n] [DecidableEq n] [Fintyp
   rw [conjTranspose_submatrix_mul_mul_submatrix, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply,
     Matrix.fromBlocks_multiply]
   simp only [Matrix.conjTranspose_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, hQ1, hQ2]
-  rw [Jpq_eq_diagonal_elim_one_neg_one, Jpq_eq_diagonal_elim_one_neg_one, Jpq_eq_diagonal_elim_one_neg_one, Matrix.fromBlocks_diagonal,
+  rw [_root_.Formalism.UG.P.Jpq_eq_diagonal, _root_.Formalism.UG.P.Jpq_eq_diagonal, _root_.Formalism.UG.P.Jpq_eq_diagonal, Matrix.fromBlocks_diagonal,
     Matrix.submatrix_diagonal_equiv]
   congr 1
   funext x
@@ -252,7 +240,7 @@ private theorem posIndex_negIndex_of_hasSignature {n : Type} [Fintype n] [Decida
     (h : Formalism.UG.HasSignature J p q) :
     GlobalTheory.Inertia.posIndex J = p ∧ GlobalTheory.Inertia.negIndex J = q := by
   obtain ⟨e, P, hP⟩ := h
-  rw [cT_sig_eq_conjTranspose] at hP
+  rw [_root_.Formalism.UG.P.cT_conj_eq] at hP
   have hR : ((P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map (starRingEnd ℂ)).det ≠ 0 := by
     have h1 : ((P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map (starRingEnd ℂ)).det =
         starRingEnd ℂ (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).det := by

@@ -84,7 +84,7 @@ private theorem ss_of_conj {r r' : Γ →* GL (Fin n) k} (h : RepIso r r') (H : 
   · have hm := (Submodule.orderIsoMapComap (conjEquiv g)).isCompl hc
     have hW2 : (Submodule.orderIsoMapComap (conjEquiv g)) (W.comap (conjEquiv g).toLinearMap) = W := by
       ext x
-      simp [Submodule.orderIsoMapComap_apply, Submodule.mem_map]
+      simp [Submodule.orderIsoMapComap_apply]
     rw [hW2] at hm
     exact hm
 

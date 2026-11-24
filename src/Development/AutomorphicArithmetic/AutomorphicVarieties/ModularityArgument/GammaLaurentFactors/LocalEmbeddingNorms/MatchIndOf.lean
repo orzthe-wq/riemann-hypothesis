@@ -51,6 +51,8 @@ import Mathlib.Tactic.NormNum.RealSqrt
 public import ReciprocityTheory.Chebotarev.CyclotomicIrreducibleOfForallIsUnramifiedAt
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.BaseChangeUnits.CycCOfCyclic
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.GelfandKazhdanReal
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaTildeHeckeCharSplitMulSignOfNormFormula
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ResFinEqOneOfAway
 
 @[expose] public section
 
@@ -72,28 +74,9 @@ section Primes
 
 variable {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
 
-private theorem natCast_mem {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) {q : ℕ}
-    (hq : q.Prime) (hd : q ∣ Ideal.absNorm w.asIdeal) : (q : 𝓞 F) ∈ w.asIdeal := by
-  have hne : Ideal.absNorm w.asIdeal ≠ 0 := by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact w.ne_bot
-  have hcard : Ideal.absNorm w.asIdeal = Nat.card (𝓞 F ⧸ w.asIdeal) := by
-    rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
-  have : Finite (𝓞 F ⧸ w.asIdeal) := Nat.finite_of_card_ne_zero (hcard ▸ hne)
-  have := Fact.mk hq
-  obtain ⟨x, hx⟩ := exists_prime_addOrderOf_dvd_card' (G := 𝓞 F ⧸ w.asIdeal) q (hcard ▸ hd)
-  have h1 : q • x = 0 := hx ▸ addOrderOf_nsmul_eq_zero x
-  have hx0 : x ≠ 0 := by
-    intro h0
-    rw [h0, addOrderOf_zero] at hx
-    exact hq.one_lt.ne hx
-  have := w.isPrime
-  rw [nsmul_eq_mul] at h1
-  have h2 := (mul_eq_zero.1 h1).resolve_right hx0
-  rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
-  exact h2
+private alias natCast_mem := _root_.GlobalTheory.EtaProduct.mem_of_dvd_absNorm
 
-private theorem normV_absNorm {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) :
-    normV w = Ideal.absNorm w.asIdeal := by
-  rw [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]
+private alias normV_absNorm := _root_.GlobalTheory.ToricDistribution.normV_eq
 
 private theorem absNorm_pow (w : HeightOneSpectrum (𝓞 M)) :
     Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ (w.under (𝓞 K)).asIdeal.inertiaDeg' w.asIdeal := by

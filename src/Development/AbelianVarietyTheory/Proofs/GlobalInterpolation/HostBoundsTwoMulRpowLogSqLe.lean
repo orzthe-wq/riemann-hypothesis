@@ -86,9 +86,6 @@ private theorem hostBounds_rd (R : Ranks) (H : Host R) :
     mul_le_mul (by linarith) hs2 (Real.sqrt_nonneg _) hS0.le
   rwa [mul_assoc]
 
-theorem hostBounds_ez {s : Scale} {C8 : ℝ} {R : Ranks} {H : Host R} (h : HostVal s C8 H) : s.eps / C8 ≤ s.ez :=
-  div_le_div_of_nonneg_left s.eps_pos.le (lt_of_lt_of_le one_pos s.one_le_J) h.2.2.2.2.2.2.2.2.1
-
 theorem hostBounds_one_le_log_div {s : Scale} {C8 : ℝ} {R : Ranks} {H : Host R} (h : HostVal s C8 H)
     (hx : Real.exp C8 ≤ s.x) : 1 ≤ Real.log s.x / s.J := by
   rw [one_le_div (lt_of_lt_of_le one_pos s.one_le_J)]

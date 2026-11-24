@@ -81,23 +81,20 @@ theorem stdLat_isOrtho (E : Type) [Field E] [NumberField E] [StarRing E] (n : �
       by_cases hij : j = i
       · subst hij
         exact ⟨1, by simp⟩
-      · exact ⟨0, by simp [Pi.single_apply, hij]⟩
+      · exact ⟨0, by simp [hij]⟩
   · intro i j
     simp only [hStd, LinearMap.mk₂'ₛₗ_apply]
     rw [Finset.sum_eq_single i (fun k _ hk => by simp [Pi.single_apply, hk]) (by simp)]
     by_cases hij : i = j
     · subst hij
       simp
-    · simp [Pi.single_apply, hij, Ne.symm hij]
+    · simp [hij]
 
 theorem unimodLocal_of_locDual (hLD : Formalism.HermitianLatticesTheory.LocDual) : UnimodLocal := by
   intro E _ _ _ n N hN hU p hp
   have hsymm : (hStd E n).IsSymm := by
     first
       | (refine ⟨fun x y => ?_⟩
-
-         simp [hStd, map_sum, starRingEnd_apply, star_mul', mul_comm])
-      | (intro x y
 
          simp [hStd, map_sum, starRingEnd_apply, star_mul', mul_comm])
   have hstar : ∀ r : 𝓞 E, star (algebraMap (𝓞 E) E r) ∈ Set.range (algebraMap (𝓞 E) E) := by

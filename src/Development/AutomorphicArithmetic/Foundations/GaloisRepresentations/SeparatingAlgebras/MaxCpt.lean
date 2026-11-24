@@ -58,7 +58,7 @@ private theorem nonneg_of_pow_mem (E : Type) [Field E] [NumberField E] (w : Heig
     {Z : Set (GL (Fin a) (w.adicCompletion E))} (hZ : IsCompact Z) (ν : Fin a → ℤ)
     (hν : ∀ m : ℕ, Cartan.diagPow (w.adicCompletion E) a ν ^ m ∈ Z) (i : Fin a) : 0 ≤ ν i := by
   by_contra hneg
-  push_neg at hneg
+  push Not at hneg
   set ϖ : w.adicCompletion E := (GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E) with hϖ
   have h0 : ϖ ≠ 0 := Cartan.uniformizer_ne_zero _
   have hf : Continuous fun x : GL (Fin a) (w.adicCompletion E) =>

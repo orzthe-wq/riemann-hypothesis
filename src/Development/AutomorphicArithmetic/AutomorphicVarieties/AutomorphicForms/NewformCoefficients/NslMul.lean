@@ -85,9 +85,9 @@ theorem UpperTheory.V.Af.Nf.nslMul :
     simp only [nsl]
     rw [sign_pos hy, Matrix.det_mul, sign_mul, sign_pos hy, mul_one, abs_mul,
       Real.mul_rpow (abs_nonneg _) (abs_nonneg _)]
-    simp only [SignType.coe_one, Int.cast_one, Complex.ofReal_one, one_mul]
+    simp only [SignType.coe_one, Complex.ofReal_one, one_mul]
     rw [← hmdef, UpperHalfPlane.ofComplex_apply_of_im_pos hm]
-    simp only [UpperHalfPlane.coe_mk, Matrix.mul_apply, Fin.sum_univ_two]
+    simp only [Matrix.mul_apply, Fin.sum_univ_two]
     have hJ : ((↑(x 1 0 * y 0 0 + x 1 1 * y 1 0) : ℂ) * z + ↑(x 1 0 * y 0 1 + x 1 1 * y 1 1)) =
         ((x 1 0 : ℂ) * m + x 1 1) * ((y 1 0 : ℂ) * z + y 1 1) := by
       rw [hmdef, add_mul, mul_assoc, div_mul_cancel₀ _ hjy]

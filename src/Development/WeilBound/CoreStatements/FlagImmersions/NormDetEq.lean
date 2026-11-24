@@ -122,7 +122,7 @@ theorem sum_Iic {N : ℕ} (i : Fin N) (f : ℕ → ℝ) : ∑ k ∈ Finset.Iic i
   rw [Fin.map_valEmbedding_Iic]
   congr 1
   ext k
-  simp [Nat.lt_succ_iff]
+  simp
 
 section
 

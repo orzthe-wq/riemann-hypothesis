@@ -55,7 +55,7 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.FamEx
 
 theorem rt0_conj_neg_ne_zero {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
-  apply Formalism.MainNotions.ModuliIntegralCharts.H1.rt0_conj_neg_ne_zero <;> assumption
+  apply Formalism.MainNotions.ModuliIntegralCharts.H1.rt0_conj_neg_ne_zero
 
 theorem rt0_ne_zero {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) : H.rt0 ≠ 0 := by
   intro h

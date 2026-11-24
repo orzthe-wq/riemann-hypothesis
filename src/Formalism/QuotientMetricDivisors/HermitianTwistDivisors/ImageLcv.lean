@@ -155,8 +155,7 @@ theorem imageLcv_std_eq (d : ℕ) :
   simp [Pi.basisFun_apply]
 
 theorem imageLcv_std_li (d : ℕ) : LinearIndependent K (fun i => (Pi.single i 1 : Fin d → K)) := by
-  rw [imageLcv_std_eq]
-  exact (Pi.basisFun K (Fin d)).linearIndependent
+  simpa [imageLcv_std_eq] using (Pi.basisFun K (Fin d)).linearIndependent
 
 theorem imageLcv_std_lat (d : ℕ) :
     Submodule.IsFullLattice K

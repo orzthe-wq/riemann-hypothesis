@@ -70,23 +70,19 @@ section GaussProd
 theorem hcnt_prod_succ (q : ℤ) (a i : ℕ) :
     ∏ j ∈ Finset.range (i + 1), (q ^ (a + 1) - q ^ j) =
       (q ^ (a + 1) - 1) * q ^ i * ∏ j ∈ Finset.range i, (q ^ a - q ^ j) := by
-  rw [Finset.prod_range_succ']
-  have h : ∀ j ∈ Finset.range i, (q ^ (a + 1) - q ^ (j + 1)) = q * (q ^ a - q ^ j) := by
-    intro j _; ring
-  rw [Finset.prod_congr rfl h, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range]
+  rw [Finset.prod_range_succ', Finset.prod_congr rfl (fun j (_ : j ∈ Finset.range i) => show q ^ (a + 1) - q ^ (j + 1) = q * (q ^ a - q ^ j) by ring), Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range]
   ring
 
 theorem gaussBin_mul_prod (q n i : ℕ) :
     (gaussBin q n i : ℤ) * ∏ j ∈ Finset.range i, ((q : ℤ) ^ i - (q : ℤ) ^ j) =
       ∏ j ∈ Finset.range i, ((q : ℤ) ^ n - (q : ℤ) ^ j) := by
-  apply GlobalTheory.KerRangeCount.gaussBin_mul_prod <;> assumption
+  apply GlobalTheory.KerRangeCount.gaussBin_mul_prod
 
 theorem hcnt_cast_prod (q n i : ℕ) (hq : 1 ≤ q) (hi : i ≤ n) :
     ((∏ j : Fin i, (q ^ n - q ^ (j : ℕ)) : ℕ) : ℤ) = ∏ j ∈ Finset.range i, ((q : ℤ) ^ n - (q : ℤ) ^ j) := by
   rw [Nat.cast_prod, Fin.prod_univ_eq_prod_range (fun j => (((q ^ n - q ^ j : ℕ)) : ℤ)) i]
-  refine Finset.prod_congr rfl (fun j hj => ?_)
-  have hj : j ≤ n := by have := Finset.mem_range.1 hj; omega
-  rw [Nat.cast_sub (Nat.pow_le_pow_right hq hj), Nat.cast_pow, Nat.cast_pow]
+  refine Finset.prod_congr rfl fun j hj => ?_
+  rw [Nat.cast_sub (Nat.pow_le_pow_right hq (le_trans (le_of_lt (Finset.mem_range.1 hj)) hi)), Nat.cast_pow, Nat.cast_pow]
 
 end GaussProd
 
@@ -116,9 +112,9 @@ theorem hcnt_card_mul (i : ℕ) (hi : i ≤ finrank K V) :
         ∏ j : Fin i, (Fintype.card K ^ i - Fintype.card K ^ (j : ℕ)) =
       ∏ j : Fin i, (Fintype.card K ^ finrank K V - Fintype.card K ^ (j : ℕ)) := by
   classical
-  haveI : Finite (Submodule K V) :=
+  have : Finite (Submodule K V) :=
     Finite.of_injective (fun U : Submodule K V => (U : Set V)) SetLike.coe_injective
-  haveI : Fintype {U : Submodule K V // finrank K U = i} := Fintype.ofFinite _
+  have : Fintype {U : Submodule K V // finrank K U = i} := Fintype.ofFinite _
   let f : {s : Fin i → V // LinearIndependent K s} → {U : Submodule K V // finrank K U = i} :=
     fun s => ⟨Submodule.span K (Set.range s.1), by rw [finrank_span_eq_card s.2, Fintype.card_fin]⟩
   have hfib : ∀ U : {U : Submodule K V // finrank K U = i},
@@ -130,16 +126,6 @@ theorem hcnt_card_mul (i : ℕ) (hi : i ≤ finrank K V) :
   rw [← card_linearIndependent hi, ← Nat.card_congr (Equiv.sigmaFiberEquiv f), Nat.card_sigma,
     Finset.sum_congr rfl (fun U _ => hfib U), Finset.sum_const, smul_eq_mul, Finset.card_univ,
     Nat.card_eq_fintype_card]
-
-private theorem gaussBin_eq_zero_of_lt (q : ℕ) {n i : ℕ} (h : n < i) : gaussBin q n i = 0 := by
-  induction n generalizing i with
-  | zero =>
-    obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
-    rfl
-  | succ n ih =>
-    obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (by omega : i ≠ 0)
-    show gaussBin q n k + q ^ (k + 1) * gaussBin q n (k + 1) = 0
-    rw [ih (by omega), ih (by omega), mul_zero, add_zero]
 
 theorem card_subspaces_finrank (i : ℕ) :
     Nat.card {U : Submodule K V // finrank K U = i} = gaussBin (Fintype.card K) (finrank K V) i := by
@@ -158,14 +144,14 @@ theorem card_subspaces_finrank (i : ℕ) :
         gaussBin (Fintype.card K) (finrank K V) i :=
       mul_right_cancel₀ hP (h3.trans h2.symm)
     exact_mod_cast h4
-  · rw [gaussBin_eq_zero_of_lt _ (not_le.1 hi), Nat.card_eq_zero]
+  · rw [_root_.Formalism.L2.Col.gaussBin_eq_zero _ (not_le.1 hi), Nat.card_eq_zero]
     left
     exact ⟨fun ⟨U, hU⟩ => by have := Submodule.finrank_le U; have := not_le.1 hi; omega⟩
 
 theorem card_subspaces_cofinrank (i : ℕ) :
     Nat.card {W : Submodule K V // finrank K (V ⧸ W) = i} = gaussBin (Fintype.card K) (finrank K V) i := by
-  haveI : FiniteDimensional K V := Module.Finite.of_finite
-  haveI : Finite (Module.Dual K V) := Module.finite_of_finite K
+  have : FiniteDimensional K V := Module.Finite.of_finite
+  have : Finite (Module.Dual K V) := Module.finite_of_finite K
   have hW : ∀ W : Submodule K V, finrank K (V ⧸ W) = finrank K W.dualAnnihilator := fun W => by
     rw [← (Submodule.dualQuotEquivDualAnnihilator W).finrank_eq, Subspace.dual_finrank_eq]
   have e : {W : Submodule K V // finrank K (V ⧸ W) = i} ≃
@@ -276,7 +262,7 @@ theorem card_quot_iso {R k V : Type} [CommRing R] [Field k] [Fintype k] [Algebra
     Nat.card {W : Submodule R V // Nonempty ((V ⧸ W) ≃ₗ[R] (Fin i → k))} =
       gaussBin (Fintype.card k) (finrank k V) i := by
   classical
-  haveI : FiniteDimensional k V := Module.Finite.of_finite
+  have : FiniteDimensional k V := Module.Finite.of_finite
   have key : ∀ W' : Submodule k V,
       Nonempty ((V ⧸ W'.restrictScalars R) ≃ₗ[R] (Fin i → k)) ↔ finrank k (V ⧸ W') = i := by
     intro W'
@@ -431,8 +417,7 @@ theorem heckeFam_eq_zero_of_lt (c : DecoPts S E n ST SG) (S0 : Set (HeightOneSpe
   have h : c.nb P.1.asIdeal i d = ∅ := by
     rw [← Finset.card_eq_zero, c.card_nb P i d, gaussBin_eq_zero _ hi]
   change (((heckeD c P.1.asIdeal i).op φ : S.EqFun) : S.D → S.V) d = _
-  rw [heckeD_op_apply, h, Finset.sum_empty]
-  rfl
+  simp [heckeD_op_apply, h, Finset.sum_empty]
 
 variable (K) (E) (n) (ST) (SG)
 

@@ -70,9 +70,7 @@ def TestExP {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V]
 
 open MeasureTheory Complex Filter Topology
 
-theorem char_real (f : ℝ → ℂ) (hc : Continuous f) (hadd : ∀ s t, f (s + t) = f s * f t)
-    (hn : ∀ s, ‖f s‖ = 1) : ∃ b : ℝ, ∀ s : ℝ, f s = exp (↑(b * s) * I) := by
-  first | exact Bl.general_b_fact_third_further.goal1 .. | (apply Bl.general_b_fact_third_further.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_further.goal1 <;> assumption)
+alias char_real := _root_.Bl.general_b_fact_third_further.goal1
 
 theorem freq_unique {u v : ℝ} (h : ∀ s : ℝ, exp (↑(u * s) * I) = exp (↑(v * s) * I)) : u = v := by
   by_contra huv

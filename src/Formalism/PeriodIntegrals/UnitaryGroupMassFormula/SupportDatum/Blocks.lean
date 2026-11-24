@@ -74,7 +74,7 @@ theorem antidiag_det {K : Type} [CommRing K] (t : K) (s : ℕ) :
           Fin.coe_castSucc]
         split_ifs <;> first | rfl | omega
       rw [hm, ih]
-      simp only [Matrix.of_apply, Fin.val_zero, Fin.val_last, zero_add, eq_self_iff_true, if_true]
+      simp only [Matrix.of_apply, Fin.val_zero, Fin.val_last, zero_add, if_true]
       have hexp : (s + 1) * (s + 1 - 1) / 2 = s + s * (s - 1) / 2 := by
         rcases s with _ | k
         · rfl

@@ -62,7 +62,7 @@ theorem UpperTheory.GL.inertia_d :
     have hm : H.QS * H.q ≠ 0 := Nat.mul_ne_zero H.QS_ne_zero H.q_prime.ne_zero
     have hN : H.condN = H.d ^ 1 * (H.QS * H.q) := by
       simp only [HostRaw.condN, pow_one]; ring
-    haveI : NeZero H.condN := ⟨by simp only [HostRaw.condN]; exact Nat.mul_ne_zero hm hd.ne_zero⟩
+    have : NeZero H.condN := ⟨by simp only [HostRaw.condN]; exact Nat.mul_ne_zero hm hd.ne_zero⟩
     obtain ⟨-, h2⟩ := parts_of_eq hd hN H.d_not_dvd_QSq hm
     obtain ⟨h1, -⟩ := frobUnit_modEq (N := H.condN) hd
     rw [h2] at h1

@@ -233,7 +233,7 @@ theorem int_cone (hm : IsVol m) (hϖ : IsUnif ϖ) {b : ℕ} {jc : Fin d₁ → F
     have e1 : ((tm (cut P Z) + Y).submatrix id e).submatrix mid mid = y.submatrix id e₁ := by
       ext i j
       have := hP i (e₁ j)
-      simp [tm, cut, hYd, ← he, this, ext_mid hmi hc, single_apply, m0]
+      simp [tm, cut, hYd, ← he, this, ext_mid hmi hc, m0]
     have e2 : (tm (cut P Z) + Y).submatrix id e 0 (Fin.last _) = s := by
       simp [tm, cut, hYd, hb, ext_off y (Or.inl m0)]
     have e3 : (tm (cut P Z) + Y).submatrix id e (Fin.last _) 0 = Z (Fin.last _, e 0) := by

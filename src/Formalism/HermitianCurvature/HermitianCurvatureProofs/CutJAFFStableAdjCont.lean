@@ -60,31 +60,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
-theorem gf_sgs (D : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : D.inSS p) (g : B.Mat k r) :
-    Gf k r D.z D.z' (B.sgs p g) = Gf k r D.z D.z' g := by
-  obtain ⟨hh, hn, hh', hn'⟩ := hp
-  have hn1 : (Matrix.of p.1.2 : B.Mat k r)⁻¹ ∈ Q.Nlev k r 0 := by
-    refine ⟨Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb.n_inv_mem hn, ?_⟩
-    rw [Formalism.FourierDecayAlt.P.CutMP.ER.CAS.level_zero_set_eq_group]
-    exact (Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb.n_inv_mem hn).1
-  have hn2 : (Matrix.of p.2.2 : B.Mat k r) ∈ Q.Nlev k r 0 := by
-    refine ⟨hn', ?_⟩
-    rw [Formalism.FourierDecayAlt.P.CutMP.ER.CAS.level_zero_set_eq_group]
-    exact hn'.1
-  have e1 := Formalism.FourierDecayAlt.P.CutMP.gf_SgS D (Formalism.FourierDecayAlt.P.CutMP.h_mem_Sset D.z (Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh))
-    (Formalism.FourierDecayAlt.P.CutMP.h_mem_Sset D.z' hh') ((Matrix.of p.1.2 : B.Mat k r)⁻¹ * g * Matrix.of p.2.2)
-  have e2 := Formalism.FourierDecayAlt.P.CutMP.gf_SgS D (Formalism.FourierDecayAlt.P.CutMP.n_mem_Sset D.z hn1)
-    (Formalism.FourierDecayAlt.P.CutMP.n_mem_Sset D.z' hn2) g
-  unfold B.sgs
-  rw [← e2, ← e1]
-  congr 1
-  simp only [mul_assoc]
-
-theorem sgs_mem (D : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : D.inSS p) {g : B.Mat k r}
-    (hg : g ∈ B.GV k r) : B.sgs p g ∈ B.GV k r := by
-  rw [Formalism.FourierDecayAlt.P.B5.sgs_eq]
-  exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul
-    (Formalism.FourierDecayAlt.P.NFRadRedLocSec.uh_inv_mem (Formalism.FourierDecayAlt.P.B5.inSS_left D hp)) hg) (Formalism.FourierDecayAlt.P.B5.inSS_right D hp)
+alias sgs_mem := _root_.Formalism.FourierDecayAlt.P.PositiveOrbitOpen.sgs_GV
 
 theorem sgs_continuous (p : B.SS k r) : Continuous (B.sgs p : B.Mat k r → B.Mat k r) := by
   unfold B.sgs
@@ -108,7 +84,7 @@ theorem suppIn_rho (D : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : D.inSS p
   have h2 := hF h1
   refine ⟨hxG, ?_⟩
   have := h2.2
-  rwa [gf_sgs D hp] at this
+  rwa [_root_.Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs D hp] at this
 
 variable [FiniteDimensional ℂ Wq]
 

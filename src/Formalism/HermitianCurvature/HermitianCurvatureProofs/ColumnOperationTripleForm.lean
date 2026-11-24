@@ -151,8 +151,7 @@ theorem psiB_sep (hsd : ∀ a : K, (∀ r ∈ R, ψ (a * r) = 1) ↔ a ∈ R) (h
     rw [← Submodule.Quotient.mk_smul] at h1
     have h2 : psiKR R ψ (Submodule.Quotient.mk ((⟨r, hr⟩ : R) • a)) = 1 := h1
     rw [psiKR_mk R ψ hψ] at h2
-    rw [mul_comm]
-    exact h2
+    rwa [mul_comm]
   exact ⟨⟨a, this⟩, rfl⟩
 
 end

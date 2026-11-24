@@ -101,13 +101,6 @@ theorem det_cast {R : Type} [CommRing R] {n k : ℕ} (e : n = k) (B : Matrix (Fi
     (Matrix.of fun i j : Fin n => B (i.cast e) (j.cast e)).det = B.det := by
   subst e; rfl
 
-theorem eps_sq {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') :
-    spMap (Chart.dualMapR f) ≫ (epsR R).hom = (epsR R').hom ≫ spMap f := by
-  show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _
-  rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]
-  congr 2
-  ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
-
 theorem stalk_of_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.pull F)}
     {θ : L.Sec} {θ' : (L.pull F).Sec} {σ : L'.Sec} (h : IsoMaps w σ θ') (hθ : PullSec F θ θ')
     (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (j : L.ι) (k : L'.ι) (hj : F (r z) ∈ L.U j) (hk : r z ∈ L'.U k) :
@@ -227,7 +220,7 @@ theorem integral_generator_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCM
     refine Chart.comb_baseChange iK M.n'.cart hw h0 (z.m'.cart.1.hom_ext ?_ ?_)
     · rw [Category.assoc, Category.assoc, ← M.h2, ← Category.assoc, h1, Category.assoc]
       exact hw'
-    · rw [Category.assoc, Category.assoc, M.n'.cart.1.w, ← Category.assoc, Over.w, Over.w, eps_sq]
+    · rw [Category.assoc, Category.assoc, M.n'.cart.1.w, ← Category.assoc, Over.w, Over.w, _root_.GlobalTheory.LieCombBaseChange.dualMap_over]
   have hσa : ∀ i, σ.f i = constFn M.t'.t.G.hom _ a * th'.f i := by
     obtain ⟨e₁, -, pm, ps, pf, hp⟩ := hmap
     rw [hφ] at e₁ pf

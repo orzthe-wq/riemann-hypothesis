@@ -138,8 +138,6 @@ theorem good_of_offS (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (P : Pl D.ho
       algebraMap D.host.F D.host.E (x : D.host.F) := by
     first
     | rfl
-    | (rw [← IsScalarTower.algebraMap_apply (𝓞 D.host.F) (𝓞 D.host.E) D.host.E,
-          IsScalarTower.algebraMap_apply (𝓞 D.host.F) D.host.F D.host.E]; rfl)
   have hnot := hy _ hcoe
   refine ⟨fun e => hnot (by rw [← e]; exact hx'), fun hc => ?_⟩
   obtain ⟨c', hc'P, hc'eq⟩ := hc _ hx'

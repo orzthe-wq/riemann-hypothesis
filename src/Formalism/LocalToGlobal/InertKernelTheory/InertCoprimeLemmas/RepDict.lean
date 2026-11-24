@@ -1,71 +1,99 @@
 module
 
-public import Formalism.LocalToGlobal.InertKernelTheory.DefsRepDict
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice
+public import Formalism.LocalToGlobal.GlobalTheory.GL3.CubicFields.PeriodRelations.ConjCls
 public import Formalism.LocalToGlobal.GlobalTheory.GL3.CubicFields.WeierstrassUniqueness.ExistsPeriodPairOfIsLat
+public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.PadicNormTwoHundredSixteenEqOneOfFiveLe
+public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SigmaAlg
+public import Formalism.LocalToGlobal.InertKernelTheory.DefsRepDict
 public import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.ExistsCoprimePowEqOne
 public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.BeWInertOfSigma
 public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.ExistsWittSeriesInverseFormalGroupIso
 public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.IntBasis
-public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.JetsModel
 public import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.MMRead
-import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.PadicNormTwoHundredSixteenEqOneOfFiveLe
-import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.PowerSeriesEmbedding
-import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SigmaAlg
-import Formalism.LocalToGlobal.TorsionIntegrality.CMGoodModels.CmAll
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.FinalOfNRDense
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.SecondLevelOfNorm
+public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.SingleLetterBiextensionRelation
+public import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.FinalFree
+public import Formalism.LocalToGlobal.InertKernelTheory.DefsBeW
 import Formalism.LocalToGlobal.TorsionIntegrality.ComplexLatticeClosure.LamConjTheta0
+import Formalism.SharpRestriction.AdmissibleParameterJoins.GandSp
+import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.PowerSeriesEmbedding
+import Formalism.LocalToGlobal.TorsionIntegrality.CMGoodModels.CmAll
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.EllipticOnePole
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.HasCMByStable
 import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral
 import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.FinalC
-public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.FinalOfNRDense
 import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.ComplexMultiplicationFieldData
-public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.SecondLevelOfNorm
-public import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.SingleLetterBiextensionRelation
 import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.BinomialSeriesCoefficients.CoeffPowEqZeroOfCc
 import Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.Joints
-public import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.FinalFree
 import Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.FamilyLogGammaSmallHolds
 import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FinalS
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-public import Formalism.LocalToGlobal.InertKernelTheory.DefsBeW
+import Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.LogarithmicSubstitution.NormHalfB2SubTwoTorsionLeOne
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.JetsModel, Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.RepDict
+
+-- ===== clump member: Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.JetsModel =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.JetsModel", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.IsDiscriminantTwelfthRootOfIdealLattice\npublic import Formalism.LocalToGlobal.GlobalTheory.GL3.CubicFields.PeriodRelations.ConjCls\npublic import Formalism.LocalToGlobal.GlobalTheory.GL3.CubicFields.WeierstrassUniqueness.ExistsPeriodPairOfIsLat\npublic import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.PadicNormTwoHundredSixteenEqOneOfFiveLe\npublic import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SigmaAlg\nimport Formalism.LocalToGlobal.TorsionIntegrality.ComplexLatticeClosure.LamConjTheta0\nimport Formalism.SharpRestriction.AdmissibleParameterJoins.GandSp\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.L2.KerInert
+
+namespace JetsModel
+
+open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric
+
+theorem eisenstein_invariants_algebraic (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hcc : IsCurveIdeal D cc) (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
+    g2 (lamOf D cc δ) ∈ Qbar ∧ g3 (lamOf D cc δ) ∈ Qbar := by
+  have hδ0 := Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.brcc_delta_ne D cc hcc δ hδ
+  obtain ⟨⟨L, hL⟩, -⟩ := _root_.Formalism.L2.Th1.F2.lambda_of_lattice_holds D cc δ hcc.1 hδ0
+  obtain ⟨hg2, hg3⟩ := _root_.Formalism.L2.KerInert.Sigma.ChartWirtingerDerivatives.weierstrass_invariants_algebraic D cc δ hcc hδ L hL
+  obtain ⟨e2, e3⟩ :=
+    Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.g2_g3_eq_periodPair _ L (congrArg (fun A : AddSubgroup ℂ => (A : Set ℂ)) hL)
+  rw [e2, e3]
+  exact ⟨hg2, hg3⟩
+
+theorem wModel_Δ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hcc : IsCurveIdeal D cc) (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ)
+    {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) : (wModel lam (lamOf D cc δ)).Δ = 1 := by
+  obtain ⟨h2, h3⟩ := eisenstein_invariants_algebraic D cc δ hcc hδ
+  set a2 : Qbar := ⟨g2 (lamOf D cc δ), h2⟩ with ha2
+  set a3 : Qbar := ⟨g3 (lamOf D cc δ), h3⟩ with ha3
+  have ea4 : lamC lam (-(g2 (lamOf D cc δ)) / 4) = lam (-a2 / 4) := by
+    have : -(g2 (lamOf D cc δ)) / 4 = ((-a2 / 4 : Qbar) : ℂ) := by push_cast; rfl
+    rw [this, Formalism.L2.KerInert.Sigma.lamC_coe]
+  have ea6 : lamC lam (-(g3 (lamOf D cc δ)) / 4) = lam (-a3 / 4) := by
+    have : -(g3 (lamOf D cc δ)) / 4 = ((-a3 / 4 : Qbar) : ℂ) := by push_cast; rfl
+    rw [this, Formalism.L2.KerInert.Sigma.lamC_coe]
+  have hd : a2 ^ 3 - 27 * a3 ^ 2 = 1 := by
+    apply Subtype.ext
+    have := Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.br_discr_lamOf D cc hcc δ hδ
+    push_cast
+    exact this
+  have hw : wModel lam (lamOf D cc δ) = ⟨0, 0, 0, lam (-a2 / 4), lam (-a3 / 4)⟩ := by
+    simp only [wModel, ea4, ea6]
+  have key : lam (a2 ^ 3 - 27 * a3 ^ 2) = 1 := by rw [hd, map_one]
+  rw [hw, ← key]
+  simp only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆,
+    WeierstrassCurve.b₈, map_sub, map_mul, map_pow, map_div₀, map_neg, map_ofNat]
+  ring
+
+
+end JetsModel
+
+
+end Formalism.L2.KerInert
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.JetsModel =====
+
+-- ===== clump member: Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.RepDict =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.RepDict", "h": "module\n\npublic import Formalism.LocalToGlobal.InertKernelTheory.DefsRepDict\npublic import Formalism.LocalToGlobal.GlobalTheory.GL3.CubicFields.WeierstrassUniqueness.ExistsPeriodPairOfIsLat\npublic import Formalism.LocalToGlobal.GroupLattices.PendingLemmas.ExistsCoprimePowEqOne\npublic import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.BeWInertOfSigma\npublic import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.ExistsWittSeriesInverseFormalGroupIso\npublic import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.IntBasis\npublic import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.JetsModel\npublic import Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.MMRead\nimport Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.PadicNormTwoHundredSixteenEqOneOfFiveLe\nimport Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.PowerSeriesEmbedding\nimport Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.SigmaAlg\nimport Formalism.LocalToGlobal.TorsionIntegrality.CMGoodModels.CmAll\nimport Formalism.LocalToGlobal.TorsionIntegrality.ComplexLatticeClosure.LamConjTheta0\nimport Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.EllipticOnePole\nimport Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.HasCMByStable\nimport Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.MulStableIntegral\nimport Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.FinalC\npublic import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.FinalOfNRDense\nimport Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLogarithms.ComplexMultiplicationFieldData\npublic import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.SecondLevelOfNorm\npublic import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.SingleLetterBiextensionRelation\nimport Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.BinomialSeriesCoefficients.CoeffPowEqZeroOfCc\nimport Formalism.LocalToGlobal.TorsionIntegrality.TorsionTranslationPowers.NonsingularJetNorms.Joints\npublic import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.FinalFree\nimport Formalism.SharpRestriction.GlobalSchurBounds.GlobalRankLatticeProofs.UnitTraceSumBounds.FamilyLogGammaSmallHolds\nimport Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FinalS\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.LocalToGlobal.InertKernelTheory.DefsBeW\nimport Formalism.LocalToGlobal.TorsionIntegrality.FrobeniusFibreCurves.LogarithmicSubstitution.NormHalfB2SubTwoTorsionLeOne\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -365,9 +393,9 @@ open Formalism.L2.Th1.CM (MaximalUnramifiedExtension omegaK)
 open Formalism.DworkPowerSeriesWeights (Integral)
 
 theorem rdictMain : Formalism.L2.KerInert.Rep.CurveDict := by
-  have hInv := Sigma.invAlg'
+  have hInv := _root_.Formalism.L2.KerInert.Sigma.ChartWirtingerDerivatives.weierstrass_invariants_algebraic
   have hS2 := Sigma.secondEisensteinAlgebraic
-  have hPhW : PhWAll := Dict.phWAll_of (Sigma.sigmaCurveInert_of Sigma.invAlg' Sigma.secondEisensteinAlgebraic)
+  have hPhW : PhWAll := Dict.phWAll_of (Sigma.sigmaCurveInert_of _root_.Formalism.L2.KerInert.Sigma.ChartWirtingerDerivatives.weierstrass_invariants_algebraic Sigma.secondEisensteinAlgebraic)
   have hBC := beta_coefficients
   have hCE := coboundary_exact
   have hCS := coboundary_equivalence
@@ -379,7 +407,7 @@ theorem rdictMain : Formalism.L2.KerInert.Rep.CurveDict := by
   have hcc : cc ≠ ⊥ := hcurve.1
   have hδ : δ ≠ 0 := by
     intro h0
-    obtain ⟨⟨L1, hL1⟩, -⟩ := Formalism.L2.Th1.F2.lamOfLat D cc 1 hcc one_ne_zero
+    obtain ⟨⟨L1, hL1⟩, -⟩ := _root_.Formalism.L2.Th1.F2.lambda_of_lattice_holds D cc 1 hcc one_ne_zero
     obtain ⟨e2, e3⟩ := Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.g2_g3_eq_periodPair _ L1 (congrArg (fun A : AddSubgroup ℂ => (A : Set ℂ)) hL1)
     have hd := Formalism.L2.Th1.F.discNeZero L1
     apply hd
@@ -387,7 +415,7 @@ theorem rdictMain : Formalism.L2.KerInert.Rep.CurveDict := by
     unfold Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice Formalism.MainNotions.TaylorLogMetric.discr at h12
     rw [h0, e2, e3] at h12
     rw [← h12]; norm_num
-  obtain ⟨⟨L, hL⟩, hCM⟩ := Formalism.L2.Th1.F2.lamOfLat D cc δ hcc hδ
+  obtain ⟨⟨L, hL⟩, hCM⟩ := _root_.Formalism.L2.Th1.F2.lambda_of_lattice_holds D cc δ hcc hδ
   have hLg : g.abelian₂ = L.lattice.toAddSubgroup := hLam.trans hL.symm
   obtain ⟨hg2, hg3⟩ := hInv D cc δ hcurve hδ12 L hL
   have hs := hS2 D cc δ hcurve hδ12 L hL
@@ -407,17 +435,17 @@ theorem rdictMain : Formalism.L2.KerInert.Rep.CurveDict := by
   have hwp : Formalism.L2.Th1.A.wpReg g.W =
       PowerSeries.C (εu ^ 2) * PowerSeries.rescale εu (Formalism.L2.Th1.F.pOf (g.lam a2) (g.lam a3)) := by
     rw [Sigma.wpReg_eq, gW2, gW3]
-    exact (Formalism.L2.Th1.F.seriesScale ℂ_[l] (g.lam a2) (g.lam a3) εu).2.2.2.1
+    exact (_root_.Formalism.L2.Th1.F.series_scale ℂ_[l] (g.lam a2) (g.lam a3) εu).2.2.2.1
   set s2 : ℂ_[l] := εu ^ 2 * g.lam s0 with hs2def
   have hR : PowerSeries.rescale εu (Formalism.MainNotions.TaylorLogMetric.sgSer g.lam g.abelian₂) = PowerSeries.C εu * Formalism.L2.Th1.B.sgW g.W s2 := by
     unfold Formalism.L2.Th1.B.sgW
     rw [hser, hwp]
-    exact ((Formalism.L2.Th1.F.sigmaScale ℂ_[l] (Formalism.L2.Th1.F.pOf (g.lam a2) (g.lam a3)) (g.lam s0) εu).2).symm
+    exact ((_root_.Formalism.L2.Th1.F.sigma_scale' ℂ_[l] (Formalism.L2.Th1.F.pOf (g.lam a2) (g.lam a3)) (g.lam s0) εu).2).symm
   have hph : g.ph = Formalism.L2.Th1.B.phW g.W s2 := Dict.formal_phase_agree l g s2 hOk hR
   have hcc0 : PowerSeries.constantCoeff g.ph = 0 := by
-    rw [hph]; exact (Formalism.L2.Th1.B.curveSigma ℂ_[l] g.W s2).1
+    rw [hph]; exact (_root_.Formalism.L2.Th1.B.Crv.curve_sigma_function_holds ℂ_[l] g.W s2).1
 
-  obtain ⟨ι, hι⟩ := Formalism.L2.KerInert.lamExt l g.lam
+  obtain ⟨ι, hι⟩ := _root_.Formalism.L2.KerInert.lattice_extension l g.lam
   have hdp : D.host.d.Prime := D.host.hyp.2.1
   have hsqf : Squarefree D.host.d := hdp.squarefree
   have hd4 : D.host.d % 4 = 3 := by have := D.host.hyp.2.2.2.1; omega
@@ -508,7 +536,7 @@ theorem rdictMain : Formalism.L2.KerInert.Rep.CurveDict := by
     rw [← Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap l]
     exact Formalism.L2.G.Pend.beRat_of g hOk.2.2.1 hB (Formalism.L2.G.Pend.exRat_of g hOk ⟨w1, w2, w3, w4, w6⟩) _
   obtain ⟨σ0, hσ0⟩ := Formalism.L2.Th1.Top.frobExistsH l h5
-  obtain ⟨F0, hF0⟩ := (Formalism.InvariantFactorPaths.G7.Top.lawExists (MaximalUnramifiedExtension l) l hσ0.1 hσ0.2.2.1).1
+  obtain ⟨F0, hF0⟩ := (_root_.Formalism.InvariantFactorPaths.G7.formal_law_exists (MaximalUnramifiedExtension l) l hσ0.1 hσ0.2.2.1).1
   have tie : ∀ F : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension l), IsLawOfLog l F →
       Formalism.InvariantFactorPaths.G7.Simeq (MvPowerSeries.map (k0ToC l) (inParam l (beLT hLT)))
         (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype (cob F (phFF l G2 G3 S2 E))) := by
@@ -626,6 +654,8 @@ end Formalism.L2.KerInert.BeCob
 
 namespace Formalism.L2.KerInert.Rep
 
-theorem curve_dictionary : CurveDict := Formalism.L2.KerInert.BeCob.rdictMain
-
 end Formalism.L2.KerInert.Rep
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.InertKernelTheory.InertCoprimeLemmas.RepDict =====

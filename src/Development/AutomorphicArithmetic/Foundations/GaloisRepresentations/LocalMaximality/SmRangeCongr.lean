@@ -196,8 +196,8 @@ private theorem loc_om (hc : IsFinCover ℂ K (xv x)) {I : Finset (Fin (d + 1))}
   by_cases hj : j ∈ I
   · rw [Finset.insert_eq_of_mem hj] at hy
     exact ⟨0, by simpa using hy⟩
-  · obtain ⟨N, hN⟩ := (GlobalTheory.T.kahlerFormsOverSubalgebra_standardOpen_iff_pow_smul ℂ F K d (xv x) hc (insert j I) i (Finset.mem_insert_of_mem hi) q y).1 hy
-    refine ⟨N, (GlobalTheory.T.kahlerFormsOverSubalgebra_standardOpen_iff_pow_smul ℂ F K d (xv x) hc I i hi q _).2 ⟨N, ?_⟩⟩
+  · obtain ⟨N, hN⟩ := (_root_.GlobalTheory.omB_iff_pow_smul ℂ F K d (xv x) hc (insert j I) i (Finset.mem_insert_of_mem hi) q y).1 hy
+    refine ⟨N, (_root_.GlobalTheory.omB_iff_pow_smul ℂ F K d (xv x) hc I i hi q _).2 ⟨N, ?_⟩⟩
     rw [Finset.prod_insert hj, map_mul, mul_pow] at hN
     rwa [smul_smul, mul_comm]
 

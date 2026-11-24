@@ -100,7 +100,7 @@ theorem PiNS_le_N (π' : LetA O n) (k : ℕ) {x : W.DD T} (hx : x ∈ PiNS W T �
 
 theorem γD_letE (g : W.Gam) (c : ZMod n) (x : W.DD T) :
     W.γD T g ((letE c : LetA O n) • x) = (letE c : LetA O n) • W.γD T g x := by
-  rw [Formalism.MainNotions.LiftingTheory.wmap_γD_smul, Formalism.MainNotions.LiftingTheory.wmap_γA_letE]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent]
 
 theorem φD_letE (c : ZMod n) (x : W.DD T) :
     W.φD T ((letE (c - 1) : LetA O n) • x) = (letE c : LetA O n) • W.φD T x := by

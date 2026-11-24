@@ -1,53 +1,8 @@
 module
 
 public import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusKernels.MultivariableReproducingFormula
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Ring.IsFormallyReal
 public import Mathlib.Analysis.Complex.LocallyUniformLimit
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Calculus.FDeriv.Basic
 public import Mathlib.Analysis.Calculus.FDeriv.Congr
 public import Mathlib.Analysis.Calculus.FDeriv.Mul
@@ -286,7 +241,7 @@ theorem norm_tm_le (hD : D.Ax) (hB : B1b) (k : I → ℕ) (hk : ∀ v, 1 ≤ k v
           mul_le_mul_of_nonneg_right (norm_ee_le D hD _) (norm_nonneg _)
       _ = _ := by rw [one_mul, eq_div_of_mul_eq hn.ne' hq]; ring
   · rw [tm_supp D k y.1 y.2 γ z x hγ]
-    simp [Set.indicator_apply, hγ]
+    simp [hγ]
 
 theorem bdd (hD : D.Ax) (hB : B1b) (hC : B1c) (hS : KapSum) (k : I → ℕ) (hk : ∀ v, 4 ≤ k v) (y : D.Y) :
     ∃ C, ∀ z x, ‖D.Kern k y (z, x)‖ * nrm k z ≤ C := by
@@ -339,7 +294,7 @@ theorem near_bd (hD : D.Ax) (hB : B1b) (hC : B1c) (hI : KapInt) (k : I → ℕ) 
             ≤ (A * Kap k z₀ (D.act γ.out y.2)) * (cst k * nrm k y.2 / (nrm k z₀ / 2)) :=
             mul_le_mul hK hd (div_nonneg hc (nrm_pos k z).le) (mul_nonneg A.2 (Kap_nonneg hC k _ _))
         _ = _ := by ring
-    · simp [Set.indicator_apply, hγ]
+    · simp [hγ]
 
 theorem tm_cont (hB : B1b) (k : I → ℕ) (ω : D.Om) (w : X I) (x : Gf) (g : GL (Fin 2) F) :
     Continuous fun z : X I => tm D k ω w (z, x) g := by

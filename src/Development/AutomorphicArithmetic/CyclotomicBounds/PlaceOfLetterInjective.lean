@@ -106,7 +106,7 @@ theorem placeOf_letter_eq_iff (τ g : φ.GG) (a b : ℕ) :
 
 theorem pow_val_add (g : φ.GG) (i : ZMod (orderOf g)) (k : ℕ) :
     g ^ (i + (k : ZMod (orderOf g))).val = g ^ (i.val + k) := by
-  haveI : NeZero (orderOf g) := ⟨(orderOf_pos g).ne'⟩
+  have : NeZero (orderOf g) := ⟨(orderOf_pos g).ne'⟩
   rw [ZMod.val_add, ZMod.val_natCast, Nat.add_mod_mod, pow_mod_orderOf]
 
 theorem placeOf_letter_succ_ne (τ g : φ.GG) (h1 : g ≠ 1) (hc : g ≠ φ.cc) (i : ZMod (orderOf g)) :

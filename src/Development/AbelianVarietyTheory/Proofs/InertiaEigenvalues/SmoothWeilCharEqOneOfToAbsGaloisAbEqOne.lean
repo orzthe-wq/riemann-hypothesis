@@ -11,8 +11,9 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Compl
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DecompositionGroupLocalGaloisIso
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsLocalEmbeddingOverPlace
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsWeilOfFixesStatement
-public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GlobalArtinReciprocityHolds
+public import CompanionTheory.AutomorphicTheory.PlaceSeparation.IsOpenQuotientMapArt0
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalArtinHasNormGroups
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalEmbeddingWeilActionFiniteExtension
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LocalEmbeddingsTowerCompatibleStatement
 import GroundTheory.LocalFields.LocalArtinMap
@@ -62,7 +63,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NonemptyEquivOfRangeEq
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsContinuousPadic
 
 @[expose] public section
 
@@ -123,19 +123,19 @@ theorem exists_inverse (h : IsPlaceOver A w) {art : Ideles E →* Gab E Ω} (ha 
 theorem mem_of_toAb_eq_one (h : IsPlaceOver A w) (H : Subgroup (Weil h)) (hfin : H.FiniteIndex)
     (hop : IsOpen {σ : Ine (F := E) A | ineIncl h σ ∈ H}) (hcomm : ∀ σ τ : Weil h, σ * τ * σ⁻¹ * τ⁻¹ ∈ H)
     (σ : Weil h) (hσ : toAb E Ω σ = 1) : σ ∈ H := by
-  obtain ⟨K, hK, hloc, hHK⟩ := GlobalTheory.T.exists_localExtension_of_finiteIndex_weilSubgroup E Ω A w h H hfin hop
+  obtain ⟨K, hK, hloc, hHK⟩ := _root_.GlobalTheory.LocalExtField.exists_localExt_of_finiteIndex E Ω A w h H hfin hop
   haveI : NumberField K := NumberField.of_module_finite E K
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E
   haveI : IsAlgClosure K Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := E) K⟩
   obtain ⟨W, h'⟩ := GlobalTheory.LocNormGrp.exists_place h K
   obtain ⟨ι, hι⟩ := GlobalTheory.LocDict.exists_isLocEmb E Ω A w h
   obtain ⟨ι', hι'⟩ := GlobalTheory.LocDict.exists_isLocEmb K Ω A W h'
-  obtain ⟨f, b, hf, hb1, hb2, hfE, -, -, -, hNc, hNg⟩ := GlobalTheory.T.local_embeddings_tower_compatible E K Ω A w W h h' hloc ι ι' hι hι'
+  obtain ⟨f, b, hf, hb1, hb2, hfE, -, -, -, hNc, hNg⟩ := _root_.GlobalTheory.LocalExtCompletion.exists_completion_ext E K Ω A w W h h' hloc ι ι' hι hι'
   letI := f.toAlgebra
-  have hN := GlobalTheory.T.completion_embedding_compatible_closures E K w W (fun x : K => ι (algebraMap K Ω x)) f b hf hb1
+  have hN := _root_.GlobalTheory.normGroup_adjoin_eq_norm_range_completion E K w W (fun x : K => ι (algebraMap K Ω x)) f b hf hb1
     (fun x => by rw [hb2, ι'.commutes, IsScalarTower.algebraMap_apply K (W.adicCompletion K)]) hfE
-  obtain ⟨art, hart⟩ := GlobalTheory.globalArtinReciprocity_holds E Ω
-  obtain ⟨artK, hartK⟩ := GlobalTheory.globalArtinReciprocity_holds K Ω
+  obtain ⟨art, hart⟩ := _root_.CompanionTheory.FamInh.globalArtin E Ω
+  obtain ⟨artK, hartK⟩ := _root_.CompanionTheory.FamInh.globalArtin K Ω
   obtain ⟨a, hasurj, ha⟩ := exists_inverse h hart
   let N := Units.map (Algebra.norm (w.adicCompletion E) : W.adicCompletion K →* w.adicCompletion E)
   have key := GlobalTheory.LocNormGrp.art_norm_eq_res E K Ω art artK hart hartK w W

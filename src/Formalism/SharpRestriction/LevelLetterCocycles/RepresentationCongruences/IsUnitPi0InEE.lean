@@ -107,8 +107,7 @@ theorem inFr_div {a : ZMod n} {num den : LetA O n} {y : W.EE}
 theorem dv_eq_sum (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (c₀ : Fin d → LL) :
     dv W T e b c₀ = ∑ k, c₀ k • dv W T e b (Pi.single k 1) := by
   unfold dv
-  simp only [Finset.smul_sum, Pi.single_apply, ite_smul, one_smul, zero_smul, smul_ite, smul_zero,
-    Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  simp only [Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 theorem lam_mem_Ps (A : ArcP n) (a : ZMod n) (e : ℕ) : abelian₂ W A a e ∈ Ps W := by
   unfold abelian₂ Ps
@@ -195,7 +194,6 @@ theorem den_dvd_Lam (A : ArcP n) (hA : A.OK) {c : ZMod n} (hc : c ∈ A.cuts) (S
   have hps : ∀ s, ps W s ∈ W.AΔ := fun s => by
     first
     | exact TypesA.ps_mem W s
-    | exact TypesA.ps_mem s
   refine ⟨∏ s ∈ Finset.range (A.len c), ps W s ^ (A.Hs c (A.len c) s - (if s ∈ Si then m s else 0)),
     prod_mem fun s _ => pow_mem (hps s) _, ?_⟩
   rw [← prod_range_ite W (A.len c) Si hsub m, ← Finset.prod_mul_distrib]
@@ -212,9 +210,7 @@ theorem isUnit_pi0_in_EE (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (
   have hR : GS.RD W := by
     first
     | exact GS.rd_of W (h9.2.2 hfr).1
-    | exact GS.rd_of (h9.2.2 hfr).1
   first
-  | exact GS.isUnit_π₀ W hR
   | exact GS.isUnit_π₀ hR
 
 section Main

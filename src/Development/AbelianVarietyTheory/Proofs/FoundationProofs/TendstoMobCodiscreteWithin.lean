@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.ExpUpper
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusUpperHalfPlanePropertiesStatement
+public import Mathlib.Analysis.Complex.UpperHalfPlane.MoebiusAction
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GlTwoPosRatMobiusUpperHalfPlaneProperties
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -58,7 +59,7 @@ theorem isOpen_Hs_mobt : IsOpen Hs := isOpen_lt continuous_const Complex.continu
 theorem tendsto_mob_codiscreteWithin :
     ∀ g : GQ, Filter.Tendsto (mob g) (Filter.codiscreteWithin Hs) (Filter.codiscreteWithin Hs) := by
   intro g
-  obtain ⟨hmaps, hmul, hone, -, hdiff, -⟩ := GlobalTheory.T.glTwoPosRatMobius_upperHalfPlane_properties
+  obtain ⟨hmaps, hmul, hone, -, hdiff, -⟩ := _root_.GlobalTheory.FN.mob_props
   have hinj : ∀ x y : ℂ, x ∈ Hs → y ∈ Hs → mob g x = mob g y → x = y := by
     intro x y hx hy hxy
     have ex : mob (g⁻¹ * g) x = x := by rw [inv_mul_cancel, hone]

@@ -1,51 +1,10 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.UnramifiedIntegrals.FgDefs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.PowerSeries.Inverse
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -148,7 +107,7 @@ theorem mult_unique (b : K) (e : PowerSeries K) (he : constantCoeff e = 0)
   exact h1
 
 theorem ltLog_const (l : ℕ) (hl : 2 ≤ l) : constantCoeff (ltLog K l) = 0 := by
-  first | unfold Formalism.G.ltLog | unfold Formalism.L2.Th1.CM.ltLog
+  first | unfold Formalism.L2.Th1.CM.ltLog
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_mk, dite_eq_right]
   rintro ⟨j, hj⟩
   have h0 : 0 < (l ^ 2) ^ j := pow_pos (pow_pos (by omega) 2) j
@@ -168,11 +127,7 @@ theorem cW_unfold {K : Type} [Field K] (g2 g3 : K) (k : ℕ) : cW g2 g3 k =
     else 0 := by
   rw [cW]
   first
-    | (rw [Nat.strongRecOn_beta]; rfl)
-    | (rw [Nat.strongRecOn'_beta]; rfl)
     | (rw [Nat.strongRecOn_eq]; rfl)
-    | (unfold Nat.strongRecOn; rw [Nat.strongRec_eq]; rfl)
-    | (exact (Nat.strongRecOn_beta' ..).trans rfl)
 
 theorem cW_map (k : ℕ) : φ (cW g2 g3 k) = cW (φ g2) (φ g3) k := by
   induction k using Nat.strong_induction_on with
@@ -232,7 +187,7 @@ theorem lgS_map : PowerSeries.map φ (lgS g2 g3) = lgS (φ g2) (φ g3) := by
 
 theorem ltLog_map (l : ℕ) : PowerSeries.map φ (ltLog K l) = ltLog L l := by
   ext n
-  first | unfold Formalism.G.ltLog | unfold Formalism.L2.Th1.CM.ltLog
+  first | unfold Formalism.L2.Th1.CM.ltLog
   rw [coeff_map, coeff_mk, coeff_mk]
   split_ifs <;> simp
 

@@ -78,7 +78,7 @@ theorem mono_iff_inj {F G : Shv R} (φ : F ⟶ G) :
 theorem inj_iff_loc {F G : Shv R} (φ : F ⟶ G) :
     (∀ U, Function.Injective (Sec.map φ (U := U))) ↔
       ∀ U (a : Sec F U), Sec.map φ a = 0 → Loc U fun _ g => Sec.res g a = 0 := by
-  apply LateralTheory.EtaleFoundations.MonoEpiPf.inj_iff_loc <;> assumption
+  apply LateralTheory.EtaleFoundations.MonoEpiPf.inj_iff_loc
 
 theorem epi_iff_loc {F G : Shv R} (φ : F ⟶ G) :
     Epi φ ↔ ∀ U (b : Sec G U), Loc U fun V g => ∃ a : Sec F V, Sec.map φ a = Sec.res g b := by

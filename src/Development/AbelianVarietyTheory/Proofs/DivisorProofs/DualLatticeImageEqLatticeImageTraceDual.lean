@@ -131,7 +131,7 @@ theorem exists_remb_eq_of_mem_dual {ι : Type} [Fintype ι] [DecidableEq ι] (b 
   haveI : Nonempty ι := b.index_nonempty
   let E := basisOfLinearIndependentOfCardEqFinrank hind hcard
   have hz : innerₛₗ ℝ (μ - remb F ν) = 0 := E.ext fun i => by
-    simp [E, inner_sub_left, hνb, hc]
+    simp [E, hνb, hc]
   have h0 := LinearMap.congr_fun hz (μ - remb F ν)
   have h1 : ⟪μ - remb F ν, μ - remb F ν⟫ = 0 := by
     rw [LinearMap.zero_apply] at h0; exact h0

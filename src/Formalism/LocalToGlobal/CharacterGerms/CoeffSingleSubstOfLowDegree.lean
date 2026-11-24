@@ -200,7 +200,7 @@ theorem coeff_single_substX_tyS {τ : Type} {l : ℕ} (hl : 2 ≤ l) (a : ℕ �
     first
     | (rw [show MvPowerSeries.coeff (Finsupp.single () 1) = PowerSeries.coeff (R := C) 1 from rfl,
         PowerSeries.coeff_mk]
-       simp [Finset.sum_range_succ, hl1])
+       simp [hl1])
   show MvPowerSeries.coeff (Finsupp.single c 1)
       (MvPowerSeries.subst (fun _ : Unit => (MvPowerSeries.X c'' : MvPowerSeries τ C)) (tyS l a)) = _
   rw [MvPowerSeries.coeff_subst ha]

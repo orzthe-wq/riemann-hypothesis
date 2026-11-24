@@ -46,6 +46,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsCuspFunIffConstTerm
 
 @[expose] public section
 
@@ -76,13 +77,9 @@ theorem evalV_singleV_ne (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v)
   classical
   exact RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) y hw
 
-theorem ext_evalV {x y : Af F} (h : ∀ w, evalV F w x = evalV F w y) : x = y :=
-  RestrictedProduct.ext (R := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F)
-    (fun w => (w.adicCompletionIntegers F : Set (w.adicCompletion F))) h
-
 theorem mul_singleV (x : Af F) (v : HeightOneSpectrum (𝓞 F)) (t : Fv F v) :
     x * singleV F v t = singleV F v (evalV F v x * t) := by
-  refine ext_evalV fun w => ?_
+  refine _root_.GlobalTheory.AutFunCompare.af_ext fun w => ?_
   rw [map_mul]
   rcases eq_or_ne w v with rfl | h
   · rw [evalV_singleV_self, evalV_singleV_self]

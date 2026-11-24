@@ -136,7 +136,7 @@ lemma coeff_coeAddMonoidHom (y : DirectSum ℕ fun i => grading o x i) (n : ℕ)
       simp
   | add a b ha hb =>
     rw [map_add (f := _), DirectSum.add_apply]
-    simp only [AddMemClass.coe_add, Subalgebra.coe_add, Polynomial.coeff_add, ha, hb]
+    simp only [AddMemClass.coe_add, Polynomial.coeff_add, ha, hb]
 
 lemma bijective_coeAddMonoidHom :
     Function.Bijective (DirectSum.coeAddMonoidHom (grading o x)) := by
@@ -773,7 +773,7 @@ lemma chartVal_fromZero {g : rees o x} (hu : IsUnit (ev g)) (a : grading o x 0) 
     chartVal g hu (fromZeroRingHom (grading o x) _ a) = ev (a : rees o x) := by
   have h : (fromZeroRingHom (grading o x) (Submonoid.powers g) a).val =
       algebraMap (rees o x) (Localization.Away g) a := by
-    simp only [fromZeroRingHom, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, val_mk]
+    simp only [fromZeroRingHom]
     exact Localization.mk_one_eq_algebraMap _
   change locVal g hu (fromZeroRingHom (grading o x) _ a).val = _
   rw [h]

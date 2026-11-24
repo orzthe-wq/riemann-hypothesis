@@ -164,7 +164,7 @@ theorem _root_.GlobalTheory.appellHumbert_normal_form_of_linear_exponent :
     have h1 := hD (Pi.single k 1) (Pi.single j 1)
     have h2 := hD (Pi.single k I) (Pi.single j I)
     have h3 := hD (Pi.single k I) (Pi.single j 1)
-    simp only [dotProduct_single, mul_one, Complex.sub_re, Complex.mul_re, Complex.I_re, Complex.I_im, mul_zero, zero_sub, sub_zero] at h1 h2 h3
+    simp only [dotProduct_single, mul_one, Complex.sub_re, Complex.mul_re, Complex.I_re, Complex.I_im, mul_zero, zero_sub] at h1 h2 h3
     refine ⟨by linarith, by linarith, by linarith⟩
   have hMsym : Mᵀ = M := by
     ext k j

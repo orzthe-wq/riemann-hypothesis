@@ -2,11 +2,12 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ContrFactor
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ProdFnMemSB
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsLinearOfBilinearSchwartzBruhatProductStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SpanSchwartzBruhatProductEqTopStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TranslationInvariantSchwartzBruhatMapFactorsInteStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsLinearOfBilinearSchwartzBruhatProduct
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SpanSchwartzBruhatProductEqTop
+public import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TranslationInvariantSchwartzBruhatMapFactorsInte
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ContinuousCharactersLocallyConstantNonarchLocalF
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicIsNonarchimedeanLocalField
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -81,7 +82,7 @@ theorem contrFactor : ContrFactor := by
   haveI hLC : ∀ (a b : Type) [Fintype a] [Fintype b], LocallyCompactSpace (Matrix a b k) :=
     fun a b _ _ => inferInstanceAs (LocallyCompactSpace (a → b → k))
   have hψlc := GlobalTheory.RootEx.OpenKernel.isLocallyConstant_coe_addChar ψ hψc
-  obtain ⟨l, hl⟩ := GlobalTheory.T.exists_linear_of_bilinear_schwartzBruhatProduct _ _ M B
+  obtain ⟨l, hl⟩ := _root_.GlobalTheory.LocFlat.CFac.exists_linear_of_bilinear_prodSB _ _ M B
 
   set X₁ := Matrix n (n' ⊕ Unit) k
   set X₂ := Matrix (n'' ⊕ Unit) n k
@@ -105,7 +106,7 @@ theorem contrFactor : ContrFactor := by
     have hsurj : Function.Surjective (mulLC _ hχ) := fun F => ⟨mulLC _ hχi F, by
       ext z; simp only [mulLC_apply, ← mul_assoc]; rw [mul_comm (ψ (-uy z) : ℂ), coe_psi_mul_neg, one_mul]⟩
     rw [Set.range_comp' (mulLC _ hχ) (fun q : SB X₁ × SB X₂ => prodSB q.1 q.2), Submodule.span_image,
-      GlobalTheory.T.span_schwartzBruhatProduct_eq_top, Submodule.map_top, LinearMap.range_eq_top.mpr hsurj]
+      _root_.GlobalTheory.LocFlat.CFac.Span.span_prodSB_eq_top, Submodule.map_top, LinearMap.range_eq_top.mpr hsurj]
 
   have transY : ∀ y₀ : n → k, L ∘ₗ comapH (Homeomorph.addRight ((fromCols 0 (Matrix.of fun r _ => y₀ r) : X₁), (0 : X₂))) = L := by
     intro y₀
@@ -119,7 +120,7 @@ theorem contrFactor : ContrFactor := by
     let g' := mulLC _ hc g
     have hu : ∀ z : X₁ × X₂, uy (z + (C, 0)) = uy z + z.2 (Sum.inr ()) ⬝ᵥ y₀ := by
       intro z
-      simp only [uy, Prod.fst_add, Prod.snd_add, add_zero, Matrix.add_apply, C, fromCols_apply_inr, Matrix.of_apply]
+      simp only [uy, Prod.fst_add, Prod.snd_add, add_zero, C]
       rw [← dotProduct_add]; rfl
     have e1 : comapH (Homeomorph.addRight (C, (0 : X₂))) (mulLC _ hχ (prodSB f g)) = mulLC _ hχ (prodSB f' g') := by
       ext z
@@ -141,7 +142,7 @@ theorem contrFactor : ContrFactor := by
     let g' := comapH (Homeomorph.addRight R) g
     have hu : ∀ z : X₁ × X₂, uy (z + (0, R)) = uy z + u₀ ⬝ᵥ fun r => z.1 r (Sum.inr ()) := by
       intro z
-      simp only [uy, Prod.fst_add, Prod.snd_add, add_zero, Matrix.add_apply, R, fromRows_apply_inr, Matrix.of_apply]
+      simp only [uy, Prod.fst_add, Prod.snd_add, add_zero, R]
       rw [← add_dotProduct]; rfl
     have e1 : comapH (Homeomorph.addRight ((0 : X₁), R)) (mulLC _ hχ (prodSB f g)) = mulLC _ hχ (prodSB f' g') := by
       ext z
@@ -201,7 +202,7 @@ theorem contrFactor : ContrFactor := by
       · ext r; show z.1 r (Sum.inr ()) + y₀ r = z.1 r (Sum.inr ()) + y₀ r + 0; simp
     rw [LinearMap.comp_apply, h3, ← LinearMap.comp_apply (f := L), transY, ← LinearMap.comp_apply (f := L), transU]
     rfl
-  obtain ⟨l₀, hl₀⟩ := GlobalTheory.T.translationInvariant_schwartzBruhat_map_factors_integral k ν hν X₀ n n M L' hL'
+  obtain ⟨l₀, hl₀⟩ := _root_.GlobalTheory.SplitWeil.HaarFactor.translation_invariant_factors k ν hν X₀ n n M L' hL'
   refine ⟨l₀, fun Ψ₁ Ψ₂ => ?_⟩
   obtain ⟨Ψ, hΨ, hLΨ⟩ := hl₀ (comapH e.symm (mulLC _ hχ (prodSB Ψ₁ Ψ₂)))
   refine ⟨Ψ, ?_, ?_⟩

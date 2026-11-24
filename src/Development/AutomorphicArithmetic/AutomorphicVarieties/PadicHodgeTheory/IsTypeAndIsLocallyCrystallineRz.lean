@@ -1,14 +1,21 @@
 module
 
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Mathlib.RingTheory.TensorProduct.Basic
+public import Mathlib.LinearAlgebra.Dimension.FreeAndStrongRankCondition
+public import Mathlib.RingTheory.Flat.Basic
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LocalPublishedTheorems
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamDieudonneSpansTensorDeRhamPeriods
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSumOfIsCrys
+public import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodRingsRegularPhiSurjectiveFil
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrField
+public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrIff
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsInertiaInfiniteCyclotomic
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.AdmProd
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.AdmSub
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.CharFil
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrIff
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrysOfInertia
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MemFilDDiag
-public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MemGKBot
-import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.OpenField
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PtCont
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -21,16 +28,19 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.Padics.LocalField
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -38,7 +48,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -53,10 +62,224 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RatioInvariantInK0
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrysOfInertia
+import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.OpenField
+import Mathlib.NumberTheory.Padics.LocalField
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Topology.Algebra.Group.Units
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.BasisOfUnit, Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MemGKBot, Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsTypeAndIsLocallyCrystallineRz
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.BasisOfUnit =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.BasisOfUnit", "h": "module\n\npublic import Mathlib.LinearAlgebra.FiniteDimensional.Defs\npublic import Mathlib.RingTheory.TensorProduct.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.LinearAlgebra.Dimension.FreeAndStrongRankCondition\npublic import Mathlib.RingTheory.Flat.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open TensorProduct Module
+
+namespace UpperTheory.V.Loc.R0
+
+variable {Q E F B H : Type} [Field Q] [Field E] [Algebra Q E] [Field F] [Algebra Q F]
+  [CommRing B] [Algebra Q B] [Algebra F B] [IsScalarTower Q F B]
+
+theorem inv_tensor [FiniteDimensional Q E] (a : H → B ≃ₐ[Q] B)
+    (ha : ∀ b, (∀ g, a g b = b) → ∃ c : F, algebraMap F B c = b) (z : E ⊗[Q] B)
+    (hz : ∀ g, (a g).toLinearMap.lTensor E z = z) :
+    ∃ c : E ⊗[Q] F, (IsScalarTower.toAlgHom Q F B).toLinearMap.lTensor E c = z := by
+  let b := Module.finBasis Q E
+  let φ : Fin (finrank Q E) → E ⊗[Q] B →ₗ[Q] B := fun i =>
+    (TensorProduct.lid Q B).toLinearMap ∘ₗ (b.coord i).rTensor B
+  have h1 : ∀ y : E ⊗[Q] B, ∑ i, b i ⊗ₜ[Q] φ i y = y := by
+    intro y
+    induction y using TensorProduct.induction_on with
+    | zero => simp
+    | tmul e c =>
+      conv_rhs => rw [← b.sum_repr e, sum_tmul]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      simp [φ, smul_tmul]
+    | add x y hx hy => simp only [map_add (f := _), tmul_add, Finset.sum_add_distrib, hx, hy]
+  have h2 : ∀ g i (y : E ⊗[Q] B), φ i ((a g).toLinearMap.lTensor E y) = a g (φ i y) := by
+    intro g i y
+    induction y using TensorProduct.induction_on with
+    | zero => simp
+    | tmul e c => simp [φ]
+    | add x y hx hy => simp only [map_add (f := _), hx, hy]
+  choose c hc using fun i => ha (φ i z) fun g => by rw [← h2, hz]
+  refine ⟨∑ i, b i ⊗ₜ[Q] c i, ?_⟩
+
+  rw [← h1 z, map_sum]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [← hc]
+  rfl
+
+theorem basis_of_unit [FiniteDimensional Q E] [Nontrivial B] (a : H → B ≃ₐ[Q] B)
+    (ha : ∀ b, (∀ g, a g b = b) → ∃ c : F, algebraMap F B c = b) (κ : H → E)
+    (T : H → E ⊗[Q] B →ₗ[E] E ⊗[Q] B) (hT : ∀ g v b, T g (v ⊗ₜ[Q] b) = (κ g * v) ⊗ₜ[Q] a g b)
+    (S : E ⊗[Q] F →ₗ[Q] Module.End Q (E ⊗[Q] B))
+    (hS : ∀ e f v b, S (e ⊗ₜ[Q] f) (v ⊗ₜ[Q] b) = (e • v) ⊗ₜ[Q] (f • b))
+    (x : E ⊗[Q] B) (hu : IsUnit x) (hx : ∀ g, T g x = x) (y : E ⊗[Q] B) (hy : ∀ g, T g y = y) :
+    ∃! c : E ⊗[Q] F, y = S c x := by
+  let j := (IsScalarTower.toAlgHom Q F B).toLinearMap.lTensor E
+  have hj : Function.Injective j :=
+    Module.Flat.lTensor_preserves_injective_linearMap _ (algebraMap F B).injective
+  have h1 : ∀ c z, S c z = j c * z := by
+    intro c z
+    induction c using TensorProduct.induction_on with
+    | zero => simp
+    | add c c' hc hc' => simp only [map_add (f := _), LinearMap.add_apply, hc, hc', add_mul]
+    | tmul e f =>
+      induction z using TensorProduct.induction_on with
+      | zero => simp
+      | add z z' hz hz' => simp only [map_add (f := _), hz, hz', mul_add]
+      | tmul v b => simp [hS, j, Algebra.smul_def]
+  have h2 : ∀ g z w, T g (z * w) = (a g).toLinearMap.lTensor E z * T g w := by
+    intro g z w
+    induction z using TensorProduct.induction_on with
+    | zero => simp
+    | add c c' hc hc' => simp only [map_add (f := _), hc, hc', add_mul]
+    | tmul e f =>
+      induction w using TensorProduct.induction_on with
+      | zero => simp
+      | add z z' hz hz' => simp only [map_add (f := _), hz, hz', mul_add]
+      | tmul v b => simp [hT, mul_left_comm]
+  obtain ⟨z, rfl⟩ : ∃ z, y = z * x := ⟨y * ↑hu.unit⁻¹, by simp [mul_assoc]⟩
+  obtain ⟨c, hc⟩ := inv_tensor a ha z fun g => hu.mul_right_cancel (by
+    have := hy g
+    rwa [h2, hx] at this)
+  refine ⟨c, by simp only [h1]; rw [← hc], fun c' hc' => hj ?_⟩
+  simp only [h1] at hc'
+  rw [← hu.mul_right_cancel hc']
+  exact hc.symm
+
+theorem unit_of_span (D : Submodule E (E ⊗[Q] B)) (hD : finrank E D = 1) {m : ℕ} (b : Fin m → B)
+    (d : Fin m → E ⊗[Q] B) (hd : ∀ i, d i ∈ D)
+    (h : (1 : E ⊗[Q] B) = ∑ i, AlgebraTensorModule.map (LinearMap.id : E →ₗ[E] E) (LinearMap.mulLeft Q (b i)) (d i)) :
+    ∃ x ∈ D, IsUnit x := by
+  obtain ⟨x, -, hx⟩ := finrank_eq_one_iff'.1 hD
+  choose e he using fun i => hx ⟨d i, hd i⟩
+  have h1 : ∀ c (z : E ⊗[Q] B), AlgebraTensorModule.map (LinearMap.id : E →ₗ[E] E) (LinearMap.mulLeft Q c) z =
+      ((1 : E) ⊗ₜ[Q] c) * z := by
+    intro c z
+    induction z using TensorProduct.induction_on with
+    | zero => simp
+    | add z z' hz hz' => simp only [map_add (f := _), hz, hz', mul_add]
+    | tmul v b => simp
+  refine ⟨x, x.2, IsUnit.of_mul_eq_one (∑ i, e i • ((1 : E) ⊗ₜ[Q] b i)) ?_⟩
+  rw [h, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  have : d i = e i • (x : E ⊗[Q] B) := (congrArg Subtype.val (he i)).symm
+  rw [h1, this, mul_smul_comm, mul_smul_comm, mul_comm]
+
+end UpperTheory.V.Loc.R0
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.BasisOfUnit =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MemGKBot =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MemGKBot", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.LocalPublishedTheorems\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.DeRhamDieudonneSpansTensorDeRhamPeriods\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsSumOfIsCrys\npublic import Formalism.LocalRingCardinality.AdicCompletionLocal.LocTied\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PeriodRingsRegularPhiSurjectiveFil\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.BasisOfUnit\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrField\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrIff\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RatioInvariantInK0\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
+
+namespace UpperTheory.V.Loc.R0
+
+variable {l : ℕ} [Fact l.Prime]
+
+theorem mem_Dcr {G A V : Type} [Group G] [CommRing A] [Algebra ℚ_[l] A] [AddCommGroup V] [Module A V]
+    [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] (φ : G →* GQ l) (ρ : Representation A G V) (x : V ⊗[ℚ_[l]] Bcr l) :
+    x ∈ Dcr φ ρ ↔ ∀ g, actC φ ρ g x = x := by
+  simp only [Dcr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]
+
+theorem mem_Ddr {G A V : Type} [Group G] [CommRing A] [Algebra ℚ_[l] A] [AddCommGroup V] [Module A V]
+    [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] (φ : G →* GQ l) (ρ : Representation A G V) (x : V ⊗[ℚ_[l]] Bdr l) :
+    x ∈ Ddr φ ρ ↔ ∀ g, actD φ ρ g x = x := by
+  simp only [Ddr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]
+
+theorem mem_GK_bot (g : GQ l) : g ∈ GK (botExt l) := by simp [GK, botExt]
+
+variable {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [TopologicalSpace E]
+  [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E]
+
+theorem char_cr (κ : GQ l →* Eˣ) (h : IsCr (GK (botExt l)).subtype (chRep (κ.comp (GK (botExt l)).subtype))) :
+    ∃ x : E ⊗[ℚ_[l]] Bcr l, (∀ g, actC (MonoidHom.id _) (chRep κ) g x = x) ∧ ∀ (L : FinExt l),
+      ∀ y ∈ Dcr (GK L).subtype (chRep (κ.comp (GK L).subtype)), ∃! c : E ⊗[ℚ_[l]] ↥(K0 L), y = smulC E L c x := by
+  obtain ⟨T⟩ := tiedP l
+  have hdom : IsDomain (PP l).R.B := GlobalTheory.RegularRing.isDomain_of_tied T (botExt l)
+  have hc := (isCrField (botExt l) _).1.1 ((isCrIff (botExt l) _).1.1 h)
+  have hf : GlobalTheory.RegularRing.FracInv ((PP l).PD (botExt l)) := by
+    intro x y hx h
+    refine GlobalTheory.Per.FracInv.tied_frac_invariant l _ _ T _ y x hx fun g hg => ?_
+    have h1 := h ⟨g, hg⟩
+    rw [(PP l).PD_actB, (PP l).PD_actB] at h1
+    rw [mul_comm, h1, mul_comm]
+  have hu : GlobalTheory.RegularRing.LineUnit ((PP l).PD (botExt l)) := by
+    intro b hb h
+    refine (_root_.GlobalTheory.MemLoc.tied_regular_and_onto l _ _ T).1 (botExt l) b hb fun g hg => ?_
+    obtain ⟨x, hx⟩ := h ⟨g, hg⟩
+    exact ⟨x, by rw [← (PP l).PD_actB (botExt l) ⟨g, hg⟩, hx, Algebra.smul_def]⟩
+  obtain ⟨m, b, d, hd, h1⟩ := GlobalTheory.Per.TiedSpan.exists_sum_of_isCrys _ hf hu _ hc 1
+  have h0 : finrank ℚ_[l] ↥(K0 (botExt l)) = 1 := by
+    rw [show K0 (botExt l) = ⊥ from bot_inf_eq _, IntermediateField.finrank_bot]
+  rw [IsCrys, h0, finrank_self] at hc
+  obtain ⟨x, hx, hxu⟩ := unit_of_span _ hc b d hd h1
+  have hx' : ∀ g, actC (MonoidHom.id _) (chRep κ) g x = x := by
+    intro g
+    simp only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
+      sub_eq_zero] at hx
+    refine Eq.trans ?_ (hx ⟨g, mem_GK_bot g⟩)
+    unfold actC actVB
+    congr 2
+    ext b
+    exact ((PP l).PD_actB (botExt l) ⟨g, mem_GK_bot g⟩ b).symm
+  refine ⟨x, hx', fun L y hy => ?_⟩
+  exact basis_of_unit (H := ↥(GK L)) (fun g => (PP l).actQ g)
+    (fun b hb => ((PP l).PD L).invB b fun g => by rw [(PP l).PD_actB]; exact hb g) (fun g => (κ g : E))
+    (actC (GK L).subtype (chRep (κ.comp (GK L).subtype))) (fun g v b => rfl) (smulC E L) (fun e f v b => rfl)
+    x hxu (fun g => hx' g) y ((mem_Dcr _ _ _).1 hy)
+
+theorem char_dr (κ : GQ l →* Eˣ) (h : IsDr (GK (botExt l)).subtype (chRep (κ.comp (GK (botExt l)).subtype))) :
+    ∃ x : E ⊗[ℚ_[l]] Bdr l, (∀ g, actD (MonoidHom.id _) (chRep κ) g x = x) ∧ ∀ (L : FinExt l),
+      ∀ y ∈ Ddr (GK L).subtype (chRep (κ.comp (GK L).subtype)), ∃! c : E ⊗[ℚ_[l]] ↥L.1, y = smulD E L c x := by
+  obtain ⟨T⟩ := tiedP l
+  have hF := GlobalTheory.RegularRing.isField_of_tied T
+  have := hF.nontrivial
+  have hc := (isCrField (botExt l) _).2.1.1 ((isCrIff (botExt l) _).2.1 h)
+  obtain ⟨m, b, d, hd, h1⟩ := GlobalTheory.Per.DeRhamSpan.span_of_isField _ _ hF hc 1
+  have h0 : finrank ℚ_[l] ↥(botExt l).1 = 1 := IntermediateField.finrank_bot
+  rw [IsDR, h0, finrank_self] at hc
+  obtain ⟨x, hx, hxu⟩ := unit_of_span _ hc b d hd h1
+  have hx' : ∀ g, actD (MonoidHom.id _) (chRep κ) g x = x := by
+    intro g
+    simp only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
+      sub_eq_zero] at hx
+    refine Eq.trans ?_ (hx ⟨g, mem_GK_bot g⟩)
+    unfold actD actVdR
+    congr 2
+    ext b
+    exact ((PP l).PD_actdR (botExt l) ⟨g, mem_GK_bot g⟩ b).symm
+  refine ⟨x, hx', fun L y hy => ?_⟩
+  exact basis_of_unit (H := ↥(GK L)) (fun g => (PP l).actQdR g)
+    (fun b hb => ((PP l).PD L).invdR b fun g => by rw [(PP l).PD_actdR]; exact hb g) (fun g => (κ g : E))
+    (actD (GK L).subtype (chRep (κ.comp (GK L).subtype))) (fun g v b => rfl) (smulD E L) (fun e f v b => rfl)
+    x hxu (fun g => hx' g) y ((mem_Ddr _ _ _).1 hy)
+
+end UpperTheory.V.Loc.R0
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MemGKBot =====
+
+-- ===== clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsTypeAndIsLocallyCrystallineRz =====
+-- clump-header: {"m": "Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsTypeAndIsLocallyCrystallineRz", "h": "module\n\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsInertiaInfiniteCyclotomic\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.AdmProd\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.AdmSub\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.CharFil\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrIff\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsCrysOfInertia\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MemFilDDiag\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.MemGKBot\nimport Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.OpenField\npublic import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.PtCont\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.Padics.LocalField\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Algebra.Group.Units\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial
@@ -227,3 +450,6 @@ theorem UpperTheory.V.Loc.isType_and_isLocallyCrystalline_rz :
     refine ⟨L, h, ?_⟩
     convert key using 2 with γ
     simp [Fin.sum_univ_three, τ, j, wt1]
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.IsTypeAndIsLocallyCrystallineRz =====

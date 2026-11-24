@@ -118,7 +118,7 @@ theorem exists_pull (hL : L.IsLB) {T T' : Over Z} (h : T' ⟶ T) (a : LB.Sec (LP
       sv G L N s r z J = sv G L N a (r ≫ (h ▷ G).left) z J := by
   have one := isGen_one L (T' ⊗ G).left
   obtain ⟨s, hs⟩ := exists_sec hL (φ' := fun _ : Fin 1 => (snd T' G).left) (ε' := fun _ => (N : ℤ))
-    (fun U _ k => by simp [wh_snd])
+    (fun U _ k => by simp [])
     (pullMulSec (L := L) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (N : ℤ)) a (h ▷ G).left _ one)
   refine ⟨s, fun Y r z J hJ => (hs Y r z J hJ).trans ((sval_pullMulSec _ _ _ _ r z hJ).trans ?_)⟩
   rw [val_one, Units.val_one, _root_.mul_one]; rfl
@@ -152,7 +152,7 @@ theorem Rel.trans {M P} (H : Rel G L N h₁ a h₂ b M) (H' : Rel G L N h₂ b h
 
 theorem Rel.refl : Rel G L N h₁ a h₁ a 1 := by
   intro k Y r z J _
-  simp [Matrix.one_apply, apply_ite (gT (r ≫ (fst T G).left) z)]
+  simp [Matrix.one_apply]
 
 theorem rel_of_lin (hL : L.IsLB) {M : Matrix (Fin m) (Fin n) Γ(T.left, ⊤)}
     (H : ∀ k, ∃ t, Lin G L N h₁ (fun _ : Fin 1 => a k) (fun _ => 1) t ∧ Lin G L N h₂ b (fun k' => M k k') t) :
@@ -271,7 +271,7 @@ theorem trait_matrix (hL : L.IsLB) (hb : TraitBasis G L N U b) (hx : Set.range x
   have e₁ : M' * P' = 1 := (hM'.trans hP').unique hL hU Rel.refl
   have e₂ : P' * M' = 1 := (hP'.trans hM').unique hL hb' Rel.refl
   refine ⟨M', P', e₁, e₂, ?_⟩
-  haveI : CharZero W := hW.2.2
+  have : CharZero W := hW.2.2
   have r₁ := hM.pull (Over.homMk (spMap gam) h : Over.mk (jK W ≫ χ) ⟶ Over.mk x)
   have r₂ := (rel_one_of_lin hL hbb).1
   have r₃ := hP'.pull (Over.homMk (jK W) rfl : Over.mk (jK W ≫ χ) ⟶ Over.mk χ)

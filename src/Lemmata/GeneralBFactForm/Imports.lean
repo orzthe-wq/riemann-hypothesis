@@ -2,117 +2,41 @@ module
 
 public import Mathlib.Basic.Complex.Basic
 public import Mathlib.LinearAlgebra.Matrix.Block
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
 namespace Bl.general_b_fact_form
 
-theorem goal1 :
-  ∀ {n : Nat} {N N' U U' : Matrix.{0, 0, 0} (Fin n) (Fin n) Complex},
-  Matrix.BlockTriangular.{0, 0, 0} N (DFunLike.coe.{1, 1, 1} OrderDual.toDual.{0}) →
-    (∀ (a : Fin n), Eq.{1} (N a a) 1) →
-      Matrix.BlockTriangular.{0, 0, 0} N' (DFunLike.coe.{1, 1, 1} OrderDual.toDual.{0}) →
-        (∀ (a : Fin n), Eq.{1} (N' a a) 1) →
-          Matrix.BlockTriangular.{0, 0, 0} U id.{1} →
-            Matrix.BlockTriangular.{0, 0, 0} U' id.{1} →
-              Ne.{1} (Matrix.det.{0, 0} U') 0 →
-                Eq.{1} (HMul.hMul.{0, 0, 0} N U) (HMul.hMul.{0, 0, 0} N' U') → And (Eq.{1} N N') (Eq.{1} U U') := by
-  intro n N N' U U' hN hNd hN' hN'd hU hU' hdet hEq
-  have hdN : N.det = 1 := by
-    rw [Matrix.det_of_isLowerTriangular N hN]
-    exact Finset.prod_eq_one (fun i _ => hNd i)
-  have hdN' : N'.det = 1 := by
-    rw [Matrix.det_of_isLowerTriangular N' hN']
-    exact Finset.prod_eq_one (fun i _ => hN'd i)
-  have hdU : U.det ≠ 0 := by
-    have h := congrArg Matrix.det hEq
-    rw [Matrix.det_mul, Matrix.det_mul, hdN, hdN', one_mul, one_mul] at h
-    rw [h]
-    exact hdet
-  have uN' : IsUnit N'.det := by rw [hdN']; exact isUnit_one
-  have uN : IsUnit N.det := by rw [hdN]; exact isUnit_one
-  have uU : IsUnit U.det := isUnit_iff_ne_zero.mpr hdU
-  let _ : Invertible N' := Matrix.invertibleOfIsUnitDet N' uN'
-  let _ : Invertible U := Matrix.invertibleOfIsUnitDet U uU
-  have hAeq : N'⁻¹ * N = U' * U⁻¹ := by
-    calc N'⁻¹ * N = N'⁻¹ * N * (U * U⁻¹) := by
-          rw [Matrix.mul_nonsing_inv U uU, Matrix.mul_one]
-      _ = N'⁻¹ * (N * U) * U⁻¹ := by simp only [Matrix.mul_assoc]
-      _ = N'⁻¹ * (N' * U') * U⁻¹ := by rw [hEq]
-      _ = U' * U⁻¹ := by
-          rw [← Matrix.mul_assoc N'⁻¹, Matrix.nonsing_inv_mul N' uN', Matrix.one_mul]
-  have hAl : (N'⁻¹ * N).BlockTriangular (DFunLike.coe OrderDual.toDual) :=
-    (Matrix.blockTriangular_inv_of_blockTriangular hN').mul hN
-  have hAu : (N'⁻¹ * N).BlockTriangular id := by
-    rw [hAeq]
-    exact hU'.mul (Matrix.blockTriangular_inv_of_blockTriangular hU)
-  have hoff : ∀ i j, i ≠ j → (N'⁻¹ * N) i j = 0 := by
-    intro i j hij
-    rcases lt_or_gt_of_ne hij with h | h
-    · exact hAl (OrderDual.toDual_lt_toDual.mpr h)
-    · exact hAu h
-  have hNA : N = N' * (N'⁻¹ * N) := by
-    rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv N' uN', Matrix.one_mul]
-  have hdiag : ∀ i, (N'⁻¹ * N) i i = 1 := by
-    intro i
-    have h1 := congrFun (congrFun hNA i) i
-    rw [Matrix.mul_apply, Finset.sum_eq_single i] at h1
-    · rw [hNd i, hN'd i, one_mul] at h1
-      exact h1.symm
-    · intro k _ hk
-      rw [hoff k i hk, mul_zero]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
-  have hA1 : N'⁻¹ * N = 1 := by
+theorem goal1 {n : ℕ} {N N' U U' : Matrix (Fin n) (Fin n) ℂ}
+    (hN : N.BlockTriangular OrderDual.toDual) (hNd : ∀ a, N a a = 1)
+    (hN' : N'.BlockTriangular OrderDual.toDual) (hN'd : ∀ a, N' a a = 1)
+    (hU : U.BlockTriangular id) (hU' : U'.BlockTriangular id)
+    (hdet : U'.det ≠ 0) (hEq : N * U = N' * U') :
+    N = N' ∧ U = U' := by
+  have hNdUnit : IsUnit N.det := by simp [Matrix.det_of_isLowerTriangular N hN, hNd]
+  have hUdUnit : IsUnit U'.det := isUnit_iff_ne_zero.mpr hdet
+  let _ : Invertible N := Matrix.invertibleOfIsUnitDet N hNdUnit
+  let _ : Invertible U' := Matrix.invertibleOfIsUnitDet U' hUdUnit
+  let D := N⁻¹ * N'
+  have hD : D = U * U'⁻¹ := by
+    calc D = N⁻¹ * (N' * U') * U'⁻¹ := by
+          rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ hUdUnit]
+      _ = U * U'⁻¹ := by rw [← hEq, Matrix.nonsing_inv_mul_cancel_left _ _ hNdUnit]
+  have hLower : D.BlockTriangular OrderDual.toDual :=
+    (Matrix.blockTriangular_inv_of_blockTriangular hN).mul hN'
+  have hUpper : D.BlockTriangular id := hD ▸ hU.mul (Matrix.blockTriangular_inv_of_blockTriangular hU')
+  have hoff {i j} (hij : i ≠ j) : D i j = 0 :=
+    (lt_or_gt_of_ne hij).elim (fun h => hLower h) fun h => hUpper h
+  have hND : N * D = N' := Matrix.mul_nonsing_inv_cancel_left _ _ hNdUnit
+  have hD1 : D = 1 := by
     ext i j
-    by_cases h : i = j
-    · subst h
-      rw [hdiag, Matrix.one_apply_eq]
-    · rw [hoff i j h, Matrix.one_apply_ne h]
-  have hNN : N = N' := by rw [hNA, hA1, Matrix.mul_one]
-  refine ⟨hNN, ?_⟩
-  calc U = N⁻¹ * (N * U) := by
-        rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul N uN, Matrix.one_mul]
-    _ = N⁻¹ * (N * U') := by rw [hEq, hNN]
-    _ = U' := by rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul N uN, Matrix.one_mul]
+    obtain rfl | hij := eq_or_ne i j
+    · have h := congrFun (congrFun hND i) i
+      rw [Matrix.mul_apply, Finset.sum_eq_single_of_mem i (Finset.mem_univ i)
+        (fun k _ hk => by rw [hoff hk, mul_zero]), hNd, one_mul, hN'd] at h
+      exact h.trans (Matrix.one_apply_eq i).symm
+    · rw [hoff hij, Matrix.one_apply_ne hij]
+  rw [hD1, mul_one] at hND
+  exact ⟨hND, (N.isUnit_iff_isUnit_det.mpr hNdUnit).mul_left_cancel (hND ▸ hEq)⟩
 
 end Bl.general_b_fact_form

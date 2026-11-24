@@ -60,21 +60,14 @@ theorem cn_notMem {l1 l2 : List α} (h : (l1 ++ l2).Nodup) {x : α} (hx : x ∈ 
   intro hx1
   first
   | exact List.disjoint_of_nodup_append h hx1 hx
-  | exact (List.nodup_append.1 h).2.2 hx1 hx
-  | exact (List.nodup_append.1 h).2.2 x hx1 x hx rfl
-  | simp_all [List.nodup_append]
 
 private theorem idxOf_cons_self_eq_zero (a : α) (l : List α) : (a :: l).idxOf a = 0 := by
   first
-  | simp [List.idxOf_cons]
-  | exact List.idxOf_cons_self l
-  | simp [List.idxOf, List.findIdx_cons]
+  | simp
 
 private theorem idxOf_cons_of_ne (a u : α) (h : a ≠ u) (l : List α) : (a :: l).idxOf u = l.idxOf u + 1 := by
   first
-  | simp [List.idxOf_cons, h]
-  | exact List.idxOf_cons_ne l h
-  | simp [List.idxOf, List.findIdx_cons, h]
+  | simp [h]
 
 private theorem idxOf_append_of_not_mem_left (l1 : List α) (u : α) (hu : u ∉ l1) (l : List α) :
     (l1 ++ l).idxOf u = l1.length + l.idxOf u := by
@@ -133,7 +126,7 @@ theorem cn_pos_braid (l1 l2 : List α) (x y z : α) (hxy : x ≠ y) (hxz : x ≠
       simp only [idxOf_append_of_not_mem_left l1 x hx, idxOf_cons_self_eq_zero, idxOf_cons_of_ne y x (Ne.symm hxy), idxOf_cons_of_ne z x (Ne.symm hxz)] <;> omega
   · by_cases huy : u = y
     · refine Or.inr (Or.inl ⟨huy, ?_, ?_⟩) <;> rw [huy] <;>
-        simp only [idxOf_append_of_not_mem_left l1 y hy, idxOf_cons_self_eq_zero, idxOf_cons_of_ne x y hxy, idxOf_cons_of_ne z y (Ne.symm hyz)] <;> omega
+        simp only [idxOf_append_of_not_mem_left l1 y hy, idxOf_cons_self_eq_zero, idxOf_cons_of_ne x y hxy, idxOf_cons_of_ne z y (Ne.symm hyz)]
     · by_cases huz : u = z
       · refine Or.inr (Or.inr (Or.inl ⟨huz, ?_, ?_⟩)) <;> rw [huz] <;>
           simp only [idxOf_append_of_not_mem_left l1 z hz, idxOf_cons_self_eq_zero, idxOf_cons_of_ne x z hxz, idxOf_cons_of_ne y z hyz] <;> omega
@@ -159,7 +152,6 @@ theorem cn_idx_rev {l : List α} (hnd : l.Nodup) {x : α} (hx : x ∈ l) :
       have hr : x ∉ t.reverse := by simpa using hat'
       rw [hax]
       simp only [idxOf_append_of_not_mem_left t.reverse x hr, idxOf_cons_self_eq_zero, List.length_reverse]
-      all_goals omega
     · have hxt : x ∈ t := by simpa [Ne.symm hax] using hx
       have hxr : x ∈ t.reverse := by simpa using hxt
       obtain ⟨e1, _⟩ := idxOf_append_of_mem_left_and_lt_length t.reverse x hxr [a]

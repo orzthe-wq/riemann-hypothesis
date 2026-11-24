@@ -131,7 +131,7 @@ theorem sm_of_weak_deriv_closed : ∀ (V : Type) [NormedAddCommGroup V] [NormedS
       rw [e]
       refine b3.congr_fderiv ?_
       ext z
-      simp [← hgd, h.1, hD, lsm, hx]
+      simp [← hgd, h.1, hD, hx]
       ring
   have ind : ∀ n : ℕ, ∀ f ∈ Θ, ContDiff ℝ n fun v => ρ v f := by
     intro n

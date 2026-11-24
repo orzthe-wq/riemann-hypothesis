@@ -1,7 +1,10 @@
 module
 
 public import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.FundamentalDomainCusps.CompactIntegralBoundedByQuotientNorm
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CapelliComplements.FirstLemmaL
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.InnerProductSpace.Basic
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -127,8 +130,39 @@ theorem integrable_mul_bc {φ : G → ℂ} (hφ : Integrable φ μ) {F : G → �
 
 theorem reprod {φ : G → ℂ} (hφ : Integrable φ μ) (hi : ∀ w, ∫ y, φ y * φ (y⁻¹ * w) ∂μ = φ w) {F : G → ℂ}
     (hF : Continuous F) {M : ℝ} (hM : ∀ y, ‖F y‖ ≤ M) :
-    ∫ y, φ y * ∫ z, φ z * F (y * z) ∂μ ∂μ = ∫ w, φ w * F w ∂μ :=
-  _root_.Bl.FirstLemmaL.goal1 hφ hi hF hM
+    ∫ y, φ y * ∫ z, φ z * F (y * z) ∂μ ∂μ = ∫ w, φ w * F w ∂μ := by
+  have hT : MeasurePreserving (MeasurableEquiv.shearMulRight G) (μ.prod μ) (μ.prod μ) :=
+    measurePreserving_prod_mul μ μ
+  have hcomp : ((fun p : G × G => φ p.1 * φ (p.1⁻¹ * p.2) * F p.2) ∘ (MeasurableEquiv.shearMulRight G))
+      = fun p : G × G => φ p.1 * (φ p.2 * F (p.1 * p.2)) := by
+    funext p
+    simp [MeasurableEquiv.shearMulRight, mul_assoc]
+  have hGi : Integrable (fun p : G × G => φ p.1 * (φ p.2 * F (p.1 * p.2))) (μ.prod μ) := by
+    have h1 : Integrable (fun p : G × G => φ p.1 * φ p.2) (μ.prod μ) := hφ.mul_prod hφ
+    have h2 := h1.mul_bdd (c := M) (g := fun p : G × G => F (p.1 * p.2))
+      ((hF.comp continuous_mul).aestronglyMeasurable) (Eventually.of_forall fun p => hM _)
+    refine h2.congr (Eventually.of_forall fun p => ?_)
+    simp only [mul_assoc]
+  have hHi : Integrable (fun p : G × G => φ p.1 * φ (p.1⁻¹ * p.2) * F p.2) (μ.prod μ) := by
+    rw [← hT.integrable_comp_emb (MeasurableEquiv.measurableEmbedding _), hcomp]
+    exact hGi
+  calc ∫ y, φ y * ∫ z, φ z * F (y * z) ∂μ ∂μ
+      = ∫ p, (fun p : G × G => φ p.1 * (φ p.2 * F (p.1 * p.2))) p ∂(μ.prod μ) := by
+        rw [integral_prod _ hGi]
+        congr 1
+        funext y
+        dsimp only
+        exact (integral_const_mul _ _).symm
+    _ = ∫ p, ((fun p : G × G => φ p.1 * φ (p.1⁻¹ * p.2) * F p.2) ∘ (MeasurableEquiv.shearMulRight G)) p ∂(μ.prod μ) := by
+        rw [hcomp]
+    _ = ∫ p, (fun p : G × G => φ p.1 * φ (p.1⁻¹ * p.2) * F p.2) p ∂(μ.prod μ) :=
+        hT.integral_comp' (fun p : G × G => φ p.1 * φ (p.1⁻¹ * p.2) * F p.2)
+    _ = ∫ w, ∫ y, φ y * φ (y⁻¹ * w) * F w ∂μ ∂μ := integral_prod_symm _ hHi
+    _ = ∫ w, φ w * F w ∂μ := by
+        congr 1
+        funext w
+        rw [integral_mul_const, hi]
+
 
 end
 

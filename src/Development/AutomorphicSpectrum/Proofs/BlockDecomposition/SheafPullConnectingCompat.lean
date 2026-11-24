@@ -41,27 +41,55 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.CechPairings.InstAddCommGroup
 
 @[expose] public section
+-- `Sheaf.H` and `HasExt` are stated for `sheafIsAbelian`; erase the definitionally equal
+-- `TopCat.Sheaf.instAbelian` so the kernel does not have to unfold both to compare them.
+attribute [-instance] TopCat.Sheaf.instAbelian
 
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundTheory.Arith.SchemeCoh GlobalTheory.SheafPull CrystallineSemistableComparison CrystallineSemistableComparison.Om CrystallineSemistableComparison.Om.Cech
 
 namespace GlobalTheory.CompanionTheory.CechDelta
 
+private lemma ext_comp_assoc_symm {C : Type*} [Category C] [Abelian C] [HasExt.{0} C]
+    {A B : C} {S : ShortComplex C} (hS : S.ShortExact) (e : A ⟶ B) (n : ℕ)
+    (y : Abelian.Ext.{0} B S.X₃ n) :
+    (Abelian.Ext.mk₀ e).comp (y.comp hS.extClass rfl) (zero_add (n + 1)) =
+      ((Abelian.Ext.mk₀ e).comp y (zero_add n)).comp hS.extClass rfl :=
+  (Abelian.Ext.comp_assoc (Abelian.Ext.mk₀ e) y hS.extClass (zero_add n) rfl (by omega)).symm
+
+private lemma conj_δ_comm {A₁ B₁ A₂ B₂ A₁' B₁' A₂' B₂' : Type*}
+    {e₁ : A₁ → B₁} {e₁_inv : B₁ → A₁} {e₂ : A₂ → B₂} {e₂_inv : B₂ → A₂}
+    {e₁' : A₁' → B₁'} {e₂' : A₂' → B₂'}
+    {dA : A₁ → A₂} {dB : B₁ → B₂} {dA' : A₁' → A₂'} {dB' : B₁' → B₂'}
+    {p₁ : A₁ → A₁'} {p₂ : A₂ → A₂'}
+    (he₁ : ∀ x, e₁ (e₁_inv x) = x) (he₂ : ∀ y, e₂_inv (e₂ y) = y)
+    (h₁ : ∀ y, e₂ (dA y) = dB (e₁ y)) (h₂ : ∀ y, e₂' (dA' y) = dB' (e₁' y))
+    (h₃ : ∀ y, p₂ (dA y) = dA' (p₁ y)) (x : B₁) :
+    e₂' (p₂ (e₂_inv (dB x))) = dB' (e₁' (p₁ (e₁_inv x))) := by
+  have hx : dB x = e₂ (dA (e₁_inv x)) := (congrArg dB (he₁ x)).symm.trans (h₁ (e₁_inv x)).symm
+  rw [hx, he₂, h₃, h₂]
+
 theorem terminalEquiv_δ {X : TopCat.{0}} {S : ShortComplex (AbSheaf X)} (hS : S.ShortExact) (n : ℕ)
     (y : Sheaf.H'.{0} S.X₃ n (⊤ : Opens X)) :
     GlobalTheory.SiteCoh.terminalEquiv S.X₁ (n + 1) isTerminalTop (GlobalTheory.SheafLES.δ hS n ⊤ y) =
-      H.δ hS n (n + 1) rfl (GlobalTheory.SiteCoh.terminalEquiv S.X₃ n isTerminalTop y) := by
-  exact (Abelian.Ext.comp_assoc (Abelian.Ext.mk₀ (GlobalTheory.SiteCoh.freeSheafIsoConst isTerminalTop).inv) y hS.extClass (zero_add n) rfl (by omega)).symm
+      H.δ hS n (n + 1) rfl (GlobalTheory.SiteCoh.terminalEquiv S.X₃ n isTerminalTop y) :=
+  (GlobalTheory.SiteCoh.terminalEquiv_apply S.X₁ (n + 1) isTerminalTop _).trans <|
+    (congrArg
+        (fun z => (Abelian.Ext.mk₀ (GlobalTheory.SiteCoh.freeSheafIsoConst isTerminalTop).inv).comp z (zero_add (n + 1)))
+        (GlobalTheory.SheafLES.δ_apply hS n ⊤ y)).trans <|
+      (ext_comp_assoc_symm hS (GlobalTheory.SiteCoh.freeSheafIsoConst isTerminalTop).inv n
+        (GlobalTheory.SiteCoh.extEquiv S.X₃ n ⊤ y)).trans <|
+        congrArg (H.δ hS n (n + 1) rfl)
+          (GlobalTheory.SiteCoh.terminalEquiv_apply S.X₃ n isTerminalTop y).symm
 
 theorem hPull_δ {X Y : TopCat.{0}} (f : X ⟶ Y) {S : ShortComplex (AbSheaf Y)} {S' : ShortComplex (AbSheaf X)}
     (hS : S.ShortExact) (hS' : S'.ShortExact) (α : S ⟶ S'.map (push f)) (n : ℕ) (x : Sheaf.H.{0} S.X₃ n) :
-    hPull f α.τ₁ (n + 1) (H.δ hS n (n + 1) rfl x) = H.δ hS' n (n + 1) rfl (hPull f α.τ₃ n x) := by
-  obtain ⟨y, rfl⟩ : ∃ y, GlobalTheory.SiteCoh.terminalEquiv S.X₃ n isTerminalTop y = x :=
-    ⟨_, AddEquiv.apply_symm_apply _ x⟩
-  rw [← terminalEquiv_δ hS n y]
-  dsimp only [hPull, GlobalTheory.SheafPull.pull, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom]
-  rw [AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply]
-  erw [GlobalTheory.SheafPull.sitePull_δ (TopologicalSpace.Opens.map f) hS hS' α n]
-  exact terminalEquiv_δ hS' n _
+    hPull f α.τ₁ (n + 1) (H.δ hS n (n + 1) rfl x) = H.δ hS' n (n + 1) rfl (hPull f α.τ₃ n x) :=
+  conj_δ_comm
+    (AddEquiv.apply_symm_apply (GlobalTheory.SiteCoh.terminalEquiv S.X₃ n isTerminalTop))
+    (AddEquiv.symm_apply_apply (GlobalTheory.SiteCoh.terminalEquiv S.X₁ (n + 1) isTerminalTop))
+    (terminalEquiv_δ hS n) (terminalEquiv_δ hS' n)
+    (GlobalTheory.SheafPull.sitePull_δ (TopologicalSpace.Opens.map f) hS hS' α n
+      (homOfLE le_top : (⊤ : Opens X) ⟶ (Opens.map f).obj ⊤)) x
 
 end GlobalTheory.CompanionTheory.CechDelta

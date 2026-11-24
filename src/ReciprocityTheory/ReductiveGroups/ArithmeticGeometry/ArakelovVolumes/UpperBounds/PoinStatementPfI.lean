@@ -77,7 +77,6 @@ theorem psiF_rmul (X : Data E r) {x0 : Frame X.Ψ r} (hx0 : IsOrth X x0) (bb : �
   have hm : rmul y b ∈ X.dom := by
     first
       | exact OrthogonalFrameDomain.rmul_mem_dom X hy hb
-      | exact ReciprocityTheory.ChartRestriction.G.FD.OrthogonalFrameDomain.rmul_mem_dom X hy hb
   unfold psiF
   rw [Set.indicator_of_mem hm, Set.indicator_of_mem hy, hP.2 y hy b hb, hW.2.1 y hy b hb,
     kaY_rmul X hx0 hy hb bb]
@@ -116,7 +115,7 @@ theorem meas_densF' (X : Data E r) (x' : Frame X.Ψ r) :
   unfold densF
   refine Finset.measurable_prod _ fun τ _ => Finset.measurable_prod _ fun i _ => ?_
   have hc : Measurable fun z : V (nd X) => ‖dmin X.Gm (cpt X x' z) τ i.castSucc‖ ^ 2 :=
-    (((cont_dmin X τ _).comp (cont_cpt' X x')).norm.pow 2).measurable
+    (((_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.cont_dmin X τ _).comp (cont_cpt' X x')).norm.pow 2).measurable
   have e : (fun z : V (nd X) => ‖dmin X.Gm (cpt X x' z) τ i.castSucc‖ ^ (-2 : ℤ)) =
       fun z => (‖dmin X.Gm (cpt X x' z) τ i.castSucc‖ ^ 2)⁻¹ := by
     funext z; rw [zpow_neg, zpow_ofNat]
@@ -142,13 +141,18 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
-theorem sumBall_holds : SumBallStatement (E := E) := by
-  intro r X x0 la W bb F P H
-  obtain ⟨hx0, hPD, hW, -, hbb, -, hA, hP, hPF⟩ := H
+/-- A finite uniform `kaY` bound gives the local ball estimate. -/
+theorem sumBall_of_kaSum (X : Data E r) (x0 : Frame X.Ψ r) (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞) (bb : ℝ)
+    (F : V (nd X) → ℂ) (P : Frame X.Ψ r → ℂ)
+    (hx0 : IsOrth X x0) (hW : IsMetricW X la W) (hbb0 : 0 ≤ bb)
+    (hA : InAt X x0 W bb F) (hP : IsBEq X la P)
+    (hPF : ∀ z ∈ OmF X x0, P (cpt X x0 z) = F z)
+    (hB : ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x, IsOrth X x →
+      ∑' γ : X.Γ, ENNReal.ofReal (kaY X x0 (bb / 2) (lact γ.1 x)) ≤ C) :
+    ∃ ρ0 : ℝ, 0 < ρ0 ∧ ρ0 ≤ 1 ∧ ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ x ∈ X.dom, IsOrth X x →
+      ∑' γ : X.Γ, (∫⁻ w in Bset X x ρ0,
+        ‖P (lact γ.1 (cpt X x w))‖ₑ ^ 2 * W (lact γ.1 (cpt X x w))) ^ (1 / 2 : ℝ) ≤ C := by
   classical
-  have hbb0 : 0 ≤ bb := by
-    have : 0 ≤ 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 := by positivity
-    linarith
   obtain ⟨ρ1, hρ1, hcomp⟩ := ka_comp X hx0 hbb0
   have e2 : ∀ᶠ w in 𝓝 (0 : V (nd X)), ∀ τ, ∀ i : Fin r, ‖lminor (Gw X w τ) i.castSucc‖ < 2 := by
     rw [Filter.eventually_all]; intro τ; rw [Filter.eventually_all]; intro i
@@ -157,8 +161,7 @@ theorem sumBall_holds : SumBallStatement (E := E) := by
   obtain ⟨R2, hR2, hR2b⟩ := Metric.eventually_nhds_iff_ball.1 e2
   set ρ0 := min (min ρ1 R2) 1 with hρ0
   have hρ0pos : 0 < ρ0 := lt_min (lt_min hρ1 hR2) one_pos
-  have hs : 2 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb / 2 := by linarith
-  obtain ⟨C2, hC2, hsum⟩ := kaSum X hx0 hPD hs
+  obtain ⟨C2, hC2, hsum⟩ := hB
   set K := Real.exp (bb * (3 * X.Ψ.card * Real.log 2)) with hK
   set cd : ℝ := ∏ _τ : X.Ψ, ∏ _i : Fin r, (1 / 4 : ℝ) with hcd
   have hcd0 : 0 < cd := Finset.prod_pos fun _ _ => Finset.prod_pos fun _ _ => by norm_num
@@ -246,6 +249,15 @@ theorem sumBall_holds : SumBallStatement (E := E) := by
     _ = c0 ^ (1 / 2 : ℝ) * ∑' γ : X.Γ, ENNReal.ofReal (kaY X x0 (bb / 2) (lact γ.1 x)) :=
         ENNReal.tsum_mul_left
     _ ≤ c0 ^ (1 / 2 : ℝ) * C2 := mul_le_mul_of_nonneg_left (hsum x hxo) zero_le
+
+theorem sumBall_holds : SumBallStatement (E := E) := by
+  intro r X x0 la W bb F P H
+  obtain ⟨hx0, hPD, hW, -, hbb, -, hA, hP, hPF⟩ := H
+  have hbb0 : 0 ≤ bb := by
+    have : 0 ≤ 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 := by positivity
+    linarith
+  have hs : 2 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 < bb / 2 := by linarith
+  exact sumBall_of_kaSum X x0 la W bb F P hx0 hW hbb0 hA hP hPF (kaSum X hx0 hPD hs)
 
 end
 

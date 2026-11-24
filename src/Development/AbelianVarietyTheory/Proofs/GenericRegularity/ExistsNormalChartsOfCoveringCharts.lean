@@ -1,12 +1,14 @@
 module
 
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.EqZeroOfForallLTensorEqZero
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import Mathlib.RingTheory.Valuation.LocalSubring
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.SCharts
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsAlgebraMapEqOfValVLeOne
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsExtendOfPowDenom
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsMulEqOfSubfieldClosureEqTop
-public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsUnramifiedExtension
-public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsValuationSubringLeDominatingOfFractionFiel
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.InjectiveAlgebraMapOfDvrOfIsIntegral
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NaturalRuleValueBaseChangeOfIsReduced
 import Mathlib.Algebra.Order.Floor.Extended
@@ -15,6 +17,7 @@ import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -26,12 +29,11 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PicardGroup
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -54,7 +56,272 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.TypeStar
+import Mathlib.RingTheory.PicardGroup
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsUnramifiedExtension, Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsValuationSubringLeDominatingOfFractionFiel, Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsNormalChartsOfCoveringCharts
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsUnramifiedExtension =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsUnramifiedExtension", "h": "module\n\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\npublic import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.EqZeroOfForallLTensorEqZero\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open TensorProduct
+
+namespace GlobalTheory.DVRBaseChange
+
+theorem exists_dvr_quotient (W : Type) [CommRing W] [IsLocalRing W] (π : W)
+    (hm : IsLocalRing.maximalIdeal W = Ideal.span {π}) (hπ : ¬ IsNilpotent π) :
+    ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V)
+      (q : W →+* V), Irreducible (q π) := by
+  classical
+  have hnu : ∀ x : W, ¬ IsUnit x ↔ π ∣ x := fun x => by
+    rw [← Ideal.mem_span_singleton, ← hm, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
+  let J : Ideal W := ⨅ n : ℕ, Ideal.span {π ^ n}
+  have hJ : ∀ x, x ∈ J ↔ ∀ n : ℕ, π ^ n ∣ x := fun x => by
+    simp only [J, Ideal.mem_iInf, Ideal.mem_span_singleton]
+  have hpow : ∀ n : ℕ, π ^ n ∉ J := by
+    intro n hn
+    obtain ⟨y, hy⟩ := (hJ _).1 hn (n + 1)
+    have hu : IsUnit (1 - π * y) :=
+      IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ ((hnu _).2 (dvd_mul_right _ _))
+    refine hπ ⟨n, ?_⟩
+    have : π ^ n * (1 - π * y) = 0 := by linear_combination hy
+    exact (hu.mul_left_eq_zero).1 this
+  have hfac : ∀ x, x ∉ J → ∃ (n : ℕ) (u : W), IsUnit u ∧ x = π ^ n * u := by
+    intro x hx
+    have hex : ∃ n : ℕ, ¬ π ^ (n + 1) ∣ x := by
+      by_contra hc
+      push Not at hc
+      exact hx ((hJ x).2 fun n => (pow_dvd_pow π (Nat.le_succ n)).trans (hc n))
+    have h1 : π ^ (Nat.find hex) ∣ x := by
+      rcases h : Nat.find hex with _ | m
+      · simp
+      · by_contra hc
+        exact Nat.find_min hex (m := m) (by omega) hc
+    obtain ⟨u, hu⟩ := h1
+    refine ⟨_, u, ?_, hu⟩
+    by_contra hc
+    obtain ⟨v, rfl⟩ := (hnu u).1 hc
+    exact Nat.find_spec hex ⟨v, hu.trans (by ring)⟩
+  have hprime : J.IsPrime := by
+    refine ⟨fun h => hpow 0 (h ▸ Submodule.mem_top), fun {x y} hxy => ?_⟩
+    by_contra hc
+    push Not at hc
+    obtain ⟨n, u, hu, rfl⟩ := hfac x hc.1
+    obtain ⟨m, v, hv, rfl⟩ := hfac y hc.2
+    refine hpow (n + m) ?_
+    rw [← J.mul_unit_mem_iff_mem (hu.mul hv)]
+    convert hxy using 1
+    ring
+  have hdom : IsDomain (W ⧸ J) := Ideal.Quotient.isDomain J
+  have hloc : IsLocalRing (W ⧸ J) :=
+    IsLocalRing.of_surjective' (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective
+  have hirr : Irreducible (Ideal.Quotient.mk J π) := by
+    refine IsDiscreteValuationRing.irreducible_of_span_eq_maximalIdeal _ ?_ ?_
+    · rw [Ne, Ideal.Quotient.eq_zero_iff_mem]
+      simpa using hpow 1
+    · rw [← IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk J)
+        Ideal.Quotient.mk_surjective, hm, Ideal.map_span, Set.image_singleton]
+  refine ⟨W ⧸ J, inferInstance, hdom,
+    IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨_, hirr, ?_⟩,
+    Ideal.Quotient.mk J, hirr⟩
+  intro x hx
+  obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective x
+  obtain ⟨n, u, hu, rfl⟩ := hfac x (fun h => hx (Ideal.Quotient.eq_zero_iff_mem.2 h))
+  refine ⟨n, ?_⟩
+  rw [map_mul, map_pow]
+  exact associated_mul_unit_right _ _ (hu.map _)
+
+theorem exists_dvr_of_isRadical (S : Type) [CommRing S] (π : S)
+    (hrad : (Ideal.span {π}).IsRadical) (hne : Ideal.span {π} ≠ ⊤)
+    (hreg : ∀ s, π * s = 0 → s = 0) :
+    ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V)
+      (q : S →+* V), Irreducible (q π) := by
+  obtain ⟨p, hp⟩ := Ideal.nonempty_minimalPrimes hne
+  have hpp : p.IsPrime := hp.1.1
+  let W := Localization.AtPrime p
+  have hm : IsLocalRing.maximalIdeal W = Ideal.span {algebraMap S W π} := by
+    have h1 := IsLocalization.AtPrime.radical_map_of_mem_minimalPrimes W p _ hp
+    rw [← IsLocalization.map_radical p.primeCompl, hrad.radical,
+      Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_span, Set.image_singleton] at h1
+    exact h1.symm
+  have hn : ¬ IsNilpotent (algebraMap S W π) := by
+    rintro ⟨n, hn⟩
+    rw [← map_pow, IsLocalization.map_eq_zero_iff p.primeCompl] at hn
+    obtain ⟨⟨s, hs⟩, h⟩ := hn
+    have key : ∀ (n : ℕ) (s : S), s * π ^ n = 0 → s = 0 := by
+      intro n
+      induction n with
+      | zero => intro s h; simpa using h
+      | succ n ih => intro s h; exact ih s (hreg _ (by linear_combination h))
+    exact hs (by rw [key n s h]; exact p.zero_mem)
+  obtain ⟨V, i1, i2, i3, q, hq⟩ := exists_dvr_quotient W _ hm hn
+  exact ⟨V, i1, i2, i3, q.comp (algebraMap S W), hq⟩
+
+theorem exists_unramified_extension :
+    ∀ (K F T : Type) [Field K] [CharZero K] [Field F] [Algebra K F] [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Algebra K T], ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (i : T →+* V) (χ : F →+* V), Function.Injective i ∧ (∀ ϖ : T, Irreducible ϖ → Irreducible (i ϖ)) ∧ IsLocalHom i ∧ ∀ a : K, i (algebraMap K T a) = χ (algebraMap K F a) := by
+  intro K F T _ _ _ _ _ _ _ _
+  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible T
+  let m := IsLocalRing.maximalIdeal T
+  have hm : m = Ideal.span {ϖ} := hϖ.maximalIdeal_eq
+  letI : Field (T ⧸ m) := Ideal.Quotient.field m
+  let g : T ⊗[K] F →ₐ[K] (T ⧸ m) ⊗[K] F :=
+    Algebra.TensorProduct.map (Ideal.Quotient.mkₐ K m) (AlgHom.id K F)
+  have hker : RingHom.ker g = Ideal.span {ϖ ⊗ₜ[K] (1 : F)} := by
+    rw [Algebra.TensorProduct.rTensor_ker _ (Ideal.Quotient.mkₐ_surjective K m)]
+    have : RingHom.ker (Ideal.Quotient.mkₐ K m) = Ideal.span {ϖ} := by
+      rw [← hm]; exact Ideal.mk_ker
+    rw [this, Ideal.map_span, Set.image_singleton]
+    rfl
+  have hred : IsReduced ((T ⧸ m) ⊗[K] F) := GlobalTheory.ReducedAlg.isReduced_field_tensor _ _
+  have hrad : (Ideal.span {ϖ ⊗ₜ[K] (1 : F)}).IsRadical := by
+    rw [← hker]
+    exact Ideal.isRadical_bot.comap _
+  have hne : Ideal.span {ϖ ⊗ₜ[K] (1 : F)} ≠ ⊤ := by
+    rw [← hker]
+    exact RingHom.ker_ne_top _
+  have hreg : ∀ s : T ⊗[K] F, (ϖ ⊗ₜ[K] (1 : F)) * s = 0 → s = 0 := by
+    intro s hs
+    have hinj : Function.Injective ((LinearMap.mulLeft K ϖ).rTensor F) :=
+      Module.Flat.rTensor_preserves_injective_linearMap _
+        (fun a b h => mul_left_cancel₀ hϖ.ne_zero h)
+    have key : ∀ s : T ⊗[K] F, (LinearMap.mulLeft K ϖ).rTensor F s = (ϖ ⊗ₜ[K] (1 : F)) * s := by
+      intro s
+      induction s using TensorProduct.induction_on with
+      | zero => simp
+      | tmul a b => simp
+      | add x y hx hy => rw [map_add (f := _), hx, hy, mul_add]
+    exact hinj (by rw [key, hs, map_zero])
+  obtain ⟨V, i1, i2, i3, q, hq⟩ := exists_dvr_of_isRadical _ _ hrad hne hreg
+  let i : T →+* V := q.comp Algebra.TensorProduct.includeLeftRingHom
+  have hi : Irreducible (i ϖ) := hq
+  refine ⟨V, i1, i2, i3, i, q.comp (Algebra.TensorProduct.includeRight (R := K) (A := T)).toRingHom,
+    ?_, ?_, ⟨?_⟩, ?_⟩
+  · rw [injective_iff_map_eq_zero]
+    intro x hx
+    by_contra h0
+    obtain ⟨n, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ
+    rw [map_mul, map_pow] at hx
+    exact mul_ne_zero (u.isUnit.map i).ne_zero (pow_ne_zero n hi.ne_zero) hx
+  · intro ϖ' h'
+    exact ((IsDiscreteValuationRing.associated_of_irreducible T hϖ h').map i).irreducible hi
+  · intro x hx
+    by_contra h0
+    have : x ∈ m := h0
+    rw [hm, Ideal.mem_span_singleton] at this
+    exact hi.not_isUnit (isUnit_of_dvd_unit (map_dvd i this) hx)
+  · intro a
+    change q (algebraMap K T a ⊗ₜ[K] (1 : F)) = q ((1 : T) ⊗ₜ[K] algebraMap K F a)
+    rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
+
+end GlobalTheory.DVRBaseChange
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsUnramifiedExtension =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsValuationSubringLeDominatingOfFractionFiel =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsValuationSubringLeDominatingOfFractionFiel", "h": "module\n\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\npublic import Mathlib.RingTheory.Valuation.ValuationSubring\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\npublic import Mathlib.RingTheory.Valuation.LocalSubring\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open IsLocalRing
+
+namespace GlobalTheory
+
+def compositeValuationSubring {L : Type*} [Field L] (W : ValuationSubring L)
+    (V : ValuationSubring (ResidueField W)) : ValuationSubring L where
+  toSubring := (V.toSubring.comap (residue W)).map W.subtype
+  mem_or_inv_mem' := by
+    intro x
+    by_cases hx : x ∈ W
+    · by_cases hx' : x⁻¹ ∈ W
+      · rcases eq_or_ne x 0 with rfl | hx0
+        · exact Or.inl (Subring.zero_mem _)
+        have hmul : residue W ⟨x, hx⟩ * residue W ⟨x⁻¹, hx'⟩ = 1 := by
+          rw [← map_mul, ← map_one (residue W)]
+          congr 1
+          exact Subtype.ext (mul_inv_cancel₀ hx0)
+        rcases V.mem_or_inv_mem (residue W ⟨x, hx⟩) with h | h
+        · exact Or.inl ⟨⟨x, hx⟩, h, rfl⟩
+        · refine Or.inr ⟨⟨x⁻¹, hx'⟩, ?_, rfl⟩
+          rw [← eq_inv_of_mul_eq_one_right hmul] at h
+          exact h
+      · refine Or.inl ⟨⟨x, hx⟩, ?_, rfl⟩
+        have hm : (⟨x, hx⟩ : W) ∈ maximalIdeal W := by
+          rw [← ValuationSubring.coe_mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or]
+          exact Or.inr hx'
+        have h0 : residue W ⟨x, hx⟩ = 0 := (residue_eq_zero_iff _).2 hm
+        change residue W ⟨x, hx⟩ ∈ V
+        rw [h0]
+        exact V.zero_mem
+    · have hx' : x⁻¹ ∈ W := (W.mem_or_inv_mem x).resolve_left hx
+      refine Or.inr ⟨⟨x⁻¹, hx'⟩, ?_, rfl⟩
+      have hm : (⟨x⁻¹, hx'⟩ : W) ∈ maximalIdeal W := by
+        rw [← ValuationSubring.coe_mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or]
+        exact Or.inr (by simpa using hx)
+      have h0 : residue W ⟨x⁻¹, hx'⟩ = 0 := (residue_eq_zero_iff _).2 hm
+      change residue W ⟨x⁻¹, hx'⟩ ∈ V
+      rw [h0]
+      exact V.zero_mem
+
+theorem mem_compositeValuationSubring {L : Type*} [Field L] (W : ValuationSubring L)
+    (V : ValuationSubring (ResidueField W)) (x : L) :
+    x ∈ compositeValuationSubring W V ↔ ∃ h : x ∈ W, residue W ⟨x, h⟩ ∈ V := by
+  constructor
+  · rintro ⟨y, hy, rfl⟩
+    exact ⟨y.2, hy⟩
+  · rintro ⟨h, hV⟩
+    exact ⟨⟨x, h⟩, hV, rfl⟩
+
+theorem compositeValuationSubring_le {L : Type*} [Field L] (W : ValuationSubring L)
+    (V : ValuationSubring (ResidueField W)) : compositeValuationSubring W V ≤ W :=
+  fun x hx => ((mem_compositeValuationSubring W V x).1 hx).1
+
+theorem exists_valuationSubring_le_dominating {O L : Type*} [CommRing O] [IsLocalRing O]
+    [Field L] (g : O →+* L) (W : ValuationSubring L) (hg : ∀ x, g x ∈ W) :
+    ∃ W' : ValuationSubring L, W' ≤ W ∧ (∀ x : O, g x ∈ W') ∧
+      ∀ x ∈ maximalIdeal O, g x ∈ W'.nonunits := by
+  let g' : O →+* W := g.codRestrict W.toSubring hg
+  let f : O →+* ResidueField W := (residue W).comp g'
+  obtain ⟨V, hV, hloc⟩ := IsLocalRing.exists_factor_valuationRing f
+  refine ⟨compositeValuationSubring W V, compositeValuationSubring_le W V, fun x =>
+    (mem_compositeValuationSubring W V _).2 ⟨hg x, hV x⟩, fun x hx => ?_⟩
+  rw [ValuationSubring.mem_nonunits_iff_or]
+  rcases eq_or_ne (g x) 0 with h0 | h0
+  · exact Or.inl h0
+  refine Or.inr fun hinv => ?_
+  obtain ⟨h, hres⟩ := (mem_compositeValuationSubring W V _).1 hinv
+  have hmul : f x * residue W ⟨(g x)⁻¹, h⟩ = 1 := by
+    change residue W (g' x) * _ = 1
+    rw [← map_mul, ← map_one (residue W)]
+    congr 1
+    exact Subtype.ext (mul_inv_cancel₀ h0)
+  have hu : IsUnit (f.codRestrict V.toSubring hV x) :=
+    isUnit_iff_exists_inv.2 ⟨⟨_, hres⟩, Subtype.ext hmul⟩
+  exact (mem_maximalIdeal x).1 hx (hloc.1 x hu)
+
+theorem exists_valuationSubring_le_dominating_of_fractionField :
+    ∀ (O F L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field F]
+      [Algebra O F] [IsFractionRing O F] [Field L] (ι : F →+* L) (W : ValuationSubring L),
+      (∀ x, ι x ∈ W) → ∃ W' : ValuationSubring L, W' ≤ W ∧
+        (∀ x : O, ι (algebraMap O F x) ∈ W') ∧
+        ∀ x ∈ IsLocalRing.maximalIdeal O, ι (algebraMap O F x) ∈ W'.nonunits := by
+  intro O F L _ _ _ _ _ _ _ ι W hW
+  exact exists_valuationSubring_le_dominating (ι.comp (algebraMap O F)) W fun x => hW _
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsValuationSubringLeDominatingOfFractionFiel =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsNormalChartsOfCoveringCharts =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsNormalChartsOfCoveringCharts", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.RegularCharts.ModelAt\npublic import Development.AbelianVarietyTheory.Definitions.RegularCharts.SCharts\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsAlgebraMapEqOfValVLeOne\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsExtendOfPowDenom\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsMulEqOfSubfieldClosureEqTop\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsUnramifiedExtension\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsValuationSubringLeDominatingOfFractionFiel\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.InjectiveAlgebraMapOfDvrOfIsIntegral\npublic import Development.AbelianVarietyTheory.Proofs.GenericRegularity.NaturalRuleValueBaseChangeOfIsReduced\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PicardGroup\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option synthInstance.maxHeartbeats 400000
@@ -548,3 +815,7 @@ theorem exists_scharts_of_covers :
     exact ⟨k, hk⟩
 
 end GlobalTheory.Reg
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.GenericRegularity.ExistsNormalChartsOfCoveringCharts =====

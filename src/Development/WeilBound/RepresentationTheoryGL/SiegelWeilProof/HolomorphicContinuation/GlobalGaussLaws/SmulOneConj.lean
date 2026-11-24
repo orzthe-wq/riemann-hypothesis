@@ -62,7 +62,7 @@ theorem blocks_of_inG {g : M2 n} (hg : InG g) :
   unfold InG JJ at h
   rw [← Matrix.fromBlocks_toBlocks g, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply,
     Matrix.fromBlocks_multiply] at h
-  simp only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, zero_add, add_zero,
+  simp only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, zero_add, add_zero,
     Matrix.fromBlocks_inj] at h
   obtain ⟨h11, h12, h21, h22⟩ := h
   refine ⟨?_, ?_, ?_, ?_⟩

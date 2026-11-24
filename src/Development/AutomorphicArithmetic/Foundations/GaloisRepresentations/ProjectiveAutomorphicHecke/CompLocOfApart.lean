@@ -114,7 +114,7 @@ def rat : Gam0 E n →* GUf E n :=
           (algebraMap ℚ E y.1.2 • (1 : Matrix (Fin n) (Fin n) E)).map (algebraMap E (Af E)) := by
         rw [finiteAdeleMap_algebraMap]
         ext i j : 1
-        by_cases hij : i = j <;> simp [hij, Matrix.one_apply]
+        by_cases hij : i = j <;> simp [hij]
       exact (congrArg (· * _) e1).trans (h'.trans e2.symm)
 
 def ofU : finU (E := E) (n := n) →* GUf E n :=

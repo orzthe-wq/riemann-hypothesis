@@ -234,12 +234,12 @@ theorem finrank_le : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [Numbe
       rw [← hsx, ← hsx]
       exact heckeIdeal_eq_of_ray hR (hs0 x) (hs0 y) (hs x) (hs y) hp he χ
     by_contra hne
-    letI : CommGroup (L ≃ₐ[K] L) := IsMulCommutative.instCommGroup
+    let : CommGroup (L ≃ₐ[K] L) := IsMulCommutative.instCommGroup
     obtain ⟨χ, h⟩ := CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (L ≃ₐ[K] L) ℂ
       (a := x * y⁻¹) (by rwa [ne_eq, mul_inv_eq_one])
     apply h
     rw [map_mul, map_inv, hχ χ, mul_inv_cancel]
-  haveI : Finite (𝓞 K ⧸ 𝔮) := Ideal.finiteQuotientOfFreeOfNeBot 𝔮 h𝔮
+  have : Finite (𝓞 K ⧸ 𝔮) := Ideal.finiteQuotientOfFreeOfNeBot 𝔮 h𝔮
   rw [← IsGalois.card_aut_eq_finrank]
   refine (Nat.card_le_card_of_injective F hF).trans (le_of_eq ?_)
   rw [Nat.card_prod, Nat.card_prod, Ideal.absNorm_apply, Submodule.cardQuot_apply, classNumber,

@@ -165,8 +165,8 @@ theorem flatH_mem {μ : (R ⊗[F] E)ˣ →* Circle} {s₀ : ℂ} {Φ : HA R σ Q
   (hI.iwasawaOf hν hK).flatOf_mem (isEmbedding_matHom R σ Q).continuous hν hK hΦ s
 
 theorem spherical_mem (s : ℂ) : (fun g => npow (hgtH σ Q ν K g) (s + (n : ℂ) / 2)) ∈ degPSH σ Q ν K 1 s := by
-  haveI := isTopologicalRing_tens (F := F) (E := E) (R := R)
-  haveI := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := R)
+  have := isTopologicalRing_tens (F := F) (E := E) (R := R)
+  have := t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := R)
   simpa only [Fintype.card_fin] using
     (hI.iwasawaOf hν hK).spherical_mem (isEmbedding_matHom R σ Q).continuous hν hK s
 
@@ -411,8 +411,8 @@ theorem exists_leviH {R : Type} [CommRing R] [Algebra F R] {σ : E →ₐ[F] E} 
     {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (h : Q = dblGram finSumFinEquiv J) (hJ : IsHermND σ J)
     (α : GL (Fin n) (R ⊗[F] E)) : ∃ p : siegelH R σ Q, (p : HA R σ Q) ∈ leviH R σ Q ∧
       leviOf finSumFinEquiv (matHom R σ Q) p = α ∧ aH R σ Q p = Matrix.GeneralLinearGroup.det α := by
-  letI : Invertible (2 : F) := invertibleOfNonzero two_ne_zero
-  letI : Invertible (2 : R ⊗[F] E) := (Invertible.map (algebraMap F (R ⊗[F] E)) 2).copy _ (map_ofNat _ 2).symm
+  let : Invertible (2 : F) := invertibleOfNonzero two_ne_zero
+  let : Invertible (2 : R ⊗[F] E) := (Invertible.map (algebraMap F (R ⊗[F] E)) 2).copy _ (map_ofNat _ 2).symm
   obtain ⟨β, hβ⟩ := exists_leviElt_mem_UJ finSumFinEquiv (σ := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ) (sigR_invol hσ)
     (J := JR R J) (by ext i j; exact congrArg (fun x => (1 : R) ⊗ₜ[F] x) (hJ.1 i j)) (isUnit_det_JR hJ.2) α
   rw [← JR_dblGram, ← h] at hβ

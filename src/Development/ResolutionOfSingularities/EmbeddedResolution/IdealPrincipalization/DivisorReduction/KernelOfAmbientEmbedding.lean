@@ -96,19 +96,6 @@ private theorem forall_le_ker_embeddingIntoAmbient_eq_boundary_get {S X : Scheme
       simp only [List.get_eq_getElem, BlowupSequenceData.boundary_succ]
       rw [List.getElem_append_left (by simpa using hjn), List.getElem_map]
 
-theorem ker_embeddingIntoAmbientBlowupSequence_eq_boundary_get {S X : Scheme.{u}} (ι : S ⟶ X)
-    [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
-    (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
-    (hno : BlowupPreservesNoetherian.{u})
-    (hcen : ∀ i < s.length, ∀ T ∈ irreducibleComponents ↥(s.obj i), ¬T ⊆ ↑(s.center i).support)
-    (E : List X.IdealSheafData) (j : ℕ) (hj : j < E.length)
-    (hE : E.get ⟨j, hj⟩ = AlgebraicGeometry.Scheme.Hom.ker ι)
-    (t : ℕ) (ht : t ≤ s.length)
-    (hjt : j < ((ambientBlowupSequence ι s hres hno hcen).boundaryFrom E t).length) :
-    AlgebraicGeometry.Scheme.Hom.ker (embeddingIntoAmbientBlowupSequence ι s hres hno hcen t) =
-      ((ambientBlowupSequence ι s hres hno hcen).boundaryFrom E t).get ⟨j, hjt⟩ :=
-  forall_le_ker_embeddingIntoAmbient_eq_boundary_get ι s hres hno hcen E j hj hE t ht hjt
-
 namespace DivisorReduction
 
 variable (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})
@@ -178,7 +165,7 @@ theorem isSmoothDivisor_ker_embeddingIntoAmbient_of_eq_top (T : MarkedIdealWithB
       ((ambientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
         (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr).boundaryFrom T.boundary t).get
           ⟨j, hjt⟩ :=
-    ker_embeddingIntoAmbientBlowupSequence_eq_boundary_get (T.boundary.get ⟨j, hj⟩).subschemeι
+    _root_.FunctorialResolution.EmbeddedResolution.forall_le_ker_embeddingIntoAmbient_eq_boundary_get (T.boundary.get ⟨j, hj⟩).subschemeι
       (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr T.boundary j hj
       (AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι _).symm t htS hjt
   have hbd : (pushedMarkedSeq hres hno T j hj s hpr hmk).boundary t =

@@ -1,17 +1,23 @@
 module
 
+public import Mathlib.Analysis.Complex.Exponential
+public import Mathlib.Algebra.BigOperators.Fin
 public import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.CoarseDegreesLargeBeyond
 public import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.NotKept
-public import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.NkExponent
+public import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-public import Mathlib.Analysis.Complex.ExponentialBounds
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -19,6 +25,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
@@ -28,7 +35,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -41,8 +47,145 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.GrowthBounds.UnramifiedQuadraticSetting
+import Mathlib.Tactic.Linter.Style
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.SharpRestriction.GrowthBounds.BinomialRatio.NkExponent, Formalism.SharpRestriction.GrowthBounds.BinomialRatio.Bracket
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.BinomialRatio.NkExponent =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.BinomialRatio.NkExponent", "h": "module\n\npublic import Mathlib.Analysis.Complex.Exponential\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Formalism.SharpRestriction.GrowthBounds.UnramifiedQuadraticSetting\npublic import Mathlib.Algebra.BigOperators.Fin\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace Formalism.MainNotions.ColumnSystems.Pf
+
+open Formalism.MainNotions.G
+
+theorem nk_vi (c Ah ρ u τ : ℝ) (hc : 0 < c) (hA : 0 < Ah) (hρ0 : 0 ≤ ρ) (hρc : ρ ≤ c) (hρA : ρ ≤ Ah) (hu0 : 0 ≤ u)
+    (hτ0 : 0 < τ) (hτ : τ < 1 / 4) (hu : 2 * τ * max c Ah < u) : ρ * (c + Ah - u - ρ) ≤ (1 - τ) * (c * Ah) := by
+  have hid : ρ * (c + Ah - u - ρ) = c * Ah - (c - ρ) * (Ah - ρ) - ρ * u := by ring
+  rw [hid]
+  have h1 : 0 ≤ (c - ρ) * (Ah - ρ) := mul_nonneg (by linarith) (by linarith)
+  have h2 : 0 ≤ ρ * u := mul_nonneg hρ0 hu0
+  have hcA : 0 < c * Ah := mul_pos hc hA
+  rcases le_total c Ah with h | h
+  · rw [max_eq_right h] at hu
+    rcases le_total (c / 2) ρ with h3 | h3
+    · have : c / 2 * (2 * τ * Ah) ≤ ρ * u := mul_le_mul h3 hu.le (by positivity) hρ0
+      nlinarith
+    · have : c / 2 * (Ah / 2) ≤ (c - ρ) * (Ah - ρ) := mul_le_mul (by linarith) (by linarith) (by positivity) (by linarith)
+      nlinarith
+  · rw [max_eq_left h] at hu
+    rcases le_total (Ah / 2) ρ with h3 | h3
+    · have : Ah / 2 * (2 * τ * c) ≤ ρ * u := mul_le_mul h3 hu.le (by positivity) hρ0
+      nlinarith
+    · have : c / 2 * (Ah / 2) ≤ (c - ρ) * (Ah - ρ) := mul_le_mul (by linarith) (by linarith) (by positivity) (by linarith)
+      nlinarith
+
+theorem nk_iv (c Ah ρ u : ℝ) (hρ0 : 0 ≤ ρ) (hρc : ρ ≤ c) (hρA : ρ ≤ Ah) (hu0 : 0 ≤ u) :
+    ρ * (c + Ah - u - ρ) ≤ c * Ah := by
+  have hid : ρ * (c + Ah - u - ρ) = c * Ah - (c - ρ) * (Ah - ρ) - ρ * u := by ring
+  rw [hid]
+  have h1 : 0 ≤ (c - ρ) * (Ah - ρ) := mul_nonneg (by linarith) (by linarith)
+  have h2 : 0 ≤ ρ * u := mul_nonneg hρ0 hu0
+  linarith
+
+theorem nk_tele (s : ℕ) (c : ℕ → ℝ) (x y : Fin s → ℝ) (hc : ∀ l, 0 ≤ c l) (hx : ∀ i, 0 ≤ x i) (hy : ∀ i, 0 ≤ y i)
+    (h : ∀ i : Fin s, x i * c (i + 1) ≤ y i * c i) : c s * ∏ i, x i ≤ c 0 * ∏ i, y i := by
+  induction s with
+  | zero => simp
+  | succ s ih =>
+    rw [Fin.prod_univ_castSucc, Fin.prod_univ_castSucc]
+    have ih' := ih (fun i => x i.castSucc) (fun i => y i.castSucc) (fun i => hx _) (fun i => hy _)
+      (fun i => by simpa using h i.castSucc)
+    have hl := h (Fin.last s)
+    simp only [Fin.val_last] at hl
+    have hp : 0 ≤ ∏ i : Fin s, x i.castSucc := Finset.prod_nonneg fun i _ => hx _
+    calc c (s + 1) * ((∏ i : Fin s, x i.castSucc) * x (Fin.last s))
+        = (∏ i : Fin s, x i.castSucc) * (x (Fin.last s) * c (s + 1)) := by ring
+      _ ≤ (∏ i : Fin s, x i.castSucc) * (y (Fin.last s) * c s) := mul_le_mul_of_nonneg_left hl hp
+      _ = y (Fin.last s) * (c s * ∏ i : Fin s, x i.castSucc) := by ring
+      _ ≤ y (Fin.last s) * (c 0 * ∏ i : Fin s, y i.castSucc) := mul_le_mul_of_nonneg_left ih' (hy _)
+      _ = _ := by ring
+
+theorem nk_bracket (s : ℕ) (c : ℕ → ℝ) (x nn Ai Ci κ μ : Fin s → ℝ) (l A E1 E2 : ℝ)
+    (hc : ∀ l, 0 ≤ c l) (hx : ∀ i, 0 ≤ x i) (hn0 : ∀ i, 0 ≤ nn i) (hAi : ∀ i, 0 ≤ Ai i) (hCi : ∀ i, 0 ≤ Ci i)
+    (hκ : ∀ i, 0 ≤ κ i) (hμ : ∀ i, 0 ≤ μ i) (hl0 : 0 ≤ l) (hE2 : 0 ≤ E2)
+    (hstep : ∀ i : Fin s, x i * c (i + 1) ≤ (κ i * (E2 * Ai i)) * c i)
+    (hl : l ≤ c s) (hn : ∀ i, nn i ≤ μ i * (E2 * Ci i)) (hA : c 0 ≤ E1 * A) :
+    l * (∏ i, x i) * (∏ i, nn i) ≤
+      (E1 * E2 ^ s * E2 ^ s * ((∏ i, κ i) * ∏ i, μ i)) * (A * (∏ i, Ai i) * ∏ i, Ci i) := by
+  have h1 := nk_tele s c x (fun i => κ i * (E2 * Ai i)) hc hx (fun i => by have := hκ i; have := hAi i; positivity) hstep
+  have hpx : 0 ≤ ∏ i, x i := Finset.prod_nonneg fun i _ => hx i
+  have hpn : 0 ≤ ∏ i, nn i := Finset.prod_nonneg fun i _ => hn0 i
+  have hpy : 0 ≤ ∏ i, (κ i * (E2 * Ai i)) :=
+    Finset.prod_nonneg fun i _ => by have := hκ i; have := hAi i; positivity
+  have h2 : ∏ i, nn i ≤ ∏ i, (μ i * (E2 * Ci i)) := Finset.prod_le_prod₀ (fun i _ => hn0 i) fun i _ => hn i
+  have e1 : ∏ i, (κ i * (E2 * Ai i)) = (∏ i, κ i) * (E2 ^ s * ∏ i, Ai i) := by
+    rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+  have e2 : ∏ i, (μ i * (E2 * Ci i)) = (∏ i, μ i) * (E2 ^ s * ∏ i, Ci i) := by
+    rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+  calc l * (∏ i, x i) * (∏ i, nn i) ≤ (c s * ∏ i, x i) * ∏ i, nn i :=
+        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hl hpx) hpn
+    _ ≤ (c 0 * ∏ i, (κ i * (E2 * Ai i))) * ∏ i, nn i := mul_le_mul_of_nonneg_right h1 hpn
+    _ ≤ (E1 * A * ∏ i, (κ i * (E2 * Ai i))) * ∏ i, nn i :=
+        mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hA hpy) hpn
+    _ ≤ (E1 * A * ∏ i, (κ i * (E2 * Ai i))) * ∏ i, (μ i * (E2 * Ci i)) :=
+        mul_le_mul_of_nonneg_left h2 (mul_nonneg (le_trans (hc 0) hA) hpy)
+    _ = _ := by rw [e1, e2]; ring
+
+theorem nk_exponent (s r : ℕ) (La γ : ℝ) (hr : 9 ≤ r) (hs : 2 * s + 1 ≤ r) (hLa : 0 ≤ La) (hγ0 : 0 ≤ γ)
+    (hγ : γ ≤ Real.exp (-(La / (4 * ((r : ℝ) + 1))))) :
+    (Real.exp (1 / ((r : ℝ) + 1) ^ 2) * Real.exp (2 / ((r : ℝ) + 1) ^ 2) ^ s * Real.exp (2 / ((r : ℝ) + 1) ^ 2) ^ s * γ) ^
+      (r - 1) ≤ Real.exp (2 - La / 5) := by
+  have hr9 : (9 : ℝ) ≤ (r : ℝ) := by exact_mod_cast hr
+  have hk : (10 : ℝ) ≤ (r : ℝ) + 1 := by linarith
+  set k : ℝ := (r : ℝ) + 1 with hkdef
+  have hsr : 2 * (s : ℝ) + 1 ≤ k - 1 := by
+    have : ((2 * s + 1 : ℕ) : ℝ) ≤ (r : ℝ) := by exact_mod_cast hs
+    push_cast at this
+    linarith
+  have hn : ((r - 1 : ℕ) : ℝ) = k - 2 := by
+    rw [Nat.cast_sub (by omega)]
+    push_cast
+    linarith
+  have hb : Real.exp (1 / k ^ 2) * Real.exp (2 / k ^ 2) ^ s * Real.exp (2 / k ^ 2) ^ s * γ ≤
+      Real.exp (1 / k ^ 2 + s * (2 / k ^ 2) + s * (2 / k ^ 2) - La / (4 * k)) := by
+    rw [← Real.exp_nat_mul, sub_eq_add_neg, Real.exp_add, Real.exp_add, Real.exp_add]
+    exact mul_le_mul_of_nonneg_left hγ (by positivity)
+  have hb0 : 0 ≤ Real.exp (1 / k ^ 2) * Real.exp (2 / k ^ 2) ^ s * Real.exp (2 / k ^ 2) ^ s * γ := by positivity
+  refine (pow_le_pow_left₀ hb0 hb (r - 1)).trans ?_
+  rw [← Real.exp_nat_mul, hn]
+  apply Real.exp_le_exp.mpr
+  have hk0 : 0 < k := by linarith
+  have e1 : (k - 2) * (1 / k ^ 2 + s * (2 / k ^ 2) + s * (2 / k ^ 2) - La / (4 * k)) =
+      (k - 2) * (4 * s + 1) / k ^ 2 - (k - 2) * La / (4 * k) := by
+    field_simp
+    ring
+  rw [e1]
+  have h1 : (k - 2) * (4 * s + 1) / k ^ 2 ≤ 2 := by
+    rw [div_le_iff₀ (by positivity)]
+    nlinarith
+  have h2 : La / 5 ≤ (k - 2) * La / (4 * k) := by
+    rw [div_le_div_iff₀ (by norm_num) (by positivity)]
+    nlinarith
+  linarith
+
+end Formalism.MainNotions.ColumnSystems.Pf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.BinomialRatio.NkExponent =====
+
+-- ===== clump member: Formalism.SharpRestriction.GrowthBounds.BinomialRatio.Bracket =====
+-- clump-header: {"m": "Formalism.SharpRestriction.GrowthBounds.BinomialRatio.Bracket", "h": "module\n\npublic import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.CoarseDegreesLargeBeyond\npublic import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.NotKept\npublic import Formalism.SharpRestriction.GrowthBounds.BinomialRatio.NkExponent\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Complex.ExponentialBounds\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -52,20 +195,17 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G
 
 theorem nk_toNat_cast (z : ℤ) (h : 0 ≤ z) : ((z.toNat : ℕ) : ℝ) = ((z : ℤ) : ℝ) := by
-  have e := Int.toNat_of_nonneg h
-  exact_mod_cast congrArg (Int.cast : ℤ → ℝ) e
+  exact_mod_cast (Int.toNat_of_nonneg h)
 
 theorem brk_hat (m : ℕ) (η δ a : ℝ) (hη0 : 0 ≤ η) (hδη : δ ≤ η) (hδ0 : 0 ≤ δ) (hA0 : 0 ≤ a)
     (hm : (m : ℝ) ≤ η * a) : (a + m) * (1 + δ) ≤ Real.exp (2 * η) * a := by
   have h1 : 1 + η ≤ Real.exp η := by linarith [Real.add_one_le_exp η]
-  have h2 : (1 + η) ^ 2 ≤ Real.exp (2 * η) := by
-    rw [show 2 * η = η + η by ring, Real.exp_add, ← sq]
-    exact pow_le_pow_left₀ (by linarith) h1 2
   calc (a + m) * (1 + δ) ≤ (a + η * a) * (1 + η) :=
         mul_le_mul (by linarith) (by linarith) (by linarith) (by nlinarith)
     _ = a * (1 + η) ^ 2 := by ring
-    _ ≤ a * Real.exp (2 * η) := mul_le_mul_of_nonneg_left h2 hA0
-    _ = Real.exp (2 * η) * a := by ring
+    _ ≤ a * (Real.exp η) ^ 2 :=
+        mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith) h1 2) hA0
+    _ = Real.exp (2 * η) * a := by rw [show 2 * η = η + η by ring, Real.exp_add, sq]; ring
 
 
 
@@ -270,8 +410,7 @@ theorem bracket_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hF : PairFactsAt C0 C
     obtain ⟨⟨-, -, -, -, h5, -, h7, -⟩, -⟩ := hI
     have := (h5 j).2
     omega
-  have hkdef : X.k = (X.m : ℝ) + 1 := rfl
-  rw [hkdef] at hkA hkAi hkCi hpk hk10 hLak
+  rw [show X.k = (X.m : ℝ) + 1 from rfl] at hkA hkAi hkCi hpk hk10 hLak
   have hk' : ∃ i0, ¬ ((((pairO mu (clA C0 CE1 CE2 X j rz ry) i0 - pairRho mu i0 : ℤ) : ℝ)) +
       4 * ((clA C0 CE1 CE2 X j rz ry i0 : ℝ) + X.m) / (X.p : ℝ) ^ 2 ≤
         X.La C0 * max ((pairC mu i0 : ℤ) : ℝ) (clA C0 CE1 CE2 X j rz ry i0 : ℝ) / ((X.m : ℝ) + 1) ∧
@@ -301,10 +440,13 @@ theorem bracket_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hF : PairFactsAt C0 C
   have e2 : ∏ i : Fin (segS X.TT j), (((pairN (s := segS X.TT j) lam i).toNat : ℝ) + X.m) =
       ∏ i : Fin (segS X.TT j), (((pairN (s := segS X.TT j) lam i : ℤ) : ℝ) + X.m) :=
     Finset.prod_congr rfl fun i _ => by rw [nk_toNat_cast _ (hn i).1]
-  rw [e0, e1, e2]
-  exact h2
+  simpa only [e0, e1, e2] using h2
 
 theorem restBracket_of (hF : RestPairFacts) (hN : CoarseDegreesLargeBeyond) : RestBracket :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => bracket_of h.1 h.2) (hF.and hN)
 
 end Formalism.MainNotions.ColumnSystems.Pf
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.SharpRestriction.GrowthBounds.BinomialRatio.Bracket =====

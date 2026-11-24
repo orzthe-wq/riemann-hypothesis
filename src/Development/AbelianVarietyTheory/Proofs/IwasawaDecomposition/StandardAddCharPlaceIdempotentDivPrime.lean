@@ -119,7 +119,6 @@ theorem integral_of_mul (w : HeightOneSpectrum (𝓞 K)) (n z s y : 𝓞 K) (hn 
     rw [div_eq_div_iff hn0 hs0]
     have := congrArg (fun t : 𝓞 K => (t : K)) h
     simp only [map_mul] at this
-    push_cast at this
     linear_combination this
   rw [hq, HeightOneSpectrum.mem_adicCompletionIntegers]
   have e := HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w ((y : K) / (s : K))

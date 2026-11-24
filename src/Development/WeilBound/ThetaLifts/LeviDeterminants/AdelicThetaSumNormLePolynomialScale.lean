@@ -107,16 +107,10 @@ theorem thetaSum_norm_le_pow :
     (∀ ξ : κ → F, ‖Ψ (fun i => algebraMap F (AF F) (ξ i))‖ * (1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖) ^ N₀ ≤ A) →
     (∀ ξ : κ → F, Ψ (fun i => algebraMap F (AF F) (ξ i)) ≠ 0 → ∀ i, IsIntegral ℤ ((m : F) * ξ i)) →
     ‖thetaSum F Ψ‖ ≤ C * A * (m : ℝ) ^ k := by
-  apply GlobalTheory.LatScaleSum.thetaSum_norm_le_pow <;> assumption
+  apply GlobalTheory.LatScaleSum.thetaSum_norm_le_pow
 
 end PositivityTheory.ThKF0.LatSum
 
 namespace PositivityTheory.ThKF0
-
-theorem theta_sum_norm_bound_denominator : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∃ (N₀ k : ℕ) (C : ℝ), ∀ (A : ℝ) (m : ℕ) (Ψ : (κ → AF F) → ℂ), 1 ≤ m →
-    (∀ ξ : κ → F, ‖Ψ (fun i => algebraMap F (AF F) (ξ i))‖ * (1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖) ^ N₀ ≤ A) →
-    (∀ ξ : κ → F, Ψ (fun i => algebraMap F (AF F) (ξ i)) ≠ 0 → ∀ i, IsIntegral ℤ ((m : F) * ξ i)) →
-    ‖thetaSum F Ψ‖ ≤ C * A * (m : ℝ) ^ k :=
-  LatSum.thetaSum_norm_le_pow
 
 end PositivityTheory.ThKF0

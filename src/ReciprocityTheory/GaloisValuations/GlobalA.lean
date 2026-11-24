@@ -105,64 +105,43 @@ section roots
 
 variable {Ω : Type*} [Field Ω]
 
+theorem valuation_geom_sum_sub_le {Γ : Type*} [LinearOrderedCommGroupWithZero Γ]
+    (v : Valuation Ω Γ) {x : Ω} (hx : v x ≤ 1) (n : ℕ) :
+    v ((∑ i ∈ Finset.range n, x ^ i) - n) ≤ v (x - 1) := by
+  have hp (j : ℕ) : v (x ^ j) ≤ 1 := by
+    rw [Valuation.map_pow]
+    exact pow_le_one' hx j
+  have hd (i : ℕ) : v (x ^ i - 1) ≤ v (x - 1) := by
+    rw [← geom_sum_mul, Valuation.map_mul]
+    exact mul_le_of_le_one_left' (v.map_sum_le fun j _ => hp j)
+  simpa [Finset.sum_sub_distrib] using v.map_sum_le (s := Finset.range n) (fun i _ => hd i)
+
 theorem eq_one_of_pow_eq_one (A : ValuationSubring Ω) {N : ℕ} (hN : ¬ A.valuation (N : Ω) < 1)
     {ξ : Ω} (hξ : ξ ^ N = 1) (h : A.valuation (ξ - 1) < 1) : ξ = 1 := by
-  have hξ1 : A.valuation ξ ≤ 1 := by
-    have h2 := Valuation.map_add A.valuation (ξ - 1) 1
-    rw [sub_add_cancel, Valuation.map_one] at h2
-    exact h2.trans (max_le h.le le_rfl)
-  have hpow : ∀ j : ℕ, A.valuation (ξ ^ j) ≤ 1 := fun j => by
-    rw [Valuation.map_pow]
-    exact pow_le_one' hξ1 j
-  have hgeom : ∀ i : ℕ, A.valuation (ξ ^ i - 1) < 1 := by
-    intro i
-    rw [← geom_sum_mul, Valuation.map_mul]
-    refine lt_of_le_of_lt (mul_le_of_le_one_left' ?_) h
-    exact Valuation.map_sum_le _ (fun j _ => hpow j)
-  by_contra hne
-  have h3 := geom_sum_mul ξ N
-  rw [hξ, sub_self] at h3
-  have hS := (mul_eq_zero.1 h3).resolve_right (fun h4 => hne (sub_eq_zero.1 h4))
-  have h5 := Valuation.map_sum_lt A.valuation (s := Finset.range N) (f := fun i => ξ ^ i - 1)
-    one_ne_zero (fun i _ => hgeom i)
-  rw [Finset.sum_sub_distrib, hS] at h5
-  apply hN
-  simpa using h5
+  have hx : A.valuation ξ ≤ 1 := by
+    simpa using (A.valuation.map_add (ξ - 1) 1).trans (max_le h.le le_rfl)
+  by_contra hn
+  have hs := (mul_eq_zero.1 ((geom_sum_mul ξ N).trans (by rw [hξ, sub_self]))).resolve_right
+    (sub_ne_zero.mpr hn)
+  have he := valuation_geom_sum_sub_le A.valuation hx N
+  rw [hs, zero_sub, Valuation.map_neg] at he
+  exact hN (he.trans_lt h)
 
 theorem valuation_eq_one_of_pow_eq_one (A : ValuationSubring Ω) {N : ℕ} (hN0 : N ≠ 0) {b : Ω}
     (hb : b ^ N = 1) : A.valuation b = 1 := by
-  have h1 : A.valuation b ^ N = 1 := by rw [← Valuation.map_pow, hb, Valuation.map_one]
-  obtain ⟨M, rfl⟩ : ∃ M, N = M + 1 := Nat.exists_eq_succ_of_ne_zero hN0
-  rw [pow_succ] at h1
-  rcases lt_trichotomy (A.valuation b) 1 with hlt | heq | hgt
-  · exfalso
-    have h2 : A.valuation b ^ M * A.valuation b ≤ A.valuation b :=
-      mul_le_of_le_one_left' (pow_le_one' hlt.le M)
-    rw [h1] at h2
-    exact absurd hlt (not_lt.2 h2)
-  · exact heq
-  · exfalso
-    have h2 : A.valuation b ≤ A.valuation b ^ M * A.valuation b :=
-      le_mul_of_one_le_left' (one_le_pow_of_one_le' hgt.le M)
-    rw [h1] at h2
-    exact absurd hgt (not_lt.2 h2)
+  apply (pow_left_inj hN0).mp
+  rw [← map_pow, hb, map_one, one_pow]
 
 theorem eq_of_pow_eq_one (A : ValuationSubring Ω) {N : ℕ} (hN : ¬ A.valuation (N : Ω) < 1)
     {a b : Ω} (ha : a ^ N = 1) (hb : b ^ N = 1) (h : A.valuation (a - b) < 1) : a = b := by
-  have hN0 : N ≠ 0 := by
-    rintro rfl
-    apply hN
-    simp
+  have hN0 : N ≠ 0 := by rintro rfl; exact hN (by simp)
   have hb0 : b ≠ 0 := by
     rintro rfl
     simp [hN0] at hb
   have hvb := valuation_eq_one_of_pow_eq_one A hN0 hb
-  have hξ : (a / b) ^ N = 1 := by rw [div_pow, ha, hb, div_one]
-  have hξ1 : A.valuation (a / b - 1) < 1 := by
-    rw [div_sub_one hb0, Valuation.map_div, hvb, div_one]
-    exact h
-  have h2 := eq_one_of_pow_eq_one A hN hξ hξ1
-  rwa [div_eq_one_iff_eq hb0] at h2
+  apply (div_eq_one_iff_eq hb0).mp
+  apply eq_one_of_pow_eq_one A hN (by rw [div_pow, ha, hb, div_one])
+  rwa [div_sub_one hb0, map_div₀, hvb, div_one]
 
 end roots
 

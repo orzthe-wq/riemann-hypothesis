@@ -2,8 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermHyperbolic
 public import Mathlib.NumberTheory.NumberField.Basic
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsTraceZeroAdjustmentOfHermitianLatticeStatement
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TransvectionIdentitiesUnitaryStatement
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsTraceZeroAdjustmentOfHermitianLattice
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TransvectionIdentitiesUnitary
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,10 +64,10 @@ theorem tvGen_adjust : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Num
   | mem m hm =>
     intro N
     obtain ⟨x, t, hx, ht, rfl⟩ := hm
-    obtain ⟨t', k, e, ht', hk, H⟩ := GlobalTheory.T.exists_traceZero_adjustment_of_hermitian_lattice F E c n G hFE hG L hL hsp x t (b ^ (N + 1)) (by positivity) ht
+    obtain ⟨t', k, e, ht', hk, H⟩ := _root_.GlobalTheory.TvAdjust.exists_tv_adjust F E c n G hFE hG L hL hsp x t (b ^ (N + 1)) (by positivity) ht
     have hinv : (tv (c : E →+* E) G x t')⁻¹ = tv (c : E →+* E) G x (-t') := by
       apply Matrix.inv_eq_right_inv
-      rw [(GlobalTheory.T.transvection_identities_unitary E n (c : E →+* E) G hG.invol hG.herm).2.2.1, hx]
+      rw [(_root_.GlobalTheory.UTrans.Calc.calculus E n (c : E →+* E) G hG.invol hG.herm).2.2.1, hx]
       ext i j
       simp [tv]
     refine ⟨_, Submonoid.subset_closure ⟨x, t', hx, ht', rfl⟩, k, (N + 1) * e,

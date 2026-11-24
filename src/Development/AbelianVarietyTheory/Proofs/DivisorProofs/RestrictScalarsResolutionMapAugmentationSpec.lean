@@ -1,7 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrPreservesHomology
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafPropertiesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
+public import Mathlib.Algebra.Homology.HomotopyCategory.KInjective
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChosenInjectiveResolutionEtaleSheafProperties
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendChainMapAlongQuasiIsoKInjectiveStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -68,10 +70,10 @@ theorem restrMap_exists : ∀ (R S : Type) [CommRing R] [CommRing S] (φ : R →
     ∀ (U : Scheme.{0}) (a : Sec F U),
       ρ.app U 0 (Sec.map (resι S F) a) = Sec.map (resι R ((restr φ).obj F)) (show Sec ((restr φ).obj F) U from a) := by
   intro R S _ _ φ F
-  obtain ⟨hKI, -, hGE, -, hι, -⟩ := GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R ((restr φ).obj F)
-  obtain ⟨-, -, -, hq, hιS, -⟩ := GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties S F
+  obtain ⟨hKI, -, hGE, -, hι, -⟩ := _root_.GlobalTheory.EtC.ResBasic.res_basic R ((restr φ).obj F)
+  obtain ⟨-, -, -, hq, hιS, -⟩ := _root_.GlobalTheory.EtC.ResBasic.res_basic S F
   have := rAug_quasiIso φ (resAug F)
-  obtain ⟨m, hm⟩ := (GlobalTheory.T.extend_chainMap_along_quasiIso_kInjective R ((restr φ).obj F) ((rcx φ).obj (res S F)) (res R ((restr φ).obj F))
+  obtain ⟨m, hm⟩ := (_root_.GlobalTheory.EtC.extHom_of_quasiIso R ((restr φ).obj F) ((rcx φ).obj (res S F)) (res R ((restr φ).obj F))
     (rAug φ (resAug F))).1 (resAug ((restr φ).obj F))
   refine ⟨rcxSemi φ m, fun U a => ?_⟩
   rw [rcxSemi_app]

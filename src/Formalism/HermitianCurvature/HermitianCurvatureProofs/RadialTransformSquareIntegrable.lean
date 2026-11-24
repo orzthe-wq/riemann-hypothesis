@@ -50,6 +50,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.TriangleInequalityAtPlace
 
 @[expose] public section
 
@@ -83,17 +84,11 @@ theorem pairAt_meas0 (μ : Measure (Mt k r)) [SFinite μ] (u v : RadSp k r z z' 
     StronglyMeasurable (fun c' : Cf r 0 => pairAt μ u v (glue 0 c c')) :=
   (pair_measurable c u v).stronglyMeasurable.integral_prod_right'
 
-theorem hsInner_self_ofReal (A : Wq →L[ℂ] Wp) : B.hsInner A A = ((‖B.hsVec A‖ ^ 2 : ℝ) : ℂ) := by
-  unfold B.hsInner
-  rw [inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (B.hsVec A)]
-  push_cast
-  rfl
-
 theorem norm_pairAt_self (μ : Measure (Mt k r)) (u : RadSp k r z z' π π') (c : Fin r → ℂ) :
     ‖pairAt μ u u c‖ = ∫ g : Mt k r, ‖B.hsInner ((u : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g))
       ((u : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g))‖ ∂μ := by
   unfold pairAt
-  simp_rw [hsInner_self_ofReal]
+  simp_rw [_root_.Formalism.FourierDecayAlt.P.TBBx2.Tri.hsInner_self]
   rw [integral_complex_ofReal, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun g => by positivity)]
   refine integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)
   simp only [Complex.norm_real, Real.norm_of_nonneg (sq_nonneg _)]

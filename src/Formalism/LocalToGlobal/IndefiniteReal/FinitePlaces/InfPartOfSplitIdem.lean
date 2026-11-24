@@ -523,7 +523,7 @@ theorem genE_smul_left (c z : EAf D) (τ : Fin T.rank → EAf D) (σ : Fin S.ran
 
 theorem genE_zero_left (c : EAf D) (σ : Fin S.rank → EAf D) : genE (T := T) c 0 σ = 0 := by
   ext i j
-  simp [genE, Matrix.vecMulVec_apply, liftE_zero]
+  simp [genE, liftE_zero]
 
 theorem genE_add_right (c : EAf D) (τ : Fin T.rank → EAf D) (σ σ' : Fin S.rank → EAf D) :
     genE c τ (σ + σ') = genE (S := S) c τ σ + genE c τ σ' := by
@@ -549,7 +549,7 @@ theorem genE_zero_right (c : EAf D) (τ : Fin T.rank → EAf D) : genE (S := S) 
     simp
   ext i j
   simp only [genE, hs]
-  simp [Matrix.vecMulVec_apply, liftE_zero]
+  simp [liftE_zero]
 
 theorem genE_mem {α : Af D.host.F} (hα : α ∈ intAf D.host.F) {a : D.host.E} (ha : a ∈ D.host.AA)
     {τ : Fin T.rank → EAf D} (hτ : τ ∈ Formalism.L2.Herm.hatL (F := D.host.F) ΛT)

@@ -60,7 +60,7 @@ private theorem UpperTheory.Comparison₂.gChi_eq_ramp (f : ℕ → ℂ) (y : �
   rw [Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot (Nat.succ_pos _), zero_add]
   have e : Finset.Ico 1 ⌊y⌋₊.succ = Finset.Icc 1 ⌊y⌋₊ := by
     ext n
-    simp [Nat.lt_succ_iff]
+    simp
   rw [e]
   simp
 

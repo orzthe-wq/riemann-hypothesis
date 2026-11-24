@@ -70,10 +70,10 @@ private theorem inf_scalarF {F : Type} [Field F] [NumberField F] [IsTotallyReal 
   refine TR.ga_ext ?_ ?_
   · rw [TR.pInf_infGL]
     ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h1]
+    by_cases e : i = j <;> simp [e, h1]
   · rw [TR.pFin_infGL]
     ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]
+    by_cases e : i = j <;> simp [e, h2]
 
 private theorem inf_scalarE {E : Type} [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] (u : (Cinf E)ˣ) :
     infGL E 2 (Matrix.GeneralLinearGroup.scalar (Fin 2) u) =
@@ -92,24 +92,24 @@ private theorem inf_scalarE {E : Type} [Field E] [NumberField E] [_root_.NumberF
   refine ga_ext ?_ ?_
   · rw [pInf_infGL]
     ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h1]
+    by_cases e : i = j <;> simp [e, h1]
   · rw [pFin_infGL]
     ext i j
-    by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]
+    by_cases e : i = j <;> simp [e, h2]
 
 private theorem ex_zE {E : Type} [Field E] [NumberField E] [_root_.NumberField.IsTotallyComplex E] (s : Cinf E) (t : ℝ) :
     ex (zE s) t = Matrix.GeneralLinearGroup.scalar (Fin 2) (euE s t) := by
   apply Units.ext
   have e : t • Matrix.of (zE s) = Matrix.diagonal (fun _ : Fin 2 => t • s) := by
     ext i j w
-    by_cases h : i = j <;> simp [zE, Matrix.diagonal_apply, h]
+    by_cases h : i = j <;> simp [zE, h]
   change NormedSpace.exp (t • Matrix.of (zE s)) = _
   rw [e, Matrix.exp_diagonal]
   ext i j w
   by_cases h : i = j
   · subst h
     simp [euE, Pi.exp_def, Complex.exp_eq_exp_ℂ]
-  · simp [Matrix.diagonal_apply, h]
+  · simp [h]
 
 private theorem norm_euE {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [_root_.NumberField.IsTotallyComplex E] (s : Cinf E) (t : ℝ) (v : InfinitePlace F) :

@@ -1,67 +1,115 @@
 module
 
+public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.Objects
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperSectionSt
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperQuotAddSt
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperQuotDevissageSt
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.MulQuotEqSt
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SectionNonvanishSt
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SectionMulInjSt
-public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperSectionObj
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.TwistAlg
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.AssemblyBase
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PCutZeroNotLe
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PIdealTwistFamily
 public import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSnapper
 import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PStepThreeAway
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.KrullDimension.Field
 import Mathlib.RingTheory.KrullDimension.Polynomial
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperSectionObj, GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSnapperSection
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperSectionObj =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperSectionObj", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.Objects\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option maxSynthPendingDepth 1
+
+namespace GroundTheory.Heights₂.Heights.Kleiman
+
+open MvPolynomial
+
+noncomputable section
+
+universe u v w
+
+variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
+
+
+variable (S x) in
+def spanBundle (s : Ω) (hs : s ≠ 0) : LineBundle S x where
+  sub I := Submodule.span (chartRing S x I) {s}
+  mono I J h y hy := by
+    obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.mp hy
+    exact Submodule.mem_span_singleton.mpr ⟨chartIncl h a, rfl⟩
+  mem_iff I J h y := by
+    constructor
+    · intro hy
+      obtain ⟨b, rfl⟩ := Submodule.mem_span_singleton.mp hy
+      obtain ⟨a, ha, hab⟩ := exists_isUnit_mul_mem h b
+      refine ⟨a, ha, Submodule.mem_span_singleton.mpr ⟨⟨_, hab⟩, ?_⟩⟩
+      rw [chartRing_smul_def, chartRing_smul_def, smul_eq_mul, mul_assoc]
+    · rintro ⟨a, ⟨u, hu⟩, hay⟩
+      obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hay
+      have hinv : ((↑u⁻¹ : chartRing S x J) : Ω) * (a : Ω) = 1 := by
+        have := congrArg Subtype.val (Units.inv_mul u)
+        rw [hu] at this
+        exact this
+      refine Submodule.mem_span_singleton.mpr ⟨(↑u⁻¹ : chartRing S x J) * chartIncl h c, ?_⟩
+      rw [chartRing_smul_def, Subalgebra.coe_mul, mul_assoc]
+      change (↑u⁻¹ : chartRing S x J).1 * ((c : Ω) * s) = y
+      rw [← chartRing_smul_def c s, hc, smul_eq_mul, ← mul_assoc, hinv, one_mul]
+  fg _ := Submodule.fg_span_singleton s
+  invertible I := ⟨Submodule.span (chartRing S x I) {s⁻¹}, by
+    rw [Submodule.span_mul_span, Set.singleton_mul_singleton, mul_inv_cancel₀ hs, ← Submodule.one_eq_span]⟩
+
+variable {E : Type v} [AddCommGroup E] [Module Ω E] [Module S E] [IsScalarTower S Ω E]
+
+def SubFamily.sup (F G : SubFamily S x E) : SubFamily S x E where
+  sub I := F.sub I ⊔ G.sub I
+  mono I J h y hy := by
+    obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.mp hy
+    exact Submodule.mem_sup.mpr ⟨a, F.mono I J h a ha, b, G.mono I J h b hb, rfl⟩
+  mem_iff I J h y := by
+    constructor
+    · intro hy
+      obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.mp hy
+      obtain ⟨u, hu, hua⟩ := (F.mem_iff I J h a).mp ha
+      obtain ⟨v, hv, hvb⟩ := (G.mem_iff I J h b).mp hb
+      refine ⟨u * v, by rw [map_mul]; exact hu.mul hv, ?_⟩
+      have : ((u * v : chartRing S x I) : Ω) • (a + b) = v • ((u : Ω) • a) + u • ((v : Ω) • b) := by
+        rw [Subalgebra.smul_def, Subalgebra.smul_def, smul_smul, smul_smul, Subalgebra.coe_mul, smul_add,
+          mul_comm (v : Ω) (u : Ω)]
+      rw [this]
+      exact Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.smul_mem _ v hua))
+        (Submodule.mem_sup_right (Submodule.smul_mem _ u hvb))
+    · rintro ⟨a, ⟨u, hu⟩, hay⟩
+      have hJ : (a : Ω) • y ∈ F.sub J ⊔ G.sub J := by
+        obtain ⟨c, hc, d, hd, hcd⟩ := Submodule.mem_sup.mp hay
+        exact Submodule.mem_sup.mpr ⟨c, F.mono I J h c hc, d, G.mono I J h d hd, hcd⟩
+      have hinv : ((↑u⁻¹ : chartRing S x J) : Ω) * (a : Ω) = 1 := by
+        have := congrArg Subtype.val (Units.inv_mul u)
+        rw [hu] at this
+        exact this
+      have hy : y = (↑u⁻¹ : chartRing S x J) • ((a : Ω) • y) := by
+        rw [Subalgebra.smul_def, smul_smul, hinv, one_smul]
+      rw [hy]
+      exact Submodule.smul_mem _ _ hJ
+
+end
+
+end GroundTheory.Heights₂.Heights.Kleiman
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperSectionObj =====
+
+-- ===== clump member: GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSnapperSection =====
+-- clump-header: {"m": "GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSnapperSection", "h": "module\n\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperSectionSt\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperQuotAddSt\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperQuotDevissageSt\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.MulQuotEqSt\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SectionNonvanishSt\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SectionMulInjSt\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.SnapperSectionObj\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.TwistAlg\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.AssemblyBase\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PCutZeroNotLe\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PIdealTwistFamily\npublic import GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSnapper\nimport GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PStepThreeAway\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.KrullDimension.Field\nimport Mathlib.RingTheory.KrullDimension.Polynomial\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option maxSynthPendingDepth 1
@@ -326,3 +374,6 @@ theorem SnapperSection.proof (hA : SnapperQuotAdd.Statement.{u, w, w})
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.HeightsAndTheta.Heights.KleimanAmpleness.PSnapperSection =====

@@ -142,7 +142,7 @@ private theorem comb_gsp {A B : M4 k} {ν : k} (h : GlobalTheory (B - A)) (hA : 
   rw [adj_comb, comb_mul (blk_adj h) h, hA, hB]
   ext1 i j
   rw [comb_same rfl rfl]
-  by_cases e : i = j <;> simp [Matrix.one_apply, e]
+  by_cases e : i = j <;> simp [e]
 
 private theorem e32 {A : M4 k} {ν : k} (hA : IsGSp ν A) (lo : ∀ i j, i < j → A i j = 0) :
     A 3 2 * A 0 0 + A 2 2 * A 1 0 = 0 := by

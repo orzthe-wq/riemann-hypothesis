@@ -81,18 +81,18 @@ lemma dual_base_vector_eq_single : es0 k r' = Pi.single (iL k r') 1 := rfl
 lemma Hpk_first (j : Fin (2 * (1 + r') + k + 1)) :
     Hpk k (1 + r') (iF k r') j = if j = iL k r' then 1 else 0 := by
   simp only [Hpk, iF, iL, Fin.ext_iff]
-  split_ifs <;> first | rfl | (exfalso; omega) | (exfalso; simp only [Fin.val_mk] at *; omega)
+  split_ifs <;> first | rfl | (exfalso; omega)
 
 lemma Hpk_last (i : Fin (2 * (1 + r') + k + 1)) :
     Hpk k (1 + r') i (iL k r') = if i = iF k r' then 1 else 0 := by
   simp only [Hpk, iF, iL, Fin.ext_iff]
-  split_ifs <;> first | rfl | (exfalso; omega) | (exfalso; simp only [Fin.val_mk] at *; omega)
+  split_ifs <;> first | rfl | (exfalso; omega)
 
 private lemma star_bvec' {m : ℕ} (p : Fin m) : star (bvec p) = bvec p := by
   ext j
   by_cases h : j = p
   · subst h; simp [bvec]
-  · simp [bvec, Pi.single_apply, h]
+  · simp [bvec, h]
 
 private lemma herm_bvec_right_eq_mulVec_apply {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (u : Fin m → ℂ) (p : Fin m) :
     herm H u (bvec p) = (H *ᵥ u) p := by
@@ -127,7 +127,6 @@ lemma liftVec_mid (y : Fin (2 * r' + k + 1) → ℂ) (j : Fin (2 * r' + k + 1)) 
   rw [dif_pos (show 1 ≤ (levPos k 1 r' j).val ∧ (levPos k 1 r' j).val < 2 * r' + k + 1 + 1 from
     ⟨show 1 ≤ j.val + 1 by omega, show j.val + 1 < 2 * r' + k + 1 + 1 by omega⟩)]
   congr 1
-  all_goals exact Fin.ext (show j.val + 1 - 1 = j.val by omega)
 
 lemma levPos_ne_first (j : Fin (2 * r' + k + 1)) : levPos k 1 r' j ≠ iF k r' := by
   intro h
@@ -152,7 +151,7 @@ def eta (k r' : ℕ) (v : Fin (2 * (1 + r') + k + 1) → ℂ) : ℂ × HPar k r'
   (v (iL k r'), (fun j => v (levPos k 1 r' j) / v (iL k r'), (v (iF k r') / v (iL k r')).im))
 
 lemma xi_last (p : ℂ × HPar k r') : xi k r' p (iL k r') = p.1 := by
-  simp [xi, dual_base_vector_eq_single, e0_eq, liftVec_last, Pi.single_apply, (first_ne_last (k := k) (r' := r')).symm]
+  simp [xi, dual_base_vector_eq_single, e0_eq, liftVec_last, (first_ne_last (k := k) (r' := r')).symm]
 
 lemma hb_im (y : Fin (2 * r' + k + 1) → ℂ) (s : ℝ) : (hb k r' y s).im = s := by
   simp [hb]
@@ -163,9 +162,9 @@ lemma eta_xi (p : ℂ × HPar k r') (hc : p.1 ≠ 0) : eta k r' (xi k r' p) = p 
   have hL : xi k r' (c, y, s) (iL k r') = c := xi_last _
   have hM : ∀ j, xi k r' (c, y, s) (levPos k 1 r' j) = c * y j := by
     intro j
-    simp [xi, dual_base_vector_eq_single, e0_eq, liftVec_mid, Pi.single_apply, levPos_ne_first, levPos_ne_last]
+    simp [xi, dual_base_vector_eq_single, e0_eq, liftVec_mid, levPos_ne_first, levPos_ne_last]
   have hF : xi k r' (c, y, s) (iF k r') = c * hb k r' y s := by
-    simp [xi, dual_base_vector_eq_single, e0_eq, liftVec_first, Pi.single_apply, first_ne_last]
+    simp [xi, dual_base_vector_eq_single, e0_eq, liftVec_first, first_ne_last]
   simp only [eta, hL, hM, hF]
   refine Prod.ext rfl (Prod.ext ?_ ?_)
   · funext j
@@ -203,8 +202,7 @@ lemma long_weyl_sends_base_to_dual (c : ℂ) : w0 k r' c *ᵥ e0 k r' = c • es
   rw [e0_eq, dual_base_vector_eq_single]
   ext i
   have hcol : (w0 k r' c *ᵥ Pi.single (iF k r') 1) i = w0 k r' c i (iF k r') := by
-    simp only [mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq,
-      Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    simp only [mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   rw [hcol, w0_apply_iF_col, Pi.smul_apply, Pi.single_apply, smul_eq_mul]
   split_ifs <;> simp
 
@@ -226,7 +224,7 @@ lemma heis_zero : heis0 k r' (0, 0) = 1 := by
 lemma lev_one : ιLev k 1 r' 1 = 1 := by
   ext p q
   simp only [ιLev, Matrix.one_apply]
-  split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | rfl | (exfalso; omega) | (exfalso; simp only [Fin.val_mk] at *; omega)
+  split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | rfl | (exfalso; omega)
 
 lemma lev_mid (g : Mat k r') (i j : Fin (2 * r' + k + 1)) : ιLev k 1 r' g (levPos k 1 r' i) (levPos k 1 r' j) = g i j := by
   have hi := i.isLt
@@ -234,7 +232,7 @@ lemma lev_mid (g : Mat k r') (i j : Fin (2 * r' + k + 1)) : ιLev k 1 r' g (levP
   unfold ιLev levPos
   rw [dif_pos (show 1 ≤ i.val + 1 ∧ i.val + 1 < 2 * r' + k + 1 + 1 by omega),
     dif_pos (show 1 ≤ j.val + 1 ∧ j.val + 1 < 2 * r' + k + 1 + 1 by omega)]
-  congr 1 <;> exact Fin.ext (by simp)
+  congr 1
 
 lemma mid_or (p : Fin (2 * (1 + r') + k + 1)) : (∃ i, p = levPos k 1 r' i) ∨ ¬ (1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1) := by
   by_cases h : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1
@@ -263,7 +261,7 @@ private lemma iotaLev_apply_of_first_index_outside (g : Mat k r') (p : Fin (2 * 
   rw [dif_neg hp]
 
 lemma lev_mul (g h : Mat k r') : ιLev k 1 r' (g * h) = ιLev k 1 r' g * ιLev k 1 r' h := by
-  apply ReciprocityTheory.ChartRestriction.DS.Xi.StepA.lev_mul <;> assumption
+  apply ReciprocityTheory.ChartRestriction.DS.Xi.StepA.lev_mul
 
 lemma lev_inv (g : Mat k r') (hg : IsUnit g.det) : (ιLev k 1 r' g)⁻¹ = ιLev k 1 r' g⁻¹ := by
   apply Matrix.inv_eq_right_inv
@@ -283,13 +281,9 @@ def detF (x : Mt k r) : ℂ := (Matrix.of x : Mat k r).det
 theorem detF_cont : Continuous (detF (k := k) (r := r)) := by
   first
     | exact Continuous.matrix_det continuous_id
-    | (unfold detF; fun_prop)
-    | (unfold detF; continuity)
 theorem adjF_cont : Continuous (adjF (k := k) (r := r)) := by
   first
     | exact Continuous.matrix_adjugate continuous_id
-    | (unfold adjF; fun_prop)
-    | (unfold adjF; continuity)
 
 theorem invM_smul : (invM : Mt k r → Mt k r) = fun x => (detF x)⁻¹ • adjF x := by
   funext x
@@ -300,8 +294,6 @@ theorem invM_meas : Measurable (invM : Mt k r → Mt k r) := by
   rw [invM_smul]
   first
     | exact (detF_cont.measurable.inv).smul adjF_cont.measurable
-    | (apply measurable_pi_lambda; intro i; apply measurable_pi_lambda; intro j
-       exact (detF_cont.measurable.inv).mul (((continuous_apply j).comp ((continuous_apply i).comp adjF_cont)).measurable))
 
 theorem invM_contOn : ContinuousOn (invM : Mt k r → Mt k r) {x | detF x ≠ 0} := by
   rw [invM_smul]
@@ -310,14 +302,10 @@ theorem invM_contOn : ContinuousOn (invM : Mt k r → Mt k r) {x | detF x ≠ 0}
 theorem lmulM_cont (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) := by
   first
     | exact continuous_const.matrix_mul continuous_id
-    | (unfold lmulM; fun_prop)
-    | (unfold lmulM; continuity)
 
 theorem mulM_cont : Continuous (mulM : Mt k r × Mt k r → Mt k r) := by
   first
     | exact continuous_fst.matrix_mul continuous_snd
-    | (unfold mulM; fun_prop)
-    | (unfold mulM; continuity)
 
 theorem sigmaFinite_of_haar {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := by
   haveI : IsFiniteMeasureOnCompacts μ := ⟨@fun K hK => h.finite_compact K hK⟩
@@ -334,7 +322,6 @@ lemma liftVec_cont : Continuous (liftVec k 1 r') := by
 lemma herm_cont {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) : Continuous fun p : (Fin m → ℂ) × (Fin m → ℂ) => herm H p.1 p.2 := by
   first
     | (simp only [herm, dotProduct, mulVec]; fun_prop)
-    | (simp only [herm, dotProduct, mulVec]; continuity)
 
 lemma hb_cont : Continuous fun x : HPar k r' => hb k r' x.1 x.2 := by
   have h1 : Continuous fun x : HPar k r' => herm (Hpk k r') x.1 x.1 :=
@@ -365,7 +352,6 @@ lemma long_weyl_family_measurable : Measurable (w0F k r') := by
   first
     | exact Measurable.ite (MeasurableSet.const _) (continuous_star.measurable.inv)
         (Measurable.ite (MeasurableSet.const _) measurable_id (Measurable.ite (MeasurableSet.const _) measurable_const measurable_const))
-    | measurability
 
 lemma levM_cont : Continuous (levM k r') := by
   apply continuous_pi; intro p; apply continuous_pi; intro q
@@ -373,7 +359,7 @@ lemma levM_cont : Continuous (levM k r') := by
   by_cases hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1
   · by_cases hq : 1 ≤ q.val ∧ q.val < 2 * r' + k + 1 + 1
     · simp only [dif_pos hp, dif_pos hq]
-      first | exact continuous_apply_apply _ _ | fun_prop | continuity
+      first | exact continuous_apply_apply _ _
     · simp only [dif_pos hp, dif_neg hq]; exact continuous_const
   · simp only [dif_neg hp]; exact continuous_const
 
@@ -398,10 +384,6 @@ lemma eta_meas : Measurable (eta k r') := by
   unfold eta
   first
     | fun_prop
-    | exact (measurable_pi_apply _).prodMk ((Measurable.of_eval fun j =>
-        ((measurable_pi_apply _).div (measurable_pi_apply _))).prodMk
-        (Complex.measurable_im.comp ((measurable_pi_apply _).div (measurable_pi_apply _))))
-    | measurability
 
 def Psi (k r' : ℕ) (p : ℂ × ((HPar k r' × HPar k r') × Mt k r')) : Mt k (1 + r') :=
   oneStep k r' p.2.1.1 p.1 (Matrix.of p.2.2) p.2.1.2
@@ -426,10 +408,6 @@ lemma heis_mem_P (hG : ClosedG) (SD : StabDecomp) (x : HPar k r') : heis0 k r' x
   have h1 : (1 : Mat k r') ∈ GV k r' := by
     first
       | exact (hG k r').one_mem
-      | exact (hG k r').2.1
-      | exact (hG k r').1.1
-      | exact (hG k r').one
-      | exact (hG k r').2.2.1
   rw [SD k r']
   unfold mulSet Hset
   show ∃ a ∈ Set.range (heis0 k r'), ∃ b ∈ ιLev k 1 r' '' GV k r', heis0 k r' x = a * b
@@ -453,10 +431,6 @@ lemma tau_mem (hG : ClosedG) (HI : HeisInv) (OM : OneStepMem) (p : ℂ × HPar k
   have h1 : (1 : Mat k r') ∈ GV k r' := by
     first
       | exact (hG k r').one_mem
-      | exact (hG k r').2.1
-      | exact (hG k r').1.1
-      | exact (hG k r').one
-      | exact (hG k r').2.2.1
   rw [tau_eq_oneStep HI p]
   exact (OM k r' (-p.2.1, -p.2.2) (0, 0) p.1 hc 1 h1).1
 
@@ -505,8 +479,6 @@ lemma wt_meas : Measurable (wt k r') := by
   unfold wt
   first
     | exact (continuous_norm.pow _).measurable.ennreal_ofReal
-    | fun_prop
-    | measurability
 
 def mC (k r' : ℕ) : Measure ℂ := (volume : Measure ℂ).withDensity (wt k r')
 
@@ -639,7 +611,6 @@ lemma mC_zero : mC k r' {0} = 0 := by
   rw [withDensity_apply _ (measurableSet_singleton 0)]
   first
     | exact setLIntegral_measure_zero _ _ (measure_singleton 0)
-    | simp
 
 lemma ae_ne : ∀ᵐ p : ℂ × HPar k r' ∂(mCone k r'), p.1 ≠ 0 := by
   rw [ae_iff]
@@ -649,9 +620,6 @@ lemma ae_ne : ∀ᵐ p : ℂ × HPar k r' ∂(mCone k r'), p.1 ≠ 0 := by
 lemma mulVec_cont (a : Mat k (1 + r')) : Continuous fun v : Fin (2 * (1 + r') + k + 1) → ℂ => a *ᵥ v := by
   first
     | exact continuous_const.matrix_mulVec continuous_id
-    | fun_prop
-    | (simp only [mulVec, dotProduct]; fun_prop)
-    | continuity
 
 lemma ae_ne' (CI : ConeInv) (a : Mat k (1 + r')) (ha : a ∈ GV k (1 + r')) :
     ∀ᵐ p : ℂ × HPar k r' ∂(mCone k r'), (a *ᵥ xi k r' p) (iL k r') ≠ 0 := by
@@ -660,7 +628,6 @@ lemma ae_ne' (CI : ConeInv) (a : Mat k (1 + r')) (ha : a ∈ GV k (1 + r')) :
   have hS : MeasurableSet {v : Fin (2 * (1 + r') + k + 1) → ℂ | v (iL k r') ≠ 0} := by
     first
       | exact (measurableSet_eq_fun (measurable_pi_apply _) measurable_const).compl
-      | measurability
   have h1 : ∀ᵐ v ∂(coneMeas k r'), v (iL k r') ≠ 0 := by
     rw [cone_eq, ae_map_iff hx.aemeasurable hS]
     filter_upwards [ae_ne (k := k) (r' := r')] with p hp
@@ -728,7 +695,7 @@ lemma Ff_ind (μP : Measure (Mt k (1 + r'))) (S : Set (Mt k (1 + r'))) (hS : Mea
   have hm : MeasurableSet ((fun q => mulM (g, q)) ⁻¹' S) :=
     (mulM_cont.comp (continuous_const.prodMk continuous_id)).measurable hS
   rw [← lintegral_indicator_one hm]
-  first | rfl | (congr 1; ext q; simp [Set.indicator_apply])
+  first | rfl
 
 def nu (μG₁ : Measure (Mt k r')) : Measure (Mt k (1 + r')) :=
   ((mC k r').prod ((volume : Measure (HPar k r' × HPar k r')).prod μG₁)).map (Psi k r')
@@ -739,7 +706,6 @@ lemma lintegral_nu (μG₁ : Measure (Mt k r')) [SFinite μG₁] (f : Mt k (1 + 
   rw [lintegral_map hf Psi_meas]
   first
     | rw [lintegral_prod (fun a => f (Psi k r' a)) ((hf.comp Psi_meas).aemeasurable)]
-    | rw [lintegral_prod _ (hf.comp Psi_meas).aemeasurable]
   unfold mC
   rw [lintegral_withDensity_eq_lintegral_mul _ wt_meas]
   · rfl
@@ -759,7 +725,7 @@ lemma nu_left (HIv : HaarInv) (hG : ClosedG) (HA : HeisAct) (HI : HeisInv) (OM :
     nu_apply _ _ hS]
   have hi : (lmulM a ⁻¹' S).indicator (1 : Mt k (1 + r') → ℝ≥0∞) = fun g => S.indicator 1 (lmulM a g) := by
     funext g
-    first | rfl | simp [Set.indicator_apply]
+    first | rfl
   rw [hi]
   exact II_inv HIv hG HA HI OM OC CI SD μG₁ h₁ hP hμP _ (measurable_one.indicator hS) a ha
 
@@ -770,7 +736,7 @@ lemma nu_conc (HIv : HaarInv) (hG : ClosedG) (HI : HeisInv) (OM : OneStepMem)
   haveI := sigmaFinite_of_haar h₁
   have hGc : @IsClosed (Mt k (1 + r')) _ (GV k (1 + r')) := by
     have hG' := hG k (1 + r')
-    first | exact hG'.1 | exact hG'.isClosed | exact hG'.closed | exact hG'.2
+    first | exact hG'.closed
   rw [nu_apply _ _ ?hS]
   swap
   · exact hGc.measurableSet.compl
@@ -799,9 +765,6 @@ lemma nu_conc (HIv : HaarInv) (hG : ClosedG) (HI : HeisInv) (OM : OneStepMem)
 lemma evalE_cont : Continuous fun g : Mt k (1 + r') => (Matrix.of g : Mat k (1 + r')) *ᵥ e0 k r' := by
   first
     | exact continuous_id.matrix_mulVec continuous_const
-    | fun_prop
-    | (simp only [mulVec, dotProduct]; fun_prop)
-    | continuity
 
 lemma nu_fin (HIv : HaarInv) (hG : ClosedG) (HA : HeisAct) (HI : HeisInv) (OM : OneStepMem) (CF : ConeFinite)
     (μG₁ : Measure (Mt k r')) (h₁ : IsHaarOn (GV k r') μG₁)
@@ -870,7 +833,6 @@ lemma mC_ne : mC k r' ≠ 0 := by
     unfold mC at h
     first
       | exact withDensity_eq_zero wt_meas.aemeasurable h
-      | exact (withDensity_eq_zero_iff wt_meas.aemeasurable).1 h
   have h2 : ∀ᵐ c : ℂ ∂volume, c = 0 := by
     filter_upwards [h1] with c hc
     simp only [wt, Pi.zero_apply, ENNReal.ofReal_eq_zero] at hc
@@ -885,7 +847,6 @@ lemma mC_ne : mC k r' ≠ 0 := by
   rw [ae_iff] at h4
   first
     | simp at h4
-    | exact (NeZero.ne (volume : Measure ℂ)) (Measure.measure_univ_eq_zero.1 (by simpa using h4))
 
 lemma prod_ne {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] (μ : Measure α) (ν : Measure β) [SFinite ν]
     (h1 : μ ≠ 0) (h2 : ν ≠ 0) : μ.prod ν ≠ 0 := by
@@ -896,9 +857,7 @@ lemma prod_ne {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] (μ : Me
 
 lemma vol_ne : (volume : Measure (HPar k r' × HPar k r')) ≠ 0 := by
   first
-    | exact NeZero.ne _
     | exact prod_ne _ _ (NeZero.ne _) (NeZero.ne _)
-    | simp
 
 lemma nu_ne (μG₁ : Measure (Mt k r')) [SFinite μG₁] (h0 : μG₁ ≠ 0) : nu μG₁ ≠ 0 := by
   unfold nu
@@ -936,7 +895,7 @@ lemma herm_bvec {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (p q : Fin m) : herm 
 
 lemma base_vector_levi_coordinate_zero (i : Fin (2 * r' + k + 1)) : e0 k r' (levPos k 1 r' i) = 0 := by
   rw [e0_eq]
-  simp [Pi.single_apply, levPos_ne_first]
+  simp [levPos_ne_first]
 
 lemma hermitian_levi_vector_base_orthogonal (j : Fin (2 * r' + k + 1)) :
     herm (Hpk k (1 + r')) (bvec (levPos k 1 r' j)) (e0 k r') = 0 := by
@@ -984,7 +943,6 @@ def rho (k r' : ℕ) (g : Mt k (1 + r')) : Mt k (1 + r') :=
 lemma rho_cont : Continuous (rho k r') := by
   first
     | exact levM_cont.comp (continuous_pi fun i => continuous_pi fun j => continuous_apply_apply _ _)
-    | exact levM_cont.comp (by fun_prop)
 
 lemma rho_prod (x : HPar k r') (g : Mat k r') : rho k r' (heis0 k r' x * ιLev k 1 r' g) = ιLev k 1 r' g := by
   unfold rho
@@ -994,14 +952,11 @@ lemma rho_prod (x : HPar k r') (g : Mat k r') : rho k r' (heis0 k r' x * ιLev k
 
 lemma parabolic_subgroup_closed (hG : ClosedG) : IsClosed (P1set k r') := by
   have hc : IsClosed {g : Mat k (1 + r') | g *ᵥ e0 k r' = e0 k r'} :=
-    isClosed_eq (by first | exact continuous_id.matrix_mulVec continuous_const | fun_prop | continuity)
+    isClosed_eq (by first | exact continuous_id.matrix_mulVec continuous_const)
       continuous_const
   have hG' := hG k (1 + r')
   first
-    | exact hG'.1.inter hc
-    | exact hG'.isClosed.inter hc
     | exact hG'.closed.inter hc
-    | exact hG'.2.inter hc
 
 theorem assembleStab : AssembleStab := by
   intro hSemi hLev hG hHC hHH hConj hConjM hStab k r' μG₁ hμ

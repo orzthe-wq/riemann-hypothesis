@@ -66,21 +66,13 @@ theorem cut_mul {R : Type} [CommRing R] {n : ℕ} (e f : R) (hef : e * f = 0) (M
   simp only [add_mul, mul_add, smul_mul_smul_comm, Matrix.mul_one, Matrix.one_mul, hef, h1, h2, h3, zero_smul, zero_add]
   rw [add_smul]; abel
 
-theorem mt_mul (V : HSp D) (x y : GA D V) : mt V (x * y) = mt V x * mt V y := by
-  show (matHom V (x * y)).1 = (matHom V x).1 * (matHom V y).1
-  rw [map_mul, Units.val_mul]
+alias mt_mul := _root_.GlobalTheory.BesselCompare.mt_mul
 
-theorem mt_one (V : HSp D) : mt V 1 = 1 := by
-  show (matHom V 1).1 = 1
-  rw [map_one, Units.val_one]
+alias mt_one := _root_.GlobalTheory.BesselCompare.mt_one
 
-theorem mt_injective (V : HSp D) : Function.Injective (mt V) := by
-  intro x y h
-  exact Subtype.ext (Units.ext h)
+alias mt_injective := _root_.GlobalTheory.MixModel.mt_injective
 
-theorem cA_algebraMap (a : AF D.host.F) : cA D (algebraMap (AF D.host.F) (AE D) a) = algebraMap (AF D.host.F) (AE D) a := by
-  show (Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) (D.sp.cm.sig)).toRingHom (a ⊗ₜ 1) = a ⊗ₜ 1
-  simp
+alias cA_algebraMap := _root_.GlobalTheory.LocWeil.cA_algebraMap
 
 theorem cut_exists (V : HSp D) (g : GA D V) (ε : AE D) (hεε : ε * ε = ε) (hε : cA D ε = ε) :
     ∃ k : GA D V, mt V k = ε • mt V g + (1 - ε) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := by

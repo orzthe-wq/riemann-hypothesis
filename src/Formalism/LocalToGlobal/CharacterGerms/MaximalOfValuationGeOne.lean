@@ -2,46 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.CharacterGerms.FirstStepSecondHalfCondition
 public import Formalism.LocalToGlobal.CharacterGerms.RowTiePGerm
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
 public import Mathlib.Data.Nat.Choose.Dvd
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 
 @[expose] public section
 
@@ -208,17 +169,12 @@ theorem MMS.pderiv {f : MvPowerSeries σ C} (hf : MMS V f) (i : σ) : MMS V (MvP
   rw [MvPowerSeries.coeff_pderiv]
   refine mm_mul_ge (hf _) ?_
   first
-    | exact ge_natCast _
     | exact VF.Ge.add (ge_natCast _) VF.Ge.one
-    | (push_cast; exact VF.Ge.add (ge_natCast _) VF.Ge.one)
 
 private theorem hasSubst_lemma_2 [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha0 : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) : MvPowerSeries.HasSubst a := by
   first
-    | exact MvPowerSeries.HasSubst.of_constantCoeff_zero ha0
     | exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha0
-    | exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)
-    | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)
 
 private theorem mm_finsum_lemma_3 {ι : Type} {g : ι → C} (h : ∀ i, V.MM (g i)) : V.MM (∑ᶠ i, g i) := by
   rw [finsum_def]
@@ -409,8 +365,6 @@ theorem mms_pow_frobTw [Finite σ] {f : MvPowerSeries σ C} (hf : IntS V f) : MM
       intro p hp
       first
         | rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp
-        | rw [Finset.mem_antidiagonal] at hp
-        | simp only [Finset.mem_antidiagonal] at hp
       rw [hlow p.1 (by rw [← hp]; exact le_self_add), zero_mul]
     rw [map_sub, sub_eq_zero] at h2
     exact h2
@@ -471,12 +425,10 @@ theorem mms_subst_frobTw [Finite σ] [Finite τ] {a : σ → MvPowerSeries τ C}
   have hpow : MvPowerSeries.subst a (f ^ V.l) = (MvPowerSeries.subst a f) ^ V.l := by
     first
       | exact MvPowerSeries.subst_pow hs _ _
-      | (rw [← MvPowerSeries.coe_substAlgHom hs]; exact map_pow _ _ _)
   have hsub : MvPowerSeries.subst a (f ^ V.l - frobTw V.l f) =
       MvPowerSeries.subst a (f ^ V.l) - MvPowerSeries.subst a (frobTw V.l f) := by
     first
       | exact MvPowerSeries.subst_sub hs _ _
-      | (rw [← MvPowerSeries.coe_substAlgHom hs]; exact map_sub _ _ _)
   have e : MvPowerSeries.subst a (frobTw V.l f) - frobTw V.l (MvPowerSeries.subst a f) =
       -(MvPowerSeries.subst a (f ^ V.l - frobTw V.l f)) +
         ((MvPowerSeries.subst a f) ^ V.l - frobTw V.l (MvPowerSeries.subst a f)) := by

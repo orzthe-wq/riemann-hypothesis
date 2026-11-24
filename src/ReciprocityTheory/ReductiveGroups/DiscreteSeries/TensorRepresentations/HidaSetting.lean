@@ -97,7 +97,7 @@ theorem tset_actM_single {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n 
 theorem tset_conj_single (k : Matrix (Fin n) (Fin n) ℂ) (r d a b : Fin n) :
     (k * Matrix.single r d (1 : ℂ) * kᴴ : Matrix (Fin n) (Fin n) ℂ) a b = k a r * star (k b d) := by
   simp [Matrix.mul_apply, Matrix.single_apply, Matrix.conjTranspose_apply, ite_and, ite_mul,
-    Finset.sum_ite_eq, Finset.sum_ite_eq']
+    Finset.sum_ite_eq]
 
 theorem tset_unit {k : Matrix (Fin n) (Fin n) ℂ} (hu : k * kᴴ = 1) (s b : Fin n) :
     ∑ d, k s d * star (k b d) = if s = b then 1 else 0 := by
@@ -327,8 +327,7 @@ theorem isGKEndo_eeF {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → 
         · rw [if_pos h, if_pos h, h]
         · rw [if_neg h, if_neg h, map_zero]
 
-      simp only [e2, Finset.sum_add_distrib, Finset.sum_sub_distrib, hirr, Finset.sum_ite_eq,
-      Finset.sum_ite_eq', Finset.mem_univ, reduceIte, map_sum, map_neg]
+      simp only [e2, Finset.sum_add_distrib, Finset.sum_sub_distrib, hirr, Finset.sum_ite_eq', Finset.mem_univ, reduceIte, map_sum, map_neg]
       by_cases hbc : b = c
       · rw [if_pos hbc, if_pos hbc.symm]; abel
       · rw [if_neg hbc, if_neg (Ne.symm hbc)]; abel

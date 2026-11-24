@@ -77,7 +77,7 @@ theorem isCompact_intAf : IsCompact (intAf F) :=
   (GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).1
 
 theorem isClosed_intAf : IsClosed (intAf F) := by
-  haveI := GlobalTheory.IntegralFinAdele.t2Space_finiteAdeleRing' F
+  haveI := _root_.GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
   exact (isCompact_intAf F).isClosed
 
 theorem zero_mem_intAf : (0 : FiniteAdeleRing (𝓞 F) F) ∈ intAf F := fun v => by

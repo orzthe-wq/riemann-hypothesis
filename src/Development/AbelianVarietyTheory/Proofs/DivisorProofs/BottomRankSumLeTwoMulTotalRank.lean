@@ -73,7 +73,7 @@ theorem eq_of_dvd_absNorm {K : Type} [Field K] [NumberField K] (v : HeightOneSpe
 theorem splitIn_of_cls {D : D7} {p : ℕ} (h : D.host.cls p = .splitK) : SplitIn D p := by
   right
   unfold Formalism.BasicNotions.Host.cls primeClass at h
-  split_ifs at h with h1 h2 h3 h4 <;> first | exact h4 | cases h
+  split_ifs at h with h1 h2 h3 h4 <;> first | exact h4
 
 theorem goodLevel {D : D7} {T : Type} {L : LevCh D T} (P : Places L)
     (hsplit : ∀ p ∈ D.host.levelPrimes, D.host.cls p = .splitK) : GoodLevel D (levQ P) := by

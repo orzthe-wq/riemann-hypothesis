@@ -88,26 +88,6 @@ noncomputable def ambientTowerOfLowerResolution (hres : FunctorialResolution.Blo
     (MarkedBlowupSequenceData.ofMarkedSequence (alg (restrictToBoundaryDivisor T j hj I₀ E₀) hdn.1)).toBlowupSequenceData
     hres hno hpr
 
-theorem containedComponentsIdeal_eq_ker_ι_comp_subschemeι_of_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
-    (h : IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
-      connectedComponent x ⊆
-        ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult}) :
-    containedComponentsIdeal T j hj =
-      Scheme.Hom.ker
-        (@AlgebraicGeometry.Scheme.Opens.ι (T.boundary.get ⟨j, hj⟩).subscheme
-            ⟨{x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
-                connectedComponent x ⊆
-                  ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult}, h⟩ ≫
-          (T.boundary.get ⟨j, hj⟩).subschemeι) :=
-  containedComponentsIdeal_eq_ker T j hj h
-
-theorem containedComponentsIdeal_eq_top_of_not_isOpen_setOf_connectedComponent (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
-    (h : ¬ IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
-      connectedComponent x ⊆
-        ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult}) :
-    containedComponentsIdeal T j hj = ⊤ :=
-  containedComponentsIdeal_eq_top_of_not_isOpen T j hj h
-
 theorem divisorReductionSeq_eq_of_containedComponentsIdeal_eq_top (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     (alg : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → S.SequenceOfBlowups) (j : ℕ) (hj : j < T.boundary.length)

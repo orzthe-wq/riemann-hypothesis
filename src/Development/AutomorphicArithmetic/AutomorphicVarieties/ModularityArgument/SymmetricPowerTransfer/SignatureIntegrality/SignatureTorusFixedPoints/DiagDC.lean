@@ -48,14 +48,6 @@ noncomputable section
 
 open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Sig UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
-private theorem vo {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x : kˣ) :
-    valuation k (x : k) = uniformizer k ^ ord k x := by
-  have h1 := GlAx.val_div_ord x
-  have h2 := GlAx.val_zpow (k := k) (ord k x)
-  have e : (x : k) = ((x / unif k ^ ord k x : kˣ) : k) * ((unif k ^ ord k x : kˣ) : k) := by
-    rw [← Units.val_mul, div_mul_cancel]
-  rw [e, map_mul, h1, h2, one_mul]
-
 theorem UpperTheory.V.Z.Sym.Sig.diagDC : UpperTheory.V.Z.Sym.Sig.DiagDC := by
   intro k _ _ _ _ V n d s hd
   have hlt : uniformizer k < 1 := ValuativeRel.uniformizer_lt_one
@@ -72,11 +64,11 @@ theorem UpperTheory.V.Z.Sym.Sig.diagDC : UpperTheory.V.Z.Sym.Sig.DiagDC := by
     have hY0 : (diagT k (Fin n) d)⁻¹ * y1 * diagT k (Fin n) d ∈ (glIwa k n).Nm V.c := by
       have hv : ∀ i, valuation k ((d⁻¹ i : kˣ) : k) = uniformizer k ^ (-ord k (d i)) := by
         intro i
-        rw [Pi.inv_apply, Units.val_inv_eq_inv_val, map_inv₀, vo, _root_.zpow_neg]
+        rw [Pi.inv_apply, Units.val_inv_eq_inv_val, map_inv₀, _root_.UpperTheory.V.Z.Sym.Sig.val_ord, _root_.zpow_neg]
       have hc : ∀ i j : Fin n, j < i → (V.c : ℤ) + -ord k (d j) ≤ (V.c : ℤ) + -ord k (d i) := by
         intro i j hji
         have h0 := hd j i hji.le
-        rw [vo, vo, zpow_le_zpow_iff_right_of_lt_one₀ hpos hlt] at h0
+        rw [_root_.UpperTheory.V.Z.Sym.Sig.val_ord, _root_.UpperTheory.V.Z.Sym.Sig.val_ord, zpow_le_zpow_iff_right_of_lt_one₀ hpos hlt] at h0
         omega
       have := GlAx.conj_Nm hv hc hy1
       rwa [map_inv, inv_inv] at this

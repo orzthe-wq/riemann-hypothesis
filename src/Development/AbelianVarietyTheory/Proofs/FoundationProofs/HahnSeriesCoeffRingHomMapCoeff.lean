@@ -188,7 +188,7 @@ theorem toGQ_mul (γ : SL(2, ℤ)) (m : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.d
     rw [Matrix.det_mul, γ.det_coe, one_mul]; exact h
   apply Subtype.ext; apply Units.ext
   ext i j
-  simp [toGQ, hd, h, ofSL, Matrix.mul_apply]
+  simp [toGQ, h, ofSL, Matrix.mul_apply]
 
 end Mat
 
@@ -274,7 +274,7 @@ theorem kronecker_congruence_tower : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     have h := X.exp_upper (toGQ !![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)]) (by rw [ent_toGQ _ (hdet j)]; simp) f (t * q)
     rw [ent_toGQ _ (hdet j), ent_toGQ _ (hdet j), ent_toGQ _ (hdet j)] at h
     simp at h
-    convert h using 2 <;> first | field_simp | (congr 1; field_simp)
+    convert h using 2 <;> first | field_simp
   have hdq : 0 < (!![(q : ℤ), 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det := by
     simp [Matrix.det_fin_two]; exact_mod_cast hq.pos
   have hB : ∀ t : ℚ, (X.exp (X.sl (toGQ ((σ : Matrix (Fin 2) (Fin 2) ℤ) * !![(q : ℤ), 0; 0, 1])) f)).coeff t =

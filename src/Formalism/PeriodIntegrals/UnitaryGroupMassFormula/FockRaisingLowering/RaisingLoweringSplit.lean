@@ -148,7 +148,6 @@ theorem minus_eq (R L : Module.End ℂ (MvPolynomial σ ℂ))
           Finset.sum_range_succ' _ (P.totalDegree + 1),
           apply_homogeneousComponent_eq_zero_of_lt_two L hL P 0 (by norm_num)]
         simp only [zero_add, apply_homogeneousComponent_eq_zero_of_lt_two L hL P 1 (by norm_num), add_zero]
-        try rfl
     _ = L P := by
 
         rw [← map_sum L, sum_hc_of_le P (P.totalDegree + 1 + 1 + 1) (by omega)]

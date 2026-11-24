@@ -232,7 +232,7 @@ theorem ycond_top (LL : ChainLetters N) (j : ℕ) : YCond K (r := r) LL j ⊤ = 
   apply le_sSup
   refine ⟨?_, ?_⟩
   · intro x _
-    simp [MvPolynomial.mem_restrictSupport_iff]
+    simp
   · intro c d x _
     exact Submodule.mem_top
 

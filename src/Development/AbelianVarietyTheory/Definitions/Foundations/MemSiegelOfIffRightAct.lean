@@ -107,13 +107,6 @@ theorem mulVec_pairVec (M : Matrix ι ι A) (x : m → A) (y : n → A) : M *ᵥ
   obtain ⟨i | i, rfl⟩ := e.surjective j <;>
     simp [mulVec, dotProduct, ← e.sum_comp, toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂]
 
-theorem pairVec_vecMul (M : Matrix ι ι A) (x : m → A) (y : n → A) : pairVec e x y ᵥ* M =
-    pairVec e (x ᵥ* (M.submatrix e e).toBlocks₁₁ + y ᵥ* (M.submatrix e e).toBlocks₂₁)
-      (x ᵥ* (M.submatrix e e).toBlocks₁₂ + y ᵥ* (M.submatrix e e).toBlocks₂₂) := by
-  funext j
-  obtain ⟨i | i, rfl⟩ := e.surjective j <;>
-    simp [vecMul, dotProduct, ← e.sum_comp, toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂]
-
 theorem blkMat_mulVec (x : Matrix m m A) (y : Matrix n n A) (u : m → A) (v : n → A) :
     blkMat e x y *ᵥ pairVec e u v = pairVec e (x *ᵥ u) (y *ᵥ v) := by
   simp [mulVec_pairVec, submatrix_blkMat]

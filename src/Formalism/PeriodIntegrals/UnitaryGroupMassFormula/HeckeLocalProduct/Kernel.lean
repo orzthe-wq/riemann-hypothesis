@@ -53,9 +53,6 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 
 namespace PI.HeckeProdW
 
-theorem no_small (z : ℂ) (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
-  first | exact Bl.SecondBlockLemmaN.goal1 .. | (apply Bl.SecondBlockLemmaN.goal1 <;> assumption) | (intros; apply Bl.SecondBlockLemmaN.goal1 <;> assumption) | (apply @Bl.SecondBlockLemmaN.goal1 <;> assumption) | (intros; apply @Bl.SecondBlockLemmaN.goal1 <;> assumption) | (apply @Bl.SecondBlockLemmaN.goal1 <;> first | assumption | infer_instance) | exact @Bl.SecondBlockLemmaN.goal1 z h | exact @Bl.SecondBlockLemmaN.goal1 z
-
 variable (L : Type) [Field L] [NumberField L]
 
 abbrev Pu : Type := (v : HeightOneSpectrum (𝓞 L)) → (v.adicCompletionIntegers L)ˣ
@@ -102,7 +99,7 @@ theorem exists_strictHenselian_absolutely_closed_local_ring (χ : HChar L) : ∃
     intro n i hi
     rw [Pi.pow_apply, hy i (hI.mem_toFinset.2 hi), one_pow]
     exact mem_of_mem_nhds (ht i)
-  refine Units.ext (no_small _ fun n => ?_)
+  refine Units.ext (_root_.Bl.SecondBlockLemmaN.goal1 _ fun n => ?_)
   have h2 := hsub (hyI n)
   simp only [Set.mem_preimage, map_pow, hWdef, Set.mem_setOf_eq, Units.val_pow_eq_pow_val] at h2
   exact h2

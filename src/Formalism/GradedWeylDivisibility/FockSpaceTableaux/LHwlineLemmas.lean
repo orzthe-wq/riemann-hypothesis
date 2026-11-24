@@ -94,7 +94,7 @@ theorem lhwline_eval_colAdd (l j : Fin n) (c : K) (x : Fin r × Fin n → K)
   next p q hp hq =>
     simp only [map_add (f := _), hp, hq]
   next p v hp =>
-    simp only [map_mul, hp, colAdd, aeval_X, lhwline_colOp]
+    simp only [map_mul, colAdd, aeval_X]
     congr 1
     split_ifs <;> simp [lhwline_colOp, *]
 
@@ -176,7 +176,7 @@ theorem lhwline_mrow_inv (φ : (Fin r × Fin n → K) → K) (hφ : lhwline_RInv
       funext v
       by_cases hv : v.1 = b
       · simp [lhwline_mrow, lhwline_rowOp, hv, hbS, hpS]
-      · simp [lhwline_mrow, lhwline_rowOp, hv, hpS]
+      · simp [lhwline_mrow, lhwline_rowOp, hv]
     rw [key, hφ _ p b (t b) hpb, ih (fun c hc => hS c (Finset.mem_insert_of_mem hc))]
 
 theorem lhwline_mcol_inv (φ : (Fin r × Fin n → K) → K) (hφ : lhwline_CInv φ) (q : Fin n)
@@ -194,7 +194,7 @@ theorem lhwline_mcol_inv (φ : (Fin r × Fin n → K) → K) (hφ : lhwline_CInv
       funext v
       by_cases hv : v.2 = b
       · simp [lhwline_mcol, lhwline_colOp, hv, hbS, hqS]
-      · simp [lhwline_mcol, lhwline_colOp, hv, hqS]
+      · simp [lhwline_mcol, lhwline_colOp, hv]
     rw [key, hφ _ q b (c b) hqb, ih (fun d hd => hS d (Finset.mem_insert_of_mem hd))]
 
 def highestWeightLineUpdate (p : Fin r) (q : Fin n) (x : Fin r × Fin n → K) : Fin r × Fin n → K :=
@@ -247,14 +247,14 @@ theorem lhwline_step_cleared (k : ℕ) (hr : k < r) (hn : k < n) (y : Fin r × F
   intro a j haj hak
   rw [lhwline_step_apply]
   have hkk := hp
-  simp only [Fin.lt_def, Fin.val_mk] at haj hak ⊢
+  simp only [Fin.lt_def] at haj hak ⊢
   rcases lt_trichotomy a.val k with ha | ha | ha
   · have h1 : y (a, j) = 0 := hy a j haj (Or.inl ha)
     have h2 : y (a, ⟨k, hn⟩) = 0 := hy a ⟨k, hn⟩ (by simp only [Fin.val_mk]; omega) (Or.inl ha)
     simp [show ¬ k < a.val by omega, h1, h2]
   · have ha' : a = ⟨k, hr⟩ := Fin.ext ha
     subst ha'
-    simp only [Fin.val_mk] at haj hak ⊢
+    simp only at haj hak ⊢
     rcases lt_or_gt_of_ne (Ne.symm haj) with hj | hj
     · have h1 : y (⟨k, hr⟩, j) = 0 := hy _ j (by simp only [Fin.val_mk]; omega) (Or.inr hj)
       simp [h1, show ¬ k < j.val by omega]
@@ -299,7 +299,7 @@ theorem lhwline_minor_RInv (s : ℕ) (hr : s ≤ r) (hn : s ≤ n) :
     have hne : (⟨b.val, hb⟩ : Fin s) ≠ ⟨a.val, ha⟩ := by
       intro h
       have := congrArg Fin.val h
-      simp only [Fin.val_mk] at this
+      simp only at this
       exact absurd this (ne_of_gt hab)
     refine Eq.trans ?_ (Matrix.det_updateRow_add_smul_self _ hne t)
     congr 1
@@ -339,13 +339,13 @@ theorem lhwline_minor_CInv [Infinite K] (s : ℕ) (hr : s ≤ r) (hn : s ≤ n) 
     have hne : (⟨j.val, hj⟩ : Fin s) ≠ ⟨l.val, hl⟩ := by
       intro h
       have := congrArg Fin.val h
-      simp only [Fin.val_mk] at this
+      simp only at this
       exact absurd this (ne_of_gt hlj)
     refine Eq.trans ?_ (Matrix.det_updateCol_add_smul_self _ hne c)
     congr 1
     ext p q
     simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.eval_X,
-      Matrix.updateCol_apply, lhwline_colOp, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+      Matrix.updateCol_apply, lhwline_colOp, smul_eq_mul]
     by_cases hq : q = ⟨j.val, hj⟩
     · subst hq
       have e1 : Fin.castLE hn (⟨j.val, hj⟩ : Fin s) = j := Fin.ext (by simp)

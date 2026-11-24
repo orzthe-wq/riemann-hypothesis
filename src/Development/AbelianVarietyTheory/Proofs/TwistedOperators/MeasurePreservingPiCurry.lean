@@ -90,11 +90,11 @@ def restrictCols (P : Finset C) (X : Matrix A C k) : Matrix A P k := Matrix.of f
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype A] in
 @[simp] theorem restrictCols_setCols (P : Finset C) (Y : Matrix A C k) (U : Matrix A P k) :
     restrictCols P (setCols P Y U) = U := by
-  ext i j; simp [restrictCols, setCols, j.2]
+  ext i j; simp [restrictCols, setCols]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype A] in
 @[simp] theorem setCols_restrictCols (P : Finset C) (Y : Matrix A C k) : setCols P Y (restrictCols P Y) = Y := by
-  ext i j; by_cases h : j ∈ P <;> simp [restrictCols, setCols, h]
+  ext i j; by_cases h : j ∈ P <;> simp [restrictCols, setCols]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype A] in
 @[simp] theorem setCols_setCols (P : Finset C) (Y : Matrix A C k) (U V : Matrix A P k) :

@@ -50,9 +50,7 @@ namespace Formalism.MainNotions.G.symbolGeneratorData
 open Formalism.MainNotions.G Formalism.MainNotions.SourceCleaning Formalism.MainNotions.G.WittFrameLocaliserOrders Formalism.MainNotions.CovariantDegrees
 
 theorem coe_untopD_le_alt (x : WithTop ℤ) (d : ℤ) : ((x.untopD d : ℤ) : WithTop ℤ) ≤ x := by
-  cases x with
-  | top => exact le_top
-  | coe z => simp
+  cases x <;> simp
 
 theorem le_untopD_of_coe_le {x : WithTop ℤ} {c d : ℤ} (h : ((c : ℤ) : WithTop ℤ) ≤ x) (hd : c ≤ d) : c ≤ x.untopD d := by
   cases x with
@@ -60,9 +58,7 @@ theorem le_untopD_of_coe_le {x : WithTop ℤ} {c d : ℤ} (h : ((c : ℤ) : With
   | coe z => simpa using h
 
 theorem le_coe_unbotD' (x : WithBot ℤ) (d : ℤ) : x ≤ ((x.unbotD d : ℤ) : WithBot ℤ) := by
-  cases x with
-  | bot => exact bot_le
-  | coe z => simp
+  cases x <;> simp
 
 theorem unbotD_le_of_le_coe {x : WithBot ℤ} {c d : ℤ} (h : x ≤ ((c : ℤ) : WithBot ℤ)) (hd : d ≤ c) : x.unbotD d ≤ c := by
   cases x with
@@ -82,9 +78,7 @@ theorem lattice_path_nonneg_prefix {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N
     have hsN : s < N := by omega
     have h1 := P.step ⟨s, hsN⟩
     rw [if_pos (hv ⟨s, hsN⟩ (by simp))] at h1
-    have h2 := ih (by omega) (fun i hi => hv i (by omega)) a
-    have h3 := h1.1 a
-    exact le_trans h2 h3
+    exact le_trans (ih (by omega) (fun i hi => hv i (by omega)) a) (h1.1 a)
 
 theorem lattice_path_zero_prefix {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} (P : PPath n N LL B) :
     ∀ (s : ℕ) (hs : s < N + 1), (∀ i : Fin N, i.val < s → LL.vec i = true ∧ B i = 0) → P.mu ⟨s, hs⟩ = 0 := by
@@ -102,11 +96,9 @@ theorem lattice_path_zero_prefix {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N �
     have h2 : P.mu (Fin.castSucc ⟨s, hsN⟩) = 0 := ih (by omega) (fun i hi => hv i (by omega))
     obtain ⟨g1, _, g3⟩ := h1
     have g4 := (Finset.sum_eq_zero_iff_of_nonneg (fun a _ => sub_nonneg.2 (g1 a))).1 (by simpa using g3)
+    simp only [h2, Pi.zero_apply, sub_zero] at g4
     funext a
-    have g5 := g4 a (Finset.mem_univ a)
-    rw [h2] at g5
-    have g6 : P.mu (Fin.succ ⟨s, hsN⟩) a = 0 := by simpa using g5
-    exact g6
+    exact g4 a (Finset.mem_univ a)
 
 section Fr
 

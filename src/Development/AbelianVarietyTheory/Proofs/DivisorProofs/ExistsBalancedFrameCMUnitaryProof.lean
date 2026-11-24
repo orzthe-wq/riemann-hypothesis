@@ -69,11 +69,6 @@ section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
-theorem conj_mem_iff (X : Data E r) (σ : E →+* ℂ) :
-    ComplexEmbedding.conjugate σ ∈ X.Ψ ↔ σ ∉ X.Ψ := by
-  rw [X.cmType (ComplexEmbedding.conjugate σ)]
-  simp [ComplexEmbedding.conjugate, star_star]
-
 theorem sum_eq_two_mul (X : Data E r) (f : (E →+* ℂ) → ℝ)
     (hf : ∀ σ, f (ComplexEmbedding.conjugate σ) = f σ) :
     ∑ σ, f σ = 2 * ∑ τ : X.Ψ, f τ.1 := by
@@ -83,7 +78,7 @@ theorem sum_eq_two_mul (X : Data E r) (f : (E →+* ℂ) → ℝ)
     refine Finset.sum_nbij' ComplexEmbedding.conjugate ComplexEmbedding.conjugate ?_ ?_ ?_ ?_ ?_
     · intro σ hσ
       rw [Finset.mem_compl] at hσ
-      exact (conj_mem_iff X σ).2 hσ
+      exact (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.conj_mem_iff X σ).2 hσ
     · intro σ hσ
       rw [Finset.mem_compl]
       exact (X.cmType σ).1 hσ
@@ -158,7 +153,7 @@ theorem balancedPoint :
     refine hNC N hN fun σ u hu => ?_
     by_cases hσ : σ ∈ X.Ψ
     · exact key ⟨σ, hσ⟩ u hu
-    · have hσ' : ComplexEmbedding.conjugate σ ∈ X.Ψ := (conj_mem_iff X.toData σ).2 hσ
+    · have hσ' : ComplexEmbedding.conjugate σ ∈ X.Ψ := (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.conj_mem_iff X.toData σ).2 hσ
       have hsu : star u ≠ 0 := fun h => hu (by simpa using congrArg star h)
       have h := key ⟨_, hσ'⟩ (star u) hsu
       have e1 : M.H (ComplexEmbedding.conjugate σ) = (M.H σ).map (starRingEnd ℂ) := M.conj_compat σ

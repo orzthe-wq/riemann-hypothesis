@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 public import Formalism.SharpRestriction.CuspSpanNormBounds.CntPartners
+import Formalism.SharpRestriction.CuspSpanNormBounds.LatticeGluingRadicals
 
 @[expose] public section
 
@@ -57,9 +58,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {r : ℕ}
-
-theorem c3eqv_mem_orth (U : Submodule E S.V) (x : S.V) : x ∈ orth S U ↔ ∀ v ∈ U, S.hT v x = 0 := by
-  simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
 
 theorem c3eqv_gmap_iff (n : S.V ≃ₗ[E] S.V) (Λ : Submodule (𝓞 E) S.V) :
     Formalism.HermitianLatticesTheory.gmap n Λ = Λ ↔ (∀ y ∈ Λ, n y ∈ Λ) ∧ ∀ y ∈ Λ, n.symm y ∈ Λ := by
@@ -109,7 +107,7 @@ theorem c3eqv_isom_trans {n m : S.V ≃ₗ[E] S.V} (h : n ∈ Formalism.Hermitia
 
 theorem c3eqv_orth_map {n : S.V ≃ₗ[E] S.V} (h : n ∈ Formalism.HermitianLatticesTheory.isom S.hT) (U₁ U₂ : Submodule E S.V)
     (hU : ∀ v ∈ U₂, n.symm v ∈ U₁) {x : S.V} (hx : x ∈ orth S U₁) : n x ∈ orth S U₂ := by
-  rw [c3eqv_mem_orth] at hx ⊢
+  rw [_root_.Formalism.MainNotions.LatticeGluingRadicals.a_mem_orth] at hx ⊢
   intro v hv
   have hiso : ∀ x y, S.hT (n x) (n y) = S.hT x y := h
   have := hiso (n.symm v) x
@@ -217,14 +215,6 @@ theorem c3eqv_NLam_symm {n : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) : n.symm 
     exact Submodule.neg_mem _ (hn2 _ hy)
 
 end Gen
-
-section D7
-
-variable (D : D7)
-
-variable (Λ : LatV D) {T T' : D.host.E} (F : LFlag (D.sp.Y 0) D.R.rS T)
-
-end D7
 
 end Formalism.MainNotions.BridgeLemma₂
 

@@ -176,7 +176,7 @@ theorem nb_neg_mul {nb : hermA D n → G D n} (hnb : IsNMap nb) (o : hermA D n) 
   show mat (nb (-o)) * mat (nb o) = mat 1
   rw [hnb, hnb, GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul]
   simp only [AddSubgroup.coe_neg, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add,
-    neg_add_cancel, add_neg_cancel]
+    add_neg_cancel]
   rw [GlobalTheory.StdUnn.Model.block_matrix_one]
   rfl
 
@@ -204,7 +204,7 @@ def cjv (nb : hermA D n → G D n) (v : Pl D) (x : hermA D n) : G D n →* GLoc 
 
 theorem cjv_apply (nb : hermA D n → G D n) (v : Pl D) (x : hermA D n) (k : G D n) :
     cjv nb v x k = GlobalTheory.AdelicU.proj D.sp.cm.sig (Jst D n) v ((nb x)⁻¹ * k * nb x) := by
-  simp [cjv, MulAut.conj_apply]
+  simp [cjv]
 
 def Ucut (nb : hermA D n → G D n) (v : Pl D) (s : Finset (hermA D n)) : Subgroup (G D n) where
   carrier := {k | ∀ x ∈ s, cjv nb v x k ∈ stabLoc D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) v}

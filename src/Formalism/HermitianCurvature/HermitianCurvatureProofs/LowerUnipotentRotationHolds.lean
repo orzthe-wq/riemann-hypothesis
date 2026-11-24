@@ -80,10 +80,6 @@ theorem cW_mulVec (θ : ℝ) {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v)
   unfold cW
   rw [DC.emb_mulVec_of _ hv, Matrix.smul_mulVec, Matrix.one_mulVec, DC.jV_smul, jV_wbPart hv]
 
-theorem fvec_last (z : Fin (2 * r + k + 1) → ℂ) : fvec k r z (Fin.last r) = z := by
-  unfold fvec
-  rw [dite_eq_right (by simp)]
-
 end cWLemmas
 
 theorem lower_unipotent_rotation_holds : LowerUnipotentRotation := by
@@ -92,7 +88,7 @@ theorem lower_unipotent_rotation_holds : LowerUnipotentRotation := by
       Complex.exp (-((θ : ℂ) * Complex.I)) * Q.yv k r z (Fin.last r) g j := by
     intro j
     unfold Q.yv
-    rw [fvec_last, Matrix.mul_inv_rev, cW_inv, ← Matrix.mulVec_mulVec, cW_mulVec _ hz, Matrix.mulVec_smul, Pi.smul_apply,
+    rw [_root_.Formalism.FourierDecayAlt.P.Dx2.DF.fvec_lastI, Matrix.mul_inv_rev, cW_inv, ← Matrix.mulVec_mulVec, cW_mulVec _ hz, Matrix.mulVec_smul, Pi.smul_apply,
       smul_eq_mul]
     congr 2
     push_cast

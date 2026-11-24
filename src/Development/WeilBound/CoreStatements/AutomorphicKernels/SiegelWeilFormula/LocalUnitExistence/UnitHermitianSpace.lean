@@ -97,37 +97,6 @@ theorem isCartan_one {n : ℕ} : IsCartan (1 : Matrix (Fin n) (Fin n) ℂ) 1 := 
     have h := (Matrix.dotProduct_star_self_pos_iff (v := x)).2 hx
     exact (Complex.pos_iff.1 h).1
 
-theorem isHerm_unitSpc {B : Base F E} (hB : B.IsGood σ) (n : ℕ) : (unitSpc F E n).IsHerm σ B n 0 := by
-  refine ⟨fun i j => ?_, fun w => ?_, isLattice_stdLattice, fun y => ?_, fun w => ?_, fun v => ?_⟩
-  · simp only [unitSpc, Matrix.one_apply]
-    split_ifs with h1 h2 h2
-    · exact map_one σ
-    · exact absurd h1.symm h2
-    · exact absurd h2.symm h1
-    · exact map_zero σ
-  · simp only [unitSpc, Matrix.map_one _ (map_zero _) (map_one _)]
-    exact hasSig_one
-  · simp only [unitSpc]
-    rw [mem_std]
-    constructor
-    · intro hy x hx
-      rw [mem_std] at hx
-      rw [form_one]
-      exact IsIntegral.sum _ fun i _ => (hy i).mul (map_isIntegral_int σ (hx i))
-    · intro h i
-      have hx : (Pi.single i (1 : E) : Fin n → E) ∈ stdLattice E n := by
-        rw [mem_std]
-        intro j
-        by_cases e : j = i
-        · subst e; simpa using isIntegral_one
-        · simpa [Pi.single_apply, e] using isIntegral_zero
-      have := h _ hx
-      rw [form_one] at this
-      simpa [Pi.single_apply] using this
-  · simp only [unitSpc, Matrix.map_one _ (map_zero _) (map_one _)]
-    exact isCartan_one
-  · exact isSplitBasis_stdLattice (B.τ v) hB.cm
-
 end PositivityTheory.SiegelWeilFormula.Ldexb.UnitHermitianSpace
 
 end

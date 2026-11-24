@@ -138,8 +138,8 @@ theorem charpoly_of_decomp (D : D7) (i : D.nd.Loc)
       ext a b
       by_cases hab : a = b
       · subst hab
-        simp [Matrix.charmatrix_apply]
-      · simp [Matrix.charmatrix_apply, hab, Matrix.diagonal_apply_ne _ hab]
+        simp
+      · simp [hab]
     rw [Matrix.charpoly, hch, Matrix.det_diagonal]
 
   have hidx : ∏ c : Fin D.R.t, (X - C (toK D.nd i ((chiU D.nd i ((c : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i))) =

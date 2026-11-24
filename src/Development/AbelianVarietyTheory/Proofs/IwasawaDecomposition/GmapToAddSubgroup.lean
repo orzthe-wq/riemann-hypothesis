@@ -4,10 +4,10 @@ public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FinAl
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslateMomentsAll
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.AddSubgroupRepsExistenceCardSum
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ExistsLiftHalfLatticeRational
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PerLatticeFactsStatement
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ThetaMovedCosetIndicatorVacuumShape
-import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeylHeisenbergOperatorCalculusRationalStatement
 public import Formalism.LocalToGlobal.KernelLattices.KernelLocalFactors.ThDistC
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PerLatticeFacts
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.WeylHeisenbergOperatorCalculusRational
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -187,7 +187,7 @@ end Pull
 theorem thInd_index : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 X.E))) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (cA c : ℕ), X.Ok → A.LaHyp a b S → A.AA ≠ ⊥ → IsSdLat N → IsSdLat N' → 0 < cA → 0 < c → ∀ x ∈ divLat cA (homAt S N N'), ∀ t ∈ halfAO S (per A N N') (cA * c), t - x ∈ mulLat c (homAt S N N') → ∀ R : Finset (HomE X.E a b), IsReps (per A N N').toAddSubgroup (halfBO S (per A N N') c).toAddSubgroup R → A.thInd S N N' c x = fun z => (((halfBO S (per A N N') c).toAddSubgroup.relIndex ((per A N N').toAddSubgroup ⊓ (halfAO S (per A N N') c).toAddSubgroup) : ℕ) : ℂ)⁻¹ * Wx A (-t) (fun z => ∑ y ∈ R, Wx A y (A.e a b N N') z) z := by
   intro X A a b S N N' cA c hX ⟨hδ, hT, hS, hU, hFG, hLa⟩ hAA hN hN' hcA hc
   obtain ⟨hfix, hL⟩ := hLa N N' hN hN'
-  obtain ⟨-, -, hidx, hloc⟩ := GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b N N' hFG hAA hN hN'
+  obtain ⟨-, -, hidx, hloc⟩ := _root_.GlobalTheory.MomT.LatFin.per_lattice_facts X A a b N N' hFG hAA hN hN'
   have hinj := embH_injective A (a := a) (b := b) hδ hT
   have hc0 : (c : X.E) ≠ 0 := Nat.cast_ne_zero.2 hc.ne'
   have hBB : ∀ x ∈ halfBO S (per A N N') c, ∀ y ∈ halfBO S (per A N N') c, ∃ n : ℤ, coc A x y = n :=
@@ -264,8 +264,8 @@ theorem thInd_index : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S : Finset (Heig
     rintro _ ⟨u, hu, rfl⟩
     obtain ⟨n₁, h₁⟩ := hBB u hu y hy
     obtain ⟨n₂, h₂⟩ := hBB y hy u hu
-    exact ((GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b).2.2.2.2.2.1 y u).2
-      ⟨n₁ - n₂, by rw [(GlobalTheory.T.weylHeisenbergOperator_calculus_rational X A a b).2.2.1, h₁, h₂]; push_cast; ring⟩
+    exact ((_root_.GlobalTheory.MomT.Heis.calculus X A a b).2.2.2.2.2.1 y u).2
+      ⟨n₁ - n₂, by rw [(_root_.GlobalTheory.MomT.Heis.calculus X A a b).2.2.1, h₁, h₂]; push_cast; ring⟩
 
   have hlift : A.IsLift S N N' c x (A.liftW S N N' c x) :=
     Classical.epsilon_spec (p := A.IsLift S N N' c x) ⟨t, ⟨cA * c, Nat.mul_pos hcA hc, ht⟩, htx⟩

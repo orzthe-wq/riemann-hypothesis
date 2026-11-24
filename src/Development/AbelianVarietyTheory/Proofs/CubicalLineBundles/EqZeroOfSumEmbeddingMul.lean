@@ -86,7 +86,7 @@ theorem _root_.GlobalTheory.EigenNorm.hermForm_conj (hH : Hm.IsHermitian) (z w :
   have h := congrFun (congrFun hH i) j
   simp only [Matrix.conjTranspose_apply] at h
   rw [← h]
-  simp [Pi.star_apply, Complex.star_def]
+  simp [Pi.star_apply]
   ring
 
 theorem conj_eq_neg_of_sq {ρ : ℂ} {d : ℕ} (hd : d ≠ 0) (h : ρ ^ 2 = -(d : ℂ)) : starRingEnd ℂ ρ = -ρ := by

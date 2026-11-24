@@ -2,9 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.GoodClass
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChangeStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsThetaPtOverOfSubsingleton
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.HasThetaConstantsRingBaseChange
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsGeneratorNeZero
+public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SpanEqTopOfFunctionals
+import Development.AbelianVarietyTheory.Proofs.ThetaFamilyOrigin.IsThetaPtOverOfSubsingleton
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -46,7 +47,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.SpanEqTopOfFunctionals
 
 @[expose] public section
 
@@ -178,7 +178,7 @@ theorem coset_of_hasTh : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] 
   intro h₁ h₂ o _ g N' J b S s t n R _ x v q hn hd H hq a
   let φ : R →+* AlgebraicClosure q.ResidueField :=
     (algebraMap q.ResidueField (AlgebraicClosure q.ResidueField)).comp (algebraMap R q.ResidueField)
-  obtain ⟨c, hc⟩ := ThetaCoset.coset_bot h₁ h₂ t hn hd _ (T.hasThetaConstants_ring_baseChange h₂ o g N' J b S s t R _ φ x v H) a
+  obtain ⟨c, hc⟩ := ThetaCoset.coset_bot h₁ h₂ t hn hd _ (_root_.GlobalTheory.hasTh_baseChange h₂ o g N' J b S s t R _ φ x v H) a
   refine ⟨c, fun hm => hc ?_⟩
   rw [RingHom.comp_apply, Ideal.algebraMap_residueField_eq_zero.2 hm, map_zero]
 

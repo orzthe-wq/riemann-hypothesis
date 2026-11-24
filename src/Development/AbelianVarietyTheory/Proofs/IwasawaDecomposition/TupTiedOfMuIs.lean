@@ -50,11 +50,6 @@ def Good (F : Type) [Field F] [NumberField F] [Algebra F L] (χ : HChar L) : Pro
 
 variable {F : Type} [Field F] [NumberField F] [Algebra F L]
 
-theorem resFin_mul (χ χ' : HChar L) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
-    (χ * χ').resFin v k = χ.resFin v k * χ'.resFin v k := by
-  simp only [HChar.resFin, MonoidHom.finsetProd_apply, ← Finset.prod_mul_distrib]
-  rfl
-
 omit [NumberField F] in
 theorem resInf_mul (χ χ' : HChar L) (v : InfinitePlace F) (k : Fˣ) :
     (χ * χ').resInf v k = χ.resInf v k * χ'.resInf v k := by
@@ -74,7 +69,7 @@ theorem Good.mul {χ χ' : HChar L} (h : Good F χ) (h' : Good F χ') : Good F (
   refine ⟨⟨n * n', Nat.mul_pos hn hn', ?_⟩, ⟨fun v k => ?_, fun v k => ?_⟩, fun v x hx hx' => ?_⟩
   · unfold HChar.OrderDvd at *
     rw [mul_pow, pow_mul, h1, one_pow, pow_mul', h1', one_pow, one_mul]
-  · rw [resFin_mul, h2.1, h2'.1, one_mul]
+  · rw [_root_.Formalism.L2.Host.HChar.resFin_mul, h2.1, h2'.1, one_mul]
   · rw [resInf_mul, h2.2, h2'.2, one_mul]
   · change χ.loc v x * χ'.loc v x = 1
     rw [h3 v x hx hx', h3' v x hx hx', one_mul]

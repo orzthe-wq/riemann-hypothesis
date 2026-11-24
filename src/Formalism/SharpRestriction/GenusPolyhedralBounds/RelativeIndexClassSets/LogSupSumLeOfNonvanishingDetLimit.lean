@@ -340,7 +340,7 @@ theorem had_onb {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (ρ 
 
 theorem had_inner' {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (ρ : ℕ) (a x : Fin ρ → E) :
     ‖(Matrix.of fun i k => inner ℂ (a i) (x k)).det‖ ≤ (∏ i, ‖a i‖) * ∏ k, ‖x k‖ := by
-  apply GlobalTheory.PlueckerBound.norm_det_inner_le <;> assumption
+  apply GlobalTheory.PlueckerBound.norm_det_inner_le
 
 theorem had_inner (d ρ : ℕ) (a x : Fin ρ → EuclideanSpace ℂ (Fin d)) :
     ‖(Matrix.of fun i k => inner ℂ (a i) (x k)).det‖ ≤ (∏ i, ‖a i‖) * ∏ k, ‖x k‖ :=
@@ -441,7 +441,7 @@ theorem exists_minor_ne_zero {ρ m : ℕ} (cf : Fin m → (V →ₗ[K] K)) (hcf 
     funext i k
     rw [Finset.sum_apply, Matrix.of_apply, ha i]
     ext β
-    simp [coeff_polyOf, MvPolynomial.coeff_sum]
+    simp [coeff_polyOf]
   rw [h1, det_sum_rows (fun i j => fun k => MvPolynomial.C (a i j) * polyOf (cf j) (z k))
     (fun _ => (Finset.univ : Finset (Fin m)))]
   refine Finset.sum_eq_zero fun J _ => ?_
@@ -982,7 +982,7 @@ theorem tr_traceDual : TrTraceDual := by
   exact ⟨cf, fun f => by simpa using h 1 f⟩
 
 theorem tr_scale : TrScale := by
-  first | exact UpperTheory.Reformulated.B.PairedCharacterCondition.tr_scale .. | (apply UpperTheory.Reformulated.B.PairedCharacterCondition.tr_scale <;> assumption) | (intros; apply UpperTheory.Reformulated.B.PairedCharacterCondition.tr_scale <;> assumption) | (apply @UpperTheory.Reformulated.B.PairedCharacterCondition.tr_scale <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.PairedCharacterCondition.tr_scale <;> assumption) | (apply @UpperTheory.Reformulated.B.PairedCharacterCondition.tr_scale <;> first | assumption | infer_instance)
+  first | (apply UpperTheory.Reformulated.B.PairedCharacterCondition.tr_scale <;> assumption)
 
 section TrA
 

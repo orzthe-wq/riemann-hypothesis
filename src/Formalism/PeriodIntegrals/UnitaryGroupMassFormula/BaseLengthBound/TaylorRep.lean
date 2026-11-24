@@ -77,7 +77,7 @@ theorem prod_pow_add_single (α : Fin d → ℕ) (i : Fin d) :
   congr 1
   rw [Finset.prod_eq_single i]
   · simp
-  · intro b _ hb; simp [Pi.single_apply, hb]
+  · intro b _ hb; simp [hb]
   · intro h; exact absurd (Finset.mem_univ i) h
 
 theorem pow_smul_top_le_monSpan (k : ℕ) :

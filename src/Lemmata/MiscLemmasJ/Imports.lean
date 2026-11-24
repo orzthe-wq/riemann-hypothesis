@@ -54,6 +54,6 @@ theorem goal1 :
   [IsScalarTower.{0, 0, 0} R F X] (S : Submodule.{0, 0} R X) {x : X},
   Membership.mem.{0, 0} (Submodule.span.{0, 0} F (SetLike.coe.{0, 0} S)) x →
     Exists.{1} fun (d : R) ↦ And (Ne.{1} d 0) (Membership.mem.{0, 0} S (HSMul.hSMul.{0, 0, 0} d x)) := by
-  apply Bl.general_b_fact_third_bis_other.goal1 <;> assumption
+  apply Bl.general_b_fact_third_bis_other.goal1
 
 end Bl.SecondBlockLemmaK

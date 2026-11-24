@@ -54,6 +54,18 @@ import Mathlib.Tactic.NormNum.RealSqrt
 
 set_option maxSynthPendingDepth 1
 
+-- Prune dead-end `Units.instSMul` / `Units.instMulAction` (which search for `SMulCommClass G R R`,
+-- false for Galois actions) and short-circuit `SMul` on unit groups via `MulDistribMulAction`.
+attribute [-instance] Units.instSMul Units.instMulAction
+
+@[reducible] local instance (priority := high) instSMulUnitsOfMulDistrib {G M : Type*} [Monoid G] [Monoid M]
+    [inst : MulDistribMulAction G Mˣ] : SMul G Mˣ :=
+  inst.toSMul
+
+@[reducible] local instance (priority := high) instMulDistribMulActionOfMulSemiring {G R : Type*} [Monoid G]
+    [Semiring R] [inst : MulSemiringAction G R] : MulDistribMulAction G R :=
+  inst.toMulDistribMulAction
+
 namespace GroundTheory.ProfCoh
 
 open CategoryTheory NumberField IsDedekindDomain IntermediateField GroundTheory.Global FiniteSubfield
@@ -193,7 +205,6 @@ theorem decompHom_smul_placeOfEmbedding'
   calc τ • w₀ = τ • (τ⁻¹ • w₀) := by rw [h]
     _ = w₀ := smul_inv_smul τ w₀
 
-set_option synthInstance.maxHeartbeats 400000 in
 def placeDecompHom :
     Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1) →*
       MulAction.stabilizer Gal(F.1/K.1) (placeOfEmbedding ι F).1.asIdeal :=
@@ -507,8 +518,6 @@ private theorem map_coboundary₂ {G H M N : Type} [Monoid G] [Monoid H]
       j (r a • β (r b) / β (r a * r b) * β (r a)) := by
   rw [hj, ← map_div, ← map_mul, map_mul r]
 
-set_option synthInstance.maxHeartbeats 400000 in
-set_option maxHeartbeats 4000000 in
 theorem exists_mulCoboundary_of_ord (he : (placeOfEmbedding ι F).1.asIdeal.ramificationIdx (𝓞 K.1) = 1)
     (c : Gal(F.1/K.1) × Gal(F.1/K.1) → F.1ˣ) (hc : IsMulCocycle₂ c)
     (h : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1) → ℤ) (hh : IsLocallyConstant h)
@@ -658,8 +667,6 @@ def compCocycleFun (c : Gal(F.1/K.1) × Gal(F.1/K.1) → F.1ˣ) :
   fun p => Additive.ofMul (Units.map (embedComp ι F).toRingHom.toMonoidHom
     (c (compDecomp ι F p.1, compDecomp ι F p.2)))
 
-set_option synthInstance.maxHeartbeats 400000 in
-set_option maxHeartbeats 1000000 in
 theorem compCocycleFun_mem (c : Gal(F.1/K.1) × Gal(F.1/K.1) → F.1ˣ) (hc : IsMulCocycle₂ c) :
     compCocycleFun ι F c ∈ groupCohomology.cocycles₂ (galUnits.{0} (v.adicCompletion K.1) (compField ι F)) := by
   have hc' : ∀ g h j, c (g * h, j) * c (g, h) = galUnitsHom K.1 F.1 g (c (h, j)) * c (g, h * j) := hc
@@ -684,8 +691,6 @@ theorem compCocycleFun_mem (c : Gal(F.1/K.1) × Gal(F.1/K.1) → F.1ˣ) (hc : Is
   exact congrArg Additive.ofMul (mm1.symm.trans (key.trans (mm2.trans (congrArg (· * _) s))))
 
 
-set_option synthInstance.maxHeartbeats 400000 in
-set_option maxHeartbeats 4000000 in
 theorem exists_compCocycle_coboundary
     (c : Gal(F.1/K.1) × Gal(F.1/K.1) → F.1ˣ) (hc : IsMulCocycle₂ c)
     (b : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1) →
@@ -769,7 +774,6 @@ theorem ordComp_coboundary_eq (c : Gal(F.1/K.1) × Gal(F.1/K.1) → F.1ˣ)
     (k1.trans k2)
 
 
-set_option synthInstance.maxHeartbeats 400000 in
 theorem exists_ord_coboundary_of_mulCoboundary
     (c : Gal(F.1/K.1) × Gal(F.1/K.1) → F.1ˣ) (hc : IsMulCocycle₂ c)
     (b : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1) →

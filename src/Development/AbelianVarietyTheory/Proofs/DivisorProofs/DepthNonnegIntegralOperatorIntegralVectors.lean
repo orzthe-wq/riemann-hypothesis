@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.IsSatFrame
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralInvariantDerivationLogStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsIntegralInvariantDerivationLog
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsExpEqOfSubstLg
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -190,7 +190,7 @@ theorem mvIsInt_X {σ : Type} (s : σ) : MvIsInt v (X s : MvPowerSeries σ C) :=
 theorem hurInt_subst_expOf {d : ℕ} (G : LogFGL v d) {f : MvPowerSeries (Fin d) C}
     (hf : MvIsInt v f) : HurInt v (subst (expOf G) f) := by
   classical
-  obtain ⟨D, hD, hJ⟩ := GlobalTheory.T.exists_integral_invariant_derivation_log C v d G
+  obtain ⟨D, hD, hJ⟩ := _root_.GlobalTheory.LogJacobian.exists_integral_invariant_derivation C v d G
   have hS : HasSubst (expOf G) := hasSubst_of_constantCoeff_zero (isExp_expOf G).1
   suffices h : ∀ n, ∀ α : Fin d →₀ ℕ, ∑ i, α i = n → ∀ f : MvPowerSeries (Fin d) C,
       MvIsInt v f → (mfact α : C) * coeff α (subst (expOf G) f) ∈ intSub v from
@@ -227,7 +227,7 @@ theorem hurInt_subst_expOf {d : ℕ} (G : LogFGL v d) {f : MvPowerSeries (Fin d)
       have : ∀ i ∈ Finset.univ.erase k,
           (((β + Finsupp.single k 1 : Fin d →₀ ℕ) i).factorial : C) = ((β i).factorial : C) := by
         intro i hi
-        simp [Finsupp.single_apply, Ne.symm (Finset.ne_of_mem_erase hi)]
+        simp [Ne.symm (Finset.ne_of_mem_erase hi)]
       rw [Finset.prod_congr rfl this]
       simp [Nat.factorial_succ]
       ring

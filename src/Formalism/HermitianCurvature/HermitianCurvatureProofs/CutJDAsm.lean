@@ -40,6 +40,8 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.IsAdmissibleSplittingCharPairMulTwist
+import Formalism.HermitianCurvature.HermitianCurvatureProofs.SquareIntegrableGammaZetabarInv
 
 @[expose] public section
 
@@ -54,18 +56,6 @@ noncomputable section
 section gen
 
 variable (P : M.Par)
-
-theorem jd_actA_add (a b : MA.A P (MA.DQ P)) (x : M.Ty P → MA.SmQ P.r P.TT) :
-    MA.actA P (a + b) x = MA.actA P a x + MA.actA P b x := by
-  funext π
-  show ∑ π', ((a + b) π π').1 (x π') = ∑ π', (a π π').1 (x π') + ∑ π', (b π π').1 (x π')
-  rw [← Finset.sum_add_distrib]
-  rfl
-
-theorem jd_actA_zero (x : M.Ty P → MA.SmQ P.r P.TT) : MA.actA P 0 x = 0 := by
-  funext π
-  show ∑ π', ((0 : MA.A P (MA.DQ P)) π π').1 (x π') = 0
-  exact Finset.sum_eq_zero fun _ _ => rfl
 
 theorem jd_actA_addR (a : MA.A P (MA.DQ P)) (x y : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P a (x + y) = MA.actA P a x + MA.actA P a y := by
@@ -108,7 +98,7 @@ theorem jd_word_span {Fn : Type} (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (Good 
   | nil =>
     intro _ _ F hF
     refine Submodule.subset_span ⟨1, Submonoid.one_mem _, F, hF, ?_⟩
-    rw [List.prod_nil, actA_one]
+    rw [List.prod_nil, _root_.Formalism.FourierDecayAlt.P.MAx2.R2.act_one]
   | cons a w ih =>
     intro hlen hw F hF
     have ha : a ∈ MA.hatSet P L := hw a (List.mem_cons_self ..)
@@ -128,8 +118,8 @@ theorem jd_word_span {Fn : Type} (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (Good 
         obtain ⟨t, ht, rfl⟩ := List.mem_map.1 hu
         rw [← actA_mul]
         exact Submodule.subset_span ⟨b' * t.1, Submonoid.mul_mem _ hb' (hts t ht).1, t.2, (hts t ht).2, rfl⟩
-      | zero => rw [jd_actA_zero]; exact Submodule.zero_mem _
-      | add x y _ _ h1 h2 => rw [jd_actA_add]; exact Submodule.add_mem _ h1 h2
+      | zero => rw [_root_.Formalism.FourierDecayAlt.P.MAx3.F.actA_zero]; exact Submodule.zero_mem _
+      | add x y _ _ h1 h2 => rw [_root_.Formalism.FourierDecayAlt.P.MAx3.F.actA_add]; exact Submodule.add_mem _ h1 h2
       | smul c x _ h1 => rw [actA_smul]; exact Submodule.smul_mem _ c h1
     have key : ∀ x ∈ Submodule.span ℂ
         {u | ∃ b ∈ Submonoid.closure (MA.bddSet P L), ∃ F', Good w.length F' ∧ u = MA.actA P b (tr F')},

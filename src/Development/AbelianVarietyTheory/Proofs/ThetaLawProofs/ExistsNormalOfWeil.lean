@@ -1,6 +1,5 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsValLineLogNormAtIffEmbedding
 public import Development.AbelianVarietyTheory.Definitions.KeyFormula.KeyRuleOneOfKeyFormula
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.DualRestrictSurjectiveOfIsTorsionFreeQuotient
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.EigLatBasis
@@ -10,17 +9,22 @@ public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.Semicha
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLinearEquivLift
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueThetaCharAtPoint
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PushEquivSymmLeft
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsIffOfIsGrpPullbackComm
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ConstGen
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
 public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsCoordinatesOfRelations
 public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.ExistsEqMulCanonicalThetaOfSignMultiplier
 public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.IsThetaFnAndNeZeroOfIsFn
 public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.NormalFormOfParts
 public import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TangentBijectionOfValues
-import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HolDifferentiableAt
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.IsDerivAt0OfIsPullback
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UnitOnInjectiveOfCommRing
 public import Development.AbelianVarietyTheory.Statements.FundamentalDomains.ExistsIsAddFundamentalDomain
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HasSumPolyDerivMulProdAddMatrix
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueHalfChar
+import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsValLineLogNormAtIffEmbedding
+import Development.AbelianVarietyTheory.Proofs.ToricGeometry.TopLePreimageOfValAtNeZero
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UnitOnInjectiveOfCommRing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -62,8 +66,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.HasSumPolyDerivMulProdAddMatrix
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueHalfChar
 
 @[expose] public section
 
@@ -204,7 +206,7 @@ theorem exists_push_iff {X : Scheme.{0}} (A : Out.PolAV X) (A' : Out.PolAV (Sp �
       ∀ (k : ℤ) p q c, Out.WeilIs A'.A A'.L k p q c ↔ Out.WeilIs A.A A.L k (Φ p) (Φ q) c := by
     rintro _ rfl
     exact ⟨ObjPull.pushEquiv h _, fun _ => rfl, fun k p q c =>
-      weilIs_iff_of_isGrpPullback_comm _ _ A.A A'.A y φ A.L A'.L A.isLB A'.isLB h hL _ k p q _ _ c rfl rfl⟩
+      _root_.GlobalTheory.weilIs_grpPullback_of_comm _ _ A.A A'.A y φ A.L A'.L A.isLB A'.isLB h hL _ k p q _ _ c rfl rfl⟩
   exact key y (Category.id_comp y)
 
 theorem exists_normal_fibre (hT : ThetaUnifAV) (hmul : Out.MulNSt) {S : Type} [CommRing S] (y : KeyIn S)

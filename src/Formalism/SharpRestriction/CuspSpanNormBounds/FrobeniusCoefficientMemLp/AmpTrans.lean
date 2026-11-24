@@ -191,7 +191,7 @@ theorem smulRight_smul_smul {E F : Type*} [NormedAddCommGroup E] [InnerProductSp
     smul_smul, smul_smul]
   congr 1
   have h1 : (innerSL ℂ (a • u)) x = star a * (innerSL ℂ u) x := by
-    simp [inner_smul_left, Complex.star_def]
+    simp
   rw [h1]
   ring
 

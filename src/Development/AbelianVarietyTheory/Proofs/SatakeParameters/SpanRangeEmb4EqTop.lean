@@ -247,7 +247,7 @@ theorem single_mem_homL (i : Fin N') (j : Fin N) :
   intro i'
   by_cases h : i = i'
   · subst h; simpa [Matrix.mulVec, dotProduct, Matrix.single_apply] using hx j
-  · simp [Matrix.mulVec, dotProduct, Matrix.single_apply, h]
+  · simp [Matrix.mulVec, dotProduct, h]
 
 def putE (D : D7) (N N' : ℕ) (i : Fin N') (j : Fin N) : (D.what₂.Tau → ℂ) →+ TaylorLogMetric.VC D N N' where
   toFun v := fun τ i' j' => if i' = i ∧ j' = j then v τ else 0
@@ -276,7 +276,7 @@ theorem Lat0 (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
       by_cases h : i' = i ∧ j' = j
       · obtain ⟨rfl, rfl⟩ := h; simp
       · have h' : ¬ (i = i' ∧ j = j') := fun e => h ⟨e.1.symm, e.2.symm⟩
-        simp [h, Matrix.single_apply, h']
+        simp [h, h']
     have hsum : z = ∑ i, ∑ j, putE D N N' i j (fun τ => z τ i j) := by
       funext τ i' j'
       simp only [Finset.sum_apply, putE, AddMonoidHom.coe_mk, ZeroHom.coe_mk]
@@ -319,7 +319,7 @@ theorem span_range_emb4_eq_top (D : D7) : Submodule.span ℂ (Set.range (emb4 D)
       funext w
       by_cases h : w.1 = a
       · simp [emb4, h, FL.embP]
-      · simp [emb4, h, Pi.single_apply]
+      · simp [emb4, h]
     | zero =>
       have : (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then (0 : D.what₂.Tau → ℂ) w.2 else 0) = 0 := by
         funext w; simp

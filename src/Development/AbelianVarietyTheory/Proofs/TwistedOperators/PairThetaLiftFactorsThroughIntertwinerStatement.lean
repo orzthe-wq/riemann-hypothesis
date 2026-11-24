@@ -46,4 +46,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PairLift
 
 theorem _root_.GlobalTheory.T.pairThetaLift_factors_through_intertwiner : ∀ (D : D7) (X : ProvA), Inputs D X → CuspAll D X → PairLifts D X := by
-  first | exact @GlobalTheory.PairLift.RuleLift.pairLifts | exact GlobalTheory.PairLift.RuleLift.pairLifts | (intros; apply GlobalTheory.PairLift.RuleLift.pairLifts <;> assumption)
+  first | exact @GlobalTheory.PairLift.RuleLift.pairLifts

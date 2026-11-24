@@ -105,7 +105,7 @@ theorem span_eq_top_of_trace_eq {Γ k : Type} [Group Γ] [Field k] {r : ℕ}
 theorem absIrrSub_of_span_eq_top {Γ k : Type} [Group Γ] [Field k] {r : ℕ} (hr : 0 < r)
     (σ : Γ →* GL (Fin r) k) (h : Submodule.span k (Set.range (mat σ)) = ⊤) : AbsIrrSub σ ⊤ := by
   refine GlobalTheory.ResAbsIrrGood.absIrrSub_top_of_irred (algebraMap k (AlgebraicClosure k)) hr σ fun W hW => ?_
-  refine GlobalTheory.BurnsideIff.eq_bot_or_top_of_span_eq_top (mat σ) h W fun g x hx => ?_
+  refine _root_.GlobalTheory.InvariantBotOrTop.bot_or_top (mat σ) h W fun g x hx => ?_
   have e : (mat σ g).map (algebraMap k (AlgebraicClosure k)) =
       ((mapRep (algebraMap k (AlgebraicClosure k)) σ g : GL (Fin r) (AlgebraicClosure k)) :
         Matrix (Fin r) (Fin r) (AlgebraicClosure k)) := by

@@ -56,6 +56,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Tr
 import Development.AutomorphicArithmetic.IntegralCasts.IsOpenStabOfMemNhds
 import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import ReciprocityTheory.NeutralLocalFields.Reciprocity
+import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 

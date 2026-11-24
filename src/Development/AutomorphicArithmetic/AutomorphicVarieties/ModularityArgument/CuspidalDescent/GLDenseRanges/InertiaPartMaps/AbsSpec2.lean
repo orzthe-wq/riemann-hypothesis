@@ -444,8 +444,7 @@ theorem UpperTheory.V.Z.Desc.V0.spec2 :
   have hτ' : H.τC ι = (Matrix.GeneralLinearGroup.map (algebraMap A ℂ)).comp (H.τA A) := by
     refine MonoidHom.ext fun u => Units.ext ?_
     ext i j
-    simp only [HSet.τC, HSet.τA, MonoidHom.comp_apply, Matrix.GeneralLinearGroup.map_apply, RingHom.mapMatrix_apply,
-      Matrix.map_apply, RingHom.coe_comp, Function.comp_apply]
+    simp only [HSet.τC, HSet.τA, MonoidHom.comp_apply, Matrix.GeneralLinearGroup.map_apply]
     show ι _ = ι (x _)
     exact congrArg ι (by rw [← AlgHom.commutes x]; rfl)
   obtain ⟨hfirst, sp, hadd, hsmul, hspan, hind, hUop, hsum, hgood, huniq⟩ :=
@@ -494,7 +493,7 @@ theorem UpperTheory.V.Z.Desc.V0.spec2 :
     have hχa : ((W.χ ⟨alV n H.Sl v ((j : ℕ) + 1), H.X.I.P_le _ (hP v _)⟩ : ℂˣ) : ℂ) =
         H.lowVal ι lam v ((j : ℕ) + 1) :=
       Sp.chi_alV H.Sl ι lam R.χ hχR v ((j : ℕ) + 1)
-    simp only [Frame.UF, HSet.opC, Subtype.coe_mk]
+    simp only [Frame.UF, HSet.opC]
     rw [Units.val_inv_eq_inv_val, hχa]
   have huz : H.uzC ι lam (W.d + 1) = H.X.UF H.m W ⟨H.X.I.z, H.X.I.z_mem⟩ := by
     have hz : ((W.χ ⟨H.X.I.z, H.X.I.P_le _ H.X.I.z_mem⟩ : ℂˣ) : ℂ) =
@@ -503,7 +502,7 @@ theorem UpperTheory.V.Z.Desc.V0.spec2 :
       simp only [Units.coe_prod] at h1
       refine h1.trans (Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun j _ => ?_)
       exact Sp.chi_alV H.Sl ι lam R.χ hχR v j
-    simp only [HSet.uzC, Frame.UF, Subtype.coe_mk]
+    simp only [HSet.uzC, Frame.UF]
     rw [Units.val_inv_eq_inv_val, hz]
   have hint : ∀ μ : ℂ, IsIntegral c'.O μ ↔ ‖ι.symm μ‖ ≤ 1 := by
     intro μ

@@ -108,13 +108,9 @@ theorem fib_of_tens {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →�
     inferInstanceAs (SecondCountableTopology (Fin a → Fin a → R ⊗[F] E))
   haveI : SecondCountableTopology (HermR R σ a) := by
     first
-      | infer_instance
       | exact hCl.isClosedEmbedding_subtypeVal.isInducing.secondCountableTopology
-      | exact hCl.isClosedEmbedding_subtypeVal.isEmbedding.isInducing.secondCountableTopology
-      | exact hCl.isClosedEmbedding_subtypeVal.toIsEmbedding.toIsInducing.secondCountableTopology
   haveI : BorelSpace (HermR R σ a) := by
     first
-      | infer_instance
       | exact ⟨rfl⟩
   haveI : LocallyCompactSpace (HermR R σ a) := hCl.isClosedEmbedding_subtypeVal.locallyCompactSpace
   exact hG _ _ _ μ ν inferInstance inferInstance inferInstance (gramR R σ J) Subtype.val _ hCont

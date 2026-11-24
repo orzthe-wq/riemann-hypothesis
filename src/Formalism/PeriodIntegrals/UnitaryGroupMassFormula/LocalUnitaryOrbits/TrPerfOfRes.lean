@@ -58,9 +58,6 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F))
 
-theorem sig_nt (hcm : IsCMExt F E σ) : ∃ x, σ x ≠ x := by
-  apply PI.VolStabS.IdxHW.sigma_ne_id <;> assumption
-
 private theorem sc_of_isUnif_of_mem_integers {ϖ r : Fv F v} (hϖ : IsUnif v ϖ)
     (hr : r ∈ v.adicCompletionIntegers F) (hn : sc (E := E) v r ∉ PO (E := E) v ϖ) :
     r ≠ 0 ∧ r⁻¹ ∈ v.adicCompletionIntegers F := by
@@ -87,7 +84,7 @@ private theorem sc_of_isUnif_of_mem_integers {ϖ r : Fv F v} (hϖ : IsUnif v ϖ)
     rw [hϖ]
     rw [mul_inv_le_iff₀ (zero_lt_iff.mpr (by simp)), one_mul]
     exact hle
-  · rw [NormOneUnitFixedPoints.sc_mul_sc, mul_comm r, ← mul_assoc, mul_inv_cancel₀ hϖ0, one_mul]
+  · rw [_root_.PI.OmLocU.sc_mul, mul_comm r, ← mul_assoc, mul_inv_cancel₀ hϖ0, one_mul]
 
 theorem mem_of_theta (hcm : IsCMExt F E σ) {ϖ : Fv F v} (hϖ : IsUnif v ϖ) (θ : Fv F v ⊗[F] E)
     (hθ : θ ∈ OEv (E := E) v) (hnd : (θ - sigR (Fv F v) σ θ) * (θ - sigR (Fv F v) σ θ) ∉ PO (E := E) v ϖ)
@@ -95,7 +92,7 @@ theorem mem_of_theta (hcm : IsCMExt F E σ) {ϖ : Fv F v} (hϖ : IsUnif v ϖ) (�
     (hz : ∀ x ∈ OEv (E := E) v, Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (x * z) ∈ v.adicCompletionIntegers F) :
     z ∈ OEv (E := E) v := by
   have hσσ := b_sig_sig σ hcm
-  have htr := trace_v v σ hσσ (sig_nt σ hcm) hcm.2.2.1
+  have htr := trace_v v σ hσσ (_root_.PI.OmLocU.SdB.b_sig_nt σ hcm) hcm.2.2.1
   have hsθ := UnN.sigR_mem σ v hθ
   have hδ : θ - sigR (Fv F v) σ θ ∈ OEv (E := E) v := by
     rw [sub_eq_add_neg]
@@ -122,7 +119,7 @@ theorem mem_of_theta (hcm : IsCMExt F E σ) {ϖ : Fv F v} (hϖ : IsUnif v ϖ) (�
     · rw [← b_sc_eq]
       exact b_sc_mem v ha
   have hz' : z = sc v r⁻¹ * ((θ - sigR (Fv F v) σ θ) * ((θ - sigR (Fv F v) σ θ) * z)) := by
-    rw [← mul_assoc (θ - sigR (Fv F v) σ θ), hreq, ← mul_assoc, NormOneUnitFixedPoints.sc_mul_sc,
+    rw [← mul_assoc (θ - sigR (Fv F v) σ θ), hreq, ← mul_assoc, _root_.PI.OmLocU.sc_mul,
       inv_mul_cancel₀ hr0, NormOneUnitFixedPoints.sc_one, one_mul]
   rw [hz']
   exact b_mul_mem v (b_sc_mem v hrinv) (b_mul_mem v hδ hy)

@@ -93,8 +93,7 @@ private lemma rw_congr_on_domL {O : Set (Mat k r)} (hO : IsOpen O) {H H' : Mat k
     intro hw g hg hgO
     have hX : inLie k r X := hw X (by simp)
     have ih' := ih (fun Y hY => hw Y (by simp [hY]))
-    show RdV X (Rw w H) g = RdV X (Rw w H') g
-    show deriv (fun t : ℝ => Rw w H (g * NormedSpace.exp ((t : ℂ) • X))) 0 =
+    change deriv (fun t : ℝ => Rw w H (g * NormedSpace.exp ((t : ℂ) • X))) 0 =
       deriv (fun t : ℝ => Rw w H' (g * NormedSpace.exp ((t : ℂ) • X))) 0
     apply Filter.EventuallyEq.deriv_eq
     filter_upwards [crv_ev (x := (false, X)) hO hgO] with t ht
@@ -123,9 +122,8 @@ private lemma ckOn_GV_add {m : ℕ∞} {f f₂ : Mat k r → (Wq →L[ℂ] Wp)} 
   obtain ⟨U, f', hU, hgU, hf', hfe⟩ := hf g₀ hg₀
   obtain ⟨V, g', hV, hgV, hg', hge⟩ := hg g₀ hg₀
   refine ⟨U ∩ V, fun x => f' x + g' x, hU.inter hV, ⟨hgU, hgV⟩,
-    (hf'.mono Set.inter_subset_left).add (hg'.mono Set.inter_subset_right), ?_⟩
-  intro x hx hxG
-  simp only [hfe x hx.1 hxG, hge x hx.2 hxG]
+    (hf'.mono Set.inter_subset_left).add (hg'.mono Set.inter_subset_right),
+    fun x hx hxG => by simp only [hfe x hx.1 hxG, hge x hx.2 hxG]⟩
 
 lemma ckOn_list_sum {m : ℕ∞} {α : Type*} (L : List α) (f : α → Mat k r → (Wq →L[ℂ] Wp))
     (h : ∀ a ∈ L, CkOn m (GV k r) (f a)) : CkOn m (GV k r) (fun g => (L.map fun a => f a g).sum) := by
@@ -134,8 +132,7 @@ lemma ckOn_list_sum {m : ℕ∞} {α : Type*} (L : List α) (f : α → Mat k r 
     intro g₀ _
     exact ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => by simp⟩
   | cons a t ih =>
-    have := ckOn_GV_add (h a (by simp)) (ih fun b hb => h b (by simp [hb]))
-    simpa using this
+    simpa using ckOn_GV_add (h a (by simp)) (ih fun b hb => h b (by simp [hb]))
 
 lemma opOrder_le_of (Θ : DiffOp k r Wp Wq) {n : ℕ} (h : ∀ T ∈ Θ, T.word.length ≤ n) : opOrder Θ ≤ n := by
   unfold opOrder

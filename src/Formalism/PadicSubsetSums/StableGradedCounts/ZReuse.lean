@@ -64,14 +64,11 @@ theorem twist_invertible_holds : TwistInvertible := by
     rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
     intro v hv
     rw [hL, sub_eq_zero] at hv
-    have h2 : γ₀ v = c • v := by
-      calc γ₀ v = c • (c⁻¹ • γ₀ v) := by rw [smul_smul, mul_inv_cancel₀ hc, one_smul]
-        _ = c • v := by rw [hv]
+    have h2 : γ₀ v = c • v := (inv_smul_eq_iff₀ hc).mp hv
     by_contra hv0
     exact hne (Module.End.hasEigenvalue_of_hasEigenvector
       ⟨Module.End.mem_eigenspace_iff.mpr h2, hv0⟩)
-  have hbij : Function.Bijective L := ⟨hinj, LinearMap.injective_iff_surjective.mp hinj⟩
-  exact hbij
+  exact ⟨hinj, LinearMap.injective_iff_surjective.mp hinj⟩
 
 theorem phi15_is_unit_holds : PrimitiveRootFifteenSubOneUnit := by
   intro R _ _ ζ hζ

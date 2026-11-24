@@ -5,9 +5,10 @@ public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
 public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCommonLevelSpanMultipleStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsConjLevelElemExponentShimuraStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerIntegralityStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsCommonLevelSpanMultiple
+public import Development.AbelianVarietyTheory.Definitions.Foundations.Letter
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsConjLevelElemExponentShimura
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularFunctionTowerIntegrality
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -144,12 +145,12 @@ theorem inv_galB {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {
   apply AdicCompletion.ext
   intro n
   obtain ⟨y, hy⟩ := eval_Pol_rep X l w b hpol n
-  obtain ⟨M, hM, hdiv, hlev⟩ := GlobalTheory.T.exists_common_level_span_multiple X l (N * l * l ^ n) y
+  obtain ⟨M, hM, hdiv, hlev⟩ := _root_.GlobalTheory.KZ.Tower.exists_lev_family X l (N * l * l ^ n) y
     (Nat.mul_pos (Nat.mul_pos hN (Nat.Prime.pos Fact.out)) (pow_pos (Nat.Prime.pos Fact.out) n))
   have hNM : N ∣ M := Dvd.dvd.trans ⟨l * l ^ n, by ring⟩ hdiv
   have hlM : l ∣ M := Dvd.dvd.trans ⟨N * l ^ n, by ring⟩ hdiv
   have hlnM : l ^ n ∣ M := Dvd.dvd.trans ⟨N * l, by ring⟩ hdiv
-  obtain ⟨γ'', hγ'', ζ, hζ, d, hsd, hcong, hdχ⟩ := GlobalTheory.T.exists_conj_level_elem_exponent_shimura (Ω := Ω) N l n M hM hNM hlM hlnM s γ hγ
+  obtain ⟨γ'', hγ'', ζ, hζ, d, hsd, hcong, hdχ⟩ := _root_.GlobalTheory.exists_conj_level_exponent (Ω := Ω) N l n M hM hNM hlM hlnM s γ hγ
   have hspan : Submodule.span ℤ_[l] (Set.range y) ≤ X.Lev l M :=
     Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hlev i)
   set χ : ℤ_[l] := (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) with hχ
@@ -176,7 +177,7 @@ theorem inv_galB {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {
 
 theorem galB_mem_B : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), Function.Injective ε → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) → ∀ (N l w : ℕ) [Fact l.Prime], l ≠ 2 → 5 ≤ N → Nat.Coprime N l → Odd w → ∀ (s : Ω ≃ₐ[ℚ] Ω), ∀ b ∈ X.B N l w, X.galB l s b ∈ X.B N l w := by
   intro Ω _ _ _ ε X hε hj N l w _ _ hN _ _ s b hb
-  have hA := (GlobalTheory.T.modular_function_tower_integrality ε X hε hj l).2 s
+  have hA := (_root_.GlobalTheory.KZ.kmap_A_stable ε X hε hj l).2 s
   have hN0 : 0 < N := by omega
   have himg : X.galB l s '' X.BSet N l w ⊆ X.BSet N l w := by
     rintro _ ⟨c, hc, rfl⟩

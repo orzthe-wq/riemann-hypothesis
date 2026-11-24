@@ -69,12 +69,6 @@ section Generator
 
 variable {R : Type} [CommRing R]
 
-theorem cst_mul₀ {Z : Scheme.{0}} (q : Z ⟶ Sp R) (z : Z) (a b : R) : cst q z (a * b) = cst q z a * cst q z b := by
-  simp only [cst, gs_eq q z ⊤ trivial, map_mul]
-
-theorem cst_one₀ {Z : Scheme.{0}} (q : Z ⟶ Sp R) (z : Z) : cst q z 1 = 1 := by
-  simp only [cst, gs_eq q z ⊤ trivial, map_one]
-
 def toPow {X : Scheme.{0}} {L : LB X} (s : L.Sec) : LB.Sec (AbLaw.pw L ((1 : ℕ) : ℤ)) :=
   ⟨s.f, fun i j => (s.compat i j).trans (congrArg (· * _) (congrArg Units.val (zpow_one (L.g i j)).symm))⟩
 
@@ -145,7 +139,7 @@ theorem exists_generator (hS : Out.SecBaseChangeSt) [IsLocalRing R] [IsNoetheria
           (congrArg₂ (· * ·) ((gs_unit (𝟙 _) y _ hy _).trans (congrArg Units.val ?_))
             ((gs_res (𝟙 _) y _ hy _).trans (gs_res (𝟙 _) y (le j) hy.2 _))))))
       refine (gm_linComb P.L _ _ (𝟙 _) y i j hy.1 hy.2).trans ?_
-      simp [Geo.Tor.trF]
+      simp
     obtain ⟨σ, hσ⟩ := hpow s
     obtain ⟨c, hc, -⟩ := hβ R (𝟙 _) _ (𝟙 _) P.A.hom (IsPullback.of_vert_isIso ⟨by simp⟩) σ
     refine ⟨c i₀, (sec_eq_iff _ _ _ _).2 fun i y hy => ?_⟩
@@ -167,7 +161,7 @@ def scale (p : X ⟶ Sp R) (a : R) (s : L.Sec) : L.Sec :=
       gs_constFn p _ _ y hy.2, gs_unit _ y _ hy, gs_compat s (𝟙 X) y hy.1 hy.2, mul_left_comm]⟩
 
 theorem isUnit_cst {Z : Scheme.{0}} (q : Z ⟶ Sp R) (z : Z) (a : Rˣ) : IsUnit (cst q z (a : R)) :=
-  IsUnit.of_mul_eq_one (cst q z (a⁻¹ : Rˣ)) (by rw [← cst_mul₀, Units.mul_inv, cst_one₀])
+  IsUnit.of_mul_eq_one (cst q z (a⁻¹ : Rˣ)) (by rw [← _root_.ReciprocityTheory.ChartRestriction.G.H1.cst_mul, Units.mul_inv, _root_.ReciprocityTheory.ChartRestriction.G.H1.cst_one])
 
 theorem mem_nonzeroLocus_of_unit (p : X ⟶ Sp R) (a : Rˣ) {s t : L.Sec} (h : ∀ i, t.f i = constFn p _ (a : R) * s.f i)
     {y : X} (hy : y ∈ Out.nonzeroLocus s) : y ∈ Out.nonzeroLocus t := by
@@ -196,7 +190,7 @@ theorem exists_unit (hS : Out.SecBaseChangeSt) [IsLocalRing R] [IsNoetherianRing
   obtain ⟨a, ha⟩ := key s hs
   obtain ⟨c, hc⟩ := key t ht
   refine ⟨c * a⁻¹, (sec_eq_iff _ _ _ _).2 fun i y hy => ?_⟩
-  rw [ha i y hy, hc i y hy, ← _root_.mul_assoc, ← cst_mul₀, ← Units.val_mul, inv_mul_cancel_right]
+  rw [ha i y hy, hc i y hy, ← _root_.mul_assoc, ← _root_.ReciprocityTheory.ChartRestriction.G.H1.cst_mul, ← Units.val_mul, inv_mul_cancel_right]
 
 end Units
 

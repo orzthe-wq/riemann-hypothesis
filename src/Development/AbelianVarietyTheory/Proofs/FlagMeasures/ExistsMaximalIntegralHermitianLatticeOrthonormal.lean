@@ -85,7 +85,7 @@ theorem _root_.GlobalTheory.Mass.MaxExists.main : ∀ (K V : Type) [Field K] [Nu
         intro M hM hn
         by_cases hmax : ∀ N : Submodule (𝓞 K) V, _root_.GlobalTheory.Mass.IsIntLat h N → M ≤ N → N = M
         · exact ⟨M, by unfold _root_.GlobalTheory.Mass.IsMaxLat; exact ⟨hM, hmax⟩, le_rfl⟩
-        · push_neg at hmax
+        · push Not at hmax
           obtain ⟨N, hNi, hMN, hne⟩ := hmax
           obtain ⟨hidx0, hdisc⟩ := (D M hM).2.2.1 N hNi hMN
           have hidx1 : _root_.GlobalTheory.Mass.idxN N M ≠ 1 := by
@@ -111,7 +111,7 @@ theorem _root_.GlobalTheory.Mass.MaxExists.main : ∀ (K V : Type) [Field K] [Nu
     have hbad : _root_.GlobalTheory.Mass.badP h M = ∅ := by
       unfold _root_.GlobalTheory.Mass.badP
       ext P
-      simp only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and, not_not]
+      simp only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and, not_not]
       intro hP
       refine (D M hI).2.2.2.2.1 P hP ?_
       rw [hD1, Nat.cast_one]

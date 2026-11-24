@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.FiniteHomogeneousInf
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SecCoordBcScaleUnique
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocallyStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SectionCoordinateVectorExistsLocally
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -113,7 +113,7 @@ theorem mem_idealOf_of_dense : ∀ (R σ : Type) [CommRing R] (Y : Scheme.{0}) (
   let L := Localization.AtPrime J
   let φ : R' →+* L := algebraMap R' L
   let yL : Sp L ⟶ Y := spMap φ ≫ y
-  obtain ⟨A, _, x, w, hx, hp, hw⟩ := (GlobalTheory.T.sectionCoordinateVector_exists_locally Y N σ ty hN).2.2 (yL (IsLocalRing.closedPoint L))
+  obtain ⟨A, _, x, w, hx, hp, hw⟩ := (_root_.GlobalTheory.ZM.LocalCoord.secCoord_local Y N σ ty hN).2.2 (yL (IsLocalRing.closedPoint L))
   have hrange : Set.range yL ⊆ Set.range x := by
     rintro _ ⟨p, rfl⟩
     exact ((IsLocalRing.specializes_closedPoint (R := L) p).map yL.continuous).mem_open

@@ -56,6 +56,6 @@ open GlobalTheory.CompanionTheory.MirPair
 namespace GlobalTheory.CompanionTheory.MirPair
 
 theorem continuous_coef : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (T : Representation ℂ (Mir k n) V) (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ), IsSmooth T → ∀ (v : V) (v' : V'), Continuous (coef T B v v') := by
-  apply GlobalTheory.CompanionTheory.MirPair.EvLin.continuous_coef <;> assumption
+  apply GlobalTheory.CompanionTheory.MirPair.EvLin.continuous_coef
 
 end GlobalTheory.CompanionTheory.MirPair

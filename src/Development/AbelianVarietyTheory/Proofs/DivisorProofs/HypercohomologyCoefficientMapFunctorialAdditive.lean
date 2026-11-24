@@ -75,7 +75,7 @@ def resMapAddHomotopy {F G : Shv R} (φ ψ : F ⟶ G) :
         InjectiveResolution.desc ψ (injectiveResolution G) (injectiveResolution F)) := by
     apply InjectiveResolution.descHomotopy (φ + ψ)
     · simp
-    · simp [Preadditive.comp_add, Preadditive.add_comp, Functor.map_add (f := _)]
+    · simp [Preadditive.comp_add, Preadditive.add_comp]
   have H2 := H.extend ComplexShape.embeddingUpNat
   rw [HomologicalComplex.extendMap_add] at H2
   exact H2

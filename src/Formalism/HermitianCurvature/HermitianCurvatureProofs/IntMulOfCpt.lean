@@ -61,7 +61,7 @@ theorem dZ_conj {φ : ℂ → ℂ} {c : ℂ} (h : DifferentiableAt ℝ φ c) :
   unfold NF.dZ NF.dZb
   rw [hd.fderiv]
   simp only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_mul,
-    map_add, map_sub, Complex.conj_I, map_div₀, map_one, map_ofNat]
+    map_add, Complex.conj_I, map_div₀, map_one, map_ofNat]
   ring
 
 end Wirt

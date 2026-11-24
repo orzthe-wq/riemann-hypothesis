@@ -51,6 +51,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.ModelLatIn
+import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.PlaceSumSquares
 
 @[expose] public section
 
@@ -95,12 +96,6 @@ theorem vw_prod' (w : HeightOneSpectrum (𝓞 K)) {ι : Type} (P : Finset ι) (f
       vw_mul' w (hf j (Finset.mem_insert_self _ _)) (Finset.prod_ne_zero_iff.2 fun i hi => hf i (Finset.mem_insert_of_mem hi)),
       ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]
 
-theorem vw_natCast_nonneg' (w : HeightOneSpectrum (𝓞 K)) (q : ℕ) : 0 ≤ vw w (q : K) := by
-  have e : (q : K) = algebraMap (𝓞 K) K (q : 𝓞 K) := by simp
-  unfold vw
-  rw [e, ← FractionalIdeal.coeIdeal_span_singleton]
-  exact FractionalIdeal.count_coe_nonneg K w _
-
 theorem loss_sqrt_prod {ι : Type} (P : Finset ι) (q : ι → ℕ) (hq : ∀ i ∈ P, q i ≠ 0) (s : ι → K)
     (hs : ∀ i ∈ P, s i ^ 2 = (q i : K)) (n : ι → ℤ) :
     ∃ dl : HeightOneSpectrum (𝓞 K) → ℝ, (∀ w, 0 ≤ dl w) ∧ {w | dl w ≠ 0}.Finite ∧
@@ -114,7 +109,7 @@ theorem loss_sqrt_prod {ι : Type} (P : Finset ι) (q : ι → ℕ) (hq : ∀ i 
   have hv2 : ∀ w, ∀ i ∈ P, 2 * vw w (s i) = vw w (q i : K) := fun w i hi => by
     rw [← hs i hi, sq, vw_mul' w (hs0 i hi) (hs0 i hi)]; ring
   have hv0 : ∀ w, ∀ i ∈ P, (0 : ℝ) ≤ vw w (s i) := fun w i hi => by
-    have h1 := vw_natCast_nonneg' w (q i) (K := K)
+    have h1 := _root_.Formalism.DivisionValues.W5.vw_nat_nonneg w (q i) (K := K)
     have h2 := hv2 w i hi
     have : 0 ≤ vw w (s i) := by omega
     exact_mod_cast this
@@ -280,7 +275,7 @@ theorem sum_abs_count_AA_le (hcc : D.host.ccK = ⊤) (S : Finset (HeightOneSpect
   have hBle : ∀ w, FractionalIdeal.count D.host.E w D.host.AAbar ≤ 0 := fun w => by
     have ht : (D.host.conj • D.host.ccE : Ideal (𝓞 D.host.E)) = ⊤ := by
       rw [Formalism.BasicNotions.Host.ccE, hcc, Ideal.map_top]
-      first | rw [Ideal.pointwise_smul_def, Ideal.map_top] | simp [Ideal.pointwise_smul_def] | rfl
+      first | rw [Ideal.pointwise_smul_def, Ideal.map_top]
     simp only [Formalism.BasicNotions.Host.AAbar, ht, FractionalIdeal.coeIdeal_top, one_mul, FractionalIdeal.count_inv, neg_nonpos]
     exact FractionalIdeal.count_coe_nonneg _ _ _
   have hterm : ∀ w ∈ S, ((|FractionalIdeal.count D.host.E w D.host.AA| + |FractionalIdeal.count D.host.E w D.host.AAbar| : ℤ) : ℝ) *

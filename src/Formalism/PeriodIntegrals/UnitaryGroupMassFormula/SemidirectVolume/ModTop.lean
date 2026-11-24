@@ -116,7 +116,6 @@ theorem mat_inv_eq (hJ : IsHermND σ J) (g : HA R σ J) :
     have e : (HA.mat R σ J g⁻¹ : GL (Fin M) (R ⊗[F] E)) = (HA.mat R σ J g)⁻¹ := by
       first
         | rfl
-        | exact Subgroup.coe_inv _
     rw [hA, hB, e]
     exact Units.mul_inv _
   have hJJ : Ji * JR (F := F) R J = 1 := by
@@ -152,7 +151,6 @@ theorem continuous_into_HA (hJ : IsHermND σ J) {X : Type} [TopologicalSpace X] 
     Units.continuous_iff.2 ⟨hf, hI⟩
   first
     | exact continuous_induced_rng.2 hGL
-    | exact hGL.subtype_mk fun x => (f x).2
 
 end HAcont
 

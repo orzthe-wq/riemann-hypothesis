@@ -119,13 +119,10 @@ section Help
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
-theorem rdsp_hsVec_zero : B.hsVec (0 : Wq →L[ℂ] Wp) = 0 := by
-  unfold B.hsVec; simp; rfl
-
 theorem rdsp_ip_congr {a b a' b' : Wq →L[ℂ] Wp} (hb : b = b') (ha : b ≠ 0 → a = a') :
     inner ℂ (B.hsVec a) (B.hsVec b) = inner ℂ (B.hsVec a') (B.hsVec b') := by
   by_cases h : b = 0
-  · rw [← hb, h, rdsp_hsVec_zero, inner_zero_right, inner_zero_right]
+  · rw [← hb, h, _root_.Formalism.FourierDecayAlt.P.JCx1.needs.hsVec_zero, inner_zero_right, inner_zero_right]
   · rw [← hb, ha h]
 
 theorem rdsp_resG_congr (J J' : B.Mat k r → (Wq →L[ℂ] Wp)) (x : (Fin r → ℂ) × Mx k r)

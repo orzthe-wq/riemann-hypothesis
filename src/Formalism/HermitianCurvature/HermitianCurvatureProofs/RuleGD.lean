@@ -80,9 +80,7 @@ lemma cj_of_eq {x a : A} (hx : x * g = g * x + a * g) : cj g gi h h' x = x + cj 
   rw [cj_apply, cj_apply, mul_assoc, hx, mul_add, ← mul_assoc, h', one_mul, ← mul_assoc]
 
 lemma comm_of_cj {y : A} (hy : cj g gi h h' y = y) : g * y = y * g := by
-  have := congrArg (g * ·) hy
-  simp only [cj_apply, ← mul_assoc, h, one_mul] at this
-  exact this.symm
+  simpa [cj_apply, ← mul_assoc, h] using (congrArg (g * ·) hy).symm
 
 end cjlemmas
 
@@ -116,9 +114,7 @@ lemma prod_mul_prod_eq_one {n : ℕ} (f g : Fin n → A) (hfg : ∀ i, f i * g i
 
 lemma map_ofFn_prod {n : ℕ} (φ : A →+* A) (f : Fin n → A) (hf : ∀ i, φ (f i) = f i) :
     φ (List.ofFn f).prod = (List.ofFn f).prod := by
-  rw [map_list_prod, List.map_ofFn]
-  have : (⇑φ ∘ f) = f := funext hf
-  rw [this]
+  rw [map_list_prod, List.map_ofFn, (funext hf : (⇑φ ∘ f) = f)]
 
 section fnsmem
 variable (L : LevelData A r)
@@ -226,9 +222,8 @@ lemma commA (L : LevelData A r) (x xi : A) (h : x * xi = 1) (h' : xi * x = 1)
     (fun l => hf _ (m_c L l)) (fun l => hf _ (m_ci L l)) (fun l => hf _ (m_cb L l))
     (hf _ (m_GG L)) (hf _ (m_ζb L)) (hf _ (m_GGi L))
     (by rw [map_zero, zero_mul, add_zero, sub_zero]; exact cj_fix x xi h h' hn) Y
-  rw [add_zero] at a1 a2
-  rw [mul_zero, zero_mul, add_zero] at a2
-  exact ⟨comm_of_cj x xi h h' a1, comm_of_cj x xi h h' a2⟩
+  rw [add_zero, mul_zero, zero_mul, add_zero] at a2
+  exact ⟨comm_of_cj x xi h h' (by simpa only [add_zero] using a1), comm_of_cj x xi h h' a2⟩
 
 lemma commV (L : LevelData A r) (x xi : A) (h : x * xi = 1) (h' : xi * x = 1)
     (hp : ∀ m, L.pb m * x = x * L.pb m) (hfn : ∀ y ∈ L.fns, y * x = x * y)
@@ -240,8 +235,7 @@ lemma commV (L : LevelData A r) (x xi : A) (h : x * xi = 1) (h' : xi * x = 1)
     (fun l => hf _ (m_cb L l)) (fun l => hf _ (m_cbi L l)) (fun l => hf _ (m_c L l))
     (hf _ (m_GG L)) (hf _ (m_ζ L)) (hf _ (m_GGi L))
     (by rw [map_zero, zero_mul, sub_zero, sub_zero]; exact cj_fix x xi h h' hn) Y
-  rw [sub_zero] at a1 a2
-  rw [mul_zero, zero_mul, add_zero] at a2
+  simp only [sub_zero, mul_zero, zero_mul, add_zero] at a1 a2
   exact ⟨comm_of_cj x xi h h' a1, comm_of_cj x xi h h' a2⟩
 
 lemma Dr_Dri (L : LevelData A r) : L.Dr * L.Dri = 1 :=
@@ -264,14 +258,11 @@ lemma fns_Drb (L : LevelData A r) {x : A} (hx : x ∈ L.fns) : x * L.Drb = L.Drb
   comm_Drb L (fun l => fc L hx (m_cb L l))
 
 lemma p_Dr (L : LevelData A r) (l : Fin r) : L.p l * L.Dr = L.Dr * L.p l + 1 * L.Dr := by
-  have := shift_prod L.c (L.p l) (fun i => if l = i then (1 : ℂ) else 0) (fun i => by
-    rw [L.p_c]; split_ifs <;> simp)
-  simpa [LevelData.Dr] using this
+  simpa [LevelData.Dr] using shift_prod L.c (L.p l) (fun i => if l = i then (1 : ℂ) else 0) (fun i => by rw [L.p_c]; split_ifs <;> simp)
 
 lemma pb_Drb (L : LevelData A r) (l : Fin r) : L.pb l * L.Drb = L.Drb * L.pb l + 1 * L.Drb := by
-  have := shift_prod L.cb (L.pb l) (fun i => if l = i then (1 : ℂ) else 0) (fun i => by
+  simpa [LevelData.Drb] using shift_prod L.cb (L.pb l) (fun i => if l = i then (1 : ℂ) else 0) (fun i => by
     rw [L.pb_cb]; split_ifs <;> simp)
-  simpa [LevelData.Drb] using this
 
 end Formalism.FourierDecayAlt.P.RuleGD
 

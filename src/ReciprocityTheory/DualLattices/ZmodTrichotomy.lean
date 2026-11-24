@@ -188,7 +188,7 @@ theorem flatW' : FlatW'Statement p O := by
     rw [hpc, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, hI, mem_span_pair] at hx
     obtain ⟨c, d, hcd⟩ := hx
     have hd : d - teichmuller p (d.coeff 0) ∈ span {(p : WittVector p (PreTilt O p))} := by
-      rw [mem_span_p_iff]
+      rw [WittVector.mem_span_p_iff_coeff_zero_eq_zero]
       have : constantCoeff (d - teichmuller p (d.coeff 0)) = 0 := by
         rw [map_sub, constantCoeff_apply, constantCoeff_apply, teichmuller_coeff_zero, sub_self]
       exact this
@@ -200,10 +200,10 @@ theorem flatW' : FlatW'Statement p O := by
     have h2 : teichmuller p (d.coeff 0) * T = 0 := by
       have hm : teichmuller p (d.coeff 0) * T ∈ span {(p : WittVector p (PreTilt O p))} :=
         mem_span_singleton'.2 ⟨_, h1.symm⟩
-      rw [mem_span_p_iff, mul_coeff_zero, hT, teichmuller_coeff_zero, teichmuller_coeff_zero] at hm
+      rw [WittVector.mem_span_p_iff_coeff_zero_eq_zero, mul_coeff_zero, hT, teichmuller_coeff_zero, teichmuller_coeff_zero] at hm
       rw [hT, ← map_mul, hm, teichmuller_zero]
     have h3 : a = c * p + e * T := by
-      have := p_mul_eq_zero _ (h1.symm.trans h2)
+      have := WittVector.eq_zero_of_p_mul_eq_zero _ (h1.symm.trans h2)
       linear_combination this
     refine ⟨Ideal.Quotient.mk I c, ?_⟩
     rw [hpc, h3, map_add (f := _), map_mul, map_mul, hTI]

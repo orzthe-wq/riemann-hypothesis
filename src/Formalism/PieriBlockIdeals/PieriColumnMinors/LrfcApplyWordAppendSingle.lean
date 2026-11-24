@@ -94,7 +94,7 @@ theorem lrfc_coeffT_sum {ι : Type*} (s : Finset ι) (d : Fin r × Fin n →₀ 
     (G : ι → MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
     lrfc_coeffT d (∑ i ∈ s, G i) = ∑ i ∈ s, lrfc_coeffT d (G i) := by
   ext m
-  simp [lrfc_coeff_coeffT, coeff_sum]
+  simp [lrfc_coeff_coeffT]
 
 theorem lrfc_coeffT_monomial (d u : Fin r × Fin n →₀ ℕ) (c : MvPolynomial (Fin r × Fin n) R) :
     lrfc_coeffT d (monomial u c) = monomial u (AddMonoidAlgebra.coeff c d) := by
@@ -226,7 +226,7 @@ theorem lrfc_coeffT_Phi (L : List (Fin r × Fin r × (Fin r × Fin n)))
         intro l hl
         have hne : l.2.2 ≠ v := by
           intro h; exact hv (List.mem_map.mpr ⟨l, hl, h⟩)
-        simp [Finsupp.single_apply, Ne.symm hne]
+        simp [Ne.symm hne]
       have hcond : (∀ u, u ∉ w.map (·.2.2) → (d - Finsupp.single v (d v)) u = 0) ↔
           (∀ u, u ∉ (w ++ [(s, a, v)]).map (·.2.2) → d u = 0) := by
         constructor
@@ -560,12 +560,12 @@ theorem coefficient_word : CoeffWord := by
   classical
   have hd : ∀ (a : Fin r) (s : Fin n), s.val < a.val → lrf_off e (a, s) = e (a, s) := by
     intro a s h
-    simp [lrf_off, Finsupp.filter_apply, h]
+    simp [lrf_off, h]
   have h1 := lrfc_coeffT_Phi (lrf_L r n) lrf_nodup F (lrf_off e)
   have hc : ∀ u, u ∉ (lrf_L r n).map (·.2.2) → lrf_off e u = 0 := by
     intro u hu
     rw [lrf_mem_vars] at hu
-    simp [lrf_off, Finsupp.filter_apply, hu]
+    simp [lrf_off, hu]
   rw [ite_eq_left hc, lrf_wordOf e (lrf_off e) hd] at h1
   rw [← h1, lrf_eval_coeffT, lrf_eval_Phi, lrf_coeff_ell ν F e hF he hcol]
 

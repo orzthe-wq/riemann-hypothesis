@@ -216,7 +216,7 @@ theorem rational_points_map_surjective : StatRatSurj := by
         _ = 0 := by rw [hd₁', hd₂, smul_zero, sub_zero]
   have hcl : cl₂ (⟨(S.π.f y₁, S.π.f z₁), memZ _ _ hd₁'⟩ - c • ⟨(y, z), memZ y z hd₂⟩) = 0 := by
     rw [map_sub, map_smul, ← hnat ⟨(y₁, z₁), hZ₁⟩ ⟨(S.π.f y₁, S.π.f z₁), memZ _ _ hd₁'⟩
-      (by first | rfl | simp [Formalism.CoboundaryTransfers.Hom.f2]), hpr₁, map_smul, hgk, hc, pow_add, mul_smul, sub_self]
+      (by first | rfl), hpr₁, map_smul, hgk, hc, pow_add, mul_smul, sub_self]
   have hcob := hherr _ hcP hcl
   unfold WachMod.IsCob1 at hcob
   obtain ⟨x, hxN, hx1, hx2⟩ := hcob

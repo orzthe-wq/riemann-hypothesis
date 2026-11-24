@@ -1,55 +1,17 @@
 module
 
 public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.BaseSt
-import Formalism.LocalRingCardinality.SpanPowerMembership.HaarDensityNeZero
-public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.FdomExistsAll
+public import Mathlib.MeasureTheory.Group.FundamentalDomain
+public import Lemmata.MiscLemmasB.Imports
 public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.HfinExistsMat
 public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.LevelA
-import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.MeasBrg
 public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.MeasFr
 public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.MeasUpq
+public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.InfFam
+import Formalism.LocalRingCardinality.SpanPowerMembership.HaarDensityNeZero
+import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.MeasBrg
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.NumFieldHosCountable
 import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.UnimodGA
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.InfFam
 
 @[expose] public section
 
@@ -154,7 +116,7 @@ theorem isMeasLevW_exists
       UpqT.mat c * F.A ρ = F.A ρ * infMat D.sp.cm.sig V.gram (thetaC D ρ) h} =
       (Set.univ.pi fun v => MF.phiR F v '' B' ((Formalism.L2.Host.tauPl D).symm v)) ×ˢ kf (MF.toFrames F) K := by
     ext x
-    simp only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_prod, Set.mem_univ_pi]
+    simp only [Set.mem_preimage, Set.mem_setOf_eq]
     rw [finE_brg, and_comm]
     refine and_congr ?_ Iff.rfl
     constructor
@@ -205,7 +167,7 @@ theorem measFDExists_holds : MeasFDExists D := fun V hS K hK => by
   obtain ⟨h1, h2, h3⟩ := G5.af_facts D.host.F
   obtain ⟨h1, -, -, h4, h5⟩ := G5.ha_facts (AF D.host.F) D.sp.cm.deg2 D.sp.cm.sig V.gram
   haveI : DiscreteTopology (GQ V) := G5.hfin_disc D.sp.cm.sig V.gram
-  obtain ⟨𝓕, -, h𝓕⟩ := G5.fdom_exists_all (GQ V)
+  obtain ⟨𝓕, -, h𝓕⟩ := _root_.Bl.SecondBlockLemmaC.goal1 (GQ V)
   exact ⟨μ, 𝓕, hμ, h𝓕 μ⟩
 
 end Formalism.IndefR.Eqv

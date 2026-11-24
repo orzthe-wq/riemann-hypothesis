@@ -104,8 +104,7 @@ variable {k r : ℕ}
 
 theorem Hpk_unit (k r : ℕ) : IsUnit (Hpk k r).det := by
   have h := (hpkFacts k r).2.1
-  have : (Hpk k r).det * (Hpk k r).det = 1 := by rw [← Matrix.det_mul, h, Matrix.det_one]
-  exact IsUnit.of_mul_eq_one _ this
+  exact IsUnit.of_mul_eq_one _ (by rw [← Matrix.det_mul, h, Matrix.det_one])
 
 theorem UH_mul {a b : Mx k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) :=
   (uHGroup _ _ (Hpk_unit k r)).2.1 a ha b hb
@@ -183,10 +182,8 @@ theorem InA.pow {X : Mx k r} (hX : InA k r X) : ∀ n : ℕ, InA k r (X ^ (n + 1
 open scoped Matrix.Norms.Operator in
 theorem exp_entry_hasSum (X : Mx k r) (i j : Fin (2 * r + k + 1)) :
     HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹) * (X ^ n) i j) ((NormedSpace.exp X) i j) := by
-  have h := NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) X
   let L : Mx k r →L[ℂ] ℂ := LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ i j)
-  have := L.hasSum h
-  exact this
+  exact L.hasSum (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) X)
 
 theorem exp_entry_of_InA {X : Mx k r} (i j : Fin (2 * r + k + 1)) (h : ∀ n : ℕ, (X ^ (n + 1)) i j = 0) :
     (NormedSpace.exp X) i j = if i = j then 1 else 0 := by
@@ -201,8 +198,7 @@ theorem exp_entry_of_InA {X : Mx k r} (i j : Fin (2 * r + k + 1)) (h : ∀ n : �
 
 theorem exp_mem_N {X : Mx k r} (hX : InLieN k r X) : NormedSpace.exp X ∈ Nset k r := by
   refine ⟨?_, ?_, ?_⟩
-  · have := exp_mem_UH hX.1 1
-    simpa using this
+  · simpa using exp_mem_UH hX.1 1
   · intro a i hai
     exact exp_entry_of_InA i _ (fun n => (hX.2.pow n).1 a i hai)
   · intro i j h1 h2 h3
@@ -266,9 +262,8 @@ theorem InLieN.add {X Y : Mx k r} (hX : InLieN k r X) (hY : InLieN k r Y) : InLi
 theorem InLieN.smul {X : Mx k r} (hX : InLieN k r X) (c : ℝ) : InLieN k r ((c : ℂ) • X) := by
   refine ⟨?_, ?_, ?_⟩
   · show ((c : ℂ) • X)ᴴ * Hpk k r + Hpk k r * ((c : ℂ) • X) = 0
-    have h1 : Xᴴ * Hpk k r + Hpk k r * X = 0 := hX.1
     have hst : star (c : ℂ) = (c : ℂ) := Complex.conj_ofReal c
-    rw [Matrix.conjTranspose_smul, hst, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1, smul_zero]
+    rw [Matrix.conjTranspose_smul, hst, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX.1, smul_zero]
   · intro a i hai
     rw [Matrix.smul_apply, hX.2.1 a i hai, smul_zero]
   · intro i j h1 h2 h3
@@ -276,8 +271,7 @@ theorem InLieN.smul {X : Mx k r} (hX : InLieN k r X) (c : ℝ) : InLieN k r ((c 
 
 theorem InLieN.zero : InLieN k r (0 : Mx k r) := by
   refine ⟨?_, ?_, ?_⟩
-  · show (0 : Mx k r)ᴴ * Hpk k r + Hpk k r * 0 = 0
-    simp
+  · simp [InLieHpk]
   · intro a i _; rfl
   · intro i j _ _ _; rfl
 
@@ -313,8 +307,7 @@ theorem lieN_of_lieE (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r 
   | smul c x _ hx => rw [unrealify_smul]; exact hx.smul c
 
 theorem isClosed_UH (k r : ℕ) : IsClosed (UH (Hpk k r)) := by
-  have hc : Continuous (fun x : Mx k r => xᴴ * Hpk k r * x) := by fun_prop
-  exact isClosed_eq hc continuous_const
+  exact isClosed_eq (by fun_prop) continuous_const
 
 theorem isClosed_N (k r : ℕ) : IsClosed (Nset k r) := by
   have h1 : IsClosed {g : Mx k r | ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), a.val ≤ i.val →
@@ -358,14 +351,11 @@ theorem continuous_expLie (S : Set (Mx k r)) :
     Continuous (fun x : lieE S => (fun i j => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ _)) i j : Mt k r)) := by
   have h1 : Continuous (fun x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool) => unrealify x) :=
     (unrealL k r).continuous_of_finiteDimensional
-  have h0 : Continuous (fun x : lieE S =>
-      (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool))) := continuous_subtype_val
-  have h2 : Continuous (fun x : lieE S => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) : Mx k r)) :=
-    by
-      have h3 : Continuous (fun x : lieE S => (unrealify (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) : Mx k r)) := by
-        exact Continuous.comp (g := fun x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool) => unrealify x) h1 h0
-      exact Continuous.comp (g := fun X : Mx k r => NormedSpace.exp X) continuous_expM h3
-  exact h2
+  have h3 : Continuous (fun x : lieE S =>
+      (unrealify (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) : Mx k r)) :=
+    Continuous.comp (g := fun x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool) => unrealify x)
+      h1 continuous_subtype_val
+  exact Continuous.comp (g := fun X : Mx k r => NormedSpace.exp X) continuous_expM h3
 
 theorem muN_conc (κ : ENNReal) : (haarLie (Nset k r) κ) {x : Mt k r | Matrix.of x ∉ Nset k r} = 0 := by
   have hs : MeasurableSet {x : Mt k r | Matrix.of x ∉ Nset k r} :=

@@ -81,7 +81,7 @@ theorem exists_lift_genericFibre {o F K : Type} [CommRing o] [IsDedekindDomain o
   let ψ' : F →+* K := IsFractionRing.lift hinj
   have hc : ψ'.comp b = ψ.hom := RingHom.ext fun a => IsFractionRing.lift_algebraMap hinj a
   have e : x ≫ z = spMap ψ' ≫ spMap b := by
-    rw [GlobalTheory.Poinc.GCTrait.spMap_comp'', hc, ← hψ]; rfl
+    rw [_root_.GlobalTheory.spMap_comp_ring, hc, ← hψ]; rfl
   exact ⟨pullback.lift x (spMap ψ') e, pullback.lift_fst _ _ _⟩
 
 theorem exists_finite_point_rat {X : Scheme.{0}} (s : X ⟶ Sp ℚ) [LocallyOfFiniteType s] (p : ℕ) [Fact p.Prime]
@@ -120,7 +120,7 @@ theorem exists_finite_point_rat {X : Scheme.{0}} (s : X ⟶ Sp ℚ) [LocallyOfFi
     | mul a b _ _ ha hb => rw [map_mul]; exact K.mul_mem ha hb
   let φK : Γ(X, U) →+* K := φ.hom.codRestrict K hmem
   refine ⟨K, hK, spMap φK ≫ hU.fromSpec, ?_⟩
-  rw [← Category.assoc, GlobalTheory.Poinc.GCTrait.spMap_comp'', ← IsOpenImmersion.lift_fac hU.fromSpec y hr, ← hφ]
+  rw [← Category.assoc, _root_.GlobalTheory.spMap_comp_ring, ← IsOpenImmersion.lift_fac hU.fromSpec y hr, ← hφ]
   rfl
 
 theorem exists_uCTrait_of_open : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf), ∀ (X : USetup C) (p : ℕ) [Fact p.Prime], ∃ U : X.M.Z.Opens, (U : Set X.M.Z).Nonempty ∧ ∀ y : Sp (OO p) ⟶ X.M.Z, Set.range (gPt p ≫ y) ⊆ U → ∃ ct : UCTrait X p (y (cPt p)), ct.y = y := by
@@ -196,7 +196,7 @@ theorem exists_uCTrait_of_open : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
       show algebraMap K (PadicAlgCl p) (e (e.symm k)) = _
       rw [AlgEquiv.apply_symm_apply]
     have key : spMap ι ≫ spMap fK ≫ spMap es = spMap (algebraMap K (PadicAlgCl p)) := by
-      rw [GlobalTheory.Poinc.GCTrait.spMap_comp'', GlobalTheory.Poinc.GCTrait.spMap_comp'', ← RingHom.comp_assoc, hι, hκ]
+      rw [_root_.GlobalTheory.spMap_comp_ring, _root_.GlobalTheory.spMap_comp_ring, ← RingHom.comp_assoc, hι, hκ]
     refine ⟨⟨y, rfl, T, ι, hint, ?_⟩, rfl⟩
     calc gPt p ≫ y ≫ X.π = y₁ ≫ C.i := hy₁.symm
       _ = (spMap (algebraMap K (PadicAlgCl p)) ≫ x) ≫ C.i := by rw [hx]

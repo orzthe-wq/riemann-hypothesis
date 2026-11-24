@@ -56,4 +56,4 @@ open GlobalTheory.WeilM GlobalTheory.EvAdm
 
 theorem PositivityTheory.Mix.exists_scaled_integral_lattice_subset : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (W : Set (κ → FiniteAdeleRing (𝓞 F) F)),
     W ∈ 𝓝 (0 : κ → FiniteAdeleRing (𝓞 F) F) → ∃ a : F, a ≠ 0 ∧ (scaledInt F κ a : Set (κ → FiniteAdeleRing (𝓞 F) F)) ⊆ W := by
-  apply GlobalTheory.EvAdm.exists_scaledInt_subset_of_mem_nhds <;> assumption
+  apply GlobalTheory.EvAdm.exists_scaledInt_subset_of_mem_nhds

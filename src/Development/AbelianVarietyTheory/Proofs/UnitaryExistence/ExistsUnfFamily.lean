@@ -3,18 +3,26 @@ module
 public import Formalism.LocalToGlobal.ProjectiveLattices.NormsFree
 public import Formalism.LocalToGlobal.ProjectiveLattices.RegPFree
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSchemeLawsUnconditional
-public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasseNormTheoremQuadraticExtensionStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.Landherr₂.ExistsNormTensor
+public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasseNormTheoremQuadraticExtension
 public import Development.AbelianVarietyTheory.Proofs.GenericRegularity.SChartsAndTransferOfGoodLevel
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CmModuliConsequenceOfAbelianSchemeLaws
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CompactifiedModuliPartOneStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsModuliSchemePolarizedAbelianLevelStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CuspFormsDominantWeightFiniteDimensionalStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFrameUniformisationPrescribedSpaceStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsHermCoordOfDatum
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.CompactifiedModuliPartOne
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HeckeKer
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsModuliSchemePolarizedAbelianLevel
+public import Formalism.LocalToGlobal.ProjectiveLattices.CuspFree
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.GlobalSectionsRankAlgClosed
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.CuspFormsDominantWeightFiniteDimensional
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
+public import Formalism.LocalToGlobal.ProjectiveLattices.IntegrableOnIntegrand
+public import Formalism.LocalToGlobal.ProjectiveLattices.UnFree
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsFrameUniformisationPrescribedSpace
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsIsUnf
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniformisationDataNonemptyComponentStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUniformisationDataNonemptyComponent
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.MemHolSubIff
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SupNormDefiniteOnCuspFormsGoodEmbeddingStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SupNormDefiniteOnCuspFormsGoodEmbedding
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsHermCoordOfDatum
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.UnitFrameEqOrthonormalMulTriangular
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -84,17 +92,17 @@ theorem exists_unf_family : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
       ∀ k x, FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (U.un k x) := by
     intro σ
     by_cases hσ : Formalism.L2.PjFree.GoodEmb c σ
-    · obtain ⟨U, h1, h2, h3, -, h5, -⟩ := GlobalTheory.T.exists_frameUniformisation_prescribedSpace GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.T.hasse_norm_theorem_quadratic_extension hB hT
+    · obtain ⟨U, h1, h2, h3, -, h5, -⟩ := _root_.GlobalTheory.FrameUnif.exists_unf_of_space GlobalTheory.closing_of_abelianSchemeLaws _root_.GlobalTheory.QNorm.hasseNormSt hB hT
         E H Dw l Xo c σ (Dw.p + Dw.q) ξ₀ Gm φ hpq hσ hcc him hφ
       exact ⟨U, fun _ => ⟨h1, h2, fun k => dom_nonempty _, h3, h5⟩⟩
-    · obtain ⟨U, -⟩ := GlobalTheory.T.exists_uniformisationData_nonempty_component E H Dw l Xo c hpq σ
+    · obtain ⟨U, -⟩ := _root_.GlobalTheory.exists_unf_nonempty_comp E H Dw l Xo c hpq σ
       exact ⟨U, fun h => absurd h hσ⟩
   choose U hU using key
   have h₀ : Formalism.L2.PjFree.GoodEmb c (c.F.val : c.F →+* ℂ) := by
     exact rfl
-  refine ⟨U, hU, GlobalTheory.T.cuspForms_dominantWeight_finiteDimensional hB E H Dw l Xo c _ U _ h₀ (hU _ h₀).1,
+  refine ⟨U, hU, _root_.GlobalTheory.cuspForms_finiteDimensional_of_isUnf hB E H Dw l Xo c _ U _ h₀ (hU _ h₀).1,
     GlobalTheory.CuspProduct.cuspMul_holds E H Dw l Xo c _ U,
-    GlobalTheory.T.supNorm_definite_on_cuspForms_goodEmbedding E H Dw l Xo c _ U (fun σ h => (hU σ h).1), fun hg => ?_⟩
-  exact (GlobalTheory.Reg.sCharts_and_transfer_of_good_level GlobalTheory.T.compactifiedModuli_partOne GlobalTheory.T.exists_moduli_scheme_polarized_abelian_level E H Dw l Xo c hpq hg).2.1 _ U
+    _root_.GlobalTheory.supNorm_definite_on_cusp E H Dw l Xo c _ U (fun σ h => (hU σ h).1), fun hg => ?_⟩
+  exact (GlobalTheory.Reg.sCharts_and_transfer_of_good_level _root_.GlobalTheory.partI_closed _root_.GlobalTheory.Moduli.moduli_scheme_exists E H Dw l Xo c hpq hg).2.1 _ U
 
 end GlobalTheory.UnifFamily

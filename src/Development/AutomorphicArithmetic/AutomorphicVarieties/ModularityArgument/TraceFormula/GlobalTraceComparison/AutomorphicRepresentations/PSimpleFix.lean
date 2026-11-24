@@ -58,7 +58,7 @@ variable {G : Type} [Group G]
 private def Mg (N : Subgroup G) (g : G) : Subgroup G := N ⊓ N.comap (MulAut.conj g⁻¹).toMonoidHom
 
 private theorem mem_Mg (N : Subgroup G) (g m : G) : m ∈ Mg N g ↔ m ∈ N ∧ g⁻¹ * m * g ∈ N := by
-  simp [Mg, Subgroup.mem_comap, MulAut.conj_apply]
+  simp [Mg, Subgroup.mem_comap]
 
 private def dc (N : Subgroup G) (g : G) : Set G := {y | ∃ a ∈ N, ∃ b ∈ N, y = a * g * b}
 
@@ -179,7 +179,7 @@ private theorem lv_dc (ρ : Representation ℂ G V) (N : Subgroup G) (hNo : IsOp
   have h1 : F (Φ j).out = F ((j.out : G) * g) := out_eq_of_inv N F (fun y h hh => hFr y h hh) _
   rw [h1]
   have hmem : (j.out : G) * g ∈ dc N g := ⟨j.out, (j.out).2, 1, N.one_mem, by simp⟩
-  simp [hF, hf, Set.indicator_of_mem hmem, map_mul, Module.End.mul_apply]
+  simp [hF, hf, Set.indicator_of_mem hmem, map_mul]
 
 private theorem avg_dc (ρ : Representation ℂ G V) (N : Subgroup G) (hNo : IsOpen (N : Set G))
     (hNc : IsCompact (N : Set G)) (g : G) (x : V) (hx : x ∈ fixed ρ N) [Finite (N ⧸ (Mg N g).subgroupOf N)] :
@@ -227,7 +227,7 @@ private theorem core (ρ : Representation ℂ G V) (N : Subgroup G) (hNo : IsOpe
       refine Submodule.span_induction (p := fun y _ => ρ g y ∈ O) ?_ ?_ ?_ ?_ hy
       · rintro _ ⟨a, rfl⟩
         refine Submodule.subset_span ⟨g * a, ?_⟩
-        simp [map_mul, Module.End.mul_apply]
+        simp [map_mul]
       · simp
       · intro a b _ _ ha hb
         rw [map_add (f := _)]

@@ -66,7 +66,7 @@ theorem ord_eq_ordL_unit {E : Type} [Field E] [NumberField E] (w : HeightOneSpec
   rw [dite_eq_right h]
   congr 1
   conv_lhs => rw [← WithZero.coe_unzero h]
-  first | rfl | simp [WithZero.log]
+  first | rfl
 
 theorem unrChar_twist : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (c : ℂˣ) (i j : ℕ) (m : GLw a w × GLw b w), ordL m.1.val.det = (i : ℤ) → ordL m.2.val.det = (j : ℤ) → (GlobalTheory.SmGL.unrChar (w.adicCompletion E) c ((-1) ^ (a * b) * GeneralLinearGroup.det m.1 ^ b * GeneralLinearGroup.det m.2 ^ a) : ℂ) = (c : ℂ) ^ (i * b + j * a) := by
   intro E _ _ _ a b w c i j m h1 h2

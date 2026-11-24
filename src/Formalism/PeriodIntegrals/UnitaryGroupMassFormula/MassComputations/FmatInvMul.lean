@@ -136,7 +136,6 @@ variable {D : Formalism.BasicNotions.D7} (X : HidaSetting D)
 theorem sig_eq : (starRingEnd X.B.I.E) = (X.B.I.cm.sig : X.B.I.E →+* X.B.I.E) := by
   first
   | rfl
-  | exact RingHom.ext fun _ => rfl
 
 theorem hA_e_f (a b : Fin D.R.rS) :
     hA X.B.I (incl X.B.I (X.eR a)) (incl X.B.I (X.fR b)) = if a = b then 1 else 0 := by

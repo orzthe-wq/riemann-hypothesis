@@ -480,7 +480,7 @@ theorem joinCol_apply {n' n : ℕ} (x₀ : HomE E n' n) (y : Sp E n) (v : Sp E (
     joinCol (c' := 1) (c := 0) x₀ y v = x₀ (LinearMap.funLeft E E (Fin.castAdd 1) v) + v (Fin.last n') • y := by
   funext l
   have : l.1 < n := l.2
-  simp [joinCol, Loc.inX, atNL, this]
+  simp [joinCol, Loc.inX, atNL]
   exact Or.inl rfl
 
 omit [NumberField E] [StarRing E] in

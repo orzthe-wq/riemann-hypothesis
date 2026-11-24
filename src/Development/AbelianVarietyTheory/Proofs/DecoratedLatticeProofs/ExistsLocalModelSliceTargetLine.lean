@@ -139,9 +139,6 @@ theorem resT_up_fst (hF : p.IsCoreFrame B s FA F₀) (x : Matrix (n' ⊕ Unit) n
   conv_lhs => rw [← fromRows_toRows x]
   rw [fromCols_mul_fromRows, Matrix.zero_mul, add_zero]
 
-theorem symplO_zero_right' (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
-  simp [symplO, hO]
-
 def rowsH (n n' : Type) [Fintype n] [Fintype n'] : Matrix (n' ⊕ Unit) n k ≃ₜ Matrix n' n k × (n → k) where
   toFun x := (x.toRows₁, x (Sum.inr ()))
   invFun q := fromRows q.1 (Matrix.of fun _ => q.2)
@@ -200,7 +197,7 @@ theorem GlobalTheory.SliceModelT.main : ∀ (D : D7) (k : Type) [Field k] [Valua
       exact Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, hy l j]
     have h1 := hT.modul Y hY (tens a' Φ) (tens a' Φ') (fun t => by
       rw [tens_apply, tens_apply, hΦ, B.o.symplO_resT, resT_up_fst p B S FS hF, hYdef, AddEquiv.apply_symm_apply,
-        symplO_zero_right', add_zero, mul_assoc])
+        _root_.GlobalTheory.PlaceModel.symplO_zero_right, add_zero, mul_assoc])
     funext u
     rw [hT₁, h1]
     simp only [heisO, hT₁]

@@ -2,48 +2,6 @@ module
 
 public import Formalism.LocalToGlobal.Divisibility.CoefModLemmas
 public import Formalism.LocalToGlobal.Columns.CoefficientsModP.LatticeBasisExistsHolds
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -138,9 +96,6 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 def latticeTensorDualSpan (M : Submodule (𝓞 K) (Fin n → K)) : Submodule (𝓞 K) (Matrix (Fin n) (Fin n) K) :=
   Submodule.span (𝓞 K) {A | ∃ x ∈ M, ∃ φ ∈ dualFr M, A = Matrix.vecMulVec x φ}
 
-theorem du_col_mem (B : GL (Fin n) K) (j : Fin n) :
-    (fun a : Fin n => (B : Matrix (Fin n) (Fin n) K) a j) ∈ colLat B := Submodule.subset_span ⟨j, rfl⟩
-
 theorem du_row_colLat (B : GL (Fin n) K) (j : Fin n) {z : Fin n → K} (hz : z ∈ colLat B) :
     (fun b : Fin n => ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) j b) ⬝ᵥ z ∈ (1 : Submodule (𝓞 K) K) := by
   induction hz using Submodule.span_induction with
@@ -169,7 +124,7 @@ theorem du_local (w : HeightOneSpectrum (𝓞 K)) (M : Submodule (𝓞 K) (Fin n
       s • (fun a : Fin n => (B : Matrix (Fin n) (Fin n) K) a j) ∈ M := by
     intro j
     have : (fun a : Fin n => (B : Matrix (Fin n) (Fin n) K) a j) ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M := by
-      rw [hB]; exact hle _ (du_col_mem B j)
+      rw [hB]; exact hle _ (_root_.Formalism.L2.DIV.lc_col_mem_colLat B j)
     exact this
   choose s hs hsM using h1
 
@@ -356,25 +311,14 @@ section H
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
-theorem du_mem_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) (x : Fin n → K) :
-    x ∈ gLat g M ↔ ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x ∈ M := by
-  unfold gLat
-  simp only [Submodule.mem_map, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply]
-  constructor
-  · rintro ⟨y, hy, rfl⟩
-    rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
-    exact hy
-  · intro h
-    exact ⟨_, h, by rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]⟩
-
 theorem du_gLat_mul (g h : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) :
     gLat g (gLat h M) = gLat (g * h) M := by
   ext x
-  rw [du_mem_gLat, du_mem_gLat, du_mem_gLat, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_rev]
+  rw [_root_.Formalism.L2.DIV.lc_mem_gLat, _root_.Formalism.L2.DIV.lc_mem_gLat, _root_.Formalism.L2.DIV.lc_mem_gLat, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_rev]
 
 theorem du_gLat_one (M : Submodule (𝓞 K) (Fin n → K)) : gLat 1 M = M := by
   ext x
-  rw [du_mem_gLat, inv_one, Units.val_one, Matrix.one_mulVec]
+  rw [_root_.Formalism.L2.DIV.lc_mem_gLat, inv_one, Units.val_one, Matrix.one_mulVec]
 
 theorem du_gLat_lattice (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) (hM : Submodule.IsFullLattice K M) :
     Submodule.IsFullLattice K (gLat g M) := by
@@ -418,7 +362,7 @@ theorem du_mem_hdualFr (G : Matrix (Fin n) (Fin n) K) (M : Submodule (𝓞 K) (F
 theorem du_hdualFr_eq (G : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) :
     hdualFr (G : Matrix (Fin n) (Fin n) K) M = gLat G⁻¹ (dualFr (du_tl (starRingEnd K) M)) := by
   ext x
-  rw [du_mem_hdualFr, du_mem_gLat, inv_inv]
+  rw [du_mem_hdualFr, _root_.Formalism.L2.DIV.lc_mem_gLat, inv_inv]
 
 end H
 
@@ -466,7 +410,7 @@ theorem du_Lprime (cE : E →+* E) (Jg : GL (Fin n) E) (L L' : Submodule (𝓞 E
     (hL' : ∀ y, y ∈ L' ↔ ∀ x ∈ L, Formalism.UG.hform cE (Jg : Matrix (Fin n) (Fin n) E) x y ∈ (algebraMap (𝓞 E) E).range) :
     L' = gLat Jg⁻¹ (dualFr (du_tl cE L)) := by
   ext y
-  rw [hL', du_mem_gLat, inv_inv, du_mem_dualFr_tl]
+  rw [hL', _root_.Formalism.L2.DIV.lc_mem_gLat, inv_inv, du_mem_dualFr_tl]
   refine forall₂_congr fun x _ => ?_
   rw [du_hform, Submodule.mem_one, RingHom.mem_range]
 
@@ -485,7 +429,7 @@ theorem tauLatDual_of (hBA : BasisAtEx) : TauLatDual := by
   have e2 : (starRingEnd K).comp (emb τ) = (emb τ).comp cE := RingHom.ext fun x => hstar x
   rw [e1, du_tauLat_eq, du_tauLat_eq, du_tl_gLat]
   ext x
-  rw [du_mem_hdualFr, du_mem_gLat, du_tl_comp, e2, ← du_tl_comp, du_dualFr_tl hBA _ _ (du_tl_lattice cE L hL),
+  rw [du_mem_hdualFr, _root_.Formalism.L2.DIV.lc_mem_gLat, du_tl_comp, e2, ← du_tl_comp, du_dualFr_tl hBA _ _ (du_tl_lattice cE L hL),
     embGL_inv, inv_inv, embGL_coe, hJg]
   rfl
 

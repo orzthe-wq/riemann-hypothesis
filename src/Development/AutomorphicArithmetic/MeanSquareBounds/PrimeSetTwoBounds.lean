@@ -107,9 +107,6 @@ structure Rows (z z' : ℝ) (q d : ℕ) : Prop where
 open Classical in
 def G0 {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (y : ℝ) : ℂ := if χ = 1 then ((G1 y : ℝ) : ℂ) else Gchi χ y
 
-def NoExc (c : ℝ) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : Prop :=
-  ∀ β : ℝ, 1 - c < β → β < 1 → DirichletCharacter.LFunction χ β ≠ 0
-
 end QH
 
 end

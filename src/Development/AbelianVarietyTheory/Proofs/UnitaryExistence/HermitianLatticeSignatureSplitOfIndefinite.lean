@@ -3,18 +3,21 @@ module
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.PermutesRefl
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.ExistsIsotropicOfIndefinite
-import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasseNormTheoremQuadraticExtension
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.TransvectionIdentitiesUnitary
-import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.TraceFormDualOneTraceFormDual
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCoprimeScaledIsometrySameSignatureStatement
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsHermCoordOfDatum
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.TwoWeightEqOneAddRoot
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsCoprimeScaledIsometrySameSignature
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsScaledIsometry
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSplitLatticeDatumEverySignatureStatement
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnitaryConjSplitLatticeOfLocalStatement
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsSplitLatticeDatumEverySignature
+public import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermHyperbolic
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsUnitaryConjSplitLatticeOfLocal
+import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.HasseNormTheoremQuadraticExtension
+import Development.AbelianVarietyTheory.Proofs.HermitianTraceForms.TraceFormDualOneTraceFormDual
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsHermCoordOfDatum
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FinrankEqOfInjectiveOfSpan
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HermitianFormsSameSignatureSameSpace
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LandherrStOfHasseNormSt
-import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SignatureHermitianModelOfDatumStatement
+import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.SignatureHermitianModelOfDatum
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,7 +64,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
-public import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.IsHermHyperbolic
 
 @[expose] public section
 
@@ -94,9 +96,7 @@ theorem exists_matrix {M : Type} [AddCommGroup M] [Module (𝓞 E) M] (φ ψ : M
   exact IsLocalizedModule.lift_apply (𝓞 E)⁰ φ ψ
     (fun s => (isLocalizedModule_id (𝓞 E)⁰ (Fin r → E) E).map_units s) x
 
-theorem herm_add_left (G : Matrix (Fin r) (Fin r) E) (x x' y : Fin r → E) :
-    FD.herm G (x + x') y = FD.herm G x y + FD.herm G x' y := by
-  simp [FD.herm, add_mul, Finset.sum_add_distrib]
+alias herm_add_left := _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianTraceFormVanishing.herm_add_left
 
 theorem herm_zero_left (G : Matrix (Fin r) (Fin r) E) (x : Fin r → E) : FD.herm G 0 x = 0 := by
   simp [FD.herm]
@@ -203,7 +203,7 @@ theorem indefinite (D : Datum H) (hp : 1 ≤ D.p) (hq : 1 ≤ D.q) (G : Matrix (
   have key : ∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 →
       (∃ x, 0 < (τ (FD.herm G x x)).re) ∧ ∃ y, (τ (FD.herm G y y)).re < 0 := by
     intro τ hτ
-    have s := GlobalTheory.T.signature_hermitian_model_of_datum E H D r _ G φ hξ hM τ hτ
+    have s := _root_.GlobalTheory.HermSign.signature_of_model E H D r _ G φ hξ hM τ hτ
     rcases lt_or_gt_of_ne (GlobalTheory.OneSpace.im_ne τ hξ (GlobalTheory.OneSpace.rt_ne H)) with h | h
     · exact both_signs τ G (by omega) (by omega) (s.2 h)
     · exact both_signs τ G (by omega) (by omega) (s.1 h)
@@ -322,7 +322,7 @@ theorem exists_projector (D₀ : Datum H) (G : Matrix (Fin r) (Fin r) E) (φ₀ 
 
 theorem splitLat_of_indefinite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), (∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0) → 3 ≤ D.p + D.q → 1 ≤ D.p → 1 ≤ D.q → SplitLat D := by
   intro E _ _ _ H D h1 h3 hp hq
-  obtain ⟨D₀, ep, eq, Lp, Lm, htop, ho, rp, rm, sp, sm⟩ := GlobalTheory.T.exists_splitLattice_datum_every_signature E H D.p D.q h1
+  obtain ⟨D₀, ep, eq, Lp, Lm, htop, ho, rp, rm, sp, sm⟩ := _root_.GlobalTheory.CompRat.exists_splitLat_of_signature E H D.p D.q h1
   have := D.fin
   have := D₀.fin
   have hξ := GlobalTheory.OneSpace.cc_rt H
@@ -357,7 +357,7 @@ theorem splitLat_of_indefinite : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
     simp at h5
   obtain ⟨b₁, hb₁, m₁⟩ := GlobalTheory.SelfDualIsom.exists_nat_smul_mem φ φ₀ span₀
   obtain ⟨b₂, hb₂, m₂⟩ := GlobalTheory.SelfDualIsom.exists_nat_smul_mem φ₀ φ span
-  obtain ⟨k, f, hk, hf⟩ := GlobalTheory.T.exists_coprime_scaled_isometry_same_signature E H D D₀ ep eq (2 * b₁ * b₂) (by positivity)
+  obtain ⟨k, f, hk, hf⟩ := _root_.GlobalTheory.LocalIsomAt.exists_coprime_scaled_isometry E H D D₀ ep eq (2 * b₁ * b₂) (by positivity)
   have hk0 : k ≠ 0 := by
     rintro rfl
     rw [Nat.coprime_zero_left] at hk
@@ -383,7 +383,7 @@ theorem splitLat_of_indefinite : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
       rfl) x y
     rwa [one_mulVec, one_mulVec] at this
   have hd₀ := isUnit_det hdet hU₀
-  obtain ⟨γ, hU, hγ⟩ := GlobalTheory.T.exists_unitary_conj_split_lattice_of_local (maximalRealSubfield E) E (IsCMField.complexConj E) _ G
+  obtain ⟨γ, hU, hγ⟩ := _root_.GlobalTheory.UTrans.exists_isU_conj_mem (maximalRealSubfield E) E (IsCMField.complexConj E) _ G
     (Algebra.IsQuadraticExtension.finrank_eq_two _ _) hh hz (LinearMap.range φ) (LinearMap.range φ₀) hfg span
     π γ₀ (φ₀ a) (2 * b₁ * b₂) k π1 π2 ((π4 a).2 ha) hxx (by rintro _ ⟨y, rfl⟩; exact π3 y) (by positivity)
     (by

@@ -2,51 +2,11 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SquareIntegrableInnerProduct
 public import Formalism.RealPlaceAnalysis.QuotientSettingHolds
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothBr
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.OneParam
 
 @[expose] public section
 
@@ -60,45 +20,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
-theorem pdA_inUJ_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hh : inUJ ε h) :
-    inUJ ε (g * h) := by
-  unfold inUJ at hg hh ⊢
-  have e : (g * h)ᴴ * Jm ε * (g * h) = hᴴ * (gᴴ * Jm ε * g) * h := by
-    simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
-  rw [e, hg, hh]
-
-theorem pdA_inUJ_of_Kset {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : inUJ ε k := by
-  unfold inUJ
-  have h1 : star k * k = 1 := Unitary.star_mul_self_of_mem hk.1
-  rw [Matrix.star_eq_conjTranspose] at h1
-  rw [Matrix.mul_assoc, ← hk.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
-
 def pdA_kg {ε : Fin n → Bool} (k : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Kset ε) : S7.KG ε :=
-  ⟨⟨⟨k, star k, Unitary.mul_star_self_of_mem hk.1, Unitary.star_mul_self_of_mem hk.1⟩, pdA_inUJ_of_Kset hk⟩, hk⟩
+  ⟨⟨⟨k, star k, Unitary.mul_star_self_of_mem hk.1, Unitary.star_mul_self_of_mem hk.1⟩, _root_.ReciprocityTheory.ChartRestriction.DS.smd_inUJ_of_Kset hk⟩, hk⟩
 
 theorem pdA_toMK_kg {ε : Fin n → Bool} (k : Matrix (Fin n) (Fin n) ℂ) (hk : k ∈ Kset ε) :
     S7.toMK (pdA_kg k hk) = k := rfl
 
 theorem pdA_toMK_one (ε : Fin n → Bool) : S7.toMK (1 : S7.KG ε) = 1 := rfl
 
-private theorem Jm_mul_self_eq_one' (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
-
-private theorem Jm_conjTranspose_eq_self' (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
-  unfold Jm
-  rw [Matrix.diagonal_conjTranspose]
-  congr 1
-  funext a
-  rw [Pi.star_apply]
-  split_ifs <;> simp
-
 private theorem inUJ_exp_of_inG' {ε : Fin n → Bool} {A : Matrix (Fin n) (Fin n) ℂ} (hA : inG ε A) :
     inUJ ε (NormedSpace.exp A) := by
-  have hJJ := Jm_mul_self_eq_one' ε
+  have hJJ := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε
   have hJJ' : ∀ X : Matrix (Fin n) (Fin n) ℂ, Jm ε * (Jm ε * X) = X := fun X => by
     rw [← Matrix.mul_assoc, hJJ, Matrix.one_mul]
   have hU : IsUnit (Jm ε) := ⟨⟨Jm ε, Jm ε, hJJ, hJJ⟩, rfl⟩
@@ -127,19 +59,19 @@ theorem pdA_rdV_congr {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {ε
     rw [← smul_add, hX, smul_zero]
   have e : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) =
       fun t : ℝ => f' (g * NormedSpace.exp ((t : ℂ) • X)) :=
-    funext fun t => he _ (pdA_inUJ_mul hg (inUJ_exp_of_inG' (hX' t)))
+    funext fun t => he _ (_root_.ReciprocityTheory.ChartRestriction.DS.smd_inUJ_mul hg (inUJ_exp_of_inG' (hX' t)))
   simp only [Formalism.REAL.RdV]
   rw [e]
 
 private theorem inG_cpart1_and_inG_cpart2 (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ) :
     inG ε (Formalism.REAL.cpart1 ε Z) ∧ inG ε (Formalism.REAL.cpart2 ε Z) := by
-  have hJJ := Jm_mul_self_eq_one' ε
+  have hJJ := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε
   have hJJ' : ∀ X : Matrix (Fin n) (Fin n) ℂ, Jm ε * (Jm ε * X) = X := fun X => by
     rw [← Matrix.mul_assoc, hJJ, Matrix.one_mul]
-  have hJH := Jm_conjTranspose_eq_self' ε
+  have hJH := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_conjTranspose ε
   have hJr : Formalism.REAL.Jm ε = Jm ε := rfl
-  have hs1 : star (1 / 2 : ℂ) = 1 / 2 := by simp [Complex.star_def]
-  have hs2 : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) := by simp [Complex.star_def]
+  have hs1 : star (1 / 2 : ℂ) = 1 / 2 := by simp
+  have hs2 : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) := by simp
   unfold inG Formalism.REAL.cpart1 Formalism.REAL.cpart2
   simp only [hJr, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_add,
     Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJH, Matrix.smul_mul, Matrix.mul_smul,
@@ -225,19 +157,19 @@ theorem pdA_single_comm {ε : Fin n → Bool} {a b : Fin n} (hab : ε a = ε b) 
 
 theorem pdA_inK_cpart {ε : Fin n → Bool} {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : Z * Jm ε = Jm ε * Z) :
     inK ε (Formalism.REAL.cpart1 ε Z) ∧ inK ε (Formalism.REAL.cpart2 ε Z) := by
-  have hJJ := Jm_mul_self_eq_one' ε
+  have hJJ := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε
   have hJJ' : ∀ X : Matrix (Fin n) (Fin n) ℂ, Jm ε * (Jm ε * X) = X := fun X => by
     rw [← Matrix.mul_assoc, hJJ, Matrix.one_mul]
   have hZH : Zᴴ * Jm ε = Jm ε * Zᴴ := by
     have e := congrArg Matrix.conjTranspose hZ
-    simp only [Matrix.conjTranspose_mul, Jm_conjTranspose_eq_self'] at e
+    simp only [Matrix.conjTranspose_mul, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_conjTranspose] at e
     exact e.symm
   have hJr : Formalism.REAL.Jm ε = Jm ε := rfl
   refine ⟨⟨(inG_cpart1_and_inG_cpart2 ε Z).1, ?_⟩, ⟨(inG_cpart1_and_inG_cpart2 ε Z).2, ?_⟩⟩
   · simp only [Formalism.REAL.cpart1, hJr, Matrix.smul_mul, Matrix.mul_smul, sub_mul, mul_sub, Matrix.mul_assoc,
-      hJJ, hJJ', mul_one, hZ, hZH]
+      hJJ', hZ, hZH]
   · simp only [Formalism.REAL.cpart2, hJr, Matrix.smul_mul, Matrix.mul_smul, add_mul, mul_add, Matrix.mul_assoc,
-      hJJ, hJJ', mul_one, hZ, hZH]
+      hJJ', hZ, hZH]
 
 theorem pdA_inK_smul {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (t : ℝ) :
     inK ε ((t : ℂ) • X) := by
@@ -252,37 +184,13 @@ theorem pdA_inK_smul {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX 
 theorem pdA_op_one {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ) : T.op 1 = 1 := by
   simp [S7.KType.op]
 
-private theorem exp_smul_mem_Kset_of_inK {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (t : ℝ) :
-    NormedSpace.exp ((t : ℂ) • X) ∈ Kset ε := by
-  have hJJ := Jm_mul_self_eq_one' ε
-  have hU : IsUnit (Jm ε) := ⟨⟨Jm ε, Jm ε, hJJ, hJJ⟩, rfl⟩
-  have hinv : (Jm ε)⁻¹ = Jm ε := Matrix.inv_eq_left_inv hJJ
-  obtain ⟨hG, hC⟩ := pdA_inK_smul hX t
-  set A := (t : ℂ) • X with hAdef
-  have h0 : Aᴴ * Jm ε = -(Jm ε * A) := by
-    unfold inG at hG
-    exact eq_neg_of_add_eq_zero_left hG
-  have hAH : Aᴴ = -A := by
-    calc Aᴴ = Aᴴ * Jm ε * Jm ε := by rw [Matrix.mul_assoc, hJJ, Matrix.mul_one]
-      _ = -A := by rw [h0, ← hC, Matrix.neg_mul, Matrix.mul_assoc, hJJ, Matrix.mul_one]
-  have hconj : Jm ε * A * (Jm ε)⁻¹ = A := by
-    rw [hinv, ← hC, Matrix.mul_assoc, hJJ, Matrix.mul_one]
-  unfold Kset
-  refine ⟨?_, ?_⟩
-  · rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, hAH,
-      ← Matrix.exp_add_of_commute _ _ (Commute.refl A).neg_right, add_neg_cancel, NormedSpace.exp_zero]
-  · have e := Matrix.exp_conj (Jm ε) A hU
-    rw [hconj, hinv] at e
-    calc NormedSpace.exp A * Jm ε = Jm ε * NormedSpace.exp A * Jm ε * Jm ε := by rw [← e]
-      _ = Jm ε * NormedSpace.exp A := by rw [Matrix.mul_assoc, hJJ, Matrix.mul_one]
-
 theorem pdA_rdV_compact {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ)
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
     (hΨ : ∀ (k₁ k₂ : S7.KG ε) (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g →
       Ψ (S7.toMK k₁ * g * S7.toMK k₂) = T.op k₁ * Ψ g * T.op k₂)
     (v₀ v : T.V) {X g : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (hg : inUJ ε g) :
     Formalism.REAL.RdV X (fun x => inner ℂ v₀ (Ψ x v)) g = inner ℂ v₀ (Ψ g (T.dτ X v)) := by
-  have hexp := exp_smul_mem_Kset_of_inK hX
+  have hexp := _root_.ReciprocityTheory.ChartRestriction.DS.HW.onep_Kset hX
   let γ : ℝ → S7.KG ε := fun t => pdA_kg (NormedSpace.exp ((t : ℂ) • X)) (hexp t)
   have hγ : ∀ t, S7.toMK (γ t) = NormedSpace.exp ((t : ℂ) • X) := fun t => pdA_toMK_kg _ _
   have hd := T.hasDeriv X hX γ hγ

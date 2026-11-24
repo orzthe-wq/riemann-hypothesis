@@ -68,14 +68,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
 open Formalism.MainNotions.UnusedSlot80.PhiPowers in
-theorem φpow_smul (T : LocLat G Qp LL O) (k : ℕ) (a : LetA O n) (x : W.DD T) :
-    ((W.φD T) ^ k) (a • x) = (W.φA ^ k) a • ((W.φD T) ^ k) x := by
-  induction k with
-  | zero => simp
-  | succ k ih =>
-    rw [pow_apply_succ, ih, φD_smulA, ← pow_apply_succ]
-    congr 1
-    rw [pow_succ', AlgHom.mul_apply]
+alias φpow_smul := _root_.Formalism.MainNotions.UnusedSlot80.SatPW.φD_pow_smulA
 
 open Formalism.MainNotions.UnusedSlot80.PhiPowers in
 theorem γ_φpow (T : LocLat G Qp LL O) (g : W.Gam) (k : ℕ) (x : W.DD T) :
@@ -88,14 +81,9 @@ theorem γD_comm (T : LocLat G Qp LL O) (g h : W.Gam) (x : W.DD T) :
     W.γD T g (W.γD T h x) = W.γD T h (W.γD T g x) := by
   rw [← W.γD_mul, mul_comm, W.γD_mul]
 
-theorem InNΔi_smul (T : LocLat G Qp LL O) (c : ZMod n) {a : LetA O n} (ha : a ∈ W.AΔ) {x : W.DD T}
-    (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T c x) : Formalism.MainNotions.LiftingTheory.InNΔi W T c (a • x) :=
-  ⟨SatW.smul_mem_NΔ W T ha hx.1, (W.Nl T c).smul_mem a hx.2⟩
+alias InNΔi_smul := _root_.Formalism.MainNotions.LiftingTheory.frame_smul_mem
 
-theorem InNΔi_add (T : LocLat G Qp LL O) (c : ZMod n) {x y : W.DD T}
-    (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T c x) (hy : Formalism.MainNotions.LiftingTheory.InNΔi W T c y) :
-    Formalism.MainNotions.LiftingTheory.InNΔi W T c (x + y) :=
-  ⟨(W.NΔ T).add_mem hx.1 hy.1, (W.Nl T c).add_mem hx.2 hy.2⟩
+alias InNΔi_add := _root_.Formalism.MainNotions.LiftingTheory.frame_add_mem
 
 theorem InNΔi_osmul (T : LocLat G Qp LL O) (c : ZMod n) (o : O) {x : W.DD T}
     (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T c x) : Formalism.MainNotions.LiftingTheory.InNΔi W T c (o • x) := by
@@ -130,7 +118,7 @@ theorem InNΔi_γ (T : LocLat G Qp LL O) (c : ZMod n) {x : W.DD T}
     rw [γD_comm, hx.1.2 δ hδ]
   · show (letE c : LetA O n) • W.γD T W.gam x = W.γD T W.gam x
     conv_rhs => rw [← InNΔi_letter W T c hx]
-    rw [Formalism.MainNotions.LiftingTheory.frame_γD_smul, Formalism.MainNotions.LiftingTheory.frame_γA_letE]
+    rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent]
 
 theorem Pp_gen (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) {a : LetA O n} (ha : a ∈ W.AΔ) {x : W.DD T}
     (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T c x) : a • ((W.φD T) ^ e) x ∈ Formalism.MainNotions.ArcLiftingSetup.Pp W T c e :=
@@ -181,7 +169,7 @@ theorem Pp_Δ (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) :
     (fun x y hx hy δ hδ => by rw [map_add (f := _), hx δ hδ, hy δ hδ])
     (fun x hx δ hδ => by rw [map_neg, hx δ hδ]) ?_
   intro a ha x hx δ hδ
-  rw [Formalism.MainNotions.LiftingTheory.frame_γD_smul, ha δ hδ, φD_pow_Δ W T hx.1.2 e δ hδ]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, ha δ hδ, φD_pow_Δ W T hx.1.2 e δ hδ]
 
 theorem Pp_γ (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) :
     ∀ y ∈ Formalism.MainNotions.ArcLiftingSetup.Pp W T c e, W.γ T y ∈ Formalism.MainNotions.ArcLiftingSetup.Pp W T c e := by
@@ -190,12 +178,10 @@ theorem Pp_γ (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) :
     (fun x hx => by rw [map_neg]; exact (Formalism.MainNotions.ArcLiftingSetup.Pp W T c e).neg_mem hx) ?_
   intro a ha x hx
   show W.γD T W.gam (a • ((W.φD T) ^ e) x) ∈ _
-  rw [Formalism.MainNotions.LiftingTheory.frame_γD_smul, γ_φpow]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, γ_φpow]
   exact Pp_gen W T c e (Formalism.MainNotions.LiftingTheory.tr_γA_mem W W.gam ha) (InNΔi_γ W T c hx)
 
-theorem mapA_smul {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (a : LetA O n) (x : W.DD T) :
-    W.map f (a • x) = a • W.map f x := by
-  rw [← algebraMap_smul W.EE a x, LinearMap.map_smul, algebraMap_smul]
+alias mapA_smul := _root_.Formalism.MainNotions.LiftingTheory.wmap_map_smul
 
 theorem map_φpow {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (k : ℕ) (x : W.DD T) :
     W.map f (((W.φD T) ^ k) x) = ((W.φD T') ^ k) (W.map f x) := by
@@ -276,7 +262,7 @@ theorem InFP_γ (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) {f : LetA O n}
   obtain ⟨u, hu, huΔ⟩ := hf
   refine ⟨u • W.γ T y, Pp_smul W T c e huΔ _ (Pp_γ W T c e y hy), ?_⟩
   show W.γD T W.gam (f • y) = _
-  rw [Formalism.MainNotions.LiftingTheory.frame_γD_smul, hu, mul_comm, mul_smul]
+  rw [_root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, hu, mul_comm, mul_smul]
   rfl
 
 theorem inMultiple_map {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (hT : IsCrys PD T.ρ)

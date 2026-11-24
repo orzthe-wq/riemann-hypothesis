@@ -91,7 +91,7 @@ theorem pushEx_eq_one_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField 
     have e : liftEx Z Fu y i P hu z = y ≫ (η[Z.oF.t.G]).left := by
       apply Z.m.cart.1.hom_ext
       · rw [h, Category.assoc, u1, ← hp]
-        simp only [Model.j, Category.assoc]
+        simp only [Category.assoc]
       · rw [liftEx_snd, Category.assoc, hs, Category.comp_id]
     rw [← liftEx_fst Z Fu y i P hu z, e, Category.assoc, u0, hu, Category.assoc]
   · intro h

@@ -110,9 +110,6 @@ theorem linForm_eq_dotProduct {g : ℕ} (lam : (Fin g → ℂ) →ₗ[ℂ] ℂ) 
     · simp [h]
   rw [hs, map_smul, smul_eq_mul, mul_comm]
 
-theorem two_pi_I_ne_zero' : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := by
-  simp [Real.pi_ne_zero, Complex.I_ne_zero]
-
 theorem mem_periodLattice_of_exp_thetaLinForm {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm)
     (w : Fin g → ℂ) (lam : (Fin g → ℂ) →ₗ[ℂ] ℂ)
     (h : ∀ n n' : Fin g → ℤ, cexp (thetaLinForm n w) = cexp (lam (τ *ᵥ ofIntVec n + ofIntVec n'))) :
@@ -145,7 +142,7 @@ theorem mem_periodLattice_of_exp_thetaLinForm {g : ℕ} {τ : Matrix (Fin g) (Fi
   refine ⟨-k, -m, funext fun i => ?_⟩
   rw [ofIntVec_neg, ofIntVec_neg, mulVec_neg]
   show w i = -(τ *ᵥ ofIntVec k) i + -((m i : ℤ) : ℂ)
-  apply mul_left_cancel₀ two_pi_I_ne_zero'
+  apply mul_left_cancel₀ Complex.two_pi_I_ne_zero
   linear_combination (-1 : ℂ) * hm i
 
 theorem eq_zero_of_thetaLinForm {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
@@ -161,7 +158,7 @@ theorem eq_zero_of_thetaLinForm {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
   have hi := h (Pi.single i 1) 0
   rw [thetaLinForm_apply, ofIntVec_single', single_dotProduct, _root_.one_mul, ofIntVec_zero, add_zero,
     linForm_eq_dotProduct lam, hlam, zero_dotProduct] at hi
-  exact (mul_eq_zero.mp hi).resolve_left (neg_ne_zero.mpr two_pi_I_ne_zero')
+  exact (mul_eq_zero.mp hi).resolve_left (neg_ne_zero.mpr Complex.two_pi_I_ne_zero)
 
 theorem fderiv_eq_mul_of_ratio {E κ : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (θ : κ → E → ℂ)
     (hθ : ∀ c, Differentiable ℂ (θ c)) (c : κ) (z w : E) (hc : θ c z ≠ 0) (v : κ → E → ℂ)

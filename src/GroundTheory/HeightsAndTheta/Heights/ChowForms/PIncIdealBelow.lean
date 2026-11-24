@@ -67,7 +67,7 @@ private def killFirst {F : Type*} [Field F] {e n : ℕ} (ij : Fin (e + 1) × Fin
   if ij.1 = 0 then 0 else X ij
 
 private theorem aeval_killFirst_eq_zero {F : Type*} [Field F] {e n δ : ℕ} (hδ : 1 ≤ δ)
-    {f : MvPolynomial (Fin (e + 1) × Fin n) F} (hf : IsMultiHomog δ f) :
+    {f : MvPolynomial (Fin (e + 1) × Fin n) F} (hf : Heights.IsMultiHomog δ f) :
     aeval (killFirst (F := F)) f = 0 := by
   classical
   rw [aeval_def, eval₂_eq]

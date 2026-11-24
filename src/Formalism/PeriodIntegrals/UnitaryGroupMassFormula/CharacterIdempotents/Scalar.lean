@@ -100,7 +100,7 @@ theorem end_one_ne_zero (W : FDRep ℂ G) [Simple W] : (1 : Module.End ℂ W) �
   apply hx
   simpa using LinearMap.congr_fun h x
 
-theorem nontrivial_of_simple (W : FDRep ℂ G) [Simple W] : Nontrivial W := nontrivial_of_simple_fdRep W
+alias nontrivial_of_simple := _root_.PI.CharIdemW.nontrivial_of_simple_fdRep
 
 theorem schur_scalar (W : FDRep ℂ G) [Simple W] (T : Module.End ℂ W)
     (hT : ∀ g : G, W.ρ g * T = T * W.ρ g) : ∃ c : ℂ, T = c • 1 := by

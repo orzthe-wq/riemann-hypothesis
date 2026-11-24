@@ -245,13 +245,11 @@ theorem low_zero {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) {i j
     (h : i < j) : x i j = 0 := by
   first
   | exact hx.1 h
-  | exact hx.1 (show OrderDual.toDual j < OrderDual.toDual i from h)
 
 theorem up_zero {n : ℕ} {y : Matrix (Fin n) (Fin n) K} (hy : IsUpUni y) {i j : Fin n}
     (h : j < i) : y i j = 0 := by
   first
   | exact hy.1 h
-  | (unfold IsUpUni at hy; done)
 
 theorem mul_inv_one_low {n : ℕ} {x : Matrix (Fin n) (Fin n) K} (hx : IsLowUni x) :
     x * x⁻¹ = 1 := by
@@ -418,7 +416,6 @@ theorem phase_main : PhaseWellDef := by
           refine Fintype.sum_equiv (Function.Involutive.toPerm _ (revF_revF s)) _ _ fun a => ?_
           refine Fintype.sum_equiv (Function.Involutive.toPerm _ (revF_revF s)) _ _ fun c => ?_
           first
-          | simp only [Function.Involutive.coe_toPerm, revF_revF]
           | simp [Function.Involutive.toPerm, revF_revF]
       _ = -∑ a : Fin s.sum, ∑ c : Fin s.sum, if (a : ℕ) = c + 1 then x a c else 0 := by
           congr 1
@@ -429,6 +426,6 @@ theorem phase_main : PhaseWellDef := by
 
 end Phase
 
-theorem phaseWellDef : Formalism.DoubleCosetMeasures.PhaseWellDef := Phase.phase_main
+alias phaseWellDef := _root_.Formalism.DoubleCosetMeasures.P.Phase.phase_main
 
 end Formalism.DoubleCosetMeasures.P

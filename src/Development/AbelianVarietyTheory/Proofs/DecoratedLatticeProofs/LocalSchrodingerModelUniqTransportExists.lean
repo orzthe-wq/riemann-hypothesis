@@ -1,15 +1,18 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.ExistsUnitarySupportedAtPlaceOfMulEqIdem
-import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.StarPurelyImaginaryEqNeg
 public import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.EventuallyFinEqOne
+public import Development.AbelianVarietyTheory.Definitions.Foundations.MatrixMeasurableSpace
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSchrodingerIntertwinerIntegralMatrices
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergFrameHalfInverse
+public import Mathlib.Analysis.Complex.Circle
+public import Mathlib.NumberTheory.LocalField.Basic
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixIntegralOfAddCharTraceDual
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatMatrixTranslationModulationIrreduc
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilCharacterSplitPlaceExistsContinuousNontrivia
+import Development.AbelianVarietyTheory.Counterexamples.HeightSurvey.StarPurelyImaginaryEqNeg
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.IsSelfDualCLatFrame
 import Development.AbelianVarietyTheory.Proofs.AdelicLatticeProofs.RealIdemMulOfReal
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsSchrodingerIntertwinerIntegralMatricesStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.HeisenbergFrameHalfInverseStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MatrixIntegralOfAddCharTraceDualStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatMatrixTranslationModulationIrreducStatement
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.WeilCharacterSplitPlaceExistsContinuousNontriviaStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -80,9 +83,9 @@ theorem charZero_of_place {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topolo
 theorem localModel_uniq_transport_exist : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (S T : HSp D) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → (∀ T₁ T₂, p.IsModel ψ FS FT T₁ → p.IsModel ψ FS FT T₂ → ∀ Φ₀, Φ₀ ≠ 0 → T₁ Φ₀ = T₂ Φ₀ → T₁ = T₂) ∧ (∀ T₁, p.IsModel ψ FS FT T₁ → ∀ A : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ), (∀ f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (A f)) → (∀ f, IsThetaFunO ψ S T f → ∀ y : WO S T, IsHalf (p.e + cA D p.e) y → A (heisO ψ S T y f) = heisO ψ S T y (A f)) → p.IsModel ψ FS FT (A ∘ₗ T₁)) ∧ ∀ f₀, IsThetaFunO ψ S T f₀ → (∀ x : Matrix Y Y' k, (∀ r q, x r q ∈ 𝒪[k]) → heisO ψ S T (p.up FS FT x) f₀ = f₀) → (∀ y : WO S T, IsHalf (cA D p.e) y → (∀ x : Matrix Y Y' k, (∀ r q, x r q ∈ 𝒪[k]) → ψ (symplO S T (p.up FS FT x) y) = 1) → heisO ψ S T y f₀ = f₀) → ∃ T₁, p.IsModel ψ FS FT T₁ ∧ ∀ Φ : SB (Matrix Y Y' k), Φ.1 = Set.indicator {x | ∀ r q, x r q ∈ 𝒪[k]} (fun _ => 1) → T₁ Φ = f₀ := by
   intro D k _ _ _ _ p Y Y' _ _ _ _ S T FS FT ψ hψ
   haveI : CharZero k := charZero_of_place p
-  obtain ⟨⟨ψk, hψk⟩, hcn, -, -, -⟩ := GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D k p ψ hψ
+  obtain ⟨⟨ψk, hψk⟩, hcn, -, -, -⟩ := _root_.GlobalTheory.LocChar.weil_char_split D k p ψ hψ
   obtain ⟨hcont, hne⟩ := hcn ψk hψk
-  obtain ⟨hup, -, -, hsymk, hsurj⟩ := GlobalTheory.T.heisenberg_frame_half_inverse D k p Y Y' S T FS FT ψ ψk hψk
+  obtain ⟨hup, -, -, hsymk, hsurj⟩ := _root_.GlobalTheory.LocSympl.halves_at_split D k p Y Y' S T FS FT ψ ψk hψk
   obtain ⟨-, hec, -⟩ := p.split
   have hce : cA D p.e * p.e = 0 := by rw [mul_comm, hec]
   have hcce : cA D (cA D p.e) * cA D p.e = 0 := by rw [GlobalTheory.DualPairCheck.cA_cA, hec]
@@ -106,7 +109,7 @@ theorem localModel_uniq_transport_exist : ∀ (D : D7) (k : Type) [Field k] [Val
     have hWle : W ≤ SB (Matrix Y Y' k) := by
       rintro _ ⟨Ψ, -, rfl⟩
       exact Ψ.2
-    have hWeq := GlobalTheory.T.schwartzBruhat_matrix_translation_modulation_irreducible k Y Y' ψk hcont hne W hWle
+    have hWeq := _root_.GlobalTheory.IrredSB.sb_irreducible k Y Y' ψk hcont hne W hWle
       (by
         rintro _ ⟨Φ, hΦ, rfl⟩ x hx
         have hΦ' : T₁ Φ = T₂ Φ := (memW Φ).1 ⟨Φ, hΦ, rfl⟩
@@ -139,7 +142,7 @@ theorem localModel_uniq_transport_exist : ∀ (D : D7) (k : Type) [Field k] [Val
     let Z := GlobalTheory.PlaceModel.half S T (cA D p.e)
     let χ : Matrix Y Y' k → Z → ℂ := fun t z => ψ (symplO S T (p.up FS FT t) z.1)
     have hZ : ∀ z : Z, IsHalf (cA D p.e) z.1 := fun z => (GlobalTheory.PlaceModel.isHalf_iff S T).2 z.2
-    obtain ⟨Tm, htr, hmo, hvac, hspan⟩ := GlobalTheory.T.exists_schrodinger_intertwiner_integralMatrices k Y Y' Z χ
+    obtain ⟨Tm, htr, hmo, hvac, hspan⟩ := _root_.GlobalTheory.SchrodExist.exists_intertwiner_matrix k Y Y' Z χ
       (fun a b z => by simp only [χ, upAdd, GlobalTheory.PlaceModel.symplO_add_left, AddChar.map_add_eq_mul])
       (fun a z z' => by simp only [χ, AddSubgroup.coe_add, GlobalTheory.PlaceModel.symplO_add_right, AddChar.map_add_eq_mul])
       (fun z => by simp only [χ, upZero, GlobalTheory.PlaceModel.symplO_zero_left, AddChar.map_zero_eq_one])
@@ -153,7 +156,7 @@ theorem localModel_uniq_transport_exist : ∀ (D : D7) (k : Type) [Field k] [Val
           have := congrArg Subtype.val h
           simpa only [AddSubgroup.coe_nsmul] using this
         rw [← GlobalTheory.PlaceModel.inv_smul_nsmul S T hn z.1, h', GlobalTheory.PlaceModel.inv_smul_nsmul S T hn])
-      (fun x hx => GlobalTheory.T.matrix_integral_of_addChar_trace_dual k Y Y' ψk hcont hne x fun b hb => by
+      (fun x hx => _root_.GlobalTheory.CharDualMat.integral_of_dual k Y Y' ψk hcont hne x fun b hb => by
         obtain ⟨y, hy, hyb⟩ := hsurj b
         have key : ∀ t, χ t ⟨y, (GlobalTheory.PlaceModel.isHalf_iff S T).1 hy⟩ = ((ψk (∑ r, ∑ q, b r q * t r q) : Circle) : ℂ) := by
           intro t
@@ -166,7 +169,7 @@ theorem localModel_uniq_transport_exist : ∀ (D : D7) (k : Type) [Field k] [Val
       (WO S T → ℂ) (fun x => GlobalTheory.PlaceModel.heisL S T ψ (p.up FS FT x)) (fun z => GlobalTheory.PlaceModel.heisL S T ψ z.1)
       (fun x x' f => by
         rw [GlobalTheory.PlaceModel.heisL_half S T ψ hce _ ((GlobalTheory.PlaceModel.isHalf_iff S T).1 (hup x).1) _
-          ((GlobalTheory.PlaceModel.isHalf_iff S T).1 (hup x').1), upAdd])
+          ((GlobalTheory.PlaceModel.isHalf_iff S T).1 (hup x').1), _root_.GlobalTheory.LocMod.Witness.up_add])
       (fun z z' f => by
         rw [GlobalTheory.PlaceModel.heisL_half S T ψ hcce _ z.2 _ z'.2]
         rfl)

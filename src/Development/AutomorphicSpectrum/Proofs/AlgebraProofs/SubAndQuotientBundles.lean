@@ -1,7 +1,7 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.IsSplitGaussChars
-public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeBasisAdaptedToSubspaceStatement
+public import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.LatticeBasisAdaptedToSubspace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -97,7 +97,7 @@ theorem isBun_sub_quot : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [Add
   obtain ⟨s, hs⟩ := LinearMap.exists_rightInverse_of_surjective W.mkQ W.range_mkQ
   refine ⟨⟨fun i => ?_, Module.finBasis K W, ?_⟩, ⟨fun i => ?_, Module.finBasis K (V ⧸ W), ?_⟩⟩
   · obtain ⟨b, hb⟩ := hloc i
-    obtain ⟨bW, bQ, b', -, hW, -, -, -⟩ := GlobalTheory.T.lattice_basis_adapted_to_subspace K C V i _ b (L i) W hb
+    obtain ⟨bW, bQ, b', -, hW, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.LatAdapted.exists_adapted K C V i _ b (L i) W hb
     exact ⟨bW, hW⟩
   · refine ((hb0.union (finite_not_mapsTo C (Module.finBasis K W) b0 W.subtype)).union
       (finite_not_mapsTo C b0 (Module.finBasis K W) g)).subset ?_
@@ -119,7 +119,7 @@ theorem isBun_sub_quot : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [Add
     · intro hw q
       exact h2 w hw q
   · obtain ⟨b, hb⟩ := hloc i
-    obtain ⟨bW, bQ, b', -, -, hQ, -, -⟩ := GlobalTheory.T.lattice_basis_adapted_to_subspace K C V i _ b (L i) W hb
+    obtain ⟨bW, bQ, b', -, -, hQ, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Crv.LatAdapted.exists_adapted K C V i _ b (L i) W hb
     exact ⟨bQ, hQ⟩
   · refine ((hb0.union (finite_not_mapsTo C b0 (Module.finBasis K (V ⧸ W)) W.mkQ)).union
       (finite_not_mapsTo C (Module.finBasis K (V ⧸ W)) b0 s)).subset ?_

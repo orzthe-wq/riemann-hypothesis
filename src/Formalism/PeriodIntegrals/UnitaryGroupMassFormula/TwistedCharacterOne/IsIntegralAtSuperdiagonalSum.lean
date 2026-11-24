@@ -298,11 +298,6 @@ lemma redP_det_Ment {r : Sp E (N + c) ≃ₗ[E] Sp E (N + c)} (hrI : ∀ (j : �
     rw [atN_dI]
     exact hrI _ _
 
-lemma hDA_of {r : Sp E (N + c) ≃ₗ[E] Sp E (N + c)} (hr : r ∈ LocE.JQ P (Ideal.absNorm P.asIdeal) kj N c) :
-    ∀ i : Fin (N + c), kj ≤ i.1 → i.1 < N → ∀ j : Fin (N + c), ¬(kj ≤ j.1 ∧ j.1 < N) →
-      redP P (r (Loc.eN E (N + c) j.1) i) = 0 :=
-  fun i hi1 hi2 j hj => redP_eq_zero_of_intAt_inv_absNorm_mul P (intAt_inv_absNorm_mul_apply_of_mem_JQ P hr i hi1 hi2 j hj)
-
 lemma hI_of {r : Sp E (N + c) ≃ₗ[E] Sp E (N + c)} (hr : r ∈ LocE.JQ P (Ideal.absNorm P.asIdeal) kj N c) :
     ∀ (j : ℕ) i, IntAt P (r (Loc.eN E (N + c) j) i) :=
   fun j i => ent_int P (Subgroup.mem_inf.1 hr).1 j i
@@ -310,7 +305,7 @@ lemma hI_of {r : Sp E (N + c) ≃ₗ[E] Sp E (N + c)} (hr : r ∈ LocE.JQ P (Ide
 lemma isUnit_Mb {r : Sp E (N + c) ≃ₗ[E] Sp E (N + c)} (hr : r ∈ LocE.JQ P (Ideal.absNorm P.asIdeal) kj N c) :
     IsUnit (Mb P kj N c r).det := by
   have hr' : r⁻¹ ∈ LocE.JQ P (Ideal.absNorm P.asIdeal) kj N c := inv_mem hr
-  have hm := Mb_mul_of P (h := 1) (r := r) (g := r⁻¹) (hDA_of P hr) (hI_of P hr) (hI_of P hr')
+  have hm := Mb_mul_of P (h := 1) (r := r) (g := r⁻¹) (_root_.PI.TwChrOne.Pf.red_DA P hr) (hI_of P hr) (hI_of P hr')
     (fun t => by show _ = (r * r⁻¹) _; rw [mul_inv_cancel])
   rw [Mb_one] at hm
   have hd := congrArg Matrix.det hm

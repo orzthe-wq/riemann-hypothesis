@@ -142,7 +142,7 @@ theorem exists_intertwining_ne_zero : ∀ (n N : ℕ) (h : n + 1 = N) (lam : Dom
     have h1 : mu.w i ≤ lam.w i.castSucc := (hI i).1
     have h2 : lam.w i.succ ≤ mu.w i := (hI i).2
     constructor <;> omega
-  obtain ⟨io, hmem, heq, hhw, -⟩ := Formalism.BranchingDeterminantCap.branchMap ℂ n (fun i : Fin n => lam.natW i.castSucc)
+  obtain ⟨io, hmem, heq, hhw, -⟩ := _root_.Formalism.BranchingDeterminantCap.branch_map_formula ℂ n (fun i : Fin n => lam.natW i.castSucc)
     (fun i => mu.natW i + c) hI'
   obtain ⟨dm, de, dh⟩ := GlobalTheory.Branching.genericDet_pow_mul n c mu.natW
   obtain ⟨am, ae⟩ := GlobalTheory.Branching.AddColumn.add_column (n + 1) n lam.natW (by simp [DomWeight.natW, hls])

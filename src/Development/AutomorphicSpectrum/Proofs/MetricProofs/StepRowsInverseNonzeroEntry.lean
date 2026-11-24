@@ -1,7 +1,7 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.GenericBlockMatrixIsBlockDiag
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishingStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockDiagonalMinorVanishing
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -72,7 +72,7 @@ theorem minorIJ_one_diag {R : Type} [CommRing R] {N : ℕ} (J : Finset (Fin N)) 
 theorem exists_isUnit_of_sum {R : Type} [CommRing R] [IsLocalRing R] {ι : Type} (s : Finset ι)
     (f : ι → R) (h : IsUnit (∑ a ∈ s, f a)) : ∃ a ∈ s, IsUnit (f a) := by
   by_contra hc
-  push_neg at hc
+  push Not at hc
   have : ∑ a ∈ s, f a ∈ IsLocalRing.maximalIdeal R :=
     Ideal.sum_mem _ fun a ha => (IsLocalRing.mem_maximalIdeal _).2 (hc a ha)
   exact (IsLocalRing.mem_maximalIdeal _).1 this h
@@ -102,7 +102,7 @@ theorem unit_comb : ∀ (L : Type) [Field L] (V : ValuationSubring L) (N j : ℕ
     apply Subtype.ext
     change ((Hv.det : V) : L) * (H.det)⁻¹ = 1
     rw [hdetc, mul_inv_cancel₀ hdet]
-  have main := GlobalTheory.T.block_diagonal_minor_vanishing V N j i hj
+  have main := _root_.GlobalTheory.CompanionTheory.Ar.PB.MinorCalc.minors_main V N j i hj
   have hJ := stepCols_ne_empty (j := j) i hj
   have hBv : IsBlockDiag j Hv := fun a b hab => Subtype.ext (hB a b hab)
   have hstep : ∀ I, ¬ IsStepRows N j i I → minorIJ Hv I (stepCols N j i) = 0 := fun I hI =>

@@ -1,45 +1,6 @@
 module
 
 public import Formalism.SharpRestriction.GrowthBounds.IsResidueClassZero
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.BitVec
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -47,7 +8,7 @@ noncomputable section
 
 namespace Formalism.MainNotions.FormalGroupSystem.Pf
 
-open Formalism.BasicNotions Finset
+open Formalism.BasicNotions
 
 variable {D : Formalism.BasicNotions.D7} {L : SizeData₂ D}
 
@@ -59,7 +20,7 @@ theorem nc_notSg {T p : ℕ} (hg : GIdx D.host T p) : ¬ Formalism.MainNotions.G
   exact absurd h (by decide)
 
 theorem nc_step {T p : ℕ} (hg : GIdx D.host T p) : Formalism.MainNotions.G.stepP D p = Formalism.MainNotions.G.hP D p := by
-  unfold Formalism.MainNotions.G.stepP; rw [if_neg (nc_notSg hg)]
+  unfold Formalism.MainNotions.G.stepP; rw [ite_eq_right (nc_notSg hg)]
 
 theorem nc_bs_iter (X : Formalism.MainNotions.G.Inst D L) (h t : Formalism.MainNotions.G.HH D) (i : ℕ) : X.bs h (t + i • h) = X.bs h t := by
   induction i with
@@ -81,19 +42,8 @@ theorem nc_partner {T p : ℕ} (hg : GIdx D.host T p) (t : Formalism.MainNotions
 
 theorem nc_tsum_odd (g : ℕ → ℝ) [DecidablePred (fun e : ℕ => Odd e)] :
     ∑' e : ℕ, (if Odd e then g e else 0) = ∑' e : ℕ, g (2 * e + 1) := by
-  have hi : Function.Injective (fun e : ℕ => 2 * e + 1) := by
-    intro a b h
-    simp only at h
-    omega
-  have hs : Function.support (fun e : ℕ => if Odd e then g e else 0) ⊆ Set.range (fun e : ℕ => 2 * e + 1) := by
-    intro e he
-    by_cases ho : Odd e
-    · obtain ⟨k, rfl⟩ := ho
-      exact ⟨k, by ring⟩
-    · exact (he (if_neg ho)).elim
-  rw [← hi.tsum_eq hs]
-  congr 1
-  funext e
-  exact if_pos (odd_two_mul_add_one e)
+  rw [← tsum_range g (g := fun k : ℕ => 2 * k + 1)
+    (fun _ _ h => Nat.mul_left_cancel zero_lt_two (Nat.add_right_cancel h)), tsum_subtype _ g]
+  exact tsum_congr fun e => by simp only [Set.indicator_apply, range_two_mul_add_one, Set.mem_ofPred_eq]
 
 end Formalism.MainNotions.FormalGroupSystem.Pf

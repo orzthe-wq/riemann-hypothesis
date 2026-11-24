@@ -128,7 +128,7 @@ theorem _root_.GlobalTheory.ChainStepSupp.emb₂_mem_parahoric {A D : Type} [Fin
   · change ((_: GL (A ⊕ D) k) : Matrix (A ⊕ D) (A ⊕ D) k) i j ∈ _
     rw [hb]
     rcases i with i | i <;> rcases j with j | j <;>
-      simp [Matrix.reindex_apply, hx.1, hy.1]
+      simp [hx.1, hy.1]
   · have hx₂ := hx.2
     have hy₂ := hy.2
     simp only [Matrix.coe_units_inv] at hx₂ hy₂
@@ -136,9 +136,9 @@ theorem _root_.GlobalTheory.ChainStepSupp.emb₂_mem_parahoric {A D : Type} [Fin
     change ((_: GL (A ⊕ D) k) : Matrix (A ⊕ D) (A ⊕ D) k) i j ∈ _
     rw [hb]
     rcases i with i | i <;> rcases j with j | j <;>
-      simp [Matrix.reindex_apply, hx₂, hy₂]
+      simp [hx₂, hy₂]
   · rw [hb]
-    simp [Matrix.reindex_apply]
+    simp
 
 
 open MeasureTheory ValuativeRel Matrix in
@@ -162,7 +162,7 @@ theorem _root_.GlobalTheory.ChainStepSupp.emb₂_one_torusElt {A D : Type} [Fint
   change ((_: GL (A ⊕ D) k) : Matrix (A ⊕ D) (A ⊕ D) k) i j = _
   rw [hb]
   rcases i with i | i <;> rcases j with j | j <;>
-    simp [Matrix.reindex_apply, _root_.GlobalTheory.GLDoubling.val_torusElt, Matrix.diagonal_apply,
+    simp [_root_.GlobalTheory.GLDoubling.val_torusElt, Matrix.diagonal_apply,
       Matrix.one_apply]
 
 

@@ -77,7 +77,7 @@ theorem map_epow (φ : A →ₐ[ℂ] B) {n : ℕ} (X : Fin n → Fin n → A) (k
     φ (Formalism.REAL.epow X k a b) = Formalism.REAL.epow (fun a b => φ (X a b)) k a b := by
   induction k generalizing a b with
   | zero => by_cases h : a = b <;> simp [Formalism.REAL.epow, h]
-  | succ m ih => simp [Formalism.REAL.epow, map_sum, map_mul, ih, apply_ite]
+  | succ m ih => simp [Formalism.REAL.epow, map_sum, map_mul, ih]
 
 theorem map_etr (φ : A →ₐ[ℂ] B) {n : ℕ} (X : Fin n → Fin n → A) (k : ℕ) :
     φ (Formalism.REAL.etr X k) = Formalism.REAL.etr (fun a b => φ (X a b)) k := by

@@ -68,10 +68,9 @@ open Formalism.TwoAdicCyclotomicDecomposition
 namespace RealCyclotomicSubfield
 
 lemma conj_root {z : ℂ} {m : ℕ} (hm : m ≠ 0) (hz : z ^ m = 1) : starRingEnd ℂ z = z⁻¹ := by
-  have hn : ‖z‖ = 1 := by
-    have h1 := congrArg norm hz
-    rw [norm_pow, norm_one] at h1
-    exact (pow_eq_one_iff_of_nonneg (norm_nonneg z) hm).mp h1
+  have hn : ‖z‖ = 1 :=
+    (pow_eq_one_iff_of_nonneg (norm_nonneg z) hm).mp
+      (by simpa only [norm_pow, norm_one] using congrArg norm hz)
   rw [Complex.inv_def, Complex.normSq_eq_norm_sq, hn]
   simp
 
@@ -86,12 +85,11 @@ lemma not_real_zeta {K : Type*} [Field K] {m : ℕ} (hm : m ≠ 0) (h2 : ¬ m �
     (hζ : IsPrimitiveRoot ζ m) (ψ : K →+* ℂ) : starRingEnd ℂ (ψ ζ) ≠ ψ ζ := by
   intro h
   have h1 : (ψ ζ) ^ m = 1 := by rw [← map_pow, hζ.pow_eq_one, map_one]
-  have hc := conj_root hm h1
+  have heq : ψ ζ = (ψ ζ)⁻¹ := h.symm.trans (conj_root hm h1)
   have hne : ψ ζ ≠ 0 := by
     intro h0
     rw [h0, zero_pow hm] at h1
     exact zero_ne_one h1
-  have heq : ψ ζ = (ψ ζ)⁻¹ := h.symm.trans hc
   have hsq : ψ (ζ ^ 2) = ψ 1 := by
     rw [map_pow, map_one, sq]
     calc ψ ζ * ψ ζ = ψ ζ * (ψ ζ)⁻¹ := congrArg (ψ ζ * ·) heq
@@ -151,11 +149,10 @@ lemma real_subfield_real_embeddings {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ
 
 lemma finrank_cyc {e : ℕ} {ζ : L} (hζ : IsPrimitiveRoot ζ (2 ^ (e + 2))) :
     Module.finrank ℚ ℚ⟮ζ⟯ = 2 ^ (e + 1) := by
-  have hint : IsIntegral ℚ ζ := Algebra.IsIntegral.isIntegral ζ
-  rw [IntermediateField.adjoin.finrank hint, ← Polynomial.cyclotomic_eq_minpoly_rat hζ (by positivity),
-    Polynomial.natDegree_cyclotomic, Nat.totient_prime_pow Nat.prime_two (by omega)]
   have h3 : e + 2 - 1 = e + 1 := by omega
-  rw [h3]
+  rw [IntermediateField.adjoin.finrank (Algebra.IsIntegral.isIntegral ζ),
+    ← Polynomial.cyclotomic_eq_minpoly_rat hζ (by positivity),
+    Polynomial.natDegree_cyclotomic, Nat.totient_prime_pow Nat.prime_two (by omega), h3]
   simp
 
 private lemma mem_adjoin_of_val_mem_adjoin_image {L' : Type*} [Field L'] [CharZero L'] (Z : IntermediateField ℚ L')

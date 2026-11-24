@@ -312,8 +312,6 @@ abbrev trivialPeriodMap : PeriodMap R0 (emptyColumnChain Tau) where
 abbrev trivialMember (Dst : ℝ) (hD : 0 < Dst) : Member R0 Tau (fun _ => hc0) :=
   ⟨emptyColumnChain Tau, atTExample Tau T Dst hD, trivialPeriodMap Tau⟩
 
-instance (i : ℕ) : IsEmpty ((emptyColumnChain Tau).cls i) := inferInstanceAs (IsEmpty Empty)
-
 instance (Dst : ℝ) (hD : 0 < Dst) : Subsingleton (atTExample Tau T Dst hD).Mram :=
   ⟨fun _ _ => Subtype.ext (funext fun c => (IsEmpty.false c).elim)⟩
 
@@ -339,8 +337,7 @@ instance : Subsingleton (zeroHLat K).V := inferInstanceAs (Subsingleton (Fin 0 �
 
 theorem zeroHLat_good : (zeroHLat K).Good := by
   refine ⟨fun _ => ?_, ?_, Subsingleton.elim _ _⟩
-  · rw [show (zeroHLat K).X _ = 1 from rfl, Matrix.det_one]
-    exact isUnit_one
+  · simp [zeroHLat]
   · rw [show (zeroHLat K).L = ⊤ from rfl, Subsingleton.elim (⊤ : Submodule (𝓞 K) (zeroHLat K).V) ⊥]
     exact Submodule.fg_bot
 

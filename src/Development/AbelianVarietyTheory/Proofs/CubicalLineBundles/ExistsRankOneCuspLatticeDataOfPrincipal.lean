@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 public import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
+import Formalism.LocalToGlobal.ProjectiveLattices.HostRank
 
 @[expose] public section
 
@@ -59,10 +60,6 @@ theorem cc_eq_conj (D : D7) (x : D.host.E) : ReciprocityTheory.ChartRestriction.
 
 theorem flagDomainConj_hostXi_eq_neg (D : D7) : ReciprocityTheory.ChartRestriction.G.FD.cc D.host.xi0 = -D.host.xi0 :=
   conj_xi0_alt D
-
-theorem halfDifferent_ne_bot (D : D7) : D.host.𝔟 ≠ ⊥ := by
-  intro h
-  exact (bB_ne D).1 (by rw [h]; simp)
 
 theorem absNorm_halfDifferent_le (D : D7) :
     (Ideal.absNorm D.host.𝔟 : ℝ) ≤ |(NumberField.discr D.host.E : ℝ)| := by
@@ -85,16 +82,6 @@ theorem absNorm_mul_mem_one (D : D7) {a : D.host.E} (ha : a ∈ D.host.AA) :
   obtain ⟨w, -, hw⟩ := (FractionalIdeal.mem_coeIdeal _).1
     (ha _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨_, Ideal.absNorm_mem D.host.𝔟, rfl⟩))
   exact ⟨w, by rw [hw, map_natCast, mul_comm]⟩
-
-theorem absNorm_ccK_mem (D : D7) : (Ideal.absNorm D.host.ccK : D.host.E) ∈ D.host.AA := by
-  unfold Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0
-  rw [← div_eq_mul_inv, FractionalIdeal.mem_div_iff_of_ne_zero (bB_ne D).1]
-  intro y hy
-  obtain ⟨z, -, rfl⟩ := (FractionalIdeal.mem_coeIdeal _).1 hy
-  have h : ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∈ D.host.ccE := by
-    have := Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) (Ideal.absNorm_mem D.host.ccK)
-    rwa [map_natCast] at this
-  exact (FractionalIdeal.mem_coeIdeal _).2 ⟨_, Ideal.mul_mem_right z _ h, by rw [map_mul, map_natCast]⟩
 
 theorem exists_dataX_of_hasPrinc : ∀ (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (hj : InR D j), ∀ σ, GoodEmb T.Q.c σ → GlobalTheory.FrameNorm.HasPrinc (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) T.Q.l.M → ∀ k : (T.U j σ).Comp, ∃ Xx : ReciprocityTheory.ChartRestriction.G.FD.DataX D.host.E D.R.r, Xx.toData = (T.U j σ).X k ∧ Xx.g = T.Q.l.M ∧ Xx.Λ = Submodule.span (𝓞 D.host.E) {v | ∃ a ∈ D.host.AA, ∃ u ∈ Xx.L', v = a • u} ∧ Xx.k0 = 2 * xiR D ∧ (Xx.NA : ℝ) ≤ |(NumberField.discr D.host.E : ℝ)| ∧ Xx.NC ≤ Ideal.absNorm D.host.ccK := by
   intro D T h j hj σ hσ hP k
@@ -126,7 +113,7 @@ theorem exists_dataX_of_hasPrinc : ∀ (D : D7) (T : Core D) (h : LawsCore T) (j
     ξ0_abs := fun τ => by rw [show Xx.ξ0 = ((T.U j σ).X k).ξ0 from congrArg _ h1, habs]; ring
     NA := Ideal.absNorm D.host.𝔟
     NC := Ideal.absNorm D.host.ccK
-    NA_pos := Nat.pos_of_ne_zero fun e => halfDifferent_ne_bot D (Ideal.absNorm_eq_zero_iff.1 e)
+    NA_pos := Nat.pos_of_ne_zero fun e => _root_.Formalism.L2.Pj.b_ne_bot D (Ideal.absNorm_eq_zero_iff.1 e)
     NC_pos := Nat.pos_of_ne_zero fun e => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 e)
     NA_sub := fun x hx => ?_
     NC_sub := fun x hx => ?_ }, h1, h2, h3, rfl, absNorm_halfDifferent_le D, le_rfl⟩
@@ -141,6 +128,6 @@ theorem exists_dataX_of_hasPrinc : ∀ (D : D7) (T : Core D) (h : LawsCore T) (j
     | add v w _ _ hv hw => rw [smul_add]; exact add_mem hv hw
     | smul c v _ hv => rw [smul_comm]; exact Xx.L'.smul_mem c hv
   · rw [h3]
-    exact Submodule.subset_span ⟨_, absNorm_ccK_mem D, x, hx, rfl⟩
+    exact Submodule.subset_span ⟨_, _root_.Formalism.L2.Pj.normK_mem_AA D, x, hx, rfl⟩
 
 end GlobalTheory.LatticeData

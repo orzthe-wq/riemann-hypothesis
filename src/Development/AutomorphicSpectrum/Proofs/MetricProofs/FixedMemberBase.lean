@@ -64,7 +64,7 @@ theorem epsT_small (C : ℝ) :
     ∃ a : ℝ, 0 < a ∧ ∀ t, 0 < t → t ≤ a → |epsT C t| ≤ 1 / 2 ∧ C * epsT C t ≤ 1 := by
   have hL : Tendsto (fun t : ℝ => Real.log (1 / t)) (𝓝[>] 0) atTop := by
     have hinv : Tendsto (fun t : ℝ => t⁻¹) (𝓝[>] 0) atTop := by
-      first | exact tendsto_inv_nhdsGT_zero | exact tendsto_inv_zero_atTop
+      first | exact tendsto_inv_nhdsGT_zero
     exact (Real.tendsto_log_atTop.comp hinv).congr fun t => by simp [one_div]
   have hq : Tendsto (fun x : ℝ => Real.log x / x) atTop (𝓝 0) := by
     simpa using Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero
@@ -83,7 +83,7 @@ theorem epsT_small (C : ℝ) :
     rw [mul_zero] at h
     exact h.eventually (gt_mem_nhds (by norm_num))
   obtain ⟨u, hu, hsub⟩ : ∃ u ∈ Set.Ioi (0:ℝ), Set.Ioc 0 u ⊆ {t | |epsT C t| < 1 / 2 ∧ C * epsT C t < 1} := by
-    first | exact mem_nhdsGT_iff_exists_Ioc_subset.mp (ha.and hb) | exact mem_nhdsWithin_Ioi_iff_exists_Ioc_subset.mp (ha.and hb)
+    first | exact mem_nhdsGT_iff_exists_Ioc_subset.mp (ha.and hb)
   refine ⟨u, hu, fun t ht htu => ?_⟩
   obtain ⟨h1, h2⟩ := hsub ⟨ht, htu⟩
   exact ⟨h1.le, h2.le⟩
@@ -95,7 +95,7 @@ private theorem contDiffAt_comp_chart_symm_of_smoothOn {e : ℕ} {X : Type} [Top
   have hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U) :=
     (A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target hU
   refine ((hf j).contDiffAt (hopen.mem_nhds ⟨hy, hyU⟩)).of_le ?_
-  first | exact_mod_cast (le_top : ((2 : ℕ∞)) ≤ ⊤) | simp | decide
+  first | simp
 
 private theorem levi_add_mul {ι : Type} [Fintype ι] (F G : (ι → ℂ) → ℝ) (y w : ι → ℂ) (k : ℝ)
     (hF : ContDiffAt ℝ 2 F y) (hG : ContDiffAt ℝ 2 G y) :

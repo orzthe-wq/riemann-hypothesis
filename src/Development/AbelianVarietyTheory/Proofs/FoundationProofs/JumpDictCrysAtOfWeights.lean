@@ -71,19 +71,11 @@ theorem embOver_true_apply (ρ : D.what₂.Tau) (x : D.host.E) :
     embOver D ρ true x = starRingEnd ℂ (embOver D ρ false x) :=
   D.host.conjE_apply (embOver D ρ false) x
 
-theorem conj_ne {R : Ranks} (H : Host R) :
-    starRingEnd ℂ (Complex.I * (Real.sqrt H.d : ℂ)) ≠ Complex.I * (Real.sqrt H.d : ℂ) := by
-  intro h
-  have h1 := congrArg Complex.im h
-  have : 0 < Real.sqrt H.d := Real.sqrt_pos.2 (by exact_mod_cast H.hyp.2.1.pos)
-  simp at h1
-  linarith
-
 theorem embOver_true_ne (ρ ρ' : D.what₂.Tau) : embOver D ρ true ≠ embOver D ρ' false := by
   intro h
   have h1 := DFunLike.congr_fun h D.host.sqrtMinusD
   rw [embOver_true_apply, embOver_false_sqrt, embOver_false_sqrt] at h1
-  exact conj_ne D.host h1
+  exact GlobalTheory.FrobDense.conj_ne D.host h1
 
 theorem sqrt_sq {R : Ranks} (H : Host R) : H.sqrtMinusD ^ 2 = -(H.d : H.E) := by
   have h0 : (Complex.I * (Real.sqrt H.d : ℂ)) ^ 2 = -(H.d : ℂ) := by
@@ -122,7 +114,7 @@ variable {R : Ranks} (H : Host R)
 
 theorem exists_finite_split : ∃ A : Set (HeightOneSpectrum (𝓞 H.E)), A.Finite ∧
     ∀ v, v ∉ A → v.asIdeal.inertiaDeg ℤ = 1 → IsSplitPl H v := by
-  apply GlobalTheory.FrobDense.exists_finite_split <;> assumption
+  apply GlobalTheory.FrobDense.exists_finite_split
 
 variable {H} {what₂ : Rows.Data R} (N : NData R H what₂)
 
@@ -260,7 +252,6 @@ theorem inf_block (hB : BlockCharParam D) (i : D.nd.Loc) (k : ℕ) (ρ : D.what�
     push_cast
     simp
     ring
-
 
 open Classical in
 def shift (φ : D.host.E →+* ℂ) : ℤ :=

@@ -269,10 +269,6 @@ theorem fg_of_le_fg' {E : Type} [Field E] [NumberField E] {n : ℕ} {N P : Submo
 
 variable {D : D7}
 
-theorem isO_star (o : 𝓞 D.host.E) : ∃ b : 𝓞 D.host.E, (b : D.host.E) = star (o : D.host.E) := by
-  have hint : IsIntegral ℤ (star (o : D.host.E)) := (o.isIntegral_coe).map (starRingEnd D.host.E).toIntAlgHom
-  exact ⟨⟨_, hint⟩, rfl⟩
-
 theorem isO_mul {a b : D.host.E} (ha : ∃ o : 𝓞 D.host.E, (o : D.host.E) = a) (hb : ∃ o : 𝓞 D.host.E, (o : D.host.E) = b) :
     ∃ o : 𝓞 D.host.E, (o : D.host.E) = a * b := by
   obtain ⟨x, rfl⟩ := ha; obtain ⟨y, rfl⟩ := hb; exact ⟨x * y, by simp⟩
@@ -334,7 +330,7 @@ theorem isSelfDualC_scaleLat (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.
       | add _ _ _ _ h h' => rw [hf_add_left]; exact isO_add h h'
       | smul o z _ h =>
         rw [← algebraMap_smul D.host.E o z, hf_smul_left]
-        exact isO_mul (isO_star o) h
+        exact isO_mul (_root_.GlobalTheory.LevSplit.exists_conj o) h
     · intro hy
       refine (mem_iff_of_pass (ι := RingHom.id D.host.E)
         (Lc := fun N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E) => N.toAddSubgroup) pass_id (mul_inv_cancel₀ h𝔟)

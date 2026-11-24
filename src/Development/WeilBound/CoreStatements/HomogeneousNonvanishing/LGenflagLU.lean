@@ -224,7 +224,7 @@ theorem exists_general (g : Matrix (Fin r) (Fin r) F) (hg : g.det ≠ 0) :
     congr 1
     · ext i j; simp
     · ext i j
-      by_cases h : i = j <;> simp [N, h, one_apply]
+      by_cases h : i = j <;> simp [N, h]
   have nz : ∀ (M : Matrix (Fin r) (Fin r) (Polynomial F)) (a : F), M.map (Polynomial.evalRingHom a) = 1 →
       ∀ k, (trunc k (M.map φ)).det ≠ 0 := by
     intro M a hM k h0

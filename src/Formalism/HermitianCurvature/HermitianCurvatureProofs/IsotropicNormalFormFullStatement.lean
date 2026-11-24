@@ -1,13 +1,13 @@
 module
 
-public import Formalism.HermitianCurvature.OperatorsCommuteTranslations
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.NormFormOneUnitary.PRowWSColW
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianInsertionVectorOrthogonal
-public import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianPerturbedVectorOrthogonal
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.OneAddProjectionMemIsotropicSet
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.OneAddProjectionMemIsotropicSet
+public import Formalism.HermitianCurvature.HermitianCurvatureProofs.StrictMonoSnoc
+public import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
+public import Formalism.HermitianCurvature.OperatorsCommuteTranslations
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.RightDerivativeRulePsi
-import Formalism.HermitianCurvature.HermitianCurvatureProofs.StrictMonoSnoc
 import Formalism.HermitianCurvature.HermitianCurvatureProofs.TriangularFactorMiddleRow
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.NormFormOneUnitary.HermitianOrthogonalProjectionVector
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -25,11 +25,7 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.TotallySplit
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
@@ -40,7 +36,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -56,9 +51,131 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.NormFormOneUnitary.HermitianOrthogonalProjectionVector
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Linter.Style
 import Std.Tactic.BVDecide.Normalize.Prop
-public import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianPerturbedVectorOrthogonal, Formalism.HermitianCurvature.HermitianCurvatureProofs.IsotropicNormalFormFullStatement
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianPerturbedVectorOrthogonal =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianPerturbedVectorOrthogonal", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.NormFormOneUnitary.PRowWSColW\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianInsertionVectorOrthogonal\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.OneAddProjectionMemIsotropicSet\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.StrictMonoSnoc\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.TriangularFactorMiddleRow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix Finset
+
+namespace Formalism.FourierDecayAlt.P.SignAntidiagonal
+
+open Formalism.FourierDecayAlt.C3 Formalism.QuantumDeterminants
+
+noncomputable section
+
+section N2d
+
+variable {k : ℕ} (m : ℕ) (i : Fin (m + 1)) (ν : Fin (2 * (m + 1) + k + 1) → ℂ)
+
+def VpF : Fin (2 * (m + 1) + k + 1) → ℂ := fun p =>
+  bvec (esI k (m + 1) i) p - ν p + (-(herm (Hpk k (m + 1)) ν ν) / 2) * bvec (eI k (m + 1) i) p
+
+theorem eI_ne_esI (a b : Fin (m + 1)) : eI k (m + 1) a ≠ esI k (m + 1) b := by
+  intro h; have := congrArg Fin.val h; simp [eI, esI] at this; have := a.isLt; have := b.isLt; omega
+
+theorem VpF_star (hν : inWb k (m + 1) ν) (q : Fin (2 * (m + 1) + k + 1)) (hq : m + 1 + k < q.val) :
+    VpF m i ν q = if (NFOne.sg k (m + 1) q).val = i.val then 1 else 0 := by
+  unfold VpF
+  rw [hν q (Or.inr hq)]
+  have hq2 : q ≠ eI k (m + 1) i := by intro h; rw [h] at hq; simp [eI] at hq; omega
+  by_cases h : q = esI k (m + 1) i
+  · rw [if_pos (by rw [sg_val', h]; simp [esI]; omega)]; simp [bvec, h, Ne.symm (eI_ne_esI m i i)]
+  · rw [if_neg]
+    · simp [bvec, h, hq2]
+    · intro h'; apply h; ext; rw [sg_val'] at h'; simp [esI]; omega
+
+theorem VpF_iso (hν : inWb k (m + 1) ν) : herm (Hpk k (m + 1)) (VpF m i ν) (VpF m i ν) = 0 := by
+  have hi := i.isLt
+  set γ : ℂ := -(herm (Hpk k (m + 1)) ν ν) / 2 with hγ
+  have hpt : ∀ l, star (VpF m i ν l) * (WeylGroupFacts.sgn k (m + 1) l * VpF m i ν (WeylGroupFacts.tau k (m + 1) l)) =
+      (if l = eI k (m + 1) i then star γ else 0) + (if l = esI k (m + 1) i then γ else 0) +
+        star (ν l) * (WeylGroupFacts.sgn k (m + 1) l * ν (WeylGroupFacts.tau k (m + 1) l)) := by
+    intro l
+    unfold VpF
+    rw [← hγ]
+    by_cases h1 : l = eI k (m + 1) i
+    · subst h1
+      rw [tau_eI, hν (eI k (m + 1) i) (Or.inl (by simp only [eI]; omega)), hν (esI k (m + 1) i) (Or.inr (by simp [esI]; omega)),
+        sgn_one _ (by simp [eI]; omega)]
+      simp [bvec, eI_ne_esI]
+    by_cases h2 : l = esI k (m + 1) i
+    · subst h2
+      rw [tau_esI, hν (eI k (m + 1) i) (Or.inl (by simp only [eI]; omega)), hν (esI k (m + 1) i) (Or.inr (by simp [esI]; omega)),
+        sgn_one _ (by simp [esI]; omega)]
+      simp [bvec, Ne.symm (eI_ne_esI m i i)]
+    by_cases hW : m + 1 ≤ l.val ∧ l.val ≤ m + 1 + k
+    · have ht : WeylGroupFacts.tau k (m + 1) l = l := by ext; rw [tau_val]; split_ifs <;> omega
+      rw [ht]
+      simp [bvec, h1, h2]
+    · rw [hν l (by omega)]
+      have ha : bvec (esI k (m + 1) i) l = 0 := by simp [bvec, h2]
+      have hb : bvec (eI k (m + 1) i) l = 0 := by simp [bvec, h1]
+      rw [ha, hb]
+      simp [h1, h2]
+  rw [herm_expand, Finset.sum_congr rfl (fun l _ => hpt l), Finset.sum_add_distrib, Finset.sum_add_distrib,
+    Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _), ← herm_expand]
+  have hreal : star (herm (Hpk k (m + 1)) ν ν) = herm (Hpk k (m + 1)) ν ν := (herm_swap k (m + 1) ν ν).symm
+  rw [hγ, star_div₀, star_neg, hreal]
+  simp
+
+theorem VpF_esI (hν : inWb k (m + 1) ν) (c : Fin (m + 1)) (hc : c ≠ i) :
+    herm (Hpk k (m + 1)) (VpF m i ν) (bvec (esI k (m + 1) c)) = 0 := by
+  rw [herm_bvec_esI]
+  unfold VpF
+  rw [hν _ (Or.inl (by simp only [eI]; omega))]
+  have h1 : eI k (m + 1) c ≠ eI k (m + 1) i := by
+    intro h; apply hc; ext; have := congrArg Fin.val h; simpa [eI] using this
+  simp [bvec, h1, eI_ne_esI]
+
+theorem hermitian_perturbed_vector_orthogonal (z' : Fin (2 * (m + 1) + k + 1) → ℂ) (hz : inWb k (m + 1) z') (hν : inWb k (m + 1) ν)
+    (hzν : herm (Hpk k (m + 1)) z' ν = 0) : herm (Hpk k (m + 1)) z' (VpF m i ν) = 0 := by
+  have : herm (Hpk k (m + 1)) z' (VpF m i ν) = -herm (Hpk k (m + 1)) z' ν := by
+    rw [herm_expand, herm_expand, ← Finset.sum_neg_distrib]
+    refine Finset.sum_congr rfl (fun l _ => ?_)
+    by_cases hW : m + 1 ≤ l.val ∧ l.val ≤ m + 1 + k
+    · unfold VpF
+      have h1 : l ≠ eI k (m + 1) i := by intro h; rw [h] at hW; simp [eI] at hW; omega
+      have h2 : l ≠ esI k (m + 1) i := by intro h; rw [h] at hW; simp [esI] at hW; omega
+      simp [bvec, h1, h2]
+    · rw [hz (WeylGroupFacts.tau k (m + 1) l) (by rw [tau_val]; split_ifs <;> omega)]; simp
+  rw [this, hzν, neg_zero]
+
+theorem bvec_esI_iso (b c : Fin (m + 1)) :
+    herm (Hpk k (m + 1)) (bvec (esI k (m + 1) b)) (bvec (esI k (m + 1) c)) = 0 := by
+  rw [herm_bvec_esI]; simp [bvec, Ne.symm (eI_ne_esI m c b)]
+
+theorem bvec_esI_star (c : Fin (m + 1)) (q : Fin (2 * (m + 1) + k + 1)) :
+    bvec (esI k (m + 1) c) q = if (NFOne.sg k (m + 1) q).val = c.val then 1 else 0 := by
+  have := c.isLt
+  simp only [bvec, Pi.single_apply]
+  by_cases h : q = esI k (m + 1) c
+  · rw [if_pos h, if_pos (by rw [sg_val', h]; simp [esI]; omega)]
+  · rw [if_neg h, if_neg]; intro h'; apply h; ext; rw [sg_val'] at h'; simp [esI]; have := q.isLt; omega
+
+end N2d
+
+end
+
+end Formalism.FourierDecayAlt.P.SignAntidiagonal
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianPerturbedVectorOrthogonal =====
+
+-- ===== clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.IsotropicNormalFormFullStatement =====
+-- clump-header: {"m": "Formalism.HermitianCurvature.HermitianCurvatureProofs.IsotropicNormalFormFullStatement", "h": "module\n\npublic import Formalism.HermitianCurvature.OperatorsCommuteTranslations\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianInsertionVectorOrthogonal\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.HermitianPerturbedVectorOrthogonal\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.OneAddProjectionMemIsotropicSet\npublic import Formalism.HermitianCurvature.HermitianCurvatureProofs.RightDerivativeRulePsi\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.StrictMonoSnoc\nimport Formalism.HermitianCurvature.HermitianCurvatureProofs.TriangularFactorMiddleRow\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.NormFormOneUnitary.HermitianOrthogonalProjectionVector\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Formalism.FormalDegreeBessel.FormalDegreeRatio.UnitaryWeylNormalHolds\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix Finset
@@ -180,7 +297,7 @@ theorem isotropicNormalFormFull_statement : IsotropicNormalFormFull := by
     simp only [yb]
     by_cases hW : m + 1 ≤ p.val ∧ p.val ≤ m + 1 + k
     · have : p ≠ eI k (m + 1) i := by intro h; rw [h] at hW; simp [eI] at hW; omega
-      simp [hW, bvec, Pi.single_apply, this]
+      simp [hW, bvec, this]
     · rw [if_neg hW, zero_add]
       by_cases hX : p.val < m + 1
       · by_cases hpi : p.val = i.val
@@ -189,9 +306,9 @@ theorem isotropicNormalFormFull_statement : IsotropicNormalFormFull := by
         · have hpe : p = eI k (m + 1) ⟨p.val, hX⟩ := by ext; simp [eI]
           have hne : (⟨p.val, hX⟩ : Fin (m + 1)) ≠ i := by intro h; apply hpi; rw [← h]
           have hne2 : p ≠ eI k (m + 1) i := by intro h; apply hpi; rw [h]; simp [eI]
-          rw [hpe, u_X _ hne]; simp [bvec, Pi.single_apply, ← hpe, hne2]
+          rw [hpe, u_X _ hne]; simp [bvec, ← hpe, hne2]
       · have hne2 : p ≠ eI k (m + 1) i := by intro h; apply hX; rw [h]; simp only [eI]; omega
-        rw [u_star p (by omega)]; simp [bvec, Pi.single_apply, hne2]
+        rw [u_star p (by omega)]; simp [bvec, hne2]
   have tau_W : ∀ l : Fin (2 * (m + 1) + k + 1), m + 1 ≤ l.val ∧ l.val ≤ m + 1 + k → WeylGroupFacts.tau k (m + 1) l = l := by
     intro l hl; ext; rw [tau_val]; split_ifs <;> omega
   have tau_notW : ∀ l : Fin (2 * (m + 1) + k + 1), ¬ (m + 1 ≤ l.val ∧ l.val ≤ m + 1 + k) →
@@ -290,7 +407,7 @@ theorem isotropicNormalFormFull_statement : IsotropicNormalFormFull := by
             simp; ring
           · rw [hv, if_neg hpi]
             have h1 : q ≠ esI k (m + 1) ⟨p.val, hp⟩ := by intro h; rw [h] at hW; simp [esI] at hW; omega
-            simp [bvec, Pi.single_apply, h1]
+            simp [bvec, h1]
         · have h0 : yb q = 0 := hyb q (by omega)
           rw [h0, mul_zero]
           split_ifs
@@ -303,10 +420,10 @@ theorem isotropicNormalFormFull_statement : IsotropicNormalFormFull := by
         have : p = eI k (m + 1) i := by ext; simp [eI, hpi]
         simp [bvec, this]
       · have : p ≠ eI k (m + 1) i := by intro h; apply hpi; rw [h]; simp [eI]
-        simp [hpi, bvec, Pi.single_apply, this]
+        simp [hpi, bvec, this]
     · have : p ≠ eI k (m + 1) i := by intro h; apply hp; rw [h]; simp only [eI]; omega
       rw [Finset.sum_eq_zero]
-      · simp [bvec, Pi.single_apply, this]
+      · simp [bvec, this]
       · intro q _
         by_cases hW : m + 1 ≤ q.val ∧ q.val ≤ m + 1 + k
         · rw [NFOne.P_rowWS_colW k (m + 1) (m + 1) V2 p q (by omega) hW.2, zero_mul]
@@ -385,3 +502,6 @@ theorem isotropicNormalFormFull_statement : IsotropicNormalFormFull := by
 end
 
 end Formalism.FourierDecayAlt.P.SignAntidiagonal
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.HermitianCurvature.HermitianCurvatureProofs.IsotropicNormalFormFullStatement =====

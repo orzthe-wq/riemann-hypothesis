@@ -42,23 +42,11 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsArcSeriesIntegralAlgebraicOverPowerSeriesStatement
 
 @[expose] public section
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
-
-private theorem mem_of_pow_mem {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {v : Ω} {N : ℕ} (hN : N ≠ 0)
-    (h : v ^ N ∈ A) : v ∈ A := by
-  rcases A.mem_or_inv_mem v with hv | hv
-  · exact hv
-  · by_cases h0 : v = 0
-    · rw [h0]
-      exact zero_mem A
-    · obtain ⟨m, rfl⟩ : ∃ m, N = m + 1 := ⟨N - 1, by omega⟩
-      have e : v = v ^ (m + 1) * v⁻¹ ^ m := by
-        rw [pow_succ, inv_pow, mul_comm (v ^ m) v, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ h0), mul_one]
-      rw [e]
-      exact mul_mem h (pow_mem hv _)
 
 private theorem coord_eq {l : ℕ} [Fact l.Prime] {c : Coef l} (β : Bas c) {n : ℕ} {z : Qbar l}
     (k k' : Fin β.d → ZMod (l ^ n)) (h : Cg n z (∑ i, β.val i * ((k i).val : Qbar l)))
@@ -117,12 +105,12 @@ theorem UpperTheory.Kd.C7.pPresDl :
     rw [hkk, add_neg_cancel] at hmul
     exact hmul
   obtain ⟨v, hv, hvfix⟩ := pKumTriv l hl2 Ω A hA ζ hζ m n hnm _ (mul_ne_zero hu0 (inv_ne_zero hu'0)) hKum
-  have hvA : v ∈ A := mem_of_pow_mem A hlN (by rw [hv]; exact mul_mem huA hu'iA)
+  have hvA : v ∈ A := _root_.GlobalTheory.Ex.ArcLift.mem_of_pow_mem A hlN (by rw [hv]; exact mul_mem huA hu'iA)
   have hv0 : v ≠ 0 := by
     intro h
     rw [h, zero_pow hlN] at hv
     exact mul_ne_zero hu0 (inv_ne_zero hu'0) hv.symm
-  have hviA : v⁻¹ ∈ A := mem_of_pow_mem A hlN (by
+  have hviA : v⁻¹ ∈ A := _root_.GlobalTheory.Ex.ArcLift.mem_of_pow_mem A hlN (by
     rw [inv_pow, hv, mul_inv, inv_inv]
     exact mul_mem huiA hu'A)
   obtain ⟨Q, hQ⟩ := pPolyEx l hl2 Ω A hA ζ hζ m v hvA hvfix

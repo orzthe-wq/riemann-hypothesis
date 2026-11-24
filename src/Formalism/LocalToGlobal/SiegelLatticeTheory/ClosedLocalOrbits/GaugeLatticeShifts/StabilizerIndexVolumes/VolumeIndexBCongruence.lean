@@ -1,10 +1,10 @@
 module
 
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.SESymmApply
+public import Formalism.LocalRingCardinality.DataSpaces
+public import Formalism.SharpRestriction.CuspSpanNormBounds.BlockEnds
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.AtNormRep
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SaturatedPf
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.DiagMulOfBt
-public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.GramBlockUnit
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.NatSmulMem
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.PtMatIsUnit
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.VolumeIndexBStable
@@ -13,10 +13,12 @@ import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
@@ -24,8 +26,7 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -33,8 +34,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,10 +48,273 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.SESymmApply, Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.GramBlockUnit, Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.VolumeIndexBCongruence
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.SESymmApply =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.SESymmApply", "h": "module\n\npublic import Formalism.LocalRingCardinality.DataSpaces\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField Matrix
+
+namespace Formalism.L2.SG.Pf.StabilizerIndexVolumes
+
+variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E}
+  {ι : Type} [Fintype ι] [DecidableEq ι]
+
+def gramOf (g : ι → S.V) : Matrix ι ι E := fun k l => S.hT (g k) (g l)
+
+def coordL (g : ι → S.V) (k : ι) : S.V →ₗ[E] E := ∑ l, ((gramOf g)⁻¹ k l) • S.hT (g l)
+
+def cOf (g : ι → S.V) (v : S.V) : ι → E := fun k => coordL g k v
+
+theorem cOf_eq (g : ι → S.V) (v : S.V) : cOf g v = (gramOf g)⁻¹ *ᵥ (fun l => S.hT (g l) v) := by
+  ext k
+  simp [cOf, coordL, Matrix.mulVec, dotProduct, LinearMap.sum_apply]
+
+theorem cOf_add (g : ι → S.V) (v w : S.V) : cOf g (v + w) = cOf g v + cOf g w := by
+  ext k; simp [cOf]
+
+theorem cOf_smul (g : ι → S.V) (a : E) (v : S.V) : cOf g (a • v) = a • cOf g v := by
+  ext k; simp [cOf]
+
+theorem cOf_g (g : ι → S.V) (hG : IsUnit (gramOf g).det) (m : ι) : cOf g (g m) = Pi.single m 1 := by
+  rw [cOf_eq]
+  have : (fun l => S.hT (g l) (g m)) = (gramOf g) *ᵥ (Pi.single m 1) := by
+    ext l; simp [gramOf, Matrix.mulVec_single]
+  rw [this, Matrix.mulVec_mulVec, nonsing_inv_mul _ hG, Matrix.one_mulVec]
+
+theorem cOf_comb (g : ι → S.V) (hG : IsUnit (gramOf g).det) (v : S.V) (y : ι → E) :
+    cOf g (v + ∑ m, y m • g m) = cOf g v + y := by
+  rw [cOf_add]
+  congr 1
+  have : cOf g (∑ m, y m • g m) = ∑ m, y m • cOf g (g m) := by
+    ext k; simp [cOf, map_sum]
+  rw [this]
+  simp only [cOf_g g hG]
+  ext k; simp [Pi.single_apply]
+
+theorem gram_cOf (g : ι → S.V) (hG : IsUnit (gramOf g).det) (v : S.V) :
+    (gramOf g) *ᵥ cOf g v = fun l => S.hT (g l) v := by
+  rw [cOf_eq, Matrix.mulVec_mulVec, mul_nonsing_inv _ hG, Matrix.one_mulVec]
+
+def sL (g : ι → S.V) (X : Matrix ι ι E) : S.V →ₗ[E] S.V :=
+  LinearMap.id + ∑ m, ∑ k, ((X - 1) m k) • (coordL g k).smulRight (g m)
+
+theorem sL_apply (g : ι → S.V) (X : Matrix ι ι E) (v : S.V) :
+    sL g X v = v + ∑ m, ((X - 1) *ᵥ cOf g v) m • g m := by
+  simp only [sL, LinearMap.add_apply, LinearMap.id_apply, LinearMap.sum_apply, LinearMap.smul_apply,
+    LinearMap.smulRight_apply]
+  congr 1
+  refine Finset.sum_congr rfl fun m _ => ?_
+  simp only [Matrix.mulVec, dotProduct, Finset.sum_smul, smul_smul, cOf]
+
+theorem cOf_sL (g : ι → S.V) (hG : IsUnit (gramOf g).det) (X : Matrix ι ι E) (v : S.V) :
+    cOf g (sL g X v) = X *ᵥ cOf g v := by
+  rw [sL_apply, cOf_comb g hG, Matrix.sub_mulVec, Matrix.one_mulVec]; abel
+
+theorem sL_comp (g : ι → S.V) (hG : IsUnit (gramOf g).det) (X Y : Matrix ι ι E) (v : S.V) :
+    sL g X (sL g Y v) = sL g (X * Y) v := by
+  rw [sL_apply g X, cOf_sL g hG, sL_apply g Y, sL_apply g (X * Y), add_assoc, ← Finset.sum_add_distrib]
+  congr 1
+  refine Finset.sum_congr rfl fun m _ => ?_
+  rw [← add_smul]
+  congr 1
+  simp only [Matrix.sub_mul, Matrix.one_mul, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec, Pi.sub_apply]
+  ring
+
+theorem sL_one (g : ι → S.V) (v : S.V) : sL g 1 v = v := by
+  rw [sL_apply]; simp
+
+def sE (g : ι → S.V) (hG : IsUnit (gramOf g).det) (X Y : Matrix ι ι E) (hXY : X * Y = 1) (hYX : Y * X = 1) :
+    S.V ≃ₗ[E] S.V :=
+  LinearEquiv.ofLinearMap (sL g X) (sL g Y)
+    (by ext v; simp only [LinearMap.comp_apply, LinearMap.id_apply]; rw [sL_comp g hG, hXY, sL_one])
+    (by ext v; simp only [LinearMap.comp_apply, LinearMap.id_apply]; rw [sL_comp g hG, hYX, sL_one])
+
+theorem gram_herm (g : ι → S.V) (k l : ι) : star (gramOf g k l) = gramOf g l k := by
+  have := S.herm.eq (g k) (g l)
+  simpa [gramOf, starRingEnd_apply] using this
+
+theorem hT_comb (g : ι → S.V) (hG : IsUnit (gramOf g).det) (x y : S.V) (α β : ι → E) :
+    S.hT (x + ∑ m, α m • g m) (y + ∑ n, β n • g n) =
+      S.hT x y + star (cOf g x) ⬝ᵥ ((gramOf g) *ᵥ β) + star α ⬝ᵥ ((gramOf g) *ᵥ cOf g y) +
+        star α ⬝ᵥ ((gramOf g) *ᵥ β) := by
+  have h1 : ∀ n, S.hT (g n) y = ((gramOf g) *ᵥ cOf g y) n := fun n => by rw [gram_cOf g hG]
+  have h2 : ∀ n, S.hT x (g n) = star (((gramOf g) *ᵥ cOf g x) n) := fun n => by
+    rw [gram_cOf g hG]
+    have := S.herm.eq (g n) x
+    simpa [starRingEnd_apply] using this.symm
+  rw [map_add (f := _), map_add (f := _), LinearMap.add_apply, LinearMap.add_apply]
+  have hxB : S.hT x (∑ n, β n • g n) = star (cOf g x) ⬝ᵥ ((gramOf g) *ᵥ β) := by
+
+    simp only [map_sum, LinearMap.map_smul, smul_eq_mul, h2]
+    simp only [Matrix.mulVec, dotProduct, star_sum, star_mul', Pi.star_apply, Finset.mul_sum]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun n _ => ?_
+    rw [← gram_herm g n k]; ring
+  have hAy : S.hT (∑ m, α m • g m) y = star α ⬝ᵥ ((gramOf g) *ᵥ cOf g y) := by
+
+    simp only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul,
+    starRingEnd_apply, h1]
+    simp [dotProduct]
+  have hAB : S.hT (∑ m, α m • g m) (∑ n, β n • g n) = star α ⬝ᵥ ((gramOf g) *ᵥ β) := by
+
+    simp only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul,
+    starRingEnd_apply, dotProduct, Matrix.mulVec, Pi.star_apply, gramOf, Finset.mul_sum, RingHom.id_apply]
+    refine Finset.sum_comm.trans (Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun n _ => ?_)
+    ring
+  rw [hxB, hAy, hAB]
+  ring
+
+theorem sL_isom (g : ι → S.V) (hG : IsUnit (gramOf g).det) (X : Matrix ι ι E)
+    (hX : X.conjTranspose * gramOf g * X = gramOf g) (x y : S.V) :
+    S.hT (sL g X x) (sL g X y) = S.hT x y := by
+  rw [sL_apply, sL_apply, hT_comb g hG]
+  set p := cOf g x
+  set q := cOf g y
+  have key : star (X *ᵥ p) ⬝ᵥ ((gramOf g) *ᵥ (X *ᵥ q)) = star p ⬝ᵥ ((gramOf g) *ᵥ q) := by
+    rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hX]
+  simp only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, dotProduct_sub,
+    sub_dotProduct, star_sub]
+  rw [key]
+  ring
+
+end Formalism.L2.SG.Pf.StabilizerIndexVolumes
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.SESymmApply =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.GramBlockUnit =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.GramBlockUnit", "h": "module\n\npublic import Formalism.SharpRestriction.CuspSpanNormBounds.BlockEnds\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open NumberField Matrix
+
+namespace Formalism.L2.SG.Pf.StabilizerIndexVolumes
+
+variable {E : Type} [Field E] [NumberField E] [StarRing E]
+
+theorem leadMinor_top {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
+    Formalism.MainNotions.S.leadMinorE Z (r + 1) = Z.det := by
+  unfold Formalism.MainNotions.S.leadMinorE
+  rw [dite_eq_left le_rfl]
+  congr 1
+
+theorem leadMinor_r {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
+    Formalism.MainNotions.S.leadMinorE Z r = Z.adjugate (Fin.last r) (Fin.last r) := by
+  unfold Formalism.MainNotions.S.leadMinorE
+  rw [dite_eq_left (Nat.le_succ r), Matrix.adjugate_fin_succ_eq_det_submatrix]
+  have : (-1 : E) ^ ((Fin.last r : ℕ) + (Fin.last r : ℕ)) = 1 := by
+    rw [← two_mul, pow_mul]; simp
+  rw [this, one_mul, Fin.succAbove_last]
+  rfl
+
+theorem gram_block_unit {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : E) (hTs : star T = T)
+    (hT's : star T' = T') (hZ : IsUnit Z.det)
+    (hG : Formalism.MainNotions.S.leadMinorE Z (r + 1) * star (Formalism.MainNotions.S.leadMinorE Z (r + 1)) -
+      T * T' * (Formalism.MainNotions.S.leadMinorE Z r * star (Formalism.MainNotions.S.leadMinorE Z r)) ≠ 0)
+    (Gr : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) E)
+    (h11 : ∀ a b, Gr (Sum.inl a) (Sum.inl b) = if a = Fin.last r ∧ b = Fin.last r then -T else 0)
+    (h12 : ∀ a b, Gr (Sum.inl a) (Sum.inr b) = Z a b)
+    (h21 : ∀ a b, Gr (Sum.inr a) (Sum.inl b) = star (Z b a))
+    (h22 : ∀ a b, Gr (Sum.inr a) (Sum.inr b) = if a = Fin.last r ∧ b = Fin.last r then -T' else 0) :
+    IsUnit Gr.det := by
+  classical
+  rw [isUnit_iff_ne_zero]
+  intro hdet
+  obtain ⟨v, hv0, hv⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr hdet
+  set l := Fin.last r
+  set α : Fin (r + 1) → E := fun a => v (Sum.inl a)
+  set β : Fin (r + 1) → E := fun b => v (Sum.inr b)
+  have hJ : ∀ (c : E) (γ : Fin (r + 1) → E) (a : Fin (r + 1)),
+      ∑ b, (if a = l ∧ b = l then c else 0) * γ b = if a = l then c * γ l else 0 := by
+    intro c γ a
+    by_cases ha : a = l
+    · simp [ha]
+    · simp [ha]
+  have E1 : Z *ᵥ β = Pi.single l (T * α l) := by
+    ext a
+    have := congrFun hv (Sum.inl a)
+    simp only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, h11, h12, Pi.zero_apply] at this
+    rw [hJ] at this
+    simp only [Matrix.mulVec, dotProduct, Pi.single_apply]
+    by_cases ha : a = l
+    · rw [if_pos ha] at this ⊢; linear_combination this
+    · rw [if_neg ha] at this ⊢; linear_combination this
+  have E2 : Z.conjTranspose *ᵥ α = Pi.single l (T' * β l) := by
+    ext a
+    have := congrFun hv (Sum.inr a)
+    simp only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, h21, h22, Pi.zero_apply] at this
+    rw [hJ] at this
+    simp only [Matrix.mulVec, dotProduct, Pi.single_apply, Matrix.conjTranspose_apply]
+    by_cases ha : a = l
+    · rw [if_pos ha] at this ⊢; linear_combination this
+    · rw [if_neg ha] at this ⊢; linear_combination this
+  have hZi : Z⁻¹ * Z = 1 := nonsing_inv_mul _ hZ
+  have hZti : IsUnit Z.conjTranspose.det := by
+    rw [Matrix.det_conjTranspose]; exact hZ.star
+  have Eβ : β = Z⁻¹ *ᵥ Pi.single l (T * α l) := by
+    rw [← E1, Matrix.mulVec_mulVec, hZi, Matrix.one_mulVec]
+  have Eα : α = (Z.conjTranspose)⁻¹ *ᵥ Pi.single l (T' * β l) := by
+    rw [← E2, Matrix.mulVec_mulVec, nonsing_inv_mul _ hZti, Matrix.one_mulVec]
+  set ζ := Z⁻¹ l l
+  have hβl : β l = ζ * (T * α l) := by
+    have := congrFun Eβ l
+    rw [this, Matrix.mulVec_single]; simp [ζ]
+  have hαl : α l = star ζ * (T' * β l) := by
+    have := congrFun Eα l
+    rw [this, Matrix.mulVec_single, ← Matrix.conjTranspose_nonsing_inv]; simp [ζ, Matrix.conjTranspose_apply]
+  have hD : Z.det ≠ 0 := hZ.ne_zero
+  have hζ : ζ * Z.det = Formalism.MainNotions.S.leadMinorE Z r := by
+    rw [leadMinor_r, show ζ = Z⁻¹ l l from rfl, Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv',
+      smul_eq_mul]
+    field_simp
+    rfl
+  have hαG : α l * (Formalism.MainNotions.S.leadMinorE Z (r + 1) * star (Formalism.MainNotions.S.leadMinorE Z (r + 1)) -
+      T * T' * (Formalism.MainNotions.S.leadMinorE Z r * star (Formalism.MainNotions.S.leadMinorE Z r))) = 0 := by
+    rw [leadMinor_top, ← hζ, star_mul']
+    have h3 : α l = star ζ * T' * ζ * T * α l := by
+      calc α l = star ζ * (T' * β l) := hαl
+        _ = star ζ * (T' * (ζ * (T * α l))) := by rw [hβl]
+        _ = star ζ * T' * ζ * T * α l := by ring
+    linear_combination (Z.det * star Z.det) * h3
+  have hαl0 : α l = 0 := by
+    rcases mul_eq_zero.mp hαG with h | h
+    · exact h
+    · exact absurd h hG
+  have hβ0 : β = 0 := by rw [Eβ, hαl0]; simp
+  have hα0 : α = 0 := by rw [Eα, show β l = 0 from by rw [hβ0]; rfl]; simp
+  apply hv0
+  ext x
+  rcases x with a | b
+  · exact congrFun hα0 a
+  · exact congrFun hβ0 b
+
+end Formalism.L2.SG.Pf.StabilizerIndexVolumes
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.GramBlockUnit =====
+
+-- ===== clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.VolumeIndexBCongruence =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.VolumeIndexBCongruence", "h": "module\n\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.SESymmApply\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.AtNormRep\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.SaturatedPf\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.DiagMulOfBt\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.GramBlockUnit\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.NatSmulMem\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.PtMatIsUnit\npublic import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.VolumeIndexBStable\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -66,15 +328,7 @@ section Tri
 
 variable {K : Type*} [Field K] {n : ℕ}
 
-theorem loUni_block {L : Matrix (Fin n) (Fin n) K} (h : Formalism.MainNotions.S.IsLoUni L) : L.BlockTriangular OrderDual.toDual :=
-  fun i j hij => (h i j).1 hij
-
-theorem det_loUni {L : Matrix (Fin n) (Fin n) K} (h : Formalism.MainNotions.S.IsLoUni L) : L.det = 1 := by
-  rw [Matrix.det_of_lowerTriangular L (loUni_block h)]
-  exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
-
-theorem loUni_inv {L : Matrix (Fin n) (Fin n) K} (h : Formalism.MainNotions.S.IsLoUni L) : Formalism.MainNotions.S.IsLoUni L⁻¹ := by
-  apply Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_inv <;> assumption
+alias loUni_inv := _root_.Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_inv
 
 theorem up_conjT {E : Type} [Field E] [StarRing E] {M : Matrix (Fin n) (Fin n) E}
     (h : Formalism.MainNotions.S.IsLoUni M) : Formalism.MainNotions.S.IsUpUni M.conjTranspose := by
@@ -209,9 +463,9 @@ theorem sL_frame (hG : IsUnit (gramOf (gg F F')).det) (P P' : Matrix (Fin (r + 1
   simp only [UU_mulVec_inl, UU_mulVec_inr, hc] at h
   have e1 : (fun k : Fin (r + 1) => (Pi.single (Sum.inl b) (1 : E) : Fin (r + 1) ⊕ Fin (r + 1) → E) (Sum.inl k)) =
       Pi.single b 1 := by
-    ext k; by_cases hk : k = b <;> simp [Pi.single_apply, hk]
+    ext k; by_cases hk : k = b <;> simp [hk]
   have e2 : (fun k : Fin (r + 1) => (Pi.single (Sum.inl b) (1 : E) : Fin (r + 1) ⊕ Fin (r + 1) → E) (Sum.inr k)) = 0 := by
-    ext k; simp [Pi.single_apply]
+    ext k; simp
   rw [e1, e2, Matrix.mulVec_zero] at h
   simp only [Pi.zero_apply, zero_smul, Finset.sum_const_zero, add_zero] at h
   have hcol : ∀ x, ((P - 1) *ᵥ Pi.single b (1 : E)) x = P x b - (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) x b := by
@@ -219,7 +473,7 @@ theorem sL_frame (hG : IsUnit (gramOf (gg F F')).det) (P P' : Matrix (Fin (r + 1
   rw [← sub_add_cancel (sL (gg F F') (UU P P') (F.fvec b)) (F.fvec b), h,
     Finset.sum_congr rfl (fun x _ => by rw [hcol x])]
   simp only [sub_smul, Finset.sum_sub_distrib, Matrix.one_apply, ite_smul, one_smul, zero_smul,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    Finset.sum_ite_eq', Finset.mem_univ, if_true]
   abel
 
 theorem sL_frame' (hG : IsUnit (gramOf (gg F F')).det) (P P' : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
@@ -229,9 +483,9 @@ theorem sL_frame' (hG : IsUnit (gramOf (gg F F')).det) (P P' : Matrix (Fin (r + 
   simp only [UU_mulVec_inl, UU_mulVec_inr, hc] at h
   have e1 : (fun k : Fin (r + 1) => (Pi.single (Sum.inr b) (1 : E) : Fin (r + 1) ⊕ Fin (r + 1) → E) (Sum.inr k)) =
       Pi.single b 1 := by
-    ext k; by_cases hk : k = b <;> simp [Pi.single_apply, hk]
+    ext k; by_cases hk : k = b <;> simp [hk]
   have e2 : (fun k : Fin (r + 1) => (Pi.single (Sum.inr b) (1 : E) : Fin (r + 1) ⊕ Fin (r + 1) → E) (Sum.inl k)) = 0 := by
-    ext k; simp [Pi.single_apply]
+    ext k; simp
   rw [e1, e2, Matrix.mulVec_zero] at h
   simp only [Pi.zero_apply, zero_smul, Finset.sum_const_zero, zero_add] at h
   have hcol : ∀ x, ((P' - 1) *ᵥ Pi.single b (1 : E)) x = P' x b - (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) x b := by
@@ -239,7 +493,7 @@ theorem sL_frame' (hG : IsUnit (gramOf (gg F F')).det) (P P' : Matrix (Fin (r + 
   rw [← sub_add_cancel (sL (gg F F') (UU P P') (F'.fvec b)) (F'.fvec b), h,
     Finset.sum_congr rfl (fun x _ => by rw [hcol x])]
   simp only [sub_smul, Finset.sum_sub_distrib, Matrix.one_apply, ite_smul, one_smul, zero_smul,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+    Finset.sum_ite_eq', Finset.mem_univ, if_true]
   abel
 
 end Act
@@ -272,7 +526,7 @@ theorem kill_single {Z Q : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hQ : Formalism
   rw [← Matrix.mulVec_mulVec, hv, ← Matrix.mulVec_mulVec]
   have : (Pi.single (Fin.last r) ((Z *ᵥ v) (Fin.last r)) : Fin (r + 1) → E) =
       ((Z *ᵥ v) (Fin.last r)) • Pi.single (Fin.last r) 1 := by
-    ext k; by_cases hk : k = Fin.last r <;> simp [Pi.single_apply, hk]
+    ext k; by_cases hk : k = Fin.last r <;> simp [hk]
   rw [this, Matrix.mulVec_smul, strictLo_last hQ, smul_zero, Matrix.mulVec_zero]
 
 theorem sum_last_span {P : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hP : Formalism.MainNotions.S.IsUpUni P) {T0 : E}
@@ -695,3 +949,7 @@ theorem volume_index_b_congruence (D : D7) (u u' : D.what₂.Word)
 end Main
 
 end Formalism.L2.SG.Pf.StabilizerIndexVolumes
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.StabilizerIndexVolumes.VolumeIndexBCongruence =====

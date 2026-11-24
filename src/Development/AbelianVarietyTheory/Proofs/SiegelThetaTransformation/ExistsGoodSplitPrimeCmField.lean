@@ -233,7 +233,7 @@ theorem _root_.GlobalTheory.SW.SplitPrime.exists_degree_one {E : Type} [Field E]
     rw [LinearMap.eval_charpoly, Algebra.norm_apply]
     congr 1
     ext x
-    simp [Algebra.smul_def, sub_mul]
+    simp [Algebra.smul_def]
   rw [hnorm] at hpn
   obtain ⟨P, hP, hJ⟩ := Ideal.exists_le_maximal _ (span_prime_sup_span_proper_of_dvd_norm _ p hp hpn)
   have hpP : (p : 𝓞 E) ∈ P := hJ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _))

@@ -71,7 +71,7 @@ theorem host_cm {R : Ranks} (H : Host R) : letI := H.cmStar; Formalism.Hermitian
   letI := H.cmStar
   (host_cmData R H).cmUnram
 
-theorem finrank_E {R : Ranks} (H : Host R) : Module.finrank ℚ H.E = 2 * R.f := H.finrank_E'
+alias finrank_E := _root_.Formalism.BasicNotions.Host.finrank_E'
 
 theorem fDeg_E {R : Ranks} (H : Host R) : Formalism.HermitianLatticesTheory.fDeg H.E = R.f := by
   let _ := H.cmStar

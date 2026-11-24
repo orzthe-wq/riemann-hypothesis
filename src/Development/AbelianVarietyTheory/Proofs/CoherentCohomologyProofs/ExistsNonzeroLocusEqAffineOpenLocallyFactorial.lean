@@ -68,9 +68,9 @@ theorem effCartier_of_stalkId_of_isLocallyNoetherian {W : Scheme.{0}} [IsLocally
   let U' : W.affineOpens := ⟨U, hU⟩
   have hx : x ∈ U'.1 := hxU
   rw [ds_stalkId_eq_map G U' x hx] at ht
-  haveI : IsNoetherianRing Γ(W, U) := IsLocallyNoetherian.component_noetherian U'
-  letI : Algebra Γ(W, U) (W.presheaf.stalk x) := W.presheaf.algebra_section_stalk ⟨x, hx⟩
-  haveI := hU.isLocalization_stalk ⟨x, hx⟩
+  have : IsNoetherianRing Γ(W, U) := IsLocallyNoetherian.component_noetherian U'
+  let : Algebra Γ(W, U) (W.presheaf.stalk x) := W.presheaf.algebra_section_stalk ⟨x, hx⟩
+  have := hU.isLocalization_stalk ⟨x, hx⟩
   have halg : algebraMap Γ(W, U) (W.presheaf.stalk x) = (W.presheaf.germ U x hx).hom := rfl
   rw [Ideal.map] at ht
   obtain ⟨y, ⟨a, haI, rfl⟩, c, hc⟩ := ds_gen_of_span _ t htnzd ht
@@ -81,7 +81,7 @@ theorem effCartier_of_stalkId_of_isLocallyNoetherian {W : Scheme.{0}} [IsLocally
     rw [halg, hc]
     exact mul_mem (IsUnit.mem_nonZeroDivisors c.isUnit) htnzd
   obtain ⟨σ, hσP, hT⟩ := ds_spread (hU.primeIdealOf ⟨x, hx⟩).asIdeal (G.ideal U') a haI hmap hnzd
-  haveI := hU.isLocalization_basicOpen σ
+  have := hU.isLocalization_basicOpen σ
   obtain ⟨h1, h2⟩ := hT Γ(W, W.basicOpen σ)
   refine ⟨W.affineBasicOpen (U := U') σ, algebraMap Γ(W, U) Γ(W, W.basicOpen σ) a, ?_, h2, ?_⟩
   · show x ∈ W.basicOpen σ
@@ -108,8 +108,8 @@ theorem stalkId_vanishingIdeal_compl {X : Scheme.{0}} (U : X.Opens) (x : X)
   obtain ⟨_, ⟨W, hW, rfl⟩, hx, -⟩ :=
     X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ
   rw [ds_stalkId_eq_map _ ⟨W, hW⟩ x hx, Scheme.IdealSheafData.vanishingIdeal_ideal]
-  letI : Algebra Γ(X, W) (X.presheaf.stalk x) := X.presheaf.algebra_section_stalk ⟨x, hx⟩
-  haveI := hW.isLocalization_stalk ⟨x, hx⟩
+  let : Algebra Γ(X, W) (X.presheaf.stalk x) := X.presheaf.algebra_section_stalk ⟨x, hx⟩
+  have := hW.isLocalization_stalk ⟨x, hx⟩
   have hcl : IsClosed (X := PrimeSpectrum Γ(X, W)) (hW.fromSpec ⁻¹' (U.compl : Set X)) :=
     U.compl.isClosed.preimage hW.fromSpec.continuous
   generalize hJ : PrimeSpectrum.vanishingIdeal (R := Γ(X, W)) (hW.fromSpec ⁻¹' (U.compl : Set X)) = J
@@ -139,7 +139,7 @@ theorem exists_nonzeroLocus_eq : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyN
     IsAffineHom.of_comp _ (terminal.from X)
   have hE : FinalTheorems.EffCartier (Scheme.IdealSheafData.vanishingIdeal U.compl) := by
     refine effCartier_of_stalkId_of_isLocallyNoetherian _ fun x => ?_
-    haveI := hufd x
+    have := hufd x
     have hd : IsDomain (X.presheaf.stalk x) := inferInstance
     have hn : IsNoetherianRing (X.presheaf.stalk x) := inferInstance
     have hA : IsAffineOpen (X.fromSpecStalk x ⁻¹ᵁ U) := by

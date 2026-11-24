@@ -99,8 +99,7 @@ theorem lbIso_mulPull_of_cube {K : Type} [Field K] (A : Over (Sp K)) [GrpObj A] 
                 rfl }
     exact gen_chartPull chart H.choose H.choose_spec
   · refine (hrig.pull (toUnit A).left).of_formEq hM (fun U _ h => ?_)
-    simp only [Finset.univ_unique, Finset.prod_singleton, Fin.prod_univ_succ, Fin.prod_univ_zero,
-      Matrix.cons_val_zero, _root_.mul_one]
+    simp only [Finset.univ_unique, Finset.prod_singleton]
     rfl
   · refine hsym.inv.of_formEq hM (fun U _ f => ?_)
     have e : ((𝟙 A : A ⟶ A)⁻¹) = (GrpObj.inv : A ⟶ A) := Category.id_comp _

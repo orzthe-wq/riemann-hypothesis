@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorusHomOfIff
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.TwistBaseChangeAndValuationStatements
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.UniformisationEndomorphismCharacterMapConstant
@@ -79,8 +79,7 @@ theorem thickMap_comm (aG : G₁ ⟶ G₂) (e : ℕ) :
     thickMap R I e G₁ ≫ ((Over.pullback (thick R I (e + 1))).map aG).left =
       ((Over.pullback (thick R I e)).map aG).left ≫ thickMap R I e G₂ := by
   apply pullback.hom_ext <;>
-    simp [thickMap, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc,
-      pullback.lift_snd_assoc]
+    simp [thickMap, pullback.map]
 
 theorem acts_down {D₁ D₂ : DegData R I} {A₁ A₂ : PolAV (Sp (FractionRing R))}
     (U₁ : UnifPre I D₁ A₁ G₁) (U₂ : UnifPre I D₂ A₂ G₂) (aG : G₁ ⟶ G₂)

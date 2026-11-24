@@ -101,7 +101,7 @@ theorem fixed_schroedinger_invariant_compactSupport_bounded_annihilator (ψ : Ad
     (hM.preimage hc2).mem_nhds M.zero_mem
   obtain ⟨O₁, hO₁, hbox₁⟩ := fixSupp_exists_box hM1
   obtain ⟨O₂, hO₂, hbox₂⟩ := fixSupp_exists_box hM2
-  obtain ⟨N, hN, hNO⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F O₁ hO₁
+  obtain ⟨N, hN, hNO⟩ := _root_.GlobalTheory.LocalNormBound.main F O₁ hO₁
   obtain ⟨K₀, hK₀, hK₀mem⟩ := hann O₂ hO₂
   let c : FiniteAdeleRing (𝓞 F) F := algebraMap F _ ((N : F)⁻¹)
   have hcN : (N : FiniteAdeleRing (𝓞 F) F) * c = 1 := by

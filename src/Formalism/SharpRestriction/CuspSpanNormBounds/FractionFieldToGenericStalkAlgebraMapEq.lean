@@ -158,13 +158,10 @@ lemma lamRaw_range (M : Model F E) {m : ℕ} (ZZ : M.Mat (m + 1)) :
     simp only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.map_apply, Algebra.linearMap_apply]
     push_cast
     rfl
-  have hinv : ∀ v : Fin (m + 1) → E,
-      Matrix.mulVec (ZZ.Z.map M.R.subtype)⁻¹ (Matrix.mulVec (ZZ.Z.map M.R.subtype) v) = v := by
-    intro v
-    rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ ZZ.unit, Matrix.one_mulVec]
   show M.Rsub.mkQ ((Matrix.mulVec (ZZ.Z.map M.R.subtype)⁻¹
     (fun i => Algebra.linearMap M.R E (ZZ.Z.mulVecLin w i))) (Fin.last m)) = 0
-  rw [hmap, hinv, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
+  rw [hmap, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ ZZ.unit, Matrix.one_mulVec,
+    Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
   exact ⟨w (Fin.last m), rfl⟩
 
 def lam (M : Model F E) {m : ℕ} (ZZ : M.Mat (m + 1)) : M.Cok ZZ →ₗ[M.R] E ⧸ M.Rsub :=

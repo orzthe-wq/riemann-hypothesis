@@ -103,13 +103,6 @@ theorem alphaN_rank_zero (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (h
 
 end unitaryAbsoluteValueBounds
 
-theorem alphaN_of_vd_zero_unit (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
-    {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
-    (hL : Submodule.IsFullLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (hv : vd h L 𝔭 = 0)
-    (hm : 1 ≤ finrank K V) {n : 𝓞 F} (hn : n ∉ 𝔭) :
-    alphaN h L 𝔭 n = (1 - etaF K F 𝔭 ^ finrank K V * (Ideal.absNorm 𝔭 : ℝ) ^ (-(finrank K V : ℤ))) :=
-  unitaryAbsoluteValueBounds.alphaN_unit hK hF hs hd (by first | exact hL | exact hL.toIsLattice) hLi h𝔭 hv hm hn
-
 theorem alphaN_eq_of_vF_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsFullLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (hv : vd h L 𝔭 = 0)
@@ -118,7 +111,7 @@ theorem alphaN_eq_of_vF_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) 
   rcases Nat.eq_zero_or_pos (finrank K V) with hm | hm
   · rw [unitaryAbsoluteValueBounds.alphaN_rank_zero hK hF hs hd hL.toIsLattice hLi h𝔭 hm hn,
       unitaryAbsoluteValueBounds.alphaN_rank_zero hK hF hs hd hL.toIsLattice hLi h𝔭 hm hn']
-  · rw [unitaryAbsoluteValueBounds.alphaN_closed hK hF hs hd (by first | exact hL | exact hL.toIsLattice) hLi h𝔭 hv hm _ n hn rfl, unitaryAbsoluteValueBounds.alphaN_closed hK hF hs hd (by first | exact hL | exact hL.toIsLattice) hLi h𝔭 hv hm _ n' hn' rfl, hvv]
+  · rw [unitaryAbsoluteValueBounds.alphaN_closed hK hF hs hd (by first | exact hL) hLi h𝔭 hv hm _ n hn rfl, unitaryAbsoluteValueBounds.alphaN_closed hK hF hs hd (by first | exact hL) hLi h𝔭 hv hm _ n' hn' rfl, hvv]
 
 theorem alphaN_rho_diff_bound (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -129,8 +122,8 @@ theorem alphaN_rho_diff_bound (hK : Formalism.HermitianLatticesTheory.IsCMUnram 
       8 * ((vF 𝔭 n : ℝ) + 1) ^ 2 *
         (Ideal.absNorm 𝔭 : ℝ) ^ (-(((finrank K V - 1) * ((vF 𝔭 n + 1) / 2) : ℕ) : ℤ)) := by
   have hq : (1 : ℝ) < (Ideal.absNorm 𝔭 : ℝ) := unitaryAbsoluteValueBounds.one_lt_q h𝔭
-  rw [unitaryAbsoluteValueBounds.alphaN_closed hK hF hs hd (by first | exact hL | exact hL.toIsLattice) hLi h𝔭 hv (by omega) _ n hn rfl,
-    unitaryAbsoluteValueBounds.alphaN_closed hK hF hs hd (by first | exact hL | exact hL.toIsLattice) hLi h𝔭 hv (by omega) _ n' hn' rfl,
+  rw [unitaryAbsoluteValueBounds.alphaN_closed hK hF hs hd (by first | exact hL) hLi h𝔭 hv (by omega) _ n hn rfl,
+    unitaryAbsoluteValueBounds.alphaN_closed hK hF hs hd (by first | exact hL) hLi h𝔭 hv (by omega) _ n' hn' rfl,
     mul_div_cancel_left₀ _ (unitaryAbsoluteValueBounds.beta_pos h𝔭 (by omega)).ne',
     mul_div_cancel_left₀ _ (unitaryAbsoluteValueBounds.beta_pos h𝔭 (by omega)).ne', hvv,
     Finset.sum_range_succ _ (vF 𝔭 n' + 1), add_sub_cancel_left, abs_pow, unitaryAbsoluteValueBounds.abs_x_eq, zpow_neg,

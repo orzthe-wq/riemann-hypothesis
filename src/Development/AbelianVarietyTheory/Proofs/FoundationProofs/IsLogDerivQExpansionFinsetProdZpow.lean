@@ -5,7 +5,7 @@ public import Mathlib.RingTheory.Flat.FaithfullyFlat.Basic
 public import Mathlib.RingTheory.Flat.TorsionFree
 public import Mathlib.RingTheory.Henselian
 public import Mathlib.RingTheory.RegularLocalRing.Defs
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLogDerivQExpansionModPrimePowCalculusStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsLogDerivQExpansionModPrimePowCalculus
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -56,7 +56,7 @@ theorem isDl_finset_prod_zpow : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsA
   ∀ (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), ((l : ℕ) : Ω) ∈ A.nonunits → ∀ (n : ℕ) (s : ℚ) (ι : Type) (I : Finset ι) (f : ι → X.K) (φ : ι → HahnSeries ℚ Ω) (m : ι → ℤ), (∀ i ∈ I, IsDl X A l n s (f i) (φ i)) → IsDl X A l n s (∏ i ∈ I, f i ^ m i) (∑ i ∈ I, m i • φ i) := by
   intro Ω _ _ _ ε X hj l _ A hl n s ι I f φ m h
   classical
-  have C := fun (a b : X.K) (u v : HahnSeries ℚ Ω) => GlobalTheory.T.isLogDerivQExpansionModPrimePow_calculus ε X hj l A hl n s a b u v
+  have C := fun (a b : X.K) (u v : HahnSeries ℚ Ω) => _root_.GlobalTheory.Glue.isDl_calc ε X hj l A hl n s a b u v
   have one : IsDl X A l n s (1 : X.K) 0 := by
     have := (C 1 1 0 0).2.2.2.1 1 one_ne_zero
     simpa using this

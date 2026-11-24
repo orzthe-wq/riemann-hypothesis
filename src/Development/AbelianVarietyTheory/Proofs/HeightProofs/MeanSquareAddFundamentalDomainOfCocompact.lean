@@ -100,7 +100,7 @@ theorem meanSquare_addFundamentalDomain_of_cocompact : ∀ (G : Type) [AddCommGr
     obtain ⟨γ, hγ, hk⟩ := hcov w
     have := hC _ hk
     rw [hinv γ hγ] at this
-    rw [← ofReal_norm_eq_enorm]
+    rw [← ofReal_norm]
     gcongr
   have hN : ∫⁻ w in F₀, ‖f w‖ₑ ^ 2 ∂μ₀ ≠ ⊤ := by
     refine ne_top_of_le_ne_top ?_ (lintegral_mono hb)
@@ -117,7 +117,7 @@ theorem meanSquare_addFundamentalDomain_of_cocompact : ∀ (G : Type) [AddCommGr
     have e2 : ∫⁻ w in F, ‖f w‖ₑ ^ 2 ∂μ = ∫⁻ w in F₀, ‖f w‖ₑ ^ 2 ∂μ :=
       hF.setLIntegral_eq hF₀' _ fun g x => by
         have := hinv g g.2 x
-        rw [← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← this]
+        rw [← ofReal_norm, ← ofReal_norm, ← this]
         rfl
     rw [e1, e2, hc, Measure.restrict_smul, lintegral_smul_measure, Measure.smul_apply, h1]
     simp [ENNReal.smul_def]
@@ -126,7 +126,7 @@ theorem meanSquare_addFundamentalDomain_of_cocompact : ∀ (G : Type) [AddCommGr
     (Filter.Eventually.of_forall fun w => by positivity)
     (hf.norm.pow 2).aestronglyMeasurable]
   have : ∀ w, ENNReal.ofReal (‖f w‖ ^ 2) = ‖f w‖ₑ ^ 2 := fun w => by
-    rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
+    rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
   simp only [this]
   rw [key, ENNReal.toReal_mul, ENNReal.coe_toReal]
 

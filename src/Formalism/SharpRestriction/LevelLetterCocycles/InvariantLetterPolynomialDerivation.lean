@@ -84,17 +84,11 @@ theorem inverse_smul_uniformizer_smul (hU : IsUnit (algebraMap (LetA O n) W.EE W
 theorem smul_comm_letA_EE (a : LetA O n) (e : W.EE) (x : W.DD T) : a • (e • x) = e • (a • x) := by
   rw [← smul_assoc a e x, Algebra.smul_def a e, mul_comm, mul_smul, algebraMap_smul W.EE a x]
 
-theorem gammaA_idempotent (g : W.Gam) (c : ZMod n) : W.γA g (letE c : LetA O n) = letE c := by
-  funext i
-  show W.γ₀ g ((Pi.single c (1 : PowerSeries O) : LetA O n) i) = (Pi.single c (1 : PowerSeries O) : LetA O n) i
-  rw [Pi.single_apply]
-  split_ifs <;> simp
-
 theorem idempotent_smul_gamma (c : ZMod n) (x : W.DD T) :
     (letE c : LetA O n) • W.γ T x = W.γ T ((letE c : LetA O n) • x) := by
   show (letE c : LetA O n) • W.γD T W.gam x = W.γD T W.gam ((letE c : LetA O n) • x)
   rw [← algebraMap_smul W.EE (letE c : LetA O n) x, W.γD_smul, W.γE_ext,
-    show letγ (W.γ₀ W.gam) (letE c : LetA O n) = letE c from gammaA_idempotent W W.gam c, algebraMap_smul]
+    show letγ (W.γ₀ W.gam) (letE c : LetA O n) = letE c from _root_.Formalism.MainNotions.LiftingTheory.gammaA_letter_idempotent W W.gam c, algebraMap_smul]
 
 theorem gammaD_gamma_comm (δ : W.Gam) (x : W.DD T) : W.γD T δ (W.γ T x) = W.γ T (W.γD T δ x) := by
   show W.γD T δ (W.γD T W.gam x) = W.γD T W.gam (W.γD T δ x)

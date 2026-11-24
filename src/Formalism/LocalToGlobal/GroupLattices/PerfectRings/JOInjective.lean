@@ -7,47 +7,7 @@ public import Mathlib.RingTheory.SimpleRing.Principal
 public import Mathlib.RingTheory.WittVector.DiscreteValuationRing
 public import Formalism.LocalRingCardinality.SpanPowerMembership.GatRing
 public import Formalism.LocalToGlobal.GroupLattices.PerfectRings.AlgebraMapFinite
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.Complete
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -88,9 +48,8 @@ theorem wU_sq : wU p n ^ 2 = (p : OO p n) := by
 theorem sq_OO [NeZero n] (hp2 : p ≠ 2) (z : ℤ) : ∃ y : OO p n, y ^ 2 = (z : OO p n) := by
   by_cases hz : z = 0
   · exact ⟨0, by simp [hz]⟩
-  have hfin : FiniteMultiplicity (p : ℤ) z :=
-    Int.finiteMultiplicity_iff.2 ⟨by simpa using hp.out.one_lt.ne', hz⟩
-  obtain ⟨c, hc, hpc⟩ := hfin.exists_eq_pow_mul_and_not_dvd
+  obtain ⟨c, hc, hpc⟩ := (show FiniteMultiplicity (p : ℤ) z from
+    Int.finiteMultiplicity_iff.2 ⟨by simpa using hp.out.one_lt.ne', hz⟩).exists_eq_pow_mul_and_not_dvd
   obtain ⟨y, hy⟩ := exists_sq_eq_intCast_of_not_dvd_of_ne_two p n hp2 c hpc
   refine ⟨wU p n ^ multiplicity (p : ℤ) z * algebraMap (W2 p n) (OO p n) y, ?_⟩
   rw [mul_pow, ← pow_mul, mul_comm _ 2, pow_mul, wU_sq, ← map_pow, hy, map_intCast]
@@ -112,9 +71,7 @@ theorem settingStd (h5 : 5 ≤ p) (h2 : 2 ≤ n) (he : Even n) :
       p_unif := WittVector.irreducible p
       res_card := card_quot_WQ p n
       eq_sum_herm_smul_frame_of_inW := inferInstance
-      frob := fun x => by
-        obtain ⟨y, hy⟩ := frob_WQ p n x
-        exact ⟨y, by rw [sig_alg, hy]⟩
+      frob := fun x => (frob_WQ p n x).imp fun y hy => by rw [sig_alg, hy]
       period := sig_period p n
       ι_comp := fun x => IsFractionRing.lift_algebraMap (inj_WK p n) x
       finite := (Quad.algebraMap_finite _).comp (jW_finite p n)

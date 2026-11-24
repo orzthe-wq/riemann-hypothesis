@@ -2,7 +2,8 @@ module
 
 public import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.SatakeRigidity.ThetaOfCsdR
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlgebraicWeightOfAutomorphicDefiniteUnitarStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.BaseChangeDefiniteUnitary
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAlgebraicWeightOfAutomorphicDefiniteUnitar
 public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightEqOfFinitePartNeBot
 public import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.SliceTensors.AscSeedHolds2
 import Mathlib.Algebra.Module.StablyFree.Basic
@@ -77,7 +78,7 @@ theorem weightEx : WeightEx := by
   intro E _ _ _ n π hπ τ
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · exact weight_zero π hπ τ
-  · exact GlobalTheory.T.exists_algebraicWeight_of_automorphic_definiteUnitary E n hn π hπ τ
+  · exact _root_.GlobalTheory.DefU.exists_hasWeightAt_of_isAutRepU E n hn π hπ τ
 
 theorem infOfWeight_reg {n : ℕ} (lam : DomWeight n) : (infOfWeight lam).Nodup ∧
     ∀ x ∈ infOfWeight lam, ∃ k : ℤ, x = k + ((n : ℂ) - 1) / 2 := by

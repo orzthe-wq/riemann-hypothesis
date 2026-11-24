@@ -55,4 +55,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 theorem _root_.GlobalTheory.T.goodLabels_rank_part_parameter_cuspidal : ∀ D : D7, Formalism.MainNotions.SumRepresentations.tieLab D → GlobalTheory.LocalInv.GoodCuspidal D.nd D.naut := by
-  first | exact @GlobalTheory.GoodCuspPoint.main | exact GlobalTheory.GoodCuspPoint.main | (intros; apply GlobalTheory.GoodCuspPoint.main <;> assumption)
+  first | exact @GlobalTheory.GoodCuspPoint.main

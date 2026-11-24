@@ -1,13 +1,14 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilOperatorRationalTranslateMemThetaFunctions
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ApplyAtOriginMinorProductLinearStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPointStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RationalPointsIntegralPointsMembershipStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLineStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryDoubleCosetClassesFiniteCardLeStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryRationalConjIntersectionCardDvdInvariantStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ApplyAtOriginMinorProductLinear
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsLatticeOfAdelicPoint
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RationalPointsIntegralPointsMembership
+public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaSpaceSelfDualPairAtMostLine
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryDoubleCosetClassesFiniteCardLe
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryRationalConjIntersectionCardDvdInvariant
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilOperatorRationalTranslateMemThetaFunctions
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,32 +62,6 @@ section Translates
 
 variable {D : D7} {T : Tor D} {N N' : ℕ}
 
-theorem hf_add_left (x y z : VC D N N') : Hf D T (x + y) z = Hf D T x z + Hf D T y z := by
-  simp only [Hf, Pi.add_apply, add_mul, Finset.sum_add_distrib, add_div]
-
-theorem hf_nsmul (n : ℕ) (x z : VC D N N') : Hf D T (n • x) z = Hf D T x (n • z) := by
-  simp only [Hf, Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast]
-  congr 1
-  refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ =>
-    Finset.sum_congr rfl fun _ _ => by ring
-
-theorem hf_conj (x z : VC D N N') : Hf D T z x = (starRingEnd ℂ) (Hf D T x z) := by
-
-  simp only [Hf, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]
-  congr 1
-  refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ =>
-    Finset.sum_congr rfl fun _ _ => by ring
-
-theorem differentiable_hf (x : VC D N N') : Differentiable ℂ (fun z => Hf D T z x) := by
-  unfold Hf
-  fun_prop
-
-theorem differentiable_wd (x : VC D N N') {G : VC D N N' → ℂ} (hG : Differentiable ℂ G) :
-    Differentiable ℂ (Wd D T x G) := by
-  have h := differentiable_hf (T := T) x
-  unfold Wd U
-  fun_prop
-
 theorem wd_wd_of_int {x z : VC D N N'} {G : VC D N N' → ℂ} (hx : Wd D T x G = G) (m : ℤ)
     (hm : (Hf D T x z).im = m) (w : VC D N N') : Wd D T x (Wd D T z G) w = Wd D T z G w := by
   apply _root_.GlobalTheory.FinWeil.RatTransl.wd_wd_of_int <;> assumption
@@ -96,18 +71,18 @@ end Translates
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ}
 
 theorem sd_std (D : D7) (N : ℕ) : SD D (stdL D N) := by
-  obtain ⟨Lt, h1, h2, -⟩ := GlobalTheory.T.Lt_eq_iff_inv_mul_mem_intG_and_transport D N
+  obtain ⟨Lt, h1, h2, -⟩ := _root_.GlobalTheory.NormSum.exists_lattice_of_adelic_point D N
   exact h2 ▸ (h1 1).2
 
 theorem test_mem (hg : admG1 D) (hc : Crv D cc δ) (P : Pair D cc δ t0 Q) (hQ : 0 < Q) :
     P.F ∈ TT D (tor0 D cc δ) P.a P.d := by
   obtain ⟨k, r, z, hz, -, -, hF⟩ := P.pres
-  obtain ⟨-, hW, hI, -⟩ := GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hg cc δ hc P.a P.d (La0 D (tor0 D cc δ) P.a P.d)
+  obtain ⟨-, hW, hI, -⟩ := _root_.GlobalTheory.ThetaLine.theta_line D hg cc δ hc P.a P.d (La0 D (tor0 D cc δ) P.a P.d)
     (Or.inr ⟨_, _, sd_std D _, sd_std D _, rfl⟩)
   obtain ⟨hd, he⟩ := P.vac.1
   refine ⟨?_, Q, hQ, fun x hx => ?_⟩
   · rw [hF]
-    exact Differentiable.fun_sum fun i _ => (differentiable_wd _ hd).const_mul _
+    exact Differentiable.fun_sum fun i _ => (GlobalTheory.FinWeil.RatTransl.differentiable_wd _ hd).const_mul _
   · have hx' : Q • x ∈ La0 D (tor0 D cc δ) P.a P.d := AddSubgroup.nsmul_mem _ hx _
     have h0 : Wd D (tor0 D cc δ) (Q • x) P.e0 = P.e0 := by
       rw [hW _ hx']
@@ -117,7 +92,7 @@ theorem test_mem (hg : admG1 D) (hc : Crv D cc δ) (P : Pair D cc δ t0 Q) (hQ :
     have h1 : ∀ i, Wd D (tor0 D cc δ) (Q • x) (Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ (z i)) P.e0) w =
         Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ (z i)) P.e0 w := fun i => by
       obtain ⟨m, hm⟩ := hI x hx _ (hz i)
-      exact wd_wd_of_int h0 m (by rw [hf_nsmul, hm]) w
+      exact wd_wd_of_int h0 m (by rw [GlobalTheory.FinWeil.RatTransl.hf_nsmul, hm]) w
     rw [hF]
     refine Eq.trans ?_ (Finset.sum_congr rfl fun i _ => congrArg ((r i : ℂ) * ·) (h1 i))
     generalize (fun i => Wd D (tor0 D cc δ) (pt D (tor0 D cc δ) δ (z i)) P.e0) = G
@@ -167,7 +142,7 @@ theorem differentiable_subst {a d : ℕ} {G : VC D a d → ℂ} (hG : Differenti
 theorem jet_rat_left (hI : Inp D) (P : Pair D cc δ t0 Q) {γA : GA D P.a} (hγ : γA ∈ ratG D P.a)
     {G : VC D P.a P.d → ℂ} (hG : G ∈ TT D (tor0 D cc δ) P.a P.d) (T : Tup D P.a P.d P.n) :
     GL3Theta.applyAt0 D (minorPol D T) (P.W.Om γA 1 G) = GL3Theta.applyAt0 D (minorPol D T) G := by
-  obtain ⟨hr, -, -, hu, -⟩ := GlobalTheory.T.rationalPoints_integralPoints_membership D P.a
+  obtain ⟨hr, -, -, hu, -⟩ := _root_.GlobalTheory.NormSum.mem_ratG_intG D P.a
   obtain ⟨γ, hγ'⟩ := (hr γA).1 hγ
   obtain ⟨a', ha'⟩ := exists_exp P
   have h := P.eqv hI P.W γA 1 γ 1 (fun τ => (P.n τ : ℤ)) a' hγ' (isRat_one D _) ha' P.wt G hG
@@ -182,7 +157,7 @@ theorem jet_rat_left (hI : Inp D) (P : Pair D cc δ t0 Q) {γA : GA D P.a} (hγ 
     funext z
     simp only [Matrix.det_one, map_one, one_zpow, mul_one, Pi.smul_apply, smul_eq_mul, pull, tor0, hG', hu']
     simp only [Matrix.map_one _ (map_zero _) (map_one _), Matrix.conjTranspose_one, Matrix.one_mul]
-  rw [h2, (GlobalTheory.T.applyAtOrigin_minorProduct_linear D _ _ P.n G' hd).2.2.1, hG', (GlobalTheory.T.applyAtOrigin_minorProduct_linear D _ _ P.n G hG.1).1 u T, ← mul_assoc,
+  rw [h2, (_root_.GlobalTheory.NormSum.applyAt0_minorPol_linear D _ _ P.n G' hd).2.2.1, hG', (_root_.GlobalTheory.NormSum.applyAt0_minorPol_linear D _ _ P.n G hG.1).1 u T, ← mul_assoc,
     ← Finset.prod_mul_distrib, Finset.prod_eq_one, one_mul]
   intro τ _
   have h0 : embT D τ γ.det ≠ 0 := by
@@ -194,7 +169,7 @@ theorem om_rat_right (hI : Inp D) (P : Pair D cc δ t0 Q) {γA : GA D P.d} (hγ 
     ∃ (c : ℂ) (u : D.what₂.Tau → Matrix (Fin P.d) (Fin P.d) ℂ), ‖c‖ = 1 ∧
       (∀ τ, u τ ∈ Matrix.unitaryGroup (Fin P.d) ℂ) ∧ ∀ G ∈ TT D (tor0 D cc δ) P.a P.d,
         P.W.Om 1 γA G = c • fun z => G (fun τ => (u τ * Matrix.of (z τ) : Matrix _ _ ℂ)) := by
-  obtain ⟨hr, -, -, hu, -⟩ := GlobalTheory.T.rationalPoints_integralPoints_membership D P.d
+  obtain ⟨hr, -, -, hu, -⟩ := _root_.GlobalTheory.NormSum.mem_ratG_intG D P.d
   obtain ⟨γ, hγ'⟩ := (hr γA).1 hγ
   obtain ⟨a', ha'⟩ := exists_exp P
   refine ⟨∏ τ, embT D τ γ.det ^ (-(a' τ)), fun τ => star (γ.map (embT D τ)), ?_,
@@ -211,13 +186,13 @@ theorem applyAt0_sum {a d : ℕ} {ι : Type} (s : Finset ι) (c : ι → ℂ) (G
     GL3Theta.applyAt0 D p (∑ i ∈ s, c i • G i) = ∑ i ∈ s, c i * GL3Theta.applyAt0 D p (G i) := by
   induction s using Finset.induction_on with
   | empty =>
-    have h := (GlobalTheory.T.applyAtOrigin_minorProduct_linear D a d (fun _ => 0) 0 (differentiable_const 0)).2.2.1 0 p
+    have h := (_root_.GlobalTheory.NormSum.applyAt0_minorPol_linear D a d (fun _ => 0) 0 (differentiable_const 0)).2.2.1 0 p
     simpa using h
   | insert i s hi ih =>
     rw [Finset.sum_insert hi, Finset.sum_insert hi,
-      (GlobalTheory.T.applyAtOrigin_minorProduct_linear D a d (fun _ => 0) _ ((hG i).const_smul (c i))).2.2.2 _ p
+      (_root_.GlobalTheory.NormSum.applyAt0_minorPol_linear D a d (fun _ => 0) _ ((hG i).const_smul (c i))).2.2.2 _ p
         (Differentiable.sum fun j _ => (hG j).const_smul (c j)), ih,
-      (GlobalTheory.T.applyAtOrigin_minorProduct_linear D a d (fun _ => 0) _ (hG i)).2.2.1]
+      (_root_.GlobalTheory.NormSum.applyAt0_minorPol_linear D a d (fun _ => 0) _ (hG i)).2.2.1]
 
 theorem term_inv (hI : Inp D) (P : Pair D cc δ t0 Q) (hF : P.F ∈ TT D (tor0 D cc δ) P.a P.d) {γ k : GA D P.a}
     (hγ : γ ∈ ratG D P.a) (hk : k ∈ intG D P.a) (x : GA D P.a) (h : GA D P.d) (T : Tup D P.a P.d P.n) :
@@ -230,7 +205,7 @@ theorem term_inv (hI : Inp D) (P : Pair D cc δ t0 Q) (hF : P.F ∈ TT D (tor0 D
 
 theorem sq_inv (hI : Inp D) (P : Pair D cc δ t0 Q) (hF : P.F ∈ TT D (tor0 D cc δ) P.a P.d) {γ j : GA D P.d}
     (hγ : γ ∈ ratG D P.d) (hj : j ∈ P.J) (h : GA D P.d) : P.sq (γ * h * j) = P.sq h := by
-  haveI := (GlobalTheory.T.unitaryDoubleCosetClasses_finite_card_le D P.a).1
+  haveI := (_root_.GlobalTheory.NormSum.cls_finite_card_le D P.a).1
   haveI := Fintype.ofFinite (Cls D P.a (intG D P.a))
   obtain ⟨c, u, hc, hu, hO⟩ := om_rat_right hI P hγ
   obtain ⟨c', hc', hE⟩ := P.eig j hj
@@ -261,11 +236,11 @@ theorem sq_inv (hI : Inp D) (P : Pair D cc δ t0 Q) (hF : P.F ∈ TT D (tor0 D c
       simp only [hG, Finset.sum_apply, Pi.smul_apply]
     rw [e, applyAt0_sum _ w (fun x z => P.W.Om (s x) h P.F (f z)) (fun x => hd _), hs, Finset.mul_sum]
     refine Finset.sum_congr rfl fun x _ => ?_
-    rw [Pair.term, h1, (GlobalTheory.T.applyAtOrigin_minorProduct_linear D _ _ P.n _ (hd _)).2.2.1]
+    rw [Pair.term, h1, (_root_.GlobalTheory.NormSum.applyAt0_minorPol_linear D _ _ P.n _ (hd _)).2.2.1]
     ring
   unfold Pair.sq
   simp only [h2, h3, norm_mul, hc, hc', one_mul]
-  exact (GlobalTheory.T.applyAtOrigin_minorProduct_linear D _ _ P.n G hGd).2.1 u hu
+  exact (_root_.GlobalTheory.NormSum.applyAt0_minorPol_linear D _ _ P.n G hGd).2.1 u hu
 
 theorem rep_indep : ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ) (Q : ℕ), Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → ∀ (P : Pair D cc δ t0 Q), 0 < Q → (∀ γ ∈ ratG D P.a, ∀ k ∈ intG D P.a, ∀ x h T, P.term (γ * x * k) h T = P.term x h T) ∧ (∀ γ ∈ ratG D P.d, ∀ j ∈ P.J, ∀ h, P.sq (γ * h * j) = P.sq h) ∧ (∀ (s : Cls D P.a (intG D P.a) → GA D P.a), (∀ q, DoubleCoset.mk (ratG D P.a) (intG D P.a) (s q) = q) → ∀ h T, P.coord h T = ∑ᶠ q, ((gam D (intG D P.a) (s q) : ℂ))⁻¹ * P.term (s q) h T) ∧ (∀ (s : Cls D P.d P.J → GA D P.d), (∀ q, DoubleCoset.mk (ratG D P.d) P.J (s q) = q) → P.norm = ∑ᶠ q, ((gam D P.J (s q) : ℝ))⁻¹ * P.sq (s q)) ∧ ((∃ h T, P.coord h T ≠ 0) → 0 < P.norm) := by
   intro D hI cc δ t0 Q hc _ P hQ
@@ -274,12 +249,12 @@ theorem rep_indep : ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ
     fun s hs h T => ?_, fun s hs => ?_, ?_⟩
   · refine finsum_congr fun q => ?_
     obtain ⟨γ, hγ, k, hk, e⟩ := (@DoubleCoset.eq _ _ _ _ _ _).1 ((hs q).trans (DoubleCoset.out_eq' q).symm)
-    rw [e, term_inv hI P hF hγ hk, (GlobalTheory.T.unitaryRationalConjIntersectionCard_dvd_invariant D _ _ le_rfl (s q)).2.2 γ hγ k hk]
+    rw [e, term_inv hI P hF hγ hk, (_root_.GlobalTheory.StabOrder.gam_ne_zero_dvd_invariant D _ _ le_rfl (s q)).2.2 γ hγ k hk]
   · refine finsum_congr fun q => ?_
     obtain ⟨γ, hγ, k, hk, e⟩ := (@DoubleCoset.eq _ _ _ _ _ _).1 ((hs q).trans (DoubleCoset.out_eq' q).symm)
-    rw [e, sq_inv hI P hF hγ hk, (GlobalTheory.T.unitaryRationalConjIntersectionCard_dvd_invariant D _ _ P.J_le (s q)).2.2 γ hγ k hk]
+    rw [e, sq_inv hI P hF hγ hk, (_root_.GlobalTheory.StabOrder.gam_ne_zero_dvd_invariant D _ _ P.J_le (s q)).2.2 γ hγ k hk]
   · rintro ⟨h, T, hT⟩
-    haveI := ((GlobalTheory.T.unitaryDoubleCosetClasses_finite_card_le D P.d).2.2 P.J P.J_le P.idx_ne).1
+    haveI := ((_root_.GlobalTheory.NormSum.cls_finite_card_le D P.d).2.2 P.J P.J_le P.idx_ne).1
     haveI := Fintype.ofFinite (Cls D P.d P.J)
     have h0 : 0 < P.sq h :=
       Finset.sum_pos' (fun _ _ => by positivity) ⟨T, Finset.mem_univ _, by positivity⟩
@@ -290,7 +265,7 @@ theorem rep_indep : ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ
     obtain ⟨γ, hγ, k, hk, e⟩ := (@DoubleCoset.eq _ _ _ _ _ _).1
       (DoubleCoset.out_eq' (DoubleCoset.mk (ratG D P.d) P.J h)).symm
     rw [e, sq_inv hI P hF hγ hk]
-    have h2 := (GlobalTheory.T.unitaryRationalConjIntersectionCard_dvd_invariant D _ _ P.J_le (γ * h * k)).1
+    have h2 := (_root_.GlobalTheory.StabOrder.gam_ne_zero_dvd_invariant D _ _ P.J_le (γ * h * k)).1
     positivity
 
 end GlobalTheory.NormSum.RepInv

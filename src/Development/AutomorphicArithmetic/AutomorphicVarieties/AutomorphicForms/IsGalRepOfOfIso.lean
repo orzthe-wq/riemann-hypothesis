@@ -4,14 +4,15 @@ public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMe
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LocIsotypic
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPoints
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PadicHodgePropertiesConjInvariant
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PadicHodgePropertiesConjInvariantStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalFilDR
+public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.FiniteDimensionalWdSpace
 public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.FontaineParameterInvariantUnderConjugation
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsPotentiallySemistableCoefficientFieldEnlarge
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WdConjAbove
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.LevelIso
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SatOfFixed
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.GlobFixed
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemFiniteCocyclesIffBcrisTensorCoboundary
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimensionalFilDR
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsPotentiallySemistableCoefficientFieldEnlarge
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WdConjAbove
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.AdeleLC
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -47,7 +48,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MemFiniteCocyclesIffBcrisTensorCoboundary
 
 @[expose] public section
 
@@ -190,7 +190,7 @@ theorem isGalRepOf_of_iso [NumberField E] [IsAlgClosure E Ω] [IsCMField E] {π 
   have Ha := H.above P AI T w A h O Bw hj
   have e : ∀ s : ↥(Dec (F := E) A), r'.comp (Dec (F := E) A).subtype s = g * r.comp (Dec (F := E) A).subtype s * g⁻¹ :=
     fun s => hg s
-  obtain ⟨c1, c2, -, c4⟩ := GlobalTheory.T.padicHodgeProperties_conj_invariant l P E Ω O _ Bw m _ _ g e
+  obtain ⟨c1, c2, -, c4⟩ := _root_.GlobalTheory.ConjLocal.local_conj l P E Ω O _ Bw m _ _ g e
   exact ⟨c1 Ha.deRham, fun τ L τ' hτ => c4 _ _ (Ha.jumps τ L τ' hτ), fun σ hσ hf =>
     ⟨isSstAt_conj P Bw g e (Ha.iwahori σ hσ hf).1, fun rc hrc =>
       (wdAt_conj P ι Bw h hj g e).trans ((Ha.iwahori σ hσ hf).2 rc hrc)⟩, fun σ hσ hf => c2 (Ha.crys σ hσ hf)⟩

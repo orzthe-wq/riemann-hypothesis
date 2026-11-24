@@ -199,7 +199,7 @@ theorem mv_isAdm (Λ : Submodule R V) (g : R) : IsAdm (mv hs F) (mv hs F') (s �
   rw [s.surjective.forall]
   refine forall_congr' fun x' => ?_
   rw [s.surjective.exists]
-  simp only [mv_e, mv_Xa, smulLat_smul, ← map_smul, ← map_sub, memR, memK]
+  simp only [mv_e, mv_Xa, smulLat_smul, ← map_smul, ← map_sub, memR]
 
 theorem mv_Dl (l : ℕ) (h : l ≤ r + 1) : Dl (mv hs F) (mv hs F') l h = Dl F F' l h := by
   unfold Dl Zhat

@@ -50,4 +50,4 @@ open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.ncard_rationalPoints_translatedCompact_le_pow : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → ∀ (Ω : Set (GA D V)), IsCompact Ω → ∃ N : ℕ, ∀ x : GA D V, ∃ C : ℝ, ∀ u ∈ GinfC V, ∀ y : GA D V, {γ : GA D V | γ ∈ GQ V ∧ ∃ o ∈ Ω, γ * y = x * u * o}.Finite ∧ (({γ : GA D V | γ ∈ GQ V ∧ ∃ o ∈ Ω, γ * y = x * u * o}.ncard : ℕ) : ℝ) ≤ C * normInf θ V u ^ N := by
-  first | exact @GlobalTheory.RatCount.ncard_rational_le | exact GlobalTheory.RatCount.ncard_rational_le | (intros; apply GlobalTheory.RatCount.ncard_rational_le <;> assumption)
+  first | exact @GlobalTheory.RatCount.ncard_rational_le

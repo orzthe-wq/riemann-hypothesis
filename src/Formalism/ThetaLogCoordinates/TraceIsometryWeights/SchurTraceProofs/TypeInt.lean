@@ -95,11 +95,9 @@ theorem weightZeroProj_mem (G₁ : GlW K U n) (G₂ : GlW K V n) (S : Finset (Fi
 theorem weightZeroProj_mem_homLat (G₁ : GlW K U n) (G₂ : GlW K V n) (S : Finset (Fin n → ℤ)) {L : AddSubgroup U} {M : AddSubgroup V}
     (hL : ∀ μ, ∀ x ∈ L, G₁.comp μ x ∈ L) (hM : ∀ μ, ∀ x ∈ M, G₂.comp μ x ∈ M)
     {φ : U →ₗ[K] V} (hφ : φ ∈ HomLat (K := K) L M) : pr0 G₁ G₂ S φ ∈ HomLat (K := K) L M := by
-  have hφ' : ∀ x ∈ L, φ x ∈ M := hφ
-  show ∀ x ∈ L, pr0 G₁ G₂ S φ x ∈ M
   intro x hx
   rw [scalar_projection_apply]
-  exact AddSubgroup.sum_mem _ fun ν _ => hM ν _ (hφ' _ (hL ν x hx))
+  exact AddSubgroup.sum_mem _ fun ν _ => hM ν _ (hφ _ (hL ν x hx))
 
 theorem comp_comm2 (G₁ : GlW K U n) (G₂ : GlW K V n) (θ : U →ₗ[K] V)
     (hθ : ∀ c x, θ (G₁.E c c x) = G₂.E c c (θ x)) (μ : Fin n → ℤ) (x : U) :
@@ -195,7 +193,7 @@ theorem QQ_id (hNat : InvNat) (G₁ : GlW K U n) (G₂ : GlW K V n) (S : Finset 
   have htr : ∀ i, LinearMap.trace K U ((b.coord i).smulRight y) = b.coord i y := by
     intro i
     rw [LinearMap.trace_eq_matrix_trace K b, Matrix.trace]
-    simp [LinearMap.toMatrix_apply, Finsupp.single_apply]
+    simp
     simp [Matrix.vecMulVec_apply, Module.Basis.repr_self, Finsupp.single_apply]
   have key : ∀ i, Psi G₁ G₂ S l ((b.coord i).smulRight (θ y)) (b i) = (b.coord i y / (k : K)) • θ (b i) := by
     intro i
@@ -434,9 +432,7 @@ theorem QQ_int (G₁ : GlW ℚ_[p] U n) (G₂ : GlW ℚ_[p] V n) (S : Finset (Fi
     have hI := invariant_integral_holds p (U →ₗ[ℚ_[p]] V) (Fin n) (homAct G₁.E G₂.E) hrel _ hZH hDH l (List.finRange n)
       (List.nodup_finRange n) _ hp
     rw [List.length_finRange] at hI
-    have hI' : ∀ x ∈ L, (((p : ℚ_[p]) ^ (n.choose 2 * Nat.log p (l + n - 1))) •
-        InvOp (homAct G₁.E G₂.E) l (List.finRange n) (pr0 G₁ G₂ S ((b.coord i).smulRight m))) x ∈ M := hI
-    exact hI' (b i) (hbL i)
+    exact hI (b i) (hbL i)
   rw [QQ_apply, smul_comm, Finset.smul_sum, Nat.cast_smul_eq_nsmul]
   exact AddSubgroup.nsmul_mem _ (AddSubgroup.sum_mem _ fun i _ => hterm i) _
 

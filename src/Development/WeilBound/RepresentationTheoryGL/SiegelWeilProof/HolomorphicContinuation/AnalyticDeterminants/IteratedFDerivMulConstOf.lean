@@ -92,7 +92,7 @@ theorem fubini_step (p q : ℤ) (Kg : Type) [Group Kg] [TopologicalSpace Kg] [Is
   have hU0 : ∀ g : M2 n, InG g → g ∈ {x : M2 n | (u1 x).det ≠ 0 ∧ (u2 x).det ≠ 0} := fun g hg =>
     ⟨(gset_sub_dom hg).2.1, (gset_sub_dom hg).2.2.1⟩
   have hf0c : ContinuousOn (f0 (n := n) p q) {x : M2 n | (u1 x).det ≠ 0 ∧ (u2 x).det ≠ 0} :=
-    (contDiffOn_scalar_section p q).continuousOn
+    (_root_.PositivityTheory.Rg.Sw.LVs.contDiffOn_scalar_section_of_units p q).continuousOn
   have hf0ne : ∀ k, f0 p q (ι k) ≠ 0 := fun k h => by
     have := scalar_section_mul_conjugate_section ((hK (ι k)).2 ⟨k, rfl⟩) p q; rw [h, zero_mul] at this; exact zero_ne_one this
   have hc : Continuous fun k => (f0 p q (ι k))⁻¹ :=

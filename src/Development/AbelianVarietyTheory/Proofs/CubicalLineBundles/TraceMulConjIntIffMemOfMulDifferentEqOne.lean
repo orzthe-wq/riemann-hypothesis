@@ -136,7 +136,7 @@ theorem _root_.GlobalTheory.trace_xi_mul_conj_int_iff_mem :
           ((FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) X.ξ0)⁻¹ *
             FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) X.ξ0) *
           ((_root_.GlobalTheory.conjFrac 𝔄)⁻¹ * _root_.GlobalTheory.conjFrac 𝔄) := by
-          first | ring | simp only [mul_comm, mul_left_comm, mul_assoc]
+          first | ring
       _ = _ := by rw [inv_mul_cancel₀ hsp0, inv_mul_cancel₀ hconj0, mul_one, mul_one]
   have hcc : ∀ w : E, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (_root_.ReciprocityTheory.ChartRestriction.G.FD.cc w) = w := by
     intro w

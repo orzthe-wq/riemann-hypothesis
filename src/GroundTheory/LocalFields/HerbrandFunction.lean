@@ -144,14 +144,6 @@ def herbrandPhi (u : ℝ) : ℝ :=
     ((lowerRamificationGroupReal K L t).relIndex (lowerRamificationGroup K L 0) : ℝ)⁻¹
 
 
-omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
-theorem relIndex_mul_card_inf {G : Type*} [Group G] (H K : Subgroup G) :
-    H.relIndex K * Nat.card ↥(H ⊓ K) = Nat.card K := by
-  rw [Subgroup.relIndex, mul_comm, ← Subgroup.card_mul_index (H.subgroupOf K)]
-  congr 1
-  rw [← Subgroup.inf_subgroupOf_right]
-  exact (Nat.card_congr (Subgroup.subgroupOfEquivOfLe inf_le_right).toEquiv).symm
-
 
 open Classical in
 theorem inv_relIndex_eq_sum (t : ℝ) :
@@ -159,7 +151,7 @@ theorem inv_relIndex_eq_sum (t : ℝ) :
       (Nat.card (lowerRamificationGroup K L 0) : ℝ)⁻¹ *
         ∑ σ : L ≃ₐ[K] L, if σ ∈ lowerRamificationGroup K L 0 ∧
           σ ∈ lowerRamificationGroupReal K L t then (1 : ℝ) else 0 := by
-  have hmul := relIndex_mul_card_inf (lowerRamificationGroupReal K L t)
+  have hmul := Subgroup.relIndex_mul_card (lowerRamificationGroupReal K L t)
     (lowerRamificationGroup K L 0)
   have hcount : (∑ σ : L ≃ₐ[K] L, if σ ∈ lowerRamificationGroup K L 0 ∧
       σ ∈ lowerRamificationGroupReal K L t then (1 : ℝ) else 0) =
@@ -381,7 +373,7 @@ theorem herbrandPsi_zero : herbrandPsi K L 0 = 0 :=
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 theorem relIndex_pos_of_finite {G : Type*} [Group G] [Finite G] (H K : Subgroup G) :
     (0 : ℝ) < H.relIndex K := by
-  have h := relIndex_mul_card_inf H K
+  have h := Subgroup.relIndex_mul_card H K
   have hK : 0 < Nat.card K := Nat.card_pos
   have : 0 < H.relIndex K := by
     rcases Nat.eq_zero_or_pos (H.relIndex K) with h0 | h0

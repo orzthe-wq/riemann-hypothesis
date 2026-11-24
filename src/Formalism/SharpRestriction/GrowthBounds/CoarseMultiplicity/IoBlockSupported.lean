@@ -251,16 +251,6 @@ private theorem false_of_cdist_between_both_ways {n' : ℕ} (a b x : Fin n') (h1
   rw [cdist_eq_ite, cdist_eq_ite] at h2 h4
   split_ifs at h1 h2 h3 h4 <;> omega
 
-private theorem posAdd_cdist_eq_self' {n' : ℕ} (a s : Fin n') : posAdd a (cdist a s) = s := by
-  apply Fin.ext
-  have ha := a.isLt
-  have hs := s.isLt
-  show (a.val + cdist a s) % n' = s.val
-  rw [cdist_eq_ite]
-  split_ifs with h
-  · rw [show a.val + (s.val - a.val) = s.val by omega, Nat.mod_eq_of_lt hs]
-  · rw [show a.val + (s.val + n' - a.val) = s.val + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt hs]
-
 theorem segVars_disj (X : Loc) (j j' : Fin (numSeg X.TT)) (h : j ≠ j') : Disjoint (segVars X j) (segVars X j') := by
   classical
   have hnodup : (evenTops X.TT).Nodup := Finset.sort_nodup _ _
@@ -303,7 +293,7 @@ theorem segVars_disj (X : Loc) (j j' : Fin (numSeg X.TT)) (h : j ≠ j') : Disjo
     obtain ⟨s, hs, hsd⟩ := hd
     have hps : segPos X.TT a i = s := by
       show posAdd (segStart X.TT a) d = s
-      rw [← hsd, posAdd_cdist_eq_self']
+      rw [← hsd, _root_.Formalism.MainNotions.ColumnSystems.Pf.posAdd_cdist]
     rw [hps]
     exact ⟨(Finset.mem_filter.1 hs).2.2.1, (Finset.mem_filter.1 hs).2.2.2⟩
   have hsm : ∀ c : Fin (numSeg X.TT), segStart X.TT c ∈ X.TT ∧ Even (segStart X.TT c).val := by

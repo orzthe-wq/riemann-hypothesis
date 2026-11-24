@@ -57,7 +57,7 @@ theorem volumes_eq_masses_of_unfold :
   fun hU D hV =>
     have hT : StandardLattice.VolTie D := Formalism.L2.Theta.VolTieG.volTie hV
     StandardLattice.volume_eq_mass_of_definite D (StandardLattice.volumeMass_of_unfolding D (hU D hT))
-      (Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.mass_volume_identity_of_class_decomp D hT (GlobalTheory.genusMassStd_all D)
-        (GlobalTheory.DefiniteDecompObj.doubleCosets_mass D))
+      (Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.mass_volume_identity_of_class_decomp D hT (_root_.GlobalTheory.genusMassStd D)
+        (_root_.GlobalTheory.DefiniteDecomp.defClassDecomp D))
 
 end GlobalTheory.Mem.VolMass

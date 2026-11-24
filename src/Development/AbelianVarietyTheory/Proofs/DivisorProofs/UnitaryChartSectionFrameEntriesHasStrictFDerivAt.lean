@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemDomOfOrth
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffOnGramSchmidtUpperTriangularFactorStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContDiffOnGramSchmidtUpperTriangularFactor
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,7 +59,7 @@ theorem yF_hasStrictFDerivAt {E : Type} [Field E] [NumberField E] [IsCMField E] 
   have hnhds : {w | cpt X x w ∈ X.dom} ∈ nhds (0 : V (nd X)) :=
     Filter.mem_of_superset (Metric.ball_mem_nhds 0 hR) fun w hw => hball w hw
   have hB : ∀ τ k b, ContDiffAt ℝ ∞ (fun w => gsB X w τ k b) 0 := fun τ k b =>
-    (GlobalTheory.T.contDiffOn_gramSchmidtUpperTriangularFactor X hx τ k b).contDiffAt hnhds
+    (_root_.GlobalTheory.SUChartSection.GSSmooth.gsB_contDiffOn X hx τ k b).contDiffAt hnhds
   have hN : ∀ τ a k, ContDiffAt ℝ ∞ (fun w : V (nd X) => nmat X w τ a k) 0 := fun τ a k =>
     have h1 : ContDiff ℂ ∞ (fun w : V (nd X) => nmat X w τ a k) := by
       unfold nmat

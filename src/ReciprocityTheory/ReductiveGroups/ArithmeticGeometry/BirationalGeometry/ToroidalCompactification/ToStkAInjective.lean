@@ -2,46 +2,7 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.HasArcDataIff
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PullCub
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 
 @[expose] public section
 
@@ -69,8 +30,6 @@ theorem top_le_iff_cpt [IsLocalRing A] (x : Sp A ⟶ X) (U : X.Opens) : ⊤ ≤ 
   · intro h z _
     first
     | exact (IsLocalRing.specializes_closedPoint z).mem_open (x ⁻¹ᵁ U).isOpen h
-    | exact ((PrimeSpectrum.le_iff_specializes z (cpt A)).mp
-        (IsLocalRing.le_maximalIdeal z.isPrime.ne_top)).mem_open (x ⁻¹ᵁ U).isOpen h
 
 theorem toStkA_valR (x : Sp A ⟶ X) (U : X.Opens) (z : Sp A) (ht : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)ˣ) :
     toStkA z (valR x U a.val) = (gm x z U a).val := by
@@ -193,7 +152,6 @@ private theorem gm_pullU_eq_gm_comp {S T W : Scheme.{0}} (h : T ⟶ S) (r : W �
     simp only [gm, dite_eq_left hz, dite_eq_left hz']
     all_goals first
     | rfl
-    | (ext; simp [pullU, Scheme.comp_app])
   · have hz' : (r ≫ h) z ∉ V := hz
     simp only [gm, dite_eq_right hz, dite_eq_right hz', MonoidHom.one_apply]
 
@@ -264,8 +222,6 @@ section Thick
 
 theorem thick_mono (R : Type) [CommRing R] (I : Ideal R) (n : ℕ) : Mono (Out.thick R I n) := by
   first
-  | exact inferInstance
-  | exact (IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective).mono
   | (haveI := IsClosedImmersion.spec_of_surjective
         (CommRingCat.ofHom (Ideal.Quotient.mk (I ^ (n + 1)))) Ideal.Quotient.mk_surjective
      infer_instance)
@@ -280,14 +236,10 @@ theorem thick_map_eq {R : Type} [CommRing R] {I : Ideal R} {n : ℕ} {G G' : Ove
       pullback.fst G.hom (Out.thick R I n) ≫ ψ.left := by
     first
     | (simp [Over.pullback]; done)
-    | (simp [Over.pullback]; exact pullback.lift_fst _ _ _)
-    | exact pullback.lift_fst _ _ _
   have m2 : ((Over.pullback (Out.thick R I n)).map ψ).left ≫ pullback.snd G'.hom (Out.thick R I n) =
       pullback.snd G.hom (Out.thick R I n) := by
     first
     | (simp [Over.pullback]; done)
-    | (simp [Over.pullback])
-    | exact pullback.lift_snd _ _ _
   apply pullback.hom_ext
   · rw [hh', m1]
   · rw [m2, ← cancel_mono (Out.thick R I n), Category.assoc,

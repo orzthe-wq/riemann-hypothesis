@@ -1,48 +1,7 @@
 module
 
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.PairVal
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -66,11 +25,11 @@ theorem mul_single_mul (l ρ : Matrix (Fin n) (Fin n) K) (i j k m : Fin n) (c : 
     by_cases hx : x = j
     · subst hx
       rw [if_pos rfl, Finset.sum_eq_single i]
-      · simp [Matrix.single_apply]
-      · intro y _ hy; simp [Matrix.single_apply, Ne.symm hy]
+      · simp
+      · intro y _ hy; simp [Ne.symm hy]
       · simp
     · rw [if_neg hx]
-      exact Finset.sum_eq_zero fun y _ => by simp [Matrix.single_apply, Ne.symm hx]
+      exact Finset.sum_eq_zero fun y _ => by simp [Ne.symm hx]
   rw [h1, Matrix.mul_apply, Finset.sum_eq_single j]
   · simp [mul_assoc]
   · intro y _ hy; simp [hy]
@@ -159,16 +118,15 @@ theorem linG_move (e : K ≃ₐ[F] F × F) (cj : K →+* K) (he : ∀ x, e (cj x
     refine Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_
     have h1 := hy c
     have h2 := hx d
-    first | (field_simp; done) | (field_simp; ring)
-  · simp only [Prod.snd_sum, Prod.snd_mul, Prod.swap, Finset.sum_div, Finset.mul_sum, Finset.sum_mul, Prod.snd_neg,
-      neg_div, mul_neg, neg_mul]
+    first | (field_simp; done)
+  · simp only [Prod.snd_sum, Prod.snd_mul, Prod.swap, Finset.sum_div, Finset.mul_sum, Finset.sum_mul, mul_neg, neg_mul]
     rw [← Finset.sum_neg_distrib]
     simp only [← Finset.sum_neg_distrib]
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_
     have h1 := hy c
     have h2 := hx d
-    first | (field_simp; done) | (field_simp; ring)
+    first | (field_simp; done)
 
 theorem constG (e : K ≃ₐ[F] F × F) (ι : E →+* K) (Dd : Fin (r + 1) → K) (hx : ∀ i, (e (Dd i)).1 ≠ 0)
     (hy : ∀ i, (e (Dd i)).2 ≠ 0) (a b : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (ha : IsLoUni a) (hb : IsUpUni b)

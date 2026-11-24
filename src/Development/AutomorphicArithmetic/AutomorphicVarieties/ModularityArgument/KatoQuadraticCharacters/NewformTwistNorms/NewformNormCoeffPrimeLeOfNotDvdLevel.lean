@@ -344,11 +344,3 @@ end
 
 end
 
-section
-open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2
-open scoped Matrix
-
-theorem _root_.GlobalTheory.T.newform_norm_coeff_prime_le_of_not_dvd_level : ∀ (k : ℕ) (g : Newform k) (p : ℕ), p.Prime → ¬ p ∣ g.M → ‖g.a p‖ ≤ (p : ℝ) ^ ((k : ℝ) / 2) + (p : ℝ) ^ ((k : ℝ) / 2 - 1) := by
-  first | exact @GlobalTheory.HeckeBd.norm_a_le | exact GlobalTheory.HeckeBd.norm_a_le | (intros; apply GlobalTheory.HeckeBd.norm_a_le <;> assumption)
-
-end

@@ -2,7 +2,7 @@ module
 
 public import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.HilbertSpaceModels.StepFormulaF
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.Bridge
-public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ComplexNormedInstanceCompat
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.ExistsKhwGenSubOfKType
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -64,7 +64,7 @@ theorem hloweq_transfer {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℝ} (A 
     (hAK : ∀ k ∈ Kset ε, ∀ x, A (rreg ε k x) = rreg ε k (A x)) {S : Submodule ℂ (L2 ε)}
     (hinj : ∀ w ∈ S, A w = 0 → w = 0) (hS : Formalism.MainNotions.S.IsKTypeOf ε (rreg ε) Λ S) :
     Formalism.MainNotions.S.IsKTypeOf ε (rreg ε) Λ (S.map A) :=
-  _root_.UpperTheory.Reformulated.B.Re3.hloweq_transfer A hAK hinj hS
+  kType_map_of_inj hS A hAK hinj
 
 theorem hloweq_brIdx {n : ℕ} (c : Fin n → Fin n → ℕ) :
     brIdxSum (∑ a, ∑ b, (c a b : ℝ) • Formalism.REAL.root a b) =

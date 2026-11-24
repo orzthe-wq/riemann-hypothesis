@@ -83,12 +83,9 @@ variable {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
 abbrev pfMapFl_Fb : T₁.V ⊗[Qp] B →ₗ[LL] T₂.V ⊗[Qp] B :=
   AlgebraTensorModule.map F.f (LinearMap.id : B →ₗ[Qp] B)
 
-abbrev pfMapFl_FdR : T₁.V ⊗[Qp] BdR →ₗ[LL] T₂.V ⊗[Qp] BdR :=
-  AlgebraTensorModule.map F.f (LinearMap.id : BdR →ₗ[Qp] BdR)
-
 theorem pfMapFl_ιV (z : T₁.V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := T₂.V) (pfMapFl_Fb F z) =
-      pfMapFl_FdR F (ιV PD (LL := LL) (V := T₁.V) z) :=
+      _root_.Formalism.MainNotions.N.Ln03.Pf.pfMapFl_Fb F (ιV PD (LL := LL) (V := T₁.V) z) :=
   (pfMapFl_map_comm F.f (PD.ι.toLinearMap.restrictScalars Qp) z).symm
 
 theorem pfMapFl_φ (z : T₁.V ⊗[Qp] B) :
@@ -134,7 +131,7 @@ theorem pfMapFl_dcrisL (τ₀ : K₀ →ₐ[Qp] LL) (z : T₁.V ⊗[Qp] B) (hz :
   rw [h3, h2 c, map_smul]
 
 theorem pfMapFl_filV (a : ℤ) (z : T₁.V ⊗[Qp] BdR) (hz : z ∈ FilV PD (LL := LL) (V := T₁.V) a) :
-    pfMapFl_FdR F z ∈ FilV PD (LL := LL) (V := T₂.V) a := by
+    _root_.Formalism.MainNotions.N.Ln03.Pf.pfMapFl_Fb F z ∈ FilV PD (LL := LL) (V := T₂.V) a := by
   obtain ⟨w, rfl⟩ := hz
   exact ⟨AlgebraTensorModule.map F.f LinearMap.id w,
     (pfMapFl_map_comm F.f ((PD.Fil a).restrictScalars Qp).subtype w).symm⟩

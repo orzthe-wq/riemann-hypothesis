@@ -112,7 +112,7 @@ theorem adapted_span : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (C
     rw [Fin.sum_univ_add] at hg
     have h1 : ∀ i, g (Fin.castAdd q i) = 0 := by
       have hf := congrArg Prod.fst hg
-      simp [Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, smul_eq_mul, hu2, hz] at hf
+      simp [Prod.fst_sum, Prod.smul_fst, hu2, hz] at hf
       exact Fintype.linearIndependent_iff.mp hv _ hf
     have h2 : ∀ j, g (Fin.natAdd p j) = 0 := by
       intro j'
@@ -138,18 +138,18 @@ theorem adapted_span : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (C
       have hy'mem : y' ∈ HT.eigSp 𝓗.ρH σ :=
         Submodule.sub_mem _ hy (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hu1 _))
       have hy'1 : y'.1 = 0 := by
-        simp [Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, smul_eq_mul, hy', hu2, hc]
+        simp [Prod.fst_sum, Prod.smul_fst, hy', hu2, hc]
       set χ := y'.2 - ∑ j, y'.2 (w j) • (u (Fin.natAdd p j)).2 with hχ
       have hχmem : ((0 : V), χ) ∈ HT.eigSp 𝓗.ρH σ := by
         have e : ((0 : V), χ) = y' - ∑ j, y'.2 (w j) • u (Fin.natAdd p j) := by
           refine Prod.ext ?_ ?_
-          · simp [Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, smul_eq_mul, hy'1, hz]
-          · simp [Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, smul_eq_mul, hχ]
+          · simp [Prod.fst_sum, Prod.smul_fst, hy'1, hz]
+          · simp [Prod.snd_sum, Prod.smul_snd, hχ]
         rw [e]
         exact Submodule.sub_mem _ hy'mem (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hu1 _))
       have hχw : ∀ j', χ (w j') = 0 := by
         intro j'
-        simp [Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, smul_eq_mul, hχ, hz2]
+        simp [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hχ, hz2]
       have hχker : HT.eigSp ρ σ' ≤ LinearMap.ker χ := by
         rw [← hws, Submodule.span_le]
         rintro _ ⟨j, rfl⟩
@@ -162,7 +162,7 @@ theorem adapted_span : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (C
       have hy2 : y'.2 = ∑ j, y'.2 (w j) • (u (Fin.natAdd p j)).2 := sub_eq_zero.mp hχ0
       have hT : y' = ∑ j, y'.2 (w j) • u (Fin.natAdd p j) := by
         refine Prod.ext ?_ ?_
-        · simp [Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, smul_eq_mul, hy'1, hz]
+        · simp [Prod.fst_sum, Prod.smul_fst, hy'1, hz]
         · simpa [Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, smul_eq_mul] using hy2
       have hyeq : y = ∑ i, c i • u (Fin.castAdd q i) + ∑ j, y'.2 (w j) • u (Fin.natAdd p j) := by
         rw [← hT, hy']

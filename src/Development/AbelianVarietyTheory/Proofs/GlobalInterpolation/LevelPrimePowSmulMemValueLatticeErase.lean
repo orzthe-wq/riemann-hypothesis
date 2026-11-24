@@ -50,6 +50,7 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LDrowLemmas
 
 @[expose] public section
 
@@ -170,19 +171,6 @@ theorem weight_rowZ {r n : ℕ} (d : Fin r × Fin n →₀ ℕ) (a : Fin r) :
   | single v c =>
     simp [Finsupp.weight_apply, rowZ, rowW, Pi.single_apply, Finsupp.sum_single_index]
 
-theorem weight_rowW {r n : ℕ} (d : Fin r × Fin n →₀ ℕ) (a : Fin r) :
-    Finsupp.weight (rowW r n) d a = rowDeg d a := by
-  classical
-  induction d using Finsupp.induction_linear with
-  | zero => simp [rowDeg]
-  | add f g hf hg => simp only [map_add (f := _), Pi.add_apply, hf, hg, rowDeg, Finsupp.add_apply, Finset.sum_add_distrib]
-  | single v c =>
-    obtain ⟨b, s⟩ := v
-    by_cases h : a = b
-    · subst h
-      simp [Finsupp.weight_apply, rowDeg, rowW, Finsupp.sum_single_index, Finsupp.single_apply]
-    · simp [Finsupp.weight_apply, rowDeg, rowW, Finsupp.sum_single_index, Finsupp.single_apply, h, Ne.symm h]
-
 theorem word_homog (R : Type) [CommRing R] {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν)
     (w : List (Fin n × Fin n × ℕ)) :
     ∃ H, IsWeightedHomogeneous (rowZ n n) (applyWord R w (hw R le_rfl ν)) H := by
@@ -217,7 +205,7 @@ theorem word_weight {n : ℕ} (hn : 0 < n) (ν : Fin n → ℕ) (hν : Antitone 
     have hs : (Finset.univ.filter fun a : Fin n => a.val < 1) = {⟨0, hn⟩} := by
       ext a; simp [Fin.ext_iff]
     rw [hs, Finset.sum_singleton, Finset.sum_singleton] at hd
-    rw [weight_rowW]
+    rw [_root_.Formalism.GradedWeylDivisibility.ldrow_weight_rowW]
     simpa [rowNu, hn] using hd
   · funext a
     have := congrFun ((hH hd).trans (hH hm).symm) a
@@ -252,7 +240,7 @@ theorem roundAct_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n 
 theorem roundAct_mem (R : Type) [CommRing R] {n : ℕ} (lam : DomWeight n)
     (k : GL (Fin n) R) (g : MvPolynomial (Fin n × Fin n) R) (hg : g ∈ delSq R n lam) :
     roundAct R n lam k g ∈ delSq R n lam :=
-  Submodule.smul_mem _ _ (Formalism.UG.Final.WeylGLStable R n n le_rfl _ _ g hg)
+  Submodule.smul_mem _ _ (_root_.Formalism.UG.P.wlocal_global R n n le_rfl _ _ g hg)
 
 theorem diag_step {R : Type} [CommRing R] (φ : R →+* ℂ) {n : ℕ} (hn : 0 < n) (lam : DomWeight n) (T : ℕ)
     (t : ℂˣ) (ht : (t : ℂ) = T) (g : MvPolynomial (Fin n × Fin n) R) (hg : g ∈ delSq R n lam) :
@@ -359,7 +347,7 @@ theorem f_expand (p : LocF.PP Lc n) {h : GL (Fin n) Lc.K} (hh : Lc.IsFrame n h p
   have e : (h : Matrix (Fin n) (Fin n) Lc.K).mulVec (fun a => (x a : Lc.K)) =
       ∑ a, x a • (h : Matrix (Fin n) (Fin n) Lc.K).mulVec (Pi.single a 1) := by
     funext b
-    simp [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.single_apply, Subring.smul_def, mul_comm]
+    simp [Matrix.mulVec, dotProduct, Finset.sum_apply, Subring.smul_def, mul_comm]
   rw [e]
   have hm : ∀ a, (h : Matrix (Fin n) (Fin n) Lc.K).mulVec (Pi.single a 1) ∈ p.1.L :=
     fun a => (hh _).2 (single_std a)

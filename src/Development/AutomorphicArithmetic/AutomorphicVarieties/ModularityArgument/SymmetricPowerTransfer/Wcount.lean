@@ -51,9 +51,6 @@ namespace UpperTheory.V.Z.Sym
 
 open MulAction
 
-def gcount (H : Type) {Y : Type} [Group H] [MulAction H Y] (k : Y → ℂ) : ℂ :=
-  ∑ᶠ o : orbitRel.Quotient H Y, k o.out / (Nat.card (stabilizer H o.out) : ℂ)
-
 def wcount {T Y : Type} [Group T] [MulAction T Y] (C : Subgroup T) (k : Y → ℂ) : ℂ :=
   ∑ᶠ o : orbitRel.Quotient T Y, ((stabilizer T o.out).relIndex C : ℂ) * k o.out
 

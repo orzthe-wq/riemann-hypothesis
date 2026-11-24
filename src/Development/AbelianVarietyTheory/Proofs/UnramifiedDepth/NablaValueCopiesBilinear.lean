@@ -57,7 +57,7 @@ theorem dofN_add (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (f g : P
 
 theorem dofN_smul (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (t : R) (f : PS R n d) :
     DofN F b u (t • f) = t • DofN F b u f := by
-  simp only [DofN, Derivation.map_smul, map_smul, mul_smul_comm, Finset.smul_sum]
+  simp only [DofN, Derivation.map_smul, mul_smul_comm, Finset.smul_sum]
 
 theorem dofN_iterate_add (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (k : ℕ)
     (f g : PS R n d) :

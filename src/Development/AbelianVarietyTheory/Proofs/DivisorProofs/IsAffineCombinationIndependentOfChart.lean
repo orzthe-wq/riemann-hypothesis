@@ -1,10 +1,11 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsCombIn
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineCombinationSquareZeroLiftsChartStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationInChartSpecMapCompStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationInChartUniqueStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreimageEqOfSquareZeroThickeningStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAffineCombinationSquareZeroLiftsChart
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationInChartSpecMapComp
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsAffineCombinationInChartUnique
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PreimageEqOfSquareZeroThickening
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -61,20 +62,7 @@ theorem chartHom_congr {Y : Scheme.{0}} (V : Y.Opens) {S : Type} [CommRing S] {f
     chartHom V f hf x = chartHom V g hg x := by
   subst e; rfl
 
-theorem chartHom_comp {Y : Scheme.{0}} (V : Y.Opens) {S S' : Type} [CommRing S] [CommRing S']
-    (g : S →+* S') (f : Sp S ⟶ Y) (hf : f ⁻¹ᵁ V = ⊤) (hgf : (spMap g ≫ f) ⁻¹ᵁ V = ⊤)
-    (x : Γ(Y, V)) : chartHom V (spMap g ≫ f) hgf x = g (chartHom V f hf x) := by
-  unfold chartHom
-  rw [← Scheme.Hom.appLE_comp_appLE (spMap g) f V ⊤ ⊤ hf.ge le_top]
-  have h1 : Scheme.Hom.appLE (spMap g) ⊤ ⊤ le_top = (spMap g).appTop := by
-    rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
-    rfl
-  have h2 := Scheme.ΓSpecIso_naturality (CommRingCat.ofHom g)
-  rw [h1]
-  change ((Scheme.ΓSpecIso (CommRingCat.of S')).hom.hom.comp
-    ((Spec.map (CommRingCat.ofHom g)).appTop.hom.comp (f.appLE V ⊤ hf.ge).hom)) x = _
-  rw [← RingHom.comp_assoc, ← CommRingCat.hom_comp, h2]
-  rfl
+alias chartHom_comp := _root_.GlobalTheory.SecGlue.chartHom_spMap_comp
 
 theorem chartHom_mono {Y : Scheme.{0}} {W V : Y.Opens} (hWV : W ≤ V) {S : Type} [CommRing S]
     (f : Sp S ⟶ Y) (hW : f ⁻¹ᵁ W = ⊤) (hV : f ⁻¹ᵁ V = ⊤) (x : Γ(Y, V)) :
@@ -193,20 +181,20 @@ theorem isCombIn_of_chart : ∀ (Y : Scheme.{0}) (V V' : Y.Opens), IsAffineOpen 
   intro Y V V' hV _hV' S T _ _ q hq hk ι _ u c w a hw hcomb hu'
 
   have hqc : spMap q ≫ c = spMap q ≫ u := by
-    have h1 := GlobalTheory.T.isAffineCombinationInChart_specMap_comp Y V S T q ι u c w a hcomb
-    refine GlobalTheory.T.isAffineCombinationInChart_unique Y V hV T ι (spMap q ≫ u) _ _ (fun i => spMap q ≫ w i) (fun i => q (a i)) h1 ?_
+    have h1 := _root_.GlobalTheory.SecGlue.isCombIn_spMap_comp Y V S T q ι u c w a hcomb
+    refine _root_.GlobalTheory.SecGlue.combIn_unique Y V hV T ι (spMap q ≫ u) _ _ (fun i => spMap q ≫ w i) (fun i => q (a i)) h1 ?_
     obtain ⟨hu1, _, hw1, _⟩ := h1
     refine ⟨hu1, hu1, hw1, fun x => ?_⟩
     have h0 : ∀ i, chartHom V (spMap q ≫ w i) (hw1 i) x - chartHom V (spMap q ≫ u) hu1 x = 0 :=
       fun i => by rw [chartHom_congr V (hw i) (hw1 i) hu1 x, sub_self]
     simp [h0]
 
-  have hc' : c ⁻¹ᵁ V' = ⊤ := by rw [← GlobalTheory.T.preimage_eq_of_square_zero_thickening S T q hq hk Y u c hqc.symm V']; exact hu'
+  have hc' : c ⁻¹ᵁ V' = ⊤ := by rw [← _root_.GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S T q hq hk Y u c hqc.symm V']; exact hu'
   have hw' : ∀ i, w i ⁻¹ᵁ V' = ⊤ := fun i => by
-    rw [← GlobalTheory.T.preimage_eq_of_square_zero_thickening S T q hq hk Y u (w i) (hw i).symm V']; exact hu'
+    rw [← _root_.GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S T q hq hk Y u (w i) (hw i).symm V']; exact hu'
   have hWsame : ∀ W : Y.Opens, c ⁻¹ᵁ W = u ⁻¹ᵁ W ∧ ∀ i, w i ⁻¹ᵁ W = u ⁻¹ᵁ W := fun W =>
-    ⟨(GlobalTheory.T.preimage_eq_of_square_zero_thickening S T q hq hk Y u c hqc.symm W).symm,
-      fun i => (GlobalTheory.T.preimage_eq_of_square_zero_thickening S T q hq hk Y u (w i) (hw i).symm W).symm⟩
+    ⟨(_root_.GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S T q hq hk Y u c hqc.symm W).symm,
+      fun i => (_root_.GlobalTheory.SecGlue.preimage_eq_of_comp_eq_of_sqZero S T q hq hk Y u (w i) (hw i).symm W).symm⟩
   obtain ⟨hu, _, _, _⟩ := hcomb
   refine ⟨hu', hc', hw', fun x => ?_⟩
   rw [← sub_eq_zero]
@@ -238,11 +226,11 @@ theorem isCombIn_of_chart : ∀ (Y : Scheme.{0}) (V V' : Y.Opens), IsAffineOpen 
     exact locMap_alg q s y
   have hws : ∀ i, spMap qs ≫ (spMap g ≫ w i) = spMap qs ≫ (spMap g ≫ u) := fun i => by
     rw [← Category.assoc, hsq, Category.assoc, hw i, ← Category.assoc, ← hsq, Category.assoc]
-  obtain ⟨d, hd, -, -⟩ := GlobalTheory.T.exists_affineCombination_squareZero_lifts_chart Y W hWaff (Localization.Away s) _ qs (locMap_surj q s hq)
+  obtain ⟨d, hd, -, -⟩ := _root_.GlobalTheory.SecGlue.CombEx.exists_comb Y W hWaff (Localization.Away s) _ qs (locMap_surj q s hq)
     (locMap_ker q s hk) ι (spMap g ≫ u) (fun i => spMap g ≫ w i) (fun i => g (a i)) (landW u rfl) hws
-  have hcs := GlobalTheory.T.isAffineCombinationInChart_specMap_comp Y V S (Localization.Away s) g ι u c w a ⟨hu, by assumption, by assumption, by assumption⟩
+  have hcs := _root_.GlobalTheory.SecGlue.isCombIn_spMap_comp Y V S (Localization.Away s) g ι u c w a ⟨hu, by assumption, by assumption, by assumption⟩
   have hdc : d = spMap g ≫ c :=
-    GlobalTheory.T.isAffineCombinationInChart_unique Y V hV _ ι _ _ _ _ _ (comb_mono (hWle.trans inf_le_left) _ _ _ _ hd) hcs
+    _root_.GlobalTheory.SecGlue.combIn_unique Y V hV _ ι _ _ _ _ _ (comb_mono (hWle.trans inf_le_left) _ _ _ _ hd) hcs
   have hV'd := comb_mono (hWle.trans inf_le_right) _ _ _ _ hd
   rw [hdc] at hV'd
   obtain ⟨h1, h2, h3, hx⟩ := hV'd

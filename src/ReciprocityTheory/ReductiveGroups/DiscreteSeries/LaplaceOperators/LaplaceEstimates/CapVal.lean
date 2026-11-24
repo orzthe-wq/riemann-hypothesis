@@ -1,51 +1,28 @@
 module
 
-public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.PsiDatumStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.TopContDiffOn
-import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothA
-public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.CapelliIdentity.WhittakerZeroStatement
+public import Formalism.FormalDegreeBessel.StatementIO
+public import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
+public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DefsRep
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.CapelliIdentity.CapelliCentralStatement
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothA
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.TransferA
-public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.CapValA
+public import Mathlib.Analysis.Calculus.Deriv.Add
+public import Mathlib.Analysis.Calculus.Deriv.Comp
+public import Mathlib.Analysis.Calculus.Deriv.Mul
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.PsiDatumStatement
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.TopContDiffOn
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.CapelliIdentity.WhittakerZeroStatement
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.TypeStar
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.CasChainB
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.CapValA, ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.CapVal
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.CapValA =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.CapValA", "h": "module\n\npublic import Formalism.FormalDegreeBessel.StatementIO\npublic import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap\npublic import Mathlib.LinearAlgebra.Complex.FiniteDimensional\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DefsRep\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.CapelliIdentity.CapelliCentralStatement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothA\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.TransferA\npublic import Mathlib.Analysis.Calculus.Deriv.Add\npublic import Mathlib.Analysis.Calculus.Deriv.Comp\npublic import Mathlib.Analysis.Calculus.Deriv.Mul\nimport ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.CasChainB\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -59,12 +36,246 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
-lemma inUJ_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hh : inUJ ε h) :
-    inUJ ε (g * h) := by
-  unfold inUJ at *
-  rw [Matrix.conjTranspose_mul,
-    show hᴴ * gᴴ * Jm ε * (g * h) = hᴴ * (gᴴ * Jm ε * g) * h by simp only [Matrix.mul_assoc], hg]
-  exact hh
+section Grp
+
+def jAdj (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ :=
+  Jm ε * gᴴ * Jm ε
+
+lemma jAdj_mul {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : jAdj ε g * g = 1 := by
+  unfold jAdj
+  unfold inUJ at hg
+  rw [show Jm ε * gᴴ * Jm ε * g = Jm ε * (gᴴ * Jm ε * g) by simp only [Matrix.mul_assoc], hg,
+    SmDerA.Jm_mul_Jm]
+
+lemma mul_jAdj {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : g * jAdj ε g = 1 :=
+  mul_eq_one_comm.mp (jAdj_mul hg)
+
+lemma inUJ_jAdj {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
+    inUJ ε (jAdj ε g) := by
+  have h1 := mul_jAdj hg
+  unfold jAdj at h1 ⊢
+  unfold inUJ
+  have h2 : g * (Jm ε * (gᴴ * Jm ε)) = 1 := by simpa only [Matrix.mul_assoc] using h1
+  rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, SmDerA.Jm_conjTranspose,
+    Matrix.conjTranspose_conjTranspose]
+  simp only [Matrix.mul_assoc, LemK.ta_Jm_Jm]
+  rw [h2, Matrix.mul_one]
+
+lemma inUJ_one (ε : Fin n → Bool) : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ) := by
+  unfold inUJ
+  simp
+
+end Grp
+
+section Unit
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+  {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
+
+lemma inner_sig_sig (hσ : IsURepOn (UJset ε) σ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
+    (x y : H) : ⟪σ g x, σ g y⟫_ℂ = ⟪x, y⟫_ℂ := by
+  let T : H →ₗᵢ[ℂ] H := { toLinearMap := (σ g : H →ₗ[ℂ] H), norm_map' := fun v => hσ.2.1 g hg v }
+  exact T.inner_map_map x y
+
+lemma sig_sig_jAdj (hσ : IsURepOn (UJset ε) σ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (y : H) :
+    σ g (σ (jAdj ε g) y) = y := by
+  rw [← ContinuousLinearMap.comp_apply, ← hσ.1.2 g hg _ (inUJ_jAdj hg), mul_jAdj hg, hσ.1.1]
+  rfl
+
+lemma inner_sig_left (hσ : IsURepOn (UJset ε) σ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
+    (x y : H) : ⟪σ g x, y⟫_ℂ = ⟪x, σ (jAdj ε g) y⟫_ℂ := by
+  conv_lhs => rw [← sig_sig_jAdj hσ hg y]
+  exact inner_sig_sig hσ hg _ _
+
+lemma hasDerivAt_coef (hσ : IsURepOn (UJset ε) σ) {D : Submodule ℂ H}
+    {E : Fin n → Fin n → Module.End ℂ D} (hD : IsDerivedOn ε σ D E) {g X : Matrix (Fin n) (Fin n) ℂ}
+    (hg : inUJ ε g) (hX : inG ε X) (y : H) (x : D) :
+    HasDerivAt (fun t : ℝ => ⟪y, σ (g * NormedSpace.exp ((t : ℂ) • X)) (x : H)⟫_ℂ)
+      ⟪y, σ g ((actM E X x : D) : H)⟫_ℂ 0 := by
+  have e : (fun t : ℝ => ⟪y, σ (g * NormedSpace.exp ((t : ℂ) • X)) (x : H)⟫_ℂ) =
+      fun t : ℝ => (((innerSL ℂ y).comp (σ g)).restrictScalars ℝ)
+        (σ (NormedSpace.exp ((t : ℂ) • X)) (x : H)) := by
+    funext t
+    rw [hσ.1.2 g hg _ (_root_.ReciprocityTheory.ChartRestriction.DS.S7.ccb_exp_inUJ ε hX t)]
+    rfl
+  rw [e]
+  exact (((innerSL ℂ y).comp (σ g)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (hD.deriv X hX x)
+
+end Unit
+
+section Op
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+  {W : Type*} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
+  {D : Submodule ℂ H} {V : Submodule ℂ D}
+
+abbrev ob (W : Type*) [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] :
+    OrthonormalBasis (Fin (Module.finrank ℂ W)) ℂ W := stdOrthonormalBasis ℂ W
+
+def opC (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (ι : V ≃ₗ[ℂ] W)
+    (h : Matrix (Fin n) (Fin n) ℂ) (B : Module.End ℂ D) : W →L[ℂ] W :=
+  ∑ i, ∑ j, ⟪(((ι.symm (ob W i) : V) : D) : H), σ h ((B ((ι.symm (ob W j) : V) : D) : D) : H)⟫_ℂ •
+    (innerSL ℂ (ob W j)).smulRight (ob W i)
+
+variable (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (ι : V ≃ₗ[ℂ] W)
+
+lemma opC_add (h : Matrix (Fin n) (Fin n) ℂ) (B₁ B₂ : Module.End ℂ D) :
+    opC σ ι h (B₁ + B₂) = opC σ ι h B₁ + opC σ ι h B₂ := by
+  simp only [opC, LinearMap.add_apply, Submodule.coe_add, map_add (f := _), inner_add_right, add_smul,
+    Finset.sum_add_distrib]
+
+lemma opC_smul (h : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (B : Module.End ℂ D) :
+    opC σ ι h (c • B) = c • opC σ ι h B := by
+  simp only [opC, LinearMap.smul_apply, Submodule.coe_smul, map_smul, inner_smul_right, smul_smul,
+    Finset.smul_sum]
+
+lemma opC_zero (h : Matrix (Fin n) (Fin n) ℂ) : opC σ ι h (0 : Module.End ℂ D) = 0 := by
+  simpa using opC_smul σ ι h (0 : ℂ) 0
+
+def opL (h : Matrix (Fin n) (Fin n) ℂ) : Module.End ℂ D →ₗ[ℂ] (W →L[ℂ] W) where
+  toFun := opC σ ι h
+  map_add' := opC_add σ ι h
+  map_smul' := opC_smul σ ι h
+
+lemma vec_expand (v : V) :
+    ((v : D) : H) = ∑ j, ⟪ob W j, ι v⟫_ℂ • (((ι.symm (ob W j) : V) : D) : H) := by
+  conv_lhs => rw [← ι.symm_apply_apply v, ← (ob W).sum_repr' (ι v)]
+
+  simp only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul]
+
+lemma vec_expandD (v : V) :
+    (v : D) = ∑ j, ⟪ob W j, ι v⟫_ℂ • ((ι.symm (ob W j) : V) : D) := by
+  conv_lhs => rw [← ι.symm_apply_apply v, ← (ob W).sum_repr' (ι v)]
+
+  simp only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul]
+
+lemma opC_coef (h : Matrix (Fin n) (Fin n) ℂ) (B : Module.End ℂ D) (v v' : V) :
+    ⟪ι v', opC σ ι h B (ι v)⟫_ℂ = ⟪((v' : D) : H), σ h ((B v : D) : H)⟫_ℂ := by
+  rw [vec_expandD ι v, vec_expand ι v']
+
+  simp only [opC, map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul,
+  ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply,
+  ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_sum, sum_inner, inner_smul_left,
+  inner_smul_right, inner_conj_symm]
+  simp only [Finset.mul_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
+
+end Op
+
+section Deriv
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+  {W : Type*} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
+  {D : Submodule ℂ H} {V : Submodule ℂ D} {ε : Fin n → Bool}
+  {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {E : Fin n → Fin n → Module.End ℂ D}
+  (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (ι : V ≃ₗ[ℂ] W)
+
+include hσ hD
+
+lemma hasDerivAt_opC {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hX : inG ε X)
+    (B : Module.End ℂ D) :
+    HasDerivAt (fun t : ℝ => opC σ ι (g * NormedSpace.exp ((t : ℂ) • X)) B)
+      (opC σ ι g (actM E X * B)) 0 := by
+  unfold opC
+  apply HasDerivAt.fun_sum
+  intro i _
+  apply HasDerivAt.fun_sum
+  intro j _
+  exact (hasDerivAt_coef hσ hD hg hX _ _).smul_const _
+
+lemma rdV_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.End ℂ D}
+    (hF : ∀ h, inUJ ε h → F h = opC σ ι h B) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
+    (hX : inG ε X) : Formalism.REAL.RdV X F g = opC σ ι g (actM E X * B) := by
+  have e : (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X))) =
+      fun t : ℝ => opC σ ι (g * NormedSpace.exp ((t : ℂ) • X)) B :=
+    funext fun t => hF _ (LemK.ta_inUJ_mul_exp ε hg hX t)
+  show deriv (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X))) 0 = _
+  rw [e]
+  exact (hasDerivAt_opC hσ hD ι hg hX B).deriv
+
+lemma eabV_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.End ℂ D}
+    (hF : ∀ h, inUJ ε h → F h = opC σ ι h B) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
+    (a b : Fin n) : Formalism.REAL.EabV ε a b F g = opC σ ι g (E a b * B) := by
+  have h1 : inG ε (Formalism.REAL.cpart1 ε (Matrix.single a b 1)) := LemK.ta_inG_cpart1 ε _
+  have h2 : inG ε (Formalism.REAL.cpart2 ε (Matrix.single a b 1)) := LemK.ta_inG_cpart2 ε _
+  have hs : Formalism.REAL.cpart1 ε (Matrix.single a b 1) + Complex.I • Formalism.REAL.cpart2 ε (Matrix.single a b 1) =
+      Matrix.single a b 1 := LemK.ta_cpart_sum ε _
+  show Formalism.REAL.RdV (Formalism.REAL.cpart1 ε (Matrix.single a b 1)) F g +
+    Complex.I • Formalism.REAL.RdV (Formalism.REAL.cpart2 ε (Matrix.single a b 1)) F g = _
+  rw [rdV_opC hσ hD ι hF hg h1, rdV_opC hσ hD ι hF hg h2, ← opC_smul, ← opC_add, ← smul_mul_assoc,
+    ← add_mul, ← SmDerA.actM_smul, ← SmDerA.actM_add, hs, SmDerA.actM_single]
+
+lemma top_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.End ℂ D}
+    (hF : ∀ h, inUJ ε h → F h = opC σ ι h B) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
+    (u : ℂ) (a b : Fin n) :
+    Formalism.QuantumDeterminants.Top (Formalism.REAL.EabV ε) u a b F g = opC σ ι g (Capelli.capEntry E u a b * B) := by
+  unfold Formalism.QuantumDeterminants.Top Capelli.capEntry
+  rw [eabV_opC hσ hD ι hF hg, hF g hg, add_mul, opC_add]
+  split_ifs
+  · rw [Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, opC_smul, add_comm]
+  · rw [zero_mul, opC_zero, zero_add, add_zero]
+
+lemma foldr_opC (l : List (ℂ × Fin n × Fin n)) :
+    ∀ (F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)) (B : Module.End ℂ D),
+      (∀ h, inUJ ε h → F h = opC σ ι h B) → ∀ g, inUJ ε g →
+      (l.map fun p => Formalism.QuantumDeterminants.Top (Formalism.REAL.EabV ε) p.1 p.2.1 p.2.2).foldr (fun T f => T f) F g =
+        opC σ ι g ((l.map fun p => Capelli.capEntry E p.1 p.2.1 p.2.2).prod * B) := by
+  induction l with
+  | nil =>
+    intro F B hF g hg
+    simp [hF g hg]
+  | cons p l ih =>
+    intro F B hF g hg
+    simp only [List.map_cons, List.foldr_cons, List.prod_cons]
+    rw [top_opC hσ hD ι (B := (l.map fun p => Capelli.capEntry E p.1 p.2.1 p.2.2).prod * B)
+      (fun h hh => ih F B hF h hh) hg, mul_assoc]
+
+lemma qdet_opC {F : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {B : Module.End ℂ D}
+    (hF : ∀ h, inUJ ε h → F h = opC σ ι h B) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (u : ℂ) :
+    Formalism.QuantumDeterminants.qdetOp (Formalism.REAL.EabV ε) u F g = opC σ ι g (Capelli.capelliC E u * B) := by
+  unfold Formalism.QuantumDeterminants.qdetOp Formalism.QuantumDeterminants.qminorOp Capelli.capelliC Capelli.cminor
+  rw [Finset.sum_apply, Finset.sum_mul]
+  change _ = opL σ ι g _
+
+  rw [map_sum]
+  refine Finset.sum_congr rfl fun s _ => ?_
+  rw [Pi.smul_apply, smul_mul_assoc, ← Int.cast_smul_eq_zsmul ℂ, map_smul]
+  congr 1
+  have e1 : (List.ofFn fun k : Fin n => Formalism.QuantumDeterminants.Top (Formalism.REAL.EabV (E := W →L[ℂ] W) ε) (u - ((k : ℕ) : ℂ)) (id (s k)) (id k)) =
+      (List.ofFn fun k : Fin n => (u - ((k : ℕ) : ℂ), s k, k)).map
+        fun p => Formalism.QuantumDeterminants.Top (Formalism.REAL.EabV (E := W →L[ℂ] W) ε) p.1 p.2.1 p.2.2 := by
+    rw [List.map_ofFn]; rfl
+  have e2 : (List.ofFn fun j : Fin n => Capelli.capEntry E (u - ((j : ℕ) : ℂ)) (id (s j)) (id j)) =
+      (List.ofFn fun k : Fin n => (u - ((k : ℕ) : ℂ), s k, k)).map
+        fun p => Capelli.capEntry E p.1 p.2.1 p.2.2 := by
+    rw [List.map_ofFn]; rfl
+  rw [e1, e2]
+  exact foldr_opC hσ hD ι _ F B hF g hg
+
+end Deriv
+
+end ReciprocityTheory.ChartRestriction.DS.Lap.CapelliClosureMembership
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.CapValA =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.CapVal =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.CapVal", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.PsiDatumStatement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.TopContDiffOn\nimport ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothA\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.CapelliIdentity.WhittakerZeroStatement\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.TransferA\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.CapValA\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset Matrix
+open scoped InnerProductSpace
+
+namespace ReciprocityTheory.ChartRestriction.DS.Lap.CapelliClosureMembership
+
+open ReciprocityTheory.ChartRestriction.DS
+
+variable {n : ℕ}
 
 lemma capelliC_mem {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (S : Submodule ℂ M) (hS : ∀ a b, ∀ x ∈ S, E a b x ∈ S) (u : ℂ) :
@@ -114,7 +325,7 @@ lemma sig_mem_clo (hσ : IsURepOn (UJset ε) σ) {h : Matrix (Fin n) (Fin n) ℂ
     rintro y ⟨g, hg, v, hv, rfl⟩
     show σ h (σ g (v : H)) ∈ clo V ε σ
     rw [← ContinuousLinearMap.comp_apply, ← hσ.1.2 h hh g hg]
-    exact Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨h * g, inUJ_mul hh hg, v, hv, rfl⟩)
+    exact Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨h * g, _root_.ReciprocityTheory.ChartRestriction.DS.smd_inUJ_mul hh hg, v, hv, rfl⟩)
   have hcl : IsClosed (((clo V ε σ).comap (σ h : H →ₗ[ℂ] H) : Submodule ℂ H) : Set H) :=
     (Submodule.isClosed_topologicalClosure _).preimage (σ h).continuous
   exact Submodule.topologicalClosure_minimal _ hle hcl hx
@@ -128,7 +339,7 @@ lemma mem_of_hasDerivAt {K : Submodule ℂ H} (hK : IsClosed (K : Set H)) {f : �
 lemma actM_mem_clo (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : inG ε X) {x : D} (hx : (x : H) ∈ clo V ε σ) : ((actM E X x : D) : H) ∈ clo V ε σ :=
   mem_of_hasDerivAt (Submodule.isClosed_topologicalClosure _) (hD.deriv X hX x)
-    fun t => sig_mem_clo hσ (inUJ_exp ε hX t) hx
+    fun t => sig_mem_clo hσ (_root_.ReciprocityTheory.ChartRestriction.DS.S7.ccb_exp_inUJ ε hX t) hx
 
 lemma E_mem_clo (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (a b : Fin n) {x : D}
     (hx : (x : H) ∈ clo V ε σ) : ((E a b x : D) : H) ∈ clo V ε σ := by
@@ -223,6 +434,8 @@ end ReciprocityTheory.ChartRestriction.DS.Lap.CapelliClosureMembership
 
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
-theorem capVal : CapValStatement := CapelliClosureMembership.capVal_main
-
 end ReciprocityTheory.ChartRestriction.DS.Lap
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceEstimates.CapVal =====

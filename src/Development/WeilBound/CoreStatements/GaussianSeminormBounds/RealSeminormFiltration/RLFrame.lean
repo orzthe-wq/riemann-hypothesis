@@ -269,6 +269,6 @@ namespace PositivityTheory.RL
 open _root_.PositivityTheory.RL.Frame
 
 theorem frameEx : GlobalTheory.RealLift.FrameEx := by
-  apply GlobalTheory.RealLift.frameEx_holds <;> assumption
+  apply GlobalTheory.RealLift.frameEx_holds
 
 end PositivityTheory.RL

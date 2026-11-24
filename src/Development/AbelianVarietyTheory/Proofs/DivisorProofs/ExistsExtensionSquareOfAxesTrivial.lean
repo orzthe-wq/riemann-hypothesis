@@ -3,7 +3,11 @@ module
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsProjectiveModel
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsLineBundleExtensionOfGenericFibreDvr
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoAbelianSchemeDVROfGenericIsoStatement
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LineBundleIsoAbelianSchemeDVROfGenericIso
+public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ClsLinCombSingle
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -47,7 +51,6 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbelianSchemeGerms
 import Development.AbelianVarietyTheory.Definitions.Degenerations.MorAlgSt
-public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.LeOfPowLePolyMulPow
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HenselianLocalRingOfIsAdicComplete
 
@@ -143,7 +146,7 @@ theorem exists_extension_square_of_axes_trivial : ∀ (W L : Type) [CommRing W] 
     have q2 : LBIso ((M.pull iG).pull φ) ((LB.triv G.left).pull φ) :=
       LBIso.trans (pull_isLB (pull_isLB hM _) _) lTA (pull_isLB hT _) q1 a1
     have q3 : LBIso (M.pull iG) (LB.triv G.left) :=
-      GlobalTheory.T.lineBundleIso_abelianSchemeDVR_of_generic_iso W L G A.left A.hom φ hG hA.1 (M.pull iG) (LB.triv G.left) (pull_isLB hM _) hT q2
+      _root_.GlobalTheory.GenericIsoAb.lbIso_of_generic_pullback W L G A.left A.hom φ hG hA.1 (M.pull iG) (LB.triv G.left) (pull_isLB hM _) hT q2
     exact (GlobalTheory.CechPic.iso_triv_iff _).1 q3.symm
   refine ⟨M, hM, axis _ _ ?_ h₁, axis _ _ ?_ h₂, iP⟩
   · exact lift_match hsq.1 hsq.2 _ _ _ _ (one_comm hA).symm (by simp)

@@ -1,11 +1,16 @@
 module
 
-public import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefB
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSelfDualSiegelWeilMeasures
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OfHermEBijective
+public import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.WeakApproximationFinitePlace
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDetSmulSubOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableThetaSumOfSchrodinger
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaCoefficientOfConvergence
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RallisConvIffInnerProduct
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
-import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzBoundFiniteInfinite
-public import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefA
+public import Formalism.LocalToGlobal.BesselHermitianTheta.IsAutFunDef
+public import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteVolumeAdelicUnitaryQuotient
+public import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNormSqEqToL2
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -44,7 +49,292 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LengthPosOfPosDef
+import Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.Tactic.TypeStar
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzBoundFiniteInfinite
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefB, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RallisConvIffInnerProduct, Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefA, Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoef
+
+-- ===== clump member: Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefB =====
+-- clump-header: {"m": "Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefB", "h": "module\n\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSelfDualSiegelWeilMeasures\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.OfHermEBijective\npublic import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.WeakApproximationFinitePlace\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteDetSmulSubOne\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.LintegralNormSqEqToL2\npublic import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MeasurableThetaSumOfSchrodinger\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaCoefficientOfConvergence\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicLocalCompactness.T2SpaceTensorProductFiniteExtension\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct Topology
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory Filter
+open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel
+open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
+open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+open IsDedekindDomain NumberField
+open GlobalTheory.RegSch (ikS projS Lvl)
+
+namespace PositivityTheory.Rg.Rsw.L.LThCoef
+
+variable {D : D7}
+
+abbrev Sp (W : HSp D) (n : ℕ) : Type := {x : Matrix (Fin W.rank) (Fin n) D.host.E // x.rank = W.rank}
+
+instance countable_sp (W : HSp D) (n : ℕ) : Countable (Sp W n) := by
+  have := GlobalTheory.ThetaTransformMeas.countable_field D.host.E
+  have : Countable (Matrix (Fin W.rank) (Fin n) D.host.E) :=
+    inferInstanceAs (Countable (Fin W.rank → Fin n → D.host.E))
+  infer_instance
+
+theorem ip_inv (W : HSp D) {n : ℕ} (h : GA D W) (y : Matrix (Fin W.rank) (Fin n) D.host.E) :
+    ip W (mm (mt W h⁻¹) (rat y)) (mm (mt W h⁻¹) (rat y)) = rat (gramQ W y) := by
+  have hu := GlobalTheory.RatAut.mt_unitary W h⁻¹
+  have hr := GlobalTheory.CompanionTheory.ThetaCoefND.rat_gramQ W y
+  show ((Formalism.L2.Theta.mt W h⁻¹ * y.map (Formalism.L2.Theta.incA D)).map (Formalism.L2.Theta.cA D)).transpose *
+      ((Formalism.BasicNotions.HSpace.gram W).map (Formalism.L2.Theta.incA D) *
+        (Formalism.L2.Theta.mt W h⁻¹ * y.map (Formalism.L2.Theta.incA D))) =
+    (gramQ W y).map (Formalism.L2.Theta.incA D)
+  rw [hr]
+  show _ = ((y.map (Formalism.L2.Theta.incA D)).map (Formalism.L2.Theta.cA D)).transpose *
+      ((Formalism.BasicNotions.HSpace.gram W).map (Formalism.L2.Theta.incA D) * y.map (Formalism.L2.Theta.incA D))
+  rw [Matrix.map_mul, Matrix.transpose_mul]
+  calc _ = ((y.map (Formalism.L2.Theta.incA D)).map (Formalism.L2.Theta.cA D)).transpose *
+        ((((Formalism.L2.Theta.mt W h⁻¹).map (Formalism.L2.Theta.cA D)).transpose *
+          (Formalism.BasicNotions.HSpace.gram W).map (Formalism.L2.Theta.incA D) * Formalism.L2.Theta.mt W h⁻¹) *
+          y.map (Formalism.L2.Theta.incA D)) := by simp only [Matrix.mul_assoc]
+    _ = _ := by rw [hu]
+
+theorem pch_rat (ψ : AddChar (AF D.host.F) ℂ) {n : ℕ} (x : hermA D n) (T : HermE D n) :
+    pch ψ x.1 (rat T.1) = GlobalTheory.CompanionTheory.SiegelND.pairH ψ (GlobalTheory.CompanionTheory.HermPoisson.ofHermE T).1 x := by
+  show ψ (GlobalTheory.StdUnn.halfTr (Matrix.trace (x.1 * rat T.1))) =
+    ψ (GlobalTheory.StdUnn.halfTr (Matrix.trace (rat T.1 * x.1)))
+  rw [Matrix.trace_mul_comm]
+
+theorem conj_eq_inv {z : ℂ} (hz : ‖z‖ = 1) : conj z = z⁻¹ := by
+  rw [Complex.inv_def, Complex.normSq_eq_norm_sq, hz]
+  simp
+
+variable {W : HSp D} {n : ℕ} {m : Measure (GA D W)} {𝓕 : Set (GA D W)} {Ψ : Mx D W.rank n → ℂ}
+
+theorem cont_term (hΨ : Continuous Ψ) (y : Matrix (Fin W.rank) (Fin n) D.host.E) :
+    Continuous fun h : GA D W => Ψ (mm (mt W h⁻¹) (rat y)) := by
+  exact hΨ.comp ((GlobalTheory.RealWeil.continuous_mt W).2.matrix_mul continuous_const)
+
+def co (W : HSp D) (m : Measure (GA D W)) (𝓕 : Set (GA D W)) (Ψ : Mx D W.rank n → ℂ)
+    (y : Matrix (Fin W.rank) (Fin n) D.host.E) : ℂ :=
+  ∫ h in 𝓕, Ψ (mm (mt W h⁻¹) (rat y)) ∂m
+
+theorem lint_fin (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
+    (hC : ∀ h : GA D W, ∑' x : Sp W n, ‖Ψ (mm (mt W h⁻¹) (rat x.1))‖ₑ ≤ C) :
+    ∑' y : Sp W n, ∫⁻ h in 𝓕, ‖Ψ (mm (mt W h⁻¹) (rat y.1))‖ₑ ∂m < ⊤ := by
+  have hmeas : ∀ y : Sp W n, AEMeasurable (fun h : GA D W => ‖Ψ (mm (mt W h⁻¹) (rat y.1))‖ₑ)
+      (m.restrict 𝓕) := fun y => (cont_term hΨ y.1).enorm.measurable.aemeasurable
+  calc ∑' y : Sp W n, ∫⁻ h in 𝓕, ‖Ψ (mm (mt W h⁻¹) (rat y.1))‖ₑ ∂m
+      = ∫⁻ h in 𝓕, ∑' y : Sp W n, ‖Ψ (mm (mt W h⁻¹) (rat y.1))‖ₑ ∂m :=
+        (MeasureTheory.lintegral_tsum hmeas).symm
+    _ ≤ ∫⁻ _ in 𝓕, (C : ℝ≥0∞) ∂m := MeasureTheory.lintegral_mono (fun h => hC h)
+    _ = C * m 𝓕 := MeasureTheory.setLIntegral_const 𝓕 C
+    _ < ⊤ := ENNReal.mul_lt_top ENNReal.coe_lt_top hvol
+
+theorem tsum_co_ne_top (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
+    (hC : ∀ h : GA D W, ∑' x : Sp W n, ‖Ψ (mm (mt W h⁻¹) (rat x.1))‖ₑ ≤ C) :
+    ∑' y : Sp W n, ‖co W m 𝓕 Ψ y.1‖ₑ ≠ ⊤ := by
+  refine ne_top_of_le_ne_top (lint_fin hvol hΨ hC).ne (ENNReal.tsum_le_tsum (fun y => ?_))
+  exact MeasureTheory.enorm_integral_le_lintegral_enorm _
+
+theorem summable_co (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
+    (hC : ∀ h : GA D W, ∑' x : Sp W n, ‖Ψ (mm (mt W h⁻¹) (rat x.1))‖ₑ ≤ C) :
+    Summable fun y : Sp W n => ‖co W m 𝓕 Ψ y.1‖ := by
+  have h := tsum_co_ne_top hvol hΨ hC
+  simp only [enorm_eq_nnnorm] at h
+  exact NNReal.summable_coe.mpr (ENNReal.tsum_coe_ne_top_iff_summable.mp h)
+
+theorem exch (hvol : m 𝓕 < ⊤) (hΨ : Continuous Ψ) {C : ℝ≥0}
+    (hC : ∀ h : GA D W, ∑' x : Sp W n, ‖Ψ (mm (mt W h⁻¹) (rat x.1))‖ₑ ≤ C) (c : Sp W n → ℂ) (hc : ∀ y, ‖c y‖ = 1) :
+    ∫ h in 𝓕, ∑' y : Sp W n, c y * Ψ (mm (mt W h⁻¹) (rat y.1)) ∂m = ∑' y : Sp W n, c y * co W m 𝓕 Ψ y.1 := by
+  have hf : ∀ y : Sp W n, MeasureTheory.AEStronglyMeasurable
+      (fun h : GA D W => c y * Ψ (mm (mt W h⁻¹) (rat y.1))) (m.restrict 𝓕) :=
+    fun y => (continuous_const.mul (cont_term hΨ y.1)).aestronglyMeasurable
+  have hc' : ∀ y, ‖c y‖ₑ = 1 := fun y => by
+    rw [← ofReal_norm, hc y, ENNReal.ofReal_one]
+  have hf' : ∑' y : Sp W n, ∫⁻ h in 𝓕, ‖c y * Ψ (mm (mt W h⁻¹) (rat y.1))‖ₑ ∂m ≠ ⊤ := by
+    simp_rw [enorm_mul, hc', one_mul]
+    exact (lint_fin hvol hΨ hC).ne
+  rw [MeasureTheory.integral_tsum hf hf']
+  congr 1
+  funext y
+  rw [MeasureTheory.integral_const_mul]
+  rfl
+
+end PositivityTheory.Rg.Rsw.L.LThCoef
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefB =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RallisConvIffInnerProduct =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RallisConvIffInnerProduct", "h": "module\n\npublic import Formalism.LocalToGlobal.BesselHermitianTheta.IsAutFunDef\npublic import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteVolumeAdelicUnitaryQuotient\npublic import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsNormLeHeightPow\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LengthPosOfPosDef\nimport Formalism.LocalToGlobal.IndefiniteReal.LocalNewformFunction\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory
+open GlobalTheory.RawLift
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+namespace GlobalTheory.Cmp.RallisRange
+
+variable {D : D7} {V W : HSp D}
+
+theorem vol_lt_top (V : HSp D) {ν : Measure (GA D V)} {𝓗 : Set (GA D V)} (hν : ν.IsHaarMeasure)
+    (h : IsFundamentalDomain (GQ V) 𝓗 ν) : ν 𝓗 < ⊤ :=
+  GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V ν 𝓗 hν h
+
+end GlobalTheory.Cmp.RallisRange
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RallisConvIffInnerProduct =====
+
+-- ===== clump member: Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefA =====
+-- clump-header: {"m": "Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefA", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.WeakApproximationFinitePlace\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open scoped Matrix NNReal ENNReal ComplexConjugate TensorProduct Topology
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Theta Formalism.L2.Pj Formalism.IndefR.Datum MeasureTheory Filter
+open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel
+open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
+open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+open IsDedekindDomain NumberField
+open GlobalTheory.RegSch (ikS projS Lvl)
+
+namespace PositivityTheory.Rg.Rsw.L.LThCoef
+
+theorem rinv_of_rank {K : Type*} [Field K] {m n : ℕ} (x : Matrix (Fin m) (Fin n) K) (h : x.rank = m) :
+    ∃ x' : Matrix (Fin n) (Fin m) K, x * x' = 1 := by
+  have hr : LinearMap.range x.mulVecLin = ⊤ := by
+    apply Submodule.eq_top_of_finrank_eq
+    rw [Matrix.finrank_range_mulVecLin, h]
+    simp
+  obtain ⟨g, hg⟩ := x.mulVecLin.exists_rightInverse_of_surjective hr
+  refine ⟨LinearMap.toMatrix' g, ?_⟩
+  have e : LinearMap.toMatrix' (x.mulVecLin ∘ₗ g) = x * LinearMap.toMatrix' g := by
+    show LinearMap.toMatrix' (Matrix.toLin' x ∘ₗ g) = _
+    rw [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin']
+  rw [← e, hg, LinearMap.toMatrix'_id]
+
+theorem orbit_mat {K : Type*} [Field K] [StarRing K] {m n : ℕ} (J : Matrix (Fin m) (Fin m) K) (hJ : IsUnit J.det)
+    (x y : Matrix (Fin m) (Fin n) K) (x' y' : Matrix (Fin n) (Fin m) K) (hx : x * x' = 1) (hy : y * y' = 1)
+    (h : xᴴ * (J * x) = yᴴ * (J * y)) : ∃ g : Matrix (Fin m) (Fin m) K, g * x = y ∧ gᴴ * (J * g) = J := by
+  have hL : y'ᴴ * yᴴ = 1 := by rw [← Matrix.conjTranspose_mul, hy, Matrix.conjTranspose_one]
+  have h0 : J * (y * (1 - x' * x)) = 0 := by
+    calc J * (y * (1 - x' * x)) = (y'ᴴ * yᴴ) * (J * y) * (1 - x' * x) := by
+          rw [hL, Matrix.one_mul, Matrix.mul_assoc]
+      _ = y'ᴴ * (yᴴ * (J * y)) * (1 - x' * x) := by rw [Matrix.mul_assoc y'ᴴ]
+      _ = y'ᴴ * (xᴴ * (J * x)) * (1 - x' * x) := by rw [h]
+      _ = y'ᴴ * xᴴ * J * (x - x * x' * x) := by
+          simp only [Matrix.mul_sub, Matrix.mul_one, Matrix.mul_assoc]
+      _ = 0 := by rw [hx, Matrix.one_mul, sub_self, Matrix.mul_zero]
+  have h1 : y * (1 - x' * x) = 0 := by
+    have := congrArg (fun M => J⁻¹ * M) h0
+    simp only [Matrix.mul_zero] at this
+    rwa [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJ, Matrix.one_mul] at this
+  refine ⟨y * x', ?_, ?_⟩
+  · have : y - y * (x' * x) = 0 := by rw [← h1, Matrix.mul_sub, Matrix.mul_one]
+    rw [Matrix.mul_assoc]
+    exact (sub_eq_zero.1 this).symm
+  · calc (y * x')ᴴ * (J * (y * x')) = x'ᴴ * (yᴴ * (J * y)) * x' := by
+          rw [Matrix.conjTranspose_mul]; simp only [Matrix.mul_assoc]
+      _ = x'ᴴ * (xᴴ * (J * x)) * x' := by rw [h]
+      _ = (x * x')ᴴ * (J * (x * x')) := by
+          rw [Matrix.conjTranspose_mul]; simp only [Matrix.mul_assoc]
+      _ = J := by rw [hx, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
+
+variable {D : D7}
+
+theorem gramQ_eq' (W : HSp D) {n : ℕ} (x : Matrix (Fin W.rank) (Fin n) D.host.E) : gramQ W x = xᴴ * (HSpace.gram W * x) := rfl
+
+theorem exists_rat (W : HSp D) (γ : GQ W) : ∃ δ : Matrix (Fin W.rank) (Fin W.rank) D.host.E, rat δ = mt W γ := by
+  obtain ⟨δ, hδ⟩ := (mem_GQ_iff W γ.1).1 γ.2
+  exact ⟨δ, hδ⟩
+
+def dl (W : HSp D) (γ : GQ W) : Matrix (Fin W.rank) (Fin W.rank) D.host.E := Classical.choose (exists_rat W γ)
+
+theorem rat_dl (W : HSp D) (γ : GQ W) : rat (dl W γ) = mt W γ := Classical.choose_spec (exists_rat W γ)
+
+theorem dl_unitary (W : HSp D) (γ : GQ W) : (dl W γ)ᴴ * (HSpace.gram W * dl W γ) = HSpace.gram W := by
+  apply rat_injective
+  rw [rat_mul, rat_mul, rat_conjTranspose, rat_dl]
+  exact mt_unitary W γ.1
+
+theorem dl_inv_mul (W : HSp D) (γ : GQ W) : dl W γ⁻¹ * dl W γ = 1 := by
+  apply rat_injective
+  rw [rat_mul, rat_dl, rat_dl, rat_one]
+  exact mt_inv_mul W γ.1
+
+theorem orbit_equiv (W : HSp D) {n : ℕ} (x₀ : Matrix (Fin W.rank) (Fin n) D.host.E) (hx₀ : x₀.rank = W.rank) :
+    ∃ e : GQ W ≃ {y : Matrix (Fin W.rank) (Fin n) D.host.E // y.rank = W.rank ∧ gramQ W y = gramQ W x₀},
+      ∀ γ, rat (e γ).1 = mm (mt W γ) (rat x₀) := by
+  obtain ⟨x', hx'⟩ := rinv_of_rank x₀ hx₀
+  have hrk : ∀ γ : GQ W, (dl W γ * x₀).rank = W.rank := fun γ => by
+    refine le_antisymm (Matrix.rank_le_height _) ?_
+    calc W.rank = x₀.rank := hx₀.symm
+      _ = (dl W γ⁻¹ * (dl W γ * x₀)).rank := by rw [← Matrix.mul_assoc, dl_inv_mul, Matrix.one_mul]
+      _ ≤ _ := Matrix.rank_mul_le_right _ _
+  have hgr : ∀ γ : GQ W, gramQ W (dl W γ * x₀) = gramQ W x₀ := fun γ => by
+    rw [gramQ_eq', gramQ_eq', Matrix.conjTranspose_mul]
+    calc x₀ᴴ * (dl W γ)ᴴ * (HSpace.gram W * (dl W γ * x₀))
+        = x₀ᴴ * ((dl W γ)ᴴ * (HSpace.gram W * dl W γ) * x₀) := by simp only [Matrix.mul_assoc]
+      _ = _ := by rw [dl_unitary]
+  let f : GQ W → {y : Matrix (Fin W.rank) (Fin n) D.host.E // y.rank = W.rank ∧ gramQ W y = gramQ W x₀} :=
+    fun γ => ⟨dl W γ * x₀, hrk γ, hgr γ⟩
+  have hinj : Function.Injective f := by
+    intro γ γ' hγ
+    have h1 : dl W γ * x₀ = dl W γ' * x₀ := congrArg Subtype.val hγ
+    have h2 : dl W γ = dl W γ' := by
+      have := congrArg (· * x') h1
+      simpa only [Matrix.mul_assoc, hx', Matrix.mul_one] using this
+    have h3 : mt W γ = mt W γ' := by rw [← rat_dl, ← rat_dl, h2]
+    exact Subtype.ext (mt_injective W h3)
+  have hsurj : Function.Surjective f := by
+    rintro ⟨y, hyr, hyg⟩
+    obtain ⟨y', hy'⟩ := rinv_of_rank y hyr
+    obtain ⟨g, hgx, hgu⟩ := orbit_mat (HSpace.gram W) (gram_isUnit_det W) x₀ y x' y' hx' hy'
+      (by rw [← gramQ_eq', ← gramQ_eq', hyg])
+    have hM : adj (rat g) * (gA W * rat g) = gA W := by
+      rw [← rat_conjTranspose, gA, ← rat_mul, ← rat_mul, hgu]
+    let γ : GA D W := ofMat W (rat g) hM
+    have hγ : γ ∈ GQ W := (mem_GQ_iff W γ).2 (by rw [mt_ofMat]; exact ⟨g, rfl⟩)
+    refine ⟨⟨γ, hγ⟩, Subtype.ext ?_⟩
+    have : dl W ⟨γ, hγ⟩ = g := rat_injective (by rw [rat_dl]; exact mt_ofMat W _ hM)
+    show dl W ⟨γ, hγ⟩ * x₀ = y
+    rw [this, hgx]
+  refine ⟨Equiv.ofBijective f ⟨hinj, hsurj⟩, fun γ => ?_⟩
+  show rat (dl W γ * x₀) = _
+  rw [rat_mul, rat_dl]
+
+end PositivityTheory.Rg.Rsw.L.LThCoef
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefA =====
+
+-- ===== clump member: Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoef =====
+-- clump-header: {"m": "Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoef", "h": "module\n\npublic import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefB\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaCoefficientOfConvergence\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RallisConvIffInnerProduct\nimport Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AdelicUnitaryTopology\nimport Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SchwartzBoundFiniteInfinite\npublic import Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoefA\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -188,3 +478,6 @@ theorem _root_.PositivityTheory.Rg.Rsw.L.thCoef : LatBound → ThCoef := by
 end PositivityTheory.Rg.Rsw.L.LThCoef
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.RepresentationTheoryGL.RegularisedSiegelWeil.SingularNullSets.LThCoef =====

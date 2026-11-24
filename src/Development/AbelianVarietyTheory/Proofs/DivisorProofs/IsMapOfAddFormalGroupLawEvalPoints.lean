@@ -1,8 +1,9 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.FormalCoboundarySmul
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectedPDivGroupHomCoordinatesExistsUniqueStatement
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NilpotentEvalCommutesSubstAndAlgebraMapStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.EqZeroOfCobOneEqZero
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConnectedPDivGroupHomCoordinatesExistsUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NilpotentEvalCommutesSubstAndAlgebraMap
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -65,8 +66,8 @@ theorem Chart.isMapOf_add : ∀ (p : ℕ) (k : Type) [CommRing k] (d e : ℕ) (G
     (f g : G ⟶ H) (φ ψ : Fin e → MvPowerSeries (Fin d) k), c'.IsLawOf ν → c.IsMapOf c' f φ →
     c.IsMapOf c' g ψ → c.IsMapOf c' (f + g) (op ν φ ψ) := by
   intro p k _ d e G H c c' ν f g φ ψ hν hf hg n j
-  have hφ := ((GlobalTheory.T.connectedPDivGroupHom_coordinates_existsUnique p k d e G H c c' f).2 φ hf).1
-  have hψ := ((GlobalTheory.T.connectedPDivGroupHom_coordinates_existsUnique p k d e G H c c' g).2 ψ hg).1
+  have hφ := ((_root_.GlobalTheory.Katz.isMapOf_existsUnique_and p k d e G H c c' f).2 φ hf).1
+  have hψ := ((_root_.GlobalTheory.Katz.isMapOf_existsUnique_and p k d e G H c c' g).2 ψ hg).1
   let L : H.A n ⊗[k] H.A n →ₐ[k] G.A n := Algebra.TensorProduct.lift
     (f.app n : H.A n →ₐ[k] G.A n) (g.app n : H.A n →ₐ[k] G.A n) (fun _ _ => Commute.all _ _)
   have hadd : ∀ a, (f + g).app n a = L (Coalgebra.comul a) := fun a => by
@@ -88,9 +89,9 @@ theorem Chart.isMapOf_add : ∀ (p : ℕ) (k : Type) [CommRing k] (d e : ℕ) (G
     | inr i =>
       change c.ev n (ψ i) = L (1 ⊗ₜ c'.x n i)
       rw [hg, Algebra.TensorProduct.lift_tmul, map_one, one_mul]; rfl
-  have e1 := (GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin e ⊕ Fin e) (G.A n)).1 (Fin d) (c.ev n) hnil (Sum.elim φ ψ) ha
+  have e1 := (_root_.GlobalTheory.evA_subst_and_map k (Fin e ⊕ Fin e) (G.A n)).1 (Fin d) (c.ev n) hnil (Sum.elim φ ψ) ha
     (fun i => L (c'.x₂ n i)) hy h1 (ν j)
-  have e2 := (GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin e ⊕ Fin e) (H.A n ⊗[k] H.A n)).2 (G.A n) L (c'.x₂ n)
+  have e2 := (_root_.GlobalTheory.evA_subst_and_map k (Fin e ⊕ Fin e) (H.A n ⊗[k] H.A n)).2 (G.A n) L (c'.x₂ n)
     (c'.nil₂ n) (fun i => L (c'.x₂ n i)) hy (fun _ => rfl) (ν j)
   change c.ev n (subst (Sum.elim φ ψ) (ν j)) = _
   rw [e1, ← e2, hadd]

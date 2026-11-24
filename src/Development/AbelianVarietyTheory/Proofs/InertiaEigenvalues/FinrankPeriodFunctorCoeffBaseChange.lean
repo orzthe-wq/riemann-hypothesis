@@ -173,10 +173,10 @@ theorem IsCoord.finrank_eq [IsScalarTower L L' M'] {u : Basis ι L L'} (h : IsCo
     {S : Submodule L M} {S' : Submodule L' M'} (hS : Rel π S S') :
     finrank L' S' = finrank L S := by
   obtain ⟨e⟩ := h.nonempty_equiv hS
-  haveI : Module.Finite L L' := Module.Finite.of_basis u
+  have : Module.Finite L L' := Module.Finite.of_basis u
   have h1 : finrank L L' * finrank L' S' = finrank L S' := Module.finrank_mul_finrank L L' S'
   have h2 : finrank L (ι → S) = Fintype.card ι * finrank L S := by
-    simp [Module.finrank, rank_fun_eq_lift_mul]
+    simp [Module.finrank]
   rw [e.finrank_eq, h2, ← Module.finrank_eq_card_basis u] at h1
   exact Nat.eq_of_mul_eq_mul_left Module.finrank_pos h1
 
@@ -184,16 +184,16 @@ theorem IsCoord.finite_iff [IsScalarTower L L' M'] {u : Basis ι L L'} (h : IsCo
     {S : Submodule L M} {S' : Submodule L' M'} (hS : Rel π S S') :
     Module.Finite L' S' ↔ Module.Finite L S := by
   obtain ⟨e⟩ := h.nonempty_equiv hS
-  haveI : Module.Finite L L' := Module.Finite.of_basis u
+  have : Module.Finite L L' := Module.Finite.of_basis u
   obtain ⟨k⟩ := u.index_nonempty
   constructor
   · intro _
-    haveI : Module.Finite L S' := Module.Finite.trans L' S'
-    haveI : Module.Finite L (ι → S) := Module.Finite.equiv e
+    have : Module.Finite L S' := Module.Finite.trans L' S'
+    have : Module.Finite L (ι → S) := Module.Finite.equiv e
     exact Module.Finite.of_surjective (LinearMap.proj k : (ι → S) →ₗ[L] S)
       (LinearMap.proj_surjective k)
   · intro _
-    haveI : Module.Finite L S' := Module.Finite.equiv e.symm
+    have : Module.Finite L S' := Module.Finite.equiv e.symm
     exact Module.Finite.of_restrictScalars_finite L L' S'
 
 theorem IsCoord.tensor {Q : Type} [Field Q] [Algebra Q L] [Algebra Q L'] [Module Q M] [Module Q M']
@@ -236,7 +236,7 @@ end General
 theorem finrank_baseChange : ∀ {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) (LL LL' : Type) [Field LL] [Field LL'] [Algebra Qp LL] [Algebra Qp LL'] [Algebra LL LL'] [IsScalarTower Qp LL LL'] [FiniteDimensional LL LL'] (V V' : Type) [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] [AddCommGroup V'] [Module LL' V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL' V'] [IsScalarTower LL LL' V'] (ρ : Representation LL G V) (ρ' : Representation LL' G V') (j : V →ₗ[LL] V'), IsBaseChange LL' j → (∀ g x, j (ρ g x) = ρ' g (j x)) → finrank LL' V' = finrank LL V ∧ finrank LL' ↥(H0V ρ') = finrank LL ↥(H0V ρ) ∧ (finrank LL' ↥(Dcris PD ρ') = finrank LL ↥(Dcris PD ρ) ∧ (Module.Finite LL' ↥(Dcris PD ρ') ↔ Module.Finite LL ↥(Dcris PD ρ))) ∧ (finrank LL' ↥(DdR PD ρ') = finrank LL ↥(DdR PD ρ) ∧ (Module.Finite LL' ↥(DdR PD ρ') ↔ Module.Finite LL ↥(DdR PD ρ))) ∧ (∀ a : ℤ, finrank LL' ↥(DdR PD ρ' ⊓ FilV PD (LL := LL') (V := V') a) = finrank LL ↥(DdR PD ρ ⊓ FilV PD (LL := LL) (V := V) a)) ∧ (∀ τ : K₀ →ₐ[Qp] LL, finrank LL' ↥(DcrisL PD ρ' ((IsScalarTower.toAlgHom Qp LL LL').comp τ)) = finrank LL ↥(DcrisL PD ρ τ)) ∧ ∀ τ : K →ₐ[Qp] LL, finrank LL' ↥(DdRE PD ρ' ((IsScalarTower.toAlgHom Qp LL LL').comp τ)) = finrank LL ↥(DdRE PD ρ τ) ∧ ∀ a : ℤ, finrank LL' ↥(FildR PD ρ' ((IsScalarTower.toAlgHom Qp LL LL').comp τ) a) = finrank LL ↥(FildR PD ρ τ a) := by
   intro G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL LL' _ _ _ _ _ _ _ V V' _ _ _ _ _ _ _ _ _ _ ρ ρ' j hj hρ
   classical
-  haveI : IsScalarTower Qp LL V' := IsScalarTower.of_algebraMap_smul fun r x => by
+  have : IsScalarTower Qp LL V' := IsScalarTower.of_algebraMap_smul fun r x => by
     rw [← algebraMap_smul LL' (algebraMap Qp LL r) x, ← IsScalarTower.algebraMap_apply,
       algebraMap_smul]
   let u := Module.finBasis LL LL'

@@ -139,9 +139,6 @@ theorem sl2_string_nonvanishing {n : ℕ} {K W : Type*} [Field K] [CharZero K] [
         (fun k => Module.End.hasEigenvalue_of_hasEigenvector
           ⟨Module.End.mem_eigenspace_iff.mpr (hA k), hall k⟩)
         (Module.End.finite_hasEigenvalue (ρ a a))
-    | exact Module.Finite.not_linearIndependent_of_infinite _
-        (Module.End.eigenvectors_linearIndependent' (ρ a a) _ hinj _
-          (fun k => ⟨Module.End.mem_eigenspace_iff.mpr (hA k), hall k⟩))
   obtain ⟨k0, hk0, hmin⟩ : ∃ k0, (ρ c a ^ k0) y = 0 ∧ ∀ j < k0, (ρ c a ^ j) y ≠ 0 :=
     ⟨Nat.find hfin, Nat.find_spec hfin, fun j hj => Nat.find_min hfin hj⟩
   have hk0pos : k0 ≠ 0 := by

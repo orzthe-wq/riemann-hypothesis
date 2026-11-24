@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermLat
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CongruentOneMatricesTransitiveNearHermitianStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.CongruentOneMatricesTransitiveNearHermitian
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsEqZpowMulUnit
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IsPrincipalIdealRingOfHenselian
 import Mathlib.Algebra.Order.Floor.Extended
@@ -80,25 +80,8 @@ theorem cont_pos {W : Type} [AddCommGroup W] (W0 : AddSubgroup W) (S : Set W) (h
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
-theorem intM_mul (L : LocE F E) {m : ℕ} {A B : Matrix (Fin m) (Fin m) E} (hA : IsIntM L A)
-    (hB : IsIntM L B) : IsIntM L (A * B) := fun a b => by
-  rw [Matrix.mul_apply]
-  exact sum_mem fun k _ => mul_mem (hA _ _) (hB _ _)
-
-theorem intM_add (L : LocE F E) {m : ℕ} {A B : Matrix (Fin m) (Fin m) E} (hA : IsIntM L A)
-    (hB : IsIntM L B) : IsIntM L (A + B) := fun a b => add_mem (hA a b) (hB a b)
-
-theorem intM_neg (L : LocE F E) {m : ℕ} {A : Matrix (Fin m) (Fin m) E} (hA : IsIntM L A) :
-    IsIntM L (-A) := fun a b => neg_mem (hA a b)
-
 theorem intM_smul (L : LocE F E) {m : ℕ} {c : E} (hc : c ∈ L.O) {A : Matrix (Fin m) (Fin m) E}
     (hA : IsIntM L A) : IsIntM L (c • A) := fun a b => mul_mem hc (hA a b)
-
-theorem intM_one (L : LocE F E) {m : ℕ} : IsIntM L (1 : Matrix (Fin m) (Fin m) E) := fun a b => by
-  rw [Matrix.one_apply]
-  split_ifs
-  · exact one_mem _
-  · exact zero_mem _
 
 theorem mem_congK (L : LocE F E) (ϖ : 𝒪[F]) {m i : ℕ} {A : Matrix (Fin m) (Fin m) E} :
     A ∈ congK L ϖ m i ↔ ∃ C, IsIntM L C ∧ A = 1 + algebraMap F E ((ϖ : F) ^ i) • C := by
@@ -113,14 +96,9 @@ theorem mem_congK (L : LocE F E) (ϖ : 𝒪[F]) {m i : ℕ} {A : Matrix (Fin m) 
   · rintro ⟨C, hC, rfl⟩ a b
     exact ⟨C a b, hC a b, by simp⟩
 
-theorem cT_mul (L : LocE F E) {m : ℕ} (A B : Matrix (Fin m) (Fin m) E) :
-    cT L (A * B) = cT L B * cT L A := by
-  ext a b
-  simp [cT, Matrix.mul_apply, mul_comm]
+alias cT_mul := _root_.GlobalTheory.CongTrans.cT_mul
 
-theorem cT_cT (L : LocE F E) {m : ℕ} (A : Matrix (Fin m) (Fin m) E) : cT L (cT L A) = A := by
-  ext a b
-  simp [cT, L.cj_cj]
+alias cT_cT := _root_.GlobalTheory.CongTrans.cT_cT
 
 theorem mem_hermLat (L : LocE F E) {m : ℕ} {X : Matrix (Fin m) (Fin m) E} :
     X ∈ hermLat L m ↔ IsHerm L X ∧ IsIntM L X := by
@@ -129,14 +107,14 @@ theorem mem_hermLat (L : LocE F E) {m : ℕ} {X : Matrix (Fin m) (Fin m) E} :
   | mem x hx => exact hx
   | zero => exact ⟨by ext a b; simp [cT], fun a b => zero_mem _⟩
   | add x y _ _ hx hy =>
-    refine ⟨?_, intM_add L hx.2 hy.2⟩
+    refine ⟨?_, _root_.GlobalTheory.CongTrans.int_add L hx.2 hy.2⟩
     ext a b
     have h1 := congrFun (congrFun hx.1 a) b
     have h2 := congrFun (congrFun hy.1 a) b
     simp only [cT] at h1 h2
     simp [cT, h1, h2]
   | neg x _ hx =>
-    refine ⟨?_, intM_neg L hx.2⟩
+    refine ⟨?_, _root_.GlobalTheory.CongTrans.int_neg L hx.2⟩
     ext a b
     have h1 := congrFun (congrFun hx.1 a) b
     simp only [cT] at h1
@@ -254,14 +232,14 @@ theorem congK_basic (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {m i : 
 theorem congK_int (L : LocE F E) (ϖ : 𝒪[F]) {m i : ℕ}
     {A : Matrix (Fin m) (Fin m) E} (hA : A ∈ congK L ϖ m i) : IsIntM L A := by
   obtain ⟨C, hC, rfl⟩ := (mem_congK L ϖ).1 hA
-  exact intM_add L (intM_one L) (intM_smul L (pow_mem' L ϖ i) hC)
+  exact _root_.GlobalTheory.CongTrans.int_add L (_root_.GlobalTheory.CongTrans.int_one L) (intM_smul L (pow_mem' L ϖ i) hC)
 
 theorem congK_mul (L : LocE F E) (ϖ : 𝒪[F]) {m i : ℕ} {A B : Matrix (Fin m) (Fin m) E}
     (hA : A ∈ congK L ϖ m i) (hB : B ∈ congK L ϖ m i) : A * B ∈ congK L ϖ m i := by
   have hB' := congK_int L ϖ hB
   obtain ⟨C, hC, rfl⟩ := (mem_congK L ϖ).1 hA
   obtain ⟨D, hD, hBD⟩ := (mem_congK L ϖ).1 hB
-  refine (mem_congK L ϖ).2 ⟨D + C * B, intM_add L hD (intM_mul L hC hB'), ?_⟩
+  refine (mem_congK L ϖ).2 ⟨D + C * B, _root_.GlobalTheory.CongTrans.int_add L hD (_root_.GlobalTheory.CongTrans.int_mul L hC hB'), ?_⟩
   rw [add_mul, one_mul, smul_add, ← add_assoc, ← hBD, Matrix.smul_mul]
 
 theorem congK_one (L : LocE F E) (ϖ : 𝒪[F]) {m i : ℕ} :
@@ -270,7 +248,7 @@ theorem congK_one (L : LocE F E) (ϖ : 𝒪[F]) {m i : ℕ} :
 theorem horb_isCO (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {m i : ℕ} (hi : 1 ≤ i)
     (Γ : Matrix (Fin m) (Fin m) E) (hΓ : IsHerm L Γ) (hdet : IsUnit Γ.det) :
     IsCO (hermLat L m) (horb L ϖ Γ i) := by
-  obtain ⟨j, hj⟩ := GlobalTheory.T.congruentOneMatrices_transitive_near_hermitian L ϖ hϖ m Γ hΓ hdet i hi
+  obtain ⟨j, hj⟩ := _root_.GlobalTheory.CongTrans.congK_transitive L ϖ hϖ m Γ hΓ hdet i hi
   obtain ⟨-, hcj, -, -, -, hcard, hq, -⟩ := GlobalTheory.UnramOrder.order_facts L ϖ hϖ
   have hϖ0 : (ϖ : F) ≠ 0 := fun h => hϖ.ne_zero (Subtype.ext h)
   have hpu : ∀ n : ℕ, IsUnit (algebraMap F E ((ϖ : F) ^ n)) := fun n =>
@@ -368,7 +346,7 @@ theorem horb_isCO (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {m i : �
     · unfold IsHerm at hΓ ⊢
       rw [cT_mul, cT_mul, cT_cT, hΓ, Matrix.mul_assoc]
     · rw [← Matrix.smul_mul, ← Matrix.mul_smul]
-      exact intM_mul L (intM_mul L (fun a b => (hcj _ (hCi b a)).1) hc) hCi
+      exact _root_.GlobalTheory.CongTrans.int_mul L (_root_.GlobalTheory.CongTrans.int_mul L (fun a b => (hcj _ (hCi b a)).1) hc) hCi
 
 omit [IsNonarchimedeanLocalField F] [CharZero F] in
 theorem congK_group : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (ϖ : 𝒪[F]), Irreducible ϖ → ∀ (m i : ℕ), 1 ≤ i → (1 : Matrix (Fin m) (Fin m) E) ∈ congK L ϖ m i ∧ (∀ A ∈ congK L ϖ m i, IsIntM L A ∧ IsUnit A.det ∧ vE L ϖ (A.det * L.cj A.det) = 0 ∧ A⁻¹ ∈ congK L ϖ m i ∧ (∀ B ∈ congK L ϖ m i, A * B ∈ congK L ϖ m i) ∧ ∀ i' ≥ i, ∀ B ∈ congK L ϖ m i', A⁻¹ * B * A ∈ congK L ϖ m i' ∧ B ∈ congK L ϖ m i) ∧ ∀ Γ : Matrix (Fin m) (Fin m) E, IsHerm L Γ → IsUnit Γ.det → IsCO (hermLat L m) (horb L ϖ Γ i) ∧ 0 < cont (hermLat L m) (horb L ϖ Γ i) := by
@@ -379,13 +357,13 @@ theorem congK_group : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpac
     have hinv : A⁻¹ * A = 1 := Matrix.nonsing_inv_mul A h1
     refine ⟨hAi, h1, h2, ?_, fun B hB => congK_mul L ϖ hA hB, fun i' hi' B hB => ⟨?_, ?_⟩⟩
     · obtain ⟨C, hC, hAC⟩ := (mem_congK L ϖ).1 hA
-      refine (mem_congK L ϖ).2 ⟨-(A⁻¹ * C), intM_neg L (intM_mul L h3 hC), ?_⟩
+      refine (mem_congK L ϖ).2 ⟨-(A⁻¹ * C), _root_.GlobalTheory.CongTrans.int_neg L (_root_.GlobalTheory.CongTrans.int_mul L h3 hC), ?_⟩
       have : A⁻¹ * (1 + algebraMap F E ((ϖ : F) ^ i) • C) = 1 := by rw [← hAC, hinv]
       rw [mul_add, mul_one, Matrix.mul_smul] at this
       rw [smul_neg, ← sub_eq_add_neg]
       exact eq_sub_of_add_eq this
     · obtain ⟨D, hD, rfl⟩ := (mem_congK L ϖ).1 hB
-      refine (mem_congK L ϖ).2 ⟨A⁻¹ * D * A, intM_mul L (intM_mul L h3 hD) hAi, ?_⟩
+      refine (mem_congK L ϖ).2 ⟨A⁻¹ * D * A, _root_.GlobalTheory.CongTrans.int_mul L (_root_.GlobalTheory.CongTrans.int_mul L h3 hD) hAi, ?_⟩
       rw [mul_add, add_mul, mul_one, hinv, Matrix.mul_smul, Matrix.smul_mul]
     · obtain ⟨D, hD, rfl⟩ := (mem_congK L ϖ).1 hB
       obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hi'

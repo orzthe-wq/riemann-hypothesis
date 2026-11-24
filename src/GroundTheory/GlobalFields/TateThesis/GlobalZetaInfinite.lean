@@ -3,50 +3,9 @@ module
 public import GroundTheory.GlobalFields.TateThesis.IdeleMeasure
 public import GroundTheory.GlobalFields.Adele.IntegersLattice
 public import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.MeasureTheory.Integral.Pi
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.SpecialFunctions.JapaneseBracket
 
 @[expose] public section
@@ -71,10 +30,6 @@ theorem norm_isometryEquivRealOfIsReal {w : InfinitePlace K} (hw : w.IsReal) (z 
 theorem norm_isometryEquivComplexOfIsComplex {w : InfinitePlace K} (hw : w.IsComplex)
     (z : w.Completion) : ‖isometryEquivComplexOfIsComplex hw z‖ = ‖z‖ :=
   (isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) z
-
-theorem one_le_mult (w : InfinitePlace K) : (1 : ℝ) ≤ w.mult := by
-  unfold InfinitePlace.mult
-  split_ifs <;> norm_num
 
 theorem mult_le_two (w : InfinitePlace K) : (w.mult : ℝ) ≤ 2 := by
   unfold InfinitePlace.mult
@@ -140,7 +95,7 @@ theorem integrable_placeZetaBound (w : InfinitePlace K) {σ : ℝ} (hσ : 1 ≤ 
     (lintegral_one_add_norm_rpow_neg_lt_top w (r := k - 2 * σ) (by linarith))
   rw [← ENNReal.ofReal_mul (by positivity)]
   refine ENNReal.ofReal_le_ofReal ?_
-  have hm1 := one_le_mult w
+  have hm1 := (NumberField.InfinitePlace.one_le_mult (w := w))
   have hm2 := mult_le_two w
   set t := ‖z‖
   have ht : 0 ≤ t := norm_nonneg _

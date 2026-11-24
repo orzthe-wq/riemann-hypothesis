@@ -520,19 +520,7 @@ private theorem laws_lemma_7 {D : D7} {V W : HSp D} {ψ : AddChar (AF D.host.F) 
 
 variable {D : D7} {V W : HSp D}
 
-theorem laws {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
-    (τ : D.what₂.Tau) {s B : Mn V.rank} {s' B' : Mn W.rank} {ε : Fin V.rank → ℝ} {ε' : Fin W.rank → ℝ}
-    (hε : ∀ a, ε a = 1 ∨ ε a = -1) (hε' : ∀ a, ε' a = 1 ∨ ε' a = -1) (hB : IsUnit B.det)
-    (hs : s * B = B * diagonal fun a => (ε a : ℂ)) (hs' : s' * B' = B' * diagonal fun a => (ε' a : ℂ))
-    (hG : Bᴴ * gramAt D V τ * B = diagonal fun a => (ε a : ℂ))
-    (hG' : B'ᴴ * gramAt D W τ * B' = diagonal fun a => (ε' a : ℂ)) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f)
-    (hvac : IsFockVacAt (heisO ψ V W) θ τ (cplxO s s') f) :
-    (∀ P, IsThetaFunO ψ V W (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ s s' B B' f P)) ∧
-      (f ≠ 0 → Function.Injective (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ s s' B B' f)) ∧
-      ∀ (μ : Measure (WO V W)) (𝓕 : Set (WO V W)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V) 𝓕 μ →
-        ∀ P Q, ipO μ 𝓕 (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ s s' B B' f P) (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ s s' B B' f Q) =
-          ipO μ 𝓕 f f * fockIp P Q :=
-  laws_lemma_7 hψ hθ τ hε hε' hB hs hs' hG hG' hf hvac
+alias laws := _root_.GlobalTheory.OnePlaceFock.laws_lemma_7
 
 end Laws
 

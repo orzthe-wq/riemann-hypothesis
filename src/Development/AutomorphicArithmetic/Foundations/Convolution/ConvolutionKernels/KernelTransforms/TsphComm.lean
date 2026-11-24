@@ -298,7 +298,6 @@ private theorem rhoL_comm {w w' : Pl K} (h : w ≠ w') (g : GL (Fin n) (w.adicCo
   have hc := (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.2.2.1 w' h.symm g g'
   change rhoF μ _ ∘L rhoF μ _ = rhoF μ _ ∘L rhoF μ _
   rw [← hm, ← hm]
-  unfold rhoL at *
   rw [hc]
 
 end Concrete

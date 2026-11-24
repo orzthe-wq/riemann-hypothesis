@@ -160,21 +160,17 @@ theorem mem_mulLat (b : Kˣ) {L : AddSubgroup K} {x : K} :
 theorem mulLat_inv_mulLat (b : Kˣ) (L : AddSubgroup K) :
     mulLat ((b⁻¹ : Kˣ) : K) (mulLat (b : K) L) = L := by
   ext x
-  rw [mem_mulLat, mem_mulLat, inv_inv]
-  simp
+  simp [mem_mulLat]
 
 theorem perp_mulLat (b : Kˣ) (L : AddSubgroup K) :
     perp ψ (mulLat (b : K) L) = mulLat ((b⁻¹ : Kˣ) : K) (perp ψ L) := by
   ext a
   rw [mem_mulLat, inv_inv, mem_perp, mem_perp]
   constructor
-  · intro h l hl
-    have := h ((b : K) * l) ⟨l, hl, rfl⟩
-    rwa [show a * ((b : K) * l) = (b : K) * a * l by ring] at this
+  · rintro h l hl
+    simpa only [mul_assoc, mul_comm, mul_left_comm] using h ((b : K) * l) ⟨l, hl, rfl⟩
   · rintro h _ ⟨l, hl, rfl⟩
-    have := h l hl
-    rwa [show (b : K) * a * l = a * (AddMonoidHom.mulLeft (b : K) l) by
-      simp only [AddMonoidHom.coe_mulLeft]; ring] at this
+    simpa only [AddMonoidHom.coe_mulLeft, mul_assoc, mul_comm, mul_left_comm] using h l hl
 
 theorem psi_out {A L : AddSubgroup K} {z : K} (hz : z ∈ perp ψ L) (r : A) :
     ψ (z * ((Quotient.out (r : A ⧸ L.addSubgroupOf A) : A) : K)) = ψ (z * (r : K)) := by
@@ -228,16 +224,14 @@ theorem dualMap_injective {A : AddSubgroup K} (hA : perp ψ A = A) (L : AddSubgr
   rw [hA] at h1
   rw [← QuotientAddGroup.out_eq' q, ← QuotientAddGroup.out_eq' q', QuotientAddGroup.eq,
     AddSubgroup.mem_addSubgroupOf]
-  have := A.neg_mem h1
-  simpa [sub_eq_add_neg, add_comm] using this
+  simpa [sub_eq_add_neg, add_comm] using A.neg_mem h1
 
 theorem dualMap_mk {A : AddSubgroup K} (hA : perp ψ A = A) {L : AddSubgroup K} {z : K}
     (hz : z ∈ perp ψ L) :
     dualMap ψ A L ((⟨z, hz⟩ : perp ψ L) : perp ψ L ⧸ A.addSubgroupOf (perp ψ L)) = charOf A hz := by
   obtain ⟨l, hl⟩ := QuotientAddGroup.mk_out_eq_add (A.addSubgroupOf (perp ψ L)) (⟨z, hz⟩ : perp ψ L)
-  rw [dualMap, charOf_eq_iff, hA, hl]
   have : ((l : perp ψ L) : K) ∈ A := AddSubgroup.mem_addSubgroupOf.1 l.2
-  simpa using this
+  simpa [dualMap, charOf_eq_iff, hA, hl] using this
 
 theorem card_addChar (G : Type) [AddCommGroup G] [Finite G] : Nat.card (AddChar G ℂ) = Nat.card G := by
   classical
@@ -336,8 +330,7 @@ variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R :
   {ψ : AddChar K ℂ}
 
 theorem perp_R (hd : LocalDatum K R ψ) : perp ψ R.toAddSubgroup = R.toAddSubgroup := by
-  ext a
-  exact hd.selfDual a
+  exact SetLike.ext hd.selfDual
 
 theorem nat_mul_mem {A L : AddSubgroup K} {x : K} (hx : x ∈ A) :
     ((L.relIndex A : ℕ) : K) * x ∈ L := by
@@ -385,8 +378,7 @@ theorem perp_lat (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit 
   have hL' := lat_mulLat c hL
   obtain ⟨h1, h2, h3⟩ := perp_small hd hn hL' hcL
   have e1 : perp ψ L = mulLat (c : K) (perp ψ (mulLat (c : K) L)) := by
-    have := perp_mulLat (ψ := ψ) c⁻¹ (mulLat (c : K) L)
-    rwa [mulLat_inv_mulLat, inv_inv] at this
+    simpa [mulLat_inv_mulLat, inv_inv] using perp_mulLat (ψ := ψ) c⁻¹ (mulLat (c : K) L)
   refine ⟨e1 ▸ lat_mulLat c h1, ?_, ?_⟩
   · rw [e1, perp_mulLat, h2, mulLat_inv_mulLat]
   · rw [e1, volL_mulLat hR c h1]
@@ -483,7 +475,6 @@ open Formalism.FourierDecayAlt.P.A6x3
 
 theorem orthogonal_lattice_properties : Formalism.FourierDecayAlt.A6.PerpLat := by
   intro K _ _ _ R ψ hd hn L hL
-  obtain ⟨h1, h2, h3⟩ := perp_lat hd hn (lat_iff.1 hL)
-  exact ⟨lat_iff.2 h1, h2, h3⟩
+  simpa only [lat_iff] using perp_lat hd hn (lat_iff.1 hL)
 
 end Formalism.FourierDecayAlt.P

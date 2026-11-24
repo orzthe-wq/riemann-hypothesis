@@ -193,6 +193,6 @@ theorem haar_map_conj (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Nset k r) μ) (
 
 theorem muN_map_conj : ∀ (k r : ℕ) (α : ℂ), α ≠ 0 →
     (D.muN k r).map (conjM (aT k r α)) = ENNReal.ofReal ((‖α‖ ^ B.kap k r)⁻¹) • D.muN k r :=
-  fun k r α h => haar_map_conj _ (Formalism.FourierDecayAlt.Final.d_muNHaar k r) α h
+  fun k r α h => haar_map_conj _ (_root_.Formalism.FourierDecayAlt.P.nilpotent_measure_is_haar k r) α h
 
 end GlobalTheory.ThA.TorusJac

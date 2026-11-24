@@ -1,27 +1,32 @@
 module
 
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.Topology.Algebra.Group.Defs
+public import Mathlib.Topology.Algebra.Support
+public import Mathlib.Topology.LocallyConstant.Basic
+public import Mathlib.Topology.Algebra.Group.ContinuousDiv
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellP
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.MeasurePreservingOfAddEquiv
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellInv
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellNu
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
+import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -29,8 +34,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -43,11 +46,520 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
+import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalInvariantNeighborhoods.MeasurePreservingOfAddEquiv
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalInvariantNeighborhoods.NhdsInv, Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.TracePairSums.ShellConj, Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellInv, Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellNu, Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.SetIntegralCharEqZero
+
+-- ===== clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalInvariantNeighborhoods.NhdsInv =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalInvariantNeighborhoods.NhdsInv", "h": "module\n\npublic import Mathlib.Basic.Complex.Basic\npublic import Mathlib.Topology.Algebra.Group.Defs\npublic import Mathlib.Topology.Algebra.Support\npublic import Mathlib.Topology.LocallyConstant.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.Topology.Algebra.Group.ContinuousDiv\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace PositivityTheory.SiegelWeilFormula.OswLocFin
+
+open Filter Topology
+
+theorem exists_nhds_invariant {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
+    {Φ : G → ℂ} (hΦ : IsLocallyConstant Φ ∧ HasCompactSupport Φ) :
+    ∃ U ∈ nhds (0 : G), ∀ Y, ∀ Z ∈ U, Φ (Y + Z) = Φ Y := by
+  obtain ⟨hlc, hcs⟩ := hΦ
+  have hT : ∀ x : G, {z : G | Φ (x + z) = Φ x} ∈ 𝓝 (0 : G) := by
+    intro x
+    have hopen : IsOpen {z : G | Φ (x + z) = Φ x} :=
+      (hlc.isOpen_fiber (Φ x)).preimage (continuous_const.add continuous_id)
+    exact hopen.mem_nhds (by simp)
+  choose V₁ hV₁ hV₁s using fun x => exists_nhds_zero_half (hT x)
+  choose V₂ hV₂ hV₂s using fun x => exists_nhds_half_neg (hT x)
+  have hU : ∀ x : G, {y : G | y - x ∈ V₁ x ∩ V₂ x} ∈ 𝓝 x := by
+    intro x
+    have ht : Tendsto (fun y : G => y - x) (𝓝 x) (𝓝 (x - x)) := (continuous_sub_right x).tendsto x
+    rw [sub_self] at ht
+    exact ht (Filter.inter_mem (hV₁ x) (hV₂ x))
+  obtain ⟨t, -, hcover⟩ := hcs.isCompact.elim_nhds_subcover
+    (fun x => {y : G | y - x ∈ V₁ x ∩ V₂ x}) (fun x _ => hU x)
+  refine ⟨⋂ x ∈ t, V₁ x ∩ V₂ x, (Filter.biInter_finset_mem t).mpr fun x _ =>
+    Filter.inter_mem (hV₁ x) (hV₂ x), fun Y Z hZ => ?_⟩
+  have hZ' : ∀ x ∈ t, Z ∈ V₁ x ∩ V₂ x := Set.mem_iInter₂.mp hZ
+  by_cases hY : Y ∈ tsupport Φ
+  · obtain ⟨x, hxt, hx⟩ := Set.mem_iUnion₂.mp (hcover hY)
+    have hx' : Y - x ∈ V₁ x ∩ V₂ x := hx
+    have h1 : Φ (x + (Y - x + Z)) = Φ x := hV₁s x _ hx'.1 Z (hZ' x hxt).1
+    have h2 : Φ (x + (Y - x + 0)) = Φ x := hV₁s x _ hx'.1 0 (mem_of_mem_nhds (hV₁ x))
+    rw [show x + (Y - x + Z) = Y + Z by abel] at h1
+    rw [show x + (Y - x + 0) = Y by abel] at h2
+    rw [h1, h2]
+  · by_cases hYZ : Y + Z ∈ tsupport Φ
+    · obtain ⟨x, hxt, hx⟩ := Set.mem_iUnion₂.mp (hcover hYZ)
+      have hx' : Y + Z - x ∈ V₁ x ∩ V₂ x := hx
+      have h1 : Φ (x + (Y + Z - x - Z)) = Φ x := hV₂s x _ hx'.2 Z (hZ' x hxt).2
+      have h2 : Φ (x + (Y + Z - x + 0)) = Φ x := hV₁s x _ hx'.1 0 (mem_of_mem_nhds (hV₁ x))
+      rw [show x + (Y + Z - x - Z) = Y by abel] at h1
+      rw [show x + (Y + Z - x + 0) = Y + Z by abel] at h2
+      rw [h1, h2]
+    · rw [image_eq_zero_of_notMem_tsupport hY, image_eq_zero_of_notMem_tsupport hYZ]
+
+end PositivityTheory.SiegelWeilFormula.OswLocFin
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalInvariantNeighborhoods.NhdsInv =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.TracePairSums.ShellConj =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.TracePairSums.ShellConj", "h": "module\n\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellP\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.MeasurePreservingOfAddEquiv\nimport Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalInvariantNeighborhoods.MeasurePreservingOfAddEquiv\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalInvariantNeighborhoods.NhdsInv\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PositivityTheory.SiegelWeilFormula.SwLocFin.SwSplit
+
+open PositivityTheory.SiegelWeilFormula.SwLocFin HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureTheory GlobalTheory.Cont PositivityTheory.PfSWUS.Loc Filter
+  Topology
+open scoped TensorProduct Matrix
+
+variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+
+theorem sig_sig_of_cm (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
+  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
+  apply τ.injective
+  rw [hcm.2.2.2 τ, hcm.2.2.2 τ, star_star]
+
+theorem sigR_sigR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ)
+    (z : R ⊗[F] E) : sigR R σ (sigR R σ z) = z := by
+  induction z using TensorProduct.induction_on with
+  | zero => simp
+  | tmul r e => simp [sigR, sig_sig_of_cm σ hcm e]
+  | add x y hx hy => rw [map_add (f := _), map_add (f := _), hx, hy]
+
+def rowMix {A : Type} [CommRing A] {n M : ℕ} (C : Matrix (Fin n) (Fin n) A) (Y : Fin n → Fin M → A) :
+    Fin n → Fin M → A :=
+  fun c i => ∑ k, C c k * Y k i
+
+theorem rowMix_add {A : Type} [CommRing A] {n M : ℕ} (C : Matrix (Fin n) (Fin n) A) (Y Z : Fin n → Fin M → A) :
+    rowMix C (Y + Z) = rowMix C Y + rowMix C Z := by
+  funext c i
+  simp [rowMix, mul_add, Finset.sum_add_distrib]
+
+theorem rowMix_one {A : Type} [CommRing A] {n M : ℕ} (Y : Fin n → Fin M → A) :
+    rowMix (1 : Matrix (Fin n) (Fin n) A) Y = Y := by
+  funext c i
+  simp [rowMix, Matrix.one_apply]
+
+theorem rowMix_mul {A : Type} [CommRing A] {n M : ℕ} (P Q : Matrix (Fin n) (Fin n) A) (Y : Fin n → Fin M → A) :
+    rowMix P (rowMix Q Y) = rowMix (P * Q) Y := by
+  funext c i
+  simp only [rowMix, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]
+  exact Finset.sum_comm
+
+theorem rowMix_one_add {A : Type} [CommRing A] {n M : ℕ} (x : Matrix (Fin n) (Fin n) A) (Y : Fin n → Fin M → A) :
+    rowMix (1 + x) Y = Y + rowMix x Y := by
+  funext c i
+  simp [rowMix, add_mul, Finset.sum_add_distrib, Matrix.one_apply]
+
+theorem sum_sum_sum_sum_comm {A : Type} [AddCommMonoid A] {n M : ℕ} (f : Fin M → Fin M → Fin n → Fin n → A) :
+    (∑ i, ∑ j, ∑ k, ∑ l, f i j k l) = ∑ k, ∑ l, ∑ i, ∑ j, f i j k l := by
+  have h1 : (∑ i, ∑ j, ∑ k, ∑ l, f i j k l) = ∑ x : Fin M × Fin M × Fin n × Fin n, f x.1 x.2.1 x.2.2.1 x.2.2.2 := by
+    simp only [Fintype.sum_prod_type]
+  have h2 : (∑ k, ∑ l, ∑ i, ∑ j, f i j k l) = ∑ y : Fin n × Fin n × Fin M × Fin M, f y.2.2.1 y.2.2.2 y.1 y.2.1 := by
+    simp only [Fintype.sum_prod_type]
+  rw [h1, h2]
+  let e : (Fin M × Fin M × Fin n × Fin n) ≃ (Fin n × Fin n × Fin M × Fin M) :=
+    { toFun := fun x => (x.2.2.1, x.2.2.2, x.1, x.2.1)
+      invFun := fun y => (y.2.2.1, y.2.2.2, y.1, y.2.1)
+      left_inv := fun _ => rfl
+      right_inv := fun _ => rfl }
+  exact Fintype.sum_equiv e _ _ (fun _ => rfl)
+
+section Mat
+variable (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M n : ℕ}
+
+theorem gramR_rowMix (hcm : IsCMExt F E σ) (J : Matrix (Fin M) (Fin M) E) (a : Matrix (Fin n) (Fin n) (R ⊗[F] E))
+    (Y : Fin n → Fin M → R ⊗[F] E) :
+    gramR R σ J (rowMix (a.map (sigR R σ)) Y) = a * gramR R σ J Y * (a.map (sigR R σ))ᵀ := by
+  ext c p
+
+  simp only [gramR, hR, hform, rowMix, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, map_sum, map_mul,
+  sigR_sigR R σ hcm, Finset.sum_mul, Finset.mul_sum]
+  rw [sum_sum_sum_sum_comm]
+  refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ =>
+    Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+  ring
+
+theorem sum_sum_eq_trace {A : Type} [CommRing A] (S T : Matrix (Fin n) (Fin n) A) :
+    ∑ a, ∑ c, S a c * T c a = Matrix.trace (S * T) := by
+  simp [Matrix.trace, Matrix.mul_apply]
+
+theorem trPair_conj (hcm : IsCMExt F E σ) (J : Matrix (Fin M) (Fin M) E)
+    (a b : Matrix (Fin n) (Fin n) (R ⊗[F] E)) (Y : Fin n → Fin M → R ⊗[F] E) :
+    trPair R ((a.map (sigR R σ))ᵀ * b * a) (gramR R σ J Y) =
+      trPair R b (gramR R σ J (rowMix (a.map (sigR R σ)) Y)) := by
+  unfold trPair
+  rw [sum_sum_eq_trace, sum_sum_eq_trace, gramR_rowMix R σ hcm]
+  congr 2
+  rw [Matrix.mul_assoc, Matrix.mul_assoc, Matrix.trace_mul_comm]
+  simp only [Matrix.mul_assoc]
+
+end Mat
+
+theorem nM_rowMix_le (v : HeightOneSpectrum (𝓞 F)) {n M : ℕ} (C1 : ℝ)
+    (hmul : ∀ (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (y : Matrix (Fin n) (Fin M) (Fv F v ⊗[F] E)),
+      nM v (x * y) ≤ C1 * nM v x * nM v y)
+    (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (Y : Fin n → Fin M → Fv F v ⊗[F] E) :
+    nM v (rowMix x Y) ≤ C1 * nM v x * nM v Y := by
+  have h := hmul x (Matrix.of Y)
+  have e : (x * Matrix.of Y : Matrix (Fin n) (Fin M) (Fv F v ⊗[F] E)) = Matrix.of (rowMix x Y) := by
+    ext c i
+    erw [Matrix.mul_apply]
+    rfl
+  rw [e] at h
+  exact h
+
+theorem jtR_conj_inv' (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M n : ℕ}
+    (J : Matrix (Fin M) (Fin M) E) (ψR : Fv F v → ℂ) (μv : Measure (Fin n → Fin M → Fv F v ⊗[F] E))
+    [μv.IsAddHaarMeasure] (Φv : (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ) (hΦ : IsSB Φv) :
+    ∃ r > 0, ∀ x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v x ≤ r → ∀ b b' : HermR (Fv F v) σ n,
+      (b' : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) = ((1 + x).map (sigR (Fv F v) σ))ᵀ * b * (1 + x) →
+      jtR (Fv F v) σ J ψR μv Φv b' = jtR (Fv F v) σ J ψR μv Φv b := by
+  classical
+  obtain ⟨C1, hC1, hmul⟩ := exists_nM_mul v (E := E) n n M
+  obtain ⟨Cs, hCs, hsig⟩ := exists_nM_sig v σ n n
+  obtain ⟨U, hU, hinvU⟩ := PositivityTheory.SiegelWeilFormula.OswLocFin.exists_nhds_invariant hΦ
+  obtain ⟨ρ, hρ, hball⟩ := exists_ballM_subset (v := v) (p := n) (q := M) hU
+  obtain ⟨R0, hR0⟩ := exists_bound_nM (v := v) (p := n) (q := M) hΦ.2.isCompact
+  obtain ⟨r0, hr0, hdet⟩ := exists_isUnit_det v (E := E) n
+  set R : ℝ := max R0 1 with hRdef
+  have hRpos : 0 < R := lt_of_lt_of_le one_pos (le_max_right _ _)
+  set K : ℝ := C1 * Cs + 1 with hKdef
+  have hKpos : 0 < K := by positivity
+  refine ⟨min r0 (min (1 / (2 * K)) (ρ / (K * R))), lt_min hr0 (lt_min (by positivity) (by positivity)), ?_⟩
+  intro x hx b b' hb'
+  have hx0 : nM v x ≤ r0 := hx.trans (min_le_left _ _)
+  have hx1 : nM v x ≤ 1 / (2 * K) := hx.trans ((min_le_right _ _).trans (min_le_left _ _))
+  have hx2 : nM v x ≤ ρ / (K * R) := hx.trans ((min_le_right _ _).trans (min_le_right _ _))
+  set x' : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := x.map (sigR (Fv F v) σ) with hx'def
+  set C : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := (1 + x).map (sigR (Fv F v) σ) with hCdef
+  have hC : C = 1 + x' := by
+    rw [hCdef, hx'def, Matrix.map_add _ (fun a b => map_add _ a b), Matrix.map_one _ (map_zero _) (map_one _)]
+  have hnx' : nM v x' ≤ Cs * nM v x := hsig x
+  have hsmall : C1 * nM v x' ≤ 1 / 2 := by
+    have h1 : C1 * nM v x' ≤ C1 * Cs * nM v x := by
+      rw [mul_assoc]; exact mul_le_mul_of_nonneg_left hnx' hC1
+    have h2 : C1 * Cs * nM v x ≤ C1 * Cs * (1 / (2 * K)) := mul_le_mul_of_nonneg_left hx1 (by positivity)
+    have h3 : C1 * Cs * (1 / (2 * K)) ≤ 1 / 2 := by
+      rw [mul_one_div, div_le_div_iff₀ (by positivity) (by norm_num)]
+      nlinarith
+    linarith
+  have hsmall2 : C1 * nM v x' * R ≤ ρ := by
+    have h1 : C1 * nM v x' ≤ C1 * Cs * nM v x := by
+      rw [mul_assoc]; exact mul_le_mul_of_nonneg_left hnx' hC1
+    have h2 : C1 * Cs * nM v x ≤ C1 * Cs * (ρ / (K * R)) := mul_le_mul_of_nonneg_left hx2 (by positivity)
+    have h3 : C1 * Cs * (ρ / (K * R)) * R ≤ ρ := by
+      rw [mul_div_assoc', div_mul_eq_mul_div, div_le_iff₀ (by positivity)]
+      have : C1 * Cs ≤ K := by rw [hKdef]; linarith
+      nlinarith [mul_le_mul_of_nonneg_right this (le_of_lt (mul_pos hρ hRpos))]
+    calc C1 * nM v x' * R ≤ C1 * Cs * (ρ / (K * R)) * R :=
+          mul_le_mul_of_nonneg_right (h1.trans h2) hRpos.le
+      _ ≤ ρ := h3
+
+  have hnorm : ∀ Y : Fin n → Fin M → Fv F v ⊗[F] E, nM v (rowMix C Y) = nM v Y := by
+    intro Y
+    rw [hC, rowMix_one_add]
+    by_cases hY : Y = 0
+    · subst hY
+      have : rowMix x' (0 : Fin n → Fin M → Fv F v ⊗[F] E) = 0 := by funext c i; simp [rowMix]
+      rw [this, add_zero]
+    · have hpos : 0 < nM v Y := lt_of_le_of_ne (nM_nonneg Y) (fun h => hY (nM_eq_zero.1 h.symm))
+      refine nM_add_eq_of_lt ?_
+      calc nM v (rowMix x' Y) ≤ C1 * nM v x' * nM v Y := nM_rowMix_le v C1 hmul x' Y
+        _ ≤ 1 / 2 * nM v Y := mul_le_mul_of_nonneg_right hsmall hpos.le
+        _ < nM v Y := by linarith
+
+  have hΦC : ∀ Y, Φv (rowMix C Y) = Φv Y := by
+    intro Y
+    by_cases hY : nM v Y ≤ R
+    · rw [hC, rowMix_one_add]
+      refine hinvU Y _ (hball ?_)
+      show nM v (rowMix x' Y) ≤ ρ
+      calc nM v (rowMix x' Y) ≤ C1 * nM v x' * nM v Y := nM_rowMix_le v C1 hmul x' Y
+        _ ≤ C1 * nM v x' * R := mul_le_mul_of_nonneg_left hY (mul_nonneg hC1 (nM_nonneg _))
+        _ ≤ ρ := hsmall2
+    · have h1 : Y ∉ tsupport Φv := fun h => hY ((hR0 Y h).trans (le_max_left _ _))
+      have h2 : rowMix C Y ∉ tsupport Φv := fun h => hY ((hnorm Y) ▸ ((hR0 _ h).trans (le_max_left _ _)))
+      rw [image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]
+
+  have hCu : IsUnit C.det := by
+    have := hdet x hx0
+    rw [hCdef, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
+    exact this.map _
+  let e : (Fin n → Fin M → Fv F v ⊗[F] E) ≃+ (Fin n → Fin M → Fv F v ⊗[F] E) :=
+    { toFun := rowMix C
+      invFun := rowMix C⁻¹
+      left_inv := fun Y => by rw [rowMix_mul, Matrix.nonsing_inv_mul C hCu, rowMix_one]
+      right_inv := fun Y => by rw [rowMix_mul, Matrix.mul_nonsing_inv C hCu, rowMix_one]
+      map_add' := rowMix_add C }
+  have hcont : ∀ P : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), Continuous (rowMix (M := M) P) := by
+    intro P
+    refine continuous_pi fun c => continuous_pi fun i => continuous_finsetSum _ fun k _ => ?_
+    exact continuous_const.mul ((continuous_apply i).comp (continuous_apply k))
+  have hmp : MeasurePreserving e μv μv := by
+    refine PositivityTheory.SiegelWeilFormula.OswLocFin.measurePreserving_of_addEquiv μv e (hcont C) (hcont C⁻¹)
+      {Y | nM v Y ≤ 1} (isCompact_ballM 1) ?_ ?_
+    · refine ⟨0, ?_⟩
+      rw [(isOpen_ballM (v := v) (p := n) (q := M) one_pos).interior_eq]
+      show nM v (0 : Fin n → Fin M → Fv F v ⊗[F] E) ≤ 1
+      rw [nM_zero]; exact zero_le_one
+    · ext Y
+      show nM v (rowMix C Y) ≤ 1 ↔ nM v Y ≤ 1
+      rw [hnorm]
+  have hemb : MeasurableEmbedding e :=
+    (Homeomorph.mk e.toEquiv (hcont C) (hcont C⁻¹)).measurableEmbedding
+  unfold jtR
+  rw [hb']
+  have hint : ∀ Y, Φv Y * ψR (trPair (Fv F v) ((C)ᵀ * (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) * (1 + x))
+      (gramR (Fv F v) σ J Y)) =
+      (fun Z => Φv Z * ψR (trPair (Fv F v) (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (gramR (Fv F v) σ J Z))) (e Y) := by
+    intro Y
+    show _ = Φv (rowMix C Y) * _
+    rw [hΦC, hCdef, trPair_conj (Fv F v) σ hcm J (1 + x) b Y]
+    rfl
+  simp_rw [hint]
+  exact hmp.integral_comp hemb (fun Z => Φv Z * ψR (trPair (Fv F v) (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (gramR (Fv F v) σ J Z)))
+
+end PositivityTheory.SiegelWeilFormula.SwLocFin.SwSplit
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.TracePairSums.ShellConj =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellInv =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellInv", "h": "module\n\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellP\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.TracePairSums.ShellConj\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PositivityTheory.SiegelWeilFormula.SwLocFin
+
+end PositivityTheory.SiegelWeilFormula.SwLocFin
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellInv =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellNu =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellNu", "h": "module\n\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellP\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.MeasurePreservingOfAddEquiv\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PositivityTheory.SiegelWeilFormula.SwLocFin
+
+open HeckeCharacterZeroLocus.SiegelWeilU NumberField IsDedekindDomain MeasureTheory GlobalTheory.Cont PositivityTheory.PfSWUS.Loc PositivityTheory.SiegelWeilFormula.Gen Filter Topology
+open scoped TensorProduct Matrix
+
+variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+
+namespace ShNu
+
+variable {v : HeightOneSpectrum (𝓞 F)} {n : ℕ}
+
+theorem stable (v : HeightOneSpectrum (𝓞 F)) {L : AddSubgroup (Fin n → Fv F v ⊗[F] E)} (hL : IsCO L) :
+    ∃ r > 0, ∀ d : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v d ≤ r → ∀ y ∈ L,
+      ((1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) + d).mulVec y ∈ L := by
+  obtain ⟨ε, hε, hεL⟩ := exists_ballV_subset (v := v) (U := (L : Set (Fin n → Fv F v ⊗[F] E)))
+    (hL.1.mem_nhds L.zero_mem)
+  obtain ⟨ρ, hρ⟩ := exists_bound_nV (v := v) hL.2
+  obtain ⟨C, hC0, hC⟩ := exists_nM_mulVec v (E := E) n n
+  set ρ' := max ρ 0 with hρ'
+  have hρ'0 : 0 ≤ ρ' := le_max_right _ _
+  refine ⟨ε / (C * ρ' + 1), by positivity, fun g hg y hy => ?_⟩
+  have hy' : nV v y ≤ ρ' := (hρ y hy).trans (le_max_left _ _)
+  have hsmall : nV v (g.mulVec y) ≤ ε := by
+    calc nV v (g.mulVec y) ≤ C * nM v g * nV v y := hC _ _
+      _ ≤ C * (ε / (C * ρ' + 1)) * ρ' :=
+          mul_le_mul (mul_le_mul_of_nonneg_left hg hC0) hy' (nV_nonneg _) (by positivity)
+      _ = ε * (C * ρ' / (C * ρ' + 1)) := by ring
+      _ ≤ ε := mul_le_of_le_one_right hε.le (div_le_one_of_le₀ (by linarith) (by positivity))
+  rw [Matrix.add_mulVec, Matrix.one_mulVec]
+  exact L.add_mem hy (hεL hsmall)
+
+theorem nM_transpose (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : nM v xᵀ = nM v x := by
+  apply le_antisymm
+  · exact (nM_le_iff (nM_nonneg x)).2 fun i j => nA_le_nM x j i
+  · exact (nM_le_iff (nM_nonneg (v := v) (xᵀ : Fin n → Fin n → Fv F v ⊗[F] E))).2 fun i j =>
+      nA_le_nM (v := v) (xᵀ : Fin n → Fin n → Fv F v ⊗[F] E) j i
+
+theorem inv_small {C : ℝ} (hC : ∀ x y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (x * y) ≤ C * nM v x * nM v y)
+    {x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (hx : C * nM v x ≤ 1 / 2) (hu : IsUnit (1 + x).det) :
+    nM v (((1 + x)⁻¹ - 1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) ≤ nM v x := by
+  set u : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := (1 + x)⁻¹ - 1 with hu_def
+  have hmul : (1 + x) * (1 + x)⁻¹ = 1 := Matrix.mul_nonsing_inv _ hu
+  have h1 : (1 + x) * (1 + u) = 1 := by rw [hu_def, add_sub_cancel]; exact hmul
+  have h2 : (1 + x) * (1 + u) = 1 + (u + (x + x * u)) := by noncomm_ring
+  rw [h2] at h1
+  have h3 : u + (x + x * u) = 0 := by simpa using h1
+  have h4 : u = -(x + x * u) := eq_neg_of_add_eq_zero_left h3
+  have e1 : nM v u = nM v (x + x * u) := by
+    conv_lhs => rw [h4]
+    exact nM_neg (v := v) ((x + x * u : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : Fin n → Fin n → Fv F v ⊗[F] E)
+  have hb : nM v u ≤ max (nM v x) (C * nM v x * nM v u) :=
+    calc nM v u = nM v (x + x * u) := e1
+      _ ≤ max (nM v x) (nM v (x * u)) := nM_add_le (v := v) (x : Fin n → Fin n → Fv F v ⊗[F] E) (x * u)
+      _ ≤ max (nM v x) (C * nM v x * nM v u) := max_le_max le_rfl (hC _ _)
+  by_contra hcon
+  push Not at hcon
+  have hx0 := nM_nonneg (v := v) x
+  rcases le_max_iff.1 hb with h | h
+  · linarith
+  · have : nM v u ≤ 1 / 2 * nM v u := h.trans (mul_le_mul_of_nonneg_right hx (nM_nonneg _))
+    linarith
+
+def cs (σ : E →ₐ[F] E) (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) :=
+  (x.map (sigR (Fv F v) σ))ᵀ
+
+theorem cs_one_add (σ : E →ₐ[F] E) (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
+    cs σ (1 + x) = 1 + cs σ x := by
+  simp only [cs]
+  rw [Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_add,
+    Matrix.transpose_one]
+
+theorem isUnit_det_cs (σ : E →ₐ[F] E) {a : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (ha : IsUnit a.det) :
+    IsUnit (cs σ a).det := by
+  simp only [cs, Matrix.det_transpose]
+  have : (a.map (sigR (Fv F v) σ)).det = sigR (Fv F v) σ a.det := (RingHom.map_det _ _).symm
+  rw [this]
+  exact ha.map _
+
+def Sx (L₁ L₂ : AddSubgroup (Fin n → Fv F v ⊗[F] E)) (B : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
+    Set (Fin n → Fv F v ⊗[F] E) := {x | ∃ y ∈ L₁, ∃ y' ∈ L₂, x = y + B.mulVec y'}
+
+theorem measurableSet_Sx {L₁ L₂ : AddSubgroup (Fin n → Fv F v ⊗[F] E)} (h₁ : IsCO L₁) (h₂ : IsCO L₂)
+    (B : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : MeasurableSet (Sx L₁ L₂ B) := by
+  have e : Sx L₁ L₂ B = (fun p : (Fin n → Fv F v ⊗[F] E) × (Fin n → Fv F v ⊗[F] E) => p.1 + B.mulVec p.2) ''
+      ((L₁ : Set (Fin n → Fv F v ⊗[F] E)) ×ˢ (L₂ : Set (Fin n → Fv F v ⊗[F] E))) := by
+    ext z
+    constructor
+    · rintro ⟨y, hy, y', hy', rfl⟩; exact ⟨(y, y'), ⟨hy, hy'⟩, rfl⟩
+    · rintro ⟨⟨y, y'⟩, ⟨hy, hy'⟩, rfl⟩; exact ⟨y, hy, y', hy', rfl⟩
+  rw [e]
+  have hc : Continuous fun p : (Fin n → Fv F v ⊗[F] E) × (Fin n → Fv F v ⊗[F] E) => p.1 + B.mulVec p.2 :=
+    continuous_fst.add (Continuous.matrix_mulVec continuous_const continuous_snd)
+  exact ((h₁.2.prod h₂.2).image hc).isClosed.measurableSet
+
+def mulVecEquiv (P Q : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (hPQ : P * Q = 1) (hQP : Q * P = 1) :
+    (Fin n → Fv F v ⊗[F] E) ≃+ (Fin n → Fv F v ⊗[F] E) where
+  toFun := P.mulVec
+  invFun := Q.mulVec
+  left_inv y := by simp only [Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec]
+  right_inv y := by simp only [Matrix.mulVec_mulVec, hPQ, Matrix.one_mulVec]
+  map_add' := Matrix.mulVec_add P
+
+end ShNu
+
+
+open ShNu in
+theorem lattice_norm_conj_invariant (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {n : ℕ}
+    (lam : Measure (Fin n → Fv F v ⊗[F] E)) [lam.IsAddHaarMeasure] (L₁ L₂ : AddSubgroup (Fin n → Fv F v ⊗[F] E))
+    (h₁ : IsCO L₁) (h₂ : IsCO L₂) :
+    ∃ r > 0, ∀ x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v x ≤ r → ∀ B : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E),
+      nu2 lam L₁ L₂ (((1 + x).map (sigR (Fv F v) σ))ᵀ * B * (1 + x)) = nu2 lam L₁ L₂ B := by
+  obtain ⟨Cm, hCm0, hCm⟩ := exists_nM_mul v (E := E) n n n
+  obtain ⟨Cs, hCs0, hCs⟩ := exists_nM_sig v σ n n
+  obtain ⟨rd, hrd, hdet⟩ := exists_isUnit_det v (E := E) n
+  obtain ⟨r₁, hr₁, hst₁⟩ := stable v h₁
+  obtain ⟨r₂, hr₂, hst₂⟩ := stable v h₂
+  set rh : ℝ := 1 / (2 * (Cm + 1)) with hrh
+  have hrh0 : 0 < rh := by positivity
+  have hrhC : ∀ t, 0 ≤ t → t ≤ rh → Cm * t ≤ 1 / 2 := by
+    intro t ht0 ht
+    calc Cm * t ≤ (Cm + 1) * rh := mul_le_mul (by linarith) ht ht0 (by linarith)
+      _ = 1 / 2 := by rw [hrh]; field_simp
+  refine ⟨min (min rd rh) (min r₂ (min r₁ rh / (Cs + 1))), by positivity, fun x hx B => ?_⟩
+  have hx0 := nM_nonneg (v := v) x
+  have hxd : nM v x ≤ rd := hx.trans ((min_le_left _ _).trans (min_le_left _ _))
+  have hxh : nM v x ≤ rh := hx.trans ((min_le_left _ _).trans (min_le_right _ _))
+  have hx2 : nM v x ≤ r₂ := hx.trans ((min_le_right _ _).trans (min_le_left _ _))
+  have hxs : nM v x ≤ min r₁ rh / (Cs + 1) := hx.trans ((min_le_right _ _).trans (min_le_right _ _))
+
+  have hcs : nM v (cs σ x) ≤ min r₁ rh := by
+    calc nM v (cs σ x) = nM v (x.map (sigR (Fv F v) σ)) := nM_transpose _
+      _ ≤ Cs * nM v x := hCs x
+      _ ≤ (Cs + 1) * nM v x := by nlinarith
+      _ ≤ min r₁ rh := by
+          rw [le_div_iff₀ (by linarith)] at hxs; linarith
+  have hcs0 := nM_nonneg (v := v) (cs σ x)
+  have hcs1 : nM v (cs σ x) ≤ r₁ := hcs.trans (min_le_left _ _)
+  have hcsh : nM v (cs σ x) ≤ rh := hcs.trans (min_le_right _ _)
+
+  set a : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := 1 + x with ha_def
+  have ha : IsUnit a.det := hdet x hxd
+  have has : IsUnit (cs σ a).det := isUnit_det_cs σ ha
+  have has' : IsUnit (1 + cs σ x).det := by rw [← cs_one_add]; exact has
+  have hai : nM v ((a⁻¹ - 1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) ≤ r₂ :=
+    (inv_small hCm (hrhC _ hx0 hxh) ha).trans hx2
+  have hasi : nM v (((cs σ a)⁻¹ - 1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) ≤ r₁ := by
+    rw [ha_def, cs_one_add]; exact (inv_small hCm (hrhC _ hcs0 hcsh) has').trans hcs1
+  have hsplit : ∀ P : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), P = 1 + (P - 1) := fun P => by abel
+  have hL2a : ∀ y ∈ L₂, a.mulVec y ∈ L₂ := hst₂ x hx2
+  have hL2ai : ∀ y ∈ L₂, a⁻¹.mulVec y ∈ L₂ := by rw [hsplit a⁻¹]; exact hst₂ _ hai
+  have hL1as : ∀ y ∈ L₁, (cs σ a).mulVec y ∈ L₁ := by rw [ha_def, cs_one_add]; exact hst₁ _ hcs1
+  have hL1asi : ∀ y ∈ L₁, (cs σ a)⁻¹.mulVec y ∈ L₁ := by rw [hsplit (cs σ a)⁻¹]; exact hst₁ _ hasi
+
+  have hPQ : (cs σ a)⁻¹ * cs σ a = 1 := Matrix.nonsing_inv_mul _ has
+  have hQP : cs σ a * (cs σ a)⁻¹ = 1 := Matrix.mul_nonsing_inv _ has
+  set e := mulVecEquiv _ _ hPQ hQP with he
+  have hmp : MeasurePreserving e lam lam := by
+    refine measurePreserving_of_addEquiv lam e (Continuous.matrix_mulVec continuous_const continuous_id)
+      (Continuous.matrix_mulVec continuous_const continuous_id) (L₁ : Set (Fin n → Fv F v ⊗[F] E)) h₁.2
+      (by rw [h₁.1.interior_eq]; exact ⟨0, L₁.zero_mem⟩) ?_
+    ext y
+    simp only [Set.mem_preimage, SetLike.mem_coe, he, mulVecEquiv, AddEquiv.coe_mk, Equiv.coe_fn_mk]
+    constructor
+    · intro hy
+      have := hL1as _ hy
+      rwa [Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec] at this
+    · exact hL1asi y
+
+  have hset : Sx L₁ L₂ ((a.map (sigR (Fv F v) σ))ᵀ * B * a) = e ⁻¹' Sx L₁ L₂ B := by
+    have hcsa : (a.map (sigR (Fv F v) σ))ᵀ = cs σ a := rfl
+    rw [hcsa]
+    ext z
+    simp only [Sx, Set.mem_preimage, Set.mem_setOf_eq, he, mulVecEquiv, AddEquiv.coe_mk, Equiv.coe_fn_mk]
+    constructor
+    · rintro ⟨y, hy, y', hy', rfl⟩
+      refine ⟨(cs σ a)⁻¹.mulVec y, hL1asi y hy, a.mulVec y', hL2a y' hy', ?_⟩
+      rw [Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPQ,
+        Matrix.one_mul]
+    · rintro ⟨y, hy, y', hy', hz⟩
+      refine ⟨(cs σ a).mulVec y, hL1as y hy, a⁻¹.mulVec y', hL2ai y' hy', ?_⟩
+      have hz' : z = (cs σ a).mulVec ((cs σ a)⁻¹.mulVec z) := by
+        rw [Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec]
+      rw [hz', hz, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc,
+        Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ha, Matrix.mul_one]
+  have hmeas := hmp.measure_preimage (measurableSet_Sx h₁ h₂ B).nullMeasurableSet
+  show (lam (Sx L₁ L₂ ((a.map (sigR (Fv F v) σ))ᵀ * B * a)) / lam L₁).toReal = (lam (Sx L₁ L₂ B) / lam L₁).toReal
+  rw [hset, hmeas]
+
+end PositivityTheory.SiegelWeilFormula.SwLocFin
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellNu =====
+
+-- ===== clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.SetIntegralCharEqZero =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.SetIntegralCharEqZero", "h": "module\n\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellP\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.MeasurePreservingOfAddEquiv\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellInv\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.ShellNu\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -382,11 +894,11 @@ theorem exists_nontriv (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {ψ : AddChar
     ∃ C > 0, ∀ b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), 0 < nM v b → ∀ r : ℝ, C ≤ r * nM v b →
       ∃ x₀ : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v x₀ ≤ r ∧
         psiV F ψ v (-Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (Matrix.trace (T * b * x₀))) ≠ 1 := by
-  obtain ⟨y₀, hy₀⟩ := exists_psiV_ne_one (v := v) hcm hψ
+  obtain ⟨y₀, hy₀⟩ := _root_.PositivityTheory.SiegelWeilFormula.SwLocFin.exists_psiV_ne_one' (v := v) hcm hψ
   obtain ⟨c, hc, htr⟩ := exists_trace_ge (E := E) v
   obtain ⟨Cm, hCm, hm⟩ := exists_nM_mul (E := E) v n n n
   obtain ⟨Ti, hTi'⟩ : ∃ Ti : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), Ti * T = 1 := ⟨T⁻¹, Matrix.nonsing_inv_mul _ hT⟩
-  have hy0 : y₀ ≠ 0 := by rintro rfl; exact hy₀ (psiV_zero ψ)
+  have hy0 : y₀ ≠ 0 := by rintro rfl; exact hy₀ (_root_.PositivityTheory.SiegelWeilFormula.SwLocFin.psiV_zero' ψ)
   have hny0 : 0 < ‖y₀‖ := norm_pos_iff.2 hy0
   have hTi := nM_nonneg (v := v) Ti
   have hCT : 0 < Cm * nM v Ti + 1 := by have := mul_nonneg hCm hTi; linarith
@@ -550,13 +1062,13 @@ def chi (ψ : AddChar (AF F) ℂ) {n : ℕ} (T b : HermR (Fv F v) σ n) (x : Mat
 theorem chi_add (ψ : AddChar (AF F) ℂ) {n : ℕ} (T b : HermR (Fv F v) σ n) (x y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
     chi ψ T b (x + y) = chi ψ T b x * chi ψ T b y := by
   simp only [chi, Matrix.mul_add, Matrix.trace_add, map_add (f := _), neg_add]
-  exact psiV_add ψ _ _
+  exact _root_.PositivityTheory.SiegelWeilFormula.SwLocFin.psiV_add' ψ _ _
 
 theorem continuous_chi {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) {n : ℕ} (T : HermR (Fv F v) σ n) :
     Continuous fun p : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) × HermR (Fv F v) σ n => chi ψ T p.2 p.1 := by
   have htr : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E)) :=
     IsModuleTopology.continuous_of_linearMap (Algebra.trace (Fv F v) (Fv F v ⊗[F] E))
-  refine (continuous_psiV hψ).comp (htr.comp ?_).neg
+  refine (_root_.PositivityTheory.SiegelWeilFormula.SwLocFin.continuous_psiV' hψ).comp (htr.comp ?_).neg
   exact ((continuous_const.matrix_mul (continuous_subtype_val.comp continuous_snd)).matrix_mul continuous_fst).matrix_trace
 
 theorem trPair_conj (hcm : IsCMExt F E σ) {n : ℕ} (T b : HermR (Fv F v) σ n) (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
@@ -574,7 +1086,7 @@ theorem shellP_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   haveI : lam.IsAddHaarMeasure := h.haar
   obtain ⟨r1, hr1, hpres⟩ := exists_normPres v σ n
   obtain ⟨r2, hr2, hinv⟩ := exists_inv (E := E) v n
-  obtain ⟨r3, hr3, hJ⟩ := jtR_conj_inv v σ h.cm J (psiV F ψ v) μv Φv h.sb
+  obtain ⟨r3, hr3, hJ⟩ := _root_.PositivityTheory.SiegelWeilFormula.SwLocFin.SwSplit.jtR_conj_inv' v σ h.cm J (psiV F ψ v) μv Φv h.sb
   obtain ⟨r4, hr4, hnu⟩ := lattice_norm_conj_invariant v σ h.cm lam L₁ L₂ h.co₁ h.co₂
   obtain ⟨Cq, hCq, hquad⟩ := exists_quad v σ T.1
   obtain ⟨Cν, hCν, hnt⟩ := exists_nontriv v σ h.cm h.chr T.1 h.unit
@@ -655,7 +1167,7 @@ theorem shellP_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
         _ = Cq * Cν ^ 2 * q / R := by rw [hrdef]; field_simp
         _ ≤ ε := by rw [div_le_iff₀ hRpos, mul_comm ε R]; rwa [div_le_iff₀ hε] at hRb
     simp only [whI, hnu', hJ', hval, trPair_conj h.cm, chi]
-    rw [neg_add, neg_add, psiV_add, psiV_add, hq1]
+    rw [neg_add, neg_add, _root_.PositivityTheory.SiegelWeilFormula.SwLocFin.psiV_add', _root_.PositivityTheory.SiegelWeilFormula.SwLocFin.psiV_add', hq1]
     ring
   ·
     intro b hb
@@ -666,7 +1178,7 @@ theorem shellP_core {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
     obtain ⟨x₀, hx₀, hne⟩ := hnt b.1 hbpos r hC
     exact setIntegral_char_eq_zero m U hUm (chi ψ T b) (chi_add ψ T b) (x₀ := x₀) hx₀ hne
   · intro b x
-    exact (norm_psiV h.chr _).le
+    exact (_root_.PositivityTheory.SiegelWeilFormula.SwLocFin.norm_psiV' h.chr _).le
 
 end Shell
 
@@ -674,3 +1186,7 @@ theorem shellP : ShellP := fun F E _ _ _ _ _ σ M J n ψ v μv νv lam L₁ L₂
   Shell.shellP_core σ M J n ψ v μv νv lam L₁ L₂ Φv g T h q hq
 
 end PositivityTheory.SiegelWeilFormula.SwLocFin
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.LocalCharacterIntegrals.SetIntegralCharEqZero =====

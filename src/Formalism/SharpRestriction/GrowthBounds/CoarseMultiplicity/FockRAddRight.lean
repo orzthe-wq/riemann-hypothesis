@@ -111,7 +111,7 @@ theorem Lin_chain (N : S → Matrix (Fin k) (Fin k) R) (s : S) (b : Fin k) (h : 
       · subst hts
         simp [eq_comm]
       · have hts' : ¬ s = t := fun h => hts h.symm
-        simp [hts, hts']
+        simp [hts]
     have hR : ∑ a : Fin k, N s a b • (Lin N p * Lin N (pderiv (s, a) (X (t, c))))
         = Lin N p * (if t = s then C (N t c b) else 0) := by
       simp only [pderiv_X, Pi.single_apply, Prod.mk.injEq]
@@ -119,7 +119,7 @@ theorem Lin_chain (N : S → Matrix (Fin k) (Fin k) R) (s : S) (b : Fin k) (h : 
       · subst hts
         simp [apply_ite, Finset.sum_ite_eq, smul_eq_C_mul, mul_comm]
       · have hts' : ¬ s = t := fun h => hts h.symm
-        simp [hts, hts']
+        simp [hts]
     simp only [map_mul, Derivation.leibniz, smul_eq_mul, map_add (f := _), Lin_X, hL, hp]
     simp only [smul_add, Finset.sum_add_distrib]
     rw [hR]
@@ -127,21 +127,24 @@ theorem Lin_chain (N : S → Matrix (Fin k) (Fin k) R) (s : S) (b : Fin k) (h : 
 
 theorem fockR_Lin (N : S → Matrix (Fin k) (Fin k) R) (P : MvPolynomial (S × Fin k) R) :
     ∀ Q : MvPolynomial (S × Fin k) R, fockR (Lin N P) Q = fockR P (Lin (fun s => (N s).transpose) Q) := by
+  change ∀ Q, FockPairing.pair (Lin N P) Q = FockPairing.pair P (Lin (fun s => (N s).transpose) Q)
   induction P using MvPolynomial.induction_on with
   | C a =>
     intro Q
     have h1 : Lin N (C a : MvPolynomial (S × Fin k) R) = C a := by simp [Lin]
-    rw [h1, C_apply, tsact_monomial_left, tsact_monomial_left, Lin_coeff_zero]
+    rw [h1, C_apply, FockPairing.pair_monomial_left, FockPairing.pair_monomial_left, Lin_coeff_zero]
   | add p q hp hq =>
     intro Q
-    rw [map_add (f := _), tsact_add_left, tsact_add_left, hp, hq]
+    rw [map_add (f := _), FockPairing.pair_add_left, FockPairing.pair_add_left, hp, hq]
   | mul_X p v hp =>
     intro Q
-    rw [map_mul, Lin_X, Finset.mul_sum, tsact_sum_left, tsact_X_mul, Lin_chain, tsact_sum_right]
+    rw [map_mul, Lin_X, Finset.mul_sum, FockPairing.pair_sum_left,
+      FockPairing.pair_mul_X, Lin_chain, FockPairing.pair_sum_right]
     refine Finset.sum_congr rfl fun b _ => ?_
     have e : Lin N p * (C (N v.1 v.2 b) * X (v.1, b)) = N v.1 v.2 b • (Lin N p * X (v.1, b)) := by
       rw [smul_eq_C_mul]; ring
-    rw [e, tsact_smul_left, tsact_X_mul, hp, tsact_smul_right, Matrix.transpose_apply]
+    rw [e, FockPairing.pair_smul_left, FockPairing.pair_mul_X, hp,
+      FockPairing.pair_smul_right, Matrix.transpose_apply]
 
 theorem fockR_Lin_dual (A B : S → Matrix (Fin k) (Fin k) R) (h : ∀ s, B s * (A s).transpose = 1)
     (P Q : MvPolynomial (S × Fin k) R) : fockR (Lin A P) (Lin B Q) = fockR P Q := by
@@ -230,12 +233,12 @@ theorem multDiv_kapFl (O : Type) [CommRing O] [IsLocalRing O] (p : ℕ) [hp : Fa
 
 def fockL {τ K : Type} [CommRing K] (Q : MvPolynomial τ K) : MvPolynomial τ K →ₗ[K] K where
   toFun P := fockR P Q
-  map_add' a b := tsact_add_left a b Q
-  map_smul' c a := by simpa using tsact_smul_left c a Q
+  map_add' a b := FockPairing.pair_add_left a b Q
+  map_smul' c a := by simpa using FockPairing.pair_smul_left c a Q
 
 theorem fockR_add_right {τ K : Type} [CommRing K] (g f f' : MvPolynomial τ K) :
-    fockR g (f + f') = fockR g f + fockR g f' := by
-  rw [tsact_symm, tsact_add_left, tsact_symm f, tsact_symm f']
+    fockR g (f + f') = fockR g f + fockR g f' :=
+  FockPairing.pair_add_right g f f'
 
 section Pair
 
@@ -281,7 +284,7 @@ def TY (c : Kf) : ↥(VS Kf m vec d) →ₗ[Kf] Module.Dual Kf ↥(VS Kf m vec d
     ext u
     simp only [LinearMap.smul_apply, LinearMap.comp_apply, fockL, LinearMap.coe_mk, AddHom.coe_mk, map_smul,
       Submodule.coe_smul, smul_eq_mul, RingHom.id_apply]
-    rw [tsact_smul_right]
+    simp_rw [FockPairing.pair_smul_right]
     ring
 
 theorem TY_apply (c : Kf) (P Q : ↥(Pol Kf (ι := S) (m + 1) d)) :
@@ -296,7 +299,7 @@ theorem int_pair (p κ : ℕ) (hMD : MultDiv O p κ (k := m + 1) d) (G : MvPolyn
   by_cases hD : (((∏ s, (d s).factorial : ℕ) : ℕ) : Kf) = 0
   · exact ⟨0, by rw [hD, div_zero, zero_mul, map_zero]⟩
   have hdvd : (((∏ s, (d s).factorial : ℕ) : ℕ) : O) ∣ (p : O) ^ κ * fockR G E := by
-    unfold fockR
+    unfold fockR FockPairing.pair FockPairing.weight
     rw [Finset.mul_sum]
     apply Finset.dvd_sum
     intro α hα
@@ -306,7 +309,7 @@ theorem int_pair (p κ : ℕ) (hMD : MultDiv O p κ (k := m + 1) d) (G : MvPolyn
     exact ⟨AddMonoidAlgebra.coeff G α * AddMonoidAlgebra.coeff E α * q, by linear_combination (AddMonoidAlgebra.coeff G α * AddMonoidAlgebra.coeff E α) * hq'⟩
   obtain ⟨z, hz⟩ := hdvd
   refine ⟨z, ?_⟩
-  rw [fockR_map, div_mul_eq_mul_div, div_eq_iff hD]
+  simp_rw [FockPairing.pair_map, div_mul_eq_mul_div, div_eq_iff hD]
   have := congrArg (algebraMap O Kf) hz
   simp only [map_mul, map_pow, map_natCast] at this
   rw [this]

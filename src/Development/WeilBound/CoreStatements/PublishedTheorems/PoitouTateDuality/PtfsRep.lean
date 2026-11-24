@@ -3,7 +3,7 @@ module
 public import GroundTheory.ProfiniteCohomology.DiscreteModules
 public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 public import ReciprocityTheory.GaloisValuations.SeparatedDvrSecondCohomologyMem
-public import Development.WeilBound.CoreStatements.EulerCharacteristicCounts.GcohCmp
+public import CompanionTheory.AutomorphicTheory.PadicCyclotomicFields.GcohCmp
 public import GroundTheory.ProfiniteCohomology.CohomologyFunctoriality
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -60,7 +60,7 @@ theorem repCmp {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     (rho : Representation R G M) (hc : ContAction rho) :
     ∃ (A : Rep.{0} (ULift.{0} ℤ) H) (_ : IsDiscreteRep A) (eM : M ≃+ A.V),
       ∀ g m, eM (rho g m) = A.ρ (θ g) (eM m) := by
-  obtain ⟨A, hA, eM, h⟩ := PositivityTheory.LocalTateOrthogonality.Gcoh.gcRep G R M rho hc
+  obtain ⟨A, hA, eM, h⟩ := CompanionTheory.LocalTateOrthogonality.Gcoh.gcRep G R M rho hc
   refine ⟨Rep.res (θ.symm : H ≃* G).toMonoidHom A,
     IsDiscreteRep.res θ.symm.continuous (φ := (θ.symm : H ≃* G).toMonoidHom) A, eM, ?_⟩
   intro g m

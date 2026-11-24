@@ -53,11 +53,11 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.Known
 
 open ReciprocityTheory.ChartRestriction.G
 
-theorem metricChange : AI.I2.MetricChangeStatement := Geo.metricChange
+alias metricChange := _root_.ReciprocityTheory.ChartRestriction.G.Geo.metricChange
 
-theorem divSuppArith : Geo.DivSuppArithStatement := Geo.divSuppArith
+alias divSuppArith := _root_.ReciprocityTheory.ChartRestriction.G.Geo.divSuppArith
 
-theorem genFibreExists : AI.I4.GenFibreExistsStatement := GroundTheory.Heights₂.Heights.Targets.genFibreExists
+alias genFibreExists := _root_.GroundTheory.Heights₂.Heights.Targets.genFibreExists
 
 theorem fieldNumbers (F : Type) [Field F] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] :
     AI.I1.ExistsUniqueStatement F ι ∧ AI.I1.SymmStatement F ι ∧ AI.I1.MultilinStatement F ι :=

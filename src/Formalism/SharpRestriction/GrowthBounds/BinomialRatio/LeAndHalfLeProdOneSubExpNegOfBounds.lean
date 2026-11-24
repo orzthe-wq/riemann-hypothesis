@@ -61,21 +61,23 @@ theorem le_and_half_le_prod_one_sub_exp_neg_of_bounds {a b' k Q Y La N1 A0 m M :
   have hkQ0 : 0 < k * Q := mul_pos hk0 hQ0
 
   have h1 : m * (k * Q * Y) ≤ b' := (le_div_iff₀ (mul_pos hkQ0 hY0)).mp hm
-  have h2 : m * (k * Q) ≤ b' := by
-    have : m * (k * Q) * 1 ≤ m * (k * Q) * Y := mul_le_mul_of_nonneg_left hY (mul_nonneg hm0 hkQ0.le)
-    nlinarith
+  have h2 : m * (k * Q) ≤ b' :=
+    (le_mul_of_one_le_right (mul_nonneg hm0 hkQ0.le) hY).trans (by rwa [mul_assoc])
 
   have h3 : k * Q ≤ b' := by
-    have hk2 : 1 ≤ k ^ 2 := by nlinarith
-    have : k * Q * 1 ≤ k * Q * k ^ 2 := mul_le_mul_of_nonneg_left hk2 hkQ0.le
-    nlinarith
+    have hk2 : 1 ≤ k ^ 2 := one_le_pow₀ (by linarith)
+    calc k * Q ≤ k * Q * k ^ 2 := le_mul_of_one_le_right hkQ0.le hk2
+      _ = k ^ 3 * Q := by ring
+      _ ≤ b' := hkQ
   have h4 : M * (k * Q) ≤ 2 * b' := by
     have : M * (k * Q) ≤ (m + 1) * (k * Q) := mul_le_mul_of_nonneg_right hM.le hkQ0.le
     linarith
 
   have h5 : 120 * b' ≤ a := by
-    have e1 : 5 ≤ k * Y := by nlinarith
-    have e2 : 120 ≤ k * Y * La := by nlinarith
+    have e1 : 5 ≤ k * Y := hk.trans (le_mul_of_one_le_right hk0.le hY)
+    have e2 : 120 ≤ k * Y * La := by
+      calc (120 : ℝ) = 5 * 24 := by norm_num
+        _ ≤ k * Y * La := mul_le_mul e1 hLa (by norm_num) (by linarith)
     have : 120 * b' ≤ k * Y * La * b' := mul_le_mul_of_nonneg_right e2 hb.le
     linarith
   have h6 : a ≤ A0 * (2 * Q) := (div_le_iff₀ (by linarith)).mp hA0
@@ -87,16 +89,25 @@ theorem le_and_half_le_prod_one_sub_exp_neg_of_bounds {a b' k Q Y La N1 A0 m M :
     linarith
   constructor
   · rw [le_div_iff₀ hk0]
-    have e1 : 24 ≤ N1 * La := by nlinarith
+    have e1 : 24 ≤ N1 * La := hLa.trans (le_mul_of_one_le_left (by linarith) hN1)
     have e2 : A0 * 24 ≤ A0 * (N1 * La) := mul_le_mul_of_nonneg_left e1 hA0pos.le
     have e3 : (M * k) * Q ≤ (A0 * N1 * La) * Q := by
-      have : A0 * 24 * Q ≤ A0 * (N1 * La) * Q := mul_le_mul_of_nonneg_right e2 hQ0.le
-      nlinarith
+      have hAQ : A0 * 24 * Q ≤ (A0 * N1 * La) * Q := by
+        simpa [mul_assoc] using mul_le_mul_of_nonneg_right e2 hQ0.le
+      have hAQ0 : 0 ≤ A0 * Q := mul_nonneg hA0pos.le hQ0.le
+      have hMkQ : (M * k) * Q = M * (k * Q) := mul_assoc M k Q
+      have h6' : a ≤ 2 * (A0 * Q) := by linarith [show A0 * (2 * Q) = 2 * (A0 * Q) by ring]
+      have hAQ24 : A0 * 24 * Q = 24 * (A0 * Q) := by ring
+      linarith
     exact le_of_mul_le_mul_right e3 hQ0
   · have hx : (k - 1) * M / A0 ≤ 1 / 30 := by
       rw [div_le_iff₀ hA0pos]
-      have e1 : (k - 1) * M ≤ k * M := by nlinarith
-      have e3 : (k * M) * Q ≤ (1 / 30 * A0) * Q := by nlinarith
+      have e1 : (k - 1) * M ≤ k * M := mul_le_mul_of_nonneg_right (by linarith) hM0
+      have e3 : (k * M) * Q ≤ (1 / 30 * A0) * Q := by
+        have hkm : (k * M) * Q = M * (k * Q) := by ring
+        have h6' : a ≤ 2 * (A0 * Q) := by linarith [show A0 * (2 * Q) = 2 * (A0 * Q) by ring]
+        have hrhs : (1 / 30 * A0) * Q = 1 / 30 * (A0 * Q) := by ring
+        linarith
       have := le_of_mul_le_mul_right e3 hQ0
       linarith
     have he1 : Real.exp (-La / 8) ≤ 1 / 4 := by
@@ -174,7 +185,7 @@ theorem Std.La_ge (h : Std C0 Cde CE1 CE2 H X) (hC0 : 0 ≤ C0) : C0 ≤ X.La C0
   have h1 := h.loga
   have h2 := h.one_le_level_alt
   unfold Loc.La lambdaScale
-  have h3 : (1 : ℝ) ≤ (X.N1 : ℝ) ^ 2 := by nlinarith
+  have h3 : (1 : ℝ) ≤ (X.N1 : ℝ) ^ 2 := one_le_pow₀ h2
   have h4 : C0 * 1 ≤ C0 * (X.N1 : ℝ) ^ 2 := mul_le_mul_of_nonneg_left h3 hC0
   have h5 : C0 * (X.N1 : ℝ) ^ 2 * 1 ≤ C0 * (X.N1 : ℝ) ^ 2 * Real.log X.a :=
     mul_le_mul_of_nonneg_left h1 (by positivity)
@@ -200,13 +211,10 @@ theorem one_segment_of_upper_lower {D : Formalism.BasicNotions.D7} (hU : RestUp)
   have hlow := low X W Qq O Kf ι σ jO w hSet hH hc j m hm0 hcore.1 rz ry hd
   have hfac : 1 / 2 ≤ lowFac C0 CE1 CE2 X j ⌈m⌉₊ := by
     have hkm : (X.m : ℝ) = X.k - 1 := by unfold Loc.k; ring
-    unfold lowFac
-    rw [hkm]
-    exact hcore.2
+    simpa [lowFac, hkm] using hcore.2
   have hmm : (0 : ℝ) ≤ (mmB C0 CE1 CE2 X j rz ry : ℝ) := Nat.cast_nonneg _
-  have h1 : 1 / 2 * (mmB C0 CE1 CE2 X j rz ry : ℝ) ≤ lowFac C0 CE1 CE2 X j ⌈m⌉₊ * (mmB C0 CE1 CE2 X j rz ry : ℝ) :=
-    mul_le_mul_of_nonneg_right hfac hmm
-  have h2 : (mmB C0 CE1 CE2 X j rz ry : ℝ) / 2 ≤ (rankOnDigits O C0 CE1 CE2 X j m rz ry : ℝ) := by linarith
+  have h2 : (mmB C0 CE1 CE2 X j rz ry : ℝ) / 2 ≤ (rankOnDigits O C0 CE1 CE2 X j m rz ry : ℝ) := by
+    linarith [mul_le_mul_of_nonneg_right hfac hmm]
   exact h2
 
 end Formalism.MainNotions.ColumnSystems.Pf

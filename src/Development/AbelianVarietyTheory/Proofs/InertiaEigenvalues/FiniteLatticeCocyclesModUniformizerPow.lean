@@ -4,10 +4,12 @@ public import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
 public import Formalism.GaloisCohomology.LocalTateDualityK
 public import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardCocyclesMulInvariantsDiscrete
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoefficientRingIntegersCompactAdicPropertiesStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteH1H2LocalStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixingSubgroupEquivBicontinuous
+public import Mathlib.NumberTheory.Padics.PadicIntegers
+public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Defs
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CoefficientRingIntegersCompactAdicProperties
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteH1H2Local
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOpenOfFgOfSpanEqTop
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixingSubgroupEquivBicontinuous
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -76,7 +78,7 @@ theorem cocycles_finite (hT : Formalism.GaloisCohomology.LocalTateDualityK) (l :
   have hrho : ReciprocityTheory.Gal.ContAction rho := by
     refine continuous_prod_of_discrete_right.2 fun m => ?_
     exact (hlc m).continuous.comp hφ.2
-  have hH := (GlobalTheory.T.finite_H1_H2_local hT l K.1 hK (r + 1) M rho (Nat.succ_pos r) hrho).1
+  have hH := (_root_.GlobalTheory.finite_H1_H2_of_localTateDuality hT l K.1 hK (r + 1) M rho (Nat.succ_pos r) hrho).1
   have hZ := GlobalTheory.CocycleCount.card_cocycles_mul_invariants_discrete _ _ M rho hrho
   have hH1 : 0 < Nat.card (ReciprocityTheory.Gal.H1 rho) := Nat.card_pos
   have hM : 0 < Nat.card M := Nat.card_pos
@@ -97,7 +99,7 @@ theorem dvd_and_finite (l : ℕ) [Fact l.Prime] (LL : Type) [Field LL] [Algebra 
     [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL] (hO : GoodO (Qp := ℚ_[l]) LL O)
     (ϖ : O) (hϖ : Irreducible ϖ) (n : ℕ) :
     ϖ ^ n ∣ ((l : ℕ) : O) ^ n ∧ Finite (O ⧸ Ideal.span {ϖ ^ n}) := by
-  obtain ⟨-, -, hfin, hcomp⟩ := GlobalTheory.T.coefficient_ring_integers_compact_adic_properties l LL O hO
+  obtain ⟨-, -, hfin, hcomp⟩ := _root_.GlobalTheory.GoodCoeff.good_coeff_integers l LL O hO
   obtain ⟨⟨hdom, hdvr, -⟩, -⟩ := hO
   have hnu : ¬ IsUnit ((l : ℕ) : O) := fun hu => by
     have htop : Ideal.span {((l : ℕ) : O)} = ⊤ := Ideal.span_singleton_eq_top.2 hu

@@ -116,7 +116,7 @@ theorem UpperTheory.V.Af.Smo.locKir :
     obtain ⟨σ, hσ⟩ := hσ
     refine ⟨c, fun p => h (p.val m') * H₀ (p * (σ (p.val m'))⁻¹), ?_, fun W hW hWU p hp => ?_⟩
     · have : σ ((1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) m') = 1 := hσ _ 1 (rowM_one m').symm
-      simp only [Units.val_one, hh1, this, inv_one, mul_one, one_mul, hH₀]
+      simp only [Units.val_one, hh1, this, inv_one, mul_one, hH₀]
     · have hinv : ∀ g, ∀ u ∈ U₁, comb c₀ W (g * u) = comb c₀ W g := by
         intro g u hu
         unfold comb

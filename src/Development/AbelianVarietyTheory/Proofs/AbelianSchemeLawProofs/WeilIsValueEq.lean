@@ -233,7 +233,7 @@ theorem commVal_eq (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) {t 
       hG hA hL (by
         rw [Category.assoc, Category.assoc, hx, ← hx', MonObj.comp_pow, _root_.mul_one, _root_.mul_one]
         module) y hJ
-    simp only [MonObj.comp_mul, MonObj.comp_one, lift_fst_assoc, lift_snd, Category.id_comp, _root_.mul_one] at e
+    simp only [MonObj.comp_one, lift_fst_assoc, lift_snd, Category.id_comp] at e
     have e' := congrArg Additive.ofMul e
     apply Additive.ofMul.injective
     simp only [ofMul_mul, ofMul_zpow, ofMul_inv] at e' ⊢
@@ -244,7 +244,7 @@ theorem commVal_eq (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) {t 
       hG hA hL (by
         rw [Category.assoc, Category.assoc, hy, ← hy']
         module) x hJ
-    simp only [MonObj.comp_mul, MonObj.comp_one, lift_fst_assoc, lift_snd, Category.id_comp, _root_.mul_one] at e
+    simp only [MonObj.comp_one, lift_fst_assoc, lift_snd, Category.id_comp] at e
     have e' := congrArg Additive.ofMul e
     apply Additive.ofMul.injective
     simp only [ofMul_mul, ofMul_pow, ofMul_inv] at e' ⊢

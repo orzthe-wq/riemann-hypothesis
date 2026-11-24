@@ -57,4 +57,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.Chain.RealIt
 
 theorem _root_.GlobalTheory.T.liftsChar_of_residueChar_at_splitPlace : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (PP : Pl D.host.E) (a : (kP PP)ˣ →* ℂˣ), GlobalTheory.StepLaw.ResAt χ PP a → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v), IsProjAt φ PP → ∀ μ : (Fv D.host.F v)ˣ →* ℂˣ, (∀ (x : (AE D)ˣ) (y : (Fv D.host.F v)ˣ), (∃ e, IsIdemOf φ e ∧ (1 - e) * (x : AE D) = 1 - e ∧ rdA φ (x : AE D) = y) → μ y = Circle.toUnits (χ x)) → LiftsChar φ PP μ a := by
-  first | exact @GlobalTheory.ResLift.liftsChar_of_resAt | exact GlobalTheory.ResLift.liftsChar_of_resAt | (intros; apply GlobalTheory.ResLift.liftsChar_of_resAt <;> assumption)
+  first | exact @GlobalTheory.ResLift.liftsChar_of_resAt

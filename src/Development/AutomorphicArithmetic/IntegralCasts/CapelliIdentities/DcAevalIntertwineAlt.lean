@@ -42,6 +42,8 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 
+import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.DcAevalIntertwine
+
 @[expose] public section
 
 theorem UpperTheory.Reformulated.B.Qk13.dc_aeval_intertwine.{u_1, u_2} :
@@ -51,20 +53,5 @@ theorem UpperTheory.Reformulated.B.Qk13.dc_aeval_intertwine.{u_1, u_2} :
       ∀ (p : Polynomial ℂ) (y : Y),
         (ψ : Y → Z) (((Polynomial.aeval A : Polynomial ℂ → Module.End ℂ Y) p : Y → Y) y) =
           ((Polynomial.aeval B : Polynomial ℂ → Module.End ℂ Z) p : Z → Z) ((ψ : Y → Z) y) := by
-  intro Y Z _ _ _ _ ψ A B h p
-  have hpow : ∀ (n : ℕ) (y : Y), ψ ((A ^ n) y) = (B ^ n) (ψ y) := by
-    intro n
-    induction n with
-    | zero => intro y; simp
-    | succ n ih =>
-      intro y
-      rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]
-  induction p using Polynomial.induction_on' with
-  | add p q hp hq =>
-    intro y
-    rw [map_add (f := _), map_add (f := _), LinearMap.add_apply, LinearMap.add_apply, map_add (f := _), hp, hq]
-  | monomial n a =>
-    intro y
-    rw [Polynomial.aeval_monomial, Polynomial.aeval_monomial, Module.End.mul_apply,
-      Module.End.mul_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply,
-      map_smul, hpow]
+  intro Y Z _ _ _ _ ψ A B h p y
+  exact UpperTheory.Reformulated.B.Qj10.dc_aeval_intertwine ψ A B h p y

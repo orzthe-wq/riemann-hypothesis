@@ -1,46 +1,9 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.LaplaceFoundations.RaisingLoweringNormIdentities
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 public import Mathlib.Analysis.InnerProductSpace.Calculus
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.ConjTransposeEqOfInG
 
 @[expose] public section
@@ -56,35 +19,20 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
-private theorem Jm_mul_selfDiscreteSeriesExistence (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
-
-private theorem Jm_conjTransposeDiscreteSeriesExistence (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
-  unfold Jm
-  rw [Matrix.diagonal_conjTranspose]
-  congr 1
-  funext a
-  change star (if ε a = true then (1 : ℂ) else -1) = _
-  split_ifs <;> simp
-
 private theorem Jm_mul_Jm_mul_eq (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) :
     Jm ε * (Jm ε * Y) = Y := by
-  rw [← Matrix.mul_assoc, Jm_mul_selfDiscreteSeriesExistence, Matrix.one_mul]
+  rw [← Matrix.mul_assoc, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self, Matrix.one_mul]
 
 theorem inv_eq_signature_conjTranspose_conj {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     g⁻¹ = Jm ε * gᴴ * Jm ε := by
   have h : gᴴ * Jm ε * g = Jm ε := hg
   apply Matrix.inv_eq_left_inv
-  rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, Jm_mul_selfDiscreteSeriesExistence]
+  rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self]
 
 theorem inv_mul_self_of_mem_indefiniteUnitary {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     g⁻¹ * g = 1 := by
   have h : gᴴ * Jm ε * g = Jm ε := hg
-  rw [inv_eq_signature_conjTranspose_conj hg, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, Jm_mul_selfDiscreteSeriesExistence]
+  rw [inv_eq_signature_conjTranspose_conj hg, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self]
 
 theorem mul_inv_self_of_mem_indefiniteUnitary {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     g * g⁻¹ = 1 := Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (inv_mul_self_of_mem_indefiniteUnitary hg))
@@ -94,8 +42,8 @@ theorem isUnit_of_mem_indefiniteUnitary {ε : Fin n → Bool} {g : Matrix (Fin n
 
 theorem inG_conj_unitary {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε)
     (hX : inG ε X) : inG ε (g * X * g⁻¹) := by
-  have hJ : Jm ε * Jm ε = 1 := Jm_mul_selfDiscreteSeriesExistence ε
-  have hJh : (Jm ε)ᴴ = Jm ε := Jm_conjTransposeDiscreteSeriesExistence ε
+  have hJ : Jm ε * Jm ε = 1 := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε
+  have hJh : (Jm ε)ᴴ = Jm ε := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_conjTranspose ε
   have hX0 : Xᴴ * Jm ε + Jm ε * X = 0 := hX
   have hX' : Jm ε * Xᴴ + X * Jm ε = 0 := by
     have e : Jm ε * Xᴴ + X * Jm ε = Jm ε * (Xᴴ * Jm ε + Jm ε * X) * Jm ε := by
@@ -110,18 +58,12 @@ theorem inG_conj_unitary {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n) ℂ
   show (g * X * g⁻¹)ᴴ * Jm ε + Jm ε * (g * X * g⁻¹) = 0
   rw [key, hX', Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_mul]
 
-private theorem Jm_conjTranspose_Jm_eq_neg_of_inG {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) :
-    Jm ε * Xᴴ * Jm ε = -X := by
-  have h0 : Xᴴ * Jm ε + Jm ε * X = 0 := hX
-  have h1 : Xᴴ * Jm ε = -(Jm ε * X) := eq_neg_of_add_eq_zero_left h0
-  rw [Matrix.mul_assoc, h1, Matrix.mul_neg, Jm_mul_Jm_mul_eq]
-
 theorem conj_involution_complex_comb {ε : Fin n → Bool} {A B : Matrix (Fin n) (Fin n) ℂ} (hA : inG ε A) (hB : inG ε B) :
     stJ ε (A + Complex.I • B) = -A + Complex.I • B := by
   unfold stJ
   rw [Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.mul_add, Matrix.add_mul,
-    Matrix.mul_smul, Matrix.smul_mul, Jm_conjTranspose_Jm_eq_neg_of_inG hA, Jm_conjTranspose_Jm_eq_neg_of_inG hB]
-  simp [Complex.star_def, Complex.conj_I]
+    Matrix.mul_smul, Matrix.smul_mul, _root_.ReciprocityTheory.ChartRestriction.DS.SmDerA.J_conj_J_of_inG hA, _root_.ReciprocityTheory.ChartRestriction.DS.SmDerA.J_conj_J_of_inG hB]
+  simp [Complex.conj_I]
 
 theorem actM_add_smul {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (X Y : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) :
@@ -187,30 +129,23 @@ theorem hasDerivAt_conj_exp_action {ε : Fin n → Bool} {σ : Matrix (Fin n) (F
 
 end Rep
 
-private theorem inG_of_Jm_conj_eq_neg {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ}
-    (h : Jm ε * Yᴴ * Jm ε = -Y) : inG ε Y := by
-  show Yᴴ * Jm ε + Jm ε * Y = 0
-  have e : Yᴴ * Jm ε = Jm ε * (Jm ε * Yᴴ * Jm ε) := by
-    rw [Matrix.mul_assoc (Jm ε) Yᴴ, Jm_mul_Jm_mul_eq]
-  rw [e, h, Matrix.mul_neg, neg_add_cancel]
-
 private theorem exists_inG_add_I_smul_inG (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     ∃ A B : Matrix (Fin n) (Fin n) ℂ, inG ε A ∧ inG ε B ∧ X = A + Complex.I • B := by
-  have hJ : Jm ε * Jm ε = 1 := Jm_mul_selfDiscreteSeriesExistence ε
-  have hJh : (Jm ε)ᴴ = Jm ε := Jm_conjTransposeDiscreteSeriesExistence ε
+  have hJ : Jm ε * Jm ε = 1 := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_mul_self ε
+  have hJh : (Jm ε)ᴴ = Jm ε := _root_.ReciprocityTheory.ChartRestriction.DS.S7.Jm_conjTranspose ε
   refine ⟨(1 / 2 : ℂ) • (X - Jm ε * Xᴴ * Jm ε), (1 / (2 * Complex.I)) • (X + Jm ε * Xᴴ * Jm ε),
     ?_, ?_, ?_⟩
-  · apply inG_of_Jm_conj_eq_neg
+  · apply _root_.ReciprocityTheory.ChartRestriction.DS.SmDerA.inG_of_J
     simp only [Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, hJh,
       Matrix.conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub,
       Matrix.sub_mul, Matrix.mul_assoc, hJ, Matrix.mul_one, Jm_mul_Jm_mul_eq]
     rw [show star (1 / 2 : ℂ) = 1 / 2 by simp, ← smul_neg, neg_sub]
-  · apply inG_of_Jm_conj_eq_neg
+  · apply _root_.ReciprocityTheory.ChartRestriction.DS.SmDerA.inG_of_J
     simp only [Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, hJh,
       Matrix.conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add,
       Matrix.add_mul, Matrix.mul_assoc, hJ, Matrix.mul_one, Jm_mul_Jm_mul_eq]
     have hc : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) := by
-      simp [Complex.star_def, Complex.conj_I]
+      simp [Complex.conj_I]
     rw [hc, neg_smul, add_comm (Jm ε * (Xᴴ * Jm ε)) X]
   · have hI : Complex.I * (1 / (2 * Complex.I)) = 1 / 2 := by
       rw [mul_one_div, mul_comm 2 Complex.I, ← div_div, div_self Complex.I_ne_zero]

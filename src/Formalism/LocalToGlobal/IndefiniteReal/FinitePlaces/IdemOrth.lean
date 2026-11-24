@@ -121,15 +121,6 @@ theorem not_two_primes {I : Ideal (𝓞 D.host.E)} (hI : I ≠ ⊤) {p q : ℕ} 
   simp only [eq_intCast, Int.cast_natCast]
   exact add_mem (I.mul_mem_left _ hpI) (I.mul_mem_left _ hqI)
 
-theorem nat_mem_of_conj {P Q : HeightOneSpectrum (𝓞 D.host.E)} (h : Lev.IsConjPl (D := D) P Q) {n : ℕ}
-    (hn : (n : 𝓞 D.host.E) ∈ P.asIdeal) : (n : 𝓞 D.host.E) ∈ Q.asIdeal := by
-  obtain ⟨c, hc, hce⟩ := h _ hn
-  have : c = (n : 𝓞 D.host.E) := by
-    apply FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E
-    show (c : D.host.E) = ((n : 𝓞 D.host.E) : D.host.E)
-    rw [hce]; push_cast; exact star_natCast n
-  rwa [← this]
-
 theorem char_mem {P : HeightOneSpectrum (𝓞 D.host.E)} {q : ℕ} (hq : q.Prime)
     (hc : Nat.card (Formalism.L2.DIV.kP P) = q) : (q : 𝓞 D.host.E) ∈ P.asIdeal := by
   have hfin : Finite (Formalism.L2.DIV.kP P) := Nat.finite_of_card_ne_zero (by rw [hc]; exact hq.ne_zero)

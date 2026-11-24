@@ -3,7 +3,7 @@ module
 public import Formalism.SharpRestriction.CuspSpanNormBounds.GlobAut
 public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.FiniteAdelicUnitaryCongruenceTopology
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuousStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.RightRegularRepUnitaryStronglyContinuous
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -245,7 +245,7 @@ end General
 theorem re_orth_proj : ∀ B : RowsAut, IsOrthProjOnto B.Re (LinearMap.range (B.Re : B.I.L2 B.μf B.fund →ₗ[ℂ] B.I.L2 B.μf B.fund)) ∧ (∀ g : B.I.Ginf, B.Re.comp (B.R (g, 1)) = (B.R (g, 1)).comp B.Re) ∧ ∃ g : ℕ, 1 ≤ g ∧ ∀ k ∈ B.I.Kg g, (B.R (1, k)).comp B.Re = B.Re := by
   intro B
   obtain ⟨hT2, -, hSC, hKc, hKo, ⟨K, hK⟩, -⟩ := GlobalTheory.CongTop.adelic_topology B.I
-  obtain ⟨hR1, hRm, hRn, hRc, -⟩ := GlobalTheory.T.rightRegularRep_unitary_stronglyContinuous B
+  obtain ⟨hR1, hRm, hRn, hRc, -⟩ := _root_.GlobalTheory.RightRegFund.rightReg_unitary_continuous B
   obtain ⟨hlc, hconv, hst, -, hsupp, -, -⟩ := B.e_adm
   obtain ⟨-, hRe⟩ := B.Re_spec
   have hKc' : IsCompact (K : Set B.I.Gf) := by rw [hK]; exact hKc

@@ -302,7 +302,7 @@ theorem collapse_factor : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopol
   haveI : ρ₂.IsInvInvariant := by
     refine isInvInvariant_of_prod ER ρ ρ₁ ρ₂ cρ hcρ hρe (U := {a : R.subgroupOf G₁ | ((a : G₁) : H) ∈ K₁}) ?_ hρ₁
     ext a
-    simp [Set.mem_inv]
+    simp
 
   let T : G₂ → Set (R.subgroupOf G₂) := fun y => {b | (b : G₂) * y ∈ K₂'}
   have hTm : ∀ y, MeasurableSet (T y) := fun y =>
@@ -317,7 +317,7 @@ theorem collapse_factor : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopol
       rw [show ((b : G₂) : H) * (y : H) * (((b₀ : G₂) : H) * (y : H))⁻¹ = ((b : G₂) : H) * ((b₀ : G₂) : H)⁻¹ by group]
     rw [hTy, measure_setOf_mul_mem ρ₂ ?_ b₀⁻¹, hρ₂]
     ext b
-    simp [U₂, Set.mem_inv]
+    simp [U₂]
   have hT0 : ∀ y, (¬ ∃ b₀ : R.subgroupOf G₂, (b₀ : G₂) * y ∈ K₂') → T y = ∅ := fun y hy => by
     ext b
     simp only [Set.mem_empty_iff_false, iff_false]

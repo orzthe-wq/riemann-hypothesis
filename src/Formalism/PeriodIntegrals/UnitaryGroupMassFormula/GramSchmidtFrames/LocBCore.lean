@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Formalism.HermitianCurvature.BigCellVanishingOfCommute
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.PolynomialProperness.ZhatNormLinearBound
 
 @[expose] public section
 
@@ -62,16 +63,9 @@ variable {k r : ℕ}
 def omS (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) : Fin (2 * r + k + 1) → ℂ :=
   prW k r z' ((Hpk k r * gᴴ * Hpk k r) *ᵥ xcofL k r z z' g)
 
-lemma inv_uh {g : B.Mat k r} (hg : g ∈ B.GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
-  have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
-  have hL : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by
-    calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by simp only [Matrix.mul_assoc]
-      _ = 1 := by rw [hg', hH_sq]
-  exact Matrix.inv_eq_left_inv hL
-
 lemma omS_eq (z z' : Fin (2 * r + k + 1) → ℂ) {g : B.Mat k r} (hg : g ∈ B.GV k r) :
     omW' k r z z' g = omS k r z z' g := by
-  rw [omW', omS, inv_uh hg]
+  rw [omW', omS, _root_.PI.PolynomialProperness.GN.inv_eq hg]
 
 lemma s_omS (z z' : Fin (2 * r + k + 1) → ℂ) {s : Set (B.Mat k r)} : Sm (fun g => omS k r z z' g) s := by
   unfold omS

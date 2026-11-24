@@ -102,7 +102,7 @@ theorem UpperTheory.V.Z.Tf.Orb.placeData :
       · exact ((Φ σ).commutes a).symm
   · have := w.1.isPrime
     have he : w.1.asIdeal.ramificationIdx (𝓞 F) = 1 := Ideal.ramificationIdx_eq_one_iff.2 hu
-    obtain ⟨π, hπ⟩ := valued_adicCompletion_surjective (K := F) v (WithZero.exp (-1 : ℤ))
+    obtain ⟨π, hπ⟩ := IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_surjective (K := F) v (WithZero.exp (-1 : ℤ))
     have h1 : Valued.v (algebraMap (v.adicCompletion F) (w.1.adicCompletion E) π) = WithZero.exp (-1 : ℤ) := by
       rw [algebraMap_completion_eq, valued_completionMap, he, pow_one, hπ]
     refine ⟨π, (hlt _).2 (by rw [h1, ← WithZero.exp_zero, WithZero.exp_lt_exp]; omega), fun x hx => (hle _ _).2 ?_⟩

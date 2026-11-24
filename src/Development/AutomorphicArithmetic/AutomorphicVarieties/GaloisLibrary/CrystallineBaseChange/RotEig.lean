@@ -59,7 +59,7 @@ private noncomputable def rot (θ : TR.Rinf F) : TR.Kinf F 2 :=
 omit [NumberField F] in
 private theorem rot_add (θ η : TR.Rinf F) : rot (θ + η) = rot θ * rot η := by
   ext i j v
-  fin_cases i <;> fin_cases j <;> simp [rot, Matrix.mul_apply, Fin.sum_univ_succ, Real.cos_add, Real.sin_add] <;> ring
+  fin_cases i <;> fin_cases j <;> simp [rot, Real.cos_add, Real.sin_add] <;> ring
 
 omit [NumberField F] in
 private theorem rot_zero : rot (0 : TR.Rinf F) = 1 := by

@@ -85,7 +85,7 @@ theorem coCpt_of_isAniso {V : HSp D} (h : IsAniso V) : CoCpt V :=
   coCpt_of_mul (GlobalTheory.Mem.AnisoQuotient.exists_compact D V h)
 
 theorem coCpt_of_posDef {V : HSp D} (h : ∀ τ, (gramAt D V τ).PosDef) : CoCpt V :=
-  coCpt_of_mul (GlobalTheory.definite_unitary_cocompact V h)
+  coCpt_of_mul (_root_.GlobalTheory.DefiniteQuotient.exists_compact V h)
 
 theorem exists_weil {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D) {χS χT : (AE D)ˣ →* Circle}
     (h1 : IsHeckeChar D χS) (h2 : IsHeckeChar D χT) (h3 : ResEta D χS S.rank) (h4 : ResEta D χT T.rank) :
@@ -116,7 +116,7 @@ theorem nonempty_stepFB {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (
     (B : BesLev D σ) : Nonempty (StepFB ψ J B) :=
   nonempty_step hψ _ _ _ _ _ _ (even_im_hermitian_sub J.d) (even_im_hermitian_sub B.d)
 
-theorem cmHost_imaginaryGenerator_ne_zero (D : D7) : D.host.xi0 ≠ 0 := GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D
+alias cmHost_imaginaryGenerator_ne_zero := _root_.GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero
 
 end GlobalTheory.Unf.Inhab
 

@@ -227,7 +227,7 @@ theorem exists_basis (V : HSp D) (he : e * e = e) (h : Comparison₂ P e) :
       GlobalTheory.LatDual.smul_mem_lamHat V _ (hz i) _ (idem_mul_span_mem V he h (hb i))
     convert this using 1
     funext a
-    simp only [Finset.sum_apply, Pi.smul_apply, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.mul_sum]
+    simp only [Finset.sum_apply, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => by ring
   · rw [GlobalTheory.LatDual.lamHat_eq_hat] at hy
     induction hy using AddSubgroup.closure_induction with

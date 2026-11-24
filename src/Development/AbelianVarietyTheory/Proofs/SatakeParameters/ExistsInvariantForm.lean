@@ -126,9 +126,7 @@ theorem isHalf_actO {e : AE D} (g : GA D S) (h : GA D T) {u : WO S T} (hu : IsHa
   unfold actO
   rw [← Matrix.smul_mul, ← Matrix.mul_smul, hu]
 
-theorem actO_inv_actO (g : GA D S) (h : GA D T) (u : WO S T) : actO S T g⁻¹ h⁻¹ (actO S T g h u) = u := by
-  have := GlobalTheory.AdelicLatMove.actO_actO_inv S T g⁻¹ h⁻¹ u
-  rwa [inv_inv, inv_inv] at this
+alias actO_inv_actO := _root_.GlobalTheory.WeilVacMove.actO_inv_actO
 
 theorem exists_count_form' {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitIdem D e)
     (hd : ∀ y, IsHalf e y → y ∉ Λ → ∃ l ∈ Λ, IsHalf (cA D e) l ∧ ψ (symplO S T l y) ≠ 1)

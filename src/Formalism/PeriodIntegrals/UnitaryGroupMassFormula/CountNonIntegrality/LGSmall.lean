@@ -54,7 +54,6 @@ theorem oneFI_ne_zero (D : Formalism.BasicNotions.D7) :
     (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F) ≠ 0 := by
   first
   | exact one_ne_zero
-  | exact FractionalIdeal.one_ne_zero
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
@@ -96,20 +95,16 @@ theorem dual_mul_different_integral (D : Formalism.BasicNotions.D7) (t : D.host.
   rw [← hy]
   first
   | exact RingOfIntegers.isIntegral_coe y
-  | exact y.2
 
 theorem differentF_ne_bot (D : Formalism.BasicNotions.D7) : differentIdeal ℤ (𝓞 D.host.F) ≠ ⊥ := by
   first
   | exact differentIdeal_ne_bot
-  | exact differentIdeal_ne_bot (K := ℚ) (L := D.host.F)
 
 theorem dual_lattice_powers : DualPow := by
   intro D t ht m
   have hinj : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) := by
     first
     | exact FaithfulSMul.algebraMap_injective _ _
-    | exact NoZeroSMulDivisors.algebraMap_injective _ _
-    | exact (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)).injective
   have hne : ddS D ≠ 0 := by
     unfold ddS
     rw [Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective hinj]
@@ -127,8 +122,6 @@ theorem dual_lattice_powers : DualPow := by
       refine ⟨⟨_, hint⟩, ?_⟩
       first
       | rfl
-      | (simp [map_mul]; done)
-      | (simp only [RingHom.toIntAlgHom_apply, map_mul]; rfl)
     | zero =>
       exact (FractionalIdeal.mem_one_iff _).mpr ⟨0, by simp⟩
     | add x y _ _ hx hy =>
@@ -151,7 +144,6 @@ theorem dual_lattice_powers : DualPow := by
     rw [pow_zero, pow_zero]
     first
     | exact FractionalIdeal.one_mem_one _
-    | exact FractionalIdeal.one_mem_one
   | succ n ih =>
     rw [pow_succ, pow_succ]
     exact FractionalIdeal.mul_mem_mul ih h1

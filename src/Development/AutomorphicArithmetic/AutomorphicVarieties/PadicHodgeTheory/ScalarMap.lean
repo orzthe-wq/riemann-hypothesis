@@ -214,7 +214,7 @@ theorem UpperTheory.V.Loc.lemma2a :
   obtain ⟨S, hS⟩ := cond_eqs D.Ψ (Iq l) U.r.hom
   obtain ⟨_, _, _⟩ := frac_alg l O
   obtain ⟨x, hx, -⟩ := univEx D U
-  obtain ⟨-, φ, hφ⟩ := rtCompl hL D U (FractionRing O) x hx
+  obtain ⟨-, φ, hφ⟩ := _root_.GlobalTheory.OrdLoc.rtCompl hL D U (FractionRing O) x hx
   refine (hS C f).2 fun a ha => hf ?_
   rw [← hφ.ker, RingHom.mem_ker, ← Ideal.mem_bot,
     ← Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal (MvPowerSeries (Fin 12) (FractionRing O)))

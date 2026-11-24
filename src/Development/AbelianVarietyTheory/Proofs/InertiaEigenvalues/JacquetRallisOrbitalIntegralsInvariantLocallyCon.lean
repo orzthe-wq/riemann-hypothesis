@@ -1,12 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.FourierMatch
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeneralLinearHaarIsMulRightInvariantUnramifiedStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantImageOpenClosedLocalSectionsStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisOrbitInvariantMapProperStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisTransferFactorKrylovDetStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryActionHermitianInvariantsTransitiveStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryGroupPositiveCharacterTrivialAndUnimodulaStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GeneralLinearHaarIsMulRightInvariantUnramified
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantImageOpenClosedLocalSections
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisOrbitInvariantMapProper
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisTransferFactorKrylovDet
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryGroupPositiveCharacterTrivialAndUnimodula
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnitaryActionHermitianInvariantsTransitive
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -97,7 +97,7 @@ theorem part1 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField 
     orbG M f' (act g Y) = orbG M f' Y := by
   letI := M.mG
   haveI := M.bG
-  haveI := GlobalTheory.T.generalLinear_haar_isMulRightInvariant_unramified F E r M
+  haveI := _root_.GlobalTheory.JR.gl_unimodular F E r M
   unfold orbG
   simp only [← act_mul]
   exact integral_mul_right_eq_self (fun h => f' (act h Y) * omega (act h Y)) g
@@ -107,7 +107,7 @@ theorem part2 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField 
     orbU M f (actU g X) = orbU M f X := by
   letI := M.mU
   haveI := M.bU
-  haveI := (GlobalTheory.T.unitaryGroup_positiveCharacter_trivial_and_unimodular F E r).2 M
+  haveI := (_root_.GlobalTheory.JR.UnitChar.posChar_trivial_and_unimodular F E r).2 M
   unfold orbU
   simp only [← actU_mul]
   exact integral_mul_right_eq_self (fun h => f (actU h X)) g
@@ -130,7 +130,7 @@ theorem companion_pow_mulVec {r : ℕ} {k : Type} [CommRing k] (p : Fin r → k)
     rw [pow_succ', ← Matrix.mulVec_mulVec, ih (by omega)]
     funext i
     rw [Matrix.mulVec_single]
-    simp only [companion, Matrix.of_apply, mul_one, Pi.single_apply, Fin.ext_iff]
+    simp only [companion, Pi.single_apply, Fin.ext_iff]
     have : j + 1 ≠ r := by omega
     simp [this]
 
@@ -144,7 +144,7 @@ theorem Cm_sec {r : ℕ} {k : Type} [CommRing k] (a : Inv r k) : Cm (sec a) = ha
 
 theorem lastDet_act_sec {r : ℕ} {k : Type} [CommRing k] (g : GL (Fin r) k) (a : Inv r k) :
     lastDet (act g (sec a)) = (-1) ^ r * (Delta a * ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k).det) := by
-  rw [(GlobalTheory.T.jacquetRallis_transfer_factor_krylov_det k r).1, (GlobalTheory.T.jacquetRallis_transfer_factor_krylov_det k r).2, Matrix.det_mul, Cm_sec]
+  rw [(_root_.GlobalTheory.JR.transfer_factor_lemma k r).1, (_root_.GlobalTheory.JR.transfer_factor_lemma k r).2, Matrix.det_mul, Cm_sec]
   rfl
 
 theorem eta_eventually {F : Type} [NormedField F] [IsUltrametricDist F] (x : F) (hx : x ≠ 0) :
@@ -168,7 +168,7 @@ theorem part3 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField 
     ∀ᶠ a in 𝓝 a₀, orbG M f' (sec a) = orbG M f' (sec a₀) := by
   haveI : LocallyCompactSpace F := Unram.lcF (E := E)
   haveI : IsUltrametricDist F := Unram.ultraF (E := E)
-  obtain ⟨hcont, -, hDc, hprop⟩ := GlobalTheory.T.jacquetRallis_orbit_invariant_map_proper F E r
+  obtain ⟨hcont, -, hDc, hprop⟩ := _root_.GlobalTheory.JR.OrbitProper.main F E r
   have hopen : IsOpen {a : Inv r F | Delta a ≠ 0} := isOpen_ne_fun hDc continuous_const
   obtain ⟨Ω, hΩn, hΩsub, hΩc⟩ := local_compact_nhds (hopen.mem_nhds hΔ)
   set K : Set (GL (Fin r) F) :=
@@ -234,8 +234,8 @@ theorem part4 (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField 
     [Unram F E] (r : ℕ) (M : Meas r F E) (f : Hn r F E → ℂ) (hf : IsTest f) (a₀ : Inv r F) (X₀ : Hn r F E)
     (hΔ : Delta a₀ ≠ 0) (hX₀ : HasInv X₀ a₀) :
     ∀ᶠ a in 𝓝 a₀, (∃ X : Hn r F E, HasInv X a) ∧ ∀ X : Hn r F E, HasInv X a → orbU M f X = orbU M f X₀ := by
-  obtain ⟨Ω, s, hΩc, hΩo, ha₀, hs, hsinv, hprop⟩ := (GlobalTheory.T.invariant_image_openClosed_local_sections F E r a₀ hΔ).2 ⟨X₀, hX₀⟩
-  have huniq := (GlobalTheory.T.unitary_action_hermitian_invariants_transitive F E r).2.2.1
+  obtain ⟨Ω, s, hΩc, hΩo, ha₀, hs, hsinv, hprop⟩ := (_root_.GlobalTheory.JR.image_openClosed_section F E r a₀ hΔ).2 ⟨X₀, hX₀⟩
+  have huniq := (_root_.GlobalTheory.JR.HermInv.herm_invariants F E r).2.2.1
   set K : Set (Matrix.unitaryGroup (Fin r) E) :=
     Prod.fst '' {p : Matrix.unitaryGroup (Fin r) E × Inv r F | p.2 ∈ Ω ∧ actU p.1 (s p.2) ∈ tsupport f} with hKdef
   have hK : IsCompact K := (hprop (tsupport f) hf.2).image continuous_fst

@@ -37,6 +37,9 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.FrobeniusOnTorsion
+import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.SemiAbelianTorsionFiniteAndClosedPointFiniteOrde
 
 @[expose] public section
 
@@ -50,12 +53,6 @@ section
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} {L : Link D G} {R : Type} [CommRing R] [Algebra ℚ R]
   {gb : GBase D.toG R} {S : Scheme.{0}} {s : S ⟶ Sp R}
-
-private theorem comp_pow_overScheme_grpObj {A T T' : Over S} [GrpObj A] (f : T' ⟶ T) (x : T ⟶ A) (n : ℕ) :
-    f ≫ x ^ n = (f ≫ x) ^ n := MonObj.comp_pow x n f
-
-private theorem pow_comp_monHom_overScheme_grpObj {A B T : Over S} [GrpObj A] [GrpObj B] (φ : A ⟶ B) [IsMonHom φ] (x : T ⟶ A) (n : ℕ) :
-    (x ^ n) ≫ φ = (x ≫ φ) ^ n := MonObj.pow_comp x n φ
 
 private theorem pt_transfer {N' N : ℕ} (hN : 0 < N) (hNp : N.Coprime p) {o : GObj gb N' s} {o₁ o₂ : GObj gb N s}
     {ψ₁ : o.A ⟶ o₁.A} {ψ₂ : o.A ⟶ o₂.A} {ψ' : o₁.A ⟶ o.A} {d : ℕ} (hψ' : IsMonHom ψ')
@@ -75,9 +72,9 @@ private theorem pt_transfer {N' N : ℕ} (hN : 0 < N) (hNp : N.Coprime p) {o : G
     rw [ha]
     exact (J₁.onto N hN _).mpr ⟨y, rfl⟩
   have h2 : a ^ d = (a ≫ ψ₁) ≫ ψ' := by
-    rw [Category.assoc, hd, comp_pow_overScheme_grpObj, Category.comp_id]
+    rw [Category.assoc, hd, _root_.GlobalTheory.SemiAbTorsion.comp_pow_points, Category.comp_id]
   have h3 : a ^ (N * d) = 1 := by
-    rw [mul_comm, pow_mul, h2, ← pow_comp_monHom_overScheme_grpObj, h1, MonObj.one_comp]
+    rw [mul_comm, pow_mul, h2, ← _root_.GlobalTheory.SS.FrobTorsion.pow_comp', h1, MonObj.one_comp]
   obtain ⟨x, hx⟩ := (I.onto (N * d) hn a).mp h3
   let y' : D.toG.La := y
   have hJ₁ : J₁.ev N y' = J₁.ev (N * d) (d • y') := by

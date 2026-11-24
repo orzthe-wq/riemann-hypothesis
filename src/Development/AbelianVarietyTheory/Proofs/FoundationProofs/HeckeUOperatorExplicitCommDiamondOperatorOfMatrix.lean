@@ -135,8 +135,8 @@ theorem key {N l q : ℕ} {k : ℤ} (f : ModularForm (GlobalTheory.Hk.lev N l) k
     apply UpperHalfPlane.ext
     rw [coe_specialLinearGroup_apply, coe_specialLinearGroup_apply]
     simp only [hγdef, gam, algebraMap_int_eq, eq_intCast, Complex.ofReal_intCast]
-    simp only [Matrix.SpecialLinearGroup.coe_mk, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
-      Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Matrix.head_fin_const]
+    simp only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
+      Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one]
     push_cast
     rw [hA, hB, mul_div_mul_left _ _ hu]
   have hden : denom ρ w = denom ρ τ * denom γ z := by
@@ -210,15 +210,15 @@ theorem GlobalTheory.Hk.uOp_dia_comm : ∀ (N l q : ℕ) (k d : ℤ) (ρ : SL(2,
   · intro i _; simpa using toNat_emod_lt hq _
   · intro i _; simpa using toNat_emod_lt hq _
   · intro i hi
-    simp only [Finset.mem_coe, Finset.mem_range] at hi
+    simp only [Finset.mem_range] at hi
     apply eq_of_cast_eq (toNat_emod_lt hq _) hi
-    simp only [ψ, φ]
+    simp only [φ]
     rw [cast_toNat_emod hq]; push_cast; rw [cast_toNat_emod hq]; push_cast
     linear_combination ((((a : ℤ) : ZMod q) * dd + 1) * i - dd * b) * had
   · intro i hi
-    simp only [Finset.mem_coe, Finset.mem_range] at hi
+    simp only [Finset.mem_range] at hi
     apply eq_of_cast_eq (toNat_emod_lt hq _) hi
-    simp only [ψ, φ]
+    simp only [ψ]
     rw [cast_toNat_emod hq]; push_cast; rw [cast_toNat_emod hq]; push_cast
     linear_combination ((((a : ℤ) : ZMod q) * dd + 1) * i + a * b) * had
   · intro i _; rfl

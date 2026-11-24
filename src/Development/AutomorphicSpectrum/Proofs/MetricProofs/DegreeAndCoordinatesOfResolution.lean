@@ -64,7 +64,7 @@ theorem genDeg_of_resExists (hE : ReciprocityTheory.ChartRestriction.G.Geo.ResEx
     GroundTheory.Heights₂.Heights.ForSecondHalf.PtsIntegrable.of_resExists hE
   have hFI : GroundTheory.Heights₂.Heights.Inter.FibreIncomp.Statement :=
     GroundTheory.Heights₂.Heights.ForSecondHalf.FibreIncomp.full
-  have hFD : ReciprocityTheory.ChartRestriction.G.AI.I4.FibreDimStatement := GlobalTheory.CompanionTheory.Ar.Giv.fibreDim
+  have hFD : ReciprocityTheory.ChartRestriction.G.AI.I4.FibreDimStatement := _root_.GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDim.proof
   have hSec : GroundTheory.Heights₂.Heights.Inter.IntersectionWithSection.Statement :=
     GroundTheory.Heights₂.Heights.Inter.IntersectionWithSection.proof hE GroundTheory.Heights₂.Heights.Inter.pullbackPushforward_holds.full
       (GroundTheory.Heights₂.Heights.Inter.PullbackDegreeCount.of_remaining
@@ -80,7 +80,7 @@ theorem pfCoord_of_genDeg (hGD : ReciprocityTheory.ChartRestriction.G.AI.I4.GenD
     ReciprocityTheory.ChartRestriction.G.AI.I4.PFCoordStatement := by
   exact GroundTheory.Heights₂.Heights.Targets.PFCoord.of_found hGD
     (fun F _ K _ ι _ => GroundTheory.Heights₂.Heights.Targets.ExistsUnique.full F ι)
-    GroundTheory.Heights₂.Heights.Targets.genFibreExists GlobalTheory.CompanionTheory.Ar.Giv.fibreDim
+    GroundTheory.Heights₂.Heights.Targets.genFibreExists _root_.GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDim.proof
     GroundTheory.Heights₂.Heights.Inter.Closed.Targets.CoordFibreDeg
 
 theorem genDeg_and_pfCoord :

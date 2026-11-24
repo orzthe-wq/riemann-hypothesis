@@ -55,13 +55,13 @@ theorem N_basis_loc {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) (K
     (LL : FinExt l) (h : Good K s LL) (T : Lt K LL) (hT : IsCrys (P.PD K) T.ρ) :
     Nonempty (Module.Basis (Fin (Module.finrank ↥(OL LL) ↥T.L.T)) (AA K LL) ↥((H.W K s LL h).N T)) := by
   obtain ⟨_, -, hl⟩ := GlobalTheory.FinExtIntegers.dvr_complete LL
-  haveI := (P.PD K).finK₀
-  haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩
+  have := (P.PD K).finK₀
+  have : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩
   have hproj := H.W_proj K s LL h T
   generalize H.W K s LL h = W at hproj ⊢
   obtain ⟨hfree, hrk⟩ := W.DD_free T
   rw [← hrk]
-  haveI : Module.Finite (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) ↥(W.N T) :=
+  have : Module.Finite (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) ↥(W.N T) :=
     Module.Finite.iff_fg.mpr (W.N_fg T)
   have hl0 : ((l : ℕ) : ↥(OL LL)) ≠ 0 := by
     intro h0

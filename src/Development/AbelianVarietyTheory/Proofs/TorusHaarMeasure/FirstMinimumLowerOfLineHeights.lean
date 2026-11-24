@@ -97,7 +97,7 @@ theorem exists_la1_lower_bound_of_line_heights : (∀ (r : ℕ) (X : Data E r) (
   have hmin : 0 < min 1 m := lt_min one_pos hm
   have hδ : 0 < X.c τ0 * min 1 m := mul_pos (c_pos X τ0) hmin
   refine ⟨Real.sqrt (X.c τ0 * min 1 m), Real.sqrt_pos.2 hδ, fun x hx hW => ?_⟩
-  obtain ⟨hdet, hmaj⟩ := GlobalTheory.T.majorant_eq_sum_norm_sq_orthonormalFrame r X x hx
+  obtain ⟨hdet, hmaj⟩ := _root_.GlobalTheory.MajorantOrthFrame.maj_eq_sum_norm_sq_of_isOrth r X x hx
   have key : ∀ v ∈ X.Λ, v ≠ 0 →
       X.c τ0 * min 1 m ≤ ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v) := by
     intro v hv hv0

@@ -264,7 +264,6 @@ theorem face (a : Fin 3) (x : Fin 3 → Fin g → ℂ)
       exact hs _)
     (fun j => (hT _).comp hPd.differentiableOn (fun y hy => hy))
     (fun j j' y hy hy' => by
-      beta_reduce
       rw [hTT _ _ _ hy hy']
       have := prod_alt_erase a (fun I => c (j (I.erase a)) (j' (I.erase a))
         (∑ b ∈ I, Function.update y a 0 b)) (fun I => hc0 _ _ _ (hy I) (hy' I))

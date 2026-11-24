@@ -1,9 +1,9 @@
 module
 
-import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoWindowsOfMatrixCongrModTau
 public import Development.AbelianVarietyTheory.Definitions.Divisors.EqZeroOfForallPowDvd
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.EpsilonPairingZeta
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfFrobeniusSemilinearEquationExistsUniqueStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AinfFrobeniusSemilinearEquationExistsUnique
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsIsoWindowsOfMatrixCongrModTau
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -67,7 +67,7 @@ theorem frob_teich (x : PreTilt O p) :
   rw [WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, map_pow]
 
 theorem sigma_tau : F.σ F.τ = p * F.τ := by
-  apply GlobalTheory.WindowIso.σ_τ <;> assumption
+  apply GlobalTheory.WindowIso.σ_τ
 
 theorem theta_tau [IsDomain O] : F.θ F.τ = 0 :=
   mul_self_eq_zero.1 (by rw [← map_mul, F.τ_sq, map_zero])
@@ -131,7 +131,7 @@ theorem core (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C 
     obtain ⟨c, hc⟩ := step F M m hm (fun j => F.a (z j)) z (fun j => by simp) i
     rw [sub_eq_iff_eq_add] at hc
     rw [hc, mul_add, ← mul_assoc, F.τ_sq, zero_mul, zero_add, sub_self]
-  exact (F.τ_mul _).2 ((GlobalTheory.T.ainf_frobenius_semilinear_equation_existsUnique p C v O hv ε hε ι m (nil_lift F M m hm hM)).2 z key i)
+  exact (F.τ_mul _).2 ((_root_.GlobalTheory.WSolve.main p C v O hv ε hε ι m (nil_lift F M m hm hM)).2 z key i)
 
 theorem vec_eq {ι : Type} [Fintype ι] (M : Matrix ι ι F.B) (g : ι → F.B) (z : ι → Ainf p O)
     (hz : ∀ i, g i = F.τ * F.a (z i))

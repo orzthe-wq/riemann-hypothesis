@@ -127,7 +127,7 @@ def constSub (A₀ : Over (Sp k)) [GrpObj A₀] (S : Submodule k (HdR A₀)) :
     ext
     · simp
     · simp only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, Pi.add_apply,
-        LinearMap.add_apply, zero_add, add_zero, Pi.zero_apply]
+        LinearMap.add_apply, zero_add, Pi.zero_apply]
   zero_mem' := ⟨0, zero_mem _, 0, fun _ => zero_mem _, fun c => by rw [LinearMap.zero_apply]; ext <;> simp⟩
   smul_mem' := by
     rintro r e ⟨x, hx, z, hz, he⟩

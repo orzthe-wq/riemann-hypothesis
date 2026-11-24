@@ -83,7 +83,6 @@ def cupMap (P : CH.Pairing F₁ F₂ F₃) (b : CH.Cn F₁ 1) (hb : CH.d F₁ 1 
         refine ⟨-P.cupC (Nat.add_comm 1 m) b t, ?_⟩
         change CH.d F₃ _ _ = _
         rw [map_neg, d_cup_one P b hb, neg_neg]
-        change P.cupC _ b (CH.d F₂ m t) = _
         exact congrArg _ ht)
 
 theorem cupMap_cls (P : CH.Pairing F₁ F₂ F₃) (b : CH.Cn F₁ 1) (hb : CH.d F₁ 1 b = 0) {a : ℕ} (y : CH.Cn F₂ a)

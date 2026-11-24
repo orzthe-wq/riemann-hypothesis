@@ -64,7 +64,7 @@ variable {R : Type} [CommRing R] {a : ℕ}
 theorem posM_block_entry {r m : ℕ} (x : UnipotentBlockColumnIndex a r m → R) (i j : Fin a) :
     posM (Subtype.val : UnipotentBlockColumnIndex a r m → Fin a × Fin a) x i j =
       if h : (i : ℕ) < r ∧ r ≤ (j : ℕ) ∧ (j : ℕ) ≤ m then x ⟨(i, j), h⟩ else 0 := by
-  apply GlobalTheory.CuspGeneric.posM_apply_of_blkIx <;> assumption
+  apply GlobalTheory.CuspGeneric.posM_apply_of_blkIx
 
 theorem posM_col_mul {n : ℕ} (x : UnipotentBlockColumnIndex a n n → R) (M : Matrix (Fin a) (Fin a) R)
     (h : ∀ k : Fin a, (k : ℕ) = n → ∀ j, M k j = (1 : Matrix (Fin a) (Fin a) R) k j) :

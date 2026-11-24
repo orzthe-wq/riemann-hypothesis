@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsOverIff
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -52,13 +53,6 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 noncomputable section
 namespace GlobalTheory.UMin.GalTh
-
-theorem sp_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
-    spMap (g.comp f) = spMap g ≫ spMap f := by
-  simp only [spMap]; rw [← Spec.map_comp]; rfl
-
-theorem sp_id (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := by
-  simp only [spMap]; exact Spec.map_id _
 
 theorem sp_cancel {F K : Type} [Field F] [Field K] (i : F →+* K) {X : Scheme.{0}} (a b : Sp F ⟶ X)
     (h : spMap i ≫ a = spMap i ≫ b) : a = b := by
@@ -81,7 +75,7 @@ theorem exists_descend {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] (H : Su
   obtain ⟨E, h₁, h₂, -⟩ := GlobalTheory.SS.exists_fieldOfValues X K p
   refine (h₂ _ (algebraMap (IntermediateField.fixedField H) K)).1 fun c hc => ?_
   have hfix : c ∈ IntermediateField.fixedField H := (IntermediateField.mem_fixedField_iff _ _).2 fun τ hτ =>
-    (h₁ (τ : K →+* K) (RingHom.id K)).1 (by rw [sp_id, Category.id_comp]; exact hp τ hτ) c hc
+    (h₁ (τ : K →+* K) (RingHom.id K)).1 (by rw [_root_.GlobalTheory.LevelFibre.spMap_id', Category.id_comp]; exact hp τ hτ) c hc
   exact ⟨⟨c, hfix⟩, rfl⟩
 
 section
@@ -105,7 +99,7 @@ theorem thList_comp (m : ℕ) {R K₁ K₂ : Type} [CommRing R] [Field K₁] [Fi
       ThList G L ρ m (spMap k ≫ x) (SecAt.pull G L θ k) pt' c := by
   unfold SecAt.pull at H ⊢
   rw [GlobalTheory.ThetaRuleCompare.pullS_comp] at H
-  exact thList_transport m θ (by rw [← hk, sp_comp, Category.assoc]) _ _ (by simp [← hk, sp_comp]) pt c H
+  exact thList_transport m θ (by rw [← hk, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc]) _ _ (by simp [← hk, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]) pt c H
 
 end
 
@@ -118,7 +112,7 @@ theorem thList_exh {m : ℕ} {K : Type} [Field K] [IsAlgClosed K] {y : Sp K ⟶ 
   let u : Over.mk (spMap (RingHom.id K) ≫ y) ⟶ Over.mk y := Over.homMk (spMap (RingHom.id K)) rfl
   obtain ⟨a, ha⟩ := H.2.2 K (RingHom.id K) (u ≫ p) (by rw [← MonObj.comp_pow, hp, MonObj.comp_one])
   refine ⟨a, Over.OverMorphism.ext ?_⟩
-  simpa [u, sp_id] using ha
+  simpa [u, _root_.GlobalTheory.LevelFibre.spMap_id'] using ha
 
 end
 

@@ -164,19 +164,18 @@ private theorem fromBlocks_transpose_dbl_map_eq_dbl {J : Matrix β β E} {ey fx 
   subst hJ
   simp only [Matrix.fromBlocks_map, map_one', mneg, msub, map_mul']
   simp only [dbl, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.transpose_one, Matrix.transpose_neg,
-    Matrix.transpose_sub, Matrix.transpose_mul, Matrix.transpose_zero]
+    Matrix.transpose_sub, Matrix.transpose_mul]
   rw [Matrix.fromBlocks_inj]
   refine ⟨?_, ?_, ?_, ?_⟩ <;>
-    simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul,
-      Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_assoc, neg_neg, neg_zero,
-      add_zero, zero_add, sub_zero, zero_sub, c1e, c1f, c2e, c2f, t1e, t1f, t2e, t2f, c1e', c1f', c2e', c2f',
+    simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul,
+      Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, Matrix.mul_assoc, neg_neg, neg_zero,
+      add_zero, zero_add, sub_zero, zero_sub, c1e', c1f', c2e', c2f',
       t1e', t1f', t2e', t2f'] <;> abel
 
 private theorem fromBlocks_mul_diagCols_eq {ey fx : Matrix β ν E} {m1 m2 : Matrix ν β E} (hsum : ey * m1 + fx * m2 = 1) :
     (fromBlocks 1 (-(fx * m2)) (-(fx * m1)) (fx * m1 - ey * m2) : Matrix (β ⊕ β) (β ⊕ β) E) *
       (diagCols β : Matrix (β ⊕ β) β E) = (fromBlocks ey 0 0 ey : Matrix (β ⊕ β) (ν ⊕ ν) E) * fromRows m1 (-m2) := by
-  simp only [diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_neg, add_zero,
-    zero_add]
+  simp only [diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_neg, zero_add]
   congr 1
   · rw [← hsum]; abel
   · abel
@@ -220,7 +219,6 @@ theorem exists_gamma (hc : ∀ z, c (c z) = z) {J : Matrix β β E} (hsk : ∀ i
   have hAiA : Ai * A = 1 := by
     first
     | exact mul_eq_one_comm.mp hAAi
-    | (rw [← Matrix.inv_eq_right_inv hAAi]; exact Matrix.nonsing_inv_mul A (Matrix.isUnit_det_of_right_inverse hAAi))
   obtain ⟨f, hf⟩ : ∃ f : Matrix β ν E, f = Cx * Ai.map c := ⟨_, rfl⟩
   obtain ⟨n2, hn2⟩ : ∃ n2 : Matrix ν β E, n2 = A.map c * m2 := ⟨_, rfl⟩
   have hf1 : m1 * f = 0 := by rw [hf, ← Matrix.mul_assoc, k1f, Matrix.zero_mul]

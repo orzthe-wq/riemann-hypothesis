@@ -231,8 +231,8 @@ private theorem fixBd_ker {A : Type} [CommRing A] (c : A) (g : ℕ) (y : DD A g)
     ext <;> simp [smul_eq_mul, hza, hzep, hzep', hzeta]
   · rintro ⟨z, rfl⟩
     rw [fixBd_smul]
-    ext <;> simp [DD.map_a, DD.map_ep, DD.map_ep', DD.map_eta, z1, z2, z3, z4, Ideal.Quotient.mkₐ_eq_mk,
-      Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, smul_eq_mul]
+    ext <;> simp [DD.map_a, DD.map_ep, DD.map_ep', DD.map_eta, Ideal.Quotient.mkₐ_eq_mk,
+      smul_eq_mul]
 
 theorem UpperTheory.V.Pa.fixBd :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (k : Kap x) (V : Submodule x.A (Matrix (Fin n) (Fin n) (DD x.A k.g))) (b₁ b₂ b₃ b₄ c₁ c₂ c₃ c₄ : Bool) (S : Type) (e : S → x.A) (P Q : S → Matrix (Fin n) (Fin n) (DD x.A k.g)) (tr : Bool), V = blkMat n x.a (ddPart x.A x.A k.g b₁ b₂ b₃ b₄) (ddPart x.A x.A k.g c₁ c₂ c₃ c₄) → ∃ C : ℕ, ∀ m, {Y : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g) | Y ∈ blkMat n x.a (ddPart x.A (x.Am m) k.g b₁ b₂ b₃ b₄) (ddPart x.A (x.Am m) k.g c₁ c₂ c₃ c₄) ∧ (tr = true → Yᵀ = -Y) ∧ ∀ s, e s • ((P s).map (fun y => ⟨algebraMap x.A (x.Am m) y.a, fun j => algebraMap x.A (x.Am m) (y.ep j), fun j => algebraMap x.A (x.Am m) (y.ep' j), algebraMap x.A (x.Am m) y.eta⟩) * Y * (Q s).map (fun y => ⟨algebraMap x.A (x.Am m) y.a, fun j => algebraMap x.A (x.Am m) (y.ep j), fun j => algebraMap x.A (x.Am m) (y.ep' j), algebraMap x.A (x.Am m) y.eta⟩)) = Y}.ncard ≤ Nat.card x.K ^ (m * Module.finrank x.A (V ⊓ (if tr then LinearMap.ker ((Matrix.transposeLinearEquiv (Fin n) (Fin n) x.A (DD x.A k.g)).toLinearMap + LinearMap.id) else ⊤) ⊓ ⨅ s, LinearMap.ker (e s • ((LinearMap.mulLeft x.A (P s)).comp (LinearMap.mulRight x.A (Q s))) - LinearMap.id) : Submodule x.A (Matrix (Fin n) (Fin n) (DD x.A k.g))) + C) := by

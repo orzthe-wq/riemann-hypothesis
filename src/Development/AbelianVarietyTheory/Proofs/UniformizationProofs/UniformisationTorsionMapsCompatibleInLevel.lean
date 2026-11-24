@@ -79,7 +79,7 @@ theorem qkToAkU_level : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => 
   obtain ⟨f', hf', -, -, hadd, -⟩ := GlobalTheory.TorsionIso.torsion_eq hL R I hI D A G hG U F N hN1
   have key : ∀ (p : QkPt D.toPre F k) (q : QkPt D.toPre F N), q.y = n • p.y → q.g = p.g → f p = f' q := by
     intro p q hy hg
-    obtain ⟨x₀, h₀⟩ := GlobalTheory.T.exists_inducedTranslation_frobeniusOnSections hL R I hI D A G hG U F k hk p
+    obtain ⟨x₀, h₀⟩ := _root_.GlobalTheory.InducedTranslation.exists_translT_indAt hL R I hI D A G hG U F k hk p
     have a := (GlobalTheory.UT.indAt_translT_iff hL R I hI D A G hG U F k hk p x₀).1
       (h₀ 1 k le_rfl (Nat.mul_one k).symm p (one_nsmul _).symm rfl)
     have b := (GlobalTheory.UT.indAt_translT_iff hL R I hI D A G hG U F N hN1 q x₀).1 (h₀ n N hn hN q hy hg)

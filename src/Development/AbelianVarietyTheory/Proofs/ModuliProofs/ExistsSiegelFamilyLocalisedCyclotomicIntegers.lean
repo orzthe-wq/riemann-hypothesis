@@ -2,7 +2,8 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSeparatedOfIsQProjOver
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.SecBaseChangeAnySt
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalSiegelOfGenericPrincipalSpecialAmpleStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.Clauses
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.PrincipalSiegelOfGenericPrincipalSpecialAmple
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPrePullbackPrincipalRingChange
 import Development.AbelianVarietyTheory.Proofs.ModuliProofs.SiegelPullbackIdCompCancel
 import Mathlib.Algebra.Order.Floor.Extended
@@ -124,7 +125,7 @@ theorem exists_siegelFamily : Out.Laws → Out.Laws2 → ∀ (h k p : ℕ) (o : 
   refine ⟨⟨pullback F.s (spMap j), pullback.snd F.s (spMap j), hsm, inferInstance, U, hUp, ?_, ?_⟩,
     (inferInstance : IsSeparated (pullback.snd F.s (spMap j))), ?_⟩
   · intro C O _ _ _ _ _ _ _ _ hO hpn β c hgen hsp
-    have hp : c.Principal := GlobalTheory.T.principal_siegel_of_generic_principal_special_ample L₁ L₂ h k hodd hk _ _ C O hO p hpp hpn β c hgen hsp
+    have hp : c.Principal := _root_.GlobalTheory.PrincipalIntegral.principal_of_generic_of_ample_special L₁ L₂ h k hodd hk _ _ C O hO p hpp hpn β c hgen hsp
     have : IsDomain O := hO.1.isDomain (algebraMap O C)
     have : CharZero O := RingHom.charZero (algebraMap O C)
     refine rep_baseChange F j hj U hU _ c inferInstance ?_ hp

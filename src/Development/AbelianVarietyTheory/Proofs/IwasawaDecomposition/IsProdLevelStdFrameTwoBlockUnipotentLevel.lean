@@ -89,14 +89,14 @@ theorem cutMat_mul_compl {e : R} (he : e * e = e) (M : Matrix (Fin n) (Fin n) R)
 theorem map_cutMat (f : R →+* S) (e : R) (M : Matrix (Fin n) (Fin n) R) :
     (cutMat e M).map f = cutMat (f e) (M.map f) := by
   ext i j
-  by_cases h : i = j <;> simp [cutMat, Matrix.one_apply, h]
+  by_cases h : i = j <;> simp [cutMat, h]
 
 theorem conjT_cutMat (σ : R →+* R) {e : R} (hσ : σ e = e) (M : Matrix (Fin n) (Fin n) R) :
     ReciprocityTheory.Aut.conjT σ (cutMat e M) = cutMat e (ReciprocityTheory.Aut.conjT σ M) := by
   ext i j
   by_cases h : i = j
   · subst h; simp [ReciprocityTheory.Aut.conjT, cutMat, hσ]
-  · simp [ReciprocityTheory.Aut.conjT, cutMat, hσ, Matrix.one_apply, h, Ne.symm h]
+  · simp [ReciprocityTheory.Aut.conjT, cutMat, hσ, h, Ne.symm h]
 
 def cutHom {e : R} (he : e * e = e) : Matrix (Fin n) (Fin n) R →* Matrix (Fin n) (Fin n) R where
   toFun := cutMat e

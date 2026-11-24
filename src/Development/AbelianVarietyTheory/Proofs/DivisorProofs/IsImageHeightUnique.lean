@@ -369,7 +369,7 @@ private theorem frameNorm_toMatrix_map_mul_eq_of_isFrame {Nm : (K →+* ℂ) →
     intro j
     have := hzeroK (Pi.single j 1)
     have e : (fun i => σ ((Pi.single j 1 : Fin N → K) i)) = (Pi.single j 1 + (0 : ℂ) • Pi.single j 1 : Fin N → ℂ) := by
-      funext i; by_cases hi : i = j <;> simp [hi, Pi.single_apply]
+      funext i; by_cases hi : i = j <;> simp [hi]
     rw [e, hpair] at this
     simpa using this
   have hre : ∀ (j k : Fin N) (a : K), (σ a * H j k).re = 0 := by

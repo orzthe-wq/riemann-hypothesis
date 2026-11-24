@@ -58,4 +58,4 @@ theorem _root_.GlobalTheory.T.heisenbergOperator_isotropic_translation_char_spli
     ∀ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v), ∀ φ₁ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v), Acts (evFin F v) (M.co.rho ψ u) φ φ₁ →
       (∀ ι, M.IsLinW ψ t b c ι → ∀ Z, ι φ₁ Z = psiLoc ψ v (pairM Z (coY σ X Y t b c u)) * ι φ (Z + coX t b c u)) ∧
       ∀ ι, M.IsLinBar ψ t b c ι → ∀ Z, ι φ₁ Z = psiLoc ψ v (-pairM Z (coX t b c u)) * ι φ (Z + coY σ X Y t b c u) := by
-  first | exact @GlobalTheory.HeisFlip.heis_trans_char | exact GlobalTheory.HeisFlip.heis_trans_char | (intros; apply GlobalTheory.HeisFlip.heis_trans_char <;> assumption)
+  first | exact @GlobalTheory.HeisFlip.heis_trans_char

@@ -300,7 +300,7 @@ theorem cayley_phase : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero
     rw [cT_add, Formalism.UG.cT_mul σ Y x, Formalism.UG.cT_mul σ Y u]
     have e : JSi * (Formalism.UG.cT σ x * Formalism.UG.cT σ Y + Formalism.UG.cT σ u * Formalism.UG.cT σ Y) * Jt * x =
         -((JSi * Formalism.UG.cT σ x) * (C * x)) + JSi * Formalism.UG.cT σ u * (-(C * x)) := by
-      simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hY', Matrix.mul_neg, Matrix.neg_mul]
+      simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hY', Matrix.mul_neg]
     rw [e, Matrix.trace_add, Matrix.trace_neg, Matrix.trace_mul_comm (JSi * Formalism.UG.cT σ x), mul_add, mul_neg]
     simp only [Matrix.mul_assoc, Formalism.UG.cT]
   rw [hkx, hb] at h3

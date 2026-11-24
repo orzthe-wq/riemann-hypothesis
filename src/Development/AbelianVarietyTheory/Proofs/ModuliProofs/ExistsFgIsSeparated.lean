@@ -138,7 +138,7 @@ theorem _root_.GlobalTheory.SpreadSep.exists_isClosed_preimage_diff {I : Type u}
       ((D.map (h ≫ g) ⁻¹ᵁ W ⊔ D.map (h ≫ g ≫ f) ⁻¹ᵁ O' : (D.obj m).Opens) : Set (D.obj m))ᶜ := by
     ext y
     simp only [Functor.map_comp, Set.mem_preimage, Set.mem_diff, SetLike.mem_coe, Set.mem_compl_iff,
-      Scheme.Hom.preimage_sup, TopologicalSpace.Opens.coe_sup, Set.mem_union, Scheme.Hom.comp_apply]
+      TopologicalSpace.Opens.coe_sup, Set.mem_union, Scheme.Hom.comp_apply]
     have h1 := ht y
     have h2 := hle y
     tauto

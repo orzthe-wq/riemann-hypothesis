@@ -112,7 +112,7 @@ end norm
 
 theorem towerAt : Formalism.FourierDecayAlt.P.PTie.TowerAt := by
   intro k r Wp Wq _ _ _ _ Bs
-  obtain ⟨T, hT, hN⟩ := Formalism.FourierDecayAlt.P.exists_level_tower k r Wp Wq (normS Bs) (normS_μW_univ_eq_one Bs) (normS_μW'_univ_eq_one Bs) rfl
+  obtain ⟨T, hT, hN⟩ := _root_.Formalism.FourierDecayAlt.P.Dx2.Tower.towerExists k r Wp Wq (normS Bs) (normS_μW_univ_eq_one Bs) (normS_μW'_univ_eq_one Bs) rfl
   exact ⟨T, by rw [hT]; rfl, by rw [hT]; rfl, by rw [hT]; rfl, by rw [hT]; rfl, hN⟩
 
 section frame
@@ -120,18 +120,13 @@ section frame
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
-theorem herm_mulVec' {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : gᴴ * H * g = H) (v w : Fin n → ℂ) :
-    herm H (g *ᵥ v) (g *ᵥ w) = herm H v w := by
-  unfold herm
-  rw [Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hg]
-
 theorem frameVec_facts (Bs : B.RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k + 1) → ℂ) (m₀ : B.Mat k r)
     (hF : D.IsBaseFrame Bs ν' m₀) :
     inWb k r (m₀ *ᵥ ν') ∧ herm (Hpk k r) (m₀ *ᵥ ν') Bs.z = 0 ∧ herm (Hpk k r) (m₀ *ᵥ ν') (m₀ *ᵥ ν') = 1 := by
   obtain ⟨hw, hz, hn, hm, hmz⟩ := hF
   have hU : m₀ᴴ * Hpk k r * m₀ = Hpk k r := hm.1
-  refine ⟨Formalism.FourierDecayAlt.P.Qx8.inWb_mulVec hm hw, ?_, by rw [herm_mulVec' hU]; exact hn⟩
-  have h0 : herm (Hpk k r) (m₀ *ᵥ ν') (m₀ *ᵥ Bs.z') = 0 := by rw [herm_mulVec' hU]; exact hz
+  refine ⟨Formalism.FourierDecayAlt.P.Qx8.inWb_mulVec hm hw, ?_, by rw [_root_.PI.StabSplit.UnipW.herm_inv hU]; exact hn⟩
+  have h0 : herm (Hpk k r) (m₀ *ᵥ ν') (m₀ *ᵥ Bs.z') = 0 := by rw [_root_.PI.StabSplit.UnipW.herm_inv hU]; exact hz
   rw [hmz] at h0
   set c : ℂ := ((√(Tz k r Bs.z' / Tz k r Bs.z) : ℝ) : ℂ) with hc
   have hc0 : c ≠ 0 := by
@@ -175,7 +170,5 @@ end frame
 end Formalism.FourierDecayAlt.P.HaarMassHermitianCurvature
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem exists_normalized_tower : Formalism.FourierDecayAlt.P.PTie.TowerAt := HaarMassHermitianCurvature.towerAt
 
 end Formalism.FourierDecayAlt.P

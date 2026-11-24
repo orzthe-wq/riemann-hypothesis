@@ -55,20 +55,6 @@ section Commutant
 
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (E : GLOps n K V)
 
-theorem comm_Umon (A : Module.End K V) (hA : ∀ a b, A * E a b = E a b * A) : ∀ u ∈ Umon E, A * u = u * A := by
-  intro u hu
-  unfold Umon at hu
-  induction hu using Submonoid.closure_induction with
-  | mem x hx =>
-    obtain ⟨ab, rfl⟩ := hx
-    exact hA ab.1 ab.2
-  | one => simp
-  | mul x y _ _ hx hy => rw [← mul_assoc, hx, mul_assoc, hy, mul_assoc]
-
-theorem comm_pres_isoSub (A : Module.End K V) (hA : ∀ a b, A * E a b = E a b * A) (mu : Fin n → ℤ) :
-    ∀ x ∈ isoSub E mu, A x ∈ isoSub E mu := by
-  apply Formalism.MainNotions.G.GLWeightTheory.isotypic_stable_commuting <;> assumption
-
 theorem comm_isoProj (A : Module.End K V) (hA : ∀ mu, ∀ x ∈ isoSub E mu, A x ∈ isoSub E mu)
     (ee : (Fin n → ℤ) → Module.End K V) (hee : ∀ mu, IsIsoProj E mu (ee mu))
     (hdec : ∀ G : V, ∃ T : Finset (Fin n → ℤ), G = ∑ mu ∈ T, ee mu G ∧ ∀ mu, ee mu G ∈ isoSub E mu)

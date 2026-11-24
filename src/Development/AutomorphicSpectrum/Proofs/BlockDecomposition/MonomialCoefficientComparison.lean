@@ -61,7 +61,7 @@ open Finset GlobalTheory.CompanionTheory.CoefId
 namespace GlobalTheory.CompanionTheory.CoefId
 
 theorem unitCircle_infinite : {z : ℂ | ‖z‖ = 1}.Infinite := by
-  apply GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.unit_circle_infinite <;> assumption
+  apply GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.unit_circle_infinite
 
 theorem poly_zero_of_torus {n : ℕ} (p : MvPolynomial (Fin n) ℂ)
     (h : ∀ z : Fin n → ℂ, (∀ a, ‖z a‖ = 1) → Function.Injective (fun a => z a ^ 2) →

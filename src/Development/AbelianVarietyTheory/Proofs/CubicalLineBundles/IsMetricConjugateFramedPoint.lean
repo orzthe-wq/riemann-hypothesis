@@ -3,10 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.CMLattices.IntegralOf
 public import Development.AbelianVarietyTheory.Definitions.RegularCharts.BaseNorm
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.LawsFieldsSeparately
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniformisationOfComplexConjugateKeyDatumStatement
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RigidifiedSectionCorrespondenceExistsUniqueNonvaStatement
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UniversalTripleFibreKeyDataBaseChangeKeyPullbackStatement
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UniversalTripleFibreKeyDataNonemptyFieldStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.ExistsUniformisationOfComplexConjugateKeyDatum
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.RigidifiedSectionCorrespondenceExistsUniqueNonva
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UniversalTripleFibreKeyDataBaseChangeKeyPullback
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.UniversalTripleFibreKeyDataNonemptyField
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FibreSectionNowhereZeroOfGenerates
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.LieBasisIffTangentBasisPullbackUniversal
 import Mathlib.Algebra.Order.Floor.Extended
@@ -78,17 +79,9 @@ theorem isLieComb_of_two_pullbacks {R S : Type} [CommRing R] [CommRing S] (f : R
   have he : (algebraMap S (DualNumber S)).comp f = (Chart.dualMapR f).comp (algebraMap R (DualNumber R)) := by
     clear h h' hv hw hc hG hψ1 hψ2 hw0
     first
-    | exact RingHom.ext fun r => rfl
     | (ext r <;> simp [Chart.dualMapR] <;> rfl)
     | (ext r <;> simp [Chart.dualMapR] <;> erw [TrivSqZeroExt.algebraMap_eq_inl] <;> simp <;> done)
     | (ext r <;> simp [Chart.dualMapR] <;> simp [Algebra.algebraMap_eq_smul_one] <;> done)
-    | (ext r
-       · simp [Chart.dualMapR]
-         show f r = f r
-         rfl
-       · simp [Chart.dualMapR]
-         show (0 : S) = f 0
-         simp)
   refine ReciprocityTheory.ChartRestriction.G.Chart.comb_baseChange f hG hc (fun i => ?_) ?_
   · apply h.1.hom_ext
     · rw [Category.assoc, hψ1, hv i, Category.assoc]
@@ -97,11 +90,6 @@ theorem isLieComb_of_two_pullbacks {R S : Type} [CommRing R] [CommRing S] (f : R
       first
       | (show spMap _ ≫ spMap f = spMap _ ≫ spMap _
          rw [← spMap_comp, ← spMap_comp, he])
-      | (show spMap _ ≫ spMap f = spMap _ ≫ spMap _
-         rw [← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, he])
-      | (unfold epsR; simp only [Over.mk_hom, ← spMap_comp, he])
-      | (show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _
-         rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, he])
   · apply h.1.hom_ext
     · rw [Category.assoc, hψ1, hw, Category.assoc]
       rfl
@@ -109,11 +97,6 @@ theorem isLieComb_of_two_pullbacks {R S : Type} [CommRing R] [CommRing S] (f : R
       first
       | (show spMap _ ≫ spMap f = spMap _ ≫ spMap _
          rw [← spMap_comp, ← spMap_comp, he])
-      | (show spMap _ ≫ spMap f = spMap _ ≫ spMap _
-         rw [← Geo.Tor.spMap_comp, ← Geo.Tor.spMap_comp, he])
-      | (unfold epsR; simp only [Over.mk_hom, ← spMap_comp, he])
-      | (show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _
-         rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, he])
 
 theorem hermForm_map_conj {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm (Hm.map (starRingEnd ℂ)) (fun i => starRingEnd ℂ (z i)) (fun i => starRingEnd ℂ (w i)) =
@@ -147,15 +130,15 @@ theorem isMetricAt_conj {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
     (hu : ∀ τ i, uu' τ i = spMap (Formalism.L2.Pj.dualMap (starRingEnd ℂ)) ≫ uu τ i)
     (h : IsMetricAt x s uu N Gr) : IsMetricAt x' s' uu' N (fun b => (Gr b).map (starRingEnd ℂ)) := by
   obtain ⟨Φ, u, Hm, χ, θ, Fd, w, W, hT, hAH, hRig, hFn, hFd, hN, hw, hGr⟩ := h
-  obtain ⟨Φ0⟩ := GlobalTheory.T.universalTripleFibreKeyData_nonempty_field E H Dw l Xo ℂ x' hpq
+  obtain ⟨Φ0⟩ := _root_.GlobalTheory.LamT.nonempty_fibKey E H Dw l Xo ℂ x' hpq
   have hNZ : SecNZ x' s' := GlobalTheory.Frames.secNZ_of_secGen GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo ℂ x' s' hgen
-  obtain ⟨-, hex, huniq⟩ := GlobalTheory.T.rigidifiedSectionCorrespondence_existsUnique_nonvanishing E H Dw l Xo ℂ x' Φ0.T.t Φ0.m
+  obtain ⟨-, hex, huniq⟩ := _root_.GlobalTheory.SecTieEx.secTie_exists_unique E H Dw l Xo ℂ x' Φ0.T.t Φ0.m
   obtain ⟨th, hth⟩ := hex s'
   have hne := ((huniq th s' hth).2).1 hNZ
-  obtain ⟨hg, v', hv', hKey, hvrel⟩ := GlobalTheory.T.universalTripleFibreKeyData_baseChange_keyPullback E H Dw l Xo ℂ ℂ (starRingEnd ℂ) x x' Φ
+  obtain ⟨hg, v', hv', hKey, hvrel⟩ := _root_.GlobalTheory.LamT.fibKey_keyPB E H Dw l Xo ℂ ℂ (starRingEnd ℂ) x x' Φ
     { Φ0 with th := th, th_ne := hne } s s' hx hT hth hs
   obtain ⟨u', χ', θ', Fd', hAH', hRig', hFn', hFd', hNeq, hdiff⟩ :=
-    GlobalTheory.T.exists_uniformisation_of_complexConjugate_keyDatum Φ.key _ hKey hg _ u Hm χ θ Fd ⟨hAH, hRig, hFn, hFd⟩
+    _root_.GlobalTheory.ConjUnif.exists_conj_unif Φ.key _ hKey hg _ u Hm χ θ Fd ⟨hAH, hRig, hFn, hFd⟩
   have hpb : ∀ (Ψ : FibKey Xo ℂ x'), IsGrpPullback Ψ.T.t.G Xo.univ.t.G x' Ψ.m.φ := by
     intro Ψ
     exact Ψ.m.cart
@@ -197,9 +180,5 @@ theorem isMetric_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   have h4 := h3 i h
   first
   | exact (congrArg _ (scal_one_mul_sec (S := ℂ) y.x y.s i)).trans h4
-  | exact (congrArg _ (scal_one_mul_sec y.x y.s i)).trans h4
-  | (convert h4 using 2; exact scal_one_mul_sec (S := ℂ) y.x y.s i)
-  | (convert h4 using 2; simp only [scal]; first | rw [map_one, one_mul] | simp [Out.liftFun])
-  | (erw [scal_one_mul_sec]; exact h4)
 
 end GlobalTheory.LamT

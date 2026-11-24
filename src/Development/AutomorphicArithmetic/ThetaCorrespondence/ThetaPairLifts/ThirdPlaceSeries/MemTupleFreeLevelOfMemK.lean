@@ -61,7 +61,7 @@ theorem mem_tuple_free_level_of_mem_K_alt : ∀ {B : GlobalTheory.Mem.Base} {X :
     rw [_root_.GlobalTheory.PenBridge.eq_s_succ_of_succ_eq_m J hj i]
     exact ⟨y⟩
   let α : J.Ch j := fun i => (hch i).some
-  rw [← _root_.GlobalTheory.T.true_geometry_tuple_free_relation_alt W hW u a ha hTr j hj t J hJ α, _root_.GlobalTheory.PenLev.mem_relax_iff']
+  rw [← _root_.GlobalTheory.PenLev.relaxed_level_eq_tuple_free_alt W hW u a ha hTr j hj t J hJ α, _root_.GlobalTheory.PenLev.mem_relax_iff']
   refine ⟨Subgroup.mem_sup_right hκ.1, GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ hκ.1, fun i => ?_⟩
   change GlobalTheory.PenBridge.toSum0 _ _ _ ∈ _
   rw [GlobalTheory.PenBridge.toSum0_mem_KO_iff]

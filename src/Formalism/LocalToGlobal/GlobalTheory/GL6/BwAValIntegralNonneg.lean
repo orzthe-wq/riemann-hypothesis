@@ -4,50 +4,9 @@ public import Formalism.LocalToGlobal.HermitianForms.FormsTied
 public import Formalism.GradedWeylDivisibility.DualWeylDominanceOf
 public import Formalism.GradedWeylDivisibility.FinalC
 public import Formalism.GradedWeylDivisibility.FinalD
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
-import Std.Tactic.BVDecide.Normalize.Prop
 import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
 
 @[expose] public section
@@ -179,10 +138,10 @@ private theorem sum_C_single_mul_X_eq_ite (a b : Fin r) (c : R) (v : Fin r × Fi
       if v.1 = b then MvPolynomial.C c * MvPolynomial.X (a, v.2) else (0 : MvPolynomial (Fin r × Fin n) R) := by
   rw [Finset.sum_eq_single a]
   · by_cases h : v.1 = b
-    · simp [Matrix.single_apply, h]
-    · simp [Matrix.single_apply, h, Ne.symm h]
+    · simp [h]
+    · simp [h, Ne.symm h]
   · intro x _ hx
-    simp [Matrix.single_apply, Ne.symm hx]
+    simp [Ne.symm hx]
   · intro h
     exact absurd (Finset.mem_univ _) h
 
@@ -338,7 +297,7 @@ theorem bwA_G_X (a b : Fin r) (v : Fin r × Fin n) : bwA_G (R := R) a b (MvPolyn
         simp [Formalism.GradedWeylDivisibility.rowGen, hv]
       have hd : bwA_wZ r n v + ((1 : ℕ) : ℤ) • bwA_del a b = bwA_wZ r n (a, v.2) := by
         funext i
-        simp only [bwA_wZ, bwA_del, hv, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, Nat.cast_one, one_smul, Pi.single_apply]
+        simp only [bwA_wZ, bwA_del, hv, Pi.add_apply, Pi.sub_apply, Nat.cast_one, one_smul, Pi.single_apply]
         split_ifs <;> omega
       rw [h, hd]
       exact MvPolynomial.isWeightedHomogeneous_X R (bwA_wZ r n) (a, v.2)
@@ -351,7 +310,7 @@ theorem bwA_G_X (a b : Fin r) (v : Fin r × Fin n) : bwA_G (R := R) a b (MvPolyn
   | k + 2 =>
     have h : Formalism.GradedWeylDivisibility.rowDiv R a b (k + 2) (MvPolynomial.X v : MvPolynomial (Fin r × Fin n) R) = 0 := by
       unfold Formalism.GradedWeylDivisibility.rowDiv
-      by_cases hv : v.1 = b <;> simp [Formalism.GradedWeylDivisibility.rowGen, hv, Polynomial.coeff_X_mul, Polynomial.coeff_C]
+      by_cases hv : v.1 = b <;> simp [Formalism.GradedWeylDivisibility.rowGen, hv]
     rw [h]
     intro d hd
     simp at hd
@@ -434,7 +393,7 @@ theorem bwA_weight_cast (m : Fin r × Fin n →₀ ℕ) :
   by_cases h : i = v.1
   · subst h
     simp
-  · simp [Pi.single_apply, h]
+  · simp [h]
 
 private theorem isWeightedHomogeneous_bwA_prod_of_forall {ι : Type} (s : Finset ι) (φ : ι → MvPolynomial (Fin r × Fin n) R) (m : ι → Fin r → ℤ)
     (h : ∀ i ∈ s, MvPolynomial.IsWeightedHomogeneous (bwA_wZ r n) (φ i) (m i)) :
@@ -528,7 +487,7 @@ theorem bwA_rowDeg_eq_weight {r n : ℕ} (m : Fin r × Fin n →₀ ℕ) (a : Fi
   · rw [Finset.sum_apply, Fintype.sum_prod_type, Finset.sum_eq_single a]
     · simp [Formalism.GradedWeylDivisibility.rowW]
     · intro x _ hx
-      simp [Formalism.GradedWeylDivisibility.rowW, Pi.single_apply, Ne.symm hx]
+      simp [Formalism.GradedWeylDivisibility.rowW, Ne.symm hx]
     · intro h
       exact absurd (Finset.mem_univ _) h
   · intro i
@@ -689,8 +648,8 @@ theorem bwA_ten_update (f : ι → MvPolynomial (Fin N × Fin N) ℂ) (τv : ι)
   unfold Formalism.L2.Forms.ten
   rw [← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ τv)]
   congr 1
-  · simp [Function.update_apply]
-  · exact Finset.prod_congr rfl fun τ hτ => by simp [Function.update_apply, Finset.ne_of_mem_erase hτ]
+  · simp
+  · exact Finset.prod_congr rfl fun τ hτ => by simp [Finset.ne_of_mem_erase hτ]
 
 end Blocks
 
@@ -742,7 +701,7 @@ theorem bwA_ten_intSpan (D : D7) (w : D.what₂.places.Pl) {N : ℕ} (lam : D.wh
       by_cases h : τ = τv
       · subst h
         simp
-      · simp [Function.update_apply, h]
+      · simp [h]
     rw [← hR, ← e]
     apply AddSubgroup.subset_closure
     refine ⟨r', Function.update f τv g, hr', fun τ => ?_, rfl⟩

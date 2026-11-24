@@ -227,7 +227,7 @@ private theorem ad0Irr_mulVec {Γ k : Type} [Group Γ] [Field k] (ρ : Γ →* G
   rw [ad0, tw_val, Matrix.smul_mulVec]
   congr 1
   ext i
-  fin_cases i <;> simp [symSquareMatrixHom, Matrix.mulVec, dotProduct, Fin.sum_univ_three] <;> ring
+  fin_cases i <;> simp [symSquareMatrixHom, Matrix.mulVec, dotProduct, Fin.sum_univ_three]
 
 end UpperTheory.V.Sd
 

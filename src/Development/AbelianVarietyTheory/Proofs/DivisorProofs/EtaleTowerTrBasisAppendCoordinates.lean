@@ -63,7 +63,7 @@ def dualHom {k K L : Type} [Field k] [Field K] [Field L] [Algebra k K] (f : K �
   map_one' := by ext <;> simp
   map_mul' a c := by ext <;> simp [Derivation.leibniz] <;> ring
   map_zero' := by ext <;> simp
-  map_add' a c := by ext <;> simp <;> ring
+  map_add' a c := by ext <;> simp
 
 theorem exists_basis {K : Type} [Field K] (c : ℂ →+* K) {n : ℕ} (x : Fin n → K) (hx : TrBasis c x) :
     letI := c.toAlgebra

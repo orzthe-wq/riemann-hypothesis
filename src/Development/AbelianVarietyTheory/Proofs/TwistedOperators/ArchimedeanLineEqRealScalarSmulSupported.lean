@@ -48,6 +48,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlkGLMem
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ThetaEqB
 import Formalism.LocalToGlobal.IndefiniteForms.IndefSide
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExtensionEmbeddingMixedSymmOfIsComplex
 
 @[expose] public section
 
@@ -63,17 +64,6 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 
 namespace GlobalTheory.LineRealAd
-
-theorem continuous_mixedSpace_symm (K : Type) [Field K] [NumberField K] :
-    Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm := by
-  refine continuous_pi fun v => ?_
-  rcases v.isReal_or_isComplex with hv | hv
-  · rw [(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]
-    exact ((continuous_apply _).comp continuous_fst).congr fun y =>
-      (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace K).apply_symm_apply y)) ⟨v, hv⟩).symm
-  · rw [(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]
-    exact ((continuous_apply _).comp continuous_snd).congr fun y =>
-      (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace K).apply_symm_apply y)) ⟨v, hv⟩).symm
 
 variable {D : D7}
 
@@ -92,7 +82,7 @@ theorem theta_realAd {θ : InfFam D} (hθ : IsInfFam θ) (ρ : D.what₂.Tau) (t
   let g : ℝ →+* ℂ := (θ ρ).comp ((Algebra.TensorProduct.includeLeftRingHom (R := D.host.F) (B := D.host.E)).comp
     ((InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).symm.toRingHom.comp (algebraMap ℝ _)))
   have hg : Continuous g :=
-    (hθ ρ).2.comp ((continuous_mixedSpace_symm _).comp (continuous_algebraMap ℝ _))
+    (hθ ρ).2.comp ((_root_.GlobalTheory.HeckeOne.continuous_ringEquiv_mixedSpace_symm _).comp (continuous_algebraMap ℝ _))
   have h : g (t • (1 : ℝ)) = t • g 1 := map_real_smul g.toAddMonoidHom hg t 1
   rw [smul_eq_mul, mul_one, map_one, Complex.real_smul, mul_one] at h
   exact h

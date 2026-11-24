@@ -118,9 +118,6 @@ theorem sumLPres_holds : SumLPres := by
               measurable_invFun := ?_ }, ?_, fun x => rfl⟩
     · first
       | exact (PiLp.volume_preserving_toLp κ).measurable
-      | exact WithLp.measurable_toLp 2 _
-      | fun_prop
-      | measurability
     · exact PiLp.volume_preserving_ofLp κ
   obtain ⟨eι, heι, heιa⟩ := mkE ι
   obtain ⟨eη, heη, heηa⟩ := mkE η
@@ -131,9 +128,6 @@ theorem sumLPres_holds : SumLPres := by
   have hsum : MeasurePreserving (MeasurableEquiv.sumPiEquivProdPi (fun _ : ι ⊕ η => ℝ)) := by
     first
     | exact MeasureTheory.measurePreserving_sumPiEquivProdPi (fun _ : ι ⊕ η => (volume : Measure ℝ))
-    | exact MeasureTheory.volume_measurePreserving_sumPiEquivProdPi (fun _ : ι ⊕ η => ℝ)
-    | exact MeasureTheory.Measure.volume_preserving_sumPiEquivProdPi (fun _ : ι ⊕ η => ℝ)
-    | exact MeasureTheory.measurePreserving_sumPiEquivProdPi_of_measurePreserving
   have hφ : MeasurePreserving φ :=
     ((MeasurePreserving.symm _ heS).comp (MeasurePreserving.symm _ hsum)).comp (heι.prod heη)
   have hφl : ∀ q : EuclideanSpace ℝ ι × EuclideanSpace ℝ η, ∀ i, (φ q).ofLp (Sum.inl i) = q.1.ofLp i := by
@@ -143,7 +137,6 @@ theorem sumLPres_holds : SumLPres := by
     rw [heSs, heιa]
     first
     | rfl
-    | simp [MeasurableEquiv.sumPiEquivProdPi, Equiv.sumPiEquivProdPi]
   have hφr : ∀ q : EuclideanSpace ℝ ι × EuclideanSpace ℝ η, ∀ j, (φ q).ofLp (Sum.inr j) = q.2.ofLp j := by
     intro q j
     show (eS.symm ((MeasurableEquiv.sumPiEquivProdPi (fun _ : ι ⊕ η => ℝ)).symm (eι q.1, eη q.2))).ofLp
@@ -151,7 +144,6 @@ theorem sumLPres_holds : SumLPres := by
     rw [heSs, heηa]
     first
     | rfl
-    | simp [MeasurableEquiv.sumPiEquivProdPi, Equiv.sumPiEquivProdPi]
   have hφl' : ∀ u : EuclideanSpace ℝ (ι ⊕ η), ∀ i, (φ.symm u).1.ofLp i = u.ofLp (Sum.inl i) := by
     intro u i
     rw [← hφl, φ.apply_symm_apply]

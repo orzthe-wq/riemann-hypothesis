@@ -95,7 +95,7 @@ theorem ds_ex {m : ℕ} (ε : Fin m → Bool) (lam : Fin m → ℝ) (hl : Formal
     exact_mod_cast this
   have hm0 : (0 : ℝ) ≤ m := Nat.cast_nonneg m
   have h1 := mul_le_mul_of_nonneg_left hq hm0
-  refine max_lt (by nlinarith) (by nlinarith)
+  refine max_lt (by linarith [sq_nonneg (m : ℝ), pow_le_pow_left₀ (Nat.cast_nonneg _) hq 2]) (by linarith [sq_nonneg (m : ℝ), pow_le_pow_left₀ (Nat.cast_nonneg _) hq 2])
 
 end BaseIntegrality
 
@@ -170,14 +170,14 @@ theorem base_of_far_models_frame : Far → Models → Frame → Base := by
   have ht0 : 0 ≤ t := by rw [htm]; positivity
   have hsq : Real.sqrt t = m := by rw [htm]; exact Real.sqrt_sq (by linarith)
   have htt0 : t₀ ≤ t := by
-    have : m ≤ m ^ 2 := by nlinarith
+    have : m ≤ m ^ 2 := le_self_pow₀ hm1 two_ne_zero
     have := le_abs_self t₀
     rw [htm]; linarith
   have hhc : Formalism.QuantumDeterminants.IsHCParam (lam + t • d) := by
     refine ⟨fun a b hab => ?_, fun a => ?_⟩
     · have h1 := hG.hc.1 hab
       simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hdi]
-      nlinarith [mul_nonneg ht0 (le_of_lt (sub_pos.2 h1))]
+      linarith [mul_nonneg ht0 (le_of_lt (sub_pos.2 h1))]
     · obtain ⟨k, hk⟩ := hG.hc.2 a
       obtain ⟨z, hz⟩ := hl2 a
       refine ⟨k + ((M ^ 2 : ℕ) : ℤ) * (z + K), ?_⟩
@@ -191,10 +191,10 @@ theorem base_of_far_models_frame : Far → Models → Frame → Base := by
     have e1 : (lam + t • d) a - (lam + t • d) b = (lam a - lam b) * (1 + 2 * t) := by
       simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hdi]; ring
     rw [e1, abs_mul, abs_of_pos (by linarith : (0 : ℝ) < 1 + 2 * t)]
-    nlinarith [mul_nonneg (abs_nonneg (lam a - lam b)) ht0]
+    linarith [mul_nonneg (abs_nonneg (lam a - lam b)) ht0]
   have hgapL : GapAtLeast ε (lam + t • d) (200 * ((n : ℝ) + 1) ^ 3) := hgap2
   have hn0 : (0 : ℝ) ≤ n := Nat.cast_nonneg n
-  obtain ⟨Hπ, i1, i2, π, hπ⟩ := BaseIntegrality.ds_ex ε (lam + t • d) hhc _ hgap2 (by push_cast; nlinarith)
+  obtain ⟨Hπ, i1, i2, π, hπ⟩ := BaseIntegrality.ds_ex ε (lam + t • d) hhc _ hgap2 (by push_cast; linarith [hn0, one_le_pow₀ (n := 3) (show (1 : ℝ) ≤ n + 1 by linarith), le_self_pow₀ (show (1 : ℝ) ≤ n + 1 by linarith) (by norm_num : 3 ≠ 0), pow_le_pow_right₀ (show (1 : ℝ) ≤ n + 1 by linarith) (by norm_num : 2 ≤ 3)])
   have : CompleteSpace Hπ := hπ.1
   obtain ⟨mu', hmc, hmb, hocc⟩ := hFar' t htt0 hhc hgapL Hπ π hπ
   have hmb' : ∀ j, |mu' j - t * d' j| ≤ |C| * m := fun j => by
@@ -217,12 +217,12 @@ theorem base_of_far_models_frame : Far → Models → Frame → Base := by
       rw [this]
       exact (abs_add_le _ _).trans (add_le_add (abs_sub _ _) le_rfl)
     rw [abs_mul, abs_of_nonneg ht0] at e3
-    have e4 : 2 * t ≤ t * |d' a - d' b| := by nlinarith
+    have e4 : 2 * t ≤ t * |d' a - d' b| := by linarith [mul_le_mul_of_nonneg_left hd2 ht0]
     have e5 : m * (|C| + 100 * ((n : ℝ) + 1) ^ 3) ≤ m * m := mul_le_mul_of_nonneg_left (by linarith) (by linarith)
     have e6 : 100 * ((n : ℝ) + 1) ^ 3 ≤ m * (100 * ((n : ℝ) + 1) ^ 3) := le_mul_of_one_le_left (by positivity) hm1
-    rw [htm] at e4
-    nlinarith
-  obtain ⟨Hσ, j1, j2, σ, hσ⟩ := BaseIntegrality.ds_ex ε' mu' hmc _ hgap' (by nlinarith)
+    rw [htm] at e1 e2 e3 e4
+    linarith [hC0, hn3, hT0, sq m]
+  obtain ⟨Hσ, j1, j2, σ, hσ⟩ := BaseIntegrality.ds_ex ε' mu' hmc _ hgap' (by linarith [hn0, sq_nonneg (n : ℝ), pow_nonneg hn0 3])
   have : CompleteSpace Hσ := hσ.1
   obtain ⟨j, hj0, hj⟩ := hocc Hσ σ hσ
   have hGp : Gp ε (lam + t • d) ε' mu' e :=
@@ -247,8 +247,8 @@ theorem base_of_far_models_frame : Far → Models → Frame → Base := by
       exact (abs_sub _ _).trans (add_le_add h1 h2)
   have hDge : ∀ x, t ≤ t * Sum.elim d d' x := by
     rintro (i | j)
-    · simp only [Sum.elim_inl]; nlinarith [hdpos i]
-    · simp only [Sum.elim_inr]; nlinarith [hd'pos j]
+    · simp only [Sum.elim_inl]; exact le_mul_of_one_le_right ht0 (hdpos i)
+    · simp only [Sum.elim_inr]; exact le_mul_of_one_le_right ht0 (hd'pos j)
   have hm2' : m * (|C| + B + 1) ≤ m * m := mul_le_mul_of_nonneg_left (by linarith) (by linarith)
   have hBm : B ≤ B * m := le_mul_of_one_le_right hB0 hm1
   have hWnn : ∀ x, 0 ≤ Wf x := by
@@ -256,8 +256,8 @@ theorem base_of_far_models_frame : Far → Models → Frame → Base := by
     have h1 := hr x
     have h2 := hDge x
     have h3 := (abs_le.1 h1).1
-    rw [htm] at h2
-    nlinarith
+    rw [htm] at h2 h3
+    linarith [sq m, hm1]
   obtain ⟨a, ha⟩ : ∃ a : Fin (n + 1) ⊕ Fin n → ℕ, a = fun x => ⌊Wf x⌋₊ := ⟨_, rfl⟩
   have haW : ∀ x, (a x : ℝ) = Wf x := fun x => by
     obtain ⟨z, hz⟩ := hWint x

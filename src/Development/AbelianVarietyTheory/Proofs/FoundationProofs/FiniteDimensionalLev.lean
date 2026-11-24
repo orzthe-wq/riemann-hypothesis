@@ -1,20 +1,23 @@
 module
 
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.Order.CompletePartialOrder
 public import Development.AbelianVarietyTheory.Definitions.Foundations.HahnPowOrderLeadingCoeff
 public import Development.AbelianVarietyTheory.Definitions.Foundations.SiegelNeZeroIff
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConstOfSlTwoIntInvariantBoundedUpperHalfPlaneStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalFixedFieldMapOfFiniteIndexStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HahnSeriesPowOfLeadingQInvStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerFunctionSlTwoIntInvariantStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerFunctionTendstoConstTermExponentialStatement
+public import Development.AbelianVarietyTheory.Definitions.Foundations.ExpUpper
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConstOfSlTwoIntInvariantBoundedUpperHalfPlane
+public import Mathlib.Algebra.Order.Ring.Rat
+public import Mathlib.RingTheory.HahnSeries.Multiplication
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HahnSeriesPowOfLeadingQInv
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerFunctionSlTwoIntInvariant
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerFunctionTendstoConstTermExponential
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QuotientIntegralHolomorphic
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitQExpansionCoefficients
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneCodiscreteGermIdentityAndUnits
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Rat
-import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -22,16 +25,18 @@ import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -54,10 +59,154 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Algebra.Order.Star.Rat
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalFixedFieldMapOfFiniteIndex, Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalLev
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalFixedFieldMapOfFiniteIndex =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalFixedFieldMapOfFiniteIndex", "h": "module\n\npublic import Mathlib.FieldTheory.Galois.Basic\npublic import Mathlib.Order.CompletePartialOrder\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Polynomial IntermediateField
+
+namespace GlobalTheory
+
+theorem isSeparable_and_natDegree_le_of_fixed {F E : Type} [Field F] [Field E] [Algebra F E]
+    (G : Type) [Group G] (act : G →* (E ≃ₐ[F] E)) (N : Subgroup G) [N.FiniteIndex]
+    (hG : ∀ x : E, (∀ g, act g x = x) → x ∈ (⊥ : IntermediateField F E))
+    (x : E) (hx : ∀ n ∈ N, act n x = x) :
+    IsIntegral F x ∧ IsSeparable F x ∧ (minpoly F x).natDegree ≤ N.index := by
+  classical
+  haveI : Finite (G ⧸ N) := Subgroup.finite_quotient_of_finiteIndex
+  haveI : Fintype (G ⧸ N) := Fintype.ofFinite _
+  let f : G ⧸ N → E := fun q => Quotient.liftOn' q (fun g => act g x) (by
+    intro a b hab
+    rw [QuotientGroup.leftRel_apply] at hab
+    have := hx _ hab
+    show act a x = act b x
+    calc act a x = act a (act (a⁻¹ * b) x) := by rw [this]
+      _ = act b x := by rw [← AlgEquiv.mul_apply, ← map_mul, mul_inv_cancel_left])
+  have hf : ∀ g : G, f (QuotientGroup.mk g) = act g x := fun g => rfl
+  let S : Finset E := Finset.univ.image f
+  have hS : ∀ y, y ∈ S ↔ ∃ g : G, act g x = y := by
+    intro y
+    simp only [S, Finset.mem_image, Finset.mem_univ, true_and]
+    constructor
+    · rintro ⟨q, rfl⟩
+      induction q using QuotientGroup.induction_on with
+      | H g => exact ⟨g, (hf g).symm⟩
+    · rintro ⟨g, rfl⟩; exact ⟨_, hf g⟩
+  have hcard : S.card ≤ N.index := by
+    rw [Subgroup.index_eq_card, Nat.card_eq_fintype_card]
+    exact Finset.card_image_le.trans (by simp)
+  let p : E[X] := ∏ y ∈ S, (X - C y)
+  have hpmon : p.Monic := monic_prod_of_monic _ _ fun y _ => monic_X_sub_C y
+  have hpsep : p.Separable := separable_prod_X_sub_C_iff'.2 (fun a _ b _ h => h)
+  have hpdeg : p.natDegree = S.card := natDegree_finsetProd_X_sub_C_eq_card S id
+  have hpinv : ∀ g : G, p.map ((act g : E ≃ₐ[F] E) : E →+* E) = p := by
+    intro g
+    simp only [p, Polynomial.map_prod, Polynomial.map_sub, map_X, map_C]
+    have himg : S.image (act g) = S := by
+      ext y
+      simp only [Finset.mem_image, hS]
+      constructor
+      · rintro ⟨z, ⟨h, rfl⟩, rfl⟩
+        exact ⟨g * h, by rw [map_mul, AlgEquiv.mul_apply]⟩
+      · rintro ⟨h, rfl⟩
+        exact ⟨act (g⁻¹ * h) x, ⟨g⁻¹ * h, rfl⟩, by
+          rw [← AlgEquiv.mul_apply, ← map_mul, mul_inv_cancel_left]⟩
+    conv_rhs => rw [← himg]
+    rw [Finset.prod_image (fun a _ b _ h => (act g).injective h)]
+    rfl
+  have hlift : p ∈ lifts (algebraMap F E) := by
+    rw [lifts_iff_coeff_lifts]
+    intro n
+    have : p.coeff n ∈ (⊥ : IntermediateField F E) := by
+      apply hG
+      intro g
+      conv_rhs => rw [← hpinv g]
+      rw [coeff_map]
+      rfl
+    exact mem_bot.1 this
+  obtain ⟨q, hqmap, hqdeg, hqmon⟩ := lifts_and_natDegree_eq_and_monic hlift hpmon
+  have hxS : x ∈ S := (hS x).2 ⟨1, by simp⟩
+  have hqx : aeval x q = 0 := by
+    rw [aeval_def, eval₂_eq_eval_map, hqmap, eval_prod]
+    exact Finset.prod_eq_zero hxS (by simp)
+  have hint : IsIntegral F x := ⟨q, hqmon, hqx⟩
+  have hdvd : minpoly F x ∣ q := minpoly.dvd F x hqx
+  have hqsep : q.Separable := (separable_map (algebraMap F E)).1 (hqmap ▸ hpsep)
+  refine ⟨hint, hqsep.of_dvd hdvd, ?_⟩
+  calc (minpoly F x).natDegree ≤ q.natDegree := natDegree_le_of_dvd hdvd hqmon.ne_zero
+    _ = S.card := by rw [hqdeg, hpdeg]
+    _ ≤ N.index := hcard
+
+theorem finiteDimensional_fixedField_map_of_finiteIndex : ∀ {F E : Type} [Field F] [Field E]
+    [Algebra F E] (G : Type) [Group G] (act : G →* (E ≃ₐ[F] E)) (N : Subgroup G), N.FiniteIndex →
+    (∀ x : E, (∀ g, act g x = x) → x ∈ (⊥ : IntermediateField F E)) →
+    FiniteDimensional F (IntermediateField.fixedField (N.map act)) := by
+  intro F E _ _ _ G _ act N hN hG
+  set L := IntermediateField.fixedField (N.map act) with hLdef
+  have key : ∀ y ∈ L, IsIntegral F y ∧ IsSeparable F y ∧ (minpoly F y).natDegree ≤ N.index := by
+    intro y hy
+    refine isSeparable_and_natDegree_le_of_fixed G act N hG y fun n hn => ?_
+    exact (mem_fixedField_iff _ _).1 hy _ (Subgroup.mem_map_of_mem act hn)
+  have hbound : ∀ y ∈ L, Module.finrank F F⟮y⟯ ≤ N.index := by
+    intro y hy
+    rw [adjoin.finrank (key y hy).1]
+    exact (key y hy).2.2
+  let D : Set ℕ := {d | ∃ y ∈ L, Module.finrank F F⟮y⟯ = d}
+  have hDne : D.Nonempty := ⟨_, 0, L.zero_mem, rfl⟩
+  have hDbdd : BddAbove D := ⟨N.index, by rintro d ⟨y, hy, rfl⟩; exact hbound y hy⟩
+  obtain ⟨x, hxL, hxmax⟩ := Nat.sSup_mem hDne hDbdd
+  have hle : ∀ y ∈ L, Module.finrank F F⟮y⟯ ≤ Module.finrank F F⟮x⟯ := by
+    intro y hy
+    rw [hxmax]
+    exact le_csSup hDbdd ⟨y, hy, rfl⟩
+  have hLx : L ≤ F⟮x⟯ := by
+    intro y hy
+    have hx := key x hxL
+    have hy' := key y hy
+    haveI := isSeparable_adjoin_pair_of_isSeparable F E hx.2.1 hy'.2.1
+    haveI : FiniteDimensional F F⟮x, y⟯ := finiteDimensional_adjoin (by
+      rintro z (rfl | rfl)
+      · exact hx.1
+      · exact hy'.1)
+    obtain ⟨α, hα⟩ := Field.exists_primitive_element F F⟮x, y⟯
+    have hz : F⟮(α : E)⟯ = F⟮x, y⟯ := by
+      simpa only [lift_adjoin_simple, lift_top] using congr_arg lift hα
+    have hKL : F⟮x, y⟯ ≤ L := by
+      rw [adjoin_le_iff]
+      rintro z (rfl | rfl)
+      · exact hxL
+      · exact hy
+    have hxK : F⟮x⟯ ≤ F⟮x, y⟯ := adjoin_simple_le_iff.2 (subset_adjoin F _ (by simp))
+    have heq : F⟮x⟯ = F⟮x, y⟯ := by
+      apply eq_of_le_of_finrank_le hxK
+      rw [← hz]
+      exact hle _ (hKL α.2)
+    rw [heq]
+    exact subset_adjoin F _ (by simp)
+  haveI : FiniteDimensional F F⟮x⟯ := adjoin.finiteDimensional (key x hxL).1
+  exact Module.Finite.of_injective (IntermediateField.inclusion hLx).toLinearMap
+    (IntermediateField.inclusion_injective hLx)
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalFixedFieldMapOfFiniteIndex =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalLev =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalLev", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.HahnPowOrderLeadingCoeff\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.SiegelNeZeroIff\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.ExpUpper\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConstOfSlTwoIntInvariantBoundedUpperHalfPlane\npublic import Mathlib.FieldTheory.Galois.Basic\npublic import Mathlib.Order.CompletePartialOrder\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalFixedFieldMapOfFiniteIndex\npublic import Mathlib.Algebra.Order.Ring.Rat\npublic import Mathlib.RingTheory.HahnSeries.Multiplication\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HahnSeriesPowOfLeadingQInv\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerFunctionSlTwoIntInvariant\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ModularTowerFunctionTendstoConstTermExponential\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.QuotientIntegralHolomorphic\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitQExpansionCoefficients\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UpperHalfPlaneCodiscreteGermIdentityAndUnits\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Rat\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -151,15 +300,15 @@ theorem eq_const_of_nonneg (X : Tower Ω ε) (h : X.K) (hinv : ∀ γ : SL(2, �
       by_contra hm
       exact hr (hneg _ (by exact_mod_cast (not_le.1 hm)))
     exact ⟨m.toNat, by rw [← Int.cast_natCast, Int.toNat_of_nonneg hm]⟩
-  obtain ⟨B, t, hB⟩ := GlobalTheory.T.modularTower_function_tendsto_constTerm_exponential X h φ hd.continuousOn ha hsupp
-  have hinvφ := GlobalTheory.T.modularTower_function_slTwoInt_invariant X h φ hd.continuousOn ha hinv
+  obtain ⟨B, t, hB⟩ := _root_.GlobalTheory.KZ.ExpBound.bound_at_infinity X h φ hd.continuousOn ha hsupp
+  have hinvφ := _root_.GlobalTheory.KZ.InvFun.fun_inv X h φ hd.continuousOn ha hinv
   have hexp1 : ∀ z : ℂ, t < z.im → Real.exp (-(2 * Real.pi * (z.im - t))) ≤ 1 := by
     intro z hz
     rw [Real.exp_le_one_iff]
     have : 0 < z.im - t := by linarith
     have := Real.pi_pos
     nlinarith
-  obtain ⟨c, hc⟩ := GlobalTheory.T.const_of_slTwoInt_invariant_bounded_upperHalfPlane φ hd hinvφ ⟨‖ε a0‖ + |B|, t, fun z hz hzt => by
+  obtain ⟨c, hc⟩ := _root_.GlobalTheory.KZ.LevelOne.const_of_invariant_bounded φ hd hinvφ ⟨‖ε a0‖ + |B|, t, fun z hz hzt => by
     have h1 := hB z hz hzt
     have h2 := hexp1 z hzt
     have h3 : B * Real.exp (-(2 * Real.pi * (z.im - t))) ≤ |B| := by
@@ -211,7 +360,7 @@ theorem mem_adjoin_j (X : Tower Ω ε) : ∀ h : X.K,
       obtain ⟨φ, hd, ha⟩ := hol
       obtain ⟨c, hcdef⟩ : ∃ c : Ω, c = (X.exp h).coeff (-((n + 1 : ℕ) : ℚ)) := ⟨_, rfl⟩
       obtain ⟨h', hh'⟩ : ∃ h' : X.K, h' = h - algebraMap Ω X.K c * X.jK ^ (n + 1) := ⟨_, rfl⟩
-      have hj := GlobalTheory.T.hahnSeries_pow_of_leading_qInv (X.exp X.jK) X.j_exp.1 X.j_exp.2.1 (n + 1)
+      have hj := _root_.GlobalTheory.hahn_pow_neg_one_lead (X.exp X.jK) X.j_exp.1 X.j_exp.2.1 (n + 1)
       have hinv' : ∀ γ : SL(2, ℤ), X.sl (ofSL γ) h' = h' := by
         intro γ
         rw [hh', map_sub, map_mul, map_pow, X.j_inv, hinv, AlgEquiv.commutes]
@@ -390,7 +539,7 @@ theorem finiteDimensional_lev : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε 
   have hact : ∀ γ f, act γ f = X.sl (ofSL γ⁻¹) f := fun _ _ => rfl
   haveI : NeZero M := ⟨hM.ne'⟩
   have hfi : Γ'.FiniteIndex := Subgroup.finiteIndex_of_le hle
-  have hfin := GlobalTheory.T.finiteDimensional_fixedField_map_of_finiteIndex' SL(2, ℤ) act Γ' hfi (by
+  have hfin := _root_.GlobalTheory.finiteDimensional_fixedField_map_of_finiteIndex SL(2, ℤ) act Γ' hfi (by
     intro x hx
     obtain ⟨P, Q, hPQ⟩ := LevFin.exists_eq_div X x (fun γ => by
       have := hx γ⁻¹
@@ -410,3 +559,7 @@ theorem finiteDimensional_lev : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε 
     (congrArg (fun x : IntermediateField.fixedField (Γ'.map act) => (x : X.K)) h))
 
 end GlobalTheory.K4
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.FiniteDimensionalLev =====

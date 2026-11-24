@@ -47,7 +47,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 
 namespace GlobalTheory
 
-theorem semiAbelian_model_determined_by_generic_fibre : ExtVStatement :=
-  GlobalTheory.ModelUniqueChecks.extV_holds
-
 end GlobalTheory

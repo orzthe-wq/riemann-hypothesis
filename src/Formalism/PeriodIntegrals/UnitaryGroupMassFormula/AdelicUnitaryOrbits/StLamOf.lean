@@ -287,7 +287,7 @@ theorem quadGen : QuadGen := by
     refine ⟨Bs.repr x 0, Bs.repr x 1, ?_⟩
     nth_rewrite 1 [← Bs.sum_repr x]
     rw [Fin.sum_univ_two, hBs]
-    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Algebra.smul_def, mul_one]
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Algebra.smul_def, mul_one]
   obtain ⟨v, u, hsq⟩ := hspan (e ^ 2)
   have hse : σ e ≠ e := fun h => he ((hfix e).mp h)
   have hσsq : σ e ^ 2 = algebraMap F E v + algebraMap F E u * σ e := by

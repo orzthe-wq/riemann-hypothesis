@@ -120,14 +120,6 @@ theorem Hf_sum_right {κ : Type*} (s : Finset κ) (v : EuclideanSpace ℂ ι)
   simp only [Hf, WithLp.ofLp_sum, Finset.sum_apply, map_sum, Finset.mul_sum]
   exact Finset.sum_comm
 
-theorem HC_add_left (v v' w : Fin n → EuclideanSpace ℂ ι) :
-    HC (v + v') w = HC v w + HC v' w := by
-  simp [HC, Hf, add_mul, Finset.sum_add_distrib]
-
-theorem HC_add_right (v w w' : Fin n → EuclideanSpace ℂ ι) :
-    HC v (w + w') = HC v w + HC v w' := by
-  simp [HC, Hf, mul_add, Finset.sum_add_distrib]
-
 theorem HC_sum_left {κ : Type*} (s : Finset κ) (v : κ → Fin n → EuclideanSpace ℂ ι)
     (w : Fin n → EuclideanSpace ℂ ι) : HC (∑ j ∈ s, v j) w = ∑ j ∈ s, HC (v j) w := by
 

@@ -78,7 +78,7 @@ theorem dg_unitary {p q : ℕ} (a₀ : Fin p ⊕ Fin q) {c : ℂ} (hc : ‖c‖ 
       _ = _ := by rw [h1, one_mul]
   · have : Formalism.UG.Jpq p q a b = 0 := by
       rcases a with i | i <;> rcases b with j | j <;>
-        simp_all [Formalism.UG.Jpq, Matrix.one_apply]
+        simp_all [Formalism.UG.Jpq]
     simp [this]
 
 theorem exists_of_dg {p q : ℕ} (a₀ : Fin p ⊕ Fin q) {c : ℂ} (hc : ‖c‖ = 1) :

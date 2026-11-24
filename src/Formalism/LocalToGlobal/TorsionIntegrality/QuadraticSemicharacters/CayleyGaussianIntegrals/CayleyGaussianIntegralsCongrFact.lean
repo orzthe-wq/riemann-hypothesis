@@ -6,51 +6,7 @@ public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.CayleyGaussianIntegrals.Th0CharMulOpUTh0HalfPeriodEq
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharacterIdentityReformulated2
 public import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.QuadraticSemicharactersFactTer
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.GroupTheory.FiniteAbelian.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -131,12 +87,12 @@ theorem uu_ne : uu ≠ 0 := fun h => by have := uu_norm; rw [h] at this; simp at
 
 theorem th_stable {x : ℂ} (hx : x ∈ L7.lattice) : th * x ∈ L7.lattice := by
   rw [mem7] at hx ⊢
-  have := Formalism.L2.Th1.F.cmStable 1 1 2 7 one_pos (by norm_num) (by norm_num) 0 1 x hx
+  have := _root_.Formalism.L2.Th1.F.cm_stable 1 1 2 7 one_pos (by norm_num) (by norm_num) 0 1 x hx
   simpa using this
 
 theorem thbar_stable {x : ℂ} (hx : x ∈ L7.lattice) : conj th * x ∈ L7.lattice := by
   rw [mem7] at hx ⊢
-  have := Formalism.L2.Th1.F.cmStable 1 1 2 7 one_pos (by norm_num) (by norm_num) 1 (-1) x hx
+  have := _root_.Formalism.L2.Th1.F.cm_stable 1 1 2 7 one_pos (by norm_num) (by norm_num) 1 (-1) x hx
   have h2 : conj th = 1 - th := by rw [← th_rel.2.1]; ring
   rw [h2]
   simpa [sub_eq_add_neg] using this
@@ -232,7 +188,7 @@ theorem stdData_seven :
       (alphaQ (Real.sqrt (7 : ℕ) / 2) (matH (((Formalism.L2.Th1.F.area L7 : ℝ) : ℂ)⁻¹ • (1 : Matrix n n ℂ))))
       (alphaQ (Real.sqrt (7 : ℕ) / 2) (stdH L7 (Fin 4 × n))) (gU n) := by
   have h := Formalism.L2.Th1.H.stdDataCm 1 1 2 7 one_pos (by norm_num) 1 one_ne_zero (by norm_num) (by decide) (by norm_num)
-    _ _ _ (gU n) (gU_isom n) (stdSelfDual L7 n) (fun x hx => th_stable_std hx)
+    _ _ _ (gU n) (gU_isom n) (_root_.Formalism.L2.Th1.H.StdSelfDual_proof L7 n) (fun x hx => th_stable_std hx)
     (by rw [fourth_power_standard_lattice]; exact idxU₁ _) (by rw [fourth_power_standard_lattice]; exact idxU₂ _)
   have e : (1 : ℂ) * ((1 : ℕ) : ℂ) = 1 := by norm_num
   rw [e] at h

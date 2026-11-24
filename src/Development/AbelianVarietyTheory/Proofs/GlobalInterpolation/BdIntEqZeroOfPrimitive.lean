@@ -156,17 +156,26 @@ theorem sidesIn_compl {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) 
   · have := congrArg Complex.re (Set.mem_singleton_iff.1 hx); simp at this; linarith
   · have := congrArg Complex.re (Set.mem_singleton_iff.1 hx); simp at this; linarith
 
-theorem bdInt_sq {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) (h3 : c < p.im)
-    (h4 : p.im < d) (k : ℂ) : bdInt a b c d (fun s => k / (s - p) ^ 2) = 0 := by
-  refine bdInt_eq_zero_of_primitive (sidesIn_compl h1 h2 h3 h4) (F := fun s => -k * (s - p)⁻¹)
-    ?_ fun s hs => ?_
+/-- Higher-order pole terms have zero boundary integral whenever the sides avoid the pole. -/
+theorem bdInt_pole_pow_eq_zero {a b c d : ℝ} {p : ℂ}
+    (h : SidesIn a b c d {p}ᶜ) (k : ℂ) (n : ℕ) :
+    bdInt a b c d (fun s => k / (s - p) ^ (n + 2)) = 0 := by
+  refine bdInt_eq_zero_of_primitive h
+    (F := fun s => -(k / (n + 1)) / (s - p) ^ (n + 1)) ?_ fun s hs => ?_
   · exact ContinuousOn.div₀ (by fun_prop) (by fun_prop)
       fun s hs => pow_ne_zero _ (sub_ne_zero.2 hs)
   · have hs' : s - p ≠ 0 := sub_ne_zero.2 hs
-    have := (((hasDerivAt_id s).sub_const p).inv hs').const_mul (-k)
-    refine this.congr_deriv ?_
-    simp only [id]
-    ring
+    have hn : (n : ℂ) + 1 ≠ 0 := by exact_mod_cast Nat.succ_ne_zero n
+    have hd := (hasDerivAt_const s (-(k / (n + 1)))).fun_div
+      (((hasDerivAt_id' s).sub_const p).fun_pow (n + 1)) (pow_ne_zero _ hs')
+    refine hd.congr_deriv ?_
+    simp only [Nat.add_sub_cancel]
+    push_cast
+    field_simp [hs', hn, pow_succ] <;> ring
+
+theorem bdInt_sq {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) (h3 : c < p.im)
+    (h4 : p.im < d) (k : ℂ) : bdInt a b c d (fun s => k / (s - p) ^ 2) = 0 := by
+  exact bdInt_pole_pow_eq_zero (sidesIn_compl h1 h2 h3 h4) k 0
 
 theorem bdInt_inv {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) (h3 : c < p.im)
     (h4 : p.im < d) (k : ℂ) : bdInt a b c d (fun s => k / (s - p)) = 2 * Real.pi * I * k := by
@@ -200,18 +209,29 @@ theorem bdInt_inv {a b c d : ℝ} {p : ℂ} (h1 : a < p.re) (h2 : p.re < b) (h3 
   rw [e1, e2]
   ring
 
-theorem residue_rectangle :
-    ∀ (f : ℂ → ℂ) (z w : ℂ) (S : Finset ℂ) (r : ℂ → ℂ), z.re < w.re → z.im < w.im → (∀ p ∈ S, z.re < p.re ∧ p.re < w.re ∧ z.im < p.im ∧ p.im < w.im) → DifferentiableOn ℂ f ((Set.Icc z.re w.re ×ℂ Set.Icc z.im w.im) \ S) → (∀ p ∈ S, ∃ (a : ℂ) (g : ℂ → ℂ), AnalyticAt ℂ g p ∧ ∀ᶠ s in nhdsWithin p {p}ᶜ, f s = a / (s - p) ^ 2 + r p / (s - p) + g s) → (∫ x : ℝ in z.re..w.re, f (x + z.im * I)) - (∫ x : ℝ in z.re..w.re, f (x + w.im * I)) + I * (∫ y : ℝ in z.im..w.im, f (w.re + y * I)) - I * (∫ y : ℝ in z.im..w.im, f (z.re + y * I)) = 2 * Real.pi * I * ∑ p ∈ S, r p := by
+/-- The rectangle residue formula for finite principal parts of arbitrary order. -/
+theorem residue_rectangle_of_finite_principal_parts :
+    ∀ (f : ℂ → ℂ) (z w : ℂ) (S : Finset ℂ) (r : ℂ → ℂ) (N : ℂ → ℕ),
+      z.re < w.re → z.im < w.im →
+      (∀ p ∈ S, z.re < p.re ∧ p.re < w.re ∧ z.im < p.im ∧ p.im < w.im) →
+      DifferentiableOn ℂ f ((Set.Icc z.re w.re ×ℂ Set.Icc z.im w.im) \ S) →
+      (∀ p ∈ S, ∃ (a : ℕ → ℂ) (g : ℂ → ℂ), AnalyticAt ℂ g p ∧
+        ∀ᶠ s in nhdsWithin p {p}ᶜ,
+          f s = (∑ k ∈ Finset.range (N p), a k / (s - p) ^ (k + 2)) +
+            r p / (s - p) + g s) →
+      bdInt z.re w.re z.im w.im f = 2 * Real.pi * I * ∑ p ∈ S, r p := by
   classical
-  intro f z w S r hre him hS hf hp
+  intro f z w S r N hre him hS hf hp
   choose! a g hg hfg using hp
   set R : Set ℂ := Set.Icc z.re w.re ×ℂ Set.Icc z.im w.im with hR
-  let P : ℂ → ℂ → ℂ := fun p s => a p / (s - p) ^ 2 + r p / (s - p)
+  let P : ℂ → ℂ → ℂ := fun p s =>
+    (∑ k ∈ Finset.range (N p), a p k / (s - p) ^ (k + 2)) + r p / (s - p)
   have hP : ∀ p s, s ≠ p → DifferentiableAt ℂ (P p) s := fun p s hs => by
     have hs' : s - p ≠ 0 := sub_ne_zero.2 hs
-    have hs2 : (s - p) ^ 2 ≠ 0 := pow_ne_zero _ hs'
-    simp only [P]
-    fun_prop (disch := assumption)
+    exact (DifferentiableAt.fun_sum fun k _ =>
+      (differentiableAt_const _).div ((differentiableAt_id.sub_const p).pow (k + 2))
+        (pow_ne_zero _ hs')).add
+      ((differentiableAt_const _).div (differentiableAt_id.sub_const p) hs')
   let h : ℂ → ℂ := fun s =>
     if s ∈ S then g s s - ∑ q ∈ S.erase s, P q s else f s - ∑ q ∈ S, P q s
   have hopen : ∀ T : Finset ℂ, ∀ s ∉ T, ∀ᶠ t in nhds s, t ∉ T := fun T s hs =>
@@ -269,10 +289,21 @@ theorem residue_rectangle :
   refine Finset.sum_congr rfl fun p hp => ?_
   obtain ⟨h1, h2, h3, h4⟩ := hS p hp
   simp only [P]
-  rw [bdInt_add (sidesIn_compl h1 h2 h3 h4) (f := fun s => a p / (s - p) ^ 2)
-    (g := fun s => r p / (s - p))
-    (ContinuousOn.div₀ (by fun_prop) (by fun_prop) fun s hs => pow_ne_zero _ (sub_ne_zero.2 hs))
+  have hsides := sidesIn_compl h1 h2 h3 h4
+  have hc : ∀ k ∈ Finset.range (N p), ContinuousOn (fun s => a p k / (s - p) ^ (k + 2)) {p}ᶜ :=
+    fun k _ => ContinuousOn.div₀ (by fun_prop) (by fun_prop)
+      fun s hs => pow_ne_zero _ (sub_ne_zero.2 hs)
+  rw [bdInt_add hsides (continuousOn_finsetSum _ hc)
     (ContinuousOn.div₀ (by fun_prop) (by fun_prop) fun s hs => sub_ne_zero.2 hs),
-    bdInt_sq h1 h2 h3 h4, bdInt_inv h1 h2 h3 h4, zero_add]
+    bdInt_sum hsides _ hc, bdInt_inv h1 h2 h3 h4]
+  simp only [bdInt_pole_pow_eq_zero hsides, Finset.sum_const_zero, zero_add]
+
+theorem residue_rectangle :
+    ∀ (f : ℂ → ℂ) (z w : ℂ) (S : Finset ℂ) (r : ℂ → ℂ), z.re < w.re → z.im < w.im → (∀ p ∈ S, z.re < p.re ∧ p.re < w.re ∧ z.im < p.im ∧ p.im < w.im) → DifferentiableOn ℂ f ((Set.Icc z.re w.re ×ℂ Set.Icc z.im w.im) \ S) → (∀ p ∈ S, ∃ (a : ℂ) (g : ℂ → ℂ), AnalyticAt ℂ g p ∧ ∀ᶠ s in nhdsWithin p {p}ᶜ, f s = a / (s - p) ^ 2 + r p / (s - p) + g s) → (∫ x : ℝ in z.re..w.re, f (x + z.im * I)) - (∫ x : ℝ in z.re..w.re, f (x + w.im * I)) + I * (∫ y : ℝ in z.im..w.im, f (w.re + y * I)) - I * (∫ y : ℝ in z.im..w.im, f (z.re + y * I)) = 2 * Real.pi * I * ∑ p ∈ S, r p := by
+  intro f z w S r hre him hS hf hp
+  apply residue_rectangle_of_finite_principal_parts f z w S r (fun _ => 1) hre him hS hf
+  intro p hpS
+  obtain ⟨a, g, hg, he⟩ := hp p hpS
+  exact ⟨fun _ => a, g, hg, by simpa using he⟩
 
 end GlobalTheory.ResRect

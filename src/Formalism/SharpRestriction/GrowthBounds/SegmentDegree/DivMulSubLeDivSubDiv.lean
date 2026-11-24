@@ -147,8 +147,8 @@ theorem restPad : RestPad 1088 := by
         apply Fin.ext
         by_contra hne
         rcases lt_or_gt_of_ne hne with h | h
-        · exact absurd heq.symm (ne_of_lt (fr_lt_fr_of_lt_of_valid hV (j - 1) b.val i h hi))
-        · exact absurd heq (ne_of_lt (fr_lt_fr_of_lt_of_valid hV (j - 1) i b.val h b.isLt))
+        · exact absurd heq.symm (ne_of_lt (_root_.Formalism.MainNotions.SelectionLemmas.Pf.bk_fr_lt hV (j - 1) b.val i h hi))
+        · exact absurd heq (ne_of_lt (_root_.Formalism.MainNotions.SelectionLemmas.Pf.bk_fr_lt hV (j - 1) i b.val h b.isLt))
       · intro h
         exact absurd (Finset.mem_univ _) h
     rw [hval]

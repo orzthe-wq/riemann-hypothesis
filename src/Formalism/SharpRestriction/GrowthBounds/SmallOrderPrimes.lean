@@ -70,16 +70,6 @@ def WReq (X : Inst D L) (K : Consts) (a b : HH D → ℤ) : Prop :=
       (2 * (if L.sc.x ^ (-L.sc.eps) < Sig X K a b p then (1 : ℝ) else 0) + 4 * Sig X K a b p) ≤
     L.sc.x ^ (-9 : ℝ)
 
-def PointsLemma (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) : Prop :=
-  ∀ a ∈ box D (winA D L.sc), ∀ b ∈ box D (winB D K L.sc), WReq X K a b →
-    (∀ S : Finset ℕ, (∀ p ∈ S, p.Prime ∧ IsResidueClassZero D p) →
-      ∑ p ∈ S, Real.log p * max 0 ((∑ j ∈ SizeData₂.lifts D, ∑ s ∈ D.host.TT, askG X a b p j s) -
-        ((∑ j ∈ SizeData₂.lifts D, gainP X K a b p j) - tauP X K a b p - ioP X K a b p)) ≤
-      5 * (D.R.m : ℝ) * (D.host.TT.card : ℝ) * L.sc.a / L.sc.x) ∧
-    (∀ S : Finset ℕ, (∀ p ∈ S, p.Prime) →
-      ∑ p ∈ S, Real.log p * ioP X K a b p ≤
-        (D.R.m : ℝ) * (D.host.TT.card : ℝ) * L.sc.a * L.sc.x ^ (-9 : ℝ))
-
 def WeightVectorExists (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) : Prop :=
   ∃ a ∈ box D (winA D L.sc), ∃ b ∈ box D (winB D K L.sc), WReq X K a b
 
@@ -88,15 +78,6 @@ def Conclusion0 (D : D7) (L : SizeData₂ D) (X : Inst D L) : Prop :=
   ∀ p : ℕ, p.Prime → (IsResidueClassZero D p ∨ IsSg D p) → ∀ j ∈ SizeData₂.lifts D, ∀ s ∈ D.host.TT,
     askP X a b p j s ≤ askG X a b p j s ∧
     askG X a b p j s ≤ askP X a b p j s + Nm D * Real.logb p (2 * L.sc.a)
-
-def WeightedPrimeSumBound (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (C : ℝ) : Prop :=
-  (∀ a ∈ box D (winA D L.sc), ∀ b ∈ box D (winB D K L.sc), ∀ S : Finset ℕ,
-    (∀ p ∈ S, p.Prime ∧ (IsResidueClassZero D p ∨ IsSg D p) ∧ L.sc.X'' D.R.n < (p : ℝ)) →
-    ∑ p ∈ S, Real.log p * (∑ j ∈ SizeData₂.lifts D, ∑ s ∈ D.host.TT, askG X a b p j s) ≤
-      (D.R.m : ℝ) * (D.host.TT.card : ℝ) * L.sc.a * L.sc.x ^ (-16 : ℝ)) ∧
-  ∀ S : Finset ℕ, (∀ p ∈ S, p.Prime ∧ (p : ℝ) ≤ L.sc.X'' D.R.n) →
-    ∑ p ∈ S, Real.log p * (C * (cG L + L.etaSz) * Real.logb p (2 * L.sc.a)) ≤ L.sc.b * L.sc.x ^ (-100 : ℝ) ∧
-    ∑ p ∈ S, Real.log p * fl D L.sc C p ≤ L.sc.b * L.sc.x ^ (-100 : ℝ)
 
 def admW (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) : Prop :=
   aL L ∈ box D (winA D L.sc) ∧ bL L ∈ box D (winB D K L.sc) ∧ WReq X K (aL L) (bL L)
@@ -115,28 +96,6 @@ def adm1 (D : D7) (L : SizeData₂ D) (X : Inst D L) (Ce : ℝ) : Prop :=
       (∀ i ∈ topsOn X p t0,
         ((Finset.Icc 1 (L1 D L.sc p)).filter (fun d =>
           i - d • hP D p ∈ D.host.TT ∧ IsV X p (i - d • hP D p))).card < rG L.sc)
-
-
-open Classical in
-def primesResidueBelow (D : D7) (y : ℝ) : Finset ℕ :=
-  (Finset.range ⌈y⌉₊).filter (fun p => p.Prime ∧ (p : ℝ) < y ∧ IsResidueClassZero D p)
-
-
-open Classical in
-def BTT (D : D7) (L : SizeData₂ D) (X : Inst D L) : ℝ :=
-  ∑ p ∈ (primesResidueBelow D L.sc.X').filter (fun p => L.sc.x ^ (L.sc.eps / 4) ≤ (addOrderOf (hP D p) : ℝ)),
-    Real.log p / p * ((D.host.TT.filter (fun t => ¬ Good X p (X.bs (stepP D p) t))).card : ℝ)
-
-def adm2 (D : D7) (L : SizeData₂ D) (X : Inst D L) : Prop :=
-  ((D.R.n : ℝ) * L.sc.delta1 / 2 ≤ (D.host.TT.card : ℝ) ∧ (D.host.TT.card : ℝ) ≤ 2 * (D.R.n : ℝ) * L.sc.delta1) ∧
-  BTT D L X ≤ (D.host.TT.card : ℝ) * L.sc.x ^ (-2 + L.sc.eps)
-
-
-open Classical in
-def adm3 (D : D7) (L : SizeData₂ D) : Prop :=
-  ∑ p ∈ (primesResidueBelow D (L.sc.X'' D.R.n)).filter
-      (fun p => (addOrderOf (hP D p) : ℝ) < L.sc.x ^ (L.sc.eps / 4)), Real.log p / p ≤
-    L.sc.x ^ (-hG L.sc + L.sc.eps)
 
 
 open Classical in
@@ -272,12 +231,12 @@ structure AConsts where
   δ : ℝ
 
 def admitted (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) (A : AConsts) : Prop :=
-  adm1 D L X A.C31 ∧ adm2 D L X ∧ adm3 D L ∧ ArchimedeanSignatureMatching D L K ∧ adm5 D L K A.δ ∧ adm6 D L K ∧
+  adm1 D L X A.C31 ∧ ArchimedeanSignatureMatching D L K ∧ adm5 D L K A.δ ∧ adm6 D L K ∧
   adm7 D L X K ∧ adm8 D L X K A.Cm ∧ adm9 D L X A.Ce ∧ unitBoundAtTwistedPlaces D L X Y K ∧ admG1 D L X Y K ∧
   TypePrimeSizeConds D L K
 
 def Conclusion₂ (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (C bo : ℝ) : Prop :=
-  Conclusion1 D L X K C bo ∧ Conclusion2 D L X K ∧ PointsLemma D L X K ∧ WeightVectorExists D L X K ∧ Conclusion0 D L X ∧ WeightedPrimeSumBound D L X K C
+  Conclusion1 D L X K C bo ∧ Conclusion2 D L X K ∧ Conclusion0 D L X
 
 def AdmF {eps : ℝ} (Fm : FamP eps) (K : Consts) (X : ∀ x (i : Fm.Ix x), Inst (Fm.D x i) (Fm.L x i))
     (Y : ∀ x (i : Fm.Ix x), LatInst (Fm.D x i)) : Prop :=

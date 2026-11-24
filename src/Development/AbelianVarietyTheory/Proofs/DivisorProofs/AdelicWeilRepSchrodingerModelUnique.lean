@@ -1,13 +1,15 @@
 module
 
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzSpaceTranslateMemStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZeroStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMassVolumes
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchwartzSpaceTranslateMem
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CharacterInvariantAdelicFormEqMulEvalZero
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DoubledUnitaryCharacterTrivialOfSiegelStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicSchwartzNeZeroAtOriginStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDiagonalLagrangianInvariantFormStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryDoubledBlockDiagOneStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductFunctionOnSumCoordsMemAdelicSchwartzSpaceStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicSchwartzNeZeroAtOrigin
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDiagonalLagrangianInvariantForm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsUnitaryDoubledBlockDiagOne
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProductFunctionOnSumCoordsMemAdelicSchwartzSpace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -79,14 +81,14 @@ theorem scalar_of_commute (ψ : AddChar (AF F) ℂ) (hψ : (_root_.Continuous ψ
     (T : Module.End ℂ ((κ → AF F) → ℂ)) (ha : ∀ l ∈ (adeleClass F).adm κ, l ∘ₗ T ∈ (adeleClass F).adm κ)
     (hc : ∀ w, ∀ φ ∈ schA F κ, T (schr ψ w φ) = schr ψ w (T φ)) :
     ∃ c : ℂ, ∀ φ ∈ schA F κ, T φ = c • φ := by
-  obtain ⟨c, hc'⟩ := GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F ψ hψ κ (LinearMap.proj 0 ∘ₗ T) (ha _ (evalZero_mem_adelicSchwartzAdmittedForms κ)) (fun y φ hφ => by
+  obtain ⟨c, hc'⟩ := _root_.GlobalTheory.CharInvForm.main F ψ hψ κ (LinearMap.proj 0 ∘ₗ T) (ha _ (evalZero_mem_adelicSchwartzAdmittedForms κ)) (fun y φ hφ => by
     have e : (fun x => ψ (x ⬝ᵥ y) * φ x) = schr ψ (0, y) φ := by funext x; simp [schr]
     simp only [LinearMap.comp_apply, LinearMap.proj_apply]
     rw [e, hc _ φ hφ]; simp [schr])
   refine ⟨c, fun φ hφ => funext fun x => ?_⟩
   have h1 := congrFun (hc (x, 0) φ hφ) 0
   have e : schr ψ (x, 0) φ = fun z => φ (z + x) := by funext z; simp [schr]
-  have h2 := hc' _ (e ▸ GlobalTheory.T.adelicSchwartzSpace_translate_mem F κ x φ hφ)
+  have h2 := hc' _ (e ▸ _root_.GlobalTheory.SchwartzTranslate.main F κ x φ hφ)
   simp only [LinearMap.comp_apply, LinearMap.proj_apply] at h2
   rw [h1] at h2
   simp [schr] at h2
@@ -131,7 +133,7 @@ theorem member_unique (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {a b : ℕ} (J
   have hrho : ∀ w, dd₁.rho ψ w = dd.rho ψ w := fun w => by simp only [Darboux.rho, hee]
   have inv_mul : ∀ (p : UG (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) (dbl ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) JB))) φ, omd p (omd p⁻¹ φ) = φ := fun p φ => by
     rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
-  obtain ⟨φz, hφz, hφz0⟩ := GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F (κ ⊕ κ)
+  obtain ⟨φz, hφz, hφz0⟩ := _root_.GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F (κ ⊕ κ)
 
   have key : ∀ p, ∃ c : ℂ, ∀ φ ∈ schA F (κ ⊕ κ), omd₁ p φ = c • omd p φ := fun p => by
     obtain ⟨c, hc⟩ := scalar_of_commute ψ hψ (omd p⁻¹ * omd₁ p)
@@ -186,7 +188,7 @@ theorem member_unique (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {a b : ℕ} (J
       rw [Units.val_inv_eq_inv_val, hcv]
     rw [this]
     exact hcont_cf.inv₀ fun p => by rw [← hcv]; exact (c p).ne_zero
-  obtain ⟨l, hl, hlinv, φ₀, hφ₀, hl0⟩ := GlobalTheory.T.exists_diagonalLagrangian_invariant_form F ψ κ
+  obtain ⟨l, hl, hlinv, φ₀, hφ₀, hl0⟩ := _root_.GlobalTheory.diagLagrangian_form F ψ κ
   have hP : ∀ (p : UG (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) (dbl ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) JB))) (t : GL (Fin b) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))),
       ((p : GL (Fin b ⊕ Fin b) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))) : Matrix _ _ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E))) * diagCols (Fin b) = diagCols (Fin b) * t.1 →
         c p = 1 := fun p t hpt => by
@@ -199,13 +201,13 @@ theorem member_unique (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {a b : ℕ} (J
     refine Units.ext ?_
     rw [hcv, Units.val_one]
     exact mul_right_cancel₀ hl0 (by rw [one_mul]; exact e1.symm)
-  have hc1 := GlobalTheory.T.doubledUnitary_character_trivial_of_siegel F E σ hσ b JB ε hJ hdet c hcont hP
+  have hc1 := _root_.GlobalTheory.SiegelChar.eq_one_of_siegel F E σ hσ b JB ε hJ hdet c hcont hP
   have hcf1 : ∀ p, cf p = 1 := fun p => by
     rw [← hcv, hc1]; rfl
   intro g Φ hΦ
-  obtain ⟨gd, hgd⟩ := GlobalTheory.T.exists_unitaryDoubled_blockDiag_one (AF F) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E)) (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) (Fin b) ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) JB) g
-  obtain ⟨φ₂, hφ₂, hφ₂0⟩ := GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F κ
-  have hb := GlobalTheory.T.productFunctionOnSumCoords_mem_adelicSchwartzSpace F κ κ Φ hΦ φ₂ hφ₂
+  obtain ⟨gd, hgd⟩ := _root_.GlobalTheory.unitary_diag_one_mem_dbl (AF F) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE (F := F) (E := E)) (_root_.Algebra.TensorProduct.map (_root_.AlgHom.id (AF F) (AF F)) σ) (Fin b) ((_root_.Matrix.map · (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F))) JB) g
+  obtain ⟨φ₂, hφ₂, hφ₂0⟩ := _root_.GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F κ
+  have hb := _root_.GlobalTheory.SchwartzBox.boxFun_mem_schA F κ κ Φ hΦ φ₂ hφ₂
   have e := hres g gd hgd Φ hΦ φ₂ hφ₂
   have e₁ := hres₁ g gd hgd Φ hΦ φ₂ hφ₂
   rw [hcf gd _ hb, hcf1 gd, one_smul, e] at e₁

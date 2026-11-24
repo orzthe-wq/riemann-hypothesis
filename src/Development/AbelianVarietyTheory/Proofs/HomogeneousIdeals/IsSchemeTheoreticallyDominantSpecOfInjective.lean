@@ -71,12 +71,7 @@ theorem dense_openImmersion {U S : Scheme.{u}} [IsReduced S] [IsLocallyNoetheria
 theorem isSchemeTheoreticallyDominant_spec_of_injective {R A : CommRingCat.{u}} (φ : R ⟶ A)
     (hφ : Function.Injective φ) : IsSchemeTheoreticallyDominant (Spec.map φ) := by
   first
-  | exact @_root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap
-  | exact _root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap
   | (apply _root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap <;> assumption)
-  | (intros; apply _root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.SchemeDominantSpecMap.isSchemeTheoreticallyDominant_specMap ..)
 
 theorem spec_fractionRing (R K : Type u) [CommRing R] [CommRing K] [Algebra R K] [IsFractionRing R K] :
     QuasiCompact (Spec.map (CommRingCat.ofHom (algebraMap R K))) ∧

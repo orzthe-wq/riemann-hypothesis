@@ -94,7 +94,7 @@ theorem repr_mapDR {I : Type} [LinearOrder I] (bK : Module.Basis I K Ω[K⁄k]) 
       LinearMap.coe_restrictScalars, Module.Basis.coord_apply, Module.Basis.repr_self, Algebra.linearMap_apply]
     by_cases hts : t = s
     · subst hts; simp
-    · simp [Finsupp.single_apply, hts]
+    · simp [hts]
   exact congrArg (· ω) this
 
 end GlobalTheory.W1.Base
@@ -131,7 +131,7 @@ theorem forms_baseChange : ∀ (k K L : Type) [Field k] [CharZero k] [Field K] [
       have h0 := congrArg (fun z => BL.repr z s) hsum
 
       simp only [map_sum, map_smul, Finset.sum_apply', Finsupp.smul_apply, smul_eq_mul,
-      map_zero, Finsupp.zero_apply, BK, BL, repr_mapDR bK bL h] at h0
+      map_zero, Finsupp.zero_apply, BL, repr_mapDR bK bL h] at h0
       refine Fintype.linearIndependent_iff.1 hb (fun j => BK.repr (ω j) s) ?_
       simpa [Algebra.smul_def, mul_comm] using h0
     exact BK.repr.injective (Finsupp.ext fun s => by simpa using hc s j)

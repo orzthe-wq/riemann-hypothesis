@@ -71,13 +71,13 @@ theorem schr_box {κ' κ'' : Type} [Fintype κ'] [Fintype κ''] (ψ : AddChar (A
     schr ψ (Sum.elim p.1 (0 : κ'' → AF F), Sum.elim p.2 (0 : κ'' → AF F)) (boxFun φ' φ₀) = boxFun (schr ψ p φ') φ₀ := by
   funext x
   simp only [schr, boxFun, dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr,
-    Pi.zero_apply, mul_zero, add_zero, Function.comp_apply, Pi.add_apply]
+    Pi.zero_apply, mul_zero, Function.comp_apply]
   have h1 : (x + Sum.elim p.1 (0 : κ'' → AF F)) ∘ Sum.inl = x ∘ Sum.inl + p.1 := by
     funext i; simp
   have h2 : (x + Sum.elim p.1 (0 : κ'' → AF F)) ∘ Sum.inr = x ∘ Sum.inr := by
     funext i; simp
   rw [h1, h2]
-  simp only [Function.comp_apply, mul_assoc, Finset.sum_const_zero, add_zero]
+  simp only [mul_assoc, Finset.sum_const_zero, add_zero]
 
 theorem subSplit_of : SliceFacts → SubSplit := by
   intro hSF F _ _ ψ hψ κ' κ'' _ _ W W' _ _ _ _ B B' dd dd' emb hemb G G' _ _ _ _ act act' j hj

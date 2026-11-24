@@ -203,8 +203,7 @@ theorem has_subst_first_pair : HasSubst ![(X 0 : MvPowerSeries (Fin 3) K), X 1] 
 
 theorem constantCoeff_first_two_of_three {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff F = 0) :
     constantCoeff (in3 F) = 0 := by
-  unfold in3
-  exact constantCoeff_subst_eq_zero has_subst_first_pair (by intro i; fin_cases i <;> simp) hF
+  simpa [in3] using constantCoeff_subst_eq_zero has_subst_first_pair (by intro i; fin_cases i <;> simp) hF
 
 theorem has_subst_coboundary_first {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff F = 0) :
     HasSubst ![in3 F, (X 2 : MvPowerSeries (Fin 3) K)] :=
@@ -269,8 +268,7 @@ theorem partial_coboundary_sum {F : MvPowerSeries (Fin 2) K} (hF : constantCoeff
   classical
   induction s using Finset.induction_on with
   | empty =>
-    have h := partial_coboundary_C_mul hF 0 (0 : MvPowerSeries (Fin 2) K)
-    simpa using h
+    simpa using partial_coboundary_C_mul hF 0 (0 : MvPowerSeries (Fin 2) K)
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, diffOne_add hF, ih]
 
 end Scale
@@ -280,8 +278,7 @@ section Sim
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
 theorem simeq_iff_sub {ι : Type} (f g : MvPowerSeries ι K) : Simeq f g ↔ Simeq (f - g) 0 := by
-  unfold Simeq
-  rw [sub_zero]
+  simp [Simeq]
 
 theorem simeq_sum (hS : SimeqRules) {ι : Type} (s : Finset ℕ) (f : ℕ → MvPowerSeries ι K)
     (h : ∀ k ∈ s, Simeq (f k) 0) : Simeq (∑ k ∈ s, f k) 0 := by
@@ -290,9 +287,8 @@ theorem simeq_sum (hS : SimeqRules) {ι : Type} (s : Finset ℕ) (f : ℕ → Mv
   | empty => simpa using (hS K ι).1 0
   | insert a s ha ih =>
     rw [Finset.sum_insert ha]
-    have h1 := (hS K ι).2.2.2.1 _ _ _ _ (h a (Finset.mem_insert_self a s))
+    simpa using (hS K ι).2.2.2.1 _ _ _ _ (h a (Finset.mem_insert_self a s))
       (ih fun k hk => h k (Finset.mem_insert_of_mem hk))
-    simpa using h1
 
 theorem integral_C_mul_X {ι : Type} {u : K} (hu : ‖u‖ ≤ 1) (i : ι) :
     Integral (C u * (X i : MvPowerSeries ι K)) := by
@@ -317,8 +313,7 @@ theorem integral_scale_three {u v : K} (hu : ‖u‖ ≤ 1) (hv : ‖v‖ ≤ 1)
   · exact integral_C_mul_X hv 2
 
 theorem norm_of_pow_eq_one {u : K} {N : ℕ} (hN : N ≠ 0) (h : u ^ N = 1) : ‖u‖ = 1 := by
-  have h1 : ‖u‖ ^ N = 1 := by rw [← norm_pow, h, norm_one]
-  exact (pow_eq_one_iff_of_nonneg (norm_nonneg u) hN).1 h1
+  exact (pow_eq_one_iff_of_nonneg (norm_nonneg u) hN).1 (by rw [← norm_pow, h, norm_one])
 
 end Sim
 
@@ -333,9 +328,7 @@ theorem swap_rules : SwapRules := by
   · ext n
     have hsw : sw (sw n) = n := by
       ext i
-      fin_cases i
-      · exact (sw_zero _).trans (sw_one _)
-      · exact (sw_one _).trans (sw_zero _)
+      fin_cases i <;> simp [sw_zero, sw_one]
     rw [coeff_swap2, coeff_swap2, hsw]
   · intro h n hn
     rw [coeff_swap2] at hn
@@ -357,8 +350,7 @@ theorem swap_rules : SwapRules := by
     rw [sw_zero, sw_one]
     exact hn.symm
   · intro h n
-    rw [coeff_swap2]
-    exact h _
+    simpa [coeff_swap2] using h _
   · unfold Hser
     rw [swap_two_sub, swap_two_sub, swap_two_C_mul, swap_two_C_mul, swap_two_single_mul, swap_two_single_mul,
       swap_two_de_s hp0]

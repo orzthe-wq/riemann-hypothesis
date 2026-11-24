@@ -86,7 +86,7 @@ def entL {J : Type} [Fintype J] [DecidableEq J] (P N : Matrix J J ℂ) (i j : J)
   LinearMap.toContinuousLinearMap
     { toFun := fun M => (P * M * N) i j
       map_add' := fun M M' => by simp [Matrix.mul_add, Matrix.add_mul]
-      map_smul' := fun r M => by simp [Matrix.mul_smul, Matrix.smul_mul] }
+      map_smul' := fun r M => by simp }
 
 theorem entL_apply {J : Type} [Fintype J] [DecidableEq J] (P N M : Matrix J J ℂ) (i j : J) :
     entL P N i j M = (P * M * N) i j := rfl
@@ -105,7 +105,6 @@ theorem hasDerivAt_rm_one (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone la
   all_goals first
     | rfl
     | exact (hD n lam hlam X).symm
-    | (congr 1; exact (hD n lam hlam X).symm)
 
 theorem rd_hol (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone lam) (N : Matrix (Jd n lam) (Jd n lam) ℂ)
     (i j : Jd n lam) {x : Mat n} (hx : x ∈ GLs n) (X : Mat n) :
@@ -140,7 +139,7 @@ theorem eu_hol (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone lam) (N : Mat
   rw [sum_single (0 : Mat n) a b (1 : ℂ) (At lam)] at e1
   rw [sum_single (0 : Mat n) a b Complex.I (At lam)] at e2
   simp only [Eu, Pi.smul_apply, Pi.add_apply, e1, e2]
-  cases s <;> simp [Matrix.mul_smul, Matrix.smul_mul] <;> ring_nf <;> simp [Complex.I_sq] <;> ring
+  cases s <;> simp <;> ring_nf <;> simp [Complex.I_sq] <;> ring
 
 theorem eu_congr {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f g : Mat n → V} {x : Mat n}
     (h : f =ᶠ[nhds x] g) (s : Bool) (a b : Fin n) : Eu s a b f x = Eu s a b g x := by
@@ -155,7 +154,7 @@ theorem epow_hol (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone lam) (M : M
   | zero =>
     intro a b y hy
     rw [Epow.eq_1]
-    by_cases h : a = b <;> simp [h, Matrix.one_apply]
+    by_cases h : a = b <;> simp [h]
   | succ m ih =>
     intro a b y hy
     rw [show m + 1 = m.succ from rfl, Epow.eq_2]
@@ -181,6 +180,6 @@ theorem rmHol_of (hT : AtTrace) (hD : AtDer) : RmHol := by
   have e : ∑ a, (Rm lam g * (At lam ^ m) a a * M) i j = (Rm lam g * (At lam ^ m).trace * M) i j := by
     simp only [Matrix.trace, Matrix.diag, Matrix.mul_sum, Matrix.sum_mul, Matrix.sum_apply]
   rw [e, hT n lam hlam m]
-  simp [Matrix.mul_smul, Matrix.smul_mul]
+  simp
 
 end PositivityTheory.RgBcC.Cxd2

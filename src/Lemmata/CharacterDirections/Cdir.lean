@@ -1,52 +1,7 @@
 module
 
+import Mathlib.Analysis.Complex.Schwarz
 public import ReciprocityTheory.L2DbarEstimates.IsLocalHomeomorph
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.Analysis.Calculus.Deriv.Add
 public import Mathlib.Analysis.Calculus.Deriv.Comp
 public import Mathlib.Analysis.Calculus.Deriv.Mul
@@ -59,59 +14,19 @@ universe u_1
 
 namespace Bl.CoprimeDirections
 
-private lemma cdir {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
-    [NormedAddCommGroup F] [NormedSpace ℂ F] {f : E → F} {v h : E} {s B : ℝ}
-    (hh : h ≠ 0) (hs : 0 < s)
-    (hd : ∀ w, ‖w - v‖ ≤ s → DifferentiableAt ℂ f w)
-    (hB : ∀ w, ‖w - v‖ ≤ s → ‖f w‖ ≤ B) :
-    ‖fderiv ℂ f v h‖ ≤ B / s * ‖h‖ := by
-  have hhn : 0 < ‖h‖ := norm_pos_iff.mpr hh
-  set R := s / ‖h‖ with hR
-  have hRpos : 0 < R := div_pos hs hhn
-  set g : ℂ → F := fun z => f (v + z • h) with hg
-  have hmem : ∀ z : ℂ, ‖z‖ ≤ R → ‖(v + z • h) - v‖ ≤ s := by
-    intro z hz
-    rw [add_sub_cancel_left, norm_smul]
-    calc ‖z‖ * ‖h‖ ≤ R * ‖h‖ := by gcongr
-      _ = s := by rw [hR]; field_simp
-  have hgd : ∀ z : ℂ, ‖z‖ ≤ R → DifferentiableAt ℂ g z := by
-    intro z hz
-    have h1 : DifferentiableAt ℂ (fun z : ℂ => v + z • h) z :=
-      (differentiableAt_const _).add (differentiableAt_id.smul_const h)
-    exact (hd _ (hmem z hz)).comp z h1
-  have hdc : DiffContOnCl ℂ g (Metric.ball (0:ℂ) R) := by
-    apply DifferentiableOn.diffContOnCl
-    rw [closure_ball (0:ℂ) hRpos.ne']
-    intro z hz
-    apply (hgd z _).differentiableWithinAt
-    simpa using hz
-  have hC : ∀ z ∈ Metric.sphere (0:ℂ) R, ‖g z‖ ≤ B := by
-    intro z hz
-    apply hB
-    apply hmem
-    exact le_of_eq (by simpa using hz)
-  have hest := Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hRpos hdc hC
-  have hderiv : deriv g 0 = fderiv ℂ f v h := by
-    have h1 : HasDerivAt (fun z : ℂ => v + z • h) h 0 := by
-      simpa using ((hasDerivAt_id (0:ℂ)).smul_const h).const_add v
-    have h2 : HasFDerivAt f (fderiv ℂ f v) (v + (0:ℂ) • h) := by
-      simpa using (hd v (by simp [hs.le])).hasFDerivAt
-    exact (h2.comp_hasDerivAt (0:ℂ) h1).deriv
-  rw [← hderiv]
-  calc ‖deriv g 0‖ ≤ B / R := hest
-    _ = B / s * ‖h‖ := by rw [hR, div_div_eq_mul_div]; ring
-
 private lemma cop {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] {f : E → F} {v : E} {s B : ℝ}
-    (hs : 0 < s) (hB0 : 0 ≤ B)
-    (hd : ∀ w, ‖w - v‖ ≤ s → DifferentiableAt ℂ f w)
+    (hs : 0 < s) (hd : ∀ w, ‖w - v‖ ≤ s → DifferentiableAt ℂ f w)
     (hB : ∀ w, ‖w - v‖ ≤ s → ‖f w‖ ≤ B) :
-    ‖fderiv ℂ f v‖ ≤ B / s := by
-  refine ContinuousLinearMap.opNorm_le_bound _ (div_nonneg hB0 hs.le) ?_
-  intro h
-  by_cases hh : h = 0
-  · simp [hh]
-  · exact cdir hh hs hd hB
+    ‖fderiv ℂ f v‖ ≤ (2 * B) / s := by
+  have hclose {w : E} (hw : w ∈ Metric.ball v s) : ‖w - v‖ ≤ s :=
+    le_of_lt (by simpa only [Metric.mem_ball, dist_eq_norm] using hw)
+  refine Complex.norm_fderiv_le_div_of_mapsTo_ball
+    (fun w hw => (hd w (hclose hw)).differentiableWithinAt) ?_ hs
+  intro w hw
+  rw [Metric.mem_closedBall, dist_eq_norm]
+  simpa only [two_mul] using (norm_sub_le (f w) (f v)).trans
+    (add_le_add (hB w (hclose hw)) (hB v (by simpa using hs.le)))
 
 private lemma key {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] {f : E → F} {U : Set E} {x : E}
@@ -123,7 +38,7 @@ private lemma key {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (hU.eventually_mem hx).and hCb.bound
   obtain ⟨ε, hε, hball⟩ := Metric.eventually_nhds_iff.mp hev
   have hfd0 : fderiv ℂ f x = 0 := (hO.hasFDerivAt (by omega)).fderiv
-  refine Asymptotics.IsBigO.of_bound (C * 2 ^ (k + 1 + 1)) ?_
+  refine Asymptotics.IsBigO.of_bound (2 * (C * 2 ^ (k + 1 + 1))) ?_
   have hnear : ∀ᶠ v in nhds x, dist v x < ε / 2 := Metric.ball_mem_nhds x (half_pos hε)
   filter_upwards [hnear] with v hv
   rw [Real.norm_eq_abs, abs_pow, abs_norm]
@@ -131,27 +46,26 @@ private lemma key {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   · subst hvx
     simp [hfd0]
   · have hρ : 0 < ‖v - x‖ := norm_pos_iff.mpr (sub_ne_zero.mpr hvx)
-    have hρ' : ‖v - x‖ ≠ 0 := hρ.ne'
     rw [dist_eq_norm] at hv
+    have hsmall : 2 * ‖v - x‖ < ε := by
+      simpa only [two_mul, add_halves] using add_lt_add hv hv
     have hw : ∀ w, ‖w - v‖ ≤ ‖v - x‖ → dist w x < ε ∧ ‖w - x‖ ≤ 2 * ‖v - x‖ := by
-      intro w hw
-      have : ‖w - x‖ ≤ ‖w - v‖ + ‖v - x‖ := norm_sub_le_norm_sub_add_norm_sub w v x
-      constructor
-      · rw [dist_eq_norm]; linarith
-      · linarith
+      intro w hdist
+      have haux : ‖w - x‖ ≤ 2 * ‖v - x‖ := by
+        rw [two_mul]
+        exact (norm_sub_le_norm_sub_add_norm_sub w v x).trans (add_le_add hdist le_rfl)
+      exact ⟨by rw [dist_eq_norm]; exact haux.trans_lt hsmall, haux⟩
     have hbd := cop (f := f) (v := v) (s := ‖v - x‖) (B := C * (2 * ‖v - x‖) ^ (k + 1 + 1)) hρ
-      (by positivity)
       (fun w hw' => hf.differentiableAt (hU.mem_nhds (hball (hw w hw').1).1))
       (fun w hw' => by
         have h1 := (hball (hw w hw').1).2
         rw [Real.norm_eq_abs, abs_pow, abs_norm] at h1
-        calc ‖f w‖ ≤ C * ‖w - x‖ ^ (k + 1 + 1) := h1
-          _ ≤ C * (2 * ‖v - x‖) ^ (k + 1 + 1) := by
-            gcongr
-            exact (hw w hw').2)
-    calc ‖fderiv ℂ f v‖ ≤ C * (2 * ‖v - x‖) ^ (k + 1 + 1) / ‖v - x‖ := hbd
-      _ = C * 2 ^ (k + 1 + 1) * ‖v - x‖ ^ (k + 1) := by
-        rw [mul_pow]; field_simp; ring
+        exact h1.trans (mul_le_mul_of_nonneg_left
+          (pow_le_pow_left₀ (norm_nonneg _) (hw w hw').2 _) hCpos.le))
+    calc ‖fderiv ℂ f v‖ ≤ 2 * (C * (2 * ‖v - x‖) ^ (k + 1 + 1)) / ‖v - x‖ := hbd
+      _ = 2 * (C * 2 ^ (k + 1 + 1)) * ‖v - x‖ ^ (k + 1) := by
+        rw [mul_pow, pow_succ ‖v - x‖ (k + 1)]
+        simp only [← mul_assoc, mul_div_cancel_right₀ _ hρ.ne']
 
 theorem goal1 :
   ∀ {n : Nat} {F : Type u_1} [inst : NormedAddCommGroup.{u_1} F] [inst_1 : NormedSpace.{0, u_1} Complex F]

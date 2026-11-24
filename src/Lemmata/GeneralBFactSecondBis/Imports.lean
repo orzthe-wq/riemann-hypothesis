@@ -1,48 +1,6 @@
 module
 
 public import Formalism.CyclotomicNorms.StatementT
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.FieldTheory.Finite.Basic
 
 @[expose] public section
@@ -55,40 +13,10 @@ theorem goal1 :
     Membership.mem.{0, 0}
       (Set.range.{0, 1} (DFunLike.coe.{1, 1, 1} (Algebra.algebraMap.{0, 0} (ZMod g) (Formalism.CyclotomicNorms.Fbar g)))) c := by
   intro g hg c hc
-  classical
-  have hp : 1 < g := hg.out.one_lt
-  set f : Polynomial (Formalism.CyclotomicNorms.Fbar g) := Polynomial.X ^ g - Polynomial.X with hf
-  have hf0 : f ≠ 0 := Polynomial.X_pow_sub_X_ne_zero hp
-  have hroot : ∀ x : Formalism.CyclotomicNorms.Fbar g, x ^ g = x → x ∈ f.roots.toFinset := by
-    intro x hx
-    rw [Multiset.mem_toFinset, Polynomial.mem_roots hf0, Polynomial.IsRoot.def, hf,
-      Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, hx, sub_self]
-  by_contra hcn
-  have hinj : Function.Injective (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)) :=
-    (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective
-  set S : Finset (Formalism.CyclotomicNorms.Fbar g) := Finset.univ.image (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)) with hS
-  have hScard : S.card = g := by
-    rw [hS, Finset.card_image_of_injective _ hinj, Finset.card_univ, ZMod.card]
-  have hcS : c ∉ S := by
-    intro h
-    apply hcn
-    rw [hS, Finset.mem_image] at h
-    obtain ⟨a, -, ha⟩ := h
-    exact ⟨a, ha⟩
-  have hsub : insert c S ⊆ f.roots.toFinset := by
-    intro x hx
-    rw [Finset.mem_insert] at hx
-    rcases hx with rfl | hx
-    · exact hroot x hc
-    · rw [hS, Finset.mem_image] at hx
-      obtain ⟨a, -, rfl⟩ := hx
-      apply hroot
-      rw [← map_pow, ZMod.pow_card]
-  have h1 := Finset.card_le_card hsub
-  rw [Finset.card_insert_of_notMem hcS, hScard] at h1
-  have h2 : f.roots.toFinset.card ≤ g :=
-    (Multiset.toFinset_card_le _).trans ((Polynomial.card_roots' f).trans
-      (Polynomial.natDegree_X_pow_sub_X (R := (Formalism.CyclotomicNorms.Fbar g)) hp).le)
-  omega
+  let F := Formalism.CyclotomicNorms.Fbar g
+  have : CharP F g := charP_of_injective_algebraMap (algebraMap (ZMod g) F).injective g
+  rw [RingHom.ext_zmod (algebraMap (ZMod g) F) (ZMod.castHom dvd_rfl F),
+    ← RingHom.coe_fieldRange, ZMod.fieldRange_castHom_eq_bot]
+  exact (Subfield.mem_bot_iff_pow_eq_self F g).2 hc
 
 end Bl.general_b_fact_second_bis

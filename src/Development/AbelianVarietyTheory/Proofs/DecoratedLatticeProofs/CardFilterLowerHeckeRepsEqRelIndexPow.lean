@@ -207,7 +207,7 @@ theorem card_eq_relIndex_of_reps {G : Type} [AddCommGroup G] (H K : AddSubgroup 
 
 theorem relIndex_pi_univ {ι G : Type} [Fintype ι] [AddCommGroup G] (A B : ι → AddSubgroup G) :
     (AddSubgroup.pi Set.univ A).relIndex (AddSubgroup.pi Set.univ B) = ∏ i, (A i).relIndex (B i) := by
-  apply _root_.GlobalTheory.HeckeLatIndex.relIndex_pi_univ <;> assumption
+  apply _root_.GlobalTheory.HeckeLatIndex.relIndex_pi_univ
 
 theorem mem_sup_iff_of_mem {V : Type} [AddCommGroup V] {S L large₂ : AddSubgroup V} (h : large₂ ≤ L) {x : V}
     (hx : x ∈ L) : x ∈ S ⊔ large₂ ↔ x ∈ (S ⊓ L) ⊔ large₂ := by

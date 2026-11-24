@@ -53,7 +53,7 @@ theorem aa_unit : ∀ (D : D7) (w : Pl D.host.E), ((D.host.QS * D.host.q * D.hos
   intro D w h2qd hN
   have h2q : ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal := fun h => h2qd (by
     rw [Nat.cast_mul]; exact w.asIdeal.mul_mem_right _ h)
-  refine ⟨fun a ha => ?_, ⟨_, GlobalTheory.HostClear.absNorm_mem_AA D, ?_⟩⟩
+  refine ⟨fun a ha => ?_, ⟨_, _root_.Formalism.L2.Pj.normK_mem_AA D, ?_⟩⟩
   · rw [GlobalTheory.FunObj.Good.valued_alg]
     exact GlobalTheory.FunObj.Good.valuation_le_one_of_mem h2q (Or.inl ha)
   · rw [GlobalTheory.FunObj.Good.valued_alg]

@@ -61,7 +61,6 @@ theorem cont_ne_one : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topolo
       have he : (fun a : k => ((χ a : Circle) : ℂ)) = fun a => psiE ψ (p.sec a) := funext hχ
       rw [he]; exact hc
     first
-      | exact Circle.isEmbedding_coe.continuous_iff.2 h'
       | exact continuous_induced_rng.2 h'
   · intro h1
     obtain ⟨a, ha⟩ := GlobalTheory.FinPl.CharNontriv.exists_psiE_sec_ne_one D k p ψ hψ

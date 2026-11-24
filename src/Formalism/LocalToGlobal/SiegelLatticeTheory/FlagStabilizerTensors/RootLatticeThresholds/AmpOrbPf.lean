@@ -5,45 +5,6 @@ public import Formalism.HermitianCurvature.HermitianCurvatureProofs.BesselNeZero
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.SmoothAdd
 public import Formalism.HermitianCurvature.HermitianCurvatureProofs.UhMeasurableSet
 public import Formalism.SharpRestriction.CuspSpanNormBounds.BridgeCSB
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -62,10 +23,9 @@ theorem lowest_K_type_unit {D : D7} {W : LocW D.R.k D.R.rS} {lam : Fin (2 * D.R.
     (hA : GoodS D lam A) :
     PI.UpqRep.IsLowUnitH D.R.k D.R.rS (epsSH D.R) lam A.σ (((‖A.v0‖⁻¹ : ℝ) : ℂ) • A.v0) := by
   obtain ⟨-, -, -, -, -, hne, ⟨P, hP, hmem⟩, -⟩ := hA
-  refine ⟨P, hP, ?_, ?_⟩
-  · rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm]
-    exact inv_mul_cancel₀ (norm_ne_zero_iff.mpr hne)
-  · exact Submodule.smul_mem _ _ hmem
+  refine ⟨P, hP, ?_, Submodule.smul_mem _ _ hmem⟩
+  rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm]
+  exact inv_mul_cancel₀ (norm_ne_zero_iff.mpr hne)
 
 theorem c_ne_zero (D : D7) :
     (((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ)) ≠ 0 := by
@@ -83,9 +43,8 @@ theorem kapN_ne_zero {D : D7} {τ : D.what₂.Tau} {w w' : D.what₂.Word} {θ :
     (hW : GoodW D τ w w' θ W) : kapN D θ ≠ 0 := by
   intro h0
   obtain ⟨-, -, -, -, -, -, hG, -, -, -, -, hN, hq, -⟩ := hW
-  have hN0 : W.μN = 0 := by rw [hN, h0]; simp [haarLie]
   have hq1 := hq (fun _ => 1) measurable_const
-  simp [muS, hN0] at hq1
+  simp [muS, hN, h0, haarLie] at hq1
   exact hG.2.1 hq1
 
 theorem muN_haar {D : D7} {τ : D.what₂.Tau} {w w' : D.what₂.Word} {θ : ℝ} {W : LocW D.R.k D.R.rS}
@@ -117,38 +76,6 @@ theorem side_pair {D : D7} {τ : D.what₂.Tau} {w w' : D.what₂.Word} {θ : �
     rw [← hμN]; exact hq0'
   exact ⟨⟨hA.1, hA.2.1, hg, hok, hw0, L.hz.1, L.hz.2, hc, L.hπ, L.hμW.1, hN, hG, hq⟩,
     ⟨hA.1, hA.2.1, hg, hok, hw0, L.hz'.1, L.hz'.2, hc, L.hπ', L.hμW'.1, hN, hG, hq'⟩⟩
-
-theorem ls_pair (hI : Formalism.FourierDecayAlt.ThreeDimData.Inputs) (hAt : Formalism.FourierDecayAlt.ThreeDimData.AtFormAdmOne)
-    {D : D7} {τ : D.what₂.Tau} {w w' : D.what₂.Word} {θ : ℝ} {W : LocW D.R.k D.R.rS}
-    {lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ} {A : LocS W} (hW : GoodW D τ w w' θ W) (hA : GoodS D lam A)
-    (hT : 0 < Tr D w) (hT' : 0 < Tr D w') {h : ℝ} (hg : Formalism.QuantumDeterminants.GapAtLeast (epsSH D.R) lam h)
-    (hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS h) :
-    ∃ (l : A.H → W.Wp) (l' : A.H → W.Wq),
-      PI.BesselMapUniq.IsBesselMapSm (k := D.R.k) (r := D.R.rS) W.z
-        (psi D.R.k D.R.rS W.z (toBessel D τ w w' θ W lam A hW hA hT hT').c) A.σ W.π l ∧
-      PI.BesselMapUniq.IsBesselMapSm (k := D.R.k) (r := D.R.rS) W.z'
-        (psi D.R.k D.R.rS W.z' (toBessel D τ w w' θ W lam A hW hA hT hT').c) A.σ W.π' l' ∧
-      Formalism.MainNotions.S.Pv.AmpDD.OnePlaceKF (toBessel D τ w w' θ W lam A hW hA hT hT') h W.μG
-        (((‖A.v0‖⁻¹ : ℝ) : ℂ) • A.v0) l l' := by
-  set L := toBessel D τ w w' θ W lam A hW hA hT hT' with hL
-  obtain ⟨h1, h2⟩ := side_pair hW hA hT hT' hg hok
-  obtain ⟨l, hl, hla, -⟩ := hAt hI _ _ _ _ h _ A.σ _ W.Wp _ _ _ _ _ _ _ _ h1
-  obtain ⟨l', hl', hla', -⟩ := hAt hI _ _ _ _ h _ A.σ _ W.Wq _ _ _ _ _ _ _ _ h2
-  have hKS : PI.KFinSmooth := hI.2.2.1
-  have hw0 := lowest_K_type_unit hA
-  have hDDs : ∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp A.σ (((‖A.v0‖⁻¹ : ℝ) : ℂ) • A.v0),
-      x ∈ PI.UpqRep.smoothVecs (k := D.R.k) (r := D.R.rS) A.σ :=
-    Formalism.FourierDecayAlt.P.DDSmoothness.DD_smooth hKS hA.1 hA.2.1 hw0
-  have hG : IsHaarOn (UH (Hpk D.R.k D.R.rS)) W.μG := hW.2.2.2.2.2.2.1
-  refine ⟨l, l', hl, hl', ⟨⟨hg, hok, c_ne_zero D, hw0, hG, ?_, ?_⟩, ?_, ?_⟩⟩
-  · intro x hx v hv
-    exact (hla x (hDDs x hx) v (Or.inl hv)).2
-  · intro x hx v hv
-    exact (hla' x (hDDs x hx) v (Or.inl hv)).2
-  · intro x hx v hv
-    exact (hla x (hDDs x hx) v (Or.inr hv)).2
-  · intro x hx v hv
-    exact (hla' x (hDDs x hx) v (Or.inr hv)).2
 
 theorem orbit_mul {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
@@ -231,10 +158,8 @@ theorem ae_UH_conj {k r : ℕ} {μG μR νR : Measure (Mt k r)}
     (hG : IsHaarOn (UH (Hpk k r)) μG) (hR : IsHaarOn (RStab k r γ) μR)
     (hq : PI.BesselPeriodGGP.IsQuotMeas μG (μR.map (fun x => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)) νR) :
     ∀ᵐ x ∂νR, Matrix.of x ∈ UH (Hpk k r) := by
-  have hc : Continuous (fun x : Mt k r => fun i j => (γ⁻¹ * Matrix.of x * γ) i j) := by
-    have h1 : Continuous (fun x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => γ⁻¹ * x * γ) :=
-      (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
-    exact h1
+  have hc : Continuous (fun x : Mt k r => fun i j => (γ⁻¹ * Matrix.of x * γ) i j) :=
+    (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
   have hf : Measurable (fun x : Mt k r => fun i j => (γ⁻¹ * Matrix.of x * γ) i j) := hc.measurable
   have hUm : MeasurableSet {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)} :=
     Formalism.FourierDecayAlt.P.DDSmoothness.uh_measurableSet

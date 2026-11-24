@@ -54,7 +54,7 @@ open ValuativeRel
 
 theorem t2Space_of_nonarchimedeanLocalField' (Fp : Type) [Field Fp] [ValuativeRel Fp] [TopologicalSpace Fp] [IsNonarchimedeanLocalField Fp] :
     T2Space Fp := by
-  apply PI.LocDualGen.FpU.t2 <;> assumption
+  apply PI.LocDualGen.FpU.t2
 
 theorem tensorLiftSurjective : PiSurj := by
   unfold PiSurj

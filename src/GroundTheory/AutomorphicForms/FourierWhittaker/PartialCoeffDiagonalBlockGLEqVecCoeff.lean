@@ -180,14 +180,14 @@ theorem isLastRowUnit_blockMat {j : ℕ} (h : Matrix (Fin j) (Fin j) K) :
   funext c
   rw [vecMul_lastVec _ _ (Nat.succ_pos j)]
   simp only [blockMat_apply, lastVec]
-  split_ifs <;> (first | rfl | (exfalso; (try simp only [Fin.ext_iff, Fin.lt_def] at *); omega) | ((try simp only [Fin.ext_iff, Fin.lt_def] at *); omega) | simp_all [Fin.ext_iff])
+  split_ifs <;> (first | rfl | (exfalso; (try simp only [Fin.ext_iff] at *); omega))
 
 theorem isLastRowUnit_colX {j : ℕ} (ξ : Fin j → K) :
     IsLastRowUnit (uMat (colX (n := j + 1) j ξ)) := by
   funext c
   rw [vecMul_lastVec _ _ (Nat.succ_pos j)]
   simp only [uMat_apply, lastVec, colX_apply]
-  split_ifs <;> (first | rfl | (exfalso; (try simp only [Fin.ext_iff, Fin.lt_def] at *); omega) | ((try simp only [Fin.ext_iff, Fin.lt_def] at *); omega) | simp_all [Fin.ext_iff])
+  split_ifs <;> (first | rfl | (exfalso; (try simp only [Fin.ext_iff, Fin.lt_def] at *); omega))
 
 theorem blockMat_self (h : Matrix (Fin n) (Fin n) K) : blockMat (le_refl n) h = h := by
   ext a b
@@ -246,7 +246,7 @@ theorem stepCoeff_diagonal_blockGL {j : ℕ} (hj : j < n) (h : GL (Fin j) K)
   have := setIntegral_comp_matVec (h⁻¹) hH
   simp only [H, hmv] at this
   rw [this]
-  simp only [H, pair_matVec]
+  simp only [pair_matVec]
 
 
 open AutomorphicForm in

@@ -152,7 +152,7 @@ theorem _root_.GlobalTheory.GalDisj.galois_linearDisjoint : ∀ (k Ω D : Type) 
     · exact congrArg Subtype.val this
     rw [← hsum]
 
-    simp only [hexp, Subfield.smul_def, map_sum, map_smul, Algebra.smul_def, map_mul, map_pow,
+    simp only [hexp, map_sum, Algebra.smul_def, map_mul, map_pow,
     Finset.sum_mul]
     rw [Finset.sum_comm]
     refine Finset.sum_congr rfl fun j _ => ?_

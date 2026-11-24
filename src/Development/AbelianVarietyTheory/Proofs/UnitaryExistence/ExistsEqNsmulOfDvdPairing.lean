@@ -90,7 +90,7 @@ theorem _root_.GlobalTheory.LevelHalf.trivial_mod_of_trivial_on_half :
     apply hbij.1
     ext z
     rw [map_nsmul, LinearMap.smul_apply, hw]
-    simp [ψ, nsmul_eq_mul, Int.mul_ediv_cancel' (hdiv z)]
+    simp [ψ, Int.mul_ediv_cancel' (hdiv z)]
   refine ⟨e₁ + w, ?_⟩
   calc gam x = x + y := by rw [hy]; abel
     _ = x + M • (e₁ + w) := by

@@ -363,7 +363,7 @@ theorem mem_span_dQ {K L₁ L₂ : FinExt l}
     wdMk P ι ρ₂ x ∈ Submodule.span ℂ (Set.range fun y => wdMk P ι ρ₂ (dQ P hf y)) := by
   have hx : x = ∑ j, (Submodule.smul (p := Dpst P ρ₂)).smul (b j) (dQ P hf (dQ P (hπ j) x)) := by
     apply Subtype.ext
-    simp only [Submodule.coe_sum, Submodule.coe_smul, coe_dQ]
+    simp only [Submodule.coe_sum]
     exact (sum_tensQ P b π hsum x.1).symm
   have hms := map_sum (AddMonoidHom.mk' (wdMk P ι ρ₂) (wdMk_add P ι ρ₂))
     (fun j => (Submodule.smul (p := Dpst P ρ₂)).smul (b j) (dQ P hf (dQ P (hπ j) x))) Finset.univ

@@ -117,17 +117,6 @@ theorem shift_off {m n : ℕ} (P : Fin m → Fin n → Prop) (z : D.what₂.Tau 
   classical
   simp [shift, h]
 
-theorem norm_compAt_le (θ : InfFam D) {m n : ℕ} (x : Mx D m n) (τ : D.what₂.Tau) (i : Fin m) (j : Fin n) :
-    ‖compAt θ τ x i j‖ ≤ realSize θ x := by
-  unfold realSize
-  calc ‖compAt θ τ x i j‖ ≤ ∑ j', ‖compAt θ τ x i j'‖ :=
-        Finset.single_le_sum (f := fun j' => ‖compAt θ τ x i j'‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)
-    _ ≤ ∑ i', ∑ j', ‖compAt θ τ x i' j'‖ :=
-        Finset.single_le_sum (f := fun i' => ∑ j', ‖compAt θ τ x i' j'‖)
-          (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i)
-    _ ≤ _ := Finset.single_le_sum (f := fun τ' => ∑ i', ∑ j', ‖compAt θ τ' x i' j'‖)
-          (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ τ)
-
 end GlobalTheory.Unf.MajInt
 
 namespace GlobalTheory.Unf.MajInt
@@ -205,7 +194,7 @@ theorem maj_integrable : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n 
     refine ⟨z, ?_, ?_, ?_⟩
     · simp only [box, Fintype.mem_piFinset, Finset.mem_product, Finset.mem_Icc]
       intro p
-      have h1 := norm_compAt_le θ x p.1 p.2.1 p.2.2
+      have h1 := _root_.GlobalTheory.Unf.MajMeas.norm_compAt_le_realSize θ x p.1 p.2.1 p.2.2
       have hre := Complex.abs_re_le_norm (compAt θ p.1 x p.2.1 p.2.2)
       have him := Complex.abs_im_le_norm (compAt θ p.1 x p.2.1 p.2.2)
       exact ⟨key _ (by linarith), key _ (by linarith)⟩

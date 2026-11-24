@@ -126,6 +126,4 @@ theorem leafPrimCover_pf : LateralTheory.E.LeafOneSpecPf.LeafPrimCover := by
     exact ⟨Prim.map (h.appTop.hom.comp ((pullback.snd U.toSpecΓ (Spec.map φ)).appTop.hom.comp
       (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom)) ζ⟩
 
-theorem LeafPrimCover_of : LateralTheory.E.LeafOneSpecPf.LeafPrimCover := leafPrimCover_pf
-
 end LateralTheory.E.LeafPrimCoverPf

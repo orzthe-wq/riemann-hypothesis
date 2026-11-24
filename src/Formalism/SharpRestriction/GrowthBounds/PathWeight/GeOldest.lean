@@ -83,9 +83,7 @@ def geN (x y : ℤ) : ℕ := ((Finset.Ioo y x).filter fun t => posOf n' t ∈ F.
 theorem ge_N_lt {x y1 y2 : ℤ} (h12 : y1 < y2) (h2 : y2 < x) (hT : posOf n' y2 ∈ F.TT) (hE : Even y2) :
     geN F x y2 < geN F x y1 := by
   unfold geN
-  apply Finset.card_lt_card
-  rw [Finset.ssubset_iff_of_subset]
-  · exact ⟨y2, by simp only [mem_filter, mem_Ioo]; exact ⟨⟨h12, h2⟩, hT, hE⟩, by simp⟩
+  refine Finset.card_lt_card ((Finset.ssubset_iff_of_subset ?_).2 ⟨y2, by simp [h12, h2, hT, hE], by simp⟩)
   · intro t ht
     simp only [mem_filter, mem_Ioo] at ht ⊢
     exact ⟨⟨by omega, ht.1.2⟩, ht.2⟩

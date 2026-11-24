@@ -104,7 +104,6 @@ theorem exists_hasDerivAt (M : ℝ → 𝔸) (hc : Continuous M) (h0 : M 0 = 1)
   have hP : HasDerivAt (fun u => ∫ s in (0 : ℝ)..(u + δ), M s) (M (t + δ)) t := by
     first
       | exact (hasDerivAt_primitive M hc (t + δ)).comp_add_const t δ
-      | exact HasDerivAt.comp_add_const t δ (hasDerivAt_primitive M hc (t + δ))
   have hF := (hP.sub (hasDerivAt_primitive M hc t)).mul_const (↑(hA.unit⁻¹) : 𝔸)
   have hF' := hF.congr_of_eventuallyEq (Eventually.of_forall hM)
   refine hF'.congr_deriv ?_

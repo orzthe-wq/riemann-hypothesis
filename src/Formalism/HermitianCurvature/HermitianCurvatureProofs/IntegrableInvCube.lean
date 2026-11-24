@@ -138,7 +138,7 @@ theorem gsup_one (S : C.HidaSetting E Wp Wq) (hg : 0 < S.g) (hpos : C.ThmPPos S)
     (hRB : (∏ _v : Fin S.f, KB.dlB S b 1) * (∏ v, Cs * (1 + (R * thr S b 1 v / S.g) ^ 2)) / R ^ (2 * S.f) ≤
       B ^ S.f * S.base.vol b 1) :
     ∃ P, 0 ≤ P ∧ P ≤ B ^ S.f * S.base.vol b 1 ∧ GSup S ε b 1 P := by
-  obtain ⟨i1, i2, hcov, -⟩ := pbc_lstdFacts S.f R hR
+  obtain ⟨i1, i2, hcov, -⟩ := _root_.Formalism.FourierDecayAlt.P.PBC.Lat.lstdFacts S.f R hR
   have := i1; have := i2
   have hg' : (0 : ℝ) < S.g := by exact_mod_cast hg
   have hL0 : ∀ v, 0 ≤ X b v := fun v => (hX v).1

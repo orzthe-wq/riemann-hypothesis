@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.TranslateMomentsAll
 public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.EmbHInjective
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PerLatticeFactsStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.PerLatticeFacts
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -58,7 +58,7 @@ theorem natCast_smul_mem {E : Type} [Field E] [NumberField E] {a b : ℕ} (M : S
 
 theorem exists_lift_halfAO : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 X.E))) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (cA c : ℕ), A.AA.FG → A.AA ≠ ⊥ → (∀ P ∈ S, conjPrime₂ P ∉ S) → A.AAUnit S → IsSdLat N → IsSdLat N' → 0 < cA → 0 < c → ∀ x ∈ divLat cA (homAt S N N'), ∃ t ∈ halfAO S (per A N N') (cA * c), t - x ∈ mulLat c (homAt S N N') := by
   intro X A a b S N N' cA c hfg hne _ hU hN hN' hcA hc x hx
-  obtain ⟨-, hfull, -, hloc⟩ := GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b N N' hfg hne hN hN'
+  obtain ⟨-, hfull, -, hloc⟩ := _root_.GlobalTheory.MomT.LatFin.per_lattice_facts X A a b N N' hfg hne hN hN'
   have hF : GlobalTheory.ThetaMove.Full (per A N N') := fun y => by
     obtain ⟨n, hn, hy⟩ := hfull y
     exact ⟨n, hn, by rwa [natCast_smul_eq_ring]⟩

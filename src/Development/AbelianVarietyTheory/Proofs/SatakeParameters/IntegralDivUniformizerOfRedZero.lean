@@ -86,7 +86,6 @@ theorem _root_.GlobalTheory.TypePrimeUnif.typePrime_mem_and_notMem_sq {X : _root
       exact hsq
     first
       | exact hcop.dvd_of_dvd_mul_left h
-      | exact hcop.dvd_of_dvd_mul_right h
   let e : HeightOneSpectrum (𝓞 X.E) → ℕ := fun Q => if Q = P then 2 else 1
   have hall : ∏ Q ∈ Pr.vG i, Q.asIdeal ^ e Q ∣ Ideal.span {X.conjO (Pr.piG i)} := by
     apply Finset.prod_dvd_of_coprime

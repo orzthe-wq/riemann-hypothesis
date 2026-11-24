@@ -204,7 +204,7 @@ theorem exists_adelic_idem (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : P
   set j : AE F E := inclR (F := F) (AF F) (a : E)
   have hj : j * j + ιA b' * j + ιA c' = 0 := by
     have := congrArg (inclR (F := F) (AF F)) hq
-    simp only [map_add (f := _), map_mul, map_pow, inclR_algebraMap, map_zero, pow_two] at this
+    simp only [map_add (f := _), map_mul, inclR_algebraMap, map_zero, pow_two] at this
     exact this
   have hσj : cA σ j = -ιA b' - j := by
     rw [cA_inclR, hσa, map_sub, map_neg, inclR_algebraMap]

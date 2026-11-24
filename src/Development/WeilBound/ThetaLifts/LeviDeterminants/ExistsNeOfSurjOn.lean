@@ -3,7 +3,8 @@ module
 public import Development.WeilBound.ThetaLifts.LeviDeterminants.EqZeroOfTheta
 public import Development.WeilBound.ThetaLifts.LeviDeterminants.MixedModels.RealSt
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqOfComponentTensorAdelicFunctionEq
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicSchwartzNeZeroAtOriginStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAdelicSchwartzNeZeroAtOrigin
 public import Development.WeilBound.ThetaLifts.LeviDeterminants.MCSpan
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -93,7 +94,7 @@ theorem surjOn_of_pure (e : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) �
 
 theorem exists_ne_of_surjOn {e : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)} (h : Set.SurjOn e (schA F κ : Set _) (schA F κ : Set _)) :
     ∃ Φ ∈ schA F κ, e Φ ≠ 0 := by
-  obtain ⟨φ, hφ, h0⟩ := GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F κ
+  obtain ⟨φ, hφ, h0⟩ := _root_.GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F κ
   obtain ⟨Φ, hΦ, rfl⟩ := h hφ
   exact ⟨Φ, hΦ, fun h1 => h0 (by rw [h1]; rfl)⟩
 

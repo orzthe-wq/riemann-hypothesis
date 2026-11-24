@@ -289,28 +289,6 @@ private theorem psdOn_hadamard_mul_of_psdOn {α : Type} (F : Finset α) (A B : �
   show Matrix.PosSemidef (Matrix.of fun x y : F => A x y * B x y)
   first
   | exact hA'.hadamard hB'
-  | exact Matrix.PosSemidef.hadamard hA' hB'
-  | obtain ⟨C, hC⟩ : ∃ C : Matrix F F ℂ, (Matrix.of fun x y : F => A x y) = C.conjTranspose * C := by
-      first
-      | exact ⟨hA'.sqrt, by rw [hA'.posSemidef_sqrt.1.eq, hA'.sqrt_mul_self]⟩
-      | exact Matrix.posSemidef_iff_eq_conjTranspose_mul_self.1 hA'
-      | exact Matrix.posSemidef_iff_exists_eq_conjTranspose_mul_self.1 hA'
-    have hsum : (Matrix.of fun x y : F => A x y * B x y) =
-        ∑ k : F, (Matrix.diagonal fun i => C k i).conjTranspose * (Matrix.of fun x y : F => B x y) *
-          Matrix.diagonal fun i => C k i := by
-      ext i j
-      have hij : A i j = ∑ k : F, star (C k i) * C k j := by
-        have := congrFun (congrFun hC i) j
-        simpa [Matrix.mul_apply] using this
-      rw [Matrix.sum_apply]
-      simp only [Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.of_apply,
-        Pi.star_apply]
-      rw [hij, Finset.sum_mul]
-      exact Finset.sum_congr rfl fun k _ => by ring
-    rw [hsum]
-    refine Finset.sum_induction _ Matrix.PosSemidef (fun _ _ h1 h2 => h1.add h2) Matrix.PosSemidef.zero ?_
-    intro k _
-    exact hB'.conjTranspose_mul_mul_same _
 
 theorem nst_diag_nonneg (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 < ε) (i s : ℕ) (w : W)
     (Y : Finset (Pt E)) (T : Finset E) (κ : Pt E → Pt E → ℂ) (hκ : PSDOn (pts Y s T) κ) (t : E) (ht : t ∈ T) :
@@ -746,7 +724,6 @@ theorem cpx_mp : MeasurePreserving (cpx E) volume volume := by
   have h1 : MeasurePreserving (Formalism.FourierDecayAlt.P.Jx2.ee E) volume volume := by
     first
     | exact Formalism.FourierDecayAlt.P.Jx2.ee_mp E
-    | exact Formalism.FourierDecayAlt.P.Jx2.ee_mp
   haveI : IsProbabilityMeasure (volume : Measure ({w : InfinitePlace E // w.IsReal} → ℝ)) := by
     constructor
     rw [MeasureTheory.volume_pi, Measure.pi_of_empty]

@@ -93,40 +93,40 @@ theorem exists_monic_aeval_eq_zero {R E : Type*} [CommRing R] [Field E] [Algebra
   rw [hp0] at this
   simpa using this.symm
 
+/-- A matrix preserving a finitely generated submodule that spans the ambient space is integral. -/
+theorem isIntegral_of_preserves_lattice {R E : Type*} [CommRing R] [Field E] [Algebra R E] {n : ℕ}
+    (L : Submodule R (Fin n → E)) (hL : L.FG)
+    (hspan : Submodule.span E (L : Set (Fin n → E)) = ⊤)
+    (M : Matrix (Fin n) (Fin n) E) (hM : ∀ x ∈ L, M.mulVec x ∈ L) : IsIntegral R M := by
+  obtain ⟨p, hp, h⟩ := exists_monic_aeval_eq_zero L hL hspan M hM
+  exact ⟨p, hp, by rwa [aeval_map_algebraMap, aeval_def] at h⟩
+
+/-- The trace of a matrix integral over the coefficient ring is integral over the same ring. -/
+theorem isIntegral_trace_of_isIntegral {R K ι : Type*} [CommRing R] [Field K] [Algebra R K]
+    [Fintype ι] [DecidableEq ι] (M : Matrix ι ι K) (hM : IsIntegral R M) : IsIntegral R M.trace := by
+  let L := AlgebraicClosure K
+  let φ : Matrix ι ι K →ₐ[R] Matrix ι ι L := (IsScalarTower.toAlgHom R K L).mapMatrix
+  obtain ⟨p, hp, hpM⟩ := hM.map φ
+  have hN : aeval (φ M) (p.map (algebraMap R L)) = 0 := by
+    rwa [aeval_map_algebraMap, aeval_def]
+  have htr : algebraMap K L M.trace = (φ M).trace := AddMonoidHom.map_trace _ _
+  rw [← isIntegral_algebraMap_iff (A := K) (B := L), htr, Matrix.trace_eq_sum_roots_charpoly]
+  refine IsIntegral.multiset_sum fun z hz => ?_
+  have hspec : z ∈ spectrum L (φ M) :=
+    Matrix.mem_spectrum_iff_isRoot_charpoly.mpr (Polynomial.isRoot_of_mem_roots hz)
+  have hz0 := spectrum.subset_polynomial_aeval (φ M) (p.map (algebraMap R L)) ⟨z, hspec, rfl⟩
+  rw [hN, spectrum.mem_iff, sub_zero] at hz0
+  have heval : eval z (p.map (algebraMap R L)) = 0 := by
+    by_contra h
+    exact hz0 ((IsUnit.mk0 _ h).map _)
+  exact ⟨p, hp, by rwa [eval_map] at heval⟩
+
 theorem isIntegral_trace {E : Type u_1} [inst : Field E] [NumberField E] (_φ : E →+* ℂ) {n : ℕ}
     (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)) (hL : Submodule.FG L)
     (hspan : Submodule.span E (↑L : Set (Fin n → E)) = ⊤)
     (M : Matrix (Fin n) (Fin n) E) (hM : ∀ x ∈ L, Matrix.mulVec M x ∈ L) :
     IsIntegral ℤ (Matrix.trace M) := by
-  obtain ⟨p, hp, hp0⟩ := exists_monic_aeval_eq_zero L hL hspan M hM
-  let K := AlgebraicClosure E
-  let N : Matrix (Fin n) (Fin n) K := (algebraMap E K).mapMatrix M
-  have hN : aeval N (p.map (algebraMap (NumberField.RingOfIntegers E) K)) = 0 := by
-    have h1 := Polynomial.aeval_algHom_apply ((Algebra.ofId E K).mapMatrix (m := Fin n)) M
-      (p.map (algebraMap (NumberField.RingOfIntegers E) E))
-    rw [hp0, map_zero] at h1
-    rw [IsScalarTower.algebraMap_eq (NumberField.RingOfIntegers E) E K, ← Polynomial.map_map,
-      aeval_map_algebraMap]
-    exact h1
-  rw [← isIntegral_algebraMap_iff (B := K)]
-  have htr : algebraMap E K M.trace = N.trace := by
-    simp [N, Matrix.trace]
-  rw [htr, Matrix.trace_eq_sum_roots_charpoly]
-  apply IsIntegral.multiset_sum
-  intro z hz
-  have hz1 : z ∈ spectrum K N := by
-    rw [Matrix.mem_spectrum_iff_isRoot_charpoly]
-    exact (Polynomial.mem_roots N.charpoly_monic.ne_zero).mp hz
-  have hz2 := spectrum.subset_polynomial_aeval N
-    (p.map (algebraMap (NumberField.RingOfIntegers E) K)) ⟨z, hz1, rfl⟩
-  rw [hN] at hz2
-  have hz3 : eval z (p.map (algebraMap (NumberField.RingOfIntegers E) K)) = 0 := by
-    by_contra h
-    rw [spectrum.mem_iff] at hz2
-    apply hz2
-    rw [sub_zero]
-    exact (IsUnit.mk0 _ h).map _
-  have hz4 : IsIntegral (NumberField.RingOfIntegers E) z := ⟨p, hp, by rwa [eval_map] at hz3⟩
-  exact isIntegral_trans z hz4
+  exact isIntegral_trans _ (isIntegral_trace_of_isIntegral M
+    (isIntegral_of_preserves_lattice L hL hspan M hM))
 
 end GlobalTheory.IntegralTrace

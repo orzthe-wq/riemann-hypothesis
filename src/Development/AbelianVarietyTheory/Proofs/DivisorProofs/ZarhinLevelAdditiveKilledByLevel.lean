@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Development.AbelianVarietyTheory.Definitions.Divisors.ToRingActOpOfRingAct
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -54,35 +55,9 @@ section Hom
 
 variable {G H : Over S} [GrpObj G] [GrpObj H]
 
-theorem isMonHom_of_mulComp (f : G ⟶ H)
-    (h : ∀ (T : Over S) (x y : T ⟶ G), (x * y) ≫ f = (x ≫ f) * (y ≫ f)) : IsMonHom f := by
-  refine ⟨?_, ?_⟩
-  · rw [MonObj.one_eq_one, MonObj.one_eq_one]
-    exact map_one (MonoidHom.mk' (fun x : 𝟙_ (Over S) ⟶ G ↦ x ≫ f) (h _))
-  · simpa only [MonObj.mul_eq_mul, MonObj.comp_mul, tensorHom_fst, tensorHom_snd] using
-      h (G ⊗ G) (fst G G) (snd G G)
+alias isMonHom_of_mulComp := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isMonHom_of_mul
 
-theorem isMonHom_mul [IsCommMonObj H] (f g : G ⟶ H) [IsMonHom f] [IsMonHom g] : IsMonHom (f * g) :=
-  isMonHom_of_mulComp _ fun T x y ↦ by
-    simp only [MonObj.comp_mul, MonObj.mul_comp]
-    exact mul_mul_mul_comm _ _ _ _
-
-theorem isMonHom_one : IsMonHom (1 : G ⟶ H) :=
-  isMonHom_of_mulComp _ fun T x y ↦ by simp
-
-theorem isMonHom_zpow [IsCommMonObj H] (f : G ⟶ H) [IsMonHom f] (n : ℤ) : IsMonHom (f ^ n) :=
-  isMonHom_of_mulComp _ fun T x y ↦ by
-    simp only [GrpObj.comp_zpow, MonObj.mul_comp, mul_zpow]
-
-theorem isMonHom_prod [IsCommMonObj H] {K : Type} (s : Finset K) (f : K → (G ⟶ H))
-    (hf : ∀ i, IsMonHom (f i)) : IsMonHom (∏ i ∈ s, f i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simpa using (isMonHom_one : IsMonHom (1 : G ⟶ H))
-  | insert a s ha ih =>
-    rw [Finset.prod_insert ha]
-    haveI := hf a
-    exact isMonHom_mul _ _
+alias isMonHom_one := _root_.GlobalTheory.Serre.isMonHom_one
 
 end Hom
 
@@ -144,18 +119,18 @@ theorem isMonHom_actZ (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A) [IsMonHom la] [IsM
   unfold actZ
   apply isMonHom_mkZ
   · intro i
-    apply isMonHom_prod
+    apply _root_.GlobalTheory.SharpExt.isMonHom_prod
     intro j
-    haveI := isMonHom_zpow (pa A B j) ((N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) (Sum.inl j) (Sum.inl i))
-    haveI := isMonHom_zpow (pb A B j ≫ mu)
+    haveI := _root_.GlobalTheory.Serre.isMonHom_zpow (pa A B j) ((N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) (Sum.inl j) (Sum.inl i))
+    haveI := _root_.GlobalTheory.Serre.isMonHom_zpow (pb A B j ≫ mu)
       ((N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) (Sum.inr j) (Sum.inl i) / (d : ℤ))
-    exact isMonHom_mul _ _
+    exact _root_.GlobalTheory.Serre.isMonHom_mul _ _
   · intro i
-    apply isMonHom_prod
+    apply _root_.GlobalTheory.SharpExt.isMonHom_prod
     intro j
-    haveI := isMonHom_zpow (pa A B j ≫ la) ((N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) (Sum.inl j) (Sum.inr i))
-    haveI := isMonHom_zpow (pb A B j) ((N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) (Sum.inr j) (Sum.inr i))
-    exact isMonHom_mul _ _
+    haveI := _root_.GlobalTheory.Serre.isMonHom_zpow (pa A B j ≫ la) ((N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) (Sum.inl j) (Sum.inr i))
+    haveI := _root_.GlobalTheory.Serre.isMonHom_zpow (pb A B j) ((N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) (Sum.inr j) (Sum.inr i))
+    exact _root_.GlobalTheory.Serre.isMonHom_mul _ _
 
 end Obj
 

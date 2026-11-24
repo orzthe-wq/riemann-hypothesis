@@ -200,7 +200,6 @@ theorem mp_reindex {ι : Type} [Fintype ι] (τ : ι ≃ ι) :
   convert h using 1
   all_goals first
     | rfl
-    | (funext w i; simp [MeasurableEquiv.arrowCongr', Equiv.arrowCongr'])
 
 theorem mp_unitConj1 (c : ℂ) (hc : ‖c‖ = 1) : MeasurePreserving (fun x : ℂ => c * star x) volume volume := by
   let u : Circle := ⟨c, by simp [Submonoid.unitSphere, hc]⟩
@@ -208,7 +207,6 @@ theorem mp_unitConj1 (c : ℂ) (hc : ‖c‖ = 1) : MeasurePreserving (fun x : �
   convert h using 1
   all_goals first
     | rfl
-    | (funext x; simp only [LinearIsometryEquiv.trans_apply, rotation_apply, Complex.conjLIE_apply]; rfl)
 
 theorem mp_unitConj {ι : Type} [Fintype ι] (τ : ι ≃ ι) (c : ι → ℂ) (hc : ∀ i, ‖c i‖ = 1) :
     MeasurePreserving (fun (w : ι → ℂ) i => c i * star (w (τ i))) volume volume := by

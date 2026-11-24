@@ -110,7 +110,7 @@ lemma mem_regAt_self {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hg : IsCptGen ξ) (a
     a ∈ regAt ξ ⟨genPt ξ, specializes_rfl⟩ := by
   obtain ⟨t, ht⟩ := hg.bij.2 a
   refine ⟨t, ?_⟩
-  simp only [genMap, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]
+  simp only [genMap, TopCat.Presheaf.stalkSpecializes_refl]
   exact ht
 
 lemma isNoetherianRing_chart {ξ : Spec (CommRingCat.of Ω) ⟶ X} {o : Type} [CommRing o]

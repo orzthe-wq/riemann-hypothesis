@@ -94,7 +94,7 @@ lemma n1_eI_eq_card {n : ℕ} (I : Finset (Fin n)) : N1 (eI I) = I.card := by
     split_ifs <;> rfl
   simp only [h]
   rw [Finset.sum_boole]
-  simp [Finset.filter_mem_eq_inter]
+  simp
 
 lemma Ninf_eI {n : ℕ} (I : Finset (Fin n)) : Ninf (eI I) ≤ 1 := by
   unfold Ninf
@@ -384,7 +384,6 @@ theorem family_expansion_of_parts (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq
     _ ≤ (2 * (d.n * Real.sqrt d.n) * d.H) ^ (P.r + 1) := by
         first
           | exact pow_le_pow_left₀ hbase hb2 _
-          | exact pow_le_pow_left hbase hb2 _
     _ = (2 * (d.n : ℝ) ^ (3 / 2 : ℝ) * d.H) ^ (P.r + 1) := by rw [hn32]
 
 theorem coefficient_growth_le_power (n r : ℕ) (b H CH C₃ : ℝ) (hb : 2 ≤ b) (hn : (n : ℝ) ≤ b) (hH : 0 ≤ H)
@@ -407,7 +406,6 @@ theorem coefficient_growth_le_power (n r : ℕ) (b H CH C₃ : ℝ) (hb : 2 ≤ 
   have hpow : (2 * (n : ℝ) ^ (3 / 2 : ℝ) * H) ^ (r + 1) ≤ (b ^ ((5 / 2 : ℝ) + CH * (2 * (r : ℝ) + 2))) ^ (r + 1) := by
     first
       | exact pow_le_pow_left₀ hX0 hX (r + 1)
-      | exact pow_le_pow_left hX0 hX (r + 1)
   refine hpow.trans ?_
   rw [← Real.rpow_natCast, ← Real.rpow_mul hb0.le]
   apply Real.rpow_le_rpow_of_exponent_le hb1

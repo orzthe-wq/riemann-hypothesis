@@ -74,7 +74,7 @@ theorem equivFinsuppOfBasisLeft_map_id {O B B' ι : Type} [CommRing O] [Algebra 
       g (TensorProduct.equivFinsuppOfBasisLeft b r k) := by
   induction r using TensorProduct.induction_on with
   | zero => simp
-  | tmul o β => simp [TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]
+  | tmul o β => simp
   | add x y hx hy => simp only [map_add (f := _), Finsupp.add_apply, hx, hy]
 
 theorem equivFinsuppOfBasisRight_map_id {O R R' M κ : Type} [CommRing O] [CommRing R] [CommRing R']
@@ -84,7 +84,7 @@ theorem equivFinsuppOfBasisRight_map_id {O R R' M κ : Type} [CommRing O] [CommR
       f (TensorProduct.equivFinsuppOfBasisRight b w j) := by
   induction w using TensorProduct.induction_on with
   | zero => simp
-  | tmul r x => simp [TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]
+  | tmul r x => simp
   | add x y hx hy => simp only [map_add (f := _), Finsupp.add_apply, hx, hy]
 
 theorem mem_span_filD_zero_of_iotaO_eq {O : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O]

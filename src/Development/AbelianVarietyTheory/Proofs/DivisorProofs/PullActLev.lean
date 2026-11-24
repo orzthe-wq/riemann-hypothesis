@@ -8,10 +8,12 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LevMoveCommL
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.NoCommonZeroIffOfSec
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsConjLevelMapByLevelMoves
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.LiesOverFramedOfSquareLevelMoves
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitive
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapsClosed
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointMoveCalculusStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.IsLevMove
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FramedPointMoveCalculus
 public import Formalism.LocalToGlobal.ProjectiveLattices.SpMapAlgHomId
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsLevMoveOfFrOver
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitive
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -49,7 +51,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.UnifOfSpaceEq
 import Development.AbelianVarietyTheory.Definitions.Foundations.IsProbabilityMeasureMuPart
 import Development.AbelianVarietyTheory.Definitions.ThetaValues.LeCovCoeff
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsLevMoveOfFrOver
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.ArakelovInstances.IsStrictDom
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.LiftFactorization
 
@@ -89,7 +90,7 @@ theorem pull_actLev : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestric
     GlobalTheory.exists_levMove_of_frOver hL D.host.E H Dw l Xo c 0 d hN hd hM hE r' m' hE' k hk _ z₂ _ hz₂ hov'
   obtain ⟨e₁, e₂⟩ := GlobalTheory.levMove_comm_levelMap_of_trivial_mod D.host.E H Dw l Xo c 0 d hpq hlev hA2 hbase ρ'.hom ν'
     (g'.f d.l₂.M) (g'.f d.l₂.A) inferInstance hmv' (fun x => GlobalTheory.LevelFibre.sub_mem_of_inGam hd hg' x)
-  obtain ⟨⟨ι, hι, hone⟩, -, -⟩ := GlobalTheory.T.framedPointMove_calculus D.host.E H Dw l Xo c
+  obtain ⟨⟨ι, hι, hone⟩, -, -⟩ := _root_.GlobalTheory.MoveCalc.frMove_calculus D.host.E H Dw l Xo c
   have hfin := GlobalTheory.frOver_of_square_of_frMove D.host.E H Dw l Xo c 0 d (𝟙 _) ι ρ'.hom ν' d.r d.m
     (by rw [e₁, Category.comp_id]) (by rw [e₂, hι, Category.comp_id]) k _ _ z₂ _ hz₂ (hone k _) hfm'
   exact hpull k hk _ _ hfin

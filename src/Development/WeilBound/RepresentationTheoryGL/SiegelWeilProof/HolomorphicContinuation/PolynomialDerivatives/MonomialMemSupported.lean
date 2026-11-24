@@ -114,7 +114,6 @@ theorem box_finiteDimensional (ε : Fin m → Bool) (R : Finset (Fin m → ℕ))
         omega
       · rw [Finsupp.notMem_support_iff.mp hk]; exact Nat.zero_le _
     refine ⟨fun k => ⟨s k, Nat.lt_succ_of_le (hle k)⟩, Set.mem_univ _, ?_⟩
-    congr 1
     ext k
     simp
   exact FiniteDimensional.span_of_finite ℂ hfin

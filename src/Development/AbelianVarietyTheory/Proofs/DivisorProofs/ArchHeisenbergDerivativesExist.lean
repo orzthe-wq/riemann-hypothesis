@@ -1,9 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsFockMap
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzSeminormLinearPhaseSecondOrderLeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzSeminormSmulLeftLinearPhaseLeStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzSeminormTranslateSubLineDerivLeStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzSeminormLinearPhaseSecondOrderLe
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzSeminormSmulLeftLinearPhaseLe
+public import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SchwartzSeminormTranslateSubLineDerivLe
 public import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.MetaplecticRepresentation
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -108,10 +111,10 @@ theorem hasDerivAt_heis (a : V) (L : V →L[ℝ] ℝ) (c : ℝ) (f : 𝓢(V, ℂ
   refine hasDerivAt_of_bound _ f _ (fun k n => ?_) T
   set P : 𝓢(V, ℂ) →L[ℂ] 𝓢(V, ℂ) := SchwartzMap.smulLeftCLM ℂ (fun x => ((L x : ℝ) : ℂ)) with hP
   set d := LineDeriv.lineDerivOpCLM ℂ 𝓢(V, ℂ) a f with hd
-  obtain ⟨C3, hC3⟩ := GlobalTheory.T.schwartz_seminorm_smulLeft_linear_phase_le L c k n
-  choose C1 hC1 using fun m => GlobalTheory.T.schwartz_seminorm_translate_sub_lineDeriv_le a f k m
-  obtain ⟨C2, hC2⟩ := GlobalTheory.T.schwartzSeminorm_linearPhase_second_order_le L c d k n
-  obtain ⟨C0, hC0⟩ := GlobalTheory.T.schwartzSeminorm_linearPhase_second_order_le L c f k n
+  obtain ⟨C3, hC3⟩ := _root_.GlobalTheory.LinPhaseSeminorm.seminorm_smulLeft_phase_le L c k n
+  choose C1 hC1 using fun m => _root_.GlobalTheory.SchwartzTranslate.seminorm_translate_sub_le a f k m
+  obtain ⟨C2, hC2⟩ := _root_.GlobalTheory.LinearPhase.seminorm_phase_sub_le L c d k n
+  obtain ⟨C0, hC0⟩ := _root_.GlobalTheory.LinearPhase.seminorm_phase_sub_le L c f k n
   set p := SchwartzMap.seminorm ℂ k n (E := V) (F := ℂ) with hp
   refine ⟨|C3| * ∑ m ∈ Finset.range (n + 1), |C1 m| + |C2| + 2 * Real.pi * p (P d) + |C0|, fun t ht => ?_⟩
   set M : 𝓢(V, ℂ) →L[ℂ] 𝓢(V, ℂ) := SchwartzMap.smulLeftCLM ℂ (fun x => Complex.exp (-(2 * Real.pi * Complex.I) * ((t * L x + t ^ 2 * c : ℝ) : ℂ))) with hM
@@ -288,8 +291,7 @@ theorem derEx : GlobalTheory.RealLift.DerEx := by
       rw [rho_pureA d ψ hψ u t f g, hT]
   · have htg : Function.HasTemperateGrowth fun x : κ → mixedEmbedding.mixedSpace F => ((trL (y u) x : ℝ) : ℂ) :=
       (Complex.ofRealCLM.comp (trL (y u))).hasTemperateGrowth
-    simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, SchwartzMap.sub_apply,
-      SchwartzMap.smul_apply, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv,
+    simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv,
       SchwartzMap.smulLeftCLM_apply_apply htg, smul_eq_mul]
     simp only [trL_apply, dotProduct, x₁, y]
     ring

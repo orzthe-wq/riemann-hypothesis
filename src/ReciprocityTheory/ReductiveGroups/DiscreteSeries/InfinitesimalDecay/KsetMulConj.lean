@@ -2,55 +2,14 @@ module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.InfinitesimalDecay.DecBoundJ
 public import Formalism.RealPlaceAnalysis.RealPlaceTaylor.MemUnitaryGroupIffMulConjTranspose
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 public import Mathlib.Analysis.InnerProductSpace.Calculus
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.Normed.Algebra.MatrixExponential
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.SmoothDS
-import Std.Tactic.BVDecide.Normalize.Prop
 import ReciprocityTheory.ReductiveGroups.DiscreteSeries.DiscreteSeriesExistence.Smooth
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.ConjTransposeEqOfInG
+import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
 
 @[expose] public section
 
@@ -64,10 +23,6 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
-
-theorem dS_smooth (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {v : H}
-    (hv : IsSmoothVecU ε σ v) : IsSmoothVecU ε σ (dS σ X v) :=
-  IsSmoothVecU.dS hσ hX hv
 
 theorem dSW_cons (X : Matrix (Fin n) (Fin n) ℂ) (w : List (Matrix (Fin n) (Fin n) ℂ)) (v : H) :
     dSW σ (X :: w) v = dS σ X (dSW σ w v) := rfl
@@ -108,22 +63,6 @@ theorem dSW_sub (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fin n)
   have e : v - v' = v + (-1 : ℂ) • v' := by rw [neg_one_smul, sub_eq_add_neg]
   rw [e, dSW_add hσ hw hv (IsSmoothVecU.smul (-1) hv'), dSW_smul, neg_one_smul, sub_eq_add_neg]
 
-private lemma exp_real_smul_mem_UJset_of_inG {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (t : ℝ) :
-    NormedSpace.exp ((t : ℂ) • X) ∈ UJset ε := by
-  have h : inG ε ((t : ℂ) • X) := by
-    unfold inG at hX ⊢
-    have e : ((t : ℂ) • X)ᴴ = (t : ℂ) • Xᴴ := by
-      rw [Matrix.conjTranspose_smul]
-      congr 1
-      exact Complex.conj_ofReal t
-    rw [e, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]
-  exact Formalism.REAL.f1alg_exp_inUJ ε _ h
-
-private lemma inner_map_map_of_isURepOn (hσ : IsURepOn (UJset ε) σ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε)
-    (y v : H) : inner ℂ (σ g y) (σ g v) = inner ℂ y v := by
-  let L : H →ₗᵢ[ℂ] H := { toLinearMap := (σ g).toLinearMap, norm_map' := hσ.2.1 g hg }
-  exact L.inner_map_map y v
-
 theorem inner_dS_add (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {y v : H}
     (hy : IsSmoothVecU ε σ y) (hv : IsSmoothVecU ε σ v) :
     inner ℂ (dS σ X y) v + inner ℂ y (dS σ X v) = 0 := by
@@ -135,7 +74,7 @@ theorem inner_dS_add (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) 
   have hc : (fun t : ℝ => inner ℂ (σ (NormedSpace.exp ((t : ℂ) • X)) y)
       (σ (NormedSpace.exp ((t : ℂ) • X)) v)) = fun _ => inner ℂ y v := by
     funext t
-    exact inner_map_map_of_isURepOn hσ (exp_real_smul_mem_UJset_of_inG hX t) y v
+    exact _root_.ReciprocityTheory.ChartRestriction.DS.inner_map_map_of_isURep hσ (_root_.ReciprocityTheory.ChartRestriction.DS.exp_smul_mem_UJset hX t) y v
   rw [hc] at hf
   have h0 : σ (NormedSpace.exp (((0 : ℝ) : ℂ) • X)) = 1 := by
     rw [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero]
@@ -201,8 +140,8 @@ theorem dS_conj (hσ : IsURepOn (UJset ε) σ) {k X : Matrix (Fin n) (Fin n) ℂ
         rw [hinv, Matrix.mul_smul, Matrix.smul_mul]
       rw [h1, Matrix.exp_conj' k _ hunit, hinv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hu,
         Matrix.one_mul]
-    rw [← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ (exp_real_smul_mem_UJset_of_inG hX t) _ hkU, he,
-      hσ.1.2 _ hkU _ (exp_real_smul_mem_UJset_of_inG hY t), ContinuousLinearMap.comp_apply]
+    rw [← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ (_root_.ReciprocityTheory.ChartRestriction.DS.exp_smul_mem_UJset hX t) _ hkU, he,
+      hσ.1.2 _ hkU _ (_root_.ReciprocityTheory.ChartRestriction.DS.exp_smul_mem_UJset hY t), ContinuousLinearMap.comp_apply]
   have hd := hasDerivAt_dS hσ hY hv
   have hd2 : HasDerivAt (fun t : ℝ => σ k (σ (NormedSpace.exp ((t : ℂ) • (kᴴ * X * k))) v))
       (σ k (dS σ (kᴴ * X * k) v)) 0 :=

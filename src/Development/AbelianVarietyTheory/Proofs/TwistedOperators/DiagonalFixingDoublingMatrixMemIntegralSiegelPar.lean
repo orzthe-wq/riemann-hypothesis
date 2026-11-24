@@ -66,12 +66,12 @@ theorem shear_zero : shear ι (0 : A) = 1 := by
 
 omit [Fintype ι] in
 theorem shear_map (f : A →+* A) (s : A) : (shear ι s).map f = shear ι (f s) := by
-  ext (i | i) (j | j) <;> by_cases h : i = j <;> simp [shear, Matrix.one_apply, h]
+  ext (i | i) (j | j) <;> by_cases h : i = j <;> simp [shear, h]
 
 theorem shear_unitary (J : Matrix ι ι A) (s : A) : (shear ι s)ᵀ * dbl J * shear ι (-s) = dbl J := by
   simp only [shear, dbl, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.transpose_smul,
     Matrix.transpose_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_zero, add_zero,
-    zero_add, smul_smul, smul_neg, Matrix.neg_mul, smul_zero]
+    zero_add, smul_smul, smul_neg]
   congr 1 <;> module
 
 theorem shear_mulVec_inl (s : A) (z : ι ⊕ ι → A) :
@@ -95,7 +95,7 @@ theorem shear_diagCols (s : A) : shear ι s * (diagCols ι : Matrix (ι ⊕ ι) 
 
 theorem shear_eq (s : A) : shear ι s = 1 + s • ((diagCols ι : Matrix (ι ⊕ ι) ι A) * (Matrix.fromRows (1 : Matrix ι ι A) (-1))ᵀ) := by
   ext (i | i) (j | j) <;> by_cases h : i = j <;>
-    simp [shear, diagCols, Matrix.mul_apply, Matrix.one_apply, h, sub_eq_add_neg]
+    simp [shear, diagCols, Matrix.one_apply, h, sub_eq_add_neg]
   all_goals (intro h'; exact absurd h'.symm h)
 
 end Gen

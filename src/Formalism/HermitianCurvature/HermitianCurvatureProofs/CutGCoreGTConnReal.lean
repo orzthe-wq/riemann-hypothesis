@@ -510,6 +510,6 @@ end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.SSReal
 
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
-theorem gauge_reality_holds : GTCReal := SSReal.gauge_reality_holds
+alias gauge_reality_holds := _root_.Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.SSReal.gauge_reality_holds
 
 end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC

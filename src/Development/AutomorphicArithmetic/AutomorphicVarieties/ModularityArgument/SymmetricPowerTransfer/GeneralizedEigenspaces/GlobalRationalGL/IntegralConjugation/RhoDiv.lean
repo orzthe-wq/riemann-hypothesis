@@ -64,8 +64,6 @@ theorem UpperTheory.V.Z.Sym.Dict.Br.rhoDiv :
       ← IsDedekindDomain.HeightOneSpectrum.valuation_liesOver L (un w) w x]
     first
       | exact pow_le_one_iff he
-      | exact pow_le_one_iff_of_nonneg zero_le' he
-      | exact pow_le_one_iff_of_nonneg (zero_le' (a := _)) he
   have hd : DenseRange (cv (un w)) :=
     IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap (Lp L) (un w)
   have hc := P.φ_cont (un w) w rfl

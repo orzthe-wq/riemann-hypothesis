@@ -688,7 +688,7 @@ theorem isEigV_kapI_iff {Fr : Type} [Field Fr] [Algebra V Fr] (io : c.F →+* Fr
     (W : tEpsG (𝟙 (Sp V)) ⟶ G.G) :
     IsEigV c io G τ (kapI ≫ W) ↔ ∀ (a : 𝓞 E) (z : V), algebraMap V Fr z = io (embK c τ a) →
       W ≫ G.act.act a = smT (𝟙 (Sp V)) z W := by
-  apply GlobalTheory.IntRebase.isEigV_kapI_iff <;> assumption
+  apply GlobalTheory.IntRebase.isEigV_kapI_iff
 
 end KapMore
 

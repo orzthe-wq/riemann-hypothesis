@@ -68,29 +68,10 @@ theorem lm_natW_anti {k : ℕ} (mu : DomWeight k) : Antitone mu.natW := by
   unfold DomWeight.natW
   exact Int.toNat_le_toNat (by omega)
 
-theorem lm_fockF_eq_sum {σ : Type*} (f g : MvPolynomial σ ℂ) (s : Finset (σ →₀ ℕ)) (hs : f.support ⊆ s) :
-    Formalism.REAL.fockF f g =
-      ∑ m ∈ s, f.coeff m * star (g.coeff m) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℂ) := by
-  unfold Formalism.REAL.fockF
-  apply Finset.sum_subset hs
-  intro m _ hm
-  rw [MvPolynomial.notMem_support_iff.mp hm]
-  simp
-
-theorem lm_fockF_add {σ : Type*} (f1 f2 g : MvPolynomial σ ℂ) :
-    Formalism.REAL.fockF (f1 + f2) g = Formalism.REAL.fockF f1 g + Formalism.REAL.fockF f2 g := by
-  classical
-  rw [lm_fockF_eq_sum (f1 + f2) g (f1.support ∪ f2.support) MvPolynomial.support_add,
-    lm_fockF_eq_sum f1 g _ Finset.subset_union_left, lm_fockF_eq_sum f2 g _ Finset.subset_union_right,
-    ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun m _ => ?_
-  rw [MvPolynomial.coeff_add]
-  ring
-
 theorem lm_fockF_smul {σ : Type*} (a : ℂ) (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (a • f) g = a * Formalism.REAL.fockF f g := by
   classical
-  rw [lm_fockF_eq_sum (a • f) g f.support MvPolynomial.support_smul, Formalism.REAL.fockF, Finset.mul_sum]
+  rw [_root_.Formalism.REAL.fischerInner_eq_sum_of_subset (a • f) g f.support MvPolynomial.support_smul, Formalism.REAL.fockF, Finset.mul_sum]
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [MvPolynomial.coeff_smul, smul_eq_mul]
   ring
@@ -105,7 +86,7 @@ theorem lm_fockF_finsum {σ ι : Type*} (s : Finset ι) (y : ι → MvPolynomial
   induction s using Finset.induction_on with
   | empty => simp [Formalism.REAL.fockF]
   | insert i s hi ih =>
-    rw [Finset.sum_insert hi, lm_fockF_add, h0 i (Finset.mem_insert_self _ _),
+    rw [Finset.sum_insert hi, _root_.Formalism.REAL.fischerInner_add_left, h0 i (Finset.mem_insert_self _ _),
       ih (fun j hj => h0 j (Finset.mem_insert_of_mem hj)), add_zero]
 
 theorem lm_rowDiv_sub {R : Type*} [CommRing R] {r m : ℕ} (a b : Fin r) (k : ℕ)

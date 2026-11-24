@@ -1,11 +1,12 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TrivIsCr
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPreframeBoundedPolesStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.BreuilKisinPreframeBoundedPoles
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EquivariantPhiModuleMatrixMemOE
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowerSeriesLiftOfPeriodPowSmulIntegralMatrStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralElementsUnitFactorizationStatement
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantPhiSolutionMemOEStatement
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsStratHom
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsPowerSeriesLiftOfPeriodPowSmulIntegralMatr
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegralElementsUnitFactorization
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.InvariantPhiSolutionMemOE
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -109,18 +110,18 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ain
       ← Matrix.mul_assoc, hX, Matrix.mul_assoc, ← b1, Matrix.mul_smul, smul_smul, mul_comm]
 
   have hOE : ∀ i j, Xm i j ∈ bk.OE := by
-    obtain ⟨w, hw, hew⟩ := (GlobalTheory.T.integral_elements_unit_factorization l K bk).2.2.1 bk.E (GlobalTheory.BSP.EquivOE.not_dvd_E bk)
+    obtain ⟨w, hw, hew⟩ := (_root_.GlobalTheory.OEDvr.main l K bk).2.2.1 bk.E (GlobalTheory.BSP.EquivOE.not_dvd_E bk)
     have hA : F.A.map bk.evW * F.A'.map bk.evW =
         bk.evW bk.E ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (WCb l)) := by
       rw [← Matrix.map_mul, F.A_mul]
       ext i j
-      by_cases h : i = j <;> simp [h, Matrix.one_apply]
+      by_cases h : i = j <;> simp [h]
     have h1 : Xm = (w ^ (N' + 2 * N) * bk.evW bk.E ^ N) •
         (F'.A.map bk.evW * Xm.map (frobW l) * F.A'.map bk.evW) := by
       rw [mul_smul, ← Matrix.smul_mul, hφ, Matrix.smul_mul, Matrix.mul_assoc, hA, Matrix.mul_smul, Matrix.mul_one,
         smul_smul, smul_smul, mul_assoc, ← pow_add, ← mul_pow, mul_comm w, hew, one_pow, one_smul]
     intro i j
-    refine GlobalTheory.T.mem_OE_of_invariant_frobenius_solution l K bk (Fin d' × Fin d) (fun p => Xm p.1 p.2)
+    refine _root_.GlobalTheory.BSP.invariant_phi_solution_mem_OE l K bk (Fin d' × Fin d) (fun p => Xm p.1 p.2)
       (fun p q => w ^ (N' + 2 * N) * bk.evW bk.E ^ N * bk.evW (F'.A q.1 p.1) * bk.evW (F.A' p.2 q.2))
       (fun p q => ?_) (fun q => ?_) (fun g h q => ?_) (i, j)
     · exact bk.OE.mul_mem (bk.OE.mul_mem (bk.OE.mul_mem (bk.OE.pow_mem hw _)
@@ -132,8 +133,8 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ain
       exact Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun k _ => by ring
     · exact congrFun (congrFun (hfix g h) q.1) q.2
 
-  obtain ⟨Y₁, Y₁', hY₁, hY₁'⟩ := GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N' d' ρ' F'
-  obtain ⟨Y₂, Y₂', hY₂, hY₂'⟩ := GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N d ρ F
+  obtain ⟨Y₁, Y₁', hY₁, hY₁'⟩ := _root_.GlobalTheory.BKLim.pre_bounded_poles l K bk τ hτ N' d' ρ' F'
+  obtain ⟨Y₂, Y₂', hY₂, hY₂'⟩ := _root_.GlobalTheory.BKLim.pre_bounded_poles l K bk τ hτ N d ρ F
   set t : WCb l := inclW l τ with ht
   have hinv : t ^ N' • Y₁'.map (inclW l) = t ^ N' • (t ^ N' • (↑u⁻¹ : Matrix (Fin d') (Fin d') (WCb l))) := by
     have e1 := congrArg (fun M => M.map (inclW l)) hY₁'
@@ -141,7 +142,7 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ain
     have e2 : (τ ^ (2 * N') • (1 : Matrix (Fin d') (Fin d') (Ainf l))).map (inclW l) =
         (t ^ N' * t ^ N') • (1 : Matrix (Fin d') (Fin d') (WCb l)) := by
       ext i j
-      by_cases h : i = j <;> simp [h, Matrix.one_apply, ht, ← pow_add, two_mul]
+      by_cases h : i = j <;> simp [h, ht, ← pow_add, two_mul]
     rw [e2, Matrix.smul_mul, ← hu] at e1
     have e3 := congrArg (fun Z => (↑u⁻¹ : Matrix (Fin d') (Fin d') (WCb l)) * Z) e1
     simp only [Matrix.mul_smul, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.mul_one] at e3
@@ -159,7 +160,7 @@ theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ain
     rw [← ht]
     congr 1
     ring
-  obtain ⟨Y, hY⟩ := GlobalTheory.T.exists_powerSeries_lift_of_period_pow_smul_integral_matrix l K bk τ hτ d d' (2 * N' + N) Xm x hOE hx
+  obtain ⟨Y, hY⟩ := _root_.GlobalTheory.BSP.KisinFF.main l K bk τ hτ d d' (2 * N' + N) Xm x hOE hx
   exact ⟨Y, by rw [hY, hX]⟩
 
 end GlobalTheory.BKLim.EquivKisin

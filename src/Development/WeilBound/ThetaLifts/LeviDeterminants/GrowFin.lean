@@ -64,7 +64,7 @@ theorem exists_pi (U : Set (κ → Af F)) (hU : U ∈ 𝓝 (0 : κ → Af F)) :
     ∃ N : ℕ, 0 < N ∧ ∀ M, N ∣ M → ∀ a : κ → Af F, (∀ i, Int' (a i)) → M • a ∈ U := by
   rw [nhds_pi, Filter.mem_pi] at hU
   obtain ⟨I, -, t, ht, hI⟩ := hU
-  choose N hN h using fun i => GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F (t i) (ht i)
+  choose N hN h using fun i => _root_.GlobalTheory.LocalNormBound.main F (t i) (ht i)
   refine ⟨∏ i, N i, Finset.prod_pos fun i _ => hN i, fun M hM a ha => hI fun i _ => ?_⟩
   obtain ⟨k, rfl⟩ := (Finset.dvd_prod_of_mem N (Finset.mem_univ i)).trans hM
   rw [Pi.smul_apply, mul_smul]

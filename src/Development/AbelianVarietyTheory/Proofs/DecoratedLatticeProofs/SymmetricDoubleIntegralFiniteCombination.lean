@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.Tactic
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.CosInj
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SchwartzBruhatSelfAverageHeisenberg
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.ExistsWeilSourceActionAndSmooth
@@ -109,7 +109,7 @@ theorem tensorVal_unique {n₀ n₁ n₂ : Type} [Fintype n₀] [DecidableEq n�
     rw [GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe _ ⟨_, hmem⟩] at l
     rw [← e]
     exact (congrArg (fun t : A →ₗ[ℂ] ℂ => t F) (GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe (T Ψ) (opL hψ ν ρ ⟨_, hmem⟩))).trans l
-  have hh := (GlobalTheory.T.schwartzFourierTransformPi_surjective_schwartzBruhat k n₁ ψ hψ hψ1 ν hν).1
+  have hh := (GlobalTheory.SplitWeil.FourierSurj.hat_surjective k n₁ ψ hψ hψ1 ν hν).1
   have int1 : ∀ Ψ (Φ₀ : SB (n₁ → k)),
       Integrable (fun u => GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.hat ψ ν Φ₀.1 u * C u Ψ) (Measure.pi fun _ => ν) := fun Ψ Φ₀ =>
     FourierJacobi.sb_int ⟨(hh Φ₀).1.mul (hC.comp fun l => l Ψ), (hh Φ₀).2.mul_right⟩

@@ -95,7 +95,7 @@ theorem isMultiHomog_X [DecidableEq K] (s : Σ k, ι k) :
       rw [Finsupp.single_apply, if_neg]
       intro e
       exact h (congrArg Sigma.fst e).symm
-    simp [this, Pi.single_apply, h]
+    simp [this, h]
 
 theorem isMultiHomog_pow {f : MvPolynomial (Σ k, ι k) ℂ} {a : K → ℕ}
     (hf : IsMultiHomog f a) (n : ℕ) : IsMultiHomog (f ^ n) (n • a) := by

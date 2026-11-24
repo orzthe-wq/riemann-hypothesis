@@ -1,15 +1,17 @@
 module
 
 public import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BaseOneSide.PsiSide
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjectionsStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRingStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasureStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureIntegralStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuityStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalarStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyRealStatement
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRingStatement
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CountingFormula
+import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.AdelicTupleProjections
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CompletionIsLocalRing
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.CoordinateHaarMeasure
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.EulerProductMeasureIntegral
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.GramFiberMeasuresContinuity
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianOneByOneIsScalar
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.InfiniteAdelesLocalRingTotallyReal
+import Formalism.UnipotentAdelicQuotients.SWXSDefs
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.TensorLocallyCompactRing
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TensTop
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TopoAF
 import Mathlib.Algebra.Order.Floor.Extended
@@ -84,7 +86,7 @@ theorem exists_len (hcm : IsCMExt F E σ) {J : Matrix (Fin 1) (Fin 1) E} (hJ : I
   have hT : ∀ a b, σ (gramE σ J X b a) = gramE σ J X a b := fun a b => by
     rw [Subsingleton.elim a b]
     exact GlobalTheory.CompanionTheory.RgMass.hE_self_fixed hcm hJ _
-  obtain ⟨β, e, h, -⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm _ hT
+  obtain ⟨β, e, h, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.hermOne_eq_scal F E σ hcm _ hT
   refine ⟨β, h ?_, e⟩
   rw [Matrix.det_unique]
   intro h0
@@ -164,15 +166,12 @@ theorem repr_one_tmul (b : Module.Basis (Fin d) F E) (R : Type) [CommRing R] [Al
     (Algebra.TensorProduct.basis R b).repr ((1 : R) ⊗ₜ[F] e) k = algebraMap F R (b.repr e k) := by
   simp [Algebra.TensorProduct.basis_repr_tmul]
 
-theorem ev_int (c : F) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite,
-    algebraMap F (Fv F v) c ∈ v.adicCompletionIntegers F := (algebraMap F (Af F) c).2
-
 def GoodV (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) : Prop :=
   ∀ k l m, algebraMap F (Fv F v) (b.repr (b k * b l) m) ∈ v.adicCompletionIntegers F
 
 theorem eventually_goodV (b : Module.Basis (Fin d) F E) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, GoodV b v := by
   simp only [GoodV, eventually_all]
-  exact fun k l m => ev_int _
+  exact fun k l m => _root_.GlobalTheory.CompanionTheory.SW.LatRat.eventually_integral _
 
 def IntE (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) : Prop :=
   ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F
@@ -200,7 +199,7 @@ theorem mem_latV_iff {b : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞
 
 theorem eventually_int (hcm : IsCMExt F E σ) (b : Module.Basis (Fin d) F E) (x : AF F ⊗[F] E) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, IntE b v (pV v x) := by
-  have h := (GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1).2.2.2.2.2.1 (projFin fun _ _ => x)
+  have h := (_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d b 1 1).2.2.2.2.2.1 (projFin fun _ _ => x)
   refine h.mono fun v hv => ?_
   have := hv 0 0
   intro k
@@ -252,7 +251,7 @@ theorem tprod_split {ι : Type} (S : Finset ι) (f : ι → ℝ) (hf : (Function
     ← finprod_mem_mul_diff' (Set.subset_univ (S : Set ι)) (by simpa using hf), finprod_mem_coe_finset]
   congr 1
   refine finprod_congr fun v => ?_
-  simp [Set.mem_diff]
+  simp
 
 theorem ne_zero_of_finprod {ι : Type} (f : ι → ℝ) (hf : (Function.mulSupport f).Finite) (h : ∏ᶠ v, f v ≠ 0) (i : ι) :
     f i ≠ 0 := by
@@ -287,7 +286,7 @@ theorem meas_mul (hcm : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R] [T
     [BorelSpace R] (hR : IsLocR R) (y : R ⊗[F] E) :
     Measurable (fun (X : Fin 1 → Fin 1 → R ⊗[F] E) (a : Fin 1) (i : Fin 1) => y * X a i) := by
   obtain ⟨_, _, _, _, -⟩ := hR
-  obtain ⟨_, -, -, -, -, -, -, hB, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm R
+  obtain ⟨_, -, -, -, -, -, -, hB, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm R
   have := hB 1 1
   refine Continuous.measurable ?_
   exact continuous_pi fun a => continuous_pi fun i =>
@@ -348,11 +347,11 @@ theorem inf_factor (hS : Scal) (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) {li :
     ∫⁻ Y, ENNReal.ofReal (φ (fun a i => (xI x : Ainf F ⊗[F] E) * Y a i)) ∂(mi (hermScal (Ainf F) σ s)) =
       ENNReal.ofReal (Gi mi φ ((n : AF F).1 * s)) := by
   have : BorelSpace (Ainf F) := ⟨rfl⟩
-  have hR := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hcm.1
+  have hR := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hcm.1
   have hR' := hR
   obtain ⟨_, _, _, _, -⟩ := hR'
-  obtain ⟨-, k1, k2⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hcm (Ainf F) d b li hli.1
-  obtain ⟨_, -, -, -, -, -, -, hB, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Ainf F)
+  obtain ⟨-, k1, k2⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm (Ainf F) d b li hli.1
+  obtain ⟨_, -, -, -, -, -, -, hB, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Ainf F)
   have := hB 1 1
   have e := hS F E σ hcm J hJ (Ainf F) hR _ _ mi (k1 1 1) (k2 1) hmi (xI x) (n : AF F).1 s (isNm_inf hxn) hs
   have hmeas := meas_mul hcm (Ainf F) hR (xI x : Ainf F ⊗[F] E)
@@ -423,22 +422,22 @@ theorem term_eq (hS : Scal) (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) {li : Me
     by_cases hv : v ∈ S
     · exact ⟨(hAS v hv).1, (hAS v hv).2.1⟩
     · rw [hAo v hv]
-      exact (GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1).2.2.2.1 v
+      exact (_root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d b 1 1).2.2.2.1 v
   have hloc : ∀ v, MeasurableSet (A' v) ∧
       m v (hermScal (Fv F v) σ (algebraMap F (Fv F v) t)) (A' v) = m v (hermScal (Fv F v) σ ((a : AF F).2 v)) (A v) ∧
       m v (hermScal (Fv F v) σ ((a : AF F).2 v)) (A v) < ⊤ := fun v => by
-    have hRv := GlobalTheory.T.completion_is_local_ring F v
+    have hRv := _root_.GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v
     have hRv' := hRv
     obtain ⟨_, _, _, _, -⟩ := hRv'
     have : BorelSpace (Fv F v) := ⟨rfl⟩
-    obtain ⟨_, -, -, -, -, -, -, hB, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Fv F v)
+    obtain ⟨_, -, -, -, -, -, -, hB, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Fv F v)
     have := hB 1 1
-    obtain ⟨-, k1, k2⟩ := GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F v) d b (lam v) (hlam v).1
+    obtain ⟨-, k1, k2⟩ := _root_.GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm (Fv F v) d b (lam v) (hlam v).1
     have hA := (hco v).2.measurableSet
     refine ⟨meas_mul hcm (Fv F v) hRv _ hA, ?_, ?_⟩
     · rw [pr_snd]
       exact map_scal hS hcm hJ (Fv F v) hRv (k1 1 1) (k2 1) (hm v) (xV v x) (isNm_v v hxn) (t.isUnit.map _) hA
-    · have := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm 1 J hJ (Fv F v) hRv 1 _ _ _ (k1 1 1) (k2 1) (hm v)
+    · have := (_root_.GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hcm 1 J hJ (Fv F v) hRv 1 _ _ _ (k1 1 1) (k2 1) (hm v)
         (hermScal (Fv F v) σ ((a : AF F).2 v))).1
       exact (hco v).1.measure_lt_top
   have hcof : ∀ᶠ v in cofinite, A' v = latV b v := by
@@ -449,15 +448,15 @@ theorem term_eq (hS : Scal) (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) {li : Me
   have hφinf : Measurable fun Y : Fin 1 → Fin 1 → Ainf F ⊗[F] E =>
       ENNReal.ofReal (φ (fun a i => (xI x : Ainf F ⊗[F] E) * Y a i)) := by
     have : BorelSpace (Ainf F) := ⟨rfl⟩
-    have hR := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hcm.1
+    have hR := _root_.GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hcm.1
     have hR' := hR
     obtain ⟨_, _, _, _, -⟩ := hR'
-    obtain ⟨_, -, -, -, -, -, -, hB, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (Ainf F)
+    obtain ⟨_, -, -, -, -, -, -, hB, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hcm (Ainf F)
     have := hB 1 1
     exact (hφc.measurable.comp (meas_mul hcm (Ainf F) hR _)).ennreal_ofReal
   have hEu : IsEulerProd b (thetaMeas σ J μ 𝓕 (sph σ J (t : F))) κ (mi (hermScal (Ainf F) σ (algebraMap F _ (t : F))))
       (fun v => cfac E v • m v (hermScal (Fv F v) σ (algebraMap F _ (t : F)))) := hEP
-  obtain ⟨-, e⟩ := GlobalTheory.T.euler_product_measure_integral F E σ hcm d b 1 1 _ κ _ _ hEu _ A' hφinf (fun v => (hloc v).1)
+  obtain ⟨-, e⟩ := _root_.GlobalTheory.CompanionTheory.SW.EulerBox.euler_box F E σ hcm d b 1 1 _ κ _ _ hEu _ A' hφinf (fun v => (hloc v).1)
     (fun v => by
       rw [smul_apply', (hloc v).2.1]
       exact ENNReal.mul_lt_top ENNReal.coe_lt_top (hloc v).2.2) hcof
@@ -503,7 +502,7 @@ theorem gramR_one (R : Type) [CommRing R] [Algebra F R] {j : F} (hj : J = fun _ 
     (X : Fin 1 → Fin 1 → R ⊗[F] E) :
     gramR R σ J X 0 0 = sigR R σ (X 0 0) * ((1 : R) ⊗ₜ[F] algebraMap F E j) * X 0 0 := by
   subst hj
-  simp [gramR, hR, hform, JR, inclR, Matrix.map_apply]
+  simp [gramR, hR, hform, JR, inclR]
   rfl
 
 theorem mem_H (hcm : IsCMExt F E σ) (hJ : IsHermND σ J)
@@ -555,9 +554,9 @@ theorem mem_H (hcm : IsCMExt F E σ) (hJ : IsHermND σ J)
     filter_upwards [S.finite_toSet.eventually_cofinite_notMem] with v h2
     rw [← hAo v (by simpa using h2)]
     exact hZA v
-  have hP := GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1
+  have hP := _root_.GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hcm d b 1 1
   obtain ⟨X, hX1, hX2⟩ := hP.2.2.2.2.2.2.2.1 Y Z hZl
-  obtain ⟨j, hj, hj0, -⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm J hJ.1
+  obtain ⟨j, hj, hj0, -⟩ := _root_.GlobalTheory.CompanionTheory.SW.hermOne_eq_scal F E σ hcm J hJ.1
   have hj1 := hj0 hJ.2
   set y : AF F ⊗[F] E := X 0 0 with hy
   have hyI : pI y = Y 0 0 := by

@@ -135,21 +135,6 @@ theorem isQ_conj {n : ℕ} {i₀ : Fin n} {M H H' : Matrix (Fin n ⊕ Fin n) (Fi
       rw [hq.row e he, zero_mul]
     · simp
 
-theorem inFrame_one (d : SD σ) : inFrame d.b (1 : d.G) = 1 := by
-  have e : mat2 (1 : d.G) = 1 := rfl
-  simp only [inFrame, e, Matrix.mul_one, KWhit.incM_inv_mul]
-
-theorem identityOnLast_embedding {d : SD σ} (L : LD d) (g : L.sd.G) : IdentityOnLastRowsCols L.i₀ (inFrame d.b (L.j g)) := fun u hu v => L.j_out g u hu v
-
-theorem q_conj' {d : SD σ} (L : LD d) {q : d.G} {lam : (AE F E)ˣ} (hq : IsQ F E L.i₀ (inFrame d.b q) lam) (g : L.sd.G) :
-    IsQ F E L.i₀ (inFrame d.b (L.j g * q * (L.j g)⁻¹)) lam := by
-  have hH : inFrame d.b (L.j g) * inFrame d.b (L.j g)⁻¹ = 1 := by
-    rw [← KWhit.inFrame_mul, mul_inv_cancel, inFrame_one]
-  rw [KWhit.inFrame_mul, KWhit.inFrame_mul]
-  refine isQ_conj hq hH (identityOnLast_embedding L g) ?_
-  rw [← map_inv]
-  exact identityOnLast_embedding L g⁻¹
-
 end PositivityTheory.SiegelWeilFormula.Avac
 
 end

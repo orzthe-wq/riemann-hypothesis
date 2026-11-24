@@ -82,7 +82,7 @@ def Z1 (N l w : ℕ) [Fact l.Prime] : Submodule ℤ_[l] (Gam N l → MvPolynomia
     · simp only [Pi.smul_apply, h2, map_smul, smul_add]
 
 theorem hs_codiscrete_neBot : (Filter.codiscreteWithin Hs).NeBot := by
-  apply _root_.GlobalTheory.KZ.codiscreteWithin_Hs_neBot <;> assumption
+  apply _root_.GlobalTheory.KZ.codiscreteWithin_Hs_neBot
 
 theorem btZ_zero (X : Tower Ω ε) (N l : ℕ) [Fact l.Prime] : BtZ X N l 0 0 := by
   intro n u

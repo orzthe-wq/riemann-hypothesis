@@ -143,7 +143,7 @@ theorem unipApprox : PIW.ClassFinD.UnipApprox := by
   let Y : Matrix (Fin n) (Fin n) F := fun i k => y i k
   have hdet : Y.det = 1 := by
     rw [det_of_upperTriangular (fun i k hki => hy0 i k hki)]
-    simp [Y, hy1]
+    simp [hy1]
   let Yg : GL (Fin n) F :=
     ((Matrix.isUnit_iff_isUnit_det Y).mpr (by rw [hdet]; exact isUnit_one)).unit
 

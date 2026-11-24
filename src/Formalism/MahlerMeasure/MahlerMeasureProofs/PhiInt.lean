@@ -1,6 +1,7 @@
 module
 
-public import Formalism.MahlerMeasure.IsIntegral
+public import Formalism.MahlerMeasure.LevelSum
+public import Mathlib.NumberTheory.Padics.PadicNumbers
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -20,9 +21,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -42,11 +40,43 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.MahlerMeasure.IsIntegral, Formalism.MahlerMeasure.MahlerMeasureProofs.PhiInt
+
+-- ===== clump member: Formalism.MahlerMeasure.IsIntegral =====
+-- clump-header: {"m": "Formalism.MahlerMeasure.IsIntegral", "h": "module\n\npublic import Formalism.MahlerMeasure.LevelSum\npublic import Mathlib.NumberTheory.Padics.PadicNumbers\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace Formalism.GM.M
+
+open MvPolynomial Finset
+
+def IsIntegral' {σ : Type} (p : ℕ) [Fact p.Prime] (u : MvPolynomial σ ℚ_[p]) : Prop :=
+  ∀ m, ‖u.coeff m‖ ≤ 1
+
+def PhiInt : Prop :=
+  ∀ (p : ℕ) [Fact p.Prime] (σ : Type) (r : ℕ) (w e : Fin r → σ), Function.Injective w → Function.Injective e →
+    (∀ c d, w c ≠ e d) → 1 ≤ r →
+    ∀ (o n z : ℕ) (u : MvPolynomial σ ℚ_[p]), IsIntegral' p u →
+      IsIntegral' p (((p : ℚ_[p]) ^ ((r + 1) * (Nat.log p (o + n + r + z) + 1))) • Formalism.GM.tiePhi w e o n z u)
+
+end Formalism.GM.M
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.MahlerMeasure.IsIntegral =====
+
+-- ===== clump member: Formalism.MahlerMeasure.MahlerMeasureProofs.PhiInt =====
+-- clump-header: {"m": "Formalism.MahlerMeasure.MahlerMeasureProofs.PhiInt", "h": "module\n\npublic import Formalism.MahlerMeasure.IsIntegral\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace Formalism.GM.M.PhiIntegrality
@@ -60,10 +90,8 @@ variable {p : ℕ} [hp : Fact p.Prime]
 
 theorem norm_natCast_inv_le (n : ℕ) (hn : n ≠ 0) :
     ‖((n : ℚ_[p]))⁻¹‖ ≤ (p : ℝ) ^ (n.factorization p) := by
-
-  have hp1 : p.Prime := Fact.out
   rw [norm_inv, show ((n : ℚ_[p])) = ((n : ℚ) : ℚ_[p]) by push_cast; rfl, Padic.eq_padicNorm,
-    padicNorm.eq_zpow_of_nonzero (by exact_mod_cast hn), padicValRat.of_nat, Nat.factorization_def n hp1]
+    padicNorm.eq_zpow_of_nonzero (by exact_mod_cast hn), padicValRat.of_nat, Nat.factorization_def n (Fact.out : p.Prime)]
   push_cast
   simp [padicValRat.of_nat]
 
@@ -92,10 +120,8 @@ theorem bnd_sum {ι : Type} (s : Finset ι) (f : ι → MvPolynomial σ ℚ_[p])
 
 theorem bnd_smul {B : ℝ} (a : ℚ_[p]) {u : MvPolynomial σ ℚ_[p]} (h : Bnd B u) :
     Bnd (‖a‖ * B) (a • u) := by
-
   intro m
-  rw [MvPolynomial.coeff_smul, smul_eq_mul, norm_mul]
-  exact mul_le_mul_of_nonneg_left (h m) (norm_nonneg _)
+  simpa [MvPolynomial.coeff_smul, smul_eq_mul, norm_mul] using mul_le_mul_of_nonneg_left (h m) (norm_nonneg a)
 
 theorem bnd_mono {B B' : ℝ} {u : MvPolynomial σ ℚ_[p]} (h : Bnd B u) (hB : B ≤ B') : Bnd B' u := fun m => (h m).trans hB
 
@@ -114,13 +140,11 @@ theorem bnd_linear (T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ 
   exact bnd_mono (bnd_smul (u.coeff v) (hT v)) (mul_le_mul_of_nonneg_right (hu v) hC)
 
 theorem bnd_monomial (m : σ →₀ ℕ) (n : ℕ) : Bnd 1 (monomial m ((n : ℕ) : ℚ_[p])) := by
-
   classical
   intro m'
   rw [MvPolynomial.coeff_monomial]
   split_ifs
-  · have := Padic.norm_int_le_one (p := p) (n : ℤ)
-    simpa using this
+  · simpa using Padic.norm_int_le_one (p := p) (n : ℤ)
   · simp
 
 end
@@ -230,9 +254,7 @@ variable {p : ℕ} [hp : Fact p.Prime] {σ : Type}
 private theorem contr_finset_sum {ι : Type} {C : ℝ} (hC : 0 ≤ C) (s : Finset ι)
     (T : ι → (MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]))
     (h : ∀ i ∈ s, Contr C (T i)) : Contr C (∑ i ∈ s, T i) := by
-  intro B hB u hu
-  rw [LinearMap.sum_apply]
-  exact bnd_sum _ _ (mul_nonneg hB hC) fun i hi => h i hi B hB u hu
+  exact fun B hB u hu => by simpa [LinearMap.sum_apply] using bnd_sum _ _ (mul_nonneg hB hC) fun i hi => h i hi B hB u hu
 
 private theorem contr_smul_mahler_measure {C : ℝ} (a : ℚ_[p])
     {T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]} (h : Contr C T) :
@@ -351,6 +373,7 @@ end Formalism.GM.M.PhiIntegrality
 
 namespace Formalism.GM
 
-theorem projectorIntegral : M.PhiInt := M.PhiIntegrality.phi_integrality
-
 end Formalism.GM
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.MahlerMeasure.MahlerMeasureProofs.PhiInt =====

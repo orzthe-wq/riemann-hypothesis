@@ -1,104 +1,34 @@
 module
 
 public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
 namespace Bl.NearbyExistence
 
-private lemma exists_near (F : Type) [Field F] [NumberField F]
+theorem goal1 {F : Type} [Field F] [NumberField F]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))
-    (x : IsDedekindDomain.HeightOneSpectrum.adicCompletion F v) :
-    ∃ y : F, Valued.v (x - algebraMap F (v.adicCompletion F) y) < 1 := by
-  have hn : {z : v.adicCompletion F | Valued.v (x - z) < 1} ∈ nhds x := by
+    (x : v.adicCompletionIntegers F) :
+    ∃ r : NumberField.RingOfIntegers F,
+      Valued.v ((x : v.adicCompletion F) - algebraMap (NumberField.RingOfIntegers F) (v.adicCompletion F) r) < 1 := by
+  have hn : {z : v.adicCompletion F | Valued.v (x.1 - z) < 1} ∈ nhds x.1 := by
     rw [Valued.mem_nhds]
     refine ⟨1, fun z hz => ?_⟩
     simp only [Set.mem_ofPred_eq, Units.val_one, Valuation.restrict_lt_one_iff] at hz ⊢
     rwa [Valuation.map_sub_swap]
-  obtain ⟨z, hz, y, rfl⟩ := mem_closure_iff_nhds.mp
-    (IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap (K := F) v x) _ hn
-  exact ⟨y, hz⟩
-
-theorem goal1 :
-  ∀ {F : Type} [inst : Field.{0} F] [inst_1 : NumberField.{0} F]
-  (v : IsDedekindDomain.HeightOneSpectrum.{0} (NumberField.RingOfIntegers.{0} F))
-  (x :
-    Subtype.{1} fun (x : IsDedekindDomain.HeightOneSpectrum.adicCompletion.{0, 0} F v) ↦
-      Membership.mem.{0, 0} (IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers.{0, 0} F v) x),
-  Exists.{1} fun (r : NumberField.RingOfIntegers.{0} F) ↦
-    LT.lt.{0}
-      (DFunLike.coe.{1, 1, 1} Valued.v.{0, 0}
-        (HSub.hSub.{0, 0, 0} (Subtype.val.{1} x)
-          (DFunLike.coe.{1, 1, 1}
-            (Algebra.algebraMap.{0, 0} (NumberField.RingOfIntegers.{0} F)
-              (IsDedekindDomain.HeightOneSpectrum.adicCompletion.{0, 0} F v))
-            r)))
-      1 := by
-  intro F _ _ v x
-  obtain ⟨y, hy⟩ := exists_near F v x.1
-  have hx : Valued.v x.1 ≤ 1 := x.2
-  have hyc : Valued.v (algebraMap F (v.adicCompletion F) y) ≤ 1 := by
-    have e : algebraMap F (v.adicCompletion F) y = x.1 - (x.1 - algebraMap F (v.adicCompletion F) y) := by
-      ring
-    rw [e]
-    exact (Valuation.map_sub _ _ _).trans (max_le hx hy.le)
+  obtain ⟨_, hy, y, rfl⟩ := mem_closure_iff_nhds.mp
+    (IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap (K := F) v x.1) _ hn
+  have hval (z : F) : Valued.v (algebraMap F (v.adicCompletion F) z) = v.valuation F z :=
+    IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v z
   have hyv : v.valuation F y ≤ 1 := by
-    have e2 : Valued.v (algebraMap F (v.adicCompletion F) y) = v.valuation F y :=
-      IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v y
-    rwa [e2] at hyc
+    rw [← hval y, ← sub_sub_cancel x.1 (algebraMap F (v.adicCompletion F) y)]
+    exact (Valuation.map_sub _ _ _).trans (max_le x.2 hy.le)
   obtain ⟨a, ha⟩ := IsDedekindDomain.HeightOneSpectrum.exists_valuation_sub_lt_of_integer v hyv 1
   refine ⟨a, ?_⟩
-  have e1 : x.1 - algebraMap (NumberField.RingOfIntegers F) (v.adicCompletion F) a
-      = (x.1 - algebraMap F (v.adicCompletion F) y) +
-        algebraMap F (v.adicCompletion F) (y - algebraMap (NumberField.RingOfIntegers F) F a) := by
-    rw [IsScalarTower.algebraMap_apply (NumberField.RingOfIntegers F) F (v.adicCompletion F), map_sub]
-    ring
-  rw [e1]
+  rw [IsScalarTower.algebraMap_apply (NumberField.RingOfIntegers F) F (v.adicCompletion F),
+    ← sub_add_sub_cancel x.1 (algebraMap F (v.adicCompletion F) y), ← map_sub]
   refine Valuation.map_add_lt _ hy ?_
-  have e3 : Valued.v (algebraMap F (v.adicCompletion F) (y - algebraMap (NumberField.RingOfIntegers F) F a))
-      = v.valuation F (y - algebraMap (NumberField.RingOfIntegers F) F a) :=
-    IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _
-  rw [e3, Valuation.map_sub_swap]
+  rw [hval, Valuation.map_sub_swap]
   simpa using ha
 
 end Bl.NearbyExistence

@@ -109,7 +109,7 @@ theorem comp_eq_of_mem {Z Z' : Comp Xo c} {p : Xo.XF c} (hp : p ∈ (Z : Set (Xo
   have hs1 : Smooth Xo.s := SmoothOfRelativeDimension.smooth Dw.dim Xo.s
   have hs : Smooth (strK (Xo := Xo) (c := c)) := inferInstance
   obtain ⟨-, hN, -⟩ := GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field c.F (Xo.XF c) strK hs
-  have hN' : GlobalTheory.IsNormalScheme (Xo.XF c) := by first | exact hN | exact GlobalTheory.IsNormalScheme.of_pred hN
+  have hN' : GlobalTheory.IsNormalScheme (Xo.XF c) := by first | exact GlobalTheory.IsNormalScheme.of_pred hN
   have ho : IsOpen (Z : Set (Xo.XF c)) := GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents Z.2
   have hg := (Z'.2.1 : IsIrreducible (Z' : Set (Xo.XF c))).isGenericPoint_genericPoint
     (isClosed_of_mem_irreducibleComponents _ Z'.2)

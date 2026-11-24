@@ -43,4 +43,4 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.cl0_bijective_and_deco_eq : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ u a b, Function.Bijective (I.cl0 u a b) ∧ ∀ c, ((I.stp u a 0).rep (I.cl0 u a b c)).1.1.deco = ((I.stp u I.mu0 0).rep c).1.1.deco := by
-  first | exact @GlobalTheory.Mem.Col2.ClsZero.stepZero_classes_bijective_same_deco | exact GlobalTheory.Mem.Col2.ClsZero.stepZero_classes_bijective_same_deco | (intros; apply GlobalTheory.Mem.Col2.ClsZero.stepZero_classes_bijective_same_deco <;> assumption)
+  first | exact @GlobalTheory.Mem.Col2.ClsZero.stepZero_classes_bijective_same_deco

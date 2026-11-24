@@ -85,8 +85,6 @@ theorem secZ_eq_zero_of_genVal {e : Ix Dw → ℤ} {g : Rul Xo c} (hg : g ∈ se
   have hJ : p.I.jacobson = p.I := by
     first
     | exact IsJacobsonRing.out' _ p.rad
-    | exact IsJacobsonRing.out inferInstance p.rad
-    | exact Ideal.IsJacobson.out' _ p.rad
   rw [← hJ, Ideal.jacobson, Submodule.mem_sInf]
   rintro m ⟨hIm, hm⟩
   letI : Field (MvPolynomial _ c.F ⧸ m) := Ideal.Quotient.field m

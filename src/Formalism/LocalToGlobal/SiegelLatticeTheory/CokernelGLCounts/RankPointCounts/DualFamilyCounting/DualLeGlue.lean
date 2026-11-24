@@ -4,47 +4,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankP
 public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.AlgebraMapIntCastSmul
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.GmapEqSelfOfFix
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.DualFamilyCounting.ProjectionIntoHolds
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -67,11 +26,7 @@ theorem memW (hG : Good hc M T 𝔭 Λ) {b : V} (hb : b ∈ locF 𝔭 (dualIn h 
     b ∈ orthK h U := by
   obtain ⟨x, -, rfl⟩ := hG.oW b hb
   first
-  | exact Submodule.projection_apply_mem _ _ _ _
-  | exact Submodule.projection_apply_mem _ _ _
   | exact Submodule.projection_apply_mem _ _
-  | exact (orthK h U).projection_apply_mem _ _ _
-  | (unfold prO; simp)
 
 theorem mem_glue_of (hG₀ : Good hc M T 𝔭 Λ₀) {y : V} (hy : y ∈ Λ₀)
     (x' : ↥(locF 𝔭 (dualIn h (orthK h U) T)))
@@ -80,15 +35,10 @@ theorem mem_glue_of (hG₀ : Good hc M T 𝔭 Λ₀) {y : V} (hy : y ∈ Λ₀)
   have hx'W : (x' : V) ∈ orthK h U := memW hG₀ x'.2
   have hyU : prO hc y ∈ U := by
     first
-    | exact Submodule.projection_apply_mem _ _ _ _
-    | exact Submodule.projection_apply_mem _ _ _
     | exact Submodule.projection_apply_mem _ _
-    | (unfold prO; simp)
   have h0 : prO hc.symm (prO hc y) = 0 := by
     first
-    | exact prO_symm_of_mem_U hyU
     | (rw [prO_apply]; simp [hyU])
-    | (unfold prO; simp [hyU])
   refine ⟨x', ?_, y, hy, ⟨prO hc.symm y, hG₀.iW y hy⟩, rfl, ?_, hx'⟩
   · rw [map_add (f := _), orth_projection_symm_of_mem (hc' := hc) hx'W, h0, zero_add]
   · rw [map_add (f := _), prO_of_mem_U (hc' := hc) hyU, orth_projection_of_mem_compl (hc' := hc) hx'W, add_zero]
@@ -106,10 +56,7 @@ theorem glue_inf_U (hG₀ : Good hc M T 𝔭 Λ₀) (hd₀ : dualF h 𝔭 Λ₀ 
     have hcW : (c : V) ∈ orthK h U := by
       rw [hcy]
       first
-      | exact Submodule.projection_apply_mem _ _ _ _
-      | exact Submodule.projection_apply_mem _ _ _
       | exact Submodule.projection_apply_mem _ _
-      | (unfold prO; simp)
     have hcO : ∀ u ∈ U, h u (c : V) = 0 := by
       intro u hu
       simp only [orthK, Submodule.mem_iInf, LinearMap.mem_ker] at hcW
@@ -129,10 +76,7 @@ theorem glue_inf_U (hG₀ : Good hc M T 𝔭 Λ₀) (hd₀ : dualF h 𝔭 Λ₀ 
         rw [e1, hcO (prO hc z) ?_]
         · simp
         · first
-      | exact Submodule.projection_apply_mem _ _ _ _
-      | exact Submodule.projection_apply_mem _ _ _
       | exact Submodule.projection_apply_mem _ _
-      | (unfold prO; simp)
       rw [e]
       exact Submodule.neg_mem _ h2
     have hxΛ : x ∈ Λ₀ := by
@@ -171,10 +115,7 @@ theorem glue_inf_orthK_eq_locF (hG₀ : Good hc M T 𝔭 Λ₀) :
     have hyW : y ∈ orthK h U := by
       rw [← hyc, hcy]
       first
-      | exact Submodule.projection_apply_mem _ _ _ _
-      | exact Submodule.projection_apply_mem _ _ _
       | exact Submodule.projection_apply_mem _ _
-      | (unfold prO; simp)
     have hyT : y ∈ locF 𝔭 T := by
       rw [← hG₀.cW]
       exact Submodule.mem_inf.2 ⟨hy, hyW⟩

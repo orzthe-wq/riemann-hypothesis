@@ -332,7 +332,7 @@ theorem trace_sum {α : Type*} (s : Finset α) {T : α → (H →L[ℂ] H)}
   simpa only [trace, ContinuousLinearMap.sum_apply, inner_sum] using this.tsum_eq
 
 theorem trace_smul (c : ℂ) (T : H →L[ℂ] H) : trace (c • T) = c * trace T := by
-  simp [trace, inner_smul_right, tsum_mul_left]
+  simp [trace, tsum_mul_left]
 
 theorem IsTraceClass.trace_comp_comp {T : H →L[ℂ] H} (h : IsTraceClass T) (A : H →L[ℂ] K)
     (A' : K →L[ℂ] H) : trace (A ∘L T ∘L A') = trace (T ∘L A' ∘L A) := by

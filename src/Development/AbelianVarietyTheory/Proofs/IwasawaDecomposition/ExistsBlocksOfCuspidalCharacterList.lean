@@ -102,7 +102,7 @@ theorem GlobalTheory.SerCmp.canonList_of_cuspidal_list : ∀ (g : ℕ) [Fact g.P
     exact ⟨Formalism.L2.PT.simple_transp _ (hVs c), Formalism.L2.PT.isCuspidal_transp _ (hVc c)⟩
   · apply List.ext_get (GlobalTheory.SerCmp.canonList_length _ _)
     intro n h1 h2
-    simp only [GlobalTheory.SerCmp.canonList, List.get_eq_getElem, List.getElem_map, List.getElem_finRange]
+    simp only [GlobalTheory.SerCmp.canonList, List.get_eq_getElem, List.getElem_map]
     rw [GlobalTheory.SerCmp.ListBlocks.entry_eq (hcard _) (V _)]
     have key : ∀ c, (⟨(Q.get c).1, fun x => (V c).character x⟩ : GlobalTheory.GLq.Pc g) = Q.get c := fun c =>
       Sigma.ext rfl (heq_of_eq (_root_.funext fun x => hVch c x))

@@ -233,7 +233,7 @@ theorem _root_.GlobalTheory.Harm.casimir_value_mixedWeight {m p q : ℕ} (h : p 
   have h2 := _root_.GlobalTheory.Harm.sum_dite_rev_lt hq
     (fun j : Fin q => (b j : ℤ) * (b j + m - 1 - 2 * (j : ℕ)))
   beta_reduce at h1 h2
-  simp only [Fin.val_mk] at h1 h2
+  simp only at h1 h2
   have hpt : ∀ k : Fin m, _root_.GlobalTheory.Harm.mixedWeight m a b k *
         (_root_.GlobalTheory.Harm.mixedWeight m a b k + m - 1 - 2 * (k : ℕ)) =
       (if h : (k : ℕ) < p then (a ⟨k, h⟩ : ℤ) * (a ⟨k, h⟩ + m - 1 - 2 * (k : ℕ)) else 0) +

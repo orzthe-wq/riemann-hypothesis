@@ -88,7 +88,7 @@ theorem setIntegral_subgroup (β : Measure B) [β.IsHaarMeasure] (K U : Subgroup
   set R' : Subgroup B := R.map K.subtype with hR'
   have hR'o : IsOpen (R' : Set B) := by
     have : (R' : Set B) = Subtype.val '' (R : Set K) := by
-      ext y; simp [hR', Subgroup.mem_map]
+      ext y; simp [hR']
     rw [this]
     exact hKo.isOpenMap_subtype_val _ hRo
   have hR'K : (R' : Set B) ⊆ K := by

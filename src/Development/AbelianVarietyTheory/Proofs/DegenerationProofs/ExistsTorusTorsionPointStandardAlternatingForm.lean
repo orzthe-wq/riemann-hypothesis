@@ -6,7 +6,9 @@ public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.Exi
 public import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.WeilIsAlternatingSkewNatural
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsTorusPoint
 import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.IsoFreePerpLabelKernelWeights
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsIffOfIsGrpPullbackComm
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ConstGen
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -96,7 +98,7 @@ theorem exists_torus_point_eStd : LL → UTorsSt → ∀ (o Ω : Type) [CommRing
     have w := GlobalTheory.CommPairing.weilIs_pull hG ρ.P.isAb ρ.P.isLB h (ρ.weil b b' (c₀ ^ (eStd S.g _ b b').val) (by
       rw [pow_mul, map_pow]; rfl))
     rw [← hΦ, ← hΦ] at w
-    refine (GlobalTheory.weilIs_iff_of_isGrpPullback_comm _ _ _ _ _ _ _ _ ρ.P.isLB u.A.isLB u.cart u.lb _ _ _ _
+    refine (_root_.GlobalTheory.weilIs_grpPullback_of_comm _ _ _ _ _ _ _ _ ρ.P.isLB u.A.isLB u.cart u.lb _ _ _ _
       (Φ (x b)) (Φ (x b')) _ rfl rfl).2 ?_
     convert w using 1
     rw [← map_pow, ← map_unitOn, ← hh]

@@ -337,12 +337,7 @@ theorem _root_.GlobalTheory.latticePoint_eq_iff {z w : ℂ} :
 open Filter PeriodPair WeierstrassCurve in
 open scoped Topology in
 variable (L : PeriodPair) in
-theorem _root_.GlobalTheory.weierstrassP_add {z w : ℂ} (hz : z ∉ L.lattice)
-    (hw : w ∉ L.lattice) (hne : ℘[L] z ≠ ℘[L] w) :
-    ℘[L] (z + w) = ((℘'[L] z - ℘'[L] w) / (℘[L] z - ℘[L] w)) ^ 2 / 4 - ℘[L] z - ℘[L] w ∧
-    ℘'[L] (z + w) = -((℘'[L] z - ℘'[L] w) / (℘[L] z - ℘[L] w) * (℘[L] (z + w) - ℘[L] z) +
-      ℘'[L] z) :=
-  weierstrassP_add_and_deriv_add_of_ne L hz hw hne
+alias _root_.GlobalTheory.weierstrassP_add := _root_.GlobalTheory.weierstrassP_add_and_deriv_add_of_ne
 
 
 open Filter PeriodPair WeierstrassCurve in

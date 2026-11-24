@@ -73,11 +73,7 @@ theorem swSection_eq_swSec {D : D7} (A B : HSp D) (ν : Measure (WO A B)) (𝓕 
   funext g
   simp only [GlobalTheory.SiegelFormula.swSection, GlobalTheory.SiegelFormula.valZero, swSec, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.evZero, lagr_eq_lagr]
 
-theorem isHeckeCharacter_inv_of_isHeckeCharacter {D : D7} {χ : (AE D)ˣ →* Circle} (h : IsHeckeChar D χ) : IsHeckeChar D χ⁻¹ := by
-  refine ⟨?_, fun x => ?_⟩
-  · have : (χ⁻¹ : (AE D)ˣ →* Circle) = fun x => (χ x)⁻¹ := rfl
-    rw [this]; exact h.1.inv
-  · rw [MonoidHom.inv_apply, h.2 x, inv_one]
+alias isHeckeCharacter_inv_of_isHeckeCharacter := _root_.GlobalTheory.WeilChange.hecke_inv
 
 end GlobalTheory.Core.Rk.IP
 
@@ -108,7 +104,7 @@ theorem siegelWeilAll_of_hypotheses : GlobalTheory.Published.WeilRepresentationU
     have hmem := GlobalTheory.T.doublingSiegelWeilSection_mem_degeneratePrincipalSeries hW D ψ A B χB omh homh ν 𝓕 hcov φ hφ a hK
     have hre : (A.rank : ℝ) / 2 < (sZero A B).re := by
       have : (sZero A B).re = ((B.rank : ℝ) - A.rank) / 2 := by
-        simp [sZero, Complex.div_re]
+        simp [sZero]
       rw [this]
       have : (2 * A.rank : ℝ) < B.rank := by exact_mod_cast hb
       linarith

@@ -58,13 +58,6 @@ noncomputable section
 
 namespace GlobalTheory.MBLow.AbKey
 
-theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U) (u : Γ(X, U)ˣ) :
-    res h (res h' u) = res (h.trans h') u := by
-  ext
-  simp only [res, Units.coe_map, MonoidHom.coe_coe]
-  rw [← CommRingCat.comp_apply, ← Functor.map_comp]
-  rfl
-
 theorem exists_unit_sec {X : Scheme.{0}} (L : LB X) (F : X ⟶ X) (hF : F = 𝟙 X) (t : LB.Gen (L.pull F)) (ht : t.IsGen) :
     ∃ s : H0 L 1, ∀ j, IsUnit (s.f j) := by
   subst hF
@@ -76,12 +69,12 @@ theorem exists_unit_sec {X : Scheme.{0}} (L : LB X) (F : X ⟶ X) (hF : F = 𝟙
   have e : res (inf_le_inf (le i) (le j)) ((L.pull (𝟙 X)).g (fun _ => i 0) (fun _ => j 0)) =
       (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => ((1 : ℕ) : ℤ))).g i j := by
     simp only [LB.pull, LB.LinComb, Fintype.prod_unique, Nat.cast_one, zpow_one]
-    exact res_res' _ _ _
+    exact _root_.ReciprocityTheory.ChartRestriction.G.Out.InhTate.res_res _ _ _
   have h' : res inf_le_left (res (le i) (t.s fun _ => i 0)) =
       (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => ((1 : ℕ) : ℤ))).g i j *
         res inf_le_right (res (le j) (t.s fun _ => j 0)) := by
-    refine ((res_res' _ _ _).trans (res_res' _ _ _).symm).trans (h.trans ?_)
-    exact congrArg₂ (· * ·) e ((res_res' _ _ _).trans (res_res' _ _ _).symm)
+    refine ((_root_.ReciprocityTheory.ChartRestriction.G.Out.InhTate.res_res _ _ _).trans (_root_.ReciprocityTheory.ChartRestriction.G.Out.InhTate.res_res _ _ _).symm).trans (h.trans ?_)
+    exact congrArg₂ (· * ·) e ((_root_.ReciprocityTheory.ChartRestriction.G.Out.InhTate.res_res _ _ _).trans (_root_.ReciprocityTheory.ChartRestriction.G.Out.InhTate.res_res _ _ _).symm)
   exact congrArg Units.val h'
 
 theorem norm_th_one {V : Type} [CommRing V] [IsDomain V] {D : DegPre V} {C : Type} [NormedField C]

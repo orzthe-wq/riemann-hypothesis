@@ -67,8 +67,6 @@ theorem uh_inv {a : Mx k r} (ha : a ∈ UH (Hpk k r)) :
   have hu := WlocSk.UnitaryGroupBasics.isUnit_of_uh ha
   exact ⟨Matrix.mul_nonsing_inv _ hu, Matrix.nonsing_inv_mul _ hu, WlocSk.UnitaryGroupBasics.uh_inv ha⟩
 
-theorem hpk_sq : Hpk k r * Hpk k r = 1 := WlocSk.UnitaryGroupBasics.hpk_sq
-
 theorem col_eq (g : Mx k r) (j : Fin (2 * r + k + 1)) : g *ᵥ bvec j = fun i => g i j := by
   funext i
   simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
@@ -164,7 +162,7 @@ theorem eq_blockW {c : Mx k r} (hc : c ∈ UH (Hpk k r))
     rw [← e2, e1, hpk_in_col hj, if_neg hne]
   have hoff : ∀ i j, ¬ inB k r i → inB k r j → c i j = 0 := by
     intro i j hi hj
-    have hsq : Hpk k r * (Hpk k r * c) = c := by rw [← Matrix.mul_assoc, hpk_sq, Matrix.one_mul]
+    have hsq : Hpk k r * (Hpk k r * c) = c := by rw [← Matrix.mul_assoc, _root_.WlocSk.UnitaryGroupBasics.hpk_sq, Matrix.one_mul]
     rw [← hsq, Matrix.mul_apply]
     refine Finset.sum_eq_zero fun m _ => ?_
     by_cases hm : inB k r m

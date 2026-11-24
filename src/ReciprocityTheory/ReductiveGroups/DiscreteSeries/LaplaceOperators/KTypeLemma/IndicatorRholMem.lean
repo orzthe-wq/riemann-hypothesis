@@ -1,50 +1,7 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.TransferStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.KTypeLemma.RightHolRightHolEq
 public import Mathlib.Analysis.Calculus.ContDiff.Basic
 public import Mathlib.Analysis.Calculus.ContDiff.Comp
@@ -86,9 +43,6 @@ theorem indicator_rhol_mem (X : Matrix (Fin n) (Fin n) ℂ) (F : cOm n) :
     have h0 := (LinearMap.toContinuousLinearMap (LinearMap.mulRight ℂ X)).contDiff (n := ∞)
     first
       | exact h0
-      | simpa using h0
-      | (convert h0 using 1; funext z; rfl)
-      | (convert h0 using 1; funext z; simp [LinearMap.mulRight_apply])
   refine mem_cOm.2 ⟨?_, fun z hz => Set.indicator_of_notMem hz _⟩
   refine (hd.clm_apply hg.contDiffOn).congr fun z hz => ?_
   rw [Set.indicator_of_mem hz]
@@ -153,10 +107,7 @@ theorem rOm_comm (X Y : Matrix (Fin n) (Fin n) ℂ) :
     have hinf := (cOm_smooth F).contDiffAt (isOpen_positiveOmega.mem_nhds hz)
     have h2 : ContDiffAt ℂ 2 (F : Matrix (Fin n) (Fin n) ℂ → ℂ) z := by
       first
-        | exact hinf.of_le (by exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤))
         | exact contDiffAt_infty.1 hinf 2
-        | exact hinf.of_le (by norm_cast)
-        | exact hinf.of_le (by simp)
     exact rightHol_commutator h2 X Y
   · simp only [Set.indicator_of_notMem hz, sub_zero]
 
@@ -172,9 +123,7 @@ private theorem single_one_mul_single_one_eq_ite (i j k l : Fin n) :
   · subst h
     first
       | rw [Matrix.single_mul_single_same, mul_one]
-      | simp
   · first
-      | rw [Matrix.single_mul_single_of_ne h]
       | simp [h]
 
 theorem isGlRep_eOm : IsGlRep (eOm (n := n)) := by

@@ -1,22 +1,23 @@
 module
 
+public import Mathlib.Algebra.Module.Submodule.Defs
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallyExistsResMEqSecHomSecToPow
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverMorphismRestrictOfRelAmple
 public import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.FiniteCohPushforwardIffOfIsClosedImmersion
-public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemSaturationOfPowSmulMem
 public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine
 public import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemNonzeroLocusIffPowFn
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechModulesFunctorShortExactOfIsAffineOpen
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CubeComplexGradedModuleExactAtOfLargeDegree
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.FiniteGrCechHomology
 public import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.VeryAmpleCompactQuasiSeparatedAffineCharts
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -29,7 +30,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -50,8 +50,48 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Algebra.Order.Star.Int
+import Mathlib.RingTheory.RegularLocalRing.Defs
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemSaturationOfPowSmulMem, Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallySubsingletonCohTwistZOfIsProjOver
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemSaturationOfPowSmulMem =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemSaturationOfPowSmulMem", "h": "module\n\npublic import Mathlib.Algebra.Module.Submodule.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.SubmoduleSaturation
+
+variable {A : Type*} [CommRing A] {M : Type*} [AddCommGroup M] [Module A M]
+
+def saturation (g : A) (K : Submodule A M) : Submodule A M where
+  carrier := {m | ∃ k : ℕ, g ^ k • m ∈ K}
+  zero_mem' := ⟨0, by simp⟩
+  add_mem' := by
+    rintro a b ⟨k, hk⟩ ⟨l, hl⟩
+    refine ⟨k + l, ?_⟩
+    rw [smul_add]
+    refine K.add_mem ?_ ?_
+    · rw [add_comm, pow_add, mul_smul]
+      exact K.smul_mem _ hk
+    · rw [pow_add, mul_smul]
+      exact K.smul_mem _ hl
+  smul_mem' := by
+    rintro c a ⟨k, hk⟩
+    refine ⟨k, ?_⟩
+    rw [smul_comm]
+    exact K.smul_mem _ hk
+
+end GlobalTheory.SubmoduleSaturation
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemSaturationOfPowSmulMem =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallySubsingletonCohTwistZOfIsProjOver =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallySubsingletonCohTwistZOfIsProjOver", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallyExistsResMEqSecHomSecToPow\npublic import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.IsProjOverMorphismRestrictOfRelAmple\npublic import Development.AbelianVarietyTheory.Definitions.QuasicoherentCohomology.FiniteCohPushforwardIffOfIsClosedImmersion\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.MemSaturationOfPowSmulMem\npublic import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.IsAmpleLBOfRelAmpleOfIsAffine\npublic import Development.AbelianVarietyTheory.Definitions.ThetaMetrics.MemNonzeroLocusIffPowFn\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CechModulesFunctorShortExactOfIsAffineOpen\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.CubeComplexGradedModuleExactAtOfLargeDegree\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.FiniteGrCechHomology\npublic import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.VeryAmpleCompactQuasiSeparatedAffineCharts\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Int\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.AbProj\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option autoImplicit false
@@ -163,8 +203,8 @@ theorem exists_fg_submodulePowSat_gammaStar_locus [QCoh.IsFiniteQC F] (hL : L.Is
       K.FG ∧ submodulePowSat (MvPolynomial.X i) K = ⊤ := by
   have := isFiniteQC_twist (F := F) (isLB_lbZPow hL 0)
   have := QCoh.finite_sections (twistZ F L 0) ha
-  letI := (ratioEval R x i).toAlgebra
-  letI : Module (MvPolynomial ι R) Γ(twistZ F L 0, nonzeroLocus (x i)) :=
+  let := (ratioEval R x i).toAlgebra
+  let : Module (MvPolynomial ι R) Γ(twistZ F L 0, nonzeroLocus (x i)) :=
     Module.compHom _ (ratioEval R x i)
   have : IsScalarTower (MvPolynomial ι R) Γ(X, nonzeroLocus (x i))
       Γ(twistZ F L 0, nonzeroLocus (x i)) := ⟨fun p a b => mul_smul _ a b⟩
@@ -259,7 +299,7 @@ theorem exists_fg_cech_iso_grCech :
   have := VeryAmpleCharts.compactSpace_of_finite_cover _ hc ha
   have := VeryAmpleCharts.quasiSeparatedSpace_of_cover hL x hc ha
   obtain ⟨M, hM, hM', e⟩ := exists_fg_isHomogeneous_submodulePowSat R x F hL hc ha hf
-  letI := grSubDecomposition _ hM'
+  let := grSubDecomposition _ hM'
   have h₁ (i : ι) (m : M) (hm : M.subtype m = 0) :
       ∃ k : ℕ, (MvPolynomial.X i : MvPolynomial ι R) ^ k • m = 0 :=
     ⟨0, by rw [show m = 0 from Subtype.ext hm, smul_zero]⟩
@@ -288,9 +328,9 @@ variable [IsNoetherianRing R]
 theorem finite_coh_twistZ (n : ℤ) (p : ℕ) : Module.Finite R (coh (twistZ F L n) p) := by
   classical
   have := Fintype.ofFinite ι
-  letI := linearOrderOfSTO (WellOrderingRel (α := ι))
+  let := linearOrderOfSTO (WellOrderingRel (α := ι))
   obtain ⟨M, hM, hM', e⟩ := exists_fg_coh_equiv_grH R x F hL hc ha hf
-  letI := grSubDecomposition _ hM'
+  let := grSubDecomposition _ hM'
   have : Module.Finite R (grH ι (grSub (gammaGrading R x F ⊤) M) n p) :=
     finite_grCech_homology ι R M _ (Module.Finite.iff_fg.2 hM) n p
   exact (e n p).elim Module.Finite.equiv
@@ -299,9 +339,9 @@ theorem eventually_subsingleton_coh_twistZ :
     ∀ᶠ n : ℤ in atTop, ∀ p, 0 < p → Subsingleton (coh (twistZ F L n) p) := by
   classical
   have := Fintype.ofFinite ι
-  letI := linearOrderOfSTO (WellOrderingRel (α := ι))
+  let := linearOrderOfSTO (WellOrderingRel (α := ι))
   obtain ⟨M, hM, hM', e⟩ := exists_fg_coh_equiv_grH R x F hL hc ha hf
-  letI := grSubDecomposition _ hM'
+  let := grSubDecomposition _ hM'
   obtain ⟨n₀, h⟩ := cubeComplex_grCube_exactAt_of_finite ι R M
     (grSub (gammaGrading R x F ⊤) M) (Module.Finite.iff_fg.2 hM)
   refine eventually_atTop.2 ⟨n₀, fun n hn p hp => ?_⟩
@@ -547,3 +587,7 @@ theorem serre_finiteness_vanishing (R : Type) [CommRing R] [IsNoetherianRing R] 
       hL.eventually_subsingleton_coh_twistZ hf F, hL.eventually_subsingleton_coh_twist hf F⟩⟩
 
 end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.EventuallySubsingletonCohTwistZOfIsProjOver =====

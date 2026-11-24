@@ -101,13 +101,11 @@ theorem blockIndex_true_last (m j : ℕ) : eGP m j ⟨true, Fin.last j⟩ = Fin.
   apply Fin.ext
   first
     | rfl
-    | simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum]
 
 theorem blockIndex_true_eq_last_iff (m j : ℕ) (b : Fin (j + 1)) : eGP m j ⟨true, b⟩ = Fin.last (m + j) ↔ b = Fin.last j := by
   have hb : ((GlobalTheory.BZMir.Leib.eGP m j ⟨true, b⟩ : Fin (m + j + 1)) : ℕ) = m + (b : ℕ) := by
     first
       | rfl
-      | simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum]
   rw [Fin.ext_iff, hb, Fin.ext_iff, Fin.val_last, Fin.val_last]
   omega
 
@@ -116,7 +114,6 @@ theorem blockIndex_false_ne_last (m j : ℕ) (a : Fin m) : eGP m j ⟨false, a�
   have ha : ((GlobalTheory.BZMir.Leib.eGP m j ⟨false, a⟩ : Fin (m + j + 1)) : ℕ) = (a : ℕ) := by
     first
       | rfl
-      | simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum]
   have h2 := congrArg Fin.val h
   rw [ha, Fin.val_last] at h2
   have := a.isLt
@@ -137,7 +134,7 @@ theorem hgp_block_mem (m j : ℕ) (h : MirabolicParabolic k m j) :
     simp [GlobalTheory.BZMir.eLast, GlobalTheory.BZMir.Leib.blockIndex_true_last]
   · have hne : GlobalTheory.BZMir.Leib.eGP m j ⟨true, b⟩ ≠ Fin.last (m + j) :=
       fun h' => hb ((GlobalTheory.BZMir.Leib.blockIndex_true_eq_last_iff m j b).1 h')
-    simp [GlobalTheory.BZMir.eLast, Pi.single_apply, hne, hb]
+    simp [GlobalTheory.BZMir.eLast, hne, hb]
 
 
 variable (k) in
@@ -201,7 +198,7 @@ theorem hpg_block_mem (i t : ℕ) (h : HPG k i t) :
     simp [GlobalTheory.BZMir.eLast, GlobalTheory.BZMir.Leib.ePG_false_last]
   · have hne : GlobalTheory.BZMir.Leib.ePG i t ⟨false, b⟩ ≠ Fin.last (i + t) :=
       fun h' => hb ((GlobalTheory.BZMir.Leib.ePG_false_eq_last_iff i t b).1 h')
-    simp [GlobalTheory.BZMir.eLast, Pi.single_apply, hne, hb]
+    simp [GlobalTheory.BZMir.eLast, hne, hb]
 
 
 variable (k) in

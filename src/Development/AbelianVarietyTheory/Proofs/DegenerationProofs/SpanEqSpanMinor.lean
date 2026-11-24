@@ -275,7 +275,7 @@ theorem _root_.GlobalTheory.ZH.DualLattice.exists_lat_dual : ∀ (o Ω : Type) [
         M.isOpen_setOf_div _ k⟩
     refine ⟨W ⊓ V, θ z • (Matrix.of fun i j => g (k i) j : Matrix J J Ω)⁻¹ᵀ, ⟨hzW, hk⟩, ?_,
       fun x hx => (key z x k hx.2 (hW x hx.1).1 (hW x hx.1).2).2⟩
-    simp [Matrix.det_smul, Matrix.det_nonsing_inv, hk.1, (hθ z).1]
+    simp [Matrix.det_nonsing_inv, hk.1, (hθ z).1]
   · intro z w
     obtain ⟨k, hk⟩ := hdiv z
     have hone : θ z / θ z ∈ M.O z := by

@@ -95,7 +95,7 @@ theorem _root_.GlobalTheory.DegAsm.AdaptInv.xa_eq {F G : _root_.Formalism.Hermit
       rw [Xa_eq_span_e_castSucc F n, Submodule.span_le]
       rintro _ ⟨b, hb, rfl⟩
       have hd := sameGr_e_sub_mem_Xa h b.castSucc
-      simp only [Fin.coe_castSucc] at hd
+      simp only [Fin.val_castSucc] at hd
       have h1 : G.e b.castSucc ∈ G.Xa n := _root_.Formalism.HermitianLatticeCounting.P.e_mem_Xa G b hb
       have h2 : G.e b.castSucc - F.e b.castSucc ∈ G.Xa n := _root_.Formalism.HermitianLatticeCounting.P.Xa_mono G (le_of_lt hb) (ih b hb hd)
       have h3 := Submodule.sub_mem _ h1 h2
@@ -104,7 +104,7 @@ theorem _root_.GlobalTheory.DegAsm.AdaptInv.xa_eq {F G : _root_.Formalism.Hermit
   rw [Xa_eq_span_e_castSucc G n, Submodule.span_le]
   rintro _ ⟨b, hb, rfl⟩
   have hd := sameGr_e_sub_mem_Xa h b.castSucc
-  simp only [Fin.coe_castSucc] at hd
+  simp only [Fin.val_castSucc] at hd
   have h1 : F.e b.castSucc ∈ F.Xa n := _root_.Formalism.HermitianLatticeCounting.P.e_mem_Xa F b hb
   have h2 : G.e b.castSucc - F.e b.castSucc ∈ F.Xa n := _root_.Formalism.HermitianLatticeCounting.P.Xa_mono F (le_of_lt hb) hd
   have h3 := Submodule.add_mem _ h1 h2
@@ -184,7 +184,7 @@ private theorem det_of_eq_of_sub_mem_span_lt {l : ℕ} (u u' w : Fin l → V)
     rw [Matrix.of_apply, hrow a, _root_.Formalism.HermitianLatticeCounting.P.B_sum_left, Matrix.mul_apply]
     simp only [Matrix.of_apply]
   have hdet : M.det = 1 := by
-    rw [Matrix.det_of_lowerTriangular]
+    rw [Matrix.det_of_isLowerTriangular]
     · refine Finset.prod_eq_one fun a _ => ?_
       have h0 : L a a = 0 := (Finsupp.mem_supported' K (L a)).1 (hLsupp a) a (by simp)
       simp [hM, h0]
@@ -205,13 +205,13 @@ private theorem sameGr_Dl_left_eq {F G : _root_.Formalism.HermitianLatticeCounti
     (fun a => G.e (Fin.castLE hl a))
   intro a
   have hd := sameGr_e_sub_mem_Xa h (Fin.castLE hl a)
-  simp only [Fin.coe_castLE] at hd
+  simp only [Fin.val_castLE] at hd
   refine (show F.Xa a ≤ _ from ?_) hd
   rw [Xa_eq_span_e_castSucc F, Submodule.span_le]
   rintro _ ⟨b, hb, rfl⟩
   apply Submodule.subset_span
-  refine ⟨⟨b.val, by have := a.isLt; simp only [Set.mem_setOf_eq] at hb; omega⟩, ?_, ?_⟩
-  · simp only [Set.mem_setOf_eq] at hb ⊢
+  refine ⟨⟨b.val, by have := a.isLt; simp only [Set.mem_ofPred_eq] at hb; omega⟩, ?_, ?_⟩
+  · simp only [Set.mem_ofPred_eq] at hb ⊢
     exact Fin.mk_lt_of_lt_val hb
   · simp only
     congr 1
@@ -246,7 +246,7 @@ theorem _root_.GlobalTheory.DegAsm.AdaptInv.inN_of {F G : _root_.Formalism.Hermi
     intro a
     rw [_root_.GlobalTheory.DegAsm.AdaptInv.xa_eq h]
     have hd := sameGr_e_sub_mem_Xa h a.castSucc
-    simp only [Fin.coe_castSucc] at hd
+    simp only [Fin.val_castSucc] at hd
     have h3 := Submodule.add_mem _ (hflag a) (hXa a _ hd)
     convert h3 using 1
     rw [map_sub]

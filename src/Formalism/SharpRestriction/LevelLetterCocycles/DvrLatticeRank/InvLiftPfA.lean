@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.SharpRestriction.LevelLetterCocycles.DvrLatticeRank.GradNPfA
 
 @[expose] public section
 
@@ -86,26 +87,11 @@ private theorem PiNS_iff_lemma_3 (π' : LetA O n) (k : ℕ) (x : W.DD T) :
   rw [Submodule.mem_map]
   rfl
 
-private theorem DelS_iff_lemma_4 (x : W.DD T) : x ∈ DelS W T ↔ ∀ δ ∈ W.DelF, W.γD T δ x = x := by
-  unfold DelS
-  simp [Submodule.mem_iInf, sub_eq_zero]
-
-private theorem gamD_smulA_lemma_5 (g : W.Gam) (a : LetA O n) (x : W.DD T) :
-    W.γD T g (a • x) = W.γA g a • W.γD T g x := by
-  show W.γD T g (a • x) = Formalism.BasicNotions.letγ (W.γ₀ g) a • W.γD T g x
-  rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
-
 private theorem cancel_lemma_6 (π' : LetA O n) (hu : IsUnit (algebraMap (LetA O n) W.EE π')) (k : ℕ)
     (u v : W.DD T) (h : π' ^ k • u = π' ^ k • v) : u = v := by
   rw [← algebraMap_smul W.EE (π' ^ k) u, ← algebraMap_smul W.EE (π' ^ k) v] at h
   have hu' : IsUnit (algebraMap (LetA O n) W.EE (π' ^ k)) := by rw [map_pow]; exact hu.pow k
   exact hu'.smul_left_cancel.mp h
-
-private theorem PiNS_anti_lemma_7 (π' : LetA O n) {a b : ℕ} (hab : a ≤ b) {z : W.DD T}
-    (hz : z ∈ PiNS W T π' b) : z ∈ PiNS W T π' a := by
-  obtain ⟨⟨y, hy, hyz⟩, hzD⟩ := (PiNS_iff_lemma_3 W T π' b z).mp hz
-  refine (PiNS_iff_lemma_3 W T π' a z).mpr ⟨⟨π' ^ (b - a) • y, (W.N T).smul_mem _ hy, ?_⟩, hzD⟩
-  rw [← hyz, smul_smul, ← pow_add, show a + (b - a) = b by omega]
 
 theorem invLiftPf_inj (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π' * f)
     (ht : f - algebraMap O (LetA O n) c₀ = π' * t)
@@ -119,7 +105,7 @@ theorem invLiftPf_inj (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π
     x ∈ PiNS W T π' M := by
   have hx' := (PiNS_iff_lemma_3 W T π' 1 x).mp hx
   have hxD : x ∈ DelS W T := hx'.2
-  have hxΔ : ∀ δ ∈ W.DelF, W.γD T δ x = x := (DelS_iff_lemma_4 W T x).mp hxD
+  have hxΔ : ∀ δ ∈ W.DelF, W.γD T δ x = x := (_root_.Formalism.MainNotions.N.Ln34.mem_DelS W T x).mp hxD
   obtain ⟨x₁, hx₁, hx₁x⟩ := hx'.1
   have hxN : x ∈ W.N T := by rw [← hx₁x]; exact (W.N T).smul_mem _ hx₁
   rw [hK] at hgx
@@ -141,11 +127,11 @@ theorem invLiftPf_inj (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π
         obtain ⟨s, hs⟩ : π' ∣ f ^ y - algebraMap O (LetA O n) c₀ ^ y :=
           (Dvd.intro t ht.symm).trans (sub_dvd_pow_sub_pow _ _ _)
         have hfy : f ^ y = algebraMap O (LetA O n) c₀ ^ y + π' * s := by rw [← hs]; ring
-        have hg' := PiNS_anti_lemma_7 W T π' hyM hgx
+        have hg' := _root_.Formalism.MainNotions.N.Ln34.gradNPf_PiNS_anti W T π' hyM hgx
         obtain ⟨⟨e', he', he'x⟩, -⟩ := (PiNS_iff_lemma_3 W T π' (y + 1) _).mp hg'
         have hγx : W.γD T W.gam x - x = π' ^ y • (algebraMap O (LetA O n) (c₀ ^ y - 1) • r₀ +
             π' • (s • r₀ + f ^ y • d)) := by
-          rw [← hr₀x, gamD_smulA_lemma_5, map_pow, hf, hγr, mul_pow, hfy, map_sub, map_pow, map_one]
+          rw [← hr₀x, _root_.Formalism.MainNotions.LiftingTheory.gammaD_semilinear, map_pow, hf, hγr, mul_pow, hfy, map_sub, map_pow, map_one]
           set a : LetA O n := algebraMap O (LetA O n) c₀ with ha_def
           have e1 : ∀ (A B A' B' : LetA O n), A = A' → B = B' → A • r₀ + B • d = A' • r₀ + B' • d := by
             intro A B A' B' h1 h2; rw [h1, h2]
@@ -226,23 +212,6 @@ theorem invLiftPf_nzd (π' w : LetA O n) (s' : ℕ) (hw : IsUnit w) (hπ : π' =
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [smul_smul, ← hA j]
 
-private theorem letS_mem_lemma (c : ZMod n) (x : W.DD T) :
-    x ∈ letS W T c ↔ (letE c : LetA O n) • x = x := by
-  unfold letS
-  rw [LinearMap.mem_ker]
-  simp [sub_eq_zero]
-
-private theorem gam_letE_lemma_2 (g : W.Gam) (c : ZMod n) (x : W.DD T) :
-    W.γD T g ((letE c : LetA O n) • x) = (letE c : LetA O n) • W.γD T g x := by
-  have e : Formalism.BasicNotions.letγ (W.γ₀ g) (letE c : LetA O n) = letE c := by
-    funext i
-    show W.γ₀ g ((letE c : LetA O n) i) = (letE c : LetA O n) i
-    unfold letE
-    by_cases hi : i = c
-    · subst hi; simp
-    · simp [Pi.single_apply, hi]
-  rw [← algebraMap_smul W.EE (letE c : LetA O n) x, W.γD_smul, W.γE_ext, e, algebraMap_smul]
-
 theorem invLiftPf_lift (π' Eπ : LetA O n) (h' M σ : ℕ) (c : ZMod n)
     (hG : GradN W T π' σ M) (hL : NinLam W T Eπ h') :
     ∀ w ∈ InvS W T π' Eπ h' 1 c, ∃ wb ∈ InvS W T π' Eπ h' M c,
@@ -257,8 +226,8 @@ theorem invLiftPf_lift (π' Eπ : LetA O n) (h' M σ : ℕ) (c : ZMod n)
     unfold LamPS at h0
     exact (Submodule.mem_inf.mp h0).2
   have hzS : W.γD T W.gamK w - w ∈ letS W T c := by
-    rw [letS_mem_lemma] at hwS ⊢
-    rw [smul_sub, ← gam_letE_lemma_2, hwS]
+    rw [_root_.Formalism.MainNotions.N.Ln34.mem_letS] at hwS ⊢
+    rw [smul_sub, ← _root_.Formalism.MainNotions.N.Ln34.γD_letE, hwS]
   obtain ⟨k, hk, hk2⟩ := hG c (W.γD T W.gamK w - w) (Submodule.mem_inf.mpr ⟨hwγ, hzS⟩)
   obtain ⟨hk1, hkS⟩ := Submodule.mem_inf.mp hk
   refine ⟨((PD.p : ℕ) : O) ^ σ • w - k, ?_, ?_⟩

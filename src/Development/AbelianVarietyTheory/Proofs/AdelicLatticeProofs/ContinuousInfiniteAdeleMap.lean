@@ -84,7 +84,7 @@ theorem toAdele_algebraMap (a : AF F) : toAdele F E (algebraMap (AF F) (AE F E) 
 variable (F E)
 
 theorem continuous_toAdele : Continuous (toAdele F E) := by
-  haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
+  have : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
   refine IsModuleTopology.continuous_of_ringHom (R := AF F) (toAdele F E) ?_
   exact (continuous_adeleMap F E).congr fun a => (toAdele_algebraMap a).symm
 
@@ -139,8 +139,8 @@ theorem bijective_toAdele {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : Function.B
   obtain ⟨ι, hb, h1, -⟩ := exists_finite F E
   obtain ⟨j, hjc, -, hj⟩ := GlobalTheory.HeckeTensorRead.exists_infinite_equiv F E σ h
   obtain ⟨s, hs, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv F E
-  haveI : IsModuleTopology (Ainf F) (Ainf F ⊗[F] E) := ⟨rfl⟩
-  haveI := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field E
+  have : IsModuleTopology (Ainf F) (Ainf F ⊗[F] E) := ⟨rfl⟩
+  have := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field E
   have hj1 : ∀ a : Ainf F, j (a ⊗ₜ[F] (1 : E)) = infiniteAdeleMap F E a := by
     have hc : Continuous fun a : Ainf F => j (a • (1 : Ainf F ⊗[F] E)) :=
       hjc.comp (f := fun a : Ainf F => a • (1 : Ainf F ⊗[F] E)) (by fun_prop)
@@ -175,17 +175,17 @@ def adeleEquiv {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : AE F E ≃+* AdeleRin
   RingEquiv.ofBijective (toAdele F E) (bijective_toAdele h)
 
 theorem continuous_adeleEquiv_symm {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : Continuous (adeleEquiv h).symm := by
-  haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
-  haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _
-  haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _
-  haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F
-  haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F
-  haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E
-  haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
-  haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E
+  have : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
+  have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _
+  have : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _
+  have := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F
+  have := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F
+  have := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E
+  have := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
+  have := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E
   obtain ⟨e0⟩ := GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)
-  haveI : LocallyCompactSpace (AE F E) := e0.isClosedEmbedding.locallyCompactSpace
-  haveI : SecondCountableTopology (AE F E) := e0.secondCountableTopology
+  have : LocallyCompactSpace (AE F E) := e0.isClosedEmbedding.locallyCompactSpace
+  have : SecondCountableTopology (AE F E) := e0.secondCountableTopology
   have hc : Continuous (adeleEquiv h) := continuous_toAdele F E
   have ho : IsOpenMap (adeleEquiv h) :=
     AddMonoidHom.isOpenMap_of_sigmaCompact (adeleEquiv h).toAddEquiv.toAddMonoidHom (adeleEquiv h).surjective hc
@@ -204,7 +204,7 @@ theorem isCMExt_iff (σ : E →ₐ[F] E) :
     IsCMExt F E σ ↔ ∃ _ : IsCMExtension F E, σ = (conj F E : E →ₐ[F] E) := by
   constructor
   · intro h
-    haveI := isCMExtension_of h
+    have := isCMExtension_of h
     refine ⟨this, AlgHom.ext fun x => ?_⟩
     obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
     exact τ.injective ((h.2.2.2 τ x).trans (embedding_conj F E τ x).symm)
@@ -217,10 +217,10 @@ theorem sig_sig (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
 
 theorem exists_of_fixed (h : IsCMExt F E σ) {x : E} (hx : σ x = x) : ∃ t, algebraMap F E t = x := by
   obtain ⟨h', rfl⟩ := (isCMExt_iff σ).1 h
-  haveI := h'.totallyReal
-  haveI := h'.totallyComplex
-  haveI := h'.quadratic
-  haveI := IsCMExtension.isCMField F E
+  have := h'.totallyReal
+  have := h'.totallyComplex
+  have := h'.quadratic
+  have := IsCMExtension.isCMField F E
   obtain ⟨t, ht⟩ := (CMExtension.equivMaximalRealSubfield F E).surjective
     ⟨x, (IsCMField.complexConj_eq_self_iff E x).1 hx⟩
   exact ⟨t, (CMExtension.equivMaximalRealSubfield_apply F E t).symm.trans (congrArg Subtype.val ht)⟩
@@ -235,8 +235,8 @@ theorem adeleConj_algebraMap [IsCMExtension F E] (x : E) :
 
 theorem adeleConj_adeleMap [IsCMExtension F E] (a : AF F) :
     adeleConj F E (adeleMap F E a) = adeleMap F E a := by
-  haveI := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field E
-  haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E
+  have := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field E
+  have := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E
   have key : ∀ k : F, adeleConj F E (adeleMap F E (algebraMap F _ k)) = adeleMap F E (algebraMap F _ k) := by
     intro k
     rw [adeleMap_algebraMap, adeleConj_algebraMap, AlgEquiv.commutes]
@@ -576,7 +576,7 @@ theorem valued_eq_iff (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) :
   rw [← h1]
   by_cases h0 : P.intValuation r = 0
   · rw [h0]
-    exact iff_of_false WithZero.exp_ne_zero.symm fun h => h.2 zero_le'
+    exact iff_of_false WithZero.exp_ne_zero.symm fun h => h.2 zero_le
   · rw [← WithZero.exp_log h0, WithZero.exp_le_exp, WithZero.exp_le_exp, WithZero.exp_inj]
     omega
 

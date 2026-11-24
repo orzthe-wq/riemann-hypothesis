@@ -3,49 +3,7 @@ module
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.RealObj
 public import Formalism.LocalToGlobal.LatticeGeometry.RealizationNorms.MkTauEmbInjective
 public import Formalism.SharpRestriction.CuspSpanNormBounds.BruhatCellsKronecker.SmoothBigCellSectionsExist
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -95,8 +53,7 @@ def sgnV (r : ℕ) : Fin (r + 1) → ℂ := fun b => (-1 : ℂ) ^ (r - b.1)
 theorem zhatO_eq_mul (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) :
     RealObj.ZhatO Z = Matrix.diagonal (fun _ => 1) * Z * Matrix.diagonal (sgnV r) := by
   ext a b
-  rw [Matrix.mul_diagonal, Matrix.diagonal_mul]
-  simp only [RealObj.ZhatO, sgnV]
+  simp only [RealObj.ZhatO, sgnV, Matrix.mul_diagonal, Matrix.diagonal_mul]
   ring
 
 theorem zhatO_invol (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : RealObj.ZhatO (RealObj.ZhatO Z) = Z := by
@@ -106,8 +63,6 @@ theorem zhatO_invol (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : RealObj.ZhatO
 
 theorem norm_prod_sgn {l : ℕ} (hl : l ≤ r + 1) : ‖∏ i : Fin l, sgnV r (Fin.castLE hl i)‖ = 1 := by
   rw [norm_prod]
-  apply Finset.prod_eq_one
-  intro i _
   simp [sgnV]
 
 theorem norm_dl_zhatO (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) {l : ℕ} (hl : l ≤ r + 1) :
@@ -224,8 +179,7 @@ theorem pt_last {D : D7} (p : Formalism.FourierDecayAlt.TB.Pt D.host.E) (w : Poi
     simp at hsum
   obtain ⟨q, hq⟩ : ∃ q, p.getLast? = some q := ⟨p.getLast hne, List.getLast?_eq_some_getLast hne⟩
   have hq1 : q.1 = 1 := by
-    rw [hq] at h1
-    simpa using h1
+    simpa [hq] using h1
   have hp' : p = p.dropLast ++ [q] := by
     rw [List.getLast?_eq_some_getLast hne, Option.some.injEq] at hq
     rw [← hq]
@@ -243,9 +197,9 @@ theorem pt_last {D : D7} (p : Formalism.FourierDecayAlt.TB.Pt D.host.E) (w : Poi
     conv_lhs => rw [hp']
     rw [signFlip_append, hs0, add_comm, signFlip_singleton_last, List.map_append]
     rfl
-  · rw [List.map_map]
-    have : Prod.snd ∘ Prod.swap = (Prod.fst : ℕ × D.host.E → ℕ) := rfl
-    rw [this, sign_list_fst, hs0]
+  · rw [List.map_map,
+      show Prod.snd ∘ Prod.swap = (Prod.fst : ℕ × D.host.E → ℕ) from rfl,
+      sign_list_fst, hs0]
 
 end Sign
 
@@ -261,8 +215,7 @@ theorem zx_sc (u u' : D.what₂.Word) (sc : ℝ) (γ : X.B.I.Ginf) (v : Infinite
     ZX X u u' sc γ v = Matrix.diagonal (cS D.R.rS sc) * ZX X u u' 1 γ v * Matrix.diagonal (cS D.R.rS sc) := by
   ext a b
   simp only [ZX, Zhat, frm, famSc, Formalism.L2.SG.HidaSetting.hJ, Matrix.mul_diagonal, Matrix.diagonal_mul, cS]
-  simp only [Complex.ofReal_one, one_pow, inv_one, one_smul, Matrix.mulVec_smul, star_smul, smul_eq_mul,
-    Complex.star_def, map_inv₀, map_pow, Complex.conj_ofReal]
+  simp only [Complex.ofReal_one, one_pow, inv_one, one_smul, Matrix.mulVec_smul, star_smul, Complex.star_def, map_inv₀, map_pow, Complex.conj_ofReal]
   simp only [smul_dotProduct, dotProduct_smul, smul_eq_mul]
   ring
 
@@ -297,10 +250,7 @@ theorem topTie_G (S : Formalism.FourierDecayAlt.C.HidaSetting D.host.E Wp Wq) (u
   obtain ⟨L, t, hw, hs, hlast⟩ := pt_last p w hp h1'
   let σ : D.host.E →+* ℂ := (X.B.I.φ (τ j)).comp X.ιE.symm.toRingHom
   have hσ : S.emb j t = σ t := by
-    have := hemb j (X.ιE.symm t)
-    rw [RingEquiv.apply_symm_apply] at this
-    rw [this]
-    rfl
+    simpa [σ] using hemb j (X.ιE.symm t)
   have hL : Formalism.FourierDecayAlt.D.ptLast (Formalism.FourierDecayAlt.C.loc (S.emb j) p) = (1, σ t) := by
     unfold Formalism.FourierDecayAlt.D.ptLast
     rw [hloc, hlast]

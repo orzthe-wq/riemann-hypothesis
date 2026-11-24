@@ -1,12 +1,10 @@
 module
 
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.UnimodS
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.HaarUniq
+public import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.TransW
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.Unimod
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.BallConj
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.ConstPair
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.MBaseMem
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.RhsTest
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -28,7 +26,6 @@ import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -36,6 +33,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -48,10 +46,157 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.ConstPair
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.MBaseMem
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.RhsTest
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Polynomial.Basic
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.BallConj, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.PolarDec
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.BallConj =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.BallConj", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.UnimodS\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.HaarUniq\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\npublic import Mathlib.Analysis.Normed.Algebra.MatrixExponential\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+set_option linter.unusedVariables false
+
+noncomputable section
+
+open MeasureTheory Filter Topology Matrix
+open scoped ENNReal
+
+namespace PI.RhsWLim.W
+
+open PI.RhsWLim HU
+
+variable {m : ℕ}
+
+def realE (X : Matrix (Fin m) (Fin m) ℂ) : EuclideanSpace ℝ (Fin m × Fin m × Bool) :=
+  (WithLp.equiv 2 _).symm (realifyFun X)
+
+theorem realE_apply (X : Matrix (Fin m) (Fin m) ℂ) (p : Fin m × Fin m × Bool) :
+    realE X p = realifyFun X p := rfl
+
+theorem unr_realE (X : Matrix (Fin m) (Fin m) ℂ) : unrealify (realE X) = X := by
+  funext i j
+  simp only [unrealify, realE_apply, realifyFun]
+  simp
+
+theorem realE_unr (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) : realE (unrealify x) = x := by
+  ext ⟨i, j, b⟩
+  rw [realE_apply]
+  cases b <;> simp [realifyFun, unrealify]
+
+theorem unr_add (x y : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
+    unrealify (x + y) = unrealify x + unrealify y := by
+  funext i j
+  apply Complex.ext <;> simp [unrealify]
+
+theorem unr_smul (c : ℝ) (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
+    unrealify (c • x) = (c : ℂ) • unrealify x := by
+  funext i j
+  apply Complex.ext <;> simp [unrealify]
+
+theorem realE_add (X Y : Matrix (Fin m) (Fin m) ℂ) : realE (X + Y) = realE X + realE Y := by
+  ext ⟨i, j, b⟩
+  cases b <;> simp [realE_apply, realifyFun]
+
+theorem realE_smul (c : ℝ) (X : Matrix (Fin m) (Fin m) ℂ) : realE ((c : ℂ) • X) = c • realE X := by
+  ext ⟨i, j, b⟩
+  cases b <;> simp [realE_apply, realifyFun]
+
+def conjL (q : Matrix (Fin m) (Fin m) ℂ) :
+    EuclideanSpace ℝ (Fin m × Fin m × Bool) →ₗ[ℝ] EuclideanSpace ℝ (Fin m × Fin m × Bool) where
+  toFun x := realE (q * unrealify x * q⁻¹)
+  map_add' x y := by rw [unr_add, Matrix.mul_add, Matrix.add_mul, realE_add]
+  map_smul' c x := by
+    rw [unr_smul, Matrix.mul_smul, Matrix.smul_mul, realE_smul]; rfl
+
+theorem conjL_apply (q : Matrix (Fin m) (Fin m) ℂ) (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
+    conjL q x = realE (q * unrealify x * q⁻¹) := rfl
+
+theorem norm_realE (X : Matrix (Fin m) (Fin m) ℂ) :
+    ‖realE X‖ = Real.sqrt (∑ i, ∑ j, Complex.normSq (X i j)) := by
+  rw [EuclideanSpace.norm_eq]
+  congr 1
+  rw [Fintype.sum_prod_type]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [Fintype.sum_prod_type]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  rw [Fintype.sum_bool]
+  simp only [realE_apply, realifyFun, Real.norm_eq_abs, sq_abs, if_true, Bool.false_eq_true, if_false,
+    Complex.normSq_apply]
+  ring
+
+theorem frob_trace (X : Matrix (Fin m) (Fin m) ℂ) :
+    ((∑ i, ∑ j, Complex.normSq (X i j) : ℝ) : ℂ) = (X * Xᴴ).trace := by
+  simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.star_def]
+  push_cast
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
+  rw [Complex.mul_conj]
+
+theorem frob_conj (q X : Matrix (Fin m) (Fin m) ℂ) (hq : qᴴ * q = 1) :
+    ∑ i, ∑ j, Complex.normSq ((q * X * q⁻¹) i j) = ∑ i, ∑ j, Complex.normSq (X i j) := by
+  have hqi : q⁻¹ = qᴴ := Matrix.inv_eq_left_inv hq
+  apply Complex.ofReal_injective
+  rw [frob_trace, frob_trace, hqi]
+  simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]
+  calc (q * X * qᴴ * (q * (Xᴴ * qᴴ))).trace = (q * (X * (qᴴ * q) * Xᴴ) * qᴴ).trace := by
+        simp only [Matrix.mul_assoc]
+    _ = (X * Xᴴ * (qᴴ * q)).trace := by
+        rw [hq, Matrix.mul_one, Matrix.mul_one, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hq, Matrix.one_mul]
+    _ = (X * Xᴴ).trace := by rw [hq, Matrix.mul_one]
+
+theorem conj_lieOf {k r : ℕ} (q : Mat k r) (hq : q ∈ UWb k r) (X : Mat k r) (hX : X ∈ lieOf (UWb k r)) :
+    q * X * q⁻¹ ∈ lieOf (UWb k r) := by
+  intro t
+  have hu := uwb_unit hq
+  have e : (t : ℂ) • (q * X * q⁻¹) = q * ((t : ℂ) • X) * q⁻¹ := by
+    rw [Matrix.mul_smul, Matrix.smul_mul]
+  rw [e, Matrix.exp_conj _ _ ((Matrix.isUnit_iff_isUnit_det q).2 hu)]
+  exact uwb_mul (uwb_mul hq (hX t)) (uwb_inv hq)
+
+theorem ballConj : BallConj := by
+  intro k r ρ q hq hqu x hx
+  have hu := uwb_unit hq
+  obtain ⟨v, hv, hvx⟩ := hx
+
+  have hmap : Submodule.map (conjL q) (lieE (UWb k r)) ≤ lieE (UWb k r) := by
+    rw [lieE, Submodule.map_span]
+    apply Submodule.span_mono
+    rintro _ ⟨_, ⟨X, hX, rfl⟩, rfl⟩
+    refine ⟨q * X * q⁻¹, conj_lieOf q hq X hX, ?_⟩
+    show realE (q * X * q⁻¹) = conjL q (realE X)
+    rw [conjL_apply, unr_realE]
+  have hmem : conjL q (v : EuclideanSpace ℝ _) ∈ lieE (UWb k r) :=
+    hmap ⟨v, v.2, rfl⟩
+  refine ⟨⟨conjL q v, hmem⟩, ?_, ?_⟩
+  · rw [Metric.mem_ball, dist_zero_right] at hv ⊢
+    show ‖conjL q (v : EuclideanSpace ℝ _)‖ < ρ
+    rw [conjL_apply, norm_realE, frob_conj q _ hqu, ← norm_realE, realE_unr]
+    exact hv
+  · have hx' : (Matrix.of x : Mat k r) * q = NormedSpace.exp (unrealify (v : EuclideanSpace ℝ _)) := by
+      have := congrArg (fun f : Mt k r => (Matrix.of f : Mat k r)) hvx
+      exact this.symm
+    show (fun i j => NormedSpace.exp (unrealify (conjL q (v : EuclideanSpace ℝ _))) i j) =
+      q * Matrix.of x
+    rw [conjL_apply, unr_realE, Matrix.exp_conj _ _ ((Matrix.isUnit_iff_isUnit_det q).2 hu), ← hx']
+    funext i j
+    rw [Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]
+
+end PI.RhsWLim.W
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.BallConj =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.PolarDec =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.PolarDec", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.HaarUniq\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.TransW\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.Unimod\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.BallConj\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.ConstPair\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.MBaseMem\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.RhsTest\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 set_option linter.unusedVariables false
@@ -66,9 +211,6 @@ namespace PI.RhsWLim.W
 open PI.RhsWLim
 
 variable {k r : ℕ}
-
-theorem hpk_mulVec_gen (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
-    (Hpk k r *ᵥ v) i = HU.sgn k r i * v (HU.tau k r i) := hpk_mulVec_apply v i
 
 theorem herm_bvec (u : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     herm (Hpk k r) u (bvec i) = (Hpk k r *ᵥ u) i := by
@@ -114,7 +256,7 @@ theorem uwb_emb {p : Mat k r} (hp : p ∈ UWb k r) :
           set a : Fin r := ⟨i.val, hi⟩
           have hfix := (hp.2 a).2
           have h1 := herm_pres hp.1 (bvec (wI k r j')) (bvec (esI k r a))
-          rw [hfix, herm_bvec, herm_bvec, hpk_mulVec_gen, hpk_mulVec_gen] at h1
+          rw [hfix, herm_bvec, herm_bvec, _root_.PI.RhsWLim.W.hpk_mulVec_apply, _root_.PI.RhsWLim.W.hpk_mulVec_apply] at h1
           have ht : HU.tau k r (esI k r a) = i := by
             unfold HU.tau esI; apply Fin.ext; simp only [a]; split_ifs <;> omega
           have hs : HU.sgn k r (esI k r a) = 1 := by
@@ -125,7 +267,7 @@ theorem uwb_emb {p : Mat k r} (hp : p ∈ UWb k r) :
         · set a : Fin r := ⟨2 * r + k - i.val, by omega⟩
           have hfix := (hp.2 a).1
           have h1 := herm_pres hp.1 (bvec (wI k r j')) (bvec (eI k r a))
-          rw [hfix, herm_bvec, herm_bvec, hpk_mulVec_gen, hpk_mulVec_gen] at h1
+          rw [hfix, herm_bvec, herm_bvec, _root_.PI.RhsWLim.W.hpk_mulVec_apply, _root_.PI.RhsWLim.W.hpk_mulVec_apply] at h1
           have ht : HU.tau k r (eI k r a) = i := by
             unfold HU.tau eI; apply Fin.ext; simp only [a]; split_ifs <;> omega
           have hs : HU.sgn k r (eI k r a) = 1 := by
@@ -171,7 +313,7 @@ theorem col_unitary (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hμ : μᴴ *
     · rw [hrow j hj, mul_zero, mul_zero, add_zero, Hb, Matrix.diagonal_apply_ne _ (fun h => hj (h.symm.trans hi)),
         Matrix.one_apply_ne (fun h => hj (h.symm.trans hi))]
   · rw [hrow i hi, map_zero, zero_mul, mul_zero, add_zero, Hb, Matrix.diagonal_apply, Matrix.one_apply]
-    split_ifs with h1 h2 <;> first | rfl | (exfalso; exact hi (h1 ▸ h2))
+    split_ifs with h1 h2 <;> first | rfl
 
 theorem boost_herm (y : Fin k → ℂ) (n : ℝ) (hn : 0 < n) : (boost y (n : ℂ))ᴴ = boost y (n : ℂ) := by
   have hnn : ‖(n : ℂ)‖ = n := by rw [Complex.norm_real, Real.norm_eq_abs, abs_of_pos hn]
@@ -182,10 +324,10 @@ theorem boost_herm (y : Fin k → ℂ) (n : ℝ) (hn : 0 < n) : (boost y (n : �
   | last =>
     induction j using Fin.lastCases with
     | last => simp [boost]
-    | cast j => simp [boost, hnn, hn0, abs_of_pos hn, div_self hn0]
+    | cast j => simp [boost, hn0, abs_of_pos hn]
   | cast i =>
     induction j using Fin.lastCases with
-    | last => simp [boost, hnn, hn0, abs_of_pos hn, div_self hn0]
+    | last => simp [boost, hn0, abs_of_pos hn]
     | cast j =>
       simp only [boost, Fin.lastCases_castSucc, hnn, map_add (f := _), map_div₀, map_mul, Complex.conj_conj,
         Complex.conj_ofReal, map_one]
@@ -274,3 +416,7 @@ theorem polarDecW : PolarDecW := by
 theorem unimodW : UnimodW := unimodW_of_two ballConj polarDecW
 
 end PI.RhsWLim.W
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeightedLimitGauge.PolarDec =====

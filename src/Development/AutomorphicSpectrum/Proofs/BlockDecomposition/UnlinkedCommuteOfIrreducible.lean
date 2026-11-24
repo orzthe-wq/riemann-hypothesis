@@ -278,16 +278,14 @@ theorem lUnlinkedComm : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     GlobalTheory.Published.IrreducibleAdmissibleGL → GlobalTheory.BZSeg.LUnlinkedIrr k → GlobalTheory.BZSeg.LUnlinkedComm k := by
   intro k _ _ _ _ hA hI Δ Δ' x y N hd hd' hl hx hy
   have hl' : ¬ Δ'.Linked Δ := fun h => hl h.symm
-  have hXi : (prodIrr ![x, y] hd).IsIrreducible := by
-    refine hI 2 N ![Δ, Δ'] ![x, y] hd ?_ ?_
-    · exact Fin.forall_fin_two.2 ⟨Fin.forall_fin_two.2 ⟨Segment.not_linked_self _, hl⟩,
-        Fin.forall_fin_two.2 ⟨hl', Segment.not_linked_self _⟩⟩
-    · exact Fin.forall_fin_two.2 ⟨hx, hy⟩
-  have hYi : (prodIrr ![y, x] hd').IsIrreducible := by
-    refine hI 2 N ![Δ', Δ] ![y, x] hd' ?_ ?_
-    · exact Fin.forall_fin_two.2 ⟨Fin.forall_fin_two.2 ⟨Segment.not_linked_self _, hl'⟩,
-        Fin.forall_fin_two.2 ⟨hl, Segment.not_linked_self _⟩⟩
-    · exact Fin.forall_fin_two.2 ⟨hy, hx⟩
+  have hXi := hI 2 N ![Δ, Δ'] ![x, y] hd
+    (Fin.forall_fin_two.2 ⟨Fin.forall_fin_two.2 ⟨Segment.not_linked_self _, hl⟩,
+      Fin.forall_fin_two.2 ⟨hl', Segment.not_linked_self _⟩⟩)
+    (Fin.forall_fin_two.2 ⟨hx, hy⟩)
+  have hYi := hI 2 N ![Δ', Δ] ![y, x] hd'
+    (Fin.forall_fin_two.2 ⟨Fin.forall_fin_two.2 ⟨Segment.not_linked_self _, hl'⟩,
+      Fin.forall_fin_two.2 ⟨hl, Segment.not_linked_self _⟩⟩)
+    (Fin.forall_fin_two.2 ⟨hy, hx⟩)
   exact prodIrr_swap_of_isIrreducible hA ![x, y] ![y, x] rfl rfl hd hd' hXi hYi
 
 end GlobalTheory.CompanionTheory.BZSegComm

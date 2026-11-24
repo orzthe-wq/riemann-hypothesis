@@ -58,17 +58,6 @@ open Polynomial
 
 namespace GlobalTheory.UnitLemma.PrincipalLat
 
-theorem isIntegral_pi' {O : Type} [CommRing O] {ι : Type} [Finite ι] {R : ι → Type}
-    [∀ i, CommRing (R i)] [∀ i, Algebra O (R i)] (x : ∀ i, R i) (hx : ∀ i, IsIntegral O (x i)) :
-    IsIntegral O x := by
-  first
-  | exact @_root_.GlobalTheory.IntegralPi.main
-  | exact _root_.GlobalTheory.IntegralPi.main
-  | (apply _root_.GlobalTheory.IntegralPi.main <;> assumption)
-  | (intros; apply _root_.GlobalTheory.IntegralPi.main <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.IntegralPi.main <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.IntegralPi.main ..)
-
 section General
 
 variable {O E A : Type} [CommRing O] [IsDomain O] [Field E] [Algebra O E] [IsFractionRing O E]
@@ -197,7 +186,7 @@ theorem isPrincipalIdealRing_integralClosure {O E A : Type} [CommRing O] [IsDoma
       (∀ I : MaximalSpectrum A, A ⧸ I.asIdeal) :=
     Pi.algHom O _ fun I => (integralClosure O (A ⧸ I.asIdeal)).val.comp (Pi.evalAlgHom O _ I)
   let F := (ψ.symm.toAlgHom.comp G).codRestrict (integralClosure O A) fun l =>
-    (isIntegral_pi' (G l) fun I => (l I).2).map ψ.symm
+    (_root_.GlobalTheory.IntegralPi.isIntegral_pi (G l) fun I => (l I).2).map ψ.symm
   refine IsPrincipalIdealRing.of_surjective F ?_
   intro x
   refine ⟨fun I => ⟨ψ x I, x.2.map ((Pi.evalAlgHom O _ I).comp ψ.toAlgHom)⟩, ?_⟩

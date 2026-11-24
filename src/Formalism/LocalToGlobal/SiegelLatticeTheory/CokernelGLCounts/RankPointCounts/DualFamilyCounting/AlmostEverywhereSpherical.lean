@@ -7,49 +7,8 @@ public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepre
 public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.IsUnimodularAtIffVd
 public import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.StarAlgebraMap
 import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
+import Formalism.GL3MeanSquares.GenusMeanAsymptotics.UnimodularClassRepresentatives.FiniteDimensionalOfOrtho
 
 @[expose] public section
 
@@ -154,8 +113,8 @@ theorem exists_unif_fin (hF : IsFixF K F) {P : Ideal (𝓞 K)} (hP : P.IsMaximal
       exact hP1
     | mul x y _ _ hx hy =>
       refine ⟨fun h => (hP.isPrime.mem_or_mem h).elim hx.1 hy.1, fun s' hs' => ?_⟩
-      obtain ⟨x', hx'⟩ := Formalism.HermitianLattices.Ext.L3.MeanB.exists_star_int x
-      obtain ⟨y', hy'⟩ := Formalism.HermitianLattices.Ext.L3.MeanB.exists_star_int y
+      obtain ⟨x', hx'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int x
+      obtain ⟨y', hy'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int y
       have e : s' = x' * y' := inj (by rw [hs', map_mul, map_mul, star_mul', hx', hy'])
       rw [e]
       exact fun h => (hP.isPrime.mem_or_mem h).elim (hx.2 x' hx') (hy.2 y' hy')
@@ -212,17 +171,17 @@ theorem exists_unif_fin (hF : IsFixF K F) {P : Ideal (𝓞 K)} (hP : P.IsMaximal
       rcases hP.isPrime.mem_or_mem h with h1 | h1
       · exact (hc s hs).1 h1
       · exact (hc s0 hs0).1 (hP.isPrime.mem_of_pow_mem N h1)
-    · obtain ⟨X', hX'⟩ := Formalism.HermitianLattices.Ext.L3.MeanB.exists_star_int X
+    · obtain ⟨X', hX'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int X
       refine ⟨X', ?_, fun N => ?_⟩
       · intro h
         have h0 : star (algebraMap (𝓞 K) K X) = 0 := by rw [← hX', h, map_zero]
         rw [star_eq_zero] at h0
         exact hX0 (inj (by rw [h0, map_zero]))
       · obtain ⟨s, hs, r, hsr⟩ := key N
-        obtain ⟨s', hs'⟩ := Formalism.HermitianLattices.Ext.L3.MeanB.exists_star_int s
-        obtain ⟨s0', hs0'⟩ := Formalism.HermitianLattices.Ext.L3.MeanB.exists_star_int s0
-        obtain ⟨r', hr'⟩ := Formalism.HermitianLattices.Ext.L3.MeanB.exists_star_int r
-        obtain ⟨Y', hY'⟩ := Formalism.HermitianLattices.Ext.L3.MeanB.exists_star_int Y
+        obtain ⟨s', hs'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int s
+        obtain ⟨s0', hs0'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int s0
+        obtain ⟨r', hr'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int r
+        obtain ⟨Y', hY'⟩ := _root_.Formalism.HermitianLattices.Ext.L3.StandardSymmetricSums.star_int Y
         have e := congrArg (fun w => star (algebraMap (𝓞 K) K w)) hsr
         simp only [map_mul, map_pow, star_mul', star_pow] at e
         rw [← hs', ← hX', ← hs0', ← hr', ← hY', ← ht] at e

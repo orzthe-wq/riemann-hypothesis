@@ -160,7 +160,7 @@ lemma dA_sum_vM_le (N : ℕ) : ∑ n ∈ Icc 1 N, vonMangoldt n ≤ dA_KC * N :=
   intro N ih
   rcases Nat.eq_zero_or_pos N with h0 | hpos
   · subst h0
-    simp [Finset.Icc_eq_empty_of_lt (show (0:ℕ) < 1 by norm_num)]
+    simp
   have hN2 : N / 2 < N := Nat.div_lt_self hpos (by norm_num)
   have ih2 := ih (N / 2) hN2
   have hcast : ((N / 2 : ℕ) : ℝ) ≤ (N : ℝ) / 2 := Nat.cast_div_le
@@ -177,7 +177,7 @@ lemma dA_vM_major (g : ℕ → ℝ) (hg0 : ∀ n, 0 ≤ g n) (hg : ∀ n, 1 ≤ 
       ≤ dA_KC * ((∑ n ∈ Icc 1 M, g n) - (M : ℝ) * g M) := by
     intro M
     induction M with
-    | zero => simp [Finset.Icc_eq_empty_of_lt (show (0:ℕ) < 1 by norm_num)]
+    | zero => simp
     | succ M ih =>
       rw [Finset.sum_Icc_succ_top (show 1 ≤ M + 1 by omega),
         Finset.sum_Icc_succ_top (show 1 ≤ M + 1 by omega),
@@ -186,7 +186,7 @@ lemma dA_vM_major (g : ℕ → ℝ) (hg0 : ∀ n, 0 ≤ g n) (hg : ∀ n, 1 ≤ 
           ≤ dA_KC * M * (g M - g (M + 1)) := by
         rcases Nat.eq_zero_or_pos M with h | h
         · subst h
-          simp [Finset.Icc_eq_empty_of_lt (show (0:ℕ) < 1 by norm_num)]
+          simp
         · exact mul_le_mul_of_nonneg_right (dA_sum_vM_le M) (by linarith [hg M h])
       push_cast
       linarith

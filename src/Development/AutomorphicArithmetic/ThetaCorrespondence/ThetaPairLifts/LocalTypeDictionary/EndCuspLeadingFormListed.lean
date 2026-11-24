@@ -81,5 +81,5 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 theorem _root_.GlobalTheory.T.endCusp_leadingForm_listed : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (y : (R.HX t).H), GlobalTheory.FlipRun.IsCuspListed ch.W.θ (.grid 0 D.R.m) (GlobalTheory.RowClaim.formTop ch t y) := by
-  first | exact @_root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList | exact _root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList | (intros; apply _root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList <;> assumption)
+  first | exact @_root_.GlobalTheory.EndCusp.leadingForm_mem_cuspList
 end

@@ -88,7 +88,7 @@ theorem exists_orthonormalBasis_singularValues {E F : Type*}
     have hk' : σ k ≠ 0 := hk
     have hkc : (σ k : ℂ) ≠ 0 := by exact_mod_cast hk'
     simp only [Set.domRestrict_apply, w, dif_pos (hlt _ hi').2, dif_pos (hlt _ hk').2,
-      inner_smul_left, inner_smul_right, key, Subtype.mk.injEq, Fin.mk.injEq, Fin.ext_iff]
+      inner_smul_left, inner_smul_right, key, Subtype.mk.injEq, Fin.ext_iff]
     split_ifs with h
     · rw [h]
       simp only [map_inv₀, Complex.conj_ofReal]

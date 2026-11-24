@@ -4,7 +4,10 @@ public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieChart
 public import Mathlib.RingTheory.RingHom.Smooth
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieChartOfSmoothChart
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.LieLatticeVectorBundleOfSmooth
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorOfDualHomStatement
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
+import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsCompletedStrictHens
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorOfDualHom
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TangentVectorSumDualNumber
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -50,7 +53,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.CubicalStructures.CubeSymmetricSwapFirst
 
 @[expose] public section
@@ -133,7 +135,7 @@ theorem exists_lieModel {S : Scheme.{0}} (G : Over S) [GrpObj G] (U : G.left.Ope
       (∀ b, δ' ((G.hom.appLE V U hUV).hom b) = 0) → ∃ e, ∀ a, δ e a = δ' a) :
     ∃ M : LieModel G y E, ∀ e, ∃ φ : Γ(G.left, U) →+* DualNumber C,
       (∀ a, (φ a).fst = v a) ∧ (∀ a, (φ a).snd = δ e a) ∧ (M.pt e).left = spMap φ ≫ hU.fromSpec := by
-  obtain ⟨c1, c2⟩ := GlobalTheory.T.tangent_vector_of_dual_hom S G U V hU hV hUV C y v h1
+  obtain ⟨c1, c2⟩ := _root_.GlobalTheory.CompanionTheory.Ar.TanChart.tan_iff_der S G U V hU hV hUV C y v h1
   let φ : E → (Γ(G.left, U) →+* DualNumber C) := fun e => dualOf v (δ e) (hadd e) (hmul e)
   have φfst : ∀ e a, (φ e a).fst = v a := fun e a => dualOf_fst ..
   have φsnd : ∀ e a, (φ e a).snd = δ e a := fun e a => dualOf_snd ..
@@ -171,6 +173,6 @@ theorem lieChart_of_smooth_chart : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] 
   (hU : IsAffineOpen U) (hV : IsAffineOpen V) (hUV : U ≤ G.hom ⁻¹ᵁ V), RingHom.Smooth (G.hom.appLE V U hUV).hom →
   ∀ u : Γ(G.left, U) →+* Localization.Away f,
     (1 : Over.mk (spMap (algebraMap R (Localization.Away f)) ≫ x) ⟶ G).left = spMap u ≫ hU.fromSpec → LieChart G x f := by
-  apply GlobalTheory.CompanionTheory.Ar.ChartDer.lieChart_of_smooth_chart <;> assumption
+  apply GlobalTheory.CompanionTheory.Ar.ChartDer.lieChart_of_smooth_chart
 
 end PositivityTheory.HtPt.Htat.Lie

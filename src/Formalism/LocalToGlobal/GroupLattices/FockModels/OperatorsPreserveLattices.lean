@@ -8,47 +8,6 @@ import Formalism.GradedWeylDivisibility.FinalD
 public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LEhwLemmas
 public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.LHwrowLemmas
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Wlocal
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -118,8 +77,7 @@ theorem hom_map {R S σ M : Type} [CommRing R] [CommRing S] [AddCommMonoid M] (�
   intro d hd
   apply h
   intro h0
-  apply hd
-  rw [MvPolynomial.coeff_map, h0, map_zero]
+  exact hd (by rw [MvPolynomial.coeff_map, h0, map_zero])
 
 theorem weyl_scale (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] (k r : ℕ) (ν : Fin k → ℕ)
     (hν : Antitone ν) (w : O) (hw0 : algebraMap O Kf w ≠ 0) :
@@ -227,10 +185,7 @@ theorem dl_indep {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf]
       rw [Matrix.mul_one, Matrix.map_mul, ← Matrix.mul_assoc, ← hU, ← hU2]
     have hgu : IsUnit g := (Matrix.isUnit_iff_isUnit_det g).2 hg
     have h2 : (U * U2).map (algebraMap O Kf) = 1 := hgu.mul_left_cancel h1
-    apply Matrix.map_injective hinj
-    beta_reduce
-    rw [h2]
-    simp
+    exact Matrix.map_injective hinj (by simpa using h2)
   have hdet : U.det * U2.det = 1 := by rw [← Matrix.det_mul, hUU, Matrix.det_one]
   let u : Oˣ := ⟨U.det, U2.det, hdet, by rw [mul_comm]; exact hdet⟩
   let γ : GL (Fin (m + 1)) O := ⟨U2, U, mul_eq_one_comm.1 hUU, hUU⟩
@@ -251,7 +206,7 @@ theorem dl_indep {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf]
   have hFh : F ∈ deltaL O Kf (m + 1) (nuOf lam) h := by
     obtain ⟨f, hf, hfe⟩ := hF
     have hst : rowAct O U f ∈ weyl O (m + 1) (m + 1) le_rfl (nuOf lam) :=
-      Formalism.UG.P.weyl_module_GL_stable O (m + 1) (m + 1) le_rfl (nuOf lam) γ f hf
+      _root_.Formalism.UG.P.wlocal_global O (m + 1) (m + 1) le_rfl (nuOf lam) γ f hf
     refine ⟨rowAct O U f, hst, ?_⟩
     have h3 : rowAct Kf (n := m + 1) h = (rowAct Kf (U.map (algebraMap O Kf))).comp (rowAct Kf g) := by
       rw [rowActMul, hU]
@@ -274,8 +229,7 @@ theorem dl_pos (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     rw [Matrix.det_mul]; exact hg.mul (lb_D_det _ _ _ hw)
   unfold Dl0 at hF ⊢
   rw [if_pos hlam] at hF ⊢
-  have h1 : F ∈ deltaLTw O Kf m lam g := (iInf₂_le g ⟨hg, rfl⟩ : _ ≤ deltaLTw O Kf m lam g) hF
-  have h2 := dl_P O Kf m r lam hlam w hw g F h1
+  have h2 := dl_P O Kf m r lam hlam w hw g F ((iInf₂_le g ⟨hg, rfl⟩ : _ ≤ deltaLTw O Kf m lam g) hF)
   exact (le_iInf₂ fun h hh => dl_indep hinj m lam _ h hgD hh.2 :
     deltaLTw O Kf m lam (g * lb_D (m + 1) r (algebraMap O Kf w)) ≤ _) h2
 

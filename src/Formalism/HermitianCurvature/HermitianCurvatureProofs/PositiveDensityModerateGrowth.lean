@@ -795,7 +795,7 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensiona
 theorem mc_precompR_lsmul {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] :
     (ContinuousLinearMap.lsmul ℝ ℝ : ℝ →L[ℝ] F →L[ℝ] F).precompR V =
       (ContinuousLinearMap.lsmul ℝ ℝ : ℝ →L[ℝ] (V →L[ℝ] F) →L[ℝ] (V →L[ℝ] F)) := by
-  ext a f v
+  ext a f
   simp [ContinuousLinearMap.precompR]
 
 theorem mc_fderiv_conv {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F]

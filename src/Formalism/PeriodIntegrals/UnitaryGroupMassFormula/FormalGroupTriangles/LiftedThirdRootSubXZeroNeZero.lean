@@ -84,7 +84,7 @@ theorem lam_pr {τ : Type*} (wq : PowerSeries ℂ_[p]) {x y : MvPowerSeries τ �
     rfl
   have h := congrArg (MvPowerSeries.subst ![x, y]) (PI.AddIntG.Wk.lam_mul wq)
   rw [MvPowerSeries.subst_mul hb, MvPowerSeries.subst_sub hb, MvPowerSeries.subst_sub hb, hcomp 1, hcomp 0] at h
-  simp only [MvPowerSeries.subst_X hb, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_zero] at h
+  simp only [MvPowerSeries.subst_X hb, Matrix.cons_val_one, Matrix.cons_val_zero] at h
   exact h
 
 def Lab (wq : PowerSeries ℂ_[p]) : MvPowerSeries (Fin 3) ℂ_[p] :=
@@ -143,7 +143,7 @@ private theorem coeff_pr_X_X (i j : Fin 3) (hij : i ≠ j) (f : MvPowerSeries (F
       apply hd
       have hi := congrArg (fun f => f i) h'
       have hj := congrArg (fun f => f j) h'
-      simp [Finsupp.single_apply, hij, hij'] at hi hj
+      simp [hij, hij'] at hi hj
       ext k
       fin_cases k
       · simp [hi]
@@ -157,7 +157,7 @@ private theorem coeff_pr_X_X (i j : Fin 3) (hij : i ≠ j) (f : MvPowerSeries (F
     intro h'
     apply h
     rw [h']
-    simp [Finsupp.single_apply, hij, hij']
+    simp [hij, hij']
 
 
 
@@ -178,18 +178,18 @@ theorem mu_exists {S : Subring ℂ_[p]} {wq : PowerSeries ℂ_[p]} (hwq : ∀ n,
       constructor
       · intro h
         rw [h]
-        simp [Finsupp.single_apply]
+        simp
       · intro h
         ext k
-        fin_cases k <;> simp [Finsupp.single_apply, h]
+        fin_cases k <;> simp [h]
     have h01 : (e = Finsupp.single 0 (e 0) + Finsupp.single 1 (e 1)) ↔ e 2 = 0 := by
       constructor
       · intro h
         rw [h]
-        simp [Finsupp.single_apply]
+        simp
       · intro h
         ext k
-        fin_cases k <;> simp [Finsupp.single_apply, h]
+        fin_cases k <;> simp [h]
     have hX : ∀ k : Fin 3, (MvPowerSeries.X k : MvPowerSeries (Fin 3) ℂ_[p]) =
         MvPowerSeries.monomial (Finsupp.single k 1) 1 := fun k => by
       rw [← MvPowerSeries.X_pow_eq, pow_one]
@@ -201,18 +201,18 @@ theorem mu_exists {S : Subring ℂ_[p]} {wq : PowerSeries ℂ_[p]} (hwq : ∀ n,
     by_cases h1 : e 1 = 0 <;> by_cases h2 : e 2 = 0
     · rw [if_pos h1, if_pos h2, if_neg (by omega), if_neg (by omega), sub_self, sub_eq_zero]
       apply hidx
-      simp [Finsupp.single_apply, h1, h2]
+      simp [h1, h2]
     · rw [if_pos h1, if_neg h2, if_pos (by omega), if_neg (by omega), sub_zero, sub_zero]
       apply hidx
-      simp [Finsupp.single_apply, Finsupp.tsub_apply, h1]
+      simp [Finsupp.tsub_apply, h1]
       omega
     · rw [if_neg h1, if_pos h2, if_neg (by omega), if_pos (by omega), zero_sub, zero_sub, neg_inj]
       apply hidx
-      simp [Finsupp.single_apply, Finsupp.tsub_apply, h2]
+      simp [Finsupp.tsub_apply, h2]
       omega
     · rw [if_neg h1, if_neg h2, if_pos (by omega), if_pos (by omega), sub_self, eq_comm, sub_eq_zero]
       apply hidx
-      simp [Finsupp.single_apply, Finsupp.tsub_apply]
+      simp [Finsupp.tsub_apply]
       omega
 
 theorem subst_pairSubst_zero_one (g : MvPowerSeries (Fin 2) ℂ_[p]) :

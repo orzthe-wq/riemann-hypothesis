@@ -77,7 +77,7 @@ namespace Formalism.MainNotions.G.CountingStatementReduction
 open Formalism.MainNotions.flipOneThree Formalism.GM Formalism.GM.M Formalism.InvariantFactorPaths.PW Formalism.InvariantFactorPaths.L4 Finset
 
 theorem alternative_mean_value_theorem (D : Formalism.BasicNotions.D7) (X : InstM) : ModelLatticeRank D X := fun hX =>
-  Formalism.InvariantFactorPaths.MC.Top.theoremMV7 X.p X.s X.r X.LL X.T X.a X.E X.Yl X.n₀ X.dd X.ρ hX.1 hX.2.1 hX.2.2.1 hX.2.2.2.1
+  _root_.Formalism.InvariantFactorPaths.MC.theoremMV7 X.p X.s X.r X.LL X.T X.a X.E X.Yl X.n₀ X.dd X.ρ hX.1 hX.2.1 hX.2.2.1 hX.2.2.2.1
     hX.2.2.2.2.1 hX.2.2.2.2.2.1 hX.2.2.2.2.2.2.1 hX.2.2.2.2.2.2.2.1 hX.2.2.2.2.2.2.2.2.1 hX.2.2.2.2.2.2.2.2.2.1
     hX.2.2.2.2.2.2.2.2.2.2
 
@@ -992,7 +992,8 @@ theorem integral_form_exponent_le_ceil (p a r n : ℕ) (hn : n + 1 ≤ r) (l : �
       (Nat.cast_le.mpr hde).trans hlog
     have hB0 : (0 : ℝ) ≤ ((deF p (n + 1) l : ℕ) : ℝ) := Nat.cast_nonneg _
     push_cast
-    nlinarith [sq_nonneg (r : ℝ)]
+    have hmul := mul_le_mul hA hB hB0 (sq_nonneg (r : ℝ))
+    linarith
   exact_mod_cast h1.trans (Nat.le_ceil _)
 
 theorem mq_top_of_irr {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {n : ℕ} [NeZero n]
@@ -1582,7 +1583,8 @@ theorem base_exponent_le_a (hp : 1 ≤ p) (hE0 : 0 ≤ S.E0) : (S.A0 p : ℝ) �
     exact_mod_cast Nat.one_le_pow _ _ hp
   rw [div_le_iff₀ (by linarith)]
   have ha : (0 : ℝ) ≤ S.a := Nat.cast_nonneg _
-  nlinarith
+  have := le_mul_of_one_le_right ha hQ
+  linarith
 
 theorem cap_le (hp : 1 ≤ p) (hE0 : 0 ≤ S.E0) (B : ℝ) (hB : ∀ i, (S.bTop i : ℝ) ≤ B) (l : ℕ) :
     (cap p S b l : ℝ) ≤ S.a + s * B := by
@@ -1648,7 +1650,9 @@ theorem segChain_deg_le (hK : Kept p r S aTop b) (hp : 1 ≤ p) (hE0 : 0 ≤ S.E
   simp only
   split_ifs with h1 h2 h3 h3
   · have := oPlus_le S aTop b hK hp hE0 hLa0 hLa B hB hBp
-    have h8 : 2 * (S.a : ℝ) * s ≤ 2 * A * s := by nlinarith
+    have h8 : 2 * (S.a : ℝ) * s ≤ 2 * A * s := by
+      have := mul_le_mul_of_nonneg_right ha hs0
+      linarith
     linarith
   · have h9 : b.w (topOf x h1) ≤ coarseA p S b (topOf x h1) := (hK.2.2.1 _ h3).2.1
     have : ((b.w (topOf x h1) : ℕ) : ℝ) ≤ B := le_trans (by exact_mod_cast h9) (hbd _)
@@ -1691,19 +1695,22 @@ theorem hiFacts (C0 CYb Cde Ck CD Cb Cc : ℝ) (X : flipOneThree.Inst) (hCYb : 1
     show (1 : ℝ) ≤ (X.L.TT.card : ℝ)
     exact_mod_cast this
   have hLa0 : 0 ≤ X.L.La C0 := by
-    have h1 : (1 : ℝ) ≤ X.L.N * X.L.Y := by nlinarith
+    have h1 : (1 : ℝ) ≤ X.L.N * X.L.Y := one_le_mul_of_one_le_of_one_le hN hY
     have := Real.log_nonneg h1
     linarith
   have hYb1 : (1 : ℝ) ≤ X.L.Yb := hCYb.trans hYb
   have hLa_lt : X.L.La C0 < X.L.k / 2 := by
-    have h1 : (1 : ℝ) ≤ X.L.Yb * X.L.N := by nlinarith
+    have h1 : (1 : ℝ) ≤ X.L.Yb * X.L.N := one_le_mul_of_one_le_of_one_le hYb1 hN
     have h2 : X.L.La C0 ≤ X.L.Yb * X.L.N * X.L.La C0 := le_mul_of_one_le_left hLa0 h1
     linarith
   have hp : X.L.k ^ 2 ≤ (X.L.p : ℝ) := by
-    have h1 : (1 : ℝ) ≤ X.L.Y ^ 2 := by nlinarith
+    have h1 : (1 : ℝ) ≤ X.L.Y ^ 2 := one_le_pow₀ hY
     have h2 : X.L.k ^ 2 ≤ X.L.k ^ 2 * X.L.Y ^ 2 := le_mul_of_one_le_right (by positivity) h1
     linarith
-  have hp25 : (25 : ℝ) ≤ (X.L.p : ℝ) := by nlinarith
+  have hp25 : (25 : ℝ) ≤ (X.L.p : ℝ) := by
+    have := pow_le_pow_left₀ (by norm_num) hk5 2
+    norm_num at this
+    linarith
   have hpb : (X.L.p : ℝ) * X.L.b' < X.L.a := by rwa [lt_div_iff₀ hb0] at hpa
   have ha0 : (0 : ℝ) < X.L.a := by
     have : 0 < (X.L.p : ℝ) * X.L.b' := by positivity
@@ -1714,8 +1721,11 @@ theorem hiFacts (C0 CYb Cde Ck CD Cb Cc : ℝ) (X : flipOneThree.Inst) (hCYb : 1
   have hJ0 : X.L.J0 C0 ≤ X.L.b' / 2 := by
     unfold Formalism.MainNotions.ColumnSystems.Loc.J0
     rw [div_le_iff₀ (by linarith)]
-    nlinarith
-  have hb25 : 25 * X.L.b' < X.L.a := by nlinarith
+    have := mul_le_mul_of_nonneg_right hLa_lt.le hb0.le
+    linarith
+  have hb25 : 25 * X.L.b' < X.L.a := by
+    have := mul_le_mul_of_nonneg_right hp25 hb0.le
+    linarith
   refine ⟨hm4, ?_, by rw [← hk]; exact hp, ha1, hLa0, by rw [← hk]; exact hLa_lt, hb0, hpb, ?_, ?_, ?_⟩
   · have := (hseg X.j).2
     show 2 * segS X.L.TT X.j + 2 ≤ X.L.m
@@ -1725,23 +1735,35 @@ theorem hiFacts (C0 CYb Cde Ck CD Cb Cc : ℝ) (X : flipOneThree.Inst) (hCYb : 1
     linarith
   · have h1 : (X.L.a : ℝ) / (X.L.k * X.L.Y) ≤ X.L.a / 5 := by
       apply div_le_div_of_nonneg_left ha0.le (by norm_num)
-      nlinarith
+      exact le_trans hk5 (le_mul_of_one_le_right (by linarith) hY)
     linarith
   · have h1 : 0 ≤ (X.L.a : ℝ) / (X.L.k * X.L.Y) := by positivity
     linarith
 
 theorem final_num (a m s p : ℝ) (ha : 1 ≤ a) (hm : 4 ≤ m) (hs0 : 0 ≤ s) (hs : 2 * s + 2 ≤ m) (hp : (m + 1) ^ 2 ≤ p) :
     2 * ((2 * s + 1) * (2 * a + s * (a / 10) + 2 * (2 * a) * s + a / 10)) + m ≤ p ^ 2 * (8 * a + m) ^ 2 := by
-  have h1 : 2 * a + s * (a / 10) + 2 * (2 * a) * s + a / 10 ≤ a * (3 * m) := by nlinarith
+  have h1 : 2 * a + s * (a / 10) + 2 * (2 * a) * s + a / 10 ≤ a * (3 * m) := by
+    have hmul := mul_le_mul_of_nonneg_left (by linarith : 21 / 10 + 41 / 10 * s ≤ 3 * m) (by linarith : 0 ≤ a)
+    linarith [show 2 * a + s * (a / 10) + 2 * (2 * a) * s + a / 10 = a * (21 / 10 + 41 / 10 * s) by ring]
   have h2 : (2 * s + 1) * (2 * a + s * (a / 10) + 2 * (2 * a) * s + a / 10) ≤ m * (a * (3 * m)) := by
     apply mul_le_mul (by linarith) h1 (by positivity) (by linarith)
-  have h3 : m ≤ m ^ 2 * a := by nlinarith
-  have h4 : m ^ 2 ≤ p := by nlinarith
-  have h5 : (1 : ℝ) ≤ p := by nlinarith
-  have h6 : m ^ 2 ≤ p ^ 2 := by nlinarith
-  have h7 : 64 * a ≤ (8 * a + m) ^ 2 := by nlinarith
+  have h3 : m ≤ m ^ 2 * a := le_trans (le_self_pow₀ (by linarith) (by norm_num)) (le_mul_of_one_le_right (sq_nonneg m) ha)
+  have h4 : m ^ 2 ≤ p := by
+    have := pow_le_pow_left₀ (by linarith) (by linarith : m ≤ m + 1) 2
+    linarith
+  have h5 : (1 : ℝ) ≤ p := le_trans (one_le_pow₀ (by linarith : (1 : ℝ) ≤ m + 1)) hp
+  have h6 : m ^ 2 ≤ p ^ 2 := le_trans h4 (le_self_pow₀ h5 (by norm_num))
+  have h7 : 64 * a ≤ (8 * a + m) ^ 2 := by
+    have ha2 : a ≤ a ^ 2 := le_self_pow₀ ha (by norm_num)
+    have he : (8 * a + m) ^ 2 = 64 * a ^ 2 + 16 * (a * m) + m ^ 2 := by ring
+    have ham : 0 ≤ a * m := by positivity
+    have hm2 : 0 ≤ m ^ 2 := sq_nonneg m
+    linarith
   have h8 : m ^ 2 * (64 * a) ≤ p ^ 2 * (8 * a + m) ^ 2 := mul_le_mul h6 h7 (by positivity) (by positivity)
-  nlinarith
+  have he1 : m * (a * (3 * m)) = 3 * (m ^ 2 * a) := by ring
+  have he2 : m ^ 2 * (64 * a) = 64 * (m ^ 2 * a) := by ring
+  have hpos : 0 ≤ m ^ 2 * a := by positivity
+  linarith
 
 theorem degIn_le_sum {ι : Type} [Fintype ι] (d : ι → ℕ) (S : Set ι) : degIn d S ≤ ∑ l, d l := by
   unfold degIn
@@ -1757,12 +1779,17 @@ theorem block_size (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) (X : flipOneThree.Inst
   have hF := hiFacts C0 CYb Cde Ck CD Cb Cc X hCYb hH
   obtain ⟨aTop, haTop, aPlus, -, b, hK, j, jp, -, rfl⟩ := hLL
   have hmR : (4 : ℝ) ≤ (X.L.m : ℝ) := by exact_mod_cast hF.m4
-  have hp25 : (25 : ℝ) ≤ (X.L.p : ℝ) := by nlinarith [hF.p_ge]
+  have hp25 : (25 : ℝ) ≤ (X.L.p : ℝ) := by
+    have := pow_le_pow_left₀ (by norm_num) (by linarith : (5 : ℝ) ≤ (X.L.m : ℝ) + 1) 2
+    norm_num at this
+    linarith [hF.p_ge]
   have hp1 : 1 ≤ X.p := by
     have : (1 : ℝ) ≤ (X.L.p : ℝ) := by linarith
     exact_mod_cast this
   have ha0 : (0 : ℝ) ≤ (X.L.a : ℝ) := Nat.cast_nonneg _
-  have hb10 : 5 / 2 * X.L.b' ≤ (X.L.a : ℝ) / 10 := by nlinarith [hF.b_lt, hF.b0]
+  have hb10 : 5 / 2 * X.L.b' ≤ (X.L.a : ℝ) / 10 := by
+    have := mul_le_mul_of_nonneg_right hp25 hF.b0.le
+    linarith [hF.b_lt]
   have hE0 : 0 ≤ (X.S C0 CE1 CE2).E0 := by
     show 0 ≤ errorTermBound CE1 CE2 X.L.p X.L.k X.L.N1 X.L.Q X.L.c X.L.a X.L.b' (X.L.La C0)
     unfold errorTermBound
@@ -1778,7 +1805,9 @@ theorem block_size (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) (X : flipOneThree.Inst
       linarith [hF.La_lt]
     have h2 : 4 / (X.L.p : ℝ) ^ 2 ≤ 1 / 2 := by
       rw [div_le_iff₀ (by positivity)]
-      nlinarith
+      have := pow_le_pow_left₀ (by norm_num) hp25 2
+      norm_num at this
+      linarith
     linarith
   have hdeg : ∀ x, (((blockData X.p (X.S C0 CE1 CE2) aTop aPlus X.m b).lettersAt j jp).deg x : ℝ) ≤
       2 * (X.L.a : ℝ) + X.s * ((X.L.a : ℝ) / 10) + 2 * (2 * (X.L.a : ℝ)) * X.s + (X.L.a : ℝ) / 10 := by
@@ -2816,8 +2845,7 @@ theorem double_count {α δ : Type*} (A : Finset α) (Dl : Finset δ) (rel : δ 
       (Finset.sum_eq_zero_iff_of_nonneg hN0).1 (le_antisymm hNs (Finset.sum_nonneg hN0))
     have hz : ∑ a ∈ A, N a / Den a = 0 := Finset.sum_eq_zero fun a ha => by rw [hNz a ha, zero_div]
     rw [hz]
-    have := mul_nonneg hε hc0
-    nlinarith
+    positivity
   · have hTa : ∀ a ∈ A, T ≤ K * (A.card : ℝ) * M a := by
       intro a ha
       calc T = ∑ a' ∈ A, M a' := rfl
@@ -2841,7 +2869,8 @@ theorem double_count {α δ : Type*} (A : Finset α) (Dl : Finset δ) (rel : δ 
       rw [div_le_iff₀ hDpos]
       have h2 : 1 ≤ 2 * (K * (A.card : ℝ)) / T * Den a := by
         rw [div_mul_eq_mul_div, le_div_iff₀ hpos, one_mul]
-        nlinarith
+        have := mul_le_mul_of_nonneg_left hD hcpos.le
+        linarith
       calc N a = N a * 1 := (mul_one _).symm
         _ ≤ N a * (2 * (K * (A.card : ℝ)) / T * Den a) := mul_le_mul_of_nonneg_left h2 (hN0 a ha)
         _ = N a * (2 * (K * (A.card : ℝ)) / T) * Den a := by ring
@@ -3337,7 +3366,8 @@ theorem choose_ratio (r x y : ℕ) (hx : 1 ≤ x) (hxy : x ≤ y) :
         field_simp
         ring
       rw [e]
-      nlinarith
+      have := le_mul_of_one_le_left hr1.le hq
+      linarith
     have hc0 : (0 : ℝ) ≤ ((x + r).choose r : ℝ) := Nat.cast_nonneg _
     have hq0 : (0 : ℝ) ≤ ((y : ℝ) / x) ^ r := by positivity
     have hmain : ((y + (r + 1)).choose (r + 1) : ℝ) * ((r : ℝ) + 1) ≤
@@ -3494,21 +3524,27 @@ theorem Kflat_num (A k Y La b' xa pp Yb N : ℝ) (r s : ℕ) (hkr : k = (r : ℝ
   have hs0' : (0 : ℝ) ≤ (s : ℝ) := Nat.cast_nonneg _
   have hk1 : (1 : ℝ) ≤ k := by rw [hkr]; linarith
   have hLk : La ≤ k := by
-    have h2 : (1 : ℝ) ≤ 2 * Yb * N := by nlinarith
-    have h3 : La ≤ 2 * Yb * N * La := by nlinarith [mul_le_mul_of_nonneg_right h2 hLa0]
+    have h2 : (1 : ℝ) ≤ 2 * Yb * N := by
+      have := one_le_mul_of_one_le_of_one_le hYb1 hN
+      linarith
+    have h3 : La ≤ 2 * Yb * N * La := le_mul_of_one_le_left hLa0 h2
     linarith
   have hpb : pp * b' < A := (lt_div_iff₀ hb').1 hpa
   have hxb : xa ≤ 2 * b' := by
     have h1 : La * b' / k ≤ b' := by
       rw [div_le_iff₀ (by linarith)]
-      nlinarith
+      have := mul_le_mul_of_nonneg_right hLk hb'.le
+      linarith [mul_comm b' k]
     linarith
   have hkY : (0 : ℝ) < k * Y := by positivity
   have hsr : (s : ℝ) * (r : ℝ) ≤ k * Y := by
     have : (r : ℝ) ≤ k := by rw [hkr]; linarith
-    nlinarith
-  have hkY1 : (1 : ℝ) ≤ k * Y := by nlinarith
-  have hkk : k * Y ≤ k ^ 2 * Y ^ 2 := by nlinarith
+    have := mul_le_mul hs this hr0 (by linarith)
+    linarith [mul_comm Y k]
+  have hkY1 : (1 : ℝ) ≤ k * Y := one_le_mul_of_one_le_of_one_le hk1 hY
+  have hkk : k * Y ≤ k ^ 2 * Y ^ 2 := by
+    have := le_self_pow₀ hkY1 (by norm_num : 2 ≠ 0)
+    linarith [show (k * Y) ^ 2 = k ^ 2 * Y ^ 2 by ring]
   set δ : ℝ := 1 / (k * Y) + xa / A with hδ
   have hhi : ((⌊A + A / (k * Y) + xa⌋₊ : ℕ) : ℝ) ≤ A + A / (k * Y) + xa :=
     Nat.floor_le (by positivity)
@@ -3535,7 +3571,7 @@ theorem Kflat_num (A k Y La b' xa pp Yb N : ℝ) (r s : ℕ) (hkr : k = (r : ℝ
     have h1 : (s : ℝ) * (r : ℝ) * xa ≤ (k * Y) * (2 * b') :=
       mul_le_mul hsr hxb hxa0 hkY.le
     have h2 : (k * Y) * b' ≤ pp * b' := mul_le_mul_of_nonneg_right (hkk.trans hpk) hb'.le
-    nlinarith
+    linarith [show (k * Y) * (2 * b') = 2 * ((k * Y) * b') by ring]
   have e : (s : ℝ) * ((r : ℝ) * δ) =
       (s : ℝ) * (r : ℝ) * (1 / (k * Y)) + (s : ℝ) * (r : ℝ) * (xa / A) := by
     rw [hδ]; ring
@@ -3551,7 +3587,7 @@ theorem Kflat_le {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hH : flipOneThr
     unfold Formalism.MainNotions.ColumnSystems.Loc.N
     exact_mod_cast Finset.card_pos.2 ⟨s0, hs0⟩
   have hLa0 : 0 ≤ X.L.La C0 := by
-    have h1 : (1 : ℝ) ≤ X.L.N * X.L.Y := by nlinarith
+    have h1 : (1 : ℝ) ≤ X.L.N * X.L.Y := one_le_mul_of_one_le_of_one_le hN hY
     have := Real.log_nonneg h1
     linarith
   have hp0 : (0 : ℝ) ≤ (X.L.p : ℝ) := Nat.cast_nonneg _
@@ -3606,8 +3642,8 @@ theorem remaining_of_segment_bound (C0 CYb Cde Ck CD Cb CE1 CE2 Cc C : ℝ) (X :
     have h1 : (X.s : ℝ) ≤ (X.N₁ : ℝ) := by exact_mod_cast hsN
     have h2 : (0 : ℝ) ≤ (X.N₁ : ℝ) := Nat.cast_nonneg _
     have h3 : (0 : ℝ) ≤ ((X.S C0 CE1 CE2).t : ℝ) := Nat.cast_nonneg _
-    have h4 : (1 : ℝ) ≤ C * (((X.S C0 CE1 CE2).t : ℝ) + 1) := by nlinarith
-    have h5 : (X.N₁ : ℝ) ≤ C * (((X.S C0 CE1 CE2).t : ℝ) + 1) * X.N₁ := by nlinarith
+    have h4 : (1 : ℝ) ≤ C * (((X.S C0 CE1 CE2).t : ℝ) + 1) := one_le_mul_of_one_le_of_one_le hC (by linarith)
+    have h5 : (X.N₁ : ℝ) ≤ C * (((X.S C0 CE1 CE2).t : ℝ) + 1) * X.N₁ := le_mul_of_one_le_left h2 h4
     linarith
   exact ⟨g, ε, Real.exp 3, hε, (Real.exp_pos 3).le, hb, hg, hC5, restFlat_exp hCYb hH hs⟩
 
@@ -3635,10 +3671,6 @@ section RankSpan
 variable {O : Type} [CommRing O] [IsDomain O] {V : Type} [AddCommGroup V] [Module O V] [Module (KK O) V]
   [IsScalarTower O (KK O) V]
 
-theorem span_denominator (M : Submodule O V) (y : V) (hy : y ∈ Submodule.span (KK O) (M : Set V)) :
-    ∃ s : O, s ≠ 0 ∧ s • y ∈ M := by
-  first | exact Bl.general_b_fact_left_bis_form.goal1 .. | (apply Bl.general_b_fact_left_bis_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_bis_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_bis_form.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_bis_form.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_bis_form.goal1 <;> first | assumption | infer_instance)
-
 def toSpan (M : Submodule O V) : M →ₗ[O] (Submodule.span (KK O) (M : Set V)) where
   toFun x := ⟨x.1, Submodule.subset_span x.2⟩
   map_add' _ _ := rfl
@@ -3661,7 +3693,7 @@ instance toSpan_loc (M : Submodule O V) : IsLocalizedModule (nonZeroDivisors O) 
       simp only [Module.algebraMap_end_apply]
       rw [← algebraMap_smul (KK O) (x : O), smul_smul, mul_inv_cancel₀ hxK, one_smul]
   · intro y
-    obtain ⟨s, hs, hsy⟩ := span_denominator M y.1 y.2
+    obtain ⟨s, hs, hsy⟩ := _root_.Bl.general_b_fact_left_bis_form.goal1 M y.1 y.2
     exact ⟨(⟨s • y.1, hsy⟩, ⟨s, mem_nonZeroDivisors_of_ne_zero hs⟩), rfl⟩
   · intro x₁ x₂ h
     refine ⟨1, ?_⟩

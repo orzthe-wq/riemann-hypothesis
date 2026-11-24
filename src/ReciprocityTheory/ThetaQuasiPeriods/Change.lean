@@ -1,53 +1,6 @@
 module
 
 public import ReciprocityTheory.ThetaQuasiPeriods.ThetaQuasiPeriodStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.GroupTheory.Nilpotent
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Algebra.BigOperators.Field
 
 @[expose] public section
@@ -104,13 +57,7 @@ theorem quad_diag_int (B : Matrix ι ι ℤ) (hB : B.IsSymm) (l : ι → ℤ) :
     rw [mul_comm (B i i : ZMod 2), ← mul_assoc, hsq]
 
 theorem eC_eq_of_int (x y : ℂ) (k : ℤ) (h : x = y + k) : eC x = eC y := by
-  rw [h]
-  simp only [eC]
-  rw [mul_add, Complex.exp_add]
-  have hk : Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (k : ℂ)) = 1 := by
-    rw [show (2 * (Real.pi : ℂ) * Complex.I * (k : ℂ)) = (k : ℂ) * (2 * Real.pi * Complex.I) by ring]
-    exact Complex.exp_int_mul_two_pi_mul_I k
-  rw [hk, mul_one]
+  rw [h, eC_add, eC_int, mul_one]
 
 theorem shiftVec_eq (a : ι → ℝ) (l : ι → ℤ) : shiftVec a l = ofIntVec l + ofRealVec a := by
   rfl
@@ -128,8 +75,6 @@ theorem ofIntVec_mulVec (M : Matrix ι ι ℤ) (l : ι → ℤ) :
 theorem thetaTranslTau_holds : ThetaTranslTauStatement := by
   unfold ThetaTranslTauStatement
   intro ι _ a b z τ B hB
-  have hadd : ∀ x y : ℂ, eC (x + y) = eC x * eC y := fun x y => by
-    simp only [eC, mul_add, Complex.exp_add]
   have hb' : ofRealVec (b + B.map (fun x : ℤ => (x : ℝ)) *ᵥ a + fun i => ((B i i : ℤ) : ℝ) / 2) =
       ofRealVec b + B.map (fun x : ℤ => (x : ℂ)) *ᵥ ofRealVec a + fun i => ((B i i : ℤ) : ℂ) / 2 := by
     rw [← ofRealVec_mulVec]
@@ -159,7 +104,7 @@ theorem thetaTranslTau_holds : ThetaTranslTauStatement := by
       (ofIntVec l ⬝ᵥ fun i => ((B i i : ℤ) : ℂ)) / 2 := by
     simp only [dotProduct, Finset.sum_div, mul_div_assoc]
   unfold thetaTerm
-  rw [← hadd]
+  rw [← eC_add]
   apply eC_eq_of_int _ _ k
   rw [hb', shiftVec_eq]
   simp only [Matrix.add_mulVec, Matrix.mulVec_add, dotProduct_add, add_dotProduct]

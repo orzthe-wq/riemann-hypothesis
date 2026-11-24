@@ -55,10 +55,7 @@ namespace GlobalTheory.SplitSign
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
-theorem conj_conj {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  let τ : E →+* ℂ := (IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom
-  apply τ.injective
-  rw [hc.2.2.2 τ, hc.2.2.2 τ, star_star]
+alias conj_conj := _root_.GlobalTheory.AdelicU.cm_conj_conj
 
 theorem exists_anti_unit {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) {v : Pl (F := F)} (hv : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v) :
     ∃ (τ : E →ₐ[F] Fv F v) (δ : 𝓞 E), σ (δ : E) = -(δ : E) ∧ Valued.v (τ (δ : E)) = 1 := by

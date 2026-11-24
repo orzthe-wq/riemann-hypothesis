@@ -87,7 +87,7 @@ theorem cobTwo_cobOne (b : A) : cobTwo O A (cobOne O A b) = 0 := by
     | tmul a b => simp
     | add x y hx hy => simp only [add_tmul, map_add (f := _), hx, hy]
   have h2 : comul (R := O) (1 : A) = 1 ⊗ₜ 1 := by simp [Algebra.TensorProduct.one_def]
-  simp only [cobTwo_apply, cobOne_apply, map_sub, tmul_sub, coassoc_apply, LinearMap.rTensor_tmul,
+  simp only [cobTwo_apply, cobOne_apply, map_sub, coassoc_apply, LinearMap.rTensor_tmul,
     LinearMap.lTensor_tmul, h1, h2, LinearMap.flip_apply, mk_apply]
   rw [assoc_tmul 1 1 b]
   abel
@@ -104,7 +104,7 @@ theorem pullTwo_comul (f : A →ₐc[O] B) (a : A) : pullbackTwo f (comul a) = c
 
 theorem pullTwo_cobOne (f : A →ₐc[O] B) (b : A) :
     pullbackTwo f (cobOne O A b) = cobOne O B (f b) := by
-  simp [cobOne_apply, pullTwo_comul]
+  simp [cobOne_apply]
 
 theorem cobTwo_pullTwo (f : A →ₐc[O] B) (c : A ⊗[O] A) :
     cobTwo O B (pullbackTwo f c) = TensorProduct.map (f : A →ₗ[O] B) (pullbackTwo f) (cobTwo O A c) := by
@@ -113,7 +113,7 @@ theorem cobTwo_pullTwo (f : A →ₐc[O] B) (c : A ⊗[O] A) :
   | tmul a b =>
     have h := TensorProduct.map_map_assoc (f : A →ₗ[O] B) (f : A →ₗ[O] B) (f : A →ₗ[O] B)
       (comul a ⊗ₜ b)
-    simp [cobTwo_apply, pullTwo_comul, h]
+    simp [cobTwo_apply, h]
 
 theorem pullTwo_mem (f : A →ₐc[O] B) {c : A ⊗[O] A} (hc : c ∈ symCocycles O A) :
     pullbackTwo f c ∈ symCocycles O B := by

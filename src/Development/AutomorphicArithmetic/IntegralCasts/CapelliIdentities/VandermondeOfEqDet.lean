@@ -48,6 +48,10 @@ noncomputable def UpperTheory.Reformulated.B.Qm12.vandermondeOf.{u_1} :
     {R : Type u_1} → [CommRing R] → {m : ℕ} → (Fin m → R) → R :=
     fun {R : Type u_1} [CommRing R] {m : ℕ} (v : Fin m → R) ↦ ∏ i : Fin m, ∏ j > i, (v i - v j)
 
+/-- The Vandermonde determinant with columns in descending degree has factors `v i - v j`
+for `i < j`. Reversing the column order in [DLMF 1.3.13](https://dlmf.nist.gov/1.3.E13)
+reverses the signs of the factors. In Mathlib this is `Matrix.det_projVandermonde`
+with the first family constantly `1`. -/
 theorem UpperTheory.Reformulated.B.Qm12.vandermondeOf_eq_det.{u_1} :
     ∀ {m : ℕ} {R : Type u_1} [inst : CommRing R] (v : Fin m → R),
       UpperTheory.Reformulated.B.Qm12.vandermondeOf v =

@@ -63,4 +63,4 @@ theorem _root_.GlobalTheory.T.cechHomologyEquivFamAlt : ∀ (R : Type) [Field R]
       (∀ (x : Cube.Term C (n + 1)) (w : (GlobalTheory.PD.cech A).Z (n : ℤ)),
         (∀ t : {s : Finset ι // s.card = n + 1}, (w : Finset ι → E) t.1 = g t.1 (x t)) →
         Cube.d C (n + 1) x = 0) := by
-  first | (exact @GlobalTheory.cechHomologyEquivFam) | (exact GlobalTheory.cechHomologyEquivFam) | (intros; apply GlobalTheory.cechHomologyEquivFam  <;> assumption)
+  first | (exact @GlobalTheory.cechHomologyEquivFam)

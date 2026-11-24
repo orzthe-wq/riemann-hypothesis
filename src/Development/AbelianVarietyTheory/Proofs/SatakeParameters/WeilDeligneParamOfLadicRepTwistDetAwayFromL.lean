@@ -50,6 +50,7 @@ import Formalism.AlgebraicWeights.IsAlgWeight
 import Formalism.LocalToGlobal.NormalizedHeckeFactors.TypesDefs
 import Formalism.LocalToGlobal.UnitaryNorms.IsUnitaryNormOf
 import ReciprocityTheory.Automorphisms.PlaceA
+public import Mathlib.RingTheory.PicardGroup
 
 @[expose] public section
 
@@ -124,7 +125,7 @@ theorem isFrobSS_tensor_line {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteD
   · rw [WDRep.tensor_ρ, hψ]
     have e1 : TensorProduct.map (ρ g) (ψ g) - TensorProduct.map (a₀.ρ g) (ψ g) =
         (ρ g - a₀.ρ g).rTensor (Fin 1 → ℂ) * (ψ g).lTensor V :=
-      TensorProduct.ext' fun x y => by simp [TensorProduct.sub_tmul]
+      TensorProduct.ext' fun x y => by simp
     rw [e1]
     have hc : Commute ((ρ g - a₀.ρ g).rTensor (Fin 1 → ℂ)) ((ψ g).lTensor V) := by
       show _ * _ = _ * _

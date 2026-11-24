@@ -83,6 +83,6 @@ theorem semiBC_basis (A B : Type) [CommRing A] [CommRing B] (f : A →+* B) (M :
     rw [a1, a2]
   let E : N ≃ₗ[B] (ι →₀ B) := LinearEquiv.ofLinear w g h1 h2
   refine ⟨Module.Basis.ofRepr E, fun i => ?_⟩
-  simp [Module.Basis.ofRepr, E, g]
+  simp [E, g]
 
 end GlobalTheory.Prism

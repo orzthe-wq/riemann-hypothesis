@@ -1,6 +1,8 @@
 module
 
-public import Mathlib
+public import Mathlib.Analysis.Complex.Basic
+public import Mathlib.Analysis.Normed.Module.FiniteDimension
+public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 public import Formalism.PeriodIntegrals.UpqRep
 public import Formalism.FormalDegreeBessel.StatementIO
 public import Formalism.FormalDegreeBessel.StatementDS

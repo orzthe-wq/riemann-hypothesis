@@ -122,8 +122,7 @@ theorem homRepresentation_isRep [CharZero K] [FiniteDimensional K V] [FiniteDime
     simp only [LinearMap.sub_apply, Module.End.mul_apply, map_sub] at h1 h2
     simp only [LinearMap.sub_apply, Module.End.mul_apply, homRepresentation_apply, map_sub]
     split_ifs at h1 h2 ⊢ <;>
-      simp only [LinearMap.zero_apply, map_zero, sub_zero, zero_sub, homRepresentation_apply, map_sub,
-        map_neg] at h1 h2 ⊢ <;>
+      simp only [LinearMap.zero_apply, map_zero, sub_zero, zero_sub, homRepresentation_apply] at h1 h2 ⊢ <;>
       (rw [eq_add_of_sub_eq h1, eq_add_of_sub_eq h2]; abel)
   · obtain ⟨s, π, hπ, -, -, -, hsum⟩ := weight_projections_exist E hE
     obtain ⟨s', π', -, -, -, hmem', hsum'⟩ := weight_projections_exist E' hE'

@@ -1,6 +1,5 @@
 module
 
-public import Mathlib
 public import Development.AbelianVarietyTheory.Definitions.Divisors.MapSmulOfIsHausdorff
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.FlagBasis
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.UniformisationConclusion
@@ -10,49 +9,13 @@ public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AmpleCubical
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardAbelianVarietyTorsionSepClosedStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DivisibleAlgClosureOfKillsTorsionSepClosedStatement
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfActsTriviallyAbelianVarietyAlgClosureStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvdCoordsOfDefiniteParallelogramFormStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTateModuleLevelComponentEqOfCardTorsionStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicIntExistsLevelNotDvdMulLiftStatement
+public import Mathlib.LinearAlgebra.LinearIndependent.Defs
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDvdCoordsOfDefiniteParallelogramForm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTateModuleLevelComponentEqOfCardTorsion
+public import Mathlib.NumberTheory.Padics.RingHoms
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PadicIntExistsLevelNotDvdMulLift
 public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdEndomorphismPowLevelComponentEqOneOfRelationStatement
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.ExistsLinearIndependentNormLe
 
 @[expose] public section
@@ -104,10 +67,10 @@ theorem linearIndependent_actTate : ∀ (K Ω : Type) [Field K] [Field Ω] [Alge
       refine LinearIndependent.of_comp (algebraMap O F).toAddMonoidHom.toIntLinearMap ?_
       exact h1
     exact h2.map' ψ.toIntLinearMap (LinearMap.ker_eq_bot.2 hinj)
-  obtain ⟨e, he, hE⟩ := GlobalTheory.T.exists_dvd_coords_of_definite_parallelogram_form (Additive (B ⟶ B)) H (fun f => Q (Additive.toMul f))
+  obtain ⟨e, he, hE⟩ := _root_.GlobalTheory.exists_dvd_coords_of_definite_form (Additive (B ⟶ B)) H (fun f => Q (Additive.toMul f))
     (fun f g => by
       have := hQ1 (Additive.toMul f) (Additive.toMul g)
-      simpa [div_eq_mul_inv] using this)
+      exact this)
     (fun f => hQ2 _) (fun f hf h0 => by
       have := hQ3 (Additive.toMul f) hf h0
       exact this) n (fun i => ψ (a i)) hu hindep
@@ -116,13 +79,13 @@ theorem linearIndependent_actTate : ∀ (K Ω : Type) [Field K] [Field Ω] [Alge
   by_contra hne
   push_neg at hne
   obtain ⟨j, hj⟩ := hne
-  obtain ⟨N, hN⟩ := GlobalTheory.T.padicInt_exists_level_not_dvd_mul_lift l (c j) hj e he
+  obtain ⟨N, hN⟩ := _root_.GlobalTheory.padicInt_toZModPow_not_dvd_mul l (c j) hj e he
   haveI : NeZero (l ^ N) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
   let m : Fin n → ℤ := fun i => ((PadicInt.toZModPow N (c i)).val : ℤ)
   have hm : ∀ i, PadicInt.toZModPow N (c i) = (m i : ZMod (l ^ N)) := fun i => by
     simp [m]
   let φ : Fin n → ((ptOver K Ω ⟶ A) →* (ptOver K Ω ⟶ A)) := fun i => actPts α.toRingAct (ptOver K Ω) (a i)
-  have kill := GlobalTheory.T.prod_endomorphism_pow_levelComponent_eq_one_of_relation (ptOver K Ω ⟶ A) l n φ c hc N m hm
+  have kill := _root_.GlobalTheory.TateRel.prod_pow_eq_one (ptOver K Ω ⟶ A) l n φ c hc N m hm
   let x : O := ∑ i, m i • a i
   have hcomp : ∀ y : ptOver K Ω ⟶ A, y ≫ α.act x = ∏ i, (y ≫ α.act (a i)) ^ m i := by
     intro y
@@ -137,7 +100,7 @@ theorem linearIndependent_actTate : ∀ (K Ω : Type) [Field K] [Field Ω] [Alge
     rw [GlobalTheory.T.card_abelianVariety_torsion_sepClosed K Ω A hA d hdim (l ^ k) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl), ← pow_mul, mul_comm k]
   have hx : ∀ y : ptOver K Ω ⟶ A, y ^ (l ^ N) = 1 → y ≫ α.act x = 1 := by
     intro y hy
-    obtain ⟨tt, rfl⟩ := GlobalTheory.T.exists_tateModule_levelComponent_eq_of_card_torsion (ptOver K Ω ⟶ A) l (2 * d) hcard N y hy
+    obtain ⟨tt, rfl⟩ := _root_.GlobalTheory.exists_tate_lev_eq_of_card_torsion (ptOver K Ω ⟶ A) l (2 * d) hcard N y hy
     rw [hcomp, ← kill tt]
     rfl
   obtain ⟨h, hh, hfh⟩ := GlobalTheory.T.divisible_algClosure_of_kills_torsion_sepClosed K Ω A hA (l ^ N) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hl) (α.act x) (α.hom x) hx

@@ -137,12 +137,6 @@ theorem chiId_span_singleton {L : Type} [Field L] [NumberField L] (χ : HChar L)
       ((∏ᶠ w : HeightOneSpectrum (𝓞 L), χ.val w ^ (ordF w u).toNat : ℂˣ) : ℂ) := by
   simp only [chiId, ordSub_span_singleton]
 
-theorem chiId_one {L : Type} [Field L] [NumberField L] (χ : HChar L) : chiId χ 1 = 1 := by
-  have h := chiId_span_singleton χ 1
-  rw [Units.val_one, ← Submodule.one_eq_span] at h
-  rw [h]
-  simp [ordF]
-
 theorem detId_std {R : Ranks} (H : Host R) (N : ℕ) : Th.detId H (Th.stdL H N) (Th.stdL H N) = 1 := by
   classical
   apply le_antisymm

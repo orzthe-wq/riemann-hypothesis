@@ -75,7 +75,7 @@ private theorem trOf_split (t : Fin n → kˣ) : ∃ b : Fin n → kˣ, Dom b �
     simp only [w]
     split_ifs with h
     · exact le_of_eq (by rw [← hVmul, inv_mul_cancel_right])
-    · push_neg at h
+    · push Not at h
       calc V (t i) = V (t i * (t j)⁻¹) * V (t j) := by rw [← hVmul, inv_mul_cancel_right]
         _ ≤ 1 * V (t j) := mul_le_mul_left h.le _
         _ = V 1 * V (t j) := by simp [V]

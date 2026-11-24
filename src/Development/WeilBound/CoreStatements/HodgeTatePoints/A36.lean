@@ -168,7 +168,7 @@ theorem a34 :
       rw [hG, ← VeryAmpleZTwist.proof_closed S Ω N x E F H r h hH a J]
       congr 2
       ext z
-      simp only [Set.mem_setOf_eq, SubSystem.twist, twistSys, hmem]
+      simp only [Set.mem_setOf_eq, twistSys, hmem]
     obtain ⟨e1⟩ := CechHdegOfSub.proof S Ω N x E G.toSubSystem i
     obtain ⟨e2⟩ := CechDouble.proof S Ω N r x h E (fun I => Submodule.restrictScalars S (G.sub I))
       (fun J => secsOnZ G.toSubSystem H.toSubSystem h J)

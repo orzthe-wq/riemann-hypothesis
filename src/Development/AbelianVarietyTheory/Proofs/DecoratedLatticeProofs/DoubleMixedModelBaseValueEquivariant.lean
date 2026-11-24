@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
+public import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.MixedCoordinates
 
 @[expose] public section
 
@@ -55,11 +56,7 @@ namespace GlobalTheory.EvalAtZero
 
 variable {D : D7}
 
-theorem heisO_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w₀ : WO S T) (c : ℂ) (f : WO S T → ℂ) :
-    heisO ψ S T w₀ (c • f) = c • heisO ψ S T w₀ f := by
-  funext w
-  simp only [heisO, Pi.smul_apply, smul_eq_mul]
-  ring
+alias heisO_smul := _root_.GlobalTheory.SplitScalar.heisO_smul
 
 theorem det_UX {ρ : ℕ} (γ : UX D ρ) : Matrix.GeneralLinearGroup.det γ.1 = 1 := by
   have hu : γ.1 ∈ UX D ρ := γ.2
@@ -123,7 +120,7 @@ theorem GlobalTheory.Unf.evalAt_xZero_yZero_rad : ∀ (D : D7) (ψ : AddChar (AF
   have t4 := (FT _ (hom'.om_pres (1, k) G hGt)).source (B.o.emb (h₀, 1)) y₀
   have t5 : om' (1, k) G = om' (1, J.d.nB b) (om' (1, J.d.nC c) (om' (1, J.d.emb0 h') G)) := by
     rw [e2, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]
-  change (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target J.d) B.V₀ ψ s.vT.μ s.vT.𝓕 (B.d.mixS J.W ψ s.vS.μ s.vS.𝓕 (s.om (embA B.d B.o h₀, k) Ψ) (xZero J.d ⬝ u.1.1)) y₀ = _
+  change (_root_.I195MixedCoordinates.target J.d) B.V₀ ψ s.vT.μ s.vT.𝓕 (B.d.mixS J.W ψ s.vS.μ s.vS.𝓕 (s.om (embA B.d B.o h₀, k) Ψ) (xZero J.d ⬝ u.1.1)) y₀ = _
   rw [s1, t4, hy, t5, t3, t2, t1]
   show _ = s.om₀ (B.o.emb (h₀, 1), 1) (jacT ψ J.d B.V₀ y₀ (J.d.nB b * J.d.nC c) (s.om₀ (1, h') _))
   unfold jacT
@@ -142,7 +139,7 @@ theorem GlobalTheory.Unf.evalAt_xZero_yZero_levi : ∀ (D : D7) (ψ : AddChar (A
   have e0 : (mt J.W (J.d.levi γ.1)⁻¹ ⬝ (xZero J.d ⬝ u.1.1) : Mx D J.W.rank ρ) = xZero J.d ⬝ (γ⁻¹ * u).1.1 := by
     rw [← map_inv, ← Matrix.mul_assoc, levi_xZero, Matrix.mul_assoc, Subgroup.coe_mul, Subgroup.coe_inv,
       Units.val_mul]
-  change (_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.target J.d) B.V₀ ψ s.vT.μ s.vT.𝓕 ((_root_.I195MixedCoordinates_a63f0715cbf334f1e52c5d7b.source B.d) J.W ψ s.vS.μ s.vS.𝓕 (s.om (1, J.d.levi γ.1) Ψ) (xZero J.d ⬝ u.1.1)) y₀ = _
+  change (_root_.I195MixedCoordinates.target J.d) B.V₀ ψ s.vT.μ s.vT.𝓕 ((_root_.I195MixedCoordinates.source B.d) J.W ψ s.vS.μ s.vS.𝓕 (s.om (1, J.d.levi γ.1) Ψ) (xZero J.d ⬝ u.1.1)) y₀ = _
   rw [(FS _ hΨ).target, e0, (FT _ (MV _)).levi, yZero_mul B.V₀ _ γ.2, det_UX, halfMod_UX, map_one,
     Circle.coe_one, Complex.ofReal_one, mul_one, one_smul]
   rfl

@@ -5,7 +5,9 @@ public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenMove
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsAbelianSchemeOfProper
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.IsPullCubicalOfIso
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ObjIsAbelianSchemeDimRigidifiedSym
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsIffOfIsGrpPullbackComm
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ConstGen
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
 public import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -75,7 +77,7 @@ theorem exists_transfer_pts {B B' : Type} [CommRing B] [CommRing B'] {b : Base l
   have tu : (toUnit (Over.mk z)).left = z := by simp
   have tv : (toUnit (Over.mk (z ≫ f))).left = z ≫ f := by simp
   refine ⟨ρ, hρ, fun a x => Over.OverMorphism.ext ?_,
-    fun n x x' c => GlobalTheory.weilIs_iff_of_isGrpPullback_comm _ _ _ _ f m.cm.F _ _ u.t.PP.isLB o.t.PP.isLB m.cart ⟨w, hw⟩
+    fun n x x' c => _root_.GlobalTheory.weilIs_grpPullback_of_comm _ _ _ _ f m.cm.F _ _ u.t.PP.isLB o.t.PP.isLB m.cart ⟨w, hw⟩
       (Over.mk z) n x x' _ _ _ (hρ x) (hρ x'), fun a => Over.OverMorphism.ext ?_,
     fun a => Over.OverMorphism.ext ?_⟩
   · rw [hρ, Over.comp_left, Over.comp_left, hρ, Category.assoc, m.act, Category.assoc]

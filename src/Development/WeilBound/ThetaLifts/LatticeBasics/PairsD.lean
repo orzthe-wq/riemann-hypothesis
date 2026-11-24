@@ -276,7 +276,7 @@ theorem exists_tmul_mem {α : Type} [Finite α] [DecidableEq α] {A : Type} [Add
     induction y using TensorProduct.induction_on with
     | zero => simp
     | tmul a n =>
-      simp [e, TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply, TensorProduct.smul_tmul']
+      simp [e, TensorProduct.smul_tmul']
     | add y z hy hz => simp [hy, hz, TensorProduct.add_tmul]
   have hpure : ∀ v : ∀ i, X i, e x p ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ v ∈ N := by
     intro v

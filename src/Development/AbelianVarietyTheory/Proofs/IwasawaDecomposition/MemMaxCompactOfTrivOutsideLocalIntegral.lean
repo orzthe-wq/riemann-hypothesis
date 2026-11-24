@@ -83,7 +83,7 @@ theorem tensor_decomp_zero {K M N : Type*} [Field K] [AddCommGroup M] [Module K 
   have h' := congrArg (TensorProduct.equivFinsuppOfBasisLeft b) h
   have h0 := DFunLike.congr_fun h' 0
   have h1 := DFunLike.congr_fun h' 1
-  simp [map_add (f := _), TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply] at h0 h1
+  simp [map_add (f := _)] at h0 h1
   exact ⟨h0, h1⟩
 
 variable (L : Type) [Field L] [NumberField L] [IsCMField L]

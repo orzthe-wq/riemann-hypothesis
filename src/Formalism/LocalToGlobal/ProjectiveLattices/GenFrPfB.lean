@@ -1,47 +1,9 @@
 module
 
 public import Formalism.LocalToGlobal.ProjectiveLattices.GenFrPfV
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Coalgebra.IsFrobenius
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.BCTools
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RankLin
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.RankPf
@@ -97,16 +59,9 @@ theorem gfpVec_tmap (hx : IsUnivChart _ n xc) (a : 𝓞 E) (cc : Fin n → L) :
       tvec (x := xc) cc ≫ (Over.pullback x).map (Xo.univ.t.act.act a) := by
     first
     | exact ReciprocityTheory.ChartRestriction.G.Chart.tvec_tmap hx _ cc
-    | exact (ReciprocityTheory.ChartRestriction.G.Chart.tvec_tmap hx _ cc).symm
-    | exact (ReciprocityTheory.ChartRestriction.G.Chart.tcoord_spec hx
-        (tvec (x := xc) cc ≫ (Over.pullback x).map (Xo.univ.t.act.act a)) _).symm
   have e1 : ((Over.pullback x).map (Xo.univ.t.act.act a)).left ≫ pullback.fst Xo.univ.t.G.hom x =
       pullback.fst Xo.univ.t.G.hom x ≫ (Xo.univ.t.act.act a).left := by
     simp
-    all_goals first
-    | exact pullback.lift_fst _ _ _
-    | erw [pullback.lift_fst]
-    | (rw [limit.lift_π]; rfl)
   simp only [gfpVec, ht, Over.comp_left, Category.assoc, e1]
 
 theorem gfp_bc {L' : Type} [Field L'] [Algebra L L'] (hx : IsUnivChart _ n xc) :
@@ -195,7 +150,6 @@ theorem gfp_basis (hx0 : x ≫ Xo.s = sOf c L) (hx : IsUnivChart _ n xc) (τ : E
   obtain ⟨a, ha⟩ : ∃ a : Fin (Dw.mult τ) → L, ∑ i, a i • d i = cc := by
     first
     | exact (Submodule.mem_span_range_iff_exists_fun L).1 hspan
-    | exact Submodule.mem_span_range_iff_exists_fun.1 hspan
   refine ⟨a, (gfp_comb_iff hx d a cc).2 ha.symm, ?_⟩
   intro a' ha'
   have h2 : cc = ∑ j, a' j • d j := (gfp_comb_iff hx d a' cc).1 ha'

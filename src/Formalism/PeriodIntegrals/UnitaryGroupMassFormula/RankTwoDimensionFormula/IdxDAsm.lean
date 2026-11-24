@@ -115,8 +115,6 @@ theorem fmat_inv_fix (x : X.B.I.Gf) (w : VA X.B.I) (h : X.B.I.fmat x *ᵥ w = w)
   have h1 : X.B.I.fmat x⁻¹ * X.B.I.fmat x = 1 := by
     first
     | simp [Formalism.MainNotions.S.AutInst.fmat]
-    | (simp only [Formalism.MainNotions.S.AutInst.fmat]
-       rw [← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, Units.val_one])
   calc X.B.I.fmat x⁻¹ *ᵥ w = X.B.I.fmat x⁻¹ *ᵥ (X.B.I.fmat x *ᵥ w) := by rw [h]
     _ = (X.B.I.fmat x⁻¹ * X.B.I.fmat x) *ᵥ w := by rw [Matrix.mulVec_mulVec]
     _ = w := by rw [h1, Matrix.one_mulVec]

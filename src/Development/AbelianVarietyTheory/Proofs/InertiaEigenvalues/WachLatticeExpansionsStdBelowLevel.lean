@@ -4,9 +4,9 @@ public import Formalism.LocalRingCardinality.RhoDetPrimeEqMuTildeMulChiPow
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.NotFullBot
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.MkMemAdmissibleAtIffCocycle
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.UnramifiedSubfieldLeCyclotomicExt
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineFrobeniusBijOnLettersDirectSumStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeEqStdPowerSeriesAtZeroStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLevelExpansionAtRootOfUnityStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrystallineFrobeniusBijOnLettersDirectSum
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeEqStdPowerSeriesAtZero
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLevelExpansionAtRootOfUnity
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,29 +59,13 @@ section Series
 
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M]
 
-theorem conv_eq_sum (e : PowerSeries L) {u : ℤ → M} {m : ℤ} (hm : ∀ k < m, u k = 0) (k : ℤ) (N : ℕ)
-    (hN : k - m < N) :
-    conv e u k = ∑ j ∈ Finset.range N, PowerSeries.coeff j e • u (k - (j : ℤ)) := by
-  unfold conv
-  apply finsum_eq_sum_of_support_subset
-  intro j hj
-  by_contra h
-  simp only [Finset.coe_range, Set.mem_Iio, not_lt] at h
-  apply hj
-  have : k - (j : ℤ) < m := by omega
-  simp [hm _ this]
-
-theorem conv_van (e : PowerSeries L) {u : ℤ → M} {m : ℤ} (hm : ∀ k < m, u k = 0) :
-    ∀ k < m, conv e u k = 0 := by
-  intro k hk
-  rw [conv_eq_sum e hm k 0 (by omega)]
-  simp
+alias conv_eq_sum := _root_.GlobalTheory.NL.FullDown.conv_eq_sum
 
 theorem conv_mul (a b : PowerSeries L) {u : ℤ → M} {m : ℤ} (hm : ∀ k < m, u k = 0) :
     conv (a * b) u = conv a (conv b u) := by
   funext k
   set N := (k - m).toNat + 1 with hN
-  rw [conv_eq_sum _ hm k N (by omega), conv_eq_sum _ (conv_van b hm) k N (by omega)]
+  rw [conv_eq_sum _ hm k N (by omega), conv_eq_sum _ (_root_.GlobalTheory.NL.FullDown.conv_low b hm) k N (by omega)]
   have h1 : ∀ i ∈ Finset.range N, PowerSeries.coeff i a • conv b u (k - (i : ℤ)) =
       ∑ j ∈ Finset.range (N - i), (PowerSeries.coeff i a * PowerSeries.coeff j b) •
         u (k - ((i + j : ℕ) : ℤ)) := by
@@ -149,7 +133,7 @@ theorem std_step {A DD : Type} [CommRing A] [AddCommGroup DD] [Module A DD] (N :
       obtain ⟨m, hm⟩ := hφ x hx
       refine ⟨m, hm, ?_⟩
       rw [heφ ⟨x, hx⟩ m hm]
-      exact conv_van _ (tw_van c Φ (hv' _))
+      exact _root_.GlobalTheory.NL.FullDown.conv_low _ (tw_van c Φ (hv' _))
     | zero =>
       refine ⟨0, by simp, fun k _ => ?_⟩
       have : (⟨Q ^ 0 • (0 : DD), by simp⟩ : ↥N) = 0 := Subtype.ext (by simp)
@@ -163,14 +147,14 @@ theorem std_step {A DD : Type} [CommRing A] [AddCommGroup DD] [Module A DD] (N :
       refine ⟨m + m', key ▸ Subtype.mem _, fun k hk => ?_⟩
       have : (⟨Q ^ (m + m') • (z + z'), key ▸ Subtype.mem _⟩ : ↥N) =
           Q ^ m' • (⟨_, hm⟩ : ↥N) + Q ^ m • (⟨_, hm'⟩ : ↥N) := Subtype.ext key
-      rw [this, map_add (f := _), hsm, hsm, Pi.add_apply, conv_van _ hz k hk, conv_van _ hz' k hk, add_zero]
+      rw [this, map_add (f := _), hsm, hsm, Pi.add_apply, _root_.GlobalTheory.NL.FullDown.conv_low _ hz k hk, _root_.GlobalTheory.NL.FullDown.conv_low _ hz' k hk, add_zero]
     | smul a z _ hz =>
       obtain ⟨m, hm, hz⟩ := hz
       have key : Q ^ m • (a • z) = ((a • (⟨_, hm⟩ : ↥N) : ↥N) : DD) := by
         simp only [Submodule.coe_smul, smul_smul, mul_comm]
       refine ⟨m, key ▸ Subtype.mem _, fun k hk => ?_⟩
       have : (⟨Q ^ m • (a • z), key ▸ Subtype.mem _⟩ : ↥N) = a • (⟨_, hm⟩ : ↥N) := Subtype.ext key
-      rw [this, hsm, conv_van _ hz k hk]
+      rw [this, hsm, _root_.GlobalTheory.NL.FullDown.conv_low _ hz k hk]
   have hv : ∀ x, ∀ k < (0 : ℤ), e x k = 0 := by
     intro y
     obtain ⟨j, hj⟩ := hφinv y y.2
@@ -180,7 +164,7 @@ theorem std_step {A DD : Type} [CommRing A] [AddCommGroup DD] [Module A DD] (N :
     rw [this, hsm] at hz
     obtain ⟨w, hw⟩ := hinv (m + j)
     obtain ⟨b, hb⟩ := hs y
-    have h2 := conv_van w hz
+    have h2 := _root_.GlobalTheory.NL.FullDown.conv_low w hz
     rwa [← conv_mul _ _ hb, hw, conv_one] at h2
   have hmap : ∀ g ∈ latSpan (LL := L) e', tw c Φ g ∈ latSpan (LL := L) e := by
     intro g hg
@@ -202,7 +186,7 @@ theorem std_step {A DD : Type} [CommRing A] [AddCommGroup DD] [Module A DD] (N :
     induction hf using Submodule.span_induction with
     | mem f hf =>
       obtain ⟨a, x, rfl⟩ := hf
-      exact conv_van a (hv x)
+      exact _root_.GlobalTheory.NL.FullDown.conv_low a (hv x)
     | zero => exact fun _ _ => rfl
     | add f g _ _ hf hg => intro k hk; simp [hf k hk, hg k hk]
     | smul a f _ hf => intro k hk; simp [hf k hk]
@@ -237,7 +221,7 @@ theorem lat_low : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : Fon
     | zero =>
       intro i ζ h1 _
       obtain rfl : ζ = 1 := by simpa using h1
-      exact GlobalTheory.T.wach_lattice_eq_std_powerSeries_at_zero D HW F Cm l K s LL h T hT i
+      exact _root_.GlobalTheory.NL.AtZero.lat_one_std D HW F Cm l K s LL h T hT i
     | succ j ih =>
       intro i ζ h1 h2
       have hprim : ∃ j : ℕ, IsPrimitiveRoot ζ (l ^ j) := by
@@ -246,8 +230,8 @@ theorem lat_low : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : Fon
       have ih' := ih (i - 1) (ζ ^ l) (by rw [← pow_mul, ← pow_succ', h1])
         (by rw [← pow_mul, mul_comm, pow_mul, h2, one_pow])
       have hQ : IsUnit (W.lev i ζ W.Q) :=
-        ((GlobalTheory.T.wachLevel_expansion_at_root_of_unity D HW l K s LL h i ζ hprim).2.2.1 h2).2
-      have hΦ := (GlobalTheory.T.crystallineFrobenius_bijOn_letters_directSum D HW l K s LL h T hT).1 i
+        ((_root_.GlobalTheory.NL.lev_at_root_of_unity D HW l K s LL h i ζ hprim).2.2.1 h2).2
+      have hΦ := (_root_.GlobalTheory.NL.PhiD.phi_letters D HW l K s LL h T hT).1 i
       have hc : (l : ↥LL.1) ≠ 0 := Nat.cast_ne_zero.2 hl.out.ne_zero
       refine std_step (W.N T) (W.φD T) W.Q (MonoidHomClass.toMonoidHom (W.lev i ζ)) hQ
         ((C.C K s LL h).tie.levB T i ζ) ((C.C K s LL h).tie.levB T (i - 1) (ζ ^ l))

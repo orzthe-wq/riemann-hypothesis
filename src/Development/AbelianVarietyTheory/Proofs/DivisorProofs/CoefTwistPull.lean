@@ -81,11 +81,11 @@ theorem coef_twistPull : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (F
   have := hI.2.2.2
   have := E.homG
   obtain ⟨β, hβ, hβ'⟩ := exists_normalised U.LG.isLB E.aG k' k β₀ hβ₀
-  obtain ⟨κ₀, hκ₀, hrel⟩ := GlobalTheory.T.descent_powerIso_endomorphism_abelianPart_uniformization hL R I hI D A G hG U E k' k β hβ hβ'
+  obtain ⟨κ₀, hκ₀, hrel⟩ := _root_.GlobalTheory.UT.PullDescent.main hL R I hI D A G hG U E k' k β hβ hβ'
   refine ⟨⟨κ₀, hκ₀⟩, ?_⟩
   intro w₀ ρ hw ψ m hm hψ hm' α hα hα' t t' s s' ⟨v, hv, n, c, σ, f, h₁, h₂, h₃⟩ ⟨v', hv', hs'⟩ htw κ hκ g g' hg w' w hw' hw₁ hww
-  choose σ' f' p₁ p₂ p₃ p₄ using fun i => GlobalTheory.T.pullback_section_endomorphism_expansion R I D A G U.toUnifPre E hh k' k β hβ κ₀ hκ₀.1 hrel (σ i) (f i) (h₁ i)
-  have tw := GlobalTheory.T.endU_twist_of_iso hGF R I D A G U.toUnifPre E F k' k β hβ hβ' w₀ ρ hw ψ m hm hψ hm' α hα hα' t t' v v' hv hv' htw
+  choose σ' f' p₁ p₂ p₃ p₄ using fun i => _root_.GlobalTheory.PullInt.main R I D A G U.toUnifPre E hh k' k β hβ κ₀ hκ₀.1 hrel (σ i) (f i) (h₁ i)
+  have tw := _root_.GlobalTheory.UT.TwistCompare.twist_through_iso hGF R I D A G U.toUnifPre E F k' k β hβ hβ' w₀ ρ hw ψ m hm hψ hm' α hα hα' t t' v v' hv hv' htw
   have H := secLin_of_expandsG U.toUnifPre (IsAdicComplete.le_jacobson_bot I) F k' v' s' hs' n c σ' f' p₁
     ((secLin_iff_val U.LG.isLB _ _ _ _).2 fun y J hJ => by
       rw [tw y J hJ, GlobalTheory.BoxExpansion.secLin_val h₂ _ y hJ, Finset.sum_mul]

@@ -1,9 +1,19 @@
 module
 
+public import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.EisensteinGrowthForms.GrowForms
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousDerivFamily
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesContinuation
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinVerticalBound
+public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicEisensteinSeries.GodementSumW
 public import Development.WeilBound.ThetaLifts.LatticeBasics.HypothesesE
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousFrameEquivSymm
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockDetParabolicFrame
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicIffFrameParabolic
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinMultiplicativity
+public import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinHalfPlane.SchwartzBruhatMajorants.SiegelMultOf
 public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFactorisationHolomorphic
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicEisensteinSeries.EisHalfPlaneW
-public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicEisensteinSeries.SiegelMultW
+import Development.WeilBound.ThetaLifts.LatticeBasics.Hypotheses2
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FlatSectionGrowthBound
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -20,7 +30,6 @@ import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -28,7 +37,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -41,8 +50,23 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.StandardCompactFrameEquiv
+import Development.WeilBound.CoreStatements.AutomorphicKernels.EisensteinSeriesG2.AdelicHomeomorphisms.IsTopologicalGroupG2
+import Formalism.LocalToGlobal.IndefiniteReal.PHeisFC
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.TopoAF
+import Mathlib.Tactic.Linter.Style
+import Mathlib.Tactic.ENatToNat
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicEisensteinSeries.IsGrowFormEvAt
+
+-- ===== clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicEisensteinSeries.IsGrowFormEvAt =====
+-- clump-header: {"m": "Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicEisensteinSeries.IsGrowFormEvAt", "h": "module\n\npublic import Development.WeilBound.ThetaLifts.LatticeBasics.HypothesesE\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalFactorisationHolomorphic\npublic import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.EisensteinGrowthForms.GrowForms\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousDerivFamily\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinSeriesContinuation\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EisensteinVerticalBound\npublic import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicEisensteinSeries.GodementSumW\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousFrameEquivSymm\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BlockDetParabolicFrame\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ParabolicIffFrameParabolic\npublic import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SiegelEisensteinMultiplicativity\npublic import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisensteinHalfPlane.SchwartzBruhatMajorants.SiegelMultOf\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -53,67 +77,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace PositivityTheory.SiegelWeilFormula.Aeis
 
-def EisBLW : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ)
-    (Y : Spc F E n), B.IsGood σ → 1 ≤ n →
-    ∀ χ : Chr F E, IsHecke F E χ → ∀ c : ℕ, ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ c →
-    ∀ b K a, IsFrame2 σ Y b → IsStdK (σ := σ) (Y := Y) B b K → IsHgt K a → ∀ s₁ f, IsSec K χ s₁ f →
-      ∃ Ê : ℂ → G2 σ Y → ℂ, (∃ t : ℝ, (∀ s : ℂ, t < s.re → ∀ x, HasSum (eisTerm (flat a f s₁ s) x) (Ê s x)) ∧
-          ∀ x, DifferentiableOn ℂ (Ê · x) {s | t < s.re}) ∧
-        ∀ s₀, ∃ (k : ℕ) (U : Set ℂ) (H : ℂ → modFun σ Y), U ∈ 𝓝 s₀ ∧ (∀ s ∈ U, s ≠ s₀ → ∀ x, (H s).1 x = (s - s₀) ^ k * Ê s x) ∧
-          ∀ μ, IsGrowForm μ → DifferentiableOn ℂ (fun s => μ (H s)) U
-
 def evAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {Y : Spc F E n} (x : G2 σ Y) : modFun σ Y →ₗ[ℂ] ℂ :=
   (LinearMap.proj x).comp (modFun σ Y).subtype
 
-theorem isGrowForm_evAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
-    {n : ℕ} {Y : Spc F E n} (x : G2 σ Y) : IsGrowForm (evAt x) := by
-  intro N
-  refine ⟨(ht2 x : ℝ) ^ N, fun f hf => ?_⟩
-  simpa [evAt] using hf x
-
-theorem eisBLW : EisBLW := by
-  intro F E _ _ _ _ _ σ B n Y hB hn χ hχ c hc b K a hb hK ha s₁ f hf
-  obtain ⟨t₀, v, hv, hvh⟩ := eisHalf_w hB hb hK ha χ s₁ f hf
-  obtain ⟨A, H, t₁, hA, hAne, hHh, hHs⟩ := siegelMult_w hB hn χ hχ c hc hb hK ha s₁ f hf
-  have hHv : ∀ s' : ℂ, max t₀ t₁ < s'.re → ∀ x, (H s').1 x = A s' * (v s').1 x := by
-    intro s' hs' x
-    have h1 := hHs s' (lt_of_le_of_lt (le_max_right _ _) hs') x
-    have h2 := (hv s' (lt_of_le_of_lt (le_max_left _ _) hs') x).mul_left (A s')
-    exact h1.unique h2
-  let Ehat : ℂ → G2 σ Y → ℂ := fun s' x => if max t₀ t₁ < s'.re then (v s').1 x else (H s').1 x / A s'
-  refine ⟨Ehat, ⟨max t₀ t₁, ?_, ?_⟩, ?_⟩
-  · intro s' hs' x
-    simp only [Ehat, if_pos hs']
-    exact hv s' (lt_of_le_of_lt (le_max_left _ _) hs') x
-  · intro x
-    have hd : DifferentiableOn ℂ (fun s' => evAt x (v s')) {s' : ℂ | t₀ < s'.re} :=
-      hvh (evAt x) (isGrowForm_evAt x)
-    have hd' : DifferentiableOn ℂ (fun s' => (v s').1 x) {s' : ℂ | max t₀ t₁ < s'.re} :=
-      (hd.mono fun s' (hs' : max t₀ t₁ < s'.re) => (show t₀ < s'.re from lt_of_le_of_lt (le_max_left _ _) hs'))
-    refine hd'.congr fun s' hs' => ?_
-    simp only [Ehat, if_pos (show max t₀ t₁ < s'.re from hs')]
-  · intro s₀
-    obtain ⟨k, U, u, hUo, hs₀U, hud, hUA⟩ := GlobalTheory.CompanionTheory.Entire.local_factorisation A hA hAne s₀
-    refine ⟨k, U, fun s' => (u s')⁻¹ • H s', hUo.mem_nhds hs₀U, ?_, ?_⟩
-    · intro s' hs' hne x
-      obtain ⟨hu, hAs⟩ := hUA s' hs'
-      have hpow : (s' - s₀) ^ k ≠ 0 := pow_ne_zero _ (sub_ne_zero.mpr hne)
-      show (u s')⁻¹ * (H s').1 x = (s' - s₀) ^ k * Ehat s' x
-      by_cases hre : max t₀ t₁ < s'.re
-      · simp only [Ehat, if_pos hre]
-        rw [hHv s' hre x, hAs]
-        field_simp
-      · simp only [Ehat, if_neg hre]
-        rw [hAs]
-        field_simp
-    · intro μ hμ
-      have h1 : DifferentiableOn ℂ (fun s' => (u s')⁻¹) U := hud.inv fun s' hs' => (hUA s' hs').1
-      have h2 : DifferentiableOn ℂ (fun s' => μ (H s')) U := (hHh μ hμ).differentiableOn
-      refine (h1.mul h2).congr fun s' _ => ?_
-      simp [map_smul, smul_eq_mul]
-
 end PositivityTheory.SiegelWeilFormula.Aeis
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.AdelicEisensteinSeries.IsGrowFormEvAt =====

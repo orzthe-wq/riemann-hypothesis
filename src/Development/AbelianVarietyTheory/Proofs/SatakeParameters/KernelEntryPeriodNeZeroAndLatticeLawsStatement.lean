@@ -48,4 +48,4 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.kernelEntry_period_ne_zero_and_lattice_laws : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex), t.δ ≠ 0 ∧ t.B.LatAll ∧ t.B.VecP t.χ ∧ t.B.EqP t.χ := by
-  first | exact @GlobalTheory.TieBase.base_data | exact GlobalTheory.TieBase.base_data | (intros; apply GlobalTheory.TieBase.base_data <;> assumption)
+  first | exact @GlobalTheory.TieBase.base_data

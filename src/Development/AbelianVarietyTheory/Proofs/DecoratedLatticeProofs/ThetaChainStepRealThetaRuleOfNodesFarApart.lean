@@ -67,11 +67,11 @@ theorem chainPar_of_nodeGap : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHeck
     · have ho : Odd ((k : ℕ) + 1) := hk.add_one
       have hne : ¬ Odd (k : ℕ) := Nat.not_odd_iff_even.mpr hk
       have hne2 : ¬ Even ((k : ℕ) + 1) := Nat.not_even_iff_odd.mpr ho
-      simp [ho, hk, hne, hne2] <;> ring
+      simp [ho, hk]
     · have ho : Even ((k : ℕ) + 1) := hk.add_one
       have hne : ¬ Even (k : ℕ) := Nat.not_even_iff_odd.mpr hk
       have hne2 : ¬ Odd ((k : ℕ) + 1) := Nat.not_odd_iff_even.mpr ho
-      simp [ho, hk, hne, hne2] <;> ring
+      simp [hne, hne2]
   · rw [h2]
     clear hc h1 h2 h
     congr 1
@@ -80,10 +80,10 @@ theorem chainPar_of_nodeGap : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHeck
     · have ho : Odd ((k : ℕ) + 1) := hk.add_one
       have hne : ¬ Odd (k : ℕ) := Nat.not_odd_iff_even.mpr hk
       have hne2 : ¬ Even ((k : ℕ) + 1) := Nat.not_even_iff_odd.mpr ho
-      simp [ho, hk, hne, hne2] <;> ring
+      simp [ho, hk]
     · have ho : Even ((k : ℕ) + 1) := hk.add_one
       have hne : ¬ Even (k : ℕ) := Nat.not_even_iff_odd.mpr hk
       have hne2 : ¬ Odd ((k : ℕ) + 1) := Nat.not_odd_iff_even.mpr ho
-      simp [ho, hk, hne, hne2] <;> ring
+      simp [hne, hne2]
 
 end GlobalTheory.Corev.ChainParOfGap

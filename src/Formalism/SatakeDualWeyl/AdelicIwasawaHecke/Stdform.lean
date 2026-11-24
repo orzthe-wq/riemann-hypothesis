@@ -254,9 +254,8 @@ theorem stdform_sig_diag {p q : ℕ} (M : Matrix n n ℂ) (e : n ≃ Fin p ⊕ F
     simpa using congrFun hx (e i)
   · rw [← stdform_Q_reindex M e y, stdform_Q_dot, hx, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec,
       Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hP]
-    simp [Jpq, dotProduct, Matrix.fromBlocks_mulVec, Fintype.sum_sum_type, Complex.re_sum, stdform_normSq,
-      re_conj_mul_self_eq_normSq, sub_eq_add_neg, Matrix.neg_mulVec, Matrix.one_mulVec, Complex.normSq_apply,
-      Complex.neg_re, Complex.neg_im, mul_neg, Finset.sum_neg_distrib]
+    simp [Jpq, dotProduct, Matrix.fromBlocks_mulVec, Fintype.sum_sum_type, Complex.re_sum, sub_eq_add_neg, Matrix.neg_mulVec, Matrix.one_mulVec, Complex.normSq_apply,
+      Complex.neg_re, mul_neg, Finset.sum_neg_distrib]
 
 theorem stdform_sig_pos {p : ℕ} (M : Matrix n n ℂ) (hs : HasSignature M p 0) (y : n → ℂ)
     (hy : y ≠ 0) : 0 < stdformQ M y := by
@@ -375,7 +374,7 @@ theorem standard_hermitian_form_definite : Formalism.UG.StdFormDef := by
     ext i j
     by_cases h : i = j
     · subst h; simp
-    · simp [one_apply, h, Ne.symm h]
+    · simp [h, Ne.symm h]
   refine ⟨hH1, ⟨hF, fun ι => ?_⟩, ⟨hF, fun ι => ?_⟩⟩
   · obtain ⟨τ, hτ⟩ := stdform_ext (E := E) ι
     refine (definite_form_signature F E n σ 1 ι τ (hσ τ) hτ hfix hH1 (by simp)).mpr (Or.inl ?_)

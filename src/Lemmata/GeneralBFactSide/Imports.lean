@@ -1,48 +1,10 @@
 module
 
+import Mathlib.RingTheory.LocalRing.MaximalIdeal.Basic
 public import Mathlib.RingTheory.Ideal.AssociatedPrime.Basic
 public import Mathlib.RingTheory.LocalRing.MaximalIdeal.Defs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 public import Mathlib.RingTheory.Ideal.AssociatedPrime.Finiteness
-import Mathlib.RingTheory.Radical.NatInt
 public import Mathlib.RingTheory.Regular.IsSMulRegular
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -69,16 +31,9 @@ theorem goal1 :
       (fun I hI _ _ => hI.elim (fun h => h.1) (fun h => h.1)) bot_ne_top bot_ne_top] at hsub
     exact hsub.elim h1 h2
   obtain ⟨z, hzm, hz⟩ := Set.not_subset.mp hns
-  refine ⟨z, hzm, ?_, ?_⟩
-  · have hz1 : z ∉ ⋃ p ∈ associatedPrimes R N₁, (p : Set R) := fun h => by
-      obtain ⟨p, hp, hzp⟩ := Set.mem_iUnion₂.mp h
-      exact hz (Set.mem_biUnion (Or.inl hp) hzp)
-    rw [biUnion_associatedPrimes_eq_compl_regular R N₁] at hz1
-    simpa using hz1
-  · have hz2 : z ∉ ⋃ p ∈ associatedPrimes R N₂, (p : Set R) := fun h => by
-      obtain ⟨p, hp, hzp⟩ := Set.mem_iUnion₂.mp h
-      exact hz (Set.mem_biUnion (Or.inr hp) hzp)
-    rw [biUnion_associatedPrimes_eq_compl_regular R N₂] at hz2
-    simpa using hz2
+  rw [Set.biUnion_union, biUnion_associatedPrimes_eq_compl_regular R N₁,
+    biUnion_associatedPrimes_eq_compl_regular R N₂] at hz
+  exact ⟨z, hzm, by
+    simpa only [Set.mem_union, Set.mem_compl_iff, Set.mem_ofPred_eq, not_or, not_not] using hz⟩
 
 end Bl.general_b_fact_side

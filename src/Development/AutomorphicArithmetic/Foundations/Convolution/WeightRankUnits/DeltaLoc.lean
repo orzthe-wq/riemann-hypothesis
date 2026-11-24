@@ -93,7 +93,7 @@ theorem UpperTheory.ConvolutionTheory.G2.deltaLoc :
     obtain ⟨u, hu, huw⟩ := hsp'
     have hfib : {x : Pl E | x.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))} = {w, u} := by
       ext x
-      refine ⟨fun hx => GlobalTheory.T.eq_or_eq_of_under_maximalRealSubfield_eq_CMField E w u x hu huw hx, ?_⟩
+      refine ⟨fun hx => _root_.GlobalTheory.BCT.FiberTwo.eq_or_eq_of_under_eq E w u x hu huw hx, ?_⟩
       rintro (rfl | rfl)
       · rfl
       · exact huw

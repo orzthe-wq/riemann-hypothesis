@@ -61,11 +61,11 @@ theorem exists_int_matrix_transpose_mul_eq_smul_one (s : ℕ) :
   refine ⟨!![(a:ℤ), -b, -c, -d; b, a, -d, c; c, d, a, -b; d, -c, b, a], ?_, ?_⟩
   · ext i j
     fin_cases i <;> fin_cases j <;>
-      simp [Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply] <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_four] <;>
       first | linear_combination h' | ring
   · ext i j
     fin_cases i <;> fin_cases j <;>
-      simp [Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply] <;>
+      simp [Matrix.mul_apply, Fin.sum_univ_four] <;>
       first | linear_combination h' | ring
 
 end GlobalTheory

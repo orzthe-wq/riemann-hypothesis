@@ -4,45 +4,7 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.
 public import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TmASmSum
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CartanInvolutionConjTransposeMul
 import Formalism.RealPlaceAnalysis.RealPlaceTaylor.IntegrableComplexContinuousBoundedSupport
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.ConjTransposeEqOfInG
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.AnalyticVectors.Unitary
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirCoefficients.IntegrableOfDecayVG
@@ -150,10 +112,6 @@ theorem tmA_sm_left {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : Formalism.REA
   · intro g hg hgJ
     exact hfF (x * g) hg (tmA_inUJ_mul hx hgJ)
 
-theorem tmA_sm_sum {ι : Type*} (s : Finset ι) (F : ι → Matrix (Fin n) (Fin n) ℂ → ℂ)
-    (hF : ∀ i ∈ s, Formalism.REAL.SmoothOnG ε (F i)) : Formalism.REAL.SmoothOnG ε (fun x => ∑ i ∈ s, F i x) := by
-  first | exact UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} .. | (apply UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf26.tmA_sm_sum.{u_1} <;> first | assumption | infer_instance)
-
 theorem tmA_eab_sum {ι : Type*} (s : Finset ι) (F : ι → Matrix (Fin n) (Fin n) ℂ → ℂ)
     (hF : ∀ i ∈ s, Formalism.REAL.SmoothOnG ε (F i)) (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : Formalism.REAL.inUJ ε g) :
@@ -165,7 +123,7 @@ theorem tmA_eab_sum {ι : Type*} (s : Finset ι) (F : ι → Matrix (Fin n) (Fin
       have hs : ∀ j ∈ s, Formalism.REAL.SmoothOnG ε (F j) := fun j hj => hF j (Finset.mem_insert_of_mem hj)
       have e : (fun x => ∑ j ∈ insert i s, F j x) = fun x => F i x + 1 * ∑ j ∈ s, F j x := by
         funext x; rw [Finset.sum_insert hi, one_mul]
-      rw [e, Formalism.REAL.lie_derivative_add_smul a b 1 (hF i (Finset.mem_insert_self i s)) (tmA_sm_sum s F hs) hg,
+      rw [e, Formalism.REAL.lie_derivative_add_smul a b 1 (hF i (Finset.mem_insert_self i s)) (_root_.Formalism.REAL.smooth_on_group_sum s F hs) hg,
         ih hs, one_mul, Finset.sum_insert hi]
 
 end Calc

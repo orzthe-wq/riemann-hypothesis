@@ -136,8 +136,7 @@ theorem lattice_of_index (μ : Measure V) [μ.IsAddHaarMeasure] (M₁ M₂ : Sub
     intro x hx
     show (scalInv V (n : ℝ)⁻¹ (inv_ne_zero hnR)) x ∈ M₁
     rw [scalInv_apply, inv_inv, Nat.cast_smul_eq_nsmul]
-    have := AddSubgroup.nsmul_index_mem (M₁.toAddSubgroup.addSubgroupOf M₂.toAddSubgroup) ⟨x, hx⟩
-    exact this
+    exact AddSubgroup.nsmul_index_mem (M₁.toAddSubgroup.addSubgroupOf M₂.toAddSubgroup) ⟨x, hx⟩
   have hd : DiscreteTopology M₂ := DiscreteTopology.of_subset (t := (M₂ : Set V))
     (s := (ZLattice.comap ℝ M₁ (scalInv V (n : ℝ)⁻¹ (inv_ne_zero hnR)).toLinearMap : Set V))
     (inferInstanceAs (DiscreteTopology
@@ -170,9 +169,8 @@ theorem map_zsub_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (B : FI E
 
 theorem finrank_eq (E : Type) [Field E] [NumberField E] [IsCMField E] :
     finrank ℚ E = 2 * deg E := by
-  have h2 : finrank (maximalRealSubfield E) E = 2 := Algebra.IsQuadraticExtension.finrank_eq_two _ _
   have h3 := finrank_mul_finrank ℚ (maximalRealSubfield E) E
-  rw [h2] at h3
+  rw [Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E] at h3
   unfold deg; omega
 
 theorem mem_twLat (E : Type) [Field E] [NumberField E] [IsCMField E] (A B : FI E) (s : ℕ) (t : E) :
@@ -215,17 +213,12 @@ theorem exists_nat_mul_mem (E : Type) [Field E] [NumberField E] (B : FI E) (hB :
     have := (B : Submodule (𝓞 E) E).smul_mem z hb
     rw [Algebra.smul_def, hz, zsmul_eq_mul] at this
     have h2 : (y : E) * (t / b) * b = (y : E) * t := by field_simp
-    rw [h2] at this
-    exact this
+    simpa [h2] using this
   rcases Int.natAbs_eq y with h | h
-  · have : ((y.natAbs : ℕ) : E) = (y : E) := by
-      conv_rhs => rw [h]
-      simp
-    rw [this]; exact h1
-  · have : ((y.natAbs : ℕ) : E) = -(y : E) := by
-      conv_rhs => rw [h]
-      simp
-    rw [this, neg_mul]; exact (B : Submodule (𝓞 E) E).neg_mem h1
+  · rw [h, Int.cast_natCast] at h1
+    exact h1
+  · rw [h, Int.cast_neg, Int.cast_natCast, neg_mul] at h1
+    simpa using (B : Submodule (𝓞 E) E).neg_mem h1
 
 end Formalism.FourierDecayAlt.P.S6x5
 

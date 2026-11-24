@@ -2,7 +2,6 @@ module
 
 public import CompanionTheory.AutomorphicTheory.ZuckermanCommutation.ZuckermanFunctors.ShiftApply
 public import Formalism.SharpRestriction.CuspSpanNormBounds.RelevantZeroGramTerms
-public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.ExceptionalGroupG2.TensorProductsG2.Transported
 public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TensorRepresentations.Transported
 import CompanionTheory.AutomorphicTheory.SchurLimitBounds.SchurOrthogonality.SchurH
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CapelliEigenvalues.HeckeMultiplication
@@ -58,7 +57,7 @@ namespace CompanionTheory.Zuck
 
 open BranchingSupport Formalism.FourierDecayAlt.ThreeDimData ReciprocityTheory.ChartRestriction.DS
 
-def thr (n : ℕ) (ε : Fin n → Bool) : ℝ := max (thrStar ε) (G2.thrS ε)
+def thr (n : ℕ) (ε : Fin n → Bool) : ℝ := max (2 * (n : ℝ)) (thrStar ε)
 
 theorem thr_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) : thr n ε ≤ 43 * (n : ℝ) ^ 3 := by
   have hp : pOf ε ≤ n := (Finset.card_le_univ _).trans_eq (Fintype.card_fin n)
@@ -73,7 +72,7 @@ theorem thr_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) : thr n ε ≤ 43 
   have h4 : Real.sqrt (2 * (S7.q0 ε : ℝ)) ≤ 2 * n := Real.sqrt_le_iff.2 ⟨by positivity, by nlinarith⟩
   have h5 : 16 * (n : ℝ) * S7.q0 ε ≤ 16 * n * n := by gcongr
   have h6 : (n : ℝ) * pOf ε * qOf ε ≤ n * n * n := by gcongr
-  refine max_le (max_le ?_ ?_) (max_le ?_ ?_) <;> nlinarith
+  refine max_le ?_ (max_le ?_ ?_) <;> nlinarith
 
 theorem dsigW_SK {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mx k r → (H →L[ℂ] H)) : ∀ (W : List (Mx k r)) (v : H),
@@ -86,18 +85,18 @@ theorem dsigW_SK {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpac
 theorem zuckerman_library_bounds : Lib thr := by
   refine { zg := ?_, dec := ?_, uniq := ?_, exist := ?_ }
   · intro n ε μ H _ _ _ σ hμ hσ h hg ht
-    have ht' : G2.thrS ε + 1 < h := lt_of_le_of_lt (by unfold thr; linarith [le_max_right (thrStar ε) (G2.thrS ε)]) ht
+    have ht' : thrStar ε + 1 < h := lt_of_le_of_lt (by unfold thr; linarith [le_max_right (2 * (n : ℝ)) (thrStar ε)]) ht
     exact ⟨G2.zuckerman_tensor_exists n ε μ H σ hμ hσ h hg ht', G2.zuckerman_dual_tensor_exists n ε μ H σ hμ hσ h hg ht'⟩
   · intro k r ε μ U h m hU hg ht
     obtain ⟨C, Ws, hWs, hC⟩ := DecInf.decSm hU.1 hg m
-      (lt_of_le_of_lt (by unfold thr; linarith [le_max_left (thrStar ε) (G2.thrS ε)]) ht) (σ := U.R.σ) hU.2
+      (lt_of_le_of_lt (by unfold thr; linarith [le_max_right (2 * ((2 * r + k + 1 : ℕ) : ℝ)) (thrStar ε)]) ht) (σ := U.R.σ) hU.2
     refine ⟨C, Ws, fun W hW => (hWs W hW).2, fun u hu v hv g hg' => ?_⟩
     have h1 := hC u hu v hv g hg'
     simp only [dsigW_SK] at h1
     exact h1
   · intro k r ε μ R R' h hR hR' hg ht
     have h2 : 2 * ((2 * r + k + 1 : ℕ) : ℝ) < h :=
-      lt_of_le_of_lt ((le_max_left _ _).trans (le_max_right (thrStar ε) (G2.thrS ε))) ht
+      lt_of_le_of_lt (le_max_left _ _) ht
     obtain ⟨P, hP, hd⟩ := hR.2
     obtain ⟨P', hP', hd'⟩ := hR'.2
     have hU' := CompanionTheory.LimBd.SchurHpk.isURepOn_of_ds hR'.2
@@ -135,10 +134,11 @@ theorem zuckerman_library_bounds : Lib thr := by
       ← Matrix.mul_assoc (P⁻¹ * P') (P'⁻¹ * P * g), ← Matrix.mul_assoc (P⁻¹ * P') (P'⁻¹ * P), hba, Matrix.one_mul]
   · intro k r ε μ μ' R h hR hμ' hg ht
     obtain ⟨P, hP, -⟩ := hR.2
-    have h1 : G2.thrS ε < h := lt_of_le_of_lt (le_max_right (thrStar ε) (G2.thrS ε)) ht
+    have h2n : 2 * ((2 * r + k + 1 : ℕ) : ℝ) < h := lt_of_le_of_lt (le_max_left _ _) ht
+    have h1 : thrStar ε < h := lt_of_le_of_lt (le_max_right _ _) ht
     have h2 : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ) := by positivity
     have h3 := Real.sqrt_nonneg (2 * (S7.q0 ε : ℝ))
-    obtain ⟨H, _, _, σ, hσ⟩ := G2.discrete_series_exists_large_gap _ ε μ' hμ' h hg (Or.inr (max_lt ((le_max_left _ _).trans_lt h1)
+    obtain ⟨H, _, _, σ, hσ⟩ := G2.discrete_series_exists_large_gap _ ε μ' hμ' h hg (Or.inr (max_lt h2n
       (by have := (le_max_right _ _).trans_lt h1; linarith)))
     have := hσ.1
     refine ⟨{ H := H, σ := fun g => σ (P * g * P⁻¹) }, hμ', P, hP, ?_⟩

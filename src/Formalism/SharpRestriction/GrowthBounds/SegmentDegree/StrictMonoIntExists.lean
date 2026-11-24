@@ -175,7 +175,7 @@ theorem sum_wtVS (f : Fin (r + K) → ℕ) (t : Fin n') :
   rw [Fin.sum_univ_add]
   split_ifs with h
   · simp [wtVS, h, hi]
-  · simp [wtVS, h, hi]
+  · simp [wtVS, h]
 
 theorem vsDeg_eq (m : Fin n' × Fin (r + K) →₀ ℕ) : vsDeg m = Finsupp.linearCombination ℕ wtVS m := by
   rw [Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_prod_type]
@@ -319,7 +319,7 @@ theorem XX'_supported (O : Type) [CommRing O] (F : Frames n' r) (j : ℤ) (m : �
     unfold plEmb
     refine (Finset.coe_subset.mpr (MvPolynomial.vars_rename (fun v : ℤ × Fin r => (v.1, Fin.castAdd K v.2)) A)).trans ?_
     intro v hv
-    simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe, Finset.mem_image] at hv
+    simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hv
     obtain ⟨w, hw, rfl⟩ := hv
     have h1 : w.1 ∈ F.letters j := hA (Finset.mem_coe.mpr hw)
     simp only [okVars, Set.mem_setOf_eq]
@@ -332,7 +332,7 @@ theorem XX'_supported (O : Type) [CommRing O] (F : Frames n' r) (j : ℤ) (m : �
     unfold nmEmb
     refine (Finset.coe_subset.mpr (MvPolynomial.vars_rename (fun v : ℤ × Fin K => (v.1, Fin.natAdd r v.2)) G)).trans ?_
     intro v hv
-    simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe, Finset.mem_image] at hv
+    simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hv
     obtain ⟨w, hw, rfl⟩ := hv
     have h1 : w.1 ∈ F.letters j ∧ ¬ F.IsW j w.1 := hG (Finset.mem_coe.mpr hw)
     simp only [okVars, Set.mem_setOf_eq]

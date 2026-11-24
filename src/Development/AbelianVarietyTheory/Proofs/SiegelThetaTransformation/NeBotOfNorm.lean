@@ -112,22 +112,17 @@ theorem max_of_norm {q : ℕ} {P : Ideal (𝓞 E)} (hq : q.Prime) (h : Ideal.abs
     P.IsMaximal :=
   (Ideal.isPrime_of_irreducible_absNorm (h ▸ hq)).isMaximal (ne_bot_of_norm hq h)
 
-theorem herm_one (x y : Fin n → E) : herm 1 x y = ∑ a, x a * cc (y a) := by
-  unfold herm
-  refine Finset.sum_congr rfl fun a _ => ?_
-  simp [Matrix.one_apply]
-
 theorem herm_sl (c : E) (x y : Fin n → E) : herm 1 (c • x) y = c * herm 1 x y := by
-  simp [herm_one, Finset.mul_sum, mul_assoc]
+  simp [_root_.GlobalTheory.SW.Base.herm_one, Finset.mul_sum, mul_assoc]
 
 theorem herm_sr (c : E) (x y : Fin n → E) : herm 1 x (c • y) = cc c * herm 1 x y := by
-  simp [herm_one, Finset.mul_sum, cc, mul_left_comm]
+  simp [_root_.GlobalTheory.SW.Base.herm_one, Finset.mul_sum, cc, mul_left_comm]
 
 theorem herm_al (x x' y : Fin n → E) : herm 1 (x + x') y = herm 1 x y + herm 1 x' y := by
-  simp [herm_one, add_mul, Finset.sum_add_distrib]
+  simp [_root_.GlobalTheory.SW.Base.herm_one, add_mul, Finset.sum_add_distrib]
 
 theorem herm_symm (x y : Fin n → E) : cc (herm 1 x y) = herm 1 y x := by
-  simp [herm_one, cc, mul_comm]
+  simp [_root_.GlobalTheory.SW.Base.herm_one, cc, mul_comm]
 
 omit [IsCMField E] in
 theorem osmul (c : 𝓞 E) (x : Fin n → E) : c • x = (c : E) • x := rfl
@@ -151,7 +146,7 @@ theorem Int'.smul {x y : Fin n → E} (c : 𝓞 E) (h : Int' x y) : Int' (c • 
 
 theorem int_zero (y : Fin n → E) : Int' 0 y := by
   unfold Int'
-  rw [herm_one]
+  rw [_root_.GlobalTheory.SW.Base.herm_one]
   simpa using isIntegral_zero
 
 theorem int_move (c : 𝓞 E) (x y : Fin n → E) : Int' (c • x) y ↔ Int' x (co c • y) := by
@@ -251,7 +246,7 @@ theorem exists_vec {M : ℕ} {Λ : Lt E n} (h : Λ ∈ Vset E n M) (g : Λ →�
   refine ⟨fun i => cc (G' (Pi.single i 1)), fun y => ?_⟩
   have h1 : G' y = g y := IsLocalizedModule.lift_apply (𝓞 E)⁰ Λ.subtype g
     (IsLocalizedModule.map_units (LinearMap.id (R := 𝓞 E) (M := E))) y
-  rw [← h1, herm_one, LinearMap.pi_apply_eq_sum_univ G']
+  rw [← h1, _root_.GlobalTheory.SW.Base.herm_one, LinearMap.pi_apply_eq_sum_univ G']
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [cc_cc, smul_eq_mul]
   congr 2
@@ -465,7 +460,7 @@ theorem nb_count {M q : ℕ} {P : Ideal (𝓞 E)} (hP : GoodPrime M q P) {Λ : L
 theorem herm_move {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1) (x y : Fin n → E) :
     herm 1 (h *ᵥ x) (h *ᵥ y) = herm 1 x y := by
   have h1 : ∀ x y : Fin n → E, herm 1 x y = (fun a => cc (y a)) ⬝ᵥ x := fun x y => by
-    rw [herm_one, dotProduct_comm]; rfl
+    rw [_root_.GlobalTheory.SW.Base.herm_one, dotProduct_comm]; rfl
   have h2 : (fun a => cc ((h *ᵥ y) a)) = (fun a => cc (y a)) ᵥ* ccT h := by
     ext a
     simp [cc, ccT, Matrix.mulVec, Matrix.vecMul, dotProduct, mul_comm]

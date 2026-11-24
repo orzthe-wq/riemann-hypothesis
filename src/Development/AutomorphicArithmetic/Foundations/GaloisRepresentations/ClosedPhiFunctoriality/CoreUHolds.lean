@@ -46,11 +46,6 @@ namespace UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 open GlobalTheory.CrisSec Matrix
 
-private theorem matrix_map_smul' {R : Type} [CommRing R] {d : ℕ} (φ : R →+* R) (c : R)
-    (X : Matrix (Fin d) (Fin d) R) : (c • X).map φ = φ c • X.map φ := by
-  ext i j
-  simp [Matrix.map_apply]
-
 private theorem eq_zero_of_pow_mul_eq_zero_of_nonzerodivisor {R : Type} [CommRing R] (L : R) (hL : ∀ x : R, L * x = 0 → x = 0) :
     ∀ (m : ℕ) (x : R), L ^ m * x = 0 → x = 0 := by
   intro m
@@ -150,9 +145,9 @@ private theorem exists_matrix_seq_diff_congruence {R : Type} [CommRing R] {d N q
           rw [← hPs k, ← hPs (k + 1)]]
     have e : L • (a * (P (k + 1)).map φ * b' - L ^ (2 * N) • (a * (P k).map φ * b'))
         = a * (L • (P (k + 1) - L ^ (2 * N) • P k)).map φ * b' := by
-      rw [matrix_map_smul', Matrix.map_sub _ (fun x y => map_sub φ x y), matrix_map_smul', map_pow, hφL]
+      rw [_root_.GlobalTheory.CrisSec.map_smul', Matrix.map_sub _ (fun x y => map_sub φ x y), _root_.GlobalTheory.CrisSec.map_smul', map_pow, hφL]
       simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, smul_sub]
-    rw [e, hM, matrix_map_smul', map_pow, hu, ← pow_mul, Matrix.mul_smul, Matrix.smul_mul]
+    rw [e, hM, _root_.GlobalTheory.CrisSec.map_smul', map_pow, hu, ← pow_mul, Matrix.mul_smul, Matrix.smul_mul]
     congr 2
     ring
 
@@ -286,7 +281,7 @@ theorem coreU_holds : CoreU := by
             simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.map_mul,
               Matrix.mul_assoc]
         _ = (l : R) ^ (4 * N * (k + 1)) • 1 := by
-            rw [ih, matrix_map_smul', map_pow, hφL, Matrix.map_one _ (map_zero φ) (map_one φ),
+            rw [ih, _root_.GlobalTheory.CrisSec.map_smul', map_pow, hφL, Matrix.map_one _ (map_zero φ) (map_one φ),
               Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hαα, smul_smul, smul_smul,
               ← pow_add, ← pow_add]
             congr 2
@@ -311,7 +306,7 @@ theorem coreU_holds : CoreU := by
     intro m
     apply matrix_eq_of_smul_eq_nonzerodivisor ((l : R) ^ (2 * N * (m + 1))) (eq_zero_of_pow_mul_eq_zero_of_nonzerodivisor _ hl _)
     rw [← Matrix.smul_mul, ← hSq, show n₀ + (m + 1) = n₀ + m + 1 from rfl, hPs, Matrix.mul_assoc,
-      hβ'β, Matrix.mul_smul, Matrix.mul_one, hSq, matrix_map_smul', map_pow, hφL, Matrix.mul_smul,
+      hβ'β, Matrix.mul_smul, Matrix.mul_one, hSq, _root_.GlobalTheory.CrisSec.map_smul', map_pow, hφL, Matrix.mul_smul,
       smul_smul, ← pow_add]
     congr 2
     ring
@@ -326,7 +321,7 @@ theorem coreU_holds : CoreU := by
           = (Sq (m + 1) + (l : R) ^ (m + 1) • Z1) * β - α * (Sq m + (l : R) ^ m • Z0).map φ := by
             rw [← e0, ← e1]
         _ = (l : R) ^ m • ((l : R) • (Z1 * β) - α * Z0.map φ) := by
-            rw [Matrix.map_add _ (fun x y => map_add φ x y), matrix_map_smul', map_pow, hφL,
+            rw [Matrix.map_add _ (fun x y => map_add φ x y), _root_.GlobalTheory.CrisSec.map_smul', map_pow, hφL,
               Matrix.add_mul, Matrix.mul_add, hstep]
             simp only [Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_smul, ← pow_succ]
             abel)
@@ -339,6 +334,6 @@ theorem coreU_holds : CoreU := by
     exact ⟨Y, by rw [← hY, smul_sub, pow_add, mul_smul]⟩
   · obtain ⟨Y, hY⟩ := hSu'
     exact ⟨Y, by rw [← hY, smul_sub, pow_add, mul_smul]⟩
-  · rw [Matrix.smul_mul, hint, matrix_map_smul', map_pow, hφL, Matrix.mul_smul]
+  · rw [Matrix.smul_mul, hint, _root_.GlobalTheory.CrisSec.map_smul', map_pow, hφL, Matrix.mul_smul]
 
 end UpperTheory.Gal.ClosedPhiFromClosedTrace

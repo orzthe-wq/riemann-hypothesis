@@ -168,10 +168,8 @@ theorem le_of_image {A N M1 M2 : Submodule (𝓞 K) V} (hN2 : N ≤ M2) (h1A : M
   obtain ⟨z, hz, hzx⟩ := hmem
   rw [Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq] at hzx
   have h1 : ((z : V) - x) ∈ M2 := hN2 hzx
-  have h2 : (z : V) ∈ M2 := hz
-  have : x = (z : V) - ((z : V) - x) := by abel
-  rw [this]
-  exact M2.sub_mem h2 h1
+  rw [show x = (z : V) - ((z : V) - x) by abel]
+  exact M2.sub_mem hz h1
 
 theorem key (A : Submodule (𝓞 K) V) : ∀ (n : ℕ) (N : Submodule (𝓞 K) V), N ≤ A →
     N.toAddSubgroup.relIndex A.toAddSubgroup = n → n ≠ 0 →
@@ -349,8 +347,7 @@ theorem exists_int_mul {d : ℕ} (L : Submodule (𝓞 K) (Fin d → K))
     ∃ y : ℤ, y ≠ 0 ∧ ∀ i, ((y : K)) • e i ∈ L := by
   classical
   obtain ⟨s, hsL, hspan, hli⟩ := exists_linearIndependent K (L : Set (Fin d → K))
-  have hfin : s.Finite := hli.setFinite
-  haveI : Fintype s := hfin.fintype
+  letI : Fintype s := hli.setFinite.fintype
   let f : Basis s K (Fin d → K) := Basis.mk hli (by rw [Subtype.range_coe, hspan, hsp])
   have hf : ∀ j, f j ∈ L := fun j => by rw [Basis.mk_apply]; exact hsL j.2
   obtain ⟨y, hy, hint⟩ := exists_integral_multiples ℤ ℚ

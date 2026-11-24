@@ -117,11 +117,7 @@ theorem finPart_liftFin (x : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (li
   | tmul a m => rfl
   | add x y hx hy => rw [LinearMap.map_add (f := _), RingHom.map_add (f := _), hx, hy]
 
-theorem finPart_cA (x : AE D) : finPart D (cA D x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
-  induction x using TensorProduct.induction_on with
-  | zero => simp only [RingHom.map_zero]
-  | tmul a m => rfl
-  | add x y hx hy => simp only [RingHom.map_add (f := _), hx, hy]
+alias finPart_cA := _root_.GlobalTheory.SplitDualLat.finPart_cA
 
 def rk (S T : HSp D) (a : D.host.E) (s : Fin S.rank → Af D.host.F ⊗[D.host.F] D.host.E)
     (t : Fin T.rank → Af D.host.F ⊗[D.host.F] D.host.E) : WO S T :=

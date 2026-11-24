@@ -4,11 +4,13 @@ public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.FormPlus
 public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.Hat1
 public import Formalism.LocalToGlobal.ProjectiveLattices.HalfOneAddSqrtNegIsIntegral
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicCompletionRationalPointsAndApproximation
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryExistsWithPrescribedPartsStatement
+public import Formalism.LocalToGlobal.ProjectiveLattices.EquivariantFiniteGroup
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.AdelicUnitaryExistsWithPrescribedParts
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ComponentAttainedAtBaseFrame
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.ExistsInverseUnitTower
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.NegIndexTransposeOfHasSignature
 public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.TypeFnPeriodExistModuliNonempty
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -43,7 +45,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
 
 @[expose] public section
 
@@ -87,7 +88,7 @@ theorem exists_marked_of_component : ∀ (D : D7) (V : HSp D) (H : ReciprocityTh
       have := hef x y
       rw [hW.1, hW.2] at this
       exact this) f h1 h2 h3
-  obtain ⟨u, hu, hug⟩ := (GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).1 gf (comp_mem_HR _ _ _ c _ (fun _ => rfl) _ gf hg3)
+  obtain ⟨u, hu, hug⟩ := (_root_.GlobalTheory.UnitaryGlue.adelic_glue D V).1 gf (comp_mem_HR _ _ _ c _ (fun _ => rfl) _ gf hg3)
   have hc := (AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank X.Λ X.Λ_fg
     X.Λ_span).1
   refine ⟨u, ?_, fun a ha => ?_⟩

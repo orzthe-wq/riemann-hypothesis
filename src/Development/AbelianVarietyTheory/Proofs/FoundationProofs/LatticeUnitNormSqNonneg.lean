@@ -1,22 +1,17 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPairCoordinatesConjugateBound
 public import Formalism.PairingDivisors.StatementH
 public import Mathlib.Analysis.SpecialFunctions.Log.PosLog
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizesStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBoundMeansPosLogAreaNormalisedThetaStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicDataStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizes
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBoundMeansPosLogAreaNormalisedTheta
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeanInfPosLogLe
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumCoeffMonomial
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPairCoordinatesConjugateBoundStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryDoubleCosetClassesFiniteCardLe
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryRationalConjIntersectionCardDvdInvariant
-import Mathlib.Algebra.AffineMonoid.UniqueSums
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
@@ -30,8 +25,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -51,10 +44,38 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt
+import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryDoubleCosetClassesFiniteCardLe
+import Mathlib.Algebra.AffineMonoid.UniqueSums
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPairCoordinatesConjugateBoundStatement, Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeUnitNormSqNonneg
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPairCoordinatesConjugateBoundStatement =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPairCoordinatesConjugateBoundStatement", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPairCoordinatesConjugateBound\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
+open scoped BigOperators
+
+theorem _root_.GlobalTheory.T.thetaPair_coordinates_conjugate_bound : ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ) (Q : ℕ), Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → ∀ (P : Pair D cc δ t0 Q), 0 < Q → ∀ (B : ℝ), 1 ≤ B → (∀ τ, (P.n τ : ℝ) ≤ 2 * B) → ∀ (ρ : Qbar →ₐ[ℚ] ℂ) t0', GL3Theta.IsTwoTorsionPointUnkilled D (lamConj Qbar ρ (lamOf D cc δ)) t0' → ∀ h T, P.coord h T ∈ Qbar ∧ ‖cj Qbar ρ (P.coord h T)‖ ^ 2 ≤ (Nat.card (Cls D P.a (intG D P.a)) : ℝ) ^ 2 * (Q : ℝ) ^ (P.a * P.d) * (((P.a.factorial : ℝ) ^ (∑ τ, P.n τ)) ^ 2 * (3 * (2 * ((fF D * P.a * P.d : ℕ) : ℝ) * D.host.rdE + 1) ^ (fF D * P.a * P.d) * nrm1Sq (lamConj Qbar ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj Qbar ρ (lamOf D cc δ)) t0') ^ (fF D * P.a * P.d) * (2 * Real.exp 1 * Real.pi * B / area (lamConj Qbar ρ (lamOf D cc δ))) ^ (P.a * ∑ τ, P.n τ))) := by
+  first | exact @GlobalTheory.NormSum.CoordConj.coord_conj_le
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPairCoordinatesConjugateBoundStatement =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeUnitNormSqNonneg =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeUnitNormSqNonneg", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm\npublic import Formalism.PairingDivisors.StatementH\npublic import Mathlib.Analysis.SpecialFunctions.Log.PosLog\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.DerivationDenominatorsAndHostFieldSizes\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsBoundMeansPosLogAreaNormalisedTheta\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.MeanInfPosLogLe\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumCoeffMonomial\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ThetaPairCoordinatesConjugateBoundStatement\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryRationalConjIntersectionCardDvdInvariant\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt\nimport Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegralJAndAlgebraicData\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.UnitaryDoubleCosetClassesFiniteCardLe\nimport Mathlib.Algebra.AffineMonoid.UniqueSums\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
@@ -135,7 +156,7 @@ theorem cls_le_exp (f k : ℕ) (n r l L : ℝ) (hf : 1 ≤ f) (hk : (k : ℝ) �
   have hk0 : (0 : ℝ) ≤ k := Nat.cast_nonneg k
   refine pow_le_exp (by positivity) (by positivity) ?_ ?_
   · have e1 : (f : ℝ) ^ 2 * (k : ℝ) ^ 4 ≤ Real.exp (4 * l) := by
-      refine le_trans ?_ (pow_le_exp (y := (f : ℝ) * (2 * n)) (n := 4) (by nlinarith) hl h1 (by norm_num))
+      refine le_trans ?_ (pow_le_exp (y := (f : ℝ) * (2 * n)) (n := 4) (mul_nonneg (by positivity) (by linarith)) hl h1 (by norm_num))
       rw [mul_pow]
       exact mul_le_mul (pow_le_pow_right₀ hf' (by norm_num)) (pow_le_pow_left₀ hk0 hk 4) (by positivity)
         (by positivity)
@@ -143,8 +164,7 @@ theorem cls_le_exp (f k : ℕ) (n r l L : ℝ) (hf : 1 ≤ f) (hk : (k : ℝ) �
     rw [mul_assoc (12 : ℝ)]
     exact mul_le_exp (by positivity) (mul_le_exp (by positivity) (le_exp_self 12) e1) e2
   · push_cast
-    have := pow_le_pow_left₀ hk0 hk 2
-    nlinarith
+    linarith [mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hk0 hk 2) (Nat.cast_nonneg f)]
 
 
 
@@ -170,11 +190,11 @@ theorem sizes (f N a d s Q ch cT ca cd : ℕ) (B L r ν A : ℝ) (hf : 1 ≤ f) 
   have hs0 : (0 : ℝ) ≤ s := Nat.cast_nonneg s
   generalize (N : ℝ) = n at *
   have hm1 : B * (2 * n) = Real.exp (Real.log (B * (2 * n))) := (Real.exp_log (by positivity)).symm
-  have hm0 : 0 ≤ Real.log (B * (2 * n)) := Real.log_nonneg (by nlinarith)
-  have hfn : 1 ≤ (f : ℝ) * (2 * n) := by nlinarith
+  have hm0 : 0 ≤ Real.log (B * (2 * n)) := Real.log_nonneg (one_le_mul_of_one_le_of_one_le hB (by linarith))
+  have hfn : 1 ≤ (f : ℝ) * (2 * n) := one_le_mul_of_one_le_of_one_le hf' (by linarith)
   have hl1 : (f : ℝ) * (2 * n) * B = Real.exp (Real.log ((f : ℝ) * (2 * n) * B)) :=
     (Real.exp_log (by positivity)).symm
-  have hl0 : 0 ≤ Real.log ((f : ℝ) * (2 * n) * B) := Real.log_nonneg (by nlinarith)
+  have hl0 : 0 ≤ Real.log ((f : ℝ) * (2 * n) * B) := Real.log_nonneg (one_le_mul_of_one_le_of_one_le hfn hB)
   have hq1 : (Q : ℝ) ≤ Real.exp (Real.log Q) := (Real.exp_log (by positivity)).ge
   have hq0 : 0 ≤ Real.log Q := Real.log_nonneg hQ'
   have hr1 : r ≤ Real.exp L := (Real.exp_log (by positivity)).ge.trans (Real.exp_le_exp.2 hrL)
@@ -187,16 +207,16 @@ theorem sizes (f N a d s Q ch cT ca cd : ℕ) (B L r ν A : ℝ) (hf : 1 ≤ f) 
   generalize Real.log Q = q at *
   generalize Real.posLog ν = v at *
   generalize Real.posLog A⁻¹ = u at *
-  have hfl : (f : ℝ) * (2 * n) ≤ Real.exp l := by nlinarith
-  have had' : (a : ℝ) * d ≤ 4 * n ^ 2 := by nlinarith
-  have hG : ((f * a * d : ℕ) : ℝ) ≤ 4 * f * n ^ 2 := by push_cast; nlinarith
+  have hfl : (f : ℝ) * (2 * n) ≤ Real.exp l := hl1 ▸ le_mul_of_one_le_right (by linarith) hB
+  have had' : (a : ℝ) * d ≤ 4 * n ^ 2 := by linarith [mul_le_mul ha' hd' hd0 (by linarith)]
+  have hG : ((f * a * d : ℕ) : ℝ) ≤ 4 * f * n ^ 2 := by push_cast; linarith [mul_le_mul_of_nonneg_left had' (Nat.cast_nonneg f)]
   have hG0 : (0 : ℝ) ≤ ((f * a * d : ℕ) : ℝ) := Nat.cast_nonneg _
   have e1 := hcd.trans (cls_le_exp f d n r l L hf hd' (by linarith) hl0 (by linarith) hfl hr1)
   have e2 := hca.trans (cls_le_exp f a n r l L hf ha' (by linarith) hl0 (by linarith) hfl hr1)
   have e3 : (ch : ℝ) ≤ Real.exp (24 * f * n ^ 2 * (12 + 4 * l + 2 * L) + 8 * n ^ 2 * q) := by
     have : (ch : ℝ) ≤ cd * (Q : ℝ) ^ (d ^ 2 + 4) := by exact_mod_cast hch
     refine this.trans (mul_le_exp (by positivity) e1 (pow_le_exp (by positivity) hq0 hq1 ?_))
-    push_cast; nlinarith
+    push_cast; linarith [pow_le_pow_left₀ hd0 hd' 2, one_le_pow₀ (n := 2) hn]
   have e4 : (cT : ℝ) ≤ Real.exp (4 * f * n * B * 2) := by
     have : (cT : ℝ) ≤ (2 : ℝ) ^ (d * s) := by exact_mod_cast hcT
     refine this.trans (pow_le_exp (by positivity) (by positivity) (le_exp_self 2) ?_)
@@ -211,7 +231,7 @@ theorem sizes (f N a d s Q ch cT ca cd : ℕ) (B L r ν A : ℝ) (hf : 1 ≤ f) 
     refine pow_le_exp (by positivity) (by positivity) (pow_le_exp (by positivity) (by positivity) ?_ hs)
       (by norm_num)
     have : (a.factorial : ℝ) ≤ (a : ℝ) ^ a := by exact_mod_cast Nat.factorial_le_pow a
-    exact this.trans (pow_le_exp ha0 hm0 (by nlinarith) ha')
+    exact this.trans (pow_le_exp ha0 hm0 (ha'.trans (hm1 ▸ le_mul_of_one_le_left (by linarith) hB)) ha')
   have e8 : (2 * ((f * a * d : ℕ) : ℝ) * r + 1) ^ (f * a * d) ≤
       Real.exp (4 * f * n ^ 2 * (3 + (2 * l + L))) := by
     refine pow_le_exp (by positivity) (by positivity) ?_ hG
@@ -220,7 +240,7 @@ theorem sizes (f N a d s Q ch cT ca cd : ℕ) (B L r ν A : ℝ) (hf : 1 ≤ f) 
       refine hG.trans (le_trans ?_ h1)
       have : 0 ≤ f * n ^ 2 * (f - 1) := by have : 0 ≤ (f : ℝ) - 1 := by linarith
                                            positivity
-      nlinarith
+      linarith
     have h3 := mul_le_exp (by linarith) h2 hr1
     have h4 : 1 ≤ Real.exp (2 * l + L) := Real.one_le_exp (by linarith)
     have h5 := mul_le_exp (Real.exp_pos _).le (le_exp_self 3) (le_refl (Real.exp (2 * l + L)))
@@ -231,7 +251,7 @@ theorem sizes (f N a d s Q ch cT ca cd : ℕ) (B L r ν A : ℝ) (hf : 1 ≤ f) 
     · rw [div_eq_mul_inv]
       refine mul_le_exp (by positivity) (mul_le_exp (by positivity) (mul_le_exp (by positivity)
         (mul_le_exp (by positivity) (le_exp_self 2) le_rfl) (Real.pi_le_four.trans (le_exp_self 4))) ?_) hu1
-      nlinarith
+      exact hm1 ▸ le_mul_of_one_le_right (by linarith) (by linarith)
     · push_cast
       have := mul_le_mul ha' hs hs0 (by positivity)
       linarith
@@ -239,8 +259,8 @@ theorem sizes (f N a d s Q ch cT ca cd : ℕ) (B L r ν A : ℝ) (hf : 1 ≤ f) 
     (mul_le_exp (by positivity) (mul_le_exp (by positivity) e5 e6)
       (mul_le_exp (by positivity) e7 (mul_le_exp (by positivity) (mul_le_exp (by positivity)
         (mul_le_exp (by positivity) (le_exp_self 3) e8) e9) e10)))).trans (Real.exp_le_exp.2 ?_)
-  have hn2 : 1 ≤ n ^ 2 := by nlinarith
-  have t2 : 1 ≤ (f : ℝ) * n ^ 2 := by nlinarith
+  have hn2 : 1 ≤ n ^ 2 := one_le_pow₀ hn
+  have t2 : 1 ≤ (f : ℝ) * n ^ 2 := one_le_mul_of_one_le_of_one_le hf' hn2
   have t1 : 0 ≤ (f : ℝ) * n * B := by positivity
   have p1 := mul_nonneg t1 hm0
   have p2 := mul_le_mul_of_nonneg_left hL t1
@@ -270,11 +290,11 @@ theorem sum_prod_le {α β : Type} [Fintype α] [Fintype β] (g : α × β → �
 
 
 theorem norm_meanInf_posLog_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ) (Q : ℕ), Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → 0 < Q → ∀ (K : Type) [Field K] [NumberField K] [_root_.NumberField.IsTotallyComplex K] (σ : K →+* ℂ) (N : ℕ) (B L : ℝ) (P : Pair D cc δ t0 Q) (x : K), 1 ≤ N → 1 ≤ B → 1 ≤ L → Real.log D.host.rdE ≤ L → |logDerivativeAtOne D| ≤ L → P.Small N B → σ x = (P.norm : ℂ) → Formalism.PairingDivisionLocalBalance.meanInf K (fun v => Real.posLog ‖v.embedding x‖) ≤ C * fF D * (2 * (N : ℝ)) * B * (L + Real.log (B * (2 * (N : ℝ)))) + C * fF D * (N : ℝ) ^ 2 * (L + Real.log ((fF D : ℝ) * (2 * (N : ℝ)) * B)) + C * (N : ℝ) ^ 2 * Real.log Q := by
-  obtain ⟨C₀, hC₀, hmean⟩ := GlobalTheory.T.exists_bound_means_posLog_area_normalisedTheta
+  obtain ⟨C₀, hC₀, hmean⟩ := _root_.GlobalTheory.PositiveMeans.means_le
   refine ⟨1100 + 4 * C₀, by positivity, ?_⟩
   intro D hI cc δ t0 Q hc ht hQ K _ _ _ σ N B L P x hN hB hL hrL hdL hsm hx
-  obtain ⟨-, -, hr, hf, hcard, -⟩ := GlobalTheory.T.derivationDenominators_and_hostField_sizes D hI.g1
-  obtain ⟨hdata, htor⟩ := (GlobalTheory.T.admJ_and_torsion_data_algebraic D hI.g1).2 cc δ hc
+  obtain ⟨-, -, hr, hf, hcard, -⟩ := _root_.GlobalTheory.NormSum.letters_and_sizes D hI.g1
+  obtain ⟨hdata, htor⟩ := (_root_.GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hI.g1).2 cc δ hc
   obtain ⟨-, hcd, hJ⟩ := GlobalTheory.NormSum.cls_finite_card_le D P.d
   obtain ⟨hfin, hch⟩ := hJ P.J P.J_le P.idx_ne
   have hca := (GlobalTheory.NormSum.cls_finite_card_le D P.a).2.1
@@ -334,9 +354,9 @@ theorem norm_meanInf_posLog_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), Inp D → 
     rw [Finset.card_univ, hcard, nsmul_eq_mul]; ring
   have hf' : (1 : ℝ) ≤ fF D := by exact_mod_cast hf
   have hn : (1 : ℝ) ≤ N := by exact_mod_cast hN
-  have hm0 : 0 ≤ Real.log (B * (2 * (N : ℝ))) := Real.log_nonneg (by nlinarith)
-  have hfn : 1 ≤ (fF D : ℝ) * (2 * (N : ℝ)) := by nlinarith
-  have hl0 : 0 ≤ Real.log ((fF D : ℝ) * (2 * (N : ℝ)) * B) := Real.log_nonneg (by nlinarith)
+  have hm0 : 0 ≤ Real.log (B * (2 * (N : ℝ))) := Real.log_nonneg (one_le_mul_of_one_le_of_one_le hB (by linarith))
+  have hfn : 1 ≤ (fF D : ℝ) * (2 * (N : ℝ)) := one_le_mul_of_one_le_of_one_le hf' (by linarith)
+  have hl0 : 0 ≤ Real.log ((fF D : ℝ) * (2 * (N : ℝ)) * B) := Real.log_nonneg (one_le_mul_of_one_le_of_one_le hfn hB)
   have hq0 : 0 ≤ Real.log Q := Real.log_natCast_nonneg Q
   set E₀ : ℝ := 1100 * fF D * (2 * (N : ℝ)) * B * (L + Real.log (B * (2 * (N : ℝ)))) +
       1100 * fF D * (N : ℝ) ^ 2 * (L + Real.log ((fF D : ℝ) * (2 * (N : ℝ)) * B)) +
@@ -390,3 +410,6 @@ theorem norm_meanInf_posLog_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), Inp D → 
   linarith
 
 end GlobalTheory.ArchNorm
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.LatticeUnitNormSqNonneg =====

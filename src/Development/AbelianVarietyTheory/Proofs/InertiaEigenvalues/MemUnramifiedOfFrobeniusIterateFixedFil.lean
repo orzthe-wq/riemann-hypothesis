@@ -71,8 +71,8 @@ theorem ιB_algebraMap (P : LocPrime l) (K : FinExt l) (a : ↥(K0 K)) :
 
 theorem orderOf_frobK0 (P : LocPrime l) (K : FinExt l) :
     orderOf (maxUnramifiedFrobenius P K) = finrank ℚ_[l] ↥(K0 K) := by
-  haveI := (P.PD K).finK₀
-  haveI := nontrivial_B P K
+  have := (P.PD K).finK₀
+  have := nontrivial_B P K
   have hfix : IntermediateField.fixedField (Subgroup.zpowers (maxUnramifiedFrobenius P K)) = ⊥ := by
     rw [eq_bot_iff]
     intro x hx
@@ -143,7 +143,7 @@ theorem mem_unramified_of_frobenius_iterate_fixed_fil_alt :
     ∃ a : ↥(K0 K), c = algebraMap ↥(K0 K) P.R.B a := by
   intro l _ P _ _ K c hn hF
   set n := finrank ℚ_[l] ↥(K0 K) with hn_def
-  haveI := (P.PD K).finK₀
+  have := (P.PD K).finK₀
   set τ := maxUnramifiedFrobenius P K
   have hord : orderOf τ = n := orderOf_frobK0 P K
   have hn0 : 0 < n := Module.finrank_pos

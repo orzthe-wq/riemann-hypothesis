@@ -96,7 +96,7 @@ theorem kap_common (hs : M.split = some g) (T T' : F) (Zh₁ Zh₂ : Matrix (Fin
   · field_simp [h1.1, h2.1]
     first | linear_combination (g.q : F) * k1 | linear_combination -(g.q : F) * k1
   · field_simp [h1.2, h2.2]
-    first | linear_combination (g.q : F) * k2 | linear_combination -(g.q : F) * k2
+    first | linear_combination (g.q : F) * k2
 
 theorem laG_b (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (Z : M.Mat (r + 1))
     (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T') (hu : IsUnit (ZZm g Zh T T').det) :

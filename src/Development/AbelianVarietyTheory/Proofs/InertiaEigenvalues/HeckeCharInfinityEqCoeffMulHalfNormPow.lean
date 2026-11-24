@@ -101,12 +101,6 @@ theorem conjugate_tauE_ne_tauE (D : D7) (τ τ' : D.what₂.Tau) :
   have : 0 < Real.sqrt D.host.d := Real.sqrt_pos.2 (by exact_mod_cast D.host.hyp.2.1.pos)
   linarith
 
-theorem mk_tauE_bij (D : D7) : Function.Bijective (fun τ : D.what₂.Tau => InfinitePlace.mk (tauE D τ)) := by
-  refine ⟨fun τ τ' h => ?_, fun w => GlobalTheory.CharInfPlace.exists_mk_tauE D w⟩
-  rcases InfinitePlace.mk_eq_iff.1 h with e | e
-  · exact D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 e))
-  · exact absurd e (conjugate_tauE_ne_tauE D τ τ')
-
 theorem mk_tauE_complex (D : D7) (τ : D.what₂.Tau) : ¬ (InfinitePlace.mk (tauE D τ)).IsReal := by
   rw [InfinitePlace.isReal_mk_iff, NumberField.ComplexEmbedding.isReal_iff]
   exact conjugate_tauE_ne_tauE D τ τ
@@ -124,7 +118,7 @@ theorem inf_eq_mul_normPow : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ :
     exact_mod_cast this
   have hnorm : ∏ τ, ‖tauE D τ (a : D.host.E)‖ ^ 2 = |((Algebra.norm ℚ (a : D.host.E) : ℚ) : ℝ)| := by
     rw [← Rat.cast_abs, ← NumberField.InfinitePlace.prod_eq_abs_norm]
-    refine (Fintype.prod_bijective _ (mk_tauE_bij D) _ _ (fun τ => ?_))
+    refine (Fintype.prod_bijective _ (_root_.GlobalTheory.CMTypePlaces.mk_tauE_bijective D) _ _ (fun τ => ?_))
     rw [NumberField.InfinitePlace.mult, if_neg (mk_tauE_complex D τ)]
     rfl
   have hA : ∏ τ, (tauE D τ (a : D.host.E) ^ ((b τ : ℤ) + (W.rank : ℤ)) *

@@ -2,9 +2,11 @@ module
 
 public import Formalism.SharpRestriction.CuspSpanNormBounds.CntPartners
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MassGenusCyclicDiscriminantSplitPrime
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeMassRatioStatement
+public import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary₂.MaxMass
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeMassRatio
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemOfPerpPerp
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StdLatIsOrthoLatticeAndMassPropertiesStatement
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.StdLatIsOrthoLatticeAndMassProperties
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -57,7 +59,7 @@ theorem main : ∀ (D : D7) (u : D.what₂.Word), letI := D.host.cmStar; ∀ F0 
   let := D.host.cmStar
   obtain ⟨⟨hPD, hrk⟩, hL⟩ := GlobalTheory.Mass.RowPerp.main D u F0 he hz
   obtain ⟨hInt, hdisc⟩ := hL Λ hΛ
-  obtain ⟨hsym, hortho, hpos, -, -⟩ := GlobalTheory.T.stdLat_isOrthoLattice_and_mass_properties D.host.E D.sp.cm.cmUnram D.R.k
+  obtain ⟨hsym, hortho, hpos, -, -⟩ := _root_.GlobalTheory.Mass.StdMass.main D.host.E D.sp.cm.cmUnram D.R.k
   have hk : 1 ≤ D.R.k := by have := D.R.m_add_three_le_k; omega
 
   have hf : fDeg D.host.E = D.R.f := by
@@ -71,7 +73,7 @@ theorem main : ∀ (D : D7) (u : D.what₂.Word), letI := D.host.cmStar; ∀ F0 
       NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces D.host.E
     show _ = 2 * D.R.ord
     omega
-  have hmass := GlobalTheory.Mass.CyclicDisc.main GlobalTheory.T.maximalHermitianLattice_massRatio D.host.E (D.sp.X 0).V (D.sp.X 0).hT
+  have hmass := GlobalTheory.Mass.CyclicDisc.main _root_.GlobalTheory.Mass.MaxFormula.main D.host.E (D.sp.X 0).V (D.sp.X 0).hT
     D.sp.cm.cmUnram (D.sp.X 0).herm hPD (by rw [hrk]; exact hk) (Fin D.R.k → D.host.E)
     (Cnt.stdH D.host.E D.R.k) hsym (Cnt.stdLat D.host.E D.R.k) (by rw [hrk]; exact hortho)
     (Lat.Tu D u) hp hs _ hInt hdisc

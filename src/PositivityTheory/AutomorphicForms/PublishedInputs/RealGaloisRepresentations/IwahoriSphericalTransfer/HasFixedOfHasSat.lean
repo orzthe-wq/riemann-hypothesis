@@ -10,41 +10,6 @@ public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.HeckeChar
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFixedIff
 import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.ExistsSteinberg
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.HasSatOfFixed
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 public import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.LocalGlobalCompatibilityReal
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.BcDefs
 import PositivityTheory.AutomorphicForms.PublishedInputs.RealGaloisRepresentations.IwahoriSphericalTransfer.FinrankAdjoinSqrtNegOne
@@ -125,40 +90,3 @@ end Par
 
 end GlobalTheory.RealGal.TwistUnr
 
-
-open GlobalTheory.RealGal.TwistUnr in
-theorem GlobalTheory.RealGal.unrAt_of_isoTwist : GlobalTheory.Mem.LiteralAutomorphy.LitN → AdmissibleReal → ∀ (F : Type) [Field F] [NumberField F]
-    [IsTotallyReal F] (a : ℕ), 1 ≤ a → ∀ (π : TR.CuspSub F a) (η : HChar F), IsoTwist π η →
-    ∀ (u : HeightOneSpectrum (𝓞 F)) (B : Multiset ℂˣ), π.HasSat u B → η.UnrAt u := by
-  intro LN hA F _ _ _ a ha π η hT u B hB
-  have hL := GlobalTheory.T.local_global_compatibility_real hA
-  have L := LN.loc
-  obtain ⟨σ, hσ⟩ := (hL F a π u).1
-  have hσ' := isLocComp_twist hT hσ
-  obtain ⟨A, hAu⟩ := exists_isPlaceOver (AlgebraicClosure F) u
-  obtain ⟨rc, hrc⟩ := L.llc F (AlgebraicClosure F) A u hAu
-  have H : IsRec hAu rc := GlobalTheory.LocLanglands.isRec_of_isRecLit L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz
-    F (AlgebraicClosure F) A u hAu rc hrc
-  have u1 := unr_of_hasFixed H σ (hasFixed_of_hasSat hL hB hσ)
-  have u2 := unr_of_hasFixed H _ (hasFixed_of_hasSat hL hB hσ')
-  obtain ⟨ar, har, ε, -, LL⟩ := H
-  have hs := GlobalTheory.HeckeComp.smooth_loc η u
-  have e : rc (cls (ParLaws.toRep (σ.twist (GlobalTheory.CuspRep.CuspSub.locDet a η u) (TR.CuspSub.isOpen_ker_locDet η u)))) =
-      (rc (cls (ParLaws.toRep σ))).lpChar (rc (.ofChar (η.loc u) hs)) := by
-    rw [← LL.twist]
-    exact congrArg _ (IrrGL.tw_of σ.ρ σ.smooth σ.irred _ _).symm
-  rw [e, LL.one] at u2
-  have hd : 1 ≤ (rc (cls (ParLaws.toRep σ))).lpDim := by rw [LL.dim]; exact ha
-  have hi := ine_trivial u1 hd _ u2
-  have hU : (WD.lpOfChar hAu ((η.loc u).comp ar) (har.smooth hs)).unr := by
-    rw [WD.lpOfChar, WD.unr_mk]
-    refine ⟨rfl, fun s => LinearMap.ext fun v => funext fun i => ?_⟩
-    have := hi s
-    simp [this]
-  have hU' := (GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff har hs).1 hU
-  intro x hx
-  refine hU' x ?_
-  have h0 : Valued.v (x : u.adicCompletion F) ≠ 0 := by simp
-  rw [← GlobalTheory.SmGL.ord_eq_zero_iff, GlobalTheory.SmGL.SphCompletion.ord_completion, neg_eq_zero]
-  unfold IsUnitAt at hx
-  rw [hx, WithZero.log_one]

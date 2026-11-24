@@ -104,7 +104,7 @@ theorem dEmb_add (i t : ℕ) (a b : Fin (t + 1) → k) : dEmb k i t (a + b) = dE
   simp only [dEmb, Subgroup.coe_mul, this, ofAdd_add, map_mul]
 
 theorem continuous_dEmb (i t : ℕ) : Continuous (dEmb k i t) := by
-  apply GlobalTheory.CompanionTheory.BZPhiPG.OntoO.Small.continuous_dEmb <;> assumption
+  apply GlobalTheory.CompanionTheory.BZPhiPG.OntoO.Small.continuous_dEmb
 
 theorem dEmb_mul_entry (i t : ℕ) (d : Fin (t + 1) → k) (g : Mir k ((i + 1) + t + 1)) (b : Fin (t + 1)) :
     (((dEmb k i t d * g : Mir k ((i + 1) + t + 1)) : GL (Fin ((i + 1) + t + 2)) k) :

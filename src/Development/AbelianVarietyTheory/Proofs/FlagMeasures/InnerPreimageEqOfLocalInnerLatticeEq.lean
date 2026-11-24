@@ -2,7 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.LocClosed
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeLocalGlobalPrinciple
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NumberFieldLatticeDeterminedByLocalLatticesStatement
+public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PlacesOf
+import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.GFrames
+import Mathlib.Algebra.Module.Lattice.Full
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NumberFieldLatticeDeterminedByLocalLattices
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -40,7 +43,6 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.PlacesOf
 
 @[expose] public section
 
@@ -120,7 +122,7 @@ theorem mem_of_local (Z : LocDat D) (Γ : LV D) (hΓ : Submodule.IsLattice D.hos
     refine { toIsLattice := LatLoc.isLattice_map (LatLoc.cE D) Λ hΛ, span_eq_top := ?_ }
     change Submodule.span D.host.E ((LatLoc.cE D).toLinearMap '' (Λ : Set (VS D).V)) = ⊤
     rw [← Submodule.map_span, hspan, Submodule.map_top, LinearEquiv.range]
-  have hrec := (GlobalTheory.T.numberField_lattice_determined_by_local_lattices
+  have hrec := (_root_.GlobalTheory.HL.PlacesRec.lattice_local
     (GlobalTheory.HL.placesOf Z) (nV D) (LatLoc.cL Λ) hfull).1
   have hx : x ∈ Λ := by
     have hmem := (hrec (LatLoc.cE D x)).2 fun p => by

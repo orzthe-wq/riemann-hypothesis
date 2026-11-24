@@ -83,15 +83,15 @@ theorem exists_countable_family (l : ℕ) [Fact l.Prime] :
       (∀ i, FiniteDimensional ℚ_[l] (K i)) ∧
       ∀ s : Set (PadicAlgCl l), s.Finite → ∃ i, s ⊆ K i := by
   classical
-  haveI halg : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ
-  haveI : Countable (AlgebraicClosure ℚ) := by
+  have halg : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ
+  have : Countable (AlgebraicClosure ℚ) := by
     have h : {x : AlgebraicClosure ℚ | IsAlgebraic ℚ x}.Countable := Algebraic.countable ℚ _
     exact Set.countable_univ_iff.1 (h.mono fun x _ => halg.isAlgebraic x)
   let j : AlgebraicClosure ℚ →+* PadicAlgCl l :=
     (IsAlgClosed.lift (R := ℚ) (S := AlgebraicClosure ℚ) (M := PadicAlgCl l)).toRingHom
   refine ⟨Finset (AlgebraicClosure ℚ), inferInstance,
     fun S => IntermediateField.adjoin ℚ_[l] (j '' (S : Set _)), fun S => ?_, fun s hs => ?_⟩
-  · haveI : Finite (j '' (S : Set (AlgebraicClosure ℚ))) := (S.finite_toSet.image j).to_subtype
+  · have : Finite (j '' (S : Set (AlgebraicClosure ℚ))) := (S.finite_toSet.image j).to_subtype
     exact IntermediateField.finiteDimensional_adjoin fun z _ =>
       (Algebra.IsAlgebraic.isAlgebraic z).isIntegral
   · choose y hy using exists_mem_adjoin_simple l (AlgebraicClosure ℚ) j
@@ -148,14 +148,14 @@ theorem exists_finiteDimensional_entries_mem (l : ℕ) [Fact l.Prime] (G : Type)
   obtain ⟨m, x, hx⟩ := nonempty_interior_of_iUnion_of_closed hcl hun
   have hop : IsOpen (entrySubgroup r (K m) : Set G) :=
     Subgroup.isOpen_of_mem_nhds _ (mem_interior_iff_mem_nhds.1 hx)
-  haveI : Finite (G ⧸ entrySubgroup r (K m)) := Subgroup.quotient_finite_of_isOpen _ hop
+  have : Finite (G ⧸ entrySubgroup r (K m)) := Subgroup.quotient_finite_of_isOpen _ hop
   let s : Set (PadicAlgCl l) := Set.range fun p : (G ⧸ entrySubgroup r (K m)) × Fin n × Fin n =>
     (r p.1.out : Matrix (Fin n) (Fin n) (PadicAlgCl l)) p.2.1 p.2.2
-  haveI : Finite s := (Set.finite_range _).to_subtype
-  haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] s) :=
+  have : Finite s := (Set.finite_range _).to_subtype
+  have : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] s) :=
     IntermediateField.finiteDimensional_adjoin fun z _ =>
       (Algebra.IsAlgebraic.isAlgebraic z).isIntegral
-  haveI := hK m
+  have := hK m
   refine ⟨IntermediateField.adjoin ℚ_[l] s ⊔ K m, inferInstance, fun g i j => ?_⟩
   obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul (entrySubgroup r (K m)) g
   have hg : g = (g : G ⧸ entrySubgroup r (K m)).out * (h : G)⁻¹ := by
@@ -171,7 +171,7 @@ theorem exists_finExt_entries_mem :
   intro l _ G _ _ _ _ _ a r hr L₀
   obtain ⟨K, hK, h⟩ := exists_finiteDimensional_entries_mem l G a r
     fun i j => hr.matrix_elem i j
-  haveI := L₀.2
+  have := L₀.2
   exact ⟨⟨L₀.1 ⊔ K, inferInstance⟩, le_sup_left, fun g i j =>
     (le_sup_right : K ≤ L₀.1 ⊔ K) (h g i j)⟩
 

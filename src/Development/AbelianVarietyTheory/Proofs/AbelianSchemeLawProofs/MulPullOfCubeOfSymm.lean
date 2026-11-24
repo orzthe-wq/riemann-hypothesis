@@ -132,8 +132,7 @@ theorem mulPull_of_cube_of_symm :
       (snd P.A P.A ≫ (GrpObj.inv : P.A ⟶ P.A)).left] ![1, -1] := hs S P 1 P.A
     refine hasGen_pow P.isLB hcube (𝟙 P.A) ?_ ?_ n
     · refine (hrig.pull (toUnit P.A).left).of_formEq P.isLB (fun U _ h => ?_)
-      simp only [Finset.univ_unique, Finset.prod_singleton, Fin.prod_univ_succ, Fin.prod_univ_zero,
-        Matrix.cons_val_zero, _root_.mul_one]
+      simp only [Finset.univ_unique, Finset.prod_singleton]
       rfl
     · refine (hneg.pull (lift (𝟙 P.A) (𝟙 P.A)).left).of_formEq P.isLB (fun U _ h => ?_)
       simp only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ,

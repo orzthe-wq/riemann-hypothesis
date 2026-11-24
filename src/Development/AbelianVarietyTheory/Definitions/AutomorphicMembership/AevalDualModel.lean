@@ -84,7 +84,7 @@ private lemma aeval_dualNumber_inl_add_inr {σ : Type} [Fintype σ] {R : Type} [
         TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr,
         Derivation.leibniz, pderiv_X, smul_eq_mul, map_add, map_mul, aeval_X, add_mul,
         Finset.sum_add_distrib]
-      simp [Pi.single_apply, Finset.mul_sum, Finset.sum_mul, mul_comm, mul_left_comm, add_comm]
+      simp [Pi.single_apply, Finset.mul_sum, mul_comm, mul_left_comm, add_comm]
 
 
 set_option autoImplicit false in

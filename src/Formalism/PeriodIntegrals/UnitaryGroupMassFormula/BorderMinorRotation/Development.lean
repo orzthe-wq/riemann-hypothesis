@@ -100,7 +100,6 @@ theorem bL_last {n m : ℕ} (e es : Fin n) (v : Fin m → Fin n) :
   | succ j =>
     first
     | simp [PI.bE, PI.bS, ← Fin.succ_castSucc]
-    | simp [PI.bE, PI.bS, Fin.cons_snoc_eq_snoc_cons]
 
 private theorem mul_intCast_mul_eq_intCast_mul_mul {A : Type*} [Ring A] (s x : A) (z : ℤ) :
     s * ((z : A) * x) = (z : A) * (s * x) := by
@@ -141,7 +140,6 @@ theorem borderFull_of (hFC : ExpFirstCol) (hS : BorderS) (hM : BFMid) : BorderFu
     Fin.sum_univ_succ, Fin.sum_univ_castSucc]
   first
   | simp only [hmid]
-  | rw [Finset.sum_congr rfl (fun w _ => hmid w)]
   rw [Fin.succAbove_zero, hs, h0v, hL, hLv, hgen]
   simp only [Fin.val_zero, pow_zero, Int.cast_one, one_mul, Fin.val_succ, Fin.val_last]
   rw [hS A n m E e es v hE hv (u - 1), hu, mul_sub (Formalism.REAL.Tm E u e e), hT2,

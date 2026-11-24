@@ -288,9 +288,6 @@ theorem comb_eq_lc (ψ : AddChar (AF D.host.F) ℂ) (c : WO S T →₀ ℂ) (f :
     comb ψ S T c f = Finsupp.linearCombination ℂ (fun u => heisO ψ S T u f) c := by
   rw [Finsupp.linearCombination_apply, Finsupp.sum]; rfl
 
-theorem heisO_zero_left (ψ : AddChar (AF D.host.F) ℂ) (f : WO S T → ℂ) : heisO ψ S T 0 f = f := by
-  funext t; simp [heisO, symplOH, symplO_zero_right]
-
 theorem heisO_comb (ψ : AddChar (AF D.host.F) ℂ) (x : WO S T) (c : WO S T →₀ ℂ) (g : WO S T → ℂ) :
     heisO ψ S T x (comb ψ S T c g) =
       comb ψ S T (c.sum fun u a => Finsupp.single (x + u) (a * ψ (symplOH S T x u))) g := by
@@ -401,7 +398,7 @@ theorem exists_back (ψ : AddChar (AF D.host.F) ℂ) {e : AE D} (hec : e * cA D 
   have hM : Φ ∈ reach ψ e Λ Φ := mem_reach.2 ⟨hW, Finsupp.single 0 1, fun u hu => by
     classical
     rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hu)]; exact zero_mem _, fun f₀ Tm _ => by
-    rw [comb_eq_lc, Finsupp.linearCombination_single, one_smul, heisO_zero_left]⟩
+    rw [comb_eq_lc, Finsupp.linearCombination_single, one_smul, _root_.GlobalTheory.LatVac.heisO_zero]⟩
   have hK := ind_nsmul_mem_of_ne_zero (reach ψ e Λ Φ) hb inf_le_right inf_le_right hLL' hX (half_div S T e) (half_div S T _) tf hfin
     (reach_trans hce hsb) (reach_modul hec hsb) Φ hM (fun t ht => (isHalf_iff S T).1 (h1 t ht)) k hk
     (fun u hu => h2 u hu.1 ((isHalf_iff S T).2 hu.2))

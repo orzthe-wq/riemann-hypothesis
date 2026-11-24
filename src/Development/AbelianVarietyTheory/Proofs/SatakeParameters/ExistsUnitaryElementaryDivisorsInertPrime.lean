@@ -51,6 +51,7 @@ import Std.Tactic.BVDecide.Normalize.Prop
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NormalFam
 import Formalism.LocalToGlobal.IndefiniteForms.IndefSide
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FIwasawaA
 
 @[expose] public section
 
@@ -85,7 +86,7 @@ theorem antiJ_herm (n : ℕ) (a b : Fin n) :
 
 theorem antiJ_det_ne_zero (n : ℕ) : (Formalism.UG.antiJ E n).det ≠ 0 := by
   intro h
-  have := congrArg Matrix.det (GlobalTheory.DualDivU.antiJ_sq (L := E) (n := n))
+  have := congrArg Matrix.det (_root_.Formalism.UG.P.fIwasawa_antiJ_mul_antiJ (L := E) (n := n))
   rw [Matrix.det_mul, h, zero_mul, Matrix.det_one] at this
   exact zero_ne_one this
 

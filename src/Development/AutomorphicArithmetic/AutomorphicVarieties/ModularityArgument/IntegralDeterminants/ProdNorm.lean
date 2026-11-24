@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
+import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.CharacterValueAtT
 
 @[expose] public section
 
@@ -103,15 +104,6 @@ private theorem nu_int (τ : E →+* ℂ) (x : 𝓞 E) : nu ι (τ x) ≤ 1 := b
   obtain ⟨u, hu⟩ := exists_place ι τ
   exact (nu_le_one_iff ι hu _).2 (u.valuation_le_one x)
 
-private theorem val_unif (w : HeightOneSpectrum (𝓞 E)) :
-    w.valuation E (unif w : E) = WithZero.exp (-1 : ℤ) := by
-  have h := unif_spec w
-  unfold IsUnifAt at h
-  have h' : Valued.v (algebraMap E (w.adicCompletion E) (unif w : E)) = WithZero.exp (-1 : ℤ) := h
-  have hv : Valued.v (algebraMap E (w.adicCompletion E) (unif w : E)) = w.valuation E (unif w : E) :=
-    HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _
-  rwa [hv] at h'
-
 private theorem exists_gen (w : HeightOneSpectrum (𝓞 E)) :
     ∃ h : ℕ, h ≠ 0 ∧ ∃ α : 𝓞 E, α ≠ 0 ∧ Ideal.span {α} = w.asIdeal ^ h := by
   let I0 : (Ideal (𝓞 E))⁰ := ⟨w.asIdeal, mem_nonZeroDivisors_of_ne_zero w.ne_bot⟩
@@ -134,7 +126,7 @@ private theorem val_gen (w : HeightOneSpectrum (𝓞 E)) {h : ℕ} {α : 𝓞 E}
     (hs : Ideal.span {α} = w.asIdeal ^ h) :
     w.valuation E (α : E) = (w.valuation E (unif w : E)) ^ h := by
   have h1 : w.valuation E (α : E) = w.intValuation α := w.valuation_of_algebraMap α
-  rw [h1, w.intValuation_eq_exp_neg_multiplicity h0, hs, val_unif, ← WithZero.exp_nsmul]
+  rw [h1, w.intValuation_eq_exp_neg_multiplicity h0, hs, _root_.GlobalTheory.CharVal.val_unif, ← WithZero.exp_nsmul]
   have hm : multiplicity w.asIdeal (w.asIdeal ^ h) = h :=
     multiplicity_pow_self w.ne_bot (by simpa using w.isPrime.ne_top) h
   rw [hm]
@@ -173,7 +165,7 @@ theorem prodNorm : ProdNorm := by
     have hp := nu_pos ι ((map_ne_zero τ).2 (unif w).ne_zero)
     refine ⟨hp, ?_⟩
     have h1 : ¬ w.valuation E (unif w : E)⁻¹ ≤ 1 := by
-      rw [map_inv₀, val_unif, not_le, ← WithZero.exp_neg, neg_neg, ← WithZero.exp_zero]
+      rw [map_inv₀, _root_.GlobalTheory.CharVal.val_unif, not_le, ← WithZero.exp_neg, neg_neg, ← WithZero.exp_zero]
       exact WithZero.exp_lt_exp.2 one_pos
     rw [← nu_le_one_iff ι hτ, map_inv₀, nu_inv, not_le] at h1
     exact (one_lt_inv₀ hp).1 h1
@@ -183,7 +175,7 @@ theorem prodNorm : ProdNorm := by
     intro τ hτ
     have hv : w.valuation E ((α : E) / (unif w : E) ^ h) = 1 := by
       have hu : w.valuation E (unif w : E) ≠ 0 := by
-        rw [val_unif]
+        rw [_root_.GlobalTheory.CharVal.val_unif]
         exact WithZero.exp_ne_zero
       rw [map_div₀, map_pow, val_gen w h0 hs, div_self (pow_ne_zero _ hu)]
     have h1 := nu_eq_one ι hτ hv

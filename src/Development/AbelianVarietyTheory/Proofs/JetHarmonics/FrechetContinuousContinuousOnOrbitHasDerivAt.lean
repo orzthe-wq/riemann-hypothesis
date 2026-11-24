@@ -286,7 +286,7 @@ open Filter Topology CWDeriv
 theorem cwCont_continuousOn_hasDerivAt : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDS ε mu → ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (Bm : R.H → V), (∀ v ∈ R.sm, ∀ w ∈ R.sm, Bm (v + w) = Bm v + Bm w) → (∀ (a : ℂ), ∀ v ∈ R.sm, Bm (a • v) = a • Bm v) → PI.BesselMapUniq.IsCWCont (k := k) (r := r) R.σ Bm → ∀ v ∈ R.sm, ContinuousOn (fun g => Bm (R.σ g v)) (GG k r) ∧ ∀ X, PI.UpqRep.InLieHpk k r X → HasDerivAt (fun t : ℝ => Bm (R.σ (NormedSpace.exp ((t : ℂ) • X)) v)) (Bm (PI.UpqRep.dsig (k := k) (r := r) R.σ X v)) 0 := by
   intro hK k r ε mu R hR V _ _ Bm ha hs hB v hv
   have hD : DerFacts R := fun X hX =>
-    ⟨(GlobalTheory.T.derivedAction_discreteSeries_properties hK k r ε mu R hR X hX).1, (GlobalTheory.T.derivedAction_discreteSeries_properties hK k r ε mu R hR X hX).2.2.2.2⟩
+    ⟨(_root_.GlobalTheory.DerivedAction.derived_action hK k r ε mu R hR X hX).1, (_root_.GlobalTheory.DerivedAction.derived_action hK k r ε mu R hR X hX).2.2.2.2⟩
   have hsm := PI.UnitaryGroupMassFormula.CapelliEig.smooth_right_action k r ε mu R.H R.σ hR.2 v hv
   have h0 : (0 : R.H) ∈ R.sm := R.smSub.zero_mem
   have hB0 : Bm 0 = 0 := by simpa using hs 0 0 h0

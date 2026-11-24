@@ -120,7 +120,7 @@ private theorem act_scalar (D : Dat F E) (w : (A E)ˣ) (a : A F) (ha : am E a = 
     intro i j
     rw [ha]
     fin_cases i <;> fin_cases j <;>
-      simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply,
+      simp [Matrix.mul_apply, Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply,
         Matrix.diagonal_apply] <;> ring
   have hc (u : A F) : D.co (am E u) 0 = u := by
     rw [← D.mkE_base, D.co_mkE]

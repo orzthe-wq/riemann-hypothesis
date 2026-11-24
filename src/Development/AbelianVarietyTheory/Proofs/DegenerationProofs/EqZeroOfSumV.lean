@@ -90,7 +90,7 @@ theorem unit_value : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → T
   subst hg₂
   have z : k • g₂ = iota hB F 0 := by rw [map_zero, ← hh, ho]
   refine ⟨qkMk hB 0 g₂ z, rfl, fun x hx e he c hval => ?_⟩
-  obtain ⟨w₁, hw₁, hv₁, hsum⟩ := GlobalTheory.T.section_value_at_torsionPoint_eq_sum_terms hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv A G hG U w₀ ρ hN k k1 _ x hx e he
+  obtain ⟨w₁, hw₁, hv₁, hsum⟩ := _root_.GlobalTheory.UT.TorsionValue.value_at_torsion hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv A G hG U w₀ ρ hN k k1 _ x hx e he
   have hS : SumV v (coef ϑ g₂ w₁) c := hsum 1 le_rfl w₁ ⟨hw₁, fun z J _ => (pow_one _).symm⟩ th ϑ c hE hval
   obtain ⟨-, -, -, -, hqk, -, hterm⟩ := GlobalTheory.UT.CoefVal.main hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv g₂
   have hl := hqk k k1 (qkMk hB 0 g₂ z)

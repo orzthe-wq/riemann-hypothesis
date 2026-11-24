@@ -7,46 +7,6 @@ public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.Gaug
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.ReHermitianCombinationNonpos
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.UnitaryHaarProducts.InHHAlg
 public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicClassFiniteness.DictRing
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -196,7 +156,7 @@ theorem ratFromAd (A : X.B.I.Gf) {u : D.what₂.Word} {Λ : Submodule (𝓞 D.ho
   obtain ⟨s, hs, m, hm, hsm⟩ := Submodule.mem_sup.1 hy
   obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun (IntAf X.B.I.F X.B.I.E)).1 hs
   choose t c' hc' ht using fun a => PIW.AdelClassFin.dual_dense X.B.I.F X.B.I.E X.B.g
-    (Nat.pos_of_ne_zero (Formalism.L2.SG.Pf.ChiNMul.gB_ne_zero X)) (c a : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (c a).2
+    (Nat.pos_of_ne_zero (_root_.Formalism.L2.SG.Pf.modulus_g_ne_zero X)) (c a : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (c a).2
   set r : (VS D).V := ∑ a, X.ιE ((t a : 𝓞 X.B.I.E) : X.B.I.E) • X.eX a with hr
 
   have hdiff : InAt X.B.I X.B.g X.B.g (hat X A (y - r)) := by
@@ -232,7 +192,7 @@ theorem ratFromAd (A : X.B.I.Gf) {u : D.what₂.Word} {Λ : Submodule (𝓞 D.ho
       rw [hr]
       refine sum_mem fun a _ => ?_
       have hmem : X.eX a ∈ Submodule.span (𝓞 D.host.E) (Set.range fun b => cc b • (lf D (X.Fu u)).fl.e b) :=
-        Submodule.subset_span ⟨a, by simp [hc1' a, hTF a, lf]⟩
+        Submodule.subset_span ⟨a, by simp [hc1' a, hTF a]⟩
       have hint : X.ιE ((t a : 𝓞 X.B.I.E) : X.B.I.E) ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
         have := ((t a).2 : IsIntegral ℤ ((t a : 𝓞 X.B.I.E) : X.B.I.E)).map X.ιE.toRingHom.toIntAlgHom
         exact ⟨⟨_, this⟩, rfl⟩

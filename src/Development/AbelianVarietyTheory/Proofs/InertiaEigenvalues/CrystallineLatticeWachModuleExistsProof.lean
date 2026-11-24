@@ -2,8 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.BoundAtTwoAndThreeForFamily
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CrysOnCondOfEveryDatum
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachHypothesisCrystallineLatticesStatement
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachModuleLocalConclusionsUsedFormsStatement
+public import Formalism.SharpRestriction.LevelLetterCocycles.JointConditionsZpowers.CrysOnCond
+public import Formalism.SharpRestriction.LevelLetterCocycles.EmbeddingTypeJumps
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachHypothesisCrystallineLattices
+public import Formalism.SharpRestriction.LevelLetterCocycles.UsedLocalConclusion
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachModuleLocalConclusionsUsedForms
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -49,6 +52,6 @@ namespace GlobalTheory.NLink
 
 theorem wAll_holds : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F), WAll D HW F :=
   fun D HW F Cm =>
-    GlobalTheory.T.wachHypothesis_crystallineLattices D HW F Cm (GlobalTheory.T.wachModuleLocalConclusions_usedForms D HW F Cm).1 (GlobalTheory.T.wachModuleLocalConclusions_usedForms D HW F Cm).2 (GlobalTheory.crysOnCond_all D HW F)
+    _root_.GlobalTheory.WachHyp.hypW_crystalline D HW F Cm (_root_.GlobalTheory.NL.usedLocalConclusion_and_prvE D HW F Cm).1 (_root_.GlobalTheory.NL.usedLocalConclusion_and_prvE D HW F Cm).2 (GlobalTheory.crysOnCond_all D HW F)
 
 end GlobalTheory.NLink

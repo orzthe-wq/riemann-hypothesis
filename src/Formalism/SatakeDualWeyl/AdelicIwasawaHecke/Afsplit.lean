@@ -94,9 +94,7 @@ theorem afsplit_stab_iff (S : Subring A) (g : GL n A) :
   have hcol : ∀ (M : Matrix n n A) (i j : n), (M *ᵥ Pi.single j (1 : A)) i = M i j := by
     intro M i j
     first
-      | simp [Matrix.mulVec_single_one]
-      | simp [Matrix.mulVec, dotProduct, Pi.single_apply]
-      | simp [Matrix.mulVec, Matrix.dotProduct, Pi.single_apply]
+      | simp
   constructor
   · intro hg
     have hg' : ∀ x : n → A, x ∈ stdLat (n := n) (A := A) S ↔
@@ -140,7 +138,6 @@ private lemma prV_tmul_lemma_12 (a : E) (y : 𝔸ᶠ[F]) : prV (E := E) v (a ⊗
         AlgHom.id_apply]; done)
     | (simp only [prV, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul,
         AlgHom.id_apply]; rfl)
-    | simp [prV, evalV]
 
 private lemma IE_tmul_lemma_10 (a : E) (b : v.adicCompletion F) :
     afsplitIE v (a ⊗ₜ[F] b) = a ⊗ₜ[F] afsplitF v b := by
@@ -278,8 +275,6 @@ theorem afsplit_bc_mem (g : GL n (E ⊗[F] 𝔸ᶠ[F])) (hg : g ∈ UPts σ J �
     ext i j
     first
       | (simp only [Matrix.map_apply, inclE, Algebra.TensorProduct.includeLeftRingHom_apply, prV_tmul_lemma_12]; rfl)
-      | simp [inclE, prV_tmul_lemma_12]
-      | simp [inclE, prV, evalV]
   have hc : (cT (sigR σ 𝔸ᶠ[F]) (g : Matrix n n (E ⊗[F] 𝔸ᶠ[F]))).map (prV (E := E) v) =
       cT (sigR σ (v.adicCompletion F)) ((g : Matrix n n (E ⊗[F] 𝔸ᶠ[F])).map (prV (E := E) v)) := by
     ext i j
@@ -396,7 +391,7 @@ private lemma Z_lemma_14 (z : E ⊗[F] 𝔸ᶠ[F])
         (Finsupp.mapRange (evalV F w) (map_zero _) c).sum
           (fun i n => (Module.Basis.ofVectorSpace F E) i ⊗ₜ[F] n) := by
       rw [Finsupp.sum_mapRange_index (fun i => by simp)]
-      first | rw [map_finsuppSum] | rw [map_finsupp_sum]
+      first | rw [map_finsuppSum]
       simp only [prV_tmul_lemma_12]
       try rfl
     rw [hmap] at h0
@@ -429,7 +424,7 @@ theorem afsplitE_snd_eq_one (g : UPts σ J 𝔸ᶠ[F]) :
   have e : (afsplitE σ J v g).2 = 1 ↔ afsplitU v 1 (g : GL n (E ⊗[F] 𝔸ᶠ[F])) = 1 := by
     rw [← afsplitE_snd σ J v g]
     exact ⟨fun h => by simp [h], fun h => by
-      first | exact Subtype.ext h | exact OneMemClass.coe_eq_one.mp h | simpa using h⟩
+      first | exact Subtype.ext h | simpa using h⟩
   rw [e]
   constructor
   · intro h w hw

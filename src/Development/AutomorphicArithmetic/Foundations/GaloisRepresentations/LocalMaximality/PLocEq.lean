@@ -152,7 +152,7 @@ theorem UpperTheory.Gal.productCup_of_system.locEq_of :
     exact Subalgebra.mul_mem _ hyw hwinv
   have hI : rB ℂ K' (xv x) I ≤ loc (rB ℂ K' (xv x) {i}) (locRes hRB e) := by
     intro y hy
-    obtain ⟨N, hN⟩ := ((GlobalTheory.T.finite_cover_ring_localization_chart ℂ F K' d (xv x) hY0.covY I i hi).2 y).1 hy
+    obtain ⟨N, hN⟩ := ((_root_.GlobalTheory.PD.rB_mono_loc ℂ F K' d (xv x) hY0.covY I i hi).2 y).1 hy
     refine unit_lemma (w := algebraMap F K' (∏ a ∈ I, xv x a / xv x i) ^ N)
       (w' := algebraMap F K' (∏ a ∈ I, xv x i / xv x a) ^ N) ?_ ?_ ?_ (hRloc hN)
     · exact hRloc (Subalgebra.pow_mem _ (mem_rB_of (L := K') (xv x) {i}

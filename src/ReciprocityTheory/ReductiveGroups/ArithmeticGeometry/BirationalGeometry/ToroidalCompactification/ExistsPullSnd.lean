@@ -1,49 +1,6 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ValCalc
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsMonHomOfMul
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.MixCore
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaCore
@@ -111,7 +68,7 @@ private theorem sameSum_of_prod_pow_eq {X Y : Scheme.{0}} {K K' : Type} [Fintype
   have key := congrArg Multiplicative.toAdd
     (e (Multiplicative ℤ) fun q => Multiplicative.ofAdd (if q = ψ then (1 : ℤ) else 0))
   simp only [toAdd_prod, toAdd_zpow, toAdd_ofAdd, smul_eq_mul, mul_ite, _root_.mul_one, mul_zero] at key
-  convert key <;> simp
+  convert key
 
 theorem GenOf.gen (hM : M.IsLB) (a : GenOf M F) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (e : ∀ (U : Type) [CommGroup U] (h : (Y ⟶ X) → U), ∏ k, h (φ k) ^ ε k = F U h) :
@@ -212,9 +169,6 @@ theorem genOf_cub (x y z : T ⟶ A) : GenOf L.L fun _ _ h => h (x * y * z).left 
     simp only [c3, c01, c02, c12, c0, c1, c2, cE, zpow_one, zpow_neg_one]
     first
     | ac_rfl
-    | (apply Additive.ofMul.injective
-       simp only [ofMul_mul, ofMul_inv]
-       abel)
   refine ⟨ULift.{0} (Finset (Fin 3)), inferInstance,
     fun I => (lift x (lift y z)).left ≫ (psum A (x3 A) I.down).left, fun I => (-1 : ℤ) ^ (3 - I.down.card),
     LB.pullGen L.L (thφ A (x3 A)) thε c.t (lift x (lift y z)).left,
@@ -245,7 +199,7 @@ theorem genOf_pow (hs : L.IsSymmetric) (y : T ⟶ A) (n : ℕ) : GenOf L.L fun _
     refine (((genOf_cub c y y⁻¹ y).mul S0.inv).mul (R.pow 2)).congr fun U _ h => ?_
     simp only [mul_inv_cancel, inv_mul_cancel, _root_.one_mul]
     apply Additive.ofMul.injective
-    simp only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one, nsmul_add, smul_neg, add_nsmul, one_nsmul]
+    simp only [ofMul_mul, ofMul_inv, ofMul_pow]
     abel!
   have C : ∀ k : ℕ, GenOf L.L fun _ _ h => h (y ^ k * y).left * (h (y ^ k).left)⁻¹ * (h y.left)⁻¹ *
       h (1 : T ⟶ A).left * (h (y * y).left * (h y.left)⁻¹ * (h y.left)⁻¹ * h (1 : T ⟶ A).left)⁻¹ ^ k := by
@@ -261,7 +215,7 @@ theorem genOf_pow (hs : L.IsSymmetric) (y : T ⟶ A) (n : ℕ) : GenOf L.L fun _
       refine ((genOf_cub c (y ^ k) y y).mul ih).congr fun U _ h => ?_
       rw [pow_succ y k]
       apply Additive.ofMul.injective
-      simp only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one, nsmul_add, smul_neg, add_nsmul, one_nsmul]
+      simp only [ofMul_mul, ofMul_inv, ofMul_pow, nsmul_add, smul_neg, add_nsmul, one_nsmul]
       abel!
   induction n with
   | zero => exact R.inv.congr fun U _ h => by simp
@@ -270,7 +224,7 @@ theorem genOf_pow (hs : L.IsSymmetric) (y : T ⟶ A) (n : ℕ) : GenOf L.L fun _
     refine (((ih.mul C.inv).mul (E.pow n)).mul R).congr fun U _ h => ?_
     rw [pow_succ y n, show (n + 1) ^ 2 = n ^ 2 + n + n + 1 by ring]
     apply Additive.ofMul.injective
-    simp only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one, nsmul_add, smul_neg, add_nsmul, one_nsmul]
+    simp only [ofMul_mul, ofMul_inv, ofMul_pow, nsmul_add, smul_neg, add_nsmul, one_nsmul]
     abel!
 
 

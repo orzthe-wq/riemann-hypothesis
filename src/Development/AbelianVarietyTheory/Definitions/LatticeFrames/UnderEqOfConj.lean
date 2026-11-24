@@ -77,14 +77,6 @@ theorem char_mem {P : Pl D.host.E} {q : ℕ} (h : Nat.card (kP P) = q) : (q : �
   rw [h, nsmul_one] at h1
   exact Ideal.Quotient.eq_zero_iff_mem.1 ((map_natCast _ q).trans h1)
 
-theorem nat_mem_of_conj {P P' : Pl D.host.E} (h : Lev.IsConjPl (D := D) P P') {q : ℕ} (hq : (q : 𝓞 D.host.E) ∈ P.asIdeal) :
-    (q : 𝓞 D.host.E) ∈ P'.asIdeal := by
-  obtain ⟨c', hc', e⟩ := h _ hq
-  have : c' = q := by
-    apply RingOfIntegers.ext
-    rw [e]; simp
-  exact this ▸ hc'
-
 theorem g_mem_of_div (C : Formalism.L2.Host.CharFrame D) {k : Fin 2} {PP : Pl D.host.E} (h : C.P.Div k PP) :
     ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
   have h0 := C.P.pb_over k
@@ -180,7 +172,7 @@ theorem isUnitAt_of (P : Pl D.host.E) (a : 𝓞 D.host.E) (k : D.host.Eˣ) (u : 
     have : (u : kP P) = 0 := hu.trans (Ideal.Quotient.eq_zero_iff_mem.2 h)
     exact u.ne_zero this
   show Valued.v (algebraMap D.host.E (P.adicCompletion D.host.E) (k : D.host.E)) = 1
-  rw [GlobalTheory.ChainOnto.TameRes.val_alg, hk]
+  rw [_root_.Formalism.UG.P.levelaf_valued_algebraMap, hk]
   exact GlobalTheory.ChainOnto.TameRes.valuation_eq_one_of_not_mem P a ha
 
 theorem under_eq_of_conj {P P' : Pl D.host.E} (h : Lev.IsConjPl (D := D) P' P) :
@@ -238,7 +230,7 @@ theorem com_is (hL : R.toLevCh.Is A.μ0) (hM : R.IsModels) (hC : R.IsChain) (t :
         · obtain ⟨i, hi⟩ := (hL.Pg PP).1 h
           obtain ⟨⟨q, hq, hcard, -, hqg⟩, -⟩ := hL.Q_pl t P' h'
           exact not_two_primes PP.isPrime.ne_top hq (D.host.g_prime i) (hqg i)
-            (nat_mem_of_conj hc (char_mem hcard)) (g_mem_of_div R.C hi)
+            (_root_.GlobalTheory.StepLaw.natCast_mem_of_isConjPl hc (char_mem hcard)) (g_mem_of_div R.C hi)
       have h3 : (R.xiH t).locK PP k = 1 := h2 _ hun
       rw [e, h3, mul_one]
       exact hL.chi j PP h a k u hk hu
@@ -263,7 +255,7 @@ theorem xiR_ne (hL : R.toLevCh.Is A.μ0) (t : T) : ∀ PP ∈ R.Q t, R.xiR t PP 
     rw [hx]; exact hk
   have hv : Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) k) = 1 := by
     rw [Valuation.map_eq_of_sub_lt _ hk']; exact hx
-  have hv1 : PP.valuation D.host.E k = 1 := by rw [← GlobalTheory.ChainOnto.TameRes.val_alg]; exact hv
+  have hv1 : PP.valuation D.host.E k = 1 := by rw [← _root_.Formalism.UG.P.levelaf_valued_algebraMap]; exact hv
   have hk0 : k ≠ 0 := by
     rintro rfl
     simp at hv1

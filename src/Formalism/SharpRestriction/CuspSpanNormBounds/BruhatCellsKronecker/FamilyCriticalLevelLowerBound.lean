@@ -94,7 +94,7 @@ theorem cfg_aeff (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : (cfgOf D �
       omega
     have hv := cfg_v D τ 1 le_rfl hk
     simp [cfgOf, Sz.Cfg.aeff, h] at hv ⊢
-    first | exact hv | linarith | simp [hv]
+    first | exact hv
 
 theorem cfg_aeff_pos {D : D7} {τ : D.what₂.Tau} (ok : (cfgOf D τ).Ok) : 0 < (cfgOf D τ).aeff := by
   generalize cfgOf D τ = c at ok ⊢

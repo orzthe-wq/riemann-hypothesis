@@ -144,14 +144,11 @@ lemma eI_ne_esI (a b : Fin r) : eI k r a ≠ esI k r b := by
   intro h; have := congrArg Fin.val h; simp only [eI, esI] at this; omega
 
 lemma eI_inj {a b : Fin r} : eI k r a = eI k r b ↔ a = b := by
-  constructor
-  · intro h; have := congrArg Fin.val h; simp only [eI] at this; exact Fin.ext this
-  · rintro rfl; rfl
+  simp only [Fin.ext_iff, eI]
 
 lemma esI_inj {a b : Fin r} : esI k r a = esI k r b ↔ a = b := by
-  constructor
-  · intro h; have := congrArg Fin.val h; simp only [esI] at this; exact Fin.ext (by omega)
-  · rintro rfl; rfl
+  refine ⟨fun h => Fin.ext (by have := congrArg Fin.val h; simp only [esI] at this; omega), ?_⟩
+  rintro rfl; rfl
 
 lemma h_e_e (a b : Fin r) : ⟪bvec (eI k r a), bvec (eI k r b)⟫ = 0 := by
   rw [herm_e_right]; exact Pi.single_eq_of_ne (eI_ne_esI a b).symm _
@@ -193,9 +190,7 @@ lemma glev_succ_iff (l : Fin r) (g : Mx k r) : g ∈ Glev k r l.succ ↔
   constructor
   · intro hg
     refine ⟨⟨hg.1, fun a ha => hg.2 a ?_⟩, (hg.2 l ?_).1, (hg.2 l ?_).2⟩
-    · simp only [Fin.val_castSucc, Fin.val_succ] at *; omega
-    · simp only [Fin.val_succ]; omega
-    · simp only [Fin.val_succ]; omega
+    all_goals (simp only [Fin.val_castSucc, Fin.val_succ] at *; omega)
   · rintro ⟨hg, h1, h2⟩
     refine ⟨hg.1, fun a ha => ?_⟩
     by_cases h : a = l
@@ -373,16 +368,12 @@ lemma stab_dec' {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (he : g *ᵥ 𝐞 
 lemma weyl_cell_apply_dual_basis (c : ℂ) (q : Fin (2 * r + k + 1)) :
     w1 k r l c (esI k r l) q = if q = eI k r l then c else 0 := by
   unfold w1
-  by_cases h : q = eI k r l
-  · simp [h]
-  · simp [h, (eI_ne_esI l l).symm]
+  by_cases h : q = eI k r l <;> simp [h, (eI_ne_esI l l).symm]
 
 lemma weyl_cell_apply_basis (c : ℂ) (q : Fin (2 * r + k + 1)) :
     w1 k r l c (eI k r l) q = if q = esI k r l then (star c)⁻¹ else 0 := by
   unfold w1
-  by_cases h : q = esI k r l
-  · simp [h, eI_ne_esI l l]
-  · simp [h, eI_ne_esI l l]
+  by_cases h : q = esI k r l <;> simp [h, eI_ne_esI l l]
 
 lemma weyl_cell_apply_other (c : ℂ) {p : Fin (2 * r + k + 1)} (h1 : p ≠ eI k r l) (h2 : p ≠ esI k r l)
     (q : Fin (2 * r + k + 1)) : w1 k r l c p q = if q = p then 1 else 0 := by
@@ -462,7 +453,6 @@ lemma Dec.mem {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : g
 lemma dec_exists {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (hc : ⟪g *ᵥ 𝐞, 𝐞⟫ ≠ 0) :
     ∃ u g₁ u', Dec k r l g ⟪g *ᵥ 𝐞, 𝐞⟫ u g₁ u' := by
   set c := ⟪g *ᵥ 𝐞, 𝐞⟫ with hcdef
-  have hc' : conj c ≠ 0 := (map_ne_zero _).2 hc
   have hX : IsX k r l (c⁻¹ • (g *ᵥ 𝐞)) := by
     refine ⟨?_, ?_, fun a ha => ⟨?_, ?_⟩⟩
     · rw [h_smul_left, ← hcdef, inv_mul_cancel₀ hc]
@@ -474,7 +464,7 @@ lemma dec_exists {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (hc : ⟪g *ᵥ �
       conv_lhs => rw [← (hg.2 a (by simpa using ha)).2]
       rw [uh_herm hg.1, h_es_e, if_neg (ne_of_val_lt ha), mul_zero]
   have hu := hx_up hX
-  set u := hx k r l (c⁻¹ • (g *ᵥ 𝐞)) with hudef
+  set u := hx k r l (c⁻¹ • (g *ᵥ 𝐞))
   have hues : u *ᵥ 𝐬 = c⁻¹ • (g *ᵥ 𝐞) := hx_es hX
   have hw := weyl_cell_mem_level_group (k := k) (r := r) (l := l) hc
   have hg' : (w1 k r l c)⁻¹ * (u⁻¹ * g) ∈ Glev k r l.castSucc := glev_mul (glev_inv hw) (glev_mul (glev_inv hu.1) hg)
@@ -588,16 +578,14 @@ lemma nlev_dec {n : Mx k r} (hn : n ∈ Nlev k r l.castSucc) :
   obtain ⟨u, hu, g₁, hg₁, h⟩ := stab_dec hn.2 (nlev_e hn)
   refine ⟨u, hu, g₁, ⟨?_, hg₁⟩, h⟩
   have : g₁ = u⁻¹ * n := by rw [h, ← Matrix.mul_assoc, uh_inv_mul hu.1.1, Matrix.one_mul]
-  rw [this]
-  exact WeylGroupFacts.mem_n_mul (WeylGroupFacts.mem_n_inv (up_nset hu)) hn.1
+  simpa only [this] using WeylGroupFacts.mem_n_mul (WeylGroupFacts.mem_n_inv (up_nset hu)) hn.1
 
 lemma nlev_dec' {n : Mx k r} (hn : n ∈ Nlev k r l.castSucc) :
     ∃ u ∈ UP k r l, ∃ n₁ ∈ Nlev k r l.succ, n = n₁ * u := by
   obtain ⟨u, hu, g₁, hg₁, h⟩ := stab_dec' hn.2 (nlev_e hn)
   refine ⟨u, hu, g₁, ⟨?_, hg₁⟩, h⟩
   have : g₁ = n * u⁻¹ := by rw [h, Matrix.mul_assoc, uh_mul_inv hu.1.1, Matrix.mul_one]
-  rw [this]
-  exact WeylGroupFacts.mem_n_mul hn.1 (WeylGroupFacts.mem_n_inv (up_nset hu))
+  simpa only [this] using WeylGroupFacts.mem_n_mul hn.1 (WeylGroupFacts.mem_n_inv (up_nset hu))
 
 lemma psi_mul {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n n' : Mx k r} (hn : n ∈ Nset k r) (hn' : n' ∈ Nset k r) :
     psi k r z cStd (n * n') = psi k r z cStd n * psi k r z cStd n' := (psiChar k r z cStd hz n hn).1 n' hn'
@@ -606,8 +594,7 @@ lemma psi_ne {z : Fin (2 * r + k + 1) → ℂ} (n : Mx k r) : psi k r z cStd n �
 
 lemma psi_one {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : psi k r z cStd (1 : Mx k r) = 1 := by
   have h := psi_mul hz (WeylGroupFacts.mem_n_one (k := k) (r := r)) WeylGroupFacts.mem_n_one
-  rw [Matrix.one_mul] at h
-  exact (mul_eq_left₀ (psi_ne _)).1 h.symm
+  exact (mul_eq_left₀ (psi_ne _)).1 (by simpa only [Matrix.one_mul] using h.symm)
 
 lemma psi_conjN {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n u : Mx k r} (hn : n ∈ Nset k r) (hu : u ∈ Nset k r) :
     psi k r z cStd (n * u * n⁻¹) = psi k r z cStd u := by
@@ -617,8 +604,7 @@ lemma psi_conjN {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n u : Mx k 
 
 lemma psi_conjN' {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n u : Mx k r} (hn : n ∈ Nset k r) (hu : u ∈ Nset k r) :
     psi k r z cStd (n⁻¹ * u * n) = psi k r z cStd u := by
-  have := psi_conjN hz (WeylGroupFacts.mem_n_inv hn) hu
-  rwa [inv_inv' hn.1] at this
+  simpa only [inv_inv' hn.1] using psi_conjN hz (WeylGroupFacts.mem_n_inv hn) hu
 
 lemma psi_conjW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {h u : Mx k r} (hh : h ∈ UWset k r z) (hu : u ∈ Nset k r) :
     psi k r z cStd (h * u * h⁻¹) = psi k r z cStd u := by
@@ -627,8 +613,7 @@ lemma psi_conjW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {h u : Mx k 
 
 lemma psi_conjW' {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {h u : Mx k r} (hh : h ∈ UWset k r z) (hu : u ∈ Nset k r) :
     psi k r z cStd (h⁻¹ * u * h) = psi k r z cStd u := by
-  have := psi_conjW hz (WeylGroupFacts.uw_inv hh) hu
-  rwa [inv_inv' hh.1] at this
+  simpa only [inv_inv' hh.1] using psi_conjW hz (WeylGroupFacts.uw_inv hh) hu
 
 section smooth
 variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {m : ℕ}
@@ -646,25 +631,21 @@ lemma smV_const (v : Fin m → ℂ) (s : Set X) : SmV (fun _ => v) s := fun _ =>
 lemma smM_mul {f g : X → Matrix (Fin m) (Fin m) ℂ} {s : Set X} (hf : SmM f s) (hg : SmM g s) :
     SmM (fun x => f x * g x) s := by
   intro i j
-  simp only [Matrix.mul_apply]
-  exact ContDiffOn.sum fun p _ => (hf i p).mul (hg p j)
+  simpa only [Matrix.mul_apply] using ContDiffOn.sum fun p _ => (hf i p).mul (hg p j)
 
 lemma smM_conjT {f : X → Matrix (Fin m) (Fin m) ℂ} {s : Set X} (hf : SmM f s) : SmM (fun x => (f x)ᴴ) s := by
   intro i j
-  simp only [Matrix.conjTranspose_apply]
-  exact sm_conj (hf j i)
+  simpa only [Matrix.conjTranspose_apply, starRingEnd_apply] using sm_conj (hf j i)
 
 lemma smV_mulVec {f : X → Matrix (Fin m) (Fin m) ℂ} {v : X → Fin m → ℂ} {s : Set X} (hf : SmM f s) (hv : SmV v s) :
     SmV (fun x => f x *ᵥ v x) s := by
   intro i
-  simp only [Matrix.mulVec, dotProduct]
-  exact ContDiffOn.sum fun p _ => (hf i p).mul (hv p)
+  simpa only [Matrix.mulVec, dotProduct] using ContDiffOn.sum fun p _ => (hf i p).mul (hv p)
 
 lemma smV_smul {c : X → ℂ} {v : X → Fin m → ℂ} {s : Set X} (hc : ContDiffOn ℝ ∞ c s) (hv : SmV v s) :
     SmV (fun x => c x • v x) s := by
   intro i
-  simp only [Pi.smul_apply, smul_eq_mul]
-  exact hc.mul (hv i)
+  simpa only [Pi.smul_apply, smul_eq_mul] using hc.mul (hv i)
 
 lemma smV_add {u v : X → Fin m → ℂ} {s : Set X} (hu : SmV u s) (hv : SmV v s) : SmV (fun x => u x + v x) s :=
   fun i => (hu i).add (hv i)
@@ -673,8 +654,7 @@ lemma smV_sub {u v : X → Fin m → ℂ} {s : Set X} (hu : SmV u s) (hv : SmV v
 
 lemma sm_herm (H : Matrix (Fin m) (Fin m) ℂ) {u v : X → Fin m → ℂ} {s : Set X} (hu : SmV u s) (hv : SmV v s) :
     ContDiffOn ℝ ∞ (fun x => herm H (u x) (v x)) s := by
-  simp only [herm, dotProduct, Pi.star_apply]
-  exact ContDiffOn.sum fun p _ => (sm_conj (hv p)).mul (smV_mulVec (smM_const H s) hu p)
+  simpa only [herm, dotProduct, Pi.star_apply, Complex.star_def] using ContDiffOn.sum fun p _ => (sm_conj (hv p)).mul (smV_mulVec (smM_const H s) hu p)
 
 lemma smM_hs (H : Matrix (Fin m) (Fin m) ℂ) {p v : X → Fin m → ℂ} {σ : X → ℂ} {s : Set X} (hp : SmV p s) (hv : SmV v s)
     (hσ : ContDiffOn ℝ ∞ σ s) : SmM (fun x => hs H (p x) (v x) (σ x)) s := by
@@ -684,9 +664,7 @@ lemma smM_hs (H : Matrix (Fin m) (Fin m) ℂ) {p v : X → Fin m → ℂ} {σ : 
     ((smV_add hv (smV_smul hσ hp) i).mul (sm_herm H (smV_const _ s) hp))
 
 lemma smM_contDiffOn {f : X → Matrix (Fin m) (Fin m) ℂ} {s : Set X} (hf : SmM f s) : ContDiffOn ℝ ∞ f s := by
-  have h : ContDiffOn ℝ ∞ (fun x => (f x : Fin m → Fin m → ℂ)) s :=
-    contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => hf i j
-  exact h
+  exact contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => hf i j
 
 end smooth
 
@@ -755,9 +733,8 @@ lemma isOpen_adelicUnipotentTimesIntegralOutsideSet : IsOpen (C0 k r l) := by
   exact (isOpen_ne_fun h1 continuous_const).inter (isOpen_ne_fun h2 continuous_const)
 
 lemma Dec.cell_decomposition_mem {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : g ∈ C0 k r l := by
-  refine ⟨by rw [h.cF_eq]; exact h.hc, ?_⟩
-  rw [iH_eq h.mem.1, h.inv.cF_eq]
-  exact h.inv.hc
+  refine ⟨by simpa [h.cF_eq] using h.hc, ?_⟩
+  simpa [iH_eq h.mem.1, h.inv.cF_eq] using h.inv.hc
 
 section ext
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq] [NormedSpace ℂ Wq]
@@ -780,11 +757,10 @@ lemma mem_cell_domain_iff {D₁ : Set (Mx k r)} {g : Mx k r} :
   · rintro ⟨hg, hC, hρ⟩
     obtain ⟨u, g₁, u', h⟩ := dec_exists hg hC.1
     refine ⟨_, u, g₁, u', h, ?_⟩
-    rw [← h.rho_eq]; exact hρ
+    simpa only [Set.mem_preimage, ← h.rho_eq] using hρ
   · rintro ⟨c, u, g₁, u', h, hg₁⟩
     refine ⟨h.mem, h.cell_decomposition_mem, ?_⟩
-    show rho k r l g ∈ D₁
-    rw [h.rho_eq]; exact hg₁
+    simpa only [Set.mem_preimage, h.rho_eq] using hg₁
 
 lemma isOpen_cell_domain {D₁ : Set (Mx k r)} (hD : IsOpen D₁) : IsOpen (D0 k r l D₁) :=
   (smM_contDiffOn smM_rho).continuousOn.isOpen_inter_preimage isOpen_adelicUnipotentTimesIntegralOutsideSet hD
@@ -900,26 +876,20 @@ lemma glev0 {g : Mx k r'} (hg : g ∈ UH (Hpk k r')) : g ∈ Glev k r' 0 :=
 lemma lev_nset {g : Mx k r'} (hg : g ∈ UH (Hpk k r')) (h : ιLev k 1 r' g ∈ Nset k (1 + r')) : g ∈ Nset k r' := by
   rw [WeylGroupFacts.nset_iff] at h ⊢
   refine ⟨hg, fun i j hj hi => ?_⟩
-  have h2 := h.2 (lv k r' i) (lv k r' j) (by rw [B2x6.lv_val]; omega) (by rw [B2x6.lv_val, B2x6.lv_val]; omega)
-  rw [B2x6.lev_mm] at h2
-  simpa only [B2x6.lv_inj] using h2
+  simpa only [B2x6.lev_mm, B2x6.lv_inj] using
+    h.2 (lv k r' i) (lv k r' j) (by rw [B2x6.lv_val]; omega) (by rw [B2x6.lv_val, B2x6.lv_val]; omega)
 
 lemma lift_inj {y y' : Fin (2 * r' + k + 1) → ℂ} (h : liftVec k 1 r' y = liftVec k 1 r' y') : y = y' := by
-  have := congrArg B2x6.res h
-  simpa using this
+  simpa using congrArg B2x6.res h
 
 lemma lev_uw {z : Fin (2 * r' + k + 1) → ℂ} {g : Mx k r'} (hg : g ∈ UH (Hpk k r'))
     (h : ιLev k 1 r' g ∈ UWset k (1 + r') (liftVec k 1 r' z)) : g ∈ UWset k r' z := by
   refine ⟨hg, fun a => ⟨?_, ?_⟩, ?_⟩
-  · have h2 := (h.2.1 ⟨a.val + 1, by omega⟩).1
-    rw [← lv_eI, B2x6.bvec_lv, B2x5.lev_lift] at h2
-    exact lift_inj h2
-  · have h2 := (h.2.1 ⟨a.val + 1, by omega⟩).2
-    rw [← lv_esI, B2x6.bvec_lv, B2x5.lev_lift] at h2
-    exact lift_inj h2
-  · have h2 := h.2.2
-    rw [B2x5.lev_lift] at h2
-    exact lift_inj h2
+  · exact lift_inj (by simpa only [← lv_eI, B2x6.bvec_lv, B2x5.lev_lift] using
+      (h.2.1 ⟨a.val + 1, by omega⟩).1)
+  · exact lift_inj (by simpa only [← lv_esI, B2x6.bvec_lv, B2x5.lev_lift] using
+      (h.2.1 ⟨a.val + 1, by omega⟩).2)
+  · exact lift_inj (by simpa only [B2x5.lev_lift] using h.2.2)
 
 lemma lift_inWb {z : Fin (2 * r' + k + 1) → ℂ} (hz : inWb k r' z) : inWb k (1 + r') (liftVec k 1 r' z) := by
   intro i hi

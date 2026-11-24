@@ -2,14 +2,16 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.HeightProofs.IsLieDataCircle
 public import Formalism.RealPlaceAnalysis.StatementA
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.BicommutantTensorFactorPermMemSpanStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommutantLiftModStableSelfAdjointStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommutatorGlGeneratorTensorWordMapMatrixUnitsStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommuteGelfandInvariantMatrixUnitsOfGlRelStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.MemAdjoinGlActionOfCommuteTensorPermStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.PermutationWordGelfandPolynomialModShorterStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.RightDerivativeAlongLieCommutatorEqBracketStatement
-public import Development.AbelianVarietyTheory.Proofs.HeightProofs.RightDerivativeAlongLieSmoothAndLinearStatement
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.BicommutantTensorFactorPermMemSpan
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.Matrix.ConjTranspose
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommutantLiftModStableSelfAdjoint
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommutatorGlGeneratorTensorWordMapMatrixUnits
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.CommuteGelfandInvariantMatrixUnitsOfGlRel
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.MemAdjoinGlActionOfCommuteTensorPerm
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.PermutationWordGelfandPolynomialModShorter
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.RightDerivativeAlongLieCommutatorEqBracket
+public import Development.AbelianVarietyTheory.Proofs.HeightProofs.RightDerivativeAlongLieSmoothAndLinear
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -81,7 +83,7 @@ theorem filt_ad (hE : Formalism.REAL.GlRel E) (d : ℕ) (a b : Fin n) {y : A} (h
     iSup₂_le fun k hk => by
       rintro _ ⟨M, rfl⟩
       change E a b * wordMap E k M - wordMap E k M * E a b ∈ filt E d
-      rw [GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n E hE]
+      rw [_root_.GlobalTheory.SmoothForms.commutator_wordMap A n E hE]
       exact range_le_filt hk ⟨_, rfl⟩
   exact this hy
 
@@ -99,7 +101,7 @@ theorem gelf_adjoin_comm (hE : Formalism.REAL.GlRel E) {c : A} (hc : c ∈ Algeb
   have : Algebra.adjoin ℂ (Set.range (gelfA E)) ≤ Subalgebra.centralizer ℂ {E a b} := by
     refine Algebra.adjoin_le ?_
     rintro _ ⟨k, rfl⟩ _ rfl
-    exact GlobalTheory.T.commute_gelfandInvariantMatrixUnits_of_glRel A n E hE k a b
+    exact _root_.GlobalTheory.SmoothForms.commute_gelfA A n E hE k a b
   exact this hc _ rfl
 
 theorem central_of_filt (hE : Formalism.REAL.GlRel E) (d : ℕ) : ∀ z ∈ filt E d, (∀ a b, E a b * z = z * E a b) →
@@ -113,34 +115,34 @@ theorem central_of_filt (hE : Formalism.REAL.GlRel E) (d : ℕ) : ∀ z ∈ filt
   | succ d ih =>
     intro z hz hc
     obtain ⟨_, ⟨M, rfl⟩, y, hy, rfl⟩ := Submodule.mem_sup.1 (filt_succ d hz)
-    obtain ⟨M₀, h1, h2⟩ := GlobalTheory.T.commutant_lift_mod_stable_selfAdjoint _ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2)
+    obtain ⟨M₀, h1, h2⟩ := _root_.GlobalTheory.matrix_commutant_lift_mod_stable _ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2)
       ((filt E d).comap (wordMap E d))
       (by rintro _ ⟨p, rfl⟩; exact ⟨(p.2, p.1), (polar_conjTranspose d p.1 p.2).symm⟩)
       (by
         rintro _ ⟨p, rfl⟩ N hN
-        rw [Submodule.mem_comap, ← GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n E hE]
+        rw [Submodule.mem_comap, ← _root_.GlobalTheory.SmoothForms.commutator_wordMap A n E hE]
         exact filt_ad hE d _ _ hN) M
       (by
         rintro _ ⟨p, rfl⟩
-        rw [Submodule.mem_comap, ← GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n E hE]
+        rw [Submodule.mem_comap, ← _root_.GlobalTheory.SmoothForms.commutator_wordMap A n E hE]
         have h3 := neg_mem (filt_ad hE d p.1 p.2 hy)
         have h4 := hc p.1 p.2
         rw [mul_add, add_mul] at h4
         convert h3 using 1
         rw [neg_sub, sub_eq_sub_iff_add_eq_add, h4, add_comm])
     have h3 : M₀ ∈ Submodule.span ℂ (Set.range (permMat n d)) := by
-      refine GlobalTheory.T.bicommutant_tensorFactorPerm_mem_span n d M₀ fun T hT => ?_
+      refine _root_.GlobalTheory.SmoothForms.bicomm_permMat n d M₀ fun T hT => ?_
       have : Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2) ≤
           Subalgebra.centralizer ℂ {M₀} := by
         refine Algebra.adjoin_le ?_
         rintro x hx _ rfl
         exact (h2 x hx).symm
-      exact this (GlobalTheory.T.mem_adjoin_glAction_of_commute_tensorPerm n d T hT) _ rfl
+      exact this (_root_.GlobalTheory.SymmTensor.mem_adjoin_polar n d T hT) _ rfl
     have h4 : Submodule.span ℂ (Set.range (permMat n d)) ≤
         (Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range (gelfA E))) ⊔ filt E d).comap (wordMap E d) := by
       rw [Submodule.span_le]
       rintro _ ⟨π, rfl⟩
-      obtain ⟨c, hc1, hc2⟩ := GlobalTheory.T.permutationWord_gelfandPolynomial_mod_shorter A n E hE d π
+      obtain ⟨c, hc1, hc2⟩ := _root_.GlobalTheory.SmoothForms.PermWord.permWord A n E hE d π
       exact Submodule.mem_sup.2 ⟨c, hc1, _, hc2, by abel⟩
     obtain ⟨c, hc1, u, hu, hcu⟩ := Submodule.mem_sup.1 (h4 h3)
     have h5 : wordMap E d M + y - c ∈ filt E d := by
@@ -206,21 +208,21 @@ theorem Sm.differentiableAt {e : L → G} {φ : G → ℂ} (h : Sm e φ) (g : G)
     (by simp)).differentiableAt
 
 def derOp (H : IsLieData σ j s) (hl : HasLog σ j) (X : L) : Module.End ℂ (smSub (expMap j s)) where
-  toFun φ := ⟨Der (expMap j s) X φ.1, (GlobalTheory.T.rightDerivativeAlongLie_smooth_and_linear 𝔸 L G σ j s H hl φ.1 φ.2).1 X⟩
+  toFun φ := ⟨Der (expMap j s) X φ.1, (_root_.GlobalTheory.SmoothForms.der_smooth_and_linear 𝔸 L G σ j s H hl φ.1 φ.2).1 X⟩
   map_add' φ ψ := Subtype.ext (funext fun g => deriv_add (Sm.differentiableAt φ.2 g X) (Sm.differentiableAt ψ.2 g X))
   map_smul' c φ := Subtype.ext (funext fun g => deriv_const_smul c (Sm.differentiableAt φ.2 g X))
 
 theorem derOp_add (H : IsLieData σ j s) (hl : HasLog σ j) (X Y : L) :
     derOp H hl (X + Y) = derOp H hl X + derOp H hl Y :=
-  LinearMap.ext fun φ => Subtype.ext ((GlobalTheory.T.rightDerivativeAlongLie_smooth_and_linear 𝔸 L G σ j s H hl φ.1 φ.2).2.1 X Y)
+  LinearMap.ext fun φ => Subtype.ext ((_root_.GlobalTheory.SmoothForms.der_smooth_and_linear 𝔸 L G σ j s H hl φ.1 φ.2).2.1 X Y)
 
 theorem derOp_smul (H : IsLieData σ j s) (hl : HasLog σ j) (c : ℝ) (X : L) :
     derOp H hl (c • X) = (c : ℂ) • derOp H hl X :=
-  LinearMap.ext fun φ => Subtype.ext ((GlobalTheory.T.rightDerivativeAlongLie_smooth_and_linear 𝔸 L G σ j s H hl φ.1 φ.2).2.2 c X)
+  LinearMap.ext fun φ => Subtype.ext ((_root_.GlobalTheory.SmoothForms.der_smooth_and_linear 𝔸 L G σ j s H hl φ.1 φ.2).2.2 c X)
 
 theorem derOp_bracket (H : IsLieData σ j s) (hl : HasLog σ j) (X Y Z : L) (h : j Z = j X * j Y - j Y * j X) :
     derOp H hl Z = derOp H hl X * derOp H hl Y - derOp H hl Y * derOp H hl X :=
-  LinearMap.ext fun φ => Subtype.ext (GlobalTheory.T.rightDerivativeAlongLie_commutator_eq_bracket 𝔸 L G σ j s H hl φ.1 φ.2 X Y Z h).symm
+  LinearMap.ext fun φ => Subtype.ext (_root_.GlobalTheory.SmoothForms.Bracket.der_bracket 𝔸 L G σ j s H hl φ.1 φ.2 X Y Z h).symm
 
 theorem derOp_zero (H : IsLieData σ j s) (hl : HasLog σ j) : derOp H hl 0 = 0 := by
   simpa using derOp_smul H hl 0 0

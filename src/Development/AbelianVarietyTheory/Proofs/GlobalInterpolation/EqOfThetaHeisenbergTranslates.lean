@@ -1,8 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.DecayZero
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralAdelicVectorsCharacterOrthogonalityStatement
-public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RapidDecayAdelicIntegrablePeriodisationContinuouStatement
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntegralAdelicVectorsCharacterOrthogonality
+public import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RapidDecayAdelicIntegrablePeriodisationContinuou
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.RationalVectorsAdelesFundamentalDomainMassOne
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.T2SpaceNumberFieldInfiniteAdeles
 import Mathlib.Algebra.Order.Floor.Extended
@@ -82,7 +82,7 @@ theorem integral_twisted_periodise {F : Type} [Field F] [NumberField F] {N : ℕ
   have : IsFiniteMeasure ((muV N ν).restrict D) :=
     ⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩
   have hsum : Summable fun ξ : Fin N → F => ‖G (rat ξ + x)‖ :=
-    (GlobalTheory.T.rapidDecay_adelic_integrable_periodisation_continuous F N hTR G hG).2.1 x
+    (_root_.GlobalTheory.decay_integrable_periodise F N hTR G hG).2.1 x
   have hnorm : ∀ (ξ : Fin N → F) (y : Fin N → AF F),
       ‖ψ (Bd (AF F) a (rat ξ) y) * G (rat ξ + x)‖ = ‖G (rat ξ + x)‖ := by
     intro ξ y
@@ -107,7 +107,7 @@ theorem integral_twisted_periodise {F : Type} [Field F] [NumberField F] {N : ℕ
   · intro ξ hξ
     rw [integral_mul_const]
     simp_rw [Bd_comm (AF F) a (rat ξ)]
-    rw [GlobalTheory.T.integral_adelicVectors_character_orthogonality F N ψ lam ν a hC D hD h1 ξ hξ, zero_mul]
+    rw [_root_.GlobalTheory.SWQ.charOrth F N ψ lam ν a hC D hD h1 ξ hξ, zero_mul]
 
 theorem eq_of_theta_rho : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) (ψ : AddChar (AF F) ℂ)
     (lam : InfinitePlace F → ℝ) (ν : Measure (AF F)) (a : Fin N → F), Ctx ψ lam ν a →

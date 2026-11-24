@@ -186,6 +186,6 @@ theorem GlobalTheory.FinPl.FlatFix.fix_of_isotropic : ∀ {D : D7} (ψ : AddChar
     · rw [zero_smul]; exact GlobalTheory.LatVac.heisO_zero ψ f
     · intro v hv
       rw [← hsum v hv]
-      exact fix_add hiso (hfix_split _ (he v hv)) (hfix_split _ (GlobalTheory.IdemSumVac.isSplitIdem_cA (he v hv)))
+      exact fix_add hiso (hfix_split _ (he v hv)) (hfix_split _ (_root_.GlobalTheory.SplitScalar.isSplitIdem_conj (he v hv)))
 
 end

@@ -60,13 +60,11 @@ open Formalism.L2.G.Model (Intl SSZ intl_zero card_SSZ card_ssIdx weylQ)
 
 theorem sum_le_succ {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
     (∑ b : Fin (k + 1) with b ≤ a.succ, F b) = F 0 + ∑ b : Fin k with b ≤ a, F b.succ := by
-  rw [Finset.sum_filter, Fin.sum_univ_succ, Finset.sum_filter]
-  simp [Fin.succ_le_succ_iff]
+  simp [Finset.sum_filter, Fin.sum_univ_succ, Fin.succ_le_succ_iff]
 
 theorem sum_lt_succ {k : ℕ} (F : Fin (k + 1) → ℕ) (a : Fin k) :
     (∑ b : Fin (k + 1) with b < a.succ, F b) = F 0 + ∑ b : Fin k with b < a, F b.succ := by
-  rw [Finset.sum_filter, Fin.sum_univ_succ, Finset.sum_filter]
-  simp [Fin.succ_lt_succ_iff, Fin.succ_pos]
+  simp [Finset.sum_filter, Fin.sum_univ_succ, Fin.succ_lt_succ_iff, Fin.succ_pos]
 
 theorem sum_le_zero {k : ℕ} (F : Fin (k + 1) → ℕ) :
     (∑ b : Fin (k + 1) with b ≤ 0, F b) = F 0 := by
@@ -270,11 +268,6 @@ theorem nuOf_cast {m : ℕ} (lam : Fin (m + 1) → ℤ) (h : Antitone lam) (t : 
   rw [Int.toNat_of_nonneg (by linarith)]
   ring
 
-private lemma weylDim_add_const' (n : ℕ) (μ : Fin n → ℤ) (c : ℤ) :
-    Formalism.CountingSumsFrames.weylDim n (fun t => μ t + c) = Formalism.CountingSumsFrames.weylDim n μ := by
-  unfold Formalism.CountingSumsFrames.weylDim
-  simp only [add_sub_add_right_eq_sub]
-
 theorem cntSpec : CntSpec := by
   intro m lam hlam vec
   have e1 : TX m false vec (nuOf lam) ≃ TN (m + 1) (nuOf lam) :=
@@ -286,7 +279,7 @@ theorem cntSpec : CntSpec := by
     linarith [hlam hab]
   rw [dGT_weylDim _ _ hanti]
   simp only [nuOf_cast lam hlam]
-  exact weylDim_add_const' (m + 1) lam _
+  exact _root_.Formalism.MainNotions.Pf14.weylDim_shift (m + 1) lam _
 
 private lemma weylDim_const_sub_rev (m : ℕ) (μ : Fin m → ℤ) (c : ℤ) :
     Formalism.CountingSumsFrames.weylDim m (fun t => c - μ t.rev) = Formalism.CountingSumsFrames.weylDim m μ := by
@@ -327,7 +320,7 @@ theorem cntTop : CntTop := by
       linarith [hlo (Fin.succ_le_succ_iff.mpr hab)]
     rw [dGT_weylDim _ _ hanti]
     simp only [nuOf_cast lo hlo]
-    exact weylDim_add_const' m (fun i => lo i.succ) _
+    exact _root_.Formalism.MainNotions.Pf14.weylDim_shift m (fun i => lo i.succ) _
   | false =>
     rw [if_neg Bool.false_ne_true]
     have hL : Antitone (fun i : Fin (m + 1) => -lo i.rev) := by
@@ -364,14 +357,13 @@ theorem card_all {n' m : ℕ} (hm : 2 ≤ m) (TT : Finset (Fin n')) (lam0 : Fin 
     simp [restW, flW, dT, hs]
   have hR1 : ∀ s, s ∈ TT → ∀ i : Fin (m + 1), i ≠ 0 → restW TT lam0 s i = lam0 s i := by
     intro s hs i hi
-    simp [restW, flW, Pi.single_apply, hi]
+    simp [restW, flW, hi]
   have hR2 : ∀ s, s ∈ TT → restW TT lam0 s 0 = lam0 s 1 := by
     intro s hs
     have h01 : lam0 s 1 ≤ lam0 s 0 := hdom s (Fin.zero_le 1)
     simp [restW, flW, dT, hs, flatDeg, Int.toNat_of_nonneg (sub_nonneg.mpr h01)]
   have h1v : ((1 : Fin (m + 1)) : ℕ) = 1 := by
     first
-    | exact Nat.mod_eq_of_lt (by omega)
     | (simp; omega)
   have h10 : (1 : Fin (m + 1)) ≠ 0 := fun h => by
     have := congrArg Fin.val h

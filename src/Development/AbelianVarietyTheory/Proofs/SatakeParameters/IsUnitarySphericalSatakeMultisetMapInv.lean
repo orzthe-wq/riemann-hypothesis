@@ -1,28 +1,35 @@
 module
 
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RpowNegLeNormOfComponent
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EsymmInvMulEsymmCard
+public import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt
 public import Mathlib.LinearAlgebra.Matrix.Rank
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardQuotMatrixRangeDvrEqResiduePowCorankStatement
-public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RelIndexGlMapStandardLatticeOfIntegralStatement
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EsymmInvMulEsymmCard
+public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
+public import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RpowNegLeNormOfComponent
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.HopfAlgebra.Basic
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
+import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,7 +37,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -47,7 +53,176 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.Linter.HaveILetI
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardQuotMatrixRangeDvrEqResiduePowCorank, Development.AbelianVarietyTheory.Proofs.SatakeParameters.RelIndexGlMapStandardLatticeOfIntegral, Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitarySphericalSatakeMultisetMapInv
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardQuotMatrixRangeDvrEqResiduePowCorank =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardQuotMatrixRangeDvrEqResiduePowCorank", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt\npublic import Mathlib.LinearAlgebra.Matrix.Rank\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Proofs.SatakeParameters.EsymmInvMulEsymmCard\npublic import Mathlib.RingTheory.LocalRing.ResidueField.Basic\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open GlobalTheory.LatHecke GlobalTheory.SatakeInv
+
+namespace GlobalTheory.IdxRank
+
+theorem mem_smul_top_of_forall_mem {O : Type} [CommRing O] (I : Ideal O) {r : ℕ}
+    (z : Fin r → O) (hz : ∀ i, z i ∈ I) : z ∈ I • (⊤ : Submodule O (Fin r → O)) := by
+  have h : z = ∑ i, z i • (Pi.single i (1 : O) : Fin r → O) := by
+    ext j
+    simp [Finset.sum_apply, Pi.single_apply]
+  rw [h]
+  exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hz i) trivial
+
+theorem card_quot_range (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
+    [Finite (IsLocalRing.ResidueField O)] (r : ℕ) (A : Matrix (Fin r) (Fin r) O)
+    (hA : IsLocalRing.maximalIdeal O • (⊤ : Submodule O (Fin r → O)) ≤
+      LinearMap.range A.mulVecLin) :
+    Nat.card ((Fin r → O) ⧸ LinearMap.range A.mulVecLin) =
+      qRes O ^ (r - (A.map (IsLocalRing.residue O)).rank) := by
+  classical
+  set F := IsLocalRing.ResidueField O with hF
+  set res : O →+* F := IsLocalRing.residue O with hres
+  set Ab : Matrix (Fin r) (Fin r) F := A.map res with hAb
+  set R : Submodule F (Fin r → F) := LinearMap.range Ab.mulVecLin with hR
+  let π : (Fin r → O) →ₗ[O] (Fin r → F) := (Algebra.linearMap O F).compLeft (Fin r)
+  have hπ : ∀ x i, π x i = res (x i) := fun x i => rfl
+  have hπs : Function.Surjective π := by
+    intro y
+    refine ⟨fun i => (IsLocalRing.residue_surjective (y i)).choose, ?_⟩
+    ext i
+    exact (IsLocalRing.residue_surjective (y i)).choose_spec
+  have hπA : ∀ x, π (A.mulVec x) = Ab.mulVec (π x) := by
+    intro x
+    ext i
+    have h2 : π x = res ∘ x := rfl
+    rw [h2, hπ]
+    exact RingHom.map_mulVec res A x i
+  let φ : (Fin r → O) →ₗ[O] ((Fin r → F) ⧸ R) := (R.mkQ.restrictScalars O).comp π
+  have hφs : Function.Surjective φ :=
+    (Submodule.mkQ_surjective R).comp hπs
+  have hker : LinearMap.ker φ = LinearMap.range A.mulVecLin := by
+    ext x
+    constructor
+    · intro hx
+      have hx' : π x ∈ R := by
+        have : R.mkQ (π x) = 0 := hx
+        simpa using this
+      obtain ⟨y, hy⟩ := hx'
+      obtain ⟨y', rfl⟩ := hπs y
+      have hy2 : π (A.mulVec y') = π x := by
+        rw [hπA]; exact hy
+      have hz : x - A.mulVec y' ∈ LinearMap.range A.mulVecLin := by
+        apply hA
+        apply mem_smul_top_of_forall_mem
+        intro i
+        have h1 : π (x - A.mulVec y') i = 0 := by
+          rw [map_sub, hy2, sub_self]; rfl
+        rw [hπ] at h1
+        exact (IsLocalRing.residue_eq_zero_iff _).1 h1
+      have : x = (x - A.mulVec y') + A.mulVecLin y' := by
+        simp
+      rw [this]
+      exact Submodule.add_mem _ hz ⟨y', rfl⟩
+    · rintro ⟨y, rfl⟩
+      show R.mkQ (π (A.mulVec y)) = 0
+      rw [hπA]
+      simp only [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
+      exact ⟨π y, rfl⟩
+  have e : ((Fin r → O) ⧸ LinearMap.range A.mulVecLin) ≃ ((Fin r → F) ⧸ R) :=
+    ((Submodule.quotEquivOfEq _ _ hker.symm).trans
+      (φ.quotKerEquivOfSurjective hφs)).toEquiv
+  rw [Nat.card_congr e]
+  have hfin : Module.finrank F ((Fin r → F) ⧸ R) + Module.finrank F R = r := by
+    have := Submodule.finrank_quotient_add_finrank R
+    simpa using this
+  have hrank : Ab.rank = Module.finrank F R := (Matrix.finrank_range_mulVecLin Ab).symm
+  have hdim : Module.finrank F ((Fin r → F) ⧸ R) = r - Ab.rank := by
+    omega
+  have : Finite ((Fin r → F) ⧸ R) := Finite.of_surjective R.mkQ (Submodule.mkQ_surjective R)
+  rw [Module.natCard_eq_pow_finrank (K := F), hdim]
+  rfl
+
+end GlobalTheory.IdxRank
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardQuotMatrixRangeDvrEqResiduePowCorank =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.RelIndexGlMapStandardLatticeOfIntegral =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.RelIndexGlMapStandardLatticeOfIntegral", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Proofs.SatakeParameters.EsymmInvMulEsymmCard\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open GlobalTheory.LatHecke GlobalTheory.SatakeInv
+
+noncomputable section
+namespace GlobalTheory.LatHecke
+
+def coordIncl (O K : Type) [CommRing O] [Field K] [Algebra O K] (r : ℕ) :
+    (Fin r → O) →ₗ[O] (Fin r → K) :=
+  LinearMap.pi fun i => (Algebra.linearMap O K).comp (LinearMap.proj i)
+
+theorem coordIncl_apply {O K : Type} [CommRing O] [Field K] [Algebra O K] {r : ℕ} (x : Fin r → O) :
+    coordIncl O K r x = fun i => algebraMap O K (x i) := rfl
+
+theorem coordIncl_injective {O K : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O K]
+    [IsFractionRing O K] {r : ℕ} : Function.Injective (coordIncl O K r) := by
+  intro x y h
+  funext i
+  exact IsFractionRing.injective O K (congrFun h i)
+
+theorem std_eq_map_top (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
+    [Algebra O K] [IsFractionRing O K] (r : ℕ) :
+    (std O K r).1 = (⊤ : Submodule O (Fin r → O)).map (coordIncl O K r) := by
+  rw [← (Pi.basisFun O (Fin r)).span_eq, Submodule.map_span, ← Set.range_comp]
+  show Submodule.span O (Set.range (Pi.basisFun K (Fin r))) = _
+  congr 2
+  funext i
+  funext j
+  simp [coordIncl_apply, Pi.single_apply]
+
+theorem glMap_std_eq {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
+    [Algebra O K] [IsFractionRing O K] {r : ℕ} (A : Matrix (Fin r) (Fin r) O) (g : GL (Fin r) K)
+    (hg : (g : Matrix (Fin r) (Fin r) K) = A.map (algebraMap O K)) :
+    glMap g (std O K r).1 = (LinearMap.range A.mulVecLin).map (coordIncl O K r) := by
+  rw [glMap, std_eq_map_top, ← Submodule.map_comp, LinearMap.range_eq_map,
+    ← Submodule.map_comp]
+  congr 1
+  apply LinearMap.ext
+  intro x
+  simp only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, Matrix.toLin'_apply,
+      Matrix.mulVecLin_apply, coordIncl_apply, hg]
+  funext i
+  exact (RingHom.map_mulVec (algebraMap O K) A x i).symm
+
+end GlobalTheory.LatHecke
+
+
+open GlobalTheory.LatHecke in
+theorem GlobalTheory.LatHecke.relIndex_glMap_std_of_integral : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] (r : ℕ) (A : Matrix (Fin r) (Fin r) O) (g : GL (Fin r) K), (g : Matrix (Fin r) (Fin r) K) = A.map (algebraMap O K) → (glMap g (std O K r).1).toAddSubgroup.relIndex (std O K r).1.toAddSubgroup = Nat.card ((Fin r → O) ⧸ LinearMap.range A.mulVecLin) ∧ (IsLocalRing.maximalIdeal O • (std O K r).1 ≤ glMap g (std O K r).1 → IsLocalRing.maximalIdeal O • (⊤ : Submodule O (Fin r → O)) ≤ LinearMap.range A.mulVecLin) := by
+  intro O K _ _ _ _ _ _ r A g hg
+  rw [glMap_std_eq A g hg, std_eq_map_top]
+  refine ⟨?_, ?_⟩
+  · have h := AddSubgroup.relIndex_map_map_of_injective (f := (coordIncl O K r).toAddMonoidHom)
+      (LinearMap.range A.mulVecLin).toAddSubgroup (⊤ : Submodule O (Fin r → O)).toAddSubgroup
+      coordIncl_injective
+    refine h.trans ?_
+    rw [Submodule.top_toAddSubgroup, AddSubgroup.relIndex_top_right]
+    rfl
+  · intro h
+    rw [← Submodule.map_smul''] at h
+    exact (Submodule.map_le_map_iff_of_injective coordIncl_injective _ _).1 h
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.RelIndexGlMapStandardLatticeOfIntegral =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitarySphericalSatakeMultisetMapInv =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitarySphericalSatakeMultisetMapInv", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RpowNegLeNormOfComponent\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EsymmInvMulEsymmCard\npublic import Mathlib.LinearAlgebra.Matrix.Rank\npublic import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.FiniteResidueFieldPadicInt\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.CardQuotMatrixRangeDvrEqResiduePowCorank\npublic import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RelIndexGlMapStandardLatticeOfIntegral\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -58,7 +233,7 @@ open GlobalTheory.LatHecke GlobalTheory.RowSatakeBound Matrix
 
 theorem relIndex_eq_pow_rank : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K] (r : ℕ) (A : Matrix (Fin r) (Fin r) O) (g : GL (Fin r) K), (g : Matrix (Fin r) (Fin r) K) = A.map (algebraMap O K) → IsLocalRing.maximalIdeal O • (std O K r).1 ≤ glMap g (std O K r).1 → (glMap g (std O K r).1).toAddSubgroup.relIndex (std O K r).1.toAddSubgroup = qRes O ^ (r - (A.map (IsLocalRing.residue O)).rank) := by
   intro O K _ _ _ _ _ _ _ r A g hg h3
-  rw [(GlobalTheory.T.relIndex_glMap_standardLattice_of_integral O K r A g hg).1, GlobalTheory.T.card_quot_matrix_range_dvr_eq_residue_pow_corank O r A ((GlobalTheory.T.relIndex_glMap_standardLattice_of_integral O K r A g hg).2 h3)]
+  rw [(_root_.GlobalTheory.LatHecke.relIndex_glMap_std_of_integral O K r A g hg).1, _root_.GlobalTheory.IdxRank.card_quot_range O r A ((_root_.GlobalTheory.LatHecke.relIndex_glMap_std_of_integral O K r A g hg).2 h3)]
 
 theorem mem_std_iff {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K] {r : ℕ} (x : Fin r → K) :
     x ∈ (std O K r).1 ↔ ∀ i, x i ∈ (algebraMap O K).range := by
@@ -344,3 +519,7 @@ theorem isUnitarySatake_map_inv : ∀ (O K : Type) [CommRing O] [IsDomain O] [Is
   rw [this]; ring
 
 end GlobalTheory.SatakeInv
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsUnitarySphericalSatakeMultisetMapInv =====

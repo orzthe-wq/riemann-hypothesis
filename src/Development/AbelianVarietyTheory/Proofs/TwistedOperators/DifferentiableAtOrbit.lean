@@ -58,19 +58,9 @@ namespace GlobalTheory.GKLie
 
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
-theorem Jm_mul_self (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
-  unfold Jm
-  rw [diagonal_mul_diagonal, ← diagonal_one]
-  congr 1
-  funext a
-  split_ifs <;> norm_num
+alias Jm_mul_self := _root_.Formalism.REAL.Jm_mul_self
 
-theorem Jm_conjTranspose (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
-  unfold Jm
-  rw [diagonal_conjTranspose]
-  congr 1
-  funext a
-  by_cases h : ε a = true <;> simp [h]
+alias Jm_conjTranspose := _root_.Formalism.REAL.Jm_conjTranspose
 
 theorem isUnit_Jm_det (ε : Fin n → Bool) : IsUnit (Jm ε).det :=
   isUnit_det_of_left_inverse (Jm_mul_self ε)
@@ -129,7 +119,6 @@ theorem dsig_eq_dRep (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (X : 
     PI.PhMeasCore.dsig ρ X v = dRep ρ X v := by
   unfold PI.PhMeasCore.dsig dRep
   congr 1
-  try (funext t; rw [Complex.coe_smul])
 
 theorem differentiableAt_orbit {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {v : H}
     (hv : SmoothVec (lieSet ε) ρ v) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) :
@@ -258,7 +247,6 @@ theorem cre_I (Y : Matrix (Fin n) (Fin n) ℂ) : cre ε (Complex.I • Y) = -cim
   have h : (1 / 2 : ℂ) * Complex.I = -(1 / (2 * Complex.I)) := by
     field_simp
     try rw [Complex.I_sq]
-    try ring
   rw [smul_add, smul_smul, neg_smul, smul_neg, smul_smul, h, smul_sub]
   module
 

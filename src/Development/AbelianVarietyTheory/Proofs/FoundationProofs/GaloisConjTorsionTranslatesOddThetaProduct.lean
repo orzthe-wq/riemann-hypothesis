@@ -1,17 +1,16 @@
 module
 
+public import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalStarComplexMultiplicationPoints
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilPairingGaloisEquivariantCmTorsion
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LineDerivListCompForm
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticPhaseEquivariantEmbeddingsStatement
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLatticeStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalStarComplexMultiplicationPointsStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTaylorThetaTranslateStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutesStatement
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
-import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilPairingGaloisEquivariantCmTorsionStatement
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice
+import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsRingEquivOfIsTranscendenceBasis
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
@@ -23,7 +22,6 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Basify
 import Mathlib.Tactic.ENatToNat
@@ -43,14 +41,213 @@ import Mathlib.Tactic.NormNum.NatFib
 import Mathlib.Tactic.NormNum.NatLog
 import Mathlib.Tactic.NormNum.NatSqrt
 import Mathlib.Tactic.NormNum.Ordinal
+import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTaylorThetaTranslate
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes
+import Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticPhaseEquivariantEmbeddings, Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTorsionTranslatesOddThetaProduct
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticPhaseEquivariantEmbeddings =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticPhaseEquivariantEmbeddings", "h": "module\n\npublic import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntegerMapEqHalfOneAddSqrt\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalStarComplexMultiplicationPoints\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilPairingGaloisEquivariantCmTorsion\nimport Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsRingEquivOfIsTranscendenceBasis\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Development.AbelianVarietyTheory.Definitions.Foundations.NormSumPairRankZeroOfCurveCoordNorm\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
+open scoped BigOperators
+
+namespace GlobalTheory.QuadPhase
+
+theorem exists_top_extension (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (S : Set ℂ) (hS : S.Countable) :
+    ∃ σ : (⊤ : IntermediateField ℚ ℂ) →ₐ[ℚ] ℂ, ∀ x ∈ S, x ∈ M → cj ⊤ σ x = cj M ρ x := by
+  let M₀ : IntermediateField ℚ ℂ := IntermediateField.adjoin ℚ (S ∩ (M : Set ℂ))
+  have hle : M₀ ≤ M := IntermediateField.adjoin_le_iff.2 Set.inter_subset_right
+  have hc : Countable M₀ := by
+    have h1 := IntermediateField.cardinalMk_adjoin_le ℚ (S ∩ (M : Set ℂ))
+    have h2 : (S ∩ (M : Set ℂ)).Countable := hS.mono Set.inter_subset_left
+    refine Cardinal.mk_le_aleph0_iff.1 (h1.trans (max_le (max_le ?_ ?_) le_rfl))
+    · exact Cardinal.mk_le_aleph0
+    · exact Cardinal.mk_le_aleph0_iff.2 h2
+  obtain ⟨σ, hσ⟩ := GlobalTheory.GaloisDescent.exists_complex_ringEquiv_comp_eq (K := M₀)
+    (algebraMap M₀ ℂ) ((ρ.comp (IntermediateField.inclusion hle)).toRingHom)
+  refine ⟨((σ : ℂ →+* ℂ).toRatAlgHom).comp (IntermediateField.val ⊤), fun x hx hxM => ?_⟩
+  have hx0 : x ∈ M₀ := IntermediateField.subset_adjoin ℚ _ ⟨hx, hxM⟩
+  have h := hσ ⟨x, hx0⟩
+  unfold cj TaylorLogMetric.liftM
+  rw [dite_eq_left IntermediateField.mem_top, dite_eq_left hxM]
+  exact h
+
+alias ee_add := _root_.GlobalTheory.WeilPairingGalois.ee_add
+
+theorem ee_zero : ee 0 = 1 := by simp [ee]
+
+theorem cmQuadraticForm_eq_alternatingForm (D : D7) (Λ : AddSubgroup ℂ) (x : ℂ) : q1 D Λ x = gl3FieldFirst Λ (w0 D * x) x := by
+  unfold q1 gl3FieldFirst w0
+  rw [mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  simp only [Complex.mul_im, Complex.ofReal_im, Complex.ofReal_re, Complex.div_ofNat_im, Complex.add_im,
+    Complex.one_im, Complex.I_re, Complex.I_im]
+  ring
+
+theorem cmQuadraticForm_half_eq_alternatingForm (D : D7) (Λ : AddSubgroup ℂ) (x : ℂ) : q1 D Λ x / 2 = gl3FieldFirst Λ (w0 D * x / 2) x := by
+  rw [cmQuadraticForm_eq_alternatingForm]
+  unfold gl3FieldFirst
+  rw [div_mul_eq_mul_div, Complex.div_ofNat_im]
+  ring
+
+theorem cmQuadraticForm_half_add_translation (D : D7) (Λ : AddSubgroup ℂ) (x l : ℂ) (m : ℕ) :
+    q1 D Λ (x + 2 * (m : ℂ) * l) / 2 = q1 D Λ x / 2 + gl3FieldFirst Λ (w0 D * ((m : ℂ) * x)) l +
+      gl3FieldFirst Λ (w0 D * l) ((m : ℂ) * x) + gl3FieldFirst Λ (w0 D * l) (((2 * m * m : ℕ) : ℂ) * l) := by
+  rw [cmQuadraticForm_half_eq_alternatingForm, cmQuadraticForm_half_eq_alternatingForm]
+  unfold gl3FieldFirst
+  rw [← add_div, ← add_div, ← add_div, ← Complex.add_im, ← Complex.add_im, ← Complex.add_im]
+  congr 2
+  simp only [map_add (f := _), map_mul, map_natCast, map_ofNat]
+  push_cast
+  ring
+
+theorem phase_top (D : D7) (hS : galStar D) (hW : WeilPairingGaloisAlt D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
+    (hc : Crv D cc δ) (ρ : (⊤ : IntermediateField ℚ ℂ) →ₐ[ℚ] ℂ) (hK : FixK D ⊤ ρ)
+    (x x' : ℂ) (m₀ : ℕ) (hm : 0 < m₀) (hx : (m₀ : ℂ) * x ∈ lamOf D cc δ)
+    (hA : Adp1 ⊤ ρ (lamOf D cc δ) (2 * m₀) x x') :
+    cj ⊤ ρ (ee (q1 D (lamOf D cc δ) x / 2)) = ee (q1 D (lamConj ⊤ ρ (lamOf D cc δ)) x' / 2) := by
+  obtain ⟨hex, huniq, -, hadd, hmul, hord, -⟩ :=
+    hS cc δ hc ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top
+  have hWP := hW cc δ hc ⊤ ρ hK IntermediateField.mem_top IntermediateField.mem_top
+  obtain ⟨a, ha⟩ := GlobalTheory.NormSum.exists_integer_map_eq_w0 D
+  set Λ := lamOf D cc δ with hΛ
+  set Λ' := lamConj ⊤ ρ Λ with hΛ'
+  have hm0 : (m₀ : ℂ) ≠ 0 := by exact_mod_cast hm.ne'
+  have hmulw : ∀ t t', StarPt ⊤ ρ Λ t t' → StarPt ⊤ ρ Λ (w0 D * t) (w0 D * t') := fun t t' h => by
+    have := hmul a t t' h
+    rwa [ha] at this
+  have hw : ∀ l ∈ Λ, w0 D * l ∈ Λ := fun l hl => by
+    have h := hmulw l 0 (Or.inl ⟨hl, zero_mem _⟩)
+    rcases h with h | h
+    · exact h.1
+    · exact absurd (by rw [mul_zero]; exact zero_mem _) h.2.1
+  have hw' : ∀ l ∈ Λ', w0 D * l ∈ Λ' := fun l hl => by
+    have h := hmulw 0 l (Or.inl ⟨zero_mem _, hl⟩)
+    rcases h with h | h
+    · exact h.2
+    · exact absurd (by rw [mul_zero]; exact zero_mem _) h.1
+  have hint : ∀ l ∈ Λ', ∀ l' ∈ Λ', ee (gl3FieldFirst Λ' l l') = 1 := fun l hl l' hl' => by
+    have h := hWP 0 0 l l' 1 one_pos (by simp) (by simp)
+      (Or.inl ⟨by simp, by simpa using hl⟩) (Or.inl ⟨by simp, by simpa using hl'⟩) IntermediateField.mem_top
+    rw [← h]
+    have h0 : gl3FieldFirst Λ 0 0 = 0 := by simp [gl3FieldFirst]
+    rw [h0, ee_zero]
+    unfold cj TaylorLogMetric.liftM
+    rw [dite_eq_left IntermediateField.mem_top]
+    exact map_one ρ
+  have hnat : ∀ (A : AddSubgroup ℂ) (n : ℕ), ∀ l ∈ A, (n : ℂ) * l ∈ A := fun A n l hl => by
+    rw [← nsmul_eq_mul]
+    exact nsmul_mem hl n
+  have htn : ((4 * m₀ * m₀ : ℕ) : ℂ) * (x / (4 * (m₀ : ℂ))) = (m₀ : ℂ) * x := by
+    push_cast
+    field_simp
+  obtain ⟨t', ht'⟩ := hex (x / (4 * (m₀ : ℂ))) ⟨4 * m₀ * m₀, by positivity, htn ▸ hx⟩
+    (Or.inr ⟨IntermediateField.mem_top, IntermediateField.mem_top⟩)
+  set y : ℂ := 4 * (m₀ : ℂ) * t' with hy
+  have hA2 : Adp1 ⊤ ρ Λ (2 * m₀) x y := by
+    have h := hadd _ _ _ _ ht' ht'
+    unfold Adp1
+    convert h using 1
+    · push_cast
+      field_simp
+      ring
+    · rw [hy]
+      push_cast
+      field_simp
+      ring
+  have hA3 : Adp1 ⊤ ρ Λ (2 * m₀) (w0 D * x / 2) (w0 D * y / 2) := by
+    have h := hmulw _ _ ht'
+    unfold Adp1
+    convert h using 1
+    · push_cast
+      field_simp
+      ring
+    · rw [hy]
+      push_cast
+      field_simp
+      ring
+  have hl := (huniq _ _ _ hA).1 hA2
+  have hμ : (m₀ : ℂ) * y ∈ Λ' := by
+    have h := (hord (4 * m₀ * m₀) _ _ ht').1 (htn ▸ hx)
+    convert h using 1
+    rw [hy]
+    push_cast
+    ring
+  set l : ℂ := x' / ((2 * m₀ : ℕ) : ℂ) - y / ((2 * m₀ : ℕ) : ℂ) with hldef
+  have hx' : x' = y + 2 * (m₀ : ℂ) * l := by
+    rw [hldef]
+    push_cast
+    field_simp
+    ring
+  have hmain := hWP (w0 D * x / 2) x (w0 D * y / 2) y (2 * m₀) (by positivity)
+    (by
+      convert hw _ hx using 1
+      push_cast
+      ring)
+    (by
+      convert hnat Λ 2 _ hx using 1
+      push_cast
+      ring)
+    hA3 hA2 IntermediateField.mem_top
+  rw [hx', cmQuadraticForm_half_add_translation, ee_add, ee_add, ee_add, hint _ (hw' _ hμ) _ hl, hint _ (hw' _ hl) _ hμ,
+    hint _ (hw' _ hl) _ (hnat Λ' _ _ hl), cmQuadraticForm_half_eq_alternatingForm, cmQuadraticForm_half_eq_alternatingForm, hmain]
+  simp
+
+theorem galPh1_of (D : D7) (hS : galStar D) (hW : WeilPairingGaloisAlt D) : galPh1 D := by
+  intro cc δ hc
+  refine ⟨fun x => cmQuadraticForm_eq_alternatingForm D _ x, fun M ρ hK h2 h3 x x' m₀ hm hx hA he => ?_⟩
+  set Λ := lamOf D cc δ with hΛ
+  have hKc : Countable D.host.K := Finsupp.Countable.of_moduleFinite (R := ℚ)
+  let S : Set ℂ := Set.range (fun a : D.host.K => D.host.φ₀ (a : D.host.E)) ∪
+    {g2 Λ, g3 Λ, wpF Λ (x / ((2 * m₀ : ℕ) : ℂ)), wpD Λ (x / ((2 * m₀ : ℕ) : ℂ)), ee (q1 D Λ x / 2)}
+  have hSc : S.Countable := (Set.countable_range _).union (Set.toFinite _).countable
+  obtain ⟨σ, hσ⟩ := exists_top_extension M ρ S hSc
+  have hK' : FixK D ⊤ σ := fun a =>
+    ⟨IntermediateField.mem_top, by rw [hσ _ (Or.inl ⟨a, rfl⟩) (hK a).1, (hK a).2]⟩
+  have hl : lamConj ⊤ σ Λ = lamConj M ρ Λ := by
+    have e2 := hσ (g2 Λ) (Or.inr (by simp)) h2
+    have e3 := hσ (g3 Λ) (Or.inr (by simp)) h3
+    unfold cj at e2 e3
+    unfold lamConj
+    rw [e2, e3]
+  have hA' : Adp1 ⊤ σ Λ (2 * m₀) x x' := by
+    unfold Adp1 StarPt at hA ⊢
+    rw [hl]
+    rcases hA with h | ⟨h1, h2', h3', h4, h5, h6⟩
+    · exact Or.inl h
+    · refine Or.inr ⟨h1, h2', IntermediateField.mem_top, IntermediateField.mem_top, ?_, ?_⟩
+      · rw [h5, hσ _ (Or.inr (by simp)) h3']
+      · rw [h6, hσ _ (Or.inr (by simp)) h4]
+  have h := phase_top D hS hW cc δ hc σ hK' x x' m₀ hm hx hA'
+  rw [← hΛ, hl, hσ _ (Or.inr (by simp)) he] at h
+  exact h
+
+theorem galPh1_all : ∀ D : D7, galPh1 D := fun D =>
+  galPh1_of D (_root_.GlobalTheory.ConjPoint.galStar_holds D) (_root_.GlobalTheory.WeilPairingGalois.weilPairingGalois_all D)
+
+end GlobalTheory.QuadPhase
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticPhaseEquivariantEmbeddings =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTorsionTranslatesOddThetaProduct =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTorsionTranslatesOddThetaProduct", "h": "module\n\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LineDerivListCompForm\npublic import Formalism.SharpRestriction.GlobalSchurBounds.StandardLatticesGL3\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.CmQuadraticPhaseEquivariantEmbeddings\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ConjugateCurveDatumLatticeIsCurveLattice\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.GalStarComplexMultiplicationPoints\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTaylorThetaTranslate\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.IdealPeriodLatticeOfCurveDatum\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.InducedTypeThetaGenusOnePermutes\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.OddThetaFunctionExistenceUniqueness\nimport Development.AbelianVarietyTheory.Proofs.FoundationProofs.WeilPairingGaloisEquivariantCmTorsion\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum
@@ -58,11 +255,7 @@ open scoped BigOperators
 
 namespace GlobalTheory.ProdThetaConj
 
-theorem ee_add (a b : ℝ) : ee (a + b) = ee a * ee b := by
-  simp only [ee, ← Complex.exp_add]
-  congr 1
-  push_cast
-  ring
+alias ee_add := _root_.GlobalTheory.WeilPairingGalois.ee_add
 
 theorem ee_sum {κ : Type*} [Fintype κ] (a : κ → ℝ) : ee (∑ j, a j) = ∏ j, ee (a j) := by
   simp only [ee, ← Complex.exp_sum]
@@ -170,7 +363,7 @@ theorem exists_adp (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {t : ℂ} {m 
     (ht : (m : ℂ) * t ∈ lamOf D cc δ) {n : ℕ} (hn : 0 < n) :
     ∃ t', Adp1 ⊤ (topHom s) (lamOf D cc δ) n t t' := by
   have hn' : (n : ℂ) ≠ 0 := by exact_mod_cast hn.ne'
-  obtain ⟨u, hu⟩ := (GlobalTheory.T.galStar_complexMultiplication_points D cc δ hc ⊤ _ hK trivial trivial).1 (t / n)
+  obtain ⟨u, hu⟩ := (_root_.GlobalTheory.ConjPoint.galStar_holds D cc δ hc ⊤ _ hK trivial trivial).1 (t / n)
     ⟨m * n, by positivity, by
       rw [show ((m * n : ℕ) : ℂ) * (t / n) = m * t by push_cast; field_simp]; exact ht⟩
     (Or.inr ⟨trivial, trivial⟩)
@@ -180,7 +373,7 @@ theorem adp_add (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n : ℕ} {x x' 
     (hx : Adp1 ⊤ (topHom s) (lamOf D cc δ) n x x') (ht : Adp1 ⊤ (topHom s) (lamOf D cc δ) n t t') :
     Adp1 ⊤ (topHom s) (lamOf D cc δ) n (x + t) (x' + t') := by
   rw [Adp1, add_div, add_div]
-  exact (GlobalTheory.T.galStar_complexMultiplication_points D cc δ hc ⊤ _ hK trivial trivial).2.2.2.1 _ _ _ _ hx ht
+  exact (_root_.GlobalTheory.ConjPoint.galStar_holds D cc δ hc ⊤ _ hK trivial trivial).2.2.2.1 _ _ _ _ hx ht
 
 theorem adp_half (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n : ℕ} {x x' : ℂ}
     (hx : Adp1 ⊤ (topHom s) (lamOf D cc δ) (2 * n) x x') :
@@ -195,7 +388,7 @@ theorem adp_mem (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n m : ℕ} (hn 
     (hx : Adp1 ⊤ (topHom s) (lamOf D cc δ) n x x') (hm : (m : ℂ) * x ∈ lamOf D cc δ) :
     (m : ℂ) * x' ∈ lamConj ⊤ (topHom s) (lamOf D cc δ) := by
   have hn' : (n : ℂ) ≠ 0 := by exact_mod_cast hn.ne'
-  have h := (GlobalTheory.T.galStar_complexMultiplication_points D cc δ hc ⊤ _ hK trivial trivial).2.2.2.2.2.1 (m * n) _ _ hx
+  have h := (_root_.GlobalTheory.ConjPoint.galStar_holds D cc δ hc ⊤ _ hK trivial trivial).2.2.2.2.2.1 (m * n) _ _ hx
   have e : ∀ y : ℂ, ((m * n : ℕ) : ℂ) * (y / n) = m * y := fun y => by
     push_cast; field_simp
   rw [e, e] at h
@@ -204,13 +397,13 @@ theorem adp_mem (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {n m : ℕ} (hn 
 theorem sgStar_law (hc : Crv D cc δ) :
     Differentiable ℂ (sgStar (lamOf D cc δ)) ∧ OddLaw (lamOf D cc δ) (sgStar (lamOf D cc δ)) := by
   have h := (GlobalTheory.OddTheta.sgStar_laws _
-    (GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hc).1).1
+    (GlobalTheory.CurveLattice.lattice_of_curve D (_root_.GlobalTheory.InducedType.induced_type D).1 cc δ hc).1).1
   exact ⟨h.1, h.2.1, h.2.2.2⟩
 
 theorem sgStar_conj_law (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) :
     Differentiable ℂ (sgStar (lamConj ⊤ (topHom s) (lamOf D cc δ))) ∧
       OddLaw (lamConj ⊤ (topHom s) (lamOf D cc δ)) (sgStar (lamConj ⊤ (topHom s) (lamOf D cc δ))) := by
-  obtain ⟨cc', δ', hc', -, h⟩ := GlobalTheory.T.conjugate_curveDatum_lattice_isCurveLattice D cc δ hc ⊤ _ hK trivial trivial 1 one_pos
+  obtain ⟨cc', δ', hc', -, h⟩ := _root_.GlobalTheory.ConjCurve.galCurve_holds D cc δ hc ⊤ _ hK trivial trivial 1 one_pos
   rw [h]
   exact sgStar_law hc'
 
@@ -220,7 +413,7 @@ theorem coef_translate (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {m : ℕ}
       coef1 (U1 (lamConj ⊤ (topHom s) (lamOf D cc δ)) t'
         (sgStar (lamConj ⊤ (topHom s) (lamOf D cc δ)))) n := by
   rw [← cj_topHom]
-  refine GlobalTheory.T.galois_conj_taylor_thetaTranslate D cc δ hc ⊤ _ hK trivial trivial t t' (2 * m) (by positivity) ?_ ha
+  refine _root_.GlobalTheory.JetConj.galois_translate_sgStar D cc δ hc ⊤ _ hK trivial trivial t t' (2 * m) (by positivity) ?_ ha
     (fun _ => trivial) n
   rwa [show ((2 * m : ℕ) : ℂ) * (t / 2) = m * t by push_cast; ring]
 
@@ -233,7 +426,7 @@ theorem coef_translate₂ (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {m : �
         (sgStar (lamConj ⊤ (topHom s) (lamOf D cc δ))))) n := by
   have hm' : (m : ℂ) ≠ 0 := by exact_mod_cast hm.ne'
   obtain ⟨y, hy⟩ := exists_adp hc hK hm hx (n := 2 * (2 * m)) (by positivity)
-  have hμ := ((GlobalTheory.T.galStar_complexMultiplication_points D cc δ hc ⊤ _ hK trivial trivial).2.1 _ _ _ (adp_half hc hK hy)).1 hxa
+  have hμ := ((_root_.GlobalTheory.ConjPoint.galStar_holds D cc δ hc ⊤ _ hK trivial trivial).2.1 _ _ _ (adp_half hc hK hy)).1 hxa
   have hsh := (sgStar_conj_law hc hK).2.doubleTranslate_shift_lattice_mod_two_mul (adp_mem hc hK (by positivity) hxa hx)
     (adp_mem hc hK (by positivity) ha ht) hμ
   rw [show x' + 2 * m * (y / ((2 * m : ℕ) : ℂ) - x' / ((2 * m : ℕ) : ℂ)) = y by
@@ -242,7 +435,7 @@ theorem coef_translate₂ (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) {m : �
     coef_translate hc hK hm (by rw [mul_add]; exact AddSubgroup.add_mem _ hx ht) (adp_add hc hK hy ha),
     ← cj_topHom]
   congr 1
-  refine GlobalTheory.T.weilPairing_galois_equivariant_cm_torsion D cc δ hc ⊤ _ hK trivial trivial t (x / 2) t' (y / 2) (2 * m) (by positivity)
+  refine _root_.GlobalTheory.WeilPairingGalois.weilPairingGalois_all D cc δ hc ⊤ _ hK trivial trivial t (x / 2) t' (y / 2) (2 * m) (by positivity)
     ?_ ?_ (adp_half hc hK ha) ?_ trivial
   · rw [show ((2 * m : ℕ) : ℂ) * t = m * t + m * t by push_cast; ring]
     exact AddSubgroup.add_mem _ ht ht
@@ -367,7 +560,7 @@ theorem emb_conj (φ : D.host.E →+* ℂ) (x : D.host.E) :
 
 theorem sum_emb_pair (hb : OnB D b) (i j : Fin r) :
     ∑ τ, embT D τ (∑ a, ∑ c, b i a c * D.host.conj (b j a c)) = if i = j then 1 else 0 := by
-  rw [(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1.2]
+  rw [(_root_.GlobalTheory.InducedType.induced_type D).1.2]
   have h := hb.1 i j
   rw [hYY] at h
   rw [h]
@@ -448,7 +641,7 @@ theorem exists_conjPair (hc : Crv D cc δ) (hK : FixK D ⊤ (topHom s)) (hb : On
   · rw [wdPh_sum (frameCoordinate_orthonormal_baseTorus hb), wdPh_sum (ortho_torConj hb), map_prod]
     refine Finset.prod_congr rfl fun j _ => ?_
     rw [← cj_topHom]
-    exact (GlobalTheory.T.cmQuadraticPhase_equivariant_embeddings D cc δ hc).2 ⊤ _ hK trivial trivial _ _ m hm (hum j) (hu j) trivial
+    exact (_root_.GlobalTheory.QuadPhase.galPh1_all D cc δ hc).2 ⊤ _ hK trivial trivial _ _ m hm (hum j) (hu j) trivial
 
 end Main
 
@@ -500,3 +693,6 @@ theorem galB_all : ∀ D : D7, galB D := by
     exact M.mul_mem hw (hUG α)
 
 end GlobalTheory.ProdThetaConj
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.FoundationProofs.GaloisConjTorsionTranslatesOddThetaProduct =====

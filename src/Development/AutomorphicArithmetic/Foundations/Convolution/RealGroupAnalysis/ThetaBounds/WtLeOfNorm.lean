@@ -62,7 +62,7 @@ private theorem wt_le_of_norm {K : Set (Fin 4 → FiniteAdeleRing (𝓞 F) F)} {
     generalize htd : ‖infPartPi w‖ = t at h
     have ht0 : 0 ≤ t := htd ▸ norm_nonneg _
     have hs0 : 0 ≤ s := hsd ▸ norm_nonneg _
-    have h1 : 1 + s ≤ m * (1 + t) := by nlinarith
+    have h1 : 1 + s ≤ m * (1 + t) := by linarith [ht0, hs0]
     have hp : (1 + s) ^ N ≤ m ^ N * (1 + t) ^ N := by
       rw [← mul_pow]
       exact pow_le_pow_left₀ (by positivity) h1 N
@@ -153,17 +153,17 @@ private theorem co_le_Hm {s : ℂ} (hs : s ≠ 0) (w : InfinitePlace F) (x : Fin
     rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_mul] at this
     norm_num at this
     rw [inv_mul_eq_div, le_div_iff₀ hs']
-    nlinarith
+    linarith
   have hp : 0 ≤ ‖s‖⁻¹ * B := by positivity
   fin_cases i
   · change |x 0 w| ≤ _
-    nlinarith
+    linarith [hB]
   · change |x 1 w| ≤ _
-    nlinarith
+    linarith
   · change |x 2 w| ≤ _
-    nlinarith
+    linarith
   · change |x 3 w| ≤ _
-    nlinarith
+    linarith
 
 private theorem Hm_le (s : ℂ) (w : InfinitePlace F) (x : Fin 4 → TR.Rinf F) {U : ℝ}
     (hU : 0 ≤ U) (h : ∀ i, |x i w| ≤ U) (i j : Fin 2) : ‖Hm s w x i j‖ ≤ (1 + ‖s‖) * U := by
@@ -176,19 +176,19 @@ private theorem Hm_le (s : ℂ) (w : InfinitePlace F) (x : Fin 4 → TR.Rinf F) 
   · have e : Hm s w x 0 0 = (x 1 w : ℂ) := by simp [Hm]
     change ‖Hm s w x 0 0‖ ≤ _
     rw [e]
-    nlinarith [hr 1]
+    linarith [hU, hr 1]
   · have e : Hm s w x 0 1 = (x 2 w : ℂ) + s * (x 3 w : ℂ) := by simp [Hm]
     change ‖Hm s w x 0 1‖ ≤ _
     rw [e]
-    exact (norm_add_le _ _).trans (by nlinarith [hr 2])
+    exact (norm_add_le _ _).trans (by linarith [hr 2])
   · have e : Hm s w x 1 0 = (x 2 w : ℂ) - s * (x 3 w : ℂ) := by simp [Hm]
     change ‖Hm s w x 1 0‖ ≤ _
     rw [e]
-    exact (norm_sub_le _ _).trans (by nlinarith [hr 2])
+    exact (norm_sub_le _ _).trans (by linarith [hr 2])
   · have e : Hm s w x 1 1 = (x 0 w : ℂ) := by simp [Hm]
     change ‖Hm s w x 1 1‖ ≤ _
     rw [e]
-    nlinarith [hr 0]
+    linarith [hr 0]
 
 end
 
@@ -227,7 +227,7 @@ theorem UpperTheory.ConvolutionTheory.R2.Ff.wtAct :
   refine ⟨A + 1, fun K N y v => ?_⟩
   have hHt : 1 ≤ Ht y := ((htLe E).2 y).1
   have hH2 : 1 ≤ Ht y ^ 2 := one_le_pow₀ hHt
-  have hm1 : 1 ≤ (A + 1) * Ht y ^ 2 := by nlinarith
+  have hm1 : 1 ≤ (A + 1) * Ht y ^ 2 := one_le_mul_of_one_le_of_one_le (by linarith) hH2
   rw [← map_inv]
   have hact := actInf F E D y⁻¹ v
   refine wt_le_of_norm hm1 hact.1 ?_
@@ -253,4 +253,4 @@ theorem UpperTheory.ConvolutionTheory.R2.Ff.wtAct :
   have hp : 0 ≤ Ht y ^ 2 * ‖infPartPi (D.act (infGL E 2 y⁻¹) v)‖ := by positivity
   calc _ ≤ A * (Ht y ^ 2 * ‖infPartPi (D.act (infGL E 2 y⁻¹) v)‖) :=
         mul_le_mul_of_nonneg_right (hterm τ) hp
-    _ ≤ (A + 1) * Ht y ^ 2 * ‖infPartPi (D.act (infGL E 2 y⁻¹) v)‖ := by nlinarith
+    _ ≤ (A + 1) * Ht y ^ 2 * ‖infPartPi (D.act (infGL E 2 y⁻¹) v)‖ := by linarith

@@ -120,7 +120,7 @@ theorem ld_boxes_le (p w i q : ℕ) (lam2 tau : Fin q → ℕ) (htau : tau ∈ s
         (lam2 a : ℤ) ≤ c + (a.val : ℤ) ∧ c + (a.val : ℤ) < (tau a : ℤ)).max' hS).val : ℤ) := by
       exact_mod_cast hab
     have htb := hanti a _ hab
-    simp only [colLen, Finset.mem_filter, Finset.mem_univ, true_and]
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
     constructor <;> omega
 
 theorem muLe : MuLe := by
@@ -225,7 +225,5 @@ theorem ld_blockWt_anti (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2
       apply ha
       rw [Fin.le_def] at hij ⊢
       simpa using hij
-
-theorem d_n_ne_zero : DnNeZero := dnNeZero
 
 end Formalism.CohomologicalDescent.LD

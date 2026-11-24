@@ -1,8 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
-public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionHeisenbergInvariantStatement
-public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissibleStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.NumberTheory.NumberField.AdeleRing
+public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionHeisenbergInvariant
+public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaDistributionNonzeroAdmissible
 public import Development.AutomorphicSpectrum.Proofs.MembershipProofs.ThetaSumAdmissibility
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -179,8 +181,8 @@ theorem theta_inj : ∀ (F : Type) [Field F] [NumberField F] [LocallyCompactSpac
   intro F _ _ _ _ κ _ ψ hc h1 hF Φ hΦ hθ
   classical
   funext x
-  have hnorm := (GlobalTheory.T.adelic_character_rational_dual F ψ hc h1 hF).1
-  have hs := (GlobalTheory.CompanionTheory.ThetaAdm.theta_adm F κ).1 _ ((GlobalTheory.T.theta_distribution_heisenberg_invariant F κ ψ hc h1 hF).1 (x, 0) Φ hΦ)
+  have hnorm := (_root_.GlobalTheory.CompanionTheory.AdeleAnn.unitary_and_annihilator_eq F ψ hc h1 hF).1
+  have hs := (GlobalTheory.CompanionTheory.ThetaAdm.theta_adm F κ).1 _ ((_root_.GlobalTheory.CompanionTheory.AdelicHeis.schr_mem_and_thetaSum F κ ψ hc h1 hF).1 (x, 0) Φ hΦ)
   have key := charSeries_coeff_eq_zero (A := κ → AdeleRing (𝓞 F) F) (I := κ → F)
     (fun ξ y => ψ ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) ⬝ᵥ y))
     (fun ξ => Φ ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) + x)) 0

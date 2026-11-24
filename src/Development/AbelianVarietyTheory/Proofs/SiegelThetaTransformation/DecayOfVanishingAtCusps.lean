@@ -1,17 +1,25 @@
 module
 
+public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible
+public import Mathlib.NumberTheory.NumberField.House
+public import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.NormLeTsumOfCubeFourierCoeffLe
+public import Mathlib.Analysis.Matrix.PosDef
+public import Mathlib.Algebra.Star.UnitaryStarAlgAut
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero
 public import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.StarInvMulVecDotProductMulVecInvMulVec
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsFourierExpansionHolomorphicTubeStatement
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsIntegralBasisHermitianMatricesDualStatement
+public import Mathlib.Analysis.CStarAlgebra.Classes
+public import Mathlib.Analysis.Calculus.FDeriv.Defs
+public import Mathlib.MeasureTheory.Integral.Bochner.Basic
+public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsFourierExpansionHolomorphicTube
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.NormDetDenomLeRankOne
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableExpNegTraceTotallyPositiveHermitianStatement
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TracePairingGeDetImPowHermitianHalfSpaceStatement
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustStatementPfA
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
@@ -23,14 +31,13 @@ import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.Henselian
+import Mathlib.RingTheory.PiTensorProduct
 import Mathlib.RingTheory.Radical.NatInt
+import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.TotallySplit
 import Mathlib.RingTheory.WittVector.IsPoly
 import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -38,7 +45,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -54,8 +61,649 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustStatementPfA
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardAlgebraicIntegersBoundedArchimedeanLe
+import Mathlib.RingTheory.Coalgebra.IsFrobenius
+import Mathlib.RingTheory.HopfAlgebra.Basic
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.RingTheory.Etale.Weakly
+import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+import Mathlib.RingTheory.TotallySplit
+import Mathlib.Tactic.Lemma
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.TypeStar
+import Std.Tactic.BVDecide.Normalize.Prop
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsIntegralBasisHermitianMatricesDual, Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableExpNegTraceTotallyPositiveHermitian, Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TracePairingGeDetImPowHermitianHalfSpace, Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DecayOfVanishingAtCusps
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsIntegralBasisHermitianMatricesDual =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsIntegralBasisHermitianMatricesDual", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix Complex NumberField GlobalTheory.SW Filter Topology
+open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
+open scoped ComplexConjugate ComplexOrder Real Classical
+
+namespace GlobalTheory.SW.HermLat
+
+noncomputable section
+
+variable {E : Type} [Field E] [NumberField E] [IsCMField E]
+
+theorem cc_add (x y : E) : cc (x + y) = cc x + cc y := map_add _ _ _
+theorem cc_zero : cc (0 : E) = 0 := map_zero _
+theorem cc_cc (x : E) : cc (cc x) = x := IsCMField.complexConj_apply_apply E x
+theorem cc_smul (q : ℚ) (x : E) : cc (q • x) = q • cc x :=
+  map_rat_smul (IsCMField.complexConj E) q x
+
+theorem sum_univ {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) (g : (E →+* ℂ) → ℂ) :
+    ∑ σ, g σ = ∑ τ : Ψ, (g τ + g (ComplexEmbedding.conjugate τ.1)) := by
+  rw [Finset.sum_coe_sort Ψ (fun τ => g τ + g (ComplexEmbedding.conjugate τ)),
+    Finset.sum_add_distrib, ← Finset.sum_add_sum_compl Ψ]
+  congr 1
+  symm
+  refine Finset.sum_bij' (fun τ _ => ComplexEmbedding.conjugate τ)
+    (fun τ _ => ComplexEmbedding.conjugate τ) ?_ ?_ ?_ ?_ ?_
+  · intro τ hτ; exact Finset.mem_compl.2 ((hΨ τ).1 hτ)
+  · intro τ hτ
+    by_contra hc
+    exact Finset.mem_compl.1 hτ ((hΨ τ).2 hc)
+  · intro τ _; exact star_star τ
+  · intro τ _; exact star_star τ
+  · intro τ _; rfl
+
+theorem half_trace {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {x : E} (hx : cc x = x) :
+    (((1 / 2 : ℚ) * Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ τ : Ψ, τ.1 x := by
+  have h := trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := x)
+  have h2 : ∑ σ : E →ₐ[ℚ] ℂ, σ x = ∑ σ : E →+* ℂ, σ x :=
+    (Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) _ _ (fun _ => rfl)).symm
+  rw [h2, sum_univ hΨ] at h
+  have h3 : ∀ τ : Ψ, ComplexEmbedding.conjugate τ.1 x = τ.1 x := fun τ => by
+    rw [ComplexEmbedding.conjugate_coe_eq, ← Base.map_cc, hx]
+  simp only [h3, ← two_mul, ← Finset.mul_sum] at h
+  have h4 : algebraMap ℚ ℂ (Algebra.trace ℚ E x) = ((Algebra.trace ℚ E x : ℚ) : ℂ) := rfl
+  rw [h4] at h
+  push_cast
+  rw [h]; ring
+
+theorem indep {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) (u v : Ψ → ℂ)
+    (h : ∀ x : E, ∑ τ : Ψ, (τ.1 x * u τ + conj (τ.1 x) * v τ) = 0) : u = 0 := by
+  let f : Ψ ⊕ Ψ → (E →* ℂ) := Sum.elim (fun τ => (τ.1 : E →* ℂ))
+    (fun τ => (ComplexEmbedding.conjugate τ.1 : E →* ℂ))
+  have inj : ∀ a b : E →+* ℂ, (a : E →* ℂ) = (b : E →* ℂ) → a = b := fun a b e =>
+    RingHom.ext fun x => DFunLike.congr_fun e x
+  have hf : Function.Injective f := by
+    rintro (a | a) (b | b) e
+    · rw [Subtype.ext (inj _ _ e)]
+    · exact absurd ((inj _ _ e) ▸ a.2) ((hΨ b.1).1 b.2)
+    · exact absurd ((inj _ _ e).symm ▸ b.2) ((hΨ a.1).1 a.2)
+    · have := congrArg ComplexEmbedding.conjugate (inj _ _ e)
+      have e2 : a.1 = b.1 := (star_star a.1).symm.trans (this.trans (star_star b.1))
+      rw [Subtype.ext e2]
+  have li := (linearIndependent_monoidHom E ℂ).comp f hf
+  have := Fintype.linearIndependent_iff.1 li (Sum.elim u v) (by
+    funext x
+    have := h x
+    rw [Finset.sum_add_distrib] at this
+    simpa [f, Fintype.sum_sum_type, Finset.sum_apply, mul_comm] using this)
+  funext τ
+  exact this (Sum.inl τ)
+
+def HermSub (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) :
+    Submodule ℚ (Matrix (Fin N) (Fin N) E) where
+  carrier := {X | ccT X = X}
+  add_mem' {X Y} hX hY := by
+    ext a b
+    have h1 := congrFun (congrFun hX a) b
+    have h2 := congrFun (congrFun hY a) b
+    simp only [ccT, transpose_apply, map_apply, Matrix.add_apply] at h1 h2 ⊢
+    rw [cc_add, h1, h2]
+  zero_mem' := by
+    ext a b
+    simp [ccT, cc_zero]
+  smul_mem' q X hX := by
+    ext a b
+    have h1 := congrFun (congrFun hX a) b
+    simp only [ccT, transpose_apply, map_apply, Matrix.smul_apply] at h1 ⊢
+    rw [cc_smul, h1]
+
+theorem cc_trace {N : ℕ} (X : Matrix (Fin N) (Fin N) E) : cc X.trace = (ccT X).trace := by
+
+  simp only [Matrix.trace, diag_apply, ccT, transpose_apply, map_apply, cc, map_sum]
+
+theorem cc_trace_mul {N : ℕ} (X Y : HermSub E N) : cc (X.1 * Y.1).trace = (X.1 * Y.1).trace := by
+  have hX : ccT X.1 = X.1 := X.2
+  have hY : ccT Y.1 = Y.1 := Y.2
+  rw [cc_trace, Base.ccT_mul, hX, hY, trace_mul_comm]
+
+def form (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) :
+    LinearMap.BilinForm ℚ (HermSub E N) :=
+  LinearMap.mk₂ ℚ (fun X Y => (1 / 2 : ℚ) * Algebra.trace ℚ E (X.1 * Y.1).trace)
+    (fun X X' Y => by simp [add_mul, mul_add])
+    (fun q X Y => by simp [mul_left_comm])
+    (fun X Y Y' => by simp [mul_add])
+    (fun q X Y => by simp [mul_left_comm])
+
+theorem form_eq {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {N : ℕ} (X Y : HermSub E N) :
+    ((form E N X Y : ℚ) : ℂ) = ∑ τ : Ψ, τ.1 (X.1 * Y.1).trace :=
+  half_trace hΨ (cc_trace_mul X Y)
+
+theorem form_self {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {N : ℕ} (X : HermSub E N)
+    (h : form E N X X = 0) : X = 0 := by
+  have h1 := form_eq hΨ X X
+  rw [h] at h1
+  have hX : ccT X.1 = X.1 := X.2
+  have h2 : ∀ τ : Ψ, τ.1 (X.1 * X.1).trace =
+      ((∑ a, ∑ b, normSq (τ.1 (X.1 a b)) : ℝ) : ℂ) := fun τ => by
+
+    simp only [Matrix.trace, diag_apply, map_sum]
+    push_cast
+    refine Finset.sum_congr rfl fun a _ => ?_
+    simp only [Matrix.mul_apply, map_sum, map_mul]
+    refine Finset.sum_congr rfl fun b _ => ?_
+    have h3 : cc (X.1 a b) = X.1 b a := congrFun (congrFun hX b) a
+    rw [← h3, Base.map_cc, Complex.mul_conj]
+  simp only [h2] at h1
+  have h4 : ∑ τ : Ψ, ∑ a, ∑ b, normSq (τ.1 (X.1 a b)) = 0 := by exact_mod_cast h1.symm
+  obtain ⟨τ⟩ : Nonempty Ψ := by
+    obtain ⟨σ⟩ : Nonempty (E →+* ℂ) := inferInstance
+    by_cases hσ : σ ∈ Ψ
+    · exact ⟨⟨σ, hσ⟩⟩
+    · exact ⟨⟨ComplexEmbedding.conjugate σ, by
+        by_contra hc; exact hσ ((hΨ σ).2 hc)⟩⟩
+  apply Subtype.ext
+  ext a b
+  have n0 : ∀ (τ : Ψ) a b, 0 ≤ normSq (τ.1 (X.1 a b)) := fun _ _ _ => normSq_nonneg _
+  have h5 := (Finset.sum_eq_zero_iff_of_nonneg fun τ _ => Finset.sum_nonneg fun a _ =>
+    Finset.sum_nonneg fun b _ => n0 τ a b).1 h4 τ (Finset.mem_univ _)
+  have h6 := (Finset.sum_eq_zero_iff_of_nonneg fun a _ =>
+    Finset.sum_nonneg fun b _ => n0 τ a b).1 h5 a (Finset.mem_univ _)
+  have h7 := (Finset.sum_eq_zero_iff_of_nonneg fun b _ => n0 τ a b).1 h6 b (Finset.mem_univ _)
+  simpa using h7
+
+theorem form_nondeg {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) (N : ℕ) :
+    (form E N).Nondegenerate :=
+  ⟨fun X hX => form_self hΨ X (hX X), fun X hX => form_self hΨ X (hX X)⟩
+
+
+omit [IsCMField E] in
+theorem exists_den {ι : Type} [Fintype ι] {N : ℕ} (X : ι → Matrix (Fin N) (Fin N) E) :
+    ∃ c : ℕ, 0 < c ∧ ∀ i, IntM ((c : E) • X i) := by
+  have h : ∀ p : ι × Fin N × Fin N, ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * X p.1 p.2.1 p.2.2) := by
+    intro p
+    have ha : IsAlgebraic ℤ (X p.1 p.2.1 p.2.2) :=
+      (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic _)
+    obtain ⟨d, hd, hi⟩ := ha.exists_integral_multiple
+    refine ⟨d.natAbs, Int.natAbs_pos.2 hd, ?_⟩
+    rw [zsmul_eq_mul] at hi
+    rcases Int.natAbs_eq d with e | e
+    · rw [e] at hi; simpa using hi
+    · rw [e] at hi; simpa using hi.neg
+  choose d hd hi using h
+  refine ⟨∏ p, d p, Finset.prod_pos fun p _ => hd p, fun i a b => ?_⟩
+  rw [← Finset.prod_erase_mul _ _ (Finset.mem_univ (i, a, b)), Matrix.smul_apply, smul_eq_mul,
+    Nat.cast_mul, mul_assoc]
+  refine IsIntegral.mul ?_ (hi (i, a, b))
+  simpa using isIntegral_algebraMap (R := ℤ) (A := E)
+    (x := ((∏ p ∈ Finset.univ.erase (i, a, b), d p : ℕ) : ℤ))
+
+theorem functional_eq_zero {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {N : ℕ}
+    (L : CM Ψ N N →ₗ[ℂ] ℂ) (h : ∀ X : HermSub E N, L (fun τ => X.1.map τ.1) = 0) : L = 0 := by
+  have key : ∀ (τ : Ψ) (a b : Fin N), L (Pi.single τ (Matrix.single a b 1)) = 0 := by
+    intro τ a b
+    have := indep hΨ (fun τ => L (Pi.single τ (Matrix.single a b 1)))
+      (fun τ => L (Pi.single τ (Matrix.single b a 1))) (fun x => by
+        have hm : Matrix.single a b x + Matrix.single b a (cc x) ∈ HermSub E N := by
+          show ccT _ = _
+          ext k l
+          simp only [ccT, transpose_apply, map_apply, Matrix.add_apply, Matrix.single_apply, cc_add,
+            apply_ite cc, cc_cc, cc_zero, and_comm]
+          rw [add_comm]
+        rw [← h ⟨_, hm⟩]
+
+        simp only [← smul_eq_mul, ← map_smul, ← map_add (f := _), ← map_sum]
+        congr 1
+        funext σ
+        rw [Finset.sum_apply, Finset.sum_eq_single σ]
+        · ext k l
+          simp [Matrix.single_apply, apply_ite σ.1, Base.map_cc]
+        · intro τ _ hτ
+          simp [Pi.single_eq_of_ne hτ.symm]
+        · simp)
+    exact congrFun this τ
+  refine LinearMap.pi_ext fun τ Z => ?_
+  have hZ : (Pi.single τ Z : CM Ψ N N) =
+      ∑ a, ∑ b, Z a b • (Pi.single τ (Matrix.single a b 1) : CM Ψ N N) := by
+    funext σ
+    by_cases hσ : σ = τ
+    · subst hσ
+      simp only [Finset.sum_apply, Pi.smul_apply, Pi.single_eq_same, Matrix.smul_single,
+        smul_eq_mul, mul_one]
+      exact Matrix.matrix_eq_sum_single Z
+    · simp [Finset.sum_apply, Pi.single_eq_of_ne hσ]
+  rw [hZ]
+
+  simp only [map_sum, map_smul, key, smul_zero, Finset.sum_const_zero]
+  simp
+
+theorem exists_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ N R : ℕ, 0 < R → ∃ (m : ℕ) (β T : Fin m → Matrix (Fin N) (Fin N) E) (c : ℕ), 0 < c ∧ (∀ i, ccT (β i) = β i ∧ ccT (T i) = T i ∧ Den c (T i) ∧ ∃ y : Matrix (Fin N) (Fin N) E, IntM y ∧ ccT y = y ∧ β i = (R : E) • y) ∧ (∀ i j, ∑ τ : Ψ, τ.1 (T i * β j).trace = if i = j then 1 else 0) ∧ ∀ Z : CM Ψ N N, Z = fun τ => ∑ j, (∑ σ : Ψ, ((T j).map σ.1 * Z σ).trace) • (β j).map τ.1 := by
+  intro E _ _ _ Ψ hΨ N R hR
+  let b₀ := Module.finBasis ℚ (HermSub E N)
+  obtain ⟨d, hd, hdi⟩ := exists_den (fun i => (b₀ i).1)
+  have hu : ((R : ℚ) * d) ≠ 0 := by positivity
+  let b := b₀.unitsSMul (fun _ => Units.mk0 _ hu)
+  have hb : ∀ i, (b i).1 = (R : E) • ((d : E) • (b₀ i).1) := fun i => by
+    simp only [b, Module.Basis.unitsSMul_apply, Units.smul_def, Units.val_mk0, Submodule.coe_smul]
+    ext k l
+    simp [Rat.smul_def, mul_assoc]
+  let t := (form E N).dualBasis (form_nondeg hΨ N) b
+  have ht : ∀ i j, form E N (t i) (b j) = if i = j then 1 else 0 := fun i j => by
+    rw [LinearMap.BilinForm.apply_dualBasis_left]
+    simp only [eq_comm]
+  obtain ⟨c, hc, hci⟩ := exists_den (fun i => (t i).1)
+  refine ⟨_, fun i => (b i).1, fun i => (t i).1, c, hc, fun i => ⟨(b i).2, (t i).2, hci i,
+    _, hdi i, ?_, hb i⟩, fun i j => ?_, fun Z => ?_⟩
+  · have : (d : E) • (b₀ i).1 = ((d : ℚ) • b₀ i).1 := by
+      ext k l
+      simp [Rat.smul_def]
+    rw [this]
+    exact ((d : ℚ) • b₀ i).2
+  · rw [← form_eq hΨ, ht]
+    split_ifs <;> simp
+  · have hrep : ∀ (X : HermSub E N) j, b.repr X j = form E N (t j) X := fun X j => by
+      conv_rhs => rw [← b.sum_repr X]
+
+      simp only [map_sum, map_smul, ht, smul_eq_mul, mul_ite, mul_one, mul_zero,
+      Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    funext τ
+    ext k l
+    let L : CM Ψ N N →ₗ[ℂ] ℂ :=
+      { toFun := fun Z => Z τ k l -
+          (∑ j, (∑ σ : Ψ, (((t j).1).map σ.1 * Z σ).trace) • ((b j).1).map τ.1) k l
+        map_add' := fun Z W => by
+          simp only [Pi.add_apply, Matrix.mul_add, trace_add, Finset.sum_add_distrib, add_smul,
+            Matrix.add_apply]
+          ring
+        map_smul' := fun s Z => by
+          simp only [Pi.smul_apply, Matrix.mul_smul, trace_smul, ← Finset.smul_sum, smul_assoc,
+            Matrix.smul_apply, RingHom.id_apply, smul_sub] }
+    have hL : L = 0 := functional_eq_zero hΨ L fun X => by
+      have h1 : ∀ j, (∑ σ : Ψ, (((t j).1).map σ.1 * X.1.map σ.1).trace) =
+          ((b.repr X j : ℚ) : ℂ) := fun j => by
+        rw [hrep, form_eq hΨ]
+        refine Finset.sum_congr rfl fun σ _ => ?_
+        rw [← Matrix.map_mul, AddMonoidHom.map_trace]
+      show τ.1 (X.1 k l) - (∑ j, (∑ σ : Ψ, (((t j).1).map σ.1 * X.1.map σ.1).trace) •
+        ((b j).1).map τ.1) k l = 0
+      simp only [h1]
+      have h2 : X.1 = ∑ j, b.repr X j • (b j).1 := by
+        conv_lhs => rw [← b.sum_repr X]
+        simp only [Submodule.coe_sum, Submodule.coe_smul]
+      rw [sub_eq_zero]
+      conv_lhs => rw [h2]
+      simp [Matrix.sum_apply, Rat.smul_def]
+    exact sub_eq_zero.1 (LinearMap.congr_fun hL Z)
+
+end
+
+end GlobalTheory.SW.HermLat
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsIntegralBasisHermitianMatricesDual =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableExpNegTraceTotallyPositiveHermitian =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableExpNegTraceTotallyPositiveHermitian", "h": "module\n\nimport Development.AbelianVarietyTheory.Proofs.DivisorProofs.CardAlgebraicIntegersBoundedArchimedeanLe\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible\npublic import Mathlib.NumberTheory.NumberField.House\npublic import Development.AbelianVarietyTheory.Proofs.ThetaLawProofs.NormLeTsumOfCubeFourierCoeffLe\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Matrix.PosDef\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Coalgebra.IsFrobenius\nimport Mathlib.RingTheory.HopfAlgebra.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix Complex NumberField GlobalTheory.SW Filter Topology
+open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
+open scoped ComplexConjugate ComplexOrder Real Classical
+
+namespace GlobalTheory.SW.PosSum
+
+theorem norm_entry_le_trace {N : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.PosSemidef)
+    (i j : Fin N) : ‖A i j‖ ≤ A.trace.re := by
+  have hd : ∀ k, 0 ≤ (A k k).re := fun k => (Complex.nonneg_iff.1 (hA.diag_nonneg (i := k))).1
+  have hi : ∀ k, (A k k).im = 0 := fun k => (Complex.nonneg_iff.1 (hA.diag_nonneg (i := k))).2.symm
+  have ht : ∀ k, (A k k).re ≤ A.trace.re := fun k => by
+    simp only [Matrix.trace, Matrix.diag, Complex.re_sum]
+    exact Finset.single_le_sum (f := fun k => (A k k).re) (fun k _ => hd k) (Finset.mem_univ k)
+  have h2 := (Complex.nonneg_iff.1 (hA.submatrix ![i, j]).det_nonneg).1
+  have hji : A j i = conj (A i j) := by
+    have := hA.1.apply j i
+    simpa using this.symm
+  rw [Matrix.det_fin_two] at h2
+  simp only [Matrix.submatrix_apply, Matrix.cons_val_zero, Matrix.cons_val_one, hji,
+    Complex.mul_conj, Complex.sub_re, Complex.mul_re, hi, Complex.ofReal_re, mul_zero, sub_zero,
+    Matrix.cons_val_fin_one] at h2
+  have h0 : 0 ≤ A.trace.re := (hd i).trans (ht i)
+  refine abs_le_of_sq_le_sq' ?_ h0 |>.2
+  rw [Complex.sq_norm, sq]
+  have := mul_le_mul (ht i) (ht j) (hd j) h0
+  linarith
+
+theorem exists_repr_le (E : Type) [Field E] [NumberField E] :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ (x : 𝓞 E) (j : Module.Free.ChooseBasisIndex ℤ (𝓞 E)),
+      |(((RingOfIntegers.basis E).repr x j : ℤ) : ℝ)| ≤ C * house (x : E) := by
+  apply _root_.GlobalTheory.IntCount.exists_abs_repr_le_mul_house
+
+theorem house_le_of_isType {E : Type} [Field E] [NumberField E] [IsCMField E]
+    {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {x : E} {B : ℝ} (hB : 0 ≤ B)
+    (h : ∀ τ ∈ Ψ, ‖τ x‖ ≤ B) : house x ≤ B := by
+  refine (pi_norm_le_iff_of_nonneg hB).2 fun τ => ?_
+  change ‖τ x‖ ≤ B
+  by_cases hτ : τ ∈ Ψ
+  · exact h τ hτ
+  · have := h _ (not_not.1 fun h' => hτ ((hΨ τ).2 h'))
+    simpa using this
+
+end GlobalTheory.SW.PosSum
+
+
+open GlobalTheory.SW.PosSum in
+theorem GlobalTheory.SW.summable_exp_neg_trace : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (N c : ℕ) (δ : ℝ), 0 < c → 0 < δ → Summable fun T : {T : Matrix (Fin N) (Fin N) E // ccT T = T ∧ Den c T ∧ ∀ τ : Ψ, (T.map τ.1).PosSemidef} => Real.exp (-(δ * ∑ τ : Ψ, (T.1.map τ.1).trace.re)) := by
+  intro E _ _ _ Ψ hΨ N c δ hc hδ
+  obtain ⟨C, hC, hb⟩ := exists_repr_le E
+  let ι := Fin N × Fin N × Module.Free.ChooseBasisIndex ℤ (𝓞 E)
+  let K : ℝ := Fintype.card ι * (C * c) + 1
+  have hK : 0 < K := by positivity
+  let m : {T : Matrix (Fin N) (Fin N) E // ccT T = T ∧ Den c T ∧
+      ∀ τ : Ψ, (T.map τ.1).PosSemidef} → ι → ℤ := fun T q =>
+    (RingOfIntegers.basis E).repr ⟨_, T.2.2.1 q.1 q.2.1⟩ q.2.2
+  have hm : Function.Injective m := by
+    intro T T' h
+    ext a b
+    have : (⟨_, T.2.2.1 a b⟩ : 𝓞 E) = ⟨_, T'.2.2.1 a b⟩ :=
+      (RingOfIntegers.basis E).ext_elem fun j => congrFun h (a, b, j)
+    have h2 : (c : E) * T.1 a b = c * T'.1 a b := congrArg Subtype.val this
+    exact mul_left_cancel₀ (Nat.cast_ne_zero.2 hc.ne') h2
+  refine Summable.of_nonneg_of_le (fun _ => (Real.exp_pos _).le) (fun T => ?_)
+    ((GlobalTheory.Koecher.summable_exp_neg_mul_sum_abs (ι := ι) (div_pos hδ hK)).comp_injective hm)
+  set S := ∑ τ : Ψ, (T.1.map τ.1).trace.re with hS
+  have h0 : ∀ τ : Ψ, 0 ≤ (T.1.map τ.1).trace.re := fun τ =>
+    (Complex.nonneg_iff.1 (T.2.2.2 τ).trace_nonneg).1
+  have hS0 : 0 ≤ S := Finset.sum_nonneg fun τ _ => h0 τ
+  have hq : ∀ q, |(m T q : ℝ)| ≤ C * c * S := fun q => by
+    refine (hb _ _).trans ?_
+    change C * house ((c : E) * T.1 q.1 q.2.1) ≤ _
+    rw [house_nat_mul, mul_assoc]
+    gcongr
+    refine house_le_of_isType hΨ hS0 fun τ hτ => ?_
+    exact (norm_entry_le_trace (T.2.2.2 ⟨τ, hτ⟩) q.1 q.2.1).trans
+      (Finset.single_le_sum (fun τ _ => h0 τ) (Finset.mem_univ (⟨τ, hτ⟩ : Ψ)))
+  have hs : ∑ q, |(m T q : ℝ)| ≤ K * S := by
+    refine (Finset.sum_le_card_nsmul _ _ _ fun q _ => hq q).trans ?_
+    simp only [Finset.card_univ, nsmul_eq_mul, K]
+    nlinarith
+  simp only [Function.comp_apply]
+  refine Real.exp_le_exp.2 (neg_le_neg ?_)
+  calc δ / K * ∑ q, |(m T q : ℝ)| ≤ δ / K * (K * S) := by gcongr
+    _ = δ * S := by field_simp
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableExpNegTraceTotallyPositiveHermitian =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TracePairingGeDetImPowHermitianHalfSpace =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TracePairingGeDetImPowHermitianHalfSpace", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\npublic import Mathlib.Analysis.Matrix.PosDef\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\npublic import Mathlib.Algebra.Star.UnitaryStarAlgAut\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Matrix Complex NumberField GlobalTheory.SW Filter Topology
+open ReciprocityTheory.ChartRestriction.G.FD (cc herm)
+open scoped ComplexConjugate ComplexOrder Real Classical
+
+namespace GlobalTheory.SW.TracePair
+
+variable {E : Type} [Field E] [NumberField E]
+
+open Matrix NumberField in
+open scoped ComplexOrder in
+private lemma ratCast_algebra_norm_eq_prod_embeddings {E : Type} [Field E] [NumberField E] (x : E) :
+    ((Algebra.norm ℚ x : ℚ) : ℂ) = ∏ τ : E →+* ℂ, τ x := by
+  have h := Algebra.norm_eq_prod_embeddings ℚ ℂ x
+  rw [eq_ratCast] at h
+  rw [h]
+  exact Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ).symm _ _ (fun σ => rfl)
+
+open Matrix NumberField in
+open scoped ComplexOrder in
+private lemma one_le_prod_re_of_isType_of_isIntegral_pos {E : Type} [Field E] [NumberField E]
+    (Ψ : Finset (E →+* ℂ)) (hΨ : _root_.GlobalTheory.SW.IsType Ψ) (d : E)
+    (hd : IsIntegral ℤ d) (hpos : ∀ τ ∈ Ψ, 0 < τ d) :
+    1 ≤ ∏ τ ∈ Ψ, (τ d).re := by
+  classical
+  unfold _root_.GlobalTheory.SW.IsType at hΨ
+  have hreal : ∀ τ ∈ Ψ, ((τ d).re : ℂ) = τ d := fun τ hτ =>
+    Complex.ext (by simp) (by simpa using (Complex.pos_iff.1 (hpos τ hτ)).2)
+  have hconj : ∀ τ : E →+* ℂ,
+      ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ := by
+    intro τ
+    ext x
+    simp
+  have hcompl : ∏ τ ∈ Ψᶜ, τ d = ∏ σ ∈ Ψ, ComplexEmbedding.conjugate σ d := by
+    refine Finset.prod_nbij' ComplexEmbedding.conjugate ComplexEmbedding.conjugate ?_ ?_
+      (fun τ _ => hconj τ) (fun τ _ => hconj τ) ?_
+    · intro τ hτ
+      simp only [Finset.mem_compl] at hτ ⊢
+      by_contra h
+      exact hτ ((hΨ τ).2 h)
+    · intro τ hτ
+      simp only [Finset.mem_compl] at hτ ⊢
+      exact (hΨ τ).1 hτ
+    · intro τ _
+      rw [hconj]
+  have hconjΨ : ∏ σ ∈ Ψ, ComplexEmbedding.conjugate σ d = ∏ σ ∈ Ψ, σ d :=
+    Finset.prod_congr rfl fun σ hσ => by
+      rw [ComplexEmbedding.conjugate_coe_eq, ← hreal σ hσ, Complex.conj_ofReal]
+  have hprod : ∏ σ ∈ Ψ, σ d = ((∏ σ ∈ Ψ, (σ d).re : ℝ) : ℂ) := by
+    push_cast
+    exact Finset.prod_congr rfl fun σ hσ => (hreal σ hσ).symm
+  have hall := ratCast_algebra_norm_eq_prod_embeddings d
+  rw [← Finset.prod_mul_prod_compl Ψ, hcompl, hconjΨ, hprod] at hall
+  set r := ∏ σ ∈ Ψ, (σ d).re
+  have hr : 0 < r := Finset.prod_pos fun σ hσ => (Complex.pos_iff.1 (hpos σ hσ)).1
+  obtain ⟨m, hm⟩ := IsIntegrallyClosed.isIntegral_iff.1 (Algebra.isIntegral_norm ℚ hd)
+  have hmr : (m : ℝ) = r * r := by
+    have h1 : ((m : ℚ) : ℂ) = (r : ℂ) * r := by
+      rw [← hall, ← hm]
+      rfl
+    exact_mod_cast h1
+  have hm1 : (1 : ℝ) ≤ m := by
+    have : 0 < m := by exact_mod_cast (hmr ▸ mul_pos hr hr : (0 : ℝ) < m)
+    exact_mod_cast this
+  nlinarith
+
+open Matrix NumberField in
+open scoped ComplexOrder in
+private lemma isIntegral_det_natCast_smul_of_den {E : Type} [Field E] {N : ℕ} (c : ℕ)
+    (T : Matrix (Fin N) (Fin N) E) (h : _root_.GlobalTheory.SW.Den c T) :
+    IsIntegral ℤ (((c : E) • T).det) := by
+  unfold _root_.GlobalTheory.SW.Den _root_.GlobalTheory.SW.IntM at h
+  rw [det_apply]
+  refine IsIntegral.sum _ fun σ _ => ?_
+  rw [Units.smul_def]
+  exact IsIntegral.smul _ (IsIntegral.prod _ fun i _ => h _ _)
+
+open Matrix NumberField in
+open scoped ComplexOrder in
+private lemma map_det_natCast_smul {E : Type} [Field E] {N : ℕ} (c : ℕ)
+    (T : Matrix (Fin N) (Fin N) E) (τ : E →+* ℂ) :
+    τ (((c : E) • T).det) = ((c : ℂ) • T.map τ).det := by
+  rw [RingHom.map_det]
+  congr 1
+  ext i j
+  simp
+
+open Matrix NumberField in
+open scoped ComplexOrder in
+private lemma exists_conjTranspose_mul_self_eq_of_posDef {N : ℕ} {Y : Matrix (Fin N) (Fin N) ℂ}
+    (hY : Y.PosDef) : ∃ C : Matrix (Fin N) (Fin N) ℂ, Cᴴ * C = Y ∧ C.det ≠ 0 := by
+  set U : Matrix (Fin N) (Fin N) ℂ := hY.isHermitian.eigenvectorUnitary.1
+  set D : Matrix (Fin N) (Fin N) ℂ :=
+    diagonal (fun i => ((Real.sqrt (hY.isHermitian.eigenvalues i) : ℝ) : ℂ))
+  have hU : star U * U = 1 := Unitary.coe_star_mul_self hY.isHermitian.eigenvectorUnitary
+  refine ⟨D * star U, ?_, ?_⟩
+  · have hD : Dᴴ = D := by simp [D, diagonal_conjTranspose]
+    have hDD : D * D = diagonal (RCLike.ofReal ∘ hY.isHermitian.eigenvalues) := by
+      rw [diagonal_mul_diagonal]
+      congr 1
+      funext i
+      rw [← Complex.ofReal_mul, Real.mul_self_sqrt (hY.eigenvalues_pos i).le]
+      rfl
+    conv_rhs => rw [hY.isHermitian.spectral_theorem]
+    rw [conjTranspose_mul, hD, star_eq_conjTranspose, conjTranspose_conjTranspose]
+    simp only [Unitary.conjStarAlgAut_apply]
+    rw [← star_eq_conjTranspose, ← Matrix.mul_assoc, Matrix.mul_assoc U D D, hDD]
+  · rw [det_mul]
+    refine mul_ne_zero ?_ ?_
+    · rw [det_diagonal, Finset.prod_ne_zero_iff]
+      intro i _
+      exact_mod_cast (Real.sqrt_pos.2 (hY.eigenvalues_pos i)).ne'
+    · have h1 : (star U).det * U.det = 1 := by rw [← det_mul, hU, det_one]
+      exact left_ne_zero_of_mul_eq_one h1
+
+open Matrix NumberField in
+open scoped ComplexOrder in
+private lemma card_mul_prod_rpow_inv_card_le_sum {ι : Type*} [Fintype ι] [Nonempty ι] (x : ι → ℝ)
+    (hx : ∀ i, 0 ≤ x i) :
+    (Fintype.card ι : ℝ) * (∏ i, x i) ^ (1 / (Fintype.card ι : ℝ)) ≤ ∑ i, x i := by
+  have hn : (0 : ℝ) < Fintype.card ι := by exact_mod_cast Fintype.card_pos
+  have h := Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ => 1 / (Fintype.card ι : ℝ)) x
+    (fun _ _ => by positivity) (by simp [Finset.card_univ]) (fun i _ => hx i)
+  rw [Real.finsetProd_rpow _ _ (fun i _ => hx i), ← Finset.mul_sum] at h
+  calc (Fintype.card ι : ℝ) * (∏ i, x i) ^ (1 / (Fintype.card ι : ℝ))
+      ≤ (Fintype.card ι : ℝ) * (1 / (Fintype.card ι : ℝ) * ∑ i, x i) := by gcongr
+    _ = ∑ i, x i := by field_simp
+
+open Matrix NumberField in
+open scoped ComplexOrder in
+private lemma card_mul_det_rpow_le_trace_of_posDef {N : ℕ} (hN : 0 < N) {P : Matrix (Fin N) (Fin N) ℂ}
+    (hP : P.PosDef) : (N : ℝ) * P.det.re ^ (1 / (N : ℝ)) ≤ P.trace.re := by
+  haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩
+  have h := card_mul_prod_rpow_inv_card_le_sum hP.isHermitian.eigenvalues
+    (fun i => (hP.eigenvalues_pos i).le)
+  rw [Fintype.card_fin] at h
+  rw [hP.isHermitian.det_eq_prod_eigenvalues, hP.isHermitian.trace_eq_sum_eigenvalues]
+  simpa [← Complex.ofReal_prod, ← Complex.ofReal_sum] using h
+
+open Matrix NumberField in
+open scoped ComplexOrder in
+private lemma card_mul_det_mul_det_rpow_le_trace_mul_of_posDef {N : ℕ} (hN : 0 < N) {A Y : Matrix (Fin N) (Fin N) ℂ}
+    (hA : A.PosDef) (hY : Y.PosDef) :
+    (N : ℝ) * (A.det.re * Y.det.re) ^ (1 / (N : ℝ)) ≤ (A * Y).trace.re := by
+  obtain ⟨C, rfl, hC⟩ := exists_conjTranspose_mul_self_eq_of_posDef hY
+  have hinj : Function.Injective Cᴴ.mulVec := by
+    refine Matrix.mulVec_injective_iff_isUnit.2 ?_
+    rw [isUnit_iff_isUnit_det, det_conjTranspose]
+    exact (star_ne_zero.2 hC).isUnit
+  have hP := hA.conjTranspose_mul_mul_same hinj
+  rw [conjTranspose_conjTranspose] at hP
+  have htr : (A * (Cᴴ * C)).trace = (C * A * Cᴴ).trace := by
+    rw [← Matrix.mul_assoc, trace_mul_comm, Matrix.mul_assoc]
+  have hAim : A.det.im = 0 := (Complex.pos_iff.1 hA.det_pos).2.symm
+  have hYim : (Cᴴ * C).det.im = 0 := (Complex.pos_iff.1 hY.det_pos).2.symm
+  have hdet : (C * A * Cᴴ).det = A.det * (Cᴴ * C).det := by
+    simp only [det_mul, det_conjTranspose]
+    ring
+  have hre : (C * A * Cᴴ).det.re = A.det.re * (Cᴴ * C).det.re := by
+    rw [hdet, Complex.mul_re, hAim, hYim]
+    ring
+  rw [htr, ← hre]
+  exact card_mul_det_rpow_le_trace_of_posDef hN hP
+
+
+open Matrix Complex NumberField Filter Topology in
+open scoped ComplexConjugate ComplexOrder Real Classical in
+variable {E : Type} [Field E] [NumberField E] in
+theorem _root_.GlobalTheory.SW.TracePair.trace_ge :
+    ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)),
+      _root_.GlobalTheory.SW.IsType Ψ → ∀ N c : ℕ, 0 < N → 0 < c → ∃ k : ℝ, 0 < k ∧
+        ∀ T : Matrix (Fin N) (Fin N) E, _root_.GlobalTheory.SW.ccT T = T →
+          _root_.GlobalTheory.SW.Den c T → (∀ τ : Ψ, (T.map τ.1).PosDef) →
+            ∀ Z ∈ _root_.GlobalTheory.SW.Hn Ψ N,
+              k * _root_.GlobalTheory.SW.detIm Z ^ (1 / ((Ψ.card * N : ℕ) : ℝ)) ≤
+                ∑ τ : Ψ, (T.map τ.1 * _root_.GlobalTheory.SW.imH (Z τ)).trace.re := by
+  intro E _ _ _ Ψ hΨ N c hN hc
+  have hne : Ψ.Nonempty := by
+    obtain ⟨τ₀⟩ : Nonempty (E →+* ℂ) := inferInstance
+    by_cases h : τ₀ ∈ Ψ
+    · exact ⟨τ₀, h⟩
+    · refine ⟨ComplexEmbedding.conjugate τ₀, ?_⟩
+      by_contra h'
+      exact h ((hΨ τ₀).2 h')
+  haveI : Nonempty Ψ := hne.to_subtype
+  have hn : 0 < Ψ.card := hne.card_pos
+  have hcR : (0 : ℝ) < c := by exact_mod_cast hc
+  have hNR : (0 : ℝ) < N := by exact_mod_cast hN
+  refine ⟨(Ψ.card * N : ℝ) / c, by positivity, ?_⟩
+  intro T _ hden hpos Z hZ
+  have hY : ∀ τ : Ψ, (_root_.GlobalTheory.SW.imH (Z τ)).PosDef := by
+    simpa [_root_.GlobalTheory.SW.Hn] using hZ
+  have hA : ∀ τ : Ψ, ((c : ℂ) • T.map τ.1).PosDef := fun τ =>
+    (hpos τ).smul (by exact_mod_cast hc)
+  set a : Ψ → ℝ := fun τ => ((c : ℂ) • T.map τ.1).det.re
+  set y : Ψ → ℝ := fun τ => (_root_.GlobalTheory.SW.imH (Z τ)).det.re
+  have ha : ∀ τ, 0 < a τ := fun τ => (Complex.pos_iff.1 (hA τ).det_pos).1
+  have hy : ∀ τ, 0 < y τ := fun τ => (Complex.pos_iff.1 (hY τ).det_pos).1
+  have hD : _root_.GlobalTheory.SW.detIm Z = ∏ τ, y τ := rfl
+  have hprod_a : 1 ≤ ∏ τ, a τ := by
+    have h := one_le_prod_re_of_isType_of_isIntegral_pos Ψ hΨ (((c : E) • T).det)
+      (isIntegral_det_natCast_smul_of_den c T hden) (fun τ hτ => by
+        rw [map_det_natCast_smul]
+        exact (hA ⟨τ, hτ⟩).det_pos)
+    have h' : ∏ τ, a τ = ∏ τ : Ψ, (τ.1 ((c : E) • T).det).re :=
+      Finset.prod_congr rfl fun τ _ => by simp only [a]; rw [map_det_natCast_smul]
+    rw [h', Finset.prod_coe_sort Ψ (fun τ => (τ ((c : E) • T).det).re)]
+    exact h
+  have hsum : (c : ℝ) * ∑ τ : Ψ, (T.map τ.1 * _root_.GlobalTheory.SW.imH (Z τ)).trace.re =
+      ∑ τ : Ψ, ((c : ℂ) • T.map τ.1 * _root_.GlobalTheory.SW.imH (Z τ)).trace.re := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun τ _ => ?_
+    rw [Matrix.smul_mul, trace_smul, smul_eq_mul]
+    simp
+  have hlow : ∀ τ : Ψ, (N : ℝ) * (a τ * y τ) ^ (1 / (N : ℝ)) ≤
+      ((c : ℂ) • T.map τ.1 * _root_.GlobalTheory.SW.imH (Z τ)).trace.re := fun τ =>
+    card_mul_det_mul_det_rpow_le_trace_mul_of_posDef hN (hA τ) (hY τ)
+  have hamgm := card_mul_prod_rpow_inv_card_le_sum (fun τ : Ψ => (a τ * y τ) ^ (1 / (N : ℝ)))
+    (fun τ => by have := ha τ; have := hy τ; positivity)
+  rw [Fintype.card_coe, Real.finsetProd_rpow _ _ (fun τ _ => (mul_pos (ha τ) (hy τ)).le),
+    ← Real.rpow_mul (Finset.prod_nonneg fun τ _ => (mul_pos (ha τ) (hy τ)).le),
+    Finset.prod_mul_distrib, ← hD] at hamgm
+  have he : 1 / (N : ℝ) * (1 / (Ψ.card : ℝ)) = 1 / ((Ψ.card * N : ℕ) : ℝ) := by
+    push_cast
+    field_simp
+  rw [he] at hamgm
+  have hDnn : 0 ≤ _root_.GlobalTheory.SW.detIm Z := by
+    rw [hD]
+    exact Finset.prod_nonneg fun τ _ => (hy τ).le
+  have hmono : _root_.GlobalTheory.SW.detIm Z ^ (1 / ((Ψ.card * N : ℕ) : ℝ)) ≤
+      ((∏ τ, a τ) * _root_.GlobalTheory.SW.detIm Z) ^ (1 / ((Ψ.card * N : ℕ) : ℝ)) :=
+    Real.rpow_le_rpow hDnn (le_mul_of_one_le_left hDnn hprod_a) (by positivity)
+  have hchain : (Ψ.card * N : ℝ) * _root_.GlobalTheory.SW.detIm Z ^ (1 / ((Ψ.card * N : ℕ) : ℝ)) ≤
+      (c : ℝ) * ∑ τ : Ψ, (T.map τ.1 * _root_.GlobalTheory.SW.imH (Z τ)).trace.re := by
+    rw [hsum]
+    calc (Ψ.card * N : ℝ) * _root_.GlobalTheory.SW.detIm Z ^ (1 / ((Ψ.card * N : ℕ) : ℝ))
+        ≤ (N : ℝ) * ((Ψ.card : ℝ) *
+            ((∏ τ, a τ) * _root_.GlobalTheory.SW.detIm Z) ^ (1 / ((Ψ.card * N : ℕ) : ℝ))) := by
+          rw [← mul_assoc, mul_comm (N : ℝ)]
+          gcongr
+      _ ≤ (N : ℝ) * ∑ τ : Ψ, (a τ * y τ) ^ (1 / (N : ℝ)) := by gcongr
+      _ = ∑ τ : Ψ, (N : ℝ) * (a τ * y τ) ^ (1 / (N : ℝ)) := Finset.mul_sum _ _ _
+      _ ≤ _ := Finset.sum_le_sum fun τ _ => hlow τ
+  rw [div_mul_eq_mul_div, div_le_iff₀ hcR]
+  linarith
+
+end GlobalTheory.SW.TracePair
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TracePairingGeDetImPowHermitianHalfSpace =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DecayOfVanishingAtCusps =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DecayOfVanishingAtCusps", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsHeatZero\npublic import Development.AbelianVarietyTheory.Proofs.CovolumeBounds.StarInvMulVecDotProductMulVecInvMulVec\npublic import Mathlib.Analysis.CStarAlgebra.Classes\npublic import Mathlib.Analysis.Calculus.FDeriv.Defs\npublic import Mathlib.MeasureTheory.Integral.Bochner.Basic\npublic import Mathlib.MeasureTheory.Measure.Haar.OfBasis\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsFourierExpansionHolomorphicTube\npublic import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.FirstCoordinateAdmissible\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsIntegralBasisHermitianMatricesDual\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.NormDetDenomLeRankOne\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.SummableExpNegTraceTotallyPositiveHermitian\npublic import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TracePairingGeDetImPowHermitianHalfSpace\npublic import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.UpperBounds.ExhaustStatementPfA\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Etale.Weakly\nimport Mathlib.RingTheory.Finiteness.ModuleFinitePresentation\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.TotallySplit\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Matrix Complex NumberField GlobalTheory.SW Filter Topology
@@ -224,7 +872,7 @@ theorem coef_sing (hXc : Continuous X) (hX : ∀ x τ, (X x τ).IsHermitian) (hT
   have hpush : ∀ x t, (fun τ => X x τ + I • Y t τ) = pushZ Ψ (fun τ => X x τ + I • Y 0 τ) v t := by
     intro x t
     funext τ
-    simp only [hYdef, pushZ, hP, smul_add, smul_smul, ofReal_zero, mul_zero, zero_smul, add_zero,
+    simp only [hYdef, pushZ, hP, smul_add, smul_smul, ofReal_zero, zero_smul, add_zero,
       add_assoc]
     rfl
   have hpr : ∀ x t, pr T (fun τ => X x τ + I • Y t τ) = pr T (fun τ => X x τ + I • Y 0 τ) := by
@@ -287,7 +935,7 @@ theorem exists_fourier (hΨ : IsType Ψ) (N R : ℕ) (hR : 0 < R) :
           f (fun τ => Z τ + ((R : E) • y).map τ.1) = f Z) →
         ∃ a : (Fin m → ℤ) → ℂ, (∀ ν, IsCoef X f (T ν) (a ν)) ∧
           ∀ Z ∈ Hn Ψ N, HasSum (fun ν => a ν * cexp (2 * π * I * pr (T ν) Z)) (f Z) := by
-  obtain ⟨m, β, T, c, hc, h1, hd, hZ⟩ := GlobalTheory.T.exists_integral_basis_hermitian_matrices_dual E Ψ hΨ N R hR
+  obtain ⟨m, β, T, c, hc, h1, hd, hZ⟩ := _root_.GlobalTheory.SW.HermLat.exists_basis E Ψ hΨ N R hR
   choose hβ hT hD y hy hyc hβy using h1
   set Φ : (Fin m → ℂ) → CM Ψ N N := fun z τ => ∑ j, z j • (β j).map τ.1 with hΦ
   set co : CM Ψ N N → Fin m → ℂ := fun Z j => pr (T j) Z with hco
@@ -381,7 +1029,7 @@ theorem exists_fourier (hΨ : IsType Ψ) (N R : ℕ) (hR : 0 < R) :
       simpa using hy τ
     · exact ((hx τ).smul (by exact_mod_cast h0)).add_posSemidef
         ((hy τ).posSemidef.smul (by exact_mod_cast ht))
-  obtain ⟨a, ha1, ha2⟩ := GlobalTheory.T.exists_fourier_expansion_holomorphic_tube (Fin m) Ω (fun z => f (Φ z)) hopen hconv
+  obtain ⟨a, ha1, ha2⟩ := _root_.GlobalTheory.exists_fourier_expansion_tube (Fin m) Ω (fun z => f (Φ z)) hopen hconv
     (hf.comp hΦd.differentiableOn fun z hz => (hmem z).1 hz) (by
       intro z hz k
       have := hper _ (hIntM y k hy) (hccT y k hyc) _ ((hmem z).1 hz)
@@ -441,8 +1089,8 @@ open GlobalTheory.SW.Decay in
 theorem GlobalTheory.SW.decay_of_vanishing_at_cusps : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (N R : ℕ) (δ s : ℝ), 0 < N → 0 < R → 0 < δ → 0 ≤ s → ∃ C : ℝ, ∀ (f : CM Ψ N N → ℂ) (B : ℝ), DifferentiableOn ℂ (fun Z : CF Ψ N N => f Z) {Z | (Z : CM Ψ N N) ∈ Hn Ψ N} → (∀ y : Matrix (Fin N) (Fin N) E, IntM y → ccT y = y → ∀ Z ∈ Hn Ψ N, f (fun τ => Z τ + ((R : E) • y).map τ.1) = f Z) → (∀ Z ∈ HnGe Ψ N (δ / 4), ‖f Z‖ ≤ B) → (∀ v : Fin N → E, v ≠ 0 → ∀ Z ∈ Hn Ψ N, Tendsto (fun t : ℝ => f (pushZ Ψ Z v t)) atTop (𝓝 0)) → ∀ Z ∈ HnGe Ψ N δ, ‖f Z‖ * detIm Z ^ s ≤ C * B := by
   intro E _ _ _ Ψ hΨ N R δ s hN hR hδ hs
   obtain ⟨m, c, T, X, hc, hinj, hT, hXc, hX, hF⟩ := exists_fourier hΨ N R hR
-  obtain ⟨k, hk, hk'⟩ := GlobalTheory.T.trace_pairing_ge_detIm_pow_hermitianHalfSpace E Ψ hΨ N c hN hc
-  have hsum := GlobalTheory.T.summable_exp_neg_trace_totallyPositive_hermitian E Ψ hΨ N c (π * δ / 2) hc (by positivity)
+  obtain ⟨k, hk, hk'⟩ := _root_.GlobalTheory.SW.TracePair.trace_ge E Ψ hΨ N c hN hc
+  have hsum := _root_.GlobalTheory.SW.summable_exp_neg_trace E Ψ hΨ N c (π * δ / 2) hc (by positivity)
   set S : Set (Fin m → ℤ) := {ν | ∀ τ : Ψ, ((T ν).map τ.1).PosSemidef} with hS
   have hsum' : Summable fun ν : S =>
       Real.exp (-(π * δ / 2 * ∑ τ : Ψ, ((T ν.1).map τ.1).trace.re)) := by
@@ -511,3 +1159,6 @@ theorem GlobalTheory.SW.decay_of_vanishing_at_cusps : ∀ (E : Type) [Field E] [
         rw [hus]; gcongr
     _ = u ^ (d * s) * Real.exp (-(π * k * u)) * σ * B := by ring
     _ ≤ C * σ * B := by gcongr; exact hC u hu0
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.DecayOfVanishingAtCusps =====

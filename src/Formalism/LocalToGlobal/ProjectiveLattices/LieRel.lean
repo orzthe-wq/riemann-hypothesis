@@ -102,7 +102,6 @@ theorem tan_eq_cvV {w : epsOver V V ⟶ G} (h : IsTan w) : ∃ c : Fin n → V, 
   have e : y = tvec (x := xc) (tcoord hx y hy) := by
     first
     | exact tcoord_spec hx y hy
-    | exact tcoord_spec y hy
   rw [← e]
   exact Over.OverMorphism.ext (by rw [cvV_left]; rfl)
 
@@ -144,7 +143,6 @@ theorem comb_iff {m : ℕ} (b : Fin m → Fin n → V) (r : Fin m → V) (e : Fi
     rw [hu', hprod] at hw
     first
     | exact ReciprocityTheory.ChartRestriction.G.Chart.tvec_inj hx (cvV_inj hw)
-    | exact ReciprocityTheory.ChartRestriction.G.Chart.tvec_inj (cvV_inj hw)
   · intro he
     refine ⟨fun i => cvV (ReciprocityTheory.ChartRestriction.G.Chart.spMap (scaleD (r i)) ≫ tvec (x := xc) (b i)), fun i => ?_, ?_⟩
     · rw [cvV_left, cvV_left] <;> rfl
@@ -171,7 +169,7 @@ theorem fst_alg : spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ spMap (algebr
   show Spec.map _ ≫ Spec.map _ = _
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
   have hid : (TrivSqZeroExt.fstHom K K K).toRingHom.comp (algebraMap K (DualNumber K)) = RingHom.id K :=
-    RingHom.ext fun a => by simp [TrivSqZeroExt.algebraMap_eq_inl]
+    RingHom.ext fun a => by simp
   rw [hid, CommRingCat.ofHom_id, Spec.map_id]
 
 def iotaX : epsAt x ⟶ Over.mk ((viaT (𝟙 (Sp K)) (sp (R₀ := K) (DualNumber K))).hom ≫ x) :=

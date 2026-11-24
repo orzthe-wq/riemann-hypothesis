@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnipotentBlockColumnIndex
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientAverageMapLatticeEquivStatement
+public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.QuotientAverageMapLatticeEquiv
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -258,7 +258,7 @@ theorem coefF_ratGL_mul : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (ψ
   have hmem : ∀ x : UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E,
       colEquiv γ⁻¹ hri x ∈ ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1)) ↔ x ∈ ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1)) :=
     fun x => colEquiv_mem γ⁻¹ hri x
-  have key := GlobalTheory.T.quotientAverage_map_lattice_equiv _ _ (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1)))
+  have key := _root_.GlobalTheory.CuspGeneric.avg_equiv _ _ (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1)))
     (isCoLat_ratV E _) (isCoLat_ratV E _) (colEquiv γ⁻¹ hri) hmem _ hper
   change avg _ _ = avg _ _
   rw [← key]
@@ -272,7 +272,6 @@ theorem coefF_ratGL_mul : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (ψ
   have hu : blkU x * (ratGL E a γ * g) = ratGL E a γ * (blkU (colEquiv γ⁻¹ hri x) * g) := by
     rw [← mul_assoc, blkU_mul (ratGL E a γ) (ratGL_rows _ hr), mul_assoc, ← map_inv]
     rfl
-  beta_reduce
   rw [hd, hu, hl γ hγ]
 
 end GlobalTheory.CuspGeneric

@@ -86,11 +86,11 @@ theorem _root_.GlobalTheory.QFam.IsFam.esymm_slash {ι : Type} [Fintype ι]
   refine Finset.sum_nbij' (fun t => t.map e.toEmbedding) (fun t => t.map e.symm.toEmbedding)
     ?_ ?_ ?_ ?_ ?_
   · intro t ht
-    simp only [Finset.mem_coe, Finset.mem_powersetCard, Finset.subset_univ, true_and,
+    simp only [Finset.mem_powersetCard, Finset.subset_univ, true_and,
       Finset.card_map] at ht ⊢
     exact ht
   · intro t ht
-    simp only [Finset.mem_coe, Finset.mem_powersetCard, Finset.subset_univ, true_and,
+    simp only [Finset.mem_powersetCard, Finset.subset_univ, true_and,
       Finset.card_map] at ht ⊢
     exact ht
   · intro t _

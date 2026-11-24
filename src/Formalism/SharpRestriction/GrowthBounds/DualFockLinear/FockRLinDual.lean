@@ -83,8 +83,7 @@ theorem Lin_chain (N : S → Matrix (Fin k) (Fin k) R) (s : S) (b : Fin k) (h : 
     rintro ⟨t, c⟩
     rw [Lin_X]
 
-    simp only [map_sum, Derivation.leibniz, MvPolynomial.pderiv_X, MvPolynomial.pderiv_C, smul_zero, add_zero,
-    Pi.single_apply, Prod.mk.injEq, smul_eq_mul]
+    simp only [map_sum, Derivation.leibniz, MvPolynomial.pderiv_X, MvPolynomial.pderiv_C, Pi.single_apply, Prod.mk.injEq, smul_eq_mul]
     by_cases ht : t = s
     · subst ht
       simp [Finset.sum_ite_eq', Finset.sum_ite_eq, MvPolynomial.smul_eq_C_mul]
@@ -98,7 +97,7 @@ theorem Lin_chain (N : S → Matrix (Fin k) (Fin k) R) (s : S) (b : Fin k) (h : 
   | mul_X p v hp =>
     rw [map_mul, Derivation.leibniz, hp, hX v]
     simp only [Derivation.leibniz, map_add (f := _), map_mul, smul_add, Finset.sum_add_distrib, smul_eq_mul,
-      Finset.mul_sum, Finset.smul_sum]
+      Finset.mul_sum]
     congr 1
     · refine Finset.sum_congr rfl fun a _ => ?_
       simp only [MvPolynomial.smul_eq_C_mul]
@@ -109,21 +108,24 @@ theorem Lin_chain (N : S → Matrix (Fin k) (Fin k) R) (s : S) (b : Fin k) (h : 
 
 theorem fockR_Lin (N : S → Matrix (Fin k) (Fin k) R) (P : MvPolynomial (S × Fin k) R) :
     ∀ Q : MvPolynomial (S × Fin k) R, fockR (Lin N P) Q = fockR P (Lin (fun s => (N s).transpose) Q) := by
+  change ∀ Q, FockPairing.pair (Lin N P) Q = FockPairing.pair P (Lin (fun s => (N s).transpose) Q)
   induction P using MvPolynomial.induction_on with
   | C a =>
     intro Q
     have h1 : Lin N (C a : MvPolynomial (S × Fin k) R) = C a := by simp [Lin]
-    rw [h1, C_apply, tsact_monomial_left, tsact_monomial_left, Lin_coeff_zero]
+    rw [h1, C_apply, FockPairing.pair_monomial_left, FockPairing.pair_monomial_left, Lin_coeff_zero]
   | add p q hp hq =>
     intro Q
-    rw [map_add (f := _), tsact_add_left, tsact_add_left, hp, hq]
+    rw [map_add (f := _), FockPairing.pair_add_left, FockPairing.pair_add_left, hp, hq]
   | mul_X p v hp =>
     intro Q
-    rw [map_mul, Lin_X, Finset.mul_sum, tsact_sum_left, tsact_X_mul, Lin_chain, tsact_sum_right]
+    rw [map_mul, Lin_X, Finset.mul_sum, FockPairing.pair_sum_left,
+      FockPairing.pair_mul_X, Lin_chain, FockPairing.pair_sum_right]
     refine Finset.sum_congr rfl fun b _ => ?_
     have e : Lin N p * (C (N v.1 v.2 b) * X (v.1, b)) = N v.1 v.2 b • (Lin N p * X (v.1, b)) := by
       rw [smul_eq_C_mul]; ring
-    rw [e, tsact_smul_left, tsact_X_mul, hp, tsact_smul_right, Matrix.transpose_apply]
+    rw [e, FockPairing.pair_smul_left, FockPairing.pair_mul_X, hp,
+      FockPairing.pair_smul_right, Matrix.transpose_apply]
 
 theorem fockR_Lin_dual (A B : S → Matrix (Fin k) (Fin k) R) (h : ∀ s, B s * (A s).transpose = 1)
     (P Q : MvPolynomial (S × Fin k) R) : fockR (Lin A P) (Lin B Q) = fockR P Q := by

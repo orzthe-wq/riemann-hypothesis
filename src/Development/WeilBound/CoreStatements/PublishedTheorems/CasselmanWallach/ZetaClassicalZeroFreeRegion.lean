@@ -47,18 +47,6 @@ open MeasureTheory Matrix Formalism.REAL Formalism.MainNotions.S Formalism.L2.Th
 
 namespace PositivityTheory.CW
 
-private theorem sobNorm_append' {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    (σ : Mx n → H →L[ℂ] H) (S A : List (List (Mx n))) (w : H) :
-    sobNorm σ (S ++ A) w = sobNorm σ S w + sobNorm σ A w := by
-  simp [sobNorm, List.map_append, List.sum_append]
-
-private theorem sobNorm_nonneg' {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    (σ : Mx n → H →L[ℂ] H) (S : List (List (Mx n))) (w : H) : 0 ≤ sobNorm σ S w := by
-  apply List.sum_nonneg
-  intro x hx
-  obtain ⟨l, -, rfl⟩ := List.mem_map.1 hx
-  exact norm_nonneg _
-
 private theorem exists_sobNorm_bound_of_sobBdOn_continuous_seminorm {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {E : Type} [AddCommGroup E] [Module ℂ E] [TopologicalSpace E]
     (σ : Mx n → H →L[ℂ] H) (p : ℕ → Seminorm ℂ E) (hp : WithSeminorms p) (T : H →ₗ[ℂ] E)
@@ -79,11 +67,11 @@ private theorem exists_sobNorm_bound_of_sobBdOn_continuous_seminorm {n : ℕ} {�
         · exact hS₁ l h
         · exact hS l h
       · intro w hw
-        rw [Finset.sum_insert hj, sobNorm_append']
+        rw [Finset.sum_insert hj, _root_.GlobalTheory.TypeSum.sobNorm_append]
         have h1 := hb₁ w hw
         have h2 := hb w hw
-        have n1 := sobNorm_nonneg' σ S₁ w
-        have n2 := sobNorm_nonneg' σ S w
+        have n1 := _root_.GlobalTheory.TypeSum.sobNorm_nonneg σ S₁ w
+        have n2 := _root_.GlobalTheory.TypeSum.sobNorm_nonneg σ S w
         have h3 : C₁ * sobNorm σ S₁ w ≤ max C₁ 0 * sobNorm σ S₁ w :=
           mul_le_mul_of_nonneg_right (le_max_left _ _) n1
         nlinarith [mul_nonneg (le_max_right C₁ 0) n2, mul_nonneg hC n1]
@@ -145,10 +133,10 @@ theorem d3 : D3 := by
             List.foldr_map]
         have h1 := hb₁ (σ k v) hsv
         have h2 := hb₂ v hv
-        have n1 := sobNorm_nonneg' σ (S₁.map (List.map fun X => k⁻¹ * X * k)) v
-        have n2 := sobNorm_nonneg' σ S₂ v
+        have n1 := _root_.GlobalTheory.TypeSum.sobNorm_nonneg σ (S₁.map (List.map fun X => k⁻¹ * X * k)) v
+        have n2 := _root_.GlobalTheory.TypeSum.sobNorm_nonneg σ S₂ v
         rw [heq] at h1
-        rw [hT', sobNorm_append']
+        rw [hT', _root_.GlobalTheory.TypeSum.sobNorm_append]
         have h3 : (p i) (T (σ k v) - π k (T v)) ≤ p i (T (σ k v)) + p i (π k (T v)) :=
           map_sub_le_add _ _ _
         have h4 : ((p i).comp (π k).toLinearMap) (T v) = p i (π k (T v)) := rfl
@@ -203,10 +191,10 @@ theorem d3 : D3 := by
           simp [List.foldr_append]
         have h1 := hb₁ (dRep σ X v) hdv
         have h2 := hb₂ v hv
-        have n1 := sobNorm_nonneg' σ (S₁.map (fun l => l ++ [X])) v
-        have n2 := sobNorm_nonneg' σ S₂ v
+        have n1 := _root_.GlobalTheory.TypeSum.sobNorm_nonneg σ (S₁.map (fun l => l ++ [X])) v
+        have n2 := _root_.GlobalTheory.TypeSum.sobNorm_nonneg σ S₂ v
         rw [heq] at h1
-        rw [hgw v hv, sobNorm_append']
+        rw [hgw v hv, _root_.GlobalTheory.TypeSum.sobNorm_append]
         have h3 : (p i) (T (dRep σ X v) - dπ X (T v)) ≤ p i (T (dRep σ X v)) + p i (dπ X (T v)) :=
           map_sub_le_add _ _ _
         have h4 : ((p i).comp (dπ X).toLinearMap) (T v) = p i (dπ X (T v)) := rfl

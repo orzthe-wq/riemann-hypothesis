@@ -86,7 +86,6 @@ attribute [local instance] ae_ring ae_t2 ae_smul
 
 theorem evI_eq_zero {a : AF F} : evI F a = 0 ↔ a.1 = 0 := map_eq_zero_iff _ (RingEquiv.injective _)
 
-
 variable (F) in
 def intF : AddSubgroup (AF F) where
   carrier := {a | evI F a = 0 ∧ ∀ v, evFin F v a ∈ v.adicCompletionIntegers F}
@@ -102,37 +101,11 @@ def intF : AddSubgroup (AF F) where
       rw [evI_eq_zero.1 ha.1, neg_zero]),
     fun v => by rw [map_neg]; exact neg_mem (ha.2 v)⟩
 
-theorem isCompact_intF : IsCompact (intF F : Set (AF F)) := by
-  haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F
-  let s : (∀ v : Pl F, (v.adicCompletionIntegers F : Set (v.adicCompletion F))) → Af F :=
-    RestrictedProduct.structureMap (fun v : Pl F => v.adicCompletion F)
-      (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) cofinite
-  haveI : ∀ v : Pl F, CompactSpace (v.adicCompletionIntegers F : Set (v.adicCompletion F)) := this
-  have hs : Continuous s := RestrictedProduct.isEmbedding_structureMap.continuous
-  have hc : Continuous fun x => pairA F 0 (s x) := continuous_const.prodMk hs
-  convert isCompact_range hc using 1
-  ext a
-  constructor
-  · rintro ⟨h1, h2⟩
-    refine ⟨fun v => ⟨_, h2 v⟩, Prod.ext (evI_eq_zero.1 h1).symm ?_⟩
-    exact RestrictedProduct.ext _ _ fun v => rfl
-  · rintro ⟨x, rfl⟩
-    exact ⟨evI_eq_zero.2 rfl, fun v => (x v).2⟩
-
-theorem mem_latHat (X : Spc F E n) {a : AF F} (ha : a ∈ intF F) {y : Fin n → E} (hy : y ∈ X.L) :
-    a • incV F y ∈ latHat X :=
-  AddSubgroup.subset_closure ⟨a, ha.1, ha.2, y, hy, rfl⟩
-
 theorem isCompact_latHat (X : Spc F E n) (hX : X.L.FG) : IsCompact (latHat X : Set (Fin n → AE F E)) := by
   apply GlobalTheory.ThK.Dbl.St.isCompact_latHat <;> assumption
 
-
 variable (F) in
 def eF : AF F := pairA F 0 1
-
-theorem eF_mem : eF F ∈ intF F := ⟨evI_eq_zero.2 rfl, fun v => by
-  have : evFin F v (eF F) = 1 := map_one (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)
-  rw [this]; exact one_mem _⟩
 
 theorem vec_bound (X : Spc F E n) (hX : X.L.IsFullLattice E) (x : Fin n → E) :
     ∃ C : Set (Fin n → AE F E), IsCompact C ∧ ∀ M : Matrix (Fin n) (Fin n) (AE F E),
@@ -140,7 +113,7 @@ theorem vec_bound (X : Spc F E n) (hX : X.L.IsFullLattice E) (x : Fin n → E) :
   have hx : x ∈ Submodule.span E (X.L : Set (Fin n → E)) := by
     rw [hX.span_eq_top]; trivial
   induction hx using Submodule.span_induction with
-  | mem y hy => exact ⟨_, isCompact_latHat X hX.fg, fun M hM => hM _ (mem_latHat X eF_mem hy)⟩
+  | mem y hy => exact ⟨_, isCompact_latHat X hX.fg, fun M hM => hM _ (GlobalTheory.ThK.Dbl.St.mem_latHat X GlobalTheory.ThK.Dbl.St.eF_mem hy)⟩
   | zero =>
     refine ⟨{0}, isCompact_singleton, fun M _ => ?_⟩
     have : incV F (0 : Fin n → E) = 0 := funext fun i => map_zero (inclR (F := F) (AF F))
@@ -174,21 +147,6 @@ theorem fin_bound (X : Spc F E n) (hX : X.L.IsFullLattice E) (i j : Fin n) :
   rw [this, Matrix.mulVec_smul, Matrix.mulVec_single_one]
   rfl
 
-omit [NumberField E] in
-theorem piInf_smul {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) (z : AE F E) :
-    piInf τ (a • z) = InfinitePlace.Completion.extensionEmbedding w (a.1 w) * piInf τ z := by
-  have : piInf τ (algebraMap (AF F) (AE F E) a) = InfinitePlace.Completion.extensionEmbedding w (a.1 w) := by
-    change InfinitePlace.Completion.extensionEmbedding w (a.1 w) * τ.1 1 = _
-    rw [map_one, mul_one]
-  rw [Algebra.smul_def, map_mul, this]
-
-omit [NumberField E] in
-theorem compFin_smul (v : Pl F) {a : AF F} (ha : a.2 = 0) (z : AE F E) : compFin F E v (a • z) = 0 := by
-  have : compFin F E v (algebraMap (AF F) (AE F E) a) = 0 := by
-    change Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v a.2 ⊗ₜ[F] (1 : E) = 0
-    rw [ha, map_zero, TensorProduct.zero_tmul]
-  rw [Algebra.smul_def, map_mul, this, zero_mul]
-
 theorem exists_section (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     ∃ Φ : (InfinitePlace F → ℂ) → AE F E, Continuous Φ ∧ ∀ z, z = Φ (fun w => piInf (τ w) z) + eF F • z := by
   haveI := h.1
@@ -213,11 +171,11 @@ theorem exists_section (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOv
     exact ((h3 1).comp h1).add ((h3 a).comp h2)
   · refine Levi.ad_ext h τ (fun w => ?_) fun v => ?_
     · have e0 : (eF F).1 w = 0 := rfl
-      rw [map_add (f := _), map_add (f := _), piInf_smul, piInf_smul, piInf_smul, eρ, eρ, ha, e0, map_zero, map_one, zero_mul, mul_one,
+      rw [map_add (f := _), map_add (f := _), GlobalTheory.ThK.Dbl.St.piInf_smul, GlobalTheory.ThK.Dbl.St.piInf_smul, GlobalTheory.ThK.Dbl.St.piInf_smul, eρ, eρ, ha, e0, map_zero, map_one, zero_mul, mul_one,
         add_zero, Complex.re_add_im]
-    · have e0 : compFin F E v ((1 - eF F) • z) = 0 := compFin_smul v (sub_self (1 : Af F)) z
+    · have e0 : compFin F E v ((1 - eF F) • z) = 0 := GlobalTheory.ThK.Dbl.St.compFin_smul v (sub_self (1 : Af F)) z
       rw [sub_smul, one_smul, map_sub, sub_eq_zero] at e0
-      rw [map_add (f := _), map_add (f := _), compFin_smul v rfl, compFin_smul v rfl, zero_add, zero_add, e0]
+      rw [map_add (f := _), map_add (f := _), GlobalTheory.ThK.Dbl.St.compFin_smul v rfl, GlobalTheory.ThK.Dbl.St.compFin_smul v rfl, zero_add, zero_add, e0]
 
 theorem exists_compact_mat {B : Base F E} {X : Spc F E n} {r s : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) :
     ∃ S : Set (Matrix (Fin n) (Fin n) (AE F E)), IsCompact S ∧ ∀ k ∈ stabK (σ := σ) B X, mat k ∈ S := by

@@ -203,9 +203,6 @@ theorem idem_identity {R : Type} [CommRing R] {e e' d d' t : R} (e1 : e * e = e)
     (h1 : d' * d = 1) (ht : t * (e + e') = d - 1) : d * (e' * d' + (1 - e')) = e * d + (1 - e) := by
   linear_combination e' * h1 - (1 - e - e') * ht - t * e1 - 2 * t * e2 - t * e3
 
-theorem conj_det_mul (V : HSp D) (g : GA D V) : cA D (Formalism.L2.Theta.mt V g).det * (Formalism.L2.Theta.mt V g).det = 1 := by
-  rw [← GlobalTheory.ConjAdjWeil.det_inv_eq, ← Matrix.det_mul, GlobalTheory.MixModel.mt_inv_mul, Matrix.det_one]
-
 theorem detA_val (V : HSp D) (g : GA D V) : ((detA V g : (AE D)ˣ) : AE D) = (Formalism.L2.Theta.mt V g).det := rfl
 
 theorem conj_detAt {e : AE D} {V : HSp D} {g : GA D V} {x : (AE D)ˣ} (hx : IsDetAt e V g x) :
@@ -220,7 +217,7 @@ theorem det_sub_one_of_suppAt {e : AE D} {V : HSp D} {g : GA D V} (hg : SuppAt e
 theorem det_mul_conj {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA D V} (hg : SuppAt e V g) {x : (AE D)ˣ}
     (hx : IsDetAt e V g x) : detA V g * Units.map (cA D).toMonoidHom x = x := by
   obtain ⟨t, ht⟩ := det_sub_one_of_suppAt hg
-  have h3 := idem_identity he.1 he.2.1 (conj_idem he) (conj_det_mul V g) ht
+  have h3 := idem_identity he.1 he.2.1 (conj_idem he) (_root_.Formalism.L2.Theta.det_conj_mul V g) ht
   rw [← conj_detAt hx] at h3
   have h4 : (Formalism.L2.Theta.mt V g).det * cA D (x : AE D) = x := h3.trans (Eq.symm hx)
   apply Units.ext

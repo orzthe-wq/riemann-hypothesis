@@ -49,4 +49,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.twistPlace_last_two_step_entries_schwartzBruhat : ∀ (D : D7) (c : Comm D) (v : VCom c) χ (Q : QAt v χ) α yb, Q.T.xiPen (box _ Q.c₂) (Q.rep Q.s 0 rfl α) yb ∈ SB _ ∧ Q.T.xiTop (box _ Q.c₂) Q.ψk Q.ν (-1) yb ∈ SB _ := by
-  first | exact @GlobalTheory.QPl.LastTwo.entries_mem_SB | exact GlobalTheory.QPl.LastTwo.entries_mem_SB | (intros; apply GlobalTheory.QPl.LastTwo.entries_mem_SB <;> assumption)
+  first | exact @GlobalTheory.QPl.LastTwo.entries_mem_SB

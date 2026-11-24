@@ -264,7 +264,6 @@ theorem exists_levStr_rep {B : Type} [Field B] {b : Base l B} {s : S ⟶ Sp B} (
     obtain ⟨p, hp⟩ : pt ∈ Set.range x := by rw [hx]; rfl
     exact ⟨w.left p, by rw [← Scheme.Hom.comp_apply, Over.w w]; exact hp⟩
   · obtain ⟨c, hc⟩ := modN_smul_Mb l₂ he ha
-    beta_reduce
     rw [← i1, hc, add_map_nsmul a1, p1, MonObj.comp_one]
   · beta_reduce
     rw [a2, MonObj.comp_mul]

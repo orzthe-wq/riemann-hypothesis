@@ -120,11 +120,9 @@ theorem G_eq_Gfun (y : ℝ) : G y = Gfun y := by
       ∑ n ∈ Finset.Icc 1 ⌊y⌋₊, (ArithmeticFunction.vonMangoldt n : ℝ) * (y / n - 1) := by
     refine Finset.sum_congr rfl fun n hn => ?_
     obtain ⟨hn1, hny⟩ := Finset.mem_Icc.mp hn
-    have hnpos : (0 : ℝ) < n := by exact_mod_cast hn1
-    have hle : (n : ℝ) ≤ y := (Nat.le_floor_iff' (by omega)).mp hny
     have h0 : 0 ≤ y / n - 1 := by
-      rw [sub_nonneg, le_div_iff₀ hnpos, one_mul]
-      exact hle
+      rw [sub_nonneg, le_div_iff₀ (by exact_mod_cast hn1), one_mul]
+      exact (Nat.le_floor_iff' (by omega)).mp hny
     rw [max_eq_left h0]
   rw [hs]
   ring

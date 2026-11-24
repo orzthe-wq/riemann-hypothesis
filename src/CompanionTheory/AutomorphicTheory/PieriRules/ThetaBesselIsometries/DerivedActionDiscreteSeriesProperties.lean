@@ -224,7 +224,7 @@ theorem dsig_kfin [CompleteSpace H] (hK : PI.KFinSmooth) (hmu : IsHCParam mu) (h
     let b := Module.finBasis ℝ (Mx k r)
     let T : Submodule ℂ H := Submodule.span ℂ (Set.range fun p : fs × Fin (Module.finrank ℝ (Mx k r)) =>
       L p.1 (b p.2))
-    haveI : FiniteDimensional ℂ T := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)
+    have : FiniteDimensional ℂ T := FiniteDimensional.span_of_finite ℂ (Set.finite_range _)
     refine Submodule.finiteDimensional_of_le (S₂ := T) (Submodule.span_le.2 ?_)
     rintro _ ⟨Y, hY, s, hs, rfl⟩
     rw [← hfs] at hs hsm
@@ -261,7 +261,7 @@ theorem dsig_skew (hσ : IsDSHpk k r ε mu σ) {X : Mx k r} (hX : InLieHpk k r X
       ((σ (NormedSpace.exp ((t : ℂ) • X)) : H →L[ℂ] H) : H →ₗ[ℂ] H)).1 (hunit _ (exp_mem hX t)) v w
   rw [e] at h
   have h0 := h.unique (hasDerivAt_const (0 : ℝ) _)
-  simp only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, h1, ContinuousLinearMap.one_apply] at h0
+  simp only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, h1, one_apply_eq_self] at h0
   exact eq_neg_of_add_eq_zero_right h0
 
 theorem dsig_TK (hK : PI.KFinSmooth) (R : Rep k r) (hR : R.IsDG ε mu) {X : Mx k r} (hX : InLieHpk k r X) :

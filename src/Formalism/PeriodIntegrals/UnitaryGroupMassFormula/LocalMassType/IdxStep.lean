@@ -1,9 +1,9 @@
 module
 
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxGrp
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassOrder.IsTopRingTens
-public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxAbs
-import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxLin
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.Development
+public import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxLin
+public import Mathlib.MeasureTheory.Group.Defs
+public import Mathlib.MeasureTheory.Group.Measure
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -20,7 +20,6 @@ import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -28,7 +27,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
@@ -42,10 +40,286 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Topology.Sheaves.Init
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Tactic.TypeStar
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassOrder.IsTopRingTens
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxGrp, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxAbs, Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxStep
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxGrp =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxGrp", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.Development\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxLin\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.LocMassTypW
+
+open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures Formalism.L2.SG.LocVol MeasureTheory NumberField
+  IsDedekindDomain
+open scoped TensorProduct Classical
+
+def frU {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
+    (v : HeightOneSpectrum (𝓞 F)) {n r : ℕ} (P : Frame E n r) (u : UIdx r → Fv F v ⊗[F] E) :
+    TupV (E := E) v n (r + 1) :=
+  fun b => ∑ a, uMat v u a b • ratTup (Fv F v) (F0 P) a
+
+def Cong {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+    (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
+    (Λ : Set (Fin n → E)) {r : ℕ} (g : ℕ) (P : Frame E n r) (x : HA (Fv F v) σ J)
+    (u : UIdx r → Fv F v ⊗[F] E) : Prop :=
+  ∀ b, ∃ w ∈ latLoc (E := E) v Λ,
+    locF v (x • ratTup (Fv F v) (F0 P)) b - locF v (frU v P u) b = sc (E := E) v (g : Fv F v) • w
+
+section Grp
+
+variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+  {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {v : HeightOneSpectrum (𝓞 F)}
+  {Λ : Set (Fin n → E)}
+
+theorem smul_tup (k : HA (Fv F v) σ J) {a : ℕ} (X : Fin a → Fin n → Fv F v ⊗[F] E) (b : Fin a) :
+    (k • X) b = lin (Fv F v) σ J k (X b) := rfl
+
+theorem kv_lat {k : HA (Fv F v) σ J} (hk : k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
+    {w : Fin n → Fv F v ⊗[F] E} (hw : w ∈ latLoc (E := E) v Λ) :
+    lin (Fv F v) σ J k w ∈ latLoc (E := E) v Λ := (hk w).1 hw
+
+theorem kv_mul {a b : HA (Fv F v) σ J} (ha : a ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
+    (hb : b ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v) : a * b ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v :=
+  Subgroup.mul_mem (Kloc (E := E) v Λ) ha hb
+
+theorem kv_inv {a : HA (Fv F v) σ J} (ha : a ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v) :
+    a⁻¹ ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v :=
+  Subgroup.inv_mem (Kloc (E := E) v Λ) ha
+
+theorem kv_one : (1 : HA (Fv F v) σ J) ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v :=
+  Subgroup.one_mem (Kloc (E := E) v Λ)
+
+theorem locF_act (k : HA (Fv F v) σ J) {r : ℕ} (Y : TupV (E := E) v n (r + 1)) (b : Fin (r + 1)) :
+    locF v (k • Y) b = lin (Fv F v) σ J k (locF v Y b) := by
+  show sc (E := E) v (alp v r b) • (k • Y) b = _
+  rw [smul_tup, locF, map_smul]
+
+theorem locF_comb {r : ℕ} (M : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E))
+    (X : TupV (E := E) v n (r + 1)) (b : Fin (r + 1)) :
+    locF v (fun b => ∑ a, M a b • X a) b =
+      ∑ a, (sc (E := E) v ((alp v r a)⁻¹ * alp v r b) * M a b) • locF v X a := by
+  simp only [locF, Finset.smul_sum, smul_smul]
+  refine Finset.sum_congr rfl fun a _ => ?_
+  congr 1
+  have h : (alp v r a)⁻¹ * alp v r b * alp v r a = alp v r b := by
+    rw [mul_comm (alp v r a)⁻¹, mul_assoc, inv_mul_cancel₀ (alp_ne' v r a), mul_one]
+  rw [mul_right_comm, sc_mul', h]
+
+theorem prim_div {r : ℕ} {Y : TupV (E := E) v n (r + 1)} (hP : IsPrim v Λ Y)
+    (c : Fin (r + 1) → Fv F v ⊗[F] E) {t : Fv F v} (ht : t ≠ 0) {y : Fin n → Fv F v ⊗[F] E}
+    (hy : y ∈ latLoc (E := E) v Λ) (h : ∑ a, c a • Y a = sc (E := E) v t • y) (a : Fin (r + 1)) :
+    sc (E := E) v t⁻¹ * c a ∈ OEv (E := E) v := by
+  apply hP.2 (fun a => sc (E := E) v t⁻¹ * c a) _ a
+  have : ∑ a, (sc (E := E) v t⁻¹ * c a) • Y a = sc (E := E) v t⁻¹ • ∑ a, c a • Y a := by
+    rw [Finset.smul_sum]; simp only [smul_smul]
+  rw [this, h, sc_smul_sc, inv_mul_cancel₀ ht, sc_one', one_smul]
+  exact hy
+
+theorem hR_smul (x w : Fin n → Fv F v ⊗[F] E) (c : Fv F v ⊗[F] E) :
+    hR (Fv F v) σ J x (c • w) = c * hR (Fv F v) σ J x w := by
+  simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
+
+theorem sd_smul (hSD : IsSDLoc σ J v Λ) {c : Fv F v ⊗[F] E} (hc : c ∈ OEv (E := E) v)
+    {w : Fin n → Fv F v ⊗[F] E} (hw : w ∈ latLoc (E := E) v Λ) : c • w ∈ latLoc (E := E) v Λ :=
+  (hSD (c • w)).2 fun x hx => by rw [hR_smul]; exact _root_.GlobalTheory.SpanMulInertiaEigenvalues.span_mul_mem v hc ((hSD w).1 hw x hx)
+
+theorem lat_comb (hSD : IsSDLoc σ J v Λ) {r : ℕ} {Y : Fin (r + 1) → Fin n → Fv F v ⊗[F] E}
+    (hY : ∀ a, Y a ∈ latLoc (E := E) v Λ) {c : Fin (r + 1) → Fv F v ⊗[F] E}
+    (hc : ∀ a, c a ∈ OEv (E := E) v) : ∑ a, c a • Y a ∈ latLoc (E := E) v Λ :=
+  Submodule.sum_mem _ fun a _ => sd_smul hSD (hc a) (hY a)
+
+theorem uMat_sub {r : ℕ} (u u' : UIdx r → Fv F v ⊗[F] E) (a b : Fin (r + 1)) :
+    uMat v u' a b - uMat v u a b =
+      if h : a < b then u' ⟨(a, b), h⟩ - u ⟨(a, b), h⟩ else 0 := by
+  by_cases h1 : a = b
+  · subst h1; simp [uMat]
+  · by_cases h2 : a < b <;> simp [uMat, h1, h2]
+
+theorem locF_frU_sub {r : ℕ} (P : Frame E n r) (u u' : UIdx r → Fv F v ⊗[F] E) (b : Fin (r + 1)) :
+    locF v (frU v P u') b - locF v (frU v P u) b =
+      ∑ a, (sc (E := E) v ((alp v r a)⁻¹ * alp v r b) * (uMat v u' a b - uMat v u a b)) •
+        locF v (ratTup (Fv F v) (F0 P)) a := by
+  unfold frU
+  rw [locF_comb, locF_comb, ← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun a _ => ?_
+  rw [← sub_smul, mul_sub]
+
+theorem cong_lat_iff (hSD : IsSDLoc σ J v Λ) {r : ℕ} {P : Frame E n r}
+    (hP : IsPrim v Λ (locF v (ratTup (Fv F v) (F0 P)))) {g : ℕ} (hg : (g : Fv F v) ≠ 0)
+    (u u' : UIdx r → Fv F v ⊗[F] E) :
+    (∀ b, ∃ z ∈ latLoc (E := E) v Λ,
+      locF v (frU v P u') b - locF v (frU v P u) b = sc (E := E) v (g : Fv F v) • z) ↔
+      -u + u' ∈ UOg (E := E) v g r := by
+  constructor
+  · rintro h ⟨⟨a, b⟩, hab⟩
+    obtain ⟨z, hz, hzeq⟩ := h b
+    rw [locF_frU_sub] at hzeq
+    have := prim_div hP _ hg hz hzeq a
+    rw [uMat_sub, dite_eq_left hab] at this
+    dsimp only
+    convert this using 1
+    rw [Pi.add_apply, Pi.neg_apply, neg_add_eq_sub, ← mul_assoc, sc_mul']
+    congr 1; congr 1; ring
+  · intro h b
+    refine ⟨∑ a, (sc (E := E) v (g : Fv F v)⁻¹ * (sc (E := E) v ((alp v r a)⁻¹ * alp v r b) *
+      (uMat v u' a b - uMat v u a b))) • locF v (ratTup (Fv F v) (F0 P)) a,
+      lat_comb hSD hP.1 ?_, ?_⟩
+    · intro a
+      rw [uMat_sub]
+      split_ifs with hab
+      · have := h ⟨(a, b), hab⟩
+        simp only [Pi.add_apply, Pi.neg_apply, neg_add_eq_sub] at this
+        convert this using 1
+        rw [← mul_assoc, sc_mul']
+        congr 1; congr 1; ring
+      · rw [mul_zero, mul_zero]; exact oev_zero v
+    · rw [locF_frU_sub, Finset.smul_sum]
+      refine Finset.sum_congr rfl fun a _ => ?_
+      rw [smul_smul, ← mul_assoc, sc_mul', mul_inv_cancel₀ hg, sc_one', one_mul]
+
+theorem cong_iff (hSD : IsSDLoc σ J v Λ) {r : ℕ} {P : Frame E n r}
+    (hP : IsPrim v Λ (locF v (ratTup (Fv F v) (F0 P)))) {g : ℕ} (hg : (g : Fv F v) ≠ 0)
+    {x y : HA (Fv F v) σ J} (hx : x ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
+    (hy : y ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v) {u u' : UIdx r → Fv F v ⊗[F] E}
+    (hcx : Cong σ J v Λ g P x u) (hcy : Cong σ J v Λ g P y u') :
+    x⁻¹ * y ∈ K1 σ J v Λ g P ↔ -u + u' ∈ UOg (E := E) v g r := by
+  rw [← cong_lat_iff hSD hP hg u u']
+  have key : ∀ b, locF v ((x⁻¹ * y) • ratTup (Fv F v) (F0 P)) b - locF v (ratTup (Fv F v) (F0 P)) b =
+      lin (Fv F v) σ J x⁻¹ (locF v (y • ratTup (Fv F v) (F0 P)) b -
+        locF v (x • ratTup (Fv F v) (F0 P)) b) := by
+    intro b
+    rw [map_sub, locF_act, locF_act, locF_act, lin_mul, lin_inv_lin]
+  constructor
+  · rintro ⟨-, hk⟩ b
+    obtain ⟨z, hz, hzeq⟩ := hk b
+    obtain ⟨wx, hwx, hwxe⟩ := hcx b
+    obtain ⟨wy, hwy, hwye⟩ := hcy b
+    refine ⟨lin (Fv F v) σ J x z - wy + wx,
+      Submodule.add_mem _ (Submodule.sub_mem _ (kv_lat hx hz) hwy) hwx, ?_⟩
+    have e1 : locF v (y • ratTup (Fv F v) (F0 P)) b - locF v (x • ratTup (Fv F v) (F0 P)) b =
+        sc (E := E) v (g : Fv F v) • lin (Fv F v) σ J x z := by
+      rw [key] at hzeq
+      have := congrArg (lin (Fv F v) σ J x) hzeq
+      rwa [← lin_mul, mul_inv_cancel, lin_one, map_smul] at this
+    rw [smul_add, smul_sub, ← e1, ← hwye, ← hwxe]
+    abel
+  · intro h
+    refine ⟨kv_mul (kv_inv hx) hy, fun b => ?_⟩
+    obtain ⟨z, hz, hzeq⟩ := h b
+    obtain ⟨wx, hwx, hwxe⟩ := hcx b
+    obtain ⟨wy, hwy, hwye⟩ := hcy b
+    refine ⟨lin (Fv F v) σ J x⁻¹ (z + wy - wx),
+      kv_lat (kv_inv hx) (Submodule.sub_mem _ (Submodule.add_mem _ hz hwy) hwx), ?_⟩
+    rw [key, ← map_smul]
+    congr 1
+    rw [smul_sub, smul_add, ← hzeq, ← hwye, ← hwxe]
+    abel
+
+end Grp
+
+end PI.LocMassTypW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxGrp =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxAbs =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxAbs", "h": "module\n\npublic import Mathlib.MeasureTheory.Group.Defs\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.MeasureTheory.Group.Measure\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+namespace PI.LocMassTypW
+
+open MeasureTheory
+
+theorem idx_abs {G V : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
+    [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd V]
+    (μ : Measure G) [μ.IsMulLeftInvariant] (ν : Measure V) [ν.IsAddLeftInvariant]
+    (K : Subgroup G) (hK : MeasurableSet (K : Set G)) (B : AddSubgroup V)
+    (hB : MeasurableSet (B : Set V)) [Countable (V ⧸ B)] (N : Set G) (C : Set V) (φ : G → V)
+    (hNK : ∀ x ∈ N, ∀ k ∈ K, x * k ∈ N) (hCB : ∀ u ∈ C, ∀ b ∈ B, u + b ∈ C)
+    (hφ : ∀ x ∈ N, φ x ∈ C) (hco : ∀ x ∈ N, ∀ y ∈ N, x⁻¹ * y ∈ K ↔ -φ x + φ y ∈ B)
+    (hsur : ∀ u ∈ C, ∃ x ∈ N, -φ x + u ∈ B) :
+    μ N * ν B = μ K * ν C := by
+  classical
+  choose x hxN hxq using
+    fun q : {q : V ⧸ B | ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q} => q.2
+  have hmk : ∀ a b : V, -a + b ∈ B ↔ (QuotientAddGroup.mk a : V ⧸ B) = QuotientAddGroup.mk b :=
+    fun a b => QuotientAddGroup.eq.symm
+  have hC : C = ⋃ q, (fun v => -φ (x q) + v) ⁻¹' (B : Set V) := by
+    ext v
+    simp only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]
+    constructor
+    · intro hv
+      obtain ⟨y, hy, hyB⟩ := hsur v hv
+      refine ⟨⟨(QuotientAddGroup.mk v : V ⧸ B), y, hy, (hmk _ _).mp hyB⟩, ?_⟩
+      exact (hmk _ _).mpr (hxq _)
+    · rintro ⟨q, hq⟩
+      simpa using hCB _ (hφ _ (hxN q)) _ hq
+  have hN : N = ⋃ q, (fun y => (x q)⁻¹ * y) ⁻¹' (K : Set G) := by
+    ext y
+    simp only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]
+    constructor
+    · intro hy
+      refine ⟨⟨QuotientAddGroup.mk (φ y), y, hy, rfl⟩, ?_⟩
+      rw [hco _ (hxN _) _ hy, hmk, hxq]
+    · rintro ⟨q, hq⟩
+      simpa using hNK _ (hxN q) _ hq
+  have hdC : Pairwise (Function.onFun Disjoint fun q => (fun v => -φ (x q) + v) ⁻¹' (B : Set V)) := by
+    intro q q' hqq
+    rw [Function.onFun, Set.disjoint_left]
+    intro v h1 h2
+    apply hqq
+    apply Subtype.ext
+    simp only [Set.mem_preimage, SetLike.mem_coe, hmk] at h1 h2
+    rw [← hxq q, ← hxq q', h1, h2]
+  have hdN : Pairwise (Function.onFun Disjoint fun q => (fun y => (x q)⁻¹ * y) ⁻¹' (K : Set G)) := by
+    intro q q' hqq
+    rw [Function.onFun, Set.disjoint_left]
+    intro y h1 h2
+    apply hqq
+    apply Subtype.ext
+    simp only [Set.mem_preimage, SetLike.mem_coe] at h1 h2
+    have hy : y ∈ N := by simpa using hNK _ (hxN q) _ h1
+    rw [hco _ (hxN q) _ hy, hmk] at h1
+    rw [hco _ (hxN q') _ hy, hmk] at h2
+    rw [← hxq q, ← hxq q', h1, h2]
+  have e1 : μ N = ∑' q : {q : V ⧸ B | ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q}, μ K := by
+    conv_lhs => rw [hN]
+    rw [measure_iUnion hdN fun q => (measurable_const_mul _) hK]
+    exact tsum_congr fun q => measure_preimage_mul μ _ _
+  have e2 : ν C = ∑' q : {q : V ⧸ B | ∃ x ∈ N, (QuotientAddGroup.mk (φ x) : V ⧸ B) = q}, ν B := by
+    rw [hC, measure_iUnion hdC fun q => (measurable_const_add _) hB]
+    exact tsum_congr fun q => measure_preimage_add ν _ _
+  rw [e1, e2, ← ENNReal.tsum_mul_right, ← ENNReal.tsum_mul_left]
+
+end PI.LocMassTypW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxAbs =====
+
+-- ===== clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxStep =====
+-- clump-header: {"m": "Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxStep", "h": "module\n\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxGrp\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassOrder.IsTopRingTens\npublic import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxAbs\nimport Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxLin\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -339,3 +613,7 @@ theorem stepIdx_of (hL : CongruenceSubgroupLift) (hU : KUnip1) (hM : CongruenceS
   exact this
 
 end PI.LocMassTypW
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.IdxStep =====

@@ -152,14 +152,12 @@ theorem cartan_mem_of_entries (U : GL n L) (h1 : ∀ i j, (U : Matrix n n L) i j
 
 theorem cartan_exists_glint (A B : Matrix n n L) (hAB : A * B = 1) (hA : ∀ i j, A i j ∈ O)
     (hB : ∀ i j, B i j ∈ O) : ∃ U ∈ GLint n O, (U : Matrix n n L) = A := by
-  refine ⟨⟨A, B, hAB, mul_eq_one_comm.mp hAB⟩, ?_, rfl⟩
-  exact cartan_mem_of_entries O _ hA hB
+  exact ⟨⟨A, B, hAB, mul_eq_one_comm.mp hAB⟩, cartan_mem_of_entries O _ hA hB, rfl⟩
 
 theorem cartan_det_mem (M : Matrix n n L) (hM : ∀ i j, M i j ∈ O) : M.det ∈ O := by
   rw [Matrix.det_apply]
-  refine sum_mem (fun σ _ => ?_)
-  rw [Units.smul_def]
-  exact zsmul_mem (prod_mem fun i _ => hM _ _) _
+  exact sum_mem fun σ _ => by
+    simpa only [Units.smul_def] using zsmul_mem (prod_mem fun i _ => hM _ _) (Equiv.Perm.sign σ : ℤ)
 
 variable {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
 
@@ -190,8 +188,7 @@ theorem cartan_pigeon {m : ℕ} (σ : Equiv.Perm (Fin m)) (i : Fin m) :
     intro j hj
     simp only [Finset.coe_Iic, Finset.coe_Iio, Set.mem_Iic, Set.mem_Iio] at hj ⊢
     exact hne j hj
-  have hc := Finset.card_le_card_of_injOn σ hmaps σ.injective.injOn
-  simp at hc
+  simpa using Finset.card_le_card_of_injOn σ hmaps σ.injective.injOn
 
 theorem cartan_core (val : Valuation L Γ) (hO : ∀ x, x ∈ O ↔ val x ≤ 1) (ϖ : L)
     (hϖ0 : ϖ ≠ 0) (hϖ : val ϖ < 1) {m : ℕ} (a b : Fin m → ℤ) (ha : Antitone a)
@@ -259,13 +256,11 @@ theorem cartan_unique_gen (val : Valuation L Γ) (hO : ∀ x, x ∈ O ↔ val x 
   funext i
   apply le_antisymm
   · by_contra hlt
-    push_neg at hlt
     exact cartan_core O val hO ϖ hϖ0 hϖ a' a ha' ha k₂⁻¹ hk₂i _
-      (cartan_entries_of_mem O k₁ hk₁) e2 i hlt
+      (cartan_entries_of_mem O k₁ hk₁) e2 i (not_le.mp hlt)
   · by_contra hlt
-    push_neg at hlt
     exact cartan_core O val hO ϖ hϖ0 hϖ a a' ha ha' k₂ hk₂ _
-      (cartan_entries_of_mem O k₁⁻¹ hk₁i) e1 i hlt
+      (cartan_entries_of_mem O k₁⁻¹ hk₁i) e1 i (not_le.mp hlt)
 
 end Unique
 
@@ -275,12 +270,11 @@ variable {L : Type} [Field L] (O : Subring L) {Γ : Type} [LinearOrderedCommGrou
 
 theorem cartan_perm_glint {m : ℕ} (τ : Equiv.Perm (Fin m)) :
     ∃ U ∈ GLint (Fin m) O, (U : Matrix (Fin m) (Fin m) L) = τ.toPEquiv.toMatrix := by
-  obtain ⟨U, hU, hUA⟩ := cartan_exists_glint O τ.toPEquiv.toMatrix τ.symm.toPEquiv.toMatrix
+  exact cartan_exists_glint O τ.toPEquiv.toMatrix τ.symm.toPEquiv.toMatrix
     (by rw [← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.self_trans_symm, Equiv.toPEquiv_refl,
       PEquiv.toMatrix_refl])
     (by intro i j; rw [PEquiv.toMatrix_apply]; split_ifs; exacts [O.one_mem, O.zero_mem])
     (by intro i j; rw [PEquiv.toMatrix_apply]; split_ifs; exacts [O.one_mem, O.zero_mem])
-  exact ⟨U, hU, hUA⟩
 
 theorem cartan_diag_perm {m : ℕ} (d : Fin m → L) (σ : Equiv.Perm (Fin m)) :
     Matrix.diagonal d = σ.symm.toPEquiv.toMatrix * Matrix.diagonal (d ∘ σ) * σ.toPEquiv.toMatrix := by
@@ -288,8 +282,8 @@ theorem cartan_diag_perm {m : ℕ} (d : Fin m → L) (σ : Equiv.Perm (Fin m)) :
   ext i j
   by_cases h : i = j
   · subst h
-    simp [Matrix.diagonal_apply]
-  · simp [Matrix.diagonal_apply, h]
+    simp
+  · simp [h]
 
 theorem cartan_sort (ϖ : L) {m : ℕ} (a : Fin m → ℤ) :
     ∃ a' : Fin m → ℤ, Antitone a' ∧ ∃ S₁ ∈ GLint (Fin m) O, ∃ S₂ ∈ GLint (Fin m) O,
@@ -300,9 +294,7 @@ theorem cartan_sort (ϖ : L) {m : ℕ} (a : Fin m → ℤ) :
   obtain ⟨S₁, h₁, e₁⟩ := cartan_perm_glint (L := L) O σ.symm
   obtain ⟨S₂, h₂, e₂⟩ := cartan_perm_glint (L := L) O σ
   refine ⟨a ∘ σ, fun i j hij => ?_, S₁, h₁, S₂, h₂, ?_⟩
-  · have := hσ hij
-    simp only [Function.comp_apply] at this ⊢
-    omega
+  · simpa only [Function.comp_apply, neg_le_neg_iff] using hσ hij
   · rw [e₁, e₂]
     exact cartan_diag_perm (fun i => ϖ ^ a i) σ
 
@@ -397,7 +389,6 @@ theorem cartan_mem_Ov (F : Type) [Field F] [NumberField F] (v : HeightOneSpectru
     (x : v.adicCompletion F) : x ∈ Ov F v ↔ Valued.v x ≤ 1 := by
   first
   | exact Iff.rfl
-  | exact HeightOneSpectrum.mem_adicCompletionIntegers F v
 
 theorem cartan_unif_ne_zero (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (ϖ : v.adicCompletion F) (h : IsUnifV F v ϖ) : ϖ ≠ 0 := by
@@ -412,8 +403,6 @@ theorem cartan_unif_lt_one (F : Type) [Field F] [NumberField F] (v : HeightOneSp
   rw [h]
   first
   | exact WithZero.coe_lt_coe.mpr (by decide)
-  | exact WithZero.coe_lt_one.mpr (by decide)
-  | decide
 
 theorem cartan_val_pow (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (ϖ : v.adicCompletion F) (h : IsUnifV F v ϖ) (x : v.adicCompletion F) (hx : x ≠ 0) :

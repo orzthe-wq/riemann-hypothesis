@@ -130,7 +130,7 @@ private lemma sum_basis_tmul_coord_eq (y : V ⊗[Qp] BdR) :
   apply (_root_.GlobalTheory.SplitJump.coord e BdR).injective
   ext j
 
-  simp [map_sum, coord_tmul_eq_repr_mul, Finsupp.single_apply, Pi.single_apply]
+  simp [map_sum, coord_tmul_eq_repr_mul, Finsupp.single_apply]
 
 open Module TensorProduct in
 variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]

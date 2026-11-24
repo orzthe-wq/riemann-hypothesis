@@ -396,27 +396,7 @@ def BuRational : Prop := ∀ u (φ : (D.div.Nu u).V) (x : D.div.RR.V),
 
 end D7
 
-def bridge_cols_conj : Prop := ∀ (D : D7) (u : D.what₂.Word),
-  ∃ (S : Submodule ℂ ((D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)) (_ : FiniteDimensional ℂ S),
-    (S : Set _) = D.colsS u ∧ Module.finrank ℂ S = D.duS u
-
-def FactSigYDceil : Prop := ∀ (R : Ranks) (j : ℕ), j < R.m →
-  (sigYD R j).2 = ((R.m - 1 - j + 1) / 2) ∧ (sigYD R j).1 + (sigYD R j).2 = R.rankY j
-
-def FactBuUnique : Prop := ∀ (D : D7), Rows.BuDef D.what₂ →
-  (∀ x : D.what₂.EE, ∃ F ∈ D.what₂.V0 D.what₂.mu0, D.iota0 F = x) →
-  ∀ B' : ∀ u, D.what₂.Mu u → D.what₂.EE → ℂ,
-    (∀ u φ F, F ∈ D.what₂.V0 D.what₂.mu0 → D.what₂.perCol u D.what₂.mu0 φ F = B' u φ (D.iota0 F)) → B' = D.what₂.Bu
-
 def FactDGam (D : D7) (C : ℝ) : Prop := ∀ u, Real.log ((D.mem u).C.DGam : ℝ) ≤ C * D.R.f * D.R.N D.R.m * Real.log ((D.R.f : ℝ) * D.R.N D.R.m)
-
-def FactPsiCardViaTau : Prop := ∀ (D : D7), Nat.card (D.R.Psi) = D.R.f
-
-def AnisotropicLineIndepOfMember : Prop := ∀ (D : D7) (u : D.what₂.Word),
-  ∃ c : D.host.E, c ≠ 0 ∧ c * D.host.conj c * ((D.mem u).A.T : D.host.E) = ((D.mem D.u₀).A.T : D.host.E)
-
-def FactUnitRuleAgree : Prop := ∀ (D : D7) (w : D.what₂.places.Pl) (x : ℚ),
-  ((Rows.unitRule D.what₂.places w x : ℚ) : ℝ) = unitRule D.what₂.LL (D.plEq w) (x : ℝ)
 
 end Formalism.BasicNotions
 

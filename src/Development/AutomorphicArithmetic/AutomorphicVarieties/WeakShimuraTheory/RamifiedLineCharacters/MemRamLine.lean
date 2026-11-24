@@ -65,7 +65,7 @@ theorem uQ_zero : uQ (0 : R) 0 0 = 1 := by
 theorem adj_uQ (x y t : R) : adj (uQ x y t) = uQ (-x) (-y) (-t) := by
   ext i j
   rw [adj_apply]
-  fin_cases i <;> fin_cases j <;> simp [uQ, sgn, Fin.rev] <;> ring
+  fin_cases i <;> fin_cases j <;> simp [uQ, sgn, Fin.rev]
 
 theorem isLow_uQ (x y t : R) : IsLow (uQ x y t) := by
   refine ⟨?_, fun i => by fin_cases i <;> rfl, fun i j hij => ?_⟩

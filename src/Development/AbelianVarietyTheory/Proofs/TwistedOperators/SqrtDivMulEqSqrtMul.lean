@@ -132,8 +132,7 @@ theorem smul_actO_mem (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank
 theorem act_mul (h h' : GA D T) (u : WO S T) : actO S T 1 (h * h') u = actO S T 1 h (actO S T 1 h' u) := by
   rw [← GlobalTheory.SplitLinear.actO_mul, one_mul]
 
-theorem act_one (u : WO S T) : actO S T 1 1 u = u := by
-  simp only [actO, inv_one, mt_one, Matrix.mul_one, Matrix.one_mul]
+alias act_one := _root_.GlobalTheory.RatAut.act_one
 
 theorem act_sub (h : GA D T) (u u' : WO S T) : actO S T 1 h (u - u') = actO S T 1 h u - actO S T 1 h u' :=
   map_sub (GlobalTheory.SplitHecke.actAdd S T 1 h) u u'

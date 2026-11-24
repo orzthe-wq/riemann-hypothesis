@@ -65,12 +65,6 @@ namespace GlobalTheory.CompanionTheory.SwapInt
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
-theorem ordL_mul_of_ne {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x + ordL y := by
-  have h := v_eq_exp' (mul_ne_zero hx hy)
-  rw [map_mul, v_eq_exp' hx, v_eq_exp' hy, ← WithZero.exp_add] at h
-  have := WithZero.exp_injective h
-  omega
-
 theorem v_le_exp_iff {x : L} (hx : x ≠ 0) (k : ℤ) : Valued.v x ≤ WithZero.exp (-k) ↔ k ≤ ordL x := by
   rw [v_eq_exp' hx, WithZero.exp_le_exp]; omega
 
@@ -105,7 +99,7 @@ theorem isAdm_mul_left {w : ℂ} (hw : w ≠ 0) {F : L → ℂ} (hF : IsAdm w F)
   obtain ⟨h1, R, C, h2⟩ := hF
   refine ⟨h1.comp_continuous (continuous_const.mul continuous_id), R - ordL c, C * w ^ (-ordL c),
     fun x hx hr => ?_⟩
-  have ho := ordL_mul_of_ne hc hx
+  have ho := _root_.Formalism.UG.P.fSatake_ord_mul hc hx
   show F (c * x) = _
   rw [h2 _ (mul_ne_zero hc hx) (by omega), ho, neg_add, zpow_add₀ hw, mul_assoc]
 
@@ -286,7 +280,7 @@ theorem sphFn_mul_uniformizer {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : �
       rw [this] at hx; omega
     have h2 : x ∉ (ordBall L 0 : Set L) := fun e => hx (by
       rw [SetLike.mem_coe, mem_ordBall, neg_zero, WithZero.exp_zero] at e; exact e)
-    have h3 := ordL_mul_of_ne hϖ0 hx0
+    have h3 := _root_.Formalism.UG.P.fSatake_ord_mul hϖ0 hx0
     rw [sphFn_of_lt hx, Set.indicator_of_notMem h2, mul_zero, add_zero]
     have h4 : w⁻¹ * w ^ (-ordL x) = w ^ (-ordL (ϖ * x)) := by
       rw [h3, ho, neg_add, zpow_add₀ hw, zpow_neg_one]

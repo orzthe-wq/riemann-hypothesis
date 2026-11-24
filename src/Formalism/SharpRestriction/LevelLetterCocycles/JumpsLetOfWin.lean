@@ -230,11 +230,6 @@ theorem prod_q_eq (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRel
     rw [map_mul, mul_pow]
     rfl
 
-private theorem letE_mul_self_level_letter_cocycles (c : ZMod n) : (letE c : LetA O n) * letE c = letE c := by
-  funext k
-  simp only [letE, Pi.mul_apply, Pi.single_apply]
-  split_ifs <;> simp
-
 theorem prodPs_mem (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))) (T : LocLat G Qp LL O)
     {M h : ZMod n → ℕ} (h5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T M h) (c : ZMod n) (Gb j : ℕ)
@@ -249,7 +244,7 @@ theorem prodPs_mem (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInvariantLatt
   have hxl : x ∈ W.Nl T c := hx.2
   have hxc : (letE c : LetA O n) • x = x := by
     obtain ⟨y, _, hy⟩ := Submodule.mem_map.1 hxl
-    rw [← hy, LinearMap.smul_apply, LinearMap.id_apply, smul_smul, letE_mul_self_level_letter_cocycles]
+    rw [← hy, LinearMap.smul_apply, LinearMap.id_apply, smul_smul, _root_.Formalism.MainNotions.WachCoordinates.Br.letE_mul_self]
   have hch := chain W hs T h5 c Gb j hM x hxN hxc j le_rfl
   obtain ⟨u, hu, hueq⟩ := prod_q_eq W hR j Gb
   rw [hueq, mul_smul] at hch

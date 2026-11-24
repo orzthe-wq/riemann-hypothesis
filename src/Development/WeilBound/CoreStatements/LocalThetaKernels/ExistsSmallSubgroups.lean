@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AdelicSchrodingerTensorEqLocalOfSupportedAt
+public import Development.WeilBound.ThetaLifts.TowerModels.TwistedSums.AdelicSchrodingerTensorEqLocalOfSupportedAt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -41,6 +41,8 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+public import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.UnitaryConjugation
+public import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsGivenStageEqOne
 
 @[expose] public section
 
@@ -121,7 +123,7 @@ theorem exists_small_lattices (v : Pl F) :
     have e : j (c z) = z := by
       conv_rhs => rw [← b.sum_repr z]
       refine Finset.sum_congr rfl fun i _ => ?_
-      rw [← GlobalTheory.SchrLoc.eq_atPlace_of_at (z := b.repr z i) fun u hu => by
+      rw [← Tw.SchrLoc.eq_atPlace_of_at (z := b.repr z i) fun u hu => by
         have := congrArg (fun t => b.repr t i) (hz.1 u hu)
         simpa using this]
     rw [← e]

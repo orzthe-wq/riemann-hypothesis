@@ -1,54 +1,9 @@
 module
 
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SymplecticGenerators.SymplecticCharacters.Blocks
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -130,16 +85,13 @@ theorem sp_keyH {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     have hJ : (Matrix.J (Fin g) ℤ).map (Int.castRingHom ℂ) = Matrix.J (Fin g) ℂ := by
       ext i j
       rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.J, Matrix.one_apply]
-      all_goals (try split_ifs)
-      all_goals (try simp_all)
     have := congrArg (fun M => M.map (Int.castRingHom ℂ)) h1
     rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hJ] at this
     exact this
   rw [← Matrix.fromBlocks_toBlocks (cMat γ), Matrix.J, Matrix.fromBlocks_transpose,
     Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply] at h3
   obtain ⟨e11, e12, e21, e22⟩ := Matrix.fromBlocks_inj.mp h3
-  simp only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.zero_mul,
-    Matrix.neg_mul, Matrix.one_mul] at e11 e12 e21 e22
+  simp only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.neg_mul] at e11 e12 e21 e22
   have hA := blk_conjTranspose₁₁ γ
   have hB := blk_conjTranspose₁₂ γ
   have hC := blk_conjTranspose₂₁ γ
@@ -166,16 +118,13 @@ theorem sp_keyT {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     have hJ : (Matrix.J (Fin g) ℤ).map (Int.castRingHom ℂ) = Matrix.J (Fin g) ℂ := by
       ext i j
       rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.J, Matrix.one_apply]
-      all_goals (try split_ifs)
-      all_goals (try simp_all)
     have := congrArg (fun M => M.map (Int.castRingHom ℂ)) h1
     rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hJ] at this
     exact this
   rw [← Matrix.fromBlocks_toBlocks (cMat γ), Matrix.J, Matrix.fromBlocks_transpose,
     Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply] at h3
   obtain ⟨e11, e12, e21, e22⟩ := Matrix.fromBlocks_inj.mp h3
-  simp only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.zero_mul,
-    Matrix.neg_mul, Matrix.one_mul] at e11 e12 e21 e22
+  simp only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.neg_mul] at e11 e12 e21 e22
   set A := (cMat γ).toBlocks₁₁
   set B := (cMat γ).toBlocks₁₂
   set C := (cMat γ).toBlocks₂₁
@@ -293,16 +242,13 @@ theorem sp_A {g : ℕ} {γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     have hJ : (Matrix.J (Fin g) ℤ).map (Int.castRingHom ℂ) = Matrix.J (Fin g) ℂ := by
       ext i j
       rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.J, Matrix.one_apply]
-      all_goals (try split_ifs)
-      all_goals (try simp_all)
     have := congrArg (fun M => M.map (Int.castRingHom ℂ)) h1
     rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hJ] at this
     exact this
   rw [← Matrix.fromBlocks_toBlocks (cMat γ), Matrix.J, Matrix.fromBlocks_transpose,
     Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply] at h3
   obtain ⟨e11, _, e21, _⟩ := Matrix.fromBlocks_inj.mp h3
-  simp only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.zero_mul,
-    Matrix.neg_mul, Matrix.one_mul] at e11 e21
+  simp only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, Matrix.neg_mul] at e11 e21
   have key : (jAut γ τ)ᵀ * ((cMat γ).toBlocks₁₁ - spAct γ τ * (cMat γ).toBlocks₂₁) = 1 := by
     rw [hσ, Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hJt,
       Matrix.one_mul]

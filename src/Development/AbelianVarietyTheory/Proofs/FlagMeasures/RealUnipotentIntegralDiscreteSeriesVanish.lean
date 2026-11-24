@@ -3,7 +3,7 @@ module
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.HermitianFormUnitaryOneOne
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsSmoothCompactSupportFixLowestKType
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IntegralDiscreteSeriesUnipotentVanishes
-import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryRepFormalDegreeBoundStatement
+import Development.AbelianVarietyTheory.Proofs.FlagMeasures.UnitaryRepFormalDegreeBound
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -75,7 +75,7 @@ theorem integral_phe_eq_zero_of_isKTypeOf : ∀ (B : RowsAut) (d : InfinitePlace
     omega
   obtain ⟨h0, hc⟩ := rate_lt hn hq (hh v)
 
-  have hF := GlobalTheory.T.unitary_rep_matrixCoeff_integral_eq_zero B.I.n (B.I.ε v) Wv ν hW hν (B.H v) (B.σ v) (d v)
+  have hF := _root_.GlobalTheory.ConstTermZero.constant_term_zero B.I.n (B.I.ε v) Wv ν hW hν (B.H v) (B.σ v) (d v)
     (h / (8 * Real.sqrt (rkR (B.I.ε v)))) α (B.w v) hU hfd (by exact_mod_cast hc) hlow.1 hαs hαc
     (fun u => hαf (B.w v) hlow.2 u)
     ⟨Real.exp (h / 8), fun g => (hLoc v g).trans (decE_le_exp hq h0 _)⟩ (x.1 v) (y.1 v)

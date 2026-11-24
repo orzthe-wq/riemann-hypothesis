@@ -51,7 +51,7 @@ open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 private theorem ofE_mul_local_orbit_counts {K : Type} [Field K] (Δ τ : K) (z w : Etau K τ) :
     ofE Δ (z * w) = ofE Δ z * ofE Δ w := by
-  ext <;> simp [ofE.eq_1] <;> ring
+  ext <;> simp [ofE.eq_1]
 
 private theorem ofE_one' {K : Type} [Field K] (Δ τ : K) : ofE Δ (1 : Etau K τ) = 1 := by
   ext <;> simp [ofE.eq_1]

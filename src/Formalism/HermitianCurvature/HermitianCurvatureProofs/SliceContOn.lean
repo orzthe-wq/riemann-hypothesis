@@ -63,24 +63,20 @@ variable {k r : ℕ}
 theorem detM_zero (Z : G.Mat 0) : G.detM Z = 1 := by
   unfold G.detM; exact Matrix.det_isEmpty
 
-theorem hMat_det_ne (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (hd : ∀ i, d i ≠ 0) : (U.hMat σ d).det ≠ 0 := by
-  rw [U.hMat, Matrix.det_mul, Matrix.det_diagonal]
-  exact mul_ne_zero (Dx2.SL.isUnit_wP σ).ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => hd i)
-
 theorem zjH_det (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (η : U.XiH r 0 σ) :
     (U.ZjH σ d η (fun a => a.elim0)).det = (U.hMat σ d).det := by
   rw [Formalism.FourierDecayAlt.P.level_determinant_z r 0 σ d η (fun a => a.elim0), detM_zero, mul_one]
 
 theorem rn_mem_GV (x : U.RC k r 0) : U.Rn k r 0 x ∈ B.GV k (r + 0) := by
-  have h := (Formalism.FourierDecayAlt.P.radical_parametrisation k r 0).2.1
+  have h := (_root_.Formalism.FourierDecayAlt.P.Ux2.radicalParam k r 0).2.1
   have : U.Rn k r 0 x ∈ U.Rset k r 0 := by rw [← h]; exact ⟨x, rfl⟩
   exact this.1
 
 theorem gaXi_mem_GV (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (hd : ∀ i, d i ≠ 0) (ξ : U.Xi k r 0 0 σ)
     (γ : B.Mat k 0) (hγ : γ ∈ B.GV k 0) : U.gaXi k 0 σ d ξ (fun a => a.elim0) γ ∈ B.GV k r := by
   have hG := Formalism.FourierDecayAlt.P.unitary_group_closed k (r + 0)
-  have hm := (Formalism.FourierDecayAlt.P.slice_membership k r 0).1 (U.ZjH σ d ξ.2 (fun a => a.elim0)) γ
-    (by rw [zjH_det]; exact hMat_det_ne σ d hd) hγ
+  have hm := (_root_.Formalism.FourierDecayAlt.P.Ux2.sliceMem k r 0).1 (U.ZjH σ d ξ.2 (fun a => a.elim0)) γ
+    (by rw [zjH_det]; exact _root_.Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd) hγ
   unfold U.gaXi
   exact hG.mul_mem _ (hG.mul_mem _ (hG.inv_mem _ (rn_mem_GV _)) _ hm) _ (rn_mem_GV _)
 
@@ -101,7 +97,7 @@ theorem slice_dom (k r : ℕ) (hr : 1 ≤ r) (σ : Equiv.Perm (Fin r)) (d : Fin 
   obtain ⟨C1, hC1⟩ := Formalism.FourierDecayAlt.P.block3_apply_embedding k r 0 hr
   obtain ⟨C2, hC2⟩ := Formalism.FourierDecayAlt.P.aux_statement_17 r 0 σ d hd
   set δ := ‖(U.hMat σ d).det‖ with hδ
-  have hδ0 : 0 < δ := norm_pos_iff.2 (hMat_det_ne σ d hd)
+  have hδ0 : 0 < δ := norm_pos_iff.2 (_root_.Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd)
   set R0 := max R 0
   set C1' := max C1 0
   set C2' := max C2 0
@@ -145,7 +141,7 @@ theorem slice_dom (k r : ℕ) (hr : 1 ≤ r) (σ : Equiv.Perm (Fin r)) (d : Fin 
       have hgR := hFs g hgG hF
       have hgn : 0 ≤ B.gN g := Real.sqrt_nonneg _
       have hgR0 : B.gN g ≤ R0 := hgR.trans (le_max_left _ _)
-      have hdet : (U.ZjH σ d ξ.2 (fun a => a.elim0)).det ≠ 0 := by rw [zjH_det]; exact hMat_det_ne σ d hd
+      have hdet : (U.ZjH σ d ξ.2 (fun a => a.elim0)).det ≠ 0 := by rw [zjH_det]; exact _root_.Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd
       obtain ⟨h1, h2, h3, -, -⟩ := hC1 ξ.1.1 ξ.1.2 (U.ZjH σ d ξ.2 (fun a => a.elim0)) γ hdet hγ
       have hdetn : ‖(U.ZjH σ d ξ.2 (fun a => a.elim0)).det‖ = δ := by rw [zjH_det]
       rw [hdetn] at h1 h2
@@ -211,7 +207,7 @@ theorem headH_cont (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) :
 theorem gaXi_cont (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (hd : ∀ i, d i ≠ 0) :
     Continuous (fun p : U.Xi k r 0 0 σ × B.Mat k 0 => U.gaXi k 0 σ d p.1 (fun a => a.elim0) p.2) := by
   set c := (U.hMat σ d).det with hc
-  have hc0 : star c ≠ 0 := star_ne_zero.2 (hMat_det_ne σ d hd)
+  have hc0 : star c ≠ 0 := star_ne_zero.2 (_root_.Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd)
   have hinv : ∀ η : U.XiH r 0 σ, (U.headH σ d η.2.1 η.2.2)ᴴ⁻¹ = (star c)⁻¹ • (U.headH σ d η.2.1 η.2.2)ᴴ.adjugate := by
     intro η
     rw [Formalism.FourierDecayAlt.P.B2x2.inv_eq, Matrix.det_conjTranspose, headH_det]

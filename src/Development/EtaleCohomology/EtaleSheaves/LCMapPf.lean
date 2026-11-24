@@ -74,7 +74,6 @@ theorem twNat : TwNat := by
   first
   | (erw [Submodule.mapQ_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]; done)
   | (erw [Submodule.mapQ_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]; rfl)
-  | exact congrArg (Submodule.Quotient.mk (p := twRel q i _)) (Finsupp.mapDomain_single (f := Prim.map g.appTop.hom) (a := ζ) (b := (1 : ULift (ZMod q))))
 
 theorem nsmul_val {q : ℕ} [NeZero q] (i : ℤ) (U : Scheme.{0}) (x : Sec (tw q i) U) (c : ZMod q) :
     c.val • x = (ULift.up c : ULift (ZMod q)) • x := by
@@ -175,8 +174,6 @@ theorem fibS_mem (B : Type) [CommRing B] {Y : Type} (φ : LocallyConstant (Prime
   have hv := v.2
   first
   | exact hv
-  | (simp only [Scheme.Cover.mkOfCovers_f, Scheme.Opens.ι_apply]; exact hv)
-  | (simp [O, Scheme.Cover.mkOfCovers_f] at hv ⊢; exact hv)
 
 theorem isSheafT {R : Type} [CommRing R] (F : Shv R) :
     Presieve.IsSheaf Scheme.etaleTopology (F.obj ⋙ forget (ModuleCat.{1} (ULift.{1} R))) :=

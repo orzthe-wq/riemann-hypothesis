@@ -64,7 +64,7 @@ theorem star_eq_inv_of_pow_eq_one {w : ℂ} {n : ℕ} (hn : n ≠ 0) (hw : w ^ n
   have h1 : ‖w‖ = 1 := Complex.norm_eq_one_of_pow_eq_one hw hn
   have h2 : Complex.normSq w = 1 := by
     rw [Complex.normSq_eq_norm_sq, h1]; norm_num
-  rw [Complex.inv_def, h2]; simp [Complex.star_def]
+  rw [Complex.inv_def, h2]; simp
 
 theorem geom_sum_root_of_unity {w : ℂ} {n : ℕ} (hw : w ^ n = 1) :
     ∑ a ∈ Finset.range n, w ^ a = if w = 1 then (n : ℂ) else 0 := by

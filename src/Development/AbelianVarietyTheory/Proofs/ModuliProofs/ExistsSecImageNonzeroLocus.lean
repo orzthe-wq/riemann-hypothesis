@@ -119,12 +119,12 @@ theorem finFree_revChar_of_isPushout {φ : A →+* B} {α : A →+* A'} {β : B 
   algebraize [φ, α, β, φ', φ'.comp α]
   have : IsScalarTower A B B' := IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom H.w).symm
   have P : Algebra.IsPushout A B A' B' := CommRingCat.isPushout_iff_isPushout.1 H
-  haveI : Module.Finite A B := h.1
-  haveI : Module.Free A B := h.2
+  have : Module.Finite A B := h.1
+  have : Module.Free A B := h.2
   have hb : IsBaseChange A' (IsScalarTower.toAlgHom A B B').toLinearMap := P.symm.out
   refine ⟨⟨Module.Finite.equiv hb.equiv, hb.free⟩, fun h' b => ?_⟩
-  haveI : Module.Finite A' B' := h'.1
-  haveI : Module.Free A' B' := h'.2
+  have : Module.Finite A' B' := h'.1
+  have : Module.Free A' B' := h'.2
   have e : (Algebra.lmul A' B' (β b)).charpoly = (Algebra.lmul A B b).charpoly.map α := by
     rw [show α = algebraMap A A' from rfl, ← LinearMap.charpoly_baseChange, ← hb.equiv.charpoly_conj]
     congr 1
@@ -155,7 +155,7 @@ theorem exists_finFree_away [IsNoetherianRing A] {φ : A →+* B} (hf : φ.Finit
   have P : Algebra.IsPushout A B A' B' := CommRingCat.isPushout_iff_isPushout.1 H
   have hb : IsBaseChange A' (IsScalarTower.toAlgHom A B B').toLinearMap := P.symm.out
   refine ⟨Module.Finite.equiv hb.equiv, ?_⟩
-  letI : Algebra (Localization.Away r) A' := (IsLocalization.Away.lift r (g := α) hu).toAlgebra
+  let : Algebra (Localization.Away r) A' := (IsLocalization.Away.lift r (g := α) hu).toAlgebra
   have : IsScalarTower A (Localization.Away r) A' :=
     IsScalarTower.of_algebraMap_eq fun x => (IsLocalization.Away.lift_eq r hu x).symm
   have h₁ : Module.Free (Localization.Away r) (TensorProduct A (Localization.Away r) B) :=

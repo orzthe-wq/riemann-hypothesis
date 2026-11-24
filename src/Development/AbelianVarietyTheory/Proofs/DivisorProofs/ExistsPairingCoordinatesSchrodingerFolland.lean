@@ -67,7 +67,7 @@ theorem pair_expand {n : ℕ} (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n)) {P : 
   conv_lhs => rw [hy]
 
   rw [map_sum]
-  simp [leftForm, hP.smulL]
+  simp [leftForm]
 
 def pairCoordsL {n : ℕ} (C : V ≃L[ℝ] EuclideanSpace ℝ (Fin n)) {P : V → V → ℝ} (hP : IsPairing P) :
     V × V →ₗ[ℝ] (Fin n ⊕ Fin n → ℝ) where

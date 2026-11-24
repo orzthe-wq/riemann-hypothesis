@@ -1,11 +1,12 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.IsFibreChartIff
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorPropertiesStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticOrbitOffBoundaryStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicLiftRealisationStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealisationBijectiveDegreeOneStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartFirstStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.ElementaryFactorProperties
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAnalyticOrbitOffBoundary
+public import Development.AutomorphicSpectrum.Definitions.MetricPeriods.MetricsProjectionFormulaNef
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.LocalHolomorphicLiftRealisation
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.RealisationBijectiveDegreeOne
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.TwoPointFibreChartFirst
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -59,9 +60,9 @@ theorem fibre_member_potential : ∀ (K : Type) [Fintype K] (ι : K → Type) [�
     have hc : Continuous (fun u : Fin (d + 1) → ℂ => (Fin.tail u : Fin d → ℂ)) :=
       continuous_pi fun i => continuous_apply _
     exact hUn.preimage hc
-  obtain ⟨zex, hzan, hzex⟩ := GlobalTheory.T.two_point_fibre_chart_first K ι Φ y Ψ N j M n d BM FA τ a ca cb X q Un Gn ΦYn ΦWn l H bp hUn hF
-  have hbij := GlobalTheory.T.realisation_bijective_degree_one K ι (d + 1) (Option (Ψ × Fin N)) FA.S (mCoordIdeal y) FA.Re FA.deg_one FA.br_empty
-  obtain ⟨Hh, hHh, hev⟩ := GlobalTheory.T.local_holomorphic_lift_realisation K ι (d + 1) (Option (Ψ × Fin N)) FA.S (mCoordIdeal y) FA.Re (some p) (d + 1)
+  obtain ⟨zex, hzan, hzex⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.exact_points_holomorphic K ι Φ y Ψ N j M n d BM FA τ a ca cb X q Un Gn ΦYn ΦWn l H bp hUn hF
+  have hbij := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.realis_bijective_of_degree_one K ι (d + 1) (Option (Ψ × Fin N)) FA.S (mCoordIdeal y) FA.Re FA.deg_one FA.br_empty
+  obtain ⟨Hh, hHh, hev⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.ref_pot_along_exact_family K ι (d + 1) (Option (Ψ × Fin N)) FA.S (mCoordIdeal y) FA.Re (some p) (d + 1)
     {u : Fin (d + 1) → ℂ | Fin.tail u ∈ Un} ΦYn zex z FA.J_top FA.deg_one FA.br_empty hV hz hzan
     (fun u hu => (hzex u hu).1) (fun u hu x₀ hx => ((hzex u hu).2 x₀ hx).1)
   refine ⟨Hh, hHh, ?_⟩
@@ -69,7 +70,7 @@ theorem fibre_member_potential : ∀ (K : Type) [Fintype K] (ι : K → Type) [�
   obtain ⟨x₀, hx₀⟩ := hbij.2 (ΦYn z')
   obtain ⟨h2, h3, h4⟩ := (hzex z' hz').2 x₀ hx₀
   obtain ⟨hbO, hH⟩ := hF.2.2.2.1 _ hz'
-  obtain ⟨hsb, hsd, -, -⟩ := GlobalTheory.T.elementary_factor_properties N j a b ca cb (z' 0) M.j_le hb hab hca hcb
+  obtain ⟨hsb, hsd, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.Shear.shear_main N j a b ca cb (z' 0) M.j_le hb hab hca hcb
   have hflag : IsBlockDiag j (flagAt H τ ca cb (z' 0) (Fin.tail z') p.1) ∧
       (flagAt H τ ca cb (z' 0) (Fin.tail z') p.1).det ≠ 0 := by
     unfold flagAt
@@ -79,7 +80,7 @@ theorem fibre_member_potential : ∀ (K : Type) [Fintype K] (ι : K → Type) [�
       rw [Matrix.det_mul, hsd, mul_one]
       exact (hH p.1).2
     · exact hH p.1
-  have hline := GlobalTheory.T.flag_analytic_orbit_off_boundary K ι Φ y Ψ N j M n d BM FA l x₀ (zex z') (bp (Fin.tail z')) p
+  have hline := _root_.GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.log_fsHerm_add_ph_eq_potAt K ι Φ y Ψ N j M n d BM FA l x₀ (zex z') (bp (Fin.tail z')) p
     (flagAt H τ ca cb (z' 0) (Fin.tail z') p.1) hbO h2 h3 (h4 p.1 p.2) hflag.1 hflag.2
   have hphi : ((FA.S.comap some).potH p).φ (ΦYn z) (ΦYn z') =
       (FA.S.th (some p)).φ (ΦYn z) (ΦYn z') + FA.S.ph (some p) (ΦYn z') := rfl

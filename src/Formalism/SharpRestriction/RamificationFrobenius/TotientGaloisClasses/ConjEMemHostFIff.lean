@@ -245,13 +245,10 @@ theorem galE_bE (σ : H.E ≃ₐ[ℚ] H.E) : σ H.sqd = ((((H.galE σ).1.2 : ℤ
 
 theorem sqd_ne_zero : H.sqd ≠ 0 := by
   intro h
-  have h1 := H.sqd_sq
-  rw [h] at h1
-  have hd : H.d = 0 := by simpa using h1.symm
-  exact H.hyp.2.1.ne_zero hd
+  have hd : (H.d : H.E) = 0 := by simpa [h] using H.sqd_sq.symm
+  exact H.hyp.2.1.ne_zero (Nat.cast_eq_zero.mp hd)
 
 theorem galE_mem_Psi_iff (σ : H.E ≃ₐ[ℚ] H.E) : H.galE σ ∈ φ.Psi ↔ σ H.sqd = H.sqd := by
-  have hs := H.sqd_ne_zero
   rw [H.galE_bE σ]
   change (H.galE σ).1.2 = 1 ↔ _
   rcases Int.units_eq_one_or (H.galE σ).1.2 with h | h <;> rw [h]
@@ -261,10 +258,9 @@ theorem galE_mem_Psi_iff (σ : H.E ≃ₐ[ℚ] H.E) : H.galE σ ∈ φ.Psi ↔ �
       exact absurd h2 (by decide)
     · intro h2
       exfalso
-      apply hs
-      have h4 : ((((-1 : ℤˣ) : ℤ) : H.E)) = -1 := by simp
-      rw [h4] at h2
-      have h3 : (2 : H.E) * H.sqd = 0 := by linear_combination -h2
+      apply H.sqd_ne_zero
+      have h2' : - H.sqd = H.sqd := by simpa using h2
+      have h3 : (2 : H.E) * H.sqd = 0 := by linear_combination -h2'
       exact (mul_eq_zero.1 h3).resolve_left two_ne_zero
 
 end HostAx

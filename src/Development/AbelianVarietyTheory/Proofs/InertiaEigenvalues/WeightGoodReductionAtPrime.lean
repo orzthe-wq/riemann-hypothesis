@@ -1,37 +1,37 @@
 module
 
+public import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc
+public import Mathlib.Algebra.Module.Torsion.Basic
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Mathlib.RingTheory.OrderOfVanishing.Basic
 public import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardCocyclesMulInvariantsDiscrete
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfLocallyConstant
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGenerator
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLengthEqAndCardEqPowOfIsFiniteLength
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMemGKChiPowNeOne
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNeZeroSmulMemOfSpanEqTop
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTopologicalClosureZpowersSupInertia
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnramifiedCharacter
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteQuotientPow
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IotaTmulOneMem
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDRAndDdRLeFilZeroOfTwist
-import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOpenOfFgOfSpanEqTop
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthTorsionByQuotientDivisibleLe
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormSubLtOneOfFix
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
-import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.OrderOfVanishing.Basic
 import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
@@ -40,7 +40,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -53,9 +52,206 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Mathlib.Data.Nat.Choose.Multinomial
+import Mathlib.RingTheory.KrullDimension.PID
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis
+import Formalism.SharpRestriction.LevelLetterCocycles.LocCoh
+import Formalism.WeaklyAdmissibleFiltrations.Statement
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGenerator
+import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOpenOfFgOfSpanEqTop
+import Mathlib.FieldTheory.Galois.Profinite
+import Mathlib.Tactic.Linter.HaveILetI
+import Mathlib.Tactic.ReduceModChar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNeZeroSmulMemOfSpanEqTop, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthTorsionByQuotientDivisibleLe, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightGoodReductionAtPrime
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNeZeroSmulMemOfSpanEqTop =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNeZeroSmulMemOfSpanEqTop", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.QuotientLatticeTorsion
+
+theorem exists_ne_zero_smul_mem_of_span_eq_top
+    {O K V : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
+    [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
+    (N : Submodule O V) (hN : Submodule.span K (N : Set V) = ⊤) (v : V) :
+    ∃ b : O, b ≠ 0 ∧ b • v ∈ N := by
+  have hv : v ∈ Submodule.span K (N : Set V) := hN ▸ Submodule.mem_top
+  induction hv using Submodule.span_induction with
+  | mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩
+  | zero => exact ⟨1, one_ne_zero, by simp⟩
+  | add x y _ _ hx hy =>
+    obtain ⟨a, ha, hax⟩ := hx
+    obtain ⟨b, hb, hby⟩ := hy
+    refine ⟨a * b, mul_ne_zero ha hb, ?_⟩
+    rw [smul_add]
+    refine N.add_mem ?_ ?_
+    · rw [mul_comm, mul_smul]
+      exact N.smul_mem b hax
+    · rw [mul_smul]
+      exact N.smul_mem a hby
+  | smul c x _ hx =>
+    obtain ⟨a, ha, hax⟩ := hx
+    obtain ⟨⟨r, s⟩, hrs⟩ := IsLocalization.surj (nonZeroDivisors O) c
+    refine ⟨s.1 * a, mul_ne_zero (nonZeroDivisors.ne_zero s.2) ha, ?_⟩
+    have key : (s.1 * a) • c • x = r • a • x := by
+      rw [← algebraMap_smul K (s.1 * a), ← algebraMap_smul K r, ← algebraMap_smul K a x,
+        smul_smul, smul_smul, ← hrs, map_mul]
+      congr 1
+      ring
+    rw [key]
+    exact N.smul_mem r hax
+
+theorem quotient_lattice_torsion
+    {G : Type} [Group G] [TopologicalSpace G] {Qp : Type} [Field Qp] {LL : Type} [Field LL]
+    [Algebra Qp LL] [TopologicalSpace LL] {O : Type} [CommRing O] [Algebra O LL] [IsDomain O]
+    [IsFractionRing O LL] (T : Formalism.BasicNotions.LocLat G Qp LL O)
+    (w : Formalism.BasicNotions.LocLat.V T ⧸ Formalism.WeaklyAdmissibleFiltrations.Lattice.T (Formalism.BasicNotions.LocLat.L T)) :
+    ∃ (b : O), b ≠ (0 : O) ∧
+      b • w = (0 : Formalism.BasicNotions.LocLat.V T ⧸ Formalism.WeaklyAdmissibleFiltrations.Lattice.T (Formalism.BasicNotions.LocLat.L T)) := by
+  obtain ⟨v, rfl⟩ := Submodule.Quotient.mk_surjective _ w
+  obtain ⟨b, hb, hbv⟩ :=
+    exists_ne_zero_smul_mem_of_span_eq_top (K := LL) T.L.T T.L.span v
+  refine ⟨b, hb, ?_⟩
+  rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
+  exact hbv
+
+end GlobalTheory.QuotientLatticeTorsion
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNeZeroSmulMemOfSpanEqTop =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthTorsionByQuotientDivisibleLe =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthTorsionByQuotientDivisibleLe", "h": "module\n\npublic import Mathlib.Algebra.Module.Torsion.Basic\npublic import Mathlib.RingTheory.DiscreteValuationRing.Basic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.KrullDimension.PID\npublic import Mathlib.RingTheory.OrderOfVanishing.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\nimport Development.AbelianVarietyTheory.Definitions.Foundations.HTBasis\nimport Formalism.SharpRestriction.LevelLetterCocycles.DataNLoc\nimport Formalism.SharpRestriction.LevelLetterCocycles.LocCoh\nimport Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation\nimport Formalism.WeaklyAdmissibleFiltrations.Statement\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc TensorProduct
+
+namespace GlobalTheory
+
+theorem length_torsionBy_quotient_divisible_le (O : Type) [CommRing O] [IsDomain O]
+    [IsDiscreteValuationRing O] (Z Q : Type) [AddCommGroup Z] [Module O Z] [AddCommGroup Q]
+    [Module O Q] (π : Z →ₗ[O] Q) (hs : Function.Surjective π)
+    (hdiv : ∀ b : O, b ≠ 0 → ∀ x, π x = 0 → ∃ y, π y = 0 ∧ b • y = x)
+    (htor : ∃ x, x ≠ 0 ∧ π x = 0 ∧ ∃ b : O, b ≠ 0 ∧ b • x = 0) (a : O) (ha : a ≠ 0) (k : ℕ)
+    (hle : Module.length O ↥(Submodule.torsionBy O Z a) ≤
+      ((k + 1 : ℕ) : ℕ∞) * Module.length O (O ⧸ Ideal.span {a})) :
+    Module.length O ↥(Submodule.torsionBy O Q a) ≤
+      (k : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) := by
+  classical
+
+  have hLfin : Module.length O (O ⧸ Ideal.span {a}) ≠ ⊤ := by
+    rw [Module.length_ne_top_iff]
+    exact isFiniteLength_quotient_span_singleton O (mem_nonZeroDivisors_of_ne_zero ha)
+
+  let φ : Submodule.torsionBy O Z a →ₗ[O] Submodule.torsionBy O Q a :=
+    LinearMap.codRestrict (Submodule.torsionBy O Q a) (π ∘ₗ (Submodule.torsionBy O Z a).subtype)
+      (fun z => by
+        rw [Submodule.mem_torsionBy_iff, LinearMap.comp_apply, Submodule.subtype_apply,
+          ← map_smul, (Submodule.mem_torsionBy_iff _ _).mp z.2, map_zero])
+
+  have hφ : Function.Surjective φ := by
+    rintro ⟨q, hq⟩
+    obtain ⟨z, rfl⟩ := hs q
+    have h1 : π (a • z) = 0 := by
+      rw [map_smul]; exact (Submodule.mem_torsionBy_iff _ _).mp hq
+    obtain ⟨y, hy0, hy⟩ := hdiv a ha (a • z) h1
+    refine ⟨⟨z - y, ?_⟩, ?_⟩
+    · rw [Submodule.mem_torsionBy_iff, smul_sub, hy, sub_self]
+    · apply Subtype.ext
+      simp [φ, hy0]
+  have hexact := Module.length_eq_add_of_exact (LinearMap.ker φ).subtype φ
+    (Submodule.subtype_injective _) hφ (LinearMap.exact_subtype_ker_map φ)
+
+  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
+  obtain ⟨x, hx0, hxK, b, hb0, hbx⟩ := htor
+  obtain ⟨m, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ
+  have hxm : ϖ ^ m • x = 0 := by
+    rw [mul_smul, ← Units.smul_def, smul_eq_zero_iff_eq] at hbx
+    exact hbx
+  have hex : ∃ j, ϖ ^ j • x = 0 := ⟨m, hxm⟩
+  have hj : ϖ ^ Nat.find hex • x = 0 := Nat.find_spec hex
+  have hj0 : Nat.find hex ≠ 0 := by
+    intro h
+    rw [h, pow_zero, one_smul] at hj
+    exact hx0 hj
+  obtain ⟨i, hi⟩ := Nat.exists_eq_succ_of_ne_zero hj0
+  have he0 : ϖ ^ i • x ≠ 0 := Nat.find_min hex (by omega)
+  have hϖe : ϖ • (ϖ ^ i • x) = 0 := by
+    rw [hi] at hj
+    rw [smul_smul, ← pow_succ']; exact hj
+  have heK : π (ϖ ^ i • x) = 0 := by rw [map_smul, hxK, smul_zero]
+  have hunit_e : ∀ w : O, IsUnit w → w • (ϖ ^ i • x) ≠ 0 := by
+    intro w hw h
+    exact he0 ((hw.smul_eq_zero).mp h)
+  obtain ⟨n, v, hav⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ
+  have hadvd : ∀ c : O, a ∣ c ↔ ϖ ^ n ∣ c := by
+    intro c; rw [hav, Units.mul_left_dvd]
+  obtain ⟨y₀, hy₀K, hy₀⟩ : ∃ y₀ : Z, π y₀ = 0 ∧ ∀ c : O, c • y₀ = 0 ↔ a ∣ c := by
+    cases n with
+    | zero =>
+      refine ⟨0, map_zero π, fun c => ?_⟩
+      rw [hadvd, pow_zero]
+      simp
+    | succ n' =>
+      obtain ⟨y, hyK, hy⟩ := hdiv (ϖ ^ n') (pow_ne_zero _ hϖ.ne_zero) _ heK
+      refine ⟨y, hyK, fun c => ?_⟩
+      rw [hadvd]
+      constructor
+      · intro hc
+        by_cases hc0 : c = 0
+        · rw [hc0]; exact dvd_zero _
+        obtain ⟨r, w, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc0 hϖ
+        by_cases hr : n' + 1 ≤ r
+        · exact Dvd.dvd.mul_left (pow_dvd_pow ϖ hr) _
+        · exfalso
+          obtain ⟨d, hd⟩ : ∃ d, n' = r + d := ⟨n' - r, by omega⟩
+          apply hunit_e (w : O) w.isUnit
+          have hmul : (w : O) * ϖ ^ n' = ϖ ^ d * ((w : O) * ϖ ^ r) := by rw [hd, pow_add]; ring
+          rw [← hy, smul_smul, hmul, mul_smul, hc, smul_zero]
+      · rintro ⟨d, rfl⟩
+        have hmul : ϖ ^ (n' + 1) * d = d * ϖ * ϖ ^ n' := by ring
+        rw [hmul, mul_smul, hy, mul_smul, hϖe, smul_zero]
+  have hy₀T : y₀ ∈ Submodule.torsionBy O Z a :=
+    (Submodule.mem_torsionBy_iff _ _).mpr ((hy₀ a).mpr dvd_rfl)
+  have hy₀ker : (⟨y₀, hy₀T⟩ : Submodule.torsionBy O Z a) ∈ LinearMap.ker φ := by
+    rw [LinearMap.mem_ker]
+    apply Subtype.ext
+    simp [φ, hy₀K]
+  let f : O →ₗ[O] LinearMap.ker φ := LinearMap.toSpanSingleton O _ ⟨⟨y₀, hy₀T⟩, hy₀ker⟩
+  have hker : Ideal.span {a} = LinearMap.ker f := by
+    ext c
+    rw [LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, Ideal.mem_span_singleton, ← hy₀ c]
+    simp [Subtype.ext_iff]
+  have hK : Module.length O (O ⧸ Ideal.span {a}) ≤ Module.length O (LinearMap.ker φ) := by
+    calc Module.length O (O ⧸ Ideal.span {a})
+        = Module.length O (O ⧸ LinearMap.ker f) :=
+          (Submodule.quotEquivOfEq _ _ hker).length_eq
+      _ = Module.length O (LinearMap.range f) := f.quotKerEquivRange.length_eq
+      _ ≤ Module.length O (LinearMap.ker φ) :=
+          Module.length_le_of_injective (LinearMap.range f).subtype (Submodule.subtype_injective _)
+  have h2 : Module.length O ↥(Submodule.torsionBy O Q a) + Module.length O (O ⧸ Ideal.span {a}) ≤
+      (k : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) + Module.length O (O ⧸ Ideal.span {a}) := by
+    calc _ ≤ Module.length O ↥(Submodule.torsionBy O Q a) + Module.length O (LinearMap.ker φ) := by
+            gcongr
+      _ = Module.length O ↥(Submodule.torsionBy O Z a) := by rw [hexact, add_comm]
+      _ ≤ _ := hle
+      _ = _ := by push_cast; ring
+  exact (ENat.add_le_add_iff_right hLfin).mp h2
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthTorsionByQuotientDivisibleLe =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightGoodReductionAtPrime =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightGoodReductionAtPrime", "h": "module\n\npublic import Formalism.SharpRestriction.LevelLetterCocycles.LocalSituation\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CardCocyclesMulInvariantsDiscrete\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EqZeroOfLocallyConstant\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsGenerator\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsLengthEqAndCardEqPowOfIsFiniteLength\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsMemGKChiPowNeOne\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsNeZeroSmulMemOfSpanEqTop\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsTopologicalClosureZpowersSupInertia\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsUnramifiedCharacter\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FiniteQuotientPow\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IotaTmulOneMem\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsDRAndDdRLeFilZeroOfTwist\nimport Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsOpenOfFgOfSpanEqTop\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthTorsionByQuotientDivisibleLe\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NormSubLtOneOfFix\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.FieldTheory.Galois.Profinite\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.OrderOfVanishing.Basic\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.HaveILetI\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -145,21 +341,10 @@ theorem HfD_div [IsDomain O] [IsFractionRing O LL] (T : LocLat G Qp LL O) {b : O
     ← smul_add, ← algebraMap_smul LL b, smul_smul, mul_inv_cancel₀ hb', one_smul]
 
 omit [TopologicalSpace Qp] in
-theorem quot_torsion [IsDomain O] [IsFractionRing O LL] (T : LocLat G Qp LL O)
-    (w : T.V ⧸ T.L.T) : ∃ b : O, b ≠ 0 ∧ b • w = 0 := by
-  first
-  | exact @_root_.GlobalTheory.QuotientLatticeTorsion.quotient_lattice_torsion
-  | exact _root_.GlobalTheory.QuotientLatticeTorsion.quotient_lattice_torsion
-  | (apply _root_.GlobalTheory.QuotientLatticeTorsion.quotient_lattice_torsion <;> assumption)
-  | (intros; apply _root_.GlobalTheory.QuotientLatticeTorsion.quotient_lattice_torsion <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.QuotientLatticeTorsion.quotient_lattice_torsion <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.QuotientLatticeTorsion.quotient_lattice_torsion ..)
-
-omit [TopologicalSpace Qp] in
 theorem Z1D_torsion [CompactSpace G] [IsDomain O] [IsFractionRing O LL] (T : LocLat G Qp LL O)
     {c : G → T.V ⧸ T.L.T} (hc : c ∈ divisibleCocycles T.L) : ∃ b : O, b ≠ 0 ∧ b • c = 0 := by
   classical
-  choose b hb hw using quot_torsion T
+  choose b hb hw using _root_.GlobalTheory.QuotientLatticeTorsion.quotient_lattice_torsion T
   have hfin := hc.1.range_finite
   refine ⟨∏ w ∈ hfin.toFinset, b w, Finset.prod_ne_zero_iff.2 fun w _ => hb w, ?_⟩
   funext g
@@ -418,3 +603,7 @@ theorem twist_torsion_facts : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.l
     exact hg1
 
 end GlobalTheory.TwistTors
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WeightGoodReductionAtPrime =====

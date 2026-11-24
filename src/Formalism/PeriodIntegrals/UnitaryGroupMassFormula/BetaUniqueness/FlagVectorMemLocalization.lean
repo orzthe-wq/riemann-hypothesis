@@ -639,8 +639,7 @@ theorem cong {g r : ℕ} {T T' : E} {F : LFlag S r T} {F' F'' : LFlag S r T'}
     · exact hs h
     · exact ht h
   · have key : (s * t) • (β₁.symm (β₂ y) - y) = β₁.symm (s • (β₂ x - β₁ x)) := by
-      simp only [x, smulO, map_smul, map_sub, LinearEquiv.symm_apply_apply, smul_sub, map_mul,
-        mul_smul]
+      simp only [x, smulO, map_smul, map_sub, LinearEquiv.symm_apply_apply, smul_sub, mul_smul]
     rw [key, ← hz, map_add (f := _), smulO, map_smul, ← smulO]
     refine Submodule.add_mem _ (Submodule.mem_sup_left (g_mem_gΛ (Λ := Λ) g
       (symm_mem hP1.1 hl₁))) (Submodule.mem_sup_right ⟨symm_mem hP1.1 hz₂.1, ?_⟩)

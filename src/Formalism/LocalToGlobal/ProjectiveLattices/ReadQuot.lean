@@ -66,7 +66,7 @@ theorem quotSupp_of (V : HSp D) (hV : FinVol V) (hP : ∃ p : Measure (GA D V) �
     QuotSupp V := by
   intro φ hφc hφinv hae g0
   by_contra hg0
-  haveI : Countable (GQ V) := by
+  have : Countable (GQ V) := by
     unfold GQ
     exact Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _
   have hvp : IsVolPair D V (volPair V).1 (volPair V).2 := by
@@ -75,17 +75,15 @@ theorem quotSupp_of (V : HSp D) (hV : FinVol V) (hP : ∃ p : Measure (GA D V) �
       rw [dite_eq_left hP]
     rw [e]
     exact hP.choose_spec
-  haveI : (volPair V).1.IsHaarMeasure := hvp.1.1
-  haveI : BorelSpace (GA D V) := by
+  have : (volPair V).1.IsHaarMeasure := hvp.1.1
+  have : BorelSpace (GA D V) := by
     first
-    | exact Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA
     | exact Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA _ _
-  haveI : MeasurableMul (GA D V) := by
+  have : MeasurableMul (GA D V) := by
     first
-    | exact Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA
     | exact Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA _ _
-  haveI : MeasurableConstSMul (GQ V) (GA D V) := ⟨fun c => measurable_const_mul (c : GA D V)⟩
-  haveI : SMulInvariantMeasure (GQ V) (GA D V) (volPair V).1 :=
+  have : MeasurableConstSMul (GQ V) (GA D V) := ⟨fun c => measurable_const_mul (c : GA D V)⟩
+  have : SMulInvariantMeasure (GQ V) (GA D V) (volPair V).1 :=
     ⟨fun c s _ => measure_preimage_mul (volPair V).1 (c : GA D V) s⟩
   let O : Set (GA D V) := {g | φ g ≠ 0}
   have hO : IsOpen O := isOpen_ne_fun hφc continuous_const
@@ -120,7 +118,6 @@ theorem quotSupp_of (V : HSp D) (hV : FinVol V) (hP : ∃ p : Measure (GA D V) �
   have hmeas : AEMeasurable (autMk V) ((volPair V).1.restrict (volPair V).2) := by
     have hm : Measurable (autMk V) := by
       first
-      | exact measurable_quotient_mk'
       | exact fun _ hs => hs
     exact hm.aemeasurable
   have hpre : autMk V ⁻¹' S = O := by

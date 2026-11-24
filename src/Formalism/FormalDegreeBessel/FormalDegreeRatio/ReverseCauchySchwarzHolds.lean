@@ -163,7 +163,7 @@ lemma ggHpk_mulVec_Wb (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (hv : inWb k
     · simp [hv i h]
     · push Not at h
       simp only [Hpk]
-      rw [if_neg (by omega), if_neg (by omega), if_pos (by first | exact ⟨h.1, h.2, rfl⟩ | exact ⟨h.1, h.2⟩ | simp [h.1, h.2])]
+      rw [if_neg (by omega), if_neg (by omega), if_pos (by first | simp [h.1, h.2])]
   · intro j _ hji
     by_cases h : j.val < r ∨ r + k < j.val
     · simp [hv j h]
@@ -199,7 +199,6 @@ lemma ggHerm_bvec_right {ι : Type*} [Fintype ι] [DecidableEq ι] (H : Matrix �
     by_cases h : j = i <;> simp [h]
   rw [hs]
   first
-  | simp [Matrix.single_dotProduct]
   | simp [dotProduct, Pi.single_apply]
 
 lemma ggHpk_ee (k r : ℕ) (a b : Fin r) : Hpk k r (eI k r a) (eI k r b) = 0 := by
@@ -279,7 +278,6 @@ lemma ggRe_star_mul (x : ℂ) : (star x * x).re = ‖x‖ ^ 2 := by
   first
   | (simp [Complex.mul_re]; ring)
   | simp [Complex.mul_re]
-  | (simp only [Complex.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im]; ring)
 
 theorem reverse_cauchy_schwarz_holds : RevCS := by
   intro k r z z' hz hz' h1 h2

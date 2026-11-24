@@ -354,7 +354,7 @@ theorem core_loss (ch : Choice R) {t : T} {w : PlL D} {Φ : ch.G.Datum} (hS : ch
   have := Fintype.ofFinite (ch.S.Classes t Φ β)
   rw [GridChoice.classSum, finsum_eq_sum_of_fintype]
   refine loss_sum _ _ fun c _ => loss_mul (hG β c) ?_
-  simp only [GridChoice.pairAt, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, LinearMap.compl₁₂_apply]
+  simp only [GridChoice.pairAt, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]
   refine loss_sum _ _ fun d hd => ?_
   obtain ⟨x', y', e⟩ := (hτ β hβ').coef_eq hd
   rw [e]
@@ -627,9 +627,3 @@ end
 end
 
 end DenominatorLossAdditivity
-section
-open GlobalTheory.SumSize GlobalTheory.RowClaim
-theorem _root_.GlobalTheory.Adopt.finiteSumDenominatorBound_of_factor_claims : SumOKK → DepthK → FinScalK → FinCoefK → FinDatK → FinGamK → FinTopK → FinRowK → FinPairK → FinPsiK → FinFormK → FinK := by
-  first | exact @DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors | exact DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors | (intros; apply DenominatorLossAdditivity.GlobalTheory.CompanionTheory.FinDen.fin_of_factors <;> assumption)
-
-end

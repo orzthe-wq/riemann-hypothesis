@@ -478,8 +478,8 @@ theorem aAnti_rmul (x₁ x₂ : Frame X.Ψ r) :
     fun a => conj ((mat x₂ τ)⁻¹ a c)) a).symm
   simp only [aAnti, of_apply]
   split_ifs
-  · simp only [rmul, mul_apply, mat, of_apply, Finset.sum_mul, Finset.mul_sum]
-    simp only [Matrix.mul_apply, of_apply, Finset.sum_mul, Finset.mul_sum]
+  · simp only [rmul, mat, Finset.mul_sum]
+    simp only [Matrix.mul_apply, of_apply, Finset.sum_mul]
     rw [Finset.sum_comm]
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
   · rfl

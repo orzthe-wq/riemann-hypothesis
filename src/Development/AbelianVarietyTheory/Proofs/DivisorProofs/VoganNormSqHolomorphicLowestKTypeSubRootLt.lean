@@ -61,7 +61,7 @@ open Finset Formalism.REAL
 
 theorem rhoN_add_rhoC {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     Formalism.REAL.rhoN ε a + Formalism.REAL.rhoC ε a = ((n : ℝ) - 1) / 2 - ((a : ℕ) : ℝ) := by
-  apply GlobalTheory.Jet.Schmid.rhoN_add_rhoC <;> assumption
+  apply GlobalTheory.Jet.Schmid.rhoN_add_rhoC
 
 theorem nsq_sub_root {n : ℕ} (u : Fin n → ℝ) {a b : Fin n} (hab : a ≠ b) :
     Formalism.REAL.nsq (u - Formalism.REAL.root a b) = Formalism.REAL.nsq u - 2 * (u a - u b) + 2 := by

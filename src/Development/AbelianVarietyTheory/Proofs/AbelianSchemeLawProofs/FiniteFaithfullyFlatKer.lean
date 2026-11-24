@@ -228,7 +228,7 @@ theorem sum_lam (e : ι → Λ) (c : ι → Λ →ₗ[R] R)
         (hit (c k) ∘ₗ LinearMap.mulLeft R x) ∘ₗ
           LinearMap.mulLeft R (HopfAlgebra.antipode R (e k)) := by
       ext y
-      simp [mul_left_comm, mul_assoc]
+      simp [mul_left_comm]
     rw [lam_apply, this, tr_comm e c h]
     simp [tr]
   have h2 : ∀ y : Λ, ∑ k, HopfAlgebra.antipode R (e k) * hit (c k) y =

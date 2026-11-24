@@ -123,7 +123,7 @@ theorem exists_flag_dual_of_frame (y : (Σ k, ι k) → Ω) (B : ChartBundle F (
     apply hm
     rcases hjm.lt_or_eq with h | h
     · have hne : j ≠ m := fun h' => (ne_of_lt h) (congrArg Fin.val h')
-      simp [heT j m h, Finsupp.single_apply, hne]
+      simp [heT j m h, hne]
     · have : m = j := Fin.ext h.symm
       subst this
       simp [heD]
@@ -233,14 +233,14 @@ private theorem chartMono_homog_aux (M : ℕ) (c : ∀ k, ι k) (α : K → ℕ)
   have hw : liftNat α = ∑ k, α k • blockWeight (bundleIdx ι M) ⟨some k, c k⟩ := by
     funext o
     cases o with
-    | none => simp [liftNat, blockWeight, Finset.sum_apply, Pi.single_apply]
+    | none => simp [liftNat, blockWeight, Finset.sum_apply]
     | some k => simp [liftNat, blockWeight, Finset.sum_apply, Pi.single_apply]
   rw [IsMultiHomog, chartMono, hw]
   exact h
 
 theorem chartMono_homog (M : ℕ) (c : ∀ k, ι k) (α : K → ℕ) :
     IsMultiHomog (chartMono (F := F) M c α) (liftNat α) := by
-  apply chartMono_homog_aux <;> assumption
+  apply chartMono_homog_aux
 
 omit [∀ k, Fintype (ι k)] in
 private theorem eval_chartMono_aux (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E) (φ : Fin M → Module.Dual Ω E)
@@ -253,7 +253,7 @@ theorem eval_chartMono (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (t : Fin N → Φ) (c : ∀ k, ι k) (α : K → ℕ) :
     eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ t) (chartMono M c α) =
       algebraMap Ω Φ (∏ k, y ⟨k, c k⟩ ^ α k) := by
-  apply eval_chartMono_aux <;> assumption
+  apply eval_chartMono_aux
 
 omit [∀ k, Fintype (ι k)] in
 theorem chartRing_forms_of_mem (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)

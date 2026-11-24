@@ -74,26 +74,6 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {V : Ty
   {d n m : ℕ} {x x' : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G}
   {y : (jOG (𝟙 (Sp V)) d m n).left} {J : ((jOG (𝟙 (Sp V)) d m n).left ⟶ t.G.left) → t.PP.L.ι}
 
-theorem frame_value_first_partial_law (hJ : Good t.PP.L y J) {G : FGLaw V d} {ph1 : PS V 3 d} {e : ∀ m, FrTyG t (𝟙 (Sp V)) d x m}
-    (hf : FamPh1 t (𝟙 (Sp V)) d x G.F ph1 e) (u v w : Q V d n) :
-    VV m y (E3 ph1 u v w) = (cubV t.cub y J (PP m x u) (PP m x v) (PP m x w) *
-      (ee x e y J (op (FQ G) u v) w)⁻¹ * ee x e y J u w * ee x e y J v w).val := by
-  obtain ⟨U, hU, h⟩ := hf m
-  have hc := gm_unit (y := y) U ![u, v, w]
-  have e₀ := val_peG x hJ e ![u, v, w] ![fun j => psIn d m ![0, 1] (G.F j), fun j => MvPolynomial.X ((2 : Fin 3), j)]
-    (op (FQ G) (gen 0) (gen 1)) (gen 2)
-    (by rintro ⟨l, j⟩; fin_cases l; exacts [hF 0 1 j, hX 2 j])
-    (by rintro ⟨l, j⟩; fin_cases l; exacts [(cc_psIn d m _ _).trans (G.const j), MvPolynomial.constantCoeff_X _ _])
-  rw [sq_op, sq_gen, sq_gen, sq_gen] at e₀
-  have k := (val_th hJ ![u, v, w] 0 1 2).symm.trans ((val_corr hJ h _).trans ((val_scale hJ _ _ _).trans
-    (congrArg₂ (· * ·) rfl ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) e₀ ((val_mul hJ _ _ _).trans
-      (congrArg₂ (· * ·) ((val_inv _ _).trans (congrArg (·⁻¹) (peXX hJ _ 0 2)))
-        ((val_inv _ _).trans (congrArg (·⁻¹) (peXX hJ _ 1 2))))))))))
-  refine (hc _ hU).symm.trans (congrArg Units.val (Additive.ofMul.injective ?_))
-  have k' := congrArg Additive.ofMul k
-  simp only [ofMul_mul, ofMul_inv, Matrix.cons_val] at k' ⊢
-  linear_combination (norm := abel) -k'
-
 theorem PP_coord (φ : Q V d 1) (h : CoordRel x x' φ.1) (u : Q V d n) : PP m x' u = PP m x (ac φ u) := by
   have e := h m
   rw [subst_eq m _ ![φ] (fun s => by obtain ⟨j, s⟩ := s; fin_cases j; rfl)
@@ -137,10 +117,8 @@ theorem frame_ratio_first_partial_law_alt : ∀ (E : Type) [Field E] [NumberFiel
   let φi' : Q V d 1 := ⟨φi, hi.2.1⟩
   have key : psJet m (E3 B'.ph1 (gen 0 : Q V d 3) (gen 1) (gen 2) * E2 ε (op (FQ B'.G) (gen 0) (gen 1)) (gen 2)) =
       psJet m (E3 B.ph1 (ac φ' (gen 0 : Q V d 3)) (ac φ' (gen 1)) (ac φ' (gen 2)) *
-        (E2 ε (gen 0) (gen 2) * E2 ε (gen 1) (gen 2))) := cst_ext fun y => by
-    choose J hJ using fun ψ : (jOG (𝟙 (Sp V)) d m 3).left ⟶ t.G.left => exists_chart t.PP.isLB (ψ y)
-    replace hJ : Good t.PP.L (Z := (jOG (𝟙 (Sp V)) d m 3).left) y J := hJ
-    show VV (x0 := 𝟙 (Sp V)) m y _ = VV (x0 := 𝟙 (Sp V)) m y _
+        (E2 ε (gen 0) (gen 2) * E2 ε (gen 1) (gen 2))) := by
+    refine psJet_eq_of_VV (x0 := 𝟙 (Sp V)) t.PP.isLB fun y J hJ => ?_
     simp only [VV_mul, frame_value_first_partial_law hJ h1, frame_value_first_partial_law hJ h1', ee_rel hJ φ' hr, ← Units.val_mul, PP_coord φ' hco,
       ac_op_trans φ' φi' hi.2.2.1 hl]
     refine congrArg Units.val (Additive.ofMul.injective ?_)

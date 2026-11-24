@@ -43,6 +43,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SharpRestriction.Divisibility.LocalNonemptiness.LiftErrorLocal
 
 @[expose] public section
 
@@ -92,67 +93,6 @@ theorem gapZ_ofGaps {p : ℕ} (g : Fin p → ℕ) (i : Fin p) : WeightAlgebra.ga
     ring
   · rw [ofGaps_last g i h]
 
-private lemma sigPar_succ_add_one_le_sigPar (D : D7) (τ : D.what₂.Tau) (i : ℕ) (hi : i + 1 < D.R.k - 1 + D.R.m) :
-    DV.sigPar D τ (i + 1) + 1 ≤ DV.sigPar D τ i := by
-  have hk : D.R.m + 3 ≤ D.R.k := D.R.m_add_three_le_k
-  unfold DV.sigPar
-  by_cases h1 : i + 1 < D.R.k - 1
-  · have h0 : i < D.R.k - 1 := by omega
-    rw [dite_eq_left h1, dite_eq_left h0]
-    have a1 : (D.hc τ).v ⟨i + 1, h1⟩ < (D.hc τ).u ⟨i + 1, by omega⟩ := (D.hc τ).u_gt_v ⟨i + 1, h1⟩
-    have a2 : (D.hc τ).u ⟨i + 1, by omega⟩ < (D.hc τ).v ⟨i, h0⟩ := (D.hc τ).v_gt_u ⟨i, h0⟩
-    have a3 : (D.hc τ).v ⟨i + 1, h1⟩ < (D.hc τ).v ⟨i, h0⟩ := lt_trans a1 a2
-    obtain ⟨x, hx⟩ := (D.hc τ).v_int ⟨i + 1, h1⟩
-    obtain ⟨y, hy⟩ := (D.hc τ).v_int ⟨i, h0⟩
-    rw [hx, hy] at a3 ⊢
-    have a4 : x < y := by exact_mod_cast a3
-    have a5 : x + 1 ≤ y := by omega
-    exact_mod_cast a5
-  · rw [dite_eq_right h1]
-    by_cases h0 : i < D.R.k - 1
-    · rw [dite_eq_left h0]
-      have hm : 0 < D.R.m := by omega
-      have hb : i + 1 - (D.R.k - 1) < D.R.m := by omega
-      rw [dite_eq_left hb]
-      have e1 : (⟨i + 1 - (D.R.k - 1), hb⟩ : Fin D.R.m) = ⟨0, hm⟩ :=
-        Fin.ext (by show i + 1 - (D.R.k - 1) = 0; omega)
-      have e2 : (⟨i + 1, by omega⟩ : Fin D.R.k) = ⟨D.R.k - 1, by omega⟩ :=
-        Fin.ext (by show i + 1 = D.R.k - 1; omega)
-      have a2 : (D.hc τ).u ⟨i + 1, by omega⟩ < (D.hc τ).v ⟨i, h0⟩ := (D.hc τ).v_gt_u ⟨i, h0⟩
-      have a3 : -(D.hc τ).b ⟨0, hm⟩ < (D.hc τ).u ⟨D.R.k - 1, by omega⟩ :=
-        (D.hc τ).u_last_gt (by omega) hm
-      rw [e2] at a2
-      have key : -(D.hc τ).b ⟨0, hm⟩ < (D.hc τ).v ⟨i, h0⟩ := lt_trans a3 a2
-      rw [e1]
-      obtain ⟨y, hy⟩ := (D.hc τ).v_int ⟨i, h0⟩
-      obtain ⟨z, hz⟩ := (D.hc τ).b_int ⟨0, hm⟩
-      rw [hy, hz] at key ⊢
-      have a4 : -z < y := by exact_mod_cast key
-      have a5 : -z + 1 ≤ y := by omega
-      exact_mod_cast a5
-    · rw [dite_eq_right h0]
-      have hb1 : i + 1 - (D.R.k - 1) < D.R.m := by omega
-      have hb2 : i - (D.R.k - 1) < D.R.m := by omega
-      have hl : i - (D.R.k - 1) + 1 < D.R.m := by omega
-      rw [dite_eq_left hb1, dite_eq_left hb2]
-      have g1 := (D.hc τ).gap_be ⟨i - (D.R.k - 1), hb2⟩
-      have g2 : ((D.R.t : ℚ) + 3) / 2 ≤
-          (D.hc τ).b ⟨i + 1 - (D.R.k - 1), hb1⟩ - (D.hc τ).e ⟨i - (D.R.k - 1), hb2⟩ := by
-        have g3 := (D.hc τ).gap_eb ⟨i - (D.R.k - 1), hb2⟩ hl
-        have e3 : (⟨i + 1 - (D.R.k - 1), hb1⟩ : Fin D.R.m) = ⟨i - (D.R.k - 1) + 1, hl⟩ :=
-          Fin.ext (by show i + 1 - (D.R.k - 1) = i - (D.R.k - 1) + 1; omega)
-        rw [e3]
-        exact g3
-      have ht : (0 : ℚ) ≤ D.R.t := Nat.cast_nonneg _
-      linarith
-
-private lemma aPlusQ_succ_le_aPlusQ (D : D7) (j : ℕ) (τ : D.what₂.Tau) (i : ℕ)
-    (hi : i + 1 < D.R.k - 1 + D.R.m) : DV.aPlusQ D j τ (i + 1) ≤ DV.aPlusQ D j τ i := by
-  have h := sigPar_succ_add_one_le_sigPar D τ i hi
-  unfold DV.aPlusQ
-  push_cast
-  linarith
-
 theorem kaBig_anti (D : D7) (hK : DV.KapDef D) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau) :
     Antitone (D.what₂.kaBig j τ) := by
   have hk : D.R.m + 3 ≤ D.R.k := D.R.m_add_three_le_k
@@ -165,7 +105,7 @@ theorem kaBig_anti (D : D7) (hK : DV.KapDef D) {j : ℕ} (h1 : 1 ≤ j) (h2 : j 
     | zero => intro a _; simp
     | succ d ih =>
       intro a ha
-      have h3 := aPlusQ_succ_le_aPlusQ D j τ (a + d) (by omega)
+      have h3 := _root_.Formalism.MainNotions.DIV.Inh.aPlusQ_step D j τ (a + d) (by omega)
       have h4 := ih a (by omega)
       rw [← add_assoc]
       linarith
@@ -303,14 +243,6 @@ theorem even_nV {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : Par
   show D.R.r + D.R.t = _
   rw [h1, h2, hc]
   ring
-
-theorem even_nW {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even T.nWn := by
-  obtain ⟨c, hc⟩ := T.nW_dvd
-  exact ⟨4 * c, by omega⟩
-
-theorem even_nP {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even T.nP := by
-  rw [T.nP_eq]
-  exact ⟨4 * D.R.f * D.R.r + 2, by ring⟩
 
 def kaWt (D : D7) (hK : DV.KapDef D) (hn : Even D.R.nV) (j : ℕ) : WeightFamilies.Wt D j :=
   if h : 1 ≤ j ∧ j ≤ D.R.m then

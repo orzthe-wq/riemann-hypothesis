@@ -72,10 +72,8 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
 
 theorem rorth_apply_mem_genSub (a b : Fin n) {y : M} (hy : y ∈ genSub E V) :
     E a b y ∈ genSub E V := by
-  unfold genSub at hy ⊢
-  rw [Submodule.mem_sInf] at hy ⊢
-  intro T hT
-  exact hT.2 a b y (hy T hT)
+  rw [genSub, Submodule.mem_sInf] at hy ⊢
+  exact fun T hT => hT.2 a b y (hy T hT)
 
 theorem rorth_le_genSub : V ≤ genSub E V := by
   unfold genSub
@@ -92,16 +90,15 @@ private theorem rorth_functional_eq_zero_of_highest_weight_mem (hE : IsGlRep E) 
   rw [genSub_eq_iSup_layer hE hV.2.1,
     Submodule.mem_iSup_of_directed _ (Monotone.directed_le fun _ _ h => layer_mono h)] at hy
   obtain ⟨k, hk⟩ := hy
-  set W := layer ε E V k with hW
+  set W := layer ε E V k
   have : FiniteDimensional ℂ W := finiteDimensional_layer hV.1 k
   have : CompleteSpace W := FiniteDimensional.complete ℂ W
   have hWK : IsKStableSub ε E W := layer_kStable hE hV.2.1 k
   obtain ⟨u, hu⟩ : ∃ u : W, ∀ w : W, inner ℂ (u : M) (w : M) = f w := by
     refine ⟨(InnerProductSpace.toDual ℂ W).symm
       (LinearMap.toContinuousLinearMap (f.comp W.subtype)), fun w => ?_⟩
-    have := InnerProductSpace.toDual_symm_apply (𝕜 := ℂ) (x := w)
+    exact InnerProductSpace.toDual_symm_apply (𝕜 := ℂ) (x := w)
       (y := LinearMap.toContinuousLinearMap (f.comp W.subtype))
-    exact this
   have hsg : ∀ a b, ε a = ε b → adjSign ε a b = 1 := fun a b h => by simp [adjSign, h]
   have hkhw : IsKHWVec ε E (lowK ε lam) (u : M) := by
     refine ⟨fun a => ?_, fun a b hab h => ?_⟩
@@ -168,9 +165,7 @@ theorem rorth_mem_UJset {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (
 
 theorem rorth_inK_of_skew {ε : Fin n → Bool} {Z : Matrix (Fin n) (Fin n) ℂ} (h1 : Zᴴ = -Z)
     (h2 : Z * Jm ε = Jm ε * Z) : inK ε Z := by
-  refine ⟨?_, h2⟩
-  unfold inG
-  rw [h1, Matrix.neg_mul, h2, neg_add_cancel]
+  exact ⟨by unfold inG; rw [h1, Matrix.neg_mul, h2, neg_add_cancel], h2⟩
 
 theorem rorth_inK_smul {ε : Fin n → Bool} {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z) (t : ℝ) :
     inK ε ((t : ℂ) • Z) := by
@@ -183,8 +178,7 @@ theorem rorth_inK_smul {ε : Fin n → Bool} {Z : Matrix (Fin n) (Fin n) ℂ} (h
 theorem rorth_single_comm {ε : Fin n → Bool} {a b : Fin n} (h : ε a = ε b) :
     Matrix.single a b (1 : ℂ) * Jm ε = Jm ε * Matrix.single a b (1 : ℂ) := by
   ext i j
-  unfold Jm
-  rw [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.single_apply]
+  simp only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.single_apply]
   by_cases hij : a = i ∧ b = j
   · obtain ⟨rfl, rfl⟩ := hij
     simp [h]
@@ -240,14 +234,12 @@ theorem rorth_inner_actM (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ 
     funext t
     have hk := exp_mem_Kset (rorth_inK_smul hZ t)
     obtain ⟨w, hw, hwe⟩ := hVK _ hk v v.2
-    have h4 := hj _ hk v ⟨w, hw⟩ hwe
     simp only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars']
-    rw [← hwe, hφ ⟨w, hw⟩, h4, rorth_inner_map hσ (rorth_mem_UJset hk)]
+    rw [← hwe, hφ ⟨w, hw⟩, hj _ hk v ⟨w, hw⟩ hwe,
+      rorth_inner_map hσ (rorth_mem_UJset hk)]
   rw [hconst] at h3
-  have h5 := h3.unique (hasDerivAt_const (0 : ℝ) _)
-  simp only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars', exp_zero_smul, hσ.1.1,
-    one_apply_eq_self, hφ] at h5
-  exact h5
+  simpa only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars', exp_zero_smul, hσ.1.1,
+    one_apply_eq_self, hφ] using h3.unique (hasDerivAt_const (0 : ℝ) _)
 
 theorem rorth_inner_E (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) (j : V →ₗ[ℂ] H)

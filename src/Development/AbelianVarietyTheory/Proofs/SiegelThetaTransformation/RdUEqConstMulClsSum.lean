@@ -6,24 +6,25 @@ public import Development.AbelianVarietyTheory.BlockTheory.ExistenceTori.DeltaDa
 public import Development.AbelianVarietyTheory.Definitions.SpanningFamilies.IsBaseClassLevelAdapted
 public import Formalism.LocalToGlobal.ProjectiveLattices.ThClass
 public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.FramedPointsLiftToLevelCover
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitive
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.AnalyticFibreUnitFrameUniformisation
-public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ClassSumEvalComplexPointEqClassicalStatement
+public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ClassSumEvalComplexPointEqClassical
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ConstOfNormFactorUnitFr
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsLiftMarked
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ExistsSymplOfSelfDual
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FgOfSmulLe
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FramedPointGeneratorIsThetaLevelOne
-import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.InjectiveOfKerCountable
 public import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ProdLevelOneThetaEqVacuumTheta
+public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.GeometricLiftsOfFrames
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsLevMoveOfFrOver
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.LevelMapFibreSimplyTransitive
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.FgOfSmulLe
+import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.HMatMulVecPerCrd
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.RationalSchwartzBruhatAlgebraIntegralLinear
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.TensorLatticeVacuaExistUnique
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.ThetaSeriesTestFunctionHolomorphicWeight
 import Development.AbelianVarietyTheory.Proofs.SiegelThetaTransformation.UniformisationComponentLatticesMarkings
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.AllUniformizationLawsHold
 import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FrMoveTransfer
-public import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.GeometricLiftsOfFrames
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -63,7 +64,6 @@ import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.SabComp
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.PullbackSections.HolomorphicFamilies.CmHostUnitAddConjEqOne
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.ExistsLevMoveOfFrOver
 
 @[expose] public section
 
@@ -261,8 +261,7 @@ theorem exists_const (X : Data E r) (la : Wt X.Ψ r) (ρ : ℝ) (hρ : 0 < ρ)
   rw [(h3 x hx b hb).2, mul_eq_zero, or_iff_right (bchar_ne_zero_of_mem_bor la hb)] at h6
   rw [h5 x hx, h6, mul_zero, mul_zero]
 
-theorem isSB_smul_tf (a : ℂ) {φ : TF n g} (h : IsSB φ) : IsSB (a • φ) :=
-  (isSB_algebra_haar_linear ℚ _ _ φ φ h h).2.1 a
+alias isSB_smul_tf := _root_.GlobalTheory.Dict.ShortVal.isSB_smul
 
 theorem isSB_gphi {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
     (hs : IsSympl X bas) (hn : Even n) {w : E} (hw : IsIntegral ℤ w) (hw' : w + cc w = 1) {L : Lt E r}
@@ -341,7 +340,7 @@ theorem GlobalTheory.ClsVal.rdU_eq_const_mul_clsSum : Formalism.MainNotions.Modu
           rw [← h1, halg]
           exact hσ
         exact Reach.exists_lift_of_reached d halg hσ₂ hlev hA1 hA2 hr1 A Dc.sympl hx hL hmk hA hmk₂ hover x₀.2 A₀ h₀ hA₀
-    have hval := GlobalTheory.T.classSum_eval_complex_point_eq_classical hCI E H Dw l Xo c n d halg hnab r _ _ Dc.bas Dc.idx W.e x _ _ y₂ A₂ hy₂ Dc.sympl hx hL
+    have hval := _root_.GlobalTheory.ClsVal.evR_eq_clsSum hCI E H Dw l Xo c n d halg hnab r _ _ Dc.bas Dc.idx W.e x _ _ y₂ A₂ hy₂ Dc.sympl hx hL
       _ Dc.hr Dc.eL hU.1 hn (hDe ▸ Dc.dir_eq) θ v _ (hrd θ hθ) hv hprod mk₂ hmk₂ hA₂ Cl w La Nc gam vol ep Vs io xs a
       hlat hP Y hY f hcls
     have hrd' : Formalism.L2.PjFree.rdU U f k x = evR Xo c f (unC U k ⟨x, hx⟩) := dif_pos hx

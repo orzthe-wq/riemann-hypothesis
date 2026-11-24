@@ -1,10 +1,11 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.SimpleTwistedTraceFormulaStable
+public import Mathlib.FieldTheory.Separable
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommuteOfCommuteSeparableCharpoly
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompactSetTwistedCentralizerElliptic
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularOrbitConjCompactModCentralizerUnitary
 import Development.AbelianVarietyTheory.Definitions.Divisors.T2SpaceGeneralLinearGroup
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommuteOfCommuteSeparableCharpolyStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsCompactSetTwistedCentralizerEllipticStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularOrbitConjCompactModCentralizerUnitaryStatement
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RelIndexNeZeroOfSubsetCpt
 import GroundTheory.GlobalFields.LocalFieldAtPlace
 import Mathlib.Algebra.Order.Floor.Extended
@@ -53,7 +54,7 @@ namespace GlobalTheory.LocFinU
 
 theorem bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E) (y : UL n w), y.1.val.charpoly.Separable → ∃ Ω : Set (UL n w), IsCompact Ω ∧ (cptPart (twCent (MonoidHom.id (UL n w)) y) : Set (UL n w)) ⊆ Ω := by
   intro E _ _ _ hE n w y hy
-  obtain ⟨Ω, hΩ, hsub⟩ := GlobalTheory.T.exists_compact_set_twisted_centralizer_elliptic E hE n w y hy
+  obtain ⟨Ω, hΩ, hsub⟩ := _root_.GlobalTheory.CentCpt.main E hE n w y hy
   refine ⟨Ω, hΩ, fun t ht => ?_⟩
   have hc : ∀ a ∈ twCent (MonoidHom.id (UL n w)) y, ∀ b ∈ twCent (MonoidHom.id (UL n w)) y, a * b = b * a := by
     intro a ha b hb
@@ -69,7 +70,7 @@ theorem bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E �
         have h0 : b * y = y * b := hb
         have := congrArg (fun g : UL n w => g.1.val) h0
         simpa only [Subgroup.coe_mul, Units.val_mul] using this
-    have := GlobalTheory.T.commute_of_commute_of_charpoly_separable' _ n _ _ _ hy ha' hb'
+    have := _root_.GlobalTheory.commute_of_commute_separable_charpoly _ n _ _ _ hy ha' hb'
     exact Subtype.ext (Units.ext this)
   have := cptPart_subset_of_comm _ hc ht
   exact hsub t this.1 this.2
@@ -112,7 +113,7 @@ theorem locFin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E �
     unfold Subgroup.relIndex at h ⊢
     rwa [e]
   · intro C hC
-    obtain ⟨Ω', hΩ', horb⟩ := GlobalTheory.T.regular_orbit_conj_compact_mod_centralizer_unitary E hE n w y hy C hC
+    obtain ⟨Ω', hΩ', horb⟩ := _root_.GlobalTheory.OrbitU.orbit_cpt_U E hE n w y hy C hC
     obtain ⟨s, hs⟩ := hΩ'.elim_finite_subcover (fun g : Ω' => (g : UL n w) • (K' : Set (UL n w)))
       (fun g => hK'o.smul _) (fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, ⟨1, K'.one_mem, mul_one x⟩⟩)
     refine (s.finite_toSet.image

@@ -1,45 +1,129 @@
 module
 
+public import Formalism.LocalToGlobal.Divisibility.RecBridge
+public import Formalism.LocalToGlobal.Divisibility.DivisibilityConstruction.ShiftOfColTie
+public import Formalism.LocalToGlobal.Divisibility.RecBridgeNum
+public import Formalism.LocalToGlobal.Divisibility.SmallTies
 public import Formalism.LocalToGlobal.Divisibility.RecBridgeTied
-public import Formalism.LocalToGlobal.Divisibility.RecBridgeMkF
 public import Formalism.LocalToGlobal.Columns.RowFormsSym
 public import Formalism.LocalToGlobal.Divisibility.HeckeCSDICommTrRep
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.Divisibility.DivisibilityConstruction.RBNum, Formalism.LocalToGlobal.Divisibility.RecBridgeMkF, Formalism.LocalToGlobal.Divisibility.RecBridgeSel
+
+-- ===== clump member: Formalism.LocalToGlobal.Divisibility.DivisibilityConstruction.RBNum =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.Divisibility.DivisibilityConstruction.RBNum", "h": "module\n\npublic import Formalism.LocalToGlobal.Divisibility.RecBridge\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open Formalism.BasicNotions
+
+noncomputable section
+
+namespace Formalism.L2.DIV.Cons
+
+open Formalism.L2.DIV
+
+variable {D : D7}
+
+theorem rdTie (L : SizeData₂ D) (Del h0 : ℕ) : (ofRecord D L Del h0).rd = D.host.rdE := ofRecord_rd D L Del h0
+
+theorem mainTie (L : SizeData₂ D) (Del h0 : ℕ) (u : D.what₂.Word) :
+    (ofRecord D L Del h0).mainT (D.mem u).A.T = L.MAIN u := by
+  simp only [NumDatum.mainT, SizeData₂.MAIN]
+  rw [← Finset.sum_coe_sort D.host.TT]
+  refine Finset.sum_congr rfl fun t _ => ?_
+  rw [ofRecord_aT, ofRecord_logOm]
+  first
+  | rfl
+
+theorem numRecTie_record (L : SizeData₂ D) (Del h0 : ℕ) (u : D.what₂.Word) :
+    NumRecTie (ofRecord D L Del h0) L u ((D.mem u).A.T) L.Nc :=
+  numRecTie_ofRecord L Del h0 u (rdTie L Del h0) (mainTie L Del h0 u)
+
+end Formalism.L2.DIV.Cons
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.Divisibility.DivisibilityConstruction.RBNum =====
+
+-- ===== clump member: Formalism.LocalToGlobal.Divisibility.RecBridgeMkF =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.Divisibility.RecBridgeMkF", "h": "module\n\npublic import Formalism.LocalToGlobal.Divisibility.DivisibilityConstruction.ShiftOfColTie\npublic import Formalism.LocalToGlobal.Divisibility.RecBridgeNum\npublic import Formalism.LocalToGlobal.Divisibility.SmallTies\npublic import Formalism.LocalToGlobal.Divisibility.DivisibilityConstruction.RBNum\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+open NumberField IsDedekindDomain
+
+noncomputable section
+
+namespace Formalism.L2.DIV
+
+open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.L2.Indef
+
+def DivisionPackageFace.ofOpen {D : D7} {L : SizeData₂ D} (Rw : DivisionRowsFace L) (C Cabs : ℝ)
+    (Cp CHp : ℝ) (cf : ConvFace Rw.Bs) (Pk : IndefPkgR Rw.Am Rw.fc cf Cp CHp) (hZs : Pk.Zs = Rw.Zs)
+    (hRows : HEq Pk.core.base.toIndefRows Rw.what₂)
+    (wU : D.what₂.Word → (Rw.fc Pk.Zs).Dc.Mem)
+    (eNu : ∀ u, (Fin ((Rw.fc Pk.Zs).Dc.a (wU u)) → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V)
+    (eRR : (Fin Pk.core.cols.D → D.what₂.LL) ≃ₗ[D.what₂.LL] D.div.RR.V)
+    (NuC : ∀ w, Submodule (𝓞 D.what₂.LL) (Fin ((Rw.fc Pk.Zs).Dc.a w) → D.what₂.LL))
+    (hNu : ∀ u, HLatTie (D.div.Nu u) (NuC (wU u)) ((Rw.fc Pk.Zs).Dc.Xc (wU u)) (eNu u))
+    (hRR : HLatTie D.div.RR Pk.core.cols.RR Pk.core.cols.XE eRR)
+    (hBk : ∀ u x y, D.div.Bk u (eNu u x) (eRR y) = Pk.core.cols.col.B (wU u) x y)
+    (tup : Rw.Bs.Tup → D.what₂.Tup) (eV : ∀ t, (Fin ((Rw.fc Pk.Zs).Df1.nV t) → D.what₂.LL) → D.what₂.Amb (tup t))
+    (brTied : (Formalism.L2.G.ServJointF.ColBrF.mk Rw.Bs (Rw.fc Pk.Zs).Df1 (Rw.fc Pk.Zs).Dc wU (fun u x => eNu u x) tup eV
+      Pk.core.cols.μ).Tied)
+    (Del h0 : ℕ) (lam0 C0 ce Ch Sw C1 : ℝ) (eJ : Rw.Bs.J ≃ Fin D.R.m)
+    (H : ∀ u, (ofRecord D L Del h0).NumFacts (letterOf D L Del h0 u) L.Nc lam0 C0 ce Ch Sw C1)
+    (inp : ∀ u, DivInputs0R Pk.core
+      (RecNums.ofNum (ofRecord D L Del h0) eJ (letterOf D L Del h0 u) ((D.mem u).A.T) L.Nc lam0 C0 ce Ch Sw C1 (H u))
+      (wU u) (Cons.nuOf L u (eNu u)) (sgRec L u))
+    (hN : NprimeDef D L) (Z : DivX D) (hk : ∀ σ, Z.kapR σ = Pk.core.cols.κ (InfinitePlace.mk σ))
+    (tH : ∀ u, NumRecTieH (ofRecord D L Del h0) L u (letterOf D L Del h0 u) ((D.mem u).A.T) Del h0)
+    (hh : ∀ u, D.div.h u = hExpl6 D L Z Ch u)
+    (hF : FTie L ((Rw.fc Pk.Zs).Z.num Cp CHp) eJ)
+    (hC0 : 0 ≤ C) (hC1 : 50 * C0 + 10 ≤ C) (hC2 : 60 * ce ≤ C) (hCabs : 1 ≤ Cabs) (hLa : 0 ≤ L.La) :
+    DivisionPackageFace Rw C Cabs where
+  Cp := Cp
+  CHp := CHp
+  cf := cf
+  Pk := Pk
+  hZs := hZs
+  hRows := hRows
+  wU := wU
+  eNu := eNu
+  eRR := eRR
+  NuC := NuC
+  hNu := hNu
+  hRR := hRR
+  hBk := hBk
+  tup := tup
+  eV := eV
+  brTied := brTied
+  Pl := RPl (ofRecord D L Del h0).R
+  R u := RecNums.ofNum (ofRecord D L Del h0) eJ (letterOf D L Del h0 u) ((D.mem u).A.T) L.Nc lam0 C0 ce Ch Sw C1 (H u)
+  Nu u := Cons.nuOf L u (eNu u)
+  inp := inp
+  shift u := Cons.shift_nuOf L hN u (eNu u) (NuC (wU u)) (hNu u).lat
+  hTie u := hTie_of L Z Ch u Pk.core.cols.κ _ hk
+    (hnum_of_numRecTieH (ofRecord D L Del h0) eJ (letterOf D L Del h0 u) ((D.mem u).A.T) L.Nc lam0 C0 ce Ch Sw C1 (H u) L u Del h0
+      (tH u)) (hh u)
+  foTie := two_FoOfR_eq_Fo L Pk.core eJ hF
+  rhs u := rhs_le_record (ofRecord D L Del h0) eJ (letterOf D L Del h0 u) ((D.mem u).A.T) L.Nc lam0 C0 ce Ch Sw C1 (H u) L u
+    (Cons.numRecTie_record L Del h0 u) C Cabs hC0 hC1 hC2 hCabs hLa
+
+end Formalism.L2.DIV
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.Divisibility.RecBridgeMkF =====
+
+-- ===== clump member: Formalism.LocalToGlobal.Divisibility.RecBridgeSel =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.Divisibility.RecBridgeSel", "h": "module\n\npublic import Formalism.LocalToGlobal.Divisibility.RecBridgeTied\npublic import Formalism.LocalToGlobal.Divisibility.RecBridgeMkF\npublic import Formalism.LocalToGlobal.Columns.RowFormsSym\npublic import Formalism.LocalToGlobal.Divisibility.HeckeCSDICommTrRep\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 open Module NumberField IsDedekindDomain
@@ -186,3 +270,6 @@ end RowsK
 end Formalism.L2.DIV
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.Divisibility.RecBridgeSel =====

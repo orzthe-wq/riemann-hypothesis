@@ -71,7 +71,7 @@ theorem isPullback_equalizer_diagonal {X S T : Scheme.{u}} (f : X ⟶ S) {a b : 
       (pullback.lift a b hab) := by
   refine ⟨⟨?_⟩, ⟨PullbackCone.IsLimit.mk _ (fun s ↦ equalizer.lift s.snd ?_) ?_ ?_ ?_⟩⟩
   · apply pullback.hom_ext
-    · simp [pullback.lift_fst]
+    · simp
     · simpa [pullback.lift_snd] using equalizer.condition a b
   · have h1 := s.condition =≫ pullback.fst _ _
     have h2 := s.condition =≫ pullback.snd _ _

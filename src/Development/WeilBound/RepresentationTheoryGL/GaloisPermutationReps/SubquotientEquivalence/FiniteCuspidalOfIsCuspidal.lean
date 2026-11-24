@@ -3,8 +3,9 @@ module
 public import Development.WeilBound.RepresentationTheoryGL.GaloisPermutationReps.SubquotientEquivalence.IsTypeMap
 public import Formalism.PadicSubsetSums.CentralIdempotents.IsConstituent
 public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CentralIdempotentsSimpleFDRepFiniteFinsumEqOne
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalLabelUniqueStatement
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCuspidalWithLabelStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspidalLabelUnique
+public import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.FiniteDimensionalHcSpace
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsCuspidalWithLabel
 public import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsIrreducibleTransportRep
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -160,20 +161,20 @@ theorem st7 : St7 := by
   letI : Fintype K := Fintype.ofFinite K
   obtain ⟨C⟩ := GlobalTheory.CompanionTheory.Hypotheses₂.CuspExists.nonempty_labelConv K
   obtain ⟨P0, a0, b0, c0, d0⟩ := GlobalTheory.CompanionTheory.Hypotheses₂.CuspExists.exists_monic_irreducible K n hn
-  obtain ⟨τ0, -⟩ := GlobalTheory.T.exists_cuspidal_with_label K C n hn P0 a0 b0 c0 d0
+  obtain ⟨τ0, -⟩ := _root_.GlobalTheory.CompanionTheory.TyFin.CuspLabel.exists_cuspidal_label K C n hn P0 a0 b0 c0 d0
   have hex : ∀ P : K[X], ∃ τ : FDRep ℂ (GL (Fin n) K), P ∈ Lab K n →
       CategoryTheory.Simple τ ∧ Formalism.IrreducibleCountingLemmas.TYPES.IsCuspidal K τ ∧ Formalism.IrreducibleCountingLemmas.TYPES.HasCuspLabel C τ P := by
     intro P
     by_cases hP : P ∈ Lab K n
     · obtain ⟨p1, p2, p3, p4⟩ := hP
-      obtain ⟨τ, hs, hc, hl⟩ := GlobalTheory.T.exists_cuspidal_with_label K C n hn P p1 p2 p3 p4
+      obtain ⟨τ, hs, hc, hl⟩ := _root_.GlobalTheory.CompanionTheory.TyFin.CuspLabel.exists_cuspidal_label K C n hn P p1 p2 p3 p4
       exact ⟨τ, fun _ => ⟨hs, hc, hl⟩⟩
     · exact ⟨τ0, fun h' => absurd h' hP⟩
   choose τ hτ using hex
   refine ⟨τ, fun P hP => ⟨GlobalTheory.SerOSys.ZSum.isIrreducible_of_simple _ (hτ P hP).1,
     finite_cuspidal_of_isCuspidal _ (hτ P hP).2.1⟩, ?_⟩
   rintro P hP P' hP' ⟨e, he⟩
-  exact GlobalTheory.T.cuspidal_label_unique K C (Fin n) (τ P') P P' (hasCuspLabel_of_equiv C e he (hτ P hP).2.2)
+  exact _root_.GlobalTheory.CompanionTheory.TyFin.LabelUniq.hasCuspLabel_unique K C (Fin n) (τ P') P P' (hasCuspLabel_of_equiv C e he (hτ P hP).2.2)
     (hτ P' hP').2.2
 
 end PositivityTheory.Rg.DzCount

@@ -39,6 +39,8 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CarriesFlagsIffAdaptedFrameAtImage
 
 @[expose] public section
 
@@ -76,13 +78,6 @@ theorem exists_isTr {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsComm
   exact ⟨_, Over.homMk (spMap (algebraMap S (DualNumber S)) ≫ g) (Category.assoc _ _ _),
     Over.homMk (spMap (dualMap φ) ≫ (tv v).left) h2, rfl, rfl, rfl⟩
 
-theorem spMap_dualMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap (dualMap (g.comp f)) = spMap (dualMap g) ≫ spMap (dualMap f) := by
-  rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
-  congr 2
-  refine RingHom.ext fun a => ?_
-  ext <;> simp [dualMap]
-
 theorem ksRel_operators : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R), (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → ∀ (c : R), c = ∏ i, tt i → ∀ (n : ℕ) (v' : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G)) (dd' : Fin n → Fld t.G.left), (∀ a, IsInv t.G (v' a) (dd' a)) → ∀ (DV : Γ(Sp R, (GlobalTheory.HeatV.bo R c).1) → Γ(Sp R, (GlobalTheory.HeatV.bo R c).1)) (Θ₁ : Matrix (Fin n) (Fin n) Γ(Sp R, (GlobalTheory.HeatV.bo R c).1)), IsKS t (GlobalTheory.HeatV.bo R c).1 (GlobalTheory.HeatV.bo R c) (fun a => spMap (dualMap (GlobalTheory.HeatV.resV R c)) ≫ (tv (v' a)).left) DV Θ₁ → ∃ (J : Type) (W : J → t.G.left.Opens) (j : J → t.PP.L.ι) (d : J → Fld t.G.left) (hW : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ (GlobalTheory.HeatV.bo R c).1), ⨆ i, W i = t.G.hom ⁻¹ᵁ (GlobalTheory.HeatV.bo R c).1 ∧ (∀ i, W i ≤ t.PP.L.U (j i)) ∧ (∀ i, IsField (W i) (d i)) ∧ (∀ i O (h : O ≤ W i) (a : Γ(Sp R, (GlobalTheory.HeatV.bo R c).1)), d i O (GlobalTheory.HeatV.cst t.G.hom _ (h.trans (hW i)) a) = GlobalTheory.HeatV.cst t.G.hom _ (h.trans (hW i)) (DV a)) ∧ (∀ i i' O (h : O ≤ W i ⊓ W i') (f : Γ(t.G.left, O)), d i O f - d i' O f = ∑ a, ∑ b, GlobalTheory.HeatV.cst t.G.hom (GlobalTheory.HeatV.bo R c).1 (h.trans (inf_le_left.trans (hW i))) (Θ₁ a b) * (dd' b O (rsT (t.PP.L.g (j i) (j i')).val O) * rsT (t.PP.L.g (j i) (j i'))⁻¹.val O) * dd' a O f) := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt _ _ c _ n v' dd' hdd DV Θ₁ hKS
   obtain ⟨J, W, j, d, hcov, hWj, hfld, hlift, hdiff⟩ := hKS
@@ -106,7 +101,7 @@ theorem ksRel_operators : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     choose w hw using fun a => exists_isTr t.G _ x hφ' (v' a)
     have key := hdiff i i' O h f S φ x w hφ hx fun a => by
       obtain ⟨g', u, h₁, h₂, h₃⟩ := hw a
-      exact ⟨g', u, h₁, by rw [h₂, spMap_dualMap_comp_eq, Category.assoc], h₃⟩
+      exact ⟨g', u, h₁, by rw [h₂, _root_.GlobalTheory.ShFam.CarriesAt.spMap_dualMap_comp, Category.assoc], h₃⟩
     have hOg : O ≤ t.PP.L.U (j i) ⊓ t.PP.L.U (j i') := fun p hp => ⟨hWj i (h hp).1, hWj i' (h hp).2⟩
     have hxg : ⊤ ≤ x ⁻¹ᵁ (t.PP.L.U (j i) ⊓ t.PP.L.U (j i')) := fun p hp => hOg (hx hp)
 

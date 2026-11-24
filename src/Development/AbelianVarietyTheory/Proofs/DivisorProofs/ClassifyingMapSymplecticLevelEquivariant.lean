@@ -38,6 +38,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaAwayPowSelf
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -140,7 +141,6 @@ theorem classify_equivariant : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : T
     refine ⟨by rw [Category.assoc, hys, ← Category.assoc, hrY], by rw [Category.assoc, hys₁, hrt],
       compObj m₂ my, fun c => ?_⟩
     dsimp [compObj]
-    change _ ≫ m₂.φ ≫ my.φ = _
     rw [← Category.assoc, hpull c, Category.assoc, hmy c, Category.assoc]
   exact (hU Y.left (Y.hom ≫ t) (t₁ ≫ spMap (σ a)) o' (sympTwist a lv') (hlev a)).unique h₂ h₁
 

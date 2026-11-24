@@ -124,7 +124,6 @@ theorem grouping {A : Type*} [Ring A] [Algebra ℂ A] {t N : ℕ} (κ : Fin N �
       rw [hF C σ, mul_smul]
       first
       | rw [Int.cast_smul_eq_zsmul ℂ, zsmul_eq_mul, mul_smul_comm]
-      | simp only [Algebra.smul_def, map_intCast, ← mul_assoc, (Int.cast_commute _ _).eq]
     · simp
   simp only [hR]
   rw [← Fintype.sum_prod_type']
@@ -146,7 +145,6 @@ theorem grouping {A : Type*} [Ring A] [Algebra ℂ A] {t N : ℕ} (κ : Fin N �
     have e2 : (fun l => κ (C l)) = (fun l => κ (C' l)) := by
       first
       | exact (StrictMono.range_inj hC hC').1 e1
-      | exact (WellFounded.eq_strictMono_iff_eq_range wellFounded_lt hC hC').1 e1
     have e3 : C = C' := funext fun l => hκ (congrFun e2 l)
     subst e3
     have e4 : σ = σ' := Equiv.ext fun x => hC.injective (congrArg κ (congrFun heq' x))

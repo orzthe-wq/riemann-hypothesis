@@ -496,7 +496,7 @@ theorem gridChoice_nonempty {U : Set T} (N : Std G U) (Z : Normal W N)
         refine ⟨b + c, ?_⟩
         change (b : D.host.E) + c = _
         rw [hb, hc]
-        simp [f, map_add, add_mul, Finset.sum_add_distrib, mul_add]
+        simp [f, add_mul, Finset.sum_add_distrib, mul_add]
       smul_mem' := by
         rintro c x ⟨b, hb⟩
         refine ⟨RingOfIntegers.mapRingHom (starRingEnd D.host.E) c * b, ?_⟩
@@ -675,7 +675,7 @@ theorem count_conj_smul (J : Ideal (𝓞 D.host.E)) (hJ : J ≠ ⊥) (w : Pl D.h
 theorem count_AA_AAbar (w : Pl D.host.E) (hw : ((GlobalTheory.HalfCompare.badInt D : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal) :
     FractionalIdeal.count D.host.E w D.host.AA = 0 ∧ FractionalIdeal.count D.host.E w D.host.AAbar = 0 := by
   have hc : D.host.ccE ≠ ⊥ := GlobalTheory.HalfCompare.ccE_ne_bot D
-  have hb : D.host.𝔟 ≠ ⊥ := ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.bb_ne_bot D
+  have hb : D.host.𝔟 ≠ ⊥ := _root_.Formalism.L2.Pj.b_ne_bot D
   have hne : ∀ J : Ideal (𝓞 D.host.E), J ≠ ⊥ →
       ((D.host.conj • J : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0 := fun J hJ => by
     rw [coeIdeal_conj_smul, Ne, FractionalIdeal.coeIdeal_eq_zero,

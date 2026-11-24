@@ -9,42 +9,6 @@ import Formalism.LocalToGlobal.ProjectiveLattices.CrudeVal
 public import Formalism.LocalToGlobal.ProjectiveLattices.DepRun
 import Formalism.MirabolicMackeyTheory.MirabolicMackeyProofs.RamBasic
 import Formalism.QuotientMetricDivisors.HermitianTwistDivisors.ValBasic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
 
 @[expose] public section
 
@@ -222,10 +186,8 @@ theorem nuLevel (hpr : O.g1 = Dd.Q.g1 ∧ O.g2 = Dd.Q.g2 ∧ O.q1 = Dd.Q.q1 ∧ 
   rw [key _ ?_ j]
   · first
       | rw [Formalism.EigenvalueLevelCeiling.plc_conjPl]
-      | rw [Formalism.L2.DIV.plc_conjPl]
   · first
       | (rw [Formalism.EigenvalueLevelCeiling.plc_conjPl]; exact hw)
-      | (rw [Formalism.L2.DIV.plc_conjPl]; exact hw)
 
 theorem tieScale : TieScale S (nuT Xo c Dd ι) (nuWT Xo c Dd ι) (sWT Xo c Dd ι) := by
   unfold TieScale AtPair
@@ -255,9 +217,7 @@ theorem bar_bar (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply NumberField.RingOfIntegers.ext
   rw [H.bar_eq, H.bar_eq]
   first
-    | exact IsCMField.complexConj_apply_apply (a : E)
     | exact IsCMField.complexConj_apply_apply E (a : E)
-    | simp
 
 def Nsig (Q : DepPage) (DFL DFF : ℕ) : ℕ := Q.q ^ (Q.f * Q.r * Q.n') * Q.Z1 DFL DFF
 
@@ -269,7 +229,6 @@ theorem vw_nonneg_of_isIntegral [StarRing K] (v : HeightOneSpectrum (𝓞 K)) (x
     simp only [vw, FractionalIdeal.spanSingleton_zero]
     first
       | simp [FractionalIdeal.count_zero]
-      | simp [FractionalIdeal.count]
   · let r : 𝓞 K := ⟨x, hx⟩
     have hr : algebraMap (𝓞 K) K r = x := rfl
     have hr0 : r ≠ 0 := by
@@ -279,13 +238,11 @@ theorem vw_nonneg_of_isIntegral [StarRing K] (v : HeightOneSpectrum (𝓞 K)) (x
     unfold vw
     rw [← hr, ← FractionalIdeal.coeIdeal_span_singleton]
     apply FractionalIdeal.count_coe_nonneg
-    try simpa using hr0
 
 omit [StarRing K] [StarRing (𝓞 E)] in
 theorem isIntegral_alg (a : 𝓞 E) : IsIntegral ℤ (algebraMap (𝓞 E) K a) := by
   first
     | exact IsIntegral.algebraMap (Algebra.IsIntegral.isIntegral a)
-    | exact IsIntegral.algebraMap (NumberField.RingOfIntegers.isIntegral a)
 
 omit [StarRing K] [StarRing (𝓞 E)] in
 theorem sigAt_eq (Dw' : Datum H) (j : ℕ) :
@@ -343,25 +300,13 @@ theorem vw_N (v : HeightOneSpectrum (𝓞 K)) (N : ℕ) (hN : N ≠ 0) :
   push_cast
   rfl
 
-private theorem vw_mul_lemma (v : HeightOneSpectrum (𝓞 K)) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) :
-    vw v (a * b) = vw v a + vw v b := by
-  unfold vw
-  rw [← FractionalIdeal.spanSingleton_mul_spanSingleton]
-  have h1 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) a ≠ 0 :=
-    FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr ha
-  have h2 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) b ≠ 0 :=
-    FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr hb
-  first
-    | exact FractionalIdeal.count_mul K v h1 h2
-    | exact FractionalIdeal.count_mul h1 h2
-
 theorem vw_sig (hsp : PiSplit (H := H) Dd) (hprime : Dd.Q.g1.Prime ∧ Dd.Q.g2.Prime ∧ Dd.Q.q1.Prime ∧ Dd.Q.dd.Prime)
     (v : HeightOneSpectrum (𝓞 K)) (Dw' : Datum H) (j : ℕ) :
     (vw v (sigAt (Dw := Dw') (H := H) (LL := K) Dd j) : ℝ) = (vw v (nnKAt (H := H) (LL := K) Dd j) : ℝ) +
       (padicValNat (plc v) (Nsig Dd.Q (DF Dw' (Dd.aL j)) (DF Dw' (Dd.aF j))) : ℝ) * (ramw v : ℝ) := by
   have hn : nnKAt (H := H) (LL := K) Dd j ≠ 0 := nnK_ne_zero Dd hsp ⟨hprime.1, hprime.2.1⟩ j
   have hN : Nsig Dd.Q (DF Dw' (Dd.aL j)) (DF Dw' (Dd.aF j)) ≠ 0 := Nsig_ne_zero _ hprime _ _
-  rw [sigAt_eq, vw_mul_lemma v _ _ hn (Nat.cast_ne_zero.mpr hN), vw_N v _ hN]
+  rw [sigAt_eq, _root_.Formalism.DivisionValues.ValuationRepresentative.vw_mul v _ _ hn (Nat.cast_ne_zero.mpr hN), vw_N v _ hN]
   rw [Int.cast_add, Int.cast_mul, Int.cast_natCast]
 
 theorem sigmaLevel (hσ : ∀ v j, O.σ v j = sigAt (Dw := Dw (ι j)) (H := H) (LL := K) Dd (ι j))

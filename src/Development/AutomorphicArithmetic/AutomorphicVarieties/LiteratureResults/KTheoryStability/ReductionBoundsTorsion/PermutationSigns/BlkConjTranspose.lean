@@ -283,7 +283,7 @@ theorem lc_herm (k : K L N) (Y : HS L N) : lc k (blk fun w => mat Y w) = (coef k
 theorem mat_sum {ι : Type} (s : Finset ι) (f : ι → HS L N) (w : InfinitePlace L) :
     mat (∑ i ∈ s, f i) w = ∑ i ∈ s, mat (f i) w := by
   ext a b
-  simp [mat, Submodule.coe_sum, Finset.sum_apply, Matrix.sum_apply]
+  simp [mat, Finset.sum_apply, Matrix.sum_apply]
 
 theorem herm_decomp (Y : HS L N) : Y = ∑ k : K L N, coef k Y • MH k := by
   refine HS_ext fun w => ?_

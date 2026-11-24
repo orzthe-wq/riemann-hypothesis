@@ -80,7 +80,7 @@ def lvN (v : HeightOneSpectrum (𝓞 F)) (P : AddSubgroup (Fv F v)) (n M : ℕ) 
 
 theorem isClopen_lvN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubgroup (Fv F v)) (n M : ℕ) :
     IsClopen (lvN b v (P : AddSubgroup (Fv F v)) n M : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
-  apply _root_.GlobalTheory.CompanionTheory.PfSWUS.FockSplit.Box.isClopen_lvN <;> assumption
+  apply _root_.GlobalTheory.CompanionTheory.PfSWUS.FockSplit.Box.isClopen_lvN
 
 theorem isCompact_lvN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubgroup (Fv F v)) (hP : P ≤ intSub v) (n M : ℕ) :
     IsCompact (lvN b v (P : AddSubgroup (Fv F v)) n M : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
@@ -88,7 +88,7 @@ theorem isCompact_lvN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubgroup (Fv 
 
 theorem projV_subN (v : HeightOneSpectrum (𝓞 F)) {n M : ℕ} (X Y : Fin n → Fin M → Af F ⊗[F] E) :
     projV v (X - Y) = projV v X - projV v Y := by
-  apply _root_.GlobalTheory.CompanionTheory.PfSWUS.FockSplit.Box.projV_subN <;> assumption
+  apply _root_.GlobalTheory.CompanionTheory.PfSWUS.FockSplit.Box.projV_subN
 
 def cosVN (v : HeightOneSpectrum (𝓞 F)) (P : OpenAddSubgroup (Fv F v)) {n M : ℕ}
     (a : Fin n → Fin M → Fv F v ⊗[F] E) : Set (Fin n → Fin M → Fv F v ⊗[F] E) :=

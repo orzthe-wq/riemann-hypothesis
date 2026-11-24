@@ -106,8 +106,7 @@ theorem lowIm_keep' (LL : Letters N) (j : ℕ) (ρ : Fin r)
     rw [Submodule.mem_comap, hA c hcd.1 d hcd.2.1 z]
     exact Submodule.mem_iSup_of_mem c (Submodule.mem_iSup_of_mem d
       (Submodule.mem_iSup_of_mem hcd ⟨A z, Submodule.mem_top, rfl⟩))
-  intro x hx
-  exact key hx
+  exact fun x hx => key hx
 
 theorem hwProj_comm' (LL : Letters N) (j : ℕ) (ρ : Fin r) (la : Fin r → ℤ)
     (PE A : MvPolynomial (Fin N × Fin r) ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial (Fin N × Fin r) ℚ_[p])
@@ -138,17 +137,13 @@ theorem hwProj_comm' (LL : Letters N) (j : ℕ) (ρ : Fin r) (la : Fin r → ℤ
     simp only [Submodule.mem_iInf, LinearMap.mem_ker] at hx2 ⊢
     intro c d hcd
     rw [← hA c hcd.1 d hcd.2.1, hx2 c d hcd, map_zero]
-  have h2' : LinearMap.range PE
-      = (HWC p LL j (univ.erase ρ) la ⊓ WtSpC p LL j univ la) ⊓ WtSpC p LL j univ la := by
-    rw [h2, inf_assoc, inf_idem]
-  exact proj_comm_abs' PE A _ _ _ h1 h2' h3 hR hW (lowIm_keep' LL j ρ A hA)
+  refine proj_comm_abs' PE A _ _ _ h1 ?_ h3 hR hW (lowIm_keep' LL j ρ A hA)
+  rw [h2, inf_assoc, inf_idem]
 
 theorem resL_fix' {σ : Type} (v : σ) (x : MvPolynomial σ ℚ_[p]) (hx : x ∈ FreeOf p v) : resL p v 0 x = x := by
-  have hx' : ↑x.support ⊆ {m : σ →₀ ℕ | m v = 0} := by
-    have h' := hx
-    simp only [FreeOf, MvPolynomial.restrictSupport, AddMonoidAlgebra.supported, Finsupp.mem_supported, Submodule.mem_comap,
-      LinearEquiv.coe_coe, AddMonoidAlgebra.coeffLinearEquiv_apply] at h'
-    exact h'
+  have hx' := hx
+  simp only [FreeOf, MvPolynomial.restrictSupport, AddMonoidAlgebra.supported, Finsupp.mem_supported, Submodule.mem_comap,
+    LinearEquiv.coe_coe, AddMonoidAlgebra.coeffLinearEquiv_apply] at hx'
   change initPart v 0 x = x
   unfold initPart
   conv_rhs => rw [x.as_sum]
@@ -160,28 +155,24 @@ theorem fock_monomial_zero' {σ : Type} (g : MvPolynomial σ ℚ_[p]) (m : σ �
   classical
   unfold fock
   refine Finset.sum_eq_zero (fun n hn => ?_)
-  have hne : m ≠ n := fun h => hm (by rw [h]; exact hn)
-  rw [MvPolynomial.coeff_monomial, if_neg hne, mul_zero, zero_mul]
+  rw [MvPolynomial.coeff_monomial, if_neg (show m ≠ n from fun h => hm (by rw [h]; exact hn)), mul_zero, zero_mul]
 
 theorem fock_right_zero' {σ : Type} (g : MvPolynomial σ ℚ_[p]) : fock p g 0 = 0 := by
-  unfold fock
-  simp
+  simp [fock]
 
 theorem monomial_mem_supp' {σ : Type} (Q : Set (σ →₀ ℕ)) (m : σ →₀ ℕ) (hm : m ∈ Q) :
     monomial m (1 : ℚ_[p]) ∈ restrictSupport ℚ_[p] Q := by
   simp only [MvPolynomial.restrictSupport, AddMonoidAlgebra.supported, Finsupp.mem_supported, Submodule.mem_comap,
       LinearEquiv.coe_coe, AddMonoidAlgebra.coeffLinearEquiv_apply]
   intro n hn
-  rw [Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset (show n ∈ (monomial m (1 : ℚ_[p])).support from hn))]
-  exact hm
+  rwa [Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset (show n ∈ (monomial m (1 : ℚ_[p])).support from hn))]
 
 theorem cartan_comm_erase' (LL : Letters N) (j : ℕ) (ρ : Fin r) (a : Fin r) (ha : a ∈ univ.erase ρ) (b : Fin r)
     (hb : b ∈ univ.erase ρ) (x : MvPolynomial (Fin N × Fin r) ℚ_[p]) :
     glAct p LL j ρ ρ (glAct p LL j a b x) = glAct p LL j a b (glAct p LL j ρ ρ x) := by
   have h := glAct_comm (p := p) LL j ρ ρ a b x
-  have hda : ¬ (ρ = a) := fun h => (Finset.mem_erase.mp ha).1 h.symm
-  have hbc : ¬ (b = ρ) := (Finset.mem_erase.mp hb).1
-  rw [if_neg hda, if_neg hbc, sub_zero, sub_eq_zero] at h
+  rw [if_neg (show ¬ (ρ = a) from fun h' => (Finset.mem_erase.mp ha).1 h'.symm),
+    if_neg (show ¬ (b = ρ) from (Finset.mem_erase.mp hb).1), sub_zero, sub_eq_zero] at h
   exact h
 
 end EC

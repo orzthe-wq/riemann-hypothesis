@@ -198,7 +198,6 @@ lemma thetaSummable_coercive (G : Matrix ι ι ℚ)
   have hcont : Continuous fun v : ι → ℝ => v ⬝ᵥ (M *ᵥ v) := by
     first
     | fun_prop
-    | exact continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id)
   have hGnn : ∀ w : ι → ℚ, 0 ≤ w ⬝ᵥ (G *ᵥ w) := by
     intro w
     by_cases hw : w = 0
@@ -376,7 +375,6 @@ lemma thetaSummable_main (h : V →ₗ⋆[K] V →ₗ[K] K)
   haveI : IsAddTorsionFree L := isAddTorsionFree_ringOfIntegers_submodule L
   haveI : Module.IsTorsionFree ℤ L := by
     first
-    | infer_instance
     | (constructor
        intro r hr a b hab
        have hr0 : r ≠ 0 := hr.ne_zero

@@ -74,12 +74,12 @@ theorem UpperTheory.Gal.G3.pLiesGen :
     apply pullback.hom_ext
     · simp only [piK, bcMap, κ, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]
       exact h0
-    · simp only [piK, bcMap, κ, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]
+    · simp only [piK, bcMap, κ, Category.assoc, pullback.lift_snd]
   refine ⟨κ, hA, ?_, ?_⟩
   · apply pullback.hom_ext
     · simp only [piK, bcMap, κ, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]
       exact h1
-    · simp only [piK, bcMap, κ, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]
+    · simp only [piK, bcMap, κ, Category.assoc, pullback.lift_snd]
       exact (H.comm g).symm
   · have w1 : pullback.snd C.π s ≫ s ≫ C.p = (pullback.fst C.π s ≫ H.q) ≫ gen O k := by
       rw [← Category.assoc, ← pullback.condition, Category.assoc, C.ov, Category.assoc]
@@ -89,14 +89,13 @@ theorem UpperTheory.Gal.G3.pLiesGen :
       apply pullback.hom_ext
       · simp only [piK, bcMap, i0, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]
         exact pullback.condition
-      · simp only [piK, bcMap, i0, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]
+      · simp only [piK, bcMap, i0, Category.assoc, pullback.lift_snd]
     let i : pullback C.π s ⟶ pullback (piK C) (bcMap (gen O k) s rfl) :=
       pullback.lift (pullback.fst C.π s) i0 w2
     have c0 := pullback.condition (f := piK C) (g := bcMap (gen O k) s rfl)
     have c1 := congrArg (· ≫ pullback.fst C.p (gen O k)) c0
     have c2 := congrArg (· ≫ pullback.snd C.p (gen O k)) c0
-    simp only [piK, bcMap, Category.assoc, pullback.lift_fst, pullback.lift_snd,
-      pullback.lift_fst_assoc, pullback.lift_snd_assoc] at c1 c2
+    simp only [piK, bcMap, Category.assoc, pullback.lift_fst, pullback.lift_snd] at c1 c2
     have w3 : pullback.fst (piK C) (bcMap (gen O k) s rfl) ≫ C.π
         = (pullback.snd (piK C) (bcMap (gen O k) s rfl) ≫ pullback.fst (s ≫ C.p) (gen O k)) ≫ s := by
       rw [Category.assoc]
@@ -106,24 +105,22 @@ theorem UpperTheory.Gal.G3.pLiesGen :
     haveI : IsIso i := by
       refine ⟨⟨j, ?_, ?_⟩⟩
       · apply pullback.hom_ext
-        · simp only [i, j, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc]
+        · simp only [i, j, Category.assoc, Category.id_comp, pullback.lift_fst]
         · simp only [i, j, i0, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd,
-            pullback.lift_fst_assoc, pullback.lift_snd_assoc]
+            pullback.lift_snd_assoc]
       · apply pullback.hom_ext
-        · simp only [i, j, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_fst_assoc]
+        · simp only [i, j, Category.assoc, Category.id_comp, pullback.lift_fst]
         · apply pullback.hom_ext
-          · simp only [i, j, i0, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd,
-              pullback.lift_fst_assoc, pullback.lift_snd_assoc]
-          · simp only [i, j, i0, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd,
-              pullback.lift_fst_assoc, pullback.lift_snd_assoc]
+          · simp only [i, j, i0, Category.assoc, Category.id_comp, pullback.lift_fst, pullback.lift_snd]
+          · simp only [i, j, i0, Category.assoc, Category.id_comp, pullback.lift_snd,
+              pullback.lift_fst_assoc]
             exact c2
     have key : pullback.lift (H.s g) κ hA = pullback.lift (H.s g) κ0 h0 ≫ i := by
       apply pullback.hom_ext
-      · simp only [i, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]
+      · simp only [i, Category.assoc, pullback.lift_fst]
       · apply pullback.hom_ext
-        · simp only [i, i0, κ, Category.assoc, pullback.lift_fst, pullback.lift_snd,
-            pullback.lift_fst_assoc, pullback.lift_snd_assoc]
-        · simp only [i, i0, κ, Category.assoc, pullback.lift_fst, pullback.lift_snd,
-            pullback.lift_fst_assoc, pullback.lift_snd_assoc]
+        · simp only [i, i0, κ, Category.assoc, pullback.lift_fst, pullback.lift_snd]
+        · simp only [i, i0, κ, Category.assoc, pullback.lift_snd,
+            pullback.lift_fst_assoc]
     rw [key]
     exact fEt_comp_iso _ i m hF

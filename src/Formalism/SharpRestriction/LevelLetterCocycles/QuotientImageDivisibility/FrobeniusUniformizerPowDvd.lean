@@ -114,12 +114,12 @@ theorem frobenius_uniformizer_pow_dvd [IsDomain O] (hR : Formalism.MainNotions.U
     funext i
     by_cases hi : i = c
     · subst hi
-      simp only [Pi.mul_apply, hgdef, if_pos rfl]
+      simp only [Pi.mul_apply, hgdef]
       rw [hf i, hg', subst_mul (hsub i), subst_X (hsub i)]
       simp
     · have : a i = ((letE c : LetA O n) * a) i := by rw [hc]
       rw [this]
-      simp [letE, Pi.single_eq_of_ne hi, hgdef, hi]
+      simp [letE, hgdef, hi]
   refine ⟨g, ?_, hag⟩
   refine Formalism.MainNotions.UnusedSlot80.ToolsR.cancel_AΔ (W := W) hR.1 (fun i => Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_ne hR) ?_
   rw [← hag]; exact ha
@@ -127,12 +127,6 @@ theorem frobenius_uniformizer_pow_dvd [IsDomain O] (hR : Formalism.MainNotions.U
 end Div
 
 section Ker
-
-theorem letE_sq (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
-  funext j
-  by_cases h : j = i
-  · subst h; simp [letE]
-  · simp [letE, Pi.single_eq_of_ne h]
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
@@ -156,7 +150,7 @@ theorem ker_NDl [IsDomain O] (c : ZMod n) (h3 : Formalism.MainNotions.DeltaInvar
   obtain ⟨a, ⟨ha, hxa⟩, -⟩ := hb.2 x hxi
   have hbN : ∀ k, b k ∈ W.N T := fun k => (hb.1 k).1.1
   have hbl : ∀ k, (letE c : LetA O n) • b k = b k := fun k =>
-    Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c (hb.1 k).2
+    _root_.Formalism.MainNotions.LiftingTheory.frame_letE_fix W T c (hb.1 k).2
   have hsum : ∑ k, algebraMap O LL (PowerSeries.constantCoeff ((a k) c)) •
       Formalism.MainNotions.ArcLiftingSetup.cmpD W T (b k) = 0 := by
     rw [← h0, hxa, cmpD_sum W T _ _ (fun k _ => (W.N T).smul_mem _ (hbN k))]
@@ -181,7 +175,7 @@ theorem cmpD_mem_NDl (i : ZMod n) (hmod : Formalism.MainNotions.DeltaInvariantLa
   set b' : Fin r → W.DD T := fun j => (letE i : LetA O n) • b j with hb'
   have hb'Δ : ∀ j, b' j ∈ W.NΔ T := fun j => Formalism.MainNotions.UnusedSlot80.SatW.smul_mem_NΔ W T hE (hb j)
   have hb'l : ∀ j, (letE i : LetA O n) • b' j = b' j := fun j => by
-    simp only [hb', smul_smul, letE_sq]
+    simp only [hb', smul_smul, _root_.Formalism.MainNotions.LiftingTheory.letter_idempotent_sq]
   have hxs : x = ∑ j, a j • b' j := by
     conv_lhs => rw [← hxi, ha, Finset.smul_sum]
     refine Finset.sum_congr rfl fun j _ => ?_

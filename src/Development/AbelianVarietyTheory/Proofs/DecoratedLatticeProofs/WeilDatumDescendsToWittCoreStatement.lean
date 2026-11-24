@@ -47,4 +47,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.weilDatum_descends_to_wittCore : ∀ D : D7, Descent D := by
-  first | exact @GlobalTheory.Desc.weil_data_descend | exact GlobalTheory.Desc.weil_data_descend | (intros; apply GlobalTheory.Desc.weil_data_descend <;> assumption)
+  first | exact @GlobalTheory.Desc.weil_data_descend

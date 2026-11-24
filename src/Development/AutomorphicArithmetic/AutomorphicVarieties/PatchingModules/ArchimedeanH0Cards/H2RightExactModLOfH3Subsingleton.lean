@@ -61,11 +61,11 @@ private theorem dn_two_apply' {R G M : Type} [CommRing R] [Group G] [AddCommGrou
   have e0 : (fun i : Fin 2 => g i.succ) = ![g 1, g 2] := by
     funext i; fin_cases i <;> rfl
   have e1 : Fin.contractNth 0 (fun x y : G => x * y) g = ![g 0 * g 1, g 2] := by
-    funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl
+    funext i; fin_cases i <;> simp [Fin.contractNth]
   have e2 : Fin.contractNth 1 (fun x y : G => x * y) g = ![g 0, g 1 * g 2] := by
-    funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl
+    funext i; fin_cases i <;> simp [Fin.contractNth]
   have e3 : Fin.contractNth 2 (fun x y : G => x * y) g = ![g 0, g 1] := by
-    funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl
+    funext i; fin_cases i <;> simp [Fin.contractNth]
   simp only [dn, LinearMap.coe_mk, AddHom.coe_mk, Fin.sum_univ_succ, Fin.sum_univ_zero, e0, e1]
   norm_num
   rw [e2, e3]
@@ -78,13 +78,13 @@ private theorem dn_three_apply {R G M : Type} [CommRing R] [Group G] [AddCommGro
   have e0 : (fun i : Fin 3 => g i.succ) = ![g 1, g 2, g 3] := by
     funext i; fin_cases i <;> rfl
   have e1 : Fin.contractNth 0 (fun x y : G => x * y) g = ![g 0 * g 1, g 2, g 3] := by
-    funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl
+    funext i; fin_cases i <;> simp [Fin.contractNth]
   have e2 : Fin.contractNth 1 (fun x y : G => x * y) g = ![g 0, g 1 * g 2, g 3] := by
-    funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl
+    funext i; fin_cases i <;> simp [Fin.contractNth]
   have e3 : Fin.contractNth 2 (fun x y : G => x * y) g = ![g 0, g 1, g 2 * g 3] := by
-    funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl
+    funext i; fin_cases i <;> simp [Fin.contractNth]
   have e4 : Fin.contractNth 3 (fun x y : G => x * y) g = ![g 0, g 1, g 2] := by
-    funext i; fin_cases i <;> simp [Fin.contractNth] <;> rfl
+    funext i; fin_cases i <;> simp [Fin.contractNth]
   simp only [dn, LinearMap.coe_mk, AddHom.coe_mk, Fin.sum_univ_succ, Fin.sum_univ_zero, e0, e1]
   norm_num
   rw [e2, e3, e4]

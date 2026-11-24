@@ -48,4 +48,4 @@ open GlobalTheory.Hk3
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 theorem _root_.GlobalTheory.T.sphericalHecke_conjPlace_eq_dualLabel : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E), hyp V (conjPl P) = hyp V P ∧ (∀ d, IsLab V (conjPl P) d ↔ IsLab V P (dualLab d)) ∧ ∀ c, ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M) (u : M), (∀ k ∈ hyp V P, π k u = u) → opOf π (conjPl P) c u = opOf π P (dualC c) u := by
-  first | exact @GlobalTheory.SphConj.sph_conj | exact GlobalTheory.SphConj.sph_conj | (intros; apply GlobalTheory.SphConj.sph_conj <;> assumption)
+  first | exact @GlobalTheory.SphConj.sph_conj

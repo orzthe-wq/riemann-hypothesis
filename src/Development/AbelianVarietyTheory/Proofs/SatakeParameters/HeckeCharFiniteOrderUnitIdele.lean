@@ -60,7 +60,7 @@ theorem circle_pow (ψ : Ideles L →* Circle) (hψ : Continuous ψ) :
     ∃ m : ℕ, 0 < m ∧ ∀ u : Ideles L, IsFinIdele u → u ∈ unitIdl L → ψ u ^ m = 1 := by
   obtain ⟨-, -, -, m, hm, h⟩ := GlobalTheory.CharFin.finite_order_of_small (R := AdeleRing (𝓞 L) L)
     (RingHom.fst (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)) (RingHom.snd _ _) id continuous_id (fun _ => rfl)
-    (GlobalTheory.UnUnitCmp.Val.intFin L) (fun W hW => GlobalTheory.AdLat.OpenLat.exists_nsmul_adele L W hW)
+    (GlobalTheory.UnUnitCmp.Val.intFin L) (fun W hW => _root_.GlobalTheory.LocalNormBound.main L W hW)
     GlobalTheory.UnUnitCmp.Val.finite_quot ψ hψ
   exact ⟨m, hm, fun u h1 h2 => h u ⟨funext h1, fun v => (h2 v).le, fun v => ((unitIdl L).inv_mem h2 v).le⟩⟩
 

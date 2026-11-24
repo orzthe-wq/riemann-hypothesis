@@ -99,7 +99,7 @@ theorem Jmat_mul_Jmat (m : ℕ) : Jmat (R := R) m * Jmat (R := R) m = 1 := by
   ext i j
   simp only [Jmat, Matrix.mul_apply, Matrix.one_apply, mul_ite, mul_one, mul_zero]
   rw [Finset.sum_eq_single i.rev]
-  · simp [eq_comm, Fin.rev_eq_iff]
+  · simp [eq_comm]
   · intro k _ hk
     simp [hk]
   · simp
@@ -225,8 +225,7 @@ private theorem theta_conj_thetaLie_eq_thetaLie_conj (b : GL (Fin m) R) (X : Mat
     (theta b : Matrix (Fin m) (Fin m) R) * (thetaLie X *
         (((theta b)⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R)) =
       thetaLie ((b : Matrix (Fin m) (Fin m) R) * (X * ((b⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R))) := by
-  simp only [theta_val, theta_inv_val, thetaLie, Matrix.transpose_mul, Jmat_transpose,
-    Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, jmat_mul_jmat_mul]
+  simp only [theta_val, theta_inv_val, thetaLie, Matrix.transpose_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, jmat_mul_jmat_mul]
 
 theorem GG.adFun_mul (x y : GG (m := m) (R := R)) (X : Matrix (Fin m) (Fin m) R) :
     (x * y).adFun X = x.adFun (y.adFun X) := by

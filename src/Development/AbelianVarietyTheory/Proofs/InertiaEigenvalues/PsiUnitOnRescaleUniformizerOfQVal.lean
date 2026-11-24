@@ -77,7 +77,7 @@ theorem psiUnitOn_rescale_of_qVal : ∀ (T : Formalism.L2.Pj.CDVR) (D : DegPre T
       ((Spec (CommRingCat.of (FractionRing T.V))).presheaf.map (homOfLE le_top).op).hom _
     rw [← map_mul]
     congr 1
-    simp only [scal, unitOn, Units.coe_map, MonoidHom.coe_coe, Scheme.Hom.id_appTop]
+    simp only [scal, unitOn, Units.coe_map, Scheme.Hom.id_appTop]
     change (Scheme.ΓSpecIso (CommRingCat.of (FractionRing T.V))).inv.hom (q y : FractionRing T.V) *
       (Scheme.ΓSpecIso (CommRingCat.of (FractionRing T.V))).inv.hom c =
       (Scheme.ΓSpecIso (CommRingCat.of (FractionRing T.V))).inv.hom (algebraMap T.V (FractionRing T.V) (u : T.V))

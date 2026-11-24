@@ -89,10 +89,6 @@ theorem hAt_eq_sb (a b : Fin dd → MvPowerSeries τ C) : hAt (Y.raw p) a b = sb
   funext ⟨s, x⟩
   fin_cases s <;> rfl
 
-theorem cc_sb_h {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) :
-    constantCoeff (sb ![a, b] Y.h) = 0 :=
-  cc_sb (zc2 ha hb) (cc_h Y)
-
 theorem sb_gp_self (f : PS C 2 dd) : sb ![gp C (Fin dd) (0 : Fin 2), gp C (Fin dd) 1] f = f := by
   have e : (fun q : Fin 2 × Fin dd => ![gp C (Fin dd) (0 : Fin 2), gp C (Fin dd) 1] q.1 q.2) = X := by
     funext ⟨s, x⟩
@@ -129,22 +125,22 @@ theorem rLaw_raw : RLaw (Y.raw p) V := {
     exact Y.intF i
   ph1 := by
     rw [formalAdd_eq_law Y p (zc_gp 0) (zc_gp 1), hAt_eq_sb, hAt_eq_sb, hAt_eq_sb, mvExp_eq (by
-      rw [map_sub, map_add (f := _), cc_sb_h Y (zc_gp _) (zc_gp _), cc_sb_h Y (zc_gp _) (zc_gp _),
-        cc_sb_h Y (zc_law Y (zc_gp _) (zc_gp _)) (zc_gp _)]
+      rw [map_sub, map_add (f := _), GlobalTheory.RowLawSquare.cc_hsb Y (zc_gp _) (zc_gp _), GlobalTheory.RowLawSquare.cc_hsb Y (zc_gp _) (zc_gp _),
+        GlobalTheory.RowLawSquare.cc_hsb Y (zc_law Y (zc_gp _) (zc_gp _)) (zc_gp _)]
       simp), exp_gauge_cocycle_first_variable Y (zc_gp _) (zc_gp _) (zc_gp _)]
     refine intS_sb V (zc3 (zc_gp _) (zc_gp _) (zc_gp _)) (fun j i => ?_) Y.intPh1
     fin_cases j <;> exact intS_gp V _ i
   ph2 := by
     rw [formalAdd_eq_law Y p (zc_gp 1) (zc_gp 2), hAt_eq_sb, hAt_eq_sb, hAt_eq_sb, mvExp_eq (by
-      rw [map_sub, map_add (f := _), cc_sb_h Y (zc_gp _) (zc_gp _), cc_sb_h Y (zc_gp _) (zc_gp _),
-        cc_sb_h Y (zc_gp _) (zc_law Y (zc_gp _) (zc_gp _))]
+      rw [map_sub, map_add (f := _), GlobalTheory.RowLawSquare.cc_hsb Y (zc_gp _) (zc_gp _), GlobalTheory.RowLawSquare.cc_hsb Y (zc_gp _) (zc_gp _),
+        GlobalTheory.RowLawSquare.cc_hsb Y (zc_gp _) (zc_law Y (zc_gp _) (zc_gp _))]
       simp), exp_gauge_cocycle_second_variable Y (zc_gp _) (zc_gp _) (zc_gp _)]
     refine intS_sb V (zc3 (zc_gp _) (zc_gp _) (zc_gp _)) (fun j i => ?_) Y.intPh2
     fin_cases j <;> exact intS_gp V _ i
   sy := by
     have e : (Y.raw p).h = sb ![gp C (Fin dd) (0 : Fin 2), gp C (Fin dd) 1] Y.h := (sb_gp_self Y.h).symm
     rw [hAt_eq_sb, e, mvExp_eq (by
-      rw [map_sub, cc_sb_h Y (zc_gp _) (zc_gp _), cc_sb_h Y (zc_gp _) (zc_gp _), sub_zero]),
+      rw [map_sub, GlobalTheory.RowLawSquare.cc_hsb Y (zc_gp _) (zc_gp _), GlobalTheory.RowLawSquare.cc_hsb Y (zc_gp _) (zc_gp _), sub_zero]),
       exp_sy Y (zc_gp _) (zc_gp _), sb_gp_self]
     exact Y.intSy
   kunit := Y.k_unit

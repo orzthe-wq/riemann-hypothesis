@@ -90,7 +90,7 @@ theorem isTotDef_gram (hc : CMData F E) (S : HSpace E) (h1 : S.SigOK) (h2 : S.Is
     solve_by_elim* (maxDepth := 2) only [*,
       @_root_.DivisionSemiring.to_moduleIsTorsionFree,
       @_root_.Algebra.IsIntegral.isAlgebraic, @_root_.inferInstance])
-  refine (Formalism.UG.Final.DefSig F E _ hc.sig S.gram ι (τ : E →+* ℂ) (RingHom.ext (hσ.2.2.2 (τ : E →+* ℂ)))
+  refine (_root_.Formalism.UG.P.definite_form_signature F E _ hc.sig S.gram ι (τ : E →+* ℂ) (RingHom.ext (hσ.2.2.2 (τ : E →+* ℂ)))
     (RingHom.ext fun a => τ.commutes a) (fun e he => (hc.fixed e).1 he)
     (Matrix.ext fun i j => (hJ S).1 i j) (hJ S).2.isUnit).2 (Or.inl ?_)
   have := h1 (τ : E →+* ℂ)
@@ -132,9 +132,9 @@ theorem cosetSum (hc : CMData F E) (S : HSpace E) (h1 : S.SigOK) (h2 : S.IsPosDe
     change star _ * _ = star _ * _ * _
     ring
   rw [CosetGroupMembership.stabHat_eq]
-  refine ⟨Formalism.UG.Final.ClassSetFiniteL F E _ hc.sig S.gram hτ hH (hJ S).2.isUnit hd _ hf hspan,
+  refine ⟨_root_.Formalism.UG.P.lattice_class_set_finite_local_holds F E _ hc.sig S.gram hτ hH (hJ S).2.isUnit hd _ hf hspan,
     fun y => (CosetGroupEquiv.cosetGrpEquiv _ _ y).finite_iff.2
-      (Formalism.UG.Final.AdelicStabFiniteL F E _ hc.sig S.gram hτ hH (hJ S).2.isUnit hd _ hf hspan y),
+      (_root_.Formalism.UG.P.adelic_stabilizer_finite_lattice_holds F E _ hc.sig S.gram hτ hH (hJ S).2.isUnit hd _ hf hspan y),
     fun ι _ y hy => ?_⟩
   simp only [CosetGroupEquiv.card_cosetGrp]
   exact (GlobalTheory.Mass.classMass_eq_sum_of_bijective y hy).symm.trans (hm.trans ht.symm)

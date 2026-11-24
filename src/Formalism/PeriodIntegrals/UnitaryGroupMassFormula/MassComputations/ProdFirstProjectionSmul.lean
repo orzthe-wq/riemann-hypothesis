@@ -97,14 +97,10 @@ theorem QQ_apply (z : (R1 × R2) ⊗[F] E) : QQ R1 R2 z = (q1 R1 R2 z, q2 R1 R2 
   rfl
 
 theorem first_factor_proj_equiv_symm (p : (R1 ⊗[F] E) × (R2 ⊗[F] E)) : q1 R1 R2 ((QQ R1 R2).symm p) = p.1 := by
-  have h := QQ_apply R1 R2 ((QQ R1 R2).symm p)
-  rw [RingEquiv.apply_symm_apply] at h
-  exact (congrArg Prod.fst h).symm
+  simpa only [QQ_apply] using congrArg Prod.fst (RingEquiv.apply_symm_apply (QQ R1 R2) p)
 
 theorem second_factor_proj_equiv_symm (p : (R1 ⊗[F] E) × (R2 ⊗[F] E)) : q2 R1 R2 ((QQ R1 R2).symm p) = p.2 := by
-  have h := QQ_apply R1 R2 ((QQ R1 R2).symm p)
-  rw [RingEquiv.apply_symm_apply] at h
-  exact (congrArg Prod.snd h).symm
+  simpa only [QQ_apply] using congrArg Prod.snd (RingEquiv.apply_symm_apply (QQ R1 R2) p)
 
 def j1 (x : R1 ⊗[F] E) : (R1 × R2) ⊗[F] E := (QQ R1 R2).symm (x, 0)
 
@@ -148,15 +144,13 @@ private theorem continuous_moduleTopology_of_semilinear {R S M N : Type*} [CommR
   have h1 : @ContinuousSMul R M _ _ t := by
     constructor
     rw [continuous_induced_rng]
-    have e : (f ∘ fun p : R × M => p.1 • p.2) = fun p : R × M => g p.1 • f p.2 := funext fun p => hf p.1 p.2
-    rw [e]
-    exact (hg.comp continuous_fst).smul (continuous_induced_dom.comp continuous_snd)
+    exact ((hg.comp continuous_fst).smul (continuous_induced_dom.comp continuous_snd)).congr
+      fun p => (hf p.1 p.2).symm
   have h2 : @ContinuousAdd M t _ := by
     constructor
     rw [continuous_induced_rng]
-    have e : (f ∘ fun p : M × M => p.1 + p.2) = fun p : M × M => f p.1 + f p.2 := funext fun p => map_add f _ _
-    rw [e]
-    exact (continuous_induced_dom.comp continuous_fst).add (continuous_induced_dom.comp continuous_snd)
+    exact ((continuous_induced_dom.comp continuous_fst).add (continuous_induced_dom.comp continuous_snd)).congr
+      fun p => (map_add f p.1 p.2).symm
   rw [continuous_iff_le_induced]
   exact sInf_le ⟨h1, h2⟩
 
@@ -179,10 +173,9 @@ theorem continuous_second_factor_incl : Continuous (j2 (F := F) (E := E) R1 R2) 
     (second_factor_incl_smul R1 R2)
 
 theorem continuous_QQ_symm : Continuous (QQ (F := F) (E := E) R1 R2).symm := by
-  have h : ⇑(QQ (F := F) (E := E) R1 R2).symm = fun p => j1 R1 R2 p.1 + j2 R1 R2 p.2 :=
-    funext (QQ_symm_eq_add R1 R2)
-  rw [h]
-  exact ((continuous_first_factor_incl R1 R2).comp continuous_fst).add ((continuous_second_factor_incl R1 R2).comp continuous_snd)
+  exact (((continuous_first_factor_incl R1 R2).comp continuous_fst).add
+    ((continuous_second_factor_incl R1 R2).comp continuous_snd)).congr
+    fun p => (QQ_symm_eq_add R1 R2 p).symm
 
 end Top
 

@@ -1,7 +1,7 @@
 module
 
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GlobalSerreRelations.GlobSerreSt
-public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HodgeFiltrationViaTruncationStatement
+public import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HodgeFiltrationViaTruncation
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GlobalSerreRelations.GlobSerreStH
 public import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomologyComparison.PerfectoidPullbacks.GlobalSerreRelations.gr_aff
 import Mathlib.Algebra.Order.Floor.Extended
@@ -54,6 +54,6 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace CrystallineSemistableComparison.Pb
 
 theorem k_iso_pf : KH.KIso :=
-  GlobalTheory.T.hodge_filtration_via_truncation locGr_h locVan_h polyTf_h globSerreSt_h globVanSt_h gr_aff_pf
+  _root_.GlobalTheory.CompanionTheory.KIso.k_iso locGr_h locVan_h polyTf_h globSerreSt_h globVanSt_h gr_aff_pf
 
 end CrystallineSemistableComparison.Pb

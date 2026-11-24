@@ -1,15 +1,12 @@
 module
 
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.BlowupSequenceRelations
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.Append
+public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedOrderReduction.ConcatComparisonMap
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.LowerDimReductionSmoothPullback
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactGeometryHypotheses
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.BoundarySeparation
-import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.DerivativeIdealSheafSmoothPullback
-import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.OrderPullback
-public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedOrderReduction.AppendIsomorphism
 public import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.IndependenceOfHypersurface
-import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactHypersurfaceTransform
-import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceComposition
-import Development.ResolutionOfSingularities.EmbeddedResolution.StrongResolution.SequenceIsomorphism
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -36,7 +33,6 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -49,8 +45,194 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.DerivativeIdealSheafSmoothPullback
+import Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.OrderPullback
+import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactHypersurfaceTransform
+import Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceComposition
+import Development.ResolutionOfSingularities.EmbeddedResolution.StrongResolution.SequenceIsomorphism
+import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.TypeStar
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedOrderReduction.AppendIsomorphism, Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.BoundarySeparationBaseChange
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedOrderReduction.AppendIsomorphism =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedOrderReduction.AppendIsomorphism", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IteratedBlowups.BlowupSequenceRelations\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedBlowupSequence.Append\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedOrderReduction.ConcatComparisonMap\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\n\n"}
+section -- clump:auto
+@[expose] public section
+
+universe u
+
+open CategoryTheory AlgebraicGeometry
+
+namespace FunctorialResolution.EmbeddedResolution
+
+namespace BlowupSequenceData
+
+private noncomputable def appendSchemeAtIsoOfLengthLt {X : Scheme.{u}} (s : BlowupSequenceData X)
+    (t₁ t₂ : BlowupSequenceData (s.obj s.length))
+    (e : ∀ i : ℕ, i ≤ t₁.length → (t₁.obj i ≅ t₂.obj i))
+    (j i : ℕ) (hij : i = s.length + j) (hj : 0 < j) (hjl : j ≤ t₁.length) :
+    (s.append t₁).obj i ≅ (s.append t₂).obj i :=
+  eqToIso (append_schemeAt_eq_right_of_pos s t₁ hj hij) ≪≫ e j hjl ≪≫
+    (eqToIso (append_schemeAt_eq_right_of_pos s t₂ hj hij)).symm
+
+private theorem appendObjIsoRight_hom {X : Scheme.{u}} (s : BlowupSequenceData X)
+    (t₁ t₂ : BlowupSequenceData (s.obj s.length))
+    (e : ∀ i : ℕ, i ≤ t₁.length → (t₁.obj i ≅ t₂.obj i))
+    (j i : ℕ) (hij : i = s.length + j) (hj : 0 < j) (hjl : j ≤ t₁.length) :
+    (appendSchemeAtIsoOfLengthLt s t₁ t₂ e j i hij hj hjl).hom =
+      eqToHom (append_schemeAt_eq_right_of_pos s t₁ hj hij) ≫ (e j hjl).hom ≫
+        eqToHom (append_schemeAt_eq_right_of_pos s t₂ hj hij).symm := rfl
+
+private theorem appendObjIsoRight_congr {X : Scheme.{u}} (s : BlowupSequenceData X)
+    (t₁ t₂ : BlowupSequenceData (s.obj s.length))
+    (e : ∀ i : ℕ, i ≤ t₁.length → (t₁.obj i ≅ t₂.obj i))
+    (j j' i : ℕ) (h : j = j')
+    (hij : i = s.length + j) (hj : 0 < j) (hjl : j ≤ t₁.length)
+    (hij' : i = s.length + j') (hj' : 0 < j') (hjl' : j' ≤ t₁.length) :
+    appendSchemeAtIsoOfLengthLt s t₁ t₂ e j i hij hj hjl = appendSchemeAtIsoOfLengthLt s t₁ t₂ e j' i hij' hj' hjl' := by
+  subst h
+  rfl
+
+private noncomputable def appendSchemeAtIso {X : Scheme.{u}} (s : BlowupSequenceData X)
+    (t₁ t₂ : BlowupSequenceData (s.obj s.length))
+    (e : ∀ i : ℕ, i ≤ t₁.length → (t₁.obj i ≅ t₂.obj i))
+    (i : ℕ) (hi : i ≤ s.length + t₁.length) :
+    (s.append t₁).obj i ≅ (s.append t₂).obj i :=
+  if h : i ≤ s.length then
+    eqToIso ((append_schemeAt_of_le_length s t₁ h).trans (append_schemeAt_of_le_length s t₂ h).symm)
+  else
+    appendSchemeAtIsoOfLengthLt s t₁ t₂ e (i - s.length) i (by omega) (by omega) (by omega)
+
+private theorem appendObjIso_hom_of_le {X : Scheme.{u}} (s : BlowupSequenceData X)
+    (t₁ t₂ : BlowupSequenceData (s.obj s.length))
+    (e : ∀ i : ℕ, i ≤ t₁.length → (t₁.obj i ≅ t₂.obj i))
+    (i : ℕ) (h : i ≤ s.length) (hi : i ≤ s.length + t₁.length) :
+    (appendSchemeAtIso s t₁ t₂ e i hi).hom =
+      eqToHom ((append_schemeAt_of_le_length s t₁ h).trans (append_schemeAt_of_le_length s t₂ h).symm) := by
+  unfold appendSchemeAtIso
+  simp only [dif_pos h, eqToIso.hom]
+
+private theorem appendObjIso_eq_right_of_pos {X : Scheme.{u}} (s : BlowupSequenceData X)
+    (t₁ t₂ : BlowupSequenceData (s.obj s.length))
+    (e : ∀ i : ℕ, i ≤ t₁.length → (t₁.obj i ≅ t₂.obj i))
+    (i j : ℕ) (hij : i = s.length + j) (hj : 0 < j) (hjl : j ≤ t₁.length)
+    (hi : i ≤ s.length + t₁.length) :
+    appendSchemeAtIso s t₁ t₂ e i hi = appendSchemeAtIsoOfLengthLt s t₁ t₂ e j i hij hj hjl := by
+  have hne : ¬ i ≤ s.length := by omega
+  unfold appendSchemeAtIso
+  rw [dite_eq_right hne]
+  exact appendObjIsoRight_congr s t₁ t₂ e (i - s.length) j i (by omega) (by omega) (by omega)
+    (by omega) hij hj hjl
+
+theorem append_isomorphic_of_iso {X : Scheme.{u}} (s : BlowupSequenceData X)
+    (t₁ t₂ : BlowupSequenceData (s.obj s.length)) (hlen : t₁.length = t₂.length)
+    (e : ∀ i : ℕ, i ≤ t₁.length → (t₁.obj i ≅ t₂.obj i))
+    (hzero : (e 0 (Nat.zero_le _)).hom ≫ t₂.isoZero.hom = t₁.isoZero.hom)
+    (hmap : ∀ (i : ℕ) (hi : i < t₁.length),
+      (e (i + 1) hi).hom ≫ t₂.map i = t₁.map i ≫ (e i hi.le).hom)
+    (hcenter : ∀ (i : ℕ) (hi : i < t₁.length),
+      (t₂.center i).comap (e i hi.le).hom = t₁.center i) :
+    (s.append t₁).toSequenceOfBlowups.Isomorphic (s.append t₂).toSequenceOfBlowups := by
+  have hlenc : (s.append t₁).length = (s.append t₂).length := by
+    rw [append_length, append_length, hlen]
+  refine toSequenceOfBlowups_isomorphic_of_iso (s.append t₁) (s.append t₂) hlenc
+    (fun i hi => appendSchemeAtIso s t₁ t₂ e i (hi.trans_eq (append_length s t₁))) ?_ ?_ ?_
+  · simp only [appendObjIso_hom_of_le s t₁ t₂ e 0 (Nat.zero_le s.length), append_isoObjZero_hom,
+      eqToHom_trans_assoc]
+  · intro i hi
+    have hi' : i < s.length + t₁.length := hi.trans_eq (append_length s t₁)
+    rcases lt_trichotomy i s.length with hlt | heq | hgt
+    · have h1 : i + 1 ≤ s.length := by omega
+      simp only [appendObjIso_hom_of_le s t₁ t₂ e (i + 1) h1, appendObjIso_hom_of_le s t₁ t₂ e i hlt.le,
+        append_blowupMorphism_of_lt_length s t₂ hlt, append_blowupMorphism_of_lt_length s t₁ hlt,
+        Category.assoc, eqToHom_trans, eqToHom_trans_assoc]
+    · subst heq
+      have h0lt : 0 < t₁.length := by omega
+      have h1le : 1 ≤ t₁.length := by omega
+      have hm0 : (e 1 h1le).hom ≫ t₂.map 0 = t₁.map 0 ≫ (e 0 (Nat.zero_le _)).hom :=
+        hmap 0 h0lt
+      simp only [appendObjIso_eq_right_of_pos s t₁ t₂ e (s.length + 1) 1 rfl Nat.one_pos h1le, appendObjIsoRight_hom,
+        appendObjIso_hom_of_le s t₁ t₂ e s.length le_rfl, append_blowupMorphism_length,
+        Category.assoc, eqToHom_trans, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]
+      rw [reassoc_of% hm0, reassoc_of% hzero]
+    · have hj1 : 0 < i - s.length := by omega
+      have hj2 : i - s.length ≤ t₁.length := by omega
+      have hj3 : i - s.length < t₁.length := by omega
+      simp only [appendObjIso_eq_right_of_pos s t₁ t₂ e (i + 1) (i - s.length + 1) (by omega) (by omega) (by omega),
+        appendObjIso_eq_right_of_pos s t₁ t₂ e i (i - s.length) (by omega) hj1 hj2, appendObjIsoRight_hom,
+        append_blowupMorphism_of_length_lt s t₂ hgt, append_blowupMorphism_of_length_lt s t₁ hgt,
+        Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]
+      rw [reassoc_of% (hmap (i - s.length) hj3)]
+  · intro i hi
+    have hi' : i < s.length + t₁.length := hi.trans_eq (append_length s t₁)
+    rcases lt_trichotomy i s.length with hlt | heq | hgt
+    · simp only [appendObjIso_hom_of_le s t₁ t₂ e i hlt.le, append_center_of_lt_length s t₂ hlt,
+        append_center_of_lt_length s t₁ hlt, ← Scheme.IdealSheafData.comap_comp, eqToHom_trans]
+    · subst heq
+      have h0lt : 0 < t₁.length := by omega
+      have hz2 : t₁.isoZero.inv ≫ (e 0 (Nat.zero_le _)).hom = t₂.isoZero.inv := by
+        rw [Iso.inv_comp_eq, ← hzero, Category.assoc, Iso.hom_inv_id, Category.comp_id]
+      simp only [appendObjIso_hom_of_le s t₁ t₂ e s.length le_rfl, append_center_length,
+        ← Scheme.IdealSheafData.comap_comp, eqToHom_trans_assoc]
+      rw [← hcenter 0 h0lt]
+      simp only [← Scheme.IdealSheafData.comap_comp, Category.assoc, hz2]
+    · have hj1 : 0 < i - s.length := by omega
+      have hj2 : i - s.length ≤ t₁.length := by omega
+      have hj3 : i - s.length < t₁.length := by omega
+      simp only [appendObjIso_eq_right_of_pos s t₁ t₂ e i (i - s.length) (by omega) hj1 hj2, appendObjIsoRight_hom,
+        append_center_of_length_lt s t₂ hgt, append_center_of_length_lt s t₁ hgt,
+        ← Scheme.IdealSheafData.comap_comp,
+        Category.assoc, eqToHom_trans, eqToHom_refl, Category.comp_id]
+      rw [← hcenter (i - s.length) hj3]
+      simp only [← Scheme.IdealSheafData.comap_comp]
+
+theorem append_isomorphic_of_isomorphic {X : Scheme.{u}} (s : BlowupSequenceData X)
+    (t₁ t₂ : BlowupSequenceData (s.obj s.length)) (h : t₁.toSequenceOfBlowups.Isomorphic t₂.toSequenceOfBlowups) :
+    (s.append t₁).toSequenceOfBlowups.Isomorphic (s.append t₂).toSequenceOfBlowups := by
+  obtain ⟨hlen, e, hzero, hmap, hcenter⟩ := h
+  have hl1 : t₁.toSequenceOfBlowups.length = t₁.length := toSequenceOfBlowups_length t₁
+  have hl2 : t₂.toSequenceOfBlowups.length = t₂.length := toSequenceOfBlowups_length t₂
+  refine append_isomorphic_of_iso s t₁ t₂ (by omega) (fun i hi => e i (by omega)) ?_ ?_ ?_
+  · rw [← toSequenceOfBlowups_isoObjZero t₂, ← toSequenceOfBlowups_isoObjZero t₁]
+    exact hzero
+  · intro i hi
+    rw [← toSequenceOfBlowups_blowupMorphism t₂ i, ← toSequenceOfBlowups_blowupMorphism t₁ i]
+    exact hmap i (by omega)
+  · intro i hi
+    rw [← toSequenceOfBlowups_center t₂ i, ← toSequenceOfBlowups_center t₁ i]
+    exact hcenter i (by omega)
+
+end BlowupSequenceData
+
+namespace MarkedBlowupSequenceData
+
+theorem append_isomorphic_of_isomorphic {k : Type u} [Field k] {X : Scheme.{u}}
+    {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
+    {E : List X.IdealSheafData} (S : MarkedBlowupSequenceData p I m E)
+    (T₁ T₂ : MarkedBlowupSequenceData (S.proj S.length ≫ p) (S.ideal S.length) m (S.boundary S.length))
+    (hinv : ComapIsoInvariance.{u})
+    (h : T₁.toMarkedSequenceOfBlowups.toSequenceOfBlowups.Isomorphic T₂.toMarkedSequenceOfBlowups.toSequenceOfBlowups) :
+    ((S.append T₁ hinv).toMarkedSequenceOfBlowups.toSequenceOfBlowups).Isomorphic
+      ((S.append T₂ hinv).toMarkedSequenceOfBlowups.toSequenceOfBlowups) := by
+  rw [toMarkedSequence_toSequenceOfBlowups, toMarkedSequence_toSequenceOfBlowups] at h
+  have key := BlowupSequenceData.append_isomorphic_of_isomorphic S.toBlowupSequenceData T₁.toBlowupSequenceData
+    T₂.toBlowupSequenceData h
+  rw [toMarkedSequence_toSequenceOfBlowups, toMarkedSequence_toSequenceOfBlowups, append_toBlowupSequenceData,
+    append_toBlowupSequenceData]
+  exact key
+
+end MarkedBlowupSequenceData
+
+end FunctorialResolution.EmbeddedResolution
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedOrderReduction.AppendIsomorphism =====
+
+-- ===== clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.BoundarySeparationBaseChange =====
+-- clump-header: {"m": "Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.BoundarySeparationBaseChange", "h": "module\n\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.LowerDimReductionSmoothPullback\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactGeometryHypotheses\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.BoundarySeparation\nimport Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.DerivativeIdealSheafSmoothPullback\nimport Development.ResolutionOfSingularities.EmbeddedResolution.DerivativeIdeal.OrderPullback\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.MarkedOrderReduction.AppendIsomorphism\npublic import Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.IndependenceOfHypersurface\nimport Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.MaxContactHypersurfaceTransform\nimport Development.ResolutionOfSingularities.EmbeddedResolution.ResolutionDescent.PullbackBlowupSequenceComposition\nimport Development.ResolutionOfSingularities.EmbeddedResolution.StrongResolution.SequenceIsomorphism\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\n\n"}
+section -- clump:auto
 @[expose] public section
 
 universe u
@@ -153,7 +335,7 @@ theorem lt_length_nil_append_boundary_drop_zero (S : MarkedIdealWithBoundary.{u}
     (hj : j < S.boundary.length) :
     j < (([] : List (s.obj s.length).IdealSheafData) ++ (s.boundary s.length).drop 0).length := by
   have h1 : s.boundaryFrom S.boundary s.length = s.boundary s.length :=
-    MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq s s.length le_rfl
+    _root_.FunctorialResolution.EmbeddedResolution.MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq_boundary_of_le s s.length le_rfl
   have h2 : s.boundaryFrom S.boundary s.length
       = S.boundary.map (s.toBlowupSequenceData.iteratedStrictTransform s.length) ++
         s.boundaryFrom ([] : List S.scheme.IdealSheafData) s.length :=
@@ -227,18 +409,6 @@ theorem separateBoundaryInvariant_separateBoundaryOfFamily (hstar : MaxContactCo
         MaxContactCoverData.separateBoundary_succ hinv T (fun S' _ i => A i S') S n
       rw [hstep]
       exact key
-
-private theorem isStrictPullback_of_length_eq_zero {X' X : Scheme.{u}} (g : X' ⟶ X)
-    (t : SequenceOfBlowups X') (s : SequenceOfBlowups X) (ht : t.length = 0) (hs : s.length = 0) :
-    IsStrictPullbackBlowupSeq g t s :=
-  StrictPullbackBlowupSeq.isStrictPullback
-    { comp := fun i hi =>
-        eqToHom (congrArg t.schemeAt (by omega : i = 0)) ≫ t.isoZero.hom ≫ g ≫ s.isoZero.inv ≫
-          eqToHom (congrArg s.schemeAt (by omega : (0 : ℕ) = i))
-      comp_zero := by simp
-      pullback := fun i hi => absurd hi (by omega)
-      length_eq := by rw [ht, hs]
-      center_eq := fun i hi => absurd hi (by omega) }
 
 private theorem length_separateBoundaryOfFamily_zero (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (A : ℕ → PrincipalizationAssignment.{u}) (S : MarkedIdealWithBoundary.{u}) :
@@ -562,7 +732,7 @@ theorem isStrictPullbackBlowupSeq_reduceAlongHypersurface (hstar : MaxContactCov
     induction n with
     | zero =>
         intro _
-        exact isStrictPullback_of_length_eq_zero q _ _
+        exact _root_.FunctorialResolution.EmbeddedResolution.IsStrictPullbackBlowupSeq.of_length_zero q _ _
           (length_separateBoundaryOfFamily_zero hinv T A (LowerDimReductionPullback.pullbackTriple S q))
           (length_separateBoundaryOfFamily_zero hinv T A S)
     | succ m ih =>
@@ -709,3 +879,6 @@ end BoundarySeparationBaseChange
 end FunctorialResolution.EmbeddedResolution
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.ResolutionOfSingularities.EmbeddedResolution.IdealPrincipalization.OrderReduction.BoundarySeparationBaseChange =====

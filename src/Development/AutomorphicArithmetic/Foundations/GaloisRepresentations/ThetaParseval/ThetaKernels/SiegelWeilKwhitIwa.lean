@@ -1,6 +1,5 @@
 module
 
-public import Mathlib
 public import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ThetaParseval.ThetaKernels.SiegelWeilKwhitCut
 public import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.WhittakerCovolume.ParabolicLowerBlockZero
 import Mathlib.Algebra.Order.Floor.Extended
@@ -81,7 +80,7 @@ theorem inFrame_injective_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k 
 theorem om_mem_sch_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (g : d.G) {Φ : d.Fn} (h : Φ ∈ d.sch) : d.om g Φ ∈ d.sch :=
   d.ok.dbl.weil.2.1.pres g Φ h
 theorem constantTerm_mul_right (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (Φ : d.Fn) (g k : d.G) : d.sec0 Φ (g * k) = d.sec0 (d.om k Φ) g := by
-  simp [_root_.PositivityTheory.SiegelWeilFormula.SD_k.sec0, map_mul, Module.End.mul_apply]
+  simp [_root_.PositivityTheory.SiegelWeilFormula.SD_k.sec0, map_mul]
 theorem a_mul_K_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (g k : d.G) (hk : k ∈ d.K) : d.a (g * k) = d.a g := by
   obtain ⟨p, t, hp, k', hk', rfl⟩ := d.ok.hgt.iwa g
   rw [mul_assoc, d.ok.hgt.val p t hp _ (d.K.mul_mem hk' hk), d.ok.hgt.val p t hp _ hk']
@@ -92,7 +91,7 @@ theorem kfin_om_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {Φ : 
     (Submodule.span_le.2 ?_)
   rintro _ ⟨k', rfl⟩
   refine Submodule.subset_span ⟨⟨k'.1 * k, d.K.mul_mem k'.2 hk⟩, ?_⟩
-  simp [map_mul, Module.End.mul_apply]
+  simp [map_mul]
 section Forms
 variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 end Forms

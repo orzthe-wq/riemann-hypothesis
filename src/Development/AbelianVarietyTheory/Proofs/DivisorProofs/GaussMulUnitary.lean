@@ -59,10 +59,6 @@ namespace GlobalTheory.VacKInf.LeviFix
 
 variable {D : D7}
 
-theorem compAt_mul' (θ : InfFam D) (τ : D.what₂.Tau) {k m n : ℕ} (x : Mx D k m) (y : Mx D m n) :
-    compAt θ τ (HMul.hMul x y : Mx D k n) = compAt θ τ x * compAt θ τ y :=
-  Matrix.map_mul (f := (θ τ).comp (infPart D))
-
 theorem compAt_adj' {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m n : ℕ} (x : Mx D m n) :
     compAt θ τ (adj x) = (compAt θ τ x)ᴴ := by
   ext i j

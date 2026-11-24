@@ -45,6 +45,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.ExistsMatchOver
 import Development.AbelianVarietyTheory.Statements.HeckeThetaIntegrals.FormulaAt
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ContinuousOnAtTau
 
 @[expose] public section
 
@@ -78,7 +79,7 @@ theorem avg_rat (V : HSp D) (κ : Measure (GinfC V)) [κ.IsMulLeftInvariant] (Φ
   obtain ⟨q, hq, e⟩ := Subgroup.mem_map.1 (Subgroup.mem_comap.1 hγ)
   have e1 : finOf V q = γ := ClassFin.finG_injective V ((finG_finOf V q).trans e)
   have e2 : ((infOf V q : GinfC V) : GA D V) * γ = q := e1 ▸ infOf_mul_finOf V q
-  have c1 := GlobalTheory.AdelicSplit.commute_GinfC_GfC V (infOf V q).2 (γ * x).2
+  have c1 := _root_.GlobalTheory.PointAtPlaceHom.comm_of_mem V (infOf V q).2 (γ * x).2
   rw [← integral_mul_left_eq_self (fun k : GinfC V => Φ (((γ * x : GfC V) : GA D V) * k)) (infOf V q)]
   refine integral_congr_ae (.of_forall fun k => ?_)
   have e3 : ((γ * x : GfC V) : GA D V) * ((infOf V q * k : GinfC V) : GA D V) = q * ((x : GA D V) * k) := by

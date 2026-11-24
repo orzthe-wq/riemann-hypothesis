@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.InjectiveOfSmulMemRange
 
 @[expose] public section
 
@@ -54,13 +55,6 @@ section SlopeTestRemainingChoices
 
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (Ideal.span {(p : O)}) O]
-
-theorem phiInv_frobenius (b : Ainf p O) : phiInv p O (WittVector.frobenius b) = b := by
-  rw [WittVector.frobenius_eq_map_frobenius]
-  unfold phiInv
-  ext n
-  simp only [WittVector.map_coeff]
-  exact (_root_.frobeniusEquiv (PreTilt O p) p).symm_apply_apply _
 
 theorem frobenius_iterate_teichmuller (k : ℕ) (x : PreTilt O p) :
     (WittVector.frobenius : Ainf p O →+* Ainf p O)^[k] (WittVector.teichmuller p x) =
@@ -127,7 +121,7 @@ theorem mu_dvd_of_ghost : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsA
       obtain ⟨c, hc⟩ := ih _ hb
       have hc' := congrArg (phiInv p O) hc
       have e : root (root^[n] ε) = root^[n + 1] ε := (Function.iterate_succ_apply' root n ε).symm
-      rw [map_mul, map_mul, phiInv_frobenius, phiInv_mu, phiInv_mu, nu_eq_mu_root, e] at hc'
+      rw [map_mul, map_mul, _root_.GlobalTheory.Dieudonne.phiInv_frobenius, phiInv_mu, phiInv_mu, nu_eq_mu_root, e] at hc'
       refine ⟨phiInv p O c, ?_⟩
       linear_combination xi ε * hc' + phiInv p O c * xi_mul_nu ε
   exact GlobalTheory.MuDivides.mu_dvd_of_forall_dvd p C v O hv ε h1 a (fun n => key n a ha)

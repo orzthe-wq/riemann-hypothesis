@@ -84,7 +84,7 @@ theorem finite_pts_of_curve (Q : LocalPointData G la) (hC : Q.InCurve) :
   have := hC.1
   have := hC.2.1
   have : ∀ ζ : PtsG G la, IsDVRAt ζ := isDVRAt_of_curve Q hC
-  exact _root_.ramificationDegreeSum (Op X la G.N) (Kp X la G.N) (OsK X la G.w) (unifO X la G.N) (unifO_irreducible X la G.N)
+  exact _root_.PI.UnitaryGroupMassFormula.EfRankSum.efRankSum_main (Op X la G.N) (Kp X la G.N) (OsK X la G.w) (unifO X la G.N) (unifO_irreducible X la G.N)
     (finite_As_of_curve Q hC)
 
 theorem one_le_ep_of_curve (Q : LocalPointData G la) (hC : Q.InCurve) (ζ : PtsG G la) : 1 ≤ ep (unifO X la G.N) ζ := by

@@ -87,11 +87,11 @@ variable {N : ℕ}
 
 theorem stabU_mul {Z a b : Matrix (Fin N) (Fin N) ℂ} (hZ : IsUnit Z.det) (ha : a ∈ GlobalTheory.LoopV.stabU Z)
     (hb : b ∈ GlobalTheory.LoopV.stabU Z) : a * b ∈ GlobalTheory.LoopV.stabU Z := by
-  refine ⟨Formalism.L2.SG.Pf.ZsVolGrp.isUpUni_mul ha.1 hb.1, ?_⟩
+  refine ⟨_root_.GlobalTheory.UpperUnipotentProductInertiaEigenvalues.isUpUni_mul ha.1 hb.1, ?_⟩
   have e : Z * (a * b) * Z⁻¹ = (Z * a * Z⁻¹) * (Z * b * Z⁻¹) := by
     simp only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hZ]
   rw [e]
-  exact Formalism.L2.SG.Pf.ZsVolGrp.isLoUni_mul ha.2 hb.2
+  exact _root_.PI.TermAttrConst.UnitaryGroupMassFormula.isLoUni_mul ha.2 hb.2
 
 theorem stabU_inv {Z a : Matrix (Fin N) (Fin N) ℂ} (hZ : IsUnit Z.det) (ha : a ∈ GlobalTheory.LoopV.stabU Z) :
     a⁻¹ ∈ GlobalTheory.LoopV.stabU Z := by

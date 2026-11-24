@@ -1,10 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.ModuliSpaces.IsSymm
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFibreCoordsStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueSectionOfLocallyRegularStatement
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueUniformisingVectorVerticalTangentStatement
-public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.InvariantVectorFieldAbelianVarietyAlgebraicStatement
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsFibreCoords
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueSectionOfLocallyRegular
+public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.InvariantVectorFieldAbelianVarietyAlgebraic
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsUniqueUniformisingVectorVerticalTangent
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -82,17 +82,7 @@ private theorem valAt'_resG_of_le {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {U V : Y.O
   exact congrArg (fun s => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom s)
     (congrArg (fun φ => CommRingCat.Hom.hom φ f) (Scheme.Hom.map_appLE x h (homOfLE hVU).op))
 
-private theorem valAt'_app_eq_valAt'_comp_moduli {Y Z : Scheme.{0}} (x : Sp ℂ ⟶ Y) (φ : Y ⟶ Z) (U : Z.Opens) (f : Γ(Z, U)) :
-    valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f := by
-  unfold valAt'
-  by_cases hh : ⊤ ≤ x ⁻¹ᵁ φ ⁻¹ᵁ U
-  · have hh' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U := hh
-    rw [dif_pos hh, dif_pos hh']
-    unfold valAt
-    rw [Scheme.Hom.comp_appLE]
-    rfl
-  · have hh' : ¬ ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U := hh
-    rw [dite_eq_right hh, dite_eq_right hh']
+private alias valAt'_app_eq_valAt'_comp_moduli := _root_.GlobalTheory.valAt'_comp
 
 private theorem valAt'_constFn' {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) (q : Y ⟶ Sp ℂ) (hq : y ≫ q = 𝟙 _) (U : Y.Opens)
     (h : ⊤ ≤ y ⁻¹ᵁ U) (c : ℂ) : valAt' y U (constFn q U c) = c := by
@@ -238,7 +228,7 @@ theorem locDer_regular_coeff : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀
   have hq : ∀ z, (u.ex z).left ≫ P₀.A.hom = 𝟙 _ := fun z => by simp [Over.w (u.ex z)]
   have hw : ∀ z, ⊤ ≤ ((u.ex z).left ≫ m) ⁻¹ᵁ W₀ → ∃ w : Fin P₀.g → ℂ, ∀ W f, z ∈ dom u m W →
       ptOf W₀ d (u.ex z).left W f = fderiv ℂ (fn u m W f) z w := fun z hz =>
-    (GlobalTheory.T.existsUnique_uniformising_vector_vertical_tangent P₀ u Hm χ hG R x₀ X p m hsm hpb z _ (ptDer_ptOf hd _ hz)
+    (_root_.GlobalTheory.KS.VertFamily.existsUnique_vector P₀ u Hm χ hG R x₀ X p m hsm hpb z _ (ptDer_ptOf hd _ hz)
       (fun r => ptOf_const hd _ (hq z) hz r)).exists
   let wf : (Fin P₀.g → ℂ) → Fin P₀.g → ℂ := fun z =>
     if hz : ⊤ ≤ ((u.ex z).left ≫ m) ⁻¹ᵁ W₀ then (hw z hz).choose else 0
@@ -257,7 +247,7 @@ theorem locDer_regular_coeff : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀
       ext j
       by_cases hj : j = i <;> simp [hj]
     rw [hs, map_smul, smul_eq_mul]
-  choose D _ hDv using fun i : Fin P₀.g => GlobalTheory.T.invariant_vectorField_abelianVariety_algebraic P₀ u Hm χ hG (Pi.single i 1)
+  choose D _ hDv using fun i : Fin P₀.g => _root_.GlobalTheory.KS.invariant_field_algebraic P₀ u Hm χ hG (Pi.single i 1)
   have hfn : ∀ (W : X.Opens) (f : Γ(X, W)),
       (fun z' => valAt' (u.ex z').left (m ⁻¹ᵁ W) ((m.app W).hom f)) = fn u m W f := fun W f => by
     funext z'
@@ -265,9 +255,9 @@ theorem locDer_regular_coeff : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀
   have hc : ∀ a, ∃ c : Γ(P₀.A.left, m ⁻¹ᵁ W₀), ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (m ⁻¹ᵁ W₀) →
       valAt' (u.ex z).left (m ⁻¹ᵁ W₀) c = wf z a := by
     intro a
-    refine (GlobalTheory.T.existsUnique_section_of_locally_given_values P₀ u Hm χ hG (m ⁻¹ᵁ W₀) (fun z => wf z a) ?_).exists
+    refine (_root_.GlobalTheory.existsUnique_section_of_locally_regular P₀ u Hm χ hG (m ⁻¹ᵁ W₀) (fun z => wf z a) ?_).exists
     intro z hz
-    obtain ⟨W, t, hzW, hdet⟩ := GlobalTheory.T.exists_fibre_coords_det_fderiv_ne_zero_of_smooth P₀ u Hm χ hG R x₀ X p m hsm hpb z
+    obtain ⟨W, t, hzW, hdet⟩ := _root_.GlobalTheory.KS.exists_fibre_coords P₀ u Hm χ hG R x₀ X p m hsm hpb z
     have hzW' : ⊤ ≤ (u.ex z).left ⁻¹ᵁ ((𝟙 P₀.A.left) ⁻¹ᵁ (m ⁻¹ᵁ W)) := hzW
     let J : Matrix (Fin P₀.g) (Fin P₀.g) Γ(P₀.A.left, (𝟙 P₀.A.left) ⁻¹ᵁ (m ⁻¹ᵁ W)) :=
       fun i b => D i (m ⁻¹ᵁ W) ((m.app W).hom (t b))

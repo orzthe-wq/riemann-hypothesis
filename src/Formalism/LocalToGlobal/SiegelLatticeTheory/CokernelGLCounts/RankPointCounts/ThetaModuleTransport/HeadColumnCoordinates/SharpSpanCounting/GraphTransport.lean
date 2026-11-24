@@ -115,7 +115,7 @@ theorem smul_transport {A B : Type} [AddCommGroup A] [Module E A] [AddCommGroup 
 variable {r : ℕ}
 
 theorem om'_mem (f f' : Fin (r + 1) → V) : H.om' f f' ∈ H.perp (H.X f) := by
-  apply Formalism.L2.SG.LsDatumA.om'_mem_perpX <;> assumption
+  apply Formalism.L2.SG.LsDatumA.om'_mem_perpX
 
 theorem sends_one {f₁ f₂ : Fin (r + 1) → V} (φ : H.Wb f₁ ≃ₗ[E] H.Wb f₂) (v₁ v₂ : V)
     (h₁ : v₁ ∈ H.perp (H.X f₁)) (h₂ : v₂ ∈ H.perp (H.X f₂))
@@ -145,7 +145,7 @@ theorem h_omP (f f' : Fin (r + 1) → V) (u : V) :
   have hD : H.Dl f f' (r + 1) = (H.Zhat f f').det := by
     unfold HermSp.Dl
     rw [dite_eq_left le_rfl]
-    simp [Fin.castLE_refl]
+    simp
   unfold omP HermSp.om'
   rw [h_smul_right, h_sum_right, Finset.mul_sum]
   apply Finset.sum_congr rfl

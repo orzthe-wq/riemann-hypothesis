@@ -346,7 +346,7 @@ theorem isLB_vecOne (hL : L.IsLB) : ∀ i, ((![L] : Fin 1 → LB X) i).IsLB :=
 theorem interNumRed_one_eq (hL : L.IsLB) (Z : Closeds X) :
     letI := algebraΓAlong k (redι Z)
     interNumRed k Z ![L] = interNum k (structureModule _) ![L.pull (redι Z)] := by
-  letI := algebraΓAlong k (redι Z)
+  let := algebraΓAlong k (redι Z)
   refine (interNumOn_eq_interNum_pull (appTop_algebraMap_along k (redι Z))
     (isLB_vecOne hL)).trans (congrArg _ (funext fun i => ?_))
   fin_cases i
@@ -355,7 +355,7 @@ theorem interNumRed_one_eq (hL : L.IsLB) (Z : Closeds X) :
 theorem IsCompleteCurve.isProper_strHom (hZ : IsCompleteCurve k Z) :
     letI := algebraΓAlong k (redι Z)
     IsProper (strHom k (Scheme.IdealSheafData.vanishingIdeal Z).subscheme) := by
-  letI := algebraΓAlong k (redι Z)
+  let := algebraΓAlong k (redι Z)
   rw [← comp_strHom (appTop_algebraMap_along k (redι Z))]
   exact hZ.3
 
@@ -366,7 +366,7 @@ theorem interNumRed_one_congr (hL : L.IsLB) (hM : M.IsLB) (e : cls L hL = cls M 
 theorem IsCompleteCurve.interNumRed_of_cls_eq_add (hZ : IsCompleteCurve k Z) (hH : IsAmpleLB H)
     (hN : N.IsLB) (hA : A.IsLB) (hB : B.IsLB) (e : cls N hN = cls A hA + cls B hB) :
     interNumRed k Z ![N] = interNumRed k Z ![A] + interNumRed k Z ![B] := by
-  letI := algebraΓAlong k (redι Z)
+  let := algebraΓAlong k (redι Z)
   have := hZ.isProper_strHom
   rw [interNumRed_one_eq hN, interNumRed_one_eq hA, interNumRed_one_eq hB]
   exact interNum_one_of_cls_eq_add (hH.pull_of_isClosedImmersion (redι Z))
@@ -397,7 +397,7 @@ theorem IsCompleteCurve.interNumRed_dual (hZ : IsCompleteCurve k Z) (hH : IsAmpl
 theorem IsCompleteCurve.interNumRed_nonneg_of_sec (hZ : IsCompleteCurve k Z) (hH : IsAmpleLB H)
     (hL : L.IsLB) (s : L.Sec) {x : X} (hx : x ∈ Z) (hs : x ∈ nonzeroLocus s) :
     0 ≤ interNumRed k Z ![L] ∧ ((∃ y ∈ Z, y ∉ nonzeroLocus s) → 0 < interNumRed k Z ![L]) := by
-  letI := algebraΓAlong k (redι Z)
+  let := algebraΓAlong k (redι Z)
   have := hZ.isProper_strHom
   have := isIntegral_red hZ.1
   obtain ⟨x, rfl⟩ := (range_redι Z).ge hx

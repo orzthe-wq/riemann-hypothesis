@@ -1,6 +1,6 @@
 module
 
-public import Mathlib
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.FlagBasis
 public import Formalism.SharpRestriction.Divisibility.AbelianOpenPart.IsOpenPart
 public import Formalism.LocalToGlobal.ProjectiveLattices.EmbKCoe

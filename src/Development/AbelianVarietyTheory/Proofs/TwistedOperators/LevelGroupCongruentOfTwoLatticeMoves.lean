@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.RevPosRevPos
 import Formalism.LocalToGlobal.IndefiniteReal.ExistsChosenExtremalVector
 import Formalism.LocalToGlobal.IndefiniteReal.LinksDefs
+import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.OmegaFormSignIndependent
 
 @[expose] public section
 
@@ -203,10 +204,6 @@ variable {D : D7}
 theorem fmt_mul' (V : HSp D) (g g' : GA D V) : fmt V (g * g') = fmt V g * fmt V g' := by
   simp only [fmt, Formalism.L2.Theta.mt, map_mul, Units.val_mul, Matrix.map_mul]
 
-theorem fmt_one' (V : HSp D) : fmt V 1 = 1 := by
-  simp only [fmt, Formalism.L2.Theta.mt, map_one, Units.val_one]
-  exact Matrix.map_one _ (map_zero _) (map_one _)
-
 theorem smul_fmt_sub_one {T : HSp D} {I : Ideal (𝓞 D.host.F)} {g : GA D T} (h : TrivAt T I g)
     {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : I ≤ v.asIdeal) {α : Af D.host.F} (h1 : evalV D.host.F v α = 1)
     (h0 : ∀ w, w ≠ v → evalV D.host.F w α = 0) :
@@ -246,9 +243,9 @@ theorem GlobalTheory.Ker.LevMove.levK_of_two_moves : ∀ (D : D7) (S T : HSp D) 
   have hfull : C.X.Λ.FG ∧ Submodule.span D.host.E (C.X.Λ : Set (Fin T.rank → D.host.E)) = ⊤ :=
     ⟨C.X.Λ_fg, C.X.Λ_span⟩
   have e1 : fmt T g₁ * fmt T g₁⁻¹ = 1 := by
-    rw [← GlobalTheory.Ker.LevMove.fmt_mul', mul_inv_cancel, GlobalTheory.Ker.LevMove.fmt_one']
+    rw [← GlobalTheory.Ker.LevMove.fmt_mul', mul_inv_cancel, _root_.GlobalTheory.Ker.LevEig.fmt_one]
   have e2 : fmt T g₂ * fmt T g₂⁻¹ = 1 := by
-    rw [← GlobalTheory.Ker.LevMove.fmt_mul', mul_inv_cancel, GlobalTheory.Ker.LevMove.fmt_one']
+    rw [← GlobalTheory.Ker.LevMove.fmt_mul', mul_inv_cancel, _root_.GlobalTheory.Ker.LevEig.fmt_one]
   obtain ⟨-, -, -, laws⟩ := GlobalTheory.Ker.isMov_laws D T.rank C.X.Λ hfull
   obtain ⟨-, hb1, -, -, -⟩ := (laws _ _ e1).2 L hL m1
   obtain ⟨-, -, -, hcomp, -⟩ := (laws _ _ e2).2 L hL m2

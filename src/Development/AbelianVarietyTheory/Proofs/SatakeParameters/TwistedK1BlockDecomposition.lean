@@ -210,7 +210,7 @@ theorem exists_block_of_twisted_k1 : ∀ {E : Type} [Field E] [NumberField E] [S
   obtain ⟨j, hj⟩ := exists_glint_of_matrix A hAint hdet
   have hj' : ∀ i l, j.1 (Pi.single l 1) i = g.1 (Pi.single (Br.iC rfl l) 1) (Br.iC rfl i) := fun i l => by
     rw [hj]
-    simp [Matrix.mulVec_single_one, A]
+    simp [A]
   refine ⟨j, ?_, inv_extI_mul_mem rfl (c + 1) g j hj' hB hC hD⟩
   show redGL n P j ∈ btG n _ (coarse r [b])
   rw [mem_btG]

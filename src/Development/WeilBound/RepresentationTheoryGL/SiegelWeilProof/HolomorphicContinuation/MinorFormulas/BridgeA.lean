@@ -89,7 +89,7 @@ theorem hasDerivAt_eval {ι : Type} [Fintype ι] [DecidableEq ι] (g : ℂ → �
       rw [Finset.sum_eq_single k0]
       · simp
       · intro b _ hb
-        simp [Pi.single_apply, Ne.symm hb]
+        simp [Ne.symm hb]
       · simp
     rw [e, Finset.sum_mul]
     have e2 : ∑ k, g 0 k0 * MvPolynomial.eval (g 0) (MvPolynomial.pderiv k p) * g' k =

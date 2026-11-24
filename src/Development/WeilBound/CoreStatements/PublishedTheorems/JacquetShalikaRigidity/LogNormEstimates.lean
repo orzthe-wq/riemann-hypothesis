@@ -186,8 +186,8 @@ theorem log_norm_estimate_of_Q : Q1 → D0 → N3 → C0 → D1 := by
         apply lintegral_congr_ae
         filter_upwards [(hN0 hk).1] with r hr
         by_cases hg : g ∈ O
-        · simp [Set.indicator_apply, hg, (hOinv r g hr).2 hg]
-        · simp [Set.indicator_apply, hg, mt (hOinv r g hr).1 hg]
+        · simp [hg, (hOinv r g hr).2 hg]
+        · simp [hg, mt (hOinv r g hr).1 hg]
       have key := hQ1 (GA E k) μ (Measure.dirac 1) (nuP E k 0) {1} (fun _ => 1) β
         (by rw [Measure.map_dirac' measurable_inv, inv_one]) (by rw [ae_dirac_eq]; exact rfl)
         ⟨measurable_const, fun g => by simp⟩ hβ.1

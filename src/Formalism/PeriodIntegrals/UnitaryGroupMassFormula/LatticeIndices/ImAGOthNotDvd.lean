@@ -116,10 +116,7 @@ theorem imA_span_g_max (p : TypX X) :
     have e : (((gOf p : ℕ) : p.1.adicCompletionIntegers X.B.I.F) : p.1.adicCompletion X.B.I.F) =
         (((gOf p : ℕ) : X.B.I.F) : p.1.adicCompletion X.B.I.F) := by
       first
-        | rfl
         | exact (map_natCast (algebraMap X.B.I.F (p.1.adicCompletion X.B.I.F)) (gOf p)).symm
-        | norm_cast
-        | simp
     rw [e, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation',
       ← map_natCast (algebraMap (𝓞 X.B.I.F) X.B.I.F) (gOf p),
       IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]

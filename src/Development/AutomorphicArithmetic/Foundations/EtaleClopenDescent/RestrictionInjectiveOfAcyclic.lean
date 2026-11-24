@@ -105,8 +105,6 @@ private lemma lan_mono {C D : Type 1} [Category.{0} C] [Category.{0} D] (G : C �
       rw [NatTrans.naturality, reassoc_of% h₂]
     first
       | exact (Category.assoc _ _ _).trans h₃
-      | (dsimp only [Functor.LeftExtension.coconeAt_ι_app, Functor.whiskerLeft_app]
-         simpa only [Category.assoc] using h₃)
   exact NatTrans.mono_of_mono_app _
 
 set_option backward.isDefEq.respectTransparency false in
@@ -147,4 +145,4 @@ private lemma restr_inj : RestrInj := by
 
 end UpperTheory.Cb
 
-theorem UpperTheory.Cb.restrInj : LateralTheory.EWeil.AcycPf.RestrInj := UpperTheory.Cb.restr_inj
+alias UpperTheory.Cb.restrInj := _root_.UpperTheory.Cb.restr_inj

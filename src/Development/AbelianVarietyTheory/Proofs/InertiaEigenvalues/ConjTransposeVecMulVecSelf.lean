@@ -67,8 +67,7 @@ theorem conjTranspose_vecMulVec_self (w : Fin r → E) : (vecMulVec w (star w))�
 theorem vecMulVec_self_mul (w : Fin r → E) :
     vecMulVec w (star w) * vecMulVec w (star w) = (star w ⬝ᵥ w) • vecMulVec w (star w) := by
   ext i j
-  simp only [Matrix.mul_apply, vecMulVec_apply, Matrix.smul_apply, smul_eq_mul, dotProduct, Pi.star_apply, Finset.sum_mul,
-    Finset.mul_sum]
+  simp only [Matrix.mul_apply, vecMulVec_apply, Matrix.smul_apply, smul_eq_mul, dotProduct, Pi.star_apply, Finset.sum_mul]
   refine Finset.sum_congr rfl fun k _ => ?_
   ring
 

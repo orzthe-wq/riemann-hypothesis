@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.PullGenLBIsGen
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.DiscreteValuationRings.LBPull
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -316,10 +317,10 @@ theorem flat_eq (W : Matrix (Fin r) (Fin r) ℤ) (u : T ⟶ A') :
     rw [← Over.comp_left, MonObj.comp_one]
   rw [Fin.sum_univ_four]
   simp only [tensε, tensφ, GlobalTheory.PolDeg.lamPts, Oε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
-    Matrix.cons_val_three, Matrix.head_cons, e0, e3, mul_smul, lam, ← Over.comp_left]
+    Matrix.cons_val_three, e0, mul_smul, lam, ← Over.comp_left]
   simp only [Matrix.vecHead, Matrix.vecTail, Function.comp_apply, Fin.succ_zero_eq_one, Fin.succ_one_eq_two,
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, e3, ← Over.comp_left]
-  simp only [smul_add, smul_sub, one_smul, neg_smul, smul_neg, mul_one, smul_comm (W i j) (-1 : ℤ)]
+  simp only [smul_add, smul_sub, one_smul, neg_smul, smul_neg]
   abel
 
 end Tens
@@ -350,7 +351,7 @@ theorem total_mem (hp : ∀ i, IsMonHom (pr i)) (H : AddSubgroup (FreeAddCommGro
   change QuotientAddGroup.mk' H _ = 0
   rw [Fintype.sum_prod_type]
 
-  simp only [mul_smul, ← Finset.smul_sum, flat_eq, map_sum, map_zsmul, Fin.sum_univ_six]
+  simp only [mul_smul, ← Finset.smul_sum, flat_eq, Fin.sum_univ_six]
   have v0 : (![(x ≫ f) * y, x ≫ f, y, x * (y ≫ g), x, y ≫ g] : Fin 6 → (T ⟶ A')) 0 = (x ≫ f) * y := rfl
   have v1 : (![(x ≫ f) * y, x ≫ f, y, x * (y ≫ g), x, y ≫ g] : Fin 6 → (T ⟶ A')) 1 = x ≫ f := rfl
   have v2 : (![(x ≫ f) * y, x ≫ f, y, x * (y ≫ g), x, y ≫ g] : Fin 6 → (T ⟶ A')) 2 = y := rfl
@@ -360,7 +361,7 @@ theorem total_mem (hp : ∀ i, IsMonHom (pr i)) (H : AddSubgroup (FreeAddCommGro
   rw [v0, v1, v2, v3, v4, v5, show rosatiε 0 = 1 from rfl, show rosatiε 1 = -1 from rfl,
     show rosatiε 2 = -1 from rfl, show rosatiε 3 = -1 from rfl, show rosatiε 4 = 1 from rfl,
     show rosatiε 5 = 1 from rfl]
-  simp only [map_add (f := _), map_zsmul, one_smul, neg_smul, map_neg, mk_qf]
+  simp only [map_add (f := _), one_smul, neg_smul, map_neg, mk_qf]
   have hm : ∀ (a b : T ⟶ A') (i : Fin r), (a * b) ≫ pr i = (a ≫ pr i) * (b ≫ pr i) := fun a b i => by
     have := hp i
     exact MonObj.mul_comp a b (pr i)

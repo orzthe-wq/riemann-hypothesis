@@ -180,15 +180,9 @@ theorem ρS_comp (S : Finset (Pl E)) : (ρS S).comp (algebraMap E (Ad E)) = jS S
   · rfl
   · rfl
 
-theorem continuous_pInf : Continuous (pInf E) := by
-  change Continuous fun y : InfiniteAdeleRing E × Af E => (infEq E).symm y.1
-  exact continuous_pi fun w =>
-    (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
-      ((continuous_apply w).comp continuous_fst)
-
 theorem continuous_ρS (S : Finset (Pl E)) : Continuous (ρS S) := by
   change Continuous fun y : Ad E => ((fun v : S => pLoc E v.1 (pFin E y)), pInf E y)
-  refine Continuous.prodMk (continuous_pi fun v => ?_) continuous_pInf
+  refine Continuous.prodMk (continuous_pi fun v => ?_) _root_.GlobalTheory.CuspRep.RankOne.continuous_pInf
   change Continuous fun y : InfiniteAdeleRing E × Af E => (y.2 : Af E) v.1
   exact (RestrictedProduct.continuous_eval v.1).comp continuous_snd
 

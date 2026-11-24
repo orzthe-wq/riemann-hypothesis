@@ -60,13 +60,7 @@ open scoped ComplexConjugate
 
 noncomputable section
 
-theorem det_LT {m : ℕ} {L : Matrix (Fin m) (Fin m) ℂ} (hL : L ∈ C2.LTset m) : L.det = 1 := by
-  rw [Matrix.det_of_lowerTriangular L (fun i j h => hL.1 i j (OrderDual.toDual_lt_toDual.1 h))]
-  simp [hL.2]
-
-theorem det_UT {m : ℕ} {U : Matrix (Fin m) (Fin m) ℂ} (hU : U ∈ C2.UTset m) : U.det = 1 := by
-  rw [Matrix.det_of_upperTriangular (fun i j h => hU.1 i j h)]
-  simp [hU.2]
+alias det_UT := _root_.Formalism.FourierDecayAlt.P.C2x2.ut_det
 
 theorem sub_mul_left {r : ℕ} (A B : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (hA : ∀ i : Fin r, A (Fin.castSucc i) (Fin.last r) = 0) :
@@ -93,10 +87,10 @@ theorem UT_sub {r : ℕ} {U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hU : U �
 theorem minorsLU : MinorsLU := by
   unfold MinorsLU
   intro r L M U hL hU
-  refine ⟨by rw [Matrix.det_mul, Matrix.det_mul, det_LT hL, det_UT hU, one_mul, mul_one], ?_⟩
+  refine ⟨by rw [Matrix.det_mul, Matrix.det_mul, _root_.Formalism.FourierDecayAlt.P.C2x2.lt_det hL, det_UT hU, one_mul, mul_one], ?_⟩
   rw [sub_mul_right _ _ (fun j => hU.1 _ _ (Fin.castSucc_lt_last j)),
     sub_mul_left _ _ (fun i => hL.1 _ _ (Fin.castSucc_lt_last i)),
-    Matrix.det_mul, Matrix.det_mul, det_LT (LT_sub hL), det_UT (UT_sub hU), one_mul, mul_one]
+    Matrix.det_mul, Matrix.det_mul, _root_.Formalism.FourierDecayAlt.P.C2x2.lt_det (LT_sub hL), det_UT (UT_sub hU), one_mul, mul_one]
 
 theorem lowS_eq_low {m : ℕ} (w : Equiv.Perm (Fin m)) (x : C2.Lstidx w → ℂ) : lowS w x = Dx2.Rad.low w x := rfl
 
@@ -111,16 +105,7 @@ theorem upper_apply {m : ℕ} (u : G.UT m → ℂ) (i j : Fin m) :
     G.upper u i j = (1 : Matrix (Fin m) (Fin m) ℂ) i j + if h : i < j then u ⟨(i, j), h⟩ else 0 := by
   rfl
 
-theorem cont_upper {m : ℕ} : Continuous (G.upper (d := m)) := by
-  have hs : Continuous fun v : G.UT m → ℂ => G.strictUpper v := by
-    refine continuous_pi fun i => continuous_pi fun j => ?_
-    by_cases h : i < j
-    · simp only [G.strictUpper, Matrix.of_apply, h, ↓reduceDIte]
-      exact continuous_apply _
-    · simp only [G.strictUpper, Matrix.of_apply, h, ↓reduceDIte]
-      exact continuous_const
-  unfold G.upper
-  fun_prop
+alias cont_upper := _root_.Formalism.FourierDecayAlt.P.Dx2.SplitM.continuous_upper
 
 theorem utc_upper {m : ℕ} (u : G.UT m → ℂ) : utc (G.upper u) = u := by
   funext q
@@ -184,12 +169,6 @@ theorem lowOf_coord {m : ℕ} (p : Fin m × Fin m → Prop) [DecidablePred p] (h
   · intro h
     exact absurd (Finset.mem_univ q) h
 
-theorem LT_ct {m : ℕ} {L : Matrix (Fin m) (Fin m) ℂ} (hL : L ∈ C2.LTset m) : Lᴴ ∈ C2.UTset m :=
-  ⟨fun i j h => by simp [Matrix.conjTranspose_apply, hL.1 j i h], fun i => by simp [hL.2 i]⟩
-
-theorem UT_ct {m : ℕ} {U : Matrix (Fin m) (Fin m) ℂ} (hU : U ∈ C2.UTset m) : Uᴴ ∈ C2.LTset m :=
-  ⟨fun i j h => by simp [Matrix.conjTranspose_apply, hU.1 j i h], fun i => by simp [hU.2 i]⟩
-
 def swUT {m : ℕ} : G.UT m ≃ C2.Lidx m where
   toFun q := ⟨(q.1.2, q.1.1), q.2⟩
   invFun q := ⟨(q.1.2, q.1.1), q.2⟩
@@ -248,27 +227,9 @@ theorem lowS_mem {m : ℕ} (w : Equiv.Perm (Fin m)) (x : C2.Lstidx w → ℂ) :
     lowS w x ∈ C2.Lstg (C2.monoP w fun _ => (1 : ℂ)) := by
   exact Dx2.Rad.low_mem w (fun _ => 1) one_ne x
 
-private theorem mul_mem_UTset {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m)
-    (hB : B ∈ C2.UTset m) : A * B ∈ C2.UTset m := by
-  refine ⟨fun i j hij => ?_, fun i => ?_⟩
-  · simp only [Matrix.mul_apply]
-    refine Finset.sum_eq_zero fun l _ => ?_
-    rcases lt_or_ge l i with h | h
-    · rw [hA.1 i l h, zero_mul]
-    · rw [hB.1 l j (lt_of_lt_of_le hij h), mul_zero]
-  · simp only [Matrix.mul_apply]
-    rw [Finset.sum_eq_single i]
-    · rw [hA.2 i, hB.2 i, one_mul]
-    · intro l _ hl
-      rcases lt_or_gt_of_ne hl with h | h
-      · rw [hA.1 i l h, zero_mul]
-      · rw [hB.1 l i h, mul_zero]
-    · intro h
-      exact absurd (Finset.mem_univ i) h
-
 theorem prod_UT {m : ℕ} (w : Equiv.Perm (Fin m)) (p : (C2.Lstidx w → ℂ) × (C2.LPidx w → ℂ)) :
     (lowS w p.1)ᴴ * (lowP w p.2)ᴴ ∈ C2.UTset m :=
-  mul_mem_UTset (LT_ct (lowS_mem w p.1).1) (LT_ct (lowerUnipotent_mem w p.2).1)
+  _root_.Formalism.FourierDecayAlt.P.C2x2.ut_mul (_root_.Formalism.FourierDecayAlt.P.C2x2.lt_conjT (lowS_mem w p.1).1) (_root_.Formalism.FourierDecayAlt.P.C2x2.lt_conjT (lowerUnipotent_mem w p.2).1)
 
 theorem upper_fSp {m : ℕ} (w : Equiv.Perm (Fin m)) (p : (C2.Lstidx w → ℂ) × (C2.LPidx w → ℂ)) :
     G.upper (fSp w p) = (lowS w p.1)ᴴ * (lowP w p.2)ᴴ :=
@@ -313,7 +274,7 @@ theorem fSp_inj {m : ℕ} (w : Equiv.Perm (Fin m)) : Function.Injective (fSp w) 
 theorem fSp_surj {m : ℕ} (w : Equiv.Perm (Fin m)) : Function.Surjective (fSp w) := by
   intro u
   have hP : C2.IsMonomial (C2.monoP w fun _ => (1 : ℂ)) := ⟨w, _, one_ne, rfl⟩
-  obtain ⟨q, ⟨hq1, hq2, hq⟩, _⟩ := lower_triangular_splitting m _ hP _ (UT_ct (upper_mem u))
+  obtain ⟨q, ⟨hq1, hq2, hq⟩, _⟩ := lower_triangular_splitting m _ hP _ (_root_.Formalism.FourierDecayAlt.P.C2x2.ut_conjT (upper_mem u))
   rw [← (lower_parabolic_coordinates m w _ one_ne).1] at hq1
   rw [← (lower_parabolic_coordinates m w _ one_ne).2] at hq2
   obtain ⟨y, hy⟩ := hq1
@@ -352,12 +313,6 @@ def iota : C2.LPidx σ.symm ≃ U.LW σ where
   left_inv q := by ext <;> simp
   right_inv l := by ext <;> simp
 
-theorem permutationMatrix_mul_apply (M : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) : (U.wP σ * M) i j = M (σ i) j := by
-  simp [U.wP, Matrix.mul_apply]
-
-theorem mul_wP_apply (M : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) : (M * U.wP σ) i j = M i (σ.symm j) := by
-  simp [U.wP, Matrix.mul_apply, Equiv.apply_eq_iff_eq_symm_apply]
-
 theorem lowW_apply (v : U.LW σ → ℂ) (a b : Fin m) :
     U.lowW σ v a b = (1 : Matrix (Fin m) (Fin m) ℂ) a b +
       if h : b < a ∧ σ.symm b < σ.symm a then v ⟨(a, b), h⟩ else 0 := by
@@ -388,7 +343,7 @@ theorem lowerUnipotent_symm_apply (y : C2.LPidx σ.symm → ℂ) (i j : Fin m) :
 theorem permutationMatrix_mul_lowerUnipotent (y : C2.LPidx σ.symm → ℂ) :
     U.wP σ * U.lowW σ (fun l => y ((iota σ).symm l)) = lowP σ.symm y * U.wP σ := by
   ext i j
-  rw [permutationMatrix_mul_apply, mul_wP_apply, lowW_apply, lowerUnipotent_symm_apply]
+  rw [_root_.Formalism.FourierDecayAlt.P.Ux2.permutationMatrix_mul_apply, _root_.Formalism.FourierDecayAlt.P.Ux2.mul_wP_apply, lowW_apply, lowerUnipotent_symm_apply]
   congr 1
   · simp only [Matrix.one_apply, Equiv.eq_symm_apply]
   · by_cases h : j < σ i ∧ σ.symm j < σ.symm (σ i)
@@ -438,7 +393,7 @@ theorem phiTopCoords : PhiTopCoords := by
     intro a
     have e := congrFun (congrFun hM (w a)) a
     simp only [C2.monoP, Matrix.of_apply, if_true] at e
-    rw [U.hMat, permutationMatrix_mul_apply, Matrix.diagonal_apply] at e
+    rw [U.hMat, _root_.Formalism.FourierDecayAlt.P.Ux2.permutationMatrix_mul_apply, Matrix.diagonal_apply] at e
     by_cases h : σ (w a) = a
     · refine ⟨?_, ?_⟩
       · rw [Equiv.eq_symm_apply]; exact h
@@ -477,7 +432,7 @@ theorem phiTopCoords : PhiTopCoords := by
   refine Filter.Eventually.of_forall fun q => ?_
   obtain ⟨y, u⟩ := q
   simp only [hg, he, MeasurableEquiv.prodCongr, MeasurableEquiv.coe_mk, Equiv.prodCongr_apply, Prod.map,
-    Dx2.SL.reE, MeasurableEquiv.refl_apply, Equiv.coe_fn_mk]
+    Dx2.SL.reE, Equiv.coe_fn_mk]
   rw [conj_lowW, psi_conj, supS_eq, psi_star, ← subS_eq]
   congr 1
   have : U.headH σ d' (fun l => y ((iota σ).symm l)) u = lowP σ.symm y * C2.monoP σ.symm d' * G.upper u := by
@@ -491,10 +446,10 @@ end Formalism.FourierDecayAlt.P.StabilizerDisintegration.UC
 
 namespace Formalism.FourierDecayAlt.P.StabilizerDisintegration
 
-theorem minorsLU : MinorsLU := UC.minorsLU
-theorem lstLeft : LstLeft := UC.lstLeft
-theorem utLeft : UTLeft := UC.utLeft
-theorem splitUT : SplitUT := UC.splitUT
-theorem phiTopCoords : PhiTopCoords := UC.phiTopCoords
+alias minorsLU := _root_.Formalism.FourierDecayAlt.P.StabilizerDisintegration.UC.minorsLU
+alias lstLeft := _root_.Formalism.FourierDecayAlt.P.StabilizerDisintegration.UC.lstLeft
+alias utLeft := _root_.Formalism.FourierDecayAlt.P.StabilizerDisintegration.UC.utLeft
+alias splitUT := _root_.Formalism.FourierDecayAlt.P.StabilizerDisintegration.UC.splitUT
+alias phiTopCoords := _root_.Formalism.FourierDecayAlt.P.StabilizerDisintegration.UC.phiTopCoords
 
 end Formalism.FourierDecayAlt.P.StabilizerDisintegration

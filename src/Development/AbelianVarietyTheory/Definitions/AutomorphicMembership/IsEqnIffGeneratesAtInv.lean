@@ -536,7 +536,7 @@ theorem Eff.eq_zero (h : D.Eff) (h' : (-D).Eff) : D = 0 := by
 def supp (D : CartierDiv X) : Closeds X where
   carrier := {x | ¬ D.IsEqn x 1}
   isClosed' := isOpen_compl_iff.1 (isOpen_iff_forall_mem_open.2 fun x hx =>
-    have ⟨U, hU, h⟩ := IsEqn.exists_nhds (not_not.1 hx)
+    have ⟨U, hU, h⟩ := IsEqn.exists_nhds (x := x) (not_not.1 hx)
     ⟨U, fun y hy => not_not.2 (h y hy), U.isOpen, hU⟩)
 
 theorem IsEqn.mem_supp_iff (h : D.IsEqn x g) : x ∈ D.supp ↔ ¬ UnitAt x g := by
@@ -671,16 +671,12 @@ theorem isRatSec_frameRat (hL : L.IsLB) (i₀ : L.ι) (h₀ : genericPoint X ∈
   simp only [Units.val_mul, map_mul, units_val_res_eq_resG, fnOf_resG] at hc
   exact hc.symm
 
-private theorem coe_res_eq_resG {U V : X.Opens} (e : V ≤ U) (u : Γ(X, U)ˣ) :
-    ((res e u : Γ(X, V)ˣ) : Γ(X, V)) = resG X e (u : Γ(X, U)) := by
-  rfl
-
 theorem frameRat_self (hL : L.IsLB) (i₀ : L.ι) (h₀ : genericPoint X ∈ L.U i₀) :
     frameRat L i₀ h₀ i₀ = 1 := by
   apply Units.ext
   rw [val_frameRat i₀ h₀ i₀ h₀, Units.val_one]
   have h2 := congrArg (fun u : Γ(X, L.U i₀)ˣ => fnOf (L.U i₀) h₀ (u : Γ(X, L.U i₀))) (hL.g_self i₀)
-  simp only [coe_res_eq_resG, fnOf_resG, Units.val_one, map_one] at h2
+  simp only [_root_.GlobalTheory.Cartier.units_val_res_eq_resG, fnOf_resG, Units.val_one, map_one] at h2
   exact h2
 
 def ofLB (hL : L.IsLB) (i₀ : L.ι) (h₀ : genericPoint X ∈ L.U i₀) : CartierDiv X :=
@@ -706,10 +702,6 @@ theorem fnOf_toLB_g (i j : (toLB D).ι) (h) : fnOf _ h ((toLB D).g i j).val =
     (i.1.2 : X.functionField) / (j.1.2 : X.functionField) :=
   (exists_trans i j).choose_spec h
 
-private theorem val_res_eq_resG {U V : X.Opens} (e : V ≤ U) (u : Γ(X, U)ˣ) :
-    ((res e u : Γ(X, V)ˣ) : Γ(X, V)) = resG X e (u : Γ(X, U)) := by
-  rfl
-
 theorem isLB_toLB (D : CartierDiv X) : (toLB D).IsLB := {
   cover := (by
       refine eq_top_iff.2 fun x _ => ?_
@@ -719,12 +711,12 @@ theorem isLB_toLB (D : CartierDiv X) : (toLB D).IsLB := {
       apply Units.ext
       apply fn_ext
       intro hU
-      rw [val_res_eq_resG, fnOf_resG, fnOf_toLB_g, div_self (Units.ne_zero _), Units.val_one, map_one])
+      rw [_root_.GlobalTheory.Cartier.units_val_res_eq_resG, fnOf_resG, fnOf_toLB_g, div_self (Units.ne_zero _), Units.val_one, map_one])
     , cocycle := fun i j k => (by
       apply Units.ext
       apply fn_ext
       intro hU
-      simp only [Units.val_mul, map_mul, val_res_eq_resG, fnOf_resG, fnOf_toLB_g]
+      simp only [Units.val_mul, map_mul, _root_.GlobalTheory.Cartier.units_val_res_eq_resG, fnOf_resG, fnOf_toLB_g]
       rw [div_mul_div_cancel₀ (Units.ne_zero _)]) }
 
 theorem presents_toLB (D : CartierDiv X) : Presents D (toLB D) fun i => i.1.2 := by
@@ -779,10 +771,6 @@ theorem rat_injective (h : Presents D L r) : Function.Injective h.rat := by
   subst this
   rfl
 
-private theorem fnOf_presheaf_map_homOfLE {U V : X.Opens} (e : V ≤ U) (h : genericPoint X ∈ V) (a : Γ(X, U)) :
-    fnOf V h ((X.presheaf.map (homOfLE e).op).hom a) = fnOf U (e h) a := by
-  exact fnOf_resG e h a
-
 theorem exists_rat_eq (h : Presents D L r) {f : X.functionField} (hf : f ∈ D.sections) :
     ∃ s, h.rat s = f := by
   have hreg : ∀ i, ∃ a : Γ(X, L.U i), ∀ hU, fnOf _ hU a = f * (r i : X.functionField) := by
@@ -798,7 +786,7 @@ theorem exists_rat_eq (h : Presents D L r) {f : X.functionField} (hf : f ∈ D.s
     intro hU
     have hi : genericPoint X ∈ L.U i := hU.1
     have hj : genericPoint X ∈ L.U j := hU.2
-    rw [map_mul, fnOf_presheaf_map_homOfLE, fnOf_presheaf_map_homOfLE, ha i, ha j, h.isRatSec i j hU]
+    rw [map_mul, _root_.GlobalTheory.Cartier.fnOf_map_homOfLE, _root_.GlobalTheory.Cartier.fnOf_map_homOfLE, ha i, ha j, h.isRatSec i j hU]
     ring
   · show fnOf _ _ (a _) / r _ = f
     rw [ha, mul_div_assoc, div_self (r _).ne_zero, mul_one]
@@ -835,10 +823,6 @@ theorem add_principal (h : Presents D L r) (g : X.functionFieldˣ) :
   ⟨h.isLB, fun i j hij => by rw [Units.val_mul, Units.val_mul, h.isRatSec i j hij, mul_assoc],
     fun i x hx => (h.isEqn i x hx).add (isEqn_principal g x)⟩
 
-private theorem val_res_units_eq_resG {U V : X.Opens} (e : V ≤ U) (u : Γ(X, U)ˣ) :
-    ((res e u : Γ(X, V)ˣ) : Γ(X, V)) = resG X e (u : Γ(X, U)) := by
-  rfl
-
 private theorem fnOf_resG_mul {U U' V : X.Opens} (e : V ≤ U) (e' : V ≤ U') (h : genericPoint X ∈ V)
     (a : Γ(X, U)) (b : Γ(X, U')) :
     fnOf V h (resG X e a * resG X e' b) = fnOf U (e h) a * fnOf U' (e' h) b := by
@@ -854,7 +838,7 @@ theorem tens (h : Presents D L r) (h' : Presents E M r') :
     (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)) hpq
     (L.g p.1 q.1 : Γ(X, L.U p.1 ⊓ L.U q.1)) (M.g p.2 q.2 : Γ(X, M.U p.2 ⊓ M.U q.2))
   dsimp only [GlobalTheory.CechPic.tens]
-  simp only [Units.val_mul, val_res_units_eq_resG]
+  simp only [Units.val_mul, _root_.GlobalTheory.Cartier.units_val_res_eq_resG]
   erw [key]
   rw [h.isRatSec _ _ h1, h'.isRatSec _ _ h2]
   ring

@@ -61,13 +61,12 @@ namespace PI.ScPsiExists.UnitaryGroupMassFormula
 
 theorem sum_embedding_eq_trace (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (y : F) :
     ∑ v : InfinitePlace F, v.embedding y = algebraMap ℚ ℂ (Algebra.trace ℚ F y) := by
-  apply PI.StdCharTRWork.sum_embedding_eq_trace <;> assumption
+  apply PI.StdCharTRWork.sum_embedding_eq_trace
 
 theorem sum_embedding_int (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (c : 𝓞 F) :
     ∃ n : ℤ, ∑ v : InfinitePlace F, v.embedding (algebraMap (𝓞 F) F c) = (n : ℂ) := by
-  have hi : IsIntegral ℤ (Algebra.trace ℚ F (algebraMap (𝓞 F) F c)) :=
-    Algebra.isIntegral_trace (RingOfIntegers.isIntegral_coe c)
-  obtain ⟨n, hn⟩ := (IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 hi
+  obtain ⟨n, hn⟩ := (IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1
+    (Algebra.isIntegral_trace (RingOfIntegers.isIntegral_coe c))
   refine ⟨n, ?_⟩
   rw [sum_embedding_eq_trace, ← hn]
   simp
@@ -118,10 +117,8 @@ end Tau
 theorem alg_int_mem (F : Type) [Field F] [NumberField F] (d : 𝓞 F) :
     algebraMap F (Af F) (algebraMap (𝓞 F) F d) ∈ Formalism.UG.intAd F := by
   intro v
-  show (algebraMap F (Af F) (algebraMap (𝓞 F) F d)) v ∈ v.adicCompletionIntegers F
-  rw [FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.mem_adicCompletionIntegers,
-    HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
-  exact HeightOneSpectrum.valuation_le_one v d
+  simpa [FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.mem_adicCompletionIntegers,
+    HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] using HeightOneSpectrum.valuation_le_one v d
 
 theorem int_of_alg_mem (F : Type) [Field F] [NumberField F] (y : F)
     (h : algebraMap F (Af F) y ∈ Formalism.UG.intAd F) : ∃ d : 𝓞 F, algebraMap (𝓞 F) F d = y := by
@@ -191,11 +188,9 @@ theorem int_of_inclE_mem (τ : E →ₗ[F] F)
     (hτ : ∀ c : 𝓞 E, ∃ d : 𝓞 F, algebraMap (𝓞 F) F d = τ (algebraMap (𝓞 E) E c))
     (x : E) (hx : Formalism.UG.inclE (F := F) (Af F) x ∈ IntAf F E) :
     ∃ d : 𝓞 F, algebraMap (𝓞 F) F d = τ x := by
-  have h := tT_mem τ hτ _ hx
-  have he : tT τ (Formalism.UG.inclE (F := F) (Af F) x) = algebraMap F (Af F) (τ x) := by
-    simp [Formalism.UG.inclE, tT_tmul]
-  rw [he] at h
-  exact int_of_alg_mem F _ h
+  have h := tT_mem τ hτ (Formalism.UG.inclE (F := F) (Af F) x) hx
+  refine int_of_alg_mem F (τ x) ?_
+  simpa [Formalism.UG.inclE, tT_tmul] using h
 
 end Tens
 
@@ -205,8 +200,7 @@ def sHom (I : AutInst) : I.E →+ ℝ :=
     simp only [map_add (f := _), Complex.add_re, mul_add, Finset.sum_add_distrib])
 
 theorem add_star_eq (z : ℂ) : z + star z = ((2 * z.re : ℝ) : ℂ) := by
-  rw [Complex.star_def]
-  exact Complex.add_conj z
+  simpa [Complex.star_def] using Complex.add_conj z
 
 theorem sHom_coe (I : AutInst) (x : I.E) :
     ((sHom I x : ℝ) : ℂ) = ∑ v, (I.φ v x + star (I.φ v x)) := by

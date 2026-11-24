@@ -121,7 +121,7 @@ theorem spanR_univ {m : ℕ} (Y : Fin m → Fin n → E) :
 theorem hE_swap (hJ : IsHermND σ J) (hinv : ∀ x, σ (σ x) = x) (x y : Fin n → E) :
     hE σ J y x = σ (hE σ J x y) := by
 
-  simp only [hE, Formalism.UG.hform, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hinv, hJ.1]
+  simp only [hE, Formalism.UG.hform, map_sum, map_mul, RingHom.coe_coe, hinv, hJ.1]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring

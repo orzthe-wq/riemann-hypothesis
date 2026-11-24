@@ -87,12 +87,12 @@ theorem binomial_expansion_coeff_padic_dvd (p t : ℕ) (hp : p.Prime) (rho M l :
       intro i
       simp only [coeff_sub, coeff_one_add_X_pow, coeff_one, coeff_X_pow]
       rcases Nat.eq_zero_or_pos i with rfl | hi
-      · simp [hP.ne']
+      · simp
         rw [if_neg (ne_of_lt hP)]
         exact dvd_zero _
       · by_cases hiP : i = p ^ t
         · subst hiP
-          simp [hP.ne']
+          simp
           rw [if_neg (by simp [hp.ne_zero])]
           exact dvd_zero _
         · by_cases hlt : i < p ^ t

@@ -443,7 +443,7 @@ structure IsOrderReduction (P : ℕ → Prop) (A B : PrincipalizationAssignment.
     ∀ J : Y.IdealSheafData,
       (T.withSchemeIdealBoundary Y q J ([] : List Y.IdealSheafData)).IsAdmissible →
       (T.withSchemeIdealBoundary Y q J ([] : List Y.IdealSheafData)).krullDimSucc < T.krullDimSucc →
-      T.ideal = imageIdealSheaf e J →
+      T.ideal = _root_.FunctorialResolution.Blowup.schemeImageIdeal e J →
       IsPushforwardBlowupSeq e (B (T.withSchemeIdealBoundary Y q J ([] : List Y.IdealSheafData))).toSequenceOfBlowups
         (A T).toSequenceOfBlowups
   order_le : ∀ T : MarkedIdealWithBoundary.{u}, T.IsAdmissible → P T.krullDimSucc → T.IsOrderBoundedByMult →
@@ -522,7 +522,7 @@ structure IsBoundaryDivisorReduction (P : ℕ → Prop) (j : ℕ) (A B : Princip
           ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap) J
           ((T.boundary.eraseIdx j).map
             (fun D => D.comap (T.boundary.get ⟨j, hj⟩).subschemeι))).krullDimSucc < T.krullDimSucc →
-      T.ideal = imageIdealSheaf (T.boundary.get ⟨j, hj⟩).subschemeι J →
+      T.ideal = _root_.FunctorialResolution.Blowup.schemeImageIdeal (T.boundary.get ⟨j, hj⟩).subschemeι J →
       IsPushforwardBlowupSeq (T.boundary.get ⟨j, hj⟩).subschemeι
         (B (T.withSchemeIdealBoundary (T.boundary.get ⟨j, hj⟩).subscheme
             ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap) J

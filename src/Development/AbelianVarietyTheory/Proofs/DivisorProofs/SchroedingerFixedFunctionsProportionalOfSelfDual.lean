@@ -127,7 +127,7 @@ theorem exists_shift {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum
     by_contra h
     push Not at h
     exact h1 (AddChar.ext _ _ fun t => by rw [h t, AddChar.one_apply])
-  obtain ⟨n, hn⟩ := GlobalTheory.CharConductor.exists_exponent_of_valued ψk hc hne
+  obtain ⟨n, hn⟩ := _root_.GlobalTheory.CharacterConductorBall.exists_conductor ψk hc hne
   obtain ⟨a, ha⟩ := HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp n)
   have ha0 : (Valued.v a : WithZero (Multiplicative ℤ)) ≠ 0 := by rw [ha]; exact WithZero.exp_ne_zero
   refine ⟨a, by simpa using ha0, fun x => ?_⟩

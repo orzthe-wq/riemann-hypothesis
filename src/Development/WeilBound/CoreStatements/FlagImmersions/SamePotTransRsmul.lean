@@ -98,13 +98,6 @@ theorem birational_of_block {y₀ : (Σ k, ι₀ k) → Ω} {y : (Σ k, ι k) �
   exact ⟨Function.extend κ d 0, rename v g, rename v h, DegBlock.isMultiHomog_rename' hv hg,
     DegBlock.isMultiHomog_rename' hv hh, by rw [hc]; exact hne, by rw [hc, hc]; exact he⟩
 
-theorem ne_zero_of_arith {y : (Σ k, ι k) → Ω} {d : ℕ} (hA : IsArithVar (mCoordIdeal y) d) (k : K) :
-    ∃ a, y ⟨k, a⟩ ≠ 0 := by
-  obtain ⟨a, ha⟩ := hA.2.1.2.2 k
-  refine ⟨a, fun h0 => ha ?_⟩
-  show mConeMap y (X ⟨k, a⟩) = 0
-  simp [mConeMap, h0]
-
 theorem relfinrank_restr [CharZero Ω₀] [CharZero Ω] (i : Ω₀ →+* Ω) {y₀ : (Σ k, ι₀ k) → Ω₀} {y : (Σ k, ι k) → Ω}
     (hy : ∀ p, y (v p) = i (y₀ p)) (h₀ : blockFnField y₀ = ⊤) (h : blockFnField y = ⊤) :
     IntermediateField.relfinrank (blockFnField (y ∘ v)) (blockFnField y) =
@@ -131,17 +124,6 @@ theorem relfinrank_restr [CharZero Ω₀] [CharZero Ω] (i : Ω₀ →+* Ω) {y�
   obtain ⟨z, rfl⟩ := (IntermediateField.equivMap ⊤ φ).surjective x
   simp [e, φ, RingHom.algebraMap_toAlgebra]
   rfl
-
-theorem exists_chart (hv : IsBlockMap κ v) (c : ∀ k, ι k) : ∃ c₀ : ∀ k, ι₀ k, ∀ k, v ⟨k, c₀ k⟩ = ⟨κ k, c (κ k)⟩ := by
-  have : ∀ k, ∃ a : ι₀ k, v ⟨k, a⟩ = ⟨κ k, c (κ k)⟩ := by
-    intro k
-    obtain ⟨p, hp⟩ := hv.2.2.2 ⟨κ k, c (κ k)⟩ ⟨k, rfl⟩
-    have h1 : κ p.1 = κ k := by rw [← hv.2.2.1 p, hp]
-    obtain ⟨k₁, a⟩ := p
-    obtain rfl : k₁ = k := hv.1 h1
-    exact ⟨a, hp⟩
-  choose c₀ hc₀ using this
-  exact ⟨c₀, hc₀⟩
 
 theorem prod_pullDeg (hκ : Function.Injective κ) (w : K → Ω) (a : K₀ → ℤ) :
     ∏ k, w k ^ pullDeg κ a k = ∏ k, w (κ k) ^ a k := by

@@ -1,9 +1,13 @@
 module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsConstMul
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HermitianPeriodLinearAlgebraStatement
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodEigenFrameStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodHermitianTypeCompatibilityStatement
+public import Mathlib.Data.Matrix.ColumnRowPartitioned
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.ThetaUnifAV
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HermitianPeriodLinearAlgebra
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.IsHodgeGram
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsHolPeriods
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.PeriodEigenFrame
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PeriodHermitianTypeCompatibility
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -65,10 +69,10 @@ theorem anSolve : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
     show σ (tauIn c (ComplexEmbedding.conjugate τ) a) = _
     rw [h1, hτ, H.bar_eq, IsCMField.complexEmbedding_complexConj]
     rfl
-  obtain ⟨V, hVd, hVl, hVs⟩ := GlobalTheory.T.period_eigen_frame E H D l Xo _ g ty FU i P (under y) (σ.comp (tauIn c τ)) τ' D.p v hP hy hτ hv
-  obtain ⟨W, hWd, hWl, hWs⟩ := GlobalTheory.T.period_eigen_frame E H D l Xo _ g ty FU i P (under y) _ (ComplexEmbedding.conjugate τ') D.q w hP hy hc hw
+  obtain ⟨V, hVd, hVl, hVs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_directions_of_isEigFrame E H D l Xo _ g ty FU i P (under y) (σ.comp (tauIn c τ)) τ' D.p v hP hy hτ hv
+  obtain ⟨W, hWd, hWl, hWs⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.exists_directions_of_isEigFrame E H D l Xo _ g ty FU i P (under y) _ (ComplexEmbedding.conjugate τ') D.q w hP hy hc hw
   obtain ⟨Hm, hHh, hHp, hHi⟩ := id hP.2.2.2.2
-  obtain ⟨-, hs, hd⟩ := GlobalTheory.T.period_hermitian_type_compatibility E H (FU.Di i) g ty P Hm hP hHh hHi
+  obtain ⟨-, hs, hd⟩ := _root_.GlobalTheory.CompanionTheory.Ar.Flat.riemann_tau_component E H (FU.Di i) g ty P Hm hP hHh hHi
   have hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q := by
     rw [(FU.sig i).1, (FU.sig i).2]; simp
   have hS : (Matrix.of fun m n => τ' (sesq (FU.Di i) (e m) (e n))).det ≠ 0 := by
@@ -80,7 +84,7 @@ theorem anSolve : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Ho
     constructor
     · intro a b; funext k; simp only [tyPart, Pi.add_apply]; split_ifs <;> simp
     · intro a b; funext k; simp only [tyPart, Pi.smul_apply]; split_ifs <;> simp
-  obtain ⟨⟨Fm, B, d⟩, ⟨h1, h2, h3, h4, h5⟩, hu⟩ := GlobalTheory.T.hermitian_period_linear_algebra D.p D.q g (tyPart ty τ') (tyPart ty (ComplexEmbedding.conjugate τ')) V W (fun m => P (e m)) _ Hm hlin hHh hHp hS hVl hWl (fun n => hVs _) (fun n => hWs _) (fun m n => hs τ' _ _)
+  obtain ⟨⟨Fm, B, d⟩, ⟨h1, h2, h3, h4, h5⟩, hu⟩ := _root_.GlobalTheory.CompanionTheory.Ar.LinFlat.flatSection_linearAlgebra D.p D.q g (tyPart ty τ') (tyPart ty (ComplexEmbedding.conjugate τ')) V W (fun m => P (e m)) _ Hm hlin hHh hHp hS hVl hWl (fun n => hVs _) (fun n => hWs _) (fun m n => hs τ' _ _)
   refine ⟨⟨V, W, Fm, B, d⟩, ⟨fun a => (hVd a _).2 rfl, fun j => (hWd j _).2 rfl, h1, h2, h3, h4, h5⟩, ?_⟩
   rintro ⟨V', W', Fm', B', d'⟩ ⟨k1, k2, k3, k4, k5, k6, k7⟩
   have eV : V' = V := funext fun a => (hVd a _).1 (k1 a)

@@ -2,53 +2,11 @@ module
 
 public import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 public import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Upqcpt
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Rat
 import Mathlib.Algebra.Order.Star.Real
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 public import Mathlib.Analysis.InnerProductSpace.Rayleigh
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 public import Mathlib.LinearAlgebra.Eigenspace.Minpoly
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -85,7 +43,7 @@ theorem adjZ_addD (X Y : Mat p q) : adjZ (X + Y) = adjZ X + adjZ Y := by
   simp [adjZ, conjTranspose_add, Matrix.mul_add, Matrix.add_mul]
 
 theorem adjZ_smulD (c : ℂ) (X : Mat p q) : adjZ (c • X) = star c • adjZ X := by
-  simp [adjZ, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]
+  simp [adjZ, conjTranspose_smul]
 
 theorem mem_upq_of_adjZD {Y : Mat p q} (h : adjZ Y = -Y) : Y ∈ upq p q := by
   show Yᴴ * Jm p q + Jm p q * Y = 0
@@ -202,7 +160,7 @@ variable {p q : ℕ} {M : GKMod p q} {H₁ H₂ : Type} [NormedAddCommGroup H₁
 def cwD : Ix p q → ℚ := Sum.elim (fun i => -(i : ℚ)) (fun j => -(j : ℚ))
 
 theorem cwD_lt {a b : Ix p q} (h : posC a b) : cwD b < cwD a := by
-  rcases a with a | a <;> rcases b with b | b <;> simp_all [posC, cwD] <;> exact_mod_cast h
+  rcases a with a | a <;> rcases b with b | b <;> simp_all [posC, cwD]
 
 def ellD (μ : Ix p q → ℚ) : ℚ := ∑ a, cwD a * μ a
 
@@ -269,8 +227,8 @@ theorem form_propD (ι₁ : M.V →ₗ[ℂ] H₁) (ι₂ : M.V →ₗ[ℂ] H₂)
   let β : Y₁ → Y₁ → ℂ := fun x x' => ⟪ι₂ (e₁.symm x), ι₂ (e₁.symm x')⟫_ℂ
   let f : Y₁ → (Y₁ →L[ℂ] ℂ) := fun x => LinearMap.toContinuousLinearMap
     { toFun := fun x' => β x x'
-      map_add' := fun a b => by simp [β, inner_add_right]
-      map_smul' := fun c a => by simp [β, inner_smul_right] }
+      map_add' := fun a b => by simp [β]
+      map_smul' := fun c a => by simp [β] }
   let T : Y₁ →ₗ[ℂ] Y₁ :=
     { toFun := fun x => (InnerProductSpace.toDual ℂ Y₁).symm (f x)
       map_add' := fun a b => ext_inner_right ℂ fun z => by
@@ -384,9 +342,9 @@ theorem form_propD (ι₁ : M.V →ₗ[ℂ] H₁) (ι₂ : M.V →ₗ[ℂ] H₂)
 
   let R : Submodule ℂ M.V :=
     { carrier := {x | ∀ w, ⟪ι₂ x, ι₂ w⟫_ℂ = (lam : ℂ) * ⟪ι₁ x, ι₁ w⟫_ℂ}
-      add_mem' := fun {a b} ha hb w => by simp only [Set.mem_setOf_eq, map_add (f := _), inner_add_left, ha w, hb w]; ring
+      add_mem' := fun {a b} ha hb w => by simp only [map_add (f := _), inner_add_left, ha w, hb w]; ring
       zero_mem' := fun w => by simp
-      smul_mem' := fun c a ha w => by simp only [Set.mem_setOf_eq, map_smul, inner_smul_left, ha w]; ring }
+      smul_mem' := fun c a ha w => by simp only [map_smul, inner_smul_left, ha w]; ring }
   have hRst : ∀ Z, ∀ y ∈ R, M.act Z y ∈ R := fun Z y hy w => by
     rw [adj_ruleD s₂, hy, adj_ruleD s₁]
   have hv₀R : (v₀ : M.V) ∈ R := fun w => by

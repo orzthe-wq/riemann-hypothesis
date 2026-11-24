@@ -129,7 +129,7 @@ theorem UpperTheory.V.Af.Rs.rankin :
       nlinarith [sq_nonneg (‖coef f n‖ - ‖coef g n‖)]
     have hn : (0:ℝ) ≤ (n:ℝ) ^ A := by positivity
     calc ‖a n‖ / (n:ℝ) ^ A = (‖coef g n‖ * ‖coef f n‖) / (n:ℝ) ^ A := by
-          simp [ha, norm_mul]
+          simp [ha]
       _ ≤ ((‖coef f n‖ ^ 2 + ‖coef g n‖ ^ 2) / 2) / (n:ℝ) ^ A := by gcongr
       _ = _ := by ring
   have hGs : Summable (fun n => ∫ y in Ioi (0:ℝ), ‖G n y‖) := by

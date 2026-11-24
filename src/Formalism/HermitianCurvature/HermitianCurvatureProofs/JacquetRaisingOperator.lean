@@ -217,7 +217,7 @@ theorem rho_aa (Bs : B.RealPlaceData k r Wp Wq) {F : Mat k r → (Wq →L[ℂ] W
     intro g₀ hg₀
     obtain ⟨U, f', hU, hgU, hc, he⟩ := hF g₀ hg₀
     exact ⟨U, f', hU, hgU, hc, fun x hx hxG => he x hx hxG⟩
-  have hX0 := (Formalism.FourierDecayAlt.P.operators_commute_translations' (Wq →L[ℂ] Wp) k r Bs.z Bs.z' r le_rfl u 0 F Bs.z_mem Bs.z'_mem hSm
+  have hX0 := (_root_.operators_commute_translations (Wq →L[ℂ] Wp) k r Bs.z Bs.z' r le_rfl u 0 F Bs.z_mem Bs.z'_mem hSm
     s hs s' hs' g hg).1
   set L := postL (Bs.π (Matrix.of p.1.1)) (Bs.π' (Matrix.of p.2.1)⁻¹) with hL
   have e1 : rho Bs p (C3.AAop k r r le_rfl u F) g = L (C3.AAop k r r le_rfl u F (s * g * s')) := by

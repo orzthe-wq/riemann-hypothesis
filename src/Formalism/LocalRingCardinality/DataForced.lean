@@ -236,7 +236,7 @@ theorem sum_orbits (D : D7) (j p : ℕ) (T : Finset (Bool × HH D))
 
 theorem cls_ramD {D : D7} {p : ℕ} (h : D.host.cls p = PrimeClass.ramD) : p = D.host.d := by
   unfold Host.cls primeClass at h
-  split_ifs at h <;> simp_all
+  split_ifs at h; simp_all
 
 section Cases
 

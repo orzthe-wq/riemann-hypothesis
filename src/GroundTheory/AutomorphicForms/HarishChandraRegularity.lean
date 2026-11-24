@@ -1,56 +1,989 @@
 module
 
 public import GroundTheory.AutomorphicForms.HarishChandraRegularity.ContDiffCompCoordEquiv
-public import GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpChart
-public import GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar
-public import GroundTheory.AutomorphicForms.HarishChandraRegularity.TupleOp
+public import Mathlib.Analysis.Calculus.Deriv.Prod
+public import GroundTheory.AutomorphicForms.DixmierMalliavinHaarCoord
+public import Mathlib.Analysis.Normed.Lp.MeasurableSpace
+public import Mathlib.MeasureTheory.Measure.Haar.OfBasis
+public import GroundTheory.AutomorphicForms.DixmierMalliavinHaar
+public import Mathlib.Analysis.Calculus.ContDiff.WithLp
+public import Mathlib.Analysis.Calculus.Deriv.Abs
+public import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
+public import GroundTheory.AutomorphicForms.PartialDifferential.AnalyticHypoBasic
+public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
 public import GroundTheory.AutomorphicForms.GKModules.Casimir
 public import GroundTheory.AutomorphicForms.HarishChandraRegularity.CartanBasis
 public import GroundTheory.AutomorphicForms.PartialDifferential.AnalyticHypoelliptic
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Tactic.TypeStar
+import Mathlib.Order.CompletePartialOrder
+import Mathlib.Topology.Algebra.Group.Units
+import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
+import Mathlib.RingTheory.PiTensorProduct
+import Mathlib.Tactic.Monotonicity.Lemmas
+import Mathlib.Topology.Sheaves.Presheaf
 import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Algebra.Ring.IsFormallyReal
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Separation.CompletelyRegular
-import Mathlib.Topology.Sheaves.Init
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpChart, GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar, GroundTheory.AutomorphicForms.HarishChandraRegularity.TupleOp, GroundTheory.AutomorphicForms.HarishChandraRegularity
+
+-- ===== clump member: GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpChart =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpChart", "h": "module\n\npublic import GroundTheory.AutomorphicForms.HarishChandraRegularity.ContDiffCompCoordEquiv\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.Deriv.Prod\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Automorphic
+
+open NormedSpace Set Filter Topology
+open scoped ContDiff
+
+set_option linter.unusedSectionVars false
+
+variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸]
+
+theorem analyticAt_expPartialHomeomorph_symm {y : 𝔸}
+    (hy : y ∈ (expPartialHomeomorph ℝ 𝔸).target) :
+    AnalyticAt ℝ (expPartialHomeomorph ℝ 𝔸).symm y := by
+  set e := expPartialHomeomorph ℝ 𝔸 with he
+  have hs : e.symm y ∈ e.source := e.map_target hy
+  have hu : IsUnit (fderiv ℝ (exp : 𝔸 → 𝔸) (e.symm y)) :=
+    expPartialHomeomorph_source_subset ℝ 𝔸 hs
+  obtain ⟨p, hp⟩ := exp_analytic (𝕂 := ℝ) (e.symm y)
+  have hp' : HasFPowerSeriesAt e p (e.symm y) := by
+    rw [he, coe_expPartialHomeomorph]; exact hp
+  have h1 : p 1 = (continuousMultilinearCurryFin1 ℝ 𝔸 𝔸).symm
+      ((ContinuousLinearEquiv.unitsEquiv ℝ 𝔸 hu.unit : 𝔸 ≃L[ℝ] 𝔸) : 𝔸 →L[ℝ] 𝔸) := by
+    have h2 := hp.fderiv_eq
+    have h3 : ((ContinuousLinearEquiv.unitsEquiv ℝ 𝔸 hu.unit : 𝔸 ≃L[ℝ] 𝔸) : 𝔸 →L[ℝ] 𝔸) =
+        fderiv ℝ (exp : 𝔸 → 𝔸) (e.symm y) := by
+      ext x; simp
+    rw [h3, h2, LinearIsometryEquiv.symm_apply_apply]
+  have := e.hasFPowerSeriesAt_symm hs hp' h1
+  rw [e.right_inv hy] at this
+  exact this.analyticAt
+
+variable {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸}
+
+noncomputable def expChartProd {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
+    (p : EuclideanSpace ℝ (Fin d) × ℝ) : 𝔸 :=
+  exp ((coordEquiv b p.1 : 𝔤) : 𝔸) * exp (p.2 • (X : 𝔸))
+
+noncomputable def expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
+    (p : EuclideanSpace ℝ (Fin d) × ℝ) : EuclideanSpace ℝ (Fin d) :=
+  (coordEquiv b).symm (subspaceProj 𝔤 ((expPartialHomeomorph ℝ 𝔸).symm (expChartProd b X p)))
+
+noncomputable def expChartCoeff {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
+    (x : EuclideanSpace ℝ (Fin d)) : EuclideanSpace ℝ (Fin d) :=
+  fderiv ℝ (expChartFlow b X) (x, 0) (0, 1)
+
+theorem continuous_expChartProd {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤) :
+    Continuous (expChartProd b X) := by
+  unfold expChartProd
+  refine Continuous.mul ?_ ?_
+  · exact (contDiff_exp ℝ 𝔸 (n := 0)).continuous.comp
+      (continuous_subtype_val.comp ((coordEquiv b).continuous.comp continuous_fst))
+  · exact (contDiff_exp ℝ 𝔸 (n := 0)).continuous.comp (continuous_snd.smul continuous_const)
+
+theorem analyticAt_expChartProd {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
+    (p : EuclideanSpace ℝ (Fin d) × ℝ) : AnalyticAt ℝ (expChartProd b X) p := by
+  have h1 : AnalyticAt ℝ (fun q : EuclideanSpace ℝ (Fin d) × ℝ => ((coordEquiv b q.1 : 𝔤) : 𝔸)) p :=
+    (𝔤.subtypeL.comp ((coordEquiv b : EuclideanSpace ℝ (Fin d) →L[ℝ] 𝔤).comp
+      (ContinuousLinearMap.fst ℝ _ ℝ))).analyticAt p
+  have h2 : AnalyticAt ℝ (fun q : EuclideanSpace ℝ (Fin d) × ℝ => q.2 • (X : 𝔸)) p :=
+    ((ContinuousLinearMap.snd ℝ (EuclideanSpace ℝ (Fin d)) ℝ).smulRight (X : 𝔸)).analyticAt p
+  have h1' := (exp_analytic (𝕂 := ℝ) _).comp h1
+  have h2' := (exp_analytic (𝕂 := ℝ) _).comp h2
+  exact h1'.mul h2'
+
+theorem analyticAt_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
+    {p : EuclideanSpace ℝ (Fin d) × ℝ}
+    (hp : expChartProd b X p ∈ (expPartialHomeomorph ℝ 𝔸).target) :
+    AnalyticAt ℝ (expChartFlow b X) p := by
+  have hL : AnalyticAt ℝ (fun w : 𝔸 => (coordEquiv b).symm (subspaceProj 𝔤 w))
+      ((expPartialHomeomorph ℝ 𝔸).symm (expChartProd b X p)) :=
+    (((coordEquiv b).symm : 𝔤 →L[ℝ] EuclideanSpace ℝ (Fin d)).comp (subspaceProj 𝔤)).analyticAt _
+  have h2 : AnalyticAt ℝ ((expPartialHomeomorph ℝ 𝔸).symm ∘ expChartProd b X) p :=
+    (analyticAt_expPartialHomeomorph_symm hp).comp (analyticAt_expChartProd b X p)
+  exact AnalyticAt.comp (f := (expPartialHomeomorph ℝ 𝔸).symm ∘ expChartProd b X)
+    (g := fun w : 𝔸 => (coordEquiv b).symm (subspaceProj 𝔤 w)) hL h2
+
+theorem analyticOnNhd_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤) :
+    AnalyticOnNhd ℝ (expChartFlow b X) (expChartProd b X ⁻¹' (expPartialHomeomorph ℝ 𝔸).target) :=
+  fun _ hp => analyticAt_expChartFlow b X hp
+
+namespace IsExpLieAlgebra
+
+variable (h : IsExpLieAlgebra G 𝔤)
+
+theorem exists_ball_coordEquiv_mem_nhd {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
+    ∃ r > 0, ∀ x ∈ Metric.ball (0 : EuclideanSpace ℝ (Fin d)) r,
+      ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd := by
+  have hc : Continuous (fun x : EuclideanSpace ℝ (Fin d) => ((coordEquiv b x : 𝔤) : 𝔸)) :=
+    continuous_subtype_val.comp (coordEquiv b).continuous
+  have h0 : h.nhd ∈ 𝓝 ((fun x : EuclideanSpace ℝ (Fin d) => ((coordEquiv b x : 𝔤) : 𝔸)) 0) := by
+    simp only [map_zero, ZeroMemClass.coe_zero]
+    exact h.isOpen_nhd.mem_nhds h.zero_mem_nhd
+  obtain ⟨r, hr, hball⟩ := Metric.mem_nhds_iff.1 (hc.continuousAt.preimage_mem_nhds h0)
+  exact ⟨r, hr, fun x hx => hball hx⟩
+
+theorem val_expG_mul_expG {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
+    (p : EuclideanSpace ℝ (Fin d) × ℝ) :
+    (((h.expG (coordEquiv b p.1) * h.expG (p.2 • X) : G) : 𝔸ˣ) : 𝔸) = expChartProd b X p := by
+  simp [expChartProd]
+
+theorem expG_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
+    {p : EuclideanSpace ℝ (Fin d) × ℝ} (hp : expChartProd b X p ∈ h.nhdOne) :
+    h.expG (coordEquiv b (expChartFlow b X p)) = h.expG (coordEquiv b p.1) * h.expG (p.2 • X) := by
+  set w : G := h.expG (coordEquiv b p.1) * h.expG (p.2 • X) with hw
+  have hwv : ((w : 𝔸ˣ) : 𝔸) = expChartProd b X p := h.val_expG_mul_expG b X p
+  have hwN : ((w : 𝔸ˣ) : 𝔸) ∈ h.nhdOne := hwv ▸ hp
+  have hmem := h.symm_mem_lie hwN
+  have e1 : coordEquiv b (expChartFlow b X p) =
+      subspaceProj 𝔤 ((expPartialHomeomorph ℝ 𝔸).symm ((w : 𝔸ˣ) : 𝔸)) := by
+    rw [hwv]; exact (coordEquiv b).apply_symm_apply _
+  apply Subtype.ext; apply Units.ext
+  rw [coe_expG, e1, subspaceProj_of_mem hmem, h.exp_symm hwN]
+
+theorem expChartFlow_zero {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
+    {x : EuclideanSpace ℝ (Fin d)} (hx : ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd) :
+    expChartFlow b X (x, 0) = x := by
+  simp only [expChartFlow, expChartProd, zero_smul, exp_zero, mul_one]
+  rw [h.symm_exp hx, subspaceProj_coe, ContinuousLinearEquiv.symm_apply_apply]
+
+theorem expChartProd_zero_mem_nhdOne {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
+    {x : EuclideanSpace ℝ (Fin d)} (hx : ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd) :
+    expChartProd b X (x, 0) ∈ h.nhdOne := by
+  simp only [expChartProd, zero_smul, exp_zero, mul_one]
+  exact h.exp_mem_nhdOne hx
+
+theorem hasDerivAt_expChartFlow {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) (X : 𝔤)
+    {x : EuclideanSpace ℝ (Fin d)} (hx : ((coordEquiv b x : 𝔤) : 𝔸) ∈ h.nhd) :
+    HasDerivAt (fun t : ℝ => expChartFlow b X (x, t)) (expChartCoeff b X x) 0 := by
+  have hA : AnalyticAt ℝ (expChartFlow b X) (x, 0) :=
+    analyticAt_expChartFlow b X (h.nhdOne_subset_target (h.expChartProd_zero_mem_nhdOne b X hx))
+  have hl : HasDerivAt (fun t : ℝ => (x, t)) ((0 : EuclideanSpace ℝ (Fin d)), (1 : ℝ)) 0 :=
+    (hasDerivAt_const (0 : ℝ) x).prodMk (hasDerivAt_id 0)
+  exact hA.differentiableAt.hasFDerivAt.comp_hasDerivAt (x := (0 : ℝ)) hl
+
+theorem exists_expChart_coeff {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
+    ∃ r > 0, ∃ c : 𝔤 → EuclideanSpace ℝ (Fin d) → EuclideanSpace ℝ (Fin d),
+      (∀ X, AnalyticOnNhd ℝ (c X) (Metric.ball 0 r)) ∧
+      (∀ X, c X 0 = (coordEquiv b).symm X) ∧
+      ∀ (X : 𝔤) (f : G → ℂ), h.IsSmoothFun f → ∀ (g : G),
+        ∀ x ∈ Metric.ball (0 : EuclideanSpace ℝ (Fin d)) r,
+          h.rightDeriv X f (g * h.expG (coordEquiv b x)) =
+            fderiv ℝ (fun y => f (g * h.expG (coordEquiv b y))) x (c X x) := by
+  obtain ⟨r, hr, hball⟩ := h.exists_ball_coordEquiv_mem_nhd b
+  refine ⟨r, hr, expChartCoeff b, ?_, ?_, ?_⟩
+  ·
+    intro X x hx
+    have hS : (x, (0 : ℝ)) ∈ expChartProd b X ⁻¹' (expPartialHomeomorph ℝ 𝔸).target :=
+      h.nhdOne_subset_target (h.expChartProd_zero_mem_nhdOne b X (hball x hx))
+    have hD := (analyticOnNhd_expChartFlow b X).fderiv (𝕜 := ℝ) _ hS
+    have hinl : AnalyticAt ℝ (fun y : EuclideanSpace ℝ (Fin d) => (y, (0 : ℝ))) x :=
+      (ContinuousLinearMap.inl ℝ (EuclideanSpace ℝ (Fin d)) ℝ).analyticAt x
+    have hD' : AnalyticAt ℝ (fun y : EuclideanSpace ℝ (Fin d) =>
+        fderiv ℝ (expChartFlow b X) (y, 0)) x :=
+      AnalyticAt.comp (g := fderiv ℝ (expChartFlow b X))
+        (f := fun y : EuclideanSpace ℝ (Fin d) => (y, (0 : ℝ))) hD hinl
+    have hap := (ContinuousLinearMap.apply ℝ (EuclideanSpace ℝ (Fin d))
+      ((0 : EuclideanSpace ℝ (Fin d)), (1 : ℝ))).analyticAt (fderiv ℝ (expChartFlow b X) (x, 0))
+    exact AnalyticAt.comp (f := fun y : EuclideanSpace ℝ (Fin d) => fderiv ℝ (expChartFlow b X) (y, 0))
+      hap hD'
+  ·
+    intro X
+    have h0 : ((coordEquiv b (0 : EuclideanSpace ℝ (Fin d)) : 𝔤) : 𝔸) ∈ h.nhd := by
+      simp only [map_zero, ZeroMemClass.coe_zero]; exact h.zero_mem_nhd
+    have hd := h.hasDerivAt_expChartFlow b X h0
+    have hev : (fun t : ℝ => expChartFlow b X (0, t)) =ᶠ[𝓝 0]
+        fun t : ℝ => t • (coordEquiv b).symm X := by
+      have hc : Continuous (fun t : ℝ => t • (X : 𝔸)) := continuous_id.smul continuous_const
+      have : ∀ᶠ t in 𝓝 (0 : ℝ), t • (X : 𝔸) ∈ h.nhd := by
+        have h1 := hc.continuousAt (x := 0)
+        rw [ContinuousAt, zero_smul] at h1
+        exact h1 (h.isOpen_nhd.mem_nhds h.zero_mem_nhd)
+      filter_upwards [this] with t ht
+      simp only [expChartFlow, expChartProd, map_zero, ZeroMemClass.coe_zero, exp_zero, one_mul]
+      rw [h.symm_exp ht, show t • (X : 𝔸) = ((t • X : 𝔤) : 𝔸) from rfl, subspaceProj_coe, map_smul]
+    have hd2 : HasDerivAt (fun t : ℝ => t • (coordEquiv b).symm X) ((coordEquiv b).symm X) 0 := by
+      simpa using (hasDerivAt_id (0 : ℝ)).smul_const ((coordEquiv b).symm X)
+    exact hd.unique (hd2.congr_of_eventuallyEq hev)
+  ·
+    intro X f hf g x hx
+    have hxN := hball x hx
+    set u : EuclideanSpace ℝ (Fin d) → ℂ := fun y => f (g * h.expG (coordEquiv b y)) with hu
+    have hud : Differentiable ℝ u := (h.contDiff_comp_coordEquiv hf g b).differentiable (by simp)
+    have hφ := h.hasDerivAt_expChartFlow b X hxN
+    have h1 : HasDerivAt (fun t : ℝ => u (expChartFlow b X (x, t)))
+        (fderiv ℝ u x (expChartCoeff b X x)) 0 := by
+      have := (hud (expChartFlow b X (x, 0))).hasFDerivAt.comp_hasDerivAt (x := (0 : ℝ)) hφ
+      rw [h.expChartFlow_zero b X hxN] at this
+      exact this
+    have h2 := h.hasDerivAt_rightDeriv hf X (g * h.expG (coordEquiv b x))
+    have hev : (fun t : ℝ => f (g * h.expG (coordEquiv b x) * h.expG (t • X))) =ᶠ[𝓝 0]
+        fun t : ℝ => u (expChartFlow b X (x, t)) := by
+      have hc : Continuous (fun t : ℝ => expChartProd b X (x, t)) :=
+        (continuous_expChartProd b X).comp (continuous_const.prodMk continuous_id)
+      have : ∀ᶠ t in 𝓝 (0 : ℝ), expChartProd b X (x, t) ∈ h.nhdOne :=
+        hc.continuousAt.preimage_mem_nhds
+          (h.isOpen_nhdOne.mem_nhds (h.expChartProd_zero_mem_nhdOne b X hxN))
+      filter_upwards [this] with t ht
+      simp only [hu]
+      rw [h.expG_expChartFlow b X ht, mul_assoc]
+    exact h2.unique (h1.congr_of_eventuallyEq hev)
+
+end IsExpLieAlgebra
+
+end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpChart =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar", "h": "module\n\npublic import GroundTheory.AutomorphicForms.HarishChandraRegularity.ContDiffCompCoordEquiv\npublic import GroundTheory.AutomorphicForms.DixmierMalliavinHaarCoord\npublic import Mathlib.Analysis.Normed.Lp.MeasurableSpace\npublic import Mathlib.MeasureTheory.Measure.Haar.OfBasis\npublic import GroundTheory.AutomorphicForms.DixmierMalliavinHaar\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.ContDiff.WithLp\npublic import Mathlib.Analysis.Calculus.Deriv.Abs\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.Order.CompletePartialOrder\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Algebra.Group.Units\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Automorphic
+
+open scoped Manifold ContDiff Topology
+open MeasureTheory Metric Set Filter
+
+variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸]
+  {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸}
+
+namespace IsExpLieAlgebra
+
+variable (h : IsExpLieAlgebra G 𝔤)
+
+theorem prodExp_eq_expG_prodExpCoord {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) {z : Fin d → ℝ}
+    (hz : prodExpVal (fun i => (b i : 𝔸)) z ∈ h.nhdOne) :
+    h.prodExp (⇑b) z = h.expG (b.equivFun.symm (prodExpCoord b z)) := by
+  have hPz : (((h.prodExp (⇑b) z : G) : 𝔸ˣ) : 𝔸) = prodExpVal (fun i => (b i : 𝔸)) z :=
+    h.val_prodExp _ z
+  have hN : (((h.prodExp (⇑b) z : G) : 𝔸ˣ) : 𝔸) ∈ h.nhdOne := hPz ▸ hz
+  have hL := h.symm_mem_lie hN
+  rw [hPz] at hL
+  have e1 : ((b.equivFun.symm (prodExpCoord b z) : 𝔤) : 𝔸) =
+      (expPartialHomeomorph ℝ 𝔸).symm (prodExpVal (fun i => (b i : 𝔸)) z) := by
+    simp only [prodExpCoord, logCoord, LinearEquiv.coe_toContinuousLinearEquiv',
+      LinearEquiv.symm_apply_apply]
+    exact subspaceProj_of_mem hL
+  apply Subtype.ext; apply Units.ext
+  rw [coe_expG, e1, h.exp_symm hz, hPz]
+
+variable [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
+
+theorem exists_smooth_density_prodExp_tsupport {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
+    ∃ ε > 0, ∀ K : (Fin d → ℝ) → ℂ, ContDiff ℝ ∞ K → tsupport K ⊆ closedBall 0 ε →
+      ∃ κ : G → ℂ, (letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ κ) ∧
+        HasCompactSupport κ ∧ tsupport κ ⊆ h.prodExp (⇑b) '' tsupport K ∧
+        ∀ φ : G → ℂ, Continuous φ → ∫ y, κ y * φ y ∂μ = ∫ t, K t * φ (h.prodExp (⇑b) t) := by
+  obtain ⟨r, ρ, c, W, hr, hρ, hρpos, hW, hPW, hcP, hc, hint⟩ := h.exists_haar_density_prodExp μ b
+  set P := h.prodExp (⇑b) with hPdef
+  have hPc : Continuous P := h.continuous_prodExp _
+  refine ⟨r / 2, by positivity, fun K hK hKs => ?_⟩
+  have hεr : closedBall (0 : Fin d → ℝ) (r / 2) ⊆ ball 0 r :=
+    closedBall_subset_ball (by linarith)
+  set C := P '' closedBall (0 : Fin d → ℝ) (r / 2) with hCdef
+  have hCc : IsCompact C := (isCompact_closedBall _ _).image hPc
+  let κ : G → ℂ := W.indicator fun y => K (c y) * (((ρ (c y))⁻¹ : ℝ) : ℂ)
+  have hκC : ∀ y, y ∉ C → κ y = 0 := by
+    intro y hy
+    by_cases hyW : y ∈ W
+    · have hz : c y ∉ closedBall (0 : Fin d → ℝ) (r / 2) := fun hz => hy ⟨c y, hz, hcP y hyW⟩
+      have : K (c y) = 0 := image_eq_zero_of_notMem_tsupport fun h' => hz (hKs h')
+      simp [κ, indicator_of_mem hyW, this]
+    · simp [κ, indicator_of_notMem hyW]
+  have hκsupp : tsupport κ ⊆ C :=
+    closure_minimal (fun y hy => by_contra fun h' => hy (hκC y h')) hCc.isClosed
+  have hKc : IsCompact (tsupport K) :=
+    (isCompact_closedBall _ _).of_isClosed_subset (isClosed_tsupport _) hKs
+  have hκsupp' : tsupport κ ⊆ P '' tsupport K := by
+    refine closure_minimal (fun y hy => ?_) (hKc.image hPc).isClosed
+    by_cases hyW : y ∈ W
+    · have hK0 : K (c y) ≠ 0 := by
+        intro h0; apply hy; simp [κ, indicator_of_mem hyW, h0]
+      exact ⟨c y, subset_tsupport _ hK0, hcP y hyW⟩
+    · exact absurd (by simp [κ, indicator_of_notMem hyW]) hy
+  have hκW : ∀ z ∈ ball (0 : Fin d → ℝ) r, κ (P z) * (ρ z : ℂ) = K z := by
+    intro z hz
+    obtain ⟨hzW, hcz⟩ := hPW z hz
+    have hρz : (ρ z : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 (hρpos z hz).ne'
+    simp only [κ, indicator_of_mem hzW, hcz, Complex.ofReal_inv]
+    field_simp
+  have hsmooth : (letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ κ) := by
+    intro g
+    rw [h.contMDiffAt_iff_expG]
+    have hcont : Continuous (fun Y : 𝔤 => g * h.expG Y) :=
+      continuous_const.mul h.continuous_expG
+    have hg0 : g * h.expG 0 = g := by rw [h.expG_zero, mul_one]
+    by_cases hg : g ∈ C
+    · obtain ⟨z₀, hz₀, rfl⟩ := hg
+      have hz₀r : z₀ ∈ ball (0 : Fin d → ℝ) r := hεr hz₀
+      obtain ⟨hgW, hcg⟩ := hPW z₀ hz₀r
+      have hev : (fun Y : 𝔤 => κ (P z₀ * h.expG Y)) =ᶠ[𝓝 0]
+          fun Y => K (c (P z₀ * h.expG Y)) * (((ρ (c (P z₀ * h.expG Y)))⁻¹ : ℝ) : ℂ) := by
+        have : ∀ᶠ Y in 𝓝 (0 : 𝔤), P z₀ * h.expG Y ∈ W := by
+          have := hcont.continuousAt (x := 0)
+          rw [ContinuousAt, hg0] at this
+          exact this (hW.mem_nhds hgW)
+        filter_upwards [this] with Y hY
+        simp [κ, indicator_of_mem hY]
+      refine ContDiffAt.congr_of_eventuallyEq ?_ hev
+      have hc0 := hc (P z₀) hgW
+      have hρ0 : ρ (c (P z₀ * h.expG 0)) ≠ 0 := by
+        rw [hg0, hcg]; exact (hρpos z₀ hz₀r).ne'
+      exact (hK.contDiffAt.comp _ hc0).mul
+        ((Complex.ofRealCLM.contDiff.contDiffAt).comp _ ((hρ.contDiffAt.comp _ hc0).inv hρ0))
+    · have hev : (fun Y : 𝔤 => κ (g * h.expG Y)) =ᶠ[𝓝 0] fun _ => 0 := by
+        have : ∀ᶠ Y in 𝓝 (0 : 𝔤), g * h.expG Y ∈ Cᶜ := by
+          have := hcont.continuousAt (x := 0)
+          rw [ContinuousAt, hg0] at this
+          exact this (hCc.isClosed.isOpen_compl.mem_nhds hg)
+        filter_upwards [this] with Y hY
+        exact hκC _ hY
+      exact contDiffAt_const.congr_of_eventuallyEq hev
+  have hκc : Continuous κ := by
+    let := h.chartedSpace
+    exact hsmooth.continuous
+  refine ⟨κ, hsmooth, HasCompactSupport.intro hCc hκC, hκsupp', fun φ hφ => ?_⟩
+  have hψ₀s : tsupport (fun y => κ y * φ y) ⊆ P '' ball 0 r :=
+    (tsupport_mul_subset_left).trans (hκsupp.trans (image_mono hεr))
+  rw [hint (fun y => κ y * φ y) (hκc.mul hφ)
+    ((HasCompactSupport.intro hCc hκC).mul_right) hψ₀s]
+  rw [← setIntegral_eq_integral_of_forall_compl_eq_zero (f := fun t => K t * φ (P t))
+    (s := ball (0 : Fin d → ℝ) r) fun z hz => by
+      have : K z = 0 := image_eq_zero_of_notMem_tsupport fun h' => hz (hεr (hKs h'))
+      simp [this]]
+  refine setIntegral_congr_fun measurableSet_ball fun z hz => ?_
+  rw [mul_right_comm, hκW z hz]
+
+theorem exists_smooth_density_expCoord {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
+    ∃ ε > 0, ∀ β : EuclideanSpace ℝ (Fin d) → ℂ, ContDiff ℝ ∞ β →
+      tsupport β ⊆ closedBall 0 ε →
+      ∃ κ : G → ℂ, (letI := h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ κ) ∧
+        HasCompactSupport κ ∧ tsupport κ ⊆ (fun x => h.expG (coordEquiv b x)) '' tsupport β ∧
+        ∀ φ : G → ℂ, Continuous φ →
+          ∫ y, κ y * φ y ∂μ = ∫ x, β x * φ (h.expG (coordEquiv b x)) := by
+  classical
+  obtain ⟨ε₁, hε₁, hdens⟩ := h.exists_smooth_density_prodExp_tsupport μ b
+  obtain ⟨S, T, ψ, hSo, hTo, h0S, hΦST, hψTS, hψΦ, hΦψ, hψs, hSN⟩ := h.exists_prodExp_coord b
+  set Φ := prodExpCoord b with hΦdef
+  set P := h.prodExp (⇑b) with hPdef
+  have hΦ0 : Φ 0 = 0 := prodExpCoord_zero b
+  have h0T : (0 : Fin d → ℝ) ∈ T := hΦ0 ▸ hΦST h0S
+  have hψ0 : ψ 0 = 0 := by have := hψΦ 0 h0S; rwa [hΦ0] at this
+
+  have hSU : S ⊆ {t | prodExpVal (fun i => (b i : 𝔸)) t ∈ (expPartialHomeomorph ℝ 𝔸).target} :=
+    fun t ht => h.nhdOne_subset_target (hSN t ht)
+  have hΦs : ContDiffOn ℝ ∞ Φ S := (contDiffOn_prodExpCoord b).mono hSU
+  have hΦat : ∀ t ∈ S, ContDiffAt ℝ ∞ Φ t := fun t ht => hΦs.contDiffAt (hSo.mem_nhds ht)
+  have hψat : ∀ w ∈ T, ContDiffAt ℝ ∞ ψ w := fun w hw => hψs.contDiffAt (hTo.mem_nhds hw)
+
+  have hPΦ : ∀ t ∈ S, P t = h.expG (b.equivFun.symm (Φ t)) := fun t ht =>
+    h.prodExp_eq_expG_prodExpCoord b (hSN t ht)
+
+  have hdet : ∀ t ∈ S, (fderiv ℝ Φ t).det ≠ 0 := by
+    intro t ht
+    have hΦt : HasFDerivAt Φ (fderiv ℝ Φ t) t := ((hΦat t ht).differentiableAt (by simp)).hasFDerivAt
+    have hψt : HasFDerivAt ψ (fderiv ℝ ψ (Φ t)) (Φ t) :=
+      ((hψat _ (hΦST ht)).differentiableAt (by simp)).hasFDerivAt
+    have hcomp := hψt.comp t hΦt
+    have hid : (ψ ∘ Φ) =ᶠ[𝓝 t] id := by
+      filter_upwards [hSo.mem_nhds ht] with s hs
+      exact hψΦ s hs
+    have e : (fderiv ℝ ψ (Φ t)).comp (fderiv ℝ Φ t) = ContinuousLinearMap.id ℝ (Fin d → ℝ) := by
+      rw [← hcomp.fderiv, hid.fderiv_eq, fderiv_id]
+    intro h0
+    have := congrArg (fun L : (Fin d → ℝ) →L[ℝ] (Fin d → ℝ) => L.det) e
+    simp only [ContinuousLinearMap.det, ContinuousLinearMap.coe_id, LinearMap.det_id] at this
+    have h2 : LinearMap.det ((fderiv ℝ ψ (Φ t) : (Fin d → ℝ) →ₗ[ℝ] (Fin d → ℝ)) ∘ₗ
+        (fderiv ℝ Φ t : (Fin d → ℝ) →ₗ[ℝ] (Fin d → ℝ))) = 1 := this
+    rw [LinearMap.det_comp] at h2
+    replace this := h2
+    rw [show LinearMap.det (fderiv ℝ Φ t : (Fin d → ℝ) →ₗ[ℝ] (Fin d → ℝ)) = 0 from h0,
+      mul_zero] at this
+    exact zero_ne_one this
+
+  have hψc : ContinuousAt ψ 0 := (hψat 0 h0T).continuousAt
+  obtain ⟨δ, hδ, hδT⟩ := Metric.isOpen_iff.1 hTo 0 h0T
+  obtain ⟨η, hη, hηψ⟩ := Metric.continuousAt_iff.1 hψc ε₁ hε₁
+  refine ⟨min (δ / 2) (η / 2), lt_min (by positivity) (by positivity), fun β hβ hβs => ?_⟩
+  set ε := min (δ / 2) (η / 2) with hεdef
+  have hεδ : ε < δ := lt_of_le_of_lt (min_le_left _ _) (by linarith)
+  have hεη : ε < η := lt_of_le_of_lt (min_le_right _ _) (by linarith)
+
+  set e : (Fin d → ℝ) → EuclideanSpace ℝ (Fin d) := fun w => WithLp.toLp 2 w with he
+  set β' : (Fin d → ℝ) → ℂ := fun w => β (e w) with hβ'
+  have he_cont : Continuous e := PiLp.continuous_toLp 2 _
+  have hβ'c : ContDiff ℝ ∞ β' := hβ.comp PiLp.contDiff_toLp
+  have hnorm : ∀ w : Fin d → ℝ, ‖w‖ ≤ ‖e w‖ := fun w =>
+    (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => by
+      simpa [e] using PiLp.norm_apply_le (e w) i
+  have hβ's : tsupport β' ⊆ closedBall 0 ε := by
+    refine closure_minimal (fun w hw => ?_) isClosed_closedBall
+    have : e w ∈ closedBall 0 ε := hβs (subset_tsupport _ hw)
+    rw [mem_closedBall_zero_iff] at this ⊢
+    exact (hnorm w).trans this
+  have hβ'T : tsupport β' ⊆ T := fun w hw => hδT (by
+    have := hβ's hw
+    rw [mem_closedBall_zero_iff] at this
+    rw [mem_ball_zero_iff]; linarith)
+  have hβ'comp : IsCompact (tsupport β') :=
+    (isCompact_closedBall _ _).of_isClosed_subset (isClosed_tsupport _) hβ's
+  have hβ'e : ∀ w ∈ tsupport β', e w ∈ tsupport β := by
+    intro w hw
+    have : tsupport β' ⊆ e ⁻¹' tsupport β :=
+      closure_minimal (fun v hv => subset_tsupport _ hv) ((isClosed_tsupport β).preimage he_cont)
+    exact this hw
+
+  set C' := ψ '' tsupport β' with hC'def
+  have hC'c : IsCompact C' := hβ'comp.image_of_continuousOn (hψs.continuousOn.mono hβ'T)
+  have hC'S : C' ⊆ S := by rintro _ ⟨w, hw, rfl⟩; exact hψTS (hβ'T hw)
+  have hC'ε : C' ⊆ closedBall 0 ε₁ := by
+    rintro _ ⟨w, hw, rfl⟩
+    have hw' := hβ's hw
+    rw [mem_closedBall_zero_iff] at hw'
+    have := hηψ (x := w) (by rw [dist_zero_right]; linarith)
+    rw [hψ0, dist_zero_right] at this
+    rw [mem_closedBall_zero_iff]; exact this.le
+  let K : (Fin d → ℝ) → ℂ := fun t =>
+    if t ∈ S then ((|(fderiv ℝ Φ t).det| : ℝ) : ℂ) * β' (Φ t) else 0
+  have hKsupp : Function.support K ⊆ C' := by
+    intro t ht
+    by_cases htS : t ∈ S
+    · have hβt : β' (Φ t) ≠ 0 := by
+        intro h0; apply ht; simp [K, htS, h0]
+      exact ⟨Φ t, subset_tsupport _ hβt, hψΦ t htS⟩
+    · exact absurd (by simp [K, htS]) ht
+  have hKts : tsupport K ⊆ C' := closure_minimal hKsupp hC'c.isClosed
+  have hK : ContDiff ℝ ∞ K := by
+    rw [contDiff_iff_contDiffAt]
+    intro t
+    by_cases htS : t ∈ S
+    · have hev : K =ᶠ[𝓝 t] fun s => ((|(fderiv ℝ Φ s).det| : ℝ) : ℂ) * β' (Φ s) := by
+        filter_upwards [hSo.mem_nhds htS] with s hs
+        simp [K, hs]
+      refine ContDiffAt.congr_of_eventuallyEq ?_ hev
+      have hfd : ContDiffAt ℝ ∞ (fderiv ℝ Φ) t := (hΦat t htS).fderiv_right (by simp)
+      have hd : ContDiffAt ℝ ∞ (fun s => (fderiv ℝ Φ s).det) t :=
+        contDiff_det_pi.contDiffAt.comp t hfd
+      have ha : ContDiffAt ℝ ∞ (fun s => |(fderiv ℝ Φ s).det|) t := by
+        have := (contDiffAt_abs (n := ⊤) (hdet t htS)).comp t hd
+        exact this
+      exact ((Complex.ofRealCLM.contDiff.contDiffAt).comp t ha).mul
+        (hβ'c.contDiffAt.comp t (hΦat t htS))
+    · have hev : K =ᶠ[𝓝 t] fun _ => 0 := by
+        have htC : t ∉ C' := fun hC => htS (hC'S hC)
+        filter_upwards [hC'c.isClosed.isOpen_compl.mem_nhds htC] with s hs
+        by_contra hne
+        exact hs (hKsupp hne)
+      exact contDiffAt_const.congr_of_eventuallyEq hev
+  obtain ⟨κ, hκs, hκc, hκt, hκint⟩ := hdens K hK (hKts.trans hC'ε)
+  refine ⟨κ, hκs, hκc, ?_, fun φ hφ => ?_⟩
+  ·
+    refine hκt.trans ?_
+    rintro _ ⟨t, ht, rfl⟩
+    obtain ⟨w, hw, rfl⟩ := hKts ht
+    have hψw : ψ w ∈ S := hψTS (hβ'T hw)
+    refine ⟨e w, hβ'e w hw, ?_⟩
+    rw [hPΦ _ hψw, hΦψ w (hβ'T hw)]
+    congr 1
+  · rw [hκint φ hφ]
+    set F : (Fin d → ℝ) → ℂ := fun w => β' w * φ (h.expG (b.equivFun.symm w)) with hF
+
+    have h1 : ∫ x, β x * φ (h.expG (coordEquiv b x)) = ∫ w, F w := by
+      have := (EuclideanSpace.volume_preserving_symm_measurableEquiv_toLp (Fin d)).integral_comp'
+        (g := F)
+      rw [← this]
+      refine integral_congr_ae (Eventually.of_forall fun x => ?_)
+      simp [F, β', e, coordEquiv]
+    rw [h1]
+
+    set s := S ∩ Φ ⁻¹' T with hsdef
+    have hs : IsOpen s := hΦs.continuousOn.isOpen_inter_preimage hSo hTo
+    have hΦs_img : Φ '' s = T := by
+      ext w; constructor
+      · rintro ⟨t, ht, rfl⟩; exact ht.2
+      · intro hw; exact ⟨ψ w, ⟨hψTS hw, by rw [mem_preimage, hΦψ w hw]; exact hw⟩, hΦψ w hw⟩
+    have h2 : ∫ w, F w = ∫ w in T, F w := by
+      refine (setIntegral_eq_integral_of_forall_compl_eq_zero fun w hw => ?_).symm
+      have : β' w = 0 := image_eq_zero_of_notMem_tsupport fun h' => hw (hβ'T h')
+      simp [F, this]
+    have hderiv : ∀ t ∈ s, HasFDerivWithinAt Φ (fderiv ℝ Φ t) s t := fun t ht =>
+      ((hΦat t ht.1).differentiableAt (by simp)).hasFDerivAt.hasFDerivWithinAt
+    have hinj : InjOn Φ s := fun t₁ ht₁ t₂ ht₂ he => by
+      rw [← hψΦ t₁ ht₁.1, ← hψΦ t₂ ht₂.1, he]
+    have h3 := integral_image_eq_integral_abs_det_fderiv_smul volume hs.measurableSet hderiv hinj F
+    rw [hΦs_img] at h3
+    rw [h2, h3]
+
+    rw [← setIntegral_eq_integral_of_forall_compl_eq_zero (s := s)
+      (f := fun t => K t * φ (P t)) fun t ht => by
+        by_cases htS : t ∈ S
+        · have hΦt : Φ t ∉ T := fun hT => ht ⟨htS, hT⟩
+          have : β' (Φ t) = 0 := image_eq_zero_of_notMem_tsupport fun h' => hΦt (hβ'T h')
+          simp [K, htS, this]
+        · simp [K, htS]]
+    refine setIntegral_congr_fun hs.measurableSet fun t ht => ?_
+    simp only [K, if_pos ht.1, F, Complex.real_smul, hPΦ t ht.1]
+    ring
+
+end IsExpLieAlgebra
+
+end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.HarishChandraRegularity.TupleOp =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.HarishChandraRegularity.TupleOp", "h": "module\n\npublic import GroundTheory.AutomorphicForms.PartialDifferential.AnalyticHypoBasic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\npublic import Mathlib.Analysis.Calculus.FDeriv.Symmetric\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.LocallyConvex.AbsConvexOpen\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.PiTensorProduct\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.Monotonicity.Lemmas\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Presheaf\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GroundTheory.Automorphic.Sobolev
+
+open scoped ContDiff
+open Finset
+
+noncomputable section
+
+variable {n : ℕ}
+
+local notation "𝔼" => EuclideanSpace ℝ (Fin n)
+
+def tupleOp (m : ℕ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) (u : 𝔼 → ℂ) (x : 𝔼) : ℂ :=
+  ∑ k ∈ range (m + 1), ∑ J : Fin k → Fin n, a k J x * pdT J u x
+
+def tupleSymbol (m : ℕ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) (x ξ : 𝔼) : ℂ :=
+  ∑ J : Fin m → Fin n, a m J x * ∏ l, ((ξ (J l) : ℝ) : ℂ)
+
+def vfOp (c : 𝔼 → 𝔼) (u : 𝔼 → ℂ) (x : 𝔼) : ℂ := fderiv ℝ u x (c x)
+
+def idCoeff : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ := fun k _ _ => if k = 0 then 1 else 0
+
+theorem tupleOp_idCoeff (u : 𝔼 → ℂ) (x : 𝔼) : tupleOp 0 (idCoeff (n := n)) u x = u x := by
+  simp [tupleOp, idCoeff, pdT_zero]
+
+theorem tupleSymbol_idCoeff (x ξ : 𝔼) : tupleSymbol 0 (idCoeff (n := n)) x ξ = 1 := by
+  simp [tupleSymbol, idCoeff]
+
+theorem analyticOnNhd_idCoeff (k : ℕ) (J : Fin k → Fin n) (s : Set 𝔼) :
+    AnalyticOnNhd ℝ (idCoeff k J) s :=
+  analyticOnNhd_const
+
+theorem tupleOp_add (m : ℕ) (a b : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) (u : 𝔼 → ℂ) (x : 𝔼) :
+    tupleOp m (a + b) u x = tupleOp m a u x + tupleOp m b u x := by
+  simp only [tupleOp, Pi.add_apply, add_mul, sum_add_distrib]
+
+theorem tupleOp_smul (m : ℕ) (c : ℂ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) (u : 𝔼 → ℂ)
+    (x : 𝔼) : tupleOp m (c • a) u x = c * tupleOp m a u x := by
+  simp only [tupleOp, Pi.smul_apply, smul_eq_mul, mul_sum, mul_assoc]
+
+theorem tupleOp_sum {ι : Type*} (s : Finset ι) (m : ℕ)
+    (a : ι → (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) (u : 𝔼 → ℂ) (x : 𝔼) :
+    tupleOp m (∑ i ∈ s, a i) u x = ∑ i ∈ s, tupleOp m (a i) u x := by
+  simp only [tupleOp, Finset.sum_apply, sum_mul]
+  symm
+  rw [sum_comm]
+  refine sum_congr rfl fun k _ => ?_
+  rw [sum_comm]
+
+theorem tupleSymbol_add (m : ℕ) (a b : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) (x ξ : 𝔼) :
+    tupleSymbol m (a + b) x ξ = tupleSymbol m a x ξ + tupleSymbol m b x ξ := by
+  simp only [tupleSymbol, Pi.add_apply, add_mul, sum_add_distrib]
+
+theorem tupleSymbol_smul (m : ℕ) (c : ℂ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) (x ξ : 𝔼) :
+    tupleSymbol m (c • a) x ξ = c * tupleSymbol m a x ξ := by
+  simp only [tupleSymbol, Pi.smul_apply, smul_eq_mul, mul_sum, mul_assoc]
+
+theorem tupleSymbol_sum {ι : Type*} (s : Finset ι) (m : ℕ)
+    (a : ι → (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) (x ξ : 𝔼) :
+    tupleSymbol m (∑ i ∈ s, a i) x ξ = ∑ i ∈ s, tupleSymbol m (a i) x ξ := by
+  simp only [tupleSymbol, Finset.sum_apply, sum_mul]
+  rw [sum_comm]
+
+theorem analyticOnNhd_add_coeff {Ω : Set 𝔼} {a b : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ}
+    (ha : ∀ k J, AnalyticOnNhd ℝ (a k J) Ω) (hb : ∀ k J, AnalyticOnNhd ℝ (b k J) Ω) (k : ℕ)
+    (J : Fin k → Fin n) : AnalyticOnNhd ℝ ((a + b) k J) Ω :=
+  (ha k J).add (hb k J)
+
+theorem analyticOnNhd_smul_coeff {Ω : Set 𝔼} (c : ℂ) {a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ}
+    (ha : ∀ k J, AnalyticOnNhd ℝ (a k J) Ω) (k : ℕ) (J : Fin k → Fin n) :
+    AnalyticOnNhd ℝ ((c • a) k J) Ω := by
+  have e : (c • a) k J = fun x => c * a k J x := by funext x; simp
+  rw [e]
+  exact analyticOnNhd_const.mul (ha k J)
+
+theorem analyticOnNhd_sum_coeff {ι : Type*} (s : Finset ι) {Ω : Set 𝔼}
+    {a : ι → (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ}
+    (ha : ∀ i ∈ s, ∀ k J, AnalyticOnNhd ℝ (a i k J) Ω) (k : ℕ) (J : Fin k → Fin n) :
+    AnalyticOnNhd ℝ ((∑ i ∈ s, a i) k J) Ω := by
+  have e : (∑ i ∈ s, a i) k J = ∑ i ∈ s, a i k J := by simp only [Finset.sum_apply]
+  rw [e]
+  exact Finset.analyticOnNhd_sum s fun i hi => ha i hi k J
+
+def raiseCoeff (m : ℕ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) :
+    (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ :=
+  fun k J x => if k ≤ m then a k J x else 0
+
+theorem tupleOp_raiseCoeff {m m' : ℕ} (h : m ≤ m') (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ)
+    (u : 𝔼 → ℂ) (x : 𝔼) : tupleOp m' (raiseCoeff m a) u x = tupleOp m a u x := by
+  unfold tupleOp
+  rw [← sum_subset (range_subset_range.2 (Nat.succ_le_succ h))]
+  · refine sum_congr rfl fun k hk => ?_
+    have hk' : k ≤ m := Nat.lt_succ_iff.1 (mem_range.1 hk)
+    simp [raiseCoeff, hk']
+  · intro k _ hk
+    have hk' : ¬ k ≤ m := fun h' => hk (mem_range.2 (Nat.lt_succ_of_le h'))
+    simp [raiseCoeff, hk']
+
+theorem tupleSymbol_raiseCoeff (m : ℕ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) (x ξ : 𝔼) :
+    tupleSymbol m (raiseCoeff m a) x ξ = tupleSymbol m a x ξ := by
+  simp [tupleSymbol, raiseCoeff]
+
+theorem tupleSymbol_raiseCoeff_of_lt {m m' : ℕ} (h : m < m')
+    (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) (x ξ : 𝔼) :
+    tupleSymbol m' (raiseCoeff m a) x ξ = 0 := by
+  simp [tupleSymbol, raiseCoeff, not_le.2 h]
+
+theorem analyticOnNhd_raiseCoeff {Ω : Set 𝔼} (m : ℕ) {a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ}
+    (ha : ∀ k J, AnalyticOnNhd ℝ (a k J) Ω) (k : ℕ) (J : Fin k → Fin n) :
+    AnalyticOnNhd ℝ (raiseCoeff m a k J) Ω := by
+  by_cases hk : k ≤ m
+  · have e : raiseCoeff m a k J = a k J := by funext x; simp [raiseCoeff, hk]
+    rw [e]; exact ha k J
+  · have e : raiseCoeff m a k J = fun _ => 0 := by funext x; simp [raiseCoeff, hk]
+    rw [e]; exact analyticOnNhd_const
+
+theorem eq_sum_ev (v : 𝔼) : v = ∑ j, v j • ev j := by
+  conv_lhs => rw [← (EuclideanSpace.basisFun (Fin n) ℝ).sum_repr v]
+  simp [ev]
+
+theorem fderiv_apply_eq_sum (f : 𝔼 → ℂ) (x v : 𝔼) :
+    fderiv ℝ f x v = ∑ j, ((v j : ℝ) : ℂ) * fderiv ℝ f x (ev j) := by
+  conv_lhs => rw [eq_sum_ev v]
+
+  simp [map_sum, map_smul, Complex.real_smul]
+
+theorem analyticOnNhd_coord {Ω : Set 𝔼} {c : 𝔼 → 𝔼} (hc : AnalyticOnNhd ℝ c Ω) (j : Fin n) :
+    AnalyticOnNhd ℝ (fun x => ((c x j : ℝ) : ℂ)) Ω := by
+  have h1 : AnalyticOnNhd ℝ ((Complex.ofRealCLM.comp (EuclideanSpace.proj j : 𝔼 →L[ℝ] ℝ)) ∘ c)
+      Ω :=
+    ((Complex.ofRealCLM.comp (EuclideanSpace.proj j : 𝔼 →L[ℝ] ℝ)).analyticOnNhd _).comp hc
+      (Set.mapsTo_univ _ _)
+  exact h1
+
+theorem analyticOnNhd_fderiv_apply {Ω : Set 𝔼} {f : 𝔼 → ℂ} {c : 𝔼 → 𝔼}
+    (hf : AnalyticOnNhd ℝ f Ω) (hc : AnalyticOnNhd ℝ c Ω) :
+    AnalyticOnNhd ℝ (fun x => fderiv ℝ f x (c x)) Ω := by
+  have e : (fun x => fderiv ℝ f x (c x)) =
+      ∑ j, fun x => ((c x j : ℝ) : ℂ) * fderiv ℝ f x (ev j) := by
+    funext x
+    rw [fderiv_apply_eq_sum f x (c x), Finset.sum_apply]
+  rw [e]
+  refine Finset.analyticOnNhd_sum _ fun j _ => (analyticOnNhd_coord hc j).mul ?_
+  have h1 : AnalyticOnNhd ℝ ((ContinuousLinearMap.apply ℝ ℂ (ev j)) ∘ fderiv ℝ f) Ω :=
+    ((ContinuousLinearMap.apply ℝ ℂ (ev j)).analyticOnNhd _).comp hf.fderiv (Set.mapsTo_univ _ _)
+  exact h1
+
+def shiftCoeff (c : 𝔼 → 𝔼) (m : ℕ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) :
+    (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ
+  | 0, _, _ => 0
+  | k + 1, J, x => if k ≤ m then ((c x (J 0) : ℝ) : ℂ) * a k (Fin.tail J) x else 0
+
+def vfCoeff (c : 𝔼 → 𝔼) (m : ℕ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ) :
+    (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ :=
+  raiseCoeff m (fun k J x => fderiv ℝ (a k J) x (c x)) + shiftCoeff c m a
+
+theorem tupleOp_shiftCoeff (c : 𝔼 → 𝔼) (m : ℕ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ)
+    (u : 𝔼 → ℂ) (x : 𝔼) :
+    tupleOp (m + 1) (shiftCoeff c m a) u x =
+      ∑ k ∈ range (m + 1), ∑ j : Fin n, ∑ J : Fin k → Fin n,
+        ((c x j : ℝ) : ℂ) * a k J x * pdT (Fin.cons j J) u x := by
+  rw [tupleOp, sum_range_succ']
+  simp only [shiftCoeff, zero_mul, sum_const_zero, add_zero]
+  refine sum_congr rfl fun k hk => ?_
+  have hkm : k ≤ m := Nat.lt_succ_iff.1 (mem_range.1 hk)
+  simp only [ite_eq_left hkm]
+  rw [← (Fin.consEquiv fun _ : Fin (k + 1) => Fin n).sum_comp, Fintype.sum_prod_type]
+  refine sum_congr rfl fun j _ => sum_congr rfl fun J _ => ?_
+  simp [Fin.consEquiv]
+
+theorem tupleSymbol_shiftCoeff (c : 𝔼 → 𝔼) (m : ℕ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ)
+    (x ξ : 𝔼) :
+    tupleSymbol (m + 1) (shiftCoeff c m a) x ξ =
+      (∑ j, ((c x j : ℝ) : ℂ) * ((ξ j : ℝ) : ℂ)) * tupleSymbol m a x ξ := by
+  simp only [tupleSymbol, shiftCoeff, le_refl, ite_true]
+  rw [← (Fin.consEquiv fun _ : Fin (m + 1) => Fin n).sum_comp, Fintype.sum_prod_type, sum_mul]
+  refine sum_congr rfl fun j _ => ?_
+  rw [mul_sum]
+  refine sum_congr rfl fun J _ => ?_
+  simp only [Fin.consEquiv, Equiv.coe_fn_mk, Fin.cons_zero, Fin.tail_cons, Fin.prod_univ_succ,
+    Fin.cons_succ]
+  ring
+
+theorem analyticOnNhd_shiftCoeff {Ω : Set 𝔼} {c : 𝔼 → 𝔼} (hc : AnalyticOnNhd ℝ c Ω) (m : ℕ)
+    {a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ} (ha : ∀ k J, AnalyticOnNhd ℝ (a k J) Ω) :
+    ∀ (k : ℕ) (J : Fin k → Fin n), AnalyticOnNhd ℝ (shiftCoeff c m a k J) Ω
+  | 0, J => by
+      have e : shiftCoeff c m a 0 J = fun _ => 0 := by funext x; simp [shiftCoeff]
+      rw [e]; exact analyticOnNhd_const
+  | k + 1, J => by
+      by_cases hk : k ≤ m
+      · have e : shiftCoeff c m a (k + 1) J =
+            fun x => ((c x (J 0) : ℝ) : ℂ) * a k (Fin.tail J) x := by
+          funext x; simp [shiftCoeff, hk]
+        rw [e]; exact (analyticOnNhd_coord hc (J 0)).mul (ha k _)
+      · have e : shiftCoeff c m a (k + 1) J = fun _ => 0 := by funext x; simp [shiftCoeff, hk]
+        rw [e]; exact analyticOnNhd_const
+
+theorem vfOp_tupleOp_eq {Ω : Set 𝔼} {c : 𝔼 → 𝔼} {m : ℕ}
+    {a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ} (ha : ∀ k J, AnalyticOnNhd ℝ (a k J) Ω)
+    {u : 𝔼 → ℂ} (hu : ContDiff ℝ ∞ u) {x : 𝔼} (hx : x ∈ Ω) :
+    vfOp c (tupleOp m a u) x = ∑ k ∈ range (m + 1), ∑ J : Fin k → Fin n,
+      (fderiv ℝ (a k J) x (c x) * pdT J u x +
+        a k J x * ∑ j : Fin n, ((c x j : ℝ) : ℂ) * pdT (Fin.cons j J) u x) := by
+  have hdiff (k : ℕ) : DifferentiableAt ℝ (iteratedFDeriv ℝ k u) x :=
+    hu.differentiable_iteratedFDeriv (by exact_mod_cast WithTop.coe_lt_top k) x
+  have hterm : ∀ (k : ℕ) (J : Fin k → Fin n), HasFDerivAt (fun y => a k J y * pdT J u y)
+      (a k J x • fderiv ℝ (pdT J u) x + pdT J u x • fderiv ℝ (a k J) x) x := by
+    intro k J
+    have hpd : DifferentiableAt ℝ (pdT J u) x :=
+      (hdiff k).continuousMultilinear_apply_const (fun l => ev (J l))
+    exact ((ha k J x hx).differentiableAt.hasFDerivAt).mul hpd.hasFDerivAt
+  have hsum : HasFDerivAt (tupleOp m a u) (∑ k ∈ range (m + 1), ∑ J : Fin k → Fin n,
+      (a k J x • fderiv ℝ (pdT J u) x + pdT J u x • fderiv ℝ (a k J) x)) x :=
+    HasFDerivAt.fun_sum fun k _ => HasFDerivAt.fun_sum fun J _ => hterm k J
+  rw [vfOp, hsum.fderiv]
+  simp only [FunLike.coe_sum, Finset.sum_apply, add_apply, FunLike.coe_smul, Pi.smul_apply,
+    smul_eq_mul]
+  refine sum_congr rfl fun k _ => sum_congr rfl fun J _ => ?_
+  rw [fderiv_apply_eq_sum (pdT J u) x (c x)]
+  have e : ∀ j, fderiv ℝ (pdT J u) x (ev j) = pdT (Fin.cons j J) u x := fun j => by
+    rw [pdT_apply, (hdiff k).iteratedFDeriv_succ_apply_left']
+    simp only [Fin.cons_zero, Fin.tail_def, Fin.cons_succ]
+    rfl
+  simp only [e]
+  ring
+
+theorem exists_vfOp_tupleOp {Ω : Set 𝔼} {c : 𝔼 → 𝔼} (hc : AnalyticOnNhd ℝ c Ω) {m : ℕ}
+    {a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ} (ha : ∀ k J, AnalyticOnNhd ℝ (a k J) Ω) :
+    ∃ a' : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ, (∀ k J, AnalyticOnNhd ℝ (a' k J) Ω) ∧
+      (∀ x ξ : 𝔼, tupleSymbol (m + 1) a' x ξ =
+        (∑ j, ((c x j : ℝ) : ℂ) * ((ξ j : ℝ) : ℂ)) * tupleSymbol m a x ξ) ∧
+      ∀ u : 𝔼 → ℂ, ContDiff ℝ ∞ u → ∀ x ∈ Ω, vfOp c (tupleOp m a u) x = tupleOp (m + 1) a' u x := by
+  refine ⟨vfCoeff c m a, ?_, ?_, ?_⟩
+  · intro k J
+    exact analyticOnNhd_add_coeff
+      (analyticOnNhd_raiseCoeff m fun k J => analyticOnNhd_fderiv_apply (ha k J) hc)
+      (analyticOnNhd_shiftCoeff hc m ha) k J
+  · intro x ξ
+    rw [vfCoeff, tupleSymbol_add, tupleSymbol_raiseCoeff_of_lt (Nat.lt_succ_self m),
+      tupleSymbol_shiftCoeff, zero_add]
+  · intro u hu x hx
+    rw [vfOp_tupleOp_eq ha hu hx, vfCoeff, tupleOp_add, tupleOp_raiseCoeff (Nat.le_succ m),
+      tupleOp_shiftCoeff]
+    have e2 : ∀ k ∈ range (m + 1), (∑ j : Fin n, ∑ J : Fin k → Fin n,
+        ((c x j : ℝ) : ℂ) * a k J x * pdT (Fin.cons j J) u x) =
+        ∑ J : Fin k → Fin n, a k J x * ∑ j : Fin n, ((c x j : ℝ) : ℂ) * pdT (Fin.cons j J) u x := by
+      intro k _
+      rw [sum_comm]
+      refine sum_congr rfl fun J _ => ?_
+      rw [mul_sum]
+      exact sum_congr rfl fun j _ => by ring
+    rw [sum_congr rfl e2, tupleOp, ← sum_add_distrib]
+    refine sum_congr rfl fun k _ => ?_
+    rw [← sum_add_distrib]
+
+theorem vfOp_congr_of_eqOn {Ω : Set 𝔼} (hΩ : IsOpen Ω) {u v : 𝔼 → ℂ} (h : Set.EqOn u v Ω)
+    (c : 𝔼 → 𝔼) {x : 𝔼} (hx : x ∈ Ω) : vfOp c u x = vfOp c v x := by
+  simp only [vfOp]
+  rw [Filter.EventuallyEq.fderiv_eq (Filter.eventuallyEq_of_mem (hΩ.mem_nhds hx) h)]
+
+def dList : List 𝔼 → (𝔼 → ℂ) → 𝔼 → ℂ
+  | [], f => f
+  | a :: L, f => fun x => fderiv ℝ (dList L f) x a
+
+theorem contDiff_dList {f : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) : ∀ L : List 𝔼, ContDiff ℝ ∞ (dList L f)
+  | [] => hf
+  | a :: L =>
+      (contDiff_infty_iff_fderiv.1 (contDiff_dList hf L)).2.clm_apply (contDiff_const (c := a))
+
+theorem dT_eq_dList {f : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) :
+    ∀ {k : ℕ} (v : Fin k → 𝔼), dT v f = dList (List.ofFn v) f
+  | 0, v => by simp [dT_zero, dList]
+  | k + 1, v => by
+      have e : List.ofFn v = v 0 :: List.ofFn (Fin.tail v) := by
+        rw [List.ofFn_succ]
+        rfl
+      rw [e]
+      have hcons : dT (Fin.cons (v 0) (Fin.tail v)) f =
+          fun x => fderiv ℝ (dT (Fin.tail v) f) x (v 0) := by
+        funext x
+        have hd : DifferentiableAt ℝ (iteratedFDeriv ℝ k f) x :=
+          hf.differentiable_iteratedFDeriv (by exact_mod_cast WithTop.coe_lt_top k) x
+        rw [dT_apply, hd.iteratedFDeriv_succ_apply_left', Fin.cons_zero, Fin.tail_cons]
+        rfl
+      conv_lhs => rw [← Fin.cons_self_tail v]
+      rw [hcons, dT_eq_dList hf (Fin.tail v)]
+      rfl
+
+theorem dList_perm {f : 𝔼 → ℂ} (hf : ContDiff ℝ ∞ f) {L L' : List 𝔼} (h : L.Perm L') :
+    dList L f = dList L' f := by
+  induction h with
+  | nil => rfl
+  | cons a _ ih =>
+    show (fun x => fderiv ℝ (dList _ f) x a) = (fun x => fderiv ℝ (dList _ f) x a)
+    rw [ih]
+  | swap a b L =>
+    funext z
+    change fderiv ℝ (fun y => fderiv ℝ (dList L f) y a) z b =
+      fderiv ℝ (fun y => fderiv ℝ (dList L f) y b) z a
+    have hL := contDiff_dList hf L
+    have hd : DifferentiableAt ℝ (fderiv ℝ (dList L f)) z :=
+      (contDiff_infty_iff_fderiv.1 hL).2.differentiable (by simp) z
+    have heval (c d : 𝔼) :
+        fderiv ℝ (fun y => fderiv ℝ (dList L f) y d) z c =
+          fderiv ℝ (fderiv ℝ (dList L f)) z c d := by
+      rw [fderiv_clm_apply hd (differentiableAt_const d)]
+      simp
+    rw [heval, heval]
+    exact ((contDiff_infty.1 hL 2).contDiffAt.isSymmSndFDerivAt (by simp)) b a
+  | trans _ _ ih1 ih2 => exact ih1.trans ih2
+
+def tupleCount {k : ℕ} (J : Fin k → Fin n) : Fin n → ℕ :=
+  fun i => (univ.filter fun l => J l = i).card
+
+theorem mabs_tupleCount {k : ℕ} (J : Fin k → Fin n) : mabs (tupleCount J) = k := by
+  simp only [mabs, tupleCount]
+  rw [← card_eq_sum_card_fiberwise (f := J) (s := univ) (t := univ)
+    (fun _ _ => mem_coe.2 (mem_univ _))]
+  simp
+
+theorem count_ofFn {k : ℕ} (J : Fin k → Fin n) (i : Fin n) :
+    (List.ofFn J).count i = tupleCount J i := by
+  rw [← Multiset.coe_count, ← Fin.univ_val_map, Multiset.count_map]
+  simp [tupleCount, Finset.card, Finset.filter_val, eq_comm]
+
+theorem ofFn_perm_flatMap {k : ℕ} (J : Fin k → Fin n) :
+    (List.ofFn J).Perm ((List.finRange n).flatMap fun i => List.replicate (tupleCount J i) i) := by
+  rw [List.perm_iff_count]
+  intro i
+  rw [count_ofFn, List.count_flatMap]
+  simp only [Function.comp_def, List.count_replicate, beq_iff_eq]
+  rw [← Fin.sum_univ_def]
+  simp
+
+theorem mdirList_eq_map (α : Fin n → ℕ) :
+    mdirList α = ((List.finRange n).flatMap fun i => List.replicate (α i) i).map ev := by
+  simp [mdirList, List.map_flatMap, List.map_replicate, ev]
+
+theorem ofFn_mdir (α : Fin n → ℕ) : List.ofFn (mdir α) = mdirList α := by
+  apply List.ext_getElem (by simp [length_mdirList])
+  intro i h1 h2
+  simp [mdir]
+
+theorem pdT_eq_pderiv {u : 𝔼 → ℂ} (hu : ContDiff ℝ ∞ u) {k : ℕ} (J : Fin k → Fin n) :
+    pdT J u = pderiv (tupleCount J) u := by
+  have hp : pderiv (tupleCount J) u = dT (mdir (tupleCount J)) u := rfl
+  rw [pdT, hp, dT_eq_dList hu, dT_eq_dList hu, ofFn_mdir, mdirList_eq_map]
+  apply dList_perm hu
+  rw [show List.ofFn (fun l => ev (J l)) = (List.ofFn J).map ev by simp [List.map_ofFn, Function.comp_def]]
+  exact (ofFn_perm_flatMap J).map ev
+
+theorem prod_eq_mpow {k : ℕ} (J : Fin k → Fin n) (ξ : 𝔼) :
+    ∏ l, ((ξ (J l) : ℝ) : ℂ) = ((mpow (tupleCount J) ξ : ℝ) : ℂ) := by
+  classical
+  rw [mpow, Complex.ofReal_prod]
+  push_cast
+  rw [Finset.prod_comp (fun i => ((ξ i : ℝ) : ℂ)) J]
+  apply Finset.prod_subset (subset_univ _)
+  intro i _ hi
+  have h0 : (univ.filter fun l => J l = i).card = 0 := by
+    rw [card_eq_zero, filter_eq_empty_iff]
+    intro l _ hl
+    exact hi (mem_image.2 ⟨l, mem_univ _, hl⟩)
+  simp [h0]
+
+theorem exists_diffOp_eq_tupleOp {Ω : Set 𝔼} (m : ℕ) (a : (k : ℕ) → (Fin k → Fin n) → 𝔼 → ℂ)
+    (ha : ∀ k J, AnalyticOnNhd ℝ (a k J) Ω) :
+    ∃ (A : Finset (Fin n → ℕ)) (b : (Fin n → ℕ) → 𝔼 → ℂ), (∀ α ∈ A, mabs α ≤ m) ∧
+      (∀ α ∈ A, AnalyticOnNhd ℝ (b α) Ω) ∧
+      (∀ x ξ : 𝔼, prinSymbol A b m x ξ = tupleSymbol m a x ξ) ∧
+      ∀ u : 𝔼 → ℂ, ContDiff ℝ ∞ u → ∀ x, diffOp A b u x = tupleOp m a u x := by
+  classical
+  let A : Finset (Fin n → ℕ) :=
+    (range (m + 1)).biUnion fun k => univ.image fun J : Fin k → Fin n => tupleCount J
+  let b : (Fin n → ℕ) → 𝔼 → ℂ := fun α x =>
+    ∑ k ∈ range (m + 1), ∑ J : Fin k → Fin n, if tupleCount J = α then a k J x else 0
+  have hmemA : ∀ k ∈ range (m + 1), ∀ J : Fin k → Fin n, tupleCount J ∈ A := fun k hk J =>
+    mem_biUnion.2 ⟨k, hk, mem_image_of_mem _ (mem_univ J)⟩
+  have hb : ∀ (α : Fin n → ℕ) (x : 𝔼) (z : ℂ), b α x * z = ∑ k ∈ range (m + 1),
+      ∑ J : Fin k → Fin n, if tupleCount J = α then a k J x * z else 0 := by
+    intro α x z
+    simp only [b, sum_mul]
+    refine sum_congr rfl fun k _ => sum_congr rfl fun J _ => ?_
+    split_ifs <;> simp
+  refine ⟨A, b, ?_, ?_, ?_, ?_⟩
+  · intro α hα
+    obtain ⟨k, hk, hα'⟩ := mem_biUnion.1 hα
+    obtain ⟨J, _, rfl⟩ := mem_image.1 hα'
+    rw [mabs_tupleCount]
+    exact Nat.lt_succ_iff.1 (mem_range.1 hk)
+  · intro α _
+    have e : b α = ∑ k ∈ range (m + 1), ∑ J : Fin k → Fin n,
+        (fun x => if tupleCount J = α then a k J x else 0) := by
+      funext x
+      simp only [b, Finset.sum_apply]
+    rw [e]
+    refine Finset.analyticOnNhd_sum _ fun k _ => Finset.analyticOnNhd_sum _ fun J _ => ?_
+    by_cases h : tupleCount J = α
+    · simpa [h] using ha k J
+    · simpa [h] using (analyticOnNhd_const (v := (0 : ℂ)) (s := Ω) (𝕜 := ℝ))
+  · intro x ξ
+    simp only [prinSymbol, tupleSymbol, hb]
+    rw [sum_comm]
+    have e2 : ∀ k ∈ range (m + 1), (∑ α ∈ A with mabs α = m, ∑ J : Fin k → Fin n,
+        if tupleCount J = α then a k J x * ((mpow α ξ : ℝ) : ℂ) else 0) =
+        if k = m then ∑ J : Fin k → Fin n, a k J x * ((mpow (tupleCount J) ξ : ℝ) : ℂ)
+        else 0 := by
+      intro k hk
+      rw [sum_comm]
+      split_ifs with hkm
+      · refine sum_congr rfl fun J _ => ?_
+        rw [sum_ite_eq, ite_eq_left]
+        exact mem_filter.2 ⟨hmemA k hk J, by rw [mabs_tupleCount, hkm]⟩
+      · refine sum_eq_zero fun J _ => ?_
+        rw [sum_ite_eq, ite_eq_right]
+        intro h
+        have := (mem_filter.1 h).2
+        rw [mabs_tupleCount] at this
+        exact hkm this
+    rw [sum_congr rfl e2, sum_ite_eq' (range (m + 1)) m, ite_eq_left (self_mem_range_succ m)]
+    refine sum_congr rfl fun J _ => ?_
+    rw [prod_eq_mpow]
+  · intro u hu x
+    simp only [diffOp, hb]
+    rw [sum_comm]
+    refine sum_congr rfl fun k hk => ?_
+    rw [sum_comm]
+    refine sum_congr rfl fun J _ => ?_
+    rw [sum_ite_eq, ite_eq_left (hmemA k hk J), pdT_eq_pderiv hu]
+
+end
+
+end GroundTheory.Automorphic.Sobolev
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.HarishChandraRegularity.TupleOp =====
+
+-- ===== clump member: GroundTheory.AutomorphicForms.HarishChandraRegularity =====
+-- clump-header: {"m": "GroundTheory.AutomorphicForms.HarishChandraRegularity", "h": "module\n\npublic import GroundTheory.AutomorphicForms.HarishChandraRegularity.ContDiffCompCoordEquiv\npublic import GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpChart\npublic import GroundTheory.AutomorphicForms.HarishChandraRegularity.ExpHaar\npublic import GroundTheory.AutomorphicForms.HarishChandraRegularity.TupleOp\npublic import GroundTheory.AutomorphicForms.GKModules.Casimir\npublic import GroundTheory.AutomorphicForms.HarishChandraRegularity.CartanBasis\npublic import GroundTheory.AutomorphicForms.PartialDifferential.AnalyticHypoelliptic\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Algebra.Ring.IsFormallyReal\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Separation.CompletelyRegular\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
 @[expose] public section
 
 namespace GroundTheory.Automorphic
@@ -175,7 +1108,7 @@ theorem laplacian_apply_coe {ι : Type*} [Fintype ι] (bL : Module.Basis ι ℝ 
     (w : h.smoothFuns (F := ℂ)) :
     ((h.laplacian bL w : h.smoothFuns (F := ℂ)) : G → ℂ) =
       ∑ i, h.rightDeriv (h.ofLie (bL i)) (h.rightDeriv (h.ofLie (bL i)) (w : G → ℂ)) := by
-  simp [laplacian, LinearMap.sum_apply, Module.End.mul_apply]
+  simp [laplacian, LinearMap.sum_apply]
 
 theorem exists_tupleOp_laplacian_pow {ι : Type*} [Fintype ι] (bL : Module.Basis ι ℝ h.lieSubalgebra)
     {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) {Ω : Set (EuclideanSpace ℝ (Fin d))} (hΩ : IsOpen Ω)
@@ -333,3 +1266,6 @@ end IsExpLieAlgebra
 end Groups
 
 end GroundTheory.Automorphic
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: GroundTheory.AutomorphicForms.HarishChandraRegularity =====

@@ -65,20 +65,6 @@ section cell
 
 variable {k r : ℕ}
 
-theorem herm_eI (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
-    herm (Hpk k r) v (bvec (eI k r a)) = v (esI k r a) := by
-  unfold herm
-  rw [dotProduct, Finset.sum_eq_single (eI k r a)]
-  · simp only [bvec, Pi.star_apply, Pi.single_eq_same, star_one, one_mul, Matrix.mulVec, dotProduct]
-    rw [Finset.sum_eq_single (esI k r a)]
-    · rw [Formalism.FourierDecayAlt.P.Qx3.hpk_row_e, if_pos rfl, one_mul]
-    · intro b _ hb
-      rw [Formalism.FourierDecayAlt.P.Qx3.hpk_row_e, if_neg hb, zero_mul]
-    · intro h; exact absurd (Finset.mem_univ _) h
-  · intro b _ hb
-    simp [bvec, Pi.single_apply, hb]
-  · intro h; exact absurd (Finset.mem_univ _) h
-
 theorem glev_row {g : B.Mat k r} (hg : g ∈ Q.Glev k r (Fin.last r)) (a : Fin r) (p : Fin (2 * r + k + 1)) :
     g (eI k r a) p = if p = eI k r a then 1 else 0 := by
   have hU : gᴴ * Hpk k r * g = Hpk k r := hg.1
@@ -106,7 +92,7 @@ theorem xi_cell (c : Fin r → ℂ) {g : B.Mat k r} (hg : g ∈ Q.Glev k r (Fin.
     (p : Fin (2 * r + k + 1)) :
     herm (Hpk k r) ((Q.wCell k r (Fin.last r) c * g) *ᵥ bvec p) (bvec (eI k r a)) =
       if p = eI k r a then c a else 0 := by
-  rw [herm_eI]
+  rw [_root_.PI.StabPairsW.herm_e]
   simp only [bvec, Matrix.mulVec_single_one, Matrix.col_apply]
   rw [Formalism.FourierDecayAlt.P5.Rad.wCell_last_eq, Matrix.mul_apply, Finset.sum_eq_single (eI k r a)]
   · rw [glev_row hg]
@@ -218,7 +204,7 @@ theorem radSide_chain (X : Q.ActualOps k r z z' π π') (L : R.LevelData (Q.Pr (
       change Formalism.FourierDecayAlt.P.JCx2.rma_fst _ ((Wd.Ts (P5.site L ⟨n, hnr⟩) Y * Formalism.FourierDecayAlt.P.JCx2.rma_pref L Y n) 0 0) Ψ = _
       rw [Matrix.mul_apply, Fin.sum_univ_two]
       simp only [Wd.Ts, YangianSpanCharacter.T.Tm, P5.site, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
-        Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]
+        Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one]
       rw [hp, hc]
       simp only [map_add (f := _), map_mul, map_neg, AlgHom.commutes, LinearMap.add_apply, LinearMap.neg_apply,
         Module.End.mul_apply, Module.algebraMap_end_apply]
@@ -229,9 +215,9 @@ theorem radSide_chain (X : Q.ActualOps k r z z' π π') (L : R.LevelData (Q.Pr (
       change Formalism.FourierDecayAlt.P.JCx2.rma_fst _ ((Wd.Ts (P5.site L ⟨n, hnr⟩) Y * Formalism.FourierDecayAlt.P.JCx2.rma_pref L Y n) 1 0) Ψ = _
       rw [Matrix.mul_apply, Fin.sum_univ_two]
       simp only [Wd.Ts, YangianSpanCharacter.T.Tm, P5.site, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero,
-        Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]
+        Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one]
       rw [hci]
-      simp only [map_add (f := _), map_mul, map_zero, zero_mul, add_zero, Module.End.mul_apply]
+      simp only [map_mul, zero_mul, add_zero, Module.End.mul_apply]
       rfl
     rw [e0, e1]
     simp only [Q.vAB, dif_pos hnr, Q.crd]

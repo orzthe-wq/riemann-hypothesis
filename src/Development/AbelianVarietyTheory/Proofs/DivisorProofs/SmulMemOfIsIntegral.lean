@@ -124,7 +124,7 @@ theorem smul_mem_of_isIntegral {Λ : Submodule (𝓞 E) (Fin r → E)} {c : E} (
   have h := Λ.smul_mem (⟨c, hc⟩ : 𝓞 E) hx
   convert h using 1
   ext i
-  simp only [Pi.smul_apply, smul_eq_mul, Algebra.smul_def]
+  simp only [Pi.smul_apply, smul_eq_mul]
   rfl
 
 theorem smul_mem_endLat {Λ : Submodule (𝓞 E) (Fin r → E)} {c : E} (hc : IsIntegral ℤ c)

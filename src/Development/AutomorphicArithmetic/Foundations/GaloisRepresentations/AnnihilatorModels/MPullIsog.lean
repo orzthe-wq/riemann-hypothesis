@@ -75,9 +75,9 @@ theorem UpperTheory.Gal.crystallineComparison.Mod.pullIsog_of :
   have pt' : ∀ (T : Over S') (x : T ⟶ o₁'.A), m.ptEquiv T (x ≫ ψ₁') = m'.ptEquiv T x ≫ ψ' := fun T x =>
     Over.OverMorphism.ext (by
       rw [ObjMap.ptEquiv_left, Over.comp_left, Over.comp_left, ObjMap.ptEquiv_left, Category.assoc, Category.assoc, e'])
-  have mh : IsMonHom ψ₁ := GlobalTheory.GrpPullPow.isMonHom_of_mul_pts ψ₁ fun T x y => (m'.ptEquiv T).injective (by
+  have mh : IsMonHom ψ₁ := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isMonHom_of_mul ψ₁ fun T x y => (m'.ptEquiv T).injective (by
     rw [map_mul, pt, pt, pt, map_mul, MonObj.mul_comp])
-  have mh' : IsMonHom ψ₁' := GlobalTheory.GrpPullPow.isMonHom_of_mul_pts ψ₁' fun T x y => (m.ptEquiv T).injective (by
+  have mh' : IsMonHom ψ₁' := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isMonHom_of_mul ψ₁' fun T x y => (m.ptEquiv T).injective (by
     rw [map_mul, pt', pt', pt', map_mul, MonObj.mul_comp])
   have hsq := isSquare_square_compatible_homs m.sq m'.sq e
   have hcL : ∀ {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (h : (Hecke.lbPow L c).IsLB), cls _ h = c • cls L hL :=

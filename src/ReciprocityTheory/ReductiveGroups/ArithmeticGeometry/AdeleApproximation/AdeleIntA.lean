@@ -210,7 +210,6 @@ theorem exists_approx_adele (b : FiniteAdeleRing R K) :
   rw [key, map_mul, ← val_R_lemma (K := K) v r] at hv
   show Valued.v ((b - algebraMap K (FiniteAdeleRing R K) (algebraMap R K a / algebraMap R K r)) v) ≤ 1
   first
-  | exact (mul_le_mul_left₀ h0).mp (by rwa [mul_one])
   | exact le_of_mul_le_mul_left (by rwa [mul_one]) (zero_lt_iff.mpr h0)
 
 end ReciprocityTheory.ChartRestriction.G.Lib.AdeleIntA

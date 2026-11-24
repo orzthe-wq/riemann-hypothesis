@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagModelBaseProjectionPoints
 
 @[expose] public section
 
@@ -79,21 +80,11 @@ theorem rename_mem_iff {Ω : Type} [Field Ω] (hv : IsBlockMap κ v) (y : (Σ k,
   rw [mConeMap_rename hv]
   exact map_eq_zero_iff _ (rename_injective κ hv.1)
 
-theorem mConeMap_comp {Ω Ω' : Type} [Field Ω] [Field Ω'] (φ : Ω →+* Ω') (x : (Σ k, ι k) → Ω) (g : MRing ι) :
-    mConeMap (φ ∘ x) g = map φ (mConeMap x g) := by
-  induction g using MvPolynomial.induction_on with
-  | C a => simp [mConeMap]
-  | add p q hp hq => simp only [map_add (f := _), hp, hq]
-  | mul_X p n hp =>
-    simp only [map_mul, hp]
-    congr 1
-    simp [mConeMap]
-
 theorem mCoordIdeal_comp {Ω Ω' : Type} [Field Ω] [Field Ω'] (φ : Ω →+* Ω') (x : (Σ k, ι k) → Ω) :
     mCoordIdeal (φ ∘ x) = mCoordIdeal x := by
   ext g
   change mConeMap (φ ∘ x) g = 0 ↔ mConeMap x g = 0
-  rw [mConeMap_comp]
+  rw [_root_.GlobalTheory.CompanionTheory.Ar.PB.CPts.mConeMap_comp]
   exact map_eq_zero_iff _ (map_injective φ φ.injective)
 
 theorem eval_rename_eq (z : (Σ k, ι' k) → ℂ) (g : MRing ι) :
@@ -117,14 +108,14 @@ theorem sum_mapDomain_block (hv : ∀ p, (v p).1 = κ p.1) [DecidableEq K'] (m :
       rw [Finset.sum_eq_single p]
       · simp
       · intro q _ hq
-        simp [Finsupp.single_apply, Ne.symm hq]
+        simp [Ne.symm hq]
       · simp
     have hL : ∀ q : Σ k, ι' k, ∑ i, (Finsupp.single q n) ⟨k', i⟩ = if q.1 = k' then n else 0 := by
       rintro ⟨kq, iq⟩
       by_cases h : kq = k'
       · subst h
         simp [Finsupp.single_apply]
-      · simp [Finsupp.single_apply, h]
+      · simp [h]
     rw [Finsupp.mapDomain_single, hL, hR, hv]
 
 theorem isMultiHomog_rename_block (hb : IsBlockMap κ v) {f : MRing ι} {b : K → ℕ} (hf : IsMultiHomog f b) :

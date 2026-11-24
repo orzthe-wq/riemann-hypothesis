@@ -3,50 +3,7 @@ module
 public import Formalism.LocalToGlobal.Divisibility.CoefMod
 public import Formalism.LocalToGlobal.Columns.CoefficientsModP.FkPderivBlockEmbNe
 public import Formalism.LocalToGlobal.Columns.CoefficientsModP.PairingNondegenerateHolds
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -236,22 +193,18 @@ theorem pairingBNondegenerate_holds : PairBNondeg := by
     rw [pairBK_apply, ← pairP_trivial] at hxy
     exact hxy
 
-private theorem actP_one' {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
-    (F : Pol K ι n) : actP lam (1 : ι → GL (Fin n) K) F = F := by
-  simp [actP, detTwK_one, trAct_one]
-
 theorem pb_extNormB_ne (K : Type) [Field K] [CharZero K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) :
     extNormB K lam ≠ 0 := by
   intro h0
   have h := @pairingExtremal_holds K _ starRingOfComm _ ι _ n lam (fun _ => 1) 1 (fun τ => by simp)
-  rw [actP_one', pairP_trivial, pairB_apply, h0, inv_zero, zero_mul] at h
+  rw [_root_.Formalism.L2.DIV.polyAction_one₂, pairP_trivial, pairB_apply, h0, inv_zero, zero_mul] at h
   exact zero_ne_one h
 
 theorem pairingBExtremal_holds : PairBExtremal := by
   intro K _ _ ι _ n lam B
   rw [pairingBInvariantK_holds K ι n lam B]
   have h := @pairingExtremal_holds K _ starRingOfComm _ ι _ n lam (fun _ => 1) 1 (fun τ => by simp)
-  rw [actP_one', pairP_trivial] at h
+  rw [_root_.Formalism.L2.DIV.polyAction_one₂, pairP_trivial] at h
   exact h
 
 section Star
@@ -288,15 +241,10 @@ theorem pb_invTrK_invTrK {K : Type} [Field K] {ι : Type} {n : ℕ} (g : ι → 
   change ((g τ : Matrix (Fin n) (Fin n) K)ᵀ)ᵀ = (g τ : Matrix (Fin n) (Fin n) K)
   exact Matrix.transpose_transpose _
 
-private theorem actP_mul' {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
-    (a b : ι → GL (Fin n) K) (F : Pol K ι n) : actP lam (a * b) F = actP lam a (actP lam b F) := by
-  have h := congrArg (fun φ : Module.End K (Pol K ι n) => φ F) ((rhoP lam).map_mul a b)
-  simpa [rhoP] using h
-
 theorem pairB_adj {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (g : ι → GL (Fin n) K)
     (F F' : Pol K ι n) : pairB lam (actP lam g F) F' = pairB lam F (actP lam (invTrK g)⁻¹ F') := by
   have h1 := pairingBInvariantK_holds K ι n lam (invTrK g)⁻¹ (actP lam g F) F'
-  rw [map_inv, pb_invTrK_invTrK, ← actP_mul', inv_mul_cancel, actP_one'] at h1
+  rw [map_inv, pb_invTrK_invTrK, ← _root_.Formalism.L2.DIV.polyAction_mul, inv_mul_cancel, _root_.Formalism.L2.DIV.polyAction_one₂] at h1
   exact h1.symm
 
 theorem pb_fockS_eq {K : Type} [Field K] [StarRing K] {σ : Type} (f g : MvPolynomial σ K) :

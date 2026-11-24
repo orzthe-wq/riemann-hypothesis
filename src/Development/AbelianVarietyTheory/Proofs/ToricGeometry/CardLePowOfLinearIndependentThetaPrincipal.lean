@@ -91,7 +91,7 @@ theorem _root_.GlobalTheory.card_le_pow_of_linearIndependent_theta_principal :
   · change f k (φ (z + Pi.single i 1)) * cexp (-((n : ℂ) * Q (z + Pi.single i 1))) =
       f k (φ z) * cexp (-((n : ℂ) * Q z))
     have hs : (fun j => (((Pi.single i 1 : Fin g → ℤ) j : ℤ) : ℂ)) = Pi.single i 1 := by
-      ext j; by_cases hj : j = i <;> simp [Pi.single_apply, hj]
+      ext j; by_cases hj : j = i <;> simp [hj]
     have hmem : φ (Pi.single i 1) ∈ Λ := (hΛ _).mpr ⟨Pi.single i 1, 0, by
       rw [hs]; ext j; simp [Matrix.mulVec, dotProduct]⟩
     obtain ⟨l, hl⟩ : ∃ l : Λ, (l : Fin g → ℂ) = φ (Pi.single i 1) := ⟨⟨_, hmem⟩, rfl⟩
@@ -103,7 +103,7 @@ theorem _root_.GlobalTheory.card_le_pow_of_linearIndependent_theta_principal :
   · change f k (φ (z + τ *ᵥ Pi.single j 1)) * cexp (-((n : ℂ) * Q (z + τ *ᵥ Pi.single j 1))) =
       b j ^ n * cexp (-(2 * Real.pi * I) * n * z j) * (f k (φ z) * cexp (-((n : ℂ) * Q z)))
     have hs : (fun i => (((Pi.single j 1 : Fin g → ℤ) i : ℤ) : ℂ)) = Pi.single j 1 := by
-      ext i; by_cases hi : i = j <;> simp [Pi.single_apply, hi]
+      ext i; by_cases hi : i = j <;> simp [hi]
     have hmem : φ (τ *ᵥ Pi.single j 1) ∈ Λ := (hΛ _).mpr ⟨0, Pi.single j 1, by
       rw [hs]; ext i; simp⟩
     obtain ⟨l, hl⟩ : ∃ l : Λ, (l : Fin g → ℂ) = φ (τ *ᵥ Pi.single j 1) := ⟨⟨_, hmem⟩, rfl⟩

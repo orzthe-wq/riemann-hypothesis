@@ -3,11 +3,11 @@ module
 public import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.ChartGen
 public import Formalism.HermitianLattices.StatementMass
 public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryOfUnimodularLatticesAtPlaceStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMaximalIntegralHermitianLatticeOrthonormalStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeDiscriminantOrderNeZeroUnimodulaStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeBadPrimesIffGramDetStatement
-public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeLocalStructureDiscriminanStatement
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsIsometryOfUnimodularLatticesAtPlace
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.ExistsMaximalIntegralHermitianLatticeOrthonormal
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianLatticeDiscriminantOrderNeZeroUnimodula
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeBadPrimesIffGramDet
+public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MaximalHermitianLatticeLocalStructureDiscriminan
 public import Development.AbelianVarietyTheory.Proofs.FlagMeasures.MemHcompl
 import Formalism.HermitianLattices.HermitianLatticesProofs.DualBasic
 import Formalism.HermitianLattices.HermitianLatticesProofs.LocDual
@@ -146,7 +146,7 @@ theorem abs_unimod {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {Λ : AddS
       (A.add_mem (A.mul_mem (A.mul_mem T'' (hA _ cA)) F) (A.mul_mem (A.mul_mem T'' T) hG))
     convert this using 1
     simp only [extForm_apply, map_sub, map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply,
-      LinearMap.sub_apply, starRingEnd_apply, star_mul', smul_eq_mul, RingHom.id_apply]
+      LinearMap.sub_apply, starRingEnd_apply, star_mul', smul_eq_mul]
     field_simp
     ring
 
@@ -189,9 +189,6 @@ section Local
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
-theorem hstar (r : 𝓞 K) : star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K) :=
-  LocWitt.star_int r
-
 theorem mem_loc {W : Type} [AddCommGroup W] [Module (𝓞 K) W] {p : HeightOneSpectrum (𝓞 K)}
     (hc : conjIdeal (K := K) p.asIdeal = p.asIdeal) (L : Submodule (𝓞 K) W) (v : W) :
     v ∈ loc (K := K) p.asIdeal L ↔ ∃ s, s ∉ p.asIdeal ∧ s • v ∈ L :=
@@ -222,8 +219,8 @@ theorem star_notMem {p : HeightOneSpectrum (𝓞 K)} (hc : conjIdeal (K := K) p.
 theorem star_le {p : HeightOneSpectrum (𝓞 K)} (hc : conjIdeal (K := K) p.asIdeal = p.asIdeal)
     (a : K) (ha : p.valuation K a ≤ 1) : p.valuation K (star a) ≤ 1 := by
   obtain ⟨n, d, e⟩ := p.exists_primeCompl_mul_eq_of_integer a ha
-  obtain ⟨n', en⟩ := hstar n
-  obtain ⟨d', ed⟩ := hstar (d : 𝓞 K)
+  obtain ⟨n', en⟩ := _root_.Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range n
+  obtain ⟨d', ed⟩ := _root_.Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range (d : 𝓞 K)
   have : p.valuation K (algebraMap (𝓞 K) K n') ≤ 1 := p.valuation_le_one n'
   rwa [en, ← e, star_mul', ← ed, map_mul, val_one (star_notMem hc ed d.2), mul_one] at this
 
@@ -261,13 +258,13 @@ theorem exists_norm (hK : IsCMUnram K) {p : HeightOneSpectrum (𝓞 K)}
     (hc : conjIdeal (K := K) p.asIdeal = p.asIdeal) {u : K} (hu : p.valuation K u ≤ 1)
     (us : star u = u) : ∃ c : K, p.valuation K c ≤ 1 ∧ p.valuation K (star c * c - u) < 1 := by
   have inj : Function.Injective (algebraMap (𝓞 K) K) := RingOfIntegers.coe_injective
-  let σ := locBasic_sigma inj hstar
-  have hσ : ∀ r, algebraMap (𝓞 K) K (σ r) = star (algebraMap (𝓞 K) K r) := locBasic_sigma_spec inj hstar
+  let σ := locBasic_sigma inj _root_.Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range
+  have hσ : ∀ r, algebraMap (𝓞 K) K (σ r) = star (algebraMap (𝓞 K) K r) := locBasic_sigma_spec inj _root_.Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range
   have hle : p.asIdeal ≤ p.asIdeal.comap σ := by
-    rw [← locBasic_conj_eq inj hstar, hc]
+    rw [← locBasic_conj_eq inj _root_.Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range, hc]
   have := p.isMaximal
-  letI : Field (𝓞 K ⧸ p.asIdeal) := Ideal.Quotient.field _
-  haveI : Finite (𝓞 K ⧸ p.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ p.ne_bot
+  let : Field (𝓞 K ⧸ p.asIdeal) := Ideal.Quotient.field _
+  have : Finite (𝓞 K ⧸ p.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ p.ne_bot
   let τ := Ideal.quotientMap p.asIdeal σ hle
   have hτ : ∀ r, τ (Ideal.Quotient.mk _ r) = Ideal.Quotient.mk _ (σ r) := fun r => rfl
   have σσ : ∀ r, σ (σ r) = r := fun r => inj (by rw [hσ, hσ, star_star])
@@ -300,8 +297,8 @@ theorem loc_int {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {M : Submodul
     {P : Ideal (𝓞 K)} (hP : P.IsPrime) :
     dualAt h P (loc (K := K) P M) = loc (K := K) P (dual h M) ∧
       loc (K := K) P M ≤ loc (K := K) P (dual h M) := by
-  have a := ((locDual (𝓞 K) K V h hs hstar M hM.1.fg).1 P hP)
-  exact ⟨a.2.trans a.1.symm, locBasic_locS_mono _ (((dualBasic (𝓞 K) K V h hs hstar).2.2.2.1 M).1 hM.2)⟩
+  have a := ((locDual (𝓞 K) K V h hs _root_.Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range M hM.1.fg).1 P hP)
+  exact ⟨a.2.trans a.1.symm, locBasic_locS_mono _ (((dualBasic (𝓞 K) K V h hs _root_.Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range).2.2.2.1 M).1 hM.2)⟩
 
 theorem exists_ext [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} (hK : IsCMUnram K) (hs : h.IsSymm)
     (hn : h.Nondegenerate) {M : Submodule (𝓞 K) V} (hM : IsMaxLat h M) {p : HeightOneSpectrum (𝓞 K)}
@@ -311,7 +308,7 @@ theorem exists_ext [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} (h
       (0, 1) ∈ loc (K := K) p.asIdeal L ∧
       (∃ w ∈ loc (K := K) p.asIdeal L, extForm h π w (0, 1) = 1) ∧
       ∀ v, (v, 0) ∈ loc (K := K) p.asIdeal L ↔ v ∈ loc (K := K) p.asIdeal M := by
-  obtain ⟨hc, -, -, x, xM, ⟨a, ea, a1, a2⟩, hd⟩ := (GlobalTheory.T.maximalHermitianLattice_local_structure_discriminant K V h hK hs hn M hM).2.2.2 _ hb
+  obtain ⟨hc, -, -, x, xM, ⟨a, ea, a1, a2⟩, hd⟩ := (_root_.GlobalTheory.MaxLatStruct.main K V h hK hs hn M hM).2.2.2 _ hb
   have av : p.valuation K (h x x) = WithZero.exp (-1 : ℤ) := ea ▸ val_unif a1 a2
   have a0 : h x x ≠ 0 := fun z => WithZero.exp_ne_zero (by rw [← av, z, map_zero])
   have π0 : π ≠ 0 := fun z => WithZero.exp_ne_zero (by rw [← πv, z, map_zero])
@@ -434,15 +431,15 @@ theorem sameGenus [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} (hK
     SameGenus h M N := by
   intro P hP
   have par : P ∈ badP h M ↔ P ∈ badP h N :=
-    (GlobalTheory.T.maximalHermitianLattice_badPrimes_iff_gramDet K V h hK hs hn M hM _ (Module.finBasis K V) P hP).trans
-      (GlobalTheory.T.maximalHermitianLattice_badPrimes_iff_gramDet K V h hK hs hn N hN _ (Module.finBasis K V) P hP).symm
+    (_root_.GlobalTheory.MaxLatDet.main K V h hK hs hn M hM _ (Module.finBasis K V) P hP).trans
+      (_root_.GlobalTheory.MaxLatDet.main K V h hK hs hn N hN _ (Module.finBasis K V) P hP).symm
   by_cases hb : P ∈ badP h M
   swap
-  · exact GlobalTheory.T.exists_isometry_of_unimodular_lattices_at_place K V h hK hs hn M N hM.1.1 hN.1.1 P hP (by_contra fun a => hb ⟨hP, a⟩)
+  · exact _root_.GlobalTheory.Mass.UnimodLoc.exists_isom_of_isUnimodularAt K V h hK hs hn M N hM.1.1 hN.1.1 P hP (by_contra fun a => hb ⟨hP, a⟩)
       (by_contra fun a => hb (par.2 ⟨hP, a⟩))
   let p : HeightOneSpectrum (𝓞 K) := ⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP
     (RingOfIntegers.not_isField K)⟩
-  obtain ⟨hc, -, -, x, -, ⟨a, ea, a1, a2⟩, -⟩ := (GlobalTheory.T.maximalHermitianLattice_local_structure_discriminant K V h hK hs hn M hM).2.2.2 _ hb
+  obtain ⟨hc, -, -, x, -, ⟨a, ea, a1, a2⟩, -⟩ := (_root_.GlobalTheory.MaxLatStruct.main K V h hK hs hn M hM).2.2.2 _ hb
   have πv : p.valuation K (h x x) = WithZero.exp (-1 : ℤ) := ea ▸ val_unif (p := p) a1 a2
   have π0 : h x x ≠ 0 := fun z => WithZero.exp_ne_zero (by rw [← πv, z, map_zero])
   have πs := LocWitt.symm' hs x x
@@ -483,7 +480,7 @@ theorem sameGenus [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} (hK
   have NF := full N hN.1.1 L' N1 N3 N6
   have s' := extForm_symm hs πs
   have n' := extForm_nondeg hn π0
-  obtain ⟨g, g1, g2⟩ := GlobalTheory.T.exists_isometry_of_unimodular_lattices_at_place K (V × K) _ hK s' n' L L' LF NF P hP L2 N2
+  obtain ⟨g, g1, g2⟩ := _root_.GlobalTheory.Mass.UnimodLoc.exists_isom_of_isUnimodularAt K (V × K) _ hK s' n' L L' LF NF P hP L2 N2
   rw [mem_iff_of_gmap] at g2
   obtain ⟨k, k1, k2, k3⟩ := LocWitt.main K (V × K) _ hK s' n' L' N1 P hP hc N2 (g (0, 1))
     ((g2 _).2 L3) (0, 1) N3 (g1 _ _) ⟨g w, (g2 _).2 L4, (g1 _ _).trans L5⟩ N4
@@ -504,11 +501,11 @@ theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommG
       simp [e] at this
     exact ⟨fun x hx => this x (hx x), fun x hx => this x (hx x)⟩
   refine ⟨fun hN => ?_, fun hN => ⟨hN.1.1, sameGenus hK hs hn hM hN⟩⟩
-  have dM := (GlobalTheory.T.hermitianLatticeDiscriminantOrder_ne_zero_unimodular K V h hK hs hn M hM.1).2.2.2.1
+  have dM := (_root_.GlobalTheory.Mass.DiscOrder.main K V h hK hs hn M hM.1).2.2.2.1
   obtain ⟨N1, N2⟩ := dM N hN
-  obtain ⟨N', m', le⟩ := (GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V h hK hs hn).1 N N1
+  obtain ⟨N', m', le⟩ := (_root_.GlobalTheory.Mass.MaxExists.main K V h hK hs hn).1 N N1
   have N3 := (dM N' ⟨m'.1.1, sameGenus hK hs hn hM m'⟩).2
-  have dN := GlobalTheory.T.hermitianLatticeDiscriminantOrder_ne_zero_unimodular K V h hK hs hn N N1
+  have dN := _root_.GlobalTheory.Mass.DiscOrder.main K V h hK hs hn N N1
   have e := (dN.2.2.1 N' m'.1 le).2
   rw [N3, ← N2] at e
   have i1 : idxN N' N = 1 := by

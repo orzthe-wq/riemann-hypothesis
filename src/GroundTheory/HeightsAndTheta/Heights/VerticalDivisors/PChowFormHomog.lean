@@ -58,7 +58,7 @@ variable {F : Type} [Field F] {n k : ℕ}
 
 theorem chowForm_degree_unique {I : Ideal (MvPolynomial (Fin n) F)}
     {f g : MvPolynomial (Fin k × Fin n) F} (hk : 0 < k) (hf : IsChowForm I k f)
-    (hg : IsChowForm I k g) {δ δ' : ℕ} (hδ : IsMultiHomog δ f) (hδ' : IsMultiHomog δ' g) :
+    (hg : IsChowForm I k g) {δ δ' : ℕ} (hδ : Heights.IsMultiHomog δ f) (hδ' : Heights.IsMultiHomog δ' g) :
     δ = δ' := by
   obtain ⟨q, rfl⟩ : f ∣ g := (hf.2 g).mp ((hg.2 g).mpr dvd_rfl)
   obtain ⟨r, hr⟩ : f * q ∣ f := (hg.2 f).mp ((hf.2 f).mpr dvd_rfl)
@@ -79,7 +79,7 @@ theorem ChowFormHomog.proof : ChowFormHomog.Statement := by
   · subst hk0
     exact fun d _ => funext fun i => i.elim0
   choose a ha using fun i => hf.exists_isWeightedHomogeneous_inGroup i
-  have hδ : IsMultiHomog (a ⟨0, hk⟩) f := (isMultiHomog_iff _ _).mpr fun i => by
+  have hδ : Heights.IsMultiHomog (a ⟨0, hk⟩) f := (isMultiHomog_iff _ _).mpr fun i => by
     rw [hf.degrees_eq ha ⟨0, hk⟩ i]
     exact ha i
   have hdeg : chowDegree I k = a ⟨0, hk⟩ := by
@@ -90,6 +90,6 @@ theorem ChowFormHomog.proof : ChowFormHomog.Statement := by
   rw [hdeg]
   exact hδ
 
-theorem chowFormHomog : ChowFormHomog.Statement := ChowFormHomog.proof
+alias chowFormHomog := _root_.GroundTheory.Heights₂.Heights.Vertical.ChowFormHomog.proof
 
 end GroundTheory.Heights₂.Heights.Vertical

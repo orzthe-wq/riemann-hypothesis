@@ -105,7 +105,7 @@ lemma reflection_column_isotropic (l : Fin r) (c : ℂ) (p : Fin (2 * r + k + 1)
   by_cases hp : p = esI k r l
   · subst hp; simp
   · by_cases hp' : p = eI k r l
-    · subst hp'; simp [hp, hne]
+    · subst hp'; simp [hp]
     · simp [hp, hp']
 
 lemma reflection_column_dual_isotropic (l : Fin r) (c : ℂ) (p : Fin (2 * r + k + 1)) :
@@ -115,7 +115,7 @@ lemma reflection_column_dual_isotropic (l : Fin r) (c : ℂ) (p : Fin (2 * r + k
   by_cases hp : p = eI k r l
   · subst hp; simp [hne.symm]
   · by_cases hp' : p = esI k r l
-    · subst hp'; simp [hp, hne.symm]
+    · subst hp'; simp [hp]
     · simp [hp, hp']
 
 lemma weyl_cell_apply_basis (l : Fin r) (c : ℂ) (q : Fin (2 * r + k + 1)) :

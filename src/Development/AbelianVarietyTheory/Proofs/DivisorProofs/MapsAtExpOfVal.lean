@@ -41,6 +41,7 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsToricRankOne
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -90,9 +91,7 @@ theorem Reg.inv (hF : Reg L L' F c) :
   show (F Z r z J J')⁻¹ = _
   rw [map_inv, hu Z r z J J' hz hJ hJ', mul_inv]
 
-theorem good_exists {M : LB X} (hM : M.IsLB) {Z : Scheme.{0}} (z : Z) : ∃ J, Good M z J := by
-  choose I hI using fun χ : Z ⟶ X => exists_chart hM (χ z)
-  exact ⟨I, hI⟩
+alias good_exists := _root_.GlobalTheory.TorusCoord.exists_good'
 
 theorem Reg.glue (hL : L.IsLB) (hL' : L'.IsLB) (hF : Reg L L' F c)
     (hc : ∀ (U : Type) [CommGroup U] h h', c U h h' = 1) :

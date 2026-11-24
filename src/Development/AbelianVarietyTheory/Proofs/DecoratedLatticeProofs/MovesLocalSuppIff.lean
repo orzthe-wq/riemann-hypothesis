@@ -1,7 +1,8 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacuaStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.AdelicPointComponentsAtPlacesLatticesVacua
+public import Development.AbelianVarietyTheory.Definitions.ExistenceOfLattices.MarkSpec
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -53,8 +54,8 @@ namespace GlobalTheory.FinPl
 theorem movesLocal_supp_iff {D : D7} (S : HSp D) (L : Lat S) (hL : Submodule.IsLattice D.host.E L) (v : Pl D)
     (y : Fin S.rank → AE D) (hy : ∀ i, y i ∈ idAt D (· = v)) :
     y ∈ latV S L (fun _ => True) ↔ y ∈ latV S L (· = v) := by
-  have hT := ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (fun _ => True)).2 S).2.2.2 L y hL
-  have hV := ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)).2 S).2.2.2 L y hL
+  have hT := ((_root_.GlobalTheory.FinPl.localComponents D (fun _ => True)).2 S).2.2.2 L y hL
+  have hV := ((_root_.GlobalTheory.FinPl.localComponents D (· = v)).2 S).2.2.2 L y hL
   have hsub : ∀ i, y i ∈ idAt D (fun _ => True) := by
     intro i
     have h := hy i
@@ -71,7 +72,7 @@ theorem movesLocal_supp_iff {D : D7} (S : HSp D) (L : Lat S) (hL : Submodule.IsL
     refine ⟨hsub, fun w _ e he => ?_⟩
     by_cases hwv : w = v
     · exact h w hwv e he
-    · obtain ⟨ε, -, -, -, hAt, hOff⟩ := (GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = w)).1
+    · obtain ⟨ε, -, -, -, hAt, hOff⟩ := (_root_.GlobalTheory.FinPl.localComponents D (· = w)).1
       have hzero : e • y = 0 := by
         funext i
         have hyi : y i ∈ idOff D (· = w) := by
@@ -107,7 +108,7 @@ theorem movesLocal : ∀ (D : D7) (S : HSp D) (L : GlobalTheory.FinPl.Lat S), Is
     rw [← movesLocal_supp_iff S L hL.1 v y hy, ← movesLocal_supp_iff S L hL.1 v _ (hmv _ y hy)]
     exact h y hyT
   · intro h y hy
-    have hT := fun z => ((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (fun _ => True)).2 S).2.2.2 L z hL.1
+    have hT := fun z => ((_root_.GlobalTheory.FinPl.localComponents D (fun _ => True)).2 S).2.2.2 L z hL.1
     rw [hT y, hT (mt S g *ᵥ y)]
     constructor
     · rintro ⟨_, hy'⟩

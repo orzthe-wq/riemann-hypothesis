@@ -140,7 +140,7 @@ theorem deg_iff_not_li {F : Type} [Field F] {N n : ℕ} (x : Mat F N) :
       rw [Finset.sum_eq_single i] at this
       · simpa using this
       · intro b _ hb
-        simp [Finsupp.single_apply, show (b : ℕ) ≠ (i : ℕ) from fun h => hb (Fin.ext h)]
+        simp [show (b : ℕ) ≠ (i : ℕ) from fun h => hb (Fin.ext h)]
       · simp
     · apply Polynomial.natDegree_sum_le_of_forall_le
       intro b _

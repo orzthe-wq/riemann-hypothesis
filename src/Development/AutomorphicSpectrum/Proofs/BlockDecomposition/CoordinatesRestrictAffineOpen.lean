@@ -51,7 +51,7 @@ theorem etale_rs {X : Scheme.{0}} {V W : X.Opens} (h : W ≤ V) (hV : IsAffineOp
     (rs h).Etale := by
   have key := HasRingHomProperty.appLE @Etale (𝟙 X) inferInstance ⟨V, hV⟩ ⟨W, hW⟩ h
   have e : Scheme.Hom.appLE (𝟙 X) V W h = X.presheaf.map (homOfLE h).op := by
-    simp [Scheme.Hom.appLE] <;> rfl
+    simp [Scheme.Hom.appLE]
   rw [e] at key
   exact key
 

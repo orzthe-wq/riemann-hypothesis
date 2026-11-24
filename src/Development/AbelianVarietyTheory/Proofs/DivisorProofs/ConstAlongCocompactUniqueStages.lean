@@ -112,7 +112,7 @@ theorem conj_mem_unip_of_subset {S T : Finset (Fin r)} (hTS : T ⊆ S) {p u : GA
   have eT := GlobalTheory.ConstTrans.unip_eq_unipFlag F E σ h n J hJ r X Y hW T m hm hm'
   rw [eT] at hu ⊢
   exact conj_mem_unipFlag hJ hσ (isIsoCols_of_isWittFrame hW hσ hJ m.2) _
-    (GlobalTheory.ConstTrans.unip_le_parFlag F E σ h n J hJ r X Y hW S T m hTS hm hm' hp) hu
+    (_root_.GlobalTheory.StdParFlag.unip_le_parFlag F E σ h n J hJ r X Y hW S T m hTS hm hm' hp) hu
 
 theorem constAlong_cocompact_unique_stages :
     (∀ S : Finset (Fin r), Cocompact (ratPts σ J) (unip σ J X S) ∧

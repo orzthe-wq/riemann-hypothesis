@@ -112,11 +112,7 @@ theorem isRadical_span_of_away {R A C ι : Type} [CommRing R] [CommRing A] [Comm
     RingHom.comp_apply, MvPolynomial.eval₂Hom_C] at h2
   exact h2
 
-theorem resG_resG {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)) :
-    resG X h' (resG X h a) = resG X (h'.trans h) a := by
-  change (X.presheaf.map _ ≫ X.presheaf.map _).hom a = _
-  rw [← Functor.map_comp]
-  rfl
+alias resG_resG := _root_.GlobalTheory.Cartier.resG_resG
 
 theorem isUnit_ger_iff_not_mem {X : Scheme.{0}} (Z : Closeds X) (U' : X.affineOpens)
     (δ : Γ(X, U'.1)) (h : (Scheme.IdealSheafData.vanishingIdeal Z).ideal U' = Ideal.span {δ})
@@ -157,7 +153,7 @@ theorem reducedEq_pullback_etale : ∀ (X Y : Scheme.{0}) [IsLocallyNoetherian X
   set g' := resG X hU' g
   set V := X.basicOpen g'
   have hV' : V = X.basicOpen g := by
-    simp only [V, g', resG, Scheme.basicOpen_res]
+    simp only [V, g', Scheme.basicOpen_res]
     exact inf_eq_right.2 hgU'
   have hVU' : V ≤ U'.1 := X.basicOpen_le g'
   have hVU : V ≤ U.1 := hVU'.trans hU'

@@ -1,53 +1,6 @@
 module
 
 public import GroundTheory.GlobalFields.TateThesis.GaussianComplex
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Int
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Fourier.FourierTransformDeriv
-import Mathlib.Analysis.LocallyConvex.AbsConvexOpen
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -97,10 +50,7 @@ theorem complexFourier_mul_self {f : ℂ → ℂ} (hf : Integrable f complexPlac
 
 theorem cexp_neg_two_pi_norm_sq (w : ℂ) :
     Complex.exp (-2 * π * (‖w‖ : ℂ) ^ 2) = Complex.exp (-2 * π * (w * conj w)) := by
-  congr 2
-  rw [mul_conj, normSq_eq_norm_sq]
-  push_cast
-  ring
+  rw [mul_conj' w]
 
 theorem exists_hasFDerivAt_conj_pow_mul_gaussian (n : ℕ) (w : ℂ) :
     ∃ D : ℂ →L[ℝ] ℂ,
@@ -162,12 +112,11 @@ theorem complexFourier_pow_mul_gaussian (n : ℕ) :
     have key := complexFourier_mul_self hf hf' hF
     have e : (fun z : ℂ ↦ z * (z ^ n * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2))) =
         fun z ↦ z ^ (n + 1) * Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2) := by
-      funext z; ring
+      funext z
+      rw [pow_succ' z n, mul_assoc z]
     rw [e] at key
-    have hne : (-4 * π * I : ℂ) ≠ 0 := by
-      have : (π : ℂ) ≠ 0 := ofReal_ne_zero.mpr Real.pi_ne_zero
-      simp [this, I_ne_zero]
-    apply mul_left_cancel₀ hne
+    apply mul_left_cancel₀ (a := (-4 * π * I : ℂ)) (by
+      simp [ofReal_ne_zero.mpr Real.pi_ne_zero, I_ne_zero])
     rw [key]
     simp only [smul_apply, smul_eq_mul]
     have hD1' : (-I) ^ n * D 1 - I * ((-I) ^ n * D I) = (-I) ^ n * (D 1 - I * D I) := by ring
@@ -181,9 +130,9 @@ theorem complexFourier_conj (f : ℂ → ℂ) (w : ℂ) :
   rw [complexFourier, complexFourier, ← integral_conj]
   congr 1
   funext z
-  simp [Circle.smul_def, Real.fourierChar_apply, ← exp_conj, map_ofNat, neg_re, neg_im,
-    mul_re, ofReal_sub, ofReal_mul]
-  congr 2 <;> try ring <;> simp
+  simp [Circle.smul_def, Real.fourierChar_apply, ← exp_conj, map_ofNat, neg_re, mul_re, ofReal_sub, ofReal_mul]
+  ring_nf
+  simp
 
 theorem conj_cexp_neg_two_pi_norm_sq (z : ℂ) :
     conj (Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2)) = Complex.exp (-2 * π * (‖z‖ : ℂ) ^ 2) := by

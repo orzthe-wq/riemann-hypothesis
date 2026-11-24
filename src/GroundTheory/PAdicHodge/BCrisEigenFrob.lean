@@ -50,6 +50,8 @@ import Mathlib.Topology.Connected.Separation
 import Mathlib.Topology.MetricSpace.Ultra.TotallySeparated
 import Mathlib.Topology.Sheaves.Init
 
+open scoped GroundTheory.PAdicHodge.LocalBridge
+
 @[expose] public section
 
 set_option maxSynthPendingDepth 1

@@ -71,7 +71,7 @@ theorem csr_linear (a : ℂ) (ha : ‖a‖ = 1) :
   have hX : reflect 1 (X : ℂ[X]) = 1 := by
     simpa [revAt] using Polynomial.reflect_monomial (R := ℂ) 1 1
   rw [hX]
-  simp only [coeff_sub, coeff_X_zero, coeff_C_zero, zero_sub, map_neg, C_neg, pow_one]
+  simp only [coeff_sub, coeff_X_zero, coeff_C_zero, zero_sub, map_neg, pow_one]
   have : (C (starRingEnd ℂ a) * C a : ℂ[X]) = 1 := by rw [← C_mul, hmul, C_1]
   linear_combination this
 

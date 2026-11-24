@@ -72,7 +72,6 @@ theorem val_res' (R : Type) [CommRing R] {P : PSh} {F : Shv R} (φ : (free R).ob
   unfold freeGen
   refine e2.symm.trans (congrArg _ ?_)
   first
-  | rfl
   | exact Finsupp.mapDomain_single
 end LateralTheory.KummerTheory
 
@@ -91,7 +90,6 @@ theorem free_gen_map (R : Type) [CommRing R] {P Q : PSh} (f : P ⟶ Q) (U : Sche
   unfold freeGen
   refine e.symm.trans (congrArg _ ?_)
   first
-  | rfl
   | exact Finsupp.mapDomain_single
 
 theorem chainsXIso_nat (R : Type) [CommRing R] {E' E : Spc} (f : E' ⟶ E) (p : ℕ) :

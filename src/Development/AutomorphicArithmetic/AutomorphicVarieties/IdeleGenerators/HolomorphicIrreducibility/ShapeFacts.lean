@@ -1,5 +1,6 @@
 module
 
+import Lemmata.CharpolySmul
 public import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.ShapeFacts
 import Formalism.LocalRingCardinality.SpanPowerMembership.NZLevD
 import Mathlib.Algebra.Order.Floor.Extended
@@ -41,21 +42,11 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.ThetaLogCoordinates.UniformThetaSubstitution.FinalS
 
 @[expose] public section
 
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial UpperTheory.V.Af UpperTheory.V.Sd
-
-private theorem charpoly_smul' {K : Type} [Field K] [CharZero K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {c : K} (hc : c ≠ 0) :
-    (c • M).charpoly = M.charpoly.scaleRoots c := by
-  apply Polynomial.funext
-  intro x
-  obtain ⟨y, rfl⟩ : ∃ y, x = c * y := ⟨c⁻¹ * x, by field_simp⟩
-  rw [scaleRoots_eval_mul, Matrix.charpoly_natDegree_eq_dim, Matrix.eval_charpoly, Matrix.eval_charpoly,
-    ← Matrix.det_smul]
-  congr 1
-  ext i j
-  by_cases h : i = j <;> simp [Matrix.scalar_apply, h, mul_sub]
 
 private theorem scaleRoots_prod' {K ι : Type} [Field K] (m : Finset ι) (a : ι → K) (s : K) :
     (∏ j ∈ m, (X - C (a j))).scaleRoots s = ∏ j ∈ m, (X - C (a j * s)) := by
@@ -64,10 +55,6 @@ private theorem scaleRoots_prod' {K ι : Type} [Field K] (m : Finset ι) (a : ι
   | empty => simp [one_scaleRoots]
   | insert j m hj ih =>
     rw [Finset.prod_insert hj, Finset.prod_insert hj, mul_scaleRoots_of_noZeroDivisors, ih, X_sub_C_scaleRoots]
-
-private theorem sub_le' {K : Type} [NormedField K] [IsUltrametricDist K] (x y : K) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
-  rw [sub_eq_add_neg, ← norm_neg y]
-  exact IsUltrametricDist.norm_add_le_max _ _
 
 private theorem prod_cong {K ι : Type} [NormedField K] [IsUltrametricDist K] (m : Finset ι) (a b : ι → K)
     (ha : ∀ j, ‖a j‖ ≤ 1) (hab : ∀ j, ‖b j - a j‖ < 1) :
@@ -92,7 +79,7 @@ private theorem prod_cong {K ι : Type} [NormedField K] [IsUltrametricDist K] (m
     have h2 : ∀ i, ‖a j * p.coeff i - b j * q.coeff i‖ < 1 := fun i => by
       have e : a j * p.coeff i - b j * q.coeff i = b j * (p.coeff i - q.coeff i) - (b j - a j) * p.coeff i := by ring
       rw [e]
-      refine (sub_le' _ _).trans_lt (max_lt ?_ ?_) <;> rw [norm_mul]
+      refine (_root_.Formalism.InvariantFactorPaths.G7.LemOne.norm_sub_le_max _ _).trans_lt (max_lt ?_ ?_) <;> rw [norm_mul]
       · exact mul_lt_one_of_nonneg_of_lt_one_right hb (norm_nonneg _) (ih i).2
       · exact mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) (hab j) (ih i).1
     intro i
@@ -104,9 +91,9 @@ private theorem prod_cong {K ι : Type} [NormedField K] [IsUltrametricDist K] (m
       exact h2 0
     | succ i =>
       simp only [sub_mul, coeff_sub, coeff_X_mul, coeff_C_mul]
-      refine ⟨(sub_le' _ _).trans (max_le (ih i).1 (h1 _)), ?_⟩
+      refine ⟨(_root_.Formalism.InvariantFactorPaths.G7.LemOne.norm_sub_le_max _ _).trans (max_le (ih i).1 (h1 _)), ?_⟩
       rw [sub_sub_sub_comm]
-      exact (sub_le' _ _).trans_lt (max_lt (ih i).2 (h2 _))
+      exact (_root_.Formalism.InvariantFactorPaths.G7.LemOne.norm_sub_le_max _ _).trans_lt (max_lt (ih i).2 (h2 _))
 
 theorem UpperTheory.V.Sd.shapeFacts :
     UpperTheory.V.Sd.ShapeFacts := by
@@ -142,7 +129,7 @@ theorem UpperTheory.V.Sd.shapeFacts :
       rw [scaleRoots_prod']; simp
     have e2 : (∏ j, (X - C (χ j s : Qbar l))).natDegree = n := by
       rw [natDegree_prod_of_monic _ _ fun j _ => monic_X_sub_C _]; simp
-    rw [e1, tw_val, charpoly_smul' _ (Units.ne_zero _), coeff_scaleRoots, coeff_scaleRoots, e2,
+    rw [e1, tw_val, Matrix.charpoly_smul, coeff_scaleRoots, coeff_scaleRoots, e2,
       Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, ← sub_mul, norm_mul, norm_pow, hδ, one_pow, mul_one]
     exact h s i
   · intro χ χ' e hχ h hc s i

@@ -69,8 +69,6 @@ theorem jet_hom_ext {B : Type} [CommRing B] [Algebra R B] {f g : Jet R ι m →�
 private theorem deg_sum_lemma {κ : Type} (e : κ →₀ ℕ) : e.degree = ∑ i ∈ e.support, e i := by
   first
   | rfl
-  | simp [Finsupp.degree]
-  | exact Finsupp.degree_apply e
 
 theorem monomial_mem_orig_pow (e : ι →₀ ℕ) (c : R) : monomial e c ∈ orig R ι ^ e.degree := by
   classical
@@ -206,7 +204,7 @@ theorem sL_trunc (m : ℕ) (g : Fin d → MvPowerSeries (Fin 1 × Fin d) R) :
   rw [Ideal.Quotient.eq]
   fin_cases k
   · simp
-  · simp only [power_series_in_fin_one, Matrix.cons_val_one, Matrix.head_cons]
+  · simp only [power_series_in_fin_one]
     change psTrunc (m + 1) (g j) - C (MvPolynomial.constantCoeff (psTrunc (m + 1) (g j))) -
       (psTrunc m (g j) - C (MvPolynomial.constantCoeff (psTrunc m (g j)))) ∈ _
     rw [const_psTrunc_lemma_3, const_psTrunc_lemma_3, sub_sub_sub_cancel_right]

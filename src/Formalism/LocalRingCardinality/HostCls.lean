@@ -44,6 +44,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Topology.Sheaves.Init
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.HostFacts
 
 @[expose] public section
 
@@ -80,15 +81,9 @@ theorem primeClass_eq_ramQ_iff : primeClass H p = .ramQ ↔ p = H.q := by
   unfold primeClass
   split_ifs <;> simp_all
 
-private theorem q_ne_d' : H.q ≠ H.d := by
-  have hh := H.hyp
-  unfold HostHyp at hh
-  obtain ⟨-, -, h1, h2, -⟩ := hh
-  omega
-
 theorem primeClass_eq_ramD_iff : primeClass H p = .ramD ↔ p = H.d := by
   have hs : p ∈ H.small → p ≠ H.d := fun h => (ne_q_and_ne_d_of_mem_small H h).2
-  have hqd := q_ne_d' H
+  have hqd := _root_.Formalism.HC.HostRaw.q_ne_d H
   unfold primeClass
   split_ifs <;> simp_all
 

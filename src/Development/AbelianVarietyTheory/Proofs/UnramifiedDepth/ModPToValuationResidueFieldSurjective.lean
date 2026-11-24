@@ -233,19 +233,19 @@ def piWL : LHom (LW p O hv ε hε ϖ hϖ) ((Ainf.ainfTowerL p O hv ε hε).R 0) 
      commutes' := fun r => by
       obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective r
       rfl },
-    TowerExample.isLocalHom_of_surj _ (piW_surj p O hv ϖ hϖ)⟩
+    IsLocalHom.of_surjective _ (piW_surj p O hv ϖ hϖ)⟩
 
 
 omit hϖ in
 def rho1L : LHom ((Ainf.ainfTowerL p O hv ε hε).R 0) (LK p O hv ε hε) :=
   ⟨{ toRingHom := rho1 p O hv
      commutes' := fun _ => rfl },
-    TowerExample.isLocalHom_of_surj _ (modPToValuationResidueField_surjective p O hv)⟩
+    IsLocalHom.of_surjective _ (modPToValuationResidueField_surjective p O hv)⟩
 
 def psiL : LHom ((Ainf.ainfTowerL p O hv ε hε).R' 1) (LW p O hv ε hε ϖ hϖ) :=
   ⟨{ toRingHom := psiW p O hv ε hε ϖ hϖ
      commutes' := fun _ => rfl },
-    TowerExample.isLocalHom_of_surj _ (psiW_surj p O hv ε hε ϖ hϖ)⟩
+    IsLocalHom.of_surjective _ (psiW_surj p O hv ε hε ϖ hϖ)⟩
 
 omit hϖ in
 lemma thetaBar_surj : Function.Surjective (Ainf.thetaBar p O hv ε hε) := by

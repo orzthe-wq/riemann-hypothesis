@@ -73,7 +73,7 @@ private theorem inner_R_eq_inner_R_inv {D : D7} (X : Formalism.L2.SG.HidaSetting
 private theorem e_inv_mul_eq_chi2_mul {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (k : X.B.I.Gf) (hk : k ∈ X.K2)
     (y : X.B.I.Gf) : X.B.e (k⁻¹ * y) = X.chi2 k * X.B.e y := by
   classical
-  obtain ⟨_, hmulK, hinvK, hchi, hnorm⟩ := Formalism.L2.SG.Closed.level_subgroup_is_group X
+  obtain ⟨_, hmulK, hinvK, hchi, hnorm⟩ := _root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary X
   have he : ∀ z, X.B.e z = if z ∈ X.K2 then star (X.chi2 z) / ((X.B.μf X.K2).toReal : ℂ) else 0 :=
     X.e_eq
   have hunit : X.chi2 k * star (X.chi2 k) = 1 := by

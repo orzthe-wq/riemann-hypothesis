@@ -3,58 +3,12 @@ module
 public import Mathlib.AlgebraicGeometry.EllipticCurve.DivisionPolynomial.Basic
 public import Mathlib.FieldTheory.IsSepClosed
 public import GroundTheory.ArithmeticGeometry.AbelianVarieties.DivisionPoints
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
 import Mathlib.Algebra.Order.Star.Int
 public import Mathlib.AlgebraicGeometry.EllipticCurve.DivisionPolynomial.Degree
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.SimpleRing.Principal
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 public import Mathlib.FieldTheory.Finite.Basic
 
 @[expose] public section
@@ -233,7 +187,7 @@ theorem card_zsmul_eq_zero {n : ℤ} (hn : (n : F) ≠ 0) :
   rcases (by omega : n.natAbs = 1 ∨ 2 ≤ n.natAbs) with h1 | h2
   · have key : ∀ P : W.toAffine.Point, n • P = 0 ↔ P = 0 := by
       intro P
-      rcases Int.natAbs_eq_iff.mp h1 with h | h <;> rw [h] <;> simp [neg_zsmul]
+      rcases Int.natAbs_eq_iff.mp h1 with h | h <;> rw [h] <;> simp
     rw [h1, one_pow, Nat.card_eq_one_iff_exists]
     exact ⟨⟨0, zsmul_zero n⟩, fun P => Subtype.ext ((key P.1).mp P.2)⟩
   have hinf := infinite_of_isSepClosed F
@@ -297,7 +251,7 @@ theorem card_zsmul_eq_zero {n : ℤ} (hn : (n : F) ≠ 0) :
     by_contra hcon
     rw [not_or, not_not, not_not] at hcon
     obtain ⟨g1, g2⟩ := hcon
-    simp only [G, derivative_sub, derivative_C_mul, map_sub, map_mul, aeval_C] at g1 g2
+    simp only [G, derivative_C_mul, map_sub, map_mul, aeval_C] at g1 g2
     have hΨa : aeval a (W.ΨSq n) ≠ 0 := by
       intro h0
       rw [h0, mul_zero, sub_zero] at g1

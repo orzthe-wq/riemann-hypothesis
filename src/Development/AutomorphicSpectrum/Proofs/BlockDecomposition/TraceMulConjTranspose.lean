@@ -64,7 +64,7 @@ theorem fr_nonneg (N : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ fr N := by
 theorem fr_conjTranspose (N : Matrix (Fin n) (Fin n) ℂ) : fr Nᴴ = fr N := by
   unfold fr
   rw [Finset.sum_comm]
-  simp [conjTranspose_apply, norm_star]
+  simp [conjTranspose_apply]
 
 theorem trace_mul_conjTranspose (N : Matrix (Fin n) (Fin n) ℂ) : (N * Nᴴ).trace = (fr N : ℂ) := by
   simp only [fr, Matrix.trace, Matrix.diag, Matrix.mul_apply, conjTranspose_apply, Complex.star_def,
@@ -79,7 +79,7 @@ theorem sq_sum_le (N : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
     have h1 : ‖(Nᴴ *ᵥ v) i‖ ≤ ∑ j, ‖N j i‖ * ‖v j‖ := by
       simp only [mulVec, dotProduct, conjTranspose_apply]
       refine (norm_sum_le _ _).trans (le_of_eq ?_)
-      simp [norm_star]
+      simp
     have h2 := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => ‖N j i‖) (fun j => ‖v j‖)
     calc ‖(Nᴴ *ᵥ v) i‖ ^ 2 ≤ (∑ j, ‖N j i‖ * ‖v j‖) ^ 2 := by gcongr
       _ ≤ _ := h2
@@ -210,7 +210,7 @@ theorem entry_single (u : Matrix (Fin n) (Fin n) ℂ) (a i : Fin n) (c : ℂ) :
   rw [Matrix.mul_apply]
   simp only [mul_diagonal, conjTranspose_apply]
   rw [Finset.sum_eq_single a]
-  · simp only [if_pos rfl]
+  · simp only
     rw [if_pos trivial]
     have := Complex.mul_conj (u i a)
     rw [Complex.normSq_eq_norm_sq] at this
@@ -396,13 +396,13 @@ theorem contraction_dichotomy (hn : 0 < n) {x xi y yi d : Matrix (Fin n) (Fin n)
         simp only [conjTranspose_mul, conjTranspose_conjTranspose, mul_assoc]
       rw [e0, hc]
       simp only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_add, Matrix.add_mul,
-        Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, mul_assoc, c6]
+        Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, mul_assoc, c6]
     have t := congrArg Matrix.trace e
     rw [trace_mul_conjTranspose, trace_add, trace_smul, trace_smul, trace_mul_conjTranspose,
       trace_mul_conjTranspose, fr_conjTranspose] at t
     have t' := congrArg Complex.re t
     simp only [Complex.ofReal_re, Complex.add_re, Complex.smul_re, smul_eq_mul] at t'
-    nlinarith [mul_nonneg hs0 (fr_nonneg (yᴴ * dᴴ * y))]
+    linarith [mul_nonneg hs0 (fr_nonneg (yᴴ * dᴴ * y))]
   have G2 : fr yi ≤ M * (s * fr y + (1 - s) * n) := by
     have hdd : dᴴᴴ * dᴴ = 1 := by rw [conjTranspose_conjTranspose]; exact hd1
     have e1 : dᴴ * (x * (xi * d * yiᴴ)) = yiᴴ := by simp only [mul_assoc, c1, c6]
@@ -421,37 +421,37 @@ theorem contraction_dichotomy (hn : 0 < n) {x xi y yi d : Matrix (Fin n) (Fin n)
   by_cases hcase : 1 ≤ 2 * n * (1 - s)
   · left
     have hy : fr y ≤ 2 * M * n := by
-      nlinarith [mul_le_mul_of_nonneg_left hcase hfry,
+      linarith [mul_le_mul_of_nonneg_left hcase hfry,
         mul_le_mul_of_nonneg_left G1 (by positivity : (0 : ℝ) ≤ 2 * n)]
     have hyi : fr yi ≤ M * (2 * M * n + n + 1) := by
-      have a1 : s * fr y ≤ fr y := by nlinarith
-      have a2 : (1 - s) * n ≤ n := by nlinarith
+      have a1 : s * fr y ≤ fr y := mul_le_of_le_one_left hfry hs1
+      have a2 : (1 - s) * n ≤ n := mul_le_of_le_one_left (by positivity) (by linarith)
       have a3 : M * (s * fr y + (1 - s) * n) ≤ M * (2 * M * n + n + 1) :=
         mul_le_mul_of_nonneg_left (by linarith) hM0
       linarith
     have hMn : 0 ≤ M * n := mul_nonneg hM0 (by positivity)
-    have hb1 : 0 ≤ M * (2 * M * n + n + 1) := mul_nonneg hM0 (by nlinarith)
+    have hb1 : 0 ≤ M * (2 * M * n + n + 1) := mul_nonneg hM0 (by linarith)
     unfold bnd
-    constructor <;> nlinarith
+    constructor <;> linarith
   · right
     rw [not_le] at hcase
-    have hs : 1 / 2 ≤ s := by nlinarith [mul_le_mul_of_nonneg_right hn1 (sub_nonneg.2 hs1)]
+    have hs : 1 / 2 ≤ s := by linarith [mul_le_mul_of_nonneg_right hn1 (sub_nonneg.2 hs1)]
     have hQ : (d * (yiᴴ * yi) * dᴴ).PosSemidef :=
       (posSemidef_conjTranspose_mul_self yi).mul_mul_conjTranspose_same d
     have hT : (fr yi • (y * yᴴ) - 1).PosSemidef := by
       have h := psd_conj (psd_fr yi) y
       convert h using 1
-      simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, mul_assoc, c3, hy1']
+      simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, c3, hy1']
     have h1 : (M • (d * (yiᴴ * yi) * dᴴ) - x * xᴴ).PosSemidef := by
       have h := psd_conj (psd_le_lemma_2 hN) (d * yiᴴ)
       convert h using 1
       simp only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul,
-        Matrix.mul_one, Matrix.one_mul, mul_assoc, c3, c5, c7, hd1]
+        Matrix.mul_one, mul_assoc, c3, c5, c7, hd1]
     have h2 : (M • (x * xᴴ) - d * (yiᴴ * yi) * dᴴ).PosSemidef := by
       have h := psd_conj (psd_le_lemma_2 hA) x
       convert h using 1
       simp only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul,
-        Matrix.mul_one, Matrix.one_mul, mul_assoc, c1, hx1']
+        Matrix.mul_one, mul_assoc, c1, hx1']
     have h3 : (1 - s) * fr yi ≤ M ^ 2 * (n : ℝ) ^ 2 := by
       have a1 : (1 - s) * fr yi ≤ (1 - s) * (M * (s * fr y + (1 - s) * n)) :=
         mul_le_mul_of_nonneg_left G2 (by linarith)
@@ -460,8 +460,9 @@ theorem contraction_dichotomy (hn : 0 < n) {x xi y yi d : Matrix (Fin n) (Fin n)
       have a5 : M * ((1 - s) * (1 - s)) * n ≤ M * ((1 - s) * M) * n :=
         mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left a4 hM0) (by positivity)
       have b1 : 0 ≤ M ^ 2 * s * (n - 1) := mul_nonneg (mul_nonneg (sq_nonneg M) hs0) (by linarith)
-      have b2 : M ^ 2 * n ≤ M ^ 2 * (n : ℝ) ^ 2 := mul_le_mul_of_nonneg_left (by nlinarith) (sq_nonneg M)
-      nlinarith [a1, a3, a5, b1, b2]
+      have b2 : M ^ 2 * n ≤ M ^ 2 * (n : ℝ) ^ 2 :=
+        mul_le_mul_of_nonneg_left (by rw [sq]; exact le_mul_of_one_le_left (by positivity) hn1) (sq_nonneg M)
+      linarith [a1, a3, a5, b1, b2]
     obtain ⟨hq1, hq2⟩ := cone_step (posSemidef_self_mul_conjTranspose y) hQ hT hc h1 h2 h3 hs hs1 hM
       (by positivity)
     constructor
@@ -479,7 +480,7 @@ theorem contraction_dichotomy (hn : 0 < n) {x xi y yi d : Matrix (Fin n) (Fin n)
           yᴴ * dᴴ * (y * yᴴ) * (yᴴ * dᴴ)ᴴ =
           (M * (2 + M ^ 2 * (n : ℝ) ^ 2)) • (1 : Matrix (Fin n) (Fin n) ℂ) - (yᴴ * dᴴ * y) * (yᴴ * dᴴ * y)ᴴ := by
         simp only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_smul, Matrix.smul_mul,
-          Matrix.mul_one, mul_assoc, c6, c8, hy2, hy2']
+          mul_assoc, c6, c8, hy2]
       rw [e] at h
       have := tr_push_algHom_eq_map_tr h
       unfold cmp
@@ -542,8 +543,9 @@ theorem suppSt : PositivityTheory.RgBcC.SuppSt := by
   have hn0 : (0 : ℝ) ≤ n := Nat.cast_nonneg n
   have hbnd0 : 0 ≤ bnd M n := by
     unfold bnd
-    have : 0 ≤ M * (2 * M * n + n + 1) := mul_nonneg (by linarith) (by nlinarith)
-    nlinarith
+    have hMn : 0 ≤ M * n := mul_nonneg (by linarith) hn0
+    have : 0 ≤ M * (2 * M * n + n + 1) := mul_nonneg (by linarith) (by linarith)
+    linarith [sq_nonneg (M * n)]
   have key : fr y ≤ max (bnd M n) C ∧ fr y⁻¹ ≤ max (bnd M n) C := by
     rcases Nat.eq_zero_or_pos n with hn | hn
     · subst hn

@@ -1,7 +1,10 @@
 module
 
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsHeisTrivial
-public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIntertwinerHeisenbergCocycleOfFixedVector
+public import Mathlib.Basic.Complex.Basic
+public import Mathlib.LinearAlgebra.LinearIndependent.Defs
+public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LinearIndependentOfJointEigenvectors
+public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SphericalThetaInertPlace
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -46,7 +49,6 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
-public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.SphericalThetaInertPlace
 import Development.AbelianVarietyTheory.Definitions.Divisors.EqOfHasValueAtInfinite
 import Development.AbelianVarietyTheory.Definitions.Divisors.HilbertNinetyQuotientHomEqIff
 import Development.AbelianVarietyTheory.Definitions.Foundations.NormEulerPolySubOneLe
@@ -88,7 +90,7 @@ theorem exists_linearForm_invariant_isotropic_vacuum : ∀ {R X M : Type} [CommR
     intro z
     exact key z _ ((Submodule.Quotient.eq Λ).1 (hrep _))
   have hli : LinearIndependent ℂ e := by
-    refine linearIndependent_of_simultaneous_eigen e (fun q (l : Λ) => γ l (rep q)) (fun l : Λ => W l) ?_ ?_ ?_
+    refine _root_.GlobalTheory.JointEigenvectorsIndependent.linearIndependent_of_joint_eigenvectors e (fun q (l : Λ) => γ l (rep q)) (fun l : Λ => W l) ?_ ?_ ?_
     · intro q q' hq
       have hm : rep q - rep q' ∈ Λ := by
         rw [hΛ]

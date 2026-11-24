@@ -151,7 +151,7 @@ theorem cmpt_inK_casGen (he : ∀ a b, ε a = ε b) (p : Fin n × Fin n) : inK �
     split_ifs <;>
       simp only [Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, Matrix.single_apply,
         smul_eq_mul] <;>
-      split_ifs <;> (try simp_all [Complex.conj_I, Complex.star_def]) <;> (try subst_vars) <;>
+      split_ifs <;> (try simp_all [Complex.conj_I]) <;> (try subst_vars) <;>
         (try simp_all [Complex.conj_I, Complex.star_def]) <;>
         (obtain ⟨h1, h2⟩ := ‹_ ∧ _›; exact absurd (h1.symm.trans h2) ‹_›)
   unfold inK inG
@@ -277,8 +277,6 @@ theorem cmpt_casU (he : ∀ a b, ε a = ε b) (v : T.V) :
     ContinuousLinearMap.mul_apply, ContinuousLinearMap.neg_apply] at hs
   simp only [casU, hd, hs, neg_neg, casimir, HW.kunits]
   first
-  | simp only [LinearMap.coeFn_sum, Finset.sum_apply, Module.End.mul_apply,
-      ContinuousLinearMap.coe_coe]
   | simp only [LinearMap.sum_apply, Module.End.mul_apply, ContinuousLinearMap.coe_coe]
 
 end Cas

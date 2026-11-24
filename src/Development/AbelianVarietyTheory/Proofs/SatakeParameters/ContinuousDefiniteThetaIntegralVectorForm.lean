@@ -69,7 +69,7 @@ theorem continuous_theta_integral_vector : ∀ {D : D7} (ψ : AddChar (Formalism
   intro D ψ V W χS χT om hom hV ν 𝓕 hν h𝓕 X _ _ _ L hL u hu hinv
   obtain ⟨_, _, _, _, _, _, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
   obtain ⟨_, _, _, _, _, _, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W
-  obtain ⟨C, hC, hcov⟩ := GlobalTheory.definite_unitary_cocompact V hV
+  obtain ⟨C, hC, hcov⟩ := _root_.GlobalTheory.DefiniteQuotient.exists_compact V hV
   let b := Module.finBasis ℂ X
   have e : ∀ g h, thetaKO om h g (L (u h)) = ∑ k, b.coord k (u h) * om (h, g) (L (b k)) 0 := by
     intro g h

@@ -1,0 +1,107 @@
+name: inbox
+
+# Keeps the `inbox` label on the pull requests that are waiting for a maintainer's first response.
+# A pull request goes into the inbox when it is opened, reopened or marked ready for review, and
+# when `awaiting-author` comes off it again. It comes out as soon as someone with triage access
+# comments on it (`batch` included), reviews it or changes its labels, and when it is turned back
+# into a draft, queued for a batch, labelled `awaiting-author` or closed. Batches never go in.
+# `scripts/inbox-sync.py` has the exact rules.
+#
+# An author takes `awaiting-author` off by commenting `ready` (see batch-queue.yml). That label
+# change is made with a workflow token, so it starts no run here, and the batch queue workflow
+# dispatches one for that pull request instead. The sweep cannot be left to find it: GitHub's list
+# of pull requests can show a timeline as it was half an hour or more before. A maintainer who
+# takes the label off by hand starts a run at once.
+#
+# Reviews on pull requests from forks only get a read-only token, so `inbox-review.yml` runs for
+# them and this workflow follows it, with the pull request's number in that run's name. On a pull
+# request by a first-time contributor that run may wait for approval, so it is followed whether it
+# succeeded or is waiting. A sweep every fifteen minutes catches anything the events missed. It
+# does not overrule a maintainer who takes the label off by hand.
+#
+# pull_request_target, issue_comment and workflow_run give the token write access for pull
+# requests from forks. Nothing from a pull request is checked out or run: the script comes from
+# the same trusted commit as this workflow, and everything it uses is read from GitHub's API.
+
+on:
+  pull_request_target:
+    types: [opened, reopened, ready_for_review, converted_to_draft, labeled, unlabeled, closed]
+  issue_comment:
+    types: [created]
+  workflow_run:
+    workflows: [inbox review]
+    types: [completed]
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Pull request to look at (optional; without one, every open pull request is)
+        type: number
+        required: false
+
+permissions: {}
+
+jobs:
+  inbox:
+    # Forks with Actions turned on would otherwise run against themselves. The rest starts no
+    # runner for events that cannot change anything: comments on issues, comments and label
+    # changes on pull requests that are not in the inbox, other than `awaiting-author` coming
+    # off, and anything a bot or the author did.
+    # The label changes this workflow makes start no runs, because the workflow token makes them.
+    if: >-
+      ${{ github.repository == 'leanprover-community/riemann-hypothesis' && (
+          github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' ||
+          (github.event_name == 'workflow_run' &&
+           contains(fromJSON('["success", "action_required"]'), github.event.workflow_run.conclusion)) ||
+          (github.event_name == 'issue_comment' && github.event.issue.pull_request &&
+           contains(github.event.issue.labels.*.name, 'inbox') &&
+           github.event.comment.user.type != 'Bot' &&
+           github.event.comment.user.login != github.event.issue.user.login) ||
+          (github.event_name == 'pull_request_target' && (
+           contains(fromJSON('["opened", "reopened", "ready_for_review", "converted_to_draft"]'), github.event.action) ||
+           (github.event.action == 'unlabeled' && github.event.label.name == 'awaiting-author') ||
+           (contains(github.event.pull_request.labels.*.name, 'inbox') && (
+            github.event.action == 'closed' ||
+            (github.event.pull_request.state == 'open' && github.event.label.name != 'inbox' &&
+             github.event.sender.type != 'Bot' &&
+             github.event.sender.login != github.event.pull_request.user.login))))) ) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # One run at a time for each pull request, one for each relayed review, and one sweep. A run
+    # that is dropped while it waits loses nothing, because each run reads everything from GitHub
+    # again. Relayed reviews get a group of their own because a fork can name that run anything.
+    concurrency:
+      group: inbox-${{ github.event.pull_request.number || github.event.issue.number || inputs.pr || (github.event.workflow_run && format('relay {0}', github.event.workflow_run.display_title)) || 'sweep' }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Check out this workflow's own copy of the scripts
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        # The default checkout uses GitHub's trusted event commit. After a fork PR merges,
+        # that commit can also equal the PR's merge SHA, which checkout rejects as an explicit ref.
+        with:
+          persist-credentials: false
+          sparse-checkout: scripts
+      - name: Put pull requests in the inbox and take them out
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pr }}
+          EVENT: ${{ github.event_name }}
+          RUN_NAME: ${{ github.event.workflow_run.display_title }}
+        run: |
+          # A review relayed by `inbox review` names its pull request in that run's name. A name
+          # that does not is left alone rather than starting a sweep.
+          if [ "$EVENT" = workflow_run ]; then
+            if ! [[ "$RUN_NAME" =~ ^inbox\ review\ \#([0-9]+)$ ]]; then
+              echo "The run '$RUN_NAME' names no pull request: nothing to do."
+              exit 0
+            fi
+            PR=${BASH_REMATCH[1]}
+          fi
+          one=()
+          if [ -n "$PR" ]; then one=(--pr "$PR"); fi
+          python3 scripts/inbox-sync.py --repo "$REPO" "${one[@]}" --summary "$GITHUB_STEP_SUMMARY"

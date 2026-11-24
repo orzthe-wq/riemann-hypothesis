@@ -75,8 +75,7 @@ theorem phase_function_eq_sum_add_prod_inv {n : ℕ} (D' : ℂ) :
   simp [g0, div_eq_mul_inv, Finset.prod_inv_distrib]
 
 theorem a_isOpen (n : ℕ) : IsOpen {x : Fin n → ℂ | ∀ k, x k ≠ 0} := by
-  have : {x : Fin n → ℂ | ∀ k, x k ≠ 0} = ⋂ k, {x | x k ≠ 0} := by ext; simp
-  rw [this]
+  rw [Set.ofPred_forall]
   exact isOpen_iInter_of_finite fun k => isOpen_ne_fun (continuous_apply k) continuous_const
 
 theorem a_contDiffAt_inv {n : ℕ} (N : WithTop ℕ∞) (k : Fin n) (x : Fin n → ℂ) (hx : x k ≠ 0) :
@@ -321,9 +320,8 @@ theorem b_root_sep (s : ℕ) (hs : 0 < s) (z z' : ℂ) (hz : z ≠ 0) (h : z' ^ 
 
 theorem b_differentiableAt {n : ℕ} (D' : ℂ) (x : Fin n → ℂ) (hx : ∀ k, x k ≠ 0) :
     DifferentiableAt ℂ (g0 D') x := by
-  have hP : (∏ k, x k) ≠ 0 := Finset.prod_ne_zero_iff.mpr fun k _ => hx k
   unfold g0
-  fun_prop (disch := assumption)
+  fun_prop (disch := exact Finset.prod_ne_zero_iff.mpr (fun k _ => hx k))
 
 theorem b_near (m : ℕ) (δ : ℝ) (hδ : 0 < δ) (z : ℂ) (hz : 100 * ((m : ℝ) + 2) * δ ≤ ‖z‖)
     (x : Fin (m + 1) → ℂ) (hx : ∀ k, ‖x k - z‖ ≤ 2 * δ) (hx0 : ∀ k, x k ≠ 0) (k : Fin (m + 1)) :
@@ -503,9 +501,8 @@ theorem c_scale (a τ : ℝ) (ha : 1 ≤ a) (hτ : 1 ≤ τ) (E' : ℕ) (A : ℝ
     Real.rpow_neg hτ0.le]
   have h2 : (1 + τ * a) ^ E' ≤ (τ * (1 + a)) ^ E' := pow_le_pow_left₀ (by positivity) (by nlinarith) _
   rw [mul_pow] at h2
-  have h3 : 0 ≤ (τ ^ A)⁻¹ * a ^ (-A) := by positivity
   calc (1 + τ * a) ^ E' * ((τ ^ A)⁻¹ * a ^ (-A))
-      ≤ (τ ^ E' * (1 + a) ^ E') * ((τ ^ A)⁻¹ * a ^ (-A)) := mul_le_mul_of_nonneg_right h2 h3
+      ≤ (τ ^ E' * (1 + a) ^ E') * ((τ ^ A)⁻¹ * a ^ (-A)) := mul_le_mul_of_nonneg_right h2 (by positivity)
     _ = _ := by rw [div_eq_mul_inv]; ring
 
 theorem c_general {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
@@ -580,7 +577,6 @@ theorem majorant_y : Formalism.FourierDecayAlt.G.MajorantY := by
   intro m E' β
   have hfr : (Module.finrank ℝ (UT (m + 2) → ℂ) : ℝ) = ((m : ℝ) + 2) * ((m : ℝ) + 1) := by
     rw [G7.finrank_pi, (dimension_count (m + 2)).1]
-    push_cast [Nat.add_sub_cancel]
     simp
   have h := PhaseFunctionDerivatives.c_general (volume : Measure (UT (m + 2) → ℂ))
     ((Real.toNNReal (‖β‖ / (2 * Real.pi))) ^ Fintype.card (UT (m + 2))) E'
@@ -680,9 +676,8 @@ theorem d_cutM_entries {s : ℕ} (τ : ℝ) (hτ : 0 < τ) (Z : Mat s) (hne : cu
   refine Finset.prod_eq_zero (Finset.mem_univ i) (Finset.prod_eq_zero (Finset.mem_univ j) ?_)
   unfold chi0
   apply Real.smoothTransition.zero_of_nonpos
-  have h2 : (2 * τ) ^ 2 < ‖Z i j‖ ^ 2 := pow_lt_pow_left₀ hlt (by positivity) two_ne_zero
   rw [sub_nonpos, le_div_iff₀ (by positivity)]
-  nlinarith [sq_nonneg τ]
+  nlinarith [pow_lt_pow_left₀ hlt (by positivity) two_ne_zero, sq_nonneg τ]
 
 theorem d_ampCrit_of (hC : CofLowerR) (hDet : DetMXY) : AmpCritContinuous := by
   intro m β Kc hK h0 ε hε hε'
@@ -690,7 +685,6 @@ theorem d_ampCrit_of (hC : CofLowerR) (hDet : DetMXY) : AmpCritContinuous := by
   refine ⟨t₀, ht₀, ?_⟩
   intro V _ _ _ Φ bd hΦ t D z ht htt hD hz
   have htn : 0 < ‖t‖ := norm_pos_iff.2 ht
-  have hτ0 : 0 < ‖t‖ ^ (-ε) := Real.rpow_pos_of_pos htn _
   have hred := d_continuous_red m (fun _ => z)
   have hcof : Continuous (fun y : UT (m + 2) → ℂ => cofXY m t (fun _ => z, y)) := by
     unfold cofXY
@@ -705,7 +699,7 @@ theorem d_ampCrit_of (hC : CofLowerR) (hDet : DetMXY) : AmpCritContinuous := by
     · simp [ampIn, amp, hc]
     · have hcut : cutM (‖t‖ ^ (-ε)) (MXY m D t (fun _ => z, y)) = 0 := by
         by_contra hne
-        have hent := d_cutM_entries _ hτ0 _ hne
+        have hent := d_cutM_entries _ (Real.rpow_pos_of_pos htn _) _ hne
         obtain ⟨e1, e2, e3, e4, e5⟩ := d_entries t _ _ _ _ _ (2 * ‖t‖ ^ (-ε)) (by positivity) hent
         have hc' : Cof (strictUpper (redOf m (fun _ => z, y)).2.2.1) (redOf m (fun _ => z, y)).2.2.2 t ≠ 0 := hc
         have hrel : t ^ (m + 1) * (redOf m (fun _ => z, y)).1 =
@@ -724,7 +718,7 @@ theorem d_ampCrit_of (hC : CofLowerR) (hDet : DetMXY) : AmpCritContinuous := by
   · have hW : ∀ᶠ y' in 𝓝 y, ‖cofXY m t (fun _ => z, y')‖ < c₀ * ‖t‖ ^ ε :=
       (hcof.norm.continuousAt (x := y)).eventually_lt continuousAt_const (by simpa [hc] using hthr)
     have hE : (fun y' => ampIn β m ε Φ D t (fun _ => z, y')) =ᶠ[𝓝 y] fun _ => (0 : V) :=
-      hW.mono fun y' h => hvan y' h
+      hW.mono hvan
     exact continuousAt_const.congr hE.symm
   · have hrho : ContinuousAt (fun y' : UT (m + 2) → ℂ => rhoXY m D t (fun _ => z, y')) y := by
       unfold rhoXY rho1
@@ -732,14 +726,13 @@ theorem d_ampCrit_of (hC : CofLowerR) (hDet : DetMXY) : AmpCritContinuous := by
       exact (((continuous_const.mul (continuous_fst.comp hred)).sub continuous_const).sub
         ((G7.continuous_remainder m t).comp (continuous_snd.comp hred))).continuousAt
     have hM : ContinuousAt (fun y' : UT (m + 2) → ℂ => MXY m D t (fun _ => z, y')) y := by
-      simp only [d_MXY_eq]
-      exact ContinuousAt.comp (f := fun y' : UT (m + 2) → ℂ => (rhoXY m D t (fun _ => z, y'), y'))
-        (d_continuous_M m t (fun _ => z)).continuousAt (hrho.prodMk continuousAt_id)
+      simpa only [d_MXY_eq, Function.comp_def] using
+        ContinuousAt.comp (f := fun y' : UT (m + 2) → ℂ => (rhoXY m D t (fun _ => z, y'), y'))
+          (d_continuous_M m t (fun _ => z)).continuousAt (hrho.prodMk continuousAt_id)
     have hΦc : ContinuousAt Φ (MXY m D t (fun _ => z, y)) :=
       (hΦ _ ⟨D, hD, (hDet m D t _ hc).symm⟩).1.continuousAt
     have hg : ContinuousAt (fun y' : UT (m + 2) → ℂ => gRem m D t (fun _ => z, y')) y := by
-      unfold gRem
-      exact (hrho.sub continuousAt_const).div_const _
+      simpa only [gRem, Pi.sub_apply] using (hrho.sub continuousAt_const).div_const _
     have hinv : ContinuousAt (fun y' : UT (m + 2) → ℂ => (‖cofXY m t (fun _ => z, y')‖ ^ 2)⁻¹) y :=
       ContinuousAt.inv₀ (hcof.norm.pow 2).continuousAt (by simpa using hc)
     unfold ampIn amp cutPhi
@@ -755,7 +748,7 @@ end Formalism.FourierDecayAlt.P.PhaseFunctionDerivatives
 namespace Formalism.FourierDecayAlt.P
 
 theorem amplitude_continuous_at_critical : Formalism.FourierDecayAlt.G.AmpCritContinuous :=
-  PhaseFunctionDerivatives.d_ampCrit_of cofactor_lower_bound_radius det_matrix_xy
+  PhaseFunctionDerivatives.d_ampCrit_of cofactor_lower_bound_radius _root_.Formalism.FourierDecayAlt.P.CuspidalIrreducibleSubrep.detMXY
 
 end Formalism.FourierDecayAlt.P
 

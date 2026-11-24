@@ -3,7 +3,8 @@ module
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.NormCharSplit
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.ExistsPowerSums
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.ListProdStable
-public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.OccursBasics
+public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.SummandFactor
+public import Development.WeilBound.CuspidalAdmissibility.OccursIff
 public import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.PowIndep
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.AmpFin
 public import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.UnitTrace
@@ -163,7 +164,7 @@ private theorem term {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   choose m hm using fun v : Pl F => ex_haar (hK v)
   haveI := fun v => (hm v).1
   obtain ⟨κ, hκ, H⟩ := UpperTheory.ConvolutionTheory.C.termF F E σ n l hn μ ν m hm
-  choose τ hτ using fun v : Pl F => (occursBasics F n μ V v (m v) hV).1
+  choose τ hτ using fun v : Pl F => (_root_.PositivityTheory.TfC.OccursBasics_holds F n μ V v (m v) hV).1
   obtain ⟨N, hN, H⟩ := H a q w₀ L.S V τ x hV hx fun v _ => hτ v
   have hlev : levF L.UF = levOn (insert q L.S) L.UF := by
     unfold levOn

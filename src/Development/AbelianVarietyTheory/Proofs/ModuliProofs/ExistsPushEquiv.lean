@@ -93,7 +93,7 @@ theorem lieMult_pull : ∀ (O : Type) [CommRing O] (S S' : Scheme.{0}) (G : Over
   have fs : spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap (algebraMap k (DualNumber k)) = 𝟙 _ := by
     refine (Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))
     ext a
-    simp [TrivSqZeroExt.algebraMap_eq_inl]
+    simp
   have hR : ∀ (c : k) (u v : epsPt x ⟶ G'), u.left = spMap (epsScale c) ≫ v.left ↔
       (e u).left = spMap (epsScale c) ≫ (e v).left := fun c u v => by
     rw [he, he]

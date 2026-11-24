@@ -49,4 +49,4 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 open GlobalTheory.CompanionTheory.Ar.BT
 
 theorem _root_.GlobalTheory.CompanionTheory.Relay.btOrder_isHopfOrder_noetherian : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T), IsHopfOrder (Γ.btOrder ⊤) := by
-  first | exact @PositivityTheory.UnitarySelfGeneration.bt_hopf | exact PositivityTheory.UnitarySelfGeneration.bt_hopf
+  first | exact @PositivityTheory.UnitarySelfGeneration.bt_hopf

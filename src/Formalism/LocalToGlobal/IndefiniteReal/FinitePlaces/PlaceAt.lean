@@ -1,52 +1,164 @@
 module
 
+public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.TwoSplitIdem
+public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.CharLem
+public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IntegrableOnOfPeriodic
+public import Formalism.LocalToGlobal.IndefiniteReal.PHeisThC
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceS
 public import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.FourUniq
-public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.HeisSt
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceInst
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceSum
 public import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.IpTheta
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.CharLem
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.FourModel
 public import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceHeis
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.HeisSt, Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceAt
+
+-- ===== clump member: Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.HeisSt =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.HeisSt", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.TwoSplitIdem\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.CharLem\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.IntegrableOnOfPeriodic\npublic import Formalism.LocalToGlobal.IndefiniteReal.PHeisThC\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Linter.Style\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum MeasureTheory
+  IsDedekindDomain NumberField Matrix Topology
+open scoped TensorProduct ComplexConjugate ContDiff
+
+namespace Formalism.IndefR.Fin
+
+attribute [local instance] Formalism.BasicNotions.Host.cmStar
+
+variable {D : D7}
+
+theorem trace_fst_eq_zero (z : AE D) (hz : infPart D z = 0) :
+    fstA D.host.F (Algebra.trace (AF D.host.F) (AE D) z) = 0 := by
+  have hc : ∀ k, fstA D.host.F (Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k) = 0 := fun k => by
+    show (Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k).1 = 0
+    rw [← Formalism.IndefR.PHeisTh.repr_fst]
+    have : Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) z = 0 := hz
+    rw [this, map_zero]; rfl
+
+  rw [← (Formalism.IndefR.PHeisFC.bA D.host.F D.host.E).sum_repr z, map_sum, map_sum]
+  refine Finset.sum_eq_zero fun k _ => ?_
+  rw [map_smul, smul_eq_mul, map_mul]
+  have : (Formalism.IndefR.PHeisFC.bA D.host.F D.host.E).repr z k = Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k := rfl
+  rw [this, hc, zero_mul]
+
+theorem trace_snd_eq_zero (z : AE D) (hz : finPart D z = 0) :
+    sndA D.host.F (Algebra.trace (AF D.host.F) (AE D) z) = 0 := by
+  have hc : ∀ k, sndA D.host.F (Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k) = 0 := fun k => by
+    show (Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k).2 = 0
+    rw [← Formalism.IndefR.PHeisTh.repr_snd]
+    have : Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) z = 0 := hz
+    rw [this, map_zero]; rfl
+
+  rw [← (Formalism.IndefR.PHeisFC.bA D.host.F D.host.E).sum_repr z, map_sum, map_sum]
+  refine Finset.sum_eq_zero fun k _ => ?_
+  rw [map_smul, smul_eq_mul, map_mul]
+  have : (Formalism.IndefR.PHeisFC.bA D.host.F D.host.E).repr z k = Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k := rfl
+  rw [this, hc, zero_mul]
+
+variable (S T : HSp D)
+
+
+theorem infPart_hO (u w : MO S T) (hu : u.map (infPart D) = 0) : infPart D (hO S T u w) = 0 := by
+  have h0 : ∀ d a, infPart D (u d a) = 0 := fun d a => congrFun (congrFun hu d) a
+  unfold hO
+
+  simp only [map_sum (infPart D), map_mul (infPart D), h0, mul_zero, Finset.sum_const_zero]
+
+
+theorem finPart_hO (u w : MO S T) (hu : u.map (finPart D) = 0) : finPart D (hO S T u w) = 0 := by
+  have h0 : ∀ d a, finPart D (u d a) = 0 := fun d a => congrFun (congrFun hu d) a
+  unfold hO
+
+  simp only [map_sum (finPart D), map_mul (finPart D), h0, mul_zero, Finset.sum_const_zero]
+
+
+theorem symplO_fst_eq_zero (u w : MO S T) (hu : u.map (infPart D) = 0) : fstA D.host.F (symplO S T u w) = 0 := by
+  unfold symplO
+  refine trace_fst_eq_zero _ ?_
+  rw [map_mul (infPart D), infPart_hO S T u w hu, mul_zero]
+
+
+theorem symplO_snd_eq_zero (u w : MO S T) (hu : u.map (finPart D) = 0) : sndA D.host.F (symplO S T u w) = 0 := by
+  unfold symplO
+  refine trace_snd_eq_zero _ ?_
+  rw [map_mul (finPart D), finPart_hO S T u w hu, mul_zero]
+
+theorem symplOH_snd_eq_zero (u w : MO S T) (hu : u.map (finPart D) = 0) : sndA D.host.F (symplOH S T u w) = 0 := by
+  unfold symplOH
+  rw [map_mul, symplO_snd_eq_zero S T u w hu, mul_zero]
+
+def sndSympl (w : MO S T) : MO S T →+ Af D.host.F where
+  toFun u := sndA D.host.F (symplO S T u w)
+  map_zero' := by rw [symplO_zero_left, map_zero]
+  map_add' u u' := by rw [symplO_add_left, map_add (f := _)]
+
+theorem heisStable : HeisStable D := by
+  intro ψ hψ S T w f hf
+  obtain ⟨G, hGo, -, hG⟩ := Formalism.IndefR.PHeisTh.psiOpen D.host.F ψ hψ.1
+  obtain ⟨U, hUo, hU⟩ := hf.level
+  let H : AddSubgroup (WO S T) := AddSubgroup.comap (sndSympl S T w) G
+  have hHo : IsOpen (H : Set (WO S T)) :=
+    hGo.preimage (continuous_snd.comp (cont_symplO_left S T w))
+  refine ⟨fun γ z => ?_, ⟨U ⊓ H, ?_, fun u hu h0 => ?_⟩, cont_heis S T hψ hf w, fun k L hL hL0 x => ?_⟩
+  ·
+    unfold heisO
+    rw [show ratW T S γ + z + w = ratW T S γ + (z + w) by abel, hf.quasi γ (z + w), ← mul_assoc,
+      ← AddChar.map_add_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul]
+    have key : symplOH S T (ratW T S γ + z) w + -symplOH S T (ratW T S γ) (z + w) =
+        -symplOH S T (ratW T S γ) z + symplOH S T z w := by
+      rw [symplOH_add_left, symplOH_add_right]; ring
+    rw [key]
+  · rw [AddSubgroup.coe_inf]; exact hUo.inter hHo
+  ·
+    have hfu := hU u hu.1 h0
+    have hc : ψ (symplO S T u w) = 1 := by
+      have e : symplO S T u w = pairA D.host.F 0 (sndA D.host.F (symplO S T u w)) := by
+        refine Prod.ext ?_ rfl
+        exact symplO_fst_eq_zero S T u w h0
+      rw [e]; exact hG _ hu.2
+    funext z
+    have k1 := congrFun hfu (z + w)
+    unfold heisO at k1 ⊢
+    have hfz : f (z + w + u) = ψ (-(symplOH S T (z + w) u)) * f (z + w) := by
+      rw [AddChar.map_neg_eq_inv, ← k1]; field_simp [psi_ne hψ]
+    rw [show z + u + w = z + w + u by abel, hfz, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul,
+      ← AddChar.map_add_eq_mul]
+    have key : symplOH S T z u + symplOH S T (z + u) w + -symplOH S T (z + w) u =
+        symplOH S T z w + symplO S T u w := by
+      rw [symplOH_add_left, symplOH_add_left, symplOH_swap S T u w, ← symplOH_two]; ring
+    rw [key, AddChar.map_add_eq_mul, hc, mul_one]
+  ·
+    let s : (Fin k → ℝ) →+ Ainf D.host.F :=
+      { toFun := fun t => fstA D.host.F (symplOH S T (L t) w)
+        map_zero' := by simp only [map_zero]; unfold symplOH; rw [symplO_zero_left, mul_zero, map_zero]
+        map_add' := fun t t' => by simp only [map_add (f := _)]; rw [symplOH_add_left, map_add (f := _)] }
+    have hs : Continuous s := continuous_fst.comp ((cont_symplOH_left S T w).comp hL)
+    have e : (fun t => heisO ψ S T w f (x + L t)) =
+        fun t => ψ (symplOH S T x w) * ψ (pairA D.host.F (s t) 0) * f (x + w + L t) := by
+      funext t
+      unfold heisO
+      have ep : symplOH S T (L t) w = pairA D.host.F (s t) 0 :=
+        Prod.ext rfl (symplOH_snd_eq_zero S T (L t) w (hL0 t))
+      rw [symplOH_add_left, AddChar.map_add_eq_mul, ep, show x + L t + w = x + w + L t by abel]
+    rw [e]
+    exact (contDiff_const.mul (Formalism.IndefR.PHeisTh.psiSmooth D ψ hψ k s hs)).mul (hf.smooth k L hL hL0 (x + w))
+
+end Formalism.IndefR.Fin
+
+end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.HeisSt =====
+
+-- ===== clump member: Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceAt =====
+-- clump-header: {"m": "Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceAt", "h": "module\n\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceS\npublic import Formalism.LocalToGlobal.BesselHermitianTheta.LemmasWeil\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.FourUniq\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.HeisSt\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceInst\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceSum\npublic import Formalism.LocalToGlobal.IndefiniteReal.LevelTypeEquivalence.IpTheta\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.CharLem\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.FourModel\npublic import Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceHeis\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -246,3 +358,6 @@ theorem placeModelAt_of {D : D7} (h : PlaceLatDual D) : PlaceModelAt D := by
 end Formalism.IndefR.Fin
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Formalism.LocalToGlobal.IndefiniteReal.FinitePlaces.PlaceAt =====

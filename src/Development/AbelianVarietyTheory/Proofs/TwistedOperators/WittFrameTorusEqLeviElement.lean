@@ -118,7 +118,7 @@ theorem exists_hypDec (S : HSp D) {r : ℕ} (e e' : Matrix (Fin S.rank) (Fin r) 
     rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hee, Matrix.zero_mul]
   refine ⟨V', GlobalTheory.MixModel.HypDec.mk e e' (B - e * K) hee he'e' he'e ?_ ?_ ?_ hrk, rfl, rfl⟩
   · rw [conjTranspose_sub, conjTranspose_mul, hKh]
-    simp only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, f1, f2, f3, g1, g3, Matrix.mul_zero, sub_zero]
+    simp only [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, f2, g1, g3, Matrix.mul_zero, sub_zero]
     rw [← Matrix.mul_assoc, hBB]
   · rw [conjTranspose_sub, conjTranspose_mul, hKh]
     simp only [Matrix.sub_mul, Matrix.mul_assoc, f1, f3, Matrix.mul_zero, sub_zero]

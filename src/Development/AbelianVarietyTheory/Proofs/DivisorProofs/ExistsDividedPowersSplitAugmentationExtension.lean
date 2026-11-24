@@ -1,7 +1,7 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.Divisors.RatBasisLinearIndependentInt
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDividedPowersOfCompOnGeneratorsStatement
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDividedPowersOfCompOnGenerators
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -306,7 +306,7 @@ theorem exists_dp_ext : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedP
     ∃ θ : DividedPowers (J.map (algebraMap B P) ⊔ 𝔞), IsDPMorphism δ θ (algebraMap B P) ∧
       ∀ n, ∀ p ∈ 𝔞, θ.dpow n p = η.dpow n p := by
   intro B _ J δ P _ _ ε 𝔞 η h𝔞
-  obtain ⟨θ, hθ⟩ := GlobalTheory.T.exists_dividedPowers_of_comp_on_generators P (J.map (algebraMap B P) ⊔ 𝔞) (th δ ε η) _ (isPreDividedPowers_th h𝔞)
+  obtain ⟨θ, hθ⟩ := _root_.GlobalTheory.PDA.exists_dividedPowers_of_comp_on_gens P (J.map (algebraMap B P) ⊔ 𝔞) (th δ ε η) _ (isPreDividedPowers_th h𝔞)
     ext_eq_span (th_comp h𝔞)
   refine ⟨θ, ⟨le_sup_left, fun {n} a _ ↦ ?_⟩, fun n p hp ↦ ?_⟩
   · rw [hθ, th_algebraMap]

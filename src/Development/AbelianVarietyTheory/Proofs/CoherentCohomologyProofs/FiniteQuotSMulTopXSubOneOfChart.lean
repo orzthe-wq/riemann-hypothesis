@@ -83,9 +83,9 @@ theorem _root_.GlobalTheory.finite_quotSMulTop_X_sub_one_of_chart : ∀ (ι : Ty
         (QuotSMulTop ((MvPolynomial.X i : MvPolynomial ι R) - 1) G)) := by
   open scoped Pointwise in
   intro ι _ _ R _ G _ _ _ _ 𝒢 _ _ i B _ _ π P _ _ ε ⟨hπs, hπX, hεs, hker⟩
-  letI : Algebra (MvPolynomial ι R) B := (π : MvPolynomial ι R →+* B).toAlgebra
-  letI : Module (MvPolynomial ι R) P := Module.compHom P (π : MvPolynomial ι R →+* B)
-  haveI : IsScalarTower (MvPolynomial ι R) B P :=
+  let : Algebra (MvPolynomial ι R) B := (π : MvPolynomial ι R →+* B).toAlgebra
+  let : Module (MvPolynomial ι R) P := Module.compHom P (π : MvPolynomial ι R →+* B)
+  have : IsScalarTower (MvPolynomial ι R) B P :=
     ⟨fun a b p => by
       change (π a * b) • p = π a • b • p
       exact mul_smul _ _ _⟩
@@ -112,18 +112,18 @@ theorem _root_.GlobalTheory.finite_quotSMulTop_X_sub_one_of_chart : ∀ (ι : Ty
     obtain ⟨g, rfl⟩ := hεs p
     exact ⟨Submodule.Quotient.mk g, rfl⟩
   let e := LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩
-  haveI : Module.Finite (MvPolynomial ι R) B :=
+  have : Module.Finite (MvPolynomial ι R) B :=
     Module.Finite.of_surjective (Algebra.linearMap (MvPolynomial ι R) B) hπs
   refine ⟨fun hP => ?_, fun hB hPfp => ?_⟩
-  · haveI : Module.Finite (MvPolynomial ι R) P := Module.Finite.trans B P
+  · have : Module.Finite (MvPolynomial ι R) P := Module.Finite.trans B P
     exact Module.Finite.equiv e.symm
-  · haveI : IsScalarTower R (MvPolynomial ι R) B :=
+  · have : IsScalarTower R (MvPolynomial ι R) B :=
       IsScalarTower.of_algebraMap_eq (fun r => (π.commutes r).symm)
-    haveI : Algebra.FinitePresentation (MvPolynomial ι R) B :=
+    have : Algebra.FinitePresentation (MvPolynomial ι R) B :=
       Algebra.FinitePresentation.of_restrict_scalars_finitePresentation R (MvPolynomial ι R) B
-    haveI : Module.FinitePresentation (MvPolynomial ι R) B :=
+    have : Module.FinitePresentation (MvPolynomial ι R) B :=
       Module.FinitePresentation.of_finite_of_finitePresentation _ _
-    haveI : Module.FinitePresentation (MvPolynomial ι R) P :=
+    have : Module.FinitePresentation (MvPolynomial ι R) P :=
       Module.FinitePresentation.trans (MvPolynomial ι R) P B
     exact Module.finitePresentation_of_surjective e.symm.toLinearMap e.symm.surjective
       (by rw [LinearEquiv.ker]; exact Submodule.fg_bot)

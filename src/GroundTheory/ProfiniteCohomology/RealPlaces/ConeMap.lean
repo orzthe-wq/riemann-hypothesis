@@ -98,27 +98,37 @@ noncomputable def prodShortComplex (S T : ShortComplex (CochainComplex (ModuleCa
       (hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) S.zero) x.1)
       (hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) T.zero) x.2)))
 
-theorem prodShortComplex_shortExact {S T : ShortComplex (CochainComplex (ModuleCat.{u} k) ℕ)}
-    (hS : S.ShortExact) (hT : T.ShortExact) : (prodShortComplex S T).ShortExact :=
+private theorem shortExact_prodMapCx
+    {M₁ M₂ M₃ N₁ N₂ N₃ : CochainComplex (ModuleCat.{u} k) ℕ}
+    {fM : M₁ ⟶ M₂} {gM : M₂ ⟶ M₃} {zM : fM ≫ gM = 0}
+    {fN : N₁ ⟶ N₂} {gN : N₂ ⟶ N₃} {zN : fN ≫ gN = 0}
+    {z : prodMapCx fM fN ≫ prodMapCx gM gN = 0}
+    (hS : (ShortComplex.mk fM gM zM).ShortExact)
+    (hT : (ShortComplex.mk fN gN zN).ShortExact) :
+    (ShortComplex.mk (prodMapCx fM fN) (prodMapCx gM gN) z).ShortExact :=
   HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => by
-    have h1 := (HomologicalComplex.shortExact_iff_degreewise_shortExact S).1 hS n
-    have h2 := (HomologicalComplex.shortExact_iff_degreewise_shortExact T).1 hT n
+    have h1 := (HomologicalComplex.shortExact_iff_degreewise_shortExact _).1 hS n
+    have h2 := (HomologicalComplex.shortExact_iff_degreewise_shortExact _).1 hT n
     refine { exact := ?_, mono_f := ?_, epi_g := ?_ }
     · rw [ShortComplex.moduleCat_exact_iff]
-      intro (x : S.X₂.X n × T.X₂.X n) hx
+      intro (x : M₂.X n × N₂.X n) hx
       have e1 := h1.exact
       have e2 := h2.exact
       rw [ShortComplex.moduleCat_exact_iff] at e1 e2
       obtain ⟨y1, hy1⟩ := e1 x.1 (congrArg Prod.fst hx)
       obtain ⟨y2, hy2⟩ := e2 x.2 (congrArg Prod.snd hx)
-      exact ⟨(show (prodComplex S.X₁ T.X₁).X n from (y1, y2)), Prod.ext hy1 hy2⟩
-    · exact (ModuleCat.mono_iff_injective _).2 fun (x x' : S.X₁.X n × T.X₁.X n) hxx =>
+      exact ⟨(show (prodComplex M₁ N₁).X n from (y1, y2)), Prod.ext hy1 hy2⟩
+    · exact (ModuleCat.mono_iff_injective _).2 fun (x x' : M₁.X n × N₁.X n) hxx =>
         Prod.ext ((ModuleCat.mono_iff_injective _).1 h1.mono_f (congrArg Prod.fst hxx))
           ((ModuleCat.mono_iff_injective _).1 h2.mono_f (congrArg Prod.snd hxx))
-    · refine (ModuleCat.epi_iff_surjective _).2 fun (z : S.X₃.X n × T.X₃.X n) => ?_
+    · refine (ModuleCat.epi_iff_surjective _).2 fun (z : M₃.X n × N₃.X n) => ?_
       obtain ⟨y1, hy1⟩ := (ModuleCat.epi_iff_surjective _).1 h1.epi_g z.1
       obtain ⟨y2, hy2⟩ := (ModuleCat.epi_iff_surjective _).1 h2.epi_g z.2
-      exact ⟨(show (prodComplex S.X₂ T.X₂).X n from (y1, y2)), Prod.ext hy1 hy2⟩
+      exact ⟨(show (prodComplex M₂ N₂).X n from (y1, y2)), Prod.ext hy1 hy2⟩
+
+theorem prodShortComplex_shortExact {S T : ShortComplex (CochainComplex (ModuleCat.{u} k) ℕ)}
+    (hS : S.ShortExact) (hT : T.ShortExact) : (prodShortComplex S T).ShortExact :=
+  shortExact_prodMapCx hS hT
 
 end Complexes
 
@@ -154,6 +164,13 @@ theorem piRepShortComplex_shortExact {S : ∀ w, ShortComplex (Rep.{u} k (F w))}
       (Rep.epi_iff_surjective _).1 (hS w).epi_g (z w)
     choose y hy using e
     exact ⟨show ∀ w, (S w).X₂ from y, funext hy⟩
+
+private theorem degZeroPiRep_shortExact
+    {S : ∀ w, ShortComplex (Rep.{u} k (F w))} (hS : ∀ w, (S w).ShortExact) :
+    (ShortComplex.mk (degZeroMap (piRepHom fun w => (S w).f))
+      (degZeroMap (piRepHom fun w => (S w).g))
+      (degZeroShortComplex (piRepShortComplex S)).zero).ShortExact :=
+  degZeroShortComplex_shortExact (piRepShortComplex_shortExact hS)
 
 end RepProducts
 
@@ -290,11 +307,20 @@ variable (S : ShortComplex (Rep.{u} k G)) [IsDiscreteRep S.X₁] [IsDiscreteRep 
   (sr : ∀ w, S.map (Rep.resFunctor (ψ w).toMonoidHom) ⟶ Sᵣ w)
 
 noncomputable abbrev tateGlobalShortComplex : ShortComplex (CochainComplex (ModuleCat.{u} k) ℕ) :=
-  prodShortComplex (cochainsShortComplex S) (degZeroShortComplex (piRepShortComplex Sᵣ))
+  ShortComplex.mk (tateGlobalMap S.f fun w => (Sᵣ w).f) (tateGlobalMap S.g fun w => (Sᵣ w).g)
+    (HomologicalComplex.hom_ext _ _ fun n => ModuleCat.hom_ext (LinearMap.ext fun x => Prod.ext
+      (hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) (cochainsShortComplex S).zero) x.1)
+      (hom_apply_hom_apply_of_comp_eq
+        (congrArg (·.f n) (degZeroShortComplex (piRepShortComplex Sᵣ)).zero) x.2)))
 
 noncomputable abbrev tateLocalShortComplex : ShortComplex (CochainComplex (ModuleCat.{u} k) ℕ) :=
-  prodShortComplex (piShortComplex fun v => cochainsShortComplex (Sᵥ v))
-    (piShortComplex fun w => cochainsShortComplex (Sᵣ w))
+  ShortComplex.mk (tateLocalMap (fun v => (Sᵥ v).f) fun w => (Sᵣ w).f)
+    (tateLocalMap (fun v => (Sᵥ v).g) fun w => (Sᵣ w).g)
+    (HomologicalComplex.hom_ext _ _ fun n => ModuleCat.hom_ext (LinearMap.ext fun x => Prod.ext
+      (funext fun v => hom_apply_hom_apply_of_comp_eq
+        (congrArg (·.f n) (cochainsShortComplex (Sᵥ v)).zero) (x.1 v))
+      (funext fun w => hom_apply_hom_apply_of_comp_eq
+        (congrArg (·.f n) (cochainsShortComplex (Sᵣ w)).zero) (x.2 w))))
 
 noncomputable def tateResShortComplex : tateGlobalShortComplex S Sᵣ ⟶ tateLocalShortComplex Sᵥ Sᵣ where
   τ₁ := tateCompactRes φ ψ S.X₁ (fun v => (Sᵥ v).X₁) (fun v => (s v).τ₁) (fun w => (Sᵣ w).X₁)
@@ -337,16 +363,8 @@ noncomputable abbrev tateCompactCohomologyMap₂₃ (n : ℕ) :=
     S.g (fun v => (Sᵥ v).g) (fun w => (Sᵣ w).g) (fun v => (s v).comm₂₃) (fun w => (sr w).comm₂₃) n
 
 theorem tateCompactCochainsMap₁₂_₂₃ :
-    tateCompactCochainsMap₁₂ φ ψ S Sᵥ s Sᵣ sr ≫ tateCompactCochainsMap₂₃ φ ψ S Sᵥ s Sᵣ sr = 0 := by
-  have hK := (tateGlobalShortComplex S Sᵣ).zero
-  have hL := (tateLocalShortComplex Sᵥ Sᵣ).zero
-  ext n : 1
-  refine ModuleCat.hom_ext (LinearMap.ext fun (p : (tateGlobalComplex S.X₁ fun w => (Sᵣ w).X₁).X n ×
-    shiftNegOneX (tateLocalComplex (fun v => (Sᵥ v).X₁) fun w => (Sᵣ w).X₁) n) => Prod.ext ?_ ?_)
-  · exact hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) hK) p.1
-  · cases n with
-    | zero => rfl
-    | succ n => exact hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) hL) p.2
+    tateCompactCochainsMap₁₂ φ ψ S Sᵥ s Sᵣ sr ≫ tateCompactCochainsMap₂₃ φ ψ S Sᵥ s Sᵣ sr = 0 :=
+  (mappingCoconeNat.mapShortComplex (tateResShortComplex φ ψ S Sᵥ s Sᵣ sr)).zero
 
 theorem tateCompactCohomologyMap_f_g (n : ℕ) :
     tateCompactCohomologyMap₁₂ φ ψ S Sᵥ s Sᵣ sr n ≫ tateCompactCohomologyMap₂₃ φ ψ S Sᵥ s Sᵣ sr n = 0 :=
@@ -357,27 +375,40 @@ theorem tateCompactCohomologyMap_f_g (n : ℕ) :
 
 theorem mapShortComplex_tateResShortComplex_f :
     (mappingCoconeNat.mapShortComplex (tateResShortComplex φ ψ S Sᵥ s Sᵣ sr)).f =
-      tateCompactCochainsMap₁₂ φ ψ S Sᵥ s Sᵣ sr := by
-  ext n : 1
-  exact ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
+      tateCompactCochainsMap₁₂ φ ψ S Sᵥ s Sᵣ sr :=
+  rfl
 
 theorem mapShortComplex_tateResShortComplex_g :
     (mappingCoconeNat.mapShortComplex (tateResShortComplex φ ψ S Sᵥ s Sᵣ sr)).g =
-      tateCompactCochainsMap₂₃ φ ψ S Sᵥ s Sᵣ sr := by
-  ext n : 1
-  exact ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
+      tateCompactCochainsMap₂₃ φ ψ S Sᵥ s Sᵣ sr :=
+  rfl
 
 variable {S Sᵥ Sᵣ}
+
+private theorem cochainsShortComplex_mk_shortExact
+    {G' : Type u} [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G']
+    {T : ShortComplex (Rep.{u} k G')} [IsDiscreteRep T.X₁] [IsDiscreteRep T.X₂] [IsDiscreteRep T.X₃]
+    (hT : T.ShortExact) :
+    (ShortComplex.mk (cochainsMap T.f) (cochainsMap T.g) (cochainsShortComplex T).zero).ShortExact :=
+  cochainsShortComplex_shortExact hT
+
+private theorem piCochains_shortExact
+    {ι' : Type u} {H' : ι' → Type u} [∀ i, Group (H' i)] [∀ i, TopologicalSpace (H' i)]
+    [∀ i, IsTopologicalGroup (H' i)] {T : ∀ i, ShortComplex (Rep.{u} k (H' i))}
+    [∀ i, IsDiscreteRep (T i).X₁] [∀ i, IsDiscreteRep (T i).X₂] [∀ i, IsDiscreteRep (T i).X₃]
+    (hT : ∀ i, (T i).ShortExact) :
+    (ShortComplex.mk (piMap fun i => cochainsMap (T i).f) (piMap fun i => cochainsMap (T i).g)
+      (piShortComplex fun i => cochainsShortComplex (T i)).zero).ShortExact :=
+  piShortComplex_shortExact (S := fun i =>
+    ShortComplex.mk (cochainsMap (T i).f) (cochainsMap (T i).g) (cochainsShortComplex (T i)).zero)
+    fun i => cochainsShortComplex_mk_shortExact (hT i)
 
 theorem tateCompactCochains_shortExact (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).ShortExact)
     (hSᵣ : ∀ w, (Sᵣ w).ShortExact) :
     (mappingCoconeNat.mapShortComplex (tateResShortComplex φ ψ S Sᵥ s Sᵣ sr)).ShortExact :=
   mappingCoconeNat.shortExact_mapShortComplex _
-    (prodShortComplex_shortExact (cochainsShortComplex_shortExact hS)
-      (degZeroShortComplex_shortExact (piRepShortComplex_shortExact hSᵣ)))
-    (prodShortComplex_shortExact
-      (piShortComplex_shortExact fun v => cochainsShortComplex_shortExact (hSᵥ v))
-      (piShortComplex_shortExact fun w => cochainsShortComplex_shortExact (hSᵣ w)))
+    (shortExact_prodMapCx (cochainsShortComplex_mk_shortExact hS) (degZeroPiRep_shortExact hSᵣ))
+    (shortExact_prodMapCx (piCochains_shortExact hSᵥ) (piCochains_shortExact hSᵣ))
 
 noncomputable def tateCompactδ (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).ShortExact)
     (hSᵣ : ∀ w, (Sᵣ w).ShortExact) (n : ℕ) :
@@ -390,46 +421,25 @@ noncomputable def tateCompactδ (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).Sho
 variable (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).ShortExact) (hSᵣ : ∀ w, (Sᵣ w).ShortExact)
 
 theorem tateCompactCohomologyMap₂₃_tateCompactδ (n : ℕ) :
-    tateCompactCohomologyMap₂₃ φ ψ S Sᵥ s Sᵣ sr n ≫ tateCompactδ φ ψ s sr hS hSᵥ hSᵣ n = 0 := by
-  have h := (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).comp_δ n (n + 1) rfl
-  rw [mapShortComplex_tateResShortComplex_g] at h
-  exact h
+    tateCompactCohomologyMap₂₃ φ ψ S Sᵥ s Sᵣ sr n ≫ tateCompactδ φ ψ s sr hS hSᵥ hSᵣ n = 0 :=
+  (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).comp_δ n (n + 1) rfl
 
 theorem tateCompactδ_tateCompactCohomologyMap₁₂ (n : ℕ) :
-    tateCompactδ φ ψ s sr hS hSᵥ hSᵣ n ≫ tateCompactCohomologyMap₁₂ φ ψ S Sᵥ s Sᵣ sr (n + 1) = 0 := by
-  have h := (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).δ_comp n (n + 1) rfl
-  rw [mapShortComplex_tateResShortComplex_f] at h
-  exact h
-
+    tateCompactδ φ ψ s sr hS hSᵥ hSᵣ n ≫ tateCompactCohomologyMap₁₂ φ ψ S Sᵥ s Sᵣ sr (n + 1) = 0 :=
+  (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).δ_comp n (n + 1) rfl
 
 include hS hSᵥ hSᵣ in
 theorem tateCompactCohomology_exact₂ (n : ℕ) :
-    (ShortComplex.mk _ _ (tateCompactCohomologyMap_f_g φ ψ S Sᵥ s Sᵣ sr n)).Exact := by
-  have h := (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₂ n
-  refine (ShortComplex.exact_iff_of_iso ?_).1 h
-  exact ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (Iso.refl _)
-    ((Category.id_comp _).trans ((congrArg (HomologicalComplex.homologyMap · _)
-      (mapShortComplex_tateResShortComplex_f φ ψ S Sᵥ s Sᵣ sr)).symm.trans (Category.comp_id _).symm))
-    ((Category.id_comp _).trans ((congrArg (HomologicalComplex.homologyMap · _)
-      (mapShortComplex_tateResShortComplex_g φ ψ S Sᵥ s Sᵣ sr)).symm.trans (Category.comp_id _).symm))
+    (ShortComplex.mk _ _ (tateCompactCohomologyMap_f_g φ ψ S Sᵥ s Sᵣ sr n)).Exact :=
+  (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₂ n
 
 theorem tateCompactCohomology_exact₃ (n : ℕ) :
-    (ShortComplex.mk _ _ (tateCompactCohomologyMap₂₃_tateCompactδ φ ψ s sr hS hSᵥ hSᵣ n)).Exact := by
-  have h := (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₃ n (n + 1) rfl
-  refine (ShortComplex.exact_iff_of_iso ?_).1 h
-  exact ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (Iso.refl _)
-    ((Category.id_comp _).trans ((congrArg (HomologicalComplex.homologyMap · _)
-      (mapShortComplex_tateResShortComplex_g φ ψ S Sᵥ s Sᵣ sr)).symm.trans (Category.comp_id _).symm))
-    ((Category.id_comp _).trans (Category.comp_id _).symm)
+    (ShortComplex.mk _ _ (tateCompactCohomologyMap₂₃_tateCompactδ φ ψ s sr hS hSᵥ hSᵣ n)).Exact :=
+  (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₃ n (n + 1) rfl
 
 theorem tateCompactCohomology_exact₁ (n : ℕ) :
-    (ShortComplex.mk _ _ (tateCompactδ_tateCompactCohomologyMap₁₂ φ ψ s sr hS hSᵥ hSᵣ n)).Exact := by
-  have h := (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₁ n (n + 1) rfl
-  refine (ShortComplex.exact_iff_of_iso ?_).1 h
-  exact ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (Iso.refl _)
-    ((Category.id_comp _).trans (Category.comp_id _).symm)
-    ((Category.id_comp _).trans ((congrArg (HomologicalComplex.homologyMap · _)
-      (mapShortComplex_tateResShortComplex_f φ ψ S Sᵥ s Sᵣ sr)).symm.trans (Category.comp_id _).symm))
+    (ShortComplex.mk _ _ (tateCompactδ_tateCompactCohomologyMap₁₂ φ ψ s sr hS hSᵥ hSᵣ n)).Exact :=
+  (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₁ n (n + 1) rfl
 
 end CoefficientSequence
 

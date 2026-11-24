@@ -71,7 +71,7 @@ private theorem mem_dx_iff {K : Type} [Field K] {Δ : K} (g : GL (Fin 2) (Lsq K 
 
 private theorem conj_two {R : Type} [CommRing R] (a b c d : R) :
     (!![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) R) * !![a, b; c, d] * !![0, 1; -1, 0] = !![d, -c; -b, a] := by
-  simp [Matrix.mul_fin_two]
+  simp
 
 private theorem dx_form {K : Type} [Field K] {Δ : K} (g : DX Δ) :
     ∃ a b : Lsq K Δ, mt g = !![a, b; -star b, star a] := by

@@ -47,4 +47,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 
 theorem _root_.GlobalTheory.T.doubleStep_eq_two_thetaColumnLifts : ∀ D : D7, ContrLaw D := by
-  first | exact @GlobalTheory.Unf.Contr.contrLaw | exact GlobalTheory.Unf.Contr.contrLaw | (intros; apply GlobalTheory.Unf.Contr.contrLaw <;> assumption)
+  first | exact @GlobalTheory.Unf.Contr.contrLaw

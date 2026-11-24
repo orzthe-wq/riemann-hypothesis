@@ -61,7 +61,7 @@ namespace GlobalTheory.SmallLevel
 
 theorem exists_open_subgroup (F : Type) [Field F] [NumberField F] (V : Set (Af F)) (hV : V ∈ 𝓝 (0 : Af F)) :
     ∃ S : AddSubgroup (Af F), IsOpen (S : Set (Af F)) ∧ (S : Set (Af F)) ⊆ V := by
-  obtain ⟨M, hM, hMV⟩ := GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F V hV
+  obtain ⟨M, hM, hMV⟩ := _root_.GlobalTheory.LocalNormBound.main F V hV
   let S : AddSubgroup (Af F) :=
     { carrier := {c | ∃ a : Af F, (∀ v, a v ∈ v.adicCompletionIntegers F) ∧ c = M • a}
       zero_mem' := ⟨0, fun v => zero_mem _, (smul_zero M).symm⟩
@@ -71,7 +71,7 @@ theorem exists_open_subgroup (F : Type) [Field F] [NumberField F] (V : Set (Af F
       neg_mem' := by
         rintro _ ⟨a, ha, rfl⟩
         exact ⟨-a, fun v => neg_mem (ha v), (smul_neg M a).symm⟩ }
-  refine ⟨S, S.isOpen_of_mem_nhds (g := 0) (GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds F M hM), ?_⟩
+  refine ⟨S, S.isOpen_of_mem_nhds (g := 0) (_root_.GlobalTheory.IntegralNeighbourhoodZero.nsmul_integral_mem_nhds_zero F M hM), ?_⟩
   rintro _ ⟨a, ha, rfl⟩
   exact hMV a ha
 

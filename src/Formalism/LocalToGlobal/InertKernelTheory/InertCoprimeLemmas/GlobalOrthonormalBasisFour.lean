@@ -6,49 +6,9 @@ public import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 public import Formalism.LocalToGlobal.GlobalTheory.GL3.IsometryLinkageTrivialLevel
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PHfTrace
 import Formalism.LocalToGlobal.GlobalTheory.GL3.PSelfDual
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.NumberTheory.SumFourSquares
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -173,7 +133,7 @@ theorem homL_le_intS (N N' : ℕ) : homL D (Formalism.MainNotions.StandardLattic
     intro i
     by_cases h : i = c
     · subst h; simpa using (isInt_one (D := D))
-    · simp [Pi.single_apply, h]
+    · simp [h]
   have h2 := (mem_stdL _).1 (hA _ h1) a
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using h2
 
@@ -323,8 +283,7 @@ theorem smul_bq {m : ℕ} (e : Fin m → Matrix (Fin 1) (Fin 1) D.host.E) (n : F
   have hn : (n ik.1 : D.host.E) ≠ 0 := by exact_mod_cast hn0 ik.1
   refine Matrix.ext fun a c => ?_
   rw [Matrix.sum_apply, Finset.sum_eq_single (pos (a, c))]
-  · simp only [bq, plc, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, if_pos rfl,
-      zsmul_eq_mul, ite_true, if_true]
+  · simp only [bq, plc, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, zsmul_eq_mul, ite_true]
     rw [Nat.cast_mul]
     field_simp
   · intro j _ hj

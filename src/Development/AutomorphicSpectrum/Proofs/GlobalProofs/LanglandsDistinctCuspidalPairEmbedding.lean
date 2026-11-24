@@ -86,10 +86,10 @@ theorem cell_antidiag (d : Fin 2 → ℕ) (σ : ∀ i, Irr k (d i))
   simp only [Fin.sum_univ_two, Fintype.card_fin, Equiv.swap_apply_left, Equiv.swap_apply_right] at r0 r1 c0 c1
   have hrz : ∀ i j, j ≠ Equiv.swap 0 1 i → b.1 i j = 0 := by
     intro i j hj
-    fin_cases i <;> fin_cases j <;> simp_all
+    fin_cases i <;> fin_cases j <;> first | exact absurd (by decide) hj | assumption
   have hcz : ∀ j i, i ≠ Equiv.swap 0 1 j → b.1 i j = 0 := by
     intro j i hi
-    fin_cases i <;> fin_cases j <;> simp_all
+    fin_cases i <;> fin_cases j <;> first | exact absurd (by decide) hi | assumption
   have hrf : ∀ i, b.1 i (Equiv.swap 0 1 i) = d i := by
     intro i
     fin_cases i <;> simp <;> omega
@@ -249,7 +249,7 @@ theorem exists_map_two_step (hBZ : BernsteinZelevinskyFiniteness) {D : ℕ} (hD 
         by_cases hi : i = 0
         · subst hi
           simpa [ψ] using hω 0 z v
-        · simp [ψ, Pi.mulSingle_eq_of_ne hi, hi]) y
+        · simp [ψ, hi]) y
     simpa [Fin.prod_univ_two] using h1
   by_cases hsc : ∀ (z : kˣ) v, μ (ψ (GeneralLinearGroup.scalar _ z)) v = (ω 0 z : ℂ) • v
   · have hsub : IsSubquotient (σ 0).π (μ.comp ψ : Representation ℂ (GL (Fin D) k) V) :=
@@ -269,7 +269,7 @@ theorem exists_map_two_step (hBZ : BernsteinZelevinskyFiniteness) {D : ℕ} (hD 
         fin_cases i <;> simp [ψ]
       · funext i
         fin_cases i <;> simp [ψ]
-  · push_neg at hsc
+  · push Not at hsc
     obtain ⟨z, v, hv⟩ := hsc
     rcases central_dichotomy X a q hq _ (hcent z) _ (hρz z) with h | h
     · exact h
@@ -312,7 +312,7 @@ theorem exists_jac_map_of_ne (hG : GeometricLemma) (n : Type) [Fintype n] [Decid
     fin_cases i <;> fin_cases j <;> simp <;> omega
   obtain ⟨f₀, g₀, ⟨E₀⟩⟩ := cell_antidiag d σ (b (b.symm G0)) (by rw [Equiv.apply_symm_apply, hG0]; rfl)
     (by rw [Equiv.apply_symm_apply, hG0]; rfl)
-  haveI : Nontrivial (⨂[ℂ] i, (σ (Equiv.swap 0 1 i)).V) := GlobalTheory.ProdSupport.nontrivial_piTensor _
+  have : Nontrivial (⨂[ℂ] i, (σ (Equiv.swap 0 1 i)).V) := GlobalTheory.ProdSupport.nontrivial_piTensor _
     fun j => GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible (σ (Equiv.swap 0 1 j)).irr
   exact exists_map_of_top S hmono hN (b.symm G0) (fun t ht => hstep t ht.ne')
     ((h4 (b.symm G0) f₀ g₀).some.trans E₀)
@@ -376,10 +376,10 @@ theorem exists_jac_map_of_eq (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFin
   have hsm : IsSmooth (piTensor fun i => (σ i).π) := isSmooth_piTensor fun i => (σ i).smooth
   obtain ⟨f₁, g₁, ⟨E₁⟩⟩ := GlobalTheory.CompanionTheory.Hypotheses₂.TD.cell_diag (k := k) (b (b.symm G1)) (fun i j hj => by
     rw [Equiv.apply_symm_apply, hG1]
-    fin_cases i <;> fin_cases j <;> simp_all) (piTensor fun i => (σ i).π) hsm
+    fin_cases i <;> fin_cases j <;> first | exact absurd rfl hj | rfl) (piTensor fun i => (σ i).π) hsm
   have F₀ := (h4 (b.symm G0) f₀ g₀).some.trans E₀
   have F₁ := (h4 (b.symm G1) f₁ g₁).some.trans E₁
-  haveI : Nontrivial (⨂[ℂ] i, (σ (Equiv.swap 0 1 i)).V) := GlobalTheory.ProdSupport.nontrivial_piTensor _
+  have : Nontrivial (⨂[ℂ] i, (σ (Equiv.swap 0 1 i)).V) := GlobalTheory.ProdSupport.nontrivial_piTensor _
     fun j => GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible (σ (Equiv.swap 0 1 j)).irr
   rcases lt_or_gt_of_ne h01 with hlt | hlt
   · have hlow : S (b.symm G0).castSucc = ⊥ := (eq_of_steps S hmono 0 _ (Fin.zero_le _) fun t h1 h2 =>

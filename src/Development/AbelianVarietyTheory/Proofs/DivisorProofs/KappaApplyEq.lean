@@ -57,7 +57,7 @@ theorem theta_comm {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.O
     ((pullback.fst (str A B) g).appLE ⊤ ((pullback.snd (str A B) g) ⁻¹ᵁ U) (by simp)).hom
       ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (algebraMap A B a)) =
     ((pullback.snd (str A B) g).app U).hom (secAlg A g U a) := by
-  apply GlobalTheory.HilbAff.IdealDet.comm_fst <;> assumption
+  apply GlobalTheory.HilbAff.IdealDet.comm_fst
 
 def theta {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.Opens) :
     letI := (secAlg A g U).toAlgebra;

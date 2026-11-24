@@ -2,34 +2,6 @@ module
 
 public import Mathlib.Analysis.CStarAlgebra.Classes
 public import Mathlib.Analysis.Calculus.FDeriv.Defs
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Bernstein
-import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,8 +14,6 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
 public import Mathlib.Analysis.Analytic.Basic
 public import Mathlib.Analysis.Analytic.Uniqueness
 public import Mathlib.Analysis.Calculus.FDeriv.Add
@@ -65,28 +35,21 @@ theorem goal1 :
         Filter.EventuallyEq.{u_1, 0} (nhds.{u_1} z) g 0 →
           ∀ (y : V), Membership.mem.{u_1, u_1} (Metric.ball.{u_1} x ε) y → Eq.{1} (g y) 0 := by
   intro V _ _ g x ε hg z hz hz0 y hy
-  let φ : ℂ → V := fun t => z + t • (y - z)
+  let ψ : ℂ →ₗ[ℂ] V := (LinearMap.id : ℂ →ₗ[ℂ] ℂ).smulRight (y - z)
+  let φ : ℂ →ᵃ[ℝ] V := AffineMap.const ℝ ℂ z + (ψ.restrictScalars ℝ).toAffineMap
+  have hφ (t : ℂ) : φ t = z + t • (y - z) := rfl
   have hφd : Differentiable ℂ φ := (differentiable_const z).add (differentiable_id.smul_const (y - z))
-  have hφc : Continuous φ := hφd.continuous
   let U : Set ℂ := φ ⁻¹' Metric.ball x ε
-  have hUo : IsOpen U := Metric.isOpen_ball.preimage hφc
-  have hdiff : DifferentiableOn ℂ (g ∘ φ) U := hg.comp hφd.differentiableOn (fun t ht => ht)
-  have han : AnalyticOnNhd ℂ (g ∘ φ) U := hdiff.analyticOnNhd hUo
-  let S : Set ℂ := (fun θ : ℝ => (θ : ℂ)) '' Set.Icc (0 : ℝ) 1
-  have hSc : IsPreconnected S := isPreconnected_Icc.image _ Complex.continuous_ofReal.continuousOn
-  have hSU : S ⊆ U := by
-    rintro t ⟨θ, hθ, rfl⟩
-    show z + (θ : ℂ) • (y - z) ∈ Metric.ball x ε
-    rw [Complex.coe_smul]
-    exact (convex_ball x ε).add_smul_sub_mem hz hy hθ
-  have h0 : (0 : ℂ) ∈ S := ⟨0, ⟨le_refl _, zero_le_one⟩, by simp⟩
-  have h1 : (1 : ℂ) ∈ S := ⟨1, ⟨zero_le_one, le_refl _⟩, by simp⟩
+  have hUo : IsOpen U := Metric.isOpen_ball.preimage hφd.continuous
+  have hUc : IsPreconnected U := ((convex_ball x ε).affine_preimage φ).isPreconnected
+  have hdiff : DifferentiableOn ℂ (g ∘ φ) U := hg.comp hφd.differentiableOn (fun _ ht => ht)
+  have h0 : (0 : ℂ) ∈ U := by simpa [U, hφ] using hz
+  have h1 : (1 : ℂ) ∈ U := by simpa [U, hφ] using hy
   have ht : Filter.Tendsto φ (nhds 0) (nhds z) := by
-    have := hφc.tendsto 0
-    simpa [φ] using this
+    simpa [hφ] using hφd.continuous.tendsto (0 : ℂ)
   have hev : Filter.EventuallyEq (nhds (0 : ℂ)) (g ∘ φ) 0 :=
-    (ht.eventually hz0).mono (fun t h => by simpa using h)
-  have := (han.mono hSU).eqOn_zero_of_preconnected_of_eventuallyEq_zero hSc h0 hev h1
-  simpa [φ] using this
+    (ht.eventually hz0).mono (fun _ h => by simpa using h)
+  simpa [hφ] using
+    (hdiff.analyticOnNhd hUo).eqOn_zero_of_preconnected_of_eventuallyEq_zero hUc h0 hev h1
 
 end Bl.FirstBlockLemmaJ

@@ -80,7 +80,7 @@ theorem cT_one' (τ : A →+* A) : cT τ (1 : Matrix (Fin n) (Fin n) A) = 1 := b
   ext i j; by_cases h : i = j <;> simp [cT, Matrix.one_apply, h, eq_comm]
 
 theorem cT_neg_one (τ : A →+* A) : cT τ (-1 : Matrix (Fin n) (Fin n) A) = -1 := by
-  ext i j; by_cases h : i = j <;> simp [cT, Matrix.one_apply, h, eq_comm]
+  ext i j; by_cases h : i = j <;> simp [cT, h, eq_comm]
 
 theorem upperLeft_blockMatrix (a b c d : Matrix (Fin n) (Fin n) A) : StdUnn.blkA (StdUnn.blk4 a b c d) = a := by
   simp [StdUnn.blkA, StdUnn.blk4, Matrix.submatrix_submatrix, Matrix.toBlocks_fromBlocks₁₁]

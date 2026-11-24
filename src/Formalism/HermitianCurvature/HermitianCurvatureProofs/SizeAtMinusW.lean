@@ -161,7 +161,7 @@ theorem nodes_level (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin 
   rcases Nat.eq_zero_or_pos j with rfl | hj0
   ·
     obtain ⟨ys, hlen, -, hg1, hp, hm, hcp, hcm, hpw⟩ :=
-      Formalism.FourierDecayAlt.P.new_letters_admissible_level_one E Wp Wq S hGo hGr hCI v a K ha hK
+      _root_.Formalism.FourierDecayAlt.P.PBD.newLetters1 E Wp Wq S hGo hGr hCI v a K ha hK
     set grid : Fin K → Fin (2 * 0 + 1) → ℝ := fun b _ => ys.get ⟨b, by rw [hlen]; exact b.2⟩ with hgrid
     have hys : ∀ n : Fin K → Fin (2 * 0 + 1), (List.ofFn fun b => grid b (n b)) = ys := by
       intro n
@@ -193,7 +193,7 @@ theorem nodes_level (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin 
         (hmk (fun ys => KB.minusW ys a) (Or.inr rfl))
   ·
     obtain ⟨-, grid, hinj, hl1, hmem, hall, hlp, hlm⟩ :=
-      Formalism.FourierDecayAlt.P.new_letters_admissible E Wp Wq S hGo hGr hCI v a K (2 * j) ha hK (by omega)
+      _root_.Formalism.FourierDecayAlt.P.PBD.newLetters E Wp Wq S hGo hGr hCI v a K (2 * j) ha hK (by omega)
     refine ⟨grid, hinj, hl1, fun n => ?_, hlp, hlm⟩
     obtain ⟨h1, h2, h3, h4, h5⟩ := hall n
     refine ⟨h1, h2, h3, h4, h5.imp fun h => by linarith, fun y hy => Or.inl ⟨by simp; omega, ?_⟩⟩

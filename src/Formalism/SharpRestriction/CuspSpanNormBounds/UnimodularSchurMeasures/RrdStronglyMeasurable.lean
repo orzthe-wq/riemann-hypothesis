@@ -144,8 +144,7 @@ private theorem integral_comp_mul_left_eq {G : Type*} [Group G] [TopologicalSpac
 private theorem abs_norm_sub_sub_norm_add_norm_le_two_mul (a b : ℂ) : |‖a - b‖ - ‖a‖ + ‖b‖| ≤ 2 * ‖b‖ := by
   have h1 := norm_sub_le a b
   have h2 : ‖a‖ ≤ ‖a - b‖ + ‖b‖ := by
-    calc ‖a‖ = ‖(a - b) + b‖ := by rw [sub_add_cancel]
-      _ ≤ ‖a - b‖ + ‖b‖ := norm_add_le _ _
+    simpa [sub_add_cancel] using norm_add_le (a - b) b
   rw [abs_le]
   constructor <;> linarith [norm_nonneg b, norm_nonneg a, norm_nonneg (a - b)]
 

@@ -349,7 +349,7 @@ theorem exists_mult {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) : ∃ s k 
       induction hx using Submodule.span_induction with
       | mem x hx =>
         obtain ⟨i, rfl⟩ := hx
-        by_cases h : b = i <;> simp [Pi.single_apply, h, isIntegral_one, isIntegral_zero]
+        by_cases h : b = i <;> simp [h, isIntegral_one, isIntegral_zero]
       | zero => exact isIntegral_zero
       | add x y _ _ hx hy => exact hx.add hy
       | smul t x _ hx => exact t.2.mul hx
@@ -357,7 +357,7 @@ theorem exists_mult {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) : ∃ s k 
     simpa [_root_.mul_assoc] using this
   · have := zsmul_mem (h2 (Pi.single b 1) (Submodule.subset_span ⟨b, rfl⟩)) a
     convert this using 1
-    funext j; by_cases h : j = b <;> simp [Pi.single_apply, h]
+    funext j; by_cases h : j = b <;> simp [h]
 
 theorem int_of_nok {M N : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) (hN : NOK Λ N M) {v : Fin n → E} (hv : v ∈ Λ)
     (b : Fin n) : IsIntegral ℤ ((N : E) * v b) := by
@@ -365,7 +365,7 @@ theorem int_of_nok {M N : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) (hN : NOK
     refine (hN.2.2 (Submodule.smul_mem_smul (Ideal.subset_span rfl) fun j _ => ?_)).1
     by_cases h : j = b
     · subst h; simpa using Submodule.one_le.1 le_rfl
-    · simp [Pi.single_apply, h]
+    · simp [h]
   have := (hΛ.2.1 v).1 hv _ h1
   rw [Base.herm_one, Finset.sum_eq_single b (fun j _ hj => by simp [Pi.single_apply, hj, cc]) (by simp)] at this
   simpa [cc, Algebra.smul_def, mul_comm] using this

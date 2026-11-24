@@ -2,7 +2,7 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsSumFrame
 public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SelfDualSplitComponentIsLatticeStabilizerEq
-public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHermitianFramePropertiesStatement
+public import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlaceHermitianFrameProperties
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IsClopenIsCompactMapsPair
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -54,7 +54,7 @@ theorem isLattice_of_isLat_selfDual {D : D7} {k : Type} [Field k] [ValuativeRel 
     [IsNonarchimedeanLocalField k] {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n]
     (β : Frame p S n) (L : Lat S) (hL : IsSelfDualC S L) (Λ : Submodule 𝒪[k] (n → k)) (h : β.IsLat L Λ) :
     Λ.IsFullLattice k := by
-  obtain ⟨Λ₀, h₀, hI, -⟩ := (GlobalTheory.T.splitPlaceHermitianFrame_properties D k p S n β).2.2.2.1 L hL
+  obtain ⟨Λ₀, h₀, hI, -⟩ := (_root_.GlobalTheory.FrameAt.frame_facts D k p S n β).2.2.2.1 L hL
   have e : Λ = Λ₀ := Submodule.ext fun x => (h x).trans (hI x).symm
   have hlat : Λ.IsLattice k := e ▸ h₀
   refine { toIsLattice := hlat, span_eq_top := eq_top_iff.mpr fun x _ => ?_ }

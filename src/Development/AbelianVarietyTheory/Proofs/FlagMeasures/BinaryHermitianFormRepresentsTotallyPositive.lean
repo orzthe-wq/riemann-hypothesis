@@ -85,11 +85,11 @@ theorem gram_diag_pos {r : ℕ} (τ : E →+* ℂ) (d : Fin r → E)
     by_cases hab : a = b
     · subst hab
       have hs : FD.sgn r (a : ℕ) = 1 := by simp [FD.sgn, a.isLt]
-      simp [hs, ite_mul, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq', Complex.conj_ofReal]
+      simp [hs, ite_mul, Finset.sum_ite_eq']
       rw [Finset.sum_eq_single a (fun x _ hx => by simp [Ne.symm hx]) (by simp)]
       simp only [if_true, Complex.conj_ofReal]
       linear_combination hq2 a
-    · simp [hab, ite_mul, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']
+    · simp [hab, ite_mul, Finset.sum_ite_eq']
       refine Finset.sum_eq_zero fun x _ => ?_
       by_cases hx : a = x
       · subst hx

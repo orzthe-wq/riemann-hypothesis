@@ -249,9 +249,7 @@ theorem top (P : Par) (hP : P.OK) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) (π : T
   · have : i = ⟨l - 1, by omega⟩ := Fin.ext (by simp; omega)
     rw [val_congr P π _ _ this, hi]; omega
   · intro i
-    by_cases hi : (i : ℕ) + 1 = l
-    · simp [hi]
-    · simp [hi]
+    by_cases hi : (i : ℕ) + 1 = l <;> simp [hi]
 
 theorem bot (P : Par) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) (π : Ty P) (h : ¬ ∃ π', Up P l π' π) :
     rho P π l = P.lo l := by
@@ -324,8 +322,7 @@ theorem rho_inj (P : Par) (hP : P.OK) (π : Ty P) (i j : ℕ) (hi : i ∈ Icc 1 
     (hij : i < j) : rho P π j < rho P π i := by
   have hI := tyInterlaces P hP π
   have o := (ord P.k P.u P.u' (rho P π) hI i hi).2.2.2 j hj hij
-  have b := hI i hi
-  linarith [o.1, b.2.2.1]
+  linarith [o.1, (hI i hi).2.2.1]
 
 open Polynomial in
 theorem wExact : WExact := by
@@ -386,9 +383,7 @@ theorem wExact : WExact := by
 
 theorem realPoints : RealPoints := by
   intro P π Y
-  constructor
-  · simp [xC, I.xpoly]
-  · simp [qC, I.qpoly]
+  exact ⟨by simp [xC, I.xpoly], by simp [qC, I.qpoly]⟩
 
 theorem interlaceSignTwo : InterlaceSignTwo := by
   intro k u u' ρ l Y h1 h2 hI hC e he
@@ -440,7 +435,6 @@ namespace Formalism.FourierDecayAlt.P
 theorem types_interlace : Formalism.FourierDecayAlt.M.TyInterlaces := Mx3.tyInterlaces
 theorem types_complete : Formalism.FourierDecayAlt.M.TyComplete := Mx3.tyComplete
 theorem rho_raise : Formalism.FourierDecayAlt.M.RhoUp := Mx3.rhoUp
-theorem nrmFacts_statement : Formalism.FourierDecayAlt.M.NrmFacts := Mx3.nrmFacts
 theorem realPoints_statement : Formalism.FourierDecayAlt.M.RealPoints := Mx3.realPoints
 theorem weight_exact : Formalism.FourierDecayAlt.M.WExact := Mx3.wExact
 theorem interlace_sign_two : Formalism.FourierDecayAlt.M.InterlaceSignTwo := Mx3.interlaceSignTwo

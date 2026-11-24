@@ -3,7 +3,10 @@ module
 public import Mathlib.Algebra.BigOperators.Finsupp.Basic
 public import Mathlib.Basic.Complex.Basic
 public import Mathlib.LinearAlgebra.Multilinear.Basic
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinsetFunctionsRecoveredFromValuesStatement
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+public import Mathlib.Algebra.Module.Pi
+public import Mathlib.Algebra.Module.Submodule.Defs
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.FinsetFunctionsRecoveredFromValues
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -65,7 +68,7 @@ theorem multilinear_sum_eq_of_prod_fun_eq
   have hkey : ∀ l, ∃ (s : Finset (X l)) (E : X l → X l → ℂ), (∀ x, E x ∈ V l) ∧
       ∀ u ∈ (a.support.image (fun c => (f c l : X l → ℂ)) ∪
         a.support.image (fun c => (g c l : X l → ℂ))), u = ∑ x ∈ s, u x • E x := fun l =>
-    GlobalTheory.T.exists_finset_eq_sum_smul_of_mem_submodule (V l) _ (by
+    _root_.GlobalTheory.finset_functions_recovered_from_values (V l) _ (by
       intro u hu
       simp only [Finset.mem_union, Finset.mem_image] at hu
       rcases hu with ⟨c, -, rfl⟩ | ⟨c, -, rfl⟩

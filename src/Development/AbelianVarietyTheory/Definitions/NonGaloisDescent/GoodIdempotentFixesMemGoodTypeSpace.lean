@@ -1,28 +1,37 @@
 module
 
+public import Mathlib.NumberTheory.Padics.Complex
+public import Mathlib.NumberTheory.Padics.PadicIntegers
+public import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
+public import Formalism.ConjugateSelfDual.Statement
+public import Mathlib.RingTheory.DedekindDomain.Dvr
 public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CharpolySmulOfProd
 public import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.WdOfMono0L
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicEmbeddingsConjugate
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EmbeddingIntegralContinuous
-public import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallIdealNeBot
+public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TripleAtt
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
+import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
+import Mathlib.Analysis.SpecialFunctions.Bernstein
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
 import Mathlib.Combinatorics.Enumerative.DyckWord
 import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
 import Mathlib.Data.NNRat.Floor
+import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.NumberTheory.Chebyshev
 import Mathlib.NumberTheory.Height.NumberField
 import Mathlib.NumberTheory.Height.Projectivization
 import Mathlib.NumberTheory.LucasLehmer
 import Mathlib.NumberTheory.SelbergSieve
+import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
+import Mathlib.RingTheory.RegularLocalRing.Defs
+import Mathlib.RingTheory.SimpleRing.Principal
 import Mathlib.Tactic.Echelon.Zsqrtd
 import Mathlib.Tactic.Inclusion.Extension.Core.Core
 import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
@@ -30,6 +39,7 @@ import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
 import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
 import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
+import Mathlib.Tactic.Lemma
 import Mathlib.Tactic.NormNum.Irrational
 import Mathlib.Tactic.NormNum.IsCoprime
 import Mathlib.Tactic.NormNum.IsSquare
@@ -42,9 +52,290 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
+import Mathlib.Tactic.TypeStar
+import Mathlib.Topology.Sheaves.Init
+import Development.WeilBound.CoreStatements.SesquilinearFractions.NIdeal
+import Mathlib.RingTheory.WittVector.IsPoly
+import Mathlib.Tactic.Basify
+import Mathlib.Tactic.ENatToNat
+import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Presheaf
-public import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TripleAtt
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EmbeddingIntegralContinuous, Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallIdealNeBot, Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GoodIdempotentFixesMemGoodTypeSpace
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EmbeddingIntegralContinuous =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EmbeddingIntegralContinuous", "h": "module\n\npublic import Mathlib.NumberTheory.Padics.Complex\npublic import Mathlib.NumberTheory.Padics.PadicIntegers\npublic import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.Lemma\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory
+
+open Polynomial in
+private lemma norm_le_one_of_monic_root_lemma {K : Type*} [NormedField K] [IsUltrametricDist K]
+    {p : K[X]} (hp : p.Monic) (hc : ∀ i, ‖p.coeff i‖ ≤ 1) {x : K} (hx : p.eval x = 0) :
+    ‖x‖ ≤ 1 := by
+  by_contra h
+  push_neg at h
+  rw [hp.as_sum] at hx
+  simp only [eval_add, eval_pow, eval_X, Polynomial.eval_finsetSum, eval_mul, eval_C] at hx
+  set n := p.natDegree
+  have hxn : x ^ n = -∑ i ∈ Finset.range n, p.coeff i * x ^ i := eq_neg_of_add_eq_zero_left hx
+  rcases Nat.eq_zero_or_pos n with hn | hn
+  · rw [hn] at hxn
+    simp at hxn
+  have hle : ‖x ^ n‖ ≤ ‖x‖ ^ (n - 1) := by
+    rw [hxn, norm_neg]
+    refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_
+    rw [norm_mul, norm_pow]
+    have hi' : i ≤ n - 1 := by
+      have := Finset.mem_range.mp hi
+      omega
+    calc ‖p.coeff i‖ * ‖x‖ ^ i ≤ 1 * ‖x‖ ^ (n - 1) := by
+          gcongr
+          · exact hc i
+          · exact h.le
+      _ = ‖x‖ ^ (n - 1) := one_mul _
+  rw [norm_pow] at hle
+  have hlt : ‖x‖ ^ (n - 1) < ‖x‖ ^ n := pow_lt_pow_right₀ h (by omega)
+  linarith
+
+
+open Polynomial in
+theorem _root_.GlobalTheory.padicAlgCl_embedding_bounded_continuous (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O]
+    [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O]
+    [TopologicalSpace O] [IsTopologicalRing O] (hO : IsAdic (IsLocalRing.maximalIdeal O))
+    (ι : O →+* PadicAlgCl l)
+    (hι : ∀ z : ℤ_[l], ι (algebraMap ℤ_[l] O z) = algebraMap ℚ_[l] (PadicAlgCl l) (z : ℚ_[l])) :
+    (∀ a, ‖ι a‖ ≤ 1) ∧ (∀ a ∈ IsLocalRing.maximalIdeal O, ‖ι a‖ < 1) ∧ Continuous ι := by
+  set g : ℤ_[l] →+* PadicAlgCl l := (algebraMap ℚ_[l] (PadicAlgCl l)).comp PadicInt.Coe.ringHom
+  have hg : ι.comp (algebraMap ℤ_[l] O) = g := by
+    ext z
+    exact hι z
+  have h1 : ∀ a, ‖ι a‖ ≤ 1 := by
+    intro a
+    obtain ⟨p, hpm, hpa⟩ := Algebra.IsIntegral.isIntegral (R := ℤ_[l]) a
+    have hroot : (p.map g).eval (ι a) = 0 := by
+      rw [eval_map, ← hg, ← hom_eval₂]
+      rw [hpa, map_zero]
+    refine norm_le_one_of_monic_root_lemma (hpm.map g) (fun i => ?_) hroot
+    rw [coeff_map]
+    change ‖algebraMap ℚ_[l] (PadicAlgCl l) ((p.coeff i : ℤ_[l]) : ℚ_[l])‖ ≤ 1
+    rw [PadicAlgCl.norm_extends]
+    exact PadicInt.norm_le_one _
+  have hunit : ∀ u : Oˣ, ‖ι u‖ = 1 := by
+    intro u
+    have hprod : ‖ι u‖ * ‖ι ↑u⁻¹‖ = 1 := by
+      rw [← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]
+    have ha := h1 u
+    have hb := h1 ↑u⁻¹
+    have ha0 := norm_nonneg (ι u)
+    have hb0 := norm_nonneg (ι ↑u⁻¹)
+    nlinarith
+  obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
+  have hmax := (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ
+  have hϖlt : ‖ι ϖ‖ < 1 := by
+    refine lt_of_le_of_ne (h1 ϖ) fun heq => ?_
+    set x := algebraMap ℤ_[l] O (l : ℤ_[l])
+    have hx : ‖ι x‖ = ‖(l : ℚ_[l])‖ := by
+      rw [hι, PadicAlgCl.norm_extends]
+      push_cast
+      rfl
+    have hlt : ‖ι x‖ < 1 := hx ▸ Padic.norm_p_lt_one
+    have hx0 : x ≠ 0 := by
+      intro h0
+      rw [h0, map_zero, norm_zero] at hx
+      have : (0 : ℝ) < ‖(l : ℚ_[l])‖ := by
+        rw [Padic.norm_p]
+        have : (0 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).pos
+        positivity
+      linarith
+    obtain ⟨n, u, hxu⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ
+    rw [hxu, map_mul, norm_mul, map_pow, norm_pow, heq, one_pow, mul_one, hunit] at hlt
+    exact lt_irrefl _ hlt
+  have hpow : ∀ n : ℕ, ∀ a ∈ IsLocalRing.maximalIdeal O ^ n, ‖ι a‖ ≤ ‖ι ϖ‖ ^ n := by
+    intro n a ha
+    rw [hmax, Ideal.span_singleton_pow, Ideal.mem_span_singleton'] at ha
+    obtain ⟨b, rfl⟩ := ha
+    rw [map_mul, norm_mul, map_pow, norm_pow]
+    calc ‖ι b‖ * ‖ι ϖ‖ ^ n ≤ 1 * ‖ι ϖ‖ ^ n := by gcongr; exact h1 b
+      _ = ‖ι ϖ‖ ^ n := one_mul _
+  refine ⟨h1, fun a ha => ?_, ?_⟩
+  · have := hpow 1 a (by rwa [pow_one])
+    rw [pow_one] at this
+    exact this.trans_lt hϖlt
+  · refine continuous_of_continuousAt_zero ι ?_
+    rw [ContinuousAt, map_zero, Metric.tendsto_nhds]
+    intro ε hε
+    obtain ⟨n, hn⟩ := exists_pow_lt_of_lt_one hε hϖlt
+    have hopen := (isAdic_iff.mp hO).1 n
+    filter_upwards [hopen.mem_nhds (Ideal.zero_mem _)] with a ha
+    rw [dist_zero_right]
+    exact (hpow n a ha).trans_lt hn
+
+end GlobalTheory
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EmbeddingIntegralContinuous =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallIdealNeBot =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallIdealNeBot", "h": "module\n\nimport Development.WeilBound.CoreStatements.SesquilinearFractions.NIdeal\npublic import Formalism.ConjugateSelfDual.Statement\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Bernstein\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Henselian\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.RegularLocalRing.Defs\nimport Mathlib.RingTheory.SimpleRing.Principal\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Topology.Sheaves.Init\npublic import Mathlib.RingTheory.DedekindDomain.Dvr\n\n"}
+section -- clump:auto
+@[expose] public section
+
+namespace GlobalTheory.SmallPrimeIdeal
+
+open NumberField
+
+theorem norm_le_one_of_isIntegral {K : Type} [NormedField K] [IsUltrametricDist K] {y : K}
+    (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
+  apply PositivityTheory.Xgf.NI.norm_le_one_of_isIntegral <;> assumption
+
+theorem norm_int_le_one {L K : Type} [Field L] [NormedField K] [IsUltrametricDist K]
+    (a : L →+* K) (x : 𝓞 L) : ‖a (x : L)‖ ≤ 1 := by
+
+  exact norm_le_one_of_isIntegral ((NumberField.RingOfIntegers.isIntegral_coe x).map a.toIntAlgHom)
+
+def smallIdeal {L K : Type} [Field L] [NormedField K] [IsUltrametricDist K]
+    (a : L →+* K) : Ideal (𝓞 L) where
+  carrier := {x | ‖a (x : L)‖ < 1}
+  zero_mem' := by simp
+  add_mem' := by
+    intro x y hx hy
+    have h : ‖a (x : L) + a (y : L)‖ ≤ max ‖a (x : L)‖ ‖a (y : L)‖ :=
+      IsUltrametricDist.norm_add_le_max _ _
+    have e : a ((x + y : 𝓞 L) : L) = a (x : L) + a (y : L) := by simp
+    change ‖a ((x + y : 𝓞 L) : L)‖ < 1
+    rw [e]
+    exact lt_of_le_of_lt h (max_lt hx hy)
+  smul_mem' := by
+    intro c x hx
+    have e : a ((c • x : 𝓞 L) : L) = a (c : L) * a (x : L) := by simp
+    change ‖a ((c • x : 𝓞 L) : L)‖ < 1
+    rw [e, norm_mul]
+    exact mul_lt_one_of_nonneg_of_lt_one_right (norm_int_le_one a c) (norm_nonneg _) hx
+
+theorem mem_smallIdeal {L K : Type} [Field L] [NormedField K] [IsUltrametricDist K]
+    (a : L →+* K) (x : 𝓞 L) : x ∈ smallIdeal a ↔ ‖a (x : L)‖ < 1 := by
+  exact Iff.rfl
+
+theorem norm_eq_one {L K : Type} [Field L] [NormedField K] [IsUltrametricDist K]
+    (a : L →+* K) (x : 𝓞 L) (h : ¬ ‖a (x : L)‖ < 1) : ‖a (x : L)‖ = 1 := by
+  exact le_antisymm (norm_int_le_one a x) (not_lt.mp h)
+
+theorem smallIdeal_isPrime {L K : Type} [Field L] [NormedField K] [IsUltrametricDist K]
+    (a : L →+* K) : (smallIdeal a).IsPrime := by
+  refine ⟨?_, ?_⟩
+  ·
+    rw [Ideal.ne_top_iff_one, mem_smallIdeal]
+    simp
+  · intro x y hxy
+    rw [mem_smallIdeal] at hxy
+    rw [mem_smallIdeal, mem_smallIdeal]
+    by_contra hc
+    push Not at hc
+    obtain ⟨hx, hy⟩ := hc
+    have e : a ((x * y : 𝓞 L) : L) = a (x : L) * a (y : L) := by simp
+    rw [e, norm_mul, norm_eq_one a x (not_lt.mpr hx), norm_eq_one a y (not_lt.mpr hy)] at hxy
+    norm_num at hxy
+
+theorem exists_local_dvd {L : Type} [Field L] [NumberField L] (P : Ideal (𝓞 L)) [P.IsPrime]
+    (hP : P ≠ ⊥) (u v : 𝓞 L) :
+    ∃ r s : 𝓞 L, s ∉ P ∧ (u * r = v * s ∨ v * r = u * s) := by
+
+  let Rp := Localization.AtPrime P
+  have : IsDiscreteValuationRing Rp :=
+    IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 L) hP Rp
+  have hinj : Function.Injective (algebraMap (𝓞 L) Rp) :=
+    IsLocalization.injective Rp P.primeCompl_le_nonZeroDivisors
+  rcases ValuationRing.dvd_total (algebraMap (𝓞 L) Rp u) (algebraMap (𝓞 L) Rp v) with ⟨c, hc⟩ | ⟨c, hc⟩
+  · obtain ⟨⟨r, s⟩, rfl⟩ := IsLocalization.mk'_surjective P.primeCompl c
+    refine ⟨r, s, s.2, Or.inl (hinj ?_)⟩
+    rw [map_mul, map_mul, hc, mul_assoc, IsLocalization.mk'_spec]
+  · obtain ⟨⟨r, s⟩, rfl⟩ := IsLocalization.mk'_surjective P.primeCompl c
+    refine ⟨r, s, s.2, Or.inr (hinj ?_)⟩
+    rw [map_mul, map_mul, hc, mul_assoc, IsLocalization.mk'_spec]
+
+theorem smallIdeal_ne_bot {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime]
+    (a : L →+* PadicAlgCl l) : smallIdeal a ≠ ⊥ := by
+
+  intro hbot
+  have hl : ((l : 𝓞 L)) ∈ smallIdeal a := by
+    rw [mem_smallIdeal]
+    have e : a ((l : 𝓞 L) : L) = (l : PadicAlgCl l) := by simp
+    have hext := PadicAlgCl.norm_extends (p := l) (l : ℚ_[l])
+    rw [map_natCast] at hext
+    rw [e, hext, Padic.norm_p]
+    exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)
+  rw [hbot, Ideal.mem_bot] at hl
+  have h0 : ((l : 𝓞 L) : L) = 0 := by rw [hl]; simp
+  exact (Fact.out : l.Prime).ne_zero (by exact_mod_cast h0)
+
+theorem le_one_of_le_one {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime]
+    (a b : L →+* PadicAlgCl l)
+    (h : ∀ x : 𝓞 L, ‖a (x : L)‖ < 1 ↔ ‖b (x : L)‖ < 1) (x : L) (hx : ‖a x‖ ≤ 1) :
+    ‖b x‖ ≤ 1 := by
+  classical
+  have hb : ∀ y : 𝓞 L, y ∈ smallIdeal a ↔ ‖b (y : L)‖ < 1 := fun y => (mem_smallIdeal a y).trans (h y)
+  have := smallIdeal_isPrime a
+
+  obtain ⟨u, w, hw, rfl⟩ := IsFractionRing.div_surjective (𝓞 L) x
+  change ‖a ((u : L) / (w : L))‖ ≤ 1 at hx
+  change ‖b ((u : L) / (w : L))‖ ≤ 1
+  have hw0 : (w : L) ≠ 0 := by
+    have := nonZeroDivisors.ne_zero hw
+    exact_mod_cast this
+
+  obtain ⟨r, s, hs, hrs⟩ := exists_local_dvd (smallIdeal a) (smallIdeal_ne_bot a) u w
+  have hs0 : (s : L) ≠ 0 := by
+    intro h0
+    apply hs
+    have : s = 0 := by exact_mod_cast h0
+    rw [this]
+    exact (smallIdeal a).zero_mem
+  have hbs : ‖b (s : L)‖ = 1 := norm_eq_one b s (fun hlt => hs ((hb s).mpr hlt))
+  have has : ‖a (s : L)‖ = 1 := norm_eq_one a s (fun hlt => hs ((mem_smallIdeal a s).mpr hlt))
+  rcases hrs with h1 | h1
+  ·
+    have h1' : (u : L) * r = w * s := by exact_mod_cast congrArg (fun z : 𝓞 L => (z : L)) h1
+    have hr0 : (r : L) ≠ 0 := by
+      intro h0
+      rw [h0, mul_zero] at h1'
+      exact mul_ne_zero hw0 hs0 h1'.symm
+    have e : (u : L) / w = s / r := by
+      rw [div_eq_div_iff hw0 hr0]
+      linear_combination h1'
+    rw [e] at hx ⊢
+    rw [map_div₀, norm_div, has] at hx
+    have hpos : 0 < ‖a (r : L)‖ := norm_pos_iff.mpr ((map_ne_zero a).mpr hr0)
+    have har : ¬ ‖a (r : L)‖ < 1 := by
+      intro hlt
+      rw [div_le_iff₀ hpos] at hx
+      linarith
+    have hbr : ‖b (r : L)‖ = 1 := norm_eq_one b r (fun hlt => har ((h r).mpr hlt))
+    rw [map_div₀, norm_div, hbs, hbr, div_one]
+  ·
+    have h1' : (w : L) * r = u * s := by exact_mod_cast congrArg (fun z : 𝓞 L => (z : L)) h1
+    have e : (u : L) / w = r / s := by
+      rw [div_eq_div_iff hw0 hs0]
+      linear_combination -h1'
+    rw [e, map_div₀, norm_div, hbs, div_one]
+    exact norm_int_le_one b r
+
+theorem norm_le_one_iff {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact (Nat.Prime l)]
+    (a b : L →+* Formalism.ConjugateSelfDual.Qbar l)
+    (h : ∀ x : 𝓞 L, ‖a (x : L)‖ < (1 : ℝ) ↔ ‖b (x : L)‖ < (1 : ℝ)) (x : L) :
+    ‖a x‖ ≤ (1 : ℝ) ↔ ‖b x‖ ≤ (1 : ℝ) := by
+  exact ⟨le_one_of_le_one a b h x, le_one_of_le_one b a (fun y => (h y).symm) x⟩
+
+end GlobalTheory.SmallPrimeIdeal
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallIdealNeBot =====
+
+-- ===== clump member: Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GoodIdempotentFixesMemGoodTypeSpace =====
+-- clump-header: {"m": "Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GoodIdempotentFixesMemGoodTypeSpace", "h": "module\n\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.CharpolySmulOfProd\npublic import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.WdOfMono0L\npublic import Development.AbelianVarietyTheory.Proofs.FoundationProofs.PadicEmbeddingsConjugate\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.EmbeddingIntegralContinuous\npublic import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SmallIdealNeBot\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Topology.Sheaves.Presheaf\npublic import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.TripleAtt\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -149,16 +440,6 @@ def ResTied (D : D7) (Rw : RowSide D) : Prop :=
 
 section Bridge
 
-theorem ball_of_int {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime] (a b : L →+* Qbar l)
-    (h : ∀ x : 𝓞 L, ‖a x‖ < 1 ↔ ‖b x‖ < 1) (x : L) : ‖a x‖ ≤ 1 ↔ ‖b x‖ ≤ 1 := by
-  first
-  | exact @_root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff
-  | exact _root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff
-  | (apply _root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff <;> assumption)
-  | (intros; apply _root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff <;> assumption)
-  | (intros; apply @_root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff <;> first | assumption | infer_instance)
-  | (intros; exact _root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff ..)
-
 theorem val_pos_iff (w : D.what₂.places.Pl) {x : D.what₂.LL} (hx : x ≠ 0) :
     0 < D.what₂.places.val w x ↔ ¬ 0 ≤ D.what₂.places.val w x⁻¹ := by
   have h := (D.what₂.places.val w).map_mul x x⁻¹
@@ -233,15 +514,11 @@ end Bridge
 
 namespace Model
 
-open Formalism.MainNotions.BlochKatoReduction (scalGL)
-
-variable (D)
-
-
-variable {D}
-
 end Model
 
 end GlobalTheory.EigTie
 
 end
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.GoodIdempotentFixesMemGoodTypeSpace =====

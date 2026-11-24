@@ -177,9 +177,6 @@ structure Spaces (R : Ranks) (F E : Type) [Field F] [NumberField F] [Field E] [N
 
 namespace Spaces
 
-def bridge_hD : Prop := ∀ (E : Type) [Field E] [NumberField E] [StarRing E]
-  (S : HSpace E) (x y : S.V), S.hD x y = star (S.hT x y)
-
 def bridge_sigRank : Prop := ∀ (E : Type) [Field E] [NumberField E] [StarRing E]
   (S : HSpace E), S.SigOK → ∀ τ : E →+* ℂ, (S.sig τ).1 + (S.sig τ).2 = S.rank
 
@@ -197,8 +194,6 @@ def FactVSig : Prop := ∀ S : Spaces R F E, ∀ j, 1 ≤ j → j ≤ R.m → �
   (S.V j).sig τ = if S.Vneg j then (0, R.nV) else (R.nV, 0)
 
 def FactWmPosDef : Prop := ∀ S : Spaces R F E, (S.W R.m).IsPosDef
-
-def FactSigYD : Prop := sigYD R 0 = R.sigY0 ∧ sigYD R R.m = (R.rankY R.m, 0)
 
 end Formalism.BasicNotions
 

@@ -116,7 +116,7 @@ theorem charZero_of_isArithVar {K : Type} [Fintype K] {J : K → Type} [∀ k, F
   have hmem : (n : ℤ) ∈ (mCoordIdeal y).comap (C : ℤ →+* MRing J) := by
     rw [Ideal.mem_comap, mCoordIdeal, RingHom.mem_ker]
     have e : mConeMap y (C (n : ℤ)) = C (n : Ω) := by
-      simp [mConeMap, aeval_C]
+      simp [mConeMap]
     rw [e, hn, map_zero]
   rw [show (mCoordIdeal y).comap (C : ℤ →+* MRing J) = ⊥ from hH] at hmem
   simpa using hmem

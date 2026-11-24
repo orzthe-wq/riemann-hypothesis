@@ -2,8 +2,10 @@ module
 
 public import Development.AbelianVarietyTheory.Definitions.ThetaValues.Generic
 public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.WeightedPrimeSumBound
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CardExponentsAndChooseRatioBoundsPairStatement
-public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GenericSectionsPolynomialDictionaryStatement
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.CardExponentsAndChooseRatioBoundsPair
+public import Development.AbelianVarietyTheory.Proofs.CuspFormEvaluations.GenericSectionsPolynomialDictionary
 public import Formalism.SharpRestriction.GenusPolyhedralBounds.RelativeIndexClassSets.ExistsGlobalFamilyQuotientBounded
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -58,7 +60,7 @@ theorem shareRhoP_of_anFacts : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : Mod
 
   have hdim : ∀ M : Submodule B.KO (B.Cusp j ka),
       Module.finrank ℂ (R.sp ka M) = Module.finrank B.KO M := fun M =>
-    ((GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t).2.2.2.2.2.2.2 ka M).2
+    ((_root_.GlobalTheory.Shares.polyDictionary D B P j X R la N wL w t).2.2.2.2.2.2.2 ka M).2
   have hspan : Submodule.span B.KO (B.Mlat j ka : Set (B.Cusp j ka)) = ⊤ :=
     Submodule.IsFullLattice.span_eq_top (self := hL)
 
@@ -73,7 +75,7 @@ theorem shareRhoP_of_anFacts : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : Mod
   have hq := rhoP_eq_finrank B CR T c j ka hspan
   have hlo := hA.lower
   rw [hdim] at hlo
-  have key := (GlobalTheory.T.card_exponents_and_choose_ratio_bounds_pair (WeightFamilies.dimY D j) T).2 δ (X.rk ka (B.Mlat j ka)) (WeightFamilies.rhoP B CR T c j ka) hD hT
+  have key := (_root_.GlobalTheory.card_exponents_and_choose_ratio_bounds (WeightFamilies.dimY D j) T).2 δ (X.rk ka (B.Mlat j ka)) (WeightFamilies.rhoP B CR T c j ka) hD hT
     (by rw [hd, ← hup]; exact hA.upper)
   exact key.2 (by rw [hq, hd, ← hsum]; omega)
 

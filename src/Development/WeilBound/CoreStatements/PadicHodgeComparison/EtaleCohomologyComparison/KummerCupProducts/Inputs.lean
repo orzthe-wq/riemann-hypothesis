@@ -73,10 +73,6 @@ theorem inKum : InKum := GlobalTheory.EtC.KummerSplit.isKum_kumT
 
 theorem firstChern_cocycle_naturality : InC1 := fun q _ E L h => (GlobalTheory.EtC.firstChernClassTateTwist_cocycle_naturality_additivity q).1 L h
 
-theorem etale_a2_facts : A2 := GlobalTheory.EtC.smooth_surjective_cech_descent_cohomology
-
-theorem reduced_coefficient_facts : A11 := GlobalTheory.EtC.RedCoef.a11
-
-theorem etIn : EtIn := ⟨etale_a2_facts, reduced_coefficient_facts, inGen, inSch, inTw, inRed, inOp, inKum, firstChern_cocycle_naturality⟩
+theorem etIn : EtIn := ⟨_root_.GlobalTheory.EtC.smooth_surjective_cech_descent_cohomology, _root_.GlobalTheory.EtC.RedCoef.a11, inGen, inSch, inTw, inRed, inOp, inKum, firstChern_cocycle_naturality⟩
 
 end CrystallineSemistableComparison.E

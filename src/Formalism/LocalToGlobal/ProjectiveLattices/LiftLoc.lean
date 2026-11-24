@@ -224,10 +224,6 @@ lemma hdW_ι (β : Idx D j G.N →₀ ℕ) (x : Lw (xplus X E hM) la G.w) :
     hdL hs β (ιW hs x) = ιW hs (hasse (xplus X E hM) la G.w β x) :=
   hdL_ι hs β x
 
-lemma hdW_mul (β : Idx D j G.N →₀ ℕ) (x z : LamL hs) :
-    hdL hs β (x * z) = ∑ q ∈ Finset.HasAntidiagonal.antidiagonal β, hdL hs q.1 x * hdL hs q.2 z :=
-  hdL_mul hs β x z
-
 lemma isUnit_of_lift_ne {x : Lw (xplus X E hM) la G.w} (hx : ∀ ζ, (hs ζ).lift x ≠ 0) : IsUnit (ιW hs x) :=
   IsLocalization.map_units (LamL hs) (⟨x, hx⟩ : locSub hs)
 

@@ -53,6 +53,7 @@ import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
 import Mathlib.Topology.UniformSpace.Matrix
 import Std.Tactic.BVDecide.Normalize.Prop
+import Formalism.RealPlaceAnalysis.RealPlaceTaylor.CompactHaarRightInvariantInst
 
 @[expose] public section
 
@@ -161,14 +162,7 @@ theorem useGermOfParts : UseGermOfParts := by
         mul_le_mul hpow hrem (norm_nonneg _) (pow_nonneg (le_max_right R 0) _)
     _ = max R 0 ^ (Mlev k ρ - 2) * Cst * max C 0 * c * ‖t‖ := by ring
 
-theorem cc_nonneg {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ}
-    {f : B.Mat k r → E} {c : ℝ} (hf : B.CCle A m f c) : 0 ≤ c := by
-  have h1 : (1 : B.Mat k r) ∈ B.GV k r := by
-    show (1 : B.Mat k r)ᴴ * _ * 1 = _
-    simp
-  obtain ⟨_, h2⟩ := hf
-  have h := h2 [] [] (by simp) (by simp) (by simp) 1 h1
-  exact le_trans (mul_nonneg (Real.rpow_nonneg (by unfold B.gN; exact Real.sqrt_nonneg _) _) (norm_nonneg _)) h
+alias cc_nonneg := _root_.Formalism.FourierDecayAlt.P.Ux8.nonneg_of_CCle_mat
 
 private theorem star_mono_bound {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {k j ρ : ℕ}
     {F₁ : B.Mat k (j + ρ) → E} {A₁ : ℝ} {Q : ℕ} {B₁ B₂ : ℝ} {K : Set ℝ}
@@ -257,10 +251,6 @@ theorem ccMono : CCMono := by
   refine ⟨hck, fun u v hu hv hl g hg => le_trans ?_ (hb u v hu hv hl g hg)⟩
   exact mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le (one_le_gN_of_mem_GV g hg) hAB) (norm_nonneg _)
 
-section
-variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (p : Seminorm ℂ V)
-end
-
 section supp
 open Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.BetaSesquilinearity
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
@@ -346,15 +336,6 @@ lemma cont_DjU (k j ρ : ℕ) : Continuous (DjU k j ρ) := by
       exact continuous_id.matrix_elem _ _
   exact h.matrix_det
 
-private theorem continuous_exp_real_smul_matrix {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
-    Continuous fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) := by
-  letI : SeminormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpSemiNormedRing
-  letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing
-  letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra
-  letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra
-  have hcs : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℂ _
-  exact (@NormedSpace.exp_continuous _ _ _ hcs).comp (Complex.continuous_ofReal.smul continuous_const)
-
 lemma Rw_vanish {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {O : Set (B.Mat k r)} (hO : IsOpen O)
     {f : B.Mat k r → E} (h : ∀ g ∈ O, f g = 0) (w : List (B.Mat k r)) : ∀ g ∈ O, B.Rw w f g = 0 := by
   induction w with
@@ -362,7 +343,7 @@ lemma Rw_vanish {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E
   | cons X w ih =>
     intro g hg
     have hc : ContinuousAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) 0 :=
-      (continuous_const.mul (continuous_exp_real_smul_matrix X)).continuousAt
+      (continuous_const.mul (_root_.Formalism.REAL.continuous_exp_real_smul X)).continuousAt
     have hmem : (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) ⁻¹' O ∈ nhds (0 : ℝ) :=
       hc.preimage_mem_nhds (by simpa using hO.mem_nhds hg)
     have hev : (fun t : ℝ => B.Rw w f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[nhds 0] fun _ => 0 := by
@@ -430,12 +411,5 @@ end supp
 end Formalism.FourierDecayAlt.P.Ux8
 
 namespace Formalism.FourierDecayAlt.P
-
-theorem compactly_supported_monotone : Formalism.FourierDecayAlt.U.CCMono := Ux8.ccMono
-theorem star_projection : Formalism.FourierDecayAlt.U.StarPi := Ux8.starPi
-theorem phi_support_level_of_parts : Formalism.FourierDecayAlt.U.PhiSuppGOfParts := Ux8.phiSuppGOfParts
-theorem corollary_u2_of_parts : Formalism.FourierDecayAlt.U.GermExpansionHypothesisFromComponents := Ux8.corollary_u2_of_parts_holds
-theorem germ_expansion_of_parts : Formalism.FourierDecayAlt.U.UseGermOfParts := Ux8.useGermOfParts
-theorem germ_top_level_of_parts : Formalism.FourierDecayAlt.U.UseGermTopOfParts := Ux8.useGermTopOfParts
 
 end Formalism.FourierDecayAlt.P

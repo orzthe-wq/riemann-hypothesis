@@ -70,7 +70,7 @@ theorem botHyp_match_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi
     refine ⟨h1.trans ?_, fun hk => ?_⟩
     · exact (show ∀ a b : W.S.X.B.I.GA, a = b → (a ∈ seeKS W.S.X ↔ b ∈ seeKS W.S.X) from fun a b h => h ▸ Iff.rfl) _ _ (e _)
     · exact (congrArg (seeChiS W.S.X) (e _)).symm.trans (h2 hk)
-  have hK := Formalism.L2.SG.Closed.level_subgroup_is_group W.S.X
+  have hK := _root_.Formalism.L2.SG.Pf.level_subgroup_character_unitary W.S.X
   refine ⟨W.Q.charW.base.models, W.Q.charW.base.models.inf, W.Q.stdChar, ?_, ?_, ?_⟩
   · intro z hz hzc
     have hz' := Subgroup.mem_center_iff.1 hzc

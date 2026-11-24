@@ -187,7 +187,6 @@ theorem GlobalTheory.EtC.CechPts.main : ∀ (R : Type) [CommRing R] (F : Shv R) 
       change ((cech f).obj (op ⦋k⦌)).map (c Z _).op (cechPt f k x y h) =
         ((cech f).obj (op ⦋k⦌)).map (𝟙 Z).op (cechPt f k x y h)
       rw [hc' Z, op_id]
-      change _ = ((cech f).obj (op ⦋k⦌)).map (𝟙 (op Z)) _
       rw [CategoryTheory.Functor.map_id]
       rfl
     rw [h2]

@@ -77,8 +77,6 @@ theorem psiA_zero : psiA F 0 = 1 := by
 theorem norm_exp_real (t : ℝ) : ‖Complex.exp (2 * Real.pi * Complex.I * (t : ℂ))‖ = 1 := by
   first
     | (rw [Complex.norm_exp]; simp)
-    | (rw [(show (2 * Real.pi * Complex.I * (t : ℂ)) = ((2 * Real.pi * t : ℝ) : ℂ) * Complex.I by push_cast; ring)]
-       exact Complex.norm_exp_ofReal_mul_I _)
 
 theorem continuous_psiA : Continuous (psiA F) := by
   have hp : ∀ w : InfinitePlace F, Continuous (fun x : Ainf F => x w) := fun w => continuous_apply w
@@ -156,7 +154,6 @@ theorem exists_psiF [IsTotallyReal F] : ∃ f : Af F →+ AddCircle (1 : ℝ),
     rw [hn]
     first
       | exact (QuotientAddGroup.eq_zero_iff _).mpr (AddSubgroup.intCast_mem_zmultiples_one n)
-      | (rw [AddCircle.coe_eq_zero_iff]; exact ⟨n, by simp⟩)
   have hj : Function.Injective (QuotientAddGroup.kerLift j) := QuotientAddGroup.kerLift_injective j
   have hB : Module.Baer ℤ (AddCircle (1 : ℝ)) := by
     first
@@ -182,7 +179,7 @@ def psiFin (z : Af F) : ℂ := ((AddCircle.toCircle (-((exists_psiF F).choose z)
 theorem psiFin_add (z w : Af F) : psiFin F (z + w) = psiFin F z * psiFin F w := by
   unfold psiFin
   rw [map_add (f := _), neg_add, AddCircle.toCircle_add]
-  first | rfl | simp
+  first | rfl
 
 theorem psiFin_int (z : Af F) (hz : z ∈ Formalism.UG.intAd F) : psiFin F z = 1 := by
   have h0 := (exists_psiF F).choose_spec.1 z hz
@@ -208,7 +205,6 @@ theorem norm_psiFin (z : Af F) : ‖psiFin F z‖ = 1 := by
 theorem continuous_psiFin : Continuous (psiFin F) := by
   have hU : IsOpen ((Formalism.UG.intAd F : Set (Af F))) := by
     first
-      | exact RestrictedProduct.isOpen_forall_mem (fun v => IsDedekindDomain.HeightOneSpectrum.isOpen_adicCompletionIntegers F v)
       | exact RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_integer _)
   have hf : Continuous ((exists_psiF F).choose) := by
     refine continuous_of_continuousAt_zero _ ?_
@@ -221,7 +217,6 @@ theorem continuous_psiFin : Continuous (psiFin F) := by
   unfold psiFin
   first
     | exact continuous_subtype_val.comp hc
-    | fun_prop
 
 def psiStd : AddChar (AF F) ℂ where
   toFun x := psiA F x.1 * psiFin F x.2
@@ -238,7 +233,6 @@ theorem psiStd_apply (x : AF F) : psiStd F x = psiA F x.1 * psiFin F x.2 := rfl
 theorem ext_alg (w : InfinitePlace F) (a : F) :
     InfinitePlace.Completion.extensionEmbedding w ((algebraMap F (Ainf F) a) w) = w.embedding a := by
   first
-    | exact InfinitePlace.Completion.extensionEmbedding_coe w a
     | simp [InfinitePlace.Completion.extensionEmbedding_coe]
 
 theorem psiStd_isChar : IsCharAF F (psiStd F) := by

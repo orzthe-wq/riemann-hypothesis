@@ -12,45 +12,8 @@ public import Formalism.GradedWeylDivisibility.FockSpaceTableaux.NablaLTwist
 public import Formalism.LocalRingCardinality.RankBoundMonotoneInDimension
 public import Formalism.LocalToGlobal.Columns.CoefficientsModP.LatticeBasisExistsHolds
 public import Formalism.LocalToGlobal.Columns.PolyFnLemmas
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.Etale.Weakly
-import Mathlib.RingTheory.Radical.NatInt
 import Mathlib.RingTheory.TotallySplit
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -136,11 +99,6 @@ section Loc
 
 variable {K : Type} [Field K] [NumberField K]
 
-theorem nb_mem_span_ow {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (w : HeightOneSpectrum (𝓞 K)) [Module (Ow w) V]
-    [IsScalarTower (𝓞 K) (Ow w) V] (T : Set V) (x : V) :
-    x ∈ Submodule.span (Ow w) T ↔ x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (Submodule.span (𝓞 K) T) :=
-  GlobalTheory.LocalSpanCriterion.span_local_iff w T x
-
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
 theorem nb_nabStd_eq (lam : ι → DomWeight n) :
@@ -168,14 +126,14 @@ theorem nb_mem_nabW (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) 
   have h : (fun τ => (nablaSq (Ow w) n (lam τ)).map
       (mapAlgHom (σ := Fin n × Fin n) (Algebra.ofId (Ow w) K)).toLinearMap) =
       fun τ => Submodule.span (Ow w) (bideterminantsOfShape K (lam τ).natW) := funext fun τ => nb_map_nablaSq (Ow w) (lam τ)
-  rw [nbNabW, h, nb_tensorLat_span, nb_nabStd_eq, nb_mem_span_ow]
+  rw [nbNabW, h, nb_tensorLat_span, nb_nabStd_eq, _root_.GlobalTheory.LocalSpanCriterion.span_local_iff]
 
 theorem nb_mem_delW (w : HeightOneSpectrum (𝓞 K)) (lam : ι → DomWeight n) (x : Pol K ι n) :
     x ∈ nbDelW w lam ↔ x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (delStd K lam) := by
   have h : (fun τ => (delSq (Ow w) n (lam τ)).map
       (mapAlgHom (σ := Fin n × Fin n) (Algebra.ofId (Ow w) K)).toLinearMap) =
       fun τ => Submodule.span (Ow w) (nbWord K (lam τ).natW) := funext fun τ => nb_map_delSq (Ow w) (lam τ)
-  rw [nbDelW, h, nb_tensorLat_span, nb_delStd_eq, nb_mem_span_ow]
+  rw [nbDelW, h, nb_tensorLat_span, nb_delStd_eq, _root_.GlobalTheory.LocalSpanCriterion.span_local_iff]
 
 end Loc
 

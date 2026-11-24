@@ -144,7 +144,7 @@ theorem gramB_surj_of_free (F E : Type) [Field F] [NumberField F] [Field E] [Num
   let half : Ainf F ⊗[F] E := algebraMap F (Ainf F ⊗[F] E) (1/2)
   have hh : half + half = 1 := by
     simp only [half, ← map_add (f := _)]; norm_num
-    first | rfl | exact Algebra.TensorProduct.one_def.symm
+    first | rfl
   have hsh : s half = half := (Algebra.TensorProduct.map (AlgHom.id F (Ainf F)) σ).commutes _
   have hw : ∀ j, ∃ w : Fin M → Ainf F ⊗[F] E, ∀ i, ∑ k, Z i k * w k =
       half * (S : Matrix (Fin a) (Fin a) (Ainf F ⊗[F] E)) i j :=

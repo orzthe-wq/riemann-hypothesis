@@ -2,9 +2,11 @@ module
 
 public import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsConstantLieBasisArcGroup
 public import Development.AbelianVarietyTheory.Proofs.JetHarmonics.IsSmulPtSmulPt
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.LiePush
 import Development.AbelianVarietyTheory.Proofs.GenericRegularity.LieCombBaseChange
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArcStatement
-import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieCombStatement
+import Development.AbelianVarietyTheory.Definitions.ArchimedeanThetaValues.IsFramedPointChangedByLetters
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsUniqueConstantTangentVectorsAlongArc
+import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.LieImgIffIsLieComb
 import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.PmapsOfGenRelR
 import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.CubicalSymmetryTransport
 import Mathlib.Algebra.Order.Floor.Extended
@@ -45,7 +47,6 @@ import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
-public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.LiePush
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.ChartPullbacks.UniversalCharts.UnivChartLoc
 import Formalism.LocalToGlobal.ProjectiveLattices.ArchimedeanQuadraticData.ArcLineFunctions.ArcSPin
 
@@ -408,7 +409,7 @@ theorem lieImg_smulPt {ν : GtPt a.D₀ (epsR A)} {v : epsR (PowerSeries A) ⟶ 
 theorem gtComb_iff_isLieComb {m : ℕ} (cf : Fin m → A) {u : Fin m → GtPt a.D₀ (epsR A)} {ν : GtPt a.D₀ (epsR A)}
     {v : Fin m → (epsR (PowerSeries A) ⟶ W.t.G)} {w : epsR (PowerSeries A) ⟶ W.t.G} (hu : ∀ i, LieImg W (u i) (v i))
     (h : LieImg W ν w) : GtComb cf u ν ↔ IsLieComb (fun i => PowerSeries.C (R := A) (cf i)) v w := by
-  have lin := GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y A b a χ W m cf u
+  have lin := _root_.GlobalTheory.ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y A b a χ W m cf u
   refine ⟨fun H => (lin ν v w hu H).1 h, fun H => ?_⟩
   obtain ⟨ξ, hξ⟩ := exists_gtComb cf u
   exact eq_of_red W hG ((lin ξ v w hu hξ).2 H) h rfl ▸ hξ
@@ -422,9 +423,9 @@ theorem isEig_iff (r : 𝓞 E →+* A) {ν : GtPt a.D₀ (epsR A)} {v : epsR (Po
 include W in
 theorem gtTanR_iff (ν : GtPt a.D₀ (epsR A)) {o : GtPt a.D₀ (epsR A)} (ho : GtComb (m := 0) Fin.elim0 Fin.elim0 o) :
     GtTanR ν ↔ GtComb (fun _ : Fin 1 => 0) (fun _ => ν) o := by
-  have ex := GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W
+  have ex := _root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W
   obtain ⟨v, hv, -⟩ := (ex ν).1
-  have h₀ := (GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y A b a χ W 0 _ _ o Fin.elim0 1 (fun j => j.elim0) ho).2
+  have h₀ := (_root_.GlobalTheory.ConstLin.lieImg_iff_isLieComb hG E H Dw l Xo c O β Y A b a χ W 0 _ _ o Fin.elim0 1 (fun j => j.elim0) ho).2
     ⟨Fin.elim0, fun j => j.elim0, by simp⟩
   rw [(ex ν).2 v hv, isTangent_iff_comb, gtComb_iff_isLieComb hG W _ (fun _ => hv) h₀]
   simp only [map_zero]
@@ -436,13 +437,13 @@ theorem isEigBasis_iff (r : 𝓞 E →+* A) {m : ℕ} {u : Fin m → GtPt a.D₀
       ∀ w, IsTangent w → (∀ x : 𝓞 E,
         (w ≫ W.t.act.act x).left = spMap (epsScaleR (PowerSeries.C (R := A) (r x))) ≫ w.left) →
         ∃! cf : Fin m → PowerSeries A, IsLieComb cf v w := by
-  have ex := GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W
+  have ex := _root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W
   refine (and_congr_left' (forall_congr' fun k =>
     and_congr ((ex _).2 _ (hu k)) (isEig_iff hG W r (hu k)))).trans (and_congr_right fun h => ?_)
   have := W.P.U.smooth
   obtain ⟨g, s, t, M, hs, ht, hc, hM⟩ := exists_const_basis hG E H Dw l Xo c O β Y A b a χ W
   have img : ∀ z ν, GtComb z s ν → LieImg W ν (prodPts (fun j => PowerSeries.C (R := A) (z j)) t) := fun z ν H =>
-    (GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E _ Dw l Xo c O β Y A b a χ W g z s ν t _ (fun i => (hs i).2) H).2 ((isLieComb_iff _ _ _).2 rfl)
+    (_root_.GlobalTheory.ConstLin.lieImg_iff_isLieComb hG E _ Dw l Xo c O β Y A b a χ W g z s ν t _ (fun i => (hs i).2) H).2 ((isLieComb_iff _ _ _).2 rfl)
   have eig : ∀ (z : Fin g → PowerSeries A) x, ((prodPts z t : epsR _ ⟶ W.t.G) ≫ W.t.act.act x).left =
       spMap (epsScaleR (PowerSeries.C (R := A) (r x))) ≫ (prodPts z t : epsR _ ⟶ W.t.G).left ↔
       z ᵥ* (M x).map (PowerSeries.C (R := A)) = PowerSeries.C (R := A) (r x) • z := fun z x =>
@@ -473,7 +474,7 @@ theorem isEigBasis_iff (r : 𝓞 E →+* A) {m : ℕ} {u : Fin m → GtPt a.D₀
 theorem arcBasis_iff (ρ : (E →+* ℂ) → (𝓞 E →+* A)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → GtPt a.D₀ (epsR A)) :
     ArcBasis W ρ e ↔ ∀ τ, IsEigBasis hG (ρ τ) (e τ) := by
   refine ⟨fun ⟨v, hv, h⟩ τ => (isEigBasis_iff hG W _ (hv τ)).2 (h τ), fun h => ?_⟩
-  choose v hv using fun ν => (GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W ν).1.exists
+  choose v hv using fun ν => (_root_.GlobalTheory.ConstLie.main hG E H Dw l Xo c O β Y A b a χ W ν).1.exists
   exact ⟨fun τ k => v (e τ k), fun τ k => hv _, fun τ => (isEigBasis_iff hG W _ fun k => hv _).1 (h τ)⟩
 
 

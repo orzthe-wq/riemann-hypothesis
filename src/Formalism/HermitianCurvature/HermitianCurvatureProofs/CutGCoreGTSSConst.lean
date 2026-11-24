@@ -153,7 +153,7 @@ theorem actA_sc (P : M.Par) (x : (MA.DQ P).Pr) (g : M.Ty P → MA.SmQ P.r P.TT) 
   refine (Fintype.sum_eq_single ρ ?_).trans ?_
   · intro b hb
     simp [Matrix.scalar_apply, Matrix.diagonal_apply_ne _ (Ne.symm hb)]
-    first | rfl | simp [ZeroMemClass.coe_zero] | exact LinearMap.zero_apply _
+    first | rfl
   · simp [Matrix.scalar_apply]
     rfl
 
@@ -406,9 +406,8 @@ theorem second_shift_constant : GTSSConst := by
     have h := congrArg (fun x : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => vl P Bs e (x.1 U) ρ' q) h0
     simp only [pm, Module.End.mul_apply] at h
     rw [vl_kap P Bs d e hk, hWv, (hss _ ρ' q).2] at h
-    simp only [vl_kap P Bs d e hk, hUv, f, g, hup, if_false, if_true] at h
-    simp only [mul_ite, mul_zero, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, ite_mul, zero_mul,
-      one_mul] at h
+    simp only [vl_kap P Bs d e hk, hUv, f, g, if_true] at h
+    simp only [mul_ite, mul_zero, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, one_mul] at h
     exact h.symm.trans (by simp [hup])
 
   let qOf : ∀ ζ ∈ Ann P, MA.Qp P.r P.TT := fun ζ hζ => ⟨((fun _ => (1 : ℂ)), ζ), ⟨fun _ => one_ne_zero, hζ⟩⟩

@@ -69,10 +69,6 @@ theorem inSpan_one : InSpan N i T' rep 1 := by
   simp only [Pi.one_apply, one_smul] at this
   exact this
 
-theorem inSpan_add {a b : X' → MatN N i} (ha : InSpan N i T' rep a) (hb : InSpan N i T' rep b) :
-    InSpan N i T' rep (a + b) := by
-  first | exact UpperTheory.Reformulated.B.Qj25.inSpan_add .. | (apply UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qj25.inSpan_add <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj25.inSpan_add <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' rep a b ha hb | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' rep a b ha | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' rep a b | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' rep a | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' rep | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' T' | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i X' | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N i | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ N | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H what₂ | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R H | exact @UpperTheory.Reformulated.B.Qj25.inSpan_add R
-
 theorem inSpan_fmul {a : X' → MatN N i} (f : X' → N.O i) (hf : f ∈ T') (ha : InSpan N i T' rep a) :
     InSpan N i T' rep (fun x' => f x' • a x') := by
   obtain ⟨m, f', g, hf', rfl⟩ := ha
@@ -184,7 +180,7 @@ theorem eel_inR' (hG : GoodCongruenceObjects N r ρ π S) : InR' N r S (Eel N S)
       intro hL
       have hc : S.rr c ∈ S.T' := hrr c (hL c (by simp))
       have h1 : InR' N r S (fun x' => S.X0 (S.p x') - S.rr c x' • S.eB (S.p x')) := by
-        have := inSpan_add N S.T' (fun x' => rO N i r (S.p x')) hX0'
+        have := _root_.UpperTheory.Reformulated.B.Qj25.inSpan_add N S.T' (fun x' => rO N i r (S.p x')) hX0'
           (inSpan_fmul N S.T' (fun x' => rO N i r (S.p x')) (-S.rr c) (S.T'.neg_mem hc) hB')
         have e1 : (fun x' => S.X0 (S.p x') - S.rr c x' • S.eB (S.p x')) =
             (fun x' => S.X0 (S.p x')) + fun x' => (-S.rr c) x' • S.eB (S.p x') := by

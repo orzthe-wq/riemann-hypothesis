@@ -87,7 +87,6 @@ def polyS (S : Subring R) : Subring R[X] where
 
 lemma C_mem_polyS {S : Subring R} {c : R} (hc : c ∈ S) : C c ∈ polyS S := by
   intro k
-  show (C c).coeff k ∈ S
   rw [Polynomial.coeff_C]
   split_ifs
   · exact hc
@@ -95,7 +94,6 @@ lemma C_mem_polyS {S : Subring R} {c : R} (hc : c ∈ S) : C c ∈ polyS S := by
 
 lemma X_mem_polyS {S : Subring R} : (X : R[X]) ∈ polyS S := by
   intro k
-  show (X : R[X]).coeff k ∈ S
   rw [Polynomial.coeff_X]
   split_ifs
   · exact S.one_mem
@@ -122,8 +120,7 @@ lemma term_newL (ρ : G →* Matrix n n R) (L0 L : R × ℕ × G) (k : ℕ) :
   ring
 
 lemma F_perm (ρ : G →* Matrix n n R) {l l' : List (R × ℕ × G)} (h : l.Perm l') : F ρ l = F ρ l' := by
-  unfold F
-  rw [(h.map _).sum_eq]
+  exact congrArg (fun M => Matrix.det (1 - M)) (h.map (term ρ)).sum_eq
 
 lemma charpoly_comp (ρ : G →* Matrix n n R) (L : R × ℕ × G) :
     Matrix.det (1 - term ρ L) = (Matrix.charpolyRev (ρ L.2.2)).comp (C L.1 * X ^ L.2.1) := by
@@ -228,8 +225,7 @@ lemma base (ρ : G →* Matrix n n R) (l : List (R × ℕ × G)) (hl : ∀ L ∈
 lemma letter_mem (ρ : G →* Matrix n n R) (hS : ∀ g k, (Matrix.charpolyRev (ρ g)).coeff k ∈ S)
     (L : R × ℕ × G) (hc : L.1 ∈ S) : piN N (Matrix.det (1 - term ρ L)) ∈ SQ N S := by
   rw [charpoly_comp]
-  exact ⟨_, comp_mem_polyS (fun k => hS _ k)
-    ((polyS S).mul_mem (C_mem_polyS hc) ((polyS S).pow_mem X_mem_polyS _)), rfl⟩
+  exact ⟨_, comp_mem_polyS (hS _) ((polyS S).mul_mem (C_mem_polyS hc) ((polyS S).pow_mem X_mem_polyS _)), rfl⟩
 
 def Valid (S : Subring R) (D : ℕ) (l : List (R × ℕ × G)) : Prop := ∀ L ∈ l, L.1 ∈ S ∧ D ≤ L.2.1
 

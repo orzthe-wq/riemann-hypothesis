@@ -47,6 +47,7 @@ import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Topology.Sheaves.Init
+import Formalism.LocalToGlobal.GroupLattices.TiedFamilies.SelfDualAtColLevel
 
 @[expose] public section
 
@@ -176,12 +177,6 @@ theorem hypTJ_stepLevelQ (hLb : Lb = S.Lb) (hUl : Uloc = S.Uloc) (hgp : ∀ a, �
     (fun w' h => selfDualAt_stepLevelQ D.sp.cm S w' (T_not_mem hg.1 hg.2.2.2.2.2 w' h))
 
 end Q
-
-section Mem
-
-variable {gp : Fin 2 → ℕ} {f : ℕ} (S : Formalism.L2.Herm.StepLevel D.sp.cm (D.sp.X (i + 1)) gp (D.mem u).A.T f)
-
-end Mem
 
 end GlobalTheory.Port
 end
@@ -362,10 +357,6 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     {clsLat : ∀ i, C.cls i → Submodule (𝓞 E) (sp.X i).V} {p : ℕ} {G : GAtP p}
     {L : ColLevel R F E sp gp C A clsLat}
 
-theorem selfDualAt_col (L : ColLevel R F E sp gp C A clsLat) (v : HeightOneSpectrum (𝓞 F)) (hT : ((A.T : ℕ) : 𝓞 F) ∉ v.asIdeal) :
-    SelfDualAt sp.cm.sig sp.gram0 v L.Lb :=
-  self_dual_lattice_at F E R.k sp.cm.sig sp.gram0 v L.Lb A.T L.Lb_fin (fun x hx y hy => L.Lb_int y hy x hx) (fun y hy => L.Lb_dual y hy) hT
-
 variable (t : Formalism.L2.Herm.GLevTie L G)
 
 
@@ -387,23 +378,19 @@ theorem stabilises_columnBaseLattice_iff_firstFactor (w : HeightOneSpectrum (�
   simp only [key]
 
 theorem hypTC_col (hT : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal → ((A.T : ℕ) : 𝓞 F) ∉ w.asIdeal) : HypTC t :=
-  fun w h x hx => (stabilises_columnBaseLattice_iff_firstFactor t w h (selfDualAt_col L w (hT w h)) x (L.Uloc_le w hx)).1 (L.Uloc_lev w hx)
+  fun w h x hx => (stabilises_columnBaseLattice_iff_firstFactor t w h (_root_.Formalism.L2.G.selfDualAt_colLevel L w (hT w h)) x (L.Uloc_le w hx)).1 (L.Uloc_lev w hx)
 
 theorem hypT_col (hT : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal → ((A.T : ℕ) : 𝓞 F) ∉ w.asIdeal)
     (hgp : ∀ a (w : HeightOneSpectrum (𝓞 F)), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal → ((gp a : ℕ) : 𝓞 F) ∉ w.asIdeal) : HypT t :=
   fun w h x hx h1 h2 => by
     rw [L.Uloc_hyp w (hgp 0 w h) (hgp 1 w h) (hT w h)]
-    exact (stabilises_columnBaseLattice_iff_firstFactor t w h (selfDualAt_col L w (hT w h)) x hx).2 ⟨h1, h2⟩
+    exact (stabilises_columnBaseLattice_iff_firstFactor t w h (_root_.Formalism.L2.G.selfDualAt_colLevel L w (hT w h)) x hx).2 ⟨h1, h2⟩
 
 end Gen
 
 section Rec
 
 variable {D : D7}
-
-theorem nat_not_mem {p n : ℕ} (hp : p.Prime) (hn : ¬ p ∣ n) (w' : HeightOneSpectrum (𝓞 D.host.F))
-    (h : ((p : ℕ) : 𝓞 D.host.F) ∈ w'.asIdeal) : (n : 𝓞 D.host.F) ∉ w'.asIdeal :=
-  fun hn' => not_mem_of_coprime ((Nat.Prime.coprime_iff_not_dvd hp).2 hn) _ hn' h
 
 theorem not_dvd_g {u : D.what₂.Word} {w : D.what₂.places.Pl} (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (a : Fin 2) :
     ¬ D.what₂.places.resChar w ∣ D.host.g a := fun hd =>
@@ -412,10 +399,10 @@ theorem not_dvd_g {u : D.what₂.Word} {w : D.what₂.places.Pl} (hg : GIdx D.ho
 variable (X : Formalism.L2.Herm.Herm0 D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
   (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
 
-theorem hypTC_rec : HypTC (X.g u w hg) := hypTC_col _ (fun w' h => nat_not_mem hg.1 hg.2.2.2.2.2 w' h)
+theorem hypTC_rec : HypTC (X.g u w hg) := hypTC_col _ (fun w' h => _root_.GlobalTheory.Port.T_not_mem hg.1 hg.2.2.2.2.2 w' h)
 
 theorem hypT_rec : HypT (X.g u w hg) :=
-  hypT_col _ (fun w' h => nat_not_mem hg.1 hg.2.2.2.2.2 w' h) (fun a w' h => nat_not_mem hg.1 (not_dvd_g hg a) w' h)
+  hypT_col _ (fun w' h => _root_.GlobalTheory.Port.T_not_mem hg.1 hg.2.2.2.2.2 w' h) (fun a w' h => _root_.GlobalTheory.Port.T_not_mem hg.1 (not_dvd_g hg a) w' h)
 
 variable {X} {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c : LatCmp D}
 
@@ -424,13 +411,6 @@ theorem oneHyp_rec (K : CmpTied D X T Gt c) (hJ : Joint0 X.lev0 u (T u)) :
   oneHyp_locAt X T u (sameUloc_of_joint X T u hJ) w hg K.B (K.fr_B u w hg) (hypT_rec X u w hg) (hypTC_rec X u w hg)
 
 end Rec
-
-section Top
-
-variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {K : G.Consts} {Dx : DivX D} {cX : ExtraC}
-  {ex : Extra D L hT Gi Gl K Dx cX}
-
-end Top
 
 end GlobalTheory.Port
 

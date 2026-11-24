@@ -56,10 +56,6 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.GCTrait
 
-theorem spMap_comp'' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
-    spMap g ≫ spMap f = spMap (g.comp f) :=
-  (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
-
 theorem map_cycAway_mem {n : ℕ} {L : Type} [Field L] (φ : cycAway n →+* L) (K : Subring L)
     (hz : φ (zetaAway n) ∈ K) (hi : φ ⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩ ∈ K) (c : cycAway n) : φ c ∈ K := by
   obtain ⟨c, hc⟩ := c
@@ -114,7 +110,7 @@ theorem exists_finite_point (n : ℕ) {X : Scheme.{0}} (s : X ⟶ Sp (cycAway n)
     | mul a b _ _ ha hb => rw [map_mul]; exact K.mul_mem ha hb
   let φK : Γ(X, U) →+* K := φ.hom.codRestrict K hmem
   refine ⟨K, hK, spMap φK ≫ hU.fromSpec, ?_⟩
-  rw [← Category.assoc, spMap_comp'', ← IsOpenImmersion.lift_fac hU.fromSpec y hr, ← hφ]
+  rw [← Category.assoc, _root_.GlobalTheory.spMap_comp_ring, ← IsOpenImmersion.lift_fac hU.fromSpec y hr, ← hφ]
   rfl
 
 theorem exists_ext_emb (p : ℕ) [Fact p.Prime] (V W : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
@@ -178,7 +174,7 @@ theorem exists_cTrait : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix 
     show algebraMap K (PadicAlgCl p) (e (e.symm k)) = _
     rw [AlgEquiv.apply_symm_apply]
   have key : spMap ι ≫ spMap fK ≫ spMap es = spMap (algebraMap K (PadicAlgCl p)) := by
-    rw [spMap_comp'', spMap_comp'', ← RingHom.comp_assoc, hι, hκ]
+    rw [_root_.GlobalTheory.spMap_comp_ring, _root_.GlobalTheory.spMap_comp_ring, ← RingHom.comp_assoc, hι, hκ]
   refine ⟨⟨y, rfl, T, ι, hint, ?_⟩, rfl⟩
   calc gPt p ≫ y ≫ X₁.π = y₁ ≫ i := hy₁.symm
     _ = (spMap (algebraMap K (PadicAlgCl p)) ≫ x) ≫ i := by rw [hx]

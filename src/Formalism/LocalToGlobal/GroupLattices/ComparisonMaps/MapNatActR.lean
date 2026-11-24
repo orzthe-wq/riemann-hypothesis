@@ -2,46 +2,7 @@ module
 
 public import Formalism.LocalToGlobal.HermitianForms.IsLocBasis
 public import Formalism.SharpRestriction.GrowthBounds.DataG
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Data.Nat.Choose.Multinomial
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
 import Mathlib.RingTheory.PiTensorProduct
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.RingTheory.WittVector.IsPoly
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Topology.Sheaves.Init
 
 @[expose] public section
 
@@ -93,11 +54,10 @@ theorem map_substR [CommRing R] [CommRing S] (f : R →+* S)
 theorem map_natActR [Field R] [Field S] (f : R →+* S) (g : ∀ v, Fin (P.n' v) → GL (Fin (P.m + 1)) R) (Q : XR P R) :
     MvPolynomial.map f (natActR P R g Q) =
       natActR P S (fun v s => Matrix.GeneralLinearGroup.map f (g v s)) (MvPolynomial.map f Q) := by
-  simp only [natActR, LinearMap.smul_apply, AlgHom.toLinearMap_apply]
-  rw [MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_substR]
-  congr 2
-  · simp only [map_prod, map_zpow₀, RingHom.map_det]
-    rfl
+  simp only [natActR, LinearMap.smul_apply, AlgHom.toLinearMap_apply,
+    MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_substR,
+    map_prod, map_zpow₀, RingHom.map_det]
+  rfl
 
 end Map
 
@@ -107,12 +67,10 @@ def reM (h : P.m + 1 = n) (A : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin (P.m + 
   A.submatrix (finCongr h) (finCongr h)
 
 theorem reM_mul (h : P.m + 1 = n) (A B : Matrix (Fin n) (Fin n) ℂ) : reM P h (A * B) = reM P h A * reM P h B := by
-  unfold reM
-  exact (Matrix.submatrix_mul_equiv A B (finCongr h) (finCongr h) (finCongr h)).symm
+  simp [reM]
 
 theorem reM_one (h : P.m + 1 = n) : reM P h (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
-  unfold reM
-  exact Matrix.submatrix_one_equiv _
+  simp [reM]
 
 def reG (h : P.m + 1 = n) : GL (Fin n) ℂ →* GL (Fin (P.m + 1)) ℂ :=
   Units.map

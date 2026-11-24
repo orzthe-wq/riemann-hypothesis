@@ -42,6 +42,7 @@ import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
 import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
+import Mathlib.CategoryTheory.Monoidal.Opposite.Mon
 
 @[expose] public section
 
@@ -228,10 +229,8 @@ theorem trivAt_units : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
           | rfl
           | exact rfl
           | exact Subsingleton.elim _ _
-          | (apply Algebra.algebra_ext; intro r; simp)
       · first
           | exact hnat
-          | convert hnat using 2
     unfold vV
     rw [key]
     simp

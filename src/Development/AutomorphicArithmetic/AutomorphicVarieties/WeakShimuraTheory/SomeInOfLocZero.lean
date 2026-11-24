@@ -77,7 +77,7 @@ theorem pair_of (f : R →+* R') (hf : Function.Injective f) (h : Φ.IsPair (f.c
     apply hi
     rw [Matrix.map_mul, ← adj_map, k]
     ext i j
-    by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
+    by_cases hij : i = j <;> simp [hij]
   refine ⟨fun g => gs _ _ (h.mult g), fun g hg => hi _ _ ?_, fun i j hij => z _ (h.nrm hij),
     fun v => ⟨gs _ _ (by rw [map_one]; exact (h.low v).1), fun i => hf ?_, fun i j hij => z _ ((h.low v).2.2 i j hij)⟩,
     fun v s hs i j hij => z _ ?_, fun v s hs i => hf ?_⟩

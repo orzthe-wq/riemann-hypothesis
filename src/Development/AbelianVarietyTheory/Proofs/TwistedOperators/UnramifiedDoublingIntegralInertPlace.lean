@@ -3,29 +3,29 @@ module
 public import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.GaussianBinomialClosedForm
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasLenOfLatLen
 public import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsOpenIsCompactUnitaryIntegralPoints
-import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvMemDoubleCosetAndComm
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BiInvariantReplaceSameDoubleCosetSumsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlockTriangularRowLatticeTriangularBasisStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DoubledLatticePrimitiveIsotropicFrameCompletionStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BlockTriangularRowLatticeTriangularBasis
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DoubledLatticePrimitiveIsotropicFrameCompletion
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DualInterEqSumStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ElementaryDivisorsExistDiscretelyValuedStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitaryBlockDiagonalLeviElementStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsUnitaryBlockDiagonalLeviElement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.HasSumSpherical
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralLatticeInverseIndexOfElementaryDivisorsStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralLatticeInverseIndexOfElementaryDivisors
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.IntegralRightInvariantEqSumOpenSubgroupCosetsStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LatticeAddVectorDetValuationStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LengthCountGeneratingSeriesFormulaStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.LeviRadicalProductLengthOfLatticeStepsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatrixLengthExistsOfElementaryDivisorsStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatrixLengthExistsOfElementaryDivisors
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmallCornerOfHeisenbergDualityStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmallRadicalCosetCountOfHeisenbergStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SphericalInductionTransitivityOfLeviExistsStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SmallRadicalCosetCountOfHeisenberg
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SphericalInductionTransitivityOfLeviExists
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.TraceZeroIntegersIndexInUniformizerMultiplesStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryHeisenbergRadicalCoordinatesStatement
 public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryIwasawaCellsDisjointStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryIwasawaCosetSurjOfLeviElementExistsStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryLeviSummationGeometricSeriesStatement
-public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryRankLeOneIntegralPointsStatement
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryIwasawaCosetSurjOfLeviElementExists
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryLeviSummationGeometricSeries
+public import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnitaryRankLeOneIntegralPoints
+import Development.AbelianVarietyTheory.Proofs.SatakeParameters.InvMemDoubleCosetAndComm
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.FSatakeA
 import Formalism.SatakeDualWeyl.KpqSubgroupCompact
 import Mathlib.Algebra.Order.Floor.Extended
@@ -158,9 +158,9 @@ theorem unramDoublingInert : UnramDoublingInert := by
   intro L _ _ _ ϖ σ q n hU _ _ μ _ hμ χ hχ s Φ hΦ α w hw
   have hq : q ≠ 0 := by have := hU.2.2.2.2.2.1; omega
   have hq0 : (q : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hq
-  have hF : FracExists := T.matrixLengthExists_of_elementaryDivisors T.elementaryDivisors_exist_discretelyValued
+  have hF : FracExists := _root_.GlobalTheory.InertZeta.fracExists_of_smith T.elementaryDivisors_exist_discretelyValued
   have hsec : (fun g => Φ (io1 σ n g) * w g) = fun g => varX q n (χ ϖ) s ^ len (mat g) * w g := funext fun g => by
-    rw [section_eq T.doubledLattice_primitive_isotropic_frame_completion hU hχ hΦ g (hF L ϖ n hU.2.2.2.1 _ (det_mat_ne_zero g))]
+    rw [section_eq _root_.GlobalTheory.FrameCompletion.completion hU hχ hΦ g (hF L ϖ n hU.2.2.2.1 _ (det_mat_ne_zero g))]
   have hint : ∀ Z, HasSum (fun x : GU σ n ⧸ KU σ n => varX q n (χ ϖ) s ^ len (mat x.out) * w x.out) Z →
       Integrable (fun g => Φ (io1 σ n g) * w g) μ ∧ ∫ g, Φ (io1 σ n g) * w g ∂μ = Z := fun Z hZ => by
     rw [hsec]
@@ -169,13 +169,13 @@ theorem unramDoublingInert : UnramDoublingInert := by
     have h2 := len_mat_mul (one_mem _) hk g
     simp only [OneMemClass.coe_one, one_mul] at h1 h2
     rw [h1, h2]
-  refine ⟨fun hD => ?_, fun hn => hint 1 (hasSum_small T.unitary_rank_le_one_integral_points hU hn (fun g => varX q n (χ ϖ) s ^ len (mat g) * w g)
+  refine ⟨fun hD => ?_, fun hn => hint 1 (hasSum_small _root_.GlobalTheory.InertZeta.smallRank hU hn (fun g => varX q n (χ ϖ) s ^ len (mat g) * w g)
     fun k hk => ?_)⟩
   · obtain ⟨φ, hφ, h1, -⟩ := Final.SphericalExistsU L ϖ σ q n (n / 2) hU (by omega) (by omega) (fun i => (α i : ℂ))
       fun i => (α i).ne_zero
-    have h2 := hasSum_spherical hF (T.leviRadicalProductLength_of_lattice_steps T.lattice_add_vector_det_valuation T.dual_inter_eq_sum' T.blockTriangular_row_lattice_triangular_basis T.unitary_heisenberg_radical_coordinates)
-      (T.smallRadicalCosetCount_of_heisenberg T.unitary_heisenberg_radical_coordinates (T.integralLatticeInverseIndex_of_elementaryDivisors T.elementaryDivisors_exist_discretelyValued) T.traceZero_integers_index_in_uniformizer_multiples) (T.small_corner_of_heisenberg_duality T.unitary_heisenberg_radical_coordinates T.dual_inter_eq_sum') T.length_count_generating_series_formula (T.unitaryIwasawaCosetSurj_of_leviElementExists T.exists_unitary_block_diagonal_levi_element)
-      T.unitary_iwasawa_cells_disjoint T.exists_unitary_block_diagonal_levi_element (T.sphericalInductionTransitivity_of_leviExists T.exists_unitary_block_diagonal_levi_element) T.unitary_rank_le_one_integral_points T.unitary_levi_summation_geometric_series hU (n / 2) n (by omega) (by omega)
+    have h2 := hasSum_spherical hF (T.leviRadicalProductLength_of_lattice_steps T.lattice_add_vector_det_valuation T.dual_inter_eq_sum' _root_.GlobalTheory.InertZeta.RowSpan.spanEq_holds T.unitary_heisenberg_radical_coordinates)
+      (_root_.GlobalTheory.InertZeta.count_of_heis T.unitary_heisenberg_radical_coordinates (_root_.GlobalTheory.InertZeta.latIndex_of_smith T.elementaryDivisors_exist_discretelyValued) T.traceZero_integers_index_in_uniformizer_multiples) (T.small_corner_of_heisenberg_duality T.unitary_heisenberg_radical_coordinates T.dual_inter_eq_sum') T.length_count_generating_series_formula (_root_.GlobalTheory.InertZeta.cosetSurj_of_leviExists _root_.GlobalTheory.InertZeta.leviExists)
+      T.unitary_iwasawa_cells_disjoint _root_.GlobalTheory.InertZeta.leviExists (_root_.GlobalTheory.InertZeta.sphTrans _root_.GlobalTheory.InertZeta.leviExists) _root_.GlobalTheory.InertZeta.smallRank _root_.GlobalTheory.InertZeta.step hU (n / 2) n (by omega) (by omega)
       (fun i => (α i : ℂ)) (varX q n (χ ϖ) s) (varY q (χ ϖ) s) φ (fun i => (α i).ne_zero) (by
         rw [varX, varY, neg_add, neg_add, Complex.cpow_add _ _ hq0, Complex.cpow_add _ _ hq0, Complex.cpow_neg_one,
           Complex.cpow_neg _ (n : ℂ), Complex.cpow_natCast]

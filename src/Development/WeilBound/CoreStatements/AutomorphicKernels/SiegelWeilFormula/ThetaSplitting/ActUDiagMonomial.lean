@@ -86,10 +86,10 @@ theorem lin_lf (φ : PX m n →ₗ[ℂ] PX m n) (b : Bool) (N M : Matrix (Fin m)
   exact Finset.sum_congr rfl fun x _ => C_mul'.symm
 
 theorem mstar_mul (A B : Matrix (Fin m) (Fin m) ℂ) : (A * B).map star = A.map star * B.map star := by
-  ext i j; simp [Matrix.mul_apply, star_sum]
+  ext i j; simp [Matrix.mul_apply]
 
 theorem am_mul (b : Bool) (A B : Matrix (Fin m) (Fin m) ℂ) : am b (A * B) = am b A * am b B := by
-  cases b <;> simp [am, mstar_mul]
+  cases b <;> simp [am]
 
 theorem actU_lf (u M : Matrix (Fin m) (Fin m) ℂ) (b : Bool) (a : Fin m) (i : Fin n) :
     actU u (lf b M a i) = lf b (M * am b u) a i :=
@@ -120,7 +120,7 @@ theorem evX_actU (u : Matrix (Fin m) (Fin m) ℂ) (P : PX m n) (v : Matrix (Fin 
     · simp [actU, Matrix.mul_apply]
     · simp [actU, Matrix.mul_apply, star_sum]
   have e := congrArg (fun f : PX m n →ₐ[ℂ] ℂ => f P) h
-  simp only [AlgHom.comp_apply, coe_aeval_eq_eval] at e
+  simp only [AlgHom.comp_apply] at e
   exact e
 
 def dm (b : Bool) (Y : Matrix (Fin m) (Fin m) ℂ) : Matrix (Fin m) (Fin m) ℂ := if b then -Yᵀ else Y
@@ -253,7 +253,7 @@ theorem kill_charged (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup
   set ζ : Fin m → ℂ := fun c => if c = a then z else 1
   have hu : diagonal ζ ∈ unitaryGroup (Fin m) ℂ := by
     rw [mem_unitaryGroup_iff', star_eq_conjTranspose, diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]
-    congr 1; ext c; simp only [ζ, Pi.star_apply, Pi.mul_apply, Pi.one_apply]; split_ifs
+    congr 1; ext c; simp only [ζ, Pi.star_apply]; split_ifs
     · exact hz
     · simp
   have e := hΛ _ hu (monomial s 1)
@@ -317,15 +317,15 @@ theorem kill_dY (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ u ∈ unitaryGroup (Fin
       H₂.IsHermitian ∧ Y = H₁ + Complex.I • H₂ := by
     refine ⟨(1 / 2 : ℂ) • (Y + Yᴴ), ?_, (1 / (2 * Complex.I) : ℂ) • (Y - Yᴴ), ?_, ?_⟩
     · ext i j
-      simp only [IsHermitian, conjTranspose_apply, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, star_mul',
+      simp only [conjTranspose_apply, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, star_mul',
         star_add, star_star]
-      rw [show star (1 / 2 : ℂ) = 1 / 2 by simp [Complex.ext_iff]]
+      rw [show star (1 / 2 : ℂ) = 1 / 2 by simp]
       ring
     · ext i j
-      simp only [IsHermitian, conjTranspose_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, star_mul',
+      simp only [conjTranspose_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, star_mul',
         star_sub, star_star]
       rw [show star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) by
-        simp [Complex.ext_iff, Complex.div_re, Complex.div_im]]
+        simp]
       ring
     · ext i j
       simp only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]
@@ -361,7 +361,7 @@ theorem hOp_eq (c : ℝ) (a b : Fin m) (P : PX m n) : hOp (fun _ => true) c a b 
         rw [Finset.sum_eq_single i' (fun c _ hc => by simp [Ne.symm hc]) (by simp)]
         simp
       · simp [Ne.symm ha, ha]
-    · simp only [lf, dm, if_true, and_false, and_true, mul_zero, zero_sub, single_apply, Matrix.neg_apply,
+    · simp only [lf, dm, if_true, and_true, single_apply, Matrix.neg_apply,
         transpose_apply]
       by_cases hb : a' = b
       · subst hb

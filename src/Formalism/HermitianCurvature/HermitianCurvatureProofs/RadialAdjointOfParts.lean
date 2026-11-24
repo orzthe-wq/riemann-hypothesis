@@ -59,12 +59,6 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
-theorem bcWeight_nonneg (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) : 0 ≤ bcWeight k r T T' q := by
-  unfold bcWeight
-  split_ifs with h
-  · exact mul_nonneg (Finset.prod_nonneg fun a _ => by positivity) (pow_nonneg (sub_nonneg.2 h) _)
-  · exact le_rfl
-
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
@@ -89,7 +83,7 @@ theorem betaBig_congr (D : RealPlaceData k r Wp Wq)
   · have hg : bigCell k r q.1 (D.μsec q.2) ∈ Om k r D.z D.z' := hq hQ
     simp only [h _ hg, h' _ hg]
   · have h0 : bcWeight k r (Tz k r D.z) (Tz k r D.z') q = 0 :=
-      le_antisymm (not_lt.1 hQ) (bcWeight_nonneg _ _ q)
+      le_antisymm (not_lt.1 hQ) (Formalism.FourierDecayAlt.P.B7.boundary_weight_nonneg _ _ q)
     simp only [h0, Complex.ofReal_zero, zero_mul]
 
 end Formalism.FourierDecayAlt.P.JFxG

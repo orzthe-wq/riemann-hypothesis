@@ -111,9 +111,6 @@ theorem mem_tauLat_iff {E : Type} [Field E] [NumberField E] {ι : Type} {n : ℕ
   rw [h2, mem_span_vmE_iff]
   rfl
 
-theorem mem_dualFr' {F : Type} [Field F] [NumberField F] {n : ℕ} (L : Submodule (𝓞 F) (Fin n → F)) (y : Fin n → F) :
-    y ∈ dualFr L ↔ ∀ x ∈ L, y ⬝ᵥ x ∈ (1 : Submodule (𝓞 F) F) := Iff.rfl
-
 theorem map_mem_one_iff (a : K') : e a ∈ (1 : Submodule (𝓞 K) K) ↔ a ∈ (1 : Submodule (𝓞 K') K') := by
   simp only [Submodule.mem_one]
   constructor
@@ -130,7 +127,7 @@ theorem mem_dualFr_iff {n : ℕ} (L : Submodule (𝓞 K') (Fin n → K')) (L2 : 
   have hd : ∀ x : Fin n → K', vmE e n y ⬝ᵥ vmE e n x = e (y ⬝ᵥ x) := fun x => by
     set_option synthInstance.maxHeartbeats 100000 in
       simp only [dotProduct, map_sum, map_mul, vmE_apply]
-  rw [mem_dualFr', mem_dualFr']
+  rw [_root_.Formalism.L2.Col.mem_dualFr, _root_.Formalism.L2.Col.mem_dualFr]
   constructor
   · intro hy x hx
     rw [← map_mem_one_iff e, ← hd]

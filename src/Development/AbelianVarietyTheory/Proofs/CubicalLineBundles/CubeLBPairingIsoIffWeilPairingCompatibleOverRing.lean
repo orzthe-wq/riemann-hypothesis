@@ -1,14 +1,17 @@
 module
 
 public import Development.AbelianVarietyTheory.Definitions.CMLattices.IsDiffOf
-import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
 public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LambdaBundleIsoOfWeilPairingCompatible
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LineBundleIsoDescendsFieldToDedekindDomainStatement
-public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeilPairingEqOfIsomorphicCubePairingsStatement
+public import Mathlib.RingTheory.DedekindDomain.Basic
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.ToroidalCompactification.IsGrpPullback
+public import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.SemiabelianSchemes.AbelianSchemeQuotients.IsAbelianScheme
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.LineBundleIsoDescendsFieldToDedekindDomain
+public import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.WeilPairingEqOfIsomorphicCubePairings
 public import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.LineBundleSymmetryHypothesisBaseChange
-import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenOfInvariant
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsPrimitiveNormalisation
 public import Development.AbelianVarietyTheory.Proofs.ModuliProofs.WeilIsGrpPullbackOfCommute
+import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.PolBaseChangeOfRelAmpleLocal
+import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsGenOfInvariant
 import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.LbIsoLinComb
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -213,7 +216,7 @@ theorem lamEq_weilEq_over_ring : Out.Laws → ∀ (R : Type) [CommRing R] (X Y A
         rw [Category.assoc, e₃, reassoc_of% π₁]
       · show (_ ≫ _) ≫ _ = _ ≫ _ ≫ _
         rw [Category.assoc, e₄, reassoc_of% π₂]
-  refine ⟨fun H => W.1 (T.weil_pairing_eq_of_isomorphic_cube_pairings laws k X' Y' A' B' _ _ _ _ m₁ m₂ m₃ m₄ ?_), fun hR hβ H => ?_⟩
+  refine ⟨fun H => W.1 (_root_.GlobalTheory.CM.weilEq_of_lamEq laws k X' Y' A' B' _ _ _ _ m₁ m₂ m₃ m₄ ?_), fun hR hβ H => ?_⟩
   · exact cA.trans hP (Geo.Tor.pull_isLB hN _) hP' (LBIso.trans (Geo.Tor.pull_isLB hN _) (Geo.Tor.pull_isLB hN' _) hP'
       (PowPrimitive.lbIso_linComb H _ _) cB.symm)
   · have H' := GlobalTheory.CM.lamEq_of_weilEq laws k X' Y' A' B' _ _ _ _ m₁ m₂ m₃ m₄ (W.2 H)
@@ -233,7 +236,7 @@ theorem lamEq_weilEq_over_ring : Out.Laws → ∀ (R : Type) [CommRing R] (X Y A
         rw [Category.assoc, π₁, ← Category.assoc, ← Over.comp_left, lift_fst, hu]
       · show F ≫ (snd X.A Y.A).left = (_ ≫ _) ≫ (snd X.A Y.A).left
         rw [Category.assoc, π₂, ← Category.assoc, ← Over.comp_left, lift_snd, hv]
-    refine T.lineBundleIso_descends_field_to_dedekindDomain R k β hβ (X.A ⊗ Y.A) (AbelianSchemeGerms.isAbelianScheme_tensor _ _ X.isAb Y.isAb) _ F p
+    refine _root_.GlobalTheory.IsoDescent.lbIso_of_field R k β hβ (X.A ⊗ Y.A) (AbelianSchemeGerms.isAbelianScheme_tensor _ _ X.isAb Y.isAb) _ F p
       (IsPullback.of_hasPullback _ _) _ _ hN hN' ?_
       (LBIso.chartPull (Geo.Tor.chartPullSame _ _ _ _ (lift u v).left fun _ => hr)
         (Geo.Tor.chartPullSame _ _ _ _ (lift u v).left fun _ => hr) H'')

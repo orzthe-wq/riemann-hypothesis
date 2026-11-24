@@ -60,14 +60,6 @@ namespace GlobalTheory.LocGL.UnramSupport
 
 open MvPolynomial ValuativeRel
 
-theorem exists_uniformizer (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
-    [IsNonarchimedeanLocalField k] : ∃ ϖ : kˣ, valuation k (ϖ : k) = uniformizer k := by
-  obtain ⟨x, hx⟩ := valuation_surjective (uniformizer k)
-  have h0 : x ≠ 0 := by
-    rintro rfl
-    exact uniformizer_ne_zero (R := k) (by simpa using hx.symm)
-  exact ⟨Units.mk0 x h0, by simpa using hx⟩
-
 theorem exists_monomial_of_count_zero (I S : Type 1) (A : Type) [DecidableEq A] [LinearOrder A]
     (Ψ : (I →₀ ℤ) ≃+ MvPolynomial S ℤ) (M : I → List A → ℕ∞) (U : Set S) (ℓ : S → List A)
     (φ : S → GlobalTheory.ShuffleAlgebra ℚ A) (hinj : Set.InjOn ℓ U)
@@ -318,7 +310,7 @@ theorem fixed_iwahori_ne_bot : GlobalTheory.Published.GeometricLemma → GlobalT
   intro hG hZ hB k _ _ _ _ n V _ _ π hs hi hsupp
   classical
   obtain ⟨Z, Ψ, hS, hΨ, hX⟩ := hZ k
-  obtain ⟨ϖ, hϖ⟩ := exists_uniformizer k
+  obtain ⟨ϖ, hϖ⟩ := _root_.GlobalTheory.LocGL.exists_uniformizer k
   let _ : LinearOrder ℂˣ := modArgOrder
   have hword : ∃ w, wordMult π w ≠ 0 := by
     by_contra hw0

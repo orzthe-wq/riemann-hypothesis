@@ -201,13 +201,12 @@ theorem majorant_orthogonal_component : MajorantOrthogonalComponent := by
     rw [h1, inner_self_eq_norm_sq_to_K]; push_cast; rfl
 
 theorem majorant_parameter_choice_holds : SkewVectorChoice := by
-  have hPhase : MajorantPhaseChoice := majorant_phase_estimate_holds
   intro V _ _ θ hθ r y a hl
   obtain ⟨e', he1, _, he3, _⟩ := majorant_orthogonal_component V (r + 1) y a.castSucc
   obtain ⟨u, hu1, hu2, hu3, hu4⟩ := majorant_orthogonal_component V (r + 1) y a.succ
   have hu0 : u ≠ 0 := by
     intro h; apply hl; rw [← hu3, h, norm_zero]
-  obtain ⟨p1, p2, p3⟩ := hPhase V θ hθ u (y a.succ) (y '' {b | b ≤ a.castSucc}) hu0
+  obtain ⟨p1, p2, p3⟩ := majorant_phase_estimate_holds V θ hθ u (y a.succ) (y '' {b | b ≤ a.castSucc}) hu0
     (by
       rintro w ⟨b, hb, rfl⟩
       exact hu2 b (lt_of_le_of_lt (show b ≤ a.castSucc from hb) (Fin.castSucc_lt_succ)))
@@ -260,11 +259,9 @@ lemma s1c2_herm_single {ι : Type*} [Fintype ι] [DecidableEq ι] (A : Matrix ι
 
 lemma s1c2_UH_of_isom {ι : Type*} [Fintype ι] [DecidableEq ι] (H p : Matrix ι ι ℂ)
     (h : ∀ x y, herm H (p *ᵥ x) (p *ᵥ y) = herm H x y) : p ∈ UH H := by
-  have : pᴴ * H * p = H := by
-    apply Matrix.ext
-    intro i j
-    rw [← s1c2_herm_single (pᴴ * H * p) i j, ← s1c2_herm_conj, h, s1c2_herm_single]
-  exact this
+  change pᴴ * H * p = H
+  ext i j
+  rw [← s1c2_herm_single (pᴴ * H * p) i j, ← s1c2_herm_conj, h, s1c2_herm_single]
 
 section ext
 variable {ι σ : Type*} [Fintype ι] [DecidableEq ι] [Fintype σ] [DecidableEq σ]
@@ -291,10 +288,8 @@ lemma s1c2_gram_f (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z
   by_cases h : a = Fin.last r ∧ b = Fin.last r
   · obtain ⟨rfl, rfl⟩ := h; simp [ggLastU]
   · rw [if_neg h]
-    have : ggLastU r b a = 0 := by
-      unfold ggLastU
-      rw [if_neg (fun h' => h ⟨h'.2, h'.1⟩)]
-    rw [this, mul_zero]
+    unfold ggLastU
+    rw [if_neg (fun h' => h ⟨h'.2, h'.1⟩), mul_zero]
 
 lemma s1c2_upper_last {r : ℕ} (a : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (ha : IsUpperUnitriangular a) (b : Fin (r + 1)) :
     a (Fin.last r) b = if b = Fin.last r then 1 else 0 := by
@@ -308,10 +303,7 @@ lemma s1c2_adj_last {r : ℕ} (B : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (hB :
   have h := congrFun (congrFun (Matrix.mul_adjugate B) (Fin.last r)) c
   rw [hdet, one_smul, Matrix.mul_apply, Finset.sum_eq_single (Fin.last r)] at h
   · rw [hB.1, one_mul] at h
-    rw [h, Matrix.one_apply]
-    by_cases hc : c = Fin.last r
-    · simp [hc]
-    · simp [hc, Ne.symm hc]
+    simpa [Matrix.one_apply, eq_comm] using h
   · intro d _ hd; rw [s1c2_upper_last B hB, if_neg hd, zero_mul]
   · intro h'; exact absurd (Finset.mem_univ _) h'
 
@@ -406,10 +398,9 @@ lemma s1c2_herm_mid (k r : ℕ) (z' d : Fin (2 * r + k + 1) → ℂ) (hz' : inWb
 
 lemma s1c2_herm_Pm (k r : ℕ) (z' x : Fin (2 * r + k + 1) → ℂ) (hz' : inWb k r z') :
     herm (Hpk k r) (reflectFlagCoordinates k r x) z' = herm (Hpk k r) x z' := by
-  have := s1c2_herm_mid k r z' (reflectFlagCoordinates k r x - x) hz' (by
-    intro i h1 h2; simp [reflectFlagCoordinates, h1, h2])
-  rw [s1c2_herm_sub_left, sub_eq_zero] at this
-  exact this
+  simpa [s1c2_herm_sub_left, sub_eq_zero] using
+    s1c2_herm_mid k r z' (reflectFlagCoordinates k r x - x) hz' (by
+      intro i h1 h2; simp [reflectFlagCoordinates, h1, h2])
 
 lemma s1c2_herm_e (k r : ℕ) (x : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     herm (Hpk k r) x (bvec (eI k r a)) = x (esI k r a) := by
@@ -543,8 +534,7 @@ theorem dual_vector_equivariant : DualVectorEquivariant := by
 
 lemma s1c2_det_map_star {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ) :
     (A.map star).det = star A.det := by
-  have := (starRingEnd ℂ).map_det A
-  rw [show star A.det = (starRingEnd ℂ) A.det from rfl, this]
+  rw [show star A.det = (starRingEnd ℂ) A.det from rfl, (starRingEnd ℂ).map_det A]
   rfl
 
 open Formalism.QuantumDeterminants.WeylGroupFacts in
@@ -628,9 +618,7 @@ theorem nilpotent_model_computation_holds : RankTwoNilpotentGroup := by
   have h3 : Y * Y * Y = 0 := by
     apply matrix_eq_of_forall_mulVec_eq
     intro x
-    rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hYx' x, Matrix.mulVec_sub, Matrix.mulVec_smul,
-      Matrix.mulVec_smul, hYe', hYv', Matrix.mulVec_sub, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_smul,
-      hYe']
+    rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hYY x, Matrix.mulVec_smul, hYe', smul_zero]
     simp
   have hadd : ∀ s t : ℝ, nilpotentExpSquare H e v (s + t) = nilpotentExpSquare H e v s * nilpotentExpSquare H e v t := by
     intro s t
@@ -748,9 +736,8 @@ theorem nilpotent_model_computation_holds : RankTwoNilpotentGroup := by
 theorem derivative_of_psi_holds : CharacterDerivativeNorm := by
   intro k r z hz a e v ka l he hv hl t
   obtain ⟨_, _, h3⟩ := nilpotent_model_computation_holds k r z hz a e v he hv
-  have h4 := (h3 t).2
   unfold Formalism.QuantumDeterminants.psi
-  rw [h4, hl]
+  rw [(h3 t).2, hl]
   have h5 : (ka : ℂ) * Formalism.QuantumDeterminants.cStd * ((t : ℂ) * (-Complex.I * (l : ℂ))) = ((-(2 * ka * l * t) : ℝ) : ℂ) := by
     unfold Formalism.QuantumDeterminants.cStd
     push_cast

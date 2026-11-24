@@ -4,7 +4,6 @@ public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.IsInfUnitary
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Algebra.Order.Star.Real
 import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import Mathlib.Analysis.Normed.Algebra.GelfandRadius
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
@@ -42,14 +41,122 @@ import Mathlib.Tactic.NormNum.Ordinal
 import Mathlib.Tactic.NormNum.Parity
 import Mathlib.Tactic.NormNum.Prime
 import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
 import Mathlib.Topology.Sheaves.Init
-public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirAlgebra.RhoEqRhoCAddRhoN
 import Std.Tactic.BVDecide.Normalize.Prop
+import Mathlib.Algebra.Order.Star.Real
+import Mathlib.Tactic.Polynomial.Basic
 import Mathlib.Order.CompletePartialOrder
+public import ReciprocityTheory.ReductiveGroups.DiscreteSeries.BochnerInequality.NumRho
 
+-- This file was produced by scripts/clump.py from the modules listed below.
+-- Members: ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirAlgebra.RhoEqRhoCAddRhoN, ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirAlgebra.KhwLowKSubRootEqZero
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirAlgebra.RhoEqRhoCAddRhoN =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirAlgebra.RhoEqRhoCAddRhoN", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.IsInfUnitary\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\nimport Std.Tactic.BVDecide.Normalize.Prop\n\n"}
+section -- clump:auto
+@[expose] public section
+
+noncomputable section
+
+open Finset
+
+namespace ReciprocityTheory.ChartRestriction.DS
+
+variable {n : ℕ}
+
+section Alg
+
+variable {M : Type*} [AddCommGroup M] [Module ℂ M]
+
+theorem casimir_split {E : Fin n → Fin n → Module.End ℂ M} (hE : IsGlRep E)
+    (P : Fin n → Fin n → Prop) [DecidableRel P] (hirr : ∀ a, ¬ P a a)
+    (hP : ∀ a b, a ≠ b → (P a b ↔ ¬ P b a)) :
+    casimir E = ∑ a, E a a * E a a +
+      ∑ a, ∑ b ∈ univ.filter (fun b => P a b), (E a a - E b b + 2 • (E b a * E a b)) := by
+  classical
+
+  have h1 : casimir E = ∑ a, ∑ b, ((if a = b then E a a * E a a else 0) +
+      (if P a b then E a b * E b a else 0) + (if P b a then E a b * E b a else 0)) := by
+    unfold casimir
+    refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+    by_cases hab : a = b
+    · subst hab
+      simp [hirr]
+    · by_cases h : P a b
+      · have h' : ¬ P b a := (hP a b hab).1 h
+        simp [hab, h, h']
+      · have h' : P b a := by
+          by_contra h''
+          exact h ((hP a b hab).2 h'')
+        simp [hab, h, h']
+
+  have comm : ∀ a b, E a b * E b a + E b a * E a b = E a a - E b b + 2 • (E b a * E a b) := by
+    intro a b
+    have h := hE a b b a
+    rw [if_pos rfl, if_pos rfl, sub_eq_iff_eq_add] at h
+    rw [h]
+    abel
+  have h3 : ∑ a, ∑ b, (if P b a then E a b * E b a else 0) =
+      ∑ a, ∑ b, (if P a b then E b a * E a b else 0) := Finset.sum_comm
+  have h4 : ∑ a, ∑ b, (if a = b then E a a * E a a else 0) = ∑ a, E a a * E a a := by
+    refine Finset.sum_congr rfl fun a _ => ?_
+    simp
+  rw [h1]
+  simp only [Finset.sum_add_distrib]
+  rw [h3, h4, add_assoc]
+  congr 1
+  simp only [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro a _
+  rw [Finset.sum_filter]
+  apply Finset.sum_congr rfl
+  intro b _
+  split_ifs
+  · exact comm a b
+  · simp
+
+end Alg
+
+theorem rho_eq_rhoC_add_rhoN (ε : Fin n → Bool) : rho n = rhoC ε + rhoN ε := by
+  classical
+  funext a
+  simp only [rho, rhoC, rhoN, Pi.add_apply]
+
+  have hgt : (univ.filter fun b : Fin n => a < b ∧ ε b = ε a).card +
+      (univ.filter fun b : Fin n => a < b ∧ ε b ≠ ε a).card = n - 1 - (a : ℕ) := by
+    have h := Finset.card_filter_add_card_filter_not (s := Finset.Ioi a)
+      (fun b => ε b = ε a)
+    rw [Fin.card_Ioi] at h
+    rw [← h]
+    congr 2 <;> ext b <;> simp
+
+  have hlt : (univ.filter fun b : Fin n => b < a ∧ ε b = ε a).card +
+      (univ.filter fun b : Fin n => b < a ∧ ε b ≠ ε a).card = (a : ℕ) := by
+    have h := Finset.card_filter_add_card_filter_not (s := Finset.Iio a)
+      (fun b => ε b = ε a)
+    rw [Fin.card_Iio] at h
+    rw [← h]
+    congr 2 <;> ext b <;> simp
+  have ha := a.isLt
+  have hc : ((n - 1 - (a : ℕ) : ℕ) : ℝ) = (n : ℝ) - 1 - (a : ℕ) := by
+    rw [Nat.cast_sub (by omega), Nat.cast_sub (by omega), Nat.cast_one]
+  have c1 := congrArg (Nat.cast : ℕ → ℝ) hgt
+  have c2 := congrArg (Nat.cast : ℕ → ℝ) hlt
+  push_cast at c1 c2
+  rw [hc] at c1
+  linarith
+
+end ReciprocityTheory.ChartRestriction.DS
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirAlgebra.RhoEqRhoCAddRhoN =====
+
+-- ===== clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirAlgebra.KhwLowKSubRootEqZero =====
+-- clump-header: {"m": "ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirAlgebra.KhwLowKSubRootEqZero", "h": "module\n\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.IsInfUnitary\nimport Mathlib.Algebra.Order.Floor.Extended\nimport Mathlib.Algebra.Order.Floor.Semifield\nimport Mathlib.Algebra.Order.Interval.Basic\nimport Mathlib.Algebra.Order.Star.Real\nimport Mathlib.Analysis.Complex.UpperHalfPlane.Basic\nimport Mathlib.Analysis.Normed.Algebra.GelfandRadius\nimport Mathlib.Analysis.SpecialFunctions.Gamma.Basic\nimport Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp\nimport Mathlib.Combinatorics.Enumerative.DyckWord\nimport Mathlib.Combinatorics.SimpleGraph.Triangle.Removal\nimport Mathlib.Data.NNRat.Floor\nimport Mathlib.Data.Nat.Choose.Multinomial\nimport Mathlib.Geometry.Euclidean.Volume.Basic\nimport Mathlib.NumberTheory.Chebyshev\nimport Mathlib.NumberTheory.Height.NumberField\nimport Mathlib.NumberTheory.Height.Projectivization\nimport Mathlib.NumberTheory.LucasLehmer\nimport Mathlib.NumberTheory.SelbergSieve\nimport Mathlib.RingTheory.Radical.NatInt\nimport Mathlib.RingTheory.WittVector.IsPoly\nimport Mathlib.Tactic.Basify\nimport Mathlib.Tactic.ENatToNat\nimport Mathlib.Tactic.Echelon.Zsqrtd\nimport Mathlib.Tactic.Inclusion.Extension.Core.Core\nimport Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp\nimport Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic\nimport Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses\nimport Mathlib.Tactic.NormNum.Irrational\nimport Mathlib.Tactic.NormNum.IsCoprime\nimport Mathlib.Tactic.NormNum.IsSquare\nimport Mathlib.Tactic.NormNum.LegendreSymbol\nimport Mathlib.Tactic.NormNum.ModEq\nimport Mathlib.Tactic.NormNum.NatFib\nimport Mathlib.Tactic.NormNum.NatLog\nimport Mathlib.Tactic.NormNum.NatSqrt\nimport Mathlib.Tactic.NormNum.Ordinal\nimport Mathlib.Tactic.NormNum.Parity\nimport Mathlib.Tactic.NormNum.Prime\nimport Mathlib.Tactic.NormNum.RealSqrt\nimport Mathlib.Tactic.Polynomial.Basic\nimport Mathlib.Tactic.ReduceModChar\nimport Mathlib.Tactic.TypeStar\nimport Mathlib.Topology.Sheaves.Init\npublic import ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirAlgebra.RhoEqRhoCAddRhoN\nimport Std.Tactic.BVDecide.Normalize.Prop\nimport Mathlib.Order.CompletePartialOrder\n\n"}
+section -- clump:auto
 @[expose] public section
 
 noncomputable section
@@ -69,13 +176,9 @@ theorem signedOrder_irrefl (ε : Fin n → Bool) (a : Fin n) : ¬ wdP ε a a := 
 
 theorem signedOrder_iff_not_swap_of_ne (ε : Fin n → Bool) (a b : Fin n) (h : a ≠ b) : wdP ε a b ↔ ¬ wdP ε b a := by
   unfold wdP
-  rcases lt_or_gt_of_ne h with h | h
-  · by_cases he : ε a = ε b
-    · simp [h, lt_asymm h, he]
-    · simp [h, lt_asymm h, he, Ne.symm he]
-  · by_cases he : ε a = ε b
-    · simp [h, lt_asymm h, he]
-    · simp [h, lt_asymm h, he, Ne.symm he]
+  by_cases he : ε a = ε b
+  · rcases lt_or_gt_of_ne h with h | h <;> simp [h, lt_asymm h, he]
+  · rcases lt_or_gt_of_ne h with h | h <;> simp [h, lt_asymm h, he, Ne.symm he]
 
 theorem wd_ind (ε : Fin n → Bool) (a b : Fin n) :
     ((if wdP ε a b then (1:ℝ) else 0) - (if wdP ε b a then (1:ℝ) else 0)) =
@@ -137,10 +240,6 @@ theorem nsq_shift (μ x y : Fin n → ℝ) : nsq (μ + x - y) - nsq (x - y) = ns
   simp only [nsq, dot, Pi.add_apply, Pi.sub_apply, mul_sum, ← sum_add_distrib, ← sum_sub_distrib]
   exact sum_congr rfl (fun _ _ => by ring)
 
-theorem nsq_root {a b : Fin n} (hab : a ≠ b) : nsq (root a b) = 2 := by
-  simp [nsq, dot, root, Pi.single_apply, mul_sub, sum_sub_distrib, hab, Ne.symm hab]
-  norm_num
-
 section Unitary
 
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
@@ -152,8 +251,7 @@ theorem wd_term (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ M}
     {μ : Fin n → ℝ} {v : M} (hv : IsKHWVec ε E μ v) {a b : Fin n} (hab : wdP ε a b) :
     inner ℂ v (E b a (E a b v)) = ((-(if b < a ∧ ε b ≠ ε a then ‖E a b v‖ ^ 2 else 0) : ℝ) : ℂ) := by
   rcases hab with ⟨h, he⟩ | ⟨h, he⟩
-  · rw [hv.2 a b h he, map_zero, inner_zero_right]
-    simp [lt_asymm h]
+  · simp [hv.2 a b h he, lt_asymm h]
   · have h1 := hU a b v (E a b v)
     rw [adjSign, if_neg he, wd_inner_self] at h1
     rw [if_pos ⟨h, Ne.symm he⟩]
@@ -229,14 +327,16 @@ theorem khw_lowK_sub_root_eq_zero (ε : Fin n → Bool) {E : Fin n → Fin n →
   have hle := casimir_khw_le ε hE hU hv hv0 hc
   have hμ : lowK ε lam - root a b + rhoC ε - rhoN ε = lam - root a b := by
     ext i; simp only [lowK, Pi.add_apply, Pi.sub_apply]; ring
-  rw [hμ] at hle
-  have e1 := nsq_sub' lam (root a b)
-  have e2 : nsq (root a b) = 2 := nsq_root (ne_of_lt hab)
+  rw [hμ, nsq_sub' lam (root a b), nsq_root (ne_of_lt hab),
+    nsq_sub' (rhoC ε) (rhoN ε)] at hle
   have e3 : casVal lam = nsq lam - (nsq (rhoC ε) + 2 * dot (rhoC ε) (rhoN ε) + nsq (rhoN ε)) := by
     rw [casVal, rho_eq_rhoC_add_rhoN ε, nsq_add']
-  have e4 := nsq_sub' (rhoC ε) (rhoN ε)
   linarith
 
 end Unitary
 
 end ReciprocityTheory.ChartRestriction.DS
+end -- clump:auto
+end -- clump:auto
+end -- clump:auto
+-- ===== end clump member: ReciprocityTheory.ReductiveGroups.DiscreteSeries.CasimirAlgebra.KhwLowKSubRootEqZero =====

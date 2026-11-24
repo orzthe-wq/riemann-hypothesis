@@ -65,8 +65,7 @@ noncomputable section
 namespace GlobalTheory.UT.ExactTerm
 open GlobalTheory.ThetaPtMove
 
-theorem gs_zero' {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) : gs r z U 0 = 0 := by
-  rw [gs_eq r z U h, map_zero, map_zero]
+alias gs_zero' := _root_.GlobalTheory.FieldBaseChange.gs_zero'
 
 theorem isUnit_top_of_ne_zero {K : Type} [Field K] {v : Γ(Spec (CommRingCat.of K), ⊤)} (hv : v ≠ 0) : IsUnit v := by
   obtain ⟨c, rfl⟩ := (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).2 v

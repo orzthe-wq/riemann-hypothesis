@@ -100,7 +100,6 @@ theorem shc_bounds (u : ℝ) : 1 ≤ shc u ∧ shc u ≤ Real.exp (u ^ 2 / 6) �
       rw [← pow_mul, pow_succ]
       first
         | (field_simp; done)
-        | (field_simp; ring)
     rw [hfun]
     exact h
   refine ⟨?_, ?_, ?_⟩
@@ -249,7 +248,7 @@ private theorem matrix_rank_add_le' (P Q : Matrix (Fin n) (Fin n) ℂ) :
       ≤ LinearMap.range P.mulVecLin ⊔ LinearMap.range Q.mulVecLin := by
     rintro _ ⟨v, rfl⟩
     have e : (P + Q).mulVecLin v = P.mulVecLin v + Q.mulVecLin v := by
-      simp [Matrix.mulVecLin_apply, Matrix.add_mulVec]
+      simp
     rw [e]
     exact Submodule.add_mem_sup (LinearMap.mem_range_self _ v) (LinearMap.mem_range_self _ v)
   exact (Submodule.finrank_mono hle).trans (Submodule.finrank_add_le_finrank_add_finrank _ _)

@@ -148,7 +148,7 @@ theorem rem_eq {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (σ : ι → 
   by_cases ht : t = τ
   · subst ht
     by_cases h1 : σ t i = j
-    · simp [h1, hne, Ne.symm hne] <;> omega
+    · simp [h1, Ne.symm hne] <;> omega
     · by_cases h2 : σ t i = j'
       · simp [h2, hne, Ne.symm hne] <;> omega
       · simp [h1, h2, Ne.symm h1, Ne.symm h2]
@@ -253,7 +253,5 @@ end Formalism.DegreeFormula.PPowSum
 
 namespace Formalism.DegreeFormula
 
-theorem degreePowerSumMulEqZero : DegFlPowerSum := PPowSum.degFlPowerSum
-theorem degreeEsymmMulEqZero : DegFlEsymm := PPowSum.degFlEsymm
-
+alias degreePowerSumMulEqZero := _root_.Formalism.DegreeFormula.PPowSum.degFlPowerSum
 end Formalism.DegreeFormula

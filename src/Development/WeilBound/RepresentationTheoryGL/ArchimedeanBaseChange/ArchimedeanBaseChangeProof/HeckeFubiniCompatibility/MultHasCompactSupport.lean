@@ -91,7 +91,7 @@ theorem mult_exists_lg (h : IsMult μ M k val T) : ∃ R : ℝ, ∀ y ∈ GLs n,
 
 theorem mult_hasCompactSupport (h : IsMult μ M k val T) : HasCompactSupport fun y : G n => k y.val := by
   obtain ⟨R, hR⟩ := mult_exists_lg h
-  exact HasCompactSupport.intro ((GlobalTheory.T.length_continuous_proper_sublevel n).2 R) fun y hy => hR _ (val_mem_GLs y) (not_le.1 hy)
+  exact HasCompactSupport.intro ((_root_.GlobalTheory.CompanionTheory.SobGL.lg_continuousOn_and_isCompact n).2 R) fun y hy => hR _ (val_mem_GLs y) (not_le.1 hy)
 
 theorem mult_equivariant (h : IsMult μ M k val T) : ∀ y ∈ GLs n, ∀ u₁ u₂ : Matrix.unitaryGroup (Fin n) ℂ,
     k (u₁.1 * y * u₂.1) = M.ρ u₁ * k y * M.ρ u₂ := by

@@ -89,7 +89,7 @@ theorem energy_of_built_setting : JCT.EnergyOfLemmaE := by
     have hsm' := cutoff_smooth _ _ _ _ (T v).base χ (f v) ε hB.1 (hsm v) hε
     rw [hpd]
     simp only [D.componentFamilySetting_ofSetting, D.bSt, D.toStd, List.map_nil, List.prod_nil]
-    rw [level_zero_holds _ _ _ _ _ _ _ _ _ _ _ hsm' (good_of_admissible _ _ _ S S.empW v)]
+    rw [level_zero_holds _ _ _ _ _ _ _ _ _ _ _ hsm' (_root_.Formalism.FourierDecayAlt.P.Dx1.d_goodOfAdm _ _ _ S S.empW v)]
     rw [hemp]
     simp only [C7.principalHermitianLattice, List.foldr_nil]
     push_cast

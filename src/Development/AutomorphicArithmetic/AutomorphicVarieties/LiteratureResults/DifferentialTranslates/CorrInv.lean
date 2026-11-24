@@ -63,12 +63,6 @@ private theorem rat_mul_split (γ : GL (Fin a) E) (g : GL (Fin a) (Cinf E)) (x :
   · simp only [map_mul, pFin_infGL, pFin_finGL, one_mul]
     rfl
 
-private theorem split_ga (g : GA E a) :
-    infGL E a (GeneralLinearGroup.map (pInf E) g) * finGL E a (GeneralLinearGroup.map (pFin E) g) = g := by
-  refine ga_ext ?_ ?_
-  · simp only [map_mul, pInf_infGL, pInf_finGL, mul_one]
-  · simp only [map_mul, pFin_infGL, pFin_finGL, one_mul]
-
 private theorem act_corr (ho : IsOpen (cone E a)) (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a) (q : ℕ)
     (α : Herm E a [⋀^Fin q]→ₗ[ℝ] (Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))) (w : (geo ho U Ξ).Om q) (h : Corr U Ξ α w.1)
     (γ : (⊤ : Subgroup (GL (Fin a) E))) (g : GL (Fin a) (Cinf E)) (x : GL (Fin a) (Af E)) (X : Fin q → Herm E a) :
@@ -104,7 +98,7 @@ theorem corrInv : CorrInv := by
   · intro hw X γ g
     have h1 := act_corr ho U Ξ q α w h (⟨γ, Subgroup.mem_top γ⟩ : (⊤ : Subgroup (GL (Fin a) E)))⁻¹
       (GeneralLinearGroup.map (pInf E) g) (GeneralLinearGroup.map (pFin E) g) X
-    rw [hw, h, split_ga, inv_inv] at h1
+    rw [hw, h, _root_.GlobalTheory.CuspRep.infGL_mul_finGL, inv_inv] at h1
     have h2 := congrArg (fun y => Ξ.mat (GeneralLinearGroup.map (pInf E) g)⁻¹ *ᵥ y) h1
     simp only [Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec] at h2
     exact h2.symm

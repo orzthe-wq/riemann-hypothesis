@@ -6,46 +6,6 @@ public import Formalism.LocalRingCardinality.DataTies
 public import Formalism.SharpRestriction.CuspSpanNormBounds.CntPartners
 public import Formalism.SharpRestriction.CuspSpanNormBounds.NonemptyParameterModels.TermTiesEmptyOfLargeIndex
 public import Formalism.SharpRestriction.CuspSpanNormBounds.FrameFixingOrbitRelation
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.Normed.Algebra.GelfandRadius
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -73,12 +33,9 @@ theorem one_mem_autLz (Λ : Submodule (𝓞 D.host.E) (VS D).V) : (id : WbQ D F0
   rw [Set.mem_setOf_eq]
   refine ⟨1, ?_, ?_, fun x hx => rfl⟩
   · first
-      | exact Subgroup.one_mem _
-      | exact one_mem _
       | (unfold stabF; simp)
   · first
       | simp [Formalism.HermitianLatticesTheory.gmap]
-      | rfl
 
 theorem wRow_pos {Λ : Submodule (𝓞 D.host.E) (VS D).V} (h : (autLz D F0 Λ).Finite) : 0 < wRow D F0 Λ := by
   unfold wRow
@@ -121,8 +78,6 @@ theorem norm_psiInf (g : ℕ) (x : E) : ‖psiInf g x‖ = 1 := by
   unfold psiInf
   first
     | (rw [Complex.norm_exp]; simp)
-    | (rw [Complex.abs_exp]; simp)
-    | simp [Complex.norm_exp]
 
 end Phase
 

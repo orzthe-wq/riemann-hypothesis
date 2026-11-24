@@ -77,8 +77,6 @@ theorem finite_zeros {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (t T :
     (zerosIn χ t T).Finite := by
   obtain ⟨F, hF, h1, h0⟩ := exists_entire χ
   have hA : AnalyticOnNhd ℂ F Set.univ := hF.differentiableOn.analyticOnNhd isOpen_univ
-  by_contra hinf
-  have hinf : (zerosIn χ t T).Infinite := hinf
   have hsub : zerosIn χ t T ⊆ Metric.closedBall (0 : ℂ) (1 + |t| + T) := by
     rintro ρ ⟨h0, h1, h2, -⟩
     rw [mem_closedBall_zero_iff]
@@ -88,13 +86,10 @@ theorem finite_zeros {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (t T :
       have := abs_sub_abs_le_abs_sub ρ.im t
       linarith
     linarith
-  obtain ⟨z, -, hz⟩ := hinf.exists_accPt_of_subset_isCompact (isCompact_closedBall _ _) hsub
-  have hfr : ∃ᶠ w in nhdsWithin z {z}ᶜ, F w = 0 := by
-    rw [accPt_iff_frequently_nhdsNE] at hz
-    exact hz.mono fun w hw => h0 w (ne_one_of_mem hw) hw.2.2.2
-  have := hA.eqOn_zero_of_preconnected_of_frequently_eq_zero isPreconnected_univ
-    (Set.mem_univ z) hfr
-  exact h1 (this (Set.mem_univ 1))
+  have hfin := (isCompact_closedBall (0 : ℂ) (1 + |t| + T)).finite_sdiff_of_mem_codiscreteWithin
+    (Filter.codiscreteWithin_mono (Set.subset_univ _) (hA.preimage_zero_mem_codiscrete h1))
+  refine hfin.subset fun ρ hρ => ⟨hsub hρ, ?_⟩
+  simpa using h0 ρ (ne_one_of_mem hρ) hρ.2.2.2
 
 theorem order_ne_top {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {ρ : ℂ} (hρ : ρ ≠ 1) :
     analyticOrderAt (LFunction χ) ρ ≠ ⊤ := by

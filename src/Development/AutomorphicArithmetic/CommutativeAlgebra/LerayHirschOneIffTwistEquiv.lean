@@ -1,8 +1,9 @@
 module
 
 public import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupProductGradedCommStatement
-public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupUnitAndPrimitiveRootClassesStatement
+public import Development.AbelianVarietyTheory.Definitions.Divisors.PullHlComp
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupProductGradedComm
+public import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupUnitAndPrimitiveRootClasses
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -58,7 +59,7 @@ private theorem cast_cast {n i n' i' n'' i'' : ℤ} (h1 : n = n') (h2 : i = i') 
 
 private theorem cup_one' [NeZero q] (hX : Inv q X) {n i : ℤ} (x : Ht q X n i) :
     cup q x (one q X) = x.cast (by ring) (by ring) := by
-  rw [GlobalTheory.T.tateTwistCupProduct_graded_comm q X x (one q X), (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 X hX x, cast_cast, mul_zero, Int.negOnePow_zero, one_smul]
+  rw [_root_.GlobalTheory.EtC.cup_comm q X x (one q X), (_root_.GlobalTheory.EtC.CupGen.main q).1 X hX x, cast_cast, mul_zero, Int.negOnePow_zero, one_smul]
 
 private theorem bij_iff [NeZero q] {E : Spc} (π : X ⟶ E) (hX : Inv q X) {n i n' i' : ℤ} (hn : n' = n) (hi : i' = i)
     (h1 : n' + 0 = n) (h2 : i' + 0 = i) :

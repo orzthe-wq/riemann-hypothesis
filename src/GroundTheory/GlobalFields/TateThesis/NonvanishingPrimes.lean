@@ -168,12 +168,8 @@ theorem one_le_norm_euler_comb {a : ℝ} (ha₀ : 0 ≤ a) (ha₁ : a < 1) {z w 
     rw [norm_mul, ha]
     calc a * ‖u‖ ≤ a * 1 := by gcongr
       _ < 1 := by rwa [mul_one]
-  have hpos : ∀ u : ℂ, ‖u‖ ≤ 1 → 0 < ‖1 - (a : ℂ) * u‖ := fun u hu ↦ by
-    refine norm_pos_iff.2 fun h0 ↦ ?_
-    have h1 : (a : ℂ) * u = 1 := (sub_eq_zero.1 h0).symm
-    have h2 := hlt u hu
-    rw [h1, norm_one] at h2
-    exact lt_irrefl _ h2
+  have hpos : ∀ u : ℂ, ‖u‖ ≤ 1 → 0 < ‖1 - (a : ℂ) * u‖ :=
+    fun u hu ↦ norm_pos_iff.mpr (IsUnit.one_sub_of_norm_lt_one (hlt u hu)).ne_zero
   have h0 : ‖(1 : ℂ) - a‖ = 1 - a := by
     rw [← ofReal_one, ← ofReal_sub, Complex.norm_of_nonneg (by linarith)]
   have hA : 0 < ‖(1 : ℂ) - a‖ := by rw [h0]; linarith

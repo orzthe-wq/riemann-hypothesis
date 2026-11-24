@@ -8,8 +8,10 @@ public import Mathlib.Tactic.ENatToNat
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsLieModel
 public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.HodgeTateWeilOpenChart
 import Development.AutomorphicSpectrum.Proofs.GeometryProofs.NatCastSmulMemHtLat
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionExtendsFromStalkPullbackStatement
-import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionLiftIsClosedImmersionStatement
+import Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion
+import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.SectionExtendsFromStalkPullback
+import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TorsionLiftIsClosedImmersion
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -144,7 +146,7 @@ theorem lift_sec {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsSeparated G.hom] {R
       ∀ {B : Type} [CommRing B] (y : Spec (CommRingCat.of B) ⟶ Γ.G.left)
         (b : Spec (CommRingCat.of B) ⟶ Spec (X.presheaf.stalk q)), y ≫ Γ.G.hom = b ≫ a →
         ∀ hy : ⊤ ≤ (y ≫ i) ⁻¹ᵁ W, valAt (y ≫ i) W hy f = valAt y ⊤ le_top s := by
-  haveI := GlobalTheory.T.torsion_lift_is_closed_immersion G R T Γ x N i h
+  haveI := _root_.GlobalTheory.CompanionTheory.Ar.BT.isClosedImmersion_torsion_lift G R T Γ x N i h
   let c : pullback Γ.G.hom a ⟶ pullback G.hom (X.fromSpecStalk q) :=
     pullback.lift (pullback.fst _ _ ≫ i) (pullback.snd _ _) (by
       rw [Category.assoc, h.isOver, ← ha, pullback.condition_assoc])
@@ -167,7 +169,7 @@ theorem lift_sec {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsSeparated G.hom] {R
       rw [Over.w]
       rfl
     exact e
-  obtain ⟨W, f, hW, hf⟩ := GlobalTheory.T.section_extends_from_stalk_pullback G.hom q _ hover c (((pullback.fst Γ.G.hom a).app ⊤).hom s)
+  obtain ⟨W, f, hW, hf⟩ := _root_.GlobalTheory.CompanionTheory.Ggeo.LocalLift.exists_open_extension G.hom q _ hover c (((pullback.fst Γ.G.hom a).app ⊤).hom s)
   refine ⟨W, f, hW, fun {B} _ y b hy hyW => ?_⟩
   let y' : Spec (CommRingCat.of B) ⟶ pullback Γ.G.hom a := pullback.lift y b hy
   have e1 : y ≫ i = y' ≫ c ≫ pullback.fst _ _ := by
@@ -178,7 +180,7 @@ theorem lift_sec {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsSeparated G.hom] {R
   refine (congrArg (valAt y' _ _) hf).trans ?_
   exact valAt_res y' _ ⊤ le_top _ le_top _
 
-theorem exists_denom (h455 : type_of% @GlobalTheory.T.lie_model_finite_base_change) {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom]
+theorem exists_denom {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom]
     {R O : Type} [CommRing R] [CommRing O] [Algebra R O] (S : Submonoid R) [IsLocalization S O]
     (x : Spec (CommRingCat.of R) ⟶ X) {L₀ : Type} [AddCommGroup L₀] [Module R L₀] (M₀ : LieModel G x L₀)
     {z : Spec (CommRingCat.of O) ⟶ X} (hz : Spec.map (CommRingCat.ofHom (algebraMap R O)) ≫ x = z)
@@ -217,7 +219,7 @@ theorem exists_denom (h455 : type_of% @GlobalTheory.T.lie_model_finite_base_chan
     { toFun := j
       map_add' := jadd
       map_smul' := jsmul }
-  have hbc : IsBaseChange O β := (h455 X G R x L₀ M₀).2.2 O L' M' β hjl
+  have hbc : IsBaseChange O β := (_root_.GlobalTheory.CompanionTheory.Ar.LieProj.lie_finite_projective_baseChange X G R x L₀ M₀).2.2 O L' M' β hjl
   have hloc : IsLocalizedModule S β := (isLocalizedModule_iff_isBaseChange S O β).2 hbc
   obtain ⟨e', he'⟩ := M'.onto v hv
   obtain ⟨⟨b, u⟩, hb⟩ := IsLocalizedModule.surj S β e'
@@ -227,7 +229,7 @@ theorem exists_denom (h455 : type_of% @GlobalTheory.T.lie_model_finite_base_chan
   rw [← h1, ← hjl]
   congr 3
 
-theorem core_tan (h455 : type_of% @GlobalTheory.T.lie_model_finite_base_change) {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {G : Over X} [GrpObj G]
+theorem core_tan {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {G : Over X} [GrpObj G]
     [IsCommMonObj G] [Smooth G.hom] {E : Type} [AddCommGroup E] [Module Ω E]
     (M : LieModel G ξ E) {R O : Type} [CommRing R] [IsDomain R] [CommRing O] [Algebra R O]
     (S : Submonoid R) [IsLocalization S O] {T : Type} [CommGroup T] (Γ : BT.QFGroup R T)
@@ -251,7 +253,7 @@ theorem core_tan (h455 : type_of% @GlobalTheory.T.lie_model_finite_base_change) 
     (he : (M.pt e).left = Spec.map (CommRingCat.ofHom (dualMap g)) ≫ v.left) :
     ∃ c : O, w e = g c ∧ ∀ h : ⊤ ≤ v.left ⁻¹ᵁ W, ∃ r : O, c = (valAt v.left W h f).snd + n * r := by
   subst hk₀
-  obtain ⟨u, hu, b, hub⟩ := exists_denom h455 G S x M₀ hz v hv
+  obtain ⟨u, hu, b, hub⟩ := exists_denom G S x M₀ hz v hv
   obtain ⟨U', hU⟩ := (IsLocalization.map_units O (⟨u, hu⟩ : S)).exists_right_inv
   replace hU : algebraMap R O u * U' = 1 := hU
   have hje : g (algebraMap R O u) • e = j b := M.inj (Over.OverMorphism.ext (by

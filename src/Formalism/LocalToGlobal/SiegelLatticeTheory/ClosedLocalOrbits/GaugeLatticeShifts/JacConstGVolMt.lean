@@ -7,51 +7,9 @@ import Formalism.FormalDegreeBessel.FinalG
 public import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.JacConstBHDim
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.JacConstBHGlue
 import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLatticeShifts.JacConstBHLie
-import Mathlib.Algebra.Order.Floor.Extended
-import Mathlib.Algebra.Order.Floor.Semifield
-import Mathlib.Algebra.Order.Interval.Basic
-import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
-import Mathlib.Combinatorics.Enumerative.DyckWord
-import Mathlib.Combinatorics.SimpleGraph.Triangle.Removal
-import Mathlib.Data.NNRat.Floor
-import Mathlib.Geometry.Euclidean.Volume.Basic
 import Mathlib.LinearAlgebra.Matrix.FiniteDimensional
-import Mathlib.NumberTheory.Chebyshev
-import Mathlib.NumberTheory.Height.NumberField
-import Mathlib.NumberTheory.Height.Projectivization
-import Mathlib.NumberTheory.LucasLehmer
-import Mathlib.NumberTheory.SelbergSieve
-import Mathlib.RingTheory.Radical.NatInt
-import Mathlib.Tactic.Basify
-import Mathlib.Tactic.ENatToNat
-import Mathlib.Tactic.Echelon.Zsqrtd
-import Mathlib.Tactic.Inclusion.Extension.Core.Core
-import Mathlib.Tactic.Inclusion.Extension.Interval.BinarySplit
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Exp
-import Mathlib.Tactic.Inclusion.Extension.IntervalDyadicReal.Hypotheses
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Basic
-import Mathlib.Tactic.Inclusion.Extension.IntervalInt.Hypotheses
 import Mathlib.Tactic.Lemma
-import Mathlib.Tactic.Linter.HaveILetI
-import Mathlib.Tactic.Linter.Style
-import Mathlib.Tactic.NormNum.Irrational
-import Mathlib.Tactic.NormNum.IsCoprime
-import Mathlib.Tactic.NormNum.IsSquare
-import Mathlib.Tactic.NormNum.LegendreSymbol
-import Mathlib.Tactic.NormNum.ModEq
-import Mathlib.Tactic.NormNum.NatFib
-import Mathlib.Tactic.NormNum.NatLog
-import Mathlib.Tactic.NormNum.NatSqrt
-import Mathlib.Tactic.NormNum.Ordinal
-import Mathlib.Tactic.NormNum.Parity
-import Mathlib.Tactic.NormNum.Prime
-import Mathlib.Tactic.NormNum.RealSqrt
-import Mathlib.Tactic.Polynomial.Basic
-import Mathlib.Tactic.ReduceModChar
 import Mathlib.Tactic.TypeStar
-import Mathlib.Topology.Sheaves.Init
-import Std.Tactic.BVDecide.Normalize.Prop
 
 @[expose] public section
 
@@ -101,7 +59,7 @@ theorem iota_mul (A B : Matrix (Fin k) (Fin k) ℂ) : iota (r := r) (A * B) = io
   have h2 : ∀ X : Matrix (Fin k) (Fin (2 * r + k + 1)) ℂ, (Ew k r)ᵀ * (Ew k r * X) = X := fun X => by
     rw [← Matrix.mul_assoc, h, Matrix.one_mul]
   simp only [iota, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one,
-    Matrix.one_mul, Matrix.mul_assoc, h1, h2]
+    Matrix.one_mul, Matrix.mul_assoc, h2]
   abel
 
 theorem iota_one : iota (k := k) (r := r) 1 = 1 := by
@@ -141,8 +99,8 @@ private lemma hpk_apply_of_outer_index (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = tau k r i then sgn k r i else 0 := by
   have hi := i.isLt
   have hj := j.isLt
-  simp only [Hpk, tau, sgn, Fin.ext_iff, Fin.val_mk]
-  split_ifs <;> first | rfl | omega | norm_num
+  simp only [Hpk, tau, sgn, Fin.ext_iff]
+  split_ifs <;> first | rfl | omega
 
 theorem hpk_mul_apply' {X : Type*} (A : Matrix (Fin (2 * r + k + 1)) X ℂ) (i : Fin (2 * r + k + 1)) (j : X) :
     (Hpk k r * A) i j = sgn k r i * A (tau k r i) j := by
@@ -158,8 +116,8 @@ theorem hpk_Ew : Hpk k r * Ew k r = Ew k r := by
   rw [hpk_mul_apply']
   have hi := i.isLt
   have hc := c.isLt
-  simp only [Ew, sgn, tau, pW, Fin.ext_iff, Fin.val_mk]
-  split_ifs <;> first | rfl | omega | (simp; done) | norm_num
+  simp only [Ew, sgn, tau, pW, Fin.ext_iff]
+  split_ifs <;> first | rfl | omega | (simp; done)
 
 theorem EwT_hpk : (Ew k r)ᵀ * Hpk k r = (Ew k r)ᵀ := by
   have h := congrArg Matrix.conjTranspose (hpk_Ew (k := k) (r := r))
@@ -272,7 +230,7 @@ private lemma Ew_transpose_mul_iota (A : Matrix (Fin k) (Fin k) ℂ) :
   have h' : ∀ X : Matrix (Fin k) (Fin k) ℂ, (Ew k r)ᵀ * (Ew k r * X) = X := fun X => by
     rw [← Matrix.mul_assoc, h, Matrix.one_mul]
   simp only [iota, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one,
-    Matrix.one_mul, Matrix.mul_assoc, h, h', sub_self, zero_add]
+    Matrix.mul_assoc, h, h', sub_self, zero_add]
 
 theorem iota_surj {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UWset k r (wLastV k r)) :
     g = iota (r := r) ((Ew k r)ᵀ * g * Ew k r) ∧
@@ -612,11 +570,9 @@ theorem phi_mul (g h : ↥(Formalism.REAL.UJ (εT k))) :
   rw [← iota_mul]
   rfl
 
-theorem iota_linv (A : Matrix (Fin k) (Fin k) ℂ) : (Ew k r)ᵀ * iota (r := r) A * Ew k r = A := Ew_transpose_mul_iota A
-
 theorem iota_inj {A B : Matrix (Fin k) (Fin k) ℂ} (h : iota (r := r) A = iota (r := r) B) : A = B := by
-  calc A = (Ew k r)ᵀ * iota (r := r) A * Ew k r := (iota_linv A).symm
-    _ = B := by rw [h, iota_linv]
+  calc A = (Ew k r)ᵀ * iota (r := r) A * Ew k r := (_root_.Formalism.L2.SG.Pf.GV.Ew_transpose_mul_iota A).symm
+    _ = B := by rw [h, _root_.Formalism.L2.SG.Pf.GV.Ew_transpose_mul_iota]
 
 theorem cont_phi : Continuous (phi k r) := by
   show Continuous fun g : ↥(Formalism.REAL.UJ (εT k)) =>
@@ -630,7 +586,7 @@ theorem phi_surj {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (h
   have hJ : Formalism.REAL.Jm (εT k) = 1 := by
     simp [Formalism.REAL.Jm]
   let u : (Matrix (Fin k) (Fin k) ℂ)ˣ :=
-    ⟨(Ew k r)ᵀ * s * Ew k r, ((Ew k r)ᵀ * s * Ew k r)ᴴ, (by first | exact mul_eq_one_comm.mp hs2 | exact Matrix.mul_eq_one_comm.mp hs2 | exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp hs2), hs2⟩
+    ⟨(Ew k r)ᵀ * s * Ew k r, ((Ew k r)ᵀ * s * Ew k r)ᴴ, (by first | exact mul_eq_one_comm.mp hs2), hs2⟩
   have hu : u ∈ Formalism.REAL.UJ (εT k) := by
     show Formalism.REAL.inUJ (εT k) (u : Matrix (Fin k) (Fin k) ℂ)
     unfold Formalism.REAL.inUJ
@@ -733,7 +689,6 @@ theorem vol_ball_eq (ρ : ℝ) : volume (Metric.ball (0 : ↥(lieE (SW k r))) ρ
   rw [← hpre]
   first
     | exact (hmp.measure_preimage measurableSet_ball.nullMeasurableSet).symm
-    | exact (hmp.measure_preimage measurableSet_ball).symm
 
 end Formalism.L2.SG.Pf.GV
 
@@ -811,7 +766,6 @@ theorem gauge_measure_is_haar : IsHaarOn (SW k r) (nu0 k r) := by
     congr 1
     first
       | exact MeasureTheory.map_mul_left_eq_self _ g0
-      | exact MeasureTheory.Measure.map_mul_left_eq_self _ g0
 
 theorem gauge_measure_ball_ratio : Tendsto (fun ρ : ℝ => (nu0 k r (expBall (k := k) (r := r) (SW k r) ρ)).toReal /
     (volume (Metric.ball (0 : ↥(lieE (SW k r))) ρ)).toReal) (𝓝[>] 0) (𝓝 1) := by

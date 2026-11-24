@@ -1,6 +1,15 @@
 module
 
-public import Mathlib
+public import Mathlib.Algebra.Category.ModuleCat.Adjunctions
+public import Mathlib.Algebra.Homology.DerivedCategory.Ext.Linear
+public import Mathlib.AlgebraicGeometry.Sites.Proetale
+public import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.HasExt
+public import Mathlib.CategoryTheory.Linear.FunctorCategory
+public import Mathlib.CategoryTheory.Sites.Abelian
+public import Mathlib.Combinatorics.Quiver.ReflQuiver
+import Mathlib.Algebra.Category.ModuleCat.AB
+import Mathlib.Algebra.Category.ModuleCat.FilteredColimits
+import Mathlib.CategoryTheory.Abelian.GrothendieckAxioms.Sheaf
 
 @[expose] public section
 
@@ -23,6 +32,10 @@ omit [TopologicalSpace R] [IsTopologicalRing R] in
 instance : IsGrothendieckAbelian.{1} (Shv R) := by
   have : EssentiallySmall.{1} Scheme.{0} := inferInstance
   exact Sheaf.isGrothendieckAbelian_of_essentiallySmall _ (ModuleCat.{1} (ULift.{1} R))
+
+-- Keep the same Ext witness throughout the pro-étale cohomology constructions.
+omit [TopologicalSpace R] [IsTopologicalRing R] in
+scoped instance : HasExt.{1} (Shv R) := IsGrothendieckAbelian.hasExt _
 
 def coefPre : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R) where
   obj U := ModuleCat.of (ULift.{1} R) (ULift.{1} C(U.unop, R))
@@ -47,8 +60,8 @@ instance (n : ℕ) (X : Scheme.{0}) : Module R (H R n X) :=
 
 def pull (n : ℕ) {X Y : Scheme.{0}} (f : X ⟶ Y) : H R n Y →ₗ[R] H R n X where
   toFun x := (Abelian.Ext.mk₀ ((freeOn R).map f)).comp (x : HS R (coef R) n Y) (zero_add n)
-  map_add' x y := Abelian.Ext.comp_add _ _ _ _
-  map_smul' r x := Abelian.Ext.comp_smul _ _ _ (ULift.up r : ULift.{1} R)
+  map_add' _ _ := Abelian.Ext.comp_add _ _ _ _
+  map_smul' r _ := Abelian.Ext.comp_smul _ _ _ (ULift.up r : ULift.{1} R)
 
 theorem pull_id (n : ℕ) (X : Scheme.{0}) : pull R n (𝟙 X) = LinearMap.id := by
   ext x

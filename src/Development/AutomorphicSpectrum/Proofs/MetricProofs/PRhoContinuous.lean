@@ -1,11 +1,11 @@
 module
 
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.UpVApply
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestrictionStatement
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.BlockMapFrameRestriction
 public import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagAdjacentChartEighth
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJLowerUniSwap
+public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PMatStepColsEntry
 import Development.AutomorphicSpectrum.Proofs.MetricProofs.FlagCoverArithmeticSecond
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.MinorIJLowerUniSwapStatement
-public import Development.AutomorphicSpectrum.Proofs.MetricProofs.PMatStepColsEntryStatement
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
 import Mathlib.Algebra.Order.Interval.Basic
@@ -68,14 +68,14 @@ theorem continuous_upV {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
 
 theorem pSgn_ne_zero {Ψ : Type} {N j : ℕ} (hj : j ≤ N) (keep : Ψ × Fin N → Prop) (q : PIdx j keep) :
     pSgn (stepCols N j (pStep j keep q.1.1.1 q.1.1.2.2)) q.1.1.2.1 q.1.1.2.2 ≠ 0 := by
-  obtain ⟨-, -, hb, ha, hc⟩ := GlobalTheory.T.pMat_stepCols_entry Ψ N j keep q hj
+  obtain ⟨-, -, hb, ha, hc⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.SmallStep.pStep_reads Ψ N j keep q hj
   have hX : IsLowerUni (pMat (j := j) keep (fun _ => (0 : ℂ)) q.1.1.1) := by
     refine ⟨fun a => ?_, fun a b hab => ?_⟩
     · unfold pMat lowMat
       rw [dif_neg (fun h => lt_irrefl _ h.1), if_pos rfl]
     · unfold pMat lowMat
       rw [dif_neg (fun h => lt_asymm hab h.1), if_neg hab.ne]
-  exact (GlobalTheory.T.minorIJ_lowerUni_swap N _ _ _ _ hX ha hb q.1.2.1 (hc fun _ => 0).2).2
+  exact (_root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.MatRead.minor_replace N _ _ _ _ hX ha hb q.1.2.1 (hc fun _ => 0).2).2
 
 section Flag
 
@@ -84,7 +84,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
   obtain ⟨hv, hcov, hF, hB, horb, hr, hh⟩ := H
   obtain ⟨hVo, hVt, -, -, hbl⟩ := hB
   have hbase : Set.MapsTo (pBase M v) (pO M Rb keep v F kb V r h) (mcPts (mCoordIdeal M.x)) := fun z hz =>
-    (GlobalTheory.T.blockMap_frame_restriction K ι Φ y Ψ N j M keep Kk ιk κ v hv hcov).1 z hz.1
+    (_root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main K ι Φ y Ψ N j M keep Kk ιk κ v hv hcov).1 z hz.1
   have cU : Continuous (upV v) := continuous_upV v
   have cB : Continuous (pBase M v) := continuous_pi fun q =>
     (continuous_apply (⟨q.1.1, q.2⟩ : Σ k, ι k)).comp cU
@@ -107,7 +107,7 @@ theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι 
       (continuous_apply l).continuousAt.comp ((Rb.A.chart kb).continuousAt hz.2.1)
     exact ContinuousAt.comp_continuousWithinAt (g := fun x => Rb.A.chart kb x l) c3 c2
   · simp only [pRho, e]
-    obtain ⟨hk, -, -, -, -⟩ := GlobalTheory.T.pMat_stepCols_entry Ψ N j keep q M.j_le
+    obtain ⟨hk, -, -, -, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.PB.PFl.SmallStep.pStep_reads Ψ N j keep q M.j_le
     have cT := fun (k : K) (J : Finset (Fin N)) => twMinor_continuousWithinAt M F cB.continuousWithinAt hbase
       (hbase hz) (hgood z hz) cU.continuousWithinAt (pStep j keep q.1.1.1 q.1.1.2.2) k (h q.1.1.1)⁻¹ J
     cases e' : M.blk (q.1.1.1, pStep j keep q.1.1.1 q.1.1.2.2) with

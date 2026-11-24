@@ -204,7 +204,7 @@ theorem exists_tri (F : FlagD H r) (Λ : Submodule (𝓞 K) V) {l : ℕ} (hl : l
     exact hxy.symm
   choose c hc hc' using h
   refine ⟨diagonal α - Matrix.of c, ?_, fun a => ?_⟩
-  · rw [Matrix.det_of_lowerTriangular]
+  · rw [Matrix.det_of_isLowerTriangular]
     · simp [hc]
     · intro a b hab
       have hab' : a < b := hab

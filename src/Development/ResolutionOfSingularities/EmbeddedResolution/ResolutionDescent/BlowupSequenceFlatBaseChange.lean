@@ -58,24 +58,15 @@ namespace SequenceOfBlowups
 variable {X : Scheme.{u}}
 
 @[simp]
-theorem transitionMap_self_eq_id (s : SequenceOfBlowups X) {i : ℕ} (h : i ≤ i) :
-    s.transitionMap h = 𝟙 (s.schemeAt i) := by
-  rw [s.transitionMap_def, show ((homOfLE h).op : op i ⟶ op i) = 𝟙 (op i) from rfl, s.tower.map_id]
+alias transitionMap_self_eq_id := _root_.FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.transitionMap_self
 
 instance instIsIsoStructMapZero (s : SequenceOfBlowups X) : IsIso (s.projectionToBase 0) := by
   rw [s.projectionToBase_zero]
   infer_instance
 
-theorem pullbackTransitionMap_comp_fst (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i i' : ℕ}
-    (h : i ≤ i') :
-    s.pullbackTransitionMap φ h ≫ pullback.fst φ (s.projectionToBase i) = pullback.fst φ (s.projectionToBase i') :=
-  s.pullbackTransitionMap_fst φ h
+alias pullbackTransitionMap_comp_fst := _root_.FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.pullbackTransitionMap_fst
 
-theorem pullbackTransitionMap_comp_snd (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X) {i i' : ℕ}
-    (h : i ≤ i') :
-    s.pullbackTransitionMap φ h ≫ pullback.snd φ (s.projectionToBase i) =
-      pullback.snd φ (s.projectionToBase i') ≫ s.transitionMap h :=
-  s.pullbackTransitionMap_snd φ h
+alias pullbackTransitionMap_comp_snd := _root_.FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.pullbackTransitionMap_snd
 
 theorem pullbackTransitionMap_refl (s : SequenceOfBlowups X) {X' : Scheme.{u}} (φ : X' ⟶ X)
     {a : ℕ} (h : a ≤ a) :

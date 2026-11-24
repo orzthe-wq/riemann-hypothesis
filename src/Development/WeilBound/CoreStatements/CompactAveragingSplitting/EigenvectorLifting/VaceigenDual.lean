@@ -128,9 +128,7 @@ theorem skew_det {B : Base F E} {X : Spc F E n} {r s : ℕ} (h : X.IsSkew σ B r
   refine isUnit_iff_ne_zero.2 fun h0 => this ?_
   rw [Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]
 
-theorem sigma_sigma (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
-  exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
+alias sigma_sigma := _root_.GlobalTheory.AdelicU.cm_conj_conj
 
 theorem cA_cA (h : ∀ x, σ (σ x) = x) (x : AE F E) : cA σ (cA σ x) = x := by
   induction x using TensorProduct.induction_on with

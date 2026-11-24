@@ -227,7 +227,7 @@ theorem _root_.GlobalTheory.GenericShape.generic_shape : ∀ (k : Type) [Field k
       · have h' : κ + (s : ℕ) ≤ r := by simpa [_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos] using hrs
         omega
       · rw [_root_.GlobalTheory.RootEx.Radical.embX_val, fromBlocks_apply₂₁]
-        simp [Matrix.one_apply]
+        simp
       · rw [_root_.GlobalTheory.RootEx.Radical.embX_val, fromBlocks_apply₂₂]
         exact (one_apply_inr_inr r s).symm
     refine ⟨hm, ?_⟩

@@ -61,4 +61,4 @@ theorem _root_.GlobalTheory.T.schroedinger_fixed_functions_proportional_of_selfD
     (∀ w, w ∈ Λ ↔ ∀ l ∈ Λ, ψk (w.1 ⬝ᵥ l.2 - l.1 ⬝ᵥ w.2) = 1) →
     (∀ l ∈ Λ, ∀ i, c * l.1 i ∈ v.adicCompletionIntegers F ∧ c * l.2 i ∈ v.adicCompletionIntegers F) →
     ∀ f g : (κ → Fv F v) → ℂ, (∀ s ∈ S, schr ψk s f = f) → (∀ s ∈ S, schr ψk s g = g) → f ≠ 0 → ∃ a : ℂ, g = a • f := by
-  first | exact @GlobalTheory.SchrFixUniq.proportional_of_fixed | exact GlobalTheory.SchrFixUniq.proportional_of_fixed | (intros; apply GlobalTheory.SchrFixUniq.proportional_of_fixed <;> assumption)
+  first | exact @GlobalTheory.SchrFixUniq.proportional_of_fixed

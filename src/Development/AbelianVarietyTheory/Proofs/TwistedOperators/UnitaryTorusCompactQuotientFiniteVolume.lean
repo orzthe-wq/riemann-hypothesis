@@ -62,15 +62,10 @@ namespace GlobalTheory.TorCompact
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {r : ℕ}
 
-theorem sigma_invol (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := ⟨(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom⟩
-  apply τ.injective
-  rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
-
 theorem star'_star' (h : IsCMExt F E σ) (P : PPol σ r) (x : Fld P) : star' P (star' P x) = x := by
   have hE : ∀ e : E, star' P (star' P (algebraMap E (Fld P) e)) = algebraMap E (Fld P) e := by
     intro e
-    rw [star'_algebraMap, star'_algebraMap, sigma_invol h]
+    rw [star'_algebraMap, star'_algebraMap, _root_.GlobalTheory.AdelicU.cm_conj_conj h]
   have hα : star' P (star' P (alpha P)) = alpha P := by
     rw [star'_alpha, map_inv₀, star'_alpha, inv_inv]
   obtain ⟨p, rfl⟩ : ∃ p, AdjoinRoot.mk P.1 p = x := AdjoinRoot.mk_surjective x

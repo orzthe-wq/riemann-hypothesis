@@ -139,7 +139,7 @@ theorem sgnMat_mul (r p : ℕ) : sgnMat r p * sgnMat r p = 1 := by
 theorem sgnMat_transpose (r p : ℕ) : (sgnMat r p)ᵀ = sgnMat r p := Matrix.diagonal_transpose _
 
 theorem cj_sgnMat (r p : ℕ) : cj (sgnMat r p) = sgnMat r p := by
-  ext a b; by_cases h : a = b <;> simp [h, Matrix.diagonal_apply]
+  ext a b; by_cases h : a = b <;> simp [h]
 
 theorem frame_facts {E : Type} [Field E] {r p : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (M : Matrix (Fin r) (Fin r) ℂ) (h : gram τ G M = sgnMat r p) :
@@ -196,7 +196,7 @@ theorem inner_theta {ι : Type} [Fintype ι] {r : ℕ} (d : Fin r → ℝ) (hd :
   have key : ∀ t a b, (starRingEnd ℂ) ((d a : ℂ) * Y (t, a, b) * (d b : ℂ)) = -(Y (t, b, a)) := by
     intro t a b
     have h := congrArg (fun A : Matrix (Fin r) (Fin r) ℂ => A a b) (hY t)
-    simp only [IsSkew, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transpose_apply,
+    simp only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transpose_apply,
       Matrix.map_apply, blk, Matrix.of_apply, Matrix.zero_apply] at h
     have hb : (d b : ℂ) * d b = 1 := by rw [← Complex.ofReal_mul, hd]; simp
     rw [map_mul, map_mul, Complex.conj_ofReal, Complex.conj_ofReal]

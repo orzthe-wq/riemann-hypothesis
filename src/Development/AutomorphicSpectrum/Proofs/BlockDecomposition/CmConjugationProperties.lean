@@ -77,7 +77,7 @@ theorem isCMExt_conj_fixed_integers : ∀ (F E : Type) [Field F] [NumberField F]
   have hval : ∀ o : 𝓞 E, ((sO σ o : 𝓞 E) : E) = σ (o : E) := fun o => rfl
   have hmoved : ∃ θ : E, σ θ ≠ θ := by
     by_contra hc
-    push_neg at hc
+    push Not at hc
     have hc' := h.2.1
     refine IsTotallyComplex.complexEmbedding_not_isReal τ ?_
     rw [ComplexEmbedding.isReal_iff]
@@ -88,7 +88,7 @@ theorem isCMExt_conj_fixed_integers : ∀ (F E : Type) [Field F] [NumberField F]
   refine ⟨hinv, ?_, hval, ?_⟩
   · intro x hx
     by_contra hne
-    haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [h.2.2.1]; norm_num)
+    have : Module.Finite F E := Module.finite_of_finrank_pos (by rw [h.2.2.1]; norm_num)
     have hli : LinearIndependent F ![(1 : E), x] := by
       rw [LinearIndependent.pair_iff]
       intro s t hst

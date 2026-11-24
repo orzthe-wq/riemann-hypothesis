@@ -1,47 +1,10 @@
-# Lake cache bootstrap
+# Lake cache
 
-Operational CI and publishing use the workflow-owned release and baseline pins in `scripts/cache-baselines.json`. Dependency state and revision maps are scoped by toolchain. Completed jobs from a previous registered release retain that release's pins when publishing; the original archive bootstrap below remains specific to Lean 4.33.1.
+Operational CI and publishing use the workflow-owned release and baseline pins in `scripts/cache-baselines.json`. Dependency state and revision maps are scoped by toolchain. Completed jobs from a previous registered release retain that release's pins when publishing.
 
 A release upgrade uses `scripts/run-complete-build.py` for its final stock default-target build. The wrapper binds committed inputs before and after the command to its log and output map. `scripts/stage-completed-build.py --build-receipt ...` requires that fresh receipt and stages the existing compressed artifacts plus a separate module index, without rebuilding proofs. A completed native `--cache-dir` can supply LTARs absent from the IR directory. Publish from the operator credential host with `publish-lake-cache.py --module-manifest ... --build-receipt ...`, verify the public map/index and a cold client restoration, then activate the new descriptor's revision and SHA256 pins. An unconfigured release cannot fall back to another toolchain's archive.
 
-The proof artifacts come from [Jack McCarthy's published archive](https://huggingface.co/datasets/JackMcCarthy/riemann-hypothesis-build/tree/9036e64326acf4acfae159b96664e9708445c1d1): 175,187 `.olean`/`.ilean` pairs, 28,638,044,751 compressed bytes and 99,269,509,951 extracted bytes. `fetch-published-cache.py` verifies the archive, manifest, and every extracted file against pinned SHA256 checksums, rejecting links, duplicates, and unsafe paths.
-
-The preferred C source is the separately published [Lake build extras](https://huggingface.co/datasets/JackMcCarthy/riemann-hypothesis-build/tree/d4a057ad21e2f699743f0ed061fa2be73edfd68b/lake-extras), pinned to revision `d4a057ad21e2f699743f0ed061fa2be73edfd68b`. These came from another build, so their C must be checked against the preserved proof artifacts before use. External traces and hash files are never installed over the build tree.
-
-## Preserve proofs, supply C and traces
-
-- These are legacy modules, without `module` headers. Separate `.ir`, `.ir.sig`, `.olean.server`, and `.olean.private` files are unnecessary.
-- `Normalize.lean` changes the archived package metadata from `none` to `tree`, matching stock Lake. Constants and runtime IR remain unchanged; published ileans are retained. For modules without runtime code, stock Lean emits initialization-only C from import/package metadata.
-- `fetch-published-extras.py` verifies both extras archives and manifests, then separately extracts C for the **20,955 runtime modules** and collects the external build's olean hashes. Resumption rechecks derived C and hash data against the pinned per-file SHA256 manifests; a completion marker cannot bypass those checks.
-- `AttestExtras.lean` compares actual frozen olean bytes with the external build's Lake hash. Where necessary, it serializes a temporary copy changing only diagnostic filenames in `lintLogExt`; matching that copy certifies that the runtime/proof data is unchanged. The frozen olean is never replaced.
-- The initial run attested **10,813 exact matches and 10,141 diagnostic-path-only matches**. The sole remaining module, `Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCounts.LocModel`, already had compatibility-checked source-generated C.
-- `accept-published-c.py` rehashes frozen oleans, verifies published C SHA256 values, and installs only missing C. Previously validated C is preserved because indexing or packing may already have observed it.
-
-An unattested module uses the guarded source fallback: stock Lean elaborates it in an offline Bubblewrap sandbox, and `CheckRuntime.lean` compares every archived constant—including theorem proof values—plus native signatures, runtime IR, imports/package metadata, and initializer order. Fresh oleans/ileans are discarded after acceptance; only C is retained. Thus a cold bootstrap needs fallback compilation only for unmatched modules, rather than all 20,955 runtime modules.
-
-Source Lean commands explicitly pass **`-j1`**. `LEAN_NUM_THREADS=1` alone does not limit the [Lean 4.33.1 shell](https://github.com/leanprover/lean4/blob/v4.33.1/src/Lean/Shell.lean#L219), whose default pool uses the hardware thread count. Independent module jobs provide parallelism.
-
-`Trace.lean` uses the pinned Lake's hashing/import-trace operations to reconstruct source/dependency/compiler/options/module/package input hashes. It writes synthetic fetch traces and packs complete `.ltar` artifacts with stock `leantar`; only root-package mappings are published. Ordinary Lake commands retain their normal graph-processing costs. Mathematical verification is separate: see [the Comparator instructions](../README.md#checking-the-proof-yourself).
-
-## Produce and test
-
-```bash
-ulimit -n 65536
-MATHLIB_CACHE_GET_URL=https://cache.mathlib.org/mathlib4 lake exe mathlib/cache get
-python3 scripts/fetch-published-cache.py --download-dir .lake/published-cache
-python3 scripts/bootstrap-cache.py --workers 16
-```
-
-The producer checks the pinned source tree, dependency manifest, and compiler configuration. Its preferred route is normalization, extras verification, attestation, C acceptance, guarded fallback for unmatched modules, then indexing/packing. State and validation records live in `.lake/bootstrap`; final artifacts and `outputs.jsonl` are staged in `.lake/cache-staging`. Re-extract the original archive before normalization, never during an already normalized resumed run.
-
-Before packing, the producer raises its process stack soft limit to the existing hard limit. Stock `leantar` needs more than the usual 8 MiB stack to compress some deeply nested oleans; no system limits are changed. The resulting archives unpack with the default 8 MiB stack.
-
-```bash
-lake -d scripts/cache-bootstrap build trace-cache normalize-cache check-runtime hash-outputs attest-extras
-python3 scripts/cache-bootstrap/test_bootstrap.py
-```
-
-Fixtures compare normalized outputs and input hashes with stock Lake builds, test compressed-cache restoration after deleting outputs, and check invalidation after source/options change. Actual samples `BuildAid.D1` and `Lemmata.CofiniteContinuousBounds.LeOfCofinite` produced byte-identical normalized oleans and C. Diagnostic-path differences are handled explicitly by attestation.
+The first cache, for the published Lean 4.33.1 source (revision `e50d09817ad81469f737e8f637561e6ccf86c670`), was assembled from [Jack McCarthy's published archive](https://huggingface.co/datasets/JackMcCarthy/riemann-hypothesis-build/tree/9036e64326acf4acfae159b96664e9708445c1d1) and its [Lake build extras](https://huggingface.co/datasets/JackMcCarthy/riemann-hypothesis-build/tree/d4a057ad21e2f699743f0ed061fa2be73edfd68b/lake-extras), each file checked against pinned SHA256 values, with the C of every runtime module attested against the archived oleans or regenerated in a sandbox. Its tooling (`bootstrap-cache.py`, `fetch-published-*.py`, `codegen-cache.py`, `accept-published-c.py` and the Lake programs in `scripts/cache-bootstrap/`) is not needed for current toolchains; [it is in Git history](https://github.com/leanprover-community/riemann-hypothesis/tree/4d25b0edc80cbf28a7b82a9d491d95875b36e826/scripts).
 
 ## Public cache reads
 
@@ -52,31 +15,40 @@ lake exe cache get
 lake build --no-build
 ```
 
-The project's `cache` executable delegates to Mathlib's qualified `mathlib/cache` executable, then downloads the root package with stock Lake and bulk-restores the verified archives. It internally selects the lakefile's service, uses a temporary curl configuration for 500 parallel transfers, and raises only its child process file-descriptor limit for Mathlib's unpacker. No user configuration or upload credential is needed. Bare `lake cache get` is stock Lake's separate built-in command and does not select this root-package service automatically in Lean 4.33.1.
+The project's `cache` executable (`scripts/Cache.lean`, which runs `scripts/lake-cache-get.sh`) first runs Mathlib's qualified `mathlib/cache` executable, then `scripts/ci-cache-get.py` for the root package. It raises only its own file-descriptor soft limit, sets `LAKE_CACHE_DIR=.lake/cache`, and passes the lakefile as `LAKE_CONFIG`, without which stock Lake ignores the `[cache]` block. No user configuration or upload credential is needed. Bare `lake cache get` is stock Lake's separate built-in command; it does not check receipts or SHA256 values and is slower.
 
-`ci-cache-get.py` first looks for a successful public CI receipt matching the current clean Git source tree and the actual lakefile, dependency-manifest and toolchain bytes. It checks the input-fingerprint index, then a bounded set of equivalent ancestors, so documentation-only revisions can reuse a cache. A matching receipt selects immutable, SHA256-addressed map and module-manifest objects; a mutable PR revision map is never substituted. Stock Lake fetches the selected map's archives, and the existing path and per-archive SHA256 checks run before bulk restoration. Missing or nonmatching successful CI results select the original published-cache fallback; corrupt matching metadata or archives stop with an error.
+`ci-cache-get.py` first looks for a successful public CI receipt matching the current clean Git source tree and the actual lakefile, dependency-manifest and toolchain bytes. It checks the input-fingerprint index, then a bounded set of equivalent ancestors, so documentation-only revisions can reuse a cache, then the active toolchain's pinned baseline from `scripts/cache-baselines.json`. A matching receipt selects immutable, SHA256-addressed map and module-manifest objects; a mutable PR revision map is never substituted. The manifest must cover the map exactly, one module per input hash.
+
+Restoration then runs two things at once: `lake cache add` registers the map's input-hash mappings in 16 parallel shards (Lake writes one file per mapping, so shards cannot conflict; mappings already registered locally are skipped), and `scripts/rh-buildq/fetch-artifacts.py` downloads the missing artifacts with one curl process making up to 500 parallel transfers, with retries. Every artifact, downloaded or already in `.lake/cache/artifacts`, must match the manifest's SHA256 before it is used; a mismatch is discarded and downloaded again. Then the script checks every source and output path (no symlinks), removes Lake's saved `.hash` files for the outputs it replaces, and unpacks all modules with one stock `leantar` process (24 workers). Finally `lake build --no-build` confirms that no module would need compiling, so a later plain `lake build` needs no environment variables. Missing or nonmatching receipts exit with status 3; corrupt matching metadata or archives stop with an error.
 
 These caches include outputs from **untrusted pull requests and volunteer machines**. The metadata and digest checks establish which bytes were published for which inputs; they do not verify proofs. An independent fresh build is needed when you need to trust the result. This CI cache path performs builds and cache restoration, without export or Comparator checks.
-
-The full anonymous cold native download passed with all **175,187 archives / 4,938,217,979 bytes** in 4 minutes 47 seconds. Stock Lake spent approximately three minutes processing the index before transfers began. The default-concurrency control also ran without errors before the faster complete test superseded it.
-
-The bulk restore checks the pinned source/configuration and every completed archive's SHA256, then calls stock `leantar` once with 24 workers. Actual HTTPS-manifest download, archive checks and restoration passed in 91 seconds; the subsequent full stock no-build/rehash check passed in 44 seconds. Its small fixture is `python3 scripts/cache-bootstrap/test_restore.py`.
 
 For independent verification or fetching Mathlib alone, use `lake exe mathlib/cache get`, which bypasses this project's combined entry point.
 
 ## Publish a completed cache
 
-The bootstrap is pinned to the original submission. Publish its validated staging directory from a separate host holding the upload credential:
+Publish a directory staged by `stage-completed-build.py`, with its module index and receipt, from a separate host holding the upload credential:
 
 ```bash
-python3 scripts/publish-lake-cache.py .lake/cache-staging \
-  --rev e50d09817ad81469f737e8f637561e6ccf86c670 --check-only
-python3 scripts/publish-lake-cache.py .lake/cache-staging \
-  --rev e50d09817ad81469f737e8f637561e6ccf86c670
+python3 scripts/publish-lake-cache.py STAGING --rev REV \
+  --module-manifest METADATA/modules.jsonl.gz --build-receipt METADATA/build-receipt.json --check-only
+python3 scripts/publish-lake-cache.py STAGING --rev REV \
+  --module-manifest METADATA/modules.jsonl.gz --build-receipt METADATA/build-receipt.json
 ```
 
-The publisher reads a mode-0600 account R2 token from `~/.riemann-hypothesis-tauceti-r2-token`, scoped to the dedicated bucket in the TauCeti account, and verifies the revision map through the anonymous endpoint. Never copy this credential to a proof-building machine. It rejects incomplete mappings, unexpected files, and links before upload. For a progressive upload, use `sync-cache-artifacts.py DIRECTORY --watch`; finalize with `publish-lake-cache.py DIRECTORY --rev REV --map-only-after-sync`, which checks every remote artifact's presence and size before publishing the map.
+The publisher reads a mode-0600 account R2 token from `~/.riemann-hypothesis-tauceti-r2-token`, scoped to the dedicated bucket in the TauCeti account, and verifies the revision map through the anonymous endpoint. Never copy this credential to a proof-building machine. It rejects incomplete mappings, unexpected files, and links before upload. For a progressive upload, use `sync-cache-artifacts.py DIRECTORY --watch`; finalize with the same `publish-lake-cache.py` command plus `--map-only-after-sync`, which checks every remote artifact's presence and size before publishing the map.
+
+### Donor and other self-hosted build runners
+
+Upload credentials never go to a machine that builds pull requests. Self-hosted runners, including those that donors lend to the project, only build and hand their outputs to a GitHub-hosted job:
+
+- Every workflow step that evaluates or runs code of the commit being built (its lakefile, its dependencies' lakefiles, Mathlib's cache tool, `lake build`) runs in a bubblewrap sandbox with all namespaces unshared, a cleared environment, read-only system directories and toolchain, and the job's own work tree as the only writable host path; it cannot see the runner account's home directory. The sandbox has no network (no internet, LAN, host loopback services, metadata endpoint or host abstract sockets). Everything that downloads is trusted code that does not evaluate the commit's lakefile; dependencies, Mathlib's cache included, come from `main`'s own configuration, and a commit whose toolchain or dependency manifest differs from `main`'s is refused. If the sandbox cannot be created, the job fails; there is no unsandboxed fallback. The fragment mode's sandbox is `scripts/rh-buildq/sandbox.py`; the full-build and quick-check modes use the one in `scripts/ci-build.py`.
+- The build jobs hold no R2 credential. They upload new artifacts as a GitHub Actions artifact; a fresh `ubuntu-latest` job in the `ci-cache-publish` environment (deployable from `main` only) verifies them with trusted code before it derives a key from `R2_ACCOUNT_TOKEN`. For full builds this is `publish-ci-cache.py`; for fragment builds it is `scripts/rh-buildq/publish-fragment.py`, which recomputes the target commit, requires every module to be a source file of that commit and every artifact's SHA-256 and stock Lake content hash to match, and only adds map entries. Keep `R2_ACCOUNT_TOKEN` an environment secret of `ci-cache-publish`, never a repository secret.
+- The shared cache is fully trusted by policy: everything built is published. Fragment builds publish by default; a dispatcher can set `fragment_publish=false` to build without publishing. The publisher cannot check that a staged artifact really is what a module's input hash produces: code in the build writes the `.trace` files that carry those hashes, so a hostile commit could publish an artifact under another module's input hash and poison the shared pool.
+- Operator hosts that hold their own credential (the AWS rh-buildq hosts) are not GitHub runners and are not affected.
+
+The fragment security model is described in detail in [`scripts/rh-buildq/README.md`](../scripts/rh-buildq/README.md#security-model).
 
 The original published olean archive and Lake-extras mirrors remain in the separate Riemann Hypothesis Cloudflare account. Production native-cache downloads use the custom domain above; the `r2.dev` development URL throttles a full 175,187-artifact download.
 
-For future source revisions, successful community CI publishes a receipt, an immutable complete map and a matching module manifest under `ci/`. `lake exe cache get` consumes these through the matching-input lookup above. Failed CI builds can supply incremental producer caches, but the public client only restores a complete successful receipt. The original archive bootstrap remains pinned and deliberately rejects changed sources; its guard is not relaxed for dynamic CI restoration. Manual publication from a completed stock Lake build remains available through `lake cache stage` and the original publisher, including `--platform x86_64-unknown-linux-gnu` for clients predating the portable-cache setting.
+For future source revisions, successful community CI publishes a receipt, an immutable complete map and a matching module manifest under `ci/`. `lake exe cache get` consumes these through the matching-input lookup above. Failed CI builds can supply incremental producer caches, but the public client only restores a complete successful receipt. Manual publication from a completed stock Lake build goes through `stage-completed-build.py` and the publisher above, including `--platform x86_64-unknown-linux-gnu` (with `--map-only-after-sync`) for clients predating the portable-cache setting.

@@ -1374,15 +1374,6 @@ section HS
 
 variable {A : Type} [CommRing A]
 
-theorem hs_succAbove_one_zero {n : ℕ} : (Fin.succAbove (1 : Fin (n + 2)) 0) = 0 := by
-  rfl
-
-theorem hs_succAbove_one_succ {n : ℕ} (i : Fin n) :
-    (Fin.succAbove (1 : Fin (n + 2)) i.succ) = i.succ.succ := by
-  apply Fin.succAbove_of_le_castSucc
-  rw [Fin.le_def]
-  simp
-
 theorem hs_isHess_succ {n : ℕ} {t : A} {M : Matrix (Fin (n + 1)) (Fin (n + 1)) A} (h : IsHess t M) :
     IsHess t (M.submatrix Fin.succ Fin.succ) := by
   intro i j
@@ -1394,11 +1385,11 @@ theorem hs_isHess_above {n : ℕ} {t : A} {M : Matrix (Fin (n + 2)) (Fin (n + 2)
   constructor
   · intro e
     obtain ⟨i', rfl⟩ : ∃ i', i = Fin.succ i' := ⟨i.pred (by intro h0; simp [h0] at e), by simp⟩
-    rw [Matrix.submatrix_apply, hs_succAbove_one_succ]
+    rw [Matrix.submatrix_apply, Fin.one_succAbove_succ]
     exact (h _ _).1 (by simp at e ⊢; omega)
   · intro e
     obtain ⟨i', rfl⟩ : ∃ i', i = Fin.succ i' := ⟨i.pred (by intro h0; simp [h0] at e), by simp⟩
-    rw [Matrix.submatrix_apply, hs_succAbove_one_succ]
+    rw [Matrix.submatrix_apply, Fin.one_succAbove_succ]
     exact (h _ _).2 (by simp at e ⊢; omega)
 
 theorem hess_laplace {n : ℕ} {t : A} (M : Matrix (Fin (n + 2)) (Fin (n + 2)) A) (h : IsHess t M) :
@@ -1444,7 +1435,7 @@ theorem hess_two {n : ℕ} {t : A} (M : Matrix (Fin n) (Fin n) A) (h : IsHess t 
       refine ⟨M 0 0 * r - r', ?_⟩
       rw [hess_laplace M h, hr, hr', hs_sg_succ, Fin.prod_univ_succ (fun i => M i i),
         Fin.prod_univ_succ (fun i => (M.submatrix (Fin.succAbove 1) Fin.succ) i i)]
-      simp only [Matrix.submatrix_apply, hs_succAbove_one_zero, hs_succAbove_one_succ]
+      simp only [Matrix.submatrix_apply, Fin.one_succAbove_zero, Fin.one_succAbove_succ]
       have h3 : (Fin.succ (0 : Fin (k + 1))) = 1 := rfl
       rw [h3]
       ring
@@ -2027,36 +2018,9 @@ section P2
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K}
   {ψ : AddChar K ℂ} {ϖ : Kˣ} {L₀ Λ₀ : AddSubgroup K} {Q : Set K} {a b : ℕ}
 
-theorem hessenberg_diagonal_entry {n : ℕ} (t : K) (d : Fin n → K) (y : Pr n → K) (i : Fin n) :
-    HH t d y i i = d i := by simp [HH]
-
 theorem hessenberg_entry_upper {n : ℕ} (t : K) (d : Fin n → K) (y : Pr n → K) {i j : Fin n} (h : i < j) :
     HH t d y i j = y ⟨(i, j), h⟩ := by
   simp [HH, h, ne_of_lt h]
-
-theorem hessenberg_submatrix_tail {A : Type} [CommRing A] {n : ℕ} {t : A}
-    {M : Matrix (Fin (n + 1)) (Fin (n + 1)) A} (h : IsHess t M) :
-    IsHess t (M.submatrix Fin.succ Fin.succ) := by
-  intro i j
-  exact ⟨fun e => (h i.succ j.succ).1 (by simp only [Fin.val_succ]; omega),
-    fun e => (h i.succ j.succ).2 (by simp only [Fin.val_succ]; omega)⟩
-
-theorem succ_above_one_zero {n : ℕ} : Fin.succAbove (1 : Fin (n + 2)) (0 : Fin (n + 1)) = 0 := by
-  rfl
-
-theorem succ_above_one_succ {n : ℕ} (i : Fin n) :
-    Fin.succAbove (1 : Fin (n + 2)) i.succ = i.succ.succ := by
-  rw [← Fin.succ_zero_eq_one, Fin.succ_succAbove_succ, Fin.zero_succAbove]
-
-theorem hessenberg_submatrix_above_one {A : Type} [CommRing A] {n : ℕ} {t : A}
-    {M : Matrix (Fin (n + 2)) (Fin (n + 2)) A} (h : IsHess t M) :
-    IsHess t (M.submatrix (Fin.succAbove 1) Fin.succ) := by
-  intro i j
-  refine Fin.cases ?_ (fun i' => ?_) i
-  · exact ⟨fun e => by simp at e, fun e => by simp at e⟩
-  · simp only [Matrix.submatrix_apply, succ_above_one_succ]
-    exact ⟨fun e => (h i'.succ.succ j.succ).1 (by simp only [Fin.val_succ] at e ⊢; omega),
-      fun e => (h i'.succ.succ j.succ).2 (by simp only [Fin.val_succ] at e ⊢; omega)⟩
 
 theorem determinant_and_inverse_bounded (hC : Cst R ϖ L₀ Λ₀ Q a b) (D' : Kˣ) (h : (D' : K) ∈ Q ∨ -(D' : K) ∈ Q) :
     Bd R ϖ a (D' : K) ∧ Bd R ϖ a ((D'⁻¹ : Kˣ) : K) := by
@@ -2102,7 +2066,7 @@ theorem pw_units (hC : Cst R ϖ L₀ Λ₀ Q a b) (m : ℕ) :
     · exact Bd.of_mem hϖ R.zero_mem a
   obtain ⟨r, hr, e⟩ := hess_one_bd hϖ _ (isHess_HH t (Fin.cons ρ x : Fin (m + 1) → K) y) htb hent
   have hprod : ∏ i, HH t (Fin.cons ρ x : Fin (m + 1) → K) y i i = ρ * ∏ k, x k := by
-    simp only [hessenberg_diagonal_entry, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]
+    simp only [_root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.hessenberg_entry_diagonal, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]
   rw [hdet, hprod] at e
   have hε : Sm R ϖ 1 (-(t * r * ((D'⁻¹ : Kˣ) : K))) := ((ht.mul_bd hr).mul_bd hDi).neg
   obtain ⟨v, hv, ev, -⟩ := Sm.one_add_inv hC.adic le_rfl hε
@@ -2166,16 +2130,16 @@ theorem pw_main (hC : Cst R ϖ L₀ Λ₀ Q a b) (m : ℕ) (hm : 1 ≤ m) :
   have hHess := isHess_HH (t : K) (Fin.cons ρ x : Fin (n + 1 + 1) → K) y
 
   have lap := hess_laplace _ hHess
-  rw [hdet, hessenberg_diagonal_entry, Fin.cons_zero] at lap
+  rw [hdet, _root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.hessenberg_entry_diagonal, Fin.cons_zero] at lap
 
-  obtain ⟨r₂, hr₂, e₂⟩ := hess_two_bd hϖ _ (hessenberg_submatrix_tail hHess) htb
+  obtain ⟨r₂, hr₂, e₂⟩ := hess_two_bd hϖ _ (_root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.hs_isHess_succ hHess) htb
     (fun i j => hessenberg_entry_bounded hϖ htb hxb i.succ j (fun h => hyb _))
   have hdiag : ∏ i, ((HH (t : K) (Fin.cons ρ x : Fin (n + 1 + 1) → K) y).submatrix
       Fin.succ Fin.succ) i i = ∏ k, x k := by
-    simp only [Matrix.submatrix_apply, hessenberg_diagonal_entry, Fin.cons_succ]
+    simp only [Matrix.submatrix_apply, _root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.hessenberg_entry_diagonal, Fin.cons_succ]
   have hsg := sg_units ((HH (t : K) (Fin.cons ρ x : Fin (n + 1 + 1) → K) y).submatrix
       Fin.succ Fin.succ) (fun i => Ring.inverse (x i)) (fun i => by
-        simp only [Matrix.submatrix_apply, hessenberg_diagonal_entry, Fin.cons_succ]
+        simp only [Matrix.submatrix_apply, _root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.hessenberg_entry_diagonal, Fin.cons_succ]
         exact Ring.mul_inverse_cancel _ (hx i).2.1)
   have hsup : ∀ i : Fin n, ((HH (t : K) (Fin.cons ρ x : Fin (n + 1 + 1) → K) y).submatrix
       Fin.succ Fin.succ) i.castSucc i.succ = y (sd i.succ) := by
@@ -2186,18 +2150,18 @@ theorem pw_main (hC : Cst R ϖ L₀ Λ₀ Q a b) (m : ℕ) (hm : 1 ≤ m) :
   rw [hdiag] at hsg e₂
   rw [hsg] at e₂
 
-  obtain ⟨r₁, hr₁, e₁⟩ := hess_one_bd hϖ _ (hessenberg_submatrix_above_one hHess) htb
+  obtain ⟨r₁, hr₁, e₁⟩ := hess_one_bd hϖ _ (_root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.hs_isHess_above hHess) htb
     (fun i j => hessenberg_entry_bounded hϖ htb hxb (Fin.succAbove 1 i) j (fun h => hyb _))
   have hdiag' : ∏ i, ((HH (t : K) (Fin.cons ρ x : Fin (n + 1 + 1) → K) y).submatrix
       (Fin.succAbove 1) Fin.succ) i i = y (sd 0) * ∏ i : Fin n, x i.succ := by
     have f0 : ((HH (t : K) (Fin.cons ρ x : Fin (n + 1 + 1) → K) y).submatrix
         (Fin.succAbove 1) Fin.succ) 0 0 = y (sd 0) := by
-      rw [Matrix.submatrix_apply, succ_above_one_zero, hessenberg_entry_upper _ _ _ (Fin.succ_pos 0)]
+      rw [Matrix.submatrix_apply, Fin.one_succAbove_zero, hessenberg_entry_upper _ _ _ (Fin.succ_pos 0)]
       congr 1
     have f1 : ∀ i : Fin n, ((HH (t : K) (Fin.cons ρ x : Fin (n + 1 + 1) → K) y).submatrix
         (Fin.succAbove 1) Fin.succ) i.succ i.succ = x i.succ := by
       intro i
-      rw [Matrix.submatrix_apply, succ_above_one_succ, hessenberg_diagonal_entry, Fin.cons_succ]
+      rw [Matrix.submatrix_apply, Fin.one_succAbove_succ, _root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.hessenberg_entry_diagonal, Fin.cons_succ]
     rw [Fin.prod_univ_succ, f0]
     simp only [f1]
   rw [hdiag'] at e₁
@@ -2299,10 +2263,10 @@ theorem pw_det (hC : Cst R ϖ L₀ Λ₀ Q a b) (m : ℕ) :
     exact hessenberg_entry_bounded hϖ htb (fun k => hC.L0 _ (hx k).1) i.succ j
       (fun h => hC.L0 _ (hy _ (Fin.succ_ne_zero i)))
   obtain ⟨r, hr, e⟩ := hess_one_bd hϖ _
-    (hessenberg_submatrix_tail (isHess_HH t (Fin.cons ρ x : Fin (m + 1) → K) y)) htb hent
+    (_root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.hs_isHess_succ (isHess_HH t (Fin.cons ρ x : Fin (m + 1) → K) y)) htb hent
   have hdiag : ∏ i, ((HH t (Fin.cons ρ x : Fin (m + 1) → K) y).submatrix Fin.succ Fin.succ) i i =
       ∏ k, x k := by
-    simp only [Matrix.submatrix_apply, hessenberg_diagonal_entry, Fin.cons_succ]
+    simp only [Matrix.submatrix_apply, _root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.hessenberg_entry_diagonal, Fin.cons_succ]
   rw [hdiag] at e
   have hPP : (∏ k, x k) * ∏ k, Ring.inverse (x k) = 1 := by
     rw [← Finset.prod_mul_distrib]
@@ -2333,12 +2297,6 @@ theorem pw_one_add_EE {n : ℕ} (N : Pr n → K) (i j : Fin n) :
   by_cases h : i = j
   · subst h; simp [EE]
   · simp [EE, h]
-
-theorem pw_isUpUni {n : ℕ} (N : Pr n → K) : IsUpUni (1 + EE N) := by
-  refine ⟨fun i j hij => ?_, fun i => ?_⟩
-  · have hij' : j < i := hij
-    rw [pw_one_add_EE, if_neg (ne_of_gt hij'), dite_eq_right (not_lt.2 hij'.le)]
-  · rw [pw_one_add_EE, if_pos rfl]
 
 theorem pw_ys_zero {m : ℕ} (n : Pr (m + 1) → K) (τ : Fin m → K) (j : Fin m) (h : (0 : Fin (m + 1)) < j.succ) :
     ys n τ ⟨(0, j.succ), h⟩ = τ j := by
@@ -2648,7 +2606,7 @@ theorem pw_point (hD : LocalDatum K R ψ) (hC : Cst R ϖ L₀ Λ₀ Q a b) {m : 
   have hZ : (Hm (t : K) (c : K) ξ (1 + EE N)).submatrix Fin.rev id =
       ZZ (t : K) (Fin.cons ((t : K) * lastE ξ) x : Fin (m + 1) → K) y := by rw [hsh]; rfl
   have hdet : (HH (t : K) (Fin.cons ((t : K) * lastE ξ) x : Fin (m + 1) → K) y).det = (D' : K) := by
-    rw [← hsh, det_Hm _ _ _ _ (pw_isUpUni N), hDt]
+    rw [← hsh, det_Hm _ _ _ _ (_root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.lu_up N), hDt]
   have hxu : ∀ k, IsUnit (x k) := fun k => (hG.1 k).2.1
   rw [hZ]
   by_cases hτL : ∀ j, τ j ∈ L₀
@@ -2768,7 +2726,7 @@ theorem levelA (hD : LocalDatum K R ψ) (hC : Cst R ϖ L₀ Λ₀ Q a b) (hL₀ 
       by_contra h
       apply hG
       have hsh := pw_shape hm (t : K) (c : K) ξ N
-      have hdet := det_Hm (t : K) (c : K) ξ (1 + EE N) (pw_isUpUni N)
+      have hdet := det_Hm (t : K) (c : K) ξ (1 + EE N) (_root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.lu_up N)
       rw [← hDt] at hdet
       rw [hsh] at h hdet
       obtain ⟨hd, hy⟩ := pw_supp_Z Φ hΦ _ _ _ h
@@ -2882,12 +2840,6 @@ theorem fa_sUp {m : ℕ} (u : Matrix (Fin (m + 1)) (Fin (m + 1)) K) :
   simp only [Fin.val_last, lt_self_iff_false, dite_false, add_zero, Fin.val_castSucc,
     add_lt_add_iff_right, Fin.is_lt, dite_true]
   rfl
-
-theorem fa_sUp_EE {m : ℕ} (N : Pr (m + 1) → K) : sUp (1 + EE N) = ∑ i : Fin m, N (sd i) := by
-  rw [fa_sUp]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  have h : i.castSucc < i.succ := Fin.castSucc_lt_succ
-  simp [EE, h, h.ne, sd]
 
 theorem fa_smul_EE {n : ℕ} (z : K) (N : Pr n → K) :
     z • (1 + EE N) = HH 0 (fun _ => z) (z • N) := by
@@ -3003,7 +2955,7 @@ theorem fa_crit (hD : LocalDatum K R ψ) (hC : Cst R ϖ L₀ Λ₀ Q a b) {m : �
       ((modK R (z : K) ^ m : ℝ) : ℂ) * GG R ψ Φ (D' : K) (fun _ => (z : K)) ((z : K) • N) := by
     intro N
     have hu : ∀ _k : Fin m, IsUnit (z : K) := fun _ => z.isUnit
-    simp only [hf, GG, if_pos hu, hprod, fa_modK_pow hA, hxt, hg1, fa_sUp_EE, fa_smul_EE, ZZ]
+    simp only [hf, GG, if_pos hu, hprod, fa_modK_pow hA, hxt, hg1, _root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.pw_sUp, fa_smul_EE, ZZ]
     have : ((modK R (z : K) ^ m : ℝ) : ℂ) ≠ 0 := by
       exact_mod_cast (pow_pos hP m).ne'
     push_cast
@@ -3316,6 +3268,6 @@ end Formalism.FourierDecayAlt.P.OrbitalIntegralReduction
 
 namespace Formalism.FourierDecayAlt.P
 
-theorem orbital_integral_change_of_variables : Formalism.FourierDecayAlt.A6.OscReduction := OrbitalIntegralReduction.fa_oscReduction
+alias orbital_integral_change_of_variables := _root_.Formalism.FourierDecayAlt.P.OrbitalIntegralReduction.fa_oscReduction
 
 end Formalism.FourierDecayAlt.P

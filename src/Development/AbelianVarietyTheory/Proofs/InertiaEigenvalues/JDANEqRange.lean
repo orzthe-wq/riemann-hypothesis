@@ -73,7 +73,7 @@ theorem jD_aN_eq_range : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : Loc
     obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun (AA K LL)).1 hm
     refine ⟨c, ?_⟩
     set_option synthInstance.maxHeartbeats 100000 in
-      simp only [smulA, LinearMap.smul_apply, LinearMap.id_apply, Finset.smul_sum, map_sum]
+      simp only [smulA, LinearMap.smul_apply, LinearMap.id_apply, map_sum]
     refine Finset.sum_congr rfl fun i _ => ?_
     simp only [jD_smul_letter]
     exact smul_comm _ _ _

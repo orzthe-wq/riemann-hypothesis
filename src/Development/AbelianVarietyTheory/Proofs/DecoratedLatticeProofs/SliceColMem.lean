@@ -122,12 +122,10 @@ theorem one_mem_SB (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [Decid
     ext x
     exact ⟨fun h r _ q _ => h r q, fun h r q => h r (Set.mem_univ _) q (Set.mem_univ _)⟩
   have hO : IsOpen S := by
-    change IsOpen (S : Set (n → n' → k))
     rw [hS]
     exact isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ =>
       Valuation.isOpen_integer (v := valuation k)
   have hK : IsCompact S := by
-    change IsCompact (S : Set (n → n' → k))
     rw [hS]
     exact isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1
   refine ⟨?_, HasCompactSupport.intro hK fun x hx => by simp [Set.indicator, hx]⟩
@@ -233,7 +231,7 @@ theorem gval : ∀ (D : D7), FlatBF D → FlatFB D → ContrLoc D → GlobalTheo
       simp only [Ψ₂, Pi.smul_apply, smul_eq_mul]
       rw [hΦ₂, hpr]
       have hC'0 : (C' : ℂ) ≠ 0 := by exact_mod_cast hC'.ne'
-      simp only [toRows₁_fromRows, fromRows_apply_inr, Matrix.zero_apply]
+      simp only [toRows₁_fromRows]
       have hz : a.fromRows (0 : Matrix Unit (XIx (Fin κ) t (j + 1)) k) (Sum.inr ()) ∈ box (XIx (Fin κ) t (j + 1)) (S.ϖ ^ (σ + 1)) := (box _ _).zero_mem
       simp only [hz, if_true, mul_one]
       rw [← mul_assoc, inv_mul_cancel₀ hC'0, one_mul]

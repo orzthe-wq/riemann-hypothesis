@@ -2,7 +2,9 @@ module
 
 public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.HasValues
 public import Mathlib.Tactic.ENatToNat
-public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumberStatement
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.ExistsUnitFormLocalizationEtaleNbhd
+public import Development.AutomorphicSpectrum.Definitions.GlobalGeometry.LieModel
+public import Development.AutomorphicSpectrum.Proofs.GeometryProofs.ExistsUniqueTangentDualNumber
 public import Development.WeilBound.CoreStatements.HodgeTatePoints.HtatHopfLin
 import Mathlib.Algebra.Order.Floor.Extended
 import Mathlib.Algebra.Order.Floor.Semifield
@@ -59,14 +61,7 @@ theorem valAt_comp_top {B : Type} [CommRing B] {X Y : Scheme.{0}} (x : Spec (Com
   unfold valAt
   congr 1
 
-theorem valAt_spec_map {B C : Type} [CommRing B] [CommRing C] {X : Scheme.{0}} (ψ : B →+* C)
-    (y : Spec (CommRingCat.of B) ⟶ X) (s : Γ(X, ⊤)) :
-    valAt (Spec.map (CommRingCat.ofHom ψ) ≫ y) ⊤ le_top s = ψ (valAt y ⊤ le_top s) := by
-  rw [valAt_comp_top]
-  have h := Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ)
-  have := congrArg (fun φ => φ.hom (y.appTop.hom s)) h
-  simp only [CommRingCat.comp_apply] at this
-  exact this
+alias valAt_spec_map := _root_.PositivityTheory.HtPt.Htat.QuotientDualMap.valAt_spec_comp
 
 abbrev qmap {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (N : ℕ) :
     R ⧸ Ideal.span {(N : R)} →+* R' ⧸ Ideal.span {(N : R')} :=
@@ -95,7 +90,7 @@ theorem PositivityTheory.HtPt.Htat.ht_bc : ∀ (R : Type) [CommRing R] [IsDomain
     show valAt (Γ'.pt t).left ⊤ le_top (F.appTop.hom s) = _
     rw [← PositivityTheory.HtPt.Htat.HTBaseChange.valAt_comp_top, ← hσj', PositivityTheory.HtPt.Htat.HTBaseChange.valAt_spec_map, hb, ← RingHom.comp_apply, hj'i]
     simp
-  obtain ⟨l', hl'⟩ := PositivityTheory.HtPt.Htat.ht_linear R' T Γ' S G (Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x) N (F ≫ i) hi'
+  obtain ⟨l', hl'⟩ := _root_.PositivityTheory.HtPt.Htat.QuotientDualMap.char_on_tangent_linear R' T Γ' S G (Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x) N (F ≫ i) hi'
     L' M' ((Units.map (algebraMap R R' : R →* R')).comp χ) (F.appTop.hom s) hs'
   have key : ∀ e, l' (β e) = Ideal.Quotient.mk (Ideal.span {(N : R')}) (w' (β e)) := by
     intro e
@@ -129,7 +124,7 @@ theorem PositivityTheory.HtPt.Htat.ht_bc : ∀ (R : Type) [CommRing R] [IsDomain
   have heq : l' = (Ideal.Quotient.mkₐ R' (Ideal.span {(N : R')})).toLinearMap.comp w' :=
     LinearMap.ext_on_range hspan (fun e => by simpa using key e)
   refine ⟨F.appTop.hom s, hs', fun e' => ?_⟩
-  obtain ⟨v', ⟨hv'1, hv'2⟩, -⟩ := GlobalTheory.T.existsUnique_tangent_dual_number R' T Γ' S G (Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x) N
+  obtain ⟨v', ⟨hv'1, hv'2⟩, -⟩ := _root_.GlobalTheory.CompanionTheory.Ar.BT.TanLift.tangent_mod_torsion R' T Γ' S G (Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x) N
     (F ≫ i) hi' L' M' e'
   refine ⟨v', hv'1, hv'2, ?_⟩
   rw [hl' e' v' ⟨hv'1, hv'2⟩, heq]

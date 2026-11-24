@@ -518,7 +518,7 @@ theorem dens_main (hP : PositivityTheory.Rg.Rsw.L.PosExt) : PositivityTheory.Rg.
         intro c f
         refine tendsto_nhds_unique (hlimA _ (c • f).2) ?_
         refine ((hlimA _ f.2).const_mul c).congr (fun j => ?_)
-        simp only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
+        simp only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]
         rw [integral_const_mul] }
   have hLpos : ∀ f : A, (∀ x, 0 ≤ (f.1 x).re ∧ (f.1 x).im = 0) → 0 ≤ (L f).re ∧ (L f).im = 0 := by
     intro f hf

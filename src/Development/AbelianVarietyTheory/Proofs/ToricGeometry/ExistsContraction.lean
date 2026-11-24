@@ -123,7 +123,6 @@ theorem symm_contraction (F F₀ : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (N : V �
         rw [hA, hB]
         simp only [map_sub, LinearMap.sub_apply]
         rw [hC, hC']
-        try ring
       rw [hD, Complex.sub_re] at hpos
       linarith
 
@@ -911,7 +910,7 @@ theorem exists_contraction (P : D.La →+ (Fin g → ℂ)) (hl : ∀ (a : 𝓞 E
 
 theorem conj_rt (H : Host E) (τ : E →+* ℂ) :
     (τ (H.rt : E) = H.rt0 ↔ ¬ ComplexEmbedding.conjugate τ (H.rt : E) = H.rt0) := by
-  apply GlobalTheory.PrincFree.cmType_of_rt <;> assumption
+  apply GlobalTheory.PrincFree.cmType_of_rt
 
 theorem card_pairs {p q : ℕ} (hty : IsTypeFn H p q ty) :
     Nat.card {x : Fin g × Fin g // ty x.1 = ComplexEmbedding.conjugate (ty x.2)} = finrank ℚ E * p * q := by

@@ -206,7 +206,7 @@ theorem _root_.GlobalTheory.OrbitUnfold.tsum_setIntegral_eq_zero :
   rw [← (MulAction.selfEquivSigmaOrbits Γ Y).symm.tsum_eq (fun y => ∫ h in 𝓕, Φ y h ∂ν)]
   simp only [Function.comp_def] at hs'
   rw [Summable.tsum_sigma hs']
-  simp only [Function.comp_apply, selfEquivSigmaOrbits_symm_mk, horbit, tsum_zero]
+  simp only [selfEquivSigmaOrbits_symm_mk, horbit, tsum_zero]
 
 end OrbitUnfold
 end GlobalTheory

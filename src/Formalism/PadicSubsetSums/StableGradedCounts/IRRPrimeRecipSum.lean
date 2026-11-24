@@ -64,12 +64,10 @@ theorem prime_of_gcd {r p : ℕ} (h1 : r < p) (h2 : p < (r + 1) * (r + 1))
     · omega
   by_contra hnp
   have hq := Nat.minFac_prime (by omega : p ≠ 1)
-  have hqd : p.minFac ∣ p := Nat.minFac_dvd p
   have hqr : r < p.minFac := by
     by_contra hle
     push_neg at hle
-    have h4 : p.minFac ∣ r.factorial := Nat.dvd_factorial hq.pos hle
-    have h5 : p.minFac ∣ Nat.gcd p r.factorial := Nat.dvd_gcd hqd h4
+    have h5 : p.minFac ∣ Nat.gcd p r.factorial := Nat.dvd_gcd (Nat.minFac_dvd p) (Nat.dvd_factorial hq.pos hle)
     rw [h3] at h5
     exact hq.one_lt.ne' (Nat.dvd_one.1 h5)
   have hsq := Nat.minFac_sq_le_self (by omega) hnp
